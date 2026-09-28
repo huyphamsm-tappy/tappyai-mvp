@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Bộ Quà Tặng Hội Nghị Nhân Viên Vietel GS04 site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:11:48.582Z",
+ "body": {
+  "searchParameters": {
+   "q": "Bộ Quà Tặng Hội Nghị Nhân Viên Vietel GS04 site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

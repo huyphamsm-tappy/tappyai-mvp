@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Khách sạn Pao’s\" Sapa site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T19:08:15.721Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Khách sạn Pao’s\" Sapa site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Khách sạn Pao's Sapa Leisure - Giá cả và Ưu đãi 2026, Sa ...",
+    "link": "https://vn.trip.com/hotels/sapa-hotel-detail-10540093/pao-s-sapa-leisure-hotel/",
+    "snippet": "Giờ nhận phòng tại Khách sạn Pao's Sapa Leisure bắt đầu từ 14:00, và giờ trả phòng là 12:00. Khách sạn Pao's Sapa Leisure có hồ bơi không? Có, Khách sạn Pao's ...",
+    "position": 1
+   },
+   {
+    "title": "Khách sạn Pao's Sapa Leisure Đánh giá của khách",
+    "link": "https://vn.trip.com/hotels/sapa-hotel-detail-10540093/pao-s-sapa-leisure-hotel/review.html",
+    "snippet": "Khám phá đánh giá Khách sạn Pao's Sapa Leisure thực tế từ khách du lịch. Với 183 đánh giá đã được xác thực và xếp hạng 9.6/10, bạn có thể đặt phòng với sự ...",
+    "position": 2
+   },
+   {
+    "title": "Khách sạn Pao's Sapa Leisure - Xem 193 Ảnh & Đánh giá",
+    "link": "https://vn.trip.com/hotels/tt-sa-pa-hotel-detail-10540093/pao-s-sapa-leisure-hotel/photo.html",
+    "snippet": "Khám phá 193 ảnh của Khách sạn Pao's Sapa Leisure, bao gồm phòng ốc, tiện nghi, cơ sở vật chất và khu vực xung quanh. Sử dụng hình ảnh khách sạn thực tế để ...",
+    "position": 3
+   },
+   {
+    "title": "Tìm Khách Sạn Khách sạn giá rẻ Tại Sa Pa",
+    "link": "https://vn.trip.com/hotels/cheap/city/vn/sapa.html",
+    "snippet": "Khách sạn tại Sa Pa. \"Tọa lạc tại Sa Pa, Khách sạn Pao's Sapa Leisure trên núi, cách Nhà thờ lớn Sa Pa và Quảng trường Sa Pa 15 phút đi bộ. Khách sạn 5 sao ...",
+    "position": 4
+   },
+   {
+    "title": "Tìm Khách Sạn 5 Sao Tại Sa Pa",
+    "link": "https://vn.trip.com/hotels/star5/city/vn/sapa.html",
+    "snippet": "Chúng tôi đã tìm được 9 khách sạn 5 Sao cho bạn tại Sa Pa · Khách sạn KK Sapa · Silk Path Grand Sapa Resort & Spa · Khách sạn Bamboo Sapa · Khách sạn Pao's Sapa ...",
+    "position": 5
+   },
+   {
+    "title": "Các khách sạn ở gần PHANSI, Sa Pa",
+    "link": "https://vn.trip.com/hotels/sapa-phansi/hotels-c36146m53410559/",
+    "snippet": "Khách sạn Pao's Sapa Leisure ... Tọa lạc tại Sa Pa, Khách sạn Pao's Sapa Leisure trên núi, cách Nhà thờ lớn Sa Pa và Quảng trường Sa Pa 15 phút đi bộ. Khách sạn 5 ...",
+    "position": 6
+   },
+   {
+    "title": "Sapa Hotel 2 - Giá cả và Ưu đãi 2026, Sa Pa",
+    "link": "https://vn.trip.com/hotels/tt-sa-pa-hotel-detail-15223855/sapa-hotel-2/",
+    "snippet": "Sapa Hotel 2. Đề Xuất. Khách sạn được xem nhiều nhất. Signature by D Home SapaDeLaMont Sapa HotelStella De Boutique HotelKhách sạn Pao's Sapa LeisureSaPa ...",
+    "position": 7
+   },
+   {
+    "title": "Top 10 khách sạn tại Sa Pa, Việt Nam",
+    "link": "https://vn.trip.com/hotels/sapa-hotels-list-36146/",
+    "snippet": "Khách sạn Pao's Sapa Leisure. \"Mọi thứ ở khách sạn này đều tuyệt vời, nhân viên thì thân thiện và nhiệt tình, lại gần Mỏn Đá chụp ảnh nữa.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

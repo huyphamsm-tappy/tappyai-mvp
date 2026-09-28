@@ -88,10 +88,10 @@ import { filterTransientMemory } from '@/lib/ai/consultative/memoryTransientFilt
 import { plainRequestTopic, appendHistoryTopic } from '@/lib/ai/consultative/memoryTopic'
 import { deriveSearchNow, SPECIFIC_DATE, type SearchNow } from '@/lib/ai/consultative/searchNow'
 import { tripAskAfter, missingTripFacts } from '@/lib/ai/consultative/tripFacts'
-import { frameDomainOf } from '@/lib/ai/consultative/domainFrames'
+import { buildDomainFrame, frameDomainOf } from '@/lib/ai/consultative/domainFrames'
 import { runConsultBrain, consultV2Enabled, wasAskReply, buildAskReply, placeTypeFor } from '@/lib/ai/consultative/consultBrain'
 import { routeConsult } from '@/lib/ai/consultative/consultRouter'
-import { travelPreCall, withoutShownRows } from '@/lib/ai/consultative/consultTravel'
+import { onlyRowsNamed, slimResultForModel, travelPreCall, withoutShownRows } from '@/lib/ai/consultative/consultTravel'
 import { turnUsd, sumCounts, turnCostStream } from '@/lib/ai/turnCost'
 import { planPresearch, planFlightPresearch, type FlightPresearchPlan, presearchMessages, presearchFrames, prefixBody, deferredBody, searchingFrame, type PresearchOutcome, type PresearchPlan } from '@/lib/ai/consultative/presearch'
 import { wantsMoreFromSet, reusablePlaceSearch, type PlaceSearchEvidence } from '@/lib/ai/consultative/moreFromSet'
@@ -1110,6 +1110,11 @@ export async function POST(req: Request) {
   } else if (presearchPlan && moreTurn) {
     presearchPlan = { ...presearchPlan, reuse: { shown: (consultShownBefore.length ? consultShownBefore : priorVenuesIn(lastAssistantText).map(v => v.name)).slice(0, 12) } }
   }
+  // Consult V2 plan (replay FOOD-1..3): a place plan with no rows had every price, hour and review fact cut by
+  // the guards (empty "Chi phí", no grounded tip). The stored search runs again (24 h Serper cache) and the
+  // model reads only the chosen venue's row (onlyRowsNamed).
+  const consultPlanReuse = !!(consultativeV1 && consult?.turn === 'plan' && !presearchPlan && priorPlaceSearch && ['food', 'entertainment', 'spa'].includes(consult.domains[0] ?? ''))
+  if (consultPlanReuse && priorPlaceSearch) presearchPlan = { toolName: 'search_places', args: priorPlaceSearch.args, exact: true }
   // Owner 2026-09-28 (c40 T7): a flight request naming two airports runs its fare call before the model.
   // Consult V2: a shopping pick runs the product search before the model (one model step, like a place pick).
   const consultProductQuery = consult && (consult.turn === 'pick' || consult.turn === 'reject') && consult.domains[0] === 'shopping' && consult.query ? consult.query : null
@@ -1526,7 +1531,7 @@ export async function POST(req: Request) {
   // The stream filter reads this to decide whether the per-place photo/link block
   // still belongs in the text: with a card, it is the same content twice.
   enrichment.setRendersDecisionCard(rendersDecisionCard)
-  if (consult && consult.turn !== 'ask') enrichment.setConsultTurn(consult.turn)
+  if (consult && consult.turn !== 'ask') enrichment.setConsultTurn(consult.turn, consult.refers, consult.known)
   // Consult V2: after a pick the server offers the next steps (owner Phần 3.3).
   if (consult && (consult.turn === 'pick' || consult.turn === 'more' || consult.turn === 'reject' || consult.turn === 'compare')) enrichment.setConsultButtons(lang === 'en' ? ['See more', 'Plan it in detail'] : ['Xem thêm', 'Lên kế hoạch chi tiết'])
 
@@ -1600,6 +1605,12 @@ export async function POST(req: Request) {
     return buildConsultativeV1Block({ frame: situation, hardGaps: [], rendersCard: rendersDecisionCard, lang, now: new Date(), searchNow: presearchPlan?.reuse ? { query: presearchPlan.args.query, type: presearchPlan.args.type ?? 'restaurant', exact: true } : searchNow, afterClarify, presearched: presearchPlan !== null || flightPresearch !== null || consultProductQuery !== null || consultTravelCall !== null, reuseShown: presearchPlan?.reuse?.shown, askAfter: gateAskAfter, domain: consult ? (consult.turn === 'chat' ? 'main' : frameDomainOf(consult.domains[0] ?? null)) : frameDomainOf(gateDomain, planningIntent), frameTurn: consult && consult.turn !== 'ask' && consult.turn !== 'chat' ? consult.turn : 'pick' }) + consultUnderstood
       + renderReferencedBlock(referenced, []) + refetchLines
   })()
+  // Consult V2 (replay 2026-09-29): a follow-up / compare turn (noToolTurn) and a travel more/reject with no
+  // situation never built the V1 block, so the area frame ("**Mình chọn: X** vì …" for A-vs-B) and the
+  // state (route, date, people, the chosen pick) never reached the model — it asked for them again.
+  const consultOnlyBlock = consult && !v1Block && consult.turn !== 'ask' && consult.turn !== 'chat' && consult.domains.length > 0
+    ? buildDomainFrame(frameDomainOf(consult.domains[0]), consult.turn) + consultUnderstood
+    : ''
 
   const consultativeBlock = [
     // Explore clip → "this place" is the clip's place. Fenced row values plus the
@@ -1629,6 +1640,7 @@ export async function POST(req: Request) {
     priorEvidenceMissing && needProfile.domain === 'shopping' ? renderMissingEvidenceBlock() : '',
     // Consultative V1: situation + rule overrides + follow-up references. Empty with the flag OFF.
     v1Block,
+    consultOnlyBlock,
     tripContext.shouldAskTransportMode ? buildTransportModeBlock() : '',
     // Movie/show recommendation turn: the place tool is already dropped above, so
     // the model answers from film knowledge. This keeps that answer grounded —
@@ -2268,13 +2280,14 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       }
     }
     if (consultShownBefore.length) result = withoutShownRows(result, consultShownBefore)
+    if (consultPlanReuse) result = onlyRowsNamed(result, latestConsultPick(null), assistantTexts.flatMap(t => priorVenuesIn(t).map(v => v.name)))
     presearchOutcome = { toolCallId, toolName: preCall.name, args: preCall.args as PresearchOutcome['args'], result, ms: Date.now() - t0 }
     const error = (result as { error?: unknown })?.error ? true : false
     if (presearchPlan) console.log(JSON.stringify({ type: 'tappyai_presearch', reuse: !!presearchPlan.reuse, exact: presearchPlan.exact, query: presearchPlan.args.query, location: presearchPlan.args.location ?? null, placeType: presearchPlan.args.type, ms: presearchOutcome.ms, rows: Array.isArray((result as { results?: unknown[] })?.results) ? (result as { results: unknown[] }).results.length : null, error }))
     else if (flightPresearch) console.log(JSON.stringify({ type: 'tappyai_presearch', tool: 'get_flight_prices', origin: flightPresearch.args.origin, destination: flightPresearch.args.destination, departDate: flightPresearch.args.departDate ?? null, ms: presearchOutcome.ms, fares: Array.isArray((result as { flights?: unknown[] })?.flights) ? (result as { flights: unknown[] }).flights.length : null, error }))
   }
   const presearchAll: PresearchOutcome[] = eveningOutcomes.length > 0 ? eveningOutcomes : presearchOutcome ? [presearchOutcome] : []
-  const modelMessagesWithPresearch = presearchAll.length > 0 ? [...modelMessages, ...presearchAll.flatMap(o => presearchMessages(o))] : modelMessages
+  const modelMessagesWithPresearch = presearchAll.length > 0 ? [...modelMessages, ...presearchAll.flatMap(o => presearchMessages(consult ? { ...o, result: slimResultForModel(o.result) } : o))] : modelMessages
   // F-015: give the question back if this turn ends in a terminal model failure. Single-shot: a
   // successful `onFinish` never refunds; a terminal error part (`onError`) or a streamText init
   // throw refunds exactly once. The tools in this route catch their own errors and never throw, so
@@ -2328,7 +2341,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     // generated, so this changes no cost on a normal reply — it bounds a runaway one.
     maxTokens: noToolTurn ? (consult ? 600 : 300) : eveningBlock ? 350 : planningIntent ? 4096 : hasImage ? 1024 : 2048,
     // Consult V2: a pick whose search already ran (presearch) answers in ONE step — no second full pass.
-    maxSteps: noToolTurn || eveningBlock || (lean && presearchAll.length > 0 && !planningIntent) ? 1 : planningIntent ? 8 : hasImage ? 3 : lean ? 3 : 5,
+    maxSteps: noToolTurn || eveningBlock || (lean && presearchAll.length > 0 && !planningIntent) ? 1 : planningIntent ? (lean ? 3 : 8) : hasImage ? 3 : lean ? 3 : 5,
     // A one-step consult turn never reads the history breakpoint back — skip its +25% write (claude.ts).
     cacheHistory: !(lean && (noToolTurn || (presearchAll.length > 0 && !planningIntent))),
     // REMOVED (C2): a `prepareStep` block that forced tool choice per step. It

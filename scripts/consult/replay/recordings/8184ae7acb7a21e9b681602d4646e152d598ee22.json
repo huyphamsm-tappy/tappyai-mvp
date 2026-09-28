@@ -1,0 +1,36 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Nhu Minh Plaza Danang Hotel\" Đà Nẵng site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:41:29.849Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Nhu Minh Plaza Danang Hotel\" Đà Nẵng site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Như Minh Plaza Đà Nẵng - Giá cả và Ưu đãi 2026, Đà Nẵng",
+    "link": "https://vn.trip.com/hotels/da-nang-hotel-detail-14000228/nhu-minh-plaza-danang-hotel/",
+    "snippet": "Như Minh Plaza Đà Nẵng. Nhu Minh Plaza Danang Hotel. Số 41 Phạm Văn Đồng, Street, An Hải ...",
+    "position": 1
+   },
+   {
+    "title": "Như Minh Plaza Đà Nẵng Đánh giá của khách",
+    "link": "https://vn.trip.com/hotels/da-nang-hotel-detail-14000228/nhu-minh-plaza-danang-hotel/review.html",
+    "snippet": "Các phòng rộng rãi và thoải mái. Chúng tôi ở phòng hướng biển với cửa sổ gần như toàn cảnh. Không có ban công, nhưng có hồ bơi, mặc dù chúng tôi không sử dụng.",
+    "position": 2
+   }
+  ],
+  "credits": 1
+ }
+}

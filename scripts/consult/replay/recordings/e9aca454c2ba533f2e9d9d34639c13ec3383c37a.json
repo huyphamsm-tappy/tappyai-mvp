@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"M Hotel Da Nang\" OR \"Sala Danang Beach Hotel\" OR \"NALOD ĐÀ NẴNG\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:41:39.070Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"M Hotel Da Nang\" OR \"Sala Danang Beach Hotel\" OR \"NALOD ĐÀ NẴNG\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Khách sạn Nalod Đà Nẵng: Trải nghiệm biển tuyệt vời",
+    "link": "https://www.tiktok.com/@reviewkhachsandanang43rv/video/7623019870178921748",
+    "snippet": "Khách sạn Nalod Đà Nẵng: Trải nghiệm biển tuyệt vời. Khám phá Nalod Hotel Đà Nẵng, nơi có view biển đẹp và dịch vụ tuyệt vời chỉ từ 800xu ...",
+    "position": 1
+   },
+   {
+    "title": "Experiencia en M Hotel Da Nang, Vietnam",
+    "link": "https://www.tiktok.com/@callumhirst_/video/7547007596809424150",
+    "snippet": "Location: M Hotel, Da Nang City, Vietnam If you're searching for the best hotels in Da Nang or want a modern stay next to Da Nang Beach, M ...",
+    "position": 2
+   },
+   {
+    "title": "Breakfast Bliss at Sala Danang Beach Hotel",
+    "link": "https://www.tiktok.com/@agingflowerfairy/video/7646262621426978078",
+    "snippet": "The Sala Danang Beach Hotel in Danang, Vietnam, offers an unforgettable breakfast experience that leaves a lasting impression.",
+    "position": 3
+   },
+   {
+    "title": "M Hotel Da Nang sea view rooms & 28th-floor infinity pool",
+    "link": "https://www.tiktok.com/@mochibumm/video/7656047436506402068",
+    "snippet": "Located at 286 Võ Nguyên Giáp in Ngũ Hành Sơn, the property checks every box for a relaxed, convenient beach escape. Why choose M Hotel Da Nang ...",
+    "position": 4
+   },
+   {
+    "title": "Sala Danang Beach Hotel (@saladanangbeachhotel)",
+    "link": "https://www.tiktok.com/@saladanangbeachhotel",
+    "snippet": "Sala Danang Beach Hotel (@saladanangbeachhotel) trên TikTok |1060 Lượt thích.227 Follower.36 - 38 Lam Hoang Street, Son Tra District, Danang City, Viet Nam.",
+    "position": 5
+   },
+   {
+    "title": "Review khách sạn The Nalod Đà Nẵng: view biển sịn sò, ...",
+    "link": "https://www.tiktok.com/@wikidulich.com/video/7687839199134878983",
+    "snippet": "Review khách sạn The Nalod Đà Nẵng: view biển sịn sò, giá hợp lý, buffet sáng đa dạng. Tuy nhiên, vẫn có những điểm chưa thực sự hoàn hảo, ...",
+    "position": 6
+   },
+   {
+    "title": "Experience Luxury at M Hotel Da Nang, Vietnam",
+    "link": "https://www.tiktok.com/@byhavy/video/7450867727973010731",
+    "snippet": "Keywords: M Hotel Da Nang, Luxury hotel in Vietnam, Hotel breakfast buffet, Vietnam travel destinations, Stunning views in Da Nang, Best ...",
+    "position": 7
+   },
+   {
+    "title": "M Hotel Da Nang: Stylish City Lights and Beach Nights",
+    "link": "https://www.tiktok.com/@leobooking/photo/7563303587162508562",
+    "snippet": "Experience the modern vibe at M Hotel Da Nang with stylish stays, city lights, and beach nights. Book now for an unforgettable getaway! # ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

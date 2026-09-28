@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Lady Hill Sapa Resort\" Sapa site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T19:08:16.353Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Lady Hill Sapa Resort\" Sapa site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Lady Hill Sapa Resort - Giá cả và Ưu đãi 2026, Sa Pa",
+    "link": "https://vn.trip.com/hotels/sapa-hotel-detail-107850010/lady-hill-sapa-resort/",
+    "snippet": "Lady Hill Sapa Resort ; Điểm tham quan: Sunworld Fairground. 250m ; Điểm tham quan: Bảo An Thiền Tự. 400m ; Điểm tham quan: Sun World Fansipan Legend. 970m.",
+    "position": 1
+   },
+   {
+    "title": "Lady Hill Sapa Resort - Xem 209 Ảnh & Đánh giá",
+    "link": "https://vn.trip.com/hotels/sapa-hotel-detail-107850010/lady-hill-sapa-resort/photo.html",
+    "snippet": "Khám phá 209 ảnh của Lady Hill Sapa Resort, bao gồm phòng ốc, tiện nghi, cơ sở vật chất và khu vực xung quanh. Sử dụng hình ảnh khách sạn thực tế để hiểu rõ ...",
+    "position": 2
+   },
+   {
+    "title": "Lady Hill Sapa Resort Đánh giá của khách",
+    "link": "https://vn.trip.com/hotels/sapa-hotel-detail-107850010/lady-hill-sapa-resort/review.html",
+    "snippet": "Khám phá đánh giá Lady Hill Sapa Resort thực tế từ khách du lịch. Với 191 đánh giá đã được xác thực và xếp hạng 9.6/10, bạn có thể đặt phòng với sự an tâm ...",
+    "position": 3
+   },
+   {
+    "title": "Khách sạn có phòng gym tốt nhất tại Sa Pa cho kỳ nghỉ ...",
+    "link": "https://vn.trip.com/hotels/gym/city/vn/sapa.html",
+    "snippet": "Lady Hill Sapa Resort - Phòng Gym. 9,6. Đáng Kinh Ngạc. 192 đánh giá. 99+. Lady Hill Sapa Resort. Khách sạn tại Sa Pa. Tiện nghi nổi bật: Phòng gym, Chăm sóc cơ ...",
+    "position": 4
+   },
+   {
+    "title": "Tìm Khách Sạn 5 Sao Tại Sa Pa",
+    "link": "https://vn.trip.com/hotels/star5/city/vn/sapa.html",
+    "snippet": "Lady Hill Sapa Resort - 5 Sao. 9,6. Đáng Kinh Ngạc. 192 đánh giá. 99+. Lady Hill Sapa Resort. Khách sạn tại Sa Pa. Tiện nghi nổi bật: Bể bơi, Spa, Phòng xông ...",
+    "position": 5
+   },
+   {
+    "title": "Dang Quang Sapa Hotel - Giá cả và Ưu đãi 2026, TT. Sa Pa",
+    "link": "https://vn.trip.com/hotels/tt-sa-pa-hotel-detail-15908271/dang-quang-sapa-hotel/",
+    "snippet": "Signature by D Home SapaLady Hill Sapa ResortAlley House Sapa HomestayKhách sạn Sapa Square trực thuộc tập đoàn MeliaÉn HomeSapa Hidden Gem Hotel & SpaKhách ...",
+    "position": 6
+   },
+   {
+    "title": "Top 10 khách sạn tại Sa Pa, Việt Nam",
+    "link": "https://vn.trip.com/hotels/sapa-hotels-list-36146/",
+    "snippet": "Lady Hill Sapa Resort. Tổ 4, Nguyễn Chí Thanh, , P.Fansipan, Sa ... Nhân viên phục vụ nhiệt tình!\". 2026-07-21. T. HK Thomas Tsang. Gia ...",
+    "position": 7
+   },
+   {
+    "title": "Các khách sạn ở gần Thung lũng Mường Hoa, Sa Pa",
+    "link": "https://vn.trip.com/hotels/sapa-muong-hoa-valley/hotels-c36146m9556648/",
+    "snippet": "Lady Hill Sapa Resort. 9,6/10. Đáng Kinh Ngạc. 190 đánh giá. Cách Thung lũng Mường Hoa 6.1km. Tọa lạc ở Sa Pa, Lady Hill Sapa Resort trên núi, cách Hồ Sa Pa ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

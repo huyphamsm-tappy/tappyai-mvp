@@ -159,7 +159,10 @@ export interface EnrichmentCollector {
   setConsultButtons(labels: string[]): void
   /** Consult V2 turn type — the prose-shape guard follows the approved frame for it (2 alternatives; a plan is not reshaped). */
   consultTurn?: string
-  setConsultTurn(turn: string): void
+  setConsultTurn(turn: string, refers?: string[], known?: Record<string, string>): void
+  consultKnown?: Record<string, string>
+  /** Consult V2: the names a compare / follow-up turn is about (router `refers`). */
+  consultRefers?: string[]
   /**
    * Whether a reflex "what kind would you like?" question may survive this
    * reply. Set by the route once a tool result has been judged against the
@@ -398,7 +401,9 @@ export function createEnrichmentCollector(turnText = '', earlierUserTexts: reado
     consultButtons: undefined as string[] | undefined,
     setConsultButtons(labels: string[]) { this.consultButtons = labels.slice(0, 3) },
     consultTurn: undefined as string | undefined,
-    setConsultTurn(turn: string) { this.consultTurn = turn },
+    consultRefers: undefined as string[] | undefined,
+    consultKnown: undefined as Record<string, string> | undefined,
+    setConsultTurn(turn: string, refers?: string[], known?: Record<string, string>) { this.consultTurn = turn; this.consultRefers = refers; this.consultKnown = known },
     clarificationPolicy: 'allow' as 'allow' | 'no_reflex',
     setClarificationPolicy(policy: 'allow' | 'no_reflex') { this.clarificationPolicy = policy },
     consultativeV1: undefined as ConsultativeV1Context | undefined,

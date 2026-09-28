@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Nhà Hàng Hải Sản\" OR \"Mộc quán Seafood Đà Nẵng\" OR \"Ăn Thôi\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T19:07:50.459Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Nhà Hàng Hải Sản\" OR \"Mộc quán Seafood Đà Nẵng\" OR \"Ăn Thôi\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Garlic Butter Shrimp at Viral Mộc Quán Seafood Đà Nẵng",
+    "link": "https://www.tiktok.com/@stephany1_/video/7682925350069800205",
+    "snippet": "Mộc Quán Seafood Đà Nẵng 26 Tô Hiến Thành, An Hải, Đà Nẵng 550000, Vietnam #danang #seafoodboil #garlicbuttershrimp #shrimpbutter #vietnam.",
+    "position": 1
+   },
+   {
+    "title": "Mộc Quán Seafood Đà Nẵng (@haisanmocquan)",
+    "link": "https://www.tiktok.com/@haisanmocquan",
+    "snippet": "Mộc Quán Seafood Đà Nẵng (@haisanmocquan) trên TikTok |32.1K Lượt thích.4919 Follower.Contact for work: 0905665058 or 0964531153.Xem video phổ biến của Mộc ...",
+    "position": 2
+   },
+   {
+    "title": "Cứu tinh cho hội lười nghĩ món: Lịch trình 7 ngày càn quét ...",
+    "link": "https://www.tiktok.com/@haisanmocquan/video/7682662495768595719",
+    "snippet": "Video TikTok từ Mộc Quán Seafood Đà Nẵng (@haisanmocquan): \"Cứu tinh cho hội lười nghĩ món: Lịch trình 7 ngày càn quét tại Mộc Quán!",
+    "position": 3
+   },
+   {
+    "title": "4 món \"ngon quên lối về\" tại Mộc thử một lần là dính liền! 🥗 ...",
+    "link": "https://www.tiktok.com/@haisanmocquan/video/7681585687698738440",
+    "snippet": "25 Lượt thích,Video TikTok từ Mộc Quán Seafood Đà Nẵng (@haisanmocquan): \"4 món \"ngon quên lối về\" tại Mộc thử một lần là dính liền!",
+    "position": 4
+   },
+   {
+    "title": "Đi Ăn Thôi (@dianthoii_)",
+    "link": "https://www.tiktok.com/@dianthoii_",
+    "snippet": "Đi Ăn Thôi (@dianthoii_) trên TikTok |8.4M Lượt thích.267.8K Follower.Thèm ăn ngon thì #ĐiĂnThôi IG: dianthoii.Xem video phổ biến của Đi Ăn Thôi ... Đi Ăn Thôi.",
+    "position": 5
+   },
+   {
+    "title": "Mộc Quán Đà Nẵng: hải sản tươi, giá hợp lý",
+    "link": "https://www.tiktok.com/@haisanmocquan/video/7687805706803744018",
+    "snippet": "... Lượt thích,Video TikTok từ Mộc Quán Seafood Đà Nẵng ... Nhà Hàng Hải Sản Biển Việt. 8867 · recommend-cover. Mommy Quyên Đoàn. 8538 · recommend ...",
+    "position": 6
+   },
+   {
+    "title": "Một ngày ở Mộc \"lên đèn\" như thế nào nhỉ? 👀 Từ khoảng ...",
+    "link": "https://www.tiktok.com/@haisanmocquan/video/7687819009625984274",
+    "snippet": "Video TikTok từ Mộc Quán Seafood Đà Nẵng (@haisanmocquan): \"Một ngày ở Mộc \"lên đèn\" như thế nào nhỉ? Từ khoảng lặng chuẩn bị từng chút ...",
+    "position": 7
+   },
+   {
+    "title": "05:30 SÁNG Ở MỘC CÓ GÌ? ⏰🦐 Khi thành phố còn chưa ...",
+    "link": "https://www.tiktok.com/@haisanmocquan/video/7683714889231273223",
+    "snippet": "Video TikTok từ Mộc Quán Seafood Đà Nẵng (@haisanmocquan): \"05:30 SÁNG Ở MỘC CÓ GÌ? ⏰ Khi thành phố còn chưa thức giấc, Mộc đã đỏ đèn.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

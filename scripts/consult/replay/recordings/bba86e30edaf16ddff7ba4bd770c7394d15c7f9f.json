@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"TiNiWorld GigaMall\" OR \"Tầng 5, Giga Mall, 240-242 Phạm Văn Đồng, Thủ Đức\" OR \"Nhà thiếu nhi Thủ Đức\" Thủ Đức site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:57:13.631Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"TiNiWorld GigaMall\" OR \"Tầng 5, Giga Mall, 240-242 Phạm Văn Đồng, Thủ Đức\" OR \"Nhà thiếu nhi Thủ Đức\" Thủ Đức site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Bài Đánh Giá TiniWorld Gigamall Thủ Đức: 50 Góc Chơi ...",
+    "link": "https://www.tiktok.com/@nhamomtuyen/video/7461230100147735826",
+    "snippet": "TiniWorld Gigamall Thủ Đức là khu vui chơi trẻ em rộng lớn với hơn 50 góc chơi được đầu tư chỉn chu và an toàn. Khi khu vui chơi mở lại với ...",
+    "position": 1
+   },
+   {
+    "title": "Lễ Hội Thiếu Nhi Phường Thủ Đức",
+    "link": "https://www.tiktok.com/@lacasaigon.vn/video/7661656325704731918",
+    "snippet": "Nhà Thiếu Nhi Thủ Đức là địa điểm quen thuộc cho các chương trình cộng đồng và văn hóa thiếu nhi ở Thủ Đức. Thông tin liên quan & tìm kiếm thêm ...",
+    "position": 2
+   },
+   {
+    "title": "Trà sữa, ăn vặt & hạt dẻ gần Nhà Thiếu Nhi Thủ Đức",
+    "link": "https://www.tiktok.com/@ansapquan9thuduc/video/7659636285342027015",
+    "snippet": "Địa chỉ nổi bật - Các quán trà sữa gần Nhà Thiếu Nhi Thủ Đức: chọn các chuỗi và quán local có đồ uống phong phú, topping tươi và giá hợp lý. - ...",
+    "position": 3
+   },
+   {
+    "title": "Trung Thu này chẳng cần đi đâu xa, cứ đến tiNiWorld là có ...",
+    "link": "https://www.tiktok.com/@giadinhbemay1/video/7686840886348500242",
+    "snippet": "... cần đi đâu xa, cứ đến tiNiWorld là có cả một. @Gia Đình Bé Mây · âm thanh gốc - Gia Đình Bé Mây · tiNiWorld Gigamall Thủ Đức · author. 1207.",
+    "position": 4
+   },
+   {
+    "title": "Nhà Thiếu Nhi Thủ Đức 281 Võ Văn Ngân",
+    "link": "https://www.tiktok.com/discover/nh%C3%A0-thi%E1%BA%BFu-nhi-th%E1%BB%A7-%C4%91%E1%BB%A9c-281-v%C3%B5-v%C4%83n-ng%C3%A2n",
+    "snippet": "Sân Bóng Nhà Thiếu Nhi Thủ Đức. ĐC 281.Đ Võ Văn Ngân Phường Thủ Đức. Đt.0899.686.686.",
+    "date": "6 thg 7, 2026",
+    "position": 5
+   },
+   {
+    "title": "Sự kiện tại Nhà Thiếu Nhi Thủ Đức — Check-in Saigon ...",
+    "link": "https://www.tiktok.com/@saigonhoale.vn/video/7663157162612395271",
+    "snippet": "Nội dung chính - Địa điểm: Nhà Thiếu Nhi Thủ Đức — điểm gặp gỡ cho gia đình và thiếu nhi, thuận tiện cho check-in và tham gia hoạt động. - Chủ ...",
+    "position": 6
+   },
+   {
+    "title": "Khu Vui Chơi TiNiWorld Mừng Khai Trương Gigamall",
+    "link": "https://www.tiktok.com/@tiniworldofficial/video/7464838735646084360",
+    "snippet": "Nhanh chân đến tiNiWorld Gigamall – Tầng 5, Gigamall Thủ Đức trong dịp Tết này để tận hưởng ngay thôi! ⏰ 9:00 - 22:00 mỗi ngày. ... Khu Vui ...",
+    "position": 7
+   },
+   {
+    "title": "Biểu Diễn Nhà Thiếu Nhi Thủ Đức Cùng Vstar",
+    "link": "https://www.tiktok.com/@vstarband/video/7618916904895384849",
+    "snippet": "Biểu Diễn Nhà Thiếu Nhi Thủ Đức Cùng Vstar. Trải nghiệm đêm nhạc bùng nổ tại Nhà Thiếu Nhi Thủ Đức cùng Vstar. Xem ngay để cảm nhận sức nóng ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

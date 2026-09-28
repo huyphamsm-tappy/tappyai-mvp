@@ -1,0 +1,32 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Massage Cổ Phong Q1\" Quận 1, Hồ Chí Minh site:klook.com/vi/activity",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:29:39.466Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Massage Cổ Phong Q1\" Quận 1, Hồ Chí Minh site:klook.com/vi/activity",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Co Phong Spa: Massage kiểu Trung Quốc truyền thống",
+    "link": "https://www.klook.com/vi/activity/215744-co-phong-spa-traditional-chinese-style-massage/",
+    "snippet": "Massage Cổ Phong Q1. Thư giãn với các liệu pháp massage truyền thống đích thực được thiết kế để phục hồi sự cân bằng và sức khỏe tổng thể tại Co Phong Spa ...",
+    "rating": 5,
+    "ratingCount": 5,
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

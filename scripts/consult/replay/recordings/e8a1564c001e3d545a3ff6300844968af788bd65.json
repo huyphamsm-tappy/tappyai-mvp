@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Gội Đầu Dưỡng Sinh Mặt Ngọc\" OR \"Gội đầu dưỡng sinh\" OR \"Muội - Gội Đầu Dưỡng Sinh\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:45:08.641Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Gội Đầu Dưỡng Sinh Mặt Ngọc\" OR \"Gội đầu dưỡng sinh\" OR \"Muội - Gội Đầu Dưỡng Sinh\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Gội đầu dưỡng sinh #duongsinhcoba #goidauduongsinh ...",
+    "link": "https://www.tiktok.com/@duongsinhcoba/video/7637030543653162247",
+    "snippet": "Gội Đầu Dưỡng Sinh Sa Đéc · Gội Đầu Dưỡng Sinh Nha Trang · Gội Đầu Dưỡng Sinh Đức Hoà · Gội Đầu Dưỡng Sinh Sài Gòn · Gội Đầu Dưỡng Sinh Thạch ...",
+    "position": 1
+   },
+   {
+    "title": "Cách Gội Đầu Dưỡng Sinh Để Khách Luôn Quay Lại",
+    "link": "https://www.tiktok.com/@linhbeautybn/video/7502295105827605767",
+    "snippet": "Cách Gội Đầu Dưỡng Sinh Để Khách Luôn Quay Lại. Khám phá 4 kỹ thuật gội đầu giúp salon của bạn thu hút khách hàng. Hướng dẫn chi tiết về cách ...",
+    "position": 2
+   },
+   {
+    "title": "Review Gội Đầu Dưỡng Sinh Huyền Trang 199k",
+    "link": "https://www.tiktok.com/@chagn.94/video/7590327070513761557",
+    "snippet": "### Quy Trình Gội Đầu Dưỡng Sinh 75 Phút Gói 199k bao gồm nhiều bước chăm sóc chi tiết: * **Tẩy Tế Bào Chết Da Đầu:** Bạn sẽ được tặng một suất ...",
+    "position": 3
+   },
+   {
+    "title": "Hướng dẫn kỹ thuật gội đầu chuẩn dưỡng sinh - Phần 1",
+    "link": "https://www.tiktok.com/@tiencanhspa/video/7653123140670754068",
+    "snippet": "Gội Đầu Dưỡng Sinh Sa Đéc · Gội Đầu Dưỡng Sinh Hóc Môn. Hướng dẫn kỹ thuật gội đầu chuẩn dưỡng sinh - Phần 1. Lead Hướng dẫn này trình bày chi ...",
+    "position": 4
+   },
+   {
+    "title": "MẤY MÁ ĐI GỘI ĐẦU DƯỠNG SINH KIỂU … 😂 | Cre",
+    "link": "https://www.tiktok.com/@longchunchun/video/7199204063496490266",
+    "snippet": "MẤY MÁ ĐI GỘI ĐẦU DƯỠNG SINH KIỂU … | Cre: toanchodien23. Gội Đầu Dưỡng Sinh Trung Hoa · Gội Đầu Dưỡng Sinh · Gội Đầu Dưỡng Sinh Sư Vạn Hạnh.",
+    "position": 5
+   },
+   {
+    "title": "lược gội đầu dưỡng sinh",
+    "link": "https://shop.tiktok.com/sg/k/luoc-goi-dau-duong-sinh",
+    "snippet": "bộ lược gội đầu dưỡng sinh · bộ dụng cụ gội đầu dưỡng sinh · bồn gội đầu dưỡng sinh · Khăn choàng gội đầu dưỡng sinh · Lá thuốc thơm gội dưỡng sinh · bộ gõ lông ...",
+    "position": 6
+   },
+   {
+    "title": "Hẹn hò gội đầu dưỡng sinh, thư giãn kiểu Trung Hoa. ...",
+    "link": "https://www.tiktok.com/@dichoicunghuy/video/7578132537877286151",
+    "snippet": "Gội Đầu Dưỡng Sinh Sa Đéc. Hẹn hò gội đầu dưỡng sinh, thư giãn kiểu Trung Hoa. #massagecophong #.",
+    "position": 7
+   },
+   {
+    "title": "Hasil untuk \"bộ lược gội đầu dưỡng sinh\"",
+    "link": "https://shop.tiktok.com/my/k/bo-luoc-goi-dau-duong-sinh",
+    "snippet": "lược gội đầu dưỡng sinh · bộ dụng cụ gội đầu dưỡng sinh · bộ lược mát xa đầu · bộ lược chải tóc · chuông gội đầu dưỡng sinh · bộ gõ lông công dưỡng sinh · bộ ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

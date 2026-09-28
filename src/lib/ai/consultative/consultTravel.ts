@@ -31,7 +31,11 @@ export function travelPreCall(known: Record<string, string>, text: string, now =
   const dest = known.diem_den?.trim()
   const origin = known.xuat_phat?.trim()
   const date = isoFromDayMonth(known.ngay, now)
-  const flight = /v[eé] m[aá]y bay|chuy[eế]n bay|\bbay\b/i.test(`${known.phuong_tien ?? ''} ${text}`)
+  // A ticket request ("vé máy bay …", "bay sáng, 1 chiều") searches fares; a trip that merely travels by air
+  // ("đi Đà Nẵng 3 ngày, đi máy bay") searches where to stay — replay TRAVEL-1: the fare call (no fare
+  // provider configured) left the pick with nothing to choose.
+  const ticketWords = /v[eé] m[aá]y bay|chuy[eế]n bay|bay (?:s[aá]ng|tr[uư]a|chi[eề]u|t[oố]i|đêm|dem)|1 chi[eề]u|m[oộ]t chi[eề]u|kh[uứ] h[oồ]i/i.test(text)
+  const flight = ticketWords || (/m[aá]y bay|\bbay\b/i.test(`${known.phuong_tien ?? ''} ${text}`) && !known.so_ngay && !known.phong_cach)
   if (flight && origin && dest) return { name: 'get_flight_prices', args: { origin, destination: dest, ...(date ? { departDate: date } : {}) } }
   if (!dest) return null
   const nights = (() => { const n = Number((known.so_ngay ?? '').match(/\d+/)?.[0]); return Number.isFinite(n) && n > 1 ? n - 1 : 1 })()
@@ -57,6 +61,48 @@ export function withoutShownRows(result: unknown, shown: readonly string[]): unk
     if (!Array.isArray(rows)) continue
     const kept = rows.filter(row => !seen(row))
     if (kept.length > 0 && kept.length < rows.length) r[key] = kept
+  }
+  return r
+}
+
+/**
+ * A consult plan turn reuses the stored place search but the model reads ONLY the rows the plan is about
+ * (the chosen pick, else the venues earlier replies named, at most 2) — "send only the needed candidates".
+ */
+export function onlyRowsNamed(result: unknown, pick: string | null, shown: readonly string[]): unknown {
+  if (!result || typeof result !== 'object') return result
+  const r = { ...(result as Record<string, unknown>) }
+  const rows = r.results
+  if (!Array.isArray(rows)) return result
+  const match = (names: readonly string[]) => {
+    const keys = names.map(foldName).filter(k => k.length >= 3)
+    return rows.filter(row => {
+      const n = foldName(String((row as { name?: unknown })?.name ?? ''))
+      return !!n && keys.some(k => n === k || n.includes(k) || k.includes(n))
+    })
+  }
+  const byPick = pick ? match([pick]) : []
+  r.results = (byPick.length ? byPick : match(shown)).slice(0, 2)
+  return r
+}
+
+/** Row fields the consult model reads to choose and explain; links, ids and review actions stay on the card. */
+const MODEL_ROW_DROP = new Set(['place_id', 'maps_link', 'booking_links', 'website_uri', 'review_actions', 'has_tiktok_review', 'place_types', 'photos', 'thumbnail', 'image', 'images', 'commerce_links', 'cid', 'fid'])
+
+/**
+ * The MODEL's copy of a pre-search result on a consult turn (cost §6 "send only the needed candidates"):
+ * same rows, same order, minus link/id/media fields the card renders. The stream frames — and therefore
+ * the cards and every guard — keep the full result.
+ */
+export function slimResultForModel(result: unknown): unknown {
+  if (!result || typeof result !== 'object') return result
+  const r = { ...(result as Record<string, unknown>) }
+  for (const key of ['results', 'hotels']) {
+    const rows = r[key]
+    if (!Array.isArray(rows)) continue
+    r[key] = rows.map(row => row && typeof row === 'object'
+      ? Object.fromEntries(Object.entries(row as Record<string, unknown>).filter(([k]) => !MODEL_ROW_DROP.has(k)))
+      : row)
   }
   return r
 }

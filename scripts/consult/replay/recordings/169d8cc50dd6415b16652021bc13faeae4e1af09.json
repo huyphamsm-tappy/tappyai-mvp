@@ -1,0 +1,441 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "khách sạn Sapa",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@22.3364,103.8438,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T19:08:14.511Z",
+ "body": {
+  "searchParameters": {
+   "q": "khách sạn Sapa",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@22.3364,103.8438,14z",
+   "engine": "google"
+  },
+  "ll": "@22.3363888,103.8437997,14z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Lady Hill Sapa Resort",
+    "address": "Nguyễn Chí Thanh, Tổ 4, Sa Pa, Lào Cai 31700, Việt Nam",
+    "latitude": 22.3414346,
+    "longitude": 103.8249663,
+    "rating": 4.6,
+    "ratingCount": 1544,
+    "type": "Khách sạn nghỉ dưỡng",
+    "types": [
+     "Khách sạn nghỉ dưỡng",
+     "Nơi tổ chức sự kiện",
+     "Nhà hàng"
+    ],
+    "website": "http://www.ladyhillsaparesort.com/",
+    "phoneNumber": "+84 214 3783 888",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmM_fdZW8cDbUgtAu6FdbS45_qrDI-bZwYAjbbtVje77yF9YpCCcMOl2zYPtRM4vekZg1nxcu2ZVt1aDh5LduQDWZ1SRLkKS2vOdFSEv8YvFGATPYXFzmKK8LJxkOUbmDEwaZCg",
+    "cid": "11638541516875542126",
+    "fid": "0x36cd41b936b503cd:0xa18467d89100ae6e",
+    "placeId": "ChIJzQO1NrlBzTYRbq4AkdhnhKE"
+   },
+   {
+    "position": 2,
+    "title": "Khách sạn Pao’s Sapa Leisure",
+    "address": "Tổ dân phố Cầu Mây 1, Sa Pa, Lào Cai 31752, Việt Nam",
+    "latitude": 22.327155599999998,
+    "longitude": 103.84658069999999,
+    "rating": 4.5,
+    "ratingCount": 2400,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "http://paoshotel.com/",
+    "phoneNumber": "+84 214 6253 999",
+    "description": "KS có phòng và suite nhìn ra thung lũng, ngoài ra còn có quầy bar sân thượng, nhà hàng và bể bơi trong nhà.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLcMvrkOHkP5zlsNED4_VZnWXrUOHnDLuXbjBwxwHrYEcaoxRMMinHo1msidbteJnsgyVj5kfsWbS-awdy1K42p3sGJga-kBk2oDv16EA8_rCUc9rfvcIbQaAnXEetm-K6BR3yoI",
+    "cid": "14285445076951657135",
+    "fid": "0x36cd416a95b6c71d:0xc640189c260e6aaf",
+    "placeId": "ChIJHce2lWpBzTYRr2oOJpwYQMY"
+   },
+   {
+    "position": 3,
+    "title": "Sapa Capsule Hotel",
+    "address": "TT, 01A Đ. Sở Than, Sa Pa, Lào Cai 330000, Việt Nam",
+    "latitude": 22.3374901,
+    "longitude": 103.84058329999999,
+    "rating": 4.3,
+    "ratingCount": 380,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn",
+     "Quán cà phê espresso",
+     "Lưu trú nhà dân",
+     "Nhà hàng",
+     "Đại lý du lịch"
+    ],
+    "website": "http://www.sapacapsule.com/",
+    "phoneNumber": "+84 813 419 486",
+    "description": "Khách sạn ấm cúng có nhà hàng, sân hiên và khoang ngủ con nhộng hiện đại. Một số khoang ngủ nhìn ra núi.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-proxy/AIM7gW2cJDEPNpc1E5fW119Ov7mQc_83NanihXVE6FFauODLyj2IJ68HgXzOoDZLo9Ik2ZsXwkkTdSXJNxqR0IT7-wrwZGvA6pBiTs3XdC5N9eB4J-oExSdFAXNCdyXpApwaiCiyvKc7j0Lvbbm-jIDYUXl_FrWCbUs1hrYBqaA3cRqdMZgyHzDa8rBYEQ",
+    "cid": "4531638611752641652",
+    "fid": "0x36cd416c3932eb53:0x3ee39d4ec7f5e474",
+    "placeId": "ChIJU-syOWxBzTYRdOT1x06d4z4"
+   },
+   {
+    "position": 4,
+    "title": "Sapa Centre Hotel",
+    "address": "10 – 12, Cau May Str, 12a Ng. Cầu Mây, Sa Pa, Lào Cai 330000, Việt Nam",
+    "latitude": 22.3345579,
+    "longitude": 103.8413892,
+    "rating": 4.8,
+    "ratingCount": 2487,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "http://www.sapacentrehotel.com/",
+    "phoneNumber": "+84 862 556 299",
+    "description": "Khách sạn giản dị có quầy bar/nhà hàng thư thái trong trung tâm thị trấn với cảnh quan núi non.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLeRu046tn8G46ApDgU5uJJMP7d7ucVuqiMbkXaFda17aKTpCEZj2QGsWmSGu71LVhePHPRk81xCt4V-jjxd9M-WOQSOnLJPwL0TB_iJKRIs8UhzgqM9GxYU6qZjxwngEzEKoVK6fEddGo1Q",
+    "cid": "14380509001321652849",
+    "fid": "0x36cd416d099040a1:0xc791d4bed915a271",
+    "placeId": "ChIJoUCQCW1BzTYRcaIV2b7Ukcc"
+   },
+   {
+    "position": 5,
+    "title": "Hotel De La Coupole",
+    "address": "1, Hoang Lien Street Sapa District, Lao Cai Province Sapa, Sa Pa, Lào Cai 033000, Việt Nam",
+    "latitude": 22.3344234,
+    "longitude": 103.8401962,
+    "rating": 4.9,
+    "ratingCount": 6315,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://mgallery.accor.com/hotels/A5V2?merchantid=seo-maps-VN-A5V2&sourceid=aw-cen&utm_source=google+Maps&utm_medium=seo+maps&utm_campaign=seo+maps&utm_term=MGallery-Launch",
+    "phoneNumber": "+84 214 3629 999",
+    "description": "KS sang trọng có phòng ở sành điệu, 1 bể bơi trong nhà, 1 spa, phòng ăn & 1 quán bar cocktail trên sân thượng.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMfB6zCLTmZOz51EuWIDNRNoqBlODkCXimF5ElQWPRcTo3-QrWZHteI5EUZPG6A8x5vFWwoch-sFGQFbfAli0rc5ocldIGPZhVeqqdoHcqmbq0gzJA-7zIWzS_SnW8HhJAncGrY",
+    "cid": "12570431786756373809",
+    "fid": "0x36cd416bec8ea63d:0xae73251beae47d31",
+    "placeId": "ChIJPaaO7GtBzTYRMX3k6hslc64"
+   },
+   {
+    "position": 6,
+    "title": "Sapa Horizon Hotel & Skybar",
+    "address": "16-18 Phạm Xuân Huân, Sa Pa, Lào Cai, Việt Nam",
+    "latitude": 22.3342515,
+    "longitude": 103.8422884,
+    "rating": 5,
+    "ratingCount": 384,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn",
+     "Quán bar cocktail",
+     "Spa mát xa",
+     "Nhà hàng"
+    ],
+    "website": "http://sapahorizonhotel.com/",
+    "phoneNumber": "+84 944 570 566",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLdOlbHSc0qhdLCUKKOSJ2bh0HFABQSR2VCLUpS6PfyWOSqacKYTWppAqEfSuqwMNWv1h13ab_guDKXbWBkOi-GgGsIHzrDph8GOEEMtF4ECgWDpi5MjKC7iTT8MD8AR-szv-CoqH7rBG6lS",
+    "cid": "18436081364068645629",
+    "fid": "0x36cd41001fd6c681:0xffda1e527382bafd",
+    "placeId": "ChIJgcbWHwBBzTYR_bqCc1Ie2v8"
+   },
+   {
+    "position": 7,
+    "title": "Sapa Catcat Hills Resort & Spa",
+    "address": "086 Fansipan, Sa Pa, Lào Cai, Việt Nam",
+    "latitude": 22.332828499999998,
+    "longitude": 103.8343429,
+    "rating": 4.6,
+    "ratingCount": 1691,
+    "type": "Khách sạn nghỉ dưỡng",
+    "types": [
+     "Khách sạn nghỉ dưỡng",
+     "Khách sạn"
+    ],
+    "website": "http://catcathills.com/",
+    "phoneNumber": "+84 982 743 679",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmORy6IuxWU1bCFSovVutAScT8CGLWRhmiRKobGLDCIPy8UdjR4qHAZ5gZ_TenVKI-QI_mrf3UoIadQO5si0A36ckFeKp3bHnZ-0YWZvNeL9u88DJcGcRwfjnoq78S0gpoRp5SDpfw",
+    "cid": "3997680658112119112",
+    "fid": "0x36cd41de3ef8ad23:0x377a9d60c0390148",
+    "placeId": "ChIJI634Pt5BzTYRSAE5wGCdejc"
+   },
+   {
+    "position": 8,
+    "title": "Silk Path Grand Sapa Resort & Spa",
+    "address": "Đồi Quan 6, Tổ Dân Phố, 5, Phường, Sa Pa, Lào Cai 330000, Việt Nam",
+    "latitude": 22.337685699999998,
+    "longitude": 103.83821379999999,
+    "rating": 4.7,
+    "ratingCount": 2595,
+    "type": "Khách sạn nghỉ dưỡng",
+    "types": [
+     "Khách sạn nghỉ dưỡng"
+    ],
+    "website": "https://silkpathhotel.com/",
+    "phoneNumber": "+84 214 3788 555",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLfuEvvchUK36OWNnvRZW_WL9y0bmS1H5sSVPV0DqBy1WJxLwfG7gdRTj1H-4i9oiXfUEaNUS-T29DFcrXRZKLM2dwD6kZAZ4uwzclpcaLZchHMoX5-o8ofOCalf_5zX00XNyk487g",
+    "cid": "4304411408836102889",
+    "fid": "0x36cd416ec1bfa135:0x3bbc575eded08ae9",
+    "placeId": "ChIJNaG_wW5BzTYR6YrQ3l5XvDs"
+   },
+   {
+    "position": 9,
+    "title": "Sapa Central House",
+    "address": "238 Đ. Thạch Sơn, Sa Pa, Lào Cai 330000, Việt Nam",
+    "latitude": 22.337477099999997,
+    "longitude": 103.8514766,
+    "rating": 4.5,
+    "ratingCount": 109,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://vietnamharmony.com/sapa-central-house/",
+    "phoneNumber": "+84 945 932 004",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOq5NXmaHIXrDpwoYaOK487n4DOcHI2ckashAaxzHcnjRNaO5tgXZDJ8iCDJA2QhPV1lFJYvuExO8EcO8wgdhfy8ife5twKAK2sEyPhKy3CaPhPl-3Jp77y85KjdVncZKuTG1NMzfL1fmk",
+    "cid": "11500305920624706382",
+    "fid": "0x36cd415653682807:0x9f994b4db728434e",
+    "placeId": "ChIJByhoU1ZBzTYRTkMot01LmZ8"
+   },
+   {
+    "position": 10,
+    "title": "Hotel De Sapa",
+    "address": "010 Mường Hoa, Sa Pa, Lào Cai 03000, Việt Nam",
+    "latitude": 22.3328579,
+    "longitude": 103.84327569999999,
+    "rating": 4.3,
+    "ratingCount": 340,
+    "type": "Khách sạn nghỉ dưỡng",
+    "types": [
+     "Khách sạn nghỉ dưỡng"
+    ],
+    "website": "https://hoteldesapa.com/",
+    "phoneNumber": "+84 966 599 987",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPu1mzdhCvfdxItAnfIm0Lsueefp-NW1SC8fCD9DK_aqyJqMX3ORkycWz-nqQXNxPedT7QM7nmSYCHn4dm0GXouhnfTEwG_wijVZfHp21rqzk84JiOrDVluTfPipWnV9yLGVJk4",
+    "cid": "11552493585975488602",
+    "fid": "0x36cd415f7af06f85:0xa052b3b56e0c305a",
+    "placeId": "ChIJhW_wel9BzTYRWjAMbrWzUqA"
+   },
+   {
+    "position": 11,
+    "title": "Sapa Luxury Hotel & Spa",
+    "address": "155 Đ. Thạch Sơn, Sa Pa, Lào Cai 330000, Việt Nam",
+    "latitude": 22.337633999999998,
+    "longitude": 103.850996,
+    "rating": 4.4,
+    "ratingCount": 507,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://sapaluxuryhotelspa.com/",
+    "phoneNumber": "+84 986 171 171",
+    "description": "Khách sạn bình dân nhìn ra núi và thung lũng, phục vụ bữa sáng miễn phí và có quầy bar/nhà hàng.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmO6KO8YNChGkY7oY9PJdZ9hAJI3JonP1G9jflbqGPJT0ywqN4vHN0qVlnE2bXLHI-xtR34TwEojMTykN4CdQgcc7O99-X8rJypJhuR8mpFZW4r9QqJAkK81iHaSxXeWo6s8fJ-3W3IikiA_",
+    "cid": "16247798016043994393",
+    "fid": "0x36cd416fbe68b9fd:0xe17bc63608994d19",
+    "placeId": "ChIJ_blovm9BzTYRGU2ZCDbGe-E"
+   },
+   {
+    "position": 12,
+    "title": "Hotel Sapa Square, Affiliated by Meliá",
+    "address": "08 phố Cầu Mây, Sa Pa, Lào Cai 33000, Việt Nam",
+    "latitude": 22.334809999999997,
+    "longitude": 103.841174,
+    "rating": 4.6,
+    "ratingCount": 1122,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn",
+     "Nhà hàng",
+     "Nhà tắm hơi",
+     "Spa"
+    ],
+    "website": "https://www.melia.com/en/hotels/vietnam/sapa/hotel-sapa-square-affiliated-by-melia?utm_campaign=google&utm_content=5742&utm_medium=organic&utm_source=directories",
+    "phoneNumber": "+84 214 3871 996",
+    "description": "Khách sạn bình dân có nhà hàng thoáng mát, phòng tập thể dục và Wi-Fi miễn phí.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLeQHhIcSv6kJumx6L64EHAsQhLtaBOTQB3u-t_pmL0E3nDWRFPNV8ddd4zm9qa-SLcu5s02_XUFEx5E_KsZA1J3VPpb0rwr6EtNOgbuVadOewVyodGAeYis2wxWAJ9tsLAOb7EQj92pUIXf",
+    "cid": "7049767683925878728",
+    "fid": "0x36cd416b90d8c3a3:0x61d5ce5b756e27c8",
+    "placeId": "ChIJo8PYkGtBzTYRyCdudVvO1WE"
+   },
+   {
+    "position": 13,
+    "title": "Pistachio Hotel Sapa",
+    "address": "Tổ 5 Đường Thác Bạc, Sa Pa, Lào Cai 661300, Việt Nam",
+    "latitude": 22.3347116,
+    "longitude": 103.8387484,
+    "rating": 4.5,
+    "ratingCount": 1933,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "http://pistachiohotel.com/",
+    "phoneNumber": "+84 214 3566 666",
+    "description": "Khách sạn cao cấp có phòng ở và phòng suite sang trọng, bể bơi trong nhà, spa và quán bar tầng thượng.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLe8dzdCx5A3AVAkY_mUNXWdDZCbdgf6ewruDl3oLCGm-vg3uhKUOb2V_nwBsi0nnKXyNAkc8d4jLqfjashEt1Btzao3v17aOm-6XafWW21IGIsqGsaqV49wwqsgPU9TNJMVWf-4sA",
+    "cid": "2424382403648800482",
+    "fid": "0x36cd416eb779007b:0x21a522f38131c6e2",
+    "placeId": "ChIJewB5t25BzTYR4sYxgfMipSE"
+   },
+   {
+    "position": 14,
+    "title": "Bamboo Sapa Hotel",
+    "address": "18 Mường Hoa, Sa Pa, Lào Cai, Việt Nam",
+    "latitude": 22.3323668,
+    "longitude": 103.8436966,
+    "rating": 4.5,
+    "ratingCount": 1584,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn",
+     "Nhà hàng",
+     "Spa",
+     "Bể bơi"
+    ],
+    "website": "http://www.bamboosapahotel.com.vn/",
+    "phoneNumber": "+84 214 3871 076",
+    "description": "Phòng ở bài trí hợp lý trong khách sạn thoải mái có nhà hàng, bể bơi vô cực và không gian ngắm cảnh núi non.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMFsATNJca1UWMBIYaWKhLOmFHJf3ni9S7McJUFif7aTZ4sFOLA2acPCpHAUu-rgxpjQYNexwpJqh77N63q8cX-1tsEQknQFGSXo3o__op9RJ19z9QunV9BZ2gfxi0zaw3iuI8wbH8RB6d6",
+    "cid": "1687483720510715949",
+    "fid": "0x36cd416b2191e4b5:0x176b2580cd4bb82d",
+    "placeId": "ChIJteSRIWtBzTYRLbhLzYAlaxc"
+   },
+   {
+    "position": 15,
+    "title": "Hotel Sapa Green & Spa Sapa",
+    "address": "02 Hoàng Liên, Sa Pa, Lào Cai, Việt Nam",
+    "latitude": 22.335046,
+    "longitude": 103.8401691,
+    "rating": 4.6,
+    "ratingCount": 2100,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn",
+     "Spa"
+    ],
+    "website": "http://sapagreenhotel.vn/",
+    "phoneNumber": "+84 214 3628 888",
+    "description": "Khách sạn bình dân có spa, nhà hàng bài trí đơn giản, Wi-Fi miễn phí và phòng ở ấm cúng có sàn gỗ.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLcQPlxTGOLjeyz8tdA92tocqXohVNWrLj8JAZDMwQslRxPIOZZQ9BfYIdS9jGkwhiEnS1tYuEX-Pc12g-qRbCEJwzzweFp8-YAsnn7USELi8-NCaT7Lp80FcEIWldMpVJf_OBlhXg",
+    "cid": "15888472810015297843",
+    "fid": "0x36cd416b99fae313:0xdc7f31d7086a1133",
+    "placeId": "ChIJE-P6mWtBzTYRMxFqCNcxf9w"
+   },
+   {
+    "position": 16,
+    "title": "Azalea Sapa Hotel",
+    "address": "Số 3 Phố Thác Bạc, Sa Pa, Lào Cai 330000, Việt Nam",
+    "latitude": 22.3357723,
+    "longitude": 103.8391364,
+    "rating": 4.9,
+    "ratingCount": 1766,
+    "type": "Khách sạn nghỉ dưỡng",
+    "types": [
+     "Khách sạn nghỉ dưỡng",
+     "Bể bơi"
+    ],
+    "website": "https://azaleahotel.vn/",
+    "phoneNumber": "+84 845 030 303",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLe8U-8y3dsXYWl7GSxIhBfPxh7CzPcQ3YoKi1G59grKvTYFaMoSrxrpoTNr9WuHyuhfehMt9qN_VnE6AZyADueBzhX6FM0k-3D0gBL9o7ENNvCBsM4FvYjO3DjkWkZ8Q9GShoLa",
+    "cid": "5228711359290795228",
+    "fid": "0x36cd4100521d48fb:0x48901d474393e4dc",
+    "placeId": "ChIJ-0gdUgBBzTYR3OSTQ0cdkEg"
+   },
+   {
+    "position": 17,
+    "title": "Sapa Relax Hotel & Spa",
+    "address": "19A Đ. Đông Lợi, Sa Pa, Lào Cai, Việt Nam",
+    "latitude": 22.3332512,
+    "longitude": 103.84151179999999,
+    "rating": 4.6,
+    "ratingCount": 1217,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "http://saparelaxhotel.com/",
+    "phoneNumber": "+84 214 3800 368",
+    "description": "Khách sạn tinh tế có nhà hàng, khu spa, phòng ở trang nhã và bữa sáng miễn phí.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLe1T73V0DR5aHs0DjhJBhZMrkUtYLMDQi-7Ju-oS7pkF028MV8is_aG41EVx2VMW2QA968FVSp2xfMtgaXEGgjEihw_CiDaJAH9Dwfy3oLdRqsX9XQRBmoFsY3cvWonE9hnjpOFL4csGzEj",
+    "cid": "13653459564318528531",
+    "fid": "0x36cd417681d8e655:0xbd7ad522765d9413",
+    "placeId": "ChIJVebYgXZBzTYRE5RddiLVer0"
+   },
+   {
+    "position": 18,
+    "title": "Lotus Aroma Sapa Hotel Lao Cai",
+    "address": "Tổ 5, phường, Sa Pa, Lào Cai, Việt Nam",
+    "latitude": 22.3394576,
+    "longitude": 103.85322239999999,
+    "rating": 4.8,
+    "ratingCount": 253,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://www.lotusaromasapa.com/",
+    "phoneNumber": "+84 988 939 393",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNq8ZRlblgdU3_6xYdb0xr4euymQZsNjuKk1YlBIv3Q1MezBEntl6WO1pnUHm701QJP4CO1H8tXP6x_-8Ijfj-en9ZTkwVc18dmROU8ppLJq9mQVcJAPmPUgcsIRy9UYiD_Vtby",
+    "cid": "7703620694127319841",
+    "fid": "0x36cd41480516900d:0x6ae8c234adce9b21",
+    "placeId": "ChIJDZAWBUhBzTYRIZvOrTTC6Go"
+   },
+   {
+    "position": 19,
+    "title": "Sapa Panorama Hotel",
+    "address": "Tx 10 Hoàng Diệu, Sa Pa, Lào Cai 310000, Việt Nam",
+    "latitude": 22.3366094,
+    "longitude": 103.8423179,
+    "rating": 4.4,
+    "ratingCount": 865,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn",
+     "Khách sạn lưu trú dài hạn",
+     "Khách sạn nghỉ dưỡng"
+    ],
+    "website": "http://sapapanoramahotel.com/",
+    "phoneNumber": "+84 918 324 535",
+    "description": "Khách sạn thư thái có nhà hàng phục vụ bữa sáng miễn phí và nhìn ra cảnh núi non.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLcHJcobjY_Rx4GqQwRJDaTg2tO4kwpKXRiMJIvZwgPkec98GRPeur55hX5UMjXlOtz4DyTHffRsV272FOLBj4VKK-sG03vPic9Dr9XmGXJvZw9H-_wRY04MbLmIokzXO2fs5RKsnCy1gIY",
+    "cid": "17632924387532557914",
+    "fid": "0x36cd416c889f77ab:0xf4b4bb4ea6334e5a",
+    "placeId": "ChIJq3efiGxBzTYRWk4zpk67tPQ"
+   },
+   {
+    "position": 20,
+    "title": "Khu nghỉ dưỡng sạn Sapa Pine Hill Eco Lodge",
+    "address": "05 Hoàng Diệu, Sa Pa, Lào Cai 330000, Việt Nam",
+    "latitude": 22.3367379,
+    "longitude": 103.84145679999999,
+    "rating": 4.9,
+    "ratingCount": 574,
+    "type": "Khách sạn nghỉ dưỡng",
+    "types": [
+     "Khách sạn nghỉ dưỡng",
+     "Quán cà phê",
+     "Khu ăn uống",
+     "Nhà hàng"
+    ],
+    "website": "https://www.facebook.com/Sapapinehill",
+    "phoneNumber": "+84 856 115 599",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmO8E1RaO7CQI-na2X7sxhgjG_kJHOB96iERcyckecOJWFvJWTVDOvMQ4B98s2qQBJqS7DIt-hnySc_1fgymiac7bqbhBcMym1MrNyqnWd8FDKT3cIyIClVVqLzpqAnuS4DnTUg",
+    "cid": "8168880699439765846",
+    "fid": "0x36cd41c153c16f6b:0x715db1b72ea6d956",
+    "placeId": "ChIJa2_BU8FBzTYRVtmmLrexXXE"
+   }
+  ],
+  "credits": 3
+ }
+}

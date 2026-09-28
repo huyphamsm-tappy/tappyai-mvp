@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Karaoke SAFARI\" OR \"Kingdom Karaoke\" OR \"Luxury Karaoke\" quan 1 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T19:09:54.770Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Karaoke SAFARI\" OR \"Kingdom Karaoke\" OR \"Luxury Karaoke\" quan 1 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Em có rồi - Kingdom Karaoke Quận 1 Phạm Viết Chanh",
+    "link": "https://www.tiktok.com/@karaoke.kingdom/video/7430847353332026631",
+    "snippet": "Em có rồi - Kingdom Karaoke Quận 1 Phạm Viết Chanh. Enjoy singing Em có rồi at Kingdom Karaoke in Quận 1 by Phạm Viết Chanh. Entertainment at ...",
+    "position": 1
+   },
+   {
+    "title": "Khám phá Căn Phòng Hoàng Gia tại Luxury Karaoke Q1, ...",
+    "link": "https://www.tiktok.com/@avatarkaraokesg/video/7315979869043674375",
+    "snippet": "Khám phá Căn Phòng Hoàng Gia tại Luxury Karaoke Q1, Sài Gòn. Dành cho những ai muốn trải nghiệm không gian đẳng cấp cùng với dịch vụ KTV đỉnh ...",
+    "position": 2
+   },
+   {
+    "title": "Ứng tuyển vị trí Marketing tại Kingdom Karaoke",
+    "link": "https://www.tiktok.com/@karaoke.kingdom/video/7397432282354633985",
+    "snippet": "Hãy cùng Kingdom Karaoke, một trong những địa điểm giải trí hàng đầu ở quận 1, để khám phá cơ hội việc làm trong lĩnh vực marketing! **Vị trí ứng tuyển:** ...",
+    "position": 3
+   },
+   {
+    "title": "Karaoke Kingdom",
+    "link": "https://www.tiktok.com/@karaoke.kingdom",
+    "snippet": "Kingdom Karaoke - Nơi huy động niềm vui. kingdomkaraoke.com. Vương Quốc Restaurant. Đi karaoke mà mắc cỡ kiểu #TikTokAwardsVN #kingdomkaraoke #kingdom ...",
+    "position": 4
+   },
+   {
+    "title": "Karaoke Chào Cao Hơn Mâm Cỗ: Hài Hước Quận 1",
+    "link": "https://www.tiktok.com/@karaoke.kingdom/video/7384766283448896769",
+    "snippet": "1330 Lượt thích,23 Bình luận.Video TikTok từ Karaoke Kingdom (@karaoke.kingdom): \"Khám phá buổi karaoke vui nhộn với lời chào độc đáo!",
+    "position": 5
+   },
+   {
+    "title": "Hát Karaoke Kingdom Quận 1: Con Gái Hiện Đại Độc Thân",
+    "link": "https://www.tiktok.com/@karaoke.kingdom/video/7420062463443422482",
+    "snippet": "306 Lượt thích,Video TikTok từ Karaoke Kingdom (@karaoke.kingdom): \"Hát karaoke tại Kingdom quận 1 với bài hát 'Con Gái Hiện Đại Độc Thân'.",
+    "position": 6
+   },
+   {
+    "title": "Sự việc lại thành ra thế này #KingdomKaraoke #Karaoke ...",
+    "link": "https://www.tiktok.com/@karaoke.kingdom/video/7378835124667845889",
+    "snippet": "2395 Lượt thích,42 Bình luận.Video TikTok từ Karaoke Kingdom (@karaoke.kingdom): \"Sự việc lại thành ra thế này #KingdomKaraoke #Karaoke ...",
+    "position": 7
+   },
+   {
+    "title": "Karaoke Kingdom Quận 1",
+    "link": "https://www.tiktok.com/discover/karaoke-kingdom-qu%E1%BA%ADn-1",
+    "snippet": "Địa điểm Karaoke và Buffet Siêu Đẹp tại Quận 1 | Review Kingdom Karaoke. Khám phá địa điểm Karaoke kết hợp Buffet đẳng cấp tại quận 1 với phòng decor siêu đẹp.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

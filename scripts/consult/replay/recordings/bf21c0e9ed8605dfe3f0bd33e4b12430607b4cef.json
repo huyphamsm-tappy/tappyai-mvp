@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Cà phê Linh\" OR \"Tiệm cà phê Sài Gòn Xưa\" OR \"Cà phê Cô Ba\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:14:52.041Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Cà phê Linh\" OR \"Tiệm cà phê Sài Gòn Xưa\" OR \"Cà phê Cô Ba\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cà phê Cô Ba Mở Lại Tại Sài Gòn",
+    "link": "https://www.tiktok.com/@baro.phe/video/7568829139533237525",
+    "snippet": "Cà phê Cô Ba Mở Lại Tại Sài Gòn. Khám phá cà phê Cô Ba đã mở cửa trở lại, trải nghiệm phong cách và hương vị độc đáo tại Rooftop. #coffee ...",
+    "position": 1
+   },
+   {
+    "title": "Tiệm Cà Phê Linh - Tái Hiện Sài Gòn Xưa và Nay",
+    "link": "https://www.tiktok.com/@baro.phe/video/7234435488730402053",
+    "snippet": "Khám phá tiệm cà phê Linh ở Quận 1, Sài Gòn với không gian xưa và nay độc đáo. Cảm nhận văn hóa cà phê Việt Nam qua thập kỷ sài gòn xưa và nay.",
+    "position": 2
+   },
+   {
+    "title": "Tiệm cà phê Cô Ba … cùng nhau đi nha ...",
+    "link": "https://www.tiktok.com/@cuuviho71/video/7689280542881107201",
+    "snippet": "156 Lượt thích,24 Bình luận.Video TikTok từ Thanh Tuyền nè (@cuuviho71): \"Tiệm cà phê Cô Ba … cùng nhau đi nha @Tiệm cà phê Cô Ba 1975 ...",
+    "position": 3
+   },
+   {
+    "title": "Results for \"Cà phê linh chi\"",
+    "link": "https://shop.tiktok.com/sg/k/ca-phe-linh-chi",
+    "snippet": "Results for \"Cà phê linh chi\" · Cà phê laura ( vị đông trùng hạ thảo, vị nấm linh chi) của Nhật Kim Anh hộp 10 gói · Cà phê laura ( vị đông trùng hạ thảo, vị nấm ...",
+    "position": 4
+   },
+   {
+    "title": "Tiệm Cà Phê Linh: Nơi Giữa Sự Ồn Ào",
+    "link": "https://www.tiktok.com/@vivichan._/video/7234762283472178437",
+    "snippet": "Tiệm Cà Phê Linh: Nơi Giữa Sự Ồn Ào. Khám phá tiệm cà phê Linh, chốn yên bình giữa Sài Gòn náo nhiệt. Trải nghiệm không gian retro độc đáo ...",
+    "position": 5
+   },
+   {
+    "title": "Tiệm cà phê Linh IEC Tứ Hiệp: Quán cafe chill, góc sống ...",
+    "link": "https://www.tiktok.com/@thanh.thanh_tri/video/7665575910657084693",
+    "snippet": "Lead Tiệm cà phê Linh vừa được phát hiện ngay khu IEC Tứ Hiệp — một quán cafe chill với đồ uống ngon và nhiều góc sống ảo.",
+    "position": 6
+   },
+   {
+    "title": "Cà Phê Cô Ba (@caphecobasaigon)",
+    "link": "https://www.tiktok.com/@caphecobasaigon",
+    "snippet": "Liên hệ tụi mình qua f.b Cà Phê Cô Ba Đồng Khởi /O9️⃣3️⃣3️⃣4️⃣2️⃣7️⃣5️⃣5️⃣3️⃣. Bạn đang tìm một quán cà phê đủ yên tĩnh để làm việc?",
+    "position": 7
+   },
+   {
+    "title": "Tiệm Cà Phê Linh Mới Ở Quận 1 Với View Bitexco",
+    "link": "https://www.tiktok.com/@baro.phe/video/7569433852045790484",
+    "snippet": "Khám phá tiệm cà phê Linh mới với view ngắm Bitexco tuyệt đẹp ở quận 1. Đừng bỏ lỡ! #coffee #cafe #reviewcafe #saigon #paophe. Đây là bản tóm ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

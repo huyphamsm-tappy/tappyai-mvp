@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Tiệm cà phê Sài Gòn Xưa\" OR \"Cà phê Linh\" OR \"CÀ PHÊ X COFFEE • VIETNAMESE COFFEE CULTURE\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:53:08.502Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Tiệm cà phê Sài Gòn Xưa\" OR \"Cà phê Linh\" OR \"CÀ PHÊ X COFFEE • VIETNAMESE COFFEE CULTURE\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tiệm Cà Phê Linh Mới Ở Quận 1 Với View Bitexco",
+    "link": "https://www.tiktok.com/@baro.phe/video/7569433852045790484",
+    "snippet": "Khám phá tiệm cà phê Linh mới với view ngắm Bitexco tuyệt đẹp ở quận 1. Đừng bỏ lỡ! #coffee #cafe #reviewcafe #saigon #paophe. Đây là bản tóm ...",
+    "position": 1
+   },
+   {
+    "title": "Tiệm Cà Phê Sài Gòn Xưa: Góc Quán Ngon Quận 5",
+    "link": "https://www.tiktok.com/@truongcamcuong21051964/video/7610449909958954256",
+    "snippet": "Tiệm Cà Phê Sài Gòn Xưa. Ở số 3B Trần Phú phường Chợ Quán quận 5, cà phê đen nóng uống ngon giá là 45k. Mở cửa bán từ lúc 7 giờ cho đến 23 giờ.",
+    "position": 2
+   },
+   {
+    "title": "Tiệm Cà Phê Linh - Tái Hiện Sài Gòn Xưa và Nay",
+    "link": "https://www.tiktok.com/@baro.phe/video/7234435488730402053",
+    "snippet": "Khám phá tiệm cà phê Linh ở Quận 1, Sài Gòn với không gian xưa và nay độc đáo. Cảm nhận văn hóa cà phê Việt Nam qua thập kỷ sài gòn xưa và nay.",
+    "position": 3
+   },
+   {
+    "title": "Tiệm Cà Phê Linh. Ở số 77 Hàm Nghi phường Sài Gòn ...",
+    "link": "https://www.tiktok.com/@truongcamcuong21051964/video/7571104636426292501",
+    "snippet": "Tiệm Cà Phê Linh. Ở số 77 Hàm Nghi phường Sài Gòn quận 1, cà phê sữa nóng giá là 50k. Cà phê ở đây uống ngon còn nhân viên thì vui vẻ, ...",
+    "position": 4
+   },
+   {
+    "title": "Results for \"Cà phê linh chi\"",
+    "link": "https://shop.tiktok.com/sg/k/ca-phe-linh-chi",
+    "snippet": "Results for \"Cà phê linh chi\" · Cà phê laura ( vị đông trùng hạ thảo, vị nấm linh chi) của Nhật Kim Anh hộp 10 gói · Cà phê laura ( vị đông trùng hạ thảo, vị nấm ...",
+    "position": 5
+   },
+   {
+    "title": "Review Cà Phê Linh Quận 3: Chi Nhánh Mới Toanh Phong ...",
+    "link": "https://www.tiktok.com/@baro.phe/video/7421021267911789831",
+    "snippet": "Khám Phá Chi Nhánh Mới Toanh Của Tiệm Cà Phê Linh Tại Quận 3 Cà phê Linh, một cái tên đã quen thuộc với nhiều tín đồ cà phê tại Sài Gòn, ...",
+    "position": 6
+   },
+   {
+    "title": "Tiệm Cà Phê Linh 1975: Chuyến Phiêu Lưu Quay Về Sài ...",
+    "link": "https://www.tiktok.com/@lacasaigon.vn/video/7240812869170908458",
+    "snippet": "Quán Cafe View 29 Đẹp Ở Đà Nẵng Tô Hiệu. Tiệm Cà Phê Linh 1975: Chuyến Phiêu Lưu Quay Về Sài Gòn Xưa. Khám phá một tiệm cà phê tái hiện năm 1975 ...",
+    "position": 7
+   },
+   {
+    "title": "Tiệm cà phê Linh IEC Tứ Hiệp: Quán cafe chill, góc sống ...",
+    "link": "https://www.tiktok.com/@thanh.thanh_tri/video/7665575910657084693",
+    "snippet": "Lead Tiệm cà phê Linh vừa được phát hiện ngay khu IEC Tứ Hiệp — một quán cafe chill với đồ uống ngon và nhiều góc sống ảo.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

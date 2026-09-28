@@ -17,8 +17,9 @@ import { guardPlanPrices, planPriceEvidenceFromRows } from './planPriceGuard'
 import { guardPlanLocalTips } from './planLocalTipsGuard'
 import { guardPlanItems, type PlanPlace } from './planItemGuard'
 import { guardPlanTripFacts, guardUngivenTravelDate } from './planTripFactsGuard'
-import { appendPlanBudgetMath } from './planBudgetMath'
+import { appendConsultPlanCost, appendPlanBudgetMath, partyCount, perPersonBudget } from './planBudgetMath'
 import { consultRemainingLine, normalizePickSentence, shoppingMarkerNames, shoppingPickName } from './consultative/consultBrain'
+import { restorePlanHeadings } from './consultative/domainFrames'
 import { buildActions } from '@/lib/recommendation/actions'
 import { safeFlushPoint, alignReleasedPrefix } from './progressiveFlush'
 import { normalizeReplyMarkdown, plainTextDeep } from '@/lib/chat/markdownNormalize'
@@ -2404,7 +2405,16 @@ export function applyPlaceEnrichmentStreamFilter(
       const named = (n: string) => { const f = n.trim().toLowerCase(); return f.length >= 3 && bolds.some(b => f.includes(b) || b.includes(f)) }
       const rec = collector?.placesRecommendations?.find(r => r.recommended)?.entity.identity.name
       if (rec && named(rec)) return rec
-      return (collector?.placesRecommendations ?? []).map(r => r.entity.identity.name).find(named) ?? null
+      const fromCards = (collector?.placesRecommendations ?? []).map(r => r.entity.identity.name).find(named)
+      if (fromCards) return fromCards
+      // A compare with no card (replay FOOD-1 "A hay B?" → "…**Unatoto** là lựa chọn an toàn hơn… Bạn định
+      // chọn quán nào?"): the compared venue the reply bolds FIRST is the one it leads with.
+      const refers = collector?.consultRefers ?? []
+      for (const b of bolds) {
+        const hit = refers.find(r => { const f = r.trim().toLowerCase(); return f.length >= 3 && (f.includes(b) || b.includes(f)) && b.length >= 3 })
+        if (hit) return hit
+      }
+      return null
     })()
     const pickNormalized = consultPickTurn ? normalizePickSentence(budgeted, shoppingPickName(collector?.shoppingMarker) ?? placePickFallback) : budgeted
     // Candidates = the card set (placesRecommendations — presearch rows reach it; latestPlaces does not,
@@ -2776,7 +2786,21 @@ export function applyPlaceEnrichmentStreamFilter(
     // `prose` / `finalText` are composed, so the detectors still read exactly what ships.
     // Consult V2: the "Mình còn N lựa chọn nữa" line is re-placed HERE, after every sentence guard (replay
     // FOOD-1: added above, then cut by the V1 prose-shape cap).
-    const groundedProse = (t => collector?.consultButtons?.length ? consultRemainingLine(t, consultCandidates, lang) : t)(settleMarkdown((() => {
+    // …and a detailed plan gets back the heading lines a guard cut with the sentence under them.
+    const groundedProse = ((t: string) => {
+      const restored = collector?.consultTurn === 'plan' ? restorePlanHeadings(mainText, t) : t
+      // …and its cost section shows code-written arithmetic (the chosen row's band, else the user's own
+      // per-person budget) when the model's own numbers did not survive the guards.
+      const headed = collector?.consultTurn === 'plan'
+        ? appendConsultPlanCost(restored, {
+          people: partyCount(collector.consultKnown?.so_nguoi),
+          band: [...priceBandsByEntity.values()][0] ?? null,
+          perHead: perPersonBudget(collector.userTexts ?? [userText]),
+          lang,
+        }).text
+        : restored
+      return collector?.consultButtons?.length ? consultRemainingLine(headed, consultCandidates, lang) : headed
+    })(settleMarkdown((() => {
       if (!fallback) return gated.text
       // V1 backstop: the pick is the FIRST sentence of the body; the model's text follows. The same
       // when G1b restores the MODEL's own pick (c40 F8): a restored pick below "Nếu muốn, …" reads

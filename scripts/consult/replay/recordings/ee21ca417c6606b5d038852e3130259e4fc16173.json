@@ -1,0 +1,36 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Vias Hotel\" Vũng Tàu site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:54:32.494Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Vias Hotel\" Vũng Tàu site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Khách sạn Vias Vũng Tàu - Xem 296 Ảnh & Đánh giá",
+    "link": "https://vn.trip.com/hotels/vung-tau-hotel-detail-23780170/vias-hotel-vung-tau/photo.html",
+    "snippet": "Kính chào Quý khách,Cảm ơn Quý Khách đã dành thời gian đánh giá về trải nghiệm của bạn tại Vias Hotel Vung Tau. ... Vũng Tàu, xe mới, sạch sẽ và thoải mái.",
+    "position": 1
+   },
+   {
+    "title": "Khách sạn Vias Vũng Tàu - Giá cả và Ưu đãi 2026, TP. Hồ ...",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-hotel-detail-23780170/vias-hotel-vung-tau/",
+    "snippet": "Khách sạn Vias Vũng Tàu. Vias Hotel Vung Tau. 179 Thùy Vân, P.8, Tam Thắng, ...",
+    "position": 2
+   }
+  ],
+  "credits": 1
+ }
+}

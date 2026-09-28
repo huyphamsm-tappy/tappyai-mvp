@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Nông Trại Khoai\" Bình Thạnh, Hồ Chí Minh site:klook.com/vi/activity",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:25:50.268Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Nông Trại Khoai\" Bình Thạnh, Hồ Chí Minh site:klook.com/vi/activity",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

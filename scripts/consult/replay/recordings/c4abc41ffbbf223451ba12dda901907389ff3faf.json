@@ -1,0 +1,77 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:vnexpress.net/du-lich Vũng Tàu",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:54:53.926Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:vnexpress.net/du-lich Vũng Tàu",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tin tức Du lịch Vũng Tàu: Khám phá địa danh, văn hóa & ...",
+    "link": "https://vnexpress.net/du-lich/diem-den/viet-nam/vung-tau",
+    "snippet": "Thông tin Du lịch Vũng Tàu 2019 tại VnExpress, chia sẻ kinh nghiệm, hình ảnh, video về văn hóa, ẩm thực, con người, những địa điểm đẹp nhất ở Vũng Tàu.",
+    "position": 1
+   },
+   {
+    "title": "Du lịch Vũng Tàu không chỉ có tắm biển",
+    "link": "https://vnexpress.net/du-lich-vung-tau-khong-chi-co-tam-bien-3691967.html",
+    "snippet": "Tham quan giàn khoan, bắt cá ở Đảo Ngọc, nướng hàu ở đảo Gò Găng, nghỉ tại khách sạn 5 sao cho bạn thấy một Vũng Tàu khác biệt.",
+    "date": "2 thg 1, 2018",
+    "position": 2
+   },
+   {
+    "title": "Tháp Tam Thắng ở Vũng Tàu giống tháp Nghinh Phong?",
+    "link": "https://vnexpress.net/du-lich-vung-tau-choi-gi-du-lich-daklak-thap-tam-thang-co-giong-thap-nghinh-phong-4923281.html",
+    "snippet": "Tháp Tam Thắng đang được xây dựng tại quảng trường Tam Thắng trên đường Thùy Vân, phường Vũng Tàu, TP HCM. Công trình này đang thu hút sự chú ý ...",
+    "date": "6 thg 8, 2025",
+    "position": 3
+   },
+   {
+    "title": "du lịch Vũng Tàu",
+    "link": "https://video.vnexpress.net/du-lich-vung-tau/tag-447428-1.html",
+    "snippet": "Đồng cừu Bà Rịa - Vũng Tàu hút khách du lịch 5. Video nổi bật. Bầu trời Kiev sáng rực trong đòn tập kích tên lửa đạn đạo của Nga 5. 00:23 Thế giới ...",
+    "position": 4
+   },
+   {
+    "title": "Du lịch Vũng Tàu và trải nghiệm căn hộ mẫu Osimi Sea View",
+    "link": "https://vnexpress.net/du-lich-vung-tau-va-trai-nghiem-can-ho-mau-osimi-sea-view-3656897.html",
+    "snippet": "Khách tham gia lễ khai trương căn hộ mẫu Osimi Sea View Vũng Tàu sẽ có cơ hội nhận giải thưởng may mắn lên đến hàng trăm triệu đồng.",
+    "date": "19 thg 10, 2017",
+    "position": 5
+   },
+   {
+    "title": "Du Lịch Việt khai trương hai văn phòng mới",
+    "link": "https://vnexpress.net/du-lich-viet-khai-truong-hai-van-phong-moi-4006925.html",
+    "snippet": "Du Lịch Việt tọa lạc tại 28B Nguyễn Sỹ Sách, TP Vinh, Nghệ An và 344 Trương Công Định, TP Vũng Tàu, tỉnh Bà Rịa - Vũng Tàu.",
+    "date": "4 thg 11, 2019",
+    "position": 6
+   },
+   {
+    "title": "Núi Thị Vải - điểm phượt cuối tuần lý tưởng ở Vũng Tàu",
+    "link": "https://vnexpress.net/du-lich/nui-thi-vai-diem-phuot-cuoi-tuan-ly-tuong-o-vung-tau-3754170.html?vn_source=rcm_detail&vn_medium=dulich&vn_campaign=rcm&ctr=rcm_detail_env_4_click_dulich",
+    "snippet": "Đến với Bà Rịa Vũng Tàu du khách có thể thử sức mình khi leo hàng nghìn bậc thang ở núi Thị Vải, thăm ba ngôi chùa Hạ, Trung, Thượng.",
+    "date": "25 thg 5, 2018",
+    "position": 7
+   },
+   {
+    "title": "Cập nhật tin tức du lịch trực tuyến mới nhất - Safe Go",
+    "link": "https://vnexpress.net/du-lich/safe-go/tin-tuc-p13",
+    "snippet": "Từ 16/11 - 30/12, đường sắt Sài Gòn tung 8.000 vé giảm 50% với các đoàn tàu đi Phan Thiết, Nha Trang, Đà Nẵng, Hà Nội và ngược lại.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

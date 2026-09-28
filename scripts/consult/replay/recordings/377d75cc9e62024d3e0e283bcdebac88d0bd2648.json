@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Quán Nhậu Bờ Kè\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:39:42.956Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Quán Nhậu Bờ Kè\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Quán Nhậu Bờ Kè Mở Cửa Đến 5h Sáng",
+    "link": "https://www.tiktok.com/@cambone_2010/video/7540944048161377556",
+    "snippet": "Quán Nhậu Bờ Kè Mở Cửa Đến 5h Sáng. Khám phá quán nhậu bờ kè, nơi mở cửa đến 5h sáng cho những cú đêm, phục vụ món ngon và đồ uống hấp dẫn.",
+    "position": 1
+   },
+   {
+    "title": "Quán nhậu Bờ Kè Chụt 29/38 Vĩnh Nguyên cũ Nha Trang ...",
+    "link": "https://www.tiktok.com/@thanh.van1612/video/7664847876006219029",
+    "snippet": "Quán nhậu Bờ Kè Chụt 29/38 Vĩnh Nguyên cũ Nha Trang #0397386068 sdt #khampha #TikTokBeautyFestVN · Review Quán Nhậu Bờ Kè Sài Gòn · Quán Nhậu ...",
+    "position": 2
+   },
+   {
+    "title": "Nhậu cùng bạn bè tại quán bờ kè",
+    "link": "https://www.tiktok.com/@bokequan76/video/7603674654393552136",
+    "snippet": "Keywords: nhậu với bạn bè tại quán, quán nhậu bờ kè nổi tiếng, trải nghiệm ăn uống vui vẻ, bờ kè quán chill, tiệc nhậu đêm vui nhất. Đây là ...",
+    "position": 3
+   },
+   {
+    "title": "Review quán ngon, giá rẻ và ổn áp ngay bờ kè Trường Sa ...",
+    "link": "https://www.tiktok.com/@dicungphuc/video/7113843300280388891",
+    "snippet": "Quán Nhậu Lề Đường Ở Gò Vấp · Review Quán Nhậu Bờ Kè Sài Gòn · Quán Nhậu Repo · Quán Nhậu Bờ Sông Quy Nhơn · Quán Nhậu Ngon Ở Thủ Dầu ...",
+    "position": 4
+   },
+   {
+    "title": "Khám Phá Quán Bờ Kè 86 Ở Cần Thơ",
+    "link": "https://www.tiktok.com/@thodianne/video/7337519365585210631",
+    "snippet": "Khám phá quán nhậu Bờ Kè 86 Cần Thơ với menu hấp dẫn và không gian. @Thỏ Đi Ăn Nè.",
+    "position": 5
+   },
+   {
+    "title": "Quán nhậu view bờ kè chill tại Phú Nhuận",
+    "link": "https://www.tiktok.com/@phuong.di.an/video/7664573580570709269",
+    "snippet": "... quán nhậu bờ kè Sài Gòn, địa điểm nhậu Phú Nhuận, quán ăn ven sông Phú Nhuận, trải nghiệm quán chill, gợi ý quán nhậu bờ kè. Đây là bản ...",
+    "position": 6
+   },
+   {
+    "title": "Nghe nói Cần Thơ sắp có chỗ để vừa ăn ngon ...",
+    "link": "https://www.tiktok.com/@trai.nghiem.cung.an/video/7679430237171551509",
+    "snippet": "... vừa ăn ngon, vừa có cảnh chill. @Trải Nghiệm Cùng An · âm thanh gốc - Trải Nghiệm Cùng An · Ẩm thực - Quán nhậu Bờ Kè AP89 · author. 146 · 77.",
+    "position": 7
+   },
+   {
+    "title": "Review Quán Nhậu Bờ Kè Sài Gòn",
+    "link": "https://www.tiktok.com/discover/review-qu%C3%A1n-nh%E1%BA%ADu-b%E1%BB%9D-k%C3%A8-s%C3%A0i-g%C3%B2n",
+    "snippet": "Khám phá quán nhậu Bờ Kè Sài Gòn với món ăn đặc sắc và không gian lý tưởng để tổ chức sinh nhật cùng bạn bè. Đến ngay để không bỏ lỡ!",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

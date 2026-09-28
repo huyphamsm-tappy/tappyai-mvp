@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Chùa Khỉ Viba\" OR \"Tượng đài Chúa Kitô\" OR \"Pháo đài Núi Lớn\" Vũng Tàu site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:54:58.661Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Chùa Khỉ Viba\" OR \"Tượng đài Chúa Kitô\" OR \"Pháo đài Núi Lớn\" Vũng Tàu site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tượng đài Chúa Kitô Vua tại Vũng Tàu",
+    "link": "https://www.tiktok.com/@vncatholicchurch/video/7464710795234938130",
+    "snippet": "Tượng đài Chúa Kitô Vua Bà Rịa Vũng Tàu, địa điểm du lịch tôn giáo Việt Nam, biểu tượng Công giáo Vũng Tàu, kiến trúc Tượng đài Chúa Kitô ...",
+    "position": 1
+   },
+   {
+    "title": "Tượng đài Chúa Kitô Vũng Tàu – Kiến trúc nổi tiếng ...",
+    "link": "https://www.tiktok.com/@vandinh.chau/video/7653322320022408468",
+    "snippet": "Tượng đài Chúa Kitô Vũng Tàu là một trong những điểm đến nổi tiếng thu hút du khách khi đến thành phố biển Vũng Tàu. Kiến trúc tượng Chúa ...",
+    "position": 2
+   },
+   {
+    "title": "Leo tượng chúa kito vũng tàu với giày Asia | En Fitness",
+    "link": "https://www.tiktok.com/@mc.hienvinh/video/7319085133959630082",
+    "snippet": "Mang giày Asia Việt Nam lên đỉnh tượng Đài chúa Kitô Vũng Tàu | #enfitness #songkhoe247 #vungtau #learnontiktok. Leo tượng chúa kito vũng tàu ...",
+    "position": 3
+   },
+   {
+    "title": "Tượng đài Chúa Kitô Vua Vũng Tàu – Biểu tượng văn hóa",
+    "link": "https://www.tiktok.com/@thaygiaohamchoi12/video/7542293199318994194",
+    "snippet": "Khám phá Tượng đài Chúa Kitô Vua tại Vũng Tàu, một điểm đến nổi bật cho du khách và những ai yêu thích văn hóa Việt Nam. #ilovevietnam #tphcm # ...",
+    "position": 4
+   },
+   {
+    "title": "Tượng Đài Chúa Kitô Tại Vũng Tàu - Điểm Du Lịch Nổi Bật",
+    "link": "https://www.tiktok.com/@n_review72/photo/7632125514416704788",
+    "snippet": "2 Hạ Long, Phường, Vũng Tàu #vungtau #viralvideo. Tượng Đài Chúa Kitô Tại Vũng Tàu - Điểm Du Lịch Nổi Bật. Khám phá tượng đài Chúa Kitô ở Vũng ...",
+    "position": 5
+   },
+   {
+    "title": "Tượng Chúa Kitô Vua tại Vũng Tàu: Biểu Tượng Hùng Vĩ",
+    "link": "https://www.tiktok.com/@hoang.bui.qb91/video/7540455791736753429",
+    "snippet": "... Vũng Tàu, tham quan Chúa Kitô Vua, kiến trúc Công giáo tại Vũng Tàu, tượng đài Chúa Kitô Vua, điểm đến du lịch tín ngưỡng, vẻ đẹp thiên nhiên ...",
+    "position": 6
+   },
+   {
+    "title": "Tượng đài chúa Kitô hay còn gọi là Tượng Chúa dang tay ...",
+    "link": "https://www.tiktok.com/@ndh_886/video/7623053860591914260",
+    "snippet": "Tượng đài chúa Kitô hay còn gọi là Tượng Chúa dang tay, là một biểu tượng nổi tiếng nằm trên đỉnh Núi Nhỏ (núi Tao Phùng) ở độ cao 170m so ...",
+    "position": 7
+   },
+   {
+    "title": "Tượng Đài Chúa Kitô: hướng dẫn, ý nghĩa và địa điểm ...",
+    "link": "https://www.tiktok.com/@nh.c.hai4/video/7672252837170007316",
+    "snippet": "Ý nghĩa và biểu tượng Tượng Đài Chúa Kitô đại diện cho Chúa Giê-su Kitô, thường truyền tải thông điệp tình yêu, cứu độ và bảo hộ. Ở từng địa ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

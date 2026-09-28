@@ -1,0 +1,77 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:vnexpress.net/du-lich Đà Lạt",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T19:08:12.823Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:vnexpress.net/du-lich Đà Lạt",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "du lịch Đà Lạt",
+    "link": "https://video.vnexpress.net/du-lich-da-lat/tag-61086-1.html",
+    "snippet": "du lịch Đà Lạt · Công viên mô hình 5 vị thần khổng lồ ở Đà Lạt 62 · Trộm túi xách khi đi Đà Lạt cùng bạn gái 48 · Vườn sen đá hơn 5.000 cây của chàng trai Đà Lạt 8.",
+    "position": 1
+   },
+   {
+    "title": "Đà Lạt đông nghịt sao không lọt top doanh thu Tết nghìn tỷ?",
+    "link": "https://vnexpress.net/du-lich-da-lat-dong-nghit-nhung-khong-lot-top-doanh-thu-tet-nghin-ty-4845516.html",
+    "snippet": "Bạn tôi lái xe đưa gia đình đi chơi Đà Lạt nhưng gặp cảnh ùn tắc đành dừng chân ở Bảo Lộc. Theo thống kê của Cục Du lịch Quốc gia, ...",
+    "date": "4 thg 2, 2025",
+    "position": 2
+   },
+   {
+    "title": "Du lịch ăn xổi ở Sa Pa, Đà Lạt",
+    "link": "https://vnexpress.net/du-lich-an-xoi-o-sa-pa-da-lat-4425467.html",
+    "snippet": "Chạy theo các trào lưu sống ảo để câu khách, Sa Pa lọt vào top 10 điểm đến gây thất vọng, còn Đà Lạt bị ô nhiễm nặng nề.",
+    "date": "9 thg 2, 2022",
+    "position": 3
+   },
+   {
+    "title": "Du lịch Đà Lạt 'một ngày 5 lần ngồi đồng ở quán cà phê'",
+    "link": "https://vnexpress.net/du-lich-da-lat-mot-ngay-5-lan-ngoi-dong-o-quan-ca-phe-4644565.html",
+    "snippet": "Du lịch Đà Lạt 'một ngày 5 lần ngồi đồng ở quán cà phê'. Nhiều người đi du lịch lạ lùng: Sau khi ăn uống no say, họ tìm một quán cà phê rồi cúi ...",
+    "date": "22 thg 8, 2023",
+    "position": 4
+   },
+   {
+    "title": "Du lịch nghỉ dưỡng là giải pháp cho Đà Lạt",
+    "link": "https://vnexpress.net/du-lich-nghi-duong-la-giai-phap-cho-da-lat-4509200.html",
+    "snippet": "Chú trọng đầu tư, xây dựng các khu du lịch nghỉ dưỡng là giải pháp giúp Đà Lạt lấy lại hình ảnh thơ mộng. - VnExpress.",
+    "date": "9 thg 9, 2022",
+    "position": 5
+   },
+   {
+    "title": "Gen Z đến Đà Lạt săn mây, uống sữa đậu nành rồi về",
+    "link": "https://vnexpress.net/du-lich-da-lat-san-may-uong-sua-dau-nanh-khong-co-cho-tieu-tien-4851654.html",
+    "snippet": "Tối thứ sáu bắt xe lên Đà Lạt, tối chủ nhật về, Gen Z tiêu tiền ở Đà Lạt vào 'sữa đậu nành, thuê xe máy săn mây'.",
+    "date": "20 thg 2, 2025",
+    "position": 6
+   },
+   {
+    "title": "Du lịch Đà Lạt",
+    "link": "https://video.vnexpress.net/du-lich-da-lat/tag-133113-1.html",
+    "snippet": "Du lịch Đà Lạt · Mai anh đào nở rực ở Đà Lạt 5 · Diện mạo đèo Prenn sau khi mở rộng lên 14 m 46 · 'Khu phố tuyết' hút khách tham quan ở Đà Lạt 63 · Video nổi bật ...",
+    "position": 7
+   },
+   {
+    "title": "Những món nóng hổi trên đường phố Đà Lạt",
+    "link": "https://video.vnexpress.net/du-lich/nhung-mon-nong-hoi-tren-duong-pho-da-lat-3444482.html",
+    "snippet": "Bánh tráng nướng, súp cua, bánh mì nướng muối ớt và vô số món ngon nóng hổi khác đã biến Đà Lạt thành thiên đường ẩm thực với những người nhớ cái lạnh giữa ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

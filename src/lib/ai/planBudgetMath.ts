@@ -43,3 +43,55 @@ export function appendPlanBudgetMath(fullText: string, userTexts: readonly strin
   const after = end + CLOSE.length
   return { text: `${fullText.slice(0, after)}\n\n${line}${fullText.slice(after)}`, added: true }
 }
+
+// ── Consult V2 plan: the cost section's arithmetic, written by code (owner §5 "show the arithmetic") ─────
+//
+// Replay 2026-09-29: the model's "Chi phí" section came out EMPTY on most place plans — every price it wrote
+// was unsupported and the guards removed it. The line below uses only (a) the chosen venue's price band from
+// the search rows, or (b) the user's OWN per-person budget, labelled as their budget (F-086: a user number is
+// never presented as the venue's cost). No band and no per-person budget → nothing is added.
+
+const COST_HEADINGS = ['chi phí', 'tổng chi phí', 'ngân sách']
+const headingText = (l: string) => l.trim().replace(/^#{1,4}\s*/, '').replace(/\*+/g, '').replace(/[:：]\s*$/, '').trim().toLowerCase()
+const isHeadingLine = (l: string) => /^\s*(?:#{1,4}\s+\S|\*\*[^*\n]{2,60}\*\*\s*:?\s*$)/.test(l)
+
+/** "2 người", "6" → 2 / 6; anything else → null. */
+export function partyCount(s: string | null | undefined): number | null {
+  const n = Number((s ?? '').match(/\d{1,2}/)?.[0])
+  return Number.isFinite(n) && n >= 1 && n <= 60 ? n : null
+}
+
+/** The user's per-person amount ("300k/người", "200k một người"), or null. */
+export function perPersonBudget(userTexts: readonly string[]): number | null {
+  for (const t of [...userTexts].reverse()) {
+    const m = t.toLowerCase().match(/(\d[\d.,]*)\s*(k|nghìn|ngàn|tr|triệu)?\s*(?:\/|một|mỗi|1)\s*(?:người|ng)\b/)
+    if (!m) continue
+    const n = Number(m[1].replace(/[.,](?=\d{3}\b)/g, '').replace(',', '.'))
+    const unit = m[2] ?? (n < 10_000 ? 'k' : '')
+    const v = unit === 'k' || unit === 'nghìn' || unit === 'ngàn' ? n * 1000 : unit === 'tr' || unit === 'triệu' ? n * 1_000_000 : n
+    if (v >= 10_000) return v
+  }
+  return null
+}
+
+export function appendConsultPlanCost(text: string, o: { people: number | null; band: { lo: number; hi: number } | null; perHead: number | null; lang?: string }): { text: string; added: boolean } {
+  const none = { text, added: false }
+  if (!o.people) return none
+  const lines = text.split('\n')
+  const at = lines.findIndex(l => isHeadingLine(l) && COST_HEADINGS.includes(headingText(l)))
+  if (at < 0) return none
+  let end = at + 1
+  while (end < lines.length && !isHeadingLine(lines[end]) && !/^\s*\[(?:FOLLOWUPS|CTA_BUTTONS|TAPPY_)/.test(lines[end])) end++
+  if (/[×÷=]/.test(lines.slice(at + 1, end).join('\n'))) return none
+  const p = o.people
+  let line: string | null = null
+  if (o.band && o.band.lo > 0 && Number.isFinite(o.band.hi)) {
+    line = o.band.hi > o.band.lo
+      ? `- ${p} người × ${vnd(o.band.lo)}–${vnd(o.band.hi)}/người = ${vnd(p * o.band.lo)}–${vnd(p * o.band.hi)} (theo mức giá trong kết quả tìm kiếm)`
+      : `- ${p} người × ${vnd(o.band.lo)}/người = ${vnd(p * o.band.lo)} (theo mức giá trong kết quả tìm kiếm)`
+  } else if (o.perHead) {
+    line = `- Ngân sách bạn đưa: ${p} người × ${vnd(o.perHead)} = ${vnd(p * o.perHead)} — giá của quán chưa xác nhận, bạn hỏi quán trước khi đi.`
+  }
+  if (!line) return none
+  return { text: [...lines.slice(0, at + 1), line, ...lines.slice(at + 1)].join('\n'), added: true }
+}

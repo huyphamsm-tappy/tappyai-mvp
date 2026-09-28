@@ -1,0 +1,54 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Lê Phan Hotel Tây Ninh\" Tây Ninh site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:54:33.318Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Lê Phan Hotel Tây Ninh\" Tây Ninh site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Lê Phan Hotel Tây Ninh - Giá cả và Ưu đãi 2026, Tân Ninh",
+    "link": "https://vn.trip.com/hotels/tan-ninh-hotel-detail-101239086/le-phan-hotel/",
+    "snippet": "Giờ nhận phòng tại Lê Phan Hotel Tây Ninh bắt đầu từ 14:00-22:00, và giờ trả phòng là 12:00. Lê Phan Hotel Tây Ninh có phục ...",
+    "position": 1
+   },
+   {
+    "title": "Lê Phan Hotel Tây Ninh Đánh giá của khách",
+    "link": "https://vn.trip.com/hotels/tay-ninh-hotel-detail-101239086/le-phan-hotel/review.html",
+    "snippet": "Khám phá đánh giá Lê Phan Hotel Tây Ninh thực tế từ khách du lịch. Với 12 đánh giá đã được xác thực và xếp hạng 7.6/10, bạn có thể đặt phòng với sự an tâm ...",
+    "position": 2
+   },
+   {
+    "title": "10 khách sạn được đề xuất gần TRUNG TÂM VĂN HÓA ...",
+    "link": "https://vn.trip.com/hotels/tan-ninh-trung-tm-vn-ha-tnh-ty-ninh/hotels-c807297m50673629/",
+    "snippet": "Lê Phan Hotel Tây Ninh. 7,6/10. Tốt. 12 đánh giá. Cách TRUNG TÂM VĂN HÓA TỈNH TÂY NINH 1.78km. Le Phan Hotel tọa lạc ở Tây Ninh. Khách sạn ...",
+    "position": 3
+   },
+   {
+    "title": "Tìm Khách Sạn 2 Sao Tại Tân Ninh",
+    "link": "https://vn.trip.com/hotels/star2/city/vn/tan-ninh.html",
+    "snippet": "Lê Phan Hotel Tây Ninh - 2 Sao. 7,6. Tốt. 12 đánh giá. 59. Lê Phan Hotel Tây Ninh. Khách sạn tại Tân Ninh. Tiện nghi nổi bật: Đậu xe, TV, Wi-Fi ở khu vực chung.",
+    "position": 4
+   },
+   {
+    "title": "Khách sạn giá rẻ gần Lotte Cinema Tây Ninh, Tân Ninh",
+    "link": "https://vn.trip.com/hotels/landmark/vn/lotte-cinema-tay-ninh.html",
+    "snippet": "Lê Phan Hotel Tây Ninh Các khách sạn gần Lotte Cinema Tây Ninh. Lê Phan Hotel Tây Ninh. 7,6/10. Tốt. 12 đánh giá. Cách Lotte Cinema Tây Ninh 1.83km. Le Phan ...",
+    "position": 5
+   }
+  ],
+  "credits": 1
+ }
+}

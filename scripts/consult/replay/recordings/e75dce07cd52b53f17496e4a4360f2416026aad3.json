@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Izakaya Unatoto Việt Nam\" OR \"Nori - Modern Izakaya\" OR \"Michi Sushi\" quan 1 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:24:12.629Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Izakaya Unatoto Việt Nam\" OR \"Nori - Modern Izakaya\" OR \"Michi Sushi\" quan 1 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Nori Modern Izakaya Quận 1: Review quán Nhật Lý Tự Trọng",
+    "link": "https://www.tiktok.com/@lulureview_/video/7517598383498890514",
+    "snippet": "Nori Modern Izakaya nằm ngay mặt tiền đường Lý Tự Trọng, Quận 1 là một quán izakaya Nhật Bản thu hút nhiều người tìm đến nhờ không gian hiện ...",
+    "position": 1
+   },
+   {
+    "title": "Nori Modern Izakaya: Trải nghiệm ẩm thực Nhật Bản hiện đại",
+    "link": "https://www.tiktok.com/@norisaigon/video/7355480358286085393",
+    "snippet": "Nori Modern Izakaya - Kết hợp giữa văn hóa ẩm thực truyền thống Nhật Bản và phong cách hiện đại.",
+    "position": 2
+   },
+   {
+    "title": "Michi Sushi (@michi_sushi_42nguyenhue)",
+    "link": "https://www.tiktok.com/@michi_sushi_42nguyenhue",
+    "snippet": "Michi Sushi Chung cư 42 Nguyễn huệ-lầu 7, Bến Nghé, Q.1 Đặt món tại đây · Đã follow · Tài khoản được đề xuất · Tận hưởng trải nghiệm đầy đủ trong ứng dụng.",
+    "position": 3
+   },
+   {
+    "title": "Ăn Sushi Trên Thuyền Khổng Lồ Tại Quận 1",
+    "link": "https://www.tiktok.com/@thon_foodie/video/7211907584675040538",
+    "snippet": "Michi Sushi Nguyễn Huệ · Sushi Hạ Long · Sushi Bà Rịa · Hagi Sushi Nguyễn ... Ăn Sushi Trên Thuyền Khổng Lồ Tại Quận 1: Review Chi Nhánh Mới Của ...",
+    "position": 4
+   },
+   {
+    "title": "𝑵𝒐𝒓𝒊 𝑴𝒐𝒅𝒆𝒓𝒏 𝑰𝒛𝒂𝒌𝒂𝒚𝒂~~~~~ ☎️ 079 877 7779 📍 ...",
+    "link": "https://www.tiktok.com/@norisaigon/video/7497425605114350856?lang=ms-MY",
+    "snippet": "... Nori Modern Izakaya~~~~~ ☎️ 079 877 7779 Open: 6pm-2am 114-114A Ly Tu Trong, Ben Thanh Ward, Dist 1, HCM City #Nori ...",
+    "position": 5
+   },
+   {
+    "title": "Nori Restaurant Quận 1",
+    "link": "https://www.tiktok.com/discover/nori-restaurant-qu%E1%BA%ADn-1",
+    "snippet": "Nếu bạn đang tìm kiếm nhà hàng sushi Quận 1 vừa sang trọng vừa chuẩn vị Nhật, NORI – Modern Izakaya tại 114 – 114A Lý Tự Trọng, P. Bến Thành là ...",
+    "date": "7 ngày trước",
+    "position": 6
+   },
+   {
+    "title": "MÓN ĂN MANG HƯƠNG VỊ TINH TÚY BIỂN CẢ TẠI NORI ...",
+    "link": "https://www.tiktok.com/@norisaigon/video/7529008714666282258?lang=is",
+    "snippet": "Nếu bạn đang tìm kiếm nhà hàng sushi Quận 1 vừa sang trọng vừa chuẩn vị Nhật, NORI – Modern Izakaya tại 114 – 114A Lý Tự Trọng, P. Bến Thành ...",
+    "position": 7
+   },
+   {
+    "title": "Ở ngay trung tâm quận 1 @Phodacbiet #bochanhst ...",
+    "link": "https://www.tiktok.com/@_bochanhst/video/7519491233132104968",
+    "snippet": "Nori - Modern Izakaya · author. 192 · 41 ... Quán quận 1 sang xịn mịn luôn ạ. 2025-6-28Trả lời. 0. Ausmedic. Bao h tui ms đc vô đây bây h huhu.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,86 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "massage gần hơn site:klook.com/vi/activity",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:30:36.964Z",
+ "body": {
+  "searchParameters": {
+   "q": "massage gần hơn site:klook.com/vi/activity",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Phiếu massage｜Ga tàu điện ngầm Nanjing Fuxing",
+    "link": "https://www.klook.com/vi/activity/71437-muxi-spa-massage-taipei/",
+    "snippet": "Ga tàu điện ngầm Nam Kinh Fuxing 2 phút đi bộ! Vị trí siêu tiện lợi, câu lạc bộ massage, xả stress cao cấp mới khai trương, tận hưởng SPA body đỉnh cao, ...",
+    "rating": 4,
+    "ratingCount": 8,
+    "position": 1
+   },
+   {
+    "title": "Thuỷ Lập Phương | Phúc Điền Tân Châu",
+    "link": "https://www.klook.com/vi/activity/140562-water-cube-futian-xinzhou-store/",
+    "snippet": "Massage Trung Quốc với một nhân viên nam. Massage rất mạnh và không hề đau. Đau khắp người, nhưng sau khi massage, tôi cảm thấy nhẹ nhõm. Nhược điểm của nơi này ...",
+    "rating": 4.2,
+    "ratingCount": 112,
+    "position": 2
+   },
+   {
+    "title": "Massage kiểu Đài Loan chính thống Yokohama",
+    "link": "https://www.klook.com/vi/activity/175450-yokohama-authentic-taiwanese-massage/",
+    "snippet": "Nằm gần ga Kannai, Yokohama, \"Chousanen\" là một salon massage kiểu Đài Loan nổi tiếng với hơn 19 năm kinh nghiệm. Nơi đây cung cấp đa dạng các liệu trình ...",
+    "position": 3
+   },
+   {
+    "title": "Thái Đô Túc Thể Dưỡng Sinh Quán - Massage chân & ...",
+    "link": "https://www.klook.com/vi/activity/47735-taito-massage-experience-taipei/",
+    "snippet": "Trung tâm chăm sóc sức khỏe chân Taidu nằm ở quận Trung Sơn, Đài Bắc, bạn cũng có thể thư giãn với dịch vụ mát-xa sau khi mua sắm và mua sắm, ...",
+    "rating": 4.8,
+    "ratingCount": 186,
+    "position": 4
+   },
+   {
+    "title": "CHIAO EAR 瞧耳 - Phiếu mát xa tai & SPA (Gần ga tàu ...",
+    "link": "https://www.klook.com/vi/activity/93964-chiao-ear-picking-taipei/",
+    "snippet": "Giáo viên Qiao Qiao và Xiao Ling rất chuyên nghiệp, rất thích hợp để thư giãn và môi trường rất thoải mái. Lần sau tôi đến Đài Loan sẽ lại đến đây để hái tai! !",
+    "rating": 4.9,
+    "ratingCount": 9,
+    "position": 5
+   },
+   {
+    "title": "Cao Hùng | TEALING Thai Spa Massage Thái Lan",
+    "link": "https://www.klook.com/vi/activity/68668-laque-thai-villa-spa-kaohsiung/",
+    "snippet": "Công nghệ spa Tealing thai bắt nguồn sâu xa ở Chiang Mai, Thái Lan. Nơi đây có tính năng mát-xa Gulanna truyền thống của Thái Lan.",
+    "rating": 4.9,
+    "ratingCount": 107,
+    "position": 6
+   },
+   {
+    "title": "Đài Bắc Đại An｜Trung tâm chăm sóc sức khỏe chân Ruiting",
+    "link": "https://www.klook.com/vi/activity/65609-afoot-spa-massage-taipei/",
+    "snippet": "Giảm giá 23% cho massage toàn thân, massage vai gáy và chân, tận hưởng massage tinh dầu tự nhiên với giá chưa đến một nghìn · Nằm cạnh khu thương mại Vĩnh Khang, ...",
+    "rating": 4.4,
+    "ratingCount": 21,
+    "position": 7
+   },
+   {
+    "title": "Trải Nghiệm Dancing Finger Massage tại Đài Bắc",
+    "link": "https://www.klook.com/vi/activity/47825-chun-qiu-massage-experience-taipei/",
+    "snippet": "Một trung tâm massage sang trọng ở Đài Bắc! Giá cả phải chăng, dịch vụ tuyệt vời và đáng đồng tiền bát gạo! Chỉ cách ga MRT Tín Nghĩa An Hòa và Kiếm Đàm 5 ...",
+    "rating": 4.7,
+    "ratingCount": 1645,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

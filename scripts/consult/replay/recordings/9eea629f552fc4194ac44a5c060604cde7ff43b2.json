@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Golden Sun Hotel - Dalat",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T19:08:22.533Z",
+ "body": {
+  "searchParameters": {
+   "q": "Golden Sun Hotel - Dalat",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Golden Sun Hotel - Dalat, Đà Lạt (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/756247088.jpg?k=c59eb8350848ac405d9be7d61209a480cbf079aab0a6e77df7f2ff0e05741717&o=",
+    "imageWidth": 1024,
+    "imageHeight": 676,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZMUsghGLXthUya2OQ4qa72Hej4h_cnQjhXx-4CX4rBQ&s=10",
+    "thumbnailWidth": 682,
+    "thumbnailHeight": 449,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/golden-imperial-da-lat.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F756247088.jpg%3Fk%3Dc59eb8350848ac405d9be7d61209a480cbf079aab0a6e77df7f2ff0e05741717%26o%3D&tbnid=G2UVZkoBLTdoNM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fgolden-imperial-da-lat.vi.html&docid=Ds04cDnxPD8ycM&w=1024&h=676",
+    "position": 1
+   },
+   {
+    "title": "Golden Sun Hotel - Dalat, Đà Lạt (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/756246979.jpg?k=8bc5200ca54702007cfde74c182cf36222f8dc9b3866f1916acf58b288f38e11&o=",
+    "imageWidth": 1024,
+    "imageHeight": 676,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQR2uqwlYIuLaBE88Ti2Pb4g7-GMlJ9zK-L252DfUPBw&s=10",
+    "thumbnailWidth": 682,
+    "thumbnailHeight": 449,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/golden-imperial-da-lat.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F756246979.jpg%3Fk%3D8bc5200ca54702007cfde74c182cf36222f8dc9b3866f1916acf58b288f38e11%26o%3D&tbnid=OM0dMbExWVnMlM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fgolden-imperial-da-lat.vi.html&docid=Ds04cDnxPD8ycM&w=1024&h=676",
+    "position": 2
+   },
+   {
+    "title": "Golden Sun Hotel - Dalat",
+    "imageUrl": "https://goldensun.vn/uploads/files/projects/imperial/banner.jpg",
+    "imageWidth": 2000,
+    "imageHeight": 2000,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT_Q5V7VPMwIyHBDkVJaAmHul1XXrJzDiLAPnExwij9eQ&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Golden Sun",
+    "domain": "goldensun.vn",
+    "link": "https://goldensun.vn/du-an-dau-tu/golden-sun-hotel-dalat.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fgoldensun.vn%2Fuploads%2Ffiles%2Fprojects%2Fimperial%2Fbanner.jpg&tbnid=Y7vEXFjSJYPbtM&imgrefurl=https%3A%2F%2Fgoldensun.vn%2Fdu-an-dau-tu%2Fgolden-sun-hotel-dalat.html&docid=CZoFexdc2wzBsM&w=2000&h=2000",
+    "position": 3
+   },
+   {
+    "title": "Golden Sun Hotel - Dalat",
+    "imageUrl": "https://goldensun.vn/uploads/files/a0205520-enhanced-nr.png",
+    "imageWidth": 2000,
+    "imageHeight": 1333,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRceTUfofbdT4VR_W6FX9zzeopkKcCikjjo4CrPW_x6IA&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "Golden Sun",
+    "domain": "goldensun.vn",
+    "link": "https://goldensun.vn/du-an-dau-tu/golden-sun-hotel-dalat.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fgoldensun.vn%2Fuploads%2Ffiles%2Fa0205520-enhanced-nr.png&tbnid=kLzbauhyNqaUAM&imgrefurl=https%3A%2F%2Fgoldensun.vn%2Fdu-an-dau-tu%2Fgolden-sun-hotel-dalat.html&docid=CZoFexdc2wzBsM&w=2000&h=1333",
+    "position": 4
+   },
+   {
+    "title": "Golden Sun Đà Lạt: Vị trí, tiện ích, review, giá bán và kinh nghiệm đặt  phòng",
+    "imageUrl": "https://phetravel.com/thumbnails/products/large/uploads/golden-sun-da-lat-11.webp",
+    "imageWidth": 800,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyBnYbYMUtWy36WMmUm2uBkD4ddRRUViQaLvlph3thDg&s=10",
+    "thumbnailWidth": 565,
+    "thumbnailHeight": 353,
+    "source": "Phê travel",
+    "domain": "phetravel.com",
+    "link": "https://phetravel.com/golden-sun-da-lat",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fphetravel.com%2Fthumbnails%2Fproducts%2Flarge%2Fuploads%2Fgolden-sun-da-lat-11.webp&tbnid=_k-9XSj4_OuWAM&imgrefurl=https%3A%2F%2Fphetravel.com%2Fgolden-sun-da-lat&docid=QoE6dIKy2YgizM&w=800&h=500",
+    "position": 5
+   },
+   {
+    "title": "Kỳ nghỉ lễ Quốc Khánh thêm ngọt ngào với Quốc Thiên tại Golden Sun Hotel -  Dalat",
+    "imageUrl": "https://goldensun.vn/uploads/files/projects/z5462176633251_9a9c918327124f88956a16e06ef6e708.jpg",
+    "imageWidth": 2000,
+    "imageHeight": 1136,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcaGlvuGtKpwiEDzDep3X5wdWgEXpNirrw27RtYs-p2A&s",
+    "thumbnailWidth": 297,
+    "thumbnailHeight": 169,
+    "source": "Golden Sun",
+    "domain": "goldensun.vn",
+    "link": "https://goldensun.vn/truyen-thong/tin-cong-ty/ky-nghi-le-quoc-khanh-them-ngot-ngao-voi-quoc-thien-tai-golden-sun-hotel-dalat.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fgoldensun.vn%2Fuploads%2Ffiles%2Fprojects%2Fz5462176633251_9a9c918327124f88956a16e06ef6e708.jpg&tbnid=mN3dUYA1tl5y5M&imgrefurl=https%3A%2F%2Fgoldensun.vn%2Ftruyen-thong%2Ftin-cong-ty%2Fky-nghi-le-quoc-khanh-them-ngot-ngao-voi-quoc-thien-tai-golden-sun-hotel-dalat.html&docid=yv6-8M7qEJarcM&w=2000&h=1136",
+    "position": 6
+   },
+   {
+    "title": "Golden Sun Hotel - Dalat",
+    "imageUrl": "https://goldensun.vn/uploads/files/a0206666-enhanced-nr.png",
+    "imageWidth": 1545,
+    "imageHeight": 2000,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLRrYwzEh6r-6OmiFSLZOY35ae_eocaILI2xFHGqohIQ&s=10",
+    "thumbnailWidth": 393,
+    "thumbnailHeight": 508,
+    "source": "Golden Sun",
+    "domain": "goldensun.vn",
+    "link": "https://goldensun.vn/du-an-dau-tu/golden-sun-hotel-dalat.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fgoldensun.vn%2Fuploads%2Ffiles%2Fa0206666-enhanced-nr.png&tbnid=CQcSC1TdD-ZBNM&imgrefurl=https%3A%2F%2Fgoldensun.vn%2Fdu-an-dau-tu%2Fgolden-sun-hotel-dalat.html&docid=CZoFexdc2wzBsM&w=1545&h=2000",
+    "position": 7
+   },
+   {
+    "title": "Khách sạn Golden Sun Đà Lạt (Golden Sun Hotel - Dalat) Đà Lạt, Việt Nam:  Agoda.com có giá rẻ nhất",
+    "imageUrl": "https://q-xx.bstatic.com/xdata/images/hotel/max500/696324450.jpg?k=d5efc055676b990edce824c8f2c2190a77af587ce9ff0226177087bd96e2ae77&o=",
+    "imageWidth": 357,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNDO-zJY8D7nrs9G7En8P-RNJ_uoFL15zueIZLaUBZbg&s=10",
+    "thumbnailWidth": 357,
+    "thumbnailHeight": 500,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/golden-imperial-hotel-da-lat/hotel/dalat-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fq-xx.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax500%2F696324450.jpg%3Fk%3Dd5efc055676b990edce824c8f2c2190a77af587ce9ff0226177087bd96e2ae77%26o%3D&tbnid=XNZIFIFAgZ4VHM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fgolden-imperial-hotel-da-lat%2Fhotel%2Fdalat-vn.html&docid=mQijCxJKYktLAM&w=357&h=500",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

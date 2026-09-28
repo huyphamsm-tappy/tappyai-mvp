@@ -85,7 +85,8 @@ describe('what the model and the client receive', () => {
     expect(route).toMatch(/\[preCall\.name\]\.execute\(preCall\.args/)
     expect(route).toMatch(/presearchPlan && toolExecutes\('search_places'\) \? \{ name: 'search_places', args: presearchPlan\.args \}/)
     expect(route).toMatch(/prefixBody\(presearchAll\.map\(presearchFrames\)\.join\(''\), sdkResponse\.body\)/)
-    expect(route).toMatch(/\[\.\.\.modelMessages, \.\.\.presearchAll\.flatMap\(o => presearchMessages\(o\)\)\]/)
+    // Consult V2 (cost §6): the model's copy of the rows drops link/id fields; the frames keep the full result.
+    expect(route).toMatch(/\[\.\.\.modelMessages, \.\.\.presearchAll\.flatMap\(o => presearchMessages\(consult \? \{ \.\.\.o, result: slimResultForModel\(o\.result\) \} : o\)\)\]/)
     expect(route).toMatch(/\+ \(presearchOutcome \? 1 : 0\)/)
   })
 })

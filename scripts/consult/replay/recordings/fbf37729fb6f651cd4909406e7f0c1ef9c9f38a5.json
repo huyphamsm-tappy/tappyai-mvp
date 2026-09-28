@@ -1,0 +1,229 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "Núi Chứa Chan Vũng Tàu Vung Tau",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.346,107.0843,12z"
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:54:53.969Z",
+ "body": {
+  "searchParameters": {
+   "q": "Núi Chứa Chan Vũng Tàu Vung Tau",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.346,107.0843,12z",
+   "engine": "google"
+  },
+  "ll": "@10.3459098,107.0842955,12z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Chùa Khỉ Viba",
+    "address": "14 6, Vũng Tàu, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.3552391,
+    "longitude": 107.0668769,
+    "rating": 4.5,
+    "ratingCount": 715,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmO9Bb7VBJkatZyI6PzFhQ5TrHLf5hqfp2QPNPGyMZUVRMDCkWuuPi1sHb1KSd956FLu1bHgmpUI2_Wjd5S9biTuIYAWcGxnFhUGzWcnpI8fdjRPW3NG9oe4Mf5QaFHPTZcMsx0",
+    "cid": "5744358918424376250",
+    "fid": "0x31756fc519762f1b:0x4fb810005b0833ba",
+    "placeId": "ChIJGy92GcVvdTERujMIWwAQuE8"
+   },
+   {
+    "position": 2,
+    "title": "Tượng đài Chúa Kitô",
+    "address": "2 Hạ Long, Phường, Vũng Tàu, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.3264876,
+    "longitude": 107.0845549,
+    "rating": 4.6,
+    "ratingCount": 10780,
+    "type": "Điểm đến tôn giáo",
+    "types": [
+     "Điểm đến tôn giáo",
+     "Điểm thu hút khách du lịch"
+    ],
+    "website": "https://kitovungtau.com/",
+    "phoneNumber": "+84 707 227 474",
+    "description": "Được xây dựng trên Núi Nhỏ trong hơn 2 thập kỷ với chiều cao 32 m, đây là pho tượng Chúa Jesus lớn nhất châu Á.",
+    "openingHours": {
+     "Thứ Ba": "07:00–17:00",
+     "Thứ Tư": "07:00–17:00",
+     "Thứ Năm": "07:00–17:00",
+     "Thứ Sáu": "07:00–17:00",
+     "Thứ Bảy": "07:00–17:00",
+     "Chủ Nhật": "07:00–17:00",
+     "Thứ Hai": "07:00–17:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOdhxr8J-Lp97g35OahvUEykTNKyQt4yo4kBQWdlpVV-eKrS_QFHMxI7uzshdHieWBAJV6asPDak_OrWA8wRmY9uxaraCxYiNprETnUCZ4Gcyhx-FVSZddaBTNcD5eE-I7Wgpna",
+    "cid": "4880562053494344449",
+    "fid": "0x3175655b99e2ee9f:0x43bb3d544ec80b01",
+    "placeId": "ChIJn-7imVtldTERAQvITlQ9u0M"
+   },
+   {
+    "position": 3,
+    "title": "Pháo đài Núi Lớn",
+    "address": "444 Trần Phú, Vũng Tàu, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.3810834,
+    "longitude": 107.05852689999999,
+    "rating": 4.5,
+    "ratingCount": 396,
+    "type": "Điểm mốc lịch sử",
+    "types": [
+     "Điểm mốc lịch sử",
+     "Điểm thu hút khách du lịch"
+    ],
+    "website": "https://www.facebook.com/homestay.re",
+    "openingHours": {
+     "Thứ Ba": "Mở cửa cả ngày",
+     "Thứ Tư": "Mở cửa cả ngày",
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMfKayvmYVozkNPMhh7U8fxxZvOuQLQDxkHQPaj2royPslJYnHaY6Kf2u5TS87NcN_00JTzKRa6RgH0KnKqK4yuNEa5wGuEaY2r7XkyGopaHvLIm9OQRz3i84KfWu0TrNNxNTPyHQ",
+    "cid": "18205138924638281204",
+    "fid": "0x31756fa450421939:0xfca5a565a1b39df4",
+    "placeId": "ChIJORlCUKRvdTER9J2zoWWlpfw"
+   },
+   {
+    "position": 4,
+    "title": "Bến Phà Cần Giờ Vũng Tàu Quốc Chánh",
+    "address": "Cần Giờ, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.4202023,
+    "longitude": 106.9590126,
+    "rating": 4.4,
+    "ratingCount": 2550,
+    "type": "Dịch vụ phà",
+    "types": [
+     "Dịch vụ phà"
+    ],
+    "website": "http://www.phacangiovungtau.com/",
+    "phoneNumber": "+84 28 3786 1555",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmO5QkYQdfGzf6sp9jCmGnUcm_YNCIwGRyU3eTScgnVcUpvJZ7OgzSe6u45DwXkNDjtSAxhSp0KrwN9lyELV7-8zEKhual14-8RUGA-5vht6Z_zc25gFXGlOUhuaGgvKFOwAujM",
+    "cid": "5062355911998800877",
+    "fid": "0x31756949fd9dfbe5:0x464119e1654983ed",
+    "placeId": "ChIJ5fud_UlpdTER7YNJZeEZQUY"
+   },
+   {
+    "position": 5,
+    "title": "Hải đăng Vũng Tàu",
+    "address": "40 Hải Đăng, Vũng Tàu, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.334090999999999,
+    "longitude": 107.077663,
+    "rating": 4.6,
+    "ratingCount": 3822,
+    "type": "Điểm mốc lịch sử",
+    "types": [
+     "Điểm mốc lịch sử"
+    ],
+    "openingHours": {
+     "Thứ Ba": "Mở cửa cả ngày",
+     "Thứ Tư": "Mở cửa cả ngày",
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmM4NSWALhF4_YX78qe7lLsodWX2D2Rf-9z6IoZciONsRIjwJ1x2IOwAxuyxuNlgZQUK-2vJeNF8NHrzofIHzwvdE6Pxd_YMGDqz0a-D8edatpWI7uiOmLLNMk4L8or3vi7ffOYv",
+    "cid": "3636259049067462585",
+    "fid": "0x31756552a003a9b9:0x32769656e2f73fb9",
+    "placeId": "ChIJuakDoFJldTERuT_34laWdjI"
+   },
+   {
+    "position": 6,
+    "title": "Trận địa Pháo núi Lớn Tương Kỳ",
+    "address": "9357+28P, Vi Ba, Vũng Tàu, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.357579999999999,
+    "longitude": 107.063328,
+    "rating": 4.3,
+    "ratingCount": 102,
+    "type": "Bảo tàng",
+    "types": [
+     "Bảo tàng"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmN5-WT7buGCe52mcRlybTc9bcK4Qh8qIMkAGIGimyUIg8FhpGEVAQRPGzpc9rslKfhB7FPskakn5BXqYUkvIzpyn84HKujQQchF5YhhXwDwaC9FXDYHTwp4OGg72vurW9oOYZpK",
+    "cid": "4904095063408122049",
+    "fid": "0x31756fa28efbf5c5:0x440ed87a273018c1",
+    "placeId": "ChIJxfX7jqJvdTERwRgwJ3rYDkQ"
+   },
+   {
+    "position": 7,
+    "title": "Bãi Sau",
+    "address": "Hồ Chí Minh, Việt Nam",
+    "latitude": 10.3453959,
+    "longitude": 107.1000134,
+    "rating": 4.4,
+    "ratingCount": 13543,
+    "type": "Bãi biển",
+    "types": [
+     "Bãi biển"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMYT5zYkmaCBe7meeyve-_Heu9sOX2xg1z4NIfLzNA7sfSsaXHASjSispA4vCbGC3_RDMRrvp67KAwj-Sddz-eMUaft4JjpXzQAPRKXkeuXwpyAFiZ36kQ6Csm2SUC0pmMMQxFQeg",
+    "cid": "13491711020314166207",
+    "fid": "0x31756fe297e51efd:0xbb3c2fb0da0c83bf",
+    "placeId": "ChIJ_R7ll-JvdTERv4MM2rAvPLs"
+   },
+   {
+    "position": 8,
+    "title": "Bến Phà Biển Vũng Tàu - Cần Giờ",
+    "address": "127C Trần Phú, Vũng Tàu, Hồ Chí Minh 790000, Việt Nam",
+    "latitude": 10.387127399999999,
+    "longitude": 107.06244889999999,
+    "rating": 4.3,
+    "ratingCount": 2440,
+    "type": "Dịch vụ phà",
+    "types": [
+     "Dịch vụ phà"
+    ],
+    "website": "http://phacangiovungtau.com/",
+    "phoneNumber": "+84 254 6525 656",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMpAfv2i6boWdnG4kdDBYFAMcHIKXR0x-dW0ldGIzN-eBqfgAUbE3KTOXmMcoZ36IXdYXG0FTpExHC9BitkD8_6GngYay2rL4JiukT4WVEzx2t8Re4sHbNnsD06q1GNw7NUqkfo",
+    "cid": "2067832672394670041",
+    "fid": "0x31756f45df14b99d:0x1cb26adc1507efd9",
+    "placeId": "ChIJnbkU30VvdTER2e8HFdxqshw"
+   },
+   {
+    "position": 9,
+    "title": "Chùa Hộ Pháp (Thích Ca Phật Đài)",
+    "address": "608 Trần Phú, Vũng Tàu, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.3744292,
+    "longitude": 107.0706677,
+    "rating": 4.5,
+    "ratingCount": 2848,
+    "type": "Chùa phật giáo",
+    "types": [
+     "Chùa phật giáo",
+     "Điểm thu hút khách du lịch"
+    ],
+    "website": "https://www.facebook.com/chuahophapthichcaphatdai?locale=vi_VN",
+    "description": "Ngôi chùa này được xây trên sườn núi, có bảo tháp trang trí tinh xảo và pho tượng Phật khổng lồ đang ngồi.",
+    "openingHours": {
+     "Thứ Ba": "05:00–10:00, 14:00–20:00",
+     "Thứ Tư": "05:00–10:00, 14:00–20:00",
+     "Thứ Năm": "05:00–10:00, 14:00–20:00",
+     "Thứ Sáu": "05:00–10:00, 14:00–20:00",
+     "Thứ Bảy": "05:00–10:00, 14:00–20:00",
+     "Chủ Nhật": "05:30–10:00",
+     "Thứ Hai": "05:00–10:00, 14:00–20:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmN0_pTrijfP4jq6QfRCpnD2bt16tYJ0EutZ5wx0SxfA-xPdwRXSLicRizW6RV4qLihph3zaRm9NhHlCA5S9AsX2V2ChzV-AzeY4Wtm8cmYJXgY6GA7K-fx9P1RRfvcZMY-_8HmC",
+    "cid": "736719926784640879",
+    "fid": "0x31756fb38ba27c71:0xa395adebef3476f",
+    "placeId": "ChIJcXyii7NvdTERb0fzvt5aOQo"
+   }
+  ],
+  "credits": 3
+ }
+}

@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Powerbowl 388 Sư Vạn Hạnh\" OR \"B52 Billiards Quận 3\" OR \"Bida ACB\" Quận 3, Hồ Chí Minh site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T19:10:28.290Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Powerbowl 388 Sư Vạn Hạnh\" OR \"B52 Billiards Quận 3\" OR \"Bida ACB\" Quận 3, Hồ Chí Minh site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Bida ACB Quận 3: 59k Chơi 8 Tiếng Miễn Phí Từ 10-24h",
+    "link": "https://www.tiktok.com/@acbofthewitch.billiard/video/7679401527496232213",
+    "snippet": "Đừng bỏ lỡ cơ hội trải nghiệm bida chất lượng với mức giá chỉ 59k cho 8 tiếng chơi miễn phí nhé! Keywords: bida ACB Quận 3, quán bida giá rẻ ...",
+    "position": 1
+   },
+   {
+    "title": "Lớp học Bida Thanh TK Academy - Ưu đãi tháng 5",
+    "link": "https://www.tiktok.com/@thanh.tk.billiard/video/7637136508314570004",
+    "snippet": "... Lớp học Bida Thanh TK Academy - Ưu đãi tháng 5 - Liên hệ! #. @Thanh TK Billiard Academy · original sound - Marissa P. Datu · B52 Billiards Quận 3.",
+    "position": 2
+   },
+   {
+    "title": "Buffet Chơi Bida 8 Giờ Miễn Phí Chỉ 59k/người",
+    "link": "https://www.tiktok.com/@acbofthewitch.billiard/photo/7650358877610855700",
+    "snippet": "TikTok video from Câu lạc bộ bida ACB billiard (@acbofthewitch.billiard): “Khám phá chương trình buffet chơi bida hấp dẫn với giá chỉ 59k/người.",
+    "position": 3
+   },
+   {
+    "title": "🚨 TÌM ĐÂU RA QUÁN BIDA ĐẬM CHẤT QUÂN ĐỘI \"ĐỈNH ...",
+    "link": "https://www.tiktok.com/@b52vn/video/7683059821343444242",
+    "snippet": "... TPHCM ☎️ Hotline: 028.2222.2225 #B52BilliardClub #BilliardsVn #ChoiBida #BidaSaigon # ... B52 Billiards Quận 3 · author · 47 · 5.",
+    "position": 4
+   },
+   {
+    "title": "Luật đề pa lọt 8 - bida sọc trơn #thanhtkacademy # ...",
+    "link": "https://www.tiktok.com/@thanh.tk.billiard/video/7428087588876979464",
+    "snippet": "B52 Billiards Quận 3 · author. 31.6K · 291 ... Dịch Vụ Giặt Thảm Hồ Chí Minh. ồ quận 3. 2024-10-31Trả lời. Đã thích bởi nhà sáng tạo. 1. Xem thêm ...",
+    "position": 5
+   },
+   {
+    "title": "HƠN 3H30 CHIỀU THỨ 3 RỒI: HẾT GIỜ HÀNH CHÍNH LÀ ...",
+    "link": "https://www.tiktok.com/@b52vn/video/7688275740487339284",
+    "snippet": "HƠN 3H30 CHIỀU THỨ 3 RỒI: HẾT GIỜ HÀNH CHÍNH LÀ ĐẾN GIỜ. @B52 Billiards Club · âm thanh gốc - B52 Billiards Club · B52 Billiards Quận 3.",
+    "position": 6
+   },
+   {
+    "title": "Khóa Học Bida Cho Người Mới Bắt Đầu",
+    "link": "https://www.tiktok.com/@thanh.tk.billiard/video/7439968226433305863",
+    "snippet": "B52 Billiards Quận 3 · author. 1540 · 24 ... chi tiết ở khoá học Bida #thanhtkacademy #bida #billiards #viral #thanhtkb52billiard #tiktok ...",
+    "position": 7
+   },
+   {
+    "title": "Giải miễn lệ phí hạng H I K 🥇1.500.000₫ 🥈 500.000₫ 24-32 ...",
+    "link": "https://www.tiktok.com/@acbofthewitch.billiard/photo/7676728493803097365",
+    "snippet": "Giải miễn lệ phí hạng H I K 1.500.000₫ 500.000₫ 24-32 slot thi đấu 11H sáng chủ nhật nha cả nhà · recommend-cover. Câu lạc bộ bida ACB ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

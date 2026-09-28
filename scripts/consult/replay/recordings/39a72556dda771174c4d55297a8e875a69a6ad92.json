@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Sala Danang Beach Hotel",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:27:13.601Z",
+ "body": {
+  "searchParameters": {
+   "q": "Sala Danang Beach Hotel",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Sala Danang Beach Hotel - Sala Hotel Group, Vietnam | Official Website",
+    "imageUrl": "https://salahotelgroup.com/wp-content/uploads/2025/09/DJI_0152-HDR-edit-V3-copy-4-e1758767271235.jpg",
+    "imageWidth": 1065,
+    "imageHeight": 2057,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSG0ygH22yrlsvmdqKy9Mc7V7xY7ZgLC-P-UVPICO8X7g&s=10",
+    "thumbnailWidth": 398,
+    "thumbnailHeight": 770,
+    "source": "Sala Hotel",
+    "domain": "salahotelgroup.com",
+    "link": "https://salahotelgroup.com/en/saladanangbeachhotel/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fsalahotelgroup.com%2Fwp-content%2Fuploads%2F2025%2F09%2FDJI_0152-HDR-edit-V3-copy-4-e1758767271235.jpg&tbnid=LDuXD6NVWMdBpM&imgrefurl=https%3A%2F%2Fsalahotelgroup.com%2Fen%2Fsaladanangbeachhotel%2F&docid=FiTGggVYEeTFGM&w=1065&h=2057",
+    "position": 1
+   },
+   {
+    "title": "Khách sạn Sala Đà Nẵng Beach - Tập đoàn Khách sạn Sala, Việt Nam | Trang  web chính thức",
+    "imageUrl": "https://salahotelgroup.com/wp-content/uploads/2021/10/DSC04512-HDR-scaled.jpg",
+    "imageWidth": 2560,
+    "imageHeight": 1707,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTO4JQn3UtbDWKdJUCuyZt4QE8QlzOQYFtyUDWb8Ve4YA&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Sala Hotel",
+    "domain": "salahotelgroup.com",
+    "link": "https://salahotelgroup.com/khachsansaladanangbeach/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fsalahotelgroup.com%2Fwp-content%2Fuploads%2F2021%2F10%2FDSC04512-HDR-scaled.jpg&tbnid=DQPQBxHu5woq4M&imgrefurl=https%3A%2F%2Fsalahotelgroup.com%2Fkhachsansaladanangbeach%2F&docid=hwZ5odZElBy9_M&w=2560&h=1707",
+    "position": 2
+   },
+   {
+    "title": "Sala Danang Beach Hotel, Đà Nẵng (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/203695763.jpg?k=b74b46c0991f72f3d02981bfb665f6f9bc533699c62dc669b38a7fb3ee4d0c3a&o=",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3kJoTJbk6QcoUfDtUy3xZkh1b4u9cnr9Tj7nZdq-qNQ&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "www.booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/sala-danang-beach.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F203695763.jpg%3Fk%3Db74b46c0991f72f3d02981bfb665f6f9bc533699c62dc669b38a7fb3ee4d0c3a%26o%3D&tbnid=_4fFSerszMEd4M&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fsala-danang-beach.vi.html&docid=z_q1tED9MewKXM&w=1024&h=683",
+    "position": 3
+   },
+   {
+    "title": "SALA DANANG BEACH HOTEL, Phước Mỹ, Đà Nẵng",
+    "imageUrl": "https://pix10.agoda.net/hotelImages/7243073/-1/4091858eac35bc67a5366d46ac895077.jpg?ca=11&ce=1&s=414x232",
+    "imageWidth": 348,
+    "imageHeight": 232,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8D1__3sk8-twUNKtujtEZog1-Pp47_GXgo6wKmtQkNA&s=10",
+    "thumbnailWidth": 348,
+    "thumbnailHeight": 232,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/sala-danang-beach-hotel/hotel/da-nang-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F7243073%2F-1%2F4091858eac35bc67a5366d46ac895077.jpg%3Fca%3D11%26ce%3D1%26s%3D414x232&tbnid=7e_AT4gT5CZAlM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fsala-danang-beach-hotel%2Fhotel%2Fda-nang-vn.html&docid=gjj8-x9iUn8y3M&w=348&h=232",
+    "position": 4
+   },
+   {
+    "title": "Sala Danang Beach Hotel | Da Nang",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=1713050667496957",
+    "imageWidth": 2048,
+    "imageHeight": 1365,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6Jo0SCzJ4ub7XrAxdvLnqml8FWWNkMieObRwIuZf6cA&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/saladanangbeachhotel/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D1713050667496957&tbnid=vRgeBn871kALZM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Fsaladanangbeachhotel%2F&docid=rDr1rIen4yw8HM&w=2048&h=1365",
+    "position": 5
+   },
+   {
+    "title": "SALA DANANG BEACH HOTEL, Phước Mỹ, Đà Nẵng",
+    "imageUrl": "https://pix10.agoda.net/hotelImages/7243073/-1/457f82286b20eebb7a71899ebf6f1605.png?ca=9&ce=1&s=414x232",
+    "imageWidth": 348,
+    "imageHeight": 232,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRL-Je8WUsZroqXpSPIN3EkJXFmv7rodQvod5GGQp9lag&s=10",
+    "thumbnailWidth": 348,
+    "thumbnailHeight": 232,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/sala-danang-beach-hotel/hotel/da-nang-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F7243073%2F-1%2F457f82286b20eebb7a71899ebf6f1605.png%3Fca%3D9%26ce%3D1%26s%3D414x232&tbnid=wu9uGz4Fbuv9GM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fsala-danang-beach-hotel%2Fhotel%2Fda-nang-vn.html&docid=gjj8-x9iUn8y3M&w=348&h=232",
+    "position": 6
+   },
+   {
+    "title": "Sala Danang Beach Hotel - Sala Hotel Group, Vietnam | Official Website",
+    "imageUrl": "https://salahotelgroup.com/wp-content/uploads/2021/10/DSC08788-2-scaled.jpg",
+    "imageWidth": 2560,
+    "imageHeight": 1708,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8-W9pe3z0d1xxj-86pxmjrQd8nQNG1sez6qHhYYfsog&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Sala Hotel",
+    "domain": "salahotelgroup.com",
+    "link": "https://salahotelgroup.com/en/saladanangbeachhotel/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fsalahotelgroup.com%2Fwp-content%2Fuploads%2F2021%2F10%2FDSC08788-2-scaled.jpg&tbnid=Z1OMFhh135QtpM&imgrefurl=https%3A%2F%2Fsalahotelgroup.com%2Fen%2Fsaladanangbeachhotel%2F&docid=FiTGggVYEeTFGM&w=2560&h=1708",
+    "position": 7
+   },
+   {
+    "title": "3N2Đ ở khách sạn SALA Đà Nẵng Beach + Ăn sáng chỉ 599.000 đồng/Khách",
+    "imageUrl": "https://cdn3.ivivu.com/2019/05/Sala-Danang-Beach-Hotel-ivivu-19.jpg",
+    "imageWidth": 720,
+    "imageHeight": 960,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4G7eStEfr3sxi2MDorFDIChdrKGe8u-5DbCZZb0ygNg&s=10",
+    "thumbnailWidth": 480,
+    "thumbnailHeight": 640,
+    "source": "iVIVU.com",
+    "domain": "www.ivivu.com",
+    "link": "https://www.ivivu.com/blog/2019/05/3n2d-o-khach-san-sala-da-nang-beach-ve-may-bay-an-sang-don-tien-san-bay-chi-3-399-000-dongkhach/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn3.ivivu.com%2F2019%2F05%2FSala-Danang-Beach-Hotel-ivivu-19.jpg&tbnid=KAGtNau-AOQvbM&imgrefurl=https%3A%2F%2Fwww.ivivu.com%2Fblog%2F2019%2F05%2F3n2d-o-khach-san-sala-da-nang-beach-ve-may-bay-an-sang-don-tien-san-bay-chi-3-399-000-dongkhach%2F&docid=YGKNJ5pzToc4sM&w=720&h=960",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

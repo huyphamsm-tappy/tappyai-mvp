@@ -778,8 +778,15 @@ function routeTurn(turns: Msg[], ui: number, thread: Thread, ctx: RouteCtx): Tur
   const cur = detectAreas(userText)
   // The picks under discussion: the NEAREST reply that named any (replay SHOP-3: a follow-up answer with no
   // bold name made the next "X hay chỗ kia?" read as a brand-new request and ASK again).
+  // Merged over the thread's last 3 replies, newest first (replay FOOD-3: a follow-up answer bolded
+  // "gọi quán trực tiếp", which hid the picks and made "A hay B?" a new request).
   let names = boldNames(prevAssistant)
-  for (let i = ui - 1; names.length === 0 && i >= Math.max(0, thread.start); i--) if (turns[i].role === 'assistant') names = boldNames(textOf(turns[i].content))
+  for (let i = ui - 1, seen = 0; i >= Math.max(0, thread.start) && seen < 3; i--) {
+    if (turns[i].role !== 'assistant') continue
+    seen++
+    for (const n of boldNames(textOf(turns[i].content))) if (!names.includes(n)) names.push(n)
+  }
+  names = names.slice(0, 16)
   const inThread = thread.domains.length > 0
 
   const pickFrom = (domains: ConsultDomain[], text: string, turn: 'pick' | 'reject', extra: Partial<ConsultDecision> = {}): RouteResult => {
@@ -810,8 +817,11 @@ function routeTurn(turns: Msg[], ui: number, thread: Thread, ctx: RouteCtx): Tur
     const negative = NEGATIVE_RE.test(t.f)
     if (PLAN_RE.test(t.f)) return keep({ domains, turn: 'plan', known: slotView(domains[0], threadText(thread.start), ctx.hasGps).known, ...(refs.length ? { refers: refs } : {}) })
     if (MORE_RE.test(t.f)) return keep({ domains, turn: 'more' })
-    if (refs.length >= 2 || (refs.length === 1 && /\bhay\b/.test(t.f)) || COMPARE_RE.test(t.f)) {
-      const refers = refs.length >= 2 ? refs : refs.length === 1 ? [refs[0], ...names.filter(n => n !== refs[0]).slice(0, 1)] : names.slice(0, 2)
+    // "A hay B?" in a thread is a comparison even when a side is not a name shown before.
+    const pair = /^(.{3,80}?)\s+hay(?:\s+là)?\s+(.{3,80}?)\s*(?:hơn)?\s*\??$/i.exec(userText.trim())
+    if (refs.length >= 2 || (refs.length === 1 && /\bhay\b/.test(t.f)) || COMPARE_RE.test(t.f) || (pair && !newArea)) {
+      const pairRefs = pair ? [pair[1].trim(), pair[2].trim()].filter(x => !/^(?:chỗ|cái|quán|mẫu|chuyến)\s+(?:kia|đó|này)$/i.test(x)) : []
+      const refers = refs.length >= 2 ? refs : refs.length === 1 ? [refs[0], ...names.filter(n => n !== refs[0]).slice(0, 1)] : pairRefs.length ? pairRefs : names.slice(0, 2)
       return keep({ domains, turn: 'compare', refers })
     }
     if ((refs.length || deictic) && isQ && !negative) return keep({ domains, turn: 'followup', refers: refs.length ? refs : names.slice(0, 1) })

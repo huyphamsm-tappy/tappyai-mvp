@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Set quà tặng phụ kiện thời trang cho nam 5 site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:11:49.399Z",
+ "body": {
+  "searchParameters": {
+   "q": "Set quà tặng phụ kiện thời trang cho nam 5 site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "GenZ - Phụ Kiện & Quà Tặng, Cửa hàng trực tuyến",
+    "link": "https://shopee.vn/coop_accessories",
+    "snippet": "PHỤ KIỆN NAM. SET 5 ĐÔI TẤT KHỦNG LONG SIÊU CƯNG CHO BÉ 5–8 TUỔI – MỀM, THOÁNG, CHỐNG TRƠN, DỄ MẶC ...",
+    "position": 1
+   },
+   {
+    "title": "box quà tặng cho nam tinh tế",
+    "link": "https://shopee.vn/list/box%20qu%C3%A0%20t%E1%BA%B7ng/cho%20nam",
+    "snippet": "box quà tặng cho nam đa dạng cho mọi dịp: combo 2–3 món tiện dụng, ví da thật và thắt lưng đồng bộ, thêm lựa chọn nước hoa/grooming.",
+    "position": 2
+   },
+   {
+    "title": "thời trang quà tặng - Giá Tốt, Sale Tháng 09, Freeship 0Đ",
+    "link": "https://shopee.vn/list/th%E1%BB%9Di%20trang/qu%C3%A0%20t%E1%BA%B7ng",
+    "snippet": "Shopee cung cấp đầy đủ các sản phẩm thời trang quà tặng chính hãng với nhiều mức giá ưu đãi vô cùng hấp dẫn. Bạn có thể thỏa thích tham khảo sản phẩm chính hãng ...",
+    "position": 3
+   },
+   {
+    "title": "Quà tặng sinh nhật cho nam - Giá Tốt, Sale Tháng 09, ...",
+    "link": "https://shopee.vn/list/qu%C3%A0%20t%E1%BA%B7ng%20sinh%20nh%E1%BA%ADt/cho%20nam",
+    "snippet": "Shopee cung cấp đầy đủ các sản phẩm quà tặng sinh nhật cho nam chính hãng với nhiều mức giá ưu đãi vô cùng hấp dẫn. Bạn có thể thỏa thích tham khảo sản phẩm ...",
+    "position": 4
+   },
+   {
+    "title": "Quà tặng cho nam, set quà tặng phụ kiện suit, set cà vạt 4 ...",
+    "link": "https://shopee.vn/Qu%C3%A0-t%E1%BA%B7ng-cho-nam-set-qu%C3%A0-t%E1%BA%B7ng-ph%E1%BB%A5-ki%E1%BB%87n-suit-set-c%C3%A0-v%E1%BA%A1t-4-m%C3%B3n-l%E1%BB%8Bch-l%C3%A3m-i.14574249.18595292073",
+    "snippet": "Mua Quà tặng cho nam, set quà tặng phụ kiện suit, set cà vạt 4 món lịch lãm giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, ...",
+    "rating": 2,
+    "ratingCount": 1,
+    "position": 5
+   },
+   {
+    "title": "xueyin.vn - Shopee Mall Online",
+    "link": "https://shopee.vn/xueyin.vn",
+    "snippet": "Dây Da Dạ Quang Mèo Đen Trắng Vòng Cổ RINHOO FRIENDSHIP Cho Nam Nữ Cặp Đôi Cá Tính Phụ Kiện Quà Tặng Kỷ Niệm. 23.331₫. -45%. Mua 2 & giảm 5%. rating-star 4.8.",
+    "position": 6
+   },
+   {
+    "title": "Thời trang quà tặng phụ nữ tinh tế",
+    "link": "https://shopee.vn/list/th%E1%BB%9Di%20trang/qu%C3%A0%20t%E1%BA%B7ng/ph%E1%BB%A5%20n%E1%BB%AF",
+    "snippet": "Khăn lụa: Một chiếc khăn choàng lụa với họa tiết trang nhã là phụ kiện không bao giờ lỗi mốt, dễ dàng kết hợp với nhiều loại trang phục. Túi xách cao cấp: ...",
+    "position": 7
+   },
+   {
+    "title": "Quà tặng người yêu nam tự làm",
+    "link": "https://shopee.vn/list/qu%C3%A0%20t%E1%BA%B7ng/ng%C6%B0%E1%BB%9Di%20y%C3%AAu%20nam%20t%E1%BB%B1%20l%C3%A0m",
+    "snippet": "Set Quà Khung Ảnh Mica Trong Suốt, Set Acrylic Nam Châm Tự Làm Tặng Người Yêu Bạn bè Valentine sinh nhật 8/3 Erashop. 119.000₫. rating-star ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

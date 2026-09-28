@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "M Hotel Da Nang",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:27:13.654Z",
+ "body": {
+  "searchParameters": {
+   "q": "M Hotel Da Nang",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "M Hotel Da Nang - M Hotels & Resorts",
+    "imageUrl": "https://mhotel.vn/wp-content/uploads/2022/12/m-hotel-4-3-no-scaled.jpg",
+    "imageWidth": 2560,
+    "imageHeight": 1438,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKKS1O_LMN-pK6px2wwfVJdXUqvMzez6NTaQZ8EzpTlQ&s=10",
+    "thumbnailWidth": 738,
+    "thumbnailHeight": 414,
+    "source": "M Hotel Saigon",
+    "domain": "mhotel.vn",
+    "link": "https://mhotel.vn/property/m-hotel-da-nang/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fmhotel.vn%2Fwp-content%2Fuploads%2F2022%2F12%2Fm-hotel-4-3-no-scaled.jpg&tbnid=JuU7xqLQtysJ2M&imgrefurl=https%3A%2F%2Fmhotel.vn%2Fproperty%2Fm-hotel-da-nang%2F&docid=nQhOitTd6nXsKM&w=2560&h=1438",
+    "position": 1
+   },
+   {
+    "title": "M Hotel Da Nang - M Hotels & Resorts",
+    "imageUrl": "https://mhotel.vn/wp-content/uploads/2024/09/Bedroom_1.5-1024x665.jpg",
+    "imageWidth": 1024,
+    "imageHeight": 665,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRA8n8uhMkPOtOPZNiTwIj4yDi6kRxzi-eSuJebI_9ZDA&s=10",
+    "thumbnailWidth": 686,
+    "thumbnailHeight": 446,
+    "source": "M Hotel Saigon",
+    "domain": "mhotel.vn",
+    "link": "https://mhotel.vn/property/m-hotel-da-nang/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fmhotel.vn%2Fwp-content%2Fuploads%2F2024%2F09%2FBedroom_1.5-1024x665.jpg&tbnid=EDSh5MQ-T5k7dM&imgrefurl=https%3A%2F%2Fmhotel.vn%2Fproperty%2Fm-hotel-da-nang%2F&docid=nQhOitTd6nXsKM&w=1024&h=665",
+    "position": 2
+   },
+   {
+    "title": "M Hotel Danang, Đà Nẵng (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/572555408.jpg?k=0b689a223b0732231e8318ed6e0a2913c9ca9303cfb27fe74b5b881a5aeb040c&o=",
+    "imageWidth": 1024,
+    "imageHeight": 627,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQr_ewm61vxlGdhyPDr9uNVRR-e0--QG5pNQjaHwVCrSg&s=10",
+    "thumbnailWidth": 708,
+    "thumbnailHeight": 432,
+    "source": "www.booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/m-danang.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F572555408.jpg%3Fk%3D0b689a223b0732231e8318ed6e0a2913c9ca9303cfb27fe74b5b881a5aeb040c%26o%3D&tbnid=rk0nybUohHm51M&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fm-danang.vi.html&docid=rE5bWgHQU8akAM&w=1024&h=627",
+    "position": 3
+   },
+   {
+    "title": "M Hotel Danang, Đà Nẵng (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/587384884.jpg?k=007bd79c1b8a123ea880e90442124878a94f2a97bbe2063142acb66800e33b46&o=",
+    "imageWidth": 480,
+    "imageHeight": 768,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGqdaNDTehZBfv6oXC8vd3Tg1pIxgcolX4zEjfw0Pjgg&s=10",
+    "thumbnailWidth": 438,
+    "thumbnailHeight": 701,
+    "source": "www.booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/m-danang.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F587384884.jpg%3Fk%3D007bd79c1b8a123ea880e90442124878a94f2a97bbe2063142acb66800e33b46%26o%3D&tbnid=SMflZ5nwgPW1pM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fm-danang.vi.html&docid=rE5bWgHQU8akAM&w=480&h=768",
+    "position": 4
+   },
+   {
+    "title": "M Hotel Da Nang - M Hotels & Resorts",
+    "imageUrl": "https://mhotel.vn/wp-content/uploads/2022/12/m-hotel-1-2-1024x767.jpg",
+    "imageWidth": 1024,
+    "imageHeight": 767,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3qV14G_l88t9p5OMJXn3fg2g8DHru0CtCr6hwO3E8yQ&s=10",
+    "thumbnailWidth": 640,
+    "thumbnailHeight": 479,
+    "source": "M Hotel Saigon",
+    "domain": "mhotel.vn",
+    "link": "https://mhotel.vn/property/m-hotel-da-nang/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fmhotel.vn%2Fwp-content%2Fuploads%2F2022%2F12%2Fm-hotel-1-2-1024x767.jpg&tbnid=LtZUrOBEM--o0M&imgrefurl=https%3A%2F%2Fmhotel.vn%2Fproperty%2Fm-hotel-da-nang%2F&docid=nQhOitTd6nXsKM&w=1024&h=767",
+    "position": 5
+   },
+   {
+    "title": "M Hotel Đà Nẵng, Đà Nẵng | Hotels.com",
+    "imageUrl": "https://images.trvl-media.com/lodging/103000000/102180000/102172200/102172167/4f62c8f5.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill",
+    "imageWidth": 910,
+    "imageHeight": 575,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBFWWwbmKMFrhkGeHSQUBPlKXDiHFLK_XMXYzlG-p7JQ&s=10",
+    "thumbnailWidth": 563,
+    "thumbnailHeight": 355,
+    "source": "hotels",
+    "domain": "vi.hotels.com",
+    "link": "https://vi.hotels.com/ho3270509344/m-hotel-danang-a-nang-viet-nam/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimages.trvl-media.com%2Flodging%2F103000000%2F102180000%2F102172200%2F102172167%2F4f62c8f5.jpg%3Fimpolicy%3Dresizecrop%26rw%3D575%26rh%3D575%26ra%3Dfill&tbnid=UGOk0VajvIofmM&imgrefurl=https%3A%2F%2Fvi.hotels.com%2Fho3270509344%2Fm-hotel-danang-a-nang-viet-nam%2F&docid=bdqNsDsF8rIo3M&w=910&h=575",
+    "position": 6
+   },
+   {
+    "title": "M HOTEL DANANG (Đà Nẵng) - Đánh giá Khách sạn & So sánh giá - Tripadvisor",
+    "imageUrl": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2d/3e/e9/da/caption.jpg?w=500&h=400&s=1",
+    "imageWidth": 500,
+    "imageHeight": 400,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6IUDbqV454_vs59xNWwEjAojfgZ5puOF5A3El6mIzXA&s=10",
+    "thumbnailWidth": 499,
+    "thumbnailHeight": 400,
+    "source": "Tripadvisor",
+    "domain": "www.tripadvisor.com.vn",
+    "link": "https://www.tripadvisor.com.vn/Hotel_Review-g298085-d27935364-Reviews-M_Hotel_Danang-Da_Nang.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdynamic-media-cdn.tripadvisor.com%2Fmedia%2Fphoto-o%2F2d%2F3e%2Fe9%2Fda%2Fcaption.jpg%3Fw%3D500%26h%3D400%26s%3D1&tbnid=8p1qIx5-eDj_-M&imgrefurl=https%3A%2F%2Fwww.tripadvisor.com.vn%2FHotel_Review-g298085-d27935364-Reviews-M_Hotel_Danang-Da_Nang.html&docid=aQD9kvOPObRfqM&w=500&h=400",
+    "position": 7
+   },
+   {
+    "title": "M Hotel Da Nang - M Hotels & Resorts",
+    "imageUrl": "https://mhotel.vn/wp-content/uploads/2022/12/NDNK7161-Enhanced-NR-copy-1-scaled.jpg",
+    "imageWidth": 2560,
+    "imageHeight": 1591,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWOmqQkddKDYh2xKIuaJxmnS4HEN8MX3SBpZ2ynhSPQA&s=10",
+    "thumbnailWidth": 701,
+    "thumbnailHeight": 436,
+    "source": "M Hotel Saigon",
+    "domain": "mhotel.vn",
+    "link": "https://mhotel.vn/property/m-hotel-da-nang/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fmhotel.vn%2Fwp-content%2Fuploads%2F2022%2F12%2FNDNK7161-Enhanced-NR-copy-1-scaled.jpg&tbnid=qitkQN_8oomyHM&imgrefurl=https%3A%2F%2Fmhotel.vn%2Fproperty%2Fm-hotel-da-nang%2F&docid=nQhOitTd6nXsKM&w=2560&h=1591",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

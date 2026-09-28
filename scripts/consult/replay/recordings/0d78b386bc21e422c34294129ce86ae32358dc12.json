@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"QUÁN NHẬU NĂM ZUI | QUÁN NHẬU GẦN ĐÂY | QUÁN NHẬU BÌNH THẠNH | QUÁN ĂN GẦN ĐÂY\" OR \"Nhà Của Piêu\" OR \"QUÁN 366| QUÁN NHẬU BÙI ĐÌNH TUÝ| QUÁN NHẬU BÌNH THẠNH\" Bình Thạnh site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:52:14.901Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"QUÁN NHẬU NĂM ZUI | QUÁN NHẬU GẦN ĐÂY | QUÁN NHẬU BÌNH THẠNH | QUÁN ĂN GẦN ĐÂY\" OR \"Nhà Của Piêu\" OR \"QUÁN 366| QUÁN NHẬU BÙI ĐÌNH TUÝ| QUÁN NHẬU BÌNH THẠNH\" Bình Thạnh site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Nhà của Piêu: Quán Ăn Ngon Tại Bình Thạnh",
+    "link": "https://www.tiktok.com/@thaodayyy_23/video/7438847001808194837",
+    "snippet": "Nhà của Piêu: Quán Ăn Ngon Tại Bình Thạnh. Khám phá nhà của Piêu, địa điểm quán ăn yêu thích tại Bình Thạnh với những món nướng hấp dẫn. # ...",
+    "position": 1
+   },
+   {
+    "title": "Nhà Của Piêu - Nướng & Chill (@nhacuapieu)",
+    "link": "https://www.instagram.com/nhacuapieu/",
+    "snippet": "Thạnh Mỹ Tây (Bình Thạnh cũ), TP. HCM Hotline: 076.923.1368. Follow. Message ... NHÀ CỦA PIÊU ...",
+    "position": 2
+   },
+   {
+    "title": "Khám phá Nhà Của Piêu - Một điểm hẹn dành cho những ...",
+    "link": "https://www.instagram.com/reel/Da5dXs1E8XM/",
+    "snippet": "... NHÀ CỦA PIÊU 42/68 Ung Văn Khiêm, P. Thạnh Mỹ Tây (Q. Bình Thạnh cũ), TP.HCM ⏰ 16:00 - 23:00 ☎️ Hotline đặt món & đặt bàn: 076 923 ...",
+    "position": 3
+   },
+   {
+    "title": "Nhà của Piêu không gian Tây Bắc với đồ ăn siêu ngon ...",
+    "link": "https://www.youtube.com/watch?v=kGKd4MBaqkI",
+    "snippet": "Nhà của Piêu không gian Tây Bắc với đồ ăn siêu ngon giữa lòng Bình Thạnh. @diachianuongNo likes131 views2 years ago",
+    "position": 4
+   },
+   {
+    "title": "Nhà Của Piêu Bình Thạnh Menu",
+    "link": "https://www.tiktok.com/discover/nh%C3%A0-c%E1%BB%A7a-pi%C3%AAu-b%C3%ACnh-th%E1%BA%A1nh-menu",
+    "snippet": "Nhà của Piêu là quán nướng nằm trong hẻm tại 68 Ung Văn Khiêm, Thạnh Mỹ Tây, Bình Thạnh, nổi tiếng với không gian chill và các món ăn đa dạng ...",
+    "date": "7 ngày trước",
+    "position": 5
+   },
+   {
+    "title": "Mới được ní ở #binhthanh dẫn đi qua #nhacuapieu trải ...",
+    "link": "https://www.tiktok.com/@lulureview_/video/7388139423566793992",
+    "snippet": "Mới được ní ở #binhthanh dẫn đi qua #nhacuapieu trải nghiệm thử. Trùi ui nó ngonnn #lulureview #fnb · Nhà Của Piêu Bình Thạnh Menu · Nhà Của Sơn ...",
+    "position": 6
+   },
+   {
+    "title": "Nhà của Piêu: Nướng & Chill giữa không gian ẩm thực Tây ...",
+    "link": "https://mia.vn/cam-nang-du-lich/quan-nuong-nha-cua-pieu-17118",
+    "snippet": "Nhắc đến một trong những quán nhậu nổi tiếng tại Bình Thạnh, Sài Gòn, không thể vắng mặt Nhà của Piêu - Nướng & Chill. Đây là địa điểm lai rai ...",
+    "date": "2 thg 4, 2025",
+    "position": 7
+   },
+   {
+    "title": "Piêu có gì mà Ghi Thích Nhậu cũng phải ghé? Từ không ...",
+    "link": "https://www.instagram.com/reel/DbVuz6IACjx/",
+    "snippet": "NHÀ CỦA PIÊU 42/68 Ung Văn Khiêm, P. Thạnh Mỹ Tây (Q. Bình Thạnh cũ), TP.HCM ⏰ 16:00 - 23:00 ☎️ Hotline đặt món & đặt bàn: 076 923 ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

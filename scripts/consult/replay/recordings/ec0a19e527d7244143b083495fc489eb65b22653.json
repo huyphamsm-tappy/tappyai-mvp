@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Colline\" Đà Lạt site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T19:08:15.024Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Colline\" Đà Lạt site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Colline Dalat Đánh giá của khách",
+    "link": "https://vn.trip.com/hotels/dalat-hotel-detail-29515862/colline-dalat/review.html",
+    "snippet": "Khám phá đánh giá Colline Dalat thực tế từ khách du lịch. Với 207 đánh giá đã được xác thực và xếp hạng 9.4/10, bạn có thể đặt phòng với sự an tâm tuyệt ...",
+    "position": 1
+   },
+   {
+    "title": "Colline Dalat - Giá cả và Ưu đãi 2026, Đà Lạt",
+    "link": "https://vn.trip.com/hotels/dalat-hotel-detail-29515862/colline-dalat/",
+    "snippet": "Giờ nhận phòng tại Colline Dalat bắt đầu từ 14:00, và giờ trả phòng là 11:30. Colline Dalat có hồ bơi không? Không, Colline Dalat không có hồ bơi. Có được mang ...",
+    "position": 2
+   },
+   {
+    "title": "Các khách sạn nổi tiếng ở gần Chợ Đêm Đà Lạt",
+    "link": "https://vn.trip.com/hotels/dalat-dalat-market/hotels-c5204m7712142/",
+    "snippet": "Colline Dalat. Trung tâm Đà Lạt, Đà Lạt | Cách Chợ Đêm Đà Lạt 0.3KM. 9,4/10. Đáng Kinh Ngạc 206 đánh giá. Khách sạn Colline tọa lạc tại Đà Lạt, cách Chợ Đà Lạt ...",
+    "position": 3
+   },
+   {
+    "title": "Các khách sạn ở gần Maika Dalat Center, Đà Lạt",
+    "link": "https://vn.trip.com/hotels/dalat-dalat-cultural-exchange-center/hotels-c5204m8942107/",
+    "snippet": "Khách sạn Colline tọa lạc tại Đà Lạt, cách Chợ Đà Lạt 3 phút đi bộ và cách Hồ Xuân Hương 3 phút lái xe. Khách sạn spa này cách Vườn hoa Đà Lạt 1,4 mi (2,2 km) ...",
+    "position": 4
+   },
+   {
+    "title": "Tìm Khách Sạn 4 Sao Tại Đà Lạt",
+    "link": "https://vn.trip.com/hotels/star4/city/vn/dalat.html",
+    "snippet": "Khách sạn Colline tọa lạc tại Đà Lạt, cách Chợ Đà Lạt 3 phút đi bộ và cách Hồ Xuân Hương 3 phút lái xe. Khách sạn spa này cách Vườn hoa Đà Lạt 1,4 mi (2,2 ...",
+    "position": 5
+   },
+   {
+    "title": "Khách Sạn Hàng Đầu Có Quầy Bar Tại Đà Lạt",
+    "link": "https://vn.trip.com/hotels/bar/city/vn/dalat.html",
+    "snippet": "Colline Dalat. 9,4 · Đáng Kinh Ngạc ; Nesta Valley Dalat Hotel - Formerly Golf Valley Hotel. 9,3 · Tuyệt Vời ; Khách sạn Dalat Palace Heritage. 9,1 · Tuyệt Vời.",
+    "position": 6
+   },
+   {
+    "title": "Các khách sạn ở gần Chùa Tâm Ấn, Đà Lạt",
+    "link": "https://vn.trip.com/hotels/dalat-cha-tm-n/hotels-c5204m12113397/",
+    "snippet": "Colline Dalat. Trung tâm Đà Lạt, Đà Lạt | Cách Chùa Tâm Ấn 0.5KM. 9,4/10. Đáng Kinh Ngạc 205 đánh giá. Khách sạn Colline tọa lạc tại Đà Lạt, cách Chợ Đà Lạt 3 ...",
+    "position": 7
+   },
+   {
+    "title": "Villa T89 Da Lat - Giá cả và Ưu đãi 2026, Đà Lạt",
+    "link": "https://vn.trip.com/hotels/dalat-hotel-detail-8594010/villa-t89-da-lat/",
+    "snippet": "MerPerle Dalat HotelNature Hotel - Lê Đại HànhColline DalatHạ Na Hotel Đà ... Đà LạtCác khách sạn gần Ga Đà Lạt. Điểm đến hàng đầu. Các khách sạn ở TP. Hồ ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,30 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Sapa Centre Hotel\" Sapa site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T19:08:15.494Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Sapa Centre Hotel\" Sapa site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Khách sạn Sapa Centre - Giá cả và Ưu đãi 2026, Sa Pa",
+    "link": "https://vn.trip.com/hotels/sapa-hotel-detail-7013889/sapa-centre-hotel/",
+    "snippet": "Khách sạn Sapa Centre. Sapa Centre Hotel. 10 – 12, Cau May Str, 12a Ng. Cầu ...",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

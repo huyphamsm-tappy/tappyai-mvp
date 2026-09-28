@@ -65,7 +65,7 @@ export const PLAN_HEADINGS: Record<Exclude<FrameDomain, 'main'>, string[]> = {
 const PLAN_NOTES: Record<Exclude<FrameDomain, 'main'>, string> = {
   food: 'Gio nen den / dat ban truoc bao lau · goi mon gi cho SO NGUOI do, khau phan · tong chi phi co phep tinh · gui xe/di lai · meo (mon nen thu, gio tranh dong, mon khong nen goi) · phuong an du phong neu het cho.',
   shopping: 'Mua o dau (online/cua hang, nut he thong) · checklist kiem truoc khi tra tien · cach so gia, thoi diem nen mua (sale) · bao hanh/doi tra · cam bay thuong gap · tong chi phi.',
-  travel: 'Lich tung ngay nam trong khoi [TAPPY_PLAN] (theo khung gio, thoi gian di chuyen thuc te khi tool co). Phan chu theo cac tieu de: tom tat chuyen · an o dau goi mon gi tam gia · meo & cam bay · khi troi mua · ngan sach VND theo nguoi va theo ngay CO PHEP TINH · viec can lam truoc khi di · link ve/khach san ghi ro la TIM KIEM.',
+  travel: 'Lich tung ngay nam trong khoi [TAPPY_PLAN] (theo khung gio, thoi gian di chuyen thuc te khi tool co). Phan chu theo cac tieu de: tom tat chuyen · an o dau goi mon gi tam gia · meo & cam bay · khi troi mua · ngan sach VND theo nguoi va theo ngay CO PHEP TINH · viec can lam truoc khi di · link ve/khach san ghi ro la TIM KIEM. CONG CU: goi TAT CA trong MOT buoc (song song), toi da 3 lan goi: get_hotel_prices (chi khi chua chot noi o) + search_places MOT truy van quan an dac san + get_weather; roi VIET NGAY, KHONG goi them.',
   entertainment: 'Lich buoi theo gio (an → choi → uong neu hop) · dat phong/ve truoc ra sao · di chuyen giua cac chang · meo tung cho (gio vang giam gia, goi gi, luu y) · tong chi phi nhom va theo nguoi CO PHEP TINH.',
   spa: 'Goi/dich vu nen chon · dat lich luc nao · chuan bi gi truoc khi den · thoi luong · tong chi phi · luu y (phu thu, tip, chong chi dinh chung — ghi ro la luu y chung).',
 }
@@ -97,4 +97,46 @@ export function buildDomainFrame(domain: FrameDomain, turn: FrameTurn = 'pick'):
   else if (turn === 'pick') body = `${PICK_SHAPE}\n${PICK[domain]}`
   else body = `${FOLLOW[turn]}\n${PICK[domain].split('\n')[0]}`
   return `\n\n===== KHUNG TU VAN — ${domain.toUpperCase()} / ${turn.toUpperCase()} =====\n${body}\n${FRAME_CORE}\n=====================================`
+}
+
+const headingKey = (line: string): string | null => {
+  const t = line.trim().replace(/^#{1,4}\s*/, '').replace(/\*+/g, '').replace(/[:：]\s*$/, '').trim().toLowerCase()
+  if (!t || t.length > 60) return null
+  for (const list of Object.values(PLAN_HEADINGS)) for (const h of list) if (h.toLowerCase() === t) return h
+  return null
+}
+
+/**
+ * A detailed plan's heading lines, put back where a sentence guard took them (replay FOOD-1..3: "Giờ đến &
+ * đặt bàn" and "Gọi món" went with the time / dish sentence under them). Only headings the MODEL wrote are
+ * restored — in their original order, before the next heading that survived; nothing is invented.
+ */
+export function restorePlanHeadings(original: string, guarded: string): string {
+  const src = original.split('\n')
+  // Each heading's anchor: the start of the first content line under it in the model's text.
+  const orig = src.map((l, j) => {
+    const key = headingKey(l)
+    if (!key) return null
+    let anchor = ''
+    for (let k = j + 1; k < src.length && !headingKey(src[k]); k++) if (src[k].trim()) { anchor = src[k].trim().replace(/^[-*•\d.)\s]+/, '').slice(0, 24); break }
+    return { line: l.trim(), key, anchor }
+  }).filter((x): x is { line: string; key: string; anchor: string } => !!x)
+  if (orig.length === 0) return guarded
+  const lines = guarded.split('\n')
+  const present = new Set(lines.map(headingKey).filter(Boolean) as string[])
+  let out = lines
+  orig.forEach((h, i) => {
+    if (present.has(h.key)) return
+    // Above its own surviving content; else before the next heading that survived.
+    let at = h.anchor.length >= 8 ? out.findIndex(l => !headingKey(l) && l.includes(h.anchor)) : -1
+    const next = orig.slice(i + 1).find(n => present.has(n.key))
+    if (at < 0 && next) at = out.findIndex(l => headingKey(l) === next.key)
+    if (at < 0) {
+      at = out.findIndex(l => /^\s*\[(?:FOLLOWUPS|CTA_BUTTONS|TAPPY_[A-Z_]+)\]/.test(l))
+      if (at < 0) at = out.length
+    }
+    out = [...out.slice(0, at), h.line, '', ...out.slice(at)]
+    present.add(h.key)
+  })
+  return out.join('\n').replace(/\n{3,}/g, '\n\n')
 }

@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Thương Rooftop\" OR \"Rong Chơi Coffee Van Garden\" OR \"Xào Xạc cafe & plants\" quan 3 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:56:45.646Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Thương Rooftop\" OR \"Rong Chơi Coffee Van Garden\" OR \"Xào Xạc cafe & plants\" quan 3 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Thương Rooftop",
+    "link": "https://www.tiktok.com/discover/th%C6%B0%C6%A1ng-rooftop",
+    "snippet": "Khám phá Thương Rooftop, quán cà phê tuyệt đẹp với không gian lãng mạn và view ngắm hoàng hôn ấn tượng tại Quận 4. Cập nhật lần cuối 2026-07-27 ...",
+    "date": "27 thg 7, 2026",
+    "position": 1
+   },
+   {
+    "title": "Xào xạc cafe & plants 📍 453/15 Nguyễn Đình Chiểu ...",
+    "link": "https://www.tiktok.com/@cafehoppersg/photo/7482220926134750471?lang=ro-RO",
+    "snippet": "Xào xạc cafe & plants 453/15 Nguyễn Đình Chiểu, phường 5, quận 3, TpHCM 7:30 am - 10 pm #xaoxac #xaoxaccafe #xaoxaccafeplants #cafe ...",
+    "position": 2
+   },
+   {
+    "title": "258 Tôn Đản. Quán rooftop đẹp nhứt Quận 4",
+    "link": "https://www.tiktok.com/@rooftopsaigonn/video/7351129185185828101",
+    "snippet": "9204 Likes, 148 Comments. TikTok video from rooftopsaigonn (@rooftopsaigonn): “Thương Rooftop - 258 Tôn Đản. Quán rooftop đẹp nhứt Quận 4”.",
+    "position": 3
+   },
+   {
+    "title": "Thương Rooftop: Quán Cafe Đẹp Nhất Quận 4",
+    "link": "https://www.tiktok.com/@wild.noodles__/video/7379991500106599681",
+    "snippet": "Thương Rooftop - quán cafe có chiếc view đẹp ngắm bầu trời ngay giữa lòng quận 4 ♥️♥️♥️♥️ ————- #trending #congmihoangda #reviewquancafe ...",
+    "position": 4
+   },
+   {
+    "title": "Xào xạc cafe & plants 📍 453/15 Nguyễn Đình Chiểu ...",
+    "link": "https://www.tiktok.com/@cafehoppersg/photo/7482220926134750471?image_index=7",
+    "snippet": "Xào xạc cafe & plants 453/15 Nguyễn Đình Chiểu, phường 5, quận 3, TpHCM 7:30 am - 10 pm #xaoxac #xaoxaccafe #xaoxaccafeplants #cafe ...",
+    "position": 5
+   },
+   {
+    "title": "Xào xạc cafe & plants 📍 453/15 Nguyễn Đình Chiểu, phường 5 ...",
+    "link": "https://www.tiktok.com/@cafehoppersg/photo/7482220926134750471?image_index=3&lang=hu-HU",
+    "snippet": "Xào xạc cafe & plants 453/15 Nguyễn Đình Chiểu, phường 5, quận 3, TpHCM 7:30 am - 10 pm #xaoxac #xaoxaccafe #xaoxaccafeplants #cafe #saigon ...",
+    "position": 6
+   },
+   {
+    "title": "Xào xạc cafe & plants 📍 453/15 Nguyễn Đình Chiểu, phường 5 ...",
+    "link": "https://www.tiktok.com/@cafehoppersg/photo/7482220926134750471?image_index=1&lang=ja-JP",
+    "snippet": "Xào xạc cafe & plants 453/15 Nguyễn Đình Chiểu, phường 5, quận 3, TpHCM 7:30 am - 10 pm #xaoxac #xaoxaccafe #xaoxaccafeplants #cafe #saigon ...",
+    "position": 7
+   },
+   {
+    "title": "Trải nghiệm cà phê đẹp tại quận 3 Sài Gòn",
+    "link": "https://www.tiktok.com/@shundidau_/video/7618859636585778452",
+    "snippet": "Khám phá quán cà phê đẹp tại Sài Gòn, nơi lý tưởng để chụp ảnh. @Shun Đi Đâu · âm thanh gốc - Shun Đi Đâu · Xào Xạc cafe & plants · author.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

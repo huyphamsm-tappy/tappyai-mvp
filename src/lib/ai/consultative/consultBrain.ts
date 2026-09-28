@@ -261,6 +261,9 @@ export function normalizePickSentence(text: string, fallbackPick?: string | null
   if (lower !== text) return lower
   const led = text.replace(/(?:mình|minh)\s+(?:chọn|gợi ý|nghiêng về|đề xuất|recommend)\s*:?\s*\*\*([^*\n]{2,120})\*\*/i, (_m, name: string) => `**Mình chọn: ${name.trim()}**`)
   if (led !== text) return led
+  // The verb inside the bold: "mình **nghiêng về Tới Nóc**" (replay FOOD-3 compare).
+  const inner = text.replace(/\*\*\s*(?:mình\s+)?(?:nghiêng về|chọn|gợi ý)\s+([^*\n]{2,120})\*\*/i, (_m, name: string) => `**Mình chọn: ${name.trim()}**`)
+  if (inner !== text) return inner
   // No pick sentence at all, but the card has one (shopping): the text says it, so text = card.
   if (fallbackPick && fallbackPick.trim()) {
     const first = text.match(/^[^\n]*?[.!?](?=\s|$)/)

@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Set quà tặng phụ kiện thời trang cho nam 5 site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:11:48.803Z",
+ "body": {
+  "searchParameters": {
+   "q": "Set quà tặng phụ kiện thời trang cho nam 5 site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "gift set ramadhan 2026",
+    "link": "https://shop.tiktok.com/vn/k/gift-set-ramadhan-2026",
+    "snippet": "Design 2025 - Bộ quà tặng Nam giới full túi hộp theo kèm - Thắt lưng + ví da cao cấp ( hàng mới về ). 4.6. 531 sold. ₫149.000. Design 2025 - Bộ quà tặng Nam ...",
+    "position": 1
+   },
+   {
+    "title": "Phục sức & phụ kiện - TikTok Shop Vietnam",
+    "link": "https://shop.tiktok.com/vn/c/costume-jewelry-accessories/905608",
+    "snippet": "Mặt dây chuyền cỏ bốn lá hợp kim với thiết kế nhỏ gọn, tinh tế, tượng trưng cho may mắn và bình an. Có thể dùng làm phụ kiện treo túi điện thoại, móc khóa chìa ...",
+    "position": 2
+   },
+   {
+    "title": "25 pesos items gift ideas black color",
+    "link": "https://shop.tiktok.com/vn/k/25-pesos-items-gift-ideas-black-color",
+    "snippet": "(Mua set 50 tặng 6) Combo 20/30/50 túi mù giá rẻ, charm phát sáng, đồ chơi dạ quang phát sáng, túi mù động vật phát sáng.",
+    "position": 3
+   },
+   {
+    "title": "Set quà tặng đáng yêu gồm gương và kẹp tóc siêu xinh ...",
+    "link": "https://shop.tiktok.com/vn/pdp/set-qua-tang-guong-va-kep-toc-xinh-cho-nu-chat-lieu-nhua-thiep-chuc-mung-mon-qua-ly-tuong/1731903364497507639",
+    "snippet": "LƯU Ý: gương Hồng hoặc Trắng (khách vui lòng không chọn màu)SET quà tặng đáng yêu cho nữGôm: gương+ kẹp tócThiệp chúc mừngChất liệu: nhựa Bộ Quà Tặng Đáng Yêu ...",
+    "rating": 4.6,
+    "ratingCount": 2617,
+    "position": 4
+   },
+   {
+    "title": "chanel holiday gift set 2025 philippines",
+    "link": "https://shop.tiktok.com/vn/k/chanel-holiday-gift-set-2025-philippines",
+    "snippet": "Set quà 5 đôi tất Noel hàng chất lượng cao Giáng sinh 2025 hạnh phúc bình an. 5. 55 sold · 99.000 ; Set 200 Thỏi Vàng Pha Lê 2025. 4.8. 22 sold · 63.000 ; Combo ...",
+    "position": 5
+   },
+   {
+    "title": "ชุด4ชิ้น - TikTok Shop Vietnam",
+    "link": "https://shop.tiktok.com/vn/k/chud-4-chin",
+    "snippet": "TẤT BÉ TRAI. SÉT 10 đôi đủ màu · 107 sold · 109.000 ; Combo 4 túi [ 2 Mít nguyên B, 2 chuối ]. 0 sold · 140.000 ; Combo 4 món (hộp giấy, hộp chè, gạt tàn, lọ tăm). 0 ...",
+    "position": 6
+   },
+   {
+    "title": "Nhẫn Nghệ Thuật Làm Móng, Thời Trang, 5 Chiếc, Phụ ...",
+    "link": "https://shop.tiktok.com/vn/pdp/nhan-nghe-thuat-lam-5-chiec-thiet-ke-thoi-trang/1732261233398678883",
+    "snippet": "Thông số kỹ thuật:Chất Liệu: Hợp KimKích thước: Như đã hiển thịGói bao gồm:5 Chiếc Nhẫn Đeo MóngLưu ý:xin cho phép sai số 1-2cm do đo lường thủ công.Do sự khác ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 7
+   },
+   {
+    "title": "Set Quà Tặng Gấu Dâu Kèm Hộp Xinh Xắn Đáng Yêu ...",
+    "link": "https://shop.tiktok.com/vn/pdp/set-qua-tang-gau-dau-kem-hop-xinh-xan-phu-kien-toc-nu-be-gai/1729733455834679834",
+    "snippet": "Mua Set Quà Tặng Gấu Dâu Kèm Hộp Xinh Xắn Đáng Yêu Tặng Ngày Lễ Sinh Nhật Ý Nghĩa Nhiều Phụ Kiện Tóc Cho Nữ Và Bé Gái trên TikTok Shop. Săn giá siêu hời cho ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

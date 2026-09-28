@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "laptop dưới 20 triệu thiết kế (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:40:47.847Z",
+ "body": {
+  "searchParameters": {
+   "q": "laptop dưới 20 triệu thiết kế (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Laptop dưới 20 triệu | Thiết kế sang trọng, mạnh mẽ, bền bỉ",
+    "link": "https://cellphones.com.vn/bo-loc/laptop-tu-15-20-trieu",
+    "snippet": "Laptop dưới 20 triệu chính hãng, thiết kế tinh tế, hiện đại, mạnh mẽ, vượt trội, bảo hành chính hãng. VN MacBook Air M5 13 inch 2026 10CPU 8GPU 16GB 512GB",
+    "position": 1
+   },
+   {
+    "title": "Laptop dưới 30 triệu | Thiết kế mỏng nhẹ, hiệu năng khủng",
+    "link": "https://cellphones.com.vn/bo-loc/laptop-tu-25-30-trieu",
+    "snippet": "Laptop dưới 30 triệu thiết kế sang trọng, tinh tế, được ứng dụng nhiều công nghệ hiện đại, vượt trội. Mua ngay laptop 30 triệu uy tín tại đây.",
+    "position": 2
+   },
+   {
+    "title": "Laptop đồ hoạ giá rẻ | Cấu hình mạnh, màu sắc chân thật",
+    "link": "https://cellphones.com.vn/laptop/do-hoa.html",
+    "snippet": "- Laptop Gaming Acer Nitro 5 Tiger AN515 58 52SP - Giá từ 24.990.000 đồng. - Laptop ASUS TUF Dash F15 FX517ZC-HN077W - Giá từ 23.990.000 đồng. - Laptop Asus Rog ...",
+    "position": 3
+   },
+   {
+    "title": "Laptop dưới 25 triệu | Hiệu năng mạnh mẽ, cấu hình ấn ...",
+    "link": "https://cellphones.com.vn/bo-loc/laptop-tu-20-25-trieu",
+    "snippet": "Laptop dưới 25 triệu của Dell sở hữu một thiết kế tối giản, với phần vỏ ngoài được làm từ nhựa cứng hoặc nhôm trang nhã. Hiệu năng mạnh mẽ của các sản phẩm này ...",
+    "position": 4
+   },
+   {
+    "title": "Top laptop dưới 20 triệu, chơi game đỉnh, đồ họa ngon ...",
+    "link": "https://cellphones.com.vn/sforum/top-laptop-gaming-hieu-nang-cao-duoi-20-trieu",
+    "snippet": "Tổng hợp laptop gaming dưới 20 triệu đáng lựa chọn nhất đến từ ASUS, Lenovo, Acer và Gigabyte để phục vụ toàn diện mọi nhu cầu từ chơi game ...",
+    "date": "26 thg 3, 2025",
+    "position": 5
+   },
+   {
+    "title": "Laptop dưới 15 triệu | Hiệu năng mạnh mẽ, cấu hình nổi bật",
+    "link": "https://cellphones.com.vn/bo-loc/laptop-tu-10-15-trieu",
+    "snippet": "Laptop dưới 15 triệu thiết kế sang trọng, tinh tế, cấu hình mạnh mẽ, hiệu năng ổn định, bảo hành chính hãng. Mua ngay laptop 15 triệu tại đây.",
+    "position": 6
+   },
+   {
+    "title": "Laptop văn phòng giá rẻ | Mỏng nhẹ, sang trọng, bền bỉ",
+    "link": "https://cellphones.com.vn/laptop/van-phong.html",
+    "snippet": "Laptop Acer Aspire Go 15 AI AG15-52P-52WT · Laptop Lenovo IdeaPad Slim 3 14IPH11 83UQ003NVN · Laptop ASUS Vivobook 15 X1504MA-BQ632W · Laptop ASUS VivoBook 16 ...",
+    "position": 7
+   },
+   {
+    "title": "Top 4 laptop văn phòng 20 triệu đáng mua nhất đầu 2026",
+    "link": "https://cellphones.com.vn/sforum/laptop-van-phong-20-trieu-dang-mua-2026",
+    "snippet": "1. Apple MacBook Air M2 (8CPU - 8GPU - 16GB - 256GB) · 2. Dell 14 DC14250 DC4C5386W - Lựa chọn “an toàn” cho dân văn phòng thích Windows · 3. HP ...",
+    "date": "26 thg 1, 2026",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

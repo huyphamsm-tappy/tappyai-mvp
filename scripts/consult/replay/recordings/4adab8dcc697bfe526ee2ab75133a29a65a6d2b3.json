@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Quán Ăn Hùng Xíu\" OR \"A Xỉu - Quán Ăn Ngon\" OR \"Cơm Tấm Đêm\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:39:59.637Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Quán Ăn Hùng Xíu\" OR \"A Xỉu - Quán Ăn Ngon\" OR \"Cơm Tấm Đêm\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Ăn cơm tấm đêm cùng Thảo nhé #mukbang #cơmtấm",
+    "link": "https://www.tiktok.com/@thao.thuthi/video/7590418685769075989",
+    "snippet": "150K Lượt thích,2845 Bình luận.Video TikTok từ Thảo Thủ Thỉ (@thao.thuthi): \"Ăn cơm tấm đêm cùng Thảo nhé #mukbang #cơmtấm\".nhạc nền - Thảo ...",
+    "position": 1
+   },
+   {
+    "title": "Cơm Tấm Đêm Thảo Nguyên 80: Địa Điểm Ngon Không ...",
+    "link": "https://www.tiktok.com/@thodiaphumy/video/7546808946204380437",
+    "snippet": "Khám phá Cơm Tấm Đêm Thảo Nguyên 80 trên đường Hùng Vương. Địa điểm ăn uống lý tưởng với món ngon đặc trưng. #xuhuong #thodiaphumy #reviewphumy.",
+    "position": 2
+   },
+   {
+    "title": "Cơm Tấm Đêm: Món Ngon Để Đi Chơi",
+    "link": "https://www.tiktok.com/@thanhxuan0140/video/7527650054023302408",
+    "snippet": "Cơm Tấm Đêm: Món Ngon Để Đi Chơi. Khám phá món cơm tấm ngon miệng cho buổi tối, hoàn hảo cho những cuộc đi chơi đêm. Đừng bỏ lỡ ...",
+    "position": 3
+   },
+   {
+    "title": "Cơm Tấm Đêm Chị Thảo – Sườn Nướng, Bì Chả Thơm Lừng",
+    "link": "https://www.tiktok.com/@hungtanofficial/video/7674021352235404562",
+    "snippet": "Cơm Tấm Đêm Chị Thảo – Sườn Nướng, Bì Chả Thơm Lừng. Tối rồi — nếu đang tìm bữa tối đơn giản mà no bụng, Cơm Tấm Đêm Chị Thảo là gợi ý hợp lý.",
+    "position": 4
+   },
+   {
+    "title": "Ghé quán Cơm Tấm Đêm 739 này ăn đi mọi người, 35K ...",
+    "link": "https://www.tiktok.com/@tranliendoanh_99/video/7538763619127856392",
+    "snippet": "Ghé quán Cơm Tấm Đêm 739 này ăn đi mọi người, 35K một phần mà ngon lắm #comtam #comtamsaigon #contamdem739 #comtamsuonbicha #comtamngon. Ghé ...",
+    "position": 5
+   },
+   {
+    "title": "Đi ăn cơm tấm đêm ở Mỹ Tho với mình nha!!! #comtamdem ...",
+    "link": "https://www.tiktok.com/@luck.chau04/video/7681300278603287816",
+    "snippet": "88 Lượt thích,Video TikTok từ MẹChou review (@luck.chau04): \"Đi ăn cơm tấm đêm ở Mỹ Tho với mình nha!",
+    "position": 6
+   },
+   {
+    "title": "Cơm Tấm Đêm Ngon Tại Ô MÔN - Khám Phá Ẩm Thực",
+    "link": "https://www.tiktok.com/@thuylinhshop06/video/7592218630163565832",
+    "snippet": "Cơm Tấm Đêm Ngon Tại Ô MÔN - Khám Phá Ẩm Thực. Trải nghiệm ngon miệng với cơm tấm đêm ở Ô MÔN, tìm hiểu các quán ngon cùng mình nhé! #xuhuong ...",
+    "position": 7
+   },
+   {
+    "title": "Cơm Tấm Đêm Cần Thơ: Hương Vị Đặc Trưng",
+    "link": "https://www.tiktok.com/@thanhmik123/video/7615547580910439688",
+    "snippet": "Khám phá hương vị Cơm Tấm Đêm Cần Thơ, không cần booking, cùng các món ăn ngon miệng. #comtamcantho #canthoangi #andemcantho. Keywords: Cơm Tấm ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}
