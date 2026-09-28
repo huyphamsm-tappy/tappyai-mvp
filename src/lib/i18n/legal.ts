@@ -118,40 +118,46 @@ export const en: Record<string, string> = {
   // route the Android app actually implements: a *request* sent by email to
   // support, not an automatic in-app erase. The app's own menu item reads
   // "Request account deletion" and its confirmation dialog states the account
-  // "is not deleted automatically" — this copy must keep matching that wording,
-  // because Play checks the published description against the shipped flow.
+  // 2026-09-28 release: the in-app button deletes at once (ACCOUNT_SELF_DELETE_ENABLED) — this copy
+  // must keep matching that flow, because Play checks the published description against the app.
   'legal.delete.title': 'Delete Your TappyAI Account',
-  'legal.delete.effective': 'Last updated: August 2026',
-
-  'legal.delete.s1.heading': '1. How to Request Account Deletion',
-  'legal.delete.s1.lead':
-    'You can request deletion of your TappyAI account from inside the app. The request is sent to our support team by email — your account is not deleted automatically when you tap the button.',
-  'legal.delete.s1.step1': 'Open TappyAI.',
-  'legal.delete.s1.step2': 'Go to Settings.',
-  'legal.delete.s1.step3': 'Choose Request account deletion.',
-  'legal.delete.s1.step4':
-    'Confirm. The app opens your email app with the request already prepared — send the email to submit it.',
-
+  'legal.delete.effective': 'Last updated: 28 September 2026',
+  'legal.delete.s1.heading': '1. How to Delete Your Account',
+  'legal.delete.s1.lead': 'You can delete your TappyAI account yourself, from inside the app (Android or web). Deletion happens immediately and cannot be undone.',
+  'legal.delete.s1.step1': 'Open TappyAI and sign in.',
+  'legal.delete.s1.step2': 'Go to Me → Settings.',
+  'legal.delete.s1.step3': 'Choose Delete account.',
+  'legal.delete.s1.step4': 'Type DELETE (XÓA in Vietnamese) to confirm. Your account is deleted at once and you are signed out.',
+  'legal.delete.s1.p2': 'If you can no longer sign in, email the support address at the bottom of this page from the email address of your account. We verify that the request comes from the owner of the account and delete it within 30 days.',
   'legal.delete.s2.heading': '2. What Happens Next',
-  'legal.delete.s2.p1':
-    'Our support team receives your request and verifies that it came from the owner of the account. Once verified, we permanently delete your account and its associated data.',
-  'legal.delete.s2.p2':
-    'If you do not have an email app set up on your device, you can send the request yourself to the support address at the bottom of this page.',
-
+  'legal.delete.s2.p1': 'Deleting the account removes your data from our database at once. The photos, videos and audio you uploaded are removed from our file storage within 48 hours after that.',
+  'legal.delete.s2.p2': 'If you sign in again later with the same Google account or email address, you start with a new, empty account.',
   'legal.delete.s3.heading': '3. What Deletion Removes',
-  'legal.delete.s3.lead': 'Once your request has been processed, deletion permanently removes:',
-  'legal.delete.s3.b1': 'Your profile.',
-  'legal.delete.s3.b2': 'Chat history.',
-  'legal.delete.s3.b3': 'AI memory.',
-  'legal.delete.s3.b4': 'Saved items.',
-  'legal.delete.s3.b5': 'Preferences.',
-  'legal.delete.s3.b6': 'Other user-generated content associated with your account.',
+  'legal.delete.s3.lead': 'Deletion permanently removes:',
+  'legal.delete.s3.b1': 'Your account and profile, including your name, profile photo, cover photo and bio.',
+  'legal.delete.s3.b2': 'Your chats with TappyAI and your AI memory.',
+  'legal.delete.s3.b3': 'Your saved places, favourites, preferences, price watches and plans.',
+  'legal.delete.s3.b4': 'The reviews, comments and likes you posted, including their photos and videos.',
+  'legal.delete.s3.b5': 'The result pages you shared publicly — their links stop working.',
+  'legal.delete.s3.b6': 'The photos, videos and audio you uploaded, removed from our file storage.',
+  'legal.delete.s3.b7': 'Groups you created, and your place in groups created by others.',
+  'legal.delete.s3.b8': 'Notifications you caused in other people\'s inboxes (for example "… commented on your review").',
+  'legal.delete.s3.b9': 'Your Google Calendar connection — we also revoke TappyAI\'s access at Google.',
+  'legal.delete.s3b.heading': '4. Kept, but No Longer Linked to You',
+  'legal.delete.s3b.lead': 'Some things you shared with other people belong to their record as well, so they stay without your name or account attached:',
+  'legal.delete.s3b.b1': 'Messages you sent to other people stay in their conversation and are shown as coming from a deleted account.',
+  'legal.delete.s3b.b2': 'Reports and moderation decisions about content or accounts are kept for safety and legal compliance, without a link to your account.',
+  'legal.delete.s4.heading': '5. Data We May Retain',
+  'legal.delete.s4.p1': 'We keep a limited amount of information after deletion, only where the law or a legitimate obligation requires it:',
+  'legal.delete.s4.b1': 'Payment records held by our payment provider, for as long as tax and accounting law requires.',
+  'legal.delete.s4.b2': 'Security logs of administrative actions, kept for up to 12 months. The IP address and browser information in them are deleted after 90 days, and these logs do not store email addresses.',
+  'legal.delete.s4.b3': 'Server logs used to keep the service running, kept for up to 30 days and then deleted.',
+  'legal.delete.s4.p2': 'Some copies are outside our control and may remain for a while:',
+  'legal.delete.s4.c1': 'A photo or video that someone already viewed can stay on their own device — in their browser or app — for up to one day after we remove it from our storage.',
+  'legal.delete.s4.c2': 'Videos uploaded before 28 September 2026 may remain reachable through their old link for up to one year, because copies of them were stored in Google\'s network before we changed how videos are stored, and we cannot recall those copies.',
+  'legal.delete.s4.c3': 'A link preview that a social network or messaging app saved when someone shared your page can remain until that service refreshes it.',
+  'legal.delete.s5.heading': '6. Need Help?',
 
-  'legal.delete.s4.heading': '4. Data We May Retain',
-  'legal.delete.s4.p1':
-    'Some information may be retained only where required by applicable laws or legitimate business obligations (for example payment or legal compliance records).',
-
-  'legal.delete.s5.heading': '5. Need Help?',
   'legal.delete.s5.p1':
     'If you need assistance, or want to check the status of a request you have already sent, contact us:',
 
@@ -294,37 +300,43 @@ export const vi: Record<string, string> = {
 
   // --------------------------------------------------------- delete account
   'legal.delete.title': 'Xóa tài khoản TappyAI',
-  'legal.delete.effective': 'Cập nhật lần cuối: Tháng 8 năm 2026',
-
-  'legal.delete.s1.heading': '1. Cách gửi yêu cầu xóa tài khoản',
-  'legal.delete.s1.lead':
-    'Bạn có thể gửi yêu cầu xóa tài khoản TappyAI ngay trong ứng dụng. Yêu cầu sẽ được gửi tới bộ phận hỗ trợ của chúng tôi qua email — tài khoản không bị xóa tự động ngay khi bạn nhấn nút.',
-  'legal.delete.s1.step1': 'Mở TappyAI.',
-  'legal.delete.s1.step2': 'Vào Cài đặt.',
-  'legal.delete.s1.step3': 'Chọn Yêu cầu xóa tài khoản.',
-  'legal.delete.s1.step4':
-    'Xác nhận. Ứng dụng sẽ mở ứng dụng email với nội dung yêu cầu đã soạn sẵn — hãy gửi email đó để hoàn tất.',
-
+  'legal.delete.effective': 'Cập nhật lần cuối: 28 tháng 9 năm 2026',
+  'legal.delete.s1.heading': '1. Cách xóa tài khoản',
+  'legal.delete.s1.lead': 'Bạn có thể tự xóa tài khoản TappyAI ngay trong ứng dụng (Android hoặc web). Tài khoản bị xóa ngay lập tức và không thể khôi phục.',
+  'legal.delete.s1.step1': 'Mở TappyAI và đăng nhập.',
+  'legal.delete.s1.step2': 'Vào Tôi → Cài đặt.',
+  'legal.delete.s1.step3': 'Chọn Xóa tài khoản.',
+  'legal.delete.s1.step4': 'Gõ XÓA (hoặc DELETE nếu dùng tiếng Anh) để xác nhận. Tài khoản bị xóa ngay và bạn được đăng xuất.',
+  'legal.delete.s1.p2': 'Nếu bạn không còn đăng nhập được, hãy gửi email tới địa chỉ hỗ trợ ở cuối trang này từ địa chỉ email của tài khoản. Chúng tôi xác minh yêu cầu đến từ chủ tài khoản và xóa tài khoản trong vòng 30 ngày.',
   'legal.delete.s2.heading': '2. Điều gì diễn ra sau đó',
-  'legal.delete.s2.p1':
-    'Bộ phận hỗ trợ tiếp nhận yêu cầu và xác minh rằng yêu cầu đến từ chủ tài khoản. Sau khi xác minh, chúng tôi sẽ xóa vĩnh viễn tài khoản của bạn cùng các dữ liệu liên quan.',
-  'legal.delete.s2.p2':
-    'Nếu thiết bị của bạn chưa cài ứng dụng email, bạn có thể tự gửi yêu cầu tới địa chỉ hỗ trợ ở cuối trang này.',
-
+  'legal.delete.s2.p1': 'Khi tài khoản bị xóa, dữ liệu của bạn được xóa khỏi cơ sở dữ liệu ngay; ảnh, video và âm thanh bạn đã tải lên được xóa khỏi kho lưu trữ tệp trong vòng 48 giờ sau đó.',
+  'legal.delete.s2.p2': 'Nếu sau này bạn đăng nhập lại bằng cùng tài khoản Google hoặc địa chỉ email, bạn sẽ bắt đầu với một tài khoản mới, trống.',
   'legal.delete.s3.heading': '3. Những dữ liệu sẽ bị xóa',
-  'legal.delete.s3.lead': 'Sau khi yêu cầu được xử lý, việc xóa sẽ loại bỏ vĩnh viễn:',
-  'legal.delete.s3.b1': 'Hồ sơ.',
-  'legal.delete.s3.b2': 'Lịch sử trò chuyện.',
-  'legal.delete.s3.b3': 'Bộ nhớ AI.',
-  'legal.delete.s3.b4': 'Nội dung đã lưu.',
-  'legal.delete.s3.b5': 'Tùy chọn cá nhân.',
-  'legal.delete.s3.b6': 'Các dữ liệu khác do bạn tạo và gắn với tài khoản.',
+  'legal.delete.s3.lead': 'Việc xóa sẽ loại bỏ vĩnh viễn:',
+  'legal.delete.s3.b1': 'Tài khoản và hồ sơ của bạn, gồm tên, ảnh đại diện, ảnh bìa và phần giới thiệu.',
+  'legal.delete.s3.b2': 'Các cuộc trò chuyện với TappyAI và bộ nhớ AI.',
+  'legal.delete.s3.b3': 'Địa điểm đã lưu, mục yêu thích, tùy chọn cá nhân, theo dõi giá và kế hoạch.',
+  'legal.delete.s3.b4': 'Các đánh giá, bình luận và lượt thích bạn đã đăng, kèm ảnh và video.',
+  'legal.delete.s3.b5': 'Các trang kết quả bạn đã chia sẻ công khai — đường link sẽ không còn mở được.',
+  'legal.delete.s3.b6': 'Ảnh, video và âm thanh bạn đã tải lên, được xóa khỏi kho lưu trữ tệp của chúng tôi.',
+  'legal.delete.s3.b7': 'Các nhóm bạn đã tạo, và tư cách thành viên của bạn trong nhóm do người khác tạo.',
+  'legal.delete.s3.b8': 'Các thông báo bạn tạo ra trong hộp thư của người khác (ví dụ "… đã bình luận đánh giá của bạn").',
+  'legal.delete.s3.b9': 'Kết nối Google Lịch — chúng tôi đồng thời thu hồi quyền truy cập của TappyAI tại Google.',
+  'legal.delete.s3b.heading': '4. Được giữ lại nhưng không còn gắn với bạn',
+  'legal.delete.s3b.lead': 'Một số nội dung bạn đã gửi cho người khác cũng thuộc về lịch sử của họ, nên được giữ lại nhưng không còn tên hay tài khoản của bạn:',
+  'legal.delete.s3b.b1': 'Tin nhắn bạn đã gửi cho người khác vẫn nằm trong cuộc trò chuyện của họ và hiển thị là từ một tài khoản đã xóa.',
+  'legal.delete.s3b.b2': 'Báo cáo vi phạm và quyết định kiểm duyệt liên quan đến nội dung hoặc tài khoản được giữ để bảo đảm an toàn và tuân thủ pháp luật, không còn liên kết với tài khoản của bạn.',
+  'legal.delete.s4.heading': '5. Dữ liệu có thể được lưu lại',
+  'legal.delete.s4.p1': 'Chúng tôi chỉ giữ lại một lượng thông tin hạn chế sau khi xóa, khi pháp luật hoặc nghĩa vụ hợp pháp yêu cầu:',
+  'legal.delete.s4.b1': 'Hồ sơ thanh toán do đơn vị xử lý thanh toán lưu giữ, trong thời hạn luật thuế và kế toán yêu cầu.',
+  'legal.delete.s4.b2': 'Nhật ký bảo mật về các thao tác quản trị, lưu tối đa 12 tháng. Địa chỉ IP và thông tin trình duyệt trong nhật ký được xóa sau 90 ngày, và nhật ký không lưu địa chỉ email.',
+  'legal.delete.s4.b3': 'Nhật ký máy chủ dùng để vận hành dịch vụ, lưu tối đa 30 ngày rồi xóa.',
+  'legal.delete.s4.p2': 'Một số bản sao nằm ngoài tầm kiểm soát của chúng tôi và có thể còn trong một thời gian:',
+  'legal.delete.s4.c1': 'Ảnh hoặc video mà người khác đã xem có thể còn trên chính thiết bị của họ — trong trình duyệt hoặc ứng dụng — tối đa một ngày sau khi chúng tôi xóa tệp khỏi kho lưu trữ.',
+  'legal.delete.s4.c2': 'Video tải lên trước ngày 28/09/2026 có thể vẫn mở được qua đường link cũ tối đa một năm, vì bản sao của chúng đã được lưu trong mạng của Google trước khi chúng tôi thay đổi cách lưu video, và chúng tôi không thể thu hồi các bản sao đó.',
+  'legal.delete.s4.c3': 'Bản xem trước đường link mà mạng xã hội hoặc ứng dụng nhắn tin đã lưu khi ai đó chia sẻ trang của bạn có thể còn cho tới khi dịch vụ đó làm mới.',
+  'legal.delete.s5.heading': '6. Cần hỗ trợ?',
 
-  'legal.delete.s4.heading': '4. Dữ liệu có thể được lưu lại',
-  'legal.delete.s4.p1':
-    'Một số dữ liệu có thể được lưu lại nếu pháp luật yêu cầu hoặc để thực hiện các nghĩa vụ hợp pháp (ví dụ thông tin thanh toán hoặc lưu trữ theo quy định).',
-
-  'legal.delete.s5.heading': '5. Cần hỗ trợ?',
   'legal.delete.s5.p1':
     'Nếu cần hỗ trợ, hoặc muốn kiểm tra tình trạng yêu cầu đã gửi, vui lòng liên hệ:',
 

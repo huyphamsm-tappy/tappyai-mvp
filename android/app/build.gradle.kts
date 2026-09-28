@@ -219,8 +219,9 @@ android {
         // `versionCode=7 versionName=0.1.2` were compared during that UAT: `aapt2 dump strings`
         // found Scam Shield in one and not the other. Nothing on a device, in a bug report or in
         // Play could have told them apart, and Play rejects a reused versionCode outright.
-        versionCode = 8
-        versionName = "0.1.3"
+        // 2026-09-28 public launch: 10 (skips 9 so no earlier upload can collide), 1.0.0.
+        versionCode = 10
+        versionName = "1.0.0"
 
         vectorDrawables {
             useSupportLibrary = true

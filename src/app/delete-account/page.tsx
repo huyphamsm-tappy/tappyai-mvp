@@ -60,6 +60,7 @@ const DELETE_ACCOUNT: LegalDoc = {
       blocks: [
         { kind: 'lead', key: 'legal.delete.s1.lead' },
         { kind: 'steps', keys: bullets('legal.delete.s1.step', 4) },
+        { kind: 'p', key: 'legal.delete.s1.p2' },
       ],
     },
     {
@@ -75,13 +76,26 @@ const DELETE_ACCOUNT: LegalDoc = {
       headingKey: 'legal.delete.s3.heading',
       blocks: [
         { kind: 'lead', key: 'legal.delete.s3.lead' },
-        { kind: 'bullets', keys: bullets('legal.delete.s3.b', 6) },
+        { kind: 'bullets', keys: bullets('legal.delete.s3.b', 9) },
+      ],
+    },
+    {
+      id: 'kept-but-unlinked',
+      headingKey: 'legal.delete.s3b.heading',
+      blocks: [
+        { kind: 'lead', key: 'legal.delete.s3b.lead' },
+        { kind: 'bullets', keys: bullets('legal.delete.s3b.b', 2) },
       ],
     },
     {
       id: 'data-we-may-retain',
       headingKey: 'legal.delete.s4.heading',
-      blocks: [{ kind: 'p', key: 'legal.delete.s4.p1' }],
+      blocks: [
+        { kind: 'p', key: 'legal.delete.s4.p1' },
+        { kind: 'bullets', keys: bullets('legal.delete.s4.b', 3) },
+        { kind: 'p', key: 'legal.delete.s4.p2' },
+        { kind: 'bullets', keys: bullets('legal.delete.s4.c', 3) },
+      ],
     },
     {
       id: 'contact',
