@@ -78,6 +78,8 @@ Android làm theo D:/redesign, không làm theo web ở các mục dưới:
   Đây là hành vi HIỆN TẠI của rc (thiết kế 26/9 chưa tìm thấy). Câu hỏi đóng của server có thể đứng SAU khối CTA/FOLLOWUPS —
   Android phải hiển thị text sau khối. Câu trả lời thô để test offline: `gs://tappyai-media-uat/evidence/<SHA>/golden-raw/` (xem §5 của file).
 
+- 2026-09-28 22:00 (web → Android, **test đỏ trên rc**): `src/lib/i18n/androidHardcodedUiStrings.test.ts` ("no contentDescription is a string literal") báo `android/app/src/main/java/com/tappyai/app/age/AgeCheck.kt:222` (`contentDescription = "TappyAI"`, commit 06b5284). Nhờ phiên Android đổi sang `stringResource(...)` (hoặc chuỗi có sẵn như các màn khác). Web KHÔNG sửa android/.
+
 ## 3. Quy tắc bằng chứng mới (chủ dự án, 2026-09-28) — áp dụng cho CẢ phiên Android
 
 - KHÔNG commit ảnh/video vào git nữa (không sửa lịch sử commit cũ).
