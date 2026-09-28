@@ -31,24 +31,28 @@ Design images (D:\redesign, 6 files): age gate · onboarding interests · "Gợi
 Tài khoản & Cài đặt · Đã lưu (with sidebar) · Viết content (AI caption). No design exists for: profile
 content tabs, share-card layouts, Explore upload, chat answers.
 
-### Work list (status: TODO / DOING / CODE-DONE (needs screenshot) / PASS+evidence)
-- P1a "tối nay … sài gòn" — CODE-DONE 668ffd1. Root cause: detectPlanningIntent read "đi chơi"+city as TRIP.
-- P1b context sticks after "mua đồ ăn vặt" — CODE-DONE 668ffd1 (turnDomain: evening plan names a domain).
-- P1c raw URLs / glued links / broken photo link — web CODE-DONE 1b79b97; Android edits uncommitted
-  (ChatResponse.normalizeImageLinks, TappyMarkdown linkLabelFor + " · " separator) — compile blocked by
-  concurrent gradle, retry.
-- P1d big blank gaps — web CODE-DONE 1b79b97 (confirmed on screenshot p1c-hotel-before-t1.png).
-- ROOT CAUSE uploads on UAT (P2a/P3a): GCP WIF provider condition allows only environment:production
-  (`gcloud iam workload-identity-pools providers describe vercel …` 2026-09-28). Owner decides (asked).
-- Harness: scratchpad pw/chatShot.mjs (headless shell, bypass header only for uat host, guest age via /age-check).
-- P1e A1 "quán phở ngon quận 3" only Maps — TODO (screenshot every vertical)
-- P2a avatar/cover upload — TODO
-- P2b own profile tabs by state (posted/shared/saved/restricted/hidden) — TODO
-- P2c sidebar: remove Settings/Language/Help/Saved/History — TODO (⚠ the "Đã lưu" design shows Saved +
-  Settings in the sidebar — owner instruction wins, noted)
-- P3a Explore clip + photo upload — TODO
-- P3b share layout / downloaded file matches chosen layout — TODO (no design in D:\redesign → report)
-- P4 share Zalo/Facebook/TikTok, OG cards, TikTok via files — TODO
+### Work list — status with evidence (screenshots under docs/uat/evidence/release-2026-09-28/shots/<uat-sha>/)
+| Item | Commit(s) | Evidence (UAT SHA) | Status |
+|---|---|---|---|
+| P1a "tối nay có chỗ nào đi chơi ở sài gòn ko" | 668ffd1 intent; f6c7faf fixed evening FRAME (eveningPlan.ts, code-written searches); a5c19a8 code-written intro | shots/a5c19a8/p1a-run1..5-t1.png — 5/5: 18:30 Quán ăn ngon Sài Gòn → 20:00 Chợ đêm Hồ Thị Kỷ → 21:30 The View Rooftop Bar, maps on every stop, no origin/transport question | PASS |
+| P1b "mua đồ ăn vặt" → "tối nay đi đâu chơi quận 1" | 668ffd1, e05de06 (new subject = only the new turn reaches the model) | shots/e05de06/p1b-snack-then-q1-t2.png — dinner → Bùi Viện → … no snack | PASS (re-shoot on final SHA) |
+| P1c raw URL / glued links / photo link | 1b79b97 (web), 4515b0f (Android) | unit tests only; needs an answer that contains links | CODE-DONE, screenshot TODO |
+| P1d blank gaps | 1b79b97 | shots/p1cd-hotel-t1.png (1b79b97) no gap | PASS |
+| P1e "quán phở ngon quận 3" order buttons | e823425, 062c7ec, c7f78d3 | shots/e05de06/p1e-pho-q3-t1.png (Đặt chỗ / Tìm trên GrabFood) | PASS |
+| A1 shopping buttons | e823425 | shots/e05de06/a1-shop-t1.png (every product Mua trên…/Tìm trên Lazada) | PASS |
+| Cut sentence "…cao hơn Nếu cần…" | a5c19a8 (moneyGuard clause cut + 'không dây' + budget words) | fixture red→green; UAT re-shoot TODO | CODE-DONE |
+| P2a avatar/cover | 5e305f4 (explicit errors) | ROOT CAUSE: GCP WIF condition = production only → owner decision | BLOCKED (owner) |
+| P2b own profile tabs | 5e305f4 | needs login in Browser pane | CODE-DONE, screenshot TODO |
+| P2c sidebar | 5e305f4 | needs a screenshot (guest shell shows sidebar) | CODE-DONE |
+| P3a Explore upload | — | same WIF root cause as P2a | BLOCKED (owner) |
+| P3b/P4 share | 7e78e58, c835b3e, 91461bd | shots/p4-review-share-sheet-mobile.png; Facebook popup sharer.php?u=uat…/reviews/… + "Đã mở Facebook" (f6c7faf); TikTok desktop download tappyai-post-*.png + tiktok.com/upload + hint; OG tags p4-og-review-*.txt | PASS web (FB/Zalo previews: UAT behind SSO → re-check on prod) |
+| Zalo "crash" | 91461bd | it was MY SCRIPT: desktop tile had no "Zalo" text (label "Sao chép liên kết"); label now "Zalo (sao chép link)" | FIXED, re-shoot TODO |
+| Design conformance R1 Saved, Account&Settings, R2 Viết content, R3 Gợi ý, age gate, onboarding | agents running | — | DOING |
+
+## Coordination
+- Android session (C:\wtandroid) owns android/. Web wrote STOPPED @ 6e392d2. Requests: docs/uat/ANDROID-REQUESTS.md.
+- vercel.json ignoreCommand: android-only commits do not build the web.
+- Push rule: fetch + rebase, never force.
 
 ## Current step
-Setting up headless screenshot harness (Playwright) + diagnosing P1.
+Design-conformance agents running; then re-shoot all on the final SHA; owner login needed for P2 screenshots.
