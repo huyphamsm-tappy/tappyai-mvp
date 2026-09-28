@@ -120,6 +120,44 @@ export const en: Record<string, string> = {
   // "Request account deletion" and its confirmation dialog states the account
   // 2026-09-28 release: the in-app button deletes at once (ACCOUNT_SELF_DELETE_ENABLED) — this copy
   // must keep matching that flow, because Play checks the published description against the app.
+  // Request-by-email flow (0af672c), shown while ACCOUNT_SELF_DELETE_ENABLED is off - the app then offers
+  // 'Request account deletion', and Play compares this page with the app (owner decision pending, 2026-09-29).
+  'legal.deleteReq.title': 'Delete Your TappyAI Account',
+  'legal.deleteReq.effective': 'Last updated: August 2026',
+
+  'legal.deleteReq.s1.heading': '1. How to Request Account Deletion',
+  'legal.deleteReq.s1.lead':
+    'You can request deletion of your TappyAI account from inside the app. The request is sent to our support team by email — your account is not deleted automatically when you tap the button.',
+  'legal.deleteReq.s1.step1': 'Open TappyAI.',
+  'legal.deleteReq.s1.step2': 'Go to Settings.',
+  'legal.deleteReq.s1.step3': 'Choose Request account deletion.',
+  'legal.deleteReq.s1.step4':
+    'Confirm. The app opens your email app with the request already prepared — send the email to submit it.',
+
+  'legal.deleteReq.s2.heading': '2. What Happens Next',
+  'legal.deleteReq.s2.p1':
+    'Our support team receives your request and verifies that it came from the owner of the account. Once verified, we permanently delete your account and its associated data.',
+  'legal.deleteReq.s2.p2':
+    'If you do not have an email app set up on your device, you can send the request yourself to the support address at the bottom of this page.',
+
+  'legal.deleteReq.s3.heading': '3. What Deletion Removes',
+  'legal.deleteReq.s3.lead': 'Once your request has been processed, deletion permanently removes:',
+  'legal.deleteReq.s3.b1': 'Your profile.',
+  'legal.deleteReq.s3.b2': 'Chat history.',
+  'legal.deleteReq.s3.b3': 'AI memory.',
+  'legal.deleteReq.s3.b4': 'Saved items.',
+  'legal.deleteReq.s3.b5': 'Preferences.',
+  'legal.deleteReq.s3.b6': 'Other user-generated content associated with your account.',
+
+  'legal.deleteReq.s4.heading': '4. Data We May Retain',
+  'legal.deleteReq.s4.p1':
+    'Some information may be retained only where required by applicable laws or legitimate business obligations (for example payment or legal compliance records).',
+
+  'legal.deleteReq.s5.heading': '5. Need Help?',
+  'legal.deleteReq.s5.p1':
+    'If you need assistance, or want to check the status of a request you have already sent, contact us:',
+
+
   'legal.delete.title': 'Delete Your TappyAI Account',
   'legal.delete.effective': 'Last updated: 28 September 2026',
   'legal.delete.s1.heading': '1. How to Delete Your Account',
@@ -299,6 +337,44 @@ export const vi: Record<string, string> = {
   'legal.terms.s6.heading': '6. Liên hệ',
 
   // --------------------------------------------------------- delete account
+  // Request-by-email flow (0af672c), shown while ACCOUNT_SELF_DELETE_ENABLED is off - the app then offers
+  // 'Request account deletion', and Play compares this page with the app (owner decision pending, 2026-09-29).
+  'legal.deleteReq.title': 'Xóa tài khoản TappyAI',
+  'legal.deleteReq.effective': 'Cập nhật lần cuối: Tháng 8 năm 2026',
+
+  'legal.deleteReq.s1.heading': '1. Cách gửi yêu cầu xóa tài khoản',
+  'legal.deleteReq.s1.lead':
+    'Bạn có thể gửi yêu cầu xóa tài khoản TappyAI ngay trong ứng dụng. Yêu cầu sẽ được gửi tới bộ phận hỗ trợ của chúng tôi qua email — tài khoản không bị xóa tự động ngay khi bạn nhấn nút.',
+  'legal.deleteReq.s1.step1': 'Mở TappyAI.',
+  'legal.deleteReq.s1.step2': 'Vào Cài đặt.',
+  'legal.deleteReq.s1.step3': 'Chọn Yêu cầu xóa tài khoản.',
+  'legal.deleteReq.s1.step4':
+    'Xác nhận. Ứng dụng sẽ mở ứng dụng email với nội dung yêu cầu đã soạn sẵn — hãy gửi email đó để hoàn tất.',
+
+  'legal.deleteReq.s2.heading': '2. Điều gì diễn ra sau đó',
+  'legal.deleteReq.s2.p1':
+    'Bộ phận hỗ trợ tiếp nhận yêu cầu và xác minh rằng yêu cầu đến từ chủ tài khoản. Sau khi xác minh, chúng tôi sẽ xóa vĩnh viễn tài khoản của bạn cùng các dữ liệu liên quan.',
+  'legal.deleteReq.s2.p2':
+    'Nếu thiết bị của bạn chưa cài ứng dụng email, bạn có thể tự gửi yêu cầu tới địa chỉ hỗ trợ ở cuối trang này.',
+
+  'legal.deleteReq.s3.heading': '3. Những dữ liệu sẽ bị xóa',
+  'legal.deleteReq.s3.lead': 'Sau khi yêu cầu được xử lý, việc xóa sẽ loại bỏ vĩnh viễn:',
+  'legal.deleteReq.s3.b1': 'Hồ sơ.',
+  'legal.deleteReq.s3.b2': 'Lịch sử trò chuyện.',
+  'legal.deleteReq.s3.b3': 'Bộ nhớ AI.',
+  'legal.deleteReq.s3.b4': 'Nội dung đã lưu.',
+  'legal.deleteReq.s3.b5': 'Tùy chọn cá nhân.',
+  'legal.deleteReq.s3.b6': 'Các dữ liệu khác do bạn tạo và gắn với tài khoản.',
+
+  'legal.deleteReq.s4.heading': '4. Dữ liệu có thể được lưu lại',
+  'legal.deleteReq.s4.p1':
+    'Một số dữ liệu có thể được lưu lại nếu pháp luật yêu cầu hoặc để thực hiện các nghĩa vụ hợp pháp (ví dụ thông tin thanh toán hoặc lưu trữ theo quy định).',
+
+  'legal.deleteReq.s5.heading': '5. Cần hỗ trợ?',
+  'legal.deleteReq.s5.p1':
+    'Nếu cần hỗ trợ, hoặc muốn kiểm tra tình trạng yêu cầu đã gửi, vui lòng liên hệ:',
+
+
   'legal.delete.title': 'Xóa tài khoản TappyAI',
   'legal.delete.effective': 'Cập nhật lần cuối: 28 tháng 9 năm 2026',
   'legal.delete.s1.heading': '1. Cách xóa tài khoản',

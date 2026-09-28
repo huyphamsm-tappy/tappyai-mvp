@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import LegalDocument from '@/components/legal/LegalDocument'
 import { bullets, type LegalDoc } from '@/components/legal/legalDoc'
 import { OG_IMAGE, SITE_URL } from '@/components/landing/config'
+import { selfDeleteEnabled } from '@/lib/account/selfDelete'
 
 // Public account-deletion page, required by Google Play: an app that offers
 // in-app account deletion must also document the route on the open web, at a
@@ -108,6 +109,53 @@ const DELETE_ACCOUNT: LegalDoc = {
   ],
 }
 
+// The request-by-email flow (0af672c) — what the app offers while ACCOUNT_SELF_DELETE_ENABLED is off.
+// The page must describe the flow the app ships in THIS environment: Play compares the two. Owner
+// 2026-09-29: self-delete stays off on production until D1/D2/D4 are applied (decision pending).
+const REQUEST_DELETION: LegalDoc = {
+  titleKey: 'legal.deleteReq.title',
+  effectiveKey: 'legal.deleteReq.effective',
+  sections: [
+    {
+      id: 'how-to-request-account-deletion',
+      headingKey: 'legal.deleteReq.s1.heading',
+      blocks: [
+        { kind: 'lead', key: 'legal.deleteReq.s1.lead' },
+        { kind: 'steps', keys: bullets('legal.deleteReq.s1.step', 4) },
+      ],
+    },
+    {
+      id: 'what-happens-next',
+      headingKey: 'legal.deleteReq.s2.heading',
+      blocks: [
+        { kind: 'p', key: 'legal.deleteReq.s2.p1' },
+        { kind: 'p', key: 'legal.deleteReq.s2.p2' },
+      ],
+    },
+    {
+      id: 'what-deletion-removes',
+      headingKey: 'legal.deleteReq.s3.heading',
+      blocks: [
+        { kind: 'lead', key: 'legal.deleteReq.s3.lead' },
+        { kind: 'bullets', keys: bullets('legal.deleteReq.s3.b', 6) },
+      ],
+    },
+    {
+      id: 'data-we-may-retain',
+      headingKey: 'legal.deleteReq.s4.heading',
+      blocks: [{ kind: 'p', key: 'legal.deleteReq.s4.p1' }],
+    },
+    {
+      id: 'contact',
+      headingKey: 'legal.deleteReq.s5.heading',
+      blocks: [
+        { kind: 'p', key: 'legal.deleteReq.s5.p1' },
+        { kind: 'contact' },
+      ],
+    },
+  ],
+}
+
 export default function DeleteAccountPage() {
-  return <LegalDocument doc={DELETE_ACCOUNT} />
+  return <LegalDocument doc={selfDeleteEnabled() ? DELETE_ACCOUNT : REQUEST_DELETION} />
 }

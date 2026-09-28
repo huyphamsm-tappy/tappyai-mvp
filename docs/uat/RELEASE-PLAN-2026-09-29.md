@@ -136,7 +136,10 @@ absent) · `NEXT_PUBLIC_TIKTOK_CONTENT_POSTING_ENABLED` (off) · `ORGANIZATION_S
 `BLOB_READ_WRITE_TOKEN` (uploads are GCS via Workload Identity, not Vercel Blob) · `RESEND_API_KEY` ·
 `NEXT_PUBLIC_GOOGLE_WEB_CLIENT_ID` (Android gets it from Gradle) · `CJ_API_KEY`. Also on prod but unread by this
 branch: `GOOGLE_PLACES_API_KEY` (Google Places removed), all `P8_*` (Phase 8 parked), `SMTP_*`/`EMAIL_FROM*`/`TEAM_EMAIL`,
-`ADMIN_IDS`, `NEWSAPI_KEY`, `GOOGLE_SEARCH_*`, `AUTH_GOOGLE_ENABLED` — leave them; removing is not part of this release.
+`ADMIN_IDS`, `NEWSAPI_KEY`, `GOOGLE_SEARCH_*` — leave them; removing is not part of this release.
+**`AUTH_GOOGLE_ENABLED` is NOT a leftover — KEEP it on Production (owner 2026-09-29).** rc does not read it yet, but
+Phase 8 (`/auth/callback`) refuses Google sign-in unless it is `1`; removing it makes the Google button disappear
+when Phase 8 merges. See `D:/Claude/Projects/TappyAI/tappyai-phase8/docs/uat/PHASE8-OVERLAP-2026-09-29.md` §4.
 
 ### 2f. Not an env var, but a dashboard switch the release depends on
 Supabase **production** → Authentication → Sign In / Providers → **Allow anonymous sign-ins = ON** (guest chat). The

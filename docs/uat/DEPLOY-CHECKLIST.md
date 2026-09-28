@@ -592,6 +592,7 @@ Confirm these on the **production** project/host (they were unset in the audit e
 | `NEXT_PUBLIC_GA_MEASUREMENT_ID` (+ create a GA property) | analytics (F-001) | no GA |
 | `RESEND_API_KEY` | outbound email / OTP sign-in | email flows off (email+password still works) |
 | `GOOGLE_CLIENT_ID` / `NEXT_PUBLIC_GOOGLE_WEB_CLIENT_ID` | Google OAuth sign-in | OAuth off |
+| `AUTH_GOOGLE_ENABLED` = `1` (already on Prod + Preview) | **KEEP — not a leftover** (owner 2026-09-29). rc does not read it; Phase 8 `/auth/callback` refuses Google unless `1` | removing it hides the Google button once Phase 8 merges (tappyai-phase8 `docs/uat/PHASE8-OVERLAP-2026-09-29.md` §4) |
 | `STRIPE_SECRET_KEY` / `STRIPE_WEBHOOK_SECRET` | Pro purchase / upgrade | purchase flow off |
 | `ACCESSTRADE_PUBLISHER_ID` | affiliate deal-link wrapping (F-020) — **set in Vercel Prod+Preview 27 Sep 2026** (docs/commerce/AFFILIATE_STATUS.md) | every commerce link direct |
 | `CCP_ATTRIBUTION_SECRET` | pseudonymous affiliate `sub1` (≥32 random chars, per environment) | links tracked but not attributable |

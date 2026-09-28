@@ -105,6 +105,16 @@ bucket through its own identity and cannot reach production media:
 - Rollback commands (unbind, delete pool/SA, remove Preview env; bucket delete only when UAT is retired) are in the
   source doc. Evidence: `docs/uat/evidence/release-2026-09-28/shots/d97b261/`, `…/4e9f53d/`.
 
+### Ghi chú gộp Phase 8 (merge notes)
+- Source of truth: `D:/Claude/Projects/TappyAI/tappyai-phase8/docs/uat/PHASE8-OVERLAP-2026-09-29.md`
+  (files both sides touch §1, feature overlap §2, migration conflicts §3 — D5 ↔ `20260924_p8_reports_sanctions_audit` is a
+  HARD conflict, S1 ↔ R-5, D1/D2/D4 ↔ P8 account deletion, H1/M1 ↔ R-6/R-11 —, flag-less changes §4, work Phase 7 must not
+  do §5, owner-mandated merge fixes §6).
+- `AUTH_GOOGLE_ENABLED` stays on Production (P8 refuses Google without it). Profile tab "Đã chia sẻ" stays rc's share-link
+  history; P8's repost tab is renamed "Đăng lại" at merge (§6.2). iOS: when P8 lands, the same two labels apply.
+- Phase 7 did not start any of the 11 §5 items (login providers, image fallback, account sanctions, deletion extensions,
+  upload EXIF/transcode/CDN, Explore social, rich messages, quota/payments, feature router, consent pipeline, camera QR/voice).
+
 ---
 
 ## Handoff of 2026-09-28 (unchanged below)

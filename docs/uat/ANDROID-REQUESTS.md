@@ -62,6 +62,14 @@ Android làm theo D:/redesign, không làm theo web ở các mục dưới:
   hỏi đúng các ý còn thiếu. Định dạng `[TAPPY_PLAN]` KHÔNG đổi — Android không cần sửa. Server cũng sửa chữ "ngan sách"
   → "ngân sách" trong câu trả lời.
 
+- 2026-09-28 (web, owner decisions — Android should match): Đã lưu **ẩn chip Deals và Bộ sưu tập** (không hiện "Sắp có"),
+  dù mockup R1 có — chỉ còn Tất cả / Địa điểm / Bài viết / Video. Onboarding: bộ đếm theo số bước thật (web: "Bước 1/2", "Bước 2/2").
+  Tab hồ sơ giữ tên "Đã chia sẻ" (lịch sử link chia sẻ); tab repost của Phase 8 sẽ tên "Đăng lại" khi gộp.
+- 2026-09-28 (web): `/delete-account` hiện nội dung theo cờ ACCOUNT_SELF_DELETE_ENABLED (tắt → gửi yêu cầu qua email, như app
+  khi cờ tắt). Android không cần sửa.
+- 2026-09-28 (web): Phase 8 overlap §5 (tappyai-phase8 `docs/uat/PHASE8-OVERLAP-2026-09-29.md`): 11 mục KHÔNG làm trong Phase 7
+  (Android cũng vậy: không sửa 2 nút Google/Zalo ngoài màu, không tự viết image fallback, không thêm tile "gửi qua tin nhắn"…).
+
 ## 3. Quy tắc bằng chứng mới (chủ dự án, 2026-09-28) — áp dụng cho CẢ phiên Android
 
 - KHÔNG commit ảnh/video vào git nữa (không sửa lịch sử commit cũ).
