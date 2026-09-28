@@ -123,3 +123,4 @@ supabase/migrations/20260925b_decision_evidence_sweep.sql
 supabase/migrations/20260925c_account_deletion_f096.sql
 supabase/migrations/20260925d_audit_log_pii_retention.sql
 supabase/migrations/20260927100000_commerce_providers_portal_state.sql
+supabase/migrations/20260928b_revoke_increment_deal_click_public.sql
