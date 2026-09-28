@@ -83,3 +83,18 @@ describe('R4 — c40 P6: an asked-for service the venue data never mentions', ()
     expect(guardUnsupportedClaims('Bạn nên gọi hỏi xem có phòng riêng không.', { venues: [], sharedTexts: [], userTexts: ['phòng riêng'] }).rewritten).toEqual([])
   })
 })
+
+// Round 6 (d965363, c40 F8 rep A): a hedge about the PRICE let an unsupported private room through.
+describe('R4 — the hedge must govern the claim it sits next to', () => {
+  const f8 = JSON.parse(readFileSync(join(EV, 'c40-ab-2026-09-27/head-d965363-claims-A/F8.json'), 'utf8')) as { text: string; prose: string; rows: Array<{ name: string; price?: string }> }
+  it('"cũng có phòng riêng nhưng chưa xác nhận được giá cụ thể" → the room is unconfirmed too', () => {
+    const r = guardUnsupportedClaims(f8.prose, { venues: venuesOf(f8.rows), sharedTexts: [], userTexts: [f8.text] })
+    expect(r.text).not.toMatch(/cũng có phòng riêng/)
+    expect(r.text).toContain('mình chưa xác nhận được có phòng riêng nhưng chưa xác nhận được giá cụ thể')
+    expect(r.rewritten).toContain('service')
+  })
+  it('the R1 rewrite ("chưa xác nhận được có X") is never rewritten again', () => {
+    const once = guardUnsupportedClaims('Rạp A không có IMAX.', { venues: [], sharedTexts: [], userTexts: ['rạp IMAX'] }).text
+    expect(guardUnsupportedClaims(once, { venues: [], sharedTexts: [], userTexts: ['rạp IMAX'] }).text).toBe(once)
+  })
+})

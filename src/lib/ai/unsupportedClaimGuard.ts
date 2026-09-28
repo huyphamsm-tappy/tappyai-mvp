@@ -57,7 +57,7 @@ const FEATURES: ReadonlyArray<{ re: RegExp; label: string }> = [
 
 const NEG_RE = /(?:^|[\s,(*_])(khong|chua)\s+(co|cung cap|ho tro|phuc vu|kinh doanh)\s+((?:cong nghe|dich vu|phong|khu|cho|rap|phong chieu)\s+)?/g
 const CONFIRMED_NEG_RE = /(?:da |vua )?xac nhan\s+(?:la |rang )?/
-const CONDITIONAL_RE = /(?:^|\s)(?:neu|khi|hoi|xem|goi|kiem tra|chua (?:duoc )?xac nhan|khong chac)(?=\s)/
+const CONDITIONAL_RE = /(?:^|[\s*_(])(?:neu|khi|hoi|xem|goi|kiem tra|chua (?:duoc )?xac nhan|khong chac)(?=\s)/
 const FOLD_NUM = /(?:gia\s+)?(duoi|khong qua|chua toi|chua den|chi tu|chi|re hon)\s+(\d+(?:[.,]\d+)?)\s*(k|nghin|ngan|tr|trieu)(?![a-z])/
 const FIT_UNPRICED = /(?:,\s*)?(?:gia\s+(?:hop ly|phai chang|vua phai)\s+)?(?:nam\s+)?(?:trong|vua|hop voi|phu hop voi)\s+(?:tam\s+)?(?:ngan sach|budget)(?:\s+(?:cua ban|cua minh))?/
 const POSITIVE_SERVICE = /(?:^|[\s,*_])(co|cung cap|chuyen)\s+((?:dich vu|phong|khu|cho|goi)\s+)?/g
@@ -93,9 +93,12 @@ export function guardUnsupportedClaims(text: string, ev: ClaimEvidence): Unsuppo
       NEG_RE.lastIndex = 0
       let m: RegExpExecArray | null
       while ((m = NEG_RE.exec(f)) !== null) {
-        const tail = f.slice(m.index + m[0].length, m.index + m[0].length + 30)
+        // From the end of the VERB: the optional noun group ("phong ") must not swallow the feature's
+        // first word ("phong rieng") — measured round 6, c40 F8.
+        const verbEnd = m.index + m[0].indexOf(m[1]) + m[1].length + 1 + m[2].length
+        const tail = f.slice(verbEnd, verbEnd + 40)
         const fm = tail.match(feat.re)
-        if (!fm || fm.index! > 15) continue
+        if (!fm || fm.index! > 25) continue
         // The retrieved data itself says it is absent → a fact, kept.
         if (new RegExp(`(?:khong|chua)\\s+(?:co|cung cap|ho tro)\\s+(?:\\S+\\s+){0,3}${fm[0]}`).test(allEvidence)) continue
         const negStart = m.index + m[0].indexOf(m[1])
@@ -149,20 +152,26 @@ export function guardUnsupportedClaims(text: string, ev: ClaimEvidence): Unsuppo
 
     // R4 — an asked-for service asserted, absent from the venue's own data.
     for (const feat of asked) {
-      if (/chua (?:duoc )?xac nhan|khong chac/.test(f)) break
       POSITIVE_SERVICE.lastIndex = 0
       let m: RegExpExecArray | null
       while ((m = POSITIVE_SERVICE.exec(f)) !== null) {
-        const start = m.index + m[0].indexOf(m[1])
-        const tail = f.slice(m.index + m[0].length, m.index + m[0].length + 40)
+        const verbStart = m.index + m[0].indexOf(m[1])
+        let start = verbStart
+        // From the end of the VERB (see R1): "co phong rieng" must still read "phong rieng".
+        const verbEnd = verbStart + m[1].length
+        const tail = f.slice(verbEnd, verbEnd + 45)
         const fm = tail.match(feat.re)
-        if (!fm || fm.index! > 20) continue
-        if (CONDITIONAL_RE.test(f.slice(Math.max(0, start - 20), start))) continue
+        if (!fm || fm.index! > 25) continue
+        // The hedge must govern THIS claim (just before it) — measured round 6, c40 F8: "cũng có phòng
+        // riêng nhưng chưa xác nhận được giá" hedges the PRICE; a sentence-wide check let the room pass.
+        if (CONDITIONAL_RE.test(f.slice(Math.max(0, start - 40), start))) continue
+        // "cũng có X" → "mình chưa xác nhận được có X" (not "cũng mình chưa …").
+        if (f.slice(Math.max(0, start - 5), start) === 'cung ') start -= 5
         const own = venue ? [venue.name, ...venue.texts].map(foldAligned).join(' ') : allEvidence
         if (feat.re.test(own)) continue
         // Cut from the claim to the end of its clause; the conditional replaces it.
         const clauseEnd = (() => { const r = f.slice(start).search(/[,;.!?\n]|\s(?:va|nhung|hoac)\s/); return r === -1 ? f.length : start + r })()
-        const claimed = s.slice(start, m.index + m[0].length + fm.index! + fm[0].length)
+        const claimed = s.slice(verbStart, verbEnd + fm.index! + fm[0].length)
         s = `${s.slice(0, start)}mình chưa xác nhận được ${claimed.replace(/^(?:có|cung cấp|chuyên)\s+/u, 'có ')}${s.slice(clauseEnd).replace(/^\s*(?:👍|🙂|😊)/u, '')}`
         rewritten.push('service')
         f = foldAligned(s)
