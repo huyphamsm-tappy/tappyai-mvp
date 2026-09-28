@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 //
-// /onboarding interests step — approved design 2026-09-11 ("Bước 2/4", six
+// /onboarding interests step — approved design 2026-09-11 (counter now "Bước 1/2", six
 // described cards with chevrons). PRESENTATION ONLY: selection and the single
 // POST /api/onboarding are pinned unchanged.
 
@@ -41,14 +41,15 @@ beforeEach(() => {
 afterEach(() => { cleanup(); vi.unstubAllGlobals() })
 
 describe('onboarding interests — structure (design 2026-09-11)', () => {
-  it('shows a 4-segment progress bar with step 2 filled and "Bước 2/4"', () => {
+  // Owner 2026-09-28: the counter shows the page's real steps (interests 1/2, location 2/2), not the mock's 2/4.
+  it('shows a 2-segment progress bar with step 1 filled and "Bước 1/2"', () => {
     render(<OnboardingPage />)
     const bar = screen.getByTestId('onboarding-progress')
-    expect(bar.getAttribute('aria-valuemax')).toBe('4')
-    expect(bar.getAttribute('aria-valuenow')).toBe('2')
+    expect(bar.getAttribute('aria-valuemax')).toBe('2')
+    expect(bar.getAttribute('aria-valuenow')).toBe('1')
     const segs = Array.from(bar.children).map((c) => c.getAttribute('data-filled'))
-    expect(segs).toEqual(['true', 'true', 'false', 'false'])
-    expect(screen.getByText('Bước 2/4')).toBeTruthy()
+    expect(segs).toEqual(['true', 'false'])
+    expect(screen.getByText('Bước 1/2')).toBeTruthy()
   })
 
   it('renders the brand, tagline, accented title, subtitle and mascot bubble', () => {
@@ -102,7 +103,7 @@ describe('onboarding interests — selection still saves', () => {
 
     expect(next.disabled).toBe(false)
     fireEvent.click(next)
-    expect(screen.getByText('Bước 3/4')).toBeTruthy()
+    expect(screen.getByText('Bước 2/2')).toBeTruthy()
 
     fireEvent.click(screen.getByText('Hà Nội'))
     fireEvent.click(screen.getByText('🚀 Bắt đầu khám phá'))

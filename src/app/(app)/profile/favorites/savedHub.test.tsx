@@ -243,24 +243,18 @@ describe('the 2026-09-28 Saved layout', () => {
     expect(hero.textContent).toContain("Every place, post and tip you've saved lives here")
   })
 
-  it('renders the six chips in the reference order; four link, Deals and Collections are disabled', async () => {
+  it('renders the four working chips in the reference order; Deals and Bộ sưu tập are hidden (owner 2026-09-28)', async () => {
     const { container } = await hub()
     const chips = [...container.querySelectorAll('[data-saved-filters] [data-saved-chip]')]
     expect(chips.map((c) => c.getAttribute('data-saved-chip')))
-      .toEqual(['all', 'places', 'posts', 'videos', 'deals', 'collections'])
+      .toEqual(['all', 'places', 'posts', 'videos'])
     const href = (k: string) => container.querySelector(`[data-saved-chip="${k}"]`)!.getAttribute('href')
     expect(href('all')).toBe('/profile/favorites')
     expect(href('places')).toBe('/profile/favorites?type=places')
     expect(href('posts')).toBe('/profile/favorites?type=posts')
     expect(href('videos')).toBe('/profile/favorites?type=videos')
-    for (const k of ['deals', 'collections']) {
-      const chip = container.querySelector(`[data-saved-chip="${k}"]`)!
-      // No data source exists: never a link, always marked disabled / coming soon.
-      expect(chip.tagName).toBe('SPAN')
-      expect(chip.getAttribute('href')).toBeNull()
-      expect(chip.getAttribute('aria-disabled')).toBe('true')
-      expect(chip.textContent).toContain('Soon')
-    }
+    for (const k of ['deals', 'collections']) expect(container.querySelector(`[data-saved-chip="${k}"]`)).toBeNull()
+    expect(container.textContent).not.toContain('Soon')
   })
 
   it('marks the chip for the current view as active', async () => {
@@ -313,7 +307,7 @@ describe('the 2026-09-28 Saved layout', () => {
     expect(container.querySelector('[data-saved-hero] h2')!.textContent).toBe('Những điều bạn yêu thích 💙')
     const chipText = [...container.querySelectorAll('[data-saved-chip]')].map((c) => c.textContent)
     expect(chipText.slice(0, 4)).toEqual(['Tất cả', 'Địa điểm', 'Bài viết', 'Video'])
-    expect(chipText[5]).toContain('Bộ sưu tập')
+    expect(chipText).toHaveLength(4)
     const empty = container.querySelector('[data-saved-empty]') as HTMLElement
     expect(empty.textContent).toContain('Chưa có gì được lưu')
     expect(empty.textContent).toContain('Hãy bắt đầu khám phá')

@@ -79,12 +79,10 @@ function OnboardingPageInner() {
     router.replace(next)
   }
 
-  // The approved design (2026-09-11) shows the WHOLE account setup as four
-  // steps: 1 account + 18+ check (done before this page), 2 interests,
-  // 3 location, 4 start. This page's two panels therefore fill segments 2 and 3.
-  // Presentation only: the panel machine below is still `step` 1 | 2.
-  const TOTAL_SETUP_STEPS = 4
-  const filled = step + 1
+  // Owner 2026-09-28: the counter shows the steps this page really has — interests (1/2), location (2/2) —
+  // not the design mock's "2/4". Presentation only: the panel machine below is `step` 1 | 2.
+  const TOTAL_SETUP_STEPS = 2
+  const filled = step
   const stepLabel = step === 1 ? t('onboarding.stepInterests') : t('onboarding.stepLocation')
 
   return (

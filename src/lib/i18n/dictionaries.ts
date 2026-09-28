@@ -135,8 +135,8 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     // Approved design 2026-09-11 counts the whole account setup as four steps
     // (1 account + 18+ check, 2 interests, 3 location, 4 start) — so the two
     // onboarding panels are steps 2 and 3 of 4.
-    'onboarding.stepInterests': 'Bước 2/4',
-    'onboarding.stepLocation': 'Bước 3/4',
+    'onboarding.stepInterests': 'Bước 1/2',
+    'onboarding.stepLocation': 'Bước 2/2',
     // English in both locales: the approved VI design prints the brand line so.
     'onboarding.tagline': 'Your AI friend for a happier you',
     'onboarding.mascotBubble': 'Chọn những chủ đề bạn yêu thích nhé! 💙',
@@ -419,8 +419,8 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     'onboarding.locationDesc': 'TappyAI will help you find experiences that fit the place you care about.',
     'onboarding.otherCity': 'Enter another city or destination...',
     'onboarding.start': '🚀 Start exploring',
-    'onboarding.stepInterests': 'Step 2 of 4',
-    'onboarding.stepLocation': 'Step 3 of 4',
+    'onboarding.stepInterests': 'Step 1 of 2',
+    'onboarding.stepLocation': 'Step 2 of 2',
     'onboarding.tagline': 'Your AI friend for a happier you',
     'onboarding.mascotBubble': 'Pick the topics you love! 💙',
     'onboarding.mascotCaption': 'Explore the world with TappyAI',

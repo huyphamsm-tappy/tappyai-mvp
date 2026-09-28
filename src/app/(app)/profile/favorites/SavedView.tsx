@@ -7,7 +7,7 @@ import type { ComponentProps, ReactNode } from 'react'
 import type Header from '@/components/Header'
 import {
   Bookmark, MapPin, FileText, ChevronRight, ChevronLeft, Loader2, LayoutGrid, PlayCircle,
-  Tag, FolderHeart, Compass, Sparkles, type LucideIcon,
+  Compass, Sparkles, type LucideIcon,
 } from 'lucide-react'
 import V3Shell, { V3Footer } from '@/components/v3/V3Shell'
 import { TappyMascot } from '@/components/TappyMascot'
@@ -271,8 +271,7 @@ const CHIPS: Chip[] = [
   { key: 'places', icon: MapPin, labelKey: 'favorites.filter.places', view: 'places' },
   { key: 'posts', icon: FileText, labelKey: 'favorites.filter.posts', view: 'posts' },
   { key: 'videos', icon: PlayCircle, labelKey: 'favorites.filter.videos', view: 'videos' },
-  { key: 'deals', icon: Tag, labelKey: 'favorites.filter.deals' },
-  { key: 'collections', icon: FolderHeart, labelKey: 'favorites.filter.collections' },
+  // Deals and Bộ sưu tập (in the reference) are hidden until something can be saved there (owner 2026-09-28).
 ]
 
 function SavedFilters({ view }: { view: View }) {
