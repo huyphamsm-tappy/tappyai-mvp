@@ -116,7 +116,7 @@ describe('C33 — an anonymous session hands its history to the account', () => 
   it('every sign-in path claims, and reads the token BEFORE the session is replaced', () => {
     const src = code(REPO)
     // Four ways in: Google, Zalo, email OTP, register.
-    expect((src.match(/claimAnonymousHistory\(claimToken\)/g) ?? []).length).toBe(4)
+    expect((src.match(/claimAnonymousHistory\(claimToken\)/g) ?? []).length).toBe(5)
     expect((src.match(/anonymousTokenToClaim\(\)/g) ?? []).length).toBeGreaterThanOrEqual(4)
 
     // 🚨 Ordering IS the fix. `finishAuthentication` swaps the session, so a capture placed after
