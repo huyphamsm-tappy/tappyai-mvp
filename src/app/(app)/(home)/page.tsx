@@ -12,6 +12,7 @@ import { vietnamHeroClock } from '@/lib/home/heroGreeting'
 import { siteJsonLd } from '@/lib/discovery/siteJsonLd'
 import type { Metadata } from 'next'
 import { absoluteUrl } from '@/lib/share/openGraph'
+import JsonLd from '@/components/JsonLd'
 
 // The one canonical for the home page. The root layout's metadata carries the
 // title/OG for every page but deliberately no canonical (a layout-level
@@ -110,7 +111,7 @@ export default async function HomePage() {
     <>
       {/* G1 GEO: WebSite (SearchAction → /chat?q=) + Organization. Static data, no user fields. */}
       {siteJsonLd().map((ld, i) => (
-        <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }} />
+        <JsonLd key={i} data={ld} />
       ))}
       <HomeV3
         user={!!user}

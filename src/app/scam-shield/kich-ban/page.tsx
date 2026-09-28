@@ -4,6 +4,7 @@ import { breadcrumbJsonLd, homeCrumb } from '@/lib/discovery/siteJsonLd'
 import { hubText } from '@/lib/i18n/discovery'
 import { SCAM_KB_PATH, scenarioIndexJsonLd } from '@/lib/scam-shield/knowledgePages'
 import KnowledgeIndexBody from './KnowledgeIndexBody'
+import JsonLd from '@/components/JsonLd'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // /scam-shield/kich-ban — the 25 official scam scenarios, as an indexable page.
@@ -35,7 +36,7 @@ export default function ScamKnowledgeIndexPage() {
   return (
     <main className="v3-theme min-h-dvh bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-50">
       {jsonLd.map((ld, i) => (
-        <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }} />
+        <JsonLd key={i} data={ld} />
       ))}
       <KnowledgeIndexBody />
     </main>

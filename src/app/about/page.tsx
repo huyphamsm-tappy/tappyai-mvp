@@ -3,6 +3,7 @@ import { BRAND, ROUTE_TITLES, absoluteUrl, brandedOgImage } from '@/lib/share/op
 import { aboutPageJsonLd, breadcrumbJsonLd, homeCrumb, organizationJsonLd } from '@/lib/discovery/siteJsonLd'
 import { hubText } from '@/lib/i18n/discovery'
 import AboutBody from './AboutBody'
+import JsonLd from '@/components/JsonLd'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // /about — the entity / identity layer (G1 completion, AI-search readiness).
@@ -40,7 +41,7 @@ export default function AboutPage() {
   return (
     <main className="min-h-dvh bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-50">
       {jsonLd.map((ld, i) => (
-        <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }} />
+        <JsonLd key={i} data={ld} />
       ))}
       <AboutBody />
     </main>

@@ -10,6 +10,7 @@ import LandingTechnology from '@/components/landing/LandingTechnology'
 import LandingAbout from '@/components/landing/LandingAbout'
 import LandingContact from '@/components/landing/LandingContact'
 import LandingFooter from '@/components/landing/LandingFooter'
+import JsonLd from '@/components/JsonLd'
 
 // Organization structured data. Server-rendered so crawlers get it without
 // executing scripts. The ONE Organization node the home page and /about also
@@ -20,10 +21,7 @@ const organization = organizationJsonLd()
 export default function StartupPage() {
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(organization) }}
-      />
+      <JsonLd data={organization} />
 
       <LandingHeader />
 

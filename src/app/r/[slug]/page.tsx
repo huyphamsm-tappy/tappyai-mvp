@@ -6,6 +6,7 @@ import { buildSharedResultMetadata, sharedResultJsonLd } from '@/lib/share/share
 import { breadcrumbJsonLd, homeCrumb, hubCrumb } from '@/lib/discovery/siteJsonLd'
 import { isHubDomain } from '@/lib/discovery/domainHubs'
 import PublicResultView from './PublicResultView'
+import JsonLd from '@/components/JsonLd'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // /r/[slug] — a public, frozen TappyAI result.
@@ -51,8 +52,8 @@ export default async function SharedResultPage({ params }: Props) {
     <>
       {/* Structured data for search engines and AI answer engines: the question and the
           answer, as data. Built from the frozen payload only — the same text the page shows. */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      {breadcrumb && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />}
+      <JsonLd data={jsonLd} />
+      {breadcrumb && <JsonLd data={breadcrumb} />}
       <PublicResultView result={row} />
     </>
   )

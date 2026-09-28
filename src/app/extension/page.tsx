@@ -4,6 +4,7 @@ import { breadcrumbJsonLd, homeCrumb } from '@/lib/discovery/siteJsonLd'
 import { hubText } from '@/lib/i18n/discovery'
 import { EXTENSION_PATH, extensionJsonLd, extensionStoreLinks } from '@/lib/growth/extensionListing'
 import ExtensionBody from './ExtensionBody'
+import JsonLd from '@/components/JsonLd'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // /extension — the browser extension's public landing page.
@@ -43,7 +44,7 @@ export default function ExtensionPage() {
   return (
     <main className="min-h-dvh bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-50">
       {jsonLd.map((ld, i) => (
-        <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }} />
+        <JsonLd key={i} data={ld} />
       ))}
       <ExtensionBody stores={stores} />
     </main>

@@ -5,6 +5,7 @@ import { listPublicSharedResults } from '@/lib/share/sharedResultStore'
 import { BRAND, absoluteUrl, brandedOgImage } from '@/lib/share/openGraph'
 import { breadcrumbJsonLd, homeCrumb, hubCrumb } from '@/lib/discovery/siteJsonLd'
 import HubBody from './HubBody'
+import JsonLd from '@/components/JsonLd'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // /food /shopping /travel /entertainment /spa — public discovery hubs (GEO).
@@ -60,7 +61,7 @@ export default async function DomainHubPage({ params }: Props) {
   return (
     <main className="min-h-dvh bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-50">
       {jsonLd.map(({ key, ...ld }) => (
-        <script key={key} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }} />
+        <JsonLd key={key} data={ld} />
       ))}
       <HubBody domain={domain} results={results} />
     </main>
