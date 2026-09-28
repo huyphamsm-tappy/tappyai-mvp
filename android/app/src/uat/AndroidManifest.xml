@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- UAT build only (this source set is merged into the `uat` variant and no other).
+     The e2e test hook: imports a session / puts text on the clipboard from files written into
+     this app's PRIVATE files dir via `adb shell run-as` (debuggable uat build only). Exported so
+     `adb shell am start` can reach it; it does nothing unless those files exist, and no other
+     app can write there. -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <application>
+        <activity
+            android:name=".uat.UatTestHookActivity"
+            android:exported="true"
+            android:excludeFromRecents="true"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+    </application>
+</manifest>
