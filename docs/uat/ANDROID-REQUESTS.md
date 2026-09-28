@@ -88,6 +88,27 @@ Giá phòng: chưa xác nhận…","price":…`). Phần đầu kế hoạch (ti
   Android hiển thị như một dòng chữ sau khối kế hoạch. Chi tiết: `docs/consultative/OUTPUT-CONTRACT-6-DOMAINS.md` §0.
   Câu trả lời thô mới để test offline: `gs://tappyai-media-uat/evidence/83853cc/golden-raw/`.
 
+- 2026-09-29 (web, **AI tư vấn bản cuối — định dạng để Android làm theo**; server đổi xong, backward-compatible):
+  **Lượt HỎI** (khi thiếu thông tin; do code tạo, 0 LLM, 0 tìm kiếm): server gửi
+  - cho `x-tappy-surface: web`: câu dẫn + `[TAPPY_ASK]{"v":1,"questions":[{"id":"party","q":"Đi mấy người?","options":["1 người","2 người","3-5 người","Nhóm đông"]},…]}[/TAPPY_ASK]` + câu đuôi
+    "Bạn chọn nhanh bên dưới hoặc gõ tự do nhé — trả lời một phần cũng được." (2–3 câu hỏi, mỗi câu 2–4 nút);
+  - cho Android/iOS HIỆN TẠI (chưa có parser): câu dẫn + mỗi câu hỏi 1 dòng `• Câu? (A / B / C)` + câu đuôi + `[FOLLOWUPS]` = nút của câu 1.
+  👉 Yêu cầu Android: thêm parser `[TAPPY_ASK]` (strip khỏi text) + render mỗi câu 1 nhóm chip (chọn 1/nhóm, bấm lại để bỏ) + ô gõ tự do
+  + nút "Gửi" gửi `"<chọn 1> · <chọn 2> · <tự gõ>"` như tin nhắn user; khi xong, gửi header `x-tappy-surface: android` VÀ báo web để bật
+  `ASK_BLOCK_SURFACES` cho android (src/lib/ai/decisionSurface.ts). Tham chiếu web: src/components/chat/AskCard.tsx, src/lib/structuredContent/parseAsk.ts.
+  **Lượt CHỐT**: text = 1 câu xác nhận + `**Mình chọn: <tên>** — lý do` + (lưu ý nếu có căn cứ) + tối đa 2 dòng `- **<tên>**: hơn/kém…`
+  + dòng do server đếm `Mình còn N lựa chọn nữa, muốn xem thêm không?` + `[FOLLOWUPS]Xem thêm|Lên kế hoạch chi tiết[/FOLLOWUPS]` (server gắn,
+  thay mọi FOLLOWUPS của model). Card `tappy.places.v1`/`[TAPPY_SHOPPING]` như cũ; card #1 = tên "Mình chọn".
+  **Kế hoạch chi tiết** (khi user bấm "Lên kế hoạch chi tiết"): văn bản có tiêu đề in đậm cố định theo mảng —
+  ĂN UỐNG: Giờ đến & đặt bàn · Gọi món · Chi phí · Đi lại & gửi xe · Mẹo địa phương · Phương án dự phòng;
+  MUA SẮM: Mua ở đâu · Kiểm tra trước khi trả tiền · So giá & thời điểm mua · Bảo hành & đổi trả · Cạm bẫy thường gặp · Tổng chi phí;
+  DU LỊCH: `[TAPPY_PLAN]` như cũ + Tóm tắt chuyến · Ăn ở đâu, gọi món gì · Mẹo & cạm bẫy · Khi trời mưa · Ngân sách · Việc cần làm trước khi đi
+  (+ dòng `💰 Ngân sách: … ÷ … người = …` do server viết);
+  GIẢI TRÍ: Lịch buổi · Đặt chỗ / vé · Di chuyển giữa các chặng · Mẹo từng chỗ · Chi phí;
+  SPA/LÀM ĐẸP: Gói / dịch vụ nên chọn · Đặt lịch · Chuẩn bị trước khi đến · Thời lượng · Chi phí · Lưu ý.
+  Android chỉ cần render markdown in đậm như thường. Mỗi lượt có thêm annotation `8:` `{kind:"tappy.turn.v1", domain, turnType, usd…}` — BỎ QUA.
+  Câu trả lời thô lượt chạy cuối (để test offline): sẽ ở `gs://tappyai-media-uat/evidence/<SHA>/consult-raw/`.
+
 ## 3. Quy tắc bằng chứng mới (chủ dự án, 2026-09-28) — áp dụng cho CẢ phiên Android
 
 - KHÔNG commit ảnh/video vào git nữa (không sửa lịch sử commit cũ).
