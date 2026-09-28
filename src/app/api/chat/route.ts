@@ -48,7 +48,7 @@ import { enrichWithTikTok } from '@/lib/links/tiktokEnrichment'
 import { serperSearch } from '@/lib/ai/tools/common'
 import { dropInactiveMerchantRows, attachCommerceLinks } from '@/lib/ai/tools/commerce'
 import { commerceActorHash } from '@/lib/ccp'
-import { rendersDecisionCard as rendersDecisionCardFor } from '@/lib/ai/decisionSurface'
+import { rendersDecisionCard as rendersDecisionCardFor, rendersAskBlock } from '@/lib/ai/decisionSurface'
 import { normalizePwLang } from '@/lib/priceWatch/messages'
 import { runAiWriteAction } from '@/lib/ai/actions/runAction'
 import { savePriceWatchPolicy } from '@/lib/ai/actions/savePriceWatch'
@@ -80,14 +80,16 @@ import { extractAttributes, attributeSummary } from '@/lib/ai/consultative/revie
 import { applyHardConstraintGate, entityTextsOf } from '@/lib/ai/consultative/hardConstraintGate'
 import { admitsForHard } from '@/lib/ai/consultative/upscale'
 import { closesLate } from '@/lib/ai/consultative/hardConstraints'
-import { assessActionability, isClarifyReply, memorySignal, mergeClarifyAnswer, collapseClarifyTurns, turnStartsNewConsultation } from '@/lib/ai/consultative/actionability'
+import { assessActionability, isClarifyReply, memorySignal, mergeClarifyAnswer, collapseClarifyTurns, turnStartsNewConsultation, turnDomain } from '@/lib/ai/consultative/actionability'
 import { currentSubjectMessages, currentSubjectUserTexts, inheritedPlanningIntent as inheritPlanningIntent } from '@/lib/ai/consultative/subjectScope'
 import { statedDistrict } from '@/lib/ai/districts'
 import { filterTransientMemory } from '@/lib/ai/consultative/memoryTransientFilter'
 import { plainRequestTopic, appendHistoryTopic } from '@/lib/ai/consultative/memoryTopic'
-import { deriveSearchNow, SPECIFIC_DATE } from '@/lib/ai/consultative/searchNow'
+import { deriveSearchNow, SPECIFIC_DATE, type SearchNow } from '@/lib/ai/consultative/searchNow'
 import { tripAskAfter, missingTripFacts } from '@/lib/ai/consultative/tripFacts'
 import { frameDomainOf } from '@/lib/ai/consultative/domainFrames'
+import { runConsultBrain, consultV2Enabled, wasAskReply, buildAskReply, placeTypeFor } from '@/lib/ai/consultative/consultBrain'
+import { turnUsd, sumCounts, turnCostStream } from '@/lib/ai/turnCost'
 import { planPresearch, planFlightPresearch, type FlightPresearchPlan, presearchMessages, presearchFrames, prefixBody, deferredBody, searchingFrame, type PresearchOutcome, type PresearchPlan } from '@/lib/ai/consultative/presearch'
 import { wantsMoreFromSet, reusablePlaceSearch, type PlaceSearchEvidence } from '@/lib/ai/consultative/moreFromSet'
 import { coercePlaceType } from '@/lib/ai/tools/placeType'
@@ -327,7 +329,24 @@ export async function POST(req: Request) {
   const inheritedPlanningIntent = ownPlanningIntent === null && isPlanningRefinement(lastText)
     ? inheritPlanningIntent(priorUserTexts, { hasGps: !!userLocation, lang })
     : null
-  const planningIntent = ownPlanningIntent ?? inheritedPlanningIntent
+  /**
+   * CONSULT V2 (owner 2026-09-29, "LÀM LẠI AI TƯ VẤN"): ONE small Haiku call reads the turn first —
+   * area(s), turn type (ask / pick / followup / compare / more / reject / plan / chat), what the user
+   * has said. An ASK turn is answered by the server with 2–3 questions + buttons and NO search; a plan
+   * is built only when the user accepts. Any failure (timeout, provider, bad JSON) → the previous
+   * pipeline for this turn (never a refusal).
+   */
+  const priorAssistantText = (() => { const m = [...messages].reverse().find((x: { role: string }) => x.role === 'assistant'); return typeof m?.content === 'string' ? m.content : '' })()
+  const consultRun = consultV2Enabled() && !hasImage && !clipRef && AI.isConfigured()
+    ? await runConsultBrain(o => AI.generate(o), messages, { hasGps: !!userLocation, previousWasAsk: wasAskReply(priorAssistantText), deterministicDomain: lastUserMsg ? turnDomain(lastUserMsg, { hasGps: !!userLocation, lang }) : null })
+    : null
+  const consult = consultRun?.decision ?? null
+  console.log(JSON.stringify({ type: 'tappyai_consult', turn: consult?.turn ?? 'fallback', domains: consult?.domains ?? [], ms: consultRun?.ms ?? null, known: consult ? Object.keys(consult.known) : [], brain_in: consultRun?.usage.promptTokens ?? 0, brain_out: consultRun?.usage.completionTokens ?? 0 }))
+  // Under Consult V2 a plan is built ONLY when the user accepts (turn "plan"); a trip plan keeps the
+  // [TAPPY_PLAN] payload, every other area's plan is the prose plan frame (domainFrames.ts).
+  const planningIntent = consult
+    ? (consult.turn === 'plan' && consult.domains[0] === 'travel' ? 'trip' as const : null)
+    : ownPlanningIntent ?? inheritedPlanningIntent
   // A plan's budget is the WHOLE envelope, and its searches are the activities
   // the user named — both decided here, deterministically, so the planning block
   // can state the total and list exactly the searches to run (see promptBuilder).
@@ -498,8 +517,30 @@ export async function POST(req: Request) {
       if (trip) gateAskAfter = trip
     }
   }
+  // Consult V2: the brain owns the asking. Its ASK turn replaces the old one-question gate; no question
+  // is stacked at the end of a pick (the pick ends with "còn N lựa chọn" + the server's buttons).
+  const consultAskReply = consult?.turn === 'ask' && consult.ask
+    ? buildAskReply(consult.ask, { lang, structured: rendersAskBlock(req.headers.get('x-tappy-surface')) })
+    : null
+  // What the brain understood, for the model: what the user said, what is assumed, what was turned down.
+  const consultUnderstood = consult && consult.turn !== 'ask' && consult.turn !== 'chat'
+    ? `
+
+===== DA HIEU (bo nao tu van) =====
+- User da noi: ${Object.entries(consult.known).map(([k, v]) => `${k}: ${v}`).join(' · ') || '(chua ro)'}
+- Gia dinh cho phan con thieu (noi ro trong cau xac nhan): ${consult.assumptions.join(' · ') || '(khong)'}${consult.rejectReason ? `
+- User da BAC: ${consult.rejectReason} — KHONG nhac lai cho da bac.` : ''}${consult.refers?.length ? `
+- User dang noi toi: ${consult.refers.join(' | ')}` : ''}
+=====================================`
+    : ''
+  if (consult) {
+    clarifyGate = null
+    gateAskAfter = null
+    if (consult.domains[0]) gateDomain = consult.domains[0]
+  }
   // Re-evaluated with memory in the account branch (memory is a signal); a `let` for that reason.
-  let quotaExempt = cannedEarly !== null || clarifyGate !== null
+  // An ASK turn is not charged (like the old clarify): it costs one small brain call and no search.
+  let quotaExempt = cannedEarly !== null || clarifyGate !== null || consultAskReply !== null
 
   // ── ADR-024: decision evidence state ──────────────────────────────────────
   //
@@ -1020,8 +1061,15 @@ export async function POST(req: Request) {
   // are refused), the model answered from memory, and the place guard cut 356 of 523 chars. A
   // "more" turn inside the same consultation is a search turn: the directive is derived as for the
   // first reply, and the venues the previous reply named are what the model must pick around.
-  const moreTurn = consultativeV1 && !ownDomainSwitch && !clipContext && !planningIntent && wantsMoreFromSet(lastText) && priorVenuesIn(lastAssistantText).length > 0
-  const searchNow = situation ? deriveSearchNow({ text: framingText, situation, frame: decisionFrame, need: needProfile, forcedTool, isFirstReply: isFirstReply || afterClarify || moreTurn, movieRecommend, afterClarify, consultationText: consultationUserTexts(framingMessages).join(' ') }) : null
+  const moreTurn = consultativeV1 && !ownDomainSwitch && !clipContext && !planningIntent && (wantsMoreFromSet(lastText) || consult?.turn === 'more' || consult?.turn === 'reject') && priorVenuesIn(lastAssistantText).length > 0
+  // Consult V2: a pick / reject searches the brain's query (what the user actually wants, e.g. "tiệm nail
+  // sơn gel", "karaoke phòng lớn") — never a generic "spa massage" / "khu vui chơi" rewrite.
+  const consultSearch = consult && (consult.turn === 'pick' || consult.turn === 'reject') && consult.query
+    ? (() => { const t = consult.domains[0] === 'shopping' ? 'product' : placeTypeFor(consult.domains[0]); return t ? ({ query: consult.query as string, type: t, exact: true } as SearchNow) : null })()
+    : null
+  // A follow-up / comparison / non-trip plan works from what is already known: no "search now" order.
+  const consultNoSearchNow = !!consult && (consult.turn === 'followup' || consult.turn === 'compare' || (consult.turn === 'plan' && consult.domains[0] !== 'travel'))
+  const searchNow = consultNoSearchNow ? null : consultSearch ?? (situation ? deriveSearchNow({ text: framingText, situation, frame: decisionFrame, need: needProfile, forcedTool, isFirstReply: isFirstReply || afterClarify || moreTurn, movieRecommend, afterClarify, consultationText: consultationUserTexts(framingMessages).join(' ') }) : null)
   // Owner 2026-09-28 (c40 T7): a flight search runs without a date; the date is asked at the END.
   if (searchNow?.type === 'flight' && !SPECIFIC_DATE.test(normalizeVN(lastText.toLowerCase())) && !(lastAssistantText && endsWithQuestion(lastAssistantText))) {
     gateAskAfter = { q: lang === 'en' ? 'Which date?' : 'Ngày bay?', options: [] }
@@ -1409,7 +1457,7 @@ export async function POST(req: Request) {
   // A clip question is a place question by construction — the button exists only
   // on an item with a place — so it is never a no-tool turn even when the short
   // bridge text alone would have read as chitchat.
-  const noToolTurn = !clipContext && (intent === 'chitchat' || decisionStage === 'confirmation')
+  const noToolTurn = !clipContext && (intent === 'chitchat' || decisionStage === 'confirmation' || consult?.turn === 'followup' || consult?.turn === 'compare')
   // The ranking instruction is only carried on turns that can actually produce a
   // ranked result — Places and Hotel are the two domains with structured
   // candidate attributes today. A weather or gold lookup pays nothing for it.
@@ -1446,6 +1494,8 @@ export async function POST(req: Request) {
   // The stream filter reads this to decide whether the per-place photo/link block
   // still belongs in the text: with a card, it is the same content twice.
   enrichment.setRendersDecisionCard(rendersDecisionCard)
+  // Consult V2: after a pick the server offers the next steps (owner Phần 3.3).
+  if (consult && (consult.turn === 'pick' || consult.turn === 'more' || consult.turn === 'reject' || consult.turn === 'compare')) enrichment.setConsultButtons(lang === 'en' ? ['See more', 'Plan it in detail'] : ['Xem thêm', 'Lên kế hoạch chi tiết'])
 
   /**
    * Consultative V1 — the prompt block and the follow-up references.
@@ -1514,7 +1564,7 @@ export async function POST(req: Request) {
     // left "ăn gì ngon giờ" / "đi chơi ở đâu" answered with a question and no tool call.
     // The turn after a clarify (item 1) is the first REAL reply: it must search now, never ask again.
     if (searchNow) console.log(JSON.stringify({ type: 'tappyai_consultative_v1', step: 'search_now', domain: decisionFrame.domains[0] ?? null, placeType: searchNow.type, exact: searchNow.exact }))
-    return buildConsultativeV1Block({ frame: situation, hardGaps: [], rendersCard: rendersDecisionCard, lang, now: new Date(), searchNow: presearchPlan?.reuse ? { query: presearchPlan.args.query, type: presearchPlan.args.type ?? 'restaurant', exact: true } : searchNow, afterClarify, presearched: presearchPlan !== null || flightPresearch !== null, reuseShown: presearchPlan?.reuse?.shown, askAfter: gateAskAfter, domain: frameDomainOf(gateDomain, planningIntent) })
+    return buildConsultativeV1Block({ frame: situation, hardGaps: [], rendersCard: rendersDecisionCard, lang, now: new Date(), searchNow: presearchPlan?.reuse ? { query: presearchPlan.args.query, type: presearchPlan.args.type ?? 'restaurant', exact: true } : searchNow, afterClarify, presearched: presearchPlan !== null || flightPresearch !== null, reuseShown: presearchPlan?.reuse?.shown, askAfter: gateAskAfter, domain: consult ? frameDomainOf(consult.domains[0] ?? null) : frameDomainOf(gateDomain, planningIntent), frameTurn: consult && consult.turn !== 'ask' && consult.turn !== 'chat' ? consult.turn : 'pick' }) + consultUnderstood
       + renderReferencedBlock(referenced, []) + refetchLines
   })()
 
@@ -1683,9 +1733,9 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
    * usage line records `llmCalls: 0` so the saving is visible. Everything else — including a
    * fact the prior prose lacks — still reaches the model, which may re-search by name.
    */
-  const canned = cannedEarly ?? clarifyGate?.reply ?? cannedFollowUp
+  const canned = consultAskReply ?? cannedEarly ?? clarifyGate?.reply ?? cannedFollowUp
   if (canned) {
-    const kind = intent === 'chitchat' ? 'chitchat' : clarifyGate ? 'clarify' : 'carried_fact'
+    const kind = consultAskReply ? 'consult_ask' : intent === 'chitchat' ? 'chitchat' : clarifyGate ? 'clarify' : 'carried_fact'
     console.log(JSON.stringify({ type: 'tappyai_canned_reply', kind, elapsedMs: Date.now() - startTime }))
     const auditFile = process.env.AUDIT_USAGE_LOG_FILE
     if (auditFile) {
@@ -1698,7 +1748,10 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
         }) + '\n')
       } catch { /* audit only */ }
     }
-    return cannedDataStreamResponse(canned, { 'X-Decision-Evidence-Id': evidenceId })
+    const cannedRes = cannedDataStreamResponse(canned, { 'X-Decision-Evidence-Id': evidenceId })
+    if (!consultRun || !cannedRes.body) return cannedRes
+    const brainIn = consultRun.usage.promptTokens, brainOut = consultRun.usage.completionTokens
+    return new Response(turnCostStream(cannedRes.body, () => ({ domain: consult?.domains[0] ?? null, turnType: consultAskReply ? 'ask' : kind, model: 'haiku-4.5', tokensIn: brainIn, tokensOut: brainOut, serperCalls: 0, cacheHits: 0, usd: turnUsd({ promptTokens: brainIn, completionTokens: brainOut }) })), { status: cannedRes.status, headers: cannedRes.headers })
   }
 
   /**
@@ -2606,7 +2659,14 @@ ${completionInstruction(lang)}` },
   // end asking. It runs after every guard — measured on Android: the model asked about ticket prices
   // and the entertainment price guard (downstream) removed that sentence, leaving no question at all.
   const timedBody = finalResponse.body
-    ? askAfterStream(finalResponse.body, gateAskAfter, lang).pipeThrough(stepRepeatGuard()).pipeThrough(timeClientEmit(startTime, Date.now, (t) => logUsage(t.ttuaMs)))
+    ? turnCostStream(askAfterStream(finalResponse.body, gateAskAfter, lang).pipeThrough(stepRepeatGuard()), () => {
+        // Owner Phần 6: one cost line per turn (brain call + answer model + Serper).
+        const d = serperDelta(serperAtStart)
+        const tokensIn = (usageAcct?.promptTokens ?? 0) + (usageAcct?.cacheReadTokens ?? 0) + (usageAcct?.cacheCreationTokens ?? 0) + (consultRun?.usage.promptTokens ?? 0)
+        const tokensOut = (usageAcct?.completionTokens ?? 0) + (consultRun?.usage.completionTokens ?? 0)
+        const usd = turnUsd({ promptTokens: (usageAcct?.promptTokens ?? 0) + (consultRun?.usage.promptTokens ?? 0), completionTokens: tokensOut, cacheReadTokens: usageAcct?.cacheReadTokens ?? 0, cacheCreationTokens: usageAcct?.cacheCreationTokens ?? 0, serperCredits: d.credits })
+        return { domain: consult?.domains[0] ?? decisionFrame.domains[0] ?? null, turnType: consult?.turn ?? (planningIntent ? 'plan' : 'legacy'), model: 'haiku-4.5', tokensIn, tokensOut, serperCalls: sumCounts(d.calls), cacheHits: sumCounts(d.hits), usd }
+      }).pipeThrough(timeClientEmit(startTime, Date.now, (t) => logUsage(t.ttuaMs)))
     : finalResponse.body
   return new Response(timedBody, { status: finalResponse.status, headers: finalResponse.headers })
   }

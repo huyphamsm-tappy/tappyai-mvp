@@ -24,6 +24,8 @@ import TripPlanCard from '@/components/TripPlanCard'
 import { parsePlan } from '@/lib/structuredContent/parsePlan'
 import { parseCTA } from '@/lib/structuredContent/parseCta'
 import { parseFollowups } from '@/lib/structuredContent/parseFollowups'
+import { parseAsk } from '@/lib/structuredContent/parseAsk'
+import AskCard from '@/components/chat/AskCard'
 import { classifyOutboundAction, emitQuery, emitResultAction, hostOf } from '@/lib/analytics/g1Events'
 import ShoppingDecision from '@/components/chat/ShoppingDecision'
 import ComparisonBlock from '@/components/chat/structured/ComparisonBlock'
@@ -1431,7 +1433,9 @@ export default function ChatInterface({
                 // marker can never reach the reader as raw JSON; nothing renders
                 // from it yet — the card layer is a separate, later task. Strip
                 // is unconditional and independent of decode (fixture rule 1).
-                const { text } = parsePlacesMarker(textAfterShopping)
+                const { text: textAfterPlaces } = parsePlacesMarker(textAfterShopping)
+                // Consult ASK turn (owner 2026-09-29): questions with their own chips; stripped always.
+                const { text, questions: askQuestions } = parseAsk(textAfterPlaces)
                 /**
                  * The place decision, from this message's ANNOTATIONS.
                  *
@@ -1627,6 +1631,9 @@ export default function ChatInterface({
                           model-authored chips, now introduced so they read as offered refinements
                           rather than as loose buttons under the answer. Shown only alongside a
                           decision, because that is the turn where refining means something. */}
+                      {askQuestions.length > 0 && isLastMessage && !isLoading && (
+                        <AskCard questions={askQuestions} lang={locale} onSend={answer => append({ role: 'user', content: answer })} />
+                      )}
                       {followups.length > 0 && isLastMessage && !isLoading && (
                         <div className="mt-3">
                           {placeView && (

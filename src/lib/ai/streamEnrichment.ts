@@ -2300,7 +2300,11 @@ export function applyPlaceEnrichmentStreamFilter(
     if (unsupported.rewritten.length > 0) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'unsupported_claim', rewritten: unsupported.rewritten }))
     // Principle 7 (owner 2026-09-29): a plan the user budgeted shows the split as code-written arithmetic,
     // added AFTER the prose guards so no price guard reads the user's own total ÷ people as a claim.
-    const placeGuarded = appendPlanBudgetMath(planMask.restore(unsupported.text), collector?.userTexts ?? [userText], lang).text
+    const budgeted = appendPlanBudgetMath(planMask.restore(unsupported.text), collector?.userTexts ?? [userText], lang).text
+    // Consult V2: the server's buttons replace whatever [FOLLOWUPS] the model wrote (web reads the FIRST block).
+    const placeGuarded = collector?.consultButtons?.length
+      ? `${budgeted.replace(/\[FOLLOWUPS\][^\n]*?(?:\[\/FOLLOWUPS\]|\n|$)/gi, '').trimEnd()}\n\n[FOLLOWUPS]${collector.consultButtons.join('|')}[/FOLLOWUPS]`
+      : budgeted
     // G1 telemetry: what the place-claim guard removed and why. Counts only — never user
     // text, never a venue name. Console-only, like `tappyai_tool_called`; the UsageEvent
     // vocabulary is a privacy surface and is deliberately not extended here.

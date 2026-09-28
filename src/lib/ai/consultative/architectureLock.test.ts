@@ -30,11 +30,15 @@ describe('the chat route still makes exactly one model call', () => {
   // announced its plan and stopped may make at most one extra call, from inside the plan-completion
   // wrapper's `complete` callback (planCompletion.ts calls it at most once, only when the block is
   // missing). Any other AI.generate() in the route is still forbidden.
-  it('no AI.generate() was introduced for ranking, need extraction or the Pick — only the plan completion', () => {
+  it('no AI.generate() was introduced for ranking, need extraction or the Pick — only the plan completion and the consult brain', () => {
     const src = code(ROUTE)
     const calls = [...src.matchAll(/AI\.generate\(/g)].map(m => m.index!)
-    expect(calls.length).toBeLessThanOrEqual(1)
+    // Owner 2026-09-29 ("LÀM LẠI AI TƯ VẤN"): the consult brain is ONE small classification call
+    // (runConsultBrain, consultBrain.ts) — the only addition; ranking / need extraction / the pick stay out.
+    expect(calls.length).toBeLessThanOrEqual(2)
     for (const at of calls) {
+      const brain = src.lastIndexOf('runConsultBrain(', at)
+      if (brain > -1 && at - brain < 200) continue
       const wrap = src.lastIndexOf('planCompletionStream(', at)
       expect(wrap).toBeGreaterThan(-1)
       expect(src.slice(wrap, at)).toMatch(/complete: async/)

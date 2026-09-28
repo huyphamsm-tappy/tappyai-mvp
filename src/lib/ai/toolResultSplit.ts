@@ -152,6 +152,12 @@ export interface EnrichmentCollector {
   rendersDecisionCard?: boolean
   setRendersDecisionCard(on: boolean): void
   /**
+   * Consult V2 (owner 2026-09-29): the quick-reply buttons the SERVER puts under this reply
+   * (e.g. "Xem thêm" / "Lên kế hoạch chi tiết" after a pick). Any [FOLLOWUPS] the model wrote is replaced.
+   */
+  consultButtons?: string[]
+  setConsultButtons(labels: string[]): void
+  /**
    * Whether a reflex "what kind would you like?" question may survive this
    * reply. Set by the route once a tool result has been judged against the
    * decision frame: a recommendation that is possible, or an evidence gap no
@@ -386,6 +392,8 @@ export function createEnrichmentCollector(turnText = '', earlierUserTexts: reado
     },
     rendersDecisionCard: false,
     setRendersDecisionCard(on: boolean) { this.rendersDecisionCard = on },
+    consultButtons: undefined as string[] | undefined,
+    setConsultButtons(labels: string[]) { this.consultButtons = labels.slice(0, 3) },
     clarificationPolicy: 'allow' as 'allow' | 'no_reflex',
     setClarificationPolicy(policy: 'allow' | 'no_reflex') { this.clarificationPolicy = policy },
     consultativeV1: undefined as ConsultativeV1Context | undefined,

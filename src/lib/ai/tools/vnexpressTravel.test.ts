@@ -596,10 +596,15 @@ describe('architecture contracts (source)', () => {
   it('23. no additional model call: the module never imports the AI layer, and the route still streams once', () => {
     expect(code(mod)).not.toMatch(/AI\.(stream|generate|vision)\(|from '@\/lib\/ai\/llm|@ai-sdk|from 'ai'/)
     expect((code(route).match(/AI\.stream\(/g) ?? []).length).toBe(1)
-    // The one allowed AI.generate() is the plan completion (UAT4 P1-f, architectureLock.test.ts).
+    // The allowed AI.generate() calls: the plan completion (UAT4 P1-f) and the consult brain (owner
+    // 2026-09-29) — see architectureLock.test.ts. The editorial module adds none.
     const gen = [...code(route).matchAll(/AI\.generate\(/g)].map(m => m.index!)
-    expect(gen.length).toBeLessThanOrEqual(1)
-    for (const at of gen) expect(code(route).slice(code(route).lastIndexOf('planCompletionStream(', at), at)).toMatch(/complete: async/)
+    expect(gen.length).toBeLessThanOrEqual(2)
+    for (const at of gen) {
+      const brain = code(route).lastIndexOf('runConsultBrain(', at)
+      if (brain > -1 && at - brain < 200) continue
+      expect(code(route).slice(code(route).lastIndexOf('planCompletionStream(', at), at)).toMatch(/complete: async/)
+    }
   })
 
   it('runs INSIDE the tools\' execute(), gated on the frame the route already derived — never as a prefetch', () => {

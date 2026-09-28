@@ -10,7 +10,7 @@ describe('coercePlaceType', () => {
   })
   it('maps the synonyms the model actually writes', () => {
     expect(coercePlaceType('entertainment')).toBe('attraction')
-    expect(coercePlaceType('karaoke')).toBe('bar')
+    expect(coercePlaceType('karaoke')).toBe('attraction') // owner 2026-09-29: an activity, not a bar
     expect(coercePlaceType('night_club')).toBe('bar')
     expect(coercePlaceType('movie theater')).toBe('cinema')
     expect(coercePlaceType('resort')).toBe('hotel')

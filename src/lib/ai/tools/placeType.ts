@@ -14,7 +14,10 @@ const SYNONYMS: Record<string, PlaceType> = {
   coffee: 'cafe', 'ca phe': 'cafe', 'coffee shop': 'cafe',
   massage: 'spa', wellness: 'spa', salon: 'spa',
   resort: 'hotel', homestay: 'hotel', hostel: 'hotel', 'khach san': 'hotel', lodging: 'hotel',
-  karaoke: 'bar', pub: 'bar', club: 'bar', nightlife: 'bar', 'night_club': 'bar', lounge: 'bar',
+  // Owner 2026-09-29: karaoke / bida / bowling are going-out ACTIVITIES, not bars (karaoke→bar lost the venue kind).
+  karaoke: 'attraction', billiards: 'attraction', bida: 'attraction', bowling: 'attraction', 'escape room': 'attraction', 'board game': 'attraction',
+  nail: 'spa', barber: 'spa', 'cat toc': 'spa', 'goi dau': 'spa',
+  pub: 'bar', club: 'bar', nightlife: 'bar', 'night_club': 'bar', lounge: 'bar',
   fitness: 'gym', yoga: 'gym',
   movie: 'cinema', movies: 'cinema', theater: 'cinema', theatre: 'cinema', 'rap phim': 'cinema',
   entertainment: 'attraction', amusement: 'attraction', park: 'attraction', tourist: 'attraction', sightseeing: 'attraction',

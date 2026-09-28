@@ -27,3 +27,15 @@ export const DECISION_CARD_SURFACES: ReadonlySet<string> = new Set(['web', 'andr
 export function rendersDecisionCard(surface: string | null | undefined): boolean {
   return surface != null && DECISION_CARD_SURFACES.has(surface)
 }
+
+/**
+ * Consult V2 (owner 2026-09-29): surfaces that render the structured ASK block ([TAPPY_ASK] with one
+ * chip group per question). Only web today; Android / iOS get the same questions as readable lines +
+ * the first question's chips until their parsers ship (docs/uat/ANDROID-REQUESTS.md) — an older build
+ * would otherwise show the JSON.
+ */
+export const ASK_BLOCK_SURFACES: ReadonlySet<string> = new Set(['web'])
+
+export function rendersAskBlock(surface: string | null | undefined): boolean {
+  return surface != null && ASK_BLOCK_SURFACES.has(surface)
+}
