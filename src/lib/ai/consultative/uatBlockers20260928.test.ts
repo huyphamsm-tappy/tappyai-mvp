@@ -95,25 +95,50 @@ describe('P1a · "tối nay có chỗ nào đi chơi ở sài gòn ko" is an eve
     expect(detectPlanningIntent('đi du lịch Đà Nẵng 3 ngày 2 đêm')).toBe('trip')
   })
 
-  const evePlan = (items: unknown[]) => `[TAPPY_PLAN]\n${JSON.stringify({ type: 'evening', title: 'Tối nay', days: [{ label: 'Tối nay', items }] })}\n[/TAPPY_PLAN]`
-  const pool = [
-    { name: 'Khu Vui chơi Trẻ em - Công viên Gia Định', place_id: 'k', maps_link: 'https://maps.google.com/?cid=10', place_types: ['amusement_park'], opening_hours: '07:00–21:00' },
-    { name: 'Quán Bụi Central', place_id: 'f', maps_link: 'https://maps.google.com/?cid=11', place_types: ['restaurant'], opening_hours: '07:00–22:30' },
-    { name: 'Phố đi bộ Nguyễn Huệ', place_id: 'w', maps_link: 'https://maps.google.com/?cid=12', place_types: ['tourist_attraction'] },
-    { name: 'Chill Skybar', place_id: 'b', maps_link: 'https://maps.google.com/?cid=13', place_types: ['bar'], opening_hours: '17:30–02:00' },
-    { name: 'Cà phê sáng', place_id: 'c', maps_link: 'https://maps.google.com/?cid=14', place_types: ['cafe'], opening_hours: '06:00–11:00' },
-  ]
-  it('a children\'s park is replaced; the evening is filled to dinner → going out → a drink, in time order', () => {
-    const r = guardPlanItems(evePlan([{ time: '19:00', category: 'entertainment', name: 'Khu Vui chơi Trẻ em - Công viên Gia Định' }]), pool)
-    const items = parsed(r.text).days[0].items as Array<{ time: string; name: string; maps_link?: string }>
-    expect(items.map(i => i.name)).toEqual(['Quán Bụi Central', 'Phố đi bộ Nguyễn Huệ', 'Chill Skybar'])
-    expect(items.map(i => i.time)).toEqual(['18:30', '19:00', '21:30'])
-    expect(items.every(i => !!i.maps_link)).toBe(true)
-    expect(r.text).not.toContain('Trẻ em')
+})
+
+describe('P1a · the evening plan is built by code on the fixed frame (owner 2026-09-28)', () => {
+  it('the frame applies to an evening that names no activity of its own', async () => {
+    const { usesEveningFrame, eveningLocation } = await import('../eveningPlan')
+    expect(usesEveningFrame('evening', { activities: [] })).toBe(true)
+    expect(usesEveningFrame('evening', { activities: ['restaurant'] })).toBe(true) // "ăn chơi tối nay"
+    expect(usesEveningFrame('evening', { activities: ['restaurant', 'cinema'] })).toBe(false) // "lẩu rồi xem phim"
+    expect(usesEveningFrame('evening', { activities: [], inherited: true })).toBe(false)
+    expect(usesEveningFrame('trip', { activities: [] })).toBe(false)
+    expect(eveningLocation(null, 'tối nay có chỗ nào đi chơi ở sài gòn ko')).toBe('TP. Hồ Chí Minh')
+    expect(eveningLocation('Quận 1', 'tối nay đi đâu chơi quận 1')).toBe('Quận 1')
   })
-  it('a place closed at the step\'s time is never used', () => {
-    const r = guardPlanItems(evePlan([{ time: '21:30', category: 'cafe', name: 'Cà phê sáng' }]), pool)
-    expect(r.text).not.toContain('Cà phê sáng')
+  it('every stage search is code-written: dinner → night out → drinks', async () => {
+    const { EVENING_STAGES } = await import('../eveningPlan')
+    expect(EVENING_STAGES.map(s => [s.key, s.time])).toEqual([['dinner', '18:30'], ['night', '20:00'], ['drinks', '21:30']])
+    expect(EVENING_STAGES.every(s => s.searches.length > 0 && s.searches.every(q => q.query.length > 0))).toBe(true)
+  })
+  it('a stage takes a row OPEN at its time, never one used by an earlier stage', async () => {
+    const { EVENING_STAGES, pickStageStop } = await import('../eveningPlan')
+    const drinks = EVENING_STAGES[2]
+    const rows = { results: [
+      { name: 'Cà phê sáng', place_id: 'c', opening_hours: '06:00–11:00' },
+      { name: 'Quán Bụi Central', place_id: 'f', opening_hours: '07:00–22:30' },
+      { name: 'Chill Skybar', place_id: 'b', opening_hours: '17:30–02:00' },
+    ] }
+    expect(pickStageStop(rows, drinks, new Set())?.name).toBe('Quán Bụi Central')
+    expect(pickStageStop(rows, drinks, new Set(['f']))?.name).toBe('Chill Skybar')
+    expect(pickStageStop({ results: [{ name: 'Cà phê sáng', opening_hours: '06:00–11:00' }] }, drinks, new Set())).toBeNull()
+  })
+  it('the plan block carries every stop, in order, each with its maps link; any model plan is replaced', async () => {
+    const { EVENING_STAGES, buildEveningPlanBlock, fixedPlanStream } = await import('../eveningPlan')
+    const stops = EVENING_STAGES.map((stage, i) => ({ stage, place: { name: `Nơi ${i + 1}`, place_id: `p${i}`, maps_link: `https://maps.google.com/?cid=${i}`, rating_value: 4.5, rating_count: 100 } }))
+    const block = buildEveningPlanBlock(stops, { lang: 'vi', area: 'Quận 1' })
+    const plan = parsed(block)
+    expect(plan.days[0].items.map((i: { time: string; name: string }) => `${i.time} ${i.name}`)).toEqual(['18:30 Nơi 1', '20:00 Nơi 2', '21:30 Nơi 3'])
+    expect(plan.days[0].items.every((i: { maps_link?: string }) => !!i.maps_link)).toBe(true)
+    const model = ['0:' + JSON.stringify('Tối nay đây.\n[TAPPY_PLAN]{"type":"evening"'), '0:' + JSON.stringify(',"days":[]}[/TAPPY_PLAN]'), 'd:{"finishReason":"stop"}'].join('\n') + '\n'
+    const out = await new Response(fixedPlanStream(new Response(model).body!, block)).text()
+    const text = out.split('\n').filter(l => l.startsWith('0:')).map(l => JSON.parse(l.slice(2))).join('')
+    expect(text.split('[TAPPY_PLAN]').length - 1).toBe(1)
+    expect(text).toContain('Tối nay đây.')
+    expect(parsed(text).days[0].items).toHaveLength(3)
+    expect(out.trim().split('\n').pop()!.startsWith('d:')).toBe(true)
   })
 })
 
@@ -124,29 +149,5 @@ describe('P1b · a new subject resets the intent ("mua đồ ăn vặt" → "t�
     const m = [{ role: 'user', content: 'mua đồ ăn vặt' }, { role: 'assistant', content: 'Bạn muốn mua món gì?' }, { role: 'user', content: 'tối nay đi đâu chơi quận 1' }]
     expect(turnStartsNewConsultation({ messages: m, hasGps: false, lang: 'vi' })).toBe(true)
     expect(currentSubjectUserTexts(m as never, { hasGps: false, lang: 'vi' })).toEqual(['tối nay đi đâu chơi quận 1'])
-  })
-})
-
-describe('P1a · an evening plan\'s search rows never include a children\'s park or a zoo', () => {
-  it('drops unsuitable rows before the model and the card see them', async () => {
-    const { dropEveningUnsuitableRows } = await import('../planItemGuard')
-    const r = dropEveningUnsuitableRows({ results: [
-      { name: 'Khu Vui chơi Trẻ em - Công viên Gia Định' }, { name: 'Vườn thú Đầm Sen' }, { name: 'Timezone - AEON MALL Tân Phú' }, { name: 'Chill Skybar' },
-    ] })
-    expect((r.result as { results: Array<{ name: string }> }).results.map(x => x.name)).toEqual(['Timezone - AEON MALL Tân Phú', 'Chill Skybar'])
-    expect(r.dropped).toHaveLength(2)
-  })
-})
-
-describe('P1a · an evening never offers a daytime park or a place closed by 20:00 (uat e05de06)', () => {
-  it('Công viên Gia Định and Suối Tiên (08:00–17:00) are dropped; a riverside park and a bar stay', async () => {
-    const { dropEveningUnsuitableRows } = await import('../planItemGuard')
-    const r = dropEveningUnsuitableRows({ results: [
-      { name: 'CÔNG VIÊN GIA ĐỊNH', opening_hours: '04:00–22:00' },
-      { name: 'Công viên văn hóa Suối Tiên', opening_hours: '08:00–17:00' },
-      { name: 'Công viên Bờ Sông Sài Gòn', opening_hours: '05:00–22:00' },
-      { name: 'Social Club Rooftop', opening_hours: '15:00–00:00' },
-    ] })
-    expect((r.result as { results: Array<{ name: string }> }).results.map(x => x.name)).toEqual(['Công viên Bờ Sông Sài Gòn', 'Social Club Rooftop'])
   })
 })

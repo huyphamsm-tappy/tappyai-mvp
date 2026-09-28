@@ -55,6 +55,12 @@ export interface PlanningContext {
   inherited?: boolean
   /** The refinement text itself, so the block can name what to acknowledge. */
   refinement?: string | null
+  /**
+   * The evening plan is built by code on the fixed frame (eveningPlan.ts): the searches run before
+   * the model and the plan block is the system's. The planning block then asks for nothing — the
+   * introduction instruction is added once the stops are chosen.
+   */
+  fixedFrame?: boolean
 }
 
 const PLAN_TOOL_LINES: Record<PlanActivity, string> = {
@@ -71,6 +77,7 @@ const PLAN_TOOL_LINES: Record<PlanActivity, string> = {
 const EVENING_ACTIVITY_LINE = '- search_places (type=attraction) → hoạt động BUỔI TỐI cho người lớn: phố đi bộ, chợ đêm, show/nhạc sống, rooftop view, karaoke, bowling — KHÔNG khu vui chơi trẻ em, công viên nước, vườn thú, công viên giải trí ban ngày'
 
 export function buildPlanningBlock(planType: 'trip' | 'evening', lang = 'vi', ctx: PlanningContext = {}): string {
+  if (ctx.fixedFrame) return ''
   // The searches are decided HERE from the activities the user named — one per
   // activity, in parallel, and nothing else. A request that names none gets the
   // plan type's sensible default; a request that names three gets three. The

@@ -35,3 +35,11 @@ Các yêu cầu sửa web/server nằm ở mục 1 bên dưới. Phiên Android 
 ## 1. Yêu cầu web/server (Android KHÔNG sửa)
 
 (đang lập trong bước 1 — xem ANDROID-PARITY-MAP.md)
+
+## 2. Web → Android: thay đổi server/API (giữ tương thích ngược)
+
+- 2026-09-28 (web): kế hoạch "tối nay" không nêu hoạt động riêng do SERVER dựng trên khung cố định
+  (ăn tối 18:30 → chơi 20:00 → uống 21:30, `src/lib/ai/eveningPlan.ts`). Định dạng `[TAPPY_PLAN]` KHÔNG đổi
+  (type "evening", days[0].items có time/emoji/category/name/description/price/address/maps_link/place_id/
+  photo_url/booking_link) — Android không cần sửa. Luồng trả về có thêm nhiều cặp `9:`/`a:` search_places ở đầu
+  (1 cặp cho mỗi chặng) — Android đã bỏ qua frame `9:`/`a:` như trước.

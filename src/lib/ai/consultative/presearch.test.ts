@@ -84,8 +84,8 @@ describe('what the model and the client receive', () => {
     // One call: the place search or (owner 2026-09-28, c40 T7) the fare call.
     expect(route).toMatch(/\[preCall\.name\]\.execute\(preCall\.args/)
     expect(route).toMatch(/presearchPlan && toolExecutes\('search_places'\) \? \{ name: 'search_places', args: presearchPlan\.args \}/)
-    expect(route).toMatch(/prefixBody\(presearchFrames\(presearchOutcome\), sdkResponse\.body\)/)
-    expect(route).toMatch(/\[\.\.\.modelMessages, \.\.\.presearchMessages\(presearchOutcome\)\]/)
+    expect(route).toMatch(/prefixBody\(presearchAll\.map\(presearchFrames\)\.join\(''\), sdkResponse\.body\)/)
+    expect(route).toMatch(/\[\.\.\.modelMessages, \.\.\.presearchAll\.flatMap\(o => presearchMessages\(o\)\)\]/)
     expect(route).toMatch(/\+ \(presearchOutcome \? 1 : 0\)/)
   })
 })
@@ -122,7 +122,7 @@ describe('A1(b): the first byte does not wait for the search', () => {
     expect(route).toMatch(/const finishTurn = async \(\): Promise<Response> => \{/)
     expect(route).toMatch(/if \(willPresearch\) \{\s*return new Response\(deferredBody\(searchingFrame\(lang\), finishTurn\), \{[^}]*'X-Decision-Evidence-Id': evidenceId/)
     expect(route).toMatch(/return finishTurn\(\)\s*\}\s*$/)
-    expect(route).toMatch(/if \(willPresearch && preCall\) \{/)
+    expect(route).toMatch(/if \(willPresearch && preCall && !eveningSearches\) \{/)
   })
 })
 

@@ -1,4 +1,5 @@
 {
+  "ignoreCommand": "git diff --quiet HEAD^ HEAD -- . ':(exclude)android/'",
   "headers": [
     {
       "source": "/games/supertux/(.*)",

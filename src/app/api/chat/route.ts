@@ -54,7 +54,7 @@ import { runAiWriteAction } from '@/lib/ai/actions/runAction'
 import { savePriceWatchPolicy } from '@/lib/ai/actions/savePriceWatch'
 import { type Budget, extractBudget, extractPlanTotalBudget, applyBudgetFilter, LUXURY_PRICE_FLOOR, applyLuxuryStreamFilter } from '@/lib/ai/budget'
 import { detectPlaceConstraints, applyPlaceConstraints } from '@/lib/ai/placeConstraintFilter'
-import { dropEveningUnsuitableRows } from '@/lib/ai/planItemGuard'
+import { usesEveningFrame, eveningLocation, EVENING_STAGES, pickStageStop, buildEveningPlanBlock, eveningIntroInstruction, fixedPlanStream, type EveningStop } from '@/lib/ai/eveningPlan'
 import { buildSystem, buildSystemSimple, buildPrefBlock, buildRenderedDecisionBlock } from '@/lib/ai/promptBuilder'
 import { applyPlaceEnrichmentStreamFilter } from '@/lib/ai/streamEnrichment'
 import { splitToolResult, createEnrichmentCollector } from '@/lib/ai/toolResultSplit'
@@ -344,6 +344,10 @@ export async function POST(req: Request) {
         }
       })()
     : undefined
+  // Owner 2026-09-28 (P1a): an evening plan that names no activity of its own is built by code on the
+  // fixed frame — dinner → night out → a drink, one code-written search per stage (eveningPlan.ts).
+  const eveningFrame = usesEveningFrame(planningIntent, planning)
+  if (planning && eveningFrame) (planning as { fixedFrame?: boolean }).fixedFrame = true
   if (inheritedPlanningIntent) console.log(JSON.stringify({ type: 'tappyai_planning', step: 'inherited', planType: inheritedPlanningIntent, tripLength: planning?.tripLength ?? null, totalBudget: planning?.totalBudget ?? null }))
   // Where in the decision this turn sits (C2). "Rẻ hơn" only means "tighten the
   // current task" if there IS one, so refinement is gated on a prior assistant
@@ -1823,10 +1827,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           if (constrained.dropped.length > 0 || constrained.demotedClosed > 0 || constrained.priceUnknown > 0 || constraints.district) {
             console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'search_places', step: 'constraint_filter', budget_max: constraints.budgetMax, exclude: constraints.exclude, open_now: constraints.openNow, district: constraints.district?.label ?? null, dropped: constrained.dropped, demoted_closed: constrained.demotedClosed, price_unknown: constrained.priceUnknown, price_fits: constrained.priceFits }))
           }
-          // UAT 2026-09-28 (owner P1a): an evening plan never offers a children's park or a zoo.
-          const eveningRows = planningIntent === 'evening' ? dropEveningUnsuitableRows(constrained.result) : { result: constrained.result, dropped: [] as string[] }
-          if (eveningRows.dropped.length > 0) console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'search_places', step: 'evening_filter', dropped: eveningRows.dropped.length }))
-          const filtered = eveningRows.result
+          const filtered = constrained.result
           // Deterministic ranking runs BEFORE the model sees the result, so the
           // order it reads is already the order that fits this user.
           //
@@ -2082,7 +2083,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     presearchPlan && toolExecutes('search_places') ? { name: 'search_places', args: presearchPlan.args }
       : flightPresearch && toolExecutes('get_flight_prices') ? { name: 'get_flight_prices', args: flightPresearch.args }
         : null
-  const willPresearch = !!(!noToolTurn && tools && preCall)
+  const eveningSearches = eveningFrame && !noToolTurn && !!tools && toolExecutes('search_places')
+  const willPresearch = !!(!noToolTurn && tools && preCall) || eveningSearches
   const finishTurn = async (): Promise<Response> => {
   /**
    * A1(c) PRE-SEARCH (presearch.ts). When the search-now directive names the call, the route runs
@@ -2092,7 +2094,49 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
    * result the model reads exactly as it reads a failed live call.
    */
   let presearchOutcome: PresearchOutcome | null = null
-  if (willPresearch && preCall) {
+  // P1a (owner 2026-09-28): the fixed evening frame — every stage's search is code-written and run
+  // here, in parallel, through the same wrapped tool; code picks one open stop per stage and writes
+  // the plan block. The model only introduces the stops.
+  const eveningOutcomes: PresearchOutcome[] = []
+  let eveningBlock: string | null = null
+  let eveningAddendum = ''
+  if (eveningSearches) {
+    const execute = (tools as unknown as Record<string, { execute: (args: unknown, ctx: { toolCallId: string; messages: unknown[] }) => Promise<unknown> }>).search_places.execute
+    const location = eveningLocation(statedArea?.label ?? null, lastText)
+    const used = new Set<string>()
+    const stops: EveningStop[] = []
+    // Stage by stage, first search in parallel; a stage whose first search has no open row tries its next.
+    const firsts = await Promise.all(EVENING_STAGES.map(async stage => {
+      const args = { query: stage.searches[0].query, type: stage.searches[0].type, ...(location ? { location } : {}) }
+      const toolCallId = 'evening_' + stage.key + '_' + randomUUID().slice(0, 6)
+      const t0 = Date.now()
+      const result = await execute(args, { toolCallId, messages: [] }).catch(e => ({ error: e instanceof Error ? e.message.slice(0, 200) : 'search_failed' }))
+      return { toolCallId, toolName: 'search_places', args, result, ms: Date.now() - t0 } as PresearchOutcome
+    }))
+    for (const [i, stage] of EVENING_STAGES.entries()) {
+      let outcome = firsts[i]
+      eveningOutcomes.push(outcome)
+      let pick = pickStageStop(outcome.result, stage, new Set(used))
+      for (const s of stage.searches.slice(1)) {
+        if (pick) break
+        const args = { query: s.query, type: s.type, ...(location ? { location } : {}) }
+        const toolCallId = 'evening_' + stage.key + '_' + randomUUID().slice(0, 6)
+        const t0 = Date.now()
+        const result = await execute(args, { toolCallId, messages: [] }).catch(e => ({ error: e instanceof Error ? e.message.slice(0, 200) : 'search_failed' }))
+        outcome = { toolCallId, toolName: 'search_places', args, result, ms: Date.now() - t0 } as PresearchOutcome
+        eveningOutcomes.push(outcome)
+        pick = pickStageStop(outcome.result, stage, new Set(used))
+      }
+      if (pick) { stops.push({ stage, place: pick }); used.add(pick.place_id || normalizeVN((pick.name ?? '').toLowerCase())) }
+    }
+    console.log(JSON.stringify({ type: 'tappyai_evening_frame', location: location ?? null, searches: eveningOutcomes.map(o => (o.args as { query: string }).query), stops: stops.map(s => s.stage.key) }))
+    if (stops.length > 0) {
+      eveningBlock = buildEveningPlanBlock(stops, { lang, area: location, budgetTotal: planning?.totalBudget ?? null })
+      eveningAddendum = eveningIntroInstruction(stops, lang)
+    }
+    presearchOutcome = eveningOutcomes[0] ?? null
+  }
+  if (willPresearch && preCall && !eveningSearches) {
     const t0 = Date.now()
     const toolCallId = 'presearch_' + randomUUID().slice(0, 8)
     let result: unknown
@@ -2106,7 +2150,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     if (presearchPlan) console.log(JSON.stringify({ type: 'tappyai_presearch', reuse: !!presearchPlan.reuse, exact: presearchPlan.exact, query: presearchPlan.args.query, location: presearchPlan.args.location ?? null, placeType: presearchPlan.args.type, ms: presearchOutcome.ms, rows: Array.isArray((result as { results?: unknown[] })?.results) ? (result as { results: unknown[] }).results.length : null, error }))
     else if (flightPresearch) console.log(JSON.stringify({ type: 'tappyai_presearch', tool: 'get_flight_prices', origin: flightPresearch.args.origin, destination: flightPresearch.args.destination, departDate: flightPresearch.args.departDate ?? null, ms: presearchOutcome.ms, fares: Array.isArray((result as { flights?: unknown[] })?.flights) ? (result as { flights: unknown[] }).flights.length : null, error }))
   }
-  const modelMessagesWithPresearch = presearchOutcome ? [...modelMessages, ...presearchMessages(presearchOutcome)] : modelMessages
+  const presearchAll: PresearchOutcome[] = eveningOutcomes.length > 0 ? eveningOutcomes : presearchOutcome ? [presearchOutcome] : []
+  const modelMessagesWithPresearch = presearchAll.length > 0 ? [...modelMessages, ...presearchAll.flatMap(o => presearchMessages(o))] : modelMessages
   // F-015: give the question back if this turn ends in a terminal model failure. Single-shot: a
   // successful `onFinish` never refunds; a terminal error part (`onError`) or a streamText init
   // throw refunds exactly once. The tools in this route catch their own errors and never throw, so
@@ -2147,7 +2192,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     // tokens for a response nobody is receiving.
     abortSignal: req.signal,
     systemShared,
-    system: systemPrompt,
+    system: eveningAddendum ? systemPrompt + eveningAddendum : systemPrompt,
     messages: modelMessagesWithPresearch as typeof modelMessages,
     // Completion cap. Place/product replies previously hit finishReason:"length"
     // at 2048 (deterministic image/review/order URLs are token-heavy). Those are
@@ -2158,8 +2203,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     // with [CTA_BUTTONS] + [FOLLOWUPS]); 2048 is 2.5× that. Planning stays at 4096 (a
     // [TAPPY_PLAN] block is long by design) and image turns at 1024. Output is billed as
     // generated, so this changes no cost on a normal reply — it bounds a runaway one.
-    maxTokens: noToolTurn ? 300 : planningIntent ? 4096 : hasImage ? 1024 : 2048,
-    maxSteps: noToolTurn ? 1 : planningIntent ? 8 : hasImage ? 3 : 5,
+    maxTokens: noToolTurn ? 300 : eveningBlock ? 1024 : planningIntent ? 4096 : hasImage ? 1024 : 2048,
+    maxSteps: noToolTurn || eveningBlock ? 1 : planningIntent ? 8 : hasImage ? 3 : 5,
     // REMOVED (C2): a `prepareStep` block that forced tool choice per step. It
     // never ran — ai@4.3.19 destructures experimental_prepareStep in
     // generateText only (bundle line 4177); streamText (line 5193) takes
@@ -2307,7 +2352,9 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   const streamed = result.toDataStreamResponse()
   // UAT4 P1-f: a planning turn that announced its plan and stopped gets the block from one extra
   // call, streamed before the finish frame so every plan guard below still runs (planCompletion.ts).
-  const sdkResponse = planningIntent && streamed.body
+  const sdkResponse = eveningBlock && streamed.body
+    ? new Response(fixedPlanStream(streamed.body, eveningBlock), { status: streamed.status, headers: streamed.headers })
+    : planningIntent && streamed.body
     ? new Response(planCompletionStream(streamed.body, {
       needed: true,
       // The whole turn must finish under maxDuration: the completion gets what is left of the turn deadline.
@@ -2336,7 +2383,7 @@ ${completionInstruction(lang)}` },
     }), { status: streamed.status, headers: streamed.headers })
     : streamed
   // A1(c): the pre-search's `9:` / `a:` frames lead the stream, exactly where the SDK would have put them.
-  const baseResponse = presearchOutcome ? new Response(prefixBody(presearchFrames(presearchOutcome), sdkResponse.body), { status: sdkResponse.status, headers: sdkResponse.headers }) : sdkResponse
+  const baseResponse = presearchAll.length > 0 ? new Response(prefixBody(presearchAll.map(presearchFrames).join(''), sdkResponse.body), { status: sdkResponse.status, headers: sdkResponse.headers }) : sdkResponse
   // B7-A: photos are fetched only for the places the finished reply actually
   // names — the filter selects them, this resolves them. Each place degrades to
   // "no photo" independently; one slow or failing lookup never blocks the rest.
