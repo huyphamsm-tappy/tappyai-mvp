@@ -268,7 +268,9 @@ describe('what leaves, once the plan has its link', () => {
   it('Facebook: opens the sharer with the PLAN url — a link share, nothing copied, no "paste" instruction', async () => {
     await act(async () => { fireEvent.click(screen.getByTestId('share-target-facebook')) })
     expect(writeText).not.toHaveBeenCalled()
-    expect(open).toHaveBeenCalledWith(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(PLAN_URL)}`, '_blank', 'noopener,noreferrer')
+    // No 'noopener' feature: with it window.open always returns null and the menu reported a failure
+    // after Facebook had opened (uat 0ab1495). The opener link is cut on the returned window instead.
+    expect(open).toHaveBeenCalledWith(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(PLAN_URL)}`, '_blank')
     expect(String(open.mock.calls[0][0])).not.toBe(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent('https://www.tappyai.com')}`)
     expect(status()).toBe('share.opened:{"app":"share.facebook"}')
     expect(screen.getByTestId('share-target-facebook').textContent).toBe('share.facebook')

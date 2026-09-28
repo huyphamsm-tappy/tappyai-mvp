@@ -105,6 +105,18 @@ function urlArtifact(url: string, title?: string): ShareArtifact {
   return { kind: 'places', title: title ?? url, subject: title ?? url, text: url, url, places: [] }
 }
 
+/**
+ * Open a share dialog in a new tab and report whether it opened. `window.open(url, '_blank',
+ * 'noopener')` ALWAYS returns null (per spec), so the old check said "Không thể chia sẻ lúc này"
+ * right after Facebook had opened (measured on uat @ 0ab1495). Open, then cut the opener link.
+ */
+export function openShareWindow(url: string): boolean {
+  const w = window.open(url, '_blank')
+  if (!w) return false
+  try { w.opener = null } catch { /* cross-origin already */ }
+  return true
+}
+
 export default function ShareMenu({
   artifact,
   url,
@@ -322,7 +334,7 @@ export default function ShareMenu({
             onShared?.(id)
             return
           }
-          const opened = window.open(handoff, '_blank', 'noopener,noreferrer')
+          const opened = openShareWindow(handoff)
           if (id === 'viber') {
             setFeedback({ kind: copied ? 'ok' : 'error', text: copied ? t('share.copiedAndOpened', { app: appName(id) }) : t('share.appNotOpened', { app: appName(id) }) })
             if (copied) onShared?.(id)
@@ -421,7 +433,7 @@ export default function ShareMenu({
           }
           // The dialog can only carry the brand url; the brochure travels on the clipboard.
           const copied = textIsMoreThanUrl ? await copyText(a.text) : true
-          const opened = window.open(handoff, '_blank', 'noopener,noreferrer')
+          const opened = openShareWindow(handoff)
           if (!opened) { setFeedback({ kind: 'error', text: t('share.unavailable') }); return }
           setFeedback({
             kind: copied ? 'ok' : 'error',
