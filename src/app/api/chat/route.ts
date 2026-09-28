@@ -1350,7 +1350,11 @@ export async function POST(req: Request) {
   console.log(JSON.stringify({ type: 'tappyai_model', model: role, planningIntent }))
 
   // Truncate history to last 10 messages to control token costs
-  const trimmedMessages = messages.length > 10 ? messages.slice(-10) : messages
+  // UAT 2026-09-28 (owner P1b, measured on uat @ 1b79b97): after "mua đồ ăn vặt", "tối nay đi đâu chơi
+  // quận 1" was detected as a NEW consultation (ownDomainSwitch), yet the model still read the snack
+  // turns and planned "Tối nay ăn vặt & dạo phố". A new subject is answered on its own words: the
+  // earlier subject's turns do not reach the model.
+  const trimmedMessages = ownDomainSwitch ? messages.slice(-1) : messages.length > 10 ? messages.slice(-10) : messages
 
   // V2 highlighted regression: on a tool-less follow-up ("Giá cả thế nào?",
   // "cụ thể hơn", "chọn giúp tôi"), no PLACE_TOOL runs so bufferMode stays
