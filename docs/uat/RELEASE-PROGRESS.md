@@ -122,6 +122,16 @@ Overnight run 2026-09-28→29 DONE — final UAT SHA af8b4ba; morning report at 
 Offline: `SNIPPET_PRICE_GUARD_V2=1 MEDIA_PLACEMENT_V2=1 npx vitest run src/lib/ai src/app/api` → 5,461 pass / 0 fail.
 → If they stay ON after the UAT eval, the same two must be set to `1` on **Production** at the deploy (release step).
 
+### Steps 0–3 (2026-09-29) — model grades are REFERENCE ONLY; the owner decides on the review page
+| Step | UAT SHA | c40 (model) | Clarify b-turns | Owner queries | Evidence |
+|---|---|---|---|---|---|
+| 0 flags ON (SNIPPET_PRICE_GUARD_V2, MEDIA_PLACEMENT_V2) | 776f392 | 30/40 (F6 S6 T5 P5 E8) | 6/8 | — | 776f392/c40-step0/ |
+| 1 6-area frames + budget arithmetic | 83853cc | — | — | — | code: domainFrames.ts, planBudgetMath.ts |
+| 2 measure (48 + 11 real turns) | 83853cc | **31/40** (Food 7 · Shop 6 · Travel 4 · Spa 7 · Ent 7) | **3/8** | 0✅ 5⚠ 4❌ + O9 ⚠, O10 ❌ (signed-in reruns, eval account hit 300/day) | 83853cc/c40-step2/ (grading with verbatim quotes, 74 mobile shots, manifest) |
+Cost/turn (lower bound, Haiku 4.5 list): step0 $0.0062 → step2 $0.0057; tokens/turn 3,671 → 3,393; first text median 13.2 s → 14.1 s.
+**Step 3 — owner review page:** https://claude.ai/artifact/AZzyNWtpKkZC5RDaAvcm9g (59 items, grouped by area, model-failed first,
+Đạt / Không đạt + note saved to the artifact db `verdicts/<id>`). **Part B waits for the owner's approval there.**
+
 ## BÁO CÁO SÁNG 29/09 (overnight run, NO prod writes)
 
 **SHA cuối trên UAT: `af8b4ba`** (rc/web-uat). Evidence = `https://storage.googleapis.com/tappyai-media-uat/evidence/<SHA>/…`
