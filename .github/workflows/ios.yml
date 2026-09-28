@@ -112,7 +112,7 @@ jobs:
     name: Archive + upload to TestFlight
     if: github.event_name == 'workflow_dispatch'
     runs-on: macos-latest
-    timeout-minutes: 60
+    timeout-minutes: 100   # ~25 min build/upload + up to 45 min waiting on Apple's processing
     defaults:
       run:
         working-directory: ios
@@ -298,6 +298,12 @@ jobs:
               --apiKey "$ASC_KEY_ID" --apiIssuer "$ASC_ISSUER_ID" 2>&1 | tee build/altool.log
           fi
           echo "### TestFlight upload: build $BUILD_NUMBER" >> "$GITHUB_STEP_SUMMARY"
+
+      # "Upload succeeded" only means the file arrived. Apple processes it afterwards and can
+      # still reject it (build 16: ITMS-90683, missing NSSpeechRecognitionUsageDescription) while
+      # the run stays green. Wait for the verdict so a green run means a usable TestFlight build.
+      - name: Wait for App Store Connect processing
+        run: python3 scripts/asc_wait_for_build.py
 
       - name: Error summary
         if: failure()
