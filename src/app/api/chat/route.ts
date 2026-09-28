@@ -1086,6 +1086,8 @@ export async function POST(req: Request) {
     presearchPlan = { ...presearchPlan, reuse: { shown: priorVenuesIn(lastAssistantText).map(v => v.name).slice(0, 8) } }
   }
   // Owner 2026-09-28 (c40 T7): a flight request naming two airports runs its fare call before the model.
+  // Consult V2: a shopping pick runs the product search before the model (one model step, like a place pick).
+  const consultProductQuery = consult && (consult.turn === 'pick' || consult.turn === 'reject') && consult.domains[0] === 'shopping' && consult.query ? consult.query : null
   const flightPresearch = consultativeV1 && !presearchPlan && !clipContext ? planFlightPresearch(searchNow, lastText, new Date(), { planning: !!planningIntent }) : null
 
   /**
@@ -1567,7 +1569,7 @@ export async function POST(req: Request) {
     // left "ăn gì ngon giờ" / "đi chơi ở đâu" answered with a question and no tool call.
     // The turn after a clarify (item 1) is the first REAL reply: it must search now, never ask again.
     if (searchNow) console.log(JSON.stringify({ type: 'tappyai_consultative_v1', step: 'search_now', domain: decisionFrame.domains[0] ?? null, placeType: searchNow.type, exact: searchNow.exact }))
-    return buildConsultativeV1Block({ frame: situation, hardGaps: [], rendersCard: rendersDecisionCard, lang, now: new Date(), searchNow: presearchPlan?.reuse ? { query: presearchPlan.args.query, type: presearchPlan.args.type ?? 'restaurant', exact: true } : searchNow, afterClarify, presearched: presearchPlan !== null || flightPresearch !== null, reuseShown: presearchPlan?.reuse?.shown, askAfter: gateAskAfter, domain: consult ? frameDomainOf(consult.domains[0] ?? null) : frameDomainOf(gateDomain, planningIntent), frameTurn: consult && consult.turn !== 'ask' && consult.turn !== 'chat' ? consult.turn : 'pick' }) + consultUnderstood
+    return buildConsultativeV1Block({ frame: situation, hardGaps: [], rendersCard: rendersDecisionCard, lang, now: new Date(), searchNow: presearchPlan?.reuse ? { query: presearchPlan.args.query, type: presearchPlan.args.type ?? 'restaurant', exact: true } : searchNow, afterClarify, presearched: presearchPlan !== null || flightPresearch !== null || consultProductQuery !== null, reuseShown: presearchPlan?.reuse?.shown, askAfter: gateAskAfter, domain: consult ? frameDomainOf(consult.domains[0] ?? null) : frameDomainOf(gateDomain, planningIntent), frameTurn: consult && consult.turn !== 'ask' && consult.turn !== 'chat' ? consult.turn : 'pick' }) + consultUnderstood
       + renderReferencedBlock(referenced, []) + refetchLines
   })()
 
@@ -2155,10 +2157,11 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
    */
   const toolExecutes = (name: string) => typeof (tools as Record<string, { execute?: unknown }> | undefined)?.[name]?.execute === 'function'
   // The ONE call run before the model: the place search, or (owner 2026-09-28, c40 T7) the fare call.
-  const preCall: { name: 'search_places' | 'get_flight_prices'; args: PresearchPlan['args'] | FlightPresearchPlan['args'] } | null =
+  const preCall: { name: 'search_places' | 'get_flight_prices' | 'search_products'; args: PresearchPlan['args'] | FlightPresearchPlan['args'] | { query: string } } | null =
     presearchPlan && toolExecutes('search_places') ? { name: 'search_places', args: presearchPlan.args }
       : flightPresearch && toolExecutes('get_flight_prices') ? { name: 'get_flight_prices', args: flightPresearch.args }
-        : null
+        : consultProductQuery && toolExecutes('search_products') ? { name: 'search_products', args: { query: consultProductQuery } }
+          : null
   const eveningSearches = eveningFrame && !noToolTurn && !!tools && toolExecutes('search_places')
   const willPresearch = !!(!noToolTurn && tools && preCall) || eveningSearches
   const finishTurn = async (): Promise<Response> => {
