@@ -87,6 +87,7 @@ import { filterTransientMemory } from '@/lib/ai/consultative/memoryTransientFilt
 import { plainRequestTopic, appendHistoryTopic } from '@/lib/ai/consultative/memoryTopic'
 import { deriveSearchNow, SPECIFIC_DATE } from '@/lib/ai/consultative/searchNow'
 import { tripAskAfter, missingTripFacts } from '@/lib/ai/consultative/tripFacts'
+import { frameDomainOf } from '@/lib/ai/consultative/domainFrames'
 import { planPresearch, planFlightPresearch, type FlightPresearchPlan, presearchMessages, presearchFrames, prefixBody, deferredBody, searchingFrame, type PresearchOutcome, type PresearchPlan } from '@/lib/ai/consultative/presearch'
 import { wantsMoreFromSet, reusablePlaceSearch, type PlaceSearchEvidence } from '@/lib/ai/consultative/moreFromSet'
 import { coercePlaceType } from '@/lib/ai/tools/placeType'
@@ -1513,7 +1514,7 @@ export async function POST(req: Request) {
     // left "ăn gì ngon giờ" / "đi chơi ở đâu" answered with a question and no tool call.
     // The turn after a clarify (item 1) is the first REAL reply: it must search now, never ask again.
     if (searchNow) console.log(JSON.stringify({ type: 'tappyai_consultative_v1', step: 'search_now', domain: decisionFrame.domains[0] ?? null, placeType: searchNow.type, exact: searchNow.exact }))
-    return buildConsultativeV1Block({ frame: situation, hardGaps: [], rendersCard: rendersDecisionCard, lang, now: new Date(), searchNow: presearchPlan?.reuse ? { query: presearchPlan.args.query, type: presearchPlan.args.type ?? 'restaurant', exact: true } : searchNow, afterClarify, presearched: presearchPlan !== null || flightPresearch !== null, reuseShown: presearchPlan?.reuse?.shown, askAfter: gateAskAfter })
+    return buildConsultativeV1Block({ frame: situation, hardGaps: [], rendersCard: rendersDecisionCard, lang, now: new Date(), searchNow: presearchPlan?.reuse ? { query: presearchPlan.args.query, type: presearchPlan.args.type ?? 'restaurant', exact: true } : searchNow, afterClarify, presearched: presearchPlan !== null || flightPresearch !== null, reuseShown: presearchPlan?.reuse?.shown, askAfter: gateAskAfter, domain: frameDomainOf(gateDomain, planningIntent) })
       + renderReferencedBlock(referenced, []) + refetchLines
   })()
 
