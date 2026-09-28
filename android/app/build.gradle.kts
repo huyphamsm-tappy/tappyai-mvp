@@ -1,5 +1,6 @@
 import java.io.ByteArrayOutputStream
 import java.util.Base64
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.android.application)
@@ -55,6 +56,35 @@ fun gitSha(): String = try {
 /** Reads a Gradle property, treating blank as absent so `-PFoo=` cannot slip an empty value through. */
 fun releaseProp(name: String, default: String): String =
     (project.findProperty(name) as String?)?.takeIf { it.isNotBlank() } ?: default
+
+// ---------------------------------------------------------------------------
+// UAT build type — https://uat.tappyai.com + the AUDIT Supabase project.
+//
+// Everything it needs is read from android/local.properties (gitignored), and ONLY when a uat task
+// was actually requested — so debug/staging/release never even load the secret, and their
+// BuildConfig.VERCEL_BYPASS_SECRET is the empty string (guarded by ReleaseCarriesNoUatSecretTest):
+//   TAPPYAI_UAT_VERCEL_BYPASS_FILE=D:/TappyAI-backups/vercel-bypass.txt  (read at build time)
+//   TAPPYAI_UAT_SUPABASE_URL=https://<audit ref>.supabase.co
+//   TAPPYAI_UAT_SUPABASE_ANON_KEY=<audit anon key>
+// ---------------------------------------------------------------------------
+val uatRequested = gradle.startParameter.taskNames.any { Regex("Uat(?![a-z])").containsMatchIn(it) }
+val localProps = Properties()
+rootProject.file("local.properties").takeIf { it.exists() }?.inputStream()?.use { localProps.load(it) }
+fun uatProp(name: String): String {
+    if (!uatRequested) return ""
+    val value = localProps.getProperty(name)?.trim().orEmpty()
+    if (value.isEmpty()) throw GradleException("uat build: $name is missing from android/local.properties")
+    return value
+}
+val uatBypassSecret: String = if (!uatRequested) "" else {
+    val f = file(uatProp("TAPPYAI_UAT_VERCEL_BYPASS_FILE"))
+    if (!f.exists()) throw GradleException("uat build: the bypass file named by TAPPYAI_UAT_VERCEL_BYPASS_FILE does not exist")
+    f.readText().trim().also {
+        if (!Regex("^[A-Za-z0-9]{16,64}$").matches(it)) throw GradleException("uat build: the bypass file does not hold a bypass secret")
+    }
+}
+val uatSupabaseUrl = uatProp("TAPPYAI_UAT_SUPABASE_URL")
+val uatSupabaseAnonKey = uatProp("TAPPYAI_UAT_SUPABASE_ANON_KEY")
 
 val supabaseUrl = releaseProp("TAPPYAI_SUPABASE_URL", "https://your-project.supabase.co")
 val supabaseAnonKey = releaseProp("TAPPYAI_SUPABASE_ANON_KEY", "REPLACE_WITH_SUPABASE_ANON_KEY")
@@ -260,6 +290,8 @@ android {
         // Defaults to production; override with `-PTAPPYAI_WEB_APP_URL=https://...` (no trailing
         // slash). Applies to all variants.
         buildConfigField("String", "WEB_APP_URL", "\"$webAppUrl\"")
+        // Empty everywhere; only the `uat` build type below fills it.
+        buildConfigField("String", "VERCEL_BYPASS_SECRET", "\"\"")
 
         // App Links (prepared, off by default) — see the PublicLinkActivity alias in the manifest.
         // `-PTAPPYAI_APP_LINKS_ENABLED=true` turns the alias on; the host is derived from the same
@@ -334,6 +366,23 @@ android {
                 "API_BASE_URL",
                 "\"${project.findProperty("TAPPYAI_API_BASE_URL_STAGING") ?: "https://staging.tappyai.example.com/"}\""
             )
+        }
+        // Owner UAT build: the real UAT web backend and its AUDIT database, never production.
+        // Shares the `.staging` application id because app/google-services.json only declares
+        // com.tappyai.app / .debug / .staging — a new id would fail processUatGoogleServices.
+        // So a uat install replaces a staging install on the same device (and vice versa).
+        create("uat") {
+            initWith(getByName("debug"))
+            applicationIdSuffix = ".staging"
+            versionNameSuffix = "-uat"
+            isMinifyEnabled = false
+            isDebuggable = true
+            matchingFallbacks += listOf("debug")
+            buildConfigField("String", "API_BASE_URL", "\"https://uat.tappyai.com/\"")
+            buildConfigField("String", "WEB_APP_URL", "\"https://uat.tappyai.com\"")
+            buildConfigField("String", "SUPABASE_URL", "\"$uatSupabaseUrl\"")
+            buildConfigField("String", "SUPABASE_ANON_KEY", "\"$uatSupabaseAnonKey\"")
+            buildConfigField("String", "VERCEL_BYPASS_SECRET", "\"$uatBypassSecret\"")
         }
         release {
             isMinifyEnabled = true

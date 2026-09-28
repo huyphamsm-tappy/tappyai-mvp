@@ -23,6 +23,11 @@ object AppModule {
     @Named("baseUrl")
     fun provideBaseUrl(): String = BuildConfig.API_BASE_URL
 
+    /** Empty in every variant except `uat` — see DeploymentProtectionInterceptor. */
+    @Provides
+    @Named("vercelBypassSecret")
+    fun provideVercelBypassSecret(): String = BuildConfig.VERCEL_BYPASS_SECRET
+
     @Provides
     @Named("isDebug")
     fun provideIsDebug(): Boolean = BuildConfig.DEBUG
