@@ -449,9 +449,13 @@ export function buildPlacesLiveView(
   // The engine's order, with the lead first. `rank` already carries that order;
   // the lead is moved to the front rather than re-scored, because on a
   // shortlist-led turn the head of the shortlist is not always rank 0.
+  // Consult V2 (replay 2026-09-29): the alternatives the reply NAMES come right after the lead, in
+  // the reply's order — an engine rank 9/10 alternative fell off the 8-item card while the prose named
+  // it (text ≠ card). Unnamed rows follow by rank.
+  const namedAt = new Map((opts.picked ?? []).map((id, i) => [id, i] as const))
   const rest = recs
     .filter(r => r !== lead && r.entity.identity.name.trim() && r.entity.kind !== 'product')
-    .sort((a, b) => a.rank - b.rank)
+    .sort((a, b) => (namedAt.get(a.entity.id) ?? 99) - (namedAt.get(b.entity.id) ?? 99) || a.rank - b.rank)
 
   const items = [lead, ...rest].slice(0, MAX_ITEMS).map(r => toLive(r, MAX_ACTIONS))
   return {

@@ -144,25 +144,23 @@ describe('photos — only the cards above the fold, only without a provider thum
     }
   })
 
-  it('🚨 SPA-1 t2 exactly: the reply names alternatives ranked 9th/10th — off the card (8 items) — so the fold is filled from the items, and THAT fold\'s photo-less card keeps its photo', async () => {
-    // Descending ratings keep the engine order = provider order; rows 8 and 9 fall past the 8-item card.
+  it('🚨 SPA-1 t2: the alternatives the reply names (engine rank 9/10) are ON the card, right after the pick — text = card; only the fold without a thumbnail pays a photo', async () => {
+    // Descending ratings keep the engine order = provider order; rows 8 and 9 used to fall past the 8-item card.
     const rows = Array.from({ length: 10 }, (_, i) => venue(
       ['MOON SPA Quận 1', 'CHARM SPA Garden', 'Gội Đầu tại Charm Garden Spa', 'Trải nghiệm La Spa Premium', 'Sen Spa Bốn', 'Sen Spa Năm', 'Sen Spa Sáu', 'Sen Spa Bảy', 'Massage Hạ Spa Quận 1', 'Qispa Head & Massage'][i],
       i,
-      { rating_value: 4.9 - i / 10, ...([2, 3].includes(i) ? {} : { photo_url: THUMB(i) }) },
+      { rating_value: 4.9 - i / 10, ...([8].includes(i) ? {} : { photo_url: THUMB(i) }) },
     ))
     const { photoAsks, shown, view } = await turn({
       rows, prose: SPA_PROSE,
       photos: names => new Map(names.map(n => [n, [`https://img.example/${encodeURIComponent(n)}.jpg`]])),
     })
     expect(view.items).toHaveLength(8)
-    expect(view.items.map(i => i.name)).not.toContain('Massage Hạ Spa Quận 1')
-    const fold = shown.map(i => i.name)
-    expect(fold).toEqual(['MOON SPA Quận 1', 'CHARM SPA Garden', 'Gội Đầu tại Charm Garden Spa'])
-    // Card #3 (seen) is resolved; item #4 'Trải nghiệm La Spa Premium' (behind "Xem thêm") is not — was both.
-    expect(photoAsks).toEqual([['Gội Đầu tại Charm Garden Spa']])
-    expect(shown[2].image).toBe(`https://img.example/${encodeURIComponent('Gội Đầu tại Charm Garden Spa')}.jpg`)
-    expect(shown.slice(0, 2).map(i => i.image)).toEqual([THUMB(0), THUMB(1)])
+    // Consult V2 (liveView.ts): the named alternatives follow the lead in the reply's order.
+    expect(shown.map(i => i.name)).toEqual(['MOON SPA Quận 1', 'Massage Hạ Spa Quận 1', 'Qispa Head & Massage'])
+    // Only the shown card without a provider thumbnail pays a photo lookup.
+    expect(photoAsks).toEqual([['Massage Hạ Spa Quận 1']])
+    expect(shown[1].image).toBe(`https://img.example/${encodeURIComponent('Massage Hạ Spa Quận 1')}.jpg`)
   })
 
   it('a reply that names NO venue keeps the old provider-order selection (the no-card trailing block reads it)', () => {
