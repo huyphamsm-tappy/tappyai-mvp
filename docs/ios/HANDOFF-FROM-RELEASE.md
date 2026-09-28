@@ -1,5 +1,114 @@
 # iOS handoff from the 2026-09-28 public release
 
+## Release 2026-09-29 (DRAFT — fill at release)
+
+> Written 2026-09-28 before the release; every `<FILL>` is completed by the lead when it happens.
+> Full runbook: [`docs/uat/RELEASE-PLAN-2026-09-29.md`](../uat/RELEASE-PLAN-2026-09-29.md). The 2026-09-28 sections
+> below this one stay valid (iOS work list); this section records what production actually became.
+
+**Identity**
+- Release SHA on `main`: `<FILL full sha>` (merge of `rc/web-uat` @ `<FILL>`; PR #252, merge commit — not squash)
+- Tag: `<FILL e.g. release-2026-09-29>` · Vercel production deployment: `<FILL id>` · `/api/version` = `<FILL>`
+- Previous production: `origin/main` @ `f42ae4b` (C2 hotfix on `842379b`)
+- Backend for iOS: https://www.tappyai.com · Supabase prod `fwznnobrdctuskgrvuik`
+
+**Database migrations** — table, checks and rollbacks: RELEASE-PLAN §1. Summary:
+- Applied before the deploy: G1 shared_results, plan_shares, profile bio/cover, share ancestry, commerce providers +
+  feed tables + 27-Sep portal state, F-028, F-032, user_events #7/#8 (no-ops on prod), groups.avatar_url,
+  D3 decision_evidence_sweep (+ one-off sweep: `<FILL rows deleted>`), D5 audit-log PII retention, L1 review_likes private.
+- After the deploy: S1 group read boundary, music_tracks lockdown.
+- After the prod smoke passed: H1 owner column UPDATE privileges, M1 revoke reviews INSERT (reviews are written only
+  by the server now — iOS must post reviews through `POST /api/reviews`, never PostgREST).
+- Verify-only (already on prod): chat phase 1, messenger reachability, review_shares. Skipped: music_soundhelix_attribution.
+- Actual apply log: `<FILL backup dir>\APPLIED.tsv`.
+
+**Deferred: D1, D2, D4 (owner decision 2026-09-29)** — `user_memory` FK/cascade, `decision_evidence`/`anon_chat_usage`
+cascades, share-page/notification cascades + upload clean-up queue. Why: they change what deleting an account removes
+and D1 rewrites a column type; the owner chose not to take that risk in the launch window. Consequence for every
+client: `ACCOUNT_SELF_DELETE_ENABLED` is **off** on production → `GET /api/config` `flags.accountSelfDelete = false`,
+`POST /api/account/delete` → 404. **iOS keeps the email-request flow**; the P0 "In-app account deletion" row below
+applies only once the flag turns on (after D1/D2/D4). `/api/cron/account-deletion-jobs` answers 500 daily until D4
+(expected). Public `/delete-account` copy: `<FILL — reverted to the request-by-email text, or kept>` (RELEASE-PLAN §6.2).
+
+**Backup:** `D:\TappyAI-backups\prod-<FILL stamp>\` (pre-migration) and `…\prod-<FILL stamp>-pre-sec\` (before H1/M1);
+checks (a)(b)(c)`<FILL (d)>` passed per `CHECKS-PASSED.json`. Local only — never copied anywhere.
+
+**Env / flags set on Production for this release** (names; values stay in Vercel):
+- Added: `SERPER_DAILY_CREDIT_CEILING=15000`, `ACCESSTRADE_API_KEY`, `ACCESSTRADE_FEED_ENDPOINT` (`<FILL added y/n>`).
+- Removed: `ACCOUNT_SELF_DELETE_ENABLED` (was listed as `true` on Production; D1/D2/D4 deferred) `<FILL done>`.
+- Deliberately unset (code defaults = what UAT tested): `SHOW_PUBLIC_SHARE` (ON), `CONSULTATIVE_V1` (ON),
+  `PLACE_GUARD_ATTRIBUTION_V2` (ON), `RISK_BACKSTOP` (live), `SNIPPET_PRICE_GUARD_V2` / `MEDIA_PLACEMENT_V2` (OFF),
+  all `LLM_*` (Haiku 4.5 for every role).
+- NOT copied from Preview: `GCS_MEDIA_BUCKET`, `GCP_MEDIA_SERVICE_ACCOUNT` (UAT bucket/SA; prod uses code defaults
+  `tappyai-media-prod` / `tappyai-media-bridge`).
+
+**Commerce feed:** first `/api/cron/feed-ingest` run after deploy → `<FILL outcome / written per merchant>`.
+Deep links live after the portal-state rows (ACCESSTRADE, pseudonymous `sub1`): cellphones, klook, lazada, traveloka,
+tripcom, vexere, vietnamairlines. TikTok Shop, Shopee, DMX: direct links (no deeplink). Buy buttons from the feed
+appear only after a successful ingest; search-fallback chips ("Tìm trên …") show regardless.
+
+**Privacy G1:** APPROVED for release by the owner 2026-09-28 (`docs/uat/PRIVACY-REVIEW-G1.md` §7) with: kill switch
+`SHOW_PUBLIC_SHARE` (default ON; `false` + redeploy → `POST /api/shared-results[/preview]` 404 `not_available`,
+`flags.publicShare=false`), `/r/<slug>` and `/plan/<id>` always `noindex, nofollow`, not in the sitemap or IndexNow,
+and the `query` key stripped from `user_events` metadata. iOS: if iOS adds "Share publicly", hide it when
+`flags.publicShare == false`. Contact sync / `query_texts` are not in this release.
+
+**Android:** versionCode 10 / versionName 1.0.0, AAB from `<FILL sha>` (`scripts/release/build-aab.sh`), sha256
+`<FILL>`, upload-key SHA-256 `<FILL>`. Track: Internal testing `<FILL date>` → Production `<FILL date / "in review">`.
+Device checks F-107 (post-login layout) and F-098 (minified sign-in persistence): `<FILL>`.
+
+**Smoke results:** automated (`scripts/release/smoke-prod.mjs`, evidence `<FILL dir>`): `<FILL n/n>`; manual
+signed-in (RELEASE-PLAN §5b): `<FILL>`; after H1/M1 re-run: `<FILL>`.
+
+**Open issues NOT fixed in this release (out of scope)**
+- D1/D2/D4 account-deletion cascades (above); self-delete flag off; `/delete-account` copy decision (RELEASE-PLAN §6.2).
+- Share-card layout choice — waiting on the owner (RELEASE-PROGRESS "Share layouts"); R4: no layout picker web/Android.
+- Web vs `D:\redesign` deviations R1 Saved hero/chips, R2 Viết content hero, R3 Gợi ý cho bạn hero (ANDROID-REQUESTS §1).
+- Android: does not read `flags.publicShare` (public-link button 404s safely when OFF); F-107 / F-098 until verified on device.
+- iOS: not released — music gate uncompiled, clip metadata stripping (F-101) missing; iOS sends no `x-tappy-surface`.
+- APNs push: server has no `apns` branch (iOS subscribe → 400).
+- G1 retention: `shared_results` / `user_events` have no TTL; old `user_events.metadata.query` rows kept; no revoke UI;
+  `/api/scam-shield/share` not under `SHOW_PUBLIC_SHARE` (PRIVACY-REVIEW-G1 §7.4).
+- PL-001: multi-day plan turn 60–110 s (target < 30 s) — `docs/uat/POST-LAUNCH-BACKLOG.md`.
+- F-002 Next.js AVIF advisory: mitigated on Vercel; framework upgrade post-launch (RELEASE-REPORT).
+- FB/Zalo crawler previews verified only on production (UAT sits behind Vercel SSO).
+- Security medium/low hardening branch (`fix/security-medium-low`, its own migrations) is not in this release.
+- Phase 8 (payments, voice, LINE — `P8_*` env already on Vercel) parked; all `p8_` flags off.
+- UAT accounts created before 2026-09-28 ~10:30 ICT live in the PRODUCTION DB (DEPLOY-CHECKLIST §4f) — owner decision.
+
+**Rollback:** code → Vercel → Deployments → the previous production deployment (`f42ae4b`) → Instant Rollback /
+"Promote to Production" (no rebuild). Schema → reverse order in RELEASE-PLAN §1 via `apply-migration.sh … --rollback`,
+S1/L1 by re-creating their policies; rows only from the dump (DEPLOY-CHECKLIST §0.4). Roll back M1 then H1 **before**
+putting the old code back (the old code inserts reviews with the user's client). Flag-only rollbacks, same build:
+`SHOW_PUBLIC_SHARE=false`, `RISK_BACKSTOP=0`, `CONSULTATIVE_V1=0` (each needs a redeploy to take effect).
+
+**Next steps**
+1. iOS sync against this production: the P0/P1 tables below, plus H1/M1 (server-only review writes) and
+   `flags.publicShare`; compile on macOS and verify the music gate and F-101 before any TestFlight → App Store.
+2. Phase 8: audit `phase8-master` against this release SHA, then merge (its migrations and `p8_` flags stay off until then).
+3. D1/D2/D4 + self-delete flag as a follow-up release with its own backup (DEPLOY-CHECKLIST §4d order).
+
+### UAT infrastructure (GCP) — summary of `docs/uat/UAT-MEDIA-INFRA.md`
+Vercel **Preview** (uat.tappyai.com, branch `rc/web-uat`, audit DB `zdaprdfgpbpnxyofagmc`) uploads media to its own
+bucket through its own identity and cannot reach production media:
+- Project `aerobic-lock-498409-u7` (number 1023373437508). Bucket `gs://tappyai-media-uat` (asia-southeast1, uniform
+  access, soft delete 7 d, abort-multipart lifecycle 7 d, CORS for `https://uat.tappyai.com` + the rc/web-uat preview
+  host, public read like prod).
+- SA `tappyai-media-uat@…` with `roles/storage.objectUser` on the UAT bucket only; WIF pool `vercel-oidc-uat`, provider
+  `vercel-preview` (issuer `https://oidc.vercel.com/huyphamsm-tappys-projects`), condition = Vercel subject
+  `…:project:tappyai-mvp:environment:preview` only.
+- Vercel Preview env: `GCS_MEDIA_BUCKET`, `GCP_WIF_POOL`, `GCP_WIF_PROVIDER`, `GCP_MEDIA_SERVICE_ACCOUNT`,
+  `GCP_PROJECT_NUMBER`. Production (pool `vercel-oidc`, provider `vercel`, SA `tappyai-media-bridge`, bucket
+  `tappyai-media-prod`) is unchanged and relies on its own records / code defaults.
+- Fix found while proving it (`4e9f53d`): resumable upload sessions are opened with the caller's `Origin` (browser
+  CORS) — native apps send no Origin and are unaffected.
+- Rollback commands (unbind, delete pool/SA, remove Preview env; bucket delete only when UAT is retired) are in the
+  source doc. Evidence: `docs/uat/evidence/release-2026-09-28/shots/d97b261/`, `…/4e9f53d/`.
+
+---
+
+## Handoff of 2026-09-28 (unchanged below)
+
 - Release SHA (main): <FILL>
 - Android versionCode 10 / versionName 1.0.0 (`1dcc877`)
 - Backend: https://www.tappyai.com

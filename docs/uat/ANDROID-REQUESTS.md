@@ -57,3 +57,16 @@ Android làm theo D:/redesign, không làm theo web ở các mục dưới:
   API unchanged. Resumable sessions are opened with the request `Origin` when it is the same host — native apps send no
   Origin and are unaffected.
 
+- 2026-09-28 (web): kế hoạch DU LỊCH không còn tự giả định ngày đi / điểm xuất phát / phương tiện khi user chưa nói
+  (`src/lib/ai/planTripFactsGuard.ts`): nhãn ngày không kèm ngày tháng, không có bước bay/xe liên tỉnh, câu hỏi cuối
+  hỏi đúng các ý còn thiếu. Định dạng `[TAPPY_PLAN]` KHÔNG đổi — Android không cần sửa. Server cũng sửa chữ "ngan sách"
+  → "ngân sách" trong câu trả lời.
+
+## 3. Quy tắc bằng chứng mới (chủ dự án, 2026-09-28) — áp dụng cho CẢ phiên Android
+
+- KHÔNG commit ảnh/video vào git nữa (không sửa lịch sử commit cũ).
+- Upload ảnh chụp lên `gs://tappyai-media-uat/evidence/<SHA>/` (SHA = commit được chụp; web dùng SHA UAT từ
+  `/api/version`, Android dùng SHA đã build APK). Ví dụ: `gcloud storage cp *.png gs://tappyai-media-uat/evidence/<SHA>/android/`.
+- ⚠️ Bucket UAT đọc công khai theo URL — không chụp dữ liệu thật/cá nhân, chỉ tài khoản test.
+- Repo chỉ giữ RELEASE-PROGRESS.md (web) / tài liệu Android với đường dẫn `gs://…` hoặc
+  `https://storage.googleapis.com/tappyai-media-uat/evidence/<SHA>/…`.
