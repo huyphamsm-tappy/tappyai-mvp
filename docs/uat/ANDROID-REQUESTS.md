@@ -18,7 +18,15 @@ WEB-SESSION: STOPPED android/ @ <sha rc/web-uat cuối cùng có sửa android/>
 
 Phiên web cũng có thể ghi `WEB-SESSION: STOPPED android/` vào commit message.
 
-(chưa có)
+WEB-SESSION: STOPPED android/ @ 6e392d2 — 2026-09-28 15:40 (+07)
+
+Các sửa `android/` phiên web đã commit trên rc/web-uat (phiên Android làm tiếp TRÊN NỀN các commit này, đừng làm lại):
+- `c66d07d` TappyShare.CANONICAL_ORIGIN = BuildConfig.WEB_APP_URL (link chia sẻ theo môi trường build)
+- `3c5887a` MarkdownNormalize.kt + CardMarkdown.kt + TappyMarkdown/ChatResponse: không lộ `**` (ChatNoLiteralBoldTest)
+- `5e305f4` Tôi hub: tab Đã đăng / Đã chia sẻ / Đã lưu / Bị hạn chế / Đã ẩn / Đã thích / Địa điểm (ProfileHub*, strings_personal_v3)
+- `4515b0f` ChatResponseParser.normalizeImageLinks (link ảnh → ảnh) + TappyMarkdown: URL trần hiện tên nền tảng, link liền nhau có " · " (ChatLinkNormalizeTest)
+- `7e78e58` TikTokHandoff.kt (ACTION_SEND file → TikTok), TappyShare.isShareableUrl(url, configuredOrigin), manifest `<queries>` TikTok
+Toàn bộ Android unit test xanh tại 4515b0f/7e78e58 (819 + 284 chat).
 
 ### 0.2 Phiên Android → phiên web
 
