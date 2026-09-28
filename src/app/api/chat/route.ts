@@ -2271,6 +2271,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   const sdkResponse = planningIntent && streamed.body
     ? new Response(planCompletionStream(streamed.body, {
       needed: true,
+      // The whole turn must finish under maxDuration (60 s): the completion gets what is left of 55 s.
+      deadlineAt: startTime + 55_000,
       complete: async (soFar) => {
         const steps = await result.steps
         const toolResults = [

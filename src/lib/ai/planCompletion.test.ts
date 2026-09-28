@@ -85,3 +85,22 @@ describe('UAT4 P1-f: a planning turn that ends without its plan', () => {
     expect(d.length).toBeLessThanOrEqual(102)
   })
 })
+
+// Round 6 (c40 T1, 28 Sep 2026): the fixed 30 s budget timed out on a 61 s turn; the route runs under
+// maxDuration 60 s. The completion now gets what the TURN has left, and skips when too little is left.
+describe('the completion is bounded by the turn deadline', () => {
+  const plain = frames(sample.assistant)
+  it('too little time left → no call, turn shipped as is, outcome no_time', async () => {
+    const complete = vi.fn(async () => PLAN)
+    const events: Array<Record<string, unknown>> = []
+    const out = await read(planCompletionStream(streamOf(plain), { needed: true, complete, deadlineAt: Date.now() + 5_000, log: e => { events.push(e) } }))
+    expect(out).toBe(plain)
+    expect(complete).not.toHaveBeenCalled()
+    expect(events[0]?.outcome).toBe('no_time')
+  })
+  it('enough time left → the call runs and the block is appended', async () => {
+    const complete = vi.fn(async () => PLAN)
+    const out = await read(planCompletionStream(streamOf(plain), { needed: true, complete, deadlineAt: Date.now() + 40_000, log: () => {} }))
+    expect(textOf(out).endsWith(`\n\n${PLAN}\n`)).toBe(true)
+  })
+})
