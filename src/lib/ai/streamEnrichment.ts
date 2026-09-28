@@ -9,6 +9,7 @@ import { guardDistrictClaims } from './districtClaimGuard'
 import { statedDistrict } from './districts'
 import { guardBudgetFitInText } from './budgetFitGuard'
 import { guardUnsupportedClaims } from './unsupportedClaimGuard'
+import { modelPickName, pickStillStated, ALT_SENTENCE } from './modelPick'
 import { extractBudget } from './budget'
 import { guardSnippetPricesInText, pricesFromSnippets, type SnippetPriceScope } from './snippetPriceGuard'
 import { guardPlaceClaimsInText, isDirectTicketUrl, mentionsTickets } from './placeClaimGuard'
@@ -2446,7 +2447,11 @@ export function applyPlaceEnrichmentStreamFilter(
       console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'consultative_v1_pick_backstop', step: inRows ? 'subject_row' : 'skipped_referenced', candidate: candidate ?? null, subject: inRows }))
       return inRows
     }
-    const g1bFallback = bodyLetters < 40 ? fallbackSentence(subjectOnly(pickName)) : null
+    // c40 F8 (28 Sep 2026): the venue the MODEL chose (modelPick.ts), when the guards cut its sentence,
+    // is the one every server-authored pick sentence names — never the engine's pick in its place.
+    const modelPickRow = modelPickName(mainText, places.map(p => p.name || '').filter(Boolean))
+    const pickForFallback = modelPickRow && fallbackSentence(modelPickRow) ? modelPickRow : pickName
+    const g1bFallback = bodyLetters < 40 ? fallbackSentence(subjectOnly(pickForFallback)) : null
     if (g1bFallback) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'place_claim_fallback', v2: guardV2, body_letters: bodyLetters, emitted: true }))
     /**
      * Consultative V1 backstop — THE PICK MUST BE STATED (rule 1). Measured 2026-09-18 on the
@@ -2473,8 +2478,17 @@ export function applyPlaceEnrichmentStreamFilter(
         const f = normalizeVN(s.toLowerCase())
         return known.some(n => n.length >= 4 && f.includes(n)) || [...s.matchAll(/\*\*([^*\n]{3,80})\*\*/g)].some(m => isGrounded(normalizeHeading(m[1]), known))
       }
+      // THE MODEL'S PICK SURVIVES THE GUARDS (modelPick.ts; c40 F8, 28 Sep 2026). When the venue the
+      // model chose is no longer named in a pick sentence, ITS evidence-only sentence goes back — never
+      // the engine's pick in its place (measured: "Nhà Hàng Ngon" cut, "The Lủi - Quán Nhậu" shown).
+      const modelPick = modelPickRow
+      if (modelPick && !pickStillStated(body, modelPick)) {
+        const restored = fallbackSentence(subjectOnly(modelPick))
+        console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'consultative_v1_pick_backstop', step: restored ? 'model_pick_restored' : 'model_pick_no_evidence' }))
+        if (restored) return { sentence: restored, kind: 'place' as const }
+      }
       const sentences = sentenceSpans(body).map(([a, b]) => body.slice(a, b)).filter(s => s.trim())
-      const hasPickSentence = sentences.some(s => namesKnown(s) && !ALT.test(s))
+      const hasPickSentence = sentences.some(s => namesKnown(s) && !ALT.test(s) && !ALT_SENTENCE.test(s))
       if (hasPickSentence) return null
       const altOnly = sentences.some(s => namesKnown(s))
       if (altOnly) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'consultative_v1_pick_backstop', step: 'alternatives_only' }))
@@ -2508,8 +2522,11 @@ export function applyPlaceEnrichmentStreamFilter(
     // 2026-09-17 replay, run 2 #11), where the client renders it as an orphan line.
     const groundedProse = (() => {
       if (!fallback) return gated.text
-      // V1 backstop: the pick is the FIRST sentence of the body; the model's text follows.
-      if ((v1PickBackstop || shoppingNoneBackstop) && !g1bFallback) {
+      // V1 backstop: the pick is the FIRST sentence of the body; the model's text follows. The same
+      // when G1b restores the MODEL's own pick (c40 F8): a restored pick below "Nếu muốn, …" reads
+      // as an afterthought.
+      const restoresModelPick = !!g1bFallback && !!modelPickRow && pickForFallback === modelPickRow && !pickStillStated(bodyAfterGuards, modelPickRow)
+      if (((v1PickBackstop || shoppingNoneBackstop) && !g1bFallback) || restoresModelPick) {
         // The head is the SETTLED bytes of the released region (whitespace-normalised), so the
         // final send's alignment against the released prefix still holds.
         const head = releasedPrefixEnd === null ? '' : gated.text.slice(0, releasedPrefixEnd)

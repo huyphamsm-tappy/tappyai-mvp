@@ -74,6 +74,17 @@ describe('V1 pick backstop on the stream (G1 attribution ON)', () => {
     expect(out.startsWith('Mình chọn **Ốc Đào**')).toBe(true)
     expect(out.match(/Mình chọn/g)).toHaveLength(1)
   })
+  // c40 F8 (28 Sep 2026): the model's pick sentence was cut and the backstop led with the ENGINE pick.
+  it('the MODEL pick is restored, never replaced by the engine pick', async () => {
+    const out = await run('Mình chọn **Ốc Đào** vì có 4.9⭐ từ 9.999 đánh giá, đông khách nhất Quận 1. Nếu muốn, **Cơm Niêu Sài Gòn** cũng là lựa chọn ổn.')
+    expect(out).not.toContain('9.999')
+    expect(out.startsWith('Mình chọn **Ốc Đào** — 4.4⭐ (589 đánh giá Google Maps)')).toBe(true)
+    expect(out).not.toMatch(/^Mình chọn \*\*Cơm Niêu/)
+  })
+  it('"Thay thế: …" is an alternative — a body with only that line still gets the pick back', async () => {
+    const out = await run('Mình giả sử tối nay đi ăn. Thay thế: **Ốc Đào** cũng được nếu bạn thích hải sản.')
+    expect(out.startsWith('Mình chọn **')).toBe(true)
+  })
   it('is V1-only: flag context off leaves the asking body as it is', async () => {
     const out = await run('Để gợi ý đúng ý, mình cần biết thêm: bạn ưu tiên món Việt hay món Nhật, và có cần chỗ đậu xe không?', { v1: false })
     expect(out).not.toContain('Mình chọn')
