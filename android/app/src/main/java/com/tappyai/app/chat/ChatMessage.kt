@@ -16,6 +16,8 @@ data class ChatMessage(
     val role: TappyChatRole,
     val text: String,
     val followups: List<String> = emptyList(),
+    /** Consult V2 ASK questions of this turn (see [AskBlock]); shown as [AskCard] on the last reply. */
+    val ask: List<AskQuestion> = emptyList(),
     // Structured cards parsed out of an assistant reply (web parity — see [ChatResponseParser]).
     val plan: TappyPlan? = null,
     // The plan block verbatim — the payload a plan share publishes (see ParsedAssistantReply.planJson).

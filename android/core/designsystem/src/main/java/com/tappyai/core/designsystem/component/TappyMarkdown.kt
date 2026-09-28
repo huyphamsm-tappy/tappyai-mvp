@@ -114,7 +114,9 @@ private sealed interface MdBlock {
 }
 
 private val HEADING_REGEX = Regex("^(#{1,3})\\s+(.*)$")
-private val BULLET_REGEX = Regex("^\\s*[-*]\\s+(.*)$")
+// "•" too: the server writes its clarify / ASK questions as "• …" lines (consult V2, 2026-09-29);
+// without it they folded into one run-on paragraph on Android while web showed one per line.
+private val BULLET_REGEX = Regex("^\\s*[-*•]\\s+(.*)$")
 private val NUMBERED_REGEX = Regex("^\\s*\\d+\\.\\s+(.*)$")
 private val RULE_REGEX = Regex("^\\s*([-*_])\\1{2,}\\s*$")
 private val QUOTE_REGEX = Regex("^\\s*>\\s?(.*)$")

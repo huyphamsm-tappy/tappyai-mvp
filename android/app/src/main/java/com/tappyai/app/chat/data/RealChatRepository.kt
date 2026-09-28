@@ -213,9 +213,16 @@ internal const val SURFACE_ANDROID = "android"
  * on this device — the `x-tappy-age-declared` header (`GuestAgeStore`). Everything else is the
  * shared client's (the Bearer, when there is a session, comes from its interceptor).
  */
+/** Rendering capabilities this build declares to /api/chat (comma list). "ask" = [com.tappyai.app.chat.AskBlock]. */
+internal const val CAPS_HEADER = "x-tappy-caps"
+internal const val CAPS_ANDROID = "ask"
+
 internal fun chatRequest(baseUrl: String, body: RequestBody, ageDeclared: String? = null): Request = Request.Builder()
     .url("${baseUrl}api/chat")
     .header(SURFACE_HEADER, SURFACE_ANDROID)
+    // What THIS build can render beyond the surface default (ANDROID-REQUESTS R10). The surface alone
+    // cannot tell an old build (no [TAPPY_ASK] parser → raw JSON) from this one; a capability can.
+    .header(CAPS_HEADER, CAPS_ANDROID)
     .apply { if (!ageDeclared.isNullOrBlank()) header(GuestAgeStore.HEADER, ageDeclared) }
     .post(body)
     .build()

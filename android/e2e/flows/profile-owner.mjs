@@ -45,6 +45,9 @@ export async function web({ w, page, shot, check }) {
   for (const [tab, n] of TABS) {
     await page.getByRole('button', { name: new RegExp(`^${tab}`) }).first().click().catch(() => page.getByText(tab, { exact: true }).first().click())
     await page.waitForTimeout(2500)
+    // A tab loads its list after the click: wait until the (E2E) cards are there, or 15 s for an
+    // empty tab — a fixed 2.5 s caught "Đã đăng" mid-spinner on a slow run.
+    if (n > 0) await page.waitForFunction((k) => ((document.body.innerText.match(/\(E2E\)/g) || []).length >= k), n, { timeout: 15000 }).catch(() => {})
     await shot(`tab-${tab}`, true)
     const text = await page.locator('main').innerText().catch(() => page.locator('body').innerText())
     const cards = (text.match(/\(E2E\)/g) || []).length

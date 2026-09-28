@@ -300,6 +300,7 @@ class ChatViewModel @Inject constructor(
                                 plan = parsed?.plan,
                                 ctaButtons = parsed?.ctaButtons ?: emptyList(),
                                 followups = parsed?.followups ?: emptyList(),
+                                ask = parsed?.ask ?: emptyList(),
                                 shopping = parsed?.shopping,
                                 places = parsed?.places ?: emptyList(),
                                 segments = parsed?.segments ?: emptyList(),
@@ -688,6 +689,7 @@ class ChatViewModel @Inject constructor(
                         ctaButtons = parsed.ctaButtons,
                         segments = parsed.segments,
                         followups = followups,
+                        ask = parsed.ask,
                         // D1 — the decision the block carries, which Android used to discard.
                         shopping = parsed.shopping,
                         places = parsed.places,
