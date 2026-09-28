@@ -99,6 +99,29 @@ Overnight run 2026-09-28→29 DONE — final UAT SHA af8b4ba; morning report at 
 
 ---
 
+## OWNER ANSWERS 2026-09-29 (morning) — supersede the table above
+- **Q1:** the 26/9 design is a REQUEST, never run. The owner's 6-area output frame (TRAVEL/FOOD/SHOPPING/ENTERTAINMENT/SPA/MAIN CHAT)
+  + principles (1)–(8) is APPROVED → implement directly (docs/consultative/OUTPUT-CONTRACT-6-DOMAINS.md records it).
+- **Q7:** KEEP last night's fixes.  **Q2/Q3:** set `ACCOUNT_SELF_DELETE_ENABLED=false` EXPLICITLY on prod at the deploy (not removed).
+- **Q6:** owner picks the share layout at the PC — do not wait.
+- **PASS rule (all items, AI included):** PASS only with a REAL UAT screenshot (SHA). Unit tests / offline replay / model grades are
+  never PASS. Every model-graded failure quotes the wrong text VERBATIM. AI is accepted only by the OWNER on the UAT review page.
+  **Part B waits for that owner approval.**
+
+### Step 0 — flags of the chat / consultative pipeline (code default → UAT Preview → Production), 2026-09-29
+| Flag | Code default | UAT (Preview, rc/web-uat) | Production | In the 38/40 runs (18–19/9) |
+|---|---|---|---|---|
+| `CONSULTATIVE_V1` | ON (74b6f10) | unset → ON | unset → ON | ON |
+| `PLACE_GUARD_ATTRIBUTION_V2` | ON | unset → ON | unset → ON | ON |
+| `SNIPPET_PRICE_GUARD_V2` | **OFF** | **was unset → OFF; set `1` 2026-09-29** | unset → **OFF** | ON |
+| `MEDIA_PLACEMENT_V2` | **OFF** | **was unset → OFF; set `1` 2026-09-29** | unset → **OFF** | ON |
+| `RISK_BACKSTOP` | live | unset → live | unset → live | ON (default) |
+| `LLM_*_MODEL` / `LLM_PROVIDER` | Haiku 4.5 / claude | unset | unset | same |
+| `PLACES_PROVIDER` | serper | set (encrypted) | set (encrypted) | serper |
+| `CONTENT_SAFETY_GATE_ENABLED` / `_SCHEMA_MIGRATED` | off | unset | set (encrypted) | — (not chat) |
+Offline: `SNIPPET_PRICE_GUARD_V2=1 MEDIA_PLACEMENT_V2=1 npx vitest run src/lib/ai src/app/api` → 5,461 pass / 0 fail.
+→ If they stay ON after the UAT eval, the same two must be set to `1` on **Production** at the deploy (release step).
+
 ## BÁO CÁO SÁNG 29/09 (overnight run, NO prod writes)
 
 **SHA cuối trên UAT: `af8b4ba`** (rc/web-uat). Evidence = `https://storage.googleapis.com/tappyai-media-uat/evidence/<SHA>/…`

@@ -112,7 +112,7 @@ lead should eyeball the three Production values in the dashboard (not the CLI) �
 ### 2c. Present on Production with a value that must be checked/changed before the deploy
 | Name | Action | Why |
 |---|---|---|
-| `ACCOUNT_SELF_DELETE_ENABLED` | 🚨 **remove it (or set `false`) on Production before the deploy.** `vercel env ls production` shows it as a plain (non-sensitive) variable created ~6 h before this check, and its listed value is `true`. | Owner deferred D1/D2/D4 and wants the flag off. Current prod code (`origin/main`) has no self-delete route, so it is inert **today**; the release code reads it (`src/lib/account/selfDelete.ts:21`) → the in-app "Xóa tài khoản" button would go live on web and Android deleting accounts while AI memory, share pages, notifications and uploads survive. Preview never had it (UAT tested flag-off). |
+| `ACCOUNT_SELF_DELETE_ENABLED` | 🚨 **set it explicitly to `false` on Production at the deploy (owner 2026-09-29 — not removed).** `vercel env ls production` shows it as a plain (non-sensitive) variable created ~6 h before this check, and its listed value is `true`. | Owner deferred D1/D2/D4 and wants the flag off. Current prod code (`origin/main`) has no self-delete route, so it is inert **today**; the release code reads it (`src/lib/account/selfDelete.ts:21`) → the in-app "Xóa tài khoản" button would go live on web and Android deleting accounts while AI memory, share pages, notifications and uploads survive. Preview never had it (UAT tested flag-off). |
 | `PLACES_PROVIDER` | confirm value is `serper` or remove | §4a: prod must be unset/`serper`; `osm` = degraded emergency mode; `google` silently falls back to serper. Set on both envs; value not inspected here. |
 | `CONTENT_SAFETY_GATE_ENABLED`, `CONTENT_SAFETY_SCHEMA_MIGRATED` | confirm values | Exist on prod only. §4a says "unset until the safety schema is applied"; the checklist header says that schema IS on prod. Whatever they are today, they are what production runs now — just don't change them in this release without a test. |
 | `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_APP_URL` | confirm `https://www.tappyai.com` | §4e(c): share links, OG `og:url`, Android origin. |
@@ -168,7 +168,8 @@ Do them in this order. Nothing here is typed into a chat; values go only into th
      grep "^$k=" /d/TappyAI-backups/accesstrade.txt | cut -d= -f2- | tr -d '\r\n' | vercel env add "$k" production --sensitive
    done
    printf '15000' | vercel env add SERPER_DAILY_CREDIT_CEILING production
-   vercel env rm ACCOUNT_SELF_DELETE_ENABLED production --yes     # §2c — owner decision: self-delete stays off
+   vercel env rm ACCOUNT_SELF_DELETE_ENABLED production --yes && printf 'false' | vercel env add ACCOUNT_SELF_DELETE_ENABLED production
+   # §2c — OWNER 2026-09-29: set it EXPLICITLY to false (do not leave it unset); self-delete stays off
    vercel env ls production | grep -E 'ACCESSTRADE_|SERPER_DAILY|ACCOUNT_SELF_DELETE'   # names only
    ```
    (If the CLI rejects `--sensitive`, drop the flag and mark the variable Sensitive in the dashboard.)
@@ -219,7 +220,7 @@ Do them in this order. Nothing here is typed into a chat; values go only into th
 | `INDEXNOW_KEY` | optional | any random 32-hex key you generate; not needed at launch (shares are noindex) |
 | `GOOGLE_WEB_RISK_API_KEY` (+ `GOOGLE_CLOUD_PROJECT`) | optional | GCP console → APIs & Services → Credentials, Web Risk API enabled |
 Everything else the release needs is already on Production (§2) or is a fixed value the lead sets
-(`SERPER_DAILY_CREDIT_CEILING=15000`, removal of `ACCOUNT_SELF_DELETE_ENABLED`).
+(`SERPER_DAILY_CREDIT_CEILING=15000`, `ACCOUNT_SELF_DELETE_ENABLED=false` set explicitly — owner 2026-09-29).
 Also verify (dashboard, no value to copy): Supabase prod → Authentication → **Allow anonymous sign-ins** is ON (§2f).
 
 **(f) After the release is stable (same day)**
