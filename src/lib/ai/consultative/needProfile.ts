@@ -104,9 +104,10 @@ const SUBJECTS: ReadonlyArray<[RegExp, string, NeedProfile['domain']]> = [
 /** Weaker domain hints — set the domain but never the subject, and never reset. */
 const DOMAIN_HINTS: ReadonlyArray<[RegExp, NeedProfile['domain']]> = [
   // UAT 2026-09-28: "mua đồ ăn vặt" was read as a food OUTING (the "đồ ăn" hint below fires first) and
-  // asked "dưới 100k/người". Buying PACKAGED food — snacks, dried food — or any food on a marketplace /
-  // "online" is a product purchase. "ăn vặt ở đâu" / "quán ăn vặt" (no buy verb) stay places.
-  [/\b(?:mua|dat mua|dat hang|order)\b(?:\s+\S+){0,3}?\s+(?:do an vat|an vat|do an kho|do kho|banh keo|snack)\b|\b(?:mua|dat mua|dat hang|order)\b.*\b(?:online|shopee|lazada|tiki|tiktok shop)\b/, 'shopping'],
+  // asked "dưới 100k/người". Buying PACKAGED food — snacks, dried food — or any food "online" / on a
+  // marketplace ("trên sàn") is a product purchase. "ăn vặt ở đâu" / "quán ăn vặt" (no buy verb) stay
+  // places. No provider is named here (architectureLock).
+  [/\b(?:mua|dat mua|dat hang|order)\b(?:\s+\S+){0,3}?\s+(?:do an vat|an vat|do an kho|do kho|banh keo|snack)\b|\b(?:mua|dat mua|dat hang|order)\b.*\b(?:online|tren san|san thuong mai dien tu|san tmdt)\b/, 'shopping'],
   [/\ban gi\b|\bdo an\b|\ban ngon\b|\bmon an\b/, 'places'],
   // 🚨 MULTI-ACTIVITY OUTINGS — measured gap, 2026-09-14. "ăn chơi nhảy múa
   // tối nay" names no venue noun the SUBJECTS lexicon knows, so an evening
