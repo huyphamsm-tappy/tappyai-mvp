@@ -940,7 +940,15 @@ const hasTikTok = (p: PlaceLike) => isValidTikTokContentUrl(p.tiktok_review_url)
 // 10, and 0.5–1 s of wall time. Named places still come first, so a reply naming #5 keeps its photo.
 const PHOTO_ENRICHMENT_LIMIT = 3
 
-export function selectPlacesNeedingEnrichment(places: PlaceLike[], fullText: string): PlaceLike[] {
+export interface SelectPlacesOptions {
+  /**
+   * The names of the cards the client RENDERS above the fold (≤ CARDS_SHOWN), in card order
+   * (`renderedFoldNames`). Omitted ⇒ the pre-2026-09-29 selection, unchanged.
+   */
+  cardNames?: readonly string[]
+}
+
+export function selectPlacesNeedingEnrichment(places: PlaceLike[], fullText: string, opts: SelectPlacesOptions = {}): PlaceLike[] {
   // A place that already HAS a photo is not a candidate for a billed lookup —
   // this is the single highest-volume Serper call in the product, and paying for
   // an image we were handed for free is pure waste.
@@ -968,7 +976,91 @@ export function selectPlacesNeedingEnrichment(places: PlaceLike[], fullText: str
    * for a card entry to be blank. Bounded by PHOTO_ENRICHMENT_LIMIT.
    */
   const rest = named.filter(p => !mentioned.includes(p))
-  return [...mentioned, ...rest].slice(0, PHOTO_ENRICHMENT_LIMIT)
+  return [...mentioned, ...visibleRest(places, rest, dedupText, headers, opts.cardNames)].slice(0, PHOTO_ENRICHMENT_LIMIT)
+}
+
+/**
+ * 🔑 COST (2026-09-29, owner rule "only what is shown pays"). The "rest" slots used to go to the
+ * photo-less rows in PROVIDER order, whether or not they are among the three cards rendered above
+ * the fold. Measured on the spa pick replay (SPA-1 t2): both /images calls of the turn bought
+ * photos for the two Klook listing rows — one of them card #3 (seen), the other item #4, behind
+ * "Xem thêm" (not seen): 1 credit per such turn for an image nobody sees.
+ *
+ * Now, when the reply names at least one venue, a rest slot goes only to a card above the fold
+ * (`cardNames`, card order). Where a photo is SHOWN is unchanged:
+ *   · the card (web) shows the fold — every fold card without a photo is still resolved;
+ *   · the injector (clients without the card) places photos next to the venues the prose NAMES —
+ *     those are `mentioned` above, untouched;
+ *   · the injector's trailing block for UNNAMED rows runs only when the prose names no venue at
+ *     all — that case keeps the old provider-order rest, exactly as before.
+ * Without `cardNames` (no place card this turn) the old selection stands.
+ */
+function visibleRest(
+  places: PlaceLike[],
+  rest: PlaceLike[],
+  dedupText: string,
+  headers: ReturnType<typeof proseHeaders>,
+  cardNames: readonly string[] | undefined,
+): PlaceLike[] {
+  // No place card this turn (shopping, hotels without recommendations, a caller that passes no
+  // fold): the pre-2026-09-29 selection, unchanged.
+  if (rest.length === 0 || !cardNames) return rest
+  const all = places.map(p => (p.name as string) || '').filter(Boolean)
+  const anyNamed = all.some(n => findPlaceOffset(n, dedupText, headers, all.filter(o => o !== n)) !== -1)
+  if (!anyNamed) return rest
+  const key = (s: string) => s.trim().toLowerCase()
+  const order = new Map(cardNames.map((n, i) => [key(n), i]))
+  return rest
+    .filter(p => order.has(key(p.name as string)))
+    .sort((a, b) => order.get(key(a.name as string))! - order.get(key(b.name as string))!)
+}
+
+/**
+ * The venues the reply NAMED (prose order), then the engine's order, CARDS_SHOWN of them — the set
+ * the TikTok lookup asks about and the `picked` ids the card is given. One function for the card
+ * path below and for `renderedFoldNames` (the photo selection), so they cannot drift.
+ */
+function cardFold(recs: Recommendation[], text: string): { named: Recommendation[]; picked: Recommendation[]; headers: ReturnType<typeof proseHeaders>; allNames: string[] } {
+  const folded = normName(text)
+  const headers = proseHeaders(folded)
+  const allNames = recs.map(r => r.entity.identity.name)
+  const named = recs
+    .map(r => ({ r, at: findPlaceOffset(r.entity.identity.name, folded, headers, allNames.filter(n => n !== r.entity.identity.name)) }))
+    .filter(x => x.at >= 0)
+    .sort((a, b) => a.at - b.at)
+    .map(x => x.r)
+  const seen = new Set(named)
+  const fill = recs.filter(r => !seen.has(r))
+  return { named, picked: [...named, ...fill].slice(0, CARDS_SHOWN), headers, allNames }
+}
+
+/**
+ * The names of the cards the client RENDERS above the fold, computed the way the card itself is
+ * built below (model pick aligned, `buildPlacesLiveView` capped at its item ceiling, the named
+ * venues first, then the item order, `CARDS_SHOWN` of them) — `placesRenderOrder` on that view.
+ *
+ * 🚨 NOT `cardFold(...).picked`. Measured on the spa replay (SPA-1 t2): the reply named two
+ * alternatives the engine ranked 9th and 10th; the card's item list stops at 8, so they were not on
+ * screen and the fold was filled with the next items — one of them a Klook listing WITHOUT a
+ * thumbnail, whose photo is the one /images call on that turn that IS seen. Selecting by the prose
+ * fold would have dropped that visible photo. `undefined` when no place card renders.
+ */
+function renderedFoldNames(recs: readonly Recommendation[], text: string): string[] | undefined {
+  if (!EMIT_PLACES_ANNOTATION || recs.length === 0) return undefined
+  const { named } = cardFold([...recs], text)
+  const aligned = alignEmphasisToModelPick(recs, named[0]?.entity.id ?? null).recs
+  const view = buildPlacesLiveView(aligned, { picked: named.slice(0, CARDS_SHOWN).map(r => r.entity.id), shown: CARDS_SHOWN })
+  if (!view) return undefined
+  const nameOf = new Map(recs.map(r => [r.entity.id, r.entity.identity.name]))
+  return placesRenderOrder(view).visible.map(i => nameOf.get(i.id)).filter((n): n is string => !!n)
+}
+
+/**
+ * Does the recommendation already carry a VERIFIED TikTok review (an attributed, direct link to a
+ * TikTok post)? When every card above the fold has one, the late TikTok lookup has nothing to add.
+ */
+function hasVerifiedTikTok(r: Recommendation): boolean {
+  return r.entity.actions.some(a => a.kind === 'review' && a.attributed === true && typeof a.url === 'string' && isValidTikTokContentUrl(a.url))
 }
 
 /** Place names referenced by a [TAPPY_PLAN] block's items. */
@@ -1837,7 +1929,9 @@ export function applyPlaceEnrichmentStreamFilter(
     // top 8 blind while the injector used at most 3.
     if (resolvePhotos) {
       try {
-        const needed = selectPlacesNeedingEnrichment(places, mainText)
+        // The cards the client will actually render above the fold (see `renderedFoldNames`).
+        const cardNames = renderedFoldNames(collector?.placesRecommendations ?? [], mainText)
+        const needed = selectPlacesNeedingEnrichment(places, mainText, { cardNames })
         if (needed.length > 0) {
           const photos = await resolvePhotos(needed)
           for (const p of places) {
@@ -1915,27 +2009,21 @@ export function applyPlaceEnrichmentStreamFilter(
      *    A reply with no bold venue at all ("chưa xác nhận được…") is not that case.
      */
     const { pickedRecs, namedRecs, namedInProse, pickUnmatched } = (() => {
-      const folded = normName(mainText)
-      const headers = proseHeaders(folded)
-      const allNames = recsForCard.map(r => r.entity.identity.name)
-      const named = recsForCard
-        .map(r => ({ r, at: findPlaceOffset(r.entity.identity.name, folded, headers, allNames.filter(n => n !== r.entity.identity.name)) }))
-        .filter(x => x.at >= 0)
-        .sort((a, b) => a.at - b.at)
-        .map(x => x.r)
-      const seen = new Set(named)
-      const fill = recsForCard.filter(r => !seen.has(r))
+      const { named, picked, headers, allNames } = cardFold(recsForCard, mainText)
       // Only when there ARE rows to match: a no-tool turn with bold section titles is not this error.
       const unmatched = recsForCard.length > 0 && named.length === 0 && headers.length > 0
       if (unmatched) console.error(JSON.stringify({ type: 'tappyai_cards_error', reason: 'pick_unmatched', headers: headers.slice(0, 5).map(h => h.norm), rows: allNames.slice(0, 8) }))
       return {
-        pickedRecs: [...named, ...fill].slice(0, CARDS_SHOWN),
+        pickedRecs: picked,
         namedRecs: named.slice(0, CARDS_SHOWN),
         namedInProse: Math.min(named.length, CARDS_SHOWN),
         pickUnmatched: unmatched,
       }
     })()
-    if (resolveTikTok && recsForCard.length > 0) {
+    // COST (2026-09-29): the lookup is skipped only when every card above the fold already
+    // carries a verified TikTok review — there is nothing left for it to attribute. Otherwise the
+    // ONE batched request for the fold is unchanged (one credit whether it names one venue or three).
+    if (resolveTikTok && recsForCard.length > 0 && !pickedRecs.every(hasVerifiedTikTok)) {
       try {
         const cardNames = pickedRecs
           .map(r => r.entity.identity.name)

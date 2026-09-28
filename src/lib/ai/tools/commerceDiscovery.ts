@@ -1,6 +1,9 @@
 import { discoveryScopesFor, providerOwning, type DiscoveryScope } from '@/lib/ccp'
 import type { CommerceDomain, IntentType } from '@/lib/ccp'
-import { serperSearch } from './common'
+import { getCache, serperSearch, setCache } from './common'
+import { cacheKeyPart } from './cacheKeys'
+import { serperCacheGet, serperCacheSet, serperCacheTtlSeconds } from './serperCache'
+import { recordSerperCacheHit } from './serperMeter'
 import { streetOf, venueCoreName, venueTitleMatches } from '@/lib/links/venueIdentity'
 
 // ── Commerce discovery — finding a merchant's page for a subject ─────────────
@@ -25,8 +28,9 @@ import { streetOf, venueCoreName, venueTitleMatches } from '@/lib/links/venueIde
 // 🚨 BUDGET. Serper is billed per request. Discovery runs at most
 // MAX_QUERIES_PER_TURN searches per tool call, only for subjects that do not
 // already carry an owned URL, and only while CCP is enabled (the caller gates).
-// `serperSearch` memoises non-empty results for its own TTL; nothing here adds
-// a longer-lived cache (owner rule: no permanent caching).
+// `serperSearch` memoises non-empty results (24 h shared); `cachedDiscoverySearch`
+// below adds the EMPTY answer for the same 24 h (owner rule 2026-09-29). Nothing is
+// kept beyond the TTL (owner rule: no permanent caching).
 
 export const MAX_QUERIES_PER_TURN = 3
 // Four hints per provider (14 Sep 2026): TikTok Shop keyword pages precede the product page in the index.
@@ -56,6 +60,35 @@ export interface DiscoveredHint {
   title?: string
   /** The index snippet — what the listing itself states (a date, a venue); never a fact of ours. */
   snippet?: string
+}
+
+// ── 24 h cache per (provider scope, entity) — owner rule 2026-09-29 ─────────────────────────
+//
+// A discovery query IS the (provider, entity) pair: the entity's name (+ locality) and the
+// provider's `site:` operand. `serperSearch` already keeps a NON-EMPTY answer 24 h in the shared
+// store (serperCache.ts), but a scoped venue lookup is EMPTY most of the time — Klook lists
+// experiences, not the venues Maps returns (measured on the spa pick replay SPA-1 t2: 3 of 3
+// venue lookups came back with nothing) — so the same venue was paid for again on every turn.
+// The empty answer is now remembered too, for the same 24 h, under its own variant key
+// (`search:ccp-none`) so it can never be read as a result by `serperSearch`. Only a genuine empty
+// answer is stored: a timeout, an HTTP error or the credit ceiling (`null`) never is.
+const NEGATIVE_VARIANT = 'ccp-none'
+const NEGATIVE_MARKER = [{ none: true }]
+const negativeKey = (query: string) => `ccpnone:${cacheKeyPart(query)}`
+
+export async function cachedDiscoverySearch(query: string): Promise<Array<{ title: string; link: string; snippet: string }> | null> {
+  if (getCache(negativeKey(query))) return []
+  if (await serperCacheGet('search', query, null, NEGATIVE_VARIANT)) {
+    recordSerperCacheHit('search')
+    setCache(negativeKey(query), true, serperCacheTtlSeconds() * 1000)
+    return []
+  }
+  const rows = await serperSearch(query)
+  if (Array.isArray(rows) && rows.length === 0) {
+    setCache(negativeKey(query), true, serperCacheTtlSeconds() * 1000)
+    await serperCacheSet('search', query, null, NEGATIVE_MARKER, NEGATIVE_VARIANT)
+  }
+  return rows
 }
 
 const quote = (s: string) => `"${s.replace(/["\n\r]/g, ' ').trim()}"`
@@ -119,7 +152,7 @@ export async function discoverCommerceHints(
   subjects: DiscoverySubject[],
   opts: { search?: SearchFn; maxQueries?: number; scopes?: DiscoveryScope[] } = {},
 ): Promise<DiscoveredHint[]> {
-  const search = opts.search ?? serperSearch
+  const search = opts.search ?? cachedDiscoverySearch
   const scopes = opts.scopes ?? discoveryScopesFor(domain, intentType)
   if (scopes.length === 0 || subjects.length === 0) return []
   let budget = opts.maxQueries ?? MAX_QUERIES_PER_TURN
@@ -170,7 +203,7 @@ export async function discoverBySubject(
   locality: string | undefined,
   opts: { search?: SearchFn; scopes?: DiscoveryScope[]; perScope?: number } = {},
 ): Promise<DiscoveredHint[]> {
-  const search = opts.search ?? serperSearch
+  const search = opts.search ?? cachedDiscoverySearch
   const scopes = opts.scopes ?? discoveryScopesFor(domain, intentType)
   const name = subject.replace(/["\n\r]/g, ' ').replace(/\s+/g, ' ').trim()
   if (scopes.length === 0 || !name) return []
