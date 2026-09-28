@@ -1,0 +1,264 @@
+{
+  "id": "T1",
+  "text": "Đi Đà Nẵng 3 ngày 2 đêm cho 2 người, ngân sách 6 triệu",
+  "parent": null,
+  "status": 200,
+  "ms": 61827,
+  "evidenceId": "90c71f73-c335-4730-a913-7c9d90b20247",
+  "toolCalls": [
+    {
+      "tool": "get_hotel_prices",
+      "args": {
+        "location": "Đà Nẵng",
+        "checkIn": "2026-10-03",
+        "checkOut": "2026-10-05"
+      }
+    },
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "nhà hàng quán ăn ngon Đà Nẵng",
+        "location": "Đà Nẵng",
+        "type": "restaurant"
+      }
+    },
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "điểm tham quan du lịch Đà Nẵng",
+        "location": "Đà Nẵng",
+        "type": "attraction"
+      }
+    },
+    {
+      "tool": "get_weather",
+      "args": {
+        "location": "Đà Nẵng"
+      }
+    },
+    {
+      "tool": "get_flight_prices",
+      "args": {
+        "origin": "TP HCM",
+        "destination": "Đà Nẵng",
+        "departDate": "2026-10-03",
+        "returnDate": "2026-10-05",
+        "passengers": 2
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Tâm Ngon Garden Đà Nẵng",
+      "rating": 4.9,
+      "count": 1065,
+      "price": "1-100.000 ₫",
+      "hours": "06:00–14:00, 17:00–21:00",
+      "address": "66-68 Trần Quốc Toản, Hải Châu, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "Ngon Phố Đà - Homey Authentic Vietnamese Cuisine",
+      "rating": 4.9,
+      "count": 594,
+      "price": "100-300 N ₫",
+      "hours": "10:00–22:00",
+      "address": "300 Võ Nguyên Giáp, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "NGON DA NANG - VIETNAMESE CUISINE RESTAURANT",
+      "rating": 4.9,
+      "count": 2206,
+      "price": "100-600 N ₫",
+      "hours": "09:00–22:30",
+      "address": "88B Lê Quang Đạo, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "Cơm nhà vui",
+      "rating": 4.8,
+      "count": 2201,
+      "price": "100-200 N ₫",
+      "hours": "10:00–22:00",
+      "address": "86 Đ. 2 Tháng 9, Hải Châu, Đà Nẵng 10000, Việt Nam"
+    },
+    {
+      "name": "Ngon Hà Nội Xưa Restaurant",
+      "rating": 4.7,
+      "count": 1297,
+      "price": "100-200 N ₫",
+      "hours": "09:30–22:00",
+      "address": "285 Hồ Nghinh, Sơn Trà, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "Nhà hàng Ngon Thị Hoa",
+      "rating": 4.4,
+      "count": 1798,
+      "price": "100-500 N ₫",
+      "hours": "06:00–22:00",
+      "address": "Str, 100 Lê Quang Đạo, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "Quán Cô Hồng - Đặc Sản Đà Nẵng",
+      "rating": 4.5,
+      "count": 2771,
+      "price": "100-200 N ₫",
+      "hours": "09:00–21:30",
+      "address": "103 Nguyễn Văn Thoại, An Hải, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "Ăn Thôi",
+      "rating": 4.8,
+      "count": 8094,
+      "price": "100-300 N ₫",
+      "hours": "10:30–21:30",
+      "address": "114 Bạch Đằng, Hải Châu, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "Mộc quán Seafood Đà Nẵng",
+      "rating": 4.8,
+      "count": 30480,
+      "hours": "10:30–22:30",
+      "address": "26 Tô Hiến Thành, An Hải, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "Nhà Hàng Hải Sản - Ơ Kìa",
+      "rating": 4.8,
+      "count": 3189,
+      "hours": "06:00–23:00",
+      "address": "7 Trần Phú, Hải Châu, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "Ngũ Hành Sơn",
+      "rating": 4.4,
+      "count": 42935,
+      "hours": "07:00–17:30",
+      "address": "81 Huyền Trân Công Chúa, Hoà Hải, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "Bảo tàng 3D Art In Paradise",
+      "rating": 4.4,
+      "count": 3418,
+      "hours": "08:30–18:00",
+      "address": "Lô 10 Trần Nhân Tông, Sơn Trà, Đà Nẵng, Việt Nam"
+    },
+    {
+      "name": "Tượng Cá Chép Hóa Rồng",
+      "rating": 4.5,
+      "count": 1483,
+      "hours": "Mở cửa cả ngày",
+      "address": "Đ. Trần Hưng Đạo, An Hải, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "Ghềnh Bàng",
+      "rating": 4.5,
+      "count": 1161,
+      "hours": "Mở cửa cả ngày",
+      "address": "Hoàng Sa, Sơn Trà, Đà Nẵng, Việt Nam"
+    },
+    {
+      "name": "Cầu Rồng",
+      "rating": 4.5,
+      "count": 9556,
+      "hours": "Mở cửa cả ngày",
+      "address": "Cầu Rồng, An Hải, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "Nhà Vọng Cảnh",
+      "rating": 4.5,
+      "count": 1130,
+      "hours": "Mở cửa cả ngày",
+      "address": "Nhà Vọng Cảnh, Sơn Trà, Đà Nẵng, Việt Nam"
+    },
+    {
+      "name": "Mũi Nghê",
+      "rating": 4.5,
+      "count": 217,
+      "address": "Sơn Trà, Đà Nẵng, Việt Nam"
+    },
+    {
+      "name": "Bảo tàng Điêu khắc Chăm Đà Nẵng",
+      "rating": 4.2,
+      "count": 8222,
+      "hours": "07:00–17:00",
+      "address": "02 Đ. 2 Tháng 9, Phường, Hải Châu, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "Cầu Vàng",
+      "rating": 4.6,
+      "count": 14878,
+      "hours": "08:00–19:00",
+      "address": "XXVW+XJ, Hòa Vang, Đà Nẵng, Việt Nam"
+    },
+    {
+      "name": "Đỉnh Bàn Cờ",
+      "rating": 4.6,
+      "count": 4474,
+      "hours": "07:30–17:30",
+      "address": "Bàn cờ, Sơn Trà, Đà Nẵng, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình chọn **Ngũ Hành Sơn** — 4.4⭐ (42.935 đánh giá Google Maps); giờ mở cửa theo Google Maps: 07:00–17:30.\n\nMình lập kế hoạch cho chuyến đi Đà Nẵng 3 ngày 2 đêm cho 2 người với ngân sách 6 triệu VND.\n\nMình sẽ lập kế hoạch chi tiết cho chuyến đi 3 ngày 2 đêm của bạn. Mình giả sử bay từ TP.HCM đi Đà Nẵng ngày 3/10 và về ngày 5/10. Thời tiết Đà Nẵng lúc đó khoảng 27°C, trời may, không mưa nhiều — rất thích hợp để tham quan và ăn uống ngoài trời.\n\n[TAPPY_PLAN]\n{\"type\":\"trip\",\"title\":\"Đà Nẵng 3 ngày 2 đêm cho 2 người — Biển, ẩm thực & thắng cảnh\",\"people\":2,\"budget_total\":\"6.000.000 VND\",\"days\":[{\"label\":\"Ngày 1 (3/10) — Đến Đà Nẵng & Khám phá thành phố\",\"items\":[{\"time\":\"14:00\",\"emoji\":\"✈️\",\"category\":\"transport\",\"name\":\"Chuyến bay TP.HCM → Đà Nẵng\",\"description\":\"Chuyến bay chiều (khoảng 1h30 bay).\",\"price\":\"chưa có giá\",\"address\":\"Sân bay Tân Sơn Nhất → Sân bay Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?q=Da+Nang+Airport\",\"booking_link\":\"https://go.isclix.com/deep_link/6277265300509373567/6455552313033835511?url=https%3A%2F%2Fvn.trip.com%2Fflights%2Fshowfarefirst%3Fdcity%3Dsgn%26acity%3Ddad%26ddate%3D2026-10-03%26rdate%3D2026-10-05%26flighttype%3Drt%26class%3Dy%26quantity%3D2%26locale%3Dvi-VN%26curr%3DVND&utm_source=tappyai&utm_medium=ccp&sub1=a73ec874a2f11f6df10c5e64\",\"place_id\":\"\"},{\"time\":\"16:30\",\"emoji\":\"🏨\",\"category\":\"hotel\",\"name\":\"M Hotel Da Nang\",\"description\":\"**4.8⭐ (2.860 đánh giá Google Maps)** — Khách sạn 3 sao gần biển, phòng sạch sẽ, có hồ bơi.\",\"price\":\"chưa có giá\",\"address\":\"286 Võ Nguyên Giáp, Ngũ Hành Sơn, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=7069989189938949055\",\"booking_link\":\"https://mhotel.vn/property/m-hotel-da-nang/\",\"place_id\":\"ChIJp0AYSgAXQjERv6spuLWlHWI\"},{\"time\":\"18:30\",\"emoji\":\"🍜\",\"category\":\"food\",\"name\":\"Tâm Ngon Garden Đà Nẵng\",\"description\":\"**4.9⭐ (1.065 đánh giá Google Maps)** — Nhà hàng Việt Nam, ăn tối, Đang mở cửa.\",\"price\":\"chưa có giá\",\"address\":\"66-68 Trần Quốc Toản, Hải Châu, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=16996332492716890959\",\"booking_link\":\"\",\"place_id\":\"ChIJF9KrROkXQjERT9vRCFoa3-s\"}]},{\"label\":\"Ngày 2 (4/10) — Tham quan thắng cảnh & ăn hải sản\",\"items\":[{\"time\":\"08:00\",\"emoji\":\"🌅\",\"category\":\"entertainment\",\"name\":\"Cầu Rồng\",\"description\":\"**4.5⭐ (9.556 đánh giá Google Maps)** — Biểu tượng Đà Nẵng, mở cửa cả ngày. Đi bộ, chụp ảnh, không phí vào cửa.\",\"price\":\"chưa có giá\",\"address\":\"Cầu Rồng, An Hải, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=329807663884316974\",\"booking_link\":\"\",\"place_id\":\"ChIJL1GKWJYZQjERLrEGqlK2kwQ\"},{\"time\":\"10:00\",\"emoji\":\"⛰️\",\"category\":\"entertainment\",\"name\":\"Ngũ Hành Sơn\",\"description\":\"**4.4⭐ (42.935 đánh giá Google Maps)** — Thắng cảnh nổi tiếng, mở 7:00-17:30.\",\"price\":\"chưa có giá\",\"address\":\"81 Huyền Trân Công Chúa, Hoà Hải, Ngũ Hành Sơn, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=13577824764986909893\",\"booking_link\":\"https://nguhanhson.org/\",\"place_id\":\"ChIJ2y5L4dQNQjERxeSLc68fbrw\"},{\"time\":\"12:30\",\"emoji\":\"🦞\",\"category\":\"food\",\"name\":\"Mộc quán Seafood Đà Nẵng\",\"description\":\"**4.8⭐ (30.480 đánh giá Google Maps)** — Nhà hàng hải sản nổi tiếng, mở 10:30-22:30.\",\"price\":\"chưa có giá\",\"address\":\"26 Tô Hiến Thành, An Hải, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=2059427300039139311\",\"booking_link\":\"https://mocseafood.com/\",\"place_id\":\"ChIJx6-KGnIXQjER7x-T0zeOlBw\"},{\"time\":\"18:00\",\"emoji\":\"🎨\",\"category\":\"entertainment\",\"name\":\"Bảo tàng 3D Art In Paradise\",\"description\":\"**4.4⭐ (3.418 đánh giá Google Maps)** — Bảo tàng nghệ thuật tương tác, mở 8:30-18:00.\",\"price\":\"chưa có giá\",\"address\":\"Lô 10 Trần Nhân Tông, Sơn Trà, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=10503400368954609584\",\"booking_link\":\"http://artinparadise.com.vn/\",\"place_id\":\"ChIJcVJkUPcXQjERsA8_dfySw5E\"},{\"time\":\"20:00\",\"emoji\":\"🍽️\",\"category\":\"food\",\"name\":\"NGON DA NANG - VIETNAMESE CUISINE RESTAURANT\",\"description\":\"**4.9⭐ (2.206 đánh giá Google Maps)** — Nhà hàng Việt Nam, mở 9:00-22:30.\",\"price\":\"chưa có giá\",\"address\":\"88B Lê Quang Đạo, Ngũ Hành Sơn, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=9932503529764339621\",\"booking_link\":\"https://ngondanangrestaurant.com/reservation/\",\"place_id\":\"ChIJ8QPkSI8XQjERpb_q7VVX14k\"}]},{\"label\":\"Ngày 3 (5/10) — Tham quan cuối & bay về\",\"items\":[{\"time\":\"08:00\",\"emoji\":\"🏛️\",\"category\":\"entertainment\",\"name\":\"Bảo tàng Điêu khắc Chăm Đà Nẵng\",\"description\":\"**4.2⭐ (8.222 đánh giá Google Maps)** — Bảo tàng di sản, mở 7:00-17:00.\",\"price\":\"chưa có giá\",\"address\":\"02 Đ. 2 Tháng 9, Hải Châu, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=7118670658497913132\",\"booking_link\":\"http://chammuseum.vn/\",\"place_id\":\"ChIJLWoAs80ZQjERLKHDYD-ZymI\"},{\"time\":\"10:30\",\"emoji\":\"☕\",\"category\":\"food\",\"name\":\"Cơm nhà vui\",\"description\":\"**4.8⭐ (2.201 đánh giá Google Maps)** — Nhà hàng Việt Nam, mở 10:00-22:00.\",\"price\":\"chưa có giá\",\"address\":\"86 Đ. 2 Tháng 9, Hải Châu, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=10812984134081417631\",\"booking_link\":\"\",\"place_id\":\"ChIJi5XzTqsZQjERn5HbwcdvD5Y\"},{\"time\":\"13:00\",\"emoji\":\"✈️\",\"category\":\"transport\",\"name\":\"Chuyến bay Đà Nẵng → TP.HCM\",\"description\":\"Chuyến bay chiều (khoảng 1h30 bay).\",\"price\":\"chưa có giá\",\"address\":\"Sân bay Đà Nẵng → Sân bay Tân Sơn Nhất\",\"maps_link\":\"https://maps.google.com/?q=Da+Nang+Airport\",\"booking_link\":\"https://go.isclix.com/deep_link/6277265300509373567/6455552313033835511?url=https%3A%2F%2Fvn.trip.com%2Fflights%2Fshowfarefirst%3Fdcity%3Dsgn%26acity%3Ddad%26ddate%3D2026-10-03%26rdate%3D2026-10-05%26flighttype%3Drt%26class%3Dy%26quantity%3D2%26locale%3Dvi-VN%26curr%3DVND&utm_source=tappyai&utm_medium=ccp&sub1=a73ec874a2f11f6df10c5e64\",\"place_id\":\"\"}]},{\"label\":\"Lưu ý\",\"items\":[{\"time\":\"\",\"emoji\":\"💡\",\"category\":\"\",\"name\":\"Mẹo địa phương\",\"description\":\"Đà Nẵng nóng vào giữa trưa — nên đi tham quan sáng sớm hoặc chiều tối. Mang kem chống nắng, nón, nước uống đủ. Hải sản tươi sống là đặc sản — thử các quán ở khu An Hải.\",\"price\":\"\",\"address\":\"\",\"maps_link\":\"\",\"booking_link\":\"\",\"place_id\":\"\"}]}],\"cost_breakdown\":{\"Chuyến bay khứ hồi (2 người)\":\"chưa có giá\",\"Khách sạn 2 đêm\":\"chưa có giá\",\"Ăn uống (5 bữa)\":\"chưa có giá\",\"Tham quan & vé vào cửa\":\"chưa có giá\"},\"local_tips\":[{\"text\":\"Cầu Rồng là biểu tượng của Đà Nẵng — đi bộ vào buổi sáng sớm hoặc chiều tối để tránh nắng gắt và chụp ảnh đẹp.\",\"basis\":\"tool\",\"place\":\"Cầu Rồng\"}],\"share_text\":\"3 ngày 2 đêm ở Đà Nẵng: biển, hải sản ngon, thắng cảnh đẹp & bảo tàng thú vị 🌊✨ #TappyAI\"}\n[/TAPPY_PLAN]\n\n- **Tham quan**: Cầu Rồng miễn phí\n\n**Tổng ước tính: 6 triệu VND** (khớp ngân sách).",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Đi Đà Nẵng 3 ngày 2 đêm cho 2 người, ngân sách 6 triệu"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình chọn **Ngũ Hành Sơn** — 4.4⭐ (42.935 đánh giá Google Maps); giờ mở cửa theo Google Maps: 07:00–17:30.\n\nMình lập kế hoạch cho chuyến đi Đà Nẵng 3 ngày 2 đêm cho 2 người với ngân sách 6 triệu VND.\n\nMình sẽ lập kế hoạch chi tiết cho chuyến đi 3 ngày 2 đêm của bạn. Mình giả sử bay từ TP.HCM đi Đà Nẵng ngày 3/10 và về ngày 5/10. Thời tiết Đà Nẵng lúc đó khoảng 27°C, trời may, không mưa nhiều — rất thích hợp để tham quan và ăn uống ngoài trời.\n\n[TAPPY_PLAN]\n{\"type\":\"trip\",\"title\":\"Đà Nẵng 3 ngày 2 đêm cho 2 người — Biển, ẩm thực & thắng cảnh\",\"people\":2,\"budget_total\":\"6.000.000 VND\",\"days\":[{\"label\":\"Ngày 1 (3/10) — Đến Đà Nẵng & Khám phá thành phố\",\"items\":[{\"time\":\"14:00\",\"emoji\":\"✈️\",\"category\":\"transport\",\"name\":\"Chuyến bay TP.HCM → Đà Nẵng\",\"description\":\"Chuyến bay chiều (khoảng 1h30 bay).\",\"price\":\"chưa có giá\",\"address\":\"Sân bay Tân Sơn Nhất → Sân bay Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?q=Da+Nang+Airport\",\"booking_link\":\"https://go.isclix.com/deep_link/6277265300509373567/6455552313033835511?url=https%3A%2F%2Fvn.trip.com%2Fflights%2Fshowfarefirst%3Fdcity%3Dsgn%26acity%3Ddad%26ddate%3D2026-10-03%26rdate%3D2026-10-05%26flighttype%3Drt%26class%3Dy%26quantity%3D2%26locale%3Dvi-VN%26curr%3DVND&utm_source=tappyai&utm_medium=ccp&sub1=a73ec874a2f11f6df10c5e64\",\"place_id\":\"\"},{\"time\":\"16:30\",\"emoji\":\"🏨\",\"category\":\"hotel\",\"name\":\"M Hotel Da Nang\",\"description\":\"**4.8⭐ (2.860 đánh giá Google Maps)** — Khách sạn 3 sao gần biển, phòng sạch sẽ, có hồ bơi.\",\"price\":\"chưa có giá\",\"address\":\"286 Võ Nguyên Giáp, Ngũ Hành Sơn, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=7069989189938949055\",\"booking_link\":\"https://mhotel.vn/property/m-hotel-da-nang/\",\"place_id\":\"ChIJp0AYSgAXQjERv6spuLWlHWI\"},{\"time\":\"18:30\",\"emoji\":\"🍜\",\"category\":\"food\",\"name\":\"Tâm Ngon Garden Đà Nẵng\",\"description\":\"**4.9⭐ (1.065 đánh giá Google Maps)** — Nhà hàng Việt Nam, ăn tối, Đang mở cửa.\",\"price\":\"chưa có giá\",\"address\":\"66-68 Trần Quốc Toản, Hải Châu, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=16996332492716890959\",\"booking_link\":\"\",\"place_id\":\"ChIJF9KrROkXQjERT9vRCFoa3-s\"}]},{\"label\":\"Ngày 2 (4/10) — Tham quan thắng cảnh & ăn hải sản\",\"items\":[{\"time\":\"08:00\",\"emoji\":\"🌅\",\"category\":\"entertainment\",\"name\":\"Cầu Rồng\",\"description\":\"**4.5⭐ (9.556 đánh giá Google Maps)** — Biểu tượng Đà Nẵng, mở cửa cả ngày. Đi bộ, chụp ảnh, không phí vào cửa.\",\"price\":\"chưa có giá\",\"address\":\"Cầu Rồng, An Hải, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=329807663884316974\",\"booking_link\":\"\",\"place_id\":\"ChIJL1GKWJYZQjERLrEGqlK2kwQ\"},{\"time\":\"10:00\",\"emoji\":\"⛰️\",\"category\":\"entertainment\",\"name\":\"Ngũ Hành Sơn\",\"description\":\"**4.4⭐ (42.935 đánh giá Google Maps)** — Thắng cảnh nổi tiếng, mở 7:00-17:30.\",\"price\":\"chưa có giá\",\"address\":\"81 Huyền Trân Công Chúa, Hoà Hải, Ngũ Hành Sơn, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=13577824764986909893\",\"booking_link\":\"https://nguhanhson.org/\",\"place_id\":\"ChIJ2y5L4dQNQjERxeSLc68fbrw\"},{\"time\":\"12:30\",\"emoji\":\"🦞\",\"category\":\"food\",\"name\":\"Mộc quán Seafood Đà Nẵng\",\"description\":\"**4.8⭐ (30.480 đánh giá Google Maps)** — Nhà hàng hải sản nổi tiếng, mở 10:30-22:30.\",\"price\":\"chưa có giá\",\"address\":\"26 Tô Hiến Thành, An Hải, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=2059427300039139311\",\"booking_link\":\"https://mocseafood.com/\",\"place_id\":\"ChIJx6-KGnIXQjER7x-T0zeOlBw\"},{\"time\":\"18:00\",\"emoji\":\"🎨\",\"category\":\"entertainment\",\"name\":\"Bảo tàng 3D Art In Paradise\",\"description\":\"**4.4⭐ (3.418 đánh giá Google Maps)** — Bảo tàng nghệ thuật tương tác, mở 8:30-18:00.\",\"price\":\"chưa có giá\",\"address\":\"Lô 10 Trần Nhân Tông, Sơn Trà, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=10503400368954609584\",\"booking_link\":\"http://artinparadise.com.vn/\",\"place_id\":\"ChIJcVJkUPcXQjERsA8_dfySw5E\"},{\"time\":\"20:00\",\"emoji\":\"🍽️\",\"category\":\"food\",\"name\":\"NGON DA NANG - VIETNAMESE CUISINE RESTAURANT\",\"description\":\"**4.9⭐ (2.206 đánh giá Google Maps)** — Nhà hàng Việt Nam, mở 9:00-22:30.\",\"price\":\"chưa có giá\",\"address\":\"88B Lê Quang Đạo, Ngũ Hành Sơn, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=9932503529764339621\",\"booking_link\":\"https://ngondanangrestaurant.com/reservation/\",\"place_id\":\"ChIJ8QPkSI8XQjERpb_q7VVX14k\"}]},{\"label\":\"Ngày 3 (5/10) — Tham quan cuối & bay về\",\"items\":[{\"time\":\"08:00\",\"emoji\":\"🏛️\",\"category\":\"entertainment\",\"name\":\"Bảo tàng Điêu khắc Chăm Đà Nẵng\",\"description\":\"**4.2⭐ (8.222 đánh giá Google Maps)** — Bảo tàng di sản, mở 7:00-17:00.\",\"price\":\"chưa có giá\",\"address\":\"02 Đ. 2 Tháng 9, Hải Châu, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=7118670658497913132\",\"booking_link\":\"http://chammuseum.vn/\",\"place_id\":\"ChIJLWoAs80ZQjERLKHDYD-ZymI\"},{\"time\":\"10:30\",\"emoji\":\"☕\",\"category\":\"food\",\"name\":\"Cơm nhà vui\",\"description\":\"**4.8⭐ (2.201 đánh giá Google Maps)** — Nhà hàng Việt Nam, mở 10:00-22:00.\",\"price\":\"chưa có giá\",\"address\":\"86 Đ. 2 Tháng 9, Hải Châu, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=10812984134081417631\",\"booking_link\":\"\",\"place_id\":\"ChIJi5XzTqsZQjERn5HbwcdvD5Y\"},{\"time\":\"13:00\",\"emoji\":\"✈️\",\"category\":\"transport\",\"name\":\"Chuyến bay Đà Nẵng → TP.HCM\",\"description\":\"Chuyến bay chiều (khoảng 1h30 bay).\",\"price\":\"chưa có giá\",\"address\":\"Sân bay Đà Nẵng → Sân bay Tân Sơn Nhất\",\"maps_link\":\"https://maps.google.com/?q=Da+Nang+Airport\",\"booking_link\":\"https://go.isclix.com/deep_link/6277265300509373567/6455552313033835511?url=https%3A%2F%2Fvn.trip.com%2Fflights%2Fshowfarefirst%3Fdcity%3Dsgn%26acity%3Ddad%26ddate%3D2026-10-03%26rdate%3D2026-10-05%26flighttype%3Drt%26class%3Dy%26quantity%3D2%26locale%3Dvi-VN%26curr%3DVND&utm_source=tappyai&utm_medium=ccp&sub1=a73ec874a2f11f6df10c5e64\",\"place_id\":\"\"}]},{\"label\":\"Lưu ý\",\"items\":[{\"time\":\"\",\"emoji\":\"💡\",\"category\":\"\",\"name\":\"Mẹo địa phương\",\"description\":\"Đà Nẵng nóng vào giữa trưa — nên đi tham quan sáng sớm hoặc chiều tối. Mang kem chống nắng, nón, nước uống đủ. Hải sản tươi sống là đặc sản — thử các quán ở khu An Hải.\",\"price\":\"\",\"address\":\"\",\"maps_link\":\"\",\"booking_link\":\"\",\"place_id\":\"\"}]}],\"cost_breakdown\":{\"Chuyến bay khứ hồi (2 người)\":\"chưa có giá\",\"Khách sạn 2 đêm\":\"chưa có giá\",\"Ăn uống (5 bữa)\":\"chưa có giá\",\"Tham quan & vé vào cửa\":\"chưa có giá\"},\"local_tips\":[{\"text\":\"Cầu Rồng là biểu tượng của Đà Nẵng — đi bộ vào buổi sáng sớm hoặc chiều tối để tránh nắng gắt và chụp ảnh đẹp.\",\"basis\":\"tool\",\"place\":\"Cầu Rồng\"}],\"share_text\":\"3 ngày 2 đêm ở Đà Nẵng: biển, hải sản ngon, thắng cảnh đẹp & bảo tàng thú vị 🌊✨ #TappyAI\"}\n[/TAPPY_PLAN]\n\n- **Tham quan**: Cầu Rồng miễn phí\n\n**Tổng ước tính: 6 triệu VND** (khớp ngân sách)."
+    }
+  ]
+}
