@@ -17,8 +17,11 @@ export async function android({ a, shot, check, seeded }) {
     await a.sleep(2000)
     shot(`sheet-${label}`)
     const sheet = a.texts().join(' | ')
-    check(`share sheet hệ thống mở với 1 FILE (${label})`, /Sharing 1 file|Chia sẻ 1 tệp/.test(sheet) && /\.(mp4|jpg|jpeg|png|webp)/.test(sheet), sheet.slice(0, 120))
-    const target = await a.scrollTo(label, { max: 6 }).catch(() => null)
+    // The chooser words a single file by kind ("Sharing image"/"Sharing video") or by count
+    // ("Sharing 1 file") depending on the Android build; what the app receives is checked below.
+    check(`share sheet hệ thống mở với 1 FILE (${label})`, /Sharing (image|video|1 file)|Chia sẻ (hình ảnh|video|1 tệp)/.test(sheet), sheet.slice(0, 120))
+    // The chooser animates in; a dump taken mid-animation can miss the row — wait for it first.
+    const target = (await a.waitFor(label, { timeout: 15000 }).catch(() => null)) || await a.scrollTo(label, { max: 6 }).catch(() => null)
     check(`${label} có trong share sheet`, !!target)
     if (!target) { await a.back(); continue }
     await a.tap(target, { after: 4000 })
