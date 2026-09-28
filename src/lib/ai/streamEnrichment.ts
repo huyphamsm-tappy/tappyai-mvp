@@ -805,6 +805,35 @@ function boundaryAfter(ownIdx: number, mentionOffsets: number[], textEnd: number
 // [TAPPY_PLAN] JSON (breaking the trip brochure) or the CTA/followups markers.
 const STRUCTURED_MARKERS = ['[TAPPY_PLAN]', '[CTA_BUTTONS]', '[FOLLOWUPS]']
 
+/** Letters and punctuation-free, so no sentence/clause/number guard can match or split it. */
+const PLAN_BODY_TOKEN = '⁣TAPPYPLANBODY⁣'
+
+/**
+ * Hide each closed [TAPPY_PLAN] body from the prose guards; `restore` puts it back byte-for-byte.
+ * A guard that dropped the token's line entirely does not lose the plan: the block is re-appended.
+ */
+export function maskPlanBody(text: string): { text: string; restore: (guarded: string) => string } {
+  const bodies: string[] = []
+  const masked = text.replace(/\[TAPPY_PLAN\]([\s\S]*?)\[\/TAPPY_PLAN\]/g, (_m, body: string) => {
+    bodies.push(body)
+    return `[TAPPY_PLAN]${PLAN_BODY_TOKEN}${bodies.length - 1}${PLAN_BODY_TOKEN}[/TAPPY_PLAN]`
+  })
+  if (bodies.length === 0) return { text, restore: g => g }
+  return {
+    text: masked,
+    restore: (guarded: string) => {
+      let out = guarded
+      bodies.forEach((body, i) => {
+        const token = `${PLAN_BODY_TOKEN}${i}${PLAN_BODY_TOKEN}`
+        if (out.includes(token)) out = out.replace(token, () => body)
+        else out = `${out.replace(/\s+$/, '')}\n\n[TAPPY_PLAN]${body}[/TAPPY_PLAN]`
+      })
+      // A guard that kept the token but lost a marker around it: normalise to one intact block.
+      return out.replace(new RegExp(`(?:\\[TAPPY_PLAN\\])?${PLAN_BODY_TOKEN}\\d+${PLAN_BODY_TOKEN}(?:\\[\\/TAPPY_PLAN\\])?`, 'g'), '')
+    },
+  }
+}
+
 // Offset of the earliest structured-block marker (or end of text) — the hard upper bound for
 // where positional injection may write.
 function earliestMarker(text: string): number {
@@ -1992,7 +2021,15 @@ export function applyPlaceEnrichmentStreamFilter(
       }))
       : null
     if (planItems && (planItems.replaced || planItems.dropped || planItems.linksSet || planItems.linksRemoved)) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'plan_items', matched: planItems.matched, replaced: planItems.replaced, dropped: planItems.dropped, links_set: planItems.linksSet, links_removed: planItems.linksRemoved }))
-    const enriched = planItems ? planItems.text : tipped
+    // 🚨 UAT 2026-09-28 (live, uat @ 062c7ec: every "Đà Nẵng 3 ngày 2 đêm" plan card broken). The
+    // prose guards below cut SENTENCES and CLAUSES — hours ("mở cửa 10:00-21:00"), prices, formats —
+    // and they ran over the [TAPPY_PLAN] JSON too: a cut took "lễ tân mở cửa 24/7, check-in từ
+    // 14:00" together with the string's closing quote, so the block no longer parsed and the client
+    // showed no plan (the older build lost the whole body the same way). The plan has already been
+    // checked field by field above (prices, local tips, items), on PARSED JSON. So its body is
+    // masked from the prose guards and restored intact after them.
+    const planMask = maskPlanBody(planItems ? planItems.text : tipped)
+    const enriched = planMask.text
     // C3-B.10: the last server-side point at which the COMPLETE prose exists and
     // has not yet reached the client. A monetary claim the structured evidence
     // does not support is removed here — deterministically, with no model call,
@@ -2223,7 +2260,7 @@ export function applyPlaceEnrichmentStreamFilter(
       })
       : { text: districtGuard.text, rewritten: [] as string[] }
     if (unsupported.rewritten.length > 0) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'unsupported_claim', rewritten: unsupported.rewritten }))
-    const placeGuarded = unsupported.text
+    const placeGuarded = planMask.restore(unsupported.text)
     // G1 telemetry: what the place-claim guard removed and why. Counts only — never user
     // text, never a venue name. Console-only, like `tappyai_tool_called`; the UsageEvent
     // vocabulary is a privacy surface and is deliberately not extended here.

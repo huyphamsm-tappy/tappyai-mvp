@@ -77,7 +77,9 @@ export function stripMarkdown(s: string): string {
 /** The matched place's own way to book / order / get a ticket — from the one action authority, or null. */
 function bookingUrlFor(p: PlanPlace, kind: Kind): string | null {
   const actions = buildActions(p, ACTION_DOMAIN[kind])
-  return actions.find(a => BOOKING_KINDS.has(a.kind) && (a.urlKind === 'direct' || !!a.commerce))?.url ?? null
+  // A search page ("Tìm trên GrabFood", the A1 fallback) is not this place's booking page — the plan
+  // card labels `booking_link` "Đặt ngay", so only a real page of the place qualifies.
+  return actions.find(a => BOOKING_KINDS.has(a.kind) && a.urlKind !== 'search' && (a.urlKind === 'direct' || !!a.commerce))?.url ?? null
 }
 
 type Item = Record<string, unknown>
