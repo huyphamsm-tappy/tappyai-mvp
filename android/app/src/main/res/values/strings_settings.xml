@@ -115,4 +115,12 @@
     <string name="profile_guest_subtitle">Home, Chat, Explore and Deals are open — no account needed.</string>
     <string name="profile_guest_sign_in">Sign in to save your stuff</string>
     <string name="profile_guest_locked">Sign in required</string>
+    <string name="account_cover_title">Cover photo</string>
+    <string name="account_cover_hint">Shown on your public profile · JPG, PNG, WebP · 5MB maximum</string>
+    <string name="account_cover_none">No cover photo yet</string>
+    <string name="account_cover_change">Change cover</string>
+    <string name="account_cover_remove">Remove cover</string>
+    <string name="account_cover_too_large">Cover photos are limited to 5MB</string>
+    <string name="account_cover_not_image">Only image files are accepted</string>
+    <string name="account_cover_error">Couldn\'t update the cover photo</string>
 </resources>

@@ -105,14 +105,19 @@ internal fun ProfileHeroV3(
             letterSpacing = 1.3.sp,
             modifier = Modifier.padding(start = 20.dp, top = 16.dp),
         )
-        // 🚨 A gradient, and it is not pretending to be a photo — there is no cover column.
+        // The cover (`profiles.cover_url`, set on the edit screen) when there is one; otherwise the
+        // gradient band — as the web's /profile hero does.
         Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 12.dp)
                 .height(96.dp)
                 .background(Brush.linearGradient(listOf(V3Tone.Violet.copy(alpha = 0.5f), HomeV3.Purple.copy(alpha = 0.5f), HomeV3.SurfaceVariant.copy(alpha = 0.5f)))),
-        )
+        ) {
+            profile?.coverUrl?.let { cover ->
+                TappyImage(url = cover, contentDescription = null, modifier = Modifier.fillMaxSize())
+            }
+        }
         Column(modifier = Modifier.padding(start = 20.dp, end = 20.dp, bottom = 20.dp)) {
             Box(
                 modifier = Modifier
@@ -221,7 +226,7 @@ internal fun ProfileContentV3(
                 modifier = Modifier.weight(1f).horizontalScroll(rememberScrollState()),
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                ProfileContentTab.entries.forEach { t ->
+                HUB_CONTENT_TABS.forEach { t ->
                     V3Chip(stringResource(t.labelRes), tab == t, { onSelectTab(t) })
                 }
             }

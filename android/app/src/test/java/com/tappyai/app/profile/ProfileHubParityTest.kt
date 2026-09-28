@@ -57,6 +57,12 @@ class ProfileHubParityTest {
     }
 
     @Test
+    fun `content tabs are the web's six, in order - no Liked tab`() {
+        // web ProfileView TABS: published, shared, saved, restricted, hidden, places.
+        assertEquals(listOf("Posts", "Shared", "Saved", "Restricted", "Hidden", "Places"), HUB_CONTENT_TABS.map { it.name })
+    }
+
+    @Test
     fun `no privacy card and guest rows are locked behind sign-in`() {
         val src = File("src/main/java/com/tappyai/app/profile/ProfileScreen.kt").readText()
         assertFalse("privacy card is not on the web or the mockup", src.contains("PrivacyCard("))

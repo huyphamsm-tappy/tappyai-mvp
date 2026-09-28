@@ -13,4 +13,6 @@ data class AccountProfile(
     val joinDate: String,
     val avatarUrl: String?,
     val language: String?,
+    /** The public profile cover (`profiles.cover_url`), null when none is set. */
+    val coverUrl: String? = null,
 )

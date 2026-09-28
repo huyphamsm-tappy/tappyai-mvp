@@ -109,4 +109,12 @@
     <string name="profile_guest_subtitle">Trang chủ, Chat, Khám phá và Ưu đãi dùng thoải mái, không cần đăng nhập.</string>
     <string name="profile_guest_sign_in">Đăng nhập để lưu lại</string>
     <string name="profile_guest_locked">Cần đăng nhập</string>
+    <string name="account_cover_title">Ảnh bìa</string>
+    <string name="account_cover_hint">Hiện trên trang cá nhân của bạn · JPG, PNG, WebP · Tối đa 5MB</string>
+    <string name="account_cover_none">Chưa có ảnh bìa</string>
+    <string name="account_cover_change">Thay ảnh bìa</string>
+    <string name="account_cover_remove">Gỡ ảnh bìa</string>
+    <string name="account_cover_too_large">Ảnh bìa tối đa 5MB</string>
+    <string name="account_cover_not_image">Chỉ chấp nhận file ảnh</string>
+    <string name="account_cover_error">Không thể cập nhật ảnh bìa</string>
 </resources>

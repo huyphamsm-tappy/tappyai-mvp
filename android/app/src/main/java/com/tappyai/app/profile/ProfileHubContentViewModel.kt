@@ -51,6 +51,13 @@ import javax.inject.Inject
 enum class ProfileContentTab { Posts, Shared, Saved, Restricted, Hidden, Liked, Places }
 
 /**
+ * The tabs the Tôi hub DRAWS — the web `/profile` TABS, in order (published, shared, saved,
+ * restricted, hidden, places). [ProfileContentTab.Liked] stays in the enum for the Explore self
+ * profile's own segments, but the web hub has no liked tab (parity 2026-09-28).
+ */
+val HUB_CONTENT_TABS: List<ProfileContentTab> = ProfileContentTab.entries - ProfileContentTab.Liked
+
+/**
  * The signed-in hub's content and side panels — the web `/profile` page's server-assembled props
  * (`page.tsx`) and the client-fetched tabs (`ProfileContent`), read through the routes this
  * client already has and nothing else:

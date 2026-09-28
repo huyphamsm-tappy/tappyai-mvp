@@ -92,6 +92,26 @@ export async function scrollTo(q, { max = 8 } = {}) {
   }
   throw new Error(`could not scroll to ${q}`)
 }
+/**
+ * Scrolls a horizontal row until [q] is fully on screen. [rowQ] finds ANY node of the row (re-found
+ * every step, since the page may shift); swipes run between x=[from] and x=[to] inside the row.
+ */
+export async function scrollRowTo(q, rowQ, { max = 6, from = 650, to = 120 } = {}) {
+  for (const dir of ['right', 'left']) {
+    for (let i = 0; i < max; i++) {
+      const nodes = dump()
+      const n = find(q, nodes)
+      if (n && n.x1 >= 60 && n.x2 <= 1020 && n.x2 - n.x1 > 40) return n
+      const row = find(rowQ, nodes)
+      if (!row) throw new Error(`row not on screen for ${q}`)
+      const y = String(Math.round((row.y1 + row.y2) / 2))
+      // "right" reveals the START of the row (content moves right), "left" its end.
+      if (dir === 'left') sh('input', 'swipe', String(from), y, String(to), y, '400'); else sh('input', 'swipe', String(to), y, String(from), y, '400')
+      await sleep(800)
+    }
+  }
+  throw new Error(`could not scroll the row to ${q}`)
+}
 export function swipe(dir = 'up') {
   const [a, b] = dir === 'up' ? [1750, 700] : [700, 1750]
   sh('input', 'swipe', '540', String(a), '540', String(b), '450')
@@ -117,19 +137,40 @@ export async function launch({ fresh = false } = {}) {
   if (fresh) sh('am', 'force-stop', PKG)
   sh('am', 'start', '-W', '-n', MAIN)
   // A first start after install can take ~20 s on the emulator; wait for the shell's bottom bar.
-  await waitFor('Trang chủ', { timeout: 60000 }).catch(() => {})
+  // The software-GPU emulator sometimes raises "isn't responding" on that first frame (main thread
+  // in text drawing, not blocked — see ANDROID-PROGRESS §ANR); answer "Wait", never "Close app".
+  const end = Date.now() + 90000
+  while (Date.now() < end) {
+    const nodes = dump()
+    if (find('Trang chủ', nodes) && !find(/isn.t responding/, nodes)) break
+    const wait = find('Wait', nodes)
+    if (wait && find(/isn.t responding/, nodes)) { tapXY((wait.x1 + wait.x2) / 2, (wait.y1 + wait.y2) / 2); console.log('    (emulator ANR dialog → Wait)') }
+    await sleep(1500)
+  }
   await sleep(1000)
 }
 export function install(apk) { adb(['install', '-r', apk]) }
 
-/** Signs the app in as a seeded AUDIT account without any UI typing (uat hook). */
+/**
+ * Signs the app in as a seeded AUDIT account without any UI typing (uat hook), then VERIFIES it:
+ * the Tôi hub must show that account's email. Retries once (a slow first frame can swallow it).
+ */
 export async function signIn(email) {
-  const s = await sessionFor(email)
-  writePrivate('session.json', JSON.stringify({ access_token: s.access_token, refresh_token: s.refresh_token }))
-  sh('am', 'start', '-n', HOOK, '--es', 'op', 'session')
-  await sleep(5000)
-  sh('am', 'force-stop', PKG)
-  await launch()
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    const s = await sessionFor(email)
+    writePrivate('session.json', JSON.stringify({ access_token: s.access_token, refresh_token: s.refresh_token }))
+    await launch()
+    sh('am', 'start', '-n', HOOK, '--es', 'op', 'session')
+    await sleep(6000)
+    sh('am', 'force-stop', PKG)
+    await launch()
+    await tap('Tôi', { after: 4000 }).catch(() => {})
+    const ok = !!find(email)
+    await tap('Trang chủ', { after: 1500 }).catch(() => {})
+    if (ok) return
+    console.log(`    (sign-in as ${email} not visible yet — attempt ${attempt})`)
+  }
+  throw new Error(`could not sign in as ${email}`)
 }
 export async function signOut() {
   sh('am', 'start', '-n', HOOK, '--es', 'op', 'signout')

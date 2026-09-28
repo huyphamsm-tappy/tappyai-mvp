@@ -92,7 +92,8 @@ class PersonalSurfacesV3Test {
         for (route in listOf("reviewsRepository.getMine()", "reviewsRepository.getSaved()", "savedRepository.getFavorites()", "reviewsRepository.getUserProfile(userId)", "chatHistoryRepository.getConversations()", "membershipRepository.getStatus()", "socialRepository.getConnections(ConnectionType.Following)")) {
             assertTrue(route, hubVm.contains(route))
         }
-        assertFalse("no invented fields", Regex("""(handle|username|coverUrl|points|level|streak|location)""").containsMatchIn(hubV3))
+        // coverUrl is no longer invented: GET /api/profile returns `cover_url` (2026-09-28 parity).
+        assertFalse("no invented fields", Regex("""(handle|username|points|level|streak|location)""").containsMatchIn(hubV3))
         assertTrue("stats render only when sent", hubV3.contains("if (stats != null || likes != null)"))
         assertTrue("edit → the existing Account edit", tab.contains("onEditProfile = { navController.navigate(ProfileRoute.AccountEdit) }"))
         assertTrue("QR → the existing sheet", hub.contains("QrProfileSheet(userId = userId, name = viewModel.profile?.fullName, onDismiss = { showQrSheet = false })"))

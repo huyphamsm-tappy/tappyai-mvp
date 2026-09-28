@@ -60,6 +60,8 @@ class SelfProfileEditTest {
             uploads += bytes.size to mimeType
             return NetworkResult.Success("https://a/new.png")
         }
+        override suspend fun uploadCover(bytes: ByteArray, mimeType: String): NetworkResult<String> = NetworkResult.Success("https://a/cover.png")
+        override suspend fun clearCover(): NetworkResult<Unit> = NetworkResult.Success(Unit)
     }
 
     private object Strings : StringProvider {
