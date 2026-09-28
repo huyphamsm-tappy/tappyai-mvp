@@ -278,7 +278,7 @@ const CHIPS: Chip[] = [
 function SavedFilters({ view }: { view: View }) {
   const { t } = useTranslation()
   return (
-    <nav aria-label={t('favorites.filter.aria')} data-saved-filters className="v3-scroll-x -mx-1 mt-5 flex gap-2 px-1 pb-1">
+    <nav aria-label={t('favorites.filter.aria')} data-saved-filters className="v3-scroll-x -mx-1 mt-5 flex gap-2 px-1 pb-1 md:flex-wrap md:pr-40 lg:pr-56">
       {CHIPS.map(({ key, icon: Icon, labelKey, view: target }) => {
         if (!target) {
           return (

@@ -193,7 +193,9 @@ export default function RecommendationsPage() {
                   <div className="min-w-0 flex-1">
                     <h3 className="truncate text-base sm:text-lg font-semibold text-gray-900 dark:text-white">{name}</h3>
                     <RecFacts facts={r} />
-                    {r.matchedSignals.length > 0 && (
+                    {/* The engine's English signal words ("Near …", "★ 5.0", "Recently Active") duplicate the
+                        fact chips above; they show only for an older server that sends no facts. */}
+                    {r.matchedSignals.length > 0 && r.averageRating === undefined && r.address === undefined && (
                       <ul className="mt-2 flex flex-wrap gap-1.5" data-rec-signals>
                         {r.matchedSignals.slice(0, 4).map((s, j) => (
                           <li key={j} className="inline-flex items-center gap-1 rounded-full bg-gray-100 dark:bg-white/5 ring-1 ring-gray-200 dark:ring-white/10 px-2.5 py-1 text-xs text-gray-700 dark:text-gray-200">
