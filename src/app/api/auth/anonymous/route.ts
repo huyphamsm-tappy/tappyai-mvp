@@ -1,8 +1,9 @@
 import { createClient } from '@supabase/supabase-js'
 import { NextRequest, NextResponse } from 'next/server'
-import { rateLimit, dailyRateLimit, clientIp } from '@/lib/security/rateLimit'
+import { clientIp } from '@/lib/security/rateLimit'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
+import { publicDailyRateLimit, publicRateLimit } from '@/lib/security/publicRateLimit'
 
 // POST /api/auth/anonymous — mint an anonymous session.
 //
@@ -27,14 +28,14 @@ export async function POST(req: NextRequest) {
   // B04. The `error` code is the machine contract and stays exactly as it was; only the human
   // sentence follows the caller's language.
   const locale = requestLocale(req)
-  const flood = rateLimit(`anon-session:${ip}`, 5, 60_000)
+  const flood = await publicRateLimit(`anon-session:${ip}`, 5, 60_000)
   if (!flood.ok) {
     return NextResponse.json(
       { error: 'rate_limit', message: serverMessage('rate.retryShortly', locale) },
       { status: 429, headers: { 'Retry-After': String(flood.retryAfter) } },
     )
   }
-  if (!dailyRateLimit(`anon-session-day:${ip}`, 30).ok) {
+  if (!(await publicDailyRateLimit(`anon-session-day:${ip}`, 30)).ok) {
     return NextResponse.json(
       { error: 'rate_limit', message: serverMessage('rate.retryTomorrow', locale) },
       { status: 429 },

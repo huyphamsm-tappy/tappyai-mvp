@@ -7,11 +7,12 @@ import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
 import { NextRequest, NextResponse } from 'next/server'
 import { resolveLink } from '@/lib/links/resolve'
-import { rateLimit, clientIp } from '@/lib/security/rateLimit'
+import { clientIp } from '@/lib/security/rateLimit'
+import { publicRateLimit } from '@/lib/security/publicRateLimit'
 
 export async function POST(req: NextRequest) {
   const ip = clientIp(req)
-  const rl = rateLimit(`links-resolve:${ip}`, 30, 60_000)
+  const rl = await publicRateLimit(`links-resolve:${ip}`, 30, 60_000)
   if (!rl.ok) {
     return NextResponse.json(
       { error: 'rate_limited', message: serverMessage('rate.tooFast', requestLocale(req)) },

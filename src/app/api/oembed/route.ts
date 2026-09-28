@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { apiError } from '@/lib/http/apiError'
-import { rateLimit, clientIp } from '@/lib/security/rateLimit'
+import { clientIp } from '@/lib/security/rateLimit'
 import { searchParam } from '@/lib/http/searchParams'
 import { getPublicSharedResult } from '@/lib/share/sharedResultStore'
 import { buildOembed, oembedTargetSlug } from '@/lib/share/oembed'
+import { publicRateLimit } from '@/lib/security/publicRateLimit'
 
 // GET /api/oembed?url=<public result URL>&format=json&maxwidth=600
 //
@@ -13,7 +14,7 @@ import { buildOembed, oembedTargetSlug } from '@/lib/share/oembed'
 export const dynamic = 'force-dynamic'
 
 export async function GET(req: NextRequest) {
-  if (!rateLimit(`oembed:${clientIp(req)}`, 120, 60_000).ok) return apiError(req, 'rate_limit', 'rate.tooFast', 429)
+  if (!(await publicRateLimit(`oembed:${clientIp(req)}`, 120, 60_000)).ok) return apiError(req, 'rate_limit', 'rate.tooFast', 429)
   const format = (searchParam(req, 'format') || 'json').toLowerCase()
   if (format !== 'json') return apiError(req, 'invalid_request', 'validation.missingFields', 501)
   const slug = oembedTargetSlug(searchParam(req, 'url'))

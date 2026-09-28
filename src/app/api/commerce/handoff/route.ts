@@ -3,8 +3,9 @@ import { apiError } from '@/lib/http/apiError'
 import { emitCommerceEvent, installCommerceObservability } from '@/lib/ccp'
 import { parseHandoffBody, type HandoffBody } from '@/lib/ccp/handoffBody'
 import { flushPending } from '@/lib/observability'
-import { rateLimit, clientIp } from '@/lib/security/rateLimit'
+import { clientIp } from '@/lib/security/rateLimit'
 import { CCP_ENABLED } from '@/lib/config/product'
+import { publicRateLimit } from '@/lib/security/publicRateLimit'
 
 // This route may be the first CCP code a warm instance runs; route the event to the shared sink.
 installCommerceObservability()
@@ -30,7 +31,7 @@ const MAX_BODY_BYTES = 512
 
 export async function POST(req: Request) {
   void flushPending(req)
-  const rl = rateLimit(`commerce-handoff:${clientIp(req)}`, 60, 60_000)
+  const rl = await publicRateLimit(`commerce-handoff:${clientIp(req)}`, 60, 60_000)
   if (!rl.ok) return apiError(req, 'rate_limit', 'rate.tooFast', 429)
   let body: HandoffBody | null = null
   try {

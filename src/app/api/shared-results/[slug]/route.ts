@@ -2,9 +2,10 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { refuseAnonymousSocialWrite } from '@/lib/auth/socialWriteAccess'
 import { apiError } from '@/lib/http/apiError'
-import { rateLimit, clientIp } from '@/lib/security/rateLimit'
+import { clientIp } from '@/lib/security/rateLimit'
 import { isValidSlug } from '@/lib/share/slug'
 import { getPublicSharedResult, withdrawSharedResult } from '@/lib/share/sharedResultStore'
+import { publicRateLimit } from '@/lib/security/publicRateLimit'
 
 // /api/shared-results/[slug]
 //
@@ -15,7 +16,7 @@ import { getPublicSharedResult, withdrawSharedResult } from '@/lib/share/sharedR
 export const dynamic = 'force-dynamic'
 
 export async function GET(req: NextRequest, { params }: { params: { slug: string } }) {
-  if (!rateLimit(`share-get:${clientIp(req)}`, 120, 60_000).ok) return apiError(req, 'rate_limit', 'rate.tooFast', 429)
+  if (!(await publicRateLimit(`share-get:${clientIp(req)}`, 120, 60_000)).ok) return apiError(req, 'rate_limit', 'rate.tooFast', 429)
   if (!isValidSlug(params.slug)) return apiError(req, 'not_found', 'server.notFound', 404)
   const row = await getPublicSharedResult(params.slug)
   if (!row) return apiError(req, 'not_found', 'server.notFound', 404)
@@ -26,7 +27,7 @@ export async function GET(req: NextRequest, { params }: { params: { slug: string
 }
 
 export async function DELETE(req: NextRequest, { params }: { params: { slug: string } }) {
-  if (!rateLimit(`share-delete:${clientIp(req)}`, 30, 60_000).ok) return apiError(req, 'rate_limit', 'rate.tooFast', 429)
+  if (!(await publicRateLimit(`share-delete:${clientIp(req)}`, 30, 60_000)).ok) return apiError(req, 'rate_limit', 'rate.tooFast', 429)
   const { user } = await getRequestUser(req)
   if (!user) return apiError(req, 'unauthorized', 'auth.required', 401)
   const anonRefusal = refuseAnonymousSocialWrite(req, user)
