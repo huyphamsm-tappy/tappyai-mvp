@@ -61,6 +61,11 @@ export interface PlanningContext {
    * introduction instruction is added once the stops are chosen.
    */
   fixedFrame?: boolean
+  /**
+   * Owner 2026-09-28 (B4): the trip facts the user has NOT given (tripFacts.ts). Each one is left
+   * out of the plan — never assumed — and the reply's closing question asks for it.
+   */
+  tripUnknown?: ReadonlyArray<'date' | 'origin' | 'transport'>
 }
 
 const PLAN_TOOL_LINES: Record<PlanActivity, string> = {
@@ -103,7 +108,12 @@ CHỖ Ở: user chưa nêu loại → tìm get_hotel_prices (khách sạn trong 
   // The transport is DECIDED here, from distance, and stated as a fact: with only a rule saying
   // "do not ask", the model asked "máy bay hay xe khách?" on two consecutive turns (measured, T1)
   // and withheld the plan until answered. It followed a stated default the moment it had one.
-  const transportLine = planType === 'trip'
+  const unknown = new Set(planType === 'trip' ? ctx.tripUnknown ?? [] : [])
+  const noLeg = unknown.has('origin') || unknown.has('transport')
+  const unknownLine = unknown.size
+    ? `CHƯA BIẾT (user chưa nói): ${[unknown.has('date') ? 'NGÀY ĐI' : '', unknown.has('origin') ? 'ĐIỂM XUẤT PHÁT' : '', unknown.has('transport') ? 'PHƯƠNG TIỆN' : ''].filter(Boolean).join(', ')}. TUYỆT ĐỐI KHÔNG giả định những điều này: ${unknown.has('date') ? 'KHÔNG ghi ngày/thứ cụ thể ở bất cứ đâu (label chỉ là "Ngày 1", "Ngày 2"…); ' : ''}${noLeg ? 'KHÔNG có bước bay/xe khách/tàu liên tỉnh trong kế hoạch, KHÔNG nêu thành phố xuất phát, KHÔNG gọi get_flight_prices/get_transport_options; kế hoạch bắt đầu khi đã tới nơi (nhận phòng). ' : ''}Hệ thống tự hỏi user những điều này ở cuối câu trả lời — bạn KHÔNG viết thêm câu hỏi đó.`
+    : ''
+  const transportLine = planType === 'trip' && !noLeg
     ? (ctx.transport
       ? `PHƯƠNG TIỆN ĐÃ QUYẾT ĐỊNH: ${ctx.transport.mode} đi ${ctx.transport.destination}${ctx.transport.distanceKm !== null ? ` (~${ctx.transport.distanceKm} km từ vị trí user)` : ''}. Dùng luôn phương tiện này trong kế hoạch, nêu bằng MỘT vế câu là user có thể đổi. TUYỆT ĐỐI KHÔNG hỏi "máy bay hay xe khách", KHÔNG chờ user chọn phương tiện rồi mới lập kế hoạch.`
       : `PHƯƠNG TIỆN: tự chọn theo khoảng cách (≥400 km hoặc có sân bay → máy bay; gần hơn → xe khách/ô tô), nêu là giả định. TUYỆT ĐỐI KHÔNG hỏi "máy bay hay xe khách".`)
@@ -136,7 +146,7 @@ CHỖ Ở: user chưa nêu loại → tìm get_hotel_prices (khách sạn trong 
 
   return `\n\n===== CHẾ ĐỘ LÊN KẾ HOẠCH ${planType === 'trip' ? 'CHUYẾN ĐI' : 'TỐI NAY'} - BẮT BUỘC, ƯU TIÊN CAO NHẤT =====
 User đang yêu cầu lên KẾ HOẠCH HOÀN CHỈNH. Đây là nhiệm vụ QUAN TRỌNG NHẤT của lượt này. Một yêu cầu có thể gồm NHIỀU hoạt động (ăn + bar + phim...) — kế hoạch phải bao trọn TẤT CẢ hoạt động user nêu, KHÔNG dừng lại sau một hoạt động, KHÔNG bắt user chọn "lĩnh vực" trước.
-${totalBudgetLine}${tripLengthLine ? '\n' + tripLengthLine : ''}${transportLine ? '\n' + transportLine : ''}${refinementLine}
+${totalBudgetLine}${tripLengthLine ? '\n' + tripLengthLine : ''}${transportLine ? '\n' + transportLine : ''}${unknownLine ? '\n' + unknownLine : ''}${refinementLine}
 
 BƯỚC 1 - GỌI TOOL: gọi ĐÚNG các tìm kiếm dưới đây, SONG SONG trong cùng một bước, mỗi hoạt động một lần, KHÔNG gọi thêm tool khác, KHÔNG gọi trùng:
 ${toolsNeeded}
@@ -159,8 +169,8 @@ QUY TẮC BẮT BUỘC:
 7. Sau [/TAPPY_PLAN]: 2-4 câu — vì sao chọn các điểm này cho đúng yêu cầu (số người, ngân sách, hoạt động), tổng/còn dư, 1 phương án thay thế nếu có, rồi CTA_BUTTONS như thường.
 8. KHÔNG áp dụng giới hạn số từ cho reply này — kế hoạch cần đầy đủ. Các khối "WORD LIMIT" khác không áp dụng ở lượt này.
 9. KHÔNG HỎI LẠI KHI ĐÃ ĐỦ: đã có địa điểm/khu vực + thời điểm (hoặc "tối nay") là ĐỦ để lập kế hoạch — hoạt động thiếu thì dùng mặc định ở BƯỚC 1, số người/ngân sách thiếu thì giả định (luật 10). TUYỆT ĐỐI KHÔNG hỏi "bạn muốn ăn loại gì" hay hỏi sở thích thay vì lập kế hoạch. Chọn mặc định theo thứ tự: (1) điều user nói trong cuộc trò chuyện này, (2) sở thích/kiêng cữ/thói quen trong MEMORY và PREFERENCES ở trên (ví dụ món hay ăn, đi mấy người, hay đi tối), (3) lựa chọn phổ biến hợp lý tại địa phương. Nêu giả định bằng MỘT câu ngắn và mời user chỉnh. Chỉ hỏi ĐÚNG MỘT câu khi thiếu điều không thể mặc định (không biết thành phố/khu vực và không có GPS/memory) — và khi đó vẫn đưa kế hoạch sơ bộ nếu có thể.
-10. MINH BACH GIẢ ĐỊNH: nếu user CHƯA nói rõ số người / ngân sách / ngày đi, hãy NÊU RÕ giả định của bạn bằng MỘT câu ngắn tự nhiên trong câu tóm tắt — viết bằng ngôn ngữ của câu trả lời, không chép mẫu có sẵn. Kế hoạch là của user để điều chỉnh, KHÔNG quyết thay user.
-11. PHƯƠNG TIỆN KHÔNG PHẢI CÂU HỎI: TUYỆT ĐỐI KHÔNG hỏi "đi máy bay hay xe khách/xe máy" — dùng PHƯƠNG TIỆN ĐÃ QUYẾT ĐỊNH ở đầu khối (hoặc tự chọn theo khoảng cách) và nêu là giả định trong MỘT vế câu ("mình tính đi máy bay, đổi thì nói mình"). Nếu user muốn phương tiện khác họ sẽ nói. Câu mở đầu TRƯỚC KHI gọi tool cũng KHÔNG được chứa câu hỏi này.
+10. MINH BACH GIẢ ĐỊNH: nếu user CHƯA nói rõ số người / ngân sách${unknown.size ? '' : ' / ngày đi'}, hãy NÊU RÕ giả định của bạn bằng MỘT câu ngắn tự nhiên trong câu tóm tắt — viết bằng ngôn ngữ của câu trả lời, không chép mẫu có sẵn. Kế hoạch là của user để điều chỉnh, KHÔNG quyết thay user.
+11. ${unknown.size ? 'Những điều trong "CHƯA BIẾT" ở đầu khối: KHÔNG giả định, KHÔNG nhắc tới, KHÔNG hỏi trong thân bài hay câu mở đầu (hệ thống hỏi ĐÚNG MỘT câu ở cuối).' : ''}${noLeg ? '' : `${unknown.size ? ' ' : ''}PHƯƠNG TIỆN KHÔNG PHẢI CÂU HỎI: TUYỆT ĐỐI KHÔNG hỏi "đi máy bay hay xe khách/xe máy" — dùng PHƯƠNG TIỆN ĐÃ QUYẾT ĐỊNH ở đầu khối (hoặc tự chọn theo khoảng cách) và nêu là giả định trong MỘT vế câu ("mình tính đi máy bay, đổi thì nói mình"). Nếu user muốn phương tiện khác họ sẽ nói. Câu mở đầu TRƯỚC KHI gọi tool cũng KHÔNG được chứa câu hỏi này.`}
 12. HỎI MỘT LẦN, KHÔNG HỎI LẠI: điều đã hỏi ở lượt trước mà user không trả lời → coi như user để bạn tự quyết, tự giả định và ghi rõ. KHÔNG bao giờ mở đầu bằng "mình cần xác nhận"/"mình cần biết" trước khi đưa kế hoạch — kế hoạch trước, câu hỏi (nếu có, tối đa MỘT) ở cuối.
 13. SỬA LÀ THAY THẾ: khi user sửa độ dài / ngân sách / khu vực / số người, con số MỚI thay cho con số cũ trong toàn bộ kế hoạch (số ngày trong "days", budget_total, cost_breakdown). Xác nhận bằng MỘT câu ngắn đúng con số mới ("OK, 2 ngày 1 đêm, 20 triệu cho 2 người"), KHÔNG lặp lại con số cũ.
 ${localTipsRule}${langReminder}==========================================================`

@@ -16,6 +16,7 @@ import { guardPlaceClaimsInText, isDirectTicketUrl, mentionsTickets, dropUnbacke
 import { guardPlanPrices, planPriceEvidenceFromRows } from './planPriceGuard'
 import { guardPlanLocalTips } from './planLocalTipsGuard'
 import { guardPlanItems, type PlanPlace } from './planItemGuard'
+import { guardPlanTripFacts } from './planTripFactsGuard'
 import { buildActions } from '@/lib/recommendation/actions'
 import { safeFlushPoint, alignReleasedPrefix } from './progressiveFlush'
 import { normalizeReplyMarkdown, plainTextDeep } from '@/lib/chat/markdownNormalize'
@@ -2028,7 +2029,12 @@ export function applyPlaceEnrichmentStreamFilter(
     // showed no plan (the older build lost the whole body the same way). The plan has already been
     // checked field by field above (prices, local tips, items), on PARSED JSON. So its body is
     // masked from the prose guards and restored intact after them.
-    const planMask = maskPlanBody(planItems ? planItems.text : tipped)
+    // TRIP FACTS (owner 2026-09-28, B4): a trip plan never states a date, a departure city or an
+    // inter-city leg the user did not give — the reply asks for them instead (planTripFactsGuard).
+    const itemized = planItems ? planItems.text : tipped
+    const tripFacts = itemized.includes('[TAPPY_PLAN]') ? guardPlanTripFacts(itemized, collector?.userTexts ?? [userText]) : null
+    if (tripFacts && (tripFacts.labelsCleaned || tripFacts.stopsDropped || tripFacts.sentencesDropped)) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'plan_trip_facts', missing: tripFacts.missing, labels_cleaned: tripFacts.labelsCleaned, stops_dropped: tripFacts.stopsDropped, sentences_dropped: tripFacts.sentencesDropped }))
+    const planMask = maskPlanBody(tripFacts ? tripFacts.text : itemized)
     const enriched = planMask.text
     // C3-B.10: the last server-side point at which the COMPLETE prose exists and
     // has not yet reached the client. A monetary claim the structured evidence

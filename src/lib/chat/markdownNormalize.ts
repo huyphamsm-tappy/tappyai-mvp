@@ -151,12 +151,27 @@ function normalizeBlockBody(name: string, body: string): string {
 }
 
 /**
+ * Owner 2026-09-28 (B4): the model wrote "ngan sách" — half accented. No code or prompt emits it;
+ * the system prompt is mostly unaccented Vietnamese ("ngan sach") and the model blends the two.
+ * Only a HALF-accented pair is fixed: "ngan" alone is a real word (wild goose), "ngan sach" may be
+ * deliberate unaccented text. Same length in and out.
+ */
+const HALF_ACCENTED: Array<[RegExp, string]> = [
+  [/(?<!\p{L})([Nn])gan(\s+)(sách)(?!\p{L})/gu, '$1gân$2$3'],
+  [/(?<!\p{L})([Nn])gân(\s+)sach(?!\p{L})/gu, '$1gân$2sách'],
+]
+export function fixHalfAccented(text: string): string {
+  return HALF_ACCENTED.reduce((t, [re, to]) => t.replace(re, to), text)
+}
+
+/**
  * The reply as the user must see it: prose bold balanced per line, marker blocks kept in place
  * with markdown stripped from their string values. An UNCLOSED block (truncated reply) and
  * everything after it is left exactly as it is — never guess at a half block.
  */
 export function normalizeReplyMarkdown(text: string): string {
   if (typeof text !== 'string' || !text) return text
+  text = fixHalfAccented(text)
   if (!/[*_`#[]/.test(text)) return text
   let out = ''
   let at = 0

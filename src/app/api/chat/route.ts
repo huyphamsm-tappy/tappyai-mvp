@@ -86,7 +86,7 @@ import { statedDistrict } from '@/lib/ai/districts'
 import { filterTransientMemory } from '@/lib/ai/consultative/memoryTransientFilter'
 import { plainRequestTopic, appendHistoryTopic } from '@/lib/ai/consultative/memoryTopic'
 import { deriveSearchNow, SPECIFIC_DATE } from '@/lib/ai/consultative/searchNow'
-import { tripAskAfter } from '@/lib/ai/consultative/tripFacts'
+import { tripAskAfter, missingTripFacts } from '@/lib/ai/consultative/tripFacts'
 import { planPresearch, planFlightPresearch, type FlightPresearchPlan, presearchMessages, presearchFrames, prefixBody, deferredBody, searchingFrame, type PresearchOutcome, type PresearchPlan } from '@/lib/ai/consultative/presearch'
 import { wantsMoreFromSet, reusablePlaceSearch, type PlaceSearchEvidence } from '@/lib/ai/consultative/moreFromSet'
 import { coercePlaceType } from '@/lib/ai/tools/placeType'
@@ -339,6 +339,8 @@ export async function POST(req: Request) {
           activities: [...new Set(thread.flatMap(detectPlanActivities))],
           tripLength: nearest(detectTripLength),
           transport: planningIntent === 'trip' ? defaultTransportFor(thread.join(' '), userLocation ? { lat: userLocation.lat, lng: userLocation.lng } : null) : null,
+          // Owner 2026-09-28 (B4): what the user has not said is left out of the plan, never assumed.
+          tripUnknown: planningIntent === 'trip' ? missingTripFacts(normalizeVN(thread.join(' \n ').toLowerCase())) : undefined,
           inherited: inheritedPlanningIntent !== null,
           refinement: inheritedPlanningIntent !== null ? lastText : null,
         }
