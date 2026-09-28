@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "ốp UAG (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:06:06.886Z",
+ "body": {
+  "searchParameters": {
+   "q": "ốp UAG (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Bao da UAG - Ốp chống sốc chính hãng, giá rẻ",
+    "link": "https://cellphones.com.vn/phu-kien/uag.html",
+    "snippet": "Bao da, ốp lưng chống sốc UAG · Chống sốc, va đập · Hỗ trợ sạc không dây · Mỏng nhẹ · Chống trầy xước · Hỗ trợ sạc không dây/MagSafe · Có chân đứng · Hạn chế ...",
+    "position": 1
+   },
+   {
+    "title": "UAG VIỆT NAM - Shopee Mall Online",
+    "link": "https://shopee.vn/uag_vietnam",
+    "snippet": "[iPhone 17/Pro/Air/ProMax] Ốp lưng UAG Chính Hãng, Chống Sốc Chuẩn Quân Đội Bảo hành 1 Năm. 1.391.000₫. 1.??8.000₫. Xem chi tiết. Gợi ý cho bạn.",
+    "position": 2
+   },
+   {
+    "title": "Ốp lưng UAG cho iPhone 16 (Plus, Pro, Pro Max) giá tốt",
+    "link": "https://cellphones.com.vn/phu-kien/bao-da-op-lung/iphone/iphone-16-series/uag.html",
+    "snippet": "Ốp lưng UAG iPhone 16 Series · Chống sốc, va đập · Chống trầy xước · Hỗ trợ sạc MagSafe · Hỗ trợ sạc không dây. Dòng iPhone. iPhone 16 Plus; iPhone 16 ...",
+    "position": 3
+   },
+   {
+    "title": "ốp lưng uag - Giá Tốt, Sale Tháng 09, Freeship 0Đ",
+    "link": "https://shopee.vn/list/%E1%BB%91p%20l%C6%B0ng/uag",
+    "snippet": "Mua Online ốp lưng uag chất lượng, Freeship 0Đ, Voucher Shopee giảm tới 50% tại Shopee. Khuyến mãi tháng 09, 2026. Mua ngay!",
+    "position": 4
+   },
+   {
+    "title": "Ốp lưng cao cấp USA",
+    "link": "https://shopee.vn/uag_vn_official_store",
+    "snippet": "Mua bao da, ốp lưng chống sốc & bảo vệ, miếng dán cường lực độ bền cao UAG chính hãng tại Shopee ưu đãi tháng 09/2026. Giao hỏa tốc, Shopee đảm bảo.",
+    "position": 5
+   },
+   {
+    "title": "Ốp UAG siêu bảo vệ máy ip 13/12/X/Xs/Xr/Xsmax- 11/11pro/ ...",
+    "link": "https://shopee.vn/%E1%BB%90p-UAG-si%C3%AAu-b%E1%BA%A3o-v%E1%BB%87-m%C3%A1y-ip-13-12-X-Xs-Xr-Xsmax-11-11pro-11promax-i.54097949.1403802671",
+    "snippet": "Mua Ốp UAG siêu bảo vệ máy ip 13/12/X/Xs/Xr/Xsmax- 11/11pro/11promax giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn ...",
+    "position": 6
+   },
+   {
+    "title": "ỐP LƯNG CHỐNG SỐC UAG cho iPhone X đến 12 Pro ...",
+    "link": "https://shopee.vn/%E1%BB%90P-L%C6%AFNG-CH%E1%BB%90NG-S%E1%BB%90C-UAG-cho-iPhone-X-%C4%91%E1%BA%BFn-12-Pro-Max-UAG-Civilian-1-1-si%C3%AAu-%C4%91%E1%BA%B9p-i.138233819.8549726816",
+    "snippet": "Mua ỐP LƯNG CHỐNG SỐC UAG cho iPhone X đến 12 Pro Max UAG Civilian 1:1 siêu đẹp giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, ...",
+    "rating": 3.9,
+    "ratingCount": 14,
+    "position": 7
+   },
+   {
+    "title": "Ốp lưng iPhone 14 Pro UAG Civilian | Giá rẻ",
+    "link": "https://cellphones.com.vn/op-lung-iphone-14-pro-uag-civilian.html",
+    "snippet": "Ốp lưng iPhone 14 Pro UAG Civilian được thiết kế với công nghệ HyperCush giúp giảm và phân tán lực mà máy phải chịu khi va chạm với các bề mặt khác. Mặt ngoài ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

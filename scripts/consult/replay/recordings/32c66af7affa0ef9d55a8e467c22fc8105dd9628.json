@@ -1,0 +1,70 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "massage toàn thân KTV nữ kỹ thuật viên nữ quan 1 site:klook.com/vi/activity",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:06:49.207Z",
+ "body": {
+  "searchParameters": {
+   "q": "massage toàn thân KTV nữ kỹ thuật viên nữ quan 1 site:klook.com/vi/activity",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Trung Tâm Massage Khỏe Mạnh Gia Vận",
+    "link": "https://www.klook.com/vi/activity/55348-taichung-food-body-massage/",
+    "snippet": "Massage dưỡng sinh thư giãn chân toàn diện 70 phút (kỹ thuật viên thực hiện 60 phút). Massage thư giãn toàn thân đỉnh cao 90 phút (Kỹ thuật thủ công 90 phút).",
+    "rating": 4.6,
+    "ratingCount": 17,
+    "position": 1
+   },
+   {
+    "title": "Vé massage tại Tân Bắc Đài Loan｜Trung tâm dưỡng sinh ...",
+    "link": "https://www.klook.com/vi/activity/65487-ba-fun-yue-spa-massage-new-taipei/",
+    "snippet": "Môi trường tại chỗ được duy trì rất tốt, sạch sẽ, không có mùi thuốc lá. Các bạn nhân viên lễ tân và kỹ thuật viên nữ rất thân thiện chào đón. Kỹ thuật viên nữ ...",
+    "position": 2
+   },
+   {
+    "title": "Lớp học nấu ăn tại nhà kiểu Hàn Quốc ở Gangnam",
+    "link": "https://www.klook.com/vi/activity/123606-korean-home-style-cooking-class-in-gangnam/",
+    "snippet": "Naomi là một giáo viên tuyệt vời, hướng dẫn của cô ấy rất rõ ràng và lớp học được tổ chức tốt. Chúng tôi đã yêu cầu một thực đơn chay và cô ấy đã tử tế chuẩn bị ...",
+    "rating": 4.9,
+    "ratingCount": 85,
+    "position": 3
+   },
+   {
+    "title": "Khu phức hợp ẩm thực và spa Nam Sơn Golden Coast",
+    "link": "https://www.klook.com/vi/activity/146455-nanshan-gold-coast-food-club-massage-and-sauna-health-care/",
+    "snippet": "Môi trường sạch sẽ, hợp vệ sinh, không ép buộc phải boa tiền, miễn phí trái cây và đồ uống; nhân viên phục vụ rất nhiệt tình; kỹ thuật massage của nhân viên ...",
+    "rating": 4.9,
+    "ratingCount": 26,
+    "position": 4
+   },
+   {
+    "title": "Tắm bùn tại Galina Hotel and Spa ở Nha Trang",
+    "link": "https://www.klook.com/vi/activity/17316-mud-bath-galina-hotel-nha-trang/",
+    "snippet": "Massage được thực hiện trong phòng riêng rộng rãi với liệu trình đầy đủ 2 tiếng bao gồm cả đá nóng. Tại quầy lễ tân, tôi được hỏi trước về độ mạnh mong muốn và ...",
+    "rating": 4.5,
+    "ratingCount": 470,
+    "position": 5
+   },
+   {
+    "title": "Vé Show Người Lớn Wake Up Club (JJ Club) ở Phuket",
+    "link": "https://www.klook.com/vi/activity/21193-wake-up-club-adult-show-ticket-phuket/",
+    "snippet": "Dàn diễn viên, sự kết hợp giữa những người đàn ông và phụ nữ tuyệt đẹp, đã mang đến một chương trình khó quên, tràn đầy đam mê, kỹ năng và nghệ thuật. Nhìn ...",
+    "rating": 4.4,
+    "ratingCount": 213,
+    "position": 6
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -157,6 +157,9 @@ export interface EnrichmentCollector {
    */
   consultButtons?: string[]
   setConsultButtons(labels: string[]): void
+  /** Consult V2 turn type — the prose-shape guard follows the approved frame for it (2 alternatives; a plan is not reshaped). */
+  consultTurn?: string
+  setConsultTurn(turn: string): void
   /**
    * Whether a reflex "what kind would you like?" question may survive this
    * reply. Set by the route once a tool result has been judged against the
@@ -394,6 +397,8 @@ export function createEnrichmentCollector(turnText = '', earlierUserTexts: reado
     setRendersDecisionCard(on: boolean) { this.rendersDecisionCard = on },
     consultButtons: undefined as string[] | undefined,
     setConsultButtons(labels: string[]) { this.consultButtons = labels.slice(0, 3) },
+    consultTurn: undefined as string | undefined,
+    setConsultTurn(turn: string) { this.consultTurn = turn },
     clarificationPolicy: 'allow' as 'allow' | 'no_reflex',
     setClarificationPolicy(policy: 'allow' | 'no_reflex') { this.clarificationPolicy = policy },
     consultativeV1: undefined as ConsultativeV1Context | undefined,

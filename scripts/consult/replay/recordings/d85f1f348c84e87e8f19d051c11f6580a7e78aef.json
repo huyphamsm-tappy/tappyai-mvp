@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "quán bar phòng riêng Bình Thạnh site:klook.com/vi/activity",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:52:55.096Z",
+ "body": {
+  "searchParameters": {
+   "q": "quán bar phòng riêng Bình Thạnh site:klook.com/vi/activity",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Khách sạn Mandarin Oriental Đài Bắc - M.O. BAR",
+    "link": "https://www.klook.com/vi/activity/168321-mandarin-oriental-m-o-bar-taipei/",
+    "snippet": "M.O. Bar quyến rũ và lộng lẫy kế thừa phong cách Art Deco của những năm 1920, với quầy bar dài ở trung tâm, kết hợp với nhiều khu vực chỗ ngồi thoải mái đa ...",
+    "position": 1
+   },
+   {
+    "title": "Tour Đêm Ultimate Rooftop Bar & Lounge ở New York",
+    "link": "https://www.klook.com/vi/activity/82449-ultimate-rooftop-bar-lounge-night-tour-new-york/",
+    "snippet": "Trải Nghiệm vui chơi buổi tối này là một tour nhóm có hướng dẫn viên đưa khách đến ba địa điểm giải trí về đêm, bao gồm các quán rượu thời thượng, quán cocktail ...",
+    "rating": 3,
+    "ratingCount": 2,
+    "position": 2
+   },
+   {
+    "title": "Trải nghiệm ẩm thực tại Rabbit Hole - Top 50 quán bar tốt ...",
+    "link": "https://www.klook.com/vi/activity/135175-dining-experience-at-rabbit-hole-asia-s-50-best-bars/",
+    "snippet": "Rabbit Hole là một trong những quán bar tuyệt vời nhất với những ly cocktail độc đáo. Nữ pha chế đã giúp chúng tôi chọn các món chay và thuần chay. Món đồ ăn ...",
+    "position": 3
+   },
+   {
+    "title": "Trải nghiệm khám phá quán rượu ở phố cổ Bucharest",
+    "link": "https://www.klook.com/vi/activity/113849-old-town-pub-crawl-experience-in-bucharest/",
+    "snippet": "Khám phá 4 - 5 quán bar và câu lạc bộ, mỗi nơi có một phong cách riêng, đồng thời thưởng thức một ly rượu mạnh miễn phí tại mỗi điểm dừng!",
+    "position": 4
+   },
+   {
+    "title": "Gói ưu đãi lưu trú tại Khách sạn Wanda Jin'hua Bình Cốc ...",
+    "link": "https://www.klook.com/vi/activity/180641-wanda-jinhua-hotel-pinggu-beijing-accommodation-package/",
+    "snippet": "Nằm ở vị trí trung tâm quận Bình Cốc, gần Bảo tàng Bình Cốc, cách nhiều điểm du lịch trong vòng 1 giờ lái xe. · Xung quanh có các khu du lịch cấp 4A như hồ Jin ...",
+    "position": 5
+   },
+   {
+    "title": "Gói Nghỉ Dưỡng tại Xi'an Hai Rong JW Marriott Hotel",
+    "link": "https://www.klook.com/vi/activity/172004-jw-marriott-hotel-xi-an-accommodation-package/",
+    "snippet": "Khách sạn có 3 nhà hàng và địa điểm giao lưu: JW Kitchen, phục vụ ẩm thực quốc tế cả ngày; nhà hàng Jin Wei Ge, phục vụ các món ăn Quảng Đông kết hợp giữa ...",
+    "position": 6
+   },
+   {
+    "title": "Tour Tham Quan Quán Bar Bangkok Đêm",
+    "link": "https://www.klook.com/vi/activity/77729-bangkok-bar-hopping-night-tour/",
+    "snippet": "Được liệt kê là một trong 50 quán bar hàng đầu châu Á, quán bar này là địa điểm không thể bỏ qua nếu bạn đang tìm kiếm đồ uống lạ. Asia Today được biết đến với ...",
+    "rating": 4,
+    "ratingCount": 3,
+    "position": 7
+   },
+   {
+    "title": "Khách sạn Mandarin Oriental Thâm Quyến",
+    "link": "https://www.klook.com/vi/activity/120177-mandarin-oriental-shenzhen/",
+    "snippet": "Tập hợp 8 nhà hàng và quán bar đặc trưng, bao gồm nhà hàng 2 sao Michelin \"Đông Loan · do Sư phụ Huy chủ trì\", nhà hàng 1 sao Michelin \"OPUS 388\", và \"MO Bar ...",
+    "rating": 4.5,
+    "ratingCount": 2,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

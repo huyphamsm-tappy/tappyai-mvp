@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Khách Sạn Minh Châu",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:56:08.583Z",
+ "body": {
+  "searchParameters": {
+   "q": "Khách Sạn Minh Châu",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Minh Chau Pearl Hotel & Spa, Đảo Quan Lạn, Hạ Long",
+    "imageUrl": "https://q-xx.bstatic.com/xdata/images/hotel/max500/469088883.jpg?k=9136340db6b0620e36489fd4916e7b8b68c8b911ffab0fb21570d4f8b034c9c5&o=",
+    "imageWidth": 500,
+    "imageHeight": 330,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTb9LVf02PpEsMhFrjy73an6Corj7HwcDaZPQK3UUEUw&s=10",
+    "thumbnailWidth": 500,
+    "thumbnailHeight": 329,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/minh-chau-pearl-hotel-spa/hotel/halong-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fq-xx.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax500%2F469088883.jpg%3Fk%3D9136340db6b0620e36489fd4916e7b8b68c8b911ffab0fb21570d4f8b034c9c5%26o%3D&tbnid=l0s6IOxEDSxNAM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fminh-chau-pearl-hotel-spa%2Fhotel%2Fhalong-vn.html&docid=DjOiwOkxJxBj0M&w=500&h=330",
+    "position": 1
+   },
+   {
+    "title": "KHÁCH SẠN MINH CHÂU SẦM SƠN THANH HÓA – SẦM SƠN, KHÁCH SẠN SẦM SƠN, DU LỊCH  SẦM SƠN",
+    "imageUrl": "https://bizweb.dktcdn.net/100/081/807/files/khach-san-minh-chau-sam-son-toan-canh.jpg?v=1523262181527",
+    "imageWidth": 439,
+    "imageHeight": 709,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQN8q4lnn3krydKPxVhOVCtGDpNOGhN6MOZKJGWElh7-w&s=10",
+    "thumbnailWidth": 351,
+    "thumbnailHeight": 569,
+    "source": "Khách sạn Sầm Sơn",
+    "domain": "samson.vn",
+    "link": "https://samson.vn/khach-san-minh-chau-sam-son-thanh-hoa",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fbizweb.dktcdn.net%2F100%2F081%2F807%2Ffiles%2Fkhach-san-minh-chau-sam-son-toan-canh.jpg%3Fv%3D1523262181527&tbnid=u-xKIdPhLTgOFM&imgrefurl=https%3A%2F%2Fsamson.vn%2Fkhach-san-minh-chau-sam-son-thanh-hoa&docid=T6PiEb22Ys1zyM&w=439&h=709",
+    "position": 2
+   },
+   {
+    "title": "Khách sạn Minh Châu - Hòa Hưng, TP. Hồ Chí Minh (cập nhật giá năm 2027)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/100342968.jpg?k=1a820f033ce48d8979bdd23fc0de6013350bb1ea68e3ba6083748004e3bda039&o=",
+    "imageWidth": 1024,
+    "imageHeight": 576,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4CT9JtexIXo7DmnhcfQRFAt8Y1fBGV2MttvL7qfPpOQ&s=10",
+    "thumbnailWidth": 738,
+    "thumbnailHeight": 414,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/minh-chau-lan-anh.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F100342968.jpg%3Fk%3D1a820f033ce48d8979bdd23fc0de6013350bb1ea68e3ba6083748004e3bda039%26o%3D&tbnid=TzS4GT_ROfDwDM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fminh-chau-lan-anh.vi.html&docid=ffBGaSVMr3WwoM&w=1024&h=576",
+    "position": 3
+   },
+   {
+    "title": "Khách sạn Minh Châu - Hòa Hưng | Hồ Chí Minh ƯU ĐÃI CẬP NHẬT NĂM 2020  335073 ₫, Ảnh HD & Nhận Xét",
+    "imageUrl": "https://pix10.agoda.net/hotelImages/248/248017/248017_15090518320035647847.jpg?va=1&ca=5&ce=1&s=414x232",
+    "imageWidth": 309,
+    "imageHeight": 232,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFUcfaq8CF8ISKnpjU-fHb6ZPOWulAwAGAsiIhNw3nKg&s=10",
+    "thumbnailWidth": 308,
+    "thumbnailHeight": 232,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/minh-chau-hotel_3/hotel/ho-chi-minh-city-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F248%2F248017%2F248017_15090518320035647847.jpg%3Fva%3D1%26ca%3D5%26ce%3D1%26s%3D414x232&tbnid=_FPNfSqX7ij0kM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fminh-chau-hotel_3%2Fhotel%2Fho-chi-minh-city-vn.html&docid=0hNWUbYm1K7nyM&w=309&h=232",
+    "position": 4
+   },
+   {
+    "title": "KHÁCH SẠN MINH CHÂU SẦM SƠN THANH HÓA – SẦM SƠN, KHÁCH SẠN SẦM SƠN, DU LỊCH  SẦM SƠN",
+    "imageUrl": "https://bizweb.dktcdn.net/100/081/807/files/khach-san-minh-chau-toan-canh-sam-son.jpg?v=1523273895161",
+    "imageWidth": 709,
+    "imageHeight": 494,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQoEdKNEQwmSnUPIvf0ixsYWtkBQpFTnNDlQIzSdnMnvg&s=10",
+    "thumbnailWidth": 536,
+    "thumbnailHeight": 373,
+    "source": "Khách sạn Sầm Sơn",
+    "domain": "samson.vn",
+    "link": "https://samson.vn/khach-san-minh-chau-sam-son-thanh-hoa",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fbizweb.dktcdn.net%2F100%2F081%2F807%2Ffiles%2Fkhach-san-minh-chau-toan-canh-sam-son.jpg%3Fv%3D1523273895161&tbnid=Z70TJnzwzb7E1M&imgrefurl=https%3A%2F%2Fsamson.vn%2Fkhach-san-minh-chau-sam-son-thanh-hoa&docid=T6PiEb22Ys1zyM&w=709&h=494",
+    "position": 5
+   },
+   {
+    "title": "Minh Châu Hotel - Khách sạn mặt biển trung tâm bãi tắm C",
+    "imageUrl": "https://dulich.datxuthanh.vn/wp-content/uploads/2024/04/Minh-Chau-hotel-Khach-san-mat-bien-Sam-Son-01.jpg",
+    "imageWidth": 1152,
+    "imageHeight": 2048,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ3LZ9JnoTlGB016Fq1SiO_tdIHeRx7dJ3yDEs8l7VOEQ&s=10",
+    "thumbnailWidth": 415,
+    "thumbnailHeight": 739,
+    "source": "dulich.datxuthanh.vn",
+    "domain": "dulich.datxuthanh.vn",
+    "link": "https://dulich.datxuthanh.vn/products/minh-chau-hotel-khach-san-mat-bien-trung-tam-bai-tam-c/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdulich.datxuthanh.vn%2Fwp-content%2Fuploads%2F2024%2F04%2FMinh-Chau-hotel-Khach-san-mat-bien-Sam-Son-01.jpg&tbnid=5dBEoettz0mEVM&imgrefurl=https%3A%2F%2Fdulich.datxuthanh.vn%2Fproducts%2Fminh-chau-hotel-khach-san-mat-bien-trung-tam-bai-tam-c%2F&docid=9s34KMrOonpnUM&w=1152&h=2048",
+    "position": 6
+   },
+   {
+    "title": "Khách sạn Minh Châu, Thành phố Hồ Chí Minh | Hotels.com",
+    "imageUrl": "https://images.trvl-media.com/lodging/7000000/6660000/6654000/6653923/b3fb10de.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill",
+    "imageWidth": 767,
+    "imageHeight": 575,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhhCxnDRQWTviPuY0kmNegX5xaaK0_NYjyIuYAAKtYxQ&s=10",
+    "thumbnailWidth": 516,
+    "thumbnailHeight": 387,
+    "source": "hotels",
+    "domain": "vi.hotels.com",
+    "link": "https://vi.hotels.com/ho444316/khach-san-minh-chau-thanh-pho-ho-chi-minh-viet-nam/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimages.trvl-media.com%2Flodging%2F7000000%2F6660000%2F6654000%2F6653923%2Fb3fb10de.jpg%3Fimpolicy%3Dresizecrop%26rw%3D575%26rh%3D575%26ra%3Dfill&tbnid=eoRRcQMNBX8shM&imgrefurl=https%3A%2F%2Fvi.hotels.com%2Fho444316%2Fkhach-san-minh-chau-thanh-pho-ho-chi-minh-viet-nam%2F&docid=8WCqKoDiWq-ABM&w=767&h=575",
+    "position": 7
+   },
+   {
+    "title": "Khách Sạn Minh Châu Quan Lạn | La Paloma Minh Châu Hotel",
+    "imageUrl": "https://minhchaubeach.vn/wp-content/uploads/2024/05/khach-san-minh-chau-quan-lan.jpg",
+    "imageWidth": 900,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1Tfc2zik2CGU0f0sMf4XlYn_7slj63VP7jiKy2ZJkow&s=10",
+    "thumbnailWidth": 738,
+    "thumbnailHeight": 411,
+    "source": "minhchaubeach.vn",
+    "domain": "minhchaubeach.vn",
+    "link": "https://minhchaubeach.vn/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fminhchaubeach.vn%2Fwp-content%2Fuploads%2F2024%2F05%2Fkhach-san-minh-chau-quan-lan.jpg&tbnid=IW-Fbz7nObuiXM&imgrefurl=https%3A%2F%2Fminhchaubeach.vn%2F&docid=quEmrr4fBAA3UM&w=900&h=500",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

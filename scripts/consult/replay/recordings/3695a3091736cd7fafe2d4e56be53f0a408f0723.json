@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Laptop | Máy tính xách tay giá rẻ, trả góp 0%, giảm 15 triệu",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:54:43.818Z",
+ "body": {
+  "searchParameters": {
+   "q": "Laptop | Máy tính xách tay giá rẻ, trả góp 0%, giảm 15 triệu",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Laptop, máy tính xách tay 10-15 triệu giá rẻ, góp 0% tại dienmayxanh.com -  09/2026",
+    "imageUrl": "https://cdn.tgdd.vn/2026/09/timerseo/362354-600x600-3.png",
+    "imageWidth": 600,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRX_6xr7PTj81Cq8aq8ze65aqcAtGETefGv8wBFHB2aRQ&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Điện máy XANH",
+    "domain": "www.dienmayxanh.com",
+    "link": "https://www.dienmayxanh.com/laptop?p=10-15-trieu&srsltid=AU7gw4X-j-6hjiZ_QAMcz6J05KScZ6nOCTImSueng4Ee_8cWGH-FkGxn",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.tgdd.vn%2F2026%2F09%2Ftimerseo%2F362354-600x600-3.png&tbnid=NAj5Vl97_m9tSM&imgrefurl=https%3A%2F%2Fwww.dienmayxanh.com%2Flaptop%3Fp%3D10-15-trieu%26srsltid%3DAU7gw4X-j-6hjiZ_QAMcz6J05KScZ6nOCTImSueng4Ee_8cWGH-FkGxn&docid=ItAnCtAzDOvYAM&w=600&h=600",
+    "position": 1
+   },
+   {
+    "title": "Laptop | Máy tính xách tay 15 - 20 triệu, trả góp 0% - 09/2026",
+    "imageUrl": "https://cdn.tgdd.vn/2026/09/timerseo/369212-600x600-3.png",
+    "imageWidth": 600,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTzw_8qF7NomJsBuoFJ1u3XMBeHoQLOOk3pu-zwQznhHQ&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Thegioididong.com",
+    "domain": "www.thegioididong.com",
+    "link": "https://www.thegioididong.com/laptop?p=15-20-trieu",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.tgdd.vn%2F2026%2F09%2Ftimerseo%2F369212-600x600-3.png&tbnid=s6igUl_4rmbjZM&imgrefurl=https%3A%2F%2Fwww.thegioididong.com%2Flaptop%3Fp%3D15-20-trieu&docid=583aJjsgliSR7M&w=600&h=600",
+    "position": 2
+   },
+   {
+    "title": "Laptop, máy tính xách tay 10-15 triệu giá rẻ, góp 0% tại dienmayxanh.com -  09/2026",
+    "imageUrl": "https://cdn.tgdd.vn/2026/09/timerseo/368189-600x600-3.png",
+    "imageWidth": 600,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSo-DGfm9ONP1OI93s4j1nm0Yb4BKacqxXbXKcQICydvg&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Điện máy XANH",
+    "domain": "www.dienmayxanh.com",
+    "link": "https://www.dienmayxanh.com/laptop?p=10-15-trieu&srsltid=AU7gw4UBacUbgJr5_tM5tHG5nxjiPoBAaEKx3djvZJOFS1kJfD0gFU6J",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.tgdd.vn%2F2026%2F09%2Ftimerseo%2F368189-600x600-3.png&tbnid=GTgrjQssbXJV6M&imgrefurl=https%3A%2F%2Fwww.dienmayxanh.com%2Flaptop%3Fp%3D10-15-trieu%26srsltid%3DAU7gw4UBacUbgJr5_tM5tHG5nxjiPoBAaEKx3djvZJOFS1kJfD0gFU6J&docid=ItAnCtAzDOvYAM&w=600&h=600",
+    "position": 3
+   },
+   {
+    "title": "Laptop | Máy tính xách tay giá rẻ, trả góp 0%, giảm 15 triệu",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/t/e/text_d_i_1__4_62.png",
+    "imageWidth": 358,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdXIOzh_lt5lNsGRKWawVmxOT17lEF62PQaajsglaAxQ&s=10",
+    "thumbnailWidth": 358,
+    "thumbnailHeight": 358,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/laptop.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A358%3A358%2Fq%3A90%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fcatalog%2Fproduct%2Ft%2Fe%2Ftext_d_i_1__4_62.png&tbnid=l83mwRCnm1H7-M&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Flaptop.html&docid=7GFpIsbpFmhUwM&w=358&h=358",
+    "position": 4
+   },
+   {
+    "title": "Laptop | Máy tính xách tay ưu đãi tới 16Tr, mua trả góp 0% - 09/2026",
+    "imageUrl": "https://cdn.tgdd.vn/2026/09/timerseo/361311-600x600-4.png",
+    "imageWidth": 600,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRupkfTGezfWLhcgOW_DnFEfRBEtjzw-iKITtdjGGDAPA&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Thegioididong.com",
+    "domain": "www.thegioididong.com",
+    "link": "https://www.thegioididong.com/laptop",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.tgdd.vn%2F2026%2F09%2Ftimerseo%2F361311-600x600-4.png&tbnid=NnyhXG5fXh2mYM&imgrefurl=https%3A%2F%2Fwww.thegioididong.com%2Flaptop&docid=M8z9icXSP1Y1wM&w=600&h=600",
+    "position": 5
+   },
+   {
+    "title": "Laptop | Máy tính xách tay giá rẻ, trả góp 0%, giảm 15 triệu",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/g/r/group_975_17.png",
+    "imageWidth": 358,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCOYWbIee7LUzUSmrqGhQ3sd8L3b62StCkC-ngrXDtAA&s=10",
+    "thumbnailWidth": 358,
+    "thumbnailHeight": 358,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/laptop.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A358%3A358%2Fq%3A90%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fcatalog%2Fproduct%2Fg%2Fr%2Fgroup_975_17.png&tbnid=7HXfY8xDMrPM5M&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Flaptop.html&docid=7GFpIsbpFmhUwM&w=358&h=358",
+    "position": 6
+   },
+   {
+    "title": "Laptop, máy tính xách tay 10-15 triệu giá rẻ, góp 0% tại dienmayxanh.com -  09/2026",
+    "imageUrl": "https://img.tgdd.vn/cate/2/5u7k0n8DbpE-/28092026",
+    "imageWidth": 1200,
+    "imageHeight": 628,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyOsR66Dh6PehwZmEPsycSNIef58MuP1SVhVv9cWjFlw&s",
+    "thumbnailWidth": 311,
+    "thumbnailHeight": 162,
+    "source": "Điện máy XANH",
+    "domain": "www.dienmayxanh.com",
+    "link": "https://www.dienmayxanh.com/laptop?p=10-15-trieu&srsltid=AU7gw4XtVifNYYT0osRTcvwrDOPkXR6VP2-Cg6CMXU1R0TH9qaN026rV",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimg.tgdd.vn%2Fcate%2F2%2F5u7k0n8DbpE-%2F28092026&tbnid=FVnoCTRiKnDiQM&imgrefurl=https%3A%2F%2Fwww.dienmayxanh.com%2Flaptop%3Fp%3D10-15-trieu%26srsltid%3DAU7gw4XtVifNYYT0osRTcvwrDOPkXR6VP2-Cg6CMXU1R0TH9qaN026rV&docid=ItAnCtAzDOvYAM&w=1200&h=628",
+    "position": 7
+   },
+   {
+    "title": "Laptop | Máy tính xách tay giá rẻ, trả góp 0%, giảm 15 triệu",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/t/e/text_d_i_9_23.png",
+    "imageWidth": 358,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSov0AsWcF_nGdV2Zri8FXIaSxHjoeQ9tSS-n5HI3i3Bw&s=10",
+    "thumbnailWidth": 358,
+    "thumbnailHeight": 358,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/laptop.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A358%3A358%2Fq%3A90%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fcatalog%2Fproduct%2Ft%2Fe%2Ftext_d_i_9_23.png&tbnid=tIFfxTJGowh7CM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Flaptop.html&docid=7GFpIsbpFmhUwM&w=358&h=358",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

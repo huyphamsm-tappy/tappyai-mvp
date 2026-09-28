@@ -1,0 +1,48 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Massage Queen\" quan 1 site:klook.com/vi/activity",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:58:45.768Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Massage Queen\" quan 1 site:klook.com/vi/activity",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Oasis Lanna Spa tại Prasing ở Chiang Mai",
+    "link": "https://www.klook.com/vi/activity/1564-oasis-spa-luxury-packages-chiang-mai/",
+    "snippet": "Các gói dịch vụ · [Thực Đơn Đặc Biệt] Massage Queen of Oasis (120 Phút) · Massage Hành trình Lanna Vàng (90 phút) · Lanna Explorer (240 phút) · Massage Tinh dầu ...",
+    "rating": 4.5,
+    "ratingCount": 125,
+    "position": 1
+   },
+   {
+    "title": "Oasis Spa, Bangkok",
+    "link": "https://www.klook.com/vi/activity/1568-oasis-spa-luxury-packages-bangkok/",
+    "snippet": "Massage Queen of Oasis (120 Phút). Ngày mở: Hiệu lực 180 ngày. Lanna Secrets (120 Phút). Ngày mở: Hiệu lực 180 ngày. Hoàn tất lựa chọn các thông tin trên để xem ...",
+    "rating": 4.7,
+    "ratingCount": 580,
+    "position": 2
+   },
+   {
+    "title": "Liệu pháp mát-xa thư giãn tại Oani Spa Đà Nẵng",
+    "link": "https://www.klook.com/vi/activity/182667-relaxing-massage-therapy-at-oani-spa-da-nang/",
+    "snippet": "... massage Queen & Nu đã phục vụ rất chu đáo trong quá trình thực hiện, thái độ phục vụ thân thiện. Cuối cùng, cảm giác tổng thể rất tốt, mang đến cho tôi một ...",
+    "rating": 4.8,
+    "ratingCount": 23,
+    "position": 3
+   }
+  ],
+  "credits": 1
+ }
+}

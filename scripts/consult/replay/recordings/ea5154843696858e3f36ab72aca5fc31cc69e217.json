@@ -1,0 +1,87 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "massage toàn thân quan 1 site:klook.com/vi/activity",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:58:32.643Z",
+ "body": {
+  "searchParameters": {
+   "q": "massage toàn thân quan 1 site:klook.com/vi/activity",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Gội Đầu & Massage tại Charm Garden Spa ở Quận 1, Hồ ...",
+    "link": "https://www.klook.com/vi/activity/212930-charm-garden-spa-hair-wash-massage-in-district-1-ho-chi-minh/",
+    "snippet": "Các gói dịch vụ · Gội đầu thảo dược · Massage Nến Ấm Thư Giãn Toàn Thân · Dermalogica Hydra Glow · [Bán chạy nhất] Massage Toàn thân bằng Tinh dầu Truyền thống.",
+    "rating": 4,
+    "ratingCount": 1,
+    "position": 1
+   },
+   {
+    "title": "Trải nghiệm La Spa & Massage Premium tại Quận 1, Hồ ...",
+    "link": "https://www.klook.com/vi/activity/157287-la-spa-massage-premium-experience-in-district-1-ho-chi-minh/",
+    "snippet": "Các gói dịch vụ · Massage toàn thân [60'/90'] · Massage toàn thân đá nóng [60'/90'] · Massage toàn thân đá muối Himalaya [60'/90'] · Natural Skin Dream [60'] · Combo ...",
+    "rating": 5,
+    "ratingCount": 8,
+    "position": 2
+   },
+   {
+    "title": "Trải Nghiệm Phân Tích Màu Sắc Cá Nhân & Da Tại Seoul ...",
+    "link": "https://www.klook.com/vi/activity/235444-personal-color-and-skin-analysis-experience-in-seoul/",
+    "snippet": "Khám phá màu sắc trang phục, màu trang điểm, họa tiết và phụ kiện tôn da nhất của bạn thông qua việc thử màu cá nhân gần Cung điện ...",
+    "date": "9 thg 9, 2026",
+    "position": 3
+   },
+   {
+    "title": "Shinrin Spa: Gội Đầu & Massage tại Quận 1, TP. Hồ Chí Minh",
+    "link": "https://www.klook.com/vi/activity/151252-shinrin-spa-massage-experience-in-district-1-ho-chi-minh/",
+    "snippet": "Kỹ thuật viên massage: Lực vừa phải, massage toàn thân 60 phút bao gồm tinh dầu, đá nóng và chườm nóng, giúp cả người thư giãn. Cơ sở vật chất: Trước khi ...",
+    "rating": 4.8,
+    "ratingCount": 470,
+    "position": 4
+   },
+   {
+    "title": "Đài Bắc Đại An｜Trung tâm chăm sóc sức khỏe chân Ruiting",
+    "link": "https://www.klook.com/vi/activity/65609-afoot-spa-massage-taipei/",
+    "snippet": "Giảm giá 23% cho massage toàn thân, massage vai gáy và chân, tận hưởng massage tinh dầu tự nhiên với giá chưa đến một nghìn · Nằm cạnh khu thương mại Vĩnh Khang, ...",
+    "rating": 4.4,
+    "ratingCount": 21,
+    "position": 5
+   },
+   {
+    "title": "Phiếu massage & chăm sóc da La Pure Spa",
+    "link": "https://www.klook.com/vi/activity/48582-la-pure-spa-experience-taipei/",
+    "snippet": "Dịch vụ rất tốt, môi trường thoải mái, massage chuyên nghiệp nhẹ nhàng vừa phải, nếu bạn vẫn đang trong thời gian phục hồi cơ bắp sau khi tập luyện thì rất phù ...",
+    "rating": 4.6,
+    "ratingCount": 15,
+    "position": 6
+   },
+   {
+    "title": "Vé massage tại Kim Lạc Túc Thể Dưỡng Sinh Hội Quán",
+    "link": "https://www.klook.com/vi/activity/48372-kinraku-foot-massage-experience-taipei/",
+    "snippet": "Giảm giá đến 26%! · Lựa chọn massage siêu nổi tiếng ở Đài Bắc! · Tự thiết lập phòng giặt khăn và quần áo, làm sạch kỹ lưỡng khăn và quần áo rồi khử trùng ở nhiệt ...",
+    "rating": 4.8,
+    "ratingCount": 235,
+    "position": 7
+   },
+   {
+    "title": "Trải nghiệm Amy Spa & Massage ở Quận 1, Hồ Chí Minh",
+    "link": "https://www.klook.com/vi/activity/147259-amy-spa-massage-experience-in-district-1-ho-chi-minh/",
+    "snippet": "Mặc dù là massage chân nhưng toàn thân đều được massage, nên không tập trung nhiều vào lòng bàn chân, nhưng vẫn rất sảng khoái! Tốt hơn nhiều so với ở Đài Loan!",
+    "rating": 4.8,
+    "ratingCount": 17,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

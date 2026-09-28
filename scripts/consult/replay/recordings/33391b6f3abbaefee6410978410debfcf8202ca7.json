@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Giá đỡ laptop nhôm điều chỉnh độ cao linh hoạt, tản nhiệt tốt",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:54:43.970Z",
+ "body": {
+  "searchParameters": {
+   "q": "Giá đỡ laptop nhôm điều chỉnh độ cao linh hoạt, tản nhiệt tốt",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Giá đỡ laptop nhôm điều chỉnh độ cao linh hoạt, tản nhiệt tốt | Shopee Việt  Nam",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/sg-11134253-822wq-mi0d94haty4l31",
+    "imageWidth": 1024,
+    "imageHeight": 1024,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQhr-Encb67sDIp3KfZuo9HgN1WFSIJBaCWH7Drrk_gfQ&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/Gi%C3%A1-%C4%91%E1%BB%A1-laptop-nh%C3%B4m-%C4%91i%E1%BB%81u-ch%E1%BB%89nh-%C4%91%E1%BB%99-cao-linh-ho%E1%BA%A1t-t%E1%BA%A3n-nhi%E1%BB%87t-t%E1%BB%91t-i.534730986.29806034437?extraParams=%7B%22display_model_id%22%3A236574194447%2C%22model_selection_logic%22%3A3%7D&rModelId=236574194447&vItemId=26436222612&vModelId=248392581924&vShopId=1506174776",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fsg-11134253-822wq-mi0d94haty4l31&tbnid=c37m3jkhhOwpbM&imgrefurl=https%3A%2F%2Fshopee.vn%2FGi%25C3%25A1-%25C4%2591%25E1%25BB%25A1-laptop-nh%25C3%25B4m-%25C4%2591i%25E1%25BB%2581u-ch%25E1%25BB%2589nh-%25C4%2591%25E1%25BB%2599-cao-linh-ho%25E1%25BA%25A1t-t%25E1%25BA%25A3n-nhi%25E1%25BB%2587t-t%25E1%25BB%2591t-i.534730986.29806034437%3FextraParams%3D%257B%2522display_model_id%2522%253A236574194447%252C%2522model_selection_logic%2522%253A3%257D%26rModelId%3D236574194447%26vItemId%3D26436222612%26vModelId%3D248392581924%26vShopId%3D1506174776&docid=b7K7gAnQ7gQy5M&w=1024&h=1024",
+    "position": 1
+   },
+   {
+    "title": "Giá đỡ laptop nhôm tăng giảm độ cao linh hoạt đen",
+    "imageUrl": "https://truonggiang.vn/wp-content/uploads/2023/01/Gia-do-laptop-nhom-tang-giam-do-cao-linh-hoat-den1.jpg",
+    "imageWidth": 800,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR68JWR9W1irUEsuQ-2-883qobsUUf8au5NatxLLHZKhQ&s=10",
+    "thumbnailWidth": 638,
+    "thumbnailHeight": 480,
+    "source": "Truonggiang.vn",
+    "domain": "truonggiang.vn",
+    "link": "https://truonggiang.vn/gia-do-laptop-nhom-tang-giam-do-cao-linh-hoat-den?srsltid=AU7gw4V9nTuvT2zSniRLjwNBJqh5w_1RWvjyE2IWnefI0mrMeAFiYrYa",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Ftruonggiang.vn%2Fwp-content%2Fuploads%2F2023%2F01%2FGia-do-laptop-nhom-tang-giam-do-cao-linh-hoat-den1.jpg&tbnid=Sw_aCmuQRNy_SM&imgrefurl=https%3A%2F%2Ftruonggiang.vn%2Fgia-do-laptop-nhom-tang-giam-do-cao-linh-hoat-den%3Fsrsltid%3DAU7gw4V9nTuvT2zSniRLjwNBJqh5w_1RWvjyE2IWnefI0mrMeAFiYrYa&docid=FnZZZy4guMXY9M&w=800&h=600",
+    "position": 2
+   },
+   {
+    "title": "Giá đỡ laptop nhôm điều chỉnh độ cao linh hoạt, tản nhiệt tốt | Shopee Việt  Nam",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/sg-11134253-7rdwj-mdq6l3j5lfm2eb",
+    "imageWidth": 1024,
+    "imageHeight": 1024,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTc88xli-BhOYO36FK2xKir7wH7cZqadhrZmdoWT7HwFw&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/Gi%C3%A1-%C4%91%E1%BB%A1-laptop-nh%C3%B4m-%C4%91i%E1%BB%81u-ch%E1%BB%89nh-%C4%91%E1%BB%99-cao-linh-ho%E1%BA%A1t-t%E1%BA%A3n-nhi%E1%BB%87t-t%E1%BB%91t-i.534730986.29806034437?extraParams=%7B%22display_model_id%22%3A236574194447%2C%22model_selection_logic%22%3A3%7D&rModelId=236574194447&vItemId=26436222612&vModelId=248392581924&vShopId=1506174776",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fsg-11134253-7rdwj-mdq6l3j5lfm2eb&tbnid=PBc8D6TQ2Dt98M&imgrefurl=https%3A%2F%2Fshopee.vn%2FGi%25C3%25A1-%25C4%2591%25E1%25BB%25A1-laptop-nh%25C3%25B4m-%25C4%2591i%25E1%25BB%2581u-ch%25E1%25BB%2589nh-%25C4%2591%25E1%25BB%2599-cao-linh-ho%25E1%25BA%25A1t-t%25E1%25BA%25A3n-nhi%25E1%25BB%2587t-t%25E1%25BB%2591t-i.534730986.29806034437%3FextraParams%3D%257B%2522display_model_id%2522%253A236574194447%252C%2522model_selection_logic%2522%253A3%257D%26rModelId%3D236574194447%26vItemId%3D26436222612%26vModelId%3D248392581924%26vShopId%3D1506174776&docid=b7K7gAnQ7gQy5M&w=1024&h=1024",
+    "position": 3
+   },
+   {
+    "title": "Giá đỡ laptop nhôm tăng giảm độ cao linh hoạt đen",
+    "imageUrl": "https://truonggiang.vn/wp-content/uploads/2023/01/Gia-do-laptop-nhom-tang-giam-do-cao-linh-hoat-den.jpg",
+    "imageWidth": 800,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTxj201RJ5lqAyP-UQ31-eKr-7kE2n-U6mZ1ySOBpI6KQ&s=10",
+    "thumbnailWidth": 638,
+    "thumbnailHeight": 480,
+    "source": "Truonggiang.vn",
+    "domain": "truonggiang.vn",
+    "link": "https://truonggiang.vn/gia-do-laptop-nhom-tang-giam-do-cao-linh-hoat-den?srsltid=AU7gw4U-U6y_wefSolozRPvlyWD1osXkulVe8tM5mjKFtJe7Ew74pkQS",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Ftruonggiang.vn%2Fwp-content%2Fuploads%2F2023%2F01%2FGia-do-laptop-nhom-tang-giam-do-cao-linh-hoat-den.jpg&tbnid=M_eqsWnryTg4lM&imgrefurl=https%3A%2F%2Ftruonggiang.vn%2Fgia-do-laptop-nhom-tang-giam-do-cao-linh-hoat-den%3Fsrsltid%3DAU7gw4U-U6y_wefSolozRPvlyWD1osXkulVe8tM5mjKFtJe7Ew74pkQS&docid=FnZZZy4guMXY9M&w=800&h=600",
+    "position": 4
+   },
+   {
+    "title": "Giá đỡ laptop nhôm điều chỉnh độ cao linh hoạt, tản nhiệt tốt | Shopee Việt  Nam",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-ly2dsxgedwbd0e",
+    "imageWidth": 1024,
+    "imageHeight": 1024,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQLEgcT5kSnqWhL3ot2qczQW_0gY8kUyMhNfUxVWIojgA&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/Gi%C3%A1-%C4%91%E1%BB%A1-laptop-nh%C3%B4m-%C4%91i%E1%BB%81u-ch%E1%BB%89nh-%C4%91%E1%BB%99-cao-linh-ho%E1%BA%A1t-t%E1%BA%A3n-nhi%E1%BB%87t-t%E1%BB%91t-i.534730986.29806034437?extraParams=%7B%22display_model_id%22%3A236574194447%2C%22model_selection_logic%22%3A3%7D&rModelId=236574194447&vItemId=26436222612&vModelId=248392581924&vShopId=1506174776",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fvn-11134207-7r98o-ly2dsxgedwbd0e&tbnid=vFWklbHHDcalwM&imgrefurl=https%3A%2F%2Fshopee.vn%2FGi%25C3%25A1-%25C4%2591%25E1%25BB%25A1-laptop-nh%25C3%25B4m-%25C4%2591i%25E1%25BB%2581u-ch%25E1%25BB%2589nh-%25C4%2591%25E1%25BB%2599-cao-linh-ho%25E1%25BA%25A1t-t%25E1%25BA%25A3n-nhi%25E1%25BB%2587t-t%25E1%25BB%2591t-i.534730986.29806034437%3FextraParams%3D%257B%2522display_model_id%2522%253A236574194447%252C%2522model_selection_logic%2522%253A3%257D%26rModelId%3D236574194447%26vItemId%3D26436222612%26vModelId%3D248392581924%26vShopId%3D1506174776&docid=b7K7gAnQ7gQy5M&w=1024&h=1024",
+    "position": 5
+   },
+   {
+    "title": "Giá đỡ laptop nhôm tăng giảm độ cao linh hoạt đen",
+    "imageUrl": "https://truonggiang.vn/wp-content/uploads/2023/01/Gia-do-laptop-nhom-tang-giam-do-cao-linh-hoat-den-2.jpg",
+    "imageWidth": 800,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQV6GT-7-7Xk3Hhh1-BUw1kMIX1DYOHodc-MpsLH_GNqQ&s=10",
+    "thumbnailWidth": 638,
+    "thumbnailHeight": 480,
+    "source": "Truonggiang.vn",
+    "domain": "truonggiang.vn",
+    "link": "https://truonggiang.vn/gia-do-laptop-nhom-tang-giam-do-cao-linh-hoat-den?srsltid=AU7gw4U10zG7U7Hv4IsZf_2yQ1JtVLbLgk3pzcqzg8OCTaXyvwqdd0zz",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Ftruonggiang.vn%2Fwp-content%2Fuploads%2F2023%2F01%2FGia-do-laptop-nhom-tang-giam-do-cao-linh-hoat-den-2.jpg&tbnid=ORIwYHGNEGlplM&imgrefurl=https%3A%2F%2Ftruonggiang.vn%2Fgia-do-laptop-nhom-tang-giam-do-cao-linh-hoat-den%3Fsrsltid%3DAU7gw4U10zG7U7Hv4IsZf_2yQ1JtVLbLgk3pzcqzg8OCTaXyvwqdd0zz&docid=FnZZZy4guMXY9M&w=800&h=600",
+    "position": 6
+   },
+   {
+    "title": "Giá đỡ laptop bằng nhôm điều chỉnh được độ cao, gấp gọn, hỗ trợ tản nhiệt  khi kê máy tính Macbox | Shopee Việt Nam",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/vn-11134207-7ras8-m12orgqtpst763",
+    "imageWidth": 1024,
+    "imageHeight": 1024,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjk5J9MR5FdVPMznG2KCEJuM7ALPPMLGZwfrS3A4SA4A&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/Gi%C3%A1-%C4%91%E1%BB%A1-laptop-b%E1%BA%B1ng-nh%C3%B4m-%C4%91i%E1%BB%81u-ch%E1%BB%89nh-%C4%91%C6%B0%E1%BB%A3c-%C4%91%E1%BB%99-cao-g%E1%BA%A5p-g%E1%BB%8Dn-h%E1%BB%97-tr%E1%BB%A3-t%E1%BA%A3n-nhi%E1%BB%87t-khi-k%C3%AA-m%C3%A1y-t%C3%ADnh-Macbox-i.338344025.3566029986",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fvn-11134207-7ras8-m12orgqtpst763&tbnid=yYOZZqvm-DICMM&imgrefurl=https%3A%2F%2Fshopee.vn%2FGi%25C3%25A1-%25C4%2591%25E1%25BB%25A1-laptop-b%25E1%25BA%25B1ng-nh%25C3%25B4m-%25C4%2591i%25E1%25BB%2581u-ch%25E1%25BB%2589nh-%25C4%2591%25C6%25B0%25E1%25BB%25A3c-%25C4%2591%25E1%25BB%2599-cao-g%25E1%25BA%25A5p-g%25E1%25BB%258Dn-h%25E1%25BB%2597-tr%25E1%25BB%25A3-t%25E1%25BA%25A3n-nhi%25E1%25BB%2587t-khi-k%25C3%25AA-m%25C3%25A1y-t%25C3%25ADnh-Macbox-i.338344025.3566029986&docid=-6cbx1O8wEFynM&w=1024&h=1024",
+    "position": 7
+   },
+   {
+    "title": "Giá đỡ Laptop/ Macbook Tản Nhiệt Có Thể Gấp Gọn, điều Chỉnh Chiều Cao Thông  Minh Từ 9inch đến 17 Inch Khung Nhôm Cao Cấp CHOETECH H033 - Choetech  Vietnam",
+    "imageUrl": "https://choetechofficial.com.vn/wp-content/uploads/2023/03/Gia-do-Laptop-Macbook-tan-nhiet-co-the-gap-gon-dieu-chinh-chieu-cao-thong-minh-tu-9inch-den-17-inch-khung-nhom-cao-cap-CHOETECH-H033-9.jpg",
+    "imageWidth": 1000,
+    "imageHeight": 1000,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTXgaYjGPZF4_EP20zvy_fxblVNS-jcjwPsUXY3qWct1g&s=10",
+    "thumbnailWidth": 554,
+    "thumbnailHeight": 554,
+    "source": "Choetech Vietnam",
+    "domain": "choetechofficial.com.vn",
+    "link": "https://choetechofficial.com.vn/gia-do-laptop-macbook-tan-nhiet-co-the-gap-gon-dieu-chinh-chieu-cao-thong-minh-tu-9inch-den-17-inch-khung-nhom-cao-cap-choetech-h033/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fchoetechofficial.com.vn%2Fwp-content%2Fuploads%2F2023%2F03%2FGia-do-Laptop-Macbook-tan-nhiet-co-the-gap-gon-dieu-chinh-chieu-cao-thong-minh-tu-9inch-den-17-inch-khung-nhom-cao-cap-CHOETECH-H033-9.jpg&tbnid=6MnR5WA9xS2dPM&imgrefurl=https%3A%2F%2Fchoetechofficial.com.vn%2Fgia-do-laptop-macbook-tan-nhiet-co-the-gap-gon-dieu-chinh-chieu-cao-thong-minh-tu-9inch-den-17-inch-khung-nhom-cao-cap-choetech-h033%2F&docid=-_KYKnWH9UniFM&w=1000&h=1000",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

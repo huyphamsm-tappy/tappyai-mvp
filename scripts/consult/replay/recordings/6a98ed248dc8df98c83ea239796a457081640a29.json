@@ -1,0 +1,30 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Acer Aspire 3 i3-1005G1 15.6 inch A315-56-37DV site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:55:11.358Z",
+ "body": {
+  "searchParameters": {
+   "q": "Acer Aspire 3 i3-1005G1 15.6 inch A315-56-37DV site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Laptop Acer Aspire 3 A315 56 37DV i3 1005G1/4GB/ ...",
+    "link": "https://www.lazada.vn/products/laptop-acer-aspire-3-a315-56-37dv-i3-1005g14gb256gb156fhdwin-10-hang-chinh-hang-i1538226697.html?srsltid=AU7gw4VQCihyqnp2uMr8OYf26JGHid0WIJVWJ791WYKFB1peiCPHmlN5",
+    "snippet": "Laptop Acer Aspire 3 A315 56 37DV i3 1005G1/4GB/256GB/15.6\"FHD/Win 10 - HÀNG CHÍNH HÃNG. Tuỳ chọn sản phẩm. Thông số. Thương hiệu,Loại bộ xử lý,Hệ điều hành.",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

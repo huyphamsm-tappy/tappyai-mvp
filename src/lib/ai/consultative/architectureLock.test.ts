@@ -85,7 +85,11 @@ describe('no tool forcing, no step rewriting, no prefetch', () => {
     // Exactly one pre-generation invocation, and it goes through the wrapped tool. Owner 2026-09-28
     // (c40 T7): that one call is the place search OR the fare call the flight directive names — no other.
     expect((outsideTools.match(/\[preCall\.name\]\.execute\(preCall\.args/g) || []).length).toBe(1)
-    expect((outsideTools.match(/\.execute\(/g) || []).length).toBe(1)
+    // + at most ONE retry of the same pre-search: the consult shopping pick whose full query found no
+    // product searches once more with the core product (owner 2026-09-29, replay SHOP-1).
+    const retries = (outsideTools.match(/search_products\.execute\(\{ query: core \}/g) || []).length
+    expect(retries).toBeLessThanOrEqual(1)
+    expect((outsideTools.match(/\.execute\(/g) || []).length).toBe(1 + retries)
     expect(outsideTools).toContain("name: 'search_places' | 'get_flight_prices'")
   })
 

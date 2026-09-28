@@ -1,0 +1,54 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Dell 15 DC15250 Core i5-1334U site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:54:29.346Z",
+ "body": {
+  "searchParameters": {
+   "q": "Dell 15 DC15250 Core i5-1334U site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "dell 15 dc15250 r5 7530u16gb",
+    "link": "https://shop.tiktok.com/vn/k/dell-15-dc15250-r5-7530u16gb",
+    "snippet": "Kết quả cho \"dell 15 dc15250 r5 7530u16gb\". [Đã qua sử dụng] - Laptop Dell Inspiron 7430 2-in-1 Core i5-1335U / i7-1355U | RAM 16GB | SSD 512GB | Màn hình ...",
+    "position": 1
+   },
+   {
+    "title": "dell 15 dc15250 i51334u8gb512gb intel uhd156inch fhdwin ...",
+    "link": "https://shop.tiktok.com/vn/k/dell-15-dc15250-i51334u8gb512gb-intel-uhd156inch-fhdwin-11silver",
+    "snippet": "[Đã qua sử dụng] Laptop Dell Latitude 5420 | Core i5-11350U | RAM 16GB | SSD 512GB | Màn hình 14\" Full HD | Windows 11 bản quyền.",
+    "position": 2
+   },
+   {
+    "title": "laptop dell 15 dc15250-dc5i5357w1 i5 1334u 16gb 512gb ...",
+    "link": "https://shop.tiktok.com/vn/k/laptop-dell-15-dc15250-dc5i5357w1-i5-1334u-16gb-512gb-full-hd-120hz-officeh24-365-win11",
+    "snippet": "Kết quả cho \"laptop dell 15 dc15250-dc5i5357w1 i5 1334u 16gb 512gb full hd 120hz officeh24 365 win11\" ; 3.7. 51 sold · 7.690.000 ; 5. 32 sold · 9.850.000 ; 5. 29 ...",
+    "position": 3
+   },
+   {
+    "title": "laptop dell 15 dc15250 i7 được tặng office 365",
+    "link": "https://shop.tiktok.com/vn/k/laptop-dell-15-dc15250-i7-duoc-tang-office-365",
+    "snippet": "laptop dell 15 dc15250-dc5i5357w1 i5 1334u 16gb 512gb full hd 120hz officeh24 365 win11 · laptop dell 15 dc15250 h02df-nhập khẩu chính hãng · laptop samsung ...",
+    "position": 4
+   },
+   {
+    "title": "Dell Optiplex i5 8GB SSD HP ProDesk ...",
+    "link": "https://shop.tiktok.com/vn/k/dell-optiplex-i5-8gb-ssd-hp-prodesk-i5-8gb-ssd-refurbished-intel-i5-desktop",
+    "snippet": "[Đã qua sử dụng] - Laptop Dell 5501 Core i5 | RAM 16GB | SSD ... laptop dell 15 dc15250-dc5i5357w1 i5 1334u 16gb 512gb full hd 120hz officeh24 365 win11.",
+    "position": 5
+   }
+  ],
+  "credits": 1
+ }
+}

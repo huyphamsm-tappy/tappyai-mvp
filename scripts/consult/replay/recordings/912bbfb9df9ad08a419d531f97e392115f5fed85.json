@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "laptop nhẹ (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:54:55.378Z",
+ "body": {
+  "searchParameters": {
+   "q": "laptop nhẹ (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Laptop mỏng nhẹ, nhỏ gọn, giá siêu rẻ, giảm đến 16 triệu",
+    "link": "https://cellphones.com.vn/laptop/mong-nhe.html",
+    "snippet": "Laptop mỏng nhẹ chính hãng, giá rẻ, siêu bền, uy tín, trả góp 0%, giao ngay tận nhà, bảo hành uy tín. Mua ngay laptop siêu mỏng giá tốt nhé!",
+    "position": 1
+   },
+   {
+    "title": "Top 6 laptop nhẹ dưới 1kg đáng mua nhất",
+    "link": "https://cellphones.com.vn/sforum/laptop-nhe-duoi-1kg",
+    "snippet": "Top các mẫu laptop nhẹ dưới 1kg tốt nhất hiện nay · Lenovo Yoga Slim 7 Carbon 13IAP · Lenovo ThinkPad X1 Nano G3 · HP EliteBook Dragonfly G4 · Microsoft Surface ...",
+    "position": 2
+   },
+   {
+    "title": "Laptop dưới 30 triệu | Thiết kế mỏng nhẹ, hiệu năng khủng",
+    "link": "https://cellphones.com.vn/bo-loc/laptop-tu-25-30-trieu",
+    "snippet": "Laptop dưới 30 triệu thiết kế sang trọng, tinh tế, được ứng dụng nhiều công nghệ hiện đại, vượt trội. Mua ngay laptop 30 triệu uy tín tại đây.",
+    "position": 3
+   },
+   {
+    "title": "TOP 15+ Máy tính cho con gái nhỏ gọn, mỏng nhẹ 2026",
+    "link": "https://cellphones.com.vn/sforum/laptop-nho-gon-cho-nu",
+    "snippet": "TOP 15+ máy tính cho con gái nhỏ gọn, mỏng nhẹ: Apple MacBook Air M1, Acer Swift 3 SF314 Core i5, Lenovo Slim Yoga 7, Microsoft Surface Pro 8,...",
+    "position": 4
+   },
+   {
+    "title": "TOP 8 mẫu laptop Dell mỏng nhẹ đáng mua nhất",
+    "link": "https://cellphones.com.vn/sforum/laptop-dell-mong-nhe",
+    "snippet": "Top các mẫu laptop Dell mỏng nhẹ đáng mua nhất · Dell Inspiron 15 3530 · Dell Vostro 3400 · Dell Inspiron 14 5415 · Dell Vostro 3510 · Dell Inspiron 15 3520 ...",
+    "position": 5
+   },
+   {
+    "title": "Laptop mỏng nhẹ - Giá Tốt, Sale Tháng 09, Ship 0 Đồng",
+    "link": "https://shopee.vn/list/laptop/m%E1%BB%8Fng%20nh%E1%BA%B9",
+    "snippet": "Shopee cung cấp đầy đủ các sản phẩm laptop mỏng nhẹ chính hãng với nhiều mức giá ưu đãi vô cùng hấp dẫn. Bạn có thể thỏa thích tham khảo sản phẩm chính hãng từ ...",
+    "position": 6
+   },
+   {
+    "title": "Top 10 mẫu laptop văn phòng pin trâu tốt nhất hiện nay",
+    "link": "https://cellphones.com.vn/sforum/laptop-van-phong-pin-trau",
+    "snippet": "Top các mẫu văn phòng pin trâu tốt nhất như: MacBook Air M1 2020, Asus ZenBook 14 OLED, MacBook Air M3 13 inch 2024, Dell Inspiron 15 3530 P16WD,...",
+    "position": 7
+   },
+   {
+    "title": "Laptop 13 inch | Thiết kế mỏng nhẹ, mạnh mẽ, giảm sốc 25%",
+    "link": "https://cellphones.com.vn/laptop/laptop-13-inch.html",
+    "snippet": "Laptop 13 inch giá rẻ, nhỏ gọn, tiện lợi, dễ di chuyển, cấu hình mạnh, độ bền vượt trội, giao nhanh tận nhà. Mua ngay laptop 13 inch tại đây!",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

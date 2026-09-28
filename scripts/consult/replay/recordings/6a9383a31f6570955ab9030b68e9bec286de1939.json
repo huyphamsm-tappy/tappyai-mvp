@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Gội Đầu & Massage tại Charm Garden Spa ở Quận 1, Hồ ...",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:19:13.827Z",
+ "body": {
+  "searchParameters": {
+   "q": "Gội Đầu & Massage tại Charm Garden Spa ở Quận 1, Hồ ...",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Gội Đầu & Massage tại Charm Garden Spa ở Quận 1, Hồ Chí Minh - Klook",
+    "imageUrl": "https://res.klook.com/images/w_1200,h_630,c_fill,q_65/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/xrgjlxcqbuj7evgepvsb/G%E1%BB%99i%C4%90%E1%BA%A7uMassaget%E1%BA%A1iCharmGardenSpa%E1%BB%9FQu%E1%BA%ADn1,H%E1%BB%93Ch%C3%ADMinh-Klook.jpg",
+    "imageWidth": 1200,
+    "imageHeight": 630,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8Gt3v6SrQ-XrPv210lWXxl-XCz_r-ejYKdewlb392JQ&s=10",
+    "thumbnailWidth": 617,
+    "thumbnailHeight": 324,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/212930-charm-garden-spa-hair-wash-massage-in-district-1-ho-chi-minh/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Fw_1200%2Ch_630%2Cc_fill%2Cq_65%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fxrgjlxcqbuj7evgepvsb%2FG%25E1%25BB%2599i%25C4%2590%25E1%25BA%25A7uMassaget%25E1%25BA%25A1iCharmGardenSpa%25E1%25BB%259FQu%25E1%25BA%25ADn1%2CH%25E1%25BB%2593Ch%25C3%25ADMinh-Klook.jpg&tbnid=faxk55oY-l94DM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F212930-charm-garden-spa-hair-wash-massage-in-district-1-ho-chi-minh%2F&docid=Wik7FwSAjy7rkM&w=1200&h=630",
+    "position": 1
+   },
+   {
+    "title": "Gội Đầu & Massage tại Charm Garden Spa ở Quận 1, Hồ Chí Minh - Klook",
+    "imageUrl": "https://res.klook.com/image/upload/w_750,h_469,c_fill,q_85/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/zq5o4jajvchbaruaeneu.jpg",
+    "imageWidth": 750,
+    "imageHeight": 469,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgAYFdsSX9FHvChcUtXdjAG_cQ4BSoZJXV_5HEC5O_gA&s",
+    "thumbnailWidth": 284,
+    "thumbnailHeight": 177,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/212930-charm-garden-spa-hair-wash-massage-in-district-1-ho-chi-minh/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimage%2Fupload%2Fw_750%2Ch_469%2Cc_fill%2Cq_85%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fzq5o4jajvchbaruaeneu.jpg&tbnid=tVLjovDDCYSutM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F212930-charm-garden-spa-hair-wash-massage-in-district-1-ho-chi-minh%2F&docid=Wik7FwSAjy7rkM&w=750&h=469",
+    "position": 2
+   },
+   {
+    "title": "Gội Đầu & Massage tại Charm Garden Spa ở Quận 1, Hồ Chí Minh - Klook",
+    "imageUrl": "https://res.klook.com/images/w_1200,h_630,c_fill,q_65/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/ydxo26vmpibcffnujiem/G%E1%BB%99i%C4%90%E1%BA%A7uMassaget%E1%BA%A1iCharmGardenSpa%E1%BB%9FQu%E1%BA%ADn1,H%E1%BB%93Ch%C3%ADMinh-Klook.jpg",
+    "imageWidth": 1200,
+    "imageHeight": 630,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQqaFSPFv_TcN0K6AdOlARgcx0cEo15PBG7O-OrTV60wQ&s",
+    "thumbnailWidth": 310,
+    "thumbnailHeight": 163,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/212930-charm-garden-spa-hair-wash-massage-in-district-1-ho-chi-minh/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Fw_1200%2Ch_630%2Cc_fill%2Cq_65%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fydxo26vmpibcffnujiem%2FG%25E1%25BB%2599i%25C4%2590%25E1%25BA%25A7uMassaget%25E1%25BA%25A1iCharmGardenSpa%25E1%25BB%259FQu%25E1%25BA%25ADn1%2CH%25E1%25BB%2593Ch%25C3%25ADMinh-Klook.jpg&tbnid=94Kjaw1s3r2GOM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F212930-charm-garden-spa-hair-wash-massage-in-district-1-ho-chi-minh%2F&docid=Wik7FwSAjy7rkM&w=1200&h=630",
+    "position": 3
+   },
+   {
+    "title": "Gội Đầu & Massage tại Charm Garden Spa ở Quận 1, Hồ Chí Minh - Klook",
+    "imageUrl": "https://res.klook.com/image/upload/w_750,h_469,c_fill,q_85/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/lupkei3ghtbgl6re9dq9.jpg",
+    "imageWidth": 750,
+    "imageHeight": 469,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT50TDTQ_xRC7fp-dwE0OtI4FDrw89tV8K8_YYNwBBplA&s",
+    "thumbnailWidth": 284,
+    "thumbnailHeight": 177,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/212930-charm-garden-spa-hair-wash-massage-in-district-1-ho-chi-minh/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimage%2Fupload%2Fw_750%2Ch_469%2Cc_fill%2Cq_85%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Flupkei3ghtbgl6re9dq9.jpg&tbnid=yqKaINviRn7MHM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F212930-charm-garden-spa-hair-wash-massage-in-district-1-ho-chi-minh%2F&docid=Wik7FwSAjy7rkM&w=750&h=469",
+    "position": 4
+   },
+   {
+    "title": "Gội Đầu & Massage tại Charm Garden Spa ở Quận 1, Hồ Chí Minh - Klook",
+    "imageUrl": "https://res.klook.com/images/w_1200,h_630,c_fill,q_65/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/wjdythra16sxu68yuqsw/G%E1%BB%99i%C4%90%E1%BA%A7uMassaget%E1%BA%A1iCharmGardenSpa%E1%BB%9FQu%E1%BA%ADn1,H%E1%BB%93Ch%C3%ADMinh-Klook.jpg",
+    "imageWidth": 1200,
+    "imageHeight": 630,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6w2exT5OLWy2sJU0oWq1iEtFRGPZePyIKhOK1T03jmQ&s",
+    "thumbnailWidth": 310,
+    "thumbnailHeight": 163,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/212930-charm-garden-spa-hair-wash-massage-in-district-1-ho-chi-minh/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Fw_1200%2Ch_630%2Cc_fill%2Cq_65%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fwjdythra16sxu68yuqsw%2FG%25E1%25BB%2599i%25C4%2590%25E1%25BA%25A7uMassaget%25E1%25BA%25A1iCharmGardenSpa%25E1%25BB%259FQu%25E1%25BA%25ADn1%2CH%25E1%25BB%2593Ch%25C3%25ADMinh-Klook.jpg&tbnid=Fcb-5BlJ_gcNbM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F212930-charm-garden-spa-hair-wash-massage-in-district-1-ho-chi-minh%2F&docid=Wik7FwSAjy7rkM&w=1200&h=630",
+    "position": 5
+   },
+   {
+    "title": "Gội Đầu & Massage tại Charm Garden Spa ở Quận 1, Hồ Chí Minh - Klook",
+    "imageUrl": "https://res.klook.com/images/w_1200,h_630,c_fill,q_65/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/q97xasbz8zkvs83hh0xz/G%E1%BB%99i%C4%90%E1%BA%A7uMassaget%E1%BA%A1iCharmGardenSpa%E1%BB%9FQu%E1%BA%ADn1,H%E1%BB%93Ch%C3%ADMinh-Klook.jpg",
+    "imageWidth": 1200,
+    "imageHeight": 630,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSKB0gCKG5NUoKjnycdjiLofktOxt9xIjwLaVzJFHH4PA&s",
+    "thumbnailWidth": 310,
+    "thumbnailHeight": 163,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/212930-charm-garden-spa-hair-wash-massage-in-district-1-ho-chi-minh/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Fw_1200%2Ch_630%2Cc_fill%2Cq_65%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fq97xasbz8zkvs83hh0xz%2FG%25E1%25BB%2599i%25C4%2590%25E1%25BA%25A7uMassaget%25E1%25BA%25A1iCharmGardenSpa%25E1%25BB%259FQu%25E1%25BA%25ADn1%2CH%25E1%25BB%2593Ch%25C3%25ADMinh-Klook.jpg&tbnid=TL00A8dA8FFOrM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F212930-charm-garden-spa-hair-wash-massage-in-district-1-ho-chi-minh%2F&docid=Wik7FwSAjy7rkM&w=1200&h=630",
+    "position": 6
+   },
+   {
+    "title": "Gội Đầu & Massage tại Charm Garden Spa ở Quận 1, Hồ Chí Minh - Klook",
+    "imageUrl": "https://res.klook.com/image/upload/w_750,h_469,c_fill,q_85/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/j0vwtd6izinijk0kpf8a.jpg",
+    "imageWidth": 750,
+    "imageHeight": 469,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQaHF2l0ZaY3KfpwkDRpo6y1DvgjeGSL1_6JcTpH2hQzw&s",
+    "thumbnailWidth": 284,
+    "thumbnailHeight": 177,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/212930-charm-garden-spa-hair-wash-massage-in-district-1-ho-chi-minh/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimage%2Fupload%2Fw_750%2Ch_469%2Cc_fill%2Cq_85%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fj0vwtd6izinijk0kpf8a.jpg&tbnid=nNkAfzKqcIPfjM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F212930-charm-garden-spa-hair-wash-massage-in-district-1-ho-chi-minh%2F&docid=Wik7FwSAjy7rkM&w=750&h=469",
+    "position": 7
+   },
+   {
+    "title": "Gội Đầu & Massage tại Charm Garden Spa ở Quận 1, Hồ Chí Minh - Klook",
+    "imageUrl": "https://res.klook.com/images/w_1200,h_630,c_fill,q_65/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/eqcukkq613c2lucwtjwe/G%E1%BB%99i%C4%90%E1%BA%A7uMassaget%E1%BA%A1iCharmGardenSpa%E1%BB%9FQu%E1%BA%ADn1,H%E1%BB%93Ch%C3%ADMinh-Klook.jpg",
+    "imageWidth": 1200,
+    "imageHeight": 630,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQifBvPMt1nSnu62eeG5g9FvIeCkrJaga5NzY9jkwkqEA&s",
+    "thumbnailWidth": 310,
+    "thumbnailHeight": 163,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/212930-charm-garden-spa-hair-wash-massage-in-district-1-ho-chi-minh/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Fw_1200%2Ch_630%2Cc_fill%2Cq_65%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Feqcukkq613c2lucwtjwe%2FG%25E1%25BB%2599i%25C4%2590%25E1%25BA%25A7uMassaget%25E1%25BA%25A1iCharmGardenSpa%25E1%25BB%259FQu%25E1%25BA%25ADn1%2CH%25E1%25BB%2593Ch%25C3%25ADMinh-Klook.jpg&tbnid=rYBiMyCgl195TM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F212930-charm-garden-spa-hair-wash-massage-in-district-1-ho-chi-minh%2F&docid=Wik7FwSAjy7rkM&w=1200&h=630",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

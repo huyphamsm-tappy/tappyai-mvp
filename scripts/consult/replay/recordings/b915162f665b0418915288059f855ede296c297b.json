@@ -1,0 +1,77 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "massage toàn thân thư giãn quận 1 quan 1 gia dich vu bang gia spa massage",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:19:02.346Z",
+ "body": {
+  "searchParameters": {
+   "q": "massage toàn thân thư giãn quận 1 quan 1 gia dich vu bang gia spa massage",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Hạ Spa - Massage ở Hồ Chí Minh City (Sài Gòn)",
+    "link": "https://haspamassage.vn/",
+    "snippet": "Hạ Spa 1 trong nhưng địa điểm chăm sóc sức khỏe, thư giãn, phục hồi năng lượng cho cả nam và nữ tại TPHCM (Sài Gòn).",
+    "position": 1
+   },
+   {
+    "title": "Top 9 địa chỉ Spa Massage Body tại Quận 1 uy tín tốt",
+    "link": "https://topaz.vn/toplist/dia-chi-massage-body-tai-quan-1",
+    "snippet": "#01. Hạ Spa – Massage Cổ Truyền Quận 1. Với dịch vụ massage body, cổ vai gáy, thư giãn và trị liệu cổ truyền, Hạ Massage là nơi cực kỳ lý ...",
+    "date": "2 thg 6, 2026",
+    "rating": 5,
+    "ratingCount": 79,
+    "position": 2
+   },
+   {
+    "title": "Bảng giá dịch vụ spa",
+    "link": "https://duongsinhspa.vn/bang-gia-dich-vu/",
+    "snippet": "Trị liệu cổ vai gáy. Massage cổ vai gáy chuyên sâu kết hợp ấn huyệt và đắp thảo dược, giúp giảm đau nhức, thư giãn đầu vai và cải thiện tư thế, giấc ngủ.",
+    "position": 3
+   },
+   {
+    "title": "Cập nhật 2025 giá các dịch vụ spa tại TP.HCM",
+    "link": "https://bookingcare.vn/cam-nang/cap-nhat-2025-gia-dich-vu-spa-tai-tphcm-so-sanh-gia-7-spa-uy-tin-p7129.html",
+    "snippet": "Massage Body thư giãn 75 phút, 469.000 ; Massage Body thư giãn 90 phút, 599.000 ; Massage Body thư giãn 120 phút, 749.000 ; Massage chân ; Massage chân 45 phút ...",
+    "position": 4
+   },
+   {
+    "title": "Hạ Spa - Massage Quận 1 | Ho Chi Minh City",
+    "link": "https://www.facebook.com/haspagoidauduongsinhquan1/?locale=vi_VN",
+    "snippet": "2- Q. Tân Bình Hotline/whatsapp : 0908 661 683 CN2 : 49 Phạm Viết Chánh , Quận 1 Hotline/Zalo : 0945705000 https://haspamassage.vn ...",
+    "position": 5
+   },
+   {
+    "title": "8 Spa Massage Body Quận 1 Uy Tín, Kỹ Thuật Viên Tay ...",
+    "link": "https://queenspa.com.vn/review-spa/massage-body-quan-1/",
+    "snippet": "1. QueenPearl Luxury Spa – Hệ thống Dưỡng sinh Hàng Đầu Việt Nam 37+ chi nhánh toàn quốc · 2. Golden Lotus Spa & Massage Club – Phong cách Jjim ...",
+    "date": "21 thg 3, 2026",
+    "position": 6
+   },
+   {
+    "title": "Top massage trị liệu Quận 1 có dịch vụ chất lượng nhất",
+    "link": "https://chothuenha.com.vn/top-massage-tri-lieu-quan-1-co-dich-vu-chat-luong-nhat",
+    "snippet": "Anam QT Spa được biết đến là một trong những cơ sở massage trị liệu Quận 1 đạt chuẩn quốc tế. Spa sử dụng các liệu pháp và sản phẩm hoàn toàn tự ...",
+    "date": "29 thg 12, 2025",
+    "position": 7
+   },
+   {
+    "title": "Trang Chủ K'Anna Spa | Massage Body Trị Liệu Quận 1",
+    "link": "https://spakanna.com/",
+    "snippet": "K'Anna Spa tại Quận 1 cung cấp dịch vụ Massage Body Trị Liệu giúp thư giãn, giảm căng thẳng, phục hồi năng lượng. Trải nghiệm tuyệt vời, nâng cao sức khỏe.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

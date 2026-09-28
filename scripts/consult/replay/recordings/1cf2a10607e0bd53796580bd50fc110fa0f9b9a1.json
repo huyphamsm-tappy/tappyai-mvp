@@ -1,0 +1,625 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "quán bar phòng riêng Bình Thạnh",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.8106,106.7091,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:52:50.819Z",
+ "body": {
+  "searchParameters": {
+   "q": "quán bar phòng riêng Bình Thạnh",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.8106,106.7091,14z",
+   "engine": "google"
+  },
+  "ll": "@10.8105941,106.7090997,14z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Cọ Vinyl Bar",
+    "address": "14B1 Ngô Tất Tố, Thạnh Mỹ Tây, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7930812,
+    "longitude": 106.7098899,
+    "rating": 4.8,
+    "ratingCount": 419,
+    "priceLevel": "200-300 N ₫",
+    "type": "Quán bar cocktail",
+    "types": [
+     "Quán bar cocktail"
+    ],
+    "website": "https://instagram.com/co.cocktailbar?igshid=OGQ5ZDc2ODk2ZA==",
+    "phoneNumber": "+84 903 959 941",
+    "openingHours": {
+     "Thứ Hai": "18:00–01:00",
+     "Thứ Ba": "18:00–01:00",
+     "Thứ Tư": "18:00–01:00",
+     "Thứ Năm": "18:00–01:00",
+     "Thứ Sáu": "18:00–01:00",
+     "Thứ Bảy": "18:00–01:00",
+     "Chủ Nhật": "18:00–01:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPQeOnA2HDeRQ582uacf53GZwmMMC6r2DmKpn1I2cThGHfrLvfvkExuhT45SZSpxZZ5Cl7NAmf1LS7EyUF1OidxOZXHtJIqpcefVMX0JdRQpLUDgLiYvQAYsXeD3bI0JBphjDO5",
+    "cid": "12616054338341086830",
+    "fid": "0x317529b6d67c2f0f:0xaf153a93f7d8a66e",
+    "placeId": "ChIJDy981rYpdTERbqbY95M6Fa8"
+   },
+   {
+    "position": 2,
+    "title": "The Brick",
+    "address": "187 D5, Thạnh Mỹ Tây, Hồ Chí Minh 72308, Việt Nam",
+    "latitude": 10.8055652,
+    "longitude": 106.71878679999999,
+    "rating": 4.8,
+    "ratingCount": 276,
+    "priceLevel": "200-300 N ₫",
+    "type": "Quán bar cocktail",
+    "types": [
+     "Quán bar cocktail"
+    ],
+    "website": "https://thebrick.live/",
+    "phoneNumber": "+84 765 415 891",
+    "openingHours": {
+     "Thứ Hai": "19:00–02:00",
+     "Thứ Ba": "19:00–02:00",
+     "Thứ Tư": "19:00–02:00",
+     "Thứ Năm": "19:00–02:00",
+     "Thứ Sáu": "19:00–02:00",
+     "Thứ Bảy": "19:00–02:00",
+     "Chủ Nhật": "19:00–02:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmN-4whnnX30LQvHT9kEz7XvpPcsmToY2el_y5v7F3S7WE21l2h-imOzA1ns4ss50Rp0SYSDuVyClX0tba6EICMrxUZQRXIGV3DIVJ5kKQuK3Ab-lSWxpgIX8K64Fs0j8a3aA7I",
+    "cid": "1756431300840673988",
+    "fid": "0x317529bf6ca3a9ff:0x186018f64efc52c4",
+    "placeId": "ChIJ_6mjbL8pdTERxFL8TvYYYBg"
+   },
+   {
+    "position": 3,
+    "title": "Maru Bar",
+    "address": "60 Phạm Viết Chánh, Thạnh Mỹ Tây, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7900815,
+    "longitude": 106.71075069999999,
+    "rating": 4.9,
+    "ratingCount": 266,
+    "type": "Quán bar cocktail",
+    "types": [
+     "Quán bar cocktail"
+    ],
+    "phoneNumber": "+84 398 585 584",
+    "openingHours": {
+     "Thứ Hai": "18:00–02:00",
+     "Thứ Ba": "18:00–02:00",
+     "Thứ Tư": "18:00–02:00",
+     "Thứ Năm": "18:00–02:00",
+     "Thứ Sáu": "18:00–02:00",
+     "Thứ Bảy": "18:00–02:00",
+     "Chủ Nhật": "18:00–01:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmP5Xc0AtFWnWBT8sx-e_HfHdfHuevD02FGd2bYO8ulv0Kgrd0YYwDpjaQknEBuoBkPzZHNkcfn6JUXh5KNUlXqn0POqHYg0KC6SwKUIYETuPxvZT6NAXNAnFIutuNxKHds_uRwI",
+    "cid": "12991917877880240428",
+    "fid": "0x31752f31f937df7f:0xb44c9079ce19392c",
+    "placeId": "ChIJf983-TEvdTERLDkZznmQTLQ"
+   },
+   {
+    "position": 4,
+    "title": "Gét Gô Rooftop",
+    "address": "348/9 Đ. Ung Văn Khiêm, Thạnh Mỹ Tây, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.80039,
+    "longitude": 106.7231601,
+    "rating": 4.7,
+    "ratingCount": 199,
+    "priceLevel": "100-200 N ₫",
+    "type": "Quán bar cocktail",
+    "types": [
+     "Quán bar cocktail"
+    ],
+    "website": "https://www.facebook.com/G%C3%89T-G%C3%94-Rooftop-112289268172028/",
+    "phoneNumber": "+84 888 586 698",
+    "openingHours": {
+     "Thứ Ba": "17:00–00:30",
+     "Thứ Tư": "17:00–00:30",
+     "Thứ Năm": "17:00–00:30",
+     "Thứ Sáu": "17:00–00:30",
+     "Thứ Bảy": "17:00–00:30",
+     "Chủ Nhật": "17:00–00:30",
+     "Thứ Hai": "17:00–00:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMBk2egkezEbMbvL0tOj82K44VsTJM7sa1bGTLCYLNJ-3D7YMa4YA-pYn2tYLBQxlgxQRxQ4-juRXf-aT1u4xzKqhE09TfhF1GuXUmbWLPXGaeocoenzt4nRVHMsIAygX_RxE1v",
+    "cid": "11024036060266457977",
+    "fid": "0x31752953b47dd773:0x98fd3e6393476b79",
+    "placeId": "ChIJc9d9tFMpdTEReWtHk2M-_Zg"
+   },
+   {
+    "position": 5,
+    "title": "NEN Retro Sport Bar Cafe & Beer",
+    "address": "8b Hoàng Hoa Thám, Gia Định, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.8044467,
+    "longitude": 106.6918893,
+    "rating": 4.9,
+    "ratingCount": 16,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Bar thể thao",
+    "types": [
+     "Bar thể thao"
+    ],
+    "website": "https://www.facebook.com/nencafe.bistro?mibextid=LQQJ4d",
+    "phoneNumber": "+84 855 482 255",
+    "openingHours": {
+     "Thứ Ba": "Mở cửa cả ngày",
+     "Thứ Tư": "Mở cửa cả ngày",
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMMLOMyG12ZgxsIerVU3AoLj-VQcuNqtNrwJiGQzX8IpRpdrcKRx2AbnOhXt9cVZPEWOk39qh1SGbqE3HCsEf3UJejAomZg9EIyL4lvOQvfle_pW2PNEB-o1bEOFp-9ZtP_8tPR",
+    "cid": "12858930545057740806",
+    "fid": "0x3175293f2ceb8619:0xb274193381963806",
+    "placeId": "ChIJGYbrLD8pdTERBjiWgTMZdLI"
+   },
+   {
+    "position": 6,
+    "title": "Tủ Bar",
+    "address": "160 Ngô Tất Tố, Thạnh Mỹ Tây, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.7898243,
+    "longitude": 106.71585619999999,
+    "rating": 4.8,
+    "ratingCount": 240,
+    "type": "Quán bar",
+    "types": [
+     "Quán bar"
+    ],
+    "website": "https://www.instagram.com/tubar.hcm?igsh=bjl6MWRwNGgyMjEz",
+    "phoneNumber": "+84 795 042 511",
+    "openingHours": {
+     "Thứ Hai": "18:00–01:00",
+     "Thứ Ba": "18:00–01:00",
+     "Thứ Tư": "18:00–01:00",
+     "Thứ Năm": "18:00–01:00",
+     "Thứ Sáu": "18:00–02:00",
+     "Thứ Bảy": "18:00–02:00",
+     "Chủ Nhật": "18:00–02:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOSjWJ0rweEGSml_dTvQv1mxTgmRPrxxxdLfpTP08zSZtHZ3V23AZdLsVUcTfdNR8svtqnxqPsko5sE0l6Po3NsHK7CXX512d5V7iEs3wsPapRewQ2CLp3gQDJchRcj8uSnkfIw0w",
+    "cid": "14514001035970999372",
+    "fid": "0x3175293b5213147f:0xc96c170b32b3f44c",
+    "placeId": "ChIJfxQTUjspdTERTPSzMgsXbMk"
+   },
+   {
+    "position": 7,
+    "title": "Karaoke ICOOL",
+    "address": "693 Xô Viết Nghệ Tĩnh, Phường, Bình Thạnh, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.8124722,
+    "longitude": 106.715229,
+    "rating": 4.7,
+    "ratingCount": 1531,
+    "priceLevel": "100-500 N ₫",
+    "type": "Quán bar karaoke",
+    "types": [
+     "Quán bar karaoke"
+    ],
+    "website": "https://karaoke.com.vn/",
+    "phoneNumber": "+84 1900 779936",
+    "openingHours": {
+     "Thứ Ba": "Mở cửa cả ngày",
+     "Thứ Tư": "Mở cửa cả ngày",
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày"
+    },
+    "bookingLinks": [
+     "https://karaoke.com.vn/datphong/",
+     "https://www.google.com/maps/reserve/v/dine/c/kaXyH1n7RmQ?source=pa&opi=79508299"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmM9TgEC0rJks32l_mohzQ3DjsvBYTccJ9aRTzt8x6wvEhQaTQteO5GDURdTaHbV814j_A_9m9uXl9XIebAZka5JnZljiBlcCpL7T3D7TGiHCMqmO8X-C1BsBtxoIUInMVJECeM",
+    "cid": "8430918866967287381",
+    "fid": "0x317529354808fde9:0x7500a40a63b95655",
+    "placeId": "ChIJ6f0ISDUpdTERVVa5YwqkAHU"
+   },
+   {
+    "position": 8,
+    "title": "Luu Bar",
+    "address": "108 Phạm Viết Chánh, Thạnh Mỹ Tây, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7899721,
+    "longitude": 106.71232069999999,
+    "rating": 4.8,
+    "ratingCount": 171,
+    "priceLevel": "100-200 N ₫",
+    "type": "Quán bar",
+    "types": [
+     "Quán bar",
+     "Quán bar cocktail",
+     "Câu lạc bộ khiêu vũ",
+     "Vũ trường",
+     "Nơi tổ chức sự kiện",
+     "Địa điểm ca nhạc trực tiếp",
+     "Quầy giải khát",
+     "Hộp đêm"
+    ],
+    "website": "https://luubar.com/",
+    "phoneNumber": "+84 888 395 058",
+    "openingHours": {
+     "Thứ Hai": "17:00–03:00",
+     "Thứ Ba": "17:00–03:00",
+     "Thứ Tư": "17:00–03:00",
+     "Thứ Năm": "17:00–03:00",
+     "Thứ Sáu": "17:00–05:00",
+     "Thứ Bảy": "17:00–05:00",
+     "Chủ Nhật": "17:00–03:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPXgviZ3-jC4RsLtsE4UJ_zXJH8LBo2qWgNkYXn4dih_u93hSdVPCoeOXymItwy0CSoe1BoEDY9pRbfBEsqJnU-tQwqJd0It35bGBYU4P0IFBjVFBdc22CG8wy6p15OKcp2zRcW9g",
+    "cid": "8698919986763944608",
+    "fid": "0x317529e1141b398b:0x78b8c5a39c9c52a0",
+    "placeId": "ChIJizkbFOEpdTERoFKcnKPFuHg"
+   },
+   {
+    "position": 9,
+    "title": "Drinks Bar",
+    "address": "84 Phạm Viết Chánh, Thạnh Mỹ Tây, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.790118699999999,
+    "longitude": 106.71186399999999,
+    "rating": 4.8,
+    "ratingCount": 55,
+    "priceLevel": "100-200 N ₫",
+    "type": "Quán bar",
+    "types": [
+     "Quán bar"
+    ],
+    "website": "https://www.facebook.com/drinksvn?mibextid=ZbWKwL",
+    "phoneNumber": "+84 906 834 733",
+    "openingHours": {
+     "Thứ Hai": "17:00–03:00",
+     "Thứ Ba": "17:00–03:00",
+     "Thứ Tư": "17:00–03:00",
+     "Thứ Năm": "17:00–03:00",
+     "Thứ Sáu": "17:00–04:00",
+     "Thứ Bảy": "17:00–04:00",
+     "Chủ Nhật": "17:00–03:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMNCuXF1Dl5G9Skp9VBeK9cxFXHTFwG4DjX5GErbYunVvU_9U6yUmWRLCgmf4ES3fHYxOqmoMscivm4RxT1Ch8hL9QgumobBWKhjQE5g2HKTrcoJLba5L2MOe0jp3a6UBvXdhls",
+    "cid": "15608125476618352904",
+    "fid": "0x3175293d9b18aceb:0xd89b336cf38fb908",
+    "placeId": "ChIJ66wYmz0pdTERCLmP82wzm9g"
+   },
+   {
+    "position": 10,
+    "title": "UniQ",
+    "address": "98, Phạm Viết Chánh/19 ward, Thạnh Mỹ Tây, Hồ Chí Minh 72300, Việt Nam",
+    "latitude": 10.7899833,
+    "longitude": 106.71217279999999,
+    "rating": 4.2,
+    "ratingCount": 94,
+    "priceLevel": "200-300 N ₫",
+    "type": "Quán bar cocktail",
+    "types": [
+     "Quán bar cocktail"
+    ],
+    "openingHours": {
+     "Thứ Hai": "17:00–03:00",
+     "Thứ Ba": "17:00–03:00",
+     "Thứ Tư": "17:00–03:00",
+     "Thứ Năm": "17:00–03:00",
+     "Thứ Sáu": "17:00–03:00",
+     "Thứ Bảy": "17:00–03:00",
+     "Chủ Nhật": "17:00–03:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmODhinGUvcCrNea-1UYmMipfWuDr3I5Rkp48Uw9sigQioPGceL_aVSLvTTi4Y-9ZYa6A0mV9g_He3nj2LeMBeXWGKsWvobHC4hZ09x_vZ5s5xHR1nSuQ9t1c-dJaLB6Aq0istsY",
+    "cid": "8252926714458980870",
+    "fid": "0x317529098aa989d3:0x7288491ef4a8c206",
+    "placeId": "ChIJ04mpigkpdTERBsKo9B5JiHI"
+   },
+   {
+    "position": 11,
+    "title": "Home Bar Là Nhà",
+    "address": "40/25 Phạm Viết Chánh, Thạnh Mỹ Tây, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.789864699999999,
+    "longitude": 106.710837,
+    "rating": 4.9,
+    "ratingCount": 113,
+    "priceLevel": "200-300 N ₫",
+    "type": "Quán bar",
+    "types": [
+     "Quán bar"
+    ],
+    "phoneNumber": "+84 708 059 585",
+    "openingHours": {
+     "Thứ Hai": "18:00–02:00",
+     "Thứ Ba": "18:00–02:00",
+     "Thứ Tư": "18:00–02:00",
+     "Thứ Năm": "18:00–02:00",
+     "Thứ Sáu": "18:00–02:00",
+     "Thứ Bảy": "18:00–02:00",
+     "Chủ Nhật": "06:00–02:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOFsngJsWj-E-MC5k8Rj3o9RGwKSP2PCnXxPBZK20akTGncthDHxjc5nqisVYlcevAquLqxpXhV_kDD7YWqj5qQiCbeOq_Eqn77mjjqfzy9cauh46fkxdcUtdlIX8eP-qSC_ZfWvq64cNhh",
+    "cid": "12993216082217458851",
+    "fid": "0x317529003a7c4a83:0xb4512d2f8e76dca3",
+    "placeId": "ChIJg0p8OgApdTERo9x2ji8tUbQ"
+   },
+   {
+    "position": 12,
+    "title": "Nông Trại Khoai",
+    "address": "89 Phạm Viết Chánh, Bình Thạnh, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.790190899999999,
+    "longitude": 106.71178549999999,
+    "rating": 4.5,
+    "ratingCount": 1127,
+    "priceLevel": "100-500 N ₫",
+    "type": "Nhà hàng quán rượu dành cho người sành ăn",
+    "types": [
+     "Nhà hàng quán rượu dành cho người sành ăn",
+     "Quán bar cocktail",
+     "Phòng uống bia"
+    ],
+    "website": "https://nongtraikhoai.vn/",
+    "phoneNumber": "+84 931 164 417",
+    "openingHours": {
+     "Thứ Hai": "17:00–02:00",
+     "Thứ Ba": "17:00–02:00",
+     "Thứ Tư": "17:00–02:00",
+     "Thứ Năm": "17:00–02:00",
+     "Thứ Sáu": "17:00–03:00",
+     "Thứ Bảy": "17:00–03:00",
+     "Chủ Nhật": "17:00–02:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmM32Z67D1QYvndt6zSpTXfg2HInk3Ou4po3oeoAGtjQbVu_aBe9BG_WRwrDiomB6kDm0XNAWOOpR431eQVwA5mEkR4TW5tKQXJZF6O8y4nsJOmUQASltPq0iTF4gpbpWcVCATMIhw",
+    "cid": "16354487899915626878",
+    "fid": "0x317528ad7b4838f7:0xe2f6d0185de5297e",
+    "placeId": "ChIJ9zhIe60odTERfinlXRjQ9uI"
+   },
+   {
+    "position": 13,
+    "title": "Thoáng Rooftop Bình Thạnh",
+    "address": "M.O.R.E Building, 161 Đ. Ung Văn Khiêm, Thạnh Mỹ Tây, Hồ Chí Minh 72300, Việt Nam",
+    "latitude": 10.8066313,
+    "longitude": 106.7200223,
+    "rating": 4.6,
+    "ratingCount": 1311,
+    "priceLevel": "100-700 N ₫",
+    "type": "Quán bia sân vườn",
+    "types": [
+     "Quán bia sân vườn",
+     "Quán bar",
+     "Quán bar cocktail",
+     "Nhà hàng"
+    ],
+    "website": "https://thoangrooftop.com/",
+    "phoneNumber": "+84 799 939 969",
+    "openingHours": {
+     "Thứ Ba": "16:00–00:00",
+     "Thứ Tư": "16:00–00:00",
+     "Thứ Năm": "16:00–00:00",
+     "Thứ Sáu": "16:00–00:00",
+     "Thứ Bảy": "16:00–00:00",
+     "Chủ Nhật": "16:00–00:00",
+     "Thứ Hai": "16:00–00:00"
+    },
+    "bookingLinks": [
+     "http://m.me/1057635890546934",
+     "https://www.facebook.com/Thoangrooftopbinhthanh"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNHK57IWlffzLU1QAnqvSmDMxIwuUtCQc3X7MxkplCDprtDxx5z1l6ZqKC3A6nJ-yw9j5pfegFDjtRtgAkPk7yiy1c1Yi1QehG61QJm5tL22ZPXxJoJbwhnosVqyWtdFWC_XWswxQ",
+    "cid": "13155191647574012208",
+    "fid": "0x317529fc82dfb3f1:0xb690a11ab1d5b130",
+    "placeId": "ChIJ8bPfgvwpdTERMLHVsRqhkLY"
+   },
+   {
+    "position": 14,
+    "title": "To - Hidden Cocktails Bar ト - 隠れ家バー",
+    "address": "02nd floor of GS25, 02 Le Thanh Ton, ward, street, Sài Gòn, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.782283399999999,
+    "longitude": 106.7059895,
+    "rating": 4.8,
+    "ratingCount": 239,
+    "priceLevel": "200-300 N ₫",
+    "type": "Quán bar",
+    "types": [
+     "Quán bar"
+    ],
+    "website": "http://facebook.com/tohiddenbar",
+    "phoneNumber": "+84 822 248 898",
+    "openingHours": {
+     "Thứ Hai": "18:00–02:00",
+     "Thứ Ba": "18:00–02:00",
+     "Thứ Tư": "18:00–02:00",
+     "Thứ Năm": "18:00–02:00",
+     "Thứ Sáu": "18:00–02:00",
+     "Thứ Bảy": "18:00–02:00",
+     "Chủ Nhật": "18:00–02:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOo_BtPuGaTbkS9DEisnQb9Jj0GPuMcklY54X1v_m7GWA8pkLs4SoZrwm3Q-pfaVzxZk9g-zKXixgYmS6jKFiZO62BAJ8KxbRG3b7cuwAPnHzvfJwSnEczJpbMXochIJEOT5UDm",
+    "cid": "8934464433167599681",
+    "fid": "0x31752f50e32bb161:0x7bfd9810ad510841",
+    "placeId": "ChIJYbEr41AvdTERQQhRrRCY_Xs"
+   },
+   {
+    "position": 15,
+    "title": "Chạng Vạng Rooftop",
+    "address": "72/6 Bạch Đằng, Bình Thạnh, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.803915799999999,
+    "longitude": 106.7090527,
+    "rating": 4.9,
+    "ratingCount": 4723,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Quán bar",
+    "types": [
+     "Quán bar"
+    ],
+    "website": "https://changvangrooftop.vn/",
+    "phoneNumber": "+84 366 106 807",
+    "description": "Quán bia thời thượng ngoài trời trên tầng 6, nhìn ra toàn cảnh đường chân trời, phục vụ bia, cocktail và đồ ăn nhẹ.",
+    "openingHours": {
+     "Thứ Ba": "16:30–00:30",
+     "Thứ Tư": "16:30–00:30",
+     "Thứ Năm": "16:30–00:30",
+     "Thứ Sáu": "16:30–00:30",
+     "Thứ Bảy": "16:30–00:30",
+     "Chủ Nhật": "16:30–00:30",
+     "Thứ Hai": "16:30–00:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOrVl1G6fejaBbfL7H0g1N1hwY6c1XTKF8P5jKLIDJhVUx_rTjF5AZ5QAV-rLozbYkKmCra4ivTikQBz2FVMvjUctUvSEIULnETm8ZEqgDyVqlemztKrq-TKP9_Qa8MHkp0KFNKjQ",
+    "cid": "6507223176456077379",
+    "fid": "0x317529f25f70f1ed:0x5a4e4d0092da8043",
+    "placeId": "ChIJ7fFwX_IpdTERQ4DakgBNTlo"
+   },
+   {
+    "position": 16,
+    "title": "Quán Nhậu Bờ Kè - Lucky Beer",
+    "address": "144 Trường Sa, Gia Định, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7941937,
+    "longitude": 106.69838589999999,
+    "rating": 4.2,
+    "ratingCount": 92,
+    "priceLevel": "300-400 N ₫",
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng",
+     "Quán bia sân vườn",
+     "Quán bia"
+    ],
+    "phoneNumber": "+84 937 888 938",
+    "openingHours": {
+     "Thứ Hai": "11:00–02:00",
+     "Thứ Ba": "11:00–02:00",
+     "Thứ Tư": "11:00–02:00",
+     "Thứ Năm": "11:00–02:00",
+     "Thứ Sáu": "11:00–02:00",
+     "Thứ Bảy": "11:00–02:00",
+     "Chủ Nhật": "11:00–02:00"
+    },
+    "bookingLinks": [
+     "https://zalo.me/479007028235178258"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNHYJ7wF6XU2KPZ50OZ_6J9V8BEyt4mRcBqexCZqd5LKI1DSmTENsRVhnHu9ebBaBsDZRIt5B1CHDF1XE56AAK85s-WwBwhvp3g5eF2Hc9JevTlElbey7LdikO9jNgzgqtyRciB",
+    "cid": "1088576405826094532",
+    "fid": "0x317529cf4abeb499:0xf1b66793c22c5c4",
+    "placeId": "ChIJmbS-Ss8pdTERxMUiPHlmGw8"
+   },
+   {
+    "position": 17,
+    "title": "Khói rooftop",
+    "address": "Phú Mỹ, Thạnh Mỹ Tây, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7907675,
+    "longitude": 106.7147803,
+    "rating": 4.4,
+    "ratingCount": 558,
+    "priceLevel": "100-200 N ₫",
+    "type": "Quán bia sân vườn",
+    "types": [
+     "Quán bia sân vườn"
+    ],
+    "website": "https://www.facebook.com/share/1MN2QPKuce/",
+    "phoneNumber": "+84 931 279 111",
+    "openingHours": {
+     "Thứ Ba": "16:30–00:30",
+     "Thứ Tư": "16:30–00:30",
+     "Thứ Năm": "16:30–00:30",
+     "Thứ Sáu": "16:30–00:30",
+     "Thứ Bảy": "16:00–00:30",
+     "Chủ Nhật": "16:00–00:30",
+     "Thứ Hai": "16:30–00:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPq1Ujl7XCr1bkdzQpRIISrQBwYZX9XtVZsKPpLoYSmzPLmNWsYZXM7aidN57PlGuD5wlqOZOgmflzqzbJr9CyaiVHcoAwsZU4-t5pMOvXuFP1YPzyerwRsimdbHFQnF-MfFATt",
+    "cid": "3667534665460499599",
+    "fid": "0x31752955992c954d:0x32e5b358c834448f",
+    "placeId": "ChIJTZUsmVUpdTERj0Q0yFiz5TI"
+   },
+   {
+    "position": 18,
+    "title": "Birdy",
+    "address": "80 Phạm Viết Chánh, Thạnh Mỹ Tây, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.790128,
+    "longitude": 106.7118299,
+    "rating": 4.6,
+    "ratingCount": 334,
+    "priceLevel": "200-300 N ₫",
+    "type": "Quán bar",
+    "types": [
+     "Quán bar"
+    ],
+    "website": "http://www.facebook.com/barbirdy/",
+    "phoneNumber": "+84 938 818 156",
+    "openingHours": {
+     "Thứ Hai": "14:00–02:00",
+     "Thứ Ba": "14:00–02:00",
+     "Thứ Tư": "14:00–02:00",
+     "Thứ Năm": "14:00–02:00",
+     "Thứ Sáu": "14:00–02:00",
+     "Thứ Bảy": "14:00–02:00",
+     "Chủ Nhật": "14:00–02:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPMH-ec6ek3hiEDeNwrRtMTrxbMVZMA1iiZWfJpuZ2c6TgFgbrC0Jv3v-z8udBJo9nb8YUm_Nl_jDr_RRHGw2yVBz0F9Roksxu85WE66TaPe4liVwYhpkzbNGRZm9S1EukKK8Kx",
+    "cid": "14978492361717609215",
+    "fid": "0x317528ad61ab7277:0xcfde4b718b1472ff",
+    "placeId": "ChIJd3KrYa0odTER_3IUi3FL3s8"
+   },
+   {
+    "position": 19,
+    "title": "Rooftop Tháng Sáu",
+    "address": "565A Nơ Trang Long, Bình Lợi Trung, Hồ Chí Minh 72311, Việt Nam",
+    "latitude": 10.824912,
+    "longitude": 106.7063805,
+    "rating": 4.7,
+    "ratingCount": 339,
+    "priceLevel": "100-200 N ₫",
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê"
+    ],
+    "phoneNumber": "+84 793 796 897",
+    "openingHours": {
+     "Thứ Ba": "16:30–00:00",
+     "Thứ Tư": "16:30–00:00",
+     "Thứ Năm": "16:30–00:00",
+     "Thứ Sáu": "16:30–00:00",
+     "Thứ Bảy": "16:30–00:00",
+     "Chủ Nhật": "16:30–00:00",
+     "Thứ Hai": "16:30–00:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPKm73h9-ZAYJaIGXfF8dUw5v2GZWREaSg1s_sGneHHcQgykynfG0wxaoxfMUuMTAg0DsOTyiXmXx8v4QbyJsoGoQ9u4zf0wUmLxYRlV7s_xl-jbzurNNpzHZXrzuZEvRlLg1ZZRg",
+    "cid": "1778537137776155536",
+    "fid": "0x317529a63b5b82bf:0x18aea21a8cfcdb90",
+    "placeId": "ChIJv4JbO6YpdTERkNv8jBqirhg"
+   },
+   {
+    "position": 20,
+    "title": "Đỉnh Phong Quán- Tiệm Bia Hè Phố",
+    "address": "495 Đ. Phạm Văn Đồng, Bình Lợi Trung, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.823044099999999,
+    "longitude": 106.7022118,
+    "rating": 4.1,
+    "ratingCount": 771,
+    "priceLevel": "100-400 N ₫",
+    "type": "Quán bia",
+    "types": [
+     "Quán bia",
+     "Nhà hàng"
+    ],
+    "phoneNumber": "+84 785 167 989",
+    "openingHours": {
+     "Thứ Hai": "15:00–02:00",
+     "Thứ Ba": "15:00–02:00",
+     "Thứ Tư": "15:00–02:00",
+     "Thứ Năm": "15:00–02:00",
+     "Thứ Sáu": "15:00–02:00",
+     "Thứ Bảy": "15:00–02:00",
+     "Chủ Nhật": "15:00–02:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNsoYprHp9cCRjtY5pQypPtof8doAkxCeFxU_aG1mLV5tURKHis-1LwNBdWcMSxCJjpD8BCjaIXl73r8lFdqyR842S9Qq6uAqkCinvdPOBBqBTDerrVD38G0xVe96Bmv8c3dKYv",
+    "cid": "14600534456480504991",
+    "fid": "0x3175288d72f8e237:0xca9f84bb315f1c9f",
+    "placeId": "ChIJN-L4co0odTERnxxfMbuEn8o"
+   }
+  ],
+  "credits": 3
+ }
+}

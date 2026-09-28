@@ -18,7 +18,7 @@ import { guardPlanLocalTips } from './planLocalTipsGuard'
 import { guardPlanItems, type PlanPlace } from './planItemGuard'
 import { guardPlanTripFacts, guardUngivenTravelDate } from './planTripFactsGuard'
 import { appendPlanBudgetMath } from './planBudgetMath'
-import { consultRemainingLine } from './consultative/consultBrain'
+import { consultRemainingLine, normalizePickSentence, shoppingPickName } from './consultative/consultBrain'
 import { buildActions } from '@/lib/recommendation/actions'
 import { safeFlushPoint, alignReleasedPrefix } from './progressiveFlush'
 import { normalizeReplyMarkdown, plainTextDeep } from '@/lib/chat/markdownNormalize'
@@ -2393,7 +2393,11 @@ export function applyPlaceEnrichmentStreamFilter(
     // Consult V2: the server's buttons replace whatever [FOLLOWUPS] the model wrote (web reads the FIRST block).
     // The "còn N lựa chọn" line is COUNTED here, not left to the model (replay 2026-09-29: the model
     // dropped it on every pick): N = candidates the search returned − the ones this reply names.
-    const withRemaining = collector?.consultButtons?.length ? consultRemainingLine(budgeted, latestPlaces.length ? latestPlaces.map(p => p.name ?? '') : productRecords.map(r => String((r as { name?: unknown }).name ?? '')), lang) : budgeted
+    // The pick sentence in the approved "**Mình chọn: X**" form (normalised by code; the model often
+    // writes "Mình gợi ý **X**" — replay 2026-09-29).
+    const consultPickTurn = ['pick', 'more', 'reject', 'compare'].includes(collector?.consultTurn ?? '')
+    const pickNormalized = consultPickTurn ? normalizePickSentence(budgeted, shoppingPickName(collector?.shoppingMarker)) : budgeted
+    const withRemaining = collector?.consultButtons?.length ? consultRemainingLine(pickNormalized, latestPlaces.length ? latestPlaces.map(p => p.name ?? '') : productRecords.map(r => String((r as { name?: unknown }).name ?? '')), lang) : pickNormalized
     const placeGuarded = collector?.consultButtons?.length
       ? `${withRemaining.replace(/\[FOLLOWUPS\][^\n]*?(?:\[\/FOLLOWUPS\]|\n|$)/gi, '').trimEnd()}\n\n[FOLLOWUPS]${collector.consultButtons.join('|')}[/FOLLOWUPS]`
       : withRemaining
@@ -2451,8 +2455,12 @@ export function applyPlaceEnrichmentStreamFilter(
       // recommendation, a subject question) keeps its prose — measured E7: the cap dropped
       // films two and three as "least informative".
       const hasVenues = snippetPlaceNames.length > 0 || v1.carried.length > 0
-      const shape = !hasVenues ? { text: atmosphere.text, stats: { sentences_in: 0, sentences_out: 0, listing_removed: 0, alternatives_removed: 0, capped: 0 } } : guardProseShape(atmosphere.text, {
+      // Consult V2: a detailed plan is not reshaped into a 3-6 sentence pick (it cut 17 → 6 sentences in
+      // replay); a pick keeps up to 2 alternatives (owner-approved frame). Claim guards are unchanged.
+      const consultPlan = collector?.consultTurn === 'plan'
+      const shape = !hasVenues || consultPlan ? { text: atmosphere.text, stats: { sentences_in: 0, sentences_out: 0, listing_removed: 0, alternatives_removed: 0, capped: 0 } } : guardProseShape(atmosphere.text, {
         rendersCard: v1.rendersCard,
+        ...(collector?.consultTurn ? { maxAlternatives: 2, maxSentences: 9 } : {}),
         venues: snippetPlaceNames.map(name => ({
           name,
           rating: ratingsByEntity.get(name)?.[0] ?? null,

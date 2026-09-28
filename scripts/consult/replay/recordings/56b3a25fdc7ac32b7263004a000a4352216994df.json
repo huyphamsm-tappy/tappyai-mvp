@@ -1,0 +1,401 @@
+{
+ "url": "https://google.serper.dev/shopping",
+ "request": {
+  "q": "Laptop Acer Aspire 3 A315-59-38PG giá mua",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 20
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:55:06.565Z",
+ "body": {
+  "searchParameters": {
+   "q": "Laptop Acer Aspire 3 A315-59-38PG giá mua",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "shopping",
+   "num": 40,
+   "page": 1,
+   "engine": "google"
+  },
+  "shopping": [
+   {
+    "title": "Acer Aspire 3 A315 59 38PG - Đà Nẵng",
+    "source": "Trâm Anh Laptop",
+    "link": "https://www.google.com/search?ibp=oshop&q=Laptop+Acer+Aspire+3+A315-59-38PG+gi%C3%A1+mua+*+*+*+*+*&prds=localAnnotatedOfferId:1,productid:8716322398685467386,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "9.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQf9c9VixgT_dUNOKByl-KpgywWgtoUMB1my0C2h8D2PtJCGLwP2augRaRo7fJBmHP0SaVYyb-3S12lRdSW3rGM--OUVnDVEehPlOUKlfbGbo1aQc_0LCtF",
+    "productId": "8716322398685467386",
+    "position": 1
+   },
+   {
+    "title": "Laptop Acer Aspire 3 A315-59-38PG (Intel Core i3-1215U | 8GB | 512GB | Intel UHD | 15.6 inch | Win 11 | Bạc)",
+    "source": "Máy Tính Hưng Yên",
+    "link": "https://www.google.com/search?ibp=oshop&q=Laptop+Acer+Aspire+3+A315-59-38PG+gi%C3%A1+mua+*+*+*+*+*&prds=localAnnotatedOfferId:1,productid:17125394867393475843,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "10.100.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQ2JLFHbIovQucEw7q1T7gcWVrbOJ_ZD4auNp5Ed8kotXtQ2gbMC5GR6g0GplrdYlxEWU6B65OWQZGxA7Lu-5h3oaYOO0-98bXZS5K4NUyEOGCcPdtVk6brug",
+    "productId": "17125394867393475843",
+    "position": 2
+   },
+   {
+    "title": "Acer Aspire 3 A315-59-38PG | I3-1215U | Chính Hãng Giá Rẻ Nhất",
+    "source": "Laptop 15 - Laptop Cũ Hải Phòng",
+    "link": "https://www.google.com/search?ibp=oshop&q=Laptop+Acer+Aspire+3+A315-59-38PG+gi%C3%A1+mua+*+*+*+*+*&prds=localAnnotatedOfferId:1,productid:11955819422531175614,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "10.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSqRZnNFdlBjfx8MJGNkEXGaPAQx6J4L_3mTLgfHJqX2dwPX5feFMkgbguw7BB23iMPC-C5-LZmsZNqtul_r26wAH826fYRMkqMt1RKRkt-mxiPDcTGWXud9g",
+    "productId": "11955819422531175614",
+    "position": 3
+   },
+   {
+    "title": "Laptop ACER Aspire A315-59-38PG (i3-1215U/RAM 8GB/512GB SSD/ Windows 11)",
+    "source": "Trường Thịnh Group",
+    "link": "https://www.google.com/search?ibp=oshop&q=Laptop+Acer+Aspire+3+A315-59-38PG+gi%C3%A1+mua+*+*+*+*+*&prds=localAnnotatedOfferId:1,productid:1303913027859439222,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "10.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTEAKhP7NrqvEN6Qm-lVbWeCVgfYl7QlUnApP_Ca88lCYt7m6SVE43J9nnXbJVvUKcglsUTd0JuYJ0mDCZiuGd62b-LiwoezX9zJF7pOgxGZqe7lQ2dAOYLzw",
+    "productId": "1303913027859439222",
+    "position": 4
+   },
+   {
+    "title": "Acer Aspire 3 A315 59 5283 - Đà Nẵng",
+    "source": "tramanh.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=Laptop+Acer+Aspire+3+A315-59-38PG+gi%C3%A1+mua+*+*+*+*+*&prds=localAnnotatedOfferId:1,productid:13710417364510652582,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "12.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQG0Y_Fn5zRj5O7g2N7JtRX7YlWUjyQLmxy6NpS2yPq3sEwq9ZL9qAFT60gcyFH9Vls6yAzjbsNsawthu1zyR0MZGIwYBKqbQJbq5tsmqT7M7p8r4Mgxy0i9g",
+    "productId": "13710417364510652582",
+    "position": 5
+   },
+   {
+    "title": "Máy tính xách tay/ Laptop Acer Aspire 3 A315-59-381E",
+    "source": "Kho Thiết Bị",
+    "link": "https://www.google.com/search?ibp=oshop&q=Laptop+Acer+Aspire+3+A315-59-38PG+gi%C3%A1+mua+*+*+*+*+*&prds=localAnnotatedOfferId:1,catalogid:13118735759991462099,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "9.799.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRRmv05lGzSCruhaFNZL9zQgphh1-FhxvA6iyGr4S-3DHsVHxYviClOUSB-CVgQDa1IL_U8pWUxQ_opR56HTzD5Mkq0arghSTBcAmYvH5GU1G8dfT_Sd6hLVQ",
+    "rating": 5,
+    "ratingCount": 4,
+    "productId": "13118735759991462099",
+    "position": 6
+   },
+   {
+    "title": "Acer Aspire 3 A315-58-54PA i5-1135G7 Notebook 39,6 cm (15.6\") Full HD Intel Core i5 8 GB DDR4-SDRAM 256 GB SSD Wi-Fi 5 (802.11ac) Windows 11 Home Bạc",
+    "source": "cybershopvn.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=Laptop+Acer+Aspire+3+A315-59-38PG+gi%C3%A1+mua+*+*+*+*+*&prds=localAnnotatedOfferId:1,catalogid:18081672960977103791,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "8.290.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRrCr2ByMx8rCS9uqKvDb-WSyxRKchXnQfhvoHd97DICm2I-ghQ76xCmGhlACK5aBEZJRuX0X3vdRNdACIApss0rf2WhvT2DXTLxnaF6Stdb_LMOO8oa0oUAg",
+    "productId": "18081672960977103791",
+    "position": 7
+   },
+   {
+    "title": "Laptop ACER Aspire 3 A315-58 Cũ (i5 Gen 11/8GB/NVMe 512GB/Iris Xe) - Sức Mạnh Tiger Lake, Màn Lớn FHD Giá Tốt - Laptop Viễn Chinh",
+    "source": "Laptop Viễn Chinh",
+    "link": "https://www.google.com/search?ibp=oshop&q=Laptop+Acer+Aspire+3+A315-59-38PG+gi%C3%A1+mua+*+*+*+*+*&prds=localAnnotatedOfferId:1,productid:2782474433960309888,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "7.200.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTLK5XZ8ezFQnDJq8gifqyS5AJVV2XGVjxh-GICH-5ftLavQoy18WWwlFRTyImBZpuQMSWQBPA7zFSyZvqsaSQrgBOdtK-c5XnxgFRFOzc0u62g-ofPgH6V",
+    "productId": "2782474433960309888",
+    "position": 8
+   },
+   {
+    "title": "Laptop Acer Aspire 3 A315-58 Core i5-1135G7. Giá Tốt",
+    "source": "truonggiang.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=Laptop+Acer+Aspire+3+A315-59-38PG+gi%C3%A1+mua+*+*+*+*+*&prds=localAnnotatedOfferId:1,productid:12628860957497462264,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "11.890.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQl6i09VRNTklRW_w0KEwxqrhhbZ0gge9CPrjrwp1OBCWWwvS5y5krpMrXglLkGNQbpoi9WTTvIvQogp3OCQQ06ywGgEKscGWzU4PH_6XmG2jbB99qwdFKQG2g",
+    "productId": "12628860957497462264",
+    "position": 9
+   },
+   {
+    "title": "Acer Aspire 3 A315-59-381E | i3-1215U | Chính Hãng Giá Rẻ Nhất",
+    "source": "Laptop 15 - Laptop Cũ Hải Phòng",
+    "link": "https://www.google.com/search?ibp=oshop&q=Laptop+Acer+Aspire+3+A315-59-38PG+gi%C3%A1+mua+*+*+*+*+*&prds=localAnnotatedOfferId:1,productid:12835654059740314418,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "11.290.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSYjHvNebgsFieS7vmQQpOeHLjzDEIWEQUXTeq3-6-Hn2kCR8uzaYCy-ZS9JkOHFpynmZIhUqPTNn_Kba7okgZKSn2rkl0wWVY9qYHpt7z5h8LRF-slB73Y",
+    "productId": "12835654059740314418",
+    "position": 10
+   },
+   {
+    "title": "[New Outlet] Acer Aspire 3 A315-59-53ER (Core i5-1235U/ 8GB/ 256GB/ 15.6inch FHD)",
+    "source": "xrazer.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=Laptop+Acer+Aspire+3+A315-59-38PG+gi%C3%A1+mua+*+*+*+*+*&prds=localAnnotatedOfferId:1,productid:2753643411748329718,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "12.890.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcR2vIjKYmAA7bN8wIsja4iWcNIVCAdzQaEDcEP-A8fYqyuSmv4cJ94Cn1QT80cIVIxctBOAB5PbjVkOtEQtY7eyAlKg3WigOFMQmuyNijmn9iCPC_ah0SQPnw",
+    "rating": 4.6,
+    "ratingCount": 76,
+    "productId": "2753643411748329718",
+    "position": 11
+   },
+   {
+    "title": "Acer Aspire A315-58-59LY",
+    "source": "OnlyLap",
+    "link": "https://www.google.com/search?ibp=oshop&q=Laptop+Acer+Aspire+3+A315-59-38PG+gi%C3%A1+mua+*+*+*+*+*&prds=localAnnotatedOfferId:1,productid:17164712066211130335,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "8.390.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSVLnIGsOVNPOxCjiGHUt5Osfcs6-_VGg8xvGa6fON71vbRPz47q4nfMsggbk-k3yJ1HNW4hTfXBaLty3t3eHZPBPXlvfx3vgg_OcXAs_qHA6FaPkM2Pthaew",
+    "productId": "17164712066211130335",
+    "position": 12
+   },
+   {
+    "title": "Laptop ACER Aspire 3 A315-58G Cũ (i5 Gen 11/8GB/NVMe 512GB/MX350/FHD) - Hiệu Năng Tiger Lake + Card Rời Mạnh Mẽ - Laptop Viễn Chinh",
+    "source": "Laptop Viễn Chinh",
+    "link": "https://www.google.com/search?ibp=oshop&q=Laptop+Acer+Aspire+3+A315-59-38PG+gi%C3%A1+mua+*+*+*+*+*&prds=localAnnotatedOfferId:1,productid:16576817868534455018,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "9.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTbWXsICz67isVVlOCSNNcK8kes1gYmpetQE5xNM8m9N0WDs5E2ORDaGpCpUppTcxvseMEjiQ-eMQXdxzr398EG0Md5lpIZ5NkfWD6o1r1WqK8moYl94wZH",
+    "productId": "16576817868534455018",
+    "position": 13
+   },
+   {
+    "title": "Laptop Acer Aspire A315-58/ Core i5-1135G7/ RAM 8GB/ SSD 256GB/ FHD",
+    "source": "Thanh Nga Laptop",
+    "link": "https://www.google.com/search?ibp=oshop&q=Laptop+Acer+Aspire+3+A315-59-38PG+gi%C3%A1+mua+*+*+*+*+*&prds=localAnnotatedOfferId:1,productid:11699794477937919050,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "6.700.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSuJQfuBfvyqXDhcKVWFkoOOx8kkbNj5ltFLlfKEsbeOVrWfcyUuXvmWHOB6LqAswfNQ4tuQMLFIehR3JJfaJ9NOEd2yxOOrN3AjKW_xMgm",
+    "productId": "11699794477937919050",
+    "position": 14
+   },
+   {
+    "title": "Laptop Acer Aspire A315-31 giá rẻ - bảo hành tốt",
+    "source": "truonggiang.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=Laptop+Acer+Aspire+3+A315-59-38PG+gi%C3%A1+mua+*+*+*+*+*&prds=localAnnotatedOfferId:1,productid:2051204864323335541,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "4.999.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQvBYp0aS__1oGjOShL9lPfMrsawTXaA9xpFlN8qlefkP3qDuOh7RYR_BR8BdIhHOVI96ZteYQl_7Cq7FIk9bMEEAVxevfphKbhdRKw6q2g1iEDbYSQ50TUZg",
+    "productId": "2051204864323335541",
+    "position": 15
+   },
+   {
+    "title": "Acer Aspire 3 A315 58 589K - TramAnh.vn",
+    "source": "tramanh.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=Laptop+Acer+Aspire+3+A315-59-38PG+gi%C3%A1+mua+*+*+*+*+*&prds=localAnnotatedOfferId:1,productid:2744191508128663788,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "9.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRLg94kyqogpkrNYPnr-2rrTk4ZhuGMiR0lSphI0791MuRY7WwIAA8jmH_XW9puu3oE8ztDzAjYO8kEXm0bmrqXjiDQtNYdnyrz1yr0UVK7s71Vr5YGoBBZ",
+    "productId": "2744191508128663788",
+    "position": 16
+   },
+   {
+    "title": "[Mới 100%] Acer Aspire 3 A315-58-561V",
+    "source": "minhvu.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=Laptop+Acer+Aspire+3+A315-59-38PG+gi%C3%A1+mua+*+*+*+*+*&prds=localAnnotatedOfferId:1,productid:7266356956440918793,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "11.890.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQ5uNDxk3FNwnNBHHTe_H7bWw84PUW7QBsDZHi1ZeurMxY6HaoJstCmnshC2fUU4-5yc7TXZnapDX46wr-08X_Z2zvDPxSeuw",
+    "productId": "7266356956440918793",
+    "position": 17
+   },
+   {
+    "title": "An Thảo - Laptop Acer Aspire 3 A315-59- 51X8 NX.K6TSV.00F (Intel Core i5-1235U | 8GB | 512GB | Intel UHD | 15.6 inch FHD | Win 11 | Bạc) -Default",
+    "source": "anthao.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=Laptop+Acer+Aspire+3+A315-59-38PG+gi%C3%A1+mua+*+*+*+*+*&prds=localAnnotatedOfferId:1,productid:14756913505423052976,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "13.590.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTx2m58tmIOMnaRQteEtfPFyz79Q4Le4us7daQidT83OWH5biYsRAYDrsYAPruFBq5lDc7DHmygW0Wn5uSfyNSoSHFkMdTIx42e5oSGhKlLwDc5EG7mjFe68A",
+    "rating": 4.6,
+    "ratingCount": 76,
+    "productId": "14756913505423052976",
+    "position": 18
+   },
+   {
+    "title": "TGMT - Laptop ACER Aspire A315-58 | i5 1135G7 | Ram 8GB | SSD 512GB | 15.6 inch -Cũ",
+    "source": "thegioimaytinh.net.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=Laptop+Acer+Aspire+3+A315-59-38PG+gi%C3%A1+mua+*+*+*+*+*&prds=localAnnotatedOfferId:1,productid:2885610543916867083,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "8.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRCFPmXreMsR33LkU5FHI-qhqpYIBAIxn-7oW3X53zzSA4r_9PIls9YwNIo709ZbtLTA6xUnic3HZfMb5eJOFnmOIzF4lYKbR8VLk96hAd36K4My5b6DfK3",
+    "productId": "2885610543916867083",
+    "position": 19
+   },
+   {
+    "title": "Laptop Acer Aspire 3 A315 58 59LY i5 1135G7 - CHÍNH HÃNG",
+    "source": "truonggiang.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=Laptop+Acer+Aspire+3+A315-59-38PG+gi%C3%A1+mua+*+*+*+*+*&prds=localAnnotatedOfferId:1,productid:10114090610010682654,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "15.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTUy2X2fv2QXjJoRio4NGsE4fffcSWYJAc2PMyTQfbjy-scFblqlCebjV6w8Y1SdDafO7Wp2e7jfL328ePfM8HVCNtezKIiooNXax-H6cwlV9rHJUek_04Vmw",
+    "rating": 4.8,
+    "ratingCount": 4,
+    "productId": "10114090610010682654",
+    "position": 20
+   },
+   {
+    "title": "Laptop ACER Aspire 3 A315-55G Cũ (i7 Gen 8/8GB/SSD 256GB/MX230/FHD) - Sức Mạnh Core i7 4 Nhân, Card Rời Đa Năng - Laptop Viễn Chinh",
+    "source": "Laptop Viễn Chinh",
+    "link": "https://www.google.com/search?ibp=oshop&q=Laptop+Acer+Aspire+3+A315-59-38PG+gi%C3%A1+mua+*+*+*+*+*&prds=localAnnotatedOfferId:1,productid:7870000854288159958,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "7.200.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTY4kPJe6JEYuVNSslP5MI4kNJgM3OhBvawtDuRLK1nxmbJ0ZtkhleNSeAngihwRqqnOEwZBNhS0voY-HAlnWZrVReMgJiienP1dhC40T0",
+    "productId": "7870000854288159958",
+    "position": 21
+   },
+   {
+    "title": "Laptop Acer Aspire 3 A315-59-51X8 NX.K6TSV.00F (Intel Core i5-1235U | 8GB | 512GB | Intel UHD | 15.6 inch FHD | Win 11 | Bạc)",
+    "source": "Máy Tính Hưng Yên",
+    "link": "https://www.google.com/search?ibp=oshop&q=Laptop+Acer+Aspire+3+A315-59-38PG+gi%C3%A1+mua+*+*+*+*+*&prds=localAnnotatedOfferId:1,productid:2062597384502046918,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "12.900.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRN-l5uCeuIlA84Jw8qgmKOjfgCvSxCj11qEx9F-eH0-jzsolbo_yySdgNWoiLT_z1_0KcDOJZ9xAVTOQLIzK7FRmAIvDHaJjakMwCG8vvcPyFQQ4EMiAW-",
+    "rating": 4.6,
+    "ratingCount": 76,
+    "productId": "2062597384502046918",
+    "position": 22
+   },
+   {
+    "title": "Acer Aspire 3 R3-3250U 15.6 inch A315-23-R8BA",
+    "source": "maytinhvanphong.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=Laptop+Acer+Aspire+3+A315-59-38PG+gi%C3%A1+mua+*+*+*+*+*&prds=localAnnotatedOfferId:1,catalogid:3545222044338126269,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "9.890.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQ2gOHWtw9Mntl15jtS12PVqJQ5T4A0RgwC1-O1v-47LPx9mqKJOB6J1I6anLYDtu_1ySBSFxzNzmQbXtb894-ETcSXm-c8U6PxTp52BT87rniamljCH7d1",
+    "productId": "3545222044338126269",
+    "position": 23
+   },
+   {
+    "title": "Laptop Acer Aspire 3 A315-58-35AG Sliver i3 1115G4 Giá Tốt",
+    "source": "truonggiang.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=Laptop+Acer+Aspire+3+A315-59-38PG+gi%C3%A1+mua+*+*+*+*+*&prds=localAnnotatedOfferId:1,productid:14671925535656862401,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "10.050.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTk4M9DXXqzNR8cZIFOPXilvMBbpmsblHtojGHvwef4nVH8m4W35pWNoGwO6PM9WAhdVXjAAnlP4kQUergG8Xv4Ixdh_Z8V6xyMNYVyCtUttouD78THe0bM",
+    "rating": 4.8,
+    "ratingCount": 4,
+    "productId": "14671925535656862401",
+    "position": 24
+   },
+   {
+    "title": "Laptop ACER Aspire A315-56 Cũ (i3 Gen 10/8GB/NVMe 256GB/FHD) - Laptop Màn Lớn, Hiệu Năng Thế Hệ 10 Giá Tốt - Laptop Viễn Chinh",
+    "source": "Laptop Viễn Chinh",
+    "link": "https://www.google.com/search?ibp=oshop&q=Laptop+Acer+Aspire+3+A315-59-38PG+gi%C3%A1+mua+*+*+*+*+*&prds=localAnnotatedOfferId:1,productid:5380323346677186085,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "5.400.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQm7uQzadUTiPk2dQcaLeP2h68d39fli6uvQR15E5MxibIUuOwOM52I_whvGLV1sHY9f8TdsxcSFxixfXbTXCMSm6YO-zYaWipB0ggvTLN1M03nVmz5XAOO",
+    "productId": "5380323346677186085",
+    "position": 25
+   },
+   {
+    "title": "LAPTOP ACER ASPIRE 3 A315-58-561V CORE I5-1135G7/ 8GB/ 512GB/ 15.6INCH FHD/ BẠC NK MỚI - TogoShop - Vệ sinh phục hồi giày đồ da",
+    "source": "togoshop.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=Laptop+Acer+Aspire+3+A315-59-38PG+gi%C3%A1+mua+*+*+*+*+*&prds=localAnnotatedOfferId:1,productid:3612471536323822210,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "13.400.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSQvzRZSswjImC2aBA0vmKK6s_GjnHWsWTCYTJ2QgEF7jjCXMt4Be0BIIRKzWb0PaB8tpyfOGHTlWj5xMvy9B8eM1tSQSayNnb3ChelfTBEE0JlcgVngcL4zw",
+    "productId": "3612471536323822210",
+    "position": 26
+   },
+   {
+    "title": "Máy tính xách tay/ Laptop Acer Aspire 3 A315-56-58EG nx.hs5sv.00j",
+    "source": "phucanh.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=Laptop+Acer+Aspire+3+A315-59-38PG+gi%C3%A1+mua+*+*+*+*+*&prds=localAnnotatedOfferId:1,catalogid:1573859058968146174,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "11.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRC9bCuvO_MxwvWqFSdSwdfsItxUI7VqpVpw2RjmzhN37mh7zyM9-fUosDkYd0W1eNpbg7c_72wkO7O0tn9mo8a06hlzGYbAZSBqXPXxcOZVi6l6NtTZm_s",
+    "productId": "1573859058968146174",
+    "position": 27
+   },
+   {
+    "title": "Laptop ACER Aspire A315-57G Cũ (i5 Gen 10/8GB/NVMe 512GB/MX330/FHD) - Hiệu Năng Thế Hệ 10, Đồ Họa Mạnh Mẽ - Laptop Viễn Chinh",
+    "source": "Laptop Viễn Chinh",
+    "link": "https://www.google.com/search?ibp=oshop&q=Laptop+Acer+Aspire+3+A315-59-38PG+gi%C3%A1+mua+*+*+*+*+*&prds=localAnnotatedOfferId:1,productid:7746353086814461136,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "6.300.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQv-8JH9Uf6kePga8LBFhUNMVGiFuM4xs-ogxo5f0j3hNpnWROq83qtd7yv_mg23UUPyop9cfR-6o0FuWk1Z3EYXO7Z-ZKnhFCzzn8LHZlgksrElwConYZj",
+    "productId": "7746353086814461136",
+    "position": 28
+   },
+   {
+    "title": "Laptop Acer Aspire 3 A315 57G 573F i5-1035G1 Ưu đãi khủng",
+    "source": "truonggiang.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=Laptop+Acer+Aspire+3+A315-59-38PG+gi%C3%A1+mua+*+*+*+*+*&prds=localAnnotatedOfferId:1,productid:2437014647979039520,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "15.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQRwl88B-Dws4YV5NrjQrlFpF87R0lzb48FDiZNhGyDYMTpbuooT4eJ6PfzwNE4M8wiGMQp32E1aCf9m7fzd8Toe0pZTu1tdLGPWZu-mEnN4pwiMguMm4rO",
+    "productId": "2437014647979039520",
+    "position": 29
+   },
+   {
+    "title": "Laptop ACER Aspire 3 A315 i3 1215U RAM 8GB M2.SSD 512GB FHD - Laptop Xách Tay Shop",
+    "source": "laptopxachtayshop.com",
+    "link": "https://www.google.com/search?ibp=oshop&q=Laptop+Acer+Aspire+3+A315-59-38PG+gi%C3%A1+mua+*+*+*+*+*&prds=localAnnotatedOfferId:1,productid:12819839157295905699,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "8.590.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTmccd4Aw3X_f0sTfxLk53jeEK498hPtT85lmTKy5-iNQfOdPEt9JlJ2Gw5sWl7MF0okvPLTUhU3X-HJFYsM0VmODsLLJTJ4cHSxIINecQ",
+    "productId": "12819839157295905699",
+    "position": 30
+   },
+   {
+    "title": "Laptop Acer Aspire 3 A315-44P-R5QG (R7 5700U/16GB/512GB/15.6 ich \"FHD/Win11_Bạc_N22C6)",
+    "source": "Máy Tính Hưng Yên",
+    "link": "https://www.google.com/search?ibp=oshop&q=Laptop+Acer+Aspire+3+A315-59-38PG+gi%C3%A1+mua+*+*+*+*+*&prds=localAnnotatedOfferId:1,productid:17652663969470988633,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "12.900.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQTwYZGpNO9_wSkpMZuZ-wb56H0elRxvoxvaQO3NInCjf_FpQQF1ulhJ6B-VikNBjdTcfrZDg85Zvtac8J0fA9EhInSFFucQnwbsdOBAX4YJbIxwznlbN7d",
+    "productId": "17652663969470988633",
+    "position": 31
+   },
+   {
+    "title": "LAPTOP ACER ASPIRE 3 A315-58-561V CORE I5-1135G7/ 8GB/ 512GB/ 15.6INCH FHD/ BẠC NK MỚI - TNEW computer-Chuyên Cung Cấp PC Laptop Cao Cấp",
+    "source": "Máy Tính TNEW",
+    "link": "https://www.google.com/search?ibp=oshop&q=Laptop+Acer+Aspire+3+A315-59-38PG+gi%C3%A1+mua+*+*+*+*+*&prds=localAnnotatedOfferId:1,productid:7797769850143240431,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "13.400.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTmfSn6G-uKfNUv_wasuZGXMyZqupN9-Gx4HtXVZN20S34j5iKlymN0Jk0XJqsy2TKqSVRXxiHXdKZZ7V8SQ-iVtmpSOEqVcsgZ_-Bj4d2trkF5wJVFDLUU",
+    "productId": "7797769850143240431",
+    "position": 32
+   },
+   {
+    "title": "Acer Aspire 3 i3-1005G1 15.6 inch A315-56-37DV",
+    "source": "Shop Thành Nhân Computer",
+    "link": "https://www.google.com/search?ibp=oshop&q=Laptop+Acer+Aspire+3+A315-59-38PG+gi%C3%A1+mua+*+*+*+*+*&prds=localAnnotatedOfferId:1,catalogid:7958647228432302145,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "13.200.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSnpnVlJz-9eFXp-zq44Kb4oI5p9gxasb2IMxfMhEG8-mcXwIb6TmZAhT0iCQ39Z8Z5maChNbJyuGYg6bGGqbt96kJsqdN0c60iPRYFOEBCz_0ctN-vfYOa",
+    "rating": 5,
+    "ratingCount": 13,
+    "productId": "7958647228432302145",
+    "position": 33
+   },
+   {
+    "title": "Laptop Acer Aspire 3 A315-56-38B1 i3-1005G1/4GB/256GB/Win11 nx.hs5sv.00g",
+    "source": "Laptop 15 - Laptop Cũ Hải Phòng",
+    "link": "https://www.google.com/search?ibp=oshop&q=Laptop+Acer+Aspire+3+A315-59-38PG+gi%C3%A1+mua+*+*+*+*+*&prds=localAnnotatedOfferId:1,catalogid:2216546137063293168,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "6.890.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQGlALp1SyMwDr4tN2wn8iw8D6sJ8sgogiecY7l6JyymyTLqbOWmhhjYDrrHM853LHBILa3jBQti-Ch7zf3I4vtEmy2Px4qqbO_vvwbDCpFYYWYIO7k9bkq",
+    "productId": "2216546137063293168",
+    "position": 34
+   },
+   {
+    "title": "Laptop ACER Aspire 3 A315-59-381E (i3-1215U/RAM 8GB/512GB SSD/ Windows 11)",
+    "source": "Trường Thịnh Group",
+    "link": "https://www.google.com/search?ibp=oshop&q=Laptop+Acer+Aspire+3+A315-59-38PG+gi%C3%A1+mua+*+*+*+*+*&prds=localAnnotatedOfferId:1,productid:1033852566167566246,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "9.891.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQTpsQfOJubLkDcQjKOJzIzxxwFa-DNtqvnnruSwrbGfOOFigks9Yb4EKWNVXBNij9FyaqAwrGTda0AkM2lD3fY3-Db6rpimyt9xiPnn3QyHydoXanu7OaN",
+    "productId": "1033852566167566246",
+    "position": 35
+   },
+   {
+    "title": "Laptop cũ Acer Aspire 3 A315-59-51X8 i5-1235U/8GB/512GB/Win11 như mới có hộp - TRUONGGIANG.VN",
+    "source": "truonggiang.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=Laptop+Acer+Aspire+3+A315-59-38PG+gi%C3%A1+mua+*+*+*+*+*&prds=localAnnotatedOfferId:1,productid:5902576542945718271,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "8.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSxPQc6z6MDMpqjag8yaK-RgzCZnhKdmQSnisJFKediKJgUTu0kSnTVl8Sp1pMbMOokweaBVDsXUjqqJ4HbDd_7cquJwEaRyaqZNBjvdFn8",
+    "productId": "5902576542945718271",
+    "position": 36
+   },
+   {
+    "title": "Laptop Acer Aspire 3 A315-57G-573F i5-1035G1/8GB/512GB/2GB MX330/Win 11",
+    "source": "Công Ty TNHH Vi Tính Thiên Ân",
+    "link": "https://www.google.com/search?ibp=oshop&q=Laptop+Acer+Aspire+3+A315-59-38PG+gi%C3%A1+mua+*+*+*+*+*&prds=localAnnotatedOfferId:1,productid:17700751392398137051,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "5.000.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRVX5bXh8lCmgemkIRsTsP0pXeCOZo8szFupzOSw4O-uah2QwZ3QvSqkRXBDIhoBtG-B0HkCNqZyIT_Dd2jZX8xilfNxDRJAFYG-gZ_CNEN",
+    "productId": "17700751392398137051",
+    "position": 37
+   },
+   {
+    "title": "Acer Aspire 3 A315-58-589K | i5-1135G7 | Chính Hãng Giá Rẻ Nhất",
+    "source": "Laptop 15 - Laptop Cũ Hải Phòng",
+    "link": "https://www.google.com/search?ibp=oshop&q=Laptop+Acer+Aspire+3+A315-59-38PG+gi%C3%A1+mua+*+*+*+*+*&prds=localAnnotatedOfferId:1,productid:16849072501047553613,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "10.890.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQWVmkSxdiDtOlS_b_K0oAhhlCaEOkskNjl3WZg0dT5FAx9lefXp9EgXpa8LxYXv5qX6CX9eYD2byUVdXbvKVOkteKHrVdwMiIHa5MbzBZw4hCrhBAZyppm",
+    "productId": "16849072501047553613",
+    "position": 38
+   },
+   {
+    "title": "Laptop Acer Aspire 3 A315-59-51X8 (NX.K6TSV.00F) Silver (Cpu i5-1235U, Ram 8GB DDR4, SSD 512GB, Vga Xe Graphics, 15.6 inch FHD, Win 11 Home)",
+    "source": "Sky Computer",
+    "link": "https://www.google.com/search?ibp=oshop&q=Laptop+Acer+Aspire+3+A315-59-38PG+gi%C3%A1+mua+*+*+*+*+*&prds=localAnnotatedOfferId:1,productid:2068606363415580492,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "12.510.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSqSR8iTdScu2EvsMHOVQcNtombRzEFL5O5ncv_oHWubcvAwpr0yqhAZFgbE_sE_2-DqhgUb_D54l6tYz2oOAbTnIUder-GnOcb0wVgPbnyHOg4gA2OaKTY3g",
+    "rating": 4.6,
+    "ratingCount": 76,
+    "productId": "2068606363415580492",
+    "position": 39
+   },
+   {
+    "title": "Laptop Acer Aspire A315-54K – 2.4 – 8 GB, DDR4, 2133 MHz – SSD M2 256 GB – 15.6'', Anti-glare – Đã qua sử dụng – BH 6 - 12 Tháng",
+    "source": "Laptop Thiên Ân",
+    "link": "https://www.google.com/search?ibp=oshop&q=Laptop+Acer+Aspire+3+A315-59-38PG+gi%C3%A1+mua+*+*+*+*+*&prds=localAnnotatedOfferId:1,productid:1707783512933509584,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "3.900.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcR4OQwiLSQge46S74ujSjuuQq-UVwIKsLdMYpikpvWqhZa1-6WsFxba-BU7OndOPiMTdSLhq5X_9fzqI1nQxOJsGEhzj7G-PUSzkzyRO21X",
+    "productId": "1707783512933509584",
+    "position": 40
+   }
+  ],
+  "credits": 2
+ }
+}

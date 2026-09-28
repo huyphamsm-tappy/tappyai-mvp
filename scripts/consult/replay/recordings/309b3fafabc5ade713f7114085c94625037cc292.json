@@ -1,0 +1,613 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "cà phê bar",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.7769,106.7009,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:57:40.754Z",
+ "body": {
+  "searchParameters": {
+   "q": "cà phê bar",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.7769,106.7009,14z",
+   "engine": "google"
+  },
+  "ll": "@10.7768941,106.7008997,14z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Nến Café & Bistro(cà phê - bar - bia craft)",
+    "address": "8A Hoàng Hoa Thám, Gia Định, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.8044195,
+    "longitude": 106.6919186,
+    "rating": 4.7,
+    "ratingCount": 208,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê",
+     "Quán bia",
+     "Quán bar cocktail"
+    ],
+    "phoneNumber": "+84 948 187 933",
+    "openingHours": {
+     "Thứ Ba": "Mở cửa cả ngày",
+     "Thứ Tư": "Mở cửa cả ngày",
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmO9sk8Cu6KYnV2cThgJUUcGAD-DbphoDrEbBpB3rPEVTJMmkG4buHmshfPsUlPU0ratu-VQmdcyzTGfv2Neazfvg3ZD0gkI8sj8NEKQVrSfuw9YTYiybaEqO9B6C3u_eeReVcqb",
+    "cid": "18243947500418762457",
+    "fid": "0x317529ec1769ae9b:0xfd2f85974f5606d9",
+    "placeId": "ChIJm65pF-wpdTER2QZWT5eFL_0"
+   },
+   {
+    "position": 2,
+    "title": "BARXIU COFFEE | Nguyễn Trãi",
+    "address": "Chung cư 143, Nguyễn Trãi, Bến Thành, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7688622,
+    "longitude": 106.69003049999999,
+    "rating": 4.8,
+    "ratingCount": 827,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê"
+    ],
+    "website": "https://linktr.ee/Barxiu",
+    "phoneNumber": "+84 369 596 764",
+    "openingHours": {
+     "Thứ Ba": "07:30–22:00",
+     "Thứ Tư": "07:30–22:00",
+     "Thứ Năm": "07:30–22:00",
+     "Thứ Sáu": "07:30–22:00",
+     "Thứ Bảy": "07:30–22:00",
+     "Chủ Nhật": "07:30–22:00",
+     "Thứ Hai": "07:30–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOjUC3hjB0Qj-7jMIl_-3jszyftZDWKcz2_T-ZxrdUNKZoysuqs29nEkd2oqe_tlq-bIdKt5B0lUKQKzU4N0UQj6mnwiq64VoihiRYVdTK8nWwPiySCkz6V-TlxmRbDTvduT51-",
+    "cid": "13295090767595973246",
+    "fid": "0x31752f27c8cf3d97:0xb881a69cdb222a7e",
+    "placeId": "ChIJlz3PyCcvdTERfioi25ymgbg"
+   },
+   {
+    "position": 3,
+    "title": "S… Cafe Bar",
+    "address": "60/69 Lý Chính Thắng, Xuân Hòa, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7915265,
+    "longitude": 106.6851897,
+    "rating": 5,
+    "ratingCount": 21,
+    "priceLevel": "1-200.000 ₫",
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê",
+     "Quán bar cocktail"
+    ],
+    "openingHours": {
+     "Thứ Ba": "08:30–00:00",
+     "Thứ Tư": "08:30–00:00",
+     "Thứ Năm": "08:30–00:00",
+     "Thứ Sáu": "08:30–00:00",
+     "Thứ Bảy": "08:30–00:00",
+     "Chủ Nhật": "08:30–00:00",
+     "Thứ Hai": "08:30–00:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMiqAXFmHtjrrcXLAfhQEvvibiP0GlK2TSVL7F9nSNCDkVjCabdzElPjUpjFLoVdgXyPf8QmTs5WrHk8OrNjZHb8GmZfTq357MvA_GRdeH1ga8w0TX09iFi4Chxy4XcpiPsxupz3OWvDnQq",
+    "cid": "13510811603095320735",
+    "fid": "0x31752916755d6ef9:0xbb800b91d5b8f89f",
+    "placeId": "ChIJ-W5ddRYpdTERn_i41ZELgLs"
+   },
+   {
+    "position": 4,
+    "title": "Than coffee and cocktail bar",
+    "address": "218/7 Nam Kỳ Khởi Nghĩa, Xuân Hòa, Hồ Chí Minh 72400, Việt Nam",
+    "latitude": 10.783618899999999,
+    "longitude": 106.6915507,
+    "rating": 4.8,
+    "ratingCount": 84,
+    "priceLevel": "100-400 N ₫",
+    "type": "Quán bar cocktail",
+    "types": [
+     "Quán bar cocktail",
+     "Quán cà phê"
+    ],
+    "phoneNumber": "+84 931 549 030",
+    "openingHours": {
+     "Thứ Hai": "09:30–01:30",
+     "Thứ Ba": "09:30–01:30",
+     "Thứ Tư": "09:30–01:30",
+     "Thứ Năm": "09:30–01:30",
+     "Thứ Sáu": "09:30–01:30",
+     "Thứ Bảy": "09:30–01:30",
+     "Chủ Nhật": "09:30–01:30"
+    },
+    "bookingLinks": [
+     "https://www.google.com/maps/reserve/v/dine/c/yTkm_G6CSGw?source=pa&opi=79508299"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNjCwhhfscEbflbdhOrjxWmD2kK1ra4Qloa0fDKOUK_pmJ3mYzBjtJNkSihgT4tvATATabK2vF4MlRKNBsH6aP0oGPaBbUMsfeObm02razKFM00aUMaAFDzDqxIF6zZ6iLvzc0T",
+    "cid": "10856388514370595812",
+    "fid": "0x31752fcf7a090519:0x96a9a3d58eb0abe4",
+    "placeId": "ChIJGQUJes8vdTER5KuwjtWjqZY"
+   },
+   {
+    "position": 5,
+    "title": "Tam | Coffee · Bar · Kitchen",
+    "address": "17/3 Nguyễn Thị Minh Khai, Sài Gòn, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.7850103,
+    "longitude": 106.70051289999999,
+    "rating": 5,
+    "ratingCount": 209,
+    "priceLevel": "1-400.000 ₫",
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "website": "https://menu.tamthefnb.com/",
+    "phoneNumber": "+84 962 320 687",
+    "openingHours": {
+     "Thứ Ba": "Đóng cửa",
+     "Thứ Tư": "07:30–23:00",
+     "Thứ Năm": "07:30–23:00",
+     "Thứ Sáu": "07:30–00:00",
+     "Thứ Bảy": "07:30–00:00",
+     "Chủ Nhật": "07:30–23:00",
+     "Thứ Hai": "07:30–23:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPheSQxc0t7_XIlYoIqPX8nmn9gWRJwRpoFM4NlTdeTS7MdwdP-F8lfF7SI-nFUvzmc7074Mzl2WNwR3gOoHOf52XJqKTRb06f2NRCDRqlSpl3R-EIjC2yZkAGL0qRIi3wWPg685dpMCJoH",
+    "cid": "6571435593798780554",
+    "fid": "0x31752f6d0ce46d9f:0x5b326ddb08bc068a",
+    "placeId": "ChIJn23kDG0vdTERiga8CNttMls"
+   },
+   {
+    "position": 6,
+    "title": "Fiction cafe & bar",
+    "address": "33/11 Lý Văn Phức, Tân Định, Hồ Chí Minh 71008, Việt Nam",
+    "latitude": 10.790707399999999,
+    "longitude": 106.69337569999999,
+    "rating": 4.7,
+    "ratingCount": 83,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê"
+    ],
+    "openingHours": {
+     "Thứ Ba": "08:00–00:00",
+     "Thứ Tư": "08:00–00:00",
+     "Thứ Năm": "08:00–00:00",
+     "Thứ Sáu": "08:00–01:00",
+     "Thứ Bảy": "09:00–01:00",
+     "Chủ Nhật": "09:00–01:00",
+     "Thứ Hai": "09:00–00:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNc8vrfRC9v_AIC4EnvK0Gb3xfzlYXvv-jJ05Ct3WnvE1loh23iH-MeV-edg6PEdutPc19tJf8VVazl7hfWVZ-il-ak_4vkww8eCfRphFPObIHtxMJXBa5LfPIbtIaUvRgKt4lbh8ysi1Qj",
+    "cid": "3012763473786137934",
+    "fid": "0x31752967462cb677:0x29cf7c6ac74b6d4e",
+    "placeId": "ChIJd7YsRmcpdTERTm1Lx2p8zyk"
+   },
+   {
+    "position": 7,
+    "title": "Lacàph Coffee",
+    "address": "151 Đồng Khởi, Sài Gòn, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.775762799999999,
+    "longitude": 106.7031707,
+    "rating": 4.9,
+    "ratingCount": 1192,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê",
+     "Cơ sở rang cà phê",
+     "Trung tâm học hành"
+    ],
+    "website": "https://www.lacaph.com/",
+    "openingHours": {
+     "Thứ Ba": "09:00–18:30",
+     "Thứ Tư": "09:00–18:30",
+     "Thứ Năm": "09:00–18:30",
+     "Thứ Sáu": "09:00–18:30",
+     "Thứ Bảy": "09:00–18:30",
+     "Chủ Nhật": "09:00–18:30",
+     "Thứ Hai": "09:00–18:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMK5eWKVYWEdrXAlIIHPGOWPYcCLSrzWm0-f1BEWUa63gPaV29Kb2NyLN7UUUAZYpDJKLw8ehJnJtXAi3eTXY8SpjDwGNXh2BNulNSPULOROnkUer8RaA8bk9H-RUnwpR2Yg7giNzMAxrQ",
+    "cid": "526812127163994903",
+    "fid": "0x31752f250219e89b:0x74f9cd6a6fa5317",
+    "placeId": "ChIJm-gZAiUvdTERF1P6ptacTwc"
+   },
+   {
+    "position": 8,
+    "title": "0.coffee&bar",
+    "address": "375/9 Hoàng Sa, Tân Định, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.793082,
+    "longitude": 106.6870289,
+    "rating": 4.9,
+    "ratingCount": 127,
+    "priceLevel": "1-300.000 ₫",
+    "type": "Quán bar cocktail",
+    "types": [
+     "Quán bar cocktail",
+     "Quán cà phê"
+    ],
+    "website": "https://www.instagram.com/0.coffeeandbar/",
+    "phoneNumber": "+84 869 870 960",
+    "openingHours": {
+     "Thứ Ba": "09:00–01:00",
+     "Thứ Tư": "09:00–01:00",
+     "Thứ Năm": "09:00–01:00",
+     "Thứ Sáu": "09:00–01:00",
+     "Thứ Bảy": "09:00–01:00",
+     "Chủ Nhật": "09:00–01:00",
+     "Thứ Hai": "09:00–20:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmM3Yxmjh9s3Bjs9ye_taF7YoI9O4OCIEAtG53QK9jBbvq7E410p-FtKkmMSGIM0h4qtyL697BWROEOswCK9iuhMAq5Ybhds21GliCizQOYV8I8JhfarII9wxVJXfdfg-UYG-V0UXZCt--SX",
+    "cid": "15206882983162771932",
+    "fid": "0x317529eb65fd6619:0xd309b380f05979dc",
+    "placeId": "ChIJGWb9ZespdTER3HlZ8ICzCdM"
+   },
+   {
+    "position": 9,
+    "title": "Refined Saigon",
+    "address": "14 Tôn Thất Đạm, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7694744,
+    "longitude": 106.7041728,
+    "rating": 4.8,
+    "ratingCount": 264,
+    "priceLevel": "100-400 N ₫",
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê",
+     "Quán bar cocktail",
+     "Quán rượu"
+    ],
+    "website": "https://www.facebook.com/refinedsaigon",
+    "phoneNumber": "+84 778 889 972",
+    "openingHours": {
+     "Thứ Ba": "09:00–00:00",
+     "Thứ Tư": "09:00–00:00",
+     "Thứ Năm": "09:00–00:00",
+     "Thứ Sáu": "09:00–00:00",
+     "Thứ Bảy": "09:00–00:00",
+     "Chủ Nhật": "09:00–00:00",
+     "Thứ Hai": "09:00–00:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNrPTBGBaSmHuJEILW-NH4ediEqhIAjZXbX_oQtWqMUJd-T_mMCiuNpnriefpzzHTTLesQiYUVHWKrnNU8QXc3_8yyr-wDc5zezCrzuqTXHzAZscK2yNhA6rKG3m3BLLoTcQvnUEYz-av9c",
+    "cid": "12506488947625831678",
+    "fid": "0x31752ff3de9ddfc7:0xad8ff96f86962cfe",
+    "placeId": "ChIJx9-d3vMvdTER_iyWhm_5j60"
+   },
+   {
+    "position": 10,
+    "title": "Manki Specialty Coffee Bar & Roasters",
+    "address": "134/12/3 Bùi Thị Xuân, Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7701324,
+    "longitude": 106.6877997,
+    "rating": 4.6,
+    "ratingCount": 354,
+    "priceLevel": "100-200 N ₫",
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê"
+    ],
+    "website": "https://mankicoffee.com/",
+    "phoneNumber": "+84 898 682 817",
+    "openingHours": {
+     "Thứ Ba": "08:30–12:00, 13:30–17:00",
+     "Thứ Tư": "08:30–12:00, 13:30–17:00",
+     "Thứ Năm": "08:30–12:00, 13:30–17:00",
+     "Thứ Sáu": "08:30–12:00, 13:30–17:00",
+     "Thứ Bảy": "08:30–12:00, 13:30–17:00",
+     "Chủ Nhật": "08:30–12:00, 13:30–17:00",
+     "Thứ Hai": "08:30–12:00, 13:30–17:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNfg2B44U2fGO2uKG3-PIdCHQdJkW7tysvUJ7RKoOqjIpPAmWEc8PM9vsimN7N4SvehozLFstBPB2yUBZlYBw6tr7vPuqu4yJZ4ztynOTQqNmhIhXLK_VBWaUoucySvR4Et1JTGz5wxazg",
+    "cid": "9601332799528315602",
+    "fid": "0x31752f99d84c1cbf:0x853ec94fa6312ad2",
+    "placeId": "ChIJvxxM2JkvdTER0ioxpk_JPoU"
+   },
+   {
+    "position": 11,
+    "title": "The Mechanic",
+    "address": "176 Lê Lai, Bến Thành, Hồ Chí Minh 71009, Việt Nam",
+    "latitude": 10.7690992,
+    "longitude": 106.6910381,
+    "rating": 4.8,
+    "ratingCount": 288,
+    "priceLevel": "100-200 N ₫",
+    "type": "Quán bar cocktail",
+    "types": [
+     "Quán bar cocktail",
+     "Quán ăn nhỏ",
+     "Quán cà phê"
+    ],
+    "website": "https://themechanicbar.wixsite.com/eaterybar",
+    "phoneNumber": "+84 968 777 965",
+    "openingHours": {
+     "Thứ Hai": "10:00–01:00",
+     "Thứ Ba": "10:00–01:00",
+     "Thứ Tư": "10:00–01:00",
+     "Thứ Năm": "10:00–01:00",
+     "Thứ Sáu": "10:00–02:00",
+     "Thứ Bảy": "10:00–02:00",
+     "Chủ Nhật": "09:00–01:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNJeKi98ZPWAgzRm3L0J6h968XDBRkX3OSwbsvcK9u6nT0WD6ISUN6MGouJ3iDge6C4jcT8rGmSOaYGPnH-lNLzIDokAyoKovlNKrt4GiGvwPac_7L6tAOrKD8xqDqqm9nxdU4nDNzOQDJO",
+    "cid": "2845415481770339199",
+    "fid": "0x31752f853ebeecf7:0x277cf24e15516b7f",
+    "placeId": "ChIJ9-y-PoUvdTERf2tRFU7yfCc"
+   },
+   {
+    "position": 12,
+    "title": "Manfolk - Coffee & Cocktail Bar",
+    "address": "69 Nguyễn Thị Minh Khai, Bến Thành, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7730646,
+    "longitude": 106.68913169999999,
+    "rating": 4.7,
+    "ratingCount": 140,
+    "priceLevel": "100-200 N ₫",
+    "type": "Quán bar cocktail",
+    "types": [
+     "Quán bar cocktail",
+     "Quán cà phê"
+    ],
+    "website": "https://www.facebook.com/Manfolkvn",
+    "phoneNumber": "+84 776 676 923",
+    "openingHours": {
+     "Thứ Hai": "07:00–01:00",
+     "Thứ Ba": "07:00–01:00",
+     "Thứ Tư": "07:00–01:00",
+     "Thứ Năm": "07:00–01:00",
+     "Thứ Sáu": "07:00–01:00",
+     "Thứ Bảy": "07:00–01:00",
+     "Chủ Nhật": "07:00–01:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNcNDPOyb350SaLKz537Q9ITnZFtsc9XSmbt8sfR0aTw_Cu8s1fGY5HGTV5cUROPs4TsQDyaZO8_luvuIL_yHdAL64AabJNHE-SpQ7sgT0T-NRjDwuBbK6eOQvg20ncvYgvgUvH",
+    "cid": "3917410794571064812",
+    "fid": "0x31752f2e0fab0603:0x365d705cc1b065ec",
+    "placeId": "ChIJAwarDy4vdTER7GWwwVxwXTY"
+   },
+   {
+    "position": 13,
+    "title": "Herm Coffee Bar",
+    "address": "47C Đ. Nguyễn Duy, Gia Định, Hồ Chí Minh 723000, Việt Nam",
+    "latitude": 10.800414,
+    "longitude": 106.6946292,
+    "rating": 4.8,
+    "ratingCount": 10,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê"
+    ],
+    "website": "https://www.instagram.com/herm.spce?igsh=MTA2ZWpxMzAwYzNtdA==",
+    "openingHours": {
+     "Thứ Ba": "08:00–20:00",
+     "Thứ Tư": "08:00–20:00",
+     "Thứ Năm": "08:00–20:00",
+     "Thứ Sáu": "08:00–20:00",
+     "Thứ Bảy": "08:00–20:00",
+     "Chủ Nhật": "08:00–20:00",
+     "Thứ Hai": "08:00–20:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmON_fZgeooJW0zSwZqrjXB_TIjDr-joE0azH_HzO8055nywwAwTMUbAgU4qRYmp9BKgJdZZnKn-PusoB3BjtrUHOm_fPGsEY0m-CkC7FxxmEpLpE3Rr4CW-aV44kqNPOGMl7Bs50LX3enuo",
+    "cid": "1094450194720246589",
+    "fid": "0x317529662c42606d:0xf3044a748a84b3d",
+    "placeId": "ChIJbWBCLGYpdTERPUuoSKdEMA8"
+   },
+   {
+    "position": 14,
+    "title": "MAMA BARBAR",
+    "address": "39b Nguyễn Duy Hiệu, An Khánh, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.802997,
+    "longitude": 106.7369286,
+    "rating": 5,
+    "ratingCount": 591,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê",
+     "Quán bia"
+    ],
+    "phoneNumber": "+84 906 693 964",
+    "openingHours": {
+     "Thứ Ba": "08:00–00:00",
+     "Thứ Tư": "08:00–00:00",
+     "Thứ Năm": "08:00–00:00",
+     "Thứ Sáu": "08:00–00:00",
+     "Thứ Bảy": "08:00–00:00",
+     "Chủ Nhật": "08:00–00:00",
+     "Thứ Hai": "08:00–00:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOEo0x_DVbQgFTIRPTdDCO6GNBVw0PyRP5_TUJCYfhUK9xMIvmbzfLZfIV9PY5g_rau8LSnG4qGvFItARYRWhHvstlkfERIaYPwVYIGIqwrmqLNK_baiITReA-_AOJlQkVNSQmEElPM0Nez",
+    "cid": "786543422226965345",
+    "fid": "0x3175276af9779ac7:0xaea5d1342422361",
+    "placeId": "ChIJx5p3-WondTERYSNCQhNd6go"
+   },
+   {
+    "position": 15,
+    "title": "CEE café bar à vin",
+    "address": "15 Nguyễn Thị Diệu, Xuân Hòa, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7766904,
+    "longitude": 106.6896031,
+    "rating": 5,
+    "ratingCount": 24,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Quầy cà phê",
+    "types": [
+     "Quầy cà phê"
+    ],
+    "phoneNumber": "+84 909 520 505",
+    "openingHours": {
+     "Thứ Ba": "07:00–22:00",
+     "Thứ Tư": "07:00–22:00",
+     "Thứ Năm": "07:00–22:00",
+     "Thứ Sáu": "07:00–22:00",
+     "Thứ Bảy": "07:00–22:00",
+     "Chủ Nhật": "07:00–22:00",
+     "Thứ Hai": "07:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmN2G0smqbwSoFpUNbdveQQW8blrHCMLlS8Ajx9an-JLHCGuUBAZfY2j4QLvctFaJbdM9GBrN_-p54QcWgfEVFxdoion48RCKtdAomaj3Rg-CBChCIuq1gyU031mRx7K9YXlHnLXOgc20WQ",
+    "cid": "10770798469410107302",
+    "fid": "0x31752f30f1d939c9:0x957990244c82afa6",
+    "placeId": "ChIJyTnZ8TAvdTERpq-CTCSQeZU"
+   },
+   {
+    "position": 16,
+    "title": "EL Where Cafe & Wine",
+    "address": "345/43 Trần Hưng Đạo, Cầu Ông Lãnh, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.7606557,
+    "longitude": 106.68994909999999,
+    "rating": 4.8,
+    "ratingCount": 188,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê",
+     "Quán rượu"
+    ],
+    "phoneNumber": "+84 336 636 165",
+    "openingHours": {
+     "Thứ Ba": "07:30–21:30",
+     "Thứ Tư": "07:30–21:30",
+     "Thứ Năm": "07:30–21:30",
+     "Thứ Sáu": "07:30–21:30",
+     "Thứ Bảy": "07:30–21:30",
+     "Chủ Nhật": "07:30–21:30",
+     "Thứ Hai": "07:30–21:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPHHgHJlN_MleenAoTjgd5UVnRko82vYG1er6Pl6FMHb3pdEs7ujUDcdZV_lj8zQztTcPtrwlA0lZnB5-MbOIBY8rb3o_N833WANyz-i0Xwcvo_vpH0CEdGxuQk4cJ7W1rBW94gi3q4Z55w",
+    "cid": "4957041749712253554",
+    "fid": "0x31752f069d01aac1:0x44caf33534613272",
+    "placeId": "ChIJwaoBnQYvdTERcjJhNDXzykQ"
+   },
+   {
+    "position": 17,
+    "title": "Haa Coffee Bar",
+    "address": "11 Đường số 54, An Khánh, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.801603799999999,
+    "longitude": 106.7291355,
+    "rating": 5,
+    "ratingCount": 44,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê"
+    ],
+    "website": "https://www.instagram.com/haa.coffeebar?igsh=OHliMGp4cTFibXVp&utm_source=qr",
+    "openingHours": {
+     "Thứ Ba": "08:00–20:00",
+     "Thứ Tư": "08:00–20:00",
+     "Thứ Năm": "08:00–20:00",
+     "Thứ Sáu": "08:00–20:00",
+     "Thứ Bảy": "08:00–20:00",
+     "Chủ Nhật": "08:00–20:00",
+     "Thứ Hai": "08:00–20:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNw_aqe70uCgspooV-NsKmYo_OJQ16VCI5Bt7f-IPNqpeGll5HOA7sLjCU8cnvEQ-fWKwh2V6GZKg9YpMlRyyVS-GpaI7iNo_leDpTMQiaG8B1pyaIlq0e9R9Fc7YnvYAkqSfkaTPiMK__N",
+    "cid": "16747612114942675590",
+    "fid": "0x317527532bbd36d5:0xe86b787c632fca86",
+    "placeId": "ChIJ1Ta9K1MndTERhsovY3x4a-g"
+   },
+   {
+    "position": 18,
+    "title": "Lagom Café - The First Coffee & Belgian Beer Lounge in Vietnam",
+    "address": "87 Võ Thị Sáu, Xuân Hòa, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7870337,
+    "longitude": 106.69130539999999,
+    "rating": 4.9,
+    "ratingCount": 1641,
+    "priceLevel": "200-700 N ₫",
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê",
+     "Nhà hàng"
+    ],
+    "website": "https://lagomcafe.vn/",
+    "phoneNumber": "+84 919 000 195",
+    "openingHours": {
+     "Thứ Ba": "10:00–23:30",
+     "Thứ Tư": "10:00–23:30",
+     "Thứ Năm": "10:00–23:30",
+     "Thứ Sáu": "10:00–23:30",
+     "Thứ Bảy": "10:00–23:30",
+     "Chủ Nhật": "10:00–23:30",
+     "Thứ Hai": "10:00–23:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmN5UFq0-cpxojb_UN37xa1FMac9k_M70z0wkhvS3A2OUG5z6_D5dHxcL-23PeSHOZENF-_aGNGQSSu2pjks7JChqZ9UI86X5ltVuqzT69d-O8qxPDl-z6bflZwQqM1LDxGa-vldbA",
+    "cid": "11499904853929184539",
+    "fid": "0x31752f3300d86e47:0x9f97de89193d4d1b",
+    "placeId": "ChIJR27YADMvdTERG009GYnel58"
+   },
+   {
+    "position": 19,
+    "title": "CHUA Juice & Dessert Bar",
+    "address": "113 Nguyễn Huệ, Quận 1, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7736316,
+    "longitude": 106.703633,
+    "rating": 4.8,
+    "ratingCount": 386,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê"
+    ],
+    "phoneNumber": "+84 899 725 825",
+    "openingHours": {
+     "Thứ Hai": "08:00–01:30",
+     "Thứ Ba": "08:00–01:30",
+     "Thứ Tư": "08:00–01:30",
+     "Thứ Năm": "08:00–01:30",
+     "Thứ Sáu": "08:00–01:30",
+     "Thứ Bảy": "09:00–01:30",
+     "Chủ Nhật": "09:00–01:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNT3xCHMHwwzbt5mwDdOCWbJQKkvWMgUXlG9Cux0TrukwhacIUFeFXHYB7fpIUXrM3ePOrJibfHXMdIhaqkusZ0K_52gGndTsVbJ_MrMLBRk9qJmt4ZbcH1ln-CwL5UdDlkD9wVpTTJO5Pv",
+    "cid": "11079965502378454861",
+    "fid": "0x31752fed22d34463:0x99c3f1eb94d9af4d",
+    "placeId": "ChIJY0TTIu0vdTERTa_ZlOvxw5k"
+   },
+   {
+    "position": 20,
+    "title": "GIAO Coffee & Wine",
+    "address": "44G Đinh Công Tráng, Tân Định, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.7896117,
+    "longitude": 106.6909977,
+    "rating": 5,
+    "ratingCount": 399,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng",
+     "Quán cà phê",
+     "Quán rượu"
+    ],
+    "phoneNumber": "+84 931 430 688",
+    "openingHours": {
+     "Thứ Hai": "08:30–01:00",
+     "Thứ Ba": "08:30–01:00",
+     "Thứ Tư": "08:30–01:00",
+     "Thứ Năm": "08:30–01:00",
+     "Thứ Sáu": "08:30–01:00",
+     "Thứ Bảy": "08:30–01:00",
+     "Chủ Nhật": "08:30–01:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOcSj4ikfcDvKK4GyalPlsCOT93YxLLnWTyUsYroldncIEyViBB22-skW6TkgjgO3Lx_cGzktVtM9G4d50qWMl8f4zKAMctW8Ic0NPzwldKwPkF0E6fM5GydUgN38MXpDnQZffOlCeI9gBO",
+    "cid": "15615686625469490518",
+    "fid": "0x31752f005adb9e29:0xd8b610401aed6556",
+    "placeId": "ChIJKZ7bWgAvdTERVmXtGkAQttg"
+   }
+  ],
+  "credits": 3
+ }
+}

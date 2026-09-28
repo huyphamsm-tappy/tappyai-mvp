@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Ốp UAG Monarch Pro Kevlar Magsafe iPhone 17 Pro Max",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:53:31.029Z",
+ "body": {
+  "searchParameters": {
+   "q": "Ốp UAG Monarch Pro Kevlar Magsafe iPhone 17 Pro Max",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Ốp lưng UAG iPhone 17 Pro Monarch Pro Kevlar có Magsafe",
+    "imageUrl": "https://bizweb.dktcdn.net/100/031/560/products/broshop-op-lung-uag-iphone-17-pro-max-monarch-pro-kevlar-co-magsafe-16-7745ce23-f13c-4516-8910-d3f09bdbbdac.jpg?v=1757486735240",
+    "imageWidth": 3000,
+    "imageHeight": 3000,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQsAkb8eTRqXppopu29ME4FYP0dbnJht-QJ6aF3AKaWgA&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "broshop",
+    "domain": "broshop.vn",
+    "link": "https://broshop.vn/op-lung-uag-iphone-17-pro-monarch-pro-kevlar-co-magsafe?srsltid=AU7gw4VPzeXQaiEfwtuGXS0G1aJSd9suSftoBNcPCAkj6nzjB70lsf6G",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fbizweb.dktcdn.net%2F100%2F031%2F560%2Fproducts%2Fbroshop-op-lung-uag-iphone-17-pro-max-monarch-pro-kevlar-co-magsafe-16-7745ce23-f13c-4516-8910-d3f09bdbbdac.jpg%3Fv%3D1757486735240&tbnid=GyJTmmfB3vPwiM&imgrefurl=https%3A%2F%2Fbroshop.vn%2Fop-lung-uag-iphone-17-pro-monarch-pro-kevlar-co-magsafe%3Fsrsltid%3DAU7gw4VPzeXQaiEfwtuGXS0G1aJSd9suSftoBNcPCAkj6nzjB70lsf6G&docid=3vGzRahqa-2vMM&w=3000&h=3000",
+    "position": 1
+   },
+   {
+    "title": "Ốp lưng UAG iPhone 17 Pro Monarch Pro Kevlar có Magsafe",
+    "imageUrl": "https://bizweb.dktcdn.net/100/031/560/products/broshop-op-lung-uag-iphone-17-pro-max-monarch-pro-kevlar-co-magsafe-2-03fab6cd-a518-4e8f-8f36-be749e8a5202.jpg?v=1757486809097",
+    "imageWidth": 3000,
+    "imageHeight": 3000,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSb4160j_vuHkI4TVNcYjvzroX4xL9TA-Y48jWL2MH1mg&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "broshop",
+    "domain": "broshop.vn",
+    "link": "https://broshop.vn/op-lung-uag-iphone-17-pro-monarch-pro-kevlar-co-magsafe?srsltid=AU7gw4XzJ_03JU6YD5DDQ0uJnHjrJLHYsvH7p1QQ281p6Je0T9oIFZEx",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fbizweb.dktcdn.net%2F100%2F031%2F560%2Fproducts%2Fbroshop-op-lung-uag-iphone-17-pro-max-monarch-pro-kevlar-co-magsafe-2-03fab6cd-a518-4e8f-8f36-be749e8a5202.jpg%3Fv%3D1757486809097&tbnid=bNUUNMGXAku6PM&imgrefurl=https%3A%2F%2Fbroshop.vn%2Fop-lung-uag-iphone-17-pro-monarch-pro-kevlar-co-magsafe%3Fsrsltid%3DAU7gw4XzJ_03JU6YD5DDQ0uJnHjrJLHYsvH7p1QQ281p6Je0T9oIFZEx&docid=3vGzRahqa-2vMM&w=3000&h=3000",
+    "position": 2
+   },
+   {
+    "title": "Ốp lưng Magsafe iPhone 17 Pro UAG Monarch Pro Kevlar",
+    "imageUrl": "https://minhtuanmobile.com/uploads/products/250916023103-114513113940.png",
+    "imageWidth": 600,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRoYPEuCyUUh8mqda7o3PfosWCa89DM_KlxJCUCcYkKlA&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Minh Tuấn Mobile",
+    "domain": "minhtuanmobile.com",
+    "link": "https://minhtuanmobile.com/op-lung-magsafe-iphone-17-pro-uag-monarch-pro-kevlar/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fminhtuanmobile.com%2Fuploads%2Fproducts%2F250916023103-114513113940.png&tbnid=Muk1e3CAXf8r7M&imgrefurl=https%3A%2F%2Fminhtuanmobile.com%2Fop-lung-magsafe-iphone-17-pro-uag-monarch-pro-kevlar%2F&docid=dLBfg2XgHLZTZM&w=600&h=600",
+    "position": 3
+   },
+   {
+    "title": "Ốp lưng UAG iPhone 17 Pro Monarch Pro Kevlar có Magsafe",
+    "imageUrl": "https://bizweb.dktcdn.net/thumb/grande/100/031/560/products/broshop-op-lung-uag-iphone-17-pro-max-monarch-pro-kevlar-co-magsafe-11-3b8981ac-6123-48c9-8389-0426a3414461.jpg?v=1757486724560",
+    "imageWidth": 600,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzgXikzdiMAYKuVvKNda3ZS86SIKMtb0cv3-2_r-v3LQ&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "broshop",
+    "domain": "broshop.vn",
+    "link": "https://broshop.vn/op-lung-uag-iphone-17-pro-monarch-pro-kevlar-co-magsafe?srsltid=AU7gw4WXxSJ2ERJGng5icfvIWi33Qv4yneaKlIH9HQP6oqY-XdRIs-IJ",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fbizweb.dktcdn.net%2Fthumb%2Fgrande%2F100%2F031%2F560%2Fproducts%2Fbroshop-op-lung-uag-iphone-17-pro-max-monarch-pro-kevlar-co-magsafe-11-3b8981ac-6123-48c9-8389-0426a3414461.jpg%3Fv%3D1757486724560&tbnid=CRHXFlnNJ_ahPM&imgrefurl=https%3A%2F%2Fbroshop.vn%2Fop-lung-uag-iphone-17-pro-monarch-pro-kevlar-co-magsafe%3Fsrsltid%3DAU7gw4WXxSJ2ERJGng5icfvIWi33Qv4yneaKlIH9HQP6oqY-XdRIs-IJ&docid=3vGzRahqa-2vMM&w=600&h=600",
+    "position": 4
+   },
+   {
+    "title": "Ốp lưng Monarch Pro w Magsafe cho iPhone 17 Pro Max [6.9 inch]",
+    "imageUrl": "https://cdn.hstatic.net/products/200000057534/g_hs_apple_iphone-17-pro-max-2025-lion_monarch-pro_carbon-fiber_prm_03_6152f3a8c6154ce0b9de81fcbce341dc_master.png",
+    "imageWidth": 1500,
+    "imageHeight": 1500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTarm-cvUMVt9G5ubfZXcIf3crYOebbv_MEt6f80luUCA&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "UAG VietNam",
+    "domain": "uagvietnam.vn",
+    "link": "https://uagvietnam.vn/products/op-lung-monarch-w-magsafe-cho-iphone-17-pro-max-6-9-inch",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.hstatic.net%2Fproducts%2F200000057534%2Fg_hs_apple_iphone-17-pro-max-2025-lion_monarch-pro_carbon-fiber_prm_03_6152f3a8c6154ce0b9de81fcbce341dc_master.png&tbnid=VzOnuu9KOD4m_M&imgrefurl=https%3A%2F%2Fuagvietnam.vn%2Fproducts%2Fop-lung-monarch-w-magsafe-cho-iphone-17-pro-max-6-9-inch&docid=k5F7g_gZyoHbiM&w=1500&h=1500",
+    "position": 5
+   },
+   {
+    "title": "Ốp UAG Monarch Pro Kevlar - iPhone 17 Pro Max (chính hãng)",
+    "imageUrl": "https://phuongvyshop.com/uploads/product/hang_mau/apple/iphone/ip17pm/uag/monarch-pro-kevlar/monarchprokevlar-10.jpg",
+    "imageWidth": 1544,
+    "imageHeight": 1544,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQc4faP2YeNrGwpuRhnHjTbGoDb_FootrpAHhAxrDdtyA&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Phương Vy Shop - Phương Vy Shop",
+    "domain": "phuongvyshop.com",
+    "link": "https://phuongvyshop.com/op-uag-monarch-pro-kevlar-iphone-17-pro-max.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fphuongvyshop.com%2Fuploads%2Fproduct%2Fhang_mau%2Fapple%2Fiphone%2Fip17pm%2Fuag%2Fmonarch-pro-kevlar%2Fmonarchprokevlar-10.jpg&tbnid=i0x-2QZqal2YoM&imgrefurl=https%3A%2F%2Fphuongvyshop.com%2Fop-uag-monarch-pro-kevlar-iphone-17-pro-max.html&docid=o0bFEZ-kHqTmVM&w=1544&h=1544",
+    "position": 6
+   },
+   {
+    "title": "Ốp lưng UAG iPhone 17 Pro Monarch Pro Kevlar có Magsafe",
+    "imageUrl": "https://bizweb.dktcdn.net/thumb/grande/100/031/560/products/broshop-op-lung-uag-iphone-17-pro-max-monarch-pro-kevlar-co-magsafe-22-45b332d9-8c27-476f-ba45-31070070a963.jpg?v=1757486748803",
+    "imageWidth": 600,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHiAuvFrxNf52pkYrkHWddZoYI6WZUJ13805viMTni_Q&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "broshop",
+    "domain": "broshop.vn",
+    "link": "https://broshop.vn/op-lung-uag-iphone-17-pro-monarch-pro-kevlar-co-magsafe?srsltid=AU7gw4W_0tTdya3tSl2JANVLh6a0OYjMnyQ4SfVywdb3BdumZ5Uy6-wd",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fbizweb.dktcdn.net%2Fthumb%2Fgrande%2F100%2F031%2F560%2Fproducts%2Fbroshop-op-lung-uag-iphone-17-pro-max-monarch-pro-kevlar-co-magsafe-22-45b332d9-8c27-476f-ba45-31070070a963.jpg%3Fv%3D1757486748803&tbnid=WRiEFxzGP-L_KM&imgrefurl=https%3A%2F%2Fbroshop.vn%2Fop-lung-uag-iphone-17-pro-monarch-pro-kevlar-co-magsafe%3Fsrsltid%3DAU7gw4W_0tTdya3tSl2JANVLh6a0OYjMnyQ4SfVywdb3BdumZ5Uy6-wd&docid=3vGzRahqa-2vMM&w=600&h=600",
+    "position": 7
+   },
+   {
+    "title": "Ốp lưng iPhone 18 Pro Max/17 Pro Max UAG Monarch Pro Kevlar With Magsafe |  Giá rẻ",
+    "imageUrl": "https://cdn2.cellphones.com.vn/x/media/catalog/product/o/p/op-lung-iphone-18-pro-max17-pro-max-uag-monarch-pro-kevlar-with-magsafe_6_.png",
+    "imageWidth": 1200,
+    "imageHeight": 1200,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRABX8fbL5Lfuh0-HuUbBMCD1FUt_zAy-glleO3NQzFlg&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/op-lung-iphone-18-pro-max17-pro-max-uag-monarch-pro-kevlar-with-magsafe.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Fx%2Fmedia%2Fcatalog%2Fproduct%2Fo%2Fp%2Fop-lung-iphone-18-pro-max17-pro-max-uag-monarch-pro-kevlar-with-magsafe_6_.png&tbnid=6e1otn6CO__FJM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fop-lung-iphone-18-pro-max17-pro-max-uag-monarch-pro-kevlar-with-magsafe.html&docid=xRe1G0VrAso2rM&w=1200&h=1200",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

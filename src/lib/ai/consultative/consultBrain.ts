@@ -233,9 +233,12 @@ export function placeTypeFor(domain: ConsultDomain | undefined): 'restaurant' | 
  */
 export function consultRemainingLine(text: string, candidateNames: readonly string[], lang: string): string {
   const fold = (s: string) => s.normalize('NFC').toLowerCase().replace(/\s+/g, ' ').trim()
-  const body = fold(text)
   const names = [...new Set(candidateNames.map(fold).filter(n => n.length >= 3))]
-  const shown = names.filter(n => body.includes(n)).length
+  // The reply writes a short form ("MOON SPA") of a long row name ("MOON SPA - Massage…"): a
+  // candidate is SHOWN when a bold name in the reply and the row name contain one another.
+  const bold = [...text.matchAll(/\*\*(?:Mình chọn:\s*)?([^*\n]{3,120})\*\*/g)].map(m => fold(m[1])).filter(b => b.length >= 3)
+  const shownSet = new Set(names.filter(n => bold.some(b => n.includes(b) || b.includes(n))))
+  const shown = shownSet.size
   const n = names.length - shown
   const vi = /Mình còn \d+ lựa chọn[^\n]*/g, en = /I have \d+ more option[^\n]*/g
   const stripped = text.replace(vi, '').replace(en, '').replace(/\n{3,}/g, '\n\n').trimEnd()
@@ -244,4 +247,38 @@ export function consultRemainingLine(text: string, candidateNames: readonly stri
   // Before any trailing marker block, after the prose.
   const m = stripped.match(/\n\s*\[(?:CTA_BUTTONS|FOLLOWUPS|TAPPY_[A-Z_]+)\]/)
   return m && m.index !== undefined ? `${stripped.slice(0, m.index).trimEnd()}\n\n${line}${stripped.slice(m.index)}` : `${stripped}\n\n${line}`
+}
+
+/**
+ * The pick sentence in the approved form "**Mình chọn: <tên>**" (owner §5.3; text = card; the next
+ * turn's "A hay B" finds the name). The model often writes "Mình gợi ý **X**" / "nghiêng về **X**" /
+ * "Mình chọn **X**": the FIRST such lead is normalised; a reply that already has the form is untouched.
+ */
+export function normalizePickSentence(text: string, fallbackPick?: string | null): string {
+  if (/\*\*Mình chọn:\s*[^*\n]+\*\*/.test(text)) return text
+  // "**mình chọn: X**" (lower case, replay FOOD-1) → the canonical capital form.
+  const lower = text.replace(/\*\*\s*mình chọn\s*:\s*([^*\n]+)\*\*/i, (_m, name: string) => `**Mình chọn: ${name.trim()}**`)
+  if (lower !== text) return lower
+  const led = text.replace(/(?:mình|minh)\s+(?:chọn|gợi ý|nghiêng về|đề xuất|recommend)\s*:?\s*\*\*([^*\n]{2,120})\*\*/i, (_m, name: string) => `**Mình chọn: ${name.trim()}**`)
+  if (led !== text) return led
+  // No pick sentence at all, but the card has one (shopping): the text says it, so text = card.
+  if (fallbackPick && fallbackPick.trim()) {
+    const first = text.match(/^[^\n]*?[.!?](?=\s|$)/)
+    const line = `**Mình chọn: ${fallbackPick.trim()}**.`
+    return first ? `${first[0]} ${line}${text.slice(first[0].length)}` : `${line}\n\n${text}`
+  }
+  return text
+}
+
+/** The shopping card's recommended product name, from its [TAPPY_SHOPPING] marker (or null). */
+export function shoppingPickName(marker: string | null | undefined): string | null {
+  if (!marker) return null
+  const i = marker.indexOf('{'), j = marker.lastIndexOf('}')
+  if (i < 0 || j <= i) return null
+  try {
+    const v = JSON.parse(marker.slice(i, j + 1)) as { entities?: Array<{ key: string; name?: string }>; recommendation?: { entityKey: string | null } | null }
+    const key = v.recommendation?.entityKey
+    const e = key ? v.entities?.find(x => x.key === key) : null
+    return e?.name?.trim() || null
+  } catch { return null }
 }

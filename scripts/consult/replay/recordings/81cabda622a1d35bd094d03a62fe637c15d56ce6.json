@@ -1,0 +1,55 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "Nhà Hàng Tửu Lầu 13 Bình Thạnh Bình Thạnh Ho Chi Minh City",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.7769,106.7009,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:53:12.381Z",
+ "body": {
+  "searchParameters": {
+   "q": "Nhà Hàng Tửu Lầu 13 Bình Thạnh Bình Thạnh Ho Chi Minh City",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.7769,106.7009,14z",
+   "engine": "google"
+  },
+  "ll": "@10.767801,106.6854289,18.0536z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Nhà Hàng Tửu Lầu 13",
+    "address": "6 Nam Quốc Cang, P, Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.767801,
+    "longitude": 106.68800379999999,
+    "rating": 4.7,
+    "ratingCount": 278,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "website": "https://nhahangtuulau13.vn/",
+    "phoneNumber": "+84 902 505 761",
+    "openingHours": {
+     "Thứ Ba": "Mở cửa cả ngày",
+     "Thứ Tư": "Mở cửa cả ngày",
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlkXyClC2Q9Go2DpLbz9Q5vfapcSfCVETX1-AHU_Nse8HN7Mtt3-8ZLWgBEXpU3wqr04eY7fJ-bQiLUdYEnyyXhjKQaB75eHNfsbqdURFnkOaz-h7GHaoei5HrtqM_wScCG1INERvMGpMI",
+    "cid": "5970488144880333484",
+    "fid": "0x31752fbbef48fcdf:0x52db6f55b345f2ac",
+    "placeId": "ChIJ3_xI77svdTERrPJFs1Vv21I"
+   }
+  ],
+  "credits": 3
+ }
+}

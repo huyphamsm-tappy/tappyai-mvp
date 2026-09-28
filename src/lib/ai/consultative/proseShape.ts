@@ -35,6 +35,8 @@ export interface ProseShapeOptions {
   rendersCard: boolean
   venues: readonly CardVenue[]
   maxSentences?: number
+  /** Owner-approved consult frame (2026-09-29): a pick may carry up to 2 alternatives. Default 1. */
+  maxAlternatives?: number
 }
 
 export interface ProseShapeStats {
@@ -143,7 +145,7 @@ export function guardProseShape(text: string, opts: ProseShapeOptions): { text: 
   let alts = 0
   for (const x of prose) {
     if (doomed.has(x.i) || x.i === pickIdx) continue
-    if (ALT_RE.test(fold(x.s))) { alts++; if (alts > 1) { doomed.add(x.i); stats.alternatives_removed++ } }
+    if (ALT_RE.test(fold(x.s))) { alts++; if (alts > (opts.maxAlternatives ?? 1)) { doomed.add(x.i); stats.alternatives_removed++ } }
   }
   // 4. A subject question after a pick (rule 5) — only when a real pick sentence exists.
   if (namesVenue(prose.find(x => x.i === pickIdx)?.s ?? '')) {

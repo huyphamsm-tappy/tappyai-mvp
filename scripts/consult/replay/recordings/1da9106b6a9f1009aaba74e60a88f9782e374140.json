@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Aspire Lite 14 site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:54:28.294Z",
+ "body": {
+  "searchParameters": {
+   "q": "Aspire Lite 14 site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Laptop Acer Aspire Lite 14 Gen2 AL14-52M-32KV i3 ...",
+    "link": "https://shopee.vn/Laptop-Acer-Aspire-Lite-14-Gen2-AL14-52M-32KV-i3-1305U-8GB-256GB-14-WUXGA-Win11-i.1431261217.40255772370",
+    "snippet": "Mua Laptop Acer Aspire Lite 14 Gen2 AL14-52M-32KV i3-1305U/8GB/256GB/14\" WUXGA/Win11 giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, ...",
+    "rating": 4.9,
+    "ratingCount": 18,
+    "position": 1
+   },
+   {
+    "title": "Laptop Acer Aspire Lite 14 AL14-51P-35QD (i3-1305U/ 8GB",
+    "link": "https://shopee.vn/Laptop-Acer-Aspire-Lite-14-AL14-51P-35QD-(i3-1305U-8GB-512GB-Win-11-Home-SL)-B%E1%BA%A3o-h%C3%A0nh-12-th%C3%A1ng-i.469040198.47858807769",
+    "snippet": "Mua Laptop Acer Aspire Lite 14 AL14-51P-35QD (i3-1305U/ 8GB/ 512GB/ Win 11 Home SL) - Bảo hành 12 tháng giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 2
+   },
+   {
+    "title": "Laptop Acer Aspire Lite 14 AL14-45P-R7Z3 (Ryzen 3 ...",
+    "link": "https://shopee.vn/Laptop-Acer-Aspire-Lite-14-AL14-45P-R7Z3-(Ryzen-3-5400U-8GB-512GB-Windows-11-Home-SL)-B%E1%BA%A3o-h%C3%A0nh-12-th%C3%A1ng-i.469040198.46963754637",
+    "snippet": "Mua Laptop Acer Aspire Lite 14 AL14-45P-R7Z3 (Ryzen 3 5400U/ 8GB/ 512GB/ Windows 11 Home SL) - Bảo hành 12 tháng giá tốt. Mua hàng qua mạng uy tín, ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 3
+   },
+   {
+    "title": "Laptop Acer Aspire Lite 14 AL14-44P-R0SP (Ryzen 7 ...",
+    "link": "https://shopee.vn/Laptop-Acer-Aspire-Lite-14-AL14-44P-R0SP-(Ryzen-7-7730U-8GB-512GB-Windows-11-Home-SL)-B%E1%BA%A3o-h%C3%A0nh-12-th%C3%A1ng-i.469040198.51463760026",
+    "snippet": "Mua Laptop Acer Aspire Lite 14 AL14-44P-R0SP (Ryzen 7 7730U/ 8GB/ 512GB/ Windows 11 Home SL) - Bảo hành 12 tháng giá tốt. Mua hàng qua mạng uy tín, ...",
+    "position": 4
+   },
+   {
+    "title": "Laptop Acer Aspire Lite 14 AL14-52P-309T (i3-1305U | 8GB",
+    "link": "https://shopee.vn/Laptop-Acer-Aspire-Lite-14-AL14-52P-309T-(i3-1305U-8GB-512GB-Intel-UHD-14'-FHD-Win-11-B%E1%BA%A1c)-i.106066556.48857965600",
+    "snippet": "Mua Laptop Acer Aspire Lite 14 AL14-52P-309T (i3-1305U | 8GB | 512GB | Intel UHD | 14' FHD+ | Win 11 | Bạc) giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 5
+   },
+   {
+    "title": "Laptop Acer Aspire Lite 14 AL14 71P 55P9 | i5-13500H",
+    "link": "https://shopee.vn/Laptop-Acer-Aspire-Lite-14-AL14-71P-55P9-i5-13500H-RAM-16GB-SSD-512GB-Intel%C2%AE-UHD-Graphics-i.1036648426.43520721494",
+    "snippet": "Mua Laptop Acer Aspire Lite 14 AL14 71P 55P9 | i5-13500H | RAM 16GB | SSD 512GB | Intel® UHD Graphics giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 6
+   },
+   {
+    "title": "Laptop Acer Aspire Lite AL14-45P-R7Z3 (NX.DPESV.002) ...",
+    "link": "https://shopee.vn/Laptop-Acer-Aspire-Lite-AL14-45P-R7Z3-(NX.DPESV.002)-(R3-5400U-8GB-512GB-SSD-14-inch-FHD-Win-11-Home-B%E1%BA%A1c)-HACOM-PC-i.12522979.44382273003",
+    "snippet": "Mua Laptop Acer Aspire Lite AL14-45P-R7Z3 (NX.DPESV.002) (R3 5400U/8GB/512GB SSD/14 inch FHD+/Win 11 Home/Bạc) - HACOM PC giá tốt. Mua hàng qua mạng uy tín, ...",
+    "position": 7
+   },
+   {
+    "title": "Acer Aspire Lite 14 AL14-72 ACD Không Dư Lượng Máy Tính ...",
+    "link": "https://shopee.vn/Acer-Aspire-Lite-14-AL14-72-ACD-Kh%C3%B4ng-D%C6%B0-L%C6%B0%E1%BB%A3ng-M%C3%A1y-T%C3%ADnh-Laptop-C%E1%BA%AFt-S%E1%BA%B5n-Decal-Da-Vinyl-Notebook-Mi%E1%BA%BFng-D%C3%A1n-Cho-11-12-13-14-15-17-Inch-Phim-B%E1%BA%A3o-V%E1%BB%87-%C4%90a-N%C4%83ng-i.914526101.56609886620",
+    "snippet": "Mua tối thiểu ₫10k để được giảm ₫1k. Acer Aspire Lite 14 AL14-72 ACD Không Dư Lượng Máy Tính Laptop Cắt Sẵn Decal Da Vinyl Notebook Miếng Dán Cho 11 / 12 ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

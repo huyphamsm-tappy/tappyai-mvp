@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"F-You 81 Massage\" OR \"CHARM SPA Garden\" OR \"MASSAGE VENUS\" quan 1 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:59:06.177Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"F-You 81 Massage\" OR \"CHARM SPA Garden\" OR \"MASSAGE VENUS\" quan 1 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Charm Spa Garden Quận 1 (@charmspagardenquan1)",
+    "link": "https://www.tiktok.com/@charmspagardenquan1",
+    "snippet": "Charm Spa Garden Quận 1 · @charmspagardenquan1 · A 13 Years haven of relaxation and wellness at 6 Branches in Ho Chi Minh, Da Nang, Nha Trang, Da Lat. -Since 2013 ...",
+    "position": 1
+   },
+   {
+    "title": "Thư Giãn Tại Charm Spa Garden Quận 1",
+    "link": "https://www.tiktok.com/@charmspagardenquan1/video/7636350570244197640",
+    "snippet": "Với không gian riêng tư, sạch sẽ và tinh tế, Charm Spa Garden là lựa chọn lý tưởng cho những ai muốn tìm đến sự thư giãn giữa lòng thành phố.",
+    "position": 2
+   },
+   {
+    "title": "Bạn đang tìm MASSAGE QUẬN 1 nhưng muốn một nơi ...",
+    "link": "https://www.tiktok.com/@charmspagardenquan1/video/7685264046618201362",
+    "snippet": "Video TikTok từ Charm Spa Garden Quận 1 (@charmspagardenquan1): \"Bạn đang tìm MASSAGE QUẬN 1 nhưng muốn một nơi thật chill ✨ Massage ...",
+    "position": 3
+   },
+   {
+    "title": "#massage_khỏe_quận_1_tphcm",
+    "link": "https://www.tiktok.com/tag/massage_kh%E1%BB%8Fe_qu%E1%BA%ADn_1_tphcm",
+    "snippet": "âm thanh gốc - Charm Spa Garden Quận 1 ... Massage tận nơi quận 2. ﹏ ⚡ 24h - đặt mọi lúc. Có mặt ngay chỉ từ 30 - 60 phút.",
+    "position": 4
+   },
+   {
+    "title": "charmspagrand",
+    "link": "https://www.tiktok.com/tag/charmspagrand",
+    "snippet": "... quận 1 tại · spa Garden giữa Quận 1 ✨ Charm Spa Garden Quận 1 — nơi bạn có · nếu bạn là tín đồ spa lâu năm ở Đà Nẵng thì chắc chắc đã biết · Ưu đãi ...",
+    "position": 5
+   },
+   {
+    "title": "Massage Venus Pham Ngu Lao",
+    "link": "https://www.tiktok.com/discover/massage-venus-pham-ngu-lao",
+    "snippet": "Khám phá các video liên quan đến Massage Venus Pham Ngu Lao trên TikTok. ... Massage Khuya Tại Quận 1 - Thư Giãn Lý Tưởng. Khám phá địa ...",
+    "date": "13 thg 7, 2026",
+    "position": 6
+   },
+   {
+    "title": "Massage Venus 368",
+    "link": "https://www.tiktok.com/discover/massage-venus-368",
+    "snippet": "4.6M bài đăng. Hãy khám phá video liên quan đến Massage Venus 368 trên TikTok. Xem thêm video về Massage Venus Hcmc, Venus Online, ...",
+    "position": 7
+   },
+   {
+    "title": "Massage Venus Hcmc",
+    "link": "https://www.tiktok.com/discover/massage-venus-hcmc",
+    "snippet": "3.3M posts. Discover videos related to Massage Venus Hcmc on TikTok. See more videos about Massage Venus 368, Venus Med Spa Mcallen, ...",
+    "date": "17 thg 8, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

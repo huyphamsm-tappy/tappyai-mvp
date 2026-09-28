@@ -1,0 +1,30 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Ẩm thực sân vườn Mái Lá (site:food.grab.com/vn OR site:shopeefood.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:51:59.402Z",
+ "body": {
+  "searchParameters": {
+   "q": "Ẩm thực sân vườn Mái Lá (site:food.grab.com/vn OR site:shopeefood.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Ẩm Thực Sân Vườn Mái Lá - Đường số 36",
+    "link": "https://shopeefood.vn/ho-chi-minh/am-thuc-san-vuon-mai-la-duong-so-36.cb5geg",
+    "snippet": "Ẩm Thực Sân Vườn Mái Lá - Đường số 36. 1D Đường số 36, P. Tân Quy, Quận 7, TP. HCM. Mở cửa. Quán được gắn nhãn Yêu thích là Quán Yêu Thích, gồm những quán ...",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

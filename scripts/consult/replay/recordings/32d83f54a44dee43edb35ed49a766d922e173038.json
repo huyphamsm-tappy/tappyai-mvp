@@ -1,0 +1,68 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Standout / Đen MagSafe site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:06:10.948Z",
+ "body": {
+  "searchParameters": {
+   "q": "Standout / Đen MagSafe site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "With Privacy Tempered Glass Film Full Protective Case For VIVO ...",
+    "link": "https://www.lazada.vn/products/with-privacy-tempered-glass-film-full-protective-case-for-vivo-x-fold-5-fold5-spring-hinge-camera-holder-cover-i13443715876-s117259522028.html?srsltid=AU7gw4XxxktDtMbaokY0dlAefagmtGnMZdjCkS4WQEBPDNayQxW6x2SE",
+    "snippet": "Description: Brand New and perfect fit. Express yourself by personalising your phone and making it stand out. Many styles and colors in stock for your choice.",
+    "position": 1
+   },
+   {
+    "title": "Dây đeo bằng da silicon cho Garmin Fenix ​​8 AMOLED ...",
+    "link": "https://h5.lazada.vn/products/day-deo-bang-da-silicon-cho-garmin-fenix-8-amoled-47mm-51mm-day-deo-co-tay-khoa-tu-tinh-vong-deo-tay-fenix-8-day-deo-dong-ho-thong-minh-day-deo-dong-ho-i3086520951.html",
+    "snippet": "Dây đeo da silicon cho Garmin Fenix 8 với thiết kế khóa từ tính tiện lợi, phù hợp cho cả phiên bản 47mm và 51mm. Chất liệu da cao cấp, kết hợp chất liệu ...",
+    "position": 2
+   },
+   {
+    "title": "Benks Montage Armorair Từ Trường Hợp Được Xây Dựng ...",
+    "link": "https://www.lazada.vn/products/benks-montage-armorair-tu-truong-hop-duoc-xay-dung-voi-kevlar-cho-iphone-17-pro-max-air-dien-thoai-sieu-mong-bao-ve-bia-i3179971137-s15133713123.html?from_gmc=1&fl_tag=1&srsltid=AU7gw4X2pmjjz2G6SggxNX8RGZ9xqXX4Erl36ERmLqWlU_pN1RKSuqBv",
+    "snippet": "Benks DuPont™ Kevlar® fiber. Thực hiện với Dupont Kevlar®Sợi, Benks armorair trường hợp Cung cấp phong cách bảo vệ chắc chắn và tối giản cho iPhone của bạn.",
+    "position": 3
+   },
+   {
+    "title": "Popsockets backspin poppgrip | điện thoại cao cấp grip",
+    "link": "https://www.lazada.vn/products/popsockets-backspin-poppgrip-dien-thoai-cao-cap-grip-gia-de-dien-thoai-tot-nhat-va-tuong-tu-nhu-mot-nguoi-giu-chuong-dien-thoai-dien-thoai-ban-dung-va-gia-treo-dien-thoai-xe-hoi-tuong-thich-gia-giu-dien-thoai-gia-de-dien-thoai-va-dien-thoai-di-don-i1470905135.html?srsltid=AU7gw4X1xNec-MjRwA1KEUhwTFxFaS75jDnrCREiVYxjBrc4kBqmf_oz",
+    "snippet": "Giá để điện thoại Popsockets Backspin - giải pháp giữ điện thoại di động tiên tiến cho iPhone và Android. Thiết kế từ kim loại cao cấp, tính năng quay 360° ...",
+    "rating": 5,
+    "ratingCount": 80,
+    "position": 4
+   },
+   {
+    "title": "Roazic Cho Vivo Y78 5G vỏ điện thoại Với Phi Hành Gia ...",
+    "link": "https://www.lazada.vn/products/roazic-cho-vivo-y78-5g-vo-dien-thoai-voi-phi-hanh-gia-chu-thang-ma-canh-vo-silicon-mem-op-lung-dung-i2386666402.html?srsltid=AU7gw4VNixDYlyuq1tMlCZ7pxJ2dbbHGzTIT5t3QbbR88c9P3JlQNZmK",
+    "snippet": "Đặc điểm nổi bật · Mô hình tương thích: cho Vivo y78 5g · Tài liệu: Chất lượng cao mềm Silicone · Phong cách: Khung phi hành gia thời trang, cạnh mạ điện, bảo vệ ...",
+    "position": 5
+   },
+   {
+    "title": "Roazic Cho Vivo V29 5G/Vivo S17 Pro 5G vỏ điện thoại ...",
+    "link": "https://www.lazada.vn/products/roazic-cho-vivo-v29-5gvivo-s17-pro-5g-vo-dien-thoai-voi-phi-hanh-gia-chu-thang-ma-canh-vo-silicon-mem-op-lung-dung-i2409830381.html?srsltid=AU7gw4VU9Zoc-JL7iBU6IG2iiam3enlEJG_6tAQT9BEA5iQjgNahtAF1",
+    "snippet": "Mô hình tương thích: cho Vivo V29 5G/Vivo S17 Pro 5g · Tài liệu: Chất lượng cao mềm Silicone · Phong cách: Khung phi hành gia thời trang, cạnh mạ điện, bảo vệ máy ...",
+    "position": 6
+   },
+   {
+    "title": "Roazic Cho Huawei Nova Y91 vỏ điện thoại Với Phi Hành ...",
+    "link": "https://www.lazada.vn/products/roazic-cho-huawei-nova-y91-vo-dien-thoai-voi-phi-hanh-gia-chu-thang-ma-canh-vo-silicon-mem-op-lung-dung-i2396697371.html?srsltid=AU7gw4VZKWeGvexF4wjcSkEf1suyyvJ4mar4LT6zSKfiURzIA3z_l-f8",
+    "snippet": "Mô hình tương thích: cho Huawei Nova y91 · Tài liệu: Chất lượng cao mềm Silicone · Phong cách: Khung phi hành gia thời trang, cạnh mạ điện, bảo vệ máy ảnh · Tính ...",
+    "position": 7
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,32 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Laptop Acer Aspire 3 A315-59-38PG giá mua (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:55:08.248Z",
+ "body": {
+  "searchParameters": {
+   "q": "Laptop Acer Aspire 3 A315-59-38PG giá mua (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Laptop Acer Aspire 3 A315 | Sang trọng, giảm đến 2 triệu",
+    "link": "https://cellphones.com.vn/laptop-acer-aspire-3-a315-59-381e.html",
+    "snippet": "Sản phẩm LAPTOP ACER ASPIRE 3 A315-59-381E NX.K6TSV.006 I3-1215U/8GB/512GB PCIE/15.6 FHD/WIN11/BẠC- Giá thời điểm hiện tại 9.490.000đ. Khu vực ...",
+    "rating": 5,
+    "ratingCount": 2,
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

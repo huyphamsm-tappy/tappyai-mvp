@@ -1505,6 +1505,7 @@ export async function POST(req: Request) {
   // The stream filter reads this to decide whether the per-place photo/link block
   // still belongs in the text: with a card, it is the same content twice.
   enrichment.setRendersDecisionCard(rendersDecisionCard)
+  if (consult && consult.turn !== 'ask') enrichment.setConsultTurn(consult.turn)
   // Consult V2: after a pick the server offers the next steps (owner Phần 3.3).
   if (consult && (consult.turn === 'pick' || consult.turn === 'more' || consult.turn === 'reject' || consult.turn === 'compare')) enrichment.setConsultButtons(lang === 'en' ? ['See more', 'Plan it in detail'] : ['Xem thêm', 'Lên kế hoạch chi tiết'])
 
@@ -2233,6 +2234,14 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       result = await (tools as unknown as Record<string, { execute: (args: unknown, ctx: { toolCallId: string; messages: unknown[] }) => Promise<unknown> }>)[preCall.name].execute(preCall.args, { toolCallId, messages: [] })
     } catch (e) {
       result = { error: e instanceof Error ? e.message.slice(0, 200) : 'presearch_failed' }
+    }
+    // Consult V2 (replay 2026-09-29): a shopping pick whose full query found nothing ("ốp UAG iPhone 17 pro max
+    // monarch magsafe") searches ONCE more with the core product — the must-haves are then judged on the rows.
+    if (preCall.name === 'search_products' && Array.isArray((result as { search_results?: unknown[] })?.search_results) && (result as { search_results: unknown[] }).search_results.length === 0) {
+      const core = (consult?.known.san_pham ?? consultProductQuery ?? '').split(/\s+/).slice(0, 5).join(' ').trim()
+      if (core && core !== (preCall.args as { query: string }).query) {
+        try { result = await (tools as unknown as Record<string, { execute: (args: unknown, ctx: { toolCallId: string; messages: unknown[] }) => Promise<unknown> }>).search_products.execute({ query: core }, { toolCallId, messages: [] }); (preCall.args as { query: string }).query = core } catch { /* keep the empty result */ }
+      }
     }
     presearchOutcome = { toolCallId, toolName: preCall.name, args: preCall.args, result, ms: Date.now() - t0 }
     const error = (result as { error?: unknown })?.error ? true : false

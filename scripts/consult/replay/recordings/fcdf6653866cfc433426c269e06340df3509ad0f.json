@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Gội Đầu Dưỡng Sinh Spa Chăm Sóc Da Chuỵ Ba Signature\" OR \"Gội Đầu Dưỡng Sinh Quận 3 HẺM SPA\" OR \"Tiệm Gội Về Nhà\" quan 3 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:59:29.059Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Gội Đầu Dưỡng Sinh Spa Chăm Sóc Da Chuỵ Ba Signature\" OR \"Gội Đầu Dưỡng Sinh Quận 3 HẺM SPA\" OR \"Tiệm Gội Về Nhà\" quan 3 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

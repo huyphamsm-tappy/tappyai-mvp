@@ -1,0 +1,84 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Hộp quà tặng cao cấp Hạt A Cafe Premium Gift Box Coffee 3 loại cà phê hòa tan 288g - 16 site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:54:02.720Z",
+ "body": {
+  "searchParameters": {
+   "q": "Hộp quà tặng cao cấp Hạt A Cafe Premium Gift Box Coffee 3 loại cà phê hòa tan 288g - 16 site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Premium Gift Box Coffee-288g (16 gói gồm 3 loại cà phê ...",
+    "link": "https://www.lazada.vn/products/hop-qua-tang-cao-cap-premium-gift-box-coffee-288g-16-goi-gom-3-loai-ca-phe-hoa-tan-thom-ngon-vi-tu-nhien-i1069432070.html?srsltid=AU7gw4VD4WU5dzVVw_tz7D6JSPHXd3nAv9nO6QDOmAbNsKSX6OVkGKl3",
+    "snippet": "LazMall Hộp quà tặng cao cấp - Premium Gift Box Coffee-288g (16 gói gồm 3 loại cà phê hòa tan thơm ngon, vị tự nhiên) · Hạt A Cafe · Gợi ý cho bạn.",
+    "date": "23 thg 2, 2022",
+    "rating": 4.9,
+    "ratingCount": 31,
+    "position": 1
+   },
+   {
+    "title": "Túi Cà phê Cappuccino Sữa Dừa Cafe hoà tan Hạt A ...",
+    "link": "https://www.lazada.vn/products/tui-ca-phe-cappuccino-sua-dua-cafe-hoa-tan-hat-a-cafe-tui-30-goi-x-18g-i2659119353.html?srsltid=AU7gw4XgPXLnUDd4DZj8NLkyro8O1Gf38G-jVzL10ICkH04ifIuvI94x",
+    "snippet": "Mô tả sản phẩm. Cà phê hòa tan Cappuccino Hạt A Cafe 4in1 vị sữa dừa tự nhiên là sự kết hợp hòa quyện giữa cà phê và cốt dừa non cùng với một lớp kem mỏng ...",
+    "position": 2
+   },
+   {
+    "title": "Cà phê hoà tan Cappuccino sầu riêng 4 In 1 Hạt A Cafe Vị ...",
+    "link": "https://www.lazada.vn/products/ca-phe-hoa-tan-cappuccino-sau-rieng-4-in-1-hat-a-cafe-vi-sau-rieng-tu-nhien-216g-12-goi-i588586479.html?srsltid=AU7gw4Vb20aL5pRdVeAf0xhnApv1-haYcAJc3ttPGNJeXY_3Z3M6UOnZ",
+    "snippet": "- Cách dùng: Cho 1 gói cà phê và tách, rót 75ml nước nóng (80-100 độ). Thưởng thức nóng hay đá tùy thích.. -Hạn sử dụng; 24 tháng",
+    "rating": 4.8,
+    "ratingCount": 148,
+    "position": 3
+   },
+   {
+    "title": "Cà Phê Chồn Nguyên Chất 100% Hương Mai Cafe ...",
+    "link": "https://www.lazada.vn/products/ca-phe-chon-nguyen-chat-100-huong-mai-cafe-weasel-coffee-gift-box-intense-aroma-huong-thom-dam-da-thich-hop-lam-qua-bieu-tang-gom-01-goi-ca-phe-dang-bot-250g-01-phin-inox-cao-cap-i588422088.html?srsltid=AU7gw4Xm-F1mdaBDNNouB-3bvOLt8PrSSWqUbvmq9ki3p2dxBXRggvjj",
+    "snippet": "Hạt Sen Tươi Sấy Hạt A Cafe 100% Sấy Tách Thủ Công - Thơm Ngon. 166.000 ₫. Hộp quà tặng cao cấp - Premium Gift Box Coffee-288g (16 gói gồm. 172.000 ₫. Cà Phê ...",
+    "rating": 4.8,
+    "ratingCount": 137,
+    "position": 4
+   },
+   {
+    "title": "Trái nhàu Hạt A Cafe Noni Powder dạng bột tốt cho hệ tiêu ...",
+    "link": "https://www.lazada.vn/products/trai-nhau-hat-a-cafe-noni-powder-dang-bot-tot-cho-he-tieu-hoa-va-da-day-500gr-i2593939877.html?srsltid=AU7gw4UTTfZbmlnfS9E9LROc8eJxwzO27Wd5AYwqB0tpFHERMxGGcpYN",
+    "snippet": "Hộp quà tặng cao cấp - Premium Gift Box Coffee-288g (16 gói gồm. 172.000 ₫. Cà ... Túi Cà phê Cappuccino Sữa Dừa Cafe hoà tan Hạt A Cafe (túi 30 gói.",
+    "position": 5
+   },
+   {
+    "title": "Túi thơm cà phê 100% hạt cà phê nguyên chất khối lượng ...",
+    "link": "https://www.lazada.vn/products/tui-thom-ca-phe-100-hat-ca-phe-nguyen-chat-khoi-luong-80g-khu-mui-hut-am-o-to-van-phong-tu-quan-ao-tu-huong-mai-cafe-i1620424288.html?srsltid=AU7gw4XYAm4rqB-07NMRNthKZmVF5u_A8zySnWBcOTGWAOxgQqAbOTts",
+    "snippet": "- Thành phần của Túi thơm cà phê Hương Mai:+ Cà phê nguyên hạt Robusta vùng Đắc Lắc rang mộc được sơ chế từ 100% từ trái chín nên thơm vị nguyên ...",
+    "date": "23 thg 2, 2022",
+    "rating": 4.8,
+    "ratingCount": 11,
+    "position": 6
+   },
+   {
+    "title": "Trà Nhài Quế Hảo Hạng Hương Mai Cafe CINNAMON ...",
+    "link": "https://www.lazada.vn/products/tra-nhai-que-hao-hang-huong-mai-cafe-cinnamon-jasmine-tea-ket-hop-hoan-hao-giua-vo-que-co-thu-va-hoa-nhai-cao-cap-150g-i835396515.html?srsltid=AU7gw4VTwsSHVTq4zpjm7yMsY2GBGGgU4I4WFch-2WZFvxpoafKhzB8g",
+    "snippet": "Hộp quà tặng cao cấp - Premium Gift Box Coffee-288g (16 gói gồm. 172.000 ₫. Cà Phê Chồn Arabica Nguyên Chất 100% Hương Mai Cafe Weasel Legend Coffee Gift Box.",
+    "position": 7
+   },
+   {
+    "title": "Thích Hợp Làm Quà Biếu Tặng Gồm 01 Gói Cà Phê Dạng ...",
+    "link": "https://h5.lazada.vn/products/ca-phe-chon-arabica-nguyen-chat-100-huong-mai-cafe-weasel-legend-coffee-gift-box-oganic-thich-hop-lam-qua-bieu-tang-gom-01-goi-ca-phe-dang-bot-250g-01-phin-inox-cao-cap-i588424368.html",
+    "snippet": "- Trọng lượng : 250g · - Kích cỡ : 21*10*6.5 · - Thành phần : cà phê chồn · - Cách dùng: đổ khoảng 15ml nước sôi vào phin,đợi khoảng 2 phút cho đến khi cà phê được ...",
+    "rating": 4.6,
+    "ratingCount": 42,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

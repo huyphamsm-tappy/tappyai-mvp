@@ -1,0 +1,565 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "quán bánh quan 7",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.734,106.7218,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:52:09.521Z",
+ "body": {
+  "searchParameters": {
+   "q": "quán bánh quan 7",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.734,106.7218,14z",
+   "engine": "google"
+  },
+  "ll": "@10.7339942,106.7217997,14z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Bánh Bao Thuý Đỗ - Quận 7",
+    "address": "174 Đ. Lâm Văn Bền, Tân Hưng, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.742119299999999,
+    "longitude": 106.7157848,
+    "rating": 4.4,
+    "ratingCount": 195,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Tiệm bánh",
+    "types": [
+     "Tiệm bánh"
+    ],
+    "phoneNumber": "+84 343 993 199",
+    "openingHours": {
+     "Thứ Ba": "06:00–22:00",
+     "Thứ Tư": "06:00–22:00",
+     "Thứ Năm": "06:00–22:00",
+     "Thứ Sáu": "06:00–22:00",
+     "Thứ Bảy": "07:00–22:00",
+     "Chủ Nhật": "07:00–22:00",
+     "Thứ Hai": "06:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLeNoityzdedRhh4L0vnObrNJEDnXb_RUIWElVlZpWaB5DEvCmrWSPgPDIZShcz0ak0VGjhoC0sz0E897e4S5-To-M8-yqMwS0fupmxK_PSqLre7NQZmFKaUQA743IJw3eGghKs",
+    "cid": "2735200282533815278",
+    "fid": "0x31752f54e4a94f55:0x25f5622a4df9e3ee",
+    "placeId": "ChIJVU-p5FQvdTER7uP5TSpi9SU"
+   },
+   {
+    "position": 2,
+    "title": "Bánh Kem Hoàng Phúc Tiệm Bánh Ngon Quận 7",
+    "address": "878 Huỳnh Tấn Phát, Tân Mỹ, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.728334199999999,
+    "longitude": 106.73271369999999,
+    "rating": 4.2,
+    "ratingCount": 162,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Tiệm bánh",
+    "types": [
+     "Tiệm bánh"
+    ],
+    "website": "https://www.facebook.com/Banhkembanhinhnhat/?ref=pages_you_manage",
+    "phoneNumber": "+84 908 367 930",
+    "openingHours": {
+     "Thứ Ba": "07:00–22:00",
+     "Thứ Tư": "07:00–22:00",
+     "Thứ Năm": "07:00–22:00",
+     "Thứ Sáu": "07:00–22:00",
+     "Thứ Bảy": "07:00–22:00",
+     "Chủ Nhật": "07:00–22:00",
+     "Thứ Hai": "07:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLdUDb_SFxrGY75qtrhIhpLV-Gz92kRm4LVnyirWh7RfirTWLEEojX9borNng52os9GxWxjBRy13nQ6sSjHAiDo5-pAlEaSeB6WgyJdTtLlw-t3rCQsMKsMcEjIwqJdHRRKu0FhLTw",
+    "cid": "227466770189823929",
+    "fid": "0x31752509b0abf91b:0x3281fd2835eafb9",
+    "placeId": "ChIJG_mrsAkldTERua9eg9IfKAM"
+   },
+   {
+    "position": 3,
+    "title": "Bánh Mì Anh Trai - Anh Trai Bánh Mì & Drink Quận 7",
+    "address": "428B Lê Văn Lương, Tân Hưng, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7376259,
+    "longitude": 106.70308949999999,
+    "rating": 4.4,
+    "ratingCount": 162,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Tiệm bánh",
+    "types": [
+     "Tiệm bánh",
+     "Quán ăn nhỏ",
+     "Nhà hàng chuyên phục vụ bữa sáng",
+     "Quán cà phê",
+     "Bữa tối",
+     "Nhà hàng phục vụ bữa trưa",
+     "Nhà hàng bán đồ ăn mang về",
+     "Nhà hàng món bánh mì nướng",
+     "Nhà hàng Việt Nam"
+    ],
+    "website": "https://sites.google.com/view/banhmianhtraiquan7",
+    "phoneNumber": "+84 868 399 211",
+    "openingHours": {
+     "Thứ Ba": "06:30–21:30",
+     "Thứ Tư": "06:30–21:30",
+     "Thứ Năm": "06:30–21:30",
+     "Thứ Sáu": "06:30–21:30",
+     "Thứ Bảy": "06:30–21:30",
+     "Chủ Nhật": "06:30–21:30",
+     "Thứ Hai": "06:30–21:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMq7F-bBcXp3Y4DioNYBm4LvOmnL9UjbE8p52e0USCEvpjbqzXbPlhUZRNoUiXyMq3RtZ7OOBmesukOet1W2IbJgdcPyUeqLFsMcBn-Jj2hbpogzQx7PyT8e72zOfc1GuuDuGzHfAog51Pr",
+    "cid": "16789416824279050613",
+    "fid": "0x31752f73414daca9:0xe8fffda5c51ea975",
+    "placeId": "ChIJqaxNQXMvdTERdakexaX9_-g"
+   },
+   {
+    "position": 4,
+    "title": "Hapa Bakery - Bánh Bông Lan Trứng Muối Quận 7",
+    "address": "118 Đường D6, Tân Thuận, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.741838,
+    "longitude": 106.7362275,
+    "rating": 4.6,
+    "ratingCount": 5,
+    "type": "Tiệm bánh",
+    "types": [
+     "Tiệm bánh"
+    ],
+    "phoneNumber": "+84 975 524 855",
+    "openingHours": {
+     "Thứ Ba": "06:00–22:00",
+     "Thứ Tư": "06:00–22:00",
+     "Thứ Năm": "06:00–22:00",
+     "Thứ Sáu": "06:00–22:00",
+     "Thứ Bảy": "06:00–22:00",
+     "Chủ Nhật": "06:00–22:00",
+     "Thứ Hai": "06:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMzgBOEgb1I0grtdNy-lR9UFaRIrWGgGLvd-ZD93W0qm5jkuFqg1-DyMdJQrHIquW5LykM16jIZBKmyM70xDPKjfJaKGfrF179BuNNnrFerLrfH686GlX1eDUm4EBmrh0ewJ9S9-kvX1KrI",
+    "cid": "3868041644283459909",
+    "fid": "0x3175250026a7532b:0x35ae0b61b7eef945",
+    "placeId": "ChIJK1OnJgAldTERRfnut2ELrjU"
+   },
+   {
+    "position": 5,
+    "title": "Bánh Mì Heo Quay Tuyền Ký - Quận 7",
+    "address": "43 Đ. Tân Mỹ, Tân Mỹ, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7368966,
+    "longitude": 106.7183203,
+    "rating": 4.5,
+    "ratingCount": 2,
+    "type": "Tiệm bánh",
+    "types": [
+     "Tiệm bánh"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPTjsK7W1epwo1dLDAySNjgyCK0_XqckjlJEy_y2dRCN23EWSOIqtXr_hvNjnV1Taz1g6WcdD0yLXgGxz3jUSfJk_dNKZjVxi8q6TUWkZQhq0RgULD0MLQ2FaWwE-yF_UFhKe5O6ruHBsXJ",
+    "cid": "12798281676215794977",
+    "fid": "0x31752f004bc81f7d:0xb19ca160563bbd21",
+    "placeId": "ChIJfR_ISwAvdTERIb07VmChnLE"
+   },
+   {
+    "position": 6,
+    "title": "Tiệm bánh Dolce Vita | Bánh Tiramisu ngon quận 7",
+    "address": "460/4/10 Lê Văn Lương, Tân Hưng, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7364395,
+    "longitude": 106.7019765,
+    "rating": 4.7,
+    "ratingCount": 111,
+    "priceLevel": "100-500 N ₫",
+    "type": "Cửa hàng bánh",
+    "types": [
+     "Cửa hàng bánh",
+     "Tiệm bánh"
+    ],
+    "website": "https://tiembanhdolcevita.com/",
+    "phoneNumber": "+84 903 789 390",
+    "openingHours": {
+     "Thứ Ba": "07:30–20:30",
+     "Thứ Tư": "07:30–20:30",
+     "Thứ Năm": "07:30–20:30",
+     "Thứ Sáu": "07:30–20:30",
+     "Thứ Bảy": "07:30–20:30",
+     "Chủ Nhật": "07:30–20:30",
+     "Thứ Hai": "07:30–20:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOPyQQRnllhT_Wt_UaVnPuodftVBnMGVhaVmzwbRnrxq_B5WWVmPNrt_-2obB71M9hZL3_WFmD4DdTaMfXk1VFdabkSkU5dAuI08c2iY_Epztz8K6O2n0Qdmd6PSZCMRdqG4FxQ",
+    "cid": "8208209024027685629",
+    "fid": "0x317528b1311212df:0x71e96a9e4f5372fd",
+    "placeId": "ChIJ3xISMbEodTER_XJTT55q6XE"
+   },
+   {
+    "position": 7,
+    "title": "Bánh Mì Pate Hải Phòng Quận 7",
+    "address": "141 Đ. Số 1, Tân Mỹ, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.7369556,
+    "longitude": 106.7170716,
+    "rating": 4.8,
+    "ratingCount": 88,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Tiệm bánh",
+    "types": [
+     "Tiệm bánh"
+    ],
+    "website": "https://studio.popswise.com/place.html?id=0x31752f006ff5a539_0xceb2acc0fcf0499f",
+    "phoneNumber": "+84 829 938 489",
+    "openingHours": {
+     "Thứ Ba": "06:30–20:00",
+     "Thứ Tư": "06:30–20:00",
+     "Thứ Năm": "06:30–20:00",
+     "Thứ Sáu": "06:30–20:00",
+     "Thứ Bảy": "06:30–20:00",
+     "Chủ Nhật": "06:30–20:00",
+     "Thứ Hai": "06:30–20:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNYTd3t_wIzyn_VZiyOx8IaqrnL3pSxl6E1SJeES5EIpE6DhbokWbtndfMAs8alO3lrR4XpW1-sYCXCNMJMlZOnaWPpKhO9twvQOsCctbayNo_Ka4r1PkxXNjsbW2arPTiQ0ESrKB0Bcnb7",
+    "cid": "14894156862544955807",
+    "fid": "0x31752f006ff5a539:0xceb2acc0fcf0499f",
+    "placeId": "ChIJOaX1bwAvdTERn0nw_MCsss4"
+   },
+   {
+    "position": 8,
+    "title": "Lò Bánh Mì Đại Phát 4| Bánh mì heo quay quận 7| Lò bánh mì ngon q7",
+    "address": "438 Huỳnh Tấn Phát, Tân Thuận, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.746030099999999,
+    "longitude": 106.72925389999999,
+    "rating": 3,
+    "ratingCount": 26,
+    "type": "Tiệm bánh",
+    "types": [
+     "Tiệm bánh"
+    ],
+    "phoneNumber": "+84 982 330 484",
+    "openingHours": {
+     "Thứ Ba": "Mở cửa cả ngày",
+     "Thứ Tư": "Mở cửa cả ngày",
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMsWVZQl1Y_XJXwBoSYEerO-z6ggt6Pi55Imhp6DkiCgqiL9GzvJ9nsaFpix2jUkAiAEA1NYCg-ggbrVILAET0_OKi620Bik5fYbdCo2-1PP4_qDa8UUn7wsDjvlQ1tCqsuvesn",
+    "cid": "8580295324679445177",
+    "fid": "0x31752565ad7b04b7:0x771355232f769ab9",
+    "placeId": "ChIJtwR7rWUldTERuZp2LyNVE3c"
+   },
+   {
+    "position": 9,
+    "title": "GRAND CASTELLA - 33 Đường 17, Quận 7",
+    "address": "Đường Số 17/33 Khu Phố Mỹ Thái 2, Khu đô thị Phú Mỹ Hưng, Tân Mỹ, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.721922,
+    "longitude": 106.728067,
+    "rating": 4.9,
+    "ratingCount": 176,
+    "type": "Cửa hàng bánh ngọt",
+    "types": [
+     "Cửa hàng bánh ngọt"
+    ],
+    "phoneNumber": "+84 901 862 583",
+    "openingHours": {
+     "Thứ Ba": "07:30–22:00",
+     "Thứ Tư": "07:30–22:00",
+     "Thứ Năm": "07:30–22:00",
+     "Thứ Sáu": "07:30–22:00",
+     "Thứ Bảy": "07:30–22:00",
+     "Chủ Nhật": "07:30–22:00",
+     "Thứ Hai": "07:30–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOW-TfCHVaLXys35jZ0MxXFDbbDOuJPjMdLIY-PsYbqTtXDSmIxicc8TFvxf6Qe-gAqbOmXDIZM1NGyXgQzOwh6WYAt4w4dG7eYkzZHrPp_nsEMHfSuntRkKAReWx47iGyxF8yI1BVX_Omd",
+    "cid": "3630864697027637857",
+    "fid": "0x31752f16a74646b1:0x32636c346dd6b261",
+    "placeId": "ChIJsUZGpxYvdTERYbLWbTRsYzI"
+   },
+   {
+    "position": 10,
+    "title": "Friendship Bakery & Desserts - Nguyễn Thị Thập, Quận 7",
+    "address": "360 Nguyễn Thị Thập, Quận 7, Hồ Chí Minh 100000, Việt Nam",
+    "latitude": 10.738763299999999,
+    "longitude": 106.7119199,
+    "rating": 4.8,
+    "ratingCount": 208,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Cửa hàng bánh",
+    "types": [
+     "Cửa hàng bánh"
+    ],
+    "website": "https://friendshipcakes.com/",
+    "phoneNumber": "+84 931 847 029",
+    "openingHours": {
+     "Thứ Ba": "07:00–22:00",
+     "Thứ Tư": "07:00–22:00",
+     "Thứ Năm": "07:00–22:00",
+     "Thứ Sáu": "07:00–22:00",
+     "Thứ Bảy": "07:00–22:00",
+     "Chủ Nhật": "07:00–22:00",
+     "Thứ Hai": "07:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNNa8SGEJNfufLJd-BWRRoLO0BrdGOFDSxt0h2ALYUaVepxXIgwA39E-xGQqYSg9nxTGC1DoEZVneocvObbhOOrlgKglC7BFKtVXu7SPq-Kdml53JNsI3pWzoVtHjAMqg5mGvDnodzBO5bb",
+    "cid": "1319636360447134681",
+    "fid": "0x3175293961f85d73:0x12504a4731240bd9",
+    "placeId": "ChIJc134YTkpdTER2QskMUdKUBI"
+   },
+   {
+    "position": 11,
+    "title": "Bánh Sinh Nhật Nguyễn Văn Linh, Quận 7 - Bii Best",
+    "address": "994 Đường Nguyễn Văn Linh, Khu đô thị Phú Mỹ Hưng, Tân Hưng, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.729312199999999,
+    "longitude": 106.70710749999999,
+    "type": "Tiệm bánh",
+    "types": [
+     "Tiệm bánh"
+    ],
+    "website": "https://biibest.com/",
+    "phoneNumber": "+84 389 030 803",
+    "openingHours": {
+     "Thứ Ba": "07:00–22:30",
+     "Thứ Tư": "07:00–22:30",
+     "Thứ Năm": "07:00–22:30",
+     "Thứ Sáu": "07:00–22:30",
+     "Thứ Bảy": "07:00–22:30",
+     "Chủ Nhật": "07:00–22:30",
+     "Thứ Hai": "07:00–22:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNhtbbxhrOiFApY0-PYmFT-KcGTzdXmK2-q3RzLMJt_58XcZnlr9MgjU7bMl0KNfxktolHCUUObebiA9Ng5g8QgwPtZYxrwjb1gpaiOc7klpSt42euf4Hzoz8-JaP8YMM9MbibJrRm4clbn",
+    "cid": "3844292013295040087",
+    "fid": "0x31752f8fd1233871:0x3559ab37d9527657",
+    "placeId": "ChIJcTgj0Y8vdTERV3ZS2TerWTU"
+   },
+   {
+    "position": 12,
+    "title": "BÁNH XÈO CÔ ÚT MIỀN TÂY QUẬN 7",
+    "address": "76 đường 11, Tân Hưng, Hồ Chí Minh 756841, Việt Nam",
+    "latitude": 10.7464949,
+    "longitude": 106.7076987,
+    "rating": 4.7,
+    "ratingCount": 93,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Quán ăn nhỏ",
+    "types": [
+     "Quán ăn nhỏ"
+    ],
+    "phoneNumber": "+84 908 390 008",
+    "openingHours": {
+     "Thứ Ba": "Đóng cửa",
+     "Thứ Tư": "11:00–19:30",
+     "Thứ Năm": "11:00–19:30",
+     "Thứ Sáu": "11:00–19:30",
+     "Thứ Bảy": "11:00–20:00",
+     "Chủ Nhật": "11:00–20:00",
+     "Thứ Hai": "Đóng cửa"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOUsXnmrtAM3FO89MpAme6yLpvT_sxm2fiutmdvwEpLMpImbjPQzVRb8wJ9tgENwLaUaPOxtEpbzjnEtZZwk-7Gs5t0gDpGpM8QdKQvouwNpSJRKv5RAaKjtrIx2bZAy87M4E6gjjttXZcO",
+    "cid": "5181096487676914303",
+    "fid": "0x31752f49cf67f6ab:0x47e6f3ce0f01aa7f",
+    "placeId": "ChIJq_Znz0kvdTERf6oBD87z5kc"
+   },
+   {
+    "position": 13,
+    "title": "Bánh Mây Souffle Quận 7",
+    "address": "577 Nguyễn Thị Thập, Khu đô thị Him Lam, Tân Hưng, Hồ Chí Minh 72915, Việt Nam",
+    "latitude": 10.7394951,
+    "longitude": 106.7047223,
+    "rating": 3,
+    "ratingCount": 6,
+    "type": "Cửa hàng bánh ngọt",
+    "types": [
+     "Cửa hàng bánh ngọt"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPlZIKC3Ynjo8okQVPx_1ZL9dQ4eZ3-ReQQZWLDSG6gh9n2lmkuFjFnqdeGTSm8Sdr5tBkMmMuPOSjr_xxrFg8WCpUGJnez_mjCEt3xu2S1kJNsySLnh6rrxDjUdTyEToZrsYkS",
+    "cid": "5172234246258495520",
+    "fid": "0x31752f007bfc6be1:0x47c777a4af591020",
+    "placeId": "ChIJ4Wv8ewAvdTERIBBZr6R3x0c"
+   },
+   {
+    "position": 14,
+    "title": "Bii Best - Tiệm Bánh Kem Quận 7",
+    "address": "882 Huỳnh Tấn Phát, Tân Mỹ, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.7282184,
+    "longitude": 106.73273329999999,
+    "type": "Tiệm bánh",
+    "types": [
+     "Tiệm bánh"
+    ],
+    "website": "https://biibest.com/",
+    "phoneNumber": "+84 389 030 803",
+    "openingHours": {
+     "Thứ Ba": "07:00–22:30",
+     "Thứ Tư": "07:00–22:30",
+     "Thứ Năm": "07:00–22:30",
+     "Thứ Sáu": "07:00–22:30",
+     "Thứ Bảy": "07:00–22:30",
+     "Chủ Nhật": "07:00–22:30",
+     "Thứ Hai": "07:00–22:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmM5EbzYGrh23lWY4ni01CjPcjxUjDpSfD5AzD-jtR7e3goHRV95AZeBgyB2SsYef8bEGk0Y3NkVqzxcF50ORYztl71gf2GGfr1KjVmSrd2glo3UrA2BdoMVyWuc8jXTOWDgMJWorj8dPnx_",
+    "cid": "10909783138838471611",
+    "fid": "0x317525d99aa7472b:0x976755f6570363bb",
+    "placeId": "ChIJK0enmtkldTERu2MDV_ZVZ5c"
+   },
+   {
+    "position": 15,
+    "title": "Bánh Sinh Nhật Nguyễn Thị Thập, Quận 7 - CanDanii",
+    "address": "46 Nguyễn Thị Thập, Tân Thuận, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.737860999999999,
+    "longitude": 106.7276503,
+    "type": "Tiệm bánh",
+    "types": [
+     "Tiệm bánh"
+    ],
+    "website": "https://candanii.com/",
+    "phoneNumber": "+84 392 219 921",
+    "openingHours": {
+     "Thứ Ba": "07:00–22:30",
+     "Thứ Tư": "07:00–22:30",
+     "Thứ Năm": "07:00–22:30",
+     "Thứ Sáu": "07:00–22:30",
+     "Thứ Bảy": "07:00–23:30",
+     "Chủ Nhật": "07:00–22:30",
+     "Thứ Hai": "07:00–22:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLfoybsfoftQWcAPVZ3bJUA0TxQ5ntgR9PxQ9I4kqCIl9zQUz11dhxWR5FInEWACBAXFNJ97KDGs-_3ocF0gSiNQ5X5Tn8qBbiOKE69zuniEX2jnri1kg9jIHUkZS3KDz5CXR-doJMBS2q7k",
+    "cid": "4087093812081827986",
+    "fid": "0x317525ed709b1f03:0x38b8462af0d5a092",
+    "placeId": "ChIJAx-bcO0ldTERkqDV8CpGuDg"
+   },
+   {
+    "position": 16,
+    "title": "Tiệm Bánh Sinh Nhật Quận 7 - Bii Best",
+    "address": "773 Trần Xuân Soạn, Khu Phố 4, Tân Hưng, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.7515748,
+    "longitude": 106.7005954,
+    "type": "Tiệm bánh",
+    "types": [
+     "Tiệm bánh"
+    ],
+    "website": "https://biibest.com/",
+    "phoneNumber": "+84 389 030 803",
+    "openingHours": {
+     "Thứ Ba": "07:00–22:30",
+     "Thứ Tư": "07:00–22:30",
+     "Thứ Năm": "07:00–22:30",
+     "Thứ Sáu": "07:00–22:30",
+     "Thứ Bảy": "07:00–22:30",
+     "Chủ Nhật": "07:00–22:30",
+     "Thứ Hai": "07:00–22:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLesYA7tHXigfux5_i4IWTSYt0nZzeCwO7Zqm8HWkGkyetbp7WClBCiu-0KwE2uO9LAkzofysE-uenOZpVsgua7_1uRLGSgOsem7goV_XCHX73Mxu2xokNqgKPrF2zQ-fmqDjma6rmQfLrTi",
+    "cid": "41736478647864144",
+    "fid": "0x31752f19bfd5500d:0x94471b2ffb4b50",
+    "placeId": "ChIJDVDVvxkvdTERUEv7LxtHlAA"
+   },
+   {
+    "position": 17,
+    "title": "BÁNH SU QUE - Q7",
+    "address": "601 Nguyễn Thị Thập, Tân Hưng, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.739585799999999,
+    "longitude": 106.7039034,
+    "rating": 4.2,
+    "ratingCount": 63,
+    "type": "Tiệm bánh",
+    "types": [
+     "Tiệm bánh"
+    ],
+    "website": "http://www.banhsuque.vn/",
+    "phoneNumber": "+84 943 392 391",
+    "openingHours": {
+     "Thứ Ba": "07:00–21:00",
+     "Thứ Tư": "07:00–21:00",
+     "Thứ Năm": "07:00–21:00",
+     "Thứ Sáu": "07:00–21:00",
+     "Thứ Bảy": "07:00–21:00",
+     "Chủ Nhật": "07:00–21:00",
+     "Thứ Hai": "07:00–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNxGlbL1TjLruaBpdw3DJnbh64RcZe2vFJ_pVV_9AV-KzDOiHg6FcLBWGHZo7YFSTcH6eXfhWvNsE03pG0DDq4LziUJ1IL65S8akRZ7LAeUMAs0AN0Qwa1DFdQ1s6Ulpk-zn72o",
+    "cid": "10687010268784165849",
+    "fid": "0x31752f99333ec769:0x944fe3379dd503d9",
+    "placeId": "ChIJacc-M5kvdTER2QPVnTfjT5Q"
+   },
+   {
+    "position": 18,
+    "title": "Tiệm Bánh Sinh Nhật Lê Văn Lương, Quận 7 - CanDanii",
+    "address": "86 Lê Văn Lương, Tân Hưng, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.7498626,
+    "longitude": 106.70493359999999,
+    "type": "Tiệm bánh",
+    "types": [
+     "Tiệm bánh"
+    ],
+    "website": "https://candanii.com/",
+    "phoneNumber": "+84 392 219 921",
+    "openingHours": {
+     "Thứ Ba": "07:00–22:30",
+     "Thứ Tư": "07:00–22:30",
+     "Thứ Năm": "07:00–22:30",
+     "Thứ Sáu": "07:00–22:30",
+     "Thứ Bảy": "07:00–22:30",
+     "Chủ Nhật": "07:00–22:30",
+     "Thứ Hai": "07:00–22:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLfRtdCv0rzGwWOxohuE_o3_ErfpP1gcJaWtoQLissE98uXmSKSfLzw4heq_nOdP8-PislY0NENyj2rJPo1bCcnmOQnGhClYeHHPyfmPUrO4ey4lidP1qm_cWuDOtZO_dGSXX1E954BFYF0l",
+    "cid": "15721250766885744874",
+    "fid": "0x31752f15c6686687:0xda2d1a47190ff0ea",
+    "placeId": "ChIJh2ZoxhUvdTER6vAPGUcaLdo"
+   },
+   {
+    "position": 19,
+    "title": "Artisan",
+    "address": "11 Nguyễn Bính, Khu đô thị Phú Mỹ Hưng, Tân Hưng, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.726023399999999,
+    "longitude": 106.7105486,
+    "rating": 4.4,
+    "ratingCount": 815,
+    "priceLevel": "100-200 N ₫",
+    "type": "Tiệm bánh",
+    "types": [
+     "Tiệm bánh",
+     "Nhà hàng chuyên phục vụ bữa sáng"
+    ],
+    "phoneNumber": "+84 28 5412 5156",
+    "openingHours": {
+     "Thứ Ba": "07:00–22:00",
+     "Thứ Tư": "07:00–22:00",
+     "Thứ Năm": "07:00–22:00",
+     "Thứ Sáu": "07:00–22:00",
+     "Thứ Bảy": "07:00–22:00",
+     "Chủ Nhật": "07:00–22:00",
+     "Thứ Hai": "07:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMtv-DzUfp-jhS1XBT5iw6gJTqt_mRJXUXaP-ueTc4voQWE699zHSeYT6MW-1qKJav1uArmDMw7Rvm9RFcAOgLdX04TLQw1YfsWq4ab7RKu6JsOA4-SfodzjUOWjc4Vrhd4ukrpWQ",
+    "cid": "801184677836576313",
+    "fid": "0x31752f925d6ecf31:0xb1e613839ef5639",
+    "placeId": "ChIJMc9uXZIvdTEROVbvOThhHgs"
+   },
+   {
+    "position": 20,
+    "title": "Tiệm Bánh Sinh Nhật Nguyễn Cao, Quận 7 - Bii Best",
+    "address": "48 Nguyễn Cao, Khu đô thị Phú Mỹ Hưng, Tân Hưng, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.722793099999999,
+    "longitude": 106.7122038,
+    "type": "Tiệm bánh",
+    "types": [
+     "Tiệm bánh"
+    ],
+    "website": "https://biibest.com/",
+    "phoneNumber": "+84 389 030 803",
+    "openingHours": {
+     "Thứ Ba": "07:00–22:30",
+     "Thứ Tư": "07:00–22:30",
+     "Thứ Năm": "07:00–22:30",
+     "Thứ Sáu": "07:00–22:30",
+     "Thứ Bảy": "07:00–22:30",
+     "Chủ Nhật": "07:00–22:30",
+     "Thứ Hai": "07:00–22:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmO6MAs-kOUXtVCxEYNbpp8QXJgLGV3eyXFaX9vCS51gA7A99k0Kw0EON4dC7-HcFTI0EkppPYWGgXMwofEVqLPqkzR2Zn_nCm9JkZMKEV4qJxWIc8TCWCxE2hi01sSc9xLttjdwLodO5PY",
+    "cid": "16031595260139309456",
+    "fid": "0x31752f138fc21149:0xde7baaf337708990",
+    "placeId": "ChIJSRHCjxMvdTERkIlwN_Oqe94"
+   }
+  ],
+  "credits": 3
+ }
+}

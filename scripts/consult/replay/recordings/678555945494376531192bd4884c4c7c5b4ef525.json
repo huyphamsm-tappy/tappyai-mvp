@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"龙宫 Karaoke Massage Pool NuRu Long Cung 官方预订ID微信hoanghaclauts\" Quận 1 Ho Chi Minh site:klook.com/vi/activity",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:17:43.641Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"龙宫 Karaoke Massage Pool NuRu Long Cung 官方预订ID微信hoanghaclauts\" Quận 1 Ho Chi Minh site:klook.com/vi/activity",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

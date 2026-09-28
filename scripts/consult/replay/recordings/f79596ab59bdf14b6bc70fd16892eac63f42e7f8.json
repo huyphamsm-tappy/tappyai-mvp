@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Aspire Lite 14 site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:54:29.119Z",
+ "body": {
+  "searchParameters": {
+   "q": "Aspire Lite 14 site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Laptop Acer Aspire Lite 14 AL14-45P-R7Z3 (Ryzen 3 5400U/ 8GB",
+    "link": "https://www.lazada.vn/products/laptop-acer-aspire-lite-14-al14-45p-r7z3-ryzen-3-5400u-8gb-512gb-windows-11-home-sl-bao-hanh-12-thang-i13422079115.html?srsltid=AU7gw4UuBP3QFTVx8-YNY_QmY6z8Ds5rMJxQhCc70lY_HVV5kjyuRp47",
+    "snippet": "Laptop Acer Aspire Lite 14 AL14-45P-R7Z3 được trang bị vi xử lý AMD Ryzen 3 5400U với 4 nhân, 8 luồng và xung nhịp tối đa lên đến 4.0GHz, mang lại hiệu năng ổn ...",
+    "position": 1
+   },
+   {
+    "title": "Laptop Acer Aspire Lite 14 AL14-44P-R0SP (Ryzen 7 7730U/ 8GB",
+    "link": "https://www.lazada.vn/products/laptop-acer-aspire-lite-14-al14-44p-r0sp-ryzen-7-7730u-8gb-512gb-windows-11-home-sl-bao-hanh-12-thang-i13423724166-s117165285530.html?from_gmc=1&fl_tag=1&srsltid=AU7gw4VBbORdkRMkjfQaEBjCI7RI4VtNbHuyl2f0Vz_vXSX2cQQGU2yQ",
+    "snippet": "Laptop Acer Aspire Lite 14 AL14-44P-R0SP được trang bị vi xử lý AMD Ryzen 7 7730U với 8 nhân, 16 luồng và xung nhịp tối đa lên đến 4.5GHz, mang lại hiệu năng ...",
+    "position": 2
+   },
+   {
+    "title": "Laptop Acer Aspire Lite 14 AL14-45P-R7Z3 (Ryzen 3 ...",
+    "link": "https://www.lazada.vn/products/laptop-acer-aspire-lite-14-al14-45p-r7z3-ryzen-3-5400u-8gb-512gb-windows-11-home-sl-bao-hanh-12-thang-i13422083045.html?srsltid=AU7gw4V1a4FYIz6iFJoVTKCfB6QtKyot0i8pYNzZACHBeGLsyD6g9kKQ",
+    "snippet": "Laptop Acer Aspire Lite 14 AL14-45P-R7Z3 được trang bị vi xử lý AMD Ryzen 3 5400U với 4 nhân, 8 luồng và xung nhịp tối đa lên đến 4.0GHz, mang lại hiệu năng ổn ...",
+    "position": 3
+   },
+   {
+    "title": "Laptop Acer Aspire Lite 14 51M 59BN i5 ...",
+    "link": "https://www.lazada.vn/products/laptop-acer-aspire-lite-14-51m-59bn-i5-1235u16gb512gbwin11-nxktxsv001-i2763465282.html?srsltid=AU7gw4X3M5nPITZ7NWBIHj0xz89AiMSwGjEYz6CtTZZJd5E3odH7diHY",
+    "snippet": "Chiếc laptop Acer Aspire Lite 14 51M 59BN i5 1235U (NX.KTXSV.001) không chỉ gây ấn tượng bởi thiết kế thanh lịch, mà còn nổi bật với cấu hình phần cứng mạnh mẽ ...",
+    "position": 4
+   },
+   {
+    "title": "Laptop Acer Aspire Lite 15 AL15-48P-R86Q (Ryzen 7 5825U/ 8GB",
+    "link": "https://h5.lazada.vn/products/laptop-acer-aspire-lite-15-al15-48p-r86q-ryzen-7-5825u-8gb-512gb-windows-11-home-sl-bao-hanh-12-thang-i13393018134-s117018956838.html",
+    "snippet": "Laptop Acer Aspire Lite 14 AL14-45P-R7Z3 (Ryzen 3 5400U/ 8GB. 16.990.000 ₫ · Laptop Acer Aspire Go 14 AG14-72P-563L (Core 5 120U/ 16GB. 21.190.000 ₫ · Laptop ...",
+    "position": 5
+   },
+   {
+    "title": "Laptop Acer Aspire Lite 14 51M 36PN i3 1215U/8GB/ ...",
+    "link": "https://www.lazada.vn/products/laptop-acer-aspire-lite-14-51m-36pn-i3-1215u8gb512gbwin11-nxktwsv001-chinh-hang-bh-12-thang-i2746281431.html?srsltid=AU7gw4Uh7rXGP6w781h1_zq1C44z9pJV0j8Jn0V6dGIAcFiFQ0gLcvRo",
+    "snippet": "Mô tả sản phẩm. Bộ xử lý. Công nghệ CPU: Intel Core i3 Alder Lake - 1215U Số nhân: 6. Số luồng: 8. Tốc độ CPU: 1.20 GHz. Tốc độ tối đa: Turbo Boost 4.4 GHz",
+    "position": 6
+   },
+   {
+    "title": "Laptop Acer Aspire Lite 15 AL15-36P-30TN (Core 3 N350/ ...",
+    "link": "https://www.lazada.vn/products/laptop-acer-aspire-lite-15-al15-36p-30tn-core-3-n350-8gb-512gb-windows-11-home-sl-bao-hanh-12-thang-i13420643782-s117170346982.html?srsltid=AU7gw4VfTJgSylWAFCGlr9zRaHEO8HH43FBy2Mk-6ruh19ChrlmHIrQ-",
+    "snippet": "LazMall Laptop Acer Aspire Lite 15 AL15-36P-30TN (Core 3 N350/ 8GB/ 512GB/ Windows 11 Home SL) - Bảo hành 12 tháng · 100% chính hãng · 30 ngày miễn phí trả hàng.",
+    "position": 7
+   },
+   {
+    "title": "Laptop Acer Aspire Lite 15 AL15-48P-R86Q (Ryzen 7 ...",
+    "link": "https://www.lazada.vn/products/laptop-acer-aspire-lite-15-al15-48p-r86q-ryzen-7-5825u-8gb-512gb-windows-11-home-sl-bao-hanh-12-thang-i13393018134.html?srsltid=AU7gw4XCnekVnAs-tUGeMZZThfRuCv0h_VR3EN8vP3W2edXdMwetCbpD",
+    "snippet": "Laptop Acer Aspire Lite 14 AL14-45P-R7Z3 (Ryzen 3 5400U/ 8GB. 16.990.000 ₫. Laptop Acer Aspire Go 14 AG14-72P-563L (Core 5 120U/ 16GB. 21.190.000 ₫. Laptop Asus ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}
