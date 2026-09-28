@@ -56,6 +56,14 @@ function stripLabelDate(label: string): string {
   return out || label.replace(/[^\p{L}\s\d]/gu, '').trim()
 }
 
+/** A chip naming where the user departs from: "Xe khách từ TP HCM", "Bay từ Hà Nội". */
+const CHIP_ORIGIN = /(?<!\p{L})(?:từ|from)\s+(?:\p{Lu}|TP\b|tp\b|hà nội|sài gòn)/u
+
+/** Sentence boundary: . ! ? … possibly followed by closing markdown / quotes / parens, then whitespace. */
+const SENTENCE_SPLIT = /(?<=[.!?…][*_"'”’)\]]*)\s+/u
+/** A sentence that asks: ends in "?" possibly wrapped in markdown / quotes / parens. */
+const ENDS_WITH_QUESTION = /\?[*_"'”’)\]\s]*$/u
+
 /** A question asking for a trip fact (date / origin / transport). */
 const TRIP_QUESTION = /(?<!\p{L})(?:ngày nào|hôm nào|khi nào|lúc nào|thời gian nào|dịp nào|xuất phát|khởi hành|từ đâu|ở đâu đi|bay hay|máy bay|xe khách|tàu|phương tiện|which dates?|when|where .*from|fly|train|bus)(?!\p{L})/iu
 
@@ -83,9 +91,9 @@ export function guardUngivenTravelDate(fullText: string, userTexts: readonly str
   const out = parts.map((part, i) => {
     if (i % 2 === 1) return part
     return part.split('\n').map(line => {
-      const sentences = line.split(/(?<=[.!?…])\s+/u)
+      const sentences = line.split(SENTENCE_SPLIT)
       const kept = sentences.filter(sn => {
-        if (/\?\s*$/u.test(sn)) return true
+        if (ENDS_WITH_QUESTION.test(sn)) return true
         const bad = hasCalendarDate(sn) || ASSUMED_DAY.test(withoutUrls(sn))
         if (bad) dropped++
         return !bad
@@ -100,18 +108,20 @@ export function guardUngivenTravelDate(fullText: string, userTexts: readonly str
 function guardProse(prose: string, missing: Set<TripFact>): { text: string; dropped: number } {
   let dropped = 0
   const lines = prose.split('\n').map(line => {
-    const parts = line.split(/(?<=[.!?…])\s+/u)
+    // A sentence may end in markdown or a closing quote/paren: "…nào?** Để mình…" (uat 192973d run 1).
+    const parts = line.split(SENTENCE_SPLIT)
     let afterDroppedQuestion = false
     const kept = parts.filter(sentence => {
-      // The "(để xác nhận …)" aside that followed a dropped question goes with it.
-      const aside = afterDroppedQuestion && /^\(.*\)[.!]?$/u.test(sentence.trim())
+      // The "(để xác nhận …)" aside, or the "Để mình tìm giá vé …" reason, that followed a dropped
+      // question goes with it.
+      const aside = afterDroppedQuestion && (/^\(.*\)[.!]?$/u.test(sentence.trim()) || /^(?:để|de)\s+(?:mình|minh|tôi|toi)\b/iu.test(sentence.trim()))
       afterDroppedQuestion = false
       if (aside) return false
       // At most ONE question (owner-approved rule): the system's closing question (tripFacts.ts, a
       // statement ending "…cho bạn.") already asks for every missing fact, so the model's own
       // question about them goes. Measured on uat @ 826d23b run 3: "Bạn dự định đi vào ngày nào?"
-      // sat right above the closing question.
-      if (/\?\s*$/u.test(sentence)) {
+      // sat right above the closing question; on 192973d it came bolded ("- **…nào?**").
+      if (ENDS_WITH_QUESTION.test(sentence)) {
         const own = TRIP_QUESTION.test(sentence)
         if (own) { dropped++; afterDroppedQuestion = true }
         return !own
@@ -189,6 +199,16 @@ export function guardPlanTripFacts(fullText: string, userTexts: readonly string[
 
   const before = guardProse(fullText.slice(0, start), miss)
   const after = guardProse(fullText.slice(end + CLOSE.length), miss)
+  // A suggestion chip that names a departure city assumes it too ("Xe khách từ TP HCM", uat 192973d
+  // run 3) — without a stated origin it goes; the other chips stay.
+  if (miss.has('origin')) {
+    after.text = after.text.replace(/\[FOLLOWUPS\]([\s\S]*?)(\[\/FOLLOWUPS\]|$)/, (_m, body: string, close: string) => {
+      const chips = body.split('|')
+      const kept = chips.filter(c => !CHIP_ORIGIN.test(c))
+      after.dropped += chips.length - kept.length
+      return kept.length ? `[FOLLOWUPS]${kept.join('|')}${close}` : ''
+    })
+  }
   const block = `${OPEN}\n${JSON.stringify(plan)}\n${CLOSE}`
   return {
     text: before.text + block + after.text,

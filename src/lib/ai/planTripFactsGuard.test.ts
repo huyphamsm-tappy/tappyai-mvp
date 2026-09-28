@@ -69,6 +69,28 @@ describe('guardPlanTripFacts — date / origin / transport never invented', () =
     expect(r.text).toContain(ASK)
   })
 
+  it('bolded model questions are caught too (uat 192973d runs 1 and 3), with their lead-in and reason', () => {
+    const run1 = '\n\nMình chọn các điểm này vì bạn muốn trải nghiệm đầy đủ.\n\nMình cần xác nhận: **bạn muốn đi máy bay hay xe khách từ thành phố nào?** Để mình tìm giá vé và lịch chuyến cho bạn nhé.\n\n'
+    const r1 = guardPlanTripFacts(plan(DATED, '', run1 + ASK), USER)
+    expect(r1.text).not.toContain('máy bay hay xe khách từ thành phố nào')
+    expect(r1.text).not.toContain('Để mình tìm giá vé và lịch chuyến')
+    expect(r1.text).toContain('Mình chọn các điểm này vì bạn muốn trải nghiệm đầy đủ.')
+    expect(r1.text).toContain(ASK)
+    const run3 = '\n\nThời tiết Đà Nẵng hôm nay 27°C, rất thuận lợi cho chuyến đi!\n- **Bạn dự định đi vào ngày nào?** (để xác nhận giá phòng khách sạn chính xác)\n\n'
+    const r3 = guardPlanTripFacts(plan(DATED, '', run3 + ASK), USER)
+    expect(r3.text).not.toContain('Bạn dự định đi vào ngày nào')
+    expect(r3.text).not.toContain('để xác nhận giá phòng')
+    expect(r3.text).toContain('rất thuận lợi cho chuyến đi!')
+    expect(r3.text).toContain(ASK)
+  })
+
+  it('a follow-up chip that assumes the departure city is dropped; the others stay', () => {
+    const r = guardPlanTripFacts(plan(DATED, '', `\n\n${ASK}\n\n[FOLLOWUPS]Chuyến bay đi Đà Nẵng|Xe khách từ TP HCM|Khách sạn khác rẻ hơn[/FOLLOWUPS]`), USER)
+    expect(r.text).toContain('[FOLLOWUPS]Chuyến bay đi Đà Nẵng|Khách sạn khác rẻ hơn[/FOLLOWUPS]')
+    const withOrigin = guardPlanTripFacts(plan(DATED, '', '\n\n[FOLLOWUPS]Xe khách từ TP HCM|Khách sạn[/FOLLOWUPS]'), ['đi Đà Nẵng 3 ngày 2 đêm từ Sài Gòn'])
+    expect(withOrigin.text).toContain('Xe khách từ TP HCM')
+  })
+
   it('keeps what the user DID say: a stated date and origin stay', () => {
     const r = guardPlanTripFacts(plan(DATED), ['đi Đà Nẵng 3/10 từ Hà Nội bằng máy bay 3 ngày 2 đêm'])
     expect(r.missing).toEqual([])
