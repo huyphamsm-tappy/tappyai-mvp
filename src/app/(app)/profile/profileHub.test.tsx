@@ -51,6 +51,28 @@ const REVIEWS = [
     thumbnail: 'https://cdn/y.jpg', content_type: 'photo', created_at: '2026-08-30T00:00:00Z',
     rating: 4, like_count: 3, comment_count: 0, view_count: 999,
   },
+  // P2b — the other two states `/api/reviews/mine` returns for the owner.
+  {
+    id: 'r3', place_name: 'Bài bị giữ', body: 'x', photos: null, thumbnail: null,
+    content_type: 'photo', created_at: '2026-08-29T00:00:00Z', is_hidden: false,
+    moderation: { state: 'UNDER_REVIEW', title: 't', detail: 'd' },
+  },
+  {
+    id: 'r4', place_name: 'Bài đã ẩn', body: 'x', photos: null, thumbnail: null,
+    content_type: 'photo', created_at: '2026-08-28T00:00:00Z', is_hidden: true,
+  },
+  {
+    id: 'r5', place_name: 'Bài bị hạn chế', body: 'x', photos: null, thumbnail: null,
+    content_type: 'photo', created_at: '2026-08-27T00:00:00Z', is_hidden: false,
+    moderation: { state: 'RESTRICTED', title: 't', detail: 'd' },
+  },
+]
+
+const SHARED = [
+  { id: 's1', place_name: 'Bài đã chia sẻ', body: 'x', photos: null, thumbnail: null, content_type: 'photo', created_at: '2026-08-20T00:00:00Z' },
+]
+const SAVED = [
+  { id: 'v1', place_name: 'Bài đã lưu', body: 'x', photos: null, thumbnail: null, content_type: 'photo', created_at: '2026-08-19T00:00:00Z' },
 ]
 
 const FAVORITES = [
@@ -81,6 +103,7 @@ beforeEach(() => {
   fetchMock = vi.fn(async (url: string) => {
     if (url === '/api/reviews/mine') return { ok: true, json: async () => ({ reviews: REVIEWS }) }
     if (url === '/api/reviews/saved') return { ok: true, json: async () => ({ reviews: [] }) }
+    if (url === '/api/reviews/shared') return { ok: true, json: async () => ({ reviews: SHARED }) }
     if (url === '/api/favorites') return { ok: true, json: async () => ({ favorites: FAVORITES }) }
     throw new Error(`unexpected fetch: ${url}`)
   })
@@ -201,7 +224,7 @@ describe('content comes from the gated endpoints, and only from them', () => {
     renderHub()
     await waitFor(() => expect(fetchMock).toHaveBeenCalled())
     for (const [url] of fetchMock.mock.calls) {
-      expect(['/api/reviews/mine', '/api/reviews/saved', '/api/favorites']).toContain(url)
+      expect(['/api/reviews/mine', '/api/reviews/shared', '/api/reviews/saved', '/api/favorites']).toContain(url)
     }
   })
 
@@ -247,13 +270,85 @@ describe('content comes from the gated endpoints, and only from them', () => {
     expect(container.querySelectorAll('[data-review]').length).toBe(0)
   })
 
-  it('offers exactly three tabs — one per gated endpoint', () => {
+  it('offers the five content states, then places', () => {
     const { container } = renderHub()
     const tabs = [...container.querySelectorAll('[data-profile-content] .v3-chip')].map((c) => c.textContent)
-    expect(tabs).toEqual(['Posts', 'Saved', 'Places'])
-    // No "Liked" tab: review_likes has no gated list endpoint, and reading it directly would
-    // bypass publishableFilter() and stripUnservableMedia.
-    expect(tabs).not.toContain('Liked')
+    expect(tabs).toEqual(['Published', 'Shared', 'Saved', 'Restricted', 'Hidden', 'Places'])
+  })
+
+  it('the Vietnamese labels are the owner\'s wording', () => {
+    setLocale('vi')
+    const { container } = renderHub()
+    const tabs = [...container.querySelectorAll('[data-profile-content] .v3-chip')].map((c) => c.textContent)
+    expect(tabs).toEqual(['Đã đăng', 'Đã chia sẻ', 'Đã lưu', 'Bị hạn chế', 'Đã ẩn', 'Địa điểm'])
+  })
+})
+
+describe('P2b — the owner sees every post, split by state', () => {
+  const ids = (c: HTMLElement) => [...c.querySelectorAll('[data-review]')].map((a) => a.getAttribute('data-review'))
+  const open = async (c: HTMLElement, tab: string) => {
+    fireEvent.click(c.querySelector(`[data-profile-tab="${tab}"]`) as HTMLElement)
+  }
+
+  it('Published holds only the public posts — no hidden, no held', async () => {
+    const { container } = renderHub()
+    await waitFor(() => expect(container.querySelector('[data-review="r1"]')).toBeTruthy())
+    expect(ids(container)).toEqual(['r1', 'r2'])
+  })
+
+  it('Restricted holds the posts the safety gate has not published (UNDER_REVIEW + RESTRICTED)', async () => {
+    const { container } = renderHub()
+    await waitFor(() => expect(container.querySelector('[data-review="r1"]')).toBeTruthy())
+    await open(container, 'restricted')
+    await waitFor(() => expect(ids(container)).toEqual(['r3', 'r5']))
+    expect(container.querySelector('[data-profile-hint="restricted"]')).toBeTruthy()
+  })
+
+  it('Hidden holds the posts the owner hid', async () => {
+    const { container } = renderHub()
+    await waitFor(() => expect(container.querySelector('[data-review="r1"]')).toBeTruthy())
+    await open(container, 'hidden')
+    await waitFor(() => expect(ids(container)).toEqual(['r4']))
+    expect(container.querySelector('[data-profile-hint="hidden"]')).toBeTruthy()
+  })
+
+  it('the three /mine tabs share ONE request', async () => {
+    const { container } = renderHub()
+    await waitFor(() => expect(container.querySelector('[data-review="r1"]')).toBeTruthy())
+    await open(container, 'restricted')
+    await open(container, 'hidden')
+    await waitFor(() => expect(ids(container)).toEqual(['r4']))
+    expect(fetchMock.mock.calls.filter(([u]) => u === '/api/reviews/mine')).toHaveLength(1)
+  })
+
+  it('Shared reads /api/reviews/shared and Saved reads /api/reviews/saved', async () => {
+    fetchMock.mockImplementation(async (url: string) => {
+      if (url === '/api/reviews/mine') return { ok: true, json: async () => ({ reviews: REVIEWS }) }
+      if (url === '/api/reviews/shared') return { ok: true, json: async () => ({ reviews: SHARED }) }
+      if (url === '/api/reviews/saved') return { ok: true, json: async () => ({ reviews: SAVED }) }
+      throw new Error(`unexpected fetch: ${url}`)
+    })
+    const { container } = renderHub()
+    await waitFor(() => expect(container.querySelector('[data-review="r1"]')).toBeTruthy())
+    await open(container, 'shared')
+    await waitFor(() => expect(ids(container)).toEqual(['s1']))
+    await open(container, 'saved')
+    await waitFor(() => expect(ids(container)).toEqual(['v1']))
+    // Bearer-only routes: never aimed at a user id.
+    for (const [url] of fetchMock.mock.calls) expect(String(url)).not.toMatch(/userId=/)
+  })
+
+  it('a state with no posts gets its own empty copy', async () => {
+    fetchMock.mockImplementation(async (url: string) => {
+      if (url === '/api/reviews/mine') return { ok: true, json: async () => ({ reviews: REVIEWS.slice(0, 2) }) }
+      throw new Error(`unexpected fetch: ${url}`)
+    })
+    const { container } = renderHub()
+    await waitFor(() => expect(container.querySelector('[data-review="r1"]')).toBeTruthy())
+    await open(container, 'restricted')
+    await waitFor(() => expect(screen.getByText('No posts are restricted.')).toBeTruthy())
+    await open(container, 'hidden')
+    await waitFor(() => expect(screen.getByText("You haven't hidden any posts.")).toBeTruthy())
   })
 })
 
@@ -353,10 +448,10 @@ describe('the grid / list switch is presentation over the rows already loaded', 
     expect(container.querySelector('[data-profile-view="grid"]')).toBeNull()
   })
 
-  it('the switch buttons are not tabs — the tab contract stays three chips', () => {
+  it('the switch buttons are not tabs — the tab contract stays six chips', () => {
     const { container } = renderHub()
     for (const b of container.querySelectorAll('[data-profile-view]')) expect(b.classList.contains('v3-chip')).toBe(false)
-    expect(container.querySelectorAll('[data-profile-content] .v3-chip')).toHaveLength(3)
+    expect(container.querySelectorAll('[data-profile-content] .v3-chip')).toHaveLength(6)
   })
 })
 

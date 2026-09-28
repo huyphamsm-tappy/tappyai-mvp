@@ -7,7 +7,8 @@ import UserAvatar from '@/components/UserAvatar'
 import Header from '@/components/Header'
 import BottomNav from '@/components/BottomNav'
 import { Check, Save, Loader2, Camera, ImagePlus, Trash2 } from 'lucide-react'
-import { rejectCoverFile, uploadCover, removeCover } from '@/lib/profile/cover'
+import { rejectCoverFile, uploadCover, removeCover, CoverRequestError } from '@/lib/profile/cover'
+import { uploadErrorKey } from '@/lib/profile/uploadError'
 
 interface ProfileData {
   full_name: string
@@ -52,6 +53,9 @@ export default function EditProfilePage() {
 
   const handleAvatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
+    // P2a: reset the input, or picking the SAME file again after a failure fires no change event
+    // and the retry silently does nothing (the cover handler already did this).
+    e.target.value = ''
     if (!file) return
 
     if (file.size > 3 * 1024 * 1024) {
@@ -74,7 +78,8 @@ export default function EditProfilePage() {
       const res = await fetch('/api/profile', { method: 'POST', body: formData })
       let data: { avatar_url?: string; error?: string; message?: string } = {}
       try { data = await res.json() } catch { /* non-JSON response */ }
-      if (!res.ok) throw new Error(data.message || t('editProfile.err.upload'))
+      // A platform-level refusal (413 body too large, 502/503/504) arrives with no JSON message.
+      if (!res.ok) throw new Error(data.message || t(uploadErrorKey(res.status) ?? 'editProfile.err.upload'))
       if (data.avatar_url) {
         setProfile(prev => ({ ...prev, avatar_url: data.avatar_url! }))
         router.refresh()  // invalidate Next.js router cache so account page re-fetches
@@ -102,7 +107,7 @@ export default function EditProfilePage() {
       setProfile(prev => ({ ...prev, cover_url: url }))
       router.refresh()
     } catch (err) {
-      setError(err instanceof Error && err.message ? err.message : t('editProfile.err.cover'))
+      setError(coverErrorText(err, t('editProfile.err.cover'), t))
     } finally {
       setCoverBusy(false)
     }
@@ -116,7 +121,7 @@ export default function EditProfilePage() {
       setProfile(prev => ({ ...prev, cover_url: null }))
       router.refresh()
     } catch (err) {
-      setError(err instanceof Error && err.message ? err.message : t('editProfile.err.cover'))
+      setError(coverErrorText(err, t('editProfile.err.cover'), t))
     } finally {
       setCoverBusy(false)
     }
@@ -326,4 +331,11 @@ export default function EditProfilePage() {
       <BottomNav />
     </div>
   )
+}
+
+/** The cover error to show: the server's own message, else a status-specific one, else the fallback. */
+function coverErrorText(err: unknown, fallback: string, t: (key: string) => string): string {
+  if (err instanceof Error && err.message) return err.message
+  const key = err instanceof CoverRequestError ? uploadErrorKey(err.status) : null
+  return key ? t(key) : fallback
 }

@@ -224,6 +224,7 @@ fun ProfileScreen(
                         places = contentViewModel.places,
                         loading = contentViewModel.tabLoading,
                         failed = contentViewModel.tabFailed,
+                        restricted = contentViewModel.restricted,
                         onCompose = onCompose,
                         onOpenReview = onOpenReview,
                     )

@@ -681,12 +681,18 @@ export const vi: Record<string, string> = {
   'v3.profile.statLikes': 'Lượt thích',
   // The five personal collections — the Android self profile's wording, in its order
   // (Bài viết / Đã thích / Đã lưu / Đã ẩn / Đã share). Places is a separate surface.
-  'v3.profile.tabPosts': 'Bài viết',
+  // P2b (2026-09-28): the owner sees every post by state — Đã đăng / Đã chia sẻ / Đã lưu /
+  // Bị hạn chế / Đã ẩn — then saved places.
+  'v3.profile.tabPosts': 'Đã đăng',
   'v3.profile.tabSaved': 'Đã lưu',
+  'v3.profile.tabRestricted': 'Bị hạn chế',
   'v3.profile.tabPlaces': 'Địa điểm',
   'v3.profile.emptyPosts': 'Bạn chưa đăng bài viết nào.',
   'v3.profile.emptySaved': 'Bạn chưa lưu bài viết nào.',
+  'v3.profile.emptyRestricted': 'Không có bài nào đang bị hạn chế.',
   'v3.profile.emptyPlaces': 'Bạn chưa lưu địa điểm nào.',
+  'v3.profile.hintRestricted': 'Những bài này chưa được đăng công khai vì đang chờ hoặc chưa qua kiểm tra an toàn. Chỉ bạn nhìn thấy chúng.',
+  'v3.profile.hintHidden': 'Bạn đã ẩn những bài này. Chỉ bạn nhìn thấy chúng.',
   'v3.profile.loadFailed': 'Không tải được nội dung. Thử lại sau nhé.',
   'v3.profile.postAction': 'Đăng bài mới',
   // Right sidebar.
@@ -718,7 +724,7 @@ export const vi: Record<string, string> = {
   // ── Profile collections (Android parity, integration/v3-canonical) ─────────
   'v3.profile.tabLiked': 'Đã thích',
   'v3.profile.tabHidden': 'Đã ẩn',
-  'v3.profile.tabShared': 'Đã share',
+  'v3.profile.tabShared': 'Đã chia sẻ',
   'v3.profile.emptyLiked': 'Bạn chưa thích bài viết nào.',
   'v3.profile.emptyHidden': 'Bạn chưa ẩn bài viết nào.',
   'v3.profile.emptyShared': 'Bạn chưa chia sẻ bài viết nào.',
@@ -1320,12 +1326,16 @@ export const en: Record<string, string> = {
   'v3.profile.statFollowing': 'Following',
   'v3.profile.statFollowers': 'Followers',
   'v3.profile.statLikes': 'Likes',
-  'v3.profile.tabPosts': 'Posts',
+  'v3.profile.tabPosts': 'Published',
   'v3.profile.tabSaved': 'Saved',
+  'v3.profile.tabRestricted': 'Restricted',
   'v3.profile.tabPlaces': 'Places',
   'v3.profile.emptyPosts': "You haven't posted anything yet.",
   'v3.profile.emptySaved': "You haven't saved any posts yet.",
+  'v3.profile.emptyRestricted': 'No posts are restricted.',
   'v3.profile.emptyPlaces': "You haven't saved any places yet.",
+  'v3.profile.hintRestricted': "These posts aren't public yet because the safety check is pending or didn't pass. Only you can see them.",
+  'v3.profile.hintHidden': 'You hid these posts. Only you can see them.',
   'v3.profile.loadFailed': "That didn't load. Please try again later.",
   'v3.profile.postAction': 'New post',
   'v3.profile.infoTitle': 'Personal information',

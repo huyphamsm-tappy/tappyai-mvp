@@ -162,6 +162,9 @@ const MESSAGES = {
   'media.imageTooLarge3': { vi: 'Ảnh tối đa 3MB', en: 'Images can be at most 3MB' },
   'media.imageTooLarge6': { vi: 'Ảnh quá lớn. Vui lòng chọn ảnh nhỏ hơn 6MB.', en: 'That image is too large. Please choose one under 6MB.' },
   'media.uploadFailed': { vi: 'Không thể tải ảnh lên. Vui lòng thử lại.', en: "Couldn't upload the image. Please try again." },
+  // P2a (2026-09-28): the storage identity (WIF/OIDC) or Cloud Storage itself is unreachable —
+  // retrying right away will not help, so the copy says the SERVICE is down, not "try again".
+  'media.uploadUnavailable': { vi: 'Dịch vụ tải ảnh đang tạm gián đoạn. Ảnh của bạn chưa được lưu — vui lòng thử lại sau.', en: "Photo uploads are temporarily unavailable. Your photo wasn't saved — please try again later." },
   'media.fileNotFound': { vi: 'Không tìm thấy file', en: 'File not found' },
   'media.videoTooLong': { vi: 'Video quá dài. Vui lòng chọn video tối đa {n} giây.', en: 'That video is too long. Please choose one up to {n} seconds.' },
 

@@ -114,7 +114,8 @@ fun ProfileTab(
                 // the existing detail screen instead — never a second viewer.
                 onOpenReview = { collection, reviewId ->
                     when (collection) {
-                        ProfileContentTab.Posts, ProfileContentTab.Hidden ->
+                        // Restricted rows are `/mine` rows too, so they page in the same pager.
+                        ProfileContentTab.Restricted, ProfileContentTab.Posts, ProfileContentTab.Hidden ->
                             navController.navigate(ProfileRoute.ProfileClips(userId = null, startReviewId = reviewId))
                         ProfileContentTab.Saved ->
                             navController.navigate(ProfileRoute.ProfileClips(userId = null, startReviewId = reviewId, saved = true))

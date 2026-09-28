@@ -42,7 +42,13 @@ import javax.inject.Inject
  *             was a telemetry event, and the collection was — rightly — absent.
  *  - [Places] `GET /api/favorites` — the web hub's own tab, kept.
  */
-enum class ProfileContentTab { Posts, Liked, Saved, Hidden, Shared, Places }
+//  - [Restricted] (P2b, 2026-09-28) the not-hidden rows of `/mine` the content-safety gate has
+//             NOT published (`moderation.state` UNDER_REVIEW / RESTRICTED / Unknown — fail-closed,
+//             see [ReviewPublicationState.isPublished]). Only the author ever sees these.
+//
+// Chip order follows the owner's web order — Đã đăng / Đã chia sẻ / Đã lưu / Bị hạn chế / Đã ẩn —
+// then the two Android-only/extra collections.
+enum class ProfileContentTab { Posts, Shared, Saved, Restricted, Hidden, Liked, Places }
 
 /**
  * The signed-in hub's content and side panels — the web `/profile` page's server-assembled props
@@ -80,7 +86,8 @@ class ProfileHubContentViewModel @Inject constructor(
     /** Every row `/mine` returned, hidden included — [posts] and [hidden] are its two halves. */
     var mine by mutableStateOf<List<Review>?>(null)
         private set
-    val posts: List<Review>? get() = mine?.filterNot { it.isHidden }
+    val posts: List<Review>? get() = mine?.filter { !it.isHidden && !it.isHeldByModeration() }
+    val restricted: List<Review>? get() = mine?.filter { !it.isHidden && it.isHeldByModeration() }
     val hidden: List<Review>? get() = mine?.filter { it.isHidden }
     var liked by mutableStateOf<List<Review>?>(null)
         private set
@@ -157,7 +164,7 @@ class ProfileHubContentViewModel @Inject constructor(
     /** The web's `load(index)`: a tab already read is not re-fetched; a failure is shown, not hidden. */
     private fun loadTab(which: ProfileContentTab) {
         val cached = when (which) {
-            ProfileContentTab.Posts, ProfileContentTab.Hidden -> mine != null
+            ProfileContentTab.Posts, ProfileContentTab.Hidden, ProfileContentTab.Restricted -> mine != null
             ProfileContentTab.Liked -> liked != null
             ProfileContentTab.Saved -> saved != null
             ProfileContentTab.Shared -> shared != null
@@ -168,7 +175,7 @@ class ProfileHubContentViewModel @Inject constructor(
         tabFailed = false
         viewModelScope.launch {
             val ok = when (which) {
-                ProfileContentTab.Posts, ProfileContentTab.Hidden -> (reviewsRepository.getMine() as? NetworkResult.Success)?.also { mine = it.data } != null
+                ProfileContentTab.Posts, ProfileContentTab.Hidden, ProfileContentTab.Restricted -> (reviewsRepository.getMine() as? NetworkResult.Success)?.also { mine = it.data } != null
                 ProfileContentTab.Liked -> (collectionsRepository.getLiked() as? NetworkResult.Success)?.also { liked = it.data } != null
                 ProfileContentTab.Saved -> (reviewsRepository.getSaved() as? NetworkResult.Success)?.also { saved = it.data } != null
                 ProfileContentTab.Shared -> (collectionsRepository.getShared() as? NetworkResult.Success)?.also { shared = it.data } != null
@@ -181,6 +188,9 @@ class ProfileHubContentViewModel @Inject constructor(
     }
 
     private companion object {
+        /** A moderation payload that is not an explicit PUBLISHED — no payload = predates the gate = public. */
+        fun Review.isHeldByModeration(): Boolean = moderation?.state?.isPublished == false
+
         const val TAG = "ProfileHubContentViewModel"
         /** The web's `FOLLOWING_PREVIEW`. */
         const val FOLLOWING_PREVIEW = 5

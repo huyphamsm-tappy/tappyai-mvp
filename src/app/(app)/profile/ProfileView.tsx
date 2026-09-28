@@ -10,10 +10,11 @@ import Panel from '@/components/v3/Panel'
 import {
   Settings, UserCircle, Pencil, Play, Heart, MessageCircle, MapPin, Camera,
   Sparkles, QrCode, Loader2, ImageOff, Star, LayoutGrid, List, ArrowRight,
-  Bookmark, Video, Images, type LucideIcon,
+  Bookmark, Video, Images, Share2, ShieldAlert, EyeOff, type LucideIcon,
 } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { ProfileRowList, accountRows, settingsRows } from './ProfileRows'
+import { postsInState } from './ownPostStates'
 
 // ── V3 Web · Profile / Me — the personal hub ────────────────────────────────
 //
@@ -50,9 +51,9 @@ import { ProfileRowList, accountRows, settingsRows } from './ProfileRows'
 //   • FRIENDS with Follow buttons — `user_follows` is directional; see `FollowingCard`.
 //
 // 🚨 WHAT IS REAL IS ALL HERE, AND ALL OF IT IS FETCHED THROUGH THE GATED ROUTES.
-// Content comes from `/api/reviews/mine`, `/api/reviews/saved` and `/api/favorites` — the three
-// endpoints that already apply the publication gate and strip unservable media. This file adds
-// no fetch of its own to `reviews`, and no new API was written for it.
+// Content comes from `/api/reviews/mine`, `/api/reviews/shared`, `/api/reviews/saved` and
+// `/api/favorites` — owner-only endpoints that already scope to the session and strip unservable
+// media. This file adds no fetch of its own to `reviews`, and no new API was written for it.
 //
 // 🚨 EVERY ACCOUNT ROW SURVIVED. `profileRowParity.test.tsx` pins that the guest and signed-in
 // screens render the SAME inventory from `ProfileRows` in the same order — the hub keeps both
@@ -75,6 +76,9 @@ interface ReviewCard {
   like_count?: number | null
   comment_count?: number | null
   view_count?: number | null
+  /** Only `/api/reviews/mine` carries these two — see `ownPostStates.ts`. */
+  is_hidden?: boolean | null
+  moderation?: { state?: string | null; title?: string; detail?: string } | null
 }
 
 interface FavoritePlace {
@@ -108,11 +112,33 @@ type ProfileViewProps = {
   following: { id: string; name: string | null; avatarUrl: string | null }[]
 }
 
-const TABS: { key: string; icon: LucideIcon }[] = [
-  { key: 'v3.profile.tabPosts', icon: Images },
-  { key: 'v3.profile.tabSaved', icon: Bookmark },
-  { key: 'v3.profile.tabPlaces', icon: MapPin },
+/**
+ * The owner's content, by state (P2b, 2026-09-28): Đã đăng / Đã chia sẻ / Đã lưu / Bị hạn chế /
+ * Đã ẩn, then saved places. Published, restricted and hidden are one partition of
+ * `/api/reviews/mine` (see `ownPostStates.ts`); shared and saved are the bearer-only
+ * `/api/reviews/shared` and `/api/reviews/saved`; places is `/api/favorites`. This page is only
+ * ever rendered for the signed-in owner (`page.tsx` returns the guest view otherwise, and
+ * `/users/<me>` redirects here), so a visitor never reaches any of these tabs — the visitor's
+ * profile is `PublicProfileView`, which reads the public feed only.
+ */
+type TabKey = 'published' | 'shared' | 'saved' | 'restricted' | 'hidden' | 'places'
+type Source = 'mine' | 'shared' | 'saved' | 'places'
+
+const TABS: { id: TabKey; key: string; empty: string; icon: LucideIcon; source: Source }[] = [
+  { id: 'published', key: 'v3.profile.tabPosts', empty: 'v3.profile.emptyPosts', icon: Images, source: 'mine' },
+  { id: 'shared', key: 'v3.profile.tabShared', empty: 'v3.profile.emptyShared', icon: Share2, source: 'shared' },
+  { id: 'saved', key: 'v3.profile.tabSaved', empty: 'v3.profile.emptySaved', icon: Bookmark, source: 'saved' },
+  { id: 'restricted', key: 'v3.profile.tabRestricted', empty: 'v3.profile.emptyRestricted', icon: ShieldAlert, source: 'mine' },
+  { id: 'hidden', key: 'v3.profile.tabHidden', empty: 'v3.profile.emptyHidden', icon: EyeOff, source: 'mine' },
+  { id: 'places', key: 'v3.profile.tabPlaces', empty: 'v3.profile.emptyPlaces', icon: MapPin, source: 'places' },
 ]
+
+const SOURCE_URL: Record<Source, string> = {
+  mine: '/api/reviews/mine',
+  shared: '/api/reviews/shared',
+  saved: '/api/reviews/saved',
+  places: '/api/favorites',
+}
 
 export default function ProfileView({
   userId, userInfo, firstName: rawFirstName, conversationCount,
@@ -310,11 +336,10 @@ function Stat({ value, label }: { value: number | null; label: string }) {
 /**
  * The tabbed content area.
  *
- * 🚨 THREE TABS, THREE GATED ENDPOINTS. Each tab is one real dataset behind one real route that
- * already applies the publication gate. There is no fourth tab because there is no fourth gated
- * endpoint — see the omission note at the top of this file for the Liked and Reviews tabs (the
- * latter is the SAME `reviews` table this product calls posts; two tabs over one dataset would
- * be a distinction the model does not make).
+ * 🚨 SIX TABS, FOUR OWNER-ONLY ENDPOINTS (P2b, 2026-09-28). Published / Restricted / Hidden are
+ * one partition of `/api/reviews/mine` (self-scoped by the session); Shared and Saved are the
+ * bearer-only `/api/reviews/shared` and `/saved`, which already drop hidden and held posts;
+ * Places is `/api/favorites`. Each endpoint is fetched once, when its first tab is opened.
  *
  * The grid/list switch is PRESENTATION: it re-arranges the rows a tab already holds. It fetches
  * nothing and it is not offered on the Places tab, whose rows have no media to grid.
@@ -323,41 +348,40 @@ function ProfileContent() {
   const { t } = useTranslation()
   const [tab, setTab] = useState(0)
   const [view, setView] = useState<'grid' | 'list'>('grid')
-  const [posts, setPosts] = useState<ReviewCard[] | null>(null)
-  const [saved, setSaved] = useState<ReviewCard[] | null>(null)
-  const [places, setPlaces] = useState<FavoritePlace[] | null>(null)
+  const [data, setData] = useState<Partial<Record<Source, (ReviewCard | FavoritePlace)[]>>>({})
   const [loading, setLoading] = useState(true)
   const [failed, setFailed] = useState(false)
 
-  const load = useCallback(async (index: number) => {
+  const current = TABS[tab]
+
+  const load = useCallback(async (source: Source) => {
     setFailed(false)
-    if ((index === 0 && posts) || (index === 1 && saved) || (index === 2 && places)) return
+    if (data[source]) return
     setLoading(true)
     try {
-      if (index === 0) {
-        const r = await fetch('/api/reviews/mine')
-        if (!r.ok) throw new Error('load')
-        setPosts(((await r.json()).reviews ?? []) as ReviewCard[])
-      } else if (index === 1) {
-        const r = await fetch('/api/reviews/saved')
-        if (!r.ok) throw new Error('load')
-        setSaved(((await r.json()).reviews ?? []) as ReviewCard[])
-      } else {
-        const r = await fetch('/api/favorites')
-        if (!r.ok) throw new Error('load')
-        setPlaces(((await r.json()).favorites ?? []) as FavoritePlace[])
-      }
+      const r = await fetch(SOURCE_URL[source])
+      if (!r.ok) throw new Error('load')
+      const body = await r.json()
+      const rows = (source === 'places' ? body.favorites : body.reviews) ?? []
+      setData((prev) => ({ ...prev, [source]: rows }))
     } catch {
       setFailed(true)
     } finally {
       setLoading(false)
     }
-  }, [posts, saved, places])
+  }, [data])
 
-  useEffect(() => { void load(tab) }, [tab, load])
+  useEffect(() => { void load(current.source) }, [current.source, load])
 
-  const rows = tab === 0 ? posts : tab === 1 ? saved : places
-  const emptyKey = tab === 0 ? 'v3.profile.emptyPosts' : tab === 1 ? 'v3.profile.emptySaved' : 'v3.profile.emptyPlaces'
+  const sourceRows = data[current.source] ?? null
+  const rows = sourceRows && current.source === 'mine'
+    ? postsInState(sourceRows as ReviewCard[], current.id as 'published' | 'restricted' | 'hidden')
+    : sourceRows
+  const emptyKey = current.empty
+  const isPlaces = current.id === 'places'
+  // One line of context on the two tabs a visitor never sees, so the owner knows why a post is
+  // there. The restricted wording is the neutral "not published publicly" — never an accusation.
+  const hintKey = current.id === 'restricted' ? 'v3.profile.hintRestricted' : current.id === 'hidden' ? 'v3.profile.hintHidden' : null
 
   return (
     <section className="v3-profile-card" data-profile-content aria-label={t('v3.profile.contentTitle')}>
@@ -368,8 +392,9 @@ function ProfileContent() {
         <div className="v3-scroll-x -mx-1 flex w-full min-w-0 gap-2 px-1 sm:w-auto sm:flex-1" role="group" aria-label={t('v3.profile.contentTitle')}>
           {TABS.map((item, i) => (
             <button
-              key={item.key}
+              key={item.id}
               type="button"
+              data-profile-tab={item.id}
               aria-pressed={i === tab}
               onClick={() => setTab(i)}
               className={`v3-chip v3-profile-tab flex-shrink-0 ${i === tab ? 'v3-chip-active' : ''}`}
@@ -381,7 +406,7 @@ function ProfileContent() {
         </div>
 
         <div className="flex flex-shrink-0 items-center justify-between gap-2 sm:justify-end">
-          {tab !== 2 && (
+          {!isPlaces && (
             <div className="flex items-center gap-1 rounded-xl p-1" style={{ background: 'var(--v3-panel)' }} role="group" aria-label={`${t('v3.profile.viewGrid')} / ${t('v3.profile.viewList')}`}>
               <button
                 type="button"
@@ -417,6 +442,12 @@ function ProfileContent() {
       </div>
 
       <div className="p-4 sm:p-5">
+        {hintKey && (
+          <p className="mb-3 text-[12.5px] leading-relaxed" data-profile-hint={current.id} style={{ color: 'var(--v3-fg-muted)' }}>
+            {t(hintKey)}
+          </p>
+        )}
+
         {loading && !rows && (
           <div className="flex items-center justify-center py-14">
             <Loader2 size={22} className="animate-spin" style={{ color: 'var(--v3-fg-muted)' }} />
@@ -428,7 +459,7 @@ function ProfileContent() {
         {!loading && !failed && rows && rows.length === 0 && <Empty text={t(emptyKey)} />}
 
         {!failed && rows && rows.length > 0 && (
-          tab === 2
+          isPlaces
             ? <PlaceList places={rows as FavoritePlace[]} />
             : view === 'grid'
               ? <ReviewGrid reviews={rows as ReviewCard[]} />

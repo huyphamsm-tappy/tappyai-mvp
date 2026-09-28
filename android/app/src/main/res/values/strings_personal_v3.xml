@@ -77,7 +77,9 @@
     <string name="profile_v3_stat_following">Following</string>
     <string name="profile_v3_stat_followers">Followers</string>
     <string name="profile_v3_stat_likes">Likes</string>
-    <string name="profile_v3_tab_posts">Posts</string>
+    <string name="profile_v3_tab_posts">Published</string>
+    <string name="profile_v3_tab_restricted">Restricted</string>
+    <string name="profile_v3_empty_restricted">No posts are restricted.</string>
     <string name="profile_v3_tab_saved">Saved</string>
     <string name="profile_v3_tab_places">Places</string>
     <string name="profile_v3_tab_liked">Liked</string>

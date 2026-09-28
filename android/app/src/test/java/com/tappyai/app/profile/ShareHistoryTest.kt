@@ -33,7 +33,7 @@ class ShareHistoryTest {
         assertTrue(api.contains("@GET(\"api/reviews/shared\")") && api.contains("@POST(\"api/reviews/{id}/share\")"))
         assertFalse(src("app/src/main/java/com/tappyai/app/reviews/data/ReviewsApi.kt").contains("reviews/shared"))
         val vm = src("app/src/main/java/com/tappyai/app/profile/ProfileHubContentViewModel.kt")
-        assertTrue(vm.contains("enum class ProfileContentTab { Posts, Liked, Saved, Hidden, Shared, Places }"))
+        assertTrue(vm.contains("enum class ProfileContentTab { Posts, Shared, Saved, Restricted, Hidden, Liked, Places }"))
         assertTrue(vm.contains("ProfileContentTab.Shared -> (collectionsRepository.getShared() as? NetworkResult.Success)?.also { shared = it.data } != null"))
         assertTrue("guests load nothing", vm.contains("if (anonymous || userId == null) return@launch"))
     }
@@ -65,6 +65,6 @@ class ShareHistoryTest {
             assertFalse("$f has no share collection", src("app/src/main/java/com/tappyai/app/$f").contains("getShared") || src("app/src/main/java/com/tappyai/app/$f").contains("ProfileContentTab"))
         }
         val vi = src("app/src/main/res/values-vi/strings_personal_v3.xml"); val en = src("app/src/main/res/values/strings_personal_v3.xml")
-        assertTrue(vi.contains("<string name=\"profile_v3_tab_shared\">Đã share</string>") && en.contains("name=\"profile_v3_tab_shared\"") && vi.contains("name=\"profile_v3_empty_shared\"") && en.contains("name=\"profile_v3_empty_shared\""))
+        assertTrue(vi.contains("<string name=\"profile_v3_tab_shared\">Đã chia sẻ</string>") && en.contains("name=\"profile_v3_tab_shared\"") && vi.contains("name=\"profile_v3_empty_shared\"") && en.contains("name=\"profile_v3_empty_shared\""))
     }
 }

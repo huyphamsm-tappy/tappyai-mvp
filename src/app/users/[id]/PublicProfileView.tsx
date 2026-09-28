@@ -55,7 +55,8 @@ import { createClient } from '@/lib/supabase/client'
 import LinkPoster from '@/components/LinkPoster'
 import { ClipViewer } from '@/app/reviews/ProfileTab'
 import { isShareOnlyName, type Review } from '@/app/reviews/feedShared'
-import { rejectCoverFile, uploadCover, removeCover } from '@/lib/profile/cover'
+import { rejectCoverFile, uploadCover, removeCover, CoverRequestError } from '@/lib/profile/cover'
+import { uploadErrorKey } from '@/lib/profile/uploadError'
 import { loadLiked, loadSaved, loadHidden } from './ownerCollections'
 
 type PublicTab = 'posts' | 'shares'
@@ -200,7 +201,9 @@ export default function PublicProfileView({ userId, viewer, onBack }: { userId: 
       const url = await uploadCover(file)
       setProfile(p => p ? { ...p, cover_url: url } : p)
     } catch (err) {
-      setCoverError(err instanceof Error && err.message ? err.message : t('v3.publicProfile.coverErrUpload'))
+      setCoverError(err instanceof Error && err.message ? err.message
+        : err instanceof CoverRequestError && uploadErrorKey(err.status) ? t(uploadErrorKey(err.status)!)
+        : t('v3.publicProfile.coverErrUpload'))
     } finally {
       setCoverBusy(false)
     }
@@ -213,7 +216,9 @@ export default function PublicProfileView({ userId, viewer, onBack }: { userId: 
       await removeCover()
       setProfile(p => p ? { ...p, cover_url: null } : p)
     } catch (err) {
-      setCoverError(err instanceof Error && err.message ? err.message : t('v3.publicProfile.coverErrUpload'))
+      setCoverError(err instanceof Error && err.message ? err.message
+        : err instanceof CoverRequestError && uploadErrorKey(err.status) ? t(uploadErrorKey(err.status)!)
+        : t('v3.publicProfile.coverErrUpload'))
     } finally {
       setCoverBusy(false)
     }

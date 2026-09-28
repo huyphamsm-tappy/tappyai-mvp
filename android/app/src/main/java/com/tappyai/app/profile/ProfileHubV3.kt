@@ -197,6 +197,8 @@ internal fun ProfileContentV3(
     shared: List<Review>?,
     places: List<FavoritePlace>?,
     loading: Boolean,
+    /** P2b: own posts the safety gate has not published — the `Bị hạn chế` chip. */
+    restricted: List<Review>? = null,
     failed: Boolean,
     onCompose: () -> Unit,
     /** A tile → the clip, in ITS collection's pager (own posts / hidden page `/mine`; saved pages `/saved`; liked opens the detail). */
@@ -232,6 +234,7 @@ internal fun ProfileContentV3(
                 ProfileContentTab.Liked -> liked
                 ProfileContentTab.Saved -> saved
                 ProfileContentTab.Hidden -> hidden
+                ProfileContentTab.Restricted -> restricted
                 ProfileContentTab.Shared -> shared
                 ProfileContentTab.Places -> places
             }
@@ -259,6 +262,7 @@ private val ProfileContentTab.labelRes: Int
         ProfileContentTab.Liked -> R.string.profile_v3_tab_liked
         ProfileContentTab.Saved -> R.string.profile_v3_tab_saved
         ProfileContentTab.Hidden -> R.string.profile_v3_tab_hidden
+        ProfileContentTab.Restricted -> R.string.profile_v3_tab_restricted
         ProfileContentTab.Shared -> R.string.profile_v3_tab_shared
         ProfileContentTab.Places -> R.string.profile_v3_tab_places
     }
@@ -269,6 +273,7 @@ private val ProfileContentTab.emptyRes: Int
         ProfileContentTab.Liked -> R.string.profile_v3_empty_liked
         ProfileContentTab.Saved -> R.string.profile_v3_empty_saved
         ProfileContentTab.Hidden -> R.string.profile_v3_empty_hidden
+        ProfileContentTab.Restricted -> R.string.profile_v3_empty_restricted
         ProfileContentTab.Shared -> R.string.profile_v3_empty_shared
         ProfileContentTab.Places -> R.string.profile_v3_empty_places
     }

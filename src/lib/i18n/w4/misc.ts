@@ -124,6 +124,8 @@ export const vi: Record<string, string> = {
   'editProfile.coverNone': 'Chưa có ảnh bìa',
   'editProfile.err.coverTooLarge': 'Ảnh bìa tối đa 5MB',
   'editProfile.err.cover': 'Không thể cập nhật ảnh bìa',
+  'editProfile.err.requestTooLarge': 'Ảnh quá lớn để tải lên. Hãy chọn ảnh dưới 4MB.',
+  'editProfile.err.uploadUnavailable': 'Dịch vụ tải ảnh đang tạm gián đoạn. Ảnh của bạn chưa được lưu — vui lòng thử lại sau.',
 
   // Saved
   'saved.title': 'Đã lưu',
@@ -251,6 +253,8 @@ export const en: Record<string, string> = {
   'editProfile.coverNone': 'No cover photo yet',
   'editProfile.err.coverTooLarge': 'Cover photos are limited to 5MB',
   'editProfile.err.cover': "Couldn't update the cover photo",
+  'editProfile.err.requestTooLarge': 'That image is too large to upload. Please choose one under 4MB.',
+  'editProfile.err.uploadUnavailable': "Photo uploads are temporarily unavailable. Your photo wasn't saved — please try again later.",
 
   'saved.title': 'Saved',
 

@@ -118,10 +118,11 @@ class PersonalSurfacesV3Test {
     fun `Self profile collections - six real destinations, each on its own read, private to the own hub`() {
         // The enum IS the collection list. "Đã share" joined on 2026-09-15 once `review_shares` and
         // its bearer-only route existed — never before, when a share left only a telemetry event.
-        assertTrue(hubVm.contains("enum class ProfileContentTab { Posts, Liked, Saved, Hidden, Shared, Places }"))
+        assertTrue(hubVm.contains("enum class ProfileContentTab { Posts, Shared, Saved, Restricted, Hidden, Liked, Places }"))
         assertTrue(hubVm.contains("ProfileContentTab.Shared -> (collectionsRepository.getShared() as? NetworkResult.Success)?.also { shared = it.data } != null"))
         // Data sources: own posts + hidden are the two halves of `/mine`; liked is the gated route; saved / favorites as before.
-        assertTrue(hubVm.contains("val posts: List<Review>? get() = mine?.filterNot { it.isHidden }"))
+        assertTrue(hubVm.contains("val posts: List<Review>? get() = mine?.filter { !it.isHidden && !it.isHeldByModeration() }"))
+        assertTrue(hubVm.contains("val restricted: List<Review>? get() = mine?.filter { !it.isHidden && it.isHeldByModeration() }"))
         assertTrue(hubVm.contains("val hidden: List<Review>? get() = mine?.filter { it.isHidden }"))
         assertTrue(hubVm.contains("ProfileContentTab.Liked -> (collectionsRepository.getLiked() as? NetworkResult.Success)?.also { liked = it.data } != null"))
         assertTrue(hubVm.contains("ProfileContentTab.Saved -> (reviewsRepository.getSaved() as? NetworkResult.Success)?.also { saved = it.data } != null"))
@@ -131,7 +132,7 @@ class PersonalSurfacesV3Test {
         // Identity: the authenticated session, never a hardcoded id; guests load nothing.
         assertTrue(hubVm.contains("val userId = authRepository.currentUserId()") && hubVm.contains("if (anonymous || userId == null) return@launch"))
         // Empty state per collection, and the chip labels, are one exhaustive mapping each.
-        for (tab in listOf("Posts", "Liked", "Saved", "Hidden", "Shared", "Places")) {
+        for (tab in listOf("Posts", "Liked", "Saved", "Restricted", "Hidden", "Shared", "Places")) {
             assertTrue("empty copy for $tab", Regex("""ProfileContentTab\.$tab -> R\.string\.profile_v3_empty_\w+""").containsMatchIn(hubV3))
             assertTrue("chip label for $tab", Regex("""ProfileContentTab\.$tab -> R\.string\.profile_v3_tab_\w+""").containsMatchIn(hubV3))
         }

@@ -6,9 +6,9 @@ import Image from '@/components/media/SafeImage'
 import { useState } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import {
-  Home, PlayCircle, Search, Upload, Users, Bookmark, History,
+  Home, PlayCircle, Search, Upload, Users,
   Tag, Store, Wrench, CalendarRange, ShieldCheck, Inbox as InboxIcon,
-  Bell, Sun, Moon, UserCircle, QrCode, Wallet, Settings, Languages, HelpCircle,
+  Bell, Sun, Moon, UserCircle, QrCode, Wallet,
   LogOut, Sparkles, MessageCircle, Grid3x3, Plus, ChevronRight,
   Music2, Sparkle, PenLine,
 } from 'lucide-react'
@@ -142,14 +142,15 @@ const GROUPS: NavGroup[] = [
       // points at the page it is named for. (The other of the two was "My Reviews"; both it
       // and the page they shared have since been removed — see the note below.)
       { href: '/social', labelKey: 'v3.nav.following', icon: Users },
-      { href: '/profile/favorites', labelKey: 'v3.nav.saved', icon: Bookmark },
+      // P2c (owner, 2026-09-28): Saved and History LEFT the sidebar. Both are rows on the Profile
+      // hub (`accountRows()` in ProfileRows: /profile/favorites, /profile/history), which is also
+      // the only way in below `lg` where this sidebar is hidden.
       // 🚨 "MY REVIEWS" IS GONE, AND IT WAS A DUPLICATE RATHER THAN A LOSS.
       // It pointed at `/profile/posts`, whose content is the same user-posted
       // clips Explore already shows — one more surface over the `reviews` table,
       // with its own copy of the tile, the delete and the hide. That page is gone
       // too: the profile grid already renders an author's own and hidden posts and
       // offers the same delete/hide. The post system underneath is untouched.
-      { href: '/profile/history', labelKey: 'v3.nav.history', icon: History },
     ],
   },
   {
@@ -184,20 +185,10 @@ const GROUPS: NavGroup[] = [
       ...(SHOW_WALLET
         ? [{ href: '/subscription', labelKey: 'v3.nav.wallet', icon: Wallet }]
         : []),
-    ],
-  },
-  {
-    titleKey: 'v3.nav.settings',
-    items: [
-      // 🚨 This read `nav.settings` — a key with no `v3.` prefix and no entry in any dictionary,
-      // so the row rendered the literal string "nav.settings" on screen. It sat below the
-      // sidebar's scroll fold, which is why every review of a screenshot missed it.
-      { href: '/profile/settings', labelKey: 'v3.action.settings', icon: Settings },
-      { href: '/profile/settings', labelKey: 'v3.nav.language', icon: Languages },
-      { href: '/how-to-use', labelKey: 'v3.nav.help', icon: HelpCircle },
-      // UAT3 (2026-09-27): a "Feedback" row sat here, linking to `/profile` since e661f17 — no feedback
-      // form, route or table exists, so it opened the profile. Removed; per-reply 👍/👎/report
-      // (`/api/message-feedback`) is the only feedback channel today.
+      // P2c (owner, 2026-09-28): the "Cài đặt & khác" group is GONE. Settings, Language and Help
+      // Center are reached from the Profile hub's Settings row (/profile/settings holds the
+      // language switcher and the /how-to-use link). The session row below is the only survivor,
+      // so it moved here rather than leaving a heading over one row.
       /**
        * 🚨 THIS ROW SAID "LOGOUT" TO EVERYONE, AND IT WAS A LINK TO `/login`.
        *

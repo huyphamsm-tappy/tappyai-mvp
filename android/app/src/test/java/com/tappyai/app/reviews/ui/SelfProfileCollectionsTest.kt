@@ -39,7 +39,7 @@ class SelfProfileCollectionsTest {
         assertTrue(s.contains("CreatorProfileTab.Posts -> R.string.reviews_self_tab_posts") && s.contains("CreatorProfileTab.Liked -> R.string.profile_v3_tab_liked") &&
             s.contains("CreatorProfileTab.Saved -> R.string.reviews_self_tab_saved") && s.contains("CreatorProfileTab.Hidden -> R.string.profile_v3_tab_hidden") && s.contains("CreatorProfileTab.Shared -> R.string.profile_v3_tab_shared"))
         val vi = raw("app/src/main/res/values-vi/strings_reviews.xml") + raw("app/src/main/res/values-vi/strings_personal_v3.xml")
-        listOf(">Bài viết<", ">Đã thích<", ">Đã lưu<", ">Đã ẩn<", ">Đã share<").forEach { assertTrue(it, vi.contains(it)) }
+        listOf(">Bài viết<", ">Đã thích<", ">Đã lưu<", ">Đã ẩn<", ">Đã chia sẻ<").forEach { assertTrue(it, vi.contains(it)) }
         assertFalse("no sixth tab invented", s.contains("CreatorProfileTab.Places"))
     }
 

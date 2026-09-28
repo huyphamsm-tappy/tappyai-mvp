@@ -338,12 +338,30 @@ describe('the AI-first chrome', () => {
     const { container } = renderShell()
     const hrefs = [...container.querySelectorAll('aside a[href]')].map(a => a.getAttribute('href'))
     for (const route of ['/', '/reviews', '/deals', '/profile/notifications', '/tools', '/planner',
-                         '/recommendations', '/social', '/profile/favorites', '/profile/history',
-                         '/profile', '/subscription', '/profile/settings']) {
+                         '/recommendations', '/social', '/profile', '/subscription']) {
       expect(hrefs, `${route} must stay in the sidebar`).toContain(route)
     }
     // ...and must not have duplicated one.
     expect(hrefs.filter(h => h === '/profile/notifications').length, 'one Inbox row, not two').toBe(1)
     expect(hrefs.filter(h => h === '/deals').length, 'one Deals row, not two').toBe(1)
+  })
+
+  it('P2c: Settings, Language, Help Center, Saved and History are NOT sidebar rows (owner, 2026-09-28)', () => {
+    const { container } = renderShell()
+    const hrefs = [...container.querySelectorAll('aside a[href]')].map(a => a.getAttribute('href'))
+    for (const route of ['/profile/settings', '/how-to-use', '/profile/favorites', '/profile/history']) {
+      expect(hrefs, `${route} left the sidebar`).not.toContain(route)
+    }
+    const src = read('src/components/v3/V3Shell.tsx')
+    for (const key of ["'v3.nav.settings'", "'v3.nav.language'", "'v3.nav.help'", "'v3.nav.saved'", "'v3.nav.history'", "'v3.action.settings'"]) {
+      expect(src, key).not.toContain(`labelKey: ${key}`)
+      expect(src, key).not.toContain(`titleKey: ${key}`)
+    }
+    // …and every one of them is still reachable from the Profile / Tài khoản & Cài đặt hub.
+    const rows = read('src/app/(app)/profile/ProfileRows.tsx')
+    for (const href of ["href: '/profile/settings'", "href: '/profile/favorites'", "href: '/profile/history'"]) expect(rows, href).toContain(href)
+    const settings = read('src/app/(app)/profile/settings/SettingsView.tsx')
+    expect(settings, 'language lives on /profile/settings').toContain('<LanguageSwitcher')
+    expect(settings, 'help lives on /profile/settings').toContain('href="/how-to-use"')
   })
 })

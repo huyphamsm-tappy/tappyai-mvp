@@ -35,6 +35,7 @@ import {
 import { createAdminClient } from '@/lib/supabase/admin'
 import { refuseAnonymousSocialWrite } from '@/lib/auth/socialWriteAccess'
 import { MAX_PHOTO_SIZE_MB } from '@/lib/config/product'
+import { isUploadServiceUnavailable } from '@/lib/media/uploadAvailability'
 
 // ── One profile row, every reader ────────────────────────────────────────────
 //
@@ -332,6 +333,11 @@ async function uploadCover(
     )
   } catch (e) {
     console.error('[profile] cover upload failed:', e instanceof Error ? e.message : e)
+    // P2a: a credential/storage outage (e.g. the WIF provider refusing a preview deployment)
+    // is reported as the SERVICE being unavailable, so the UI does not invite a futile retry.
+    if (isUploadServiceUnavailable(e)) {
+      return NextResponse.json({ error: 'upload_unavailable', message: serverMessage('media.uploadUnavailable', requestLocale(req)) }, { status: 503 })
+    }
     return NextResponse.json({ error: 'upload_failed', message: serverMessage('media.uploadFailed', requestLocale(req)) }, { status: 500 })
   }
 
@@ -407,6 +413,11 @@ export async function POST(req: NextRequest) {
     )
   } catch (e) {
     console.error('[profile] avatar upload failed:', e instanceof Error ? e.message : e)
+    // P2a: a credential/storage outage (e.g. the WIF provider refusing a preview deployment)
+    // is reported as the SERVICE being unavailable, so the UI does not invite a futile retry.
+    if (isUploadServiceUnavailable(e)) {
+      return NextResponse.json({ error: 'upload_unavailable', message: serverMessage('media.uploadUnavailable', requestLocale(req)) }, { status: 503 })
+    }
     return NextResponse.json({ error: 'upload_failed', message: serverMessage('media.uploadFailed', requestLocale(req)) }, { status: 500 })
   }
 

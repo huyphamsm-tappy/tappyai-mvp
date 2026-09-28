@@ -227,7 +227,8 @@ describe('the data boundary is unchanged', () => {
   it('the existing Saved navigation still points here', () => {
     const shell = readFileSync('src/components/v3/V3Shell.tsx', 'utf8')
     const rows = readFileSync('src/app/(app)/profile/ProfileRows.tsx', 'utf8')
-    expect(shell).toContain("href: '/profile/favorites'")
-    expect(rows, 'Profile links to Saved rather than duplicating the hub').toContain("href: '/profile/favorites'")
+    // P2c (owner, 2026-09-28): the sidebar row was removed; the Profile hub row is the way in.
+    expect(shell).not.toContain("href: '/profile/favorites'")
+    expect(rows,'Profile links to Saved rather than duplicating the hub').toContain("href: '/profile/favorites'")
   })
 })

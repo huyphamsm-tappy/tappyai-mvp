@@ -108,6 +108,51 @@ describe('cover on the edit form', () => {
     expect(refresh).not.toHaveBeenCalled()
   })
 
+  // P2a (2026-09-28): failures the route never handles arrive with no JSON message.
+  const stubRaw = (status: number) => {
+    vi.stubGlobal('fetch', vi.fn(async (_url: string, init?: RequestInit) => {
+      if ((init?.method ?? 'GET') === 'GET') return { ok: true, json: async () => ({ full_name: 'Huy Pham', avatar_url: '', email: 'a@b', bio: '', cover_url: COVER }) } as Response
+      return { ok: false, status, json: async () => { throw new SyntaxError('not json') } } as unknown as Response
+    }))
+  }
+  const avatarInput = () => document.querySelector('input[type=file]:not([data-edit-cover-input])') as HTMLInputElement
+  const jpeg = () => new File([new Uint8Array([1, 2, 3])], 'x.jpg', { type: 'image/jpeg' })
+
+  it('a platform 413 on the cover says the image is too large, not a generic failure', async () => {
+    stubRaw(413)
+    await load()
+    fireEvent.change(input(), { target: { files: [jpeg()] } })
+    await screen.findByText(/Ảnh quá lớn để tải lên|too large to upload/)
+  })
+
+  it('an unavailable upload service (503, no body) is named on the cover AND the avatar', async () => {
+    stubRaw(503)
+    await load()
+    fireEvent.change(input(), { target: { files: [jpeg()] } })
+    await screen.findByText(/tạm gián đoạn|temporarily unavailable/)
+    cleanup()
+    stubRaw(503)
+    await load()
+    fireEvent.change(avatarInput(), { target: { files: [jpeg()] } })
+    await screen.findByText(/tạm gián đoạn|temporarily unavailable/)
+  })
+
+  it('the server\'s own 503 message is shown verbatim on the avatar', async () => {
+    stub({ full_name: 'Huy Pham', avatar_url: '', email: 'a@b', bio: '' }, { status: 503, body: { error: 'upload_unavailable', message: 'Dịch vụ tải ảnh đang tạm gián đoạn. X' } })
+    await load()
+    fireEvent.change(avatarInput(), { target: { files: [jpeg()] } })
+    await screen.findByText(/Dịch vụ tải ảnh đang tạm gián đoạn\. X/)
+  })
+
+  it('the avatar input is reset after a pick, so re-picking the same file after a failure retries', async () => {
+    stubRaw(503)
+    await load()
+    const el = avatarInput()
+    fireEvent.change(el, { target: { files: [jpeg()] } })
+    await screen.findByText(/tạm gián đoạn|temporarily unavailable/)
+    expect(el.value).toBe('')
+  })
+
   it('the name/bio save is untouched — PATCH still carries full_name and bio', async () => {
     stub({ full_name: 'Huy Pham', avatar_url: '', email: 'a@b', bio: 'x', cover_url: null })
     await load()

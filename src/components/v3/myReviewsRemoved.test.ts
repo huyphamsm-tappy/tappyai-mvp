@@ -51,13 +51,16 @@ describe('no navigation offers My Reviews', () => {
 })
 
 describe('the post system Explore depends on is untouched', () => {
-  it('the sidebar still offers Explore, Saved and History', () => {
+  it('the sidebar still offers Explore and Post; Saved and History live on the Profile hub', () => {
     // The row was removed from the middle of a group; its neighbours must not
-    // have gone with it.
+    // have gone with it. P2c (owner, 2026-09-28) then moved Saved and History off the
+    // sidebar — they stay reachable as Profile rows.
     const src = code(read('src/components/v3/V3Shell.tsx'))
-    for (const key of ['v3.nav.explore', 'v3.nav.saved', 'v3.nav.history', 'v3.nav.post']) {
+    for (const key of ['v3.nav.explore', 'v3.nav.post']) {
       expect(src, key).toContain(key)
     }
+    const rows = code(read('src/app/(app)/profile/ProfileRows.tsx'))
+    for (const href of ["href: '/profile/favorites'", "href: '/profile/history'"]) expect(rows, href).toContain(href)
   })
 
   it('the My Reviews page itself is gone', () => {
