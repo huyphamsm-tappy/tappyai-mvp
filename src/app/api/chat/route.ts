@@ -85,6 +85,7 @@ import { statedDistrict } from '@/lib/ai/districts'
 import { filterTransientMemory } from '@/lib/ai/consultative/memoryTransientFilter'
 import { plainRequestTopic, appendHistoryTopic } from '@/lib/ai/consultative/memoryTopic'
 import { deriveSearchNow, SPECIFIC_DATE } from '@/lib/ai/consultative/searchNow'
+import { tripAskAfter } from '@/lib/ai/consultative/tripFacts'
 import { planPresearch, planFlightPresearch, type FlightPresearchPlan, presearchMessages, presearchFrames, prefixBody, deferredBody, searchingFrame, type PresearchOutcome, type PresearchPlan } from '@/lib/ai/consultative/presearch'
 import { wantsMoreFromSet, reusablePlaceSearch, type PlaceSearchEvidence } from '@/lib/ai/consultative/moreFromSet'
 import { coercePlaceType } from '@/lib/ai/tools/placeType'
@@ -106,6 +107,9 @@ import { cannedChitchat, cannedCarriedFact, cannedDataStreamResponse } from '@/l
 // plan change. TURN_DEADLINE_MS keeps 10 s of headroom for the finish frame and post-stream guards.
 export const maxDuration = 120
 const TURN_DEADLINE_MS = 110_000
+
+/** A travel turn that is a TRIP (going somewhere), not a single hotel or ticket lookup. Folded text. */
+const TRIP_WORDS = /\b(?:du lich|di choi|chuyen di|lich trinh|ke hoach di|di [a-z]+ \d+ ngay|\d+\s*ngay\s*\d*\s*dem|trip|travel|vacation|holiday)\b/
 
 export async function POST(req: Request) {
   const startTime = Date.now()
@@ -453,6 +457,7 @@ export async function POST(req: Request) {
    */
   /** Answer first (owner 2026-09-28): the ONE question an actionable place turn asks at the END of its reply. */
   let gateAskAfter: { q: string; options: string[] } | null = null
+  let gateDomain: string | null = null
   let clarifyGate = (() => {
     if (cannedEarly !== null || intent === 'chitchat' || !consultativeV1Enabled() || clipRef || hasImage || decisionStage === 'confirmation') return null
     // A turn that starts a new consultation is gated on its own words (see ownDomainSwitch).
@@ -463,21 +468,24 @@ export async function POST(req: Request) {
     // on food ("tìm giùm cái ốp 17 promax uag") was asked "dưới 100k/người" — the thread's food buckets.
     const own = ownDomainSwitch ? a : assessActionability({ messages: messages.slice(-1), hasGps: !!userLocation, lang, lastAssistantText: null, planningIntent, forcedTool, movieRecommend })
     const ask = own.domain && own.domain !== a.domain ? (own.askAfter ?? null) : (a.askAfter ?? null)
+    gateDomain = own.domain ?? a.domain
     // One question per consultation: a reply that already ended by asking is not followed by another.
     gateAskAfter = ask && !(lastAssistantText && endsWithQuestion(lastAssistantText)) ? ask : null
     return a.actionable ? null : a
   })()
   /**
-   * UAT 2026-09-28 (trip, "3 ngày 2 người, đang có 20 triệu"): a trip is answered first, but nothing in
-   * it can be booked without WHEN and FROM WHERE / HOW — the plan never asked, so no fare or dated room
-   * could follow. One question at the end, only while the thread has no date.
+   * UAT 2026-09-28 (trip, "3 ngày 2 người, đang có 20 triệu" / "đi du lịch Đà Nẵng"): a trip is answered
+   * first, but nothing in it can be booked without WHEN, FROM WHERE and HOW — the plan never asked, and
+   * a travel turn was asked a hotel budget instead. The one closing question names exactly what the
+   * thread still lacks (tripFacts.ts); it replaces the gate's budget question on a trip.
    */
-  if (!gateAskAfter && planningIntent === 'trip' && consultativeV1Enabled()) {
+  if (consultativeV1Enabled() && !(lastAssistantText && endsWithQuestion(lastAssistantText))) {
     const threadUser = messages.filter(m => m.role === 'user' && typeof m.content === 'string').map(m => normalizeVN((m.content as string).toLowerCase())).join(' \n ')
-    const hasDate = SPECIFIC_DATE.test(threadUser) || /\b(thang|ngay)\s+\d{1,2}\b|\bcuoi tuan\b|\btuan (sau|toi)\b/.test(threadUser)
-    const hasOrigin = /\b(tu|xuat phat|from)\s+[a-z]/.test(threadUser)
-    if (!hasDate && !(lastAssistantText && endsWithQuestion(lastAssistantText))) {
-      gateAskAfter = lang === 'en' ? { q: 'Travel dates?', options: [] } : { q: hasOrigin ? 'Ngày đi, bay hay xe?' : 'Ngày đi?', options: [] }
+    const lastFolded = normalizeVN(lastText.toLowerCase())
+    const tripTurn = planningIntent === 'trip' || (gateDomain === 'travel' && TRIP_WORDS.test(lastFolded))
+    if (tripTurn) {
+      const trip = tripAskAfter(threadUser, lang)
+      if (trip) gateAskAfter = trip
     }
   }
   // Re-evaluated with memory in the account branch (memory is a signal); a `let` for that reason.
