@@ -142,6 +142,40 @@ struct FollowResponse: Decodable, Sendable {
     let followerCount: Int
 }
 
+// MARK: - Report a review
+
+/// `POST /api/reviews/[id]/report` reasons — the server's whitelist, in web's menu order
+/// (`src/lib/reviews/reportReasons.ts`). No free-text field exists.
+/// Named apart from Music's `ReportReason`, a different endpoint with a different list.
+enum ReviewReportReason: String, CaseIterable, Sendable, Identifiable {
+    case spam, harassment, inappropriate, copyright, misinformation, violence, other
+
+    var id: String { rawValue }
+    var labelKey: String { "review.report.reason.\(rawValue)" }
+}
+
+/// `{ ok, reported, alreadyReported? }` — a repeat report of the same reason is a 200 too.
+struct ReviewReportResponse: Decodable, Sendable {
+    let ok: Bool?
+    let reported: Bool?
+    let alreadyReported: Bool?
+}
+
+/// What the reporter is told (web `alert(reportThanks | reportFailed)`). A duplicate counts as
+/// sent. Any failure — including a server without the route (404) or an anonymous session
+/// (403 `account_required`) — is "couldn't send", never a crash or a silent no-op.
+enum ReviewReportOutcome: Equatable, Sendable {
+    case sent
+    case failed
+
+    static func from(_ result: Result<ReviewReportResponse, Error>) -> ReviewReportOutcome {
+        if case .success = result { return .sent }
+        return .failed
+    }
+
+    var messageKey: String { self == .sent ? "review.report.thanks" : "review.report.failed" }
+}
+
 enum FeedSort: String, CaseIterable, Sendable {
     case trending
     case latest

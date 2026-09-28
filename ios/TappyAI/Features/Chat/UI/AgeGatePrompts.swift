@@ -67,15 +67,65 @@ struct GuestAgeDeclarationPrompt: View {
     }
 }
 
-/// Account: the server refused with `age_verification_required` (no date of birth on file).
-/// Same fields and rules as web `AgeCheckView`: day, month, year → `PATCH /api/profile`.
+/// What the blocked (`age_ineligible`) panel offers. Guests get none of it: their declaration is
+/// local and web offers them no correction either.
+struct AgeBlockedState: Equatable {
+    var isGuest = true
+    var canCorrect = true
+    var correcting = false
+
+    var offersCorrection: Bool { !isGuest && canCorrect }
+    var showsSupport: Bool { !isGuest && !canCorrect }
+}
+
+/// Under 18 (web `AgeCheckView` blocked state): the refusal, then for an account either
+/// "I entered the wrong date" or — once the correction is used — the support address.
+struct AgeBlockedPanel: View {
+    let message: String?
+    let state: AgeBlockedState
+    let onCorrect: () -> Void
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: Spacing.xs) {
+            Text("chat.age.blocked.title")
+                .font(TappyFont.bodyEmphasis)
+                .foregroundStyle(TappyColor.textPrimary)
+            Text(message ?? NSLocalizedString("chat.age.blocked.desc", comment: ""))
+                .font(TappyFont.callout)
+                .foregroundStyle(TappyColor.textSecondary)
+            if state.offersCorrection {
+                AgeGateButton(titleKey: "chat.age.correct.cta", filled: false, enabled: true, action: onCorrect)
+            } else if state.showsSupport {
+                Text("chat.age.blocked.exhausted")
+                    .font(TappyFont.caption)
+                    .foregroundStyle(TappyColor.textSecondary)
+                if let url = URL(string: "mailto:\(AgeGateSupport.email)") {
+                    Link(AgeGateSupport.email, destination: url)
+                        .font(TappyFont.caption)
+                        .foregroundStyle(TappyColor.primary)
+                }
+            }
+        }
+        .padding(Spacing.sm)
+        .background(TappyColor.surface)
+        .clipShape(RoundedRectangle(cornerRadius: Radius.md, style: .continuous))
+    }
+}
+
+/// Account: the server refused with `age_verification_required` (no date of birth on file), or a
+/// blocked account is correcting it. Same fields and rules as web `AgeCheckView`: day, month,
+/// year → `PATCH /api/profile`.
 struct DateOfBirthPrompt: View {
+    enum Mode { case firstEntry, correction }
+
     let serverMessage: String?
     let submitting: Bool
     let formError: String?
     let onSubmit: (_ day: String, _ month: String, _ year: String) -> Void
     /// Any field changed: the error about the previous attempt is cleared.
     var onEdit: () -> Void = {}
+    var mode: Mode = .firstEntry
+    var onCancel: (() -> Void)? = nil
 
     @State private var day = ""
     @State private var month = ""
@@ -92,12 +142,18 @@ struct DateOfBirthPrompt: View {
         onSubmit(day, month, year)
     }
 
+    private var titleKey: LocalizedStringKey { mode == .correction ? "chat.age.correct.title" : "chat.age.dob.title" }
+    private var descKey: String { mode == .correction ? "chat.age.correct.desc" : "chat.age.dob.desc" }
+    private var submitKey: LocalizedStringKey {
+        submitting ? "chat.age.dob.submitting" : (mode == .correction ? "chat.age.correct.submit" : "chat.age.dob.submit")
+    }
+
     var body: some View {
         VStack(alignment: .leading, spacing: Spacing.sm) {
-            Text("chat.age.dob.title")
+            Text(titleKey)
                 .font(TappyFont.bodyEmphasis)
                 .foregroundStyle(TappyColor.textPrimary)
-            Text(serverMessage ?? NSLocalizedString("chat.age.dob.desc", comment: ""))
+            Text(serverMessage ?? NSLocalizedString(descKey, comment: ""))
                 .font(TappyFont.callout)
                 .foregroundStyle(TappyColor.textSecondary)
 
@@ -117,17 +173,22 @@ struct DateOfBirthPrompt: View {
                 .font(TappyFont.caption)
                 .foregroundStyle(TappyColor.textSecondary)
 
-            AgeGateButton(titleKey: submitting ? "chat.age.dob.submitting" : "chat.age.dob.submit",
-                          filled: true, enabled: canSubmit, action: submit)
+            HStack(spacing: Spacing.xs) {
+                AgeGateButton(titleKey: submitKey, filled: true, enabled: canSubmit, action: submit)
+                if let onCancel {
+                    AgeGateButton(titleKey: "common.cancel", filled: false, enabled: !submitting, action: onCancel)
+                }
+            }
         }
-        // The number pad has no return key: Done, next field and Continue sit above it, so the
-        // keyboard can neither trap the user nor cover the Continue button.
+        // The number pad has no return key: Done and Continue sit above it, so the keyboard can
+        // neither trap the user nor cover the Continue button.
         .toolbar {
             if focusedField != nil {
                 ToolbarItemGroup(placement: .keyboard) {
                     Button(NSLocalizedString("common.done", comment: "")) { focusedField = nil }
                     Spacer()
-                    Button(NSLocalizedString("chat.age.dob.submit", comment: ""), action: submit)
+                    Button(NSLocalizedString(mode == .correction ? "chat.age.correct.submit" : "chat.age.dob.submit",
+                                             comment: ""), action: submit)
                         .disabled(!canSubmit)
                 }
             }

@@ -207,6 +207,20 @@ struct ReviewsService: Sendable {
         return try await api.send(endpoint, as: FollowResponse.self)
     }
 
+    // MARK: - Report review
+
+    /// `POST /api/reviews/{id}/report {"reason": …}` — account session required.
+    func reportReview(reviewId: String, reason: ReviewReportReason) async throws -> ReviewReportResponse {
+        let body = try JSONSerialization.data(withJSONObject: ["reason": reason.rawValue])
+        let endpoint = Endpoint(
+            path: "/api/reviews/\(reviewId)/report",
+            method: .post,
+            body: body,
+            requiresAuth: true
+        )
+        return try await api.send(endpoint, as: ReviewReportResponse.self)
+    }
+
     // MARK: - Delete review
 
     func deleteReview(reviewId: String) async throws {

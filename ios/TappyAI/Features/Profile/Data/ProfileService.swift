@@ -35,6 +35,13 @@ struct ProfileService {
         return try await api.send(endpoint, as: DateOfBirthUpdateResponse.self)
     }
 
+    /// The account's age status (`GET /api/profile` → `ageStatus`, `canCorrectAge`); the raw date of
+    /// birth is never returned.
+    func fetchAgeStatus() async throws -> DateOfBirthUpdateResponse {
+        let endpoint = Endpoint(path: "/api/profile", requiresAuth: true)
+        return try await api.send(endpoint, as: DateOfBirthUpdateResponse.self)
+    }
+
     func uploadAvatar(_ data: Data, boundary: String) async throws -> String? {
         let endpoint = Endpoint(
             path: "/api/profile",

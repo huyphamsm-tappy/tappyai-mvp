@@ -73,24 +73,33 @@ final class ChatViewModel: AppObservableObject {
     let planShare: PlanSharing?
 
     /// Saves a signed-in user's date of birth (`PATCH /api/profile`) and returns the server's
-    /// `ageStatus`. Nil only where no account flow exists (tests that never hit the gate).
-    typealias DateOfBirthSaver = @Sendable (String) async throws -> AgeStatus
+    /// `ageStatus` / `canCorrectAge`. Nil only where no account flow exists (tests that never hit the gate).
+    typealias DateOfBirthSaver = @Sendable (String) async throws -> DateOfBirthUpdateResponse
+    /// Reads the account's `ageStatus` / `canCorrectAge` (`GET /api/profile`).
+    typealias AgeStatusLoader = @Sendable () async throws -> DateOfBirthUpdateResponse
     private let saveDateOfBirth: DateOfBirthSaver?
+    private let loadAgeStatus: AgeStatusLoader?
     private let guestAge: GuestAgeStore
 
     /// Set while the date of birth is being saved; the form shows its "Saving…" state.
     @AppPublished var ageSubmitting: Bool = false
     /// The form's inline error (invalid date, save failed, correction already used).
     @AppPublished var ageFormError: String? = nil
+    /// Blocked account: whether "I entered the wrong date" is offered (server `canCorrectAge`).
+    @AppPublished var canCorrectAge: Bool = true
+    /// Blocked account: the correction form is open.
+    @AppPublished var ageCorrecting: Bool = false
 
     init(service: ChatService, session: SessionStore, category: String = "general",
          conversationId: String? = nil, savedMessages: [Conversation.ConversationMessage]? = nil,
          planShare: PlanSharing? = nil, saveDateOfBirth: DateOfBirthSaver? = nil,
+         loadAgeStatus: AgeStatusLoader? = nil,
          guestAge: GuestAgeStore = GuestAgeStore()) {
         self.service = service
         self.session = session
         self.planShare = planShare
         self.saveDateOfBirth = saveDateOfBirth
+        self.loadAgeStatus = loadAgeStatus
         self.guestAge = guestAge
         self.category = category
         self.conversationId = conversationId
@@ -150,8 +159,8 @@ final class ChatViewModel: AppObservableObject {
         retry()
     }
 
-    /// The signed-in user entered a date of birth: save it, then resend the turn if the server now
-    /// says eligible. Under 18 → the blocked state; nothing is resent.
+    /// The signed-in user entered (or corrected) a date of birth: save it, then resend the turn if
+    /// the server now says eligible. Under 18 → the blocked state; nothing is resent.
     func submitDateOfBirth(day: String, month: String, year: String) async {
         guard !ageSubmitting, !isStreaming else { return }
         guard let iso = DateOfBirthInput.iso(day: day, month: month, year: year) else {
@@ -164,19 +173,52 @@ final class ChatViewModel: AppObservableObject {
         }
         ageSubmitting = true
         defer { ageSubmitting = false }
-        do {
-            switch try await saveDateOfBirth(iso) {
-            case .eligible:
-                ageFormError = nil
-                retry()
-            case .ineligible:
-                ageFormError = nil
-                error = .ageIneligible(message: nil)
-            case .unknown:
-                ageFormError = NSLocalizedString("chat.age.error.failed", comment: "")
-            }
-        } catch {
-            ageFormError = Self.dateOfBirthErrorText(error)
+        let result: Result<DateOfBirthUpdateResponse, Error>
+        do { result = .success(try await saveDateOfBirth(iso)) } catch { result = .failure(error) }
+        apply(AgeCorrectionOutcome.from(result))
+    }
+
+    private func apply(_ outcome: AgeCorrectionOutcome) {
+        switch outcome {
+        case .resend:
+            ageFormError = nil
+            ageCorrecting = false
+            retry()
+        case .blocked(let canCorrect):
+            ageFormError = nil
+            ageCorrecting = false
+            canCorrectAge = canCorrect
+            error = .ageIneligible(message: nil)
+        case .correctionExhausted:
+            ageFormError = nil
+            ageCorrecting = false
+            canCorrectAge = false
+            error = .ageIneligible(message: nil)
+        case .formError(let text):
+            ageFormError = text
+        }
+    }
+
+    /// Blocked account taps "I entered the wrong date" (web `AgeCheckView`): open the form. The
+    /// server decides whether the correction is allowed (409 `age_correction_exhausted`).
+    func startAgeCorrection() {
+        guard !isGuest, canCorrectAge else { return }
+        ageFormError = nil
+        ageCorrecting = true
+    }
+
+    func cancelAgeCorrection() {
+        ageFormError = nil
+        ageCorrecting = false
+    }
+
+    /// The server refused an account as under 18: ask it whether a correction is still allowed,
+    /// so the button is not offered to someone who has used theirs (web reads `GET /api/profile`).
+    private func refreshAgeCorrection() {
+        guard !isGuest, let loadAgeStatus else { return }
+        Task { [weak self] in
+            guard let status = try? await loadAgeStatus() else { return }
+            self?.canCorrectAge = status.mayCorrect
         }
     }
 
@@ -533,6 +575,7 @@ final class ChatViewModel: AppObservableObject {
                 }
 
                 self.error = Self.mapError(error, isGuest: self.isGuest)
+                if case .ageIneligible? = self.error { self.refreshAgeCorrection() }
                 self.log.error("stream error: \(error)")
             }
         }

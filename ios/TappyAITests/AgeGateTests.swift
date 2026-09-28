@@ -152,6 +152,63 @@ final class AgeGateTests: XCTestCase {
         XCTAssertEqual(ChatViewModel.mapError(noDob, isGuest: false), .ageVerificationRequired(message: nil))
     }
 
+    // MARK: - Correcting a date of birth (web AgeCheckView "I entered the wrong date")
+
+    private func response(_ status: String?, canCorrect: Bool?) -> DateOfBirthUpdateResponse {
+        let json: [String: Any] = [status.map { ("ageStatus", $0 as Any) }, canCorrect.map { ("canCorrectAge", $0 as Any) }]
+            .compactMap { $0 }.reduce(into: [:]) { $0[$1.0] = $1.1 }
+        return try! JSONDecoder().decode(DateOfBirthUpdateResponse.self, from: JSONSerialization.data(withJSONObject: json))
+    }
+
+    func testCorrectionOutcomeFollowsTheServer() {
+        XCTAssertEqual(AgeCorrectionOutcome.from(.success(response("eligible", canCorrect: false))), .resend)
+        XCTAssertEqual(AgeCorrectionOutcome.from(.success(response("ineligible", canCorrect: true))), .blocked(canCorrect: true))
+        XCTAssertEqual(AgeCorrectionOutcome.from(.success(response("ineligible", canCorrect: false))), .blocked(canCorrect: false))
+        XCTAssertEqual(AgeCorrectionOutcome.from(.success(response("ineligible", canCorrect: nil))), .blocked(canCorrect: true),
+                       "a missing canCorrectAge is treated as true, as web does; the server still answers 409")
+        XCTAssertEqual(AgeCorrectionOutcome.from(.success(response(nil, canCorrect: nil))),
+                       .formError(NSLocalizedString("chat.age.error.failed", comment: "")))
+    }
+
+    func testCorrectionOutcomeForErrors() {
+        XCTAssertEqual(AgeCorrectionOutcome.from(.failure(AppError.network(status: 409, code: "age_correction_exhausted"))),
+                       .correctionExhausted)
+        XCTAssertEqual(AgeCorrectionOutcome.from(.failure(AppError.validation(message: "Ngày sinh không hợp lệ."))),
+                       .formError("Ngày sinh không hợp lệ."))
+        XCTAssertEqual(AgeCorrectionOutcome.from(.failure(AppError.offline)),
+                       .formError(NSLocalizedString("chat.age.error.failed", comment: "")))
+        XCTAssertEqual(AgeCorrectionOutcome.from(.failure(AppError.network(status: 500, code: "server_error"))),
+                       .formError(NSLocalizedString("chat.age.error.failed", comment: "")))
+    }
+
+    func testBlockedPanelOffersCorrectionOnlyToAccountsThatStillHaveIt() {
+        XCTAssertFalse(AgeBlockedState(isGuest: true, canCorrect: true).offersCorrection, "a guest's declaration is local; no correction")
+        XCTAssertFalse(AgeBlockedState(isGuest: true, canCorrect: false).showsSupport)
+        XCTAssertTrue(AgeBlockedState(isGuest: false, canCorrect: true).offersCorrection)
+        XCTAssertFalse(AgeBlockedState(isGuest: false, canCorrect: true).showsSupport)
+        XCTAssertFalse(AgeBlockedState(isGuest: false, canCorrect: false).offersCorrection)
+        XCTAssertTrue(AgeBlockedState(isGuest: false, canCorrect: false).showsSupport)
+    }
+
+    func testReadingTheAgeStatusIsAGetOfProfile() async throws {
+        let api = MockAPIClient()
+        api.stubbed = Data(#"{"full_name":"A","ageStatus":"ineligible","age":16,"ageBand":null,"canCorrectAge":false}"#.utf8)
+        let status = try await ProfileService(api: api).fetchAgeStatus()
+        XCTAssertEqual(status.status, .ineligible)
+        XCTAssertFalse(status.mayCorrect)
+        let sent = try XCTUnwrap(api.sentEndpoints.first)
+        XCTAssertEqual(sent.path, "/api/profile")
+        XCTAssertEqual(sent.method, .get)
+        XCTAssertTrue(sent.requiresAuth)
+    }
+
+    func testCorrectionStringsAreInTheCatalog() {
+        for key in ["chat.age.correct.cta", "chat.age.correct.title", "chat.age.correct.desc",
+                    "chat.age.correct.submit", "chat.age.blocked.exhausted"] {
+            XCTAssertNotEqual(NSLocalizedString(key, comment: ""), key, key)
+        }
+    }
+
     func testDateOfBirthSaveErrorsShowTheRightSentence() {
         XCTAssertEqual(ChatViewModel.dateOfBirthErrorText(AppError.validation(message: "Ngày sinh không hợp lệ.")),
                        "Ngày sinh không hợp lệ.")

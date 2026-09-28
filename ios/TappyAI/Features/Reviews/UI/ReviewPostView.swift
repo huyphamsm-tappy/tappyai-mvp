@@ -17,10 +17,15 @@ struct ReviewPostView: View {
     let onHide: () -> Void
     let onCreatorTap: () -> Void
     var onMusicTap: (() -> Void)?
+    /// Report someone else's post (web: shown to a signed-in non-owner). Nil hides the menu.
+    var onReport: ((ReviewReportReason) -> Void)?
 
     @State private var showHeartBurst = false
     @State private var singleTapTask: Task<Void, Never>?
     @State private var showOwnMenu = false
+    @State private var showReportMenu = false
+
+    private var canReport: Bool { !isOwnPost && isAuthenticated && onReport != nil }
 
     var body: some View {
         GeometryReader { geo in
@@ -68,6 +73,14 @@ struct ReviewPostView: View {
         .confirmationDialog("", isPresented: $showOwnMenu, titleVisibility: .hidden) {
             Button(NSLocalizedString("review.action.hide", comment: "")) { onHide() }
             Button(NSLocalizedString("review.action.delete", comment: ""), role: .destructive) { onDelete() }
+            Button(NSLocalizedString("common.cancel", comment: ""), role: .cancel) {}
+        }
+        .confirmationDialog(NSLocalizedString("review.report.title", comment: ""),
+                            isPresented: $showReportMenu, titleVisibility: .visible) {
+            // Tapping a reason sends it at once, as on web — no second confirmation.
+            ForEach(ReviewReportReason.allCases) { reason in
+                Button(NSLocalizedString(reason.labelKey, comment: "")) { onReport?(reason) }
+            }
             Button(NSLocalizedString("common.cancel", comment: ""), role: .cancel) {}
         }
     }
@@ -259,6 +272,16 @@ struct ReviewPostView: View {
                             }
                         }
                         .buttonStyle(.plain)
+                    } else if canReport {
+                        Button {
+                            showReportMenu = true
+                        } label: {
+                            Image(systemName: "ellipsis")
+                                .font(.system(size: 14))
+                                .foregroundStyle(TappyColor.feedTextSecondary)
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityLabel(Text("review.report.title"))
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
