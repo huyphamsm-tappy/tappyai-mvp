@@ -101,7 +101,8 @@ describe('route wiring', () => {
     const route = readFileSync('src/app/api/chat/route.ts', 'utf8')
       .replace(/\/\*[\s\S]*?\*\//g, ' ')
       .replace(/^\s*\/\/.*$/gm, ' ')
-    expect(route).toMatch(/travelIntent,\s*lastText,\s*needProfile\.domain === 'places'/)
+    // A trip plan also holds the whole reply (2bd5c59) — the travel slot may carry `|| planningIntent === 'trip'`.
+    expect(route).toMatch(/travelIntent(?: \|\| planningIntent === 'trip')?,\s*lastText,\s*needProfile\.domain === 'places'/)
   })
 
   it("the production conversation resolves to 'places' on the bare follow-up", () => {
