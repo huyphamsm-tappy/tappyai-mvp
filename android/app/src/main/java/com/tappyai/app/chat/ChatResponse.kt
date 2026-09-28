@@ -3,7 +3,12 @@ package com.tappyai.app.chat
 import com.tappyai.core.designsystem.component.MarkdownNormalize
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.nullable
+import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonArray
+import kotlinx.serialization.json.JsonNull
+import kotlinx.serialization.json.JsonPrimitive
 
 /**
  * Structured blocks the assistant may embed at the end of its reply. The backend emits the SAME
@@ -16,7 +21,8 @@ import kotlinx.serialization.json.Json
 data class TappyPlan(
     val type: String? = null,
     val title: String = "",
-    val people: Int? = null,
+    /** The model sometimes writes `"people":[1]` or `"2 người"` (golden M1, 2026-09-28): read leniently. */
+    @Serializable(with = LenientPeopleSerializer::class) val people: Int? = null,
     @SerialName("budget_total") val budgetTotal: String? = null,
     val days: List<PlanDay> = emptyList(),
     @SerialName("cost_breakdown") val costBreakdown: Map<String, String>? = null,
@@ -493,4 +499,23 @@ object ChatResponseParser {
      * its closing `)` arrives. Complete images earlier in the text are untouched.
      */
     fun trimPartialImage(text: String): String = PARTIAL_IMAGE_RE.replace(text, "").trimEnd()
+}
+
+/**
+ * `people` as the model actually writes it: 2, [2], "2", "2 người" → 2; anything else → null.
+ * Before this a single `[1]` failed the WHOLE plan decode and the card never rendered.
+ */
+internal object LenientPeopleSerializer : kotlinx.serialization.KSerializer<Int?> {
+    override val descriptor = Int.serializer().nullable.descriptor
+    override fun deserialize(decoder: kotlinx.serialization.encoding.Decoder): Int? {
+        val element = (decoder as? kotlinx.serialization.json.JsonDecoder)?.decodeJsonElement()
+            ?: return decoder.decodeInt()
+        val first = if (element is JsonArray) element.firstOrNull() ?: return null else element
+        val prim = first as? JsonPrimitive ?: return null
+        if (prim is JsonNull) return null
+        return Regex("""\d+""").find(prim.content)?.value?.toIntOrNull()
+    }
+    override fun serialize(encoder: kotlinx.serialization.encoding.Encoder, value: Int?) {
+        if (value == null) encoder.encodeNull() else encoder.encodeInt(value)
+    }
 }

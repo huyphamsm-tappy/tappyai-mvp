@@ -116,6 +116,10 @@ export function swipe(dir = 'up') {
   const [a, b] = dir === 'up' ? [1750, 700] : [700, 1750]
   sh('input', 'swipe', '540', String(a), '540', String(b), '450')
 }
+/** BACK only when the soft keyboard is up — a BACK with no keyboard would leave the screen. */
+export async function hideKeyboard() {
+  if (/mInputShown=true|isInputViewShown=true/.test(sh('dumpsys', 'input_method'))) { sh('input', 'keyevent', '4'); await sleep(600) }
+}
 export const back = async () => { sh('input', 'keyevent', '4'); await sleep(1500) }
 export const typeAscii = (s) => sh('input', 'text', s.replace(/ /g, '%s'))
 
@@ -149,6 +153,19 @@ export async function launch({ fresh = false } = {}) {
   }
   await sleep(1000)
 }
+/**
+ * The system photo picker / share chooser run as their OWN task and survive force-stopping the app
+ * (they come back on top of it). Back out of anything that isn't the app, then kill the picker.
+ */
+export async function dismissForeign() {
+  for (let i = 0; i < 5; i++) {
+    const top = foreground()
+    if (!top || top.startsWith(PKG + '/') || /launcher/i.test(top)) break
+    sh('input', 'keyevent', '4'); await sleep(800)
+  }
+  sh('am', 'force-stop', 'com.google.android.providers.media.module')
+  sh('input', 'keyevent', '3'); await sleep(500)
+}
 export function install(apk) { adb(['install', '-r', apk]) }
 
 /**
@@ -159,7 +176,9 @@ export async function signIn(email) {
   for (let attempt = 1; attempt <= 3; attempt++) {
     const s = await sessionFor(email)
     writePrivate('session.json', JSON.stringify({ access_token: s.access_token, refresh_token: s.refresh_token }))
-    await launch()
+    // A leftover picker / chooser from an earlier flow sits on top of the app's task: start clean.
+    await dismissForeign()
+    await launch({ fresh: true })
     sh('am', 'start', '-n', HOOK, '--es', 'op', 'session')
     await sleep(6000)
     sh('am', 'force-stop', PKG)

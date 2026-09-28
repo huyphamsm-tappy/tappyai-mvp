@@ -75,6 +75,19 @@ object MarkdownNormalize {
     }
 
     /** [balanceBold] on every line — bold never spans a line break in either client. */
+    private val GLUED_LINKS = Regex("""(\]\([^)\s]+\))(?=\[[^\]]*\]\()""")
+
+    /**
+     * "[Official Website](u)[Google Maps](v)" — the server emits a place's links back to back, and
+     * rendered as-is they read "Official WebsiteGoogle Maps" (golden M1/T1, 2026-09-28). Put a
+     * " · " between two adjacent LINKS; images (`![…](…)`) are left alone.
+     */
+    fun separateGluedLinks(text: String): String =
+        if (!text.contains(")[")) text else GLUED_LINKS.replace(text) { it.groupValues[1] + " · " }
+
+    /** Everything the renderer normalises before parsing blocks. */
+    fun forRender(text: String): String = balanceBoldPerLine(separateGluedLinks(text))
+
     fun balanceBoldPerLine(text: String): String =
         if (!text.contains("**")) text else text.split("\n").joinToString("\n") { balanceBold(it) }
 

@@ -219,7 +219,8 @@ fun AgeCheckScreen(guest: Boolean, onEligible: () -> Unit, viewModel: AgeCheckVi
         ) {
             // Header: the official lockup + the language chip (mockup top row).
             Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                Image(painterResource(R.drawable.tappyai_logo), contentDescription = "TappyAI", modifier = Modifier.size(44.dp).clip(RoundedCornerShape(14.dp)))
+                // Decorative: the "TappyAI" wordmark sits right beside it.
+                Image(painterResource(R.drawable.tappyai_logo), contentDescription = null, modifier = Modifier.size(44.dp).clip(RoundedCornerShape(14.dp)))
                 Column(modifier = Modifier.padding(start = 10.dp).weight(1f)) {
                     Text(buildAnnotatedString { append("Tappy"); withStyle(SpanStyle(color = Color(0xFF60A5FA))) { append("AI") } }, color = Color.White, fontSize = 19.sp, fontWeight = FontWeight.Black)
                     Text(stringResource(R.string.age_brand_tagline), color = Color(0x73FFFFFF), fontSize = 11.sp)

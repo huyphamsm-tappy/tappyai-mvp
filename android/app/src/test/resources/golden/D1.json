@@ -1,0 +1,10 @@
+{
+ "id": "D1",
+ "group": "district-stated-vs-gps",
+ "turns": [
+  {
+   "user": "Quán phở ngon ở Quận 3",
+   "text": "Để chọn đúng chỗ, mình cần biết thêm:\n• Tầm giá? (dưới 100k/người / 100–200k/người / trên 200k/người)\n• Mấy người? (1–2 người / 3–5 người / nhóm đông)\nBạn trả lời phần nào cũng được, phần còn lại mình tự giả sử và nói rõ.\n\n[FOLLOWUPS]dưới 100k/người|100–200k/người|trên 200k/người[/FOLLOWUPS]"
+  }
+ ]
+}

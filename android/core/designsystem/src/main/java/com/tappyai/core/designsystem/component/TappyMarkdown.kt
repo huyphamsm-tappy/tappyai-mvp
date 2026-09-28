@@ -70,7 +70,7 @@ fun TappyMarkdown(
     // Bold is balanced per line BEFORE parsing: the inline scan below emits an unterminated `**`
     // literally, so an unmatched one (model slip, guard cut, pair split by a line break) must be
     // gone by then (owner UAT 2026-09-28; mirrors web formatMessage).
-    val blocks = remember(markdown) { parseMarkdownBlocks(MarkdownNormalize.balanceBoldPerLine(markdown)) }
+    val blocks = remember(markdown) { parseMarkdownBlocks(MarkdownNormalize.forRender(markdown)) }
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(TappySpacing.md),
@@ -78,6 +78,26 @@ fun TappyMarkdown(
         blocks.forEach { block -> MarkdownBlock(block) }
     }
 }
+
+/**
+ * Exactly the characters [TappyMarkdown] puts on screen for [markdown] — block by block, one line
+ * each — with the same bold balancing, link labels ("Google Maps", never the URL) and " · " between
+ * adjacent links. For tests that assert what a reader sees (no `**`, no raw URL, no glued links)
+ * without a device; it runs the same inline scan the renderer uses.
+ */
+fun markdownVisibleText(markdown: String): String =
+    parseMarkdownBlocks(MarkdownNormalize.forRender(markdown)).joinToString("\n") { block ->
+        val inline = { s: String -> buildInlineAnnotated(s, Color.Unspecified, Color.Unspecified).text }
+        when (block) {
+            is MdBlock.Heading -> inline(block.text)
+            is MdBlock.Paragraph -> inline(block.text)
+            is MdBlock.CodeBlock -> block.code
+            is MdBlock.BulletList -> block.items.joinToString("\n") { "• " + inline(it) }
+            is MdBlock.NumberedList -> block.items.mapIndexed { i, it -> "${i + 1}. " + inline(it) }.joinToString("\n")
+            is MdBlock.Quote -> inline(block.text)
+            MdBlock.Rule -> "—"
+        }
+    }
 
 // ---------------------------------------------------------------------------------------------
 // Block model + parser (pure Kotlin, no Compose — trivially unit-testable and lib-swappable).

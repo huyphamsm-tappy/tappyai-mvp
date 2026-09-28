@@ -99,6 +99,11 @@ class RealChatRepository @Inject constructor(
 
                 while (!source.exhausted()) {
                     val line = source.readUtf8Line() ?: break
+                    if (ChatStreamFrames.errorFrame(line) != null) {
+                        // Localized generic text in the VM (a blank message), never the SDK's English one.
+                        close(ChatException.AiError(""))
+                        return@launch
+                    }
                     ChatStreamFrames.parse(line)?.let { trySend(it) }
                 }
                 close()

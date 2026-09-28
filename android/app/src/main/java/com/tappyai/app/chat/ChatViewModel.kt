@@ -721,7 +721,7 @@ class ChatViewModel @Inject constructor(
                     msgs + ChatMessage(
                         id = nextId++,
                         role = TappyChatRole.Assistant,
-                        text = e.message ?: stringProvider.get(R.string.chat_error_generic),
+                        text = e.message?.takeIf { it.isNotBlank() } ?: stringProvider.get(R.string.chat_error_generic),
                         isError = true,
                         errorAction = action,
                     )

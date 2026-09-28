@@ -44,6 +44,19 @@ object ChatStreamFrames {
      * annotation riding the same part cannot be mistaken for a place decision. An optional `data: `
      * SSE wrapper is stripped defensively in case the stream format ever changes to full SSE.
      */
+    /**
+     * A `3:` frame — the SDK's error part (contract OUTPUT-CONTRACT-6-DOMAINS §1.4 / §5(f)): the turn
+     * failed server-side after the stream opened. Returns the payload (often the SDK's English
+     * default "An error occurred.", which is never shown), or null for any other line. Before
+     * 2026-09-28 it fell through [parse] and was dropped, so an errored turn ended as a silent,
+     * empty or half reply with no error state.
+     */
+    fun errorFrame(line: String): String? {
+        val stripped = if (line.startsWith("data: ")) line.removePrefix("data: ") else line
+        if (!stripped.startsWith("3:")) return null
+        return runCatching { json.decodeFromString<String>(stripped.removePrefix("3:")) }.getOrDefault("")
+    }
+
     fun parse(line: String): ChatStreamEvent? {
         val stripped = if (line.startsWith("data: ")) line.removePrefix("data: ") else line
         if (stripped.startsWith("0:")) {

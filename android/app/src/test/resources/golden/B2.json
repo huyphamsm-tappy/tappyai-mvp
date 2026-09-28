@@ -1,0 +1,10 @@
+{
+ "id": "B2",
+ "group": "budget-unit-quantity-age",
+ "turns": [
+  {
+   "user": "Tìm quán ăn cho gia đình 5-6 người, có bé dưới 5 tuổi, gần đây",
+   "text": "Mình giả sử bạn muốn ăn cơm gia đình gần vị trí hiện tại (Quận 1) hôm nay. Để tìm quán phù hợp cho gia đình có bé nhỏ, mình sẽ tìm ngay những nơi có không gian thoải mái và an toàn cho trẻ.\n\nMình chọn **Hàng Dương Quán Quận 1** cho gia đình bạn — cách đây chỉ 0.6km, có 4.5⭐ từ 723 đánh giá Google Maps với không gian thoải mái. Quán mở đến 23:30 nên bạn có thời gian linh hoạt.\n\nMình gợi ý Hàng Dương vì gần nhất\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Hàng Dương Quán\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=6865477283024017585\",\"primary\":true}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Đặt bàn trước không|Quán nào có khu vui chơi cho bé|Ăn gì ngon cho bé[/FOLLOWUPS]"
+  }
+ ]
+}

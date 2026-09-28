@@ -96,6 +96,9 @@ class ChatNoLiteralBoldTest {
             "android/core/designsystem/src/main/java/com/tappyai/core/designsystem/component/TappyMarkdown.kt",
         )
         val file = candidates.map { java.io.File(it) }.firstOrNull { it.exists() } ?: return
-        assertTrue(file.readText().contains("parseMarkdownBlocks(MarkdownNormalize.balanceBoldPerLine(markdown))"))
+        // forRender = balanceBoldPerLine(separateGluedLinks(…)) since 2026-09-28 (golden glued links).
+        val src = file.readText()
+        assertTrue(src.contains("parseMarkdownBlocks(MarkdownNormalize.forRender(markdown))"))
+        assertTrue(java.io.File(file.parentFile, "MarkdownNormalize.kt").readText().contains("fun forRender(text: String): String = balanceBoldPerLine("))
     }
 }
