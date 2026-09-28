@@ -24,22 +24,22 @@ class ProfileV3Test {
 
     @Test
     fun `every destination is still there, in the web ProfileView order, wired to the callback it always had`() {
-        val items = screen.substring(screen.indexOf("private val ACCOUNT_ITEMS = buildList {"), screen.indexOf("private val CardShape"))
+        val items = screen.substring(screen.indexOf("internal fun accountMenuItems(): List<ProfileMenuItem> = buildList {"), screen.indexOf("private val CardShape"))
         val order = Regex("""add\(ProfileMenuItem\.(\w+)\)""").findAll(items).map { it.groupValues[1] }.toList()
-        // 2026-09-15: Planner joins the row where the web's `accountRows()` has it, and Following
-        // (the web shell's `v3.nav.following`) sits beside it — Android has no nav row to host it.
-        assertEquals(listOf("Account", "ChatHistory", "Bookings", "Preferences", "Saved", "PriceTracking", "Planner", "Social", "TappyKnows", "AppConnections", "MyReviews", "GroupDining", "UpgradeToPro"), order)
+        // 2026-09-28 parity: exactly the web `accountRows()` (Social / My reviews gone, App
+        // connections gated like the web) — see ProfileHubParityTest.
+        assertEquals(listOf("Account", "ChatHistory", "Bookings", "Preferences", "Saved", "PriceTracking", "Planner", "TappyKnows", "AppConnections", "GroupDining", "UpgradeToPro"), order)
         assertTrue("Pro stays gated exactly as before", items.contains("if (SHOW_PRO_UPGRADE) add(ProfileMenuItem.UpgradeToPro)") && screen.contains("private const val SHOW_PRO_UPGRADE = false"))
         val wiring = mapOf(
             "UpgradeToPro" to "onOpenMembership", "TappyKnows" to "onOpenTappyKnows", "ChatHistory" to "onOpenChatHistory",
-            "Saved" to "onOpenSaved", "Bookings" to "onOpenBookings", "Preferences" to "onOpenPreferences", "MyReviews" to "onOpenMyReviews",
+            "Saved" to "onOpenSaved", "Bookings" to "onOpenBookings", "Preferences" to "onOpenPreferences",
             "PriceTracking" to "onOpenPriceTracking", "GroupDining" to "onOpenGroupDining", "Account" to "onOpenAccount", "AppConnections" to "onOpenAppConnections",
-            "Planner" to "onOpenPlanner", "Social" to "onOpenSocial",
+            "Planner" to "onOpenPlanner",
         )
         for ((item, cb) in wiring) assertTrue("$item → $cb", screen.contains("ProfileMenuItem.$item -> $cb"))
-        assertTrue("Settings entry kept", screen.contains("R.string.profile_settings_row_title") && screen.contains("onClick = onOpenSettings"))
+        assertTrue("Settings entry kept", screen.contains("R.string.profile_settings_row_title") && screen.contains("else onOpenSettings"))
         assertTrue("QR kept: real sheet with a user id, coming-soon without", screen.contains("if (viewModel.userId != null) showQrSheet = true else comingSoonFeature = qrFeatureName") && screen.contains("QrProfileSheet(userId = userId, name = viewModel.profile?.fullName, onDismiss = { showQrSheet = false })"))
-        assertTrue("guests still get the sign-in card, with the existing copy and action", screen.contains("if (viewModel.isAnonymous) {") && screen.contains("SignInCard(onClick = onSignIn)") && screen.contains("R.string.settings_sign_in") && screen.contains("R.string.profile_sign_in_desc"))
+        assertTrue("guests still get the sign-in card, with the existing copy and action", screen.contains("if (viewModel.isAnonymous) {") && screen.contains("GuestCard(onSignIn = onSignIn)") && screen.contains("R.string.profile_guest_sign_in"))
     }
 
     @Test
@@ -60,7 +60,7 @@ class ProfileV3Test {
 
     @Test
     fun `the header is Tôi plus the blurb and an official mascot pose that exists as a file`() {
-        val header = screen.substring(screen.indexOf("private fun ProfileV3Header("), screen.indexOf("private fun ProfileHeroCard("))
+        val header = screen.substring(screen.indexOf("private fun ProfileV3Header("), screen.indexOf("private fun GuestCard("))
         assertTrue(header.contains("R.string.home_tab_profile") && header.contains("R.string.profile_v3_subtitle"))
         assertTrue(header.contains("painterResource(R.drawable.tappy_wave)"))
         val pose = File(root(), "app/src/main/res/drawable-nodpi/tappy_wave.png")
@@ -70,28 +70,26 @@ class ProfileV3Test {
 
     @Test
     fun `the hero shows only what the profile API returns, and the placeholder identity for a guest`() {
-        val hero = screen.substring(screen.indexOf("private fun ProfileHeroCard("), screen.indexOf("internal fun SignInCard("))
-        assertTrue(hero.contains("profile?.fullName?.takeIf { it.isNotBlank() }") && hero.contains("R.string.profile_header_title"))
-        assertTrue(hero.contains("profile?.email?.takeIf { it.isNotBlank() }") && hero.contains("R.string.profile_header_subtitle"))
-        assertTrue(hero.contains("imageUrl = profile.avatarUrl"))
+        // 2026-09-28: the guest card is the web GuestProfileView — no identity at all.
+        val hero = screen.substring(screen.indexOf("private fun GuestCard("), screen.indexOf("internal fun SignInCard("))
+        assertTrue(hero.contains("R.string.profile_guest_title") && hero.contains("R.string.profile_guest_subtitle"))
         // The guest card still shows nothing beyond name / email / avatar. (The signed-in hero,
         // `ProfileHeroV3`, adds the REAL bio from `GET /api/profile` and the trigger-maintained
         // follow counts from `GET /api/users/{me}` — see PersonalSurfacesV3Test.)
         assertFalse("no invented fields", Regex("""profile\??\.(handle|username|followers|points|level|bio|joinDate)""").containsMatchIn(hero))
-        assertTrue("the QR action is the hero's action", hero.contains("Icons.Filled.QrCode2") && hero.contains("onClick = onShowQr"))
     }
 
     @Test
     fun `the surface is V3 - palette, grouped card with coloured icon tiles, privacy card - and the copy is in both locales`() {
         assertTrue(screen.contains("V3HomeTheme {") && screen.contains(".background(HomeV3.Background)"))
-        assertTrue("one grouped card, tile per row, subtle dividers", screen.contains("internal fun ProfileGroupCard(") && screen.contains("HorizontalDivider(color = HomeV3.Outline") && screen.contains(".background(tint)"))
-        assertTrue("privacy card", screen.contains("private fun PrivacyCard(") && screen.contains("Icons.Filled.Shield") && screen.contains("R.string.profile_privacy_card_title") && screen.contains("PrivacyCard(onClick = onOpenPrivacy)"))
+        assertTrue("one grouped card, tile per row, subtle dividers", screen.contains("internal fun ProfileGroupCard(") && screen.contains("HorizontalDivider(color = HomeV3.Outline") && screen.contains(".background(tint.copy(alpha = 0.16f))"))
+        assertFalse("no privacy card - neither the web nor D:/redesign has one", screen.contains("PrivacyCard("))
         assertFalse("no design-system grey rows any more", screen.contains("TappyMenuRow("))
         assertFalse("no emoji mascot, no generated art", Regex("""Text\(text = "[^"]*[\p{So}]""").containsMatchIn(screen))
         val en = src("app/src/main/res/values/strings_settings.xml"); val vi = src("app/src/main/res/values-vi/strings_settings.xml")
         val keys = Regex("""R\.string\.(profile_\w+)""").findAll(screen).map { it.groupValues[1] }.toSet()
         assertTrue(keys.size >= 26)
         for (k in keys) { assertTrue("$k (en)", en.contains("name=\"$k\"")); assertTrue("$k (vi)", vi.contains("name=\"$k\"")) }
-        assertTrue(vi.contains(">Quyền riêng tư &amp; Bảo mật<") && vi.contains("Quản lý tài khoản và cá nhân hóa trải nghiệm của bạn với TappyAI"))
+        assertTrue(vi.contains("Quản lý tài khoản và cá nhân hóa trải nghiệm của bạn với TappyAI"))
     }
 }

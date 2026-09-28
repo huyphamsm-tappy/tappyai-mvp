@@ -84,11 +84,11 @@ class PersonalSurfacesV3Test {
 
     @Test
     fun `Profile hub - real fields only, the three gated routes, the same rows plus Planner and Following`() {
-        val items = hub.substring(hub.indexOf("private val ACCOUNT_ITEMS"), hub.indexOf("private val CardShape"))
+        val items = hub.substring(hub.indexOf("internal fun accountMenuItems()"), hub.indexOf("private val CardShape"))
         val order = Regex("""add\(ProfileMenuItem\.(\w+)\)""").findAll(items).map { it.groupValues[1] }.toList()
-        assertEquals(listOf("Account", "ChatHistory", "Bookings", "Preferences", "Saved", "PriceTracking", "Planner", "Social", "TappyKnows", "AppConnections", "MyReviews", "GroupDining", "UpgradeToPro"), order)
-        assertTrue(hub.contains("ProfileMenuItem.Planner -> onOpenPlanner") && hub.contains("ProfileMenuItem.Social -> onOpenSocial"))
-        assertTrue("guests keep the sign-in card and no content", hub.contains("if (viewModel.isAnonymous) {") && hub.contains("SignInCard(onClick = onSignIn)"))
+        assertEquals(listOf("Account", "ChatHistory", "Bookings", "Preferences", "Saved", "PriceTracking", "Planner", "TappyKnows", "AppConnections", "GroupDining", "UpgradeToPro"), order)
+        assertTrue(hub.contains("ProfileMenuItem.Planner -> onOpenPlanner") && !hub.contains("ProfileMenuItem.Social ->"))
+        assertTrue("guests keep the sign-in card and no content", hub.contains("if (viewModel.isAnonymous) {") && hub.contains("GuestCard(onSignIn = onSignIn)"))
         for (route in listOf("reviewsRepository.getMine()", "reviewsRepository.getSaved()", "savedRepository.getFavorites()", "reviewsRepository.getUserProfile(userId)", "chatHistoryRepository.getConversations()", "membershipRepository.getStatus()", "socialRepository.getConnections(ConnectionType.Following)")) {
             assertTrue(route, hubVm.contains(route))
         }
