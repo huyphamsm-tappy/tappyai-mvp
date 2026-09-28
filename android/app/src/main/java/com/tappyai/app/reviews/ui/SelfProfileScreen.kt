@@ -79,6 +79,7 @@ import com.tappyai.app.explore.ExploreV3
 import com.tappyai.app.personal.V3AccentPill
 import com.tappyai.app.explore.compactCount
 import com.tappyai.app.reviews.data.Review
+import com.tappyai.app.reviews.data.isShareOnlyName
 import com.tappyai.app.reviews.data.ReviewContentType
 import com.tappyai.app.reviews.data.ReviewProfile
 import com.tappyai.core.designsystem.component.TappyAvatar
@@ -337,9 +338,11 @@ internal fun ReviewProfileScreen(
                     onRetry = viewModel::retry,
                 )
             profile != null -> {
+                val split = remember(uiState.reviews) { splitVisitorPosts(uiState.reviews) }
                 CreatorProfileContent(
                     facts = creatorProfileFacts(profile, uiState.reviews),
-                    posts = uiState.reviews,
+                    posts = split.posts,
+                    visitorShares = split,
                     primaryAction = CreatorPrimaryAction.Follow(
                         isFollowing = profile.isFollowing,
                         isToggling = uiState.isTogglingFollow,
@@ -412,6 +415,23 @@ internal fun CreatorProfileTab.labelRes(): Int = when (this) {
     CreatorProfileTab.Shared -> R.string.profile_v3_tab_shared
 }
 
+/** The web's visitor tab labels (`v3.publicProfile.tabPosts` / `tabShares`): "Bài đăng", "Chia sẻ". */
+internal fun CreatorProfileTab.visitorLabelRes(): Int =
+    if (this == CreatorProfileTab.Shared) R.string.reviews_visitor_tab_shares else R.string.reviews_visitor_tab_posts
+
+/** Another creator's posts, split the way the web's `PublicProfileView` splits them. */
+internal data class VisitorPosts(val posts: List<Review>, val shares: List<Review>) {
+    /** The web opens on "Chia sẻ" when the creator has shares and no real-place posts. */
+    val initialTab: CreatorProfileTab
+        get() = if (posts.isEmpty() && shares.isNotEmpty()) CreatorProfileTab.Shared else CreatorProfileTab.Posts
+}
+
+/** "Chia sẻ" = rows with no real place (`isShareOnlyName`: clips/links posted as "Chia sẻ"); "Bài đăng" = the rest. */
+internal fun splitVisitorPosts(reviews: List<Review>): VisitorPosts {
+    val (shares, posts) = reviews.partition { isShareOnlyName(it.placeName) }
+    return VisitorPosts(posts = posts, shares = shares)
+}
+
 /**
  * The profile body both screens draw: the header ([CreatorProfileHeader]) spanning the grid,
  * then the 3-column clip grid of [PostGridTile]s, or [emptyState] when there are no posts.
@@ -433,9 +453,15 @@ private fun CreatorProfileContent(
     /** True when the posts list could not be loaded although the header did; [postsError] is drawn instead of [emptyState]. */
     postsFailed: Boolean = false,
     postsError: @Composable () -> Unit = {},
+    /** Another creator's profile: the web's second visitor tab, "Chia sẻ" (see [splitVisitorPosts]). */
+    visitorShares: VisitorPosts? = null,
 ) {
-    var selectedTab by rememberSaveable { mutableStateOf(CreatorProfileTab.Posts) }
-    val tab = if (collections == null) CreatorProfileTab.Posts else selectedTab
+    var selectedTab by rememberSaveable(visitorShares?.initialTab) { mutableStateOf(visitorShares?.initialTab ?: CreatorProfileTab.Posts) }
+    val tab = when {
+        collections != null -> selectedTab
+        visitorShares != null && selectedTab == CreatorProfileTab.Shared -> CreatorProfileTab.Shared
+        else -> CreatorProfileTab.Posts
+    }
     LazyVerticalGrid(
         columns = GridCells.Fixed(3),
         modifier = Modifier.fillMaxSize(),
@@ -452,6 +478,7 @@ private fun CreatorProfileContent(
                 onCompose = onCompose,
                 selectedTab = tab,
                 showCollections = collections != null,
+                showVisitorShares = visitorShares != null,
                 onTabSelected = { selectedTab = it },
             )
         }
@@ -468,7 +495,7 @@ private fun CreatorProfileContent(
             else -> {
                 // The four personal collections share this one branch: the same 3-column grid,
                 // the same tile, each with its own empty copy and its own opener.
-                val rows = collections?.rows(tab)
+                val rows = if (collections == null) visitorShares?.shares else collections.rows(tab)
                 when {
                     rows == null -> item(span = { GridItemSpan(maxLineSpan) }) {
                         TappyErrorState(
@@ -489,12 +516,12 @@ private fun CreatorProfileContent(
                             )
                             CreatorProfileTab.Liked -> TappyEmptyState(icon = Icons.Filled.FavoriteBorder, title = stringResource(R.string.profile_v3_empty_liked), titleColor = SelfTextPrimary, contentColor = SelfTextSecondary)
                             CreatorProfileTab.Hidden -> TappyEmptyState(icon = Icons.Filled.VisibilityOff, title = stringResource(R.string.profile_v3_empty_hidden), titleColor = SelfTextPrimary, contentColor = SelfTextSecondary)
-                            CreatorProfileTab.Shared -> TappyEmptyState(icon = Icons.Filled.Share, title = stringResource(R.string.profile_v3_empty_shared), titleColor = SelfTextPrimary, contentColor = SelfTextSecondary)
+                            CreatorProfileTab.Shared -> TappyEmptyState(icon = Icons.Filled.Share, title = stringResource(if (collections == null) R.string.reviews_visitor_empty_shares else R.string.profile_v3_empty_shared), titleColor = SelfTextPrimary, contentColor = SelfTextSecondary)
                             CreatorProfileTab.Posts -> emptyState()
                         }
                     }
                     else -> items(items = rows, key = { tab.name + ":" + it.id }) { review ->
-                        PostGridTile(review = review, onClick = { collections.onReviewClick(tab, review.id) })
+                        PostGridTile(review = review, onClick = { collections?.onReviewClick?.invoke(tab, review.id) ?: onReviewClick(review.id) })
                     }
                 }
             }
@@ -561,6 +588,7 @@ private fun CreatorProfileHeader(
     onCompose: () -> Unit,
     selectedTab: CreatorProfileTab = CreatorProfileTab.Posts,
     showCollections: Boolean = false,
+    showVisitorShares: Boolean = false,
     onTabSelected: (CreatorProfileTab) -> Unit = {},
 ) {
     val displayName = facts.displayName ?: stringResource(R.string.reviews_anonymous_name)
@@ -688,7 +716,12 @@ private fun CreatorProfileHeader(
         // collections too — "Đã thích", "Đã lưu", "Đã ẩn", "Đã share" — in ONE scrolling row of
         // the same underline segments (the Tôi hub's rule: one scrolling row, never a cramped
         // five-way split on a phone).
-        val tabs = if (showCollections) CreatorProfileTab.entries else listOf(CreatorProfileTab.Posts)
+        val tabs = when {
+            showCollections -> CreatorProfileTab.entries
+            // Another creator: the web's two visitor tabs, "Bài đăng" · "Chia sẻ".
+            showVisitorShares -> listOf(CreatorProfileTab.Posts, CreatorProfileTab.Shared)
+            else -> listOf(CreatorProfileTab.Posts)
+        }
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -698,7 +731,7 @@ private fun CreatorProfileHeader(
         ) {
             tabs.forEach { t ->
                 ProfileSegment(
-                    text = stringResource(t.labelRes()),
+                    text = stringResource(if (showVisitorShares && !showCollections) t.visitorLabelRes() else t.labelRes()),
                     selected = selectedTab == t,
                     onClick = { onTabSelected(t) },
                 )

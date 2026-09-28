@@ -169,4 +169,7 @@
     <string name="reviews_likes_empty">Chưa có ai thích bài viết này</string>
     <string name="reviews_likes_error">Không tải được danh sách lượt thích</string>
     <string name="reviews_likes_more">Xem thêm</string>
+    <string name="reviews_visitor_tab_posts">Bài đăng</string>
+    <string name="reviews_visitor_tab_shares">Chia sẻ</string>
+    <string name="reviews_visitor_empty_shares">Chưa có nội dung chia sẻ.</string>
 </resources>

@@ -84,6 +84,8 @@ fun MessageActionBar(
      * the flow was opened; false (unsaved chat / error bubble) leaves the sheet as it is.
      */
     onSharePublic: () -> Boolean = { false },
+    /** SHOW_PUBLIC_SHARE — off hides the "public link" row, as the web's ShareMenu does. */
+    publicShareEnabled: Boolean = false,
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
@@ -153,7 +155,7 @@ fun MessageActionBar(
             TappyShareSheet(
                 artifact = a,
                 onDismiss = { shareArtifact = null },
-                onPublicLink = { if (onSharePublic()) shareArtifact = null },
+                onPublicLink = if (publicShareEnabled) { { if (onSharePublic()) shareArtifact = null } } else null,
             )
         }
 

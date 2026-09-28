@@ -35,7 +35,7 @@ class SelfProfileCollectionsTest {
     fun `the signed-in self profile exposes exactly the five personal surfaces, in order`() {
         assertEquals(listOf("Posts", "Liked", "Saved", "Hidden", "Shared"), CreatorProfileTab.entries.map { it.name })
         val s = screen
-        assertTrue("every segment is drawn from the enum, in one scrolling row", s.contains("val tabs = if (showCollections) CreatorProfileTab.entries else listOf(CreatorProfileTab.Posts)") && s.contains(".horizontalScroll(rememberScrollState())"))
+        assertTrue("every segment is drawn from the enum, in one scrolling row", s.contains("showCollections -> CreatorProfileTab.entries") && s.contains("showVisitorShares -> listOf(CreatorProfileTab.Posts, CreatorProfileTab.Shared)") && s.contains(".horizontalScroll(rememberScrollState())"))
         assertTrue(s.contains("CreatorProfileTab.Posts -> R.string.reviews_self_tab_posts") && s.contains("CreatorProfileTab.Liked -> R.string.profile_v3_tab_liked") &&
             s.contains("CreatorProfileTab.Saved -> R.string.reviews_self_tab_saved") && s.contains("CreatorProfileTab.Hidden -> R.string.profile_v3_tab_hidden") && s.contains("CreatorProfileTab.Shared -> R.string.profile_v3_tab_shared"))
         val vi = raw("app/src/main/res/values-vi/strings_reviews.xml") + raw("app/src/main/res/values-vi/strings_personal_v3.xml")
@@ -138,7 +138,7 @@ class SelfProfileCollectionsTest {
         val content = screen.substringAfter("private fun CreatorProfileContent(").substringBefore("private fun CreatorProfileTopBar(")
         assertTrue(content.contains("columns = GridCells.Fixed(3),"))
         assertTrue(content.contains("CreatorProfileTab.Posts -> {\n                if (posts.isEmpty()) {") && content.contains("PostGridTile(review = review, onClick = { onReviewClick(review.id) })"))
-        assertTrue("selection survives rotation", content.contains("var selectedTab by rememberSaveable { mutableStateOf(CreatorProfileTab.Posts) }"))
+        assertTrue("selection survives rotation", content.contains("var selectedTab by rememberSaveable(visitorShares?.initialTab) { mutableStateOf(visitorShares?.initialTab ?: CreatorProfileTab.Posts) }"))
         assertTrue("hidden tiles keep their veil", screen.contains("if (review.isHidden) {") && screen.contains("Icons.Filled.VisibilityOff"))
     }
 }

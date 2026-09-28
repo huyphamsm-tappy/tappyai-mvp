@@ -110,6 +110,11 @@ fun DealsScreen(
      * mockup's CTA is only worth showing when it really goes somewhere.
      */
     onAskTappy: ((String) -> Unit)? = null,
+    /**
+     * The "Hỏi Tappy trước khi mua" card's CTA: Chat, EMPTY — the web's `href="/chat"` ("no prompt is
+     * pre-filled: with no deal in hand there is no subject to carry"). Null draws no card.
+     */
+    onOpenChat: (() -> Unit)? = null,
     viewModel: DealsViewModel = hiltViewModel(),
 ) {
     val state = viewModel.uiState
@@ -139,11 +144,18 @@ fun DealsScreen(
                 message = state.message,
                 onRetry = viewModel::retry,
             )
-            is UiState.Empty -> TappyEmptyState(
-                icon = Icons.Filled.LocalOffer,
-                title = stringResource(R.string.deals_empty_title),
-                message = stringResource(R.string.deals_empty_message),
-            )
+            // The web keeps the ask-Tappy card above its one-line empty text ("Chưa có ưu đãi nào.
+            // Quay lại sau nhé!") — the card is how an empty Deals page is still useful.
+            is UiState.Empty -> Column(
+                modifier = Modifier.fillMaxSize().padding(horizontal = TappySpacing.lg),
+                verticalArrangement = Arrangement.spacedBy(TappySpacing.xl),
+            ) {
+                if (onOpenChat != null) AskTappyHero(partners = emptyList(), onAsk = onOpenChat)
+                TappyEmptyState(
+                    icon = Icons.Filled.LocalOffer,
+                    title = stringResource(R.string.deals_empty_title),
+                )
+            }
             is UiState.Success -> {
                 val deals = viewModel.visibleDeals
                 val featured = deals.filter { it.isFeatured }.ifEmpty { deals }
@@ -156,14 +168,11 @@ fun DealsScreen(
                     ),
                     verticalArrangement = Arrangement.spacedBy(TappySpacing.lg),
                 ) {
-                    if (onAskTappy != null) {
+                    if (onOpenChat != null) {
                         item(key = "hero") {
-                            // Read in composition, not in the click handler — stringResource is a
-                            // @Composable and cannot be called from a lambda that runs on tap.
-                            val generalPrefill = stringResource(R.string.deals_ask_general_prefill)
                             AskTappyHero(
                                 partners = state.data.map { it.partnerName }.distinct(),
-                                onAsk = { onAskTappy(generalPrefill) },
+                                onAsk = onOpenChat,
                             )
                         }
                     }

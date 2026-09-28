@@ -25,8 +25,8 @@ async function media() {
 function post(userId, key, fields) {
   return {
     user_id: userId, place_id: `e2e_${key}`, place_name: fields.place_name, place_address: 'Quận 1, TP.HCM',
-    body: `${TAG} ${fields.body}`, is_hidden: false, publication_state: 'PUBLISHED', content_type: 'photo',
-    source_type: 'upload', rating: 5, ...fields,
+    is_hidden: false, publication_state: 'PUBLISHED', content_type: 'photo',
+    source_type: 'upload', source_url: null, rating: 5, ...fields, body: `${TAG} ${fields.body}`,
   }
 }
 
@@ -49,16 +49,21 @@ export async function seed() {
   const ids = [u.pro.id, u.other.id].join(',')
   await rest.del(`review_shares?user_id=in.(${ids})`)
   await rest.del(`review_saves?user_id=in.(${ids})`)
-  await rest.del(`reviews?user_id=in.(${ids})&body=like.${encodeURIComponent(TAG)}*`)
+  await rest.del(`reviews?user_id=in.(${ids})&place_id=like.e2e_*`)
 
   const m = await media()
   const P = (i) => [m.photos[i % m.photos.length]]
-  const [o1, o2, o3, o4] = await rest.insert('reviews', [
+  const [o1, o2, o3, o4, o5] = await rest.insert('reviews', [
     post(u.other.id, 'other_photo1', { place_name: 'Phở Người Khác (E2E)', body: 'bài công khai 1', photos: P(0), media_url: P(0)[0], thumbnail: P(0)[0] }),
     post(u.other.id, 'other_photo2', { place_name: 'Bánh Mì Người Khác (E2E)', body: 'bài công khai 2', photos: P(1), media_url: P(1)[0], thumbnail: P(1)[0] }),
     post(u.other.id, 'other_clip', { place_name: 'Clip Người Khác (E2E)', body: 'clip công khai', content_type: 'video', media_url: m.clip.media_url, thumbnail: m.clip.thumbnail, photos: [] }),
     post(u.other.id, 'other_hidden', { place_name: 'Bài Ẩn Người Khác (E2E)', body: 'bài ẩn — người xem KHÔNG được thấy', is_hidden: true, photos: P(2), media_url: P(2)[0], thumbnail: P(2)[0] }),
+    // A share-only row (no real place, the web's `isShareOnlyName`) — what the visitor "Chia sẻ" tab lists.
+    post(u.other.id, 'other_share', { place_name: 'Chia sẻ', body: 'link YouTube chia sẻ', content_type: 'video', source_type: 'youtube', source_url: 'https://www.youtube.com/watch?v=ftsQYS1fkOs', media_url: 'https://www.youtube.com/watch?v=ftsQYS1fkOs', thumbnail: 'https://i.ytimg.com/vi/ftsQYS1fkOs/hqdefault.jpg', photos: [], rating: null }),
   ])
+  // Pro follows the other account, so its profile is reachable from Tôi → Đang theo dõi.
+  await rest.del(`user_follows?follower_id=eq.${u.pro.id}`)
+  await rest.insert('user_follows', [{ follower_id: u.pro.id, following_id: u.other.id }])
   const [p1, p2, p3, p4] = await rest.insert('reviews', [
     post(u.pro.id, 'pro_published1', { place_name: 'Phở Chính Chủ (E2E)', body: 'đã đăng 1', photos: P(0), media_url: P(0)[0], thumbnail: P(0)[0] }),
     post(u.pro.id, 'pro_published2', { place_name: 'Cà Phê Chính Chủ (E2E)', body: 'đã đăng 2', photos: P(2), media_url: P(2)[0], thumbnail: P(2)[0] }),
@@ -77,7 +82,7 @@ export async function seed() {
   ])
   return {
     users: Object.fromEntries(Object.entries(u).map(([k, v]) => [k, { email: v.email, id: v.id }])),
-    other: { public: [o1.id, o2.id, o3.id], hidden: o4.id },
+    other: { public: [o1.id, o2.id, o3.id], hidden: o4.id, share: o5.id },
     pro: { published: [p1.id, p2.id], restricted: p3.id, hidden: p4.id, shared: [p1.id, o2.id], saved: [o1.id, o3.id] },
   }
 }

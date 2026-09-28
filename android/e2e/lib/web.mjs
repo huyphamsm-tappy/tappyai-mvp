@@ -9,7 +9,7 @@ import { sessionFor } from './supabase.mjs'
 
 const CHUNK = 3180 // @supabase/ssr MAX_CHUNK_SIZE
 
-export async function openWeb({ email = null, dir }) {
+export async function openWeb({ email = null, dir, chatQuiz = false }) {
   const browser = await chromium.launch()
   const context = await browser.newContext({
     viewport: { width: 412, height: 915 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true,
@@ -22,6 +22,8 @@ export async function openWeb({ email = null, dir }) {
   const host = new URL(UAT_BASE).hostname
   // First-visit language modal: the choice the web stores, so every run starts in Vietnamese.
   await context.addInitScript(() => { try { localStorage.setItem('tappy_lang', 'vi') } catch {} })
+  // The first-chat 3-question quiz (ChatInterface `tappy_onboarded`) is its own flow; elsewhere skip it.
+  if (!chatQuiz) await context.addInitScript(() => { try { localStorage.setItem('tappy_onboarded', '1') } catch {} })
   if (email) {
     const s = await sessionFor(email)
     const value = 'base64-' + Buffer.from(JSON.stringify(s)).toString('base64url')

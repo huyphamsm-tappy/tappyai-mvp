@@ -35,6 +35,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.compose.ui.res.stringResource
+import com.tappyai.app.R
 import com.tappyai.app.chat.ChatScreen
 import com.tappyai.app.deals.DealsScreen
 import com.tappyai.app.explore.ExploreTab
@@ -202,7 +204,8 @@ fun HomeShellScreen(
                         )
                     }
                 } else if (!showsOwnHeader) {
-                    TappyAppBar(title = currentTab.title())
+                    // Deals reads "Deal hôm nay" in its bar, like the web page title; the tab keeps "Deals".
+                    TappyAppBar(title = if (currentTab == HomeTab.Deals) stringResource(R.string.deals_v3_title) else currentTab.title())
                 }
             },
             bottomBar = {
@@ -294,6 +297,7 @@ fun HomeShellScreen(
                         // them real; without it the screen draws no CTA rather than a dead one.
                         DealsScreen(
                             onAskTappy = { prefill -> navController.navigateToChatWithPrefill(prefill) },
+                            onOpenChat = { navController.navigateToChat() },
                         )
                     }
                     composable<HomeRoute.Profile> {
@@ -350,6 +354,14 @@ private fun NavHostController.navigateToConversation(conversationId: String) {
  * "ask Tappy about this place" shortcut). Same fresh-instance rationale as [navigateToConversation]:
  * a restored Chat back stack would ignore the prompt, so this pushes a new entry carrying it.
  */
+/** Opens the Chat tab on a fresh, EMPTY conversation (the web's plain `/chat` link). */
+private fun NavHostController.navigateToChat() {
+    navigate(HomeRoute.Chat()) {
+        popUpTo(graph.findStartDestination().id) { saveState = true }
+        launchSingleTop = true
+    }
+}
+
 private fun NavHostController.navigateToChatWithPrefill(prefill: String) {
     navigate(HomeRoute.Chat(prefill = prefill)) {
         popUpTo(graph.findStartDestination().id) { saveState = true }

@@ -117,7 +117,7 @@ class SelfProfileV3Test {
         assertFalse("no city invented", header.contains("facts.city") || header.contains("R.string.reviews_self_city"))
         // 2026-09-13: "Đã lưu" joined "Bài viết" — GET /api/reviews/saved exists (see ProfileSavedTest); Liked still has no API.
         // 2026-09-17: the personal segments (Đã thích / Đã lưu / Đã ẩn / Đã share) are self-only, behind showCollections.
-        assertTrue("the personal segments, self-only (behind showCollections)", header.contains("val tabs = if (showCollections) CreatorProfileTab.entries else listOf(CreatorProfileTab.Posts)"))
+        assertTrue("the personal segments, self-only (behind showCollections)", header.contains("showCollections -> CreatorProfileTab.entries") && header.contains("showVisitorShares -> listOf(CreatorProfileTab.Posts, CreatorProfileTab.Shared)"))
         assertFalse("no Liked segment without an API", header.contains("reviews_self_tab_liked"))
     }
 

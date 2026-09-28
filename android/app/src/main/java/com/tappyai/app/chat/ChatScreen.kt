@@ -154,6 +154,7 @@ fun ChatScreen(
     // recomposing this (invisible) tree on every token while the app is backgrounded. Pausing at
     // STOPPED stops that churn; the ViewModel's own stream is unaffected either way.
     val messages by viewModel.messages.collectAsStateWithLifecycle()
+    val publicShareEnabled by viewModel.publicShareEnabled.collectAsStateWithLifecycle()
     val isResponding by viewModel.isAssistantResponding.collectAsStateWithLifecycle()
     val streamingText by viewModel.streamingText.collectAsStateWithLifecycle()
     val streamingHint by viewModel.streamingHint.collectAsStateWithLifecycle()
@@ -417,6 +418,7 @@ fun ChatScreen(
                                         planJson = message.planJson,
                                         shareSubject = shareSubjectFor(messages, message),
                                         onSharePublic = { viewModel.onSharePublic(message.id) },
+                                        publicShareEnabled = publicShareEnabled,
                                     )
                                 }
                             }

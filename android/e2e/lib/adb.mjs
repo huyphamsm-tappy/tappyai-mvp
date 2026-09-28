@@ -53,6 +53,8 @@ const matches = (n, q) => (q instanceof RegExp ? q.test(n.text) || q.test(n.desc
 export const find = (q, nodes = dump()) => nodes.find((n) => matches(n, q) && n.x2 > n.x1 && n.y2 > n.y1)
 export const texts = (nodes = dump()) => nodes.map((n) => n.text || n.desc).filter(Boolean)
 export const visible = (q) => !!find(q)
+/** Portrait grid tiles (profile / collection grids): clickable, ~1/3 of the width, taller than wide. */
+export const tiles = (nodes = dump()) => nodes.filter((n) => n.clickable && n.x2 - n.x1 > 250 && n.x2 - n.x1 < 420 && n.y2 - n.y1 > 400 && n.y1 > 300)
 
 export async function waitFor(q, { timeout = 20000, interval = 800 } = {}) {
   const end = Date.now() + timeout
@@ -77,12 +79,16 @@ export async function tap(q, opts) {
   await sleep(opts?.after ?? 1200)
   return n
 }
-export async function scrollTo(q, { max = 8, dir = 'up' } = {}) {
-  for (let i = 0; i < max; i++) {
-    const n = find(q)
-    if (n && n.y2 < 2050 && n.y1 > 150) return n
-    swipe(dir)
-    await sleep(900)
+export async function scrollTo(q, { max = 8 } = {}) {
+  // Down first (content above the fold), then up — a screen may come back with its old scroll.
+  for (const dir of ['down', 'up']) {
+    for (let i = 0; i < max; i++) {
+      const n = find(q)
+      if (n && n.y2 < 2050 && n.y1 > 200) return n
+      if (dir === 'down' && i >= 3) break
+      swipe(dir)
+      await sleep(900)
+    }
   }
   throw new Error(`could not scroll to ${q}`)
 }
@@ -110,7 +116,9 @@ export function foreground() {
 export async function launch({ fresh = false } = {}) {
   if (fresh) sh('am', 'force-stop', PKG)
   sh('am', 'start', '-W', '-n', MAIN)
-  await sleep(2500)
+  // A first start after install can take ~20 s on the emulator; wait for the shell's bottom bar.
+  await waitFor('Trang chủ', { timeout: 60000 }).catch(() => {})
+  await sleep(1000)
 }
 export function install(apk) { adb(['install', '-r', apk]) }
 
@@ -137,22 +145,26 @@ export class Recorder {
     fs.writeFileSync(file, png)
     return file
   }
-  /** screenrecord caps at 180 s, so long flows record in parts. */
+  /** screenrecord caps at 180 s, so a flow records in consecutive parts until stopVideo(). */
   startVideo() {
-    this.stopVideo()
-    const remote = `/sdcard/e2e-${this.part}.mp4`
-    this.remote = remote
-    this.proc = spawn(ADB, ['-s', SERIAL, 'shell', 'screenrecord', '--time-limit', '180', '--bit-rate', '4000000', remote], { stdio: 'ignore' })
-    this.startedAt = Date.now()
+    this.stopped = false
+    const next = () => {
+      const remote = `/sdcard/e2e-part-${this.part}.mp4`
+      this.remotes = [...(this.remotes || []), remote]
+      this.proc = spawn(ADB, ['-s', SERIAL, 'shell', 'screenrecord', '--time-limit', '175', '--size', '540x1200', '--bit-rate', '1500000', remote], { stdio: 'ignore' })
+      this.proc.on('exit', () => { if (!this.stopped) { this.part++; next() } })
+    }
+    next()
   }
   async stopVideo() {
-    if (!this.proc) return
-    sh('pkill', '-INT', 'screenrecord')
-    await sleep(2500)
-    adb(['pull', this.remote, path.join(this.dir, `video-${this.part}.mp4`)], { allowFail: true })
-    sh('rm', '-f', this.remote)
-    this.proc = null
-    this.part++
+    if (this.stopped !== false) return
+    this.stopped = true
+    adb(['shell', 'pkill', '-INT', 'screenrecord'], { allowFail: true })
+    await sleep(3000)
+    ;(this.remotes || []).forEach((remote, i) => {
+      adb(['pull', remote, path.join(this.dir, `video-${i}.mp4`)], { allowFail: true })
+      adb(['shell', 'rm', '-f', remote], { allowFail: true })
+    })
+    this.remotes = []
   }
-  async keepRecording() { if (this.proc && Date.now() - this.startedAt > 170000) { await this.stopVideo(); this.startVideo() } }
 }

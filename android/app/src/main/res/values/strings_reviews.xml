@@ -175,4 +175,7 @@
     <string name="reviews_likes_empty">No likes on this post yet</string>
     <string name="reviews_likes_error">Couldn\'t load the like list</string>
     <string name="reviews_likes_more">Show more</string>
+    <string name="reviews_visitor_tab_posts">Posts</string>
+    <string name="reviews_visitor_tab_shares">Shared</string>
+    <string name="reviews_visitor_empty_shares">Nothing shared yet.</string>
 </resources>

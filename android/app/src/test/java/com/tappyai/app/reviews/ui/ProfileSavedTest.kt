@@ -96,17 +96,17 @@ class ProfileSavedTest {
         val otherVm = src("app/src/main/java/com/tappyai/app/reviews/ui/ReviewProfileViewModel.kt")
         assertFalse(otherVm.contains("getSaved"))
         val content = screen.substring(screen.indexOf("private fun CreatorProfileContent("), screen.indexOf("private fun CreatorProfileTopBar("))
-        assertTrue("without collections the grid is the posts, whatever was selected", content.contains("val tab = if (collections == null) CreatorProfileTab.Posts else selectedTab"))
+        assertTrue("without collections the grid is the posts, whatever was selected", (content.contains("collections != null -> selectedTab") && content.contains("else -> CreatorProfileTab.Posts")))
         assertTrue("the personal segments are drawn only with collections", content.contains("showCollections = collections != null,"))
     }
 
     @Test
     fun `the segments switch the same 3-column grid - posts or saved rows, empty and error states`() {
         val content = screen.substring(screen.indexOf("private fun CreatorProfileContent("), screen.indexOf("private fun CreatorProfileTopBar("))
-        assertTrue(content.contains("var selectedTab by rememberSaveable { mutableStateOf(CreatorProfileTab.Posts) }"))
+        assertTrue(content.contains("var selectedTab by rememberSaveable(visitorShares?.initialTab) { mutableStateOf(visitorShares?.initialTab ?: CreatorProfileTab.Posts) }"))
         assertTrue(content.contains("columns = GridCells.Fixed(3),"))
         assertTrue("posts branch unchanged", content.contains("PostGridTile(review = review, onClick = { onReviewClick(review.id) })"))
-        assertTrue("collection rows use the same tile, keyed by their collection", content.contains("""items(items = rows, key = { tab.name + ":" + it.id }) { review ->""") && content.contains("PostGridTile(review = review, onClick = { collections.onReviewClick(tab, review.id) })"))
+        assertTrue("collection rows use the same tile, keyed by their collection", content.contains("""items(items = rows, key = { tab.name + ":" + it.id }) { review ->""") && content.contains("PostGridTile(review = review, onClick = { collections?.onReviewClick?.invoke(tab, review.id) ?: onReviewClick(review.id) })"))
         assertTrue("empty saved copy", content.contains("R.string.reviews_self_saved_empty_title") && content.contains("Icons.Filled.BookmarkBorder"))
         assertTrue("a failed load retries", content.contains("rows == null -> item") && content.contains("onRetry = collections?.onRetry ?: {},"))
         // 2026-09-17: the segments are drawn from `CreatorProfileTab.entries`, so the order is the enum's.

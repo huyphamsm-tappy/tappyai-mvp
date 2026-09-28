@@ -2,7 +2,7 @@
     <string name="deals_title">🏷️ Deals</string>
     <string name="deals_error_title">Couldn\'t load deals</string>
     <string name="deals_error_message">Couldn\'t load deals. Please try again later.</string>
-    <string name="deals_empty_title">No deals right now</string>
+    <string name="deals_empty_title">No deals yet. Check back soon!</string>
     <string name="deals_empty_message">Check back later for new deals.</string>
     <string name="deals_opens_externally_description">Opens externally</string>
     <string name="deals_via_source">via %1$s</string>
@@ -24,7 +24,6 @@
     <!-- V3 Deals (ported from A 77b0bb7) -->
     <string name="deals_ask_about">Ask Tappy</string>
     <string name="deals_ask_deal_prefill">Tappy tư vấn giúp mình về ưu đãi trên %1$s nhé?</string>
-    <string name="deals_ask_general_prefill">Mình đang muốn mua sắm, Tappy tư vấn giúp mình nhé?</string>
     <string name="deals_daily_note">Tappy refreshes the best offers every day</string>
     <string name="deals_featured_title">Featured today</string>
     <string name="deals_filter_all">All</string>
@@ -36,6 +35,6 @@
     <string name="deals_hero_title">Ask Tappy before you buy</string>
     <string name="deals_platforms_subtitle">Pick a platform to see its offers</string>
     <string name="deals_platforms_title">Explore deals by platform</string>
-    <string name="deals_v3_subtitle">Smart daily offers</string>
-    <string name="deals_v3_title">Tappy Deals</string>
+    <string name="deals_v3_subtitle">Offers from the e-commerce platforms Tappy follows</string>
+    <string name="deals_v3_title">Today\'s deals</string>
 </resources>

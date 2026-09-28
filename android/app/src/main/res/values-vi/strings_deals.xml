@@ -2,7 +2,7 @@
     <string name="deals_title">🏷️ Ưu đãi</string>
     <string name="deals_error_title">Không thể tải ưu đãi</string>
     <string name="deals_error_message">Không thể tải ưu đãi. Vui lòng thử lại sau.</string>
-    <string name="deals_empty_title">Hiện chưa có ưu đãi nào</string>
+    <string name="deals_empty_title">Chưa có ưu đãi nào. Quay lại sau nhé!</string>
     <string name="deals_empty_message">Quay lại sau để xem ưu đãi mới.</string>
     <string name="deals_opens_externally_description">Mở bên ngoài ứng dụng</string>
     <string name="deals_via_source">qua %1$s</string>
@@ -18,7 +18,6 @@
     <!-- V3 Deals (ported from A 77b0bb7) -->
     <string name="deals_ask_about">Hỏi Tappy về deal</string>
     <string name="deals_ask_deal_prefill">Tappy tư vấn giúp mình về ưu đãi trên %1$s nhé?</string>
-    <string name="deals_ask_general_prefill">Mình đang muốn mua sắm, Tappy tư vấn giúp mình nhé?</string>
     <string name="deals_daily_note">Tappy cập nhật những ưu đãi tốt nhất mỗi ngày</string>
     <string name="deals_featured_title">Deal nổi bật hôm nay</string>
     <string name="deals_filter_all">Tất cả</string>
@@ -30,6 +29,6 @@
     <string name="deals_hero_title">Hỏi Tappy trước khi mua</string>
     <string name="deals_platforms_subtitle">Chọn nền tảng để xem ưu đãi từ nguồn đó</string>
     <string name="deals_platforms_title">Khám phá deal theo sàn</string>
-    <string name="deals_v3_subtitle">Săn ưu đãi thông minh mỗi ngày</string>
-    <string name="deals_v3_title">Deals của Tappy</string>
+    <string name="deals_v3_subtitle">Khám phá ưu đãi từ các sàn thương mại điện tử</string>
+    <string name="deals_v3_title">Deal hôm nay</string>
 </resources>

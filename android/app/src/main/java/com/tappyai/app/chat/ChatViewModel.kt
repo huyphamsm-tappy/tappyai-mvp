@@ -68,7 +68,11 @@ class ChatViewModel @Inject constructor(
     private val logger: LoggerProvider,
     private val stringProvider: StringProvider,
     @ApplicationContext private val context: android.content.Context,
+    private val productFlags: com.tappyai.app.config.ProductFlagsRepository,
 ) : ViewModel() {
+
+    /** The web's SHOW_PUBLIC_SHARE (`/api/config` flags.publicShare); false until the server says on. */
+    val publicShareEnabled: kotlinx.coroutines.flow.StateFlow<Boolean> = productFlags.publicShare
 
     val category: ChatCategory = savedStateHandle.get<String>("category")
         ?.let { name -> ChatCategory.entries.find { it.name.equals(name, ignoreCase = true) } }
@@ -268,6 +272,7 @@ class ChatViewModel @Inject constructor(
     private var ttsIntentionalStop = false
 
     init {
+        viewModelScope.launch { productFlags.refresh() }
         val id = conversationId
         // chat_opened (RUNBOOK §3.19) — fires once when a fresh main chat opens. A
         // resumed conversation (conversationId != null) is a continuation, matching
