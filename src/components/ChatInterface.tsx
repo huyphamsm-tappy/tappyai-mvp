@@ -460,13 +460,68 @@ function escapeHtml(s: string): string {
 
 // Exported for test only — this is the single transform standing between untrusted LLM/tool
 // output and dangerouslySetInnerHTML, and it had no coverage at all.
+const IMAGE_HOSTS = /(^|\.)(googleusercontent\.com|gstatic\.com|ggpht\.com|fbcdn\.net|cdninstagram\.com|tiktokcdn\.com|ytimg\.com)$/i
+/** Does this URL point at an image (a photo CDN, or an image file)? */
+export function isImageUrl(url: string): boolean {
+  try {
+    const u = new URL(url.replace(/&amp;/g, '&'))
+    if (/\.(jpe?g|png|webp|gif|avif)$/i.test(u.pathname)) return true
+    // encrypted-tbn*.gstatic.com thumbnails and lh*.googleusercontent.com photos — never a page.
+    return IMAGE_HOSTS.test(u.hostname) && !/\/maps\b|\/search\b/.test(u.pathname)
+  } catch { return false }
+}
+const looksLikeUrl = (s: string) => /^\s*(https?:\/\/|www\.)/i.test(s)
+const LINK_LABELS: Array<[RegExp, string]> = [
+  [/(^|\.)(google\.[a-z.]+|goo\.gl|maps\.app\.goo\.gl)$/, 'Google Maps'],
+  [/(^|\.)(facebook\.com|fb\.com|fb\.me)$/, 'Facebook'],
+  [/(^|\.)(instagram\.com)$/, 'Instagram'],
+  [/(^|\.)(tiktok\.com)$/, 'TikTok'],
+  [/(^|\.)(youtube\.com|youtu\.be)$/, 'YouTube'],
+  [/(^|\.)(shopeefood\.vn)$/, 'ShopeeFood'],
+  [/(^|\.)(food\.grab\.com|grab\.com)$/, 'GrabFood'],
+  [/(^|\.)(shopee\.vn)$/, 'Shopee'],
+  [/(^|\.)(lazada\.vn)$/, 'Lazada'],
+  [/(^|\.)(tiki\.vn)$/, 'Tiki'],
+  [/(^|\.)(booking\.com)$/, 'Booking.com'],
+  [/(^|\.)(traveloka\.com)$/, 'Traveloka'],
+  [/(^|\.)(trip\.com)$/, 'Trip.com'],
+  [/(^|\.)(agoda\.com)$/, 'Agoda'],
+  [/(^|\.)(ticketbox\.vn)$/, 'Ticketbox'],
+  [/(^|\.)(go\.isclix\.com)$/, 'Mở trang'],
+]
+/** A readable label for a link target: the platform's name, else the site's short host — never the URL. */
+export function linkLabelFor(url: string): string {
+  try {
+    const host = new URL(url.replace(/&amp;/g, '&')).hostname.toLowerCase().replace(/^www\./, '')
+    if (/(^|\.)google\.[a-z.]+$/.test(host) && !/\/maps|maps\.|goo\.gl/.test(url)) return 'Google'
+    for (const [re, label] of LINK_LABELS) if (re.test(host)) return label
+    return host.length > 28 ? `${host.slice(0, 26)}…` : host
+  } catch { return 'Link' }
+}
+/** One link, one chip: never glued to its neighbour, never a raw URL. */
+function linkChip(url: string, label: string): string {
+  return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center align-middle mx-0.5 my-0.5 px-2.5 py-0.5 rounded-full border border-primary-500/40 bg-primary-500/10 text-primary-600 dark:text-primary-300 text-[13px] font-medium no-underline hover:bg-primary-500/20 max-w-full truncate">${label}</a>`
+}
+
 export function formatMessage(content: string) {
   // Images first — render before link processing to avoid conflicts. Group any run of
   // consecutive image lines (a place's photo gallery) into one horizontally-scrollable
   // strip instead of stacking them vertically, so 3 photos swipe left/right like a carousel.
   // Bold is balanced per line FIRST: a matched pair renders bold, an unmatched `**` (model slip,
   // guard cut, a pair split by a line break) is dropped — never painted, never an empty <em>.
-  const withImages = escapeHtml(balanceBoldPerLine(content)).replace(
+  // UAT 2026-09-28 (owner P1c/P1d): the answer showed raw googleusercontent / facebook URLs, links
+  // glued together ("Official WebsiteGoogle Maps"), a broken "Ảnh địa điểm" photo link and big blank
+  // gaps. Normalised here, for every vertical: blank-line runs a guard left behind collapse to one
+  // paragraph break; a link whose target IS an image renders as the image; every other link is a
+  // separate chip with a readable label — a URL is never printed as text.
+  const normalized = balanceBoldPerLine(content)
+    .replace(/[ \t]+\n/g, '\n')
+    .replace(/\n{3,}/g, '\n\n')
+    // [Ảnh địa điểm](https://…googleusercontent…) — a photo, written as a link.
+    .replace(/(^|[^!])\[([^\]\n]*)\]\((https?:\/\/[^\s)]+)\)/g, (m, pre: string, label: string, url: string) => isImageUrl(url) ? `${pre}![${label}](${url})` : m)
+    // A bare image URL on its own is a photo too.
+    .replace(/(^|\s)(https?:\/\/[^\s<)\]]+)/g, (m, pre: string, url: string) => isImageUrl(url) ? `${pre}![](${url})` : m)
+  const withImages = escapeHtml(normalized).replace(
     /(?:!\[[^\]]*\]\(https?:\/\/[^\s)]+\)[ \t]*\n?)+/g,
     (block) => {
       const imgs = [...block.matchAll(/!\[([^\]]*)\]\((https?:\/\/[^\s)]+)\)/g)]
@@ -478,8 +533,9 @@ export function formatMessage(content: string) {
     }
   )
   return withImages
-    .replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer" class="text-primary-600 dark:text-primary-400 underline font-medium break-all">$1</a>')
-    .replace(/(^|[^"'>])(https?:\/\/[^\s<]+)/g, '$1<a href="$2" target="_blank" rel="noopener noreferrer" class="text-primary-600 dark:text-primary-400 underline break-all">$2</a>')
+    .replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, (_m, label: string, url: string) => linkChip(url, looksLikeUrl(label) ? linkLabelFor(url) : label))
+    // A bare URL is never printed: it becomes a chip named for where it goes ("Facebook", "Google Maps").
+    .replace(/(^|[^"'>=])(https?:\/\/[^\s<]+)/g, (_m, pre: string, url: string) => `${pre}${linkChip(url, linkLabelFor(url))}`)
     .replace(/^### (.+)$\n?/gm, '<div class="font-semibold mt-3 mb-1">$1</div>')
     .replace(/^## (.+)$\n?/gm, '<div class="font-semibold text-base mt-3 mb-1">$1</div>')
     .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
