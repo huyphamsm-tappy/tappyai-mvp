@@ -12,6 +12,10 @@ const [, , base, outDir, caseId, ...turns] = process.argv
 const bypass = readFileSync('D:/TappyAI-backups/vercel-bypass.txt', 'utf8').trim()
 mkdirSync(outDir, { recursive: true })
 
+function safeJson(s) {
+  try { return JSON.parse(s) } catch (e) { return { BROKEN_JSON: String(e.message), head: s.slice(0, 160) } }
+}
+
 function parseStream(raw) {
   let text = ''
   const annotations = []
@@ -66,8 +70,8 @@ for (const [i, content] of turns.entries()) {
     unbalancedBoldLines: prose.split('\n').filter(l => ((l.match(/\*\*/g) ?? []).length % 2) === 1),
     proseTail: prose.slice(-400),
     placeActions,
-    shopping: shopping ? JSON.parse(shopping) : null,
-    plan: plan ? JSON.parse(plan) : null,
+    shopping: shopping ? safeJson(shopping) : null,
+    plan: plan ? safeJson(plan) : null,
     cta: text.match(/\[CTA_BUTTONS\]([\s\S]*?)\[\/CTA_BUTTONS\]/)?.[1]?.trim() ?? null,
     error: res.status !== 200 ? raw.slice(0, 300) : undefined,
   }
@@ -75,4 +79,4 @@ for (const [i, content] of turns.entries()) {
   messages.push({ role: 'assistant', content: text })
 }
 writeFileSync(join(outDir, `${caseId}.summary.json`), JSON.stringify(summary, null, 2))
-console.log(JSON.stringify(summary.turns.map(t => ({ status: t.status, ms: t.ms, stars: t.literalDoubleStar, unbalanced: t.unbalancedBoldLines.length, places: t.placeActions.length, shopping: !!t.shopping, plan: !!t.plan }))))
+console.log(JSON.stringify(summary.turns.map(t => ({ status: t.status, ms: t.ms, stars: t.literalDoubleStar, unbalanced: t.unbalancedBoldLines.length, places: t.placeActions.length, shopping: t.shopping ? (t.shopping.BROKEN_JSON ? 'BROKEN' : 'ok') : false, plan: t.plan ? (t.plan.BROKEN_JSON ? 'BROKEN' : 'ok') : false }))))

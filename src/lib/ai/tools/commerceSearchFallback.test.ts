@@ -223,3 +223,20 @@ describe('events', () => {
     expect(links(venue).some(l => l.providerId === 'ticketbox')).toBe(false)
   })
 })
+
+describe('hotel card rows without a page of their own (live UAT 2026-09-28: 2 of 8 had a booking button)', () => {
+  it('every hotel row gets ONE "Tìm trên Booking.com" results page for THAT hotel, not the city', async () => {
+    const rows = ['Khách Sạn Green Eco Đà Lạt', 'Tulip Dalat Hotel', 'Ana Villa'].map((n, i) => ({ name: n, maps_link: `https://maps.google.com/?cid=${i}`, place_types: ['hotel'] }))
+    const result = { results: rows, _tappy_place_domain: 'place', query: 'khách sạn Đà Lạt' }
+    await attachCommerceLinks('search_places', result, { enabled: true, now: NOW, search: none, location: 'Đà Lạt', userTexts: ['khách sạn Đà Lạt dưới 1 triệu'] })
+    for (const r of rows) {
+      const ls = links(r)
+      expect(ls).toHaveLength(1)
+      expect(ls[0]).toMatchObject({ providerId: 'booking', kind: 'SEARCH_HANDOFF', fallback: 'search', primary: false })
+      const ss = new URL(ls[0].url).searchParams.get('ss')!
+      expect(ss.startsWith(r.name)).toBe(true)
+    }
+    const actions = placeRecommendations(result, 'Đà Lạt')[0].entity.actions
+    expect(resolveActionLabel(actions.find(a => a.commerce)!)).toEqual({ key: 'v3.action.bookingSearch', params: { platform: 'Booking.com' } })
+  })
+})

@@ -751,6 +751,11 @@ function fallbackIntentOf(plan: Plan, ctx: CommerceAttachContext, listingsAdded:
   // A Ticketbox search for a venue's name is only an answer when the user asked for event tickets
   // AND no event listing of its own was found (a listing row is the real answer; 14 Sep 2026).
   if (plan.domain === 'entertainment' && !listingsAdded && entertainmentCapabilityOf(userTurns(ctx)) === 'event_ticket') return 'buy_event_ticket'
+  // UAT 2026-09-28 (live: 2 of 8 hotel cards had a booking button). A HOTEL card row — the places
+  // tool's lodging rows or get_hotel_prices' `hotel_list`, never the OTA snippets the model reads —
+  // with no page of its own gets the one OTA whose search grammar lands on a results page for the
+  // hotel's name (Booking.com, depth 2; Traveloka/Agoda only reach a front door and are refused).
+  if (plan.domain === 'travel' && plan.listKey !== 'search_results' && plan.intents.some(i => i.intentType === 'book_hotel')) return 'book_hotel'
   return null
 }
 
@@ -796,11 +801,17 @@ function attachSearchFallbacks(
     // A product whose own listing link is already the product page needs no search beside it.
     const own = str(row.link)
     if (plan.domain === 'shopping' && own && linkDepthClass(own) === 'product') continue
-    let source = captured.get(row)
+    // A hotel search must be for THIS hotel: the OTA grammar searches the city constraint when one is
+    // set (a results page for the whole city), so the hotel fallback resolves on the name alone.
+    const hotelSearch: boolean = intentType === 'book_hotel'
+    let source: { links: CommerceLink[]; requestId: string; intentType: IntentType } | undefined = hotelSearch ? undefined : captured.get(row)
     if (!source || source.intentType !== intentType) {
       const area = plan.domain === 'shopping' ? undefined : str(ctx.location)
       const subject = (area && !normalizeVN(s.subject.toLowerCase()).includes(normalizeVN(area.toLowerCase())) ? `${s.subject} ${area}` : s.subject).slice(0, 200)
-      const request: CommerceRequest = { domain: plan.domain, intentType, capability: capabilityForIntent(intentType), subject, ...rc.constraints, context: rc.context }
+      const constraints = hotelSearch && rc.constraints.constraints
+        ? { constraints: { ...rc.constraints.constraints, city: undefined } }
+        : rc.constraints
+      const request: CommerceRequest = { domain: plan.domain, intentType, capability: capabilityForIntent(intentType), subject, ...constraints, context: rc.context }
       const out = rc.resolve(request, { hints: [], now: rc.now, enabled: true })
       if (!('links' in out)) continue
       source = { links: out.links, requestId: out.requestId, intentType }
