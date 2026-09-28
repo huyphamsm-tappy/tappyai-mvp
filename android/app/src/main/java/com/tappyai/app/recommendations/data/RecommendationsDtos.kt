@@ -21,4 +21,10 @@ data class RankedRecommendationDto(
     val placeId: String = "",
     val placeName: String = "",
     val matchedSignals: List<String> = emptyList(),
+    /** Additive (2026-09-28), from the place's community reviews; absent on older servers. */
+    val address: String? = null,
+    val photoUrl: String? = null,
+    val averageRating: Double? = null,
+    val reviewCount: Int = 0,
+    val latestReviewAt: String? = null,
 )

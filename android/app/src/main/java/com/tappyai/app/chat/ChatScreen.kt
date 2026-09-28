@@ -459,10 +459,25 @@ fun ChatScreen(
                                         size = TappyButtonSize.Small,
                                         modifier = Modifier.testTag("chat-error-sign-in"),
                                     )
-                                    ChatErrorAction.DeclareAge -> GuestAgeDeclaration(
-                                        onDeclare = viewModel::onDeclareAge,
-                                        modifier = Modifier.testTag("chat-age-declaration"),
-                                    )
+                                    // The web sends the visitor to /age-check (D:/redesign 18+ screen);
+                                    // here the same screen opens over the chat, once on its own, and
+                                    // this button reopens it if it was dismissed.
+                                    ChatErrorAction.DeclareAge, ChatErrorAction.VerifyAge -> {
+                                        var ageOpen by rememberSaveable(message.id) { mutableStateOf(true) }
+                                        TappyButton(
+                                            text = stringResource(R.string.age_open_cta),
+                                            onClick = { ageOpen = true },
+                                            size = TappyButtonSize.Small,
+                                            modifier = Modifier.testTag("chat-age-open"),
+                                        )
+                                        if (ageOpen) {
+                                            com.tappyai.app.age.AgeCheckDialog(
+                                                guest = message.errorAction == ChatErrorAction.DeclareAge,
+                                                onEligible = { ageOpen = false; viewModel.onAgeConfirmed() },
+                                                onDismiss = { ageOpen = false },
+                                            )
+                                        }
+                                    }
                                     null -> TappyButton(
                                         text = stringResource(R.string.chat_action_regenerate),
                                         onClick = viewModel::onRegenerate,

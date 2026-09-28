@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The 18+ gate — the web's `age.*` copy (src/lib/i18n/w6/age.ts), D:/redesign Sep 10 11_46. -->
+<resources>
+    <string name="age_brand_tagline">Trải nghiệm tốt hơn, cùng nhau.</string>
+    <string name="age_ask_title_lead">Xác nhận bạn</string>
+    <string name="age_ask_title_accent">đủ 18 tuổi</string>
+    <string name="age_ask_desc">TappyAI cung cấp dịch vụ và nội dung dành cho người từ 18 tuổi trở lên. Vui lòng cho chúng tôi biết ngày sinh để xác nhận bạn đủ tuổi sử dụng.</string>
+    <string name="age_field_day">Ngày</string>
+    <string name="age_field_month">Tháng</string>
+    <string name="age_field_year">Năm</string>
+    <string name="age_submit">Tiếp tục</string>
+    <string name="age_submitting">Đang lưu...</string>
+    <string name="age_error_invalid">Ngày sinh không hợp lệ. Vui lòng kiểm tra lại.</string>
+    <string name="age_error_failed">Không thể lưu. Vui lòng thử lại.</string>
+    <string name="age_privacy_title">Ngày sinh của bạn được giữ riêng tư</string>
+    <string name="age_privacy">Chúng tôi chỉ sử dụng thông tin này để xác nhận bạn đủ 18 tuổi và không hiển thị ngày sinh trên hồ sơ của bạn.</string>
+    <string name="age_blocked_title">TappyAI dành cho người từ 18 tuổi</string>
+    <string name="age_blocked_desc">Theo ngày sinh bạn cung cấp, bạn chưa đủ 18 tuổi nên chưa thể sử dụng TappyAI.</string>
+    <string name="age_trust_privacy_title">An toàn &amp; riêng tư</string>
+    <string name="age_trust_privacy_desc">Thông tin của bạn luôn được bảo vệ.</string>
+    <string name="age_trust_age_only_title">Chỉ xác nhận độ tuổi</string>
+    <string name="age_trust_age_only_desc">Chúng tôi chỉ sử dụng ngày sinh để xác nhận bạn đủ 18 tuổi.</string>
+    <string name="age_trust_better_title">Trải nghiệm tốt hơn</string>
+    <string name="age_trust_better_desc">Cùng xây dựng cộng đồng lành mạnh và tích cực.</string>
+    <string name="age_footer_tagline">TappyAI — Trải nghiệm tốt hơn, cùng nhau.</string>
+    <string name="age_open_cta">Xác nhận độ tuổi</string>
+    <string name="age_intro_eyebrow">CỘNG ĐỒNG TAPPYAI</string>
+    <string name="age_intro_title_lead">Những trải nghiệm tốt đẹp hơn,</string>
+    <string name="age_intro_title_accent">cùng nhau</string>
+    <string name="age_intro_desc">TappyAI là nền tảng dành cho người từ 18 tuổi trở lên, nơi bạn có thể khám phá, trò chuyện, mua sắm và chia sẻ những điều thú vị.</string>
+    <string name="age_feature_discover_title">Khám phá</string>
+    <string name="age_feature_discover_desc">Những gợi ý phù hợp với bạn</string>
+    <string name="age_feature_shop_title">Mua sắm</string>
+    <string name="age_feature_shop_desc">Sản phẩm chính hãng, đáng tin cậy</string>
+    <string name="age_feature_together_title">Cùng nhau</string>
+    <string name="age_feature_together_desc">Xây dựng cộng đồng tích cực</string>
+</resources>

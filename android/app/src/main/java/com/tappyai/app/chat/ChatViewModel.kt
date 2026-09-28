@@ -454,22 +454,15 @@ class ChatViewModel @Inject constructor(
     fun onMoodSelected(mood: MoodChip) = sendUserMessage(mood.prompt)
 
     /**
-     * The guest's 18+ self-declaration (owner decision D1 revised): persist the value on this
-     * device, then re-send the turn the refusal interrupted. `birthYear` wins over `adult` when
-     * both are given; an under-18 year is stored too — the refusal must stick on this device —
-     * and the re-send then shows the server's ineligible message.
+     * The 18+ screen said "eligible" (it already stored the guest's declaration, or PATCHed the
+     * account's date of birth): drop the refusal bubble and re-send the interrupted turn.
      */
-    fun onDeclareAge(birthYear: Int?, adult: Boolean) {
-        val value = birthYear?.let { GuestAgeStore.valueForBirthYear(it) } ?: (if (adult) GuestAgeStore.ADULT else null) ?: return
-        viewModelScope.launch {
-            guestAgeStore.declare(value)
-            // Drop the declaration bubble and retry the same history (exactly what Regenerate does).
-            val current = _messages.value
-            val lastAssistantIndex = current.indexOfLast { it.role == TappyChatRole.Assistant }
-            val history = if (lastAssistantIndex != -1 && current[lastAssistantIndex].isError) current.take(lastAssistantIndex) else current
-            _messages.value = history
-            if (history.lastOrNull()?.role == TappyChatRole.User) streamAssistantReply(history)
-        }
+    fun onAgeConfirmed() {
+        val current = _messages.value
+        val lastAssistantIndex = current.indexOfLast { it.role == TappyChatRole.Assistant }
+        val history = if (lastAssistantIndex != -1 && current[lastAssistantIndex].isError) current.take(lastAssistantIndex) else current
+        _messages.value = history
+        if (history.lastOrNull()?.role == TappyChatRole.User) streamAssistantReply(history)
     }
 
     fun onQuickPromptSelected(prompt: String) = sendUserMessage(prompt)
@@ -720,6 +713,8 @@ class ChatViewModel @Inject constructor(
                 val action = when (e) {
                     is ChatException.AuthRequired, is ChatException.AnonLimitReached -> ChatErrorAction.SignIn
                     is ChatException.AgeDeclarationRequired -> ChatErrorAction.DeclareAge
+                    // A signed-in account with no date of birth: the same 18+ screen (web /age-check).
+                    is ChatException.AgeGate -> if (e.code == "age_verification_required") ChatErrorAction.VerifyAge else null
                     else -> null
                 }
                 _messages.update { msgs ->

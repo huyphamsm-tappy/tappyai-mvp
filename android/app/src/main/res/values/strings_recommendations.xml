@@ -1,6 +1,6 @@
 <resources>
     <string name="recommendations_title">✨ Suggestions for you</string>
-    <string name="recommendations_subtitle_personalized">Personalized to your tastes</string>
+    <string name="recommendations_subtitle_personalized">Personalised places for your taste</string>
     <string name="recommendations_subtitle_popular">Trending places nearby</string>
     <string name="recommendations_ask_tappy">Ask Tappy about this place</string>
     <string name="recommendations_place_fallback">Place</string>
@@ -12,4 +12,17 @@
     <!-- The exact prompt the web pre-fills chat with: "Kể mình nghe về {place}". %1$s = place name. -->
     <string name="recommendations_ask_prompt">Kể mình nghe về %1$s</string>
     <string name="recommendations_ask_prompt_fallback">địa điểm này</string>
+    <string name="recommendations_header_title">For you</string>
+    <string name="recommendations_hero_lead">Discover standout places</string>
+    <string name="recommendations_hero_accent">near you</string>
+    <string name="recommendations_hero_subtitle">Connect with eateries, interesting spots and the community around you.</string>
+    <string name="recommendations_highlight_discover">Discover new places</string>
+    <string name="recommendations_highlight_community">Connect with the community</string>
+    <string name="recommendations_highlight_life">Experience life around you</string>
+    <string name="recommendations_mascot_bubble">Let\'s explore the world around you!</string>
+    <string name="recommendations_see_more">See more</string>
+    <string name="recommendations_recently_active">Recently active</string>
+    <string name="recommendations_review_count">%1$d reviews</string>
+    <string name="recommendations_footer_line">The world around you is always full of interesting stories</string>
+    <string name="recommendations_footer_cta">Start exploring today!</string>
 </resources>

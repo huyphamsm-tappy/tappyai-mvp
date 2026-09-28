@@ -8,7 +8,8 @@ import com.tappyai.core.designsystem.component.TappyChatRole
  *  [imageUri] is a locally-picked photo attached to a user turn (vision input, mirrors the
  *  web's `experimental_attachments`) — display-only here; [ChatRepository] reads and
  *  base64-encodes it at send time, it is never persisted as base64 in this model. */
-enum class ChatErrorAction { SignIn, DeclareAge }
+/** [DeclareAge] = a guest's 18+ gate, [VerifyAge] = an account without a date of birth; both open the 18+ screen. */
+enum class ChatErrorAction { SignIn, DeclareAge, VerifyAge }
 
 data class ChatMessage(
     val id: Long,

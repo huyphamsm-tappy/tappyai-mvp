@@ -36,6 +36,8 @@ export async function seed() {
 
   for (const [role, a] of Object.entries(ACCOUNTS)) {
     await rest.patch(`profiles?id=eq.${u[role].id}`, { full_name: a.name, onboarded: true, language: 'vi' })
+    // nodob starts every run WITHOUT a date of birth, so the 18+ gate is always exercised.
+    if (role === 'nodob') await rest.del(`user_demographics?user_id=eq.${u[role].id}`)
     if (role !== 'nodob') {
       await rest.upsert('user_demographics', [{ user_id: u[role].id, date_of_birth: '1994-06-15', age_declared_at: new Date().toISOString() }], 'user_id')
     }

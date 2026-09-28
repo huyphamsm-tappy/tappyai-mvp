@@ -96,6 +96,8 @@ fun HomeTabHost(
             RecommendationsScreen(
                 onBack = { navController.popBackStack() },
                 onAskAboutPlace = { prompt -> onOpenChatWithPrefill(prompt) },
+                // "Xem thêm" → the community Explore feed these places come from (web: /reviews).
+                onSeeMore = { onNavigateToTab(HomeTab.Explore) },
             )
         }
         composable<TranslateRoute.Main> {

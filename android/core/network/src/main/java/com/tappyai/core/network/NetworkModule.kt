@@ -49,6 +49,7 @@ object NetworkModule {
         appLanguageInterceptor: AppLanguageInterceptor,
         tokenAuthenticator: TokenAuthenticator,
         deploymentProtectionInterceptor: DeploymentProtectionInterceptor,
+        guestAgeInterceptor: GuestAgeInterceptor,
         @Named("isDebug") isDebug: Boolean,
     ): OkHttpClient {
         // HEADERS, never BODY. At BODY level the interceptor reads the ENTIRE response body
@@ -75,6 +76,8 @@ object NetworkModule {
             .addInterceptor(appLanguageInterceptor)
             // Inert unless this is the `uat` build (empty secret everywhere else).
             .addInterceptor(deploymentProtectionInterceptor)
+            // A guest's 18+ declaration on every own-API request (the web's cookie equivalent).
+            .addInterceptor(guestAgeInterceptor)
             .addInterceptor(loggingInterceptor)
             .authenticator(tokenAuthenticator)
             // Explicit rather than relying on OkHttp's undocumented-in-this-codebase implicit
