@@ -2557,7 +2557,10 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     // Consult V2: a pick whose search already ran (presearch) answers in ONE step — no second full pass.
     // A follow-up/compare that re-reads its evidence keeps a second step: a stray tool call must still end in text.
     // R15: a pre-fetched trip plan writes in ONE step (a second only if it still reaches for a tool).
-    maxSteps: consultFollowReuse || consultTripPrefetch ? 2 : noToolTurn || eveningBlock || (lean && presearchAll.length > 0 && !planningIntent) ? 1 : planningIntent ? (lean ? 3 : 8) : hasImage ? 3 : lean ? 3 : 5,
+    // UAT 70153e8 (evening plan): a presearched turn run with ONE step still called search_places itself — the
+    // step budget ended on the tool call and the reply stopped at "mình sẽ tìm…". It keeps a second step: a turn
+    // that writes straight away is unchanged (no second pass is made), a stray tool call now ends in text.
+    maxSteps: consultFollowReuse || consultTripPrefetch || (lean && presearchAll.length > 0 && !planningIntent && !noToolTurn && !eveningBlock) ? 2 : noToolTurn || eveningBlock ? 1 : planningIntent ? (lean ? 3 : 8) : hasImage ? 3 : lean ? 3 : 5,
     // A one-step consult turn never reads the history breakpoint back — skip its +25% write (claude.ts).
     // A/B 29/09: a consult plan that is not a multi-step trip wrote ~4.2k tokens of history to the cache (1.25×)
     // and read back ~20% — a net loss. The history breakpoint stays only where a second model step is likely.
