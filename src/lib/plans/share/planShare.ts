@@ -72,12 +72,26 @@ export interface PlanShareItem {
   maps_link?: string
   booking_link?: string
   photo_url?: string
+  /** R22 plan card v2: the stop's image KEY (`diem-…`), never a URL — resolved through /api/plan-images/manifest. */
+  image?: string
 }
 
 export interface PlanShareDay {
   label: string
+  /** R22: the day's short title ("Khám phá thành phố biển"). */
+  title?: string
   items: PlanShareItem[]
 }
+
+/**
+ * R22 (Android proposal 29/09, accepted by web): plan card v2 fields — all OPTIONAL; a plan without them renders as
+ * before. Images are KEYS the server picked and stored, never URLs; the regexes are the Android ones.
+ */
+export const PLAN_DOMAINS = ['travel', 'food', 'shopping', 'entertainment', 'spa'] as const
+export type PlanDomain = typeof PLAN_DOMAINS[number]
+export const HERO_IMAGE_KEY_RE = /^(du-lich|an-uong|giai-tri|mua-sam|spa)(-[a-z0-9]+)+-[0-9]+$/
+export const SPOT_IMAGE_KEY_RE = /^diem(-[a-z0-9]+)+$/
+export interface PlanShareHighlight { label: string; image?: string }
 
 export interface PlanShareSnapshot {
   /** Snapshot format. Bumped only if a field is added; a reader must tolerate older rows. */
@@ -89,6 +103,14 @@ export interface PlanShareSnapshot {
   /** One short, link-free line of the model's own summary — same rule as the text brochure. */
   summary?: string
   days: PlanShareDay[]
+  // R22 plan card v2 (all optional)
+  domain?: PlanDomain
+  destination?: string
+  duration?: string
+  tagline?: string
+  hero_image?: string
+  budget_per_person?: string
+  highlights?: PlanShareHighlight[]
 }
 
 const clip = (v: unknown, max: number): string | undefined => {
@@ -116,7 +138,29 @@ function pickItem(raw: unknown): PlanShareItem | null {
   const maps = safeLink(r.maps_link); if (maps) item.maps_link = maps
   const booking = safeLink(r.booking_link); if (booking) item.booking_link = booking
   if (isPlanPhotoUrl(r.photo_url as string) && (r.photo_url as string).length <= MAX_LINK) item.photo_url = r.photo_url as string
+  if (typeof r.image === 'string' && SPOT_IMAGE_KEY_RE.test(r.image) && r.image.length <= 64) item.image = r.image
   return item
+}
+
+const noLink = (v: string | undefined) => (v && !/https?:\/\//i.test(v) ? v : undefined)
+
+/** R22 v2 fields of a plan, each validated; anything malformed is simply absent (the card then uses its fallback). */
+function pickV2(plan: Record<string, unknown>, snap: PlanShareSnapshot): void {
+  if (typeof plan.domain === 'string' && (PLAN_DOMAINS as readonly string[]).includes(plan.domain)) snap.domain = plan.domain as PlanDomain
+  const destination = noLink(clip(plan.destination, MAX_SHORT)); if (destination) snap.destination = destination
+  const duration = noLink(clip(plan.duration, MAX_SHORT)); if (duration) snap.duration = duration
+  const tagline = noLink(clip(plan.tagline, 160)); if (tagline) snap.tagline = tagline
+  if (typeof plan.hero_image === 'string' && HERO_IMAGE_KEY_RE.test(plan.hero_image) && plan.hero_image.length <= 64) snap.hero_image = plan.hero_image
+  const perPerson = planAmount(clip(plan.budget_per_person, MAX_SHORT)); if (perPerson) snap.budget_per_person = perPerson
+  if (Array.isArray(plan.highlights)) {
+    const hs = plan.highlights.slice(0, 4).map((h): PlanShareHighlight | null => {
+      if (!h || typeof h !== 'object') return null
+      const label = noLink(clip((h as Record<string, unknown>).label, MAX_SHORT)); if (!label) return null
+      const image = (h as Record<string, unknown>).image
+      return { label, ...(typeof image === 'string' && SPOT_IMAGE_KEY_RE.test(image) && image.length <= 64 ? { image } : {}) }
+    }).filter((x): x is PlanShareHighlight => !!x)
+    if (hs.length) snap.highlights = hs
+  }
 }
 
 /**
@@ -129,7 +173,7 @@ function fitBudget(snap: PlanShareSnapshot): PlanShareSnapshot {
   // BYTES, not characters — the DB CHECK counts pg_column_size (F-029).
   const size = (s: PlanShareSnapshot) => Buffer.byteLength(JSON.stringify(s), 'utf8')
   if (size(snap) <= MAX_SNAPSHOT_BYTES) return snap
-  const out: PlanShareSnapshot = { ...snap, days: snap.days.map(d => ({ label: d.label, items: d.items.map(it => ({ ...it })) })) }
+  const out: PlanShareSnapshot = { ...snap, days: snap.days.map(d => ({ ...d, items: d.items.map(it => ({ ...it })) })) }
   for (const d of out.days) for (const it of d.items) delete it.description
   if (size(out) <= MAX_SNAPSHOT_BYTES) return out
   for (const d of out.days) for (const it of d.items) { delete it.maps_link; delete it.booking_link }
@@ -154,7 +198,8 @@ export function toPlanShareSnapshot(plan: TappyPlan | null | undefined): PlanSha
     const items = (Array.isArray(d.items) ? d.items : []).map(pickItem).filter((x): x is PlanShareItem => !!x).slice(0, MAX_ITEMS_PER_DAY)
     if (items.length === 0) return
     // A day is real by its stops; a missing label falls back to its position, which is a fact.
-    days.push({ label: clip(d.label, MAX_LABEL) ?? String(i + 1), items })
+    const dayTitle = noLink(clip((d as unknown as Record<string, unknown>).title, MAX_LABEL))
+    days.push({ label: clip(d.label, MAX_LABEL) ?? String(i + 1), ...(dayTitle ? { title: dayTitle } : {}), items })
   })
   if (days.length === 0) return null
 
@@ -165,6 +210,7 @@ export function toPlanShareSnapshot(plan: TappyPlan | null | undefined): PlanSha
   // The model's caption may say anything; it contributes one short line and never a link.
   const summary = clip(plan.share_text, MAX_SUMMARY + 1)
   if (summary && summary.length <= MAX_SUMMARY && !/https?:\/\//i.test(summary)) snap.summary = summary
+  pickV2(plan as unknown as Record<string, unknown>, snap)
   return fitBudget(snap)
 }
 
@@ -183,7 +229,10 @@ export function readPlanShareSnapshot(raw: unknown): PlanShareSnapshot | null {
     budget_total: r.budget_total as string,
     share_text: r.summary as string,
     days: r.days as TappyPlan['days'],
-  })
+    // R22 v2 fields, re-validated on read like everything else.
+    domain: r.domain, destination: r.destination, duration: r.duration, tagline: r.tagline,
+    hero_image: r.hero_image, budget_per_person: r.budget_per_person, highlights: r.highlights,
+  } as unknown as TappyPlan)
 }
 
 /** Canonical JSON — sorted keys — so the same plan always hashes the same. */
