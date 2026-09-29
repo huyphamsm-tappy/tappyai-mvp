@@ -65,8 +65,10 @@
     <!-- Nhạc (/music) -->
 
     <!-- Viết (/viet-content) -->
-    <string name="tool_viet_eyebrow">AI viết content ✍️</string>
+    <string name="tool_viet_eyebrow">AI viết content</string>
     <string name="tool_viet_title1">Caption hấp dẫn</string>
     <string name="tool_viet_title2">trong vài giây</string>
     <string name="tool_viet_body">Facebook, TikTok, Instagram — chọn tone, độ dài và để AI lo phần còn lại.</string>
+    <string name="tool_viet_title2_lead">trong</string>
+    <string name="tool_viet_title_accent">vài giây</string>
 </resources>

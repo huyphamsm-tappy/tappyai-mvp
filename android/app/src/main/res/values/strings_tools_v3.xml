@@ -64,8 +64,10 @@
 
 
     <!-- Caption writer (/viet-content) -->
-    <string name="tool_viet_eyebrow">AI caption writer ✍️</string>
+    <string name="tool_viet_eyebrow">AI caption writer</string>
     <string name="tool_viet_title1">Scroll-stopping captions</string>
     <string name="tool_viet_title2">in seconds</string>
     <string name="tool_viet_body">Facebook, TikTok, Instagram — pick a tone and length, and let AI handle the rest.</string>
+    <string name="tool_viet_title2_lead">in</string>
+    <string name="tool_viet_title_accent">seconds</string>
 </resources>
