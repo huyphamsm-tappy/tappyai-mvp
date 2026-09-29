@@ -275,6 +275,10 @@ export function isTicketSaleClaim(sentence: string): boolean {
   // both were cut, leaving the reply as one line plus a hedge.
   if (TICKET_NOT_AVAILABLE_RE.test(sentence)) return false
   if (!TICKET_SALE_VOCAB_RE.test(sentence)) return false
+  // A venue's ticket SALE is the claim this rule exists for (a cinema, a show). Transport tickets and
+  // "how to book" instructions assert nothing about a venue (replay r25 TRAVEL-3 plan: "Hướng dẫn đặt vé máy
+  // bay:" and "Vào trang đặt vé — chọn một trong hai:" were cut, and with them the plan's structure).
+  if (TRANSPORT_OR_HOWTO_RE.test(sentence)) return false
   // `sentenceSpans` keeps a markdown link as its own span, so "đặt vé trực tiếp trên **[Moveek](…)**"
   // reaches here as the fragment "đặt vé trực tiếp trên **" — the platform it points at is in the
   // next span. A fragment that ends on the preposition IS the "where to look" framing (measured
@@ -282,6 +286,9 @@ export function isTicketSaleClaim(sentence: string): boolean {
   if (LINK_FRAMING_TAIL_RE.test(sentence)) return false
   return !ORDERING_SEARCH_FRAMING_RE.test(sentence)
 }
+
+/** Transport tickets (flight, train, coach) and booking instructions — not a venue's ticket sale. */
+const TRANSPORT_OR_HOWTO_RE = /(máy bay|may bay|chuyến bay|chuyen bay|hãng bay|hang bay|vé tàu|ve tau|tàu hỏa|tau hoa|xe khách|xe khach|vé xe|ve xe|flight|airline|hướng dẫn|huong dan|các bước|cac buoc|cách đặt|cach dat|vào trang|vao trang|trang đặt vé|trang dat ve)/iu
 
 /** A fragment cut off by a link span right after its preposition: "… trên **", "… tại", "… on". */
 const LINK_FRAMING_TAIL_RE = /(?:^|\s)(?:trên|tren|tại|tai|qua|ở|o|on|at|via)\s*(?:\*\*|__)?\s*$/iu
@@ -973,7 +980,10 @@ export function guardPlaceClaimsInText(
       // (replay run 2 #14). A fabricated number matches nobody and is still removed.
       if (v2 && !named && phonesByEntity && stated.length > 0) {
         const owners = [...phonesByEntity.entries()].filter(([, ps]) => stated.every(d => ps.map(phoneDigits).includes(d))).map(([n]) => n)
-        if (owners.length === 1) { named = owners[0]; stats.attribution.L5++ }
+        // A chain HOTLINE is the same number on every branch row ("1900 0303" on all "Hải Sản Hoàng Gia CN …"):
+        // it still identifies who answers, so any owner vouches for it (replay r25 FOOD-2 plan: the Pick's own
+        // hotline was deleted, leaving "Nhưng …" and a list starting at "2."). A number no row carries is still cut.
+        if (owners.length >= 1) { named = owners[0]; stats.attribution.L5++ }
       }
       const own = (named ? (phonesByEntity?.get(named) ?? []) : []).map(phoneDigits)
       if (stated.length > 0 && !stated.every(d => own.includes(d))) { doomed.add(i); reasonOf.set(i, 'phone'); if (!named) stats.unattributable_claims++; return }

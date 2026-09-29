@@ -257,3 +257,27 @@ describe('G1 · coherence pass: no fragments', () => {
     expect(b.text).toBe(a.text)
   })
 })
+
+describe('replay r25 plan false positives (29/09)', () => {
+  const base = (phones: Array<[string, string]>): PlaceClaimEvidence => ({
+    ratings: [], distancesKm: [], texts: [], entityTexts: new Map(), placeNames: phones.map(p => p[0]), orderablePlaces: new Set(),
+    ratingsByEntity: new Map(), reviewCountsByEntity: new Map(), phonesByEntity: new Map(phones.map(([n, p]) => [n, [p]])), ticketablePlaces: new Set(),
+  })
+  const opts = { scope: 'all' as const, attributionV2: true, pickName: 'Hải Sản Hoàng Gia CN Phạm Văn Nghị' }
+  it('a chain hotline carried by every branch row is kept (FOOD-2)', () => {
+    const ev = base([['Hải Sản Hoàng Gia CN Phạm Văn Nghị', '1900 0303'], ['Hải Sản Hoàng Gia CN Nguyễn Văn Linh', '1900 0303']])
+    const r = guardPlaceClaimsInText('1. **Gọi trực tiếp quán** (☎️ **1900 0303**) — hỏi menu, giá, và gọi món luôn.', ev, opts)
+    expect(r.text).toContain('1900 0303')
+  })
+  it('a number no row carries is still removed', () => {
+    const ev = base([['Hải Sản Hoàng Gia CN Phạm Văn Nghị', '1900 0303']])
+    const r = guardPlaceClaimsInText('Gọi trực tiếp quán (☎️ 1900 9999) để đặt bàn.', ev, opts)
+    expect(r.text).not.toContain('1900 9999')
+  })
+  it('flight booking instructions are not a venue ticket-sale claim (TRAVEL-3); a cinema sale claim still is', async () => {
+    const { isTicketSaleClaim } = await import('./placeClaimGuard')
+    expect(isTicketSaleClaim('**Hướng dẫn đặt vé máy bay:**')).toBe(false)
+    expect(isTicketSaleClaim('**Vào trang đặt vé** — chọn một trong hai:')).toBe(false)
+    expect(isTicketSaleClaim('CGV Vincom có bán vé online cho suất tối nay.')).toBe(true)
+  })
+})
