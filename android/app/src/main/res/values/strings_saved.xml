@@ -9,8 +9,8 @@
     <string name="saved_empty_title">Nothing saved yet</string>
     <string name="saved_empty_message">Tap ♡ to save places you love, or 🔖 to bookmark posts to revisit — they\'ll all live here.</string>
     <string name="saved_explore_now">Explore now</string>
-    <string name="saved_section_favorites">Favorite places</string>
-    <string name="saved_section_reviews">Saved reviews</string>
+    <string name="saved_section_favorites">Favourite places</string>
+    <string name="saved_section_reviews">Saved posts</string>
     <string name="saved_date_prefix">Saved %1$s</string>
     <string name="saved_review_fallback_name">Review</string>
     <string name="saved_error_no_connectivity">No internet connection. Please check and try again.</string>
@@ -18,4 +18,17 @@
     <string name="saved_error_session_expired">Your session has expired. Please sign in again.</string>
     <string name="saved_error_server">The server is having issues. Please try again later.</string>
     <string name="saved_error_generic">Something went wrong. Please try again.</string>
+    <string name="saved_hero_title">The things you love 💙</string>
+    <string name="saved_hero_subtitle">Every place, post and tip you\'ve saved lives here — easy to find again any time.</string>
+    <string name="saved_filter_all">All</string>
+    <string name="saved_filter_places">Places</string>
+    <string name="saved_filter_posts">Posts</string>
+    <string name="saved_filter_videos">Videos</string>
+    <string name="saved_card_places_desc">Places, restaurants, cafés, spas… you\'ve saved</string>
+    <string name="saved_card_posts_desc">Posts, guides, reviews… you\'ve saved</string>
+    <string name="saved_unit_places">places</string>
+    <string name="saved_unit_posts">posts</string>
+    <string name="saved_section_videos">Saved videos</string>
+    <string name="saved_hub_empty_title">Nothing saved yet</string>
+    <string name="saved_hub_empty_hint">Start exploring and save the places, posts or videos you love!</string>
 </resources>

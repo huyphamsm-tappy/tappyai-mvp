@@ -14,4 +14,13 @@
     <string name="onboarding_interest_shopping">Shopping</string>
     <string name="onboarding_interest_entertainment">Entertainment</string>
     <string name="onboarding_interest_hotel">Hotel</string>
+    <string name="onboarding_step_counter">Step %1$d of %2$d</string>
+    <string name="onboarding_welcome_title_lead">"Welcome to "</string>
+    <string name="onboarding_welcome_title_accent">TappyAI!</string>
+    <string name="onboarding_interest_food_desc">Discover great places to eat, recipes and new food trends</string>
+    <string name="onboarding_interest_spa_desc">Self-care, beauty and feeling good every day</string>
+    <string name="onboarding_interest_travel_desc">Discover destinations, plan trips and experience new places</string>
+    <string name="onboarding_interest_shopping_desc">Find products you love and the latest deals</string>
+    <string name="onboarding_interest_entertainment_desc">Movies, music, events and fun things to do</string>
+    <string name="onboarding_interest_hotel_desc">Find the ideal stay for every journey</string>
 </resources>

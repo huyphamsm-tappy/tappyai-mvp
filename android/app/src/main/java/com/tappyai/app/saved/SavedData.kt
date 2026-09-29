@@ -22,6 +22,8 @@ data class SavedReview(
     val body: String?,
     val thumbnailUrl: String?,
     val savedAtMillis: Long,
+    /** `content_type == 'video'` — a video is a saved review, so "Video" is a filter over these. */
+    val isVideo: Boolean = false,
 )
 
 /** Both kinds shown under one "Saved" home (web `/profile/favorites`). */
@@ -32,6 +34,15 @@ data class SavedData(
     val total: Int get() = favorites.size + reviews.size
     val isEmpty: Boolean get() = favorites.isEmpty() && reviews.isEmpty()
 }
+
+/**
+ * The hero's filter chips — web `SavedView.tsx` CHIPS, in its order. Deals and Bộ sưu tập (in the
+ * reference) are HIDDEN, not "Sắp có", until something can be saved there (owner 2026-09-28).
+ */
+enum class SavedFilter { ALL, PLACES, POSTS, VIDEOS }
+
+/** Web `readView(?type=)`: anything unknown is the hub. */
+fun savedFilterOf(key: String?): SavedFilter = SavedFilter.entries.firstOrNull { it.name == key } ?: SavedFilter.ALL
 
 /** Place type → emoji, mirroring the web `TYPE_EMOJI` map (fallback 📍). */
 fun emojiForPlaceType(type: String): String = when (type) {
