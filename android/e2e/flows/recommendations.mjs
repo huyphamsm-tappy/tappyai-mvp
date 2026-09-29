@@ -17,6 +17,11 @@ export async function android({ a, shot, check, seeded }) {
   check('thẻ có nút "Hỏi Tappy về chỗ này"', a.visible('Hỏi Tappy về chỗ này'))
   check('thẻ có chip đánh giá / hoạt động', /\d\.\d/.test(t) && (t.includes('Hoạt động gần đây') || /\d+ đánh giá/.test(t)))
   check('không lộ chữ tiếng Anh của engine (Recently Active / Near)', !t.includes('Recently Active') && !/\bNear\b/.test(t))
+  // R19 (web 0399988): a RESTRICTED post never becomes a suggestion — the seed's pro_restricted row.
+  const restricted = await a.scrollTo('Bài Bị Hạn Chế (E2E)', { max: 6 }).then(() => true, () => false)
+  check('không gợi ý bài bị hạn chế (R19)', !restricted)
+  // E2E_NO_AI=1: stop before "Hỏi Tappy về chỗ này", which sends a real chat turn.
+  if (process.env.E2E_NO_AI) return
   const first = a.find(/Phở|Cà Phê|Bánh Mì|Quán|Spa|Tiệm|Clip/)
   const place = first?.text || ''
   await a.tap('Hỏi Tappy về chỗ này', { after: 6000 })
