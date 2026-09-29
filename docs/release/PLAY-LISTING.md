@@ -96,9 +96,10 @@ Căn cứ (code đã kiểm 29/09):
   thu hồi quyền anon/authenticated — `supabase/migrations/20260929130000_commerce_click_attributions.sql:14-34`), giữ **12 tháng** để đối soát hoa hồng.
   Trên Data safety nó thuộc **Hoạt động trong app → Tương tác trong app** (đã khai "Có thu, không chia sẻ"), mục đích *Chức năng ứng dụng* (đối soát).
 - Chính sách `/privacy` (vi + en) đã viết theo cơ chế này (web, 29/09). Android không đổi code: vẫn mở `url` của link như cũ.
-- ⚠️ Việc phía web trước khi công khai (R21 trong `docs/uat/ANDROID-REQUESTS.md`): migration `20260929130000` phải chạy trên Production; hàm dọn
-  `commerce_click_attributions_sweep()` (12 tháng) **chưa có cron nào gọi**; `identity_id` không có khoá ngoại → **xoá tài khoản không xoá các dòng
-  nối của người đó** (chỉ còn UUID mồ côi, không nối được về người nữa, nhưng nên xoá cùng tài khoản cho khớp câu "xoá được" ở Data safety).
+- Xoá và thời hạn (R21, web `6f78b78`): `identity_id` → `auth.users(id) ON DELETE CASCADE` (`supabase/migrations/20260929140000_commerce_click_attributions_r21.sql:21`)
+  → xoá tài khoản (hoặc phiên khách) xoá luôn các dòng nối của người đó; cron `/api/cron/click-attributions-sweep` chạy hằng ngày (`vercel.json:66`)
+  xoá dòng quá 12 tháng. Kiểm trên DB audit: bấm 2 link → 2 dòng → xoá tài khoản → 0 dòng. Trước khi công khai: migration `20260929130000` và
+  `20260929140000` (RELEASE-PLAN §1 bước 7b, 7c) phải chạy trên Production.
 
 ## 2. Xoá tài khoản (mục "Data deletion" trong Play Console)
 
