@@ -99,6 +99,17 @@ class ChatViewModel @Inject constructor(
     var conversationId: String? = savedStateHandle.get<String>("conversationId")
         private set
 
+    // R14: one id per chat, on every turn (a reopened chat reuses the one stored with its row).
+    private val sessionIdStore = ChatSessionIdStore(context)
+    private val chatSessionId: String = ChatSessionId.resolve(
+        saved = savedStateHandle.get<String>(ChatSessionId.SAVED_KEY),
+        historyRowId = conversationId,
+        stored = sessionIdStore::get,
+    ).also { id ->
+        savedStateHandle[ChatSessionId.SAVED_KEY] = id
+        conversationId?.let { sessionIdStore.put(it, id) }
+    }
+
     /**
      * A message to auto-send once on entry — the native equivalent of the web's `/chat?q=…`
      * (see `ChatInterface`'s `initialMessage` effect). Set only when arriving from an "ask Tappy
@@ -658,7 +669,7 @@ class ChatViewModel @Inject constructor(
                 // is built — it is never appended to the text, which is why it cannot leak into the
                 // reply, into TTS, or into what gets persisted.
                 var livePlaces: PlacesLiveView? = null
-                chatRepository.streamReply(history).collect { event ->
+                chatRepository.streamReply(history, chatSessionId).collect { event ->
                     val token = when (event) {
                         is ChatStreamEvent.Text -> event.delta
                         // The last place frame is the turn's view (the preliminary set is replaced
@@ -902,7 +913,11 @@ class ChatViewModel @Inject constructor(
                 category = category.name.lowercase(),
                 messages = stored,
             )) {
-                is NetworkResult.Success -> conversationId = result.data
+                is NetworkResult.Success -> {
+                    conversationId = result.data
+                    // Reopening this chat from history later keeps the same chatSessionId (R14).
+                    sessionIdStore.put(result.data, chatSessionId)
+                }
                 is NetworkResult.Error -> logger.w(TAG, "Conversation create failed: ${result.error}")
             }
         } else {

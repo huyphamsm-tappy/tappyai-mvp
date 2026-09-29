@@ -17,6 +17,11 @@ data class ChatRequest(
      * `distance_km` and "gần đây" means near the phone (BUG-011 D2).
      */
     val userLocation: UserLocationDto? = null,
+    /**
+     * This chat's id for the server-side consultation state (ANDROID-REQUESTS R14): a UUID v4 made
+     * once per chat and sent on every turn — see [com.tappyai.app.chat.ChatSessionId].
+     */
+    val chatSessionId: String? = null,
 )
 
 @Serializable
