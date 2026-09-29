@@ -818,6 +818,24 @@ const PLAN_BODY_TOKEN = '⁣TAPPYPLANBODY⁣'
  * Hide each closed [TAPPY_PLAN] body from the prose guards; `restore` puts it back byte-for-byte.
  * A guard that dropped the token's line entirely does not lose the plan: the block is re-appended.
  */
+/**
+ * Which venue a consult plan's cost line is about, and that venue's own price band. The plan's "**Mình chọn: X**"
+ * wins; else the card's first recommendation. The band is the one whose venue name matches — none matches → no band
+ * (the line then says "chưa có giá — hỏi quán" for the chosen venue instead of pricing another one).
+ */
+export function planCostSubject(text: string, fallbackName: string | null, bands: ReadonlyMap<string, PriceBand>): { name: string | null; band: PriceBand | null } {
+  const fold = (x: string) => x.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/gi, 'd').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()
+  const stated = /\*\*Mình chọn:\s*([^*\n]+?)\*\*/.exec(text)?.[1]?.trim() ?? null
+  const name = stated ?? fallbackName
+  if (!name) return { name: null, band: [...bands.values()][0] ?? null }
+  const want = fold(name)
+  for (const [venue, band] of bands) {
+    const v = fold(venue)
+    if (v.length >= 3 && want.length >= 3 && (v === want || v.includes(want) || want.includes(v))) return { name, band }
+  }
+  return { name, band: null }
+}
+
 export function maskPlanBody(text: string): { text: string; restore: (guarded: string) => string } {
   const bodies: string[] = []
   const masked = text.replace(/\[TAPPY_PLAN\]([\s\S]*?)\[\/TAPPY_PLAN\]/g, (_m, body: string) => {
@@ -2837,16 +2855,19 @@ export function applyPlaceEnrichmentStreamFilter(
       const narrated = collector?.consultTurn ? stripStepNarration(t) : { text: t, removed: 0 }
       if (narrated.removed) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'step_narration', removed: narrated.removed }))
       const restored = collector?.consultTurn === 'plan' ? restorePlanHeadings(mainText, narrated.text) : narrated.text
+      // The cost line is about the venue the PLAN chose ("**Mình chọn: X**"), never simply the first search row —
+      // replay FOOD-1 (30/09, level A): the plan for MANMARU priced "FEN Izakaya: 2 người × 100.000đ–600.000đ".
+      const planCost = planCostSubject(restored, collector?.placesRecommendations?.[0]?.entity.identity.name ?? null, priceBandsByEntity)
       // …and its cost section shows code-written arithmetic (the chosen row's band, else the user's own
       // per-person budget) when the model's own numbers did not survive the guards.
       const headed = collector?.consultTurn === 'plan'
         ? appendConsultPlanCost(restored, {
           people: partyCount(collector.consultKnown?.so_nguoi),
-          band: [...priceBandsByEntity.values()][0] ?? null,
+          band: planCost.band,
           // The history is trimmed to 3 turns, so the per-person budget stated earlier comes from the router's slot.
           perHead: perPersonBudget([...(collector.consultKnown?.ngan_sach ? [collector.consultKnown.ngan_sach] : []), ...(collector.userTexts ?? [userText])]),
           unitPrice: collector.consultPlanPrice ?? null,
-          pickName: collector.placesRecommendations?.[0]?.entity.identity.name ?? null,
+          pickName: planCost.name,
           lang,
         }).text
         : restored
