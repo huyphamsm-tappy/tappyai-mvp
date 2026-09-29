@@ -57,6 +57,7 @@ Giá phòng: chưa xác nhận…","price":…`). Phần đầu kế hoạch (ti
 
 ## 2. Web → Android: thay đổi server/API (giữ tương thích ngược)
 
+- 2026-09-29 (web) **R8 XONG**: `videoDuration.test.ts` + `videoSize.test.ts` không còn cấm video Android. Nay kiểm ĐỒNG BỘ: (1) chỉ `reviews/ui/ReviewComposer{ViewModel,Screen}.kt`, `reviews/ui/ReviewsScreens.kt` (picker) và `reviews/data/VideoUploader.kt` được chọn/tải video; (2) khi có đường video: `ReviewComposerViewModel.kt` có `MAX_VIDEO_SIZE_MB = 150` (nhân 1024×1024, so `length() > …`) và `MAX_VIDEO_DURATION_ACCEPT_SEC = 305` (so `durationSec > …`); (3) `VideoUploader.kt` gọi `/api/upload/video` với `media.create-upload-session` + `media.complete-upload`; (4) `ClipMetadata.kt` tồn tại (F-099); (5) strings EN/VI nói 150MB, không còn "50MB". Đã chạy với 6fe2150 cherry-pick: 92/92 xanh; không có 6fe2150: 92/92 xanh. **Android push 6fe2150 được.** Lệnh: `npx vitest run src/lib/config/videoDuration.test.ts src/lib/config/videoSize.test.ts`.
 - 2026-09-28 (web): kế hoạch "tối nay" không nêu hoạt động riêng do SERVER dựng trên khung cố định
   (ăn tối 18:30 → chơi 20:00 → uống 21:30, `src/lib/ai/eveningPlan.ts`). Định dạng `[TAPPY_PLAN]` KHÔNG đổi
   (type "evening", days[0].items có time/emoji/category/name/description/price/address/maps_link/place_id/
