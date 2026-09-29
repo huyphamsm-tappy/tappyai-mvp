@@ -57,12 +57,35 @@ Giá phòng: chưa xác nhận…","price":…`). Phần đầu kế hoạch (ti
 
 ## 2. Web → Android: thay đổi server/API (giữ tương thích ngược)
 
+- 2026-09-29 (web) **KẾT QUẢ R7/R9–R14** (server sửa xong, tái hiện offline bằng bộ replay `androidR` với
+  `x-tappy-surface: android`; ảnh UAT + SHA sẽ ghi dòng dưới khi deploy):
+  - **R13 (P0) — SỬA TẬN GỐC.** Nguyên nhân: câu «Lên kế hoạch chi tiết» bị bộ phạm vi chủ đề coi là CUỘC TƯ VẤN MỚI →
+    cắt cả cuộc trò chuyện còn đúng 1 dòng → khối kế hoạch ghi «user chưa nêu» thành phố/ngày/điểm đi; bản UAT cũ rơi vào
+    khung «Tối nay» không có thành phố → tìm toàn cầu (Omaha/Seattle). Nay: lượt tiếp nối (kế hoạch/hỏi thêm/so sánh/xem
+    thêm/chê/trả lời thẻ hỏi) giữ nguyên cả cuộc tư vấn; + guard CODE `placeGeoGuard.ts` loại mọi địa điểm ngoài Việt Nam
+    và ngoài tỉnh/thành đang hỏi (không đọc tên đường: «Nguyễn Thái Bình, Quận 1, TP.HCM» là TP.HCM). Serper vốn đã
+    `gl=vn, hl=vi`. Replay: kế hoạch Đà Nẵng ở lại Đà Nẵng (M Hotel Võ Nguyên Giáp, Mộc quán…), 0 địa điểm nước ngoài.
+  - **R7** — thân `[TAPPY_PLAN]` được che qua cả tầng guard V1 (bước dọn dòng xoá dòng JSON có «)» dư → khối rỗng/cụt).
+    Replay: 4/4 kế hoạch du lịch có JSON đủ (~4.3k ký tự).
+  - **R9** — lời kể các bước («Đang tìm…», «Mình gọi tool…», «Bây giờ mình sẽ lập…», «Tuyệt vời! Mình đã tìm được…») bị
+    CODE gỡ ở mọi lượt tư vấn (`stepNarration.ts`).
+  - **R10** — server gửi `[TAPPY_ASK]` cho request có `x-tappy-caps` chứa `ask` (không đổi `ASK_BLOCK_SURFACES`). Bản
+    Android cũ (không gửi caps) vẫn nhận dòng đọc được.
+  - **R11** — tư vấn concert/show/lễ hội: thẻ hỏi là «Ca sĩ / thể loại? · Mấy người đi? · Giá vé mỗi người?» (không còn
+    «chiều nay/tối nay»); lượt chọn tìm SỰ KIỆN (web_search → Ticketbox `event_links`), câu chọn «**Mình chọn: <sự kiện>** —
+    [link Ticketbox]». Replay: «Tinh Hà "Say Hi" Concert» + 2 concert khác, đều link ticketbox.vn.
+  - **R12** — sau thẻ hỏi: không còn hỏi «máy bay hay xe khách» / «ngày bay» ở lượt chọn; «Lên kế hoạch chi tiết» lập kế
+    hoạch ngay (giả định ghi ở dòng «Mình giả định…»).
+  - **R14 / Q7** — server XONG: `chatSessionId` đọc từ body; trạng thái (mảng, thông tin đã biết, lựa chọn đã chốt, các chỗ đã
+    giới thiệu, dòng bằng chứng tìm kiếm) lưu 30 ngày theo băm(chủ sở hữu, mã). Request KHÔNG có `decisionEvidenceId` được
+    trả lại bằng chứng từ trạng thái → «xem thêm»/hỏi tiếp trên app ngang web. Mã của người khác → phiên mới (có test).
+    Web đã chuyển sang gửi `chatSessionId`. Guard cho phép `chatSessionId` trong `ChatRequest.kt`.
 - 2026-09-29 (web) **R14 — HỢP ĐỒNG CHỐT `chatSessionId`** (Huy duyệt R14/Q7). Android làm song song được ngay:
   - Body `POST /api/chat` thêm trường cấp cao nhất `chatSessionId`: chuỗi UUID dạng `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx` (36 ký tự, hex thường, client sinh UUID v4 bằng `UUID.randomUUID()`). Sinh 1 lần khi mở cuộc chat MỚI; gửi y nguyên ở MỌI lượt của cuộc chat đó — cả lượt 1, cả khách (tài khoản ẩn danh). Mở lại chat từ lịch sử → dùng lại mã đã lưu cùng cuộc chat; cuộc chat cũ chưa có mã → sinh mã mới lúc mở lại (server dựng lại trạng thái từ lịch sử tin nhắn).
   - Không header mới, không đọc header trạng thái nào; KHÔNG gửi `decisionEvidenceId` / `X-Decision-Evidence-Id` (bỏ `d48a11e`).
   - Server lưu trạng thái tư vấn (mảng, thành phố, thông tin đã biết, lựa chọn đã chốt, các chỗ đã giới thiệu/bị chê, lần tìm gần nhất) theo khoá = băm(chủ sở hữu + `chatSessionId`), chủ sở hữu = user id (kể cả user ẩn danh). Mã của người khác → khoá khác → coi như phiên mới, không đọc được gì. Không có user nào (chưa đăng nhập, không ẩn danh) → không lưu, chạy như hiện nay. Giữ 30 ngày.
   - Mã sai định dạng → bỏ qua (không lỗi). Thiếu mã → như hiện nay (tương thích bản Android cũ).
-  - Guard web `consultativeArchitecture.test.ts` sẽ CHO PHÉP `chatSessionId` trong `ChatRequest.kt`, vẫn cấm `decisionEvidenceId` và header trạng thái. Web cũng chuyển sang gửi `chatSessionId` (cùng cơ chế). Phía server đang làm — sẽ ghi dòng "R14 LIVE trên UAT <sha>" ở đây.
+  - Guard web `consultativeArchitecture.test.ts` sẽ CHO PHÉP `chatSessionId` trong `ChatRequest.kt`, vẫn cấm `decisionEvidenceId` và header trạng thái. Web cũng chuyển sang gửi `chatSessionId` (cùng cơ chế). Server + web + guard XONG (xem mục KẾT QUẢ ngay trên).
 - 2026-09-29 (web) **R8 XONG**: `videoDuration.test.ts` + `videoSize.test.ts` không còn cấm video Android. Nay kiểm ĐỒNG BỘ: (1) chỉ `reviews/ui/ReviewComposer{ViewModel,Screen}.kt`, `reviews/ui/ReviewsScreens.kt` (picker) và `reviews/data/VideoUploader.kt` được chọn/tải video; (2) khi có đường video: `ReviewComposerViewModel.kt` có `MAX_VIDEO_SIZE_MB = 150` (nhân 1024×1024, so `length() > …`) và `MAX_VIDEO_DURATION_ACCEPT_SEC = 305` (so `durationSec > …`); (3) `VideoUploader.kt` gọi `/api/upload/video` với `media.create-upload-session` + `media.complete-upload`; (4) `ClipMetadata.kt` tồn tại (F-099); (5) strings EN/VI nói 150MB, không còn "50MB". Đã chạy với 6fe2150 cherry-pick: 92/92 xanh; không có 6fe2150: 92/92 xanh. **Android push 6fe2150 được.** Lệnh: `npx vitest run src/lib/config/videoDuration.test.ts src/lib/config/videoSize.test.ts`.
 - 2026-09-28 (web): kế hoạch "tối nay" không nêu hoạt động riêng do SERVER dựng trên khung cố định
   (ăn tối 18:30 → chơi 20:00 → uống 21:30, `src/lib/ai/eveningPlan.ts`). Định dạng `[TAPPY_PLAN]` KHÔNG đổi
@@ -108,7 +131,7 @@ Giá phòng: chưa xác nhận…","price":…`). Phần đầu kế hoạch (ti
   - cho Android/iOS HIỆN TẠI (chưa có parser): câu dẫn + mỗi câu hỏi 1 dòng `• Câu? (A / B / C)` + câu đuôi + `[FOLLOWUPS]` = nút của câu 1.
   👉 Yêu cầu Android: thêm parser `[TAPPY_ASK]` (strip khỏi text) + render mỗi câu 1 nhóm chip (chọn 1/nhóm, bấm lại để bỏ) + ô gõ tự do
   + nút "Gửi" gửi `"<chọn 1> · <chọn 2> · <tự gõ>"` như tin nhắn user; khi xong, gửi header `x-tappy-surface: android` VÀ báo web để bật
-  `ASK_BLOCK_SURFACES` cho android (src/lib/ai/decisionSurface.ts). Tham chiếu web: src/components/chat/AskCard.tsx, src/lib/structuredContent/parseAsk.ts.
+  `ASK_BLOCK_SURFACES` cho android (src/lib/ai/decisionSurface.ts) — **ĐÃ THAY bằng R10**: gửi `x-tappy-caps: ask`, không bật theo surface. Tham chiếu web: src/components/chat/AskCard.tsx, src/lib/structuredContent/parseAsk.ts.
   **Lượt CHỐT**: text = 1 câu xác nhận + `**Mình chọn: <tên>** — lý do` + (lưu ý nếu có căn cứ) + tối đa 2 dòng `- **<tên>**: hơn/kém…`
   + dòng do server đếm `Mình còn N lựa chọn nữa, muốn xem thêm không?` + `[FOLLOWUPS]Xem thêm|Lên kế hoạch chi tiết[/FOLLOWUPS]` (server gắn,
   thay mọi FOLLOWUPS của model). Card `tappy.places.v1`/`[TAPPY_SHOPPING]` như cũ; card #1 = tên "Mình chọn".
