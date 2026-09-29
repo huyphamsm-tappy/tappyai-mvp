@@ -1,0 +1,80 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Urban Armor Gear Ốp iPhone 11 Pro Max site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T19:18:50.014Z",
+ "body": {
+  "searchParameters": {
+   "q": "Urban Armor Gear Ốp iPhone 11 Pro Max site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "[HCM]ỐP LƯNG UAG CIVILIAN CHO IPHONE 11 PRO MAX",
+    "link": "https://www.lazada.vn/products/hcmop-lung-uag-civilian-cho-iphone-11-pro-max-iphone-11-iphone-11-pro-hang-chinh-hang-uag-thaibaotrading-i394154208.html?srsltid=AU7gw4VJcBzadlKUMIhuNvYGXL5URY9k_SdHVkADumnfDz9QX12d3QaU",
+    "snippet": "Đặc điểm nổi bật. Vỏ giáp nhẹ; Cản va đập; Sốc hấp thụ lõi mềm; Các nút xúc giác quá khổ và dễ dàng truy cập vào màn hình cảm ứng và cổng ...",
+    "rating": 5,
+    "ratingCount": 12,
+    "position": 1
+   },
+   {
+    "title": "Ốp Lưng UAG Chống Va Đập Cho iPhone 11, 12, 13 Series An ...",
+    "link": "https://www.lazada.vn/products/pdp-i441188745.html?srsltid=AU7gw4Vbvi9syEeTe-BcKgGi7oLcboCiTUvCba_jozcwf0IrW8QWp1iV",
+    "snippet": "Sản phẩm ốp lưng sản xuất cho iPhone 11, 11 Pro, 11 Pro Max, 12 Mini, 12, 12 Pro, 12 Pro Max, 13 Mini, 13, 13 Pro, 13 Pro Max từ thương hiệu nổi tiếng UAG.",
+    "position": 2
+   },
+   {
+    "title": "Ốp Lưng UAG Chống Va Đập Cho iPhone 11, 12, 13 ...",
+    "link": "https://www.lazada.vn/products/op-lung-uag-chong-va-dap-cho-iphone-11-12-13-series-an-toan-tuyet-doi-i442590975.html?srsltid=AU7gw4Xd6_lXYNp0lcHFPmYAJ6NsxNMU6ilm9MM4gKzi0cqT0m93O7-j",
+    "snippet": "Sản phẩm ốp lưng sản xuất cho iPhone 11, 11 Pro, 11 Pro Max, 12 Mini, 12, 12 Pro, 12 Pro Max, 13 Mini, 13, 13 Pro, 13 Pro Max từ thương hiệu nổi tiếng UAG.",
+    "rating": 4.8,
+    "ratingCount": 10,
+    "position": 3
+   },
+   {
+    "title": "Ốp Lưng iPhone 14/14 Plus/14 Pro/14 Pro Max/13/ ...",
+    "link": "https://www.lazada.vn/products/op-lung-iphone-1414-plus14-pro14-pro-max1313-pro13-mini13-pro-max-uag-essential-armor-with-magsafe-series-i1539466933.html?srsltid=AU7gw4UtytZMnAXZMJaFMoXr1ZTLaOVSRfwC60njb71ZCs7h7__fSKgQ",
+    "snippet": "Ốp lưng iPhone 13/13 Pro/13 Mini/13 Pro Max UAG Essential Armor with MagSafe Series · Mỏng, nhẹ, bền, bảo vệ tối ưu · Đạt tiêu chuẩn kiểm tra rơi/thả của quân đội ...",
+    "position": 4
+   },
+   {
+    "title": "Ốp Lưng cho iPhone 11 Pro - UAG Monarch Series",
+    "link": "https://h5.lazada.vn/products/op-lung-cho-iphone-11-pro-uag-monarch-series-i1824463089-s8228081857.html",
+    "snippet": "Ốp lưng Monarch của UAG là dòng cao cấp của hãng này và được đánh giá là sản phẩm vua của ốp lưng. Cao cấp bởi đây là sản phẩm được làm hoàn toàn bằng thủ công, ...",
+    "position": 5
+   },
+   {
+    "title": "Ốp Lưng UAG Monarch Chống Va Đập Cho iPhone 11 / 12 ...",
+    "link": "https://www.lazada.vn/products/op-lung-uag-monarch-chong-va-dap-cho-iphone-11-12-13-series-an-toan-tuyet-doi-i442762223.html?srsltid=AU7gw4XSdZsO_Tp0ahIv0WcBqje3Dmmpv8vel9Sg1QCJiqHuxfxrjcfz",
+    "snippet": "Ốp lưng chống va đập UAG cho iPhone 11, 12, 13 series với vật liệu composite dẻo dai, bảo vệ tối ưu 4 góc và cạnh máy. Cải tiến vượt trội từ thương hiệu nổi ...",
+    "rating": 5,
+    "ratingCount": 39,
+    "position": 6
+   },
+   {
+    "title": "[Lấy mã miễn phí vận chuyển] ỐP LƯNG CHỐNG SỐC ...",
+    "link": "https://www.lazada.vn/products/lay-ma-mien-phi-van-chuyen-op-lung-chong-soc-uag-cho-iphone-12-mini-den-12-pro-max-uag-civilian-11-sieu-dep-i1289372968.html?srsltid=AU7gw4WtUYcD8Sf8bFq9COx44XixNO69aNQBx5DDrcVEPLkuccLQsQxk",
+    "snippet": "- Ốp UAG iphone có đủ các mã từ iphone XS Max, 11 pro, 11, 11promax, 12, 12promax... Sản phẩm có sẵn hàng và giao hàng nhanh chóng.",
+    "rating": 5,
+    "ratingCount": 6,
+    "position": 7
+   },
+   {
+    "title": "Ốp Lưng iPhone 13/13 Pro/13 Pro Max UAG Dip Series",
+    "link": "https://www.lazada.vn/products/op-lung-iphone-1313-pro13-pro-max-uag-dip-series-i1540761552.html?srsltid=AU7gw4UIogdnVOjlnnAFl0arFloxS3-9V7PxSIaMPctk4zoWdqZIk6z2",
+    "snippet": "[U] Ốp lưng iPhone 13/13 Pro/13 Pro Max UAG Dip Series · Chất liệu kháng khuẩn, thiết kế độc đáo · Nhiều màu sắc, Thời trang, trẻ trung và hiện đại · Mỏng, nhẹ, ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

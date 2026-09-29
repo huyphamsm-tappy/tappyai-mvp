@@ -1,0 +1,579 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "quán ăn sáng ngon",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.7769,106.7009,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T00:39:54.568Z",
+ "body": {
+  "searchParameters": {
+   "q": "quán ăn sáng ngon",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.7769,106.7009,14z",
+   "engine": "google"
+  },
+  "ll": "@10.7768941,106.7008997,14z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Bếp Quà Sáng – Xôi, Bún, Phở Hà Nội",
+    "address": "35 Hoàng Diệu, Phú Nhuận, Hồ Chí Minh 72252, Việt Nam",
+    "latitude": 10.795726799999999,
+    "longitude": 106.67066489999999,
+    "rating": 4.9,
+    "ratingCount": 152,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng",
+     "Quán ăn nhỏ",
+     "Quán cà phê",
+     "Nhà hàng gia đình",
+     "Nhà hàng phở",
+     "Quán ăn nhẹ"
+    ],
+    "website": "https://www.facebook.com/profile.php?id=100091615847862&mibextid=LQQJ4d",
+    "phoneNumber": "+84 909 464 688",
+    "openingHours": {
+     "Thứ Ba": "06:00–17:00",
+     "Thứ Tư": "06:00–17:00",
+     "Thứ Năm": "06:00–17:00",
+     "Thứ Sáu": "06:00–17:00",
+     "Thứ Bảy": "06:00–17:00",
+     "Chủ Nhật": "06:00–17:00",
+     "Thứ Hai": "06:00–00:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkIj9dKzUy5Mz51FBUezht3JJsVgXQlXxfcC_qgWY0n6E3GQUk23X78V_zD-67F8pG-QPN4LvX33NoO0t-OnbfQIe8o5s1hDM5-o8gJzeRpHXuOufLUY5scVDNsCpmSzcMSmuvaJuucBlFE",
+    "cid": "14051362995194974537",
+    "fid": "0x3175298ffb779ff7:0xc300783262aa5149",
+    "placeId": "ChIJ9593-48pdTERSVGqYjJ4AMM"
+   },
+   {
+    "position": 2,
+    "title": "Quán ăn sáng chị Hoà & Hồng",
+    "address": "48/1 Trần Đình Xu, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.760626,
+    "longitude": 106.6919264,
+    "rating": 4.7,
+    "ratingCount": 20,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "phoneNumber": "+84 938 423 833",
+    "openingHours": {
+     "Thứ Ba": "06:00–15:00",
+     "Thứ Tư": "06:00–15:00",
+     "Thứ Năm": "06:00–15:00",
+     "Thứ Sáu": "06:00–15:00",
+     "Thứ Bảy": "06:00–15:00",
+     "Chủ Nhật": "06:00–15:00",
+     "Thứ Hai": "06:00–15:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnk6O4GLD13XQZYIvSBJlxtTfrBMp4hsRBG8e7xVoXvCTSEJgWvcOAF6ERDdibjkXYGUtWYAD4HTd1-KI3nG32z9b6f8O_UAMF-n0tsvKrvwBM_aejPzZPqSxsy7XpaJw2gjA2j1R1_VhA8",
+    "cid": "8625784955279311279",
+    "fid": "0x31752f1110d61da1:0x77b4f1b7285501af",
+    "placeId": "ChIJoR3WEBEvdTERrwFVKLfxtHc"
+   },
+   {
+    "position": 3,
+    "title": "Bún Riêu Yến",
+    "address": "1348 Trường Sa, Tân Sơn Hòa, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7916694,
+    "longitude": 106.664096,
+    "rating": 4.4,
+    "ratingCount": 1211,
+    "type": "Quán ăn nhỏ",
+    "types": [
+     "Quán ăn nhỏ"
+    ],
+    "website": "https://www.foody.vn/ho-chi-minh/bun-rieu-yen",
+    "phoneNumber": "+84 937 273 217",
+    "openingHours": {
+     "Thứ Ba": "06:00–18:00",
+     "Thứ Tư": "06:00–18:00",
+     "Thứ Năm": "06:00–18:00",
+     "Thứ Sáu": "06:00–18:00",
+     "Thứ Bảy": "06:00–18:00",
+     "Chủ Nhật": "06:00–11:00",
+     "Thứ Hai": "06:00–18:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkcgTk1uvXL2sr1HLfI9KjHwIR9OvVI1BmOdaOkXgTSNwo2ojNsF2a2EYohzlvAJNT4JtpVnmj544zx7YjuzTFI0NNjCBayZbRFOfAWFW89AThJGBDWKblOIgTv0jUONyGapsI",
+    "cid": "7088139094692586053",
+    "fid": "0x31752932baa40563:0x625e20f3b9b5e245",
+    "placeId": "ChIJYwWkujIpdTERReK1ufMgXmI"
+   },
+   {
+    "position": 4,
+    "title": "Quán ăn Cô Ba",
+    "address": "63 Hoàng Diệu, Xóm Chiếu, Hồ Chí Minh 72806, Việt Nam",
+    "latitude": 10.764306999999999,
+    "longitude": 106.705731,
+    "rating": 4.6,
+    "ratingCount": 42,
+    "type": "Quán ăn nhỏ",
+    "types": [
+     "Quán ăn nhỏ",
+     "Nhà hàng"
+    ],
+    "website": "https://www.facebook.com/Qu%C3%A1n-%C4%83n-C%C3%B4-Ba-1768222573440797/",
+    "phoneNumber": "+84 947 787 879",
+    "openingHours": {
+     "Thứ Ba": "06:00–17:00",
+     "Thứ Tư": "06:00–17:00",
+     "Thứ Năm": "06:00–17:00",
+     "Thứ Sáu": "06:00–17:00",
+     "Thứ Bảy": "06:00–17:00",
+     "Chủ Nhật": "06:00–17:00",
+     "Thứ Hai": "06:00–17:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnV54TvqB__Oa7pHnE2LKDS7AAOBa7bw8GEA3TSPzLNC7Jwx3gbzYYhZpJVK_CVm7QGpwMu1OIofs1B4AKa0VHOfwezOmXzcU2kOiOuTMxRkfgTDzYwK1cWnuyPSUURM95cxeU",
+    "cid": "7840715486018332515",
+    "fid": "0x31752fe55f11dbdf:0x6ccfd1315106e763",
+    "placeId": "ChIJ39sRX-UvdTERY-cGUTHRz2w"
+   },
+   {
+    "position": 5,
+    "title": "Quán ăn sáng Chị Út - 7 ngày 7 món 🏳️‍🌈",
+    "address": "341/24 Xô Viết Nghệ Tĩnh, Bình Thạnh, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.803910199999999,
+    "longitude": 106.7108064,
+    "rating": 4.7,
+    "ratingCount": 3,
+    "type": "Quán ăn nhỏ",
+    "types": [
+     "Quán ăn nhỏ"
+    ],
+    "phoneNumber": "+84 909 815 832",
+    "openingHours": {
+     "Thứ Ba": "06:00–10:00",
+     "Thứ Tư": "06:00–10:00",
+     "Thứ Năm": "06:00–10:00",
+     "Thứ Sáu": "06:00–10:00",
+     "Thứ Bảy": "06:00–10:00",
+     "Chủ Nhật": "06:00–10:00",
+     "Thứ Hai": "06:00–10:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlV80nZkl0lDpCRUb-7R_47pKx0sseQ5Xy95yJELU8wZsRqfvq6kBVMNo5yN4v2o_awZzQzeeNYxIvdrrrvRltFM0lEila1n7mf_1que3IEKHW-fzVXIIOEWEplRUlcDbLxsHSc",
+    "cid": "8387588919857554290",
+    "fid": "0x317529002a9b82db:0x7466b3aeea1ca372",
+    "placeId": "ChIJ24KbKgApdTERcqMc6q6zZnQ"
+   },
+   {
+    "position": 6,
+    "title": "Quán ăn sáng Quang",
+    "address": "94 Đ. Ưu Long, Phú Định, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.748565099999999,
+    "longitude": 106.6632456,
+    "rating": 4.4,
+    "ratingCount": 5,
+    "type": "Quán ăn nhỏ",
+    "types": [
+     "Quán ăn nhỏ"
+    ],
+    "openingHours": {
+     "Thứ Ba": "06:00–10:00",
+     "Thứ Tư": "06:00–10:00",
+     "Thứ Năm": "06:00–10:00",
+     "Thứ Sáu": "06:00–10:00",
+     "Thứ Bảy": "06:00–10:00",
+     "Chủ Nhật": "06:00–10:00",
+     "Thứ Hai": "06:00–10:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmKROtsDfWNfTAHBx2pfywaSrpwE-zXxrxEbxr10CjcrORLdb7vgjBgzgZN6vFVq1LwhEIWYsZS_1TkrV5tFdfve864DXCkXrJUe2EUbasT1h81nuw9sJLy6lTFdH-wfGHYTZPN",
+    "cid": "2122953250089974973",
+    "fid": "0x31752f9690580ff7:0x1d763ebbaa5fbcbd",
+    "placeId": "ChIJ9w9YkJYvdTERvbxfqrs-dh0"
+   },
+   {
+    "position": 7,
+    "title": "Quán ăn sáng Nhung Ngô",
+    "address": "602/37/10 Điện Biên Phủ, Thạnh Mỹ Tây, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7980606,
+    "longitude": 106.7181203,
+    "rating": 5,
+    "ratingCount": 10,
+    "type": "Nhà hàng chuyên phục vụ bữa sáng",
+    "types": [
+     "Nhà hàng chuyên phục vụ bữa sáng"
+    ],
+    "phoneNumber": "+84 913 895 077",
+    "openingHours": {
+     "Thứ Ba": "06:00–12:30",
+     "Thứ Tư": "06:00–12:30",
+     "Thứ Năm": "06:00–12:30",
+     "Thứ Sáu": "06:00–12:30",
+     "Thứ Bảy": "Đóng cửa",
+     "Chủ Nhật": "Đóng cửa",
+     "Thứ Hai": "06:00–12:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkMT_66ss4mzaeqCeDFDhkrUXNFlZHygdzOMwhUSgu7IoRXS6CSb4b95Bs0SShr_9peiM415e4gqLAAXqMJsaHpaptmuooA3WVmeWTlUZlHSipwjKKbXS8sKgsjw3-0M_HPySYdV7spm9Qe",
+    "cid": "350288567355249549",
+    "fid": "0x3175290073a8c1bd:0x4dc79989a17138d",
+    "placeId": "ChIJvcGocwApdTERjRMXmph53AQ"
+   },
+   {
+    "position": 8,
+    "title": "Quán ăn Sáng Hạnh",
+    "address": "8 Đường B, Bình Khánh, An Khánh, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.786344999999999,
+    "longitude": 106.7383703,
+    "rating": 4.8,
+    "ratingCount": 5,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "phoneNumber": "+84 382 395 778",
+    "openingHours": {
+     "Thứ Ba": "06:00–12:00",
+     "Thứ Tư": "06:00–12:00",
+     "Thứ Năm": "06:00–12:00",
+     "Thứ Sáu": "06:00–12:00",
+     "Thứ Bảy": "06:00–12:00",
+     "Chủ Nhật": "06:00–12:00",
+     "Thứ Hai": "06:00–12:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWk083Hc_tr__Qa7k3lTSpqFBmm4OqvwnXCdCYHIEsnjmztoZwbp6JDQaDl-vIA51DJxr96xJ4ynVvtQNcpH_GKNm1TvlaqMOhxN8RwMHCByvL8JyecKfiCSKCiIzAlhHNAkeeaI",
+    "cid": "13767654572646737797",
+    "fid": "0x3175250edd5fd3f5:0xbf1088e3c0e42785",
+    "placeId": "ChIJ9dNf3Q4ldTERhSfkwOOIEL8"
+   },
+   {
+    "position": 9,
+    "title": "ĐIỂM TÂM - Ăn Sáng - Chân Gà xã tắc - Úc Vân",
+    "address": "11 Số 34, Khánh Hội, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.758197899999999,
+    "longitude": 106.7005665,
+    "rating": 4.8,
+    "ratingCount": 10,
+    "type": "Quán ăn nhỏ",
+    "types": [
+     "Quán ăn nhỏ"
+    ],
+    "phoneNumber": "+84 356 131 483",
+    "openingHours": {
+     "Thứ Ba": "06:30–11:00",
+     "Thứ Tư": "06:30–11:00",
+     "Thứ Năm": "06:30–11:00",
+     "Thứ Sáu": "06:30–11:00",
+     "Thứ Bảy": "00:00–11:00",
+     "Chủ Nhật": "Đóng cửa",
+     "Thứ Hai": "06:30–11:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmulUNJs-Pqh4lhgxG6aZMxV6xMMktu1NP3NE_6IgWa4dwCajKwZtcPVtCpcG3HKvLC7Lk0RNzgivFymv7yjOSks1-UwE4Kt_N42vIlqwnEU3e5p_6VGg3kYiv94wxymnQfjJJg",
+    "cid": "14713743347636644663",
+    "fid": "0x31752f6d30aa097f:0xcc31b79e30262b37",
+    "placeId": "ChIJfwmqMG0vdTERNysmMJ63Mcw"
+   },
+   {
+    "position": 10,
+    "title": "Quán cơm bà Năm",
+    "address": "34 Tân Canh, Tân Sơn Hòa, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7973197,
+    "longitude": 106.66739299999999,
+    "rating": 4.4,
+    "ratingCount": 147,
+    "type": "Quán ăn nhỏ",
+    "types": [
+     "Quán ăn nhỏ"
+    ],
+    "openingHours": {
+     "Thứ Ba": "06:00–12:00",
+     "Thứ Tư": "06:00–12:00",
+     "Thứ Năm": "06:00–12:00",
+     "Thứ Sáu": "06:00–12:00",
+     "Thứ Bảy": "06:00–12:00",
+     "Chủ Nhật": "06:00–12:00",
+     "Thứ Hai": "06:00–12:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnrwG9J8kZukjt7qu7bycLZPky9pAy09dJc5wiqPLJlT-6aMJmlWhx5RYVMhMLYWmiHtBeThLFzQFt1yiCtTsyaSQ6KapKTzFriUJUlpl90Raq4zdrKOxjyFCsqRvbWFOTWK4ZDYQ",
+    "cid": "14578286261066044107",
+    "fid": "0x3175295dd45652d3:0xca507a1d88cc92cb",
+    "placeId": "ChIJ01JW1F0pdTERy5LMiB16UMo"
+   },
+   {
+    "position": 11,
+    "title": "Quán Ngon - Bún Chả Hà Nội",
+    "address": "209 Đề Thám, Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.767714699999999,
+    "longitude": 106.69366889999999,
+    "rating": 4.8,
+    "ratingCount": 2044,
+    "type": "Nhà hàng Việt Nam",
+    "types": [
+     "Nhà hàng Việt Nam"
+    ],
+    "website": "http://www.facebook.com/bunchaquanngon",
+    "phoneNumber": "+84 971 718 888",
+    "openingHours": {
+     "Thứ Ba": "09:30–22:30",
+     "Thứ Tư": "09:30–22:30",
+     "Thứ Năm": "09:30–22:30",
+     "Thứ Sáu": "09:30–22:30",
+     "Thứ Bảy": "09:30–22:30",
+     "Chủ Nhật": "09:30–22:30",
+     "Thứ Hai": "09:30–22:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWl0Lwfa1s8bq9zCqw22p7o7TI62GLhoDoGSGkZAJxWyAwz4kJrw2BEerZotZUQjTJZXNpnB-hoPUvS_BNsLzsGhLlzbGcPxVmGaoWo6GOgsHBP5MunDrLaOUvrBQ5IHrjsrIxZ_FUEBqCvG",
+    "cid": "3545193429669240937",
+    "fid": "0x31752f1f75a5d6c9:0x31330ea41b7be069",
+    "placeId": "ChIJydaldR8vdTERaeB7G6QOMzE"
+   },
+   {
+    "position": 12,
+    "title": "Quán ăn Thiên Ân",
+    "address": "144 Bành Văn Trân, Tân Sơn Nhất, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7902787,
+    "longitude": 106.6569833,
+    "rating": 4.1,
+    "ratingCount": 947,
+    "type": "Quán ăn nhỏ",
+    "types": [
+     "Quán ăn nhỏ"
+    ],
+    "website": "http://thienan.vn.support/",
+    "phoneNumber": "+84 706 598 530",
+    "openingHours": {
+     "Thứ Ba": "09:00–21:00",
+     "Thứ Tư": "09:00–21:00",
+     "Thứ Năm": "09:00–21:00",
+     "Thứ Sáu": "09:00–21:00",
+     "Thứ Bảy": "09:00–21:00",
+     "Chủ Nhật": "09:00–21:00",
+     "Thứ Hai": "09:00–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkcQe3-HtBaiIYkg7wcHo3EsWvSHdx_NSxVEISP8rkUo1lxhHa_0wl15Mt9aW4FoF0r45xMtwWlimUTGC9tI5EyqI8IJQwcedJcMU2PBP3T4Rs5hpSKmGKlcvfdmV5-zPZyYdru2w",
+    "cid": "4733951509124952888",
+    "fid": "0x31752ecb3e49b0e7:0x41b25fd0e5513338",
+    "placeId": "ChIJ57BJPssudTERODNR5dBfskE"
+   },
+   {
+    "position": 13,
+    "title": "A Xỉu - Quán Ăn Ngon",
+    "address": "26 Đề Thám, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7632981,
+    "longitude": 106.6960386,
+    "rating": 4.7,
+    "ratingCount": 246,
+    "type": "Quán ăn nhỏ",
+    "types": [
+     "Quán ăn nhỏ"
+    ],
+    "website": "https://www.facebook.com/AXIU.QuanAnNgon",
+    "phoneNumber": "+84 921 942 754",
+    "openingHours": {
+     "Thứ Ba": "17:00–22:30",
+     "Thứ Tư": "17:00–22:30",
+     "Thứ Năm": "17:00–22:30",
+     "Thứ Sáu": "17:00–22:30",
+     "Thứ Bảy": "17:00–22:30",
+     "Chủ Nhật": "17:00–22:30",
+     "Thứ Hai": "17:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlMqIoJzj8rSL62guJbScyruDyp5JyzrZNSDtMxZOwdW3WRNomsZ0X0EOpRJgrKqCO0viD9iFNYppEq32kxwVZ3EXaoWJIQiMJJR32AbzvgjJ9FvsoNJEk_iu_lVYq_lGLYeSTR",
+    "cid": "4972183245674149675",
+    "fid": "0x31752f567f8aff87:0x4500be51748e772b",
+    "placeId": "ChIJh_-Kf1YvdTERK3eOdFG-AEU"
+   },
+   {
+    "position": 14,
+    "title": "Quán Ăn NGON HƯƠNG XƯA",
+    "address": "43 Lê Bình, Tân Sơn Nhất, Hồ Chí Minh 02888, Việt Nam",
+    "latitude": 10.7938142,
+    "longitude": 106.6567111,
+    "rating": 4.1,
+    "ratingCount": 14,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "phoneNumber": "+84 987 881 997",
+    "openingHours": {
+     "Thứ Ba": "07:00–21:00",
+     "Thứ Tư": "07:30–21:00",
+     "Thứ Năm": "07:00–21:00",
+     "Thứ Sáu": "07:00–21:00",
+     "Thứ Bảy": "07:00–21:00",
+     "Chủ Nhật": "07:00–21:00",
+     "Thứ Hai": "07:00–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWml5CdlotxpDDdRl8lWqYZNTd2XRy771mbSmRG_9nqrEwXZBhyEKpV9euXYSMCBm2UqIfMkuA7SdBY3Xqj4fa751TYmjFi_xdqmMVmK244d_HMOVLHvO7PX_aJ3TXFs8gJtOu72",
+    "cid": "4916059343242055800",
+    "fid": "0x317529643cd0f945:0x443959ed20aed078",
+    "placeId": "ChIJRfnQPGQpdTEReNCuIO1ZOUQ"
+   },
+   {
+    "position": 15,
+    "title": "Nghệ Tĩnh Quán | Súp -Cháo -Miến Lươn Thủ Đức | Quán Ăn Ngon Gần Đây",
+    "address": "88 Trần Não, An Khánh, Hồ Chí Minh 713100, Việt Nam",
+    "latitude": 10.7946295,
+    "longitude": 106.7307202,
+    "rating": 4.9,
+    "ratingCount": 198,
+    "type": "Nhà hàng ăn nhanh",
+    "types": [
+     "Nhà hàng ăn nhanh",
+     "Nhà hàng phở",
+     "Quán ăn nhẹ"
+    ],
+    "website": "http://nghetinhquan.com/",
+    "phoneNumber": "+84 922 265 588",
+    "openingHours": {
+     "Thứ Ba": "06:00–14:30, 17:00–22:00",
+     "Thứ Tư": "06:00–14:30, 17:00–22:00",
+     "Thứ Năm": "06:00–14:30, 17:00–22:00",
+     "Thứ Sáu": "06:00–14:30, 17:00–22:00",
+     "Thứ Bảy": "06:00–14:30, 17:00–22:00",
+     "Chủ Nhật": "06:00–14:30, 17:00–22:00",
+     "Thứ Hai": "06:00–14:30, 17:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlZsu_MU4C1iKZRkj5GH0xHEptzMUWQMwGVxEU1A0uljxsIgZJECjmJ_LKU6H_gkQqKZWK0Xh6lPoJunNTjigf6PzwnpoS6SBarDWL6sKwpwq4wm8rUSSNwx46JPmPvcqjrddAUl0pc4Kwv",
+    "cid": "2087023506644393997",
+    "fid": "0x317527003b56a10f:0x1cf698d25f6de00d",
+    "placeId": "ChIJD6FWOwAndTERDeBtX9KY9hw"
+   },
+   {
+    "position": 16,
+    "title": "Bún bò MINH ANH",
+    "address": "Near Ăn vặt Bé Lì, 11 Xuân Thủy, An Khánh, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.8029462,
+    "longitude": 106.7291261,
+    "rating": 4.6,
+    "ratingCount": 53,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "phoneNumber": "+84 962 280 359",
+    "openingHours": {
+     "Thứ Ba": "06:00–14:00",
+     "Thứ Tư": "06:00–14:00",
+     "Thứ Năm": "06:00–14:00",
+     "Thứ Sáu": "06:00–14:00",
+     "Thứ Bảy": "06:00–14:00",
+     "Chủ Nhật": "06:00–14:00",
+     "Thứ Hai": "06:00–14:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnJfa9ZIem28qTnPZfuD3kTKBrEBtCvJ98O9GKxwSsofJpwKCq6OXL5TMdXuOtu6BDGMvgiNKBreHaDrrWmlcN3TH11vp3ooMIv3omdogrf0a4ARCrcpffJM8PzOdB68WbE8Kks",
+    "cid": "1932825069924602249",
+    "fid": "0x3175274e7fc341d3:0x1ad2c62919d35189",
+    "placeId": "ChIJ00HDf04ndTERiVHTGSnG0ho"
+   },
+   {
+    "position": 17,
+    "title": "Quán Ăn Huế Thuận An",
+    "address": "39 Hoàng Sa, Sài Gòn, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.791929999999999,
+    "longitude": 106.70418199999999,
+    "rating": 3.8,
+    "ratingCount": 182,
+    "type": "Quán ăn nhỏ",
+    "types": [
+     "Quán ăn nhỏ"
+    ],
+    "website": "https://quan-an-hue-thuan-an.gulagi.com/",
+    "phoneNumber": "+84 39100300",
+    "openingHours": {
+     "Thứ Ba": "07:00–21:00",
+     "Thứ Tư": "07:00–21:00",
+     "Thứ Năm": "07:00–21:00",
+     "Thứ Sáu": "07:00–21:00",
+     "Thứ Bảy": "07:00–21:00",
+     "Chủ Nhật": "07:00–21:00",
+     "Thứ Hai": "07:00–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlF-ciGHeIvdoXm6jPk_1VwGb1qmzoG0UOHXzD96_upgg95wNo3b6iqztW0Vat65e9cr_kuH8oQqX0qcxBkSDbykmADVV_WxtMm4lJhEB1vltRV7tPRZ2IlbVW4eascaH1OWsGU6dlkxTJ4",
+    "cid": "10778720077881493634",
+    "fid": "0x317528b45e6ea443:0x9595b4cd7f7f4882",
+    "placeId": "ChIJQ6RuXrQodTERgkh_f820lZU"
+   },
+   {
+    "position": 18,
+    "title": "Quán ăn sáng hẻm 87 Trần Phú",
+    "address": "87 Trần Phú, Chợ Quán, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7611017,
+    "longitude": 106.67778489999999,
+    "rating": 5,
+    "ratingCount": 2,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "openingHours": {
+     "Thứ Ba": "05:30–09:30",
+     "Thứ Tư": "05:30–09:30",
+     "Thứ Năm": "05:30–09:30",
+     "Thứ Sáu": "05:30–09:30",
+     "Thứ Bảy": "05:30–09:30",
+     "Chủ Nhật": "Đóng cửa",
+     "Thứ Hai": "05:30–09:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWl39SM-2uMccIzN-MSzcvCDEw6AFs52enYeTlf1qtrDLKNdSzbY8grQzijfOjfTe-np63CBpHFwLfcpOo1-pc40PjvCa6H_oQETT92UbRYfcNVfaxUmYzJBE46gbwOFdzotvTVrJBBlf5eb",
+    "cid": "14340155855965443726",
+    "fid": "0x31752f44340efda9:0xc70277c60a8ed68e",
+    "placeId": "ChIJqf0ONEQvdTERjtaOCsZ3Asc"
+   },
+   {
+    "position": 19,
+    "title": "Quán Huế Thương",
+    "address": "13 Nguyễn Quý Cảnh, Khu đô thị An Phú An Khánh, Bình Trưng, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7986039,
+    "longitude": 106.7370325,
+    "rating": 4.3,
+    "ratingCount": 629,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "phoneNumber": "+84 989 650 777",
+    "openingHours": {
+     "Thứ Ba": "06:30–13:00, 16:30–21:00",
+     "Thứ Tư": "06:30–13:00, 16:30–21:00",
+     "Thứ Năm": "06:30–13:00, 16:30–21:00",
+     "Thứ Sáu": "06:30–13:00, 16:30–21:00",
+     "Thứ Bảy": "06:30–13:00, 16:30–21:00",
+     "Chủ Nhật": "06:30–13:00, 16:30–21:00",
+     "Thứ Hai": "06:30–13:00, 16:30–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlyFuPvc8QMkqqhuvT52fL8w6gh18E76egPHeFYMYcvJjEz_iglI-m7pvKEPNvGXQqHBOeCbDWyAOCIMC0vDarwJt7Q0uaR3VbhOwTgbN352XDHQP52xiWHTEVwpTpva2IkjcMlSw",
+    "cid": "7687848175725368451",
+    "fid": "0x317526103da89623:0x6ab0b92f113ed483",
+    "placeId": "ChIJI5aoPRAmdTERg9Q-ES-5sGo"
+   },
+   {
+    "position": 20,
+    "title": "Xe bán đồ ăn sáng đầu hẻm",
+    "address": "IN THE END OF ALLEY, 84 Nguyễn Thái Bình, STREET, Bến Thành, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.768776899999999,
+    "longitude": 106.69889459999999,
+    "rating": 5,
+    "ratingCount": 1,
+    "type": "Quán ăn nhỏ",
+    "types": [
+     "Quán ăn nhỏ"
+    ],
+    "openingHours": {
+     "Thứ Ba": "06:30–10:30",
+     "Thứ Tư": "06:30–10:30",
+     "Thứ Năm": "06:30–10:30",
+     "Thứ Sáu": "06:30–10:30",
+     "Thứ Bảy": "06:30–10:30",
+     "Chủ Nhật": "06:30–10:30",
+     "Thứ Hai": "06:30–10:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnL0rIHCTqydAJRZk6NO6lwn1vwVqki4J2CyI_du-pfeJeFWdnd4Ap8FFV4OLjMswV7Pt3BZ71jqNLycoOkxucoZFGPOiCa4xMq3lvQpzM74S_HEF2E6IYCFdUl53SgQj_uPl9xm7n2cLkA",
+    "cid": "2489632148387036471",
+    "fid": "0x31752f002efe0795:0x228cf33f92007d37",
+    "placeId": "ChIJlQf-LgAvdTERN30Akj_zjCI"
+   }
+  ],
+  "credits": 3
+ }
+}

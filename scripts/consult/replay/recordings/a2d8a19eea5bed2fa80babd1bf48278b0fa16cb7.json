@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Iris Nailbar SGN\" OR \"The Nail\" OR \"Molsy Nails & Beauty\" quan 10 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T00:45:13.264Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Iris Nailbar SGN\" OR \"The Nail\" OR \"Molsy Nails & Beauty\" quan 10 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Nails xinh tại Iris Nailbar SGN 💅📸",
+    "link": "https://www.tiktok.com/@irisnailbarsgn/photo/7681231691645668628",
+    "snippet": "Hoà Hưng (Quận 10), Tp.HCM Hotline: 033 7979 106 ... Keywords: Iris Nailbar SGN,Nails Quận 10,Nối mi thiết kế,Đào tạo học ...",
+    "position": 1
+   },
+   {
+    "title": "i'm obsessed with this colorrr @the nail lab NYC #fy #nails",
+    "link": "https://www.tiktok.com/@dianerysl/video/7686614122833661198",
+    "snippet": "782 Likes, TikTok video from dianeryscastillo (@dianerysl): “i'm obsessed with this colorrr @the nail lab NYC #fy #nails”. nails. original ...",
+    "position": 2
+   },
+   {
+    "title": "Zarla Larson The Nail Lab | TikTok",
+    "link": "https://www.tiktok.com/discover/zarla-larson-the-nail-lab",
+    "snippet": "@sydneylaurrenn Thank you for the recommendation to this salon Tiny was Fabulous! @The Nail Lab of Cary is Sarah and Zara approved",
+    "date": "7 thg 9, 2026",
+    "position": 3
+   },
+   {
+    "title": "What Is the Nail in Basketball? NBA All‑Star Court Setup",
+    "link": "https://www.tiktok.com/@nba/video/7335896018195729710",
+    "snippet": "The nail is also one of the most underrated terms in basketball. Players often hear the advice to “find the nail” before shooting a free throw.",
+    "position": 4
+   },
+   {
+    "title": "Funny Client Interactions at the Nail Salon",
+    "link": "https://www.tiktok.com/@nailboo/video/7590913075046354231",
+    "snippet": "Laugh at relatable moments with clients at the nail salon! Discover funny nail memes and client stories. #nails #relatablememes #funny #nailtech.",
+    "position": 5
+   },
+   {
+    "title": "Don't get so caught up in the nail art that you forget ...",
+    "link": "https://www.tiktok.com/@aubreynails/video/7479525896496450846",
+    "snippet": "Don't get so caught up in the nail art that you forget you're actually supposed to be doing nails .. Don't get so caught up ...",
+    "position": 6
+   },
+   {
+    "title": "𝐓𝐡𝐞 𝐍𝐚𝐢𝐥 𝐁𝐚𝐛𝐞 ☆ (@thenailbabeee)'s video ...",
+    "link": "https://www.tiktok.com/@thenailbabeee/video/7661290475415964941",
+    "snippet": "87 Likes, TikTok video from ☆ The Nail Babe ☆ (@thenailbabeee): “”. the nail girl. original sound - ☆ The Nail Babe ...",
+    "position": 7
+   },
+   {
+    "title": "Lessons at the nail salon 💅 #life #lifelessons # ...",
+    "link": "https://www.tiktok.com/@andiearonow/video/7663111169044974862",
+    "snippet": "TikTok video from Andie Aronow (@andiearonow): “Lessons at the nail salon #life #lifelessons #lifehack #work #worklife”. Nail Tech Life. what if you just ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

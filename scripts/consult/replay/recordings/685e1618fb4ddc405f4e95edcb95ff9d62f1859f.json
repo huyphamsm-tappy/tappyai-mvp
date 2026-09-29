@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Nhu Minh Plaza Danang Hotel",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T00:41:35.363Z",
+ "body": {
+  "searchParameters": {
+   "q": "Nhu Minh Plaza Danang Hotel",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Khách sạn Sun Thành Phố Đà Nẵng",
+    "imageUrl": "https://sunhotel.com.vn/wp-content/uploads/2024/08/nhu-minh-plaza-hotel-da-nang.jpg",
+    "imageWidth": 600,
+    "imageHeight": 400,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRh8ySh5HbsTkX5tHSihFpCxD7A0LBHaEK6K5Qe9nL1hw&s=10",
+    "thumbnailWidth": 600,
+    "thumbnailHeight": 400,
+    "source": "Khách sạn Sun Thành Phố Đà Nẵng",
+    "domain": "sunhotel.com.vn",
+    "link": "https://sunhotel.com.vn/khach-san-nhu-minh-plaza-da-nang/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fsunhotel.com.vn%2Fwp-content%2Fuploads%2F2024%2F08%2Fnhu-minh-plaza-hotel-da-nang.jpg&tbnid=fJIlDdcB8qV9OM&imgrefurl=https%3A%2F%2Fsunhotel.com.vn%2Fkhach-san-nhu-minh-plaza-da-nang%2F&docid=lW0mEHwRq4Nl7M&w=600&h=400",
+    "position": 1
+   },
+   {
+    "title": "NHU MINH PLAZA DANANG HOTEL (Đà Nẵng) - Đánh giá Khách sạn & So sánh giá -  Tripadvisor",
+    "imageUrl": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/14/c5/ea/ba/swimming-pool.jpg?w=900&h=500&s=1",
+    "imageWidth": 900,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCfgVHi1FWgmt1IcqU2gXoORSpMP8o9bRdBxkM2Kx8-w&s=10",
+    "thumbnailWidth": 599,
+    "thumbnailHeight": 333,
+    "source": "Tripadvisor",
+    "domain": "www.tripadvisor.com.vn",
+    "link": "https://www.tripadvisor.com.vn/Hotel_Review-g298085-d13297744-Reviews-Nhu_Minh_Plaza_Danang_Hotel-Da_Nang.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdynamic-media-cdn.tripadvisor.com%2Fmedia%2Fphoto-o%2F14%2Fc5%2Fea%2Fba%2Fswimming-pool.jpg%3Fw%3D900%26h%3D500%26s%3D1&tbnid=NDCal4esIHIIeM&imgrefurl=https%3A%2F%2Fwww.tripadvisor.com.vn%2FHotel_Review-g298085-d13297744-Reviews-Nhu_Minh_Plaza_Danang_Hotel-Da_Nang.html&docid=CE10hSXSMCJoOM&w=900&h=500",
+    "position": 2
+   },
+   {
+    "title": "Khách sạn nghỉ dưỡng Như Minh Plaza Đà Nẵng - Đẳng cấp | XEM NGAY",
+    "imageUrl": "https://nhuminhplazahotel.com/wp-content/uploads/2023/02/khach-san-nghi-duong-nhu-minh-plaza-da-nang-1-min-1024x768.jpg",
+    "imageWidth": 1024,
+    "imageHeight": 768,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlGjV3td3iydmV0MUwZ9uCBLEViOzqL5nSn6T7fnzwxA&s=10",
+    "thumbnailWidth": 638,
+    "thumbnailHeight": 480,
+    "source": "Nhu Minh Plaza Danang Hotel",
+    "domain": "nhuminhplazahotel.com",
+    "link": "https://nhuminhplazahotel.com/nhu-minh-plaza/khach-san-nghi-duong-nhu-minh-plaza-da-nang/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fnhuminhplazahotel.com%2Fwp-content%2Fuploads%2F2023%2F02%2Fkhach-san-nghi-duong-nhu-minh-plaza-da-nang-1-min-1024x768.jpg&tbnid=lcBW05o4RdUd_M&imgrefurl=https%3A%2F%2Fnhuminhplazahotel.com%2Fnhu-minh-plaza%2Fkhach-san-nghi-duong-nhu-minh-plaza-da-nang%2F&docid=d0aFccBpC_c4qM&w=1024&h=768",
+    "position": 3
+   },
+   {
+    "title": "Nhu Minh Plaza Danang Hotel, Đà Nẵng (cập nhật giá năm 2027)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/580671286.jpg?k=a094a37add72d3d3c5538d4c468d710ea1095448a844e4d0873f0c894368ae3f&o=",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcToRRuZZBaar2u21I1EPDBUDGxtV6yLJxtW9EJURILx2A&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/nhu-minh-plaza-danang.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F580671286.jpg%3Fk%3Da094a37add72d3d3c5538d4c468d710ea1095448a844e4d0873f0c894368ae3f%26o%3D&tbnid=nq0x9yjULASqiM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fnhu-minh-plaza-danang.vi.html&docid=FPn7fL74VzwHQM&w=1024&h=683",
+    "position": 4
+   },
+   {
+    "title": "Như Minh Plaza Đà Nẵng ở Đà Nẵng | Giá mới nhất và ưu đãi hấp dẫn 2026 -  Klook Việt Nam",
+    "imageUrl": "https://res.klook.com/klook-hotel/image/upload/w_750,c_fill,q_85/travelapi/22000000/21520000/21518500/21518401/a0b67877_z.jpg",
+    "imageWidth": 750,
+    "imageHeight": 1124,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtPnnY-hRB0pzKcHtksCQhQ2m53fSJca8C-7cYblUv_g&s=10",
+    "thumbnailWidth": 365,
+    "thumbnailHeight": 547,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/hotels/detail/280531-nhu-minh-plaza-danang-hotel/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fklook-hotel%2Fimage%2Fupload%2Fw_750%2Cc_fill%2Cq_85%2Ftravelapi%2F22000000%2F21520000%2F21518500%2F21518401%2Fa0b67877_z.jpg&tbnid=9N44ui3MkxZzvM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Fhotels%2Fdetail%2F280531-nhu-minh-plaza-danang-hotel%2F&docid=MSmv36kZxgTw6M&w=750&h=1124",
+    "position": 5
+   },
+   {
+    "title": "Nhu minh Plaza Đà Nẵng - Khách sạn thân thiện môi trường tiêu chuẩn",
+    "imageUrl": "https://nhuminhplazahotel.com/wp-content/uploads/2023/09/khach-san-than-thien-moi-truong-1.jpg",
+    "imageWidth": 1200,
+    "imageHeight": 900,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPaQ1lKvmJCH9eu7eM5bQKbQpTNGXsEOIMrzFd773Xfw&s=10",
+    "thumbnailWidth": 638,
+    "thumbnailHeight": 480,
+    "source": "Nhu Minh Plaza Danang Hotel",
+    "domain": "nhuminhplazahotel.com",
+    "link": "https://nhuminhplazahotel.com/danang-travel/khach-san-than-thien-moi-truong/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fnhuminhplazahotel.com%2Fwp-content%2Fuploads%2F2023%2F09%2Fkhach-san-than-thien-moi-truong-1.jpg&tbnid=lvUCuPAISbks_M&imgrefurl=https%3A%2F%2Fnhuminhplazahotel.com%2Fdanang-travel%2Fkhach-san-than-thien-moi-truong%2F&docid=dK0CJ33pnzSVVM&w=1200&h=900",
+    "position": 6
+   },
+   {
+    "title": "Như Minh Plaza Đà Nẵng, Đà Nẵng | Hotels.com",
+    "imageUrl": "https://images.trvl-media.com/lodging/22000000/21520000/21518500/21518401/17c799f5.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill",
+    "imageWidth": 862,
+    "imageHeight": 575,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXuY33xUDgPQq_-T43A8zhAWBBy2YyQ0foOGhA9balJg&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "hotels",
+    "domain": "vi.hotels.com",
+    "link": "https://vi.hotels.com/ho689588832/khach-san-nhu-minh-plaza-a-nang-a-nang-viet-nam/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimages.trvl-media.com%2Flodging%2F22000000%2F21520000%2F21518500%2F21518401%2F17c799f5.jpg%3Fimpolicy%3Dresizecrop%26rw%3D575%26rh%3D575%26ra%3Dfill&tbnid=zmkE1NHgG90BgM&imgrefurl=https%3A%2F%2Fvi.hotels.com%2Fho689588832%2Fkhach-san-nhu-minh-plaza-a-nang-a-nang-viet-nam%2F&docid=ky30iGUjEBYTkM&w=862&h=575",
+    "position": 7
+   },
+   {
+    "title": "Nhu Minh Plaza Danang Hotel, Đà Nẵng (cập nhật giá năm 2027)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/580643616.jpg?k=73ec0e2702dbc114aab13cdcabd04c0826874f6c16db135b6e56abf8cdb9ff80&o=",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKj_7pcknOBfc91cSDg_CyM6FUWdwP27jgmJvkgL3AWw&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/nhu-minh-plaza-danang.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F580643616.jpg%3Fk%3D73ec0e2702dbc114aab13cdcabd04c0826874f6c16db135b6e56abf8cdb9ff80%26o%3D&tbnid=BdC2divkXbTE9M&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fnhu-minh-plaza-danang.vi.html&docid=FPn7fL74VzwHQM&w=1024&h=683",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

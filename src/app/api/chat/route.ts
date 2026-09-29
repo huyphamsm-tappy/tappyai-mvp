@@ -88,7 +88,7 @@ import { filterTransientMemory } from '@/lib/ai/consultative/memoryTransientFilt
 import { plainRequestTopic, appendHistoryTopic } from '@/lib/ai/consultative/memoryTopic'
 import { deriveSearchNow, SPECIFIC_DATE, type SearchNow } from '@/lib/ai/consultative/searchNow'
 import { tripAskAfter, missingTripFacts } from '@/lib/ai/consultative/tripFacts'
-import { buildDomainFrame, frameDomainOf } from '@/lib/ai/consultative/domainFrames'
+import { buildDomainFrame, frameDomainOf, PLAN_HEADINGS } from '@/lib/ai/consultative/domainFrames'
 import { runConsultBrain, consultV2Enabled, wasAskReply, buildAskReply, placeTypeFor } from '@/lib/ai/consultative/consultBrain'
 import { routeConsult } from '@/lib/ai/consultative/consultRouter'
 import { onlyRowsNamed, slimResultForModel, travelPreCall, withoutShownRows } from '@/lib/ai/consultative/consultTravel'
@@ -553,7 +553,15 @@ export async function POST(req: Request) {
 - User da BAC: ${consult.rejectReason} — KHONG nhac lai cho da bac.` : ''}${consult.refers?.length ? `
 - User dang noi toi: ${consult.refers.join(' | ')}` : ''}${(() => { const m = latestConsultPick(messages); return m ? `
 - LUA CHON DA CHOT gan nhat: ${m}` : '' })()}${consultShownEver.length ? `
-- Da gioi thieu (dung cho "xem them"/"bac": KHONG chon lai): ${consultShownEver.slice(0, 12).join(' | ')}` : ''}
+- Da gioi thieu (dung cho "xem them"/"bac": KHONG chon lai): ${consultShownEver.slice(0, 12).join(' | ')}` : ''}${(() => {
+    // Replay r6: 6/11 plans ASKED instead of planning — the no-ask rule sat mid-prompt, under blocks that
+    // say "toi da 1 cau hoi" / "khong gia dinh ngay". The last word of the prompt is the plan order.
+    const fd = frameDomainOf(consult.domains[0] ?? null)
+    if (consult.turn !== 'plan' || fd === 'main') return ''
+    const pick = latestConsultPick(messages)
+    return `
+- LENH CUOI (GHI DE moi luat hoi o tren): VIET KE HOACH NGAY, KHONG dat cau hoi nao. Dong dau "Mình giả định: …" cho moi thu chua biet (so nguoi, ngay → "ngày bạn chọn", noi o, mon qua…). Xoay quanh ${pick ? `"${pick}"` : 'lua chon hop nhat trong cuoc tro chuyen'}. Viet DU cac tieu de in dam, dung thu tu: ${PLAN_HEADINGS[fd].map(h => `**${h}**`).join(' · ')}.`
+  })()}
 =====================================`
     : ''
   if (consult) {
@@ -1117,7 +1125,12 @@ export async function POST(req: Request) {
   if (consultPlanReuse && priorPlaceSearch) presearchPlan = { toolName: 'search_places', args: priorPlaceSearch.args, exact: true }
   // Owner 2026-09-28 (c40 T7): a flight request naming two airports runs its fare call before the model.
   // Consult V2: a shopping pick runs the product search before the model (one model step, like a place pick).
-  const consultProductQuery = consult && (consult.turn === 'pick' || consult.turn === 'reject') && consult.domains[0] === 'shopping' && consult.query ? consult.query : null
+  // "xem thêm" on shopping searches again from the carried product slots (replay SHOP-2/3: with no search the
+  // "more" turn had nothing new to pick); rows already shown are filtered out after the search.
+  const consultShoppingMoreQuery = consult?.turn === 'more' && consult.domains[0] === 'shopping' && consult.known.san_pham
+    ? Object.entries(consult.known).filter(([k]) => !['ngan_sach', 'so_nguoi', 'muc_dich'].includes(k)).map(([, v]) => v).join(' ').slice(0, 120)
+    : null
+  const consultProductQuery = consult && (consult.turn === 'pick' || consult.turn === 'reject') && consult.domains[0] === 'shopping' && consult.query ? consult.query : consultShoppingMoreQuery
   // …and a travel pick runs the flight or hotel search its slots name (consultTravel.ts).
   const consultTravelCall = consult && (consult.turn === 'pick' || consult.turn === 'reject') && consult.domains[0] === 'travel' ? travelPreCall(consult.known, lastText) : null
   const flightPresearch = consultativeV1 && !presearchPlan && !clipContext ? planFlightPresearch(searchNow, lastText, new Date(), { planning: !!planningIntent }) : null

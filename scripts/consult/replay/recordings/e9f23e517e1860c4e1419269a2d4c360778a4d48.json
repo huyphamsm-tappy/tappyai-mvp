@@ -1,0 +1,79 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"UAG Monarch Pro Case iPhone 17 Series (Titanium)\" OR \"UAG Pathfinder Case with MagSafe for iPhone 18 Pro Max/17 Pro Max\" OR \"UAG Urban Armor Gear Exclusive Monarch Pro iPhone 17 Pro Max Case Titanium\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T19:18:54.745Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"UAG Monarch Pro Case iPhone 17 Series (Titanium)\" OR \"UAG Pathfinder Case with MagSafe for iPhone 18 Pro Max/17 Pro Max\" OR \"UAG Urban Armor Gear Exclusive Monarch Pro iPhone 17 Pro Max Case Titanium\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "UAG Pathfinder Case with MagSafe for iPhone 18 Pro Max ...",
+    "link": "https://www.verizon.com/products/uag-pathfinder-case-with-magsafe-for-iphone-18-pro-max-17-pro-max/?sku=sku6048720",
+    "snippet": "With its translucent design and built-in MagSafe module, the UAG Pathfinder Case with MagSafe for iPhone 18 Pro Max/17 Pro Max offers 18 ft. drop protection ...",
+    "rating": 4.2,
+    "ratingCount": 9,
+    "position": 1
+   },
+   {
+    "title": "Review UAG Monarch Pro Case iPhone 17 Series ...",
+    "link": "https://www.youtube.com/watch?v=Ufv8UjQSN3Q",
+    "snippet": "Review UAG Monarch Pro Case iPhone 17 Series Titanium @ NMS AAER · Comments.",
+    "position": 2
+   },
+   {
+    "title": "Red Uag Iphone Covers UAG Urban Armor Gear Exclusive Monarch ...",
+    "link": "https://sovereigncapital.ae/?g=33327956011880",
+    "snippet": "Pick up at the store (Free shipping) ... Due to a lack of stock in stores, we will be ordering the item. Delivery is scheduled for around 2026-09-15.",
+    "position": 3
+   },
+   {
+    "title": "Uag Products",
+    "link": "https://ws01.static-verizon.com/products/allproducts/uag/",
+    "snippet": "UAG Pathfinder Case with MagSafe for iPhone 18 Pro Max/17 Pro Max. (9)star rating 4.2222 out of 5 and 9 reviews. $54.99. Black ...",
+    "position": 4
+   },
+   {
+    "title": "Aug Iphone Supplier Case - UAG Urban Armor Gear Exclusive ...",
+    "link": "https://img.davetiyekazan.com/?agh=29.1559134.2.82",
+    "snippet": "Pursue Aug Iphone Supplier Case - UAG Urban Armor Gear Exclusive Monarch Pro IPhone 17 Merchants Max, UAG Urban Armor Gear Exclusive Monarch ...",
+    "date": "9 thg 9, 2026",
+    "rating": 4.8,
+    "ratingCount": 696,
+    "position": 5
+   },
+   {
+    "title": "Iphone Urban Armor Gear Phone Case Buy The ...",
+    "link": "https://www.resmab.eu/product/category/153547001640",
+    "snippet": "Iphone Urban Armor Gear Phone Case Buy The Urban Armor Gear IPhone 17 Pro Max Pathfinder Clear 114552114333 Online ; Delivery date · 2026-09-28 Later.",
+    "rating": 4.5,
+    "ratingCount": 39,
+    "position": 6
+   },
+   {
+    "title": "Buy Apple Iphone 17 Pro Max Phone Covers & Cases Online",
+    "link": "https://coveritup.com/collections/apple-iphone-17-pro-max-cases-covers?srsltid=AU7gw4V5w5qP7Ns97I6AoMyG2KMn76RfqHLqtdy4KwmyPjXx1Vkn8lyT",
+    "snippet": "Buy Apple Iphone 17 Pro Max phone covers online at the best price from Cover It Up. Discover a wide range of stylish and premium Apple Iphone 17 Pro Max ...",
+    "position": 7
+   },
+   {
+    "title": "IPhone 15 Pro Max uag pathfinder – Finn den beste prisen",
+    "link": "https://www.prisjakt.no/s/iphone-15-pro-max-uag-pathfinder/",
+    "snippet": "UAG Pathfinder Case with MagSafe for iPhone 18 Pro Max/17 Pro Max. Black, Magsafe compatible. fra. 599 kr. Sjekk priser. UAG Pathfinder MagSafe for iPhone 14 ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

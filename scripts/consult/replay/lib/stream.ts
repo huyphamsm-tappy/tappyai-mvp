@@ -53,15 +53,35 @@ export function parseDataStream(raw: string): ParsedStream {
 }
 
 /** The largest row list any tool result of this turn returned (places / products / search rows). */
+const ROW_KEYS = ['results', 'shopping_results', 'search_results', 'products', 'places', 'hotels', 'events']
+
 export function toolRowCount(tools: ToolFrame[]): number {
   let n = 0
   for (const t of tools) {
     const r = t.result as Record<string, unknown> | undefined
     if (!r || typeof r !== 'object') continue
-    for (const k of ['results', 'shopping_results', 'products', 'places', 'hotels', 'events']) {
+    for (const k of ROW_KEYS) {
       const a = r[k]
       if (Array.isArray(a)) n = Math.max(n, a.length)
     }
   }
   return n
+}
+
+/** Row names in tool order (card order) — the replay fills {alt} from them when the text names none. */
+export function toolRowNames(tools: ToolFrame[]): string[] {
+  const out: string[] = []
+  for (const t of tools) {
+    const r = t.result as Record<string, unknown> | undefined
+    if (!r || typeof r !== 'object') continue
+    for (const k of ROW_KEYS) {
+      const a = r[k]
+      if (!Array.isArray(a)) continue
+      for (const row of a) {
+        const n = String((row as { name?: unknown; title?: unknown })?.name ?? (row as { title?: unknown })?.title ?? '').trim()
+        if (n && !out.includes(n)) out.push(n)
+      }
+    }
+  }
+  return out
 }

@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Cà Phê Sân Vườn Du Mục Lâm Văn Bền (site:food.grab.com/vn OR site:shopeefood.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T00:39:00.635Z",
+ "body": {
+  "searchParameters": {
+   "q": "Cà Phê Sân Vườn Du Mục Lâm Văn Bền (site:food.grab.com/vn OR site:shopeefood.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

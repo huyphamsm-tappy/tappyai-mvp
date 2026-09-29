@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Trải Nghiệm Làm Móng tại Tiệm Nail ChocoBusy ở Busan",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T19:23:16.139Z",
+ "body": {
+  "searchParameters": {
+   "q": "Trải Nghiệm Làm Móng tại Tiệm Nail ChocoBusy ở Busan",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Trải Nghiệm Làm Móng tại Tiệm Nail ChocoBusy ở Busan - Klook",
+    "imageUrl": "https://res.klook.com/image/upload/w_750,h_469,c_fill,q_85/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/hnv7murho4bgzro5uudz.jpg",
+    "imageWidth": 750,
+    "imageHeight": 469,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTBHZXYVn_MYLnIIk8GLWHsE3PX_fnJBecGl6uhMnFvBw&s=10",
+    "thumbnailWidth": 565,
+    "thumbnailHeight": 353,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/98525-chocobusy-nail/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimage%2Fupload%2Fw_750%2Ch_469%2Cc_fill%2Cq_85%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fhnv7murho4bgzro5uudz.jpg&tbnid=dSowHlF8-0DuCM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F98525-chocobusy-nail%2F&docid=HpJ4lHQmIggxKM&w=750&h=469",
+    "position": 1
+   },
+   {
+    "title": "Trải Nghiệm Làm Móng tại Tiệm Nail ChocoBusy ở Busan - Klook",
+    "imageUrl": "https://res.klook.com/images/w_1200,h_630,c_fill,q_65/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/twpqyqpkhfrlqxgrcy6s/Tr%E1%BA%A3iNghi%E1%BB%87mL%C3%A0mM%C3%B3ngt%E1%BA%A1iTi%E1%BB%87mNailChocoBusy%E1%BB%9FBusan-Klook.jpg",
+    "imageWidth": 1200,
+    "imageHeight": 630,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrSRBQd1MlRZ9bRznEmZEuYlXthRa1to7b69UuiDDRzw&s=10",
+    "thumbnailWidth": 617,
+    "thumbnailHeight": 324,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/98525-chocobusy-nail/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Fw_1200%2Ch_630%2Cc_fill%2Cq_65%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Ftwpqyqpkhfrlqxgrcy6s%2FTr%25E1%25BA%25A3iNghi%25E1%25BB%2587mL%25C3%25A0mM%25C3%25B3ngt%25E1%25BA%25A1iTi%25E1%25BB%2587mNailChocoBusy%25E1%25BB%259FBusan-Klook.jpg&tbnid=VdFcBTfcisS1zM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F98525-chocobusy-nail%2F&docid=HpJ4lHQmIggxKM&w=1200&h=630",
+    "position": 2
+   },
+   {
+    "title": "Trải Nghiệm Làm Móng tại Tiệm Nail ChocoBusy ở Busan - Klook",
+    "imageUrl": "https://res.klook.com/images/w_1200,h_630,c_fill,q_65/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/iyetxcvmjvgwguqb8aq1/Tr%E1%BA%A3iNghi%E1%BB%87mL%C3%A0mM%C3%B3ngt%E1%BA%A1iTi%E1%BB%87mNailChocoBusy%E1%BB%9FBusan-Klook.jpg",
+    "imageWidth": 1200,
+    "imageHeight": 630,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSDNUt1KDOZFTE9ILITVDjwZOang6GMXFdgU-6qgyGxeA&s=10",
+    "thumbnailWidth": 617,
+    "thumbnailHeight": 324,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/98525-chocobusy-nail/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Fw_1200%2Ch_630%2Cc_fill%2Cq_65%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fiyetxcvmjvgwguqb8aq1%2FTr%25E1%25BA%25A3iNghi%25E1%25BB%2587mL%25C3%25A0mM%25C3%25B3ngt%25E1%25BA%25A1iTi%25E1%25BB%2587mNailChocoBusy%25E1%25BB%259FBusan-Klook.jpg&tbnid=QGjK0xHZRofc5M&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F98525-chocobusy-nail%2F&docid=HpJ4lHQmIggxKM&w=1200&h=630",
+    "position": 3
+   },
+   {
+    "title": "Trải Nghiệm Làm Móng tại Tiệm Nail ChocoBusy ở Busan - Klook",
+    "imageUrl": "https://res.klook.com/images/w_1200,h_630,c_fill,q_65/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/vatboovmwdioomupz38o/Tr%E1%BA%A3iNghi%E1%BB%87mL%C3%A0mM%C3%B3ngt%E1%BA%A1iTi%E1%BB%87mNailChocoBusy%E1%BB%9FBusan-Klook.jpg",
+    "imageWidth": 1200,
+    "imageHeight": 630,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQicFf7qzSgeXlTt1vi5GXslT0rdE_TZITCahiIQWijQw&s",
+    "thumbnailWidth": 310,
+    "thumbnailHeight": 163,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/98525-chocobusy-nail/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Fw_1200%2Ch_630%2Cc_fill%2Cq_65%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fvatboovmwdioomupz38o%2FTr%25E1%25BA%25A3iNghi%25E1%25BB%2587mL%25C3%25A0mM%25C3%25B3ngt%25E1%25BA%25A1iTi%25E1%25BB%2587mNailChocoBusy%25E1%25BB%259FBusan-Klook.jpg&tbnid=nU9fAa2WUhQ8zM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F98525-chocobusy-nail%2F&docid=HpJ4lHQmIggxKM&w=1200&h=630",
+    "position": 4
+   },
+   {
+    "title": "Trải Nghiệm Làm Móng tại Tiệm Nail ChocoBusy ở Busan - Klook",
+    "imageUrl": "https://res.klook.com/image/upload/w_750,h_469,c_fill,q_85/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/hhdxu03nl5i3r01fnjgz.jpg",
+    "imageWidth": 750,
+    "imageHeight": 469,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPJxoHrb4iZghlq__iMZJkh0O2OJKKxWZn1GeBnKjU9w&s=10",
+    "thumbnailWidth": 565,
+    "thumbnailHeight": 353,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/98525-chocobusy-nail/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimage%2Fupload%2Fw_750%2Ch_469%2Cc_fill%2Cq_85%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fhhdxu03nl5i3r01fnjgz.jpg&tbnid=l23mNoZ44XwXXM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F98525-chocobusy-nail%2F&docid=HpJ4lHQmIggxKM&w=750&h=469",
+    "position": 5
+   },
+   {
+    "title": "Trải Nghiệm Làm Móng tại Tiệm Nail ChocoBusy ở Busan - Klook",
+    "imageUrl": "https://res.klook.com/images/w_1200,h_630,c_fill,q_65/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/lfgkwaonrtehtwkbmadl/Tr%E1%BA%A3iNghi%E1%BB%87mL%C3%A0mM%C3%B3ngt%E1%BA%A1iTi%E1%BB%87mNailChocoBusy%E1%BB%9FBusan-Klook.jpg",
+    "imageWidth": 1200,
+    "imageHeight": 630,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQarE_toehsseBLvR45ilIJ2fIdRsAJofugwZreH2_JVg&s",
+    "thumbnailWidth": 310,
+    "thumbnailHeight": 163,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/98525-chocobusy-nail/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Fw_1200%2Ch_630%2Cc_fill%2Cq_65%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Flfgkwaonrtehtwkbmadl%2FTr%25E1%25BA%25A3iNghi%25E1%25BB%2587mL%25C3%25A0mM%25C3%25B3ngt%25E1%25BA%25A1iTi%25E1%25BB%2587mNailChocoBusy%25E1%25BB%259FBusan-Klook.jpg&tbnid=2PjTeHKLPmFGaM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F98525-chocobusy-nail%2F&docid=HpJ4lHQmIggxKM&w=1200&h=630",
+    "position": 6
+   },
+   {
+    "title": "Trải Nghiệm Làm Móng tại Tiệm Nail ChocoBusy ở Busan - Klook",
+    "imageUrl": "https://res.klook.com/images/w_1200,h_630,c_fill,q_65/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/kyzc2wclzl3gofna8xd5/Tr%E1%BA%A3iNghi%E1%BB%87mL%C3%A0mM%C3%B3ngt%E1%BA%A1iTi%E1%BB%87mNailChocoBusy%E1%BB%9FBusan-Klook.jpg",
+    "imageWidth": 1200,
+    "imageHeight": 630,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvuxqrQC0Rxd06KO_Kns1vUZWULBuA-rMmN9_YEnCbMg&s",
+    "thumbnailWidth": 310,
+    "thumbnailHeight": 163,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/98525-chocobusy-nail/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Fw_1200%2Ch_630%2Cc_fill%2Cq_65%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fkyzc2wclzl3gofna8xd5%2FTr%25E1%25BA%25A3iNghi%25E1%25BB%2587mL%25C3%25A0mM%25C3%25B3ngt%25E1%25BA%25A1iTi%25E1%25BB%2587mNailChocoBusy%25E1%25BB%259FBusan-Klook.jpg&tbnid=FJma-p5XOscr8M&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F98525-chocobusy-nail%2F&docid=HpJ4lHQmIggxKM&w=1200&h=630",
+    "position": 7
+   },
+   {
+    "title": "Trải Nghiệm Làm Móng tại Tiệm Nail ChocoBusy ở Busan - Klook",
+    "imageUrl": "https://res.klook.com/images/w_1200,h_630,c_fill,q_65/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/xp3bli0qv8xhzdxoecoj/Tr%E1%BA%A3iNghi%E1%BB%87mL%C3%A0mM%C3%B3ngt%E1%BA%A1iTi%E1%BB%87mNailChocoBusy%E1%BB%9FBusan-Klook.jpg",
+    "imageWidth": 1200,
+    "imageHeight": 630,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSt4MxlvZDlAsxVGBdsSf-0Wcno27ADO2quohq7qabSCw&s",
+    "thumbnailWidth": 310,
+    "thumbnailHeight": 163,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/98525-chocobusy-nail/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Fw_1200%2Ch_630%2Cc_fill%2Cq_65%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fxp3bli0qv8xhzdxoecoj%2FTr%25E1%25BA%25A3iNghi%25E1%25BB%2587mL%25C3%25A0mM%25C3%25B3ngt%25E1%25BA%25A1iTi%25E1%25BB%2587mNailChocoBusy%25E1%25BB%259FBusan-Klook.jpg&tbnid=EnDH7wsTOsXlSM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F98525-chocobusy-nail%2F&docid=HpJ4lHQmIggxKM&w=1200&h=630",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

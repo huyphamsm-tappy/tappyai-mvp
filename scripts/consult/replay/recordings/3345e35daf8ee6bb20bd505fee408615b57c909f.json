@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Hải Sản Hoàng Gia\" OR \"Matsuri Yaki Restaurant\" OR \"San Fu Lou Restaurant AB Tower\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T00:43:05.659Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Hải Sản Hoàng Gia\" OR \"Matsuri Yaki Restaurant\" OR \"San Fu Lou Restaurant AB Tower\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Hải Sản Hoàng Gia (@haisanhoanggia)",
+    "link": "https://www.tiktok.com/@haisanhoanggia",
+    "snippet": "Hải Sản Hoàng Gia (@haisanhoanggia) trên TikTok |219.7K Lượt thích.22.4K Follower.Hotline đặt bàn: 1900 0303 hoặc 090 6789 543.Xem video phổ biến của Hải ...",
+    "position": 1
+   },
+   {
+    "title": "HÔM NAY ĂN GÌ TẠI HẢI SẢN HOÀNG GIA? Với hơn 50 ...",
+    "link": "https://www.tiktok.com/@haisanhoanggia/video/7687560050482760980",
+    "snippet": "HÔM NAY ĂN GÌ TẠI HẢI SẢN HOÀNG GIA? Với hơn 50 loại hải sản sống đang bơi ngay tại hồ, chọn chế biến đa dạng theo khẩu vị.",
+    "position": 2
+   },
+   {
+    "title": "CUỐI TUẦN HẸN NHAU TẠI HẢI SẢN HOÀNG GIA 🦀✨ Một ...",
+    "link": "https://www.tiktok.com/@haisanhoanggia/video/7684279582312107284",
+    "snippet": "Hải Sản Hoàng Gia mang đến cơ hội hiếm có để bạn trải nghiệm hương vị tinh hoa từ xứ sở lá phong với mức giá ưu đãi đặc biệt chỉ còn 499.000đ/ ...",
+    "position": 3
+   },
+   {
+    "title": "Du Lịch Vị Giác Lễ 2/9: Hải Sản Hoàng Gia Sài Gòn",
+    "link": "https://www.tiktok.com/@haisanhoanggia/video/7679378710683733268",
+    "snippet": "Hải Sản Hoàng Gia mang đến cơ hội trải nghiệm hương vị từ khắp nơi trên thế giới ngay giữa lòng thành phố. Thực đơn phong phú với các loại hải ...",
+    "position": 4
+   },
+   {
+    "title": "Nhà Hàng Hải Sản Hoàng Gia - Tinh Hoa Ẩm Thực Biển",
+    "link": "https://www.tiktok.com/@haisanhoanggia/video/7524191587581103367",
+    "snippet": "Hải Sản Hoàng Gia mang đến một hành trình ẩm thực độc đáo, quy tụ những tinh hoa từ mọi vùng biển trên thế giới.",
+    "position": 5
+   },
+   {
+    "title": "Đến Hải Sản Hoàng Gia tận hưởng món ngon từ hải ...",
+    "link": "https://www.tiktok.com/@mymy.review07/video/7579502395349093639",
+    "snippet": "Đến Hải Sản Hoàng Gia tận hưởng món ngon từ hải sản đang bơi #haisanhoanggia #tuoingontunguon #cualongthuonghai #kingcrab #seafood.",
+    "position": 6
+   },
+   {
+    "title": "TSG Korea x Hải Sản Hoàng Gia: Tinh Hoa Biển Hàn Đến ...",
+    "link": "https://www.tiktok.com/@haisanhoanggia/video/7679022866414783751",
+    "snippet": "Hành trình đưa tinh hoa biển Hàn Quốc đến gần hơn với bàn ăn Việt Nam đã được thực hiện bởi TSG Korea kết hợp cùng Hải Sản Hoàng Gia.",
+    "position": 7
+   },
+   {
+    "title": "BỌ BIỂN – ĐẶC SẢN TỪ ĐẠI DƯƠNG SÂU 🌊 Vẻ ngoài ...",
+    "link": "https://www.tiktok.com/@haisanhoanggia/video/7683074174390177032",
+    "snippet": "Tại Hải Sản Hoàng Gia, từng loại hải sản đều được chú trọng từ khâu tuyển chọn, vận chuyển đến khi về hồ bể, để giữ trọn tinh thần tươi ngon từ ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

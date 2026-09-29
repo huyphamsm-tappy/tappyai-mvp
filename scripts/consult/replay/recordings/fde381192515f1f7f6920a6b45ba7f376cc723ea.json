@@ -1,0 +1,82 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Cà Phê Hòa Tan Cappuccino Dừa Con Chồn Vàng C7 Hộp 272g site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T00:48:26.910Z",
+ "body": {
+  "searchParameters": {
+   "q": "Cà Phê Hòa Tan Cappuccino Dừa Con Chồn Vàng C7 Hộp 272g site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cà Phê Hòa Tan Cappuccino Dừa Con Chồn Vàng C7 ...",
+    "link": "https://shopee.vn/C%C3%A0-Ph%C3%AA-H%C3%B2a-Tan-Cappuccino-D%E1%BB%ABa-Con-Ch%E1%BB%93n-V%C3%A0ng-C7-H%E1%BB%99p-272g-(16-G%C3%B3i-17g)-B%E1%BB%8Bch-850G-(50-G%C3%B3i-17g)-i.161062098.40002846452",
+    "snippet": "Mua Cà Phê Hòa Tan Cappuccino Dừa Con Chồn Vàng C7 Hộp 272g (16 Gói 17g) , Bịch 850G (50 Gói 17g) giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 1
+   },
+   {
+    "title": "Cà Phê Dừa Hòa Tan Cappuccino 4in1 (Less Sugar)",
+    "link": "https://shopee.vn/C%C3%A0-Ph%C3%AA-D%E1%BB%ABa-H%C3%B2a-Tan-Cappuccino-4in1-(Less-Sugar)-Con-Ch%E1%BB%93n-V%C3%A0ng-C7-H%E1%BB%99p-16Que-x-17Gr-i.80536559.20532987160",
+    "snippet": "Mua Cà Phê Dừa Hòa Tan Cappuccino 4in1 (Less Sugar) - Con Chồn Vàng C7 - Hộp 16Que x 17Gr giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 5,
+    "ratingCount": 83,
+    "position": 2
+   },
+   {
+    "title": "Combo 3 hộp Cà Phê Hòa Tan Cappuccino Dừa Con ...",
+    "link": "https://shopee.vn/Combo-3-h%E1%BB%99p-C%C3%A0-Ph%C3%AA-H%C3%B2a-Tan-Cappuccino-D%E1%BB%ABa-Con-Ch%E1%BB%93n-V%C3%A0ng-C7-H%E1%BB%99p-272g-(16-G%C3%B3i-17g)-i.883816355.44415263465",
+    "snippet": "Mua Combo 3 hộp Cà Phê Hòa Tan Cappuccino Dừa Con Chồn Vàng C7 Hộp 272g (16 Gói 17g) giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, ...",
+    "rating": 5,
+    "ratingCount": 4,
+    "position": 3
+   },
+   {
+    "title": "Cà Phê Hòa Tan Cappuccino Dừa Con Chồn Vàng C7 ...",
+    "link": "https://shopee.vn/C%C3%A0-Ph%C3%AA-H%C3%B2a-Tan-Cappuccino-D%E1%BB%ABa-Con-Ch%E1%BB%93n-V%C3%A0ng-C7-H%E1%BB%99p-272g-(16-G%C3%B3i-17g)-i.1821226520.53412747760",
+    "snippet": "Mua Cà Phê Hòa Tan Cappuccino Dừa Con Chồn Vàng C7 Hộp 272g (16 Gói 17g) giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, ...",
+    "rating": 4.9,
+    "ratingCount": 56,
+    "position": 4
+   },
+   {
+    "title": "[ CÓ HỎA TỐC] Cà Phê Dừa Hòa Tan Cappuccino 4in1 ...",
+    "link": "https://shopee.vn/-C%C3%93-H%E1%BB%8EA-T%E1%BB%90C-C%C3%A0-Ph%C3%AA-D%E1%BB%ABa-H%C3%B2a-Tan-Cappuccino-4in1-Con-Ch%E1%BB%93n-V%C3%A0ng-C7-H%E1%BB%99p-16Que-x-17Gr-Huca-Food-i.269345550.20797423785",
+    "snippet": "Mua [ CÓ HỎA TỐC] Cà Phê Dừa Hòa Tan Cappuccino 4in1 Con Chồn Vàng C7 - Hộp 16Que x 17Gr - Huca Food giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 4.9,
+    "ratingCount": 52,
+    "position": 5
+   },
+   {
+    "title": "Cà Phê Dừa Hòa Tan Cappuccino 4in1 Con Chồn Vàng C7",
+    "link": "https://shopee.vn/C%C3%A0-Ph%C3%AA-D%E1%BB%ABa-H%C3%B2a-Tan-Cappuccino-4in1-Con-Ch%E1%BB%93n-V%C3%A0ng-C7-H%E1%BB%99p-16Que-x-17Gr-Huca-Food.-i.279248189.11599929467",
+    "snippet": "Mua Cà Phê Dừa Hòa Tan Cappuccino 4in1 Con Chồn Vàng C7 - Hộp 16Que x 17Gr - Huca Food. giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 6
+   },
+   {
+    "title": "Cà Phê Hòa Tan Hương Vị Dừa Cappuccino 4in1 Con ...",
+    "link": "https://shopee.vn/C%C3%A0-Ph%C3%AA-H%C3%B2a-Tan-H%C6%B0%C6%A1ng-V%E1%BB%8B-D%E1%BB%ABa-Cappuccino-4in1-Con-Ch%E1%BB%93n-V%C3%A0ng-C7-T%C3%BAi-50-g%C3%B3i-x-17Gr-i.72598170.29808486899",
+    "snippet": "Mua Cà Phê Hòa Tan Hương Vị Dừa Cappuccino 4in1 Con Chồn Vàng C7 - Túi 50 gói x 17Gr giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, ...",
+    "rating": 5,
+    "ratingCount": 47,
+    "position": 7
+   },
+   {
+    "title": "Cà Phê Dừa Hòa Tan Cappuccino 4in1 Con Chồn Vàng ...",
+    "link": "https://shopee.vn/C%C3%A0-Ph%C3%AA-D%E1%BB%ABa-H%C3%B2a-Tan-Cappuccino-4in1-Con-Ch%E1%BB%93n-V%C3%A0ng-C7(Huca-Food.)-H%E1%BB%99p-16Que-x-17Gr-i.84027064.27531777705",
+    "snippet": "Mua Cà Phê Dừa Hòa Tan Cappuccino 4in1 Con Chồn Vàng C7(Huca Food.) - Hộp 16Que x 17Gr giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

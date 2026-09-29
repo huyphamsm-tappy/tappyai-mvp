@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "[HOT] Hộp Cà Phê Cao Cấp Mix 6 Vị, Cà Phê Hòa Tan",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T00:48:25.550Z",
+ "body": {
+  "searchParameters": {
+   "q": "[HOT] Hộp Cà Phê Cao Cấp Mix 6 Vị, Cà Phê Hòa Tan",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "[CAO CẤP] Hộp Cà Phê Mix 6 Vị Cao Cấp Cà Phê Hòa Tan Xuất Khẩu 6 Vị Đa Dạng  Cốt Dừa, Sầu Riêng, Muối",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mkf1ljo715af96",
+    "imageWidth": 1024,
+    "imageHeight": 1024,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZxzNOfqrg1Z06YY9OgeurgYDL-oBs3enh6OE7r50-TA&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/-CAO-C%E1%BA%A4P-H%E1%BB%99p-C%C3%A0-Ph%C3%AA-Mix-6-V%E1%BB%8B-Cao-C%E1%BA%A5p-C%C3%A0-Ph%C3%AA-H%C3%B2a-Tan-Xu%E1%BA%A5t-Kh%E1%BA%A9u-6-V%E1%BB%8B-%C4%90a-D%E1%BA%A1ng-C%E1%BB%91t-D%E1%BB%ABa-S%E1%BA%A7u-Ri%C3%AAng-Mu%E1%BB%91i-i.203201793.48504491144",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fvn-11134207-81ztc-mkf1ljo715af96&tbnid=VXu-q-7_YOdkyM&imgrefurl=https%3A%2F%2Fshopee.vn%2F-CAO-C%25E1%25BA%25A4P-H%25E1%25BB%2599p-C%25C3%25A0-Ph%25C3%25AA-Mix-6-V%25E1%25BB%258B-Cao-C%25E1%25BA%25A5p-C%25C3%25A0-Ph%25C3%25AA-H%25C3%25B2a-Tan-Xu%25E1%25BA%25A5t-Kh%25E1%25BA%25A9u-6-V%25E1%25BB%258B-%25C4%2590a-D%25E1%25BA%25A1ng-C%25E1%25BB%2591t-D%25E1%25BB%25ABa-S%25E1%25BA%25A7u-Ri%25C3%25AAng-Mu%25E1%25BB%2591i-i.203201793.48504491144&docid=L_Th2tsfSL9cjM&w=1024&h=1024",
+    "position": 1
+   },
+   {
+    "title": "[MỚI] Hộp Cà Phê Mix 6 Vị Cao Cấp, Cà Phê Hòa Tan Xuất Khẩu, 6 Vị Đa Dạng  Cốt Dừa, Sầu Riêng, Muối",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/vn-11134207-820l4-mjaywlafjg908c",
+    "imageWidth": 1001,
+    "imageHeight": 1001,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvemCV_cdjl6Z22h3rCc33_PeC49YHk7jkQzZfNvFn8Q&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/-M%E1%BB%9AI-H%E1%BB%99p-C%C3%A0-Ph%C3%AA-Mix-6-V%E1%BB%8B-Cao-C%E1%BA%A5p-C%C3%A0-Ph%C3%AA-H%C3%B2a-Tan-Xu%E1%BA%A5t-Kh%E1%BA%A9u-6-V%E1%BB%8B-%C4%90a-D%E1%BA%A1ng-C%E1%BB%91t-D%E1%BB%ABa-S%E1%BA%A7u-Ri%C3%AAng-Mu%E1%BB%91i-i.1351315347.28961280974",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fvn-11134207-820l4-mjaywlafjg908c&tbnid=8aS2Kvo-1bJpAM&imgrefurl=https%3A%2F%2Fshopee.vn%2F-M%25E1%25BB%259AI-H%25E1%25BB%2599p-C%25C3%25A0-Ph%25C3%25AA-Mix-6-V%25E1%25BB%258B-Cao-C%25E1%25BA%25A5p-C%25C3%25A0-Ph%25C3%25AA-H%25C3%25B2a-Tan-Xu%25E1%25BA%25A5t-Kh%25E1%25BA%25A9u-6-V%25E1%25BB%258B-%25C4%2590a-D%25E1%25BA%25A1ng-C%25E1%25BB%2591t-D%25E1%25BB%25ABa-S%25E1%25BA%25A7u-Ri%25C3%25AAng-Mu%25E1%25BB%2591i-i.1351315347.28961280974&docid=h-W-e81-500SrM&w=1001&h=1001",
+    "position": 2
+   },
+   {
+    "title": "HOT] Hộp Cà Phê Cao Cấp Mix 6 Vị, Cà Phê Hòa Tan Xuất Khẩu, Quà Tặng Sang  Trọng, Làm Quà Biếu | Shopee Việt Nam",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mqvpatetn5e494",
+    "imageWidth": 1024,
+    "imageHeight": 1024,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRRMxEqdlDk4aGpjseTyWWCZXHos7Gp7cEI_3kqp4ttug&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/-HOT-H%E1%BB%99p-C%C3%A0-Ph%C3%AA-Cao-C%E1%BA%A5p-Mix-6-V%E1%BB%8B-C%C3%A0-Ph%C3%AA-H%C3%B2a-Tan-Xu%E1%BA%A5t-Kh%E1%BA%A9u-Qu%C3%A0-T%E1%BA%B7ng-Sang-Tr%E1%BB%8Dng-L%C3%A0m-Qu%C3%A0-Bi%E1%BA%BFu-i.1122792718.29103327133",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fvn-11134207-81ztc-mqvpatetn5e494&tbnid=1ZX7Hun76p0s7M&imgrefurl=https%3A%2F%2Fshopee.vn%2F-HOT-H%25E1%25BB%2599p-C%25C3%25A0-Ph%25C3%25AA-Cao-C%25E1%25BA%25A5p-Mix-6-V%25E1%25BB%258B-C%25C3%25A0-Ph%25C3%25AA-H%25C3%25B2a-Tan-Xu%25E1%25BA%25A5t-Kh%25E1%25BA%25A9u-Qu%25C3%25A0-T%25E1%25BA%25B7ng-Sang-Tr%25E1%25BB%258Dng-L%25C3%25A0m-Qu%25C3%25A0-Bi%25E1%25BA%25BFu-i.1122792718.29103327133&docid=HjqJEgykOvSgeM&w=1024&h=1024",
+    "position": 3
+   },
+   {
+    "title": "[CAO CẤP] Hộp Cà Phê Mix 6 Vị Cao Cấp Cà Phê Hòa Tan Xuất Khẩu 6 Vị Đa Dạng  Cốt Dừa, Sầu Riêng, Muối",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-ml686tf2i1vse6",
+    "imageWidth": 1024,
+    "imageHeight": 1024,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMWAm3_GoCyzCaOI2pkAJcOX6gCnz6jhwtIC1x1LqDPg&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/-CAO-C%E1%BA%A4P-H%E1%BB%99p-C%C3%A0-Ph%C3%AA-Mix-6-V%E1%BB%8B-Cao-C%E1%BA%A5p-C%C3%A0-Ph%C3%AA-H%C3%B2a-Tan-Xu%E1%BA%A5t-Kh%E1%BA%A9u-6-V%E1%BB%8B-%C4%90a-D%E1%BA%A1ng-C%E1%BB%91t-D%E1%BB%ABa-S%E1%BA%A7u-Ri%C3%AAng-Mu%E1%BB%91i-i.1041091487.28180132704",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fvn-11134207-81ztc-ml686tf2i1vse6&tbnid=UMxz0auq6QhgvM&imgrefurl=https%3A%2F%2Fshopee.vn%2F-CAO-C%25E1%25BA%25A4P-H%25E1%25BB%2599p-C%25C3%25A0-Ph%25C3%25AA-Mix-6-V%25E1%25BB%258B-Cao-C%25E1%25BA%25A5p-C%25C3%25A0-Ph%25C3%25AA-H%25C3%25B2a-Tan-Xu%25E1%25BA%25A5t-Kh%25E1%25BA%25A9u-6-V%25E1%25BB%258B-%25C4%2590a-D%25E1%25BA%25A1ng-C%25E1%25BB%2591t-D%25E1%25BB%25ABa-S%25E1%25BA%25A7u-Ri%25C3%25AAng-Mu%25E1%25BB%2591i-i.1041091487.28180132704&docid=uK6__r8ovxMGaM&w=1024&h=1024",
+    "position": 4
+   },
+   {
+    "title": "[MỚI] Hộp Cà Phê Mix 6 Vị Cao Cấp, Cà Phê Hòa Tan Xuất Khẩu, 6 Vị Đa Dạng  Cốt Dừa, Sầu Riêng, Muối",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mmb8qw8111qaee",
+    "imageWidth": 1024,
+    "imageHeight": 1024,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHYe6C-qZNHowYszBs7ydS97hzuLsFfx85vubeADMLxw&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/-M%E1%BB%9AI-H%E1%BB%99p-C%C3%A0-Ph%C3%AA-Mix-6-V%E1%BB%8B-Cao-C%E1%BA%A5p-C%C3%A0-Ph%C3%AA-H%C3%B2a-Tan-Xu%E1%BA%A5t-Kh%E1%BA%A9u-6-V%E1%BB%8B-%C4%90a-D%E1%BA%A1ng-C%E1%BB%91t-D%E1%BB%ABa-S%E1%BA%A7u-Ri%C3%AAng-Mu%E1%BB%91i-i.1351315347.28961280974",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fvn-11134207-81ztc-mmb8qw8111qaee&tbnid=5xnP366CkJkX3M&imgrefurl=https%3A%2F%2Fshopee.vn%2F-M%25E1%25BB%259AI-H%25E1%25BB%2599p-C%25C3%25A0-Ph%25C3%25AA-Mix-6-V%25E1%25BB%258B-Cao-C%25E1%25BA%25A5p-C%25C3%25A0-Ph%25C3%25AA-H%25C3%25B2a-Tan-Xu%25E1%25BA%25A5t-Kh%25E1%25BA%25A9u-6-V%25E1%25BB%258B-%25C4%2590a-D%25E1%25BA%25A1ng-C%25E1%25BB%2591t-D%25E1%25BB%25ABa-S%25E1%25BA%25A7u-Ri%25C3%25AAng-Mu%25E1%25BB%2591i-i.1351315347.28961280974&docid=h-W-e81-500SrM&w=1024&h=1024",
+    "position": 5
+   },
+   {
+    "title": "HOT] Hộp Cà Phê Cao Cấp Mix 6 Vị, Cà Phê Hòa Tan Xuất Khẩu, Quà Tặng Sang  Trọng, Làm Quà Biếu | Shopee Việt Nam",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mqvpdgaerhmw6f",
+    "imageWidth": 1024,
+    "imageHeight": 1024,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRVNa4p8XTqSxakVfjX2fPnFeQoMAtqb2XbebpjDMTq5g&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/-HOT-H%E1%BB%99p-C%C3%A0-Ph%C3%AA-Cao-C%E1%BA%A5p-Mix-6-V%E1%BB%8B-C%C3%A0-Ph%C3%AA-H%C3%B2a-Tan-Xu%E1%BA%A5t-Kh%E1%BA%A9u-Qu%C3%A0-T%E1%BA%B7ng-Sang-Tr%E1%BB%8Dng-L%C3%A0m-Qu%C3%A0-Bi%E1%BA%BFu-i.1122792718.29103327133",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fvn-11134207-81ztc-mqvpdgaerhmw6f&tbnid=HTIZKyx-OYUQ4M&imgrefurl=https%3A%2F%2Fshopee.vn%2F-HOT-H%25E1%25BB%2599p-C%25C3%25A0-Ph%25C3%25AA-Cao-C%25E1%25BA%25A5p-Mix-6-V%25E1%25BB%258B-C%25C3%25A0-Ph%25C3%25AA-H%25C3%25B2a-Tan-Xu%25E1%25BA%25A5t-Kh%25E1%25BA%25A9u-Qu%25C3%25A0-T%25E1%25BA%25B7ng-Sang-Tr%25E1%25BB%258Dng-L%25C3%25A0m-Qu%25C3%25A0-Bi%25E1%25BA%25BFu-i.1122792718.29103327133&docid=HjqJEgykOvSgeM&w=1024&h=1024",
+    "position": 6
+   },
+   {
+    "title": "HOT] Hộp Cà Phê Cao Cấp Mix 6 Vị, Cà Phê Hòa Tan Xuất Khẩu, Quà Tặng Sang  Trọng, Làm Quà Biếu | Shopee Việt Nam",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mqvp9ww7uosi81",
+    "imageWidth": 1024,
+    "imageHeight": 1024,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBItc_UKoZ2s4f5miR3wWNicZVNAdbqExEC553iMAEyg&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/-HOT-H%E1%BB%99p-C%C3%A0-Ph%C3%AA-Cao-C%E1%BA%A5p-Mix-6-V%E1%BB%8B-C%C3%A0-Ph%C3%AA-H%C3%B2a-Tan-Xu%E1%BA%A5t-Kh%E1%BA%A9u-Qu%C3%A0-T%E1%BA%B7ng-Sang-Tr%E1%BB%8Dng-L%C3%A0m-Qu%C3%A0-Bi%E1%BA%BFu-i.1122792718.29103327133",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fvn-11134207-81ztc-mqvp9ww7uosi81&tbnid=z9AwxjpRzKAI5M&imgrefurl=https%3A%2F%2Fshopee.vn%2F-HOT-H%25E1%25BB%2599p-C%25C3%25A0-Ph%25C3%25AA-Cao-C%25E1%25BA%25A5p-Mix-6-V%25E1%25BB%258B-C%25C3%25A0-Ph%25C3%25AA-H%25C3%25B2a-Tan-Xu%25E1%25BA%25A5t-Kh%25E1%25BA%25A9u-Qu%25C3%25A0-T%25E1%25BA%25B7ng-Sang-Tr%25E1%25BB%258Dng-L%25C3%25A0m-Qu%25C3%25A0-Bi%25E1%25BA%25BFu-i.1122792718.29103327133&docid=HjqJEgykOvSgeM&w=1024&h=1024",
+    "position": 7
+   },
+   {
+    "title": "[CAO CẤP] Hộp Cà Phê Mix 6 Vị Cao Cấp Cà Phê Hòa Tan Xuất Khẩu 6 Vị Đa Dạng  Cốt Dừa, Sầu Riêng, Muối",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mmbbu6w50oaw49",
+    "imageWidth": 1001,
+    "imageHeight": 1001,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgJ5S0sLuWzpOJWeetk5aqTJnFOSxtyotxK1tpRXwHDg&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/-CAO-C%E1%BA%A4P-H%E1%BB%99p-C%C3%A0-Ph%C3%AA-Mix-6-V%E1%BB%8B-Cao-C%E1%BA%A5p-C%C3%A0-Ph%C3%AA-H%C3%B2a-Tan-Xu%E1%BA%A5t-Kh%E1%BA%A9u-6-V%E1%BB%8B-%C4%90a-D%E1%BA%A1ng-C%E1%BB%91t-D%E1%BB%ABa-S%E1%BA%A7u-Ri%C3%AAng-Mu%E1%BB%91i-i.203201793.48504491144",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fvn-11134207-81ztc-mmbbu6w50oaw49&tbnid=tFhLEIQq2x2hfM&imgrefurl=https%3A%2F%2Fshopee.vn%2F-CAO-C%25E1%25BA%25A4P-H%25E1%25BB%2599p-C%25C3%25A0-Ph%25C3%25AA-Mix-6-V%25E1%25BB%258B-Cao-C%25E1%25BA%25A5p-C%25C3%25A0-Ph%25C3%25AA-H%25C3%25B2a-Tan-Xu%25E1%25BA%25A5t-Kh%25E1%25BA%25A9u-6-V%25E1%25BB%258B-%25C4%2590a-D%25E1%25BA%25A1ng-C%25E1%25BB%2591t-D%25E1%25BB%25ABa-S%25E1%25BA%25A7u-Ri%25C3%25AAng-Mu%25E1%25BB%2591i-i.203201793.48504491144&docid=L_Th2tsfSL9cjM&w=1001&h=1001",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

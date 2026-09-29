@@ -1,0 +1,401 @@
+{
+ "url": "https://google.serper.dev/shopping",
+ "request": {
+  "q": "hộp quà tặng cao cấp cà phê hòa tan premium",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 20
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T00:48:20.839Z",
+ "body": {
+  "searchParameters": {
+   "q": "hộp quà tặng cao cấp cà phê hòa tan premium",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "shopping",
+   "num": 40,
+   "page": 1,
+   "engine": "google"
+  },
+  "shopping": [
+   {
+    "title": "Hộp quà tặng cao cấp Hạt A Cafe Premium Gift Box Coffee 3 loại cà phê hòa tan 288g - 16 stick",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=h%E1%BB%99p+qu%C3%A0+t%E1%BA%B7ng+cao+c%E1%BA%A5p+c%C3%A0+ph%C3%AA+h%C3%B2a+tan+premium&prds=localAnnotatedOfferId:1,catalogid:9791745495429777279,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "172.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQcXbz1LoVFJadwqplPVYq6mWcJD6rpwkNOMs4ryMfR_EBOlapj3fPAlNejW8AIlerHKiH5YlJLF8zzTbfcsmAKtD1mYuHIA45uloYqDAo",
+    "rating": 4.9,
+    "ratingCount": 70,
+    "productId": "9791745495429777279",
+    "position": 1
+   },
+   {
+    "title": "Hộp quà tặng Cà Phê Cao Cấp - Chợ Việt Online",
+    "source": "Chợ Việt Online",
+    "link": "https://www.google.com/search?ibp=oshop&q=h%E1%BB%99p+qu%C3%A0+t%E1%BA%B7ng+cao+c%E1%BA%A5p+c%C3%A0+ph%C3%AA+h%C3%B2a+tan+premium&prds=localAnnotatedOfferId:1,productid:14040083821689330044,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "2.000.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQ7Jw_22UpZ898O8eAVjc8dRQ_j27YxeTgZj_iMoT5TSeTYnPAwTpo2-rDpyht_j69M0dT1amYfhPKlPzhhimZHTAc9q6Lh_jgkglVxK6lzYdB2JGq_T8wg",
+    "productId": "14040083821689330044",
+    "position": 2
+   },
+   {
+    "title": "Cà Phê Hòa Tan Cappuccino Dừa Con Chồn Vàng C7 Hộp 272g",
+    "source": "lottemart.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=h%E1%BB%99p+qu%C3%A0+t%E1%BA%B7ng+cao+c%E1%BA%A5p+c%C3%A0+ph%C3%AA+h%C3%B2a+tan+premium&prds=localAnnotatedOfferId:1,catalogid:10643920522879680670,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "92.900 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTWWZhmnFON7ukrs697MUZpnP1m-5-v98YgR4IxlSkUCcmutaJ2WNMLyjmYB2rJJ6-BhaobZfRCXyftO_jhb0g_Af-NYeGkIPmeMCvPBsPU74TITYDXluJJ",
+    "rating": 5,
+    "ratingCount": 126,
+    "productId": "10643920522879680670",
+    "position": 3
+   },
+   {
+    "title": "Set Quà Tặng 4 Hộp Cà Phê Hòa Tan, SET HAMPER TẾT Hộp Hamper Mix Vị, Hộp Quà Tặng",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=h%E1%BB%99p+qu%C3%A0+t%E1%BA%B7ng+cao+c%E1%BA%A5p+c%C3%A0+ph%C3%AA+h%C3%B2a+tan+premium&prds=localAnnotatedOfferId:1,productid:17613069098665287857,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "227.150 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQlT-dSOmitn-JaJ6EW5SjSLRy8FVh3vIZ7w990_bYm9whVE457ZSqqALndfxsHFhhX5IsfipCOY0UcbXsXiXcVsV5l4CnsMePbCDYmrVFN3dQMV4WWwx8VUQ",
+    "productId": "17613069098665287857",
+    "position": 4
+   },
+   {
+    "title": "Cà Phê Hoà Tan Cà Phê Cappuccino Sô-cô-la Hòa Tan -Hộp 10 gói",
+    "source": "lamantcafe.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=h%E1%BB%99p+qu%C3%A0+t%E1%BA%B7ng+cao+c%E1%BA%A5p+c%C3%A0+ph%C3%AA+h%C3%B2a+tan+premium&prds=localAnnotatedOfferId:1,catalogid:9787925998710529451,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "49.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSqqNPb9out2AP19UR7PTFQG4vIvqOV95csfB71RxS9LvmN580RRGlMb6AXCiS_FRxp4C930Q4MQQrpbD2Qk9upcIRXPOkQWTaTbhoWX5-AWuO41yiaTLkb",
+    "rating": 5,
+    "ratingCount": 8,
+    "productId": "9787925998710529451",
+    "position": 5
+   },
+   {
+    "title": "Combo Hộp Quà Tặng Cà Phê - CB6",
+    "source": "Cà Phê Sạch ORG",
+    "link": "https://www.google.com/search?ibp=oshop&q=h%E1%BB%99p+qu%C3%A0+t%E1%BA%B7ng+cao+c%E1%BA%A5p+c%C3%A0+ph%C3%AA+h%C3%B2a+tan+premium&prds=localAnnotatedOfferId:1,productid:2586765535503438883,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "595.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRBPooMkJmizZuG-A7T5t4YYc0QUwtZ6-l9OEFEnrlG1O_jxT6LWiIXJo8Xid-Yt193yeAq90t-yCrYF6JHdCei_giFtIhdwDchaQc0W-_izxw3jvSyOdfN3Q",
+    "productId": "2586765535503438883",
+    "position": 6
+   },
+   {
+    "title": "[GoldzHerbs] Bộ quà tặng Vietnamese Coffee Heritage - 500g",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=h%E1%BB%99p+qu%C3%A0+t%E1%BA%B7ng+cao+c%E1%BA%A5p+c%C3%A0+ph%C3%AA+h%C3%B2a+tan+premium&prds=localAnnotatedOfferId:1,productid:6425207892291670649,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "368.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSN5qWRGUIOMk9UhMMW9uRC3U4T3uy-06E6V1ZofSJg6lg-s8u4A1G_6wnbsypus8m3t-mIaxw5p5IqTNpHUO7-7FtKoS_fe_nZu3k5pxM",
+    "productId": "6425207892291670649",
+    "position": 7
+   },
+   {
+    "title": "Hộp quà cà phê hòa tan Trung Nguyên CTG399 - Hộp gỗ biếu tặng cao cấp » CT BEE FARM - Mật Ong & Quà Tặng",
+    "source": "dacsangialaitoi.com",
+    "link": "https://www.google.com/search?ibp=oshop&q=h%E1%BB%99p+qu%C3%A0+t%E1%BA%B7ng+cao+c%E1%BA%A5p+c%C3%A0+ph%C3%AA+h%C3%B2a+tan+premium&prds=localAnnotatedOfferId:1,productid:3010776944829342394,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "619.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcT8Nq3n-8gdXfZ-yQeLo1siUDd2q1b8RJvHdQ-tt76s5JVdESG_XMdFG30s3O4Z9MKQIf8-_sedB3H9U7KkaZj-ucKk4_SvCgpfnQJC5WGT",
+    "productId": "3010776944829342394",
+    "position": 8
+   },
+   {
+    "title": "Hộp quà tặng cà phê Phúc - Cá chép",
+    "source": "tiki.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=h%E1%BB%99p+qu%C3%A0+t%E1%BA%B7ng+cao+c%E1%BA%A5p+c%C3%A0+ph%C3%AA+h%C3%B2a+tan+premium&prds=localAnnotatedOfferId:1,productid:1784853447692775538,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "645.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSDY6OJzNXpUaODIs6Zr--e3vp4tUgsfq9jTjGoXeOL7wOFSox1zGpI3hYOz047YfHx_Ka-z5R4T2FAz1HUAv9vBwbag01UPD4EU3poIuiX0SqgTXRAUilCAQ",
+    "productId": "1784853447692775538",
+    "position": 9
+   },
+   {
+    "title": "(TẶNG QUÀ) 1 Hộp CAFE Sữa Đá Hoà Tan 3 in 1 - CAFE RANG XAY 260gr ( 10 Gói * 26gr)",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=h%E1%BB%99p+qu%C3%A0+t%E1%BA%B7ng+cao+c%E1%BA%A5p+c%C3%A0+ph%C3%AA+h%C3%B2a+tan+premium&prds=localAnnotatedOfferId:1,catalogid:2812692142523404361,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "57.850 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRGXJgtWs7pJnOOSH5ZvrF7n2HmGjMtAbExwKJQcGn6PK_3DTA8RtiBzhWQxsVrHvxpRfn-8XhI4G793mNgZuTzIYxXUacBNilZJOVnmf4I",
+    "productId": "2812692142523404361",
+    "position": 10
+   },
+   {
+    "title": "Cà phê hòa tan GO! 3in1 hộp 20 gói x 16g",
+    "source": "Siêu thị GO!",
+    "link": "https://www.google.com/search?ibp=oshop&q=h%E1%BB%99p+qu%C3%A0+t%E1%BA%B7ng+cao+c%E1%BA%A5p+c%C3%A0+ph%C3%AA+h%C3%B2a+tan+premium&prds=localAnnotatedOfferId:1,productid:2390750242745141586,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "52.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcStghSBoUMLpm2CXIQBTspMLVddOnBnMKtoPKW2pYbyvxh8NGCJWDVeF0HhDTLRLl1Jm0XXBO2zYgwaeJeCCSMAVmkXwmqXNYN-ssRoE4nlobz7fgWaVLIqsw",
+    "productId": "2390750242745141586",
+    "position": 11
+   },
+   {
+    "title": "Cà Phê Hòa Tan Đen Americano Premium King Coffee Hộp 15 Gói 1g",
+    "source": "lottemart.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=h%E1%BB%99p+qu%C3%A0+t%E1%BA%B7ng+cao+c%E1%BA%A5p+c%C3%A0+ph%C3%AA+h%C3%B2a+tan+premium&prds=localAnnotatedOfferId:1,catalogid:16482938441652122811,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "59.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcStKTMw_pxPdQHKdYszmc9QfnsHREOC6CsIDCtSLM0_K1RhWSdtqxBwgxbgkPb-OTfsukwYA2uRtNAph5ZNKFcCX76fXqjZI3LNQExPsCcjfCyqV7KBm0wC",
+    "rating": 4.9,
+    "ratingCount": 479,
+    "productId": "16482938441652122811",
+    "position": 12
+   },
+   {
+    "title": "[Tặng hộp L&L] Combo Cặp Đôi Hoàn Hảo - cà phê hòa tan GUNAM đen đá (10 gói x 16g) + cà phê hòa tan GUNAM bạc sỉu (",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=h%E1%BB%99p+qu%C3%A0+t%E1%BA%B7ng+cao+c%E1%BA%A5p+c%C3%A0+ph%C3%AA+h%C3%B2a+tan+premium&prds=localAnnotatedOfferId:1,catalogid:137037999284611875,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "90.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQc8tRHQV1QUMVkdgYPxr9MQowGLmeru5IRLHA0cRspyzXjx2q-S4M_5DzE5orcYSjnFHPMizpi3xUa4gAgA2bChZiZhpb9woU5Eaj2WrJkSHAMNsC7U1CzoA",
+    "productId": "137037999284611875",
+    "position": 13
+   },
+   {
+    "title": "Combo 2 Hộp Cà Phê Sữa Hòa Tan 3 Trong 1 G7 Hộp 336G ( 21 Gói X 16G )",
+    "source": "lazada.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=h%E1%BB%99p+qu%C3%A0+t%E1%BA%B7ng+cao+c%E1%BA%A5p+c%C3%A0+ph%C3%AA+h%C3%B2a+tan+premium&prds=localAnnotatedOfferId:1,productid:225053091409474225,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "192.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQVPO2RiAY8k64IFQoZfCV7m-whCXhbLzxSTQChY7RvxWmZu7DEsdIkiQyKJ2nMFJ-Eiyltp9itqzdI9Ns1K_sqTowdi9tiGQ",
+    "productId": "225053091409474225",
+    "position": 14
+   },
+   {
+    "title": "Cà phê hòa tan đen Legend hộp giấy 15 gói x 2g",
+    "source": "cooponline.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=h%E1%BB%99p+qu%C3%A0+t%E1%BA%B7ng+cao+c%E1%BA%A5p+c%C3%A0+ph%C3%AA+h%C3%B2a+tan+premium&prds=localAnnotatedOfferId:1,productid:17783334272979869610,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "53.700 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTyX2aQ0m9QV8TbQohubS_RBNt_VD4HxaD9Fhr7H4oVCB21Zk2bCqtRrbe4U9y949_mFKpX4DTz1UJGyS8oqUeCYQPLHmVFZfEvTqJzueI6qdbWiYFa9Ccg",
+    "productId": "17783334272979869610",
+    "position": 15
+   },
+   {
+    "title": "Combo 3 Hộp BGK Hoà Tan Việt Quất- 1Hộp 18gói x14g- hsd 1 năm- Tặng kèm 3 gói BGK ngẫu nhiên",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=h%E1%BB%99p+qu%C3%A0+t%E1%BA%B7ng+cao+c%E1%BA%A5p+c%C3%A0+ph%C3%AA+h%C3%B2a+tan+premium&prds=localAnnotatedOfferId:1,catalogid:6450888840184627139,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "108.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQ1mFTUbv8s4hDhxlm2KQNCNASkanvSf2AkV19AGXekEzh_9LUNwrYUsac-x5QE7XR4kJoXhgXXIjcoed3Gg48SvSLE2HKBp8bq_jmRB_7zKNIP-qD4owg5PQ",
+    "productId": "6450888840184627139",
+    "position": 16
+   },
+   {
+    "title": "Cà Phê Hoà Tan Đen - Pure Black Hộp 20 gói",
+    "source": "lamantcafe.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=h%E1%BB%99p+qu%C3%A0+t%E1%BA%B7ng+cao+c%E1%BA%A5p+c%C3%A0+ph%C3%AA+h%C3%B2a+tan+premium&prds=localAnnotatedOfferId:1,productid:10972207133437525024,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "45.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRlHjgMEDktTv_dewlQIPs-B_RmqvU7OLoL6P7hwegcIfMXO2QFQyTf3BVszTFkDnGeKv2hLBQx39dL3_AlzrIIlcHLOp9k0M8dI1_rkl1JL2essy0AbUR8",
+    "rating": 4.8,
+    "ratingCount": 82,
+    "productId": "10972207133437525024",
+    "position": 17
+   },
+   {
+    "title": "Cà phê sữa hoà tan Ngon Trần Quang 480g (24 gói x 20g) [MUA ĐỂ NHẬN QUÀ]",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=h%E1%BB%99p+qu%C3%A0+t%E1%BA%B7ng+cao+c%E1%BA%A5p+c%C3%A0+ph%C3%AA+h%C3%B2a+tan+premium&prds=localAnnotatedOfferId:1,catalogid:11743040533353351465,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "69.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTrjgR2rAX1aqsyD6A13YWEaMLPnz_Hbs2AiZVoKbn454i6m-maWL7hDfOYnqfGWFSZqYSFjbFSB94eQYVk3-uRsoIbRK7dWf6EtSLxT5HrO-6nWTETr5NRuQ",
+    "rating": 4.8,
+    "ratingCount": 28,
+    "productId": "11743040533353351465",
+    "position": 18
+   },
+   {
+    "title": "Combo 3 hộp bạc xỉu hoà tan Cộng cà phê (hộp 12 gói)",
+    "source": "Lazada Vietnam",
+    "link": "https://www.google.com/search?ibp=oshop&q=h%E1%BB%99p+qu%C3%A0+t%E1%BA%B7ng+cao+c%E1%BA%A5p+c%C3%A0+ph%C3%AA+h%C3%B2a+tan+premium&prds=localAnnotatedOfferId:1,catalogid:8059476389211394253,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "225.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTWQ5fjN-Qo-ZASC9x_hySNc0-aaXwksStRu28fXa5Zmp4EBIvA1P7I3yNKKHqnN8rM6k0R_EF1IglpVLatBJmc1NdDj7L0pF92msFWbjJE2wQTGQ_0cnzUsA",
+    "productId": "8059476389211394253",
+    "position": 19
+   },
+   {
+    "title": "Cà phê hòa tan GO! 3in1 hộp 10 gói x 24g",
+    "source": "Siêu thị GO!",
+    "link": "https://www.google.com/search?ibp=oshop&q=h%E1%BB%99p+qu%C3%A0+t%E1%BA%B7ng+cao+c%E1%BA%A5p+c%C3%A0+ph%C3%AA+h%C3%B2a+tan+premium&prds=localAnnotatedOfferId:1,productid:18105819298588267069,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "40.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTwgdgEZfTV4--iX4u1xJnyZLs9g1S4wi4erQSPzjA36e3pzueUJt3XK5gXrPQziRB3SGaFQ5nHAkXSZ2RBUcZDnogxKzey2B_Vfg4oOOriRVYbUF5AcoJ76A",
+    "productId": "18105819298588267069",
+    "position": 20
+   },
+   {
+    "title": "Hộp Cà Phê Hòa Tan Sấy Thăng Hoa Vị Cacao Không Đường NONLA COFFEE 8 Viên",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=h%E1%BB%99p+qu%C3%A0+t%E1%BA%B7ng+cao+c%E1%BA%A5p+c%C3%A0+ph%C3%AA+h%C3%B2a+tan+premium&prds=localAnnotatedOfferId:1,catalogid:11668947236005459068,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "477.625 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcR1bfUyB6XwEW92SZWKaSyv4ZZCM1bOvmsk84S2BlvQLYAQLUyx32-pUNsb3bzKWn40KXlx9KmnlZz7dw0wXA4ZY9IdHQ7DG4E39UBWiYw",
+    "productId": "11668947236005459068",
+    "position": 21
+   },
+   {
+    "title": "Cà Phê Hòa Tan Cappuccino King Coffee - Hộp 12 Gói x 20g - Hương Vị Hạt Dẻ Thơm Ngon, Cà Phê Arabica Cao Cấp",
+    "source": "Chiaki.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=h%E1%BB%99p+qu%C3%A0+t%E1%BA%B7ng+cao+c%E1%BA%A5p+c%C3%A0+ph%C3%AA+h%C3%B2a+tan+premium&prds=localAnnotatedOfferId:1,productid:2541872483738968140,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "107.300 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSTrn464RbgaviK9t_HK3qkvtWCpZNzWDUg-7V5_yQR33Sqifuca4Gl8GiiAT1HvHI6w92hoqGuG5vig4f17tv9ICHdniT2pI_ZMi2fbet4Zoo-tvtg-EJJ",
+    "productId": "2541872483738968140",
+    "position": 22
+   },
+   {
+    "title": "[Tặng hộp L&L] Combo 2 hộp cà phê hòa tan GUNAM cà phê sữa đậm vị (hộp 10 gói x 20g)",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=h%E1%BB%99p+qu%C3%A0+t%E1%BA%B7ng+cao+c%E1%BA%A5p+c%C3%A0+ph%C3%AA+h%C3%B2a+tan+premium&prds=localAnnotatedOfferId:1,catalogid:4921474977957479707,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "96.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTlhTJ5lFyoh1YWoDrPa072JHOfO-OlYhJjjAIw9B3eVS2Jr79PvpouU0VMoJqtV8WHfb9bHl9pO2Ga4FCP1sA-k0o1cwE9DiRYfedfdy8Xt-4OFlJTb0Aoug",
+    "productId": "4921474977957479707",
+    "position": 23
+   },
+   {
+    "title": "Cà Phê Hoà Tan Đen",
+    "source": "lamantcafe.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=h%E1%BB%99p+qu%C3%A0+t%E1%BA%B7ng+cao+c%E1%BA%A5p+c%C3%A0+ph%C3%AA+h%C3%B2a+tan+premium&prds=localAnnotatedOfferId:1,catalogid:16128188199202397029,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "194.400 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRgwH75VabJwNk0f8ATOO02b0nusUpRjOstbs1ztd7EplssrlRU8WUaxAyWxCsvnZC6sTKPx8nixMSlNLjafPqidUVHju_eOy2Z7M0J6_9llHdwpNQA3Qa-Mg",
+    "productId": "16128188199202397029",
+    "position": 24
+   },
+   {
+    "title": "Cà phê hòa tan Enjoy Coffee (EJ FARM)",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=h%E1%BB%99p+qu%C3%A0+t%E1%BA%B7ng+cao+c%E1%BA%A5p+c%C3%A0+ph%C3%AA+h%C3%B2a+tan+premium&prds=localAnnotatedOfferId:1,catalogid:1742900029018738444,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "125.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSiBHZRw0ymLSHk8NFy0gq4NmeRoQgYuuWCGREP3EbwyiBWPRCkv05vy5BDuKdvD-PYGKFu8LSfh1byTErVrhcAetQ5H4JRMTOrQzHBWuGjXGfW29tG8SFwRw",
+    "productId": "1742900029018738444",
+    "position": 25
+   },
+   {
+    "title": "[CHÍNH HÃNG] Cà Phê sữa Hòa Tan 3 in 1 Ngon Trần Quang (24 Gói)",
+    "source": "Lazada Vietnam",
+    "link": "https://www.google.com/search?ibp=oshop&q=h%E1%BB%99p+qu%C3%A0+t%E1%BA%B7ng+cao+c%E1%BA%A5p+c%C3%A0+ph%C3%AA+h%C3%B2a+tan+premium&prds=localAnnotatedOfferId:1,catalogid:15671274396921821546,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "62.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcR9qCox0As1tx2GJN2-pK0g05h2UduI3RJiv65t5vWi46BT3bAJ1LBETejgzDh2A1z78Hu4KfCsxWhTrE64ialSHEMC0XKvcYExEyBCeDc90JquuDaA6Pg5vw",
+    "productId": "15671274396921821546",
+    "position": 26
+   },
+   {
+    "title": "Cà phê sữa hòa tan 3in1 K Coffee hộp 15 gói x 17g",
+    "source": "Siêu thị GO!",
+    "link": "https://www.google.com/search?ibp=oshop&q=h%E1%BB%99p+qu%C3%A0+t%E1%BA%B7ng+cao+c%E1%BA%A5p+c%C3%A0+ph%C3%AA+h%C3%B2a+tan+premium&prds=localAnnotatedOfferId:1,productid:16967804980894572027,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "82.500 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQqjP4aCSXiIjS_slEzqe8vdP0ImlwZI40VVQOlZb2h52agCvBALKbYm-95lwEk9XywHASt66EkgY4uC8azzWlLBTPFaa_wR3obFULhYENvOwgX6RdlbbMSIw",
+    "productId": "16967804980894572027",
+    "position": 27
+   },
+   {
+    "title": "Cà phê Hương Chồn/ Sài Gòn Wake Up hòa tan 3 in 1 mang đậm hương vị thơm ngon ấn tượng",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=h%E1%BB%99p+qu%C3%A0+t%E1%BA%B7ng+cao+c%E1%BA%A5p+c%C3%A0+ph%C3%AA+h%C3%B2a+tan+premium&prds=localAnnotatedOfferId:1,productid:6869700764958698965,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "73.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTYO7Y4Nltsb4V9DZ12C-XM4shwS5q1dtfycQ_vhldL0erOeu_zvLW2JqxneNczL_MailIlCQGseNTP0mfAagAoeNyv3dK2GV_Cex-RechISrXgmKgCyHh5EA",
+    "productId": "6869700764958698965",
+    "position": 28
+   },
+   {
+    "title": "Cà phê mocha hòa tan PAN de MANILA 27 g",
+    "source": "weee.com",
+    "link": "https://www.google.com/search?ibp=oshop&q=h%E1%BB%99p+qu%C3%A0+t%E1%BA%B7ng+cao+c%E1%BA%A5p+c%C3%A0+ph%C3%AA+h%C3%B2a+tan+premium&prds=localAnnotatedOfferId:1,productid:13844352220682608385,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "124.418 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRCeMQ5ZDp68iW7e-pqNwTg-RltStGZBq61gVD7uxqVe0pPYtklZEDfmEOQ6z7LhJb2hdtuSjwZRyN6wqQQOKv4mlcI2mcFvzV6W2qyhPa8VCV9DpPmMTrSDg",
+    "productId": "13844352220682608385",
+    "position": 29
+   },
+   {
+    "title": "[Tặng hộp L&L] Combo Nguyên Vị - cà phê hoà tan GU NAM bạc sỉu (10 gói x 20g) + cà phê sữa GU NAM đậm vị (10 gói x",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=h%E1%BB%99p+qu%C3%A0+t%E1%BA%B7ng+cao+c%E1%BA%A5p+c%C3%A0+ph%C3%AA+h%C3%B2a+tan+premium&prds=localAnnotatedOfferId:1,productid:18195816844577416337,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "96.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQXXn5wNNdNRUIvY6zNptYySfIohwdW-1iW0tqbP5Froj61owQ_hj90kIigLKIzKhzkKqlTopBH2v7StpKvo9XqwM8qEW54af5_kbl-M2WSPGUKrVzsp_3AEA",
+    "rating": 5,
+    "ratingCount": 8,
+    "productId": "18195816844577416337",
+    "position": 30
+   },
+   {
+    "title": "Bộ quà tặng Tri Ân 1 cà phê kèm phin và notebook RuNam",
+    "source": "farmersmarket.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=h%E1%BB%99p+qu%C3%A0+t%E1%BA%B7ng+cao+c%E1%BA%A5p+c%C3%A0+ph%C3%AA+h%C3%B2a+tan+premium&prds=localAnnotatedOfferId:1,productid:14584569376688111764,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "1.499.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQCfM0H-w76A2IB7xNOL4E_IQnaaZ9PbfL0vdTjK2hM5XQhoh2DnsgjwOZCDil8x1BMY2hw6VRElcknPwVs1eExCwk0VFF0",
+    "productId": "14584569376688111764",
+    "position": 31
+   },
+   {
+    "title": "Cà Phê Hòa Tan Hương Hạt Phỉ No Brand Hộp 100 Gói 1G",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=h%E1%BB%99p+qu%C3%A0+t%E1%BA%B7ng+cao+c%E1%BA%A5p+c%C3%A0+ph%C3%AA+h%C3%B2a+tan+premium&prds=localAnnotatedOfferId:1,catalogid:12039655719448612856,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "364.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTzTYtu587vIrlwY1iOezzF_T2yIPIebfzXWli3tQRGLe-Itt2ukh3hdRr-OgvOUk0x3NK5iCxC3ykJB6uDczNYY7ALzUHJSJrg-Bbzqo92hD3MW7HdMSQ9",
+    "productId": "12039655719448612856",
+    "position": 32
+   },
+   {
+    "title": "Hộp Quà Cà Phê & Socola Energy Boost, Quà Tặng Bạn Trai",
+    "source": "Chus.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=h%E1%BB%99p+qu%C3%A0+t%E1%BA%B7ng+cao+c%E1%BA%A5p+c%C3%A0+ph%C3%AA+h%C3%B2a+tan+premium&prds=localAnnotatedOfferId:1,productid:18003968108919316577,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "1.045.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTD5_vIAKB5Gz51P8g_swxbR8FIp8T0OeSu5GW_mTb21PxAuhkbqccFndIAYtKNu4lLvFuNt366iOLp0_caVftXFMUTmgYK1-1_jvIfVXe7",
+    "productId": "18003968108919316577",
+    "position": 33
+   },
+   {
+    "title": "Tinh Cà Phê Hòa Tan Đen Cố Đô - Sấy Lạnh 20g",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=h%E1%BB%99p+qu%C3%A0+t%E1%BA%B7ng+cao+c%E1%BA%A5p+c%C3%A0+ph%C3%AA+h%C3%B2a+tan+premium&prds=localAnnotatedOfferId:1,productid:2029615139086168589,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "62.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTwECocXewnu78bUwToH-y0BeEdvq-apRopcheEJ17w4wZ0yOJSypo6QSfqkUZp43ZGoqBaWhaWlDVMERusLdJa6cHP8pcTUVmdBus4sPuiS9uMWYUwA2AyBs4",
+    "rating": 5,
+    "ratingCount": 1,
+    "productId": "2029615139086168589",
+    "position": 34
+   },
+   {
+    "title": "Cà phê hòa tan GO! 3in1 bịch 25 gói x 24g",
+    "source": "Siêu thị GO!",
+    "link": "https://www.google.com/search?ibp=oshop&q=h%E1%BB%99p+qu%C3%A0+t%E1%BA%B7ng+cao+c%E1%BA%A5p+c%C3%A0+ph%C3%AA+h%C3%B2a+tan+premium&prds=localAnnotatedOfferId:1,productid:4034618421988252246,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "86.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRXxLs3i4g9hgIXX-UvoP5sOj7Rsdcexz_rU04nD1LXHHN12OwcOd-WF5VYadclvjEHb6LRiIn7Ca8JG7xfBvkwdSRjgGwHN7pXZkt79pAgB2ccUxvE2yGm",
+    "productId": "4034618421988252246",
+    "position": 35
+   },
+   {
+    "title": "Cà Phê Quế Hòa Tan 4in1 ASAHI Hộp 9 Gói 162g Chuẩn Vị Việt Đậm Đà Dễ Pha Ngon Khó Cưỡng",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=h%E1%BB%99p+qu%C3%A0+t%E1%BA%B7ng+cao+c%E1%BA%A5p+c%C3%A0+ph%C3%AA+h%C3%B2a+tan+premium&prds=localAnnotatedOfferId:1,productid:1783767937519919668,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "75.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcR2tN-Vfc_Alh2knc6hNKNRuj7oXqYot9GBIzDepi8FAn0EZ9PHmAf5Ce5yNk5LukRG-tiImdyoJA3D-haqnXpAa9qkI7YwuRf_UbkD8UZUj_Q4g3EgEsu9oA",
+    "productId": "1783767937519919668",
+    "position": 36
+   },
+   {
+    "title": "Quà tặng doanh nghiệp - Gan Ngỗng Pháp,giỏ quà tết, gio quà tết, quà tặng, quà tết, quà tặng sếp, quà tặng cao cấp, quà tặng vip",
+    "source": "Alofood",
+    "link": "https://www.google.com/search?ibp=oshop&q=h%E1%BB%99p+qu%C3%A0+t%E1%BA%B7ng+cao+c%E1%BA%A5p+c%C3%A0+ph%C3%AA+h%C3%B2a+tan+premium&prds=localAnnotatedOfferId:1,productid:7729404568721290507,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "3.350.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSMiEfcTXBEQ3lvmEBP7DkIyh-4M83ivpExUiM_ocwdx8Pew1aQtd-htj4KRrYGldUEHTg89e-c942D9PF4_peKuL8n7j6-58hN1Ijs_lWnqkLcQivIlABE",
+    "productId": "7729404568721290507",
+    "position": 37
+   },
+   {
+    "title": "Combo 4 hộp cà phê hoà tan Coffee 3F (10 gói/hộp x 16g/gói)",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=h%E1%BB%99p+qu%C3%A0+t%E1%BA%B7ng+cao+c%E1%BA%A5p+c%C3%A0+ph%C3%AA+h%C3%B2a+tan+premium&prds=localAnnotatedOfferId:1,catalogid:17503064123670481544,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "350.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcR2BPcM043DnUhU_TXtw3_8hKzab_ZBUrpP9m4bOVE3tu2EEZn9-JrfO8Jqfsw6y1LZNycVuGAp-4k3XWzfiuWxlrkSMS5ejhV6crt26bnXQHt5kFMfc-nZew",
+    "productId": "17503064123670481544",
+    "position": 38
+   },
+   {
+    "title": "Cà Phê Hòa Tan 3 Vị Cộng Gói 470g",
+    "source": "menaselect.com",
+    "link": "https://www.google.com/search?ibp=oshop&q=h%E1%BB%99p+qu%C3%A0+t%E1%BA%B7ng+cao+c%E1%BA%A5p+c%C3%A0+ph%C3%AA+h%C3%B2a+tan+premium&prds=localAnnotatedOfferId:1,productid:14507599226374539464,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "169.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTePoxkqBI8k_5tQT4nzj1n7MK0fbRiPFDPpC9NCCQ03kbGTlxcfqIJHSOOgolJde405uLEE1N-19SPbV847j1E-pyHCIBhdVkwIp8UsmCBTuhqIlh70doX",
+    "productId": "14507599226374539464",
+    "position": 39
+   },
+   {
+    "title": "Cà Phê Hòa Tan 3 in 1 King Coffee Hộp 18 gói",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=h%E1%BB%99p+qu%C3%A0+t%E1%BA%B7ng+cao+c%E1%BA%A5p+c%C3%A0+ph%C3%AA+h%C3%B2a+tan+premium&prds=localAnnotatedOfferId:1,productid:9607128064970413132,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "318.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTmD1P_on-UuwLrUDyWOePEqCvy0MuE2fhIcMQqIN5kXzniFBxicrGAVRtvJWOnmQt_wcYjpen4RgvD1_TWGEFiyJDEiHgOY0KXRG5RmAgF",
+    "productId": "9607128064970413132",
+    "position": 40
+   }
+  ],
+  "credits": 2
+ }
+}

@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Khách sạn Mường Thanh Luxury Đà Nẵng",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T19:20:26.151Z",
+ "body": {
+  "searchParameters": {
+   "q": "Khách sạn Mường Thanh Luxury Đà Nẵng",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Khách sạn Mường Thanh Luxury Đà Nẵng (Mường Thanh Đà Nẵng) - Chudu24",
+    "imageUrl": "http://du-lich.chudu24.com/f/m/2105/19/khach-san-muong-thanh-luxury-da-nang-2.jpg",
+    "imageWidth": 1280,
+    "imageHeight": 719,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS5eQKnLJVyqpMRVcVBrJlkqwraYctCMiZUa_a3SE7GeA&s=10",
+    "thumbnailWidth": 597,
+    "thumbnailHeight": 335,
+    "source": "Đặt Phòng Khách Sạn - Chudu24",
+    "domain": "khachsan.chudu24.com",
+    "link": "https://khachsan.chudu24.com/ks.5074.khach-san-muong-thanh-luxury-da-nang.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=http%3A%2F%2Fdu-lich.chudu24.com%2Ff%2Fm%2F2105%2F19%2Fkhach-san-muong-thanh-luxury-da-nang-2.jpg&tbnid=XjRB9bkRbbHKYM&imgrefurl=https%3A%2F%2Fkhachsan.chudu24.com%2Fks.5074.khach-san-muong-thanh-luxury-da-nang.html&docid=EwcsIRqibohKDM&w=1280&h=719",
+    "position": 1
+   },
+   {
+    "title": "Khách sạn Mường Thanh Luxury Đà Nẵng, Phước Mỹ, Đà Nẵng",
+    "imageUrl": "https://pix10.agoda.net/hotelImages/219/2190907/2190907_17080417080054905485.jpg?ca=6&ce=1&s=414x232",
+    "imageWidth": 414,
+    "imageHeight": 232,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQyyHGIoJaE_55vYimMr-Pi9DKxxoxleWmRbZygrJcH3w&s=10",
+    "thumbnailWidth": 414,
+    "thumbnailHeight": 232,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/muong-thanh-luxury-da-nang-hotel/hotel/da-nang-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F219%2F2190907%2F2190907_17080417080054905485.jpg%3Fca%3D6%26ce%3D1%26s%3D414x232&tbnid=piun_c9FIFbvxM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fmuong-thanh-luxury-da-nang-hotel%2Fhotel%2Fda-nang-vn.html&docid=YF2p4pRHox7_5M&w=414&h=232",
+    "position": 2
+   },
+   {
+    "title": "Mường Thanh Đà Nẵng | Khách sạn Mường Thanh",
+    "imageUrl": "https://bizweb.dktcdn.net/thumb/large/100/471/958/products/10019241-1798x1419-fit-and-trim-8b863abd52df5a14e92409e000613d7d.webp?v=1672123310727",
+    "imageWidth": 480,
+    "imageHeight": 379,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQRMjaERs6Qpnzg8kZVr08mOkwbESi3GOPzHsd3hJHj3Q&s=10",
+    "thumbnailWidth": 480,
+    "thumbnailHeight": 379,
+    "source": "Khách sạn Mường Thanh",
+    "domain": "khachsanmuongthanh.vn",
+    "link": "https://khachsanmuongthanh.vn/muong-thanh-da-nang",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fbizweb.dktcdn.net%2Fthumb%2Flarge%2F100%2F471%2F958%2Fproducts%2F10019241-1798x1419-fit-and-trim-8b863abd52df5a14e92409e000613d7d.webp%3Fv%3D1672123310727&tbnid=r3Azss-GQnQQMM&imgrefurl=https%3A%2F%2Fkhachsanmuongthanh.vn%2Fmuong-thanh-da-nang&docid=wNsOzrItanEXSM&w=480&h=379",
+    "position": 3
+   },
+   {
+    "title": "Mường Thanh Luxury Da Nang Hotel",
+    "imageUrl": "https://booking.muongthanh.com/images/offer/2026/03/resize/muong-thanh-luxury-anh-sp-1_1774348615.jpg",
+    "imageWidth": 1024,
+    "imageHeight": 645,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScqnW8uAesyDTFrj-LzRpY9vsFDYNRVbEohKw2hQb9KQ&s=10",
+    "thumbnailWidth": 563,
+    "thumbnailHeight": 355,
+    "source": "Mường Thanh",
+    "domain": "booking.muongthanh.com",
+    "link": "https://booking.muongthanh.com/hotel-muong-thanh-luxury-da-nang",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fbooking.muongthanh.com%2Fimages%2Foffer%2F2026%2F03%2Fresize%2Fmuong-thanh-luxury-anh-sp-1_1774348615.jpg&tbnid=QogPtzJQlXTrGM&imgrefurl=https%3A%2F%2Fbooking.muongthanh.com%2Fhotel-muong-thanh-luxury-da-nang&docid=Zf3LqFtGIvLW4M&w=1024&h=645",
+    "position": 4
+   },
+   {
+    "title": "Muong Thanh Luxury Song Han Hotel - 10 Minutes to Da Nang Airport & 800m to  Dragon Bridge, Đà Nẵng (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/257023614.jpg?k=4ac9a29a30a02f95793dd341b7ce8c38f391207a1c27088353d877d5dfdaf1e4&o=",
+    "imageWidth": 1024,
+    "imageHeight": 767,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSpplcmsM-A4u2_b2SIIqmuSmH4Fj8RcKEuXNtP8o0-Pg&s=10",
+    "thumbnailWidth": 640,
+    "thumbnailHeight": 479,
+    "source": "www.booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/one-opera-danang.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F257023614.jpg%3Fk%3D4ac9a29a30a02f95793dd341b7ce8c38f391207a1c27088353d877d5dfdaf1e4%26o%3D&tbnid=opVCojaWIEv36M&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fone-opera-danang.vi.html&docid=okc3kip0IbufGM&w=1024&h=767",
+    "position": 5
+   },
+   {
+    "title": "Khách sạn Mường Thanh Luxury Đà Nẵng, Phước Mỹ, Đà Nẵng",
+    "imageUrl": "https://pix10.agoda.net/hotelImages/219/2190907/2190907_17080416000054901610.jpg?ca=6&ce=1&s=414x232",
+    "imageWidth": 406,
+    "imageHeight": 232,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTkuybq3m8lXYB2faqY2aRz2XcuZ1bMZeYQSZ1Ndmu8MA&s=10",
+    "thumbnailWidth": 405,
+    "thumbnailHeight": 232,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/muong-thanh-luxury-da-nang-hotel/hotel/da-nang-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F219%2F2190907%2F2190907_17080416000054901610.jpg%3Fca%3D6%26ce%3D1%26s%3D414x232&tbnid=tdyItiCJxXzZnM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fmuong-thanh-luxury-da-nang-hotel%2Fhotel%2Fda-nang-vn.html&docid=YF2p4pRHox7_5M&w=406&h=232",
+    "position": 6
+   },
+   {
+    "title": "Mường Thanh Luxury Đà Nẵng ưu đãi HOT 2026. Free bữa sáng - BestPrice",
+    "imageUrl": "https://owa.bestprice.vn/images/hotels/uploads/muong-thanh-luxury-da-nang-6483e613f2346.jpg",
+    "imageWidth": 1024,
+    "imageHeight": 576,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQY9bI-7Jb1thqQHqXYHxupRhlMip_Bb-wLWIvT-iBvEg&s=10",
+    "thumbnailWidth": 738,
+    "thumbnailHeight": 414,
+    "source": "BestPrice",
+    "domain": "www.bestprice.vn",
+    "link": "https://www.bestprice.vn/khach-san/muong-thanh-luxury-da-nang-1430.html?srsltid=AU7gw4VlNNBdujdiVj5N6lrpChc2RQ0y7dEwhOULHFqCIHl0cJQsnahD",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fowa.bestprice.vn%2Fimages%2Fhotels%2Fuploads%2Fmuong-thanh-luxury-da-nang-6483e613f2346.jpg&tbnid=An6x5DMp-xF6oM&imgrefurl=https%3A%2F%2Fwww.bestprice.vn%2Fkhach-san%2Fmuong-thanh-luxury-da-nang-1430.html%3Fsrsltid%3DAU7gw4VlNNBdujdiVj5N6lrpChc2RQ0y7dEwhOULHFqCIHl0cJQsnahD&docid=S97eZCcIKZKaIM&w=1024&h=576",
+    "position": 7
+   },
+   {
+    "title": "MƯỜNG THANH LUXURY HOTEL ĐÀ NẴNG",
+    "imageUrl": "https://kyhoatour.com.vn/uploadwb/hinhanh/4_133592021103015_b_.jpg",
+    "imageWidth": 750,
+    "imageHeight": 550,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIDD_zzufkFfP4k44BQ2YcNxIhlz0RQaq-mgE1kVn9Sg&s=10",
+    "thumbnailWidth": 523,
+    "thumbnailHeight": 382,
+    "source": "Kỳ Hòa Tourist",
+    "domain": "kyhoatour.com.vn",
+    "link": "https://kyhoatour.com.vn/khach-san/muong-thanh-luxury-hotel-da-nang-266.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fkyhoatour.com.vn%2Fuploadwb%2Fhinhanh%2F4_133592021103015_b_.jpg&tbnid=XQEcHuKPkJ0yDM&imgrefurl=https%3A%2F%2Fkyhoatour.com.vn%2Fkhach-san%2Fmuong-thanh-luxury-hotel-da-nang-266.html&docid=WwW3Jfhji1eeFM&w=750&h=550",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

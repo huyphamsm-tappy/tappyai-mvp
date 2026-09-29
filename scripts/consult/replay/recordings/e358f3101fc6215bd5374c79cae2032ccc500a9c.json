@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Hộp quà tặng kèm sổ da Parker site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T19:19:13.692Z",
+ "body": {
+  "searchParameters": {
+   "q": "Hộp quà tặng kèm sổ da Parker site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Bút ký dạ bi PARKER kèm hộp đựng Bút ký cao cấp khắc ...",
+    "link": "https://www.lazada.vn/products/but-ky-da-bi-parker-kem-hop-dung-but-ky-cao-cap-khac-ten-theo-yeu-cau-i2259350268.html?srsltid=AU7gw4X7_dCFfanVc77K9JwlmdQ4NHUBUrU3ZfjqIThLFsjf2dLta60V",
+    "snippet": "Bút ký dạ bi cao cấp Parker đa dạng màu sắc, phù hợp nhiều mục đích sử dụng. Hộp đựng bút cao cấp đi kèm tiện lợi, có thể khắc tên theo yêu cầu, ...",
+    "rating": 5,
+    "ratingCount": 2,
+    "position": 1
+   },
+   {
+    "title": "Parker | Quà Tặng Tri Ân Giáo Viên Bộ Bút Chữ Ký Sang Trọng ...",
+    "link": "https://h5.lazada.vn/products/parker-qua-tang-tri-an-giao-vien-bo-but-chu-ky-sang-trong-hop-qua-dep-co-no-i3322305997.html",
+    "snippet": "Chiếc bút có chữ ký PARKER này là sự lựa chọn lý tưởng để làm quà tặng tốt nghiệp hoặc quà tặng doanh nghiệp, mang đến cảm giác sang trọng và tinh tế cho bất kỳ ...",
+    "position": 2
+   },
+   {
+    "title": "Parker | Bút Quà Tặng Đẹp Cao Cấp",
+    "link": "https://www.lazada.vn/products/parker-but-qua-tang-dep-cao-cap-i3231393323.html?srsltid=AU7gw4WJ-hQy6bhDPZC0Mpr3tbwnkHylfTgFA1Eq9yQSeuxHOIce3z95",
+    "snippet": "HERO | Bộ Quà Tặng Văn Phòng Sang Trọng Phong Cách Trung Quốc Bao Gồm Sổ. 583.000 ₫ · HERO | Bộ Quà Tặng Doanh Nghiệp Sang Trọng Bút Máy. 851.000 ₫. Ưu đãi từ ...",
+    "position": 3
+   },
+   {
+    "title": "Parker | Bút Kinh Doanh Chất Lượng Cao Làm Quà Tặng cho ...",
+    "link": "https://www.lazada.vn/products/parker-but-kinh-doanh-chat-luong-cao-lam-qua-tang-cho-nguoi-lon-luyen-viet-i3322519364-s16234792287.html?from_gmc=1&fl_tag=1&srsltid=AU7gw4Vox-5oNuSE_kSakuttNRWGS-38Mh3bqfJPYVnNlM6H77cu1q36",
+    "snippet": "Được đựng trong hộp ruy băng lụa đầy phong cách, chiếc bút này là một món quà hoàn hảo cho lễ tốt nghiệp, sinh nhật hoặc bất kỳ sự kiện kỷ niệm nào khác.",
+    "position": 4
+   },
+   {
+    "title": "Bút ký doanh nhân Parker IM BLACK cài vàng ...",
+    "link": "https://h5.lazada.vn/products/but-ky-doanh-nhan-parker-im-black-cai-vang-but-ky-parker-khac-ten-theo-yeu-cau-but-ki-i2506368882.html",
+    "snippet": "Bút ký cao cấp Parker IM BLACK, bút dạ bi 0.7mm chất lượng cao với ngòi thanh mảnh, mực nhanh khô không lem. Vỏ bút đồng nguyên khối sang trọng, ...",
+    "rating": 4.6,
+    "ratingCount": 8,
+    "position": 5
+   },
+   {
+    "title": "[GIFT SET] Bộ Quà Tặng Sổ Vươn Xa Biển Lớn & Bút Ký ...",
+    "link": "https://h5.lazada.vn/products/gift-set-bo-qua-tang-so-vuon-xa-bien-lon-but-ky-cao-cap-lenoble-i3006329672-s14488324487.html",
+    "snippet": "Bộ quà tặng sổ tay bìa da trơn, bút ký tên Leon Dio Le Noble Ý nghĩa sản phẩm Cuốn sổ không chỉ là một công cụ ghi chép mà còn mang trong mình thông điệp về ...",
+    "position": 6
+   },
+   {
+    "title": "[GIFT SET] Bộ quà tặng sổ tay 12 cung hoàng đạo ZODIAC ...",
+    "link": "https://www.lazada.vn/products/gift-set-bo-qua-tang-so-tay-12-cung-hoang-dao-zodiac-but-ky-ten-leon-dio-the-classic-matte-hill-black-i2734101014.html?srsltid=AU7gw4WlXz7uNVVAyokb9HcohLf8tXkvjiK4Kc4d_yJLFdh6MIbGgAMM",
+    "snippet": "- Hộp đựng sang trọng: Hộp, Túi, Thẻ bảo hành Leon Dio, Nametag, Thanks Card. - Khắc tên/logo miễn phí theo yêu cầu.",
+    "position": 7
+   },
+   {
+    "title": "Bút ký cao cấp BK12 Kèm hộp sang trọng, Bút khắc tên làm ...",
+    "link": "https://www.lazada.vn/products/but-ky-cao-cap-bk12-kem-hop-sang-trong-but-khac-ten-lam-qua-tang-sinh-nhat-qua-tang-ki-niem-i2066468353.html?srsltid=AU7gw4U9ngxPX0C3S0mbKFH5aWwpdYHq4_PC6njzlvj719RGJBiepBzV",
+    "snippet": "Bút ký cao cấp BK12 Kèm hộp sang trọng, Bút khắc tên làm quà tặng sinh nhật, quà tặng kỉ niệm · Đặc điểm nổi bật · Mô tả sản phẩm.",
+    "rating": 5,
+    "ratingCount": 7,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

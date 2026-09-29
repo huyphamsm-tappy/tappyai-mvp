@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Quán Bụi Central\" OR \"Hàng Dương Quán Quận 1\" OR \"NHÀ HÀNG NGON\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T19:22:23.595Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Quán Bụi Central\" OR \"Hàng Dương Quán Quận 1\" OR \"NHÀ HÀNG NGON\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Top 5 nhà hàng ngon ở Irvine 2026 — review ăn uống ...",
+    "link": "https://www.tiktok.com/@tuilathitkho/video/7641428220532870420",
+    "snippet": "Kết luận Danh sách trên giúp khám phá 5 lựa chọn nhà hàng ngon ở Irvine, phù hợp cho người xem #tuilathitkho và #ancungtiktok muốn làm review ...",
+    "position": 1
+   },
+   {
+    "title": "Nhà Hàng Ngon: Trải Nghiệm Ẩm Thực Tại TP.HCM",
+    "link": "https://www.tiktok.com/@anchimihe/video/7121950658047135019",
+    "snippet": "Nhà Hàng Ngon | 160 Pasteur, Bến Nghé, Quận 1, Thành phố Hồ Chí Minh ... Nhà Hàng Ngon: Trải Nghiệm Ẩm Thực Tại TP.HCM. Khám phá Nhà ...",
+    "position": 2
+   },
+   {
+    "title": "Mỳ Hàn tươi làm tại nhà hàng – ngon đỉnh, nhất định thử",
+    "link": "https://www.tiktok.com/@hanoifoodchill/video/7664573325896731924",
+    "snippet": "Mỳ Hàn tươi làm tại nhà hàng – ngon đỉnh, nhất định thử. Mỳ Hàn tươi làm ngay tại nhà hàng — trải nghiệm ngon đỉnh Tóm tắt nhanh Mỳ Hàn tươi ...",
+    "position": 3
+   },
+   {
+    "title": "Khám Phá Nhà Hàng Ngon Tại Hàm Nghi, Nam Từ Liêm",
+    "link": "https://www.tiktok.com/@trainghiemcungnga/video/7424493995121839378",
+    "snippet": "Gợi ý 1 nhà hàng ngon-chất khu Hàm Nghi- Nam Từ Liêm để ace đổi gió. Sắp 20/10 rồi lên lịch hẹn hò ngay thôiiii #comnieu #comnha #comque # ...",
+    "position": 4
+   },
+   {
+    "title": "Dấu hiệu nhận biết một nhà hàng ngon chuẩn vị là đây ...",
+    "link": "https://www.tiktok.com/@nhahangquangon/video/7669013753110859028",
+    "snippet": "39 Lượt thích,Video TikTok từ Nhà Hàng Quá Ngon (@nhahangquangon): \"Dấu hiệu nhận biết một nhà hàng ngon chuẩn vị là đây #nhahangquangon ...",
+    "position": 5
+   },
+   {
+    "title": "Đi ăn mì bò kho, một trong những nhà hàng ngon ở khu ...",
+    "link": "https://www.tiktok.com/@anlychicago/video/7688405076607520014",
+    "snippet": "TikTok video from Ailey Ly (@anlychicago): “Đi ăn mì bò kho, một trong những nhà hàng ngon ở khu người Vietnam tại Chicago.",
+    "position": 6
+   },
+   {
+    "title": "Ngon Restaurant Garden Grove CA",
+    "link": "https://www.tiktok.com/@rainaiscrazy/video/7597616189896002846",
+    "snippet": "Ngon Restaurant Garden Grove CA – Nhà Hàng Ngon Tại Garden Grove ... Keywords: ngon restaurant garden grove ca, nhà hàng ngon tại garden ...",
+    "position": 7
+   },
+   {
+    "title": "Nhà Hàng Ngon Houston",
+    "link": "https://www.tiktok.com/discover/nh%C3%A0-h%C3%A0ng-ngon-houston",
+    "snippet": "3.9M posts. Discover videos related to Nhà Hàng Ngon Houston on TikTok. See more videos about El Paisano Restaurante Houston, Món Ngon ...",
+    "date": "7 thg 9, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

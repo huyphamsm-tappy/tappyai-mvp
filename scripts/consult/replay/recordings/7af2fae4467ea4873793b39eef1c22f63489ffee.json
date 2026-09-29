@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "H Café (site:food.grab.com/vn OR site:shopeefood.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T00:39:01.154Z",
+ "body": {
+  "searchParameters": {
+   "q": "H Café (site:food.grab.com/vn OR site:shopeefood.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "H Amazon Cafe",
+    "link": "https://food.grab.com/vn/en/restaurant/h-amazon-cafe-delivery/5-C8DGTYDWVB3GAJ",
+    "snippet": "Thousands of choices and promos will satisfy all types of craving needs: Local Food, Milktea, Coffee, and more. Everything delivered with just a few clicks.",
+    "position": 1
+   },
+   {
+    "title": "Home's N&H - Cafe & Ăn Vặt - Mê Linh",
+    "link": "https://shopeefood.vn/da-nang/home-s-n-h-cafe-an-vat-me-linh?source_url=foody_ordernow_mobile",
+    "snippet": "Lô 365 KDT Lakeside, Mê Linh, P. Hòa Hiệp Nam, Quận Liên Chiểu, Đà Nẵng. Đã đóng. Quán được gắn nhãn Yêu thích là Quán Yêu Thích, gồm những quán đạt chất ...",
+    "position": 2
+   },
+   {
+    "title": "H Cafe | ShopeeFood - Food Delivery | Order & get it ...",
+    "link": "https://shopeefood.vn/ha-noi/h-cafe-phung-hung",
+    "snippet": "Ngõ 159 Nhà Giữa 6-8 Phùng Hưng, Yên Phúc, P. Phúc La, Hà Đông, Hà Nội. Đã đóng. Quán được gắn nhãn Yêu thích là Quán Yêu Thích, gồm những quán đạt chất ...",
+    "position": 3
+   },
+   {
+    "title": "Milk Tea H'House ⭐ 4.9",
+    "link": "https://food.grab.com/vn/en/restaurant/milk-tea-h-house-delivery/5-C75BKEWKN8DKJE?",
+    "snippet": "Red Tea,Milk Tea,Oolong Tea. 4.9. Opening Hours. Today 08:00-22:00. Today's Offer. For You. Taro. Coffee - Milk. Matcha. Cacao. Oolong Tea. Black Tea.",
+    "rating": 4.9,
+    "ratingCount": 29,
+    "position": 4
+   },
+   {
+    "title": "Home's N&H - Cafe & Ăn Vặt - Mê Linh",
+    "link": "https://shopeefood.vn/da-nang/home-s-n-h-cafe-an-vat-me-linh?source_url=foody_ordernow_pc",
+    "snippet": "Lô 365 KDT Lakeside, Mê Linh, P. Hòa Hiệp Nam, Quận Liên Chiểu, Đà Nẵng. Đã đóng. Quán được gắn nhãn Yêu thích là Quán Yêu Thích, gồm những quán đạt chất ...",
+    "position": 5
+   },
+   {
+    "title": "Taran'H Sushi",
+    "link": "https://food.grab.com/vn/en/restaurant/taran-h-sushi-delivery/5-C8DDRJMCL2XZG2",
+    "snippet": "Taran'H Sushi · Sushi roll · Noodles · Soup · Salad · Fruit tea · Taro · Green Tea · Cacao.",
+    "position": 6
+   },
+   {
+    "title": "Cơm, Trà & Cafe - Ăn Vặt H&T",
+    "link": "https://shopeefood.vn/binh-duong/com-tra-cafe-an-vat-h-t",
+    "snippet": "17/9 Đường Hai Bà Trưng, P. Đông Hòa, Dĩ An, Bình Dương. Đã đóng. Quán được gắn nhãn Yêu thích là Quán Yêu Thích, gồm những quán đạt chất lượng dịch vụ vượt ...",
+    "position": 7
+   },
+   {
+    "title": "Laika - Café | Mua online tại ShopeeFood.vn",
+    "link": "https://shopeefood.vn/thuong-hieu/laika-cafe",
+    "snippet": "Tìm Laika - Café gần bạn nhất từ danh sách 19 địa điểm trên toàn quốc. Đặt mua online tại ShopeeFood.vn và nhận hàng ngay tại nhà!",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

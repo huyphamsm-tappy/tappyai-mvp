@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Con đường làm đẹp Biển sương mù Bộ tách cà phê sứ",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T19:19:11.636Z",
+ "body": {
+  "searchParameters": {
+   "q": "Con đường làm đẹp Biển sương mù Bộ tách cà phê sứ",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Bộ đồ ăn 10 sản phẩm - Jasmine - Cá Cơm Sương Mờ",
+    "imageUrl": "https://product.hstatic.net/200000532849/product/bo-do-an-10-san-pham-jasmine-ca-com-suong-mo_10jas519-sm-01_34d8cf212231484794549f1727621d87_master.png",
+    "imageWidth": 1024,
+    "imageHeight": 1024,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTngMQMxB-Y38sO7OmndsjmzzIvYFSNcUwTyr2S4XNyzg&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Gốm sứ Minh Long",
+    "domain": "minhlong.com",
+    "link": "https://minhlong.com/products/bo-do-an-10-san-pham-jasmine-ca-com-suong-mo?srsltid=AU7gw4XQNOrLEoFO4rFsQfOur-QDmLffijX-rygdzRebSYPorH9Bho9p",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fproduct.hstatic.net%2F200000532849%2Fproduct%2Fbo-do-an-10-san-pham-jasmine-ca-com-suong-mo_10jas519-sm-01_34d8cf212231484794549f1727621d87_master.png&tbnid=Evxy5NNXUGPiLM&imgrefurl=https%3A%2F%2Fminhlong.com%2Fproducts%2Fbo-do-an-10-san-pham-jasmine-ca-com-suong-mo%3Fsrsltid%3DAU7gw4XQNOrLEoFO4rFsQfOur-QDmLffijX-rygdzRebSYPorH9Bho9p&docid=mVvlK5cxCzDhcM&w=1024&h=1024",
+    "position": 1
+   },
+   {
+    "title": "Bộ đồ ăn 9 sản phẩm - Timeless - Đại Dương Sương Mờ",
+    "imageUrl": "https://product.hstatic.net/200000532849/product/09llt518-1-sm_f841db921317497e8fdf1772b7c5d162_master.png",
+    "imageWidth": 1024,
+    "imageHeight": 1024,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSB-zRtc9zGXPlixhBRVHYKLQJ_KIG-4mvYooqgmhxzvQ&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Gốm sứ Minh Long",
+    "domain": "minhlong.com",
+    "link": "https://minhlong.com/products/mkt-bo-do-an-9-san-pham-timeless-dai-duong-suong-mo?srsltid=AU7gw4Xosr-2VlRNxHRLsn2WCkE7OmmsWhVn9cs9RCymvVgRZp3QX30C",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fproduct.hstatic.net%2F200000532849%2Fproduct%2F09llt518-1-sm_f841db921317497e8fdf1772b7c5d162_master.png&tbnid=LcENlT5jZ6F4lM&imgrefurl=https%3A%2F%2Fminhlong.com%2Fproducts%2Fmkt-bo-do-an-9-san-pham-timeless-dai-duong-suong-mo%3Fsrsltid%3DAU7gw4Xosr-2VlRNxHRLsn2WCkE7OmmsWhVn9cs9RCymvVgRZp3QX30C&docid=60EULh5Cb4iPpM&w=1024&h=1024",
+    "position": 2
+   },
+   {
+    "title": "Top 5 loại ly sứ khách sạn được ưa chuộng nhất hiện nay",
+    "imageUrl": "https://lysubattrang.vn/wp-content/uploads/2026/01/Ly-su-men-hoa-bien-Bat-Trang-dung-hang-ngay-va-lam-qua-tang-gom-su-5-1.jpg",
+    "imageWidth": 800,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWci1YIkgvnGo2ywIJhFskJbxu6OX5uXgtTvOm6vfBtQ&s=10",
+    "thumbnailWidth": 638,
+    "thumbnailHeight": 480,
+    "source": "Ly sứ Bát Tràng",
+    "domain": "lysubattrang.vn",
+    "link": "https://lysubattrang.vn/top-5-loai-ly-su-khach-san-duoc-ua-chuong/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flysubattrang.vn%2Fwp-content%2Fuploads%2F2026%2F01%2FLy-su-men-hoa-bien-Bat-Trang-dung-hang-ngay-va-lam-qua-tang-gom-su-5-1.jpg&tbnid=9-zRkudpwsIC1M&imgrefurl=https%3A%2F%2Flysubattrang.vn%2Ftop-5-loai-ly-su-khach-san-duoc-ua-chuong%2F&docid=IJVXoO_ARBfd4M&w=800&h=600",
+    "position": 3
+   },
+   {
+    "title": "Tải miễn phí Một Tách Cà Phê Với Khung Cảnh Núi Mù Sương Mù Nhiếp Ảnh | PNG  chuyên nghiệp - Pikbest",
+    "imageUrl": "https://img.pikbest.com/photo/20250212/a-cup-of-coffee-with-a-misty-mountain-view_11519268.jpg!w700wp",
+    "imageWidth": 700,
+    "imageHeight": 368,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgOov0lQqoE3NRYEV6TAnQM_y540M79yLiGpUxmFNArw&s=10",
+    "thumbnailWidth": 700,
+    "thumbnailHeight": 367,
+    "source": "Pikbest",
+    "domain": "vn.pikbest.com",
+    "link": "https://vn.pikbest.com/photo/a-cup-of-coffee-with-a-misty-mountain-view_11519268.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimg.pikbest.com%2Fphoto%2F20250212%2Fa-cup-of-coffee-with-a-misty-mountain-view_11519268.jpg!w700wp&tbnid=pK3IjxCxKsNXUM&imgrefurl=https%3A%2F%2Fvn.pikbest.com%2Fphoto%2Fa-cup-of-coffee-with-a-misty-mountain-view_11519268.html&docid=FNpu9r-iDtLKXM&w=700&h=368",
+    "position": 4
+   },
+   {
+    "title": "bộ tách uống cà phê capuchino, latte sứ Minh Long - bộ tách uống cà phê",
+    "imageUrl": "http://bizweb.dktcdn.net/thumb/grande/100/355/103/products/2-c2d6573e-90d8-4626-9ac0-bc9493fd2883.jpg?v=1654017072507",
+    "imageWidth": 600,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHyaBElrfn4CSfvPOBASbV63e6gO024tWnQTOxXynB8w&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Khánh Phương Shop",
+    "domain": "khanhphuongshop.vn",
+    "link": "https://khanhphuongshop.vn/bo-tach-uong-ca-phe-capuchino-latte-su-minh-long-bo-tach-uong-ca-phe?srsltid=AU7gw4Vy4J1uQySP07CRjORz59uhAx8OtRlR15l5U5C-Q4bD14r3l9Bz",
+    "googleUrl": "https://www.google.com/imgres?imgurl=http%3A%2F%2Fbizweb.dktcdn.net%2Fthumb%2Fgrande%2F100%2F355%2F103%2Fproducts%2F2-c2d6573e-90d8-4626-9ac0-bc9493fd2883.jpg%3Fv%3D1654017072507&tbnid=cJaIQsmKByU3eM&imgrefurl=https%3A%2F%2Fkhanhphuongshop.vn%2Fbo-tach-uong-ca-phe-capuchino-latte-su-minh-long-bo-tach-uong-ca-phe%3Fsrsltid%3DAU7gw4Vy4J1uQySP07CRjORz59uhAx8OtRlR15l5U5C-Q4bD14r3l9Bz&docid=oe9NuCqTs-l0LM&w=600&h=600",
+    "position": 5
+   },
+   {
+    "title": "Nhà thơ Phạm Quốc Ca - một người Nghệ xa xứ thành đạt | Làng văn xứ Nghệ |  Tạp chí Sông Lam",
+    "imageUrl": "https://i0.wp.com/tapchisonglam.vn/wp-content/uploads/2026/04/Nha-tho-Pham-Quoc-Ca-bia-phai-va-nha-tho-Tung-Bach-o-Da-Lat-nam-2016.jpg?fit=1200%2C800&ssl=1",
+    "imageWidth": 1200,
+    "imageHeight": 800,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIRCZsQhZtGrCzCFEXeneK_HI1dQe1dE4LJWEP_S0ikg&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Tạp chí Sông Lam",
+    "domain": "tapchisonglam.vn",
+    "link": "https://tapchisonglam.vn/nha-tho-pham-quoc-ca-mot-nguoi-nghe-xa-xu-thanh-dat/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fi0.wp.com%2Ftapchisonglam.vn%2Fwp-content%2Fuploads%2F2026%2F04%2FNha-tho-Pham-Quoc-Ca-bia-phai-va-nha-tho-Tung-Bach-o-Da-Lat-nam-2016.jpg%3Ffit%3D1200%252C800%26ssl%3D1&tbnid=kWJlZC18rRx1ZM&imgrefurl=https%3A%2F%2Ftapchisonglam.vn%2Fnha-tho-pham-quoc-ca-mot-nguoi-nghe-xa-xu-thanh-dat%2F&docid=7EwJIvawUx9BwM&w=1200&h=800",
+    "position": 6
+   },
+   {
+    "title": "Cần chuẩn bị dụng cụ thử nếm cà phê gì để tổ chức một buổi Cupping tại nhà  chuẩn SCA? - Xưởng sản xuất Cà phê & Trà ILOTA",
+    "imageUrl": "https://ilota.vn/wp-content/uploads/2026/01/7-3-scaled.jpg",
+    "imageWidth": 2560,
+    "imageHeight": 2560,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdYuiu_4TbND5p8NqS3l4r5AodBKqNrfx0tEJp4JzYTQ&s=10",
+    "thumbnailWidth": 554,
+    "thumbnailHeight": 554,
+    "source": "ILOTA Coffee & Tea",
+    "domain": "ilota.vn",
+    "link": "https://ilota.vn/blog/cac-dung-cu-thu-nem-ca-phe/?srsltid=AU7gw4UU2oqNhJvKWILNn6g-UgYamP8aGGX99dpLPLUxYPDsgebmFuHs",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Filota.vn%2Fwp-content%2Fuploads%2F2026%2F01%2F7-3-scaled.jpg&tbnid=0E6GZRe4UnYS5M&imgrefurl=https%3A%2F%2Filota.vn%2Fblog%2Fcac-dung-cu-thu-nem-ca-phe%2F%3Fsrsltid%3DAU7gw4UU2oqNhJvKWILNn6g-UgYamP8aGGX99dpLPLUxYPDsgebmFuHs&docid=oo7Zk5gOY4GBkM&w=2560&h=2560",
+    "position": 7
+   },
+   {
+    "title": "Chén chấm 9 cm - Jasmine - Cá Cơm Sương Mờ",
+    "imageUrl": "https://product.hstatic.net/200000532849/product/chen-cham-9-cm-jasmine-ca-com-suong-mo_040919519-sm-01_dd1fce086e4a412f870cba1515632ea4_1024x1024.png",
+    "imageWidth": 1023,
+    "imageHeight": 1024,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrv1sQn_FnXz01mX2OKy_HsmGyeVCdSa2J5jzEoS9p-w&s",
+    "thumbnailWidth": 224,
+    "thumbnailHeight": 225,
+    "source": "Gốm sứ Minh Long",
+    "domain": "minhlong.com",
+    "link": "https://minhlong.com/products/chen-cham-9-cm-jasmine-ca-com-suong-mo?srsltid=AU7gw4VDMHz8m9uuLPuPUSRfRmE_2_3mEivtqHzQMeusLgHfYJ5dUJz0",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fproduct.hstatic.net%2F200000532849%2Fproduct%2Fchen-cham-9-cm-jasmine-ca-com-suong-mo_040919519-sm-01_dd1fce086e4a412f870cba1515632ea4_1024x1024.png&tbnid=OR8lRumZhAFwwM&imgrefurl=https%3A%2F%2Fminhlong.com%2Fproducts%2Fchen-cham-9-cm-jasmine-ca-com-suong-mo%3Fsrsltid%3DAU7gw4VDMHz8m9uuLPuPUSRfRmE_2_3mEivtqHzQMeusLgHfYJ5dUJz0&docid=r0ifA2MflxjFTM&w=1023&h=1024",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -16,7 +16,7 @@ import { mkdirSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { prepareReplayEnv, RUN_FLAGS } from './lib/env'
 import { installReplayFetch, netSnapshot, netDelta } from './lib/serperReplay'
-import { parseDataStream, toolRowCount } from './lib/stream'
+import { parseDataStream, toolRowCount, toolRowNames } from './lib/stream'
 import { evaluateTurn, mainPickName, alternativeNames, shownNames } from './lib/criteria'
 import { loadSuite, filterOnly, fillPlaceholders, SUITES, type SuiteName, type Conversation } from './lib/suites'
 import { summarize, markdown, type TurnRow } from './lib/report'
@@ -167,7 +167,7 @@ describe.skipIf(!ON)('offline replay — chat route, real model, Serper record/r
       writeFileSync(join(outDir, 'raw', `${c.id}-t${i + 1}.json`), JSON.stringify({ sent, status, parsed: { ...p, text: undefined }, logEvents: cap.events, logErrors: cap.errors, raw }, null, 1))
       // The next turn's history: the reply text exactly as the client keeps it.
       messages.push({ role: 'assistant', content: p.text })
-      if (pick) { lastPick = pick; lastAlt = alts[0] ?? lastAlt }
+      if (pick) { lastPick = pick; lastAlt = alts[0] ?? toolRowNames(p.tools).find(n => !n.toLowerCase().includes(pick.toLowerCase()) && !pick.toLowerCase().includes(n.toLowerCase())) ?? lastAlt }
       shown.push(...shownNames(p.text))
       if (crash && !p.text) break
     }

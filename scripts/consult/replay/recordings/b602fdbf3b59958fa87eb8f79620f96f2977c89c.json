@@ -1,0 +1,84 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Urban Armor Gear Ốp iPhone 11 Pro Max site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T19:18:49.367Z",
+ "body": {
+  "searchParameters": {
+   "q": "Urban Armor Gear Ốp iPhone 11 Pro Max site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Ốp lưng UAG mới cho iPhone 17 16 15 14 13 12 11 pro ...",
+    "link": "https://shopee.vn/%E1%BB%90p-l%C6%B0ng-UAG-m%E1%BB%9Bi-cho-iPhone-17-16-15-14-13-12-11-pro-max-air-plus-XTE-Pathfinder-c%C3%B3-v%E1%BB%8F-t%E1%BB%AB-t%C3%ADnh-V%E1%BB%8F-%C4%91i%E1%BB%87n-tho%E1%BA%A1i-trong-su%E1%BB%91t-i.1700603497.26645059253",
+    "snippet": "Ốp lưng UAG mới cho iPhone 17 16 15 14 13 12 11 pro max air plus XTE Pathfinder có vỏ từ tính Vỏ điện thoại trong suốt ... Tặng Voucher 15.000₫ nếu đơn giao sau ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 1
+   },
+   {
+    "title": "ốp uag giá tốt Tháng 9, 2026 | Mua ngay",
+    "link": "https://shopee.vn/search?keyword=%E1%BB%91p%20uag",
+    "snippet": "Ốp điện thoại từ tính chống sốc cho iPhone 11 / 12 / 13 / 14 / 15 / 16 / 17 Pro Max, Vỏ mờ mờ có nút màu tương phản, Vỏ mỏng chống trầy xước để sạc không ...",
+    "position": 2
+   },
+   {
+    "title": "bao da uag giá tốt Tháng 9, 2026 | Mua ngay",
+    "link": "https://shopee.vn/search?keyword=bao%20da%20uag&urlold=bao-da-uag-metropolis-cho-iphone-12-pro-max-5g/8771880827144526860/877968015750663345/%20",
+    "snippet": "Uag explorer thế hệ thứ hai phù hợp cho iPhone 16promax 15 14 13 12 và Samsung S25ultra S24ultra S23ultra tay áo bảo vệ chống rơi mạnh mẽ. 224.316 ...",
+    "position": 3
+   },
+   {
+    "title": "Ốp lưng UAG APPLE iPhone 14 12 11 Pro Max ...",
+    "link": "https://shopee.vn/%E1%BB%90p-l%C6%B0ng-UAG-APPLE-iPhone-14-13-12-11-Pro-Max-12-MINI-%E1%BB%90p-l%C6%B0ng-iPhone15-iPhone14-plus-V%E1%BB%8F-b%E1%BA%A3o-v%E1%BB%87-ch%E1%BB%91ng-r%C6%A1i-thi%E1%BA%BFt-y%E1%BA%BFu-i.872803322.29574938956",
+    "snippet": "Ốp lưng UAG APPLE iPhone 14 12 11 Pro Max Ốp lưng iPhone14 plus Vỏ bảo vệ chống rơi thiết yếu ... Tặng Voucher 15.000₫ nếu đơn giao sau thời gian trên.",
+    "rating": 5,
+    "ratingCount": 12,
+    "position": 4
+   },
+   {
+    "title": "UAG cho iPhone 14 12 11 Pro Max 11pro Essential Armor ...",
+    "link": "https://shopee.vn/UAG-cho-iPhone-14-12-11-Pro-Max-11pro-Essential-Armor-V%E1%BB%8F-b%E1%BA%A3o-v%E1%BB%87-ch%E1%BB%91ng-r%C6%A1i-kh%C3%A1ng-khu%E1%BA%A9n-V%E1%BB%8F-%C4%91i%E1%BB%87n-tho%E1%BA%A1i-m%E1%BB%8Fng-nh%E1%BA%B9-i.859549445.20850869482",
+    "snippet": "UAG cho iPhone 14 12 11 Pro Max 11pro Essential Armor Vỏ bảo vệ chống rơi kháng khuẩn Vỏ điện thoại mỏng nhẹ ... Tặng Voucher 15.000₫ nếu đơn giao sau thời gian ...",
+    "rating": 4.8,
+    "ratingCount": 42,
+    "position": 5
+   },
+   {
+    "title": "Ốp lưng silicon UAG iPhone 14 13 12 11 Pro max XS ...",
+    "link": "https://shopee.vn/%E1%BB%90p-l%C6%B0ng-silicon-UAG-iPhone-14-13-12-11-Pro-max-XS-max-XR-iPhone14-8-7-Plus-se2-%E1%BB%90p-l%C6%B0ng-ch%E1%BB%91ng-s%E1%BB%91c-Trailblazer-Series-m%C3%A0u-%C4%91en-i.800221276.28824871703",
+    "snippet": "Ốp lưng silicon UAG iPhone 14 13 12 11 Pro max XS max XR iPhone14 8 7 Plus se2 Ốp lưng chống sốc Trailblazer Series màu đen ... Tặng Voucher 15.000₫ nếu đơn giao ...",
+    "rating": 5,
+    "ratingCount": 13,
+    "position": 6
+   },
+   {
+    "title": "Ốp lưng UAG Plasma cho iPhone 16 15 14 13 12 11 pro ...",
+    "link": "https://shopee.vn/%E1%BB%90p-l%C6%B0ng-UAG-Plasma-cho-iPhone-16-15-14-13-12-11-pro-max-iPhone15-iPhone14-plus-iPhone13-iPhone12-mini-%E1%BB%90p-l%C6%B0ng-trong-su%E1%BB%91t-i.800221276.18293187929",
+    "snippet": "Mua Ốp lưng UAG Plasma cho iPhone 16 15 14 13 12 11 pro max / iPhone15 iPhone14 plus iPhone13 iPhone12 mini Ốp lưng trong suốt giá tốt.",
+    "rating": 4.6,
+    "ratingCount": 10,
+    "position": 7
+   },
+   {
+    "title": "UAG Ốp ĐiệN ThoạI ChốNg SốC Cho iPhone 12 11 Pro ...",
+    "link": "https://shopee.vn/UAG-%E1%BB%90p-%C4%90i%E1%BB%87N-Tho%E1%BA%A1I-Ch%E1%BB%91Ng-S%E1%BB%91C-Cho-iPhone-12-11-Pro-MAX-XS-MAX-XR-X-12-Mini-8-7-6-6s-Plus-i.800221276.19732544695",
+    "snippet": "UAG Ốp ĐiệN ThoạI ChốNg SốC Cho iPhone 12 11 Pro MAX XS MAX XR X 12 Mini 8 7 6 6s Plus ... Tặng Voucher 15.000₫ nếu đơn giao sau thời gian trên.",
+    "rating": 4.8,
+    "ratingCount": 80,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

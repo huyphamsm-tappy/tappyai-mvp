@@ -2397,6 +2397,11 @@ export function applyPlaceEnrichmentStreamFilter(
     // The pick sentence in the approved "**Mình chọn: X**" form (normalised by code; the model often
     // writes "Mình gợi ý **X**" — replay 2026-09-29).
     const consultPickTurn = ['pick', 'more', 'reject', 'compare'].includes(collector?.consultTurn ?? '')
+    // Candidates = the card set (placesRecommendations — presearch rows reach it; latestPlaces does not,
+    // because presearch frames are prefixed outside this filter), then the model's own rows, then products.
+    const consultCandidates = collector?.placesRecommendations?.length
+      ? collector.placesRecommendations.map(r => r.entity.identity.name)
+      : latestPlaces.length ? latestPlaces.map(p => p.name ?? '') : productRecords.length ? productRecords.map(r => r.title || '') : shoppingMarkerNames(collector?.shoppingMarker)
     // A place reply with no pick sentence (replay FOOD-1 "more": "gợi ý thêm 3 quán: **A** … **B** …"):
     // the card's recommended row when the reply names it, else the first candidate the reply bolds.
     const placePickFallback = (() => {
@@ -2414,16 +2419,30 @@ export function applyPlaceEnrichmentStreamFilter(
         const hit = refers.find(r => { const f = r.trim().toLowerCase(); return f.length >= 3 && (f.includes(b) || b.includes(f)) && b.length >= 3 })
         if (hit) return hit
       }
+      // No bold at all (replay SPA-3 "…ME IN NAIL là lựa chọn chắc chắn hơn"): the compared venue named in a
+      // sentence that says it is the better one; or the only compared venue the reply names.
+      if (collector?.consultTurn === 'compare' && refers.length) {
+        const low = budgeted.toLowerCase()
+        const sentences = low.split(/(?<=[.!?\n])\s+/)
+        const better = /(?:chắc chắn hơn|tốt hơn|hợp hơn|phù hợp hơn|đáng chọn hơn|nên chọn|an toàn hơn|lựa chọn (?:tốt|chắc|an toàn)|ổn hơn)/
+        const inBetter = refers.filter(r => sentences.some(s => better.test(s) && s.includes(r.trim().toLowerCase())))
+        if (inBetter.length === 1) return inBetter[0]
+        const mentioned = refers.filter(r => low.includes(r.trim().toLowerCase()))
+        if (mentioned.length === 1) return mentioned[0]
+      }
       return null
     })()
-    const pickNormalized = consultPickTurn ? normalizePickSentence(budgeted, shoppingPickName(collector?.shoppingMarker) ?? placePickFallback) : budgeted
-    // Candidates = the card set (placesRecommendations — presearch rows reach it; latestPlaces does not,
-    // because presearch frames are prefixed outside this filter), then the model's own rows, then products.
-    const consultCandidates = collector?.placesRecommendations?.length
-      ? collector.placesRecommendations.map(r => r.entity.identity.name)
-      : latestPlaces.length ? latestPlaces.map(p => p.name ?? '') : productRecords.length ? productRecords.map(r => r.title || '') : shoppingMarkerNames(collector?.shoppingMarker)
+    // Reason labels are not alternatives (replay ENT-1: "- **Yên tĩnh hơn**: …" read as 3 alternatives): on a
+    // consult pick turn a bolded list label that is no candidate's name loses its bold.
+    const candidateKeys = [...consultCandidates, ...(collector?.consultRefers ?? [])].map(n => n.trim().toLowerCase()).filter(n => n.length >= 3)
+    const unlabelled = consultPickTurn
+      ? budgeted.replace(/^(\s*(?:[-•*]|\d+[.)])\s+)\*\*([^*\n]{2,40})\*\*(\s*:)/gm, (m, lead: string, label: string, colon: string) => {
+        const l = label.trim().toLowerCase()
+        return candidateKeys.some(k => k.includes(l) || l.includes(k)) ? m : `${lead}${label}${colon}`
+      })
+      : budgeted
+    const pickNormalized = consultPickTurn ? normalizePickSentence(unlabelled, shoppingPickName(collector?.shoppingMarker) ?? placePickFallback) : unlabelled
     const withRemaining = collector?.consultButtons?.length ? consultRemainingLine(pickNormalized, consultCandidates, lang) : pickNormalized
-    if (collector?.consultButtons?.length) console.log(JSON.stringify({ type: 'tappyai_consult_remaining', candidates: consultCandidates.length, recs: collector?.placesRecommendations?.length ?? 0, latest: latestPlaces.length, added: withRemaining !== pickNormalized, hasLine: /Mình còn \d+/.test(withRemaining) }))
     const placeGuarded = collector?.consultButtons?.length
       ? `${withRemaining.replace(/\[FOLLOWUPS\][^\n]*?(?:\[\/FOLLOWUPS\]|\n|$)/gi, '').trimEnd()}\n\n[FOLLOWUPS]${collector.consultButtons.join('|')}[/FOLLOWUPS]`
       : withRemaining
@@ -2681,7 +2700,7 @@ export function applyPlaceEnrichmentStreamFilter(
         : ''
       return confidentlyEnglish
         ? `I'd go with **${name}** — ${ratingText}${hoursText}.`
-        : `Mình chọn **${name}** — ${ratingText}${hoursText}.`
+        : collector?.consultTurn ? `**Mình chọn: ${name}** — ${ratingText}${hoursText}.` : `Mình chọn **${name}** — ${ratingText}${hoursText}.`
     }
     const releasedPrefix = flushedSent
     // Same whitespace-tolerant alignment as the final send below (see `alignReleasedPrefix`).
@@ -2749,7 +2768,9 @@ export function applyPlaceEnrichmentStreamFilter(
       }
       const sentences = sentenceSpans(body).map(([a, b]) => body.slice(a, b)).filter(s => s.trim())
       const hasPickSentence = sentences.some(s => namesKnown(s) && !ALT.test(s) && !ALT_SENTENCE.test(s))
-      if (hasPickSentence) return null
+      // Consult V2 (replay FOOD-3/ENT-3): a reply that already states "**Mình chọn: X**" has its pick — a
+      // second, backstop pick made the turn show two.
+      if (hasPickSentence || (collector?.consultTurn && /\*\*Mình chọn:/.test(body))) return null
       const altOnly = sentences.some(s => namesKnown(s))
       if (altOnly) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'consultative_v1_pick_backstop', step: 'alternatives_only' }))
       // The engine's Pick, or — when derivePick made none (measured T8: five shortlisted hotels,
@@ -2795,7 +2816,8 @@ export function applyPlaceEnrichmentStreamFilter(
         ? appendConsultPlanCost(restored, {
           people: partyCount(collector.consultKnown?.so_nguoi),
           band: [...priceBandsByEntity.values()][0] ?? null,
-          perHead: perPersonBudget(collector.userTexts ?? [userText]),
+          // The history is trimmed to 3 turns, so the per-person budget stated earlier comes from the router's slot.
+          perHead: perPersonBudget([...(collector.consultKnown?.ngan_sach ? [collector.consultKnown.ngan_sach] : []), ...(collector.userTexts ?? [userText])]),
           lang,
         }).text
         : restored

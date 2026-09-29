@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Cà Phê Sân Vườn Du Mục\" OR \"Bamos Coffee Quận 7\" OR \"An Coffee\" quan 7 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T00:38:59.178Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Cà Phê Sân Vườn Du Mục\" OR \"Bamos Coffee Quận 7\" OR \"An Coffee\" quan 7 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "An coffee - Workshop làm gốm (@vuonnhaan208)",
+    "link": "https://www.tiktok.com/@vuonnhaan208",
+    "snippet": "An coffee - Workshop làm gốm · @vuonnhaan208 · 208 Nguyễn Hữu Thọ, Tân Hưng,Quận 7 WORKSHOP NẶN GỐM & TÔ GỐM Sài Gòn giá trải nghiệm 199xu.",
+    "position": 1
+   },
+   {
+    "title": "Bamos Coffee Quận 7 - Cafe biệt thự núp hẻm 24/7, sân ...",
+    "link": "https://www.tiktok.com/@bamos.xinchao/video/7621056556284595477",
+    "snippet": "cafe biệt thự núp hẻm mở 24/7 Tổng quan Bamos Coffee nằm ở cuối đường số 65 (rẽ từ Nguyễn Thị Thập), ...",
+    "date": "Bamos Coffee Quận 7",
+    "position": 2
+   },
+   {
+    "title": "Workshop làm gốm quận 7 tại An Coffee",
+    "link": "https://www.tiktok.com/@meo_dihia/video/7597632438696774930",
+    "snippet": "Không gian quán cafe sân vườn tạo cảm giác thư giãn, phù hợp cho những ai muốn vừa uống cà phê vừa tham gia workshop làm đồ gốm. Tại An Coffee ...",
+    "position": 3
+   },
+   {
+    "title": "Review Bamos Coffee Quận 7 — Quán cafe Saigon được ...",
+    "link": "https://www.tiktok.com/@junie.daily/video/7655334947321908501",
+    "snippet": "355 Lượt thích,Video TikTok từ JUNIE DAILY (@junie.daily): \"Khám phá Bamos Coffee Quận 7: không gian, menu và lý do nên ghé qua. Review quán ...",
+    "position": 4
+   },
+   {
+    "title": "ghé An trải nghiệm ngay nhéee các tình iu ơi, nóng thế này ...",
+    "link": "https://www.tiktok.com/@vuonnhaan208/video/7495291058406886664",
+    "snippet": "ghé An trải nghiệm ngay nhéee các tình iu ơi, nóng thế này vào vườn. @An coffee - Workshop làm gốm.",
+    "position": 5
+   },
+   {
+    "title": "An Coffee Quận 7: Trải nghiệm Chữa lành Từ Cây và Đất",
+    "link": "https://www.tiktok.com/@vuonnhaan208/video/7665293416275643668",
+    "snippet": "Khám phá An Coffee tại Quận 7, một không gian mang đến trải nghiệm chữa lành thông qua sự kết hợp giữa cây xanh và đất.",
+    "position": 6
+   },
+   {
+    "title": "Bamos coffee quận 7 chiếc cà phê gần nhà nằm cuối con ...",
+    "link": "https://www.tiktok.com/@duydayvlog/video/7401531728860433680",
+    "snippet": "Coffee: Bamos coffee quận 7 chiếc cà phê gần nhà nằm cuối con đường cạnh sông mát mẻ và yên tĩnh quán mở 24/7 nên mọi người đến lúc nào cũng ...",
+    "position": 7
+   },
+   {
+    "title": "Cà phê chill thú vị tại quận 7",
+    "link": "https://www.tiktok.com/@hongdilongvong/video/7589839715747056916",
+    "snippet": "Cà phê chill giữa lòng quận 7. Tui mê đến nổi mỗi tuần tui phải ghé 1 lần mới chịu nổi đó @An coffee quận 7 - Vườn nhà An #reviewcafe ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

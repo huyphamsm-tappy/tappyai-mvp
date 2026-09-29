@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "ốp UAG Monarch iPhone 17 Pro Max MagSafe (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T19:18:33.553Z",
+ "body": {
+  "searchParameters": {
+   "q": "ốp UAG Monarch iPhone 17 Pro Max MagSafe (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Ốp lưng UAG cho iPhone 17 Series",
+    "link": "https://cellphones.com.vn/phu-kien/bao-da-op-lung/iphone/iphone-17/uag.html",
+    "snippet": "Hỗ trợ sạc không dây/MagSafe; Mỏng nhẹ; Chống sốc, va đập; Chống trầy xước; Có chân đứng; Hạn chế ngã màu. Dòng iPhone. iPhone 17 Pro Max; iPhone 17 Pro",
+    "position": 1
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Monarch ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-17-pro-max-uag-monarch-pro-exclusive-cap-carbon-fiber.html",
+    "snippet": "Dùng được cho. iPhone 17 Pro Max. Tính năng. Lõi Chống Sốc Lớp đệm bảo vệ chống va chạm và sốc. Tương thích MagSafe. Bảo vệ chống va đập từ độ cao 7,6 mét",
+    "position": 2
+   },
+   {
+    "title": "Ốp lưng UAG Monarch Pro w Magnetic cho iPhone 17 ...",
+    "link": "https://shopee.vn/%E1%BB%90p-l%C6%B0ng-UAG-Monarch-Pro-w-Magnetic-cho-iPhone-17-Pro-Max-6.9-inch--i.241319331.43818320892",
+    "snippet": "Mua Ốp lưng UAG Monarch Pro w Magnetic cho iPhone 17 Pro Max [6.9 inch] giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, ...",
+    "position": 3
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Civilian With ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-17-pro-max-uag-civilian-with-magsafe.html",
+    "snippet": "Dùng được cho. iPhone 17 Pro Max. Tính năng. Tương thích MagSafe. Các điểm neo dây đeo tích hợp. Bảo vệ chống va đập Hypercush Bảo vệ khi rơi từ độ cao 6m",
+    "position": 4
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro UAG chống sốc Monarch Pro Orange",
+    "link": "https://cellphones.com.vn/op-lung-iphone-17-pro-uag-monarch-pro-orange.html",
+    "snippet": "Lõi chống sốc hấp thụ và phân tán lực va đập. Khung giáp Signature Armor tăng cường độ bền và tạo vẻ ngoài đặc trưng. Tấm Polycarbonate chịu lực tăng cường ...",
+    "position": 5
+   },
+   {
+    "title": "Ốp lưng iPhone 18 Pro Max/17 Pro Max UAG Monarch Pro ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-18-pro-max17-pro-max-uag-monarch-pro-with-magsafe.html",
+    "snippet": "Smember Giảm thêm đến 110.000đ ; Thông số kỹ thuật · Thiết kế chất liệu chống sốc, trầy xước, va đập và hao mòn. Bảo vệ khi rơi từ độ cao 25 feet (7.6 mét) Được ...",
+    "position": 6
+   },
+   {
+    "title": "Ốp sợi Carbon chính hãng UAG Monarch Pro với Magsafe cho ...",
+    "link": "https://h5.lazada.vn/products/op-soi-carbon-chinh-hang-uag-monarch-pro-voi-magsafe-cho-iphone-17-pro-max-iphone-16-pro-max-iphone-15-pro-max-iphone-14-13-pro-max-cong-voi-bao-ve-chong-va-dap-chong-roi-quan-su-chac-chan-chong-va-dap-chong-truot-bia-i13404664039-s117075658304.html",
+    "snippet": "Ốp sợi Carbon chính hãng UAG Monarch Pro với Magsafe cho Iphone 17 Pro Max / iPhone 16 Pro Max / iPhone 15 Pro Max / iPhone 14 13 Pro Max cộng với bảo vệ chống ...",
+    "position": 7
+   },
+   {
+    "title": "So sánh Ốp lưng cho iPhone XS Max - UAG Monarch Series và ...",
+    "link": "https://cellphones.com.vn/so-sanh/op-lung-cho-iphone-xs-max-uag-monarch-series-vs-dong-ho-thong-minh-huami-amazfit-bip-u-pro",
+    "snippet": "So sánh chi tiết về giá, cấu hình, ưu nhược điểm giữa: Ốp lưng cho iPhone XS Max - UAG Monarch Series và Đồng hồ thông minh Huami Amazfit Bip U Pro.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Hộp quà tặng cao cấp cà phê hòa tan Hạt A Cafe 3 loại",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T00:48:25.427Z",
+ "body": {
+  "searchParameters": {
+   "q": "Hộp quà tặng cao cấp cà phê hòa tan Hạt A Cafe 3 loại",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Hộp quà tặng cao cấp cà phê hòa tan Hạt A Cafe 3 loại cà phê hòa tan 288g -  16 stick",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/vn-11134207-7ra0g-m78mtrldd9mk5e",
+    "imageWidth": 500,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQS81V6McW2z_JWqovtY50x4bBO8gl2nyYBHmmBcYEEwA&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/H%E1%BB%99p-qu%C3%A0-t%E1%BA%B7ng-cao-c%E1%BA%A5p-c%C3%A0-ph%C3%AA-h%C3%B2a-tan-H%E1%BA%A1t-A-Cafe-3-lo%E1%BA%A1i-c%C3%A0-ph%C3%AA-h%C3%B2a-tan-288g-16-stick-i.1476155731.27226615016",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fvn-11134207-7ra0g-m78mtrldd9mk5e&tbnid=Qj41Tk5MIJ8YoM&imgrefurl=https%3A%2F%2Fshopee.vn%2FH%25E1%25BB%2599p-qu%25C3%25A0-t%25E1%25BA%25B7ng-cao-c%25E1%25BA%25A5p-c%25C3%25A0-ph%25C3%25AA-h%25C3%25B2a-tan-H%25E1%25BA%25A1t-A-Cafe-3-lo%25E1%25BA%25A1i-c%25C3%25A0-ph%25C3%25AA-h%25C3%25B2a-tan-288g-16-stick-i.1476155731.27226615016&docid=6nBCynf3cfmvtM&w=500&h=500",
+    "position": 1
+   },
+   {
+    "title": "Hộp quà tặng cao cấp Hạt A Cafe Premium Gift Box Coffee 3 loại cà phê hòa  tan 288g - 16 stick",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-lzeb3qresu31d7",
+    "imageWidth": 1024,
+    "imageHeight": 1024,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjaizSD1LKFLkLxGoUUZ5Bm7ICrdyLE4BJ3EdkyiefUw&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/H%E1%BB%99p-qu%C3%A0-t%E1%BA%B7ng-cao-c%E1%BA%A5p-H%E1%BA%A1t-A-Cafe-Premium-Gift-Box-Coffee-3-lo%E1%BA%A1i-c%C3%A0-ph%C3%AA-h%C3%B2a-tan-288g-16-stick-i.312500391.7074996441",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fvn-11134207-7r98o-lzeb3qresu31d7&tbnid=rOtjxX9OAPaxlM&imgrefurl=https%3A%2F%2Fshopee.vn%2FH%25E1%25BB%2599p-qu%25C3%25A0-t%25E1%25BA%25B7ng-cao-c%25E1%25BA%25A5p-H%25E1%25BA%25A1t-A-Cafe-Premium-Gift-Box-Coffee-3-lo%25E1%25BA%25A1i-c%25C3%25A0-ph%25C3%25AA-h%25C3%25B2a-tan-288g-16-stick-i.312500391.7074996441&docid=rHkU3K8bKJE-LM&w=1024&h=1024",
+    "position": 2
+   },
+   {
+    "title": "Hộp quà cà phê hòa tan Trung Nguyên CTG399 - Hộp gỗ biếu tặng cao cấp » CT  BEE FARM - Mật Ong & Quà Tặng",
+    "imageUrl": "https://dacsangialaitoi.com/wp-content/uploads/2025/04/hop-qua-ca-phe-coffeegift01.jpg",
+    "imageWidth": 800,
+    "imageHeight": 800,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRwpy-oPojPSFOBks0Zx3rVKj2mW7sgXtTnuRTRaswC8Q&s=10",
+    "thumbnailWidth": 554,
+    "thumbnailHeight": 554,
+    "source": "Đặc Sản Tây Nguyên Cô Thủy",
+    "domain": "dacsangialaitoi.com",
+    "link": "https://dacsangialaitoi.com/san-pham/hop-qua-ca-phe-trung-nguyen-g399/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdacsangialaitoi.com%2Fwp-content%2Fuploads%2F2025%2F04%2Fhop-qua-ca-phe-coffeegift01.jpg&tbnid=4wvVGkVs3AuudM&imgrefurl=https%3A%2F%2Fdacsangialaitoi.com%2Fsan-pham%2Fhop-qua-ca-phe-trung-nguyen-g399%2F&docid=CRTLveFbhrakRM&w=800&h=800",
+    "position": 3
+   },
+   {
+    "title": "HỘP QUÀ CAO CẤP SÁNG TẠO 8 TRUNG NGUYÊN- GIÀU CÓ",
+    "imageUrl": "https://trungnguyencoffeevn.com/wp-content/uploads/2022/12/5000970-2.jpg",
+    "imageWidth": 1000,
+    "imageHeight": 1000,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPimJY_k0ABQTZ2tNY9mFUDkXgRJFh0xXkGT6qCjMkpQ&s=10",
+    "thumbnailWidth": 554,
+    "thumbnailHeight": 554,
+    "source": "Cafe Trung Nguyên, Cà Phê Trung Nguyên, Cà Phê",
+    "domain": "trungnguyencoffeevn.com",
+    "link": "https://trungnguyencoffeevn.com/product/https-trungnguyencoffeevn-com-product-hop-qua-cao-cap-ca-phe-chon-legend-trung-nguyen/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Ftrungnguyencoffeevn.com%2Fwp-content%2Fuploads%2F2022%2F12%2F5000970-2.jpg&tbnid=mwIIulIqkyhTuM&imgrefurl=https%3A%2F%2Ftrungnguyencoffeevn.com%2Fproduct%2Fhttps-trungnguyencoffeevn-com-product-hop-qua-cao-cap-ca-phe-chon-legend-trung-nguyen%2F&docid=9TAW1K1yK5xkCM&w=1000&h=1000",
+    "position": 4
+   },
+   {
+    "title": "HỘP QUÀ CAO CẤP SÁNG TẠO 8 TRUNG NGUYÊN- GIÀU CÓ",
+    "imageUrl": "https://trungnguyencoffeevn.com/wp-content/uploads/2022/12/5000970-3.jpg",
+    "imageWidth": 1000,
+    "imageHeight": 1000,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmg90FHTFiEtqjcIfdTEJ1QWky0_-OpflI5y6jdA5png&s=10",
+    "thumbnailWidth": 554,
+    "thumbnailHeight": 554,
+    "source": "Cafe Trung Nguyên, Cà Phê Trung Nguyên, Cà Phê",
+    "domain": "trungnguyencoffeevn.com",
+    "link": "https://trungnguyencoffeevn.com/product/https-trungnguyencoffeevn-com-product-hop-qua-cao-cap-ca-phe-chon-legend-trung-nguyen/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Ftrungnguyencoffeevn.com%2Fwp-content%2Fuploads%2F2022%2F12%2F5000970-3.jpg&tbnid=sKkHIgjdE0ytGM&imgrefurl=https%3A%2F%2Ftrungnguyencoffeevn.com%2Fproduct%2Fhttps-trungnguyencoffeevn-com-product-hop-qua-cao-cap-ca-phe-chon-legend-trung-nguyen%2F&docid=9TAW1K1yK5xkCM&w=1000&h=1000",
+    "position": 5
+   },
+   {
+    "title": "Hộp Quà Cà Phê Hòa Tan",
+    "imageUrl": "https://drive.gianhangvn.com/image/hop-qua-ca-phe-hoa-tan-2602764j19274x3.jpg",
+    "imageWidth": 300,
+    "imageHeight": 300,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTU221FvwuISSurbkJ6c0WaY7f98tjYpmLv7xD8Vi1hDg&s=10",
+    "thumbnailWidth": 300,
+    "thumbnailHeight": 300,
+    "source": "Cà Phê Chồn Legend Trung Nguyên",
+    "domain": "shopcafetrungnguyen.com",
+    "link": "https://shopcafetrungnguyen.com/hop-qua-ca-phe-hoa-tan-1451565.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdrive.gianhangvn.com%2Fimage%2Fhop-qua-ca-phe-hoa-tan-2602764j19274x3.jpg&tbnid=BXo9lpi6gTYgYM&imgrefurl=https%3A%2F%2Fshopcafetrungnguyen.com%2Fhop-qua-ca-phe-hoa-tan-1451565.html&docid=xpR4nJNjBt8qtM&w=300&h=300",
+    "position": 6
+   },
+   {
+    "title": "Hộp Quà Tết Cao Cấp, Set Quà Tặng Cà phê Đặc sản từ Message Coffee",
+    "imageUrl": "https://cdn.hstatic.net/products/200000870851/1000x1000-03_cf353d3d3ace48a0a5ac94fca28384a3_master.jpg",
+    "imageWidth": 2048,
+    "imageHeight": 2048,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4qUdcAVZcZaWtNKYzLLVTFCJemVsst8VX3T60X_NGfw&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Message Coffee",
+    "domain": "messagecoffee.com",
+    "link": "https://messagecoffee.com/products/hop-qua-tet-cao-cap-set-qua-tang-ca-phe-dac-san-combo-cafe-nguyen-chat-hoa-tan-kem-phin-ly-tu-message-coffee",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.hstatic.net%2Fproducts%2F200000870851%2F1000x1000-03_cf353d3d3ace48a0a5ac94fca28384a3_master.jpg&tbnid=vPJmbu6gjS-4EM&imgrefurl=https%3A%2F%2Fmessagecoffee.com%2Fproducts%2Fhop-qua-tet-cao-cap-set-qua-tang-ca-phe-dac-san-combo-cafe-nguyen-chat-hoa-tan-kem-phin-ly-tu-message-coffee&docid=NDs7gFUbaAIzoM&w=2048&h=2048",
+    "position": 7
+   },
+   {
+    "title": "Hộp quà cà phê hòa tan, cà phê hòa tan legend, quà tặng cà phê",
+    "imageUrl": "https://trungnguyencoffeevn.com/wp-content/uploads/2023/12/z5021197225158_eef9d33978f922832d37d667695dd349.jpg",
+    "imageWidth": 964,
+    "imageHeight": 1282,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSjepK_lxrmKYyFaKPZ90ch9tYADFDjIEFo-j-7pVQJCg&s=10",
+    "thumbnailWidth": 480,
+    "thumbnailHeight": 638,
+    "source": "Cafe Trung Nguyên, Cà Phê Trung Nguyên, Cà Phê",
+    "domain": "trungnguyencoffeevn.com",
+    "link": "https://trungnguyencoffeevn.com/product/https-trungnguyenlegendcafe-net-product-trung-nguyen-legend-classic-hop-21-goi/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Ftrungnguyencoffeevn.com%2Fwp-content%2Fuploads%2F2023%2F12%2Fz5021197225158_eef9d33978f922832d37d667695dd349.jpg&tbnid=AEGx-A0bM-OOQM&imgrefurl=https%3A%2F%2Ftrungnguyencoffeevn.com%2Fproduct%2Fhttps-trungnguyenlegendcafe-net-product-trung-nguyen-legend-classic-hop-21-goi%2F&docid=V8dVkXkB3fanoM&w=964&h=1282",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

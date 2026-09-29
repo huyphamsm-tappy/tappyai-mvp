@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Meliá Vinpearl Danang Riverfront",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T19:20:15.290Z",
+ "body": {
+  "searchParameters": {
+   "q": "Meliá Vinpearl Danang Riverfront",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Meliá Vinpearl Danang Riverfront | Giá tốt nhất trực tuyến cho khách sạn 5  sao tại Đà Nẵng | Melia.com",
+    "imageUrl": "https://dam.melia.com/melia/file/LW8oPfFqcFdyc8bCx1L4.jpg?im=RegionOfInterestCrop=(1666,1999),regionOfInterest=(1771.5,1180)",
+    "imageWidth": 1666,
+    "imageHeight": 1999,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyy1R1dYolGg3F4Ex4RTu9-sV7vZK8JCBLhADaKpJGXw&s=10",
+    "thumbnailWidth": 407,
+    "thumbnailHeight": 491,
+    "source": "Melia Hotels",
+    "domain": "www.melia.com",
+    "link": "https://www.melia.com/vi/hotels/vietnam/da-nang/melia-vinpearl-danang-riverfront",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdam.melia.com%2Fmelia%2Ffile%2FLW8oPfFqcFdyc8bCx1L4.jpg%3Fim%3DRegionOfInterestCrop%3D(1666%2C1999)%2CregionOfInterest%3D(1771.5%2C1180)&tbnid=bMtNv6kGcMj5uM&imgrefurl=https%3A%2F%2Fwww.melia.com%2Fvi%2Fhotels%2Fvietnam%2Fda-nang%2Fmelia-vinpearl-danang-riverfront&docid=L8nvPdcg3tTIAM&w=1666&h=1999",
+    "position": 1
+   },
+   {
+    "title": "Meliá Vinpearl Danang Riverfront, Đà Nẵng (cập nhật giá năm 2027)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/893024149.jpg?k=8205d2b43744f5cf2f2af8b868cd693577639cf0e9d27a579af943af21044643&o=",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrULXpTZYhSU7VEKi2VqjgApHYQEwh8X991rFNMThY_A&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "www.booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/melia-vinpearl-danang-riverfont.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F893024149.jpg%3Fk%3D8205d2b43744f5cf2f2af8b868cd693577639cf0e9d27a579af943af21044643%26o%3D&tbnid=CjiaTzP5oYYDCM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fmelia-vinpearl-danang-riverfont.vi.html&docid=50oyyRkrUB6dtM&w=1024&h=683",
+    "position": 2
+   },
+   {
+    "title": "Meliá Vinpearl Danang Riverfront, Đà Nẵng (cập nhật giá năm 2027)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/893024178.jpg?k=be4ad6a7553525bab1dc7640f6f441450c24b9920913c2b937aeb3a1715149b9&o=",
+    "imageWidth": 1024,
+    "imageHeight": 682,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMszcOi578Y1df4yO14BdS87f0Bgro_WQ9UoOlDSNnuQ&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "www.booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/melia-vinpearl-danang-riverfont.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F893024178.jpg%3Fk%3Dbe4ad6a7553525bab1dc7640f6f441450c24b9920913c2b937aeb3a1715149b9%26o%3D&tbnid=XUNnyvx96P8vCM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fmelia-vinpearl-danang-riverfont.vi.html&docid=50oyyRkrUB6dtM&w=1024&h=682",
+    "position": 3
+   },
+   {
+    "title": "MELIA VINPEARL DANANG RIVERFRONT (An Hai Bac) - Đánh giá Khách sạn & So  sánh giá - Tripadvisor",
+    "imageUrl": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/26/f4/89/4a/pool-bar.jpg?w=900&h=500&s=1",
+    "imageWidth": 900,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4e-hEP6qsGvBMuxVN4bQj0DsAPmR3VpKUO_UAT1W0kg&s=10",
+    "thumbnailWidth": 599,
+    "thumbnailHeight": 333,
+    "source": "Tripadvisor",
+    "domain": "www.tripadvisor.com.vn",
+    "link": "https://www.tripadvisor.com.vn/Hotel_Review-g19935676-d14120429-Reviews-Melia_Vinpearl_Danang_Riverfront-An_Hai_Bac_Son_Tra_Peninsula_Da_Nang.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdynamic-media-cdn.tripadvisor.com%2Fmedia%2Fphoto-o%2F26%2Ff4%2F89%2F4a%2Fpool-bar.jpg%3Fw%3D900%26h%3D500%26s%3D1&tbnid=KmRhh5o0FxHHxM&imgrefurl=https%3A%2F%2Fwww.tripadvisor.com.vn%2FHotel_Review-g19935676-d14120429-Reviews-Melia_Vinpearl_Danang_Riverfront-An_Hai_Bac_Son_Tra_Peninsula_Da_Nang.html&docid=pp2zXriIPI6QxM&w=900&h=500",
+    "position": 4
+   },
+   {
+    "title": "Melia Vinpearl Riverfront Đà Nẵng: Vị trí, tiện ích, review, giá bán và  kinh nghiệm đặt phòng",
+    "imageUrl": "https://phetravel.com/thumbnails/products/large/uploads/melia-vinpearl-riverfront-da-nang-9.webp",
+    "imageWidth": 800,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdnjiSSvVRuNmGLu8-jm7mZdpND7Tl48ViLXBvFbAe3g&s=10",
+    "thumbnailWidth": 565,
+    "thumbnailHeight": 353,
+    "source": "Phê travel",
+    "domain": "phetravel.com",
+    "link": "https://phetravel.com/melia-vinpearl-riverfront-da-nang",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fphetravel.com%2Fthumbnails%2Fproducts%2Flarge%2Fuploads%2Fmelia-vinpearl-riverfront-da-nang-9.webp&tbnid=H888rQkOFkA9LM&imgrefurl=https%3A%2F%2Fphetravel.com%2Fmelia-vinpearl-riverfront-da-nang&docid=5-ZjKlJ8Yzy0jM&w=800&h=500",
+    "position": 5
+   },
+   {
+    "title": "Meliá Vinpearl Danang Riverfront | Giá tốt nhất trực tuyến cho khách sạn 5  sao tại Đà Nẵng | Melia.com",
+    "imageUrl": "https://dam.melia.com/melia/file/Bag15KvHL946mEJRRaD3.jpg?im=RegionOfInterestCrop=(1666,1999),regionOfInterest=(1771.5,1180)",
+    "imageWidth": 1666,
+    "imageHeight": 1999,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvMAJG5PrLfVdezw0sojSaIzuxDTAEhg-cHQe1mrH6gQ&s=10",
+    "thumbnailWidth": 407,
+    "thumbnailHeight": 491,
+    "source": "Melia Hotels",
+    "domain": "www.melia.com",
+    "link": "https://www.melia.com/vi/hotels/vietnam/da-nang/melia-vinpearl-danang-riverfront",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdam.melia.com%2Fmelia%2Ffile%2FBag15KvHL946mEJRRaD3.jpg%3Fim%3DRegionOfInterestCrop%3D(1666%2C1999)%2CregionOfInterest%3D(1771.5%2C1180)&tbnid=ZFfB-n9MV_uMGM&imgrefurl=https%3A%2F%2Fwww.melia.com%2Fvi%2Fhotels%2Fvietnam%2Fda-nang%2Fmelia-vinpearl-danang-riverfront&docid=L8nvPdcg3tTIAM&w=1666&h=1999",
+    "position": 6
+   },
+   {
+    "title": "Melia Vinpearl Riverfront Đà Nẵng, An Hải Bắc, Đà Nẵng",
+    "imageUrl": "https://pix10.agoda.net/hotelImages/4947690/514453133/625069ac295222eb5eae548cd6b8ab77.jpeg?ce=3&s=414x232",
+    "imageWidth": 348,
+    "imageHeight": 232,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGDpE3Eid-TRtXj6q1N7BH3HihAbx9jZPVhqS_uYDXVA&s=10",
+    "thumbnailWidth": 348,
+    "thumbnailHeight": 232,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/vinpearl-condotel-riverfront-da-nang/hotel/da-nang-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F4947690%2F514453133%2F625069ac295222eb5eae548cd6b8ab77.jpeg%3Fce%3D3%26s%3D414x232&tbnid=j9T9OTmVB5xN5M&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fvinpearl-condotel-riverfront-da-nang%2Fhotel%2Fda-nang-vn.html&docid=xQXW3023CTtWVM&w=348&h=232",
+    "position": 7
+   },
+   {
+    "title": "Chi tiết các hạng phòng và giá phòng tại khách sạn Melia Vinpearl  Riverfront Đà Nẵng",
+    "imageUrl": "https://phetravel.com/uploads/2026/06/vi-tri-dia-ly-dac-dia-cua-melia-vinpearl-riverfront-da-nang-1.jpg",
+    "imageWidth": 1295,
+    "imageHeight": 728,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4QXWt5RDLeY5_JgeYNGAHkW6_rUyffm_Td9Wu4L7aJw&s=10",
+    "thumbnailWidth": 597,
+    "thumbnailHeight": 335,
+    "source": "Phê travel",
+    "domain": "phetravel.com",
+    "link": "https://phetravel.com/chi-tiet-cac-hang-phong-va-gia-phong-tai-khach-san-melia-vinpearl-riverfront-da-nang",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fphetravel.com%2Fuploads%2F2026%2F06%2Fvi-tri-dia-ly-dac-dia-cua-melia-vinpearl-riverfront-da-nang-1.jpg&tbnid=FHFh-Dr55meoFM&imgrefurl=https%3A%2F%2Fphetravel.com%2Fchi-tiet-cac-hang-phong-va-gia-phong-tai-khach-san-melia-vinpearl-riverfront-da-nang&docid=H_bGLJdijP7DRM&w=1295&h=728",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

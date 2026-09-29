@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Hộp quà tặng kèm sổ da Parker\" (site:dienmayxanh.com OR site:cellphones.com.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T19:19:13.415Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Hộp quà tặng kèm sổ da Parker\" (site:dienmayxanh.com OR site:cellphones.com.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

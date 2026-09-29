@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "[SALE 8.8] Hộp Cà Phê Cao Cấp Mix 6 Vị,",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T00:48:25.248Z",
+ "body": {
+  "searchParameters": {
+   "q": "[SALE 8.8] Hộp Cà Phê Cao Cấp Mix 6 Vị,",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "[SALE 8.8] Hộp Cà Phê Cao Cấp Mix 6 Vị, Cà Phê Hòa Tan Xuất Khẩu, Quà Tặng  Sang Trọng, Làm Quà Biếu",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mqvpatetn5e494",
+    "imageWidth": 1024,
+    "imageHeight": 1024,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRRMxEqdlDk4aGpjseTyWWCZXHos7Gp7cEI_3kqp4ttug&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/product-i.1122792718.29103327133?from_source=h5_video_page",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fvn-11134207-81ztc-mqvpatetn5e494&tbnid=1ZX7Hun76p0s7M&imgrefurl=https%3A%2F%2Fshopee.vn%2Fproduct-i.1122792718.29103327133%3Ffrom_source%3Dh5_video_page&docid=8hG4mneZreuR-M&w=1024&h=1024",
+    "position": 1
+   },
+   {
+    "title": "[SALE 8.8] Hộp Cà Phê Cao Cấp Mix 6 Vị, Cà Phê Hòa Tan Xuất Khẩu, Quà Tặng  Sang Trọng, Làm Quà Biếu",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mqvpap8j5fcw2b",
+    "imageWidth": 1024,
+    "imageHeight": 1024,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQm4iGVpz-mi9jvTmYBPBRfD8NRbUVP2iiI4q7rJujhUg&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/product-i.1122792718.29103327133?from_source=h5_video_page",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fvn-11134207-81ztc-mqvpap8j5fcw2b&tbnid=rnrO_Obv9pBx-M&imgrefurl=https%3A%2F%2Fshopee.vn%2Fproduct-i.1122792718.29103327133%3Ffrom_source%3Dh5_video_page&docid=8hG4mneZreuR-M&w=1024&h=1024",
+    "position": 2
+   },
+   {
+    "title": "[SALE 8.8] Hộp Cà Phê Cao Cấp Mix 6 Vị, Cà Phê Hòa Tan Xuất Khẩu, Quà Tặng  Sang Trọng, Làm Quà Biếu",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mqvpajzpsbuv37",
+    "imageWidth": 1024,
+    "imageHeight": 1024,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRcRosOo4ZgV5okYv323oOhiK8u_5fOlnkB-wqEv4tlBw&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/product-i.1122792718.29103327133?from_source=h5_video_page",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fvn-11134207-81ztc-mqvpajzpsbuv37&tbnid=ojlQp2xMmH8HrM&imgrefurl=https%3A%2F%2Fshopee.vn%2Fproduct-i.1122792718.29103327133%3Ffrom_source%3Dh5_video_page&docid=8hG4mneZreuR-M&w=1024&h=1024",
+    "position": 3
+   },
+   {
+    "title": "[SALE 8.8] Hộp Cà Phê Cao Cấp Mix 6 Vị, Cà Phê Hòa Tan Xuất Khẩu, Quà Tặng  Sang Trọng, Làm Quà Biếu",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mqvpafwvsw0783",
+    "imageWidth": 1024,
+    "imageHeight": 1024,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSslhiE8TRM9DJTOWD9rohWZxabiXlSzE9Jb3R_hINqBg&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/product-i.1122792718.29103327133?from_source=h5_video_page",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fvn-11134207-81ztc-mqvpafwvsw0783&tbnid=AkYaFF7jsZD2IM&imgrefurl=https%3A%2F%2Fshopee.vn%2Fproduct-i.1122792718.29103327133%3Ffrom_source%3Dh5_video_page&docid=8hG4mneZreuR-M&w=1024&h=1024",
+    "position": 4
+   },
+   {
+    "title": "[SALE 8.8] Hộp Cà Phê Cao Cấp Mix 6 Vị, Cà Phê Hòa Tan Xuất Khẩu, Quà Tặng  Sang Trọng, Làm Quà Biếu",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mqvp9ww7uosi81",
+    "imageWidth": 1024,
+    "imageHeight": 1024,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBItc_UKoZ2s4f5miR3wWNicZVNAdbqExEC553iMAEyg&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/product-i.1122792718.29103327133?from_source=h5_video_page",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fvn-11134207-81ztc-mqvp9ww7uosi81&tbnid=z9AwxjpRzKAI5M&imgrefurl=https%3A%2F%2Fshopee.vn%2Fproduct-i.1122792718.29103327133%3Ffrom_source%3Dh5_video_page&docid=8hG4mneZreuR-M&w=1024&h=1024",
+    "position": 5
+   },
+   {
+    "title": "[SALE 8.8] Hộp Cà Phê Cao Cấp Mix 6 Vị, Cà Phê Hòa Tan Xuất Khẩu, Quà Tặng  Sang Trọng, Làm Quà Biếu",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/vn-11134207-820l4-mjau1sadyccib5",
+    "imageWidth": 1001,
+    "imageHeight": 1001,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-C6FkkWlnPiH4xnA3Q3Mh_nhdZjY6_tDU3hDEPk5g7Q&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/product-i.1122792718.29103327133?from_source=h5_video_page",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fvn-11134207-820l4-mjau1sadyccib5&tbnid=GL2A1Zo76N_rjM&imgrefurl=https%3A%2F%2Fshopee.vn%2Fproduct-i.1122792718.29103327133%3Ffrom_source%3Dh5_video_page&docid=8hG4mneZreuR-M&w=1001&h=1001",
+    "position": 6
+   },
+   {
+    "title": "[SALE 8.8] Hộp Cà Phê Cao Cấp Mix 6 Vị, Cà Phê Hòa Tan Xuất Khẩu, Quà Tặng  Sang Trọng, Làm Quà Biếu",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mqvp9wwp962ofc",
+    "imageWidth": 1024,
+    "imageHeight": 1024,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsZvphYYgbM_2fG_xSAd9Pl-4mwuD7SDtb4MvNMYFYng&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/product-i.1122792718.29103327133?from_source=h5_video_page",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fvn-11134207-81ztc-mqvp9wwp962ofc&tbnid=10PORdXNApLPWM&imgrefurl=https%3A%2F%2Fshopee.vn%2Fproduct-i.1122792718.29103327133%3Ffrom_source%3Dh5_video_page&docid=8hG4mneZreuR-M&w=1024&h=1024",
+    "position": 7
+   },
+   {
+    "title": "[SALE 8.8] Hộp Cà Phê Cao Cấp Mix 6 Vị, Cà Phê Hòa Tan Xuất Khẩu, Quà Tặng  Sang Trọng, Làm Quà Biếu",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/vn-11134207-820l4-mjau1sb82qrr4c",
+    "imageWidth": 1001,
+    "imageHeight": 1001,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRkJsZ1RA3xWtqaP3i2MQboZ0agDTcdJsjcMEx6WKj6wg&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/product-i.1122792718.29103327133?from_source=h5_video_page",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fvn-11134207-820l4-mjau1sb82qrr4c&tbnid=SrTZe5FQZEtn1M&imgrefurl=https%3A%2F%2Fshopee.vn%2Fproduct-i.1122792718.29103327133%3Ffrom_source%3Dh5_video_page&docid=8hG4mneZreuR-M&w=1001&h=1001",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

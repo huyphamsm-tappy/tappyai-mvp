@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "quán bánh sân vườn giao tận nơi đồ chiên quan 7 gia menu thuc don",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T00:38:52.386Z",
+ "body": {
+  "searchParameters": {
+   "q": "quán bánh sân vườn giao tận nơi đồ chiên quan 7 gia menu thuc don",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Vườn Thư Giãn Nhà Bè Quận 7: Quán Sân Vườn Ăn Ngon ...",
+    "link": "https://www.tiktok.com/@diadiemanuong/video/7587351894503329031",
+    "snippet": "Điểm đặc biệt là thực đơn đa dạng với nhiều món hải sản tươi sống, đồ đồng quê và các món nướng, lẩu, chiên xào. Một số món được nhiều người ...",
+    "position": 1
+   },
+   {
+    "title": "Các nhà hàng sân vườn ở quận 7 view thoáng đãng, ngon ...",
+    "link": "https://vincom.com.vn/trend/nha-hang-san-vuon-quan-7",
+    "snippet": "Thực đơn đặc biệt của nhà hàng là buffet hải sản và đồ nướng. Hơn 40 món buffet được chế biến từ những đầu bếp tài ba, gồm những món ăn từ hải sản tươi ngon ...",
+    "position": 2
+   },
+   {
+    "title": "Top 7 quán ăn sáng ngon Phú Mỹ Hưng Quận 7 nên thử ít ...",
+    "link": "https://bathaofood.com/quan-an-ngon-phu-my-hung-quan-7/",
+    "snippet": "Top 1: Hệ thống bánh canh cá lóc BaThao · Địa chỉ: 72 Cao Triều Phát, Phú Mỹ Hưng, Quận 7, TP. · Giờ mở cửa: 6h – 21h (đông khách lúc 7h và 20h) ...",
+    "date": "7 thg 9, 2025",
+    "position": 3
+   },
+   {
+    "title": "Ghé ngay 25 quán ăn ngon quận 7 'ngon-bổ-rẻ'",
+    "link": "https://www.bachhoaxanh.com/kinh-nghiem-hay/ke-ten-top-15-quan-an-ngon-quan-7-xem-ban-hieu-ro-sai-gon-ra-sao-1297633",
+    "snippet": "Món ngon nhất: Cơm chiên xá xíu, cơm gà nướng mật ong,... Ưu điểm: Thịt sườn ngon mềm, ướp cay cay, có giao hàng tận nơi. Nhược điểm: Quán hơi nhỏ, nên không ...",
+    "position": 4
+   },
+   {
+    "title": "Hãy ăn thử quán này trước khi đông không có chỗ ngồi. ...",
+    "link": "https://www.facebook.com/groups/riviu.official/posts/4179871878809397/",
+    "snippet": "Địa chỉ : bột chiên bánh xếp Quốc Triều góc đường 14 và đường Võ Thị Đặng quận 7 cũ. Gần chợ Tân Mỹ và cạnh cafe Chất. Mở 7h sáng - 9h tối ...",
+    "position": 5
+   },
+   {
+    "title": "Ở Quận 7, sau giờ làm thì đi đâu?  Một chiếc không gian ...",
+    "link": "https://www.facebook.com/SuGarden.D7/videos/%E1%BB%9F-qu%E1%BA%ADn-7-sau-gi%E1%BB%9D-l%C3%A0m-th%C3%AC-%C4%91i-%C4%91%C3%A2u-m%E1%BB%99t-chi%E1%BA%BFc-kh%C3%B4ng-gian-s%C3%A2n-v%C6%B0%E1%BB%9Dn-tho%C3%A1ng-%C4%91%C3%A3ng-m%C3%B3n-%C4%83n/26123623260580807/",
+    "snippet": "Từ món lai rai đến combo nướng nghi ngút khói, mọi thứ đều đã sẵn sàng để bạn tạm gác lại deadline và tận hưởng một buổi tối thật trọn vẹn ✨ ...",
+    "position": 6
+   },
+   {
+    "title": "Wok Of Love Quận 7",
+    "link": "https://www.order.capichiapp.com/vi/ho-chi-minh/phuong-tan-thuan/restaurant/wokofloveQuan7hochiminh",
+    "snippet": "Wok Of Love Quận 7 ; Mì Tương Đen Thượng Hải. 194.400 · đ ; Mì Champong Cay. 194.400 · đ ; Mì Bò Đỏ Đài Loan. 248.400 · đ ; Bánh Bao Chiên. 97.200 · đ ; Cà Tím Tôm Giòn ...",
+    "position": 7
+   },
+   {
+    "title": "Top 20 quán ăn ngon quận 7 ăn tới đâu ghiền tới đó",
+    "link": "https://go2joy.vn/blog/quan-an-ngon-quan-7/",
+    "snippet": "2. Top 10 quán ngon quận 7 nổi tiếng · 2.1 Ẩm thực Sân Vườn Mái Lá · 2.2 Nhà hàng Thạch Hãn · 2.3 Shang Garden · 2.4 Chloe Gallery · 2.5 The Crab ...",
+    "date": "4 thg 8, 2023",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

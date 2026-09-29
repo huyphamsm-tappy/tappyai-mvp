@@ -1,0 +1,137 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Melissa - Vung Tau | Khách Sạn Bãi Sau Vũng Tàu",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T19:21:04.175Z",
+ "body": {
+  "searchParameters": {
+   "q": "Melissa - Vung Tau | Khách Sạn Bãi Sau Vũng Tàu",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Melissa - Vung Tau | Khách Sạn Bãi Sau Vũng Tàu - Giá cả và Ưu đãi 2026,  TP. Hồ Chí Minh",
+    "imageUrl": "https://ak-d.tripcdn.com/images/1mc6112000bd5feh3BCA6_R_960_660_R5_D.jpg",
+    "imageWidth": 960,
+    "imageHeight": 660,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQod4JX80qfpSjNiWNfEb9zEMlcJzveqleNVsAJZ2McWg&s=10",
+    "thumbnailWidth": 539,
+    "thumbnailHeight": 371,
+    "source": "Trip.com",
+    "domain": "vn.trip.com",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-hotel-detail-105061137/melissa-hotel/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fak-d.tripcdn.com%2Fimages%2F1mc6112000bd5feh3BCA6_R_960_660_R5_D.jpg&tbnid=dXj-Rwx9ZcfjhM&imgrefurl=https%3A%2F%2Fvn.trip.com%2Fhotels%2Fho-chi-minh-city-hotel-detail-105061137%2Fmelissa-hotel%2F&docid=b74piq2sN2vd8M&w=960&h=660",
+    "position": 1
+   },
+   {
+    "title": "KHÁCH SẠN MELISSA HOTEL 📍ĐỊA CHỈ: 23D THÙY VÂN, P.2, VŨNG TÀU 🔥 Deluxe  Queen : 3xx/phòng/đêm/2 khách ✔️ Giá áp dụng trong tuần Chủ nhật - Thứ 6.  ✔️ Miễn phí",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=567447106218439",
+    "imageWidth": 1365,
+    "imageHeight": 2048,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRr_HRCjtdgvxz_4gmN6sy0O3qsic75_PdkoN9vNXR35A&s=10",
+    "thumbnailWidth": 365,
+    "thumbnailHeight": 547,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/melissahotel.vungtau/posts/kh%C3%A1ch-s%E1%BA%A1n-melissa-hotel%C4%91%E1%BB%8Ba-ch%E1%BB%89-23d-th%C3%B9y-v%C3%A2n-p2-v%C5%A9ng-t%C3%A0u-deluxe-queen-3xxph%C3%B2ng%C4%91%C3%AAm/567450086218141/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D567447106218439&tbnid=3jHH0TsaKM8LNM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Fmelissahotel.vungtau%2Fposts%2Fkh%25C3%25A1ch-s%25E1%25BA%25A1n-melissa-hotel%25C4%2591%25E1%25BB%258Ba-ch%25E1%25BB%2589-23d-th%25C3%25B9y-v%25C3%25A2n-p2-v%25C5%25A9ng-t%25C3%25A0u-deluxe-queen-3xxph%25C3%25B2ng%25C4%2591%25C3%25AAm%2F567450086218141%2F&docid=NNq6vDvO6eNdSM&w=1365&h=2048",
+    "creator": "nguyen hieu",
+    "position": 2
+   },
+   {
+    "title": "MELISSA HOTEL - VUNG TAU (Vũng Tàu) - Đánh giá Khách sạn & So sánh giá -  Tripadvisor",
+    "imageUrl": "https://media-cdn.tripadvisor.com/media/photo-s/29/66/a8/d3/melissa-hotel.jpg",
+    "imageWidth": 550,
+    "imageHeight": 366,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGcLbF08_4xWn8-BWzhXk1Yn8AHNgH19MJua1X4_tf7Q&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "Tripadvisor",
+    "domain": "www.tripadvisor.com.vn",
+    "link": "https://www.tripadvisor.com.vn/Hotel_Review-g303946-d25985557-Reviews-Melissa_Hotel_Vung_Tau-Vung_Tau_Ba_Ria_Vung_Tau_Province.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fmedia-cdn.tripadvisor.com%2Fmedia%2Fphoto-s%2F29%2F66%2Fa8%2Fd3%2Fmelissa-hotel.jpg&tbnid=YDqqM-Hdd2RdsM&imgrefurl=https%3A%2F%2Fwww.tripadvisor.com.vn%2FHotel_Review-g303946-d25985557-Reviews-Melissa_Hotel_Vung_Tau-Vung_Tau_Ba_Ria_Vung_Tau_Province.html&docid=IDGgPMD4fqs_XM&w=550&h=366",
+    "position": 3
+   },
+   {
+    "title": "Melissa Hotel - Vũng Tàu, Thành phố Hồ Chí Minh | Hotels.com",
+    "imageUrl": "https://images.trvl-media.com/lodging/95000000/94700000/94691900/94691899/0c424c00.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill",
+    "imageWidth": 863,
+    "imageHeight": 575,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9vrFW0iXH8bK1AHimvXQ1nUN0WhsyZmQ555OFUzS8Aw&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "hotels",
+    "domain": "vi.hotels.com",
+    "link": "https://vi.hotels.com/ho3031140768/melissa-hotel-vung-tau-vung-tau-viet-nam/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimages.trvl-media.com%2Flodging%2F95000000%2F94700000%2F94691900%2F94691899%2F0c424c00.jpg%3Fimpolicy%3Dresizecrop%26rw%3D575%26rh%3D575%26ra%3Dfill&tbnid=HdKXzk6XNufzbM&imgrefurl=https%3A%2F%2Fvi.hotels.com%2Fho3031140768%2Fmelissa-hotel-vung-tau-vung-tau-viet-nam%2F&docid=lXvjY7g36QImLM&w=863&h=575",
+    "position": 4
+   },
+   {
+    "title": "Melissa Hotel - Vũng Tàu, Thành phố Hồ Chí Minh | Hotels.com",
+    "imageUrl": "https://images.trvl-media.com/lodging/95000000/94700000/94691900/94691899/0d39baf7.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill",
+    "imageWidth": 864,
+    "imageHeight": 575,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQK5QS6kSPg1uxmMDWDsaR2mOfwu-S7kgpACiD4GtJwpg&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "hotels",
+    "domain": "vi.hotels.com",
+    "link": "https://vi.hotels.com/ho3031140768/melissa-hotel-vung-tau-vung-tau-viet-nam/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimages.trvl-media.com%2Flodging%2F95000000%2F94700000%2F94691900%2F94691899%2F0d39baf7.jpg%3Fimpolicy%3Dresizecrop%26rw%3D575%26rh%3D575%26ra%3Dfill&tbnid=bzujm4xqiyTK7M&imgrefurl=https%3A%2F%2Fvi.hotels.com%2Fho3031140768%2Fmelissa-hotel-vung-tau-vung-tau-viet-nam%2F&docid=lXvjY7g36QImLM&w=864&h=575",
+    "position": 5
+   },
+   {
+    "title": "🌈KHÁCH SẠN MELISSA VŨNG TÀU 🌹🌹🌹🌹 💥💥Vị trí : Tọa lạc tại 23D Đường  Thùy Vân, Phường 2, TP.Vũng Tàu. Khách sạn giá sinh viên khu Bãi Sau gần  biển bãi tắm (",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=673041302325685",
+    "imageWidth": 2048,
+    "imageHeight": 1365,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwP0jXHo9y-MtAQebOR4LSfZBA0zzyXhQbOjoV-K42Kg&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/groups/khachsanVungTau/posts/3038957502943204/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D673041302325685&tbnid=cgosNNB0tBw7VM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Fgroups%2FkhachsanVungTau%2Fposts%2F3038957502943204%2F&docid=Y8KI7gZCDkTiKM&w=2048&h=1365",
+    "position": 6
+   },
+   {
+    "title": "Khách sạn Melissa Vũng Tàu - Tico Travel - Dịch vụ thuê villa, biệt thự  nghỉ dưỡng hàng đầu Việt Nam",
+    "imageUrl": "https://ticotravel.com.vn/wp-content/uploads/2023/09/Melissa-Hotel-Vung-Tau-10.jpg",
+    "imageWidth": 800,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0Ln7X2WLv-SLuIkn6Dl7QpFytjHOWOzP2oA-FPbMhmg&s=10",
+    "thumbnailWidth": 638,
+    "thumbnailHeight": 480,
+    "source": "Tico Travel",
+    "domain": "ticotravel.com.vn",
+    "link": "https://ticotravel.com.vn/hotel/khach-san-melissa-vung-tau/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fticotravel.com.vn%2Fwp-content%2Fuploads%2F2023%2F09%2FMelissa-Hotel-Vung-Tau-10.jpg&tbnid=ZQRyGIz18cBrKM&imgrefurl=https%3A%2F%2Fticotravel.com.vn%2Fhotel%2Fkhach-san-melissa-vung-tau%2F&docid=sWZjXXUTunwcVM&w=800&h=600",
+    "position": 7
+   },
+   {
+    "title": "Khách Sạn Melissa: Trải Nghiệm Tuyệt Vời Tại Vũng Tàu",
+    "imageUrl": "https://www.tiktok.com/api/img/?itemId=7491271792603024648&location=0&aid=1988",
+    "imageWidth": 1186,
+    "imageHeight": 1701,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTu_3uhoJwF3EPuhUGNH2KdDhA4rXYx-GDsvoVDrVS-w&s=10",
+    "thumbnailWidth": 462,
+    "thumbnailHeight": 663,
+    "source": "TikTok",
+    "domain": "www.tiktok.com",
+    "link": "https://www.tiktok.com/@melissa.hotelvungtau/video/7491271792603024648",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.tiktok.com%2Fapi%2Fimg%2F%3FitemId%3D7491271792603024648%26location%3D0%26aid%3D1988&tbnid=dV7GFFZLTlCqUM&imgrefurl=https%3A%2F%2Fwww.tiktok.com%2F%40melissa.hotelvungtau%2Fvideo%2F7491271792603024648&docid=NkeHyB5u511JvM&w=1186&h=1701",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

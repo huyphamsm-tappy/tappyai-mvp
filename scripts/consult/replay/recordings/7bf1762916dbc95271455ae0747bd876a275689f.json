@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"NEKO - Sushi & Izakaya\" OR \"Haru Sushi Quận 1\" OR \"Michi Sushi\" quan 1 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T19:17:06.479Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"NEKO - Sushi & Izakaya\" OR \"Haru Sushi Quận 1\" OR \"Michi Sushi\" quan 1 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "NEKO Sushi & Izakaya",
+    "link": "https://www.tiktok.com/@neko.sushi.izakaya",
+    "snippet": "NEKO - Sushi & Izakaya 15 Dinh Cong Trang, Tan Dinh Ward, District 1, HCMC · Neko có thực sự \"chuẩn Nhật\"? · Thưởng thức set 10 món cá hồi tại NEKO mà chưa đến ...",
+    "position": 1
+   },
+   {
+    "title": "Haru Sushi Quận 1 (@harusushinguyenthaihoc)",
+    "link": "https://www.tiktok.com/@harusushinguyenthaihoc",
+    "snippet": "Haru Sushi Quận 1 (@harusushinguyenthaihoc) trên TikTok |6090 Lượt thích.91 Follower.HARU SUSHI - 93 NGUYỄN THÁI HỌC, PHƯỜNG CẦU ÔNG LÃNH, QUẬN 1.",
+    "position": 2
+   },
+   {
+    "title": "Cùng @ddhang_2005 khám phá NEKO Sushi & Izakaya",
+    "link": "https://www.tiktok.com/@neko.sushi.izakaya/video/7527549108895190289",
+    "snippet": "Cùng @ddhang_2005 khám phá NEKO Sushi & Izakaya - có gì độc đáo ở một nhà hàng Nhật nằm giữa lòng Quận 1? ✨ #NEKO #sushi #izakaya ...",
+    "position": 3
+   },
+   {
+    "title": "\"Chị Cường\" lần đầu trải nghiệm nhà hàng Nhật #NEKO ...",
+    "link": "https://www.tiktok.com/@neko.sushi.izakaya/video/7662359146167143688",
+    "snippet": "Video TikTok từ NEKO Sushi & Izakaya (@neko.sushi.izakaya): \"POV: \"Chị Cường\" lần đầu trải nghiệm nhà hàng Nhật #NEKO #Sushi #Izakaya ...",
+    "position": 4
+   },
+   {
+    "title": "Michi Sushi (@michi_sushi_42nguyenhue)",
+    "link": "https://www.tiktok.com/@michi_sushi_42nguyenhue",
+    "snippet": "Michi Sushi Chung cư 42 Nguyễn huệ-lầu 7, Bến Nghé, Q.1 Đặt món tại đây · Đã follow · Tài khoản được đề xuất · Tận hưởng trải nghiệm đầy đủ trong ứng dụng.",
+    "position": 5
+   },
+   {
+    "title": "Khám Phá Sushi Ngon Tại Haru Sushi Quận 1",
+    "link": "https://www.tiktok.com/@winter290796/photo/7658315768630709524",
+    "snippet": "Đánh giá: 4.5/5⭐️ Đc: 93 Nguyễn Thái Học, Cầu Ông Lãnh, Hồ Chí Minh #shushi #shushiharu #hcm #quan1. Khám Phá Sushi Ngon Tại Haru Sushi Quận 1.",
+    "position": 6
+   },
+   {
+    "title": "Michi Sushi Nguyễn Huệ",
+    "link": "https://www.tiktok.com/discover/michi-sushi-nguy%E1%BB%85n-hu%E1%BB%87",
+    "snippet": "MICHI SUSHI – ƯU ĐÃI CỰC HẤP DẪN Team mê sushi đâu rồi ơi! Ghé Michi Sushi thưởng thức sashimi tươi ngon và đừng bỏ lỡ những ưu đãi ...",
+    "date": "14 thg 9, 2026",
+    "position": 7
+   },
+   {
+    "title": "Sushi Haru Quận 1",
+    "link": "https://www.tiktok.com/discover/sushi-haru-qu%E1%BA%ADn-1",
+    "snippet": "Khám phá tiệm sushi giá ổn áp tại Sài Gòn, thưởng thức món ăn hấp dẫn. Đừng bỏ lỡ! 31 Likes, 1 Comments. TikTok video from Haru Sushi Quận 1 (@ ...",
+    "date": "8 ngày trước",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

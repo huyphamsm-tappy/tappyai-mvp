@@ -1,0 +1,142 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Bộ cốc cà phê cao cấp tinh xảo đẹp nhẹ nhàng sang trọng",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T19:19:11.977Z",
+ "body": {
+  "searchParameters": {
+   "q": "Bộ cốc cà phê cao cấp tinh xảo đẹp nhẹ nhàng sang trọng",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Bộ Ly Thủy Tinh Đẹp, Sang Trọng – Giá Tốt, Mua Là Ưng",
+    "imageUrl": "https://isoglass.com.vn/wp-content/uploads/2025/06/bo-ly-thuy-tinh-la-gi-vi-sao-nen-su-dung-1.jpg",
+    "imageWidth": 2000,
+    "imageHeight": 2000,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQhqFPIavYCeFjZNLgyuAXZoZ6y5jK45i_icgVzMXgLkg&s=10",
+    "thumbnailWidth": 554,
+    "thumbnailHeight": 554,
+    "source": "iSOGLASS",
+    "domain": "isoglass.com.vn",
+    "link": "https://isoglass.com.vn/bo-ly-thuy-tinh.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fisoglass.com.vn%2Fwp-content%2Fuploads%2F2025%2F06%2Fbo-ly-thuy-tinh-la-gi-vi-sao-nen-su-dung-1.jpg&tbnid=MgsyfRauXmBJuM&imgrefurl=https%3A%2F%2Fisoglass.com.vn%2Fbo-ly-thuy-tinh.html&docid=yeTUcN38z_IOmM&w=2000&h=2000",
+    "copyright": "isogift.vn",
+    "creator": "isoglass.com.vn",
+    "position": 1
+   },
+   {
+    "title": "Ly uống cafe đẹp cho không gian thêm sang trọng – Chai Lọ Thủy Tinh Sài Gòn  [ Lythuytinh.vn ]",
+    "imageUrl": "https://file.hstatic.net/1000275031/file/ly-cafe1_08cb7dce278f441f8f613c98393a9f98_grande.jpg",
+    "imageWidth": 600,
+    "imageHeight": 592,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS82VuAcRuLJ76G-sXwLz999wSXga3CJYVkY4wGrHHBQA&s=10",
+    "thumbnailWidth": 450,
+    "thumbnailHeight": 444,
+    "source": "Ly thủy tinh",
+    "domain": "lythuytinh.vn",
+    "link": "https://lythuytinh.vn/blogs/news/ly-uong-cafe-dep-cho-khong-gian-them-sang-trong",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Ffile.hstatic.net%2F1000275031%2Ffile%2Fly-cafe1_08cb7dce278f441f8f613c98393a9f98_grande.jpg&tbnid=oBBH8UrxzzljKM&imgrefurl=https%3A%2F%2Flythuytinh.vn%2Fblogs%2Fnews%2Fly-uong-cafe-dep-cho-khong-gian-them-sang-trong&docid=mdgZVZrRJW0-MM&w=600&h=592",
+    "position": 2
+   },
+   {
+    "title": "Ly thủy tinh sản xuất tại TP.HCM",
+    "imageUrl": "https://isoglass.com.vn/wp-content/uploads/2024/04/bo-ly-thuy-tinh-qua-tang-san-xuat-theo-yeu-cau-iso-09.jpg",
+    "imageWidth": 800,
+    "imageHeight": 800,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMYE0WTQ0qrocn07HbvYp9hSS93cSntKDtSm3wLfnOXw&s=10",
+    "thumbnailWidth": 554,
+    "thumbnailHeight": 554,
+    "source": "iSOGLASS",
+    "domain": "isoglass.com.vn",
+    "link": "https://isoglass.com.vn/ly-thuy-tinh.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fisoglass.com.vn%2Fwp-content%2Fuploads%2F2024%2F04%2Fbo-ly-thuy-tinh-qua-tang-san-xuat-theo-yeu-cau-iso-09.jpg&tbnid=ZSrVh-GDukLqbM&imgrefurl=https%3A%2F%2Fisoglass.com.vn%2Fly-thuy-tinh.html&docid=yFhamDzVvsQR0M&w=800&h=800",
+    "copyright": "isoglass.com.vn;",
+    "creator": "isoglass.com.vn",
+    "position": 3
+   },
+   {
+    "title": "Điểm danh bộ cốc sứ cao cấp đẹp “mê ly” tại Gốm Sứ CK - GỐM SỨ CK",
+    "imageUrl": "https://ckporcelain.vn/wp-content/uploads/2024/06/LINE_ALBUM_%E7%94%A3%E5%93%81%E6%83%85%E6%99%AF%E5%9C%96Daphne_211230_350.jpg",
+    "imageWidth": 2364,
+    "imageHeight": 1773,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQbPLIWm5qbnlkGStyL0hbJD-Ww5ftuGmEjla0LasT8w&s=10",
+    "thumbnailWidth": 638,
+    "thumbnailHeight": 480,
+    "source": "GỐM SỨ CK",
+    "domain": "ckporcelain.vn",
+    "link": "https://ckporcelain.vn/diem-danh-bo-coc-su-cao-cap-dep-me-ly-tai-gom-su-ck/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fckporcelain.vn%2Fwp-content%2Fuploads%2F2024%2F06%2FLINE_ALBUM_%25E7%2594%25A3%25E5%2593%2581%25E6%2583%2585%25E6%2599%25AF%25E5%259C%2596Daphne_211230_350.jpg&tbnid=Jqzzz7Z9aiIIPM&imgrefurl=https%3A%2F%2Fckporcelain.vn%2Fdiem-danh-bo-coc-su-cao-cap-dep-me-ly-tai-gom-su-ck%2F&docid=yZRwHOzW2HyMIM&w=2364&h=1773",
+    "position": 4
+   },
+   {
+    "title": "Bộ Ly Thủy Tinh Đẹp, Sang Trọng – Giá Tốt, Mua Là Ưng",
+    "imageUrl": "https://isoglass.com.vn/wp-content/uploads/2025/06/gia-bo-coc-thuy-tinh-6-cai.png",
+    "imageWidth": 2500,
+    "imageHeight": 2500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRw9ffoSMjQ5gJHvfanEgUaxWu5MPOb7P9zes2fNzUaeg&s=10",
+    "thumbnailWidth": 554,
+    "thumbnailHeight": 554,
+    "source": "iSOGLASS",
+    "domain": "isoglass.com.vn",
+    "link": "https://isoglass.com.vn/bo-ly-thuy-tinh.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fisoglass.com.vn%2Fwp-content%2Fuploads%2F2025%2F06%2Fgia-bo-coc-thuy-tinh-6-cai.png&tbnid=HX8iB3bkQ9gLRM&imgrefurl=https%3A%2F%2Fisoglass.com.vn%2Fbo-ly-thuy-tinh.html&docid=yeTUcN38z_IOmM&w=2500&h=2500",
+    "copyright": "isoglass.com.vn",
+    "creator": "isoglass.com.vn",
+    "position": 5
+   },
+   {
+    "title": "TOP] 100+ BỘ ẤM CHÉN UỐNG TRÀ CAO CẤP NHẬP KHẨU 2026",
+    "imageUrl": "https://file.hstatic.net/200000296482/file/bo-am-chen-uong-tra-cover-1_fd5ae5bd49504251959e69b85afa346b.png",
+    "imageWidth": 1000,
+    "imageHeight": 525,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSpbd55e6yI4ibBhR7YVyD6hoGHdaZdIKtou7lherkyUQ&s=10",
+    "thumbnailWidth": 617,
+    "thumbnailHeight": 324,
+    "source": "Noritake Vietnam",
+    "domain": "noritake.vn",
+    "link": "https://noritake.vn/collections/bo-am-chen-uong-tra?srsltid=AU7gw4UogduHxwc3yDoVkmcjfD-KrY83LrL-kah6srOYsZZ_MfC3pAHR",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Ffile.hstatic.net%2F200000296482%2Ffile%2Fbo-am-chen-uong-tra-cover-1_fd5ae5bd49504251959e69b85afa346b.png&tbnid=gA6Xp3REf_sdFM&imgrefurl=https%3A%2F%2Fnoritake.vn%2Fcollections%2Fbo-am-chen-uong-tra%3Fsrsltid%3DAU7gw4UogduHxwc3yDoVkmcjfD-KrY83LrL-kah6srOYsZZ_MfC3pAHR&docid=W0ltq_RLTl2N9M&w=1000&h=525",
+    "position": 6
+   },
+   {
+    "title": "Bộ cốc sứ cao cấp hộp quà 12 chi tiết sang trọng ( 6 tách và 6 đĩa)",
+    "imageUrl": "https://bizweb.dktcdn.net/thumb/1024x1024/100/236/309/products/d80f402e-65f8-4d0a-8149-5010cc783197.jpg?v=1679488621793",
+    "imageWidth": 600,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTutX4hyT3n2JxykZH5GCxiLe4oGxhBIZgFkzD1ltjFuQ&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "In Logo lên cốc thủy tinh, ấm chén sứ",
+    "domain": "incocthuytinh.net",
+    "link": "https://incocthuytinh.net/bo-tach-dia-cafe-cao-cap-hop-qua-18-chi-tiet-sang-trong",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fbizweb.dktcdn.net%2Fthumb%2F1024x1024%2F100%2F236%2F309%2Fproducts%2Fd80f402e-65f8-4d0a-8149-5010cc783197.jpg%3Fv%3D1679488621793&tbnid=QZWULPuIBfgqyM&imgrefurl=https%3A%2F%2Fincocthuytinh.net%2Fbo-tach-dia-cafe-cao-cap-hop-qua-18-chi-tiet-sang-trong&docid=iqyq5xBgwTrwEM&w=600&h=600",
+    "position": 7
+   },
+   {
+    "title": "1000+ mẫu ly ca cốc sứ đẹp cao cấp - giá tận xưởng",
+    "imageUrl": "https://store.longphuong.vn/wp-content/uploads/2026/01/ca-coc-su.png",
+    "imageWidth": 1000,
+    "imageHeight": 1000,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJePLCKevV-aU12IFVWCWZge2K2J2_WZUMVPRkuvQQNg&s=10",
+    "thumbnailWidth": 554,
+    "thumbnailHeight": 554,
+    "source": "Sứ Long Phương",
+    "domain": "store.longphuong.vn",
+    "link": "https://store.longphuong.vn/danh-muc-san-pham/ca-coc-su/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fstore.longphuong.vn%2Fwp-content%2Fuploads%2F2026%2F01%2Fca-coc-su.png&tbnid=DFdQzBeCfr00pM&imgrefurl=https%3A%2F%2Fstore.longphuong.vn%2Fdanh-muc-san-pham%2Fca-coc-su%2F&docid=nrntpu59GeaFhM&w=1000&h=1000",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

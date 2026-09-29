@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "An Coffee Nguyễn Hữu Thọ (site:food.grab.com/vn OR site:shopeefood.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T00:39:00.868Z",
+ "body": {
+  "searchParameters": {
+   "q": "An Coffee Nguyễn Hữu Thọ (site:food.grab.com/vn OR site:shopeefood.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "HA - Coffee & Tea - Nguyễn Hữu Thọ",
+    "link": "https://shopeefood.vn/ha-noi/ha-coffee-tea-nguyen-huu-tho.r4puaf?source_url=foody_ordernow_mobile",
+    "snippet": "104 Nguyễn Hữu Thọ, P. Định Công, Hoàng Mai, Hà Nội. Đã đóng. Quán được gắn nhãn Yêu thích là Quán Yêu Thích, gồm những quán đạt chất lượng dịch vụ vượt ...",
+    "position": 1
+   },
+   {
+    "title": "Saman Coffee - 45 Nguyễn Hữu Thọ",
+    "link": "https://shopeefood.vn/binh-dinh/saman-coffee-45-nguyen-huu-tho",
+    "snippet": "45 Nguyễn Hữu Thọ, P. Thị Nại, Tp. Qui Nhơn, Bình Định. Đã đóng. Quán được gắn nhãn Yêu thích là Quán Yêu Thích, gồm những quán đạt chất lượng dịch vụ vượt ...",
+    "position": 2
+   },
+   {
+    "title": "Range Coffee & Tea - Nguyễn Hữu Thọ",
+    "link": "https://shopeefood.vn/ha-noi/range-coffee-tea-nguyen-huu-tho",
+    "snippet": "Số 6 Nguyễn Hữu Thọ, P. Hoàng Liệt, Hoàng Mai, Hà Nội. Đã đóng. Quán được gắn nhãn Yêu thích là Quán Yêu Thích, gồm những quán đạt chất lượng dịch vụ vượt ...",
+    "position": 3
+   },
+   {
+    "title": "Like Coffee - Nguyễn Hữu Thọ",
+    "link": "https://shopeefood.vn/da-nang/like-coffee-nguyen-huu-tho?source_url=foody_ordernow_mobile",
+    "snippet": "36 Nguyễn Hữu Thọ, Quận Hải Châu, Đà Nẵng. Đã đóng. Quán được gắn nhãn Yêu thích là Quán Yêu Thích, gồm những quán đạt chất lượng dịch vụ vượt trội và được ...",
+    "position": 4
+   },
+   {
+    "title": "Food Delivery - Milano Coffee - Nguyễn Hữu Thọ",
+    "link": "https://shopeefood.vn/ha-noi/milano-coffee-nguyen-huu-tho",
+    "snippet": "2 Nguyễn Hữu Thọ, P. Đại Kim, Hoàng Mai, Hà Nội. Đã đóng. Quán được gắn nhãn Yêu thích là Quán Yêu Thích, gồm những quán đạt chất lượng dịch vụ vượt trội và ...",
+    "position": 5
+   },
+   {
+    "title": "K Coffee - Nguyễn Hữu Thọ",
+    "link": "https://shopeefood.vn/ho-chi-minh/k-coffee-nguyen-huu-tho",
+    "snippet": "G1-10 Novaland Sunrise Riverside, Đường Nguyễn Hữu Thọ, X. Phước Kiển, Nhà Bè, TP. HCM. Đã đóng. Quán được gắn nhãn Yêu thích là Quán Yêu Thích, ...",
+    "position": 6
+   },
+   {
+    "title": "NiNa - Coffee Và Thức Ăn - Nguyễn Hữu Thọ",
+    "link": "https://shopeefood.vn/ho-chi-minh/nina-coffee-va-thuc-an-nguyen-huu-tho",
+    "snippet": "Sunrise City View, 33 Nguyễn Hữu Thọ, P. Tân Hưng, Quận 7, TP. HCM. Đã đóng. Quán được gắn nhãn Yêu thích là Quán Yêu Thích, gồm những quán đạt chất lượng ...",
+    "position": 7
+   },
+   {
+    "title": "Food Delivery - LeLa Coffee - Nguyễn Hữu Thọ",
+    "link": "https://shopeefood.vn/ha-noi/lela-coffee-nguyen-huu-tho",
+    "snippet": "Số 06 Đường Nguyễn Hữu Thọ, P. Hoàng Liệt, Hoàng Mai, Hà Nội. Mở cửa. Quán được gắn nhãn Yêu thích là Quán Yêu Thích, gồm những quán đạt chất lượng dịch vụ ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}
