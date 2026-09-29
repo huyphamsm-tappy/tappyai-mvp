@@ -46,6 +46,7 @@ describe('a trip plan does not inherit the previous subject\'s budget (golden B4
   it('route.ts folds the plan and derives the need profile over the current subject', () => {
     const src = readFileSync(join(process.cwd(), 'src/app/api/chat/route.ts'), 'utf8')
     expect(src).toContain('const priorUserTexts: string[] = subjectUserTexts.slice(-4, -1)')
-    expect(src).toContain('deriveNeedProfile(currentSubjectMessages(framingMessages, { hasGps: !!userLocation, lang })')
+    // replay SHOP-3 (29/09): names the user copied from our replies are dropped first (withoutQuotedNames).
+    expect(src).toContain('deriveNeedProfile(currentSubjectMessages(withoutQuotedNames(framingMessages), { hasGps: !!userLocation, lang })')
   })
 })

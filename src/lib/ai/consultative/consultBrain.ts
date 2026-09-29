@@ -240,7 +240,8 @@ export function consultRemainingLine(text: string, candidateNames: readonly stri
   const shownSet = new Set(names.filter(n => bold.some(b => n.includes(b) || b.includes(n))))
   const shown = shownSet.size
   const n = names.length - shown
-  const vi = /Mình còn \d+ lựa chọn[^\n]*/g, en = /I have \d+ more option[^\n]*/g
+  // The model's own count line in any wording ("Còn 6 lựa chọn khác nữa…", replay SHOP-3) is replaced, never doubled.
+  const vi = /(?:Mình\s+)?[Cc]òn(?:\s+khoảng)?\s+\d+\s+lựa chọn[^\n]*/g, en = /I have \d+ more option[^\n]*/g
   const stripped = text.replace(vi, '').replace(en, '').replace(/\n{3,}/g, '\n\n').trimEnd()
   if (n <= 0 || shown === 0) return stripped
   const line = lang === 'en' ? `I have ${n} more option${n > 1 ? 's' : ''} — want to see more?` : `Mình còn ${n} lựa chọn nữa, muốn xem thêm không?`
@@ -289,6 +290,29 @@ export function shoppingPickName(marker: string | null | undefined): string | nu
     const e = key ? v.entities?.find(x => x.key === key) : null
     return e?.name?.trim() || null
   } catch { return null }
+}
+
+/**
+ * The NEWEST shopping card's products as money evidence ({ title, price, source }) — a shopping PLAN turn calls no
+ * tool, so without it the money guard had no evidence and stayed inert: replay SHOP-2 (29/09, level A) — "Giấy gói
+ * quà ~20.000đ", "Thiệp ~5.000đ", "Tổng ~105.000đ" all shipped. With the card's prices as evidence the existing
+ * guard keeps the product's own price and removes the amounts no source carries.
+ */
+export function shoppingMarkerRecords(assistantTexts: readonly string[]): Array<{ title: string; price: string; source?: string }> {
+  for (let i = assistantTexts.length - 1; i >= 0; i--) {
+    const m = /\[TAPPY_SHOPPING\]([\s\S]*?)\[\/TAPPY_SHOPPING\]/.exec(assistantTexts[i])
+    if (!m) continue
+    try {
+      const v = JSON.parse(m[1]) as { entities?: Array<{ name?: string; priceLow?: number; priceHigh?: number; offers?: Array<{ seller?: string; price?: number }> }> }
+      const out: Array<{ title: string; price: string; source?: string }> = []
+      for (const e of v.entities ?? []) {
+        const prices = [e.priceLow, e.priceHigh, ...(e.offers ?? []).map(o => o.price)].filter((p): p is number => typeof p === 'number' && p > 0)
+        for (const p of [...new Set(prices)]) out.push({ title: e.name ?? '', price: `${p.toLocaleString('vi-VN')} ₫`, ...(e.offers?.[0]?.seller ? { source: e.offers[0].seller } : {}) })
+      }
+      return out
+    } catch { return [] }
+  }
+  return []
 }
 
 /** Every product name the shopping marker carries — the candidate set for "Mình còn N lựa chọn nữa". */

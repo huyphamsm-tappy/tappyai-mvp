@@ -720,6 +720,35 @@ const BUTTON_PLAN = new Set(['len ke hoach chi tiet', 'len ke hoach', 'ok chot',
 
 const GENERIC_NAME_PREFIX = /^(?:karaoke|quan|nha hang|spa|khach san|tiem|salon|cafe|ca phe|hotel|resort|homestay|chuyen bay|hang|cua hang|shop|bar|pub|rap|cgv|trung tam|tiem nail|nail|barber|op|vietjet|vietnam airlines|bamboo)\s+/
 
+/** `text` without the given names (≥ 6 chars, longest first, case-insensitive) — a quoted pick is a reference. */
+export function withoutNames(text: string, names: readonly string[]): string {
+  return [...names].filter(n => n.length >= 6).sort((a, b) => b.length - a.length)
+    .reduce((acc, n) => acc.replace(new RegExp(n.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'giu'), ' '), text)
+}
+
+/**
+ * The same messages with every USER message stripped of the names earlier ASSISTANT replies put in bold — the need
+ * profile then reads what the user asked for, not the product names they copied back ("A hay B?", replay SHOP-3:
+ * "Laptop … Dell 15 …" became a hard brand constraint and "xem thêm" refused every non-Dell laptop).
+ */
+export function withoutQuotedNames<M extends { role: string; content: unknown }>(messages: readonly M[]): M[] {
+  const names: string[] = []
+  return messages.map(m => {
+    if (m.role === 'assistant') { for (const n of [...boldNames(textOf(m.content)), ...cardNames(textOf(m.content))]) if (!names.includes(n)) names.push(n); return m }
+    if (m.role !== 'user' || typeof m.content !== 'string' || names.length === 0) return m
+    return { ...m, content: withoutNames(m.content, names) }
+  })
+}
+
+/** The product / place names an app card in the reply carries (the user copies them from the card, not the prose). */
+function cardNames(assistantText: string): string[] {
+  const out: string[] = []
+  for (const m of assistantText.matchAll(/\[(TAPPY_SHOPPING|TAPPY_PLACES)\]([\s\S]*?)\[\/\1\]/g)) {
+    for (const n of m[2].matchAll(/"name"\s*:\s*"((?:[^"\\]|\\.){6,160})"/g)) { try { out.push(JSON.parse(`"${n[1]}"`)) } catch { /* skip */ } }
+  }
+  return out
+}
+
 /** Bold names in an assistant reply ("**Mình chọn: Karaoke MEI**" → "Karaoke MEI"). */
 export function boldNames(assistantText: string): string[] {
   const out: string[] = []
@@ -759,9 +788,13 @@ const REJECT_MOD: Array<[RegExp, string]> = [
   [/\bxa qua\b|\bqua xa\b|\btoo far\b/, 'gần hơn'], [/\b(?:mac|dat|dat do) qua\b|\bqua (?:mac|dat)\b|\btoo expensive\b/, 'giá rẻ'],
   [/\b(?:on|on ao|dong) qua\b|\bqua (?:on|dong)\b/, 'yên tĩnh'], [/\bnang qua\b/, 'nhẹ'], [/\bnho qua\b/, 'rộng rãi'], [/\bcu qua\b/, 'mới'],
 ]
+/** The requirement a "bác" states ("nặng quá" → "nhẹ", "muốn gần hơn" → "gần"); '' when it states none. */
+export function rejectModifierOf(text: string): string { return rejectModifier(prep(text)) }
 function rejectModifier(t: Txt): string {
   for (const [re, v] of REJECT_MOD) if (re.test(t.f)) return v
-  const want = grab(t, /\b(?:muon|thich|can|uu tien)\s+([a-z0-9 ]{2,30}?)(?:\s+hon)?(?:[,.!?]|$)/, 1)
+  // A negated wish is a DISLIKE, not a modifier (replay SHOP-1: \"không thích màu đen\" became the query \"… màu đen\"
+  // and every search returned the black case again).
+  const want = grab(t, /(?<!\b(?:khong|ko|k|chang|hong)\s)\b(?:muon|thich|can|uu tien)\s+([a-z0-9 ]{2,30}?)(?:\s+hon)?(?:[,.!?]|$)/, 1)
   if (want) return want.replace(/\s+hơn$/, '')
   const near = grab(t, /\bgan [a-z0-9 ]{2,20}?(?=\s+thoi|[,.!?]|$)/)
   if (near) return near
@@ -787,8 +820,16 @@ function routeTurn(turns: Msg[], ui: number, thread: Thread, ctx: RouteCtx): Tur
   function threadKnown(): Record<string, string> {
     if (!thread.domains.length) return {}
     const parts: string[] = []
-    for (let i = Math.max(0, thread.start); i <= ui; i++) if (turns[i].role === 'user') parts.push(stripMarkers(textOf(turns[i].content)))
+    for (let i = Math.max(0, thread.start); i <= ui; i++) if (turns[i].role === 'user') parts.push(unquote(stripMarkers(textOf(turns[i].content))))
     return slotView(thread.domains[0], parts.join(' . '), ctx.hasGps).known
+  }
+  // Replay SHOP-3 (29/09): "Laptop Aspire Lite 14 hay Laptop Dell 15 DC15250 …?" — names the user copied from OUR
+  // replies are references, not requirements; read as slots they became `dong: Dell` and "xem thêm" then refused
+  // every non-Dell laptop. The thread's earlier bold names are removed from the user text before slots are read.
+  function unquote(s: string): string {
+    const names: string[] = []
+    for (let i = Math.max(0, thread.start); i < ui; i++) if (turns[i].role === 'assistant') for (const n of boldNames(textOf(turns[i].content))) if (!names.includes(n)) names.push(n)
+    return withoutNames(s, names)
   }
   const keep = (d: Partial<ConsultDecision> & { turn: ConsultTurn }, confidence: RouteConfidence = 'rule'): TurnOut =>
     ({ result: { decision: { domains: [], assumptions: [], ...d, known: d.known && Object.keys(d.known).length ? d.known : d.turn === 'chat' ? {} : threadKnown() }, confidence }, thread })
@@ -799,7 +840,7 @@ function routeTurn(turns: Msg[], ui: number, thread: Thread, ctx: RouteCtx): Tur
 
   const threadText = (from: number) => {
     const parts: string[] = []
-    for (let i = Math.max(0, from); i <= ui; i++) if (turns[i].role === 'user') parts.push(stripMarkers(textOf(turns[i].content)))
+    for (let i = Math.max(0, from); i <= ui; i++) if (turns[i].role === 'user') parts.push(unquote(stripMarkers(textOf(turns[i].content))))
     return parts.join(' . ')
   }
   const cur = detectAreas(userText)

@@ -27,8 +27,24 @@ function addDays(iso: string, n: number): string {
 }
 
 /** The travel search for a pick, from the router's slots; null when the slots do not name one. */
+/**
+ * A weekend trip that names a TERRAIN but no place ("cuối tuần … gần Sài Gòn … thích núi") — the destination a
+ * consultant would propose, by the city the user leaves from. Replay TRAVEL-2 (29/09): with no destination the hotel
+ * search ran for "Núi gần TP.HCM" and Maps answered with hotels on NÚI THÀNH STREET in Tân Bình (inside the city);
+ * the reply then said Tân Bình was "30-45 phút" from the city. Names only — no distance or time is claimed here.
+ */
+const NEARBY_BY_STYLE: Record<string, Record<string, string>> = {
+  'TP.HCM': { 'núi': 'Tây Ninh', 'biển': 'Vũng Tàu' },
+  'Hà Nội': { 'núi': 'Tam Đảo', 'biển': 'Hạ Long' },
+}
+export function nearbyDestination(known: Record<string, string>): string | null {
+  const days = Number((known.so_ngay ?? '').match(/\d+/)?.[0])
+  if (Number.isFinite(days) && days > 3) return null
+  return NEARBY_BY_STYLE[known.xuat_phat?.trim() ?? '']?.[known.phong_cach?.trim() ?? ''] ?? null
+}
+
 export function travelPreCall(known: Record<string, string>, text: string, now = new Date()): TravelPreCall | null {
-  const dest = known.diem_den?.trim()
+  const dest = known.diem_den?.trim() || nearbyDestination(known) || undefined
   const origin = known.xuat_phat?.trim()
   const date = isoFromDayMonth(known.ngay, now)
   // The return / checkout the user named ("10/10 đến 12/10") — only when it comes after the start.
@@ -51,7 +67,7 @@ const foldName = (s: string) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '
  * A "more" / "reject" pre-search result without the rows an earlier reply already named (by folded
  * name containment either way). Rows are kept as they are when filtering would leave none.
  */
-export function withoutShownRows(result: unknown, shown: readonly string[]): unknown {
+export function withoutShownRows(result: unknown, shown: readonly string[], opts: { allowEmpty?: boolean } = {}): unknown {
   if (!result || typeof result !== 'object' || shown.length === 0) return result
   const keys = shown.map(foldName).filter(k => k.length >= 3)
   const seen = (row: unknown) => {
@@ -64,6 +80,12 @@ export function withoutShownRows(result: unknown, shown: readonly string[]): unk
     if (!Array.isArray(rows)) continue
     const kept = rows.filter(row => !seen(row))
     if (kept.length > 0 && kept.length < rows.length) r[key] = kept
+    // A "bác" whose search holds ONLY rows already shown: handing them back made the reply re-pick the one just
+    // turned down (replay TRAVEL-2 / SHOP-2, level B). The model gets none, and is told so — it asks to narrow.
+    else if (kept.length === 0 && rows.length > 0 && opts.allowEmpty) {
+      r[key] = []
+      r._tappy_all_shown = 'Moi lua chon tim duoc deu DA hien cho user (va co the da bi bac) — KHONG chon lai; noi that va hoi 1-2 cau de thu hep/doi huong.'
+    }
   }
   return r
 }

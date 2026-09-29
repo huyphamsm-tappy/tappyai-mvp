@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { parseConsultDecision, enforceConsultRules, buildAskReply, wasAskReply, brainMessages, ASK_TAIL_VI, BRAIN_SYSTEM } from './consultBrain'
+import { parseConsultDecision, enforceConsultRules, buildAskReply, wasAskReply, brainMessages, ASK_TAIL_VI, BRAIN_SYSTEM, consultRemainingLine } from './consultBrain'
 
 const ASK_JSON = JSON.stringify({
   domains: ['shopping'], turn: 'ask', known: { san_pham: 'ốp UAG iPhone 17 Pro Max' }, assumptions: [],
@@ -83,5 +83,20 @@ describe('BRAIN_SYSTEM', () => {
     for (const w of ['karaoke', 'bida', 'nail', 'goi dau duong sinh', 'an khuya', 'barber', 'escape room', 'board game'])
       expect(BRAIN_SYSTEM).toContain(w)
     expect(BRAIN_SYSTEM).toMatch(/TUYET DOI KHONG coi la ngoai pham vi/)
+  })
+})
+
+describe('consultRemainingLine — the count line is the code\'s, never the model\'s (replay SHOP-3 29/09)', () => {
+  const text = ['**Mình chọn: Laptop A**', '', '- **Laptop B**, nhẹ hơn.', '- **Laptop C**, rẻ hơn.'].join('\n')
+  it('counts the candidates the reply does not name', () => {
+    expect(consultRemainingLine(text, ['Laptop A', 'Laptop B', 'Laptop C', 'Laptop D', 'Laptop E'], 'vi')).toContain('Mình còn 2 lựa chọn nữa')
+  })
+  it("replaces the model's own 'Còn N lựa chọn khác' line, never doubles it (replay SHOP-3)", () => {
+    const out = consultRemainingLine(`${text}\n\nCòn 6 lựa chọn khác nữa, muốn xem thêm không?`, ['Laptop A', 'Laptop B', 'Laptop C', 'Laptop D', 'Laptop E', 'Laptop F'], 'vi')
+    expect(out.match(/lựa chọn/g)).toHaveLength(1)
+    expect(out).toContain('Mình còn 3 lựa chọn nữa')
+  })
+  it('no extras and everything shown → no line', () => {
+    expect(consultRemainingLine(text, ['Laptop A', 'Laptop B', 'Laptop C'], 'vi')).not.toContain('Mình còn')
   })
 })

@@ -63,7 +63,7 @@ describe('turnStartsNewConsultation', () => {
     const route = readFileSync('src/app/api/chat/route.ts', 'utf8')
     expect(route).toMatch(/taskSwitched: taskSwitched\(messages\) \|\| ownDomainSwitch/)
     expect(route).toMatch(/const gateMessages = ownDomainSwitch \? messages\.slice\(-1\) : messages/)
-    expect(route).toMatch(/deriveSituation\(ownDomainSwitch \? consultationUserTexts\(framingMessages\)\.slice\(-1\)/)
+    expect(route).toMatch(/deriveSituation\(ownDomainSwitch \? consultationUserTexts\(unquotedFraming\)\.slice\(-1\)/)
   })
 })
 

@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
-import { routeConsult, detectAreas, slotView, boldNames, budgetOf, partyOf, localAreaOf, timeOf, routeOf, tripDatesOf, prep } from './consultRouter'
+import { routeConsult, detectAreas, slotView, boldNames, budgetOf, partyOf, localAreaOf, timeOf, routeOf, tripDatesOf, prep, rejectModifierOf, withoutQuotedNames } from './consultRouter'
 import { buildAskReply, wasAskReply, type ConsultDecision } from './consultBrain'
 
 const FIX = join(__dirname, '__fixtures__')
@@ -213,6 +213,25 @@ describe('button texts and conversation state', () => {
     expect(rej.query).toContain('karaoke')
     expect(rej.query).toContain('gần hơn')
   })
+  it('product names the user copies from our reply are references, not requirements (replay SHOP-3)', () => {
+    const msgs = [
+      { role: 'user', content: 'laptop học thiết kế dưới 20 triệu, mới' },
+      { role: 'assistant', content: '**Mình chọn: Laptop Aspire Lite 14**\n- **Laptop Dell 15 DC15250 Core i5-1334U**, nhiều đánh giá hơn.' },
+      { role: 'user', content: 'Laptop Aspire Lite 14 hay Laptop Dell 15 DC15250 Core i5-1334U - Thái Long Computer?' },
+    ]
+    const d = routeConsult(msgs, { hasGps: true, lang: 'vi' }).decision
+    expect(d.turn).toBe('compare')
+    expect(d.known.dong ?? '').not.toMatch(/dell/i)
+    const more = routeConsult([...msgs, { role: 'assistant', content: '**Mình chọn: Laptop Aspire Lite 14** vì rẻ hơn.' }, { role: 'user', content: 'xem thêm lựa chọn' }], { hasGps: true, lang: 'vi' }).decision
+    expect(more.known.dong ?? '').not.toMatch(/dell/i)
+    expect(more.known.ngan_sach).toBeTruthy()
+  })
+  it('a "bác" modifier: a new requirement is read, a dislike or a plain no is not (replay SHOP-1/2/3)', () => {
+    expect(rejectModifierOf('nặng quá, muốn nhẹ hơn')).toBe('nhẹ')
+    expect(rejectModifierOf('không thích màu đen')).toBe('')
+    expect(rejectModifierOf('cái đó sếp có rồi')).toBe('')
+    expect(rejectModifierOf('muốn màu xanh')).toContain('xanh')
+  })
   it('an answer to an ask is a pick, never a second ask', () => {
     const first = routeConsult([{ role: 'user', content: 'mệt quá muốn thư giãn' }], { hasGps: true, lang: 'vi' }).decision
     const askText = buildAskReply(first.ask!, { lang: 'vi', structured: false })
@@ -233,5 +252,18 @@ describe('button texts and conversation state', () => {
     const t0 = Date.now()
     for (let i = 0; i < 1000; i++) one(everyday.items[i % everyday.items.length].text)
     expect((Date.now() - t0) / 1000).toBeLessThan(20)
+  })
+})
+
+describe('withoutQuotedNames — names copied from our replies are references (replay SHOP-3)', () => {
+  it('strips earlier bold names from later user messages only', () => {
+    const out = withoutQuotedNames([
+      { role: 'user', content: 'laptop Dell học thiết kế' },
+      { role: 'assistant', content: '**Mình chọn: Laptop Aspire Lite 14**\n- **Laptop Dell 15 DC15250 Core i5-1334U**, nhiều đánh giá.' },
+      { role: 'user', content: 'Laptop Aspire Lite 14 hay Laptop Dell 15 DC15250 Core i5-1334U - Thái Long Computer?' },
+    ])
+    expect(out[0].content).toBe('laptop Dell học thiết kế')
+    expect(String(out[2].content)).not.toMatch(/dell|aspire/i)
+    expect(String(out[2].content)).toContain('hay')
   })
 })

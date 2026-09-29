@@ -90,8 +90,9 @@ import { plainRequestTopic, appendHistoryTopic } from '@/lib/ai/consultative/mem
 import { deriveSearchNow, SPECIFIC_DATE, type SearchNow } from '@/lib/ai/consultative/searchNow'
 import { tripAskAfter, missingTripFacts } from '@/lib/ai/consultative/tripFacts'
 import { buildDomainFrame, frameDomainOf, frameLibrary, frameRef, PLAN_HEADINGS } from '@/lib/ai/consultative/domainFrames'
-import { runConsultBrain, consultV2Enabled, wasAskReply, buildAskReply, placeTypeFor, latestShoppingPickPrice } from '@/lib/ai/consultative/consultBrain'
+import { runConsultBrain, consultV2Enabled, wasAskReply, buildAskReply, placeTypeFor, latestShoppingPickPrice, shoppingMarkerRecords } from '@/lib/ai/consultative/consultBrain'
 import { routeConsult } from '@/lib/ai/consultative/consultRouter'
+import { rejectModifierOf, withoutQuotedNames } from '@/lib/ai/consultative/consultRouter'
 import { eventPreCall, onlyRowsNamed, slimResultForModel, travelPreCall, unshownRows, withoutShownRows } from '@/lib/ai/consultative/consultTravel'
 import { geoGuardArea, guardPlaceGeography } from '@/lib/ai/tools/placeGeoGuard'
 import { compactCandidates, compactProducts, loadChatSessionState, nextChatSessionState, readChatSessionId, saveChatSessionState, type ChatSessionState } from '@/lib/ai/consultative/chatSessionState'
@@ -1092,7 +1093,10 @@ export async function POST(req: Request) {
   // Folded over the CURRENT SUBJECT only (golden B4): the profile resets itself on a venue-noun
   // switch, but "Lên lịch trình … Vũng Tàu" names no venue, so the headphone budget stayed on the
   // profile and filtered the trip's place rows to 2,000,000.
-  const needProfile = deriveNeedProfile(currentSubjectMessages(framingMessages, { hasGps: !!userLocation, lang }), {
+  // Names the user copied back from our replies / cards ("A hay B?") are references, never requirements — for the
+  // need profile AND the situation frame's hard constraints (replay SHOP-3: "… Dell 15 …" became hard: brand).
+  const unquotedFraming = withoutQuotedNames(framingMessages)
+  const needProfile = deriveNeedProfile(currentSubjectMessages(withoutQuotedNames(framingMessages), { hasGps: !!userLocation, lang }), {
     storedPreferences: storedPrefs,
     gps: userLocation ? { lat: userLocation.lat, lng: userLocation.lng } : null,
   })
@@ -1139,7 +1143,7 @@ export async function POST(req: Request) {
   // thấy bằng chứng về giờ mở khuya" about resorts nobody asked to be open late. The fold now
   // reads only the user turns since the last task switch (consultationUserTexts).
   const situation: SituationFrame | null = consultativeV1
-    ? deriveSituation(ownDomainSwitch ? consultationUserTexts(framingMessages).slice(-1) : consultationUserTexts(framingMessages), needProfile, { hasGps: !!userLocation })
+    ? deriveSituation(ownDomainSwitch ? consultationUserTexts(unquotedFraming).slice(-1) : consultationUserTexts(unquotedFraming), needProfile, { hasGps: !!userLocation })
     : null
   // The concrete first step for a VAGUE place request (searchNow.ts) — computed once here, read by
   // the V1 block below and by the pre-search (A1(c)). The turn after a clarify (item 1) is the first
@@ -1207,7 +1211,11 @@ export async function POST(req: Request) {
   const storedProducts = chatState?.products ?? null
   const shopMoreTurn = !!consult && (consult.turn === 'more' || consult.turn === 'reject') && consult.domains[0] === 'shopping'
   let productsOverride: Array<Record<string, unknown>> | null = null
-  if (shopMoreTurn && storedProducts?.rows?.length) {
+  // A "bác" that states a NEW requirement ("nặng quá, muốn nhẹ hơn") searches again with it (consult.query carries
+  // the modifier): the stored pool was found for the old requirement (replay SHOP-3: no light laptop in it, and the
+  // reply refused to pick). A plain "bác" ("cái đó sếp có rồi") continues from the pool.
+  const shopRejectNewNeed = consult?.turn === 'reject' && !!rejectModifierOf(lastText)
+  if (shopMoreTurn && storedProducts?.rows?.length && !shopRejectNewNeed) {
     const named = storedProducts.rows.map(r => ({ ...r, name: String(r.title ?? r.name ?? '') }))
     const remaining = unshownRows(named, [...consultShownEver, ...(chatState?.shown ?? [])])
     if (remaining.length >= 2) productsOverride = remaining
@@ -1327,8 +1335,10 @@ export async function POST(req: Request) {
    * with laptop screens and a mouse. The budget falls back to the last turn that
    * stated one for the same reason.
    */
+  // The product constraints read what the user ASKED FOR — not the names they copied back from our cards (replay
+  // SHOP-3: "… Laptop Dell 15 …" in an "A hay B?" became brand = Dell and filtered out every other laptop).
   const shoppingConstraints = deriveShoppingConstraints(
-    messages,
+    withoutQuotedNames(messages),
     budget ?? budgetFromHistory(currentSubjectMessages(messages, { hasGps: !!userLocation, lang }), extractBudget),
   )
 
@@ -2011,9 +2021,15 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   // Follow-up / compare: the guards' EVIDENCE for the venues being discussed comes from the stored candidates
   // (stream-filter seed) — no tool call, no provider call, nothing new for the model to read. r14: the guards
   // cut true facts from the previous turn ("Michi 4,8⭐ (818 review) vs Haru 4,5⭐", the venue's phone).
-  const followSeed: TurnEvidence | undefined = consult && (consult.turn === 'followup' || consult.turn === 'compare') && storedCandidates?.rows?.length && process.env.CONSULT_FOLLOW_SEED === '1'
+  const followPlaceSeed: TurnEvidence | undefined = consult && (consult.turn === 'followup' || consult.turn === 'compare') && storedCandidates?.rows?.length && process.env.CONSULT_FOLLOW_SEED === '1'
     ? { places: storedCandidates.rows as unknown as TurnEvidence['places'], productRecords: [], productQueries: [] }
     : undefined
+  // A shopping PLAN calls no tool: the newest card's prices are its money evidence, so the money guard is active and
+  // an amount no source carries ("Giấy gói quà ~20.000đ", replay SHOP-2 level A) is removed, the product's own kept.
+  const shopPlanRecords = consult?.turn === 'plan' && consult.domains[0] === 'shopping' ? shoppingMarkerRecords(assistantTexts) : []
+  // The requested entity the guard binds prices to: the product the conversation settled on, else the card's first.
+  const shopPlanQuery = shopPlanRecords.length ? (latestConsultPick(null) ?? shopPlanRecords[0].title) : null
+  const followSeed: TurnEvidence | undefined = followPlaceSeed ?? (shopPlanRecords.length ? { places: [], productRecords: shopPlanRecords, productQueries: shopPlanQuery ? [shopPlanQuery] : [] } : undefined)
   // Follow-up / compare: the stored rows of the venues the turn is about (refers + the stated pick), no search.
   if (followFromState && storedCandidates) {
     const want = [...(consult?.refers ?? []), ...(latestConsultPick(null) ? [latestConsultPick(null) as string] : [])]
@@ -2499,7 +2515,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
         try { result = await (tools as unknown as Record<string, { execute: (args: unknown, ctx: { toolCallId: string; messages: unknown[] }) => Promise<unknown> }>).search_products.execute({ query: core }, { toolCallId, messages: [] }); (preCall.args as { query: string }).query = core } catch { /* keep the empty result */ }
       }
     }
-    if (consultShownBefore.length) result = withoutShownRows(result, consultShownBefore)
+    if (consultShownBefore.length) result = withoutShownRows(result, consultShownBefore, { allowEmpty: consult?.turn === 'reject' })
     if (consultPlanReuse) result = onlyRowsNamed(result, latestConsultPick(null), assistantTexts.flatMap(t => priorVenuesIn(t).map(v => v.name)))
     if (consultFollowReuse) result = onlyRowsNamed(result, null, [...(consult?.refers ?? []), ...(latestConsultPick(null) ? [latestConsultPick(null) as string] : [])])
     presearchOutcome = { toolCallId, toolName: preCall.name, args: preCall.args as PresearchOutcome['args'], result, ms: Date.now() - t0 }
