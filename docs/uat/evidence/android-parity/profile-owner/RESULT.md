@@ -1,9 +1,17 @@
 # profile-owner
 
-Run `2026-09-28T11-02-31` · UAT `826d23b2ab8a83a0ad36d74ecc79d2e33a71b406`
+Run `2026-09-28T15-59-06` · UAT `31c5e84199a2c4aab8cf07372a2781b1118ae145`
 
-## android: FAIL — timeout waiting for Tôi
+## android: PASS
 
+- ✅ đủ 6 tab như web, đúng thứ tự — Đã đăng · Đã chia sẻ · Đã lưu · Đăng bài mới · Bị hạn chế · Đã ẩn · Địa điểm
+- ✅ không có tab "Đã thích" (web không có)
+- ✅ Đã đăng: 2 mục — 2 thẻ
+- ✅ Đã chia sẻ: 2 mục — 2 thẻ
+- ✅ Đã lưu: 2 mục — 2 thẻ
+- ✅ Bị hạn chế: 1 mục — 1 thẻ
+- ✅ Đã ẩn: 1 mục — 1 thẻ
+- ✅ Địa điểm: 0 mục — 0 thẻ
 
 ## web: PASS
 
@@ -15,4 +23,5 @@ Run `2026-09-28T11-02-31` · UAT `826d23b2ab8a83a0ad36d74ecc79d2e33a71b406`
 - ✅ Đã ẩn: 1 mục — 1 thẻ (E2E)
 - ✅ Địa điểm: 0 mục — 0 thẻ (E2E)
 
-Video + raw screenshots: `D:/TappyAI-backups/android-parity-evidence/2026-09-28T11-02-31/profile-owner/` (outside git — size).
+Side-by-side images: `D:/TappyAI-backups/android-parity-evidence/2026-09-28T15-59-06/profile-owner/compare/` (7 steps).
+Video + raw screenshots: `D:/TappyAI-backups/android-parity-evidence/2026-09-28T15-59-06/profile-owner/{android,web}/` (outside git — rule 2026-09-28).

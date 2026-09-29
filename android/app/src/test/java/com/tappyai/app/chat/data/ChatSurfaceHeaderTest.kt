@@ -33,8 +33,9 @@ class ChatSurfaceHeaderTest {
     fun `the surface is the only header the request adds itself`() {
         // Authorization and Accept-Language come from the shared client's interceptors, never
         // from here — a second source for either would be a second thing to keep in sync.
+        // x-tappy-caps (2026-09-29, ANDROID-REQUESTS R10) declares what this build renders.
         val request = chatRequest("http://10.0.2.2:3200/", body)
-        assertEquals(setOf("x-tappy-surface"), request.headers.names())
+        assertEquals(setOf("x-tappy-surface", "x-tappy-caps"), request.headers.names())
         assertNull(request.header("Authorization"))
     }
 

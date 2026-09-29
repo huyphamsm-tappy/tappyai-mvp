@@ -159,11 +159,18 @@ export async function launch({ fresh = false } = {}) {
  */
 export async function dismissForeign() {
   for (let i = 0; i < 5; i++) {
+    // Another app (e.g. Maps opened by a link) hanging on the software-GPU emulator: close IT —
+    // it is not ours. (Our own app's ANR is answered "Wait" in launch().)
+    const nodes = dump()
+    if (find(/isn.t responding/, nodes) && !find(/^TappyAI/, nodes)) {
+      const close = find('Close app', nodes)
+      if (close) { tapXY((close.x1 + close.x2) / 2, (close.y1 + close.y2) / 2); await sleep(1500) }
+    }
     const top = foreground()
     if (!top || top.startsWith(PKG + '/') || /launcher/i.test(top)) break
     sh('input', 'keyevent', '4'); await sleep(800)
   }
-  sh('am', 'force-stop', 'com.google.android.providers.media.module')
+  for (const p of ['com.google.android.providers.media.module', 'com.google.android.apps.maps', 'com.android.chrome']) sh('am', 'force-stop', p)
   sh('input', 'keyevent', '3'); await sleep(500)
 }
 export function install(apk) { adb(['install', '-r', apk]) }

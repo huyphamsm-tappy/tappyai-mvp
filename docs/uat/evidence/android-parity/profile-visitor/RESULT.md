@@ -1,6 +1,6 @@
 # profile-visitor
 
-Run `2026-09-28T10-25-05` · UAT `1e11b32390f34a748cb994269c8d79e7b2c3db9a`
+Run `2026-09-28T15-11-17` · UAT `83853cc6c857c7e029ec6dd96a4b43e2dca7f903`
 
 ## android: PASS
 
@@ -20,4 +20,5 @@ Run `2026-09-28T10-25-05` · UAT `1e11b32390f34a748cb994269c8d79e7b2c3db9a`
 - ✅ Bài đăng: KHÔNG thấy bài đã ẩn
 - ✅ Chia sẻ: không còn bài có địa điểm
 
-Video + raw screenshots: `D:/TappyAI-backups/android-parity-evidence/2026-09-28T10-25-05/profile-visitor/` (outside git — size).
+Side-by-side images: `D:/TappyAI-backups/android-parity-evidence/2026-09-28T15-11-17/profile-visitor/compare/` (2 steps).
+Video + raw screenshots: `D:/TappyAI-backups/android-parity-evidence/2026-09-28T15-11-17/profile-visitor/{android,web}/` (outside git — rule 2026-09-28).

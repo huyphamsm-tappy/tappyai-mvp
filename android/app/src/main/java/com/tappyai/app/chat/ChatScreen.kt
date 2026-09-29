@@ -499,7 +499,14 @@ fun ChatScreen(
                                     )
                                 }
                             }
-                            if (message.followups.isNotEmpty() && isLast && !isResponding) {
+                            // Consult V2 ASK turn: one chip group per question + "Gửi" (web AskCard).
+                            // It replaces the generic follow-up chips for that turn.
+                            if (message.ask.isNotEmpty() && isLast && !isResponding) {
+                                AskCard(
+                                    questions = message.ask,
+                                    onSend = viewModel::onFollowupSelected,
+                                )
+                            } else if (message.followups.isNotEmpty() && isLast && !isResponding) {
                                 FollowupChips(
                                     followups = message.followups,
                                     onSelect = viewModel::onFollowupSelected,

@@ -298,8 +298,13 @@ class ChatViewModel @Inject constructor(
                                 role = if (isUser) TappyChatRole.User else TappyChatRole.Assistant,
                                 text = parsed?.text ?: stored.content,
                                 plan = parsed?.plan,
+                                // The share payload too — without it a plan reopened from history
+                                // could not be shared ("Không chia sẻ được kế hoạch này từ đây",
+                                // e2e share-plan 2026-09-29); web shares it.
+                                planJson = parsed?.planJson,
                                 ctaButtons = parsed?.ctaButtons ?: emptyList(),
                                 followups = parsed?.followups ?: emptyList(),
+                                ask = parsed?.ask ?: emptyList(),
                                 shopping = parsed?.shopping,
                                 places = parsed?.places ?: emptyList(),
                                 segments = parsed?.segments ?: emptyList(),
@@ -688,6 +693,7 @@ class ChatViewModel @Inject constructor(
                         ctaButtons = parsed.ctaButtons,
                         segments = parsed.segments,
                         followups = followups,
+                        ask = parsed.ask,
                         // D1 — the decision the block carries, which Android used to discard.
                         shopping = parsed.shopping,
                         places = parsed.places,

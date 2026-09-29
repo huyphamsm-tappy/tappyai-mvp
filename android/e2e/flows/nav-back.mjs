@@ -32,8 +32,11 @@ export async function android({ a, shot, check, seeded }) {
     await a.tap(row, { after: 3500 })
     shot(`open-${label}`)
     await a.back()
-    const now = a.texts().slice(0, 12).join('|')
-    check(`Back từ "${label}" → về lại ${tab}`, inApp() && (tab === 'Trang chủ' ? !!a.find(HOME) : a.visible('Chỉnh sửa hồ sơ') || now.includes('TÀI KHOẢN') || now.includes(row)), parent.slice(0, 60))
+    // Back lands on the parent at the SAME scroll position, so the row just tapped is on screen
+    // again (the parent's header may be scrolled away — the old top-of-screen check missed that).
+    // No "Quay lại" = not still on the child page.
+    const now = a.texts()
+    check(`Back từ "${label}" → về lại ${tab}`, inApp() && now.includes(row) && !now.includes('Quay lại'), `${parent.slice(0, 40)} → ${now.slice(0, 4).join('|')}`)
   }
 
   // Explore → creator profile → Back; Explore → composer → Back.

@@ -36,6 +36,14 @@ class ChatShareWiringTest {
     }
 
     @Test
+    fun `a conversation reopened from history keeps the plan block, so its plan can be shared`() {
+        val vm = File(findSrc("app/src/main/java/com/tappyai/app/chat/ChatViewModel.kt")).readText()
+        // Both paths that build a message from a parsed reply: live, and restored from storage.
+        assertTrue(vm.contains("planJson = parsed.planJson,"))
+        assertTrue(vm.contains("planJson = parsed?.planJson,"))
+    }
+
+    @Test
     fun `a sheet opened with no plan block says so instead of spinning forever`() {
         val vm = PlanShareViewModel(object : PlanShareRepository {
             override suspend fun publish(planJson: String): PlanShareOutcome = error("must not publish without a block")

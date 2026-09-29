@@ -184,7 +184,13 @@ class RealChatRepository @Inject constructor(
                 null
             }
         }
-        val content = if (dataUrl != null) textAndImageContent(text, dataUrl) else textContent(text)
+        // An assistant turn goes back AS IT ARRIVED, markers included — what web's useChat sends. The
+        // server reads them (consultBrain.wasAskReply: [TAPPY_ASK]; the accepted "Lên kế hoạch chi
+        // tiết" offer in [FOLLOWUPS]) and strips them itself before the model sees the history
+        // (sanitizePriorAssistantContent). Sending the reader-facing [text] lost that state: after
+        // "Lên kế hoạch chi tiết" the server asked "Bạn muốn đi đâu?" on Android (UAT 2026-09-29).
+        val body = historyBody(role, text, raw)
+        val content = if (dataUrl != null) textAndImageContent(body, dataUrl) else textContent(body)
         return ChatMessageDto(role = role, content = content)
     }
 
@@ -213,9 +219,20 @@ internal const val SURFACE_ANDROID = "android"
  * on this device — the `x-tappy-age-declared` header (`GuestAgeStore`). Everything else is the
  * shared client's (the Bearer, when there is a session, comes from its interceptor).
  */
+/** Rendering capabilities this build declares to /api/chat (comma list). "ask" = [com.tappyai.app.chat.AskBlock]. */
+internal const val CAPS_HEADER = "x-tappy-caps"
+internal const val CAPS_ANDROID = "ask"
+
+/** What a history turn sends as content: an assistant turn's raw reply (markers kept), else its text. */
+internal fun historyBody(role: String, text: String, raw: String): String =
+    if (role == "assistant" && raw.isNotBlank()) raw else text
+
 internal fun chatRequest(baseUrl: String, body: RequestBody, ageDeclared: String? = null): Request = Request.Builder()
     .url("${baseUrl}api/chat")
     .header(SURFACE_HEADER, SURFACE_ANDROID)
+    // What THIS build can render beyond the surface default (ANDROID-REQUESTS R10). The surface alone
+    // cannot tell an old build (no [TAPPY_ASK] parser → raw JSON) from this one; a capability can.
+    .header(CAPS_HEADER, CAPS_ANDROID)
     .apply { if (!ageDeclared.isNullOrBlank()) header(GuestAgeStore.HEADER, ageDeclared) }
     .post(body)
     .build()

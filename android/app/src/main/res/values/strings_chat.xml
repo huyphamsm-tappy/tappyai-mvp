@@ -302,4 +302,6 @@
     <string name="chat_share_public_copy">Copy link</string>
     <string name="chat_share_public_rate_limited">You have created enough public links for today. Try again tomorrow.</string>
     <string name="chat_share_public_not_shareable">This answer cannot be shared publicly.</string>
+    <string name="chat_ask_free_hint">Or type anything else…</string>
+    <string name="chat_ask_send">Send</string>
 </resources>

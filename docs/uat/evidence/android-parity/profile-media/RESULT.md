@@ -1,6 +1,6 @@
 # profile-media
 
-Run `2026-09-28T11-02-31` · UAT `826d23b2ab8a83a0ad36d74ecc79d2e33a71b406`
+Run `2026-09-28T15-11-17` · UAT `83853cc6c857c7e029ec6dd96a4b43e2dca7f903`
 
 ## android: PASS
 
@@ -16,4 +16,5 @@ Run `2026-09-28T11-02-31` · UAT `826d23b2ab8a83a0ad36d74ecc79d2e33a71b406`
 - ✅ server: avatar_url đã đổi
 - ✅ sau khi tải lại: ảnh bìa hiện trên /profile
 
-Video + raw screenshots: `D:/TappyAI-backups/android-parity-evidence/2026-09-28T11-02-31/profile-media/` (outside git — size).
+Side-by-side images: `D:/TappyAI-backups/android-parity-evidence/2026-09-28T15-11-17/profile-media/compare/` (7 steps).
+Video + raw screenshots: `D:/TappyAI-backups/android-parity-evidence/2026-09-28T15-11-17/profile-media/{android,web}/` (outside git — rule 2026-09-28).

@@ -138,6 +138,8 @@ data class ParsedAssistantReply(
      * JSON reaching a user, which is how the same block leaked twice before.
      */
     val places: List<PersistedPlace> = emptyList(),
+    /** Consult V2 ASK questions (`[TAPPY_ASK]`), rendered as [AskCard]. Empty on every other turn. */
+    val ask: List<AskQuestion> = emptyList(),
 )
 
 /**
@@ -295,6 +297,11 @@ object ChatResponseParser {
     fun parse(content: String): ParsedAssistantReply {
         var text = normalizeImageLinks(content)
 
+        // 0. Consult V2 ASK turn (server 70667d3): 2-3 questions, each with its own options.
+        // ALWAYS stripped — complete, malformed, or still arriving mid-stream — so no raw JSON reads.
+        val ask = AskBlock.parse(text)
+        text = ask.text
+
         // 1. Trip/evening plan.
         val planMatch = PLAN_RE.find(text)
         val plan = planMatch?.let {
@@ -447,6 +454,7 @@ object ChatResponseParser {
             segments = segment(presented),
             shopping = shopping,
             places = places,
+            ask = ask.questions,
         )
     }
 
@@ -520,5 +528,54 @@ internal object LenientPeopleSerializer : kotlinx.serialization.KSerializer<Int?
     }
     override fun serialize(encoder: kotlinx.serialization.encoding.Encoder, value: Int?) {
         if (value == null) encoder.encodeNull() else encoder.encodeInt(value)
+    }
+}
+
+/** One consult question and its quick-reply options (web `AskQuestionView`). */
+data class AskQuestion(val id: String, val q: String, val options: List<String>)
+
+/**
+ * `[TAPPY_ASK]{"v":1,"questions":[{id,q,options[]}]}[/TAPPY_ASK]` — port of web
+ * `src/lib/structuredContent/parseAsk.ts`: ≤3 questions, each with 2-4 trimmed options; a question
+ * with fewer than 2 options is dropped; a malformed block yields no questions but is still removed.
+ */
+object AskBlock {
+    private val BLOCK = Regex("""\[TAPPY_ASK\]([\s\S]*?)\[/TAPPY_ASK\]""")
+    // A block still arriving (streaming) or cut off: everything from the open tag on is hidden.
+    private val PARTIAL = Regex("""\[TAPPY_ASK\][\s\S]*$""")
+    private val BLANK_RUN = Regex("\n{3,}")
+    private val json = Json { ignoreUnknownKeys = true; isLenient = true }
+
+    data class Result(val text: String, val questions: List<AskQuestion>)
+
+    fun parse(content: String): Result {
+        val m = BLOCK.find(content)
+        if (m == null) {
+            return if (content.contains("[TAPPY_ASK]")) Result(PARTIAL.replace(content, "").trimEnd(), emptyList())
+            else Result(content, emptyList())
+        }
+        val text = (content.substring(0, m.range.first) + content.substring(m.range.last + 1)).replace(BLANK_RUN, "\n\n").trim()
+        val questions = runCatching {
+            val root = json.parseToJsonElement(m.groupValues[1].trim()) as kotlinx.serialization.json.JsonObject
+            val arr = root["questions"] as? JsonArray ?: return@runCatching emptyList()
+            arr.mapIndexedNotNull { i, el ->
+                val o = el as? kotlinx.serialization.json.JsonObject ?: return@mapIndexedNotNull null
+                val q = (o["q"] as? JsonPrimitive)?.takeIf { it.isString }?.content?.trim() ?: return@mapIndexedNotNull null
+                val options = (o["options"] as? JsonArray).orEmpty()
+                    .mapNotNull { (it as? JsonPrimitive)?.takeIf { p -> p.isString }?.content?.trim()?.takeIf { s -> s.isNotEmpty() } }
+                    .take(4)
+                if (options.size < 2) return@mapIndexedNotNull null
+                val id = (o["id"] as? JsonPrimitive)?.takeIf { it.isString }?.content ?: "q${i + 1}"
+                AskQuestion(id, q, options)
+            }.take(3)
+        }.getOrDefault(emptyList())
+        return Result(text, questions)
+    }
+
+    /** The user's reply from the chosen options, in question order: "2 người · 100-300k · Món Nhật". */
+    fun composeAnswer(questions: List<AskQuestion>, chosen: Map<String, String>, free: String = ""): String {
+        val parts = questions.mapNotNull { chosen[it.id]?.takeIf { v -> v.isNotEmpty() } }
+        val extra = free.trim()
+        return (parts + listOfNotNull(extra.takeIf { it.isNotEmpty() })).joinToString(" · ")
     }
 }

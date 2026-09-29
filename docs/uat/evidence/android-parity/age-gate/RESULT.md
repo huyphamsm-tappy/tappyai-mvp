@@ -1,6 +1,6 @@
 # age-gate
 
-Run `2026-09-28T11-50-13` · UAT `2bd5c592ae71932010591e9144c87e5aea3d28d4`
+Run `2026-09-28T15-11-17` · UAT `83853cc6c857c7e029ec6dd96a4b43e2dca7f903`
 
 ## android: PASS
 
@@ -17,4 +17,5 @@ Run `2026-09-28T11-50-13` · UAT `2bd5c592ae71932010591e9144c87e5aea3d28d4`
 - ✅ /recommendations đưa sang /age-check
 - ✅ sau "Tiếp tục": quay lại trang gợi ý
 
-Video + raw screenshots: `D:/TappyAI-backups/android-parity-evidence/2026-09-28T11-50-13/age-gate/` (outside git — size).
+Side-by-side images: `D:/TappyAI-backups/android-parity-evidence/2026-09-28T15-11-17/age-gate/compare/` (4 steps).
+Video + raw screenshots: `D:/TappyAI-backups/android-parity-evidence/2026-09-28T15-11-17/age-gate/{android,web}/` (outside git — rule 2026-09-28).
