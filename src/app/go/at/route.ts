@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { newClickSub1, openClickUrl, withSub1 } from '@/lib/ccp/tracking/clickLink'
-import { rateLimit } from '@/lib/security/rateLimit'
+import { rateLimit, clientIp } from '@/lib/security/rateLimit'
 
 // GET /go/at — one click on a tracked affiliate link (Phương án C, owner 2026-09-29).
 //
@@ -22,7 +22,8 @@ export async function GET(req: NextRequest) {
   const click = openClickUrl(req.nextUrl.searchParams)
   if (!click) return NextResponse.redirect(new URL('/', req.nextUrl.origin), 302)
 
-  const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ?? 'unknown'
+  // The platform-set client IP (P3-F1) — the leftmost x-forwarded-for is caller-written, so it keys no limiter.
+  const ip = clientIp(req)
   if (!rateLimit(`go-at:${ip}`, 60, 60_000).ok) return NextResponse.redirect(click.wrapperUrl, 302)
 
   const sub1 = newClickSub1()
