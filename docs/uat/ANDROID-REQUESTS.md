@@ -92,20 +92,24 @@ Giá phòng: chưa xác nhận…","price":…`). Phần đầu kế hoạch (ti
   (frame `0:`/`8:`, marker `[TAPPY_PLAN]`/`[TAPPY_SHOPPING]`/`[CTA_BUTTONS]`/`[FOLLOWUPS]` = gợi ý trả lời nhanh, annotation
   `tappy.places.v1`/`tappy.progress.v1`, nút CCP `labelKey`, hàng tìm kiếm `urlKind:'search'`): `docs/consultative/OUTPUT-CONTRACT-6-DOMAINS.md`.
   Đây là hành vi HIỆN TẠI của rc (thiết kế 26/9 chưa tìm thấy). Câu hỏi đóng của server có thể đứng SAU khối CTA/FOLLOWUPS —
-  Android phải hiển thị text sau khối. Câu trả lời thô để test offline: `gs://tappyai-media-uat/evidence/<SHA>/golden-raw/` (xem §5 của file).
+  Android phải hiển thị text sau khối. Câu trả lời thô để test offline: `gs://tappyai-uat-evidence/evidence/<SHA>/golden-raw/` (xem §5 của file).
 
 - 2026-09-28 22:00 (web → Android, **test đỏ trên rc**): `src/lib/i18n/androidHardcodedUiStrings.test.ts` ("no contentDescription is a string literal") báo `android/app/src/main/java/com/tappyai/app/age/AgeCheck.kt:222` (`contentDescription = "TappyAI"`, commit 06b5284). Nhờ phiên Android đổi sang `stringResource(...)` (hoặc chuỗi có sẵn như các màn khác). Web KHÔNG sửa android/.
 
 - 2026-09-29 (web): **Khung đầu ra 6 mảng đã duyệt được cài** (83853cc, `domainFrames.ts`) — đổi NỘI DUNG câu chữ, KHÔNG đổi
   định dạng stream/marker. Mới: dòng `💰 Ngân sách: … ÷ … người = …` (văn bản thường) ngay sau `[/TAPPY_PLAN]` khi user nêu ngân sách —
   Android hiển thị như một dòng chữ sau khối kế hoạch. Chi tiết: `docs/consultative/OUTPUT-CONTRACT-6-DOMAINS.md` §0.
-  Câu trả lời thô mới để test offline: `gs://tappyai-media-uat/evidence/83853cc/golden-raw/`.
+  Câu trả lời thô mới để test offline: `gs://tappyai-uat-evidence/evidence/83853cc/golden-raw/`.
 
 ## 3. Quy tắc bằng chứng mới (chủ dự án, 2026-09-28) — áp dụng cho CẢ phiên Android
 
 - KHÔNG commit ảnh/video vào git nữa (không sửa lịch sử commit cũ).
-- Upload ảnh chụp lên `gs://tappyai-media-uat/evidence/<SHA>/` (SHA = commit được chụp; web dùng SHA UAT từ
-  `/api/version`, Android dùng SHA đã build APK). Ví dụ: `gcloud storage cp *.png gs://tappyai-media-uat/evidence/<SHA>/android/`.
-- ⚠️ Bucket UAT đọc công khai theo URL — không chụp dữ liệu thật/cá nhân, chỉ tài khoản test.
+- Upload ảnh chụp lên `gs://tappyai-uat-evidence/evidence/<SHA>/` (SHA = commit được chụp; web dùng SHA UAT từ
+  `/api/version`, Android dùng SHA đã build APK). Ví dụ: `gcloud storage cp *.png gs://tappyai-uat-evidence/evidence/<SHA>/android/`.
+- 2026-09-29 (Huy): bằng chứng KHÔNG được đọc công khai. Bucket bằng chứng là `gs://tappyai-uat-evidence` (RIÊNG TƯ:
+  public access prevention = enforced, không có `allUsers`; đọc bằng `gcloud` đã đăng nhập). KHÔNG upload bằng chứng vào
+  `gs://tappyai-media-uat` nữa — bucket media đó đọc công khai (ảnh app cần). 913 tệp cũ đã chép sang bucket riêng.
+  Trang duyệt cho Huy dùng ảnh nhúng trong artifact hoặc signed URL có hạn.
+- Vẫn chỉ chụp tài khoản test, không dữ liệu thật/cá nhân.
 - Repo chỉ giữ RELEASE-PROGRESS.md (web) / tài liệu Android với đường dẫn `gs://…` hoặc
-  `https://storage.googleapis.com/tappyai-media-uat/evidence/<SHA>/…`.
+  `gs://tappyai-uat-evidence/evidence/<SHA>/…`.

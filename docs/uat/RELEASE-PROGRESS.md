@@ -8,8 +8,8 @@ Check the running SHA: `GET /api/version` with the bypass header.
 ## Rules from the owner (2026-09-28)
 - **PASS only with a real screenshot on UAT** (headless browser + bypass). Unit tests are not enough.
   UI items: screenshot next to the matching design in `D:\redesign`. Evidence up to 2614652 → `docs/uat/evidence/release-2026-09-28/`.
-- **From 2026-09-28 evening: NO images/videos in git.** Evidence → `gs://tappyai-media-uat/evidence/<UAT SHA>/…`
-  (public URL `https://storage.googleapis.com/tappyai-media-uat/evidence/<SHA>/…`; test accounts only). This file keeps paths only.
+- **From 2026-09-28 evening: NO images/videos in git.** Evidence → `gs://tappyai-uat-evidence/evidence/<UAT SHA>/…`
+  (public URL `gs://tappyai-uat-evidence/evidence/<SHA>/…`; test accounts only). This file keeps paths only.
 - Signed-in shots: Playwright + admin magic-link session on the AUDIT project (scratchpad `pw/login.mjs`), never the Browser pane.
 - Only message the owner for login/password/secret, real-device tests, or danger points.
 - Never write to prod before the owner confirms the real-device UAT. Phase B (release) unchanged.
@@ -54,8 +54,8 @@ Latest full run: `final-1e11b32/` (+ `final-a9d634e/` for the cut-sentence fix a
 edesign | PASS (deviations in RELEASE report) |
 | Share layouts (owner-chosen from Downloads) | — | contact sheet sent 2026-09-28 | WAITING OWNER CHOICE |
 
-## Round 3 — owner prompt 2026-09-28 evening (evidence in GCS: `gs://tappyai-media-uat/evidence/<SHA>/`)
-| Item | Commit(s) | UAT SHA | Evidence (gs://tappyai-media-uat/evidence/…) | Status |
+## Round 3 — owner prompt 2026-09-28 evening (evidence in GCS: `gs://tappyai-uat-evidence/evidence/<SHA>/`)
+| Item | Commit(s) | UAT SHA | Evidence (gs://tappyai-uat-evidence/evidence/…) | Status |
 |---|---|---|---|---|
 | A1 onboarding counter = real steps ("Bước 1/2", "Bước 2/2") | b08561d | f8a26b7 | f8a26b7/a1-onboarding.png ("Bước 1/2", 2 segments) | PASS |
 | A2 Đã lưu: Deals / Bộ sưu tập chips hidden | b08561d | f8a26b7 | f8a26b7/a2-saved.png, a2-saved-mobile.png (Tất cả / Địa điểm / Bài viết / Video only, no "Sắp có") | PASS |
@@ -134,12 +134,12 @@ Cost/turn (lower bound, Haiku 4.5 list): step0 $0.0062 → step2 $0.0057; tokens
 
 ## BÁO CÁO SÁNG 29/09 (overnight run, NO prod writes)
 
-**SHA cuối trên UAT: `af8b4ba`** (rc/web-uat). Evidence = `https://storage.googleapis.com/tappyai-media-uat/evidence/<SHA>/…`
+**SHA cuối trên UAT: `af8b4ba`** (rc/web-uat). Evidence = `gs://tappyai-uat-evidence/evidence/<SHA>/…`
 Tests on the final code: web vitest 15,588 pass (2 failures: a load timeout that passes alone + the Android
 `AgeCheck.kt:222` pin from the Android session's 06b5284, see Q8) · Android unit 833/0 · tsc/eslint clean.
 
 ### Mục BẮT BUỘC
-| Mục | Kết quả | Ảnh (gs://tappyai-media-uat/evidence/…) |
+| Mục | Kết quả | Ảnh (gs://tappyai-uat-evidence/evidence/…) |
 |---|---|---|
 | A1 onboarding đúng số bước | PASS | f8a26b7/a1-onboarding.png |
 | A2 ẩn chip Deals / Bộ sưu tập | PASS | f8a26b7/a2-saved.png, a2-saved-mobile.png |

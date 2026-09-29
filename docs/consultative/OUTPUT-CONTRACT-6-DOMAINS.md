@@ -417,7 +417,7 @@ The following apply to every area.
 ## 5. Android offline test (replaying a saved stream)
 
 **Planned storage.** Raw golden-set turns will be stored at
-`gs://tappyai-media-uat/evidence/<SHA>/golden-raw/`. Nothing has been uploaded yet, so this is the
+`gs://tappyai-uat-evidence/evidence/<SHA>/golden-raw/`. Nothing has been uploaded yet, so this is the
 format to expect:
 
 - `<suite>-<caseId>-t<n>.stream.txt`: the **exact response body bytes** of `/api/chat`, not re-encoded. It is UTF-8
