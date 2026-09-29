@@ -17,6 +17,8 @@ describe('SHOP-3 — laptop for a design student: services, bags and store pages
     ['Bảng Giá Sửa Laptop -Default Title', 'service'],
     ['Ba lô Rivacase 5563 Laptop 13.3', 'accessory'],
     ['Laptop | Máy tính xách tay giá rẻ, trả góp 0%, giảm 15 triệu', 'accessory'],
+    ['Jack DC Chân Sạc Laptop Sony VPCEB PCG-71311N', 'accessory'],
+    ['ZIN QUA SỬ DỤNG BỘ NGUỒN Cục sạc ADAPTER laptop', 'accessory'],
   ])('%s → %s', (title, reason) => {
     expect(rejectCandidate(cand(title), k)?.reason).toBe(reason)
   })

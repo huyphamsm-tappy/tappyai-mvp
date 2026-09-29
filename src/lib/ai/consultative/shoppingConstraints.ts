@@ -210,6 +210,8 @@ const ACCESSORY_HEAD = new RegExp(
 const ACCESSORY_ANYWHERE = new RegExp(
   '(?:' + [
     'man hinh', 'ban phim', 'chuot', 'tui xach', 'balo', 'ba lo', 'tui chong soc', 'cap dung', 'bao da',
+    // replay SHOP-3 (30/09): "Jack DC Chân Sạc Laptop Sony …", "… BỘ NGUỒN Cục sạc ADAPTER laptop" was the "lighter laptop"
+    'jack dc', 'chan sac', 'cuc sac', 'bo nguon', 'adapter',
     'op lung', 'cap sac', 'day sac', 'de tan nhiet', 'gia do', 'quat tan nhiet',
     'mieng dan', 'dan man hinh', 'cuong luc', 'than may', 'vo may', 'pin laptop',
     'o cung', 'ram laptop', 'the nho', 'mieng lot', 'lot chuot', 'dem tai',
@@ -222,6 +224,9 @@ const ACCESSORY_ANYWHERE = new RegExp(
  * Laptop Uy Tín HCM" reached the laptop card on "xem thêm" because the service rule only read the FIRST word.
  */
 const SERVICE_ANYWHERE = /\b(?:bang gia (?:sua|dich vu|thay)|dia chi sua|sua (?:chua|laptop|may tinh|macbook|dien thoai|may)|dich vu sua|nhan sua|thay man hinh)\b/
+
+const POWER_PART = /\b(?:jack dc|chan sac|cuc sac|bo nguon|adapter|day nguon)\b/
+const DEVICE_FIRST = /^(?:laptop|macbook|may tinh|dien thoai|iphone|ipad|may tinh bang|tai nghe)\b/
 
 /** Head nouns that name a SERVICE rather than a product. */
 const SERVICE_HEAD = new RegExp(
@@ -504,6 +509,10 @@ export function rejectCandidate(c: Candidate, k: ShoppingConstraints): Rejection
   if (!k.wantsAccessory) {
     if (SERVICE_HEAD.test(head) || SERVICE_ANYWHERE.test(head)) return { candidate: c, reason: 'service', detail: head }
     if (ACCESSORY_HEAD.test(head) || ACCESSORY_ANYWHERE.test(head)) return { candidate: c, reason: 'accessory', detail: head }
+    // A power part named a little later ("ZIN QUA SỬ DỤNG BỘ NGUỒN Cục sạc ADAPTER laptop", replay SHOP-3) — only when
+    // the title does not OPEN with the device itself ("Laptop Dell … kèm adapter" is a laptop).
+    const head8 = norm(title).replace(/[^a-z0-9\s]/g, ' ').replace(/\s+/g, ' ').trim().split(' ').slice(0, 8).join(' ')
+    if (POWER_PART.test(head8) && !DEVICE_FIRST.test(head)) return { candidate: c, reason: 'accessory', detail: head8 }
   }
 
   // A listing that names no particular product, and a toy that borrows the word.
