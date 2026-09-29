@@ -86,7 +86,8 @@ describe('Explore post share — the approved sheet', () => {
     fireEvent.click(screen.getByTestId('share-target-tiktok'))
     await waitFor(() => expect(status()).toBe('share.tiktokShared'))
     expect(share.mock.calls[0][0].files?.[0].type).toBe('video/mp4')
-    expect(brandedRender).not.toHaveBeenCalled()
+    // The card is only rendered for the sheet's preview; the video alone leaves.
+    expect(share.mock.calls[0][0].files).toHaveLength(1)
   })
 
   it('TikTok for a clip whose video cannot be fetched (CORS/offline) falls back to the card; desktop downloads + opens upload', async () => {

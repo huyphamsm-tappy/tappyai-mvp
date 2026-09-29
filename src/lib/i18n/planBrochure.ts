@@ -36,6 +36,9 @@ export interface PlanBrochureStrings {
   linkFailed: string
   linkRetry: string
   linkRequired: string
+  /** Overview-box labels on the plan share image (sample #7). */
+  durationLabel: string
+  partyLabel: string
 }
 
 const STRINGS: Record<RequestLocale, PlanBrochureStrings> = {
@@ -67,6 +70,8 @@ const STRINGS: Record<RequestLocale, PlanBrochureStrings> = {
     linkFailed: 'Chưa tạo được liên kết kế hoạch — hiện tại chia sẻ bằng văn bản',
     linkRetry: 'Thử lại',
     linkRequired: 'Cần có liên kết kế hoạch để chia sẻ lên đây',
+    durationLabel: 'Thời gian',
+    partyLabel: 'Số người',
   },
   en: {
     eyebrow: 'Tappy Plan',
@@ -96,6 +101,8 @@ const STRINGS: Record<RequestLocale, PlanBrochureStrings> = {
     linkFailed: 'The plan link could not be created — sharing as text for now',
     linkRetry: 'Retry',
     linkRequired: 'This needs the plan link',
+    durationLabel: 'Duration',
+    partyLabel: 'Travellers',
   },
 }
 

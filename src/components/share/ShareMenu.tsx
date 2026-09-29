@@ -49,7 +49,7 @@
 // The neutral glyphs are reserved for the ACTIONS (Email, Inbox, Save, Copy,
 // Other apps), so a real mark can never be mistaken for a generic one.
 
-import { useEffect, useState, type ReactNode } from 'react'
+import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { Copy, Check, Share2, X, Mail, Inbox, Download, Link2, ChevronRight } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import {
@@ -57,7 +57,8 @@ import {
 } from '@/lib/share/shareTargets'
 import { shareBrandMark } from '@/lib/share/shareBrands'
 import { inboxBody, planLinkArtifact, type ShareArtifact } from '@/lib/share/shareArtifact'
-import { renderShareCard, type ShareCardLayout } from '@/lib/share/shareCardFile'
+import { renderShareCard, shareCardLayouts, type ShareCardLayout, type ShareSheetVariant } from '@/lib/share/shareCardFile'
+import type { SharePostCard } from '@/lib/share/contentCards'
 import { fetchVideoFile, runTikTokShare, tiktokCaption } from '@/lib/share/tiktokShare'
 import { absoluteUrl } from '@/lib/share/openGraph'
 import { planBrochureStrings } from '@/lib/i18n/planBrochure'
@@ -68,6 +69,15 @@ import { TAPPY_MARK_SRC } from '@/components/brand/TappyLockup'
 import { usePublicShareEnabled } from '@/lib/config/usePublicShareFlag'
 
 type Feedback = { kind: 'ok' | 'error'; text: string } | null
+
+/** The line under the name on the sheet's link card, per variant. */
+const CARD_LINE: Record<ShareSheetVariant, string> = {
+  default: 'share.profile.cardLine',
+  profile: 'share.profile.cardLine',
+  post: 'share.post.cardLine',
+  suggestion: 'share.suggestion.cardLine',
+  plan: 'share.plan.cardLine',
+}
 
 /**
  * A plan's link, minted when the menu opens on a plan artifact.
@@ -127,6 +137,7 @@ export default function ShareMenu({
   onPublicLink,
   variant = 'default',
   profileName,
+  post,
   videoUrl,
 }: {
   /** The canonical artifact. When absent, `url` + `title` are shared as a link (Reviews). */
@@ -162,9 +173,18 @@ export default function ShareMenu({
    * 🔑 The variant is also the LAYOUT of every file this menu produces — Save and TikTok both go
    * through `renderShareCard(layout = variant)`, so the file matches the sheet on screen.
    */
-  variant?: 'default' | 'profile' | 'post'
+  /**
+   * `suggestion` (a chat recommendation) and `plan` (a published plan's page): the same approved
+   * sheet (owner pick #6, 29/09) with their own card layout — see shareCardLayouts.
+   */
+  variant?: ShareSheetVariant
   /** The profile's display name (profile) or the post's title (post) for the card (empty → "TappyAI" alone). */
   profileName?: string
+  /**
+   * An Explore post's public fields. Given → the sheet offers the post's own card (review / clip,
+   * owner pick #1 style) first and the QR card second; the chosen one is the saved/TikTok file.
+   */
+  post?: SharePostCard
   /**
    * An UPLOADED clip's own video (never a YouTube embed — that has no file). TikTok then shares
    * the video itself; when it cannot be fetched, the card image in the chosen layout instead.
@@ -195,7 +215,8 @@ export default function ShareMenu({
   // dialog carries everything, nothing rides on the clipboard.
   const linkOnly = a.text.trim() === a.url.trim() || a.planLink === true
   const textIsMoreThanUrl = !linkOnly
-  const planSnapshot = base.kind === 'plan' ? base.plan : undefined
+  // A plan that arrives ALREADY published (its own /plan page) is not minted again.
+  const planSnapshot = base.kind === 'plan' && !base.planLink ? base.plan : undefined
   // A plan without a link has nothing honest to hand to a url-only platform:
   // the brand root is not the plan. Those tiles wait for the link, or for Retry.
   const planUnlinked = !!planSnapshot && planLink.state !== 'url'
@@ -207,9 +228,41 @@ export default function ShareMenu({
     setZaloApp(typeof navigator !== 'undefined' && canHandoffToZalo(navigator.userAgent))
   }, [])
 
+  // ── THE CARD: one layout picked, rendered ONCE per (layout, link), shown, saved, sent ──
+  const sheetLayout = variant !== 'default'
+  const layouts = shareCardLayouts({ variant, artifact: base, post })
+  const [layoutPick, setLayoutPick] = useState<ShareCardLayout | null>(null)
+  const layout: ShareCardLayout = layoutPick && layouts.includes(layoutPick) ? layoutPick : layouts[0]
+  const cardCache = useRef(new Map<string, Promise<File | null>>())
+  const cardFileRef = useRef<(l: ShareCardLayout) => Promise<File | null>>(async () => null)
+  const objectUrls = useRef<string[]>([])
+  const [preview, setPreview] = useState<{ key: string; state: 'pending' | 'ready' | 'failed'; src?: string } | null>(null)
+  const cardKey = `${layout}|${a.url}`
+
   useEffect(() => {
-    if (!open) { setFeedback(null); setInboxOpen(false); setBusy(null); setPlanLink({ state: 'idle' }); setAttempt(0) }
+    if (!open) {
+      setFeedback(null); setInboxOpen(false); setBusy(null); setPlanLink({ state: 'idle' }); setAttempt(0)
+      setLayoutPick(null); setPreview(null); cardCache.current.clear()
+      for (const u of objectUrls.current) { try { URL.revokeObjectURL(u) } catch { /* already gone */ } }
+      objectUrls.current = []
+    }
   }, [open])
+
+  // The sheet shows the very file Save and TikTok will use (same cache entry, same File object).
+  useEffect(() => {
+    if (!open || !sheetLayout) return
+    let cancelled = false
+    setPreview({ key: cardKey, state: 'pending' })
+    void cardFileRef.current(layout).then(file => {
+      if (cancelled) return
+      if (!file) { setPreview({ key: cardKey, state: 'failed' }); return }
+      let src: string | undefined
+      try { src = URL.createObjectURL(file); objectUrls.current.push(src) } catch { src = undefined }
+      setPreview({ key: cardKey, state: 'ready', src })
+    })
+    return () => { cancelled = true }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- keyed on the card's identity, not the render
+  }, [open, sheetLayout, cardKey])
 
   // Publish the plan the moment the menu opens on one. The snapshot goes up in
   // the plan's own field names; the server whitelists it again and answers with
@@ -254,18 +307,22 @@ export default function ShareMenu({
   // Save and TikTok both call this: the layout is the sheet's own variant, so the file is the
   // layout the user is looking at. The card is drawn from the ARTIFACT AS BUILT (a plan's full
   // brochure, not its link-only shell) but carries the link that actually leaves.
-  const layout: ShareCardLayout = variant
-  const sheetLayout = variant === 'profile' || variant === 'post'
   function cardWebsite(): string {
     try { return new URL(absoluteUrl('/')).host } catch { return '' }
   }
-  function makeCardFile(): Promise<File | null> {
+  function renderCard(l: ShareCardLayout): Promise<File | null> {
     return renderShareCard({
       artifact: { ...base, url: a.url },
-      layout,
+      layout: l,
       displayName: variant === 'post' ? (profileName ?? a.subject) : profileName,
+      post,
+      planStrings: planStrings,
       copy: {
         caption: variant === 'post' ? t('share.post.scanHint') : t('v3.qr.scanHint'),
+        badges: { review: t('share.card.badge.review'), clip: t('share.card.badge.clip'), suggestion: t('share.card.badge.suggestion') },
+        scanTitle: t('share.card.scan'),
+        byline: t('share.card.byline'),
+        morePlaces: t('share.card.morePlaces'),
         tagline: t('v3.page.subtitle'),
         invite: variant === 'profile' ? t('v3.qr.card.invite') : undefined,
         slogan: t('v3.qr.card.slogan'),
@@ -276,6 +333,20 @@ export default function ShareMenu({
       },
     })
   }
+  /** The ONE file for a layout and link: rendered once, then the same File for preview, Save and TikTok. */
+  function cardFile(l: ShareCardLayout): Promise<File | null> {
+    const key = `${l}|${a.url}`
+    let p = cardCache.current.get(key)
+    if (!p) {
+      p = renderCard(l)
+      cardCache.current.set(key, p)
+      // A failed render may be retried on the next ask.
+      void p.then(f => { if (!f && cardCache.current.get(key) === p) cardCache.current.delete(key) })
+    }
+    return p
+  }
+  cardFileRef.current = cardFile
+  const makeCardFile = () => cardFile(layout)
   /** TikTok's file: an uploaded clip's own video when it can be fetched, else the card. */
   async function makeTikTokFile(): Promise<File | null> {
     if (videoUrl) {
@@ -484,6 +555,7 @@ export default function ShareMenu({
   }
 
   // ── The profile layout (approved design, UAT3). Every control calls the same `handle`. ──
+  const cardName = variant === 'suggestion' || variant === 'plan' ? (profileName ?? a.subject) : profileName
   const copiedNow = feedback?.text === t('share.copiedContent') || feedback?.text === t('share.copied') || feedback?.text === t('share.copiedLink')
   const optionRow = (testId: string, icon: ReactNode, label: string, desc: string, onClick: () => void) => (
     <button data-testid={testId} onClick={onClick} disabled={!!busy || linkPending}
@@ -521,16 +593,44 @@ export default function ShareMenu({
         </a>
         <div className="flex flex-wrap items-center gap-3 px-4 py-3">
           <div className="min-w-0 flex-1">
-            <p className="truncate text-[16px] font-bold text-gray-900 dark:text-gray-50">{profileName ? `${profileName} · TappyAI` : 'TappyAI'}</p>
-            <p className="text-[13px] text-gray-500 dark:text-gray-400">{variant === 'post' ? t('share.post.cardLine') : t('share.profile.cardLine')}</p>
+            <p className="truncate text-[16px] font-bold text-gray-900 dark:text-gray-50">{cardName ? `${cardName} · TappyAI` : 'TappyAI'}</p>
+            <p className="text-[13px] text-gray-500 dark:text-gray-400">{t(CARD_LINE[variant])}</p>
             <p className="truncate text-[13px] text-primary-600 dark:text-sky-300" data-share-profile-url>{a.url}</p>
           </div>
           <button data-testid="share-target-copy" onClick={() => handle('copy')} disabled={!!busy || linkPending}
             className="inline-flex items-center gap-2 rounded-full bg-primary-50 px-4 py-2.5 text-[14px] font-semibold text-primary-700 transition hover:bg-primary-100 dark:bg-white/10 dark:text-gray-50 dark:hover:bg-white/15">
             {copiedNow ? <Check size={16} className="text-green-500" /> : <Copy size={16} />}
-            {t('share.profile.copyLink')}
+            {textIsMoreThanUrl ? t('share.copyContent') : t('share.profile.copyLink')}
           </button>
         </div>
+      </div>
+
+      {/* ── The share IMAGE: layout selector + the rendered file itself. What is shown here is the
+          exact File that "Lưu về máy" saves and TikTok receives (same cache entry). ── */}
+      <div className="mb-5" data-share-card-picker data-layout={layout}>
+        <h3 className="mb-2.5 text-[16px] font-bold text-gray-900 dark:text-gray-50">{t('share.card.title')}</h3>
+        {layouts.length > 1 && (
+          <div role="radiogroup" aria-label={t('share.card.title')} className="mb-2.5 flex flex-wrap gap-2">
+            {layouts.map(l => (
+              <button key={l} type="button" role="radio" aria-checked={l === layout} data-testid={`share-layout-${l}`}
+                onClick={() => setLayoutPick(l)} disabled={!!busy}
+                className={`rounded-full border px-3.5 py-1.5 text-[13px] font-semibold transition ${l === layout
+                  ? 'border-primary-600 bg-primary-600 text-white dark:border-sky-400 dark:bg-sky-500'
+                  : 'border-gray-200 bg-white text-gray-700 hover:border-primary-400 dark:border-white/15 dark:bg-white/[0.04] dark:text-gray-100'}`}>
+                {t(`share.card.layout.${l}`)}
+              </button>
+            ))}
+          </div>
+        )}
+        <div className="flex h-[280px] items-center justify-center overflow-hidden rounded-2xl border border-gray-200 bg-gray-50 dark:border-white/10 dark:bg-white/[0.04]">
+          {preview?.key === cardKey && preview.state === 'ready' && preview.src
+            // eslint-disable-next-line @next/next/no-img-element -- a blob: URL of the rendered card file
+            ? <img src={preview.src} alt={t(`share.card.layout.${layout}`)} data-share-card-preview={layout} className="h-full w-auto max-w-full object-contain" />
+            : <p className="px-4 text-center text-[13px] text-gray-500 dark:text-gray-400" data-share-card-state={preview?.key === cardKey ? preview.state : 'pending'}>
+                {preview?.key === cardKey && preview.state === 'failed' ? t('share.card.failed') : t('share.card.loading')}
+              </p>}
+        </div>
+        <p className="mt-1.5 text-[12px] text-gray-500 dark:text-gray-400">{t('share.card.hint')}</p>
       </div>
 
       <h3 className="mb-2.5 text-[16px] font-bold text-gray-900 dark:text-gray-50">{t('share.profile.quick')}</h3>
@@ -554,6 +654,7 @@ export default function ShareMenu({
       <h3 className="mb-2.5 text-[16px] font-bold text-gray-900 dark:text-gray-50">{t('share.profile.other')}</h3>
       <div className="mb-5 flex flex-col gap-2">
         {optionRow('share-target-inbox', <Inbox size={24} className="text-orange-500" />, t('share.inbox'), t('share.profile.inboxDesc'), () => handle('inbox'))}
+        {onPublicLink && publicShareEnabled && optionRow('share-target-public-link', <Link2 size={24} className="text-primary-600" />, t('share.publicResult'), t('share.card.publicDesc'), () => onPublicLink())}
         {optionRow('share-target-save', <Download size={24} className="text-gray-600 dark:text-gray-200" />, t('share.save'), t('share.profile.saveDesc'), () => handle('save'))}
         {/* The OS sheet only where it exists — never a dead row. */}
         {canNativeShare && optionRow('share-target-native', <Share2 size={24} className="text-gray-600 dark:text-gray-200" />, t('share.more'), t('share.profile.moreDesc'), () => handle('native'))}
@@ -660,8 +761,8 @@ export default function ShareMenu({
                 <span className="text-sm text-gray-800 dark:text-gray-100">{t('share.publicResult')}</span>
               </button>
             )}
-            {/* A published plan is a link: the page carries the photos, so no rendered card to save (Android/iOS hide it too). */}
-            {!a.planLink && (
+            {/* A plan saves its itinerary image (owner pick #7, 29/09); other link-only shares have no card worth saving. */}
+            {(!a.planLink || layout === 'plan') && (
               <button data-testid="share-target-save" onClick={() => handle('save')} disabled={!!busy || linkPending} className="flex items-center gap-3 w-full px-3 py-3 rounded-xl bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition text-left">
                 <Download size={18} className="text-gray-500" />
                 <span className="text-sm text-gray-800 dark:text-gray-100">{t('share.save')}</span>

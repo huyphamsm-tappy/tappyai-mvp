@@ -44,7 +44,7 @@ export default function PlanBrochure({ brochure, locale, shareId }: Props) {
         <a href="/" className="v3-pb-brand" aria-label={BRAND.name}>
           <TappyLockup size={28} />
         </a>
-        <PlanBrochureShare url={canonical} title={snapshot.title} label={s.share} />
+        <PlanBrochureShare url={canonical} title={snapshot.title} label={s.share} snapshot={snapshot} />
       </header>
 
       <main className="v3-pb-main">
