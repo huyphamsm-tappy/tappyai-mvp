@@ -96,9 +96,6 @@ sealed interface ProfileRoute {
     @Serializable
     data object Terms : ProfileRoute
 
-    @Serializable
-    data object Privacy : ProfileRoute
-
     /** Reused from the Reviews feature (`ReviewComposerHost`) — reachable here too since My
      *  Reviews' "Post your first review" empty-state action needs a real destination, matching
      *  the web's `/profile/posts` → `/reviews/new` link. */
