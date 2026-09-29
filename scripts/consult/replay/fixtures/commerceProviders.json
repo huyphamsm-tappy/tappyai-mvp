@@ -1,0 +1,175 @@
+{
+ "note": "Read-only copy of public.commerce_providers on the AUDIT database (UAT), 2026-09-29; production carries the same rows (migration 20260927100000). Campaign ids are public (they appear in every generated link). The replay serves these rows to the runtime registry instead of a live Supabase read.",
+ "rows": [
+  {
+   "provider_id": "agoda",
+   "active": true,
+   "deeplink_enabled": false,
+   "tier": 2,
+   "network": null,
+   "campaign_id": null,
+   "wrapper_template": null,
+   "updated_at": "2026-09-20T07:42:50.277Z"
+  },
+  {
+   "provider_id": "booking",
+   "active": true,
+   "deeplink_enabled": false,
+   "tier": 2,
+   "network": null,
+   "campaign_id": null,
+   "wrapper_template": null,
+   "updated_at": "2026-09-20T07:42:50.277Z"
+  },
+  {
+   "provider_id": "cellphones",
+   "active": true,
+   "deeplink_enabled": true,
+   "tier": 1,
+   "network": "accesstrade",
+   "campaign_id": "6259155740535091857",
+   "wrapper_template": null,
+   "updated_at": "2026-09-20T07:42:50.277Z"
+  },
+  {
+   "provider_id": "cgv",
+   "active": true,
+   "deeplink_enabled": false,
+   "tier": 2,
+   "network": null,
+   "campaign_id": null,
+   "wrapper_template": null,
+   "updated_at": "2026-09-20T07:42:50.277Z"
+  },
+  {
+   "provider_id": "dmx",
+   "active": false,
+   "deeplink_enabled": false,
+   "tier": 2,
+   "network": "accesstrade",
+   "campaign_id": "5751981382510607935",
+   "wrapper_template": null,
+   "updated_at": "2026-09-27T13:42:14.929Z"
+  },
+  {
+   "provider_id": "grabfood",
+   "active": true,
+   "deeplink_enabled": false,
+   "tier": 2,
+   "network": null,
+   "campaign_id": null,
+   "wrapper_template": null,
+   "updated_at": "2026-09-20T07:42:50.277Z"
+  },
+  {
+   "provider_id": "klook",
+   "active": true,
+   "deeplink_enabled": true,
+   "tier": 1,
+   "network": "accesstrade",
+   "campaign_id": "4704521809526929067",
+   "wrapper_template": null,
+   "updated_at": "2026-09-20T07:42:50.277Z"
+  },
+  {
+   "provider_id": "lazada",
+   "active": true,
+   "deeplink_enabled": true,
+   "tier": 1,
+   "network": "accesstrade",
+   "campaign_id": "5087153089503673507",
+   "wrapper_template": null,
+   "updated_at": "2026-09-27T13:42:14.929Z"
+  },
+  {
+   "provider_id": "shopee",
+   "active": true,
+   "deeplink_enabled": false,
+   "tier": 2,
+   "network": "accesstrade",
+   "campaign_id": "4751584435713464237",
+   "wrapper_template": null,
+   "updated_at": "2026-09-27T13:42:14.929Z"
+  },
+  {
+   "provider_id": "shopeefood",
+   "active": true,
+   "deeplink_enabled": false,
+   "tier": 2,
+   "network": null,
+   "campaign_id": null,
+   "wrapper_template": null,
+   "updated_at": "2026-09-20T07:42:50.277Z"
+  },
+  {
+   "provider_id": "ticketbox",
+   "active": true,
+   "deeplink_enabled": false,
+   "tier": 2,
+   "network": null,
+   "campaign_id": null,
+   "wrapper_template": null,
+   "updated_at": "2026-09-20T07:42:50.277Z"
+  },
+  {
+   "provider_id": "tiktokshop",
+   "active": true,
+   "deeplink_enabled": false,
+   "tier": 2,
+   "network": "accesstrade",
+   "campaign_id": "6648523843406889655",
+   "wrapper_template": null,
+   "updated_at": "2026-09-27T13:42:14.929Z"
+  },
+  {
+   "provider_id": "traveloka",
+   "active": true,
+   "deeplink_enabled": true,
+   "tier": 1,
+   "network": "accesstrade",
+   "campaign_id": "6654251588167732819",
+   "wrapper_template": null,
+   "updated_at": "2026-09-27T13:42:14.929Z"
+  },
+  {
+   "provider_id": "tripcom",
+   "active": true,
+   "deeplink_enabled": true,
+   "tier": 1,
+   "network": "accesstrade",
+   "campaign_id": "6455552313033835511",
+   "wrapper_template": null,
+   "updated_at": "2026-09-20T07:42:50.277Z"
+  },
+  {
+   "provider_id": "vexere",
+   "active": true,
+   "deeplink_enabled": true,
+   "tier": 1,
+   "network": "accesstrade",
+   "campaign_id": "5222734619328835827",
+   "wrapper_template": null,
+   "updated_at": "2026-09-27T13:42:14.929Z"
+  },
+  {
+   "provider_id": "vietjet",
+   "active": true,
+   "deeplink_enabled": false,
+   "tier": 2,
+   "network": null,
+   "campaign_id": null,
+   "wrapper_template": null,
+   "updated_at": "2026-09-20T07:42:50.277Z"
+  },
+  {
+   "provider_id": "vietnamairlines",
+   "active": true,
+   "deeplink_enabled": true,
+   "tier": 1,
+   "network": "accesstrade",
+   "campaign_id": "6318680441596031865",
+   "wrapper_template": null,
+   "updated_at": "2026-09-27T13:42:14.929Z"
+  }
+ ]
+}

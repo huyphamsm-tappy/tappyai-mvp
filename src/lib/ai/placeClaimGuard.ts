@@ -287,8 +287,9 @@ export function isTicketSaleClaim(sentence: string): boolean {
   return !ORDERING_SEARCH_FRAMING_RE.test(sentence)
 }
 
-/** Transport tickets (flight, train, coach) and booking instructions — not a venue's ticket sale. */
-const TRANSPORT_OR_HOWTO_RE = /(máy bay|may bay|chuyến bay|chuyen bay|hãng bay|hang bay|vé tàu|ve tau|tàu hỏa|tau hoa|xe khách|xe khach|vé xe|ve xe|flight|airline|hướng dẫn|huong dan|các bước|cac buoc|cách đặt|cach dat|vào trang|vao trang|trang đặt vé|trang dat ve)/iu
+/** Transport tickets (flight, train, coach) and booking instructions (a numbered "Bước 1:" step, replay TRAVEL-3
+ * 29/09: "**Bước 1:** Chọn nền tảng đặt vé" was cut) — not a venue's ticket sale. */
+const TRANSPORT_OR_HOWTO_RE = /(máy bay|may bay|chuyến bay|chuyen bay|hãng bay|hang bay|vé tàu|ve tau|tàu hỏa|tau hoa|xe khách|xe khach|vé xe|ve xe|flight|airline|hướng dẫn|huong dan|các bước|cac buoc|bước \d|buoc \d|cách đặt|cach dat|vào trang|vao trang|trang đặt vé|trang dat ve|nền tảng đặt|nen tang dat)/iu
 
 /** A fragment cut off by a link span right after its preposition: "… trên **", "… tại", "… on". */
 const LINK_FRAMING_TAIL_RE = /(?:^|\s)(?:trên|tren|tại|tai|qua|ở|o|on|at|via)\s*(?:\*\*|__)?\s*$/iu

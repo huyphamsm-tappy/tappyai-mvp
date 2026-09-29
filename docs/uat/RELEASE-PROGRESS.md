@@ -139,6 +139,22 @@ Method: headless Chromium, mobile 390 px, slow 4G (150 ms RTT, 1.6 Mbps down, 75
 | 🚨 Q-API1 (29/09 ~19:50 VN) | The Anthropic key used by the replay (`g1-place-guard/.env.local`) answers 400 "You have reached your specified API usage limits. You will regain access on 2026-10-01 at 00:00 UTC" (07:00 VN) — same as 28/09. Replay D2-B collapsed to 17/105 on it. Unknown whether UAT / production use the same Anthropic organisation (key identity check was refused before — not retried). If they do, AI chat on UAT **and production** is down until 07:00 VN. | Stopped all replays / UAT AI runs. D2 (shopping: store the RANKED rows for more/reject; 1 valid run 91/105 @ $0.00894) parked in `docs/uat/patches/2026-09-29-d2-shopping-store-ranked-rows.patch`, repo = measured D1. **Huy: raise the monthly limit in console.anthropic.com → Settings → Limits (or confirm prod uses another org/key), and check www chat now.** |
 | Q-AI-STATE (29/09) | Replay, mean of 2, new checker: baseline 87.5 → C2 89 → (flight checker, B1) 90 @ $0.00892 → D1 92 @ $0.00889. By area (D1): spa 20.5, entertainment 19.5, travel 18, shopping 17.5, food 16.5 (food moves 15–20 between runs of the same code). Remaining repeat failures: SHOP-1 reject (the search returns 1 product, only in black), TRAVEL-2 reject (3 hotels for a vague destination, all already offered), SHOP-3 more/reject (fixed by D2, unmeasured), food plan headings / reject on FOOD-2. | §9 not reached in all 5 areas yet → §10 not started. |
 
+## ▶ AI TƯ VẤN — QUYẾT ĐỊNH CỦA HUY + THỨ TỰ LÀM (29/09 tối) — đọc trước khi làm tiếp
+Quy tắc: mỗi thay đổi giữ/bỏ theo **trung bình 2 lượt replay, hai cột** (chất lượng, $/lượt) — giữ khi không cột nào kém đi.
+- **Q10 (đã quyết):** vé máy bay KHÔNG cần nguồn giá (không Travelpayouts). Một lượt vé máy bay ĐẠT khi: không bịa giá; có link tìm vé
+  Traveloka **qua ACCESSTRADE** điền sẵn chặng + ngày (sub1 theo phương án C = mã ngẫu nhiên do `/go/at` thêm lúc bấm); ghi rõ
+  "xem giá trên Traveloka"; phần tư vấn còn lại đúng. Link Traveloka trực tiếp (không qua ACCESSTRADE) = TRƯỢT.
+- **Q-AI-C1 (đã quyết): GIỮ** bản sửa 2 guard — đã áp và commit `acec34c` (patch `docs/uat/patches/2026-09-29-c1-guard-false-positives.patch`
+  kiểm `git apply -R --check` = đã có trong code).
+- **Thứ tự:** (1) sửa bộ chấm Q10 + chạy lại 2 lượt, báo điểm du lịch → (2) C1 (xong) → (3) mua sắm: trích nguyên văn lượt trượt, sửa gốc
+  (prompt/dữ liệu đưa vào, KHÔNG thêm guard vá) → (4) du lịch phần còn lại. Ăn uống KHÔNG phải mảng yếu nhất.
+- **Khi mục 9 đạt ở CẢ 5 mảng:** chạy thật một lượt đầy đủ mục 10 → gửi trang UAT cho Huy duyệt; đồng thời ghi "AI tư vấn ổn định" + câu trả
+  lời thô cuối + đặc tả thẻ kế hoạch vào `ANDROID-REQUESTS.md` (phiên Android đang chờ).
+- **Ghi nhận 29/09 21:00 (bước 1):** replay trước đây KHÔNG giống production ở 2 chỗ — (a) client Supabase giả trả bảng `commerce_providers`
+  rỗng → Traveloka (mã chiến dịch chỉ nằm trong bảng) ra link TRỰC TIẾP; (b) user giả `u1` không có dạng id → không có link `/go/at`. Bộ chấm cũ
+  lại chấp nhận link trực tiếp. Đã sửa harness (fixture = các dòng của DB audit, trùng production) + bộ chấm; lượt "chốt, hướng dẫn đặt vé"
+  (TRAVEL-3) đang lập kế hoạch khách sạn + quán ăn thay vì gọi lại tra vé → sửa gốc ở route. Điểm đo lại: xem Q-AI-STATE.
+
 ## Current step
 Overnight run 2026-09-28→29 DONE — final UAT SHA af8b4ba; morning report at the end of this file. Waiting on owner: Q1 (26/9 design), Q7 (AI gate), Q6 (share layout). Login = scratchpad pw/login.mjs (AUDIT only).
 

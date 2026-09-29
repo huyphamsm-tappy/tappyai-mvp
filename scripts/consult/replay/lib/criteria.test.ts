@@ -16,15 +16,21 @@ describe('alternativeNames — the pick\'s reasons are not alternatives (replay 
 })
 
 describe('flight turns (owner Q10, 29/09)', () => {
-  it('passes a tracked Traveloka link with route, date and sub1; flags invented prices', async () => {
+  it('passes an ACCESSTRADE Traveloka link with route + date (click link or bare wrapper); fails direct / baked sub1; flags invented prices', async () => {
     const { flightShape } = await import('./criteria')
-    const link = 'https://go.isclix.com/deep_link/6277265300509373567/6654251588167732819?url=' + encodeURIComponent('https://www.traveloka.com/vi-VN/flight/fullsearch?ap=SGN.HAN&dt=15-10-2026.null&ps=1.0.0&sc=ECONOMY') + '&utm_source=tappyai&utm_medium=ccp&sub1=4cd9952b50a24c125c75cf0f'
-    const ok = flightShape(`Xem giá trên Traveloka: [Traveloka](${link})`)
-    expect(ok.traveloka.ok).toBe(true)
+    const wrapper = 'https://go.isclix.com/deep_link/6277265300509373567/6654251588167732819?url=' + encodeURIComponent('https://www.traveloka.com/vi-VN/flight/fullsearch?ap=SGN.HAN&dt=15-10-2026.null&ps=1.0.0&sc=ECONOMY') + '&utm_source=tappyai&utm_medium=ccp'
+    const click = 'https://www.tappyai.com/go/at?' + new URLSearchParams({ u: wrapper, p: 'traveloka', a: 'x'.repeat(48), s: 'sig' }).toString()
+    const ok = flightShape(`Xem giá trên Traveloka: [Traveloka](${click})`)
+    expect(ok.traveloka).toMatchObject({ ok: true })
+    expect(ok.traveloka.detail).toContain('click')
     expect(ok.money).toEqual([])
-    expect(flightShape(`[Traveloka](${link.replace(/&sub1=[0-9a-f]+/, '')})`).traveloka.ok).toBe(false)
+    expect(flightShape(`[Traveloka](${wrapper})`).traveloka.ok).toBe(true)
+    expect(flightShape(`[Traveloka](${wrapper}&sub1=4cd9952b50a24c125c75cf0f)`).traveloka.ok).toBe(false)
+    expect(flightShape('[Traveloka](https://www.traveloka.com/vi-VN/flight/fullsearch?ap=SGN.HAN&dt=15-10-2026.null)').traveloka).toMatchObject({ ok: false, detail: expect.stringContaining('direct') })
+    expect(flightShape(`[Traveloka](${wrapper.replace('dt%3D15-10-2026', 'x')})`).traveloka.ok).toBe(false)
     expect(flightShape('Vé thường 1.200.000đ, [Traveloka](https://www.traveloka.com/vi-VN/flight/fullsearch?ap=SGN.HAN&dt=15-10-2026.null)').money).toEqual(['1.200.000đ'])
     expect(flightShape('Chuyến bay 1 người, bay sáng').money).toEqual([])
+    expect(flightShape('- **[Xem giá trên Traveloka](https://www.tappyai.com/go/at?a=Zm4Kx_4K9&s=4k)** — chuyến bay theo ngày').money).toEqual([])
   })
 })
 

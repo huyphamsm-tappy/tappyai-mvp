@@ -278,6 +278,7 @@ describe('replay r25 plan false positives (29/09)', () => {
     const { isTicketSaleClaim } = await import('./placeClaimGuard')
     expect(isTicketSaleClaim('**Hướng dẫn đặt vé máy bay:**')).toBe(false)
     expect(isTicketSaleClaim('**Vào trang đặt vé** — chọn một trong hai:')).toBe(false)
+    expect(isTicketSaleClaim('**Bước 1:** Chọn nền tảng đặt vé')).toBe(false)
     expect(isTicketSaleClaim('CGV Vincom có bán vé online cho suất tối nay.')).toBe(true)
   })
 })

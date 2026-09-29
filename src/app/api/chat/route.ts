@@ -1228,9 +1228,15 @@ export async function POST(req: Request) {
     console.log(JSON.stringify({ type: 'tappyai_consult_candidates', turn: consult?.turn, domain: 'travel', stored: storedStay.rows.length, remaining: remaining.length, reused: !!stayOverride }))
   }
   const storedStayCall = travelMoreTurn && storedStay ? { name: 'get_hotel_prices' as const, args: storedStay.args } : null
+  // Replay TRAVEL-3 (Q10): the plan of a FLIGHT consultation ("chốt, hướng dẫn đặt vé" after "vé máy bay sài gòn
+  // đi hà nội") ran the trip pre-fetch — a Hà Nội hotel + lunch plan with no Traveloka link. A plan turn whose
+  // thread asked for a ticket re-runs the fare call instead (dated ACCESSTRADE links, 0 Serper) and no trip pre-fetch.
+  const consultFlightPlanCall = consult && consult.turn === 'plan' && consult.domains[0] === 'travel'
+    ? (() => { const c = travelPreCall(consult.known, [...(consultThreadTexts ?? []), lastText].join(' . ')); return c?.name === 'get_flight_prices' ? c : null })()
+    : null
   const consultTravelCall = consult && (consult.turn === 'pick' || consult.turn === 'reject' || consult.turn === 'more') && consult.domains[0] === 'travel'
     ? (stayOverride ? storedStayCall : travelPreCall(consult.known, lastText) ?? storedStayCall)
-    : null
+    : consultFlightPlanCall
   // R11 (Android 29/09): "vé concert tháng 10" → ask card → answer → a VENUE ("Nhà hát…", "CHÀO SHOW") with no
   // Ticketbox button: the entertainment pick pre-searched places. An event consultation (concert / show /
   // festival / tickets) pre-searches EVENTS through web_search (Ticketbox listings become event_links).
@@ -2419,7 +2425,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   // Replay r19 TRAVEL-2: "núi gần Sài Gòn" names no destination slot — the plan then searched with none and
   // planned a Saigon hotel. The destination of the hotels this consultation already searched stands in.
   const tripDest = consult?.known.diem_den?.trim() || (consult?.domains[0] === 'travel' ? storedStay?.args.location : '') || ''
-  const consultTripPrefetch = !!consult && consult.turn === 'plan' && planningIntent === 'trip' && !!tripDest && process.env.CONSULT_TRIP_PREFETCH !== '0'
+  const consultTripPrefetch = !!consult && consult.turn === 'plan' && planningIntent === 'trip' && !!tripDest && !consultFlightPlanCall && process.env.CONSULT_TRIP_PREFETCH !== '0'
   const willPresearch = !!(!noToolTurn && tools && preCall) || eveningSearches || (consultTripPrefetch && !!tools)
   const finishTurn = async (): Promise<Response> => {
   /**

@@ -109,27 +109,36 @@ export interface TurnContext {
 
 /**
  * A flight reply: money amounts it states (none may be invented — there is no fare source) and its Traveloka
- * search link. The link is direct or wrapped by ACCESSTRADE (go.isclix.com …?url=<traveloka>&…&sub1=<24 hex>);
- * either way it must name the route (`ap=XXX.YYY`) and a date (`dt=DD-MM-YYYY`); a wrapped one must carry sub1.
+ * search link. Q10 + Phương án C (owner 29/09): the link MUST go through ACCESSTRADE — a direct traveloka.com
+ * link fails. Two accepted forms:
+ *   · Tappy's click link `/go/at?u=<go.isclix.com …?url=<traveloka>…>&…` — a signed-in or guest user; the
+ *     random sub1 is added by /go/at at click (verified on UAT), so the link itself never carries one;
+ *   · the bare wrapper `go.isclix.com …?url=<traveloka>` — only when the turn has no identity (the replay
+ *     runs without one); a sub1 baked into the link is the old scheme and fails.
+ * The Traveloka target must name the route (`ap=XXX.YYY`) and a date (`dt=DD-MM-YYYY`).
  */
 export function flightShape(text: string): { money: string[]; traveloka: { ok: boolean; detail: string } } {
   // Only a FARE counts: an amount on a line about the ticket / flight ("giá từ 800k–2M+ tùy hãng"). A sourced
   // venue band in the plan ("200.000đ–600.000đ (mức giá Google Maps)") is not a flight price; "6.075 đánh giá"
   // is a review count ("đ" must not start a word); amounts never span a line break.
   const FARE_LINE = /(vé|bay|chuyến|hãng|hành lý|khứ hồi|một chiều|1 chiều|flight|fare)/iu
-  const money = text.split('\n').filter(l => FARE_LINE.test(l) && !/Google Maps/i.test(l)).flatMap(l =>
+  // URLs are not prose: a signed /go/at token once read as "4K".
+  const money = text.replace(/https?:\/\/[^\s)\]]+/g, ' ').split('\n').filter(l => FARE_LINE.test(l) && !/Google Maps/i.test(l)).flatMap(l =>
     [...l.matchAll(/\d{1,3}(?:[.,]\d{3})+[ \t]*(?:đ|₫|vnd|VNĐ)(?![\p{L}])|\d+(?:[.,]\d+)?[ \t]*(?:k|nghìn|ngàn|triệu|tr|m)(?![\p{L}])(?![ \t]*(?:người|khách|km))/giu)].map(m => m[0]))
   const links = [...text.matchAll(/\]\((https?:\/\/[^)\s]+)\)|(https?:\/\/[^\s)\]]+)/g)].map(m => m[1] ?? m[2])
   for (const u of links) {
-    let target = u, wrapped = false
+    let form: 'click' | 'accesstrade' | 'direct' = 'direct', wrapper = u, target = u
     try {
-      const url = new URL(u)
-      if (/isclix\.com|accesstrade/.test(url.host)) { wrapped = true; target = url.searchParams.get('url') ?? '' }
+      let url = new URL(u)
+      if (url.pathname === '/go/at' && url.searchParams.get('u')) { form = 'click'; wrapper = url.searchParams.get('u') ?? ''; url = new URL(wrapper) }
+      if (/(^|\.)isclix\.com$|accesstrade/.test(url.host)) { if (form === 'direct') form = 'accesstrade'; target = url.searchParams.get('url') ?? '' }
+      else if (form === 'click') target = ''
     } catch { continue }
     if (!/traveloka\.com/.test(target)) continue
     const route = /[?&]ap=[A-Z]{3}\.[A-Z]{3}/.test(target), date = /[?&]dt=\d{2}-\d{2}-\d{4}/.test(target)
-    const sub1 = !wrapped || /[?&]sub1=[0-9a-f]{24}(?:&|$)/.test(u)
-    return { money, traveloka: { ok: route && date && sub1, detail: `${wrapped ? 'accesstrade' : 'direct'} route=${route} date=${date} sub1=${wrapped ? sub1 : 'n/a'}` } }
+    const noBakedSub1 = !/[?&]sub1=/.test(wrapper)
+    const ok = form !== 'direct' && noBakedSub1 && route && date
+    return { money, traveloka: { ok, detail: `${form} route=${route} date=${date}${noBakedSub1 ? '' : ' sub1-in-link(old scheme)'}${form === 'click' ? ' sub1=at click' : form === 'accesstrade' ? ' sub1=n/a (no identity)' : ''}` } }
   }
   return { money, traveloka: { ok: false, detail: 'no Traveloka link' } }
 }

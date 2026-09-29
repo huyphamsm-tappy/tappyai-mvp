@@ -7,12 +7,12 @@
  * The REAL `POST` from src/app/api/chat/route.ts runs every turn, with the REAL model (Anthropic,
  * key from the AUDIT env file) and the REAL tool modules. Mocked exactly like
  * memoryDrift.route.test.ts / consultativeV1.route.test.ts: Supabase (server + admin), auth
- * (signed-in 'u1'), age (eligible), rate limit. No memory row. Quota is reset before each turn.
+ * (signed-in REPLAY_USER_ID), age (eligible), rate limit. No memory row. Quota is reset before each turn.
  * The network is the fetch stub in lib/serperReplay.ts: Serper record/replay, Anthropic passes
  * through, everything else gets `{}` locally.
  */
 import { describe, it, expect, vi, beforeAll, afterAll } from 'vitest'
-import { mkdirSync, writeFileSync } from 'node:fs'
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { randomUUID } from 'node:crypto'
 
@@ -28,6 +28,7 @@ import { loadSuite, filterOnly, fillPlaceholders, SUITES, type SuiteName, type C
 import { summarize, markdown, type TurnRow } from './lib/report'
 
 const ON = process.env.REPLAY === '1'
+const REPLAY_USER_ID = '00000000-0000-4000-8000-0000000a0001'
 const HERE = join('scripts', 'consult', 'replay')
 const RECORDINGS = join(HERE, 'recordings')
 const TURN_TIMEOUT_MS = Number(process.env.REPLAY_TURN_TIMEOUT_MS) || 180_000
@@ -55,8 +56,14 @@ const h = vi.hoisted(() => {
     if (fn === 'decision_evidence_load' && args?.p_id) return Promise.resolve({ data: evidence.get(args.p_id) ?? null, error: null })
     return Promise.resolve({ data: null, error: null })
   }
-  return { client: { from: () => builder(), rpc } }
+  // The runtime provider registry (which merchants ACCESSTRADE wraps) is the `commerce_providers` table on UAT /
+  // production. An empty table here sent every DB-only campaign (Traveloka, Vietnam Airlines) out DIRECT — a
+  // link production never emits (Q10). Its rows come from fixtures/commerceProviders.json (the audit DB copy).
+  const providers = { rows: [] as unknown[] }
+  const providersBuilder = (): any => { const b: any = { select: () => b, then: (r: any) => r({ data: providers.rows, error: null }) }; return b }
+  return { client: { from: (table: string) => table === 'commerce_providers' ? providersBuilder() : builder(), rpc }, providers }
 })
+h.providers.rows = (JSON.parse(readFileSync(join('scripts', 'consult', 'replay', 'fixtures', 'commerceProviders.json'), 'utf8')) as { rows: unknown[] }).rows
 
 vi.mock('@/lib/supabase/server', () => ({ createClient: () => h.client }))
 vi.mock('@/lib/supabase/admin', () => ({ createAdminClient: () => h.client }))
@@ -65,7 +72,8 @@ vi.mock('@/lib/account/ageEligibility', async (importOriginal) => ({
   getAgeEligibility: async () => ({ status: 'eligible', ageBand: '25_34', age: 30, canSelfCorrect: true }),
 }))
 vi.mock('@/lib/auth/getRequestUser', () => ({
-  getRequestUser: () => Promise.resolve({ user: { id: 'u1' }, supabase: h.client }),
+  // A UUID like every real (or anonymous-guest) user, so commerce links go through /go/at as in production.
+  getRequestUser: () => Promise.resolve({ user: { id: REPLAY_USER_ID }, supabase: h.client }),
 }))
 vi.mock('@/lib/security/rateLimit', () => ({
   rateLimit: () => ({ ok: true, retryAfter: 0 }),
