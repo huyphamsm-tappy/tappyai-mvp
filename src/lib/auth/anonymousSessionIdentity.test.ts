@@ -82,7 +82,12 @@ describe('the server stays the authority on quota identity', () => {
   const route = read('src/app/api/chat/route.ts')
 
   it('resolves identity from the verified session, never from the client', () => {
-    expect(route).toMatch(/const \{ user, supabase \} = await getRequestUser\(req\)/)
+    // R14 (29/09): the verified-session lookup starts earlier (the chat-session state must load before
+    // routing) and is awaited here — still ONE getRequestUser(req) call, never a client-supplied identity.
+    const direct = /const \{ user, supabase \} = await getRequestUser\(req\)/.test(route)
+    const early = /const requestUserP = getRequestUser\(req\)/.test(route) && /const \{ user, supabase \} = await requestUserP/.test(route)
+    expect(direct || early).toBe(true)
+    expect((route.match(/getRequestUser\(req\)/g) ?? []).length).toBe(1)
   })
 
   it('🚨 an ANONYMOUS session gets the anonymous (lifetime) quota, spent from the ONE shared pool', () => {
