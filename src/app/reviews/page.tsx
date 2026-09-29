@@ -1366,12 +1366,35 @@ export default function ReviewsPage() {
     return undefined
   }, [])
 
-  if (isDesktop === null) return null
+  if (isDesktop === null) return <FeedShell />
   if (isDesktop) return <ExploreStage />
 
   return (
-    <Suspense fallback={null}>
+    <Suspense fallback={<FeedShell />}>
       <ReviewsPageInner />
     </Suspense>
+  )
+}
+
+/**
+ * The first paint of /reviews (owner 2026-09-29: production took 44 s in a browser; UAT on slow 4G painted
+ * nothing for 4.0 s). The route cannot choose its feed during SSR (above), so it used to render NOTHING —
+ * the HTML carried no content and the first paint waited for the whole client bundle. This shell is
+ * neutral for both feeds (dark stage, brand, a loading bar), so the HTML paints at once and the chosen feed
+ * replaces it after hydration. No media, no data, no layout guess.
+ */
+function FeedShell() {
+  return (
+    <div className="fixed inset-0 flex flex-col bg-black" aria-busy="true" data-feed-shell>
+      <div className="flex flex-1 items-center justify-center">
+        <div className="flex flex-col items-center gap-3">
+          <span className="text-lg font-bold tracking-tight text-white/90">TappyAI</span>
+          <div className="h-1 w-24 overflow-hidden rounded-full bg-white/15">
+            <div className="h-full w-1/3 animate-pulse rounded-full bg-white/60" />
+          </div>
+        </div>
+      </div>
+      <div className="h-14 border-t border-white/10" />
+    </div>
   )
 }
