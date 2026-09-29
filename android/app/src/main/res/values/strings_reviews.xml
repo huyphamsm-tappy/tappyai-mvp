@@ -178,4 +178,14 @@
     <string name="reviews_visitor_tab_posts">Posts</string>
     <string name="reviews_visitor_tab_shares">Shared</string>
     <string name="reviews_visitor_empty_shares">Nothing shared yet.</string>
+    <string name="reviews_composer_video_pick">Choose a video</string>
+    <string name="reviews_composer_video_hint">mp4 · mov  ·  up to 5 minutes · 150MB</string>
+    <string name="reviews_composer_video_uploading">Uploading video...</string>
+    <string name="reviews_composer_video_uploaded">Video uploaded</string>
+    <string name="reviews_composer_video_remove">Remove</string>
+    <string name="reviews_composer_video_unsupported">This video format isn\'t supported. Please record or export it as MP4 or MOV and try again.</string>
+    <string name="reviews_composer_video_too_large">Video is too large. Please choose a video up to 150MB.</string>
+    <string name="reviews_composer_video_read_error">Couldn\'t read video info</string>
+    <string name="reviews_composer_video_too_long">Video is too long. Please choose a video up to 5 minutes 5 seconds.</string>
+    <string name="reviews_composer_video_upload_error">Upload failed. Please try again.</string>
 </resources>

@@ -61,7 +61,28 @@ data class ReviewComposerUiState(
     val linkThumbnailUrl: String? = null,
     /** True while a poster lookup is in flight. */
     val isFetchingLinkMeta: Boolean = false,
+    /** The uploaded clip (Video tab), once `/api/upload/video` completed. */
+    val video: com.tappyai.app.reviews.data.UploadedVideo? = null,
+    /** The poster shown while / after uploading (local file uri until the server one exists). */
+    val videoPreview: String? = null,
+    val isUploadingVideo: Boolean = false,
+    /** 0..100 while the clip's bytes are being sent. */
+    val videoProgress: Int = 0,
 )
+
+/** The web's place fallback for a post with no place typed: "Chia sẻ" (`placeName.trim() || 'Chia sẻ'`). */
+internal fun composerPlaceName(placeName: String): String = placeName.trim().ifEmpty { "Chia sẻ" }
+
+/**
+ * The web's place id: a photo post WITH a place → `community_<slug>`; anything else →
+ * `${mediaMode}_${Date.now()}` (src/app/(app)/reviews/new/page.tsx).
+ */
+internal fun composerPlaceId(mode: ComposerMediaMode, placeName: String, nowMs: Long = System.currentTimeMillis()): String =
+    if (mode == ComposerMediaMode.Photo && placeName.isNotBlank()) {
+        "community_" + placeName.trim().lowercase().replace(Regex("\\s+"), "_")
+    } else {
+        mode.name.lowercase() + "_" + nowMs
+    }
 
 @HiltViewModel
 class ReviewComposerViewModel @Inject constructor(
@@ -70,6 +91,7 @@ class ReviewComposerViewModel @Inject constructor(
     private val logger: LoggerProvider,
     private val reviewErrorMessages: ReviewErrorMessages,
     @ApplicationContext private val context: Context,
+    private val videoUploader: com.tappyai.app.reviews.data.VideoUploader,
 ) : ViewModel() {
 
     /**
@@ -116,22 +138,25 @@ class ReviewComposerViewModel @Inject constructor(
      * place name yields a 400 which we surface as a Toast (leaving validation to the backend,
      * which owns that business rule).
      */
-    fun submit(body: String, rating: Int, placeName: String) {
-        // Block posting while a photo is still uploading, so the created review can't miss a URL
-        // that is a moment away from being ready.
+    fun submit(body: String, rating: Int, placeName: String, mode: ComposerMediaMode = ComposerMediaMode.Photo) {
+        // Block posting while a photo or the clip is still uploading, so the created review can't
+        // miss a URL that is a moment away from being ready.
         val s = _uiState.value
-        if (s.isPosting || s.isUploadingPhoto) return
+        if (s.isPosting || s.isUploadingPhoto || s.isUploadingVideo) return
+        if (mode == ComposerMediaMode.Video && s.video == null) return
         _uiState.update { it.copy(isPosting = true) }
         viewModelScope.launch {
             val result = repository.createReview(
                 // A booking-sourced review carries the venue's real place_id; a free-text place
                 // has none, so it falls back to a slug of the typed name as before.
-                placeId = presetPlaceId ?: slugify(placeName),
-                placeName = placeName.trim(),
+                placeId = presetPlaceId ?: composerPlaceId(mode, placeName),
+                placeName = composerPlaceName(placeName),
                 body = body.trim(),
                 rating = rating.takeIf { it in 1..5 },
-                photos = s.photoUrls.takeIf { it.isNotEmpty() },
-                link = currentLinkAttachment(),
+                // Each tab posts its own media only, like the web's three payloads.
+                photos = s.photoUrls.takeIf { it.isNotEmpty() && mode == ComposerMediaMode.Photo },
+                link = currentLinkAttachment()?.takeIf { mode == ComposerMediaMode.Link },
+                video = s.video?.takeIf { mode == ComposerMediaMode.Video },
             )
             _uiState.update { it.copy(isPosting = false) }
             when (result) {
@@ -230,6 +255,76 @@ class ReviewComposerViewModel @Inject constructor(
         }
     }
 
+    /**
+     * The Video tab — the web composer's clip lane: MP4/MOV only, ≤ [MAX_VIDEO_SIZE_MB], ≤
+     * [MAX_VIDEO_DURATION_ACCEPT_SEC]; a poster frame first (best-effort, a JPEG with no EXIF), then
+     * the clip itself, both through [com.tappyai.app.reviews.data.VideoUploader] (the web's
+     * three-step media session, with the clip's metadata neutralised before the PUT).
+     */
+    fun onVideoPicked(uri: Uri) {
+        if (_uiState.value.isUploadingVideo) return
+        viewModelScope.launch {
+            val fail: suspend (Int) -> Unit = { res ->
+                _uiState.update { it.copy(isUploadingVideo = false, videoProgress = 0, videoPreview = null, video = null) }
+                _events.send(ComposerEvent.Failed(context.getString(res)))
+            }
+            val mime = context.contentResolver.getType(uri)
+            if (mime !in VIDEO_TYPES) return@launch fail(R.string.reviews_composer_video_unsupported)
+            _uiState.update { it.copy(isUploadingVideo = true, videoProgress = 0, video = null) }
+            val local = withContext(Dispatchers.IO) {
+                runCatching {
+                    val f = java.io.File(context.cacheDir, "composer-clip-${System.currentTimeMillis()}." + (if (mime == "video/quicktime") "mov" else "mp4"))
+                    context.contentResolver.openInputStream(uri)!!.use { input -> f.outputStream().use { input.copyTo(it) } }
+                    f
+                }.getOrNull()
+            } ?: return@launch fail(R.string.reviews_composer_video_read_error)
+            if (local.length() > MAX_VIDEO_SIZE_MB * 1024L * 1024L) { local.delete(); return@launch fail(R.string.reviews_composer_video_too_large) }
+            val (durationSec, poster) = withContext(Dispatchers.IO) {
+                val r = android.media.MediaMetadataRetriever()
+                try {
+                    r.setDataSource(local.absolutePath)
+                    val d = r.extractMetadata(android.media.MediaMetadataRetriever.METADATA_KEY_DURATION)?.toLongOrNull()?.div(1000.0)
+                    val frame = r.getFrameAtTime(0)
+                    val jpg = frame?.let { bmp ->
+                        java.io.File(context.cacheDir, "composer-poster-${System.currentTimeMillis()}.jpg").also { out ->
+                            out.outputStream().use { bmp.compress(android.graphics.Bitmap.CompressFormat.JPEG, 85, it) }
+                        }
+                    }
+                    d to jpg
+                } catch (e: Exception) {
+                    null to null
+                } finally {
+                    r.release()
+                }
+            }
+            if (durationSec == null) { local.delete(); return@launch fail(R.string.reviews_composer_video_read_error) }
+            if (durationSec > MAX_VIDEO_DURATION_ACCEPT_SEC) { local.delete(); return@launch fail(R.string.reviews_composer_video_too_long) }
+            _uiState.update { it.copy(videoPreview = poster?.let { f -> Uri.fromFile(f).toString() }) }
+            // 1. Poster — best-effort: a clip must still upload and play without one (web does the same).
+            val thumbUrl = poster?.let { f -> runCatching { videoUploader.upload("videoThumbnail", f, "image/jpeg") }.getOrNull() }
+            // 2. The clip, with progress.
+            val result = runCatching {
+                videoUploader.upload("video", local, mime!!) { pct -> _uiState.update { it.copy(videoProgress = pct) } }
+            }
+            local.delete()
+            result.fold(
+                onSuccess = { url ->
+                    _uiState.update { it.copy(isUploadingVideo = false, videoProgress = 100, video = com.tappyai.app.reviews.data.UploadedVideo(url, thumbUrl, durationSec)) }
+                },
+                onFailure = { e ->
+                    logger.e(TAG, "Video upload failed", e)
+                    val code = (e as? com.tappyai.app.reviews.data.VideoUploadException)?.code
+                    fail(if (code == "unsupported_format") R.string.reviews_composer_video_unsupported else R.string.reviews_composer_video_upload_error)
+                },
+            )
+        }
+    }
+
+    fun onRemoveVideo() {
+        if (_uiState.value.isUploadingVideo) return
+        _uiState.update { it.copy(video = null, videoPreview = null, videoProgress = 0) }
+    }
+
     /** Drops one already-uploaded photo from the draft (removes its URL; no server call needed). */
     fun onRemovePhoto(url: String) {
         _uiState.update { it.copy(photoUrls = it.photoUrls - url) }
@@ -283,15 +378,19 @@ class ReviewComposerViewModel @Inject constructor(
     private fun extractYoutubeId(url: String): String? =
         Regex("(?:youtube\\.com/watch\\?v=|youtu\\.be/)([^&?/]+)").find(url)?.groupValues?.getOrNull(1)
 
-    private companion object {
-        const val TAG = "ReviewComposerViewModel"
+    companion object {
+        private const val TAG = "ReviewComposerViewModel"
+        /** Web MAX_VIDEO_SIZE_MB / MAX_VIDEO_DURATION_ACCEPT_SEC (src/lib/config/product.ts); MP4/MOV only (F-102). */
+        const val MAX_VIDEO_SIZE_MB = 150
+        const val MAX_VIDEO_DURATION_ACCEPT_SEC = 305
+        val VIDEO_TYPES = setOf("video/mp4", "video/quicktime")
 
         /**
          * The V1 backend contract (`LINK_VIDEO_PROVIDERS`), used until `GET /api/config` answers.
          * A default is required because the composer may be opened offline; it matches the backend
          * so the offline behaviour is the correct behaviour rather than a guess.
          */
-        val DEFAULT_LINK_PROVIDERS = setOf("youtube")
+        private val DEFAULT_LINK_PROVIDERS = setOf("youtube")
 
         /**
          * URL matchers for the providers this client can parse, mirroring the web's `MATCHERS`
@@ -300,7 +399,7 @@ class ReviewComposerViewModel @Inject constructor(
          * coordinated change: its id in the backend's LINK_VIDEO_PROVIDERS, a resolver branch
          * server-side, and a matcher here.
          */
-        val LINK_MATCHERS: Map<String, (String) -> Boolean> = mapOf(
+        private val LINK_MATCHERS: Map<String, (String) -> Boolean> = mapOf(
             "youtube" to { u: String -> u.contains("youtube.com") || u.contains("youtu.be") },
         )
         // Matches the web's MAX_PHOTOS_PER_REVIEW (src/lib/config/product.ts) and the backend's

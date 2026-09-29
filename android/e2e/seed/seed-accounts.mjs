@@ -52,6 +52,8 @@ export async function seed() {
   await rest.del(`review_shares?user_id=in.(${ids})`)
   await rest.del(`review_saves?user_id=in.(${ids})`)
   await rest.del(`reviews?user_id=in.(${ids})&place_id=like.e2e_*`)
+  // Posts made BY the composer e2e (place ids photo_/video_/link_<ms>) carry an [E2E] body.
+  await rest.del(`reviews?user_id=in.(${ids})&body=like.${encodeURIComponent('[E2E]')}*`)
 
   const m = await media()
   const P = (i) => [m.photos[i % m.photos.length]]

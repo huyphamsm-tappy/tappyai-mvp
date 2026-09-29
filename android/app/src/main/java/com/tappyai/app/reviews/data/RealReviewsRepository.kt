@@ -132,6 +132,7 @@ class RealReviewsRepository @Inject constructor(
         rating: Int?,
         photos: List<String>?,
         link: LinkAttachment?,
+        video: UploadedVideo?,
     ): NetworkResult<ReviewModeration?> = safeApiCall {
         api.createReview(
             CreateReviewRequestDto(
@@ -140,12 +141,19 @@ class RealReviewsRepository @Inject constructor(
                 body = body,
                 rating = rating,
                 photos = photos?.takeIf { it.isNotEmpty() },
-                // Mirror the web's link payload: content_type='video', media_url = the source URL.
-                contentType = link?.let { "video" },
-                mediaUrl = link?.sourceUrl,
-                sourceType = link?.sourceType,
+                // The web's three payloads: photo → content_type 'photo'; uploaded clip → 'video' +
+                // media_url + thumbnail + source_type 'upload' + duration; link → 'video' +
+                // media_url = source_url + source_type/source_url + thumbnail.
+                contentType = when {
+                    video != null || link != null -> "video"
+                    !photos.isNullOrEmpty() -> "photo"
+                    else -> null
+                },
+                mediaUrl = video?.mediaUrl ?: link?.sourceUrl,
+                sourceType = if (video != null) "upload" else link?.sourceType,
                 sourceUrl = link?.sourceUrl,
-                thumbnail = link?.thumbnailUrl,
+                thumbnail = video?.thumbnail ?: link?.thumbnailUrl,
+                duration = video?.durationSec,
             ),
         ).moderation?.toDomain()
         // 🚨 Returns the gate's outcome rather than Unit. `ok: true` only means the row was
