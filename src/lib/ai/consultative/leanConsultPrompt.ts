@@ -62,18 +62,24 @@ export function buildLeanConsultSystem(o: {
   consultBlock: string
   /** Request blocks that must survive (decision evidence, memory, prefs, planning block…). */
   extra?: string[]
+  /**
+   * Cost §6: the area's static text (its tool rules + every frame of the area, `frameLibrary`) goes in the
+   * CACHED segment, so it clears Anthropic's minimum cacheable prefix and a session's later turns read it
+   * at 10%. The consult block then carries only the frame pointer (`frameByRef`).
+   */
+  library?: string
 }): { shared: string; dynamic: string } {
   const langBlock = `CRITICAL: The user is writing in ${o.langName}. Your ENTIRE reply MUST be in ${o.langName}.`
   const tools = o.domains.map(d => TOOL_RULES[d]).filter(Boolean).join('\n')
   const dynamic = [
     langBlock,
     `THOI GIAN: ${o.vnDateTime} (GMT+7). Ngay: ${o.vnDateISO}. Dinh dang ngay dd/mm/yyyy, tien VND.`,
-    tools,
+    o.library ? '' : tools,
     ...(o.extra ?? []).filter(Boolean),
     o.consultBlock,
     `REMINDER: reply in ${o.langName} only.`,
   ].filter(Boolean).join('\n\n')
-  return { shared: LEAN_CORE, dynamic }
+  return { shared: o.library ? [LEAN_CORE, tools, o.library].filter(Boolean).join('\n\n') : LEAN_CORE, dynamic }
 }
 
 /** Last N user/assistant turns (the STATE block carries everything older). */
@@ -85,4 +91,11 @@ export function recentTurns<T extends { role: string }>(messages: readonly T[], 
     if (messages[i].role === 'user' && ++users >= turns) break
   }
   return out
+}
+
+/** Cost §6 flag: the cached frame library (default OFF after measurement; CONSULT_CACHE_LIBRARY=1 for A/B). */
+export function consultCacheLibraryEnabled(): boolean {
+  // A/B 29/09 (15 scenarios, 105 turns): ON cost $0.01145/turn vs OFF $0.01049 — the prefix stays near Haiku's
+  // minimum cacheable size, hits were 13–35% on tool turns and 0% on follow-ups. Owner rule: not kept → OFF.
+  return process.env.CONSULT_CACHE_LIBRARY === '1'
 }

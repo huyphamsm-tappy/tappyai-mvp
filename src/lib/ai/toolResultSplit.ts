@@ -161,6 +161,8 @@ export interface EnrichmentCollector {
   consultTurn?: string
   setConsultTurn(turn: string, refers?: string[], known?: Record<string, string>): void
   consultKnown?: Record<string, string>
+  /** Consult V2 shopping plan: the chosen product's listed price (route, from the newest shopping card). */
+  consultPlanPrice?: { amount: number; seller: string | null } | null
   /** Consult V2: the names a compare / follow-up turn is about (router `refers`). */
   consultRefers?: string[]
   /**
@@ -403,6 +405,7 @@ export function createEnrichmentCollector(turnText = '', earlierUserTexts: reado
     consultTurn: undefined as string | undefined,
     consultRefers: undefined as string[] | undefined,
     consultKnown: undefined as Record<string, string> | undefined,
+    consultPlanPrice: null as { amount: number; seller: string | null } | null,
     setConsultTurn(turn: string, refers?: string[], known?: Record<string, string>) { this.consultTurn = turn; this.consultRefers = refers; this.consultKnown = known },
     clarificationPolicy: 'allow' as 'allow' | 'no_reflex',
     setClarificationPolicy(policy: 'allow' | 'no_reflex') { this.clarificationPolicy = policy },

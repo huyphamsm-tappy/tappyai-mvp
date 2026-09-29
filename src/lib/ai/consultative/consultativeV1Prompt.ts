@@ -10,7 +10,7 @@
 
 import { buildSituationBlock, type SituationFrame } from './situationFrame'
 import type { Hard } from './situationFrame'
-import { buildDomainFrame, type FrameDomain, type FrameTurn } from './domainFrames'
+import { buildDomainFrame, frameRef, type FrameDomain, type FrameTurn } from './domainFrames'
 
 export interface ConsultativeV1PromptInput {
   frame: SituationFrame
@@ -43,6 +43,8 @@ export interface ConsultativeV1PromptInput {
   domain?: FrameDomain | null
   /** The consult turn type (consultBrain.ts) — picks the pick / follow-up / plan frame of the area. */
   frameTurn?: FrameTurn
+  /** The frames sit in the CACHED system segment (frameLibrary): emit only the pointer (frameRef). */
+  frameByRef?: boolean
 }
 
 const HARD_VI: Record<Hard, string> = {
@@ -123,7 +125,7 @@ export function buildConsultativeV1Block(input: ConsultativeV1PromptInput): stri
   const shape = input.domain
     ? 'HINH DANG CAU TRA LOI: theo KHUNG TRA LOI cua mang ngay ben duoi (thay cho 1-3 cu). Ten quan/san pham phai co trong ket qua tool.\n'
     : `HINH DANG CAU TRA LOI (3-5 cau, toi da 6, KHONG bullet, KHONG tieu de):\n1. CAU DAU: MOT lua chon chinh cho DUNG tinh huong tren + LY DO co bang chung (so lieu/that trong ket qua tool: diem, so luot danh gia, khoang cach, muc gia, trich review). Ten quan phai co trong ket qua tool (results / hotel_list).\n2. MOT lua chon thay the (toi da 1) + danh doi that: "re hon nhung xa hon", "view dep nhung dong". Khong co danh doi that thi khong nhac.\n3. MOT luu y huu ich: gio mo/dong, nen dat ban, khoang cach/di chuyen — chi khi co trong du lieu.\n`
-  const domainFrame = input.domain ? buildDomainFrame(input.domain, input.frameTurn ?? 'pick') : ''
+  const domainFrame = !input.domain ? '' : input.frameByRef ? frameRef(input.domain, input.frameTurn ?? 'pick') : buildDomainFrame(input.domain, input.frameTurn ?? 'pick')
   return `${searchFirst}${buildSituationBlock(frame)}
 
 ===== TU VAN V1 — GHI DE CAC LUAT SAU =====

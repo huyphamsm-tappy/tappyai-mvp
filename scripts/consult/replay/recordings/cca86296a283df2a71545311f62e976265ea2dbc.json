@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"CHARM SPA Garden\" OR \"MOON SPA | MASSAGE FOOT | MASSAGE BODY | GỘI ĐẦU DƯỠNG SINH | NAIL\" OR \"Qispa Head & Massage Quận 1\" quan 1 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T02:30:10.982Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"CHARM SPA Garden\" OR \"MOON SPA | MASSAGE FOOT | MASSAGE BODY | GỘI ĐẦU DƯỠNG SINH | NAIL\" OR \"Qispa Head & Massage Quận 1\" quan 1 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Charm Spa Garden Quận 1 (@charmspagardenquan1)",
+    "link": "https://www.tiktok.com/@charmspagardenquan1",
+    "snippet": "Charm Spa Garden Quận 1 · @charmspagardenquan1 · A 13 Years haven of relaxation and wellness at 6 Branches in Ho Chi Minh, Da Nang, Nha Trang, Da Lat. -Since 2013 ...",
+    "position": 1
+   },
+   {
+    "title": "Thư Giãn Tại Charm Spa Garden Quận 1",
+    "link": "https://www.tiktok.com/@charmspagardenquan1/video/7636350570244197640",
+    "snippet": "Charm Spa Garden Quận 1 nổi bật với không gian xanh mát, sang trọng và cực kỳ chill, mang đến trải nghiệm thư giãn đúng nghĩa. Charm Spa Garden ...",
+    "position": 2
+   },
+   {
+    "title": "Bạn đang tìm MASSAGE QUẬN 1 nhưng muốn một nơi ...",
+    "link": "https://www.tiktok.com/@charmspagardenquan1/video/7685264046618201362",
+    "snippet": "Video TikTok từ Charm Spa Garden Quận 1 (@charmspagardenquan1): \"Bạn đang tìm MASSAGE QUẬN 1 nhưng muốn một nơi thật chill ✨ Massage ...",
+    "position": 3
+   },
+   {
+    "title": "charmspagrand",
+    "link": "https://www.tiktok.com/tag/charmspagrand",
+    "snippet": "... quận 1 tại · spa Garden giữa Quận 1 ✨ Charm Spa Garden Quận 1 — nơi bạn có · nếu bạn là tín đồ spa lâu năm ở Đà Nẵng thì chắc chắc đã biết · Ưu đãi ...",
+    "position": 4
+   },
+   {
+    "title": "#massage_khỏe_quận_1_tphcm",
+    "link": "https://www.tiktok.com/tag/massage_kh%E1%BB%8Fe_qu%E1%BA%ADn_1_tphcm",
+    "snippet": "地址：115 Nguyen Cu Trinh, phuong Nguyen Cu Trinh, Quan 1, TpHCM. #越式洗頭 #massage ... Charm Spa Garden Quận 1. Charm spa Garden Quận 1 #MassageQuan1 ...",
+    "position": 5
+   },
+   {
+    "title": "chạmspachill",
+    "link": "https://www.tiktok.com/tag/ch%E1%BA%A1mspachill",
+    "snippet": "Ghé ngay Charm Spa Garden Quận 1 Relax đúng · Ghé qua chill spa chăm da ... Charm Spa Garden Quận 1 – không gian xanh, sang và cực chill ‍♀️ ...",
+    "position": 6
+   },
+   {
+    "title": "TING! Charm Spa Garden Nha Trang vừa cập nhật những ...",
+    "link": "https://www.tiktok.com/@charm.spa.garden/video/7398553669723049233",
+    "snippet": "❀ TING! Charm Spa Garden Nha Trang vừa cập nhật những hình ảnh mới nhất ^^ Sau bao ngày tháng bận rộn tối mặt “ngôi nhà thứ 6” trong chuỗi hệ ...",
+    "position": 7
+   },
+   {
+    "title": "Cham Spa Ho Chi Minh",
+    "link": "https://www.tiktok.com/discover/cham-spa-ho-chi-minh",
+    "snippet": "Sài Gòn ồn ào quá rồi… Đi đâu để “reset” lại bản thân? Charm Spa Garden Quận 1 – nơi massage tại Sài Gòn chuẩn thư giãn 5⭐",
+    "date": "31 thg 8, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

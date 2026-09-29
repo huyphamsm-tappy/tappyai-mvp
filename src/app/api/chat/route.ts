@@ -56,7 +56,7 @@ import { type Budget, extractBudget, extractPlanTotalBudget, applyBudgetFilter, 
 import { detectPlaceConstraints, applyPlaceConstraints } from '@/lib/ai/placeConstraintFilter'
 import { usesEveningFrame, eveningLocation, eveningStagesFor, pickStageStop, buildEveningPlanBlock, eveningIntroInstruction, eveningIntro, fixedPlanStream, type EveningStop } from '@/lib/ai/eveningPlan'
 import { buildSystem, buildSystemSimple, buildPrefBlock, buildRenderedDecisionBlock, buildPlanningBlock } from '@/lib/ai/promptBuilder'
-import { buildLeanConsultSystem, consultTools, recentTurns } from '@/lib/ai/consultative/leanConsultPrompt'
+import { buildLeanConsultSystem, consultCacheLibraryEnabled, consultTools, recentTurns } from '@/lib/ai/consultative/leanConsultPrompt'
 import { applyPlaceEnrichmentStreamFilter } from '@/lib/ai/streamEnrichment'
 import { splitToolResult, createEnrichmentCollector } from '@/lib/ai/toolResultSplit'
 import { shouldExtractMemory } from '@/lib/ai/memoryGate'
@@ -88,8 +88,8 @@ import { filterTransientMemory } from '@/lib/ai/consultative/memoryTransientFilt
 import { plainRequestTopic, appendHistoryTopic } from '@/lib/ai/consultative/memoryTopic'
 import { deriveSearchNow, SPECIFIC_DATE, type SearchNow } from '@/lib/ai/consultative/searchNow'
 import { tripAskAfter, missingTripFacts } from '@/lib/ai/consultative/tripFacts'
-import { buildDomainFrame, frameDomainOf, PLAN_HEADINGS } from '@/lib/ai/consultative/domainFrames'
-import { runConsultBrain, consultV2Enabled, wasAskReply, buildAskReply, placeTypeFor } from '@/lib/ai/consultative/consultBrain'
+import { buildDomainFrame, frameDomainOf, frameLibrary, frameRef, PLAN_HEADINGS } from '@/lib/ai/consultative/domainFrames'
+import { runConsultBrain, consultV2Enabled, wasAskReply, buildAskReply, placeTypeFor, latestShoppingPickPrice } from '@/lib/ai/consultative/consultBrain'
 import { routeConsult } from '@/lib/ai/consultative/consultRouter'
 import { eventPreCall, onlyRowsNamed, slimResultForModel, travelPreCall, withoutShownRows } from '@/lib/ai/consultative/consultTravel'
 import { guardPlaceGeography } from '@/lib/ai/tools/placeGeoGuard'
@@ -594,6 +594,9 @@ export async function POST(req: Request) {
 =====================================`
     : ''
   let consultUnderstood = buildConsultUnderstood()
+  // Cost §6: lean consult turns keep the area's frames in the CACHED segment (frameLibrary) and send a pointer.
+  const consultLibraryOn = !!consult && consult.domains.length > 0 && consultCacheLibraryEnabled()
+  const consultLibraryDomain = consult?.turn === 'chat' ? 'main' as const : frameDomainOf(consult?.domains[0] ?? null)
   if (consult) {
     clarifyGate = null
     gateAskAfter = null
@@ -1173,6 +1176,11 @@ export async function POST(req: Request) {
   // model reads only the chosen venue's row (onlyRowsNamed).
   const consultPlanReuse = !!(consultativeV1 && consult?.turn === 'plan' && !presearchPlan && priorPlaceSearch && ['food', 'entertainment', 'spa'].includes(consult.domains[0] ?? ''))
   if (consultPlanReuse && priorPlaceSearch) presearchPlan = { toolName: 'search_places', args: priorPlaceSearch.args, exact: true }
+  // Follow-up / compare on places (A/B 29/09: a compare came out EMPTY — the guards had no evidence for the
+  // ratings the previous reply showed, and cut every sentence). The stored search runs again (same query →
+  // cache, no new credit) and the model reads only the venues the turn is about; it gets no tools.
+  const consultFollowReuse = !!(consultativeV1 && (consult?.turn === 'followup' || consult?.turn === 'compare') && !presearchPlan && priorPlaceSearch && ['food', 'entertainment', 'spa'].includes(consult?.domains[0] ?? ''))
+  if (consultFollowReuse && priorPlaceSearch) presearchPlan = { toolName: 'search_places', args: priorPlaceSearch.args, exact: true }
   // Owner 2026-09-28 (c40 T7): a flight request naming two airports runs its fare call before the model.
   // Consult V2: a shopping pick runs the product search before the model (one model step, like a place pick).
   // "xem thêm" on shopping searches again from the carried product slots (replay SHOP-2/3: with no search the
@@ -1534,16 +1542,20 @@ export async function POST(req: Request) {
   // 2026-09-19): the model imitated that assistant turn — a question with options — and asked
   // again instead of searching, three turns in a row on Android. Request + answer become one
   // user message for the model; the UI transcript and the memory extractor keep the real thread.
+  // A prior assistant turn whose text is only machine blocks (buttons, a card) sanitises to "" — and the
+  // provider rejects a whitespace-only text block ("text content blocks must contain non-whitespace text":
+  // replay 29/09, the turn AFTER an empty compare crashed). It becomes a short neutral stand-in instead.
+  const nonEmpty = (t: string) => (t.trim() ? t : '(Tappy đã trả lời bằng thẻ/nút, không có chữ.)')
   const modelMessages = compactHistory(collapseClarifyTurns(trimmedMessages).map((m) => {
     if (m.role !== 'assistant') return m
     if (typeof m.content === 'string') {
-      return { ...m, content: sanitizePriorAssistantContent(m.content) }
+      return { ...m, content: nonEmpty(sanitizePriorAssistantContent(m.content)) }
     }
     if (Array.isArray(m.content)) {
       const parts = m.content.map((part) => {
         if (part && typeof part === 'object' && (part as { type?: string }).type === 'text') {
           const p = part as { type: 'text'; text: string }
-          return { ...p, text: sanitizePriorAssistantContent(p.text) }
+          return { ...p, text: nonEmpty(sanitizePriorAssistantContent(p.text)) }
         }
         return part
       })
@@ -1564,7 +1576,7 @@ export async function POST(req: Request) {
   // A clip question is a place question by construction — the button exists only
   // on an item with a place — so it is never a no-tool turn even when the short
   // bridge text alone would have read as chitchat.
-  const noToolTurn = !clipContext && (intent === 'chitchat' || decisionStage === 'confirmation' || consult?.turn === 'followup' || consult?.turn === 'compare')
+  const noToolTurn = !clipContext && (intent === 'chitchat' || decisionStage === 'confirmation' || ((consult?.turn === 'followup' || consult?.turn === 'compare') && !consultFollowReuse))
   // The ranking instruction is only carried on turns that can actually produce a
   // ranked result — Places and Hotel are the two domains with structured
   // candidate attributes today. A weather or gold lookup pays nothing for it.
@@ -1602,6 +1614,8 @@ export async function POST(req: Request) {
   // still belongs in the text: with a card, it is the same content twice.
   enrichment.setRendersDecisionCard(rendersDecisionCard)
   if (consult && consult.turn !== 'ask') enrichment.setConsultTurn(consult.turn, consult.refers, consult.known)
+  // Shopping plan: the "Tổng chi phí" line is computed from the chosen product's listed price (appendConsultPlanCost).
+  if (consult?.turn === 'plan' && consult.domains[0] === 'shopping') enrichment.consultPlanPrice = latestShoppingPickPrice(assistantTexts)
   // Consult V2: after a pick the server offers the next steps (owner Phần 3.3).
   if (consult && (consult.turn === 'pick' || consult.turn === 'more' || consult.turn === 'reject' || consult.turn === 'compare')) enrichment.setConsultButtons(lang === 'en' ? ['See more', 'Plan it in detail'] : ['Xem thêm', 'Lên kế hoạch chi tiết'])
 
@@ -1672,16 +1686,18 @@ export async function POST(req: Request) {
     // left "ăn gì ngon giờ" / "đi chơi ở đâu" answered with a question and no tool call.
     // The turn after a clarify (item 1) is the first REAL reply: it must search now, never ask again.
     if (searchNow) console.log(JSON.stringify({ type: 'tappyai_consultative_v1', step: 'search_now', domain: decisionFrame.domains[0] ?? null, placeType: searchNow.type, exact: searchNow.exact }))
-    return buildConsultativeV1Block({ frame: situation, hardGaps: [], rendersCard: rendersDecisionCard, lang, now: new Date(), searchNow: presearchPlan?.reuse ? { query: presearchPlan.args.query, type: presearchPlan.args.type ?? 'restaurant', exact: true } : searchNow, afterClarify, presearched: presearchPlan !== null || flightPresearch !== null || consultProductQuery !== null || consultTravelCall !== null || consultEventCall !== null, reuseShown: presearchPlan?.reuse?.shown, askAfter: gateAskAfter, domain: consult ? (consult.turn === 'chat' ? 'main' : frameDomainOf(consult.domains[0] ?? null)) : frameDomainOf(gateDomain, planningIntent), frameTurn: consult && consult.turn !== 'ask' && consult.turn !== 'chat' ? consult.turn : 'pick' }) + consultUnderstood
+    return buildConsultativeV1Block({ frame: situation, hardGaps: [], rendersCard: rendersDecisionCard, lang, now: new Date(), searchNow: presearchPlan?.reuse ? { query: presearchPlan.args.query, type: presearchPlan.args.type ?? 'restaurant', exact: true } : searchNow, afterClarify, presearched: presearchPlan !== null || flightPresearch !== null || consultProductQuery !== null || consultTravelCall !== null || consultEventCall !== null, reuseShown: presearchPlan?.reuse?.shown, askAfter: gateAskAfter, domain: consult ? (consult.turn === 'chat' ? 'main' : frameDomainOf(consult.domains[0] ?? null)) : frameDomainOf(gateDomain, planningIntent), frameTurn: consult && consult.turn !== 'ask' && consult.turn !== 'chat' ? consult.turn : 'pick', frameByRef: consultLibraryOn }) + consultUnderstood
       + renderReferencedBlock(referenced, []) + refetchLines
   })()
   // Consult V2 (replay 2026-09-29): a follow-up / compare turn (noToolTurn) and a travel more/reject with no
   // situation never built the V1 block, so the area frame ("**Mình chọn: X** vì …" for A-vs-B) and the
   // state (route, date, people, the chosen pick) never reached the model — it asked for them again.
   const consultOnlyBlock = consult && !v1Block && consult.turn !== 'ask' && consult.turn !== 'chat' && consult.domains.length > 0
-    ? buildDomainFrame(frameDomainOf(consult.domains[0]), consult.turn) + consultUnderstood
+    ? (consultLibraryOn ? frameRef(frameDomainOf(consult.domains[0]), consult.turn) : buildDomainFrame(frameDomainOf(consult.domains[0]), consult.turn)) + consultUnderstood
     : ''
 
+  // The lean consult prompt will be used (same test as `lean` below); CONSULT_TRIM_FRAME=0 restores the frame for A/B.
+  const lean0 = !!consult && consult.domains.length > 0 && process.env.CONSULT_TRIM_FRAME !== '0'
   const consultativeBlock = [
     // Explore clip → "this place" is the clip's place. Fenced row values plus the
     // rule that a clip address stands in for the missing GPS/city. Absent on
@@ -1690,7 +1706,8 @@ export async function POST(req: Request) {
     // The frame first: what the user is trying to do, what to search for and
     // what evidence settles it — read before the ranking/pick instructions that
     // explain how to present the result.
-    buildDecisionFrameBlock(decisionFrame, needProfile),
+    // A/B 29/09 (cost): a lean consult turn carries the consult state block (DA HIEU), which supersedes this frame.
+    lean0 ? '' : buildDecisionFrameBlock(decisionFrame, needProfile),
     isDecisionDomain ? buildRankingInstructionBlock() : '',
     isDecisionDomain && rendersDecisionCard ? buildRenderedDecisionBlock() : '',
     // Shopping evidence carries price/store/rating and nothing else, so the
@@ -1748,6 +1765,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           vnDateISO: now.toLocaleDateString('en-CA', { timeZone: 'Asia/Ho_Chi_Minh' }),
           domains: consult.domains,
           consultBlock: consultativeBlock,
+          ...(consultLibraryOn ? { library: frameLibrary(consultLibraryDomain) } : {}),
           extra: [memoryBlock ?? '', prefBlock, planningIntent ? buildPlanningBlock(planningIntent, lang, planning ?? {}) : '', styleBlock, shareContextBlock],
         })
       })()
@@ -2361,6 +2379,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     }
     if (consultShownBefore.length) result = withoutShownRows(result, consultShownBefore)
     if (consultPlanReuse) result = onlyRowsNamed(result, latestConsultPick(null), assistantTexts.flatMap(t => priorVenuesIn(t).map(v => v.name)))
+    if (consultFollowReuse) result = onlyRowsNamed(result, null, [...(consult?.refers ?? []), ...(latestConsultPick(null) ? [latestConsultPick(null) as string] : [])])
     presearchOutcome = { toolCallId, toolName: preCall.name, args: preCall.args as PresearchOutcome['args'], result, ms: Date.now() - t0 }
     const error = (result as { error?: unknown })?.error ? true : false
     if (presearchPlan) console.log(JSON.stringify({ type: 'tappyai_presearch', reuse: !!presearchPlan.reuse, exact: presearchPlan.exact, query: presearchPlan.args.query, location: presearchPlan.args.location ?? null, placeType: presearchPlan.args.type, ms: presearchOutcome.ms, rows: Array.isArray((result as { results?: unknown[] })?.results) ? (result as { results: unknown[] }).results.length : null, error }))
@@ -2421,9 +2440,12 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     // generated, so this changes no cost on a normal reply — it bounds a runaway one.
     maxTokens: noToolTurn ? (consult ? 600 : 300) : eveningBlock ? 350 : planningIntent ? 4096 : hasImage ? 1024 : 2048,
     // Consult V2: a pick whose search already ran (presearch) answers in ONE step — no second full pass.
-    maxSteps: noToolTurn || eveningBlock || (lean && presearchAll.length > 0 && !planningIntent) ? 1 : planningIntent ? (lean ? 3 : 8) : hasImage ? 3 : lean ? 3 : 5,
+    // A follow-up/compare that re-reads its evidence keeps a second step: a stray tool call must still end in text.
+    maxSteps: consultFollowReuse ? 2 : noToolTurn || eveningBlock || (lean && presearchAll.length > 0 && !planningIntent) ? 1 : planningIntent ? (lean ? 3 : 8) : hasImage ? 3 : lean ? 3 : 5,
     // A one-step consult turn never reads the history breakpoint back — skip its +25% write (claude.ts).
-    cacheHistory: !(lean && (noToolTurn || (presearchAll.length > 0 && !planningIntent))),
+    // A/B 29/09: a consult plan that is not a multi-step trip wrote ~4.2k tokens of history to the cache (1.25×)
+    // and read back ~20% — a net loss. The history breakpoint stays only where a second model step is likely.
+    cacheHistory: !(lean && (noToolTurn || (presearchAll.length > 0 && !planningIntent) || (consult?.turn === 'plan' && planningIntent !== 'trip'))),
     // REMOVED (C2): a `prepareStep` block that forced tool choice per step. It
     // never ran — ai@4.3.19 destructures experimental_prepareStep in
     // generateText only (bundle line 4177); streamText (line 5193) takes
@@ -2832,7 +2854,7 @@ ${completionInstruction(lang)}` },
         const tokensIn = (usageAcct?.promptTokens ?? 0) + (usageAcct?.cacheReadTokens ?? 0) + (usageAcct?.cacheCreationTokens ?? 0) + (consultRun?.usage.promptTokens ?? 0)
         const tokensOut = (usageAcct?.completionTokens ?? 0) + (consultRun?.usage.completionTokens ?? 0)
         const usd = turnUsd({ promptTokens: (usageAcct?.promptTokens ?? 0) + (consultRun?.usage.promptTokens ?? 0), completionTokens: tokensOut, cacheReadTokens: usageAcct?.cacheReadTokens ?? 0, cacheCreationTokens: usageAcct?.cacheCreationTokens ?? 0, serperCredits: d.credits })
-        return { domain: consult?.domains[0] ?? decisionFrame.domains[0] ?? null, turnType: consult?.turn ?? (planningIntent ? 'plan' : 'legacy'), model: 'haiku-4.5', tokensIn, tokensOut, serperCalls: sumCounts(d.calls), cacheHits: sumCounts(d.hits), usd }
+        return { domain: consult?.domains[0] ?? decisionFrame.domains[0] ?? null, turnType: consult?.turn ?? (planningIntent ? 'plan' : 'legacy'), model: 'haiku-4.5', tokensIn, tokensOut, serperCalls: sumCounts(d.calls), cacheHits: sumCounts(d.hits), promptCacheRead: usageAcct?.cacheReadTokens ?? 0, promptCacheWrite: usageAcct?.cacheCreationTokens ?? 0, usd }
       }).pipeThrough(timeClientEmit(startTime, Date.now, (t) => logUsage(t.ttuaMs)))
     : finalResponse.body
   return new Response(timedBody, { status: finalResponse.status, headers: finalResponse.headers })

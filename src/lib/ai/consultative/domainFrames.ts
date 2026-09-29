@@ -99,6 +99,30 @@ export function buildDomainFrame(domain: FrameDomain, turn: FrameTurn = 'pick'):
   return `\n\n===== KHUNG TU VAN — ${domain.toUpperCase()} / ${turn.toUpperCase()} =====\n${body}\n${FRAME_CORE}\n=====================================`
 }
 
+/**
+ * Cost §6 (prompt caching): every frame of ONE area, as a static library for the CACHED system segment —
+ * identical bytes on every turn of that area, so a session's turns read it at 10% after the first. The
+ * per-turn segment then names the frame to apply (`frameRef`) instead of repeating it.
+ */
+export function frameLibrary(domain: FrameDomain): string {
+  if (domain === 'main') return `===== THU VIEN KHUNG — CHUNG =====\n${MAIN}\n${FRAME_CORE}`
+  const D = domain.toUpperCase()
+  return [
+    `===== THU VIEN KHUNG TU VAN — ${D} (luot nay chi dung MOT khung: xem dong "KHUNG AP DUNG" o cuoi) =====`,
+    `--- ${D} / PICK ---\n${PICK_SHAPE}\n${PICK[domain]}`,
+    ...(['followup', 'compare', 'more', 'reject'] as const).map(t => `--- ${D} / ${t.toUpperCase()} ---\n${FOLLOW[t]}\n${PICK[domain].split('\n')[0]}`),
+    `--- ${D} / PLAN ---\n${PLAN_HEAD}\nTIEU DE BAT BUOC — ${D}: ${PLAN_HEADINGS[domain].map(h => `"${h}"`).join(' · ')}\nNOI DUNG: ${PLAN_NOTES[domain]}`,
+    FRAME_CORE,
+  ].join('\n\n')
+}
+
+/** The per-turn pointer into `frameLibrary` (replaces the full frame when the library is cached). */
+export function frameRef(domain: FrameDomain, turn: FrameTurn = 'pick'): string {
+  return domain === 'main'
+    ? `\n\nKHUNG AP DUNG LUOT NAY: CHUNG (thu vien khung o dau).`
+    : `\n\nKHUNG AP DUNG LUOT NAY: ${domain.toUpperCase()} / ${turn.toUpperCase()} — lam DUNG khung "${domain.toUpperCase()} / ${turn.toUpperCase()}" trong THU VIEN KHUNG o dau, bo qua cac khung khac.`
+}
+
 const headingKey = (line: string): string | null => {
   const t = line.trim().replace(/^#{1,4}\s*/, '').replace(/\*+/g, '').replace(/[:：]\s*$/, '').trim().toLowerCase()
   if (!t || t.length > 60) return null

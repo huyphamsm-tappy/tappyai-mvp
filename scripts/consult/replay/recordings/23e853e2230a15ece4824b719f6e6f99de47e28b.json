@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "12oz Gốm Cà Phê Sinh Nhật Vui Vẻ Quà Tặng Thích Hợp",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T02:34:02.232Z",
+ "body": {
+  "searchParameters": {
+   "q": "12oz Gốm Cà Phê Sinh Nhật Vui Vẻ Quà Tặng Thích Hợp",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Cốc gốm sứ uống nước Happy quà tặng sinh nhật cute dễ thương ý nghĩa tráng  men cao cấp LSHED01",
+    "imageUrl": "https://cdn.hstatic.net/products/200000666175/_qua_tang_sinh_nhat_cute_de_thuong_y_nghia_trang_men_cao_cap_lshed0111_b5addb08bde14aeab41c1ea3a1ebe981.png",
+    "imageWidth": 800,
+    "imageHeight": 800,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRfWZ_uhhvEP3iKs8l-w_UnjrFPKqWdupp45Fn0a7Duow&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Chillme Candle",
+    "domain": "chillme.vn",
+    "link": "https://chillme.vn/products/coc-gom-su-uong-nuoc-happy-qua-tang-sinh-nhat-cute-de-thuong-y-nghia-trang-men-cao-cap-lshed01?srsltid=AU7gw4XnOjzYLCYEVsndIhMIWMp1oGNvnMttwXi_GI8m9ykOFAUV2sRh",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.hstatic.net%2Fproducts%2F200000666175%2F_qua_tang_sinh_nhat_cute_de_thuong_y_nghia_trang_men_cao_cap_lshed0111_b5addb08bde14aeab41c1ea3a1ebe981.png&tbnid=JME-KTsgkkmygM&imgrefurl=https%3A%2F%2Fchillme.vn%2Fproducts%2Fcoc-gom-su-uong-nuoc-happy-qua-tang-sinh-nhat-cute-de-thuong-y-nghia-trang-men-cao-cap-lshed01%3Fsrsltid%3DAU7gw4XnOjzYLCYEVsndIhMIWMp1oGNvnMttwXi_GI8m9ykOFAUV2sRh&docid=f1rkxtC_mzvRGM&w=800&h=800",
+    "position": 1
+   },
+   {
+    "title": "Cốc hoạt hình dễ thương có nắp, cốc sứ cho các cô gái với vẻ ngoài cao cấp,  cốc nước văn phòng thực tế, quà sinh nhật ý nghĩa",
+    "imageUrl": "https://image.made-in-china.com/202f0j00VAYcPiDIgzrC/Cute-Cartoon-Mug-with-Lid-Ceramic-Cup-for-Girls-with-High-Appearance-Office-Water-Cup-Practical-Birthday-Gift.webp",
+    "imageWidth": 550,
+    "imageHeight": 550,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUrnJS_SxeUbRBOze0TWtZSjDvxOvKhlTgpRGKHG1_Pw&s=10",
+    "thumbnailWidth": 550,
+    "thumbnailHeight": 550,
+    "source": "Made-in-China.com",
+    "domain": "vi.made-in-china.com",
+    "link": "https://vi.made-in-china.com/co_sunfull-industry/product_Cute-Cartoon-Mug-with-Lid-Ceramic-Cup-for-Girls-with-High-Appearance-Office-Water-Cup-Practical-Birthday-Gift_yuiyiggsey.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimage.made-in-china.com%2F202f0j00VAYcPiDIgzrC%2FCute-Cartoon-Mug-with-Lid-Ceramic-Cup-for-Girls-with-High-Appearance-Office-Water-Cup-Practical-Birthday-Gift.webp&tbnid=L2ry2DHs5z4KYM&imgrefurl=https%3A%2F%2Fvi.made-in-china.com%2Fco_sunfull-industry%2Fproduct_Cute-Cartoon-Mug-with-Lid-Ceramic-Cup-for-Girls-with-High-Appearance-Office-Water-Cup-Practical-Birthday-Gift_yuiyiggsey.html&docid=rOUFDN7OukbMYM&w=550&h=550",
+    "position": 2
+   },
+   {
+    "title": "Cốc gốm sứ uống nước Happy quà tặng sinh nhật cute dễ thương ý nghĩa tráng  men cao cấp LSHED01",
+    "imageUrl": "https://cdn.hstatic.net/products/200000666175/_qua_tang_sinh_nhat_cute_de_thuong_y_nghia_trang_men_cao_cap_lshed0118_4cc2ca65a7444a02a59fe0e65a8a69a5_master.png",
+    "imageWidth": 800,
+    "imageHeight": 800,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSE1rSOvHO6avVGiJMtncTFje6pSwc725PPbiON6HY7_g&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Chillme Candle",
+    "domain": "chillme.vn",
+    "link": "https://chillme.vn/products/coc-gom-su-uong-nuoc-happy-qua-tang-sinh-nhat-cute-de-thuong-y-nghia-trang-men-cao-cap-lshed01?srsltid=AU7gw4WY8g3aerEJ80lCHJJTCv32dWDN4nXeBqJF8UryKyRJAESsQPuO",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.hstatic.net%2Fproducts%2F200000666175%2F_qua_tang_sinh_nhat_cute_de_thuong_y_nghia_trang_men_cao_cap_lshed0118_4cc2ca65a7444a02a59fe0e65a8a69a5_master.png&tbnid=0-iF8-8lisAy_M&imgrefurl=https%3A%2F%2Fchillme.vn%2Fproducts%2Fcoc-gom-su-uong-nuoc-happy-qua-tang-sinh-nhat-cute-de-thuong-y-nghia-trang-men-cao-cap-lshed01%3Fsrsltid%3DAU7gw4WY8g3aerEJ80lCHJJTCv32dWDN4nXeBqJF8UryKyRJAESsQPuO&docid=f1rkxtC_mzvRGM&w=800&h=800",
+    "position": 3
+   },
+   {
+    "title": "Cốc gốm sứ uống nước Happy quà tặng sinh nhật cute dễ thương ý nghĩa tráng  men cao cấp LSHED01",
+    "imageUrl": "https://cdn.hstatic.net/products/200000666175/18_d4177637c53e46d4b6c320986723f568_master.png",
+    "imageWidth": 800,
+    "imageHeight": 800,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLbIzaPJvq7NUzz1xDJ1E42IgRrakRnfBAUVpSvlh-GQ&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Chillme Candle",
+    "domain": "chillme.vn",
+    "link": "https://chillme.vn/products/coc-gom-su-uong-nuoc-happy-qua-tang-sinh-nhat-cute-de-thuong-y-nghia-trang-men-cao-cap-lshed01?srsltid=AU7gw4UPZrNt6FOI7zADUkSqR_g_U3MQm_5N7vBINrwiTq0cyEGAMGGm",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.hstatic.net%2Fproducts%2F200000666175%2F18_d4177637c53e46d4b6c320986723f568_master.png&tbnid=LW8J7zLZ-xbsTM&imgrefurl=https%3A%2F%2Fchillme.vn%2Fproducts%2Fcoc-gom-su-uong-nuoc-happy-qua-tang-sinh-nhat-cute-de-thuong-y-nghia-trang-men-cao-cap-lshed01%3Fsrsltid%3DAU7gw4UPZrNt6FOI7zADUkSqR_g_U3MQm_5N7vBINrwiTq0cyEGAMGGm&docid=f1rkxtC_mzvRGM&w=800&h=800",
+    "position": 4
+   },
+   {
+    "title": "Cốc uống nước cute Gốm Sứ Hình Chú Mèo Cún Dễ Thương Tay Cầm Kiểu Mới Có  Thìa Kèm Hộp Quà Tặng Sinh Nhật Tinh Tế - LSCM01",
+    "imageUrl": "https://cdn.hstatic.net/products/200000666175/tay_cam_kieu_moi_co_thia_kem_hop_qua_tang_sinh_nhat_tinh_te_-__lscm012_8aa0de052cb64142882d042d21f28052_master.png",
+    "imageWidth": 800,
+    "imageHeight": 800,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcREvWaylUtHsP5S8CBlsi3-OZ6_Br-U_8J2tjDAgDnbtg&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Chillme Candle",
+    "domain": "chillme.vn",
+    "link": "https://chillme.vn/products/coc-uong-nuoc-cute-gom-su-hinh-chu-meo-cun-de-thuong-tay-cam-kieu-moi-co-thia-kem-hop-qua-tang-sinh-nhat-tinh-te-lscm01?srsltid=AU7gw4XlTj2aLZLlgjKOtjKN71ox0iVv_nidWarKOotGyuF5f9duVjFA",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.hstatic.net%2Fproducts%2F200000666175%2Ftay_cam_kieu_moi_co_thia_kem_hop_qua_tang_sinh_nhat_tinh_te_-__lscm012_8aa0de052cb64142882d042d21f28052_master.png&tbnid=cmiwlhA0PGPvqM&imgrefurl=https%3A%2F%2Fchillme.vn%2Fproducts%2Fcoc-uong-nuoc-cute-gom-su-hinh-chu-meo-cun-de-thuong-tay-cam-kieu-moi-co-thia-kem-hop-qua-tang-sinh-nhat-tinh-te-lscm01%3Fsrsltid%3DAU7gw4XlTj2aLZLlgjKOtjKN71ox0iVv_nidWarKOotGyuF5f9duVjFA&docid=2xTGsLMUyGpn2M&w=800&h=800",
+    "position": 5
+   },
+   {
+    "title": "Cốc gốm sứ uống nước Happy quà tặng sinh nhật cute dễ thương ý nghĩa t –  Chillme Candle - Thương hiệu chuyên nến thơm, tinh dầu tán hương",
+    "imageUrl": "https://cdn.hstatic.net/products/200000666175/tay_cam_kieu_moi_co_thia_kem_hop_qua_tang_sinh_nhat_tinh_te_-__lscm011_41c691240fc0467283b51b84011e6748.png",
+    "imageWidth": 800,
+    "imageHeight": 800,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIdB1vUIxE5rvFo0w0btNlJjypJ85XCTwRyXES7APO7g&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Chillme Candle",
+    "domain": "chillme.vn",
+    "link": "https://chillme.vn/products/coc-gom-su-uong-nuoc-happy-qua-tang-sinh-nhat-cute-de-thuong-y-nghia-trang-men-cao-cap-lshed01?srsltid=AU7gw4Vg5PjjWJJMJ_An7GEtig_lOFg5gN_FcPrqeDT6uXCEdLgIynN9",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.hstatic.net%2Fproducts%2F200000666175%2Ftay_cam_kieu_moi_co_thia_kem_hop_qua_tang_sinh_nhat_tinh_te_-__lscm011_41c691240fc0467283b51b84011e6748.png&tbnid=Zvlqg0G2nnPSvM&imgrefurl=https%3A%2F%2Fchillme.vn%2Fproducts%2Fcoc-gom-su-uong-nuoc-happy-qua-tang-sinh-nhat-cute-de-thuong-y-nghia-trang-men-cao-cap-lshed01%3Fsrsltid%3DAU7gw4Vg5PjjWJJMJ_An7GEtig_lOFg5gN_FcPrqeDT6uXCEdLgIynN9&docid=f1rkxtC_mzvRGM&w=800&h=800",
+    "position": 6
+   },
+   {
+    "title": "Cốc gốm sứ uống nước Happy quà tặng sinh nhật cute dễ thương ý nghĩa t –  Chillme Candle - Thương hiệu chuyên nến thơm, tinh dầu tán hương",
+    "imageUrl": "https://product.hstatic.net/200000666175/product/1_df96401c0b9c4f38994359e3114b6639.jpg",
+    "imageWidth": 1200,
+    "imageHeight": 1200,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSuEHrQh3uv5VXeBf94bm5AFcO3XKOph61EqfGQKhyG3g&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Chillme Candle",
+    "domain": "chillme.vn",
+    "link": "https://chillme.vn/products/coc-gom-su-uong-nuoc-happy-qua-tang-sinh-nhat-cute-de-thuong-y-nghia-trang-men-cao-cap-lshed01?srsltid=AU7gw4XA6CXHlaIUAStHgtj9QH-Og3QUEjut4TzHGaEPW6ZaFOx3VmiG",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fproduct.hstatic.net%2F200000666175%2Fproduct%2F1_df96401c0b9c4f38994359e3114b6639.jpg&tbnid=Y2omWReaAvxRVM&imgrefurl=https%3A%2F%2Fchillme.vn%2Fproducts%2Fcoc-gom-su-uong-nuoc-happy-qua-tang-sinh-nhat-cute-de-thuong-y-nghia-trang-men-cao-cap-lshed01%3Fsrsltid%3DAU7gw4XA6CXHlaIUAStHgtj9QH-Og3QUEjut4TzHGaEPW6ZaFOx3VmiG&docid=f1rkxtC_mzvRGM&w=1200&h=1200",
+    "position": 7
+   },
+   {
+    "title": "12oz Cốc nước gốm 360cc Cốc đá",
+    "imageUrl": "https://image.made-in-china.com/2f0j00OLCqMIgFydcP/12oz-Ceramic-Water-Cup-360cc-Stoneware-Mug.jpg",
+    "imageWidth": 800,
+    "imageHeight": 800,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSDCwh1cwNGpHrzCYTpjH3H6OrH8UYa8vaX6eVwMyUsgA&s=10",
+    "thumbnailWidth": 554,
+    "thumbnailHeight": 554,
+    "source": "Made-in-China.com",
+    "domain": "vi.made-in-china.com",
+    "link": "https://vi.made-in-china.com/co_gdrollin/product_12oz-Ceramic-Water-Cup-360cc-Stoneware-Mug_ysgysgeegg.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimage.made-in-china.com%2F2f0j00OLCqMIgFydcP%2F12oz-Ceramic-Water-Cup-360cc-Stoneware-Mug.jpg&tbnid=iN90uX86ZrPk7M&imgrefurl=https%3A%2F%2Fvi.made-in-china.com%2Fco_gdrollin%2Fproduct_12oz-Ceramic-Water-Cup-360cc-Stoneware-Mug_ysgysgeegg.html&docid=OV6dL5arVsBlGM&w=800&h=800",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

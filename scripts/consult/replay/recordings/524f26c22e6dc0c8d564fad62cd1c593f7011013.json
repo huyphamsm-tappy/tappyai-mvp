@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Spa Massage Gội Đầu Dưỡng Sinh Cô Út Quận 3\" OR \"Gội Đầu Dưỡng Sinh Quận 3 HẺM SPA\" OR \"GỘI ĐẦU DƯỠNG SINH CHUẨN\" quan 3 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T02:30:41.025Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Spa Massage Gội Đầu Dưỡng Sinh Cô Út Quận 3\" OR \"Gội Đầu Dưỡng Sinh Quận 3 HẺM SPA\" OR \"GỘI ĐẦU DƯỠNG SINH CHUẨN\" quan 3 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Gội Đầu Dưỡng Sinh Chuẩn Nhật Tại SORA",
+    "link": "https://www.tiktok.com/@yuspa.facetanbinh/video/7532031881013890311",
+    "snippet": "479 Võ Văn Tần, Phường 5, Quận 3. 9.AM - 9.PM 0935 19 60 80 @sorabeauty.vn - @sora.hairsalon. Gội Đầu Dưỡng Sinh Chuẩn Nhật Tại SORA. Khám phá ...",
+    "position": 1
+   },
+   {
+    "title": "Tiệm Gội Đầu Dưỡng Sinh Hàn Quốc Quận 3 Sài Gòn",
+    "link": "https://www.tiktok.com/@duyenwithlove/video/7289049706708094216",
+    "snippet": "... Quận 3 Sài Gòn: Review và Khám Phá Spa Sang Trọng. ‍♀️✨ Trải nghiệm gội đầu dưỡng sinh chuẩn Hàn Quốc giá siêu yêu tại Nei Beauty, Quận 3!",
+    "position": 2
+   },
+   {
+    "title": "Khám Phá Nơi Gội Đầu Dưỡng Sinh Tại Bến Lức",
+    "link": "https://www.tiktok.com/@duongmannhireview/video/7577272850969562376",
+    "snippet": "“Nhi vừa tìm được một nơi gội đầu dưỡng sinh chuẩn xịn ! Bất ngờ nhất… địa chỉ này ở Bến Lức ai ở gần phải ghé trãi nghiệm thử nha #vtmgr ...",
+    "position": 3
+   },
+   {
+    "title": "Tiệm gội dưỡng sinh chuẩn trung hoa - #fyp",
+    "link": "https://www.tiktok.com/@goidausieuthugian1998/video/7371863338814360840",
+    "snippet": "... 3 Nguyễn Gia Trí (D2 cũ), P.25, Q. Bình Thạnh Hotline đặt lịch chung ... Gội đầu dưỡng sinh chuẩn Trung Hoa tại 1998 sẽ như thế nào ...",
+    "position": 4
+   },
+   {
+    "title": "Trải nghiệm gội đầu dưỡng sinh chuẩn quy trình tại Huỳnh ...",
+    "link": "https://www.tiktok.com/@may17_0220/photo/7651189642938649864",
+    "snippet": "Trải nghiệm các bước đầy đủ của gói phổ thông gội đầu dưỡng sinh chuẩn quy trình tại Huỳnh Tấn Phát, Quận 7, giúp thư giãn cổ vai gáy. Keywords: ...",
+    "position": 5
+   },
+   {
+    "title": "Quán Massage Cheongju",
+    "link": "https://www.tiktok.com/discover/qu%C3%A1n-massage-cheongju",
+    "snippet": "Gội đầu dưỡng sinh quận 12 sang quận 2. Trải nghiệm gội đầu dưỡng sinh chuẩn Trung Hoa tại salon An Hoanh, 105 phút thư giãn. Khách hàng từ ...",
+    "date": "17 thg 8, 2026",
+    "position": 6
+   },
+   {
+    "title": "#khoacuaducrau #khoaducrau #khoacua",
+    "link": "https://www.tiktok.com/@ducrau6368/video/7661452318491020564?lang=ms-MY",
+    "snippet": "- Gội đầu dưỡng sinh chuẩn spa: qui trình gội đầu dưỡng sinh chuyên nghiệp, kết hợp thảo dược và kỹ thuật massage đầu. - Massage đầu kích thích ...",
+    "position": 7
+   },
+   {
+    "title": "Hướng dẫn quy trình gãi đầu chuẩn của gội đầu dưỡng sinh",
+    "link": "https://www.tiktok.com/@tiencanhspa/video/7688887231846665493",
+    "snippet": "Keywords: gội đầu dưỡng sinh, quy trình gãi đầu, hướng dẫn gãi đầu, gội đầu thư giãn, gội đầu dưỡng sinh chuẩn, quy trình gội đầu. Đây là bản ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

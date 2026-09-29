@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Nhà Hàng Tửu Lầu 13\" OR \"The Street Sương Nguyệt Anh\" OR \"Quán Nhậu Bờ Kè\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T02:23:49.441Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Nhà Hàng Tửu Lầu 13\" OR \"The Street Sương Nguyệt Anh\" OR \"Quán Nhậu Bờ Kè\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Nhà Hàng Tửu Lầu 13 (@nhahangtuulau13)",
+    "link": "https://www.tiktok.com/@nhahangtuulau13",
+    "snippet": "Nhà Hàng Tửu Lầu 13 · @nhahangtuulau13 · Đặt Bàn Ứng Tuyển 09.02.50.57.61 06 Nam Quốc Cang, Phạm Ngũ Lão, Quận 1 https://nhahangtuulau13.vn.",
+    "position": 1
+   },
+   {
+    "title": "Hành trình Tửu Lầu 13 tạo nên mỹ vị từ đại dương ...",
+    "link": "https://www.tiktok.com/@nhahangtuulau13/video/7536833820251770119",
+    "snippet": "Video TikTok từ Nhà Hàng Tửu Lầu 13 (@nhahangtuulau13): \"Hành trình Tửu Lầu 13 tạo nên mỹ vị từ đại dương❤️‍ #tuulau13 #nhahang ...",
+    "position": 2
+   },
+   {
+    "title": "Quán Nhậu Bờ Kè Mở Cửa Đến 5h Sáng",
+    "link": "https://www.tiktok.com/@cambone_2010/video/7540944048161377556",
+    "snippet": "Quán Nhậu Bờ Kè Mở Cửa Đến 5h Sáng. Khám phá quán nhậu bờ kè, nơi mở cửa đến 5h sáng cho những cú đêm, phục vụ món ngon và đồ uống hấp dẫn.",
+    "position": 3
+   },
+   {
+    "title": "Quán nhậu Bờ Kè Chụt 29/38 Vĩnh Nguyên cũ Nha Trang ...",
+    "link": "https://www.tiktok.com/@thanh.van1612/video/7664847876006219029",
+    "snippet": "Quán nhậu Bờ Kè Chụt 29/38 Vĩnh Nguyên cũ Nha Trang #0397386068 sdt #khampha #TikTokBeautyFestVN · Review Quán Nhậu Bờ Kè Sài Gòn · Quán Nhậu ...",
+    "position": 4
+   },
+   {
+    "title": "Múa cổ trang #tuulau13 #nhahang #montrung #quan1 # ...",
+    "link": "https://www.tiktok.com/@nhahangtuulau13/video/7617072634538298645",
+    "snippet": "505 Lượt thích,Video TikTok từ Nhà Hàng Tửu Lầu 13 (@nhahangtuulau13): \"Múa cổ trang #tuulau13 #nhahang #montrung #quan1 #trungquoc\".âm ...",
+    "position": 5
+   },
+   {
+    "title": "Khám Phá Tửu Lầu 13: Quán Nhậu Quận 1",
+    "link": "https://www.tiktok.com/@nhahangtuulau13/video/7611527438962658581",
+    "snippet": "110 Lượt thích,Video TikTok từ Nhà Hàng Tửu Lầu 13 (@nhahangtuulau13): \"Trải nghiệm ẩm thực tại Tửu Lầu 13 - quán nhậu ngon ở Quận 1!",
+    "position": 6
+   },
+   {
+    "title": "Nhìn thôi đã muốn đặt bàn ngay! 🤤🔥🔥Tửu Lầu 13",
+    "link": "https://www.tiktok.com/@nhahangtuulau13/video/7664550534413552916",
+    "snippet": "6102 Lượt thích,Video TikTok từ Nhà Hàng Tửu Lầu 13 (@nhahangtuulau13): \"Nhìn thôi đã muốn đặt bàn ngay! Tửu Lầu 13– Nơi vị giác gặp ...",
+    "position": 7
+   },
+   {
+    "title": "Món Súp Cua Ngon Tại Quán Nhậu Bờ Kè Hoàng Sa",
+    "link": "https://www.tiktok.com/@lankhapsaigon/video/7439726069256637703",
+    "snippet": "Món Súp Cua Ngon Tại Quán Nhậu Bờ Kè Hoàng Sa. Khám phá quán súp cua thơm ngon chỉ 15xu ở Bờ Kè Hoàng Sa. Không thể bỏ lỡ! #supcua #quan1 ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

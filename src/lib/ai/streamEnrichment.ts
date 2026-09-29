@@ -2450,6 +2450,11 @@ export function applyPlaceEnrichmentStreamFilter(
       })
       : budgeted
     const pickNormalized = consultPickTurn ? normalizePickSentence(unlabelled, shoppingPickName(collector?.shoppingMarker) ?? placePickFallback) : unlabelled
+    // Owner 29/09 "hạn chế guard vá": every post-model text patch on a consult turn is COUNTED (logged once per
+    // turn below), so a patch that fires often is replaced by a prompt/structure fix instead of piling up.
+    const consultPatches: string[] = []
+    if (unlabelled !== budgeted) consultPatches.push('reason_labels')
+    if (pickNormalized !== unlabelled) consultPatches.push(/\*\*Mình chọn:/.test(unlabelled) ? 'pick_sentence_form' : 'pick_sentence_added')
     const withRemaining = collector?.consultButtons?.length ? consultRemainingLine(pickNormalized, consultCandidates, lang) : pickNormalized
     const placeGuarded = collector?.consultButtons?.length
       ? `${withRemaining.replace(/\[FOLLOWUPS\][^\n]*?(?:\[\/FOLLOWUPS\]|\n|$)/gi, '').trimEnd()}\n\n[FOLLOWUPS]${collector.consultButtons.join('|')}[/FOLLOWUPS]`
@@ -2834,10 +2839,32 @@ export function applyPlaceEnrichmentStreamFilter(
           band: [...priceBandsByEntity.values()][0] ?? null,
           // The history is trimmed to 3 turns, so the per-person budget stated earlier comes from the router's slot.
           perHead: perPersonBudget([...(collector.consultKnown?.ngan_sach ? [collector.consultKnown.ngan_sach] : []), ...(collector.userTexts ?? [userText])]),
+          unitPrice: collector.consultPlanPrice ?? null,
           lang,
         }).text
         : restored
-      return collector?.consultButtons?.length ? consultRemainingLine(headed, consultCandidates, lang) : headed
+      const withLine = collector?.consultButtons?.length ? consultRemainingLine(headed, consultCandidates, lang) : headed
+      // Safety net (replay 29/09): the guards can leave a consult reply with NO words (a compare whose every
+      // sentence lacked evidence) — the user then sees only buttons. One honest sentence is put back.
+      const proseOnly = withLine.replace(/\[(FOLLOWUPS|CTA_BUTTONS|TAPPY_[A-Z_]+)\][\s\S]*?\[\/\1\]/g, '')
+      const emptyReply = !!collector?.consultTurn && !/[\p{L}\p{N}]/u.test(proseOnly)
+      const refs = collector?.consultRefers ?? []
+      const honest = lang === 'en'
+        ? 'I don\'t have checked details to answer this yet — open each card for rating, hours and price, or tap "See more".'
+        : refs.length >= 2
+          ? `Mình chưa có đủ dữ liệu đã kiểm để so sánh ${refs.slice(0, 2).join(' và ')} — bạn mở từng thẻ để xem điểm, giờ mở và giá, hoặc bấm "Xem thêm".`
+          : 'Mình chưa có đủ dữ liệu đã kiểm để trả lời câu này — bạn mở thẻ để xem điểm, giờ mở và giá, hoặc bấm "Xem thêm".'
+      const final = emptyReply ? `${honest}\n\n${withLine.replace(/^\s+/, '')}` : withLine
+      if (collector?.consultTurn) {
+        const patches = [...consultPatches]
+        if (narrated.removed) patches.push('step_narration')
+        if (restored !== narrated.text) patches.push('plan_headings')
+        if (headed !== restored) patches.push('plan_cost')
+        if (/Mình còn \d+ lựa chọn/.test(final) && !/Mình còn \d+ lựa chọn/.test(mainText)) patches.push('remaining_line')
+        if (emptyReply) patches.push('empty_reply_fallback')
+        console.log(JSON.stringify({ type: 'tappyai_consult_patch', turn: collector.consultTurn, patches }))
+      }
+      return final
     })(settleMarkdown((() => {
       if (!fallback) return gated.text
       // V1 backstop: the pick is the FIRST sentence of the body; the model's text follows. The same

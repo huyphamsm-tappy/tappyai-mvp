@@ -1,0 +1,341 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "quán ăn đặc sản Tây Ninh Tây Ninh",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.7769,106.7009,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T02:27:32.010Z",
+ "body": {
+  "searchParameters": {
+   "q": "quán ăn đặc sản Tây Ninh Tây Ninh",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.7769,106.7009,14z",
+   "engine": "google"
+  },
+  "ll": "@10.7768941,106.7008997,14z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Bánh tráng Tây Ninh - Đặc sản Tây Ninh",
+    "address": "10J Đ. Trần Nhật Duật, Tân Định, Hồ Chí Minh 760000, Việt Nam",
+    "latitude": 10.7945525,
+    "longitude": 106.688395,
+    "rating": 3.6,
+    "ratingCount": 5,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "phoneNumber": "+84 923 444 050",
+    "openingHours": {
+     "Thứ Ba": "07:30–15:30",
+     "Thứ Tư": "07:30–15:30",
+     "Thứ Năm": "07:30–15:30",
+     "Thứ Sáu": "07:30–15:30",
+     "Thứ Bảy": "Đóng cửa",
+     "Chủ Nhật": "Đóng cửa",
+     "Thứ Hai": "07:30–15:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMwVb2SVDuK7vq-pIVk3kRm5vC_sLL8tLs-VynAARZvbZ8B9M7PTpQbGlCDmn_c-3D9xrkK4u_rdmTMuvI3ApTFTBFSmyzxjAAriD23MD9uwVf1QJpJB-SE_DuDf4BGmUY9iwfQ",
+    "cid": "8041532173986290163",
+    "fid": "0x317528cde6b7a52b:0x6f9942e80853d9f3",
+    "placeId": "ChIJK6W35s0odTER89lTCOhCmW8"
+   },
+   {
+    "position": 2,
+    "title": "8 Ghiền - Đặc Sản Bánh Tráng Phơi Sương Tây Ninh",
+    "address": "128B/24 Nguyễn Chí Thanh, Vườn Lài, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7610727,
+    "longitude": 106.6716569,
+    "rating": 5,
+    "ratingCount": 250,
+    "type": "Tiệm bánh",
+    "types": [
+     "Tiệm bánh"
+    ],
+    "website": "https://8ghien.vn/",
+    "phoneNumber": "+84 339 667 447",
+    "openingHours": {
+     "Thứ Ba": "08:00–21:00",
+     "Thứ Tư": "08:00–21:00",
+     "Thứ Năm": "08:00–21:00",
+     "Thứ Sáu": "08:00–21:00",
+     "Thứ Bảy": "08:00–21:00",
+     "Chủ Nhật": "08:00–21:00",
+     "Thứ Hai": "08:00–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNfbrA_R6hpouHyNvQgxJXzu0FmppvXRYZywu2lGvKkmRbiJxKTU3W9rZrWRH1Lba88EB9Pxr4hVKeM7wp972R6cu7GpFFtoshqDZn7QTUrJnK1eCLzxSZm-n7hIIc1-D36HF8Z",
+    "cid": "12965470370730912851",
+    "fid": "0x31752ffb9e07ee11:0xb3ee9a9bb144ac53",
+    "placeId": "ChIJEe4HnvsvdTERU6xEsZua7rM"
+   },
+   {
+    "position": 3,
+    "title": "Đặc Sản Tây Ninh - Bánh Tráng Muối Ớt Sỉ & Lẻ Các Loại",
+    "address": "94 Đ. Tân Sơn Hoà, Tân Sơn Hòa, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.797068999999999,
+    "longitude": 106.662279,
+    "rating": 4.5,
+    "ratingCount": 2,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "openingHours": {
+     "Thứ Ba": "07:30–18:00",
+     "Thứ Tư": "07:30–18:00",
+     "Thứ Năm": "07:30–18:00",
+     "Thứ Sáu": "07:30–18:00",
+     "Thứ Bảy": "07:30–18:00",
+     "Chủ Nhật": "07:30–18:00",
+     "Thứ Hai": "07:30–18:00"
+    },
+    "thumbnailUrl": "https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid=jCpxYWsgGbgd0xlUuIqG_w&cb_client=search.gws-prod.grass&w=80&h=92&yaw=149.83981&pitch=0&thumbfov=100",
+    "cid": "3027315025742978864",
+    "fid": "0x3175293185f782d5:0x2a032ef9fc9cdf30",
+    "placeId": "ChIJ1YL3hTEpdTERMN-c_PkuAyo"
+   },
+   {
+    "position": 4,
+    "title": "HOÀNG TY - Đặc Sản Trảng Bàng Tây Ninh - CN Nguyễn Trung Nguyệt",
+    "address": "29 Đường Nguyễn Trung Nguyệt, Bình Trưng, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.786733199999999,
+    "longitude": 106.7716219,
+    "rating": 4.3,
+    "ratingCount": 242,
+    "type": "Nhà hàng Việt Nam",
+    "types": [
+     "Nhà hàng Việt Nam"
+    ],
+    "phoneNumber": "+84 907 484 850",
+    "openingHours": {
+     "Thứ Ba": "08:30–13:30, 16:00–21:00",
+     "Thứ Tư": "08:30–13:30, 16:00–21:00",
+     "Thứ Năm": "08:30–13:30, 16:00–21:00",
+     "Thứ Sáu": "08:30–13:30, 16:00–21:00",
+     "Thứ Bảy": "08:30–13:30, 16:00–21:00",
+     "Chủ Nhật": "08:30–13:30, 16:00–21:00",
+     "Thứ Hai": "08:30–13:30, 16:00–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPZ44nx7LgiaBCmWnaHk5bH5abcLkut5HwqRfWKAum6CM0uNmvmj8ailOuWivOe2ymLd6NnnH_lDrkucWvzR1yN3ywASPYtOgcX8Eoe0CfDz1BCSiKEGduHXbNgUqA7YbhgKLA",
+    "cid": "7938817611271015295",
+    "fid": "0x317526806dad5be5:0x6e2c588e486c8b7f",
+    "placeId": "ChIJ5VutbYAmdTERf4tsSI5YLG4"
+   },
+   {
+    "position": 5,
+    "title": "Đặc sản Trảng Bàng Út Bảo - Bánh canh - Thịt luộc - Hủ tiếu Nam Vang",
+    "address": "11 Phan Xích Long, Gia Định, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.797030399999999,
+    "longitude": 106.6934108,
+    "rating": 4.9,
+    "ratingCount": 99,
+    "type": "Quán ăn nhỏ",
+    "types": [
+     "Quán ăn nhỏ"
+    ],
+    "phoneNumber": "+84 935 745 308",
+    "openingHours": {
+     "Thứ Ba": "09:00–20:30",
+     "Thứ Tư": "09:00–20:30",
+     "Thứ Năm": "09:00–20:30",
+     "Thứ Sáu": "09:00–20:30",
+     "Thứ Bảy": "09:00–20:30",
+     "Chủ Nhật": "09:00–20:30",
+     "Thứ Hai": "09:00–20:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmM5qgQRbT9ylI2GYY5MBcbcYpZ9NG2_v-pshxQM5hwW7U4-DjEr7gkRzTs3NBRzymdD85aIybZzmrU7VXqTSMNHPlUz3ItRzpuwi9paMQhrmpOXqvi7fXxXJdq6kRqik-ZdE31bvA",
+    "cid": "2336321440101005334",
+    "fid": "0x31752900770a5061:0x206c47f8ae597816",
+    "placeId": "ChIJYVAKdwApdTERFnhZrvhHbCA"
+   },
+   {
+    "position": 6,
+    "title": "Cửa Hàng Đặc Sản Tây Ninh",
+    "address": "29 Bắc Hải, Hòa Hưng, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7855641,
+    "longitude": 106.66343309999999,
+    "rating": 3,
+    "ratingCount": 6,
+    "type": "Cửa hàng bán thực phẩm sạch",
+    "types": [
+     "Cửa hàng bán thực phẩm sạch"
+    ],
+    "phoneNumber": "+84 276 3837 789",
+    "openingHours": {
+     "Thứ Ba": "08:00–21:00",
+     "Thứ Tư": "08:00–21:00",
+     "Thứ Năm": "08:00–21:00",
+     "Thứ Sáu": "08:00–21:00",
+     "Thứ Bảy": "08:00–21:00",
+     "Chủ Nhật": "08:00–21:00",
+     "Thứ Hai": "08:00–21:00"
+    },
+    "thumbnailUrl": "https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid=3y-DhRcjQ8eK3mUR6z_spQ&cb_client=search.gws-prod.grass&w=80&h=92&yaw=101.62973&pitch=0&thumbfov=100",
+    "cid": "15865226477897948606",
+    "fid": "0x31752ece0957f58b:0xdc2c9b6c903a9dbe",
+    "placeId": "ChIJi_VXCc4udTERvp06kGybLNw"
+   },
+   {
+    "position": 7,
+    "title": "Đặc Sản Tây Ninh - Tanisa",
+    "address": "2/3 Bình Giã, Tân Bình, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.799068199999999,
+    "longitude": 106.64474639999999,
+    "rating": 4.5,
+    "ratingCount": 24,
+    "type": "Cửa hàng bán thực phẩm đặc sản",
+    "types": [
+     "Cửa hàng bán thực phẩm đặc sản"
+    ],
+    "website": "https://muoitomtayninh.net/",
+    "phoneNumber": "+84 938 198 299",
+    "openingHours": {
+     "Thứ Ba": "08:00–18:30",
+     "Thứ Tư": "08:00–18:30",
+     "Thứ Năm": "08:00–18:30",
+     "Thứ Sáu": "08:00–18:30",
+     "Thứ Bảy": "08:00–12:00",
+     "Chủ Nhật": "Đóng cửa",
+     "Thứ Hai": "08:00–18:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOrPe7wS1MQ-LOqUScsGuwI8u-mDoDVd1-bGCkU7X1yqHtsRe4JEuKh2kvZOGdJ5G5oN__MNxmBw17Opv3ckYdhKMzDSGgtzVRGj-NQkf-rF3u49EpeLnS61JIKDRHqoh3vZKc",
+    "cid": "496638672288324782",
+    "fid": "0x3175294eec5fd04b:0x6e46a3dbb779cae",
+    "placeId": "ChIJS9Bf7E4pdTERrpx3uz1q5AY"
+   },
+   {
+    "position": 8,
+    "title": "Nhà hàng Hoàng Ty",
+    "address": "70-72 Võ Văn Tần, Xuân Hòa, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.776596699999999,
+    "longitude": 106.6901372,
+    "rating": 4.1,
+    "ratingCount": 2471,
+    "type": "Nhà hàng Việt Nam",
+    "types": [
+     "Nhà hàng Việt Nam",
+     "Cửa hàng bán đồ ăn nấu sẵn",
+     "Nhà hàng bán đồ ăn mang về",
+     "Nhà hàng"
+    ],
+    "phoneNumber": "+84 914 828 171",
+    "openingHours": {
+     "Thứ Ba": "09:00–22:00",
+     "Thứ Tư": "09:00–22:00",
+     "Thứ Năm": "09:00–22:00",
+     "Thứ Sáu": "09:00–22:00",
+     "Thứ Bảy": "09:00–22:00",
+     "Chủ Nhật": "09:00–22:00",
+     "Thứ Hai": "09:00–22:00"
+    },
+    "bookingLinks": [
+     "https://maps.app.goo.gl/HV9JHAva8KKG5sX66"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPJNyA_8O3dH21xuTXWsdek_bC3aAohwhl7131oGICrbYiZzoyKMegmZ0O9wd8UjYpQ4X6Jrxsscii1mFYqAJefu0nu1JGAn4aj8ZcmUxKapmKb9AcCrpgo69oqN-BOp2sYBpWCUw",
+    "cid": "5847659191817195341",
+    "fid": "0x31752f3ae36f34b9:0x51270f0d7fcfcf4d",
+    "placeId": "ChIJuTRv4zovdTERTc_Pfw0PJ1E"
+   },
+   {
+    "position": 9,
+    "title": "Đặc Sản Trảng Bàng AT ( delivery only )",
+    "address": "94 đường Nguyễn Trung Nguyệt, Bình Trưng, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.784411799999999,
+    "longitude": 106.77123239999999,
+    "rating": 4.4,
+    "ratingCount": 25,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "openingHours": {
+     "Thứ Ba": "07:00–21:00",
+     "Thứ Tư": "07:00–21:00",
+     "Thứ Năm": "07:00–21:00",
+     "Thứ Sáu": "07:00–21:00",
+     "Thứ Bảy": "07:00–21:00",
+     "Chủ Nhật": "07:00–21:00",
+     "Thứ Hai": "07:00–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPqIXashGv2kq38ybFb97aQQ9efqIcScnBOLo1nmy2bPwB7O6Tl8MrmabSHpJMbYHNHfGoHJLl4-1_I3SToA_J_8dyjjvizsmoen61DnTzx2hGuENQNQg4v74wEkAI6jgnpbsDP",
+    "cid": "8130872254167125724",
+    "fid": "0x31752709db723e41:0x70d6a93c67b60edc",
+    "placeId": "ChIJQT5y2wkndTER3A62Zzyp1nA"
+   },
+   {
+    "position": 10,
+    "title": "Đặc Sản Phan Rang 2 Phượng",
+    "address": "544 Cách Mạng Tháng Tám, Nhiêu Lộc, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.785886,
+    "longitude": 106.6669579,
+    "rating": 3.8,
+    "ratingCount": 398,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "phoneNumber": "+84 941 294 040",
+    "openingHours": {
+     "Thứ Ba": "07:00–21:30",
+     "Thứ Tư": "07:00–21:30",
+     "Thứ Năm": "07:00–21:30",
+     "Thứ Sáu": "07:00–21:30",
+     "Thứ Bảy": "07:00–21:30",
+     "Chủ Nhật": "07:00–21:30",
+     "Thứ Hai": "07:00–21:30"
+    },
+    "bookingLinks": [
+     "https://www.google.com/maps/reserve/v/dine/c/qAXrUY7k4Ds?source=pa&opi=79508299"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMURdFF6S2LpzHTrk_D5YhbHAXNvOOEVWPULmui7abld3_XxLpn0Ii9EygnuauORDi67DZI1fYs5K2lUpE-343p4x9wRwGFPKHM8eharpGxawPVSmHP1Ag4VMLmT20Ug7JPmB54",
+    "cid": "17133410590809776795",
+    "fid": "0x31752ecfd9a4d7df:0xedc61a27d821e29b",
+    "placeId": "ChIJ39ek2c8udTERm-Ih2Ccaxu0"
+   },
+   {
+    "position": 11,
+    "title": "Phở Bắc Hải",
+    "address": "Tân Thuận, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7525488,
+    "longitude": 106.72366389999999,
+    "rating": 4.8,
+    "ratingCount": 19,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "phoneNumber": "+84 772 774 998",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPTcTVLeIeMSh_6QfSValpcnfv9vsVv1xxpRDusxCajZSjpxPoriMD5xoOtSbVuMjejXaXGBeVsASaiKxAAdS4HVyINfm1UNUsbujwdEirzjkMlFfScNQaTBcNZEAWHy7kXeMqRb--eUKVy",
+    "cid": "16269199611061768448",
+    "fid": "0x3175258781b37031:0xe1c7ced92d429100",
+    "placeId": "ChIJMXCzgYcldTERAJFCLdnOx-E"
+   },
+   {
+    "position": 12,
+    "title": "Ngọc Tuyết - Đặc sản tây Ninh",
+    "address": "94 Đ. Đồng Nai, Cư xá Bắc Hải, Hòa Hưng, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7802214,
+    "longitude": 106.6619891,
+    "rating": 5,
+    "ratingCount": 1,
+    "type": "Khu ăn uống",
+    "types": [
+     "Khu ăn uống"
+    ],
+    "thumbnailUrl": "https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid=rX3qmteocRSw0E5n5M27Yw&cb_client=search.gws-prod.grass&w=80&h=92&yaw=47.20054&pitch=0&thumbfov=100",
+    "cid": "661852957444204672",
+    "fid": "0x31752fdcb088ad95:0x92f5fc21600e880",
+    "placeId": "ChIJla2IsNwvdTERgOgAFsJfLwk"
+   }
+  ],
+  "credits": 3
+ }
+}

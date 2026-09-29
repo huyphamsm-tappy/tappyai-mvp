@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Le House Da Lat",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T02:36:22.864Z",
+ "body": {
+  "searchParameters": {
+   "q": "Le House Da Lat",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Khách sạn Le House Đà Lạt (Le House Hotel Đà Lạt) - Chudu24",
+    "imageUrl": "https://du-lich.chudu24.com/f/m/2402/27/khach-san-le-house-da-lat.jpg?w=800&h=500",
+    "imageWidth": 800,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRr1TXLw07-Wn3zMficM3C0Q1R53ImPV8RpLHSwpPqZQA&s=10",
+    "thumbnailWidth": 565,
+    "thumbnailHeight": 353,
+    "source": "Đặt Phòng Khách Sạn - Chudu24",
+    "domain": "khachsan.chudu24.com",
+    "link": "https://khachsan.chudu24.com/ks.15072.khach-san-le-house-da-lat.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdu-lich.chudu24.com%2Ff%2Fm%2F2402%2F27%2Fkhach-san-le-house-da-lat.jpg%3Fw%3D800%26h%3D500&tbnid=WHGt4Cuu5c068M&imgrefurl=https%3A%2F%2Fkhachsan.chudu24.com%2Fks.15072.khach-san-le-house-da-lat.html&docid=vhZLVhu4i0NkuM&w=800&h=500",
+    "position": 1
+   },
+   {
+    "title": "Le House DaLat, Đà Lạt (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/526646322.jpg?k=b29bc2d25b30c8e33fe722a92456293716ba40de939a14d9c0e46ce6cb67831b&o=",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSExX6ho9lrhxAFqDyhqO-fC3YaDG_iZOgHf9k_Of4ZA&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "www.booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/le-house-dalat-thanh-pho-da-lat.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F526646322.jpg%3Fk%3Db29bc2d25b30c8e33fe722a92456293716ba40de939a14d9c0e46ce6cb67831b%26o%3D&tbnid=W6ezmLa8QsgdSM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fle-house-dalat-thanh-pho-da-lat.vi.html&docid=IvKgeaIHOfYYeM&w=1024&h=683",
+    "position": 2
+   },
+   {
+    "title": "Le House Đà Lạt , Cam Ly - Đà Lạt | Hotels.com",
+    "imageUrl": "https://mediaim.expedia.com/video/5CE9271FE4B2397E89B94FCEB9271216/52ea1ecb-5fd5-40be-a8eb-216353bce348-thumbnail.jpg?impolicy=resizecrop&rw=1080",
+    "imageWidth": 1080,
+    "imageHeight": 1920,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTl6UJTgznrAIMwbqz__hfDdERasOpcXUQWQZjEn7M3SQ&s=10",
+    "thumbnailWidth": 335,
+    "thumbnailHeight": 597,
+    "source": "hotels",
+    "domain": "vi.hotels.com",
+    "link": "https://vi.hotels.com/ho3257598912/le-house-a-lat-a-lat-viet-nam/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fmediaim.expedia.com%2Fvideo%2F5CE9271FE4B2397E89B94FCEB9271216%2F52ea1ecb-5fd5-40be-a8eb-216353bce348-thumbnail.jpg%3Fimpolicy%3Dresizecrop%26rw%3D1080&tbnid=3pmdoYjDePSyDM&imgrefurl=https%3A%2F%2Fvi.hotels.com%2Fho3257598912%2Fle-house-a-lat-a-lat-viet-nam%2F&docid=4O4M6SvHSkWMhM&w=1080&h=1920",
+    "position": 3
+   },
+   {
+    "title": "Le House Đà Lạt (Le House Dalat) Đà Lạt, Việt Nam: Agoda.com có giá rẻ nhất",
+    "imageUrl": "https://pix10.agoda.net/hotelImages/49736589/-1/ad3cf7607f856c6189f216d1d059b303.jpg?ce=0&s=414x232",
+    "imageWidth": 358,
+    "imageHeight": 232,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRlsk0t4Fw_hbDGlNq-trdhvPJZAnwBpipouzTTuMBN2w&s=10",
+    "thumbnailWidth": 358,
+    "thumbnailHeight": 231,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/le-house-dalat/hotel/dalat-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F49736589%2F-1%2Fad3cf7607f856c6189f216d1d059b303.jpg%3Fce%3D0%26s%3D414x232&tbnid=-QqrCHrRWo9zXM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fle-house-dalat%2Fhotel%2Fdalat-vn.html&docid=Pp4FqHi0TPgOeM&w=358&h=232",
+    "position": 4
+   },
+   {
+    "title": "Le House Đà Lạt (Le House Dalat) Đà Lạt, Việt Nam: Agoda.com có giá rẻ nhất",
+    "imageUrl": "https://pix10.agoda.net/hotelImages/49736589/-1/a6457335f6351d0312d2dafa19d890ea.jpg?ce=0&s=414x232",
+    "imageWidth": 377,
+    "imageHeight": 232,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnZX1HUNDwCPni5wGJwvShCgPAmH_c2l0ScHioAuVZqA&s=10",
+    "thumbnailWidth": 377,
+    "thumbnailHeight": 231,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/le-house-dalat/hotel/dalat-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F49736589%2F-1%2Fa6457335f6351d0312d2dafa19d890ea.jpg%3Fce%3D0%26s%3D414x232&tbnid=I67ls_3NLqYUdM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fle-house-dalat%2Fhotel%2Fdalat-vn.html&docid=Pp4FqHi0TPgOeM&w=377&h=232",
+    "position": 5
+   },
+   {
+    "title": "Le House Đà Lạt review: khách sạn gần concert, đại nhạc hội",
+    "imageUrl": "https://www.tiktok.com/api/img/?itemId=7424072660772228359&location=0&aid=1988",
+    "imageWidth": 1080,
+    "imageHeight": 1920,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkoHQkKGEQFntw34uMh2lefZzE65xITuyZ6TA3a8GEBw&s=10",
+    "thumbnailWidth": 415,
+    "thumbnailHeight": 739,
+    "source": "TikTok",
+    "domain": "www.tiktok.com",
+    "link": "https://www.tiktok.com/@lulureview_/video/7424072660772228359",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.tiktok.com%2Fapi%2Fimg%2F%3FitemId%3D7424072660772228359%26location%3D0%26aid%3D1988&tbnid=g0NT4xUIt9NzeM&imgrefurl=https%3A%2F%2Fwww.tiktok.com%2F%40lulureview_%2Fvideo%2F7424072660772228359&docid=AQJ9WKCdLbzweM&w=1080&h=1920",
+    "position": 6
+   },
+   {
+    "title": "Le House DaLat, Đà Lạt (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/522870325.jpg?k=0c1b119b44dd4e9532bf107f45acf116f41ed5606219afaa5457d1b608bc39c6&o=",
+    "imageWidth": 1024,
+    "imageHeight": 657,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4Ov43knsq1ZXZMBd6tKYELOn1xOoAOQgnRf9WPfRQMw&s=10",
+    "thumbnailWidth": 690,
+    "thumbnailHeight": 443,
+    "source": "www.booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/le-house-dalat-thanh-pho-da-lat.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F522870325.jpg%3Fk%3D0c1b119b44dd4e9532bf107f45acf116f41ed5606219afaa5457d1b608bc39c6%26o%3D&tbnid=Ylmh2JZeMLBkbM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fle-house-dalat-thanh-pho-da-lat.vi.html&docid=IvKgeaIHOfYYeM&w=1024&h=657",
+    "position": 7
+   },
+   {
+    "title": "Le House Đà Lạt (Le House Dalat) Đà Lạt, Việt Nam: Agoda.com có giá rẻ nhất",
+    "imageUrl": "https://q-xx.bstatic.com/xdata/images/hotel/max500/522874146.jpg?k=516268c6657a43416f14978c5db5c8413747e73326436457c054dbc6549a8af1&o=",
+    "imageWidth": 500,
+    "imageHeight": 331,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFPY8d0qcjiGh6-cqBIiECEGK_LSWRZLLkG1ajr1TRkg&s=10",
+    "thumbnailWidth": 500,
+    "thumbnailHeight": 331,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/le-house-dalat/hotel/dalat-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fq-xx.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax500%2F522874146.jpg%3Fk%3D516268c6657a43416f14978c5db5c8413747e73326436457c054dbc6549a8af1%26o%3D&tbnid=m3gwx2MklohfEM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fle-house-dalat%2Fhotel%2Fdalat-vn.html&docid=Pp4FqHi0TPgOeM&w=500&h=331",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

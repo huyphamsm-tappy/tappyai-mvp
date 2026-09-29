@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Cốc cà phê xe tải thủ công, Cốc cà phê hình bán rơ-moóc 11",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T02:34:02.687Z",
+ "body": {
+  "searchParameters": {
+   "q": "Cốc cà phê xe tải thủ công, Cốc cà phê hình bán rơ-moóc 11",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Cốc cà phê xe tải BLACKON, 11 Ounce Cốc cà phê thủ công, Quà tặng tài xế xe  tải Bán tải bền Hình bán rơ moóc Cốc cà phê bán bánh dành cho nam",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/sg-11134201-7rbmt-m5wf0fr3qkei99",
+    "imageWidth": 1000,
+    "imageHeight": 1000,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZEUdanHqnNhER7vr2NrEXl9q8yJHS3ZsBxFRC3BOzZA&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/C%E1%BB%91c-c%C3%A0-ph%C3%AA-xe-t%E1%BA%A3i-BLACKON-11-Ounce-C%E1%BB%91c-c%C3%A0-ph%C3%AA-th%E1%BB%A7-c%C3%B4ng-Qu%C3%A0-t%E1%BA%B7ng-t%C3%A0i-x%E1%BA%BF-xe-t%E1%BA%A3i-B%C3%A1n-t%E1%BA%A3i-b%E1%BB%81n-H%C3%ACnh-b%C3%A1n-r%C6%A1-mo%C3%B3c-C%E1%BB%91c-c%C3%A0-ph%C3%AA-b%C3%A1n-b%C3%A1nh-d%C3%A0nh-cho-nam-i.461065611.26171387647",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fsg-11134201-7rbmt-m5wf0fr3qkei99&tbnid=n3K24nu5lrnFkM&imgrefurl=https%3A%2F%2Fshopee.vn%2FC%25E1%25BB%2591c-c%25C3%25A0-ph%25C3%25AA-xe-t%25E1%25BA%25A3i-BLACKON-11-Ounce-C%25E1%25BB%2591c-c%25C3%25A0-ph%25C3%25AA-th%25E1%25BB%25A7-c%25C3%25B4ng-Qu%25C3%25A0-t%25E1%25BA%25B7ng-t%25C3%25A0i-x%25E1%25BA%25BF-xe-t%25E1%25BA%25A3i-B%25C3%25A1n-t%25E1%25BA%25A3i-b%25E1%25BB%2581n-H%25C3%25ACnh-b%25C3%25A1n-r%25C6%25A1-mo%25C3%25B3c-C%25E1%25BB%2591c-c%25C3%25A0-ph%25C3%25AA-b%25C3%25A1n-b%25C3%25A1nh-d%25C3%25A0nh-cho-nam-i.461065611.26171387647&docid=75-oAoZQuoJ6TM&w=1000&h=1000",
+    "position": 1
+   },
+   {
+    "title": "Cốc cà phê xe tải BLACKON, 11 Ounce Cốc cà phê thủ công, Quà tặng tài xế xe  tải Bán tải bền Hình bán rơ moóc Cốc cà phê bán bánh dành cho nam",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/sg-11134201-821fc-mgi1o5lp95aib8",
+    "imageWidth": 1000,
+    "imageHeight": 1000,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQWsmABavQM5HsU8kRuKc9MqPu3An-i9h6PFRi5ve5fgA&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/C%E1%BB%91c-c%C3%A0-ph%C3%AA-xe-t%E1%BA%A3i-BLACKON-11-Ounce-C%E1%BB%91c-c%C3%A0-ph%C3%AA-th%E1%BB%A7-c%C3%B4ng-Qu%C3%A0-t%E1%BA%B7ng-t%C3%A0i-x%E1%BA%BF-xe-t%E1%BA%A3i-B%C3%A1n-t%E1%BA%A3i-b%E1%BB%81n-H%C3%ACnh-b%C3%A1n-r%C6%A1-mo%C3%B3c-C%E1%BB%91c-c%C3%A0-ph%C3%AA-b%C3%A1n-b%C3%A1nh-d%C3%A0nh-cho-nam-i.461065611.26171387647",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fsg-11134201-821fc-mgi1o5lp95aib8&tbnid=36N_BGuaWU-TcM&imgrefurl=https%3A%2F%2Fshopee.vn%2FC%25E1%25BB%2591c-c%25C3%25A0-ph%25C3%25AA-xe-t%25E1%25BA%25A3i-BLACKON-11-Ounce-C%25E1%25BB%2591c-c%25C3%25A0-ph%25C3%25AA-th%25E1%25BB%25A7-c%25C3%25B4ng-Qu%25C3%25A0-t%25E1%25BA%25B7ng-t%25C3%25A0i-x%25E1%25BA%25BF-xe-t%25E1%25BA%25A3i-B%25C3%25A1n-t%25E1%25BA%25A3i-b%25E1%25BB%2581n-H%25C3%25ACnh-b%25C3%25A1n-r%25C6%25A1-mo%25C3%25B3c-C%25E1%25BB%2591c-c%25C3%25A0-ph%25C3%25AA-b%25C3%25A1n-b%25C3%25A1nh-d%25C3%25A0nh-cho-nam-i.461065611.26171387647&docid=75-oAoZQuoJ6TM&w=1000&h=1000",
+    "position": 2
+   },
+   {
+    "title": "Cốc cà phê xe tải BLACKON, 11 Ounce Cốc cà phê thủ công, Quà tặng tài xế xe  tải Bán tải bền Hình bán rơ moóc Cốc cà phê bán bánh dành cho nam",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/sg-11134201-7rbmv-m5wf0dd38e329c",
+    "imageWidth": 1000,
+    "imageHeight": 1000,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcStYYa7XCSM9tUjsLOlnO4heDyJ8mz57XqnM9XNeDZupQ&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/C%E1%BB%91c-c%C3%A0-ph%C3%AA-xe-t%E1%BA%A3i-BLACKON-11-Ounce-C%E1%BB%91c-c%C3%A0-ph%C3%AA-th%E1%BB%A7-c%C3%B4ng-Qu%C3%A0-t%E1%BA%B7ng-t%C3%A0i-x%E1%BA%BF-xe-t%E1%BA%A3i-B%C3%A1n-t%E1%BA%A3i-b%E1%BB%81n-H%C3%ACnh-b%C3%A1n-r%C6%A1-mo%C3%B3c-C%E1%BB%91c-c%C3%A0-ph%C3%AA-b%C3%A1n-b%C3%A1nh-d%C3%A0nh-cho-nam-i.461065611.26171387647",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fsg-11134201-7rbmv-m5wf0dd38e329c&tbnid=dmH-9uIwpwfMoM&imgrefurl=https%3A%2F%2Fshopee.vn%2FC%25E1%25BB%2591c-c%25C3%25A0-ph%25C3%25AA-xe-t%25E1%25BA%25A3i-BLACKON-11-Ounce-C%25E1%25BB%2591c-c%25C3%25A0-ph%25C3%25AA-th%25E1%25BB%25A7-c%25C3%25B4ng-Qu%25C3%25A0-t%25E1%25BA%25B7ng-t%25C3%25A0i-x%25E1%25BA%25BF-xe-t%25E1%25BA%25A3i-B%25C3%25A1n-t%25E1%25BA%25A3i-b%25E1%25BB%2581n-H%25C3%25ACnh-b%25C3%25A1n-r%25C6%25A1-mo%25C3%25B3c-C%25E1%25BB%2591c-c%25C3%25A0-ph%25C3%25AA-b%25C3%25A1n-b%25C3%25A1nh-d%25C3%25A0nh-cho-nam-i.461065611.26171387647&docid=75-oAoZQuoJ6TM&w=1000&h=1000",
+    "position": 3
+   },
+   {
+    "title": "Cốc cà phê xe tải BLACKON, 11 Ounce Cốc cà phê thủ công, Quà tặng tài xế xe  tải Bán tải bền Hình bán rơ moóc Cốc cà phê bán bánh dành cho nam",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/sg-11134201-7rblo-m5wf0cc6qef40f",
+    "imageWidth": 1000,
+    "imageHeight": 1000,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmsDL-CTotsRM30yIF6ZmOWqM9iivuZmZR1vj6lu8juw&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/C%E1%BB%91c-c%C3%A0-ph%C3%AA-xe-t%E1%BA%A3i-BLACKON-11-Ounce-C%E1%BB%91c-c%C3%A0-ph%C3%AA-th%E1%BB%A7-c%C3%B4ng-Qu%C3%A0-t%E1%BA%B7ng-t%C3%A0i-x%E1%BA%BF-xe-t%E1%BA%A3i-B%C3%A1n-t%E1%BA%A3i-b%E1%BB%81n-H%C3%ACnh-b%C3%A1n-r%C6%A1-mo%C3%B3c-C%E1%BB%91c-c%C3%A0-ph%C3%AA-b%C3%A1n-b%C3%A1nh-d%C3%A0nh-cho-nam-i.461065611.26171387647",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fsg-11134201-7rblo-m5wf0cc6qef40f&tbnid=xaEX5lB7M0WweM&imgrefurl=https%3A%2F%2Fshopee.vn%2FC%25E1%25BB%2591c-c%25C3%25A0-ph%25C3%25AA-xe-t%25E1%25BA%25A3i-BLACKON-11-Ounce-C%25E1%25BB%2591c-c%25C3%25A0-ph%25C3%25AA-th%25E1%25BB%25A7-c%25C3%25B4ng-Qu%25C3%25A0-t%25E1%25BA%25B7ng-t%25C3%25A0i-x%25E1%25BA%25BF-xe-t%25E1%25BA%25A3i-B%25C3%25A1n-t%25E1%25BA%25A3i-b%25E1%25BB%2581n-H%25C3%25ACnh-b%25C3%25A1n-r%25C6%25A1-mo%25C3%25B3c-C%25E1%25BB%2591c-c%25C3%25A0-ph%25C3%25AA-b%25C3%25A1n-b%25C3%25A1nh-d%25C3%25A0nh-cho-nam-i.461065611.26171387647&docid=75-oAoZQuoJ6TM&w=1000&h=1000",
+    "position": 4
+   },
+   {
+    "title": "Cốc cà phê xe tải BLACKON, 11 Ounce Cốc cà phê thủ công, Quà tặng tài xế xe  tải Bán tải bền Hình bán rơ moóc Cốc cà phê bán bánh dành cho nam",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/sg-11134201-7rbm3-m5wf0eadvpxz95",
+    "imageWidth": 1000,
+    "imageHeight": 1000,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1loFXKqB4sZb0ifomwTBN3f7vKTa6dDj9oi5Gfeocdw&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/C%E1%BB%91c-c%C3%A0-ph%C3%AA-xe-t%E1%BA%A3i-BLACKON-11-Ounce-C%E1%BB%91c-c%C3%A0-ph%C3%AA-th%E1%BB%A7-c%C3%B4ng-Qu%C3%A0-t%E1%BA%B7ng-t%C3%A0i-x%E1%BA%BF-xe-t%E1%BA%A3i-B%C3%A1n-t%E1%BA%A3i-b%E1%BB%81n-H%C3%ACnh-b%C3%A1n-r%C6%A1-mo%C3%B3c-C%E1%BB%91c-c%C3%A0-ph%C3%AA-b%C3%A1n-b%C3%A1nh-d%C3%A0nh-cho-nam-i.461065611.26171387647",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fsg-11134201-7rbm3-m5wf0eadvpxz95&tbnid=1G70YM0JwnEudM&imgrefurl=https%3A%2F%2Fshopee.vn%2FC%25E1%25BB%2591c-c%25C3%25A0-ph%25C3%25AA-xe-t%25E1%25BA%25A3i-BLACKON-11-Ounce-C%25E1%25BB%2591c-c%25C3%25A0-ph%25C3%25AA-th%25E1%25BB%25A7-c%25C3%25B4ng-Qu%25C3%25A0-t%25E1%25BA%25B7ng-t%25C3%25A0i-x%25E1%25BA%25BF-xe-t%25E1%25BA%25A3i-B%25C3%25A1n-t%25E1%25BA%25A3i-b%25E1%25BB%2581n-H%25C3%25ACnh-b%25C3%25A1n-r%25C6%25A1-mo%25C3%25B3c-C%25E1%25BB%2591c-c%25C3%25A0-ph%25C3%25AA-b%25C3%25A1n-b%25C3%25A1nh-d%25C3%25A0nh-cho-nam-i.461065611.26171387647&docid=75-oAoZQuoJ6TM&w=1000&h=1000",
+    "position": 5
+   },
+   {
+    "title": "YYLINGX Xe Tải Cốc Cà Phê, 11 Ounce Cốc Cà Phê Bền Đẹp, Đồ Trang Trí Thủ  Công Bán Xe Tải Bán Hình rơ moóc Cốc Cà Phê Bán Truck Cho Nam |",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/sg-11134201-7rbmy-m5wf0eo9bddg58",
+    "imageWidth": 1000,
+    "imageHeight": 1000,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSAU7wA8tZa5kwQKLkxMv8IDEozX6_gdotjsxKpW8NiBA&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/YYLINGX-Xe-T%E1%BA%A3i-C%E1%BB%91c-C%C3%A0-Ph%C3%AA-11-Ounce-C%E1%BB%91c-C%C3%A0-Ph%C3%AA-B%E1%BB%81n-%C4%90%E1%BA%B9p-%C4%90%E1%BB%93-Trang-Tr%C3%AD-Th%E1%BB%A7-C%C3%B4ng-B%C3%A1n-Xe-T%E1%BA%A3i-B%C3%A1n-H%C3%ACnh-r%C6%A1-mo%C3%B3c-C%E1%BB%91c-C%C3%A0-Ph%C3%AA-B%C3%A1n-Truck-Cho-Nam-i.82033227.53258172996",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fsg-11134201-7rbmy-m5wf0eo9bddg58&tbnid=njxPebkaohfLSM&imgrefurl=https%3A%2F%2Fshopee.vn%2FYYLINGX-Xe-T%25E1%25BA%25A3i-C%25E1%25BB%2591c-C%25C3%25A0-Ph%25C3%25AA-11-Ounce-C%25E1%25BB%2591c-C%25C3%25A0-Ph%25C3%25AA-B%25E1%25BB%2581n-%25C4%2590%25E1%25BA%25B9p-%25C4%2590%25E1%25BB%2593-Trang-Tr%25C3%25AD-Th%25E1%25BB%25A7-C%25C3%25B4ng-B%25C3%25A1n-Xe-T%25E1%25BA%25A3i-B%25C3%25A1n-H%25C3%25ACnh-r%25C6%25A1-mo%25C3%25B3c-C%25E1%25BB%2591c-C%25C3%25A0-Ph%25C3%25AA-B%25C3%25A1n-Truck-Cho-Nam-i.82033227.53258172996&docid=TzJSal58GodYoM&w=1000&h=1000",
+    "position": 6
+   },
+   {
+    "title": "Cốc cà phê xe tải thủ công ZONGGJZ, Cốc cà phê bán bánh hình bán rơ moóc  thủ công, Cốc cà phê IRREGULAR bằng thép không gỉ sáng tạo | Shopee Việt",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/sg-11134201-8260n-mlffiektzx8o50",
+    "imageWidth": 1000,
+    "imageHeight": 1000,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQA49Bwx3sPHbcRKn81Stwk0vTgGooeMn_P26BPKg8Xrg&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/C%E1%BB%91c-c%C3%A0-ph%C3%AA-xe-t%E1%BA%A3i-th%E1%BB%A7-c%C3%B4ng-ZONGGJZ-C%E1%BB%91c-c%C3%A0-ph%C3%AA-b%C3%A1n-b%C3%A1nh-h%C3%ACnh-b%C3%A1n-r%C6%A1-mo%C3%B3c-th%E1%BB%A7-c%C3%B4ng-C%E1%BB%91c-c%C3%A0-ph%C3%AA-IRREGULAR-b%E1%BA%B1ng-th%C3%A9p-kh%C3%B4ng-g%E1%BB%89-s%C3%A1ng-t%E1%BA%A1o-i.81202508.51806408895",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fsg-11134201-8260n-mlffiektzx8o50&tbnid=dOqZ-W06G7uakM&imgrefurl=https%3A%2F%2Fshopee.vn%2FC%25E1%25BB%2591c-c%25C3%25A0-ph%25C3%25AA-xe-t%25E1%25BA%25A3i-th%25E1%25BB%25A7-c%25C3%25B4ng-ZONGGJZ-C%25E1%25BB%2591c-c%25C3%25A0-ph%25C3%25AA-b%25C3%25A1n-b%25C3%25A1nh-h%25C3%25ACnh-b%25C3%25A1n-r%25C6%25A1-mo%25C3%25B3c-th%25E1%25BB%25A7-c%25C3%25B4ng-C%25E1%25BB%2591c-c%25C3%25A0-ph%25C3%25AA-IRREGULAR-b%25E1%25BA%25B1ng-th%25C3%25A9p-kh%25C3%25B4ng-g%25E1%25BB%2589-s%25C3%25A1ng-t%25E1%25BA%25A1o-i.81202508.51806408895&docid=QrokjPhq7E5zEM&w=1000&h=1000",
+    "position": 7
+   },
+   {
+    "title": "Cốc cà phê xe tải thủ công ZONGGJZ, Cốc cà phê bán bánh hình bán rơ moóc  thủ công, Cốc cà phê IRREGULAR bằng thép không gỉ sáng tạo | Shopee Việt",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/sg-11134201-7rd3m-m7rqfeflanv146",
+    "imageWidth": 1000,
+    "imageHeight": 1000,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReQQSNPdpniMmFXMnCbUcpRtOicwObe2ENaCzuNvzkFA&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/C%E1%BB%91c-c%C3%A0-ph%C3%AA-xe-t%E1%BA%A3i-th%E1%BB%A7-c%C3%B4ng-ZONGGJZ-C%E1%BB%91c-c%C3%A0-ph%C3%AA-b%C3%A1n-b%C3%A1nh-h%C3%ACnh-b%C3%A1n-r%C6%A1-mo%C3%B3c-th%E1%BB%A7-c%C3%B4ng-C%E1%BB%91c-c%C3%A0-ph%C3%AA-IRREGULAR-b%E1%BA%B1ng-th%C3%A9p-kh%C3%B4ng-g%E1%BB%89-s%C3%A1ng-t%E1%BA%A1o-i.81202508.51806408895",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fsg-11134201-7rd3m-m7rqfeflanv146&tbnid=FBXP6WLY7M9U6M&imgrefurl=https%3A%2F%2Fshopee.vn%2FC%25E1%25BB%2591c-c%25C3%25A0-ph%25C3%25AA-xe-t%25E1%25BA%25A3i-th%25E1%25BB%25A7-c%25C3%25B4ng-ZONGGJZ-C%25E1%25BB%2591c-c%25C3%25A0-ph%25C3%25AA-b%25C3%25A1n-b%25C3%25A1nh-h%25C3%25ACnh-b%25C3%25A1n-r%25C6%25A1-mo%25C3%25B3c-th%25E1%25BB%25A7-c%25C3%25B4ng-C%25E1%25BB%2591c-c%25C3%25A0-ph%25C3%25AA-IRREGULAR-b%25E1%25BA%25B1ng-th%25C3%25A9p-kh%25C3%25B4ng-g%25E1%25BB%2589-s%25C3%25A1ng-t%25E1%25BA%25A1o-i.81202508.51806408895&docid=QrokjPhq7E5zEM&w=1000&h=1000",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

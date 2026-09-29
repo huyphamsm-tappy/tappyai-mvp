@@ -74,16 +74,36 @@ export function perPersonBudget(userTexts: readonly string[]): number | null {
   return null
 }
 
-export function appendConsultPlanCost(text: string, o: { people: number | null; band: { lo: number; hi: number } | null; perHead: number | null; lang?: string }): { text: string; added: boolean } {
+/** The head count the reply itself assumed ("Mình giả định: 2 người, …") — used when the user gave none. */
+export function assumedPeople(text: string): number | null {
+  const line = /Mình giả định[^\n]*/.exec(text)?.[0] ?? ''
+  return partyCount(/(\d{1,2})\s*người/.exec(line)?.[1] ?? null)
+}
+
+export function appendConsultPlanCost(text: string, o: {
+  people: number | null; band: { lo: number; hi: number } | null; perHead: number | null; lang?: string
+  /** Shopping: the chosen product's listed price (from the pick's evidence) — "1 × giá = tổng". */
+  unitPrice?: { amount: number; seller?: string | null } | null
+}): { text: string; added: boolean } {
   const none = { text, added: false }
-  if (!o.people) return none
   const lines = text.split('\n')
+  if (o.unitPrice && o.unitPrice.amount > 0) {
+    const at = lines.findIndex(l => isHeadingLine(l) && COST_HEADINGS.includes(headingText(l)))
+    if (at < 0) return none
+    let end = at + 1
+    while (end < lines.length && !isHeadingLine(lines[end]) && !/^\s*\[(?:FOLLOWUPS|CTA_BUTTONS|TAPPY_)/.test(lines[end])) end++
+    if (/[×÷=]/.test(lines.slice(at + 1, end).join('\n'))) return none
+    const line = `- 1 × ${vnd(o.unitPrice.amount)} = ${vnd(o.unitPrice.amount)}${o.unitPrice.seller ? ` (giá tại ${o.unitPrice.seller} lúc tìm)` : ' (giá lúc tìm)'}, chưa gồm phí giao — kiểm lại giá trên trang bán trước khi trả tiền.`
+    return { text: [...lines.slice(0, at + 1), line, ...lines.slice(at + 1)].join('\n'), added: true }
+  }
+  if (!o.people) o = { ...o, people: assumedPeople(text) }
+  if (!o.people) return none
   const at = lines.findIndex(l => isHeadingLine(l) && COST_HEADINGS.includes(headingText(l)))
   if (at < 0) return none
   let end = at + 1
   while (end < lines.length && !isHeadingLine(lines[end]) && !/^\s*\[(?:FOLLOWUPS|CTA_BUTTONS|TAPPY_)/.test(lines[end])) end++
   if (/[×÷=]/.test(lines.slice(at + 1, end).join('\n'))) return none
-  const p = o.people
+  const p = o.people as number
   let line: string | null = null
   if (o.band && o.band.lo > 0 && Number.isFinite(o.band.hi)) {
     line = o.band.hi > o.band.lo

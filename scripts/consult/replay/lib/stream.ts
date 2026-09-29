@@ -10,6 +10,8 @@ export interface TurnAnnotation {
   tokensOut: number
   serperCalls: number
   cacheHits: number
+  promptCacheRead?: number
+  promptCacheWrite?: number
   usd: number
 }
 

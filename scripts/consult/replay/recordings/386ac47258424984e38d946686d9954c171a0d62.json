@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Set quà tặng Cà phê Cộng Cà – 01 phin nhôm, 01 hộp bột Việt Nam, hạn dùng 12 site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T02:34:04.099Z",
+ "body": {
+  "searchParameters": {
+   "q": "Set quà tặng Cà phê Cộng Cà – 01 phin nhôm, 01 hộp bột Việt Nam, hạn dùng 12 site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

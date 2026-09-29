@@ -16,6 +16,11 @@ export interface TurnRow {
   tokensOut: number
   serperCalls: number
   cacheHits: number
+  promptCacheRead?: number
+  promptCacheWrite?: number
+  /** Post-model text patches that CHANGED this reply (tappyai_consult_patch) and guard events that fired. */
+  patches?: string[]
+  guards?: string[]
   net: NetStats
   toolRows: number
   tools: string[]
@@ -28,11 +33,11 @@ export interface TurnRow {
   crash?: string
 }
 
-interface Agg { turns: number; pass: number; usd: number; tokensIn: number; tokensOut: number; serperCalls: number; serperReal: number; serperReplayed: number }
+interface Agg { turns: number; pass: number; usd: number; tokensIn: number; tokensOut: number; serperCalls: number; serperReal: number; serperReplayed: number; pcRead: number; pcWrite: number }
 const agg = (rows: TurnRow[]): Agg => rows.reduce<Agg>((a, r) => ({
-  turns: a.turns + 1, pass: a.pass + (r.pass ? 1 : 0), usd: a.usd + r.usd, tokensIn: a.tokensIn + r.tokensIn, tokensOut: a.tokensOut + r.tokensOut,
+  turns: a.turns + 1, pass: a.pass + (r.pass ? 1 : 0), usd: a.usd + r.usd, tokensIn: a.tokensIn + r.tokensIn, tokensOut: a.tokensOut + r.tokensOut, pcRead: a.pcRead + (r.promptCacheRead ?? 0), pcWrite: a.pcWrite + (r.promptCacheWrite ?? 0),
   serperCalls: a.serperCalls + r.serperCalls, serperReal: a.serperReal + r.net.serperReal, serperReplayed: a.serperReplayed + r.net.serperReplayed,
-}), { turns: 0, pass: 0, usd: 0, tokensIn: 0, tokensOut: 0, serperCalls: 0, serperReal: 0, serperReplayed: 0 })
+}), { turns: 0, pass: 0, usd: 0, tokensIn: 0, tokensOut: 0, serperCalls: 0, serperReal: 0, serperReplayed: 0, pcRead: 0, pcWrite: 0 })
 
 const groupBy = (rows: TurnRow[], key: (r: TurnRow) => string) => {
   const m: Record<string, TurnRow[]> = {}
@@ -63,8 +68,8 @@ export function summarize(rows: TurnRow[]) {
 
 const usd = (n: number) => `$${n.toFixed(5)}`
 const aggTable = (title: string, m: Record<string, Agg>) => [
-  `### ${title}`, '', '| key | turns | pass | usd total | usd/turn | tok in/turn | tok out/turn | serper (meter) | real | replayed |', '|---|---|---|---|---|---|---|---|---|---|',
-  ...Object.entries(m).sort().map(([k, a]) => `| ${k} | ${a.turns} | ${a.pass} | ${usd(a.usd)} | ${usd(a.turns ? a.usd / a.turns : 0)} | ${Math.round(a.tokensIn / (a.turns || 1))} | ${Math.round(a.tokensOut / (a.turns || 1))} | ${a.serperCalls} | ${a.serperReal} | ${a.serperReplayed} |`), '',
+  `### ${title}`, '', '| key | turns | pass | usd total | usd/turn | tok in/turn | tok out/turn | serper (meter) | real | replayed | prompt cache read % of in | cache write/turn |', '|---|---|---|---|---|---|---|---|---|---|---|---|',
+  ...Object.entries(m).sort().map(([k, a]) => `| ${k} | ${a.turns} | ${a.pass} | ${usd(a.usd)} | ${usd(a.turns ? a.usd / a.turns : 0)} | ${Math.round(a.tokensIn / (a.turns || 1))} | ${Math.round(a.tokensOut / (a.turns || 1))} | ${a.serperCalls} | ${a.serperReal} | ${a.serperReplayed} | ${a.tokensIn ? Math.round(100 * a.pcRead / a.tokensIn) : 0}% | ${Math.round(a.pcWrite / (a.turns || 1))} |`), '',
 ]
 
 export function markdown(suite: string, rows: TurnRow[], s: ReturnType<typeof summarize>, meta: Record<string, unknown>): string {
@@ -74,6 +79,20 @@ export function markdown(suite: string, rows: TurnRow[], s: ReturnType<typeof su
     `- 900 turns/month at the observed mix: ${usd(s.cost.month900)}  (mix: ${Object.entries(s.cost.mix).map(([k, v]) => `${k} ${(v * 100).toFixed(0)}%`).join(' · ')})`,
     '- note: `usd` is the route\'s own figure; it prices every Serper call the meter saw, including replayed ones.', '')
   L.push(...aggTable('By turn type (server)', s.byType), ...aggTable('By area', s.byArea), ...aggTable('By area / turn type', s.byAreaType))
+  // Owner 29/09 "hạn chế guard vá": how often each post-model patch had to change a reply, per turn type.
+  {
+    const byType = new Map<string, { turns: number; hits: Map<string, number> }>()
+    for (const r of rows) {
+      const t = r.server?.turnType ?? r.type
+      const e = byType.get(t) ?? { turns: 0, hits: new Map<string, number>() }
+      e.turns++
+      for (const p of new Set([...(r.patches ?? []), ...(r.guards ?? []).map(g => `guard:${g}`)])) e.hits.set(p, (e.hits.get(p) ?? 0) + 1)
+      byType.set(t, e)
+    }
+    L.push('### Patches and guards that changed a reply (turns affected / turns)', '', '| turn type | turns | patches / guards (count) |', '|---|---|---|')
+    for (const [t, e] of [...byType.entries()].sort()) L.push(`| ${t} | ${e.turns} | ${[...e.hits.entries()].sort((a, b) => b[1] - a[1]).map(([k, v]) => `${k} ${v}`).join(' · ') || '-'} |`)
+    L.push('')
+  }
   if (s.crashes.length) L.push('## Crashes', '', ...s.crashes.map(c => `- ${c}`), '')
   if (s.typeMismatch.length) L.push('## Turn type ≠ expected', '', ...s.typeMismatch.map(c => `- ${c}`), '')
   L.push('## Failures', '', ...(s.failures.length ? s.failures.map(f => `- ${f.conv}#${f.turn} [${f.type}]: ${f.failed.join('; ')}`) : ['- none']), '')

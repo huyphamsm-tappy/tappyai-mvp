@@ -42,6 +42,9 @@ export interface TurnCostInfo {
   tokensOut: number
   serperCalls: number
   cacheHits: number
+  /** Anthropic prompt cache: input tokens read from / written to the cache this turn (cost §6 hit rate). */
+  promptCacheRead?: number
+  promptCacheWrite?: number
   usd: number
 }
 

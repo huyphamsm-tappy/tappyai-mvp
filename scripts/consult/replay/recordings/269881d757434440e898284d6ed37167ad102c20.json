@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Quà tặng sinh nhật vui nhộn Tin nhắn ẩn Cốc cà phê gốm 11oz",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T02:34:02.075Z",
+ "body": {
+  "searchParameters": {
+   "q": "Quà tặng sinh nhật vui nhộn Tin nhắn ẩn Cốc cà phê gốm 11oz",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Cốc cà phê tin nhắn ẩn - Gốm sứ có tin nhắn bất ngờ ngộ nghĩnh, Quà tặng  Gag mới lạ độc đáo, Cốc tương tác dễ thương dành cho nữ, đồng",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/sg-11134201-8258b-mrpjmzxcne9uff",
+    "imageWidth": 1024,
+    "imageHeight": 1024,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJLJSrR_UdtwUA1KOVQ9vPIq8VMGPDjc6pruDZrXiOCw&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/C%E1%BB%91c-c%C3%A0-ph%C3%AA-tin-nh%E1%BA%AFn-%E1%BA%A9n-G%E1%BB%91m-s%E1%BB%A9-c%C3%B3-tin-nh%E1%BA%AFn-b%E1%BA%A5t-ng%E1%BB%9D-ng%E1%BB%99-ngh%C4%A9nh-Qu%C3%A0-t%E1%BA%B7ng-Gag-m%E1%BB%9Bi-l%E1%BA%A1-%C4%91%E1%BB%99c-%C4%91%C3%A1o-C%E1%BB%91c-t%C6%B0%C6%A1ng-t%C3%A1c-d%E1%BB%85-th%C6%B0%C6%A1ng-d%C3%A0nh-cho-n%E1%BB%AF-%C4%91%E1%BB%93ng-nghi%E1%BB%87p-Qu%C3%A0-sinh-nh%E1%BA%ADt-voi-tr%E1%BA%AFng-(%C4%90en)-i.1913831351.44765769287",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fsg-11134201-8258b-mrpjmzxcne9uff&tbnid=ZXBjNpq7FGSJmM&imgrefurl=https%3A%2F%2Fshopee.vn%2FC%25E1%25BB%2591c-c%25C3%25A0-ph%25C3%25AA-tin-nh%25E1%25BA%25AFn-%25E1%25BA%25A9n-G%25E1%25BB%2591m-s%25E1%25BB%25A9-c%25C3%25B3-tin-nh%25E1%25BA%25AFn-b%25E1%25BA%25A5t-ng%25E1%25BB%259D-ng%25E1%25BB%2599-ngh%25C4%25A9nh-Qu%25C3%25A0-t%25E1%25BA%25B7ng-Gag-m%25E1%25BB%259Bi-l%25E1%25BA%25A1-%25C4%2591%25E1%25BB%2599c-%25C4%2591%25C3%25A1o-C%25E1%25BB%2591c-t%25C6%25B0%25C6%25A1ng-t%25C3%25A1c-d%25E1%25BB%2585-th%25C6%25B0%25C6%25A1ng-d%25C3%25A0nh-cho-n%25E1%25BB%25AF-%25C4%2591%25E1%25BB%2593ng-nghi%25E1%25BB%2587p-Qu%25C3%25A0-sinh-nh%25E1%25BA%25ADt-voi-tr%25E1%25BA%25AFng-(%25C4%2590en)-i.1913831351.44765769287&docid=AbiOEng_yY0_GM&w=1024&h=1024",
+    "position": 1
+   },
+   {
+    "title": "Cốc Cà Phê Vui Nhộn 11 Oz Gốm Đồ Uống Có Tin Nhắn Bí Mật Cốc Trà Ngộ nghĩnh  Cho Nóng Sữa Ca Cao Nhà Thanh Văn Phòng shopidaevn | Shopee Việt Nam",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/sg-11134201-82593-mt8kjfwfwvt2cf",
+    "imageWidth": 1024,
+    "imageHeight": 1024,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQV4Nlzq-YxLztJak4mTRcPvbtt5Uj2khmeKH7rRx2C7Q&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/C%E1%BB%91c-C%C3%A0-Ph%C3%AA-Vui-Nh%E1%BB%99n-11-Oz-G%E1%BB%91m-%C4%90%E1%BB%93-U%E1%BB%91ng-C%C3%B3-Tin-Nh%E1%BA%AFn-B%C3%AD-M%E1%BA%ADt-C%E1%BB%91c-Tr%C3%A0-Ng%E1%BB%99-ngh%C4%A9nh-Cho-N%C3%B3ng-S%E1%BB%AFa-Ca-Cao-Nh%C3%A0-Thanh-V%C4%83n-Ph%C3%B2ng-shopidaevn-i.1064211714.46417993313",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fsg-11134201-82593-mt8kjfwfwvt2cf&tbnid=V2WO4Sr_E7PhyM&imgrefurl=https%3A%2F%2Fshopee.vn%2FC%25E1%25BB%2591c-C%25C3%25A0-Ph%25C3%25AA-Vui-Nh%25E1%25BB%2599n-11-Oz-G%25E1%25BB%2591m-%25C4%2590%25E1%25BB%2593-U%25E1%25BB%2591ng-C%25C3%25B3-Tin-Nh%25E1%25BA%25AFn-B%25C3%25AD-M%25E1%25BA%25ADt-C%25E1%25BB%2591c-Tr%25C3%25A0-Ng%25E1%25BB%2599-ngh%25C4%25A9nh-Cho-N%25C3%25B3ng-S%25E1%25BB%25AFa-Ca-Cao-Nh%25C3%25A0-Thanh-V%25C4%2583n-Ph%25C3%25B2ng-shopidaevn-i.1064211714.46417993313&docid=3H8kz3Ynujs1rM&w=1024&h=1024",
+    "position": 2
+   },
+   {
+    "title": "Quà tặng sinh nhật cho nữ, Quà tặng Gag ngộ nghĩnh cho nam, Cốc cà phê gốm  sứ tin nhắn ẩn, Quà tặng voi trắng, văn phòng độc đáo Prank Gag cho",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/sg-11134201-823ph-mp9h65rzxl3691",
+    "imageWidth": 800,
+    "imageHeight": 800,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-uVtUhsy_Cv_GBTrAxoH-LW74Q4oDz3M6McC7PM1ZHQ&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/Qu%C3%A0-t%E1%BA%B7ng-sinh-nh%E1%BA%ADt-cho-n%E1%BB%AF-Qu%C3%A0-t%E1%BA%B7ng-Gag-ng%E1%BB%99-ngh%C4%A9nh-cho-nam-C%E1%BB%91c-c%C3%A0-ph%C3%AA-g%E1%BB%91m-s%E1%BB%A9-tin-nh%E1%BA%AFn-%E1%BA%A9n-Qu%C3%A0-t%E1%BA%B7ng-voi-tr%E1%BA%AFng-Qu%C3%A0-t%E1%BA%B7ng-v%C4%83n-ph%C3%B2ng-%C4%91%E1%BB%99c-%C4%91%C3%A1o-Prank-Gag-cho-ng%C6%B0%E1%BB%9Di-y%C3%AAu-c%C3%A0-ph%C3%AA-i.1856055264.51012102486?extraParams=%7B%22display_model_id%22%3A441051726886%2C%22model_selection_logic%22%3A3%7D",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fsg-11134201-823ph-mp9h65rzxl3691&tbnid=jrhb_IkSLk5zGM&imgrefurl=https%3A%2F%2Fshopee.vn%2FQu%25C3%25A0-t%25E1%25BA%25B7ng-sinh-nh%25E1%25BA%25ADt-cho-n%25E1%25BB%25AF-Qu%25C3%25A0-t%25E1%25BA%25B7ng-Gag-ng%25E1%25BB%2599-ngh%25C4%25A9nh-cho-nam-C%25E1%25BB%2591c-c%25C3%25A0-ph%25C3%25AA-g%25E1%25BB%2591m-s%25E1%25BB%25A9-tin-nh%25E1%25BA%25AFn-%25E1%25BA%25A9n-Qu%25C3%25A0-t%25E1%25BA%25B7ng-voi-tr%25E1%25BA%25AFng-Qu%25C3%25A0-t%25E1%25BA%25B7ng-v%25C4%2583n-ph%25C3%25B2ng-%25C4%2591%25E1%25BB%2599c-%25C4%2591%25C3%25A1o-Prank-Gag-cho-ng%25C6%25B0%25E1%25BB%259Di-y%25C3%25AAu-c%25C3%25A0-ph%25C3%25AA-i.1856055264.51012102486%3FextraParams%3D%257B%2522display_model_id%2522%253A441051726886%252C%2522model_selection_logic%2522%253A3%257D&docid=DRRcj5CKAMzA3M&w=800&h=800",
+    "position": 3
+   },
+   {
+    "title": "Cốc cà phê tin nhắn ẩn - Gốm sứ có tin nhắn bất ngờ ngộ nghĩnh, Quà tặng  Gag mới lạ độc đáo, Cốc tương tác dễ thương dành cho nữ, đồng",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/sg-11134201-8259x-mrpjn2tux9fld8",
+    "imageWidth": 1024,
+    "imageHeight": 1024,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRe1Y9lAja3usC08fAaB0sdSXyCPXoys7ZcAnMhbrwWCA&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/C%E1%BB%91c-c%C3%A0-ph%C3%AA-tin-nh%E1%BA%AFn-%E1%BA%A9n-G%E1%BB%91m-s%E1%BB%A9-c%C3%B3-tin-nh%E1%BA%AFn-b%E1%BA%A5t-ng%E1%BB%9D-ng%E1%BB%99-ngh%C4%A9nh-Qu%C3%A0-t%E1%BA%B7ng-Gag-m%E1%BB%9Bi-l%E1%BA%A1-%C4%91%E1%BB%99c-%C4%91%C3%A1o-C%E1%BB%91c-t%C6%B0%C6%A1ng-t%C3%A1c-d%E1%BB%85-th%C6%B0%C6%A1ng-d%C3%A0nh-cho-n%E1%BB%AF-%C4%91%E1%BB%93ng-nghi%E1%BB%87p-Qu%C3%A0-sinh-nh%E1%BA%ADt-voi-tr%E1%BA%AFng-(%C4%90en)-i.1913831351.44765769287",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fsg-11134201-8259x-mrpjn2tux9fld8&tbnid=VstI_NJdDE7BJM&imgrefurl=https%3A%2F%2Fshopee.vn%2FC%25E1%25BB%2591c-c%25C3%25A0-ph%25C3%25AA-tin-nh%25E1%25BA%25AFn-%25E1%25BA%25A9n-G%25E1%25BB%2591m-s%25E1%25BB%25A9-c%25C3%25B3-tin-nh%25E1%25BA%25AFn-b%25E1%25BA%25A5t-ng%25E1%25BB%259D-ng%25E1%25BB%2599-ngh%25C4%25A9nh-Qu%25C3%25A0-t%25E1%25BA%25B7ng-Gag-m%25E1%25BB%259Bi-l%25E1%25BA%25A1-%25C4%2591%25E1%25BB%2599c-%25C4%2591%25C3%25A1o-C%25E1%25BB%2591c-t%25C6%25B0%25C6%25A1ng-t%25C3%25A1c-d%25E1%25BB%2585-th%25C6%25B0%25C6%25A1ng-d%25C3%25A0nh-cho-n%25E1%25BB%25AF-%25C4%2591%25E1%25BB%2593ng-nghi%25E1%25BB%2587p-Qu%25C3%25A0-sinh-nh%25E1%25BA%25ADt-voi-tr%25E1%25BA%25AFng-(%25C4%2590en)-i.1913831351.44765769287&docid=AbiOEng_yY0_GM&w=1024&h=1024",
+    "position": 4
+   },
+   {
+    "title": "Cốc cà phê tin nhắn ẩn - Gốm sứ có tin nhắn bất ngờ ngộ nghĩnh, Quà tặng  Gag mới lạ độc đáo, Cốc tương tác dễ thương dành cho nữ, đồng",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/sg-11134201-825ai-mrpjnfqy4ljad8",
+    "imageWidth": 970,
+    "imageHeight": 970,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT08YL_ojMxCsyVxDp7aJA3crEvRgwLU4o-ts2fpcv60A&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/C%E1%BB%91c-c%C3%A0-ph%C3%AA-tin-nh%E1%BA%AFn-%E1%BA%A9n-G%E1%BB%91m-s%E1%BB%A9-c%C3%B3-tin-nh%E1%BA%AFn-b%E1%BA%A5t-ng%E1%BB%9D-ng%E1%BB%99-ngh%C4%A9nh-Qu%C3%A0-t%E1%BA%B7ng-Gag-m%E1%BB%9Bi-l%E1%BA%A1-%C4%91%E1%BB%99c-%C4%91%C3%A1o-C%E1%BB%91c-t%C6%B0%C6%A1ng-t%C3%A1c-d%E1%BB%85-th%C6%B0%C6%A1ng-d%C3%A0nh-cho-n%E1%BB%AF-%C4%91%E1%BB%93ng-nghi%E1%BB%87p-Qu%C3%A0-sinh-nh%E1%BA%ADt-voi-tr%E1%BA%AFng-(%C4%90en)-i.1913831351.44765769287",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fsg-11134201-825ai-mrpjnfqy4ljad8&tbnid=1-mJBTsH33O7mM&imgrefurl=https%3A%2F%2Fshopee.vn%2FC%25E1%25BB%2591c-c%25C3%25A0-ph%25C3%25AA-tin-nh%25E1%25BA%25AFn-%25E1%25BA%25A9n-G%25E1%25BB%2591m-s%25E1%25BB%25A9-c%25C3%25B3-tin-nh%25E1%25BA%25AFn-b%25E1%25BA%25A5t-ng%25E1%25BB%259D-ng%25E1%25BB%2599-ngh%25C4%25A9nh-Qu%25C3%25A0-t%25E1%25BA%25B7ng-Gag-m%25E1%25BB%259Bi-l%25E1%25BA%25A1-%25C4%2591%25E1%25BB%2599c-%25C4%2591%25C3%25A1o-C%25E1%25BB%2591c-t%25C6%25B0%25C6%25A1ng-t%25C3%25A1c-d%25E1%25BB%2585-th%25C6%25B0%25C6%25A1ng-d%25C3%25A0nh-cho-n%25E1%25BB%25AF-%25C4%2591%25E1%25BB%2593ng-nghi%25E1%25BB%2587p-Qu%25C3%25A0-sinh-nh%25E1%25BA%25ADt-voi-tr%25E1%25BA%25AFng-(%25C4%2590en)-i.1913831351.44765769287&docid=AbiOEng_yY0_GM&w=970&h=970",
+    "position": 5
+   },
+   {
+    "title": "Cốc gốm sứ uống nước Happy quà tặng sinh nhật cute dễ thương ý nghĩa tráng  men cao cấp LSHED01",
+    "imageUrl": "https://cdn.hstatic.net/products/200000666175/18_d4177637c53e46d4b6c320986723f568_master.png",
+    "imageWidth": 800,
+    "imageHeight": 800,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLbIzaPJvq7NUzz1xDJ1E42IgRrakRnfBAUVpSvlh-GQ&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Chillme Candle",
+    "domain": "chillme.vn",
+    "link": "https://chillme.vn/products/coc-gom-su-uong-nuoc-happy-qua-tang-sinh-nhat-cute-de-thuong-y-nghia-trang-men-cao-cap-lshed01?srsltid=AU7gw4XOLuZJfz8qROnEv1f11BC4xNgXkksfdgpffei4aFw6r7k9RS2K",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.hstatic.net%2Fproducts%2F200000666175%2F18_d4177637c53e46d4b6c320986723f568_master.png&tbnid=LW8J7zLZ-xbsTM&imgrefurl=https%3A%2F%2Fchillme.vn%2Fproducts%2Fcoc-gom-su-uong-nuoc-happy-qua-tang-sinh-nhat-cute-de-thuong-y-nghia-trang-men-cao-cap-lshed01%3Fsrsltid%3DAU7gw4XOLuZJfz8qROnEv1f11BC4xNgXkksfdgpffei4aFw6r7k9RS2K&docid=f1rkxtC_mzvRGM&w=800&h=800",
+    "position": 6
+   },
+   {
+    "title": "Cốc cà phê tin nhắn ẩn - Gốm sứ có tin nhắn bất ngờ ngộ nghĩnh, Quà tặng  Gag mới lạ độc đáo, Cốc tương tác dễ thương dành cho nữ, đồng",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/sg-11134201-8259i-mrpjn4rllrlu2c",
+    "imageWidth": 1024,
+    "imageHeight": 1024,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTB8pSw3ngv6thXd6izBEmSfhCRJGDSY2AD-KyNcXVTRw&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/C%E1%BB%91c-c%C3%A0-ph%C3%AA-tin-nh%E1%BA%AFn-%E1%BA%A9n-G%E1%BB%91m-s%E1%BB%A9-c%C3%B3-tin-nh%E1%BA%AFn-b%E1%BA%A5t-ng%E1%BB%9D-ng%E1%BB%99-ngh%C4%A9nh-Qu%C3%A0-t%E1%BA%B7ng-Gag-m%E1%BB%9Bi-l%E1%BA%A1-%C4%91%E1%BB%99c-%C4%91%C3%A1o-C%E1%BB%91c-t%C6%B0%C6%A1ng-t%C3%A1c-d%E1%BB%85-th%C6%B0%C6%A1ng-d%C3%A0nh-cho-n%E1%BB%AF-%C4%91%E1%BB%93ng-nghi%E1%BB%87p-Qu%C3%A0-sinh-nh%E1%BA%ADt-voi-tr%E1%BA%AFng-(%C4%90en)-i.1913831351.44765769287",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fsg-11134201-8259i-mrpjn4rllrlu2c&tbnid=V_SlvWii6pFxeM&imgrefurl=https%3A%2F%2Fshopee.vn%2FC%25E1%25BB%2591c-c%25C3%25A0-ph%25C3%25AA-tin-nh%25E1%25BA%25AFn-%25E1%25BA%25A9n-G%25E1%25BB%2591m-s%25E1%25BB%25A9-c%25C3%25B3-tin-nh%25E1%25BA%25AFn-b%25E1%25BA%25A5t-ng%25E1%25BB%259D-ng%25E1%25BB%2599-ngh%25C4%25A9nh-Qu%25C3%25A0-t%25E1%25BA%25B7ng-Gag-m%25E1%25BB%259Bi-l%25E1%25BA%25A1-%25C4%2591%25E1%25BB%2599c-%25C4%2591%25C3%25A1o-C%25E1%25BB%2591c-t%25C6%25B0%25C6%25A1ng-t%25C3%25A1c-d%25E1%25BB%2585-th%25C6%25B0%25C6%25A1ng-d%25C3%25A0nh-cho-n%25E1%25BB%25AF-%25C4%2591%25E1%25BB%2593ng-nghi%25E1%25BB%2587p-Qu%25C3%25A0-sinh-nh%25E1%25BA%25ADt-voi-tr%25E1%25BA%25AFng-(%25C4%2590en)-i.1913831351.44765769287&docid=AbiOEng_yY0_GM&w=1024&h=1024",
+    "position": 7
+   },
+   {
+    "title": "Cốc cà phê gốm màu (11oz) (In khu vực) in theo yêu cầu - Đồ dùng uống nước  - PrintKK",
+    "imageUrl": "https://images.printkk.com/product/accent-mugs-n9y9n-61.png?imageMogr2/thumbnail/800x800",
+    "imageWidth": 800,
+    "imageHeight": 800,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTR_wXVFF1eSFGXWCoyyUk-jlYPPRlXCvAzTed94n46Gg&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "PrintKK",
+    "domain": "www.printkk.com",
+    "link": "https://www.printkk.com/vi/product/info/accent-mugs?srsltid=AU7gw4Vk35Vli6k_diBsCiE2fQ2X9a28iwe_Vy40flqGwF3SyaPp4K8h",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimages.printkk.com%2Fproduct%2Faccent-mugs-n9y9n-61.png%3FimageMogr2%2Fthumbnail%2F800x800&tbnid=G-0S8bB72pti_M&imgrefurl=https%3A%2F%2Fwww.printkk.com%2Fvi%2Fproduct%2Finfo%2Faccent-mugs%3Fsrsltid%3DAU7gw4Vk35Vli6k_diBsCiE2fQ2X9a28iwe_Vy40flqGwF3SyaPp4K8h&docid=oI-qSVGmwTibWM&w=800&h=800",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

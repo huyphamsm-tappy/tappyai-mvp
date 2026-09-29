@@ -66,7 +66,8 @@ export function planShape(text: string, area: PlanArea | null) {
   const headings = area ? PLAN_HEADINGS[area] : []
   const missing = headings.filter(h => !norm(text).includes(norm(h)))
   const lines = text.split('\n')
-  const tipsWord = area && !headings.some(h => h.includes('Mẹo')) ? 'Lưu ý' : 'Mẹo'
+  // The tips section of the area's approved headings: "Mẹo …" (food, travel, entertainment), "Cạm bẫy thường gặp" (shopping), "Lưu ý" (spa).
+  const tipsWord = !area ? 'Mẹo' : headings.some(h => h.includes('Mẹo')) ? 'Mẹo' : headings.some(h => h.includes('Cạm bẫy')) ? 'Cạm bẫy' : 'Lưu ý'
   let tips = 0
   const at = lines.findIndex(l => l.includes(tipsWord) && isHeadingLine(l, area))
   if (at >= 0) {

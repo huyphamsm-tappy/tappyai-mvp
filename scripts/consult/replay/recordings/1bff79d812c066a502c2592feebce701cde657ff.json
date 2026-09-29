@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Nhà Hàng Tửu Lầu 13\" OR \"Quán Nhậu Bờ Kè\" OR \"Nhà Hàng 56\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T02:24:03.481Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Nhà Hàng Tửu Lầu 13\" OR \"Quán Nhậu Bờ Kè\" OR \"Nhà Hàng 56\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Nhà Hàng Tửu Lầu 13 (@nhahangtuulau13)",
+    "link": "https://www.tiktok.com/@nhahangtuulau13",
+    "snippet": "Nhà Hàng Tửu Lầu 13 · @nhahangtuulau13 · Đặt Bàn Ứng Tuyển 09.02.50.57.61 06 Nam Quốc Cang, Phạm Ngũ Lão, Quận 1 https://nhahangtuulau13.vn.",
+    "position": 1
+   },
+   {
+    "title": "Nhà Hàng 56 - Quận 10 (@nh.hang.56)",
+    "link": "https://www.tiktok.com/@nh.hang.56",
+    "snippet": "Đ.Đồng Nai Q10 (P.Hoà Hưng) 0865 947 556. Hòa chung không khí nhộn nhịp cùng ca sĩ Hồ Việt Trung tại Nhà Hàng 56. 30.2K. Đã ghim.",
+    "position": 2
+   },
+   {
+    "title": "Hành trình Tửu Lầu 13 tạo nên mỹ vị từ đại dương ...",
+    "link": "https://www.tiktok.com/@nhahangtuulau13/video/7536833820251770119",
+    "snippet": "Video TikTok từ Nhà Hàng Tửu Lầu 13 (@nhahangtuulau13): \"Hành trình Tửu Lầu 13 tạo nên mỹ vị từ đại dương❤️‍ #tuulau13 #nhahang ...",
+    "position": 3
+   },
+   {
+    "title": "Quán Nhậu Bờ Kè Mở Cửa Đến 5h Sáng",
+    "link": "https://www.tiktok.com/@cambone_2010/video/7540944048161377556",
+    "snippet": "Quán Nhậu Bờ Kè Mở Cửa Đến 5h Sáng. Khám phá quán nhậu bờ kè, nơi mở cửa đến 5h sáng cho những cú đêm, phục vụ món ngon và đồ uống hấp dẫn.",
+    "position": 4
+   },
+   {
+    "title": "Quán nhậu Bờ Kè Chụt 29/38 Vĩnh Nguyên cũ Nha Trang ...",
+    "link": "https://www.tiktok.com/@thanh.van1612/video/7664847876006219029",
+    "snippet": "Quán Nhậu Ven Biển Phú Yên. Quán nhậu Bờ Kè Chụt 29/38 Vĩnh Nguyên cũ Nha Trang #0397386068 sdt.",
+    "position": 5
+   },
+   {
+    "title": "Nhìn thôi đã muốn đặt bàn ngay! 🤤🔥🔥Tửu Lầu 13",
+    "link": "https://www.tiktok.com/@nhahangtuulau13/video/7664550534413552916",
+    "snippet": "6102 Lượt thích,Video TikTok từ Nhà Hàng Tửu Lầu 13 (@nhahangtuulau13): \"Nhìn thôi đã muốn đặt bàn ngay! Tửu Lầu 13– Nơi vị giác gặp ...",
+    "position": 6
+   },
+   {
+    "title": "Khám Phá Nhà Hàng Sang Trọng Nhất Quận 10",
+    "link": "https://www.tiktok.com/@nh.hang.56/video/7519495356120435986",
+    "snippet": "Nhóm Vip Đan Phượng Shop. Khám Phá Nhà Hàng Sang Trọng Nhất Quận 10. Tìm hiểu về nhà hàng 56 tại Quận 10 với phòng VIP sang trọng và các món ăn ...",
+    "position": 7
+   },
+   {
+    "title": "Múa cổ trang #tuulau13 #nhahang #montrung #quan1 # ...",
+    "link": "https://www.tiktok.com/@nhahangtuulau13/video/7617072634538298645",
+    "snippet": "505 Lượt thích,Video TikTok từ Nhà Hàng Tửu Lầu 13 (@nhahangtuulau13): \"Múa cổ trang #tuulau13 #nhahang #montrung #quan1 #trungquoc\".âm ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

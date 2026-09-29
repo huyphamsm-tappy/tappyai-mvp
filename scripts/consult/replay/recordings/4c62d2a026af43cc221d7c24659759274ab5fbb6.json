@@ -1,0 +1,48 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Tới Nóc | chi nhánh Bình Thạnh\" OR \"QUÁN 366| QUÁN NHẬU BÙI ĐÌNH TUÝ| QUÁN NHẬU BÌNH THẠNH\" OR \"Quán Nhậu 256\" Bình Thạnh site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T02:32:59.073Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Tới Nóc | chi nhánh Bình Thạnh\" OR \"QUÁN 366| QUÁN NHẬU BÙI ĐÌNH TUÝ| QUÁN NHẬU BÌNH THẠNH\" OR \"Quán Nhậu 256\" Bình Thạnh site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Khám Phá Quán Nhậu 256 Nguyễn Gia Trí tại Bình Thạnh",
+    "link": "https://www.tiktok.com/@quan_nhau_256/video/7444057004529831175",
+    "snippet": "Quán nhậu 256 Nguyễn Gia Trí, P25, Q Bình Thạnh, tp hcm#quannhaubinhdan #quanbinhthanh #quannhausinhvien #quannhaungonbinhthanh. Khám Phá Quán ...",
+    "position": 1
+   },
+   {
+    "title": "Tiệc Sinh Nhật & Quán Nhậu Vỉa Hè Quận Bình Thạnh",
+    "link": "https://www.tiktok.com/@quan_nhau_256/video/7644509627375209748",
+    "snippet": "Khám phá quán nhậu bình dân, lý tưởng cho tiệc sinh nhật và tụ tập. @Quán 256 Bình Thạnh · âm thanh gốc - Nhựt Hài Dữ Tee · Quán Nhậu 256.",
+    "position": 2
+   },
+   {
+    "title": "Xuống CA là chúng ta lên LY #quannhaubinhthanh ...",
+    "link": "https://www.tiktok.com/@quan_nhau_256/video/7667563933439446293",
+    "snippet": "Quán Nhậu 256 · author · 11 · 0 ... Quán 256 Bình Thạnh. 80 · recommend-cover. Quán 256 Bình Thạnh. 6 · recommend-cover.",
+    "position": 3
+   },
+   {
+    "title": "Gà nổ muối quán 256 Bình Thạnh - Món streetfood nổi bật",
+    "link": "https://www.tiktok.com/@tinhtungtangvn/video/7638971642059803911",
+    "snippet": "Trải nghiệm gà nổ muối tại quán 256 Bình Thạnh: vị giòn, mặn vừa. @TÍNH TUNG TĂNG · âm thanh gốc - TÍNH TUNG TĂNG · Quán Nhậu 256 · author.",
+    "position": 4
+   }
+  ],
+  "credits": 1
+ }
+}
