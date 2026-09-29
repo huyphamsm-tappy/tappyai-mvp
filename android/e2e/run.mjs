@@ -51,11 +51,11 @@ for (const name of wanted) {
     if (platform === 'android') {
       const rec = new a.Recorder(dir)
       rec.startVideo()
-      try { await flow.android({ a, rec, shot: (n) => rec.shot(n), check, seeded }) } catch (e) { error = e.message; try { rec.shot('error') } catch {} }
+      try { await flow.android({ a, rec, shot: (n) => rec.shot(n), check, seeded, outDir: dir }) } catch (e) { error = e.message; try { rec.shot('error') } catch {} }
       await rec.stopVideo()
     } else {
       const w = await openWeb({ email: flow.webAccount ?? null, dir })
-      try { await flow.web({ w, page: w.page, shot: (n, full) => w.shot(n, full), check, seeded }) } catch (e) { error = e.message; try { await w.shot('error') } catch {} }
+      try { await flow.web({ w, page: w.page, shot: (n, full) => w.shot(n, full), check, seeded, outDir: dir }) } catch (e) { error = e.message; try { await w.shot('error') } catch {} }
       await w.close()
     }
     if (error) console.log(`  ✘ ERROR ${error}`)

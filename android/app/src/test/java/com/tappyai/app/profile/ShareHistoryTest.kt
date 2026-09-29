@@ -42,7 +42,10 @@ class ShareHistoryTest {
     fun `the write is the chooser's chosen-component boundary, fire-and-forget, bearer-pinned server-side`() {
         val rec = src("app/src/main/java/com/tappyai/app/profile/data/ShareHistoryRecorder.kt")
         assertTrue(rec.contains("Intent.EXTRA_CHOSEN_COMPONENT") && rec.contains("PendingIntent.getBroadcast("))
-        assertTrue(rec.contains("repository.recordShare(reviewId, channelFor(chosen?.packageName))"))
+        // A chooser pick → `android:<package>`; a share completed inside the TappyAI sheet (sample #6,
+        // web onShared) → `android:<target>` — same row, same endpoint.
+        assertTrue(rec.contains("repository.recordShare(reviewId, if (target != null) \"android:${'$'}target\" else channelFor(chosen?.packageName))"))
+        assertTrue(src("app/src/main/java/com/tappyai/app/reviews/ui/ReviewShare.kt").contains("onShared = { channel -> ShareHistoryRecorder.recordChannel(context, review.id, channel) },"))
         assertTrue("one process-wide receiver — a dismissed chooser leaves nothing that could fire on the next share", rec.contains("private fun ensureReceiver(app: Context)") && rec.contains("if (registered) return") && !rec.contains("unregisterReceiver"))
         // The call site (landed 2026-09-15 once ReviewShare.kt was committed in 1ec07bb): the chooser
         // carries the sender, so a chosen target — and only that — reaches the recorder.

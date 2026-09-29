@@ -155,6 +155,8 @@ fun MessageActionBar(
             TappyShareSheet(
                 artifact = a,
                 onDismiss = { shareArtifact = null },
+                // A plan turn draws the sample #7 plan image in the sheet (SL1).
+                plan = if (a.kind == com.tappyai.app.share.ShareArtifact.Kind.PLAN) plan else null,
                 onPublicLink = if (publicShareEnabled) { { if (onSharePublic()) shareArtifact = null } } else null,
             )
         }

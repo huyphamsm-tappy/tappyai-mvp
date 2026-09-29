@@ -9,6 +9,7 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -55,7 +56,9 @@ internal fun ReviewClipPager(
 ) {
     val context = LocalContext.current
     // The share fetches the clip before the chooser opens; leaving the pager cancels it.
-    val shareScope = rememberCoroutineScope()
+    // Share opens the approved sheet (sample #6, variant post) — see ReviewShareSheetHost.
+    var shareSheetFor by remember { mutableStateOf<Review?>(null) }
+    shareSheetFor?.let { r -> ReviewShareSheetHost(r, onDismiss = { shareSheetFor = null }) }
 
     // Advance pagination as the user swipes toward the end of the loaded pages.
     LaunchedEffect(pagerState.currentPage) {
@@ -101,7 +104,7 @@ internal fun ReviewClipPager(
                 onOpenLikes = { likesFor = review.id },
                 onSave = { viewModel.toggleSave(review) },
                 onComment = { commentsFor = review.id },
-                onShare = { shareScope.launch { shareReview(context, review) } },
+                onShare = { shareSheetFor = review },
                 onAvatarClick = { onAuthorClick(review.userId) },
                 onFollow = { viewModel.toggleFollow(review) },
                 onDelete = { viewModel.deleteReview(review) },

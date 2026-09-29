@@ -292,6 +292,10 @@ android {
         buildConfigField("String", "WEB_APP_URL", "\"$webAppUrl\"")
         // Empty everywhere; only the `uat` build type below fills it.
         buildConfigField("String", "VERCEL_BYPASS_SECRET", "\"\"")
+        // Google Play badge on the TappyAI QR card (owner SL2, web storeListing.ts): the public listing of
+        // com.tappyai.app answered 404 on 29/09 → the badge shows on debug/uat builds only; a release shows it
+        // once `-PTAPPYAI_PLAY_LISTING_LIVE=true` is set after the public Play page loads.
+        buildConfigField("boolean", "PLAY_LISTING_LIVE", (project.findProperty("TAPPYAI_PLAY_LISTING_LIVE")?.toString() == "true").toString())
 
         // App Links (prepared, off by default) — see the PublicLinkActivity alias in the manifest.
         // `-PTAPPYAI_APP_LINKS_ENABLED=true` turns the alias on; the host is derived from the same

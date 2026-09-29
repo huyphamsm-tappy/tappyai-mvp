@@ -46,8 +46,11 @@ class TikTokHandoffTest {
         val sheet = File("src/main/java/com/tappyai/app/share/TappyShareSheet.kt").readText()
         val branch = sheet.substringAfter("TappyShare.Target.TIKTOK -> {").substringBefore("TappyShare.Target.EMAIL")
         assertTrue(branch.contains("ShareDelivery.toTikTok("))
-        // Not drawn yet → "preparing", never a false "not installed" + clipboard (review 2026-09-28).
-        assertTrue(branch.contains("if (bitmap == null) { toast(context.getString(R.string.share_image_preparing)); return }"))
+        // An uploaded clip goes as its own video; otherwise THE card file (sample #6 "one file").
+        assertTrue(branch.contains("clipVideo?.invoke()") && branch.contains("\"video/mp4\""))
+        assertTrue(branch.contains("val uri = cardUri()") && branch.contains("\"image/png\""))
+        // Not drawn yet → "preparing" (or "could not be created"), never a false "not installed" + clipboard.
+        assertTrue(branch.contains("R.string.share_v6_card_failed else R.string.share_image_preparing"))
         val delivery = File("src/main/java/com/tappyai/app/share/ShareDelivery.kt").readText()
         val body = delivery.substringAfter("fun toTikTok(").substringBefore("fun toEmail(")
         for (needle in listOf("Intent.ACTION_SEND", "Intent.EXTRA_STREAM", "FLAG_GRANT_READ_URI_PERMISSION", "setPackage(plan.pkg)", "Intent.createChooser")) {

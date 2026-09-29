@@ -101,14 +101,20 @@ object ShareHistoryRecorder {
     internal fun channelFor(chosenPackage: String?): String =
         "android:" + (chosenPackage?.takeIf { it.isNotBlank() } ?: "chooser")
 
-    private fun record(app: Context, reviewId: String, chosen: ComponentName?) {
+    /**
+     * A share completed INSIDE the TappyAI share sheet (sample #6) through [target] — web
+     * `onShared(channel)` → `recordReviewShare`. Same row as a chooser pick: `android:<target>`.
+     */
+    fun recordChannel(context: Context, reviewId: String, target: String) = record(context.applicationContext, reviewId, null, target)
+
+    private fun record(app: Context, reviewId: String, chosen: ComponentName?, target: String? = null) {
         val repository = runCatching {
             EntryPointAccessors.fromApplication(app, Deps::class.java).collectionsRepository()
         }.getOrElse { e ->
             Log.w(TAG, "No repository for share history: $e"); return
         }
         scope.launch {
-            val result = repository.recordShare(reviewId, channelFor(chosen?.packageName))
+            val result = repository.recordShare(reviewId, if (target != null) "android:$target" else channelFor(chosen?.packageName))
             if (result !is com.tappyai.core.network.NetworkResult.Success) Log.i(TAG, "Share history not recorded for $reviewId: $result")
         }
     }

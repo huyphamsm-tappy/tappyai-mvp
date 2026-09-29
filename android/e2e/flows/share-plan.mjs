@@ -41,26 +41,48 @@ export async function android({ a, shot, check, seeded }) {
   const card = await a.scrollTo(/Chia sẻ lịch trình/, { max: 10 }).catch(() => null)
   check('mở lại → thẻ kế hoạch hiện đủ (có "Chia sẻ lịch trình")', !!card)
   if (!card) return
+  const PICS = '/sdcard/Pictures/TappyAI'
+  // Scroll INSIDE the bottom sheet: up only — a downward drag at its top dismisses the sheet.
+  const inSheet = async (q) => {
+    for (let i = 0; i <= 8; i++) { const n = a.find(q); if (n && n.y1 > 200 && n.y2 < 2150) return n; a.sh('input', 'swipe', '540', '1700', '540', '900', '500'); await a.sleep(900) }
+    return null
+  }
+  let savedBytes = null
   for (const [tile, pkg, wantImage] of [['Zalo', 'com.zing.zalo', false], ['TikTok (gửi ảnh)', 'com.zhiliaoapp.musically', true]]) {
     const btn = await a.scrollTo(/Chia sẻ lịch trình/, { max: 10 }).catch(() => null)
     await a.tap(btn, { after: 3000 })
-    // A plan share first publishes the plan's own page ("Đang tạo kế hoạch chia sẻ…").
-    await a.waitGone(/Đang tạo kế hoạch chia sẻ/, { timeout: 30000 }).catch(() => {})
+    // SL1: the sheet mints the plan's page first ("Đang tạo liên kết kế hoạch…"), then draws the plan image.
+    await a.waitGone(/Đang tạo liên kết kế hoạch/, { timeout: 30000 }).catch(() => {})
+    await a.waitGone(/^Đang tạo ảnh/, { timeout: 30000 }).catch(() => {})
     shot(`sheet-${pkg}`)
     const sheet = a.texts().join(' | ')
-    check(`sheet chia sẻ kế hoạch có Zalo / Facebook / TikTok (${tile})`, /Zalo/.test(sheet) && /Facebook/.test(sheet) && /TikTok/.test(sheet), sheet.slice(0, 140))
+    check(`sheet mẫu #6 cho kế hoạch: "Xem kế hoạch này trên TappyAI" + link /plan/ (${tile})`, /Chia sẻ với mọi người/.test(sheet) && /Xem kế hoạch này trên TappyAI/.test(sheet) && /uat\.tappyai\.com\/plan\//.test(sheet), sheet.slice(0, 160))
+    if (wantImage) {
+      // "Lưu về máy" = THE plan image (sample #7), 1080 wide; TikTok gets the same file.
+      a.sh('rm', '-rf', PICS)
+      const save = await inSheet('Lưu về máy')
+      if (save) await a.tap(save, { after: 3000 })
+      const name = (a.sh('ls', PICS) || '').split(/\s+/).find((f) => f.endsWith('.png')) || ''
+      const size = (a.sh('stat', '-c', '%s', `${PICS}/${name}`) || '').trim()
+      savedBytes = Number(size) || null
+      const head = name ? a.sh('xxd', '-s', '16', '-l', '8', '-p', `${PICS}/${name}`).trim() : ''
+      const width = head ? parseInt(head.slice(0, 8), 16) : 0
+      const height = head ? parseInt(head.slice(8, 16), 16) : 0
+      check('"Lưu về máy" = tappyai-plan-….png, ảnh kế hoạch rộng 1080', /^tappyai-plan-\d{4}-\d{2}-\d{2}\.png$/.test(name) && width === 1080 && height > 1800, `${name} ${width}×${height}`)
+    }
     a.clearLog()
-    const t = a.find(tile) || await a.scrollRowTo(tile, /Zalo|Facebook|Messenger|TikTok/).catch(() => null)
+    const t = await inSheet(tile)
     if (!t) { check(`thấy ô «${tile}»`, false); await a.back(); continue }
-    await a.tap(t, { after: 6000 })
-    const got = a.receivedShares().find((s) => s.receiver === pkg)
+    await a.tap(t, { after: 3000 })
+    let got
+    for (let i = 0; i < 20 && !got; i++) { got = a.receivedShares().find((x) => x.receiver === pkg); if (!got) await a.sleep(1500) }
     shot(`received-${pkg}`)
-    check(`${tile} nhận ${wantImage ? 'ẢNH kế hoạch (file)' : 'kế hoạch'}`, !!got && (wantImage ? /^image\//.test(got.streamMime || got.type || '') && got.streamBytes > 5000 : !!(got.text || got.streamBytes)),
-      got ? `${got.type} ${got.streamMime || ''} ${got.streamBytes || 0}B` : 'không nhận gì')
+    check(`${tile} nhận ${wantImage ? 'ĐÚNG file ảnh kế hoạch đã lưu' : 'kế hoạch'}`, !!got && (wantImage ? /^image\//.test(got.streamMime || got.type || '') && got.streamBytes === savedBytes : !!(got.text || got.streamBytes)),
+      got ? `${got.type} ${got.streamMime || ''} ${got.streamBytes || 0}B${wantImage ? ` vs ${savedBytes}` : ''}` : 'không nhận gì')
     check(`${tile} kèm link kế hoạch trên UAT`, !!got?.text && /https:\/\/uat\.tappyai\.com\//.test(got.text), (got?.text || '').replace(/\n/g, ' ').slice(0, 100))
     await a.dismissForeign(); await a.launch()
-    // A conversation reopened from history is its own screen (no tab bar): stay on it.
-    await a.tap('Chat', { after: 2500 }).catch(() => {})
+    // A conversation reopened from history is its own screen (no tab bar): close the sheet if still up.
+    if (a.visible(/Chia sẻ với mọi người|Tùy chọn khác|Chia sẻ nhanh qua ứng dụng/)) await a.back()
   }
 }
 

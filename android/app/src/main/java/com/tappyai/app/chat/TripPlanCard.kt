@@ -70,7 +70,8 @@ fun TripPlanCard(plan: TappyPlan, modifier: Modifier = Modifier, planJson: Strin
     val share = { shareOpen = true }
     if (shareOpen) {
         val artifact = remember(plan, planJson) { ShareArtifactBuilder.buildPlanArtifact(plan, Locale.getDefault().language, planJson) }
-        TappyShareSheet(artifact = artifact, onDismiss = { shareOpen = false })
+        // SL1 (owner 29/09): the plan card uses the approved sheet (sample #6) with the plan image (#7).
+        TappyShareSheet(artifact = artifact, onDismiss = { shareOpen = false }, plan = plan)
     }
 
     Column(

@@ -163,7 +163,7 @@ class ProfileClipsTest {
             "onRequestAudioUnlock = { audioUnlocked = true },",
             "onLike = { viewModel.toggleLike(review) },",
             "onSave = { viewModel.toggleSave(review) },",
-            "onShare = { shareScope.launch { shareReview(context, review) } },",
+            "onShare = { shareSheetFor = review },",
             "onAvatarClick = { onAuthorClick(review.userId) },",
             "onDelete = { viewModel.deleteReview(review) },",
             "onHide = { viewModel.hideReview(review) },",
