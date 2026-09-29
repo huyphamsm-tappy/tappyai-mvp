@@ -15,7 +15,7 @@
 export const en: Record<string, string> = {
   // ---------------------------------------------------------------- privacy
   'legal.privacy.title': 'Privacy Policy',
-  'legal.privacy.effective': 'Effective Date: August 2026',
+  'legal.privacy.effective': 'Effective Date: September 2026',
 
   'legal.privacy.s1.heading': '1. Information We Collect',
   'legal.privacy.s1.lead': 'TappyAI may collect:',
@@ -30,9 +30,13 @@ export const en: Record<string, string> = {
   'legal.privacy.s1.b6':
     'Booking details — your name and phone number — when you book a service through TappyAI.',
   'legal.privacy.s1.b7':
-    'Approximate location. With your permission, your device coordinates are used to show results near you.',
+    'Precise location (optional). Only if you allow it, the app sends your device’s precise coordinates with a request so it can find places near you. You can refuse or withdraw the permission at any time and keep using TappyAI; location is never collected in the background.',
   'legal.privacy.s1.b8':
     'Usage and device information — pages viewed, searches, the categories, places, deals and reviews you interact with, the features you use, plus device type, operating system, app version, language, a session identifier, and the country derived from your IP address.',
+  'legal.privacy.s1.b9':
+    'Your date of birth, to confirm you are 18 or older before using the AI assistant, recommendations and posting. Without an account it stays on your device and is sent with your requests.',
+  'legal.privacy.s1.b10':
+    'Content you create: reviews, photos and clips you post, comments, your profile bio, and messages you send to other users.',
   'legal.privacy.s1.note':
     'If you browse without signing in, usage events are recorded against a random anonymous identifier instead of an account.',
 
@@ -61,6 +65,12 @@ export const en: Record<string, string> = {
     'OpenStreetMap Nominatim — turns coordinates into a place name when you share your location.',
   'legal.privacy.s3.b6': 'Stripe — processes payment if you subscribe to a paid plan.',
   'legal.privacy.s3.b7': 'Google and Zalo — handle sign-in when you choose those options.',
+  'legal.privacy.s3.b9':
+    'Google Analytics (website) and Google Analytics for Firebase (Android app) — measure how the service is used, from usage events such as the screens and features you open. The Android app does not collect the advertising ID.',
+  'legal.privacy.s3.b10':
+    'Firebase Cloud Messaging (Google) — delivers push notifications to the Android app when you turn them on, using a device token.',
+  'legal.privacy.s3.b11':
+    'ACCESSTRADE — when you open a partner (affiliate) link, the link carries a pseudonymous code that cannot be used to identify you, only to reconcile partner commissions. The partner’s site then applies its own privacy policy.',
   'legal.privacy.s3.p1': 'These providers process data according to their own privacy policies.',
   'legal.privacy.s3.p2':
     'If you turn on notifications, your browser or device also creates a push subscription, which we store in order to deliver those notifications.',
@@ -238,7 +248,7 @@ export const en: Record<string, string> = {
 export const vi: Record<string, string> = {
   // ---------------------------------------------------------------- privacy
   'legal.privacy.title': 'Chính sách bảo mật',
-  'legal.privacy.effective': 'Ngày hiệu lực: Tháng 8 năm 2026',
+  'legal.privacy.effective': 'Ngày hiệu lực: Tháng 9 năm 2026',
 
   'legal.privacy.s1.heading': '1. Thông tin chúng tôi thu thập',
   'legal.privacy.s1.lead': 'TappyAI có thể thu thập:',
@@ -253,9 +263,13 @@ export const vi: Record<string, string> = {
   'legal.privacy.s1.b6':
     'Thông tin đặt chỗ — tên và số điện thoại của bạn — khi bạn đặt dịch vụ qua TappyAI.',
   'legal.privacy.s1.b7':
-    'Vị trí tương đối. Khi bạn cho phép, tọa độ thiết bị của bạn được dùng để hiển thị kết quả ở gần bạn.',
+    'Vị trí chính xác (tuỳ chọn). Chỉ khi bạn cho phép, ứng dụng gửi tọa độ chính xác của thiết bị kèm yêu cầu để tìm địa điểm quanh bạn. Bạn có thể từ chối hoặc thu hồi quyền bất cứ lúc nào mà vẫn dùng được TappyAI; ứng dụng không thu vị trí khi chạy nền.',
   'legal.privacy.s1.b8':
     'Thông tin sử dụng và thiết bị — các trang bạn xem, nội dung bạn tìm kiếm, các danh mục, địa điểm, ưu đãi và bài đánh giá bạn tương tác, các tính năng bạn dùng, cùng với loại thiết bị, hệ điều hành, phiên bản ứng dụng, ngôn ngữ, mã phiên và quốc gia được xác định từ địa chỉ IP của bạn.',
+  'legal.privacy.s1.b9':
+    'Ngày sinh của bạn, để xác nhận bạn đủ 18 tuổi trước khi dùng trợ lý AI, gợi ý và đăng bài. Khi chưa có tài khoản, ngày sinh được giữ trên thiết bị và gửi kèm yêu cầu của bạn.',
+  'legal.privacy.s1.b10':
+    'Nội dung bạn tạo: bài review, ảnh và clip bạn đăng, bình luận, phần giới thiệu trên hồ sơ và tin nhắn bạn gửi cho người dùng khác.',
   'legal.privacy.s1.note':
     'Nếu bạn sử dụng mà không đăng nhập, các sự kiện sử dụng được ghi nhận theo một mã ẩn danh ngẫu nhiên thay vì theo tài khoản.',
 
@@ -284,6 +298,12 @@ export const vi: Record<string, string> = {
     'OpenStreetMap Nominatim — chuyển tọa độ thành tên địa điểm khi bạn chia sẻ vị trí.',
   'legal.privacy.s3.b6': 'Stripe — xử lý thanh toán nếu bạn đăng ký gói trả phí.',
   'legal.privacy.s3.b7': 'Google và Zalo — xử lý đăng nhập khi bạn chọn các phương thức đó.',
+  'legal.privacy.s3.b9':
+    'Google Analytics (trang web) và Google Analytics for Firebase (ứng dụng Android) — đo cách dịch vụ được sử dụng, qua các sự kiện sử dụng như màn hình và tính năng bạn mở. Ứng dụng Android không thu mã quảng cáo (advertising ID).',
+  'legal.privacy.s3.b10':
+    'Firebase Cloud Messaging (Google) — gửi thông báo đẩy tới ứng dụng Android khi bạn bật thông báo, dùng một mã thiết bị (token).',
+  'legal.privacy.s3.b11':
+    'ACCESSTRADE — khi bạn mở link đối tác (affiliate), link kèm một mã bí danh không thể dùng để nhận diện bạn, chỉ để đối soát hoa hồng với đối tác. Sau đó trang của đối tác áp dụng chính sách bảo mật riêng của họ.',
   'legal.privacy.s3.p1': 'Các nhà cung cấp này xử lý dữ liệu theo chính sách bảo mật riêng của họ.',
   'legal.privacy.s3.p2':
     'Nếu bạn bật thông báo, trình duyệt hoặc thiết bị của bạn cũng tạo một đăng ký nhận thông báo đẩy, và chúng tôi lưu đăng ký đó để có thể gửi các thông báo này.',
