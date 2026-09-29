@@ -1181,8 +1181,13 @@ export async function POST(req: Request) {
   // cache, no new credit) and the model reads only the venues the turn is about; it gets no tools.
   // A/B 29/09 round 8: ON → follow-up 14/15 → 6/15 (a re-run search counts as Serper) and $0.0048 → $0.0076 per turn,
   // compare_chooses 7 → 2 failures. Not kept (quality + cost): OFF unless CONSULT_FOLLOW_REUSE=1.
-  const consultFollowReuse = !!(process.env.CONSULT_FOLLOW_REUSE === '1' && consultativeV1 && (consult?.turn === 'followup' || consult?.turn === 'compare') && !presearchPlan && priorPlaceSearch && ['food', 'entertainment', 'spa'].includes(consult?.domains[0] ?? ''))
-  if (consultFollowReuse && priorPlaceSearch) presearchPlan = { toolName: 'search_places', args: priorPlaceSearch.args, exact: true }
+  // 29/09 r14: the guards cut TRUE facts on follow-up / compare ("Michi 4,8⭐ (818 review) vs Haru 4,5⭐", the
+  // venue's phone) because these turns carried no evidence. The stored candidates of the chat-session state
+  // are that evidence — read with NO provider call (placesOverride below); a re-search only under the old flag.
+  const followFromState = !!(consultativeV1 && process.env.CONSULT_FOLLOW_STATE !== '0' && (consult?.turn === 'followup' || consult?.turn === 'compare') && !presearchPlan && chatState?.candidates?.rows?.length && ['food', 'entertainment', 'spa'].includes(consult?.domains[0] ?? ''))
+  const consultFollowReuse = followFromState || !!(process.env.CONSULT_FOLLOW_REUSE === '1' && consultativeV1 && (consult?.turn === 'followup' || consult?.turn === 'compare') && !presearchPlan && priorPlaceSearch && ['food', 'entertainment', 'spa'].includes(consult?.domains[0] ?? ''))
+  if (followFromState && chatState?.candidates) presearchPlan = { toolName: 'search_places', args: chatState.candidates.args, exact: true }
+  else if (consultFollowReuse && priorPlaceSearch) presearchPlan = { toolName: 'search_places', args: priorPlaceSearch.args, exact: true }
   // Owner 2026-09-28 (c40 T7): a flight request naming two airports runs its fare call before the model.
   // Consult V2: a shopping pick runs the product search before the model (one model step, like a place pick).
   // "xem thêm" on shopping searches again from the carried product slots (replay SHOP-2/3: with no search the
@@ -1958,6 +1963,12 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   // Consult pick / "xem thêm" / "bác": the model reads the engine's top 3 only (trimPlacesForModel consultTop).
   const consultTopTurn = !!consult && ['pick', 'more', 'reject'].includes(consult.turn) && process.env.CONSULT_TOP3 !== '0'
   const storedCandidates = chatState?.candidates
+  // Follow-up / compare: the stored rows of the venues the turn is about (refers + the stated pick), no search.
+  if (followFromState && storedCandidates) {
+    const want = [...(consult?.refers ?? []), ...(latestConsultPick(null) ? [latestConsultPick(null) as string] : [])]
+    const named = (onlyRowsNamed({ results: storedCandidates.rows }, null, want) as { results: unknown[] }).results
+    placesOverride = { results: named.length ? named : storedCandidates.rows.slice(0, 2), ...(storedCandidates.args.location ? { location: storedCandidates.args.location } : {}) }
+  }
   if (consult && (consult.turn === 'more' || consult.turn === 'reject') && storedCandidates?.rows?.length && ['food', 'entertainment', 'spa'].includes(consult.domains[0] ?? '')) {
     const fold = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/gi, 'd').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()
     const seen = [...consultShownEver, ...(chatState?.shown ?? [])].map(fold).filter(k => k.length >= 3)
