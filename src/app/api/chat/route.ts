@@ -1179,7 +1179,9 @@ export async function POST(req: Request) {
   // Follow-up / compare on places (A/B 29/09: a compare came out EMPTY — the guards had no evidence for the
   // ratings the previous reply showed, and cut every sentence). The stored search runs again (same query →
   // cache, no new credit) and the model reads only the venues the turn is about; it gets no tools.
-  const consultFollowReuse = !!(consultativeV1 && (consult?.turn === 'followup' || consult?.turn === 'compare') && !presearchPlan && priorPlaceSearch && ['food', 'entertainment', 'spa'].includes(consult?.domains[0] ?? ''))
+  // A/B 29/09 round 8: ON → follow-up 14/15 → 6/15 (a re-run search counts as Serper) and $0.0048 → $0.0076 per turn,
+  // compare_chooses 7 → 2 failures. Not kept (quality + cost): OFF unless CONSULT_FOLLOW_REUSE=1.
+  const consultFollowReuse = !!(process.env.CONSULT_FOLLOW_REUSE === '1' && consultativeV1 && (consult?.turn === 'followup' || consult?.turn === 'compare') && !presearchPlan && priorPlaceSearch && ['food', 'entertainment', 'spa'].includes(consult?.domains[0] ?? ''))
   if (consultFollowReuse && priorPlaceSearch) presearchPlan = { toolName: 'search_places', args: priorPlaceSearch.args, exact: true }
   // Owner 2026-09-28 (c40 T7): a flight request naming two airports runs its fare call before the model.
   // Consult V2: a shopping pick runs the product search before the model (one model step, like a place pick).
