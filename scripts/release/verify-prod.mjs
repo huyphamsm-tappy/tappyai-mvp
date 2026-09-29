@@ -202,23 +202,35 @@ if (A) {
   await ctx.close()
 }
 {
-  const tracked = links.filter(l => /go\.isclix\.com/.test(l.url))
-  const withSub1 = tracked.filter(l => /[?&]sub1=[0-9a-f]{24}(&|$)/.test(l.url))
-  record('affiliate: every tracked link carries sub1', tracked.length > 0 && withSub1.length === tracked.length, `${withSub1.length}/${tracked.length} tracked links with sub1; sub1 value(s) to find in the ACCESSTRADE click report: ${[...new Set(withSub1.map(l => l.url.match(/sub1=([0-9a-f]{24})/)[1]))].join(', ')}`)
-  const destOf = u => { try { return new URL(new URL(u).searchParams.get('url')).host } catch { return new URL(u).host } }
+  // Phương án C (owner 29/09): a tracked link in the reply is Tappy's /go/at click link and carries NO sub1;
+  // each click on it draws a fresh random sub1 (recorded server-side) and redirects to ACCESSTRADE with it.
+  const goLinks = links.filter(l => /\/go\/at\?/.test(l.url))
+  const leaked = links.filter(l => /go\.isclix\.com/.test(l.url) && /[?&]sub1=/.test(l.url))
+  record('affiliate: tracked links are /go/at click links, none carries a sub1', goLinks.length > 0 && leaked.length === 0, `${goLinks.length} click links, ${leaked.length} deep links with a fixed sub1`)
+  const clickSub1 = []
+  if (goLinks[0]) {
+    for (let k = 0; k < 2; k++) {
+      const r = await fetch(goLinks[0].url, { redirect: 'manual', headers: extraHeaders }).catch(() => null)
+      const loc = r?.headers.get('location') ?? ''
+      try { clickSub1.push(new URL(loc).searchParams.get('sub1')) } catch { clickSub1.push(null) }
+    }
+  }
+  record('affiliate: two clicks on the same link → two different random sub1', clickSub1.length === 2 && clickSub1.every(v => /^[0-9a-f]{24}$/.test(v ?? '')) && clickSub1[0] !== clickSub1[1],
+    `sub1 values (find them in the ACCESSTRADE click report and in commerce_click_attributions): ${clickSub1.join(', ')}`)
+  const destOf = u => { try { const x = new URL(u); const inner = x.pathname === '/go/at' ? new URL(x.searchParams.get('u')) : x; return new URL(inner.searchParams.get('url')).host } catch { try { return new URL(u).host } catch { return '' } } }
   const want = [['tripcom', /trip\.com/], ['traveloka', /traveloka/], ['lazada', /lazada/], ['shopee', /shopee/]]
   for (const [name, re] of want) {
     const l = links.find(x => re.test(destOf(x.url)) || re.test(new URL(x.url).host))
     if (!l) { record(`affiliate follow ${name}`, false, 'no link for this provider in the chat answers (ask a query that returns it, or check the provider row)'); continue }
     const hops = []
-    let url = l.url, sub1Seen = /sub1=/.test(url)
+    let url = l.url, sub1Seen = false
     for (let i = 0; i < 8; i++) {
-      const r = await fetch(url, { redirect: 'manual', headers: { 'user-agent': 'Mozilla/5.0 (Linux; Android 14) AppleWebKit/537.36 Chrome/128 Mobile Safari/537.36' } }).catch(e => ({ status: 0, headers: new Map(), err: String(e) }))
+      const r = await fetch(url, { redirect: 'manual', headers: { ...(new URL(url).host === new URL(BASE).host ? extraHeaders : {}), 'user-agent': 'Mozilla/5.0 (Linux; Android 14) AppleWebKit/537.36 Chrome/128 Mobile Safari/537.36' } }).catch(e => ({ status: 0, headers: new Map(), err: String(e) }))
       hops.push(`${r.status} ${new URL(url).host}`)
       const loc = r.headers.get?.('location')
       if (!loc || r.status < 300 || r.status > 399) break
       url = new URL(loc, url).toString()
-      if (/click\.accesstrade\.vn/.test(url) && /sub1=/.test(url)) sub1Seen = true
+      if (/go\.isclix\.com|click\.accesstrade\.vn/.test(url) && /sub1=[0-9a-f]{24}/.test(url)) sub1Seen = true
     }
     let bodyMerchant = null
     if (/click\.accesstrade\.vn/.test(url)) {
@@ -228,7 +240,7 @@ if (A) {
       const text = decodeURIComponent(html.replace(/\\\//g, '/').replace(/&amp;/g, '&'))
       bodyMerchant = [...text.matchAll(/https?:\/\/([a-z0-9.-]+)/gi)].map(m => m[1]).find(h => re.test(h)) ?? null
     }
-    const tracked = /isclix/.test(l.url)
+    const tracked = /isclix|\/go\/at\?/.test(l.url)
     const reachedAT = hops.some(h => /accesstrade\.vn/.test(h))
     const merchantHop = hops.map(h => h.split(' ')[1]).find(h => re.test(h)) ?? bodyMerchant
     const final = merchantHop ?? new URL(url).host

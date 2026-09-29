@@ -37,7 +37,7 @@ upload (UI); a plan share opened signed-out (200, `noindex`); B reads **0** of A
 `chat_messages`, `user_memory`, `user_preferences`, `notifications` and cannot modify A's `plan_shares`; comparison
 with the baseline above.
 
-**Dry run on UAT `400da54` (2026-09-29, `--auth audit-magiclink`): 31 PASS · 1 FAIL**, the FAIL being the script's own
+**Dry run on UAT `453bd93` (2026-09-29, Phương án C click links): 33 PASS · 0 FAIL** (`gs://tappyai-uat-evidence/evidence/453bd93/verify-dryrun/`). Earlier dry run on `400da54`: 31 PASS · 1 FAIL, the FAIL being the script's own
 reading of ACCESSTRADE's `<meta refresh>` for Trip.com (fixed after the run; decode checked on the captured page).
 Evidence: `gs://tappyai-uat-evidence/evidence/400da54/verify-dryrun2/`.
 
@@ -54,8 +54,10 @@ Evidence: `gs://tappyai-uat-evidence/evidence/400da54/verify-dryrun2/`.
 **ACCESSTRADE — the click is recorded with sub1**
 1. pub2.accesstrade.vn → **Báo cáo → Báo cáo click** (click report), date = today.
 2. Campaign **Trip.com** (6455552313033835511) and **Lazada** (5087153089503673507) show new clicks at the time of the run.
-3. Open the click detail / export: column **sub1** contains the value(s) printed in `report.md`
-   ("sub1 value(s) to find in the ACCESSTRADE click report"). A click with an empty sub1 = FAIL (tell the lead).
+3. Open the click detail / export: column **sub1** holds the TWO different values printed in `report.md`
+   ("two clicks on the same link → two different random sub1"). A click with an empty sub1 = FAIL (tell the lead).
+4. (Phương án C) The lead confirms the same two sub1 values are rows of `commerce_click_attributions` for test account A
+   (read-only SQL: `select sub1, identity_id, provider_id, clicked_at from public.commerce_click_attributions order by clicked_at desc limit 5`).
 
 **Play Console — the build is the release build and still hidden**
 1. play.google.com/console → **TappyAI** → Test and release → **Internal testing** → release with **versionCode 10**,

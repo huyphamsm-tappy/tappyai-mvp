@@ -99,7 +99,8 @@ của Tappy (`src/lib/ccp/tracking/accesstrade.ts:62-65`):
 Nghĩa là `sub1` là **mã bí danh cố định theo người dùng**: ACCESSTRADE biết "các lượt bấm/mua này là của cùng một người" nhưng không
 biết người đó là ai; chỉ Tappy (giữ secret) mới nối lại được. Theo định nghĩa của Huy ("mã ngẫu nhiên không nhận diện người dùng → không
 tính; chứa id/email → ghi rõ"), nó nằm **giữa hai trường hợp**:
-- **Phương án A (khuyến nghị cho bản này): không tính chia sẻ.** Không gửi dữ liệu cá nhân nào; mã chỉ để đối soát hoa hồng. Thêm vào chính
+- ✅ **HUY ĐÃ CHỌN PHƯƠNG ÁN C (29/09) — đã làm, LIVE UAT `453bd93`:** mỗi lần bấm link đối tác, server Tappy (`/go/at`) sinh một `sub1` NGẪU NHIÊN mới (không suy ra từ id, không lặp giữa các lần bấm), lưu bảng nối `commerce_click_attributions` (sub1 → tài khoản/phiên khách, thời điểm, đối tác, link; RLS chỉ server; giữ 12 tháng) rồi chuyển sang ACCESSTRADE kèm `sub1`. Đối tác không nhận ra người dùng và không nối được các lần bấm. Chính sách `/privacy` đã ghi đúng cơ chế + thời hạn. **Data safety:** không tính "chia sẻ" (không gửi dữ liệu nhận diện nào cho đối tác); dữ liệu nối lưu ở Tappy thuộc mục "Hoạt động trong app" (Tương tác trong app → Phân tích/Chức năng), xoá được khi xoá tài khoản sau 12 tháng tự xoá.
+- ~~Phương án A (khuyến nghị cho bản này): không tính chia sẻ.~~ (thay bằng C) Không gửi dữ liệu cá nhân nào; mã chỉ để đối soát hoa hồng. Thêm vào chính
   sách quyền riêng tư một câu: "Khi bạn bấm link đối tác, TappyAI gửi kèm một mã bí danh không thể dùng để nhận diện bạn, để đối soát hoa hồng."
 - **Phương án B (chặt nhất): khai "Mã người dùng (User IDs) — có chia sẻ, mục đích Quảng cáo/tiếp thị hoặc Phân tích".**
 - **Phương án C (sửa code, việc phiên web):** đổi `sub1` thành mã ngẫu nhiên MỖI LẦN BẤM, Tappy lưu bảng nối mã ↔ người dùng ở server → khi
