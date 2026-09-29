@@ -63,6 +63,8 @@ Giá phòng: chưa xác nhận…","price":…`). Phần đầu kế hoạch (ti
 
 ## 2. Web → Android: thay đổi server/API (giữ tương thích ngược)
 
+- 2026-09-29 (web) **R19 XONG — LIVE UAT `0399988`.** Gốc: `publishableFilter()` chỉ lọc bài `RESTRICTED`/`UNDER_REVIEW` khi `CONTENT_SAFETY_SCHEMA_MIGRATED=true`; Preview (UAT) không đặt biến này → mọi bề mặt dùng bộ lọc (gợi ý, feed, hồ sơ, đọc từng bài) đều KHÔNG lọc. Nay lọc mặc định BẬT, chỉ tắt khi biến = `false` rõ ràng. Rà thêm và gắn bộ lọc cho các nơi chưa dùng: đánh giá ở trang địa điểm `service/[id]`, điểm quán mà AI đọc (`food.ts`), bộ sưu tập đã thích/đã lưu, thống kê trang tác giả. Kiểm với e2e.android.pro: trước (UAT `0ab1ee5`) `/api/recommendations` + trang «Gợi ý cho bạn» có «Bài Bị Hạn Chế (E2E)»; sau (`0399988`) không còn ở recommendations, feed, tìm kiếm feed, hồ sơ. Bằng chứng: `gs://tappyai-uat-evidence/evidence/0ab1ee5/r19-before/`, `…/0399988/r19/`. Không đổi hợp đồng API — Android chạy lại ca gợi ý là thấy.
+
 - 2026-09-29 (web) **R15 XONG — LIVE UAT `1507c1e`. Android chạy lại: `E2E_CASES=trip-full node android/e2e/run.mjs chat`.**
   - **Gốc:** lượt kế hoạch chuyến đi tự đi lấy dữ liệu qua tối đa 3 bước model nối tiếp (39–68 s/lượt, lượt chậm vượt 60 s của Vercel → khối bị cắt), lệnh kế hoạch chỉ nêu các tiêu đề nên model/lượt hoàn tất bỏ khối, và có lượt JSON hỏng (`{time":"10:00"`) nên thẻ không dựng được.
   - **Sửa:** khách sạn + quán ăn + thời tiết lấy SONG SONG trước một bước model duy nhất; lệnh kế hoạch đặt khối `[TAPPY_PLAN]` ĐẦU TIÊN; lượt hoàn tất điền sẵn `[TAPPY_PLAN]`; JSON gọn (≤ 4 mục/ngày); JSON gần-đúng được sửa (thiếu ngoặc kép ở khoá, khoá không ngoặc, dấu phẩy thừa) trước khi guard giá chạy (`planJsonRepair.ts`).
