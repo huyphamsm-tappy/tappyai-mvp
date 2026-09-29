@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Cát Tiên Hotel",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T03:12:54.775Z",
+ "body": {
+  "searchParameters": {
+   "q": "Cát Tiên Hotel",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Cát Tiên Hotel, Cát Tiên (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/526849098.jpg?k=e141ea93d2b64870611102ea92ec79d65ad5c669954b6377eb5937f631646872&o=",
+    "imageWidth": 576,
+    "imageHeight": 768,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS06tXLxvoJnOjwPHhsTHe_urQzLMtOspwHppDmTZDNRw&s=10",
+    "thumbnailWidth": 480,
+    "thumbnailHeight": 640,
+    "source": "www.booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/bamboo-wind.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F526849098.jpg%3Fk%3De141ea93d2b64870611102ea92ec79d65ad5c669954b6377eb5937f631646872%26o%3D&tbnid=mE7fF0-8A0EKpM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fbamboo-wind.vi.html&docid=G3NoNpW5jDlrxM&w=576&h=768",
+    "position": 1
+   },
+   {
+    "title": "Cat Tien Jungle Lodge, Cát Tiên (cập nhật giá năm 2027)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/166795860.jpg?k=dc0cd22321d6942ffe98729aa1fa70bf7162073ad896747140532c031df9b7bf&o=",
+    "imageWidth": 1024,
+    "imageHeight": 673,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpjnEYh5HtlOnSXkGCJzov9weKu8-nZhkRGfDj6IxwFQ&s=10",
+    "thumbnailWidth": 682,
+    "thumbnailHeight": 449,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/cat-tien-jungle-lodge-bien-hoa.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F166795860.jpg%3Fk%3Ddc0cd22321d6942ffe98729aa1fa70bf7162073ad896747140532c031df9b7bf%26o%3D&tbnid=p9VT6lJG9G1TFM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fcat-tien-jungle-lodge-bien-hoa.vi.html&docid=tzgq7KiVQBl0WM&w=1024&h=673",
+    "position": 2
+   },
+   {
+    "title": "Khu nghỉ dưỡng sinh thái Alagon Nam Cát Tiên (ALAGON ECOLODGE NAM CAT TIEN)  Nam Cát Tiên, Việt Nam: Agoda.com có giá rẻ nhất",
+    "imageUrl": "https://pix10.agoda.net/hotelImages/86103890/0/09538a32a086434a74484429f2897576.jpg?va=1&ce=3&s=414x232",
+    "imageWidth": 414,
+    "imageHeight": 232,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTAzNzQEJmZkLK5euga_fpuLOaQiqnVh48sJ-qwPy1YBA&s=10",
+    "thumbnailWidth": 414,
+    "thumbnailHeight": 232,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/alagon-ecolodge-nam-cat-tien/hotel/nam-cat-tien-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F86103890%2F0%2F09538a32a086434a74484429f2897576.jpg%3Fva%3D1%26ce%3D3%26s%3D414x232&tbnid=SF0by2h9hYe_bM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Falagon-ecolodge-nam-cat-tien%2Fhotel%2Fnam-cat-tien-vn.html&docid=ZrqRJOBm0sLEOM&w=414&h=232",
+    "position": 3
+   },
+   {
+    "title": "Cat Tien Vista, Tân Phú (updated prices 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/785738739.jpg?k=b98e03726495df67b5c576659dac00e02c127aa19d5b57fa4794ac7a86466a4b&o=",
+    "imageWidth": 576,
+    "imageHeight": 768,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRlNKTZs13TtAenzCNTKP8dOmwVrtVjBCEFoN7QpNTEdg&s=10",
+    "thumbnailWidth": 480,
+    "thumbnailHeight": 640,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/cat-tien-vista.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F785738739.jpg%3Fk%3Db98e03726495df67b5c576659dac00e02c127aa19d5b57fa4794ac7a86466a4b%26o%3D&tbnid=dV7sZJ8ugHGHZM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fcat-tien-vista.html&docid=yORICvQJ7YOYZM&w=576&h=768",
+    "position": 4
+   },
+   {
+    "title": "Khu Nghỉ Dưỡng Orchard Home Nam Cát Tiên, Nam Cát Tiên, Nam Cát Tiên",
+    "imageUrl": "https://pix10.agoda.net/hotelImages/5055511/-1/db5d1fb216aeda9c0f9e9a0172e1826e.jpg?va=1&ce=0&s=414x232",
+    "imageWidth": 348,
+    "imageHeight": 232,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJ_sEinGIVC1Ek2dyof8g1Xg8JVZYAcXwxt-p0igV0xw&s=10",
+    "thumbnailWidth": 348,
+    "thumbnailHeight": 232,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/orchard-home-nam-cat-tien-resort/hotel/nam-cat-tien-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F5055511%2F-1%2Fdb5d1fb216aeda9c0f9e9a0172e1826e.jpg%3Fva%3D1%26ce%3D0%26s%3D414x232&tbnid=OwI2CqttrD4LWM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Forchard-home-nam-cat-tien-resort%2Fhotel%2Fnam-cat-tien-vn.html&docid=sIL4G2JfuyuQ7M&w=348&h=232",
+    "position": 5
+   },
+   {
+    "title": "Gợi ý Top 5 resort nghỉ dưỡng khi du lịch Nam Cát Tiên 2026",
+    "imageUrl": "https://datviettour.com.vn/uploads/images/mien-nam/dong-nai/danh-thang/orchard-home-resort-nam-cat-tien.jpg",
+    "imageWidth": 800,
+    "imageHeight": 507,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQjigZ13cixGMHQxLdO-BD8ah-cNxjOdkGljzvkkf4WIw&s=10",
+    "thumbnailWidth": 561,
+    "thumbnailHeight": 356,
+    "source": "Đất Việt Tour",
+    "domain": "datviettour.com.vn",
+    "link": "https://datviettour.com.vn/tin-tuc/goi-y-top-5-resort-nghi-duong-khi-du-lich-nam-cat-tien",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdatviettour.com.vn%2Fuploads%2Fimages%2Fmien-nam%2Fdong-nai%2Fdanh-thang%2Forchard-home-resort-nam-cat-tien.jpg&tbnid=3W6JJUgcKfQ0oM&imgrefurl=https%3A%2F%2Fdatviettour.com.vn%2Ftin-tuc%2Fgoi-y-top-5-resort-nghi-duong-khi-du-lich-nam-cat-tien&docid=8dV8hFijoTF1wM&w=800&h=507",
+    "position": 6
+   },
+   {
+    "title": "Cát Tiên Hotel, Cát Tiên (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/545908920.jpg?k=bf639bbd55bd10a9cb1369c5193c6cc8f41b95d50f1e0020d2edd00e974589eb&o=",
+    "imageWidth": 576,
+    "imageHeight": 768,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGbw8G1dPO6I9K4aWdHvIICaqyTAFqD-B61Nz_xnyRzQ&s=10",
+    "thumbnailWidth": 480,
+    "thumbnailHeight": 640,
+    "source": "www.booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/bamboo-wind.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F545908920.jpg%3Fk%3Dbf639bbd55bd10a9cb1369c5193c6cc8f41b95d50f1e0020d2edd00e974589eb%26o%3D&tbnid=8F2mAPxMRMnv2M&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fbamboo-wind.vi.html&docid=G3NoNpW5jDlrxM&w=576&h=768",
+    "position": 7
+   },
+   {
+    "title": "Hotel Cát Tiên Sa, Giá giảm 30%, Ảnh & Review chân thật",
+    "imageUrl": "https://ik.imagekit.io/tvlk/apr-asset/TzEv3ZUmG4-4Dz22hvmO9NUDzw1DGCIdWl4oPtKumOg=/lodging/98000000/97040000/97038800/97038770/5c74dcce_z.jpg?tr=q-80,c-at_max,w-740,h-500&_src=imagekit",
+    "imageWidth": 375,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR5JWSFp9cDerFxBQBxsDLaVEVkyqfsthFtkxbwQ2ZURg&s=10",
+    "thumbnailWidth": 375,
+    "thumbnailHeight": 500,
+    "source": "Traveloka",
+    "domain": "www.traveloka.com",
+    "link": "https://www.traveloka.com/vi-vn/hotel/vietnam/hotel-cat-tien-sa-3000010035812",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fik.imagekit.io%2Ftvlk%2Fapr-asset%2FTzEv3ZUmG4-4Dz22hvmO9NUDzw1DGCIdWl4oPtKumOg%3D%2Flodging%2F98000000%2F97040000%2F97038800%2F97038770%2F5c74dcce_z.jpg%3Ftr%3Dq-80%2Cc-at_max%2Cw-740%2Ch-500%26_src%3Dimagekit&tbnid=JJ5b-rQ1gYdL1M&imgrefurl=https%3A%2F%2Fwww.traveloka.com%2Fvi-vn%2Fhotel%2Fvietnam%2Fhotel-cat-tien-sa-3000010035812&docid=kWW0ZhidzTLxrM&w=375&h=500",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

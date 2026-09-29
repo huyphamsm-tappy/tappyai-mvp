@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Lana Beauty | GỘI ĐẦU QUẬN 10 | LÀM NAIL QUẬN 10\" OR \"The Nail\" OR \"Hani's Nail\" quan 10 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T04:07:37.794Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Lana Beauty | GỘI ĐẦU QUẬN 10 | LÀM NAIL QUẬN 10\" OR \"The Nail\" OR \"Hani's Nail\" quan 10 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "The Nail Chic - Tiệm nail mới tại 193 Nguyễn Lâm, P. Diên Hồng ...",
+    "link": "https://www.tiktok.com/@thuy.chung.ly/video/7651110247737740564",
+    "snippet": "The Nail Chic vừa bố trí lại không gian tiệm với hy vọng khách hàng sẽ thích phong cách mới. Địa chỉ: 193 Nguyễn Lâm, Phường Diên Hồng, TP.HCM (Quận 10).",
+    "position": 1
+   },
+   {
+    "title": "Tiệm Nail The Nail Corner quận 4 — Gội, Chà gót thư giãn",
+    "link": "https://www.tiktok.com/@thudidaurua/video/7652543433940274450",
+    "snippet": "Không gian và vị trí The Nail Corner nằm ở quận 4, có nét “hidden” — không gian ấm cúng, thoải mái, phù hợp cho người muốn thư giãn khi làm nail ...",
+    "position": 2
+   },
+   {
+    "title": "i'm obsessed with this colorrr @the nail lab NYC #fy #nails",
+    "link": "https://www.tiktok.com/@dianerysl/video/7686614122833661198",
+    "snippet": "... The Nail Resort in Port Harcourt. Body What defines an almond nail ... Lead Nail xinh mỗi ngày giới thiệu 10 ý tưởng nail art dễ làm để thay đổi ...",
+    "position": 3
+   },
+   {
+    "title": "Funny Client Interactions at the Nail Salon",
+    "link": "https://www.tiktok.com/@nailboo/video/7590913075046354231",
+    "snippet": "Laugh at relatable moments with clients at the nail salon! Discover funny nail memes and client stories. #nails #relatablememes #funny #nailtech.",
+    "position": 4
+   },
+   {
+    "title": "Làm nail cho người lạ: quy trình, ý tưởng và lưu ý",
+    "link": "https://www.tiktok.com/@the.nail.chic/video/7664983012924247316",
+    "snippet": "The Nail Chic vừa bố trí lại không gian tiệm với hy vọng khách hàng sẽ thích phong cách mới. Địa chỉ: 193 Nguyễn Lâm, Phường Diên Hồng, TP.HCM (Quận 10). Tóm ...",
+    "position": 5
+   },
+   {
+    "title": "Zarla Larson The Nail Lab | TikTok",
+    "link": "https://www.tiktok.com/discover/zarla-larson-the-nail-lab",
+    "snippet": "@sydneylaurrenn Thank you for the recommendation to this salon Tiny was Fabulous! @The Nail Lab of Cary is Sarah and Zara approved",
+    "date": "7 thg 9, 2026",
+    "position": 6
+   },
+   {
+    "title": "What Is the Nail in Basketball? NBA All‑Star Court Setup",
+    "link": "https://www.tiktok.com/@nba/video/7335896018195729710",
+    "snippet": "The nail is also one of the most underrated terms in basketball. Players often hear the advice to “find the nail” before shooting a free throw.",
+    "position": 7
+   },
+   {
+    "title": "Stunning Red Leopard Duck Nails by The Nail Homegirl",
+    "link": "https://www.tiktok.com/@thenailhomegirl/video/7681033252576054542",
+    "snippet": "Get ready to be inspired by the latest in nail fashion from The Nail Homegirl. This showcase features striking red nails with bold leopard ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

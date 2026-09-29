@@ -14,6 +14,7 @@
 import { describe, it, expect, vi, beforeAll, afterAll } from 'vitest'
 import { mkdirSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
+import { randomUUID } from 'node:crypto'
 import { prepareReplayEnv, RUN_FLAGS } from './lib/env'
 import { installReplayFetch, netSnapshot, netDelta } from './lib/serperReplay'
 import { parseDataStream, toolRowCount, toolRowNames } from './lib/stream'
@@ -110,12 +111,12 @@ describe.skipIf(!ON)('offline replay — chat route, real model, Serper record/r
   }, 120_000)
   afterAll(() => { uninstall?.() })
 
-  const post = async (messages: Msg[], evidenceId: string | null) => {
+  const post = async (messages: Msg[], chatSessionId: string) => {
     const req = {
       url: 'http://localhost/api/chat',
       nextUrl: new URL('http://localhost/api/chat'),
       headers: new Headers({ 'content-type': 'application/json', 'x-tappy-surface': process.env.REPLAY_SURFACE || 'web', ...(process.env.REPLAY_CAPS ? { 'x-tappy-caps': process.env.REPLAY_CAPS } : {}), 'accept-language': 'vi' }),
-      json: () => Promise.resolve({ messages, userLocation: USER_LOCATION, ...(evidenceId ? { decisionEvidenceId: evidenceId } : {}) }),
+      json: () => Promise.resolve({ messages, userLocation: USER_LOCATION, chatSessionId }),
       signal: undefined,
     }
     const res = await POST(req as never)
@@ -127,6 +128,8 @@ describe.skipIf(!ON)('offline replay — chat route, real model, Serper record/r
     let lastPick: string | null = null, lastAlt: string | null = null
     const shown: string[] = []
     let evidenceId: string | null = null
+    // Like the web client (R14): one chatSessionId per conversation, sent on every turn; no decisionEvidenceId.
+    const chatSessionId = randomUUID()
     for (let i = 0; i < c.turns.length; i++) {
       const t = c.turns[i]
       const { text: sent, unresolved } = fillPlaceholders(t.text, lastPick, lastAlt)
@@ -138,7 +141,7 @@ describe.skipIf(!ON)('offline replay — chat route, real model, Serper record/r
       let raw = '', status = 0, crash: string | undefined
       try {
         const r: { status: number; raw: string; evidenceId: string | null } = await Promise.race([
-          post([...messages], evidenceId),
+          post([...messages], chatSessionId),
           new Promise<never>((_, rej) => setTimeout(() => rej(new Error(`turn timeout ${TURN_TIMEOUT_MS} ms`)), TURN_TIMEOUT_MS)),
         ])
         raw = r.raw; status = r.status

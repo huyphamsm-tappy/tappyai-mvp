@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Fusion Suites Vũng Tàu\" OR \"Melissa - Vung Tau | Khách Sạn Bãi Sau Vũng Tàu\" OR \"Vias Hotel Vung Tau\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T03:01:48.761Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Fusion Suites Vũng Tàu\" OR \"Melissa - Vung Tau | Khách Sạn Bãi Sau Vũng Tàu\" OR \"Vias Hotel Vung Tau\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "VIAS HOTEL VUNG TAU (@viashotelvungtau)",
+    "link": "https://www.tiktok.com/@viashotelvungtau",
+    "snippet": "VIAS HOTEL VUNG TAU · @viashotelvungtau · VIAS HOTEL VUNG TAU 179 Thuy Van, Tam Thang, HCMC Hotline booking: 0254 354 1111.",
+    "position": 1
+   },
+   {
+    "title": "𝐅𝐮𝐬𝐢𝐨𝐧 𝐒𝐮𝐢𝐭𝐞𝐬 𝐕𝐮̃𝐧𝐠 𝐓𝐚̀𝐮 💯REVIEW từ trải nghiệm ...",
+    "link": "https://www.tiktok.com/@nhungjie.travel/video/7673371086746078484",
+    "snippet": "Fusion Suites Vũng Tàu REVIEW từ trải nghiệm thực tế: vị trí tiện đi ăn uống (cụ thể là chợ Xóm Lưới), ra biển tắm sẽ ...",
+    "position": 2
+   },
+   {
+    "title": "Review Fusion Suites Vũng Tàu: đẹp, sịn trên hình hay ...",
+    "link": "https://www.tiktok.com/@wikidulich.com/video/7659288650823322901",
+    "snippet": "Review Fusion Suites Vũng Tàu: đẹp, sịn trên hình hay thực tế cũng vậy? 50 năm về sau. Full. Chạm Music Box.",
+    "position": 3
+   },
+   {
+    "title": "Luxury Experience at Vias Hotel Vung Tau for ...",
+    "link": "https://www.tiktok.com/@viashotelvungtau/video/7480430578521607442",
+    "snippet": "... Vias Hotel Vung Tau starting from just 2000000 VND for two guests ... Keywords: Vias Hotel Vung Tau, 5-star hotel experience, luxury ...",
+    "position": 4
+   },
+   {
+    "title": "Khách Sạn Fusion Suites Vũng Tàu: Review Chi Tiết",
+    "link": "https://www.tiktok.com/@anhdadenbooking.com/video/7520585734772804865",
+    "snippet": "Review Khách Sạn Vũng Tàu - Fusion Suites Vũng Tàu, nơi có hồ bơi trên cao vô cực ngắm hoàng hôn đẹp nhất Vũng Tàu #reviewdulich #review # ...",
+    "position": 5
+   },
+   {
+    "title": "Khách sạn Fusion Suites Vũng Tàu ngắm hoàng hôn đẹp",
+    "link": "https://www.tiktok.com/@dulichcungkimnhi/photo/7678316900425698578",
+    "snippet": "Khách sạn Fusion Suites Vũng Tàu ngắm hoàng hôn đẹp. Khách sạn Fusion Suites Vũng Tàu có view ngắm hoàng hôn đẹp, tặng kèm spa khi đặt phòng ...",
+    "position": 6
+   },
+   {
+    "title": "Fusion Suites Vũng Tàu: 2N1Đ Combo with Transfers & Spa",
+    "link": "https://www.tiktok.com/@checkincungbap/photo/7686795706987760897",
+    "snippet": "Fusion Suites Vũng Tàu sở hữu vị trí thuận tiện, cách công viên Bãi Trước khoảng 2 phút đi bộ. Từ khách sạn, du khách có thể ngắm nhìn biển ...",
+    "position": 7
+   },
+   {
+    "title": "Fusion Suites Vũng Tàu: review resort 10 hồ bơi vô cực ...",
+    "link": "https://www.tiktok.com/@booking.khachsan/video/7648181700245146901",
+    "snippet": "Fusion Suites Vũng Tàu 10 hồ bơi vô cực, spa cho 2 khách và chỉ cách công viên Bãi Trước 200m. Một địa điểm rất đáng trải nghiệm khi đến Vũng ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

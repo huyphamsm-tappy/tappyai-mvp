@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "CÁT TIÊN RIVERSIDE hotel",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T03:13:14.769Z",
+ "body": {
+  "searchParameters": {
+   "q": "CÁT TIÊN RIVERSIDE hotel",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Cát Tiên Riverside, Tân Phú (cập nhật giá năm 2027)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/292483274.jpg?k=0cc086acf4b69f097ae00e0102d09cf4b43ea4adcc4f5d6e889ff3a3fa5d4014&o=",
+    "imageWidth": 576,
+    "imageHeight": 768,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8HSHxMEh2j7v5Bb0R13W1noNaBodoja6kkZwM8ujZNw&s=10",
+    "thumbnailWidth": 480,
+    "thumbnailHeight": 640,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/cat-tien-river-side.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F292483274.jpg%3Fk%3D0cc086acf4b69f097ae00e0102d09cf4b43ea4adcc4f5d6e889ff3a3fa5d4014%26o%3D&tbnid=P5ihY0SYMazqzM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fcat-tien-river-side.vi.html&docid=GyO7IQdta4bN6M&w=576&h=768",
+    "position": 1
+   },
+   {
+    "title": "Cat Tien Riverside Nam Cát Tiên, Việt Nam: Agoda.com có giá rẻ nhất",
+    "imageUrl": "https://pix7.agoda.net/hotelImages/85204843/0/2a866984d90eea08c3c578211d62a2fa.jpg?ce=3&s=414x232",
+    "imageWidth": 309,
+    "imageHeight": 232,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSa23SILILovxW_zRx-xryV4p-7qTBj5Ssa_rbDLeUcEg&s",
+    "thumbnailWidth": 259,
+    "thumbnailHeight": 194,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/cat-tien-river-side/hotel/da-breline-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix7.agoda.net%2FhotelImages%2F85204843%2F0%2F2a866984d90eea08c3c578211d62a2fa.jpg%3Fce%3D3%26s%3D414x232&tbnid=bg4svhf-CMRciM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fcat-tien-river-side%2Fhotel%2Fda-breline-vn.html&docid=qeen_BmPLZc7AM&w=309&h=232",
+    "position": 2
+   },
+   {
+    "title": "Cat Tien Riverside Nam Cát Tiên, Việt Nam: Agoda.com có giá rẻ nhất",
+    "imageUrl": "https://q-xx.bstatic.com/xdata/images/hotel/max300/292575749.jpg?k=df361111f51d10e0558e5f865f6f4a44d47060d9d96f723f2692d771fe4ef1d1&o=",
+    "imageWidth": 300,
+    "imageHeight": 225,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSoOzvA7uz70fNG0f74rHHI_p25avay9UqpEu194oUjGw&s",
+    "thumbnailWidth": 259,
+    "thumbnailHeight": 194,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/cat-tien-river-side/hotel/da-breline-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fq-xx.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax300%2F292575749.jpg%3Fk%3Ddf361111f51d10e0558e5f865f6f4a44d47060d9d96f723f2692d771fe4ef1d1%26o%3D&tbnid=feRgzxviSzxM9M&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fcat-tien-river-side%2Fhotel%2Fda-breline-vn.html&docid=qeen_BmPLZc7AM&w=300&h=225",
+    "position": 3
+   },
+   {
+    "title": "Cát Tiên Riverside Hotel | Tỉnh Đồng Nai",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=1021219096690058",
+    "imageWidth": 644,
+    "imageHeight": 644,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBLTUiY6qzXVSoVDiHue3L2qgwKWMQr7_K1eVhJg2eWQ&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/p/C%C3%A1t-Ti%C3%AAn-Riverside-Hotel-100064059311442/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D1021219096690058&tbnid=rGkv6rFuoueRCM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Fp%2FC%25C3%25A1t-Ti%25C3%25AAn-Riverside-Hotel-100064059311442%2F&docid=7O8GqO6T6VPshM&w=644&h=644",
+    "position": 4
+   },
+   {
+    "title": "Cát Tiên Riverside Hotel, Nam Cát Tiên | Hotels.com",
+    "imageUrl": "https://images.trvl-media.com/lodging/104000000/103510000/103505100/103505087/38db9768.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill",
+    "imageWidth": 1022,
+    "imageHeight": 575,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcST7AriwxvmiKWAYS9oyeX7bzmp6aPm4CkTHoUGDhIXHA&s=10",
+    "thumbnailWidth": 597,
+    "thumbnailHeight": 335,
+    "source": "hotels",
+    "domain": "vi.hotels.com",
+    "link": "https://vi.hotels.com/ho3313162784/cat-tien-riverside-hotel-tan-phu-viet-nam/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimages.trvl-media.com%2Flodging%2F104000000%2F103510000%2F103505100%2F103505087%2F38db9768.jpg%3Fimpolicy%3Dresizecrop%26rw%3D575%26rh%3D575%26ra%3Dfill&tbnid=CkJK7R62qtj1wM&imgrefurl=https%3A%2F%2Fvi.hotels.com%2Fho3313162784%2Fcat-tien-riverside-hotel-tan-phu-viet-nam%2F&docid=gyifGjenzPzmaM&w=1022&h=575",
+    "position": 5
+   },
+   {
+    "title": "Cat Tien Riverside Nam Cát Tiên, Việt Nam: Agoda.com có giá rẻ nhất",
+    "imageUrl": "https://q-xx.bstatic.com/xdata/images/hotel/max300/252748662.jpg?k=4a83e9e5168a343bb97a5c9d3062ab84cef4204fdaec4bcb71682378d1b5fb82&o=",
+    "imageWidth": 300,
+    "imageHeight": 225,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYXIgcD4ZsMzoXOI7Z5awveYT3iXvNTuleab9dPRBVBQ&s=10",
+    "thumbnailWidth": 299,
+    "thumbnailHeight": 225,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/cat-tien-river-side/hotel/da-breline-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fq-xx.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax300%2F252748662.jpg%3Fk%3D4a83e9e5168a343bb97a5c9d3062ab84cef4204fdaec4bcb71682378d1b5fb82%26o%3D&tbnid=1V2iGua_xNlUIM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fcat-tien-river-side%2Fhotel%2Fda-breline-vn.html&docid=qeen_BmPLZc7AM&w=300&h=225",
+    "position": 6
+   },
+   {
+    "title": "Cat Tien Riverside Lodge Nam Cát Tiên, Việt Nam: Agoda.com có giá rẻ nhất",
+    "imageUrl": "https://q-xx.bstatic.com/xdata/images/hotel/max1024x768/887308209.jpg?k=ea52284346413d726a9755dae180ed41ec8102a2b4102c698dc62d9ce5b07447&o=",
+    "imageWidth": 837,
+    "imageHeight": 628,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFfpaYLJ1XqeqGH6SRyScaLGmf_2SIJSRjtsLJNxd6qg&s",
+    "thumbnailWidth": 259,
+    "thumbnailHeight": 194,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/cat-tien-riverside-lodge/hotel/quan-tom-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fq-xx.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F887308209.jpg%3Fk%3Dea52284346413d726a9755dae180ed41ec8102a2b4102c698dc62d9ce5b07447%26o%3D&tbnid=R8XKCClkP1Oa-M&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fcat-tien-riverside-lodge%2Fhotel%2Fquan-tom-vn.html&docid=G9E9IgP_eA1cAM&w=837&h=628",
+    "position": 7
+   },
+   {
+    "title": "Cát Tiên Riverside, Tân Phú (cập nhật giá năm 2027)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/478151946.jpg?k=cfada7f3e5fcb4d9824b14c6e5ba8fb0e10336e888cc16c992540738ad713fc9&o=",
+    "imageWidth": 1024,
+    "imageHeight": 768,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgSXv5IaedR6wMpTHU14LYffow8J-Wim6ex3adeCO0qw&s=10",
+    "thumbnailWidth": 638,
+    "thumbnailHeight": 480,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/cat-tien-river-side.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F478151946.jpg%3Fk%3Dcfada7f3e5fcb4d9824b14c6e5ba8fb0e10336e888cc16c992540738ad713fc9%26o%3D&tbnid=jkWgto4CTy_u3M&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fcat-tien-river-side.vi.html&docid=GyO7IQdta4bN6M&w=1024&h=768",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

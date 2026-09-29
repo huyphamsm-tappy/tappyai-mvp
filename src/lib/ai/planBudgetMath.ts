@@ -84,6 +84,8 @@ export function appendConsultPlanCost(text: string, o: {
   people: number | null; band: { lo: number; hi: number } | null; perHead: number | null; lang?: string
   /** Shopping: the chosen product's listed price (from the pick's evidence) — "1 × giá = tổng". */
   unitPrice?: { amount: number; seller?: string | null } | null
+  /** The chosen venue, named on its cost line. */
+  pickName?: string | null
 }): { text: string; added: boolean } {
   const none = { text, added: false }
   const lines = text.split('\n')
@@ -97,21 +99,26 @@ export function appendConsultPlanCost(text: string, o: {
     return { text: [...lines.slice(0, at + 1), line, ...lines.slice(at + 1)].join('\n'), added: true }
   }
   if (!o.people) o = { ...o, people: assumedPeople(text) }
-  if (!o.people) return none
   const at = lines.findIndex(l => isHeadingLine(l) && COST_HEADINGS.includes(headingText(l)))
   if (at < 0) return none
   let end = at + 1
   while (end < lines.length && !isHeadingLine(lines[end]) && !/^\s*\[(?:FOLLOWUPS|CTA_BUTTONS|TAPPY_)/.test(lines[end])) end++
-  if (/[×÷=]/.test(lines.slice(at + 1, end).join('\n'))) return none
-  const p = o.people as number
-  let line: string | null = null
-  if (o.band && o.band.lo > 0 && Number.isFinite(o.band.hi)) {
-    line = o.band.hi > o.band.lo
-      ? `- ${p} người × ${vnd(o.band.lo)}–${vnd(o.band.hi)}/người = ${vnd(p * o.band.lo)}–${vnd(p * o.band.hi)} (theo mức giá trong kết quả tìm kiếm)`
-      : `- ${p} người × ${vnd(o.band.lo)}/người = ${vnd(p * o.band.lo)} (theo mức giá trong kết quả tìm kiếm)`
-  } else if (o.perHead) {
-    line = `- Ngân sách bạn đưa: ${p} người × ${vnd(o.perHead)} = ${vnd(p * o.perHead)} — giá của quán chưa xác nhận, bạn hỏi quán trước khi đi.`
+  const section = lines.slice(at + 1, end).join('\n')
+  if (/[×÷=]/.test(section) || /chưa có giá\s*[—-]\s*hỏi/i.test(section)) return none
+  const p = o.people
+  const bandOk = !!o.band && o.band.lo > 0 && Number.isFinite(o.band.hi)
+  let block: string[] | null = null
+  if (p && bandOk && o.band) {
+    // Owner 29/09: real price bands only; the total adds only what has a price, and says so.
+    block = [o.band.hi > o.band.lo
+      ? `- ${o.pickName ? `${o.pickName}: ` : ''}${p} người × ${vnd(o.band.lo)}–${vnd(o.band.hi)}/người = ${vnd(p * o.band.lo)}–${vnd(p * o.band.hi)} (mức giá Google Maps)`
+      : `- ${o.pickName ? `${o.pickName}: ` : ''}${p} người × ${vnd(o.band.lo)}/người = ${vnd(p * o.band.lo)} (mức giá Google Maps)`,
+      '- Tổng: chỉ cộng phần có giá ở trên; các khoản khác (gửi xe, đồ uống thêm…) chưa có giá — hỏi quán.']
+  } else if (p && o.perHead) {
+    block = [`- ${o.pickName ? `${o.pickName}: ` : ''}chưa có giá — hỏi quán.`,
+      `- Ngân sách bạn đưa: ${p} người × ${vnd(o.perHead)} = ${vnd(p * o.perHead)} (đây là ngân sách, không phải giá của quán).`]
+  } else {
+    block = [`- ${o.pickName ? `${o.pickName}: ` : ''}chưa có giá — hỏi quán.`, '- Tổng: chưa tính được vì chưa có giá có nguồn.']
   }
-  if (!line) return none
-  return { text: [...lines.slice(0, at + 1), line, ...lines.slice(at + 1)].join('\n'), added: true }
+  return { text: [...lines.slice(0, at + 1), ...block, ...lines.slice(at + 1)].join('\n'), added: true }
 }

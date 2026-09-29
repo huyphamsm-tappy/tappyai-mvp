@@ -21,6 +21,9 @@ const CASES = [
   { id: 'concert', turns: ['vé concert tháng 10'], expect: /ticketbox|ticketgo|vebo|google\./ },
   { id: 'flight', turns: ['vé máy bay đi Đà Nẵng'], expect: /traveloka|trip\.com|vietjet|vietnamairlines|bambooairways|agoda|booking|google\./ },
   { id: 'hotel', turns: ['khách sạn Đà Lạt cuối tuần'], expect: /booking\.com|agoda|traveloka|trip\.com|google\./ },
+  // R14 (chatSessionId): the follow-up «xem thêm» carries no topic of its own — the server's state
+  // for this chat must keep it on phở in District 1.
+  { id: 'followup-more', turns: ['quán phở ngon quận 1', 'xem thêm'], expect: /grab\.com|google\.|maps|zalo\.me/, mustMention: /phở/i },
   { id: 'trip', turns: ['đi du lịch Đà Nẵng 3 ngày 2 đêm'], expect: /booking\.com|agoda|traveloka|trip\.com|vexere|grab|xanhsm|google\./, plan: true },
   // Every fact given up front, so the consult has nothing left to ask: the plan card + its share.
   { id: 'trip-full', turns: ['Lên kế hoạch đi Đà Nẵng 3 ngày 2 đêm tuần sau cho 2 người, ngân sách 10 triệu, bay từ TP.HCM, thích biển và ăn hải sản'], expect: /booking\.com|agoda|traveloka|trip\.com|vexere|grab|xanhsm|google\./, plan: true, share: true },
@@ -53,11 +56,12 @@ const askOf = (raw) => {
 const strip = (s) => s.replace(/^[^\p{L}\p{N}]+/u, '').trim() // a label's leading emoji
 
 /** Raw content of the last assistant message in the user's newest conversation containing [prompt]. */
+let caseStart = 0 // conversations older than the running case are someone else's answer (an earlier run)
 async function lastReply(email, prompt) {
   const api = await asUser(email)
   for (let i = 0; i < 8; i++) {
     const r = await api('/api/conversations')
-    const conv = (r.json || []).find((c) => (c.messages || []).some((m) => m.role === 'user' && (m.content || '').includes(prompt)))
+    const conv = (r.json || []).find((c) => Date.parse(c.updated_at || 0) >= caseStart && (c.messages || []).some((m) => m.role === 'user' && (m.content || '').includes(prompt)))
     const msgs = conv?.messages || []
     const last = [...msgs].reverse().find((m) => m.role === 'assistant')
     if (last && msgs.indexOf(last) > msgs.findLastIndex((m) => m.role === 'user' && (m.content || '').includes(prompt))) return last.content || ''
@@ -83,8 +87,13 @@ async function send(a, text) {
   if (allow) await a.tap(allow, { after: 1500 })
   // The emulator's software-GPU ANR (§ANR: main thread drawing text) — answer "Wait", never close.
   for (let k = 0; k < 3 && a.find(/isn.t responding/); k++) { const w = a.find('Wait'); if (w) await a.tap(w, { after: 3000 }) }
-  await a.tap('Nhắn tin cho Tappy…', { after: 500 })
-  await a.pasteText(text)
+  // The paste can be lost right after a (re)launch: check the box holds the text, paste again if not.
+  for (let k = 0; k < 3; k++) {
+    await a.tap('Nhắn tin cho Tappy…', { after: 500 }).catch(() => {})
+    await a.pasteText(text)
+    if (a.find(text) || a.texts().some((t) => t.includes(text.slice(0, 12)))) break
+    await a.sleep(1500)
+  }
   await a.tap('Gửi', { after: 3000 })
 }
 
@@ -112,6 +121,7 @@ export async function android({ a, shot, check, seeded }) {
   a.adb(['emu', 'geo', 'fix', '106.7009', '10.7769'], { allowFail: true })
   await a.signIn(email)
   for (const c of cases()) {
+    caseStart = Date.now() - 5000
     await a.launch({ fresh: true })
     await a.tap('Chat', { after: 3000 })
     let raw = ''
@@ -166,6 +176,10 @@ export async function android({ a, shot, check, seeded }) {
         await a.hideKeyboard()
         raw = (await lastReply(email, ACCEPT_PLAN)) || raw
       }
+    }
+    if (c.mustMention) {
+      const prose = raw.replace(/\[(TAPPY_[A-Z_]+|CTA_BUTTONS|FOLLOWUPS)\][\s\S]*?\[\/\1\]/g, '')
+      check(`${c.id}: lượt cuối vẫn đúng chủ đề (${c.mustMention})`, c.mustMention.test(prose), prose.slice(0, 120).replace(/\n/g, ' '))
     }
     shot(`${c.id}-done`)
     // Read the whole reply on screen: the app shows a finished reply from its TOP, so read downward.
@@ -232,6 +246,7 @@ async function sharePlan(a, shot, check, id) {
 
 export async function web({ w, page, shot, check }) {
   for (const c of cases()) {
+    caseStart = Date.now() - 5000
     await w.go('/chat', 4000)
     for (const prompt of c.turns) {
       const box = page.getByRole('textbox').last()

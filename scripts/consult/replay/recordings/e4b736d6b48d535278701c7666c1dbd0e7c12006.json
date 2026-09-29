@@ -1,0 +1,36 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Cat Tien Jungle Lodge\" Cát Tiên, Lâm Đồng site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T03:12:43.923Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Cat Tien Jungle Lodge\" Cát Tiên, Lâm Đồng site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cát Tiên Jungle Lodge - Giá cả và Ưu đãi 2026, Nam ...",
+    "link": "https://vn.trip.com/hotels/cat-tien-hotel-detail-3801289/cat-tien-jungle-lodge/",
+    "snippet": "Giờ nhận phòng tại Cát Tiên Jungle Lodge bắt đầu từ 14:00, và giờ trả phòng là 12:00. Cát Tiên Jungle Lodge có hồ bơi không?",
+    "position": 1
+   },
+   {
+    "title": "Top khách sạn tốt nhất tại Dong Nai, Việt Nam",
+    "link": "https://vn.trip.com/hotels/dong-nai-hotels-list-94077/",
+    "snippet": "Cát Tiên Jungle Lodge. 7,6 (34 đánh giá). Cát Tiên Jungle Lodge. Số 854, ấp 1, Xã, Nam Cát Tiên. \"Ở tuyệt vời tại nhà nghỉ trong rừng ở Cát Tiên Bạn ...",
+    "position": 2
+   }
+  ],
+  "credits": 1
+ }
+}

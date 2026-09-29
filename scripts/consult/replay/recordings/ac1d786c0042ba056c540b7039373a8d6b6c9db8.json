@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Grand\" Núi Ba Vì, Hà Nội site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T03:12:43.386Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Grand\" Núi Ba Vì, Hà Nội site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Các khách sạn ở gần Chùa Tản Viên, Hà Nội",
+    "link": "https://vn.trip.com/hotels/hanoi-tan-vien-pagoda/hotels-c286m12039254/",
+    "snippet": "Tọa lạc tại trung tâm Hà Nội, Khách sạn Grand Mercure cách Văn Miếu 6 phút đi bộ và cách Lăng Bác 13 phút đi bộ. Khách sạn 5 sao này cách Nhà thờ Lớn Hà Nội ...",
+    "position": 1
+   },
+   {
+    "title": "Melia Ba Vi Mountain Retreat - Giá cả và Ưu đãi 2026, Hà ...",
+    "link": "https://vn.trip.com/hotels/hanoi-hotel-detail-15906062/melia-ba-vi-mountain-retreat/",
+    "snippet": "Phong suite Grand ... 1 Giường king. 95m²; Có cửa sổ; Không hút thuốc; Wi-Fi ... Khu nghỉ dưỡng trên núi tuyệt vời với đồ ăn ngon và dịch vụ chu đáo… thực ...",
+    "position": 2
+   },
+   {
+    "title": "Melia Ba Vi Mountain Retreat Đánh giá của khách",
+    "link": "https://vn.trip.com/hotels/hanoi-hotel-detail-15906062/melia-ba-vi-mountain-retreat/review.html",
+    "snippet": "Các đánh giá Melia Ba Vi Mountain Retreat. Cốt 600m, Vườn quốc gia Ba Vì, Ba Vì, Hà Nội ... Lưu trú vào thg 6, 2026. Phong suite Grand. Trang thiết bị khách sạn ...",
+    "position": 3
+   },
+   {
+    "title": "Grand View Resort - Giá cả và Ưu đãi 2026, Đài Bắc",
+    "link": "https://vn.trip.com/hotels/taipei-hotel-detail-663850/grand-view-resort/",
+    "snippet": "Grand View Resort · Xếp hạng 2 trong danh sách Khách Sạn Sang Trọng của Đài Bắc · Chỗ đậu xe miễn phí · Có dịch vụ đón tại sân bay · Phong cảnh tuyệt vời.",
+    "position": 4
+   },
+   {
+    "title": "Top khách sạn tốt nhất tại Vũ Yển, Việt Nam",
+    "link": "https://vn.trip.com/hotels/vu-yen-hotels-list-456390/",
+    "snippet": "Mường Thanh Grand Tuyên Quang Hotel. 8,2 (105 đánh giá). Mường Thanh Grand Tuyên Quang Hotel. Số 207 Đường Bình Thuận, tổ 13, Minh Xuân. \"Cô lễ tân ...",
+    "position": 5
+   },
+   {
+    "title": "Khách sạn Suối nước nóng tại Hà Nội",
+    "link": "https://vn.trip.com/hotels/hot-spring/city/vn/hanoi.html",
+    "snippet": "Nổi Bật. 3 đánh giá. 70. Vinhomes Smart City Masteri West Heights - Grand Homes. Khách sạn tại Tây Mỗ,Hà Nội. Tiện nghi nổi bật: Quầy bán đồ ăn nhẹ, Nhà hàng. 1 ...",
+    "position": 6
+   },
+   {
+    "title": "GRAND NEW CENTURY RESORT Siming Lake Yuyao",
+    "link": "https://vn.trip.com/hotels/yuyao-hotel-detail-606171/grand-new-century-resort-siming-lake-yuyao/",
+    "snippet": "Giờ nhận phòng tại GRAND NEW CENTURY RESORT Siming Lake Yuyao bắt đầu từ 15:00, và giờ trả phòng là 12:00. GRAND NEW CENTURY RESORT Siming Lake Yuyao có hồ ...",
+    "position": 7
+   },
+   {
+    "title": "Shiraraso Grand Hotel - Giá cả và Ưu đãi 2026, Shirahama",
+    "link": "https://vn.trip.com/hotels/shirahama-hotel-detail-705027/shiraraso-grand-hotel/",
+    "snippet": "Shiraraso Grand Hotel Phòng Nhật Bản Kết Nối Với Nhìn Ra Biển - Không Hút Thuốc. Phòng Nhật Bản Kết Nối Với Nhìn Ra Biển - Không Hút Thuốc. 8 Đệm ngủ dưới sàn.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

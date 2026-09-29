@@ -12,11 +12,14 @@ describe('appendConsultPlanCost', () => {
   it('falls back to the user budget, labelled as the user budget, never as the venue price', () => {
     const out = appendConsultPlanCost(plan, { people: 6, band: null, perHead: 200_000 }).text
     expect(out).toContain('Ngân sách bạn đưa: 6 người × 200.000đ = 1.200.000đ')
-    expect(out).toContain('giá của quán chưa xác nhận')
+    expect(out).toContain('chưa có giá — hỏi quán')
+    expect(out).toContain('không phải giá của quán')
   })
-  it('adds nothing without people, without numbers, without a cost heading, or when arithmetic is there', () => {
-    expect(appendConsultPlanCost(plan, { people: null, band: { lo: 1, hi: 2 }, perHead: null }).added).toBe(false)
-    expect(appendConsultPlanCost(plan, { people: 2, band: null, perHead: null }).added).toBe(false)
+  it('no price data: says so (owner 29/09 rule); nothing without a cost heading or when arithmetic is there', () => {
+    const noData = appendConsultPlanCost(plan, { people: 2, band: null, perHead: null, pickName: 'Aniki' }).text
+    expect(noData).toContain('- Aniki: chưa có giá — hỏi quán.')
+    expect(noData).toContain('- Tổng: chưa tính được vì chưa có giá có nguồn.')
+    expect(appendConsultPlanCost(noData, { people: 2, band: null, perHead: null }).added).toBe(false)
     expect(appendConsultPlanCost('no headings', { people: 2, band: null, perHead: 100_000 }).added).toBe(false)
     expect(appendConsultPlanCost(plan.replace('**Chi phí**\n', '**Chi phí**\n2 × 100k = 200k\n'), { people: 2, band: null, perHead: 100_000 }).added).toBe(false)
   })

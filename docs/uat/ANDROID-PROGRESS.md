@@ -152,8 +152,8 @@ Hộp này thỉnh thoảng hiện ở khung hình đầu sau khi cài (emulator
 | Q1 | KHÔNG upload bằng chứng lên bucket công khai | Giữ ở `D:/TappyAI-backups/android-parity-evidence/` | ✅ đang làm vậy |
 | Q2, Q3, Q4, Q9 | Đồng ý phương án tạm | — | ✅ |
 | Q5 | CÓ đăng video | Guard mới (R8, 3319a1d) pass 92/92 → push video `41cd098` → e2e composer Android 8/8 (UAT) → APK cài lên máy Huy 08:07 | ✅ xong 29/09 |
-| Q7 | Tư vấn trên app NGANG web; server lưu trạng thái theo mã cuộc trò chuyện, giữ ADR-024 | Hợp đồng R14 chốt (web 26dc643). App gửi `chatSessionId` (UUID v4) ở MỌI lượt, cả lượt 1 và khách; giữ qua khi app bị tắt; mở lại từ lịch sử dùng lại mã cũ. Push `69624b9`, test `ChatSessionIdTest`, e2e chat 2 ca xanh với trường mới. `d48a11e` bỏ (web: không gửi decisionEvidenceId). APK cài lên máy Huy 08:44 | ✅ phía app; ⏳ chờ phiên web báo "R14 LIVE" để kiểm hội thoại nhiều lượt |
-| Q6, Q8 | Lỗi server, phiên web sửa | Khi phiên web báo server ổn định trong ANDROID-REQUESTS → chạy lại `node android/e2e/run.mjs chat` | ⏳ chờ |
+| Q7 | Tư vấn trên app NGANG web; server lưu trạng thái theo mã cuộc trò chuyện, giữ ADR-024 | Hợp đồng R14 chốt (web 26dc643). App gửi `chatSessionId` (UUID v4) ở MỌI lượt, cả lượt 1 và khách; giữ qua khi app bị tắt; mở lại từ lịch sử dùng lại mã cũ. Push `69624b9`, test `ChatSessionIdTest`, e2e chat 2 ca xanh với trường mới. `d48a11e` bỏ (web: không gửi decisionEvidenceId). APK cài lên máy Huy 08:44 | ✅ R14 LIVE, e2e `followup-more` xanh |
+| Q6, Q8 | Lỗi server, phiên web sửa | Phiên web báo R7/R9–R14 LIVE (a798125) → chạy lại chat: **web 37/37, Android 70/74** (UAT). R14 kiểm được: «xem thêm» vẫn đúng quán phở Q1. Thẻ hỏi nhanh `[TAPPY_ASK]` chạy trên Android. 4 điểm đỏ còn lại: 1 do nhịp poll của script, 3 do server lần đó không trả kế hoạch sau «Lên kế hoạch chi tiết» (web cùng đợt có); chia sẻ kế hoạch đã chứng minh bằng `share-plan` 8/8 | ✅ 29/09 |
 
 ## BÁO CÁO SÁNG — 29/09/2026
 

@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Play More Vincom Plaza Thủ Đức\" OR \"KHU VUI CHƠI TRẺ EM BIBO KIDS QUẬN 9\" OR \"Tầng 5, Giga Mall, 240-242 Phạm Văn Đồng, Thủ Đức\" Thủ Đức site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T02:53:34.236Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Play More Vincom Plaza Thủ Đức\" OR \"KHU VUI CHƠI TRẺ EM BIBO KIDS QUẬN 9\" OR \"Tầng 5, Giga Mall, 240-242 Phạm Văn Đồng, Thủ Đức\" Thủ Đức site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Bán cà phê tại Thủ Đức gần Gigamall",
+    "link": "https://www.tiktok.com/@caphe.mo/photo/7616974997730446609",
+    "snippet": "... , please report at: Feedback and help - TikTok · Lỡ Cả Đời Không Rực Rỡ Thì Sao · Tầng 5, Giga Mall, 240-242 Phạm Văn Đồng, Thủ Đức · author.",
+    "position": 1
+   },
+   {
+    "title": "Cà Phê và Trà Matcha Tươi Ngon Gần Gigamall Thủ Đức",
+    "link": "https://www.tiktok.com/@caphe.mo/photo/7627122751819582740?image_index=1",
+    "snippet": "... Thủ Đức. This is an AI-generated summary of the content, and is not ... Tầng 5, Giga Mall, 240-242 Phạm Văn Đồng, Thủ Đức · author · 21 · 2.",
+    "position": 2
+   },
+   {
+    "title": "Trải nghiệm cà phê, trà và matcha mang đi tại Gigamall",
+    "link": "https://www.tiktok.com/@caphe.mo/photo/7627364433278323988",
+    "snippet": "... , please report at: Feedback and help - TikTok · âm thanh gốc - BIẾT CHƯA NÈ · Tầng 5, Giga Mall, 240-242 Phạm Văn Đồng, Thủ Đức · author. 17.",
+    "position": 3
+   },
+   {
+    "title": "Khám Phá Địa Điểm Sinh Nhật Đang Hot Cho GenZ",
+    "link": "https://www.tiktok.com/@dzinomnomfood/video/7524954878511156498",
+    "snippet": "... không giới hạn giờ và giảm giá đến 25%. @Di Nom Nom · nhạc nền - Dzi rì viu dạo · Tầng 5, Giga Mall, 240-242 Phạm Văn Đồng, Thủ Đức · author.",
+    "position": 4
+   },
+   {
+    "title": "TT Đẹp Quá #xuhuongtiktok #Quanghung ...",
+    "link": "https://www.tiktok.com/@vanchuyen1976/video/7690129179571965205",
+    "snippet": "Tầng 5, Giga Mall, 240-242 Phạm Văn Đồng, Thủ Đức · author · 133 · 0 ... This exciting culinary event will take place on 25/7 along the scenic Bờ ...",
+    "position": 5
+   },
+   {
+    "title": "viral #xuhuong",
+    "link": "https://www.tiktok.com/@caphe.mo/photo/7627122751819582740?image_index=4",
+    "snippet": "... (caphe.mo · @Cà Phê Mơ · #viral #xuhuong · âm thanh gốc - DJ BaBi Hai · Tầng 5, Giga Mall, 240-242 Phạm Văn Đồng, Thủ Đức · author. 22 · 2.",
+    "position": 6
+   },
+   {
+    "title": "Đi đu trend Bò Bông Tuyết thoai #KichiKichi # ...",
+    "link": "https://www.tiktok.com/@dundunvivu/video/7552872686796492050",
+    "snippet": "Tầng 5, Giga Mall, 240-242 Phạm Văn Đồng, Thủ Đức · author · 7791 · 69 ... @Đức Thiện . 2025-9-22Trả lời. 0. Xem thêm câu trả lời khác (1). Thúy ...",
+    "position": 7
+   },
+   {
+    "title": "Bowling thư giãn 🌹🌹🌹#hashtagxuhuong🌈",
+    "link": "https://www.tiktok.com/@thao2301_1/video/7656828218665798933?lang=nb",
+    "snippet": "Tầng 5, Giga Mall, 240-242 Phạm Văn Đồng, Thủ Đức · author · 145 · 76 ... Địa điểm: XBOWLING - 1139 Tôn Đức Thắng, Hồng Bàng, Hải Phòng. ⚠️ Lưu ý: Số lượng ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

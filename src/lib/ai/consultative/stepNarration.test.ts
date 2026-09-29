@@ -20,3 +20,9 @@ describe('stripStepNarration (R9)', () => {
     expect(stripStepNarration(keep).text).toContain('**M Hotel**')
   })
 })
+
+describe('R9 form seen in replay 29/09', () => {
+  it('"Gọi tool tìm nhà hàng…" without a subject', () => {
+    expect(stripStepNarration('Gọi tool tìm nhà hàng, thời tiết và xác nhận giá phòng...\n\n**Tóm tắt chuyến**').text).toBe('**Tóm tắt chuyến**')
+  })
+})

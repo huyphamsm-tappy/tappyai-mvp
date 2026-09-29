@@ -14,7 +14,7 @@ import { isDistributedStoreConfigured, namespacedKey } from '@/lib/security/dist
 
 export const CHAT_SESSION_TTL_SEC = 30 * 24 * 3600
 const TIMEOUT_MS = 800
-const MAX_BYTES = 24_000
+const MAX_BYTES = 64_000
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/
 
@@ -39,7 +39,22 @@ export interface ChatSessionState {
   shown?: string[]
   /** The decision-evidence row (last place search + shopping evidence) — what `decisionEvidenceId` carried. */
   evidence?: Record<string, unknown> | null
+  /** The last real place search's RANKED candidates (compact rows) — "xem thêm" / "bác" continue from them. */
+  candidates?: { args: { query: string; type?: string; location?: string }; rows: Array<Record<string, unknown>> } | null
   updatedAt?: string
+}
+
+/** Row fields kept for a later "xem thêm" / "bác": what ranking, the guards and the cards read. */
+const CANDIDATE_KEEP = ['name', 'place_id', 'address', 'phone', 'google_rating', 'rating_value', 'rating_count', 'rating', 'user_ratings_total', 'review_count',
+  'price_range_text', 'price_range', 'price_level', 'price', 'distance_km', 'open_now', 'opening_hours', 'place_types', 'cuisine', 'attributes',
+  'has_delivery', 'has_order', 'maps_link', 'booking_links', 'website_uri', 'latitude', 'longitude', 'lat', 'lng', 'photo_url', 'thumbnail', 'cid']
+
+export function compactCandidates(rows: readonly unknown[]): Array<Record<string, unknown>> {
+  return rows.slice(0, 20).filter((r): r is Record<string, unknown> => !!r && typeof r === 'object').map(r => {
+    const out: Record<string, unknown> = {}
+    for (const k of CANDIDATE_KEEP) if (r[k] !== undefined && r[k] !== null && r[k] !== '') out[k] = r[k]
+    return out
+  })
 }
 
 /** The storage key: owner and session hashed together — never the raw ids. */
@@ -93,6 +108,7 @@ export async function saveChatSessionState(ownerId: string | null | undefined, s
   const key = chatSessionKey(ownerId, sessionId, env)
   let value = JSON.stringify({ ...state, v: 1, updatedAt: new Date().toISOString() })
   if (value.length > MAX_BYTES) value = JSON.stringify({ ...state, v: 1, evidence: null, updatedAt: new Date().toISOString() })
+  if (value.length > MAX_BYTES) value = JSON.stringify({ ...state, v: 1, evidence: null, candidates: null, updatedAt: new Date().toISOString() })
   if (value.length > MAX_BYTES) return false
   try {
     if (isDistributedStoreConfigured(env)) await kv(['SET', key, value, 'EX', String(CHAT_SESSION_TTL_SEC)], env)
@@ -110,6 +126,7 @@ export function nextChatSessionState(prev: ChatSessionState | null, turn: {
   replyText?: string
   presentedNames?: readonly string[]
   evidence?: Record<string, unknown> | null
+  candidates?: ChatSessionState['candidates']
 }): ChatSessionState {
   const pick = turn.replyText ? /\*\*Mình chọn:\s*([^*\n]+?)\*\*/.exec(turn.replyText)?.[1]?.trim() ?? null : null
   const shown = [...(prev?.shown ?? [])]
@@ -121,6 +138,7 @@ export function nextChatSessionState(prev: ChatSessionState | null, turn: {
     pick: pick ?? prev?.pick ?? null,
     shown: shown.slice(-24),
     evidence: turn.evidence === undefined ? prev?.evidence ?? null : turn.evidence,
+    candidates: turn.candidates === undefined ? prev?.candidates ?? null : turn.candidates,
   }
 }
 

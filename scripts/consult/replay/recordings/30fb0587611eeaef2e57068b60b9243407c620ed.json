@@ -1,0 +1,36 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"MOON SPA | MASSAGE FOOT | MASSAGE BODY | GỘI ĐẦU DƯỠNG SINH | NAIL\" OR \"Massage tận nơi Sài Gòn\" OR \"Gội Đầu & Massage tại Charm Garden Spa ở Quận 1\" quan 1 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T02:53:51.939Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"MOON SPA | MASSAGE FOOT | MASSAGE BODY | GỘI ĐẦU DƯỠNG SINH | NAIL\" OR \"Massage tận nơi Sài Gòn\" OR \"Gội Đầu & Massage tại Charm Garden Spa ở Quận 1\" quan 1 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Nhóm Massage Tận Nơi Sài Gòn",
+    "link": "https://www.tiktok.com/discover/nh%C3%B3m-massage-t%E1%BA%ADn-n%C6%A1i-s%C3%A0i-g%C3%B2n",
+    "snippet": "Nhóm Massage Tận Nơi Sài Gòn. Khám phá các video liên quan đến Nhóm Massage Tận Nơi Sài Gòn trên TikTok. Cập nhật lần cuối 2026-09-07. 11 Likes, 1 Comments.",
+    "position": 1
+   },
+   {
+    "title": "Massage Tận Nơi Sài Gòm",
+    "link": "https://www.tiktok.com/discover/massage-t%E1%BA%ADn-n%C6%A1i-s%C3%A0i-g%C3%B2m",
+    "snippet": "... 1 | Massage Quận 1 · Ren Spa Quận 10 · Olenii Spa Quận 10 · Sen Boutique Spa Danang ... massage tận nơi Sài Gòn. 834 Likes, 81 Comments. TikTok video from App ...",
+    "position": 2
+   }
+  ],
+  "credits": 1
+ }
+}

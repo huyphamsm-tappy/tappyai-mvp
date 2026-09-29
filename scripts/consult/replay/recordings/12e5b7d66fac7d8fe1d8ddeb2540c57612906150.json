@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Winnie Coffee & Tea | QUÁN CAFE ĐẸP QUẬN 3 | QUÁN CAFE CHECK IN QUẬN 3\" OR \"Phê La\" OR \"Rong Chơi Coffee Van Garden\" quan 3 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T04:05:59.394Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Winnie Coffee & Tea | QUÁN CAFE ĐẸP QUẬN 3 | QUÁN CAFE CHECK IN QUẬN 3\" OR \"Phê La\" OR \"Rong Chơi Coffee Van Garden\" quan 3 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Chi nhánh Phê La cực chill ngay tại Quận 3 ...",
+    "link": "https://www.tiktok.com/@saigondidautaaa/video/7330201421733776647",
+    "snippet": "Quán Cà Phê Ở Sea 3 Ở Đâu. Chi nhánh Phê La cực chill ngay tại Quận 3 #saigondidauta #diadiemsongao #phela.",
+    "position": 1
+   },
+   {
+    "title": "PHÊ LA: The Hot New Chill Café in Saigon",
+    "link": "https://www.tiktok.com/@vivucungdung/video/7644528934310153480",
+    "snippet": "PHÊ LA: The Hot New Chill Café in Saigon. PHÊ LA has officially landed at Vincom 3/2, making waves in the café scene for those looking to chill.",
+    "position": 2
+   },
+   {
+    "title": "Phê La Hồ Con Rùa trở lại rồi Đồng Chill ơiiii #PhêLa",
+    "link": "https://www.tiktok.com/@phela_xinchaoo/video/7512493303921691912",
+    "snippet": "**Vị trí dễ tìm** Chi nhánh mới của Phê La nằm tại số 42 đường Trần Cao Vân, phường Võ Thị Sáu, Quận 3. Bạn có thể dễ dàng nhận ra cửa hàng mới ...",
+    "position": 3
+   },
+   {
+    "title": "Phê La: Quán Cà Phê Đẹp Ở Quận 3",
+    "link": "https://www.tiktok.com/@quiz_didaukhum/video/7154908789995556122",
+    "snippet": "Phê La: Quán Cà Phê Đẹp Ở Quận 3. Khám phá quán cà phê Phê La với không gian ngập tràn nắng tại Quận 3. Tìm hiểu view đẹp và những trải nghiệm ...",
+    "position": 4
+   },
+   {
+    "title": "Tạm gác âu lo lại mình cùng đi Phê La chi nhánh mới ...",
+    "link": "https://www.tiktok.com/@lee.haydi/video/7157261988249308443",
+    "snippet": "Phê La Hồ Tùng Mậu là quán cafe mộc mạc nằm ở số 125 Hồ Tùng Mậu, phường Bến Nghé, Quận 1, TP.HCM. Quán được nhiều người tìm đến vì không gian ...",
+    "position": 5
+   },
+   {
+    "title": "Phê La hướng dẫn Đồng Chill trải nghiệm “Máy gọi món tự ...",
+    "link": "https://www.tiktok.com/@phela_xinchaoo/video/7509150236988787976",
+    "snippet": "Cà Phê Nguyễn Gia Trí Quận Bình Thạnh. Phê La hướng dẫn Đồng Chill trải nghiệm “Máy gọi món tự động” nha.",
+    "position": 6
+   },
+   {
+    "title": "Concept Đám Cưới Tại Phê La Cà Phê: Ý Tưởng Độc Đáo ...",
+    "link": "https://www.tiktok.com/@baro.phe/video/7557249820193262856",
+    "snippet": "Phê La Cà Phê đã nắm bắt xu hướng này và biến không gian quen thuộc thành một bối cảnh hoàn hảo cho ngày trọng đại. Concept này không chỉ giúp ...",
+    "position": 7
+   },
+   {
+    "title": "Review quán cà phê view bờ sông chill",
+    "link": "https://www.tiktok.com/@tuilahangne29/video/7667409369583242516",
+    "snippet": "Phê La bờ kè Biên Hòa là lựa chọn tốt cho người tìm quán cafe view sông, không gian chill và menu tiện lợi. Nếu bạn ở Đồng Nai và muốn quán mới ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

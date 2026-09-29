@@ -6,7 +6,7 @@
 
 const NARRATION = new RegExp([
   '^(?:ok,?\\s*)?(?:mình\\s+)?(?:đang|sẽ|để mình|giờ mình|bây giờ mình(?: sẽ)?)\\s+(?:tìm|gọi|tra|kiểm tra|lập|lên|tổng hợp|xem)\\b',
-  '^mình\\s+(?:gọi|dùng)\\s+(?:tool|công cụ)',
+  '^(?:mình\\s+)?(?:đang\\s+)?(?:gọi|dùng)\\s+(?:tool|công cụ)',
   '^mình\\s+tìm\\s+(?:thêm\\s+)?(?:[^.!?]{0,60})\\s+cho bạn(?:\\s+(?:nhé|ngay))?[.!…]*$',
   '^(?:tuyệt vời|xong|được rồi|ok)[!.,]?\\s+(?:mình\\s+)?đã\\s+(?:tìm|có)\\s+(?:được\\s+)?(?:đủ\\s+)?(?:thông tin|kết quả|dữ liệu)',
   '^chờ\\s+(?:mình|một chút|chút|xíu|tí)',

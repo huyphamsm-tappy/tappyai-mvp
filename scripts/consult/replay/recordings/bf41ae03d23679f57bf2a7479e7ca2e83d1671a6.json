@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "The Q villa retreat",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T03:13:57.523Z",
+ "body": {
+  "searchParameters": {
+   "q": "The Q villa retreat",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "TheQ Villa, Xóm Suối Vàng (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/800678518.jpg?k=a892e191c45de7b2baf17e2d5a047d03070a953e6fa27fb68c52a1d9436c9272&o=",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ_od5DGCd7t46uuo1z-zf960WOtF6rRSsyLGcyQqRACA&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/theq-villa.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F800678518.jpg%3Fk%3Da892e191c45de7b2baf17e2d5a047d03070a953e6fa27fb68c52a1d9436c9272%26o%3D&tbnid=BRxxHzLKyBOP2M&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Ftheq-villa.vi.html&docid=JEH3zPKeSrpqqM&w=1024&h=683",
+    "position": 1
+   },
+   {
+    "title": "TheQ Villa, Xóm Suối Vàng (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/800544905.jpg?k=bd6829e7583329fa05bf0e93633791dd5cca374451e0a0c8d43846d490e91d28&o=",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6W8YSizT7e_hsymBsvVBsLfa-vtSWAZhchlucH8VZQg&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/theq-villa.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F800544905.jpg%3Fk%3Dbd6829e7583329fa05bf0e93633791dd5cca374451e0a0c8d43846d490e91d28%26o%3D&tbnid=NCsmMVdW5uuipM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Ftheq-villa.vi.html&docid=JEH3zPKeSrpqqM&w=1024&h=683",
+    "position": 2
+   },
+   {
+    "title": "TheQ Villa Retreat | Luxury Villa Experience in Tay Ninh.",
+    "imageUrl": "https://theqvilla.com/assets/villa-night-1-WdXyGpGw.jpg",
+    "imageWidth": 1440,
+    "imageHeight": 1920,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2gSJExgmukr4eIW-8EkSnWcsbiZHtXGFIguh3Wbc6Lg&s=10",
+    "thumbnailWidth": 387,
+    "thumbnailHeight": 516,
+    "source": "theqvilla.com",
+    "domain": "theqvilla.com",
+    "link": "https://theqvilla.com/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Ftheqvilla.com%2Fassets%2Fvilla-night-1-WdXyGpGw.jpg&tbnid=RQPpQaA70e_clM&imgrefurl=https%3A%2F%2Ftheqvilla.com%2F&docid=RtgMUY5JQRqE2M&w=1440&h=1920",
+    "position": 3
+   },
+   {
+    "title": "TheQ Villa Tây Ninh, Việt Nam: Agoda.com có giá rẻ nhất",
+    "imageUrl": "https://q-xx.bstatic.com/xdata/images/hotel/max500/800552061.jpg?k=5d6a7b98058191b6bd1293dd8da16116c84d2eb5566740e8c74acd65c8a46f35&o=",
+    "imageWidth": 500,
+    "imageHeight": 333,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrY19pVDTbW-LJIQyFcs_D8Ni5YQRJ1wab_RT5dVCZ7Q&s=10",
+    "thumbnailWidth": 500,
+    "thumbnailHeight": 333,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/theq-villa/hotel/tay-ninh-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fq-xx.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax500%2F800552061.jpg%3Fk%3D5d6a7b98058191b6bd1293dd8da16116c84d2eb5566740e8c74acd65c8a46f35%26o%3D&tbnid=8fUzWZJDz9GePM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Ftheq-villa%2Fhotel%2Ftay-ninh-vn.html&docid=LarvFF9jGbSFaM&w=500&h=333",
+    "position": 4
+   },
+   {
+    "title": "TheQ Villa Retreat | Luxury Villa Experience in Tay Ninh.",
+    "imageUrl": "https://theqvilla.com/assets/pool-sign-BkfSyrrV.jpg",
+    "imageWidth": 1440,
+    "imageHeight": 1920,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSDiGitPKDjoKMo-t22SoSf12gvBi52B8FoAE41AZRWw&s=10",
+    "thumbnailWidth": 387,
+    "thumbnailHeight": 516,
+    "source": "theqvilla.com",
+    "domain": "theqvilla.com",
+    "link": "https://theqvilla.com/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Ftheqvilla.com%2Fassets%2Fpool-sign-BkfSyrrV.jpg&tbnid=qeTmbKKVF_D77M&imgrefurl=https%3A%2F%2Ftheqvilla.com%2F&docid=RtgMUY5JQRqE2M&w=1440&h=1920",
+    "position": 5
+   },
+   {
+    "title": "The Q Villa Tay Ninh | Tây Ninh",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=61582410711399",
+    "imageWidth": 1563,
+    "imageHeight": 1563,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQb53yHXpArWjR0blJJBkCE-pXS0S8V3J4qBt16hDSUOA&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/theqvillatayninh/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D61582410711399&tbnid=xuNaQHDsA3PuPM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Ftheqvillatayninh%2F&docid=kFMYje4ClUnylM&w=1563&h=1563",
+    "position": 6
+   },
+   {
+    "title": "TheQ Villa, Xóm Suối Vàng (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/837407448.jpg?k=81ba81ca3cea815487969c8b61121eb15a646c1eb6cacde8e266225d998d6446&o=",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrwmc8fjRLmRnUWC4-tnA9Lkrq0Fap2cP-er8sKmOauQ&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/theq-villa.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F837407448.jpg%3Fk%3D81ba81ca3cea815487969c8b61121eb15a646c1eb6cacde8e266225d998d6446%26o%3D&tbnid=RDcP4drcRzrXMM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Ftheq-villa.vi.html&docid=JEH3zPKeSrpqqM&w=1024&h=683",
+    "position": 7
+   },
+   {
+    "title": "TheQ Villa Tây Ninh, Việt Nam: Agoda.com có giá rẻ nhất",
+    "imageUrl": "https://q-xx.bstatic.com/xdata/images/hotel/max500/800677700.jpg?k=1b542caa3ff1baba9bf751565b1a8dde7f64abd89c1f65b9adddfe6d49094f24&o=",
+    "imageWidth": 500,
+    "imageHeight": 333,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSl3pE-qA7YCjYVwREyGwxRwc9l9S16lBOQXWD9lDXkwg&s=10",
+    "thumbnailWidth": 500,
+    "thumbnailHeight": 333,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/theq-villa/hotel/tay-ninh-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fq-xx.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax500%2F800677700.jpg%3Fk%3D1b542caa3ff1baba9bf751565b1a8dde7f64abd89c1f65b9adddfe6d49094f24%26o%3D&tbnid=Ror4LwlWRCzy3M&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Ftheq-villa%2Fhotel%2Ftay-ninh-vn.html&docid=LarvFF9jGbSFaM&w=500&h=333",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

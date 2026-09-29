@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Green Bamboo Lodge Resort",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T03:12:53.106Z",
+ "body": {
+  "searchParameters": {
+   "q": "Green Bamboo Lodge Resort",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Green Bamboo Lodge Resort, Nam Cát Tiên, Nam Cát Tiên",
+    "imageUrl": "https://q-xx.bstatic.com/xdata/images/hotel/max500/695657761.jpg?k=985433e8349730eb55c12caab8bc470c161ce0dfd615bcc7b081eecb45d148f9&o=",
+    "imageWidth": 375,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSovEyLejIWJxfXEYWN8hDzGO1fFQbAw5jG5eln5ENUPg&s=10",
+    "thumbnailWidth": 375,
+    "thumbnailHeight": 500,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/green-bamboo-lodge-resort/hotel/nam-cat-tien-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fq-xx.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax500%2F695657761.jpg%3Fk%3D985433e8349730eb55c12caab8bc470c161ce0dfd615bcc7b081eecb45d148f9%26o%3D&tbnid=uTWpy6eT3vlolM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fgreen-bamboo-lodge-resort%2Fhotel%2Fnam-cat-tien-vn.html&docid=QuLekxFnmcgV3M&w=375&h=500",
+    "position": 1
+   },
+   {
+    "title": "Green Bamboo Lodge Resort, Cát Tiên (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/695658252.jpg?k=ef5d57d4d8b6492ed3958f2ea63dea5e2003c40ae6908c3377d86dcaec4ed6a4&o=",
+    "imageWidth": 1024,
+    "imageHeight": 741,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSZHAWjHw8YgIiuhJGEN4jXaFVOxgdC6Z35Vk_ZWoD3g&s=10",
+    "thumbnailWidth": 651,
+    "thumbnailHeight": 471,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/green-bamboo-lodge-resort.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F695658252.jpg%3Fk%3Def5d57d4d8b6492ed3958f2ea63dea5e2003c40ae6908c3377d86dcaec4ed6a4%26o%3D&tbnid=P47zf9o_NBIj3M&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fgreen-bamboo-lodge-resort.vi.html&docid=iQD1696z6b5K5M&w=1024&h=741",
+    "position": 2
+   },
+   {
+    "title": "Green Bamboo Lodge Resort, Nam Cát Tiên, Nam Cát Tiên",
+    "imageUrl": "https://q-xx.bstatic.com/xdata/images/hotel/max500/695659181.jpg?k=a07f97036e91d21df5ab5a17c275889259616e98e8b38168ca102d50f0c67a2e&o=",
+    "imageWidth": 375,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSssWbqBqY9ESlQHBjFGUmhKgPtuB5QvGIW_kRy7bmqrg&s=10",
+    "thumbnailWidth": 375,
+    "thumbnailHeight": 500,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/green-bamboo-lodge-resort/hotel/nam-cat-tien-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fq-xx.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax500%2F695659181.jpg%3Fk%3Da07f97036e91d21df5ab5a17c275889259616e98e8b38168ca102d50f0c67a2e%26o%3D&tbnid=kAwMFFxv6f8oiM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fgreen-bamboo-lodge-resort%2Fhotel%2Fnam-cat-tien-vn.html&docid=QuLekxFnmcgV3M&w=375&h=500",
+    "position": 3
+   },
+   {
+    "title": "Green Bamboo Lodge - Enjoy Nature | Tỉnh Đồng Nai",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=835492481915965",
+    "imageWidth": 1080,
+    "imageHeight": 608,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMqUMpArjseEDV0DYv3x5ZfmWarQ-9SliSYKlmAVWlYQ&s=10",
+    "thumbnailWidth": 597,
+    "thumbnailHeight": 335,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/p/Green-Bamboo-Lodge-Enjoy-Nature-100063656631660/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D835492481915965&tbnid=XV5z3FNFQ-Y_IM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Fp%2FGreen-Bamboo-Lodge-Enjoy-Nature-100063656631660%2F&docid=ZnFVTGL8vAzszM&w=1080&h=608",
+    "position": 4
+   },
+   {
+    "title": "GREEN BAMBOO LODGE RESORT (Nam Cát Tiên) - Đánh giá Nhà nghỉ & So sánh giá  - Tripadvisor",
+    "imageUrl": "https://media-cdn.tripadvisor.com/media/photo-s/1c/35/6d/b6/green-bamboo-lodge.jpg",
+    "imageWidth": 550,
+    "imageHeight": 254,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRb7F-KPVUI_Afj8IY7yHmXYoiuhybU6XKKO-op9VRz9Q&s=10",
+    "thumbnailWidth": 548,
+    "thumbnailHeight": 254,
+    "source": "Tripadvisor",
+    "domain": "www.tripadvisor.com.vn",
+    "link": "https://www.tripadvisor.com.vn/Hotel_Review-g8841040-d3801212-Reviews-Green_Bamboo_Lodge_Resort-Nam_Cat_Tien_Tan_Phu_District_Dong_Nai_Province.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fmedia-cdn.tripadvisor.com%2Fmedia%2Fphoto-s%2F1c%2F35%2F6d%2Fb6%2Fgreen-bamboo-lodge.jpg&tbnid=rNU0xzoIvwgcEM&imgrefurl=https%3A%2F%2Fwww.tripadvisor.com.vn%2FHotel_Review-g8841040-d3801212-Reviews-Green_Bamboo_Lodge_Resort-Nam_Cat_Tien_Tan_Phu_District_Dong_Nai_Province.html&docid=oFHXOgJiIr5WtM&w=550&h=254",
+    "position": 5
+   },
+   {
+    "title": "Review Green Bamboo Lodge Resort Đồng Nai bảng giá 2026",
+    "imageUrl": "https://ticotravel.com.vn/wp-content/uploads/2022/03/green-bamboo-lodge-resort.jpg",
+    "imageWidth": 1920,
+    "imageHeight": 1080,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2G9uf2n6yY5B4MOKhzxZyHyZkiOgn3OqoHWYnCcL73Q&s=10",
+    "thumbnailWidth": 738,
+    "thumbnailHeight": 414,
+    "source": "Tico Travel",
+    "domain": "ticotravel.com.vn",
+    "link": "https://ticotravel.com.vn/resort/green-bamboo-lodge-resort/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fticotravel.com.vn%2Fwp-content%2Fuploads%2F2022%2F03%2Fgreen-bamboo-lodge-resort.jpg&tbnid=_K1SSCNAIy6viM&imgrefurl=https%3A%2F%2Fticotravel.com.vn%2Fresort%2Fgreen-bamboo-lodge-resort%2F&docid=G0lhlvBPz7NEIM&w=1920&h=1080",
+    "position": 6
+   },
+   {
+    "title": "Green Bamboo Lodge Resort, Cát Tiên (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/404674069.jpg?k=c84dad07ffc0bce5efe130db797eab382228e2ed8ebcfd1953b39f980e88ab04&o=",
+    "imageWidth": 1024,
+    "imageHeight": 768,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTlfFYh7cRuThHrCazrfczzYpFc4JtMLEw5geaVVKYeuQ&s=10",
+    "thumbnailWidth": 638,
+    "thumbnailHeight": 480,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/green-bamboo-lodge-resort.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F404674069.jpg%3Fk%3Dc84dad07ffc0bce5efe130db797eab382228e2ed8ebcfd1953b39f980e88ab04%26o%3D&tbnid=lWn0aoWIdOqRYM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fgreen-bamboo-lodge-resort.vi.html&docid=iQD1696z6b5K5M&w=1024&h=768",
+    "position": 7
+   },
+   {
+    "title": "Review Green Bamboo Lodge Resort Đồng Nai bảng giá 2026",
+    "imageUrl": "https://ticotravel.com.vn/wp-content/uploads/2022/03/green-bamboo-lodge-resort-5-1.jpg",
+    "imageWidth": 1920,
+    "imageHeight": 1080,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcST4Tc-AVz9fe4FV9FvsgPFdMK3jjlVRDT9jFkIBqYktg&s=10",
+    "thumbnailWidth": 738,
+    "thumbnailHeight": 414,
+    "source": "Tico Travel",
+    "domain": "ticotravel.com.vn",
+    "link": "https://ticotravel.com.vn/resort/green-bamboo-lodge-resort/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fticotravel.com.vn%2Fwp-content%2Fuploads%2F2022%2F03%2Fgreen-bamboo-lodge-resort-5-1.jpg&tbnid=PVkniKK6A7e63M&imgrefurl=https%3A%2F%2Fticotravel.com.vn%2Fresort%2Fgreen-bamboo-lodge-resort%2F&docid=G0lhlvBPz7NEIM&w=1920&h=1080",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}
