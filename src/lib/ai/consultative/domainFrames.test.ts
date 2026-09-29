@@ -32,7 +32,7 @@ describe('buildDomainFrame', () => {
     for (const d of AREAS) {
       const f = buildDomainFrame(d, 'plan')
       for (const h of PLAN_HEADINGS[d as Exclude<FrameDomain, 'main'>]) expect(f).toContain(`"${h}"`)
-      expect(f).toMatch(/It nhat 2 meo dia phuong CO CAN CU/)
+      expect(f).toMatch(/2-3 GACH DAU DONG "- …", MOI gach DUNG MOT meo CO CAN CU/)
     }
   })
   it('follow-up turns: no new search; compare must choose', () => {
