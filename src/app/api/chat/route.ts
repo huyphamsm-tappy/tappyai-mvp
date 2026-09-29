@@ -1966,7 +1966,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   // Follow-up / compare: the guards' EVIDENCE for the venues being discussed comes from the stored candidates
   // (stream-filter seed) — no tool call, no provider call, nothing new for the model to read. r14: the guards
   // cut true facts from the previous turn ("Michi 4,8⭐ (818 review) vs Haru 4,5⭐", the venue's phone).
-  const followSeed: TurnEvidence | undefined = consult && (consult.turn === 'followup' || consult.turn === 'compare') && storedCandidates?.rows?.length && process.env.CONSULT_FOLLOW_SEED !== '0'
+  const followSeed: TurnEvidence | undefined = consult && (consult.turn === 'followup' || consult.turn === 'compare') && storedCandidates?.rows?.length && process.env.CONSULT_FOLLOW_SEED === '1'
     ? { places: storedCandidates.rows as unknown as TurnEvidence['places'], productRecords: [], productQueries: [] }
     : undefined
   // Follow-up / compare: the stored rows of the venues the turn is about (refers + the stated pick), no search.
