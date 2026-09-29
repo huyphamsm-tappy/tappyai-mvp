@@ -345,7 +345,22 @@ export async function POST(req: Request) {
   // Owner §6: the ASK turn and the button turns are decided by CODE (consultRouter.ts: rules per area +
   // question/button templates) — 0 LLM, 0 Serper. The LLM brain runs ONLY when the rules are unsure.
   const consultOn = consultV2Enabled() && !hasImage && !clipRef
-  const routed = consultOn ? routeConsult(messages, { hasGps: !!userLocation, lang }) : null
+  // R14 (UAT 9644d8e): the stored state must be known BEFORE routing — a client whose history does not show
+  // the consultation ("xem thêm" alone) was routed as a fresh chat. The request user is looked up ONCE; this
+  // promise is the same one the account branch awaits below (a failure surfaces there, as before).
+  const requestUserP = getRequestUser(req)
+  requestUserP.catch(() => { /* handled where it is awaited */ })
+  const chatSessionId = readChatSessionId(rawBody)
+  const earlyChatState = consultOn && chatSessionId
+    ? await requestUserP.then(r => loadChatSessionState(r.user?.id ?? null, chatSessionId)).catch(() => null)
+    : null
+  const routedRaw = consultOn ? routeConsult(messages, { hasGps: !!userLocation, lang }) : null
+  // A continuing turn (a button, "xem thêm", "chỗ đó…") that the visible history cannot place takes the
+  // stored consultation's area and slots, decided by code (no brain call).
+  const routed = routedRaw && earlyChatState?.domains?.length && routedRaw.decision.domains.length === 0
+    && ['more', 'plan', 'followup', 'compare', 'reject'].includes(routedRaw.decision.turn)
+    ? { decision: { ...routedRaw.decision, domains: earlyChatState.domains as typeof routedRaw.decision.domains, known: { ...(earlyChatState.known ?? {}), ...routedRaw.decision.known } }, confidence: 'rule' as const }
+    : routedRaw
   const consultRun = consultOn && routed?.confidence === 'unsure' && AI.isConfigured()
     ? await runConsultBrain(o => AI.generate(o), messages, { hasGps: !!userLocation, previousWasAsk: wasAskReply(priorAssistantText), deterministicDomain: lastUserMsg ? turnDomain(lastUserMsg, { hasGps: !!userLocation, lang }) : null })
     : null
@@ -616,7 +631,7 @@ export async function POST(req: Request) {
   // that catch favours availability and must never mean "ungated".
   let ageGatePassed = false
   try {
-    const { user, supabase } = await getRequestUser(req)
+    const { user, supabase } = await requestUserP
     commerceIdentityId = user?.id ?? null
     // The clip the user is asking about, read through THIS caller's client —
     // guests included (the anon-key client sees exactly what the public feed
@@ -925,8 +940,7 @@ export async function POST(req: Request) {
   // decisionEvidenceId (Android, and web once it sends chatSessionId) gets the same evidence row back from
   // here; the router's slots and the stated pick fill what a trimmed history lacks. Another owner's id is a
   // different key (chatSessionState.ts) — it reads as a new session.
-  const chatSessionId = readChatSessionId(rawBody)
-  chatState = chatSessionId ? await loadChatSessionState(commerceIdentityId, chatSessionId) : null
+  chatState = earlyChatState ?? (chatSessionId && !consultOn ? await loadChatSessionState(commerceIdentityId, chatSessionId) : null)
   if (chatState) {
     if (!loadedEvidenceRow && chatState.evidence && typeof chatState.evidence === 'object') {
       loadedEvidenceRow = chatState.evidence
