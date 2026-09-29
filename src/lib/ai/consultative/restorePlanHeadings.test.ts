@@ -80,7 +80,7 @@ describe('pick written as a link (R11)', () => {
   it('becomes the canonical pick sentence with the link kept', async () => {
     const { normalizePickSentence } = await import('./consultBrain')
     const out = normalizePickSentence('Mình hiểu rồi.\n\nMình chọn: [Tinh Hà Concert](https://ticketbox.vn/tinh-ha-26508)\n\n- [B](https://ticketbox.vn/b-1)', 'Tinh Hà Concert')
-    expect(out).toContain('**Mình chọn: Tinh Hà Concert** — [xem & mua vé](https://ticketbox.vn/tinh-ha-26508)')
+    expect(out).toContain('**Mình chọn: Tinh Hà Concert** — [Tinh Hà Concert](https://ticketbox.vn/tinh-ha-26508)')
     expect(out.match(/Mình chọn/g)).toHaveLength(1)
   })
 })
