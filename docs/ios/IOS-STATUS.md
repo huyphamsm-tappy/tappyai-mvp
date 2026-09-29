@@ -1,152 +1,93 @@
 # iOS — tình trạng hiện tại
 
-Ảnh chụp tại `ci/ios-build-rc` @ `adcb1540` (2026-09-28, đã gồm #257, #258, #259). Chỉ đọc mã nguồn và git log, không build lại. Chưa có gì được kiểm trên iPhone thật: "có" nghĩa là mã tồn tại, màn tới được và gọi API thật; CI chỉ chứng minh biên dịch được và unit test xanh.
+Ảnh chụp CHỈ ĐỌC, không sửa code, không build. Nền iOS: `ci/ios-build-rc` @ `adcb1540` (2026-09-28, gồm #257–#259) — **chưa có commit nào mới**. Nền so sánh: `rc/web-uat` @ `cc625119` (2026-09-29, mới hơn `ci/ios-build-rc` 265 commit, không commit nào đụng `ios/`). iOS tạm dừng ở đây — làm lại sau khi xong Luna và Phase 8.
 
-## 1. Cấu trúc project
+## 0. Bản TestFlight ngày 28/9 (owner đã thấy)
 
-| Mục | Hiện trạng |
-|---|---|
-| Thư mục | `ios/TappyAI/{App, Core, DesignSystem, Features, Resources}`, `ios/TappyAITests`, `ios/TappyAIUITests`, `ios/Config` (xcconfig), `ios/scripts` |
-| Features | Auth, Chat, Deals, Discovery, GroupDining, Home, Music (ẩn), Notifications, Planner, Profile, Reviews, UtilityTools — 246 file `.swift` |
-| Target | `TappyAI` (app), `TappyAITests` (unit), `TappyAIUITests` (UI) |
-| File project Xcode | **Không commit** `.xcodeproj` — sinh bằng XcodeGen từ `ios/project.yml` (`xcodegen generate`); CI cũng sinh như vậy |
-| iOS tối thiểu | 16.0 (ghi chú trong `project.yml`: giá trị tạm, chưa chốt ADR-003) |
-| Thiết bị | Chỉ iPhone (`TARGETED_DEVICE_FAMILY = 1`) |
-| Phiên bản | `MARKETING_VERSION 1.0.0`; build number = số run CI |
-| Swift | 5.9, strict concurrency `minimal`. Bản Swift 6 nằm ở `ios/swift6` (PR #256, chưa merge) |
-| Thư viện (SPM) | Chỉ **supabase-swift** `from: 2.0.0`. Còn lại dùng framework hệ thống (StoreKit 2, AuthenticationServices, Speech, AVFoundation, CoreImage, UserNotifications) |
+**Run #50** (`workflow_dispatch`, id `36370450108`), commit `adcb1540`, chạy 02:36–02:44 UTC 28/9. Cả hai job xanh; log job Archive+TestFlight: `[02:44:43] upload=COMPLETE build=VALID` → `✅ Build 50 processed by Apple (VALID) — available in TestFlight`. Đây là lần đầu lên được TestFlight — trước đó run #49 (cùng commit) hỏng ở bước Archive vì thiếu capability Sign in with Apple trên profile; Local đã bật capability, tạo lại profile rồi chạy lại thành run #50. Không có run TestFlight nào mới hơn.
 
-## 2. Màn hình so với Android
+"Bố cục cũ": đúng — `adcb1540` có TRƯỚC toàn bộ đợt làm lại giao diện theo mockup D:\redesign (Đã lưu, Viết content, Gợi ý, cổng 18+, hub Tôi…) đang chạy trên `rc/web-uat`/Android từ 28–29/9 (`docs/uat/ANDROID-PARITY-MAP.md`, `ANDROID-REQUESTS.md` §2). iOS chưa nhận bất kỳ thay đổi nào trong đợt đó.
 
-`docs/uat/ANDROID-PARITY-MAP.md` **không có trên bất kỳ nhánh GitHub nào** (đã tìm cả `main`, `rc/web-uat`, `ci/ios-build-rc`). Bảng dưới so với các màn thực có trong `android/app/src/main` (`android/docs/FEATURE_STATUS.md` đã cũ, ngày 2026-07-13). Tab hai bên giống nhau: Home, Chat, Explore, Deals, Profile.
+## 1. iOS thiếu gì so với bản web + Android mới nhất (`rc/web-uat` @ `cc625119`)
 
-| Màn (Android) | iOS | Tình trạng | Ghi chú |
+### 1a. Màn hình
+
+| Màn | iOS (`ci/ios-build-rc`) | Web/Android mới nhất | Thiếu |
 |---|---|---|---|
-| Đăng nhập / OTP email | `Auth/UI/AuthFlowView`, `RegisterView` | có | Google, Zalo, email OTP, đăng ký; Apple ẩn |
-| Onboarding | `Auth/UI/OnboardingView` | có | |
-| Home | `Home/UI/HomeView` | có | |
-| Smart Tools hub | — | thiếu | iOS chỉ có lưới 7 ô trên Home |
-| Games (SuperTux) | — | thiếu | |
-| Chat + giọng nói | `Chat/UI/ChatView` | có | Giọng nói nằm trong thanh nhập |
-| Explore feed | `Reviews/UI/ReviewsFeedView` | một phần | Thiếu lối vào tìm kiếm, hộp thư, hồ sơ creator |
-| Chi tiết review | `Reviews/UI/ReviewDetailView` | có | |
-| Soạn review (ảnh/video) | `Reviews/UI/CreateReviewView` | có | Xoá GPS/metadata trước khi upload |
-| Tìm kiếm review | `Reviews/UI/UserSearchView` | một phần | Chỉ tìm người, không tìm review |
-| Hồ sơ tác giả / clip | `Reviews/UI/UserProfileView` | một phần | Chưa có trình xem clip dạng lướt |
-| Hồ sơ của tôi + sửa | `Profile/UI/AccountView`, `EditProfileView` | một phần | Không có hồ sơ creator trong Explore |
-| Deals | `Deals/UI/DealsView` | có | |
-| Gợi ý | `Discovery/UI/RecommendationsView` | có | |
-| Chi tiết dịch vụ | `Discovery/UI/ServiceDetailView` (+ `BookingFormView`) | có | |
-| Tiền tệ / Dịch / Quét / Scam Shield / Viết tiếng Việt | `UtilityTools/UI/*` | có | |
-| Chia hoá đơn | `UtilityTools/UI/SplitBill` | có | Tính tại máy |
-| Tử vi / Tarot / Cung hoàng đạo | `UtilityTools/UI/Fortune/*` | có | Dữ liệu tại máy, như Android |
-| Ăn nhóm + chi tiết nhóm | `GroupDining/UI/*` | có | Có deep link `/group/{id}` |
-| Hồ sơ (tab) | `Profile/UI/ProfileMainView` (+ `ProfileQRView`) | có | |
-| Cài đặt | `Profile/UI/SettingsView` | có | Có xoá tài khoản |
-| Cài đặt thông báo | `Profile/UI/NotificationsSettingsView` | có | |
-| Hộp thư thông báo | `Notifications/UI/NotificationsInboxView` | một phần | Không có tab Tin nhắn |
-| Tin nhắn riêng (thread) | — | thiếu | |
-| Gói Pro | `Profile/UI/SubscriptionView` | một phần | Ẩn theo `showProUpgrade`; nút mua tắt khi chưa có sản phẩm StoreKit |
-| Tappy biết gì | `Profile/UI/TappyKnowsView` | có | |
-| Lịch sử chat | `Profile/UI/ChatHistoryView` | có | Chuỗi "phút/giờ/ngày trước" cứng tiếng Việt |
-| Đã lưu | `Discovery/UI/FavoritesView` | có | |
-| Đặt chỗ | `Profile/UI/BookingsView` | có | |
-| Sở thích | `Profile/UI/PreferencesView` | có | |
-| Theo dõi giá | `Profile/UI/PriceWatchesView` | có | |
-| Kết nối ứng dụng | `Profile/UI/IntegrationsView` | một phần | Ẩn theo `showAppConnections` |
-| Review của tôi | `Reviews/UI/MyPostsView` | có | |
-| Kế hoạch | `Planner/UI/PlannerView` | có | |
-| Theo dõi / Người theo dõi | `Reviews/UI/SocialView` | có | |
-| Hướng dẫn / Điều khoản / Quyền riêng tư | `Profile/UI/HowToUseView`, `LegalPageView` | có | |
-| Maps, Discovery hub | — | thiếu | Android cũng không có đường vào (mã chết) |
-| Nhạc | `Music/*` | ẩn | `ProductFlags.showMusic = false`, giống Android |
+| Đã lưu (Saved) | `Discovery/UI/FavoritesView` — 2 dòng đếm | Mockup: hero + mascot, chip lọc (Tất cả/Địa điểm/Bài viết/Video), 2 thẻ đếm có mô tả, trạng thái rỗng "Khám phá ngay" (Android đã làm theo mockup) | Toàn bộ giao diện mới |
+| Viết content | `UtilityTools/UI/VietContent` — hero hồng, icon emoji | Mockup: hero xanh-tím + mascot, logo FB/TikTok/IG, "Thử gợi ý", tone có icon, nút gradient | Toàn bộ giao diện mới |
+| Gợi ý cho bạn | `Discovery/UI/RecommendationsView` | Web đã sửa theo mockup (hero, thẻ "Hỏi Tappy về chỗ này") | Chưa theo mockup mới |
+| Cổng 18+ | Hỏi trong luồng chat | Mockup: màn riêng Ngày/Tháng/Năm + "Ngày sinh được giữ riêng tư" | Chưa có màn riêng |
+| Hub "Tôi" | 9 mục, khách không bị khoá dòng nào | Web: đúng 9 mục theo mockup, khách bị khoá "Cần đăng nhập" | Khách chưa bị khoá đúng như thiết kế |
+| Đăng nhập bằng mật khẩu | Không có (chỉ đăng ký) | Web có Email + Mật khẩu | Thiếu đăng nhập mật khẩu |
+| Explore: tìm review, hồ sơ creator, xem clip dạng lướt | Chỉ tìm người | Web/Android có | một phần (đã ghi ở bản trước) |
+| Tin nhắn riêng (DM) | Không có | Android có `MessagingApi` | Thiếu |
+| Ảnh chia sẻ (share card) | Chỉ chia sẻ link/text qua UIActivityViewController | Web + Android **mới (29/9)**: vẽ ảnh thẻ tại máy (review/clip/gợi ý/kế hoạch/QR hồ sơ), theo mẫu cố định, "Lưu về máy" + gửi TikTok bằng đúng ảnh đó (`docs/design/share-layouts/`, `ShareImageRenderer.kt`/canvas web) | Thiếu toàn bộ tính năng vẽ ảnh chia sẻ |
+| Smart Tools hub, Games | Không có | Android có (Games cũng chưa dùng được trên web) | Thiếu |
 
-Chỉ iOS có: QR hồ sơ, form đặt chỗ, sheet so sánh mua sắm, sheet bình luận / chia sẻ / đồng ý điều khoản.
+### 1b. Hợp đồng `/api/chat` — đây là phần đổi nhiều nhất kể từ lần đọc trước (28/9 → 29/9)
 
-## 3. Hợp đồng API
+| Mục | Hợp đồng mới nhất (`rc/web-uat`) | iOS hiện tại | Thiếu |
+|---|---|---|---|
+| `chatSessionId` | **CHỐT 29/9 (R14/Q7, Huy duyệt).** Body `/api/chat` thêm `chatSessionId`: UUID v4 client sinh 1 lần khi mở cuộc chat mới, gửi y nguyên mọi lượt (kể cả lượt 1, kể cả khách); mở lại từ lịch sử thì dùng lại mã cũ. Server khoá trạng thái tư vấn theo (chủ sở hữu, mã). Thiếu mã → chạy như trước (tương thích ngược bản cũ). Web đã chuyển sang gửi. | Không gửi trường này | **Cần thêm**: sinh UUID v4 khi mở chat mới, giữ trong `ChatSession`/state hiện có, gửi ở mọi lượt, dùng lại khi mở lại lịch sử |
+| `[TAPPY_ASK]` | **Định dạng CHỐT 29/9.** Server gửi `[TAPPY_ASK]{"v":1,"questions":[{"id","q","options":[...]}]}[/TAPPY_ASK]` cho client báo `x-tappy-caps: ask`. Không báo caps → vẫn nhận dạng cũ (mỗi câu hỏi 1 dòng `• Câu? (A / B / C)` + `[FOLLOWUPS]` của câu 1) — **tương thích ngược, không bắt buộc phải làm ngay** | Không gửi `x-tappy-caps`, không có parser `[TAPPY_ASK]` | iOS vẫn chạy được (nhận dòng đọc được), nhưng thiếu UI hỏi nhanh (chip theo nhóm + ô gõ tự do) mà web/Android đã có |
+| `x-tappy-caps` | Request header, hiện có giá trị đã định nghĩa: `ask` (bật `[TAPPY_ASK]`) | Không gửi | Thiếu — cần gửi `x-tappy-caps: ask` để nhận cú pháp hỏi nhanh mới |
+| `x-tappy-surface` | Request header: `web` hoặc `android` → server ẩn bớt chữ trùng lặp với thẻ card trong prose (giả định client tự vẽ thẻ) | Không gửi → server coi iOS "không vẽ được thẻ", nhồi link/ảnh thô vào văn bản | Thiếu — cần gửi `x-tappy-surface: ios` và xin server thêm giá trị này vào danh sách nhận `rendersDecisionCard = true` (đã có iOS parse `tappy.places.v1` qua card riêng, đủ điều kiện) |
+| `[TAPPY_PLAN]` (thẻ kế hoạch) | Định dạng không đổi từ lần trước; R15 (29/9) sửa lỗi JSON cụt/hỏng ở server — không cần sửa client | iOS đã parse (`ContentParser.swift`) và có `TripPlanCardView` | Không thiếu — hưởng lợi tự động từ sửa lỗi phía server |
+| Dòng `💰 Ngân sách: …` sau `[/TAPPY_PLAN]` | Mới (83853cc, 29/9): văn bản thường, in ngay sau khối kế hoạch khi user nêu ngân sách | Chưa kiểm — nhiều khả năng đã hiện đúng vì chỉ là văn bản thường sau marker | Không cần sửa, nên xác nhận lại khi build tiếp |
+| Tiêu đề in đậm cố định trong "Kế hoạch chi tiết" (Ăn uống/Mua sắm/Giải trí/Spa) | Mới (29/9), văn bản markdown in đậm thường | iOS render markdown cơ bản (chưa kiểm in đậm) | Cần xác nhận renderer markdown xử lý đúng |
+| `8:` annotation `tappy.turn.v1` (domain, turnType, usd) | Mới (29/9) | iOS đọc `8:` theo `kind`, bỏ qua kind lạ | Không thiếu — tự bỏ qua đúng theo hợp đồng |
+| Thẻ hỏi lượt CHỐT: `**Mình chọn: <tên>**` phải trùng thẻ #1 | R17: có lúc lệch (server đôi khi không gửi `picked`) — đang chờ sửa phía server | iOS chưa có logic riêng cho lượt CHỐT | Theo dõi, chưa cần sửa ngay |
 
-| Hạng mục | iOS | Bằng chứng / ghi chú |
-|---|---|---|
-| `/api/chat` streaming | có | `Core/Networking/StreamingClient.swift` — SSE data-stream của Vercel |
-| Body `/api/chat` | có | `messages`, `userPreferences`, `responseStyle`, `userLocation` (`Chat/Data/ChatService.swift:179`) |
-| `chatSessionId` | chưa | **Không có ở đâu trên GitHub** (iOS, Android, backend). Hội thoại lưu riêng qua `/api/conversations` |
-| `[TAPPY_PLAN]` | có | `Chat/Model/ContentParser.swift:224` → `TripPlanCardView`; còn đọc CTA_BUTTONS, FOLLOWUPS, TAPPY_SHOPPING, TAPPY_PLACES |
-| `[TAPPY_ASK]` | chưa | Không có trên GitHub ở cả ba nền tảng |
-| Header `x-tappy-caps` | chưa | Không có trên GitHub ở cả ba nền tảng |
-| Header `x-tappy-surface` | **chưa** | Backend đọc (`src/app/api/chat/route.ts:1380`), Android gửi `android`; iOS không gửi → server coi iOS không hiển thị được thẻ |
-| Header `x-tappy-age-declared` | có | Chỉ với khách (`Chat/Model/AgeGate.swift`) |
-| Đăng nhập email OTP | có | Supabase `signInWithOTP` / `verifyOTP` |
-| Đăng ký email + mật khẩu | có | Supabase `signUp`; **không có** đăng nhập bằng mật khẩu |
-| Google | có | Supabase OAuth + `ASWebAuthenticationSession` |
-| Zalo | có | `/api/auth/zalo` trong web session, token qua fragment, dự phòng PKCE |
-| Khách | có | `POST /api/auth/anonymous`; sau khi đăng nhập gọi `POST /api/auth/claim-anonymous` (cả 5 đường) |
-| Sign in with Apple | một phần | Có mã (native sheet → `signInWithIdToken`), ẩn tới khi server bật cờ |
-| Upload ảnh review | có | Multipart `POST /api/reviews/upload`; tối đa 6 ảnh, 5 MB |
-| Upload video | có | `POST /api/upload/video`: create-upload-session → PUT → complete-upload; 150 MB, 300 s; xoá GPS/metadata |
-| Upload avatar | có | Multipart `POST /api/profile` |
-| Chia sẻ | có | Share sheet; link `www.tappyai.com/reviews/…`, `/plan/…`, `/group/…`, `/users/…`; `POST /api/plans/share` |
-| Ghi nhận lượt chia sẻ review | chưa | Backend có `/api/reviews/[id]/share`, iOS không gọi |
-| Hồ sơ | có | `GET` / `PATCH /api/profile` (tên, bio, ngôn ngữ, ngày sinh) |
-
-## 4. Trạng thái build
+### 1c. Khác
 
 | Mục | Hiện trạng |
 |---|---|
-| CI GitHub Actions | Có: `.github/workflows/ios.yml`, `macos-latest`, XcodeGen |
-| Job "Build + TappyAITests" | Chạy mỗi PR đụng `ios/**` và khi chạy tay. Xanh: PR #259 (run #47, `a6a60af5`) và `adcb1540` (run #49) |
-| Job TestFlight | Chỉ chạy tay (`workflow_dispatch`): archive có ký → upload bằng App Store Connect API key → chờ Apple xử lý (`ios/scripts/asc_wait_for_build.py`) |
-| Lần TestFlight gần nhất | Run #49 (2026-09-28, `adcb1540`) **thất bại ở bước Archive**: profile "TappyAI App Store CI" thiếu Sign In with Apple. Phiên Local đang bật capability, tạo lại profile và chạy lại |
-| Trước đó | Build 16 upload được nhưng Apple **từ chối** (ITMS-90683, thiếu chuỗi quyền nhận dạng giọng nói); đã sửa ở `8cfaeb7e` |
-| Đã lên TestFlight chưa | **Chưa xác nhận được** build nào ở trạng thái VALID. API GitHub không truy cập được lúc viết nên không đọc được các run sau run #49 |
-| Ký app | Có, ký thủ công trong CI. Chứng chỉ phân phối + profile App Store + API key nằm trong secrets (`DIST_CERT_P12_BASE64`, `DIST_CERT_P12_PASSWORD`, `APPSTORE_PROFILE_BASE64`, `ASC_KEY_ID`, `ASC_ISSUER_ID`, `ASC_KEY_P8_BASE64`, `APPLE_TEAM_ID`). Chạy local: `CODE_SIGN_STYLE Automatic`, `DEVELOPMENT_TEAM` để trống, tự điền trên máy |
+| Ghi nhận lượt chia sẻ review (`POST /api/reviews/[id]/share`) | Backend có, iOS không gọi (đã ghi lần trước) |
+| Universal Links / AASA | AASA chỉ khai `/r/*` + 5 trang danh mục, thiếu `/reviews`, `/users`, `/group`, `/plan`; cần biến môi trường `IOS_UNIVERSAL_LINKS_APP_ID` (như trước, chưa đổi) |
 
-## 5. Phần trên GitHub và phần có thể còn trên PC
-
-| Nội dung | Vị trí |
-|---|---|
-| Toàn bộ mã iOS đã merge (#257, #258, #259) | GitHub `ci/ios-build-rc`. Nhánh này **chưa vào `main`** (65 commit iOS chưa có trong `main`) |
-| Swift 6 + parser ngày + sửa DIContainer / realtime | GitHub `ios/swift6` (PR #256, 7 commit, chưa merge) |
-| `ios/marker-leak-parity`, `ios/shopping-decision-evidence-parity` | GitHub; nội dung đã có trong `ci/ios-build-rc` qua commit khác, có thể xoá nhánh |
-| `docs/uat/ANDROID-PARITY-MAP.md` | **Không có trên GitHub** → có thể còn trên PC |
-| `chatSessionId`, `[TAPPY_ASK]`, `x-tappy-caps` | **Không có trên GitHub** (cả backend) → nếu đã làm thì còn trên PC hoặc nhánh chưa push |
-| `ios/Config/Secrets.xcconfig` | Chỉ trên máy (gitignore, đúng thiết kế); CI tạo từ secrets |
-| `TappyAI.xcodeproj` | Sinh trên máy / CI từ `project.yml`, không commit (đúng thiết kế) |
-| Chứng chỉ, profile, file `.p8` | Apple Developer + GitHub secrets; bản gốc ở máy người tạo |
-| Worktree `C:\wtrc` | PC; cần `git pull origin ci/ios-build-rc` để theo kịp |
-| Lịch sử | iOS viết trên Windows không có Mac (commit `9393357d` "complete Windows implementation and pre-Mac validation"); lần biên dịch thật đầu tiên là CI |
-
-## 6. Yêu cầu riêng của Apple
+## 2. Yêu cầu riêng của Apple
 
 | Yêu cầu | Tình trạng | Ghi chú |
 |---|---|---|
-| Sign in with Apple | một phần | Mã + entitlement có. Còn thiếu: capability trên App ID / profile (đang làm), provider Apple trên Supabase, cờ `appleSignIn` hoặc provider "apple" ở `/api/config` |
-| Xoá tài khoản trong app | có (theo cờ) | `Profile/UI/AccountDeletionView` → `POST /api/account/delete`; chỉ hiện khi `flags.accountSelfDelete` bật trên server |
-| Apple IAP | một phần | StoreKit 2 (`Core/Payments/StoreKitProvider`), sản phẩm `com.tappyai.ios.pro.monthly`, xác minh qua `/api/iap/apple/verify` (backend có, dùng `src/lib/apple-iap/`). Màn Pro đang ẩn; sản phẩm chưa tạo / chưa duyệt trên App Store Connect |
-| Thông báo đẩy APNs | một phần | App đăng ký token và gửi `provider: "apns"` tới `/api/notifications/subscribe`, nhưng **backend chỉ nhận `fcm` / `webpush` → trả 400**; server chưa có mã gửi APNs. Entitlement `aps-environment` có |
-| Chuỗi xin quyền | có | Camera, micro, nhận dạng giọng nói, thư viện ảnh (đọc + ghi), vị trí khi dùng app |
-| PrivacyInfo.xcprivacy | có | `Resources/PrivacyInfo.xcprivacy` (API UserDefaults, dữ liệu thu thập, không tracking) |
-| Universal Links | một phần | App nhận `/reviews`, `/users`, `/group`, `/plan`…; file AASA của server chỉ khai báo `/r/*` và 5 trang danh mục, và trả 404 nếu thiếu env `IOS_UNIVERSAL_LINKS_APP_ID` |
+| Sign in with Apple | **Có, hoạt động** | Mã + entitlement + capability trên profile đã xong (Local, 28/9); build 50 archive/ký thành công. Còn ẩn vì chờ: provider Apple trên Supabase, cờ `appleSignIn` hoặc provider "apple" ở `/api/config` |
+| Xoá tài khoản bắt đầu từ trong app | **Có, theo cờ** | `Profile/UI/AccountDeletionView` → `POST /api/account/delete`; hiện khi `flags.accountSelfDelete` bật. Khi cờ tắt (hiện tại), Android/web dùng luồng gửi yêu cầu qua email tới `support@tappyai.com` — iOS **chưa có màn tương đương** cho trường hợp cờ tắt (chỉ có luồng tự xoá, chưa rõ có fallback email hay không, cần kiểm lại) |
+| Apple IAP | **Một phần** | StoreKit 2 đã viết (`Core/Payments/StoreKitProvider`), gọi `POST /api/iap/apple/verify` (backend đã có, `src/lib/apple-iap/`). Còn thiếu: sản phẩm `com.tappyai.ios.pro.monthly` tạo/duyệt trên App Store Connect; màn Pro đang ẩn theo `showProUpgrade` (giống Android — Android cũng ẩn, `SHOW_PRO_UPGRADE=false`, không có Play Billing) |
+| Thông báo đẩy | **Chưa hoạt động — đề xuất dùng Firebase Cloud Messaging (FCM)** | Hiện tại iOS tự đăng ký APNs rồi gửi `provider: "apns"` tới `/api/notifications/subscribe`, nhưng backend **chỉ nhận `fcm` hoặc `webpush`** (`src/app/api/notifications/subscribe/route.ts`) → mọi lần gửi đều bị 400. Android đã dùng Firebase Cloud Messaging (`TappyFirebaseMessagingService.kt`, `google_analytics_adid_collection_enabled=false`) và gửi đúng `provider: "fcm"`. **Đề xuất**: thêm Firebase SDK (FirebaseMessaging) vào iOS thay vì tự quản token APNs thô — Firebase Messaging trên iOS vẫn dùng APNs bên dưới (cần APNs key/cert trong Firebase Console) nhưng phát ra **FCM token**; app gửi token đó với `provider: "fcm"` như Android đang làm. **Lợi ích: backend không cần sửa gì** (route đã nhận `fcm`), chỉ cần đăng ký app iOS trong cùng project Firebase và thêm khoá APNs Auth Key vào Firebase Console (việc của Huy, không phải code). Không cần Huy quyết thêm — đây là hướng kỹ thuật thay thế cho việc sửa backend nhận thêm `provider: "apns"` |
+| Quyền camera / ảnh / vị trí | **Có** | Chuỗi xin quyền đầy đủ: `NSCameraUsageDescription`, `NSMicrophoneUsageDescription`, `NSSpeechRecognitionUsageDescription`, `NSPhotoLibraryUsageDescription` (+Add), `NSLocationWhenInUseUsageDescription`. Cần đối chiếu lại câu chữ với `/privacy` mới (`e3413ca`, 29/9: vị trí ghi rõ "chính xác, tuỳ chọn, chỉ khi cho phép, không chạy nền") — chưa kiểm câu tiếng Việt trong Info.plist có khớp chính sách mới hay không |
+| Privacy manifest (`PrivacyInfo.xcprivacy`) | **Có** | `Resources/PrivacyInfo.xcprivacy` khai API UserDefaults, không tracking. Cần bổ sung khai báo nếu thêm Firebase (Google đã có hướng dẫn `PrivacyInfo` riêng cho FirebaseMessaging/FirebaseAnalytics — làm cùng lúc với việc thêm SDK) |
 
-## 7. Lỗi đã biết và khối lượng để ngang Android
+## 3. Trạng thái build / CI (không đổi so với lần đọc trước, xác nhận lại)
 
-Ước lượng cho một người, tính theo ngày công, chưa gồm thời gian chờ Apple duyệt.
+| Mục | Hiện trạng |
+|---|---|
+| CI | `.github/workflows/ios.yml`, macOS runner, XcodeGen sinh project mỗi lần chạy (không commit `.xcodeproj`) |
+| Build + Test | Xanh trên `adcb1540` (run #50 job "Build + TappyAITests") |
+| TestFlight | **Build 50 = VALID, đã lên TestFlight** (xem mục 0). Đây là bản owner thấy ngày 28/9 |
+| Ký app | Ký thủ công trong CI bằng chứng chỉ phân phối + profile App Store lấy từ secrets; profile đã có Sign in with Apple từ 28/9 |
+| Trên GitHub vs còn trên PC | `ci/ios-build-rc` (iOS) không đổi từ lần đọc trước. `rc/web-uat` đã tiến xa (265 commit, toàn bộ là web/Android/server, không ios/). Không thấy thêm gì "chỉ trên PC" ngoài các mục đã ghi lần trước (`Secrets.xcconfig`, `.xcodeproj` sinh tại máy — đúng thiết kế) |
 
-| # | Việc | Loại | Ước lượng |
-|---|---|---|---|
-| 1 | Profile App Store thiếu Sign In with Apple → TestFlight hỏng | cấu hình Apple | đang làm (phiên Local) |
-| 2 | iOS không gửi `x-tappy-surface` → thẻ mua sắm không hiện | lỗi | 0,5 |
-| 3 | APNs: backend chưa nhận `apns` và chưa gửi được | thiếu (backend) | 2–3 |
-| 4 | AASA thiếu `/reviews`, `/users`, `/group`, `/plan`; cần env Team ID | thiếu (web) | 0,5 |
-| 5 | `StreamingClient.swift`: `case "8"` lặp, nhánh annotation không bao giờ chạy | lỗi nhỏ | 0,5 |
-| 6 | 3 màn còn tự parse ngày (`FavoritesView`, `ServiceDetailView`, `Planner.swift`) | lỗi nhỏ | 0,5 |
-| 7 | `ChatHistoryView`: "phút/giờ/ngày trước" cứng tiếng Việt | i18n | 0,5 |
-| 8 | Merge `ios/swift6` (#256) | kỹ thuật | 1 |
-| 9 | Tin nhắn riêng (tab Tin nhắn + thread, realtime) | thiếu | 5–7 |
-| 10 | Explore: tìm review, hồ sơ creator, xem clip dạng lướt | thiếu | 3–4 |
-| 11 | Smart Tools hub | thiếu | 1 |
-| 12 | Games (SuperTux WebView) | thiếu | 2–3 |
-| 13 | `chatSessionId` / `[TAPPY_ASK]` / `x-tappy-caps` — sau khi phần backend được push | chờ backend | 2–3 |
-| 14 | Kích hoạt IAP (tạo sản phẩm, bật màn Pro, thử sandbox) | thiếu | 2 |
-| 15 | Kiểm thử trên iPhone thật (đăng nhập, upload, chia sẻ, deep link, thông báo) | QA | 3–5 |
+## 4. Ước lượng khối lượng để iOS ngang bản mới nhất (web + Android, `rc/web-uat` @ `cc625119`)
 
-**Tổng: khoảng 25–35 ngày công (5–7 tuần một người).** Mục 1–8 (khoảng 6 ngày) đủ cho một bản TestFlight dùng được. Mục 9–14 là phần tính năng Android có mà iOS chưa có.
+Một người, ngày công, chưa gồm thời gian chờ Apple duyệt / Firebase thiết lập console.
+
+| # | Việc | Ước lượng |
+|---|---|---|
+| 1 | Gửi `chatSessionId` (UUID v4, sinh khi mở chat mới, giữ khi mở lại lịch sử) | 0,5 |
+| 2 | Gửi `x-tappy-surface: ios` (cần xin server thêm giá trị vào whitelist) + `x-tappy-caps: ask` | 0,5 (+ phối hợp backend) |
+| 3 | Parser `[TAPPY_ASK]` + UI chip nhóm câu hỏi + ô gõ tự do (giống web/Android) | 1,5 |
+| 4 | Ảnh chia sẻ vẽ tại máy (review/clip/gợi ý/kế hoạch) theo mẫu đã duyệt | 3–4 |
+| 5 | Giao diện mới: Đã lưu, Viết content, Gợi ý, cổng 18+ riêng, hub Tôi (khoá khách) | 4–5 |
+| 6 | Đăng nhập bằng mật khẩu (đang chỉ có đăng ký) | 0,5 |
+| 7 | Thông báo đẩy qua Firebase Cloud Messaging (thêm SDK, đổi `provider: "apns"` → `"fcm"`) | 1–1,5 |
+| 8 | Apple IAP: tạo sản phẩm trên App Store Connect, bật màn Pro, thử sandbox | 2 |
+| 9 | AASA thiếu path, câu chữ quyền vị trí đối chiếu `/privacy` mới | 0,5 |
+| 10 | Merge `ios/swift6` (#256, Swift 6 + parser ngày) | 1 |
+| 11 | Tin nhắn riêng (DM) | 5–7 |
+| 12 | Explore: tìm review, hồ sơ creator, xem clip dạng lướt | 3–4 |
+| 13 | Smart Tools hub | 1 |
+| 14 | Kiểm thử trên iPhone thật (đăng nhập, upload, chia sẻ, deep link, thông báo, chat session mới) | 3–5 |
+
+**Tổng: khoảng 27–37 ngày công (5,5–7,5 tuần một người).** Mục 1–3 (khoảng 2,5 ngày) là phần hợp đồng chat mới nhất — làm trước để iOS không tụt lại thêm so với web/Android đang thay đổi nhanh. Mục 4–9 (khoảng 12–14 ngày) đưa iOS lên ngang bản 29/9 hiện tại. Mục 11–13 là các mảng Android có mà iOS chưa từng có.
+
+**Ghi chú:** `rc/web-uat` đang đổi liên tục (265 commit trong ~1 ngày). Bảng trên là ảnh chụp tại `cc625119`; nên đọc lại `docs/uat/ANDROID-REQUESTS.md` §2 khi quay lại làm iOS, vì đó là nơi ghi mọi thay đổi hợp đồng server mới nhất.
