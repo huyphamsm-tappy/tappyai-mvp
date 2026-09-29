@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
+import { publishableFilter } from '@/lib/safety/gate/publicationAccess'
 import { redirect } from 'next/navigation'
 import Header from '@/components/Header'
 import BottomNav from '@/components/BottomNav'
@@ -93,6 +94,7 @@ export default async function ServiceDetailPage({ params, searchParams }: PagePr
           .select('id, rating, body, created_at, photos')
           .eq('place_id', placeId)
           .eq('is_hidden', false)
+          .or(publishableFilter()) // R19: restricted posts are not a place's reviews
           .order('created_at', { ascending: false })
           .limit(8)
       : Promise.resolve({ data: null }),

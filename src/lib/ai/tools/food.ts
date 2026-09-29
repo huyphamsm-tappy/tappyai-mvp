@@ -1,6 +1,7 @@
 import { getCache, setCache, serperSearch } from './common'
 import { normalizeVN } from '@/lib/ai/intent'
 import { createClient } from '@/lib/supabase/server'
+import { publishableFilter } from '@/lib/safety/gate/publicationAccess'
 import { buildFoodOrderLinks } from '@/lib/platformLinks/food'
 import { attributeTikTok } from '@/lib/links/tiktokAttribution'
 import { placeTokensFor, placeNamedBy } from '@/lib/links/placeAttribution'
@@ -918,6 +919,7 @@ async function searchPlacesUncached(
             .select('place_id, rating')
             .in('place_id', placeIds)
             .eq('is_hidden', false)
+            .or(publishableFilter()) // R19: a restricted post never feeds a place's rating
           if (ratingRows && ratingRows.length > 0) {
             const rMap = new Map<string, { sum: number; count: number }>()
             for (const row of ratingRows) {

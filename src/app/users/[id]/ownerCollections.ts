@@ -23,6 +23,7 @@
 
 import type { SupabaseClient } from '@supabase/supabase-js'
 import type { Review } from '@/app/reviews/feedShared'
+import { publishableFilter } from '@/lib/safety/gate/publicationAccess'
 
 const REVIEW_COLUMNS = 'id,user_id,place_name,place_address,rating,body,photos,is_verified,like_count,comment_count,created_at,content_type,media_url,thumbnail,source_type,source_url'
 const COLLECTION_LIMIT = 30
@@ -34,6 +35,8 @@ async function reviewsByIds(supabase: SupabaseClient, ids: string[]): Promise<Re
     .select(REVIEW_COLUMNS)
     .in('id', ids)
     .or('is_hidden.is.null,is_hidden.eq.false')
+    // R19: a liked / saved post that was later restricted is not shown in anyone's collection.
+    .or(publishableFilter())
     .order('created_at', { ascending: false })
     .limit(COLLECTION_LIMIT)
   if (error) throw error

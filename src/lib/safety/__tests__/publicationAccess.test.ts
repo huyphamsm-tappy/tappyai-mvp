@@ -185,19 +185,19 @@ describe('server-side enforcement across every public surface', () => {
     expect(applications.length).toBeGreaterThanOrEqual(2);
   });
 
-  it('the filter is INERT until the migration is applied — deploy order cannot break the feed', () => {
-    // PostgREST errors on a filter naming a column the table lacks. Shipping the
-    // real filter before the migration would take every feed down while the gate
-    // was still switched off.
-    expect(publishableFilter({})).toBe('id.not.is.null');
-    expect(publishableFilter({ CONTENT_SAFETY_SCHEMA_MIGRATED: 'false' })).toBe('id.not.is.null');
+  it('R19: the filter is ON unless the flag is explicitly "false" — an unset flag never turns content safety off', () => {
+    // UAT 29/09: the flag was unset on Preview and RESTRICTED posts reached "Gợi ý cho bạn", the feed and profiles.
+    // The migration is on every database now; only a database WITHOUT the column sets the flag to "false".
+    expect(publishableFilter({})).toBe(PUBLISHABLE_FILTER);
+    expect(publishableFilter({ CONTENT_SAFETY_SCHEMA_MIGRATED: '' })).toBe(PUBLISHABLE_FILTER);
     expect(publishableFilter({ CONTENT_SAFETY_SCHEMA_MIGRATED: 'true' })).toBe(PUBLISHABLE_FILTER);
+    expect(publishableFilter({ CONTENT_SAFETY_SCHEMA_MIGRATED: 'false' })).toBe('id.not.is.null');
   });
 
-  it('the inert filter really is a tautology, not a silent exclusion', () => {
-    // If it excluded anything, the "safe" window would quietly hide content.
-    expect(publishableFilter({})).toContain('id.not.is.null');
-    expect(publishableFilter({})).not.toContain('publication_state');
+  it('the explicit escape ("false") really is a tautology, not a silent exclusion', () => {
+    const off = publishableFilter({ CONTENT_SAFETY_SCHEMA_MIGRATED: 'false' });
+    expect(off).toContain('id.not.is.null');
+    expect(off).not.toContain('publication_state');
   });
 
   it('the mutation route refuses a forged publication state', () => {
