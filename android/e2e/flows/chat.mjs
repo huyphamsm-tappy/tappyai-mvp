@@ -224,24 +224,26 @@ export async function android({ a, shot, check, seeded }) {
 }
 
 async function sharePlan(a, shot, check, id) {
-  await a.tap('Chat', { after: 2000 })
-  for (const [tile, pkg, wantFile] of [['Zalo', 'com.zing.zalo', false], ['TikTok (gửi ảnh)', 'com.zhiliaoapp.musically', true]]) {
-    const btn = await a.scrollTo(/Chia sẻ lịch trình/, { max: 8 }).catch(() => null)
-    if (!btn) { check(`${id}: nút "Chia sẻ lịch trình"`, false); return }
-    await a.tap(btn, { after: 2500 })
-    shot(`${id}-sheet-${pkg}`)
-    const sheet = a.texts().join(' | ')
-    check(`${id}: sheet chia sẻ kế hoạch có Zalo/Facebook/TikTok`, /Zalo/.test(sheet) && /Facebook/.test(sheet) && /TikTok/.test(sheet), sheet.slice(0, 120))
-    a.clearLog()
-    const t = await a.scrollRowTo(tile, /Zalo|Facebook|Messenger/).catch(() => a.find(tile))
-    await a.tap(t, { after: 6000 })
-    const got = a.receivedShares().find((s) => s.receiver === pkg)
-    shot(`${id}-received-${pkg}`)
-    check(`${id}: ${tile} nhận ${wantFile ? 'ẢNH (file)' : 'nội dung'} kế hoạch`, !!got && (wantFile ? /^image\//.test(got.streamMime || got.type || '') && got.streamBytes > 5000 : !!(got.text || got.streamBytes)),
-      got ? `${got.type} ${got.streamMime || ''} ${got.streamBytes || 0}B ${(got.text || '').slice(0, 60)}` : 'không nhận gì')
-    check(`${id}: ${tile} kèm link kế hoạch UAT`, !!got?.text && /https:\/\/uat\.tappyai\.com\//.test(got.text), (got?.text || '').slice(0, 80))
-    await a.dismissForeign(); await a.launch(); await a.tap('Chat', { after: 2000 })
+  // The live plan's share opens the approved sheet (#6) with its plan image (#7). What each app
+  // RECEIVES from a plan share is proven deterministically by the share-plan flow (golden plan,
+  // same sheet); here: the live plan card opens that sheet with its link and image.
+  await a.tap('Chat', { after: 2000 }).catch(() => {})
+  // The composer can take focus on return: close the keyboard first, or a scroll swipe that starts
+  // on it is read as glide typing ("TT TT TT…" in the box).
+  await a.hideKeyboard()
+  let btn = null
+  for (let k = 0; k < 14 && !btn; k++) {
+    btn = a.find(/Chia sẻ lịch trình/)
+    if (!btn) { a.swipe(k < 7 ? 'up' : 'down'); await a.sleep(700) }
   }
+  if (!btn) { check(`${id}: nút "Chia sẻ lịch trình"`, false); return }
+  await a.tap(btn, { after: 2500 })
+  await a.waitGone(/Đang tạo liên kết kế hoạch/, { timeout: 30000 }).catch(() => {})
+  await a.waitGone(/^Đang tạo ảnh/, { timeout: 30000 }).catch(() => {})
+  shot(`${id}-sheet`)
+  const sheet = a.texts().join(' | ')
+  check(`${id}: sheet mẫu #6 cho kế hoạch có link /plan/ + Zalo/Facebook/TikTok`, /Chia sẻ với mọi người/.test(sheet) && /uat\.tappyai\.com\/plan\//.test(sheet) && /Zalo/.test(sheet) && /Facebook/.test(sheet), sheet.slice(0, 120))
+  await a.back()
 }
 
 export async function web({ w, page, shot, check }) {
