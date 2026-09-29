@@ -155,6 +155,21 @@ Quy tắc: mỗi thay đổi giữ/bỏ theo **trung bình 2 lượt replay, hai
   lại chấp nhận link trực tiếp. Đã sửa harness (fixture = các dòng của DB audit, trùng production) + bộ chấm; lượt "chốt, hướng dẫn đặt vé"
   (TRAVEL-3) đang lập kế hoạch khách sạn + quán ăn thay vì gọi lại tra vé → sửa gốc ở route. Điểm đo lại: xem Q-AI-STATE.
 
+### AI tư vấn — kết quả đo 29/09 tối (trung bình 2 lượt, bộ chấm Q10 mới, harness = production)
+| Bước | Chất lượng /105 | $/lượt | Ăn uống · Mua sắm · Du lịch · Giải trí · Spa | Giữ/bỏ |
+|---|---|---|---|---|
+| Baseline (bộ chấm mới, harness đúng prod) | 89.5 | 0.00916 | 18 · 16 · 15 · 20 · 20.5 | — |
+| E1 lượt kế hoạch vé máy bay gọi lại tra vé + guard "Bước 1:" (`9b7fd81`) | 91 | 0.00885 | 19.5 · 16.5 · 16 · 18.5 · 20.5 | **GIỮ** |
+| E2 thẻ mua sắm chỉ lựa chọn chính + 2, router bỏ tên sản phẩm user chép lại, dòng "còn N" | 90.5 | 0.00857 | 19 · 16 · 15.5 · 19 · 21 | bỏ (−0.5) |
+| E2b = E2 + kho sản phẩm mở rộng + luật lượt bác | 91 | 0.00895 | 19.5 · 15.5 · 15 · 20 · 21 | bỏ (chi phí +1%) |
+| E2c = E2 + lượt bác có yêu cầu mới thì tìm lại + "không thích X" không thành "muốn X" | 88.5 | 0.00860 | 17.5 · 16 · 14.5 · 20 · 20.5 | bỏ |
+| E3 nhãn link vé = "Xem giá trên Traveloka" (Q10) | **95** | 0.00898 | 19.5 · 16.5 · 17.5 · 20.5 · 21 | giữ — ⚠ chi phí +1.5% (xem Q-AI-E3) |
+
+Patch E2/E2b/E2c lưu ở scratchpad phiên (không trong git) — ý tưởng đúng gốc nhưng không vượt được độ dao động của 2 lượt.
+
+| Q-AI-E3 | E3 tăng chất lượng +4 nhưng chi phí +1.5% ($0.00013/lượt). Thay đổi chỉ thêm ~4 từ vào nhãn link; cùng một code E1 dao động $0.00873–0.00898 giữa 2 lượt. | **Giữ** (như tiền lệ D2). Huy: đồng ý giữ, hay bỏ theo đúng luật hai cột? (bỏ = revert 1 commit). |
+| Q-AI-S9 | Mục 9 chưa định nghĩa ngưỡng "đạt" cho MỘT mảng. Hiện chưa mảng nào 21/21 ở cả 2 lượt (spa 21/21 ở 3 trên 4 lượt gần nhất). Độ dao động giữa 2 lượt của CÙNG code là ±2–4 lượt/105 (E1: 91 và 91; E2b: 89 và 93) — phần lớn các sửa nhỏ không đo được bằng trung bình 2 lượt. | Đang coi "đạt" = 21/21 cả 2 lượt (chặt nhất). Huy: chốt ngưỡng (vd ≥ 19/21 trung bình 2 lượt và không lượt nào trượt ở cả 2), hoặc cho phép đo 4 lượt cho thay đổi nhỏ? |
+
 ## Current step
 Overnight run 2026-09-28→29 DONE — final UAT SHA af8b4ba; morning report at the end of this file. Waiting on owner: Q1 (26/9 design), Q7 (AI gate), Q6 (share layout). Login = scratchpad pw/login.mjs (AUDIT only).
 

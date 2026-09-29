@@ -914,7 +914,10 @@ async function attachRouteLinks(toolName: 'get_flight_prices' | 'get_transport_o
     // A3.3: the dated route page or nothing — a merchant's front door with the route to be typed is not a route link.
     const rows = dedupeLinks([], out.links.filter(l => l.depth >= MIN_ROUTE_LINK_DEPTH).map(l => projectCommerceLinkRow(l, out.requestId, intentType, assumed, { primary: true })), flight ? 4 : 1)
     if (rows.length === 0) return r
-    const projected = rows.map(l => ({ name: l.merchantName, url: l.url }))
+    // Owner Q10 (29/09): a flight turn says "Xem giá trên Traveloka" — there is no fare source. The model copies
+    // `[name](url)` verbatim, so the label IS that sentence (replay TRAVEL-3: "[Traveloka](…)" on every more /
+    // reject / plan turn, the sentence missing although the prompt asked for it).
+    const projected = rows.map(l => ({ name: flight ? (/^en/i.test(ctx.locale ?? '') ? `See prices on ${l.merchantName}` : `Xem giá trên ${l.merchantName}`) : l.merchantName, url: l.url }))
     if (flight) r.booking_links = projected
     else r.vexere_link = projected[0].url
     r._tappy_commerce = rows.map((l): RouteHandoffFacts => ({

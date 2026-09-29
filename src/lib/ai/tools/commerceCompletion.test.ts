@@ -19,7 +19,8 @@ describe('flights — get_flight_prices booking links are a CCP projection', () 
     const result: Row = { flights: [], booking_links: [{ name: 'Traveloka', url: 'https://legacy.example/x' }], origin: 'SGN', destination: 'HAN' }
     await attachCommerceLinks('get_flight_prices', result, { enabled: true, now: NOW, search: noSearch, origin: 'Sài Gòn', destination: 'Hà Nội', departDate: '2026-10-10', passengers: 2 })
     const names = (result.booking_links as Array<{ name: string; url: string }>).map(l => l.name)
-    expect(names).toEqual(['Trip.com', 'Traveloka'])
+    // Owner Q10: the label is the sentence the reply must carry.
+    expect(names).toEqual(['Xem giá trên Trip.com', 'Xem giá trên Traveloka'])
     const urls = (result.booking_links as Array<{ name: string; url: string }>).map(l => l.url)
     expect(urls[0]).toBe('https://vn.trip.com/flights/showfarefirst?dcity=sgn&acity=han&ddate=2026-10-10&flighttype=ow&class=y&quantity=2&locale=vi-VN&curr=VND')
     expect(urls[1]).toBe('https://www.traveloka.com/vi-VN/flight/fullsearch?ap=SGN.HAN&dt=10-10-2026.null&ps=2.0.0&sc=ECONOMY')
