@@ -18,9 +18,8 @@ ghi **CẦN HUY XÁC NHẬN**.
 > 2. ~~**Chính sách quyền riêng tư lệch với code.**~~ **XONG trên UAT (29/09):** web `/privacy` sửa theo Data safety (R18, UAT `e3413ca`
 >    — vị trí chính xác, ngày sinh, Firebase, FCM, ACCESSTRADE; bảng "Chính sách khớp" ở mục 1). Android bỏ màn chính sách tiếng Anh
 >    cũ (lệch: không có vị trí/Firebase) — "Chính sách bảo mật" trong Cài đặt và thẻ "Quyền riêng tư" ở Tôi nay mở chính trang web
->    `/privacy` (`ProfileTab.kt` `openPrivacyPolicy`), một chính sách duy nhất. Còn phải: (a) bản web lên **Production** trước khi
->    công khai; (b) `sub1`: **Huy chọn PHƯƠNG ÁN C (29/09)** — phiên web đang đổi code + câu trong chính sách (đang viết theo A); khi web báo xong thì bỏ ghi chú này (xem "Link affiliate" ở
->    mục 1); nếu chọn B/C thì phiên web sửa lại câu đó.
+>    `/privacy` (`ProfileTab.kt` `openPrivacyPolicy`), một chính sách duy nhất. Còn phải: bản web lên **Production** trước khi
+>    công khai.
 > 3. **Cờ xoá tài khoản trên Production.** Kế hoạch phát hành đặt `ACCOUNT_SELF_DELETE_ENABLED=false`
 >    (`docs/uat/RELEASE-PLAN-2026-09-29.md:115`) nhưng cùng dòng đó ghi Production hiện đang `true`. Mục 2 dưới đây viết theo `false`
 >    (luồng gửi yêu cầu). **CẦN HUY XÁC NHẬN** giá trị trên Vercel Production trước khi khai.
@@ -85,30 +84,21 @@ khuyến nghị cũng coi là bên xử lý. Riêng Overpass là API công cộn
 | Mã thiết bị | `s1.b8`, `s3.b10` (FCM token), `s3.p2` (push web) |
 | Bên xử lý: Anthropic, Supabase, Google Cloud, Firebase, ACCESSTRADE | `s3.b1`, `s3.b3`, `s3.b8`, `s3.b9`–`s3.b10`, `s3.b11` |
 
-**Link affiliate (ACCESSTRADE) — đã kiểm `sub1` (29/09). Huy chọn PHƯƠNG ÁN C (29/09): mã ngẫu nhiên mỗi lần bấm, server lưu bảng nối — ĐANG LÀM ở phiên web.** Khi xong: khai ACCESSTRADE "không chia sẻ" dữ liệu người dùng. Phân tích dưới đây là hiện trạng TRƯỚC khi đổi.
+**Link affiliate (ACCESSTRADE) — khai: KHÔNG chia sẻ dữ liệu người dùng** (Huy chọn phương án C 29/09; web làm xong, LIVE UAT `453bd93`)
 
-Khi người dùng bấm link mua, trình duyệt mở `https://go.isclix.com/deep_link/<publisher>/<campaign>?url=<trang đích>` kèm đúng 3 tham số
-của Tappy (`src/lib/ccp/tracking/accesstrade.ts:62-65`):
-
-| Tham số | Giá trị | Nhận diện người dùng? |
-|---|---|---|
-| `utm_source`, `utm_medium` | hằng `tappyai`, `ccp` | Không |
-| `utm_content` | có chỗ trong code nhưng **không nơi nào truyền giá trị** (grep `utmContent`: chỉ `resolve.ts:92` chuyển tiếp `opts.utmContent`, không caller nào đặt) → không gửi | Không |
-| `sub1` | `HMAC-SHA256(CCP_ATTRIBUTION_SECRET, "ccp-sub1:" + mã người dùng)`, lấy 24 ký tự hex đầu (`src/lib/ccp/tracking/attribution.ts:24-29`; gọi ở `src/app/api/chat/route.ts:1638`). Mã người dùng = UUID tài khoản hoặc UUID phiên khách ẩn danh. Thiếu secret (hoặc < 32 ký tự) → không gửi `sub1`. | **Không chứa id/email/tên/SĐT** và ACCESSTRADE không đảo ngược được (có khoá). **Nhưng không phải mã ngẫu nhiên**: cùng một người → luôn cùng một `sub1` ở mọi lần bấm. |
-
-Nghĩa là `sub1` là **mã bí danh cố định theo người dùng**: ACCESSTRADE biết "các lượt bấm/mua này là của cùng một người" nhưng không
-biết người đó là ai; chỉ Tappy (giữ secret) mới nối lại được. Theo định nghĩa của Huy ("mã ngẫu nhiên không nhận diện người dùng → không
-tính; chứa id/email → ghi rõ"), nó nằm **giữa hai trường hợp**:
-- ✅ **HUY ĐÃ CHỌN PHƯƠNG ÁN C (29/09) — đã làm, LIVE UAT `453bd93`:** mỗi lần bấm link đối tác, server Tappy (`/go/at`) sinh một `sub1` NGẪU NHIÊN mới (không suy ra từ id, không lặp giữa các lần bấm), lưu bảng nối `commerce_click_attributions` (sub1 → tài khoản/phiên khách, thời điểm, đối tác, link; RLS chỉ server; giữ 12 tháng) rồi chuyển sang ACCESSTRADE kèm `sub1`. Đối tác không nhận ra người dùng và không nối được các lần bấm. Chính sách `/privacy` đã ghi đúng cơ chế + thời hạn. **Data safety:** không tính "chia sẻ" (không gửi dữ liệu nhận diện nào cho đối tác); dữ liệu nối lưu ở Tappy thuộc mục "Hoạt động trong app" (Tương tác trong app → Phân tích/Chức năng), xoá được khi xoá tài khoản sau 12 tháng tự xoá.
-- ~~Phương án A (khuyến nghị cho bản này): không tính chia sẻ.~~ (thay bằng C) Không gửi dữ liệu cá nhân nào; mã chỉ để đối soát hoa hồng. Thêm vào chính
-  sách quyền riêng tư một câu: "Khi bạn bấm link đối tác, TappyAI gửi kèm một mã bí danh không thể dùng để nhận diện bạn, để đối soát hoa hồng."
-- **Phương án B (chặt nhất): khai "Mã người dùng (User IDs) — có chia sẻ, mục đích Quảng cáo/tiếp thị hoặc Phân tích".**
-- **Phương án C (sửa code, việc phiên web):** đổi `sub1` thành mã ngẫu nhiên MỖI LẦN BẤM, Tappy lưu bảng nối mã ↔ người dùng ở server → khi
-  đó không còn là mã cố định, khai "không chia sẻ" không cần bàn.
-
-Ngoài ra ACCESSTRADE thấy IP + trình duyệt như mọi trang web người dùng tự mở — Play không tính phần này là app chia sẻ.
-Trên Production `ACCESSTRADE_PUBLISHER_ID` và `CCP_ATTRIBUTION_SECRET` **đã đặt** (`docs/uat/RELEASE-PLAN-2026-09-29.md:178-180`,
-secret khác nhau giữa UAT và Production) → link đối tác trên Production **đang gửi `sub1`**; cần chốt A/B/C trước khi khai Data safety.
+Căn cứ (code đã kiểm 29/09):
+- Link đối tác trong câu trả lời chat là link **của Tappy**: `https://<site>/go/at?u=<deep link ACCESSTRADE, không có sub1>&p=<đối tác>&a=<danh tính mã hoá AES-256-GCM>&h=…&s=<chữ ký HMAC>`
+  (`src/lib/ccp/tracking/clickLink.ts:35-56`). Danh tính trong link đã mã hoá và chỉ server Tappy đọc được; nó không đi tới ACCESSTRADE.
+- Mỗi lần bấm, server sinh một `sub1` **ngẫu nhiên mới** (`randomBytes(12)` = 24 hex, `clickLink.ts:91-92`; `src/app/go/at/route.ts:9-43`), không suy ra từ id, không lặp
+  giữa các lần bấm → **ACCESSTRADE không liên kết được các lần bấm với nhau, cũng không biết người bấm là ai**. Nó chỉ nhận: `utm_source=tappyai`,
+  `utm_medium=ccp` và `sub1` ngẫu nhiên đó (cộng IP/trình duyệt như mọi trang web người dùng tự mở — Play không tính là app chia sẻ).
+- Bảng nối `sub1 → tài khoản/khách, đối tác, link, thời điểm` là dữ liệu **Tappy tự giữ** (`commerce_click_attributions`, RLS bật, không policy nào,
+  thu hồi quyền anon/authenticated — `supabase/migrations/20260929130000_commerce_click_attributions.sql:14-34`), giữ **12 tháng** để đối soát hoa hồng.
+  Trên Data safety nó thuộc **Hoạt động trong app → Tương tác trong app** (đã khai "Có thu, không chia sẻ"), mục đích *Chức năng ứng dụng* (đối soát).
+- Chính sách `/privacy` (vi + en) đã viết theo cơ chế này (web, 29/09). Android không đổi code: vẫn mở `url` của link như cũ.
+- ⚠️ Việc phía web trước khi công khai (R21 trong `docs/uat/ANDROID-REQUESTS.md`): migration `20260929130000` phải chạy trên Production; hàm dọn
+  `commerce_click_attributions_sweep()` (12 tháng) **chưa có cron nào gọi**; `identity_id` không có khoá ngoại → **xoá tài khoản không xoá các dòng
+  nối của người đó** (chỉ còn UUID mồ côi, không nối được về người nữa, nhưng nên xoá cùng tài khoản cho khớp câu "xoá được" ở Data safety).
 
 ## 2. Xoá tài khoản (mục "Data deletion" trong Play Console)
 
