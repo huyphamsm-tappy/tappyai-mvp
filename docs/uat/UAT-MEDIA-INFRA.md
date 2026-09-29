@@ -11,7 +11,17 @@ Production (pool `vercel-oidc`, provider `vercel`, SA `tappyai-media-bridge`, bu
 | Service account | `tappyai-media-uat@aerobic-lock-498409-u7.iam.gserviceaccount.com` — `roles/storage.objectUser` on the UAT bucket ONLY |
 | WIF pool / provider | `vercel-oidc-uat` / `vercel-preview` — issuer `https://oidc.vercel.com/huyphamsm-tappys-projects`, audience `https://vercel.com/huyphamsm-tappys-projects`, condition `assertion.sub == "owner:huyphamsm-tappys-projects:project:tappyai-mvp:environment:preview"` |
 | Impersonation | UAT SA `roles/iam.workloadIdentityUser` → `principal://…/workloadIdentityPools/vercel-oidc-uat/subject/owner:…:environment:preview` only |
+| Evidence bucket (added 2026-09-29) | `gs://tappyai-uat-evidence` — asia-southeast1, uniform access, **public access prevention = enforced**, no `allUsers`/`allAuthenticatedUsers` binding (anonymous GET → 403). Read with an authenticated `gcloud`. Holds ALL UAT evidence under `evidence/<SHA>/…` (956 objects on 29/09). Not used by the app; no service account or Vercel env points at it. |
 | Vercel env (Preview, all branches) | `GCS_MEDIA_BUCKET=tappyai-media-uat`, `GCP_WIF_POOL=vercel-oidc-uat`, `GCP_WIF_PROVIDER=vercel-preview`, `GCP_MEDIA_SERVICE_ACCOUNT=tappyai-media-uat@…`, `GCP_PROJECT_NUMBER=1023373437508` |
+
+### Evidence is NOT in the media bucket (owner rule 2026-09-29)
+`gs://tappyai-media-uat` stays public-read because the app's UAT images and clips are served from it, and uniform
+bucket-level access cannot make one folder private. So evidence moved to its own private bucket:
+- 29/09: the 913 objects under `gs://tappyai-media-uat/evidence/` were copied to `gs://tappyai-uat-evidence/evidence/`
+  (same count, same bytes: 61,983,796), then the owner deleted `gs://tappyai-media-uat/evidence/` (913/913). Re-checked:
+  no object left under that prefix; an old public evidence URL returns 404.
+- Upload new evidence ONLY to `gs://tappyai-uat-evidence/evidence/<SHA>/` (web: SHA from `/api/version`; Android: the APK's
+  SHA). Never to the media bucket. Pages for the owner embed the images (artifact) or use a short-lived signed URL.
 
 Code: no bucket is hard-coded — `src/lib/media/index.ts` / `trustedHosts.ts` read the env above (prod values are the defaults).
 Code fix found while proving it (4e9f53d): resumable sessions are opened with the caller's origin, or the browser cannot
@@ -27,6 +37,7 @@ gcloud iam service-accounts remove-iam-policy-binding tappyai-media-uat@aerobic-
 gcloud iam workload-identity-pools delete vercel-oidc-uat --location=global --project=aerobic-lock-498409-u7
 gcloud iam service-accounts delete tappyai-media-uat@aerobic-lock-498409-u7.iam.gserviceaccount.com
 gcloud storage rm -r gs://tappyai-media-uat   # deletes UAT media — only when UAT is retired
+gcloud storage rm -r gs://tappyai-uat-evidence   # deletes ALL UAT evidence — only when the owner says so
 vercel env rm GCS_MEDIA_BUCKET preview; vercel env rm GCP_WIF_POOL preview; vercel env rm GCP_WIF_PROVIDER preview; vercel env rm GCP_MEDIA_SERVICE_ACCOUNT preview; vercel env rm GCP_PROJECT_NUMBER preview
 ```
 
@@ -45,4 +56,8 @@ $ vercel env add GCP_WIF_POOL preview (value: vercel-oidc-uat)
 $ vercel env add GCP_WIF_PROVIDER preview (value: vercel-preview)
 $ vercel env add GCP_MEDIA_SERVICE_ACCOUNT preview (value: tappyai-media-uat@aerobic-lock-498409-u7.iam.gserviceaccount.com)
 $ vercel env add GCP_PROJECT_NUMBER preview (value: 1023373437508)
+# 2026-09-29 — private evidence bucket
+$ gcloud storage buckets create gs://tappyai-uat-evidence --project=aerobic-lock-498409-u7 --location=ASIA-SOUTHEAST1 --uniform-bucket-level-access --public-access-prevention
+$ gcloud storage rsync -r gs://tappyai-media-uat/evidence gs://tappyai-uat-evidence/evidence
+# owner: gcloud storage rm -r gs://tappyai-media-uat/evidence/   (913/913)
 ```

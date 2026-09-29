@@ -161,7 +161,7 @@ Giá phòng: chưa xác nhận…","price":…`). Phần đầu kế hoạch (ti
   `/api/version`, Android dùng SHA đã build APK). Ví dụ: `gcloud storage cp *.png gs://tappyai-uat-evidence/evidence/<SHA>/android/`.
 - 2026-09-29 (Huy): bằng chứng KHÔNG được đọc công khai. Bucket bằng chứng là `gs://tappyai-uat-evidence` (RIÊNG TƯ:
   public access prevention = enforced, không có `allUsers`; đọc bằng `gcloud` đã đăng nhập). KHÔNG upload bằng chứng vào
-  `gs://tappyai-media-uat` nữa — bucket media đó đọc công khai (ảnh app cần). 913 tệp cũ đã chép sang bucket riêng.
+  `gs://tappyai-media-uat` nữa — bucket media đó đọc công khai (ảnh app cần). 913 tệp cũ đã chép sang bucket riêng; Huy đã XOÁ `gs://tappyai-media-uat/evidence/` (913/913, kiểm lại: trống, URL cũ 404).
   Trang duyệt cho Huy dùng ảnh nhúng trong artifact hoặc signed URL có hạn.
 - Vẫn chỉ chụp tài khoản test, không dữ liệu thật/cá nhân.
 - Repo chỉ giữ RELEASE-PROGRESS.md (web) / tài liệu Android với đường dẫn `gs://…` hoặc

@@ -93,7 +93,10 @@ Vercel **Preview** (uat.tappyai.com, branch `rc/web-uat`, audit DB `zdaprdfgpbpn
 bucket through its own identity and cannot reach production media:
 - Project `aerobic-lock-498409-u7` (number 1023373437508). Bucket `gs://tappyai-media-uat` (asia-southeast1, uniform
   access, soft delete 7 d, abort-multipart lifecycle 7 d, CORS for `https://uat.tappyai.com` + the rc/web-uat preview
-  host, public read like prod).
+  host, public read like prod). It holds app media ONLY.
+- Evidence bucket `gs://tappyai-uat-evidence` (added 2026-09-29): PRIVATE (public access prevention enforced, no
+  `allUsers`), all UAT evidence under `evidence/<SHA>/…`. The old `gs://tappyai-media-uat/evidence/` was copied there and
+  then deleted by the owner (913/913, re-checked empty). iOS evidence goes to the private bucket, never the media bucket.
 - SA `tappyai-media-uat@…` with `roles/storage.objectUser` on the UAT bucket only; WIF pool `vercel-oidc-uat`, provider
   `vercel-preview` (issuer `https://oidc.vercel.com/huyphamsm-tappys-projects`), condition = Vercel subject
   `…:project:tappyai-mvp:environment:preview` only.
