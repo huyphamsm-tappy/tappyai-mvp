@@ -12,6 +12,7 @@ import { encodeQR, qrToSvg } from '@/lib/qr/qrcode'
 import { renderBrandedQrCard } from '@/lib/qr/brandedCard'
 import { absoluteUrl } from '@/lib/share/openGraph'
 import { goBack } from '@/lib/nav/inAppBack'
+import { GOOGLE_PLAY_URL, playBadgeEnabled } from '@/lib/share/storeListing'
 
 // ── V3 Web · QR Profile ─────────────────────────────────────────────────────
 //
@@ -135,13 +136,14 @@ export default function QRProfileView({
         sloganSub: t('v3.qr.card.sloganSub'),
         websiteLabel: t('v3.qr.card.websiteLabel'),
         features: [t('v3.qr.card.feat1'), t('v3.qr.card.feat2'), t('v3.qr.card.feat3'), t('v3.qr.card.feat4')],
-        googlePlay: {
+        // Gated (storeListing.ts): the Play listing is not public yet → production shows no badge until it is.
+        ...(playBadgeEnabled() ? { googlePlay: {
           badgeTop: t('v3.qr.card.playBadgeTop'),
           titlePre: t('v3.qr.card.getAppPre'),
           titlePost: t('v3.qr.card.getAppPost'),
           sub: t('v3.qr.card.getAppSub'),
           orWebsite: t('v3.qr.card.orWebsite'),
-        },
+        } } : {}),
         qrPx: QR_PX * DOWNLOAD_SCALE,
         quietModules: QR_MARGIN,
       })
@@ -235,6 +237,19 @@ export default function QRProfileView({
               {downloading ? <Loader2 size={17} className="animate-spin" /> : <Download size={17} />}
               {t('v3.qr.download')}
             </button>
+            {/* Owner SL2 (29/09): the Google Play listing, same gate as the card's badge (storeListing.ts). */}
+            {playBadgeEnabled() && (
+              <a
+                href={GOOGLE_PLAY_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex min-h-[46px] w-full items-center justify-center gap-2 rounded-xl text-[14px] font-semibold"
+                style={{ background: '#000', color: '#fff', border: '1px solid #A6A6A6' }}
+                data-qr-google-play
+              >
+                {t('v3.qr.card.playBadgeTop')} Google Play
+              </a>
+            )}
           </div>
 
           <p className="mt-3 text-[11.5px]" style={{ color: 'var(--v3-fg-muted)' }}>
