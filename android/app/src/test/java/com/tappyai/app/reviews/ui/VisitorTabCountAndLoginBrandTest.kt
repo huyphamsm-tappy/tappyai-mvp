@@ -25,4 +25,12 @@ class VisitorTabCountAndLoginBrandTest {
         val g = File("../features/auth/src/main/res/drawable/ic_brand_google.xml").readText()
         listOf("#4285F4", "#34A853", "#FBBC05", "#EA4335").forEach { assertTrue(it, g.contains(it)) }
     }
+
+    /** Music is hidden in this release (owner 29/09): the login screen must not advertise it. */
+    @Test fun `login feature copy does not promise music`() {
+        for (p in listOf("../features/auth/src/main/res/values-vi/strings.xml", "../features/auth/src/main/res/values/strings.xml")) {
+            val line = File(p).readLines().single { "auth_feature_2_desc" in it }
+            assertTrue(p, !Regex("(?i)âm nhạc|music").containsMatchIn(line))
+        }
+    }
 }

@@ -5,12 +5,16 @@ Căn cứ: code tại `rc/web-uat` (Android `android/`, server `src/`), bản ph
 targetSdk 36, minSdk 26 (`android/app/build.gradle.kts:226-254`). Mọi dòng dẫn file làm căn cứ; chỗ code không trả lời được
 ghi **CẦN HUY XÁC NHẬN**.
 
-> ### ⛔ 3 việc PHẢI xong trước khi bấm công khai (không phải việc nhập liệu)
-> 1. **Báo cáo + chặn nội dung/người dùng (chính sách UGC của Play).** App có bài đăng công khai, bình luận, hồ sơ công khai,
->    tin nhắn riêng, nhưng Android **chưa có nút "Báo cáo"** (server đã có `POST /api/reviews/[id]/report`, Android chưa gọi —
->    `android/.../reviews/ui/ReviewCard.kt:585-598`, `ReviewOverflowMenu.kt` chỉ có Lưu / Ẩn / Xoá cho chủ bài) và **không có chặn
->    người dùng** ở cả server lẫn app (bảng `chat_blocks` không dùng). Play yêu cầu app có UGC phải cho người dùng báo cáo nội dung
->    và chặn người dùng. **CẦN HUY QUYẾT**: làm "Báo cáo bài/bình luận" trên Android (dùng route có sẵn) + route chặn phía server.
+> ## 🚦 ĐIỀU KIỆN CÔNG KHAI (Huy quyết 29/09): chỉ công khai trên Play SAU KHI GỘP PHASE 8
+> Play bắt buộc app có nội dung người dùng tạo (bài công khai, bình luận, hồ sơ, tin nhắn riêng) phải cho **báo cáo nội dung và
+> chặn người dùng**. Bản Phase 7 (vc10) **không có**: Android chưa có nút "Báo cáo" (`android/.../reviews/ui/ReviewCard.kt:585-598`,
+> `ReviewOverflowMenu.kt` chỉ Lưu / Ẩn / Xoá cho chủ bài), server không có route chặn (bảng `chat_blocks` không dùng).
+> **Không làm ở Phase 7** — Phase 8 đã có chặn / báo cáo / chế tài. Trước khi công khai: gộp Phase 8, kiểm báo cáo + chặn trên bản
+> Android sẽ phát hành, rồi mới làm checklist mục 8. Mọi câu trả lời dưới đây viết cho bản hiện tại; sau khi gộp Phase 8 phải rà lại
+> mục 1 (Phase 8 có thể thu thêm dữ liệu, vd. báo cáo vi phạm, thanh toán — `docs/phase8/PAYMENTS.md`) và mục 3.
+
+> ### ⛔ Các việc còn lại PHẢI xong trước khi bấm công khai (không phải việc nhập liệu)
+> 1. **Báo cáo + chặn** — xem điều kiện công khai ở trên (Phase 8).
 > 2. **Chính sách quyền riêng tư lệch với code.** Trang `https://www.tappyai.com/privacy` ghi vị trí "Approximate location"
 >    (`src/lib/i18n/legal.ts:31-32`) nhưng app gửi toạ độ **chính xác** (`ChatLocationSource.kt:31-41`); danh sách bên thứ ba
 >    (`legal.ts:51-63`) **không nêu Google Analytics for Firebase / Firebase Cloud Messaging**; màn Chính sách trong app
@@ -38,8 +42,11 @@ Bên nhận dữ liệu phía server: Anthropic (Claude — AI chat, dịch, qu�
 `package.json:27`), Serper (tìm địa điểm, nhận toạ độ: `src/lib/ai/tools/serperPlaces.ts:136`), OpenStreetMap Overpass/Nominatim
 (`src/lib/ai/tools/food.ts:197-203`), Google Web Risk (kiểm link lừa đảo), Travelpayouts (`src/lib/ai/tools/travel.ts`), Google Cloud
 Storage (ảnh/video), Supabase (CSDL, đăng nhập), Vercel (máy chủ), Upstash (giới hạn tần suất), Google Cloud Logging, Firebase (Google).
-Mình coi tất cả là **service provider → "Không chia sẻ"**. **CẦN HUY XÁC NHẬN** (đây là đánh giá pháp lý; riêng OSM Overpass là API công
-cộng, không có hợp đồng xử lý — nếu Huy muốn chặt chẽ thì khai **Vị trí: có chia sẻ**, mục đích "Chức năng ứng dụng").
+**Huy quyết 29/09: Anthropic, Supabase, Google Cloud (Storage, Logging), Firebase là bên xử lý thay mặt TappyAI → KHÔNG tính
+"chia sẻ".** Vercel, Upstash cùng loại hạ tầng → cũng không tính. Còn lại **CẦN HUY XÁC NHẬN**: Serper, OSM Overpass/Nominatim,
+Google Web Risk, Travelpayouts nhận nội dung truy vấn (Serper/Overpass nhận toạ độ). Chúng là API tra cứu Tappy gọi thay người dùng;
+khuyến nghị cũng coi là bên xử lý. Riêng Overpass là API công cộng không có hợp đồng xử lý — nếu muốn chặt chẽ thì khai
+**Vị trí: có chia sẻ**, mục đích "Chức năng ứng dụng".
 
 **Từng loại dữ liệu**
 
@@ -64,10 +71,29 @@ cộng, không có hợp đồng xử lý — nếu Huy muốn chặt chẽ thì
 | Thông tin tài chính / lịch sử mua | **Không** | | | | | Android không có Play Billing/RevenueCat; gói hội viên chỉ đọc (`MembershipRepository.kt:6-7`), `SHOW_PRO_UPGRADE=false` (`ProfileScreen.kt:115`) |
 | Danh bạ, lịch, tệp, SMS, nhật ký cuộc gọi, sức khoẻ, thể chất | **Không** | | | | | không có quyền tương ứng; tử vi/tarot chạy trên máy, không gửi (`A/fortune/`) |
 
-**Link affiliate (ACCESSTRADE)** — không phải loại dữ liệu riêng trên Play, nhưng ghi để khai nhất quán: khi người dùng bấm link mua,
-trình duyệt mở `go.isclix.com` với `utm_source=tappyai&utm_medium=ccp` và `sub1` = mã băm HMAC 24 ký tự của mã người dùng
-(`src/lib/ccp/tracking/accesstrade.ts:11,22,62-65`, `attribution.ts:24-29`) — không gửi tên/email. ACCESSTRADE thấy IP + trình duyệt như
-mọi trang web. Mình khai theo **Mã người dùng: không chia sẻ** vì chỉ là mã băm một chiều — **CẦN HUY XÁC NHẬN**.
+**Link affiliate (ACCESSTRADE) — đã kiểm `sub1` (29/09), CẦN HUY QUYẾT**
+
+Khi người dùng bấm link mua, trình duyệt mở `https://go.isclix.com/deep_link/<publisher>/<campaign>?url=<trang đích>` kèm đúng 3 tham số
+của Tappy (`src/lib/ccp/tracking/accesstrade.ts:62-65`):
+
+| Tham số | Giá trị | Nhận diện người dùng? |
+|---|---|---|
+| `utm_source`, `utm_medium` | hằng `tappyai`, `ccp` | Không |
+| `utm_content` | có chỗ trong code nhưng **không nơi nào truyền giá trị** (grep `utmContent`: chỉ `resolve.ts:92` chuyển tiếp `opts.utmContent`, không caller nào đặt) → không gửi | Không |
+| `sub1` | `HMAC-SHA256(CCP_ATTRIBUTION_SECRET, "ccp-sub1:" + mã người dùng)`, lấy 24 ký tự hex đầu (`src/lib/ccp/tracking/attribution.ts:24-29`; gọi ở `src/app/api/chat/route.ts:1638`). Mã người dùng = UUID tài khoản hoặc UUID phiên khách ẩn danh. Thiếu secret (hoặc < 32 ký tự) → không gửi `sub1`. | **Không chứa id/email/tên/SĐT** và ACCESSTRADE không đảo ngược được (có khoá). **Nhưng không phải mã ngẫu nhiên**: cùng một người → luôn cùng một `sub1` ở mọi lần bấm. |
+
+Nghĩa là `sub1` là **mã bí danh cố định theo người dùng**: ACCESSTRADE biết "các lượt bấm/mua này là của cùng một người" nhưng không
+biết người đó là ai; chỉ Tappy (giữ secret) mới nối lại được. Theo định nghĩa của Huy ("mã ngẫu nhiên không nhận diện người dùng → không
+tính; chứa id/email → ghi rõ"), nó nằm **giữa hai trường hợp**:
+- **Phương án A (khuyến nghị cho bản này): không tính chia sẻ.** Không gửi dữ liệu cá nhân nào; mã chỉ để đối soát hoa hồng. Thêm vào chính
+  sách quyền riêng tư một câu: "Khi bạn bấm link đối tác, TappyAI gửi kèm một mã bí danh không thể dùng để nhận diện bạn, để đối soát hoa hồng."
+- **Phương án B (chặt nhất): khai "Mã người dùng (User IDs) — có chia sẻ, mục đích Quảng cáo/tiếp thị hoặc Phân tích".**
+- **Phương án C (sửa code, việc phiên web):** đổi `sub1` thành mã ngẫu nhiên MỖI LẦN BẤM, Tappy lưu bảng nối mã ↔ người dùng ở server → khi
+  đó không còn là mã cố định, khai "không chia sẻ" không cần bàn.
+
+Ngoài ra ACCESSTRADE thấy IP + trình duyệt như mọi trang web người dùng tự mở — Play không tính phần này là app chia sẻ.
+Trên Production `ACCESSTRADE_PUBLISHER_ID` và `CCP_ATTRIBUTION_SECRET` **đã đặt** (`docs/uat/RELEASE-PLAN-2026-09-29.md:178-180`,
+secret khác nhau giữa UAT và Production) → link đối tác trên Production **đang gửi `sub1`**; cần chốt A/B/C trước khi khai Data safety.
 
 ## 2. Xoá tài khoản (mục "Data deletion" trong Play Console)
 
@@ -118,7 +144,7 @@ Quyền cần giải thích: Vị trí (tìm quanh đây khi chat), Micro (nói 
 
 ## 4. Quảng cáo
 
-- **App có chứa quảng cáo không?** → Khuyến nghị **Không**. App không có SDK quảng cáo nào (không AdMob, không mạng quảng cáo; Advertising ID
+- **App có chứa quảng cáo không?** → **Không** (Huy xác nhận 29/09). App không có SDK quảng cáo nào (không AdMob, không mạng quảng cáo; Advertising ID
   bị gỡ — `AndroidManifest.xml:26-27,73-75`).
 - **Link affiliate**: TappyAI nhận hoa hồng khi người dùng mua qua một số link đối tác (ACCESSTRADE → Shopee, Lazada, TikTok Shop…,
   `src/lib/config/product.ts:243,259`). Link nằm trong câu trả lời tư vấn / mục Deals, không phải banner trả tiền hiển thị. Play định nghĩa
@@ -255,7 +281,8 @@ Email: `support@tappyai.com` (bắt buộc) · Website: `https://www.tappyai.com
 
 ⚠️ Dữ liệu là của DB audit/UAT: ảnh 03 in link `uat.tappyai.com/plan/…`, ảnh 05 có tên `@minh.anh.(uat)` (tài khoản UAT có sẵn — không
 sửa theo quy tắc R11), ảnh 07 có email `e2e.android.pro@example.com`. Khuyến nghị: khi app đã lên Production, chụp lại 03/05/07 bằng
-tài khoản thật (hoặc chấp nhận vì chữ nhỏ). Không có ảnh Deals vì UAT chưa có ưu đãi nào.
+tài khoản thật. **Huy quyết 29/09: chụp lại sau khi app lên Production** (đã đưa vào checklist mục 8, bước 2). Không có ảnh Deals vì
+UAT chưa có ưu đãi nào.
 
 **Biểu tượng app** 512×512 PNG 32-bit: `D:/TappyAI-backups/play-listing/icon-512.png` (từ `public/icons/icon-512x512.png`).
 
@@ -275,21 +302,28 @@ Phiên bản đầu tiên của TappyAI trên Google Play:
 • Khám phá và đăng đánh giá bằng ảnh, video.
 • Công cụ: viết caption, dịch, quét ảnh, chia hóa đơn, kiểm tra lừa đảo.
 ```
-(318 ký tự, dưới giới hạn 500.)
+(318 ký tự, dưới giới hạn 500.) ⚠️ Vì chỉ công khai sau khi gộp Phase 8, bản lên Play sẽ là versionCode mới hơn vc10 — đổi số phiên
+bản ở tiêu đề và thêm dòng về tính năng Phase 8 (nếu có thứ người dùng thấy được) trước khi dán.
 
 ## 8. Checklist trong Play Console (khi công khai)
 
 Làm theo thứ tự; mỗi bước lưu nháp được.
 
-1. **Kiểm trước (ngoài Console)**: 3 việc trong hộp ⛔ đầu tài liệu xong; mở ẩn danh `https://www.tappyai.com/privacy` và
+1. **Kiểm trước (ngoài Console)**: **đã gộp Phase 8** và kiểm báo cáo + chặn trên bản Android sẽ phát hành (điều kiện công khai 🚦);
+   các việc trong hộp ⛔ xong; mở ẩn danh `https://www.tappyai.com/privacy` và
    `https://www.tappyai.com/delete-account` trên **Production** thấy nội dung đúng; bật huy hiệu Play cho web (`NEXT_PUBLIC_PLAY_LISTING_LIVE=1`)
    và Android (`TAPPYAI_PLAY_LISTING_LIVE=true` khi build) **sau khi** trang Play mở được.
-2. Play Console → chọn app **TappyAI** → menu trái **Grow users → Store presence → Main store listing**:
-   dán Tên / Mô tả ngắn / Mô tả đầy đủ (mục 5, tiếng Việt); tải icon 512, feature graphic 1024×500, ảnh điện thoại 01→07 (kéo đúng thứ tự).
+2. **Chụp lại ảnh cửa hàng trên Production** (Huy quyết 29/09): tài khoản thật, không có chữ `uat`, `(E2E)`, `example.com`; 1080×1920,
+   PNG không alpha; ít nhất: chat hỏi nhanh, chat chốt quán có thẻ, sheet chia sẻ kế hoạch (link `www.tappyai.com`), Trang chủ, Khám phá
+   (bài của người dùng thật), Viết content, Hồ sơ. Cách chụp: `adb shell wm size 1080x1920` → `node android/e2e/scripts/drive.mjs …`
+   → `adb shell wm size reset`. Thay các file trong `D:/TappyAI-backups/play-listing/`.
+3. Play Console → chọn app **TappyAI** → menu trái **Grow users → Store presence → Main store listing**:
+   dán Tên / Mô tả ngắn / Mô tả đầy đủ (mục 5, tiếng Việt); tải icon 512, feature graphic 1024×500, ảnh điện thoại chụp lại ở bước 2
+   (kéo đúng thứ tự).
    **Manage translations → Add your own translations → English (United States)**: dán bản EN.
-3. **Store presence → Store settings**: App category = Travel & Local (hoặc Lifestyle); Tags; Contact details: email `support@tappyai.com`,
+4. **Store presence → Store settings**: App category = Travel & Local (hoặc Lifestyle); Tags; Contact details: email `support@tappyai.com`,
    website `https://www.tappyai.com`.
-4. **Policy → App content** (từng thẻ, bấm **Start** / **Manage**):
+5. **Policy → App content** (từng thẻ, bấm **Start** / **Manage**):
    - **Privacy policy**: `https://www.tappyai.com/privacy`.
    - **Ads**: "No, my app does not contain ads" (mục 4).
    - **App access**: "All or some functionality is restricted" → thêm hướng dẫn cho người duyệt: tài khoản test (email + mật khẩu tạo
@@ -303,9 +337,19 @@ Làm theo thứ tự; mỗi bước lưu nháp được.
    - **Account deletion** (nằm trong Data safety): URL `https://www.tappyai.com/delete-account`.
    - **Advertising ID**: "No" (app không dùng Advertising ID — đã gỡ quyền).
    - **Health apps**: không chọn gì.
-5. **Release → Production → Countries/regions**: thêm Việt Nam (+ nước khác nếu muốn).
-6. **Release → Production → Create new release** (hoặc **Promote** bản vc10 đang ở kênh test): dùng AAB vc10 đã ký; dán ghi chú phát hành
+6. **Release → Production → Countries/regions**: thêm Việt Nam (+ nước khác nếu muốn).
+7. **Release → Production → Create new release** (hoặc **Promote** bản vc10 đang ở kênh test): dùng AAB vc10 đã ký; dán ghi chú phát hành
    (mục 7, `<vi-VN>`); **Review release** → sửa mọi cảnh báo → **Start rollout to Production** (có thể chọn tỉ lệ rollout, vd 20%).
-7. **Publishing overview**: nếu bật *Managed publishing* thì sau khi Google duyệt phải bấm **Publish** thủ công.
-8. Sau khi trang Play mở được: kiểm link `https://play.google.com/store/apps/details?id=com.tappyai.app` ẩn danh; bật huy hiệu (bước 1);
+8. **Publishing overview**: nếu bật *Managed publishing* thì sau khi Google duyệt phải bấm **Publish** thủ công.
+9. Sau khi trang Play mở được: kiểm link `https://play.google.com/store/apps/details?id=com.tappyai.app` ẩn danh; bật huy hiệu (bước 1);
    theo dõi **Quality → Android vitals** và **Ratings and reviews** tuần đầu.
+
+## 9. Sau release — việc đã biết, làm ở Phase 8
+
+Không chặn việc công khai, nhưng phải sửa ở Phase 8 (Huy quyết 29/09):
+
+| Việc | Hiện trạng (căn cứ) | Hướng sửa |
+|---|---|---|
+| **Ảnh/video người dùng trên GCS đang công khai** | bucket đọc công khai (`src/lib/media/providers/gcs.ts:64-79`); ai có URL tệp là mở được, kể cả khi bài đã bị ẩn/xoá khỏi feed | chuyển sang **signed URL** có hạn, cấp qua server sau khi kiểm quyền xem bài |
+| **Bài bị ẩn / hạn chế vẫn mở được qua link** | feed và hồ sơ không trả các bài này, nhưng tệp ảnh/video của chúng vẫn tải được bằng URL trực tiếp (hệ quả của dòng trên) | cùng thay đổi signed URL: bài ẩn/hạn chế → server không cấp URL cho người ngoài chủ bài/kiểm duyệt |
+| Data safety sau signed URL | "Ảnh/video" vẫn là **thu thập, không chia sẻ**; bỏ ghi chú "đọc công khai" ở mục 1 | cập nhật mục 1 khi Phase 8 lên |
