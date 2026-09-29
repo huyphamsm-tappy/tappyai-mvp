@@ -118,7 +118,9 @@ export function swipe(dir = 'up') {
 }
 /** BACK only when the soft keyboard is up — a BACK with no keyboard would leave the screen. */
 export async function hideKeyboard() {
-  if (/mInputShown=true|isInputViewShown=true/.test(sh('dumpsys', 'input_method'))) { sh('input', 'keyevent', '4'); await sleep(600) }
+  // The window manager's mImeShowing is the truth; input_method's mInputShown was seen stale (true
+  // with no keyboard on screen), and a BACK then left the chat for Trang chủ.
+  if (/mImeShowing=true/.test(sh('dumpsys', 'window'))) { sh('input', 'keyevent', '4'); await sleep(600) }
 }
 export const back = async () => { sh('input', 'keyevent', '4'); await sleep(1500) }
 export const typeAscii = (s) => sh('input', 'text', s.replace(/ /g, '%s'))
@@ -140,6 +142,10 @@ export function foreground() {
 export async function launch({ fresh = false } = {}) {
   if (fresh) sh('am', 'force-stop', PKG)
   sh('am', 'start', '-W', '-n', MAIN)
+  // After a foreign app (Maps/Chrome) was force-stopped the emulator sometimes leaves the launcher on
+  // top: start the app once more if it is not in front a few seconds later.
+  await sleep(3000)
+  if (!foreground().startsWith(PKG + '/')) { sh('am', 'start', '-n', MAIN); await sleep(2000) }
   // A first start after install can take ~20 s on the emulator; wait for the shell's bottom bar.
   // The software-GPU emulator sometimes raises "isn't responding" on that first frame (main thread
   // in text drawing, not blocked — see ANDROID-PROGRESS §ANR); answer "Wait", never "Close app".

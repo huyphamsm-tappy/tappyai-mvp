@@ -284,7 +284,9 @@ function metaOf(p: SharedPlace): string {
   return bits.join('  ·  ')
 }
 
-export const SUGGESTION_MAX_ROWS = 4
+// Owner verdict 29/09 (suggestion card): "lấy tấm 1 và 2, không lấy tấm 3" — the card shows the first TWO places; the rest
+// are counted in the "+N" line.
+export const SUGGESTION_MAX_ROWS = 2
 
 /** The SUGGESTION card: the recommendation's places, as the chat card showed them. */
 export async function renderSuggestionCard(subject: string, places: SharedPlace[], url: string, copy: ContentCardCopy): Promise<Blob | null> {

@@ -57,6 +57,12 @@ Giá phòng: chưa xác nhận…","price":…`). Phần đầu kế hoạch (ti
 
 ## 2. Web → Android: thay đổi server/API (giữ tương thích ngược)
 
+- 2026-09-29 (web) **Layout chia sẻ — sửa theo duyệt của Huy (lượt 2)**:
+  - **QR hồ sơ**: dùng bản CÓ huy hiệu Google Play (cột trái «Tải TappyAI ngay» + huy hiệu; cột phải «Hoặc truy cập website» + pill). Link Play = `https://play.google.com/store/apps/details?id=com.tappyai.app` (applicationId release). Kiểm 29/09 11:15: trang công khai trả 404 (VN/US) → CHƯA công khai. Web: hiện huy hiệu ở UAT; production chỉ hiện khi đặt `NEXT_PUBLIC_PLAY_LISTING_LIVE=1` sau khi trang Play mở được. Android: dùng CÙNG điều kiện (không vẽ huy hiệu/không mở link khi trang chưa công khai). App Store: CHƯA gắn.
+  - **Thẻ gợi ý**: tối đa **2 quán** (trước 4), phần còn lại ghi «+N quán khác».
+  - **Ảnh kế hoạch**: ảnh của kế hoạch làm NỀN (poster từ mép trên, như thẻ OG), + «Điểm nổi bật» khi có ≥2 ảnh.
+  - **Thẻ kế hoạch trong chat (SL1)**: mở sheet mẫu 6; trạng thái link kế hoạch (đang tạo / cần đăng nhập / lỗi + Thử lại) nằm TRONG sheet mẫu 6; ô chỉ-link chờ có link; ảnh kế hoạch chờ link để in đúng URL.
+  - **QR thẻ gợi ý (SL3)**: mở trang chủ (tạm).
 - 2026-09-29 (web) **ẢNH CHIA SẺ — mẫu Huy chọn 29/09, web XONG, LIVE UAT `30c0724`** (Android làm theo; web KHÔNG sửa `android/`).
   Mẫu gốc + quy tắc phong cách: `docs/design/share-layouts/` (`profile-qr.png` = #1, `share-sheet.png` = #6, `plan-share.png` = #7,
   `README.md` = bảng màu/chữ/bo góc/khoảng cách). Code tham chiếu: `src/lib/share/cardStyle.ts` (token), `contentCards.ts`,
