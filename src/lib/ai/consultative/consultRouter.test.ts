@@ -136,7 +136,7 @@ describe('slot extraction', () => {
     expect(routeOf(prep('vé máy bay sài gòn đi hà nội'))).toEqual({ origin: 'TP.HCM', dest: 'Hà Nội' })
     expect(routeOf(prep('cuối tuần đi đâu chơi gần sài gòn'))).toEqual({ origin: 'TP.HCM', dest: null })
     expect(routeOf(prep('tàu hỏa hà nội sapa'))).toEqual({ origin: 'Hà Nội', dest: 'Sapa' })
-    expect(tripDatesOf(prep('đi du lịch Đà Nẵng 3 ngày 2 đêm'))).toEqual({ date: null, days: '3 ngày 2 đêm' })
+    expect(tripDatesOf(prep('đi du lịch Đà Nẵng 3 ngày 2 đêm'))).toEqual({ date: null, days: '3 ngày 2 đêm', back: null })
     expect(tripDatesOf(prep('15/10, 1 người')).date).toBe('15/10')
   })
   it('diacritic traps: mùa/mưa are not "mua", phố đi bộ is not phở, sơn gel is not son', () => {

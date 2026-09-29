@@ -94,3 +94,17 @@ describe('a plan heading is a label, not a claim (placeClaimGuard ordering rule 
     expect(isPlanHeadingLine('Quán có đặt bàn online.')).toBe(false)
   })
 })
+
+describe('travel dates reach the prefilled links (UAT 1ddfadc affiliate check)', () => {
+  const now = new Date('2026-09-29T08:00:00Z')
+  it('"ngày 15/10" keeps its month; "10/10 đến 12/10" gives the checkout', async () => {
+    const { routeConsult } = await import('./consultRouter')
+    const { travelPreCall } = await import('./consultTravel')
+    const k1 = routeConsult([{ role: 'user', content: 'Vé máy bay Sài Gòn đi Hà Nội ngày 15/10, 1 người, 1 chiều' }], { hasGps: false, lang: 'vi' }).decision.known
+    expect(travelPreCall(k1, 'Vé máy bay Sài Gòn đi Hà Nội ngày 15/10, 1 người, 1 chiều', now)?.args).toMatchObject({ departDate: '2026-10-15' })
+    const k2 = routeConsult([{ role: 'user', content: 'Khách sạn Đà Nẵng gần biển 10/10 đến 12/10, 2 người' }], { hasGps: false, lang: 'vi' }).decision.known
+    expect(travelPreCall(k2, 'Khách sạn Đà Nẵng gần biển 10/10 đến 12/10, 2 người', now)?.args).toEqual({ location: 'Đà Nẵng', checkIn: '2026-10-10', checkOut: '2026-10-12' })
+    const k3 = routeConsult([{ role: 'user', content: 'Vé máy bay Sài Gòn đi Đà Nẵng 10/10 về 13/10, 2 người, khứ hồi' }], { hasGps: false, lang: 'vi' }).decision.known
+    expect(travelPreCall(k3, 'Vé máy bay Sài Gòn đi Đà Nẵng 10/10 về 13/10, 2 người, khứ hồi', now)?.args).toMatchObject({ departDate: '2026-10-10', returnDate: '2026-10-13' })
+  })
+})

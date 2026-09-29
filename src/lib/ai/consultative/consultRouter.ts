@@ -397,13 +397,21 @@ export function routeOf(t: Txt): { origin: string | null; dest: string | null } 
 }
 const DURATION = /\b\d{1,2}\s*(?:n|ngay)\s*\d{0,2}\s*(?:d|dem)?\b|\b(?:mot|hai|ba|bon|nam)\s+ngay(?:\s+\w+\s+dem)?\b|\btrong ngay\b|\bvai hom\b|\bmay hom\b|\b\d+\s*days?\b/
 const OTHER_DATE = /\bthang\s+\d{1,2}\b|\bcuoi tuan\b|\btuan\s+(?:sau|toi|nay)\b|\bthang\s+(?:sau|toi|nay)\b|\b(?:le|dip)\s+(?:2\/9|30\/4|tet)\b|\btet\b|\bngay mai\b|\bnext (?:week|month|weekend)\b|\bthis weekend\b/
-export function tripDatesOf(t: Txt): { date: string | null; days: string | null } {
+// UAT 1ddfadc (affiliate check): "ngày 15/10" was read as "ngày 15" (the day-only alternative matched first, the
+// month was lost, the fare link fell back to +7 days) and "10/10 đến 12/10" kept only the check-in (checkout
+// defaulted to one night). A day/month wins over a bare day; a "A đến B" range gives the return / checkout.
+const DAY_MONTH = /\b\d{1,2}\s*[/.]\s*\d{1,2}(?:\s*[/.]\s*\d{2,4})?\b/
+const DATE_RANGE = /\b(\d{1,2}\s*[/.]\s*\d{1,2})\s*(?:den|toi|ve|-|–|~)\s*(?:ngay\s+)?(\d{1,2}\s*[/.]\s*\d{1,2})\b/
+export function tripDatesOf(t: Txt): { date: string | null; days: string | null; back: string | null } {
   const days = grab(t, DURATION)
   const noDur = t.f.replace(new RegExp(DURATION.source, 'g'), m => ' '.repeat(m.length))
   let date: string | null = null
-  const m = SPECIFIC_DATE.exec(noDur) ?? OTHER_DATE.exec(noDur)
+  const back: string | null = null
+  const range = DATE_RANGE.exec(noDur)
+  if (range) return { date: range[1].replace(/\s+/g, ''), days, back: range[2].replace(/\s+/g, '') }
+  const m = DAY_MONTH.exec(noDur) ?? SPECIFIC_DATE.exec(noDur) ?? OTHER_DATE.exec(noDur)
   if (m) date = t.lo.slice(m.index, m.index + m[0].length).trim()
-  return { date, days }
+  return { date, days, back }
 }
 const STYLE: Array<[RegExp, string]> = [
   [W('bien|tam bien|view bien|gan bien|beach'), 'biển'], [W('nui|san may|trekking|leo nui|mountain'), 'núi'], [W('an uong|hai san|am thuc|food tour'), 'ăn uống'],
@@ -543,7 +551,7 @@ function shoppingView(t: Txt): SlotView {
 function travelView(t: Txt): SlotView {
   const kind = travelKindOf(t)
   const { origin, dest } = routeOf(t)
-  const { date, days } = tripDatesOf(t)
+  const { date, days, back } = tripDatesOf(t)
   const party = partyOf(t) ?? (W('gia dinh').test(t.f) ? 'gia đình' : null)
   const budget = budgetOf(t), style = label(t, STYLE), transport = label(t, TRANSPORT)
   const flightTime = kind === 'flight' || kind === 'ticket' ? grab(t, FLIGHT_TIME) : null
@@ -551,6 +559,7 @@ function travelView(t: Txt): SlotView {
   if (dest) known.diem_den = dest
   if (origin) known.xuat_phat = origin
   if (date) known.ngay = date
+  if (back) known.ngay_ve = back
   if (days) known.so_ngay = days
   if (party) known.so_nguoi = party
   if (budget) known.ngan_sach = budget

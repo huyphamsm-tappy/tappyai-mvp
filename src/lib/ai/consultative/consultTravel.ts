@@ -31,15 +31,18 @@ export function travelPreCall(known: Record<string, string>, text: string, now =
   const dest = known.diem_den?.trim()
   const origin = known.xuat_phat?.trim()
   const date = isoFromDayMonth(known.ngay, now)
+  // The return / checkout the user named ("10/10 đến 12/10") — only when it comes after the start.
+  const backIso = isoFromDayMonth(known.ngay_ve, now)
+  const back = date && backIso && backIso > date ? backIso : undefined
   // A ticket request ("vé máy bay …", "bay sáng, 1 chiều") searches fares; a trip that merely travels by air
   // ("đi Đà Nẵng 3 ngày, đi máy bay") searches where to stay — replay TRAVEL-1: the fare call (no fare
   // provider configured) left the pick with nothing to choose.
   const ticketWords = /v[eé] m[aá]y bay|chuy[eế]n bay|bay (?:s[aá]ng|tr[uư]a|chi[eề]u|t[oố]i|đêm|dem)|1 chi[eề]u|m[oộ]t chi[eề]u|kh[uứ] h[oồ]i/i.test(text)
   const flight = ticketWords || (/m[aá]y bay|\bbay\b/i.test(`${known.phuong_tien ?? ''} ${text}`) && !known.so_ngay && !known.phong_cach)
-  if (flight && origin && dest) return { name: 'get_flight_prices', args: { origin, destination: dest, ...(date ? { departDate: date } : {}) } }
+  if (flight && origin && dest) return { name: 'get_flight_prices', args: { origin, destination: dest, ...(date ? { departDate: date } : {}), ...(back ? { returnDate: back } : {}) } }
   if (!dest) return null
   const nights = (() => { const n = Number((known.so_ngay ?? '').match(/\d+/)?.[0]); return Number.isFinite(n) && n > 1 ? n - 1 : 1 })()
-  return { name: 'get_hotel_prices', args: { location: dest, ...(date ? { checkIn: date, checkOut: addDays(date, nights) } : {}) } }
+  return { name: 'get_hotel_prices', args: { location: dest, ...(date ? { checkIn: date, checkOut: back ?? addDays(date, nights) } : {}) } }
 }
 
 const foldName = (s: string) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/gi, 'd').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()
