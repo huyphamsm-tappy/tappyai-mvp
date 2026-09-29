@@ -1,3 +1,4 @@
+import { maskStreetNames } from './streetNames'
 export function normalizeVN(str: string): string {
   return str
     .normalize('NFD')
@@ -717,7 +718,7 @@ export interface TransportDefault { mode: 'máy bay' | 'xe khách / ô tô' | 't
  * fast boat or plane; otherwise road. Null when the destination is unknown to this table.
  */
 export function defaultTransportFor(text: string, origin: { lat: number; lng: number } | null | undefined): TransportDefault | null {
-  const t = normalizeVN(String(text ?? '').toLowerCase())
+  const t = maskStreetNames(normalizeVN(String(text ?? '').toLowerCase()))
   if (ABROAD_RE.test(t)) return { mode: 'máy bay', destination: 'nước ngoài', distanceKm: null }
   const hit = DESTINATION_COORDS.find(([re]) => re.test(t))
   if (!hit) return null
@@ -772,7 +773,8 @@ export function isPlanningRefinement(lastText: string): boolean {
 }
 
 export function detectPlanningIntent(text: string): 'trip' | 'evening' | null {
-  const t = normalizeVN(text.toLowerCase())
+  // A street / dish named after a city is not a destination ("phố đi bộ Nguyễn Huệ" is not a trip to Huế).
+  const t = maskStreetNames(normalizeVN(text.toLowerCase()))
 
   const hasPlanRequest = PLAN_REQUEST_RE.test(t)
   const hasPlanKeyword = hasPlanRequest || PLAN_NOUN_RE.test(t)

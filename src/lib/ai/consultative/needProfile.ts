@@ -1,6 +1,7 @@
 import { extractBudget, type Budget } from '../budget'
 import { normalizeVN, namedVenueIn } from '../intent'
 import { statedDistrict } from '../districts'
+import { maskStreetNames } from '../streetNames'
 import { foldForLexicon } from '../foldSense'
 import { PRODUCT_TYPES, PRODUCT_TYPE_QUERY_VI } from './shoppingConstraints'
 
@@ -540,8 +541,10 @@ export function deriveNeedProfile(
 
     // ── Location ───────────────────────────────────────────────────────────
     let placedThisTurn = false
+    // A city is a WORD of the text with street / dish names masked (UAT 29/09: "Nguyễn Huệ" ⊃ "hue" → Huế).
+    const tCity = maskStreetNames(t)
     for (const place of PLACES) {
-      if (t.includes(place)) { p.location.text = place; p.changedAtTurn.location = turn; placedThisTurn = true; break }
+      if (new RegExp(`\\b${place}\\b`).test(tCity)) { p.location.text = place; p.changedAtTurn.location = turn; placedThisTurn = true; break }
     }
     const district = t.match(/\bquan\s+(\d{1,2})\b/)
     if (district && !p.location.text) {

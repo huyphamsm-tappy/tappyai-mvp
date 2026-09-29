@@ -13,6 +13,7 @@
 // 🚨 `\b` after a Vietnamese vowel never matches — diacritic patterns use (?<![\p{L}\p{N}])…(?![\p{L}\p{N}]).
 
 import { normalizeVN } from '../intent'
+import { maskStreetNames } from '../streetNames'
 import { SPECIFIC_DATE } from './searchNow'
 import { wasAskReply, type AskQuestion, type ConsultDecision, type ConsultDomain, type ConsultTurn } from './consultBrain'
 
@@ -22,7 +23,7 @@ export interface RouteResult { decision: ConsultDecision; confidence: RouteConfi
 
 // ── Text views ─────────────────────────────────────────────────────────────────────────────────
 
-export interface Txt { raw: string; lo: string; f: string }
+export interface Txt { raw: string; lo: string; f: string; /** `f` with street / dish names that contain a city blanked (streetNames.ts) — city matching only */ fc: string }
 
 /** Folds one string char-by-char so `f` stays index-aligned with `lo`. */
 export function prep(raw: string): Txt {
@@ -33,7 +34,7 @@ export function prep(raw: string): Txt {
     if (d.length !== ch.length) d = (d + '  ').slice(0, ch.length)
     f += d
   }
-  return { raw, lo, f }
+  return { raw, lo, f, fc: maskStreetNames(f) }
 }
 
 const W = (alts: string) => new RegExp(`\\b(?:${alts})\\b`)
@@ -50,7 +51,7 @@ const stripMarkers = (s: string) => s.replace(/\[(TAPPY_[A-Z_]+|CTA_BUTTONS|FOLL
 // ── AREA lexicon ───────────────────────────────────────────────────────────────────────────────
 // w: 3 = names the area on its own · 2 = usually this area, yields to a 3 · 1 = a hint only.
 
-interface AreaRule { d: ConsultDomain; w: number; re: RegExp; on: 'f' | 'lo'; id?: string }
+interface AreaRule { d: ConsultDomain; w: number; re: RegExp; on: 'f' | 'fc' | 'lo'; id?: string }
 
 const CITY: Array<[string, string]> = [
   ['sai gon|saigon|sg|tp\\.? ?hcm|hcm|tphcm|tp\\.? ?ho chi minh|ho chi minh', 'TP.HCM'], ['ha noi|hanoi', 'Hà Nội'], ['da nang|danang', 'Đà Nẵng'],
@@ -78,9 +79,9 @@ const AREA_RULES: AreaRule[] = [
   { d: 'shopping', w: 3, on: 'f', re: W('mua sam|sam do|sam sua|dien thoai|dt|smartphone|iphone|ipad|samsung|xiaomi|oppo|pixel|laptop|macbook|may tinh|pc|tai nghe|airpods|loa (?:bluetooth|mini|keo)|ban phim|chuot (?:may tinh|khong day|gaming)|man hinh|dong ho|smartwatch|apple watch|may anh|op lung|op (?:uag|iphone|ip|samsung|dien thoai)|uag|cuong luc|sac du phong|cu sac|thoi trang|quan ao|ao khoac|ao thun|ao so mi|tui xach|balo|vi da|my pham|skincare|kem chong nang|kem duong|kem nen|sua rua mat|serum|toner|nuoc hoa|tay trang|gia dung|noi chien|noi com|may loc|may hut|robot hut bui|may giat|tu lanh|dieu hoa|may lanh|may pha|do cu|hang cu|may cu|2hand|second hand|like new|qua tang|tang qua|mon qua|so gia|deal|giam gia|voucher|ma giam|flash sale|shopee|lazada|tiki|tiktok shop|gift|buy|phu kien') },
   // TRAVEL
   { d: 'travel', w: 3, on: 'f', re: W('du lich|dl|lich trinh|khach san|homestay|resort|villa|hostel|ve may bay|may bay|chuyen bay|ve xe|xe khach|xe giuong nam|limousine|ve tau|tau hoa|tau lua|cam trai|camping|glamping|da ngoai|di trong ngay|phuot|honeymoon|trang mat|book phong|dat phong|nghi duong|tour|tron khoi thanh pho|xa thanh pho|di choi xa|flight|hotel|trip|travel') },
-  { d: 'travel', w: 3, on: 'f', id: 'go-city', re: new RegExp(`\\b(?:di|ve|ra|vao|toi|den)\\s+(?:${CITY_ALT})\\b|\\b(?:${CITY_ALT})\\s+\\d+\\s*(?:ngay|n\\d)|\\b\\d+\\s*ngay\\s*\\d+\\s*dem\\b`) },
-  { d: 'travel', w: 3, on: 'f', id: 'getaway', re: new RegExp(`\\b(?:di dau choi|di choi dau|di dau)\\b.*\\b(?:gan|quanh)\\s+(?:${CITY_ALT}|thanh pho)\\b|\\b(?:gan|quanh)\\s+(?:${CITY_ALT})\\b.*\\b(?:di dau|di choi)\\b|\\b(?:vai hom|may hom|ngay nghi|dip le|nghi le)\\b.*\\bdi (?:dau|choi)\\b|\\bnen di dau\\b`) },
-  { d: 'travel', w: 1, on: 'f', re: W(CITY_ALT) },
+  { d: 'travel', w: 3, on: 'fc', id: 'go-city', re: new RegExp(`\\b(?:di|ve|ra|vao|toi|den)\\s+(?:${CITY_ALT})\\b|\\b(?:${CITY_ALT})\\s+\\d+\\s*(?:ngay|n\\d)|\\b\\d+\\s*ngay\\s*\\d+\\s*dem\\b`) },
+  { d: 'travel', w: 3, on: 'fc', id: 'getaway', re: new RegExp(`\\b(?:di dau choi|di choi dau|di dau)\\b.*\\b(?:gan|quanh)\\s+(?:${CITY_ALT}|thanh pho)\\b|\\b(?:gan|quanh)\\s+(?:${CITY_ALT})\\b.*\\b(?:di dau|di choi)\\b|\\b(?:vai hom|may hom|ngay nghi|dip le|nghi le)\\b.*\\bdi (?:dau|choi)\\b|\\bnen di dau\\b`) },
+  { d: 'travel', w: 1, on: 'fc', re: W(CITY_ALT) },
   // ENTERTAINMENT
   { d: 'entertainment', w: 3, on: 'f', re: W('karaoke|di hat|quan hat|bida|bi a|billiard|bowling|rap phim|rap chieu|xem phim|(?<!ban )phim|cgv|cinema|concert|live ?show|nhac song|live music|acoustic|bar|pub|beer club|rooftop|club|escape room|phong thoat hiem|game center|trung tam tro choi|board ?game|ma soi|san choi|khu vui choi|khu tro choi|cong vien|thao cam vien|so thu|pho di bo|trien lam|bao tang|thuy cung|aquarium|truot bang|paintball|trampoline|workshop|lam gi (?:cho|toi nay|bay gio|cuoi tuan)|toi nay lam gi|chan qua|buon qua|hen ho|di choi nhom|choi nhom|dan (?:con|be|tre|nguoi yeu|ny) di choi|di choi voi (?:con|be|nguoi yeu|ny)') },
   { d: 'entertainment', w: 3, on: 'lo', re: N('hát|quẩy') },
@@ -95,7 +96,7 @@ interface AreaHit { d: ConsultDomain; w: number; at: number; id?: string }
 function areaHits(t: Txt): AreaHit[] {
   const best = new Map<ConsultDomain, AreaHit>()
   for (const r of AREA_RULES) {
-    const src = r.on === 'f' ? t.f : t.lo
+    const src = r.on === 'f' ? t.f : r.on === 'fc' ? t.fc : t.lo
     const m = r.re.exec(src)
     if (!m) continue
     const hit: AreaHit = { d: r.d, w: r.w, at: m.index, id: r.id }
@@ -196,7 +197,7 @@ export function localAreaOf(t: Txt): string | null {
   const q = /\b(?:quan|q\.?|district)\s?(\d{1,2})\b/.exec(t.f)
   if (q) return `quận ${q[1]}`
   for (const [k, v] of DISTRICTS) if (W(k).test(t.f)) return v
-  for (const [k, v] of CITY) if (W(k).test(t.f)) return v
+  for (const [k, v] of CITY) if (W(k).test(t.fc)) return v
   if (W('gan day|gan nha|quanh day|gan toi|gan minh|gan em|gan cong ty|nearby|near me|around here').test(t.f)) return 'gần bạn'
   return null
 }
@@ -378,12 +379,12 @@ function travelKindOf(t: Txt): TravelKind {
 const cityAt = (s: string): string | null => { for (const [k, v] of CITY) if (new RegExp(`^(?:${k})\\b`).test(s)) return v; return null }
 export function routeOf(t: Txt): { origin: string | null; dest: string | null } {
   let origin: string | null = null, dest: string | null = null
-  const from = new RegExp(`\\b(?:tu|xuat phat(?: tu)?|khoi hanh(?: tu)?|from|gan|quanh|o)\\s+(${CITY_ALT})\\b`).exec(t.f)
+  const from = new RegExp(`\\b(?:tu|xuat phat(?: tu)?|khoi hanh(?: tu)?|from|gan|quanh|o)\\s+(${CITY_ALT})\\b`).exec(t.fc)
   if (from) origin = cityAt(from[1])
-  const pair = new RegExp(`\\b(${CITY_ALT})\\s*(?:di|->|-|den|toi|ra|vao|to|–)\\s*(${CITY_ALT})\\b`).exec(t.f)
+  const pair = new RegExp(`\\b(${CITY_ALT})\\s*(?:di|->|-|den|toi|ra|vao|to|–)\\s*(${CITY_ALT})\\b`).exec(t.fc)
   if (pair) { origin = origin ?? cityAt(pair[1]); dest = cityAt(pair[2]) }
   if (!dest) {
-    const go = new RegExp(`\\b(?:di|ve|ra|vao|toi|den|dl|du lich|lich trinh|khach san|homestay|resort|o)\\s+(${CITY_ALT})\\b`).exec(t.f)
+    const go = new RegExp(`\\b(?:di|ve|ra|vao|toi|den|dl|du lich|lich trinh|khach san|homestay|resort|o)\\s+(${CITY_ALT})\\b`).exec(t.fc)
     if (go && cityAt(go[1]) !== origin) dest = cityAt(go[1])
   }
   if (!dest) {
