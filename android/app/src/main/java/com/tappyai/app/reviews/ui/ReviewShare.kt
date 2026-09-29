@@ -15,6 +15,7 @@ import com.tappyai.app.reviews.data.ReviewContentType
 import com.tappyai.app.reviews.data.ReviewSourceType
 import com.tappyai.app.reviews.data.isShareOnlyName
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.net.HttpURLConnection
@@ -74,6 +75,46 @@ internal suspend fun shareReview(context: Context, review: Review) {
         if (stream != null) addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
     }
     context.startActivity(chooser)
+}
+
+/**
+ * An Explore post's share: the approved sheet (sample #6, variant "post" — web `feedShared.tsx`
+ * ShareModal). Its "Ảnh chia sẻ" offers the post's own card (review / clip) first and the TappyAI QR
+ * card second; Save and TikTok get that file. An UPLOADED clip goes to TikTok as its own video.
+ * "Ứng dụng khác" keeps the platform share of the media ([shareReview]). A completed share is a
+ * row of the author's "Đã share" history.
+ */
+@androidx.compose.runtime.Composable
+internal fun ReviewShareSheetHost(review: Review, onDismiss: () -> Unit) {
+    val context = androidx.compose.ui.platform.LocalContext.current
+    val scope = androidx.compose.runtime.rememberCoroutineScope()
+    val post = androidx.compose.runtime.remember(review) { com.tappyai.app.share.card.postCardOf(review) }
+    val artifact = androidx.compose.runtime.remember(review) {
+        val url = reviewShareUrl(review.id, BuildConfig.WEB_APP_URL)
+        com.tappyai.app.share.ShareArtifact(
+            kind = com.tappyai.app.share.ShareArtifact.Kind.PLACES,
+            title = post.title, subject = post.title,
+            text = shareTextFor(review, BuildConfig.WEB_APP_URL, post.title),
+            url = url, places = emptyList(),
+        )
+    }
+    val isUploadedClip = shareMediaFor(review)?.family == "video"
+    com.tappyai.app.share.TappyShareSheet(
+        artifact = artifact,
+        onDismiss = onDismiss,
+        variant = com.tappyai.app.share.card.ShareSheetVariant.POST,
+        displayName = post.title,
+        post = post,
+        clipVideo = if (isUploadedClip) ({ uploadedClipUri(context, review) }) else null,
+        onNativeShare = { scope.launch { shareReview(context, review) } },
+        onShared = { channel -> ShareHistoryRecorder.recordChannel(context, review.id, channel) },
+    )
+}
+
+/** An uploaded clip's own video as a shareable content URI (TikTok) — null for photos and imports. */
+internal suspend fun uploadedClipUri(context: Context, review: Review): Uri? {
+    val media = shareMediaFor(review)?.takeIf { it.family == "video" } ?: return null
+    return fetchForShare(context, review.id, media)?.uri
 }
 
 /** The media file worth sharing, or null for a post that has none of its own. */

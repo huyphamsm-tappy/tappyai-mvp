@@ -134,9 +134,13 @@ class ReviewShareTest {
 
     @Test
     fun `both share entry points launch the same helper, and the old text-only one is gone`() {
-        assertTrue(src("app/src/main/java/com/tappyai/app/reviews/ui/ReviewClipPager.kt").contains("onShare = { shareScope.launch { shareReview(context, review) } },"))
+        // Both open the approved sheet (sample #6, variant post); its "Ứng dụng khác" is the one helper.
+        for (f in listOf("ReviewClipPager.kt", "ReviewsScreens.kt")) {
+            val s = src("app/src/main/java/com/tappyai/app/reviews/ui/$f")
+            assertTrue(f, s.contains("onShare = { shareSheetFor = review },") && s.contains("ReviewShareSheetHost(r, onDismiss = { shareSheetFor = null })"))
+        }
+        assertTrue(share.contains("onNativeShare = { scope.launch { shareReview(context, review) } },"))
         val screens = src("app/src/main/java/com/tappyai/app/reviews/ui/ReviewsScreens.kt")
-        assertTrue(screens.contains("onShare = { shareScope.launch { shareReview(context, review) } },"))
         assertFalse(screens.contains("fun shareReview(") || screens.contains("ACTION_SEND"))
         assertEquals("one definition", 1, Regex("""fun shareReview\(""").findAll(share).count())
     }

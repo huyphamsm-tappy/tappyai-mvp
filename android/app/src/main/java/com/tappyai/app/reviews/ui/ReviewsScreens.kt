@@ -550,7 +550,9 @@ internal fun ReviewDetailScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     LaunchedEffect(reviewId) { viewModel.load(reviewId) }
     val context = LocalContext.current
-    val shareScope = rememberCoroutineScope()
+    // Share opens the approved sheet (sample #6, variant post) — see ReviewShareSheetHost.
+    var shareSheetFor by remember { mutableStateOf<Review?>(null) }
+    shareSheetFor?.let { r -> ReviewShareSheetHost(r, onDismiss = { shareSheetFor = null }) }
     val nowMillis = System.currentTimeMillis()
     val review = uiState.review
     // Id of the comment whose emoji picker is open (only one at a time), or null.
@@ -622,7 +624,7 @@ internal fun ReviewDetailScreen(
                             onOpenLikes = { likesFor = review.id },
                             onSave = { viewModel.toggleSave() },
                             onComment = {},
-                            onShare = { shareScope.launch { shareReview(context, review) } },
+                            onShare = { shareSheetFor = review },
                             onAvatarClick = { onAvatarClick(review.userId) },
                             onDelete = {},
                             onHide = {},

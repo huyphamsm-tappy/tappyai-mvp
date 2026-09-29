@@ -227,3 +227,18 @@ Xem bảng ở mục "CẦN HUY QUYẾT" phía trên, Q1–Q9. Gấp nhất:
 6. Nút Back vật lý / cử chỉ vuốt trên mọi màn.
 7. Đổi ảnh đại diện + ảnh bìa bằng camera.
 8. Xem có còn hộp "isn't responding" không. Trên emulator nó do GPU phần mềm (§ANR); máy thật không nên có.
+
+
+## 29/09 chiều — Layout chia sẻ (Huy duyệt) + R15
+
+| Việc | Kết quả | Bằng chứng |
+|---|---|---|
+| Sheet mẫu #6 (Explore, hồ sơ, gợi ý chat, kế hoạch chat SL1) | "Ảnh chia sẻ" có bộ chọn mẫu + xem trước 280 dp; lưới 4 cột logo thương hiệu; Tùy chọn khác; banner | e2e `share-cards` Android 8/8, web 4/4 |
+| Thẻ #1 review / clip (1080×1920), QR bài + QR hồ sơ (1200, huy hiệu Google Play chỉ ở UAT/debug, release khi `TAPPYAI_PLAY_LISTING_LIVE=true`), gợi ý (2 quán) | vẽ tại máy, port từng toạ độ của web | ảnh ghép `D:/TappyAI-backups/android-parity-evidence/share-layouts-2026-09-29/*-android-vs-web.png` |
+| Ảnh kế hoạch #7 | nền ảnh thật nếu có ảnh Google, không có → dải gradient; timeline ≤3 ngày × 4 chặng; Tổng quan; CTA + link | `share-plan` 9/9: file `tappyai-plan-…png` 1080×3334 |
+| MỘT file | "Lưu về máy" = đúng file xem trước; TikTok nhận CÙNG số byte (hồ sơ 328.297 = 328.297, kế hoạch 449.776 = 449.776); clip tải lên → TikTok nhận chính video (12 MB) | `share-cards`, `share-plan` |
+| R15 (mục 3) | `trip-full` 7/7 lượt liên tiếp ra thẻ kế hoạch sau «Lên kế hoạch chi tiết» (UAT 1507c1e+) | e2e `chat` E2E_CASES=trip-full |
+| Mục 2 (thẻ kế hoạch mới + manifest ảnh) | CHƯA có đặc tả trong ANDROID-REQUESTS → chờ phiên web | — |
+| Lỗi web R16 | lưới bài hồ sơ đè lên modal QR và sheet chia sẻ hồ sơ (che nút) | ANDROID-REQUESTS R16 |
+
+Khác biệt còn lại (không đổi chức năng): chữ đậm 800 trên Android nhạt hơn web một chút (Roboto của máy); mẫu điểm QR khác (zxing ↔ bộ mã hoá web) — cả hai quét được.

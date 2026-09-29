@@ -2,7 +2,6 @@ package com.tappyai.app.profile
 
 import android.content.ContentValues
 import android.content.Context
-import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.os.Build
@@ -99,7 +98,21 @@ fun QrProfileSheet(userId: String, name: String?, onDismiss: () -> Unit) {
         if (result != null) qrBitmap = result else qrFailed = true
     }
 
-    val shareChooserTitle = stringResource(R.string.profile_qr_share_chooser_title)
+    // "Chia sẻ" opens the approved share sheet (sample #6, variant profile) — web QRProfileButton →
+    // ShareMenu(variant="profile"): its "Ảnh chia sẻ" is the TappyAI QR card, the file Save/TikTok get.
+    var shareOpen by remember { mutableStateOf(false) }
+    if (shareOpen) {
+        val title = name?.trim()?.takeIf { it.isNotEmpty() }?.let { "$it · TappyAI" } ?: "TappyAI"
+        com.tappyai.app.share.TappyShareSheet(
+            artifact = com.tappyai.app.share.ShareArtifact(
+                kind = com.tappyai.app.share.ShareArtifact.Kind.PLACES,
+                title = title, subject = title, text = "$title\n$profileUrl", url = profileUrl, places = emptyList(),
+            ),
+            onDismiss = { shareOpen = false },
+            variant = com.tappyai.app.share.card.ShareSheetVariant.PROFILE,
+            displayName = name?.trim().orEmpty(),
+        )
+    }
     val savedToast = stringResource(R.string.profile_qr_saved)
     val saveFailedToast = stringResource(R.string.profile_qr_save_failed)
     val canSave = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
@@ -175,7 +188,7 @@ fun QrProfileSheet(userId: String, name: String?, onDismiss: () -> Unit) {
                         icon = Icons.Filled.Share,
                         accent = true,
                         enabled = true,
-                        onClick = { shareProfileLink(context, profileUrl, shareChooserTitle) },
+                        onClick = { shareOpen = true },
                     )
                     if (canSave) {
                         QrAction(
@@ -246,14 +259,6 @@ private fun generateQrBitmap(content: String, sizePx: Int): Bitmap? = try {
     Bitmap.createBitmap(pixels, sizePx, sizePx, Bitmap.Config.RGB_565)
 } catch (_: Exception) {
     null
-}
-
-private fun shareProfileLink(context: Context, url: String, chooserTitle: String) {
-    val sendIntent = Intent(Intent.ACTION_SEND).apply {
-        type = "text/plain"
-        putExtra(Intent.EXTRA_TEXT, url)
-    }
-    context.startActivity(Intent.createChooser(sendIntent, chooserTitle))
 }
 
 /**
