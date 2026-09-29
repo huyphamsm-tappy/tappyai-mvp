@@ -94,13 +94,14 @@ const MODEL_ROW_DROP = new Set(['place_id', 'maps_link', 'booking_links', 'websi
  * same rows, same order, minus link/id/media fields the card renders. The stream frames — and therefore
  * the cards and every guard — keep the full result.
  */
-export function slimResultForModel(result: unknown): unknown {
+export function slimResultForModel(result: unknown, maxRows?: number): unknown {
   if (!result || typeof result !== 'object') return result
   const r = { ...(result as Record<string, unknown>) }
-  for (const key of ['results', 'hotels']) {
+  for (const key of ['results', 'hotels', 'hotel_list']) {
     const rows = r[key]
     if (!Array.isArray(rows)) continue
-    r[key] = rows.map(row => row && typeof row === 'object'
+    // R15: a pre-fetched trip plan reads a few rows per source (28k input tokens with every row).
+    r[key] = (maxRows ? rows.slice(0, maxRows) : rows).map(row => row && typeof row === 'object'
       ? Object.fromEntries(Object.entries(row as Record<string, unknown>).filter(([k]) => !MODEL_ROW_DROP.has(k)))
       : row)
   }

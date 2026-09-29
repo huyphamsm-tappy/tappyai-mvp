@@ -592,7 +592,7 @@ export async function POST(req: Request) {
 - LENH CUOI (GHI DE moi luat hoi o tren): VIET KE HOACH NGAY, KHONG dat cau hoi nao. Dong dau "Mình giả định: …" cho moi thu chua biet (so nguoi, ngay → "ngày bạn chọn", noi o, mon qua…). Xoay quanh ${pick ? `"${pick}"` : 'lua chon hop nhat trong cuoc tro chuyen'}.${fd === 'travel'
     // R15 (29/09): the travel plan block went missing on ~1/3 plan turns (and the completion call, which reuses
     // this prompt, then wrote headings again): the order named only the headings. The block is FIRST and required.
-    ? ' Khach san / quan an / thoi tiet DA CO trong ket qua cong cu o tren: VIET NGAY, KHONG goi cong cu nua. BAT BUOC THEO THU TU: (1) khoi [TAPPY_PLAN]{JSON dung dinh dang o khoi KE HOACH phia tren}[/TAPPY_PLAN] — THIEU KHOI NAY LA SAI; (2) sau khoi, cac tieu de in dam: '
+    ? ' Khach san / quan an / thoi tiet DA CO trong ket qua cong cu o tren: VIET NGAY, KHONG goi cong cu nua. BAT BUOC THEO THU TU: (1) khoi [TAPPY_PLAN]{JSON dung dinh dang o khoi KE HOACH phia tren}[/TAPPY_PLAN] — THIEU KHOI NAY LA SAI; JSON GON: moi ngay TOI DA 4 muc, description TOI DA 15 tu, CHI dung dia diem co trong ket qua cong cu (dia diem khac se bi loai); (2) sau khoi, cac tieu de in dam, MOI tieu de TOI DA 2 dong ngan (lich tung ngay da nam trong khoi): '
     : ' Viet DU cac tieu de in dam, dung thu tu: '}${PLAN_HEADINGS[fd].map(h => `**${h}**`).join(' · ')}.`
   })()}
 =====================================`
@@ -2473,7 +2473,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     console.log(JSON.stringify({ type: 'tappyai_trip_prefetch', calls: tripOutcomes.map(o => o.toolName), ms: Math.max(0, ...tripOutcomes.map(o => o.ms)) }))
   }
   const presearchAll: PresearchOutcome[] = tripOutcomes.length > 0 ? tripOutcomes : eveningOutcomes.length > 0 ? eveningOutcomes : presearchOutcome ? [presearchOutcome] : []
-  const modelMessagesWithPresearch = presearchAll.length > 0 ? [...modelMessages, ...presearchAll.flatMap(o => presearchMessages(consult ? { ...o, result: slimResultForModel(o.result) } : o))] : modelMessages
+  const modelMessagesWithPresearch = presearchAll.length > 0 ? [...modelMessages, ...presearchAll.flatMap(o => presearchMessages(consult ? { ...o, result: slimResultForModel(o.result, o.toolCallId.startsWith('trip_') ? 4 : undefined) } : o))] : modelMessages
   // F-015: give the question back if this turn ends in a terminal model failure. Single-shot: a
   // successful `onFinish` never refunds; a terminal error part (`onError`) or a streamText init
   // throw refunds exactly once. The tools in this route catch their own errors and never throw, so
