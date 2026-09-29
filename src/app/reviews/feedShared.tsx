@@ -28,6 +28,7 @@ import { useTranslation } from '@/lib/i18n/useTranslation'
 import { loginPathFor, currentDestination } from '@/lib/auth/returnTo'
 import { useOnlineStatus } from '@/hooks/useOnlineStatus'
 import { isShareOnlyPlaceName, reviewShareTitle } from '@/lib/share/reviewShareTitle'
+import { postCardOf } from '@/lib/share/contentCards'
 import { useMusicTrack, getPreviewUrl } from '@/modules/music'
 import { ReviewMusicCredit } from './ReviewMusicCard'
 import { SHOW_MUSIC } from '@/lib/config/product'
@@ -293,6 +294,8 @@ export function ShareModal({ review, onClose }: { review: Review; onClose: () =>
       // old one); its layout is also what Save and TikTok produce.
       variant="post"
       profileName={reviewShareTitle(review)}
+      // The post's own card (review / clip, owner pick #1 style) is offered first, the QR card second.
+      post={postCardOf(review)}
       // An uploaded clip hands TikTok its own video; a YouTube clip has no file → the card.
       videoUrl={reviewShareVideoUrl(review)}
       open

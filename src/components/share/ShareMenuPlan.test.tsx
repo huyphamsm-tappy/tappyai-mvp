@@ -259,10 +259,13 @@ describe('what leaves, once the plan has its link', () => {
     expect(status()).toBe('share.copiedLink')
   })
 
-  it('🚨 the published plan is never the plain-text itinerary: no text block to inspect, no Save, no image', () => {
+  it('🚨 the published plan is never the plain-text itinerary: no text block to inspect', () => {
     expect(screen.queryByText('share.previewHint')).toBeNull()
     expect(screen.queryByTestId('share-preview-text')).toBeNull()
-    expect(screen.queryByTestId('share-target-save')).toBeNull()
+  })
+
+  it('owner pick #7 (29/09): a published plan offers "Lưu về máy" of its itinerary IMAGE (never the text)', () => {
+    expect(screen.getByTestId('share-target-save')).toBeTruthy()
   })
 
   it('Facebook: opens the sharer with the PLAN url — a link share, nothing copied, no "paste" instruction', async () => {

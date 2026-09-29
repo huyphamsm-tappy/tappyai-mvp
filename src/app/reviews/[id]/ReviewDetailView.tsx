@@ -8,6 +8,7 @@ import ReviewCommentButton from './ReviewCommentButton'
 import ReviewLikeButton from './ReviewLikeButton'
 import ReviewSaveButton from './ReviewSaveButton'
 import ReviewShareButton from './ReviewShareButton'
+import { postCardOf } from '@/lib/share/contentCards'
 import ReviewMusicCard from '../ReviewMusicCard'
 import VideoPlayer from '@/components/explore/VideoPlayer'
 import { useMusicTrack, getPreviewUrl } from '@/modules/music'
@@ -231,6 +232,7 @@ export default function ReviewDetailView({
           reviewId={reviewId}
           placeName={review.place_name}
           body={review.body}
+          card={postCardOf(review)}
           variant="bar"
         />
       </div>
