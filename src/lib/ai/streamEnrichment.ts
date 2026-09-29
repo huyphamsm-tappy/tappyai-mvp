@@ -2788,7 +2788,9 @@ export function applyPlaceEnrichmentStreamFilter(
       const hasPickSentence = sentences.some(s => namesKnown(s) && !ALT.test(s) && !ALT_SENTENCE.test(s))
       // Consult V2 (replay FOOD-3/ENT-3): a reply that already states "**Mình chọn: X**" has its pick — a
       // second, backstop pick made the turn show two.
-      if (hasPickSentence || (collector?.consultTurn && /\*\*Mình chọn:/.test(body))) return null
+      // The whole settled reply, not only the not-yet-released body: a pick sentence already streamed
+      // (released prefix) is still THE pick (replay TRAVEL-1 t5: backstop "Parosand" + the model's "Meliá").
+      if (hasPickSentence || (collector?.consultTurn && /\*\*Mình chọn:/.test(gated.text))) return null
       const altOnly = sentences.some(s => namesKnown(s))
       if (altOnly) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'consultative_v1_pick_backstop', step: 'alternatives_only' }))
       // The engine's Pick, or — when derivePick made none (measured T8: five shortlisted hotels,

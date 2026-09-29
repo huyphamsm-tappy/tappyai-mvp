@@ -1,0 +1,77 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Hải Sản Hoàng Gia CN Nguyễn Văn Linh Nguyễn Văn Linh (site:food.grab.com/vn OR site:shopeefood.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T03:59:40.274Z",
+ "body": {
+  "searchParameters": {
+   "q": "Hải Sản Hoàng Gia CN Nguyễn Văn Linh Nguyễn Văn Linh (site:food.grab.com/vn OR site:shopeefood.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Hải Sản Hoàng Gia - Nguyễn Văn Linh ⭐ 5",
+    "link": "https://food.grab.com/vn/en/restaurant/restaurant/5-C3EVEXMTC8AKGT",
+    "snippet": "Hải Sản Hoàng Gia - Nguyễn Văn Linh. Hải Sản Hoàng Gia - Nguyễn Văn Linh. Delivery Dine-out. Seafood Dish. 5. Opening Hours. Today Closed.",
+    "date": "6 thg 9, 2026",
+    "rating": 5,
+    "ratingCount": 22,
+    "position": 1
+   },
+   {
+    "title": "Hải Sản Tươi Sống Mỗi Ngày - Nguyễn Văn Linh",
+    "link": "https://shopeefood.vn/ho-chi-minh/hai-san-hoang-gia-hai-san-tuoi-song-moi-ngay-nguyen-van-linh",
+    "snippet": "Hải Sản Hoàng Gia - Hải Sản Tươi Sống Mỗi Ngày - Nguyễn Văn Linh. 954 - 956 Nguyễn Văn Linh, P. Tân Phong, Quận 7, TP. HCM.",
+    "position": 2
+   },
+   {
+    "title": "Hải Sản Hoàng Gia | Mua online tại ShopeeFood.vn",
+    "link": "https://shopeefood.vn/thuong-hieu/hai-san-hoang-gia",
+    "snippet": "Hải Sản Hoàng Gia - Nguyễn Văn Linh. 954 - 956 Nguyễn Văn Linh, P. Tân Phong ... Hải Sản Hoàng Gia - Trần Hưng Đạo. 180 Trần Hưng Đạo P. Nguyễn Cư Trinh, Quận 1, ...",
+    "position": 3
+   },
+   {
+    "title": "Hải Sản Hoàng Gia - Nguyễn Văn Linh",
+    "link": "https://shopeefood.vn/ho-chi-minh/hai-san-hoang-gia-nguyen-van-linh",
+    "snippet": "954 - 956 Nguyễn Văn Linh, P. Tân Phong, Quận 7, TP. HCM. Đã đóng. Quán được gắn nhãn Yêu thích là Quán Yêu Thích, gồm những quán đạt chất lượng dịch vụ ...",
+    "position": 4
+   },
+   {
+    "title": "Hải Sản Hoàng Gia - Nguyễn Văn Linh",
+    "link": "https://shopeefood.vn/ho-chi-minh/hai-san-hoang-gia-nguyen-van-linh?source_url=foody_ordernow_pc",
+    "snippet": "954 - 956 Nguyễn Văn Linh, P. Tân Phong, Quận 7, TP. HCM. Đã đóng. Quán được gắn nhãn Yêu thích là Quán Yêu Thích, gồm những quán đạt chất lượng dịch vụ ...",
+    "position": 5
+   },
+   {
+    "title": "Hải Sản Hoàng Gia - Nguyễn Văn Linh ⭐ 5",
+    "link": "https://food.grab.com/vn/vi/restaurant/h%E1%BA%A3i-s%E1%BA%A3n-ho%C3%A0ng-gia-nguy%E1%BB%85n-v%C4%83n-linh-delivery/5-C3EVEXMTC8AKGT",
+    "snippet": "Món Hải Sản.",
+    "rating": 5,
+    "ratingCount": 22,
+    "position": 6
+   },
+   {
+    "title": "Phê La | Mua online tại ShopeeFood.vn",
+    "link": "https://shopeefood.vn/thuong-hieu/phe-la",
+    "snippet": "Lô L1-04-05A Tầng L1, Trung Tâm Thương Mại Vincom Mega Mall Grand Park, Số 88 Đường Phước Thiện, Khu Phố Phước Thiện, P. Long Bình, Thành Phố Thủ Đức, TP.",
+    "position": 7
+   },
+   {
+    "title": "Vô vàn ưu đãi, hàng vạn món ngon | GrabFood VN",
+    "link": "https://food.grab.com/vn/vi/",
+    "snippet": "GrabFood - Dịch vụ giao đồ ăn trực tuyến giúp bạn thỏa mãn cơn thèm ăn với hàng vạn quán ăn.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

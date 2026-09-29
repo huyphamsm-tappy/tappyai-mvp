@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Haru Sushi Quận 1\" OR \"Izakaya Unatoto Việt Nam\" OR \"FEN Izakaya\" quan 1 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T03:58:54.867Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Haru Sushi Quận 1\" OR \"Izakaya Unatoto Việt Nam\" OR \"FEN Izakaya\" quan 1 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Haru Sushi Quận 1 (@harusushinguyenthaihoc)",
+    "link": "https://www.tiktok.com/@harusushinguyenthaihoc",
+    "snippet": "Haru Sushi Quận 1 (@harusushinguyenthaihoc) trên TikTok |6090 Lượt thích.91 Follower.HARU SUSHI - 93 NGUYỄN THÁI HỌC, PHƯỜNG CẦU ÔNG LÃNH, QUẬN 1.",
+    "position": 1
+   },
+   {
+    "title": "Khám Phá Sushi Ngon Tại Haru Sushi Quận 1",
+    "link": "https://www.tiktok.com/@winter290796/photo/7658315768630709524",
+    "snippet": "Đánh giá: 4.5/5⭐️ Đc: 93 Nguyễn Thái Học, Cầu Ông Lãnh, Hồ Chí Minh #shushi #shushiharu #hcm #quan1. Khám Phá Sushi Ngon Tại Haru Sushi Quận 1.",
+    "position": 2
+   },
+   {
+    "title": "Tình cờ biết đến Fen Izakaya ở 240 Lý Tự Trọng Q1. Quán ...",
+    "link": "https://www.tiktok.com/@ghithichnhau/video/7674929044164480276",
+    "snippet": "Tình cờ biết đến Fen Izakaya ở 240 Lý Tự Trọng Q1. Quán nhậu kiểu Nhật... không ồn ào như mô hình trẻ trung... nhưng cũng không củ kỹ với ...",
+    "position": 3
+   },
+   {
+    "title": "Sushi Haru Quận 1",
+    "link": "https://www.tiktok.com/discover/sushi-haru-qu%E1%BA%ADn-1",
+    "snippet": "Khám phá tiệm sushi giá ổn áp tại Sài Gòn, thưởng thức món ăn hấp dẫn. Đừng bỏ lỡ! 31 Likes, 1 Comments. TikTok video from Haru Sushi Quận 1 (@ ...",
+    "date": "8 ngày trước",
+    "position": 4
+   },
+   {
+    "title": "Trải Nghiệm Izakaya Thú Vị Tại Fen",
+    "link": "https://www.tiktok.com/@vuvicungyuhi/video/7529149203030052103",
+    "snippet": "Keywords: trải nghiệm izakaya thú vị, ẩm thực Nhật tại Fen Izakaya, quán ăn chill ở quận 1, món ăn ngon tại izakaya, địa điểm ăn uống cho ...",
+    "position": 5
+   },
+   {
+    "title": "Trải nghiệm izakaya phong cách Nhật Bản và đường phố ...",
+    "link": "https://www.tiktok.com/@longnhongsaigon/video/7666774273159122194",
+    "snippet": "Giới thiệu nhanh Lần đầu trải nghiệm mô hình Fen Izakaya — một izakaya pha trộn yếu tố Nhật Bản và hương vị, không khí đường phố Hà Nội.",
+    "position": 6
+   },
+   {
+    "title": "Nhân Viên Sushi Haru",
+    "link": "https://www.tiktok.com/discover/nh%C3%A2n-vi%C3%AAn-sushi-haru",
+    "snippet": "Haru Sushi Quận 1. Ai nói nhân viên nhà hàng chỉ biết làm? Tụi mình ... TikTok video from Quan Minh Quốc (@quanminhquoc). 71821 tuần ...",
+    "date": "7 thg 9, 2026",
+    "position": 7
+   },
+   {
+    "title": "Sushi Haru Nguyễn Thái Học",
+    "link": "https://www.tiktok.com/discover/sushi-haru-nguy%E1%BB%85n-th%C3%A1i-h%E1%BB%8Dc",
+    "snippet": "31 Likes, 1 Comments. TikTok video from Haru Sushi Quận 1 (@harusushinguyenthaihoc. 28031 tuần trước. harusushinguyenthaihoc. Haru Sushi Quận 1.",
+    "date": "8 ngày trước",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

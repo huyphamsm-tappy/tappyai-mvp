@@ -1,0 +1,589 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "quán nhậu Bình Thạnh",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.7769,106.7009,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T04:00:09.153Z",
+ "body": {
+  "searchParameters": {
+   "q": "quán nhậu Bình Thạnh",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.7769,106.7009,14z",
+   "engine": "google"
+  },
+  "ll": "@10.7768941,106.7008997,14z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Quán nhậu Vũ Thương Binh",
+    "address": "220/9A6 Xô Viết Nghệ Tĩnh, Thạnh Mỹ Tây, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.798667,
+    "longitude": 106.712204,
+    "rating": 4.9,
+    "ratingCount": 31,
+    "type": "Quán bia",
+    "types": [
+     "Quán bia"
+    ],
+    "openingHours": {
+     "Thứ Ba": "07:30–22:30",
+     "Thứ Tư": "07:30–22:30",
+     "Thứ Năm": "07:30–22:30",
+     "Thứ Sáu": "07:30–22:30",
+     "Thứ Bảy": "07:30–22:30",
+     "Chủ Nhật": "07:30–22:30",
+     "Thứ Hai": "07:30–22:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLfkU4Z7C-FSGWIBqaBoaczZhpDRYPTtPg_YUgKJ0-QkIY1Xy1qll_W7TxECCLLZ3VOsX6e8AwK6sze63OU_8N7zY0yGhHOn322X81NOaG7aKen3V5nyXiDzK7y15FGpZ0NPfstSkiz-LzeB",
+    "cid": "9717596983598517767",
+    "fid": "0x3175298d8476a341:0x86dbd6f875cc0e07",
+    "placeId": "ChIJQaN2hI0pdTERBw7MdfjW24Y"
+   },
+   {
+    "position": 2,
+    "title": "Tiệm Đỡ Buồn",
+    "address": "9/18 Nguyễn Huy Tưởng, Gia Định, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.8042543,
+    "longitude": 106.6889238,
+    "rating": 4.9,
+    "ratingCount": 351,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "website": "https://dobuon.vn/",
+    "phoneNumber": "+84 839 000 918",
+    "openingHours": {
+     "Thứ Ba": "10:00–23:00",
+     "Thứ Tư": "10:00–23:00",
+     "Thứ Năm": "10:00–23:00",
+     "Thứ Sáu": "10:00–23:00",
+     "Thứ Bảy": "10:00–23:00",
+     "Chủ Nhật": "15:00–23:00",
+     "Thứ Hai": "10:00–23:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLcVHyuIx0-BZh5yzDvN979svHgX8f1tlw9_YpOtRQfqn9TV4tNxY7J1D5RUuvsrQyaogaA_RqPBkQvMNCaqWMwYXxJTm11frAaKPzBl04jdmpRk3rDTMdPrFK_TZS2JO5tv6-kH3A",
+    "cid": "12276834308581847455",
+    "fid": "0x317529c778877661:0xaa6013c21959719f",
+    "placeId": "ChIJYXaHeMcpdTERn3FZGcITYKo"
+   },
+   {
+    "position": 3,
+    "title": "Cửu Vân Quán – Nhậu & Bia Hơi Bình Thạnh ✅",
+    "address": "35 Nguyễn Cửu Vân, Gia Định, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7957676,
+    "longitude": 106.70702569999999,
+    "rating": 5,
+    "ratingCount": 33,
+    "type": "Nhà hàng hải sản",
+    "types": [
+     "Nhà hàng hải sản"
+    ],
+    "openingHours": {
+     "Thứ Ba": "Mở cửa cả ngày",
+     "Thứ Tư": "Mở cửa cả ngày",
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLdXSzA5pi1EZzhz9LF3cQ6L8Nud-9ZqOsxrE8_aF6Az1AIfjLvgw8mxvwO92Tn-_6I1UtqhFgM7G3lWc6QjwHY230DeY8d9_OUCbUmd1iVcO3NEOmsc1Xtiwgtjr5FsSdD8GAmsj6KU4ZBw",
+    "cid": "11625830788469186437",
+    "fid": "0x317529b1a1ea7439:0xa1573f817d815f85",
+    "placeId": "ChIJOXTqobEpdTERhV-BfYE_V6E"
+   },
+   {
+    "position": 4,
+    "title": "Quán Tạ Hiện Phố - Cơm Văn Phòng - Bia Hơi Hà Nội - Nhậu Rooftop",
+    "address": "32D Phan Đăng Lưu, Quận Bình Thạnh, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.8038065,
+    "longitude": 106.6884876,
+    "rating": 4.3,
+    "ratingCount": 85,
+    "type": "Quán ăn nhỏ",
+    "types": [
+     "Quán ăn nhỏ"
+    ],
+    "website": "https://www.facebook.com/nhahangtahienpho32dphandangluu",
+    "phoneNumber": "+84 902 696 758",
+    "openingHours": {
+     "Thứ Ba": "10:30–23:30",
+     "Thứ Tư": "10:30–23:30",
+     "Thứ Năm": "10:30–23:30",
+     "Thứ Sáu": "10:30–23:30",
+     "Thứ Bảy": "10:30–23:30",
+     "Chủ Nhật": "16:00–23:30",
+     "Thứ Hai": "10:30–23:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmO8lQeaHxeSBmJfsjdB3xq0p8zX1v4gVAg7Fb4BqPCamz5dXkWoY_1wXY-MZaMKsJnmBImsmI-lseKBdstMkUDhQ94FmrLClhrRTw13wu2qNTfrXQyxGHqcEQuR50D4QYidYb_8",
+    "cid": "8129347690822224002",
+    "fid": "0x3175296d830a5479:0x70d13ea75719c882",
+    "placeId": "ChIJeVQKg20pdTERgsgZV6c-0XA"
+   },
+   {
+    "position": 5,
+    "title": "Tới Nóc | chi nhánh Bình Thạnh",
+    "address": "589 Điện Biên Phủ, quận Bình Thạnh, Hồ Chí Minh 72300, Việt Nam",
+    "latitude": 10.7991189,
+    "longitude": 106.71950419999999,
+    "rating": 4.9,
+    "ratingCount": 1233,
+    "type": "Quán bia",
+    "types": [
+     "Quán bia"
+    ],
+    "website": "https://toinoc.com/",
+    "phoneNumber": "+84 1900 7471",
+    "openingHours": {
+     "Thứ Ba": "17:00–02:00",
+     "Thứ Tư": "17:00–02:00",
+     "Thứ Năm": "17:00–02:00",
+     "Thứ Sáu": "17:00–02:00",
+     "Thứ Bảy": "17:00–02:00",
+     "Chủ Nhật": "17:00–02:00",
+     "Thứ Hai": "17:00–02:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLdED_nNrbW86KHRTFbkaTFwYdozY3ps7vMMBqbJl3LWkqIMa5oMUF8udnb4JK-HP15FClLlga9Gx1FVP6BV8MdKXlI0THjGr9BO-OR4IJMMlf4EGPRA1jH8mRp7h01rLQJgfioZFA_KOWsD",
+    "cid": "10307009256295590406",
+    "fid": "0x3175296183e940d5:0x8f09da4f4a296a06",
+    "placeId": "ChIJ1UDpg2EpdTERBmopSk_aCY8"
+   },
+   {
+    "position": 6,
+    "title": "Bợm Sushi - Izakaya",
+    "address": "Hẽm 69/30, Nguyễn Gia Trí, Thạnh Mỹ Tây, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.8036572,
+    "longitude": 106.71469409999999,
+    "rating": 4.9,
+    "ratingCount": 1185,
+    "type": "Nhà hàng Nhật Bản",
+    "types": [
+     "Nhà hàng Nhật Bản"
+    ],
+    "phoneNumber": "+84 938 395 617",
+    "openingHours": {
+     "Thứ Ba": "10:00–22:00",
+     "Thứ Tư": "10:00–22:00",
+     "Thứ Năm": "10:00–22:00",
+     "Thứ Sáu": "10:00–22:00",
+     "Thứ Bảy": "10:00–22:00",
+     "Chủ Nhật": "10:00–22:00",
+     "Thứ Hai": "10:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLfBh4iE6xGBp4qTn2DqpCVJnDZGb4IgtcTSMO8OTomYLelOSnph_QEzVBtZWu73UnCSJJRkSlzFBh7u3CZSPxpru3bayW2m8UQsZfa3Bm2wtbGbiQ4buknFXEVMTkWaGKgWLFo",
+    "cid": "17469484882611241303",
+    "fid": "0x317527c5b26e104d:0xf27013f185198157",
+    "placeId": "ChIJTRBussUndTERV4EZhfETcPI"
+   },
+   {
+    "position": 7,
+    "title": "Quán Nhậu No.1",
+    "address": "125 Đ. Bùi Hữu Nghĩa, Gia Định, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7957466,
+    "longitude": 106.6980971,
+    "rating": 4.7,
+    "ratingCount": 127,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "phoneNumber": "+84 783 979 393",
+    "openingHours": {
+     "Thứ Ba": "15:30–01:30",
+     "Thứ Tư": "15:30–02:00",
+     "Thứ Năm": "15:30–02:00",
+     "Thứ Sáu": "15:30–02:00",
+     "Thứ Bảy": "15:30–02:00",
+     "Chủ Nhật": "15:30–00:00",
+     "Thứ Hai": "15:30–02:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLfNTaNQrJ9DEOe_s4h100bNwjYP3VtSaYl_PgdhlM7mstOUjTJJmvpaWk7RyUFe0aHbofLgPouFjzo5SNWxsn7wVBIUmZVOr9kNsNRJBu-RfdJW4z8FROmpTXoPiIwyNWMiOec",
+    "cid": "8743746222080557382",
+    "fid": "0x317529004e38c745:0x795806dcd5468146",
+    "placeId": "ChIJRcc4TgApdTERRoFG1dwGWHk"
+   },
+   {
+    "position": 8,
+    "title": "Quán Nhậu Bờ Kè - Lucky Beer",
+    "address": "144 Trường Sa, Gia Định, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7941937,
+    "longitude": 106.69838589999999,
+    "rating": 4.2,
+    "ratingCount": 92,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng",
+     "Quán bia sân vườn",
+     "Quán bia"
+    ],
+    "phoneNumber": "+84 937 888 938",
+    "openingHours": {
+     "Thứ Ba": "11:00–02:00",
+     "Thứ Tư": "11:00–02:00",
+     "Thứ Năm": "11:00–02:00",
+     "Thứ Sáu": "11:00–02:00",
+     "Thứ Bảy": "11:00–02:00",
+     "Chủ Nhật": "11:00–02:00",
+     "Thứ Hai": "11:00–02:00"
+    },
+    "bookingLinks": [
+     "https://zalo.me/479007028235178258"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLckievo_vh65xfVweTsDfAy9awE581PWEm8r1XTyGwglEibhLCzj2U_QxlkxDKE4yLjbzOWIJOClOGCwRfPRc4kOQ1aRk0rKKtyZktSqN8lA46myNG8F6Lg-AFZgPqrsAoxo1kHfA",
+    "cid": "1088576405826094532",
+    "fid": "0x317529cf4abeb499:0xf1b66793c22c5c4",
+    "placeId": "ChIJmbS-Ss8pdTERxMUiPHlmGw8"
+   },
+   {
+    "position": 9,
+    "title": "Quán Nhậu Ngọc Hào",
+    "address": "38a Huỳnh Đình Hai, Bình Thạnh, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.8045301,
+    "longitude": 106.6992392,
+    "rating": 5,
+    "ratingCount": 1,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "openingHours": {
+     "Thứ Ba": "06:00–21:00",
+     "Thứ Tư": "06:00–21:00",
+     "Thứ Năm": "06:00–21:00",
+     "Thứ Sáu": "06:00–21:00",
+     "Thứ Bảy": "06:00–21:00",
+     "Chủ Nhật": "06:00–21:00",
+     "Thứ Hai": "06:00–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLe2DwbRp4SFWRHl6GDEY7QDJP1cpyoMkgE5JsuLMztj5QvJoXyqzPoLST6gaL_EUZOZmHSjsxHHAV1xom6Jj3xeK0ipq3uMMYVhtnoLJzeFJz1Wa5HmiUAgsQdQbz4fLr38SfU",
+    "cid": "17634038780306841937",
+    "fid": "0x317528c75c294f03:0xf4b8b0d76fa6e151",
+    "placeId": "ChIJA08pXMcodTERUeGmb9ewuPQ"
+   },
+   {
+    "position": 10,
+    "title": "Quán Nhậu Ông Bình",
+    "address": "113/4/51 Đ. Võ Duy Ninh, Thạnh Mỹ Tây, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7931332,
+    "longitude": 106.7169153,
+    "rating": 5,
+    "ratingCount": 1,
+    "type": "Quán ăn nhỏ",
+    "types": [
+     "Quán ăn nhỏ"
+    ],
+    "openingHours": {
+     "Thứ Ba": "06:30–22:00",
+     "Thứ Tư": "06:30–22:00",
+     "Thứ Năm": "06:30–22:00",
+     "Thứ Sáu": "06:30–22:00",
+     "Thứ Bảy": "06:30–22:00",
+     "Chủ Nhật": "06:30–22:00",
+     "Thứ Hai": "06:30–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMRHQWrEHSc6bCRzzYaOZSHV9KgSS1ZjmAvlKW6Dp971Ok50MQTKQjdjxdm2ugbhASuGe1RyBhT2-KnsPChmaDcV7cYSNW-OPfPuj_EIW1pDj_lPaGH5aIVp0GuE6yylEKF9KQ",
+    "cid": "17985003732551608223",
+    "fid": "0x3175296064894bd5:0xf997919b2ad0279f",
+    "placeId": "ChIJ1UuJZGApdTERnyfQKpuRl_k"
+   },
+   {
+    "position": 11,
+    "title": "Ơ BISTRO BÌNH THẠNH - Steakhouse, Pasta & Bar",
+    "address": "218 D5, Thạnh Mỹ Tây, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.8056225,
+    "longitude": 106.7167023,
+    "rating": 4.8,
+    "ratingCount": 1386,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "website": "https://www.obistro.vn/",
+    "phoneNumber": "+84 866 555 157",
+    "openingHours": {
+     "Thứ Ba": "11:00–14:00, 17:00–22:00",
+     "Thứ Tư": "11:00–14:00, 17:00–22:00",
+     "Thứ Năm": "11:00–14:00, 17:00–22:00",
+     "Thứ Sáu": "11:00–14:00, 17:00–22:00",
+     "Thứ Bảy": "11:00–14:00, 17:00–22:00",
+     "Chủ Nhật": "11:00–14:00, 17:00–22:00",
+     "Thứ Hai": "11:00–14:00, 17:00–22:00"
+    },
+    "bookingLinks": [
+     "https://booking.ipos.vn/public/booking/6d06ab90-03a3-47ca-b4d8-8b0a72ba90c6",
+     "https://www.google.com/maps/reserve/v/dine/c/QdvbpqYDW6w?source=pa&opi=79508299"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLcnbfG4gEc400X7GZdYKiBA19p61ikepLoC-5Yf8RWm3nJb4CcccisI_mkR2xTSTpCg0ugY4Xoy04e-H62pXkxwGw_68cFF7X62olXpRo0rLyepfVpinHMCDKeHBNB4WZ6WnHEqkdaBFrw",
+    "cid": "16090295491152155978",
+    "fid": "0x317529b8cd3cbf25:0xdf4c367fc931954a",
+    "placeId": "ChIJJb88zbgpdTERSpUxyX82TN8"
+   },
+   {
+    "position": 12,
+    "title": "Quán Thu Hòa",
+    "address": "31 Trần Quang Long, Thạnh Mỹ Tây, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7917999,
+    "longitude": 106.7116368,
+    "rating": 4.6,
+    "ratingCount": 39,
+    "type": "Quán ăn nhỏ",
+    "types": [
+     "Quán ăn nhỏ",
+     "Quán bia"
+    ],
+    "phoneNumber": "+84 989 904 476",
+    "openingHours": {
+     "Thứ Ba": "15:00–02:00",
+     "Thứ Tư": "15:00–02:00",
+     "Thứ Năm": "15:00–02:00",
+     "Thứ Sáu": "15:00–02:00",
+     "Thứ Bảy": "15:00–02:00",
+     "Chủ Nhật": "15:00–02:00",
+     "Thứ Hai": "15:00–02:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNvpVqC1cjKzLQDC0F1hPelSy932sCSwb4XNAnuT_ogVvcasoUs6tuATgY6o6AXOBZ3s2RTSCTRM48UZnMnTLp9vC9GOFQT_zaSGLWnlyyDbaRHp_b680Ge7jZ7-A5KV1IWXyOs",
+    "cid": "7606153810043402016",
+    "fid": "0x317528b276eca8cb:0x698e7c97529ef720",
+    "placeId": "ChIJy6jsdrIodTERIPeeUpd8jmk"
+   },
+   {
+    "position": 13,
+    "title": "THU THỦY QUÁN BIA HƠI HÀ NỘI",
+    "address": "83C Võ Oanh, Thạnh Mỹ Tây, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.8040834,
+    "longitude": 106.7169517,
+    "rating": 4.2,
+    "ratingCount": 432,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "phoneNumber": "+84 909 125 126",
+    "openingHours": {
+     "Thứ Ba": "10:00–23:30",
+     "Thứ Tư": "10:00–23:30",
+     "Thứ Năm": "10:00–23:30",
+     "Thứ Sáu": "10:00–23:30",
+     "Thứ Bảy": "10:00–23:30",
+     "Chủ Nhật": "Đóng cửa",
+     "Thứ Hai": "10:00–23:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLe-GdmqlOKk_hm5mkAaHb5RP6YmwIprK3pGIfLS3j_wqZd5DISFDj4dcJZy8wF-6mCC2hG8PvCOpQakWce2Aucov_bg3kY_UUDXQ9B03R4qYWJmIdmEeBmVdWQtRouQ5QLrNmRd2Jj1Dk3J",
+    "cid": "1147945947030888510",
+    "fid": "0x317528a405f310cb:0xfee52c1ba20203e",
+    "placeId": "ChIJyxDzBaQodTERPiAgusFS7g8"
+   },
+   {
+    "position": 14,
+    "title": "Rảnh Là Nhậu",
+    "address": "15 Phan Xích Long, Gia Định, Hồ Chí Minh 74000, Việt Nam",
+    "latitude": 10.7970583,
+    "longitude": 106.6932901,
+    "rating": 3.9,
+    "ratingCount": 331,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng",
+     "Quán ăn nhỏ",
+     "Nhà hàng hải sản"
+    ],
+    "website": "https://m.facebook.com/R%E1%BA%A3nh-L%C3%A0-Nh%E1%BA%ADu-307971566657589/?ref=bookmarks",
+    "phoneNumber": "+84 906 728 227",
+    "openingHours": {
+     "Thứ Ba": "14:00–02:00",
+     "Thứ Tư": "14:00–02:00",
+     "Thứ Năm": "14:00–02:00",
+     "Thứ Sáu": "14:00–02:00",
+     "Thứ Bảy": "14:00–02:00",
+     "Chủ Nhật": "14:00–02:00",
+     "Thứ Hai": "14:00–02:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLeIgDTdJxA8zuzL_s5CxzCyNqrfvSLFg_yOxWCGwsS4zAOZgFUlchJjNxj3zoGJP53B9kqqzHn_egUItM-MAbnwsHJqsEIM5pp0T3TOGSnRLVn661vV5L0EHi3i0cHa0IT44NbVHQ",
+    "cid": "15402289258150185162",
+    "fid": "0x317529a130741ae3:0xd5bfec79b7db48ca",
+    "placeId": "ChIJ4xp0MKEpdTERykjbt3nsv9U"
+   },
+   {
+    "position": 15,
+    "title": "Cò Lả Quán",
+    "address": "55C Huỳnh Đình Hai, Bình Thạnh, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.804172399999999,
+    "longitude": 106.69951209999999,
+    "rating": 3.9,
+    "ratingCount": 811,
+    "type": "Quán ăn nhỏ",
+    "types": [
+     "Quán ăn nhỏ",
+     "Quán ăn",
+     "Nhà tổ chức buổi tiệc"
+    ],
+    "website": "https://www.foody.vn/ho-chi-minh/co-la",
+    "phoneNumber": "+84 28 3510 4465",
+    "openingHours": {
+     "Thứ Ba": "09:00–21:00",
+     "Thứ Tư": "09:00–21:00",
+     "Thứ Năm": "09:00–21:00",
+     "Thứ Sáu": "09:00–21:00",
+     "Thứ Bảy": "09:00–21:00",
+     "Chủ Nhật": "09:00–21:00",
+     "Thứ Hai": "09:00–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLc_pJNxJeYFlIeStFjtPjz0A2i7gbGqkZByNXMsf3hKU2aLDWSxETJ7AiKHOVKWIdZx10YcwBne8M9-rP01nJ-YoyBfAQwvoQ5cHpozbQSezOpdZ2DcQs7EnRP5nmkMvtSK7VLz",
+    "cid": "3995584719258053474",
+    "fid": "0x317528b8a8a96925:0x37732b21f55aeb62",
+    "placeId": "ChIJJWmpqLgodTERYuta9SErczc"
+   },
+   {
+    "position": 16,
+    "title": "Bia Hơi Hà Nội - Cây Si Quán",
+    "address": "362/ 8 Đ. Ung Văn Khiêm, Thạnh Mỹ Tây, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.8001237,
+    "longitude": 106.7227784,
+    "rating": 4.5,
+    "ratingCount": 117,
+    "type": "Khu vực phục vụ bia",
+    "types": [
+     "Khu vực phục vụ bia"
+    ],
+    "phoneNumber": "+84 989 036 771",
+    "openingHours": {
+     "Thứ Ba": "15:30–23:30",
+     "Thứ Tư": "15:30–23:30",
+     "Thứ Năm": "15:30–23:30",
+     "Thứ Sáu": "15:30–23:30",
+     "Thứ Bảy": "15:30–23:30",
+     "Chủ Nhật": "15:30–23:30",
+     "Thứ Hai": "15:30–23:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLfnQd0O2lUbjH2oUfVjq9bnSnyWqF-68RlQq21iQNfd3o-RO6Y_C3F8JQ16b2UpxAAe0TABQVPMYg6cfotRny7XgzOO9uGsSS6E767UyEZhpvoEdeKK04zJaKJDST6J5GUTSf2FZQ",
+    "cid": "6878140581974703175",
+    "fid": "0x3175278cb3627d87:0x5f74106ad7ccfc47",
+    "placeId": "ChIJh31is4wndTERR_zM12oQdF8"
+   },
+   {
+    "position": 17,
+    "title": "Làm Tí - Food & Beer",
+    "address": "N3 Điện Biên Phủ, Phường, Thạnh Mỹ Tây, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7993205,
+    "longitude": 106.7231351,
+    "rating": 4.5,
+    "ratingCount": 1455,
+    "type": "Quán bia sân vườn",
+    "types": [
+     "Quán bia sân vườn"
+    ],
+    "website": "https://www.facebook.com/lamtifoodnbeer",
+    "phoneNumber": "+84 383 250 077",
+    "description": "Quán bia sân vườn rộng rãi, sôi động này có bầu không khí thoải mái và phục vụ các món ăn bình dân.",
+    "openingHours": {
+     "Thứ Ba": "15:00–23:00",
+     "Thứ Tư": "15:00–23:00",
+     "Thứ Năm": "15:00–23:00",
+     "Thứ Sáu": "15:00–23:00",
+     "Thứ Bảy": "15:00–23:00",
+     "Chủ Nhật": "15:30–23:00",
+     "Thứ Hai": "15:00–23:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLdsP2hoKi-Spo1KY-hXKT52XjMraYox2k-NKVyeInllYOKjsZx5pZrPFZooOZYZbkOuqE8muf3qonZEYLba-mQv3MUkTX4nDgyB9ASPuUnLPrqtqFEXa091enfgGeOu71Xw28DgeQ",
+    "cid": "12786245796743308239",
+    "fid": "0x31752922fc245eed:0xb171decec5b763cf",
+    "placeId": "ChIJ7V4k_CIpdTERz2O3xc7ecbE"
+   },
+   {
+    "position": 18,
+    "title": "Nhà Hàng Thủy",
+    "address": "261 Đ. Ung Văn Khiêm, Thạnh Mỹ Tây, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.8037045,
+    "longitude": 106.7224311,
+    "rating": 4,
+    "ratingCount": 2982,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng",
+     "Nhà hàng món nướng",
+     "Nhà hàng hải sản",
+     "Nhà hàng Việt Nam"
+    ],
+    "website": "http://amthucthuy.vn/",
+    "phoneNumber": "+84 28 6258 3266",
+    "openingHours": {
+     "Thứ Ba": "09:00–23:00",
+     "Thứ Tư": "09:00–23:00",
+     "Thứ Năm": "09:00–23:00",
+     "Thứ Sáu": "09:00–23:00",
+     "Thứ Bảy": "09:00–23:00",
+     "Chủ Nhật": "09:00–23:00",
+     "Thứ Hai": "09:00–23:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLe3ocZCaq2zFN4HaskIFu9jZhVVsfoPjYJFMNrOn3-7ik60VlgPOekIZ9YGOIe_UP_YtXBJEzUt8FkQ9Mf5ncbr5tdOIGMWXZqVBPha3wR_JxYE5MQYy3UjoKy9P4RaGfaIbn69Iw",
+    "cid": "14573088074917107310",
+    "fid": "0x317528a7446f39dd:0xca3e026481ea566e",
+    "placeId": "ChIJ3TlvRKcodTERblbqgWQCPso"
+   },
+   {
+    "position": 19,
+    "title": "Quán Ăn Thanh Bình",
+    "address": "140 Lê Thánh Tôn, Bến Thành, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7736068,
+    "longitude": 106.6981203,
+    "rating": 4.1,
+    "ratingCount": 223,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "phoneNumber": "+84 28 3823 2412",
+    "openingHours": {
+     "Thứ Ba": "08:00–22:00",
+     "Thứ Tư": "08:00–22:00",
+     "Thứ Năm": "08:00–22:00",
+     "Thứ Sáu": "08:00–22:00",
+     "Thứ Bảy": "08:00–22:00",
+     "Chủ Nhật": "08:00–22:00",
+     "Thứ Hai": "08:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLf92I-GKRogO3iyitSgvdiia4Ad9sMobBXryUMmkNWuSbghdkSbDNWjxu0TbQ1Shsfzf9e7CnZMe51SWkQ0BV-AWAk8mM3AlUJVx-tgY1ufjD99dkp-gODmxyElpo2Q2tfoocnKZilF8-Zc",
+    "cid": "17648988448356734623",
+    "fid": "0x31752f894dc5d495:0xf4edcd7c4546969f",
+    "placeId": "ChIJldTFTYkvdTERn5ZGRXzN7fQ"
+   },
+   {
+    "position": 20,
+    "title": "Cơm Niêu Việt 36D2",
+    "address": "36 Nguyễn Gia Trí, Thạnh Mỹ Tây, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.8023277,
+    "longitude": 106.7157489,
+    "rating": 4.2,
+    "ratingCount": 880,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "phoneNumber": "+84 971 917 733",
+    "openingHours": {
+     "Thứ Ba": "08:00–21:00",
+     "Thứ Tư": "08:00–21:00",
+     "Thứ Năm": "08:00–21:00",
+     "Thứ Sáu": "08:00–21:00",
+     "Thứ Bảy": "08:00–21:00",
+     "Chủ Nhật": "08:00–21:00",
+     "Thứ Hai": "08:00–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLfzcb8BJ00H1mYjHKwr9fKMZPDYs5aBDGuGHMQnsAP-VrzTGJhpjJLShofQcLuvq5jljF9x3EX2V77dXT6ebHtVINRIGrDnV9wEzBfyjpHS3skBVmOIic2YWO_AvhsFnj1z5wT3",
+    "cid": "16253838069636879848",
+    "fid": "0x317528a38d7a3275:0xe1913b9b996d55e8",
+    "placeId": "ChIJdTJ6jaModTER6FVtmZs7keE"
+   }
+  ],
+  "credits": 3
+ }
+}

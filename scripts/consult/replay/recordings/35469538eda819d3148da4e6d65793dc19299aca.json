@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Spa Massage Gội Đầu Dưỡng Sinh Cô Út Quận 3\" OR \"GỘI ĐẦU DƯỠNG SINH CHUẨN\" OR \"Gội đầu thư giãn Quận 3\" quan 3 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T04:07:10.898Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Spa Massage Gội Đầu Dưỡng Sinh Cô Út Quận 3\" OR \"GỘI ĐẦU DƯỠNG SINH CHUẨN\" OR \"Gội đầu thư giãn Quận 3\" quan 3 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Nail - gội đầu thư giãn quận 3 (@halina.beauty)",
+    "link": "https://www.tiktok.com/@halina.beauty",
+    "snippet": "Nail - gội đầu thư giãn quận 3 · @halina.beauty · Sdt book lịch : 0937633489 163 Đ. Nguyễn Thông , P9 , Q3.",
+    "position": 1
+   },
+   {
+    "title": "Cam không thể thường hơn",
+    "link": "https://www.tiktok.com/@halina.beauty/video/7594402148675226898",
+    "snippet": "Video TikTok từ Nail - gội đầu thư giãn quận 3 (@halina.beauty): \"Cam không thể thường hơn \".nhạc nền - người dùng tiktok - ko cảm xúc.",
+    "position": 2
+   },
+   {
+    "title": "Đông Tây Barbershop — địa điểm gội đầu thư giãn quận 3",
+    "link": "https://www.tiktok.com/@thin.thn.thin5/video/7686006397422603538",
+    "snippet": "địa điểm gội đầu thư giãn quận 3. Đông Tây Barbershop là địa điểm làm đẹp cung cấp dịch vụ gội đầu thư giãn ở quận 3.",
+    "date": "Đông Tây Barbershop",
+    "position": 3
+   },
+   {
+    "title": "Bóng lồng bóng lộn",
+    "link": "https://www.tiktok.com/@halina.beauty/video/7667169216696552724",
+    "snippet": "Video TikTok từ Nail - gội đầu thư giãn quận 3 (@halina.beauty): \"Bóng lồng bóng lộn\".nhạc nền - Wanglee.",
+    "position": 4
+   },
+   {
+    "title": "Gội Đầu Dưỡng Sinh Chuẩn Nhật Tại SORA",
+    "link": "https://www.tiktok.com/@yuspa.facetanbinh/video/7532031881013890311",
+    "snippet": "479 Võ Văn Tần, Phường 5, Quận 3. 9.AM - 9.PM 0935 19 60 80 @sorabeauty.vn - @sora.hairsalon. Gội Đầu Dưỡng Sinh Chuẩn Nhật Tại SORA. Khám phá ...",
+    "position": 5
+   },
+   {
+    "title": "Đánh mắt se lỗ gèn siêu thư giãn quận 3",
+    "link": "https://www.tiktok.com/@trangbeautyspa285.69/video/7635482646545714453",
+    "snippet": "Địa chỉ quận 3 nào bạn thấy ưng ý? Keywords: gội đầu dưỡng sinh quận 3, đánh mắt se lỗ gèn, gội đầu thư giãn quận 3, review gội đầu dưỡng ...",
+    "position": 6
+   },
+   {
+    "title": "#denkhinao #thuythuvienduong #goidauduongsinhquan3 ...",
+    "link": "https://www.tiktok.com/@ngocchan11/video/7687807753217559829",
+    "snippet": "Gội đầu thư giãn Quận 3 - Điểm trốn nợ deadline cực chill mà ví tiền không hề đau đớn! ‍♀️✨Chỉ từ 49K cho combo gội sạch sâu, hoặc nâng ...",
+    "position": 7
+   },
+   {
+    "title": "gội đầu dưỡng sinh chuẩn Đông Y",
+    "link": "https://www.tiktok.com/@gi.u.dng.sinh.gia/photo/7633694581795654932",
+    "snippet": "TikTok video from gội đầu dưỡng sinh Gia Lai❤️ (@gi.u.dng.sinh.gia): “gội đầu dưỡng sinh chuẩn Đông Y”. Bên Ấy Hiếu Có Ai Rồi - Minh Hiếu .",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

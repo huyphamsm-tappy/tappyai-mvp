@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Winnie Coffee & Tea | QUÁN CAFE ĐẸP QUẬN 3 | QUÁN CAFE CHECK IN QUẬN 3\" OR \"Sài Gòn Đậm Đắng\" OR \"Barista Collective\" quan 3 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T04:05:50.350Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Winnie Coffee & Tea | QUÁN CAFE ĐẸP QUẬN 3 | QUÁN CAFE CHECK IN QUẬN 3\" OR \"Sài Gòn Đậm Đắng\" OR \"Barista Collective\" quan 3 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Barista Collective Cat Cafe Ho Chi Minh",
+    "link": "https://www.tiktok.com/@overexploring/video/7654961807534132502",
+    "snippet": "Lead Barista Collective is a cat-friendly café located at 191 Đ. Trần Văn Đang, Quận 3, Ho Chi Minh 700000. Ideal for cat lovers visiting ...",
+    "position": 1
+   },
+   {
+    "title": "Gợi Ý Quán Cafe Đẹp Ở Sài Gòn - Barista Collective",
+    "link": "https://www.tiktok.com/@jaynioi/video/7437449279976803592",
+    "snippet": "Gợi Ý Quán Cafe Đẹp Ở Sài Gòn - Barista Collective. Khám phá quán cafe ấm cúng và xinh xắn tại Quán quen núp hẻm Lê Văn Sỹ, một địa điểm lý ...",
+    "position": 2
+   },
+   {
+    "title": "Barista Collective: Top Cafe in Lê Văn Sỹ",
+    "link": "https://www.tiktok.com/@didauvaychau/video/7309858438232673537",
+    "snippet": "Discover Barista Collective in Lê Văn Sỹ for cozy vibes, festive decor, and excellent. @Đi đâu vậy Châu ?",
+    "position": 3
+   },
+   {
+    "title": "Barista Collective Cat Cafe Ho Chi Minh — Review & Location",
+    "link": "https://www.tiktok.com/@pints.with.locals/video/7654961807534132502",
+    "snippet": "Lead Barista Collective is a cat-friendly café located at 191 Đ. Trần Văn Đang, Quận 3, Ho Chi Minh 700000. Ideal for cat lovers visiting Saigon, ...",
+    "position": 4
+   },
+   {
+    "title": "Barista Collective II - 264H Lê Văn Sỹ Q.3 #qmthau ...",
+    "link": "https://www.tiktok.com/@qmthau/video/7258873956034268421",
+    "snippet": "BARISTA COLLECTIVE Quán cafe đẹp & yên tĩnh tại Lê Văn Sỹ, Quận 3 Tối hôm qua mình ghé quán khá yên tĩnh, có nhiều chỗ ngồi lắm. Phù hợp để ...",
+    "position": 5
+   },
+   {
+    "title": "Barista Collective",
+    "link": "https://www.tiktok.com/discover/barista-collective",
+    "snippet": "Khám phá Barista Collective tại Sài Gòn! Quán cà phê độc đáo với không gian ấm cúng, cà phê thơm ngon và những chú mèo dễ thương.",
+    "date": "20 thg 7, 2026",
+    "position": 6
+   },
+   {
+    "title": "quán cafe xanh ngắt vibe siêu thích giữa Sài Gòn #...",
+    "link": "https://www.tiktok.com/@qmthau/video/7134662311524027675",
+    "snippet": "886 Lượt thích,Video TikTok từ Dưa Hấu Hấu (@qmthau): \"Barista Collective- quán cafe xanh ngắt vibe siêu thích giữa Sài Gòn #qmthau ...",
+    "position": 7
+   },
+   {
+    "title": "Barista Collective - có cà phê, có mèo, có chill ☕️ #dailyvlog # ...",
+    "link": "https://www.tiktok.com/@thioiii215/video/7528280173062524168",
+    "snippet": "Barista Collective - có cà phê, có mèo, có chill ☕️ #dailyvlog #. @thioiii đang chill.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}
