@@ -5,6 +5,7 @@ import { decayConfidence, makeFreshness } from '../domain/freshness'
 import type { ProviderAdapter } from '../adapters/types'
 import { checkCommerceUrl } from '../validation/url'
 import { wrapWithAccesstrade } from '../tracking/accesstrade'
+import { buildClickUrl } from '../tracking/clickLink'
 import { wrapWithTemplate } from '../tracking/template'
 import { effectiveTracking, providerOverride } from '../registry/runtime'
 
@@ -91,7 +92,8 @@ export function resolveDeepLink(
       ? wrapWithTemplate({ directUrl: build.url, tracking: trackingConfig, actorHash })
       : wrapWithAccesstrade({ directUrl: build.url, tracking: trackingConfig, actorHash, utmContent: opts.utmContent })
     if (w.ok) {
-      url = w.url
+      // Phương án C: an ACCESSTRADE deep link goes out through /go/at (fresh sub1 per click, join kept server-side).
+      url = (trackingConfig.network === 'template' ? undefined : buildClickUrl({ wrapperUrl: w.url, providerId: adapter.providerId, seal: request.context?.actorSeal, actorHash })) ?? w.url
       tracking = w.tracking
       validation = 'param_echo_ok'
       wrapper = 'applied'

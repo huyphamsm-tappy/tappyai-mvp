@@ -125,7 +125,7 @@ describe('recommendation → CommerceLink → tracked ACCESSTRADE URL carrying s
     const u = new URL(l.url)
     expect(u.hostname).toBe('go.isclix.com')
     expect(u.pathname).toBe(`/deep_link/${PUB}/6455552313033835511`)
-    expect(u.searchParams.get('sub1')).toBe(actorHash)
+    expect(u.searchParams.get('sub1')).toBeNull() // Phương án C: no fixed sub1 in the deep link
     expect(u.searchParams.get('utm_source')).toBe('tappyai')
     const dest = new URL(u.searchParams.get('url')!)
     expect(dest.hostname).toBe('vn.trip.com')
@@ -159,13 +159,18 @@ describe('a memoised tool result shared by two users never keeps the other ident
     const search = async (q: string) => q.includes('site:vn.trip.com/hotels') ? [{ title: 'Mường Thanh Luxury Đà Nẵng', link: 'https://vn.trip.com/hotels/da-nang-hotel-detail-10569789/muong-thanh-luxury/', snippet: '' }] : []
     const base = { enabled: true, search, now: new Date('2026-09-27T08:00:00Z'), location: 'Đà Nẵng', checkIn: '2026-10-10', checkOut: '2026-10-12' }
     const a = 'a'.repeat(24), b = 'b'.repeat(24)
-    await attachCommerceLinks('get_hotel_prices', shared, { ...base, actorHash: a })
+    // Phương án C: the per-caller marker is the click link's `h`; the identity rides sealed in `a`.
+    process.env.CCP_ATTRIBUTION_SECRET = 'test-secret-for-click-links-000000000000'
+    const { sealIdentity, linkActorMarker } = await import('@/lib/ccp/tracking/clickLink')
+    const sealA = sealIdentity('11111111-1111-4111-8111-111111111111')!, sealB = sealIdentity('22222222-2222-4222-8222-222222222222')!
+    await attachCommerceLinks('get_hotel_prices', shared, { ...base, actorHash: a, actorSeal: sealA })
     // Simulate B's turn meeting A's attachment mid-flight: A's links are on the row when B writes.
     const aLinks = [...(row[COMMERCE_LINKS_KEY] as CommerceLinkRow[])]
-    await attachCommerceLinks('get_hotel_prices', shared, { ...base, actorHash: b })
+    await attachCommerceLinks('get_hotel_prices', shared, { ...base, actorHash: b, actorSeal: sealB })
     row[COMMERCE_LINKS_KEY] = [...aLinks, ...((row[COMMERCE_LINKS_KEY] as CommerceLinkRow[]) ?? [])]
-    await attachCommerceLinks('get_hotel_prices', shared, { ...base, actorHash: b })
-    const subs = (row[COMMERCE_LINKS_KEY] as CommerceLinkRow[]).filter(l => l.tracked).map(l => new URL(l.url).searchParams.get('sub1'))
+    await attachCommerceLinks('get_hotel_prices', shared, { ...base, actorHash: b, actorSeal: sealB })
+    const subs = (row[COMMERCE_LINKS_KEY] as CommerceLinkRow[]).filter(l => l.tracked).map(l => linkActorMarker(l.url))
+    delete process.env.CCP_ATTRIBUTION_SECRET
     expect(subs.length).toBeGreaterThan(0)
     expect(new Set(subs)).toEqual(new Set([b]))
   })

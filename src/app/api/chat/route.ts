@@ -48,6 +48,7 @@ import { enrichWithTikTok } from '@/lib/links/tiktokEnrichment'
 import { serperSearch } from '@/lib/ai/tools/common'
 import { dropInactiveMerchantRows, attachCommerceLinks } from '@/lib/ai/tools/commerce'
 import { commerceActorHash } from '@/lib/ccp'
+import { sealIdentity } from '@/lib/ccp/tracking/clickLink'
 import { rendersDecisionCard as rendersDecisionCardFor, rendersAskBlock } from '@/lib/ai/decisionSurface'
 import { normalizePwLang } from '@/lib/priceWatch/messages'
 import { runAiWriteAction } from '@/lib/ai/actions/runAction'
@@ -1649,6 +1650,8 @@ export async function POST(req: Request) {
   // id itself, never PII. Absent secret or identity ⇒ undefined ⇒ the link is still tracked, just
   // not attributable to a Tappy identity (src/lib/ccp/tracking/attribution.ts).
   const commerceActorHashValue = commerceActorHash(commerceIdentityId)
+  // Phương án C (29/09): the identity sealed into each tracked link — /go/at opens it, draws a fresh sub1, records the join.
+  const commerceActorSealValue = sealIdentity(commerceIdentityId)
   // The stream filter reads this to decide whether the per-place photo/link block
   // still belongs in the text: with a card, it is the same content twice.
   enrichment.setRendersDecisionCard(rendersDecisionCard)
@@ -2148,7 +2151,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           // CCP (Phase 6, owner decision P6-B): Commerce Links ride the ranked rows as
           // `commerce_links`, read by buildActions below and carved from the model by forModel.
           // Identity-preserving and a no-op while CCP_ENABLED is false.
-          await attachCommerceLinks('search_places', result, { location, query, platform: commercePlatform, locale: commerceLocale, actorHash: commerceActorHashValue, userText: lastText, userTexts: recentUserTexts })
+          await attachCommerceLinks('search_places', result, { location, query, platform: commercePlatform, locale: commerceLocale, actorHash: commerceActorHashValue, actorSeal: commerceActorSealValue, userText: lastText, userTexts: recentUserTexts })
           // Unified recommendation architecture — canonical entities and their
           // recommendations are built on EVERY place turn, whether or not the
           // `[TAPPY_PLACES]` block is emitted. Building unconditionally is what
@@ -2196,7 +2199,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           const keepRows = shortRaw.length >= 2 ? [...shortRaw, ...(Array.isArray(rankedRows) ? rankedRows.filter(r => !shortRaw.includes(r)) : [])] : rankedRows
           if (!stored && Array.isArray(keepRows) && keepRows.length) lastProductsForState = { query, rows: compactProducts(keepRows) }
           if (pick) turnPick = pick
-          await attachCommerceLinks('search_products', result, { location: needProfile.location.text ?? undefined, query, platform: commercePlatform, locale: commerceLocale, actorHash: commerceActorHashValue, userText: lastText, userTexts: recentUserTexts })
+          await attachCommerceLinks('search_products', result, { location: needProfile.location.text ?? undefined, query, platform: commercePlatform, locale: commerceLocale, actorHash: commerceActorHashValue, actorSeal: commerceActorSealValue, userText: lastText, userTexts: recentUserTexts })
           enrichment.setPlacesRecommendations(productRecommendations(result), producerSubject('search_products'))
           /**
            * THE DECISION SURFACE DOES NOT DEPEND ON A WINNER EXISTING.
@@ -2258,7 +2261,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           // Completion Pass (14 Sep 2026): an EVENT question is answered here, not by the places
           // tool — Ticketbox listings are discovered and validated by CCP and projected as
           // `event_links` (when CCP is on); the result is untouched otherwise.
-          await attachCommerceLinks('web_search', r, { query, location: needProfile.location.text ?? undefined, platform: commercePlatform, locale: commerceLocale, actorHash: commerceActorHashValue, userText: lastText, userTexts: recentUserTexts })
+          await attachCommerceLinks('web_search', r, { query, location: needProfile.location.text ?? undefined, platform: commercePlatform, locale: commerceLocale, actorHash: commerceActorHashValue, actorSeal: commerceActorSealValue, userText: lastText, userTexts: recentUserTexts })
           return withTravelEditorial(r, editorial)
         }
       }),
@@ -2291,7 +2294,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           const filtered = budget ? applyBudgetFilter(r, budget, 've may bay') : r
           // Completion Pass (14 Sep 2026): the booking links are CCP-resolved when CCP is on
           // (Trip.com / Traveloka dated fare lists, airline entry pages); untouched otherwise.
-          await attachCommerceLinks('get_flight_prices', filtered, { origin, destination, departDate, returnDate, passengers, platform: commercePlatform, locale: commerceLocale, actorHash: commerceActorHashValue, userText: lastText, userTexts: recentUserTexts })
+          await attachCommerceLinks('get_flight_prices', filtered, { origin, destination, departDate, returnDate, passengers, platform: commercePlatform, locale: commerceLocale, actorHash: commerceActorHashValue, actorSeal: commerceActorSealValue, userText: lastText, userTexts: recentUserTexts })
           return filtered
         }
       }),
@@ -2316,7 +2319,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           const { result, pick } = rankForModel('get_hotel_prices', filtered)
           if (pick) turnPick = pick
           turnPlaceLocation = location
-          await attachCommerceLinks('get_hotel_prices', result, { location, checkIn, checkOut, platform: commercePlatform, locale: commerceLocale, actorHash: commerceActorHashValue, userText: lastText, userTexts: recentUserTexts })
+          await attachCommerceLinks('get_hotel_prices', result, { location, checkIn, checkOut, platform: commercePlatform, locale: commerceLocale, actorHash: commerceActorHashValue, actorSeal: commerceActorSealValue, userText: lastText, userTexts: recentUserTexts })
           enrichment.setPlacesRecommendations(stayRecommendations(result, pickContext(pick)), producerSubject('get_hotel_prices'))
           // Model copy = the decision set (≤5 hotel rows, no photos/coords) — the card was built
           // from the full list above. Same trim as places (cost item 4).
@@ -2353,7 +2356,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           const mode = m.mode
           const [r, editorial] = await Promise.all([getTransportOptions(origin, destination, mode === 'taxi' ? 'taxi' : undefined, lang), travelEditorialFor(destination)])
           // Completion Pass (14 Sep 2026): the Vexere link is CCP-resolved (route page + date) when CCP is on.
-          await attachCommerceLinks('get_transport_options', r, { origin, destination, departDate: date, transportMode: mode === 'taxi' ? 'taxi' : 'intercity', platform: commercePlatform, locale: commerceLocale, actorHash: commerceActorHashValue, userText: lastText, userTexts: recentUserTexts })
+          await attachCommerceLinks('get_transport_options', r, { origin, destination, departDate: date, transportMode: mode === 'taxi' ? 'taxi' : 'intercity', platform: commercePlatform, locale: commerceLocale, actorHash: commerceActorHashValue, actorSeal: commerceActorSealValue, userText: lastText, userTexts: recentUserTexts })
           return withTravelEditorial(r, editorial)
         }
       }),

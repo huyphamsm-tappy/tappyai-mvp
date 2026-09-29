@@ -166,7 +166,7 @@ describe('shopping product whose only link is a Google Shopping intermediary', (
     expect(ls[0]).toMatchObject({ providerId: 'lazada', kind: 'SEARCH_HANDOFF', fallback: 'search', primary: false, tracked: true })
     const u = new URL(ls[0].url)
     expect(u.hostname).toBe('go.isclix.com')
-    expect(u.searchParams.get('sub1')).toBe('a'.repeat(24))
+    expect(u.searchParams.get('sub1')).toBeNull() // Phương án C: sub1 is drawn per click at /go/at
     expect(new URL(ls[0].destinationUrl).pathname).toBe('/catalog/')
     expect(new URL(ls[0].destinationUrl).searchParams.get('q')).toContain('WH-1000XM5')
     // The card: no "Mua"/"Xem sản phẩm" for the Google redirect, one "Tìm trên Lazada".

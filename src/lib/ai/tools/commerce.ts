@@ -17,6 +17,7 @@ import {
   type IntentType,
 } from '@/lib/ccp'
 import { refreshProviderConfig, isProviderActive, inactiveMerchants, hasProviderConfigSource } from '@/lib/ccp'
+import { linkActorMarker } from '@/lib/ccp/tracking/clickLink'
 import { installProviderConfigSource } from '@/lib/commerce/providerConfigSource'
 import { feedHintsFor, type FeedHint } from '@/lib/commerce/feedHints'
 import { cleanOtaTitle, cityKeyOf, otaCityKeyOf, otaPageContradictsCity, stripTrailingCity } from '@/lib/links/otaTitle'
@@ -98,6 +99,8 @@ export interface CommerceAttachContext {
    * from the verified identity via `commerceActorHash`. Never a raw id, e-mail, name or phone.
    */
   actorHash?: string
+  /** The identity sealed for the per-click link (ccp/tracking/clickLink.ts). */
+  actorSeal?: string
   /**
    * The user's latest message (kept for callers that have only that).
    * Prefer `userTexts`: the last few user turns, oldest first.
@@ -433,9 +436,9 @@ function candidateRows(rows: Row[], r: Row, max: number): Row[] {
 function sameActorLinks(value: unknown, actorHash: string | undefined): CommerceLinkRow[] {
   if (!Array.isArray(value)) return []
   return (value as CommerceLinkRow[]).filter(l => {
-    let sub1: string | null = null
-    try { sub1 = new URL(l.url).searchParams.get('sub1') } catch { return false }
-    return sub1 === null || sub1 === actorHash
+    let marker: string | null = null
+    try { new URL(l.url); marker = linkActorMarker(l.url) } catch { return false }
+    return marker === null || marker === actorHash
   })
 }
 
@@ -600,7 +603,7 @@ async function attachOnce(toolName: CommerceToolName, result: unknown, ctx: Comm
       if (subject) subjects.push({ id: String(i), subject, locality: ctx.location, knownUrls: plan.knownUrlsOf(row), title: str(row.title) ?? str(row.name), ...(str(row.address) ? { address: str(row.address) } : {}) })
     })
 
-    const context = { ...(ctx.platform ? { platform: ctx.platform } : {}), ...(ctx.locale ? { locale: ctx.locale } : {}), ...(ctx.actorHash ? { actorHash: ctx.actorHash } : {}), allowTracking: true }
+    const context = { ...(ctx.platform ? { platform: ctx.platform } : {}), ...(ctx.locale ? { locale: ctx.locale } : {}), ...(ctx.actorHash ? { actorHash: ctx.actorHash } : {}), ...(ctx.actorSeal ? { actorSeal: ctx.actorSeal } : {}), allowTracking: true }
     const requested = requestedProvider(ctx)
     const constraints = ctx.location || requested
       ? { constraints: { ...(ctx.location ? { city: ctx.location.slice(0, 80) } : {}), ...(requested ? { merchantAllowList: requested.merchantAllowList } : {}) } }
@@ -903,7 +906,7 @@ async function attachRouteLinks(toolName: 'get_flight_prices' | 'get_transport_o
         hints = hits.map(h => ({ url: h.url, title: h.title ?? subject }))
       } catch { hints = [] }
     }
-    const context = { ...(ctx.platform ? { platform: ctx.platform } : {}), ...(ctx.locale ? { locale: ctx.locale } : {}), ...(ctx.actorHash ? { actorHash: ctx.actorHash } : {}), allowTracking: true }
+    const context = { ...(ctx.platform ? { platform: ctx.platform } : {}), ...(ctx.locale ? { locale: ctx.locale } : {}), ...(ctx.actorHash ? { actorHash: ctx.actorHash } : {}), ...(ctx.actorSeal ? { actorSeal: ctx.actorSeal } : {}), allowTracking: true }
     const requested = requestedProvider(ctx)
     const request: CommerceRequest = { domain: 'travel', intentType, capability: capabilityForIntent(intentType), subject, configuration, ...(requested ? { constraints: { merchantAllowList: requested.merchantAllowList } } : {}), context }
     const out = (ctx.resolve ?? resolveCommerce)(request, { hints, now, enabled: true })
@@ -968,7 +971,7 @@ async function attachWebHandoffs(r: Row, ctx: CommerceAttachContext): Promise<un
     const scopes = requested ? requested.scopesFor('entertainment', intentType) : undefined
     let hits: DiscoveredHint[] = []
     try { hits = await discoverBySubject('entertainment', intentType, event ? `${subject} ${now.getFullYear()}` : subject, ctx.location, { search: ctx.search, perScope: MAX_EVENT_LINKS + 2, ...(scopes ? { scopes } : {}) }) } catch { hits = [] }
-    const context = { ...(ctx.platform ? { platform: ctx.platform } : {}), ...(ctx.locale ? { locale: ctx.locale } : {}), ...(ctx.actorHash ? { actorHash: ctx.actorHash } : {}), allowTracking: true }
+    const context = { ...(ctx.platform ? { platform: ctx.platform } : {}), ...(ctx.locale ? { locale: ctx.locale } : {}), ...(ctx.actorHash ? { actorHash: ctx.actorHash } : {}), ...(ctx.actorSeal ? { actorSeal: ctx.actorSeal } : {}), allowTracking: true }
     const rows: CommerceLinkRow[] = []
     const names: string[] = []
     const reads = { left: MAX_EVENT_PAGE_READS }

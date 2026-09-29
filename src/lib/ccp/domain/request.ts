@@ -84,6 +84,8 @@ export const CommerceRequestSchema = z
     context: z
       .object({
         actorHash: z.string().regex(/^[a-f0-9]{16,64}$/).optional(),
+        // Phương án C (29/09): the identity SEALED for the click link (AES-GCM ciphertext, never an id).
+        actorSeal: z.string().regex(/^[A-Za-z0-9_-]{40,400}$/).optional(),
         sessionHash: z.string().regex(/^[a-f0-9]{16,64}$/).optional(),
         platform: z.enum(['web', 'android', 'ios']).optional(),
         locale: z.enum(['vi', 'en']).optional(),

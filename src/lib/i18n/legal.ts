@@ -70,7 +70,7 @@ export const en: Record<string, string> = {
   'legal.privacy.s3.b10':
     'Firebase Cloud Messaging (Google) — delivers push notifications to the Android app when you turn them on, using a device token.',
   'legal.privacy.s3.b11':
-    'ACCESSTRADE — when you open a partner (affiliate) link, the link carries a pseudonymous code that cannot be used to identify you, only to reconcile partner commissions. The partner’s site then applies its own privacy policy.',
+    'ACCESSTRADE — when you open a partner (affiliate) link, TappyAI attaches a new random code to that one click. The code is different on every click and the partner cannot tell who you are or link your clicks together. TappyAI keeps, on its own servers only, which account or guest session each code belongs to, together with the time, the partner and the link, for 12 months to reconcile partner commissions, then deletes it. The partner’s site then applies its own privacy policy.',
   'legal.privacy.s3.p1': 'These providers process data according to their own privacy policies.',
   'legal.privacy.s3.p2':
     'If you turn on notifications, your browser or device also creates a push subscription, which we store in order to deliver those notifications.',
@@ -303,7 +303,7 @@ export const vi: Record<string, string> = {
   'legal.privacy.s3.b10':
     'Firebase Cloud Messaging (Google) — gửi thông báo đẩy tới ứng dụng Android khi bạn bật thông báo, dùng một mã thiết bị (token).',
   'legal.privacy.s3.b11':
-    'ACCESSTRADE — khi bạn mở link đối tác (affiliate), link kèm một mã bí danh không thể dùng để nhận diện bạn, chỉ để đối soát hoa hồng với đối tác. Sau đó trang của đối tác áp dụng chính sách bảo mật riêng của họ.',
+    'ACCESSTRADE — mỗi lần bạn mở link đối tác (affiliate), TappyAI gắn một mã ngẫu nhiên mới cho riêng lần bấm đó. Mã khác nhau ở mỗi lần bấm, đối tác không biết bạn là ai và không nối được các lần bấm của bạn với nhau. TappyAI chỉ lưu trên máy chủ của mình mã đó thuộc tài khoản hay phiên khách nào, kèm thời điểm, đối tác và đường link, trong 12 tháng để đối soát hoa hồng, sau đó xoá. Sau đó trang của đối tác áp dụng chính sách bảo mật riêng của họ.',
   'legal.privacy.s3.p1': 'Các nhà cung cấp này xử lý dữ liệu theo chính sách bảo mật riêng của họ.',
   'legal.privacy.s3.p2':
     'Nếu bạn bật thông báo, trình duyệt hoặc thiết bị của bạn cũng tạo một đăng ký nhận thông báo đẩy, và chúng tôi lưu đăng ký đó để có thể gửi các thông báo này.',

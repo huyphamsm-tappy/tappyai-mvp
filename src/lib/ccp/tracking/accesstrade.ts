@@ -61,8 +61,9 @@ export function wrapWithAccesstrade(input: WrapInput): WrapResult {
 
   const utm: Record<string, string> = { utm_source: 'tappyai', utm_medium: 'ccp' }
   if (input.utmContent) utm.utm_content = input.utmContent
+  // Phương án C (owner 29/09): no sub1 here. The reply links through Tappy's /go/at, which adds a NEW RANDOM
+  // sub1 per click and records who clicked (tracking/clickLink.ts, table commerce_click_attributions).
   const subIds: Record<string, string> = {}
-  if (input.actorHash) subIds.sub1 = input.actorHash
 
   const params = new URLSearchParams()
   params.set('url', input.directUrl)

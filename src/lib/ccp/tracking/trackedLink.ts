@@ -15,6 +15,10 @@ const WRAPPERS: ReadonlySet<string> = new Set(ACCESSTRADE_WRAPPER_HOSTS)
 export function trackedLinkFacts(href: string): { providerId: string; domain: CommerceDomain } | null {
   let wrapper: URL
   try { wrapper = new URL(href) } catch { return null }
+  // Phương án C: a Tappy click link (/go/at?u=<deep link>&…) is classified by the deep link it carries.
+  if (wrapper.pathname === '/go/at' && wrapper.searchParams.get('u')) {
+    try { wrapper = new URL(wrapper.searchParams.get('u') as string) } catch { return null }
+  }
   if (wrapper.protocol !== 'https:' || !WRAPPERS.has(wrapper.hostname.toLowerCase())) return null
   const inner = wrapper.searchParams.get('url')
   if (!inner) return null

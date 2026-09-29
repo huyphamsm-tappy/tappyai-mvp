@@ -252,6 +252,8 @@ export type ConfigurationKind = Configuration['kind']
 export interface CommerceContext {
   /** Pseudonymous actor id (HMAC of user/session) — never a raw user id or e-mail. */
   actorHash?: string
+  /** The identity sealed for the per-click link (tracking/clickLink.ts) — ciphertext, never an id. */
+  actorSeal?: string
   sessionHash?: string
   platform?: 'web' | 'android' | 'ios'
   locale?: 'vi' | 'en'

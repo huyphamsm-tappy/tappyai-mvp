@@ -31,7 +31,8 @@ describe('ACCESSTRADE Deep Link wrapper (D4)', () => {
     expect(u.pathname).toBe('/deep_link/6277265300509373567/6455552313033835511')
     expect(u.searchParams.get('url')).toBe(direct)
     expect(u.searchParams.get('utm_source')).toBe('tappyai')
-    expect(u.searchParams.get('sub1')).toBe('a1b2c3d4e5f60718')
+    // Phương án C (29/09): the deep link carries NO sub1 — /go/at adds a fresh random one per click.
+    expect(u.searchParams.get('sub1')).toBeNull()
     expect(r.tracking).toMatchObject({ mode: 'affiliate', network: 'accesstrade', campaignId: '6455552313033835511' })
   })
 
