@@ -11,5 +11,10 @@
             android:exported="true"
             android:excludeFromRecents="true"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <!-- Offline preview of the plan card v2 from a fixture (no chat call, no network for the plan). -->
+        <activity
+            android:name=".uat.UatPlanCardPreviewActivity"
+            android:exported="true"
+            android:excludeFromRecents="true" />
     </application>
 </manifest>

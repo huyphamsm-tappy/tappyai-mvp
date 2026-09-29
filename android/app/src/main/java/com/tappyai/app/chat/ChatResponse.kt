@@ -29,6 +29,29 @@ data class TappyPlan(
     @SerialName("share_text") val shareText: String? = null,
     /** Trip plans only; each tip already passed the server's planLocalTipsGuard (UAT3 P2, 2026-09-27). */
     @SerialName("local_tips") val localTips: List<LocalTip>? = null,
+    // ── Plan card v2 (proposed contract, ANDROID-REQUESTS R22, 2026-09-29). All optional: a plan
+    //    without them still draws — every image slot falls back to its gradient placeholder. ──
+    /** The area: "travel" | "food" | "shopping" | "entertainment" | "spa". */
+    val domain: String? = null,
+    /** "Quy Nhơn, Bình Định" — shown as the destination, never derived here. */
+    val destination: String? = null,
+    /** "3 ngày · 2 đêm" / "Tối nay · 18:00–22:30" — the server's own words. */
+    val duration: String? = null,
+    /** One or two lines under the title ("Biển xanh, ẩm thực ngon…"). */
+    val tagline: String? = null,
+    /** The STORED hero image key (`<mang>-<kieu>-N`, 16:9), resolved through the image manifest. */
+    @SerialName("hero_image") val heroImage: String? = null,
+    /** The server's per-person figure ("2.500.000đ/người"); the app never divides. */
+    @SerialName("budget_per_person") val budgetPerPerson: String? = null,
+    /** Up to 4 "Điểm nổi bật" tiles, each with its STORED image key. */
+    val highlights: List<PlanHighlight>? = null,
+)
+
+/** One "Điểm nổi bật" tile. [image] is a stored key (`diem-<loai>` or a hero key), never a URL. */
+@Serializable
+data class PlanHighlight(
+    val label: String = "",
+    val image: String? = null,
 )
 
 /** `basis` "tool" = about the stop named in [place]; "general" = flagged general advice. */
@@ -43,6 +66,8 @@ data class LocalTip(
 data class PlanDay(
     val label: String = "",
     val items: List<PlanItem> = emptyList(),
+    /** "Khám phá thành phố biển" — the day's theme (plan card v2, optional). */
+    val title: String? = null,
 )
 
 @Serializable
@@ -66,6 +91,8 @@ data class PlanItem(
      * server started injecting photos, and items whose place had no photo, simply omit it.
      */
     @SerialName("photo_url") val photoUrl: String? = null,
+    /** Plan card v2: the STORED image key of this stop (`diem-<loai>`, 1:1), resolved via the manifest. */
+    val image: String? = null,
 )
 
 /** The CTA button kinds the model emits, mirroring the web's `CTAButton['type']` union. */
