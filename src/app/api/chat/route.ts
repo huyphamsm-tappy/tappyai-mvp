@@ -1697,6 +1697,8 @@ export async function POST(req: Request) {
       who: situation.who, occasion: situation.occasion, time: situation.time, mood: situation.mood, hard: situation.hard,
       assumptions: situation.assumptions.length, confidence: situation.confidence,
       prior_venues: priorVenues.length, referenced: referenced.length, facts, named_refetch: refetch.length,
+      // Where the search is centred and why (UAT 29/09: "Nguyễn Huệ" read as Huế) — labels only, no GPS.
+      place: situation.place.text, stated_area: statedArea?.label ?? null, near_me: situation.place.nearMe,
     }))
     enrichment.setConsultativeV1({
       on: true, rendersCard: rendersDecisionCard, namedRefetch: refetch.map(v => v.name),

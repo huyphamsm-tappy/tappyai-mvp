@@ -1,5 +1,5 @@
 {
-  "note": "ANDROID-REQUESTS R9/R11/R12/R13 reproduced offline (UAT 28-29/09, e2e.android.pro).",
+  "note": "ANDROID-REQUESTS R9/R11/R12/R13 reproduced offline (UAT 28-29/09, e2e.android.pro; R16 = UAT 29/09 evening plan, \"Nguyễn Huệ\" read as Huế).",
   "items": [
     {
       "id": "R13",
@@ -149,6 +149,20 @@
         },
         {
           "text": "Lên kế hoạch chi tiết",
+          "expect": "plan"
+        }
+      ]
+    },
+    {
+      "id": "R16",
+      "domain": "food",
+      "turns": [
+        {
+          "text": "Lên kế hoạch tối nay ở Quận 1 cho 2 người: ăn tối món Việt, dạo phố đi bộ Nguyễn Huệ, rồi cà phê view đẹp",
+          "expect": "pick"
+        },
+        {
+          "text": "Lên kế hoạch chi tiết luôn nhé, 2 người, khoảng 500k/người",
           "expect": "plan"
         }
       ]
