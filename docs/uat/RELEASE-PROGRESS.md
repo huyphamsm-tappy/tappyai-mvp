@@ -96,6 +96,21 @@ Observations (not fixed): desktop post-publish lands on "for you" feed (own post
 - UAT `1ddfadc`: 5/5 `go.isclix.com` links with `sub1` (24 hex); Booking.com direct (not in a programme). Found + fixed: the prefilled Trip.com fare link used the wrong date ("ngày 15/10" → 06/10) and the hotel link one night only ("10/10 đến 12/10" → checkout 11/10) — commit `41eca86` (in `400da54`); on UAT `400da54` the hotel link now carries `checkOut=2026-10-12`.
 - Clicks followed on UAT `400da54` (verify-prod dry run): Trip.com, Traveloka, Lazada → `go.isclix.com` → `click.accesstrade.vn` (sub1 present) → merchant (Rakuten linksynergy for Trip.com, Traveloka, c.lazada.vn); Shopee direct. GA4 is configured for Production only → verified at release by Huy (PRODUCTION-VERIFICATION §3).
 
+## /reviews LOAD TIME — 2026-09-29 (owner: >3 s to first content = blocker)
+Method: headless Chromium, mobile 390 px, slow 4G (150 ms RTT, 1.6 Mbps down, 750 kbps up), CPU ×4, cache off, signed-out, language pre-chosen. FCP/LCP from PerformanceObserver; "usable" = a feed item visible and no long task for 2 s. Script: scratchpad pw/perfReviews.mjs; evidence gs://tappyai-uat-evidence/evidence/perf-reviews-2026-09-29/ (JSON per run, screenshots, filmstrip.jpg).
+
+| Build | FCP (ms) | LCP (ms) | Usable (ms) |
+|---|---|---|---|
+| UAT 727e01a (before) | 4040 | 5520 | 7589 |
+| UAT 7e7dfe4 (feed shell) | 3716 · 2876 | 5964 · 4444 | 5971 · 6539 |
+| UAT 7ec6970 (+ posthog out of the root bundle) | 3332 · 2620 · 2636 · 2616 · 2640 — **median 2636** | 5112 · 3972 · 3872 · 3752 · 3816 | 5128 · 6120 · 5957 · 5839 · 5891 |
+| Production f42ae4b (reference, same conditions) | 2800 · 2728 | 7136 · 2984 | 7269 · 3078 |
+
+- **Root causes found:** (1) the page rendered **null** until the media query resolved and its Suspense fallback was null → the HTML had no content (30 chars: the title), first paint waited for the whole client bundle; (2) the render-blocking CSS (49 KB) finished at 2.9 s because ~578 KB of JS downloaded beside it — incl. posthog-js (68 KB) on every page although the PostHog key is deliberately unset, and the full UI dictionary in BOTH languages for every area (110 KB compressed).
+- **Fixed:** feed shell in the first HTML (7e7dfe4); posthog-js loaded only when a key is configured (7ec6970). Median FCP 4.0 s → **2.6 s** (one run of five 3.3 s).
+- **The "44 s" on production was a measurement artifact** of the baseline script (it waited for network-idle; the video feed never goes idle). Production paints at ~2.8 s.
+- **Open (not a blocker by the 3 s FCP rule, reported honestly):** real feed content on UAT arrives at ~5.8 s vs 3.1–7.3 s on production — the V3 bundle is heavier and the feed fetch starts only after hydration. Next steps (post-launch backlog unless Huy says otherwise): split the UI dictionary per language/area (−55…110 KB), start the feed request before hydration, lazy-load the desktop ExploreStage on mobile.
+
 ## CẦN HUY QUYẾT (each has a temporary SAFE choice already applied — work continues)
 | # | Question | Temporary safe choice (applied) |
 |---|---|---|
