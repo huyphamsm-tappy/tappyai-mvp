@@ -10,7 +10,11 @@ export type PlanArea = keyof typeof PLAN_HEADINGS
 const PICK_COUNT = /Mình chọn\s*(?::|\*\*)/g
 const NEVER = ['không có chức năng', 'chưa hỗ trợ tìm']
 /** Bullet labels that are not alternatives. */
-const NOT_ALT = /^(lưu ý|mẹo|giá|địa chỉ|giờ|giờ mở cửa|khoảng cách|đánh giá|chi phí|tổng|ghi chú|note|điện thoại|sđt|link|nguồn|ưu điểm|nhược điểm|lý do)\b/i
+// 🚨 No `\b` after the label: JS `\b` never matches after a Vietnamese vowel with a diacritic ("giá", "địa chỉ",
+// "giờ"), so this list excluded nothing it was written for (replay r25: FOOD-3 "Giá · Địa chỉ" counted as alternatives).
+const NOT_ALT = /^(lưu ý|mẹo|giá|địa chỉ|giờ|giờ mở cửa|mở|khoảng cách|đánh giá|chi phí|tổng|ghi chú|note|điện thoại|sđt|link|nguồn|ưu điểm|nhược điểm|lý do|khu vực|không khí|món|phù hợp|vì sao)(?=$|[\s:,.(])/i
+/** A line that opens the alternatives block ("Hai lựa chọn khác:", "Phương án khác", "Gợi ý thêm:"). */
+const ALT_HEADER = /(lựa chọn khác|phương án khác|gợi ý khác|gợi ý thêm|quán khác|chỗ khác|mẫu khác)\s*:?\s*\**\s*$/i
 
 const norm = (s: string) => s.normalize('NFC').toLowerCase().replace(/\s+/g, ' ').trim()
 const cleanName = (s: string) => s.replace(/\*+/g, '').replace(/[\s—–\-:,.]+$/g, '').replace(/^[\s—–\-:]+/, '').trim()
@@ -27,14 +31,22 @@ export function mainPickName(text: string): string | null {
 
 export const pickCount = (text: string) => (text.match(PICK_COUNT) ?? []).length
 
-/** Alternative lines "- **Name**: …" / "- Name: …" (not the main pick, not "Lưu ý:"-style labels). */
+/**
+ * Alternatives as the consult frame writes them: a bullet whose name is BOLD ("- **Name**: …"), or any
+ * "- Name: …" bullet after an alternatives header ("Hai lựa chọn khác:"). Plain "- Label: …" bullets under
+ * "Mình chọn … vì:" are the pick's REASONS, not alternatives (replay r25 FOOD-3: "- Địa chỉ: …", "- Giá: …").
+ */
 export function alternativeNames(text: string): string[] {
   const out: string[] = []
+  let inAltBlock = false
   for (const line of text.split('\n')) {
-    if (line.includes('Mình chọn')) continue
-    const m = line.match(/^\s*(?:[-•]|\*(?!\*))\s+\*{0,2}([^*:\n]{2,80}?)\*{0,2}\s*:/)
+    if (line.includes('Mình chọn')) { inAltBlock = false; continue }
+    if (ALT_HEADER.test(line.replace(/^[\s#>*-]+/, '').trim())) { inAltBlock = true; continue }
+    const m = line.match(/^\s*(?:[-•]|\*(?!\*))\s+(\*\*)?([^*:\n]{2,80}?)\*{0,2}\s*:/)
     if (!m) continue
-    const name = cleanName(m[1])
+    const bold = !!m[1]
+    if (!bold && !inAltBlock) continue
+    const name = cleanName(m[2])
     if (!name || NOT_ALT.test(name)) continue
     out.push(name)
   }
