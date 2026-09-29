@@ -66,11 +66,15 @@ export interface ShoppingConstraints {
   inStock: boolean
   /** B2: who it is for ("cho mẹ", "cho bạn gái", "cho bé") — never verifiable from a listing: always hedged. */
   recipient: string | null
+  /** Who the gift is for, by gender, when the words say so ("sếp nam", "cho mẹ") — a listing aimed at the other is not it. */
+  recipientGender?: 'nam' | 'nu' | null
+  /** Colours the user turned DOWN ("không thích màu đen") — never a required variant (replay SHOP-1, 29/09). */
+  excludeVariants?: string[]
   /** The user asked FOR an accessory/service, so rule 1 must stand down. */
   wantsAccessory: boolean
 }
 
-export type RejectionReason = 'accessory' | 'service' | 'brand' | 'budget' | 'ram' | 'storage' | 'size' | 'variant'
+export type RejectionReason = 'accessory' | 'service' | 'brand' | 'budget' | 'ram' | 'storage' | 'size' | 'variant' | 'recipient'
 
 export interface Rejection {
   candidate: Candidate
@@ -185,7 +189,7 @@ const BRANDS: ReadonlyArray<[string, RegExp, RegExp]> = [
  */
 const ACCESSORY_HEAD = new RegExp(
   '^(?:' + [
-    'man hinh', 'man ', 'ban phim', 'chuot', 'tui', 'balo', 'cap dung', 'bao da',
+    'man hinh', 'man ', 'ban phim', 'chuot', 'tui', 'balo', 'ba lo', 'cap dung', 'bao da',
     'op lung', 'op ', 'sac', 'cap sac', 'cap ', 'adapter', 'day sac', 'de tan nhiet',
     'gia do', 'ke ', 'quat tan nhiet', 'mieng dan', 'dan man hinh', 'cuong luc',
     'than may', 'vo may', 'vo ', 'pin laptop', 'pin ', 'o cung', 'ram laptop', 'ram ',
@@ -205,13 +209,19 @@ const ACCESSORY_HEAD = new RegExp(
  */
 const ACCESSORY_ANYWHERE = new RegExp(
   '(?:' + [
-    'man hinh', 'ban phim', 'chuot', 'tui xach', 'balo', 'cap dung', 'bao da',
+    'man hinh', 'ban phim', 'chuot', 'tui xach', 'balo', 'ba lo', 'tui chong soc', 'cap dung', 'bao da',
     'op lung', 'cap sac', 'day sac', 'de tan nhiet', 'gia do', 'quat tan nhiet',
     'mieng dan', 'dan man hinh', 'cuong luc', 'than may', 'vo may', 'pin laptop',
     'o cung', 'ram laptop', 'the nho', 'mieng lot', 'lot chuot', 'dem tai',
     'day deo', 'nut tai', 'hop dung', 'gia treo', 'chan de', 'tan nhiet',
   ].join('|') + ')',
 )
+
+/**
+ * A SERVICE named anywhere in the head window — replay SHOP-3 (29/09): "Bảng Giá Sửa Laptop Lấy Liền", "Địa Chỉ Sửa
+ * Laptop Uy Tín HCM" reached the laptop card on "xem thêm" because the service rule only read the FIRST word.
+ */
+const SERVICE_ANYWHERE = /\b(?:bang gia (?:sua|dich vu|thay)|dia chi sua|sua (?:chua|laptop|may tinh|macbook|dien thoai|may)|dich vu sua|nhan sua|thay man hinh)\b/
 
 /** Head nouns that name a SERVICE rather than a product. */
 const SERVICE_HEAD = new RegExp(
@@ -235,7 +245,24 @@ const CATCH_ALL = new RegExp([
   'nhieu su lua chon', 'nhieu mau ma', 'du loai', 'cac loai', 'gia tot nhat',
   'lien he de biet', 'hang co san', 'do choi', 'cua be', 'cho be yeu', 'tre em',
   'link tong hop', 'tong hop cac', 'cac hang', 'nhieu hang',
+  // A store's category page ("Laptop | Máy tính xách tay giá rẻ, trả góp 0%, giảm 15 triệu", replay SHOP-3).
+  'tra gop 0',
 ].join('|'))
+
+/** "không / chẳng … thích / muốn / lấy" — a wish turned down. */
+const NEGATED_WISH = '(?:khong|ko|k|chang|hong)\\s+(?:thich|muon|lay|can|chon|ua)'
+
+/**
+ * Listings AIMED at one gender of recipient. Replay SHOP-2 (29/09): for "quà sinh nhật sếp nam thích cà phê" the card
+ * held "Set Quà Tặng Nàng 14/2", "Bộ Quà Tặng cho Bạn gái … Set Trang Điểm, Makeup".
+ */
+const FOR_WOMEN = /\b(?:ban gai|nguoi yeu nu|nang|cho nu|tang nu|qua tang nu|cho me|tang me|phu nu|chi em|trang diem|makeup|son moi)\b/
+const FOR_MEN = /\b(?:ban trai|cho nam|tang nam|qua tang nam|cho bo|tang bo|cho chong|dan ong|quy ong)\b/
+function recipientGenderOf(t: string): 'nam' | 'nu' | null {
+  if (/\b(?:sep|dong nghiep|ban|khach|thay|co|nguoi nhan)\s+nam\b|\b(?:cho|tang|qua cho)\s+(?:bo|ong|chong|ban trai|anh|ong xa)\b/.test(t)) return 'nam'
+  if (/\b(?:sep|dong nghiep|ban|khach|thay|co|nguoi nhan)\s+nu\b|\b(?:cho|tang|qua cho)\s+(?:me|ba|vo|ban gai|chi|ba xa|nguoi yeu nu)\b/.test(t)) return 'nu'
+  return null
+}
 
 /**
  * Device families that CONFLICT with what was asked for.
@@ -350,7 +377,7 @@ export function deriveShoppingConstraints(
   const userTexts = messages.filter(m => m.role === 'user').map(textOf).filter(t => t.trim().length > 0)
   const k: ShoppingConstraints = {
     productType: null, unknownType: null, brand: null, budget, ramGb: null, storageGb: null,
-    size: null, variant: null, inStock: false, recipient: null, wantsAccessory: false,
+    size: null, variant: null, inStock: false, recipient: null, recipientGender: null, excludeVariants: [], wantsAccessory: false,
   }
 
   for (const raw of userTexts) {
@@ -372,16 +399,34 @@ export function deriveShoppingConstraints(
     if (size) k.size = size[1]
     const vol = t.match(VOLUME_RE)
     if (vol) k.variant = `${vol[1]}ml`
-    else if (/\b(mau|color|colour)\b/.test(t)) { for (const [c, re] of COLOUR_WORDS) if (re.test(t)) { k.variant = c; break } }
+    else {
+      // "không thích màu đen" names a colour to AVOID: read it as an exclusion and out of the text before a wanted
+      // colour is looked for (replay SHOP-1: it became variant = đen and only the black case was kept).
+      const neg = new RegExp(`\\b${NEGATED_WISH}\\s+(?:mau\\s+)?(\\w+)`, 'g')
+      let wanted = t
+      for (const m of t.matchAll(neg)) {
+        const c = COLOUR_WORDS.find(([, re]) => re.test(m[1]))?.[0]
+        if (c && !k.excludeVariants?.includes(c)) k.excludeVariants = [...(k.excludeVariants ?? []), c]
+        wanted = wanted.replace(m[0], ' ')
+      }
+      if (/\b(mau|color|colour)\b/.test(wanted)) { for (const [c, re] of COLOUR_WORDS) if (re.test(wanted) && !k.excludeVariants?.includes(c)) { k.variant = c; break } }
+    }
     if (IN_STOCK_RE.test(t)) k.inStock = true
     const rec = t.match(RECIPIENT_RE)
     if (rec) k.recipient = rec[1]
+    const gender = recipientGenderOf(t)
+    if (gender) k.recipientGender = gender
   }
 
-  // Only the CURRENT turn decides whether an accessory is what is wanted: asking
-  // for a laptop after asking for a laptop bag is a new question.
+  // The LATEST turn that names a product decides whether an accessory is what is wanted: asking for a laptop after
+  // asking for a laptop bag is a new question. A turn that names none ("không thích màu đen", "xem thêm") keeps the
+  // subject of the turn before — replay SHOP-1 (29/09): on that "bác" every UAG case was dropped as an "accessory".
   const latest = norm(userTexts[userTexts.length - 1] ?? '')
-  k.wantsAccessory = WANTS_ACCESSORY.test(latest)
+  for (let i = userTexts.length - 1; i >= 0; i--) {
+    const t = norm(userTexts[i])
+    if (WANTS_ACCESSORY.test(t)) { k.wantsAccessory = true; break }
+    if (PRODUCT_TYPES.some(([, re]) => re.test(foldForLexicon(userTexts[i])))) break
+  }
 
   /**
    * "Rẻ hơn" keeps the ceiling and drops the floor.
@@ -457,7 +502,7 @@ export function rejectCandidate(c: Candidate, k: ShoppingConstraints): Rejection
   const full = norm(title)
 
   if (!k.wantsAccessory) {
-    if (SERVICE_HEAD.test(head)) return { candidate: c, reason: 'service', detail: head }
+    if (SERVICE_HEAD.test(head) || SERVICE_ANYWHERE.test(head)) return { candidate: c, reason: 'service', detail: head }
     if (ACCESSORY_HEAD.test(head) || ACCESSORY_ANYWHERE.test(head)) return { candidate: c, reason: 'accessory', detail: head }
   }
 
@@ -497,6 +542,16 @@ export function rejectCandidate(c: Candidate, k: ShoppingConstraints): Rejection
   if (k.size) {
     const stated = full.match(SIZE_RE)
     if (stated && stated[1] !== k.size) return { candidate: c, reason: 'size', detail: `${stated[1]} != ${k.size}` }
+  }
+  const avoid = k.excludeVariants ?? []
+  if (avoid.length > 0) {
+    const stated = COLOUR_WORDS.filter(([, re]) => re.test(full)).map(([c2]) => c2)
+    if (stated.length > 0 && stated.every(x => avoid.includes(x))) return { candidate: c, reason: 'variant', detail: `${stated.join('/')} turned down` }
+  }
+  // A gift listing aimed at the other gender (a title aimed at both is left alone).
+  if (k.recipientGender) {
+    const women = FOR_WOMEN.test(full), men = FOR_MEN.test(full)
+    if (women !== men && (k.recipientGender === 'nam' ? women : men)) return { candidate: c, reason: 'recipient', detail: k.recipientGender }
   }
   if (k.variant) {
     if (/ml$/.test(k.variant)) {
