@@ -2468,7 +2468,7 @@ export function applyPlaceEnrichmentStreamFilter(
         type: 'tappyai_guard', guard: 'place_claim', v2: guardV2,
         sentences_in: st.sentences_in, sentences_removed: st.sentences_removed,
         chars_in: st.chars_in, chars_removed: Math.max(0, st.chars_in - st.chars_out), chars_kept: st.chars_out,
-        reasons: st.reasons, unattributable_claims: st.unattributable_claims, attribution: st.attribution,
+        reasons: st.reasons, unattributable_claims: st.unattributable_claims, attribution: st.attribution, samples: st.samples,
         pick_attributable: st.pick_attributable,
       }))
     }

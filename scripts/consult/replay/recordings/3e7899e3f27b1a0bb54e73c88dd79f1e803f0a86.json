@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Kingdom Karaoke\" OR \"Karaoke Avatar\" quan 1 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T04:15:47.192Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Kingdom Karaoke\" OR \"Karaoke Avatar\" quan 1 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Em có rồi - Kingdom Karaoke Quận 1 Phạm Viết Chanh",
+    "link": "https://www.tiktok.com/@karaoke.kingdom/video/7430847353332026631",
+    "snippet": "Em có rồi - Kingdom Karaoke Quận 1 Phạm Viết Chanh. Enjoy singing Em có rồi at Kingdom Karaoke in Quận 1 by Phạm Viết Chanh. Entertainment at ...",
+    "position": 1
+   },
+   {
+    "title": "Phòng karaoke Avatar - Giá hấp dẫn tại quận 1 Sài Gòn",
+    "link": "https://www.tiktok.com/@avatarkaraokesg/video/7270370684478557446",
+    "snippet": "Khám phá không gian karaoke Avatar độc đáo tại Q1 Saigon, với giá cả phải. @Avatar Karaoke Saigon.",
+    "position": 2
+   },
+   {
+    "title": "Karaoke Avatar Quận 1: Công Nghệ 3D Đột Phá, Giảm 30 ...",
+    "link": "https://www.tiktok.com/@avatarkaraokesg/video/7423246235756203272",
+    "snippet": "Karaoke Avatar Quận 1: Công Nghệ 3D Đột Phá, Giảm 30% Giờ Hát. ### Avatar Karaoke: Trải Nghiệm Hát Karaoke Đột Phá Tại Quận 1 Nếu bạn đang ...",
+    "position": 3
+   },
+   {
+    "title": "Hát Karaoke Kingdom Quận 1: Con Gái Hiện Đại Độc Thân",
+    "link": "https://www.tiktok.com/@karaoke.kingdom/video/7420062463443422482",
+    "snippet": "306 Lượt thích,Video TikTok từ Karaoke Kingdom (@karaoke.kingdom): \"Hát karaoke tại Kingdom quận 1 với bài hát 'Con Gái Hiện Đại Độc Thân'.",
+    "position": 4
+   },
+   {
+    "title": "Ứng tuyển vị trí Marketing tại Kingdom Karaoke",
+    "link": "https://www.tiktok.com/@karaoke.kingdom/video/7397432282354633985",
+    "snippet": "Hãy cùng Kingdom Karaoke, một trong những địa điểm giải trí hàng đầu ở quận 1, để khám phá cơ hội việc làm trong lĩnh vực marketing! **Vị trí ứng tuyển:** ...",
+    "position": 5
+   },
+   {
+    "title": "Karaoke AVATAR Cần Thơ #KaraokeAVATAR # ...",
+    "link": "https://www.tiktok.com/@nguyenhuuphuoc87/video/7686689985394691349",
+    "snippet": "1832 Lượt thích,86 Bình luận.Video TikTok từ Nguyễn Hữu Phước (@nguyenhuuphuoc87): \"Karaoke AVATAR Cần Thơ #KaraokeAVATAR ...",
+    "position": 6
+   },
+   {
+    "title": "Karaoke Kingdom",
+    "link": "https://www.tiktok.com/@karaoke.kingdom",
+    "snippet": "Kingdom Karaoke - Nơi huy động niềm vui. kingdomkaraoke.com. Vương Quốc Restaurant. Đi karaoke mà mắc cỡ kiểu #TikTokAwardsVN #kingdomkaraoke #kingdom ...",
+    "position": 7
+   },
+   {
+    "title": "Khám Phá AVATAR KARAOKE: Địa Điểm Tiệc Tùng Đỉnh ...",
+    "link": "https://www.tiktok.com/@avatarkaraokesg/video/7536174017997180178",
+    "snippet": "Karaoke Avatar · Avatar Kataang Kiss · Kai Avatar · Tuki Avatar · Aang ... Kingdom Karaoke Solo. 326 · recommend-cover. Ký Ức 8x9x10x. 131.4K.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

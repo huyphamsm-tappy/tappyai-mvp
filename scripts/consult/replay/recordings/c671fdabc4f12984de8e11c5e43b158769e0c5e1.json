@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Homestay Phương Linh – Khách sạn Gần Núi Bà Đen Tây Ninh\" Núi Bà Đen site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T04:14:16.090Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Homestay Phương Linh – Khách sạn Gần Núi Bà Đen Tây Ninh\" Núi Bà Đen site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

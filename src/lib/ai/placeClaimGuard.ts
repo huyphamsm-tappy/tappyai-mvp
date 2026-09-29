@@ -644,6 +644,8 @@ export interface PlaceClaimStats {
   unattributable_claims: number
   attribution: Record<'L1' | 'L2' | 'L2p' | 'L3' | 'L4' | 'L5' | 'anaphora' | 'multi', number>
   pick_attributable: boolean | null
+  /** Up to 3 removed sentences as "reason: text" (diagnosis only). */
+  samples?: string[]
 }
 
 export function guardPlaceClaimsInText(
@@ -1107,6 +1109,8 @@ export function guardPlaceClaimsInText(
   const finish = (out: string, redacted: number): { text: string; redacted: number; stats: PlaceClaimStats } => {
     stats.chars_out = out.length
     for (const i of doomed) { const r = reasonOf.get(i); if (r) stats.reasons[r]++ }
+    // Diagnosis (owner 29/09 "sửa ở gốc"): which sentences were cut and why, truncated — the model's own text.
+    stats.samples = [...doomed].slice(0, 3).map(i => `${reasonOf.get(i) ?? '?'}: ${text.slice(spans[i][0], spans[i][1]).trim().slice(0, 140)}`)
     stats.reasons.orphan = orphaned.size
     stats.reasons.cascade = cascade.size
     stats.sentences_removed = doomed.size + orphaned.size + cascade.size

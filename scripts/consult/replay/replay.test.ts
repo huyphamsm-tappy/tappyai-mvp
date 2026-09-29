@@ -15,6 +15,11 @@ import { describe, it, expect, vi, beforeAll, afterAll } from 'vitest'
 import { mkdirSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { randomUUID } from 'node:crypto'
+
+/** A guard event counts only when it CHANGED the reply (a removal / rewrite / drop), not when it merely ran. */
+function guardChanged(e: Record<string, unknown>): boolean {
+  return Object.entries(e).some(([k, v]) => /removed|rewritten|dropped|cut|cleaned|trimmed|moved|restored|stripped|replaced/i.test(k) && k !== 'chars_kept' && ((typeof v === 'number' && v > 0) || (Array.isArray(v) && v.length > 0) || v === true))
+}
 import { prepareReplayEnv, RUN_FLAGS } from './lib/env'
 import { installReplayFetch, netSnapshot, netDelta } from './lib/serperReplay'
 import { parseDataStream, toolRowCount, toolRowNames } from './lib/stream'
@@ -162,7 +167,7 @@ describe.skipIf(!ON)('offline replay — chat route, real model, Serper record/r
       rows.push({
         conv: c.id, area: c.area, turnIndex: i + 1, sent, unresolved, expect: t.expect, type: ev.type,
         server: p.turn ? { domain: p.turn.domain, turnType: p.turn.turnType } : null,
-        usd: p.turn?.usd ?? 0, tokensIn: p.turn?.tokensIn ?? 0, tokensOut: p.turn?.tokensOut ?? 0, serperCalls: p.turn?.serperCalls ?? 0, cacheHits: p.turn?.cacheHits ?? 0, promptCacheRead: p.turn?.promptCacheRead ?? 0, promptCacheWrite: p.turn?.promptCacheWrite ?? 0, patches: (cap.events as Array<{ type?: string; patches?: string[] }>).filter(e => e.type === 'tappyai_consult_patch').flatMap(e => e.patches ?? []), guards: (cap.events as Array<{ type?: string; guard?: string }>).filter(e => e.type === 'tappyai_guard').map(e => String(e.guard)),
+        usd: p.turn?.usd ?? 0, tokensIn: p.turn?.tokensIn ?? 0, tokensOut: p.turn?.tokensOut ?? 0, serperCalls: p.turn?.serperCalls ?? 0, cacheHits: p.turn?.cacheHits ?? 0, promptCacheRead: p.turn?.promptCacheRead ?? 0, promptCacheWrite: p.turn?.promptCacheWrite ?? 0, patches: (cap.events as Array<{ type?: string; patches?: string[] }>).filter(e => e.type === 'tappyai_consult_patch').flatMap(e => e.patches ?? []), guards: (cap.events as Array<Record<string, unknown>>).filter(e => e.type === 'tappyai_guard' && guardChanged(e)).map(e => String(e.guard)),
         net, toolRows, tools: p.tools.map(x => x.toolName ?? '?'), mainPick: pick, alternatives: alts, ms, pass: ev.pass && unresolved.length === 0,
         checks: unresolved.length ? [...ev.checks, { id: 'placeholders', pass: false, detail: `unresolved: ${unresolved.join(',')}` }] : ev.checks,
         reply: p.text, ...(crash ? { crash } : {}),
