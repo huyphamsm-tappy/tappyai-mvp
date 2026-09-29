@@ -16,6 +16,10 @@ export async function android({ a, shot, check, seeded }) {
   check('có tab "Bài đăng"', a.visible('Bài đăng'))
   check('có tab "Chia sẻ"', a.visible('Chia sẻ'))
   check('không có tab riêng tư (Đã lưu/Đã ẩn/Đã thích)', !a.visible('Đã ẩn') && !a.visible('Đã thích'))
+  // Web tabCount: each visitor tab carries its count — "Bài đăng 3", "Chia sẻ 1".
+  const tx = a.texts()
+  const after = (label) => tx[tx.lastIndexOf(label) + 1]
+  check('số đếm tab: Bài đăng 3 · Chia sẻ 1 (như web)', after('Bài đăng') === '3' && after('Chia sẻ') === '1', `${after('Bài đăng')} / ${after('Chia sẻ')}`)
   // Tiles carry no text on Android (image + like count), so the grid is counted: the seed gives this
   // account 3 public posts with a place, 1 share-only post and 1 HIDDEN post.
   const postTiles = a.tiles().length

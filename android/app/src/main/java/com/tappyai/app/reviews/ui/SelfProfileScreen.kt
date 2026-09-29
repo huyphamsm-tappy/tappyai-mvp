@@ -57,6 +57,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -479,6 +480,7 @@ private fun CreatorProfileContent(
                 selectedTab = tab,
                 showCollections = collections != null,
                 showVisitorShares = visitorShares != null,
+                visitorCounts = visitorShares?.let { mapOf(CreatorProfileTab.Posts to it.posts.size, CreatorProfileTab.Shared to it.shares.size) },
                 onTabSelected = { selectedTab = it },
             )
         }
@@ -589,6 +591,7 @@ private fun CreatorProfileHeader(
     selectedTab: CreatorProfileTab = CreatorProfileTab.Posts,
     showCollections: Boolean = false,
     showVisitorShares: Boolean = false,
+    visitorCounts: Map<CreatorProfileTab, Int>? = null,
     onTabSelected: (CreatorProfileTab) -> Unit = {},
 ) {
     val displayName = facts.displayName ?: stringResource(R.string.reviews_anonymous_name)
@@ -732,6 +735,8 @@ private fun CreatorProfileHeader(
             tabs.forEach { t ->
                 ProfileSegment(
                     text = stringResource(if (showVisitorShares && !showCollections) t.visitorLabelRes() else t.labelRes()),
+                    // Web `PublicProfileView` tabCount: a visitor tab carries its count ("Bài đăng 2", "Chia sẻ 1").
+                    count = if (showCollections) null else visitorCounts?.get(t),
                     selected = selectedTab == t,
                     onClick = { onTabSelected(t) },
                 )
@@ -742,7 +747,7 @@ private fun CreatorProfileHeader(
 
 /** One grid segment: accent text and underline when selected, muted text otherwise. */
 @Composable
-private fun ProfileSegment(text: String, selected: Boolean, onClick: () -> Unit) {
+private fun ProfileSegment(text: String, selected: Boolean, onClick: () -> Unit, count: Int? = null) {
     Column(
         modifier = Modifier
             .width(IntrinsicSize.Max)
@@ -753,13 +758,23 @@ private fun ProfileSegment(text: String, selected: Boolean, onClick: () -> Unit)
                 onClick = onClick,
             ),
     ) {
-        Text(
-            text = text,
-            color = if (selected) ExploreV3.Purple else SelfTextSecondary,
-            fontSize = 16.sp,
-            fontWeight = FontWeight.SemiBold,
-            modifier = Modifier.padding(horizontal = TappySpacing.lg),
-        )
+        Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(horizontal = TappySpacing.lg)) {
+            Text(
+                text = text,
+                color = if (selected) ExploreV3.Purple else SelfTextSecondary,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.SemiBold,
+            )
+            if (count != null) {
+                Text(
+                    text = count.toString(),
+                    color = if (selected) ExploreV3.Purple else SelfTextSecondary,
+                    fontSize = 13.sp,
+                    fontWeight = FontWeight.Medium,
+                    modifier = Modifier.padding(start = 6.dp).testTag("profile_tab_count"),
+                )
+            }
+        }
         Box(
             modifier = Modifier
                 .padding(top = TappySpacing.md)

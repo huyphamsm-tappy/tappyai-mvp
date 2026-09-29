@@ -201,6 +201,10 @@ fun LoginScreen(
                         modifier = Modifier.fillMaxWidth(),
                         variant = TappyButtonVariant.Secondary,
                         enabled = !isLoading,
+                        // The brand marks the web /login buttons draw: the four-colour "G"…
+                        leadingIcon = {
+                            Image(painter = painterResource(R.drawable.ic_brand_google), contentDescription = null, modifier = Modifier.size(20.dp))
+                        },
                     )
                     TappyButton(
                         text = stringResource(R.string.auth_continue_with_zalo),
@@ -208,6 +212,8 @@ fun LoginScreen(
                         modifier = Modifier.fillMaxWidth(),
                         variant = TappyButtonVariant.Secondary,
                         enabled = !isLoading,
+                        // …and Zalo's blue tile with the wordmark (web: 24px, #0068FF, 10px black).
+                        leadingIcon = { ZaloMark() },
                     )
                     // Web /login card, 2026-09-28 parity: "hoặc", Email + Mật khẩu + "Đăng nhập",
                     // "Tạo tài khoản", then "Tiếp tục với tư cách Khách" — in that order. (The old
@@ -353,5 +359,16 @@ private fun LoginFeatureRow(emoji: String, title: String, description: String, t
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
+    }
+}
+
+/** Zalo's mark as the web /login draws it: a 24dp #0068FF rounded tile with the white "Zalo" wordmark. */
+@Composable
+private fun ZaloMark() {
+    Box(
+        modifier = Modifier.size(24.dp).clip(RoundedCornerShape(6.dp)).background(Color(0xFF0068FF)),
+        contentAlignment = androidx.compose.ui.Alignment.Center,
+    ) {
+        Text(text = "Zalo", color = Color.White, fontSize = 9.sp, fontWeight = FontWeight.Black, maxLines = 1)
     }
 }
