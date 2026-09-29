@@ -19,7 +19,7 @@ ghi **CẦN HUY XÁC NHẬN**.
 >    — vị trí chính xác, ngày sinh, Firebase, FCM, ACCESSTRADE; bảng "Chính sách khớp" ở mục 1). Android bỏ màn chính sách tiếng Anh
 >    cũ (lệch: không có vị trí/Firebase) — "Chính sách bảo mật" trong Cài đặt và thẻ "Quyền riêng tư" ở Tôi nay mở chính trang web
 >    `/privacy` (`ProfileTab.kt` `openPrivacyPolicy`), một chính sách duy nhất. Còn phải: (a) bản web lên **Production** trước khi
->    công khai; (b) câu về `sub1` trong chính sách đang viết theo **phương án A** — Huy chưa chốt A/B/C (xem "Link affiliate" ở
+>    công khai; (b) `sub1`: **Huy chọn PHƯƠNG ÁN C (29/09)** — phiên web đang đổi code + câu trong chính sách (đang viết theo A); khi web báo xong thì bỏ ghi chú này (xem "Link affiliate" ở
 >    mục 1); nếu chọn B/C thì phiên web sửa lại câu đó.
 > 3. **Cờ xoá tài khoản trên Production.** Kế hoạch phát hành đặt `ACCOUNT_SELF_DELETE_ENABLED=false`
 >    (`docs/uat/RELEASE-PLAN-2026-09-29.md:115`) nhưng cùng dòng đó ghi Production hiện đang `true`. Mục 2 dưới đây viết theo `false`
@@ -85,7 +85,7 @@ khuyến nghị cũng coi là bên xử lý. Riêng Overpass là API công cộn
 | Mã thiết bị | `s1.b8`, `s3.b10` (FCM token), `s3.p2` (push web) |
 | Bên xử lý: Anthropic, Supabase, Google Cloud, Firebase, ACCESSTRADE | `s3.b1`, `s3.b3`, `s3.b8`, `s3.b9`–`s3.b10`, `s3.b11` |
 
-**Link affiliate (ACCESSTRADE) — đã kiểm `sub1` (29/09), CẦN HUY QUYẾT**
+**Link affiliate (ACCESSTRADE) — đã kiểm `sub1` (29/09). Huy chọn PHƯƠNG ÁN C (29/09): mã ngẫu nhiên mỗi lần bấm, server lưu bảng nối — ĐANG LÀM ở phiên web.** Khi xong: khai ACCESSTRADE "không chia sẻ" dữ liệu người dùng. Phân tích dưới đây là hiện trạng TRƯỚC khi đổi.
 
 Khi người dùng bấm link mua, trình duyệt mở `https://go.isclix.com/deep_link/<publisher>/<campaign>?url=<trang đích>` kèm đúng 3 tham số
 của Tappy (`src/lib/ccp/tracking/accesstrade.ts:62-65`):
