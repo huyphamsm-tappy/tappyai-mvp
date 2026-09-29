@@ -57,6 +57,47 @@ Giá phòng: chưa xác nhận…","price":…`). Phần đầu kế hoạch (ti
 
 ## 2. Web → Android: thay đổi server/API (giữ tương thích ngược)
 
+- 2026-09-29 (web) **ẢNH CHIA SẺ — mẫu Huy chọn 29/09, web XONG, LIVE UAT `30c0724`** (Android làm theo; web KHÔNG sửa `android/`).
+  Mẫu gốc + quy tắc phong cách: `docs/design/share-layouts/` (`profile-qr.png` = #1, `share-sheet.png` = #6, `plan-share.png` = #7,
+  `README.md` = bảng màu/chữ/bo góc/khoảng cách). Code tham chiếu: `src/lib/share/cardStyle.ts` (token), `contentCards.ts`,
+  `planCard.ts`, `shareCardFile.ts`, `src/components/share/ShareMenu.tsx`. Bằng chứng (RIÊNG TƯ):
+  `gs://tappyai-uat-evidence/evidence/30c0724/share-layouts/` (`<thẻ>-card.jpg`, `<thẻ>-download.png` = file gốc,
+  `<thẻ>-sheet*.png`, `results-*.json`: file tải về trùng từng pixel với ảnh xem trước).
+  - **KHÔNG có API ảnh mới.** Ảnh được VẼ TẠI MÁY (web: canvas 2D; Android: `Bitmap`/`Canvas` trong `ShareImageRenderer.kt`)
+    từ dữ liệu app đã có: bài Explore (`GET /api/reviews/feed`, `GET /api/reviews/{id}`), thẻ gợi ý (dữ liệu `tappy.places.v1`
+    đã whitelist như `ShareArtifact`), kế hoạch (snapshot `[TAPPY_PLAN]` / `POST /api/plans/share` như cũ), QR hồ sơ như cũ.
+    Ảnh OG của `/plan/<id>` (`/plan/<id>/opengraph-image`, 1200×630) KHÔNG thay ảnh kế hoạch này.
+  - **Thẻ sáng (mẫu #1)** — review, clip, gợi ý: **1080×1920 PNG**. Từ trên xuống: otter tròn 116 px căn giữa (y=56) + wordmark
+    "Tappy" `#0B1B3F` / "AI" `#3391FF` 54 px/800 + tagline "One Agent. One Conversation. Everyday Life." 26 px `#4F5B76`;
+    panel trắng x 60–1020, y 330–1330, bo 40, viền 2 px `#D8E4FA`; hàng mã y 1360–1620 (panel trắng bo 32): trái = "Quét mã để
+    xem trên TappyAI" 32 px/800 + pill website (nền `#EAF3FF`, viền `#B9D2FB`, chữ `#1E6BFF` 32 px/700, host của link), PHẢI = QR
+    212 px của CHÍNH link chia sẻ, quiet zone 4 module, 4 góc ngoặc `#1E6BFF` 7 px nằm ngoài quiet zone; banner y 1690, cao 170,
+    bo 40, gradient `#1453D9`→`#2F8CFF`, slogan "Kết nối · Khám phá · Chia sẻ" nghiêng 40 px/800 trắng + dòng phụ 24 px `#E3EEFF`,
+    otter hoodie cao 300 px đứng ở đầu trái banner. Nền dọc `#FFFFFF`→`#F2F7FF`→`#EAF3FF`. Sao `#FFB020`/tắt `#D5DEEE`.
+    - **Review** (`content_type` ≠ video): ảnh đầu tiên (bo 28, cao 480, cover) — không có ảnh thì khối xanh nhạt có dấu “;
+      badge "★ REVIEW"; tên địa điểm 46 px/800 (2 dòng); 5 sao + "N/5" (CHỈ khi có địa điểm thật và rating 1–5); ghim + địa chỉ;
+      trích caption trong ngoặc kép (≤ 220 ký tự, tối đa 5 dòng); "Đăng bởi {tên}" + vòng chữ cái đầu ở đáy panel.
+    - **Clip** (`content_type` = video): thumbnail cao 560 + nút play tròn trắng giữa; badge "▶ CLIP"; KHÔNG sao; còn lại như review.
+      Bài có tên địa điểm là "Chia sẻ" (sentinel) → không địa điểm/địa chỉ/sao; tiêu đề = dòng caption đầu (như `reviewShareTitle`).
+    - **Gợi ý**: badge "TAPPY GỢI Ý"; tiêu đề = subject (2 dòng); tối đa 4 quán × 176 px: ảnh 144 bo 24 (không ảnh → ô số thứ tự),
+      "i. Tên" 32 px/800, ★ rating (số đánh giá) · loại · giá, ghim + địa chỉ; "+N địa điểm khác". KHÔNG khoảng cách (quyền riêng tư).
+      QR = link thương hiệu (gợi ý không có trang riêng).
+  - **Ảnh kế hoạch (mẫu #7)**: 1080 × cao theo nội dung (≈2000–2900), nền `#070A12`→`#0B1220`→`#14133A`; thanh logo; hero 640 px =
+    ảnh địa điểm thật đầu tiên phủ tối dần (không có → gradient, KHÔNG ảnh thay thế); "TAPPY PLAN" `#8FB8FF`, tiêu đề 76 px/800,
+    "N ngày · N điểm dừng · N người", tóm tắt; "Hành trình": tối đa 3 ngày × 4 chặng, vòng số "01" gradient `#3B82F6`→`#8B5CF6`,
+    giờ / ảnh 150×100 (nếu có) / tên / mô tả 1 dòng / ghim tím `#A78BFA` + địa chỉ, dư ghi "+N"; hộp "Tổng quan chuyến đi"
+    (Thời gian / Số người / Ngân sách ước tính — chỉ trường có); pill CTA gradient "XEM KẾ HOẠCH ĐẦY ĐỦ TRÊN TAPPY →"; link kế hoạch;
+    "Được tạo bởi TappyAI". Kế hoạch ĐÃ có link thì nay CÓ "Lưu về máy" (ảnh này), không còn ẩn.
+  - **QR hồ sơ**: giữ nguyên thẻ đã duyệt UAT3 (1200 × ≈2062).
+  - **Màn chia sẻ (mẫu #6)** cho hồ sơ, bài Explore, gợi ý chat, trang kế hoạch: như sheet hồ sơ hiện có + mục mới **"Ảnh chia sẻ"**
+    ngay dưới thẻ link: nút chọn mẫu (chỉ hiện khi ≥ 2 mẫu) + ảnh xem trước cao 280 dp + dòng "Đúng ảnh này được lưu về máy và gửi
+    lên TikTok.". Mẫu theo thứ tự (mẫu đầu = mặc định): hồ sơ [QR hồ sơ]; bài Explore [Thẻ review | Thẻ clip, Mã QR]; gợi ý [Thẻ gợi ý];
+    kế hoạch [Ảnh kế hoạch]. Gợi ý chat: nút sao chép ghi "Sao chép nội dung" (chép văn bản gợi ý).
+  - **QUY TẮC MỘT FILE**: render MỘT lần cho mỗi (mẫu, link), giữ file đó; ảnh xem trước, "Lưu về máy" và TikTok dùng CÙNG file
+    (tên `tappyai-<review|clip|suggestion|plan|post|profile>-YYYY-MM-DD.png`). Đổi mẫu → đổi cả xem trước lẫn file. Ngoại lệ 28/09
+    giữ nguyên: clip TẢI LÊN gửi TikTok bằng chính video; không lấy được video → ảnh mẫu đang chọn. Render lỗi → báo "Chưa tạo được
+    ảnh — vẫn chia sẻ link được." và "Lưu về máy" rơi về tệp văn bản như cũ.
+
 - 2026-09-29 (web) **R7/R9–R14 ĐÃ LIVE TRÊN UAT** — kiểm thật trên uat.tappyai.com (khách, mobile 390 px), bằng chứng RIÊNG TƯ:
   - UAT `9644d8e` → `gs://tappyai-uat-evidence/evidence/9644d8e/android-requests/` (R13, R12, R11: ảnh `.jpg` + chữ `.txt` +
     luồng thô `/api/chat` `.raw.txt` để Android test offline). R13: kế hoạch Đà Nẵng, 0 địa điểm ngoài VN/ngoài Đà Nẵng;
