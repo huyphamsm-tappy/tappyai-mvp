@@ -81,6 +81,21 @@ Observations (not fixed): desktop post-publish lands on "for you" feed (own post
 - vercel.json ignoreCommand: android-only commits do not build the web.
 - Push rule: fetch + rebase, never force.
 
+## PRODUCTION STATE — 2026-09-29 16:40 VN (read-only check; nothing written to production)
+| Item | Finding |
+|---|---|
+| `origin/main` | **`f42ae4b`** (Merge PR #260 hotfix/c2-apple-root) — contains the C2 fix `src/lib/apple-iap/` (Apple Root CA G3 pinned in code). |
+| Vercel production | serves **`f42ae4b`** (`/api/version`), deployment `dpl_AwmZEwWgMNzJzKun5K7c6CYKvsne`, created 2026-09-28 10:12 VN, Ready. The previous one (`842379b`, 08:00) is the rollback-of-rollback target only. → **C2 is on main AND running: no stop.** |
+| Supabase prod `commerce_providers` | 7 tracked rows applied 27/09 (AFFILIATE_STATUS). `f42ae4b` has **no reference** to `commerce_providers` / feed tables → no dependency, no broken flow. Rows not re-read today: no prod DB credential on this PC (no `pgpass`), and the prod service key is not used. |
+| Production env (names, 80) | vs the release code: see RELEASE-PLAN §2 (unchanged) + Q-ENV1. `NEXT_PUBLIC_PLAY_LISTING_LIVE` **absent = OFF** ✓. `AUTH_GOOGLE_ENABLED` present ✓ (keep). 🚨 `ACCOUNT_SELF_DELETE_ENABLED` = **`true`** (plain var) — inert on `f42ae4b` (no self-delete route), must be set **`false`** at the release (RELEASE-GOVERNANCE §4 step 6); not changed now (no production writes). |
+| Health baseline | `/` 200 · `/login` 200 · `/reviews` 200 · public review 200 with OG · **guest chat 401 → sign-in wall** (no guest chat on production today). Evidence `gs://tappyai-uat-evidence/evidence/prod-baseline-f42ae4b/`. |
+
+## AFFILIATE (PR #255) — 2026-09-29
+- Already merged into `rc/web-uat` on 27/09 (`dc51447`; `e182504` is an ancestor of HEAD; PR #255 state **MERGED**). No price source on that branch (flights still need `TRAVELPAYOUTS_TOKEN`, Q10) → TRAVEL-3 keeps prefilled search links.
+- One link builder (`src/lib/ccp` resolver → `wrapWithAccesstrade`), one click path per surface: card = handoff beacon + GA4 `affiliate_click`; link in the reply text = GA4 only (`inlineLinkTap`) → a tap is never counted twice.
+- UAT `1ddfadc`: 5/5 `go.isclix.com` links with `sub1` (24 hex); Booking.com direct (not in a programme). Found + fixed: the prefilled Trip.com fare link used the wrong date ("ngày 15/10" → 06/10) and the hotel link one night only ("10/10 đến 12/10" → checkout 11/10) — commit `41eca86` (in `400da54`); on UAT `400da54` the hotel link now carries `checkOut=2026-10-12`.
+- Clicks followed on UAT `400da54` (verify-prod dry run): Trip.com, Traveloka, Lazada → `go.isclix.com` → `click.accesstrade.vn` (sub1 present) → merchant (Rakuten linksynergy for Trip.com, Traveloka, c.lazada.vn); Shopee direct. GA4 is configured for Production only → verified at release by Huy (PRODUCTION-VERIFICATION §3).
+
 ## CẦN HUY QUYẾT (each has a temporary SAFE choice already applied — work continues)
 | # | Question | Temporary safe choice (applied) |
 |---|---|---|
@@ -103,6 +118,8 @@ Observations (not fixed): desktop post-publish lands on "for you" feed (own post
 | Q14 | Cost target ≤ $0.005/turn is NOT met: replay mean ≈ $0.0096–0.0101/turn (ask $0 · follow-up/compare ≈ $0.004 · plan ≈ $0.014 · reject ≈ $0.015 · pick/more ≈ $0.014–0.020). Top 3 drivers: (1) search rows sent to the model (~3k tokens per pick), (2) the V1 rules block still sent with the lean prompt (~1k tokens), (3) Serper per pick/more/reject. | Next experiment (measured before kept): trim rows to the fields the pick needs + drop V1 blocks the lean core duplicates. |
 | Q-R16 | A consult evening plan ("Lên kế hoạch tối nay ở Quận 1 … dạo phố Nguyễn Huệ … cà phê") is a PROSE plan under Consult V2 — only travel plans carry `[TAPPY_PLAN]` (and the chat "Chia sẻ lịch trình" card). Its pre-search is ONE query (the café), so the "Gọi món" section has no dinner venue. | Kept as designed; the Huế location bug and the cut reply are fixed (72d53b0…e36c1ea). Huy: should an evening plan also build a `[TAPPY_PLAN]` card (dinner → walk → café, one search per stage)? |
 | Q-SL1b | Chat plan sheet #6, real link step: in the automated UAT session `/api/plans/share` answered 401 (sheet shows "Đăng nhập để tạo liên kết"), while the same account calling it directly got 200 (`/plan/EwLSSerdjhmd`). Likely the test browser's injected session; not reproduced by hand. | Failed / pending / sign-in states verified by screenshots (gs://tappyai-uat-evidence/evidence/e36c1ea/share-layouts-v2b/). Huy: tap "Chia sẻ lịch trình" once on a real signed-in phone. |
+| Q-ENV1 | `SNIPPET_PRICE_GUARD_V2` is set on **Preview for `rc/web-uat`** (added ~28/09 evening) — UAT and the replay run with it **ON** — but it is **absent on Production**, where the code default is **OFF**. RELEASE-PLAN §2d still says "unset = OFF, as tested", which is no longer true. | Nothing changed. Huy: either add `SNIPPET_PRICE_GUARD_V2=1` to Production at the release (ships what UAT tested — recommended), or remove it from Preview and re-run the replay/UAT with it off. |
+| Q-PROD1 | `commerce_providers` + its 7 tracked rows were applied to **production** on 27/09 (AFFILIATE_STATUS §0), while RELEASE-PLAN §1 still lists #5 / #7 as APPLY-before-deploy. | RELEASE-GOVERNANCE §4 step 2: #5 and #7 are VERIFY-ONLY; #6 applied only if the pre-check shows it absent. The current production code (`f42ae4b`) does not read these tables — no effect today. |
 
 ## Current step
 Overnight run 2026-09-28→29 DONE — final UAT SHA af8b4ba; morning report at the end of this file. Waiting on owner: Q1 (26/9 design), Q7 (AI gate), Q6 (share layout). Login = scratchpad pw/login.mjs (AUDIT only).
