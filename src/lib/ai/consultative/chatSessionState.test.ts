@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import {
-  __resetChatSessionStore, chatSessionKey, loadChatSessionState, nextChatSessionState, readChatSessionId, saveChatSessionState,
+  compactProducts, __resetChatSessionStore, chatSessionKey, loadChatSessionState, nextChatSessionState, readChatSessionId, saveChatSessionState,
 } from './chatSessionState'
 
 // No KV in tests → the per-process store (the same code path otherwise).
@@ -66,5 +66,15 @@ describe('travel "xem thêm" / "bác" continue from the stored hotels (replay r1
     const { unshownRows } = await import('./consultTravel')
     const rows = [{ name: 'M Hotel Da Nang' }, { name: 'Sala Danang Beach Hotel' }, { name: 'Hanami Hotel Danang' }, { name: 'Muong Thanh' }]
     expect(unshownRows(rows, ['M Hotel Da Nang', 'Sala Danang Beach Hotel']).map(r => r.name)).toEqual(['Hanami Hotel Danang', 'Muong Thanh'])
+  })
+})
+
+describe('shopping "xem thêm" / "bác" continue from the stored products (replay SHOP-1/3)', () => {
+  it('keeps the product search until a new one replaces it; rows are trimmed', () => {
+    const rows = compactProducts([{ title: 'Laptop A', price: '14.740.000 ₫', thumbnail: 'x'.repeat(2000), _tappy_rank: 1 }, { title: 'Laptop B', price: '15.990.000 ₫' }])
+    expect(rows).toEqual([{ title: 'Laptop A', price: '14.740.000 ₫' }, { title: 'Laptop B', price: '15.990.000 ₫' }])
+    const s1 = nextChatSessionState(null, { products: { query: 'laptop thiết kế', rows } })
+    expect(nextChatSessionState(s1, { replyText: 'x' }).products?.rows).toHaveLength(2)
+    expect(nextChatSessionState(s1, { products: null }).products).toBeNull()
   })
 })

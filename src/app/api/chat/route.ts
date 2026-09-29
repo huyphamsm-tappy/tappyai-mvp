@@ -93,7 +93,7 @@ import { runConsultBrain, consultV2Enabled, wasAskReply, buildAskReply, placeTyp
 import { routeConsult } from '@/lib/ai/consultative/consultRouter'
 import { eventPreCall, onlyRowsNamed, slimResultForModel, travelPreCall, unshownRows, withoutShownRows } from '@/lib/ai/consultative/consultTravel'
 import { geoGuardArea, guardPlaceGeography } from '@/lib/ai/tools/placeGeoGuard'
-import { compactCandidates, loadChatSessionState, nextChatSessionState, readChatSessionId, saveChatSessionState, type ChatSessionState } from '@/lib/ai/consultative/chatSessionState'
+import { compactCandidates, compactProducts, loadChatSessionState, nextChatSessionState, readChatSessionId, saveChatSessionState, type ChatSessionState } from '@/lib/ai/consultative/chatSessionState'
 import { turnUsd, sumCounts, turnCostStream } from '@/lib/ai/turnCost'
 import { planPresearch, planFlightPresearch, type FlightPresearchPlan, presearchMessages, presearchFrames, prefixBody, deferredBody, searchingFrame, type PresearchOutcome, type PresearchPlan } from '@/lib/ai/consultative/presearch'
 import { wantsMoreFromSet, reusablePlaceSearch, type PlaceSearchEvidence } from '@/lib/ai/consultative/moreFromSet'
@@ -1200,6 +1200,19 @@ export async function POST(req: Request) {
     ? Object.entries(consult.known).filter(([k]) => !['ngan_sach', 'so_nguoi', 'muc_dich'].includes(k)).map(([, v]) => v).join(' ').slice(0, 120)
     : null
   const consultProductQuery = consult && (consult.turn === 'pick' || consult.turn === 'reject') && consult.domains[0] === 'shopping' && consult.query ? consult.query : consultShoppingMoreQuery
+  // Owner design (29/09): a shopping "xem thêm" / "bác" continues from the products the chat-session state kept
+  // (0 provider calls) while >= 2 are unshown — replay SHOP-3: "xem thêm" and "nặng quá, muốn nhẹ hơn" searched
+  // again, found 0 rows, and the reply could only say "tìm trên Shopee". Fewer left → search again.
+  const storedProducts = chatState?.products ?? null
+  const shopMoreTurn = !!consult && (consult.turn === 'more' || consult.turn === 'reject') && consult.domains[0] === 'shopping'
+  let productsOverride: Array<Record<string, unknown>> | null = null
+  if (shopMoreTurn && storedProducts?.rows?.length) {
+    const named = storedProducts.rows.map(r => ({ ...r, name: String(r.title ?? r.name ?? '') }))
+    const remaining = unshownRows(named, [...consultShownEver, ...(chatState?.shown ?? [])])
+    if (remaining.length >= 2) productsOverride = remaining
+    console.log(JSON.stringify({ type: 'tappyai_consult_candidates', turn: consult?.turn, domain: 'shopping', stored: storedProducts.rows.length, remaining: remaining.length, reused: !!productsOverride }))
+  }
+  const shopQuery = consultProductQuery ?? (productsOverride && storedProducts ? storedProducts.query : null)
   // …and a travel pick runs the flight or hotel search its slots name (consultTravel.ts).
   // Replay r18 TRAVEL-1/2: "xem thêm khách sạn" / "còn chỗ nào khác" / "đi rồi, chỗ khác đi" ran no search (or
   // one with no destination — "núi gần Sài Gòn" names none) and the model asked the user again. A travel
@@ -1980,6 +1993,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   let placesOverride: { results: unknown[]; location?: string } | null = null
   let lastPlaceRowsForState: { args: { query: string; type?: string; location?: string }; rows: unknown[] } | null = null
   let lastStayForState: NonNullable<ChatSessionState['stay']> | null = null
+  let lastProductsForState: NonNullable<ChatSessionState['products']> | null = null
   // A place "xem thêm" / "bác" with ≥ 2 stored candidates nobody has been shown: the stored set, not a new
   // search. Fewer left → search again (the candidates ran out).
   // Consult pick / "xem thêm" / "bác": the model reads the engine's top 3 only (trimPlacesForModel consultTop).
@@ -2169,8 +2183,13 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
         description: 'Tim san pham/shop mua sam: gia tren Shopee/Tiki/Lazada, website rieng cua shop, dia chi cua hang vat ly (neu co), Facebook cua shop - tat ca tu Google Search (Serper)',
         parameters: z.object({ query: z.string().describe('Ten san pham can tim mua') }),
         execute: async ({ query }) => {
-          const r = await searchProducts(query, lang)
+          const stored = productsOverride
+          productsOverride = null
+          if (stored) console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'search_products', step: 'from_chat_state', rows: stored.length }))
+          const r = stored ? { query, source: 'chat_state', search_results: stored } : await searchProducts(query, lang)
           const filtered = await dropInactiveMerchantRows(budget ? applyBudgetFilter(r, budget, query) : r, 'search_results')
+          const productRows = (filtered as { search_results?: unknown })?.search_results
+          if (!stored && Array.isArray(productRows) && productRows.length) lastProductsForState = { query, rows: compactProducts(productRows) }
           const { result, pick, shortlistedCandidates } = rankForModel('search_products', filtered)
           if (pick) turnPick = pick
           await attachCommerceLinks('search_products', result, { location: needProfile.location.text ?? undefined, query, platform: commercePlatform, locale: commerceLocale, actorHash: commerceActorHashValue, userText: lastText, userTexts: recentUserTexts })
@@ -2382,6 +2401,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   const preCall: { name: 'search_places' | 'get_flight_prices' | 'search_products' | 'get_hotel_prices' | 'web_search'; args: PresearchPlan['args'] | FlightPresearchPlan['args'] | { query: string } | Record<string, string> } | null =
     consultTravelCall && toolExecutes(consultTravelCall.name) ? consultTravelCall :
     consultEventCall && toolExecutes('web_search') ? consultEventCall :
+    // A shopping consultation searches products, never places (replay SHOP-1 "còn mẫu nào nữa không" ran search_places).
+    consult?.domains[0] === 'shopping' && shopQuery && toolExecutes('search_products') ? { name: 'search_products', args: { query: shopQuery } } :
     presearchPlan && toolExecutes('search_places') ? { name: 'search_places', args: presearchPlan.args }
       : flightPresearch && toolExecutes('get_flight_prices') ? { name: 'get_flight_prices', args: flightPresearch.args }
         : consultProductQuery && toolExecutes('search_products') ? { name: 'search_products', args: { query: consultProductQuery } }
@@ -2795,6 +2816,7 @@ ${completionInstruction(lang)}` },
         domains: consult?.domains, known: consult?.known, replyText: evidence.replyText, presentedNames: evidence.presentedNames,
         ...(lastPlaceRowsForState ? { candidates: { args: lastPlaceRowsForState.args, rows: compactCandidates(lastPlaceRowsForState.rows) } } : {}),
         ...(lastStayForState ? { stay: lastStayForState } : {}),
+        ...(lastProductsForState ? { products: lastProductsForState } : {}),
         evidence: row ?? turnEvidenceRow ?? loadedEvidenceRow ?? null,
       }))
       console.log(JSON.stringify({ type: 'tappyai_chat_session', step: 'saved', ok: saved }))

@@ -133,6 +133,7 @@ describe.skipIf(!ON)('offline replay — chat route, real model, Serper record/r
     let lastPick: string | null = null, lastAlt: string | null = null
     const shown: string[] = []
     let evidenceId: string | null = null
+    let flightThread = false
     // Like the web client (R14): one chatSessionId per conversation, sent on every turn; no decisionEvidenceId.
     const chatSessionId = randomUUID()
     for (let i = 0; i < c.turns.length; i++) {
@@ -162,13 +163,14 @@ describe.skipIf(!ON)('offline replay — chat route, real model, Serper record/r
       const p = parseDataStream(raw)
       const errors = [...(crash ? [crash] : []), ...p.errors]
       const toolRows = toolRowCount(p.tools)
-      const ev = evaluateTurn({ expect: t.expect, area: c.area, text: p.text, turn: p.turn, toolRows, shownBefore: [...shown], errors })
+      if (p.tools.some(x => x.toolName === 'get_flight_prices')) flightThread = true
+      const ev = evaluateTurn({ expect: t.expect, area: c.area, text: p.text, turn: p.turn, toolRows, shownBefore: [...shown], errors, flight: flightThread })
       const pick = mainPickName(p.text), alts = alternativeNames(p.text)
       rows.push({
         conv: c.id, area: c.area, turnIndex: i + 1, sent, unresolved, expect: t.expect, type: ev.type,
         server: p.turn ? { domain: p.turn.domain, turnType: p.turn.turnType } : null,
         usd: p.turn?.usd ?? 0, tokensIn: p.turn?.tokensIn ?? 0, tokensOut: p.turn?.tokensOut ?? 0, serperCalls: p.turn?.serperCalls ?? 0, cacheHits: p.turn?.cacheHits ?? 0, promptCacheRead: p.turn?.promptCacheRead ?? 0, promptCacheWrite: p.turn?.promptCacheWrite ?? 0, patches: (cap.events as Array<{ type?: string; patches?: string[] }>).filter(e => e.type === 'tappyai_consult_patch').flatMap(e => e.patches ?? []), guards: (cap.events as Array<Record<string, unknown>>).filter(e => e.type === 'tappyai_guard' && guardChanged(e)).map(e => String(e.guard)),
-        net, toolRows, tools: p.tools.map(x => x.toolName ?? '?'), mainPick: pick, alternatives: alts, ms, pass: ev.pass && unresolved.length === 0,
+        net, toolRows, tools: p.tools.map(x => x.toolName ?? '?'), mainPick: pick, alternatives: alts, ms, pass: ev.pass && (unresolved.length === 0 || flightThread), // a flight thread's "chỗ đó" names no place (Q10)
         checks: unresolved.length ? [...ev.checks, { id: 'placeholders', pass: false, detail: `unresolved: ${unresolved.join(',')}` }] : ev.checks,
         reply: p.text, ...(crash ? { crash } : {}),
       })

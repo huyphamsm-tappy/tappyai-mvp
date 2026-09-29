@@ -1,3 +1,4 @@
+import { randomBytes } from 'node:crypto'
 // Replay harness — environment for one run.
 //
 // Only TWO values are taken from the AUDIT env file: the model key and the Serper key. Nothing else
@@ -46,6 +47,10 @@ export function prepareReplayEnv(file = process.env.REPLAY_ENV_FILE || DEFAULT_E
   for (const k of TAKE) if (env[k]) process.env[k] = env[k]
   for (const k of SHARED_STORE) delete process.env[k]
   for (const [k, v] of Object.entries(RUN_FLAGS)) process.env[k] = v
+  // Q10 (29/09): links as production builds them — ACCESSTRADE wrapping with sub1. The publisher id is public
+  // (it is in every tracked link); the attribution secret is a fresh random value per run, never a real one.
+  process.env.ACCESSTRADE_PUBLISHER_ID = '6277265300509373567'
+  process.env.CCP_ATTRIBUTION_SECRET = randomBytes(24).toString('hex')
   // Keep the model on the provider defaults (Haiku); a stray shell override would skew cost.
   for (const k of ['LLM_PROVIDER', 'LLM_FAST_MODEL', 'LLM_SMART_MODEL', 'LLM_PLANNING_MODEL', 'LLM_VISION_MODEL']) delete process.env[k]
   return { serperKey: !!env.SERPER_API_KEY }
