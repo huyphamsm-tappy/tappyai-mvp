@@ -307,10 +307,13 @@ export async function renderSuggestionCard(subject: string, places: SharedPlace[
 
   const shown = places.slice(0, SUGGESTION_MAX_ROWS)
   const photos = await Promise.all(shown.map(p => loadCardImage(cardImageSrc(p.image, 384), 4000)))
-  const rowH = 176
-  const thumb = 144
+  // Owner review 29/09: with 2 places the rows fill the panel (bigger photos) instead of leaving a gap above the QR.
+  const avail = CONTENT_FRAME.panelBottom - 70 - y
+  const rowH = Math.max(176, Math.min(330, Math.floor(avail / Math.max(1, shown.length))))
+  const thumb = Math.min(260, rowH - 40)
   shown.forEach((p, i) => {
-    const top = y + i * rowH
+    const rowTop = y + i * rowH
+    const top = rowTop
     const img = photos[i]
     if (img) drawCover(ctx, img, x, top, thumb, thumb, 24)
     else {
@@ -326,11 +329,12 @@ export async function renderSuggestionCard(subject: string, places: SharedPlace[
     }
     const tx = x + thumb + 26
     const tw = w - thumb - 26
+    const textTop = top + Math.max(0, (thumb - 124) / 2)
     ctx.textBaseline = 'alphabetic'
     ctx.fillStyle = LIGHT.ink
     ctx.font = `800 32px ${CARD_FONT}`
-    ctx.fillText(wrapLines(ctx, `${i + 1}. ${p.name}`, tw, 1)[0] ?? '', tx, top + 38, tw)
-    let ly = top + 80
+    ctx.fillText(wrapLines(ctx, `${i + 1}. ${p.name}`, tw, 1)[0] ?? '', tx, textTop + 38, tw)
+    let ly = textTop + 80
     let mx = tx
     if (typeof p.rating === 'number') {
       drawStar(ctx, mx + 13, ly - 9, 14, LIGHT.star)
@@ -356,7 +360,7 @@ export async function renderSuggestionCard(subject: string, places: SharedPlace[
     if (i < shown.length - 1) {
       ctx.strokeStyle = LIGHT.panelBorder
       ctx.lineWidth = 2
-      ctx.beginPath(); ctx.moveTo(x, top + rowH - 16); ctx.lineTo(x + w, top + rowH - 16); ctx.stroke()
+      ctx.beginPath(); ctx.moveTo(x, rowTop + rowH - 16); ctx.lineTo(x + w, rowTop + rowH - 16); ctx.stroke()
     }
   })
   const more = places.length - shown.length
