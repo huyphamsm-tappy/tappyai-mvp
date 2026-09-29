@@ -110,6 +110,10 @@ Names only; values never in git or chat. Source: `vercel env ls` (29/09). Full g
 
 ## 8. After the release
 
+- **Cron `click-attributions-sweep` (R21):** the day after the release, Vercel → Project → Logs, filter `click-attributions-sweep`:
+  a 200 with `{"type":"tappyai_cron","job":"click-attributions-sweep","ok":true,"deleted":N}` (N is 0 for the first 12 months).
+  A 401/500 → check `CRON_SECRET` on Production and that migration 7c was applied.
+- **Account deletion requests** (support@tappyai.com) follow `docs/uat/ACCOUNT-DELETION-REQUEST-RUNBOOK.md` (includes the click joins).
 - Delete from this PC: `D:\TappyAI-backups\pgpass`, `pghost.txt`, `accesstrade.txt` (any copy), and the prod secret
   files noted in `PRELAUNCH-REPORT.md` (Huy confirms each deletion).
 - Write `HANDOFF.md` (what shipped, SHA, open items, where evidence is).
