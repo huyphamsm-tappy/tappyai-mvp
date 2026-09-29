@@ -57,8 +57,17 @@ Giá phòng: chưa xác nhận…","price":…`). Phần đầu kế hoạch (ti
 
 ## 2. Web → Android: thay đổi server/API (giữ tương thích ngược)
 
+- 2026-09-29 (web) **R7/R9–R14 ĐÃ LIVE TRÊN UAT** — kiểm thật trên uat.tappyai.com (khách, mobile 390 px), bằng chứng RIÊNG TƯ:
+  - UAT `9644d8e` → `gs://tappyai-uat-evidence/evidence/9644d8e/android-requests/` (R13, R12, R11: ảnh `.jpg` + chữ `.txt` +
+    luồng thô `/api/chat` `.raw.txt` để Android test offline). R13: kế hoạch Đà Nẵng, 0 địa điểm ngoài VN/ngoài Đà Nẵng;
+    R7: khối `[TAPPY_PLAN]` parse được (3.797 và 5.496 ký tự); R9/R12: 0 lời kể bước, 0 câu hỏi lần 2; R11: «Mình chọn:
+    Tinh Hà "Say Hi" Concert» + 2 concert khác, nút Ticketbox.
+  - UAT `0377288` → `gs://tappyai-uat-evidence/evidence/0377288/android-requests/` (`api-evidence.jpg` + `.raw.txt`):
+    R10 — Android + `x-tappy-caps: ask` → có `[TAPPY_ASK]`; không caps → dòng đọc được. R14 — khách A gửi CHỈ «xem thêm» +
+    `chatSessionId` (không lịch sử) → lượt «more», chọn quán MỚI ở Bình Thạnh cho 6 người; khách B gửi CÙNG mã → không thấy gì
+    của A (hỏi lại từ đầu).
 - 2026-09-29 (web) **KẾT QUẢ R7/R9–R14** (server sửa xong, tái hiện offline bằng bộ replay `androidR` với
-  `x-tappy-surface: android`; ảnh UAT + SHA sẽ ghi dòng dưới khi deploy):
+  `x-tappy-surface: android`):
   - **R13 (P0) — SỬA TẬN GỐC.** Nguyên nhân: câu «Lên kế hoạch chi tiết» bị bộ phạm vi chủ đề coi là CUỘC TƯ VẤN MỚI →
     cắt cả cuộc trò chuyện còn đúng 1 dòng → khối kế hoạch ghi «user chưa nêu» thành phố/ngày/điểm đi; bản UAT cũ rơi vào
     khung «Tối nay» không có thành phố → tìm toàn cầu (Omaha/Seattle). Nay: lượt tiếp nối (kế hoạch/hỏi thêm/so sánh/xem
