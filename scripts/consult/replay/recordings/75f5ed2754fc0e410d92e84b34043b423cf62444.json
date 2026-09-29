@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Khách Sạn The Sum Núi Bà Đen\" Tây Ninh, Núi Bà Đen site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T03:13:26.246Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Khách Sạn The Sum Núi Bà Đen\" Tây Ninh, Núi Bà Đen site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "quán ăn đặc sản Đà Nẵng ngon rẻ Da Nang gia menu thuc don",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T02:49:45.028Z",
+ "body": {
+  "searchParameters": {
+   "q": "quán ăn đặc sản Đà Nẵng ngon rẻ Da Nang gia menu thuc don",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Top 50 quán ăn ngon Đà Nẵng ngon - bổ - rẻ, siêu đông ...",
+    "link": "https://zalopay.vn/quan-an-ngon-da-nang-5286",
+    "snippet": "Khám phá 50 quán ăn ngon Đà Nẵng siêu đông khách: Bún chả cá Ông Tạ, Bánh cuốn Tiến Hưng, Bún mắm Vân, Mít trộn Bà Già, Bánh tráng kẹp Dì ...",
+    "date": "5 thg 5, 2025",
+    "position": 1
+   },
+   {
+    "title": "Top 25 quán ăn ngon Đà Nẵng bạn không nên bỏ lỡ",
+    "link": "https://www.ivivu.com/blog/2012/10/20-quan-an-ngon-nuc-tieng-cua-du-lich-da-nang/",
+    "snippet": "Nằm cạnh bãi biển Mỹ Khê tuyệt đẹp, nhà hàng hải sản Gành Bàng là quán ăn ngon Đà Nẵng được nhiều du khách và người dân địa phương yêu thích.",
+    "date": "11 thg 8, 2026",
+    "position": 2
+   },
+   {
+    "title": "Top 10 địa điểm ăn uống ngon, rẻ và nổi tiếng nhất tại Đà Nẵng",
+    "link": "https://www.bachhoaxanh.com/kinh-nghiem-hay/top-10-dia-diem-an-uong-ngon-re-va-noi-tieng-nhat-tai-da-nang-1336881",
+    "snippet": "Đà Nẵng là thiên đường thắng cảnh và ẩm thực, cùng Bách hóa XANH khám phá các địa điểm ăn uống ngon, bổ, rẻ cực nổi tiếng ở thành phố xa hoa này nhé!",
+    "position": 3
+   },
+   {
+    "title": "Tối Ngon Tại Đà Nẵng Tất tần tật quán \" ...",
+    "link": "https://www.facebook.com/dacsandananghanigo/posts/t%E1%BA%A5t-t%E1%BA%A7n-t%E1%BA%ADt-qu%C3%A1n-%C4%83n-s%C3%A1ng-tr%C6%B0a-chi%E1%BB%81u-t%E1%BB%91i-ngon-t%E1%BA%A1i-%C4%91%C3%A0-n%E1%BA%B5ngt%E1%BA%A5t-t%E1%BA%A7n-t%E1%BA%ADt-qu%C3%A1n-t%E1%BB%A7-c%E1%BB%A7a-/1265487151962998/",
+    "snippet": "=== ✈ Đến Đà Nẵng - Đến Hanigo Đặc Sản Đà Nẵng Ngon Mua Quà Cơ sở 1: 70 Hà Bổng, Sơn Trà, Đà Nẵng Cơ sở 2: 214 Trần Bạch Đằng, Mỹ An, Đà ...",
+    "position": 4
+   },
+   {
+    "title": "22 Đặc Sản Đà Nẵng Nổi Tiếng Bạn Nhất Định Phải Thử",
+    "link": "https://www.klook.com/vi/blog/mon-an-da-nang/",
+    "snippet": "Quán Mì Quảng Thi: 251 Hoàng Diệu, quận Hải Châu, TP.Đà Nẵng. Mì Quảng Bà Mua: 19 Trần Bình Trọng, quận Hải Châu, TP.Đà Nẵng. Mì Quảng Bà Vị ...",
+    "position": 5
+   },
+   {
+    "title": "Top 15 món ngon Đà Nẵng ăn là ghiền",
+    "link": "https://www.traveloka.com/vi-vn/explore/destination/dat-tui-15-mon-ngon-da-nang-an-la-ghien/180936",
+    "snippet": "Món ăn gắn liền với cuộc sống của người dân Đà Nẵng. Một tô mì quảng thơm lừng kết hợp hài hòa của vị ngọt từ thịt, tươi mát từ rau sống, giòn rụm của bánh đa ...",
+    "position": 6
+   },
+   {
+    "title": "Đắm chìm vào 26 địa điểm ăn uống Đà Nẵng vừa ngon lại rẻ",
+    "link": "https://nhahangcham.com/dia-diem-an-uong-da-nang-ngon-re/",
+    "snippet": "Nếu bạn đang tìm kiếm một quán ăn hợp túi tiền nhưng vẫn đảm bảo hương vị đặc trưng của Đà Nẵng, thì quán Bánh Đập Phan Châu Trinh chính là lựa chọn lý tưởng!",
+    "rating": 1.5,
+    "ratingCount": 2,
+    "position": 7
+   },
+   {
+    "title": "Ở Đà Nẵng đi ăn hải sản ngon, nhiều món lạ, bình dân thì qua ...",
+    "link": "https://www.facebook.com/quanngondathanh/posts/%E1%BB%9F-%C4%91%C3%A0-n%E1%BA%B5ng-%C4%91i-%C4%83n-h%E1%BA%A3i-s%E1%BA%A3n-ngon-nhi%E1%BB%81u-m%C3%B3n-l%E1%BA%A1-b%C3%ACnh-d%C3%A2n-th%C3%AC-qua-%C4%91%C3%A2y-uki-n%C3%A8/1415081053983441/",
+    "snippet": "Ngọc Thiên Nghi · quán này xa xân bay ko ạ. 28w ; Lê Nhàn · trưa bán k. 28w · 1 like ; Lê Nhàn. Trâm Trần trưa có bán k. 28w ; Trâm Trần. Lê Hoài 93 ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

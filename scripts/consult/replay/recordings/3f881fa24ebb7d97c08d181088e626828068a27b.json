@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Nem Thơm Tiến Dung\" OR \"Đặc sản Đà Nẵng\" OR \"NGON DA NANG\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T03:00:31.062Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Nem Thơm Tiến Dung\" OR \"Đặc sản Đà Nẵng\" OR \"NGON DA NANG\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Đặc sản Đà Nẵng: 10 món phải thử khi đến thành phố",
+    "link": "https://www.tiktok.com/@hellovietnam.beatnetwork/video/7668325420051336466",
+    "snippet": "Lead Đặc sản Đà Nẵng luôn đó — thành phố biển nổi tiếng không chỉ vì cảnh đẹp mà còn vì ẩm thực phong phú. Dưới đây là gợi ý 10 món bạn nên ...",
+    "position": 1
+   },
+   {
+    "title": "Bún Mắm Nêm - Đặc Sản Đà Nẵng Ngon Nhất",
+    "link": "https://www.tiktok.com/@mam.nem.sieu.ngon/video/7551030665286782216",
+    "snippet": "Bún mắm nêm 30k mời cả nhà ghé ăn #goicuoncohang #xuhuong #foodtiktok #goicuon #fyp. Bún Mắm Nêm - Đặc Sản Đà Nẵng Ngon Nhất. Khám phá món bún ...",
+    "position": 2
+   },
+   {
+    "title": "Mắm Nêm Dì Cẩn: Đặc Sản Đà Nẵng Ngon Khó Cưỡng",
+    "link": "https://www.tiktok.com/@quocviet_atc/video/7623004327774375186",
+    "snippet": "Mắm Nêm Dì Cẩn: Đặc Sản Đà Nẵng Ngon Khó Cưỡng. Mắm nêm Dì Cẩn là một đặc sản nổi tiếng của Đà Nẵng, được nhiều người yêu thích bởi hương vị ...",
+    "position": 3
+   },
+   {
+    "title": "Tré Lão Bạc Đặc Sản Đà Nẵng #thanhnaucom ...",
+    "link": "https://www.tiktok.com/@ducthanh140923/video/7685042382986923284",
+    "snippet": "Video TikTok từ Thành nấu cơm (@ducthanh140923): \"Tré Lão Bạc Đặc Sản Đà Nẵng #thanhnaucom #tré #trelaobac #trelaobacxuquang #tredanang\".",
+    "position": 4
+   },
+   {
+    "title": "Review Món Ăn Ngon - Đặc Sản Đà Nẵng Tại Biên Hòa",
+    "link": "https://www.tiktok.com/@chaykhapbienhoa/video/7653687390912941333",
+    "snippet": "Đặc sản Đà Nẵng tại Biên Hòa đang được nhiều người tìm kiếm khi muốn thưởng thức hương vị quen thuộc của miền Trung ngay tại khu vực này.",
+    "position": 5
+   },
+   {
+    "title": "BẾP CHÚ ĐÀO- đặc sản Đà Nẵng (@chudaolochi)",
+    "link": "https://www.tiktok.com/@chudaolochi",
+    "snippet": "... đặc sản Đà Nẵng: \"Nay mưa cả trưa nữa ...\", \"Bún mắm nêm Chú Đào ... Món ngon Đà Nẵng #quan7 #review #food #angi #xuhuong do Thích. 3267 · Bún mắm ...",
+    "position": 6
+   },
+   {
+    "title": "Đặc sản Đà Nẵng tại Biên Hòa: mì Quảng, bánh tráng cuốn ...",
+    "link": "https://www.tiktok.com/@bienhoadidau60/video/7653677766360960277",
+    "snippet": "Quán đặc sản Đà Nẵng nằm bên đường, dễ tìm từ vòng xoay Biên Hùng chạy thẳng theo đường 30/4 tới gần khu nhà hát Biên Hùng sẽ thấy. Không ...",
+    "position": 7
+   },
+   {
+    "title": "Chỉ cần khách ăn ngon miệng thôi! Cong lại để Chú Đào lo ...",
+    "link": "https://www.tiktok.com/@chudaolochi/video/7661594640721775890",
+    "snippet": "Video TikTok từ BẾP CHÚ ĐÀO- đặc sản Đà Nẵng (@chudaolochi): \"Chỉ cần khách ăn ngon miệng thôi! Cong lại để Chú Đào lo. Lochi ha !",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

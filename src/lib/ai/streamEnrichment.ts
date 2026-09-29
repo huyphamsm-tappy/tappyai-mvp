@@ -2840,6 +2840,7 @@ export function applyPlaceEnrichmentStreamFilter(
           // The history is trimmed to 3 turns, so the per-person budget stated earlier comes from the router's slot.
           perHead: perPersonBudget([...(collector.consultKnown?.ngan_sach ? [collector.consultKnown.ngan_sach] : []), ...(collector.userTexts ?? [userText])]),
           unitPrice: collector.consultPlanPrice ?? null,
+          pickName: collector.placesRecommendations?.[0]?.entity.identity.name ?? null,
           lang,
         }).text
         : restored

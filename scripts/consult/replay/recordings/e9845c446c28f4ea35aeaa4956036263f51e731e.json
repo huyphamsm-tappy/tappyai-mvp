@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Cơm Ngon Hà Nội\" OR \"Tiệm cơm trưa\" OR \"Cơm Thố Xá Lị\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T03:10:10.849Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Cơm Ngon Hà Nội\" OR \"Tiệm cơm trưa\" OR \"Cơm Thố Xá Lị\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Dù núp hẻm nhưng CƠM THỐ XÁ LỊ người Hoa với các ...",
+    "link": "https://www.tiktok.com/@didauofficial/video/7312277488145566978",
+    "snippet": "đây là bữa trưa tại cơm thố xá lị. nhà nhà gọi đến để đặt ... cơm thố xá lị bán từ 10 giờ sáng đến khi hết món. nằm ở 76 xẹt 6 Tôn ...",
+    "position": 1
+   },
+   {
+    "title": "Cơm thố Xá Lị - Món Canh Tiềm Người Hoa Ngon Nhất",
+    "link": "https://www.tiktok.com/@tuanmanhnguyen3/video/7568854444671110418",
+    "snippet": "Cơm thố Xá Lị - Món Canh Tiềm Người Hoa Ngon Nhất. Khám phá Cơm thố Xá Lị với các món canh tiềm tuyệt hảo! Đến thử ngay hôm nay nhé ...",
+    "position": 2
+   },
+   {
+    "title": "Cơm Thố Xá Lị",
+    "link": "https://www.tiktok.com/discover/c%C6%A1m-th%E1%BB%91-x%C3%A1-l%E1%BB%8B",
+    "snippet": "Cơm Thố Xá Lị: Món Tiềm Siêu Ngon người Hoa ở Quận 1. Khám phá vị ngon của cơm thố xá lị người Hoa tại Quận 1 với các món tiềm siêu hấp dẫn.",
+    "date": "14 thg 9, 2026",
+    "position": 3
+   },
+   {
+    "title": "Đồ tiềm tiệm cơm thố Xá Lị - Đánh giá Nì Review",
+    "link": "https://www.tiktok.com/@niingan_review/video/7051481108751355138",
+    "snippet": "Đồ tiềm tiệm cơm thố Xá Lị là địa chỉ cực hot tại quận 1 mà bạn không thể bỏ qua. Ăn cơm thố xá lị ngon tuyệt vời cùng với #niingan. # ...",
+    "position": 4
+   },
+   {
+    "title": "Review Cơm Thố Xá Lị (Mỹ Hương Cũ) Của Bà Long ...",
+    "link": "https://www.tiktok.com/@zhengzhaoxin/video/7555368064653593857",
+    "snippet": "Dưới đây là một số món được đánh giá cao: * **Cơm Thố Xá Lị:** Món chủ lực của quán, cơm nóng hổi được nấu trong thố đất, mang lại hương vị đặc ...",
+    "position": 5
+   },
+   {
+    "title": "Quán Cơm Ngon Hà Nội: Mê Cơm Lưu Lại Ngay!",
+    "link": "https://www.tiktok.com/@thodiahanois/video/7618816599063006485",
+    "snippet": "Quán Cơm Ngon Hà Nội: Mê Cơm Lưu Lại Ngay! Khám phá ngay danh sách các quán cơm ngon tại Hà Nội dành cho team mê cơm. Lưu lại địa chỉ để ...",
+    "position": 6
+   },
+   {
+    "title": "Tiệm Cơm Trưa Kim Anh Vĩnh Long",
+    "link": "https://www.tiktok.com/@thanhchung2805/video/7663803372952243464",
+    "snippet": "Tiệm Cơm Trưa Kim Anh ở Vĩnh Long là điểm ăn trưa quen thuộc cho người dân địa phương. Tiệm phục vụ suất cơm trưa với cơm, các món mặn xen ...",
+    "position": 7
+   },
+   {
+    "title": "Quán Cơm Ngon Hà Nội: Thiếu Sót Lớn Nếu Chưa Ghé!",
+    "link": "https://www.tiktok.com/@congnhanvanphongvn/video/7622290966287813908",
+    "snippet": "Quán Cơm Ngon Hà Nội: Thiếu Sót Lớn Nếu Chưa Ghé! Khám phá quán cơm 'chất lượng' tại Hà Nội mà bạn không thể bỏ lỡ. Ăn ngon, bổ, rẻ cho công ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

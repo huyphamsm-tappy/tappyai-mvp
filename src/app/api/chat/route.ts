@@ -93,7 +93,7 @@ import { runConsultBrain, consultV2Enabled, wasAskReply, buildAskReply, placeTyp
 import { routeConsult } from '@/lib/ai/consultative/consultRouter'
 import { eventPreCall, onlyRowsNamed, slimResultForModel, travelPreCall, withoutShownRows } from '@/lib/ai/consultative/consultTravel'
 import { geoGuardArea, guardPlaceGeography } from '@/lib/ai/tools/placeGeoGuard'
-import { loadChatSessionState, nextChatSessionState, readChatSessionId, saveChatSessionState, type ChatSessionState } from '@/lib/ai/consultative/chatSessionState'
+import { compactCandidates, loadChatSessionState, nextChatSessionState, readChatSessionId, saveChatSessionState, type ChatSessionState } from '@/lib/ai/consultative/chatSessionState'
 import { turnUsd, sumCounts, turnCostStream } from '@/lib/ai/turnCost'
 import { planPresearch, planFlightPresearch, type FlightPresearchPlan, presearchMessages, presearchFrames, prefixBody, deferredBody, searchingFrame, type PresearchOutcome, type PresearchPlan } from '@/lib/ai/consultative/presearch'
 import { wantsMoreFromSet, reusablePlaceSearch, type PlaceSearchEvidence } from '@/lib/ai/consultative/moreFromSet'
@@ -1694,7 +1694,11 @@ export async function POST(req: Request) {
   // Consult V2 (replay 2026-09-29): a follow-up / compare turn (noToolTurn) and a travel more/reject with no
   // situation never built the V1 block, so the area frame ("**Mình chọn: X** vì …" for A-vs-B) and the
   // state (route, date, people, the chosen pick) never reached the model — it asked for them again.
-  const consultOnlyBlock = consult && !v1Block && consult.turn !== 'ask' && consult.turn !== 'chat' && consult.domains.length > 0
+  // Only the rules of THIS turn type (owner 29/09): a lean plan turn gets its plan frame + state, not the pick-
+  // oriented V1 rulebook; follow-up / compare / plan skip the ranking and card blocks (no ranked set to explain).
+  const leanPlanTurn = !!consult && consult.domains.length > 0 && consult.turn === 'plan' && process.env.CONSULT_TRIM_FRAME !== '0'
+  const leanNonPick = !!consult && consult.domains.length > 0 && !['pick', 'more', 'reject'].includes(consult.turn) && process.env.CONSULT_TRIM_FRAME !== '0'
+  const consultOnlyBlock = consult && (!v1Block || leanPlanTurn) && consult.turn !== 'ask' && consult.turn !== 'chat' && consult.domains.length > 0
     ? (consultLibraryOn ? frameRef(frameDomainOf(consult.domains[0]), consult.turn) : buildDomainFrame(frameDomainOf(consult.domains[0]), consult.turn)) + consultUnderstood
     : ''
 
@@ -1710,8 +1714,8 @@ export async function POST(req: Request) {
     // explain how to present the result.
     // A/B 29/09 (cost): a lean consult turn carries the consult state block (DA HIEU), which supersedes this frame.
     lean0 ? '' : buildDecisionFrameBlock(decisionFrame, needProfile),
-    isDecisionDomain ? buildRankingInstructionBlock() : '',
-    isDecisionDomain && rendersDecisionCard ? buildRenderedDecisionBlock() : '',
+    leanNonPick ? '' : isDecisionDomain ? buildRankingInstructionBlock() : '',
+    leanNonPick ? '' : isDecisionDomain && rendersDecisionCard ? buildRenderedDecisionBlock() : '',
     // Shopping evidence carries price/store/rating and nothing else, so the
     // model must be told what it may NOT assert — measured live 2026-08-17
     // asserting weight and battery that no candidate supplied.
@@ -1728,7 +1732,7 @@ export async function POST(req: Request) {
     priorEvidence ? renderDecisionEvidenceBlock(priorEvidence, true) : '',
     priorEvidenceMissing && needProfile.domain === 'shopping' ? renderMissingEvidenceBlock() : '',
     // Consultative V1: situation + rule overrides + follow-up references. Empty with the flag OFF.
-    v1Block,
+    leanPlanTurn ? '' : v1Block,
     consultOnlyBlock,
     // R12: under Consult V2 the questions were asked ONCE, by the ask card — no second "máy bay hay xe khách?".
     tripContext.shouldAskTransportMode && !consult ? buildTransportModeBlock() : '',
@@ -1942,6 +1946,29 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
 
   /** A1(d): the place search this turn ran — saved with the names shown, for a "gợi ý thêm" follow-up. */
   let lastPlaceSearch: PlaceSearchEvidence | null = null
+  // Owner 29/09 (design): "xem thêm" / "bác" continue from the candidates kept in the chat-session state —
+  // 0 Serper. When set, search_places runs its whole pipeline (constraints, ranking, cards) on these stored
+  // rows instead of calling the provider. The ranked rows of a real search are captured for the state.
+  let placesOverride: { results: unknown[]; location?: string } | null = null
+  let lastPlaceRowsForState: { args: { query: string; type?: string; location?: string }; rows: unknown[] } | null = null
+  // A place "xem thêm" / "bác" with ≥ 2 stored candidates nobody has been shown: the stored set, not a new
+  // search. Fewer left → search again (the candidates ran out).
+  // Consult pick / "xem thêm" / "bác": the model reads the engine's top 3 only (trimPlacesForModel consultTop).
+  const consultTopTurn = !!consult && ['pick', 'more', 'reject'].includes(consult.turn) && process.env.CONSULT_TOP3 !== '0'
+  const storedCandidates = chatState?.candidates
+  if (consult && (consult.turn === 'more' || consult.turn === 'reject') && storedCandidates?.rows?.length && ['food', 'entertainment', 'spa'].includes(consult.domains[0] ?? '')) {
+    const fold = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/gi, 'd').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()
+    const seen = [...consultShownEver, ...(chatState?.shown ?? [])].map(fold).filter(k => k.length >= 3)
+    const remaining = storedCandidates.rows.filter(r => {
+      const n = fold(String(r.name ?? ''))
+      return !!n && !seen.some(k => n === k || n.includes(k) || k.includes(n))
+    })
+    if (remaining.length >= 2) {
+      placesOverride = { results: remaining, ...(storedCandidates.args.location ? { location: storedCandidates.args.location } : {}) }
+      presearchPlan = { toolName: 'search_places', args: storedCandidates.args, exact: true, reuse: { shown: [...consultShownEver].slice(0, 12) } }
+    }
+    console.log(JSON.stringify({ type: 'tappyai_consult_candidates', turn: consult.turn, stored: storedCandidates.rows.length, remaining: remaining.length, reused: remaining.length >= 2 }))
+  }
   const tools = noToolTurn ? undefined : gateTools(timeTools({
       // A movie/show RECOMMENDATION turn drops the place search entirely, so the
       // model can't answer "recommend a movie" with a list of cinemas — it
@@ -1973,7 +2000,10 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           // a stated budget (this turn or the thread) or a price word in the request.
           const priceRetry = !!budget || !!needProfile.budget || /\b(gia|re|dat|bao nhieu|budget|price|cheap|expensive)\b/.test(normalizeVN(lastText.toLowerCase()))
           // The editorial supplement runs beside the live search, not after it.
-          const [placesResult, editorial] = await Promise.all([searchPlaces(query, location, type, lang, userLocation, placesBudget, { priceRetry, ...(statedArea ? { areaCentre: { ...statedArea.centre, label: statedArea.label } } : {}) }), travelEditorialFor(location)])
+          const [placesResult, editorial] = placesOverride
+            ? [{ source: 'chat_state', count: placesOverride.results.length, location: placesOverride.location ?? location ?? '', results: placesOverride.results }, [] as Awaited<ReturnType<typeof travelEditorialFor>>] as const
+            : await Promise.all([searchPlaces(query, location, type, lang, userLocation, placesBudget, { priceRetry, ...(statedArea ? { areaCentre: { ...statedArea.centre, label: statedArea.label } } : {}) }), travelEditorialFor(location)])
+          if (placesOverride) console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'search_places', step: 'from_chat_state', rows: placesOverride.results.length }))
           let r: unknown = placesResult
           // R13 (P0): rows outside Việt Nam, or outside the city this search / consultation is about, never
           // reach the model, the cards or a plan (placeGeoGuard.ts).
@@ -2057,6 +2087,9 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
             ? { result: filtered, pick: null }
             : rankForModel('search_places', filtered)
           if (pick) turnPick = pick
+          // The ranked candidate set of a REAL search goes to the chat-session state ("xem thêm" / "bác" reuse it).
+          const rankedRows = (result as { results?: unknown }).results
+          if (!placesOverride && Array.isArray(rankedRows)) lastPlaceRowsForState = { args: { query, ...(type ? { type } : {}), ...(location ? { location } : {}) }, rows: rankedRows }
           // CCP (Phase 6, owner decision P6-B): Commerce Links ride the ranked rows as
           // `commerce_links`, read by buildActions below and carved from the model by forModel.
           // Identity-preserving and a no-op while CCP_ENABLED is false.
@@ -2083,7 +2116,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           // `modelPayload.ts`.
           return trimPlacesForModel(forModel('search_places', withTravelEditorial(pick
             ? { ...(result as Record<string, unknown>), _tappy_ranking: buildPickPayload(pick) }
-            : result, editorial)), 'results', { rendersCard: rendersDecisionCard, modelChooses: v1Active })
+            : result, editorial)), 'results', { rendersCard: rendersDecisionCard, modelChooses: v1Active, ...(consultTopTurn ? { consultTop: 3 } : {}) })
         }
       }) }),
       get_news: tool({
@@ -2673,6 +2706,7 @@ ${completionInstruction(lang)}` },
     if (chatSessionId && commerceIdentityId) {
       const saved = await saveChatSessionState(commerceIdentityId, chatSessionId, nextChatSessionState(chatState, {
         domains: consult?.domains, known: consult?.known, replyText: evidence.replyText, presentedNames: evidence.presentedNames,
+        ...(lastPlaceRowsForState ? { candidates: { args: lastPlaceRowsForState.args, rows: compactCandidates(lastPlaceRowsForState.rows) } } : {}),
         evidence: row ?? turnEvidenceRow ?? loadedEvidenceRow ?? null,
       }))
       console.log(JSON.stringify({ type: 'tappyai_chat_session', step: 'saved', ok: saved }))

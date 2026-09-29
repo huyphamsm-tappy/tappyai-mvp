@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Khách Sạn Parosand\" OR \"Meliá Vinpearl Danang Riverfront\" OR \"Minh Toan SAFI Ocean Hotel\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T03:31:34.536Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Khách Sạn Parosand\" OR \"Meliá Vinpearl Danang Riverfront\" OR \"Minh Toan SAFI Ocean Hotel\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Minh Toan Safi Ocean Hotel Review in Da Nang",
+    "link": "https://www.tiktok.com/@lioness_na/video/7612973268902923534?lang=ru-RU",
+    "snippet": "The presentation and quality of the food left a lasting impression, making it a highlight of my stay. At just 56 USD per night, the Minh Toan Safi Ocean Hotel ...",
+    "position": 1
+   },
+   {
+    "title": "Minh Toan SAFI Ocean Hotel ⭐️⭐️⭐️⭐️ 224 Võ Nguyên ...",
+    "link": "https://www.tiktok.com/@bimeo88/video/7275290689120816391",
+    "snippet": "Welcome to Minh Toan SAFI Ocean Hotel 224 Võ Nguyên Giáp - Quận Sơn Trà - tp.Đà Nẵng. Vâng mình mời các bạn xem căn Penhous của ...",
+    "position": 2
+   },
+   {
+    "title": "Meliá Vinpearl Danang Riverfront, khách sạn 5* tầm nhìn ...",
+    "link": "https://www.tiktok.com/@travelwithxuan/video/7689523212379573524",
+    "snippet": "Meliá Vinpearl Danang Riverfront, khách sạn 5* tầm nhìn tuyệt đẹp ra sông Hàn #meliavinpearldanangriverfront #danangcity #travel ...",
+    "position": 3
+   },
+   {
+    "title": "Penthouse sang trọng tại Minh Toan SAFI Ocean Hotel",
+    "link": "https://www.tiktok.com/@minhtoansafioceanhotel/video/7281491634632658177",
+    "snippet": "Căn phòng Penthouse “đắt đỏ” tại Minh Toan SAFI Ocean Hotel trông như thế nào? Hứa hẹn sẽ mang lại sự sang trọng và đẳng cấp cho quý khách ...",
+    "position": 4
+   },
+   {
+    "title": "Buffet Sáng Đặc Biệt Tại Minh Toan SAFI Ocean Hotel",
+    "link": "https://www.tiktok.com/@minhtoansafioceanhotel/video/7278859433319386370",
+    "snippet": "Bắt đầu một ngày mới với hương vị tuyệt vời ❤️ Hãy đến với Minh Toan SAFI Ocean Hotel và thưởng thức buffet sáng đa dạng cùng nhiều món ...",
+    "position": 5
+   },
+   {
+    "title": "Khách sạn Parosand Đà Nẵng gần My Khe",
+    "link": "https://www.tiktok.com/@vivudanang243/video/7684608514567720212",
+    "snippet": "Khách sạn Parosand Đà Nẵng gần My Khe: Review nhanh cho chuyến đi. Tổng quan nhanh Bạn đang tham khảo căn phòng tại Parosand Hotel để quyết ...",
+    "position": 6
+   },
+   {
+    "title": "Minh Toàn SAFI Ocean Hotel có gì khiến du khách lựa ...",
+    "link": "https://www.tiktok.com/@minhtoansafioceanhotel/video/7247409536317787398",
+    "snippet": "295 Lượt thích,63 Bình luận.Video TikTok từ Minh Toan SAFI Ocean Hotel (@minhtoansafioceanhotel): \"Minh Toàn SAFI Ocean Hotel có gì khiến du ...",
+    "position": 7
+   },
+   {
+    "title": "Meliá Vinpearl Danang Riverfront",
+    "link": "https://www.tiktok.com/@hanhan134_/photo/7681229615368670484",
+    "snippet": "Meliá Vinpearl Danang Riverfront offers luxurious rooms with beautiful Han River views in a central location for exploring Da Nang. Keywords: ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

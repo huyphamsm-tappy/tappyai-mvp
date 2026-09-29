@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Massage Tân Thủ Đô Hai\" OR \"Phiếu massage｜Ga tàu điện ngầm Nanjing Fuxing\" OR \"Thuỷ Lập Phương | Phúc Điền Tân Châu\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T03:04:48.957Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Massage Tân Thủ Đô Hai\" OR \"Phiếu massage｜Ga tàu điện ngầm Nanjing Fuxing\" OR \"Thuỷ Lập Phương | Phúc Điền Tân Châu\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

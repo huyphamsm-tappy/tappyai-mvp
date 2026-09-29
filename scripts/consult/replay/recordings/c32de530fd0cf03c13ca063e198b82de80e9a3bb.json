@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Minh Toan SAFI Ocean Hotel",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T02:59:37.371Z",
+ "body": {
+  "searchParameters": {
+   "q": "Minh Toan SAFI Ocean Hotel",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Khách sạn Minh Toàn SAFI Ocean, Phước Mỹ, Đà Nẵng",
+    "imageUrl": "https://pix10.agoda.net/hotelImages/10604648/-1/6cd2dbcedc8aa702916ff0890630b5e2.jpg?ca=11&ce=1&s=414x232",
+    "imageWidth": 414,
+    "imageHeight": 232,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQWNI662rwvw9sat6LRKvbFWZY34nmIYXgrXdB33ByPpw&s=10",
+    "thumbnailWidth": 414,
+    "thumbnailHeight": 232,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/minh-toan-ocean-hotel/hotel/da-nang-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F10604648%2F-1%2F6cd2dbcedc8aa702916ff0890630b5e2.jpg%3Fca%3D11%26ce%3D1%26s%3D414x232&tbnid=D6jL65Z3f0QscM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fminh-toan-ocean-hotel%2Fhotel%2Fda-nang-vn.html&docid=3VygC9UlX8j2uM&w=414&h=232",
+    "position": 1
+   },
+   {
+    "title": "MINH TOAN SAFI OCEAN HOTEL (Phuoc My) - Đánh giá Khách sạn & So sánh giá -  Tripadvisor",
+    "imageUrl": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/1c/12/e1/eb/minh-toan-ocean-hotel.jpg?w=900&h=500&s=1",
+    "imageWidth": 900,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPd3vjJpCQX_Ukpf-B9yOq0GQ3nym0banfgnvJTTDjgg&s=10",
+    "thumbnailWidth": 599,
+    "thumbnailHeight": 333,
+    "source": "Tripadvisor",
+    "domain": "www.tripadvisor.com.vn",
+    "link": "https://www.tripadvisor.com.vn/Hotel_Review-g19779171-d19507734-Reviews-Minh_Toan_SAFI_Ocean_Hotel-Phuoc_My_Son_Tra_Peninsula_Da_Nang.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdynamic-media-cdn.tripadvisor.com%2Fmedia%2Fphoto-o%2F1c%2F12%2Fe1%2Feb%2Fminh-toan-ocean-hotel.jpg%3Fw%3D900%26h%3D500%26s%3D1&tbnid=pnkdfByfz51pBM&imgrefurl=https%3A%2F%2Fwww.tripadvisor.com.vn%2FHotel_Review-g19779171-d19507734-Reviews-Minh_Toan_SAFI_Ocean_Hotel-Phuoc_My_Son_Tra_Peninsula_Da_Nang.html&docid=kDkvC7CE3ofQMM&w=900&h=500",
+    "position": 2
+   },
+   {
+    "title": "🌊Lưu trú sang trọng và thoải mái cùng Minh Toan SAFI Ocean ✨Bạn có yêu  thích cảm giác mỗi sớm mai tỉnh giấc được hít thở không khí trong lành,  được trải",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=1146103864183211",
+    "imageWidth": 1365,
+    "imageHeight": 2048,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSYnWP7GMA9PAP5E7u3uQJOUd3Vwhk78WNypomM8hJzYg&s=10",
+    "thumbnailWidth": 365,
+    "thumbnailHeight": 547,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/MinhToanSafiOceanHotel/posts/l%C6%B0u-tr%C3%BA-sang-tr%E1%BB%8Dng-v%C3%A0-tho%E1%BA%A3i-m%C3%A1i-c%C3%B9ng-minh-toan-safi-ocean-b%E1%BA%A1n-c%C3%B3-y%C3%AAu-th%C3%ADch-c%E1%BA%A3m-g/1146103910849873/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D1146103864183211&tbnid=YqSpFJ1YulPtuM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2FMinhToanSafiOceanHotel%2Fposts%2Fl%25C6%25B0u-tr%25C3%25BA-sang-tr%25E1%25BB%258Dng-v%25C3%25A0-tho%25E1%25BA%25A3i-m%25C3%25A1i-c%25C3%25B9ng-minh-toan-safi-ocean-b%25E1%25BA%25A1n-c%25C3%25B3-y%25C3%25AAu-th%25C3%25ADch-c%25E1%25BA%25A3m-g%2F1146103910849873%2F&docid=LYYIU7s8K_m0EM&w=1365&h=2048",
+    "position": 3
+   },
+   {
+    "title": "Khách sạn Minh Toàn SAFI Ocean, Phước Mỹ, Đà Nẵng",
+    "imageUrl": "https://pix10.agoda.net/hotelImages/10604648/-1/3528973f37fad23c74a2a1a6e4829f43.jpg?ca=11&ce=1&s=414x232",
+    "imageWidth": 348,
+    "imageHeight": 232,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQG533CLTGM9OJBFZWXPkEUCLov-sT9I21M8X0wn9YkUg&s=10",
+    "thumbnailWidth": 348,
+    "thumbnailHeight": 232,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/minh-toan-ocean-hotel/hotel/da-nang-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F10604648%2F-1%2F3528973f37fad23c74a2a1a6e4829f43.jpg%3Fca%3D11%26ce%3D1%26s%3D414x232&tbnid=a41cmM4_NJDMuM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fminh-toan-ocean-hotel%2Fhotel%2Fda-nang-vn.html&docid=3VygC9UlX8j2uM&w=348&h=232",
+    "position": 4
+   },
+   {
+    "title": "Minh Toàn SAFI Ocean Hotel Đà Nẵng - Bản giao hưởng hoàn hảo tại thành phố  biển",
+    "imageUrl": "https://owa.bestprice.vn/images/hotels/uploads/minh-toan-safi-ocean-hotel-da-nang-6451de187b61b.jpg",
+    "imageWidth": 1024,
+    "imageHeight": 576,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVgN0Wl0Y0OuqSFCL8rlONB8Pcb9DR_AvadulVX8aOEw&s=10",
+    "thumbnailWidth": 738,
+    "thumbnailHeight": 414,
+    "source": "BestPrice",
+    "domain": "www.bestprice.vn",
+    "link": "https://www.bestprice.vn/khach-san/minh-toan-ocean-hotel-da-nang-1740.html?srsltid=AU7gw4Ve_iTdMnO2ctPi-8LNWTv6C9rxwN5vSWqzJnuxB5mKLoGPwAFC",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fowa.bestprice.vn%2Fimages%2Fhotels%2Fuploads%2Fminh-toan-safi-ocean-hotel-da-nang-6451de187b61b.jpg&tbnid=jSbGKMK999V_ZM&imgrefurl=https%3A%2F%2Fwww.bestprice.vn%2Fkhach-san%2Fminh-toan-ocean-hotel-da-nang-1740.html%3Fsrsltid%3DAU7gw4Ve_iTdMnO2ctPi-8LNWTv6C9rxwN5vSWqzJnuxB5mKLoGPwAFC&docid=JsDfHqA8fXklmM&w=1024&h=576",
+    "position": 5
+   },
+   {
+    "title": "Minh Toàn SAFI Ocean Hotel, Đà Nẵng - Trang web chính thức",
+    "imageUrl": "https://minhtoansafiocean.com/vnt_upload/weblink/swimming_pool.jpg",
+    "imageWidth": 1000,
+    "imageHeight": 670,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ5u9dB0_UYF4-qigl8DC0OSz0cFWEvRYJdUvZNsEFVmw&s=10",
+    "thumbnailWidth": 545,
+    "thumbnailHeight": 366,
+    "source": "Minh Toan SAFI Ocean Hotel, Da Nang",
+    "domain": "minhtoansafiocean.com",
+    "link": "https://minhtoansafiocean.com/vn/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fminhtoansafiocean.com%2Fvnt_upload%2Fweblink%2Fswimming_pool.jpg&tbnid=TXB29do0mCN4kM&imgrefurl=https%3A%2F%2Fminhtoansafiocean.com%2Fvn%2F&docid=v89MYJK7L_NP5M&w=1000&h=670",
+    "position": 6
+   },
+   {
+    "title": "Minh Toan SAFI Ocean Hotel, Đà Nẵng (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/801218839.jpg?k=08ad6de77bb505e93162102d6b6b278164dd5b49f8d4ceef1e1ef015e6105261&o=",
+    "imageWidth": 1024,
+    "imageHeight": 682,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTeXRMIvdi0AeO5nt-5HuIfDyLftM1zu-mORK1f1BM0Cw&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "www.booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/minh-toan-ocean.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F801218839.jpg%3Fk%3D08ad6de77bb505e93162102d6b6b278164dd5b49f8d4ceef1e1ef015e6105261%26o%3D&tbnid=fFnUrk_OQISmvM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fminh-toan-ocean.vi.html&docid=jEq112VxMY5sYM&w=1024&h=682",
+    "position": 7
+   },
+   {
+    "title": "Minh Toan SAFI Ocean Hotel | Da Nang 2026 UPDATED DEALS, HD Photos & Reviews",
+    "imageUrl": "https://q-xx.bstatic.com/xdata/images/hotel/max500/251200457.jpg?k=6c080f7f4199194646383f52520bcac98cfb330bf9ee9a13a4571c1db4c4c1ca&o=",
+    "imageWidth": 333,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMmyT9RD7Y1kiwthqyr5uTS8WthCy9y6QD5i7fFbwAQQ&s=10",
+    "thumbnailWidth": 333,
+    "thumbnailHeight": 500,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/en-in/minh-toan-ocean-hotel/hotel/da-nang-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fq-xx.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax500%2F251200457.jpg%3Fk%3D6c080f7f4199194646383f52520bcac98cfb330bf9ee9a13a4571c1db4c4c1ca%26o%3D&tbnid=-U-QIP8KCOefgM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fen-in%2Fminh-toan-ocean-hotel%2Fhotel%2Fda-nang-vn.html&docid=buM8qpfw9HQwzM&w=333&h=500",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

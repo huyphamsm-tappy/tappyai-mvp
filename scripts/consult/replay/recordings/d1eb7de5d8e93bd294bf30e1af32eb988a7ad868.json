@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Massage Cổ Phong Q1\" OR \"Lake Sea Spa\" OR \"RELAX SPA MASSAGE VAI\" quan 1 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T03:16:05.870Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Massage Cổ Phong Q1\" OR \"Lake Sea Spa\" OR \"RELAX SPA MASSAGE VAI\" quan 1 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "📍 Mình trải nghiệm tại: Massage Cổ Phong Q1 106-108 Lê ...",
+    "link": "https://www.tiktok.com/@cobidimassage/video/7534701041246293255",
+    "snippet": "📍 Mình trải nghiệm tại: Massage Cổ Phong Q1 106-108 Lê Thị Riêng, Quận 1, Tp.HCM #matxa #thưgiãn #massagecophong #massagecotruyen #spaquan1 # ...",
+    "position": 1
+   },
+   {
+    "title": "Cổ Phong - spa quận 1 #spa #goidauduongsinh # ...",
+    "link": "https://www.tiktok.com/@onie_thichdichoi/video/7543950128999075089",
+    "snippet": "Spa truyền thống ở Sài Gòn (106 Lê Thị Riêng). Tóm tắt Massage Cổ Phong Q1 là một điểm spa ở Quận 1, Thành phố Hồ Chí ...",
+    "date": "Massage Cổ Phong Q1",
+    "position": 2
+   },
+   {
+    "title": "Massage Cổ Phong Q1 – Traditional Relaxation in Saigon ...",
+    "link": "https://www.tiktok.com/@vietjoetv/video/7643474438796643591",
+    "snippet": "🇻🇳 Massage Cổ Phong Q1 – Traditional Relaxation in Saigon 💆🏻‍♂️🕯️ 👉👉@Cổ Phong - Gội đầu dưỡng sinh A massage spot in District 1 ...",
+    "position": 3
+   },
+   {
+    "title": "Massage Cổ Phong Quận 1",
+    "link": "https://www.tiktok.com/discover/massage-c%E1%BB%95-phong-qu%E1%BA%ADn-1",
+    "snippet": "Khám phá các video liên quan đến Massage Cổ Phong Quận 1 trên TikTok. ... 📍 Mình trải nghiệm tại: Massage Cổ Phong Q1 106-108 Lê Thị Riêng ...",
+    "date": "31 thg 8, 2026",
+    "position": 4
+   },
+   {
+    "title": "Relax Spa Massage Vai Cổ Gáy",
+    "link": "https://www.tiktok.com/discover/relax-spa-massage-vai-c%E1%BB%95-g%C3%A1y",
+    "snippet": "4.3M bài đăng. Hãy khám phá video liên quan đến Relax Spa Massage Vai Cổ Gáy trên TikTok. Xem thêm video về Calm Spa | Massage Cổ Vai Gáy ...",
+    "date": "31 thg 8, 2026",
+    "position": 5
+   },
+   {
+    "title": "spachoquan1",
+    "link": "https://www.tiktok.com/tag/spachoquan1",
+    "snippet": "💎 Trải nghiệm Luxury Spa tại Quận 1, không gian cổ điển sang trọng và · 📍 Mình trải nghiệm tại: Massage Cổ Phong Q1 106-108 Lê Thị Riêng ... 1 глава кромид лук ...",
+    "position": 6
+   },
+   {
+    "title": "ASMR: Amazing Vietnamese Full Body Massage that made ...",
+    "link": "https://www.tiktok.com/@cleoabrahamsasmr/video/7579598963624496402",
+    "snippet": "📍Ho Chi Minh City, Vietnam Spa name: Massage Cổ Phong Q1 Address: 106 - 108 Lê Thị Riêng, Phường Phạm Ngũ Lão, Quận 1, Thành phố Hồ Chí Minh ...",
+    "position": 7
+   },
+   {
+    "title": "Trải Nghiệm Spa Trị Liệu Cổ Truyền Độc Đáo",
+    "link": "https://www.tiktok.com/@moingaycuaquy/video/7616199256805739797",
+    "snippet": "... 1, dịch vụ spa cho gia đình, thư giãn giống vua chúa, ăn nhẹ trong spa, tiện ích spa hiện đại. Đây là ... Massage Cổ Phong Q1 · author · 133 · 0.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

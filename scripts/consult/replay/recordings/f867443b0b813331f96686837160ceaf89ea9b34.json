@@ -1,0 +1,397 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "quán sushi yên tĩnh Thua Thien Hue",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@16.4639,107.5863,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T03:24:00.454Z",
+ "body": {
+  "searchParameters": {
+   "q": "quán sushi yên tĩnh Thua Thien Hue",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@16.4639,107.5863,14z",
+   "engine": "google"
+  },
+  "ll": "@16.4638913,107.5862997,14z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Nhà hàng Nhật Bản Shinosushi Japannese restaurant",
+    "address": "35 Nguyễn Thái Học, Thuận Hóa, Huế 530000, Việt Nam",
+    "latitude": 16.4681799,
+    "longitude": 107.5976348,
+    "rating": 4.9,
+    "ratingCount": 3047,
+    "priceLevel": "200-500 N ₫",
+    "type": "Nhà hàng sushi",
+    "types": [
+     "Nhà hàng sushi"
+    ],
+    "website": "https://shinosushi.com/",
+    "phoneNumber": "+84 909 752 233",
+    "openingHours": {
+     "Thứ Ba": "09:30–14:00, 16:30–22:00",
+     "Thứ Tư": "09:30–14:00, 16:00–22:00",
+     "Thứ Năm": "09:30–14:00, 16:30–22:00",
+     "Thứ Sáu": "09:30–14:00, 16:30–22:00",
+     "Thứ Bảy": "09:30–14:00, 16:30–22:00",
+     "Chủ Nhật": "09:30–14:00, 16:30–22:00",
+     "Thứ Hai": "09:30–14:00, 16:30–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLcH2i-ir17zHAgH7cCYYsJ4zlyGVpPR-JgBrCkKsYG8wLgDNvOTMZcilJdARiw6LPtNStYj9lTCraKCfzXj_3tuKH7qJSIDSt7yvv_9tqMXLQMQLRhh-64A6lZz3-4kt4Wt7yo",
+    "cid": "9455899650945192469",
+    "fid": "0x3141a1562add61e3:0x833a1aa20e541215",
+    "placeId": "ChIJ42HdKlahQTERFRJUDqIaOoM"
+   },
+   {
+    "position": 2,
+    "title": "Nhà Hàng Nhật Bản Shino Sushi - 22 Nguyễn Thái Học, Huế",
+    "address": "22 Nguyễn Thái Học, Thuận Hóa, Huế, Việt Nam",
+    "latitude": 16.468037199999998,
+    "longitude": 107.59599469999999,
+    "rating": 4.9,
+    "ratingCount": 3100,
+    "priceLevel": "100-600 N ₫",
+    "type": "Nhà hàng Nhật Bản",
+    "types": [
+     "Nhà hàng Nhật Bản",
+     "Nhà hàng sushi"
+    ],
+    "website": "https://shinosushi.com/",
+    "phoneNumber": "+84 909 750 022",
+    "openingHours": {
+     "Thứ Ba": "09:30–22:00",
+     "Thứ Tư": "09:30–22:00",
+     "Thứ Năm": "09:30–22:00",
+     "Thứ Sáu": "09:30–22:00",
+     "Thứ Bảy": "09:30–22:00",
+     "Chủ Nhật": "09:30–22:00",
+     "Thứ Hai": "09:30–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMSCIHe2m6bohq2P5l7VnvG3LxCBHaaeie_-v_2kaaF_vucfKUT5wRJInzA3E9VVrHpJ-4b398jYFFByNP9xYtUfoshRtgGZmex8xDUYlutGdRNe5qwifeSx2x5ZrdHbKYpegfMqtxur5ac",
+    "cid": "8747908056927352966",
+    "fid": "0x3141a1fe8afccf57:0x7966d00784eeb886",
+    "placeId": "ChIJV8_8iv6hQTERhrjuhAfQZnk"
+   },
+   {
+    "position": 3,
+    "title": "Buffet Huế & Sushi Huế - Yaki Yum",
+    "address": "59 Bến Nghé, Thuận Hóa, Huế 530000, Việt Nam",
+    "latitude": 16.4652612,
+    "longitude": 107.5947846,
+    "rating": 4.8,
+    "ratingCount": 1415,
+    "priceLevel": "300-400 N ₫",
+    "type": "Nhà hàng Nhật Bản",
+    "types": [
+     "Nhà hàng Nhật Bản"
+    ],
+    "website": "https://yakiyum.vn/",
+    "phoneNumber": "+84 779 109 979",
+    "openingHours": {
+     "Thứ Ba": "10:30–21:00",
+     "Thứ Tư": "10:30–21:00",
+     "Thứ Năm": "10:30–21:00",
+     "Thứ Sáu": "10:30–21:00",
+     "Thứ Bảy": "10:30–21:00",
+     "Chủ Nhật": "10:30–21:00",
+     "Thứ Hai": "10:30–21:00"
+    },
+    "bookingLinks": [
+     "https://yakiyum.vn/"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOAtSKqHVZhUt1aKqd23qltlIHnemd6QA63YTZqWvfy2I1fLYhVDS5l8if_tVg8xm3aZ14LypRj9-Nbtbtm3u0O5rzNZKUVt79OoEFHQIeCUiwiQi6CZ_dnF1RgZBff01Gu9HG0Fg",
+    "cid": "5349247372029647636",
+    "fid": "0x3141a16bc83240cf:0x4a3c5824b184db14",
+    "placeId": "ChIJz0AyyGuhQTERFNuEsSRYPEo"
+   },
+   {
+    "position": 4,
+    "title": "Gem Sushi Bar",
+    "address": "6A Võ Thị Sáu, Thuận Hóa, Huế 530000, Việt Nam",
+    "latitude": 16.4690208,
+    "longitude": 107.59568,
+    "rating": 4.8,
+    "ratingCount": 400,
+    "priceLevel": "200-600 N ₫",
+    "type": "Nhà hàng Nhật Bản",
+    "types": [
+     "Nhà hàng Nhật Bản"
+    ],
+    "phoneNumber": "+84 935 737 646",
+    "openingHours": {
+     "Thứ Ba": "16:00–22:00",
+     "Thứ Tư": "16:00–22:00",
+     "Thứ Năm": "16:00–22:00",
+     "Thứ Sáu": "16:00–22:00",
+     "Thứ Bảy": "16:00–22:00",
+     "Chủ Nhật": "16:00–22:00",
+     "Thứ Hai": "16:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmP2f_xgYZUQTE6uNFOKWlR0o87uVyuvmZTSQWhigTNDS0dNpdoRZu4Ke8cTzN4ZfX21rsKQ5n0jW6v4NXeZ8iUqncTENTF0a5ayuJfP3tZhcswYSQpdnbyg8VbU8e2QWThoBnfM",
+    "cid": "7234779482802296997",
+    "fid": "0x3141a173df802ffb:0x6467199bacb718a5",
+    "placeId": "ChIJ-y-A33OhQTERpRi3rJsZZ2Q"
+   },
+   {
+    "position": 5,
+    "title": "Nhà Hàng Ta.ke",
+    "address": "34 Trần Cao Vân, Thuận Hóa, Huế, Việt Nam",
+    "latitude": 16.4657172,
+    "longitude": 107.59204109999999,
+    "rating": 4.2,
+    "ratingCount": 490,
+    "priceLevel": "100-200 N ₫",
+    "type": "Nhà hàng Nhật Bản",
+    "types": [
+     "Nhà hàng Nhật Bản",
+     "Nhà hàng"
+    ],
+    "website": "https://www.foody.vn/hue/nha-hang-ta-ke",
+    "phoneNumber": "+84 234 3848 262",
+    "openingHours": {
+     "Thứ Ba": "10:00–22:00",
+     "Thứ Tư": "10:00–22:00",
+     "Thứ Năm": "10:00–22:00",
+     "Thứ Sáu": "10:00–22:00",
+     "Thứ Bảy": "10:00–22:00",
+     "Chủ Nhật": "10:00–22:00",
+     "Thứ Hai": "10:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOZ_hF6BiTMpu2urtSmseyx0H-Btu4Ea4KBZXDbhVj3s_67X-9yykpmVPFyqTZljW_a3-nz-u1YUp_y-Ds3Gd1BaactaB_w0oUL8CBZXP1tL6N4wIzCPAlHGqWzFATusRpHOlBO",
+    "cid": "5142383653773527890",
+    "fid": "0x3141a13b8b0f80fb:0x475d6ab005f24b52",
+    "placeId": "ChIJ-4APizuhQTERUkvyBbBqXUc"
+   },
+   {
+    "position": 6,
+    "title": "Yen Yakiniku Huế",
+    "address": "21 Nguyễn Thái Học, Thuận Hóa, Huế 531150, Việt Nam",
+    "latitude": 16.468331,
+    "longitude": 107.5969976,
+    "rating": 4.8,
+    "ratingCount": 798,
+    "priceLevel": "300-400 N ₫",
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "website": "https://yenyakiniku.vn/",
+    "phoneNumber": "+84 396 543 199",
+    "openingHours": {
+     "Thứ Ba": "10:30–21:00",
+     "Thứ Tư": "10:30–21:00",
+     "Thứ Năm": "10:30–21:00",
+     "Thứ Sáu": "10:30–21:00",
+     "Thứ Bảy": "10:30–21:00",
+     "Chủ Nhật": "10:30–21:00",
+     "Thứ Hai": "10:30–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNkqBUXNAqA-INANfqc9ybbklZfH4Hpae85gjWbexRR-VWmZfeRpm1lstOCSf2e4_ABPt9SOfA8KctLHhRzi48r6eL3AJ22TnW9q96uKm0HJ_2UFSHZ-TuV_0Nco94LwoM-Rn4GMKVbnYWL",
+    "cid": "7817981791800728801",
+    "fid": "0x3141a192c874ae73:0x6c7f0d04a8c11ce1",
+    "placeId": "ChIJc650yJKhQTER4RzBqAQNf2w"
+   },
+   {
+    "position": 7,
+    "title": "ONES CASUAL BAR Japanese Restaurant",
+    "address": "32 Kiệt 42 Nguyễn Công Trứ, Thuận Hóa, Huế 52000, Việt Nam",
+    "latitude": 16.4695355,
+    "longitude": 107.5969387,
+    "rating": 4.9,
+    "ratingCount": 614,
+    "priceLevel": "100-200 N ₫",
+    "type": "Nhà hàng Nhật Bản",
+    "types": [
+     "Nhà hàng Nhật Bản",
+     "Nhà hàng Nhật Bản chính cống",
+     "Nhà hàng"
+    ],
+    "phoneNumber": "+84 378 228 398",
+    "openingHours": {
+     "Thứ Ba": "10:30–22:30",
+     "Thứ Tư": "10:30–22:30",
+     "Thứ Năm": "10:30–22:30",
+     "Thứ Sáu": "10:30–22:30",
+     "Thứ Bảy": "10:30–22:30",
+     "Chủ Nhật": "10:30–22:30",
+     "Thứ Hai": "10:30–22:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLfl9-OJhl8WfFVnEvWlRuFok8JFPy4ISI5n3KXKGvkyvvCeu1OkBVS77pubydpGpCb4WDO24RHz3n_9YO8LiAjFc9Bv1-yjeIeZPA1TlYOVbFUIQvKB2w_hG4Fuoqxv5L4eszcK6ByYugko",
+    "cid": "13533657849454001064",
+    "fid": "0x3141a1001ea8f5d5:0xbbd1361c1461fba8",
+    "placeId": "ChIJ1fWoHgChQTERqPthFBw20bs"
+   },
+   {
+    "position": 8,
+    "title": "Izakaya Taka Hue - Quán nhậu kiểu Nhật tại Huế",
+    "address": "41 Chu Văn An, Thuận Hóa, Huế 49000, Việt Nam",
+    "latitude": 16.468764,
+    "longitude": 107.59633099999999,
+    "rating": 5,
+    "ratingCount": 1219,
+    "priceLevel": "100-300 N ₫",
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng",
+     "Quán rượu"
+    ],
+    "phoneNumber": "+84 824 667 345",
+    "openingHours": {
+     "Thứ Ba": "10:00–13:30, 17:00–00:00",
+     "Thứ Tư": "10:00–13:30, 17:00–00:00",
+     "Thứ Năm": "10:00–13:30, 17:00–00:00",
+     "Thứ Sáu": "10:00–13:30, 17:00–00:00",
+     "Thứ Bảy": "10:00–13:30, 17:00–00:00",
+     "Chủ Nhật": "10:00–13:30, 17:00–00:00",
+     "Thứ Hai": "10:00–13:30, 17:00–00:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMlC8vTb30iOF3d6rdYv-FVp6YwFzh7isTmrF5VF-mg8QZRur6bW6newLtY1EIETp3FG4wJdLKI8qRP-IDESl9A-1VbH5iivSdK-MB9q9DNyJ_CevZ2WiO7p9O0S9iDB88bDDEyWnNNBVI",
+    "cid": "18016964505016185450",
+    "fid": "0x3141a1a24b416069:0xfa091dc2644fb26a",
+    "placeId": "ChIJaWBBS6KhQTERarJPZMIdCfo"
+   },
+   {
+    "position": 9,
+    "title": "Coy Sushi &Home",
+    "address": "4a Nguyễn Bính, Vỹ Dạ, Huế, Việt Nam",
+    "latitude": 16.467989499999998,
+    "longitude": 107.60160069999999,
+    "rating": 5,
+    "ratingCount": 1,
+    "type": "Nhà hàng sushi",
+    "types": [
+     "Nhà hàng sushi"
+    ],
+    "website": "https://www.facebook.com/CoySushi",
+    "phoneNumber": "+84 935 444 808",
+    "openingHours": {
+     "Thứ Ba": "09:00–17:00",
+     "Thứ Tư": "09:00–17:00",
+     "Thứ Năm": "09:00–17:00",
+     "Thứ Sáu": "09:00–17:00",
+     "Thứ Bảy": "09:00–17:00",
+     "Chủ Nhật": "09:00–17:00",
+     "Thứ Hai": "09:00–17:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNNssQq4Q__5HjpfKO6uZLwzKZtUCtdyXl67lTKd6Dn7xrpNYCUkpOlSWBaDFQyY_3EU4HDaDy3NCOHsHJK6IV4EBtZBP3uxE5IYUVJ77foGZ0kvWDYiBXtmDc9GR17ecW_C8M7",
+    "cid": "13599460592572931058",
+    "fid": "0x3141a100174731dd:0xbcbafd5b1d3b9bf2",
+    "placeId": "ChIJ3TFHFwChQTER8ps7HVv9urw"
+   },
+   {
+    "position": 10,
+    "title": "Shin Izakaya - Quán nhậu phong cách đường phố Nhật Bản",
+    "address": "32 Trường Chinh, Vỹ Dạ, Huế, Việt Nam",
+    "latitude": 16.4619092,
+    "longitude": 107.6017262,
+    "rating": 4.2,
+    "ratingCount": 55,
+    "priceLevel": "100-200 N ₫",
+    "type": "Nhà hàng Nhật Bản",
+    "types": [
+     "Nhà hàng Nhật Bản"
+    ],
+    "phoneNumber": "+84 975 391 749",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLcm-HrFtnWHxf3ETJX9Pi1rKiOoT4caoNzjaQltqHDKR_iG9-0RaQsc11vo8x33oILfneASaxK78-pwPESm_BApK1-sofa7jHYjYa9boUkKxT3RVQB5rN8mqeY9Ngoh3CrYkLw",
+    "cid": "11815393329550737789",
+    "fid": "0x3141a1004535d5d7:0xa3f8b5a1f164417d",
+    "placeId": "ChIJ19U1RQChQTERfUFk8aG1-KM"
+   },
+   {
+    "position": 11,
+    "title": "Japanese Family Meals KANA",
+    "address": "81 Nguyễn Sinh Cung, Vỹ Dạ, Huế, Việt Nam",
+    "latitude": 16.4778908,
+    "longitude": 107.5955489,
+    "rating": 4.7,
+    "ratingCount": 44,
+    "priceLevel": "100-200 N ₫",
+    "type": "Nhà hàng Nhật Bản",
+    "types": [
+     "Nhà hàng Nhật Bản"
+    ],
+    "website": "https://www.facebook.com/profile.php?id=61559930106652&mibextid=ZbWKwL",
+    "phoneNumber": "+84 906 418 323",
+    "openingHours": {
+     "Thứ Ba": "17:30–22:00",
+     "Thứ Tư": "17:30–22:00",
+     "Thứ Năm": "17:30–22:00",
+     "Thứ Sáu": "17:30–22:00",
+     "Thứ Bảy": "17:30–22:00",
+     "Chủ Nhật": "17:30–22:00",
+     "Thứ Hai": "Đóng cửa"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmN5Umhwjd0kJ-O6obyu_Ru7fbkcp4fs8laKkWE46UxbcX6e4Pl_9mnMcMpb6MmRdkifMZfV_2dCyPCZraLmtyMufh4ZUqvHkKE4FnmXLgp31n87pdVfn6GD9qPhzeC4-RxAr6CP",
+    "cid": "15445495687246203756",
+    "fid": "0x3141a1007410f1f7:0xd6596c7e6a234b6c",
+    "placeId": "ChIJ9_EQdAChQTERbEsjan5sWdY"
+   },
+   {
+    "position": 12,
+    "title": "Sakura Sushi Garden",
+    "address": "76 Nguyễn Huệ, Thuận Hóa, Huế 530000, Việt Nam",
+    "latitude": 16.457876499999998,
+    "longitude": 107.5896726,
+    "rating": 3.8,
+    "ratingCount": 51,
+    "priceLevel": "200-600 N ₫",
+    "type": "Nhà hàng Nhật Bản",
+    "types": [
+     "Nhà hàng Nhật Bản"
+    ],
+    "phoneNumber": "+84 703 757 757",
+    "openingHours": {
+     "Thứ Ba": "07:00–22:00",
+     "Thứ Tư": "07:00–22:00",
+     "Thứ Năm": "07:00–22:00",
+     "Thứ Sáu": "07:00–22:00",
+     "Thứ Bảy": "07:00–22:00",
+     "Chủ Nhật": "07:00–22:00",
+     "Thứ Hai": "07:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOP-PWN85nfJNwHDEY-fCUvjkPGG-pjM7vNpPFVztXeX1l5FUJGrOph8aqy2csbl1QADn_I0yNMG_CyYM7o9_8xRXLSHl2Ckt-yzPSZVB7UUbwReqMjCb8sCuHOGLpheTlzKwnB",
+    "cid": "2177551039688037813",
+    "fid": "0x3141a1af993ebced:0x1e38372228e355b5",
+    "placeId": "ChIJ7bw-ma-hQTERtVXjKCI3OB4"
+   },
+   {
+    "position": 13,
+    "title": "Đông Lam Vegan",
+    "address": "9 Lê Quý Đôn, tổ 6, Thuận Hóa, Huế 530000, Việt Nam",
+    "latitude": 16.465327,
+    "longitude": 107.5975091,
+    "rating": 3.6,
+    "ratingCount": 45,
+    "priceLevel": "100-200 N ₫",
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "website": "https://www.foody.vn/hue/kido-bbq",
+    "phoneNumber": "+84 944 979 869",
+    "openingHours": {
+     "Thứ Ba": "06:30–20:30",
+     "Thứ Tư": "06:30–20:30",
+     "Thứ Năm": "06:30–20:30",
+     "Thứ Sáu": "06:30–20:30",
+     "Thứ Bảy": "06:30–20:30",
+     "Chủ Nhật": "06:30–20:30",
+     "Thứ Hai": "06:30–20:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLfNygkAwTz1zcu7xF7N0TTioMpoXfCWxzXSaAanGqu4Ydq8b1KqegR6V5RuJZqSSjfpM9FBiSVZdCWf2ogJ_hLl91WhKzTgUkwMezWn-aw4sQ9woNYDJqGpD_IJVORqRDp66y0t",
+    "cid": "15227942342436940430",
+    "fid": "0x3141a13e0f765813:0xd35484e11d156a8e",
+    "placeId": "ChIJE1h2Dz6hQTERjmoVHeGEVNM"
+   }
+  ],
+  "credits": 3
+ }
+}

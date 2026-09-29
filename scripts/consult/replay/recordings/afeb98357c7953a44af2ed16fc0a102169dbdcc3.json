@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Nhà Hàng Hải Sản\" OR \"Quán Cô Hồng\" OR \"Hải Sản Đà Nẵng Bé Biển\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T02:50:34.209Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Nhà Hàng Hải Sản\" OR \"Quán Cô Hồng\" OR \"Hải Sản Đà Nẵng Bé Biển\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Quán Cô Hồng Sài Gòn: Ăn món quê Đà Nẵng khi không ...",
+    "link": "https://www.tiktok.com/@canuccohong/video/7680113755069533461",
+    "snippet": "- Phù hợp cho dịp lễ hoặc gặp gỡ bạn bè muốn thưởng thức món miền Trung tại Sài Gòn. Kết luận Quán Cô Hồng ở Sài Gòn là điểm dừng hợp lý khi ...",
+    "position": 1
+   },
+   {
+    "title": "Quản lý và Giải Quyết Tình Huống Tại Quán Cô Hồng",
+    "link": "https://www.tiktok.com/@canuccohong/video/7589264845044714773",
+    "snippet": "Ở quán cô Hồng lời nói luôn đi kèm với hành động, nhưng đôi lúc cũng gặp những tình huống khó xử nên cô Hồng cần phải quán xuyến hơn ...",
+    "position": 2
+   },
+   {
+    "title": "Nhượng quyền Quán Cô Hồng Đà Nẵng",
+    "link": "https://www.tiktok.com/@canuccohong/video/7657548763468139797",
+    "snippet": "Một món ăn ngon chưa chắc đã kinh doanh thành công mà cần có rất nhiều thứ, cô Hồng sẽ chia sẻ về nhượng quyền của Quán Cô Hồng nhen #cohongquan ...",
+    "position": 3
+   },
+   {
+    "title": "Khám Phá Bao Bì Sản Phẩm Cá Nục Quán Cô Hồng",
+    "link": "https://www.tiktok.com/@quancohong/video/7258613559192587525",
+    "snippet": "- Quán phù hợp cho nhóm nhỏ và du khách muốn thử đặc sản địa phương. Kết luận Quán cô Hồng ở 103 Nguyễn Văn Thoại là lựa chọn hợp lý để thưởng ...",
+    "position": 4
+   },
+   {
+    "title": "Review nhà hàng hải sản tươi sống gần biển Mỹ Khê",
+    "link": "https://www.tiktok.com/@anngaynoithat/video/7656331082069019922",
+    "snippet": "- Loại hình: nhà hàng hải sản, chi nhánh từ Ăn Thôi chợ Hàn. - Điểm mạnh: hải sản tươi nhập hàng ngày, giá niêm yết theo lạng, sốt ăn hợp vị, ...",
+    "position": 5
+   },
+   {
+    "title": "Quán Cô Hồng: Món Cá Nục và Heo Cuốn Ngon Nhất",
+    "link": "https://www.tiktok.com/@danangmoine/video/7596590253993938183",
+    "snippet": "Quán Cô Hồng: Món Cá Nục và Heo Cuốn Ngon Nhất. Khám phá quán Cô Hồng với cá nục, heo cuốn hấp dẫn. Đến ngay 38 Lê Hồng Phong để thưởng thức ...",
+    "position": 6
+   },
+   {
+    "title": "Tủ rau là linh hồn của Quán cô Hồng, tỉ mỹ mọi thứ tốt nhất ...",
+    "link": "https://www.tiktok.com/@canuccohong/video/7687184768714231060",
+    "snippet": "Tủ rau là linh hồn của Quán cô Hồng, tỉ mỹ mọi thứ tốt nhất. @CÔ HỒNG CÁ NỤC · âm thanh gốc - CÔ HỒNG CÁ NỤC · Quán Cô Hồng - Đặc sản Đà Nẵng ( ...",
+    "position": 7
+   },
+   {
+    "title": "Quán Cô Hồng (@quancohong)",
+    "link": "https://www.tiktok.com/@quancohong",
+    "snippet": "Quán Cô Hồng (@quancohong) trên TikTok |15.7K Lượt thích.947 Follower.103 Nguyễn Văn Thoại - ĐN - 0905.54.57.55 38 Lê Hồng Phong - Đn - 0905.935755 44 ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

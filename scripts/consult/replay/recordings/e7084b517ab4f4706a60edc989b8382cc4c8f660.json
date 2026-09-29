@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"The Street Sương Nguyệt Anh\" OR \"Nhà Hàng Tửu Lầu 13\" OR \"The Lủi\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T03:21:20.305Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"The Street Sương Nguyệt Anh\" OR \"Nhà Hàng Tửu Lầu 13\" OR \"The Lủi\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "The Lủi (@thelui.official)",
+    "link": "https://www.tiktok.com/@thelui.official",
+    "snippet": "The Lủi 177 Nguyễn Cư Trinh, P. Cầu Ông Lãnh, Q1, HCM Đặt bàn: 0933544639. Phần 2 bão trước The Lủi ạ #thelui #quannhauquan1 #quannhau #vietnamvodich do.",
+    "position": 1
+   },
+   {
+    "title": "Giải vía bằng liệu pháp lạnh ở The Lủi nha anh emm - #thelui",
+    "link": "https://www.tiktok.com/@thelui.official/video/7644869587355553044",
+    "snippet": "Video TikTok từ The Lủi (@thelui.official): \"Giải vía bằng liệu pháp lạnh ở The Lủi nha anh emm #thelui #TigerBeer #BatLonCoolPack ...",
+    "position": 2
+   },
+   {
+    "title": "Nhà Hàng Tửu Lầu 13 (@nhahangtuulau13)",
+    "link": "https://www.tiktok.com/@nhahangtuulau13",
+    "snippet": "Nhà Hàng Tửu Lầu 13 · @nhahangtuulau13 · Đặt Bàn Ứng Tuyển 09.02.50.57.61 06 Nam Quốc Cang, Phạm Ngũ Lão, Quận 1 https://nhahangtuulau13.vn.",
+    "position": 3
+   },
+   {
+    "title": "Charming Guests at The Lủi",
+    "link": "https://www.tiktok.com/@thelui.official/video/7640820585261534485",
+    "snippet": "Every visit to The Lủi showcases a plethora of attractive hot girls, adding to the appeal of this trendy spot. Patrons are drawn not only by the food and drinks ...",
+    "position": 4
+   },
+   {
+    "title": "POV: Khi bạn rời bàn nhậu ở The Lủi #thelui #quannhau ...",
+    "link": "https://www.tiktok.com/@thelui.official/video/7640400391187926293",
+    "snippet": "2045 Lượt thích,30 Bình luận.Video TikTok từ The Lủi (@thelui.official): \"POV: Khi bạn rời bàn nhậu ở The Lủi #thelui #quannhau ...",
+    "position": 5
+   },
+   {
+    "title": "Khách xinh ở The Lủi không bao giờ thiếu #thelui # ...",
+    "link": "https://www.tiktok.com/@thelui.official/video/7677855446144748820",
+    "snippet": "Video TikTok từ The Lủi (@thelui.official): \"Khách xinh ở The Lủi không bao giờ thiếu #thelui #quannhauquan1 #quannhau #xinhyeu\".âm thanh ...",
+    "position": 6
+   },
+   {
+    "title": "Một buổi tối vui tại The Lủi 🍻 Có bia lạnh, có bạn bè và rất ...",
+    "link": "https://www.tiktok.com/@thelui.official/video/7637875950545407252",
+    "snippet": "26 Lượt thích,Video TikTok từ The Lủi (@thelui.official): \"Một buổi tối vui tại The Lủi Có bia lạnh, có bạn bè và rất nhiều tiếng cười.",
+    "position": 7
+   },
+   {
+    "title": "Đánh giá bánh dẻo \"thị phi\" \"The Lủi\" | Giá 540k/cặp",
+    "link": "https://www.tiktok.com/@hoaquynh.3112/video/7663196610343537927",
+    "snippet": "Review bánh dẻo \"The Lủi\" gây tranh cãi được thực hiện một cách chân thật, không bán hàng, không tiếp thị liên kết, không nhận PR hay ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

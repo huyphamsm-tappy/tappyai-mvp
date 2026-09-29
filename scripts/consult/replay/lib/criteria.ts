@@ -76,7 +76,10 @@ export function planShape(text: string, area: PlanArea | null) {
       if (lines[i].trim() && !lines[i].startsWith('[')) tips++
     }
   }
-  return { missing, tipsWord, tipsHeadingFound: at >= 0, tips, arithmetic: /[×÷=]/.test(text) }
+  // Owner 29/09: the price section passes with REAL arithmetic, or with items marked "chưa có giá — hỏi quán" and a total that says what it
+  // covers. Invented prices are the guards' job (they fail elsewhere); an estimate like "~900.000đ" or "giả sử giá" fails here too.
+  const estimated = /giả sử giá|giá trung bình|~\s*\d[\d.]*\s*(?:đ|k|nghìn)/i.test(text)
+  return { missing, tipsWord, tipsHeadingFound: at >= 0, tips, arithmetic: /[×÷=]/.test(text), priceHonest: !estimated && (/[×÷=]/.test(text) || /chưa có giá\s*[—-]\s*hỏi/i.test(text)), estimated }
 }
 
 export interface TurnContext {
@@ -134,7 +137,7 @@ export function evaluateTurn(c: TurnContext): { type: string; checks: Check[]; p
     const p = planShape(c.text, area)
     checks.push({ id: 'plan_headings', pass: !!area && p.missing.length === 0, detail: area ? (p.missing.length ? `missing: ${p.missing.join(' · ')}` : 'all present') : `no plan frame for area ${c.area}` })
     checks.push({ id: 'plan_tips', pass: p.tips >= 2, detail: `${p.tipsWord} heading=${p.tipsHeadingFound} lines=${p.tips}` })
-    checks.push({ id: 'plan_arithmetic', pass: p.arithmetic })
+    checks.push({ id: 'plan_price', pass: p.priceHonest, detail: p.estimated ? 'estimated price (giả sử / ~)' : p.arithmetic ? 'arithmetic' : 'no arithmetic and no "chưa có giá — hỏi quán"' })
   }
   return { type, checks, pass: checks.every(k => k.pass || k.info) }
 }

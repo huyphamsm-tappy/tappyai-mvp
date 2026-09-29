@@ -61,7 +61,7 @@ function compactRow(row: unknown): unknown {
  *   PROVIDER's order with no `_tappy_shortlist` and no `_tappy_ranking`, and chooses itself. Off
  *   (the pre-V1 product, byte-identical): shortlist members first, both engine fields travel.
  */
-export function trimPlacesForModel(result: unknown, key: 'results' | 'hotel_list' = 'results', opts: { rendersCard?: boolean; modelChooses?: boolean } = {}): unknown {
+export function trimPlacesForModel(result: unknown, key: 'results' | 'hotel_list' = 'results', opts: { rendersCard?: boolean; modelChooses?: boolean; consultTop?: number } = {}): unknown {
   if (!result || typeof result !== 'object' || Array.isArray(result)) return result
   const r = result as Record<string, unknown>
   const rows = r[key]
@@ -69,6 +69,26 @@ export function trimPlacesForModel(result: unknown, key: 'results' | 'hotel_list
   const total = rows.length
   const top: Record<string, unknown> = { ...r }
   if (opts.rendersCard) delete top.google_maps_search
+  if (opts.consultTop) {
+    /**
+     * Consult V2 (owner 29/09, design): CODE chooses and ranks; the model gets ONLY the top candidates
+     * (1 main + ≤ 2 others) with the fields a pick is argued with, and writes the words. The engine's
+     * order is the shortlist first, then the ranked rest; `_tappy_ranking` (the engine's pick) travels.
+     * The full set stays on the server (cards, "còn N", the chat-session state for "xem thêm" / "bác").
+     */
+    const sl = Array.isArray(r._tappy_shortlist) ? (r._tappy_shortlist as Array<{ id?: unknown; name?: unknown }>) : []
+    const ids = new Set(sl.map(s => String(s.id ?? '')).filter(Boolean))
+    const names = new Set(sl.map(s => String(s.name ?? '')).filter(Boolean))
+    const isSl = (x: Record<string, unknown>) => ids.has(String(x.place_id ?? x.maps_link ?? x.name ?? '')) || names.has(String(x.name ?? ''))
+    const ordered = [...rows.filter(x => isSl(x as Record<string, unknown>)), ...rows.filter(x => !isSl(x as Record<string, unknown>))]
+    const chosen = ordered.slice(0, opts.consultTop)
+    delete top._tappy_shortlist
+    return {
+      ...top,
+      [key]: chosen.map(consultRow),
+      results_note: `${chosen.length} ung vien DA XEP HANG boi he thong (ung vien 1 = lua chon chinh${r._tappy_ranking ? ', xem _tappy_ranking' : ''}); ${Math.max(0, total - chosen.length)} ung vien khac giu o he thong (the/card va "xem thêm"). Chi viet ve cac ung vien nay.`,
+    }
+  }
   if (opts.modelChooses) {
     /**
      * 🚨 THE MODEL'S ORDER IS THE PROVIDER'S ORDER, AND IT GETS NO PRE-MADE PICK (owner decision
@@ -106,4 +126,23 @@ export function trimPlacesForModel(result: unknown, key: 'results' | 'hotel_list
       ? `Hien thi ${all.length}/${total} ket qua (rut gon: chi cac truong de chon); the (card) cua user co day du.`
       : `Day la TOAN BO ${all.length} ket qua, rut gon (chi cac truong de chon); the (card) cua user hien anh/dia chi/SDT/nut hanh dong.`,
   }
+}
+
+/**
+ * The consult model's row (owner 29/09): name, rating + count, the REAL price band, a short address, today's
+ * hours, open-now, distance and 1–2 evidenced highlights. The rating/count numerics stay: the stream guards
+ * read the pick's evidence from this copy.
+ */
+function consultRow(row: unknown): unknown {
+  if (!row || typeof row !== 'object') return row
+  const x = row as Record<string, unknown>
+  const out: Record<string, unknown> = {}
+  for (const k of ['name', 'google_rating', 'rating_value', 'rating_count', 'rating', 'user_ratings_total', 'review_count',
+    'price_range_text', 'price_level', '_tappy_price_unconfirmed', 'opening_hours', 'open_now', 'distance_km', 'has_delivery'] as const) {
+    if (x[k] !== undefined && x[k] !== null && x[k] !== '') out[k] = x[k]
+  }
+  if (typeof x.address === 'string') out.address = x.address.split(',').slice(0, 2).join(',').trim()
+  if (Array.isArray(x.attributes)) out.highlights = (x.attributes as unknown[]).slice(0, 2)
+  else if (x.attributes && typeof x.attributes === 'object') out.highlights = Object.entries(x.attributes as Record<string, unknown>).slice(0, 2).map(([k, v]) => `${k}: ${typeof v === 'string' ? v : JSON.stringify(v)}`.slice(0, 120))
+  return out
 }

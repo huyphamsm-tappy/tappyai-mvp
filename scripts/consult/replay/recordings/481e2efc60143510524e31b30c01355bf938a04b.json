@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"TiNiWorld GigaMall\" OR \"Khu vui chơi (Nhà văn hoá thiếu nhi Thủ Đức)\" OR \"CT'S HOUSE\" Thủ Đức site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T02:53:21.921Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"TiNiWorld GigaMall\" OR \"Khu vui chơi (Nhà văn hoá thiếu nhi Thủ Đức)\" OR \"CT'S HOUSE\" Thủ Đức site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Bài Đánh Giá TiniWorld Gigamall Thủ Đức: 50 Góc Chơi ...",
+    "link": "https://www.tiktok.com/@nhamomtuyen/video/7461230100147735826",
+    "snippet": "TiniWorld Gigamall Thủ Đức là khu vui chơi trẻ em rộng lớn với hơn 50 góc chơi được đầu tư chỉn chu và an toàn. Khi khu vui chơi mở lại với ...",
+    "position": 1
+   },
+   {
+    "title": "Trung Thu này chẳng cần đi đâu xa, cứ đến tiNiWorld là có ...",
+    "link": "https://www.tiktok.com/@giadinhbemay1/video/7686840886348500242",
+    "snippet": "... cần đi đâu xa, cứ đến tiNiWorld là có cả một. @Gia Đình Bé Mây · âm thanh gốc - Gia Đình Bé Mây · tiNiWorld Gigamall Thủ Đức · author. 1207.",
+    "position": 2
+   },
+   {
+    "title": "CT's House Kid & Coffee Thủ Đức: Khu vui chơi trẻ em",
+    "link": "https://www.tiktok.com/@khuvuichoictshousethuduc/photo/7617766421338000647",
+    "snippet": "CT's House Kid & Coffee Thủ Đức: Khu vui chơi trẻ em. CT's House Kid & Coffee tại Thủ Đức cung cấp không gian vui chơi sạch sẽ, an toàn với ...",
+    "position": 3
+   },
+   {
+    "title": "Tiệc Cuối Năm & Mùa Hè Của Bé Tại Khu Vui Chơi",
+    "link": "https://www.tiktok.com/@khuvuichoictshousethuduc/video/7643656231583894802",
+    "snippet": "Xem lại những khoảnh khắc đáng nhớ sau bữa tiệc cuối năm và khám phá mùa. @Khu Vui Chơi Ct's House Kids.",
+    "position": 4
+   },
+   {
+    "title": "Ct's House xin phép cả nhà hôm nay được spam những khoảnh ...",
+    "link": "https://www.tiktok.com/@khuvuichoictshousethuduc/video/7632702243380481287",
+    "snippet": "Ct's House xin phép cả nhà hôm nay được spam những khoảnh khắc đáng yêu này !#le30thang4 #khuvuichoitreem #hungvuong #nghile #viralvideo.",
+    "position": 5
+   },
+   {
+    "title": "Khu Vui Chơi TiNiWorld Mừng Khai Trương Gigamall",
+    "link": "https://www.tiktok.com/@tiniworldofficial/video/7464838735646084360",
+    "snippet": "Nhanh chân đến tiNiWorld Gigamall – Tầng 5, Gigamall Thủ Đức trong dịp Tết này để tận hưởng ngay thôi! ⏰ 9:00 - 22:00 mỗi ngày. ... Khu Vui ...",
+    "position": 6
+   },
+   {
+    "title": "Vì khoảnh khắc quây quần mới là món quà tuyệt vời nhất 💛 Ct's ...",
+    "link": "https://www.tiktok.com/@khuvuichoictshousethuduc/video/7588167223882157330",
+    "snippet": "Vì khoảnh khắc quây quần mới là món quà tuyệt vời nhất Ct's House Chúc Mừng Sinh Nhật Bé Khánh An lên 9 Tuổi Trong ngày sinh nhật, món quà ý nghĩa nhất ...",
+    "position": 7
+   },
+   {
+    "title": "Gigamall tiniWorld Review & Kids' Adventure with Cô ...",
+    "link": "https://www.tiktok.com/@kimkhanh_mot/video/7392579769348443400",
+    "snippet": "Holiworld · World Josi. Gigamall tiniWorld Review & Kids' Adventure with Cô Khánh ❤️. Experience the latest at tiniWorld Gigamall with Cô ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

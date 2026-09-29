@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Tầng 5, Giga Mall, 240-242 Phạm Văn Đồng, Thủ Đức\" OR \"Khu vui chơi (Nhà văn hoá thiếu nhi Thủ Đức)\" OR \"CT'S HOUSE\" Thủ Đức site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T03:03:52.703Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Tầng 5, Giga Mall, 240-242 Phạm Văn Đồng, Thủ Đức\" OR \"Khu vui chơi (Nhà văn hoá thiếu nhi Thủ Đức)\" OR \"CT'S HOUSE\" Thủ Đức site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "CT's House Kid & Coffee Thủ Đức: Khu vui chơi trẻ em",
+    "link": "https://www.tiktok.com/@khuvuichoictshousethuduc/photo/7617766421338000647",
+    "snippet": "CT's House Kid & Coffee Thủ Đức: Khu vui chơi trẻ em. CT's House Kid & Coffee tại Thủ Đức cung cấp không gian vui chơi sạch sẽ, an toàn ...",
+    "position": 1
+   },
+   {
+    "title": "Ct's House xin phép cả nhà hôm nay được spam những khoảnh ...",
+    "link": "https://www.tiktok.com/@khuvuichoictshousethuduc/video/7632702243380481287",
+    "snippet": "Video TikTok từ Khu Vui Chơi Ct's House Kids (@khuvuichoictshousethuduc): \"Ct's House xin phép cả nhà hôm nay được spam những khoảnh khắc đáng yêu này !",
+    "position": 2
+   },
+   {
+    "title": "Vì khoảnh khắc quây quần mới là món quà tuyệt vời nhất 💛 Ct's ...",
+    "link": "https://www.tiktok.com/@khuvuichoictshousethuduc/video/7588167223882157330",
+    "snippet": "Video TikTok từ Khu Vui Chơi Ct's House Kids (@khuvuichoictshousethuduc): \" Vì khoảnh khắc quây quần mới là món quà tuyệt vời nhất Ct's House Chúc Mừng ...",
+    "position": 3
+   },
+   {
+    "title": "Tiệc Cuối Năm & Mùa Hè Của Bé Tại Khu Vui Chơi",
+    "link": "https://www.tiktok.com/@khuvuichoictshousethuduc/video/7643656231583894802",
+    "snippet": "Xem lại những khoảnh khắc đáng nhớ sau bữa tiệc cuối năm và khám phá mùa. @Khu Vui Chơi Ct's House Kids.",
+    "position": 4
+   },
+   {
+    "title": "Khu Vui Chơi Trẻ Em Tại Đặng Văn Bi Thủ Đức",
+    "link": "https://www.tiktok.com/@khuvuichoictshousethuduc/video/7279252004109552897",
+    "snippet": "Tại Đặng Văn Bi Thủ Đức — KHU VUI CHƠI TRẺ EM CT's HOUSE ‍♀️THÔNG BÁO Ưu Đãi Giá Vé Vào Cổng Từ Thứ 2 - đến Thứ 6 Áp dụng từ ...",
+    "position": 5
+   },
+   {
+    "title": "Khép lại một năm học thật nhiều tiếng cười và kỷ niệm đáng nhớ ...",
+    "link": "https://www.tiktok.com/@khuvuichoictshousethuduc/video/7642952214251572488?lang=sl",
+    "snippet": "Khu Vui Chơi Ct's House Kids · #CapCut CT'S HOUSE KIDS CAFE – SINH NHẬT VUI HẾT CỠ CHO BÉ YÊU! ✨ GÓI TIỆC TRỌN GÓI CHỈ TỪ 159K/BÉ ✨ TRANG TRÍ ...",
+    "position": 6
+   },
+   {
+    "title": "Lễ hội mới ở Thủ Đức — mở cổng tự do, siêu vui",
+    "link": "https://www.tiktok.com/@lankhapthuduc/video/7662629263270579474",
+    "snippet": "... Thủ Đức với cổng mở tự do, hoạt. @Lăn Khắp Thủ Đức · âm thanh gốc - Lăn Khắp Thủ Đức · Khu vui chơi (Nhà văn hoá thiếu nhi Thủ Đức) · author.",
+    "position": 7
+   },
+   {
+    "title": "Bán cà phê tại Thủ Đức gần Gigamall",
+    "link": "https://www.tiktok.com/@caphe.mo/photo/7616974997730446609",
+    "snippet": "... , please report at: Feedback and help - TikTok · Lỡ Cả Đời Không Rực Rỡ Thì Sao · Tầng 5, Giga Mall, 240-242 Phạm Văn Đồng, Thủ Đức · author.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

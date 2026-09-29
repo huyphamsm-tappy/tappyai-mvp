@@ -1,0 +1,77 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"MASSAGE VENUS\" OR \"SPA AN YÊN\" OR \"Massage Big Bang | Massage Quận 5 | Massage Thư GIãn Gần Đây\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T02:54:33.913Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"MASSAGE VENUS\" OR \"SPA AN YÊN\" OR \"Massage Big Bang | Massage Quận 5 | Massage Thư GIãn Gần Đây\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "⚜️ MASSAGE VENUS ⚜️ (@massage35vantiendung)",
+    "link": "https://www.tiktok.com/@massage35vantiendung",
+    "snippet": "⚜️ MASSAGE VENUS ⚜️ · @massage35vantiendung · ☎️ 0326 196 115 ☎️ 035 224 406.",
+    "position": 1
+   },
+   {
+    "title": "Mtv Massage Venus",
+    "link": "https://www.tiktok.com/discover/mtv-massage-venus",
+    "snippet": "... Massage Venus Massage Venus, Công Ty Tnhh Mtv Massage Venus, Venus Lite Healty Massage, Tiệm Tóc Massage Venus, Venus Massage Sukumvit ».",
+    "position": 2
+   },
+   {
+    "title": "Massage Venus 368",
+    "link": "https://www.tiktok.com/discover/massage-venus-368",
+    "snippet": "4.6M bài đăng. Hãy khám phá video liên quan đến Massage Venus 368 trên TikTok. Xem thêm video về Massage Venus Hcmc, Venus Online, ...",
+    "position": 3
+   },
+   {
+    "title": "Spa Massage Venus",
+    "link": "https://www.tiktok.com/discover/spa-massage-venus",
+    "snippet": "5.6M publications. Découvre des vidéos liées à Spa Massage Venus sur TikTok. Découvre plus de vidéos en lien avec « Venus Spa Massages, ...",
+    "date": "14 thg 9, 2026",
+    "position": 4
+   },
+   {
+    "title": "Nana Massage Venus",
+    "link": "https://www.tiktok.com/discover/nana-massage-venus",
+    "snippet": "4.9M posts. Discover videos related to Nana Massage Venus on TikTok. See more videos about Mons Venus Massage, Encantada Venus Massagem, ...",
+    "date": "31 thg 8, 2026",
+    "position": 5
+   },
+   {
+    "title": "Massage Venus Pham Ngu Lao",
+    "link": "https://www.tiktok.com/discover/massage-venus-pham-ngu-lao",
+    "snippet": "11.2M bài đăng. Hãy khám phá video liên quan đến Massage Venus Pham Ngu Lao trên TikTok. Xem thêm video về Massage Venus Hcmc, Massage Venus ...",
+    "date": "13 thg 7, 2026",
+    "position": 6
+   },
+   {
+    "title": "Massage Venus Palm Mall",
+    "link": "https://www.tiktok.com/discover/massage-venus-palm-mall",
+    "snippet": "1.7M posts. Discover videos related to Massage Venus Palm Mall on TikTok. See more videos about Review Venus Spa Palm Mall, Vincci Palm Mall ...",
+    "date": "20 thg 7, 2026",
+    "position": 7
+   },
+   {
+    "title": "Massage Venus Hcmc",
+    "link": "https://www.tiktok.com/discover/massage-venus-hcmc",
+    "snippet": "3.3M posts. Discover videos related to Massage Venus Hcmc on TikTok. See more videos about Massage Venus 368, Venus Med Spa Mcallen, ...",
+    "date": "17 thg 8, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}
