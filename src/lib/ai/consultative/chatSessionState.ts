@@ -41,6 +41,8 @@ export interface ChatSessionState {
   evidence?: Record<string, unknown> | null
   /** The last real place search's RANKED candidates (compact rows) — "xem thêm" / "bác" continue from them. */
   candidates?: { args: { query: string; type?: string; location?: string }; rows: Array<Record<string, unknown>> } | null
+  /** The last real hotel search (args + compact hotel rows) — a travel "xem thêm" / "bác" continues from them. */
+  stay?: { args: { location: string; checkIn?: string; checkOut?: string }; rows: Array<Record<string, unknown>> } | null
   updatedAt?: string
 }
 
@@ -108,7 +110,7 @@ export async function saveChatSessionState(ownerId: string | null | undefined, s
   const key = chatSessionKey(ownerId, sessionId, env)
   let value = JSON.stringify({ ...state, v: 1, updatedAt: new Date().toISOString() })
   if (value.length > MAX_BYTES) value = JSON.stringify({ ...state, v: 1, evidence: null, updatedAt: new Date().toISOString() })
-  if (value.length > MAX_BYTES) value = JSON.stringify({ ...state, v: 1, evidence: null, candidates: null, updatedAt: new Date().toISOString() })
+  if (value.length > MAX_BYTES) value = JSON.stringify({ ...state, v: 1, evidence: null, candidates: null, stay: null, updatedAt: new Date().toISOString() })
   if (value.length > MAX_BYTES) return false
   try {
     if (isDistributedStoreConfigured(env)) await kv(['SET', key, value, 'EX', String(CHAT_SESSION_TTL_SEC)], env)
@@ -127,6 +129,7 @@ export function nextChatSessionState(prev: ChatSessionState | null, turn: {
   presentedNames?: readonly string[]
   evidence?: Record<string, unknown> | null
   candidates?: ChatSessionState['candidates']
+  stay?: ChatSessionState['stay']
 }): ChatSessionState {
   const pick = turn.replyText ? /\*\*Mình chọn:\s*([^*\n]+?)\*\*/.exec(turn.replyText)?.[1]?.trim() ?? null : null
   const shown = [...(prev?.shown ?? [])]
@@ -139,6 +142,7 @@ export function nextChatSessionState(prev: ChatSessionState | null, turn: {
     shown: shown.slice(-24),
     evidence: turn.evidence === undefined ? prev?.evidence ?? null : turn.evidence,
     candidates: turn.candidates === undefined ? prev?.candidates ?? null : turn.candidates,
+    stay: turn.stay === undefined ? prev?.stay ?? null : turn.stay,
   }
 }
 

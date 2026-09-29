@@ -56,13 +56,22 @@ export function withoutShownRows(result: unknown, shown: readonly string[]): unk
     return !!n && keys.some(k => n === k || n.includes(k) || k.includes(n))
   }
   const r = { ...(result as Record<string, unknown>) }
-  for (const key of ['results', 'hotels', 'search_results']) {
+  for (const key of ['results', 'hotels', 'hotel_list', 'search_results']) {
     const rows = r[key]
     if (!Array.isArray(rows)) continue
     const kept = rows.filter(row => !seen(row))
     if (kept.length > 0 && kept.length < rows.length) r[key] = kept
   }
   return r
+}
+
+/** Stored rows nobody has been shown yet (folded-name containment either way, like withoutShownRows). */
+export function unshownRows<T extends { name?: unknown }>(rows: readonly T[], shown: readonly string[]): T[] {
+  const keys = shown.map(foldName).filter(k => k.length >= 3)
+  return rows.filter(r => {
+    const n = foldName(String(r.name ?? ''))
+    return !!n && !keys.some(k => n === k || n.includes(k) || k.includes(n))
+  })
 }
 
 /**

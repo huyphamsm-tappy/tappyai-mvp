@@ -54,3 +54,17 @@ describe('nextChatSessionState', () => {
     expect(b.shown).toEqual(['Izakaya A', 'B', 'C'])
   })
 })
+
+describe('travel "xem thêm" / "bác" continue from the stored hotels (replay r18 TRAVEL-1/2)', () => {
+  it('keeps the hotel search until a new one replaces it', () => {
+    const stay = { args: { location: 'Đà Nẵng' }, rows: [{ name: 'M Hotel' }, { name: 'Sala Danang Beach Hotel' }, { name: 'Hanami Hotel' }] }
+    const s1 = nextChatSessionState(null, { stay })
+    expect(nextChatSessionState(s1, { replyText: 'x' }).stay).toEqual(stay)
+    expect(nextChatSessionState(s1, { stay: null }).stay).toBeNull()
+  })
+  it('only unshown hotels are offered again', async () => {
+    const { unshownRows } = await import('./consultTravel')
+    const rows = [{ name: 'M Hotel Da Nang' }, { name: 'Sala Danang Beach Hotel' }, { name: 'Hanami Hotel Danang' }, { name: 'Muong Thanh' }]
+    expect(unshownRows(rows, ['M Hotel Da Nang', 'Sala Danang Beach Hotel']).map(r => r.name)).toEqual(['Hanami Hotel Danang', 'Muong Thanh'])
+  })
+})

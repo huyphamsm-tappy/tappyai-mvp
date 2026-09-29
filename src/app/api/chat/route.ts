@@ -91,7 +91,7 @@ import { tripAskAfter, missingTripFacts } from '@/lib/ai/consultative/tripFacts'
 import { buildDomainFrame, frameDomainOf, frameLibrary, frameRef, PLAN_HEADINGS } from '@/lib/ai/consultative/domainFrames'
 import { runConsultBrain, consultV2Enabled, wasAskReply, buildAskReply, placeTypeFor, latestShoppingPickPrice } from '@/lib/ai/consultative/consultBrain'
 import { routeConsult } from '@/lib/ai/consultative/consultRouter'
-import { eventPreCall, onlyRowsNamed, slimResultForModel, travelPreCall, withoutShownRows } from '@/lib/ai/consultative/consultTravel'
+import { eventPreCall, onlyRowsNamed, slimResultForModel, travelPreCall, unshownRows, withoutShownRows } from '@/lib/ai/consultative/consultTravel'
 import { geoGuardArea, guardPlaceGeography } from '@/lib/ai/tools/placeGeoGuard'
 import { compactCandidates, loadChatSessionState, nextChatSessionState, readChatSessionId, saveChatSessionState, type ChatSessionState } from '@/lib/ai/consultative/chatSessionState'
 import { turnUsd, sumCounts, turnCostStream } from '@/lib/ai/turnCost'
@@ -1201,7 +1201,22 @@ export async function POST(req: Request) {
     : null
   const consultProductQuery = consult && (consult.turn === 'pick' || consult.turn === 'reject') && consult.domains[0] === 'shopping' && consult.query ? consult.query : consultShoppingMoreQuery
   // …and a travel pick runs the flight or hotel search its slots name (consultTravel.ts).
-  const consultTravelCall = consult && (consult.turn === 'pick' || consult.turn === 'reject') && consult.domains[0] === 'travel' ? travelPreCall(consult.known, lastText) : null
+  // Replay r18 TRAVEL-1/2: "xem thêm khách sạn" / "còn chỗ nào khác" / "đi rồi, chỗ khác đi" ran no search (or
+  // one with no destination — "núi gần Sài Gòn" names none) and the model asked the user again. A travel
+  // "more" / "reject" continues from the hotels the chat-session state kept (0 provider calls) while ≥ 2 are
+  // unshown; fewer left → the same hotel search again (its stored args when the slots name no destination).
+  const storedStay = chatState?.stay ?? null
+  const travelMoreTurn = !!consult && (consult.turn === 'more' || consult.turn === 'reject') && consult.domains[0] === 'travel' && !/chuy[eế]n|v[eé]|\bbay\b|m[aá]y bay/i.test(lastText)
+  let stayOverride: Array<Record<string, unknown>> | null = null
+  if (travelMoreTurn && storedStay?.rows?.length) {
+    const remaining = unshownRows(storedStay.rows, [...consultShownEver, ...(chatState?.shown ?? [])])
+    if (remaining.length >= 2) stayOverride = remaining
+    console.log(JSON.stringify({ type: 'tappyai_consult_candidates', turn: consult?.turn, domain: 'travel', stored: storedStay.rows.length, remaining: remaining.length, reused: !!stayOverride }))
+  }
+  const storedStayCall = travelMoreTurn && storedStay ? { name: 'get_hotel_prices' as const, args: storedStay.args } : null
+  const consultTravelCall = consult && (consult.turn === 'pick' || consult.turn === 'reject' || consult.turn === 'more') && consult.domains[0] === 'travel'
+    ? (stayOverride ? storedStayCall : travelPreCall(consult.known, lastText) ?? storedStayCall)
+    : null
   // R11 (Android 29/09): "vé concert tháng 10" → ask card → answer → a VENUE ("Nhà hát…", "CHÀO SHOW") with no
   // Ticketbox button: the entertainment pick pre-searched places. An event consultation (concert / show /
   // festival / tickets) pre-searches EVENTS through web_search (Ticketbox listings become event_links).
@@ -1962,6 +1977,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   // rows instead of calling the provider. The ranked rows of a real search are captured for the state.
   let placesOverride: { results: unknown[]; location?: string } | null = null
   let lastPlaceRowsForState: { args: { query: string; type?: string; location?: string }; rows: unknown[] } | null = null
+  let lastStayForState: NonNullable<ChatSessionState['stay']> | null = null
   // A place "xem thêm" / "bác" with ≥ 2 stored candidates nobody has been shown: the stored set, not a new
   // search. Fewer left → search again (the candidates ran out).
   // Consult pick / "xem thêm" / "bác": the model reads the engine's top 3 only (trimPlacesForModel consultTop).
@@ -2263,8 +2279,15 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           checkOut: z.string().optional().describe('Ngay check-out dang YYYY-MM-DD (khong bat buoc)'),
         }),
         execute: async ({ location, checkIn, checkOut }) => {
-          const [r, editorial] = await Promise.all([getHotelPrices(location, checkIn, checkOut, budget?.max, lang), travelEditorialFor(location)])
-          const filtered = budget ? applyBudgetFilter(r, budget, 'khach san') : r
+          const stored = stayOverride
+          stayOverride = null
+          if (stored) console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'get_hotel_prices', step: 'from_chat_state', rows: stored.length }))
+          const [r, editorial] = await Promise.all([stored ? Promise.resolve({ location, source: 'chat_state', hotel_list: stored }) : getHotelPrices(location, checkIn, checkOut, budget?.max, lang), travelEditorialFor(location)])
+          // A travel "bác": hotels already offered leave the list BEFORE ranking (replay r19 TRAVEL-2 re-picked one).
+          const unseen = travelMoreTurn ? withoutShownRows(r, [...consultShownEver, ...(chatState?.shown ?? [])]) : r
+          const filtered = budget ? applyBudgetFilter(unseen as typeof r, budget, 'khach san') : unseen as typeof r
+          const hotelRows = (r as { hotel_list?: unknown })?.hotel_list
+          if (!stored && Array.isArray(hotelRows) && hotelRows.length) lastStayForState = { args: { location, ...(checkIn ? { checkIn } : {}), ...(checkOut ? { checkOut } : {}) }, rows: compactCandidates(hotelRows) }
           const { result, pick } = rankForModel('get_hotel_prices', filtered)
           if (pick) turnPick = pick
           turnPlaceLocation = location
@@ -2274,7 +2297,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           // from the full list above. Same trim as places (cost item 4).
           return trimPlacesForModel(forModel('get_hotel_prices', withTravelEditorial(pick
             ? { ...(result as Record<string, unknown>), _tappy_ranking: buildPickPayload(pick) }
-            : result, editorial)), 'hotel_list', { modelChooses: v1Active })
+            : result, editorial)), 'hotel_list', { modelChooses: v1Active, ...(consultTopTurn && consult?.domains[0] === 'travel' ? { consultTop: 3 } : {}) })
         }
       }),
       get_transport_options: tool({
@@ -2363,7 +2386,10 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           : null
   const eveningSearches = eveningFrame && !noToolTurn && !!tools && toolExecutes('search_places')
   // R15: a consult trip plan pre-fetches hotel + food + weather in parallel (tripOutcomes, inside finishTurn).
-  const consultTripPrefetch = !!consult && consult.turn === 'plan' && planningIntent === 'trip' && !!consult.known.diem_den && process.env.CONSULT_TRIP_PREFETCH !== '0'
+  // Replay r19 TRAVEL-2: "núi gần Sài Gòn" names no destination slot — the plan then searched with none and
+  // planned a Saigon hotel. The destination of the hotels this consultation already searched stands in.
+  const tripDest = consult?.known.diem_den?.trim() || (consult?.domains[0] === 'travel' ? storedStay?.args.location : '') || ''
+  const consultTripPrefetch = !!consult && consult.turn === 'plan' && planningIntent === 'trip' && !!tripDest && process.env.CONSULT_TRIP_PREFETCH !== '0'
   const willPresearch = !!(!noToolTurn && tools && preCall) || eveningSearches || (consultTripPrefetch && !!tools)
   const finishTurn = async (): Promise<Response> => {
   /**
@@ -2452,8 +2478,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   const tripOutcomes: PresearchOutcome[] = []
   if (consultTripPrefetch && tools) {
     const known = consult?.known ?? {}
-    const dest = known.diem_den as string
-    const hotel = travelPreCall({ ...known, phuong_tien: '' }, '')
+    const dest = tripDest
+    const hotel = travelPreCall({ ...known, diem_den: dest, phuong_tien: '' }, '')
     const taste = [known.mon, known.phong_cach === 'biển' ? 'hải sản' : null].filter(Boolean)[0] ?? 'đặc sản'
     const calls: Array<{ name: 'get_hotel_prices' | 'search_places' | 'get_weather'; args: Record<string, string> }> = [
       ...(hotel && hotel.name === 'get_hotel_prices' ? [{ name: 'get_hotel_prices' as const, args: hotel.args }] : []),
@@ -2763,6 +2789,7 @@ ${completionInstruction(lang)}` },
       const saved = await saveChatSessionState(commerceIdentityId, chatSessionId, nextChatSessionState(chatState, {
         domains: consult?.domains, known: consult?.known, replyText: evidence.replyText, presentedNames: evidence.presentedNames,
         ...(lastPlaceRowsForState ? { candidates: { args: lastPlaceRowsForState.args, rows: compactCandidates(lastPlaceRowsForState.rows) } } : {}),
+        ...(lastStayForState ? { stay: lastStayForState } : {}),
         evidence: row ?? turnEvidenceRow ?? loadedEvidenceRow ?? null,
       }))
       console.log(JSON.stringify({ type: 'tappyai_chat_session', step: 'saved', ok: saved }))
