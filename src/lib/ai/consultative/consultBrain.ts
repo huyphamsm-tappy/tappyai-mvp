@@ -306,17 +306,21 @@ export function shoppingMarkerNames(marker: string | null | undefined): string[]
  * The recommended product's listed price in the NEWEST reply that carried a shopping card — a shopping plan's
  * "Tổng chi phí" line is computed from it (appendConsultPlanCost). Null when no card or no price.
  */
-export function latestShoppingPickPrice(assistantTexts: readonly string[]): { amount: number; seller: string | null } | null {
+export function latestShoppingPickPrice(assistantTexts: readonly string[], pickName?: string | null): { amount: number; seller: string | null } | null {
+  const fold = (s: string) => s.normalize('NFC').toLowerCase().replace(/\s+/g, ' ').trim()
+  const want = pickName ? fold(pickName) : ''
   for (let i = assistantTexts.length - 1; i >= 0; i--) {
     const m = /\[TAPPY_SHOPPING\]([\s\S]*?)\[\/TAPPY_SHOPPING\]/.exec(assistantTexts[i])
     if (!m) continue
     try {
-      const v = JSON.parse(m[1]) as { entities?: Array<{ key: string; priceLow?: number; recommended?: boolean; offers?: Array<{ seller?: string }> }>; recommendation?: { entityKey: string | null } | null }
+      const v = JSON.parse(m[1]) as { entities?: Array<{ key: string; name?: string; priceLow?: number; recommended?: boolean; offers?: Array<{ seller?: string }> }>; recommendation?: { entityKey: string | null } | null }
+      // The product the conversation settled on ("**Mình chọn: X**") wins; then the card's own recommendation.
+      const byName = want.length >= 4 ? v.entities?.find(x => x.name && (fold(x.name).includes(want) || want.includes(fold(x.name)))) : undefined
       const key = v.recommendation?.entityKey
-      const e = (key ? v.entities?.find(x => x.key === key) : null) ?? v.entities?.find(x => x.recommended) ?? null
+      const e = byName ?? (key ? v.entities?.find(x => x.key === key) : null) ?? v.entities?.find(x => x.recommended) ?? null
       if (e && typeof e.priceLow === 'number' && e.priceLow > 0) return { amount: e.priceLow, seller: e.offers?.[0]?.seller ?? null }
     } catch { /* malformed marker */ }
-    return null
+    if (!want) return null // without a name, only the newest card speaks
   }
   return null
 }

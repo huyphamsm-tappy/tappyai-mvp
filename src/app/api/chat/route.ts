@@ -1617,7 +1617,7 @@ export async function POST(req: Request) {
   enrichment.setRendersDecisionCard(rendersDecisionCard)
   if (consult && consult.turn !== 'ask') enrichment.setConsultTurn(consult.turn, consult.refers, consult.known)
   // Shopping plan: the "Tổng chi phí" line is computed from the chosen product's listed price (appendConsultPlanCost).
-  if (consult?.turn === 'plan' && consult.domains[0] === 'shopping') enrichment.consultPlanPrice = latestShoppingPickPrice(assistantTexts)
+  if (consult?.turn === 'plan' && consult.domains[0] === 'shopping') enrichment.consultPlanPrice = latestShoppingPickPrice(assistantTexts, latestConsultPick(null))
   // Consult V2: after a pick the server offers the next steps (owner Phần 3.3).
   if (consult && (consult.turn === 'pick' || consult.turn === 'more' || consult.turn === 'reject' || consult.turn === 'compare')) enrichment.setConsultButtons(lang === 'en' ? ['See more', 'Plan it in detail'] : ['Xem thêm', 'Lên kế hoạch chi tiết'])
 

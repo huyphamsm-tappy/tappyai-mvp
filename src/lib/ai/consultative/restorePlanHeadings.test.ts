@@ -84,3 +84,15 @@ describe('pick written as a link (R11)', () => {
     expect(out.match(/Mình chọn/g)).toHaveLength(1)
   })
 })
+
+describe('sealPlanHeadings (prevention, not repair)', () => {
+  it('gives only approved heading lines an invisible sentence end, and removes it cleanly', async () => {
+    const { sealPlanHeadings, unsealPlanHeadings } = await import('./domainFrames')
+    const plan = '**Gọi món**\nBún bò 50k.\n**Không phải tiêu đề**\n## Chi phí'
+    const sealed = sealPlanHeadings(plan)
+    expect(sealed).toContain('**Gọi món**\u2063.')
+    expect(sealed).toContain('## Chi phí\u2063.')
+    expect(sealed).toContain('**Không phải tiêu đề**\n')
+    expect(unsealPlanHeadings(sealed)).toBe(plan)
+  })
+})

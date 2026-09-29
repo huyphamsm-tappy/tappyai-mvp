@@ -51,7 +51,7 @@ const FOLLOW: Record<Exclude<FrameTurn, 'pick' | 'plan'>, string> = {
   reject: `LUOT BAC / DOI YEU CAU: 1 cau ghi nhan ly do (vd "Ok, mình tìm chỗ có kỹ thuật viên nữ"), roi CAU TIEP phai la "**Mình chọn: <TEN MOI>** vì …" dung dieu kien moi + toi da 2 dong khac. KHONG nhac lai cho da bac. Da bac nhieu lan / het ung vien → hoi 1-2 cau so thich de thu hep.`,
 }
 
-const PLAN_HEAD = `KHUNG KE HOACH CHI TIET (GHI DE R1-R4, R3 tieu de va gioi han so tu). LUOT NAY KHONG DUOC HOI LAI: user da bam "Lên kế hoạch chi tiết" — thieu so nguoi / so ngay / mon qua / ngay di thi GIA DINH muc pho bien nhat, viet DONG DAU "Mình giả định: <...> — bạn đổi thì mình tính lại." roi VIET DU ke hoach (ngay cu the chua co thi ghi "ngày bạn chọn", KHONG bịa ngay). Ke hoach xoay quanh LUA CHON DA CHOT trong TRANG THAI — KHONG doi sang cho khac; chi tim them khi can mot chang moi (vd quan an truoc karaoke). Viet "chi tiet toi bat ngo": COPY DUNG tung tieu de ben duoi thanh MOT dong in dam rieng ("**<tieu de>**"), theo DUNG thu tu, KHONG bo tieu de nao; duoi moi tieu de 1-4 dong cu the. It nhat 2 meo dia phuong CO CAN CU (tu review/du lieu, hoac ghi "theo kinh nghiệm chung"). Muc chi phi PHAI co phep tinh dang "<so> × <gia> = <tong>" (gia chua co thi ghi "chưa có giá" va van tinh phan da biet).`
+const PLAN_HEAD = `KHUNG KE HOACH CHI TIET (GHI DE R1-R4, R3 tieu de va gioi han so tu). LUOT NAY KHONG DUOC HOI LAI: user da bam "Lên kế hoạch chi tiết" — thieu so nguoi / so ngay / mon qua / ngay di thi GIA DINH muc pho bien nhat, viet DONG DAU "Mình giả định: <...> — bạn đổi thì mình tính lại." roi VIET DU ke hoach (ngay cu the chua co thi ghi "ngày bạn chọn", KHONG bịa ngay). Ke hoach xoay quanh LUA CHON DA CHOT trong TRANG THAI — KHONG doi sang cho khac; chi tim them khi can mot chang moi (vd quan an truoc karaoke). Viet "chi tiet toi bat ngo": COPY DUNG tung tieu de ben duoi thanh MOT dong in dam rieng ("**<tieu de>**"), theo DUNG thu tu, KHONG bo tieu de nao; duoi moi tieu de 1-4 dong cu the. It nhat 2 meo dia phuong CO CAN CU (tu review/du lieu, hoac ghi "theo kinh nghiệm chung"). Muc chi phi PHAI co phep tinh dang "<so> × <gia> = <tong>" (gia chua co thi ghi "chưa có giá" va van tinh phan da biet). GIA CHI lay tu ket qua tool hoac the san pham/quan da hien (TRANG THAI); KHONG BAO GIO uoc luong hay "giả sử giá", "~900.000đ", "khoảng …đ" khi khong co nguon.`
 
 /** The required headings of each area's detailed plan (the automated check reads these). */
 export const PLAN_HEADINGS: Record<Exclude<FrameDomain, 'main'>, string[]> = {
@@ -163,4 +163,18 @@ export function restorePlanHeadings(original: string, guarded: string): string {
     present.add(h.key)
   })
   return out.join('\n').replace(/\n{3,}/g, '\n\n')
+}
+
+/**
+ * PREVENTION instead of repair (owner 29/09 "hạn chế guard vá"; the heading restore fired on 8/15 plans):
+ * a heading line has no sentence end, so a sentence guard read "**Gọi món**\nBún bò 50k…" as ONE sentence
+ * and cut the heading with the claim. Before the guards, each approved heading line gets an invisible
+ * sentence end (U+2063 + "."), so it stands alone and carries no claim; `unsealPlanHeadings` removes it.
+ */
+const SEAL = '\u2063.'
+export function sealPlanHeadings(text: string): string {
+  return text.split('\n').map(l => (headingKey(l) && !l.endsWith(SEAL) ? `${l.trimEnd()}${SEAL}` : l)).join('\n')
+}
+export function unsealPlanHeadings(text: string): string {
+  return text.split(SEAL).join('')
 }

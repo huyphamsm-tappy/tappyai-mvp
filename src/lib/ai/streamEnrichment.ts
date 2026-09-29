@@ -19,7 +19,7 @@ import { guardPlanItems, type PlanPlace } from './planItemGuard'
 import { guardPlanTripFacts, guardUngivenTravelDate } from './planTripFactsGuard'
 import { appendConsultPlanCost, appendPlanBudgetMath, partyCount, perPersonBudget } from './planBudgetMath'
 import { consultRemainingLine, normalizePickSentence, shoppingMarkerNames, shoppingPickName } from './consultative/consultBrain'
-import { restorePlanHeadings } from './consultative/domainFrames'
+import { restorePlanHeadings, sealPlanHeadings, unsealPlanHeadings } from './consultative/domainFrames'
 import { stripStepNarration } from './consultative/stepNarration'
 import { buildActions } from '@/lib/recommendation/actions'
 import { safeFlushPoint, alignReleasedPrefix } from './progressiveFlush'
@@ -2137,7 +2137,8 @@ export function applyPlaceEnrichmentStreamFilter(
     const tripped = tripFacts ? tripFacts.text : itemized
     const dated = travelIntent ? guardUngivenTravelDate(tripped, collector?.userTexts ?? [userText]) : null
     if (dated?.dropped) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'travel_ungiven_date', dropped: dated.dropped }))
-    const planMask = maskPlanBody(dated ? dated.text : tripped)
+    // Consult plan: headings get an invisible sentence end for the guards (sealPlanHeadings), removed at the end.
+    const planMask = maskPlanBody(collector?.consultTurn === 'plan' ? sealPlanHeadings(dated ? dated.text : tripped) : (dated ? dated.text : tripped))
     const enriched = planMask.text
     // C3-B.10: the last server-side point at which the COMPLETE prose exists and
     // has not yet reached the client. A monetary claim the structured evidence
@@ -2828,7 +2829,7 @@ export function applyPlaceEnrichmentStreamFilter(
     // …and a detailed plan gets back the heading lines a guard cut with the sentence under them.
     const groundedProse = ((t: string) => {
       // R9: the model's step commentary ("Đang tìm…", "Bây giờ mình sẽ lập…") never reaches the user.
-      const narrated = collector?.consultTurn ? stripStepNarration(t) : { text: t, removed: 0 }
+      const narrated = collector?.consultTurn ? stripStepNarration(unsealPlanHeadings(t)) : { text: t, removed: 0 }
       if (narrated.removed) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'step_narration', removed: narrated.removed }))
       const restored = collector?.consultTurn === 'plan' ? restorePlanHeadings(mainText, narrated.text) : narrated.text
       // …and its cost section shows code-written arithmetic (the chosen row's band, else the user's own
