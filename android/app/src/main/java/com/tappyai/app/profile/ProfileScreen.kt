@@ -78,8 +78,8 @@ import com.tappyai.core.designsystem.theme.TappySpacing
 // privacy card, and the Settings entry — over the SAME ViewModel, routes and callbacks as before.
 //
 // 🚨 NOTHING ROUTES ANYWHERE NEW. Every row calls the callback the tab already passed; the one
-// added card, "Quyền riêng tư & Bảo mật", opens `ProfileRoute.Privacy` — a destination this
-// tab's graph has always registered and Settings has always linked ("Chính sách bảo mật").
+// added card, "Quyền riêng tư & Bảo mật", opens the web `/privacy` page (`openPrivacyPolicy`) — the
+// same page Settings' "Chính sách bảo mật" opens.
 // No field is shown that `GET /api/profile` does not return (name, email, avatar); a guest sees
 // the same placeholder identity as before, never an invented one.
 
@@ -166,7 +166,7 @@ fun ProfileScreen(
     onOpenPriceTracking: () -> Unit,
     onOpenAccount: () -> Unit,
     onOpenAppConnections: () -> Unit,
-    /** The privacy card → `ProfileRoute.Privacy`, the privacy policy this graph always hosted. */
+    /** The privacy card → the web `/privacy` page, the one policy Data safety declares against. */
     onOpenPrivacy: () -> Unit = {},
     /** AI Planner (web `/planner`) and Following / Followers (web `/social`). */
     onOpenPlanner: () -> Unit = {},

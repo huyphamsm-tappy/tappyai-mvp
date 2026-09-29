@@ -100,8 +100,8 @@ fun ProfileTab(
                 onOpenPriceTracking = { navController.navigate(ProfileRoute.PriceTracking) },
                 onOpenAccount = { navController.navigate(ProfileRoute.AccountGraph) },
                 onOpenAppConnections = { navController.navigate(ProfileRoute.AppConnections) },
-                // The privacy card: the same destination Settings' "Chính sách bảo mật" opens.
-                onOpenPrivacy = { navController.navigate(ProfileRoute.Privacy) },
+                // The privacy card: the same page Settings' "Chính sách bảo mật" opens.
+                onOpenPrivacy = { openPrivacyPolicy(context) },
                 onSignIn = onSignIn,
                 onOpenPlanner = { navController.navigate(ProfileRoute.Planner) },
                 onOpenSocial = { navController.navigate(ProfileRoute.Social) },
@@ -163,7 +163,7 @@ fun ProfileTab(
                 onOpenTappyKnows = { navController.navigate(ProfileRoute.TappyKnows) },
                 onOpenGuide = { navController.navigate(ProfileRoute.Guide) },
                 onOpenTerms = { navController.navigate(ProfileRoute.Terms) },
-                onOpenPrivacy = { navController.navigate(ProfileRoute.Privacy) },
+                onOpenPrivacy = { openPrivacyPolicy(context) },
             )
         }
         composable<ProfileRoute.Guide> {
@@ -171,9 +171,6 @@ fun ProfileTab(
         }
         composable<ProfileRoute.Terms> {
             TermsOfServiceScreen(onBack = { navController.popBackStack() })
-        }
-        composable<ProfileRoute.Privacy> {
-            PrivacyPolicyScreen(onBack = { navController.popBackStack() })
         }
         composable<ProfileRoute.Notifications> {
             NotificationsScreen(onBack = { navController.popBackStack() })
@@ -315,3 +312,20 @@ private fun serviceSlug(name: String): String =
         .replace(Regex("[^a-z0-9-]"), "")
         .take(40)
         .ifEmpty { "place" }
+
+/**
+ * The privacy policy is the web page `/privacy` — ONE policy for web, Android and the Play listing
+ * (R18, web e3413ca: precise location, date of birth, Firebase, FCM, ACCESSTRADE), so the app can
+ * never drift from what Data safety declares. It replaced a native English copy that had drifted
+ * (no location, no Firebase). Same pattern as Settings' copyright row.
+ */
+internal fun openPrivacyPolicy(context: android.content.Context) {
+    runCatching {
+        context.startActivity(
+            android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse(PRIVACY_POLICY_URL))
+                .addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK),
+        )
+    }
+}
+
+internal val PRIVACY_POLICY_URL: String get() = "${com.tappyai.app.share.TappyShare.CANONICAL_ORIGIN}/privacy"

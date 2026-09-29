@@ -15,11 +15,12 @@ ghi **CẦN HUY XÁC NHẬN**.
 
 > ### ⛔ Các việc còn lại PHẢI xong trước khi bấm công khai (không phải việc nhập liệu)
 > 1. **Báo cáo + chặn** — xem điều kiện công khai ở trên (Phase 8).
-> 2. **Chính sách quyền riêng tư lệch với code.** Trang `https://www.tappyai.com/privacy` ghi vị trí "Approximate location"
->    (`src/lib/i18n/legal.ts:31-32`) nhưng app gửi toạ độ **chính xác** (`ChatLocationSource.kt:31-41`); danh sách bên thứ ba
->    (`legal.ts:51-63`) **không nêu Google Analytics for Firebase / Firebase Cloud Messaging**; màn Chính sách trong app
->    (`PrivacyPolicyScreen.kt:66`) nêu micro + thông báo nhưng không nêu vị trí. Play đối chiếu Data safety với chính sách → phải
->    sửa chính sách (việc của phiên web, đã ghi R18 trong `docs/uat/ANDROID-REQUESTS.md`).
+> 2. ~~**Chính sách quyền riêng tư lệch với code.**~~ **XONG trên UAT (29/09):** web `/privacy` sửa theo Data safety (R18, UAT `e3413ca`
+>    — vị trí chính xác, ngày sinh, Firebase, FCM, ACCESSTRADE; bảng "Chính sách khớp" ở mục 1). Android bỏ màn chính sách tiếng Anh
+>    cũ (lệch: không có vị trí/Firebase) — "Chính sách bảo mật" trong Cài đặt và thẻ "Quyền riêng tư" ở Tôi nay mở chính trang web
+>    `/privacy` (`ProfileTab.kt` `openPrivacyPolicy`), một chính sách duy nhất. Còn phải: (a) bản web lên **Production** trước khi
+>    công khai; (b) câu về `sub1` trong chính sách đang viết theo **phương án A** — Huy chưa chốt A/B/C (xem "Link affiliate" ở
+>    mục 1); nếu chọn B/C thì phiên web sửa lại câu đó.
 > 3. **Cờ xoá tài khoản trên Production.** Kế hoạch phát hành đặt `ACCOUNT_SELF_DELETE_ENABLED=false`
 >    (`docs/uat/RELEASE-PLAN-2026-09-29.md:115`) nhưng cùng dòng đó ghi Production hiện đang `true`. Mục 2 dưới đây viết theo `false`
 >    (luồng gửi yêu cầu). **CẦN HUY XÁC NHẬN** giá trị trên Vercel Production trước khi khai.

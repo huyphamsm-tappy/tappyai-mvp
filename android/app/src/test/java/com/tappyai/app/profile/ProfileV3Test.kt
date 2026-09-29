@@ -50,10 +50,10 @@ class ProfileV3Test {
             "onOpenChatHistory" to "ProfileRoute.ChatHistory", "onOpenSaved" to "ProfileRoute.Saved", "onOpenBookings" to "ProfileRoute.Bookings",
             "onOpenPreferences" to "ProfileRoute.Preferences", "onOpenMyReviews" to "ProfileRoute.MyReviews", "onOpenGroupDining" to "ProfileRoute.GroupDining",
             "onOpenPriceTracking" to "ProfileRoute.PriceTracking", "onOpenAccount" to "ProfileRoute.AccountGraph", "onOpenAppConnections" to "ProfileRoute.AppConnections",
-            "onOpenPrivacy" to "ProfileRoute.Privacy",
         )) assertTrue("$cb → $route", hub.contains("$cb = { navController.navigate($route) }"))
         assertTrue(hub.contains("onSignIn = onSignIn,"))
-        assertTrue("the privacy route was already in this graph", tab.contains("composable<ProfileRoute.Privacy> {"))
+        // R18: the privacy card and Settings open the ONE web policy (/privacy), not a native copy.
+        assertTrue("privacy → the web policy", hub.contains("onOpenPrivacy = { openPrivacyPolicy(context) }") && tab.contains("TappyShare.CANONICAL_ORIGIN}/privacy\"") && com.tappyai.app.profile.PRIVACY_POLICY_URL.endsWith("/privacy") && !tab.contains("PrivacyPolicyScreen("))
         assertTrue("Saved is the existing Saved route — no second Saved", hub.contains("onOpenSaved = { navController.navigate(ProfileRoute.Saved) }") && !screen.contains("getSaved"))
         assertTrue("the landing owns its header, like Explore", tab.contains("ReportNestedScreen(HomeTab.Profile, navController, landingOwnsHeader = true)"))
     }
