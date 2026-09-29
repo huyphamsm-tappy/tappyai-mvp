@@ -1,5 +1,6 @@
 package com.tappyai.app.personal
 
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -19,11 +20,19 @@ class SavedQrV3Test {
         .replace(Regex("(?s)/\\*.*?\\*/"), "").replace(Regex("(?m)^\\s*//.*$"), "")
 
     @Test
-    fun `Saved is the V3 hub - two REAL categories with counts, zero shown not hidden, a category view with a back link and the dashed empty`() {
+    fun `Saved is the V3 hub - hero chips without Deals or Bo suu tap, two REAL count cards, zero shown not hidden, a category view with a back link`() {
         val s = src("app/src/main/java/com/tappyai/app/saved/SavedScreen.kt")
         assertTrue(s.contains("V3PersonalPage(") && s.contains("R.string.saved_title") && s.contains("R.string.saved_items_count"))
-        assertTrue("the hub's two rows are the two lists that open", s.contains("HubRow(key = \"places\"") && s.contains("HubRow(key = \"posts\""))
-        assertFalse("no Deals / Sản phẩm / Video rows - nothing saves those", s.contains("\"deals\"") || s.contains("\"products\"") || s.contains("\"video\""))
+        assertTrue("hero with the reading otter", s.contains("SavedHero(") && s.contains("R.drawable.tappy_reading") && s.contains("R.string.saved_hero_title"))
+        // Owner 2026-09-28: Tất cả / Địa điểm / Bài viết / Video only — Deals and Bộ sưu tập hidden, no "Sắp có".
+        val chips = s.substringAfter("private val SAVED_CHIPS = listOf(").substringBefore("\n)")
+        assertEquals(listOf("ALL", "PLACES", "POSTS", "VIDEOS"), Regex("""SavedFilter\.(\w+)""").findAll(chips).map { it.groupValues[1] }.toList())
+        assertFalse("no Deals / Bộ sưu tập / soon chip", Regex("(?i)deals|collection|soon").containsMatchIn(s))
+        assertTrue("the hub's two count cards are the two lists that open", s.contains("filter = SavedFilter.PLACES, icon") && s.contains("filter = SavedFilter.POSTS, icon"))
+        assertTrue("Video is a filter over the saved posts", s.contains("data.reviews.filter { it.isVideo }"))
+        assertTrue("nothing saved → the empty card with Explore", s.contains("if (data.isEmpty)") && s.contains("SavedEmpty(onExploreNow = onExploreNow)"))
+        assertEquals(com.tappyai.app.saved.SavedFilter.VIDEOS, com.tappyai.app.saved.savedFilterOf("VIDEOS"))
+        assertEquals(com.tappyai.app.saved.SavedFilter.ALL, com.tappyai.app.saved.savedFilterOf("deals"))
         assertTrue("zero is shown, not hidden", s.contains("UiState.Empty -> SavedData(emptyList(), emptyList())"))
         assertTrue("the category view unwinds with the system Back too", s.contains("BackHandler(enabled = view != null) { view = null }"))
         assertTrue(s.contains("R.string.saved_empty_title") && s.contains("R.string.saved_explore_now") && s.contains("onClick = onExploreNow"))

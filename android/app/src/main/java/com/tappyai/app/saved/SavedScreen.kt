@@ -2,6 +2,19 @@ package com.tappyai.app.saved
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.material.icons.filled.Explore
+import androidx.compose.material.icons.filled.GridView
+import androidx.compose.material.icons.filled.PlayCircle
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.selected
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -50,25 +63,24 @@ import com.tappyai.app.home.HomeV3
 import com.tappyai.app.personal.V3ErrorLine
 import com.tappyai.app.personal.V3Loading
 import com.tappyai.app.personal.V3Panel
-import com.tappyai.app.personal.V3PanelHeader
 import com.tappyai.app.personal.V3PersonalPage
 import com.tappyai.app.personal.V3Tone
 import com.tappyai.core.common.UiState
 import com.tappyai.core.designsystem.component.TappyImage
 
 /**
- * Saved — the web `/profile/favorites` (`SavedView.tsx`, V3), 2026-09-17.
+ * Saved — the web `/profile/favorites` (`SavedView.tsx`, owner reference 2026-09-28).
  *
- * A UTILITY HUB, NOT A DASHBOARD: `V3Shell` at phone width with "Đã lưu" and the "N mục"
- * subtitle, then ONE `.v3-panel`. The panel is the hub — one row per REAL saved category,
- * ĐỊA ĐIỂM (`/api/favorites`) and BÀI VIẾT (`/api/reviews/saved`), each with the count of the
- * very list that opens — or, once a row is tapped, that category's contents with a "‹ Đã lưu"
- * link back to the hub (the web's `?type=` URL; here a saveable view state the system Back
- * button also unwinds).
+ * The hero ("Đã lưu" · "Những điều bạn yêu thích 💙" · the reading otter) carries the filter chips
+ * Tất cả / Địa điểm / Bài viết / Video — Deals and Bộ sưu tập are HIDDEN (owner 2026-09-28: no save
+ * model behind them, so no "Sắp có" either). "Tất cả" is the hub: two count cards, one per REAL
+ * saved dataset — ĐỊA ĐIỂM (`/api/favorites`) and BÀI VIẾT (`/api/reviews/saved`) — and, when
+ * nothing is saved, one empty card whose CTA opens Explore. Video is a FILTER over the saved posts
+ * (a video IS a saved review), so it has no count card of its own.
  *
- * ZERO IS SHOWN, NOT HIDDEN: a category with nothing in it still renders its row and its 0, so
- * the page never looks fuller than the account is. Deals / Sản phẩm / Video are absent for the
- * web's audited reasons (no deal-save model, no catalogue, and a video IS a saved review).
+ * ZERO IS SHOWN, NOT HIDDEN: a category with nothing in it still renders its card and its 0, so
+ * the page never looks fuller than the account is. The chip state is the web's `?type=` URL — here
+ * a saveable view state the system Back button unwinds to the hub.
  *
  * Data, routes and the un-save control are unchanged: [SavedViewModel] over the same two
  * endpoints, a place opens the Service Detail (the web's `/service/{slug}`), a post opens the
@@ -83,8 +95,9 @@ fun SavedScreen(
     viewModel: SavedViewModel = hiltViewModel(),
 ) {
     val state = viewModel.uiState
-    // The web's `?type=places|posts`; null is the hub.
+    // The web's `?type=places|posts|videos`; null is the hub ("Tất cả").
     var view by rememberSaveable { mutableStateOf<String?>(null) }
+    val filter = savedFilterOf(view)
     BackHandler(enabled = view != null) { view = null }
 
     val data: SavedData? = when (state) {
@@ -98,17 +111,25 @@ fun SavedScreen(
         subtitle = data?.let { stringResource(R.string.saved_items_count, it.total) },
         onBack = onBack,
     ) {
+        SavedHero(filter = filter, onSelect = { view = if (it == SavedFilter.ALL) null else it.name })
+        Spacer(modifier = Modifier.height(16.dp))
         when {
             state is UiState.Error -> V3Panel {
                 V3ErrorLine(message = state.message, retryText = stringResource(R.string.common_try_again), onRetry = viewModel::load)
             }
             data == null -> V3Panel { V3Loading() }
-            view == null -> SavedHub(
-                placesCount = data.favorites.size,
-                postsCount = data.reviews.size,
-                onOpen = { view = it },
-            )
-            view == "places" -> CategoryPanel(
+            filter == SavedFilter.ALL -> {
+                SavedHub(
+                    placesCount = data.favorites.size,
+                    postsCount = data.reviews.size,
+                    onOpen = { view = it.name },
+                )
+                if (data.isEmpty) {
+                    Spacer(modifier = Modifier.height(16.dp))
+                    SavedEmpty(onExploreNow = onExploreNow)
+                }
+            }
+            filter == SavedFilter.PLACES -> CategoryPanel(
                 title = stringResource(R.string.saved_section_favorites),
                 empty = data.favorites.isEmpty(),
                 onBackToHub = { view = null },
@@ -119,58 +140,190 @@ fun SavedScreen(
                     FavoriteRow(favorite = fav, onOpen = { onOpenPlace(fav) }, onDelete = { viewModel.removeFavorite(fav.placeId) })
                 }
             }
-            else -> CategoryPanel(
-                title = stringResource(R.string.saved_section_reviews),
-                empty = data.reviews.isEmpty(),
-                onBackToHub = { view = null },
-                onExploreNow = onExploreNow,
-            ) {
-                data.reviews.forEachIndexed { index, review ->
-                    if (index > 0) HorizontalDivider(color = HomeV3.Outline)
-                    SavedReviewRow(review = review, onOpen = { onOpenReview(review.id) })
+            else -> {
+                val posts = if (filter == SavedFilter.VIDEOS) data.reviews.filter { it.isVideo } else data.reviews
+                CategoryPanel(
+                    title = stringResource(if (filter == SavedFilter.VIDEOS) R.string.saved_section_videos else R.string.saved_section_reviews),
+                    empty = posts.isEmpty(),
+                    onBackToHub = { view = null },
+                    onExploreNow = onExploreNow,
+                ) {
+                    posts.forEachIndexed { index, review ->
+                        if (index > 0) HorizontalDivider(color = HomeV3.Outline)
+                        SavedReviewRow(review = review, onOpen = { onOpenReview(review.id) })
+                    }
                 }
             }
         }
     }
 }
 
-/** `SavedHub`: one row per REAL saved category, its count, a chevron. */
+private val HeroAccent = Color(0xFF3391FF)
+
+/** `SavedHero`: label, title, subtitle, the chips, and the reading otter on the right. */
 @Composable
-private fun SavedHub(placesCount: Int, postsCount: Int, onOpen: (String) -> Unit) {
-    V3Panel(padding = 0.dp) {
-        V3PanelHeader(
-            title = stringResource(R.string.saved_title),
-            icon = Icons.Filled.Bookmark,
-            tint = V3Tone.Violet,
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
+private fun SavedHero(filter: SavedFilter, onSelect: (SavedFilter) -> Unit) {
+    val shape = RoundedCornerShape(24.dp)
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(shape)
+            .background(Brush.linearGradient(listOf(Color(0xE60F1E46), HomeV3.Surface)))
+            .background(Brush.radialGradient(listOf(HeroAccent.copy(alpha = 0.22f), Color.Transparent), radius = 700f, center = Offset(900f, 60f)))
+            .border(1.dp, HomeV3.Outline, shape)
+            .testTag("saved_hero"),
+    ) {
+        Image(
+            painter = painterResource(R.drawable.tappy_reading),
+            contentDescription = null,
+            modifier = Modifier.align(Alignment.TopEnd).padding(top = 8.dp, end = 4.dp).size(96.dp),
         )
-        HorizontalDivider(color = HomeV3.Outline)
-        HubRow(key = "places", icon = Icons.Filled.Place, tone = HomeV3.Purple, label = stringResource(R.string.saved_section_favorites), count = placesCount, onOpen = onOpen)
-        HorizontalDivider(color = HomeV3.Outline)
-        HubRow(key = "posts", icon = Icons.Filled.Description, tone = V3Tone.Violet, label = stringResource(R.string.saved_section_reviews), count = postsCount, onOpen = onOpen)
+        Column(modifier = Modifier.padding(20.dp)) {
+            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                Icon(Icons.Filled.Bookmark, contentDescription = null, tint = HeroAccent, modifier = Modifier.size(18.dp))
+                Text(text = stringResource(R.string.saved_title), color = HeroAccent, fontSize = 15.sp, fontWeight = FontWeight.Bold)
+            }
+            Text(
+                text = stringResource(R.string.saved_hero_title),
+                color = HomeV3.OnSurface,
+                fontSize = 22.sp,
+                lineHeight = 28.sp,
+                fontWeight = FontWeight.ExtraBold,
+                modifier = Modifier.padding(top = 8.dp, end = 88.dp),
+            )
+            Text(
+                text = stringResource(R.string.saved_hero_subtitle),
+                color = HomeV3.OnSurfaceVariant,
+                fontSize = 13.5.sp,
+                lineHeight = 20.sp,
+                modifier = Modifier.padding(top = 8.dp),
+            )
+            Row(
+                modifier = Modifier.padding(top = 18.dp).horizontalScroll(rememberScrollState()),
+                horizontalArrangement = Arrangement.spacedBy(4.dp),
+            ) {
+                SAVED_CHIPS.forEach { chip ->
+                    FilterChipPill(chip = chip, active = chip.filter == filter, onClick = { onSelect(chip.filter) })
+                }
+            }
+        }
+    }
+}
+
+private class SavedChip(val filter: SavedFilter, val icon: ImageVector, val label: Int)
+
+// Order and icons follow the reference; Deals and Bộ sưu tập are hidden (owner 2026-09-28).
+private val SAVED_CHIPS = listOf(
+    SavedChip(SavedFilter.ALL, Icons.Filled.GridView, R.string.saved_filter_all),
+    SavedChip(SavedFilter.PLACES, Icons.Filled.Place, R.string.saved_filter_places),
+    SavedChip(SavedFilter.POSTS, Icons.Filled.Description, R.string.saved_filter_posts),
+    SavedChip(SavedFilter.VIDEOS, Icons.Filled.PlayCircle, R.string.saved_filter_videos),
+)
+
+@Composable
+private fun FilterChipPill(chip: SavedChip, active: Boolean, onClick: () -> Unit) {
+    val label = stringResource(chip.label)
+    Row(
+        modifier = Modifier
+            .heightIn(min = 40.dp)
+            .clip(CircleShape)
+            .then(if (active) Modifier.background(HeroAccent.copy(alpha = 0.12f)).border(1.dp, HeroAccent, CircleShape) else Modifier)
+            .clickable(role = Role.Tab, onClick = onClick)
+            .semantics { selected = active }
+            .testTag("saved_chip_${chip.filter.name.lowercase()}")
+            .padding(horizontal = 12.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(6.dp),
+    ) {
+        Icon(chip.icon, contentDescription = null, tint = if (active) HeroAccent else HomeV3.OnSurfaceVariant, modifier = Modifier.size(16.dp))
+        Text(text = label, color = if (active) HomeV3.OnSurface else HomeV3.OnSurfaceVariant, fontSize = 13.sp, fontWeight = FontWeight.Medium)
+    }
+}
+
+/** `SavedHub`: the two count cards — one per REAL saved dataset, zero shown not hidden. */
+@Composable
+private fun SavedHub(placesCount: Int, postsCount: Int, onOpen: (SavedFilter) -> Unit) {
+    Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+        CountCard(
+            filter = SavedFilter.PLACES, icon = Icons.Filled.Place, tile = Color(0xFF1D6FE0),
+            label = stringResource(R.string.saved_section_favorites), desc = stringResource(R.string.saved_card_places_desc),
+            count = placesCount, unit = stringResource(R.string.saved_unit_places), onOpen = onOpen,
+        )
+        CountCard(
+            filter = SavedFilter.POSTS, icon = Icons.Filled.Description, tile = Color(0xFF6D4FD8),
+            label = stringResource(R.string.saved_section_reviews), desc = stringResource(R.string.saved_card_posts_desc),
+            count = postsCount, unit = stringResource(R.string.saved_unit_posts), onOpen = onOpen,
+        )
     }
 }
 
 @Composable
-private fun HubRow(key: String, icon: ImageVector, tone: Color, label: String, count: Int, onOpen: (String) -> Unit) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable(role = Role.Button, onClick = { onOpen(key) })
-            .heightIn(min = 64.dp)
-            .padding(horizontal = 16.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
-    ) {
-        Box(
-            modifier = Modifier.size(44.dp).clip(RoundedCornerShape(12.dp)).background(HomeV3.SurfaceVariant),
-            contentAlignment = Alignment.Center,
+private fun CountCard(
+    filter: SavedFilter, icon: ImageVector, tile: Color, label: String, desc: String, count: Int, unit: String,
+    onOpen: (SavedFilter) -> Unit,
+) {
+    V3Panel(padding = 0.dp) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable(role = Role.Button, onClick = { onOpen(filter) })
+                .heightIn(min = 104.dp)
+                .testTag("saved_count_${filter.name.lowercase()}")
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(14.dp),
         ) {
-            Icon(icon, contentDescription = null, tint = tone, modifier = Modifier.size(18.dp))
+            Box(modifier = Modifier.size(48.dp).clip(CircleShape).background(tile), contentAlignment = Alignment.Center) {
+                Icon(icon, contentDescription = null, tint = Color.White, modifier = Modifier.size(22.dp))
+            }
+            Column(modifier = Modifier.weight(1f)) {
+                Text(text = label, color = HomeV3.OnSurface, fontSize = 16.sp, fontWeight = FontWeight.Bold, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                Text(text = desc, color = HomeV3.OnSurfaceVariant, fontSize = 12.5.sp, lineHeight = 18.sp, modifier = Modifier.padding(top = 4.dp))
+            }
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Text(text = count.toString(), color = HomeV3.OnSurface, fontSize = 28.sp, fontWeight = FontWeight.ExtraBold)
+                Text(text = unit, color = HomeV3.OnSurfaceVariant, fontSize = 12.5.sp)
+            }
+            Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, contentDescription = null, tint = HomeV3.OnSurfaceVariant, modifier = Modifier.size(18.dp))
         }
-        Text(text = label, color = HomeV3.OnSurface, fontSize = 13.5.sp, fontWeight = FontWeight.Medium, maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.weight(1f))
-        Text(text = count.toString(), color = HomeV3.OnSurfaceVariant, fontSize = 13.sp, fontWeight = FontWeight.SemiBold)
-        Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, contentDescription = null, tint = HomeV3.OnSurfaceVariant, modifier = Modifier.size(18.dp))
+    }
+}
+
+/** Nothing saved at all: one card, one real discovery route (the Explore tab). */
+@Composable
+private fun SavedEmpty(onExploreNow: () -> Unit) {
+    V3Panel {
+        Column(
+            modifier = Modifier.fillMaxWidth().padding(vertical = 24.dp).testTag("saved_empty"),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Box(modifier = Modifier.size(80.dp).clip(RoundedCornerShape(16.dp)).background(HomeV3.SurfaceVariant), contentAlignment = Alignment.Center) {
+                Icon(Icons.Filled.Bookmark, contentDescription = null, tint = HeroAccent, modifier = Modifier.size(34.dp))
+            }
+            Text(text = stringResource(R.string.saved_hub_empty_title), color = HomeV3.OnSurface, fontSize = 20.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(top = 20.dp))
+            Text(
+                text = stringResource(R.string.saved_hub_empty_hint),
+                color = HomeV3.OnSurfaceVariant,
+                fontSize = 13.5.sp,
+                lineHeight = 20.sp,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.padding(top = 8.dp),
+            )
+            Row(
+                modifier = Modifier
+                    .padding(top = 24.dp)
+                    .heightIn(min = 48.dp)
+                    .clip(CircleShape)
+                    .background(HeroAccent)
+                    .clickable(role = Role.Button, onClick = onExploreNow)
+                    .padding(horizontal = 28.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                Icon(Icons.Filled.Explore, contentDescription = null, tint = Color.White, modifier = Modifier.size(18.dp))
+                Text(text = stringResource(R.string.saved_explore_now), color = Color.White, fontSize = 15.sp, fontWeight = FontWeight.SemiBold)
+            }
+        }
     }
 }
 

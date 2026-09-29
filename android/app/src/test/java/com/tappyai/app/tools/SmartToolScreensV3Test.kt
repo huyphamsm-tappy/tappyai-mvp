@@ -61,7 +61,12 @@ class SmartToolScreensV3Test {
         assertTrue(currency.contains("hue = ToolHue.Navy") && currency.contains("R.drawable.tappy_wave") && currency.contains("ToolCoin("))
         assertTrue(split.contains("hue = ToolHue.Navy") && split.contains("R.drawable.tappy_wave") && split.contains("SplitScene("))
         assertTrue(group.contains("hue = ToolHue.Blue") && group.contains("R.drawable.tappy_thinking") && group.contains("GroupScene("))
-        assertTrue(viet.contains("hue = ToolHue.Pink") && viet.contains("R.drawable.tappy_reading") && viet.contains("Color(0xFFEC4899), Color(0xFFF43F5E), Color(0xFFFB923C)"))
+        // Viết content = the approved design 2026-09-28 (R2): primary-900 → indigo-800 → violet-600 hero,
+        // the reading otter with the REAL platform marks, "Thử gợi ý", brand tiles, the gradient submit.
+        assertTrue(viet.contains("R.drawable.tappy_reading") && viet.contains("Color(0xFF001833), Color(0xFF3730A3), Color(0xFF7C3AED)"))
+        assertTrue(viet.contains("R.drawable.share_brand_facebook") && viet.contains("R.drawable.share_brand_tiktok") && viet.contains("InstagramMark("))
+        assertTrue(viet.contains("TryExampleButton(") && viet.contains("VIET_EXAMPLE_TOPICS") && viet.contains("R.string.vietwriter_platform_hint"))
+        assertFalse("platform tiles show the brand, not an emoji", viet.contains("option.emoji") || viet.contains("platformEmoji"))
         // The kit knows all five hues; each is a distinct palette.
         val hues = Regex("""^    (Blue|Indigo|Navy|Music|Pink)\(""", RegexOption.MULTILINE).findAll(kit).map { it.groupValues[1] }.toList()
         assertEquals(listOf("Blue", "Indigo", "Navy", "Music", "Pink"), hues)

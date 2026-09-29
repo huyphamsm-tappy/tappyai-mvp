@@ -10,6 +10,8 @@ export const ACCOUNTS = {
   free: { email: 'e2e.android.free@example.com', name: 'E2E Free' },
   other: { email: 'e2e.android.other@example.com', name: 'E2E Người khác' },
   nodob: { email: 'e2e.android.nodob@example.com', name: 'E2E Chưa khai tuổi' },
+  // Starts every run NOT onboarded (and with a date of birth), so the onboarding wizard is exercised.
+  fresh: { email: 'e2e.android.fresh@example.com', name: 'E2E Mới' },
 }
 
 const TAG = '[E2E]'
@@ -35,7 +37,7 @@ export async function seed() {
   for (const [role, a] of Object.entries(ACCOUNTS)) u[role] = await ensureUser(a.email, a.name)
 
   for (const [role, a] of Object.entries(ACCOUNTS)) {
-    await rest.patch(`profiles?id=eq.${u[role].id}`, { full_name: a.name, onboarded: true, language: 'vi' })
+    await rest.patch(`profiles?id=eq.${u[role].id}`, { full_name: a.name, onboarded: role !== 'fresh', language: 'vi' })
     // nodob starts every run WITHOUT a date of birth, so the 18+ gate is always exercised.
     if (role === 'nodob') await rest.del(`user_demographics?user_id=eq.${u[role].id}`)
     if (role !== 'nodob') {

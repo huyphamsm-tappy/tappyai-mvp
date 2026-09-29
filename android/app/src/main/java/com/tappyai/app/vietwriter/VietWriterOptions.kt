@@ -40,3 +40,12 @@ fun VietWriterLength.label(): String = stringResource(labelRes)
 
 @Composable
 fun VietWriterLength.hint(): String = stringResource(hintRes)
+
+/** "Thử gợi ý": the web's five example topics (`EXAMPLE_TOPIC_KEYS`), cycled in order; nothing is fetched. */
+val VIET_EXAMPLE_TOPICS: List<Int> = listOf(
+    R.string.vietwriter_example_1,
+    R.string.vietwriter_example_2,
+    R.string.vietwriter_example_3,
+    R.string.vietwriter_example_4,
+    R.string.vietwriter_example_5,
+)

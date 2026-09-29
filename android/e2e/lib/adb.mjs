@@ -204,6 +204,22 @@ export async function signIn(email) {
   }
   throw new Error(`could not sign in as ${email}`)
 }
+/**
+ * A REAL login transition for an account whose first screen is onboarding: from a guest, open the
+ * Login screen (Tôi → a locked "Cần đăng nhập" row), then complete the sign-in through the hook while
+ * Login is on screen — the app gates onboarding only there, like the web's auth callback. No wait
+ * for Trang chủ.
+ */
+export async function signInFromLogin(email) {
+  await signOut()
+  await tap('Tôi', { after: 3000 })
+  await scrollTo('Tài khoản')
+  await tap('Tài khoản', { after: 3500 })
+  const s = await sessionFor(email)
+  writePrivate('session.json', JSON.stringify({ access_token: s.access_token, refresh_token: s.refresh_token }))
+  sh('am', 'start', '-n', HOOK, '--es', 'op', 'session')
+  await sleep(4000)
+}
 /** Back to a GUEST: wipe the app's data (a fresh install's state), then launch and let it mint a guest session. */
 export async function signOut() {
   sh('pm', 'clear', PKG)
