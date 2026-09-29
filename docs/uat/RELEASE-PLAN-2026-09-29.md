@@ -158,9 +158,9 @@ read from the source. "eff." = the value the code actually runs with.
 | `MESSAGE_NOTIFICATIONS_ENABLED` | OFF (`=== 'true'`) | unset → OFF | unset → OFF | none |
 | `NEXT_PUBLIC_TIKTOK_CONTENT_POSTING_ENABLED` | OFF | unset | unset | none |
 | `GCP_LOGGING_ENABLED` | OFF | unset | unset | none |
-| `CONTENT_SAFETY_GATE_ENABLED` | OFF (`=== 'true'`) | unset → **OFF** | **set (Encrypted, value not readable by CLI)** | 🚨 Lead reads the value in the Vercel dashboard at step 6. If `true`: production runs the safety gate UAT never ran → **before Huy's UAT sign-off**, set the same value on Preview (`rc/web-uat`), redeploy UAT and re-run the gates (do NOT switch a safety gate off on Production). If `false`/empty: nothing. |
-| `CONTENT_SAFETY_SCHEMA_MIGRATED` | **since R19 (29/09): the read filter is ON unless the value is exactly `false`** (`publishableFilter`); gate activation still needs `true` | unset → filter ON | set (Encrypted) | 🚨 must NOT be `false` on Production (that would show RESTRICTED posts again); `true` or unset are both safe for reads |
-| `CONTROLLER_ORG_MEMBERSHIP_ENABLED` | OFF (`=== 'true'`) | unset → OFF | set (Encrypted) | same rule: read it; `true` → mirror on Preview and re-test before sign-off |
+| `CONTENT_SAFETY_GATE_ENABLED` | OFF (`=== 'true'`) | unset → OFF | **`""` (empty) → OFF** — read 29/09 in memory via `vercel env run` | none — same as UAT |
+| `CONTENT_SAFETY_SCHEMA_MIGRATED` | since R19: read filter ON unless exactly `false`; gate activation needs `true` | unset → filter ON | **`""` → today OFF on `f42ae4b` (restricted posts are NOT filtered on production now); ON after the release** | none. Column `reviews.publication_state` verified on production 29/09 (anon read-only: the filtered query answers 200) → the R19 default is safe. 🚨 never set it to `false` |
+| `CONTROLLER_ORG_MEMBERSHIP_ENABLED` | OFF (`=== 'true'`) | unset → OFF | **`""` → OFF** (read 29/09) | none — same as UAT |
 | `ACCOUNT_SELF_DELETE_ENABLED` | OFF | unset → OFF | **`true`** (plain) | **SET `false`** (owner decision) |
 | `NEXT_PUBLIC_PLAY_LISTING_LIVE` | OFF (UAT shows the badge by rule, `VERCEL_ENV !== 'production'`) | unset | unset → OFF | **keep unset** until Huy publishes the Play listing |
 | `AUTH_GOOGLE_ENABLED` | not read by this release (Phase 8 reads it) | set (Sensitive) | set | **keep** on Production |

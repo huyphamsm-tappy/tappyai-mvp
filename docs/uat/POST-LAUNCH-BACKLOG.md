@@ -32,3 +32,10 @@ Các việc chủ động hoãn đến sau launch. Mỗi mục ghi rõ vì sao c
 - c40 T1 cùng 2–3 câu lập kế hoạch golden, chạy trước và sau, mỗi câu ít nhất 3 lần.
 
 **Không làm:** hạ chất lượng kế hoạch để đổi lấy tốc độ, hoặc bỏ bước bù P1-f.
+
+## PL-REVIEWS-PERF — /reviews: nội dung feed thật tới muộn hơn production (owner 29/09: xử lý sau launch)
+Đo 29/09 (4G chậm 150 ms / 1,6 Mbps, CPU ×4): lần vẽ đầu đã sửa (FCP trung vị 4,0 → 2,6 s, commit 7e7dfe4 + 7ec6970), nhưng feed thật trên UAT tới ~5,8 s so với 3,1–7,3 s trên production. Việc cần làm:
+1. Tách từ điển giao diện theo ngôn ngữ và theo khu vực (hiện mọi trang tải cả vi + en của admin, pháp lý, landing, hướng dẫn… — 110 KB nén). Lưu ý trang công khai hiển thị theo ngôn ngữ trình duyệt → không được nháy chữ khi tải lười.
+2. Bắt đầu request feed trước khi hydrate (preload / server fetch trang đầu).
+3. Tải lười `ExploreStage` (desktop) trên mobile — test `exploreStage.test.tsx` đang ghim import tĩnh, sửa cùng.
+Bằng chứng + script đo: `gs://tappyai-uat-evidence/evidence/perf-reviews-2026-09-29/`, RELEASE-PROGRESS "/reviews LOAD TIME".
