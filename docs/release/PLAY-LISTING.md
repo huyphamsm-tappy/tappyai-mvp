@@ -71,6 +71,19 @@ khuyến nghị cũng coi là bên xử lý. Riêng Overpass là API công cộn
 | Thông tin tài chính / lịch sử mua | **Không** | | | | | Android không có Play Billing/RevenueCat; gói hội viên chỉ đọc (`MembershipRepository.kt:6-7`), `SHOW_PRO_UPGRADE=false` (`ProfileScreen.kt:115`) |
 | Danh bạ, lịch, tệp, SMS, nhật ký cuộc gọi, sức khoẻ, thể chất | **Không** | | | | | không có quyền tương ứng; tử vi/tarot chạy trên máy, không gửi (`A/fortune/`) |
 
+**Chính sách khớp (web `/privacy`, UAT `e3413ca`, 29/09)** — mỗi dòng Data safety có câu tương ứng trong `src/lib/i18n/legal.ts`:
+
+| Data safety | Câu trong chính sách (khoá) |
+|---|---|
+| Vị trí chính xác, tuỳ chọn | `legal.privacy.s1.b7` — chính xác, chỉ khi cho phép, không chạy nền |
+| Tên, email, mã người dùng | `s1.b1`, `s1.b3`, `s1.note` (mã ẩn danh khi chưa đăng nhập) |
+| Ngày sinh (18+) | `s1.b9` |
+| Ảnh, video | `s1.b10`, `s3.b8` (Google Cloud Storage) |
+| Tin nhắn trong app, nội dung người dùng tạo | `s1.b2` (chat AI), `s1.b10` (review, bình luận, bio, tin nhắn giữa người dùng) |
+| Tương tác trong app, lịch sử tìm kiếm | `s1.b8`, `s3.b9` (Google Analytics / Google Analytics for Firebase) |
+| Mã thiết bị | `s1.b8`, `s3.b10` (FCM token), `s3.p2` (push web) |
+| Bên xử lý: Anthropic, Supabase, Google Cloud, Firebase, ACCESSTRADE | `s3.b1`, `s3.b3`, `s3.b8`, `s3.b9`–`s3.b10`, `s3.b11` |
+
 **Link affiliate (ACCESSTRADE) — đã kiểm `sub1` (29/09), CẦN HUY QUYẾT**
 
 Khi người dùng bấm link mua, trình duyệt mở `https://go.isclix.com/deep_link/<publisher>/<campaign>?url=<trang đích>` kèm đúng 3 tham số
