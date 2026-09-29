@@ -85,14 +85,12 @@ describe('pick written as a link (R11)', () => {
   })
 })
 
-describe('sealPlanHeadings (prevention, not repair)', () => {
-  it('gives only approved heading lines an invisible sentence end, and removes it cleanly', async () => {
-    const { sealPlanHeadings, unsealPlanHeadings } = await import('./domainFrames')
-    const plan = '**Gọi món**\nBún bò 50k.\n**Không phải tiêu đề**\n## Chi phí'
-    const sealed = sealPlanHeadings(plan)
-    expect(sealed).toContain('**Gọi món**\u2063.')
-    expect(sealed).toContain('## Chi phí\u2063.')
-    expect(sealed).toContain('**Không phải tiêu đề**\n')
-    expect(unsealPlanHeadings(sealed)).toBe(plan)
+
+describe('a plan heading is a label, not a claim (placeClaimGuard ordering rule cut "Gọi món" / "Giờ đến & đặt bàn")', () => {
+  it('recognises approved heading lines only', async () => {
+    const { isPlanHeadingLine } = await import('./domainFrames')
+    expect(isPlanHeadingLine('**Gọi món**')).toBe(true)
+    expect(isPlanHeadingLine('## Giờ đến & đặt bàn')).toBe(true)
+    expect(isPlanHeadingLine('Quán có đặt bàn online.')).toBe(false)
   })
 })

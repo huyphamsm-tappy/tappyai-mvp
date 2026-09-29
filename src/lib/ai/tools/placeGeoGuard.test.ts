@@ -44,3 +44,15 @@ describe('street names that are province names (Explore clip regression)', () =>
     expect(guardPlaceGeography(rows, '155 Nguyễn Thái Bình, Quận 1, TP.HCM').dropped).toEqual([])
   })
 })
+
+describe('district-only area: the province comes from GPS', () => {
+  it('holds a "quận 1" search in TP.HCM to TP.HCM rows', async () => {
+    const { geoGuardArea, provinceNear } = await import('./placeGeoGuard')
+    expect(provinceNear(10.7769, 106.7009)).toBe('ho chi minh')
+    expect(provinceNear(0, 0)).toBeNull()
+    const area = geoGuardArea('quận 1', { lat: 10.7769, lng: 106.7009 })
+    const rows = { results: [{ name: 'Izakaya Taka Hue', address: '12 Võ Thị Sáu, Vĩnh Ninh, Huế' }, { name: 'Aniki', address: '112 Trần Khắc Chân, Quận 1, TP.HCM' }] }
+    expect((guardPlaceGeography(rows, area).result as typeof rows).results.map(r => r.name)).toEqual(['Aniki'])
+    expect(geoGuardArea('Đà Nẵng', { lat: 10.7769, lng: 106.7009 })).toBe('Đà Nẵng')
+  })
+})

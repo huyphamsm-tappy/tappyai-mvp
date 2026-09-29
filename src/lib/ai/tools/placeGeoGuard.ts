@@ -97,3 +97,30 @@ export function guardPlaceGeography(result: unknown, area: string | null | undef
     dropped,
   }
 }
+
+// A district-only area ("quận 1") names no province: the user's GPS says which city it is (replay 29/09:
+// FOOD-1 "quận 1" picked "Izakaya Taka Hue … tại Huế"). Centres of the cities users search most, 40 km.
+const CITY_CENTRES: Array<[string, number, number]> = [
+  ['ho chi minh', 10.776, 106.700], ['ha noi', 21.028, 105.834], ['da nang', 16.054, 108.202], ['hue', 16.464, 107.586],
+  ['khanh hoa', 12.238, 109.197], ['lam dong', 11.940, 108.458], ['can tho', 10.045, 105.746], ['hai phong', 20.845, 106.688],
+  ['ba ria vung tau', 10.346, 107.084], ['kien giang', 10.289, 103.984], ['quang nam', 15.880, 108.335], ['binh dinh', 13.782, 109.219],
+  ['quang ninh', 20.951, 107.080], ['binh duong', 10.980, 106.652], ['dong nai', 10.945, 106.824],
+]
+
+export function provinceNear(lat: number | null | undefined, lng: number | null | undefined): string | null {
+  if (typeof lat !== 'number' || typeof lng !== 'number') return null
+  let best: { key: string; km: number } | null = null
+  for (const [key, la, ln] of CITY_CENTRES) {
+    const dLat = (la - lat) * 111, dLng = (ln - lng) * 111 * Math.cos((lat * Math.PI) / 180)
+    const km = Math.sqrt(dLat * dLat + dLng * dLng)
+    if (km <= 40 && (!best || km < best.km)) best = { key, km }
+  }
+  return best?.key ?? null
+}
+
+/** The province to hold rows to: the one the area names, else the one the user is in (district-only areas). */
+export function geoGuardArea(area: string | null | undefined, gps: { lat: number; lng: number } | null | undefined): string | null {
+  if (provinceOf(area)) return area ?? null
+  const near = provinceNear(gps?.lat, gps?.lng)
+  return near ? `${area ? `${area}, ` : ''}${near}` : (area ?? null)
+}

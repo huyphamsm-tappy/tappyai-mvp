@@ -23,6 +23,7 @@
 // m" is evidence for exactly those numbers. Anything tracing to neither is
 // removed with the whole sentence, and nothing is ever written.
 
+import { isPlanHeadingLine } from './consultative/domainFrames'
 import { sentenceSpans, proseOnly } from './moneyGuard'
 import { placeTokensFor, textNamesPlace, attributePlace, placesNamedIn } from '@/lib/links/placeAttribution'
 import { isDirectEntityUrl } from '@/lib/links/directUrl'
@@ -752,6 +753,10 @@ export function guardPlaceClaimsInText(
      */
     let prose = proseOnly(s)
     if (!/\p{L}/u.test(prose)) return
+    // An approved consult-plan heading ("**Gọi món**", "**Giờ đến & đặt bàn**") is a label, not a claim: the
+    // ordering rule read "gọi món" / "đặt bàn" as a capability claim and cut the heading (replay 29/09: 7/15
+    // plans lost it, then code had to put it back).
+    if (isPlanHeadingLine(s.trim())) return
 
     /**
      * The claim rules that fired on this sentence.

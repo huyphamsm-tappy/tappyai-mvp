@@ -165,16 +165,8 @@ export function restorePlanHeadings(original: string, guarded: string): string {
   return out.join('\n').replace(/\n{3,}/g, '\n\n')
 }
 
-/**
- * PREVENTION instead of repair (owner 29/09 "hạn chế guard vá"; the heading restore fired on 8/15 plans):
- * a heading line has no sentence end, so a sentence guard read "**Gọi món**\nBún bò 50k…" as ONE sentence
- * and cut the heading with the claim. Before the guards, each approved heading line gets an invisible
- * sentence end (U+2063 + "."), so it stands alone and carries no claim; `unsealPlanHeadings` removes it.
- */
-const SEAL = '\u2063.'
-export function sealPlanHeadings(text: string): string {
-  return text.split('\n').map(l => (headingKey(l) && !l.endsWith(SEAL) ? `${l.trimEnd()}${SEAL}` : l)).join('\n')
-}
-export function unsealPlanHeadings(text: string): string {
-  return text.split(SEAL).join('')
+
+/** An approved plan heading line ("**Gọi món**", "## Chi phí") — a label, never a claim (placeClaimGuard skips it). */
+export function isPlanHeadingLine(line: string): boolean {
+  return headingKey(line) !== null
 }

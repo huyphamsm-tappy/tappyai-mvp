@@ -92,7 +92,7 @@ import { buildDomainFrame, frameDomainOf, frameLibrary, frameRef, PLAN_HEADINGS 
 import { runConsultBrain, consultV2Enabled, wasAskReply, buildAskReply, placeTypeFor, latestShoppingPickPrice } from '@/lib/ai/consultative/consultBrain'
 import { routeConsult } from '@/lib/ai/consultative/consultRouter'
 import { eventPreCall, onlyRowsNamed, slimResultForModel, travelPreCall, withoutShownRows } from '@/lib/ai/consultative/consultTravel'
-import { guardPlaceGeography } from '@/lib/ai/tools/placeGeoGuard'
+import { geoGuardArea, guardPlaceGeography } from '@/lib/ai/tools/placeGeoGuard'
 import { loadChatSessionState, nextChatSessionState, readChatSessionId, saveChatSessionState, type ChatSessionState } from '@/lib/ai/consultative/chatSessionState'
 import { turnUsd, sumCounts, turnCostStream } from '@/lib/ai/turnCost'
 import { planPresearch, planFlightPresearch, type FlightPresearchPlan, presearchMessages, presearchFrames, prefixBody, deferredBody, searchingFrame, type PresearchOutcome, type PresearchPlan } from '@/lib/ai/consultative/presearch'
@@ -1977,7 +1977,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           let r: unknown = placesResult
           // R13 (P0): rows outside Việt Nam, or outside the city this search / consultation is about, never
           // reach the model, the cards or a plan (placeGeoGuard.ts).
-          const geoArea = location ?? consult?.known.diem_den ?? consult?.area ?? null
+          const geoArea = geoGuardArea(location ?? consult?.known.diem_den ?? consult?.area ?? null, userLocation)
           const geo = guardPlaceGeography(r, geoArea)
           if (geo.dropped.length) {
             r = geo.result
