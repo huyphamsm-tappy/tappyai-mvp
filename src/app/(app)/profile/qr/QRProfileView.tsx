@@ -125,16 +125,23 @@ export default function QRProfileView({
         caption: t('v3.qr.scanHint'),
         // The product line and the site, both already configuration: `v3.page.subtitle` is the
         // shipped tagline and the host comes from NEXT_PUBLIC_SITE_URL via `absoluteUrl`.
-        // No store badges — see the note on `website` in brandedCard.ts.
+        // Google Play badge beside the site (owner SL2, 29/09); no App Store badge yet.
         tagline: t('v3.page.subtitle'),
         website: cardWebsite(),
         // The approved card's remaining copy (UAT3): invitation line, banner, website label and the
-        // feature strip. No @username and no store badges — owner decisions, see brandedCard.ts.
+        // feature strip. No @username — owner decision, see brandedCard.ts.
         invite: t('v3.qr.card.invite'),
         slogan: t('v3.qr.card.slogan'),
         sloganSub: t('v3.qr.card.sloganSub'),
         websiteLabel: t('v3.qr.card.websiteLabel'),
         features: [t('v3.qr.card.feat1'), t('v3.qr.card.feat2'), t('v3.qr.card.feat3'), t('v3.qr.card.feat4')],
+        googlePlay: {
+          badgeTop: t('v3.qr.card.playBadgeTop'),
+          titlePre: t('v3.qr.card.getAppPre'),
+          titlePost: t('v3.qr.card.getAppPost'),
+          sub: t('v3.qr.card.getAppSub'),
+          orWebsite: t('v3.qr.card.orWebsite'),
+        },
         qrPx: QR_PX * DOWNLOAD_SCALE,
         quietModules: QR_MARGIN,
       })

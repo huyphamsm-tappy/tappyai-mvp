@@ -1512,7 +1512,7 @@ export default function ChatInterface({
                       <div className="text-base leading-[1.6] text-gray-800 dark:text-gray-100 pt-0.5">
                         <div className={cn('message-content whitespace-pre-wrap', isLoading && isLastMessage && 'streaming-cursor')} onClick={onMessageLinkClick} dangerouslySetInnerHTML={{ __html: formatMessage(bodyText) }} />
                       </div>
-                      {plan && <TripPlanCard plan={plan} />}
+                      {plan && <TripPlanCard plan={plan} placePhotos={placeView?.items} />}
                       {shopView && (
                         <ShoppingDecision
                           view={shopView}

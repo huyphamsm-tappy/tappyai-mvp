@@ -7,10 +7,10 @@
 //  1. NOTHING IS DRAWN INSIDE THE CODE. The reference sheet shows a version with the app mark in
 //     the middle of the matrix; a centre logo spends error-correction budget and costs contrast,
 //     and this code exists to be read by a stranger's phone camera. Branding goes around it.
-//  2. NO STORE URLS. The reference also shows App Store and Google Play badges. Measured across
-//     `src/`, `public/` and `docs/`, this repository holds no canonical listing URL for either
-//     platform, and composing one from the Android `applicationId` would be an invented link on a
-//     printed card. Until a real listing exists, the badges stay off.
+//  2. NO STORE URLS. The reference also shows App Store and Google Play badges. Owner SL2 (29/09):
+//     Android is on Google Play, so the card draws the Google Play BADGE (artwork, no link — a PNG
+//     cannot carry one); the App Store badge stays off until iOS is listed. No listing URL is
+//     written into the card or the page: the Play listing did not answer publicly on 29/09.
 //  3. THE WEBSITE IS CONFIGURATION, NOT A LITERAL. It comes from `NEXT_PUBLIC_SITE_URL`, so a
 //     deployment that moves does not ship cards pointing at the old host.
 
@@ -45,6 +45,18 @@ describe('the card links only where the project actually points', () => {
 
   it.each([CARD, VIEW])('%s names no app-store URL', (rel) => {
     expect(read(rel)).not.toMatch(stores)
+  })
+
+  it('owner SL2: the Google Play badge is drawn (profile page and share sheet), never an App Store badge', () => {
+    const card = read(CARD)
+    expect(card).toContain('export function drawGooglePlayBadge(')
+    expect(card).toContain("ctx.fillText('Google Play'")
+    expect(card).not.toMatch(/App Store/)
+    expect(read(VIEW)).toContain("badgeTop: t('v3.qr.card.playBadgeTop')")
+    expect(read('src/components/share/ShareMenu.tsx')).toContain("badgeTop: t('v3.qr.card.playBadgeTop')")
+    // Google's own localized badge line.
+    expect(read('src/lib/i18n/v3/web.ts')).toContain("'v3.qr.card.playBadgeTop': 'Tải nội dung trên'")
+    expect(read('src/lib/i18n/v3/web.ts')).toContain("'v3.qr.card.playBadgeTop': 'Get it on'")
   })
 
   it('the website comes from the configured site origin, not a hardcoded host', () => {

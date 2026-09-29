@@ -5,7 +5,7 @@
 // with the deterministic plan brochure built from `days[].items[]`.
 
 import { describe, it, expect, afterEach, vi } from 'vitest'
-import { render, screen, cleanup, fireEvent } from '@testing-library/react'
+import { render, screen, cleanup, fireEvent, waitFor, act } from '@testing-library/react'
 import TripPlanCard, { type TappyPlan } from './TripPlanCard'
 import { buildPlanArtifact } from '@/lib/share/shareArtifact'
 
@@ -18,7 +18,7 @@ vi.mock('@/lib/i18n/useTranslation', () => ({
 vi.mock('@/components/messaging/NewMessageSheet', () => ({ default: () => null }))
 vi.mock('@/lib/share/renderCardImage', () => ({ renderArtifactImage: async () => null }))
 
-afterEach(cleanup)
+afterEach(() => { cleanup(); vi.unstubAllGlobals() })
 
 const plan: TappyPlan = {
   type: 'trip',
@@ -39,16 +39,23 @@ const plan: TappyPlan = {
 }
 
 describe('TripPlanCard — Share', () => {
-  it('opens the TappyAI share menu with the deterministic plan brochure', () => {
+  it('opens the approved share sheet (#6, owner SL1) and copies the deterministic plan brochure while there is no link', async () => {
+    // Signed out: no plan link, so "copy" carries the brochure built from days[].items[].
+    vi.stubGlobal('fetch', vi.fn(async () => ({ ok: false, status: 401, json: async () => ({}) })))
+    const writeText = vi.fn(async (_t: string) => undefined)
+    Object.defineProperty(navigator, 'clipboard', { value: { writeText }, configurable: true })
     render(<TripPlanCard plan={plan} />)
     expect(screen.queryByRole('dialog')).toBeNull()
     fireEvent.click(screen.getAllByText('tripPlan.share')[0])
     const dialog = screen.getByRole('dialog')
-    expect(dialog).toBeTruthy()
+    expect(dialog.querySelector('[data-share-variant="plan"]')).toBeTruthy()
+    expect(dialog.querySelector('[data-share-card-picker]')!.getAttribute('data-layout')).toBe('plan')
+    // The plan title names the link card.
+    expect(screen.getByText('2 ngày Đà Lạt cho 2 người · TappyAI')).toBeTruthy()
+    await waitFor(() => expect(dialog.querySelector('[data-plan-link="sign-in"]')).toBeTruthy())
 
-    // The preview shows the exact artifact text the builder produces.
-    fireEvent.click(screen.getByText('share.previewHint'))
-    const text = screen.getByTestId('share-preview-text').textContent ?? ''
+    await act(async () => { fireEvent.click(screen.getByTestId('share-target-copy')) })
+    const text = writeText.mock.calls[0][0] as string
     const expected = buildPlanArtifact(plan, 'vi').text
     expect(text).toBe(expected)
     expect(text.startsWith('Kế hoạch từ TappyAI: 2 ngày Đà Lạt cho 2 người\n')).toBe(true)
@@ -64,6 +71,18 @@ describe('TripPlanCard — Share', () => {
     for (const id of ['facebook', 'zalo', 'viber', 'line', 'email', 'inbox', 'save', 'copy']) {
       expect(screen.getByTestId(`share-target-${id}`)).toBeTruthy()
     }
+  })
+
+  it('the shared plan borrows the same turn\'s place-card photos by stop name (canonical photos only)', async () => {
+    const fetchMock = vi.fn(async (_u: string, _init?: { body: string }) => ({ ok: false, status: 401, json: async () => ({}) }))
+    vi.stubGlobal('fetch', fetchMock)
+    const PHOTO = 'https://lh3.googleusercontent.com/p/AF1Qip-tung=s800'
+    render(<TripPlanCard plan={plan} placePhotos={[{ name: 'Cà phê Tùng', image: PHOTO }, { name: 'Le House Đà Lạt', image: 'https://evil.example/x.jpg' }]} />)
+    fireEvent.click(screen.getAllByText('tripPlan.share')[0])
+    await waitFor(() => expect(fetchMock).toHaveBeenCalled())
+    const body = JSON.parse(fetchMock.mock.calls[0][1]!.body)
+    expect(body.plan.days[0].items[0].photo_url).toBe(PHOTO)
+    expect(body.plan.days[0].items[1].photo_url).toBeUndefined()
   })
 
   it('does not call navigator.share on click', () => {

@@ -1,6 +1,8 @@
-// The PLAN share image — sample #7 ("TAPPY PLAN", plan-share.png): navy ground, the plan's own hero
-// photo (or none), the eyebrow + title + real counts, a numbered day timeline, the overview box,
-// the blue→violet CTA pill carrying the plan link, and "Được tạo bởi TappyAI".
+// The PLAN share image — sample #7 ("TAPPY PLAN", plan-share.png): navy ground, the plan's own
+// photo as the BACKGROUND of the whole top (owner note 29/09; styled like the /plan/<id> social
+// card) or a gradient band when there is none, the eyebrow + title + real counts, a numbered day
+// timeline, "Điểm nổi bật" (≥ 2 photos), the overview box, the blue→violet CTA pill carrying the
+// plan link, and "Được tạo bởi TappyAI".
 //
 // 1080 px wide; the height follows the plan (bounded: at most PLAN_CARD_DAYS days and
 // PLAN_CARD_STOPS stops per day are drawn, the rest is counted).
@@ -18,24 +20,47 @@ export const PLAN_CARD_STOPS = 4
 
 const W = 1080
 const P = 60
+const TOP_BAR = 120
+/** Text-only hero (no real photo): the band under the top bar. */
 const HERO_H = 640
+/**
+ * Photo hero (owner note 29/09 — "tấm plan … có ảnh nền"): the plan's own photo is the card's
+ * BACKGROUND from the very top edge, the lockup and the title sit on it (the /plan/<id> social
+ * card's styling: bottom and left shades so white type reads on any photo).
+ */
+const PHOTO_HERO_H = 1000
 const STOP_H = 128
 const DAY_HEAD = 96
+const TILE_H = 280
+const TILE_GAP = 24
 
 const pad2 = (n: number) => String(n).padStart(2, '0')
 
+/** Where the itinerary starts: under the photo poster, or under the top bar + text hero. */
+export function planHeroBottom(hasPhoto: boolean): number {
+  return hasPhoto ? PHOTO_HERO_H : TOP_BAR + HERO_H
+}
+
+/** "Điểm nổi bật" grid: shown with at least two distinct real stop photos (2 columns, ≤ 4 tiles). */
+function highlightsHeight(n: number): number {
+  if (n < 2) return 0
+  const rows = Math.ceil(Math.min(n, 4) / 2)
+  return 40 + 70 + rows * (TILE_H + 56) + (rows - 1) * TILE_GAP
+}
+
 /** Height of the card for a snapshot — pure, so the layout is testable without a canvas. */
 export function planCardHeight(s: PlanShareSnapshot): number {
+  const { hero, highlights } = brochureOf(s)
   const days = s.days.slice(0, PLAN_CARD_DAYS)
   const body = days.reduce((h, d) => h + DAY_HEAD + Math.min(d.items.length, PLAN_CARD_STOPS) * STOP_H + (d.items.length > PLAN_CARD_STOPS ? 44 : 0) + 24, 0)
   const moreDays = s.days.length > PLAN_CARD_DAYS ? 50 : 0
   const overview = 60 + 3 * 64 + 40
-  return 120 + HERO_H + 60 + 70 + body + moreDays + 30 + overview + 40 + 100 + 60 + 110
+  return planHeroBottom(!!hero) + 60 + 70 + body + moreDays + highlightsHeight(highlights.length) + 30 + overview + 40 + 100 + 60 + 110
 }
 
 export async function renderPlanCard(s: PlanShareSnapshot, url: string, str: PlanBrochureStrings): Promise<Blob | null> {
   if (typeof document === 'undefined') return null
-  const { hero, dayCount, stopCount } = brochureOf(s)
+  const { hero, dayCount, stopCount, highlights } = brochureOf(s)
   const H = planCardHeight(s)
   const canvas = document.createElement('canvas')
   canvas.width = W
@@ -50,8 +75,44 @@ export async function renderPlanCard(s: PlanShareSnapshot, url: string, str: Pla
   ctx.fillStyle = g
   ctx.fillRect(0, 0, W, H)
 
-  // ── Top bar: the shipped lockup ("Tappy" white, "AI" blue) ──
-  const mark = await loadCardImage(TAPPY_MARK, 3000)
+  const [mark, heroImg] = await Promise.all([
+    loadCardImage(TAPPY_MARK, 3000),
+    hero ? loadCardImage(cardImageSrc(hero), 5000) : Promise.resolve(null),
+  ])
+  // A photo that failed to load is treated as no photo — but the height was planned for the
+  // poster, so the gradient fills the same band and the layout below does not move.
+  const heroTop = hero ? 0 : TOP_BAR
+  const heroBottom = planHeroBottom(!!hero)
+
+  // ── Hero: the photo as the card's background (poster), else the text-only gradient band ──
+  if (heroImg) {
+    drawCover(ctx, heroImg, 0, 0, W, heroBottom, 0)
+    const top = ctx.createLinearGradient(0, 0, 0, 260)
+    top.addColorStop(0, 'rgba(7,10,18,0.70)')
+    top.addColorStop(1, 'rgba(7,10,18,0)')
+    ctx.fillStyle = top
+    ctx.fillRect(0, 0, W, 260)
+    const bottom = ctx.createLinearGradient(0, 0, 0, heroBottom)
+    bottom.addColorStop(0, 'rgba(7,10,18,0.10)')
+    bottom.addColorStop(0.55, 'rgba(7,10,18,0.45)')
+    bottom.addColorStop(1, DARK.groundDeep)
+    ctx.fillStyle = bottom
+    ctx.fillRect(0, 0, W, heroBottom)
+    const left = ctx.createLinearGradient(0, 0, W, 0)
+    left.addColorStop(0, 'rgba(7,10,18,0.60)')
+    left.addColorStop(0.6, 'rgba(7,10,18,0.15)')
+    left.addColorStop(1, 'rgba(7,10,18,0)')
+    ctx.fillStyle = left
+    ctx.fillRect(0, 0, W, heroBottom)
+  } else {
+    const hg = ctx.createLinearGradient(0, heroTop, W, heroBottom)
+    hg.addColorStop(0, 'rgba(59,130,246,0.22)')
+    hg.addColorStop(1, 'rgba(139,92,246,0.22)')
+    ctx.fillStyle = hg
+    ctx.fillRect(0, heroTop, W, heroBottom - heroTop)
+  }
+
+  // ── Top bar: the shipped lockup ("Tappy" white, "AI" blue), on the photo when there is one ──
   if (mark) {
     ctx.save(); ctx.beginPath(); ctx.arc(P + 30, 60, 30, 0, Math.PI * 2); ctx.clip()
     ctx.drawImage(mark, P, 30, 60, 60); ctx.restore()
@@ -63,32 +124,16 @@ export async function renderPlanCard(s: PlanShareSnapshot, url: string, str: Pla
   ctx.fillStyle = '#3391FF'
   ctx.fillText('AI', P + 76 + ctx.measureText('Tappy').width, 62)
 
-  // ── Hero ──
-  const heroTop = 120
-  const heroImg = hero ? await loadCardImage(cardImageSrc(hero), 5000) : null
-  if (heroImg) {
-    drawCover(ctx, heroImg, 0, heroTop, W, HERO_H, 0)
-    const shade = ctx.createLinearGradient(0, heroTop, 0, heroTop + HERO_H)
-    shade.addColorStop(0, 'rgba(7,10,18,0.10)')
-    shade.addColorStop(1, 'rgba(7,10,18,0.90)')
-    ctx.fillStyle = shade
-    ctx.fillRect(0, heroTop, W, HERO_H)
-  } else {
-    const hg = ctx.createLinearGradient(0, heroTop, W, heroTop + HERO_H)
-    hg.addColorStop(0, 'rgba(59,130,246,0.22)')
-    hg.addColorStop(1, 'rgba(139,92,246,0.22)')
-    ctx.fillStyle = hg
-    ctx.fillRect(0, heroTop, W, HERO_H)
-  }
   ctx.textBaseline = 'alphabetic'
-  let y = heroTop + HERO_H - 60
+  let y = heroBottom - 60
   // bottom-up: summary, meta, title, eyebrow
   const summary = s.summary ? wrapLinesFont(ctx, s.summary, `400 28px ${CARD_FONT}`, W - P * 2, 2) : []
   const meta = [fill(str.days, dayCount), fill(str.stops, stopCount), s.people ? fill(str.people, s.people) : null].filter(Boolean).join('   ·   ')
   ctx.font = `800 76px ${CARD_FONT}`
   const title = wrapLines(ctx, s.title, W - P * 2, 2)
   const blockH = 34 + 20 + title.length * 86 + 20 + 40 + (summary.length ? 20 + summary.length * 38 : 0)
-  y = heroTop + HERO_H - 56 - blockH
+  y = heroBottom - 56 - blockH
+  if (heroImg) { ctx.shadowColor = 'rgba(0,0,0,0.55)'; ctx.shadowBlur = 24; ctx.shadowOffsetY = 4 }
   ctx.fillStyle = DARK.eyebrow
   ctx.font = `700 28px ${CARD_FONT}`
   ctx.fillText(spaced(str.eyebrow.toUpperCase()), P, y + 30)
@@ -107,9 +152,10 @@ export async function renderPlanCard(s: PlanShareSnapshot, url: string, str: Pla
     ctx.font = `400 28px ${CARD_FONT}`
     for (const l of summary) { y += 38; ctx.fillText(l, P, y, W - P * 2) }
   }
+  ctx.shadowColor = 'transparent'; ctx.shadowBlur = 0; ctx.shadowOffsetY = 0
 
   // ── Itinerary ──
-  y = heroTop + HERO_H + 60
+  y = heroBottom + 60
   ctx.fillStyle = DARK.text
   ctx.font = `800 48px ${CARD_FONT}`
   ctx.fillText(str.itinerary, P, y + 40)
@@ -188,6 +234,30 @@ export async function renderPlanCard(s: PlanShareSnapshot, url: string, str: Pla
     ctx.font = `600 26px ${CARD_FONT}`
     ctx.fillText(`+${fill(str.days, s.days.length - PLAN_CARD_DAYS)}`, P, y + 20)
     y += 50
+  }
+
+  // ── Highlights: the plan's own distinct stop photos, 2 columns (sample #7 "Điểm nổi bật") ──
+  if (highlights.length >= 2) {
+    const tiles = highlights.slice(0, 4)
+    y += 40
+    ctx.fillStyle = DARK.text
+    ctx.font = `800 40px ${CARD_FONT}`
+    ctx.fillText(str.highlights, P, y + 36)
+    y += 70
+    const tw = (W - P * 2 - TILE_GAP) / 2
+    const imgs = await Promise.all(tiles.map(h => loadCardImage(cardImageSrc(h.photo, 640), 4000)))
+    tiles.forEach((h, i) => {
+      const tx = P + (i % 2) * (tw + TILE_GAP)
+      const ty = y + Math.floor(i / 2) * (TILE_H + 56 + TILE_GAP)
+      const img = imgs[i]
+      if (img) drawCover(ctx, img, tx, ty, tw, TILE_H, 24)
+      else { ctx.fillStyle = DARK.panel; roundedRect(ctx, tx, ty, tw, TILE_H, 24); ctx.fill() }
+      ctx.fillStyle = DARK.text
+      ctx.font = `600 26px ${CARD_FONT}`
+      ctx.fillText(wrapLines(ctx, h.name, tw, 1)[0] ?? '', tx, ty + TILE_H + 38, tw)
+    })
+    const rows = Math.ceil(tiles.length / 2)
+    y += rows * (TILE_H + 56) + (rows - 1) * TILE_GAP
   }
 
   // ── Overview box ──

@@ -6,6 +6,7 @@ import { MapPin, Share2, ExternalLink, ChevronRight } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import ShareMenu from '@/components/share/ShareMenu'
 import { buildPlanArtifact } from '@/lib/share/shareArtifact'
+import { withPlacePhotos, type PlacePhotoSource } from '@/lib/plans/share/planPhotos'
 
 export interface PlanItem {
   time: string
@@ -52,7 +53,11 @@ function categoryColor(cat: string) {
   return CATEGORY_COLORS[cat] || CATEGORY_COLORS.transport
 }
 
-export default function TripPlanCard({ plan: rawPlan }: { plan: TappyPlan }) {
+export default function TripPlanCard({ plan: rawPlan, placePhotos }: {
+  plan: TappyPlan
+  /** The same turn's place cards: their own photos become the SHARED plan's stop photos (see planPhotos). */
+  placePhotos?: readonly PlacePhotoSource[] | null
+}) {
   // Every field below renders as PLAIN text, and the model writes markdown inside the plan JSON
   // ("**4.7⭐**"): strip it once, here, for every source (live chat, restored history, planner).
   const plan = useMemo(() => plainTextDeep(rawPlan), [rawPlan])
@@ -70,7 +75,7 @@ export default function TripPlanCard({ plan: rawPlan }: { plan: TappyPlan }) {
    * contribute one introductory line and nothing structural.
    */
   const handleShare = () => setShareOpen(true)
-  const artifact = buildPlanArtifact(plan, locale === 'en' ? 'en' : 'vi')
+  const artifact = buildPlanArtifact(withPlacePhotos(plan, placePhotos), locale === 'en' ? 'en' : 'vi')
 
   const currentDay = plan.days[activeDay] ?? plan.days[0]
 
@@ -256,7 +261,8 @@ export default function TripPlanCard({ plan: rawPlan }: { plan: TappyPlan }) {
           <Share2 size={14} />
           {t('tripPlan.shareItinerary')}
         </button>
-        <ShareMenu artifact={artifact} open={shareOpen} onClose={() => setShareOpen(false)} />
+        {/* Owner SL1 (29/09): the approved sheet (#6) with the plan image; it mints the link itself. */}
+        <ShareMenu artifact={artifact} variant="plan" profileName={plan.title} open={shareOpen} onClose={() => setShareOpen(false)} />
         <p className="text-center text-xs text-gray-400 dark:text-gray-500 mt-1.5">
           {t('tripPlan.shareHint')}
         </p>

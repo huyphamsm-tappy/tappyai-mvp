@@ -20,7 +20,7 @@
 
 import type { ShareArtifact, SharedPlace } from './shareArtifact'
 import { renderArtifactImage } from './renderCardImage'
-import { renderBrandedQrCard, type BrandedQrOptions } from '@/lib/qr/brandedCard'
+import { renderBrandedQrCard, type BrandedQrOptions, type GooglePlayCopy } from '@/lib/qr/brandedCard'
 import { renderPostCard, renderSuggestionCard, type ContentCardCopy, type SharePostCard } from './contentCards'
 import { renderPlanCard } from './planCard'
 import type { PlanShareSnapshot } from '@/lib/plans/share/planShare'
@@ -43,6 +43,8 @@ export interface ShareCardCopy {
   scanTitle?: string
   byline?: string
   morePlaces?: string
+  /** The Google Play column of the TappyAI QR card (profile / post; owner SL2, 29/09). */
+  googlePlay?: GooglePlayCopy
 }
 
 export interface ShareCardInput {
@@ -126,6 +128,7 @@ export async function renderShareCard(input: ShareCardInput, renderers: ShareCar
           websiteLabel: c.websiteLabel,
           features: c.features,
           website: c.website,
+          googlePlay: c.googlePlay,
         })
         break
       case 'review':
