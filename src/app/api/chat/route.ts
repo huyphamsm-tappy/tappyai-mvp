@@ -57,7 +57,7 @@ import { detectPlaceConstraints, applyPlaceConstraints } from '@/lib/ai/placeCon
 import { usesEveningFrame, eveningLocation, eveningStagesFor, pickStageStop, buildEveningPlanBlock, eveningIntroInstruction, eveningIntro, fixedPlanStream, type EveningStop } from '@/lib/ai/eveningPlan'
 import { buildSystem, buildSystemSimple, buildPrefBlock, buildRenderedDecisionBlock, buildPlanningBlock } from '@/lib/ai/promptBuilder'
 import { buildLeanConsultSystem, consultCacheLibraryEnabled, consultTools, recentTurns } from '@/lib/ai/consultative/leanConsultPrompt'
-import { applyPlaceEnrichmentStreamFilter } from '@/lib/ai/streamEnrichment'
+import { applyPlaceEnrichmentStreamFilter, type TurnEvidence } from '@/lib/ai/streamEnrichment'
 import { splitToolResult, createEnrichmentCollector } from '@/lib/ai/toolResultSplit'
 import { shouldExtractMemory } from '@/lib/ai/memoryGate'
 import { sanitizePriorAssistantContent } from '@/lib/ai/sanitizePriorAssistantContent'
@@ -1184,7 +1184,7 @@ export async function POST(req: Request) {
   // 29/09 r14: the guards cut TRUE facts on follow-up / compare ("Michi 4,8⭐ (818 review) vs Haru 4,5⭐", the
   // venue's phone) because these turns carried no evidence. The stored candidates of the chat-session state
   // are that evidence — read with NO provider call (placesOverride below); a re-search only under the old flag.
-  const followFromState = !!(consultativeV1 && process.env.CONSULT_FOLLOW_STATE !== '0' && (consult?.turn === 'followup' || consult?.turn === 'compare') && !presearchPlan && chatState?.candidates?.rows?.length && ['food', 'entertainment', 'spa'].includes(consult?.domains[0] ?? ''))
+  const followFromState = !!(consultativeV1 && process.env.CONSULT_FOLLOW_STATE === '1' && (consult?.turn === 'followup' || consult?.turn === 'compare') && !presearchPlan && chatState?.candidates?.rows?.length && ['food', 'entertainment', 'spa'].includes(consult?.domains[0] ?? ''))
   const consultFollowReuse = followFromState || !!(process.env.CONSULT_FOLLOW_REUSE === '1' && consultativeV1 && (consult?.turn === 'followup' || consult?.turn === 'compare') && !presearchPlan && priorPlaceSearch && ['food', 'entertainment', 'spa'].includes(consult?.domains[0] ?? ''))
   if (followFromState && chatState?.candidates) presearchPlan = { toolName: 'search_places', args: chatState.candidates.args, exact: true }
   else if (consultFollowReuse && priorPlaceSearch) presearchPlan = { toolName: 'search_places', args: priorPlaceSearch.args, exact: true }
@@ -1963,6 +1963,12 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   // Consult pick / "xem thêm" / "bác": the model reads the engine's top 3 only (trimPlacesForModel consultTop).
   const consultTopTurn = !!consult && ['pick', 'more', 'reject'].includes(consult.turn) && process.env.CONSULT_TOP3 !== '0'
   const storedCandidates = chatState?.candidates
+  // Follow-up / compare: the guards' EVIDENCE for the venues being discussed comes from the stored candidates
+  // (stream-filter seed) — no tool call, no provider call, nothing new for the model to read. r14: the guards
+  // cut true facts from the previous turn ("Michi 4,8⭐ (818 review) vs Haru 4,5⭐", the venue's phone).
+  const followSeed: TurnEvidence | undefined = consult && (consult.turn === 'followup' || consult.turn === 'compare') && storedCandidates?.rows?.length && process.env.CONSULT_FOLLOW_SEED !== '0'
+    ? { places: storedCandidates.rows as unknown as TurnEvidence['places'], productRecords: [], productQueries: [] }
+    : undefined
   // Follow-up / compare: the stored rows of the venues the turn is about (refers + the stated pick), no search.
   if (followFromState && storedCandidates) {
     const want = [...(consult?.refers ?? []), ...(latestConsultPick(null) ? [latestConsultPick(null) as string] : [])]
@@ -2733,7 +2739,7 @@ ${completionInstruction(lang)}` },
     }
   // A trip PLAN holds the whole reply too (owner 2026-09-28, B4): on uat @ 444774d a released prefix
   // carried the model's own "bay hay đi xe khách từ thành phố nào?" past planTripFactsGuard.
-  }, undefined, travelIntent || planningIntent === 'trip', lastText, needProfile.domain === 'places',
+  }, followSeed, travelIntent || planningIntent === 'trip', lastText, needProfile.domain === 'places',
   /**
    * 🚨 TIKTOK REVIEW DISCOVERY — THE V1/V2 CAPABILITY, RESTORED WITH A QUERY
    * THAT CAN ACTUALLY BE ATTRIBUTED.
