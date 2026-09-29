@@ -242,3 +242,14 @@ Xem bảng ở mục "CẦN HUY QUYẾT" phía trên, Q1–Q9. Gấp nhất:
 | Lỗi web R16 | lưới bài hồ sơ đè lên modal QR và sheet chia sẻ hồ sơ (che nút) | ANDROID-REQUESTS R16 |
 
 Khác biệt còn lại (không đổi chức năng): chữ đậm 800 trên Android nhạt hơn web một chút (Roboto của máy); mẫu điểm QR khác (zxing ↔ bộ mã hoá web) — cả hai quét được.
+
+## 29/09 chiều — việc không phụ thuộc server (chờ phiên web)
+
+| Việc | Commit | e2e (Android / web) |
+|---|---|---|
+| Consult V2 bản cuối: phát lại OFFLINE 15 luồng raw UAT (HỎI nhóm chip, CHỐT 2 nút, kế hoạch, bỏ qua `tappy.turn.v1`) | `cce387f` | test đơn vị 6/6 · R17 gửi web (CHỐT «Mình chọn» ≠ thẻ #1 khi server không gửi `picked`) |
+| L7 Đã lưu: hero + chip Tất cả/Địa điểm/Bài viết/Video (ẩn Deals, Bộ sưu tập), 2 thẻ đếm, thẻ rỗng | `470e3e1` | saved-onboarding 11/11 · 4/4 |
+| L6 Onboarding: giao diện tối V3 như web, bộ đếm «Bước 1/2 → 2/2», không vẽ dưới thanh trạng thái | `470e3e1` | (cùng flow; tài khoản e2e.android.fresh trên AUDIT) |
+| L8 / R2 Viết content theo thiết kế 28/09 | `91739cc` | viet-content 8/8 · 3/3 (không gọi AI) |
+
+Còn chờ phiên web: spec thẻ kế hoạch mới + manifest ảnh (việc 1), `consult-raw` bản cuối (việc 2), dòng «AI tư vấn ỔN ĐỊNH» (việc 4 → chạy e2e đầy đủ rồi báo Huy MỘT lần).
