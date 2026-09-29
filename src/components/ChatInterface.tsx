@@ -799,6 +799,27 @@ export default function ChatInterface({
     })
   }, [consultKey])
 
+  // R14 / Q7 (owner 29/09): ONE mechanism for web and Android — `chatSessionId`, a UUID made when a chat
+  // opens and sent on every turn; the server keeps the consultation state under (owner, id). It replaces
+  // the decisionEvidenceId key above in the request (the server still honours that key from older tabs).
+  // The remount after the first reply (/chat → /chat/{id}) is the SAME chat, so it adopts the pending id;
+  // reopening a chat from history reuses the id stored for its row. A chat from before this has none →
+  // a new id, and the server rebuilds from the history.
+  const [chatSessionId] = useState<string>(() => {
+    const fresh = () => (typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : `${Date.now().toString(16).padStart(8, '0').slice(-8)}-0000-4000-8000-${Math.random().toString(16).slice(2, 14).padEnd(12, '0')}`)
+    if (typeof window === 'undefined') return fresh()
+    try {
+      const slot = conversationId ? `tappy_chat_session:${conversationId}` : null
+      const own = slot ? localStorage.getItem(slot) : null
+      if (own) return own
+      const pending = isContinuation ? sessionStorage.getItem('tappy_chat_session:pending') : null
+      const id = pending ?? fresh()
+      if (slot) { localStorage.setItem(slot, id); sessionStorage.removeItem('tappy_chat_session:pending') }
+      else sessionStorage.setItem('tappy_chat_session:pending', id)
+      return id
+    } catch { return fresh() }
+  })
+
   // A signed-out visitor has no identity, and the server (correctly) refuses to
   // scope evidence to nobody — so without this, grounded follow-ups would be off
   // for most web users. Mint on mount rather than on first send: the session has
@@ -850,7 +871,7 @@ export default function ChatInterface({
       ...(userLocation ? { userLocation: { lat: userLocation.lat, lng: userLocation.lng, address: userLocation.address } } : {}),
       ...(userPreferences.length > 0 ? { userPreferences } : {}),
       ...((responseStyle.tone || responseStyle.length) ? { responseStyle } : {}),
-      ...(evidenceKey ? { decisionEvidenceId: evidenceKey } : {}),
+      chatSessionId,
       ...(initialContext ? { context: initialContext } : {}),
     },
     onResponse: (response) => {

@@ -93,6 +93,7 @@ import { runConsultBrain, consultV2Enabled, wasAskReply, buildAskReply, placeTyp
 import { routeConsult } from '@/lib/ai/consultative/consultRouter'
 import { eventPreCall, onlyRowsNamed, slimResultForModel, travelPreCall, withoutShownRows } from '@/lib/ai/consultative/consultTravel'
 import { guardPlaceGeography } from '@/lib/ai/tools/placeGeoGuard'
+import { loadChatSessionState, nextChatSessionState, readChatSessionId, saveChatSessionState, type ChatSessionState } from '@/lib/ai/consultative/chatSessionState'
 import { turnUsd, sumCounts, turnCostStream } from '@/lib/ai/turnCost'
 import { planPresearch, planFlightPresearch, type FlightPresearchPlan, presearchMessages, presearchFrames, prefixBody, deferredBody, searchingFrame, type PresearchOutcome, type PresearchPlan } from '@/lib/ai/consultative/presearch'
 import { wantsMoreFromSet, reusablePlaceSearch, type PlaceSearchEvidence } from '@/lib/ai/consultative/moreFromSet'
@@ -541,19 +542,23 @@ export async function POST(req: Request) {
   // The pick the plan is built around: the NEWEST reply that stated one (replay FOOD-1: a reject turn that
   // asked instead of picking hid the earlier pick, and the plan said "bạn chưa chọn quán nào").
   const assistantTexts = messages.filter((m: { role: string }) => m.role === 'assistant').map((m: { content: unknown }) => typeof m.content === 'string' ? m.content : Array.isArray(m.content) ? m.content.map((p: { type?: string; text?: string }) => p?.type === 'text' ? p.text ?? '' : '').join(' ') : '')
+  // R14: the server-side state of this consultation (loaded once the owner is known, below). The history
+  // stays the first source; the state fills what the history cannot show (a trimmed client history, the
+  // evidence row the web used to carry as decisionEvidenceId).
+  let chatState: ChatSessionState | null = null
   const latestConsultPick = (_ms: unknown): string | null => {
     for (let i = assistantTexts.length - 1; i >= 0; i--) {
       const m = assistantTexts[i].match(/\*\*Mình chọn:\s*([^*\n]+?)\*\*/)
       if (m) return m[1].trim()
     }
-    return null
+    return chatState?.pick ?? null
   }
   // Every venue any earlier reply named — "more" / "reject" never brings one back (replay ENT-1/ENT-3).
-  const consultShownEver = consult && (consult.turn === 'more' || consult.turn === 'reject')
+  let consultShownEver = consult && (consult.turn === 'more' || consult.turn === 'reject')
     ? [...new Set(assistantTexts.flatMap(t => priorVenuesIn(t).map(v => v.name)))]
     : []
   // What the brain understood, for the model: what the user said, what is assumed, what was turned down.
-  const consultUnderstood = consult && consult.turn !== 'ask' && consult.turn !== 'chat'
+  const buildConsultUnderstood = () => consult && consult.turn !== 'ask' && consult.turn !== 'chat'
     ? `
 
 ===== DA HIEU (bo nao tu van) =====
@@ -573,6 +578,7 @@ export async function POST(req: Request) {
   })()}
 =====================================`
     : ''
+  let consultUnderstood = buildConsultUnderstood()
   if (consult) {
     clarifyGate = null
     gateAskAfter = null
@@ -600,6 +606,8 @@ export async function POST(req: Request) {
   let priorEvidence: DecisionEvidence | null = null
   /** The raw evidence row this turn was handed (shopping evidence and/or the last place search). */
   let loadedEvidenceRow: Record<string, unknown> | null = null
+  /** R14: the evidence row THIS turn produced (shopping pick or place search) — stored in the chat state. */
+  let turnEvidenceRow: Record<string, unknown> | null = null
   /** True when an id WAS presented but did not resolve — the fail-safe path. */
   let priorEvidenceMissing = false
 
@@ -912,6 +920,24 @@ export async function POST(req: Request) {
       priorEvidenceMissing = true
     }
   }
+
+  // R14 / Q7: the consultation state stored under (owner, chatSessionId). A client that sends no
+  // decisionEvidenceId (Android, and web once it sends chatSessionId) gets the same evidence row back from
+  // here; the router's slots and the stated pick fill what a trimmed history lacks. Another owner's id is a
+  // different key (chatSessionState.ts) — it reads as a new session.
+  const chatSessionId = readChatSessionId(rawBody)
+  chatState = chatSessionId ? await loadChatSessionState(commerceIdentityId, chatSessionId) : null
+  if (chatState) {
+    if (!loadedEvidenceRow && chatState.evidence && typeof chatState.evidence === 'object') {
+      loadedEvidenceRow = chatState.evidence
+      if ((chatState.evidence as { pick?: unknown }).pick) priorEvidence = chatState.evidence as unknown as DecisionEvidence
+      priorEvidenceMissing = false
+    }
+    if (consult && consultContinues && chatState.known) consult.known = { ...chatState.known, ...consult.known }
+    if (consult && (consult.turn === 'more' || consult.turn === 'reject') && chatState.shown?.length) consultShownEver = [...new Set([...consultShownEver, ...chatState.shown])]
+    consultUnderstood = buildConsultUnderstood()
+  }
+  console.log(JSON.stringify({ type: 'tappyai_chat_session', present: !!chatSessionId, owner: !!commerceIdentityId, loaded: !!chatState }))
 
   // Carry it forward under THIS turn's id.
   //
@@ -1445,6 +1471,7 @@ export async function POST(req: Request) {
     const evidence = buildDecisionEvidence(
       pick, shortlisted, typeof totalFound === 'number' ? totalFound : null, lastText,
     )
+    turnEvidenceRow = evidence as unknown as Record<string, unknown>
     if (evidenceDb) {
       try {
         await evidenceDb.rpc('decision_evidence_save', { p_id: evidenceId, p_evidence: evidence })
@@ -2603,11 +2630,19 @@ ${completionInstruction(lang)}` },
     // no place word of its own is still recognised; nothing new is persisted.
   }, async (evidence) => {
     // A1(d): carry this turn's place search (args + the venues shown) under this turn's evidence id.
-    if (!lastPlaceSearch || !evidenceDb) return
-    const row = { ...(loadedEvidenceRow ?? { v: 1 }), placeSearch: { ...lastPlaceSearch, shown: [...(evidence.presentedNames ?? [])].slice(0, 8) } }
+    const row = lastPlaceSearch ? { ...(turnEvidenceRow ?? loadedEvidenceRow ?? { v: 1 }), placeSearch: { ...lastPlaceSearch, shown: [...(evidence.presentedNames ?? [])].slice(0, 8) } } : null
+    // R14: the same row + the consult slots and the stated pick, under (owner, chatSessionId).
+    if (chatSessionId && commerceIdentityId) {
+      const saved = await saveChatSessionState(commerceIdentityId, chatSessionId, nextChatSessionState(chatState, {
+        domains: consult?.domains, known: consult?.known, replyText: evidence.replyText, presentedNames: evidence.presentedNames,
+        evidence: row ?? turnEvidenceRow ?? loadedEvidenceRow ?? null,
+      }))
+      console.log(JSON.stringify({ type: 'tappyai_chat_session', step: 'saved', ok: saved }))
+    }
+    if (!row || !evidenceDb) return
     try {
       await evidenceDb.rpc('decision_evidence_save', { p_id: evidenceId, p_evidence: row })
-      console.log(JSON.stringify({ type: 'tappyai_place_evidence', step: 'saved', shown: row.placeSearch.shown.length, query: lastPlaceSearch.args.query }))
+      console.log(JSON.stringify({ type: 'tappyai_place_evidence', step: 'saved', shown: row.placeSearch.shown.length, query: lastPlaceSearch?.args.query ?? null }))
     } catch (e) {
       console.error('[chat] place evidence save failed (the next "more" turn will search afresh):', e)
     }

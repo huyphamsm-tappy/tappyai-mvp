@@ -148,15 +148,18 @@ describe('ADR-024 — decision evidence state, and only that', () => {
   })
 })
 
-describe('the mobile clients stayed stateless', () => {
-  it('Android sends no chat-state id and reads no state header', () => {
-    // ADR-024 is web-only by design. Android and iOS simply do not send a key, so
-    // their follow-ups get the fail-safe block — honest, if less useful — and no
-    // release is blocked on a mobile change.
+describe('the mobile clients carry no state — only the chat session id (R14)', () => {
+  it('Android may send chatSessionId, and nothing else that carries or names state', () => {
+    // R14 / Q7 (owner 29/09): the consultation state lives on the SERVER under (owner, chatSessionId) —
+    // one mechanism for web and Android. So Android MAY send `chatSessionId` (a UUID it makes per chat);
+    // it still never sends the web's evidence key, the history row id as a state key, or reads a state
+    // header. The server ignores a malformed id and scopes a valid one by owner (chatSessionState.ts).
     const request = readFileSync(
       'android/app/src/main/java/com/tappyai/app/chat/data/ChatRequest.kt', 'utf8')
     expect(request).not.toContain('conversationId')
     expect(request).not.toContain('decisionEvidenceId')
+    // When present, it is exactly this field name — the contract in ANDROID-REQUESTS §2 (R14).
+    if (/session/i.test(request)) expect(request).toMatch(/\bchatSessionId\b/)
     const repo = readFileSync(
       'android/app/src/main/java/com/tappyai/app/chat/data/RealChatRepository.kt', 'utf8')
     expect(repo).not.toContain('X-Conversation-Id')

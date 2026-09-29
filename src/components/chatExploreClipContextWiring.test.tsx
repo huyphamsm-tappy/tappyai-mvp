@@ -64,8 +64,10 @@ describe('the request body carries the clip reference', () => {
   it('the existing fields are untouched either way', () => {
     render(<ChatInterface initialContext={{ kind: 'explore_clip', reviewId: REVIEW }} />)
     const keys = Object.keys(lastBody())
-    // Everything else is conditional (GPS, prefs, style, evidence) and absent in this render.
-    expect(keys).toEqual(['context'])
+    // Everything else is conditional (GPS, prefs, style) and absent in this render; `chatSessionId` (R14) is
+    // sent on every turn.
+    expect(keys).toEqual(['chatSessionId', 'context'])
+    expect(lastBody().chatSessionId).toMatch(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/)
   })
 })
 

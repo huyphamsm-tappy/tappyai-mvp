@@ -1255,6 +1255,8 @@ export interface TurnEvidence {
    * first-N was equally wrong in the other direction.
    */
   presentedNames?: string[]
+  /** OUTPUT — the reply text the user received (R14 consult state reads the stated pick). */
+  replyText?: string
   /**
    * INPUT — the candidates already held in state, so a turn that presents from
    * the existing pool WITHOUT searching can still be recorded.
@@ -1688,6 +1690,8 @@ export function applyPlaceEnrichmentStreamFilter(
   let assistantSoFar = ''
   /** Candidate names this reply actually named — see TurnEvidence.presentedNames. */
   let presentedNames: string[] = []
+  /** R14: the reply text as sent (buffered turns) — the consult state records the stated pick from it. */
+  let finalReplyText = ''
   /** Canonical ids of HELD candidates this reply named — see TurnEvidence.presentedIds. */
   let presentedIds: string[] = []
   /** Names the reply presents as options that no evidence backs — see below. */
@@ -2953,6 +2957,7 @@ export function applyPlaceEnrichmentStreamFilter(
       ? `\n\n${lang === 'vi' ? '🔗 Liên kết chính thức:' : '🔗 Official links:'} ${missingSystemLinks.map(l => `[${escapeMarkdownLabel(l.name)}](${sanitizeUrlForMarkdown(l.url)})`).join(' · ')}`
       : ''
     const finalText = `${ctaOwnedProse}${systemLinksSuffix}${markerSuffix}${placesSuffix}${ctaSuffix}`
+    finalReplyText = finalText
     // Record which candidates this reply actually named — the only reliable
     // answer to "which ones did the user see?".
     const seenIn = normalizeVN(finalText.toLowerCase())
@@ -3445,7 +3450,7 @@ export function applyPlaceEnrichmentStreamFilter(
           // resolved it from the reconstructed text above, live turns resolve
           // it here from what was actually streamed.
           if (presentedIds.length === 0) presentedIds = namedHeldIds(liveText)
-          await onEvidence({ places: resolvePlaces(), productRecords, productQueries, presentedNames: [...new Set(presentedNames)], presentedIds: [...new Set(presentedIds)], ungroundedNames })
+          await onEvidence({ places: resolvePlaces(), productRecords, productQueries, presentedNames: [...new Set(presentedNames)], presentedIds: [...new Set(presentedIds)], ungroundedNames, replyText: finalReplyText || liveText })
         } catch { /* state is best-effort; the reply already shipped */ }
       }
     },
