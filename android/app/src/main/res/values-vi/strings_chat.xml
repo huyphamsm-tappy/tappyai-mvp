@@ -301,4 +301,17 @@
     <string name="chat_share_public_not_shareable">Câu trả lời này chưa thể chia sẻ công khai.</string>
     <string name="chat_ask_free_hint">Hoặc gõ thêm ý khác…</string>
     <string name="chat_ask_send">Gửi</string>
+    <string name="chat_plan_v2_kicker">TAPPY PLAN</string>
+    <string name="chat_plan_v2_itinerary">Hành trình</string>
+    <string name="chat_plan_v2_people">%1$d người</string>
+    <string name="chat_plan_v2_people_label">Số người</string>
+    <string name="chat_plan_v2_destination">Điểm đến</string>
+    <string name="chat_plan_v2_duration">Thời gian</string>
+    <string name="chat_plan_v2_budget">Ngân sách ước tính</string>
+    <string name="chat_plan_v2_overview_trip">Tổng quan chuyến đi</string>
+    <string name="chat_plan_v2_overview">Tổng quan</string>
+    <string name="chat_plan_v2_highlights">Điểm nổi bật</string>
+    <string name="chat_plan_v2_no_price">chưa có giá — hỏi quán</string>
+    <string name="chat_plan_v2_full_cta">Xem kế hoạch đầy đủ trên Tappy</string>
+    <string name="chat_plan_v2_made_by">Được tạo bởi TAPPY</string>
 </resources>

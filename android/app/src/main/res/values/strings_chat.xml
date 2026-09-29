@@ -304,4 +304,17 @@
     <string name="chat_share_public_not_shareable">This answer cannot be shared publicly.</string>
     <string name="chat_ask_free_hint">Or type anything else…</string>
     <string name="chat_ask_send">Send</string>
+    <string name="chat_plan_v2_kicker">TAPPY PLAN</string>
+    <string name="chat_plan_v2_itinerary">Itinerary</string>
+    <string name="chat_plan_v2_people">%1$d people</string>
+    <string name="chat_plan_v2_people_label">People</string>
+    <string name="chat_plan_v2_destination">Destination</string>
+    <string name="chat_plan_v2_duration">Duration</string>
+    <string name="chat_plan_v2_budget">Estimated budget</string>
+    <string name="chat_plan_v2_overview_trip">Trip overview</string>
+    <string name="chat_plan_v2_overview">Overview</string>
+    <string name="chat_plan_v2_highlights">Highlights</string>
+    <string name="chat_plan_v2_no_price">no price yet — ask the venue</string>
+    <string name="chat_plan_v2_full_cta">See the full plan on Tappy</string>
+    <string name="chat_plan_v2_made_by">Made with TAPPY</string>
 </resources>

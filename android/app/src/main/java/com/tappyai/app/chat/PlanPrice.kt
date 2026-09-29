@@ -36,6 +36,7 @@ object PlanPrice {
     @JvmStatic
     fun project(plan: TappyPlan): TappyPlan = plan.copy(
         budgetTotal = amount(plan.budgetTotal),
+        budgetPerPerson = amount(plan.budgetPerPerson),
         costBreakdown = plan.costBreakdown
             ?.mapNotNull { (k, v) -> amount(v)?.let { k to it } }
             ?.toMap()
