@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "concert tháng 10 vé ticketbox 2026 site:ticketbox.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T01:21:07.136Z",
+ "body": {
+  "searchParameters": {
+   "q": "concert tháng 10 vé ticketbox 2026 site:ticketbox.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Ticketbox: Mua vé hòa nhạc, hội thảo, thể thao, phim, kịch và ...",
+    "link": "https://ticketbox.vn/",
+    "snippet": "... TẤM CÁM ĐẠI CHIẾN! 08 tháng 10, 2026. Nhà Hát Kịch IDECAF: Một Ngày Làm VUA 11 tháng 10, 2026. Ticket Box. Nhạc sống. Xem thêm.",
+    "position": 1
+   },
+   {
+    "title": "Tinh Hà \"Say Hi\" Concert",
+    "link": "https://ticketbox.vn/tinh-ha-say-hi-concert-26508",
+    "snippet": "Tinh Hà “Say Hi” Concert, diễn ra vào ngày 17.10.2026 tại Khu đô thị Vạn Phúc City - Sân số 2, Ticketbox chịu trách nhiệm giải quyết các vấn đề phát sinh liên ...",
+    "position": 2
+   },
+   {
+    "title": "[LIVE CONCERT] THANH ÂM MÙA HẠ",
+    "link": "https://ticketbox.vn/thanh-am-mua-ha-concert-26116",
+    "snippet": "Mỗi tấm vé không chỉ là tấm vé bước vào không gian nghệ thuật giàu cảm xúc ... Petersubrg World Tour 2026Từ 500.000đ 28 tháng 10, 2026. Xem thêm sự kiện.",
+    "position": 3
+   },
+   {
+    "title": "Mua bán vé sự kiện",
+    "link": "https://ticketbox.vn/resale-ticket",
+    "snippet": "'GIỮA MỘT VẠN TOUR (MỞ RỘNG)' - PHÙNG KHÁNH LINH | CHAPTER 5: LIVE EXPERIENCE IN HCMC 17 tháng 10, 2026 ; Nhà Hát Kịch IDECAF: Một Ngày Làm VUA 11 tháng 10, 2026.",
+    "position": 4
+   },
+   {
+    "title": "VinhVerse Concert",
+    "link": "https://ticketbox.vn/vinhverse-concert-25910",
+    "snippet": "... FPT TRANSFORM 26: Ship AI LiveTừ 0đ 17 tháng 10, 2026. DANDIYA NIGHT 2026Từ 100.000đ 17 tháng 10, 2026. Xem thêm sự kiện.",
+    "position": 5
+   },
+   {
+    "title": "Mua vé hòa nhạc, hội thảo, thể thao, phim, kịch và voucher",
+    "link": "https://ticketbox.vn/search",
+    "snippet": "Gợi ý dành cho bạn. Vé Trải Nghiệm KidZania Hà NộiTừ 50.000đ 25 tháng 09, 2026 ... SAIGON PRO-AM BASKETBALL CUP 2026Từ 39.000đ 02 tháng 10, 2026.",
+    "position": 6
+   },
+   {
+    "title": "LOALOA SHOW: VIỆT NAM BỪNG SÁNG - Hồ Chí Minh",
+    "link": "https://ticketbox.vn/viet-nam-bung-sang-26446",
+    "snippet": "108 Nguyễn Du, Phường Sài Gòn, Thành phố Hồ Chí Minh. LOALOA SHOW: VIỆT NAM BỪNG SÁNG. Khuôn Viên Dinh Độc Lập. Mua vé ngay. Giá từ1.600.000 đ. Mua vé ngay ...",
+    "position": 7
+   },
+   {
+    "title": "[BẾN THÀNH] Đêm nhạc Anh Tú - Special Guest: Đông Nhi",
+    "link": "https://ticketbox.vn/anh-tu-special-guest-dong-nhi-26083",
+    "snippet": "Lịch diễn ; Phụ thu Super Star. 2.200.000 đ ; Phụ thu Bến Thành. 1.900.000 đ ; Phụ thu Tân Định. 1.600.000 đ ; Phụ thu An Đông. 1.200.000 đ ; Phụ thu Bình Tây 1.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

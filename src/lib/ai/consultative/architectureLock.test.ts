@@ -162,7 +162,8 @@ describe('the transport-mode question is BACKEND-decided, not prompt-decided', (
   })
 
   it('the block is gated on shouldAskTransportMode, never sent unconditionally', () => {
-    expect(code(ROUTE)).toMatch(/tripContext\.shouldAskTransportMode\s*\?\s*buildTransportModeBlock\(\)/)
+    // R12 (29/09): under Consult V2 the ask card already asked — the block is additionally gated off (`&& !consult`).
+    expect(code(ROUTE)).toMatch(/tripContext\.shouldAskTransportMode(?:\s*&&\s*!consult)?\s*\?\s*buildTransportModeBlock\(\)/)
   })
 
   it('the trip module stays model-free, network-free and deterministic', () => {

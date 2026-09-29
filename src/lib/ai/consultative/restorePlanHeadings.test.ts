@@ -67,3 +67,20 @@ describe('row filters', () => {
     expect((onlyRowsNamed(res, 'Không có', ['FEN Izakaya']) as typeof res).results).toEqual([{ name: 'FEN Izakaya' }])
   })
 })
+
+describe('event pre-search (R11)', () => {
+  it('a concert thread searches events with Ticketbox, keeping the month', async () => {
+    const { eventPreCall } = await import('./consultTravel')
+    expect(eventPreCall('vé concert tháng 10 . Chưa biết · 1 người · Dưới 500k', {})).toEqual({ name: 'web_search', args: { query: 'concert tháng 10 vé ticketbox' } })
+    expect(eventPreCall('karaoke quận 1 tối nay', {})).toBeNull()
+  })
+})
+
+describe('pick written as a link (R11)', () => {
+  it('becomes the canonical pick sentence with the link kept', async () => {
+    const { normalizePickSentence } = await import('./consultBrain')
+    const out = normalizePickSentence('Mình hiểu rồi.\n\nMình chọn: [Tinh Hà Concert](https://ticketbox.vn/tinh-ha-26508)\n\n- [B](https://ticketbox.vn/b-1)', 'Tinh Hà Concert')
+    expect(out).toContain('**Mình chọn: Tinh Hà Concert** — [xem & mua vé](https://ticketbox.vn/tinh-ha-26508)')
+    expect(out.match(/Mình chọn/g)).toHaveLength(1)
+  })
+})

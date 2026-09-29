@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Nhà hát Thành phố Hồ Chí Minh\" OR \"CHÀO SHOW\" OR \"Nhà hát Bến Thành\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T01:00:27.178Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Nhà hát Thành phố Hồ Chí Minh\" OR \"CHÀO SHOW\" OR \"Nhà hát Bến Thành\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Chào Show: Trải Nghiệm Nghệ Thuật Việt Nam Đầy Cảm ...",
+    "link": "https://www.tiktok.com/@callmenubi/video/7483104448194120978",
+    "snippet": "Chào Show nghệ thuật Việt Nam, trải nghiệm ẩm thực miền Bắc Trung Nam, không gian sang trọng Chào Show, âm nhạc dân tộc trong Chào Show ...",
+    "position": 1
+   },
+   {
+    "title": "3 anh em rủ nhau đi quậy nhà hát Bến Thành 💣 #OSAD",
+    "link": "https://www.tiktok.com/@osad.official/video/7685826794934586644",
+    "snippet": "13.1K Lượt thích,64 Bình luận.Video TikTok từ OSAD (@osad.official): \"3 anh em rủ nhau đi quậy nhà hát Bến Thành #OSAD\".âm thanh gốc ...",
+    "position": 2
+   },
+   {
+    "title": "CHAO Show (@chaoshow.vn_vietnam)",
+    "link": "https://www.tiktok.com/@chaoshow.vn_vietnam",
+    "snippet": "Spotlight on Công Minh: One of the Talented Wind Instrument Musicians at Chào Show! ... Chào Show tháng 3 có gì #saigoncogi #saigon #saigondem #thang3 ...",
+    "position": 3
+   },
+   {
+    "title": "review đi nghe ở nhà hát Bến Thành 5 triệu 2 cho 2 người ...",
+    "link": "https://www.tiktok.com/@phuongoanh.daily/video/7679433047351037205",
+    "snippet": "review đi nghe ở nhà hát Bến Thành 5 triệu 2 cho 2 người liệu có đáng #phuongoanhdaily. review đi nghe ở nhà hát Bến Thành 5 triệu 2 cho 2 người ...",
+    "position": 4
+   },
+   {
+    "title": "CHÀO SHOW: Âm nhạc, Văn hóa & Ẩm thực Việt Nam",
+    "link": "https://www.tiktok.com/@_ylonton/video/7651928399757282580",
+    "snippet": "CHÀO SHOW mang đến một hành trình độc đáo, khám phá vẻ đẹp đa dạng của Việt Nam qua lăng kính âm nhạc, văn hóa và ẩm thực. Chương trình này dẫn dắt khán giả ...",
+    "position": 5
+   },
+   {
+    "title": "Hồ Văn Cường biểu diễn 28.11 tại Nhà hát Bến Thành",
+    "link": "https://www.tiktok.com/@hovancuong.tiktok/video/7682488967765396756",
+    "snippet": "Hồ Văn Cường sẽ biểu diễn vào ngày 28.11 tại Nhà hát Bến Thành. Đây là lời mời dành cho cô, chú, anh, chị quan tâm tới giọng ca này — thông ...",
+    "position": 6
+   },
+   {
+    "title": "Cháyyy rồi 🔥 MOVE ON từ nhóm nhạc H.O.T tại Nhà hát ...",
+    "link": "https://www.tiktok.com/@thanhxuancuatocohaanhuy/video/7685764080644148501",
+    "snippet": "Cháyyy rồi MOVE ON từ nhóm nhạc H.O.T tại Nhà hát Bến Thành tối nay Biểu diễn: Anh Hoàng Tôn, OSAD, Hà An Huy Trà Thu Thảo ...",
+    "position": 7
+   },
+   {
+    "title": "Chào show 🥰 trải nghiệm nhạc cụ dân gian đa giác quan 3 ...",
+    "link": "https://www.tiktok.com/@hongdilongvong/video/7661283019033988373",
+    "snippet": "Video TikTok từ hongdilongvong (@hongdilongvong): \"Chào show trải nghiệm nhạc cụ dân gian đa giác quan 3 miền quê hương mình nè ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

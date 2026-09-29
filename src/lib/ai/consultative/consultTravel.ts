@@ -106,3 +106,20 @@ export function slimResultForModel(result: unknown): unknown {
   }
   return r
 }
+
+const EVENT_WORDS = /\b(concert|live ?show|liveshow|đại nhạc hội|nhạc hội|fan ?meeting|fanmeet|festival|lễ hội âm nhạc|show diễn|show ca nhạc|minishow|mini ?show|nhạc kịch|vở kịch|xem kịch|sự kiện|stand ?up|hài độc thoại)\b/i
+const MONTH = /\btháng\s*(\d{1,2})\b|\b(\d{1,2})\s*\/\s*(\d{4})\b/i
+
+/**
+ * R11: an event consultation searches EVENTS (web_search → Ticketbox event_links), never venues. The query
+ * is built from what the user said: the event word, the artist if named, the month, the city.
+ */
+export function eventPreCall(threadText: string, known: Record<string, string>): { name: 'web_search'; args: { query: string } } | null {
+  const ev = EVENT_WORDS.exec(threadText)
+  if (!ev) return null
+  const month = MONTH.exec(threadText)
+  const artist = known.nghe_si ?? known.ca_si ?? null
+  const city = known.khu_vuc ?? known.diem_den ?? null
+  const parts = [ev[1].toLowerCase(), artist, month ? `tháng ${month[1] ?? month[2]}` : null, city, 'vé ticketbox']
+  return { name: 'web_search', args: { query: parts.filter(Boolean).join(' ').replace(/\s+/g, ' ').trim() } }
+}

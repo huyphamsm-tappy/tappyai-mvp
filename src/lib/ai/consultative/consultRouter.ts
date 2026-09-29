@@ -614,6 +614,23 @@ function entView(t: Txt, gps: boolean): SlotView {
   const date = W('hen ho|nguoi yeu|ny|date|ban gai|ban trai').test(t.f)
   const kids = W('dan con|voi con|cho con|con \\d+ tuoi|be \\d+ tuoi|cho be|tui nho|con nit|tre con|kids?').test(t.f)
   const missing: Q[] = []
+  // R11: a concert / show / festival is chosen by WHO and HOW MUCH the ticket is — not "chiều nay hay tối
+  // nay" or "sôi động hay chill" (the user said "tháng 10"). Ticket questions only.
+  const event = W('concert|live ?show|liveshow|dai nhac hoi|nhac hoi|fan ?meeting|fanmeet|festival|show dien|show ca nhac|mini ?show|nhac kich|vo kich|xem kich|su kien|stand ?up|hai doc thoai|ve xem').test(t.f)
+  if (event) {
+    const artist = grab(t, /\b(?:cua|xem|nghe)\s+([a-z0-9 ]{2,30}?)(?=\s+(?:thang|tuan|cuoi|o|tai|ngay)\b|[,.!?]|$)/, 1)
+    if (artist) known.nghe_si = artist
+    if (!artist) missing.push(q('artist', 'Ca sĩ / thể loại?', 'Artist / genre?', ['Chưa biết', 'Nhạc trẻ / pop', 'Rap / hip-hop', 'Indie / acoustic'], ['Not sure', 'Pop', 'Rap / hip-hop', 'Indie / acoustic']))
+    if (!party) missing.push(q('party', 'Mấy người đi?', 'How many going?', ['1 người', '2 người', 'Nhóm 3-5', 'Nhóm đông'], ['1', '2', '3-5', 'Big group']))
+    if (!budget) missing.push(q('budget', 'Giá vé mỗi người?', 'Ticket budget per person?', ['Dưới 500k', '500k-1tr', '1-2tr', 'Trên 2tr'], ['Under 500k', '500k-1m', '1-2m', 'Over 2m']))
+    const eventWord = ({ 'nhac kich': 'nhạc kịch', 'vo kich': 'kịch', 'xem kich': 'kịch' } as Record<string, string>)[/concert|live ?show|liveshow|festival|fan ?meeting|nhac kich|vo kich|xem kich|stand ?up/.exec(t.f)?.[0] ?? ''] ?? (/concert|live ?show|liveshow|festival|fan ?meeting|stand ?up/.exec(t.f)?.[0] ?? 'sự kiện')
+    return {
+      known, count: [artist, party, budget].filter(Boolean).length, enough: missing.length === 0 || (!!party && !!budget) || missing.length < 2,
+      missing, queryParts: [eventWord, artist ?? ''], area: area ?? undefined,
+      assumptions: [...(party ? [] : ['1-2 người']), ...(budget ? [] : ['Mức vé phổ thông'])],
+      lead: { vi: `Để chọn ${eventWord === 'sự kiện' ? 'sự kiện' : eventWord} hợp với bạn:`, en: 'To pick the right show:' },
+    }
+  }
   if (!activity) missing.push(date ? q('activity', 'Muốn đi đâu?', 'What would you like to do?', ['Cafe/rooftop', 'Xem phim', 'Bar nhạc sống', 'Dạo phố'], ['Café/rooftop', 'Movie', 'Live-music bar', 'Stroll'])
     : kids ? q('activity', 'Cho bé chơi gì?', 'What for the kids?', ['Khu vui chơi', 'Công viên', 'Thủy cung/bảo tàng', 'Xem phim'], ['Play center', 'Park', 'Aquarium/museum', 'Movie'])
       : q('activity', 'Muốn chơi gì?', 'What would you like to do?', ['Karaoke', 'Xem phim', 'Bar/pub', 'Bida/bowling'], ['Karaoke', 'Movie', 'Bar/pub', 'Billiards/bowling']))

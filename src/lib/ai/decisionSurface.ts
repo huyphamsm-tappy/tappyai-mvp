@@ -36,6 +36,16 @@ export function rendersDecisionCard(surface: string | null | undefined): boolean
  */
 export const ASK_BLOCK_SURFACES: ReadonlySet<string> = new Set(['web'])
 
-export function rendersAskBlock(surface: string | null | undefined): boolean {
+/**
+ * R10 (Android 29/09): a client that can parse the block says so in `x-tappy-caps` (comma/space list,
+ * e.g. "ask"). Gating on the CAPABILITY, not the surface, keeps older Android builds — which still send
+ * `x-tappy-surface: android` but have no parser — on the readable lines.
+ */
+export function clientCaps(header: string | null | undefined): Set<string> {
+  return new Set(String(header ?? '').toLowerCase().split(/[\s,;]+/).map(s => s.trim()).filter(Boolean))
+}
+
+export function rendersAskBlock(surface: string | null | undefined, caps?: string | null): boolean {
+  if (clientCaps(caps).has('ask')) return true
   return surface != null && ASK_BLOCK_SURFACES.has(surface)
 }

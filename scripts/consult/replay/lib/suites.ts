@@ -4,8 +4,8 @@ import { join } from 'node:path'
 
 export interface ReplayTurn { text: string; expect: string | null }
 export interface Conversation { id: string; area: string | null; title?: string; turns: ReplayTurn[] }
-export type SuiteName = 'scenarios' | 'firstTurns' | 'owner59'
-export const SUITES: SuiteName[] = ['scenarios', 'firstTurns', 'owner59']
+export type SuiteName = 'scenarios' | 'firstTurns' | 'owner59' | 'androidR'
+export const SUITES: SuiteName[] = ['scenarios', 'firstTurns', 'owner59', 'androidR']
 
 const FIX = 'src/lib/ai/consultative/__fixtures__'
 const OWNER_MANIFEST = 'C:/Users/Admin/AppData/Local/Temp/claude/D--Claude-Projects-TappyAI--worktrees-g1-growth/252826a6-7ad2-4155-ad14-6de6aee19cdd/scratchpad/c40-step2/review/manifest.json'
@@ -18,6 +18,10 @@ export function loadSuite(name: SuiteName): Conversation[] {
   if (name === 'scenarios') {
     const f = read<{ scenarios: Array<{ id: string; domain: string; turns: Array<{ text: string; expect: string }> }> }>(`${FIX}/multiTurnScenarios.vi.json`)
     return f.scenarios.map(s => ({ id: s.id, area: s.domain, turns: s.turns.map(t => ({ text: t.text, expect: t.expect })) }))
+  }
+  if (name === 'androidR') {
+    const f = read<{ items: Array<{ id: string; domain: string; turns: Array<{ text: string; expect: string | null }> }> }>(join('scripts', 'consult', 'replay', 'fixtures', 'androidRegressions.json'))
+    return f.items.map(it => ({ id: it.id, area: it.domain, turns: it.turns }))
   }
   if (name === 'firstTurns') {
     const f = read<{ items: Array<{ text: string; domain: string }> }>(`${FIX}/intentEveryday.vi.json`)

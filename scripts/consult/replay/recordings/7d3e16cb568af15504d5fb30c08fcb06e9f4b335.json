@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Cội Việt Nam\" OR \"Tiệm Gội Đầu\" OR \"Gội Đầu Dưỡng Sinh\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T00:53:30.440Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Cội Việt Nam\" OR \"Tiệm Gội Đầu\" OR \"Gội Đầu Dưỡng Sinh\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Gội đầu dưỡng sinh Cô Ba — Hướng dẫn & trải nghiệm ...",
+    "link": "https://www.tiktok.com/@duongsinhcoba/video/7656759430905728264",
+    "snippet": "Gội Đầu Dưỡng Sinh Tại Hàn · Gội Đầu Dưỡng Sinh Thảo Điền · Gội Đầu Dưỡng Sinh Đức Hoà. Gội đầu dưỡng sinh Cô Ba — Hướng dẫn & trải nghiệm ASMR.",
+    "position": 1
+   },
+   {
+    "title": "Gội đầu dưỡng sinh #duongsinhcoba #goidauduongsinh ...",
+    "link": "https://www.tiktok.com/@duongsinhcoba/video/7637030543653162247",
+    "snippet": "Gội Đầu Dưỡng Sinh Sa Đéc · Gội Đầu Dưỡng Sinh Nha Trang · Gội Đầu Dưỡng Sinh Đức Hoà · Gội Đầu Dưỡng Sinh Sài Gòn · Gội Đầu Dưỡng Sinh Thạch ...",
+    "position": 2
+   },
+   {
+    "title": "Review Gội Đầu Dưỡng Sinh Huyền Trang 199k",
+    "link": "https://www.tiktok.com/@chagn.94/video/7590327070513761557",
+    "snippet": "Nếu bạn đang tìm kiếm một không gian để thư giãn và chăm sóc bản thân, hãy cùng xem trải nghiệm thực tế tại tiệm gội đầu dưỡng sinh Huyền Trang ...",
+    "position": 3
+   },
+   {
+    "title": "Cách Gội Đầu Dưỡng Sinh Để Khách Luôn Quay Lại",
+    "link": "https://www.tiktok.com/@linhbeautybn/video/7502295105827605767",
+    "snippet": "Gội Đầu Dưỡng Sinh Tại Hàn · Gội Đầu Dưỡng Sinh Long Thành · Gội Đầu Dưỡng Sinh Jang Relax · Gội Đầu Dưỡng Sinh Thảo Điền. Cách Gội Đầu ...",
+    "position": 4
+   },
+   {
+    "title": "Chị nào nhức đầu mình cứ qua gội đầu dưỡng sinh Cô Ba ...",
+    "link": "https://www.tiktok.com/@duongsinhcoba/video/7657490452236537095",
+    "snippet": "Queenby Beauty ✨. 2643 · recommend-cover. Tiệm Gội Đầu Nhà Quê. 582 · recommend-cover. Gội Đầu Dưỡng Sinh Thái Nguyên. 11 · recommend-cover.",
+    "position": 5
+   },
+   {
+    "title": "Gội đầu ở Q1 quá đã bà con ơi 😜 #embetit #quan1",
+    "link": "https://www.tiktok.com/@embetit_/video/7657839156424412436",
+    "snippet": "Gội Đầu Dưỡng Sinh Nha Trang · Gội Đầu Dưỡng Sinh Long Thành · Gội Đầu Dưỡng Sinh Sài Gòn · Gội Đầu Dưỡng Sinh Tại Hàn · Gội Đầu Đúng Cách.",
+    "position": 6
+   },
+   {
+    "title": "lược gội đầu dưỡng sinh",
+    "link": "https://shop.tiktok.com/sg/k/luoc-goi-dau-duong-sinh",
+    "snippet": "bộ lược gội đầu dưỡng sinh · bộ dụng cụ gội đầu dưỡng sinh · bồn gội đầu dưỡng sinh · Khăn choàng gội đầu dưỡng sinh · Lá thuốc thơm gội dưỡng sinh · bộ gõ lông ...",
+    "position": 7
+   },
+   {
+    "title": "Hasil untuk \"bộ lược gội đầu dưỡng sinh\"",
+    "link": "https://shop.tiktok.com/my/k/bo-luoc-goi-dau-duong-sinh",
+    "snippet": "lược gội đầu dưỡng sinh · bộ dụng cụ gội đầu dưỡng sinh · bộ lược mát xa đầu · bộ lược chải tóc · chuông gội đầu dưỡng sinh · bộ gõ lông công dưỡng sinh · bộ ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

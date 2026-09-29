@@ -138,3 +138,15 @@ describe('what the surface changes on the wire', () => {
     expect(prose).toBe((await turn(null)).prose)
   })
 })
+
+describe('R10: the structured ask block follows the client capability, not the surface', () => {
+  it('web always; android only when it declares x-tappy-caps: ask; older android keeps readable lines', async () => {
+    const { rendersAskBlock } = await import('./decisionSurface')
+    expect(rendersAskBlock('web', null)).toBe(true)
+    expect(rendersAskBlock('android', 'ask')).toBe(true)
+    expect(rendersAskBlock('android', 'plan, ask')).toBe(true)
+    expect(rendersAskBlock('android', null)).toBe(false)
+    expect(rendersAskBlock('android', 'asks')).toBe(false)
+    expect(rendersAskBlock(null, 'ASK')).toBe(true)
+  })
+})

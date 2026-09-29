@@ -1,0 +1,23 @@
+{
+  "note": "ANDROID-REQUESTS R9/R11/R12/R13 reproduced offline (UAT 28-29/09, e2e.android.pro).",
+  "items": [
+    { "id": "R13", "domain": "travel", "turns": [
+      { "text": "Lên kế hoạch đi Đà Nẵng 3 ngày 2 đêm tuần sau cho 2 người, ngân sách 10 triệu, bay từ TP.HCM, thích biển và ăn hải sản", "expect": null },
+      { "text": "Lên kế hoạch chi tiết", "expect": "plan" } ] },
+    { "id": "R12", "domain": "travel", "turns": [
+      { "text": "đi du lịch Đà Nẵng 3 ngày 2 đêm", "expect": "ask" },
+      { "text": "Tuần này", "expect": "pick" },
+      { "text": "Lên kế hoạch chi tiết", "expect": "plan" } ] },
+    { "id": "R12b", "domain": "travel", "turns": [
+      { "text": "đi du lịch Đà Nẵng 3 ngày 2 đêm", "expect": "ask" },
+      { "text": "Tuần này · 2 người · 5-10 triệu", "expect": "pick" },
+      { "text": "Lên kế hoạch chi tiết", "expect": "plan" } ] },
+    { "id": "R11", "domain": "entertainment", "turns": [
+      { "text": "vé concert tháng 10", "expect": "ask" },
+      { "text": "Chưa biết · 1 người · Dưới 500k", "expect": "pick" } ] },
+    { "id": "R9", "domain": "travel", "turns": [
+      { "text": "đi du lịch Đà Nẵng 3 ngày 2 đêm", "expect": "ask" },
+      { "text": "Tuần sau · 2 người · 5-10 triệu", "expect": "pick" },
+      { "text": "Lên kế hoạch chi tiết", "expect": "plan" } ] }
+  ]
+}

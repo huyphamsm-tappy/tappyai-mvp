@@ -256,6 +256,10 @@ export function consultRemainingLine(text: string, candidateNames: readonly stri
  */
 export function normalizePickSentence(text: string, fallbackPick?: string | null): string {
   if (/\*\*Mình chọn:\s*[^*\n]+\*\*/.test(text)) return text
+  // The pick written as a link (replay R11: "Mình chọn: [Tinh Hà Concert](https://ticketbox.vn/…)"): the name
+  // becomes the pick sentence, the link stays right after it.
+  const linked = text.replace(/\*{0,2}Mình chọn:\s*\*{0,2}\[([^\]\n]{2,120})\]\((https?:\/\/[^)\s]+)\)\*{0,2}/i, (_m, name: string, url: string) => `**Mình chọn: ${name.replace(/\*+/g, '').trim()}** — [xem & mua vé](${url})`)
+  if (linked !== text) return linked
   // "**mình chọn: X**" (lower case, replay FOOD-1) → the canonical capital form.
   const lower = text.replace(/\*\*\s*mình chọn\s*:\s*([^*\n]+)\*\*/i, (_m, name: string) => `**Mình chọn: ${name.trim()}**`)
   if (lower !== text) return lower

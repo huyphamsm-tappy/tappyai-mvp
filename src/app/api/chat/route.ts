@@ -91,7 +91,8 @@ import { tripAskAfter, missingTripFacts } from '@/lib/ai/consultative/tripFacts'
 import { buildDomainFrame, frameDomainOf, PLAN_HEADINGS } from '@/lib/ai/consultative/domainFrames'
 import { runConsultBrain, consultV2Enabled, wasAskReply, buildAskReply, placeTypeFor } from '@/lib/ai/consultative/consultBrain'
 import { routeConsult } from '@/lib/ai/consultative/consultRouter'
-import { onlyRowsNamed, slimResultForModel, travelPreCall, withoutShownRows } from '@/lib/ai/consultative/consultTravel'
+import { eventPreCall, onlyRowsNamed, slimResultForModel, travelPreCall, withoutShownRows } from '@/lib/ai/consultative/consultTravel'
+import { guardPlaceGeography } from '@/lib/ai/tools/placeGeoGuard'
 import { turnUsd, sumCounts, turnCostStream } from '@/lib/ai/turnCost'
 import { planPresearch, planFlightPresearch, type FlightPresearchPlan, presearchMessages, presearchFrames, prefixBody, deferredBody, searchingFrame, type PresearchOutcome, type PresearchPlan } from '@/lib/ai/consultative/presearch'
 import { wantsMoreFromSet, reusablePlaceSearch, type PlaceSearchEvidence } from '@/lib/ai/consultative/moreFromSet'
@@ -357,9 +358,17 @@ export async function POST(req: Request) {
   // A plan's budget is the WHOLE envelope, and its searches are the activities
   // the user named — both decided here, deterministically, so the planning block
   // can state the total and list exactly the searches to run (see promptBuilder).
+  // R13 (P0, Android 29/09): "Lên kế hoạch chi tiết" read as a NEW consultation — the subject scope cut
+  // the thread to that one line, so the trip block said "user chưa nêu" the city, dates and origin the
+  // user HAD given (UAT: an evening plan in Omaha/Seattle). Under Consult V2 the router decides whether a
+  // turn continues the consultation; a continuing turn keeps the whole thread (up to 6 user turns).
+  const consultContinues = !!consult && (['followup', 'compare', 'more', 'reject', 'plan'].includes(consult.turn) || (consult.turn === 'pick' && wasAskReply(priorAssistantText)))
+  const consultThreadTexts = consultContinues
+    ? messages.filter((m: { role: string }) => m.role === 'user').map((m: { content: unknown }) => typeof m.content === 'string' ? m.content : Array.isArray(m.content) ? m.content.map((p: { type?: string; text?: string }) => p?.type === 'text' ? p.text ?? '' : '').join(' ') : '').slice(-7, -1)
+    : null
   const planning = planningIntent
     ? (() => {
-        const thread = [...priorUserTexts, lastText]
+        const thread = [...(consultThreadTexts ?? priorUserTexts), lastText]
         const nearest = <T,>(read: (s: string) => T | null): T | null => thread.slice().reverse().map(read).find(v => v !== null) ?? null
         return {
           totalBudget: nearest(extractPlanTotalBudget),
@@ -423,7 +432,7 @@ export async function POST(req: Request) {
   // actionable for FOOD, no clarify fired, and the model asked instead of searching. The gate's own
   // domain reading of the turn alone decides (turnStartsNewConsultation); when it fires, the
   // intent gate, the clarify gate and the situation frame all read the turn as a first turn.
-  const ownDomainSwitch = consultativeV1Enabled() && turnStartsNewConsultation({ messages, hasGps: !!userLocation, lang })
+  const ownDomainSwitch = !consultContinues && consultativeV1Enabled() && turnStartsNewConsultation({ messages, hasGps: !!userLocation, lang })
   const turnIntent = classifyTurnIntent({
     stage: decisionStage,
     hasPriorAssistantTurn,
@@ -527,7 +536,7 @@ export async function POST(req: Request) {
   // Consult V2: the brain owns the asking. Its ASK turn replaces the old one-question gate; no question
   // is stacked at the end of a pick (the pick ends with "còn N lựa chọn" + the server's buttons).
   const consultAskReply = consult?.turn === 'ask' && consult.ask
-    ? buildAskReply(consult.ask, { lang, structured: rendersAskBlock(req.headers.get('x-tappy-surface')) })
+    ? buildAskReply(consult.ask, { lang, structured: rendersAskBlock(req.headers.get('x-tappy-surface'), req.headers.get('x-tappy-caps')) })
     : null
   // The pick the plan is built around: the NEWEST reply that stated one (replay FOOD-1: a reject turn that
   // asked instead of picking hid the earlier pick, and the plan said "bạn chưa chọn quán nào").
@@ -1002,7 +1011,8 @@ export async function POST(req: Request) {
   // tool call and must judge them all against the SAME question. Phase 7: the earlier user
   // turns ride along so a bare follow-up ("gần biển", "quận nào cũng được") is judged by what
   // the CONVERSATION asked, not misread as a new, narrower question (slotAdmission.ts).
-  const enrichment = createEnrichmentCollector(lastText, recentSubjectUserTexts.slice(0, -1))
+  // R12/R13: a continuing consult turn's guards read the WHOLE thread (subject scope cut "Lên kế hoạch chi tiết" off it).
+  const enrichment = createEnrichmentCollector(lastText, consultThreadTexts ?? recentSubjectUserTexts.slice(0, -1))
   // Observability for the TikTok cost/quality trade-off. Nothing branches on these.
   let tiktokEntitiesAsked = 0
   let tiktokSearched = false
@@ -1105,7 +1115,7 @@ export async function POST(req: Request) {
   const consultNoSearchNow = !!consult && (consult.turn === 'followup' || consult.turn === 'compare' || (consult.turn === 'plan' && consult.domains[0] !== 'travel'))
   const searchNow = consultNoSearchNow ? null : consultSearch ?? (situation ? deriveSearchNow({ text: framingText, situation, frame: decisionFrame, need: needProfile, forcedTool, isFirstReply: isFirstReply || afterClarify || moreTurn, movieRecommend, afterClarify, consultationText: consultationUserTexts(framingMessages).join(' ') }) : null)
   // Owner 2026-09-28 (c40 T7): a flight search runs without a date; the date is asked at the END.
-  if (searchNow?.type === 'flight' && !SPECIFIC_DATE.test(normalizeVN(lastText.toLowerCase())) && !(lastAssistantText && endsWithQuestion(lastAssistantText))) {
+  if (!consult && searchNow?.type === 'flight' && !SPECIFIC_DATE.test(normalizeVN(lastText.toLowerCase())) && !(lastAssistantText && endsWithQuestion(lastAssistantText))) {
     gateAskAfter = { q: lang === 'en' ? 'Which date?' : 'Ngày bay?', options: [] }
   }
   let presearchPlan = consultativeV1 ? planPresearch(searchNow, situation, { clip: !!clipContext, planning: !!planningIntent, movie: movieRecommend, more: moreTurn, statedArea: statedArea?.label ?? null, userText: framingText }) : null
@@ -1133,6 +1143,12 @@ export async function POST(req: Request) {
   const consultProductQuery = consult && (consult.turn === 'pick' || consult.turn === 'reject') && consult.domains[0] === 'shopping' && consult.query ? consult.query : consultShoppingMoreQuery
   // …and a travel pick runs the flight or hotel search its slots name (consultTravel.ts).
   const consultTravelCall = consult && (consult.turn === 'pick' || consult.turn === 'reject') && consult.domains[0] === 'travel' ? travelPreCall(consult.known, lastText) : null
+  // R11 (Android 29/09): "vé concert tháng 10" → ask card → answer → a VENUE ("Nhà hát…", "CHÀO SHOW") with no
+  // Ticketbox button: the entertainment pick pre-searched places. An event consultation (concert / show /
+  // festival / tickets) pre-searches EVENTS through web_search (Ticketbox listings become event_links).
+  const consultEventCall = consult && (consult.turn === 'pick' || consult.turn === 'reject' || consult.turn === 'more') && consult.domains[0] === 'entertainment'
+    ? eventPreCall([...(consultThreadTexts ?? []), lastText].join(' . '), consult.known)
+    : null
   const flightPresearch = consultativeV1 && !presearchPlan && !clipContext ? planFlightPresearch(searchNow, lastText, new Date(), { planning: !!planningIntent }) : null
 
   /**
@@ -1615,7 +1631,7 @@ export async function POST(req: Request) {
     // left "ăn gì ngon giờ" / "đi chơi ở đâu" answered with a question and no tool call.
     // The turn after a clarify (item 1) is the first REAL reply: it must search now, never ask again.
     if (searchNow) console.log(JSON.stringify({ type: 'tappyai_consultative_v1', step: 'search_now', domain: decisionFrame.domains[0] ?? null, placeType: searchNow.type, exact: searchNow.exact }))
-    return buildConsultativeV1Block({ frame: situation, hardGaps: [], rendersCard: rendersDecisionCard, lang, now: new Date(), searchNow: presearchPlan?.reuse ? { query: presearchPlan.args.query, type: presearchPlan.args.type ?? 'restaurant', exact: true } : searchNow, afterClarify, presearched: presearchPlan !== null || flightPresearch !== null || consultProductQuery !== null || consultTravelCall !== null, reuseShown: presearchPlan?.reuse?.shown, askAfter: gateAskAfter, domain: consult ? (consult.turn === 'chat' ? 'main' : frameDomainOf(consult.domains[0] ?? null)) : frameDomainOf(gateDomain, planningIntent), frameTurn: consult && consult.turn !== 'ask' && consult.turn !== 'chat' ? consult.turn : 'pick' }) + consultUnderstood
+    return buildConsultativeV1Block({ frame: situation, hardGaps: [], rendersCard: rendersDecisionCard, lang, now: new Date(), searchNow: presearchPlan?.reuse ? { query: presearchPlan.args.query, type: presearchPlan.args.type ?? 'restaurant', exact: true } : searchNow, afterClarify, presearched: presearchPlan !== null || flightPresearch !== null || consultProductQuery !== null || consultTravelCall !== null || consultEventCall !== null, reuseShown: presearchPlan?.reuse?.shown, askAfter: gateAskAfter, domain: consult ? (consult.turn === 'chat' ? 'main' : frameDomainOf(consult.domains[0] ?? null)) : frameDomainOf(gateDomain, planningIntent), frameTurn: consult && consult.turn !== 'ask' && consult.turn !== 'chat' ? consult.turn : 'pick' }) + consultUnderstood
       + renderReferencedBlock(referenced, []) + refetchLines
   })()
   // Consult V2 (replay 2026-09-29): a follow-up / compare turn (noToolTurn) and a travel more/reject with no
@@ -1654,7 +1670,8 @@ export async function POST(req: Request) {
     // Consultative V1: situation + rule overrides + follow-up references. Empty with the flag OFF.
     v1Block,
     consultOnlyBlock,
-    tripContext.shouldAskTransportMode ? buildTransportModeBlock() : '',
+    // R12: under Consult V2 the questions were asked ONCE, by the ask card — no second "máy bay hay xe khách?".
+    tripContext.shouldAskTransportMode && !consult ? buildTransportModeBlock() : '',
     // Movie/show recommendation turn: the place tool is already dropped above, so
     // the model answers from film knowledge. This keeps that answer grounded —
     // recommend a few titles with why, never invent current showtimes/platform/price.
@@ -1897,6 +1914,14 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           // The editorial supplement runs beside the live search, not after it.
           const [placesResult, editorial] = await Promise.all([searchPlaces(query, location, type, lang, userLocation, placesBudget, { priceRetry, ...(statedArea ? { areaCentre: { ...statedArea.centre, label: statedArea.label } } : {}) }), travelEditorialFor(location)])
           let r: unknown = placesResult
+          // R13 (P0): rows outside Việt Nam, or outside the city this search / consultation is about, never
+          // reach the model, the cards or a plan (placeGeoGuard.ts).
+          const geoArea = location ?? consult?.known.diem_den ?? consult?.area ?? null
+          const geo = guardPlaceGeography(r, geoArea)
+          if (geo.dropped.length) {
+            r = geo.result
+            console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'place_geography', area: geoArea, dropped: geo.dropped.length, reasons: geo.dropped.map(d => d.reason) }))
+          }
           // A type the lexicon could not place ran as a type-less search — said so, not swallowed.
           if (rawType !== undefined && rawType !== null && String(rawType).trim() !== '' && type === undefined && r && typeof r === 'object') {
             (r as Record<string, unknown>)._tappy_type_note = `type "${String(rawType).slice(0, 40)}" khong nam trong danh sach loai; da tim KHONG loc theo loai.`
@@ -2212,8 +2237,9 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
    */
   const toolExecutes = (name: string) => typeof (tools as Record<string, { execute?: unknown }> | undefined)?.[name]?.execute === 'function'
   // The ONE call run before the model: the place search, or (owner 2026-09-28, c40 T7) the fare call.
-  const preCall: { name: 'search_places' | 'get_flight_prices' | 'search_products' | 'get_hotel_prices'; args: PresearchPlan['args'] | FlightPresearchPlan['args'] | { query: string } | Record<string, string> } | null =
+  const preCall: { name: 'search_places' | 'get_flight_prices' | 'search_products' | 'get_hotel_prices' | 'web_search'; args: PresearchPlan['args'] | FlightPresearchPlan['args'] | { query: string } | Record<string, string> } | null =
     consultTravelCall && toolExecutes(consultTravelCall.name) ? consultTravelCall :
+    consultEventCall && toolExecutes('web_search') ? consultEventCall :
     presearchPlan && toolExecutes('search_places') ? { name: 'search_places', args: presearchPlan.args }
       : flightPresearch && toolExecutes('get_flight_prices') ? { name: 'get_flight_prices', args: flightPresearch.args }
         : consultProductQuery && toolExecutes('search_products') ? { name: 'search_products', args: { query: consultProductQuery } }

@@ -1,0 +1,67 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Cội Việt Nam - Tiệm gội đầu dưỡng sinh\" quận 3 hồ chí minh site:klook.com/vi/activity",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T00:53:17.901Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Cội Việt Nam - Tiệm gội đầu dưỡng sinh\" quận 3 hồ chí minh site:klook.com/vi/activity",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Trải Nghiệm Tỉnh Thức Spa tại Hồ Chí Minh - Klook",
+    "link": "https://www.klook.com/vi/activity/46813-tinh-thuc-spa-experience-ho-chi-minh/",
+    "snippet": "Đây là một trong những nơi tôi yêu thích nhất khi đến thăm thành phố Hồ Chí Minh! Thực sự thư giãn và nhân viên thân thiện. Massage rất tuyệt! Có rất nhiều Spa ở đây nhưng tôi chưa bao giờ sai khi chọn nơi này.",
+    "position": 1
+   },
+   {
+    "title": "Chi Tu Head Spa & Massage Chi nhánh Võ Văn Tần, TP. Hồ Chí Minh",
+    "link": "https://www.klook.com/vi/activity/236532-chi-tu-herbal-hair-wash-spa-in-ho-chi-minh-city/",
+    "snippet": "Chị Tư Spa mang đến trải nghiệm gội đầu và massage kiểu Việt Nam đích thực ngay trung tâm Thành phố Hồ Chí Minh. Lấy cảm hứng từ nghi thức spa đầu truyền thống, các liệu pháp kết hợp dầu gội thảo dược, tẩy tế bào chết da đầu và massage thư giãn đầu, cổ, vai giúp ...",
+    "date": "Sep 13, 2026",
+    "position": 2
+   },
+   {
+    "title": "Klook Travel",
+    "link": "https://www.klook.com/vi/activity/162023-520-spa/",
+    "snippet": "Kỹ thuật viên tại cửa hàng có kỹ thuật tinh tế, liệu pháp massage vừa phải, êm dịu và hiệu quả. Không gian thiết kế sáng sủa, sạch sẽ tạo nên bầu không khí thư giãn chất lượng cao, giúp cơ thể và tinh thần hoàn toàn giải tỏa căng thẳng. Áp dụng phương pháp \"tắm nằm\" truyền thống của Việt Nam, kết ...",
+    "position": 3
+   },
+   {
+    "title": "AYen Spa & Healing: Trải nghiệm Massage và Gội đầu tại TP. Hồ ...",
+    "link": "https://www.klook.com/vi/activity/215888-ayen-spa-healing-hair-wash-and-massage-experience-in-ho-chi-minh/",
+    "snippet": "Tôi đã đến đây mỗi ngày trong 3 ngày cuối cùng ở Sài Gòn—2 lần mát-xa toàn thân và một buổi trị liệu tóc. Đây là điểm dừng chân cuối cùng của tôi trước khi ra sân bay để bắt chuyến bay! Môi trường ấm cúng, sạch sẽ và vô cùng yên bình.",
+    "position": 4
+   },
+   {
+    "title": "Trải nghiệm gội đầu thảo dược & massage An Mien tại Hồ Chí Minh",
+    "link": "https://www.klook.com/vi/activity/133564-an-mien-herbal-hairwash-massage-experience-in-ho-chi-minh/",
+    "snippet": "Với 18 chi nhánh trên khắp Việt Nam, An Miên tự hào phục vụ hơn 10.000 khách hàng, thể hiện sự tăng trưởng nhanh chóng và cam kết về các liệu pháp chất lượng cao, bao gồm dầu gội thảo dược, massage toàn thân, chăm sóc da mặt và chăm sóc tóc.",
+    "position": 5
+   },
+   {
+    "title": "Trải nghiệm Yubii Spa & Massage tại Hồ Chí Minh - Klook",
+    "link": "https://www.klook.com/vi/activity/143550-yubii-spa-massage-experience-in-ho-chi-minh/",
+    "snippet": "Hai địa điểm: YUBII SPA có chi nhánh trên đường Lam Sơn gần Sân bay Tân Sơn Nhất và ở Quận 3. Dịch vụ chuyên nghiệp: Kỹ thuật viên lành nghề được đào tạo bởi các chuyên gia massage spa và chăm sóc sức khỏe giàu kinh nghiệm, mang đến dịch vụ chăm sóc chất lượng cao.",
+    "position": 6
+   },
+   {
+    "title": "Trải Nghiệm Dịch Vụ Tại Sả Spa Thành Phố Hồ Chí Minh - Klook",
+    "link": "https://www.klook.com/vi/activity/43964-sa-spa-package-ho-chi-minh/",
+    "snippet": "Trong chuyến đi Hồ Chí Minh 5 ngày 4 đêm, tôi đã massage hai lần. Ở Hồ Chí Minh, đây không phải là nơi kinh tế nhất, nhưng cảm giác tổng thể và độ an toàn đều chất lượng hơn so với những tiệm massage ven đường.",
+    "position": 7
+   }
+  ],
+  "credits": 1
+ }
+}

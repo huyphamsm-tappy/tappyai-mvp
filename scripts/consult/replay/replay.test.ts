@@ -114,7 +114,7 @@ describe.skipIf(!ON)('offline replay — chat route, real model, Serper record/r
     const req = {
       url: 'http://localhost/api/chat',
       nextUrl: new URL('http://localhost/api/chat'),
-      headers: new Headers({ 'content-type': 'application/json', 'x-tappy-surface': 'web', 'accept-language': 'vi' }),
+      headers: new Headers({ 'content-type': 'application/json', 'x-tappy-surface': process.env.REPLAY_SURFACE || 'web', ...(process.env.REPLAY_CAPS ? { 'x-tappy-caps': process.env.REPLAY_CAPS } : {}), 'accept-language': 'vi' }),
       json: () => Promise.resolve({ messages, userLocation: USER_LOCATION, ...(evidenceId ? { decisionEvidenceId: evidenceId } : {}) }),
       signal: undefined,
     }

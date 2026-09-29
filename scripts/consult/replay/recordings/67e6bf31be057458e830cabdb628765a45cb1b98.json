@@ -1,0 +1,461 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "concert",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.7769,106.7009,12z"
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T01:00:19.668Z",
+ "body": {
+  "searchParameters": {
+   "q": "concert",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.7769,106.7009,12z",
+   "engine": "google"
+  },
+  "ll": "@10.7768062,106.7008955,12z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Nhà hát VOH Music One",
+    "address": "3 Đường Nguyễn Đình Chiểu, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7900531,
+    "longitude": 106.7014621,
+    "rating": 4.5,
+    "ratingCount": 388,
+    "type": "Nhà hát nghệ thuật biểu diễn",
+    "types": [
+     "Nhà hát nghệ thuật biểu diễn"
+    ],
+    "phoneNumber": "+84 28 3822 5933",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWl1bp0xVkMxoXfECACdWxUza2Qj4IjKPBWR-YjTklvoDsL71_tSr49tJMTqZZN__u2kQR8od2b5LcUBelOZ-rvIFsTTKahof_kkhJJ-AZQZg8LMlYjZUyc3GaMi32KSIqFrqgs",
+    "cid": "11530129451353253816",
+    "fid": "0x3175294e9f0bfa37:0xa0033fa5922e27b8",
+    "placeId": "ChIJN_oLn04pdTERuCcukqU_A6A"
+   },
+   {
+    "position": 2,
+    "title": "CHÀO SHOW",
+    "address": "6 Nguyễn Siêu, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.779180199999999,
+    "longitude": 106.705727,
+    "rating": 5,
+    "ratingCount": 1286,
+    "type": "Phòng hòa nhạc",
+    "types": [
+     "Phòng hòa nhạc",
+     "Nhà hàng Việt Nam"
+    ],
+    "website": "http://chaoshow.vn/",
+    "phoneNumber": "+84 973 297 938",
+    "bookingLinks": [
+     "https://book.chope.co/booking?source=google_dining&rid=chaoshow2608vn&rwg_token=AE37R_hvDPu-93uQ9IdnLjezaWlhBoxYsrlBeYFKmoC61uZUhVdvvZ-3S0p10XBT9ryrgH6Py4LkhwcUMxyKbZtE6xZyLnIwNOMJ5lbO6NhxuEGE42_MzHQ%3D",
+     "https://www.google.com/maps/reserve/v/dine/c/XOn4IXiy5CE?source=pa&opi=79508299"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmEAYPg510dXr5Ab1C4Bzk2oB29UlwpECN_rh7jPsGaniq-blqSFOyB_55uxTiOP18SQpnxd-PUC-K4Dem-V4pCYTk2QMkqtDXaU1durD8b9U3Q9huX7EFLUJEsiSnSYTLAChJGeMMzYs65",
+    "cid": "8231687031646984266",
+    "fid": "0x31752fa6a779b93f:0x723cd3bdef82184a",
+    "placeId": "ChIJP7l5p6YvdTERShiC773TPHI"
+   },
+   {
+    "position": 3,
+    "title": "Nhà hát Bến Thành",
+    "address": "6 Mạc Đĩnh Chi, Sài Gòn, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7840882,
+    "longitude": 106.70089019999999,
+    "rating": 4.5,
+    "ratingCount": 903,
+    "type": "Nhà hát nghệ thuật biểu diễn",
+    "types": [
+     "Nhà hát nghệ thuật biểu diễn"
+    ],
+    "website": "http://www.nhahatbenthanh.com.vn/",
+    "phoneNumber": "+84 28 3829 1450",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlgeqNVFN7yzc8gioodi5rbb7OxtRcCQd0eRNSEtjY4VNMCGoz1akbqCDkC8bqiOWaY5OA-fsKf3E1OWBGMuoyz1R2Yt7QsEajuCV4sGbYD05d50b4xfLL4Ec7R0sqGKIRmlwMP",
+    "cid": "3836092871537775108",
+    "fid": "0x31752f2bd90910bb:0x353c8a24656ad204",
+    "placeId": "ChIJuxAJ2SsvdTERBNJqZSSKPDU"
+   },
+   {
+    "position": 4,
+    "title": "Sân vận động Quân Khu 7",
+    "address": "2A Đ. Phan Đình Giót, Tân Sơn Hòa, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.801867,
+    "longitude": 106.6673668,
+    "rating": 4.4,
+    "ratingCount": 926,
+    "type": "Sân vận động",
+    "types": [
+     "Sân vận động"
+    ],
+    "phoneNumber": "+84 28 7305 4388",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkO0EBkCUI4y0PGWcc60Ljq7gigX3xBQRMiPz8PUcYg3Qy9aS9khEcQhZZTq9MuNsTUbukNgBGf0-Vw5qqNDTwsavUrb7FRaxf5ExEVbkk3t6gAUhBXnslMvZ0gQNh4npVML0fD",
+    "cid": "18252434688432403076",
+    "fid": "0x3175292f8e255555:0xfd4daca4c207f284",
+    "placeId": "ChIJVVUlji8pdTERhPIHwqSsTf0"
+   },
+   {
+    "position": 5,
+    "title": "Nhà hát Thành phố Hồ Chí Minh",
+    "address": "07 Công trường Lam Sơn, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.776612799999999,
+    "longitude": 106.7031715,
+    "rating": 4.6,
+    "ratingCount": 18002,
+    "type": "Nhà hát Opera",
+    "types": [
+     "Nhà hát Opera",
+     "Điểm thu hút khách du lịch"
+    ],
+    "website": "https://ticket-stations.com/a-o-show",
+    "description": "Nhà hát opera tinh xảo từ thời Pháp thuộc vào thế kỷ 19, nay là nơi biểu diễn ba lê và nhạc giao hưởng của thành phố.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkZezsOdzw-7BWV0mY0Iyy4N-_prQXEjufOn7ES-5IAZ0tLFVemhBL5AzlNb2envnCPGQLSpVPyQu3R5uhe9yhzFdCK85_atLdMVfQhh9av0jJ8akEDA2S3YNa15vq71DsfCfoI",
+    "cid": "6193911520574615099",
+    "fid": "0x31752f4649e7ca29:0x55f531b6120cae3b",
+    "placeId": "ChIJKcrnSUYvdTERO64MErYx9VU"
+   },
+   {
+    "position": 6,
+    "title": "Phòng trà Bến Thành",
+    "address": "6 Mạc Đĩnh Chi, Sài Gòn, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7840882,
+    "longitude": 106.70089019999999,
+    "rating": 4.3,
+    "ratingCount": 323,
+    "priceLevel": "Trên 1 Tr ₫",
+    "type": "Quán bar ca nhạc trực tiếp",
+    "types": [
+     "Quán bar ca nhạc trực tiếp"
+    ],
+    "website": "https://www.facebook.com/phongtrabenthanh",
+    "phoneNumber": "+84 348 486 066",
+    "openingHours": {
+     "Thứ Ba": "09:00–22:00",
+     "Thứ Tư": "09:00–22:00",
+     "Thứ Năm": "09:00–22:00",
+     "Thứ Sáu": "09:00–22:00",
+     "Thứ Bảy": "09:00–22:00",
+     "Chủ Nhật": "09:00–22:00",
+     "Thứ Hai": "09:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmM6nzoGrPTsbRaVKL3qy81VylLptEHCv3OJsaO5hcQ3LqpkIqzGKnEkU9DoSedpxDeTDkckgT_2uDJnBV54iAl09UqmlwjkOYf2ePKMAYNfnCaFT8E0GHXgBRJw5Rhd59ebyib",
+    "cid": "3985692939557611505",
+    "fid": "0x31752feda28ba4f3:0x3750069c861d27f1",
+    "placeId": "ChIJ86SLou0vdTER8ScdhpwGUDc"
+   },
+   {
+    "position": 7,
+    "title": "Sân khấu C30 Hòa Bình",
+    "address": "QMH5+G3G, 141 Bắc Hải, Diên Hồng, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.7789862,
+    "longitude": 106.6576345,
+    "rating": 4.6,
+    "ratingCount": 584,
+    "type": "Nhà hát nghệ thuật biểu diễn",
+    "types": [
+     "Nhà hát nghệ thuật biểu diễn"
+    ],
+    "phoneNumber": "+84 913 676 616",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmthXdLg1BYkhAZbON5CrMddHXfZHesk37p6luOG7OggogNWX4hhSfe2MZBCM0t9Rh3o7Mxuo2z7HIqAwCKxGWsLqK94rNau3cttLltt_SUgRvySjsqiNBnXNx1dye72N5gCEbKaA",
+    "cid": "15425755748913281854",
+    "fid": "0x31752f35d65d45c7:0xd6134b1fddea7b3e",
+    "placeId": "ChIJx0Vd1jUvdTERPnvq3R9LE9Y"
+   },
+   {
+    "position": 8,
+    "title": "Saigon Outcast",
+    "address": "182 Nguyễn Văn Hưởng, An Khánh, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.816552,
+    "longitude": 106.72865189999999,
+    "rating": 4.4,
+    "ratingCount": 1194,
+    "type": "Trung tâm nghệ thuật",
+    "types": [
+     "Trung tâm nghệ thuật",
+     "Lễ hội"
+    ],
+    "website": "https://www.saigonoutcast.com/",
+    "phoneNumber": "+84 358 316 861",
+    "description": "Sân khấu trực tiếp, chợ trời và lễ hội được tổ chức trong không gian tinh tế có quán cà phê và tường leo núi.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWk68B5uz8Ixy7KNg7voI5Wd2-83LtEf7RwpHwz9trXGjKwQGgi1A4Ya_Jgzs_RHSUW_oNU3cL0dKYHFC7exOP4Cz4YtSPnLVaN1zaIDFP0adXG0NgOEm-0IO7U4rlqFb-2Bjec",
+    "cid": "16748152945042416194",
+    "fid": "0x317526242b96f17b:0xe86d645e352a6242",
+    "placeId": "ChIJe_GWKyQmdTERQmIqNV5kbeg"
+   },
+   {
+    "position": 9,
+    "title": "Trung tâm Hội chợ và Triển lãm Sài Gòn",
+    "address": "799 Đường Nguyễn Văn Linh, Khu đô thị Phú Mỹ Hưng, Tân Mỹ, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7306572,
+    "longitude": 106.7213436,
+    "rating": 4.4,
+    "ratingCount": 13203,
+    "type": "Trung tâm hội chợ và triễn lãm",
+    "types": [
+     "Trung tâm hội chợ và triễn lãm",
+     "Khu thương mại",
+     "Nơi tổ chức sự kiện"
+    ],
+    "website": "https://secc.com.vn/",
+    "phoneNumber": "+84 28 3990 7999",
+    "openingHours": {
+     "Thứ Ba": "07:30–17:30",
+     "Thứ Tư": "07:30–17:30",
+     "Thứ Năm": "07:30–17:30",
+     "Thứ Sáu": "07:30–17:30",
+     "Thứ Bảy": "07:30–17:30",
+     "Chủ Nhật": "07:30–17:30",
+     "Thứ Hai": "07:30–17:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkWGqCMJY4b9b0pCkuVYz5xy3xEU4WF0ekeNJAOJdzot14SZt9ZsHHBJk0o8Ne7z7qPL-GI-wcihHyWFsZ45RfmhNM1ORwqjUrc8FDUppGt3CgZWkLw1_R5yo9awwqv6qRIDmZb",
+    "cid": "1349587681935968714",
+    "fid": "0x31752f884b977323:0x12bab2d8a70949ca",
+    "placeId": "ChIJI3OXS4gvdTERykkJp9iyuhI"
+   },
+   {
+    "position": 10,
+    "title": "New Style Star Media",
+    "address": "227/2 Xô Viết Nghệ Tĩnh, Gia Định, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.800497199999999,
+    "longitude": 106.7103786,
+    "rating": 5,
+    "ratingCount": 14,
+    "type": "Phòng hòa nhạc",
+    "types": [
+     "Phòng hòa nhạc"
+    ],
+    "website": "https://www.facebook.com/profile.php?id=61578199637264",
+    "phoneNumber": "+84 908 661 185",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmSUJLD8UvsMW1rp4Ld4QyD78fJlCoHY7YB-2yFcqUHG7jL6m08Q37p8GUIy20VinpGDGDTqlaeK1kCsorpFw2Pwf_UkwSLV6gvUOCExmZ9hm1H4MmZ47KdAVl_s_MIUXWTE8_YCK4BaHfO",
+    "cid": "1713854938389591353",
+    "fid": "0x3175297cf24127dd:0x17c8d5fc6f42b539",
+    "placeId": "ChIJ3SdB8nwpdTERObVCb_zVyBc"
+   },
+   {
+    "position": 11,
+    "title": "Nhà hát Quân đội - Khu vực phía Nam",
+    "address": "140 Cộng Hòa, Tân Sơn Nhất, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.8020053,
+    "longitude": 106.65644739999999,
+    "rating": 4.2,
+    "ratingCount": 1651,
+    "type": "Nhà hát nghệ thuật biểu diễn",
+    "types": [
+     "Nhà hát nghệ thuật biểu diễn"
+    ],
+    "website": "http://vnq.edu.vn/",
+    "phoneNumber": "+84 907 639 973",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmKsO-C3yL-fnMTxLNNY4O3jKZ7d-wlo3rWK3AS0_sJ3ZLsyau0Zv9QQWQGS4aqAjRGYxOdZmebj1v1HuU95ThfrmbxZvxN9XnV8dIewpPzIlRaX1XdO4ysrX7H3ruhWoqUmyjnF_dhbTlV",
+    "cid": "13998584099082522192",
+    "fid": "0x317529376b4303a9:0xc244f612083ece50",
+    "placeId": "ChIJqQNDazcpdTERUM4-CBL2RMI"
+   },
+   {
+    "position": 12,
+    "title": "Rạp Hưng Đạo",
+    "address": "20 Nguyễn Cư Trinh, Bến Thành, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.764897099999999,
+    "longitude": 106.6919459,
+    "rating": 4.4,
+    "ratingCount": 18,
+    "type": "Nhà hát Opera",
+    "types": [
+     "Nhà hát Opera"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWm9pHSQrjXpQy4LTBfelAJCaPrbtjpTG7BPXdjt90AJpJvwnqEK_eMi3fUgTFHfqyWM96JlU9xOYTyGJlxVbNuMMzpPqaI0WlU5d1hFCp-L0N8X1n28As-KpU5va6TEVRYa55TKMbxsCag",
+    "cid": "1633861662306087458",
+    "fid": "0x31752f16f4d9e4f9:0x16aca48679e23222",
+    "placeId": "ChIJ-eTZ9BYvdTERIjLieYakrBY"
+   },
+   {
+    "position": 13,
+    "title": "Phan Phong Vũ",
+    "address": "T9 Ấp Thiên Bình, Tam Phước, Đồng Nai 810000, Việt Nam",
+    "latitude": 10.8785745,
+    "longitude": 106.9339392,
+    "rating": 3.7,
+    "ratingCount": 3,
+    "type": "Phòng hòa nhạc",
+    "types": [
+     "Phòng hòa nhạc"
+    ],
+    "phoneNumber": "+84 933 400 350",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWksNffT-66270iQyQFdCdC7HPzVFI-3PcGuLpvTwvMTt_m2zIir-IooZi6nIQPjH4Dpt9heM0X6m3CufMn5pkGWZAVRA0_6dXPi0xfD9OfQza_uhRaBGTHkNkMK9r8gbov5VUA",
+    "cid": "8028355721663703893",
+    "fid": "0x3174e1a3775b2085:0x6f6a72fe283d6b55",
+    "placeId": "ChIJhSBbd6PhdDERVWs9KP5yam8"
+   },
+   {
+    "position": 14,
+    "title": "8889 STATION VENUE/STUDIO",
+    "address": "3 Đường 10, Khu đô Thị Vạn Phúc, Hiệp Bình, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.8421256,
+    "longitude": 106.70781919999999,
+    "rating": 4.6,
+    "ratingCount": 10,
+    "type": "Nơi tổ chức sự kiện",
+    "types": [
+     "Nơi tổ chức sự kiện"
+    ],
+    "phoneNumber": "+84 901 895 360",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnChyN4dFEQoUoQ7mMQsJO8qVvrDz17srmefhyg049V4LC4zXTTSdWaJoL2_S14ijRHLEArewNYpw8XUw1ixTBNbShQz7qLpRZptfGKYyKL31XF1eg9T4_VcH2fIYBGXjLv8n5Cjs3sbxss",
+    "cid": "255728873541525036",
+    "fid": "0x317529d0b45906c7:0x38c880e3a40de2c",
+    "placeId": "ChIJxwZZtNApdTERLN5AOg6IjAM"
+   },
+   {
+    "position": 15,
+    "title": "1010's Studio",
+    "address": "1010 Network, Lê Văn Lương/724/69 ấp 5, Tổ 7, Nhà Bè, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.722022599999999,
+    "longitude": 106.69273849999999,
+    "rating": 5,
+    "ratingCount": 21,
+    "type": "Phòng hòa nhạc",
+    "types": [
+     "Phòng hòa nhạc",
+     "Nhà sản xuất âm nhạc",
+     "Phòng thu âm"
+    ],
+    "website": "http://1010network.com/",
+    "phoneNumber": "+84 932 061 214",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmrdhMLrsfu6obj9bxXYhRYcHwzDcuc7V4eNj4EuFn69qkv2IGQn4kXTEpEIKsJSX-5ATZF6ksVaUsb7W4onA7sd4k_0Gp35AZokOgeHiPvpG_ubn-6bxr6GhzlAAov69KT0WLX",
+    "cid": "9882438233413906880",
+    "fid": "0x31752f83ba39efa3:0x89257936c15ff1c0",
+    "placeId": "ChIJo-85uoMvdTERwPFfwTZ5JYk"
+   },
+   {
+    "position": 16,
+    "title": "Nhà thi đấu Nguyễn Du",
+    "address": "116 Nguyễn Du, Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7732829,
+    "longitude": 106.6929444,
+    "rating": 4.3,
+    "ratingCount": 1055,
+    "type": "Tổ hợp thể thao",
+    "types": [
+     "Tổ hợp thể thao"
+    ],
+    "website": "https://www.facebook.com/ttvh.q1/?locale=vi_VN",
+    "openingHours": {
+     "Thứ Ba": "06:00–22:00",
+     "Thứ Tư": "06:00–22:00",
+     "Thứ Năm": "06:00–22:00",
+     "Thứ Sáu": "06:00–22:00",
+     "Thứ Bảy": "06:00–22:00",
+     "Chủ Nhật": "06:00–22:00",
+     "Thứ Hai": "06:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmDv8yPWHsK4NCS625EaIp5rgPSqwd9qQ0vyl5rO2B_SIu4aEFXKcF84n-eZdnkHYJu867xXlLdwOjWwN8Y7NSVNHYlRBKRs5F0feI2VemR6xixNVjpqtIuQVVhWBR4jQKFNGOjUw",
+    "cid": "6166926409069705988",
+    "fid": "0x31752f3bf6222bcb:0x559552e530933b04",
+    "placeId": "ChIJyysi9jsvdTERBDuTMOVSlVU"
+   },
+   {
+    "position": 17,
+    "title": "TRAP ROOM Concert",
+    "address": "194 Bùi Viện, Bến Thành, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.766582999999999,
+    "longitude": 106.691777,
+    "type": "Câu lạc bộ âm nhạc",
+    "types": [
+     "Câu lạc bộ âm nhạc"
+    ],
+    "phoneNumber": "+84 938 884 428",
+    "openingHours": {
+     "Thứ Ba": "Mở cửa cả ngày",
+     "Thứ Tư": "Mở cửa cả ngày",
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmAMnrg6HRwkn1dmp31014V2sSfHSVfeTwr9xpH-yTJhSgWGL_jj3fGv3oPsQgc8UkEETSYuYr1EaMboPIOGepl5MAPM_Ef0mebSe-qcz9fr8WoJLnAyyBcL3dpF_rR8n4SbIsDohbedh5T",
+    "cid": "3373347010973948298",
+    "fid": "0x31752f79fc80acbb:0x2ed0893bd53a598a",
+    "placeId": "ChIJu6yA_HkvdTERilk61TuJ0C4"
+   },
+   {
+    "position": 18,
+    "title": "Nhạc viện Thành phố Hồ Chí Minh",
+    "address": "112 Nguyễn Du, Bến Thành, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7741828,
+    "longitude": 106.6950945,
+    "rating": 4.6,
+    "ratingCount": 491,
+    "type": "Nhạc viện",
+    "types": [
+     "Nhạc viện",
+     "Trường nghệ thuật"
+    ],
+    "website": "https://hcmcons.vn/",
+    "phoneNumber": "+84 28 3822 5841",
+    "openingHours": {
+     "Thứ Ba": "08:00–12:00, 14:00–17:00",
+     "Thứ Tư": "08:00–12:00, 14:00–17:00",
+     "Thứ Năm": "08:00–12:00, 14:00–17:00",
+     "Thứ Sáu": "08:00–12:00, 14:00–17:00",
+     "Thứ Bảy": "Đóng cửa",
+     "Chủ Nhật": "Đóng cửa",
+     "Thứ Hai": "08:00–12:00, 14:00–17:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlr_kS-byQ0UTsifyw6aH1hHvPFwFeFSHK9zK65omG3o57X5JbfRHu7yNqWn-MRSPVrISIHAZvepAVggzmqzdaTh-QFSZaY_YmOdBeMBbll8n4mgwTRryjOyQRPeZNwvSftPmpf",
+    "cid": "3757148670655557560",
+    "fid": "0x31752f3942f825c7:0x342412cf4ac16fb8",
+    "placeId": "ChIJxyX4QjkvdTERuG_BSs8SJDQ"
+   },
+   {
+    "position": 19,
+    "title": "Trà Sữa Bách Trà",
+    "address": "65 Võ Oanh, Thạnh Mỹ Tây, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.8038937,
+    "longitude": 106.7176475,
+    "rating": 4.9,
+    "ratingCount": 144,
+    "type": "Trà trân châu",
+    "types": [
+     "Trà trân châu"
+    ],
+    "phoneNumber": "+84 353 838 383",
+    "openingHours": {
+     "Thứ Ba": "07:00–21:30",
+     "Thứ Tư": "07:00–21:30",
+     "Thứ Năm": "07:00–21:30",
+     "Thứ Sáu": "07:00–21:30",
+     "Thứ Bảy": "07:00–21:30",
+     "Chủ Nhật": "07:00–21:30",
+     "Thứ Hai": "07:00–21:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmJ_kwxeOlgngyz9OcNyhyVQ9BruqI6zZXEZYAm3DGoVSTIBaTcIr5eQrjp5V5GvE7e5zjfAtC3Xz4lrXhzs6M6RZk3IsYSSzLeC_anatSUQwhXnDBQAppYew3DU8PAwKcLRy-PE8KceVfP",
+    "cid": "14151903615005825137",
+    "fid": "0x31752986947f8705:0xc465a95b9bfd1871",
+    "placeId": "ChIJBYd_lIYpdTERcRj9m1upZcQ"
+   },
+   {
+    "position": 20,
+    "title": "Nhà thi đấu Quân khu 7",
+    "address": "202 Đ. Hoàng Văn Thụ, Đức Nhuận, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.8008743,
+    "longitude": 106.6688994,
+    "rating": 4.6,
+    "ratingCount": 292,
+    "type": "Tổ hợp thể thao",
+    "types": [
+     "Tổ hợp thể thao"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnborJt9hpAv9Kt3nHJMBbKYAeFqoUSGXzKNGUG92xZfJ3aQsS-7uwv_4qWVmDCMTfEromIoPP4Fu_62-eO_CVELtlNHva0cgm1aNCk32TSbQEIAyw0c1kuQPVlm8nqVs8FmI0L",
+    "cid": "13647314349804830866",
+    "fid": "0x317529f613239cd9:0xbd65001836354092",
+    "placeId": "ChIJ2ZwjE_YpdTERkkA1NhgAZb0"
+   }
+  ],
+  "credits": 3
+ }
+}

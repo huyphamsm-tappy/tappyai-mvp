@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Hải Sản Đà Nẵng Bé Biển\" OR \"Hải Sản Ku Tom Đà Nẵng\" OR \"Thèm Hải Sản\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T01:05:38.334Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Hải Sản Đà Nẵng Bé Biển\" OR \"Hải Sản Ku Tom Đà Nẵng\" OR \"Thèm Hải Sản\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Muối Biển thèm hải sản 🦀🦞🥹 (@muoibienseafood)",
+    "link": "https://www.tiktok.com/@muoibienseafood",
+    "snippet": "Muối Biển thèm hải sản · @muoibienseafood · Nhà hàng hải sản Đà Nẵng 51 Võ Nguyên Giáp, Ngũ Hành Sơn, Đà Nẵng.",
+    "position": 1
+   },
+   {
+    "title": "Góc \"rì viu\" chân thực: Ở Đà Nẵng thèm hải sản tươi rói mà ...",
+    "link": "https://www.tiktok.com/@haisanmocquan/video/7678531885219187988",
+    "snippet": "Góc \"rì viu\" chân thực: Ở Đà Nẵng thèm hải sản tươi rói mà sợ \"đau ví\"? Ghé Mộc Quán liền đi, đồ ăn đỉnh chóp, phục vụ tận răng từ A-Z luôn ...",
+    "position": 2
+   },
+   {
+    "title": "Thèm Hải Sản: Cua, Tôm và Các Món Ngon Khác",
+    "link": "https://www.tiktok.com/@giangvlog71/video/7588024757870775559",
+    "snippet": "Thèm Hải Sản: Cua, Tôm và Các Món Ngon Khác. Giang chia sẻ món hải sản hấp dẫn từ cua, tôm, và cách chế biến đơn giản. Khám phá ẩm thực cùng ...",
+    "position": 3
+   },
+   {
+    "title": "Nhà hàng Thèm Hải Sản Đà Nẵng: Review món sốt quyện ...",
+    "link": "https://www.tiktok.com/@thaikunreview/video/7649674543015005447",
+    "snippet": "Nhà hàng \"Thèm hải sản\" ở Đà Nẵng được người viết nhận xét là rất hợp gu: từ những món sốt đậm đà quyện vị đến các món ăn chơi mang phong ...",
+    "position": 4
+   },
+   {
+    "title": "Hải Sản Ku Tom Đà Nẵng – Quán Ăn Chủ Nhật Đêm Đón ...",
+    "link": "https://www.tiktok.com/@haisankutomdanang/video/7643467017814576391",
+    "snippet": "Hải Sản Ku Tom Đà Nẵng – Quán Ăn Chủ Nhật Đêm Đón Khách. Hôm nay buổi tối chủ nhật tại Quán Ku Tom Đà Nẵng diễn ra thật ấm cúng và đông vui ...",
+    "position": 5
+   },
+   {
+    "title": "Thèm hải sản quá đi",
+    "link": "https://www.tiktok.com/@angidiii_/video/7684167023085014280",
+    "snippet": "Lead Thèm hải sản và ăn vặt ở Đà Nẵng? Tiệm Nhà Nỏn là gợi ý phù hợp: đồ ăn siu rẻ, giá chỉ từ 23k, nhiều lựa chọn hải sản và món vỉa hè đặc sắc ...",
+    "position": 6
+   },
+   {
+    "title": "Thèm hải sản quáaaa, ước gì có tôm hùm để ăn #behien ...",
+    "link": "https://www.tiktok.com/@be_hien_mukbang/video/7682006459965558037",
+    "snippet": "3928 Lượt thích,66 Bình luận.Video TikTok từ Bé Hiền Mukbang (@be_hien_mukbang): \"Thèm hải sản quáaaa, ước gì có tôm hùm để ăn #behien ...",
+    "position": 7
+   },
+   {
+    "title": "Nay Lại thèm Hải Sản#eat #mukbang #reviewanngon ...",
+    "link": "https://www.tiktok.com/@haydenvoitoiii/video/7682456455689129237",
+    "snippet": "8591 Lượt thích,269 Bình luận.Video TikTok từ An Do An Cung Tho Shop (@haydenvoitoiii): \"Nay Lại thèm Hải Sản#eat #mukbang #reviewanngon ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

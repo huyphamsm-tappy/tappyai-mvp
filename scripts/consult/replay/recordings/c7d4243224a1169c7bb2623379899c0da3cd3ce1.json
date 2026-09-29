@@ -1,0 +1,590 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "Cội Việt Nam tiệm gội đầu dưỡng sinh quận 3 quận 3 Ho Chi Minh City",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.7769,106.7009,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T00:53:13.242Z",
+ "body": {
+  "searchParameters": {
+   "q": "Cội Việt Nam tiệm gội đầu dưỡng sinh quận 3 quận 3 Ho Chi Minh City",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.7769,106.7009,14z",
+   "engine": "google"
+  },
+  "ll": "@10.7768941,106.7008997,14z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Cội Việt Nam - Tiệm gội đầu dưỡng sinh",
+    "address": "31A Nguyễn Du, Sài Gòn, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7829661,
+    "longitude": 106.7021455,
+    "rating": 4.7,
+    "ratingCount": 22,
+    "type": "Spa mát xa",
+    "types": [
+     "Spa mát xa"
+    ],
+    "phoneNumber": "+84 982 270 165",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnoOO1c5eg07jXC3SgFnkoc4-11MvX75yFXe96e3b2QgDuKGCDIdaqMt4F4Tru8b-U2f847CQA2fzuNi6UIVCN_0gpJcw1zSlZ7swWe1E77xp1wU1xALHlcMK1m1bNiL-PytsRiwxuZrO5K",
+    "cid": "6761503793525934974",
+    "fid": "0x31752f0076fbe5dd:0x5dd5afe05091cb7e",
+    "placeId": "ChIJ3eX7dgAvdTERfsuRUOCv1V0"
+   },
+   {
+    "position": 2,
+    "title": "Tiệm Gội Về Nhà - Gội Đầu Dưỡng Sinh Quận 3",
+    "address": "14/36 Đ. Kỳ Đồng, Quận 3, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7841917,
+    "longitude": 106.68128949999999,
+    "rating": 4.9,
+    "ratingCount": 77,
+    "type": "Spa",
+    "types": [
+     "Spa"
+    ],
+    "website": "http://tiemgoivenha.com/",
+    "phoneNumber": "+84 357 171 400",
+    "openingHours": {
+     "Thứ Ba": "10:00–21:30",
+     "Thứ Tư": "10:00–21:30",
+     "Thứ Năm": "10:00–21:30",
+     "Thứ Sáu": "10:00–21:30",
+     "Thứ Bảy": "10:00–21:30",
+     "Chủ Nhật": "10:00–21:30",
+     "Thứ Hai": "10:00–21:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnjSzVPwSLQTnMZlvWAggZ1JOMTqAsYHjPdE4q7zQT6oGrXUHydVKYvLN4BB6ixF6QE4M_s8fMfgiYbhbcTs_BAe_fgjQv2nPgG0MKXx4kLAs3YgEF5sQf10cbMRmdG3UobmkOix_sVQpV3",
+    "cid": "15127296766410187618",
+    "fid": "0x31752fb13453ab83:0xd1eef442ddcb6362",
+    "placeId": "ChIJg6tTNLEvdTERYmPL3UL07tE"
+   },
+   {
+    "position": 3,
+    "title": "GỘI ĐẦU DƯỠNG SINH CHUẨN - Q3",
+    "address": "252 Đ. Nguyễn Thiện Thuật, Bàn Cờ, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.769582999999999,
+    "longitude": 106.6781836,
+    "rating": 4.9,
+    "ratingCount": 135,
+    "type": "Spa mát xa",
+    "types": [
+     "Spa mát xa"
+    ],
+    "website": "https://duongsinhchuan.com/",
+    "phoneNumber": "+84 936 735 566",
+    "openingHours": {
+     "Thứ Ba": "09:30–20:30",
+     "Thứ Tư": "09:30–20:30",
+     "Thứ Năm": "09:30–20:30",
+     "Thứ Sáu": "09:30–20:30",
+     "Thứ Bảy": "09:30–20:30",
+     "Chủ Nhật": "09:30–20:30",
+     "Thứ Hai": "09:30–20:30"
+    },
+    "bookingLinks": [
+     "https://www.fresha.com/a/chuan-spa-thanh-pho-ho-chi-minh-ban-co-ban-co-252-duong-nguyen-thien-thuat-ybxtgkv8/all-offer?rwg_token=AE37R_iTjdcmFfX49oDmb6woOc6eI3Oc7h_GbqZm2LNLqErumrvq9CPsr_37vV1RdYYZi63nSOYjfg53noMviOC17DaNQZnB97Y5tQpP0f3pLRCSKYnG-lc%3D"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlZ9Z4n_H0dGCgc4NZyJnS7U_LdHhx0tK7pvYbIWGFYQ6uMZJ88KHcjz8KmgF3sQ0zQqvhG8yIjrmTHSwBNIIX80VVEPZAXpdQCqc5Ax2pc0yobBuqhDB6lkW-O2z1tHLX2MW-FkA",
+    "cid": "7112377013220223705",
+    "fid": "0x31752f007a2ea7f5:0x62b43d35e5a52ad9",
+    "placeId": "ChIJ9acuegAvdTER2Sql5TU9tGI"
+   },
+   {
+    "position": 4,
+    "title": "Spa Massage Gội Đầu Dưỡng Sinh Cô Út Quận 3",
+    "address": "399/28 Đường Nguyễn Đình Chiểu, Bàn Cờ, Hồ Chí Minh 70010, Việt Nam",
+    "latitude": 10.770763599999999,
+    "longitude": 106.68382229999999,
+    "rating": 5,
+    "ratingCount": 150,
+    "type": "Spa",
+    "types": [
+     "Spa"
+    ],
+    "website": "http://spanhacout.com/",
+    "phoneNumber": "+84 966 966 404",
+    "openingHours": {
+     "Thứ Ba": "09:00–21:00",
+     "Thứ Tư": "09:00–21:00",
+     "Thứ Năm": "09:00–21:00",
+     "Thứ Sáu": "09:00–21:00",
+     "Thứ Bảy": "09:00–21:00",
+     "Chủ Nhật": "09:00–21:00",
+     "Thứ Hai": "09:00–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlrDyOyDxKqQ9w8g6_nQKp4taIl5KKZ4anpSbUO5EikCMoYEqtJs9T1XWoCM5GQE96z5puyBwUBgkoxnBPy2OzWnyC9Z2-7ym-ZuDJSRMVXCF0LZx0u0-5QPTbU8bGoXF396PaTWTXTI48",
+    "cid": "6891423283179521845",
+    "fid": "0x31752feb3e00ddf1:0x5fa340f6b6c58735",
+    "placeId": "ChIJ8d0APusvdTERNYfFtvZAo18"
+   },
+   {
+    "position": 5,
+    "title": "Gội Đầu Dưỡng Sinh Quận 3 HẺM SPA",
+    "address": "202/18 Võ Văn Tần, Quận 3, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.7729845,
+    "longitude": 106.6866515,
+    "rating": 5,
+    "ratingCount": 56,
+    "type": "Spa",
+    "types": [
+     "Spa"
+    ],
+    "website": "https://www.facebook.com/share/1JCzTXkDaX/?mibextid=wwXIfr",
+    "phoneNumber": "+84 345 870 685",
+    "openingHours": {
+     "Thứ Ba": "10:30–22:00",
+     "Thứ Tư": "10:30–22:00",
+     "Thứ Năm": "10:30–22:00",
+     "Thứ Sáu": "10:30–22:00",
+     "Thứ Bảy": "10:30–22:00",
+     "Chủ Nhật": "10:30–22:00",
+     "Thứ Hai": "10:30–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWla4Ie1NQM7s4Pr1BseC_OjpQb79I5PPSYRU_tbBSptqfhck_WIulHX1ereSaEUEox4UzX7po0vW0liCrJ3LyDLPVJ4SIq7yPVL5lD46Y3546LlQ1xcKcAnJmFaISDZa2ZV7u9INK0HBP1w",
+    "cid": "2383666130334040291",
+    "fid": "0x31752f00197a9939:0x21147bb761b0c0e3",
+    "placeId": "ChIJOZl6GQAvdTER48CwYbd7FCE"
+   },
+   {
+    "position": 6,
+    "title": "Gội Đầu Dưỡng Sinh - Nhà Vy",
+    "address": "491/76 Đường Nguyễn Đình Chiểu, Quận 3, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7678773,
+    "longitude": 106.68263089999999,
+    "rating": 4.9,
+    "ratingCount": 229,
+    "type": "Spa sức khỏe",
+    "types": [
+     "Spa sức khỏe"
+    ],
+    "website": "http://duongsinhnhavy.com/",
+    "phoneNumber": "+84 869 252 179",
+    "openingHours": {
+     "Thứ Ba": "09:00–21:00",
+     "Thứ Tư": "09:00–21:00",
+     "Thứ Năm": "09:00–21:00",
+     "Thứ Sáu": "09:00–21:00",
+     "Thứ Bảy": "09:00–21:00",
+     "Chủ Nhật": "09:00–21:00",
+     "Thứ Hai": "09:00–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlEQapwzjE5j1wAVcGTtUUENHg6ffhRvwWmrpfNalaz9u3FHVUrybtV320WbloqpwHbaB095nU9tP-rbIfEo8oKcpLeFPCeVtts9BKsSIeuuZm8izkjTYYkOup25Nt-3h9k7sSu653WzqR4",
+    "cid": "13243914248489086846",
+    "fid": "0x31752f006532c5ab:0xb7cbd5d6f8ed2f7e",
+    "placeId": "ChIJq8UyZQAvdTERfi_t-NbVy7c"
+   },
+   {
+    "position": 7,
+    "title": "Tiệm Gội Đầu - Hair Spa & Massage Quận 3",
+    "address": "Phường Nhiêu Lộc, 123 Đ. Đỗ Thị Lời, Nhiêu Lộc, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.786866999999999,
+    "longitude": 106.67169,
+    "rating": 4.4,
+    "ratingCount": 23,
+    "type": "Spa",
+    "types": [
+     "Spa"
+    ],
+    "phoneNumber": "+84 865 583 878",
+    "openingHours": {
+     "Thứ Ba": "09:30–20:30",
+     "Thứ Tư": "09:30–20:30",
+     "Thứ Năm": "09:30–20:30",
+     "Thứ Sáu": "09:30–20:30",
+     "Thứ Bảy": "09:30–20:30",
+     "Chủ Nhật": "09:30–20:30",
+     "Thứ Hai": "09:30–20:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlSrxgIJbftzs_ECs7R_JQ7V6HSljDyJDxZd_vVLvfEi2sU3A_ey8kR5OWJnt9C4TcY1QFwYq4VMtGd7QJDa6WkQuzFHqn1aCK33vD27L-HFAgZoaDw9ipR1zoQPomIZiSRvZB2tILuEvNf",
+    "cid": "2498013902067565805",
+    "fid": "0x31752f0003e8b02b:0x22aaba68acb984ed",
+    "placeId": "ChIJK7DoAwAvdTER7YS5rGi6qiI"
+   },
+   {
+    "position": 8,
+    "title": "Gội đầu dưỡng sinh Trung Hoa (A.T)",
+    "address": "399 Võ Văn Tần, Bàn Cờ, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.770298799999999,
+    "longitude": 106.6846826,
+    "rating": 4.8,
+    "ratingCount": 123,
+    "type": "Spa",
+    "types": [
+     "Spa"
+    ],
+    "phoneNumber": "+84 868 888 006",
+    "openingHours": {
+     "Thứ Ba": "09:30–19:00",
+     "Thứ Tư": "09:30–19:00",
+     "Thứ Năm": "09:30–19:00",
+     "Thứ Sáu": "09:30–19:00",
+     "Thứ Bảy": "09:30–19:00",
+     "Chủ Nhật": "09:30–19:00",
+     "Thứ Hai": "09:30–19:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWn8nNV7zEhVkft5R-oz4xfKk0LLmnVgo1iYeF8mnoh3okPb2tcLQDDR_23ocWJ4PECLfFylmxI6KbVHksTnDEb8ymWbmWbza0Pb9V4sF34KyYPb3um4LluFsfe1cAa-R7COSPo7Xg",
+    "cid": "15009940864727618123",
+    "fid": "0x31752f1d694719ff:0xd04e05b0bdb5924b",
+    "placeId": "ChIJ_xlHaR0vdTERS5K1vbAFTtA"
+   },
+   {
+    "position": 9,
+    "title": "AN MIÊN SPA - GỘI ĐẦU THẢO DƯỢC & MASSAGE QUẬN 3",
+    "address": "274/1 Nam Kỳ Khởi Nghĩa, Xuân Hòa, Hồ Chí Minh 72120, Việt Nam",
+    "latitude": 10.788264999999999,
+    "longitude": 106.6859492,
+    "rating": 4.8,
+    "ratingCount": 515,
+    "type": "Spa",
+    "types": [
+     "Spa",
+     "Spa sức khỏe"
+    ],
+    "website": "https://anmienspa.vn/",
+    "phoneNumber": "+84 799 776 668",
+    "openingHours": {
+     "Thứ Ba": "09:00–22:00",
+     "Thứ Tư": "09:00–22:00",
+     "Thứ Năm": "09:00–22:00",
+     "Thứ Sáu": "09:00–22:00",
+     "Thứ Bảy": "09:00–22:00",
+     "Chủ Nhật": "09:00–22:00",
+     "Thứ Hai": "09:00–22:00"
+    },
+    "bookingLinks": [
+     "https://anmienspa.vn/"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkm_n18-4HkcuNofF--bLdFSWuc45sPLuIbGOze8R7apv8HR7e4IKyG2mlez6z3aqsUbdiCN6kFpdXSeqCSWVxa-KZ2Y5kjq-Vxchq3FeItJic7-of-JLzHxE0kxdcsd3A7PtzDxg",
+    "cid": "3705289139708686899",
+    "fid": "0x31752f7f664050ef:0x336bd4d75272f233",
+    "placeId": "ChIJ71BAZn8vdTERM_JyUtfUazM"
+   },
+   {
+    "position": 10,
+    "title": "Muội - Gội Đầu Dưỡng Sinh",
+    "address": "281/13/4 Đ. Lê Văn Sỹ, Tân Sơn Hòa, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.793964299999999,
+    "longitude": 106.6679206,
+    "rating": 5,
+    "ratingCount": 154,
+    "type": "Spa",
+    "types": [
+     "Spa"
+    ],
+    "website": "https://www.facebook.com/share/1EMCYo917A/?mibextid=wwXIfr",
+    "phoneNumber": "+84 329 242 636",
+    "openingHours": {
+     "Thứ Ba": "09:00–20:30",
+     "Thứ Tư": "09:00–20:30",
+     "Thứ Năm": "09:00–20:30",
+     "Thứ Sáu": "09:00–20:30",
+     "Thứ Bảy": "09:00–20:30",
+     "Chủ Nhật": "09:00–20:30",
+     "Thứ Hai": "09:00–20:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlg8kYLZ6vF5wl16Glms8QCE_t3VuYYLCYQtSgMmOmQSd5YBBdlLIXJP278LbrcEXHmgir_xkHY_40sC3GHmMsBi2zI_tjUXqQJSm8XgldU5wtFdYCS6bMqTvTlE-6exHirhSh8083r2uGD",
+    "cid": "3304867246520985958",
+    "fid": "0x31752903def1c7fb:0x2ddd3f4032b4e966",
+    "placeId": "ChIJ-8fx3gMpdTERZum0MkA_3S0"
+   },
+   {
+    "position": 11,
+    "title": "Gội đầu dưỡng sinh Hai Ơi",
+    "address": "158/7 Hoà Hưng, Quận 10, Hồ Chí Minh 740200, Việt Nam",
+    "latitude": 10.7792135,
+    "longitude": 106.6740178,
+    "rating": 4.7,
+    "ratingCount": 15,
+    "type": "Spa sức khỏe",
+    "types": [
+     "Spa sức khỏe"
+    ],
+    "phoneNumber": "+84 943 714 633",
+    "openingHours": {
+     "Thứ Ba": "15:00–02:00",
+     "Thứ Tư": "15:00–02:00",
+     "Thứ Năm": "15:00–02:00",
+     "Thứ Sáu": "15:00–02:00",
+     "Thứ Bảy": "15:00–02:00",
+     "Chủ Nhật": "15:00–02:00",
+     "Thứ Hai": "15:00–02:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmP6C_0T970sqpQaYDm2c_cH1skdimOcQ_THHZb1YQSMHJXKXr6e8g6e6GV0pflY5mvhoUblOnSM6fJtxdqfF9yDF8rcTaLK_RjY9YtW_aZJQ0cyFH2GlMHLJDw1yDcA6abrddmKzq_iJ1s",
+    "cid": "9680275716470490792",
+    "fid": "0x31752f20b4bb355d:0x86573f79d01046a8",
+    "placeId": "ChIJXTW7tCAvdTERqEYQ0Hk_V4Y"
+   },
+   {
+    "position": 12,
+    "title": "Gội Đầu Dưỡng Sinh Spa Chăm Sóc Da Chuỵ Ba Signature",
+    "address": "40/37 Trần Quang Diệu, Quận 3, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.788844899999999,
+    "longitude": 106.67932499999999,
+    "rating": 5,
+    "ratingCount": 258,
+    "type": "Spa sức khỏe",
+    "types": [
+     "Spa sức khỏe"
+    ],
+    "website": "https://www.facebook.com/share/1Jt9GiPqqu/?mibextid=wwXIfr",
+    "phoneNumber": "+84 911 933 403",
+    "openingHours": {
+     "Thứ Ba": "09:00–03:30",
+     "Thứ Tư": "09:00–03:30",
+     "Thứ Năm": "09:00–03:30",
+     "Thứ Sáu": "09:00–03:30",
+     "Thứ Bảy": "09:00–03:30",
+     "Chủ Nhật": "09:00–03:30",
+     "Thứ Hai": "09:00–03:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWm5RQb0Cgj2_ha3eTLdl0WUYPIYnl_hvMS7jr19_SxKz95A-KoTsdeWgsh0jJ-fWjByaBC0anYoiP_lgo5VsvmHupk_8akCJl9AzyUmKudNqDIKGKAuZSIjQk9zigu5Qv1C1-VLD_4-fABC",
+    "cid": "9151013133202926729",
+    "fid": "0x31752f0055f792cf:0x7efeedf5e37eac89",
+    "placeId": "ChIJz5L3VQAvdTERiax-4_Xt_n4"
+   },
+   {
+    "position": 13,
+    "title": "Gội đầu dưỡng sinh và Massage body - An Miên Spa Quận 4",
+    "address": "277/1 Hoàng Diệu, Khánh Hội, Hồ Chí Minh 72808, Việt Nam",
+    "latitude": 10.7603827,
+    "longitude": 106.70005619999999,
+    "rating": 4.9,
+    "ratingCount": 716,
+    "type": "Spa sức khỏe",
+    "types": [
+     "Spa sức khỏe"
+    ],
+    "website": "https://g.co/kgs/uWJ4tf",
+    "phoneNumber": "+84 326 380 979",
+    "openingHours": {
+     "Thứ Ba": "09:00–22:00",
+     "Thứ Tư": "09:00–22:00",
+     "Thứ Năm": "09:00–22:00",
+     "Thứ Sáu": "09:00–22:00",
+     "Thứ Bảy": "09:00–22:00",
+     "Chủ Nhật": "09:00–22:00",
+     "Thứ Hai": "09:00–22:00"
+    },
+    "bookingLinks": [
+     "https://anmienspa.vn/"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlAj6vP-9RNrLc3-3iGQ5PGY_2PN9KaHVRfM-500tdj7kzuAxS1w0FL8FeIWZ5RRyn3iBcJVYp4xIFJ-6VUYdNSIoRX076v1Fw9r2YeFSA7Nat8gnokc0-mzFjwmAzAw2k0GRm2sw",
+    "cid": "17097564657328206523",
+    "fid": "0x31752f8da822c2c1:0xed46c078145232bb",
+    "placeId": "ChIJwcIiqI0vdTERuzJSFHjARu0"
+   },
+   {
+    "position": 14,
+    "title": "Win Win Spa | Dưỡng Sinh Đông Y Quận 3 | Massage Body Quận 3",
+    "address": "222 Lý Chính Thắng, Nhiêu Lộc, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7793096,
+    "longitude": 106.6819883,
+    "rating": 4.8,
+    "ratingCount": 667,
+    "type": "Spa sức khỏe",
+    "types": [
+     "Spa sức khỏe"
+    ],
+    "website": "http://winwinspa.com/",
+    "phoneNumber": "+84 332 640 156",
+    "openingHours": {
+     "Thứ Ba": "09:00–21:00",
+     "Thứ Tư": "09:00–21:00",
+     "Thứ Năm": "09:00–21:00",
+     "Thứ Sáu": "09:00–21:00",
+     "Thứ Bảy": "09:00–21:00",
+     "Chủ Nhật": "09:00–21:00",
+     "Thứ Hai": "09:00–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkkP3zAK0ow3TAU3CDPksOOq1wJNaoqW2ooeBz7udKVbORrJuXVzoYc-QKXnyV_erBAb0WmiLb3Tp-6csTnqhUF36oCl08xWvPt9MJ2X-vFt7oGpLKMcv8Cvkb3NjZZjbPzfZQm",
+    "cid": "14932093717601110897",
+    "fid": "0x31752f0051c45565:0xcf39741f5e74cb71",
+    "placeId": "ChIJZVXEUQAvdTERcct0Xh90Oc8"
+   },
+   {
+    "position": 15,
+    "title": "Gội đầu dưỡng sinh - Vai cổ gáy Dung Spa",
+    "address": "43 đường 18, Cát Lái, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.775228,
+    "longitude": 106.7652687,
+    "rating": 5,
+    "ratingCount": 21,
+    "type": "Spa",
+    "types": [
+     "Spa"
+    ],
+    "phoneNumber": "+84 903 065 333",
+    "openingHours": {
+     "Thứ Ba": "09:00–21:00",
+     "Thứ Tư": "09:00–21:00",
+     "Thứ Năm": "09:00–21:00",
+     "Thứ Sáu": "09:00–21:00",
+     "Thứ Bảy": "09:00–21:00",
+     "Chủ Nhật": "09:00–21:00",
+     "Thứ Hai": "09:00–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlsUnniWjoSuk6soK0bCPIRaY88yQOtJaXusjSKeVg_1wnxGvasnMkPvUNuXz0mMS1Nn_tHRlMdg9gc7JC_AuEVWGBBxtjjJIB0w7Wr3I-c4eH8b6csPKWZGNsSSkXJ08fum-ze6NUFXmFg",
+    "cid": "18185478208965213087",
+    "fid": "0x317525e1cbd9b3e1:0xfc5fcc148bfa7b9f",
+    "placeId": "ChIJ4bPZy-EldTERn3v6ixTMX_w"
+   },
+   {
+    "position": 16,
+    "title": "Gội Đầu Nhà Tie - Gội Đầu Dưỡng Sinh & Massage Quận 3",
+    "address": "462/2 Cách Mạng Tháng Tám, Nhiêu Lộc, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7847615,
+    "longitude": 106.6695072,
+    "rating": 5,
+    "ratingCount": 77,
+    "type": "Spa sức khỏe",
+    "types": [
+     "Spa sức khỏe",
+     "Spa"
+    ],
+    "website": "https://www.facebook.com/profile.php?id=61592833190773",
+    "phoneNumber": "+84 393 930 068",
+    "openingHours": {
+     "Thứ Ba": "10:00–21:00",
+     "Thứ Tư": "10:00–21:00",
+     "Thứ Năm": "10:00–21:00",
+     "Thứ Sáu": "10:00–21:00",
+     "Thứ Bảy": "10:00–21:00",
+     "Chủ Nhật": "10:00–21:00",
+     "Thứ Hai": "10:00–21:00"
+    },
+    "bookingLinks": [
+     "https://booksalon.kiotviet.vn/goidaunhatie"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlDNwkF4NohjC09mWGHrvvkLc3izex7Xd0T_02BdOjVBdVN6LFD1Dzz8hPQq5UbzS611Rfw8PPZTRcfwrOgXwYEEQNwPeVYxp4AOr5o3A8p-NbndKcYHiGP4tDLbt6ie4nBkCjG6yuC-R8j",
+    "cid": "3718574758678947232",
+    "fid": "0x31752f004d2ba5bf:0x339b080a89cae5a0",
+    "placeId": "ChIJv6UrTQAvdTERoOXKiQoImzM"
+   },
+   {
+    "position": 17,
+    "title": "Tiệm Gội Đầu ÊM MƠ - Gội đầu & Chăm Sóc Da",
+    "address": "297/23A Đ. Lê Văn Sỹ, Phường 13, Quận 3, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7867848,
+    "longitude": 106.6788036,
+    "rating": 5,
+    "ratingCount": 159,
+    "type": "Spa mặt",
+    "types": [
+     "Spa mặt",
+     "Tiệm chăm sóc móng",
+     "Cơ sở chăm sóc da"
+    ],
+    "phoneNumber": "+84 777 575 943",
+    "openingHours": {
+     "Thứ Ba": "08:00–12:00",
+     "Thứ Tư": "08:00–20:00",
+     "Thứ Năm": "08:00–20:00",
+     "Thứ Sáu": "08:00–20:00",
+     "Thứ Bảy": "08:00–15:00",
+     "Chủ Nhật": "15:00–20:00",
+     "Thứ Hai": "08:00–20:00"
+    },
+    "bookingLinks": [
+     "https://zalo.me/0777575943"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnLqxGs_ei1TBhl8DvZr9FdzgGEDoY61tc_4HHfxytDqekyHp-5wL98GH1qyq3G0nluFoUyA2vrpXuDcIS7b46Xvibqzoo8ld8diV2apluwELlPHtUQ1TzO7SJ8iyHQVjBf2KwwYeeCwOpz",
+    "cid": "14129738616363553941",
+    "fid": "0x31752f95a3db0053:0xc416ea68b5781495",
+    "placeId": "ChIJUwDbo5UvdTERlRR4tWjqFsQ"
+   },
+   {
+    "position": 18,
+    "title": "Gội đầu dưỡng sinh Quyên",
+    "address": "1041/10VT, 1041/10 Trần Xuân Soạn, Tân Hưng, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7501866,
+    "longitude": 106.6917434,
+    "rating": 5,
+    "ratingCount": 11,
+    "type": "Spa",
+    "types": [
+     "Spa",
+     "Chuyên gia làm đẹp"
+    ],
+    "phoneNumber": "+84 985 329 106",
+    "openingHours": {
+     "Thứ Ba": "09:00–21:00",
+     "Thứ Tư": "09:00–21:00",
+     "Thứ Năm": "09:00–21:00",
+     "Thứ Sáu": "09:00–21:00",
+     "Thứ Bảy": "09:00–21:00",
+     "Chủ Nhật": "09:00–21:00",
+     "Thứ Hai": "09:00–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmhBoNNwaOoRdklV4jYxCGMuvgEjlHDeSEs-_WJa3P5XR1d-r910pIgfNi39J-WMN9uHQAbDDTxIl7YyRMlNQDRn8SWurl7hfjeax8dX13tKlPOu5VYj86phZKbtkJ3odfoeooOk0bOaIa6",
+    "cid": "4317560848009718018",
+    "fid": "0x31752f0011d137b3:0x3beb0eb741c0e902",
+    "placeId": "ChIJszfREQAvdTERAunAQbcO6zs"
+   },
+   {
+    "position": 19,
+    "title": "Nhã Spa- Gội Đầu Dưỡng Sinh, Trị Liệu Cổ Vai Gáy",
+    "address": "647A Điện Biên Phủ, Bàn Cờ, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.7687154,
+    "longitude": 106.6753911,
+    "rating": 5,
+    "ratingCount": 26,
+    "type": "Spa mát xa",
+    "types": [
+     "Spa mát xa"
+    ],
+    "website": "https://www.facebook.com/share/1HB9Q2NoQg/?mibextid=wwXIfr",
+    "phoneNumber": "+84 769 688 418",
+    "openingHours": {
+     "Thứ Ba": "10:00–20:00",
+     "Thứ Tư": "10:00–20:00",
+     "Thứ Năm": "10:00–20:00",
+     "Thứ Sáu": "10:00–20:00",
+     "Thứ Bảy": "10:00–20:00",
+     "Chủ Nhật": "10:00–20:00",
+     "Thứ Hai": "10:00–20:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlv9GMe7gLarxxn-XB8DCRL9WmZmGHiZb8nQsdJ6GYCCOxq2CdtZbVekCQECuz-WBGOAmp-tRJGXwdeG1dw7UfIgdfGtXeFhaTDQ4vopihtIvf7KLHNCKU5AT7M05vGz1uztbqzH2uKbjUB",
+    "cid": "15325368174552731061",
+    "fid": "0x31752fe16074710b:0xd4aea528504acdb5",
+    "placeId": "ChIJC3F0YOEvdTERtc1KUCilrtQ"
+   },
+   {
+    "position": 20,
+    "title": "Gội Đầu Dưỡng Sinh SEA | Massage quận 1",
+    "address": "212b/4 Nguyễn Trãi, Cầu Ông Lãnh, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.765126799999999,
+    "longitude": 106.6874821,
+    "rating": 4.7,
+    "ratingCount": 28,
+    "type": "Trung tâm chăm sóc sức khỏe",
+    "types": [
+     "Trung tâm chăm sóc sức khỏe"
+    ],
+    "phoneNumber": "+84 898 055 926",
+    "openingHours": {
+     "Thứ Ba": "09:00–02:00",
+     "Thứ Tư": "09:00–02:00",
+     "Thứ Năm": "09:00–02:00",
+     "Thứ Sáu": "09:00–02:00",
+     "Thứ Bảy": "09:00–02:00",
+     "Chủ Nhật": "09:00–02:00",
+     "Thứ Hai": "09:00–02:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkck95zsGJ4OlH_Iq07arHBWD9Iaw00OOCVUDGCxq6cf6hE86IpxR6m-EBFvd_GywrHJckSDPCBsmweKpi-arlvAVOuznLnljlpDV-JIVYFMP5Y62g_ln3VhbWq522VFVmw0hFxbCE5PNs",
+    "cid": "5807625827566242697",
+    "fid": "0x31752fbaf7de0ff9:0x5098d4eb88784b89",
+    "placeId": "ChIJ-Q_e97ovdTERiUt4iOvUmFA"
+   }
+  ],
+  "credits": 3
+ }
+}
