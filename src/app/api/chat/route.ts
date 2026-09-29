@@ -1672,6 +1672,8 @@ export async function POST(req: Request) {
   // still belongs in the text: with a card, it is the same content twice.
   enrichment.setRendersDecisionCard(rendersDecisionCard)
   if (consult && consult.turn !== 'ask') enrichment.setConsultTurn(consult.turn, consult.refers, consult.known)
+  // The plan's cost line prices the pick the conversation settled on (replay ENT-1/ENT-2/SPA-2 30/09: another venue's).
+  if (consult?.turn === 'plan') enrichment.setConsultPick(latestConsultPick(null))
   // Shopping plan: the "Tổng chi phí" line is computed from the chosen product's listed price (appendConsultPlanCost).
   if (consult?.turn === 'plan' && consult.domains[0] === 'shopping') enrichment.consultPlanPrice = latestShoppingPickPrice(assistantTexts, latestConsultPick(null))
   // Consult V2: after a pick the server offers the next steps (owner Phần 3.3).

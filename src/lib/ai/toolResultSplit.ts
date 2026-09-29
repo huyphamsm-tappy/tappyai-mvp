@@ -160,6 +160,9 @@ export interface EnrichmentCollector {
   /** Consult V2 turn type — the prose-shape guard follows the approved frame for it (2 alternatives; a plan is not reshaped). */
   consultTurn?: string
   setConsultTurn(turn: string, refers?: string[], known?: Record<string, string>): void
+  /** Consult V2 plan: the pick the conversation settled on (the plan's cost line is about it). */
+  consultPick?: string | null
+  setConsultPick(name: string | null): void
   consultKnown?: Record<string, string>
   /** Consult V2 shopping plan: the chosen product's listed price (route, from the newest shopping card). */
   consultPlanPrice?: { amount: number; seller: string | null } | null
@@ -407,6 +410,8 @@ export function createEnrichmentCollector(turnText = '', earlierUserTexts: reado
     consultKnown: undefined as Record<string, string> | undefined,
     consultPlanPrice: null as { amount: number; seller: string | null } | null,
     setConsultTurn(turn: string, refers?: string[], known?: Record<string, string>) { this.consultTurn = turn; this.consultRefers = refers; this.consultKnown = known },
+    consultPick: null as string | null,
+    setConsultPick(name: string | null) { this.consultPick = name },
     clarificationPolicy: 'allow' as 'allow' | 'no_reflex',
     setClarificationPolicy(policy: 'allow' | 'no_reflex') { this.clarificationPolicy = policy },
     consultativeV1: undefined as ConsultativeV1Context | undefined,

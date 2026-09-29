@@ -19,4 +19,11 @@ describe('plan cost line — the chosen venue, never the first search row', () =
   it('no stated pick → the card\'s first recommendation, matched by name', () => {
     expect(planCostSubject('no pick line', 'FEN Izakaya', bands).band).toEqual({ lo: 100000, hi: 600000 })
   })
+  it('ENT-1: no "Mình chọn" in the plan → the conversation\'s pick (Santori), not the first row (MEI)', () => {
+    const karaoke = new Map([['Karaoke MEI', { lo: 100000, hi: 600000 } as never]])
+    const text = ['**Lịch buổi**', '- 19:30–23:00: Hát karaoke tại **Karaoke Santori**', '', '**Chi phí**', ''].join('\n')
+    const subj = planCostSubject(text, 'Karaoke Santori', karaoke)
+    expect(subj).toEqual({ name: 'Karaoke Santori', band: null })
+    expect(appendConsultPlanCost(text, { people: 8, band: subj.band, perHead: null, pickName: subj.name }).text).not.toContain('MEI')
+  })
 })

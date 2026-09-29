@@ -2857,7 +2857,7 @@ export function applyPlaceEnrichmentStreamFilter(
       const restored = collector?.consultTurn === 'plan' ? restorePlanHeadings(mainText, narrated.text) : narrated.text
       // The cost line is about the venue the PLAN chose ("**Mình chọn: X**"), never simply the first search row —
       // replay FOOD-1 (30/09, level A): the plan for MANMARU priced "FEN Izakaya: 2 người × 100.000đ–600.000đ".
-      const planCost = planCostSubject(restored, collector?.placesRecommendations?.[0]?.entity.identity.name ?? null, priceBandsByEntity)
+      const planCost = planCostSubject(restored, collector?.consultPick ?? collector?.placesRecommendations?.[0]?.entity.identity.name ?? null, priceBandsByEntity)
       // …and its cost section shows code-written arithmetic (the chosen row's band, else the user's own
       // per-person budget) when the model's own numbers did not survive the guards.
       const headed = collector?.consultTurn === 'plan'
