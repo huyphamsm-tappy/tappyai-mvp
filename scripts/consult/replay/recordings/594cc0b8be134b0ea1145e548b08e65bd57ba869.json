@@ -1,0 +1,596 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "quán ăn hải sản Vũng Tàu Vung Tau",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.346,107.0843,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T04:26:16.808Z",
+ "body": {
+  "searchParameters": {
+   "q": "quán ăn hải sản Vũng Tàu Vung Tau",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.346,107.0843,14z",
+   "engine": "google"
+  },
+  "ll": "@10.3459944,107.0842997,14z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Nhà hàng Gành Hào 1",
+    "address": "03 Trần Phú, Vũng Tàu, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.360034899999999,
+    "longitude": 107.0602722,
+    "rating": 4.3,
+    "ratingCount": 10211,
+    "type": "Nhà hàng hải sản",
+    "types": [
+     "Nhà hàng hải sản"
+    ],
+    "website": "http://ganhhao.com.vn/",
+    "phoneNumber": "+84 1900 3332",
+    "openingHours": {
+     "Thứ Ba": "10:00–21:00",
+     "Thứ Tư": "10:00–21:00",
+     "Thứ Năm": "10:00–21:00",
+     "Thứ Sáu": "10:00–21:00",
+     "Thứ Bảy": "10:00–21:00",
+     "Chủ Nhật": "10:00–21:00",
+     "Thứ Hai": "10:00–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlrmYDWsbulJBUg06-U47Fl-AUUzRq0ekM6lAkdAqcEvWDp5CLCvhZT6D6CT5vLyM9umL44k9Jo-OYWfh-bvrNU0T9T6dB3QiBSX32vi6-bTcztS6jdUd_8xYehpNsc8ttBE3ycQOqDAZ6l",
+    "cid": "17550626060477245407",
+    "fid": "0x31756febf0656077:0xf390596a3075a7df",
+    "placeId": "ChIJd2Bl8OtvdTER36d1MGpZkPM"
+   },
+   {
+    "position": 2,
+    "title": "Hải Sản Bờ Biển",
+    "address": "32 Hạ Long, Vũng Tàu, Hồ Chí Minh 790000, Việt Nam",
+    "latitude": 10.3284118,
+    "longitude": 107.0795776,
+    "rating": 4.3,
+    "ratingCount": 2952,
+    "type": "Nhà hàng hải sản",
+    "types": [
+     "Nhà hàng hải sản"
+    ],
+    "phoneNumber": "+84 902 720 807",
+    "openingHours": {
+     "Thứ Ba": "08:30–03:00",
+     "Thứ Tư": "08:30–03:00",
+     "Thứ Năm": "08:30–03:00",
+     "Thứ Sáu": "08:30–03:00",
+     "Thứ Bảy": "08:30–03:00",
+     "Chủ Nhật": "08:30–03:00",
+     "Thứ Hai": "08:30–03:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlJJjqYI4A0VUCuTAW0umCJ2z-zLmaj1Iov24Tu06MOPla0aoW0nIEunaZvhIKZfyCF0px5fgheIoUYUnynVDjOhnGdhDruVeFk_mbmYG8XZPRp02hI4bz6KEaJUeKsDcwer7PAmwkKW7E",
+    "cid": "15680268805366210021",
+    "fid": "0x31756521b1b4aec1:0xd99b81669e7ddde5",
+    "placeId": "ChIJwa60sSFldTER5d19nmaBm9k"
+   },
+   {
+    "position": 3,
+    "title": "Nhà hàng hải sản La Sirena",
+    "address": "159 Thùy Vân, Vũng Tàu, Hồ Chí Minh 790000, Việt Nam",
+    "latitude": 10.3438225,
+    "longitude": 107.0947848,
+    "rating": 4.6,
+    "ratingCount": 1659,
+    "type": "Nhà hàng hải sản",
+    "types": [
+     "Nhà hàng hải sản"
+    ],
+    "website": "https://www.foody.vn/vung-tau/la-sirena-bar-grill",
+    "phoneNumber": "+84 908 429 866",
+    "openingHours": {
+     "Thứ Ba": "10:30–14:00, 17:00–22:30",
+     "Thứ Tư": "10:30–14:00, 17:00–22:30",
+     "Thứ Năm": "10:30–14:00, 17:00–22:30",
+     "Thứ Sáu": "10:30–14:00, 17:00–22:30",
+     "Thứ Bảy": "10:30–14:00, 17:00–22:30",
+     "Chủ Nhật": "10:30–14:00, 17:00–22:30",
+     "Thứ Hai": "10:30–14:00, 17:00–22:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmfcF8NCMQkDelzdUAc4jPeMKJP3BGxWIxDoppQklq2jOckR_xz61h8_2-h9KikI32V-OZ9wa7S4xhOdFYMOsG58E1420TEEC4-mGhysbGpiM9M0fMZXs2bldQyNfjOd6EP_PWMow",
+    "cid": "15039716562630094517",
+    "fid": "0x31756ffc9f86fc29:0xd0b7ce87a6202eb5",
+    "placeId": "ChIJKfyGn_xvdTERtS4gpofOt9A"
+   },
+   {
+    "position": 4,
+    "title": "Lẩu cá đuối & hải sản 7 Lượm Vũng Tàu",
+    "address": "37 Nguyễn Trường Tộ, Vũng Tàu, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.3436696,
+    "longitude": 107.07940509999999,
+    "rating": 3.6,
+    "ratingCount": 1511,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "website": "https://www.foody.vn/vung-tau/quan-an-hai-san-7-luom-dac-biet-lau-ca-duoi/gioi-thieu/tin-nong-hoi-cho-cac-tin-do-hai-san-lau-ca-duoi-vung-tau-731",
+    "phoneNumber": "+84 767 111 919",
+    "openingHours": {
+     "Thứ Ba": "09:00–22:30",
+     "Thứ Tư": "09:00–22:30",
+     "Thứ Năm": "09:00–22:30",
+     "Thứ Sáu": "09:00–22:30",
+     "Thứ Bảy": "09:00–22:30",
+     "Chủ Nhật": "09:00–22:30",
+     "Thứ Hai": "09:00–22:30"
+    },
+    "bookingLinks": [
+     "https://www.foody.vn/vung-tau/quan-an-hai-san-7-luom-dac-biet-lau-ca-duoi/gioi-thieu"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWndsqa4U0xrlFQ87U5eBKdOgxn9BC992STxFPmD2UvGg1H4so2EGnDIyBvfaujvPTb8z9Ud9feU9ZxbDfRwt4eWSyJd3lu6Kt4AozSEF_b0glSGUoCd83Gtg0thc_1OAm8_WA0",
+    "cid": "13146073388796894817",
+    "fid": "0x31756ff2e8aa9b07:0xb6703c18a2745e61",
+    "placeId": "ChIJB5uq6PJvdTERYV50ohg8cLY"
+   },
+   {
+    "position": 5,
+    "title": "QUÁN ỐC HẢI SẢN SƯƠNG",
+    "address": "281 Trương Công Định, Vũng Tàu, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.3525128,
+    "longitude": 107.08342909999999,
+    "rating": 4.7,
+    "ratingCount": 1179,
+    "type": "Quán ăn nhỏ",
+    "types": [
+     "Quán ăn nhỏ"
+    ],
+    "phoneNumber": "+84 932 031 323",
+    "openingHours": {
+     "Thứ Ba": "10:00–23:00",
+     "Thứ Tư": "10:00–23:00",
+     "Thứ Năm": "10:00–23:00",
+     "Thứ Sáu": "10:00–23:00",
+     "Thứ Bảy": "10:00–23:00",
+     "Chủ Nhật": "10:00–23:00",
+     "Thứ Hai": "10:00–23:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWntgmz5WGxKzEzDXyskfzmI2-G_1YvjBUo0kwkEgTXl60Oid8aaqglZn4qXOQ9G1lEr7iOuJadWEPcYkNJioZIe1NbnF8qrjTbtUMtNObcXcgai7TFBVFnGG6E0ma_WSoy6Tw6t8D-ztTw",
+    "cid": "6433895982357148304",
+    "fid": "0x31756f5a26bfb5a5:0x5949ca4ec635f290",
+    "placeId": "ChIJpbW_JlpvdTERkPI1xk7KSVk"
+   },
+   {
+    "position": 6,
+    "title": "Nhà Hàng Vạn Chài | Nhà Hàng Vũng Tàu",
+    "address": "02-04 Lê Hồng Phong, Vũng Tàu, Hồ Chí Minh 970000, Việt Nam",
+    "latitude": 10.3471438,
+    "longitude": 107.0932351,
+    "rating": 4.2,
+    "ratingCount": 2146,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "website": "http://vanchairestaurant.com/",
+    "phoneNumber": "+84 901 558 866",
+    "openingHours": {
+     "Thứ Ba": "09:00–22:00",
+     "Thứ Tư": "09:00–22:00",
+     "Thứ Năm": "09:00–22:00",
+     "Thứ Sáu": "09:00–22:00",
+     "Thứ Bảy": "09:00–22:00",
+     "Chủ Nhật": "09:00–22:00",
+     "Thứ Hai": "09:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnO_BuQkhhOTlUg0LyObKxOk7g1Zt66jEETcnOUaKvdwuRz3Q0IXzMVolx2vSPQFbT1wHgcYpo_YlGyjuVwcuo1PydpkTsz-5BrKvhdd-T5UNbbNfOjHL_SzU9zQTqBrhNbpV9F",
+    "cid": "14528467955073905872",
+    "fid": "0x31756fe4418778e3:0xc99f7ca148d374d0",
+    "placeId": "ChIJ43iHQeRvdTER0HTTSKF8n8k"
+   },
+   {
+    "position": 7,
+    "title": "Quán hải sản Hùng Chi",
+    "address": "F19 Đường Ông Ích Khiêm, phường, Vũng Tàu, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.373211399999999,
+    "longitude": 107.0809347,
+    "rating": 4.1,
+    "ratingCount": 2817,
+    "type": "Nhà hàng hải sản",
+    "types": [
+     "Nhà hàng hải sản"
+    ],
+    "website": "https://www.facebook.com/Qu%C3%A1n-%C4%83n-H%E1%BA%A3i-S%E1%BA%A3n-H%C3%B9ng-Chi-565131643638346/",
+    "phoneNumber": "+84 905 965 556",
+    "openingHours": {
+     "Thứ Ba": "08:00–22:00",
+     "Thứ Tư": "08:00–22:00",
+     "Thứ Năm": "08:00–22:00",
+     "Thứ Sáu": "08:00–22:00",
+     "Thứ Bảy": "08:00–22:00",
+     "Chủ Nhật": "08:00–22:00",
+     "Thứ Hai": "08:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnvZpMEr321-ADyHhrVvELERM8RWvWZnHBu9flyekJpukyDe6Ctdxn5R8xEAcbaYVZiTdCMdhwGGW5sJtR9xw7glMwnQYShYYuhT5EJGBbFc56JCFewHQBSa3rDWP_NyWcDLjpxD99PV2iD",
+    "cid": "15601311258112418998",
+    "fid": "0x31756fcbc9a72fa5:0xd882fdee1217e4b6",
+    "placeId": "ChIJpS-nyctvdTERtuQXEu79gtg"
+   },
+   {
+    "position": 8,
+    "title": "Ốc Tự Nhiên Vũng Tàu - Ốc Tự Nhiên 2",
+    "address": "34 Trần Phú, Vũng Tàu, Hồ Chí Minh 790000, Việt Nam",
+    "latitude": 10.353653,
+    "longitude": 107.0634364,
+    "rating": 4.3,
+    "ratingCount": 6901,
+    "type": "Nhà hàng hải sản",
+    "types": [
+     "Nhà hàng hải sản"
+    ],
+    "website": "https://www.facebook.com/octunhien",
+    "phoneNumber": "+84 903 376 468",
+    "openingHours": {
+     "Thứ Ba": "10:00–22:30",
+     "Thứ Tư": "10:00–22:30",
+     "Thứ Năm": "10:00–22:30",
+     "Thứ Sáu": "10:00–22:30",
+     "Thứ Bảy": "10:00–22:30",
+     "Chủ Nhật": "10:00–22:30",
+     "Thứ Hai": "10:00–22:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkQ6FaixQ-WLMUXt1sQf9NheN4cFJc2sHOdhkYxMNjShqKkpgnmB30DmF8XwisLWcvCeYcazRBRe4e-yoI4VxZvoWzwsBsif3_aO_3xRrxORjEzK1va8xClhLy6U8aIlkGAOnetULk0h5u7",
+    "cid": "13541304505137005941",
+    "fid": "0x31756fa392df4455:0xbbec60b3d8168575",
+    "placeId": "ChIJVUTfkqNvdTERdYUW2LNg7Ls"
+   },
+   {
+    "position": 9,
+    "title": "QUÁN LÁ",
+    "address": "311 Thống Nhất, Tam Thắng, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.3570832,
+    "longitude": 107.088803,
+    "rating": 4.2,
+    "ratingCount": 296,
+    "type": "Nhà hàng hải sản",
+    "types": [
+     "Nhà hàng hải sản"
+    ],
+    "phoneNumber": "+84 254 3583 050",
+    "openingHours": {
+     "Thứ Ba": "09:00–22:00",
+     "Thứ Tư": "09:00–22:00",
+     "Thứ Năm": "09:00–22:00",
+     "Thứ Sáu": "09:00–22:00",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "09:00–22:00",
+     "Thứ Hai": "09:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmvKhSxTXp4PqwhW8A9z8BLlMZTngz4aghHdUJmPjAF2y9XheEovwgvYc8IJo4iexuKbuWAk0GhgSLQS1FDZY8I22oH6hyKtsqoa3ZDDd7mWRMLNDWqeq0brmGf2B3FJgJBiUE",
+    "cid": "8741721560243643590",
+    "fid": "0x31756fe63fe78c7d:0x7950d57183b224c6",
+    "placeId": "ChIJfYznP-ZvdTERxiSyg3HVUHk"
+   },
+   {
+    "position": 10,
+    "title": "Hàu Nướng Oyster Box",
+    "address": "212A Phan Chu Trinh, Vũng Tàu, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.331017,
+    "longitude": 107.0826221,
+    "rating": 4.7,
+    "ratingCount": 240,
+    "type": "Nhà hàng hải sản",
+    "types": [
+     "Nhà hàng hải sản",
+     "Khu ăn uống",
+     "Chợ thực phẩm tươi sống",
+     "Nhà hàng bán đồ ăn mang về",
+     "Nhà cung cấp sò biển",
+     "Nhà hàng cháo",
+     "Nhà hàng",
+     "Nhà hàng phục vụ sò",
+     "Nhà bán buôn hải sản",
+     "Nhà hàng Phương Tây"
+    ],
+    "website": "https://www.facebook.com/oysterboxvungtau",
+    "phoneNumber": "+84 901 421 009",
+    "openingHours": {
+     "Thứ Ba": "10:30–22:30",
+     "Thứ Tư": "10:30–22:30",
+     "Thứ Năm": "10:30–22:30",
+     "Thứ Sáu": "10:30–22:30",
+     "Thứ Bảy": "10:30–22:30",
+     "Chủ Nhật": "10:30–22:30",
+     "Thứ Hai": "10:30–22:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnkKrO-lcTngdWfoqzUTpgVSPuUYXpSqUIRo3WMndbAQXSvAzJskN5ZfGn49t7ClxqMT-MER-A7fFer8YLLT30g_e14UyFG6O06XTq989dcdgGFrJAuE2Jlvw9pvAaDAglYtT2y",
+    "cid": "12946812521466819301",
+    "fid": "0x31756f0cae94f12d:0xb3ac5164a39bf2e5",
+    "placeId": "ChIJLfGUrgxvdTER5fKbo2RRrLM"
+   },
+   {
+    "position": 11,
+    "title": "Mê Buffet - Coffee Vũng Tàu",
+    "address": "128 Hoàng Hoa Thám, Phường, Vũng Tàu, Hồ Chí Minh 79000, Việt Nam",
+    "latitude": 10.338012899999999,
+    "longitude": 107.0851337,
+    "rating": 4.8,
+    "ratingCount": 5614,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng",
+     "Quán cà phê"
+    ],
+    "phoneNumber": "+84 339 781 689",
+    "openingHours": {
+     "Thứ Ba": "06:00–23:00",
+     "Thứ Tư": "06:00–23:00",
+     "Thứ Năm": "06:00–23:00",
+     "Thứ Sáu": "06:00–23:00",
+     "Thứ Bảy": "06:00–23:00",
+     "Chủ Nhật": "06:00–23:00",
+     "Thứ Hai": "06:00–23:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWl1fkZM1XBYMX_UaFq2ecPEYAhcghYjSl79QmjZMyDXJYKP60YeDc69xgWCIE4aofqnqKmNwmVOpWWpTDFRS5KXr3z6NlJovNuSlc6l3nOHNyCz0SzNsrXAE3m0gopwWVo-BmwD9xGeD14",
+    "cid": "11224644236133632005",
+    "fid": "0x31756f007ddc1c05:0x9bc5f27648e18805",
+    "placeId": "ChIJBRzcfQBvdTERBYjhSHbyxZs"
+   },
+   {
+    "position": 12,
+    "title": "NaKa buffet Hải sản",
+    "address": "100/16B Xô Viết Nghệ Tĩnh, Vũng Tàu, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.3461602,
+    "longitude": 107.0874463,
+    "rating": 4.4,
+    "ratingCount": 625,
+    "type": "Nhà hàng Việt Nam",
+    "types": [
+     "Nhà hàng Việt Nam"
+    ],
+    "website": "http://nakabuffetvungtau.com/",
+    "phoneNumber": "+84 326 586 513",
+    "openingHours": {
+     "Thứ Ba": "16:00–22:00",
+     "Thứ Tư": "16:00–22:00",
+     "Thứ Năm": "16:00–22:00",
+     "Thứ Sáu": "16:00–22:00",
+     "Thứ Bảy": "16:00–22:00",
+     "Chủ Nhật": "16:00–22:00",
+     "Thứ Hai": "16:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkrwncATZ67u9XN85zVuN8uCY-rxLupzfR5fQY1CL9DaZcX9Q2LXnw_wp6Tlly3aF7dKL9GXwYH39VIZlklTlZrXoTn4LXDm0Da8N1blnixjZxWis5rmYDbr0KTp3nQJN2nCR5HU3J32GXN",
+    "cid": "5382510308490894285",
+    "fid": "0x31756f1d387980d9:0x4ab2849b997a5bcd",
+    "placeId": "ChIJ2YB5OB1vdTERzVt6mZuEsko"
+   },
+   {
+    "position": 13,
+    "title": "Ốc Biển Tự Nhiên",
+    "address": "189 Hoàng Hoa Thám, Vũng Tàu, Hồ Chí Minh 78100, Việt Nam",
+    "latitude": 10.335318599999999,
+    "longitude": 107.0871427,
+    "rating": 4.2,
+    "ratingCount": 2411,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "phoneNumber": "+84 902 720 807",
+    "openingHours": {
+     "Thứ Ba": "08:30–03:00",
+     "Thứ Tư": "08:30–03:00",
+     "Thứ Năm": "08:30–03:00",
+     "Thứ Sáu": "08:30–03:00",
+     "Thứ Bảy": "08:30–03:00",
+     "Chủ Nhật": "08:30–03:00",
+     "Thứ Hai": "08:30–03:00"
+    },
+    "bookingLinks": [
+     "https://maps.app.goo.gl/dSQiuXsE7RELAVDX8?g_st=com.google.maps.preview.copy"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnYZIHALSg_0hJb9WRN4HoQzjdmb3-kH5c1qqK0pkv9ktbF8oaOb0ytT3DdusGjlqevtDZOjafq1k-z1xPqvzAyOfyJhp5n9iIRufN7Uxscj20zxvHNf5VLc9USkPHEO6JG0o-f8X0Cjbal",
+    "cid": "3351420939364127303",
+    "fid": "0x31756f5bfde71457:0x2e82a396779ad247",
+    "placeId": "ChIJVxTn_VtvdTERR9Kad5ajgi4"
+   },
+   {
+    "position": 14,
+    "title": "Hải sản tươi sống Vũng tàu (Làng nướng đêm 2)",
+    "address": "151C Thùy Vân, Vũng Tàu, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.3385702,
+    "longitude": 107.091529,
+    "rating": 3.5,
+    "ratingCount": 128,
+    "type": "Nhà hàng hải sản",
+    "types": [
+     "Nhà hàng hải sản"
+    ],
+    "phoneNumber": "+84 907 379 759",
+    "openingHours": {
+     "Thứ Ba": "Mở cửa cả ngày",
+     "Thứ Tư": "Mở cửa cả ngày",
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWl3xf9ehJvULrR14IrfM5lL6my0sqoygGpzuqGBhiICWbw6dvX-dMWvixi_lPNCgxJxJn1gwi8z4nUbnwBS9pKU3h21neUOQdLfcHLVMxycQXCi91kmSCY8yn7pVc5n-gKgU_GOmQ",
+    "cid": "10997548680377777970",
+    "fid": "0x31756fdd748e6b03:0x989f2441ddfbbf32",
+    "placeId": "ChIJA2uOdN1vdTERMr_73UEkn5g"
+   },
+   {
+    "position": 15,
+    "title": "Tiệm nướng Thương Thương Vũng Tàu",
+    "address": "173a Võ Thị Sáu, Vũng Tàu, Hồ Chí Minh 790000, Việt Nam",
+    "latitude": 10.3392815,
+    "longitude": 107.08778099999999,
+    "rating": 4.7,
+    "ratingCount": 1608,
+    "type": "Quán ăn nhỏ",
+    "types": [
+     "Quán ăn nhỏ"
+    ],
+    "website": "https://1phutvungtau.com/",
+    "phoneNumber": "+84 339 413 345",
+    "openingHours": {
+     "Thứ Ba": "10:30–14:00, 16:00–23:00",
+     "Thứ Tư": "10:30–14:00, 16:00–23:00",
+     "Thứ Năm": "10:30–14:00, 16:00–23:00",
+     "Thứ Sáu": "10:30–14:00, 16:00–23:00",
+     "Thứ Bảy": "10:30–14:00, 16:00–23:00",
+     "Chủ Nhật": "10:30–14:00, 16:00–23:00",
+     "Thứ Hai": "10:30–14:00, 16:00–23:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnfSiiZO6Y56bqz7cZKpzFJ9Ieg_TQeXLeeF9Qrf8axUsoSSSYx_iEae4XZyzK5l1yX339IRALQHWJJtlXxvCNfzHaqELiZe1EvHejfXDNbxyG99pILF9c9y-6NYA0mtnWTEvC_TnO5OTg6",
+    "cid": "16491570762405134920",
+    "fid": "0x31756fe2031d3fc9:0xe4ddd43b79604248",
+    "placeId": "ChIJyT8dA-JvdTERSEJgeTvU3eQ"
+   },
+   {
+    "position": 16,
+    "title": "Tê Tê Buffet - Vũng Tàu",
+    "address": "92 Xô Viết Nghệ Tĩnh, Vũng Tàu, Hồ Chí Minh 790000, Việt Nam",
+    "latitude": 10.345665799999999,
+    "longitude": 107.086135,
+    "rating": 4.2,
+    "ratingCount": 819,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "website": "https://www.facebook.com/buffettetevungtau",
+    "phoneNumber": "+84 899 775 908",
+    "openingHours": {
+     "Thứ Ba": "16:00–22:30",
+     "Thứ Tư": "16:00–22:30",
+     "Thứ Năm": "16:00–22:30",
+     "Thứ Sáu": "16:00–22:30",
+     "Thứ Bảy": "16:00–22:30",
+     "Chủ Nhật": "16:00–22:30",
+     "Thứ Hai": "16:00–22:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWm_PpmUN3r93L2D8nmrCrcG5YXQ2KdbsFcxTnHmCRHWsBiDlJ-_WD_dQH2eJm9_SgtyQj3PCp2X0qcpFnXseULtZEz_H3EF2bO3yMMoemTcQ90lHzfmEz9TgLV7t0Dhwm5gvWPr9Q",
+    "cid": "16958920788018025142",
+    "fid": "0x31756f866c940755:0xeb5a309abfcd52b6",
+    "placeId": "ChIJVQeUbIZvdTERtlLNv5owWus"
+   },
+   {
+    "position": 17,
+    "title": "BOHO Restaurant",
+    "address": "66 Hạ Long, Vũng Tàu, Hồ Chí Minh 240000, Việt Nam",
+    "latitude": 10.330629799999999,
+    "longitude": 107.0756959,
+    "rating": 4.6,
+    "ratingCount": 1002,
+    "type": "Nhà hàng hải sản",
+    "types": [
+     "Nhà hàng hải sản"
+    ],
+    "website": "http://bohovungtau.vn/",
+    "phoneNumber": "+84 798 633 339",
+    "openingHours": {
+     "Thứ Ba": "09:00–22:00",
+     "Thứ Tư": "09:00–22:00",
+     "Thứ Năm": "09:00–22:00",
+     "Thứ Sáu": "09:00–22:00",
+     "Thứ Bảy": "09:00–22:00",
+     "Chủ Nhật": "09:00–22:00",
+     "Thứ Hai": "09:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlSE_YXnKrXElCCACghUTU0GuVlt_HfNV0HRkgwz7HDbyMqCbMYRqSvva4L8SrxdvcdVuT31Kzs2-asWFhaBHhTHtuL4qwxT-ZcO_AMzNjQcgeHmH_hkce35AnYsyLIXH7npjC8Xxg-1-4o",
+    "cid": "10826302059591349316",
+    "fid": "0x3175650053e5ff69:0x963ec05ced05b444",
+    "placeId": "ChIJaf_lUwBldTERRLQF7VzAPpY"
+   },
+   {
+    "position": 18,
+    "title": "Nhà Hàng Gành Hào 2",
+    "address": "83QC+RM3, 09 Hạ Long, Thành phố Vũng Tầu, Bà Rịa - Vũng Tàu, Việt Nam",
+    "latitude": 10.339089699999999,
+    "longitude": 107.0713957,
+    "rating": 4.2,
+    "ratingCount": 6901,
+    "type": "Nhà hàng hải sản",
+    "types": [
+     "Nhà hàng hải sản"
+    ],
+    "website": "https://ganhhao.com.vn/",
+    "phoneNumber": "+84 1900 3332",
+    "openingHours": {
+     "Thứ Ba": "09:00–21:00",
+     "Thứ Tư": "09:00–21:00",
+     "Thứ Năm": "09:00–21:00",
+     "Thứ Sáu": "09:00–21:00",
+     "Thứ Bảy": "09:00–21:00",
+     "Chủ Nhật": "09:00–21:00",
+     "Thứ Hai": "09:00–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWklpX33d084O46mokucxM1x-6LUGHuCQs195-6fIFn-EniifcLdu8w0HJEx6NFNubUXGthRustVW2d-tG9WOqeZ8ccKVG0XzUfFUbvL6mPylWAiDLPSEwLYar3B4yTG_KY5biPcwA",
+    "cid": "789246756626221904",
+    "fid": "0x31756f8942a2102f:0xaf3f7be58d5cb50",
+    "placeId": "ChIJLxCiQolvdTERUMvVWL738wo"
+   },
+   {
+    "position": 19,
+    "title": "Chợ Hải Sản Vũng Tàu",
+    "address": "94 Trần Hưng Đạo, Vũng Tàu, Hồ Chí Minh 790000, Việt Nam",
+    "latitude": 10.3494923,
+    "longitude": 107.0753103,
+    "rating": 3.9,
+    "ratingCount": 104,
+    "type": "Chợ",
+    "types": [
+     "Chợ"
+    ],
+    "phoneNumber": "+84 906 672 539",
+    "openingHours": {
+     "Thứ Ba": "07:00–22:00",
+     "Thứ Tư": "07:00–22:00",
+     "Thứ Năm": "07:00–22:00",
+     "Thứ Sáu": "07:00–22:00",
+     "Thứ Bảy": "07:00–22:00",
+     "Chủ Nhật": "07:00–22:00",
+     "Thứ Hai": "07:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmOY3TkbZtzHVX2QatTie5-CS9V1psIEuBjfVW5NRKdkqXHxQJdjIJ5H5e7vyHZDNuuCslGaqYVg1MQaOnrlATdnY8Nppiohf8C_hiRfjj9g17D7FJ7dubcz2hrQDiRccwhQ0wLFg",
+    "cid": "16887327818141178747",
+    "fid": "0x31756ffa37b6f7a1:0xea5bd72d7de09b7b",
+    "placeId": "ChIJofe2N_pvdTERe5vgfS3XW-o"
+   },
+   {
+    "position": 20,
+    "title": "Lẩu Cá đuối, hải sản tươi sống Bảy Giai",
+    "address": "29 Nguyễn Trường Tộ, Vũng Tàu, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.34295,
+    "longitude": 107.0791936,
+    "rating": 4,
+    "ratingCount": 118,
+    "type": "Nhà hàng gia đình",
+    "types": [
+     "Nhà hàng gia đình"
+    ],
+    "website": "https://www.facebook.com/profile.php?id=100090179784477",
+    "phoneNumber": "+84 384 623 826",
+    "openingHours": {
+     "Thứ Ba": "09:00–22:00",
+     "Thứ Tư": "09:00–22:00",
+     "Thứ Năm": "09:00–22:00",
+     "Thứ Sáu": "09:00–22:00",
+     "Thứ Bảy": "09:00–22:00",
+     "Chủ Nhật": "09:00–22:00",
+     "Thứ Hai": "09:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnKwOCq3sI6mDnCxfQA3xVovNpQ_yfqFfKNV7WPcn6kbP5VcMhfAvDA4JpLyNOvyOsMWo5UmWmPkscHJNQrVuPWYSbRXOLTZJGWF16-EvmZxFzw22hToB1SwTrBEP_zIrDshBD6",
+    "cid": "17509192991160191916",
+    "fid": "0x31756f349ffaa3d7:0xf2fd2641fddccbac",
+    "placeId": "ChIJ16P6nzRvdTERrMvc_UEm_fI"
+   }
+  ],
+  "credits": 3
+ }
+}

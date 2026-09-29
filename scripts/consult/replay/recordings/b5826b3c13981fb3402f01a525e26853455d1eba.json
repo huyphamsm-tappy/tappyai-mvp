@@ -1,0 +1,92 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Gội Đầu Dưỡng Sinh Quận 3 HẺM SPA\" quan 3 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T04:40:08.160Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Gội Đầu Dưỡng Sinh Quận 3 HẺM SPA\" quan 3 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Gội Đầu Dưỡng Sinh & Head Spa Quận 3 | TikTok",
+    "link": "https://www.tiktok.com/@tinhthuc.spa/video/7620427109760126229",
+    "snippet": "804 Lượt thích,Video TikTok từ Tỉnh Thức Spa (@tinhthuc.spa): \"Thư giãn với dịch vụ gội đầu dưỡng sinh, massage, facial tại spa Quận 3. Đặt lịch ngay! #hairwash #headspa #goidau #goidauduongsinh #spaquan3\".",
+    "position": 1
+   },
+   {
+    "title": "Gội đầu dưỡng sinh Quận 3 — Head spa District 3 đặt lịch | TikTok",
+    "link": "https://www.tiktok.com/@tinhthuc.spa/video/7647544058147015956",
+    "snippet": "Dịch vụ gội đầu dưỡng sinh tại Quận 3 (Head spa District 3) tập trung vào trải nghiệm thư giãn toàn diện: kỹ thuật gội kết hợp massage đầu, cổ vai gáy và chăm sóc tóc để phục hồi cả về thể chất lẫn tinh thần.",
+    "position": 2
+   },
+   {
+    "title": "Gội đầu dưỡng sinh thư giãn giá mềm ở quận 3 | TikTok",
+    "link": "https://www.tiktok.com/@thudidaurua/video/7612976076452629768",
+    "snippet": "Gội đầu dưỡng sinh thư giãn giá mềm ở quận 3 Khám phá dịch vụ gội đầu dưỡng sinh giá chỉ từ 79K với không gian vintage ấm cúng, phản ánh sự chăm sóc hoàn hảo. #goidauduongsinh #spathugian #massagetherapy #thudidaurua #ngayquoctephunu",
+    "position": 3
+   },
+   {
+    "title": "Gội đầu thư giãn tại Spa quận 3 | TikTok",
+    "link": "https://www.tiktok.com/@tinhthuc.spa/video/7624148926416866580",
+    "snippet": "Tận hưởng dịch vụ gội đầu thư giãn tại tiệm Spa quận 3, TP. HCM. Đặt lịch ngay để chăm sóc bản thân! #hairwash #headspa #goidau",
+    "position": 4
+   },
+   {
+    "title": "Gội Đầu Dưỡng Sinh Quận 3: Thư Giãn Xóa Tan Mệt Mỏi | TikTok",
+    "link": "https://www.tiktok.com/@lisanailvn/video/7525022899187518728",
+    "snippet": "Gội Đầu Dưỡng Sinh Quận 3: Thư Giãn Xóa Tan Mệt Mỏi Trải nghiệm gội đầu dưỡng sinh thư giãn tại Quận 3 giúp xóa tan stress và mang lại sự thoải mái. Khám phá ngay! #asmr #goidauduongsinh #spa",
+    "position": 5
+   },
+   {
+    "title": "Địa điểm gội đầu dưỡng sinh Trung Hoa mới toanh tại Quận 3 # ...",
+    "link": "https://www.tiktok.com/@huongnoilamphim/video/7665625755514096914",
+    "snippet": "Video TikTok từ Hướng nội làm phim 🍃🎬 (@huongnoilamphim): \"Địa điểm gội đầu dưỡng sinh Trung Hoa mới toanh tại Quận 3 #goidauduongsinh #goidauduongsinhquan3 #spa #nangmayspa #huongnoilamphim\".chinese head spa. âm thanh gốc - Hướng nội làm phim 🍃🎬.",
+    "position": 6
+   },
+   {
+    "title": "Gội đầu dưỡng sinh Quận 3 siêu thư giãn , siêu thoải mái # ...",
+    "link": "https://www.tiktok.com/@yubii.spa/video/7568442563544239381",
+    "snippet": "646 Lượt thích,Video TikTok từ Yubii Spa (@yubii.spa): \"Gội đầu dưỡng sinh Quận 3 siêu thư giãn , siêu thoải mái #asmr #yubiispa #goidauduongsinh #goidauduongsinhtanbinh #goidauduongsinhquan3\".Gội đầu dưỡng sinh Quận 3 siêu thư giãn , siêu thoải máinhạc nền - Yubii Spa.",
+    "position": 7
+   }
+  ],
+  "relatedSearches": [
+   {
+    "query": "gội đầu dưỡng sinh quận 3 hẻm spa quan 3 site:tiktok.com tv"
+   },
+   {
+    "query": "gội đầu dưỡng sinh quận 3 hẻm spa quan 3 site:tiktok.com nam"
+   },
+   {
+    "query": "gội đầu dưỡng sinh quận 3 hẻm spa quan 3 site:tiktok.com 1"
+   },
+   {
+    "query": "gội đầu dưỡng sinh quận 3 hẻm spa quan 3 site:tiktok.com cua"
+   },
+   {
+    "query": "gội đầu dưỡng sinh quận 3 hẻm spa quan 3 site:tiktok.com song"
+   },
+   {
+    "query": "gội đầu dưỡng sinh quận 3 hẻm spa quan 3 site:tiktok.com tin"
+   },
+   {
+    "query": "gội đầu dưỡng sinh quận 3 hẻm spa quan 3 site:tiktok.com va"
+   },
+   {
+    "query": "gội đầu dưỡng sinh quận 3 hẻm spa quan 3 site:tiktok.com music"
+   }
+  ],
+  "credits": 1
+ }
+}

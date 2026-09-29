@@ -1,0 +1,36 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"KHU VUI CHƠI TRẺ EM BIBO KIDS THỦ ĐỨC\" Thủ Đức site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T04:39:01.348Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"KHU VUI CHƠI TRẺ EM BIBO KIDS THỦ ĐỨC\" Thủ Đức site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "xe mô hình ở BIBO KIDS",
+    "link": "https://www.tiktok.com/@hoangnhanduc20/video/7588820037130128661",
+    "snippet": "Video TikTok từ Hoàng Nhân Đức (@hoangnhanduc20): \"xe mô hình ở BIBO ... xe mô hình ở BIBO KIDS. nhạc nền - Pet Cute · KHU VUI CHƠI TRẺ EM BIBO KIDS THỦ ĐỨC.",
+    "position": 1
+   },
+   {
+    "title": "Nụ đi chơi cùng chị Bi 🫶#giadinh #xuhướng @Yuriko Kim ...",
+    "link": "https://www.tiktok.com/@kimanh.020395/video/7554983461912579336?lang=sl",
+    "snippet": "... cùng chị Bi #giadinh #xuhướng @Yuriko Kim @Minh. @Kim Anh ☘️ · nhạc nền - Kim Anh ☘️ · KHU VUI CHƠI TRẺ EM BIBO KIDS THỦ ĐỨC · author. 7.",
+    "position": 2
+   }
+  ],
+  "credits": 1
+ }
+}

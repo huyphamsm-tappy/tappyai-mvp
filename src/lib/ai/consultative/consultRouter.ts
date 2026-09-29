@@ -53,7 +53,7 @@ const stripMarkers = (s: string) => s.replace(/\[(TAPPY_[A-Z_]+|CTA_BUTTONS|FOLL
 interface AreaRule { d: ConsultDomain; w: number; re: RegExp; on: 'f' | 'lo'; id?: string }
 
 const CITY: Array<[string, string]> = [
-  ['sai gon|saigon|sg|hcm|tp hcm|tphcm|tp\\.? ?ho chi minh|ho chi minh', 'TP.HCM'], ['ha noi|hanoi', 'Hà Nội'], ['da nang|danang', 'Đà Nẵng'],
+  ['sai gon|saigon|sg|tp\\.? ?hcm|hcm|tphcm|tp\\.? ?ho chi minh|ho chi minh', 'TP.HCM'], ['ha noi|hanoi', 'Hà Nội'], ['da nang|danang', 'Đà Nẵng'],
   ['da lat|dalat', 'Đà Lạt'], ['nha trang', 'Nha Trang'], ['vung tau', 'Vũng Tàu'], ['phu quoc', 'Phú Quốc'], ['hoi an', 'Hội An'], ['hue', 'Huế'],
   ['sa ?pa', 'Sapa'], ['ha giang', 'Hà Giang'], ['ha long', 'Hạ Long'], ['quy nhon', 'Quy Nhơn'], ['mui ne', 'Mũi Né'], ['phan thiet', 'Phan Thiết'],
   ['con dao', 'Côn Đảo'], ['can tho', 'Cần Thơ'], ['ninh binh', 'Ninh Bình'], ['my khe', 'Mỹ Khê'], ['moc chau', 'Mộc Châu'], ['tam dao', 'Tam Đảo'],
@@ -409,7 +409,7 @@ const STYLE: Array<[RegExp, string]> = [
   [W('nghi duong|resort|thu gian|chill'), 'nghỉ dưỡng'], [W('kham pha|phuot|mao hiem'), 'khám phá'], [W('lang man|honeymoon|trang mat'), 'lãng mạn'],
 ]
 const TRANSPORT: Array<[RegExp, string]> = [
-  [W('may bay|bay (?:sang|trua|chieu|toi|dem|thang)|flight|fly'), 'máy bay'], [W('xe rieng|tu lai|lai xe|o to|oto|xe hoi'), 'xe riêng'], [W('xe may|phuot'), 'xe máy'],
+  [W('may bay|bay (?:sang|trua|chieu|toi|dem|thang|tu|ra|vao)|flight|fly'), 'máy bay'], [W('xe rieng|tu lai|lai xe|o to|oto|xe hoi'), 'xe riêng'], [W('xe may|phuot'), 'xe máy'],
   [W('xe khach|xe giuong nam|limousine|bus'), 'xe khách'], [W('tau hoa|tau lua|di tau|ve tau|train'), 'tàu hỏa'],
 ]
 const FLIGHT_TIME = /\b(?:bay|chuyen|buoi|di)\s+(?:sang|trua|chieu|toi|dem|khuya)\b|\b(?:sau|truoc|tu|khoang)\s+\d{1,2}\s?h\b|\b\d{1,2}\s?h(?:\d{2})?\b|\b(?:morning|afternoon|evening)\b/

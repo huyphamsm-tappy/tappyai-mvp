@@ -589,7 +589,11 @@ export async function POST(req: Request) {
     if (consult.turn !== 'plan' || fd === 'main') return ''
     const pick = latestConsultPick(messages)
     return `
-- LENH CUOI (GHI DE moi luat hoi o tren): VIET KE HOACH NGAY, KHONG dat cau hoi nao. Dong dau "Mình giả định: …" cho moi thu chua biet (so nguoi, ngay → "ngày bạn chọn", noi o, mon qua…). Xoay quanh ${pick ? `"${pick}"` : 'lua chon hop nhat trong cuoc tro chuyen'}. Viet DU cac tieu de in dam, dung thu tu: ${PLAN_HEADINGS[fd].map(h => `**${h}**`).join(' · ')}.`
+- LENH CUOI (GHI DE moi luat hoi o tren): VIET KE HOACH NGAY, KHONG dat cau hoi nao. Dong dau "Mình giả định: …" cho moi thu chua biet (so nguoi, ngay → "ngày bạn chọn", noi o, mon qua…). Xoay quanh ${pick ? `"${pick}"` : 'lua chon hop nhat trong cuoc tro chuyen'}.${fd === 'travel'
+    // R15 (29/09): the travel plan block went missing on ~1/3 plan turns (and the completion call, which reuses
+    // this prompt, then wrote headings again): the order named only the headings. The block is FIRST and required.
+    ? ' Khach san / quan an / thoi tiet DA CO trong ket qua cong cu o tren: VIET NGAY, KHONG goi cong cu nua. BAT BUOC THEO THU TU: (1) khoi [TAPPY_PLAN]{JSON dung dinh dang o khoi KE HOACH phia tren}[/TAPPY_PLAN] — THIEU KHOI NAY LA SAI; (2) sau khoi, cac tieu de in dam: '
+    : ' Viet DU cac tieu de in dam, dung thu tu: '}${PLAN_HEADINGS[fd].map(h => `**${h}**`).join(' · ')}.`
   })()}
 =====================================`
     : ''
@@ -2358,7 +2362,9 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
         : consultProductQuery && toolExecutes('search_products') ? { name: 'search_products', args: { query: consultProductQuery } }
           : null
   const eveningSearches = eveningFrame && !noToolTurn && !!tools && toolExecutes('search_places')
-  const willPresearch = !!(!noToolTurn && tools && preCall) || eveningSearches
+  // R15: a consult trip plan pre-fetches hotel + food + weather in parallel (tripOutcomes, inside finishTurn).
+  const consultTripPrefetch = !!consult && consult.turn === 'plan' && planningIntent === 'trip' && !!consult.known.diem_den && process.env.CONSULT_TRIP_PREFETCH !== '0'
+  const willPresearch = !!(!noToolTurn && tools && preCall) || eveningSearches || (consultTripPrefetch && !!tools)
   const finishTurn = async (): Promise<Response> => {
   /**
    * A1(c) PRE-SEARCH (presearch.ts). When the search-now directive names the call, the route runs
@@ -2439,7 +2445,34 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     if (presearchPlan) console.log(JSON.stringify({ type: 'tappyai_presearch', reuse: !!presearchPlan.reuse, exact: presearchPlan.exact, query: presearchPlan.args.query, location: presearchPlan.args.location ?? null, placeType: presearchPlan.args.type, ms: presearchOutcome.ms, rows: Array.isArray((result as { results?: unknown[] })?.results) ? (result as { results: unknown[] }).results.length : null, error }))
     else if (flightPresearch) console.log(JSON.stringify({ type: 'tappyai_presearch', tool: 'get_flight_prices', origin: flightPresearch.args.origin, destination: flightPresearch.args.destination, departDate: flightPresearch.args.departDate ?? null, ms: presearchOutcome.ms, fares: Array.isArray((result as { flights?: unknown[] })?.flights) ? (result as { flights: unknown[] }).flights.length : null, error }))
   }
-  const presearchAll: PresearchOutcome[] = eveningOutcomes.length > 0 ? eveningOutcomes : presearchOutcome ? [presearchOutcome] : []
+  // R15 (29/09): a trip plan fetched its data itself, over up to 3 sequential model steps — 39–68 s per turn,
+  // past Vercel's 60 s on the slow ones, which is when the [TAPPY_PLAN] block went missing (Android trip-full).
+  // The data the plan needs is fetched HERE, in parallel, before the one model step: where to stay (the trip's
+  // hotel search), where to eat at the destination (one search, the user's stated taste), the weather.
+  const tripOutcomes: PresearchOutcome[] = []
+  if (consultTripPrefetch && tools) {
+    const known = consult?.known ?? {}
+    const dest = known.diem_den as string
+    const hotel = travelPreCall({ ...known, phuong_tien: '' }, '')
+    const taste = [known.mon, known.phong_cach === 'biển' ? 'hải sản' : null].filter(Boolean)[0] ?? 'đặc sản'
+    const calls: Array<{ name: 'get_hotel_prices' | 'search_places' | 'get_weather'; args: Record<string, string> }> = [
+      ...(hotel && hotel.name === 'get_hotel_prices' ? [{ name: 'get_hotel_prices' as const, args: hotel.args }] : []),
+      { name: 'search_places', args: { query: `quán ${taste} ngon ${dest}`, type: 'restaurant', location: dest } },
+      { name: 'get_weather', args: { location: dest } },
+    ]
+    const run = (name: string) => (tools as unknown as Record<string, { execute: (args: unknown, ctx: { toolCallId: string; messages: unknown[] }) => Promise<unknown> }>)[name]?.execute
+    const done = await Promise.all(calls.map(async c => {
+      const exec = run(c.name)
+      if (!exec) return null
+      const toolCallId = 'trip_' + c.name + '_' + randomUUID().slice(0, 6)
+      const t0 = Date.now()
+      const result = await exec(c.args, { toolCallId, messages: [] }).catch(e => ({ error: e instanceof Error ? e.message.slice(0, 200) : 'prefetch_failed' }))
+      return { toolCallId, toolName: c.name, args: c.args as unknown as PresearchOutcome['args'], result, ms: Date.now() - t0 } as PresearchOutcome
+    }))
+    for (const o of done) if (o) tripOutcomes.push(o)
+    console.log(JSON.stringify({ type: 'tappyai_trip_prefetch', calls: tripOutcomes.map(o => o.toolName), ms: Math.max(0, ...tripOutcomes.map(o => o.ms)) }))
+  }
+  const presearchAll: PresearchOutcome[] = tripOutcomes.length > 0 ? tripOutcomes : eveningOutcomes.length > 0 ? eveningOutcomes : presearchOutcome ? [presearchOutcome] : []
   const modelMessagesWithPresearch = presearchAll.length > 0 ? [...modelMessages, ...presearchAll.flatMap(o => presearchMessages(consult ? { ...o, result: slimResultForModel(o.result) } : o))] : modelMessages
   // F-015: give the question back if this turn ends in a terminal model failure. Single-shot: a
   // successful `onFinish` never refunds; a terminal error part (`onError`) or a streamText init
@@ -2495,7 +2528,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     maxTokens: noToolTurn ? (consult ? 600 : 300) : eveningBlock ? 350 : planningIntent ? 4096 : hasImage ? 1024 : 2048,
     // Consult V2: a pick whose search already ran (presearch) answers in ONE step — no second full pass.
     // A follow-up/compare that re-reads its evidence keeps a second step: a stray tool call must still end in text.
-    maxSteps: consultFollowReuse ? 2 : noToolTurn || eveningBlock || (lean && presearchAll.length > 0 && !planningIntent) ? 1 : planningIntent ? (lean ? 3 : 8) : hasImage ? 3 : lean ? 3 : 5,
+    // R15: a pre-fetched trip plan writes in ONE step (a second only if it still reaches for a tool).
+    maxSteps: consultFollowReuse || consultTripPrefetch ? 2 : noToolTurn || eveningBlock || (lean && presearchAll.length > 0 && !planningIntent) ? 1 : planningIntent ? (lean ? 3 : 8) : hasImage ? 3 : lean ? 3 : 5,
     // A one-step consult turn never reads the history breakpoint back — skip its +25% write (claude.ts).
     // A/B 29/09: a consult plan that is not a multi-step trip wrote ~4.2k tokens of history to the cache (1.25×)
     // and read back ~20% — a net loss. The history breakpoint stays only where a second model step is likely.
@@ -2670,10 +2704,13 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
             { role: 'user', content: `${toolResultDigest(toolResults)}
 
 ${completionInstruction(lang)}` },
+            // R15: the answer is pre-filled with the block's opening tag, so the model continues the JSON and
+            // cannot drift into headings (measured: 'no_block' on about half the completions before this).
+            { role: 'assistant', content: '[TAPPY_PLAN]' },
           ],
           maxTokens: 4096,
         })
-        return done.text
+        return done.text.trimStart().startsWith('[TAPPY_PLAN]') ? done.text : `[TAPPY_PLAN]${done.text}`
       },
     }), { status: streamed.status, headers: streamed.headers })
     : streamed

@@ -26,3 +26,10 @@ describe('R9 form seen in replay 29/09', () => {
     expect(stripStepNarration('Gọi tool tìm nhà hàng, thời tiết và xác nhận giá phòng...\n\n**Tóm tắt chuyến**').text).toBe('**Tóm tắt chuyến**')
   })
 })
+
+describe('R15 narration forms', () => {
+  it('"Giờ mình gọi tool…" and "Mình gọi thông tin quán ăn…"', () => {
+    expect(stripStepNarration('Giờ mình gọi tool tìm giá vé máy bay.\nNội dung.').text).toBe('Nội dung.')
+    expect(stripStepNarration('Mình gọi thông tin quán ăn hải sản, thời tiết và giá phòng Đà Nẵng để lập kế hoạch đầy đủ.\nNội dung.').text).toBe('Nội dung.')
+  })
+})
