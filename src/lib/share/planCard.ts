@@ -1,6 +1,8 @@
-// The PLAN share image — sample #7 ("TAPPY PLAN", plan-share.png): navy ground, the plan's own hero
-// photo (or none), the eyebrow + title + real counts, a numbered day timeline, the overview box,
-// the blue→violet CTA pill carrying the plan link, and "Được tạo bởi TappyAI".
+// The PLAN share image — sample #7 ("TAPPY PLAN", plan-share.png): navy ground, the plan's own
+// photo as the BACKGROUND of the whole top (owner note 29/09; styled like the /plan/<id> social
+// card) or a gradient band when there is none, the eyebrow + title + real counts, a numbered day
+// timeline, "Điểm nổi bật" (≥ 2 photos), the overview box, the blue→violet CTA pill carrying the
+// plan link, and "Được tạo bởi TappyAI".
 //
 // 1080 px wide; the height follows the plan (bounded: at most PLAN_CARD_DAYS days and
 // PLAN_CARD_STOPS stops per day are drawn, the rest is counted).
