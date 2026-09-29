@@ -1,5 +1,6 @@
 package com.tappyai.app.chat.data
 
+import com.tappyai.app.chat.ChatSessionId
 import android.content.Context
 import android.util.Base64
 import com.tappyai.app.R
@@ -50,7 +51,7 @@ class RealChatRepository @Inject constructor(
         return JwtDecoder.decode(token)?.isAnonymous == true
     }
 
-    override fun streamReply(messages: List<ChatMessage>): Flow<ChatStreamEvent> = callbackFlow {
+    override fun streamReply(messages: List<ChatMessage>, chatSessionId: String?): Flow<ChatStreamEvent> = callbackFlow {
         // Error bubbles (isError) are a UI artifact, not real model output. They live in the
         // ViewModel's message list with role=Assistant, so without this filter a prior failed
         // turn's error text (e.g. a connection-error message) would be replayed to the backend as a genuine
@@ -66,7 +67,7 @@ class RealChatRepository @Inject constructor(
         }
         // The device's last known position rides along when the user granted it (see
         // ChatLocationSource); a guest's 18+ declaration rides as a header (see GuestAgeStore).
-        val body = json.encodeToString(ChatRequest(dtoMessages, userLocation = location.lastKnown()))
+        val body = json.encodeToString(ChatRequest(dtoMessages, userLocation = location.lastKnown(), chatSessionId = chatSessionId?.takeIf(ChatSessionId::isValid)))
             .toRequestBody("application/json".toMediaType())
 
         val request = chatRequest(baseUrl, body, ageDeclared = if (isGuest()) guestAge.declared() else null)

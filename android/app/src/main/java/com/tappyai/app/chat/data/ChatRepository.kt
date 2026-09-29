@@ -46,7 +46,7 @@ sealed interface ChatStreamEvent {
 }
 
 interface ChatRepository {
-    fun streamReply(messages: List<ChatMessage>): Flow<ChatStreamEvent>
+    fun streamReply(messages: List<ChatMessage>, chatSessionId: String? = null): Flow<ChatStreamEvent>
     fun getFollowups(category: ChatCategory): List<String>
 }
 // The V3 share artifact used to read the `8:` frame through a `takeLatestPlacesView()` side

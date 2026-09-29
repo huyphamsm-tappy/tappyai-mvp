@@ -81,6 +81,8 @@ async function send(a, text) {
   // A permission prompt left over (pm grant normally prevents it) would swallow the send.
   const allow = a.find(/^(While using the app|Khi dùng ứng dụng)$/)
   if (allow) await a.tap(allow, { after: 1500 })
+  // The emulator's software-GPU ANR (§ANR: main thread drawing text) — answer "Wait", never close.
+  for (let k = 0; k < 3 && a.find(/isn.t responding/); k++) { const w = a.find('Wait'); if (w) await a.tap(w, { after: 3000 }) }
   await a.tap('Nhắn tin cho Tappy…', { after: 500 })
   await a.pasteText(text)
   await a.tap('Gửi', { after: 3000 })
