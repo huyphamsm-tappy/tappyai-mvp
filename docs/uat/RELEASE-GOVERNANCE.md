@@ -54,7 +54,10 @@ Only after all gates. Each step is in `RELEASE-PLAN-2026-09-29.md` §1/§4; the 
    after the deploy; **H1/M1** (#18, #19) only after the smoke passed and a fresh backup.
 4. **Merge PR #252** (merge commit, by Huy).
 5. **Vercel production deploy** of that merge; wait until `/api/version` = release SHA.
-6. **Env / flags** (RELEASE-PLAN §3a): `ACCOUNT_SELF_DELETE_ENABLED=false` (today it is `true`), `SERPER_DAILY_CREDIT_CEILING`,
+6. **Env / flags — parity with UAT** (RELEASE-PLAN **§2g** is the checklist: production runs every flag exactly as UAT
+   tested, except Huy's decisions below; `SNIPPET_PRICE_GUARD_V2=1` added — Q-ENV1 approved 29/09; the three prod-only
+   flags `CONTENT_SAFETY_*` / `CONTROLLER_ORG_MEMBERSHIP_ENABLED` are read first and mirrored on UAT + re-tested if `true`;
+   **Allow anonymous sign-ins ON** (RELEASE-PLAN §3 (e2)). Then RELEASE-PLAN §3a: `ACCOUNT_SELF_DELETE_ENABLED=false` (today it is `true`), `SERPER_DAILY_CREDIT_CEILING`,
    `ACCESSTRADE_*` (owner), and the `SNIPPET_PRICE_GUARD_V2` decision of §7 below; `NEXT_PUBLIC_PLAY_LISTING_LIVE` stays **unset**
    until Huy makes the Play listing public. Env changes need a redeploy to take effect.
 7. **S1** + #17.

@@ -55,9 +55,9 @@ all checks are also in `scripts/release/sql/precheck-all.sql`.
 | 2 | `20260913_plan_shares` | **APPLY** | before deploy | `to_regclass('public.plan_shares') IS NOT NULL` f → t; 3 policies; `plan_share_public` t | `rollback/20260913_plan_shares_rollback.sql` | Every plan share 500s without it (prod has no `/api/plans/share` today) |
 | 3 | `20260915_profile_public_presentation` | **APPLY** | before deploy | `profiles.bio` / `cover_url` exist: f,f → t,t | `rollback/20260915_profile_public_presentation_rollback.sql` | Cover/bio; API degrades without it |
 | 4 | `20260918_g1b_share_ancestry` | **APPLY** | before deploy, after #1 | `shared_results.parent_id`, `owner_is_anonymous` f → t,t | `rollback/20260918_g1b_share_ancestry_rollback.sql` | Share creation writes these columns |
-| 5 | `20260920100000_commerce_providers` | **APPLY** | before deploy | `to_regclass('public.commerce_providers') IS NOT NULL` f → t | none (additive): `DROP TABLE public.commerce_providers CASCADE; DROP FUNCTION IF EXISTS public.commerce_providers_touch();` | Runtime provider registry; feed rows key on it |
+| 5 | `20260920100000_commerce_providers` | **VERIFY-ONLY** (already on prod since 2026-09-27, AFFILIATE_STATUS §0) | step 0 (pre-check) | `to_regclass('public.commerce_providers') IS NOT NULL` → expect **t** (already applied). `f` = the 27/09 apply is missing → STOP and ask Huy (then it becomes APPLY) | none (additive): `DROP TABLE public.commerce_providers CASCADE; DROP FUNCTION IF EXISTS public.commerce_providers_touch();` | Runtime provider registry; feed rows key on it |
 | 6 | `20260920110000_commerce_feed_items` | **APPLY** | before deploy, after #5 | `commerce_feed_items`, `commerce_feed_runs` f,f → t,t | none (additive): `DROP TABLE public.commerce_feed_items, public.commerce_feed_runs;` (before #5's drop) | Feed ingest target (buy buttons, §6 checklist) |
-| 7 | `20260927100000_commerce_providers_portal_state` ⚑ | **APPLY** | right after #6 (owner) | before: errors until #5 exists; after: `select provider_id … where deeplink_enabled` → 7 rows cellphones, klook, lazada, traveloka, tripcom, vexere, vietnamairlines | none (row UPDATEs only; undo = rollback of #5, or re-apply the seed values of `20260920100000` for lazada/vexere/traveloka/vietnamairlines/tiktokshop/shopee/dmx) | ACCESSTRADE portal state verified 27 Sep; **not in DEPLOY-CHECKLIST** |
+| 7 | `20260927100000_commerce_providers_portal_state` ⚑ | **VERIFY-ONLY** (already on prod since 2026-09-27, AFFILIATE_STATUS §0) | step 0 (pre-check) | `select provider_id … where deeplink_enabled` → expect **7 rows** (cellphones, klook, lazada, traveloka, tripcom, vexere, vietnamairlines). Anything else → STOP and ask Huy; never re-run the file blindly (it is row UPDATEs of the portal state) | none (row UPDATEs only; undo = rollback of #5, or re-apply the seed values of `20260920100000` for lazada/vexere/traveloka/vietnamairlines/tiktokshop/shopee/dmx) | ACCESSTRADE portal state verified 27 Sep; **not in DEPLOY-CHECKLIST** |
 | 8 | `20260920_f028_dob_self_correct_while_ineligible` | **APPLY** | before deploy | `prosrc ILIKE '%age(CURRENT_DATE, v_existing%'` on `set_user_date_of_birth` f → t | `rollback/20260920_f028_dob_self_correct_while_ineligible_rollback.sql` | Age-correction flow matches the new client |
 | 9 | `20260921_f032_admin_role_actor_from_authuid` | **APPLY** | before deploy | `body_ok` f → t, `auth_can_exec` f | `rollback/20260921_f032_admin_role_actor_from_authuid_rollback.sql` | Security hardening of admin-role RPCs |
 | 10 | `20260921_user_events_ga4_event_types` | **APPLY** (no-op on prod) | before deploy | constraint query → 0 rows on prod (no-op expected) | `rollback/20260921_user_events_ga4_event_types_rollback.sql` | Conditional; widens only an existing constraint |
@@ -120,7 +120,7 @@ lead should eyeball the three Production values in the dashboard (not the CLI) �
 
 ### 2d. Read by the code, missing on both — same as what UAT tested; no action for launch
 `SHOW_PUBLIC_SHARE` (unset = ON, owner) · `RISK_BACKSTOP` (unset = live) · `CONSULTATIVE_V1` (unset = ON) ·
-`PLACE_GUARD_ATTRIBUTION_V2` (unset = ON) · `SNIPPET_PRICE_GUARD_V2`, `MEDIA_PLACEMENT_V2` (unset = OFF, as tested) ·
+`PLACE_GUARD_ATTRIBUTION_V2` (unset = ON) · `MEDIA_PLACEMENT_V2` (unset = OFF, as tested) · ~~`SNIPPET_PRICE_GUARD_V2`~~ → UAT runs it ON: see §2g (ADD `1` on Production) ·
 `LLM_PROVIDER`, `LLM_FAST/SMART/PLANNING/VISION_MODEL` (must stay unset) · `SERPER_OUTAGE_INSTANCE_CEILING` (default 1,500) ·
 `MESSAGE_NOTIFICATIONS_ENABLED`, `GCP_LOGGING_*` (off) · harness switches `AUDIT_*`, `CCP_EVENT_LOG` (must stay unset —
 confirmed absent) · `UPSTASH_REDIS_REST_*` (fallback for KV, KV is set).
@@ -131,6 +131,58 @@ lookup; the AI gives search links) · `ZALO_IDENTITY_SECRET`, `NEXT_PUBLIC_ZALO_
 `APPLE_IAP_*` (`/api/iap/apple/verify` unusable; iOS is not in this release) · `NEXT_PUBLIC_POSTHOG_*` (deliberately
 absent) · `NEXT_PUBLIC_TIKTOK_CONTENT_POSTING_ENABLED` (off) · `ORGANIZATION_SAME_AS` (no JSON-LD `sameAs`) ·
 `VAPID_CONTACT_EMAIL` (defaults to admin@tappyai.com).
+
+### 2g. FLAG / CONFIG PARITY — Production must run what UAT tested (owner 2026-09-29, applied in PHẦN B)
+
+Rule (Huy, 29/09): every flag the release code reads runs on Production **exactly as on UAT (Preview, `rc/web-uat`)**,
+except the owner's explicit decisions: `NEXT_PUBLIC_PLAY_LISTING_LIVE` **off**, `ACCOUNT_SELF_DELETE_ENABLED=false`,
+D1/D2/D4 deferred. Method (29/09): `vercel env ls` names on both, `vercel env pull` of Preview for the non-sensitive values
+(file deleted right after; *Sensitive* values come back empty, so those were read from behaviour — UAT logs), code defaults
+read from the source. "eff." = the value the code actually runs with.
+
+**A. Behaviour flags**
+
+| Flag | Code default (unset) | UAT / Preview (tested) | Production today | Release action (step 6 of the run sheet) |
+|---|---|---|---|---|
+| `SNIPPET_PRICE_GUARD_V2` | OFF (`=== '1'/'true'`) | **set (Sensitive) → eff. ON** — UAT log `snippet_price v2:true` (064542b, 29/09) | unset → **OFF** | **ADD `1` on Production** (Q-ENV1, approved 29/09) |
+| `CONSULT_V2` | ON (off only on `0/false/off`) | unset → ON | unset → ON | none |
+| `CONSULTATIVE_V1` | ON | unset → ON | unset → ON | none |
+| `PLACE_GUARD_ATTRIBUTION_V2` | ON | unset → ON | unset → ON | none |
+| `RISK_BACKSTOP` | `live` | unset → live | unset → live | none |
+| `MEDIA_PLACEMENT_V2` | OFF | unset → OFF | unset → OFF | none |
+| `CONSULT_TOP3`, `CONSULT_TRIM_FRAME`, `CONSULT_TRIP_PREFETCH` | ON (`!== '0'`) | unset → ON | unset → ON | none |
+| `CONSULT_V1_MORE` | normal (`=== '0'` switches) | unset | unset | none |
+| `CONSULT_CACHE_LIBRARY`, `CONSULT_FOLLOW_REUSE`, `CONSULT_FOLLOW_SEED`, `CONSULT_FOLLOW_STATE` | OFF (`=== '1'`) | unset → OFF | unset → OFF | none (A/B kept off) |
+| `QUOTA_WEIGHTED` | off | unset | unset | none |
+| `SHOW_PUBLIC_SHARE` | ON | unset → ON | unset → ON | none |
+| `MESSAGE_NOTIFICATIONS_ENABLED` | OFF (`=== 'true'`) | unset → OFF | unset → OFF | none |
+| `NEXT_PUBLIC_TIKTOK_CONTENT_POSTING_ENABLED` | OFF | unset | unset | none |
+| `GCP_LOGGING_ENABLED` | OFF | unset | unset | none |
+| `CONTENT_SAFETY_GATE_ENABLED` | OFF (`=== 'true'`) | unset → **OFF** | **set (Encrypted, value not readable by CLI)** | 🚨 Lead reads the value in the Vercel dashboard at step 6. If `true`: production runs the safety gate UAT never ran → **before Huy's UAT sign-off**, set the same value on Preview (`rc/web-uat`), redeploy UAT and re-run the gates (do NOT switch a safety gate off on Production). If `false`/empty: nothing. |
+| `CONTENT_SAFETY_SCHEMA_MIGRATED` | OFF (`=== 'true'`) | unset → OFF | set (Encrypted) | same as the line above (they go together) |
+| `CONTROLLER_ORG_MEMBERSHIP_ENABLED` | OFF (`=== 'true'`) | unset → OFF | set (Encrypted) | same rule: read it; `true` → mirror on Preview and re-test before sign-off |
+| `ACCOUNT_SELF_DELETE_ENABLED` | OFF | unset → OFF | **`true`** (plain) | **SET `false`** (owner decision) |
+| `NEXT_PUBLIC_PLAY_LISTING_LIVE` | OFF (UAT shows the badge by rule, `VERCEL_ENV !== 'production'`) | unset | unset → OFF | **keep unset** until Huy publishes the Play listing |
+| `AUTH_GOOGLE_ENABLED` | not read by this release (Phase 8 reads it) | set (Sensitive) | set | **keep** on Production |
+| `LLM_PROVIDER`, `LLM_*_MODEL`, `AUDIT_*`, `CCP_EVENT_LOG` | code defaults / harness only | unset | unset | **must stay unset** |
+
+**B. Config with an environment-specific value (NOT copied — each environment has its own)**
+
+| Name | UAT / Preview | Production | Release action |
+|---|---|---|---|
+| `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_APP_URL` | `https://uat.tappyai.com` | set (Encrypted) | confirm `https://www.tappyai.com` in the dashboard |
+| `PLACES_PROVIDER` | `serper` | set (Encrypted) | confirm `serper` (same as UAT) |
+| `GCS_MEDIA_BUCKET`, `GCP_MEDIA_SERVICE_ACCOUNT` | UAT bucket / SA | unset → code defaults = prod bucket / bridge SA | **keep unset** (§2a) |
+| `GCP_WIF_POOL`, `GCP_WIF_PROVIDER`, `GCP_PROJECT_NUMBER` | UAT pool | prod values | confirm no `-uat` value (§2a) |
+| `SERPER_DAILY_CREDIT_CEILING` | unset → 15,000 | unset → 15,000 | ADD `15000` explicitly (§2b) |
+| `ACCESSTRADE_PUBLISHER_ID` | set | set | none |
+| `ACCESSTRADE_API_KEY`, `ACCESSTRADE_FEED_ENDPOINT` | unset | unset | ADD (owner, §2b) — feed ingest |
+| `CCP_ATTRIBUTION_SECRET` | own value | own value | none (different per env by design) |
+| `NEXT_PUBLIC_GA_MEASUREMENT_ID` | unset (no GA on UAT) | set | none |
+| `MEDIA_PROVIDER`, `APPLE_ROOT_CA_PEM` | unset | set | leave (inert: GCS is the only provider; the Apple root is pinned in code) |
+| Credentials (`ANTHROPIC_API_KEY`, `SERPER_API_KEY`, `STRIPE_*`, `SUPABASE_SERVICE_ROLE_KEY`, `KV_*`, `ZALO_*`, `VAPID_*`, `GOOGLE_CLIENT_*`, `CRON_SECRET`, …) | own values | own values | none — never copied between environments |
+
+After step 6: redeploy Production (env changes apply only to new deployments), then `verify-prod.mjs` (§5).
 
 ### 2e. Checklist §4 names the code no longer reads — do NOT add
 `BLOB_READ_WRITE_TOKEN` (uploads are GCS via Workload Identity, not Vercel Blob) · `RESEND_API_KEY` ·
@@ -222,6 +274,38 @@ Do them in this order. Nothing here is typed into a chat; values go only into th
 Everything else the release needs is already on Production (§2) or is a fixed value the lead sets
 (`SERPER_DAILY_CREDIT_CEILING=15000`, `ACCOUNT_SELF_DELETE_ENABLED=false` set explicitly — owner 2026-09-29).
 Also verify (dashboard, no value to copy): Supabase prod → Authentication → **Allow anonymous sign-ins** is ON (§2f).
+
+**(e2) Guest chat on production — Allow anonymous sign-ins** (at §4 step 6, right after the deploy; before the smoke)
+Baseline 29/09 (`f42ae4b`): a guest's first chat message answers **401 → "Cần đăng nhập để trò chuyện với Tappy"**
+(`gs://tappyai-uat-evidence/evidence/prod-baseline-f42ae4b/guest-chat.png`). The release lets guests chat through an
+anonymous Supabase session; without this switch every guest case of the smoke fails.
+1. supabase.com/dashboard → project **`fwznnobrdctuskgrvuik`** (production — check the ref in the URL, NOT `zdaprdfgpbpnxyofagmc`).
+2. Left menu **Authentication** → **Sign In / Providers** (older UI: Authentication → Providers → Settings).
+3. Section *User Signups*: switch **Allow anonymous sign-ins** → ON. Leave "Allow new users to sign up" and
+   "Confirm email" as they are.
+4. **Save changes**. Tell the lead "anonymous ON" — the lead re-runs one guest question (expect 200 and an answer).
+5. Rollback of this switch = the same toggle OFF (guests see the sign-in wall again; accounts are unaffected).
+
+**(e3) Two production TEST accounts for `verify-prod.mjs`** (any time before §4 step 9; takes ~5 minutes)
+Names — obviously test, never a real person: **`qa.release.a@tappyai.com`** (account A: chats, uploads, plan share)
+and **`qa.release.b@tappyai.com`** (account B: only proves it cannot read A's data). No mailbox is needed.
+1. supabase.com/dashboard → project **`fwznnobrdctuskgrvuik`** → **Authentication** → **Users**.
+2. **Add user** → **Create new user** → email `qa.release.a@tappyai.com`, a strong password (password manager),
+   tick **Auto Confirm User** → **Create user**. Repeat for `qa.release.b@tappyai.com` (different password).
+3. On a private browser window open www.tappyai.com → Đăng nhập with account A → complete the **18+ date-of-birth**
+   step once (the age gate blocks every signed-in account without it) → sign out. Repeat for B.
+4. Do NOT give them Pro, admin or any role. After the release they may stay (useful for the next release) — their rows
+   are test data; deleting them later = Authentication → Users → ⋯ → Delete user.
+5. Running the script — the passwords never go into a file, the chat or the shell history. In Git Bash:
+   ```bash
+   export VERIFY_A_EMAIL=qa.release.a@tappyai.com VERIFY_B_EMAIL=qa.release.b@tappyai.com
+   read -rs -p "A password: " VERIFY_A_PASSWORD; echo; export VERIFY_A_PASSWORD
+   read -rs -p "B password: " VERIFY_B_PASSWORD; echo; export VERIFY_B_PASSWORD
+   export VERIFY_SUPABASE_URL=https://fwznnobrdctuskgrvuik.supabase.co VERIFY_SUPABASE_ANON_KEY=<public anon key, Settings → API>
+   node scripts/release/verify-prod.mjs --sha <release sha> --baseline <prod-baseline-f42ae4b dir>
+   unset VERIFY_A_PASSWORD VERIFY_B_PASSWORD
+   ```
+   You type the two passwords yourself at the prompts (nothing is echoed); the lead runs the rest.
 
 **(f) After the release is stable (same day)**
 Delete `D:\TappyAI-backups\pgpass` (and `pghost.txt`, `accesstrade.txt` if still there). Keep the `prod-<stamp>`
