@@ -145,6 +145,16 @@ Hộp này thỉnh thoảng hiện ở khung hình đầu sau khi cài (emulator
 
 ---
 
+## QUYẾT ĐỊNH CỦA HUY — 29/09 sáng
+
+| # | Quyết định | Việc Android làm | Trạng thái |
+|---|---|---|---|
+| Q1 | KHÔNG upload bằng chứng lên bucket công khai | Giữ ở `D:/TappyAI-backups/android-parity-evidence/` | ✅ đang làm vậy |
+| Q2, Q3, Q4, Q9 | Đồng ý phương án tạm | — | ✅ |
+| Q5 | CÓ đăng video | Chờ guard mới (R8) trên rc → push `6fe2150` (nhánh `android/video-held`) → build lại APK uat → cài lại lên máy Huy (SM-A127F) bằng adb | ⏳ chờ phiên web đổi guard |
+| Q7 | Tư vấn trên app NGANG web; server lưu trạng thái theo mã cuộc trò chuyện, giữ ADR-024 | Hiện app KHÔNG gửi mã nào (và web cũng chưa, server chưa đọc) — đã ghi hợp đồng đề xuất `chatSessionId` ở R14; làm ngay khi phiên web chốt tên trường + đổi guard. Không kịp → push `d48a11e` (nhánh `android/evidence-id-held`) | ⏳ chờ phiên web trả lời R14 |
+| Q6, Q8 | Lỗi server, phiên web sửa | Khi phiên web báo server ổn định trong ANDROID-REQUESTS → chạy lại `node android/e2e/run.mjs chat` | ⏳ chờ |
+
 ## BÁO CÁO SÁNG — 29/09/2026
 
 **SHA cuối:** `1854594` trên `rc/web-uat` (đã push, không force). Unit Android 2.674/0 (debug + release + uat), test web quét android/ 810/0, release sạch 7/7.
