@@ -1698,7 +1698,9 @@ export async function POST(req: Request) {
   // oriented V1 rulebook; follow-up / compare / plan skip the ranking and card blocks (no ranked set to explain).
   const leanPlanTurn = !!consult && consult.domains.length > 0 && consult.turn === 'plan' && process.env.CONSULT_TRIM_FRAME !== '0'
   const leanNonPick = !!consult && consult.domains.length > 0 && !['pick', 'more', 'reject'].includes(consult.turn) && process.env.CONSULT_TRIM_FRAME !== '0'
-  const consultOnlyBlock = consult && (!v1Block || leanPlanTurn) && consult.turn !== 'ask' && consult.turn !== 'chat' && consult.domains.length > 0
+  // A/B (CONSULT_V1_MORE=0): "xem thêm" / "bác" on stored candidates read frame + state + top 3, not the V1 pick rulebook.
+  const leanMoreFrameOnly = !!consult && consult.domains.length > 0 && (consult.turn === 'more' || consult.turn === 'reject') && process.env.CONSULT_V1_MORE === '0'
+  const consultOnlyBlock = consult && (!v1Block || leanPlanTurn || leanMoreFrameOnly) && consult.turn !== 'ask' && consult.turn !== 'chat' && consult.domains.length > 0
     ? (consultLibraryOn ? frameRef(frameDomainOf(consult.domains[0]), consult.turn) : buildDomainFrame(frameDomainOf(consult.domains[0]), consult.turn)) + consultUnderstood
     : ''
 
@@ -1732,7 +1734,7 @@ export async function POST(req: Request) {
     priorEvidence ? renderDecisionEvidenceBlock(priorEvidence, true) : '',
     priorEvidenceMissing && needProfile.domain === 'shopping' ? renderMissingEvidenceBlock() : '',
     // Consultative V1: situation + rule overrides + follow-up references. Empty with the flag OFF.
-    leanPlanTurn ? '' : v1Block,
+    leanPlanTurn || leanMoreFrameOnly ? '' : v1Block,
     consultOnlyBlock,
     // R12: under Consult V2 the questions were asked ONCE, by the ask card — no second "máy bay hay xe khách?".
     tripContext.shouldAskTransportMode && !consult ? buildTransportModeBlock() : '',
