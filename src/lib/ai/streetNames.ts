@@ -2,13 +2,11 @@
 // planned an evening in HUẾ — the situation's location was read by substring, "nguyen hue" ⊃ "hue").
 // Same class as placeGeoGuard's street-segment rule ("Nguyễn Thái Bình" ≠ Thái Bình), for the detectors
 // that read the USER's text.
-
-const CITY_WORDS = 'hue|ha noi|hai phong|da nang|can tho|nha trang|da lat|vung tau|quy nhon|phan thiet|ha long|ninh binh|hoi an|sai gon|thai binh'
-
-const STREET_OR_DISH = new RegExp(
-  `\\b(?:nguyen hue|nguyen thai binh|bun bo hue|com hen hue|(?:duong|pho di bo|street|dai lo|ngo|hem)\\s+(?:${CITY_WORDS}))\\b`,
-  'g',
-)
+//
+// 🚨 A REGEX LITERAL, not `new RegExp(\`…\${CONST}…\`)`: on UAT b87219d the constant template version
+// matched locally (vitest) and never in the production bundle — "Nguyễn Huệ" still centred the search on
+// Huế while every other change of the same commit was live. The literal leaves nothing to fold.
+const STREET_OR_DISH = /\b(?:nguyen hue|nguyen thai binh|bun bo hue|com hen hue|(?:duong|pho di bo|street|dai lo|ngo|hem)\s+(?:hue|ha noi|hai phong|da nang|can tho|nha trang|da lat|vung tau|quy nhon|phan thiet|ha long|ninh binh|hoi an|sai gon|thai binh))\b/g
 
 /**
  * Diacritic-folded, lower-case text with street / dish names that contain a city word blanked out —
