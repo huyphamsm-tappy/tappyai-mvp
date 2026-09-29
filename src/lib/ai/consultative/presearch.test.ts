@@ -86,7 +86,8 @@ describe('what the model and the client receive', () => {
     expect(route).toMatch(/presearchPlan && toolExecutes\('search_places'\) \? \{ name: 'search_places', args: presearchPlan\.args \}/)
     expect(route).toMatch(/prefixBody\(presearchAll\.map\(presearchFrames\)\.join\(''\), sdkResponse\.body\)/)
     // Consult V2 (cost §6): the model's copy of the rows drops link/id fields; the frames keep the full result.
-    expect(route).toMatch(/\[\.\.\.modelMessages, \.\.\.presearchAll\.flatMap\(o => presearchMessages\(consult \? \{ \.\.\.o, result: slimResultForModel\(o\.result\) \} : o\)\)\]/)
+    // R15: a pre-fetched trip plan (toolCallId 'trip_…') reads at most 4 rows per source.
+    expect(route).toMatch(/\[\.\.\.modelMessages, \.\.\.presearchAll\.flatMap\(o => presearchMessages\(consult \? \{ \.\.\.o, result: slimResultForModel\(o\.result(?:, o\.toolCallId\.startsWith\('trip_'\) \? 4 : undefined)?\) \} : o\)\)\]/)
     expect(route).toMatch(/\+ \(presearchOutcome \? 1 : 0\)/)
   })
 })

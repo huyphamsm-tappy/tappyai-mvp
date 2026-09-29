@@ -17,6 +17,7 @@ import { guardPlanPrices, planPriceEvidenceFromRows } from './planPriceGuard'
 import { guardPlanLocalTips } from './planLocalTipsGuard'
 import { guardPlanItems, type PlanPlace } from './planItemGuard'
 import { guardPlanTripFacts, guardUngivenTravelDate } from './planTripFactsGuard'
+import { repairPlanBlock } from './planJsonRepair'
 import { appendConsultPlanCost, appendPlanBudgetMath, partyCount, perPersonBudget } from './planBudgetMath'
 import { consultRemainingLine, normalizePickSentence, shoppingMarkerNames, shoppingPickName } from './consultative/consultBrain'
 import { restorePlanHeadings } from './consultative/domainFrames'
@@ -2100,9 +2101,12 @@ export function applyPlaceEnrichmentStreamFilter(
       byEntity: planPriceEvidenceFromRows(latestPlaces as Record<string, unknown>[], snippetPricesByEntity),
       userAmounts: extractMoneyClaims(userText || '').flatMap(c => [c.lo, c.hi]),
     }
-    const pricedPlan = enrichedProse.includes('[TAPPY_PLAN]')
-      ? guardPlanPrices(enrichedProse, planEvidence, lang).text
-      : enrichedProse
+    // R15: a plan body whose JSON does not parse (measured `{time":"10:00"`) is repaired before any plan guard.
+    const planRepair = enrichedProse.includes('[TAPPY_PLAN]') ? repairPlanBlock(enrichedProse) : { text: enrichedProse, repaired: false }
+    if (planRepair.repaired) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'plan_json_repaired', repaired: 1 }))
+    const pricedPlan = planRepair.text.includes('[TAPPY_PLAN]')
+      ? guardPlanPrices(planRepair.text, planEvidence, lang).text
+      : planRepair.text
     // LOCAL TIPS (UAT3 P2, 2026-09-27): a tip survives only tied to a stop retrieved this turn,
     // or flagged general and naming no venue, price, hour or ticket — see planLocalTipsGuard.
     const tips = pricedPlan.includes('"local_tips"')
