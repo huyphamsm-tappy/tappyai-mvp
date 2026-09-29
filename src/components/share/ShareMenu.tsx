@@ -238,6 +238,9 @@ export default function ShareMenu({
   const objectUrls = useRef<string[]>([])
   const [preview, setPreview] = useState<{ key: string; state: 'pending' | 'ready' | 'failed'; src?: string } | null>(null)
   const cardKey = `${layout}|${a.url}`
+  // A plan being published waits for its link before the card is drawn: the card prints the link
+  // that leaves, and drawing it first with the brand url would render (and show) a card twice.
+  const cardHold = base.kind === 'plan' && !base.planLink && !!base.plan && (planLink.state === 'idle' || planLink.state === 'pending')
 
   useEffect(() => {
     if (!open) {
@@ -251,8 +254,9 @@ export default function ShareMenu({
   // The sheet shows the very file Save and TikTok will use (same cache entry, same File object).
   useEffect(() => {
     if (!open || !sheetLayout) return
-    let cancelled = false
     setPreview({ key: cardKey, state: 'pending' })
+    if (cardHold) return
+    let cancelled = false
     void cardFileRef.current(layout).then(file => {
       if (cancelled) return
       if (!file) { setPreview({ key: cardKey, state: 'failed' }); return }
@@ -262,7 +266,7 @@ export default function ShareMenu({
     })
     return () => { cancelled = true }
     // eslint-disable-next-line react-hooks/exhaustive-deps -- keyed on the card's identity, not the render
-  }, [open, sheetLayout, cardKey])
+  }, [open, sheetLayout, cardKey, cardHold])
 
   // Publish the plan the moment the menu opens on one. The snapshot goes up in
   // the plan's own field names; the server whitelists it again and answers with
@@ -330,6 +334,14 @@ export default function ShareMenu({
         websiteLabel: t('v3.qr.card.websiteLabel'),
         features: [t('v3.qr.card.feat1'), t('v3.qr.card.feat2'), t('v3.qr.card.feat3'), t('v3.qr.card.feat4')],
         website: cardWebsite(),
+        // The TappyAI QR card (profile / post) carries the Google Play badge (owner SL2, 29/09).
+        googlePlay: {
+          badgeTop: t('v3.qr.card.playBadgeTop'),
+          titlePre: t('v3.qr.card.getAppPre'),
+          titlePost: t('v3.qr.card.getAppPost'),
+          sub: t('v3.qr.card.getAppSub'),
+          orWebsite: t('v3.qr.card.orWebsite'),
+        },
       },
     })
   }
@@ -568,6 +580,28 @@ export default function ShareMenu({
       <ChevronRight size={18} className="shrink-0 text-gray-400" aria-hidden="true" />
     </button>
   )
+  // The plan link's state, said plainly: minting, or why there is none. A published link is
+  // visible on the link card and needs no line of its own. Both sheets show the same lines.
+  const planLinkStatus = planSnapshot ? (
+    <>
+      {linkPending && (
+        <p role="status" className="mt-2 text-xs text-gray-500 dark:text-gray-400" data-plan-link="pending">{planStrings.linkPending}</p>
+      )}
+      {planLink.state === 'signIn' && (
+        <p role="status" className="mt-2 text-xs text-amber-600 dark:text-amber-400" data-plan-link="sign-in">{planStrings.linkSignIn}</p>
+      )}
+      {/* A failed mint is said plainly and can be retried; it is never dressed up as published. */}
+      {planLink.state === 'failed' && (
+        <p role="status" className="mt-2 flex items-center gap-2 text-xs text-red-600 dark:text-red-400" data-plan-link="failed">
+          <span>{planStrings.linkFailed}</span>
+          <button type="button" onClick={() => setAttempt(n => n + 1)} data-testid="share-plan-retry" className="rounded-md border border-current px-2 py-0.5 font-medium">
+            {planStrings.linkRetry}
+          </button>
+        </p>
+      )}
+    </>
+  ) : null
+
   const profilePanel = (
     <div data-share-variant={variant}>
       <div className="mb-4 flex items-start justify-between gap-3">
@@ -603,6 +637,8 @@ export default function ShareMenu({
             {textIsMoreThanUrl ? t('share.copyContent') : t('share.profile.copyLink')}
           </button>
         </div>
+        {/* Owner SL1 (29/09): the chat plan uses THIS sheet, so its link states live here too. */}
+        {planLinkStatus && <div className="px-4 pb-3">{planLinkStatus}</div>}
       </div>
 
       {/* ── The share IMAGE: layout selector + the rendered file itself. What is shown here is the
@@ -639,7 +675,10 @@ export default function ShareMenu({
           const mark = shareBrandMark(target.id)
           return (
             <button key={target.id} data-testid={`share-target-${target.id}`} onClick={() => handle(target.id)}
-              disabled={!!busy || linkPending} title={buttonLabel(target.id, target.kind)}
+              disabled={!!busy || linkPending || needsLink(target.id)}
+              aria-disabled={needsLink(target.id) || undefined}
+              data-needs-link={needsLink(target.id) ? 'true' : undefined}
+              title={needsLink(target.id) ? planStrings.linkRequired : buttonLabel(target.id, target.kind)}
               className="flex flex-col items-center gap-1.5 rounded-2xl border border-gray-200 px-1 py-3 transition hover:border-primary active:scale-95 disabled:opacity-60 dark:border-white/10 dark:bg-white/[0.03]">
               {mark
                 // eslint-disable-next-line @next/next/no-img-element -- local SVG, fixed box
@@ -699,23 +738,7 @@ export default function ShareMenu({
 
           <div className="mb-4">
             <SharePreview artifact={a} />
-            {/* The plan link's state, said plainly: minting, or why there is none. A
-                published link is visible in the preview and needs no line of its own. */}
-            {planSnapshot && linkPending && (
-              <p role="status" className="mt-2 text-xs text-gray-500 dark:text-gray-400" data-plan-link="pending">{planStrings.linkPending}</p>
-            )}
-            {planSnapshot && planLink.state === 'signIn' && (
-              <p role="status" className="mt-2 text-xs text-amber-600 dark:text-amber-400" data-plan-link="sign-in">{planStrings.linkSignIn}</p>
-            )}
-            {/* A failed mint is said plainly and can be retried; it is never dressed up as published. */}
-            {planSnapshot && planLink.state === 'failed' && (
-              <p role="status" className="mt-2 flex items-center gap-2 text-xs text-red-600 dark:text-red-400" data-plan-link="failed">
-                <span>{planStrings.linkFailed}</span>
-                <button type="button" onClick={() => setAttempt(n => n + 1)} data-testid="share-plan-retry" className="rounded-md border border-current px-2 py-0.5 font-medium">
-                  {planStrings.linkRetry}
-                </button>
-              </p>
-            )}
+            {planLinkStatus}
           </div>
 
           <div className="grid grid-cols-3 gap-2 mb-3">

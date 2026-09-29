@@ -8,9 +8,13 @@
 // exactly as on screen. Branding is around the code, never on it (the corner brackets sit OUTSIDE
 // the quiet zone).
 //
-// Owner decisions (UAT3): no @username (the profile link is `/users/<id>`); no store badges until a
-// public listing exists (the Play listing is 404 anonymously); no handwriting, skyline or paw
-// prints — only the shipped otter assets.
+// Owner decisions (UAT3): no @username (the profile link is `/users/<id>`); no handwriting, skyline
+// or paw prints — only the shipped otter assets.
+// Owner decision SL2 (29/09): Android is on Google Play → the bottom panel becomes the reference's
+// "Tải TappyAI ngay" + Google Play badge │ "Hoặc truy cập website" + the pill. Apple's store: not yet
+// listed — no badge, no placeholder. The badge is painted (canvas) as a faithful copy of Google's official
+// badge: black rounded box, grey hairline, the Play logo, the localized small line ("TẢI NỘI DUNG
+// TRÊN" / "GET IT ON") and "Google Play".
 //
 // Pure canvas, no dependency, no image service. Every image is same-origin (`/branding/…`), so
 // drawing it does not taint the canvas.
@@ -46,14 +50,28 @@ export interface BrandedQrOptions {
   /**
    * The website the card points people at, shown bare ("www.tappyai.com").
    *
-   * 🚨 THIS IS THE ONLY DESTINATION ON THE CARD BESIDES THE CODE. The reference also draws
-   * App Store and Google Play badges; this repository holds NO public store listing for either
-   * platform (the Android listing answers 404 to a signed-out visitor), and a store link composed
-   * from an app id would be an invented URL on a file people print and hand out, so the badges
-   * are omitted until a real listing exists. The site origin, by contrast, is configuration:
+   * 🚨 THIS IS THE ONLY WRITTEN DESTINATION ON THE CARD BESIDES THE CODE. The Google Play badge
+   * (`googlePlay`) says where to get the app; it is not a URL. The site origin is configuration:
    * `NEXT_PUBLIC_SITE_URL`.
    */
   website?: string
+  /**
+   * The Google Play badge and its "get the app" column (owner SL2, 29/09). Omitted → the website
+   * panel alone, as before. The badge is artwork only: a PNG carries no link, and no store URL is
+   * written here — the public listing did not answer on 29/09 (see RELEASE-PROGRESS Q-SL4).
+   */
+  googlePlay?: GooglePlayCopy
+}
+
+export interface GooglePlayCopy {
+  /** Badge small line, localized per Google's badge rules ("TẢI NỘI DUNG TRÊN" / "GET IT ON"). */
+  badgeTop: string
+  /** "Tải" … "ngay" around the TappyAI wordmark, and the line under it. */
+  titlePre: string
+  titlePost: string
+  sub: string
+  /** The website column's label when the badge column is present ("Hoặc truy cập website"). */
+  orWebsite: string
 }
 
 /** Layout constants (px at the rendered scale). Kept together so the card reads as one design. */
@@ -70,6 +88,7 @@ const CARD = {
   bannerH: 210,
   mascotH: 360,
   panelH: 190,
+  storePanelH: 260,
   websitePx: 34,
   featurePx: 21,
   ink: '#0B1B3F',
@@ -159,6 +178,8 @@ export async function renderBrandedQrCard(opts: BrandedQrOptions): Promise<Blob 
   const website = opts.website?.trim() ?? ''
   const slogan = opts.slogan?.trim() ?? ''
   const features = (opts.features ?? []).map(f => f.trim()).filter(Boolean).slice(0, 4)
+  const play = website ? opts.googlePlay : undefined
+  const panelH = play ? CARD.storePanelH : CARD.panelH
   const width = Math.max(CARD.width, qrSide + (CARD.pad + CARD.bracketGap) * 2)
 
   // ── Vertical plan (top to bottom) ──
@@ -171,7 +192,7 @@ export async function renderBrandedQrCard(opts: BrandedQrOptions): Promise<Blob 
   const captionH = CARD.captionPx + (invite ? 10 + CARD.captionPx : 0)
   const bannerTop = captionTop + captionH + (slogan ? 150 : 40)
   const panelTop = bannerTop + (slogan ? CARD.bannerH + 36 : 0)
-  const featuresTop = panelTop + (website ? CARD.panelH + 30 : 0)
+  const featuresTop = panelTop + (website ? panelH + 30 : 0)
   const height = featuresTop + (features.length ? CARD.featurePx + 36 : 0) + CARD.pad
 
   const canvas = document.createElement('canvas')
@@ -285,28 +306,46 @@ export async function renderBrandedQrCard(opts: BrandedQrOptions): Promise<Blob 
     }
   }
 
-  // ── Website panel (no store badges — see `website`) ──
+  // ── Bottom panel: [get the app + Google Play badge │] the website pill ──
   if (website) {
     const px = CARD.pad
     const pw = width - CARD.pad * 2
     ctx.fillStyle = '#FFFFFF'
-    roundedRect(ctx, px, panelTop, pw, CARD.panelH, 32)
+    roundedRect(ctx, px, panelTop, pw, panelH, 32)
     ctx.fill()
     ctx.strokeStyle = '#D8E4FA'
     ctx.lineWidth = 2
     ctx.stroke()
-    if (opts.websiteLabel?.trim()) {
+    let colX = px
+    let colW = pw
+    if (play) {
+      const leftW = Math.round(pw * 0.52)
+      drawGetAppColumn(ctx, play, px + 40, panelTop, leftW - 60, panelH)
+      ctx.strokeStyle = '#D8E4FA'
+      ctx.lineWidth = 2
+      ctx.beginPath(); ctx.moveTo(px + leftW, panelTop + 36); ctx.lineTo(px + leftW, panelTop + panelH - 36); ctx.stroke()
+      colX = px + leftW
+      colW = pw - leftW
+    }
+    const cx = colX + colW / 2
+    const label = (play ? play.orWebsite : opts.websiteLabel ?? '').trim()
+    ctx.textAlign = 'center'
+    ctx.textBaseline = 'middle'
+    if (label) {
       ctx.fillStyle = CARD.ink
       ctx.font = `600 27px ${CARD.font}`
-      ctx.fillText(opts.websiteLabel.trim(), width / 2, panelTop + 46, pw)
+      ctx.fillText(label, cx, play ? panelTop + 78 : panelTop + 46, colW - 40)
     }
-    ctx.font = `700 ${CARD.websitePx}px ${CARD.font}`
+    const sitePx = play ? 29 : CARD.websitePx
+    const inset = play ? 38 : 48
+    ctx.font = `700 ${sitePx}px ${CARD.font}`
     const tw = ctx.measureText(website).width
-    const pillW = Math.min(pw - 60, tw + 190)
-    const pillX = Math.round((width - pillW) / 2)
-    const pillY = panelTop + 82
+    const pillW = Math.min(colW - 50, tw + inset * 2 + 60)
+    const pillH = play ? 72 : 78
+    const pillX = Math.round(cx - pillW / 2)
+    const pillY = play ? panelTop + 124 : panelTop + 82
     ctx.fillStyle = CARD.sky
-    roundedRect(ctx, pillX, pillY, pillW, 78, 39)
+    roundedRect(ctx, pillX, pillY, pillW, pillH, pillH / 2)
     ctx.fill()
     ctx.strokeStyle = '#B9D2FB'
     ctx.stroke()
@@ -314,17 +353,17 @@ export async function renderBrandedQrCard(opts: BrandedQrOptions): Promise<Blob 
     ctx.save()
     ctx.strokeStyle = CARD.blue
     ctx.lineWidth = 3.5
-    const gx = pillX + 48
-    const gy = pillY + 39
-    ctx.beginPath(); ctx.arc(gx, gy, 17, 0, Math.PI * 2); ctx.stroke()
-    ctx.beginPath(); ctx.ellipse(gx, gy, 7, 17, 0, 0, Math.PI * 2); ctx.stroke()
-    ctx.beginPath(); ctx.moveTo(gx - 17, gy); ctx.lineTo(gx + 17, gy); ctx.stroke()
-    const ax = pillX + pillW - 48
+    const gx = pillX + inset
+    const gy = pillY + pillH / 2
+    ctx.beginPath(); ctx.arc(gx, gy, 16, 0, Math.PI * 2); ctx.stroke()
+    ctx.beginPath(); ctx.ellipse(gx, gy, 7, 16, 0, 0, Math.PI * 2); ctx.stroke()
+    ctx.beginPath(); ctx.moveTo(gx - 16, gy); ctx.lineTo(gx + 16, gy); ctx.stroke()
+    const ax = pillX + pillW - inset
     ctx.beginPath(); ctx.moveTo(ax - 16, gy); ctx.lineTo(ax + 12, gy); ctx.moveTo(ax + 2, gy - 11); ctx.lineTo(ax + 13, gy); ctx.lineTo(ax + 2, gy + 11); ctx.stroke()
     ctx.restore()
     ctx.fillStyle = CARD.blue
-    ctx.font = `700 ${CARD.websitePx}px ${CARD.font}`
-    ctx.fillText(website, width / 2, pillY + 39, pillW - 190)
+    ctx.font = `700 ${sitePx}px ${CARD.font}`
+    ctx.fillText(website, pillX + pillW / 2, gy, pillW - inset * 2 - 40)
   }
 
   // ── Feature strip ──
@@ -349,4 +388,95 @@ export async function renderBrandedQrCard(opts: BrandedQrOptions): Promise<Blob 
   }
 
   return new Promise((resolve) => canvas.toBlob((blob) => resolve(blob), 'image/png'))
+}
+
+/** "Tải TappyAI ngay", the line under it and the Google Play badge — the panel's left column. */
+function drawGetAppColumn(ctx: CanvasRenderingContext2D, play: GooglePlayCopy, x: number, top: number, w: number, h: number) {
+  ctx.save()
+  ctx.textAlign = 'left'
+  ctx.textBaseline = 'middle'
+  const titleY = top + 58
+  let tx = x
+  const pre = play.titlePre.trim()
+  if (pre) {
+    ctx.font = `700 34px ${CARD.font}`
+    ctx.fillStyle = CARD.ink
+    ctx.fillText(pre, tx, titleY)
+    tx += ctx.measureText(`${pre} `).width
+  }
+  ctx.font = `800 40px ${CARD.font}`
+  ctx.fillStyle = CARD.blue
+  ctx.fillText('Tappy', tx, titleY)
+  tx += ctx.measureText('Tappy').width
+  ctx.fillStyle = TAPPY_WORDMARK_BLUE
+  ctx.fillText('AI', tx, titleY)
+  tx += ctx.measureText('AI ').width
+  const post = play.titlePost.trim()
+  if (post) {
+    ctx.font = `700 34px ${CARD.font}`
+    ctx.fillStyle = CARD.ink
+    ctx.fillText(post, tx, titleY, Math.max(40, x + w - tx))
+  }
+  ctx.font = `500 23px ${CARD.font}`
+  ctx.fillStyle = CARD.muted
+  ctx.fillText(play.sub, x, titleY + 46, w)
+  drawGooglePlayBadge(ctx, play.badgeTop, x, top + h - 30 - 84, 84)
+  ctx.restore()
+}
+
+/**
+ * The Google Play badge after Google's badge guidelines: black box, #A6A6A6 hairline, the Play
+ * logo, the localized small line and "Google Play" in white. `bh` is the height; returns the width.
+ */
+export function drawGooglePlayBadge(ctx: CanvasRenderingContext2D, top: string, x: number, y: number, bh: number): number {
+  const s = bh / 84
+  const smallFont = `600 ${Math.round(15 * s)}px ${CARD.font}`
+  const nameFont = `500 ${Math.round(36 * s)}px ${CARD.font}`
+  ctx.save()
+  ctx.textAlign = 'left'
+  ctx.textBaseline = 'alphabetic'
+  ctx.font = smallFont
+  const topW = ctx.measureText(top.toUpperCase()).width
+  ctx.font = nameFont
+  const nameW = ctx.measureText('Google Play').width
+  const logo = 44 * s
+  const bw = Math.round(22 * s + logo + 16 * s + Math.max(topW, nameW) + 24 * s)
+  ctx.fillStyle = '#000000'
+  roundedRect(ctx, x, y, bw, bh, 12 * s)
+  ctx.fill()
+  ctx.strokeStyle = '#A6A6A6'
+  ctx.lineWidth = Math.max(1.5, 2 * s)
+  ctx.stroke()
+  drawPlayLogo(ctx, x + 22 * s, y + (bh - logo) / 2, logo)
+  const textX = x + 22 * s + logo + 16 * s
+  ctx.fillStyle = '#FFFFFF'
+  ctx.font = smallFont
+  ctx.fillText(top.toUpperCase(), textX, y + 31 * s)
+  ctx.font = nameFont
+  ctx.fillText('Google Play', textX, y + 68 * s)
+  ctx.restore()
+  return bw
+}
+
+/** The four-colour Play triangle (blue body, green top, red bottom, yellow tip) in a `size` box. */
+function drawPlayLogo(ctx: CanvasRenderingContext2D, x: number, y: number, size: number) {
+  const w = size * 0.88
+  const X = (f: number) => x + (size - w) / 2 + f * w
+  const Y = (f: number) => y + f * size
+  const poly = (color: string, pts: [number, number][]) => {
+    ctx.fillStyle = color
+    ctx.beginPath()
+    pts.forEach(([px, py], i) => (i ? ctx.lineTo(X(px), Y(py)) : ctx.moveTo(X(px), Y(py))))
+    ctx.closePath()
+    ctx.fill()
+  }
+  ctx.save()
+  ctx.beginPath()
+  ctx.moveTo(X(0), Y(0)); ctx.lineTo(X(1), Y(0.5)); ctx.lineTo(X(0), Y(1)); ctx.closePath()
+  ctx.clip()
+  poly('#00A0FF', [[0, 0], [0.6, 0.5], [0, 1]])
+  poly('#00E676', [[0, 0], [0.78, 0.39], [0.6, 0.5]])
+  poly('#FF3A44', [[0, 1], [0.6, 0.5], [0.78, 0.61]])
+  poly('#FFD500', [[0.6, 0.5], [0.78, 0.39], [1, 0.5], [0.78, 0.61]])
+  ctx.restore()
 }

@@ -369,8 +369,8 @@ export default function MessageActionBar({
         <ShareMenu
           artifact={artifact}
           // A recommendation opens the approved sheet with its own card (owner picks 29/09); a plan
-          // keeps the sheet that mints and reports its link.
-          variant={artifact.kind === 'places' && artifact.places.length > 0 ? 'suggestion' : 'default'}
+          // opens the same sheet with the plan image, and the sheet mints and reports its link (SL1).
+          variant={artifact.kind === 'places' && artifact.places.length > 0 ? 'suggestion' : artifact.kind === 'plan' && artifact.plan ? 'plan' : 'default'}
           open={shareOpen}
           onClose={() => setShareOpen(false)}
           onPublicLink={conversationId ? () => { setShareOpen(false); setPublicOpen(true) } : undefined}
