@@ -251,10 +251,14 @@ object ContentCards {
         y += 30f
 
         val shown = places.take(SUGGESTION_MAX_ROWS)
-        val rowH = 176f
-        val thumb = 144f
+        // Owner review 29/09 (web 2aefaf6): with 2 places the rows fill the panel (bigger photos, text centred).
+        val avail = ContentFrame.panelBottom - 70f - y
+        val rowH = maxOf(176f, minOf(330f, kotlin.math.floor(avail / maxOf(1, shown.size))))
+        val thumb = minOf(260f, rowH - 40f)
         shown.forEachIndexed { i, p ->
-            val top = y + i * rowH
+            val rowTop = y + i * rowH
+            val top = rowTop
+            val textTop = top + maxOf(0f, (thumb - 124f) / 2f)
             val img = images.load(p.image, 384, 4000)
             if (img != null) c.drawCover(img, x, top, thumb, thumb, 24f)
             else {
@@ -264,8 +268,8 @@ object ContentCards {
             val tx = x + thumb + 26f
             val tw = w - thumb - 26f
             val np = font(800, 32f, Light.ink)
-            c.text(wrapLines(np, "${i + 1}. ${p.name}", tw, 1).firstOrNull().orEmpty(), tx, top + 38f, np, maxWidth = tw)
-            var ly = top + 80f
+            c.text(wrapLines(np, "${i + 1}. ${p.name}", tw, 1).firstOrNull().orEmpty(), tx, textTop + 38f, np, maxWidth = tw)
+            var ly = textTop + 80f
             var mx = tx
             p.rating?.let { rating ->
                 c.drawStar(mx + 13f, ly - 9f, 14f, Light.star)
@@ -285,7 +289,7 @@ object ContentCards {
                 val ap = font(500, 23f, Light.muted)
                 c.text(wrapLines(ap, addr, tw - 34f, 1).firstOrNull().orEmpty(), tx + 34f, ly, ap, maxWidth = tw - 34f)
             }
-            if (i < shown.size - 1) c.drawLine(x, top + rowH - 16f, x + w, top + rowH - 16f, strokePaint(Light.panelBorder, 2f).apply { strokeCap = android.graphics.Paint.Cap.BUTT })
+            if (i < shown.size - 1) c.drawLine(x, rowTop + rowH - 16f, x + w, rowTop + rowH - 16f, strokePaint(Light.panelBorder, 2f).apply { strokeCap = android.graphics.Paint.Cap.BUTT })
         }
         val more = places.size - shown.size
         if (more > 0 && copy.morePlaces != null) {
