@@ -151,8 +151,8 @@ Hộp này thỉnh thoảng hiện ở khung hình đầu sau khi cài (emulator
 |---|---|---|---|
 | Q1 | KHÔNG upload bằng chứng lên bucket công khai | Giữ ở `D:/TappyAI-backups/android-parity-evidence/` | ✅ đang làm vậy |
 | Q2, Q3, Q4, Q9 | Đồng ý phương án tạm | — | ✅ |
-| Q5 | CÓ đăng video | Chờ guard mới (R8) trên rc → push `6fe2150` (nhánh `android/video-held`) → build lại APK uat → cài lại lên máy Huy (SM-A127F) bằng adb | ⏳ chờ phiên web đổi guard |
-| Q7 | Tư vấn trên app NGANG web; server lưu trạng thái theo mã cuộc trò chuyện, giữ ADR-024 | Hiện app KHÔNG gửi mã nào (và web cũng chưa, server chưa đọc) — đã ghi hợp đồng đề xuất `chatSessionId` ở R14; làm ngay khi phiên web chốt tên trường + đổi guard. Không kịp → push `d48a11e` (nhánh `android/evidence-id-held`) | ⏳ chờ phiên web trả lời R14 |
+| Q5 | CÓ đăng video | Guard mới (R8, 3319a1d) pass 92/92 → push video `41cd098` → e2e composer Android 8/8 (UAT) → APK cài lên máy Huy 08:07 | ✅ xong 29/09 |
+| Q7 | Tư vấn trên app NGANG web; server lưu trạng thái theo mã cuộc trò chuyện, giữ ADR-024 | Hợp đồng R14 chốt (web 26dc643). App gửi `chatSessionId` (UUID v4) ở MỌI lượt, cả lượt 1 và khách; giữ qua khi app bị tắt; mở lại từ lịch sử dùng lại mã cũ. Push `69624b9`, test `ChatSessionIdTest`, e2e chat 2 ca xanh với trường mới. `d48a11e` bỏ (web: không gửi decisionEvidenceId). APK cài lên máy Huy 08:44 | ✅ phía app; ⏳ chờ phiên web báo "R14 LIVE" để kiểm hội thoại nhiều lượt |
 | Q6, Q8 | Lỗi server, phiên web sửa | Khi phiên web báo server ổn định trong ANDROID-REQUESTS → chạy lại `node android/e2e/run.mjs chat` | ⏳ chờ |
 
 ## BÁO CÁO SÁNG — 29/09/2026
@@ -206,7 +206,8 @@ Xem bảng ở mục "CẦN HUY QUYẾT" phía trên, Q1–Q9. Gấp nhất:
 
 ### APK uat
 
-- File: `D:/TappyAI-backups/TappyAI-UAT-1854594.apk` (45,5 MB, sha256 bắt đầu `590fb424ea68b886`). Build từ `1854594`.
+- **Mới nhất (29/09 08:44, đã cài lên máy Huy):** `D:/TappyAI-backups/TappyAI-UAT-69624b9.apk` — có đăng video (Q5) + `chatSessionId` (R14).
+- Bản đêm: `D:/TappyAI-backups/TappyAI-UAT-1854594.apk` (45,5 MB, sha256 bắt đầu `590fb424ea68b886`). Build từ `1854594`.
 - Tên app **"TappyAI UAT"**, package `com.tappyai.app.staging`. Chạy song song với app thật, không đè lên. Máy chủ `uat.tappyai.com`, DB audit.
 - **Máy thật R58RC0V30BH không còn cắm lúc cài (02:50)**, nên chưa cài được. Cách cài:
   1. Cắm cáp USB, bật **Gỡ lỗi USB** (Cài đặt → Tùy chọn nhà phát triển).
