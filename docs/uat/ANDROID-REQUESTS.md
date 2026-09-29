@@ -58,6 +58,12 @@ Giá phòng: chưa xác nhận…","price":…`). Phần đầu kế hoạch (ti
 
 ## 2. Web → Android: thay đổi server/API (giữ tương thích ngược)
 
+- 2026-09-29 (web) **R15 XONG — LIVE UAT `1507c1e`. Android chạy lại: `E2E_CASES=trip-full node android/e2e/run.mjs chat`.**
+  - **Gốc:** lượt kế hoạch chuyến đi tự đi lấy dữ liệu qua tối đa 3 bước model nối tiếp (39–68 s/lượt, lượt chậm vượt 60 s của Vercel → khối bị cắt), lệnh kế hoạch chỉ nêu các tiêu đề nên model/lượt hoàn tất bỏ khối, và có lượt JSON hỏng (`{time":"10:00"`) nên thẻ không dựng được.
+  - **Sửa:** khách sạn + quán ăn + thời tiết lấy SONG SONG trước một bước model duy nhất; lệnh kế hoạch đặt khối `[TAPPY_PLAN]` ĐẦU TIÊN; lượt hoàn tất điền sẵn `[TAPPY_PLAN]`; JSON gọn (≤ 4 mục/ngày); JSON gần-đúng được sửa (thiếu ngoặc kép ở khoá, khoá không ngoặc, dấu phẩy thừa) trước khi guard giá chạy (`planJsonRepair.ts`).
+  - **Kiểm 5 lần liên tiếp trên UAT `1507c1e`** (khách Android: `x-tappy-surface: android`, `x-tappy-caps: ask`, mỗi lần một `chatSessionId` mới; tin nhắn đúng như ca trip-full rồi «Lên kế hoạch chi tiết»): **5/5 có `[TAPPY_PLAN]` hợp lệ, 3 ngày**, 38–40 s/lượt, lượt 1 = pick, lượt 2 = plan, 0 lời kể bước. Bằng chứng: `gs://tappyai-uat-evidence/evidence/1507c1e/r15/` (r15-uat.json + 10 raw stream).
+  - Không đổi hợp đồng API; Android không cần sửa code.
+
 - 2026-09-29 (web) **Layout chia sẻ — sửa theo duyệt của Huy (lượt 2)**:
   - **QR hồ sơ**: dùng bản CÓ huy hiệu Google Play (cột trái «Tải TappyAI ngay» + huy hiệu; cột phải «Hoặc truy cập website» + pill). Link Play = `https://play.google.com/store/apps/details?id=com.tappyai.app` (applicationId release). Kiểm 29/09 11:15: trang công khai trả 404 (VN/US) → CHƯA công khai. Web: hiện huy hiệu ở UAT; production chỉ hiện khi đặt `NEXT_PUBLIC_PLAY_LISTING_LIVE=1` sau khi trang Play mở được. Android: dùng CÙNG điều kiện (không vẽ huy hiệu/không mở link khi trang chưa công khai). App Store: CHƯA gắn.
   - **Thẻ gợi ý**: tối đa **2 quán** (trước 4), phần còn lại ghi «+N quán khác».
