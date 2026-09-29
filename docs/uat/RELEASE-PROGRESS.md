@@ -205,3 +205,32 @@ Q1–Q9 in the table above. Most urgent: **Q1** (where is the 26/9 design), **Q7
 (e) Env prod: giữ `AUTH_GOOGLE_ENABLED`; lead xoá `ACCOUNT_SELF_DELETE_ENABLED`, thêm `SERPER_DAILY_CREDIT_CEILING=15000`
     + 2 biến ACCESSTRADE; Supabase prod → Authentication → "Allow anonymous sign-ins" = ON.
 (f) Sau khi ổn định: xoá `pgpass`, `pghost.txt`, `accesstrade.txt`.
+
+## AI tư vấn — chi phí theo loại lượt + prompt caching (offline replay, 29/09, rc 9e81b95)
+15 kịch bản × 7 lượt = 105 lượt, Haiku 4.5, server tự tính (`tappy.turn.v1`). Chất lượng = tiêu chí tự động §9.
+
+| Loại lượt | Đạt | $/lượt | token vào/lượt | cache đọc |
+|---|---|---|---|---|
+| hỏi (ask) | 15/15 | $0 | 0 | — |
+| chọn (pick) | 13/15 | $0.0176 | 8.442 | 5% |
+| hỏi thêm (followup) | 14/15 | $0.0044 | 3.520 | 0% |
+| so sánh (compare) | 14/15 | $0.0051 | 3.604 | 0% |
+| xem thêm (more) | 10/15 | $0.0146 | 8.575 | 6% |
+| chê (reject) | 12/15 | $0.0142 | 8.217 | 0% |
+| kế hoạch (plan) | 6/15 | $0.0170 | 10.496 | 14% |
+
+Tổng: **84/105**, **$0.0104/lượt**; phiên 6 lượt ≈ $0.059; 900 lượt/tháng ≈ $9.4. Mục tiêu $0.005/lượt **CHƯA ĐẠT**.
+3 khoản đắt nhất: (1) dòng kết quả tìm kiếm gửi cho model (~3k token mỗi lượt chọn/xem thêm/chê); (2) khối luật V1 + khung
+(~1.8k token/lượt); (3) Serper cho chọn/xem thêm/chê (cache 24 h dùng chung chỉ có trên UAT/prod, replay không có).
+
+Prompt caching — đo A/B, KHÔNG giữ những gì làm tăng chi phí:
+- Đưa toàn bộ khung của mảng vào phần được cache (thư viện khung): $0.01145 so với $0.01049 khi tắt → TẮT (cờ `CONSULT_CACHE_LIBRARY`).
+  Lý do: phần cố định vẫn sát ngưỡng tối thiểu cache của Haiku 4.5, trúng cache chỉ 13–35% ở lượt có công cụ, 0% ở hỏi thêm.
+- Kế hoạch không phải chuyến đi nhiều bước: bỏ ghi cache lịch sử (ghi ~4.2k token ×1.25, đọc lại ~20% = lỗ) → GIỮ.
+- Hỏi thêm/so sánh đọc lại bằng chứng lần tìm trước: chất lượng hỏi thêm 14/15 → 6/15 (tính là gọi Serper), chi phí tăng → TẮT (cờ `CONSULT_FOLLOW_REUSE`).
+- Kết luận: với lưu lượng hiện tại, caching không phải đòn bẩy chính; đòn bẩy là GIẢM token gửi đi (mục 1–2 ở trên).
+
+Hạn chế guard vá: mỗi bản vá sau model giờ được ĐẾM (`tappyai_consult_patch`, bảng trong báo cáo replay).
+- Tiêu đề kế hoạch bị cắt 7/15 → sửa TẬN GỐC (guard đọc «gọi món»/«đặt bàn» trong tiêu đề là khẳng định) → 0/15, bỏ cơ chế «niêm phong».
+- Còn vá nhiều: câu «Mình chọn» thêm bằng code (4/15 lượt chọn), dòng «còn N» (server đếm — đúng thiết kế).
+- `place_claim` + `snippet_price` sửa 9–12/15 lượt mỗi loại → việc tiếp theo: giảm khẳng định không có nguồn ngay ở khung.
