@@ -167,8 +167,39 @@ Quy tắc: mỗi thay đổi giữ/bỏ theo **trung bình 2 lượt replay, hai
 
 Patch E2/E2b/E2c lưu ở scratchpad phiên (không trong git) — ý tưởng đúng gốc nhưng không vượt được độ dao động của 2 lượt.
 
-| Q-AI-E3 | E3 tăng chất lượng +4 nhưng chi phí +1.5% ($0.00013/lượt). Thay đổi chỉ thêm ~4 từ vào nhãn link; cùng một code E1 dao động $0.00873–0.00898 giữa 2 lượt. | **Giữ** (như tiền lệ D2). Huy: đồng ý giữ, hay bỏ theo đúng luật hai cột? (bỏ = revert 1 commit). |
-| Q-AI-S9 | Mục 9 chưa định nghĩa ngưỡng "đạt" cho MỘT mảng. Hiện chưa mảng nào 21/21 ở cả 2 lượt (spa 21/21 ở 3 trên 4 lượt gần nhất). Độ dao động giữa 2 lượt của CÙNG code là ±2–4 lượt/105 (E1: 91 và 91; E2b: 89 và 93) — phần lớn các sửa nhỏ không đo được bằng trung bình 2 lượt. | Đang coi "đạt" = 21/21 cả 2 lượt (chặt nhất). Huy: chốt ngưỡng (vd ≥ 19/21 trung bình 2 lượt và không lượt nào trượt ở cả 2), hoặc cho phép đo 4 lượt cho thay đổi nhỏ? |
+- ~~Q-AI-E3~~ **ĐÃ QUYẾT (Huy 29/09 tối): GIỮ E3** — chất lượng +4, chênh chi phí nằm trong dao động.
+- ~~Q-AI-S9~~ **ĐÃ QUYẾT (Huy 29/09 tối) — NGƯỠNG RELEASE MỤC 9:**
+  - Mỗi mảng **≥ 17/21** (trung bình 2 lượt replay ĐỦ BỘ) **VÀ 0 lỗi mức A, 0 lỗi mức B, tối đa 1 lỗi mức C**.
+  - Đạt ngưỡng là **DỪNG tinh chỉnh mảng đó** — không đuổi 21/21 (Phase 8 chuyển sang GPT-6 Luna và làm lại prompt). Lỗi D còn lại → `POST-LAUNCH-BACKLOG.md` cho đợt Luna.
+  - **Phân loại lượt trượt (bắt buộc với replay mới nhất và mọi lần đo sau):**
+    - **A. Sai/bịa thông tin** (giá, địa điểm, giờ, món, link sai đích) — PHẢI = 0.
+    - **B. Hiểu sai ý người dùng** (sai mảng, sai khu vực/ngân sách/số người, bỏ qua yêu cầu, lặp lựa chọn đã bác) — PHẢI = 0.
+    - **C. Thiếu thông tin quan trọng để quyết định** (không có lý do, không có nút hành động, không nói thiếu dữ liệu) — tối đa 1/mảng.
+    - **D. Lỗi định dạng/nhãn** (thiếu dòng "còn N", chữ nhãn nút, số phương án khác, tiêu đề) — chấp nhận trong ngưỡng ≥ 17/21.
+  - Báo bảng: mỗi mảng → số lượt trượt theo A/B/C/D, trích NGUYÊN VĂN mỗi lượt A/B/C. Lượt A hoặc B nào còn thì SỬA TRƯỚC, bất kể điểm mảng.
+  - Du lịch: dừng tinh chỉnh (trừ lỗi A/B). Mua sắm: giữ 2 sửa router ("không thích X" ≠ muốn X; tên sản phẩm chép lại trong "A hay B?"
+    là tham chiếu) + xoá dòng "Còn N lựa chọn" do model tự viết (có test); BỎ kho sản phẩm mở rộng; đo RIÊNG mua sắm 4 lượt trước/sau.
+  - Sau đó: replay đủ bộ 2 lượt xác nhận cả 5 mảng → chạy thật mục 10 trên UAT (trang duyệt ghi mức lỗi từng câu) → ANDROID-REQUESTS
+    "AI tư vấn ổn định" + câu trả lời thô cuối + đặc tả thẻ kế hoạch.
+
+### AI tư vấn — phân loại A/B/C/D + mua sắm 4 lượt (30/09 ~00:30)
+**Replay đủ bộ mới nhất (E3, 2 lượt) — lượt trượt theo mức (đọc tay):**
+| Mảng | Điểm TB | A | B | C | D | Ghi chú |
+|---|---|---|---|---|---|---|
+| Spa | 21 | 0 | 0 | 0 | 0 | |
+| Giải trí | 20.5 | 0 | 0 | 0 | 1 | ENT-2 t2: 2 dòng "Mình chọn" (D) |
+| Ăn uống | 19.5 | 0 | 0 | 2 (1/lượt) | 1 | FOOD-2 t7 không gợi ý món (C); FOOD-2 t6 bác xong không nêu tên quán (C) |
+| Du lịch | 17.5 | **1** | **2** | 2 (1/lượt) | 4 | ⚠ TRAVEL-2 t2 ĐƯỢC CHẤM ĐẠT nhưng là **B**: "thích núi, gần Sài Gòn" → chọn KS ở **đường Núi Thành, Tân Bình**; t3 **A**: "Tân Bình cách TP.HCM 30–45 phút"; t6 **B** lặp KS đã hiện. TRAVEL-3 t7 mất link Traveloka (model chép sai URL /go/at dài ~500 ký tự → guard egress xoá) = C |
+| Mua sắm | 16.5 | **1** | **4** | … | … | SHOP-1 t6 "không thích màu đen" → vẫn chọn ốp đen (B, router đọc thành *muốn* màu đen); SHOP-3 t5/t6 ràng buộc "Dell" user không hề nói (B, tên chép lại trong "A hay B?"); SHOP-2 t7 "Giấy gói quà ~20.000đ", "Tổng ~105.000đ" (A) |
+
+**Mua sắm — đo riêng 4 lượt × 21 lượt:**
+| Bản | 4 lượt | TB | A | B | Ghi chú |
+|---|---|---|---|---|---|
+| Trước (E3) | 15·19·16·18 | 17.0 | 1 | 5 | |
+| R = 2 sửa router + xoá dòng "Còn N" model viết | 16·19·16·18 | 17.25 | 1 (SHOP-2 giá khoản phụ) | "Dell" còn (từ 3 lớp khác) | hết lỗi "màu đen" |
+| AB2–AB4 (+ thẻ 3 sản phẩm, bằng chứng giá kế hoạch, bỏ tên chép lại ở need profile / situation / shopping constraints) | 16.75 · 16.25 · 15.0 | | 0 | 2 → 0 | thẻ 3 sản phẩm làm guard cắt tên phương án ở "xem thêm" → C tăng; BỎ |
+| AB5 = R + bỏ tên chép lại ở cả 4 lớp + bằng chứng giá kế hoạch + bác không nhận lại cái đã hiện + TRAVEL-2 | 15·15·18·16 | 16.0 | 0 | 1–2 mới | hết "Dell"; nhưng lượt "xem thêm" tìm lại ra **dịch vụ sửa laptop**, lượt bác chọn **ba lô** (B mới, do dữ liệu tìm kiếm) |
+Chưa commit — patch lưu scratchpad (shopR / shopAB5). Chờ Huy (Q-AI-SHOP).
 
 ## Current step
 Overnight run 2026-09-28→29 DONE — final UAT SHA af8b4ba; morning report at the end of this file. Waiting on owner: Q1 (26/9 design), Q7 (AI gate), Q6 (share layout). Login = scratchpad pw/login.mjs (AUDIT only).
