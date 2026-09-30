@@ -35,6 +35,9 @@ Chi tiết gốc (nếu cần tra): `RELEASE-PLAN-2026-09-29.md` §3, `RELEASE-G
      team: `softBlock`/`blocked`, deploy UAT gần nhất READY). **Bị chặn lúc release → DỪNG, báo Huy ngay** (production
      `f42ae4b` vẫn chạy): Huy quyết nâng Pro tạm, hoặc lùi release để dời sang Google Cloud.
    - Sau release: dời hosting sang Google Cloud (PL-HOSTING-GCP) là việc ưu tiên — phiên riêng.
+   - **AI = GPT-6 Luna (owner 30/09, Anthropic hết credit):** `OPENAI_API_KEY` ĐÃ đặt cho Production + Preview (30/09, Claude, từ
+     `D:\TappyAI-backups\openai-key.txt`). Ngay trước deploy production Claude kiểm TÊN biến (không đọc giá trị): có `OPENAI_API_KEY`,
+     KHÔNG có `LLM_PROVIDER` (giá trị `claude` sẽ gọi Anthropic đang hết credit), không có `HAIKU_FALLBACK`. Bảng: RELEASE-PLAN §2g.
    - **Supabase — URL Configuration (chỉ xem, I6):** dashboard → Authentication → URL Configuration → Redirect URLs của
      production chỉ gồm các URL web của TappyAI + `tappyai://auth-callback` (Android) + `tappyai://auth/callback` (iOS);
      KHÔNG có mục `*`/`**` mở rộng. Chụp ảnh gửi Claude.
