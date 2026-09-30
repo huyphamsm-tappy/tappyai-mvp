@@ -90,6 +90,13 @@ manifest hiện rỗng → ảnh giữ chỗ gradient theo mảng + icon (đúng
 gửi «Karaoke, Bida/bowling · 2 người · Tối nay», gửi 1 lần, gửi rỗng = «Tìm cho tôi». Ca «giữ lựa chọn khi remount» của web là
 do `router.replace` của web — iOS không remount thẻ, không áp dụng.
 
+## CI run 36700541289 (ecec00e) — build + toàn bộ unit test xanh; UI 30/32 ảnh
+- Thẻ hỏi nhanh: cả 6 UI test qua (5 mảng + gửi rỗng); tin gửi «Karaoke, Bida/bowling · 2 người · Tối nay», gửi 1 lần. Đã xem
+  `28` (giải trí) và `29` (ăn uống): khớp mockup — tiêu đề theo mảng, số 1/2/3, ô ảnh giữ chỗ tím/cam + icon, ✓ xanh, ô icon.
+- Home: `23`–`25` đúng (Hi Minh Anh, lời chào theo giờ, 6 gợi ý nhanh, ưu đãi rỗng, video, lĩnh vực). Lỗi: khoảng trống lớn dưới
+  hero (quầng sáng 300pt làm cao ZStack) → mascot/quầng sáng chuyển thành nền, không chiếm chỗ. Test đỏ ở «suggestion cards» do vuốt
+  cố định số lần trên trang dài → test vuốt tới khi thấy phần cần chụp.
+
 ## MOB-1 — CI run 36696907475 (b36706a) XANH, 22/22 ảnh
 Đã xem ảnh: `20`/`21` màn đăng nhập báo «Liên kết đăng nhập không hợp lệ hoặc đã hết hạn…», vẫn là khách; `22` link callback từ
 ngoài → vẫn hồ sơ Minh Anh.

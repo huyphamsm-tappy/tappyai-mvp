@@ -102,12 +102,20 @@ final class ScreenshotTests: XCTestCase {
         app.swipeUp()
         XCTAssertTrue(any(app, "home-deals-empty").waitForExistence(timeout: 20), "deals empty card")
         shot("25-home-3")
-        app.swipeUp(); app.swipeUp()
-        XCTAssertTrue(any(app, "home-suggestion-1").waitForExistence(timeout: 20), "suggestion cards")
+        XCTAssertTrue(scrollTo(app, "home-suggestion-1"), "suggestion cards")
         shot("26-home-4")
-        app.swipeUp(); app.swipeUp(); app.swipeUp()
-        XCTAssertTrue(any(app, "tool-scan").waitForExistence(timeout: 20), "smart tools")
+        XCTAssertTrue(scrollTo(app, "tool-scan"), "smart tools")
         shot("27-home-5")
+    }
+
+    /// Swipes up (at most 10 times) until `id` is on screen — the page is long and its grids are lazy.
+    private func scrollTo(_ app: XCUIApplication, _ id: String) -> Bool {
+        let el = any(app, id)
+        for _ in 0..<10 {
+            if el.exists && el.isHittable { return true }
+            app.swipeUp()
+        }
+        return el.waitForExistence(timeout: 5) && el.isHittable
     }
 
     // MARK: - MOB-1: sign-in callbacks need the state this app made

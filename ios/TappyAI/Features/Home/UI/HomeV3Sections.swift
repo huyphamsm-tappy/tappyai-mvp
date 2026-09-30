@@ -86,19 +86,9 @@ struct HomeHeroSection: View {
     let hero: HeroGreeting
 
     var body: some View {
-        ZStack(alignment: .topTrailing) {
-            ZStack {
-                RadialGradient(colors: [HomeV3.heroGlow, .clear], center: .center, startRadius: 0, endRadius: 150)
-                    .frame(width: 300, height: 300)
-                Image("TappyWave").resizable().scaledToFit().frame(width: 210, height: 210)
-            }
-            .offset(x: 64, y: -24)
-            .accessibilityHidden(true)
-            sparkle(11, 0.9, x: -150, y: 4)
-            sparkle(8, 0.7, x: -160, y: 160)
-            sparkle(7, 0.55, x: -8, y: 130)
-
-            VStack(alignment: .leading, spacing: 8) {
+        // The copy sets the height; the mascot, its glow and the sparkles are an overlay, so they
+        // never push the ask bar down (Android draws the mascot in a 0-high unbounded slot).
+        VStack(alignment: .leading, spacing: 8) {
                 Text(hero.welcome).font(.system(size: 32, weight: .heavy)).foregroundStyle(HomeV3.onSurface)
                     .lineLimit(1).minimumScaleFactor(0.7)
                     .accessibilityIdentifier("home-welcome")
@@ -118,12 +108,23 @@ struct HomeHeroSection: View {
                         .background(HomeV3.surfaceVariant, in: Capsule())
                 }
                 .padding(.top, 6)
-            }
-            .padding(.top, 8)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.trailing, 110)
         }
+        .padding(.top, 8)
+        .padding(.trailing, 110)
         .frame(maxWidth: .infinity, minHeight: 212, alignment: .topLeading)
+        .background(alignment: .topTrailing) {
+            ZStack {
+                RadialGradient(colors: [HomeV3.heroGlow, .clear], center: .center, startRadius: 0, endRadius: 150)
+                    .frame(width: 300, height: 300)
+                Image("TappyWave").resizable().scaledToFit().frame(width: 200, height: 200)
+                sparkle(11, 0.9, x: -80, y: -100)
+                sparkle(8, 0.7, x: -90, y: 70)
+                sparkle(7, 0.55, x: 95, y: 40)
+            }
+            .frame(width: 200, height: 212)
+            .offset(x: 40, y: -10)
+            .accessibilityHidden(true)
+        }
     }
 
     private func sparkle(_ size: CGFloat, _ alpha: Double, x: CGFloat, y: CGFloat) -> some View {
