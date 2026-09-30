@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Hanoi Ngon Lê Văn Lương (site:food.grab.com/vn OR site:shopeefood.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:19:15.986Z",
+ "body": {
+  "searchParameters": {
+   "q": "Hanoi Ngon Lê Văn Lương (site:food.grab.com/vn OR site:shopeefood.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Nem Chua Rán Ăn Vặt Chuẩn Hà Nội - Lê Văn Lương",
+    "link": "https://shopeefood.vn/ho-chi-minh/hanoi-ngon-nem-chua-ran-an-vat-chuan-ha-noi-le-van-luong",
+    "snippet": "Hanoi Ngon - Nem Chua Rán Ăn Vặt Chuẩn Hà Nội - Lê Văn Lương. 139 Lê Văn Lương, P. Tân Kiếng, Quận 7, TP. HCM. Đã đóng. Quán được gắn nhãn Yêu thích là Quán ...",
+    "position": 1
+   },
+   {
+    "title": "Nem Chua Rán Ăn Vặt Chuẩn Hà Nội - Lê Văn Lương",
+    "link": "https://shopeefood.vn/ho-chi-minh/hanoi-ngon-nem-chua-ran-an-vat-chuan-ha-noi-hoang-van-thu?source_url=foody_ordernow_pc",
+    "snippet": "Hanoi Ngon - Nem Chua Rán Ăn Vặt Chuẩn Hà Nội - Lê Văn Lương. 139 Lê Văn Lương, P. Tân Kiếng, Quận 7, TP. HCM. Mở cửa. Quán được gắn nhãn Yêu thích là Quán ...",
+    "position": 2
+   },
+   {
+    "title": "Hanoi Ngon - Nem Chua Rán Hà Nội",
+    "link": "https://shopeefood.vn/thuong-hieu/ha-noi-ngon-nem-chua-ran-ha-noi?c=ho-chi-minh",
+    "snippet": "Hanoi Ngon - Nem Chua Rán Ăn Vặt Chuẩn Hà Nội - Lê Văn Lương. 139 Lê Văn Lương, P. Tân Kiếng, Quận 7, TP. HCM. Tối thiểu 20k Giá 0. Giảm món. Mã giảm 11%. Đã ...",
+    "position": 3
+   },
+   {
+    "title": "Order Đồ ăn in Hà Nội & Delivery Service | Food ...",
+    "link": "https://shopeefood.vn/ha-noi/food",
+    "snippet": "Cơm Ngon SÀI GÒN - Cơm gà, Cơm sườn ngon. 1 Lê Đại Hành, Hai Bà Trưng, Hà Nội ... Vạn Deal Ngon Giảm 40.000Đ. 200 địa điểm. Quán Ngon Gần Nhà, Giảm Tới 35.000Đ.",
+    "position": 4
+   },
+   {
+    "title": "Bún Chả Của Mẹ - Ngon Như Của Mẹ",
+    "link": "https://shopeefood.vn/ho-chi-minh/bun-cha-cua-me-ngon-nhu-cua-me",
+    "snippet": "101/45 Lê Văn Lương, X. Phước Kiển, Nhà Bè, TP. HCM. Đã đóng. Quán được gắn nhãn Yêu thích là Quán Yêu Thích, gồm những quán đạt chất lượng dịch vụ vượt ...",
+    "position": 5
+   },
+   {
+    "title": "Vô vàn ưu đãi, hàng vạn món ngon | GrabFood VN",
+    "link": "https://food.grab.com/vn/vi/",
+    "snippet": "GrabFood - Dịch vụ giao đồ ăn trực tuyến giúp bạn thỏa mãn cơn thèm ăn với hàng vạn quán ăn.",
+    "position": 6
+   },
+   {
+    "title": "FujiMart - Tươi Ngon Mỗi Ngày",
+    "link": "https://shopeefood.vn/thuong-hieu/fujimart-tuoi-ngon-moi-ngay",
+    "snippet": "FujiMart - Tươi Ngon Mỗi Ngày - Lê Văn Lương. 25 Lê Văn Lương, P. Trung Hoà, Cầu Giấy, Hà Nội. Tối thiểu 20k Giá 0. Shop/Cửa hàng. FujiMart - Tươi Ngon Mỗi Ngày ...",
+    "position": 7
+   },
+   {
+    "title": "Pizza Hut Hà Nội | Mua online tại ShopeeFood.vn",
+    "link": "https://shopeefood.vn/thuong-hieu/pizza-hut-ha-noi",
+    "snippet": "Pizza Hut - Golden Palm Lê Văn Lương. Tầng 1 - 2, Tòa Nhà Golden Palm, 21 Lê Văn Lương, P. Nhân Chính, Thanh Xuân, Hà Nội. Tối thiểu 20k Giá 0. Giảm món. Mã ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

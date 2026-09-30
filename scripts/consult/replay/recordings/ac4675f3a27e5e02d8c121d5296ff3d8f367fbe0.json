@@ -1,0 +1,83 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Apple Apple Macbook Neo 13-Inch site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:10:23.826Z",
+ "body": {
+  "searchParameters": {
+   "q": "Apple Apple Macbook Neo 13-Inch site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "searchInformation": {
+   "didYouMean": "Apple Apple Macbook Pro 13-Inch site:shopee.vn"
+  },
+  "organic": [
+   {
+    "title": "Máy tính xách tay Apple MacBook Neo A18 Pro 13 inch (6 ...",
+    "link": "https://shopee.vn/M%C3%A1y-t%C3%ADnh-x%C3%A1ch-tay-Apple-MacBook-Neo-A18-Pro-13-inch-(6-core-CPU-5-core-GPU-8GB-RAM-256GB-512GB-SSD)-i.469040198.57108154449",
+    "snippet": "THÔNG SỐ KỸ THUẬT CHI TIẾT Thương hiệu: Apple Chipset: Apple A18 Pro (CPU 6 nhân | GPU 5 nhân | Neural Engine 16 nhân) RAM: 8GB Bộ nhớ thống nhất (Băng ...",
+    "rating": 4.9,
+    "ratingCount": 180,
+    "position": 1
+   },
+   {
+    "title": "Bảo Vệ Màn Hình Cho Macbook Neo 13 Inch Apple laptop ...",
+    "link": "https://shopee.vn/B%E1%BA%A3o-V%E1%BB%87-M%C3%A0n-H%C3%ACnh-Cho-Macbook-Neo-13-Inch-Apple-laptop-Macbook-Pro-14-Inch-Air-13-Inch-PET-M%E1%BB%9D-Ch%E1%BB%91ng-Tr%E1%BA%A7y-X%C6%B0%E1%BB%9Bc-Phim-M%C3%A0n-H%C3%ACnh-Phim-M%E1%BB%81m-i.164796016.53708181467?extraParams=%7B%22display_model_id%22%3A420726550839%2C%22model_selection_logic%22%3A3%7D",
+    "snippet": "Mua Bảo Vệ Màn Hình Cho Macbook Neo 13 Inch Apple laptop Macbook Pro 14 Inch Air 13 Inch PET Mờ Chống Trầy Xước Phim Màn Hình Phim Mềm giá tốt.",
+    "position": 2
+   },
+   {
+    "title": "Vỏ cứng chống vân tay cho Apple MacBook Neo ...",
+    "link": "https://shopee.vn/V%E1%BB%8F-c%E1%BB%A9ng-ch%E1%BB%91ng-v%C3%A2n-tay-cho-Apple-MacBook-Neo-V%E1%BB%8F-m%C3%A1y-t%C3%ADnh-x%C3%A1ch-tay-m%C3%A0u-trong-su%E1%BB%91t-cho-2026-MacBook-Neo-13-inch-Crystal-Clear-HD-Case-i.1797654703.46859968775",
+    "snippet": "Mua Vỏ cứng chống vân tay cho Apple MacBook Neo Vỏ máy tính xách tay màu trong suốt cho 2026 MacBook Neo 13 inch Crystal Clear HD Case giá tốt.",
+    "rating": 4.6,
+    "ratingCount": 86,
+    "position": 3
+   },
+   {
+    "title": "Macbook neo - Giá Tốt, Sale Tháng 09, Freeship 0Đ",
+    "link": "https://shopee.vn/list/macbook/neo",
+    "snippet": "Máy Tính Xách Tay Apple MacBook Neo, 256GB · Máy Tính Xách Tay Apple MacBook Neo, 512GB · Máy tính xách tay Apple MacBook Neo A18 Pro 13 inch (6 core CPU | · Máy ...",
+    "position": 4
+   },
+   {
+    "title": "Dành Cho Apple notebook Phim MacBook Neo 13 PET ...",
+    "link": "https://shopee.vn/D%C3%A0nh-Cho-Apple-notebook-Phim-MacBook-Neo-13-PET-B%E1%BA%A3o-V%E1%BB%87-M%C3%A0n-H%C3%ACnh-Cho-MacBook-Neo-13-inch-A18-Pro-2026-%C4%90%E1%BB%99-N%C3%A9t-Cao-Ch%E1%BB%91ng-%C3%81nh-S%C3%A1ng-Xanh-M%C3%A0ng-M%E1%BB%81m-i.164796016.49312454400?extraParams=%7B%22display_model_id%22%3A406078415574%2C%22model_selection_logic%22%3A3%7D",
+    "snippet": "Dành Cho Apple notebook Phim MacBook Neo 13 PET Bảo Vệ Màn Hình Cho MacBook Neo 13 inch A18 Pro 2026 Độ Nét Cao Chống Ánh Sáng Xanh Màng Mềm.",
+    "position": 5
+   },
+   {
+    "title": "Ốp Lưng Laptop Cho Apple Macbook Neo 13 Inch 2026 ...",
+    "link": "https://shopee.vn/%E1%BB%90p-L%C6%B0ng-Laptop-Cho-Apple-Macbook-Neo-13-Inch-2026-A3404-%C4%90%E1%BB%A9ng-%E1%BB%90p-L%C6%B0ng-Ch%E1%BB%91ng-S%E1%BB%91c-Cho-Mackbook-Neo-13-Laptop-Tay-T%C3%BAi-Ch%C3%A2n-%C4%90%E1%BA%BF-Bao-i.800781569.55616883410?extraParams=%7B%22display_model_id%22%3A326434722123%2C%22model_selection_logic%22%3A3%7D",
+    "snippet": "Mua Ốp Lưng Laptop Cho Apple Macbook Neo 13 Inch 2026 A3404 Đứng Ốp Lưng Chống Sốc Cho Mackbook Neo 13 \"Laptop Tay Túi Chân Đế Bao giá tốt.",
+    "rating": 4.8,
+    "ratingCount": 1731,
+    "position": 6
+   },
+   {
+    "title": "Mờ Trong Suốt Dành Cho Apple MacBook Neo Ốp Lưng ...",
+    "link": "https://shopee.vn/M%E1%BB%9D-Trong-Su%E1%BB%91t-D%C3%A0nh-Cho-Apple-MacBook-Neo-%E1%BB%90p-L%C6%B0ng-C%E1%BB%A9ng-Laptop-M%C3%A0u-M%E1%BB%9D-Cho-2026-MacBook-Neo-13-inch-B%C3%ACa-C%E1%BB%A9ng-Si%C3%AAu-M%E1%BB%8Fng-M%E1%BB%9D-Case-i.1797649545.56160369577",
+    "snippet": "Mua Mờ Trong Suốt Dành Cho Apple MacBook Neo Ốp Lưng Cứng Laptop Màu Mờ Cho 2026 MacBook Neo 13 inch Bìa Cứng Siêu Mỏng Mờ Case giá tốt.",
+    "position": 7
+   },
+   {
+    "title": "Siêu Mỏng Pha Lê Laptop Dành Cho Apple MacBook Neo ...",
+    "link": "https://shopee.vn/Si%C3%AAu-M%E1%BB%8Fng-Pha-L%C3%AA-Laptop-D%C3%A0nh-Cho-Apple-MacBook-Neo-Ch%E1%BB%91ng-Tr%E1%BA%A7y-X%C6%B0%E1%BB%9Bc-HD-Trong-Su%E1%BB%91t-D%C3%A0nh-Cho-2026-MacBook-Neo-13-inch-Pha-L%C3%AA-M%C3%A0u-V%E1%BB%8F-C%E1%BB%A9ng-i.1258799241.51809965638",
+    "snippet": "Siêu Mỏng Pha Lê Laptop Dành Cho Apple MacBook Neo Chống Trầy Xước HD Trong Suốt Dành Cho 2026 MacBook Neo 13 inch Pha Lê Màu Vỏ Cứng.",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

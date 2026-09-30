@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Quà tặng sếp nam: Top 20 site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:45:22.398Z",
+ "body": {
+  "searchParameters": {
+   "q": "Quà tặng sếp nam: Top 20 site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Quà tặng sếp - Giá Tốt, Sale Tháng 09, Freeship 0Đ",
+    "link": "https://shopee.vn/list/qu%C3%A0%20t%E1%BA%B7ng/s%E1%BA%BFp",
+    "snippet": "Set Quà Tặng Sang Trọng – Bình Giữ Nhiệt + Ô Gấp Hoặc Máy Massage – quà tốt nghiệp, quà tặng doanh nghệp, quà giáng sinh. 119.000₫. rating-star 4.9.",
+    "position": 1
+   },
+   {
+    "title": "TOP 20+ set quà Tết độc đáo vừa ấn tượng vừa ý nghĩa ...",
+    "link": "https://shopee.vn/blog/qua-tet-doc-dao/",
+    "snippet": "Một set quà Tết độc đáo sẽ giúp bạn ghi điểm hoàn hảo trong mắt bố mẹ, sếp hay đối tác. Shopee Blog gợi ý 20+ quà Tết độc đáo năm mới nhé!",
+    "date": "26 thg 1, 2026",
+    "position": 2
+   },
+   {
+    "title": "Hoa tặng sếp nữ tinh tế, chuyên nghiệp",
+    "link": "https://shopee.vn/list/hoa/t%E1%BA%B7ng%20s%E1%BA%BFp%20n%E1%BB%AF",
+    "snippet": "Ngày Quốc tế Phụ nữ 8/3 và 20/10: Vào những ngày này, một bó hoa với tông màu nhẹ nhàng như hồng pastel, kem, tím nhạt sẽ rất phù hợp. Hoa hồng, cẩm tú cầu, ...",
+    "position": 3
+   },
+   {
+    "title": "Gợi ý 10+ món quà 8/3 cho sếp nữ giúp bạn ghi điểm tuyệt ...",
+    "link": "https://shopee.vn/blog/qua-8-3-cho-sep-nu/",
+    "snippet": "Khăn lụa là một trong những ý tưởng tặng quà 8/3 cho sếp nữ ấn tượng nhất bởi chiếc khăn này có tính ứng dụng cao. Điểm nổi bật của khăn lụa ...",
+    "date": "6 thg 3, 2025",
+    "position": 4
+   },
+   {
+    "title": "NISSI - Quà tặng cao cấp, Cửa hàng trực tuyến",
+    "link": "https://shopee.vn/nissi.vn",
+    "snippet": "TOP 2. Bút khắc tên theo yêu cầu cao cấp MONTAGUT, quà tặng bút kí khắc tên tặng sếp, tặng giáo viên, doanh nhân sang trọng. Đã bán 1/tháng. 99.000₫. Bút khắc ...",
+    "position": 5
+   },
+   {
+    "title": "Top 20+ quà Tết cao cấp và ý nghĩa dành cho mọi đối tượng",
+    "link": "https://shopee.vn/blog/qua-tet/",
+    "snippet": "Vì vậy, bạn có thể lựa chọn bộ ấm trà, chén trà làm quà tặng cho cấp trên và khách hàng. Bộ ấm chén trà thường sẽ được đặt gọn trong hộp quà ...",
+    "date": "9 thg 2, 2026",
+    "position": 6
+   },
+   {
+    "title": "Tranh Gạo Hà Thành, Cửa hàng trực tuyến",
+    "link": "https://shopee.vn/havu2403",
+    "snippet": "Tranh gạo Hà Nội Hà Thành, quà lưu niệm Việt Nam, tặng hộp đựng · Tranh gạo chân dung - Tri ân thầy cô ( HÀNG MẪU THAM KHẢO) · Tranh gạo hoa sen Hà Thành, quà lưu ...",
+    "position": 7
+   },
+   {
+    "title": "quà tặng sếp nữ - Giá Tốt, Sale Tháng 09, Freeship 0Đ",
+    "link": "https://shopee.vn/list/qu%C3%A0%20t%E1%BA%B7ng/s%E1%BA%BFp%20n%E1%BB%AF",
+    "snippet": "Top Bán Chạy Sản Phẩm quà tặng sếp nữ. 1. Biểu Trưng Pha Lê Hoa Sen Bình An, Quà Tặng Sếp Nữ, Cô Giáo, Đối Tác Cao Cấp, Quà Tặng Hoàng Gia245.000₫ · 2. Set Quà ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

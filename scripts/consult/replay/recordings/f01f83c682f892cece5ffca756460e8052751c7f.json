@@ -1,0 +1,30 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Laptop Lenovo V15 G4 IRU 83A100PMVN\" OR \"Laptop Lenovo V15 G4 IRU 83A100PMVN\" OR \"Laptop Lenovo V15 G4 IRU 83CC0041VN\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:05:04.682Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Laptop Lenovo V15 G4 IRU 83A100PMVN\" OR \"Laptop Lenovo V15 G4 IRU 83A100PMVN\" OR \"Laptop Lenovo V15 G4 IRU 83CC0041VN\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Mediamart Hưng Yên (@mediamart_hungyen)",
+    "link": "https://www.tiktok.com/@mediamart_hungyen",
+    "snippet": "Review Laptop LENOVO V15 G4 IRU 83A100PMVN#xuhuong #sieuthi #LearnOnTikTok #FoodFestOnTikTok # ... Review Laptop LENOVO V15 G4 IRU 83A100PMVN#xuhuong ...",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

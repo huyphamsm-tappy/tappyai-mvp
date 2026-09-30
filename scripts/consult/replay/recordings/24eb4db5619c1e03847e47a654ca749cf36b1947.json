@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Quán ăn ngon Sài Gòn\" OR \"Khu ăn vặt Cao Thắng\" OR \"NHÀ HÀNG NGON\" gần Sài Gòn site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:25:11.819Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Quán ăn ngon Sài Gòn\" OR \"Khu ăn vặt Cao Thắng\" OR \"NHÀ HÀNG NGON\" gần Sài Gòn site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "25 Quán Ăn Ngon Sài Gòn Không Cần Review Vẫn Đông ...",
+    "link": "https://www.tiktok.com/@didauofficial/video/7489300733129510151",
+    "snippet": "Danh sách 25 quán ăn ngon Sài Gòn không cần review vẫn đông nghẹt khách, từ sáng đến tối, nắng mưa vẫn xếp hàng dài. Nhiều quán nổi tiếng vì ...",
+    "position": 1
+   },
+   {
+    "title": "Khám Phá Ẩm Thực Sài Gòn Cùng Trân",
+    "link": "https://www.tiktok.com/@traanxngg/video/7603051478751677714",
+    "snippet": "Nhật ký đi ăn tiệm dạo gần đây của Trân ở Sài Gònn nếu biến đây thành một series thì chắc vô số tập luôn vì SG nhiều nhà hàng ngon quá mà ...",
+    "position": 2
+   },
+   {
+    "title": "Những Món Ngon Cần Thử Khi Đến Sài Gòn",
+    "link": "https://www.tiktok.com/@saigonspringroll/video/7524267611857734967",
+    "snippet": "Ăn Gì Ở Sài Gòn? (Tiếng Việt). Món Ngon Sài Gòn · Quán Ăn Ngon Sài Gòn · Những Quán Xôi Mặn Ngon Ở Sài Gòn · Địa Điểm Quán Ăn Trưa Ngon Ở Sài ...",
+    "position": 3
+   },
+   {
+    "title": "Quán ăn ngon Sài Gòn hôm nay ăn gì",
+    "link": "https://www.tiktok.com/@boodiann/video/7675346474011479314",
+    "snippet": "7581 Lượt thích,64 Bình luận.Video TikTok từ Boo tới ròi nèee (@boodiann): \"Gợi ý quán ăn ngon Sài Gòn, món nướng hấp dẫn và cảm nhận ...",
+    "position": 4
+   },
+   {
+    "title": "Top 12 Quán Ăn Ngon và Rẻ Ở Quận 3 Sài Gòn",
+    "link": "https://www.tiktok.com/@didauofficial/video/7478594318370999570",
+    "snippet": "Quán Ăn Ngon Sài Gòn · Quán Ăn Hàn Quốc Nổi Tiếng Ở Sài Gòn · Quán Ăn Tối Ngon Tại Quận 1 Sài Gòn · Địa Điểm Quán Ăn Trưa Ngon Ở Sài Gòn · Quán ...",
+    "position": 5
+   },
+   {
+    "title": "Cơm Chiên Mì Xào Ngon Nhất Q3 Sài Gòn",
+    "link": "https://www.tiktok.com/@dicungphuc/video/7500550616750624018",
+    "snippet": "... Gòn, địa điểm ăn uống Q3, món ngon nhất Sài Gòn, gợi ý món ăn Sài Gòn, trải nghiệm ẩm thực Q3, nhà hàng ngon ở Sài Gòn, ăn uống tại Q3, món ăn ...",
+    "position": 6
+   },
+   {
+    "title": "Không phải cơm tấm hay ốc, đây là quán ăn kiểu gia đình ...",
+    "link": "https://www.tiktok.com/@utcungdidau/video/7477966720678858001",
+    "snippet": "Quán Ăn Hàn Quốc Nổi Tiếng Ở Sài Gòn · Quán Ăn Ngon Sài Gòn · Quán Cafe Linh Hàm Nghi Sài Gòn · Quán Ốc Lê Thánh Tôn Sài Gòn · Quán Ăn Ngon Lê ...",
+    "position": 7
+   },
+   {
+    "title": "Quán ngon phường Bến Thành: 6 món bình dân gần chợ ...",
+    "link": "https://www.tiktok.com/@ansapsaigon/video/7524591866503908615",
+    "snippet": "Quán Ăn Ngon Sài Gòn · Chỗ Đi Chơi Ở Sài Gòn · Thử Thách Ăn Nhận Thưởng ... Dưới đây là tổng hợp 6 quán ngon đáng thử trong khu vực gần chợ Bến ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

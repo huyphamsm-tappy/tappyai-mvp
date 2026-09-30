@@ -1,0 +1,365 @@
+{
+ "url": "https://google.serper.dev/shopping",
+ "request": {
+  "q": "laptop mới Thời lượng pin",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 20
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:13:42.230Z",
+ "body": {
+  "searchParameters": {
+   "q": "laptop mới Thời lượng pin",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "shopping",
+   "num": 40,
+   "page": 1,
+   "engine": "google"
+  },
+  "shopping": [
+   {
+    "title": "Laptop Dell 15 DC15250 - 71084747 (i7 1355U, 16GB, 512GB, Full HD 120 Hz, OfficeHS24+365, Win11)",
+    "source": "Thế Giới Di Động",
+    "price": "25.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQWnvn2zeF8Hvmadl7DPeEtHZw5QAFUezfoZPkMF1aA0xwhfaA_JR2WWQAZPtKyY0Fvw4Msx3zl-9uQZ7Gk47EocXGMoYtZn0_HdJTzMJAhuVurkhRdTujA",
+    "productId": "3717769403993957533",
+    "position": 1
+   },
+   {
+    "title": "Laptop làm việc văn phòng, học online DEEQ, màn hình 14 inch FullHD 1080, Ram 8G,SSD M2 128G, Intel J4150 (4 Core, 2.5Ghz)",
+    "source": "Promax Shop",
+    "price": "6.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTKUHJcqLO0r3RYDqdNLPxALOZoNKvQquO6jfz40IPgzt3FcpkdDDcExrXWgmIkN8WzU4m4S01KrW_KQOaZ7NmK6etn76at0IowEBvLg1dYubiLsMD2v58W8A",
+    "productId": "17180646393086510740",
+    "position": 2
+   },
+   {
+    "title": "Laptop Dell 15 DC15250 MCW52",
+    "source": "CellphoneS",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+m%E1%BB%9Bi+Th%E1%BB%9Di+l%C6%B0%E1%BB%A3ng+pin+*+*+*&prds=localAnnotatedOfferId:1,catalogid:18223076252425367046,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "26.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQwbYHFMrrPMjZuZW1XCYbEsL0YvCFvgI79FWy47GHVr458xTymkqF2IUQw-qH-axkE8wxFpHhHnosrJQLp38peVca5ef3SxOOfN57_GXsLD8xe7VQfWB0M",
+    "rating": 2,
+    "ratingCount": 1,
+    "productId": "18223076252425367046",
+    "position": 3
+   },
+   {
+    "title": "Laptop Máy tính bàn & Netbooks Dell Pro 14 Plus Pb14250 14\" Máy tính Xách Tay Vỏ Sò Copilot+ Pc",
+    "source": "Lapvip",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+m%E1%BB%9Bi+Th%E1%BB%9Di+l%C6%B0%E1%BB%A3ng+pin+*+*+*&prds=localAnnotatedOfferId:1,catalogid:11860555169722820286,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "23.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQWhqgdU1i_FrEhD07pG5DeK0NDMxekWhG4u40xyrhyom2V11dXcC5FM2Oxjbq1Ws16heL257S8UrGA7Hf9F_7yYI-NvhNQ8Bigss-Iy-Eu57bRuHCVp508",
+    "rating": 4.2,
+    "ratingCount": 394,
+    "productId": "11860555169722820286",
+    "position": 4
+   },
+   {
+    "title": "Laptop Lenovo 20296 Pentium 3556U- Giá Rẻ, Chính Hãng",
+    "source": "truonggiang.vn",
+    "price": "3.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQW0EZQHkEF5tae8ArwQmfRCN4JssTgKjvyh_BYDL5k7ke15rjR2cxLOTC54DAf0G5W8hRAP5jENbO3EgccvQWJMraGbTSL-rotu0MIz6ns9dZPel-w6XH2",
+    "productId": "15354511222894356024",
+    "position": 5
+   },
+   {
+    "title": "Laptop Core i5-1145G7 - Tặng Kèm Phần Mềm Hát Live",
+    "source": "thietbihatlive.com",
+    "price": "9.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcR5XZusIF8235NpIdQTKuYRgk0LBwJCoHDUbTErJnKAZdku6yQfVeocpwxfr5CtAq7yuTo8F9Zc58d8zSmRANdKa2COYfl6MpRaMj75PNQ",
+    "productId": "18428456378760635619",
+    "position": 6
+   },
+   {
+    "title": "Máy tính xách tay/ Laptop Dell 14 DC14250 - F0FTK5 (Core 5-120U) (Bạc)",
+    "source": "Phong Vũ",
+    "price": "26.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSkiCFo2fY6YFn4sN3204nfvFuUqDMrder2UC3-5xAR6YS2pRnHWA2V0cv5VwQdlXbtwOgoVK5T-XkGmWo6LWN-Vr4NqwkYPWUthMULr-rWCdw9h2UTCn4y",
+    "productId": "16283730714245259927",
+    "position": 7
+   },
+   {
+    "title": "Nơi bán pin laptop aspire e 15 tại gò vấp - HIENLAPTOP",
+    "source": "Shop Linh Kiện",
+    "price": "562.500 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRFphoYEIAa3QPUs_keFNWjI90QlvVnDvz4uGEm_jPdpdQQjy6ROOpBSbU6_8D8QEtKpLUlNmDoe1fjIDPeFjPhmAyXLAUGyhRCtgt63MN-XlxhrRZWDbSq0g",
+    "productId": "15162297986697138967",
+    "position": 8
+   },
+   {
+    "title": "Pin Laptop Macbook Air 13 inch A1369 A1466 A1405 A1496 54WH 4 Cell Chất Lượng Cao - Laptop Viễn Chinh",
+    "source": "Laptop Viễn Chinh",
+    "price": "725.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTqOMUXQwdNLirwGt-5-JpXC41xpIlTewRmupo6pvzgy-Xjr2JmSHAoEd2lkyKFemUUmRKWKC7y9HQZoIiSOdoqyWjsrVuHy4FB2qMTluB_A8wMLNltY6gW",
+    "rating": 4.8,
+    "ratingCount": 237,
+    "productId": "6089977640544243869",
+    "position": 9
+   },
+   {
+    "title": "Bán Pin Laptop Asus Giá Rẻ (đã bao gồm công)",
+    "source": "Bảo Hành One",
+    "price": "190.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcR-hBbPHtDZPFGDli1SW9ilBtZGJhCXB-hMLFA2zVJY2DVx6PfJBryk3g_fioPMW3fzDp50asNbdboi8oS4X76zqFLhXSJIFnG64PCMr-BE_7DfeyZZsWtc",
+    "productId": "17849918970603535982",
+    "position": 10
+   },
+   {
+    "title": "Pin laptop HP Compaq 6530b 6535b 6730b 6735b, EliteBook 6930p 8440p 8440w – 8440P",
+    "source": "Công Ty TNHH Vi Tính Thiên Ân",
+    "price": "253.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQWy9QsWuDRaj0cWlXBdCLScY1gmaqk8QyGcwcOYOIP1X_g-_2GF1RsUcG3xn468TaTH90QjoHuGfK6uXX6GrJ2hbSa30g2UgTmYuLrVn-3g4BEMLONriyt",
+    "rating": 4.8,
+    "ratingCount": 12,
+    "productId": "10405751558268951131",
+    "position": 11
+   },
+   {
+    "title": "Địa Chỉ Thay Pin Laptop Asus",
+    "source": "Laptop Thiên Ân",
+    "price": "450.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQbEDo0TbB4zSQa3D5txNtBmEJrYVwPZLxdAUW3m9I3_VZJXLYhx7h3ZqbmpoaJ4OiilTuANVNhU4ouuetxoljIGUjckn4vi-BmAp5kTZo",
+    "productId": "12921086854616610220",
+    "position": 12
+   },
+   {
+    "title": "Pin laptop Acer Aspire E1-470",
+    "source": "NewTechShop.vn",
+    "price": "1.140.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcR_EsihPevDwHoHrVWlItuHf1YcCcKEpMKKbNMNcyaX9sFDPlGDbshiNwWTvvPOvh80D736u9QwgsrIVWM2tv3vK57EoQqZHVzQAZlrhmytOaWYj-g--bkB2g",
+    "productId": "3202818551832252233",
+    "position": 13
+   },
+   {
+    "title": "Pin Laptop Lenovo ThinkPad SL400 SL300 SL500, Bảo Hành Nhanh, Chất Lượng Cao",
+    "source": "Chiaki.vn",
+    "price": "380.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSfH87KVgv5mptYc6fVBOH2Z49XuaRJ_AktBz9wBWdvmiv2_lUla21w6bTZ4lUK-iDwn48N3P3E9gzzAB1WGtz0yKyn8_IrB-9hMhysVOHC0K69dbc-1EkO",
+    "productId": "14614025404547783271",
+    "position": 14
+   },
+   {
+    "title": "Pin laptop HP 1000 450 $ 490.000đ - zin chất lượng cao - b.hành 12th",
+    "source": "Shop Linh Kiện",
+    "price": "293.750 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQ9iW7gbQ98evBx-3Pf4ODumwiNCwOqZ4mzwvrSKBhFawBcadnX0CiZRInUPxuHIaxycj_e6dCBQ-3NuU4aOi5kg2e1uyF9DDSKQd1U2aomPzPHEz4QW1NsaA",
+    "productId": "18405082110966294702",
+    "position": 15
+   },
+   {
+    "title": "Pin laptop Toshiba Satellite R630 R700 R705 R830 R835 R840 R930 (PA3832, 6 Cell) Chất Lượng Cao - Laptop Viễn Chinh",
+    "source": "Laptop Viễn Chinh",
+    "price": "325.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSFRvznBl6XAAo635DxdK_7fCRbs30QvEL-OxcbI5zQhU7q8gqsK3qGrfkVcBVIs7MDL-tdhftLZL34ftAx4WkxLTPA0fngQ5xnlJhpf0CIrR_2jWqoHyvB",
+    "productId": "12898541095588657339",
+    "position": 16
+   },
+   {
+    "title": "Pin laptop Samsung Tuxedo InfinityBook Pro 14 Gen 6, Tuxedo InfinityBook Pro 14 Gen 7, Mechrevo F1 Schenker Vision 14 Adata XPG Xenia 14, 3ICP6/63/69,",
+    "source": "Công Ty TNHH Vi Tính Thiên Ân",
+    "price": "977.500 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcS7zB6GRNoUOyzosR1bG0H7SNn7enKxLepQK3fn4is6cU8-kIKEROXsqQqh3kU7Swlietp2bt6cvSCRUyYXNx3Q_C0VLEZmtiemZh_ZGLSE6C8pz-_PXZy9JQ",
+    "productId": "8990743511831290081",
+    "position": 17
+   },
+   {
+    "title": "Pin laptop Lenovo Legion 5-15IAH7",
+    "source": "NewTechShop.vn",
+    "price": "1.950.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTeF7DA-yiHRAK5vAxUTHO5zuOubU4FrAlWh5eZ-16ZcGPI9uhKhZb1QLaV-oyU41ZiC6lUcCViBmPkE3kZFWKB3S2F9bUswrG2yKbiJKCpGXxqxTFuuCF0ig",
+    "rating": 5,
+    "ratingCount": 2,
+    "productId": "4932666226310129932",
+    "position": 18
+   },
+   {
+    "title": "Pin Laptop Asus VivoBook S200 – C21-X202 – 4 Cell (38Wh) – Mới 100% – Bảo hành 6 Tháng (1 đổi 1)",
+    "source": "Laptop Thiên Ân",
+    "price": "950.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcS_Qbb5qPB4an8q6R4uLNHhwI9v2No-YskxMQ3bAzDpM_Qvbv1B4J6XunhHUtfaWHZMnLrU_SN17oAOHL_oyBTjTwIoOPqtYB7BsOcKpdqmOqUrWZmvAyA",
+    "productId": "1831188854294610157",
+    "position": 19
+   },
+   {
+    "title": "Pin Laptop Samsung RC420 RV415 Chính Hãng 6 Cell Đen - Bảo Hành Đổi Mới 100% - Phụ Kiện Thiết Bị Số Chất Lượng Cao",
+    "source": "Chiaki.vn",
+    "price": "585.499 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRlsbTIG4Qbq6q6a_jwWvRFqeiah_cegl8x1yS5y6AYGD323qxFWfP8QKmdAbyYedqVWhAQRoh5uPL9dbKMlUwolW4G_U8HT43_fog4v38",
+    "productId": "3989469787289410044",
+    "position": 20
+   },
+   {
+    "title": "Pin Laptop Macbook Air 11 inch A1370 A1375 35WH 6 Cell Chất Lượng Cao - Laptop Viễn Chinh",
+    "source": "Laptop Viễn Chinh",
+    "price": "762.500 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTO0Uh_yoA-QNxOg7M7G8xmqWTjW0FpxslO5smAEz5gZo_q_sACWyY5wSgIYjejYliXcG5SEruDaHBE_vyp7DjAP7UEBoqvt4LUfh9UMLJxsmshS45NkhrSag",
+    "productId": "8393510037646131373",
+    "position": 21
+   },
+   {
+    "title": "Thay Pin Laptop HP 240-G2, 250-G3, OA03, OA04 Zin - Bình Minh Phát Laptop",
+    "source": "Bình Minh Phát Laptop",
+    "price": "750.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRIUWw9EvQiD_CSGPYGh8eRJOdXFJ-JCG7dnQWyainzM0NvriKe0I7FnQcMkNLe8chTMKd-lNb0i5YC4OIsWDbv0Msype-LCNrzTwD9KNA",
+    "productId": "5532251529221365842",
+    "position": 22
+   },
+   {
+    "title": "Pin Surface Book with Performance Base",
+    "source": "NewTechShop.vn",
+    "price": "1.430.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTnyRUgnhS0vy5gCqXttXyl9RTwi4er5ts33Jg0j0vrhgO7ivKPzwcR5MKH6RUzfyzSZuDf9ijH9b9Qv5Ks2Ndd4k5vpW59fMdn2V0OZbKrozUqX6X0nyxb0A",
+    "productId": "14335100448532945635",
+    "position": 23
+   },
+   {
+    "title": "Pin Laptop Nec LaVie S PC-LS150, PC-LS350 Zin Mới | Dịch Vụ Thay Pin Laptop Nhanh, Bảo Hành Dài Lâu",
+    "source": "Trường Thịnh Group",
+    "price": "450.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSCUF5L_XsO5oSnilw0XwsEMcoEHX8Ww5sVVMhaJzL46txCANvi11hHuB8SF51TrxXdtynrRKHnp7Ko4rh7zDcN8xax1ZgF4d30XGC-Cjucc7P8B9SvRefLtA",
+    "productId": "6192249556548187691",
+    "position": 24
+   },
+   {
+    "title": "Thay Pin Laptop Dell Chính Hãng- Giá Rẻ - Uy Tín - Ko phát sinh thêm phí",
+    "source": "Bảo Hành One",
+    "price": "370.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRCcic9RCkSiIRBhIXJt9iG9LXyRkNQVxPGPKhV4MisPXpZnvIkGlunYecZ2FXVdbJVhVnsf0x-o7t2XHWsX7vCVuyEkZBDXjK4Np2S8j2PmcHKHUqJNNnn",
+    "productId": "16909454097305102911",
+    "position": 25
+   },
+   {
+    "title": "Pin Laptop Lenoge Toshiba TS-PA3534U (10.8V/5200mAh)",
+    "source": "Tinhocngoisao.com",
+    "price": "99.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSpVsbuIGKXW3KOOSMxXKF3dclLGZFmKNmpMU2b4FNSoH5OtF5xlQ3I5XW1Udus9I9NubjOO6EtgbRKlJWWITS326Oq-vM8GG2APHMxZ3H1lffLD0Mymz95",
+    "rating": 4.8,
+    "ratingCount": 29,
+    "productId": "18164435044560582138",
+    "position": 26
+   },
+   {
+    "title": "Pin Laptop Lenovo ThinkBook 15-IML – L19M3PF9 – 3 Cell (44Wh) – Mới 100% – Bảo hành 6 Tháng (1 đổi 1)",
+    "source": "Laptop Thiên Ân",
+    "price": "1.200.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSO-7hsSoIAjmqzj2usWpBEMncbeiDkEaNBcspx4xBvaDA7OzrZnKaHEJLII8cUZP3zx7L04MO8-pWs-Irnfj-9zGmFcO5S70tpO4gKACTB2qY6dXn6jLOrgA",
+    "productId": "9654740083618218997",
+    "position": 27
+   },
+   {
+    "title": "Pin laptop Sony Vaio VPC-E VPC-EA EB EC EF Series VGP-BPS22 6 Cell Chất Lượng Cao - Laptop Viễn Chinh",
+    "source": "Laptop Viễn Chinh",
+    "price": "612.500 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQzTP1MBW9xHSoWQ1YwLvanIUWghWrep3vPdecjbGEWaQN3R6acLKyo7d3BvwpKqP8aoH9LbmYaPPFhPu8BbgUxrhmTGbNQjw2TIkVCwX9M_fdkk5bkAIHSFw",
+    "productId": "15725933005640974970",
+    "position": 28
+   },
+   {
+    "title": "Pin laptop MacBook Pro M4 14 inch A3112",
+    "source": "NewTechShop.vn",
+    "price": "4.200.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSggYnd6-4JNhPG0iHk7tBAg0pDKkXQjVnJepSaYG8tQW7hlphmmKa31tjeQVCCDAL3uEpoFhi3h_ffAyL9aePd1nCuSoaMcHfEu7y1IMBhrRGjonJ4eURfHA",
+    "productId": "3504287430994690287",
+    "position": 29
+   },
+   {
+    "title": "Pin Laptop Chính Hãng Asus V551, V551L, DH51T, V551LB-SH71T - Linh Kiện Chất Lượng Cao cho Thiết Bị Số",
+    "source": "Chiaki.vn",
+    "price": "742.999 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRgDmYlcT-JaSayKbEzeHL8DyFpXEqQN9ufKUNGm2asWDMFh0jTO6zYt_KZGr39motJtdl57DHSrNqc-5JwmSHxz6gEXlZE63RArXSa9ya4",
+    "productId": "5842232083588138310",
+    "position": 30
+   },
+   {
+    "title": "Pin Surface Laptop",
+    "source": "Surface Center",
+    "price": "1.800.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcS-KcNQg0NGnRKLSN1mjlEehlPjWk9hzoRe0oDZC07gM0TvDtQvgLMhgE-qQIayJZkaUbHl6GMdHh6np9sU5qXncxvH4AWSvFJy1yjuDy9PD2vnFtOVn6NuHA",
+    "productId": "10606011162806051790",
+    "position": 31
+   },
+   {
+    "title": "Bảo Hành Pin Laptop",
+    "source": "lapvip.com.vn",
+    "price": "300.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSCRIxiR54lvatSZKT8PI9mC0CuCFePjKGqgzdtUYZK6ufDBBZiAj9igBf9OIqFDNtnWW8LAQ2sM9zcu3QqisrP7zi3CURsC6dGp_WFPWp4-eE0CvU5H-xT",
+    "productId": "1310090983883979941",
+    "position": 32
+   },
+   {
+    "title": "Pin Laptop Notebook Lenovo 5B10W69449",
+    "source": "NewTechShop.vn",
+    "price": "1.350.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSOcWh4rm5b_9eZZXz-m2T3cZWwovOTNu1FMa5m8UCx7Cvul27hpP1VFklwGOWtzuObuzL6yzAIDJ-bTzMGboC40l30KbF1585Fa7IrytW98GK4dR3MDapM",
+    "rating": 5,
+    "ratingCount": 1,
+    "productId": "15791888321533206131",
+    "position": 33
+   },
+   {
+    "title": "Pin laptop Lenovo ThinkPad X240, T440, T450, X260 (6 Cell, Gắn Ngoài) Chất Lượng Cao - Laptop Viễn Chinh",
+    "source": "Laptop Viễn Chinh",
+    "price": "556.250 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQONLzHcxCVz_KNkwHF1ms_xDUf2OHk4kgTGt1wxLBUhYfe2Isw-Bim16XM3-ZfZz_a8q7z04vspcCTH6zzLS0QrwSkAlqB6w_KiPC1DONAuv1dHgbTmxxsSg",
+    "rating": 4.7,
+    "ratingCount": 325,
+    "productId": "15416294950661862797",
+    "position": 34
+   },
+   {
+    "title": "Pin Laptop Lenovo Ideapad S145-15iil – L16M2PB1 – 2 Cell (30Wh) – Mới 100% – Bảo hành 6 Tháng (1 đổi 1)",
+    "source": "Laptop Thiên Ân",
+    "price": "980.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTX_68HmFZJaIEu6geYG9y-5l7AApOJice3oeZG0Y-vuq9p1LI-BDCy26HgHXzpUu2CT0C-Wwzgcqbz0Rn2laJvay4nqhbnkF6pDqbfBwq0mBWNcql-RcS3ww",
+    "productId": "15837094869225856665",
+    "position": 35
+   },
+   {
+    "title": "Pin Laptop Lenoge HP HQ-6520S (10.8V/5200mAh)",
+    "source": "Tinhocngoisao.com",
+    "price": "99.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTI5BAsPIkm0Qdm-0ejgJwyfMKmT795VqKN87BdpZr2e9phZ5HAVUN2nSbXnctFaYvmf2Lop5opaJC4mywjcGGpaZFoZnlwWJIZI8gcjKr7ZJuJqiZwVywR",
+    "productId": "14300748412042209443",
+    "position": 36
+   },
+   {
+    "title": "Pin Laptop Dell Vostro 1014 Chất Lượng – Giá Rẻ",
+    "source": "Công Ty TNHH Vi Tính Thiên Ân",
+    "price": "264.500 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRn_3RqQFUDyoAzOjHGmuc-ZH2RcY6QGZfYj2d7EyNERRT0xhkuf0fRi3zxMfi5I0zppJNYw0PvLd9HGd8HrkmvUxF_P56W1NdR6-FPZH6U",
+    "rating": 5,
+    "ratingCount": 1,
+    "productId": "17067210439803324699",
+    "position": 37
+   },
+   {
+    "title": "Pin Laptop Acer 5536G 5541 5541G 5542 5542G 5735 5735Z 5737Z 5738 5738G - Thay Thế Pin Chất Lượng Cao cho Laptop Acer",
+    "source": "Chiaki.vn",
+    "price": "359.999 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRGZpB7wn9783LwVNTqB1QewW7EW_Gy2TUMi1hApsIr858Vv8NLEiGN93PGiJA-CeiBF7_3OWxZfvAOUH7TP8I5sDeDzNtCooqE01WYeCg4Hkwr8JxpdL8ppQ",
+    "productId": "12397356655120710194",
+    "position": 38
+   },
+   {
+    "title": "Pin laptop HP Pavilion 14 CE2064TX NQ",
+    "source": "NewTechShop.vn",
+    "price": "1.460.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTiNyxLm0f_Amd_J4nYANqrdABmcM5rpsdBTgY8TO5cE-q11UxVn7FA3CBf748ZsfJ7pNAwFybVmEedLgPcDRAVmCBD2NPr_bZoqDtUInlmxQ6e7n1TD-KY",
+    "productId": "17912882843493636695",
+    "position": 39
+   },
+   {
+    "title": "Pin laptop Acer Extensa 4220 4620 4720, Aspire 2920 3640 5552, TravelMate 2480 4720 (6 Cell) Chất Lượng Cao - Laptop Viễn Chinh",
+    "source": "Laptop Viễn Chinh",
+    "price": "300.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcT4S481ugrZWQ8AOrp8SlHYocxe8ARapLMlFLb3dDPHrZI7nI5qh1d2i_1o-cCll29G7VwqQBXgTIUC2I1IotOItnJwCGwShZIFzNQIZJH52W1SCNKmNfmH",
+    "productId": "8730929395705209571",
+    "position": 40
+   }
+  ],
+  "credits": 2
+ }
+}

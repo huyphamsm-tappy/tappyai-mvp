@@ -1,0 +1,66 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"La Siesta\" TP.HCM site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:26:31.681Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"La Siesta\" TP.HCM site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Khách sạn La Siesta Premium Saigon Central - Giá cả và ...",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-hotel-detail-120437423/la-siesta-premium-saigon-central/",
+    "snippet": "Khách sạn La Siesta Premium Saigon Central · 55m² · Có cửa sổ · Không hút thuốc · Wi-Fi miễn phí.",
+    "position": 1
+   },
+   {
+    "title": "Tìm Khách Sạn 5 Sao Tại TP. Hồ Chí Minh",
+    "link": "https://vn.trip.com/hotels/star5/city/vn/ho-chi-minh-city.html",
+    "snippet": "Khách sạn La Siesta Premium Saigon Central. 9,3/10Tuyệt Vời. Shaharul MY“Chúng tôi đã ở tại Khách sạn La Siesta từ ngày 27 đến ngày 29 tháng 11 năm 2024 và đó ...",
+    "position": 2
+   },
+   {
+    "title": "Tòa HH2K, Chung Cư Xuân Mai Complex - Khách sạn",
+    "link": "https://vn.trip.com/hotels/hanoi-ta-hh2k-chung-c-xun-mai-complex/hotels-c286m30351295/",
+    "snippet": "Khách sạn La Siesta Premium Lakeside. Khách Sạn Ở Quận Hoàn Kiếm, Hà Nội. 9,3/10. Tuyệt Vời 113 đánh giá. La Siesta Premium Lakeside tọa lạc ở trung tâm Hà Nội ...",
+    "position": 3
+   },
+   {
+    "title": "Các khách sạn ở gần Trường Đại học Điện Lực, Hà Nội",
+    "link": "https://vn.trip.com/hotels/hanoi-electric-power-university/hotels-c286m10783110/",
+    "snippet": "Khách sạn La Siesta Premium Lakeside. Khách Sạn Ở Quận Hoàn Kiếm, Hà Nội. 9,3/10. Tuyệt Vời 114 đánh giá. La Siesta Premium Lakeside tọa lạc ở trung tâm Hà Nội ...",
+    "position": 4
+   },
+   {
+    "title": "Các khách sạn ở gần TokyoLife - Hồ Tùng Mậu, Hà Nội",
+    "link": "https://vn.trip.com/hotels/hanoi-tokyolife-h-tng-mu/hotels-c286m28799827/",
+    "snippet": "La Siesta Premium Lakeside tọa lạc ở trung tâm Hà Nội, chỉ cách Hồ Hoàn Kiếm ... TP. Hồ Chí Minh Hà NộiVé máy bay Thượng Hải Hà NộiVé máy bay Cao Hùng ...",
+    "position": 5
+   },
+   {
+    "title": "Các khách sạn ở gần Học viện Múa Việt Nam, Hà Nội",
+    "link": "https://vn.trip.com/hotels/hanoi-college-of-dance/hotels-c286m10927457/",
+    "snippet": "Khách sạn La Siesta Premium Lakeside. Khách Sạn Ở Quận Hoàn Kiếm, Hà Nội. 9,2/10. Tuyệt Vời 110 đánh giá. La Siesta Premium Lakeside tọa lạc ở trung tâm Hà Nội ...",
+    "position": 6
+   },
+   {
+    "title": "Các khách sạn ở gần Chùa Láng, Hà Nội",
+    "link": "https://vn.trip.com/hotels/hanoi-lang-pagoda/hotels-c286m9012632/",
+    "snippet": "Khách sạn La Siesta Premium Lakeside. Khách Sạn Ở Quận Hoàn Kiếm, Hà Nội. 9,3/10. Tuyệt Vời 117 đánh giá. La Siesta Premium Lakeside tọa lạc ở trung tâm Hà Nội ...",
+    "position": 7
+   }
+  ],
+  "credits": 1
+ }
+}

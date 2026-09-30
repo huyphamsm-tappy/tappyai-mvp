@@ -1,0 +1,30 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Mặt Nạ Cà Phê Trắng Da,Cấp Ẩm Sâu( date 12/2027) Hộp 5Miếng site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:09:16.497Z",
+ "body": {
+  "searchParameters": {
+   "q": "Mặt Nạ Cà Phê Trắng Da,Cấp Ẩm Sâu( date 12/2027) Hộp 5Miếng site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Mặt Nạ Cà Phê Trắng Da,Cấp Ẩm Sâu( date 12/2027) Hộp 5Miếng",
+    "link": "https://shopee.vn/M%E1%BA%B7t-N%E1%BA%A1-C%C3%A0-Ph%C3%AA-Tr%E1%BA%AFng-Da-C%E1%BA%A5p-%E1%BA%A8m-S%C3%A2u(-date-12-2027)-H%E1%BB%99p-5Mi%E1%BA%BFng-i.1546318078.46356712343",
+    "snippet": "Mặt Nạ Cà Phê Trắng Da,Cấp Ẩm Sâu( date 12/2027) Hộp 5Miếng. 1/6. 65.000₫-180.000₫. Mặt Nạ Cà Phê Trắng Da,Cấp Ẩm Sâu( date 12/2027) Hộp 5Miếng.",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

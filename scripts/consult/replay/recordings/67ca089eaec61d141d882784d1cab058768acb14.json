@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Ốp lưng iPhone 17 Pro Max 17 pro max UAG Monarch hoặc Pathfinder Có MagSafe gia Shopee Tiki Lazada",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:40:50.247Z",
+ "body": {
+  "searchParameters": {
+   "q": "Ốp lưng iPhone 17 Pro Max 17 pro max UAG Monarch hoặc Pathfinder Có MagSafe gia Shopee Tiki Lazada",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "[iPhone 17 Pro Max] UAG Chính Hãng",
+    "link": "https://shopee.vn/-iPhone-17-Pro-Max-UAG-Ch%C3%ADnh-H%C3%A3ng-Monarch-Pro-Pathfinder-Plasma-Ch%E1%BB%91ng-S%E1%BB%91c-Chu%E1%BA%A9n-Qu%C3%A2n-%C4%90%E1%BB%99i-S%E1%BA%A1c-Magnet-i.898301886.41068409513",
+    "snippet": "... Ốp lưng, bao da, miếng dán mặt lưng cho Điện thoại. [iPhone 17 Pro Max] UAG Chính Hãng - Monarch Pro, Pathfinder, Plasma - Chống Sốc Chuẩn Quân Đội, Sạc Magnet.",
+    "position": 1
+   },
+   {
+    "title": "Ốp lưng UAG iPhone 17 Pro Max Monarch Pro Kevlar có ...",
+    "link": "https://broshop.vn/op-lung-uag-iphone-17-pro-max-monarch-pro-kevlar-co-magsafe?srsltid=AU7gw4V9HXggPQ4XbskjGyVP8XeCNdZu5KJVYPQSQesfJOIv7tgAVNKt",
+    "snippet": "Sản phẩm UAG được phân phối chính hãng tại hệ thống BROSHOP. Đặc điểm nổi bật của dòng Ốp lưng UAG iPhone 17 Pro Max Monarch Pro Kevlar có Magsafe.",
+    "position": 2
+   },
+   {
+    "title": "Ốp lưng Pathfinder w Magsafe cho iPhone 17 Pro Max [6.9 ...",
+    "link": "https://uagvietnam.vn/products/op-lung-pathfinder-w-magsafe-cho-iphone-17-pro-max-6-9-inch",
+    "snippet": "- Cấu tạo nhẹ và bền bỉ: Kết cấu nhẹ với lõi mềm chống va đập, bảo vệ đáng tin cậy. - Khả năng chống va đập được cải thiện: Ốp lưng TPU gia cố hấp thụ và phân ...",
+    "position": 3
+   },
+   {
+    "title": "Ốp Lưng UAG Monarch Pro Cho iPhone 17 Pro Max",
+    "link": "https://www.tiktok.com/@vtechtin/video/7558468590417038593",
+    "snippet": "Ốp lưng UAG Monarch Pro và ốp lưng UAG Pathfinder dành cho iPhone 17 Pro Max. Vẫn giữ được chất hầm hố vốn có của UAG, khả năng chống sốc cao.",
+    "position": 4
+   },
+   {
+    "title": "Droptest iPhone 17 Pro Max với đủ các loại ốp, cường lực của ...",
+    "link": "https://www.youtube.com/watch?v=sVN0UXtYRkg",
+    "snippet": "Droptest iPhone 17 Pro Max với đủ các loại ốp, cường lực của Zagg, UAG, Pitaka ▻ Tham khảo các sản phẩm ốp lưng, cường lực của Pitaka: ...",
+    "position": 5
+   },
+   {
+    "title": "ốp lưng iphone 17 pro max uag- Giá Tốt & Ưu Đãi",
+    "link": "https://www.lazada.vn/tag/%E1%BB%91p-l%C6%B0ng-iphone-17-pro-max-uag/?srsltid=AU7gw4UhzkhjxDXfo2MI4KYn4UEEccpG1dfX6i170-Sxy41Xb50EhJTo",
+    "snippet": "₫250,000. Voucher save 44%. 5.0·6 sold ; ₫167,788. Voucher save 49% ; ₫98,177. Voucher save 45%. 4.0·75 sold.",
+    "rating": 4.8,
+    "ratingCount": 166,
+    "position": 6
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Pathfinder ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-17-pro-max-uag-pathfinder-clear-with-magsafe.html",
+    "snippet": "Ốp lưng iPhone 17 Pro Max UAG Pathfinder Clear with MagSafe sở hữu thiết kế trong suốt, được gia cố thêm bằng viền TPU và mô-đun nam châm tích hợp. Sản phẩm có ...",
+    "rating": 4.4,
+    "ratingCount": 324,
+    "position": 7
+   },
+   {
+    "title": "Review 6 ỐP LƯNG iPhone 17 & iPhone 17 Pro Max",
+    "link": "https://www.youtube.com/watch?v=6jRlu686elc",
+    "snippet": "Review 6 ỐP LƯNG iPhone 17 & iPhone 17 Pro Max: Có MAGSAFE, BAO RƠI VỠ từ AVA+ ‣ Thế Giới Di Động. @thegioididong.official47 likes8.7K ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

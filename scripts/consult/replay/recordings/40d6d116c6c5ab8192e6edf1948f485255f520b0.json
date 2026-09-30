@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Lanita Hotel\" OR \"Khách sạn LUXURY\" OR \"Lê Phan Hotel Tây Ninh\" núi Bà Đen, Tây Ninh site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:17:09.244Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Lanita Hotel\" OR \"Khách sạn LUXURY\" OR \"Lê Phan Hotel Tây Ninh\" núi Bà Đen, Tây Ninh site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Lanita Hotel - Bà Đen Tây Ninh",
+    "link": "https://www.tiktok.com/@lanitahotel/video/7687931499131325714",
+    "snippet": "Tổng kết Phòng Family tại Lanita Hotel là lựa chọn phù hợp cho chuyến nghỉ gia đình hoặc nhóm bạn muốn ở chung một căn, đặc biệt khi bạn cần ...",
+    "position": 1
+   },
+   {
+    "title": "Lanita Hotel Tây Ninh – Phòng 4x0 gần trung tâm Bà Đen",
+    "link": "https://www.tiktok.com/@lanitahotel/video/7654197256576437512",
+    "snippet": "Lanita Hotel – Bà Đen Tây Ninh mang đến không gian lưu trú nhỏ xinh, riêng tư cho 2 người chỉ từ 4x0. Nơi đây được thiết kế như một tổ ấm ...",
+    "position": 2
+   },
+   {
+    "title": "Phòng Family Lanita Hotel Tây Ninh — Nghỉ gia đình 4-6 ...",
+    "link": "https://www.tiktok.com/@lanitahotel/video/7661995551906417927",
+    "snippet": "_____ LANITA HOTEL - BÀ ĐEN TÂY NINH Địa chỉ: 21 Đường Nguyễn Chí Thanh, KP. Ninh An, Bình Minh, Tây Ninh (Gần Tượng Đài Ninh Sơn) # ...",
+    "position": 3
+   },
+   {
+    "title": "Lanita Hotel không tăng giá phòng dịp lễ 2/9 Tây Ninh",
+    "link": "https://www.tiktok.com/@lanitahotel/photo/7677579732354862344",
+    "snippet": "Khuyến mãi giữ nguyên giá phòng Lanita Hotel Tây Ninh dịp nghỉ lễ Quốc khánh 2/9 từ 29/8 đến 2/9/2026, không phụ thu lễ, gần Núi Bà Đen.",
+    "position": 4
+   },
+   {
+    "title": "Lanita Hotel - Bà Đen Tây Ninh (@lanitahotel)",
+    "link": "https://www.tiktok.com/@lanitahotel",
+    "snippet": "Lanita Hotel - Bà Đen Tây Ninh Không gian sân vườn rộng thoáng - Điểm dừng chân lý tưởng. Forwork: 0949 126 494 · Lanita Hotel – Nơi khói bụi nhường chỗ cho ...",
+    "position": 5
+   },
+   {
+    "title": "Có một “Đà Lạt” rất khác ở Tây Ninh… 👀 Bạn đã biết nơi ...",
+    "link": "https://www.tiktok.com/@lanitahotel/video/7674597853976726802",
+    "snippet": "Có một “Đà Lạt” rất khác ở Tây Ninh… Bạn đã biết nơi này chưa? _____ Lanita Hotel - Bà Đen Tây Ninh (21 Nguyễn Chí Thanh - Gần Tượng Đài ...",
+    "position": 6
+   },
+   {
+    "title": "Ý Nghĩa Lễ Vu Lan Trên Đỉnh Núi Bà Đen Cùng Lanita Hotel",
+    "link": "https://www.tiktok.com/@lanitahotel/photo/7676012283188858130",
+    "snippet": "_____ LANITA HOTEL - BÀ ĐEN TÂY NINH Địa chỉ: 21 Đường Nguyễn Chí Thanh, KP. Ninh An, Bình Minh, Tây Ninh (Gần Tượng Đài Ninh Sơn) # ...",
+    "position": 7
+   },
+   {
+    "title": "Tìm được góc chill thế này mà đi một mình thì phí quá. Bạn ...",
+    "link": "https://www.tiktok.com/@lanitahotel/video/7684243927997926674",
+    "snippet": "- Địa chỉ: 21 Đường Nguyễn Chí Thanh, KP. Ninh An, Bình Minh, Tây Ninh (gần Tượng Đài Ninh Sơn). Tổng kết Phòng Family tại Lanita Hotel là lựa ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

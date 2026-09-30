@@ -1,0 +1,67 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Quán cà phê đợi một người\" OR \"Phê La\" OR \"Time House\" quan 3 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:01:37.553Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Quán cà phê đợi một người\" OR \"Phê La\" OR \"Time House\" quan 3 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Phê La Xin Chào (@phela_xinchaoo) | TikTok",
+    "link": "https://www.tiktok.com/@phela_xinchaoo",
+    "snippet": "Phê La Xin Chào (@phela_xinchaoo) trên TikTok |1.1M Lượt thích.62.5K Follower.🎶 Phê La - Specialty Tea & Coffee 🎶 Nốt Hương Đặc Sản - Nguyên Bản - Thủ Công.Xem video phổ biến của Phê La Xin Chào: \"Hẹn Đồng Chill 11.09...\", \"Mời Đồng Chill nhận ...\". Hãy tham gia cùng 62.5K follower trên TikTok để xem nhiều nội dung phêla, phela ...",
+    "position": 1
+   },
+   {
+    "title": "Instagram",
+    "link": "https://www.instagram.com/reel/DbA7cUzhiCe/",
+    "snippet": "7 likes, 0 comments - quancaphedoimotnguoi on July 20, 2026: \"Mỗi màu sắc đều mang một ý nghĩa riêng biệt. Nếu màu đỏ tượng trưng cho quả chín đong đầy năng lượng, sức mạnh và sự đam mê, thì màu xanh lại đại diện cho bầu trời tự do, mang đến cảm giác thanh mát và bình yên hơn cả. Cũng như mỗi cuộc đời, mỗi con ...",
+    "position": 2
+   },
+   {
+    "title": "Laura Cà Phê là sao? Giải mã meme và 'congb' quán quen | TikTok",
+    "link": "https://www.tiktok.com/@hocnguguxuanbach_/video/7663331946591685908",
+    "snippet": "Giải đáp ngắn gọn - Nếu bạn đang hỏi \"Laura Cà Phê là sao\": đây thường là tên liên quan đến một chuỗi video/meme liên quan đến quán hoặc audio cover phổ biến; người xem tìm \"laura cà phê meme\" để xem clip, ảnh chế hoặc bản cover.",
+    "position": 3
+   },
+   {
+    "title": "Phê La - Trà & Cà Phê Đặc Sản - Trương Định Quận 3",
+    "link": "https://shopeefood.vn/ho-chi-minh/phe-la-truong-dinh-quan-3",
+    "snippet": "Xem menu & đặt món trực tuyến từ Phê La - Trà & Cà Phê Đặc Sản - Trương Định Quận 3 rất dễ dàng. Giao hàng tận nơi trong vòng ít phút.",
+    "position": 4
+   },
+   {
+    "title": "Thao T Nguyen | Quán Cafe đang rất chuộng ở Seattle: tên Phê ...",
+    "link": "https://www.instagram.com/reel/DalLPrIDMHW/",
+    "snippet": "6 likes, 1 comments - tihon.thao on July 9, 2026: \"Quán Cafe đang rất chuộng ở Seattle: tên Phê - là biết chủ người Việt rồi hen. Menu cũng ghi tiếng Việt: Phê Đen, Phê Nâu, Phê Sữa, Phê Bạc Xỉu luôn hehe. Thức uống ngon và quán đẹp hơn nhiều lần nhờ gặp được bạn hiền Long Ho Ta.\".",
+    "position": 5
+   },
+   {
+    "title": "đợi 1 tiếng để uống thử cafe Phê La sẻ như thế nào",
+    "link": "https://www.facebook.com/ton.nguyen.3154/videos/cafe-ph%C3%AA-la-long-xuy%C3%AAn/1923806112337902/",
+    "snippet": "Nơi sôi động nhất lúc này ở Long Xuyên là cafe Phê La về tới Long Xuyên rồi mấy bà ơi. Sau bao ngày chờ đợi thì Fela ở Long Xuyên cũng khai trương rồi. Đông xèo xèo luôn các bạn ơi. Mấy bà xem qua menu nha, bảy mươi cá ha cho tới năm mươi năm cá ha. Mình thấy ở đây có bánh ngọt đó nha. Hiện tại đang khai trương ...",
+    "date": "Aug 15, 2026",
+    "position": 6
+   },
+   {
+    "title": "Phê La - Facebook",
+    "link": "https://www.facebook.com/phelaxinchao/",
+    "snippet": "Phê La Có Hỷ - Rộn Ràng Chill Vui 💖 Đồng Chill 03 miền ơi, mình đi ăn cươi thôi! Lấy cảm hứng từ nét đẹp cưới hỏi Việt Nam, Phê La kể chuyện ngày vui theo tinh thần trẻ trung, hiện đại qua hình ảnh váy cưới mềm mại, lớp voan nhẹ nhàng lấp lánh ánh kim.",
+    "position": 7
+   }
+  ],
+  "credits": 1
+ }
+}

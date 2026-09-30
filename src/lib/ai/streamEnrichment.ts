@@ -21,6 +21,7 @@ import { repairPlanBlock } from './planJsonRepair'
 import { appendConsultPlanCost, appendPlanBudgetMath, partyCount, perPersonBudget } from './planBudgetMath'
 import { consultRemainingLine, normalizePickSentence, shoppingMarkerNames, shoppingPickName } from './consultative/consultBrain'
 import { consultLunaEnabled, splitPickSentence } from './consultative/luna'
+import { LEAK_REPLACEMENT_EN, LEAK_REPLACEMENT_VI } from './consultative/lunaSafety'
 import { restorePlanHeadings, fillEmptyPlanSections } from './consultative/domainFrames'
 import { stripStepNarration } from './consultative/stepNarration'
 import { buildActions } from '@/lib/recommendation/actions'
@@ -1767,9 +1768,13 @@ export function applyPlaceEnrichmentStreamFilter(
    * future change touches. Releases only the prefix `releasableLiveText` vouches for, which for a
    * turn with no link/image token is all of it, in the same frame.
    */
+  let liveLeak = false
   const emitLive = (controller: TransformStreamDefaultController, addition: string) => {
     liveText += addition
     assistantSoFar += addition
+    // PHIÊN LUNA safety: stop releasing the moment the live text echoes the prompt / shows a secret shape.
+    if (liveLeak) return
+    if (collector?.leakCheck?.(liveText).leak) { liveLeak = true; console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'luna_leak', path: 'live' })); return }
     const releasable = releasableLiveText(liveText, false, allowedUrls)
     if (!releasable.startsWith(liveReleased) || releasable.length === liveReleased.length) return
     const slice = releasable.slice(liveReleased.length)
@@ -1808,6 +1813,12 @@ export function applyPlaceEnrichmentStreamFilter(
 
   const flushLive = (controller: TransformStreamDefaultController) => {
     if (bufferMode) return
+    if (liveLeak) {
+      const tail = (liveReleased ? '\n\n' : '') + (/^en/i.test(String(lang)) ? LEAK_REPLACEMENT_EN : LEAK_REPLACEMENT_VI)
+      controller.enqueue(encoder.encode('0:' + JSON.stringify(tail) + '\n'))
+      liveReleased += tail
+      return
+    }
     const settled = releasableLiveText(liveText, true, allowedUrls)
     logEgress('live', liveText, settled)
     // Same final normaliser as the buffered path, but the live prefix is already on the client and
@@ -2022,6 +2033,16 @@ export function applyPlaceEnrichmentStreamFilter(
         const rest = mainText.slice(pre.length)
         const split = splitPickSentence(rest)
         if (split !== rest) { console.log(JSON.stringify({ type: 'tappyai_consult_patch', turn: 'luna', patches: ['pick_sentence_split'] })); mainText = pre + split }
+      }
+    }
+    // PHIÊN LUNA safety: a reply that echoes the prompt or carries a secret shape is replaced (the released prefix, if
+    // any, stays — it went out before the echo was complete).
+    if (collector?.leakCheck) {
+      const pre = flushedSent && mainText.startsWith(flushedSent) ? flushedSent : ''
+      const verdict = collector.leakCheck(mainText.slice(pre.length))
+      if (verdict.leak) {
+        console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'luna_leak', path: 'settle', reason: verdict.reason }))
+        mainText = pre + (pre ? '\n\n' : '') + (/^en/i.test(String(lang)) ? LEAK_REPLACEMENT_EN : LEAK_REPLACEMENT_VI)
       }
     }
 

@@ -1,0 +1,80 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Rose Spa\" Quận 1 site:klook.com/vi/activity",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:21:18.749Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Rose Spa\" Quận 1 site:klook.com/vi/activity",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Trải nghiệm Rose Spa & Massage tại Hồ Chí Minh",
+    "link": "https://www.klook.com/vi/activity/148619-rose-spa-massage-experience-in-ho-chi-minh/",
+    "snippet": "Đây là lần thứ 3 tôi đến Rose Spa. Sau nửa năm quay lại, tôi thấy địa điểm đã chuyển. Kỹ thuật massage rất tuyệt vời. Tôi đã trải nghiệm liệu pháp massage toàn ...",
+    "rating": 4.8,
+    "ratingCount": 271,
+    "position": 1
+   },
+   {
+    "title": "Trải nghiệm Ha Spa & Massage tại Quận 1, Hồ Chí Minh",
+    "link": "https://www.klook.com/vi/activity/165262-ha-spa-massage-experience-in-district-1-ho-chi-minh/",
+    "snippet": "Massage đáng tiền ở Quận 1. Không gian rộng rãi với khu vực chờ, tủ ... Trải nghiệm Rose Spa & Massage tại Hồ Chí Minh. ☆ 4.8 (271). ₫ 280,000. Về nhà ...",
+    "rating": 4.4,
+    "ratingCount": 77,
+    "position": 2
+   },
+   {
+    "title": "Trải nghiệm Amy Spa & Massage ở Quận 1, Hồ Chí Minh",
+    "link": "https://www.klook.com/vi/activity/147259-amy-spa-massage-experience-in-district-1-ho-chi-minh/",
+    "snippet": "Vị trí đắc địa – Nằm ở Quận 1, gần Chợ Bến Thành, dễ dàng di chuyển. ... Trải nghiệm Rose Spa & Massage tại Hồ Chí Minh. ☆ 4.8 (271). ₫ 280,000 · Trải ...",
+    "rating": 4.8,
+    "ratingCount": 17,
+    "position": 3
+   },
+   {
+    "title": "Gội đầu thảo dược & Massage An Miên ở Hồ Chí Minh ...",
+    "link": "https://www.klook.com/vi/activity/146688-an-mien-herbal-hairwash-massage-in-dinh-tien-hoang-street-ho-chi/",
+    "snippet": "Đinh Tiên Hoàng, Đa Kao, Quận 1, Thành phố Hồ Chí Minh. An Miên Spa cung ... Trải nghiệm Rose Spa & Massage tại Hồ Chí Minh. ☆ 4.8 (271). ₫ 280,000 · Trải ...",
+    "position": 4
+   },
+   {
+    "title": "Gội Đầu Thảo Dược, Massage và Chăm Sóc Da Mặt tại ...",
+    "link": "https://www.klook.com/vi/activity/201167-chi-tu-herbal-hair-wash-spa-in-ho-chi-minh-city/",
+    "snippet": "Trải nghiệm Ha Spa & Massage tại Quận 1, Hồ Chí Minh. ☆ 4.4 (77). ₫ 331,250 · Trải nghiệm Rose Spa & Massage tại Hồ Chí Minh. ☆ 4.8 (271). ₫ 280,000.",
+    "rating": 4.8,
+    "ratingCount": 61,
+    "position": 5
+   },
+   {
+    "title": "Trải Nghiệm Spa Độc Đáo Tại Thành Phố Hồ Chí Minh",
+    "link": "https://www.klook.com/vi/activity/230751-bong-spa-thach-thi-thanh-unique-spa-experience-in-ho-chi-minh-city/",
+    "snippet": "Trải nghiệm Rose Spa & Massage tại Hồ Chí Minh. ☆ 4.8 (270). ₫ 266,000. Về nhà điều hành. Hấp dẫn không kém. Điểm tham quan nổi tiếng ở Thành phố Hồ Chí Minh.",
+    "position": 6
+   },
+   {
+    "title": "Trải nghiệm 90 phút tại Sense Spa ở Thành phố Hồ Chí Minh",
+    "link": "https://www.klook.com/vi/activity/133221-90-minutes-experience-at-sense-spa-in-ho-chi-minh-city/",
+    "snippet": "Trải nghiệm Rose Spa & Massage tại Hồ Chí Minh. ☆ 4.8 (271). ₫ 280,000 · Trải nghiệm Ha Spa & Massage tại Quận 1, Hồ Chí Minh. ☆ 4.4 (77). ₫ 331,250.",
+    "position": 7
+   },
+   {
+    "title": "Mam Spa & Massage Experience in Ho Chi Minh",
+    "link": "https://www.klook.com/vi/activity/133665-mam-spa-massage-experience-in-ho-chi-minh/",
+    "snippet": "Trải nghiệm Rose Spa & Massage tại Hồ Chí Minh. ☆ 4.8 (271). ₫ 280,000 · [SALE] Combo Dịch Vụ Sả Spa tại Thành Phố Hồ Chí Minh. ☆ 4.8 (112). ₫ 968,000.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

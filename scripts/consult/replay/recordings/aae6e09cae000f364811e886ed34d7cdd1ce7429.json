@@ -1,0 +1,42 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"H Hôtel\" Hà Nội site:www.traveloka.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:59:57.426Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"H Hôtel\" Hà Nội site:www.traveloka.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Khách sạn gần Nguyễn Sơn, Long Biên, Hà Nội, Discount tới 30%",
+    "link": "https://www.traveloka.com/vi-vn/hotel/vietnam/landmark/nguyn-sn-long-bin-h-ni-91728149827135/69",
+    "snippet": "Bay Heights Residence. 3.75 km từ Nguyễn Sơn, Long Biên, Hà Nội | Tràng Tiền, Hoan Kiem ; H Hôtel L'Art Hanoi. 3.99 km từ Nguyễn Sơn, Long Biên, Hà Nội | Hàng Bồ ...",
+    "position": 1
+   },
+   {
+    "title": "Khách sạn gần Thành Tâm Auto - Đông Anh, Hà Nội",
+    "link": "https://www.traveloka.com/vi-vn/hotel/vietnam/landmark/thnh-tm-auto---ng-anh-h-ni-91755708935169/66",
+    "snippet": "... Auto - Đông Anh H Hôtel L'Art Hanoi 8, Khách sạn Thành Tâm Auto - Đông Anh. H Hôtel L'Art Hanoi. 7.97 km từ Thành Tâm Auto - Đông Anh, Hà Nội | Hàng Bồ, Hoan ...",
+    "position": 2
+   },
+   {
+    "title": "Best Hotels Near & Closest To Hà Nội 1995 Coffee, Vietnam ...",
+    "link": "https://www.traveloka.com/en-en/hotel/vietnam/landmark/h-ni-1995-coffee-91725612711510/71",
+    "snippet": "H Hôtel L'Art Hanoi 1, Hotel Hà Nội 1995 Coffee H Hôtel L'Art Hanoi 2, Hotel Hà Nội 1995 Coffee H Hôtel L'Art Hanoi 3, Hotel Hà Nội 1995 Coffee H Hôtel L ...",
+    "position": 3
+   }
+  ],
+  "credits": 1
+ }
+}

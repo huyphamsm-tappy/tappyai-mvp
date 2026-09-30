@@ -1,0 +1,83 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "quà tặng áp dụng riêng khách mua hoa tại Shop mình site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:55:19.973Z",
+ "body": {
+  "searchParameters": {
+   "q": "quà tặng áp dụng riêng khách mua hoa tại Shop mình site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "quà tặng áp dụng riêng khách mua hoa tại shop mình 👉 ...",
+    "link": "https://shopee.vn/qu%C3%A0-t%E1%BA%B7ng-%C3%A1p-d%E1%BB%A5ng-ri%C3%AAng-kh%C3%A1ch-mua-hoa-t%E1%BA%A1i-shop-m%C3%ACnh-%F0%9F%91%89-V%C6%B0%E1%BB%9Dn-%C4%90%E1%BA%B9p-Nh%C3%A0-Xinh-i.1211834295.23089783792",
+    "snippet": "Mua quà tặng áp dụng riêng khách mua hoa tại shop mình Vườn Đẹp Nhà Xinh giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, ...",
+    "rating": 5,
+    "ratingCount": 13,
+    "position": 1
+   },
+   {
+    "title": "quà tặng áp dụng riêng khách mua hoa tại shop mình 🙂 ...",
+    "link": "https://shopee.vn/qu%C3%A0-t%E1%BA%B7ng-%C3%A1p-d%E1%BB%A5ng-ri%C3%AAng-kh%C3%A1ch-mua-hoa-t%E1%BA%A1i-shop-m%C3%ACnh-%F0%9F%99%82-Top-Lo%C3%A0i-Hoa-%C4%90%E1%BA%B9p-Nh%E1%BA%A5t-Th%E1%BA%BF-Gi%E1%BB%9Bi-i.453426792.24272802638",
+    "snippet": "3 phân loại có sẵn. 30.000₫. quà tặng áp dụng riêng khách mua hoa tại shop mình Top Loài Hoa Đẹp Nhất Thế Giới. outline grey truck icon. Không hỗ trợ.",
+    "rating": 5,
+    "ratingCount": 8,
+    "position": 2
+   },
+   {
+    "title": "quà tặng áp dụng riêng khách mua hoa tại shop mình",
+    "link": "https://shopee.vn/qu%C3%A0-t%E1%BA%B7ng-%C3%A1p-d%E1%BB%A5ng-ri%C3%AAng-kh%C3%A1ch-mua-hoa-t%E1%BA%A1i-shop-m%C3%ACnh-i.727039086.24272802639",
+    "snippet": "Mua quà tặng áp dụng riêng khách mua hoa tại shop mình giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn lại tiền Giao ...",
+    "rating": 5,
+    "ratingCount": 13,
+    "position": 3
+   },
+   {
+    "title": "quà tặng áp dụng riêng khách mua hoa tại shop mình 🍔 ...",
+    "link": "https://shopee.vn/qu%C3%A0-t%E1%BA%B7ng-%C3%A1p-d%E1%BB%A5ng-ri%C3%AAng-kh%C3%A1ch-mua-hoa-t%E1%BA%A1i-shop-m%C3%ACnh-%F0%9F%8D%94-Si%C3%AAu-Th%E1%BB%8B-Hoa-V%C3%A0-C%C3%A2y-Gi%E1%BB%91ng-i.1221425828.24272802634",
+    "snippet": "Mua quà tặng áp dụng riêng khách mua hoa tại shop mình Siêu Thị Hoa Và Cây Giống giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, ...",
+    "rating": 5,
+    "ratingCount": 17,
+    "position": 4
+   },
+   {
+    "title": "quà tặng áp dụng riêng khách mua hoa tại shop mình 🎁 ...",
+    "link": "https://shopee.vn/qu%C3%A0-t%E1%BA%B7ng-%C3%A1p-d%E1%BB%A5ng-ri%C3%AAng-kh%C3%A1ch-mua-hoa-t%E1%BA%A1i-shop-m%C3%ACnh-%F0%9F%8E%81-Y%C3%AAu-Nh%C3%A0-Y%C3%AAu-Hoa-i.1211853169.23089783794",
+    "snippet": "Mua quà tặng áp dụng riêng khách mua hoa tại shop mình Yêu Nhà Yêu Hoa giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, ...",
+    "rating": 5,
+    "ratingCount": 5,
+    "position": 5
+   },
+   {
+    "title": "Top 20+ quà Tết cao cấp và ý nghĩa dành cho mọi đối tượng",
+    "link": "https://shopee.vn/blog/qua-tet/",
+    "snippet": "Vì vậy, bạn có thể lựa chọn bộ ấm trà, chén trà làm quà tặng cho cấp trên và khách hàng. Bộ ấm chén trà thường sẽ được đặt gọn trong hộp quà ...",
+    "date": "9 thg 2, 2026",
+    "position": 6
+   },
+   {
+    "title": "CHÍNH SÁCH VẬN CHUYỂN SHOPEE",
+    "link": "https://help.shopee.vn/portal/4/article/77250",
+    "snippet": "Khái niệm Người Mua sẽ được dùng để chỉ Người Mua hoặc Người Nhận Hàng trong từng trường hợp; Khái niệm Người Bán sẽ được dùng để chỉ Người Bán hoặc Người Gửi ...",
+    "position": 7
+   },
+   {
+    "title": "Shop hoa tươi - Giá Tốt, Sale Tháng 09, Freeship 0Đ",
+    "link": "https://shopee.vn/list/shop%20hoa%20t%C6%B0%C6%A1i",
+    "snippet": "Bó hoa sáp thơm mix theo yêu cầu phong cách Hàn Quốc kiểu tròn [Quà tặng 20/10, Quà tặng sinh nhật, Valentine, Noel..] 279.000₫. 330.000₫. -15%. rating-star ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

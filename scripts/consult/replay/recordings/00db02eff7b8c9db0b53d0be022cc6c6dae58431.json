@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Laptop (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:04:32.952Z",
+ "body": {
+  "searchParameters": {
+   "q": "Laptop (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Laptop | Máy tính xách tay giá rẻ, trả góp 0%, giảm 15 triệu",
+    "link": "https://cellphones.com.vn/laptop.html",
+    "snippet": "Laptop, máy tính xách tay giá rẻ, trả góp 0%, đổi điểm giảm thêm tới 10%. Mua online laptop giảm thêm đến 5 triệu, giao hàng miễn phí tận nhà.",
+    "position": 1
+   },
+   {
+    "title": "Giá đỡ laptop nhôm điều chỉnh độ cao linh hoạt, tản nhiệt tốt ...",
+    "link": "https://shopee.vn/Gi%C3%A1-%C4%91%E1%BB%A1-laptop-nh%C3%B4m-%C4%91i%E1%BB%81u-ch%E1%BB%89nh-%C4%91%E1%BB%99-cao-linh-ho%E1%BA%A1t-t%E1%BA%A3n-nhi%E1%BB%87t-t%E1%BB%91t-i.338344025.3566029986?extraParams=%7B%22display_model_id%22%3A340450146534%2C%22model_selection_logic%22%3A3%7D&rModelId=340450146534&vItemId=26436222612&vModelId=271275737257&vShopId=1506174776",
+    "snippet": "Mua Giá đỡ laptop nhôm điều chỉnh độ cao linh hoạt, tản nhiệt tốt giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn lại ...",
+    "position": 2
+   },
+   {
+    "title": "Sạc Laptop Dell Oval 65W - 19.5V - 3.34A - Đầu kim nhỏ 4.5 ...",
+    "link": "https://shopee.vn/S%E1%BA%A1c-Laptop-Dell-Oval-65W-19.5V-3.34A-%C4%90%E1%BA%A7u-kim-nh%E1%BB%8F-4.5*3.0mm-DELL-XPS-13-9360-9350-9343-9333-9365-(Dell-Ovan-65w)-i.9099784.4272081850",
+    "snippet": "Mua Sạc Laptop Dell Oval 65W - 19.5V - 3.34A - Đầu kim nhỏ 4.5*3.0mm DELL XPS 13 9360 9350 9343 9333 9365 (Dell Ovan 65w) giá tốt. Mua hàng qua mạng uy tín, ...",
+    "position": 3
+   },
+   {
+    "title": "HP Victus (16, 15) | Laptop gaming giảm đến 7 triệu đồng",
+    "link": "https://cellphones.com.vn/laptop/hp/victus.html",
+    "snippet": "HP Victus 15, 16 laptop gaming cấu hình mạnh, hiệu năng mượt mà, trả góp 0%, phụ phí 0 đồng, trả trước 0 đồng. Mua HP Victus giá rẻ tại đây!",
+    "position": 4
+   },
+   {
+    "title": "Jack DC Chân Sạc Laptop Sony VPCEB PCG-71311N ...",
+    "link": "https://shopee.vn/Jack-DC-Ch%C3%A2n-S%E1%BA%A1c-Laptop-Sony-VPCEB-PCG-71311N-i.121885649.43808776781",
+    "snippet": "Mua Jack DC Chân Sạc Laptop Sony VPCEB PCG-71311N giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn lại tiền Giao Hàng ...",
+    "position": 5
+   },
+   {
+    "title": "ZIN QUA SỬ DỤNG BỘ NGUỒN Cục sạc ADAPTER laptop ...",
+    "link": "https://shopee.vn/%F0%9F%8C%9F-ZIN-QUA-S%E1%BB%AC-D%E1%BB%A4NG-%F0%9F%8C%9F-B%E1%BB%98-NGU%E1%BB%92N-C%E1%BB%A5c-s%E1%BA%A1c-ADAPTER-laptop-Hp-200W-19.5V-10.3A-ch%C3%A2n-kim-xanh-zin-th%C3%A1o-m%C3%A1y-HP-HP-Compad-i.228219692.22721883616",
+    "snippet": "Mua ZIN QUA SỬ DỤNG BỘ NGUỒN Cục sạc ADAPTER laptop Hp 200W 19.5V 10.3A chân kim xanh zin tháo máy HP HP-Compad giá tốt. Mua hàng qua mạng uy tín, ...",
+    "position": 6
+   },
+   {
+    "title": "[Chân Nhỏ] Sạc Laptop Asus 19V – 3.42A (65W) chân 4.0x1 ...",
+    "link": "https://shopee.vn/-Ch%C3%A2n-Nh%E1%BB%8F-S%E1%BA%A1c-Laptop-Asus-19V-%E2%80%93-3.42A-(65W)-ch%C3%A2n-4.0x1.35mm-%C4%91%C6%B0%E1%BB%9Dng-k%C3%ADnh-%C4%91%E1%BA%A7u-s%E1%BA%A1c-4mm-VivoBook-A556-A510U-X441-X541-i.9099784.1320795860",
+    "snippet": "Mua [Chân Nhỏ] Sạc Laptop Asus 19V – 3.42A (65W) chân 4.0x1.35mm - đường kính đầu sạc 4mm - VivoBook A556 A510U X441 X541 giá tốt. Mua hàng qua mạng uy tín, ...",
+    "position": 7
+   },
+   {
+    "title": "Laptop cũ giá rẻ, uy tín, trả góp 0%, dùng thử 7 ngày",
+    "link": "https://cellphones.com.vn/hang-cu/laptop.html",
+    "snippet": "Laptop cũ giá rẻ, giảm HSSV 700k, trả góp 0%, trả trước 0đ, phụ phí 0đ, 7 ngày dùng thử miễn phí, giảm 2tr lên đời. Mua ngay laptop cũ uy tín.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

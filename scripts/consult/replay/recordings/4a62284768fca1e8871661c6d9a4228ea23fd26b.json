@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Miya Sushi\" OR \"Chiyoda Sushi Bến Thành\" OR \"MANMARU - Japanese Restaurant - 71 Mạc Đĩnh Chi, Hồ Chí Minh\" quan 1 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:57:06.864Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Miya Sushi\" OR \"Chiyoda Sushi Bến Thành\" OR \"MANMARU - Japanese Restaurant - 71 Mạc Đĩnh Chi, Hồ Chí Minh\" quan 1 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Miya Sushi: Tiệm Sushi Ngon Ở Quận 1 Để Hẹn Hò",
+    "link": "https://www.tiktok.com/@toiladansaigon/video/7481613174857354503",
+    "snippet": "Miya Sushi: Tiệm Sushi Ngon Ở Quận 1 Để Hẹn Hò. Khám phá Miya Sushi – tiệm sushi tuyệt vời tại quận 1, hoàn hảo cho buổi hẹn hò của bạn!",
+    "position": 1
+   },
+   {
+    "title": "Miya Sushi: Tiệm Sushi Ngon Núp Hẻm Quận 1",
+    "link": "https://www.tiktok.com/@loveoffoods/video/7493880324817046802",
+    "snippet": "Khám phá Miya Sushi, tiệm sushi chất lượng tại quận 1 với sashimi tươi ngon và không gian thoải mái. Chắc chắn bạn sẽ hài lòng! #mammamcungzit # ...",
+    "position": 2
+   },
+   {
+    "title": "MIYA SUSHI: Tiệm Sushi Ngon Núp Hẻm Hẹn Hò Quận 1",
+    "link": "https://www.tiktok.com/@toiladansaigon/video/7461992108774149394",
+    "snippet": "### Món Sushi Ngon Tại MIYA SUSHI Với tư cách là một quán ăn Nhật Bản (Japanese food) uy tín, MIYA SUSHI tự hào mang đến những món sushi tươi ...",
+    "position": 3
+   },
+   {
+    "title": "miyasushi",
+    "link": "https://www.tiktok.com/tag/miyasushi",
+    "snippet": "We didnt win but this is actually one · Một tiệm sushi ngon núp hẻm quận 1 đáng để lưu lại hẹn hò nè · Miya sushi jacksonville florida #sushi # ...",
+    "position": 4
+   },
+   {
+    "title": "Miya Sushi 🍣 (@miya_ss_bbq)",
+    "link": "https://www.tiktok.com/@miya_ss_bbq",
+    "snippet": "Miya Sushi · @miya_ss_bbq · CN1 : 150/43A Nguyễn Trãi, Bến Thành, Q1 Hotline: 02839259908 CN2: 48A Huỳnh Mẫn Đạt, p.19,Bình Thạnh Hotline : 0777200985.",
+    "position": 5
+   },
+   {
+    "title": "Tiệm sushi ngon rẻ khu Bình Thạnh nhiều bạn sinh viên ...",
+    "link": "https://www.tiktok.com/@toiladansaigon/video/7368090102658043143",
+    "snippet": "### Món Sushi Ngon Tại MIYA SUSHI Với tư cách là một quán ăn Nhật Bản (Japanese food) uy tín, MIYA SUSHI tự hào mang đến những món sushi tươi ...",
+    "position": 6
+   },
+   {
+    "title": "Miya Sushi Odivelas",
+    "link": "https://www.tiktok.com/discover/miya-sushi-odivelas",
+    "snippet": "Miya Sushi: Tiệm Sushi Ngon Núp Hẻm Quận 1. Khám phá Miya Sushi, tiệm sushi chất lượng tại quận 1 với sashimi tươi ngon và không gian thoải mái.",
+    "date": "24 thg 8, 2026",
+    "position": 7
+   },
+   {
+    "title": "Review Chiyoda Sushi Bến Thành: Menu Sashimi & ...",
+    "link": "https://www.tiktok.com/@anchoidieunghe/video/7280497441852476674",
+    "snippet": "18.5K Lượt thích,113 Bình luận.Video TikTok từ Ăn Chơi Điệu Nghệ ✨ (@anchoidieunghe): \"Bài review Chiyoda Sushi Bến Thành với trải nghiệm ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

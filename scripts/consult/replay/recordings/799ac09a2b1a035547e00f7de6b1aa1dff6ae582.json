@@ -1,0 +1,32 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Quà Tặng Kèm - Quà Tặng 0đ - Quà Tặng Đơn Đủ Điều Kiện Nhận Quà - Đơn 29k - 39k - 59k - 99k - 129k site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:55:19.133Z",
+ "body": {
+  "searchParameters": {
+   "q": "Quà Tặng Kèm - Quà Tặng 0đ - Quà Tặng Đơn Đủ Điều Kiện Nhận Quà - Đơn 29k - 39k - 59k - 99k - 129k site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Quà Tặng Đơn Đủ Điều Kiện Nhận Quà - Đơn 29k - 39k - 59k",
+    "link": "https://shopee.vn/Qua%CC%80-T%C4%83%CC%A3ng-Ke%CC%80m-QUA%CC%80-T%C4%82%CC%A3NG-0%C4%91-Qua%CC%80-T%C4%83%CC%A3ng-%C4%90%C6%A1n-%C4%90u%CC%89-%C4%90i%C3%AA%CC%80u-Ki%C3%AA%CC%A3n-Nh%C3%A2%CC%A3n-Qua%CC%80-%C4%90%C6%A1n-29k-39k-59k-99k-129k-i.734334705.27379281588",
+    "snippet": "Mua Quà Tặng Kèm - QUÀ TẶNG 0đ - Quà Tặng Đơn Đủ Điều Kiện Nhận Quà - Đơn 29k - 39k - 59k - 99k - 129k giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 4.9,
+    "ratingCount": 2060,
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"HP ZBook Firefly 14 G7 i7-10510U Máy trạm di động 35,6 cm (14 ) Full HD Intel Core i7 16 GB DDR4-SDRAM 512 GB SSD NVIDIA Quadro P520 Wi-Fi 6\" site:cellphones.com.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:13:56.896Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"HP ZBook Firefly 14 G7 i7-10510U Máy trạm di động 35,6 cm (14 ) Full HD Intel Core i7 16 GB DDR4-SDRAM 512 GB SSD NVIDIA Quadro P520 Wi-Fi 6\" site:cellphones.com.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

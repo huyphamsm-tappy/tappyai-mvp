@@ -1,0 +1,137 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Laptop Lenovo V15 G4 IRU 83A100PMVN - Cũ Đẹp",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:04:58.954Z",
+ "body": {
+  "searchParameters": {
+   "q": "Laptop Lenovo V15 G4 IRU 83A100PMVN - Cũ Đẹp",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Laptop Lenovo V15 G4 IRU 83A100G0VN - Cũ Đẹp | Giá rẻ",
+    "imageUrl": "https://cdn2.cellphones.com.vn/x/media/catalog/product/l/a/laptop-lenovo-v15-g4-iru-83a100g0vn_3.png",
+    "imageWidth": 640,
+    "imageHeight": 640,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDIcIuzWBos9pq12sFDw65fy5H936qF51DEbUtpx2bCg&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/laptop-lenovo-v15-g4-iru-83a100g0vn-cu-dep.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Fx%2Fmedia%2Fcatalog%2Fproduct%2Fl%2Fa%2Flaptop-lenovo-v15-g4-iru-83a100g0vn_3.png&tbnid=bCoz0dno79RoxM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Flaptop-lenovo-v15-g4-iru-83a100g0vn-cu-dep.html&docid=jmuULSyNXcVqDM&w=640&h=640",
+    "position": 1
+   },
+   {
+    "title": "Laptop Lenovo V15 G4 IRU 83A100FYVN - Cũ Đẹp | Giá rẻ",
+    "imageUrl": "https://cdn2.cellphones.com.vn/x/media/catalog/product/t/e/text_ng_n_21__3_31_1_1_1.png",
+    "imageWidth": 600,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKPS5Bu9XkhYr9d8S0UVn6RByXKIXgaybSO_eEFtdtlQ&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/laptop-lenovo-v15-g4-iru-83a100fyvn-cu-dep.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Fx%2Fmedia%2Fcatalog%2Fproduct%2Ft%2Fe%2Ftext_ng_n_21__3_31_1_1_1.png&tbnid=Lr0Cv47vmoI5bM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Flaptop-lenovo-v15-g4-iru-83a100fyvn-cu-dep.html&docid=rGDCGH0TFSsHQM&w=600&h=600",
+    "position": 2
+   },
+   {
+    "title": "Laptop LENOVO V15 G4 IRU 83A100PMVN  /i5-13420H/16GD4/512GSSD/15.6FHD/2C/W11SL/2Y",
+    "imageUrl": "https://mediamart.vn/images/uploads/2025/3fd6d2eb-937c-40ec-a03b-5a8356de36b3.jpg",
+    "imageWidth": 800,
+    "imageHeight": 800,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTERX4w_t7C6pMfxqEO_y-3XqRaNen-a_6JQr4aR6TUbA&s=10",
+    "thumbnailWidth": 554,
+    "thumbnailHeight": 554,
+    "source": "MediaMart",
+    "domain": "mediamart.vn",
+    "link": "https://mediamart.vn/laptop/laptop-lenovo-v15-g4-iru-83a100pmvn",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fmediamart.vn%2Fimages%2Fuploads%2F2025%2F3fd6d2eb-937c-40ec-a03b-5a8356de36b3.jpg&tbnid=SBBorDEL7qL-FM&imgrefurl=https%3A%2F%2Fmediamart.vn%2Flaptop%2Flaptop-lenovo-v15-g4-iru-83a100pmvn&docid=ikL4QCj5WnYBjM&w=800&h=800",
+    "position": 3
+   },
+   {
+    "title": "Laptop Lenovo V15 G4 IRU 83A100PMVN - Cũ Đẹp | Giá rẻ",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/g/r/group_744_1_48_2.png",
+    "imageWidth": 358,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQp32dcilHVIUkJWgi1ROqx2JOc5iqpFmUSeG7KpnuSbg&s=10",
+    "thumbnailWidth": 358,
+    "thumbnailHeight": 358,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/laptop-lenovo-v15-g4-iru-83a100pmvn-cu-dep.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A0%3A358%2Fq%3A90%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fcatalog%2Fproduct%2Fg%2Fr%2Fgroup_744_1_48_2.png&tbnid=5WsN5Kc9yhmEqM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Flaptop-lenovo-v15-g4-iru-83a100pmvn-cu-dep.html&docid=fQwDXGQgPK8n3M&w=358&h=358",
+    "position": 4
+   },
+   {
+    "title": "Laptop LENOVO V15 G4 IRU 83A100PMVN  /i5-13420H/16GD4/512GSSD/15.6FHD/2C/W11SL/2Y",
+    "imageUrl": "https://mediamart.vn/images/uploads/2025/20a4aa2a-d22b-49f5-8266-dc3b72bbbe1a.jpg",
+    "imageWidth": 800,
+    "imageHeight": 800,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQu-nnwheTVry3-bcvVrUvbJs_7gEoVqbOug5u3DCDkfw&s=10",
+    "thumbnailWidth": 554,
+    "thumbnailHeight": 554,
+    "source": "MediaMart",
+    "domain": "mediamart.vn",
+    "link": "https://mediamart.vn/laptop/laptop-lenovo-v15-g4-iru-83a100pmvn",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fmediamart.vn%2Fimages%2Fuploads%2F2025%2F20a4aa2a-d22b-49f5-8266-dc3b72bbbe1a.jpg&tbnid=J_1-qqXmo1Fe4M&imgrefurl=https%3A%2F%2Fmediamart.vn%2Flaptop%2Flaptop-lenovo-v15-g4-iru-83a100pmvn&docid=ikL4QCj5WnYBjM&w=800&h=800",
+    "position": 5
+   },
+   {
+    "title": "Laptop Lenovo V15 G4 IRU 83A100PMVN - Cũ Đẹp | Giá rẻ",
+    "imageUrl": "https://cdn2.cellphones.com.vn/x/media/catalog/product/l/a/laptop_lenovo_v15_g4_iru_83a100pmvn_-_1_2.png",
+    "imageWidth": 1234,
+    "imageHeight": 652,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvIQvWhfq-KFkLZsYwsserGxpXgpfsUZExZ_fSAxnZvQ&s",
+    "thumbnailWidth": 308,
+    "thumbnailHeight": 163,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/laptop-lenovo-v15-g4-iru-83a100pmvn-cu-dep.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Fx%2Fmedia%2Fcatalog%2Fproduct%2Fl%2Fa%2Flaptop_lenovo_v15_g4_iru_83a100pmvn_-_1_2.png&tbnid=Z3v4leUyB4h8VM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Flaptop-lenovo-v15-g4-iru-83a100pmvn-cu-dep.html&docid=fQwDXGQgPK8n3M&w=1234&h=652",
+    "position": 6
+   },
+   {
+    "title": "Laptop Lenovo V15 G4 IRU 83A100PMVN - Cũ Đẹp | Giá rẻ",
+    "imageUrl": "https://cdn2.cellphones.com.vn/x/media/catalog/product/l/a/laptop_lenovo_v15_g4_iru_83a100pmvn_-_3_2.png",
+    "imageWidth": 1234,
+    "imageHeight": 652,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsBVxgSQe-rA0_-I-ArT28-HVgLEUkoKgNP5o784wzgg&s",
+    "thumbnailWidth": 308,
+    "thumbnailHeight": 163,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/laptop-lenovo-v15-g4-iru-83a100pmvn-cu-dep.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Fx%2Fmedia%2Fcatalog%2Fproduct%2Fl%2Fa%2Flaptop_lenovo_v15_g4_iru_83a100pmvn_-_3_2.png&tbnid=Hgvf7wcMjG1LhM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Flaptop-lenovo-v15-g4-iru-83a100pmvn-cu-dep.html&docid=fQwDXGQgPK8n3M&w=1234&h=652",
+    "position": 7
+   },
+   {
+    "title": "Laptop Lenovo V15 G4 IRU 83A100PMVN | Giá Rẻ | Dịch Vụ Dẫn Đầu",
+    "imageUrl": "https://phucanhcdn.com/media/product/55257_laptop_lenovo_v15_g4_iru_83a100g0vn_1.jpg",
+    "imageWidth": 600,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSg2RBxNk-NCMhi7MSfRTbhv6DkkU3yl0xUAylFhBViqg&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Phucanh.vn",
+    "domain": "www.phucanh.vn",
+    "link": "https://www.phucanh.vn/laptop-lenovo-v15-g4-iru-83a100g0vn.html?srsltid=AU7gw4WwK3ECE35CLyu949uj-DZWMwwJmhqlOj8_X89onRlp0X3hNHJg",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fphucanhcdn.com%2Fmedia%2Fproduct%2F55257_laptop_lenovo_v15_g4_iru_83a100g0vn_1.jpg&tbnid=Lc2a4sVgBSl2ZM&imgrefurl=https%3A%2F%2Fwww.phucanh.vn%2Flaptop-lenovo-v15-g4-iru-83a100g0vn.html%3Fsrsltid%3DAU7gw4WwK3ECE35CLyu949uj-DZWMwwJmhqlOj8_X89onRlp0X3hNHJg&docid=FSDIPiv8N7fAVM&w=600&h=600",
+    "creator": "Admin",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

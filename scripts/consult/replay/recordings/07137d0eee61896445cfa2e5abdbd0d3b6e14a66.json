@@ -1,0 +1,30 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Dell XPS 15 9510 – Core i7, Màn 4K site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:46:12.389Z",
+ "body": {
+  "searchParameters": {
+   "q": "Dell XPS 15 9510 – Core i7, Màn 4K site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "dell engineering laptop",
+    "link": "https://shop.tiktok.com/vn/k/dell-engineering-laptop",
+    "snippet": "2-in-1 Core i7-1260P | RAM 16GB | SSD 512GB | MX550 | Màn hình 16 inch 4K. Xps 15 9530 9550 9560 9570",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

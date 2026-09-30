@@ -1,0 +1,359 @@
+{
+ "url": "https://google.serper.dev/shopping",
+ "request": {
+  "q": "laptop Mới",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 20
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:42:46.462Z",
+ "body": {
+  "searchParameters": {
+   "q": "laptop Mới",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "shopping",
+   "num": 40,
+   "page": 1,
+   "engine": "google"
+  },
+  "shopping": [
+   {
+    "title": "Laptop MSI Modern 15 F1MG-1225VN",
+    "source": "Fptshop.com.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+M%E1%BB%9Bi&prds=localAnnotatedOfferId:1,catalogid:14842682624889745781,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "19.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTvSdilMYdp0NocHdJPK80VouV4nTveQFPahsXlxFoB5a2Yg5BRgA4QtlWfw4shq5NKKrCeTgi3xng_voFKzyG-PSsxvhwbBF8Y0K0yVr99whTa3CwztMtXipY",
+    "productId": "14842682624889745781",
+    "position": 1
+   },
+   {
+    "title": "Bảng Giá Sửa Laptop Lấy Liền Tại TPHCM -Giá Từ",
+    "source": "Laptop One",
+    "price": "150.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSp0JrWKksUSvABE367PBrr4p3UY0cQOeftwlseUvuWJO0x8A9qFfMCpUH_vUIB9hWb7aM25qyOp6b1PiH2bgL1H0gqUSF7jJfF9kewuroX",
+    "productId": "928126521592395705",
+    "position": 2
+   },
+   {
+    "title": "Laptop Lenovo 20296 Pentium 3556U- Giá Rẻ, Chính Hãng",
+    "source": "truonggiang.vn",
+    "price": "3.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQXnv9bhxkl8gIpncCauQAQLHAjm35epyRGfMnLMgntkqP8q_eeYLtw-L-27N3CoaumaMZR77EvTKDN7i0kqcCqsfnEYrNMi0Ca2GbfYVcSnScwB8mdMO98",
+    "productId": "15354511222894356024",
+    "position": 3
+   },
+   {
+    "title": "Địa Chỉ Sửa Laptop Uy Tín HCM",
+    "source": "Laptop Thiên Ân",
+    "price": "150.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRFL5LQpeO_FvA6buW5uYwuKYv4BV3HNFAWvymfzF66BvrJm4ZSr-SLBgwpQBCBMDrvy3ANeDAAbbr2Yvr7pgnY5OGwUYEfThtWG-YVvA3Q",
+    "productId": "5251478027309808362",
+    "position": 4
+   },
+   {
+    "title": "Sửa laptop tại Gò Vấp tận nơi",
+    "source": "Tin Học Vido",
+    "price": "500.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSpJNuTDaUIQrOSCmzsi6H0RyNzHHEraKk7yGoZVmIQmYNe-tfrmO0HDMf5pbYshW25XHi0kOndTR3KEIDitCtfgEFVsseOs0Z1gTMKFOC5yzYBWokeqXT4",
+    "productId": "5988437437484961095",
+    "position": 5
+   },
+   {
+    "title": "Laptop MSI Modern 15 F1MG-1264VN (Core 5 120U, 16GB, 512GB, Full HD, Win11)",
+    "source": "Thế Giới Di Động",
+    "price": "19.190.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTZeG-wtRvOCgPQPSM8koNEqrur1gTiSE2Kg8_tR0wHjvaqLebqYn-frAHKV4fjIZVYInRaIyGPOzDi0852k51eVOfRD0RR296APN6By8Y3FF1fpkXvKd2E4Q",
+    "rating": 5,
+    "ratingCount": 7,
+    "productId": "13823072894652460220",
+    "position": 6
+   },
+   {
+    "title": "Địa Chỉ Sửa Laptop Khởi Động Chậm TPHCM | Giá Rẻ, Gần Đây",
+    "source": "Trường Thịnh Group",
+    "price": "150.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcR6xZm_b3d-OXNqiugOO7M2qw49_NasSLEnPRUC0Oy-m7EfMCFh6SxZbValB4zConR--OvjM00YYLPG0DYt7kQR_i7pKs_OO-qkiY-L_bwACUHXga1gVAehqg",
+    "productId": "7183095848054414710",
+    "position": 7
+   },
+   {
+    "title": "Cửa hàng sửa chữa laptop uy tín -Giá Từ",
+    "source": "Laptop One",
+    "price": "200.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSAVsSYfoFUArafilIA2yYB-bXSoiY0dmiJdXW0hi2OHqMIwRLn7c5Lp2ovdlMewz-Dof1LGZo_OQKpuxi5ArKfxevuE36esOZyYuUexmr7",
+    "productId": "7969592062054080537",
+    "position": 8
+   },
+   {
+    "title": "Laptop HP 15s du3591TU i5 1135G7 MỚI, GIÁ SIÊU KHỦNG",
+    "source": "truonggiang.vn",
+    "price": "15.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQWXB7QQ-pEjasAxb4ZXz136CIWtyz81KjfbnsVuDeU7aw5TK9ub-uSWfWZSDC5iBwqyjDxa5IF6RpeIyADb5Z7aWMc9r6q6riVSokRRx3m",
+    "productId": "17587331427969128103",
+    "position": 9
+   },
+   {
+    "title": "Laptop 2 màn hình 16 & 14 inch cảm ứng Intel Core i7-9850H Windows 11 Pro dành cho doanh nhân Máy mới 100%, chính hãng",
+    "source": "Máy tính AOC",
+    "price": "17.900.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcS8Q3R-PmczwZMGBjqB1G12iscFY9q68hSM0_xbJpHNRljEGxxCTiZEXKZNCoopOH42ld3djE0bffWZrlOja3vns3rh5yhQ6lX2CG8PU2m2bARoGeEN1hSB",
+    "productId": "71972848673461332",
+    "position": 10
+   },
+   {
+    "title": "Laptop Dell 15 DC15250 CPH991 (i7-1355U | 16GB | 1TB | Intel UHD | 15.6' FHD 120Hz | Win 11 + Office Home 2024) -Hàng Chính Hãng",
+    "source": "Hangchinhhieu.vn",
+    "price": "27.690.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRsZlEraqowK0ojFL7_iQp6-4V_Mxe3155rZplh-aN28biTVNxTj8aUlvt8aRHcX-THLoEl96X2CvRyl4tgPSmaltXj9_RDjDJzexw21M74IU_m-7fdj9oh",
+    "rating": 5,
+    "ratingCount": 20,
+    "productId": "3896913996952992726",
+    "position": 11
+   },
+   {
+    "title": "Bảng Giá Sửa Laptop -Default Title",
+    "source": "Laptop One",
+    "price": "200.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQNITee9JBUBadBmYLSuhCwxNSphKotIWupt-8-emwrBc-Pe6gzGSj9XmAJutVZd2tjlyeV3CklZ4Cyj4_eBcoB7TrQCH-Y6YOELHsqLUhd",
+    "productId": "13962342677588714707",
+    "position": 12
+   },
+   {
+    "title": "Laptop Dell",
+    "source": "Điện máy XANH",
+    "price": "56.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSnuaOwwHtp7U6vQ7P0UUtF42qEXg1l-sHziTAHYILpj1smjdgagArYlMHnI2dy33qm-5wVq02DYO8TJjLy3NYBvMGWLw5CWGQtZa-wSzVeJBGkulnu_SmP",
+    "productId": "11328643172797839291",
+    "position": 13
+   },
+   {
+    "title": "Laptop viamei 16 inch 2 màn hình cảm ứng DS16-PLUS, Intel Core i7-1360P, RAM DDR4, Win 11 Máy mới 100%, chính hãng",
+    "source": "Máy tính AOC",
+    "price": "20.900.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTYlgZmoTH3-uH1TzMyoYX9Vddzr6c4tfsSln6IAaLztRxHd-GxpgX3DWU9qOimIS1zyJiKi4qDhKWEiOECsqU6F2LhPzJRovRXHwV4a3WO0aktgqg1Or0m4g",
+    "productId": "13418322815571331477",
+    "position": 14
+   },
+   {
+    "title": "Vệ Sinh Laptop Quận 7 - Địa Chỉ Vệ Sinh Máy Tính PC Laptop Lấy Liền Uy Tín Giá Rẻ",
+    "source": "Trường Thịnh Group",
+    "price": "150.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRBTpMKb-T-2QUPngMq5wSOtMnh_tL36pqzWHekNGJ6DTKZuQvS-Hr7vEPRJmN58xZ4ieUs8l4LYyJMccYhAv2cEXWVOSxk2wI9EQ0Jvkwqz8jn5JzeWYzK",
+    "productId": "2410660369189995964",
+    "position": 15
+   },
+   {
+    "title": "Dịch vụ sửa chữa laptop lấy liền giá rẻ -Giá Từ",
+    "source": "Laptop One",
+    "price": "200.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSuOMrNl0AtFM5qq0d7F56v1-XlWJjiy840uiRzt2kao-J7QFc8gPYXpd9DHwDHwt-ogpLvVVNF8gflumIg8ZY3pBzCOqH8RNouDVfXY9WT",
+    "productId": "10304775455061104371",
+    "position": 16
+   },
+   {
+    "title": "Laptop SingPC",
+    "source": "Điện máy XANH",
+    "price": "17.390.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTQrFqNCVe9QVdj4cjH5RBYB3kiK_02CWnhfUOlEeBvatvryj_PhbThQ4ZhQFLjmw_6D-h_sijyK9T_Cvrutn7urxN2Yf2P6k7Z8Rrdc40apSoaeTDTJrJL9Q",
+    "productId": "1998976763239144643",
+    "position": 17
+   },
+   {
+    "title": "Laptop MSI Modern 15 F1MG-1264VN (Core 5 120U | 16GB | 512GB | Intel Graphics | 15.6inch FHD | Win 11 Home | Xám)",
+    "source": "NewTechShop.vn",
+    "price": "18.890.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQK0eWUxXO35-lUh_kbzvLPpuUV9KDGs1oUameaigqjGO6wToXYYTFqt3AGnJ00Fb0cM3gqdoKor639JPmv9QnPM3RXKitBdE6ZfTfo6zTH_Wfsx_GMH54z",
+    "rating": 5,
+    "ratingCount": 7,
+    "productId": "5529348040560503178",
+    "position": 18
+   },
+   {
+    "title": "Laptop Lenovo Xiaoxin Air 13 2026 Core 5 320 RAM 16GB SSD 512GB 13.3",
+    "source": "TechSpace Việt Nam",
+    "price": "21.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSNER0qgyChc05uFaDYHtcPV3hrmI5NbV6pkA4b44owA2nPXpRApYcHFrAu5zzDbAByne1bOi4dXsbZy72V0EHT6xo0nfwetw",
+    "productId": "16343271516033312212",
+    "position": 19
+   },
+   {
+    "title": "Vệ Sinh Laptop Asus Tại Tp.Hồ Chí Minh -VGA RỜI",
+    "source": "Laptop One",
+    "price": "100.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcS11VzIVgLu4l3TYcvi-wX146TW4G9ziwnPW5uuIhUqA8b-hoscxBVmY8Ux-jGjnnG5Pojo_djRj6W4jMKVC0HjDacP_broWKisIWGh55J5T85VbJNE0zTD",
+    "productId": "10832009191878326183",
+    "position": 20
+   },
+   {
+    "title": "Vệ Sinh Laptop Quận 11 - Địa Chỉ Vệ Sinh Máy Tính PC Laptop Lấy Liền Uy Tín Giá Rẻ",
+    "source": "Trường Thịnh Group",
+    "price": "150.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRxUHZkI-9_AMjq7iYkCrGYwS1NT-dG653ZsLHh8dxTqJdX_m9ijLywvQ34ZFlLxq-PeiiLadwK51Jm5kcNGP2z6OBusz2qEYRdXmF7KIxbr-9x67s8R5qt-w",
+    "productId": "13422462008283158479",
+    "position": 21
+   },
+   {
+    "title": "Laptop Core i5-1145G7 - Tặng Kèm Phần Mềm Hát Live",
+    "source": "thietbihatlive.com",
+    "price": "9.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcR6nxQ3hMWIJ9kVRlSUmzmKOgOAAhm908jPDkswMZf8-KedaZFGKQxXyHlyLfhc7ItjHUFPnVk-zZVxl3TlKl4zRY3HqIxXxYXlfdnxlsY",
+    "productId": "18428456378760635619",
+    "position": 22
+   },
+   {
+    "title": "HP 15s-du1055tu 6405U Notebook 39,6 cm (15.6\") HD Intel Pentium Gold 4 GB DDR4-SDRAM 256 GB SSD Wi-Fi 5 (802.11ac) Windows 11 Home Màu đen",
+    "source": "Shop Thành Nhân Computer",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+M%E1%BB%9Bi&prds=localAnnotatedOfferId:1,catalogid:6291753712718335103,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "8.700.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTdCaOT6NFqMTXZVcBEZZXUkhRB_cqPhSTkZkDQolZuBSeryrNvNyIkMNYltBQhalu-kXMsUX6rwWJC4olT2-VlDnv49cLb0rsHlD9V-g-D",
+    "productId": "6291753712718335103",
+    "position": 23
+   },
+   {
+    "title": "【Bảng Giá Sửa Laptop Lấy Liền】 ️Hiển Laptop",
+    "source": "Shop Linh Kiện",
+    "price": "199.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRBSVA1zqGcZThAefAEy4GXWXAMue4HCApOckB1nrwfPC48KgSRvKZMH1X9ofwTLA5iPXq6prg5TXQGeWVis54-3A-LfE6iYCMyYO15H2R4",
+    "productId": "789444137906802955",
+    "position": 24
+   },
+   {
+    "title": "S-A TECH - Laptop MSi Gaming GF63 11UC 443VN -RAM 8GB DDR4 3200MHz",
+    "source": "satech.com.vn",
+    "price": "15.690.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSd5qo9Qgn3gX_n_x_U2V0v8HmoYS8JSd1NcZ-m3Cd8W_XvLyN9Do1O4Qv-cJySWtBJbgfMsgerAXrCs1UD1IzGH7FrzVerk7quRcXniubBL4aEy0Wpq-6lww",
+    "productId": "18079492012119160062",
+    "position": 25
+   },
+   {
+    "title": "Vệ Sinh Laptop Quận 2 - Địa Chỉ Vệ Sinh Máy Tính PC Laptop Lấy Liền Uy Tín Giá Rẻ",
+    "source": "Trường Thịnh Group",
+    "price": "150.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQqI1XrdM5TxITG9LuQJhGr-PPoIgKKrn4cHrYViPpuht8E8oszmff5kGZCxhV5q32ouwq5I_TP86fSpVaHS8x548Sa5aJEahnTVWSJN1rhk7nrBep5A-qx5A",
+    "productId": "14529076173919103620",
+    "position": 26
+   },
+   {
+    "title": "Laptop làm việc văn phòng, học online DEEQ, màn hình 14 inch FullHD 1080, Ram 8G,SSD M2 128G, Intel J4150 (4 Core, 2.5Ghz)",
+    "source": "Promax Shop",
+    "price": "6.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQfwEO1WxOy7vVPOffnLifV2YUvomI4fFZ8vGKialu6jRBx_zhGjs4oxbGSkZSJNDrmKznpbY-MngVUzHynpNucfZCwR9VQfqhbFHHocQh43HC2sG8G3JcN3A",
+    "productId": "17180646393086510740",
+    "position": 27
+   },
+   {
+    "title": "ILLEGEAR MACH 15",
+    "source": "illegear.com",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+M%E1%BB%9Bi&prds=localAnnotatedOfferId:1,catalogid:14787880776811497581,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "24.825.085 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcT63Ahw0LtqFNubwUp9p3zL5lqOfGruF_ID7JPl1JXtZdVDxCyVj0XZCGm7UVtpBeRhSoFAC-Z_X-6KvTamnyE4xx0HJ6T1r1RzcL5C4No2OsClhwM5Zdwu",
+    "productId": "14787880776811497581",
+    "position": 28
+   },
+   {
+    "title": "Laptop MSI Modern 14 F1MG-432VN",
+    "source": "CTy Máy Tính Vinh Hiển Lộc Tài",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+M%E1%BB%9Bi&prds=localAnnotatedOfferId:1,catalogid:4708320406667993444,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "19.550.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQzTSv2-itSj_gowDGsO3P2iB_9LB0K6zM-i07SQBSOneDuTvjKRPJJx6x1sSc44jW7aqGoHvxml5APf0IMmt_zmY-ykXVnh72zBfTwEjKA2szpiIBm_TNn",
+    "productId": "4708320406667993444",
+    "position": 29
+   },
+   {
+    "title": "Laptop Dell 15 DC15255-A261BLK (R5-7530U | Ram 8GB | Ssd 1TB | 15.6\" Fhd | Touch | Win 11 | HV1N4 | Nk)",
+    "source": "sp-one.vn",
+    "price": "14.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSAhZL4WdsD_n4cf08zvXWkSfsCz2d02e0-kdMSQOEmjCz_yZvw-g1MZt2lAkVB90prSweyBbZnph_2_X_BDic4XIpRJ_ZRJ3yOhc6gpMmrLAvx1Zyuvll3bw",
+    "productId": "12787996373221785425",
+    "position": 30
+   },
+   {
+    "title": "Địa Chỉ Sửa Laptop Không Nhận Màn Hình Ngoài Quận 12",
+    "source": "Trường Thịnh Group",
+    "price": "150.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcT01n4jLXR0RxvqkWNIz69M_ndy6je-1LIMevoyqoQ7CLStJfJKpu30B1N5yI_PBa4-sVqESE9JWHXB90tee_oBpjtpidXuKUTwU9JOOy0WYLsCs4jXF0-9xg",
+    "productId": "5260634049138940315",
+    "position": 31
+   },
+   {
+    "title": "【Địa Chỉ Sửa Laptop Tốt Nhất TPHCM】 ️Hiển Laptop",
+    "source": "Shop Linh Kiện",
+    "price": "290.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQ_n8oSb0ed4rvCJ9Nz951_mYmoM_7OZBe7x6NqT4Mrme7BbrV2CryJ634HGTi5Kmq98ctxZLixGUFfjPY1lftN3cq1YapFPdTlRER9OsQ",
+    "productId": "9710034447703736155",
+    "position": 32
+   },
+   {
+    "title": "Laptop 3 màn hình MAX16, chính 16 inch & 2 phụ 10.5 inch Intel Core i7-12TH Windows 11 Pro Máy mới 100%, chính hãng",
+    "source": "Máy tính AOC",
+    "price": "26.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcThCNbfbxSDRTE8CMC2nku4t1gs-rU0jzlpM3sp3-Zkl6wXZ4rH21vnJfAsz9PdkExbXLXiwoLffDAlr-aPLQm4GR1SyOJsrNv2iRT5j9hOozo2SqGMxPziPg",
+    "productId": "4478185409481152307",
+    "position": 33
+   },
+   {
+    "title": "Sửa Bản Lề Laptop Asus Ở Đâu",
+    "source": "Laptop Thiên Ân",
+    "price": "450.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcS-h-0tImvGnROv7hkWLHvSQXWMUOefSTejmgem2V7bsp0I_O5P6XGlbY5tiivseoNEwREPMNH3iCrM2HSK2-xYgsgFY3cscKJiec8Yk54",
+    "productId": "9448866611914276694",
+    "position": 34
+   },
+   {
+    "title": "Surface Laptop 8 15 inch Intel Core Ultra X7 368H RAM 16GB SSD 256GB, LCD 120Hz, Wi-Fi, Win 11 Pro, Black - Surfacecity.vn",
+    "source": "surfacecity.vn",
+    "price": "77.120.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRH2ksF7Yc1cL_qAO_DDAUAdck1hoRBiZ74z-2ADsPXoCWWvX9SmIO8jbuc6Run3PszAC59XAofUtyGJF6zPKKZmA5zYcA6YA",
+    "rating": 5,
+    "ratingCount": 1,
+    "productId": "6719196805459593082",
+    "position": 35
+   },
+   {
+    "title": "Máy tính xách tay/ Laptop Dell 15 DC15250 - CPH991 (i7-1355U) (Bạc)",
+    "source": "Phong Vũ",
+    "price": "25.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTOWPi8kHdePcKe5WKDv6tOsnX7YNF72GoL3As_wNgAchewyWtMN38MBdyorQXlqMg7uZD0O0wUJWyLooJxsiE_Z8cpFb4LkTSCUtTbfe4qofglnzmYKo-nEw",
+    "rating": 2,
+    "ratingCount": 1,
+    "productId": "4185348533567892912",
+    "position": 36
+   },
+   {
+    "title": "Vệ Sinh Laptop Quận Bình Tân - Địa Chỉ Vệ Sinh Máy Tính PC Laptop Lấy Liền Uy Tín Giá Rẻ",
+    "source": "Trường Thịnh Group",
+    "price": "150.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcS6Vf6dX6jPRdGv7SbCBGbAPsSY_mtgZMiCX-ye5Zdq1LaqDYTkFXhm4MFcKnhYIME9g6HL66cJido0IDb86wNb4aPctRoEIfYzdKgcywwiJ7nbhY5X0jw9",
+    "productId": "2065586989962036630",
+    "position": 37
+   },
+   {
+    "title": "Sửa Bàn Phím LapTop Lấy Liền Giá Rẻ",
+    "source": "Laptop Viễn Chinh",
+    "price": "99.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcT19oEB5sGwry97KiM3rOwuBbmsBBoECvfjB_hi5yxMplv91btCzZ1nrN3JN-V-nLjEwWG5Xfn6R6hqp-cujNgRd8BHMc9OpYIqwgBQ7K24u0C4RVvFv7mwsQ",
+    "productId": "14622527130277282129",
+    "position": 38
+   },
+   {
+    "title": "Sửa Main Laptop - Laptop văn phòng, Gaming, Máy trạm CPU gen 10, gen 11, gen 12, gen 13",
+    "source": "Lapvip",
+    "price": "600.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQOhB1EqxqCydL4pkQ3B_QI3cf0E5h_TTSdJFtJ29hBFdyzht_RkXjc_p8iZuuk2EKjuQ4XSXJHvG5CovfM5qFShsaB1_0I046S2jALcviq",
+    "productId": "12322965132838697701",
+    "position": 39
+   },
+   {
+    "title": "Sơn Laptop Tân Trang Laptop - Đà Nẵng",
+    "source": "Trâm Anh Laptop",
+    "price": "100.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSAplk_ciB4D32nTU790wrafrJj3nXA2YtnlIT3gqLPExJPUHR6owqtlYfbYJCyXMsIqyc6gieARuXucgtdTKFAM1K--zV-Qtrwi5yS34T_",
+    "productId": "3268871989914946151",
+    "position": 40
+   }
+  ],
+  "credits": 2
+ }
+}

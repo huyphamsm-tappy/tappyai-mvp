@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Hapaku Combo 3 site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:09:31.596Z",
+ "body": {
+  "searchParameters": {
+   "q": "Hapaku Combo 3 site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Túi Than Hoạt Tính Khử Mùi Hapaku 200g, Hút Ẩm ...",
+    "link": "https://shop.tiktok.com/vn/pdp/1730248489529411651?source=anchor",
+    "snippet": "Túi Than Hoạt Tính Khử Mùi Hapaku 200g, Hút Ẩm Khử Mùi Khử Khuẩn, 100% Than Gáo Dừa Bến Tre Không Hương Liệu- Khử mùi hôi tủ lạnh, tủ giày, nhà bếp - Khử ...",
+    "position": 1
+   },
+   {
+    "title": "Túi Chườm Mắt Thảo Dược HAPAKU Làm Nóng Bằng Lò Vi ...",
+    "link": "https://shop.tiktok.com/vn/pdp/1729498602954131523",
+    "snippet": "Túi chườm thảo dược dùng cho vùng mắt là sản phẩm kết hợp các loại thảo dược tự nhiên truyền thống, có tác dụng làm giảm nhức mỏi mắt do làm việc nhiều với ...",
+    "position": 2
+   },
+   {
+    "title": "Túi Thơm Cà Phê Arabica Hapaku - Khử mùi hôi, tạo hương ...",
+    "link": "https://shop.tiktok.com/vn/pdp/tui-thom-ca-phe-arabica-hapaku-khu-mui-hieu-qua-huong-thom-de-chiu-an-toan-cho-ba-bau-va-tre-em/1730251161248630851?source=anchor",
+    "snippet": "THÀNH PHẦN– Cà phê Arabica tự nhiên– Nguồn nguyên liệu chất lượng, được sàng lọc tỉ mỉ, cẩn thận từ Arabica Cầu ĐấtCÔNG DỤNG– Nhanh chóng giúp hút ẩm, ...",
+    "position": 3
+   },
+   {
+    "title": "sampalok sampalokan herbal",
+    "link": "https://shop.tiktok.com/vn/k/sampalok-sampalokan-herbal",
+    "snippet": "Trà Sam Hồng ( combo 3 gói 500 tặng 1 gói 200g). 0 sold. ₫390.000. Tấm thảo dược thay thế đai chườm cổ Hapaku. 5. 59 ...",
+    "position": 4
+   },
+   {
+    "title": "box lalagyan nag gamot",
+    "link": "https://shop.tiktok.com/vn/k/box-lalagyan-nag-gamot",
+    "snippet": "Combo Túi Chườm Mắt và Bóng Matxa Thảo Dược 2 quả 300g Hapaku. 5. 14 sold. ₫445.000. ₫590.000 ...",
+    "position": 5
+   },
+   {
+    "title": "[GIFT] Gối Chườm Nóng Thảo Dược Giúp Thư Giãn, Giảm ...",
+    "link": "https://shop.tiktok.com/vn/pdp/goi-chuom-nong-thao-duoc-hapaku-thu-gian-giam-dau/1731960026760514054",
+    "snippet": "Mua [GIFT] Gối Chườm Nóng Thảo Dược Giúp Thư Giãn, Giảm Đau Bụng Kinh Hapaku - Làm Nóng Bằng Lò Vi Sóng trên TikTok Shop ... Combo 3 Thùng 12 Hộp Sữa Tươi Công ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 6
+   },
+   {
+    "title": "Sản phẩm không có sẵn tại quốc gia hoặc khu vực này",
+    "link": "https://shop.tiktok.com/vn/pdp/tui-than-hoat-tinh-hapaku-500g-giu-mat-thom-cho-khong-gian/1731514878533862623",
+    "snippet": "Combo 3 gói (30 viên) đuổi chuột, côn trùng, nguyên liệu tự nhiên an toàn cho trẻ nhỏ. Deal. 4.2.",
+    "position": 7
+   },
+   {
+    "title": "hadiah habib anniversary untuk wife",
+    "link": "https://shop.tiktok.com/vn/k/hadiah-habib-anniversary-untuk-wife",
+    "snippet": "Thiệp Chúc Mừng Kỷ Niệm 3D Có Đèn & Nhạc + Thẻ Viết Riêng + Số Kỷ Niệm Ả Rập Đặc Biệt Vợ Chồng, Bạn Bè Kèm Số Năm. Flash sale. 18 sold. ₫62.000. ₫96.550 ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

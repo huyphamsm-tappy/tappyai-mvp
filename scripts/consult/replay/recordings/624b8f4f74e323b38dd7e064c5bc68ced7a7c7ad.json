@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "laptop mới học thiết kế đồ họa dưới 20 triệu (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:23:00.771Z",
+ "body": {
+  "searchParameters": {
+   "q": "laptop mới học thiết kế đồ họa dưới 20 triệu (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Laptop đồ hoạ giá rẻ | Cấu hình mạnh, màu sắc chân thật",
+    "link": "https://cellphones.com.vn/laptop/do-hoa.html",
+    "snippet": "- Laptop ASUS TUF Dash F15 FX517ZC-HN077W - Giá từ 23.990.000 đồng. - Laptop Asus Rog Strix G15 G513IM HN008W - Giá từ 28.490.000 đồng. - Laptop Lenovo Thinkpad ...",
+    "position": 1
+   },
+   {
+    "title": "Laptop dưới 20 triệu | Thiết kế sang trọng, mạnh mẽ, bền bỉ",
+    "link": "https://cellphones.com.vn/bo-loc/laptop-tu-15-20-trieu",
+    "snippet": "MacBook Air M5 13 inch 2026 10CPU 8GPU 16GB 512GB | Chính hãng Apple Việt Nam · Laptop Acer Gaming Nitro ProPanel ANV15-52-50VA · Laptop ASUS Vivobook 14 X1404VA- ...",
+    "position": 2
+   },
+   {
+    "title": "Laptop dưới 25 triệu | Hiệu năng mạnh mẽ, cấu hình ấn ...",
+    "link": "https://cellphones.com.vn/bo-loc/laptop-tu-20-25-trieu",
+    "snippet": "Laptop dưới 25 triệu chính hãng, thiết kế ấn tượng, cấu hình mạnh mẽ, hiệu năng nổi bật, bảo hành uy tín. Mua ngay laptop 25 triệu trả góp 0%",
+    "position": 3
+   },
+   {
+    "title": "Laptop dưới 30 triệu | Thiết kế mỏng nhẹ, hiệu năng khủng",
+    "link": "https://cellphones.com.vn/bo-loc/laptop-tu-25-30-trieu",
+    "snippet": "Hãng sản xuất. Dell; Lenovo; HP · Nhu cầu sử dụng. Học tập - Văn phòng; Cao cấp - Sang trọng; Mỏng nhẹ · CPU. Intel Core i3; Intel Core i5 · Dung lượng RAM. 4GB",
+    "position": 4
+   },
+   {
+    "title": "Top 5 laptop cho sinh viên kiến trúc năm 2026",
+    "link": "https://cellphones.com.vn/sforum/laptop-cho-sinh-vien-kien-truc",
+    "snippet": "Theo đó, bạn nên ưu tiên các dòng CPU từ Intel Core i5, Core i7 hoặc AMD Ryzen 5, Ryzen 7 trở lên. Nếu có nhu cầu sử dụng lâu dài và muốn tối ưu các tính năng ...",
+    "position": 5
+   },
+   {
+    "title": "Sinh viên nên mua laptop nào để học thiết kế đồ họa?",
+    "link": "https://cellphones.com.vn/sforum/sinh-vien-thiet-ke-do-hoa-chon-laptop-nao",
+    "snippet": "Phân khúc giá từ 10 - 20 triệu · Laptop Acer Aspire Lite 14 AL14-52M · MacBook Neo 13 inch · Lenovo IdeaPad Slim 3 14IWC11.",
+    "position": 6
+   },
+   {
+    "title": "Top 10 laptop cảm ứng dưới 20 triệu cho trải nghiệm tốt nhất",
+    "link": "https://cellphones.com.vn/sforum/laptop-cam-ung-duoi-20-trieu",
+    "snippet": "Top 10 laptop cảm ứng dưới 20 triệu cho trải nghiệm tốt nhất · Laptop Asus Zenbook 14X UM5401QA KN209W · Laptop Asus VivoBook S 14 Flip TN3402YA-LZ026W · Laptop ...",
+    "position": 7
+   },
+   {
+    "title": "Laptop dưới 15 triệu | Hiệu năng mạnh mẽ, cấu hình nổi bật",
+    "link": "https://cellphones.com.vn/bo-loc/laptop-tu-10-15-trieu",
+    "snippet": "Laptop Dell 14 DC14250 DC4C5375W1 - Bảo hành 2 năm · Hãng sản xuất. Dell; Lenovo; HP · Nhu cầu sử dụng. Học tập - Văn phòng; Cao cấp - Sang trọng; Mỏng nhẹ · CPU.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

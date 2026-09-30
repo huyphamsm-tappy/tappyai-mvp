@@ -1,0 +1,385 @@
+{
+ "url": "https://google.serper.dev/shopping",
+ "request": {
+  "q": "Mới Laptop",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 20
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:45:59.247Z",
+ "body": {
+  "searchParameters": {
+   "q": "Mới Laptop",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "shopping",
+   "num": 40,
+   "page": 1,
+   "engine": "google"
+  },
+  "shopping": [
+   {
+    "title": "Laptop HP Omnibook 5 AI 16-af1048TU BZ7Q9PA",
+    "source": "Hugotech.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=M%E1%BB%9Bi+Laptop&prds=localAnnotatedOfferId:1,catalogid:11848022015397309181,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "23.690.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTt_RBuLVu8tzQEBskWBdgqcu8B6j5jRMizUdOQC4Ve_d_5F9bw87nt20PkIdE0nmPcyKao4QOQIb1ucwgxDBvawvcSM7DNUqDly7xKPz8C99cR5keQwnLiPQ",
+    "rating": 4.2,
+    "ratingCount": 92,
+    "productId": "11848022015397309181",
+    "position": 1
+   },
+   {
+    "title": "Laptop MSI Modern 15 F1MG-1225VN",
+    "source": "Phong Vũ",
+    "link": "https://www.google.com/search?ibp=oshop&q=M%E1%BB%9Bi+Laptop&prds=localAnnotatedOfferId:1,catalogid:14842682624889745781,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "18.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQObeq8m5VtHIhjWUx6iTUiz0RQLE3VK6PKmrVOqzBmmY-PGOw6qTZWCyzx8gfV3we1WD0A-3wd-RxYgFcTLtc2Hy-n-RCY9slO0bWMK4ViBKR4x2EY1h9dcw",
+    "productId": "14842682624889745781",
+    "position": 2
+   },
+   {
+    "title": "Laptop Lenovo Yoga Pro 7 15IPH11 83SN000BVN",
+    "source": "CellphoneS",
+    "link": "https://www.google.com/search?ibp=oshop&q=M%E1%BB%9Bi+Laptop&prds=localAnnotatedOfferId:1,catalogid:1664844159501271609,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "74.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRelwETIpAWue3SGQlWMZVl1B_aABNADPfebAY8CFHwXPOk8r7mZObipJgAJ2ka3Ag2eyrf0GAAK2mNb-BscOi-oIJGU4clE21VzqGxpMN9wGenMoeKZ5Tn",
+    "productId": "1664844159501271609",
+    "position": 3
+   },
+   {
+    "title": "Laptop HP Omnibook 5 16-ag1068AU BZ7T0PA",
+    "source": "Tinhocngoisao.com",
+    "link": "https://www.google.com/search?ibp=oshop&q=M%E1%BB%9Bi+Laptop&prds=localAnnotatedOfferId:1,catalogid:1527532648537162414,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "24.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQCrqtxsvQcoAIvVk-bDjYxdAZXuAuVf18Hm4F8pDIWysKtyLveHeBV2VNVlcZyu24blboK90LkuszvhoWIJ0_mglCAYher3xvESj-GjFLZ432x-9hcM_K3EA",
+    "rating": 4.4,
+    "ratingCount": 49,
+    "productId": "1527532648537162414",
+    "position": 4
+   },
+   {
+    "title": "Laptop Văn phòng AI HP OmniBook 5 16 16-ag1068AU | R5 Ai 5 340, 16GB, SSD 512GB, AMD Graphics, 16\" WUXGA",
+    "source": "Tin Học Anh Phát",
+    "price": "25.000.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRzmPOjGMCBWpfoIXU1slbkA2MQGDhzH6D6AaCt4ze3s9yfxzEaH9REsGit0s9K8nKSfskvpLWm9pkXPXAlSNSl1At9d8CxUWl_1dlGB56504dtWhH4Tymx",
+    "productId": "4691163487847499349",
+    "position": 5
+   },
+   {
+    "title": "Surface Laptop 8 15 inch Intel Core Ultra X7 368H RAM 16GB SSD 256GB, LCD 120Hz, Wi-Fi, Win 11 Pro, Black - Surfacecity.vn",
+    "source": "surfacecity.vn",
+    "price": "77.120.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRH2ksF7Yc1cL_qAO_DDAUAdck1hoRBiZ74z-2ADsPXoCWWvX9SmIO8jbuc6Run3PszAC59XAofUtyGJF6zPKKZmA5zYcA6YA",
+    "rating": 5,
+    "ratingCount": 1,
+    "productId": "6719196805459593082",
+    "position": 6
+   },
+   {
+    "title": "Laptop Dell 15 DC15250 CPH991 (i7-1355U | 16GB | 1TB | Intel UHD | 15.6' FHD 120Hz | Win 11 + Office Home 2024) -Hàng Chính Hãng",
+    "source": "Hangchinhhieu.vn",
+    "price": "27.690.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQV7wr4sjhTLc0bJm0wyohgG8t20rBN5Bn-wGaIEtVHBjE_Kc1SYCoRQ3atFQnOL2_nCnuRJnsYG3HfPRbL2Jnd-SLl9NfNva-51EXu0XqBz50yxMcdC3HV",
+    "rating": 5,
+    "ratingCount": 20,
+    "productId": "3896913996952992726",
+    "position": 7
+   },
+   {
+    "title": "Laptop MSI Modern 15 F1MG-1264VN (Core 5 120U, 16GB, 512GB, Full HD, Win11)",
+    "source": "Thế Giới Di Động",
+    "price": "19.190.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcT4GuEGG3d8Hkt0wYjg0hK5pguM8VpNZnSd-bOl4niOn8-129qZqLdA_QRl9TIHYQVaTQr_8GB28SREe3NdCq-VH9cpG0b9WLnrx6r016O1zIHGAImvhacfAA",
+    "rating": 5,
+    "ratingCount": 7,
+    "productId": "13823072894652460220",
+    "position": 8
+   },
+   {
+    "title": "Lecoo Pro 14 2025 (Ultra 5-135H| 32GB RAM| 1TB SSD)",
+    "source": "SAZO",
+    "price": "26.300.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcT-TIMLVu35A8OBRqDBFcJLNPnWKoJAn-P0_QIqvmvGdM14KUPIiS_BfxyKAvEuWjtDqQvFbRYWIKOVDJnlDL5ddxOf2QT0iCGi6aiSsUcbM5qG0ImWClqgjQ",
+    "productId": "18336035516839150161",
+    "position": 9
+   },
+   {
+    "title": "HP OmniBook 3 NGAI 15 Ryzen AI 7 350, 16GB RAM, 1TB SSD, Radeon 860M, 15.6\" FHD Touch screen - Glacier Silver",
+    "source": "Lapvip",
+    "price": "17.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQjYdYGwuhBYngUwACtyUdNCzMPR9ZqyDxB4ZP15c5YD85_bWVkf0e8ZtpqSFJm2V8OK4yfvA5GKZcnEo1W1VaLMaP8jlGyj2w-b34t2N5TXSE5aBGmLq4Y",
+    "rating": 4.1,
+    "ratingCount": 27,
+    "productId": "10354437099202378553",
+    "position": 10
+   },
+   {
+    "title": "Laptop gaming MSI GF63 Thin 11SC 664VN",
+    "source": "CellphoneS",
+    "price": "14.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTUAHz2JTM4d14ydjUrN2a9httY6y0kjgAnzLiF04wcCyailY3kJVbhF77QPtb4MV8tTcKxvqAPZUm9_Ge0J33MBAUcrZn_zUbd1IZ4oPRdgolh09Cpy6oWbw",
+    "rating": 3.8,
+    "ratingCount": 5,
+    "productId": "3256707658866636179",
+    "position": 11
+   },
+   {
+    "title": "Laptop MSI Modern 15 F1MG-1264VN (Core 5 120U | 16GB | 512GB | Intel Graphics | 15.6inch FHD | Win 11 Home | Xám)",
+    "source": "NewTechShop.vn",
+    "price": "18.890.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQK0eWUxXO35-lUh_kbzvLPpuUV9KDGs1oUameaigqjGO6wToXYYTFqt3AGnJ00Fb0cM3gqdoKor639JPmv9QnPM3RXKitBdE6ZfTfo6zTH_Wfsx_GMH54z",
+    "rating": 5,
+    "ratingCount": 7,
+    "productId": "5529348040560503178",
+    "position": 12
+   },
+   {
+    "title": "Laptop HP OmniBook 5 AI 16 af1048TU - BZ7Q9PA (Ultra 5 225U, 16GB, 512GB, WUXGA, OfficeH24, Win11)",
+    "source": "Thế Giới Di Động",
+    "price": "25.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcT7zKwDQV03TKwOKZWzbYPjyxNvFL7-4CIaFhapCSWzk58ADGcfXUi2PrlDUd2FrUqqmei0EjMzlDiB-Wm04AON5KvVzhfUy4W-DgxvUdRn8QOGcs8JwvKEqg",
+    "rating": 4.2,
+    "ratingCount": 91,
+    "productId": "9304789170384626279",
+    "position": 13
+   },
+   {
+    "title": "Laptop làm việc văn phòng, học online DEEQ, màn hình 14 inch FullHD 1080, Ram 8G,SSD M2 128G, Intel J4150 (4 Core, 2.5Ghz)",
+    "source": "Promax Shop",
+    "price": "6.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQjU0VF7vrvpNPLvOVwXbiflkTRu4nUUnOQHOxli_On2V6NffYEaDcsXfac3V5V2It-0LLNXC_uznAX_9zrCDcdTepq5puRce8L_knlhDQiuIIK9rHjcA5faA",
+    "productId": "17180646393086510740",
+    "position": 14
+   },
+   {
+    "title": "HP OmniBook 5 LaptopAI 16 inch (AMD) (2026) (Cấu hình: RYZEN AI 7 445 / 16GB / 1TB SSD / AMD RADEON 840M GRAPHICS / FHD+)",
+    "source": "Hưng Phát Laptop",
+    "price": "25.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRh1wb1Zy4F4b77QRp14yuym0YETRC9nFZVF5Xy6I9jKhMhQLZWPP2-3pJ8yNrDmWzw3hZjpUWmZzDtFsf5aoTF-LIkpcMZ-4bsBA5a6zmEGThZYxvSw7g9",
+    "rating": 3.8,
+    "ratingCount": 41,
+    "productId": "3704392592706906954",
+    "position": 15
+   },
+   {
+    "title": "Mechrevo Star 14 2025 AMD Ryzen AI 9 H 365, Ram 32GB, SSD 1TB, AMD Radeon 880M, 14′′ 2.8K 120Hz",
+    "source": "Lapvip",
+    "price": "23.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSOiz4MZf8WvXw9suk6PRnFJyWtmINTz8wl9HX2KI2x7ifvDqC8BNpzWLJu6guY8mp2mbhYjOpddMoszQEm0HVZ0pUE1waUDznjfVJa3Dy_vBAG_2zKvkg5Xw",
+    "productId": "12545876193110353791",
+    "position": 16
+   },
+   {
+    "title": "Hp Omnibook 5 Ai 16 Af1048tu Core Ultra 5 225U, 16 GB, SSD 512GB, Intel Graphics, 16 inch WUXGA, Hàng hãng Full VAT BH 1 năm",
+    "source": "Techcare.vn",
+    "price": "24.890.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQTqWRFeenrH6gSA459cOZxpatEvrGI8NBI6VgZWrYY8OaQmgjVXhe3TZ4D8xKtlWDaJ9N-uB9u5h0XDa-ZL44G5gDkjjSLt5Y6dG2oWfzf_JlLKsTamwDn4Hc",
+    "productId": "3368012153312253237",
+    "position": 17
+   },
+   {
+    "title": "Laptop HP OmniBook 5 AI 16 af1054TU - C1MN8PA (Ultra 7 255U, 32GB, 512GB, WUXGA, OfficeH24, Win11)",
+    "source": "Thế Giới Di Động",
+    "price": "31.690.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSE7X89JPh3plh5m8TSE24pP5ogqQdrGwoh8y0t0fw0XyAt4DtxKfpkWs43xmhSN79NFpg92--SjSiIzA10ODEMHYCNLJiQA5GDJ9ABcyNqMKbre5CZ6zHD",
+    "productId": "16871317896704372454",
+    "position": 18
+   },
+   {
+    "title": "HP OmniBook 3 NGAI 15 - Ryzen AI 7 350, 16GB RAM, 1TB SSD, Radeon 860M, 15.6\" FHD Touch screen - Glacier Silver",
+    "source": "lapvip.com.vn",
+    "price": "17.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTi-y_LtLIT-o_h1_BL2YjDt1zXztSe9vfSyRNnnzH1poCru-lkFLZraXhW3z0lSxC9KOV-gK6vl3mc1IjmU_fRwcbBC-EPpA",
+    "rating": 4.1,
+    "ratingCount": 27,
+    "productId": "2653084023983661076",
+    "position": 19
+   },
+   {
+    "title": "TGMT - Laptop HP AI 15-fd2050wm | Core Ultra 5 225U | RAM 8GB | SSD 512GB | 15.6 inch | FHD | Cảm ứng | Win 11 -Mới",
+    "source": "thegioimaytinh.net.vn",
+    "price": "17.580.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQGCAyqryL7I0rj74fVzjR6dhD7LvKdBoXVKU_ncD5Ovs44e7okaPvciXnwANUtfmPZ2DNCfbZJaF4M-YoUb1ZDf5xY8InLp_B66cpsN0_NKwuwZbH6LJx9Mw",
+    "productId": "12600286220924307002",
+    "position": 20
+   },
+   {
+    "title": "Laptop Máy tính bàn & Netbooks Hp Omnibook 5 Laptop Cảm Ứng 16 Inch Ai Pc 16-Af1700Nr Intel Core Ultra 5 225",
+    "source": "Hưng Phát Laptop",
+    "link": "https://www.google.com/search?ibp=oshop&q=M%E1%BB%9Bi+Laptop&prds=localAnnotatedOfferId:1,catalogid:18191369686437185713,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "26.900.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQ1W3xeNwZo4g1EHAJPQumzJk-IZcaFXuF3IGfkTHIPZ9vtzPMGahsRCMtTTvgDzf62PqPKKm5Q2HS_hdS73oXakDKzn2pZsJ723u-05TGPCeV1spa7WIdP",
+    "rating": 4.2,
+    "ratingCount": 301,
+    "productId": "18191369686437185713",
+    "position": 21
+   },
+   {
+    "title": "HP Laptop AI 17 Ultra 7-255U, 16GB RAM, 256GB SSD, 17.3\" FHD - Natural Silver",
+    "source": "Lapvip",
+    "price": "17.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcR1-_jIbxIJniCklHk9ezIBBFWZD0XFgVmhwmeWuFOdpGD1O-c11ghgL8oxiBLj2xLcD8WqmP_S5r9ocH4u2ZIwIq5H2MXFygfNTOHqRx9Z9FTIAqoxsEDq",
+    "productId": "6632985332533133050",
+    "position": 22
+   },
+   {
+    "title": "Máy tính xách tay Windows 11 14 inch, 16GB+128GB, CPU Intel Core i3 thế hệ thứ 4, Trục xoay 180 độ (Bạc)",
+    "source": "Sunsky Wholesale Dropshipping",
+    "price": "6.025.968 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRzimh-n8WETw1Cw1dICxXUUJHq4UDQzYGwmwbeS-eS1p8XjDxMLrjaD7MXGCbxyrPKLiZ537vEFlR_7CisMXRYeXrN5YFSt0zQXP18h2ck-jCkAYOKEgSm-A",
+    "productId": "15757302681494751563",
+    "position": 23
+   },
+   {
+    "title": "Laptop HP 15s-fq5147TU 7C133PA Bạc | i7-1255U | 8GB | 512GB | 15.6'' FHD",
+    "source": "Phạm Hoàng Gia",
+    "price": "20.890.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRIAUDgW3XTsj6N5O2GkbBIyx3fvfALbmrL2BZ18kxuc2hWkVFJVBmAaPEqaz_tZ3eESRBoZXbSkJH3ltzIUBO6LQh6qGOlDkKPreV2RYxYBEt07eY2LJal",
+    "productId": "17172997542804949719",
+    "position": 24
+   },
+   {
+    "title": "Laptop MSI Modern 15 F1MG-1225VN (Core 5 120U/ 16GB/ 512GB SSD/ 15.6 inch FHD/ Win11/ Xám/ 2Y)",
+    "source": "Manosa VN",
+    "price": "21.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRRH5_8yDoEmu6sBkkcu7mI-7r3xXvx3dDxGQ7USdqF6yX1SzVs_XqHHud5C-PpCp1b3biQOanjCa7XYGe7U8e8hm5jgJh_EPmmhXU9sCeDdFG4GztDD3rlMA",
+    "productId": "2876928063216107764",
+    "position": 25
+   },
+   {
+    "title": "HP OmniBook 5 LaptopAI 16 inch (2025) (Cấu hình: CORE ULTRA 7 255U / 32GB / 512GB SSD / INTEL GRAPHICS / 2K)",
+    "source": "Hưng Phát Laptop",
+    "price": "30.590.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQ1W3xeNwZo4g1EHAJPQumzJk-IZcaFXuF3IGfkTHIPZ9vtzPMGahsRCMtTTvgDzf62PqPKKm5Q2HS_hdS73oXakDKzn2pZsJ723u-05TGPCeV1spa7WIdP",
+    "productId": "3239959857605132627",
+    "position": 26
+   },
+   {
+    "title": "HP OmniBook 5 Al 16-af1067st Ultra 7 255U, 16GB RAM, 1TB SSD, 16\" 2K",
+    "source": "Lapvip",
+    "price": "24.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQSPj2N0yB539gRj5o1Dozg8bpwG_sNwmwsu9KvgmcpjInE1NDkJgE0hXgisuVGWEANma0w4qm-gw5WPZtTXEOKO_ygRP50HkUzS8ucTT94xaZ5by6DUivb",
+    "rating": 4.3,
+    "ratingCount": 154,
+    "productId": "11750748029448646920",
+    "position": 27
+   },
+   {
+    "title": "Laptop HP OmniBook 5 AI 16-af1052TU C1MN6PA Ultra 7-255U| 32GB| 512GB| OB| 16\"2K Cảm Ứng| Win 11",
+    "source": "CTy Máy Tính Vinh Hiển Lộc Tài",
+    "price": "32.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRmvA8rzCmIN0RWhisyGwFCpa1o1x19jy-u-drHq68-EMWNxHv-4crSy5Vn16Bc5sPkRJ633Gjk4p0rBnsRjMnZs47feOb5NqcftyP_n7ZXLjE4wfBP-ov_",
+    "rating": 4.3,
+    "ratingCount": 94,
+    "productId": "7742660336798111306",
+    "position": 28
+   },
+   {
+    "title": "Laptop MSI Modern 16S G3MG-016VN (Core 7 350, 16GB, 1TB, 16",
+    "source": "Dương Long - duonglong.vn",
+    "price": "29.960.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRirdDqohK1FqzJQ-xqgndRg4LC6RLU_D1cumipadxccBUQOCW9vSqeqmSHu6VxCDuKbIFkLQGQhGqWJuXr26dTM3uRAKAK2X90M4z_wzmr82_PZyY3-Fn-",
+    "productId": "8372670132733824278",
+    "position": 29
+   },
+   {
+    "title": "Laptop Lenovo Xiaoxin Air 13 2026 Core 5 320 RAM 16GB SSD 512GB 13.3",
+    "source": "TechSpace Việt Nam",
+    "price": "21.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSNER0qgyChc05uFaDYHtcPV3hrmI5NbV6pkA4b44owA2nPXpRApYcHFrAu5zzDbAByne1bOi4dXsbZy72V0EHT6xo0nfwetw",
+    "productId": "16343271516033312212",
+    "position": 30
+   },
+   {
+    "title": "Laptop SingPC",
+    "source": "Điện máy XANH",
+    "price": "17.390.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTFJLlZqcYwXPWUHMWho-dq4gV4wr2XvaTnwgeHoTysEoc3T4JjVi9hCiHPQ4PSciCfpunbQfhyeawQay6adZuuCVCI8ORbI7NEMsr4317nphZeH6Xy9rJTHg",
+    "productId": "1998976763239144643",
+    "position": 31
+   },
+   {
+    "title": "HP OmniBook 5 16 (AF100 ) - Core Ultra 7 255U, 16GB RAM, 1TB SSD, 16 inch FHD",
+    "source": "Lapvip",
+    "price": "25.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQcbKzMq0nqwaXRwq3iq8J4wRS8IKTU-97NYlI_SvG-sz5XOonemqJd3GQEcZ410g2RrdaH7j0fpfc4FEg3QQkvSqzXnb_9dbtB_QA0gpnd_mrdRs3rnCHZHA",
+    "productId": "2178389000530828583",
+    "position": 32
+   },
+   {
+    "title": "Laptop HP OmniBook 5 AI 16-af1052TU U7 C1MN6PA (U7-255U, Ram 32GB, SSD 512GB, 16 inch 2K Touch, Windows 11 Home, 1Y, Bạc)",
+    "source": "Dinhvangcomputer.vn",
+    "price": "32.450.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcStZvEFj4poL1ZtNDDXJcj-PuQLRDE73hXLXhHoko1k_G2RHxgOvdGZ_UdaLHgjeKNTerDybhnKnqcvclTQJtrF1DgPskurt4nFKycADvRIgRZcBBeQwWJI",
+    "rating": 4.2,
+    "ratingCount": 301,
+    "productId": "1814010896715979133",
+    "position": 33
+   },
+   {
+    "title": "Laptop Core i5-1145G7 - Tặng Kèm Phần Mềm Hát Live",
+    "source": "thietbihatlive.com",
+    "price": "9.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQOlFyPLDRMQqfafV0KasEslDPTMygyifmURq_SwRM8iKUKyWMKusus-wjpCZYh3D8aetr7UyP8lc1-qkWEu0L9YR7qBrucvwU760S9FfA",
+    "productId": "18428456378760635619",
+    "position": 34
+   },
+   {
+    "title": "Laptop HP OmniBook 5 AI 16-af1052TU C1MN6PA (U7-255U/ Ram 32GB/ SSD 512GB/ Touch/ Windows 11 Home/ 1Y/ Bạc)",
+    "source": "Thành Nhân TNC",
+    "price": "32.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcScHKQj8nndP_gpYPcNhRtB6TbcLxZXnD5PL4C6X0Ap_U_Q05bACc4yjQqylprh_F2Wp2MI5D2aVWCaaAI3rFI14Yxb_7yM_7gp4yBp3qv603CbkHRudAdP",
+    "productId": "10666682812835351514",
+    "position": 35
+   },
+   {
+    "title": "Laptop HP OmniBook 5 AI 16-af1054TU C1MN8PA (Ultra 7 255U/ 32GB/ 512GB SSD/ 16 inch WUXGA/ Win 11/ Office/ Bạc)",
+    "source": "Manosa VN",
+    "price": "29.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQXGxyz6HeE3wh-ghoMi4qmnT4wT51FYbyZv5wghroPU5DyNgsHJvlH1ShweZ7TaE_FktJxRuAEtk3l5YbI6gbj-Pe-b4OqfUAirif8_VoQwTFED65qANes",
+    "productId": "8713465193996645569",
+    "position": 36
+   },
+   {
+    "title": "Laptop màn hình kép GPD DUO",
+    "source": "Minh Hightech",
+    "price": "41.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRTgqfbTLc4gz7FPOtvw8Kh6d1AfSPbRNTN8pLEd4MZ92ZGwbGdX1VEwJtnRLVAZ7J26JS2Hb3y28tpyLkutK4EhZS4zT_TROQGGI5befLc333XerYwhAet",
+    "productId": "17231315915962572508",
+    "position": 37
+   },
+   {
+    "title": "LAPTOP HP 240R G10 (Thông số: Core 5-120U/Ram 8G/512GSSD/14inch FHD/WL/BT/3C/W11SL/Màu BẠC - 01Y)",
+    "source": "novazone.vn",
+    "price": "24.860.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQwHQLluhzrj9-vYt_V1HNh9SkMoj5nUVv-yqEw8njbbTVJluOEFj5XgBFiF86j2oGxqrMxJIrRHTaFg578kRRfwtnNK5QlJqZLuAtPNxFN7EgzEzy3uQRQ",
+    "rating": 5,
+    "ratingCount": 4,
+    "productId": "14892940522558411822",
+    "position": 38
+   },
+   {
+    "title": "S-A TECH - Laptop MSi Gaming GF63 11UC 443VN -RAM 8GB DDR4 3200MHz",
+    "source": "satech.com.vn",
+    "price": "15.690.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSgU2IfBkDfY5c7SQ2VX3XLW-TbofC8pYkSOHRPTtY91jt-iK8lUccaBNwiMQqYRfOwVZHSMN1Q-zG9vWum_Ljdak92FujoIEi5y_Pc8BkWXT0lZ9ihJ0Rz9w",
+    "productId": "18079492012119160062",
+    "position": 39
+   },
+   {
+    "title": "Laptop Máy tính bàn & Netbooks Máy tính Xách Tay Hp 14\" Bộ Xử Lý Intel N150 16Gb Ram 128Gb Ufs Microsoft Ai Office 365",
+    "source": "Microless.com",
+    "link": "https://www.google.com/search?ibp=oshop&q=M%E1%BB%9Bi+Laptop&prds=localAnnotatedOfferId:1,catalogid:6526625385191828301,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "7.464.928 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRWmYJoAFLZoHN4qUmFYnOQiPLrJn8YkWBx1m7Yf7lx2w5277C03FgjfI95DxMJHMD_TissRpgKtFK8hrJYBMatXBHKRj3uT7jNby_zJpb-P0H7o9ah-CxTcg",
+    "rating": 4.3,
+    "ratingCount": 31,
+    "productId": "6526625385191828301",
+    "position": 40
+   }
+  ],
+  "credits": 2
+ }
+}

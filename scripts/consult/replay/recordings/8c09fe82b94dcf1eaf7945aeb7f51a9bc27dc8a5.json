@@ -1,0 +1,400 @@
+{
+ "url": "https://google.serper.dev/shopping",
+ "request": {
+  "q": "ốp UAG monarch magsafe",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 20
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:19:31.309Z",
+ "body": {
+  "searchParameters": {
+   "q": "ốp UAG monarch magsafe",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "shopping",
+   "num": 40,
+   "page": 1,
+   "engine": "google"
+  },
+  "shopping": [
+   {
+    "title": "Ốp lưng iPhone 16 Pro Max UAG chống sốc Monarch Pro Titanium",
+    "source": "CellphoneS",
+    "link": "https://www.google.com/search?ibp=oshop&q=%E1%BB%91p+UAG+monarch+magsafe&prds=localAnnotatedOfferId:1,catalogid:10369835625400552380,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "1.800.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSLSpeTuIoPkebiNyQLjiQHOFBSP79U1xQ1UCO8CYppR_vRoNSj6ZuK9axRM4BN6Xj1RuoVM_7S9QmD6mwsoLo2pAZWEhP9xWUemc45Zk5P6rImAzm8xGRt",
+    "rating": 4.7,
+    "ratingCount": 302,
+    "productId": "10369835625400552380",
+    "position": 1
+   },
+   {
+    "title": "Ốp Lưng iPhone 14 UAG Monarch Pro Magsafe - Carbon Fiber",
+    "source": "Cello.vn",
+    "price": "1.900.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTILh6MO4f5oR2BqoXKjGXUNq-ymKlmfaDduBNI79C5H8rIS2A0EaMBVvVOPid-wazlhyITUhAhyPXl90gBvhnD4Oqq-d4NyQWiUlObpCfSMYh9vSUoFclbBg",
+    "productId": "1953678594195508467",
+    "position": 2
+   },
+   {
+    "title": "Ốp lưng Monarch Pro w Magsafe cho iPhone 17 Pro Max [6.9 inch]",
+    "source": "UAG Authorized Reseller",
+    "price": "2.000.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcT9cABpbXucgfNFhEnyQD_ook9syiwq02qRXT1wI8Q7xusRVNOpOH8cCOAWmtyjgFBc88pzLhODhNqvW4KMbGsaWxOpa940JKD1fJ2c8yjn9hi1blofxmxJYQ",
+    "rating": 4.1,
+    "ratingCount": 11,
+    "productId": "6113249309275079241",
+    "position": 3
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Monarch Pro",
+    "source": "CellphoneS",
+    "link": "https://www.google.com/search?ibp=oshop&q=%E1%BB%91p+UAG+monarch+magsafe&prds=localAnnotatedOfferId:1,catalogid:9963511138660996960,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "1.700.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTJIwqcpUsPT3rRkQYJNktQ0LTTd1yDvcOY8DsHILt3oUVSd8634555HJiwbwdPDAf5lDCvtriRxp3a6KIlODh8H4X4MDEmzgtiqvIPpNVLy6e21Q1Q1HoJ",
+    "rating": 4.6,
+    "ratingCount": 401,
+    "productId": "9963511138660996960",
+    "position": 4
+   },
+   {
+    "title": "Ốp lưng Samsung S9 UAG Monarch",
+    "source": "Phụ Kiện Samsung",
+    "price": "1.350.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSzjEsDu86F32Dipj5hss7u_EGyGJFvcG4504IQEmnTgQzMUTsWGvEW7XcUfrP9r1XtFV9c9UpZqglv76l1irxYREYwxeeM1K5xQtucJGzU69FQEbi5Q-XSMA",
+    "productId": "2734309097978852744",
+    "position": 5
+   },
+   {
+    "title": "Ốp lưng UAG iPhone 16 Pro Monarch Pro có Magsafe - MCL Trading Vietnam Co.,Ltd",
+    "source": "MCL Vietnam Trading CO.,LTD",
+    "price": "1.400.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcToq-JIi0rf2w-ryz55z-HNB4ylAfE7EN48gE2TO0SLFrCgpS5qsQ-uPlL9KS-dWXcrPuwUrPOWIBsXbQnU4_0dfUD6cw2gjuc9SAiTrj_BZVIL05tODhV6",
+    "rating": 4.8,
+    "ratingCount": 219,
+    "productId": "12772829966905323586",
+    "position": 6
+   },
+   {
+    "title": "Ốp Lưng iPhone 14 Pro UAG Monarch Pro Magsafe - Silver",
+    "source": "Cello.vn",
+    "price": "1.900.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQ6CSMLzPMMtNSK7kmYfqyOBdIfg5KXGtFH1l1NUqkCVKJIm2DhufRBLOnzvXi4C-SOcrH5h9sdYNisJJ8KRWo2vmH6UpAroJGzfEhcvIJ0Ej3ZXyJcNzDDpW0",
+    "rating": 4.3,
+    "ratingCount": 83,
+    "productId": "2277885805839553981",
+    "position": 7
+   },
+   {
+    "title": "Ốp lưng UAG Monarch Pro Magsafe cho iPhone 17 Pro",
+    "source": "vuapk.vn",
+    "price": "1.998.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRjJNIyw3mpD2s_Nb9Aw5J_7bXitXkPamaFpe53zTHtATSu8TYavFC5VNho_PADOWwZH1_tHKIKI8IKJHfLAo33bjsN1nrDeWRV1RnPFfcASBnbIyIqHOPo",
+    "rating": 5,
+    "ratingCount": 1,
+    "productId": "16538941989716221652",
+    "position": 8
+   },
+   {
+    "title": "Ốp lưng Monarch Pro w Magsafe cho iPhone 17 Pro [6.3 inch]",
+    "source": "UAG Authorized Reseller",
+    "price": "2.000.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQxbD0Q4lY2_UoRasvGPmTW7fMAle3d8DE1tLFjVQAPYCwCDCFMXuEwi0jAUNb3aHEElOsHSiE4XngYvacYt3C_ztB6IudrEEmJXBj7zHxFTnt1vHnHGKE_2g",
+    "productId": "18064258396572871824",
+    "position": 9
+   },
+   {
+    "title": "Ốp lưng Monarch Pro w Magsafe cho iPhone 15 Pro Max [6.7 inch]",
+    "source": "UAG Authorized Reseller",
+    "price": "1.400.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQkloyjHtLfVGVYRKtqqdldjXV_T9x8U5Xtcn-sh3CNm1tSzNtlPXcuBJmQkkeF5wnA6vvQXiINmY9R__2Y5olofsR4FSh34OwD4eLQqab_Y621h8qcVTme",
+    "productId": "1362059771925431685",
+    "position": 10
+   },
+   {
+    "title": "Ốp Lưng iPhone 14 Pro Max UAG Monarch Pro Magsafe - Mallard",
+    "source": "Cello.vn",
+    "price": "1.900.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTWz212OMtxHj8KSysDCoNTlLEGODYxDtg1ZPM0MN1RdJr9T5CGY4mhbMaUMSW6vaEO2g6ASGmYCsvZvMHzbD_nB0_29HfUgQVIXFEL-2rrVCBax7xvo21e25c",
+    "productId": "856284301490494257",
+    "position": 11
+   },
+   {
+    "title": "Ốp lưng Magsafe iPhone 17 Pro UAG Monarch Pro",
+    "source": "minhtuanmobile.com",
+    "price": "1.900.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSkHtarquF4RRXUyEaRu0TQqC3Hz8Y8wKyYbSQOd74kfmwz6LhqC741KpRwV-QQo4JvKuFOiE0z9ZQgoYfPepjfqRaVgVBEIwQIO2k_6Yy-L5vzodDL5T-ldA",
+    "rating": 5,
+    "ratingCount": 1,
+    "productId": "14257449115884750543",
+    "position": 12
+   },
+   {
+    "title": "[THANH LÝ] Ốp lưng Monarch Pro w Magsafe cho iPhone 14 [6.1 inch]",
+    "source": "UAG Authorized Reseller",
+    "price": "570.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcR_7tOWTXd4Yg0q5qq1-psi9pmIIOOwyjuVhZCQ4HvMEIt_MmCsTr9UuS1r8vj_uK8Wx3KchzQ0kqYbhygzT7Y5qEOVhmnpUKoGZ1r_6eUlbDtA-JfLoXe3",
+    "rating": 4.7,
+    "ratingCount": 131,
+    "productId": "15644224968009628082",
+    "position": 13
+   },
+   {
+    "title": "Ốp lưng UAG iPhone 16 Pro Max Monarch Pro có Magsafe - MCL Trading Vietnam Co.,Ltd",
+    "source": "MCL Vietnam Trading CO.,LTD",
+    "price": "1.400.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQwtBfdC9D6ebmKYlhmq72HvyJnvafAXdBGM3VI7yoQRaRPW6_a6hIEKhhtZJAEyUatEHR6d7GB1xaQpGXECA9r1b2DOcMjH4GyUO3Tmy0s2NvVnXBSAvulXw",
+    "productId": "15132275314787859904",
+    "position": 14
+   },
+   {
+    "title": "Ốp Lưng iPhone 15 Pro UAG Monarch Pro Magsafe - Rust",
+    "source": "Cello.vn",
+    "price": "2.000.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTmgtXMHxScKWovFGBQxPXNmyNhw0-Misy5iGEa7xm50Dx-ofisOHdIKSrkIRVILxUwkCOSWShDOCutypHuesFKs-nIq5V7DIyMG0gp3VElbzE0rFuRm1cETw",
+    "productId": "13180031918541064469",
+    "position": 15
+   },
+   {
+    "title": "[THANH LÝ] Ốp lưng Monarch Pro w Magsafe cho iPhone 14 Pro [6.1 inch]",
+    "source": "UAG Authorized Reseller",
+    "price": "570.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRJwUnzP7wIjvbMRT9cM_pkXKKq1BnYlWPjzvXbh90yomGX_kEV1Jm7kV-eikrxrzH6QT_QM-GtHmV8tFYK0GqN3Y3m53tqk8xYbM9YkgqAWqJdB1R8nKbu",
+    "rating": 4.7,
+    "ratingCount": 377,
+    "productId": "2508350778318838850",
+    "position": 16
+   },
+   {
+    "title": "Ốp lưng UAG Monarch Pro Magsafe cho iPhone 17 Promax",
+    "source": "vuapk.vn",
+    "price": "1.998.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTxLpNaZKI8-3rftq2deLN4hmC5NyKxQ2f1m5hd1mW1YvItZXey2Qty1WKDh2UKmv95UwYqGUMLYOXPIrimuBF0O3xwympiqbQLmN56M1TZGTEu0WDgVHjp",
+    "rating": 5,
+    "ratingCount": 4,
+    "productId": "10345256391470581496",
+    "position": 17
+   },
+   {
+    "title": "Urban Armor Gear Ốp iPhone 11 Pro UAG Monarch",
+    "source": "Phụ Kiện Dế Yêu",
+    "link": "https://www.google.com/search?ibp=oshop&q=%E1%BB%91p+UAG+monarch+magsafe&prds=localAnnotatedOfferId:1,catalogid:7421453587414260082,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "725.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTzvRw4q_HmaXjY4rN5ivF6laNTAsujf1MEVntPJKfMrmF_7VbOhU5vSw_G7OaKDWfNjzRePT_waNuA0uFv8nnL_oDQEdZ9KDSmnWZzvyPtCqyH9HoWQeC5UA",
+    "rating": 4.8,
+    "ratingCount": 125,
+    "productId": "7421453587414260082",
+    "position": 18
+   },
+   {
+    "title": "Ốp Lưng iPhone 14 Plus UAG Monarch Pro Magsafe - Kevlar Black",
+    "source": "Cello.vn",
+    "price": "1.900.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcT8XI-xSOalUFAoBJxGsiD0hFy25JiM-a5jZr0Y5OcVytvod3nBR0Zmh6rw5EPbqxCW0iJ10wXBGaYueXaOWOqEnI7678h6GMnZ6dHa_N7GGkD0F0XXu7Q19g",
+    "productId": "2613527471060734836",
+    "position": 19
+   },
+   {
+    "title": "Ốp lưng Magsafe iPhone 16 Pro UAG Monarch Pro",
+    "source": "minhtuanmobile.com",
+    "price": "1.590.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSjbGepGAU9h7eo4nZC7g_KqBqiBTZqXnfSAdT-Y6YgNJPGdR6D38D0tUmsYfScM7DKB6CZvKqNTCFz9y9d3vHQMsd404ibMzLjmG631vEYcC1zqvN_qL54bw",
+    "rating": 4.8,
+    "ratingCount": 219,
+    "productId": "1073000494725808388",
+    "position": 20
+   },
+   {
+    "title": "Ốp lưng Monarch Pro w Magsafe cho iPhone 15 Pro [6.1 inch]",
+    "source": "UAG Authorized Reseller",
+    "price": "1.400.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcT5KbOwSAkQwaFZ8FGp_IJzklJiKQaOMVrCt3efuLrlm7tme_BD0SI8WF6VD8DQjbfQIY2TYzORvpPV1VCXP7_b7Y2hNRqkwDQpP_4jSJ1NlZrHo1QBdSTc",
+    "rating": 4.6,
+    "ratingCount": 335,
+    "productId": "9837098350760407530",
+    "position": 21
+   },
+   {
+    "title": "Ốp lưng iPhone 18 Pro Max/17 Pro Max UAG Monarch Pro Veil With Mags",
+    "source": "CellphoneS",
+    "price": "2.200.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSbR04I9sTIRHoahazVfg8zrmc_6LaU-5HEBM7Iaul4qZ27FXDaO3KtyU8Y2deKHnGVH0RBmeelOafqS9X-cG8ez-_rI_SyAUK98ZnBNfaqR15Wh_lZ2XSC",
+    "productId": "15667554536589734925",
+    "position": 22
+   },
+   {
+    "title": "Combo Ốp lưng UAG iPhone 16 Pro Max Monarch Pro có Magsafe Carbon Fiber Và Ring Stand Black - MCL Trading Vietnam Co.,Ltd",
+    "source": "MCL Vietnam Trading CO.,LTD",
+    "price": "1.680.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcT1Vp5FOcfCaXkLtoSqErG6CWg3NN2CTlkcCSHNhrgLxgNczp3pGfhj8R_tDbGDJqX3kbndz2exdBq501TTSpAKHzica5zvovWBIrM_POMxvaldr_ncJT4QUQ",
+    "productId": "11001608701812869821",
+    "position": 23
+   },
+   {
+    "title": "Ốp Lưng iPhone 15 Pro Max UAG Monarch Pro Magsafe - Mallard",
+    "source": "Cello.vn",
+    "price": "2.000.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcT0oaTzxwvN0updg1gktqYYQ8D7qvK54T6exC4UsiUV8YobneQd9hiL54TVbQ_DVmF403EBz7OTaZKyRQeAltvhVx1TgVnyAYL9J-umLAq4QeJDectOZipWAg",
+    "rating": 5,
+    "ratingCount": 2,
+    "productId": "8197244205420605767",
+    "position": 24
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro UAG chống sốc Monarch Pro Orange",
+    "source": "vuapk.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=%E1%BB%91p+UAG+monarch+magsafe&prds=localAnnotatedOfferId:1,catalogid:14549016134021999447,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "2.000.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcS_gW_FTvpmMtx1h_aP_303V4FW2TxUkuau-o98XtsvkitBIWx0VS5dAR1O4MrAI23JwfJxiWkT5ixA7XiQSYes-XXFPDPIdXTYxvkNVJ1Z1tNM6N9uUcnN",
+    "rating": 4.7,
+    "ratingCount": 59,
+    "productId": "14549016134021999447",
+    "position": 25
+   },
+   {
+    "title": "[THANH LÝ] Ốp lưng Monarch Pro w Magsafe cho iPhone 14 Plus [6.7 inch]",
+    "source": "UAG Authorized Reseller",
+    "price": "570.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRJ9v03E6Qd2myYCa9bxPHMWsXY0OzyJAHq7uua4GlBY3WqKwhuvfay9LtRKRlktu2iYzlHcKre2KNtcqlpCpnSn5rjDk3u9_Oq4Qsk-jQx-KH4IZanC-ps",
+    "rating": 4.8,
+    "ratingCount": 273,
+    "productId": "3787717669786119337",
+    "position": 26
+   },
+   {
+    "title": "Ốp lưng Magsafe iPhone 17 Pro Max UAG Monarch Pro Exclusive Cap",
+    "source": "minhtuanmobile.com",
+    "price": "2.090.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcR1oGahVeti81inaIxaqAvvRX2uXeTvu2ugM_6b8mdLut8UyA4yzlRMyrhdlKkTjASv3EAL8aMgvmpz9ar_J12FD49U5_RLVl0uicBqEiMYugLRxT0jDqxt0g",
+    "productId": "5950298652396158398",
+    "position": 27
+   },
+   {
+    "title": "Ốp lưng UAG iPhone 18 Pro Limited Edition Monarch Pro có Magsafe",
+    "source": "broshop.vn",
+    "price": "4.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSBa2xFbA4H6_eCoozAXz-NpGv8eyrlWW2KKg3-LwoAjAn4vvSK4BjP_iYt2q3EKxiQDwgVc5f1cUX7yL4NFkXIKtJAoCebe8vrQc6Maip_iXCIrwwWynsHog",
+    "productId": "12937493343996753589",
+    "position": 28
+   },
+   {
+    "title": "Ốp lưng UAG iPhone 16 Monarch Pro có Magsafe - MCL Trading Vietnam Co.,Ltd",
+    "source": "MCL Vietnam Trading CO.,LTD",
+    "price": "1.400.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTU0-9KyoV01avjjOulGHHoOg3for4he9d7l922oP_ZS_sPOYk4R7_zHYqQy8yEdI960vAcm2oJAYe2t7_1rG2TDWANpjDmM8P5wMUulMrn0cgWpqEWafA39g",
+    "rating": 4.9,
+    "ratingCount": 137,
+    "productId": "13497621939832672292",
+    "position": 29
+   },
+   {
+    "title": "Ốp lưng iPhone 18 Pro Max/17 Pro Max UAG Monarch Pro Kevlar With Ma",
+    "source": "CellphoneS",
+    "price": "2.700.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcS-axIZMSgvOxzoWsCzrdABCX9tQoWwyGXLXQfVRui8VcNbf_fm3YCYpbQA0bX67lL5IGXxft0KrbM-49-EqkkEdSSy67WczopGQoJuc_dheBBS-3kofsBl",
+    "rating": 4.7,
+    "ratingCount": 7,
+    "productId": "6189406913423073724",
+    "position": 30
+   },
+   {
+    "title": "UAG Monarch Pro Case iPhone 17 Series (Titanium)",
+    "source": "NMS - Apple Authorised Reseller",
+    "price": "1.949.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTpk8NFlwtfC6lV8hgp1V9c42fJApihUYol0NWR-q4PiKjtDnrIsBviW4aP3n_dXL-2lrWhWr3QtLTQMBBEU01gi504HtCVNV1tjOQEFBJMIatqKjyltBFJUA",
+    "productId": "7575520723785552705",
+    "position": 31
+   },
+   {
+    "title": "Ốp lưng Magsafe iPhone 17 Pro Max UAG Monarch Pro",
+    "source": "minhtuanmobile.com",
+    "price": "1.900.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcS3nyYhFnUqQmjvLGd6EAH0ivC-6rJ9tLkWGgJwJGpEoQVwxKRHBCg6wXA5mhzzF-pca6svJp0NZzt98-sB7to3tCaECeBws727pla18O4WsxYyIn76_9AivA",
+    "rating": 4.6,
+    "ratingCount": 401,
+    "productId": "2808049410177451851",
+    "position": 32
+   },
+   {
+    "title": "Ốp lưng UAG Monarch Pro Magnetic dành cho Samsung S25 Ultra -Titanium / S25 Ultra",
+    "source": "vuapk.vn",
+    "price": "2.000.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQC_JyFV83LKsepZQMPMh4qOkapvzej38eLrPO0xWNPYH6ZZB0zycnHncrwi5_V8CnocqU4lnvGnbuNTIs398EGqcypnbBIzsIweOL5__8ThZ215-1yqDKTOA",
+    "rating": 4.8,
+    "ratingCount": 208,
+    "productId": "18421906504876634291",
+    "position": 33
+   },
+   {
+    "title": "Ốp lưng UAG iPhone 16 Pro Monarch Pro Kevlar có Magsafe - MCL Trading Vietnam Co.,Ltd",
+    "source": "MCL Vietnam Trading CO.,LTD",
+    "price": "1.350.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTOO-1Y0cf7xreiCuYyMS0pjcB-kmlygQz-OYOie5_2--TqKk8X79_cZrrfzCwM18rzi01FgdyD7zSc9li3tm-nCx4D-T28jJ5Z6d8qR2RkS8IYr5lDWtEM",
+    "rating": 4.8,
+    "ratingCount": 219,
+    "productId": "9230999671674005942",
+    "position": 34
+   },
+   {
+    "title": "Ốp lưng UAG iPhone 18 Pro Monarch Pro Veil Collection có Magsafe",
+    "source": "broshop.vn",
+    "price": "2.100.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSi25CdXT6UaGPT2XTv1foljhbdQk-FCtgFHDMEU81TE3QK52ZZ9Z0ikl-3dPTh2dd8vsKg5P1Y9x43mC9N6qy2psz9ewMkJ2iFVCV1ce9zczrKR8wBhKiyRw",
+    "productId": "8655559002524314700",
+    "position": 35
+   },
+   {
+    "title": "Ốp lưng iPhone 14 Pro Max UAG Chống sốc Monarch Kevlar",
+    "source": "Cello.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=%E1%BB%91p+UAG+monarch+magsafe&prds=localAnnotatedOfferId:1,catalogid:11733433849118350922,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "1.900.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSMoqF7GF0w7LNUjDRSCsNv9BJTizLzDESzeavHLyN1yKPvoJhGVsIvydXS0u50Fh_Kwy5lmFLrMlxvHqxoKZoBithYvaKEAVLRb0qewGB6",
+    "rating": 4.7,
+    "ratingCount": 390,
+    "productId": "11733433849118350922",
+    "position": 36
+   },
+   {
+    "title": "Ốp lưng Magsafe iPhone 17 Pro UAG Monarch Pro Kevlar",
+    "source": "minhtuanmobile.com",
+    "price": "2.380.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQXSNA1vE8hNPOXQkbVmtEE4mYvLFlsT6y6W6jA4WgklYJrANHbav6W3XZpyjTOjcsGESSFRVzhciBRTdEdLCLpZ248Nmzbx5m4bkwcj2vcRsACQMyszPfbyA",
+    "rating": 4.7,
+    "ratingCount": 211,
+    "productId": "7934082054883810965",
+    "position": 37
+   },
+   {
+    "title": "Ốp lưng Samsung Galaxy Note 10 UAG Monarch chống sốc",
+    "source": "Phụ Kiện Samsung",
+    "price": "1.290.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQGQ-erWLN2S5JM2DcI3mzDr9ZdZR1yspRlq2o3BKyZqzd77UmvRm2iYLJIPoCJAoLsxCfrldVrC83ZzIfNeeC566VCVXjsnUeoawOC1dTDg7HyAVdKCCPTKg",
+    "productId": "14728352618298263767",
+    "position": 38
+   },
+   {
+    "title": "Ốp lưng UAG Monarch Pro Magnetic cho iPhone 16 Series -Titanium PU / iPhone 16 Pro Max",
+    "source": "HoaiBaoStore",
+    "price": "1.998.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTMO8Iil4UlOxYt7TgFJEFM-vO4XgbvkKPqMX7pe3RR6C_AUhD8xKgArx-TPSpnTjobbZeybQvkg1L0Syhj0FVQpQRS9Ub86wKIQ9dtO90bvNqTYffF9TYo",
+    "rating": 4.7,
+    "ratingCount": 302,
+    "productId": "6724393466222796228",
+    "position": 39
+   },
+   {
+    "title": "UAG Vòng giữ điện thoại Monarch Magnetic 2 (Gunmetal)",
+    "source": "NMS - Apple Authorised Reseller",
+    "price": "1.449.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcS2KCUryBT7hTqiAIw8iKLcMxA9NaDE-RSHQrsQG-f81fiDN_SwYONE5MH7DXh_FfOVwZYHteeCH9BbsH3Y5RW8V42OfJ2Kq11_JrxTNk8ViTOcwDLEejcUiw",
+    "rating": 4.5,
+    "ratingCount": 491,
+    "productId": "16956645464780256691",
+    "position": 40
+   }
+  ],
+  "credits": 2
+ }
+}

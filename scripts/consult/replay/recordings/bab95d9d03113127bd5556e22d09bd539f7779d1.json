@@ -1,0 +1,79 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Sếp nam, 40 tuổi, thích cà phê Cà phê quà tặng thích cà phê gia Shopee Tiki Lazada",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:45:17.734Z",
+ "body": {
+  "searchParameters": {
+   "q": "Sếp nam, 40 tuổi, thích cà phê Cà phê quà tặng thích cà phê gia Shopee Tiki Lazada",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "20+ Quà Tặng Sinh Nhật Sếp Dưới 1 Triệu Sang Trọng, Ý ...",
+    "link": "https://www.decathlon.vn/blog/qua-tang-sinh-nhat-sep-duoi-1-trieu/?srsltid=AU7gw4XmgFfEPg4vWpnKKsKL5KrUXGcgwoaFS8kXhO8dXGPmaDc-oRmj",
+    "snippet": "Bút ký cao cấp · Cốc/Ly hoặc bình giữ nhiệt · Hộp cơm giữ nhiệt · Tai nghe Bluetooth thể thao · Nước hoa mini theo set (nếu sếp có sử dụng nước hoa).",
+    "date": "20 thg 3, 2026",
+    "position": 1
+   },
+   {
+    "title": "Quà tặng sếp nam: Top 20 món quà sang trọng và thiết thực",
+    "link": "https://jadify.vn/blogs/news/qua-tang-sep-nam?srsltid=AU7gw4WjEnona-_4YBtlRW25msfqaRVRvNs-1X7ua5I2r1xcHfs-8B3d",
+    "snippet": "3.1. Đồng hồ đeo tay · 3.2. Bút ký cao cấp · 3.3. Cà vạt · 3.4. Tranh nghệ thuật · 3.5. Rượu nhập khẩu · 3.6. Trà thượng hạng · 3.7. Tượng linh vật ...",
+    "date": "23 thg 12, 2025",
+    "position": 2
+   },
+   {
+    "title": "30 Quà sinh nhật Sếp dưới 1 triệu Sang trọng, Dễ ghi điểm",
+    "link": "https://muaquatet.vn/qua-tang-sinh-nhat-sep-duoi-1-trieu",
+    "snippet": "Tặng bộ ly là cách bạn bày tỏ sự tôn trọng đối với sở thích cá nhân của sếp, đồng thời mong muốn sếp có những giây phút thư thái, an yên bên bạn bè và gia đình.",
+    "rating": 4.8,
+    "ratingCount": 5,
+    "position": 3
+   },
+   {
+    "title": "25+ Quà Tặng Sếp Nam Ý Nghĩa, Độc Đáo, Tinh Tế Cho ...",
+    "link": "https://jungkian.com/25-qua-tang-sep-nam-y-nghia-doc-dao-tinh-te-cho-moi-dip/",
+    "snippet": "Cà phê đặc sản phù hợp với sếp yêu thích cà phê và phong cách làm việc hiện đại. Nên chọn loại có bao bì sang trọng, nguồn gốc rõ ràng và hương ...",
+    "date": "8 thg 9, 2026",
+    "position": 4
+   },
+   {
+    "title": "Quà tặng sinh nhật sếp nam: 30 gợi ý tinh tế kèm nơi mua ...",
+    "link": "https://aeonmall-tanphuceladon.com.vn/tin-tuc/qua-tang-sinh-nhat-sep-nam-30-goi-y-tinh-te-kem-noi-mua-uy-tin.html",
+    "snippet": "Voucher cà phê tiếp khách là lựa chọn nhẹ nhàng nhưng thực tế, phù hợp với sếp nam thường xuyên gặp gỡ đối tác hoặc làm việc ngoài văn phòng.",
+    "date": "23 thg 1, 2026",
+    "position": 5
+   },
+   {
+    "title": "Băn khoăn chọn quà cho sếp nam, đây là bí kíp dành ...",
+    "link": "https://www.gotit.vn/blog/qua-sinh-nhat-cho-sep-nam.122",
+    "snippet": "Việc chọn quà cho sếp nam rất khó, nhưng sẽ trở thành cơ hội để tạo ấn tượng với sếp. Dưới đây là một số bí kíp và gợi ý quà thú vị.",
+    "date": "28 thg 11, 2023",
+    "position": 6
+   },
+   {
+    "title": "Set quà tặng 3 món cà phê - trà - đồ ăn vặt ý nghĩa cho ...",
+    "link": "https://shopee.vn/Set-qu%C3%A0-t%E1%BA%B7ng-3-m%C3%B3n-c%C3%A0-ph%C3%AA-tr%C3%A0-%C4%91%E1%BB%93-%C4%83n-v%E1%BA%B7t-%C3%BD-ngh%C4%A9a-cho-th%E1%BA%A7y-c%C3%B4-s%E1%BA%BFp-v%C3%A0-%C4%91%E1%BB%93ng-nghi%E1%BB%87p-C%E1%BB%99ng-C%C3%A0-Ph%C3%AA-i.354028981.54406709356",
+    "snippet": "Mua Set quà tặng 3 món cà phê - trà - đồ ăn vặt ý nghĩa cho thầy cô, sếp và đồng nghiệp - Cộng Cà Phê giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 7
+   },
+   {
+    "title": "Top 10 Quà Tặng Sếp Ý Nghĩa Nhân Dịp Sinh Nhật ...",
+    "link": "https://vn.my-best.com/36278",
+    "snippet": "Top 5 Quà Tặng Sinh Nhật Ý Nghĩa Dành Cho Sếp Nam tốt nhất được ưa chuộng (Tư vấn mua) · Yến Sào Trung NamTổ Yến Sào Tinh Chế · Trà ViệtHộp Trà Tri Ân · HarioBình ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

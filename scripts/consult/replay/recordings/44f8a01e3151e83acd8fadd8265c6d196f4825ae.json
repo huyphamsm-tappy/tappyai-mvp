@@ -1,0 +1,36 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Khách sạn San Marino\" Đà Nẵng site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:53:15.834Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Khách sạn San Marino\" Đà Nẵng site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "San Marino Boutique Danang - Giá cả và Ưu đãi 2026, Đà ...",
+    "link": "https://vn.trip.com/hotels/da-nang-hotel-detail-12173614/san-marino-boutique-danang/",
+    "snippet": "Dạ em có trải nghiệm tốt ở khách sạn San Marino ạ. Nhân viên phục vụ dễ thương và nhiệt tình, đặc biệt là anh Cảnh ạ. Lần sau khi quay lại Đà Nẵng, em sẽ ...",
+    "position": 1
+   },
+   {
+    "title": "San Marino Boutique Danang Đánh giá của khách",
+    "link": "https://vn.trip.com/hotels/da-nang-hotel-detail-12173614/san-marino-boutique-danang/review.html",
+    "snippet": "Dạ em có trải nghiệm tốt ở khách sạn San Marino ạ. Nhân viên phục vụ dễ thương và nhiệt tình, đặc biệt là anh Cảnh ạ. Lần sau khi quay lại Đà Nẵng, em sẽ book ...",
+    "position": 2
+   }
+  ],
+  "credits": 1
+ }
+}

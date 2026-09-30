@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Ốp lưng UAG iPhone 17 Pro Max site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:41:10.295Z",
+ "body": {
+  "searchParameters": {
+   "q": "Ốp lưng UAG iPhone 17 Pro Max site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Ốp lưng dân sự UAG chính hãng có Magsafe cho iPhone ...",
+    "link": "https://www.lazada.vn/products/op-lung-dan-su-uag-chinh-hang-co-magsafe-cho-iphone-17-pro-max-iphone-17-air-iphone-16-pro-max-iphone-15-pro-max-iphone-14-pro-max-iphone-12-13-pro-max-op-bao-ve-bac-quan-su-chong-soc-chong-truot-mong-gon-tinh-te-i13403113173.html?srsltid=AU7gw4WENake4drmzQ80FAEyEjW9iKgETXrBJcDp5VbAJmxwt9FtRDEN",
+    "snippet": "Cấu trúc overmold ba lần sáng tạo kết hợp với lõi đệm Hex cung cấp bảo vệ chống rơi lượng lên đến 20 feet (6 mét). Một cạnh màn hình được nâng lên giúp chống ...",
+    "position": 1
+   },
+   {
+    "title": "Ốp lưng ngụy trang UAG cho iPhone 17 Pro Max 16 15 Plus 14 ...",
+    "link": "https://www.lazada.vn/products/pdp-i3257954159.html?srsltid=AU7gw4XO-nA7U1KxbLOavuEZbdp0faapG5-i1vC0CP2QDB6g-_WRZYBs",
+    "snippet": "Được trang bị công nghệ MagSafe, vỏ này cho phép gắn liền các phụ kiện MagSafe, nâng cao trải nghiệm của bạn. Ngoài ra, Giá để điện thoại tích hợp cung cấp thêm ...",
+    "position": 2
+   },
+   {
+    "title": "Ốp Lưng UAG có Camera Button cho iPhone 17 Pro Max ...",
+    "link": "https://h5.lazada.vn/products/op-lung-uag-co-camera-button-cho-iphone-17-pro-max-monarch-pro-exclusive-chong-soc-toan-dien-i3197724604-s15249095072.html",
+    "snippet": "Được chế tác từ kính chống trầy xước + khung kim loại + viền silicon dẻo, mang đến độ bền cao và cảm giác bấm cực kỳ nhạy, không ma sát. Giúp bạn mở ...",
+    "position": 3
+   },
+   {
+    "title": "Ốp lưng UAG Pathfinder SE chính hãng với Magsafe cho iPhone ...",
+    "link": "https://www.lazada.vn/products/op-lung-uag-pathfinder-se-chinh-hang-voi-magsafe-cho-iphone-17-pro-max-iphone-17-air-iphone-16-pro-max-iphone-15-14-13-12-pro-max-vo-dien-thoai-cap-bac-quan-su-go-ghe-chong-roi-dap-bao-ve-trong-suot-i13404795989.html?srsltid=AU7gw4XJWW1JryiKcvMBUV4cKaZEeBJdmJ1sW83PpRwUpVqLCE__v-Sa",
+    "snippet": "Một mô hình Hex nội thất tăng chống sốc. Được làm bằng 50% nguyên liệu tái chế, kết hợp tính bền vững với bảo vệ hiệu suất cao. Tương thích với ...",
+    "position": 4
+   },
+   {
+    "title": "Ốp lưng UAG Plasma Xte chính hãng với Magsafe cho iPhone ...",
+    "link": "https://www.lazada.vn/products/op-lung-uag-plasma-xte-chinh-hang-voi-magsafe-cho-iphone-17-pro-max-iphone-17-air-iphone-16-pro-max-iphone-15-14-13-12-pro-max-vo-dien-thoai-chong-soc-chac-chan-vo-bao-ve-co-chan-de-bac-quan-su-chong-truot-i13406308651.html?srsltid=AU7gw4XHVaw-7DkkZ-jxR6RDWrvQ_ZBnppO9Pcni2Fkhnku8u1As2WKY",
+    "snippet": "Ốp lưng UAG Plasma Xte chính hãng với Magsafe cho iPhone 17 Pro Max / iPhone 17 Air / iPhone 16 Pro Max / iPhone 15 14 13 12 Pro Max vỏ điện thoại chống sốc ...",
+    "position": 5
+   },
+   {
+    "title": "Ốp Lưng Trong Suốt Chống Sốc UAG cho iPhone 17 Pro Max / ...",
+    "link": "https://h5.lazada.vn/products/op-lung-trong-suot-chong-soc-uag-cho-iphone-17-pro-max-17-pro-plyo-magnetic-clear-case-chong-soc-toan-dien-i3197743725-s15249381908.html",
+    "snippet": "UAG Plyo đạt chuẩn 3X MIL-SPEC 810G-516.6, chống sốc lên đến 4,9 mét, giúp iPhone 17 Series an toàn ngay cả trong những cú rơi bất ngờ. Công ...",
+    "position": 6
+   },
+   {
+    "title": "Ốp lưng UAG cho iPhone 18 Pro Max 17 / Air ...",
+    "link": "https://h5.lazada.vn/products/op-lung-uag-cho-iphone-18-pro-max-17-air-17-pro-17-pro-max-model-pathfinder-clear-tu-tinh-cho-iphone-16-pro-max-iphone-13-pro-max-vo-dien-thoai-i13458801414-s117323810560.html",
+    "snippet": "Tăng cường chống va đập: Được gia cố chất liệu TPU cản hấp thụ và phân tán tác động để bảo vệ điện thoại của bạn từ giọt và những cú sốc.",
+    "position": 7
+   },
+   {
+    "title": "Ốp Lưng UAG Pathfinder / Civilian / Monarch Pro Orange Cho ...",
+    "link": "https://h5.lazada.vn/products/op-lung-uag-pathfinder-civilian-monarch-pro-orange-cho-iphone-17-pro-17-pro-max-phien-ban-cam-dac-biet-i3264819254-s15760585524.html",
+    "snippet": "Ốp Lưng Aulumu cho iPhone 17 Pro Max / 17 Pro, Rugged Case, Chống. 757.000 ₫ · Ốp Lưng Aulumu cho iPhone 17 Pro Max / 17 Pro, A17 Slim ShockProof,. 1.732.000 ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

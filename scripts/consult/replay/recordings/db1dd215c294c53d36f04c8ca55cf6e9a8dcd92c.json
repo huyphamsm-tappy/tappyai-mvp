@@ -1,0 +1,54 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"La Siesta\" gần Sài Gòn site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:06:39.779Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"La Siesta\" gần Sài Gòn site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Khách sạn La Siesta Premium Saigon Central - Giá cả và ...",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-hotel-detail-120437423/la-siesta-premium-saigon-central/",
+    "snippet": "Khách sạn La Siesta Premium Saigon Central ; Điểm tham quan: Chợ Bến Thành. 310m ; Điểm tham quan: Phạm Ngũ Lão. 470m ; Điểm tham quan: Phố Nhật Sài Gòn. 1,5km.",
+    "position": 1
+   },
+   {
+    "title": "La Siesta Premium Saigon Đánh giá của khách",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-hotel-detail-102316758/la-siesta-premium-saigon/review.html",
+    "snippet": "Khám phá đánh giá La Siesta Premium Saigon thực tế từ khách du lịch. Với 212 đánh giá đã được xác thực và xếp hạng 9.5/10, bạn có thể đặt phòng với sự an ...",
+    "position": 2
+   },
+   {
+    "title": "La Siesta Premium Saigon - Giá cả và Ưu đãi 2026, TP. Hồ ...",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-hotel-detail-102316758/la-siesta-premium-saigon/",
+    "snippet": "La Siesta Premium Saigon · 50m² | Tầng: 9 · Có cửa sổ · Không hút thuốc · Wi-Fi miễn phí.",
+    "position": 3
+   },
+   {
+    "title": "Tìm Khách Sạn 5 Sao Tại TP. Hồ Chí Minh",
+    "link": "https://vn.trip.com/hotels/star5/city/vn/ho-chi-minh-city.html",
+    "snippet": "Rất thuận tiện với rất nhiều nhà hàng và cửa hàng tại Trung tâm Sài Gòn. ... Khách sạn La Siesta Premium Saigon Central. 9,3/10Tuyệt Vời. Shaharul MY“Chúng ...",
+    "position": 4
+   },
+   {
+    "title": "Các khách sạn ở gần Tràng Tiền Plaza, Hà Nội",
+    "link": "https://vn.trip.com/hotels/hanoi-trang-tien-plaza/hotels-c286m6702441/",
+    "snippet": "Khách sạn La Siesta Premium Lakeside. Quận Hoàn Kiếm, Hà Nội | Cách Tràng Tiền Plaza 0.22KM. 9,3/10. Tuyệt Vời 113 đánh giá. La Siesta Premium Lakeside tọa lạc ...",
+    "position": 5
+   }
+  ],
+  "credits": 1
+ }
+}

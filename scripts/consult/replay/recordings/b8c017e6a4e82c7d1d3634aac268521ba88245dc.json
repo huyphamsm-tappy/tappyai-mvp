@@ -1,0 +1,391 @@
+{
+ "url": "https://google.serper.dev/shopping",
+ "request": {
+  "q": "laptop mới Dành cho sinh viên",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 20
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:35:24.812Z",
+ "body": {
+  "searchParameters": {
+   "q": "laptop mới Dành cho sinh viên",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "shopping",
+   "num": 40,
+   "page": 1,
+   "engine": "google"
+  },
+  "shopping": [
+   {
+    "title": "Laptop MSI Modern 15 F1MG-1225VN",
+    "source": "Phong Vũ",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+m%E1%BB%9Bi+D%C3%A0nh+cho+sinh+vi%C3%AAn&prds=localAnnotatedOfferId:1,catalogid:14842682624889745781,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "18.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSitdJi5nKbWXYq_dilqC51Zdc12a6a_G3qgrirQQcjtHDEMWFdRORSgB8MZzqjCJaikwAvHuOnOEGvedNhGNctp-DZoyw4y57qVleemynOIbD5GbtV2QcEKg",
+    "productId": "14842682624889745781",
+    "position": 1
+   },
+   {
+    "title": "Laptop làm việc văn phòng, học online DEEQ, màn hình 14 inch FullHD 1080, Ram 8G,SSD M2 128G, Intel J4150 (4 Core, 2.5Ghz)",
+    "source": "Promax Shop",
+    "price": "6.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTKUHJcqLO0r3RYDqdNLPxALOZoNKvQquO6jfz40IPgzt3FcpkdDDcExrXWgmIkN8WzU4m4S01KrW_KQOaZ7NmK6etn76at0IowEBvLg1dYubiLsMD2v58W8A",
+    "productId": "17180646393086510740",
+    "position": 2
+   },
+   {
+    "title": "Laptop MSI Modern 15 F1MG-1264VN (Core 5 120U, 16GB, 512GB, Full HD, Win11)",
+    "source": "Thế Giới Di Động",
+    "price": "19.190.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRojpE4Obuu4BAf_rOFCkFePtRIXucMv8gCLgb7W7Uw1Ttkpy7irAdFUvftXnPziGL81L0VjqKXNKdfmkumovBFUa9a8356xrMVg2MZdvNmmuJqhSahH_0DwQ",
+    "rating": 5,
+    "ratingCount": 7,
+    "productId": "13823072894652460220",
+    "position": 3
+   },
+   {
+    "title": "Laptop Lenovo IdeaPad Slim 3 14IPH11 83UQ002GVN",
+    "source": "Phong Vũ",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+m%E1%BB%9Bi+D%C3%A0nh+cho+sinh+vi%C3%AAn&prds=localAnnotatedOfferId:1,catalogid:6844782361974112895,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "28.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTeILJOKAEngI-2qrcdFZfQn136dKotYzdko4hw03ZfVu7kEcHXYj7K1XG-Z1mBjC0Yi0rNNCJAXRKZmOZhvoy88ck_mYzyZLfJ0Uk-giQjDf2K2_dhiCg_nQ",
+    "productId": "6844782361974112895",
+    "position": 4
+   },
+   {
+    "title": "Intel Core i7 10 thế hệ máy tính xách tay HD 15.6 inch mới, ổ SSD 16GB+1TB, mở khóa vân tay, văn phòng/chơi game/th",
+    "source": "Shopee",
+    "price": "8.210.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRlxNxF_zgQbcVqJ0e4hCuvlp9fFWTGR-YtGtUipFRgFLsi9iW7NMM1vxyrDJa7AL8KgJqcbBEg1L_nI87sTS6OdOi7tPkbtUn2e_HDOj5Qk04Lb7gy3NMR",
+    "rating": 5,
+    "ratingCount": 1,
+    "productId": "8181131811145350398",
+    "position": 5
+   },
+   {
+    "title": "Laptop HP 14 - ep1179TU C89ZSPA (Intel Core 5 120U/16GB/512GB/14\" FHD/Win 11/Bạc)",
+    "source": "Điện Máy HC",
+    "price": "20.950.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRhOyK78XIhyW483Vu62tFnVNnVbPyFKUb_Gcn8immmUk9WnizUinm7yhLfYS6_-h2nkllh660Kx-jtx7q3c0IpBIqvvkY9Daq9OcKjfMlI3CaYU51hyODWNQ",
+    "rating": 4.8,
+    "ratingCount": 502,
+    "productId": "15677358442379142192",
+    "position": 6
+   },
+   {
+    "title": "Microsoft Surface Pro 7 Plus",
+    "source": "Simpletek",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+m%E1%BB%9Bi+D%C3%A0nh+cho+sinh+vi%C3%AAn&prds=localAnnotatedOfferId:1,catalogid:4365574846274743572,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "14.723.956 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQjURWn3WiTS4Sj-gdbF-ZrAMFyQjjo3ZDrqmFDerj0o4mxuaG6hHVctW1Hn8jE3zFekpyBua5Cews2tHT2XaUQugxtkiiENnInTLQ7j9jb-zjeFrLLR3AX",
+    "rating": 4.8,
+    "ratingCount": 756,
+    "productId": "4365574846274743572",
+    "position": 7
+   },
+   {
+    "title": "Balo laptop cao cấp siêu mỏng nhẹ dành cho dân văn phòng, sinh viên Mặt nhẵn",
+    "source": "zongvietnam.com",
+    "price": "386.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSvVz5xNhNcdITEKGG-2fVdOrInmZZgdhp5L8I_81rEl4yOPgMnyHeNwVJYC9XtbjCHFFXoNtHol0CRtKtKFhcIMjV4Y6bwmEpykD2ZKtmRlUJtAK8LNVhpYg",
+    "productId": "5720860820513152935",
+    "position": 8
+   },
+   {
+    "title": "Laptop Dell 15 DC15255 DC5R5802W1 /R5-7530U/16GB/512GB/15.6FHD120Hz/OffH24+365 1Y/Win11",
+    "source": "MediaMart",
+    "price": "19.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTxyRmAYquIXmTm4JKzowDQVZIenjpLU1pZmK9DWbdV2qIr2PYZ6rn1RY-qjQcdm0t7sqdLfCeRph1KlMrW0BSBYLrET0QoVfEtVqR1Kr5L",
+    "rating": 4.5,
+    "ratingCount": 2,
+    "productId": "4686647128597193967",
+    "position": 9
+   },
+   {
+    "title": "Balo Laptop 17 Inch In Đơn Giản Thời Trang Phù Hợp Cho Học Sinh Sinh Viên Size 51cm BALO-",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+m%E1%BB%9Bi+D%C3%A0nh+cho+sinh+vi%C3%AAn&prds=localAnnotatedOfferId:1,catalogid:1578552430214565355,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "169.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTnKSJvQERUmgLYI-4g5NsJyG2lowFgcqeXuDs__5zA996Vy9cBQ5V49B81mXVch9e6iEFtJGU2N6zeMC3ZFNj1O2VuRVwzUlNXdAgIpfTNtPV4baI5Pjk6FA",
+    "rating": 5,
+    "ratingCount": 3,
+    "productId": "1578552430214565355",
+    "position": 10
+   },
+   {
+    "title": "Máy tính xách tay/ Laptop Dell 15 DC15250 - CPH991 (i7-1355U) (Bạc)",
+    "source": "Phong Vũ",
+    "price": "25.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQRaeGyhblgfPIzuwSjQRUSROBpiA_EXDP7IQT7ptIuRpUT5HDAI8G2X2ORRr6VURcwJnwaj83KTPzHgELtcGfjiBhqIP5p5DUtmaeOb4al_O48V4T-buBx_A",
+    "rating": 2,
+    "ratingCount": 1,
+    "productId": "4185348533567892912",
+    "position": 11
+   },
+   {
+    "title": "Hp Envy x360 14-es1013dx",
+    "source": "Sửa chữa máy tính Hiếu PC",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+m%E1%BB%9Bi+D%C3%A0nh+cho+sinh+vi%C3%AAn&prds=localAnnotatedOfferId:1,catalogid:12600134259194745454,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "14.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSvIyIDBikCgQP6IbcO93D3xP2_Keeui6AIS-PNJUzTrPjrsfnECLCpMlEbjqOCwpOgXi9zYRpgo467QZQz2-Js3Mowq97xbrymOllKYAcZbIGObBBeLWJGbA",
+    "rating": 4.5,
+    "ratingCount": 23,
+    "productId": "12600134259194745454",
+    "position": 12
+   },
+   {
+    "title": "Dell 14 Dc14255 2026 Ai Ryzen Ai 5 330 Ryzen AI 5 330, RAM 16GB, SSD 512GB, AMD Radeon 820M Graphics, 14 inch FHD+, Win 11, New 100%",
+    "source": "Techcare.vn",
+    "price": "22.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQO-8llyQDEJY3_G25Z60aic9n6CEGjJ3MBZSe6ujGHhyBT3Grlg6WsOOhRRnf3T-7ivl1Ym-j4UzvwqOXals0N84EfOWHnzNnqHhADP4lKMuRvGRqhJV056g",
+    "productId": "16988328992093755978",
+    "position": 13
+   },
+   {
+    "title": "Laptop Mini NEC VC6 I5 10th/8GB/128GB SSD/12.5inch FHD siêu nhỏ gọn,nhẹ 0.8kg có HDMI tặng chuột + Túi CS",
+    "source": "Shopee",
+    "price": "4.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTAnxJwIiAoLeoOXBylkG9zd0P9Qx7OVoeAly6QqR8B-qLCafIdIFp9lCV4E82LNktmZ15gYZeq9baddN-e05CsBXifioypJoVJszsTOZ4bAK0621aWonhWfg",
+    "rating": 5,
+    "ratingCount": 1,
+    "productId": "379869951855857549",
+    "position": 14
+   },
+   {
+    "title": "Laptop Core i5-1145G7 - Tặng Kèm Phần Mềm Hát Live",
+    "source": "thietbihatlive.com",
+    "price": "9.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcR5XZusIF8235NpIdQTKuYRgk0LBwJCoHDUbTErJnKAZdku6yQfVeocpwxfr5CtAq7yuTo8F9Zc58d8zSmRANdKa2COYfl6MpRaMj75PNQ",
+    "productId": "18428456378760635619",
+    "position": 15
+   },
+   {
+    "title": "Lecoo Pro 14 2025 (Ultra 5-135H| 32GB RAM| 1TB SSD)",
+    "source": "SAZO",
+    "price": "26.300.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQXWBKgeYM8mrxc_wclNaxFUApxMMPT3ZXPElDRyTyQwU6g2Q0uI-ZANbsEqqqG-Z_YQyepGKS8UHRw8a-_hhj19qQB265AsYMj_P-ESU4J3IMGcBZQnwSr5w",
+    "productId": "18336035516839150161",
+    "position": 16
+   },
+   {
+    "title": "Balo Laptop Nam Nữ Chống Sốc Chống Nước Sức Chứa Lớn Cho Học Sinh, Sinh Viên Màu Đen, Xanh",
+    "source": "188.com.vn",
+    "price": "820.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTsKMLzcdqNo0-tIY5tBeHwWKAbaqXlsoHbXrZMtzs-kX3J7EDLxQWvakz2717wBgHns0ZUAtO1oX9aX4azVqLbSXbGkCpRYOjqIEtcr6B1Wc1qKRxMYA8ZrQ",
+    "productId": "14114555197358161268",
+    "position": 17
+   },
+   {
+    "title": "Laptop Lenovo 20296 Pentium 3556U- Giá Rẻ, Chính Hãng",
+    "source": "truonggiang.vn",
+    "price": "3.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQW0EZQHkEF5tae8ArwQmfRCN4JssTgKjvyh_BYDL5k7ke15rjR2cxLOTC54DAf0G5W8hRAP5jENbO3EgccvQWJMraGbTSL-rotu0MIz6ns9dZPel-w6XH2",
+    "productId": "15354511222894356024",
+    "position": 18
+   },
+   {
+    "title": "Laptop Dell 15 DC15250 CPH991 (i7-1355U | 16GB | 1TB | Intel UHD | 15.6' FHD 120Hz | Win 11 + Office Home 2024) -Hàng Chính Hãng",
+    "source": "Hangchinhhieu.vn",
+    "price": "27.690.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSKs7A4BSQZ0mMoZzEju6miOv_EyaQEqaN_fge6bo86wi7QUuubPAyXV2Gavh1pd2K0YzvcPYYJZjlWLD2148lFzyHilXiDv8vZMuWuLwHb0oMPeTDL1oVl",
+    "rating": 5,
+    "ratingCount": 20,
+    "productId": "3896913996952992726",
+    "position": 19
+   },
+   {
+    "title": "Laptop Dell 15 DC15255-A261BLK (R5-7530U | Ram 8GB | Ssd 1TB | 15.6\" Fhd | Touch | Win 11 | HV1N4 | Nk)",
+    "source": "sp-one.vn",
+    "price": "14.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTR9dlo9iMjVzQVKGNXK6X8uWKzAk81R9q7q24i5crHRYcPYsqjZ2RcXewka6swtyQu9mJObe-3NI-j3xhCxwilaC4LpZkdSGB4mCa-h-kjxyCjRPAJAZE6kg",
+    "productId": "12787996373221785425",
+    "position": 20
+   },
+   {
+    "title": "Laptop SingPC",
+    "source": "Điện máy XANH",
+    "price": "17.390.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcS5SG8wGqo9UGaZyAtt-PZAvCUtAHJD9WE7jOsLA06C2b4S72xq2l0MHS9oSu6uP6gfu1OyA_zCyKR4eO0lLBuFdcf7qWJo4JkdAqZ1eXBXhOS09Z2Og-GAxg",
+    "productId": "1998976763239144643",
+    "position": 21
+   },
+   {
+    "title": "Laptop HP 240R G10 C3SG9AT (Core 5-120U/8G/512GSSD/14.0FHD)",
+    "source": "Trường Phát PC",
+    "price": "20.900.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcT-9v5mrw8Wmh5hRDntxEtxlkNMxFg3j0qNyn0uOhFm4ToRYvc-nqOwpRjaCHdkeDge-XgBqD4xlNDT9nmVQlu3yJbwINzztxtTCswOAq41Tn6_03d1E4CH",
+    "productId": "12095790767547263834",
+    "position": 22
+   },
+   {
+    "title": "Laptop HP 14-ep1012TU D72CPPA",
+    "source": "Công Ty Cổ Phần Pico Retail",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+m%E1%BB%9Bi+D%C3%A0nh+cho+sinh+vi%C3%AAn&prds=localAnnotatedOfferId:1,catalogid:10635931631497324557,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "24.390.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSi5xwSiHL32VttRDu9C6HjICz5jvgQJeNUkIIGurto5ZD6YcjBxb-XpbRsBBWSF0Y9j4xN4KDRVZGqCHzwqbwBarkv-BgX_MOapSWA7VGY4D1EZr35trao",
+    "rating": 1,
+    "ratingCount": 1,
+    "productId": "10635931631497324557",
+    "position": 23
+   },
+   {
+    "title": "EVOO 11.6\" Ultra Thin Notebook EVC1167 HD Intel 64 GB 4GB RAM HDMI Black Wind 10",
+    "source": "eBay",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+m%E1%BB%9Bi+D%C3%A0nh+cho+sinh+vi%C3%AAn&prds=localAnnotatedOfferId:1,catalogid:7145675182816351082,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "5.613.171 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSK1vIN8XtnLHEYHfNNgdJwwKHRdFi5mgFhh5Z5qY77iycDzDf8LjYrRCy5RNnZdBBEMtfP8xxrwFHPry-Z27U5m1qeA4yJy8WQTlpoYxfLWDq-sCFgf1Hq",
+    "rating": 4.7,
+    "ratingCount": 3,
+    "productId": "7145675182816351082",
+    "position": 24
+   },
+   {
+    "title": "Balo công sở, laptop 17 inch công suất siêu lớn - BANGE 3057",
+    "source": "zongvietnam.com",
+    "price": "825.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQhAUN7bivZ13y5vLRATtMq0K7AJIthRHnXVvVN8u1yRx0INXBXEgCfPgzJ5olXLsS7qXFL1STg1iDOu-V2RuZIpCiAt3Dat2q1LLN0HT2H83QYQKLRQJHMvQ",
+    "rating": 4.8,
+    "ratingCount": 136,
+    "productId": "12220861351390383318",
+    "position": 25
+   },
+   {
+    "title": "LAPTOP HP 240R G10 (Thông số: Core 5-120U/Ram 8G/512GSSD/14inch FHD/WL/BT/3C/W11SL/Màu BẠC - 01Y)",
+    "source": "novazone.vn",
+    "price": "24.860.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQPwA-uywXvho_k1D4AdNceVEqxPUhEoBi82iEaK0ZmlmzqmVFLH72gQp7odktdOVcZQAfzhktra3140GI6fv2Z7rq1qdQMdEjx9Hn462kxaxjGH1y1jyq8",
+    "rating": 5,
+    "ratingCount": 4,
+    "productId": "14892940522558411822",
+    "position": 26
+   },
+   {
+    "title": "Balo laptop Gumantu 17\" 2316 (màu đen)",
+    "source": "Phong Vũ",
+    "price": "449.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTszFqmuSNHw1khnYxlnvh0mTvWcdhinoNuPj4pW3K6jRe5ehoUgdEY-HDXbQ2GmC6uhe_FahWjZmTFATNA7P7KkH9bdJLWKzexa1PGBkpVkgyreYwL4rFWzg",
+    "productId": "14973627179307688648",
+    "position": 27
+   },
+   {
+    "title": "Quảng Tin - Laptop HP 240 G10 B73TKAT (Core i5-1335U | 8GB | 512GB | Intel UHD | 14 inch FHD | Win 11 | Bạc) -Laptop HP 240 G10 B73TKAT (Core i5-1335U",
+    "source": "Quảng Tin",
+    "price": "17.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQEfNHgDidRwDifj841qg5Uuwn2pi4ILEUr6Ukm3Je3kyd2xw44s02xXMZqzlqvbyXnpe5ttqKHYHIYRWdkWREYMWXdU7O0Ewr_G4k3d6mTmDdcV-7DC49ufA",
+    "productId": "17434563740287239073",
+    "position": 28
+   },
+   {
+    "title": "Thu Mua Laptop HP 2021 Core i5",
+    "source": "Bảo Hành One",
+    "price": "6.390.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRNGopk6W78VmwkZkI1ScpFKJHgt12B95jKl_e6nspoT-l-LlUf3koACCOKBSirW5mog5DKDmd9Y-wlYECEOZO_LfpsjvPk6bD5suczxpVf2i9Wknz3a-fs",
+    "productId": "1670272107837637499",
+    "position": 29
+   },
+   {
+    "title": "Traveler's Choice_Balo laptop 17in Silverwood",
+    "source": "House Of Luggage",
+    "price": "1.750.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSJ-w75pF-HVm0JkmtkbmmX5JDtrWzZKmGrOrLGNtAq22-YUwWn-DnOOnrtUNXu8ZuNQBqDoI2HIoocLLNyE4OJMK-3awgIQTlnfHbaMAYF6OoLDheLNaNU",
+    "productId": "4867925921988853316",
+    "position": 30
+   },
+   {
+    "title": "Balo laptop Mikkor The Mina 15.6\"",
+    "source": "CellphoneS",
+    "price": "855.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSDBqc6ZQft4UwTV1VEVjPZ_dR-H7MbSfs5fRkULcJnrOODtlyWY690tYr8mT7gz1lzTet_qtx8hfW-f8tQtprR_C6nJFw3sWps9Spg4k_-VTsz3azEc2do",
+    "rating": 5,
+    "ratingCount": 2,
+    "productId": "10331561338419367276",
+    "position": 31
+   },
+   {
+    "title": "Balo laptop công sở siêu mỏng, kích thước 14/ 15.6/ 17 inch – BANGE THINPACK Màu Đen 15.6 inch",
+    "source": "zongvietnam.com",
+    "price": "628.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQ8OZcdmLEH7VOZICuMtaZiKVLLwKrS0K51tujBQrgGn9Ee_lrsK3ga17r0ib523a0WaP7QYDpmzlffRJi7BClVmJDtyC2mHFB9edWpF5tf",
+    "rating": 5,
+    "ratingCount": 9,
+    "productId": "7023048394806196925",
+    "position": 32
+   },
+   {
+    "title": "Laptop Lenovo IdeaPad Slim 5 OLED 14AKP10 83HX001JVN",
+    "source": "Han Computer",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+m%E1%BB%9Bi+D%C3%A0nh+cho+sinh+vi%C3%AAn&prds=localAnnotatedOfferId:1,catalogid:9861081474465691255,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "31.900.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcStlxhOEcSvEW9OX2Nk9PJlj79ZHuhzSgYdXWvwwk9iukvYFaMyR_cKjad9ELQV_AU6rW5QpdNp40KMKS9wLq--z7JVdpSEloC4Zsg55IMF-bZEsNCON4Xk",
+    "productId": "9861081474465691255",
+    "position": 33
+   },
+   {
+    "title": "Laptop Asus Vivobook S14 M3407KA-SF034W Ryzen AI 5 330/16GB/512GB/14\" OLED/Win11",
+    "source": "Fptshop.com.vn",
+    "price": "26.890.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcR13ZSPg7UONS3MomjbbOY_4fSwAM2Y-_XIj_xNUQZUMC9tzzgUZLlokpnHgrgXqh-AjIE4vGhTscJ0982dCF_YoilL7M0nFPaQicgHS-5tda5d1bAzpWtwJg",
+    "productId": "1624257237214128513",
+    "position": 34
+   },
+   {
+    "title": "Laptop 2 màn hình 16 & 14 inch cảm ứng Intel Core i7-9850H Windows 11 Pro dành cho doanh nhân Máy mới 100%, chính hãng",
+    "source": "Máy tính AOC",
+    "price": "17.900.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTRp0lt4H_o5uSo4k--QcNXgqslkzhG02bwF3jI4jD2V45bShYbq4wscdY_gjZjUlTe6tMINokxEMc-6nFHtC5YgOZMu0Ng2ZUBcSaH4dSB7URsdahJ2ePe",
+    "productId": "71972848673461332",
+    "position": 35
+   },
+   {
+    "title": "Túi xách C6-POCKET Laptop",
+    "source": "Chautfifth",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+m%E1%BB%9Bi+D%C3%A0nh+cho+sinh+vi%C3%AAn&prds=localAnnotatedOfferId:1,catalogid:16040240882802552370,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "1.595.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcR8nL02h8PvuUg5cNbAtooPdmP1f5UfTGmRTO5ISLI-p9X9BmCzC674QPMfoSYOCJMaTs1zgAmr8qeYEr1HwozgLXBVLuGwyl9aykCkFydDdQE9hPBZSKJp5A",
+    "rating": 5,
+    "ratingCount": 19,
+    "productId": "16040240882802552370",
+    "position": 36
+   },
+   {
+    "title": "Balo laptop du lịch 15,6 icnh, mở rộng kích thước, cổng sạc USB tiện lợi V5 - ZBL2205",
+    "source": "zongvietnam.com",
+    "price": "586.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRzyQVA0oP2a04lGq7tu-otlHs5ocCoRZov3aRnazuZ4AClbc-_qizxCyyG-fVYvRKp5fDcq7Jt1HWCWx7tuA6e8sy7JjP4G1GKmPFGNhRA",
+    "productId": "15987781676902075741",
+    "position": 37
+   },
+   {
+    "title": "Cặp Đựng Laptop",
+    "source": "MUJI",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+m%E1%BB%9Bi+D%C3%A0nh+cho+sinh+vi%C3%AAn&prds=localAnnotatedOfferId:1,catalogid:8099664500672262978,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "299.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSVNqcErfCjZFBXjNW5uKP8JKzquXMCVZGbhvfURbV36eTvOrzBZT3UY7T5pcY8pQJJNSWomfZiWSKrPIJjo3Fzmqp7T6o9Dd0D9aI16TRAJmCEjFj4psp-Vw",
+    "productId": "8099664500672262978",
+    "position": 38
+   },
+   {
+    "title": "TÚI LAPTOP NỮ YASMIENA BROWN PRIMARY",
+    "source": "Aldo VN",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+m%E1%BB%9Bi+D%C3%A0nh+cho+sinh+vi%C3%AAn&prds=localAnnotatedOfferId:1,catalogid:142870014011113066,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "2.550.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTt0krEMNk_KQP0tl1d8iOJzxRAwOIaf2piv48UzE-Kfjfz141Mu0OXvND-AfjRJuqxNxyg0vzWhgRuoc_qCj6SieSgNXJc3wLWHXaVLL-MdgKtkaWFp151",
+    "productId": "142870014011113066",
+    "position": 39
+   },
+   {
+    "title": "Laptop SingPC M16 GLXi595-W (i5 1235U/ 16GB/ 512GB SSD/ 14 inch FHD+/ Win 11 Pro/ Vàng nhạt/ Vỏ nhôm)",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+m%E1%BB%9Bi+D%C3%A0nh+cho+sinh+vi%C3%AAn&prds=localAnnotatedOfferId:1,catalogid:16485910335029674299,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "17.890.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcT_zaRt7k-TBmrt6Brk2Ei3tgeu_qJ0smK8_BxdkOt7mMska0yFCsMfHZMymiBp7zFxm3lqX2QO4wMLArVU8kN1l2Ymd70Fusil1UoyNiyXhahLjHapm0lBgw",
+    "productId": "16485910335029674299",
+    "position": 40
+   }
+  ],
+  "credits": 2
+ }
+}

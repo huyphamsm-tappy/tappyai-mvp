@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"NOVA SG Music Box\" OR \"Karaoke Crystal KTV\" OR \"Karaoke MEI\" quan 1 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:03:14.288Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"NOVA SG Music Box\" OR \"Karaoke Crystal KTV\" OR \"Karaoke MEI\" quan 1 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Còn ai nghĩ karaoke quận 1 rổ rá trên trời nữa thì bước tới ...",
+    "link": "https://www.tiktok.com/@reviewsaigon.59/video/7593323014628986129",
+    "snippet": "Còn ai nghĩ karaoke quận 1 rổ rá trên trời nữa thì bước tới đây ... Karaoke MEI. 38 · recommend-cover. Dạ Dày Không Đáy. 1126 · recommend-cover.",
+    "position": 1
+   },
+   {
+    "title": "Vui chơi ca hát chỉ từ 15ka/1 người tại Nova SG Music Box ...",
+    "link": "https://www.tiktok.com/@phat_su/video/7583550268646706440",
+    "snippet": "2953 Lượt thích,59 Bình luận.Video TikTok từ Lang Thang With Phát (@phat_su): \"Vui chơi ca hát chỉ từ 15ka/1 người tại Nova SG Music Box ...",
+    "position": 2
+   },
+   {
+    "title": "Khám Phá Nova SG Music Box: Karaoke Chỉ 12K",
+    "link": "https://www.tiktok.com/@hungoididau/video/7569833532399406356",
+    "snippet": "Nova SG Music Box - 174 Tây Thạnh, Phường Tây Thạnh, Tân Phú (cũ) - 12K 1 GIỜ HÁT ... quán karaoke ở Tân Phú, chương trình khuyến mãi karaoke ...",
+    "position": 3
+   },
+   {
+    "title": "Mách bạn khu Karaoke xịn ngay Quận 1 mà zá siêu hạt dẻ ...",
+    "link": "https://www.tiktok.com/@reviewsaigon.59/video/7625152515004288276",
+    "snippet": "Karaoke Hàn Quốc Quận 1. Mách bạn khu Karaoke xịn ngay Quận 1 mà zá siêu hạt dẻ lunn!! ... Karaoke MEI. Đặt trước để được free 1h nha mấy mom. 4-6 ...",
+    "position": 4
+   },
+   {
+    "title": "Karaoke Mei Quận 1: Tiếng Đá Rơi Vào Ly Khó Nha Bro",
+    "link": "https://www.tiktok.com/@mei.karaoke/video/7577767144100875538",
+    "snippet": "Karaoke Mei Quận 1 được biết đến là nơi tụ tập bạn bè, thư giãn và hát hò. Không gian thoải mái, âm thanh vui nhộn và những tình huống bất ngờ ...",
+    "position": 5
+   },
+   {
+    "title": "Quán hoạt động 24/7 ạ #musicboxtanphu #novasgmusicbox",
+    "link": "https://www.tiktok.com/@novasg.musicbox/video/7686923050549251348",
+    "snippet": "Nova SG Music Box mang đến những giai điệu phù hợp để khuấy động không khí văn phòng, biến những giờ làm việc căng thẳng trở nên nhẹ nhàng ...",
+    "position": 6
+   },
+   {
+    "title": "Karaoke Xịn Sò Tại Quận Nhất Chỉ 80k/giờ",
+    "link": "https://www.tiktok.com/@duckim90/video/7593335608710417685",
+    "snippet": "Karaoke Kingdom Quận 1 · Karaoke Bareng Di Tempat Karaoke · Karaoke Chong Oi ... Karaoke MEI. 289. recommend-cover. Gia-Bảo96. 79 · recommend- ...",
+    "position": 7
+   },
+   {
+    "title": "Karaoke Quận 1 Giá 50k/h - Quán Hot Hit Dân Gen Z",
+    "link": "https://www.tiktok.com/@mei.karaoke/video/7614418613503823125",
+    "snippet": "22 Lượt thích,Video TikTok từ Karaoke MEI (@mei.karaoke): \"Trải nghiệm hát karaoke cực chill tại quán hot hit Quận 1 chỉ với 50k/giờ.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

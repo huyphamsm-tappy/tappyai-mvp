@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Hải Sản Hoàng Gia CN Phạm Văn Nghị Quận 7\" OR \"Bánh Cuốn Nóng Cao Bằng\" OR \"Ẩm thực sân vườn Mái Lá Quận 7\" quan 7 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:33:02.837Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Hải Sản Hoàng Gia CN Phạm Văn Nghị Quận 7\" OR \"Bánh Cuốn Nóng Cao Bằng\" OR \"Ẩm thực sân vườn Mái Lá Quận 7\" quan 7 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Ẩm Thực Sân Vườn Mái Lá Quận 7",
+    "link": "https://www.tiktok.com/discover/%E1%BA%A9m-th%E1%BB%B1c-s%C3%A2n-v%C6%B0%E1%BB%9Dn-m%C3%A1i-l%C3%A1-qu%E1%BA%ADn-7",
+    "snippet": "Ẩm Thực Sân Vườn Mái Lá Quận 7: Địa Chỉ, Menu & Không Gian. Ẩm Thực Sân Vườn Mái Lá là nhà hàng với không gian sân vườn thoáng mát, ...",
+    "date": "21 thg 9, 2026",
+    "position": 1
+   },
+   {
+    "title": "Ẩm thực sân vườn Lê Vy: Góc trốn chill đồng quê",
+    "link": "https://www.tiktok.com/@levycafe2/video/7629316389542825234",
+    "snippet": "Ẩm Thực Sân Vườn Mái Lá Quận 7 · Lê Nguyễn Trà Vi · Vườn Ẩm Thực N86 Tuy Hoà Phú Yên · Vy Vân Lê Nói Tiếng Việt · Cafe Tuệ Nhi Vĩnh Long · Nhà ...",
+    "position": 2
+   },
+   {
+    "title": "Lắp đặt nét cuốn cơ sở 2 tại địa chỉ 110B Triệu Việt Vương ...",
+    "link": "https://www.tiktok.com/@7ngayrautuoi/video/7520236029635202311",
+    "snippet": "Lạc Buffet Lẩu Rau Nấm Quận 7 · Ẩm Thực Sân Vườn Mái Lá Quận 7 · Cách Trồng Rau Mùi Bằng Hạt Ở Nhật. Lắp đặt nét cuốn cơ sở 2 tại địa chỉ 110B ...",
+    "position": 3
+   },
+   {
+    "title": "Khám Phá Quán Cà Phê Mái Lá Tại An Giang",
+    "link": "https://www.tiktok.com/@nhadep4phuong/video/7614796380107836693",
+    "snippet": "Nhà Hàng Nón Lá · Quán Uyên Lẩ Gà Lá É Biên Hoà · Vườn Hoa Mẫu Đơn Trung Quốc Siêu Đẹp · Ẩm Thực Sân Vườn Mái Lá Quận 7 · Quán Hoa Lá Cành Phủ ...",
+    "position": 4
+   },
+   {
+    "title": "Tìm hiểu lý do không hái trầu vào ban đêm",
+    "link": "https://www.tiktok.com/@vuonnha_onghoa/video/7611169769391181077",
+    "snippet": "Cách Trồng Cây Trầu Bà Trong Bể Cá · Ẩm Thực Sân Vườn Mái Lá Quận 7 · Khui Sầu Riêng Chưa Chín Phải Làm Sao · Cách Nấu Xôi Lá Cẩm Đỏ.",
+    "position": 5
+   },
+   {
+    "title": "Sierra Kate hats🤠 - original sound",
+    "link": "https://www.tiktok.com/music/original-sound-7642516482324187925",
+    "snippet": "ẩm-thực-sân-vườn-mái-lá-quận-7. |. ‍♀️ ‍♀️. |. Kekejaman Israel Terhadap Rakyat Palestina. |. kseniadjeily's post on TikTok. |. Geely Flach Colray ...",
+    "position": 6
+   },
+   {
+    "title": "home Vườn Trên Mây. đi về còn lụy #thanh7nui ...",
+    "link": "https://www.tiktok.com/@thanh7nui1810/video/7506757542593269000",
+    "snippet": "Menu Của Mây Farm Quận 7 · Cách Nâng Cấp Tầng Mây Trong Khu Vườn Trên Mây · Ẩm Thực Sân Vườn Mái Lá Quận 7. home Vườn Trên Mây. đi về còn lụy ...",
+    "position": 7
+   },
+   {
+    "title": "Quý cô về vườn (tập 6) #tuncuibap2🌽🌽🌽",
+    "link": "https://www.tiktok.com/@tunthichreview1/video/7658516819325668629",
+    "snippet": "Tủn Cùi Bắp 67 · Ẩm Thực Sân Vườn Mái Lá Quận 7 · 67 Capivara · Út Về Vườn · 67腦腐 · Number 67 in N ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

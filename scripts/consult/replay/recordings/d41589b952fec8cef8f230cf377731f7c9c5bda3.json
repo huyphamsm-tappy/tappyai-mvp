@@ -1,0 +1,30 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Tới Nóc | chi nhánh Bình Thạnh\" OR \"Cửu Vân Quán\" OR \"Quán Thu Hòa\" Bình Thạnh site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:39:53.055Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Tới Nóc | chi nhánh Bình Thạnh\" OR \"Cửu Vân Quán\" OR \"Quán Thu Hòa\" Bình Thạnh site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cà phê một mình tại 135 Nguyễn Cửu Vân, P17, Q.Bình ...",
+    "link": "https://www.tiktok.com/@bichlan.99999/video/7664225659899628820",
+    "snippet": "cà phê một mình Nguyễn Cửu Vân, 135 Nguyễn Cửu Vân quán cà phê, cà phê Bình Thạnh, quán cafe P17 Bình Thạnh, home alone coffee Bình Thạnh ...",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

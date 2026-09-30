@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Spa Massage Gội Đầu Dưỡng Sinh Cô Út Quận 3\" OR \"Tiệm Gội Về Nhà\" OR \"Spa massage body Quận 3 | Gội đầu dưỡng sinh Quận 3 | Halavu Spa\" quan 3 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:41:52.108Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Spa Massage Gội Đầu Dưỡng Sinh Cô Út Quận 3\" OR \"Tiệm Gội Về Nhà\" OR \"Spa massage body Quận 3 | Gội đầu dưỡng sinh Quận 3 | Halavu Spa\" quan 3 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

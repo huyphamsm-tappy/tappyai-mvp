@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Hotel\" TP.HCM site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:37:34.234Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Hotel\" TP.HCM site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "searchInformation": {
+   "didYouMean": "\"Hotel\" TPHCM site:vn.trip.com/hotels"
+  },
+  "organic": [
+   {
+    "title": "Đặt khách sạn giá rẻ & chỗ ở, giảm giá 50%",
+    "link": "https://vn.trip.com/hotels/",
+    "snippet": "The Crown Airport Hotel ở Tân Sơn Hòa, Thành phố Hồ Chí Minh, cách Chợ Bến Thành và Đường Đồng Khởi 10 phút lái xe. Khách sạn này cách Sài Gòn Square 7,3 km và ...",
+    "position": 1
+   },
+   {
+    "title": "La Serena Boutique Hotel - Giá cả và Ưu đãi 2026, TP. Hồ ...",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-hotel-detail-115585978/la-serena-boutique-hotel/",
+    "snippet": "La Serena Boutique Hotel ; Phòng Đôi Cao Cấp · 55m² ; Phòng Đôi Superior · 25m² ; Phòng Deluxe Có Ban Công · 35m².",
+    "position": 2
+   },
+   {
+    "title": "Các khách sạn ở gần Nguyễn Huệ, TP. Hồ Chí Minh",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-nguyen-hue-street/hotels-c301m8245360/",
+    "snippet": "Saigon Pink Hotel ở trung tâm Thành phố Hồ Chí Minh, chỉ cách Chợ Bến Thành và Sài Gòn Square 10 phút đi bộ. Khách sạn này cách Đường Đồng Khởi 0,5 km và ...",
+    "position": 3
+   },
+   {
+    "title": "Top 10 khách sạn tại TP. Hồ Chí Minh, Việt Nam",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-hotels-list-301/",
+    "snippet": "Khách sạn tốt nhất tại TP. Hồ Chí Minh · Sunrise Airport Hotel · Liberty Central Saigon Riverside · Amory Royal Hotel · Khách sạn Saigonciti · Nicecy Hotel Pham Ngu ...",
+    "position": 4
+   },
+   {
+    "title": "M Hotel Saigon - Giá cả và Ưu đãi 2026, TP. Hồ Chí Minh",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-hotel-detail-26583292/m-hotel-saigon/",
+    "snippet": "M Hotel Saigon · Xếp hạng 18 trong danh sách Nâng tầm dịch vụ của TP. Hồ Chí Minh · Bữa sáng đa dạng · Phong cảnh tuyệt vời · Vị trí lý tưởng.",
+    "position": 5
+   },
+   {
+    "title": "Khách Sạn Hàng Đầu Có Quầy Bar Tại TP. Hồ Chí Minh",
+    "link": "https://vn.trip.com/hotels/bar/city/vn/ho-chi-minh-city.html",
+    "snippet": "\"Nằm tại vị trí thuận tiện ở TP. Hồ Chí Minh, CROWNE BUI VIEN Hotel cung cấp các phòng điều hòa với Wi-Fi miễn phí, chỗ đậu xe riêng miễn phí và dịch vụ phòng.",
+    "position": 6
+   },
+   {
+    "title": "Khách sạn Piano - Giá cả và Ưu đãi 2026, TP. Hồ Chí Minh",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-hotel-detail-54516278/piano-hotel/",
+    "snippet": "Bạn đang tìm đặt phòng Khách sạn Piano tại TP. Hồ Chí Minh? Hãy chọn ... HotelThe Metropole Signature Collection – Galleria, Crest & OperaThe Crown ...",
+    "position": 7
+   },
+   {
+    "title": "Khách sạn giá rẻ gần Vietopia, TP. Hồ Chí Minh",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-vietopia/hotels-c301m10821239/",
+    "snippet": "Các khách sạn nổi tiếng ở gần Vietopia · Cupid Hotel 3 · Khách Sạn 9 Sao · Big Hotel Trung Sơn - Gần Lotte Mart Quận 7 · Bộ sưu tập O Sunrise Hotel Trung Sơn gần ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}
