@@ -67,6 +67,17 @@ Giá phòng: chưa xác nhận…","price":…`). Phần đầu kế hoạch (ti
 
 ## 2. Web → Android: thay đổi server/API (giữ tương thích ngược)
 
+- 2026-09-30 (web) **R23.1 — THẺ HỎI NHANH MỚI: web đã làm (rc/web-uat `1685c62`), 9 điểm bổ sung cho Android** —
+  đọc `docs/design/ask-card/README.md` **§5** (các mục §0–§4 giữ nguyên). Tóm tắt những gì Android cần đổi so với R23:
+  (1) tiêu đề / dòng phụ / gợi ý ô ý khác THEO MẢNG (bảng §5.1; giải trí + chung giữ «Tìm gì cho bạn hôm nay?»);
+  (2) id LOẠI thêm `dish`, `service`; (3) khoá ảnh theo tên owner: `diem-bar-rooftop`, `diem-cafe`, `diem-quan-an`
+  (gộp món việt + ăn uống), `diem-bowling`, `diem-nail`; không khớp → `diem-<chữ-không-dấu>`; (4) từ trùng khi bỏ dấu so
+  CÓ dấu (rạp, trà, lẩu, nhật/hàn, phở/bún/cơm/ăn/món, chợ, đồ); (5) nút «Tìm cho tôi» LUÔN bật — không chọn gì → gửi
+  `Tìm cho tôi`; sau gửi khoá thẻ; (6)–(8) icon / lưới / màu ảnh giữ chỗ theo mảng. Server + dữ liệu gửi lên KHÔNG đổi.
+  Bảng chuẩn = `src/lib/structuredContent/askCardModel.ts`; ca kiểm = `askCardModel.test.ts` (dùng đúng câu hỏi router
+  gửi cho 5 mảng — Android nên chép các ca này sang test Kotlin). Ảnh UAT web 5 mảng (mobile + desktop) cạnh mockup: xem
+  RELEASE-PROGRESS mục «Thẻ hỏi nhanh».
+
 - 2026-09-30 (web) **AI TƯ VẤN ỔN ĐỊNH — rc/web-uat `b01b53c`** (ngưỡng release của Huy 29/09 đạt: mỗi mảng ≥ 17/21 TB 2 lượt
   replay — ăn uống 18,5 · mua sắm 17,5 · du lịch 17,5 · giải trí 18,5 · spa 20,5; A = 0; B chỉ còn ở ngách, ghi ở trang duyệt).
   Sau `55e298e` chỉ thêm 2 sửa không đổi định dạng trả lời: ngân sách không đọc từ tên sản phẩm chép lại (`af38b73`), lượt so
