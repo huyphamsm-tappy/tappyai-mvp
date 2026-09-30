@@ -7,10 +7,11 @@ Chi tiết gốc (nếu cần tra): `RELEASE-PLAN-2026-09-29.md` §3, `RELEASE-G
 
 ## A. UAT AI tư vấn (sáng) — duyệt trang, rồi thử tay
 
-1. **Mở trang duyệt UAT:** __UAT_PAGE__ (riêng tư, đăng nhập claude.ai).
+1. **Mở trang duyệt UAT:** https://claude.ai/artifact/T1ENadG4ZVDHEbnJaaGRFU (riêng tư, đăng nhập claude.ai).
    - Đầu trang: bảng tổng 5 mảng + danh sách lỗi B còn ở ngách.
    - Mỗi câu: ảnh mobile thật, chi phí, mức lỗi A/B/C/D (nếu có). Bấm **Đạt / Không đạt** + ghi chú — trang tự lưu.
-   - UAT đang chạy SHA **__SHA__** (kiểm: https://uat.tappyai.com/api/version).
+   - Trang ghi rõ: phần 59 câu + ý định chạy trên `fbb1c3c`, 15 kịch bản chạy trên `55e298e`; UAT bây giờ = `b01b53c`
+     (thêm 2 sửa: ngân sách từ tên sản phẩm chép lại, lượt so sánh không bị chèn "Mình chọn") — kiểm: https://uat.tappyai.com/api/version.
 2. **Thử tay trên điện thoại** (uat.tappyai.com, tài khoản test `manual.uat.*` — không dùng tài khoản thật), mỗi câu gõ
    tiếp các lượt trong ngoặc:
    - Ăn uống: `tối nay ăn gì ngon quận 1` → chọn nhanh → `không muốn đồ chiên` → `Lên kế hoạch chi tiết`
@@ -27,6 +28,13 @@ Chi tiết gốc (nếu cần tra): `RELEASE-PLAN-2026-09-29.md` §3, `RELEASE-G
 4. **Duyệt xong** (một câu trong chat: "UAT AI đạt" hoặc danh sách câu không đạt) → là cổng 2 của RELEASE-GOVERNANCE §3.
 
 ## B. Release PHẦN B — các việc CHỈ Huy làm được (theo thứ tự)
+
+0. **Vercel (quyết TRƯỚC khi release)** — team đã dùng 100% Function Storage (Hobby, tính theo đỉnh 30 ngày). Hiện KHÔNG bị chặn
+   (`softBlock`/`blocked` rỗng), nhưng Hobby có thể chặn deploy khi vượt hạn mức, mà release cần 1 bản production mới.
+   - Quyết: **nâng Pro** (vercel.com → team → Settings → Billing → Upgrade) — hoặc thử deploy trên Hobby (bị chặn thì production
+     `f42ae4b` vẫn chạy, chỉ chưa release được).
+   - Hạ thời gian giữ bản Preview: Project `tappyai-mvp` → Settings → Security → **Deployment Retention Policy** → Preview = 7 ngày
+     → Save (API không cho đổi; hiện 30 ngày).
 
 1. **ACCESSTRADE (trước deploy)** — pub2.accesstrade.vn → menu tài khoản → trang API → copy **Access Key**.
    Tạo `D:\TappyAI-backups\accesstrade.txt` đúng 2 dòng:

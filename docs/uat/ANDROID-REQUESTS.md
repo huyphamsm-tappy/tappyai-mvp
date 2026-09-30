@@ -65,6 +65,29 @@ Giá phòng: chưa xác nhận…","price":…`). Phần đầu kế hoạch (ti
 
 ## 2. Web → Android: thay đổi server/API (giữ tương thích ngược)
 
+- 2026-09-30 (web) **AI TƯ VẤN ỔN ĐỊNH — rc/web-uat `b01b53c`** (ngưỡng release của Huy 29/09 đạt: mỗi mảng ≥ 17/21 TB 2 lượt
+  replay — ăn uống 18,5 · mua sắm 17,5 · du lịch 17,5 · giải trí 18,5 · spa 20,5; A = 0; B chỉ còn ở ngách, ghi ở trang duyệt).
+  Sau `55e298e` chỉ thêm 2 sửa không đổi định dạng trả lời: ngân sách không đọc từ tên sản phẩm chép lại (`af38b73`), lượt so
+  sánh không bị chèn "Mình chọn" từ thẻ (`b01b53c`). **Android chạy e2e cuối + build APK trên SHA này.**
+  - **Câu trả lời thô lượt chạy thật (UAT, mục 10, 30/09)** — stream nguyên văn `0:/8:/9:/a:/d:` từng lượt (file `<ID>-t<n>.txt`):
+    `gs://tappyai-uat-evidence/evidence/s10-2026-09-30/scenarios-55e298e/raw/` (15 kịch bản × 7 lượt — ask → pick → hỏi thêm →
+    "A hay B" → xem thêm → bác → kế hoạch) và `…/single-fbb1c3c/raw/` (59 câu + 20 câu bộ ý định). Kế hoạch mẫu có `[TAPPY_PLAN]`:
+    `TRAVEL-1-t7.txt`, `TRAVEL-2-t7.txt` (du lịch), `ENT-1-t7.txt` (giải trí), `FOOD-1-t7.txt` (ăn uống). Vé máy bay: `TRAVEL-3-t2.txt`
+    (link `https://www.tappyai.com/go/at?u=…&p=traveloka…` — mở /go/at, server thêm sub1 rồi 302 sang ACCESSTRADE → Traveloka).
+    Kết quả + mức lỗi: `…/results-fixed.json`; trang duyệt (Huy): https://claude.ai/artifact/T1ENadG4ZVDHEbnJaaGRFU
+  - **Định dạng không đổi so với các mục trước:** `[TAPPY_ASK]`, `[TAPPY_SHOPPING]`, `[TAPPY_PLACES]`, `[TAPPY_PLAN]`, `[FOLLOWUPS]`
+    (server luôn viết `Xem thêm|Lên kế hoạch chi tiết` sau lượt chọn/xem thêm/bác/so sánh), annotation `tappy.turn.v1` cuối stream.
+    Nhãn link vé máy bay giờ là `Xem giá trên <hãng>` (trước: tên hãng) — Android hiển thị nguyên nhãn.
+  - **R22 — thẻ kế hoạch v2, phía server (trả lời mục (5)):**
+    - ĐÃ LÀM (`69cdff6`): `GET /api/plan-images/manifest` công khai, cache 1 giờ, đúng dạng đề xuất; hiện
+      `{"version":"2026-09-30.0","images":{}}` = CHƯA có ảnh nào → mọi khoá là ảnh giữ chỗ (đúng như đã chốt).
+      Snapshot chia sẻ `/api/plans/share` GIỮ các trường v2 khi có (`domain`, `destination`, `duration`, `tagline`, `hero_image`,
+      `budget_per_person`, `highlights[]`, `days[].title`, `items[].image`), kiểm đúng regex khoá của Android, URL bị loại.
+      Tên trường = đúng đề xuất Android, không đổi.
+    - CHƯA LÀM (sau release): server CHƯA sinh các trường v2 trong `[TAPPY_PLAN]` (model chưa được yêu cầu viết, và chưa có thư
+      viện ảnh để chọn khoá) → kế hoạch hiện tại chỉ có trường cũ; Android dùng fallback đã làm (`domain` suy từ `type`, ảnh giữ chỗ).
+      Ảnh chia sẻ #7 (`planCard.ts`) và trang `/plan/<id>` VẪN dùng `photo_url` Google, chưa dùng khoá + manifest.
+
 - 2026-09-29 (web) **R21 XONG — bảng nối sub1 (phương án C).** (1) Dọn sau 12 tháng có lịch: cron Vercel `/api/cron/click-attributions-sweep` hằng ngày 18:45 UTC, log `{"job":"click-attributions-sweep","deleted":N}`; hàm dọn giới hạn 5000 dòng/lần — đã kiểm trên DB audit (dòng cũ 13 tháng bị xoá, dòng khác giữ nguyên). (2) Xoá tài khoản xoá theo: `commerce_click_attributions.identity_id` → `auth.users(id) ON DELETE CASCADE` (khách ẩn danh cũng là user trong `auth.users` nên xoá theo id khách). Kiểm trên DB audit: tài khoản test mới → bấm 2 link (2 sub1, 2 dòng) → xoá tài khoản → **0 dòng** còn lại. Quy trình xử lý yêu cầu xoá qua email (cờ tự xoá đang tắt): `docs/uat/ACCOUNT-DELETION-REQUEST-RUNBOOK.md`. (3) Migration mới `20260929140000_commerce_click_attributions_r21` = bước **7c** trong RELEASE-PLAN §1 (PHẦN B). Không đổi API cho Android. Bằng chứng: `gs://tappyai-uat-evidence/evidence/r21-2026-09-29/`.
 
 - 2026-09-29 (web) **sub1 ACCESSTRADE — PHƯƠNG ÁN C, LIVE UAT `453bd93` → cập nhật Data safety.** Link affiliate trong câu trả lời chat (thẻ lẫn chữ) nay là link của Tappy: `https://<site>/go/at?u=<deep link ACCESSTRADE, KHÔNG có sub1>&p=<provider>&a=<danh tính đã MÃ HOÁ>&h=…&s=<chữ ký>`. Mỗi lần bấm, server sinh `sub1` NGẪU NHIÊN mới, lưu bảng nối `commerce_click_attributions` (sub1 → tài khoản/khách, thời điểm, đối tác, link; RLS chỉ server; giữ 12 tháng) rồi 302 sang ACCESSTRADE kèm `sub1`. **Android không cần sửa code**: vẫn mở `url` của link như cũ (trình duyệt ngoài OK — không cần cookie, danh tính nằm trong link đã mã hoá); beacon handoff + GA4 `affiliate_click` giữ nguyên. Kiểm UAT: 2 lần bấm cùng link → 2 `sub1` khác nhau, bảng nối có đúng các dòng cho đúng user, redirect go.isclix.com → click.accesstrade.vn → vn.trip.com. **Data safety:** đối tác không nhận dữ liệu nhận diện → không tính "chia sẻ"; bảng nối là dữ liệu Tappy tự giữ (Hoạt động trong app), 12 tháng — xem `docs/release/PLAY-LISTING.md` mục Link affiliate. Chính sách `/privacy` (vi + en) đã sửa theo cơ chế này. Bằng chứng: `gs://tappyai-uat-evidence/evidence/453bd93/sub1/`.
