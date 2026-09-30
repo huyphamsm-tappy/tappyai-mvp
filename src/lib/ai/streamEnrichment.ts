@@ -2489,7 +2489,10 @@ export function applyPlaceEnrichmentStreamFilter(
     // PHIÊN LUNA: on a reject turn the server never re-offers a name already shown as its fallback pick (replay 30/09
     // SHOP-1 t6: "không thích màu đen" → the card's recommendation was the black case already shown → a B).
     const foldName = (n: string) => n.normalize('NFC').toLowerCase().replace(/\s+/g, ' ').trim()
-    const fallbackShown = !!fallbackPick && consultLunaEnabled() && collector?.consultTurn === 'reject'
+    // Luna more/reject: an honest "nothing new fits" is kept — the server does not write a pick Luna declined (replay
+    // 30/09 SHOP-3 t6: fallback inserted "Mình chọn: Dell XPS 13 Cũ" after Luna declined it because the user wants new).
+    const lunaDeclinable = consultLunaEnabled() && (collector?.consultTurn === 'reject' || collector?.consultTurn === 'more')
+    const fallbackShown = lunaDeclinable || !!fallbackPick && consultLunaEnabled() && collector?.consultTurn === 'reject'
       && (collector?.consultShown ?? []).some(n => { const a = foldName(n), b = foldName(fallbackPick); return a.length >= 4 && (a.includes(b) || b.includes(a)) })
     const pickNormalized = consultPickTurn ? normalizePickSentence(unlabelled, fallbackShown ? null : fallbackPick) : unlabelled
     // Owner 29/09 "hạn chế guard vá": every post-model text patch on a consult turn is COUNTED (logged once per
@@ -2841,6 +2844,12 @@ export function applyPlaceEnrichmentStreamFilter(
       const place = fallbackSentence(subjectOnly(pickName ?? engineFirst))
       // PHIÊN LUNA: a reject turn's backstop never re-offers a name the consultation already showed (replay 30/09 SHOP-1
       // t6: "không thích màu đen" → "Mình chọn **<the black Scout case>**" — Haiku's baseline had the same B).
+      // Luna more/reject: no backstop pick at all — Luna's own pick stands, or its honest "nothing new" does (a backstop
+      // added a second pick on SPA-1 / ENT-1 t5 and a declined one on SHOP-3 t6).
+      if (consultLunaEnabled() && (collector?.consultTurn === 'more' || collector?.consultTurn === 'reject')) {
+        console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'consultative_v1_pick_backstop', step: 'luna_more_reject_skipped' }))
+        return null
+      }
       if (consultLunaEnabled() && collector?.consultTurn === 'reject') {
         const f = (s: string) => s.normalize('NFC').toLowerCase().replace(/\s+/g, ' ')
         const shownKeys = (collector?.consultShown ?? []).map(f).filter(n => n.length >= 4)

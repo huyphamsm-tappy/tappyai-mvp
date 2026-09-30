@@ -277,7 +277,10 @@ export async function runLunaIntent(
  *    (replay 30/09 SHOP-2 t3: "<product> mua ở đâu uy tín" read by the rules as a new request; Luna: a follow-up).
  * Luna's checked facts are merged over the router's slots either way (Luna wins where both read a slot).
  */
-export function mergeIntentWithRules(luna: ConsultDecision, routed: { decision: ConsultDecision; confidence: 'rule' | 'unsure' } | null): { decision: ConsultDecision; mode: 'luna' | 'merged' | 'luna-turn' } {
+export function mergeIntentWithRules(luna: ConsultDecision, routed: { decision: ConsultDecision; confidence: 'rule' | 'unsure' } | null, ownWordsKnown: Record<string, string> = {}): { decision: ConsultDecision; mode: 'luna' | 'merged' | 'luna-turn' } {
+  // Slots: the router's reading of the user's OWN words (no copied names), then Luna's checked facts on top (replay 30/09
+  // low TRAVEL-3 t5: Luna left out the route, the travel code lost the flight and searched hotels).
+  luna = { ...luna, known: { ...ownWordsKnown, ...luna.known } }
   if (!routed || routed.confidence !== 'rule') return { decision: luna, mode: 'luna' }
   const r = routed.decision
   const same = luna.domains.length === 0 || (r.domains.length > 0 && luna.domains.length === r.domains.length && luna.domains.every(d => r.domains.includes(d)))
@@ -319,17 +322,22 @@ export function splitPickSentence(text: string): string {
  * a guard after (replay 30/09 ENT-1 t6: "chỗ đó ồn ào đông quá" — the search returned a NEW karaoke, Luna re-picked the
  * rejected one). Reject: the pick just turned down. More: the names already shown (never the main pick again).
  */
-export function lunaTurnFacts(turn: ConsultTurn, state: { pick?: string | null; shown?: string[]; known?: Record<string, string> } | null | undefined): string {
-  if (!state) return ''
+export function lunaTurnFacts(turn: ConsultTurn, state: { pick?: string | null; shown?: string[]; known?: Record<string, string> } | null | undefined, domains: readonly string[] = []): string {
+  // A trip with no destination yet: hotels in the city the user leaves FROM are not the trip (replay 30/09 TRAVEL-2 t5/t6:
+  // "gần Sài Gòn, thích núi" → Saigon hotels picked without a word).
+  const noDest = domains.includes('travel') && ['pick', 'more', 'reject'].includes(turn) && !state?.known?.diem_den
+    ? 'ĐIỂM ĐẾN CHƯA CHỐT: khách sạn/địa điểm NẰM TRONG thành phố xuất phát không phải chuyến đi — không chọn chúng; chọn điểm đến khớp sở thích nếu kết quả có, không có thì nói thật và hỏi một câu.'
+    : ''
+  if (!state) return noDest ? ['SỰ THẬT CỦA LƯỢT NÀY (code):', noDest].join('\n') : ''
   const shown = [...new Set((state.shown ?? []).filter(Boolean))].slice(-10)
   // The stated budget travels with a later turn (replay 30/09 SHOP-2 t6: a 70k "random gift" picked for a 1–2 triệu boss gift).
   const budget = state.known?.ngan_sach ? `NGÂN SÁCH NGƯỜI DÙNG ĐÃ NÓI: ${state.known.ngan_sach} — lựa chọn lệch xa mức này thì nói rõ một câu.` : ''
   if (turn === 'reject') {
-    const lines = [state.pick ? `VỪA BỊ BÁC: ${state.pick} — TUYỆT ĐỐI không chọn lại, không đưa vào phương án khác.` : '', shown.length ? `ĐÃ HIỆN TRƯỚC ĐÓ (không chọn lại làm lựa chọn chính): ${shown.join(' | ')}` : '', budget].filter(Boolean)
+    const lines = [state.pick ? `VỪA BỊ BÁC: ${state.pick} — TUYỆT ĐỐI không chọn lại, không đưa vào phương án khác.` : '', shown.length ? `ĐÃ HIỆN TRƯỚC ĐÓ (không chọn lại làm lựa chọn chính): ${shown.join(' | ')}` : '', budget, noDest].filter(Boolean)
     return lines.length ? ['SỰ THẬT CỦA LƯỢT NÀY (code):', ...lines, 'Chọn ứng viên KHÁC trong kết quả công cụ; không còn ứng viên khác thì nói thật và hỏi một câu.'].join('\n') : ''
   }
-  if (turn === 'more' && (shown.length || budget)) return ['SỰ THẬT CỦA LƯỢT NÀY (code):', shown.length ? `ĐÃ HIỆN (không chọn lại làm lựa chọn chính): ${shown.join(' | ')}` : '', budget].filter(Boolean).join('\n')
-  return ''
+  if (turn === 'more' && (shown.length || budget || noDest)) return ['SỰ THẬT CỦA LƯỢT NÀY (code):', shown.length ? `ĐÃ HIỆN (không chọn lại làm lựa chọn chính): ${shown.join(' | ')}` : '', budget, noDest].filter(Boolean).join('\n')
+  return noDest ? ['SỰ THẬT CỦA LƯỢT NÀY (code):', noDest].join('\n') : ''
 }
 
 /**
