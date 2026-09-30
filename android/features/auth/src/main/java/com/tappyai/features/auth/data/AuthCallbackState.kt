@@ -65,11 +65,13 @@ class AuthCallbackStateGuard(
 
     companion object {
         const val STATE_BYTES = 32
-        const val TTL_MS = 10 * 60 * 1000L
+        const val TTL_MS = 5 * 60 * 1000L
 
         /**
          * `state` from the callback link: the token fragment first (`#…&state=`), then the query
-         * (`?state=`). Pure string parsing (no android.net.Uri), so it is JVM-testable.
+         * (`?state=`). `app_state` is read too — the shared iOS/Android contract (MOB-1 / server I6)
+         * names the parameter `app_state` on the way out, and a server may echo it under that name.
+         * Pure string parsing (no android.net.Uri), so it is JVM-testable.
          */
         fun stateOf(link: String?): String? {
             link ?: return null
@@ -78,7 +80,7 @@ class AuthCallbackStateGuard(
             val beforeHash = if (hash >= 0) link.substring(0, hash) else link
             val q = beforeHash.indexOf('?')
             val query = if (q >= 0) beforeHash.substring(q + 1) else ""
-            return param(fragment, "state") ?: param(query, "state")
+            return param(fragment, "state") ?: param(fragment, "app_state") ?: param(query, "state") ?: param(query, "app_state")
         }
 
         private fun param(pairs: String, name: String): String? = pairs.split('&').firstNotNullOfOrNull { kv ->
