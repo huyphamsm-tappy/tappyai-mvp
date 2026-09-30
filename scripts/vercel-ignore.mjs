@@ -13,10 +13,21 @@ export function shouldBuild(branch, onlyAndroid) {
   return onlyAndroid !== true
 }
 
-function onlyAndroidChanged() {
+/**
+ * true = everything since the LAST DEPLOYED commit is under android/. Compared with that commit (Vercel's
+ * VERCEL_GIT_PREVIOUS_SHA), never with HEAD^: on 30/09 a merge into rc/web-uat whose first parent was the web work and
+ * whose second parent held Android commits diffed as "android only" against HEAD^ — every web fix was SKIPPED on UAT.
+ * No previous SHA, or it is not in the clone → null (unknown → build). A merge with no previous SHA → null too.
+ */
+export function onlyAndroidChanged(prevSha = process.env.VERCEL_GIT_PREVIOUS_SHA, git = (args) => execFileSync('git', args, { stdio: 'pipe' }).toString()) {
   try {
-    // --quiet exits 0 when nothing outside android/ changed between the parent and this commit.
-    execFileSync('git', ['diff', '--quiet', 'HEAD^', 'HEAD', '--', '.', ':(exclude)android/'], { stdio: 'ignore' })
+    const base = (prevSha ?? '').trim()
+    if (!base) {
+      const parents = git(['rev-list', '--parents', '-n', '1', 'HEAD']).trim().split(/\s+/).length - 1
+      if (parents !== 1) return null
+    }
+    // --quiet exits 0 when nothing outside android/ changed.
+    git(['diff', '--quiet', base || 'HEAD^', 'HEAD', '--', '.', ':(exclude)android/'])
     return true
   } catch (e) {
     return e && e.status === 1 ? false : null
