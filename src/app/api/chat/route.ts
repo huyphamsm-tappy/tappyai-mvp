@@ -2652,7 +2652,9 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       execute: (args: Record<string, unknown>, ctx: unknown) => {
         if (lunaPlan && ++lunaPlanSearches > 1) {
           console.log(JSON.stringify({ type: 'tappyai_luna_plan_search_budget', tool: name, call: lunaPlanSearches }))
-          return { error: 'search_budget_used', note: lang === 'en' ? 'No more searches this turn. Write the full plan now from the data above; mark anything missing as "no information yet".' : 'Hết lượt tìm của lượt này. Viết ngay kế hoạch đầy đủ từ dữ liệu đã có; mục nào thiếu ghi "chưa có thông tin".' }
+          // A Promise like every tool result: the wrapped tool chains .then on execute() (a plain object hung the turn —
+          // replay 30/09 R16, "tool2.execute(...).then is not a function").
+          return Promise.resolve({ error: 'search_budget_used', note: lang === 'en' ? 'No more searches this turn. Write the full plan now from the data above; mark anything missing as "no information yet".' : 'Hết lượt tìm của lượt này. Viết ngay kế hoạch đầy đủ từ dữ liệu đã có; mục nào thiếu ghi "chưa có thông tin".' })
         }
         if (typeof args?.query === 'string') {
           const s = sanitizeSearchQuery(args.query, { privateTexts, ownWords })
