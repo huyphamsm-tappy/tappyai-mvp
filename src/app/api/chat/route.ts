@@ -385,7 +385,7 @@ export async function POST(req: Request) {
     ? { ...lunaIntentRun, decision: { ...lunaIntentRun.decision, domains: earlyChatState.domains as typeof lunaIntentRun.decision.domains, known: { ...(earlyChatState.known ?? {}), ...lunaIntentRun.decision.known } } }
     : lunaIntentRun
   // The turn type stays with the code router when it is sure (owner: Luna reads areas / goal / constraints / difficulty).
-  const lunaMerged = lunaStated ? mergeIntentWithRules(lunaStated.decision, routed) : null
+  const lunaMerged = lunaStated ? mergeIntentWithRules(lunaStated.decision, routed, routeConsult(lunaOwnWords, { hasGps: !!userLocation, lang }).decision.known) : null
   const lunaRun = lunaStated && lunaMerged ? { ...lunaStated, decision: lunaMerged.decision, mode: lunaMerged.mode } : null
   const consultRun = lunaRun ?? (consultOn && routed?.confidence === 'unsure' && AI.isConfigured()
     ? await runConsultBrain(o => AI.generate(o), messages, { hasGps: !!userLocation, previousWasAsk: wasAskReply(priorAssistantText), deterministicDomain: lastUserMsg ? turnDomain(lastUserMsg, { hasGps: !!userLocation, lang }) : null })
@@ -1866,7 +1866,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           consultBlock: consultativeBlock,
           ...(consultLibraryOn ? { library: frameLibrary(consultLibraryDomain) } : {}),
           ...(lunaAnswer && process.env.CONSULT_LUNA_PROMPT !== '0' ? { core: LUNA_CORE } : {}),
-          extra: [memoryBlock ?? '', prefBlock, planningIntent ? buildPlanningBlock(planningIntent, lang, planning ?? {}) : '', styleBlock, shareContextBlock, lunaAnswer ? lunaTurnFacts(consult.turn, earlyChatState) : ''],
+          extra: [memoryBlock ?? '', prefBlock, planningIntent ? buildPlanningBlock(planningIntent, lang, planning ?? {}) : '', styleBlock, shareContextBlock, lunaAnswer ? lunaTurnFacts(consult.turn, earlyChatState, consult.domains) : ''],
         })
       })()
     : null

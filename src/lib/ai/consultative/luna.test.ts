@@ -149,6 +149,10 @@ describe('the turn stays with code when the router is sure', () => {
     const plan = { ...rule, decision: { ...rule.decision, turn: 'plan' as const } }
     expect(mergeIntentWithRules({ domains: ['shopping'], turn: 'followup', known: {}, assumptions: [] }, plan).decision.turn).toBe('plan')
   })
+  it('the router slots read from own words fill what Luna left out; Luna wins where both read a slot', () => {
+    const m = mergeIntentWithRules({ domains: ['shopping'], turn: 'ask', known: { dong: 'Monarch' }, assumptions: [] }, rule, { diem_den: 'X', dong: 'regex' })
+    expect(m.decision.known).toEqual({ diem_den: 'X', dong: 'Monarch' })
+  })
   it('areas disagree, or the router is unsure → Luna decides', () => {
     expect(mergeIntentWithRules({ domains: ['food'], turn: 'pick', known: {}, assumptions: [] }, rule).mode).toBe('luna')
     expect(mergeIntentWithRules({ domains: ['shopping'], turn: 'pick', known: {}, assumptions: [] }, { ...rule, confidence: 'unsure' }).decision.turn).toBe('pick')
@@ -180,6 +184,9 @@ describe('turn facts from the stored consultation (replay ENT-1 t6: the rejected
     expect(lunaTurnFacts('more', { shown: ['A', 'B'] })).toContain('A | B')
     expect(lunaTurnFacts('pick', { pick: 'X', shown: ['X'] })).toBe('')
     expect(lunaTurnFacts('reject', null)).toBe('')
+    // a trip with no destination yet (replay TRAVEL-2 t5/t6)
+    expect(lunaTurnFacts('more', { shown: [] , known: { xuat_phat: 'TP.HCM' } }, ['travel'])).toContain('ĐIỂM ĐẾN CHƯA CHỐT')
+    expect(lunaTurnFacts('more', { shown: [], known: { diem_den: 'Đà Nẵng' } }, ['travel'])).toBe('')
   })
 })
 
