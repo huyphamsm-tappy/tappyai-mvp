@@ -56,3 +56,20 @@ Ngưỡng release (Huy 29/09): mỗi mảng ≥ 17/21 (TB 2 lượt replay), A =
 - **Dữ liệu:** Serper Shopping cho "laptop … nhẹ" trả phụ kiện / dịch vụ sửa → bộ lọc loại sản phẩm (af4f2cb, 5547faa) chặn được nhưng
   còn rất ít laptop thật; cần nguồn sản phẩm có thông số (trọng lượng, màu) — feed ACCESSTRADE sau khi có API key.
 Bằng chứng: replay `scripts/consult/replay/out/scenarios-2026-09-29T17-*`, phân loại tay trong RELEASE-PROGRESS "AI tư vấn — kết quả cuối".
+
+## PL-HOSTING-GCP — đánh giá dời hosting web từ Vercel sang Google Cloud (owner 30/09: CHỈ GHI, CHƯA LÀM)
+Bối cảnh: 30/09 Vercel báo team `huyphamsm-tappys-projects` dùng 100% Function Storage (10 GB, Hobby, tính theo đỉnh 30 ngày).
+Đã làm ngay: build chỉ `rc/web-uat` + `main` (`scripts/vercel-ignore.mjs`), xoá 6 bản Preview cũ, retention đang 30 ngày.
+**Phương án:** Next.js standalone trong container → **Cloud Run** (min-instances 1 cho production để tránh cold start), **Cloud CDN** +
+HTTPS Load Balancer trước Cloud Run cho tĩnh/ISR, **Cloud Scheduler** gọi 14 cron hiện tại (thay `vercel.json crons`, giữ bearer
+`CRON_SECRET`), **Secret Manager** cho env, **Cloud Build** (hoặc GitHub Actions) build theo nhánh; UAT = service Cloud Run thứ hai.
+**Chi phí (ước, cần đo):** Cloud Run ~ theo vCPU-giây + RAM; 1 instance tối thiểu 1 vCPU/1 GiB chạy liên tục ≈ vài chục USD/tháng
+mỗi môi trường; Load Balancer ≈ 18 USD/tháng + egress; trừ vào credit GCP hiện có. So với Vercel Pro 20 USD/thành viên/tháng.
+**Công sức (ước):** 3–5 ngày: Dockerfile standalone + cache ISR/`revalidate` (Vercel làm hộ), middleware/edge chạy trên Node,
+`next/image` (cần loader hoặc Cloud CDN), domain + SSL (www, uat), preview theo nhánh (tự dựng), log/alert (Cloud Logging).
+**Rủi ro:** ISR/`revalidateTag` và cache dữ liệu Next chạy nhiều instance cần cache dùng chung (hiện dựa vào hạ tầng Vercel);
+`@vercel/*` (KV, analytics, OG `@vercel/og`?) phải thay; header `x-vercel-*` mà code đọc (`clientIp()` ưu tiên `x-vercel-forwarded-for`,
+`x-vercel-protection-bypass` cho UAT) phải đổi sang header của Load Balancer; cold start; mất rollback một chạm.
+**Mất so với Vercel:** preview URL tự động mỗi nhánh, Deployment Protection + bypass cho UAT, rollback/promote tức thì, edge network
+và image optimization có sẵn, Speed Insights, cron trong `vercel.json`, log theo deployment.
+**Đề xuất:** release trên Vercel (nâng Pro nếu Hobby chặn), đo chi phí thật 1 tháng, rồi mới quyết dời.
