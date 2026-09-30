@@ -11,13 +11,13 @@ describe('SERPER_CACHE_V2 — key', () => {
 
   it('folds the ways the same request is written onto one key', () => {
     const same = ['phở Quận 1', 'phở ở q1', 'Phở, quận 1 TP.HCM', 'phở q.1 tp hcm', 'phở quận 1 Sài Gòn', 'phở District 1']
-    expect(new Set(same.map(normalizeQueryV2))).toEqual(new Set(['phở quận 1']))
+    expect(new Set(same.map(normalizeQueryV2))).toEqual(new Set(['pho quan 1']))
     expect(normalizeQueryV2('khách sạn Đà Nẵng, Việt Nam')).toBe(normalizeQueryV2('khách sạn da nang'))
-    expect(normalizeQueryV2('bún bò Huế gần đây Sài Gòn')).toBe('bún bò huế hồ chí minh')
+    expect(normalizeQueryV2('bún bò Huế gần đây Sài Gòn')).toBe('bun bo hue ho chi minh')
+    expect(normalizeQueryV2('quan an ngon quan 3')).toBe(normalizeQueryV2('quán ăn ngon Quận 3'))
   })
 
-  it('never folds diacritics or merges different requests', () => {
-    expect(normalizeQueryV2('mắt kính')).not.toBe(normalizeQueryV2('mất kính'))
+  it('never merges different requests (tone-only pairs like mắt/mất DO share — owner spec, see header)', () => {
     expect(normalizeQueryV2('phở quận 1')).not.toBe(normalizeQueryV2('phở quận 10'))
     expect(normalizeQueryV2('khách sạn hà nội')).not.toBe(normalizeQueryV2('khách sạn đà nẵng'))
     expect(serperKeyBodyV2('shopping', 'tai nghe', null, 'n20')).not.toBe(serperKeyBodyV2('shopping', 'tai nghe', null))
