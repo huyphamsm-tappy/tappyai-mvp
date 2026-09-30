@@ -5,6 +5,7 @@ struct ChatView: View {
     @AppStateObject private var vm: ChatViewModel
     @AppEnvironmentState private var router: AppRouter
     @AppEnvironmentState private var localization: LocalizationManager
+    @State private var ageScreen = false
 
     init(deps: AppDependencies, category: String = "general",
          conversationId: String? = nil, savedMessages: [Conversation.ConversationMessage]? = nil) {
@@ -153,6 +154,33 @@ struct ChatView: View {
                 vm.shareArtifact = nil
             }
             .presentationDetents([.large])
+        }
+        // The 18+ gate as its own screen (mockup "Xác nhận bạn đủ 18 tuổi"). Closing it leaves the
+        // inline prompt in the message list, which still offers the same fields (and, for a blocked
+        // account, the one-time correction).
+        .onChange(of: vm.error) { newError in
+            ageScreen = newError?.isAgeGate ?? false
+        }
+        .fullScreenCover(isPresented: $ageScreen) {
+            AgeCheckView(
+                isGuest: vm.isGuest,
+                blocked: vm.isAgeBlocked,
+                submitting: vm.ageSubmitting,
+                formError: vm.ageFormError,
+                onSubmit: { d, m, y in
+                    if vm.isGuest {
+                        if let iso = DateOfBirthInput.iso(day: d, month: m, year: y) {
+                            vm.declareGuestAge(iso)
+                        } else {
+                            vm.ageFormError = NSLocalizedString("chat.age.error.invalid", comment: "")
+                        }
+                    } else {
+                        Task { await vm.submitDateOfBirth(day: d, month: m, year: y) }
+                    }
+                },
+                onEdit: { vm.clearAgeFormError() },
+                onClose: { ageScreen = false }
+            )
         }
         .sheet(isPresented: $vm.showOnboarding) {
             OnboardingSheet { prefs in
