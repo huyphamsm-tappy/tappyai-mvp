@@ -264,6 +264,20 @@ Chưa commit — patch lưu scratchpad (shopR / shopAB5). Chờ Huy (Q-AI-SHOP).
 - Bảo mật 30/09: nhánh `security/hardening-2026-09-30` gộp vào rc (`d4f5c8c`), UAT `6aade7a` smoke 5 luồng đạt; migration #20–#23 vào PHẦN B.
   Apple IAP: production KHÔNG có `APPLE_IAP_*` → verify trả 503, lỗ API-1 đang đóng; không thêm các biến này trước khi `fea7f38` lên prod.
 
+### ▶ LUNA TRÊN UAT — chạy thật rút gọn 30/09 tối (UAT `3e763fb`), trang duyệt https://claude.ai/artifact/KtAqAkz3s1hUdpsZQUiQnV
+- Gộp `luna/consult-2026-09-30` (@c4ddf3c) vào rc = `87007a1`; 16.150 test (2 quét repo quá giờ khi chạy cả bộ, chạy riêng đạt) · tsc · lint 0 lỗi ·
+  kiến trúc 15/15 · build Vercel. Gói `@ai-sdk/openai@1.3.24` thêm vào node_modules dùng chung (khớp integrity lockfile).
+- Env: `OPENAI_API_KEY` (key TEST 30 ngày → PL-OPENAI-KEY) + `SERPER_CACHE_V2=1` cho Preview + Production; không có `LLM_PROVIDER`;
+  `ANTHROPIC_API_KEY` để nguyên. §2g + PHẦN B B0 đã ghi.
+- Sửa trước lượt chạy (`54210f2`): kế hoạch ẩn mục không có dữ liệu + nói chặng thiếu ở cuối; mua sắm không chọn máy thiếu RAM cho mục đích
+  đã nêu (SHOP-3 t5). Sau lượt chạy (`c2d8b59`): «không thích bar» không bị coi là muốn đi uống; chủ ngữ câu gộp bỏ đuôi «được xác nhận».
+- Lượt chạy: 20 câu tiêu biểu + 15 kịch bản + ScamShield / Viết content / đăng clip có phân tích (cả 3 chạy Luna, ảnh giao diện thật).
+  104 lượt, **A = 0**, B = 5 (TRAVEL-2 t5–t7 «đi rồi, chỗ khác» vẫn ở Tây Ninh; SHOP-2 t2/t6 lệch xa ngân sách 1–2 triệu), C/D ghi trên trang.
+  **Chi phí thật (server UAT): $0,404 / 104 lượt ≈ $0,0039/lượt** (Haiku $0,00916); lượt nền trước sửa $0,232 / 107 lượt.
+- ⏳ FOOD-1, FOOD-3, SHOP-3 (dừng ở lượt 1) và SPA-3 (lượt 4): 3 tài khoản test hết lượt hỏi trong ngày (Pro 300/300, free 15/15) —
+  bộ đếm ở KV dùng chung với production nên KHÔNG xoá; chụp nốt + ENT-2 t7 sau 0h (giờ VN).
+- Bằng chứng: `gs://tappyai-uat-evidence/luna-uat-2026-09-30/`.
+
 ### ✅ 3 lỗi code ở lượt KẾ HOẠCH CHI TIẾT (LUNA-REPORT §7) — sửa trong Phase 7, rc `43d4395` + `ca10919`
 Kiểm trên rc hiện tại (sau các sửa dòng chi phí FOOD-1/ENT-1/ENT-2/SPA-2) bằng replay đúng các hội thoại có lượt kế hoạch lỗi
 (13 kịch bản + E1-G5; replay `scenarios-2026-09-30T10-14` trước sửa): **cả 3 lỗi CÒN** → sửa:
