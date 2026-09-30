@@ -20344,6 +20344,23 @@
           }
         }
       }
+    },
+    "onboarding.stepCounter": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Step %d/%d"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bước %d/%d"
+          }
+        }
+      }
     }
   }
 }

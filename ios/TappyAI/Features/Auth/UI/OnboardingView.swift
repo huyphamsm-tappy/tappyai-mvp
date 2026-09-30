@@ -85,6 +85,7 @@ struct OnboardingView: View {
 
     private var loadedContent: some View {
         VStack(alignment: .leading, spacing: Spacing.lg) {
+            progressHeader
             if vm.step == 1 { interestsStep } else { cityStep }
             Spacer()
             if let error = vm.errorMessage {
@@ -94,6 +95,28 @@ struct OnboardingView: View {
         }
         .padding(Spacing.md)
         .overlay { if vm.isWorking { TappyLoadingIndicator() } }
+    }
+
+    /// Brand mark, a 2-segment progress bar and the real counter "Bước 1/2" (owner 2026-09-28: the
+    /// counter shows the steps this wizard really has — Android `OnboardingScreen.ProgressBar`).
+    private var progressHeader: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack(spacing: 10) {
+                Image("TappyLogo").resizable().scaledToFit().frame(width: 40, height: 40)
+                    .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+                    .accessibilityHidden(true)
+                (Text("Tappy").foregroundColor(TappyColor.textPrimary) + Text("AI").foregroundColor(TappyColor.primary))
+                    .font(.system(size: 19, weight: .black))
+            }
+            HStack(spacing: 6) {
+                ForEach(1...2, id: \.self) { s in
+                    Capsule().fill(s <= vm.step ? TappyColor.primary : TappyColor.border).frame(height: 4)
+                }
+            }
+            Text(String(format: NSLocalizedString("onboarding.stepCounter", comment: ""), vm.step, 2))
+                .font(.system(size: 12, weight: .medium)).foregroundStyle(TappyColor.textSecondary)
+                .accessibilityIdentifier("onboarding-step-counter")
+        }
     }
 
     private var interestsStep: some View {
