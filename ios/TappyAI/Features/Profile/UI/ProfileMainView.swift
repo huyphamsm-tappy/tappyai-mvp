@@ -11,6 +11,11 @@ struct ProfileMainView: View {
     @State private var showProUpgrade = false
     @State private var showAppConnections = false
     @State private var showQR = false
+    @State private var showAuth = false
+
+    /// Signed-out (anonymous) visitor: the hub shows the sign-in card and locks every row, as the
+    /// web `/profile` and Android do (ANDROID-PARITY-MAP L3).
+    private var isGuest: Bool { !session.state.isAuthenticated }
 
     private var service: ProfileService { ProfileService(api: deps.api) }
 
@@ -21,8 +26,13 @@ struct ProfileMainView: View {
                     ProgressView()
                         .frame(maxWidth: .infinity)
                         .padding(.top, 60)
+                } else if isGuest {
+                    guestCard
+                    accountSection
+                    settingsSection
                 } else if let profile {
                     profileCard(profile)
+                    communityShortcuts
                     accountSection
                     if showProUpgrade { proSection }
                     settingsSection
@@ -35,6 +45,74 @@ struct ProfileMainView: View {
         .navigationTitle(Text("profile.title"))
         .navigationBarTitleDisplayMode(.inline)
         .task { await loadProfile() }
+        .fullScreenCover(isPresented: $showAuth) {
+            AuthFlowView(repo: deps.authRepository, config: deps.configService) { showAuth = false }
+        }
+    }
+
+    // MARK: - Guest card
+
+    private var guestCard: some View {
+        VStack(alignment: .leading, spacing: Spacing.md) {
+            HStack(spacing: Spacing.md) {
+                RoundedRectangle(cornerRadius: Radius.xl)
+                    .fill(LinearGradient(colors: [Color(hex: 0x8B5CF6, alpha: 0.3), TappyColor.primary.opacity(0.25)],
+                                         startPoint: .topLeading, endPoint: .bottomTrailing))
+                    .frame(width: 64, height: 64)
+                    .overlay(Text("👋").font(.system(size: 30)))
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("profile.guest.title")
+                        .font(.system(size: 18, weight: .bold))
+                        .foregroundStyle(TappyColor.textPrimary)
+                    Text("profile.guest.subtitle")
+                        .font(.system(size: 13))
+                        .foregroundStyle(TappyColor.textSecondary)
+                }
+            }
+            Button { showAuth = true } label: {
+                Text("profile.guest.signIn")
+                    .font(.system(size: 15, weight: .semibold))
+                    .foregroundStyle(.white)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 14)
+                    .background(TappyColor.primary)
+                    .clipShape(RoundedRectangle(cornerRadius: Radius.md))
+            }
+            .buttonStyle(.plain)
+            .accessibilityIdentifier("profile-guest-signin")
+        }
+        .padding(Spacing.lg)
+        .background(TappyColor.cardBackground)
+        .clipShape(RoundedRectangle(cornerRadius: Radius.xl))
+        .overlay(RoundedRectangle(cornerRadius: Radius.xl).stroke(TappyColor.border, lineWidth: 1))
+        .accessibilityIdentifier("profile-guest-card")
+    }
+
+    // MARK: - Community shortcuts (the rows the web/Android hub dropped stay one tap away)
+
+    private var communityShortcuts: some View {
+        HStack(spacing: Spacing.sm) {
+            shortcut("star", "profile.row.myPosts", .myPosts)
+            shortcut("person.2", "profile.row.social", .social)
+            shortcut("magnifyingglass", "profile.row.userSearch", .userSearch)
+            shortcut("bell", "profile.row.notifications", .notificationsInbox)
+        }
+    }
+
+    private func shortcut(_ icon: String, _ label: LocalizedStringKey, _ dest: ProfileDestination) -> some View {
+        Button { router.push(dest, on: .profile) } label: {
+            VStack(spacing: 4) {
+                Image(systemName: icon).font(.system(size: 16))
+                Text(label).font(.system(size: 10, weight: .medium)).lineLimit(1).minimumScaleFactor(0.7)
+            }
+            .foregroundStyle(TappyColor.textPrimary)
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, Spacing.sm)
+            .background(TappyColor.cardBackground)
+            .clipShape(RoundedRectangle(cornerRadius: Radius.md))
+            .overlay(RoundedRectangle(cornerRadius: Radius.md).stroke(TappyColor.border, lineWidth: 1))
+        }
+        .buttonStyle(.plain)
     }
 
     // MARK: - Profile Card
@@ -135,8 +213,6 @@ struct ProfileMainView: View {
                 Divider().padding(.leading, 52)
                 menuRow(icon: "bubble.left.and.bubble.right", label: "profile.row.history", desc: "profile.row.history.desc", dest: .history)
                 Divider().padding(.leading, 52)
-                menuRow(icon: "map", label: "profile.row.planner", desc: "profile.row.planner.desc", dest: .planner)
-                Divider().padding(.leading, 52)
                 menuRow(icon: "calendar", label: "profile.row.bookings", desc: "profile.row.bookings.desc", dest: .bookings)
                 Divider().padding(.leading, 52)
                 menuRow(icon: "heart", label: "profile.row.preferences", desc: "profile.row.preferences.desc", dest: .preferences)
@@ -144,6 +220,8 @@ struct ProfileMainView: View {
                 menuRow(icon: "bookmark", label: "profile.row.saved", desc: "profile.row.saved.desc", dest: .favorites)
                 Divider().padding(.leading, 52)
                 menuRow(icon: "arrow.down.right", label: "profile.row.priceWatch", desc: "profile.row.priceWatch.desc", dest: .priceWatches)
+                Divider().padding(.leading, 52)
+                menuRow(icon: "map", label: "profile.row.planner", desc: "profile.row.planner.desc", dest: .planner)
                 Divider().padding(.leading, 52)
                 menuRow(icon: "brain", label: "profile.row.memory", desc: "profile.row.memory.desc", dest: .tappyKnows)
                 Divider().padding(.leading, 52)
@@ -155,18 +233,8 @@ struct ProfileMainView: View {
                     menuRow(icon: "link", label: "profile.row.integrations", desc: "profile.row.integrations.desc", dest: .integrations)
                     Divider().padding(.leading, 52)
                 }
-                // 🚨 Was `router.switchTo(.explore)`, which took "xem các review BẠN đã viết" to
-                // the PUBLIC feed — everyone's posts, and by construction none of the author's own
-                // held ones, since the gate keeps those out of Explore. The row promised the
-                // author's own posts and delivered the opposite. `.myPosts` is that screen.
-                menuRow(icon: "star", label: "profile.row.myPosts", desc: "profile.row.myPosts.desc", dest: .myPosts)
-                Divider().padding(.leading, 52)
-                menuRow(icon: "bell", label: "profile.row.notifications", desc: "profile.row.notifications.desc", dest: .notificationsInbox)
-                Divider().padding(.leading, 52)
-                menuRow(icon: "person.2", label: "profile.row.social", desc: "profile.row.social.desc", dest: .social)
-                Divider().padding(.leading, 52)
-                menuRow(icon: "magnifyingglass", label: "profile.row.userSearch", desc: "profile.row.userSearch.desc", dest: .userSearch)
-                Divider().padding(.leading, 52)
+                // My posts / notifications / following / people search moved to `communityShortcuts`
+                // (web and Android hubs have exactly the nine rows of the mockup).
                 menuRow(icon: "person.3", label: "profile.row.groupDining", desc: "profile.row.groupDining.desc", dest: .groupDining)
             }
             .background(TappyColor.cardBackground)
@@ -231,7 +299,9 @@ struct ProfileMainView: View {
     /// type change is what makes the next row hard to get wrong.
     private func menuRow(icon: String, label: LocalizedStringKey, desc: LocalizedStringKey, dest: ProfileDestination?, action: (() -> Void)? = nil) -> some View {
         Button {
-            if let action {
+            if isGuest {
+                showAuth = true
+            } else if let action {
                 action()
             } else if let dest {
                 router.push(dest, on: .profile)
@@ -249,7 +319,7 @@ struct ProfileMainView: View {
                     Text(label)
                         .font(.system(size: 14, weight: .medium))
                         .foregroundStyle(TappyColor.textPrimary)
-                    Text(desc)
+                    Text(isGuest ? LocalizedStringKey("profile.guest.locked") : desc)
                         .font(.system(size: 11))
                         .foregroundStyle(TappyColor.textSecondary)
                         .lineLimit(1)
@@ -272,6 +342,7 @@ struct ProfileMainView: View {
     }
 
     private func loadProfile() async {
+        if isGuest { loading = false; return }
         do {
             let p = try await service.fetchProfile()
             profile = p
