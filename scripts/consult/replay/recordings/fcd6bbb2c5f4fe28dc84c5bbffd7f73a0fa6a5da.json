@@ -1,0 +1,80 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Ốp lưng iPhone 17 Pro Max site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:02:30.233Z",
+ "body": {
+  "searchParameters": {
+   "q": "Ốp lưng iPhone 17 Pro Max site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "[iPhone 17 Pro Max] Ốp lưng UAG/ ZAGG/ PITAKA chống ...",
+    "link": "https://shopee.vn/-iPhone-17-Pro-Max-%E1%BB%90p-l%C6%B0ng-UAG-ZAGG-PITAKA-ch%E1%BB%91ng-s%E1%BB%91c-b%E1%BA%A3o-h%C3%A0nh-ch%E1%BB%91ng-%E1%BB%91-v%C3%A0ng-H%C3%A0ng-ch%C3%ADnh-h%C3%A3ng-i.206824363.25796994129",
+    "snippet": "Mua [iPhone 17 Pro Max] Ốp lưng UAG/ ZAGG/ PITAKA chống sốc, bảo hành chống ố vàng - Hàng chính hãng giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 5,
+    "ratingCount": 12,
+    "position": 1
+   },
+   {
+    "title": "Ốp lưng iphone 17 pro max - Giá Tốt, Sale Tháng 09, ...",
+    "link": "https://shopee.vn/list/%E1%BB%91p%20l%C6%B0ng/iphone/17%20pro%20max",
+    "snippet": "Ốp lưng silicon lỏng cho iPhone | Tự Động Lấy Nét Bảo Vệ Ống Kính Nút AI Tương Thích Chống Sốc Cho iPhone 17 16 15 14 13 Pro Max. 129.240₫. 230.401₫.",
+    "position": 2
+   },
+   {
+    "title": "Ốp lưng bảo vệ dành cho iPhone thiết kế 17 Pro Max, TPU ...",
+    "link": "https://shopee.vn/%E1%BB%90p-l%C6%B0ng-b%E1%BA%A3o-v%E1%BB%87-d%C3%A0nh-cho-iPhone-thi%E1%BA%BFt-k%E1%BA%BF-17-Pro-Max-TPU-d%E1%BA%BBo-nh%C3%A1m-ch%E1%BB%91ng-b%C3%A1m-b%E1%BA%A9n-ch%E1%BB%91ng-s%E1%BB%91c-5-6-9-inch-m%E1%BB%9Bi-100-KINGBON-i.322094848.48253146951",
+    "snippet": "Ốp lưng bảo vệ dành cho iPhone thiết kế 17 Pro Max, TPU ・ ốc, 5,6-9 inch, mới ・ 69.000₫ 99.000₫ -30% 5,6-9 inch, mới 100% KINGBON",
+    "rating": 4.9,
+    "ratingCount": 2109,
+    "position": 3
+   },
+   {
+    "title": "[17 ProMax] Ốp Lưng iPhone 17 / 17 Pro / 17 Pro Max / 15 ...",
+    "link": "https://shopee.vn/-17-ProMax-%E1%BB%90p-L%C6%B0ng-iPhone-17-17-Pro-17-Pro-Max-15-Plus-16-Pro-Max-WIWU-MCC-101-L%C6%B0ng-trong-vi%E1%BB%81n-d%E1%BA%BBo-ch%E1%BB%91ng-s%E1%BB%91c-i.894430014.22079373324",
+    "snippet": "[17 ProMax] Ốp Lưng iPhone 17 / 17 Pro / 17 Pro Max / 15 Plus / 16 Pro Max WIWU MCC-101 Lưng trong viền dẻo chống sốc. outline grey truck icon. Không hỗ trợ.",
+    "rating": 5,
+    "ratingCount": 9,
+    "position": 4
+   },
+   {
+    "title": "Ốp Lưng iPhone 17 Pro Max IMAK Chống Sốc Cho ...",
+    "link": "https://shopee.vn/%E1%BB%90p-L%C6%B0ng-iPhone-17-Pro-Max-IMAK-Ch%E1%BB%91ng-S%E1%BB%91c-Cho-iPhone17-Air-iPhone16-B%C3%ACa-M%E1%BB%81m-i.204496598.41803207637",
+    "snippet": "Ốp Lưng iPhone 17 Pro Max IMAK Chống Sốc Cho iPhone17 Air iPhone16 Bìa Mềm ... Tặng Voucher 15.000₫ nếu đơn giao sau thời gian trên.",
+    "rating": 4.8,
+    "ratingCount": 46,
+    "position": 5
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max có sạc từ tính cho iPhone 11 12 13 ...",
+    "link": "https://shopee.vn/%E1%BB%90p-l%C6%B0ng-iPhone-17-Pro-Max-c%C3%B3-s%E1%BA%A1c-t%E1%BB%AB-t%C3%ADnh-cho-iPhone-11-12-13-14-15-ProMax-16-Plus-17-Air-Case-c%C3%B3-n%E1%BA%AFp-%E1%BB%91ng-k%C3%ADnh-m%C3%A1y-%E1%BA%A3nh-sang-tr%E1%BB%8Dng-trong-su%E1%BB%91t-V%E1%BB%8F-%C4%91i%E1%BB%87n-tho%E1%BA%A1i-c%E1%BB%A9ng-PC-ch%E1%BB%91ng-s%E1%BB%91c-trong-su%E1%BB%91t-sang-tr%E1%BB%8Dng-i.932130599.44073584768",
+    "snippet": "Ốp lưng iPhone 17 Pro Max có sạc từ tính cho iPhone 11 12 13 14 15 ProMax 16 Plus 17 Air Case, có nắp ống kính máy ảnh sang trọng trong suốt Vỏ điện thoại cứng ...",
+    "position": 6
+   },
+   {
+    "title": "Ốp lưng iphone 17 pro max 17pro 16 15 14pro 13 12 11 ...",
+    "link": "https://shopee.vn/%E1%BB%90p-l%C6%B0ng-iphone-17-pro-max-17pro-16-15-14pro-13-12-11-Pro-Max-v%E1%BB%8F-m%E1%BB%81m-trong-su%E1%BB%91t-m%E1%BB%9D-Qu%C3%A0-t%E1%BA%B7ng-ch%E1%BB%91ng-r%C6%A1i-ch%E1%BB%91ng-s%E1%BB%91c-tr%C3%A1i-tim-gradient-%C4%91%E1%BA%A7y-m%C3%A0u-s%E1%BA%AFc--i.1024607561.54757507154",
+    "snippet": "Ốp lưng iphone 17 pro max 17pro 16 15 14pro 13 12 11 Pro Max, vỏ mềm trong suốt mờ, Quà tặng, chống rơi, chống sốc, trái tim gradient đầy màu sắc,.",
+    "position": 7
+   },
+   {
+    "title": "Ốp Lưng IPhone 17 Pro Max/16 Pro ...",
+    "link": "https://shopee.vn/%E1%BB%90p-L%C6%B0ng-IPhone-17-Pro-Max-16-Pro-Max-15-Pro-Max-14-Pro-Max-13-D%E1%BA%BBo-Trong-N%C3%B3n-L%C3%A1-i.1489968724.56506851473",
+    "snippet": "Mua Ốp Lưng IPhone 17 Pro Max/16 Pro Max/15 Pro Max/14 Pro Max/13 Dẻo Trong Nón Lá giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

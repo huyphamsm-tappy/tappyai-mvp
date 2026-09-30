@@ -1,0 +1,44 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "MỲ CAY-GÀ RÁN HÀN QUỐC CHICKEN 3S Nguyễn Thị Thập (site:food.grab.com/vn OR site:shopeefood.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:01:22.313Z",
+ "body": {
+  "searchParameters": {
+   "q": "MỲ CAY-GÀ RÁN HÀN QUỐC CHICKEN 3S Nguyễn Thị Thập (site:food.grab.com/vn OR site:shopeefood.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Giao món trực tuyến - Vô vàn ưu đãi, hàng vạn món ngon",
+    "link": "https://food.grab.com/vn/vi//",
+    "snippet": "Đáp ứng mọi nhu cầu - Từ món ăn đặc sản địa phương đến các nhà hàng được ưa thích, nhiều lựa chọn đa dạng chắc chắn sẽ luôn làm hài lòng khẩu vị của bạn. Thanh ...",
+    "position": 1
+   },
+   {
+    "title": "TOUS les JOURS - Masteri ⭐ 4.8",
+    "link": "https://food.grab.com/vn/vi/restaurant/tous-les-jours-masteri-delivery/5-CYK2LZCJJABAEN",
+    "snippet": "Matcha Uji nguyên chất được đánh mịn cùng sữa yến mạch, kết hợp nước dừa tươi tự nhiên mang đến vị trà xanh thanh tao, hậu vị béo nhẹ và cảm giác tươi mát đặc ...",
+    "rating": 4.8,
+    "ratingCount": 502,
+    "position": 2
+   },
+   {
+    "title": "Vô vàn ưu đãi, hàng vạn món ngon | GrabFood VN",
+    "link": "https://food.grab.com/vn/vi/",
+    "snippet": "GrabFood - Dịch vụ giao đồ ăn trực tuyến giúp bạn thỏa mãn cơn thèm ăn với hàng vạn quán ăn.",
+    "position": 3
+   }
+  ],
+  "credits": 1
+ }
+}

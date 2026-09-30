@@ -1,0 +1,24 @@
+{
+ "url": "https://google.serper.dev/shopping",
+ "request": {
+  "q": "quà sinh nhật cho sếp nam thích cà phê 1-2 triệu",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 20
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:03:38.634Z",
+ "body": {
+  "searchParameters": {
+   "q": "quà sinh nhật cho sếp nam thích cà phê 1-2 triệu",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "shopping",
+   "num": 40,
+   "page": 1,
+   "engine": "google"
+  },
+  "shopping": [],
+  "credits": 2
+ }
+}

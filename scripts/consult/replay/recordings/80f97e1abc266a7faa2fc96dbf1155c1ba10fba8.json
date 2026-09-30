@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Tới Nóc | chi nhánh Bình Thạnh\" OR \"QUÁN NHẬU NĂM ZUI | QUÁN NHẬU GẦN ĐÂY | QUÁN NHẬU BÌNH THẠNH | QUÁN ĂN GẦN ĐÂY\" OR \"LOCAL “An\" Bình Thạnh site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:01:40.450Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Tới Nóc | chi nhánh Bình Thạnh\" OR \"QUÁN NHẬU NĂM ZUI | QUÁN NHẬU GẦN ĐÂY | QUÁN NHẬU BÌNH THẠNH | QUÁN ĂN GẦN ĐÂY\" OR \"LOCAL “An\" Bình Thạnh site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

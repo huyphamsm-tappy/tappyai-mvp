@@ -88,7 +88,7 @@ function suitesToRun(): SuiteName[] {
   const raw = (process.env.REPLAY_SUITE ?? '').trim()
   if (!raw) return []
   if (raw === 'all') return [...SUITES]
-  return raw.split(',').map(s => s.trim()).filter((s): s is SuiteName => ([...SUITES, 'injection', 'file'] as string[]).includes(s))
+  return raw.split(',').map(s => s.trim()).filter((s): s is SuiteName => ([...SUITES, 'injection', 'file', 'realTyping'] as string[]).includes(s))
 }
 
 /** Route log lines worth keeping per turn (JSON lines with a tappyai_* type), plus errors. */

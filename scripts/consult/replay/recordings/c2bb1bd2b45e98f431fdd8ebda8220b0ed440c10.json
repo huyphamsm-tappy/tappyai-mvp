@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"QUÁN 366| QUÁN NHẬU BÙI ĐÌNH TUÝ| QUÁN NHẬU BÌNH THẠNH\" OR \"Ốc Hận\" OR \"Quán Tôi\" Bình Thạnh site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:01:58.970Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"QUÁN 366| QUÁN NHẬU BÙI ĐÌNH TUÝ| QUÁN NHẬU BÌNH THẠNH\" OR \"Ốc Hận\" OR \"Quán Tôi\" Bình Thạnh site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Quán Ốc Hận - Bùi Đình Tuý Nổi Bật Tại Bình Thạnh",
+    "link": "https://www.tiktok.com/@ngay2cu/video/7540722242842365192",
+    "snippet": "Video TikTok từ Ngày 2 Cử (@ngay2cu): \"Khám phá quán Ốc Hận Bùi Đình Tuý với những món ăn hấp dẫn. Tìm hiểu thực đơn và địa chỉ quán.",
+    "position": 1
+   },
+   {
+    "title": "Một quán ốc ở Bùi Đình Tuý đồng giá chỉ 40 cành ăn ngon ...",
+    "link": "https://www.tiktok.com/@funfun.review/video/7563687210772352277",
+    "snippet": "Một quán ốc ở Bùi Đình Tuý đồng giá chỉ 40 cành ăn ngon má hú luôn á #phuongtoidayy #diadiemanuong #ocngon #ankhuya #anvat · Ốc Hận Bùi Đình ...",
+    "position": 2
+   },
+   {
+    "title": "Quán Ốc Siêu Hot Đường Bùi Đình Tuý",
+    "link": "https://www.tiktok.com/@mammamsaigon/video/7574425648416967954",
+    "snippet": "Sự Tàn Khốc Của Hận Thù · Ốc Hận Bùi Đình Túy · Ốc Ruốc Bình Thạnh · Ốc Nguyễn Hoàng. Quán Ốc Siêu Hot Đường Bùi Đình Tuý.",
+    "position": 3
+   },
+   {
+    "title": "Ốc Bùi Đình Tuý",
+    "link": "https://www.tiktok.com/discover/%E1%BB%91c-b%C3%B9i-%C4%91%C3%ACnh-tu%C3%BD",
+    "snippet": "Khám phá tầm quan trọng của tình yêu và sự nghiệp cho hạnh phúc tối ưu trong cuộc sống.Xem thêm video về Ốc Hận Bùi Đình Túy, Bùi Đình Túy, Dặm Bùa, ...",
+    "position": 4
+   },
+   {
+    "title": "Sau 1 năm mở quán, tôi mới nhận ra một điều khá cay",
+    "link": "https://www.tiktok.com/@trumfood/photo/7688636824255745300",
+    "snippet": "Sau 1 năm mở quán, tôi mới nhận ra một điều khá cay: Có những vấn đề trong quán, chủ quán đi qua mỗi ngày nhưng không bao giờ nhìn thấy.",
+    "position": 5
+   },
+   {
+    "title": "và quán tôi lựa#xuhuonggggggggggggggggg # ...",
+    "link": "https://www.tiktok.com/@englot279/video/7675008845965511943",
+    "snippet": "... Lượt thích,Video TikTok từ Waraha (@englot279): \"và quán tôi lựa ... Bình Thạnh. Quán rộng như cái mê cung, bài trí đẹp và có gu ...",
+    "position": 6
+   },
+   {
+    "title": "Quán cà phê Bình Thạnh review: quán tôi hay lén tới chạy ...",
+    "link": "https://www.tiktok.com/@alynternal/video/7672630365063826708",
+    "snippet": "Quán cà phê Bình Thạnh review: quán tôi hay lén tới chạy bài. Lead Quán cà phê Bình Thạnh mà tôi thường lén tới để chạy bài và ôn tập có một ...",
+    "position": 7
+   },
+   {
+    "title": "Đưa tôi 250 cành và lên quán tôi ăn uống ngắm mây nào ...",
+    "link": "https://www.tiktok.com/@hieudulichvietnam/video/7690202398303849746",
+    "snippet": "Video TikTok từ Hiếu bò sống ở Tà Xùa (@hieudulichvietnam): \"Đưa tôi 250 cành và lên quán tôi ăn uống ngắm mây nào anh em ơi.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

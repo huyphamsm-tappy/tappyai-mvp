@@ -1,3 +1,48 @@
-# Bộ "câu gõ thật" của anh Huy — mỗi dòng một câu (viết tắt, sai chính tả, không dấu, chửi thề… đều được).
-# Dòng bắt đầu bằng # bị bỏ qua. Một hội thoại nhiều lượt: nối các lượt bằng ' || ' trên cùng một dòng.
-
+# Bộ "gõ đời thường" — biến thể của 2 lượt mở đầu mỗi kịch bản Phase 7 (15 kịch bản × 2 lượt).
+# Mỗi dòng: câu gốc | biến thể. Dòng "# <ID>" mở một hội thoại. Dòng bắt đầu bằng # khác bị bỏ qua.
+# Giữ NGUYÊN ý nghĩa và ràng buộc của câu gốc; anh sửa thoải mái — harness đọc thẳng file này (REPLAY_SUITE=realTyping).
+# FOOD-1
+tối nay ăn gì ngon quận 1 | toi nay an j ngon q1
+2 người, tầm 300k/người, món Nhật, ăn tại chỗ | 2ng, tam 300k/ng, do nhat, an tai cho
+# FOOD-2
+đói mà lười ra đường | doi vl ma luoi ra dg qua
+giao tới quận 7, 1 người, dưới 100k | ship toi q7, 1 ng, duoi 100k
+# FOOD-3
+quán nhậu cho 6 đứa bạn | kiem quan nhau cho 6 thang ban
+bình thạnh, tầm 200k/người, tối thứ 7 | binh thanh, tam 200k/ng, toi t7
+# SHOP-1
+tìm ốp uag 17 pro max | tim op uag 17pm
+dòng Monarch hoặc Pathfinder, dưới 1 triệu, cần magsafe | monarch hay pathfinder j cung dc, <1tr, can magsafe
+# SHOP-2
+sếp sinh nhật mua gì | sep sn mua j z mn
+sếp nam 40 tuổi, thích cà phê, tầm 1-2 triệu | sep nam 40t, ghien cafe, tam 1-2tr
+# SHOP-3
+laptop cho sinh viên | lap cho sv
+học thiết kế, dưới 20 triệu, mới | hoc tk do hoa, duoi 20tr, hang moi
+# TRAVEL-1
+đi du lịch Đà Nẵng 3 ngày 2 đêm | di d.nang 3n2d choi
+từ sài gòn, 2 người, 10/10, đi máy bay, 8 triệu, thích biển và ăn hải sản | tu sg, 2ng, 10/10, bay, 8tr, thik bien vs an hai san
+# TRAVEL-2
+cuối tuần đi đâu chơi gần sài gòn | cuoi tuan di dau choi gan sg ta
+đi 2 ngày 1 đêm, gia đình 4 người, xe riêng, 5 triệu, thích núi | 2n1d, gd 4 ng, xe nha, 5tr, thik nui
+# TRAVEL-3
+vé máy bay sài gòn đi hà nội | ve mb sg ra hn
+15/10, 1 người, bay sáng, 1 chiều | 15/10, 1ng, bay sang, 1 chieu thoi
+# ENT-1
+tìm quán karaoke quận 1 cho nhóm bạn | kiem cho hat karaoke q1 cho team
+8 người, tối nay 9h, tầm 150k/người, sôi động | 8 ng, 9h toi nay, 150k/ng, quay cho sung
+# ENT-2
+chán quá tối nay làm gì | chan vcl toi nay lam gi day
+đi với người yêu, quận 3, chill, 500k | di vs ny, q3, chill chill, 500k
+# ENT-3
+cuối tuần dẫn con đi chơi đâu | cuoi tuan dan con di choi dau h
+con 6 tuổi, thủ đức, chủ nhật sáng, dưới 500k | be 6t, thu duc, sang cn, duoi 500k
+# SPA-1
+mệt quá muốn thư giãn | met qua muon thu gian ti
+massage toàn thân, quận 1, 500k, tối nay | mat xa toan than, q1, 500k, toi nay
+# SPA-2
+gội đầu dưỡng sinh | goi dau duong sinh
+quận 3, dưới 200k, chiều mai | q3, <200k, chieu mai
+# SPA-3
+làm nail đẹp gần đây | lam nail dep gan day
+sơn gel + vẽ, quận 10, 300k, thứ 7 | son gel + ve, q10, 300k, t7

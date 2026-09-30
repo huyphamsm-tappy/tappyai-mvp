@@ -54,6 +54,7 @@ export function prepareReplayEnv(file = process.env.REPLAY_ENV_FILE || DEFAULT_E
   // Keep the model on the provider defaults (Haiku); a stray shell override would skew cost.
   for (const k of ['LLM_PROVIDER', 'LLM_FAST_MODEL', 'LLM_SMART_MODEL', 'LLM_PLANNING_MODEL', 'LLM_VISION_MODEL']) delete process.env[k]
   applyLunaEnv()
+  process.env.CONSULT_DECISION_LOG = '1' // the turn's full decision in the raw logs (intent check); log only
   return { serperKey: !!env.SERPER_API_KEY }
 }
 

@@ -385,6 +385,8 @@ export async function POST(req: Request) {
     ? await runConsultBrain(o => AI.generate(o), messages, { hasGps: !!userLocation, previousWasAsk: wasAskReply(priorAssistantText), deterministicDomain: lastUserMsg ? turnDomain(lastUserMsg, { hasGps: !!userLocation, lang }) : null })
     : null)
   const consult = consultRun?.decision ?? (routed ? routed.decision : null)
+  // Measurement only (CONSULT_DECISION_LOG=1, off by default — replay sets it): the full decision, to check intent reading.
+  if (process.env.CONSULT_DECISION_LOG === '1' && consult) console.log(JSON.stringify({ type: 'tappyai_consult_decision', by: lunaRun ? 'luna' : consultRun ? 'brain' : 'rules', turn: consult.turn, domains: consult.domains, known: consult.known, area: consult.area ?? null }))
   console.log(JSON.stringify({ type: 'tappyai_consult', by: consultRun ? 'brain' : routed ? 'rules' : 'off', turn: consult?.turn ?? 'fallback', domains: consult?.domains ?? [], ms: consultRun?.ms ?? null, known: consult ? Object.keys(consult.known) : [], brain_in: consultRun?.usage.promptTokens ?? 0, brain_out: consultRun?.usage.completionTokens ?? 0 }))
   // Under Consult V2 a plan is built ONLY when the user accepts (turn "plan"); a trip plan keeps the
   // [TAPPY_PLAN] payload, every other area's plan is the prose plan frame (domainFrames.ts).

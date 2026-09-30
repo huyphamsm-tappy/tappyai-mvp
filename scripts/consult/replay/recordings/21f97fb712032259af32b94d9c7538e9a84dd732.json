@@ -1,0 +1,80 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "20+ Quà Tặng Sinh Nhật Sếp Dưới 1 site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:03:46.974Z",
+ "body": {
+  "searchParameters": {
+   "q": "20+ Quà Tặng Sinh Nhật Sếp Dưới 1 site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "【Bear Chef】Quà tặng sinh nhật Cốc uống nước bằng gốm hình ...",
+    "link": "https://shop.tiktok.com/vn/pdp/coc-uong-nuoc-gom-hinh-banh-sinh-nhat-380ml-qua-tang-doc-dao/1732083543919593070",
+    "snippet": "【Bear Chef】Quà tặng sinh nhật Cốc uống nước bằng gốm hình \"Bánh sinh nhật dễ thương\" 380ml thích hợp làm quà tặng các dịp lễ, sinh nhật Chất lượng cao cấp ...",
+    "position": 1
+   },
+   {
+    "title": "[30/4-1/5,2/9] Cờ dây tổ quốc 10m 20 lá cờ-Cờ sao đảng in hàng ...",
+    "link": "https://shop.tiktok.com/vn/pdp/tet-2026-co-day-to-quoc-10m-20-la-trang-tri-duong-pho-quan-cafe/1732956131049243823",
+    "snippet": "￼[Quà Tặng dịp lễ ] Hộp Qùa Hoa Sweet Love đựng tiền kèm đèn LED & thiệp – Quà tặng mẹ, bạn gái, sinh nhật ý nghĩa. 4.3. 31 sold. ₫16.200. ₫18.000 ...",
+    "position": 2
+   },
+   {
+    "title": "Sách Bài Tập Toán Học 64 Trang Dành Cho Người Mới Bắt Đầu ...",
+    "link": "https://shop.tiktok.com/vn/pdp/sach-bai-tap-toan-hoc-64-trang-luyen-viet-so-1-20-hoat-%C4%91ong-cong-tru/1733213847458186722",
+    "snippet": "Mô Hình Động Vật Hàng Hải, Đồ Chơi, Mô Phỏng Thế Giới Dưới ... Quà Tặng Cho Bạn Bè, Quà Tặng Sinh Nhật. 1. 48 sold ... Tháp Xoay cầu vồng, Tháp đồ chơi xếp chồng ...",
+    "position": 3
+   },
+   {
+    "title": "[THÊU TÊN] Khăn Choàng Len Thêu Tên Theo Yêu Cầu ...",
+    "link": "https://shop.tiktok.com/vn/pdp/khan-choang-len-theu-ten-theo-yeu-cau-qua-tang-y-nghia/1733322684522464378",
+    "snippet": "Gấu Bông Teddy Thêu Tên Theo Yêu Cầu - Quà Tặng Sinh Nhật, Kỷ Niệm Cao Cấp (Size 30-40-50cm).",
+    "rating": 4.8,
+    "ratingCount": 8,
+    "position": 4
+   },
+   {
+    "title": "Quạt Tròn In Theo Yêu Cầu Quạt Đu Idol Quạt Đu Concert",
+    "link": "https://shop.tiktok.com/vn/pdp/quat-tron-in-theo-yeu-cau-quat-%C4%91u-idol-concert-chat-lieu-nhua-cung/1731139976520632183",
+    "snippet": "Quạt Tròn In Theo Yêu Cầu Quạt Đu Idol Quạt Đu ConcertGửi ảnh ở Inbox hoặc drive cho nét b nhaĐường đính : 18cmChất kiệu : Ép Nhựa CứngQuạt in 2 mặt.",
+    "rating": 4.3,
+    "ratingCount": 3,
+    "position": 5
+   },
+   {
+    "title": "Mô Hình Côn Trùng Mô Phỏng, Hàng Mới Về, Làm Bằng ...",
+    "link": "https://shop.tiktok.com/vn/pdp/mo-hinh-con-trung-nhua-chat-luong-cao-thiet-ke-thuc-te-%C4%91a-nang/1732146096496411790",
+    "snippet": "Mua Mô Hình Côn Trùng Mô Phỏng, Hàng Mới Về, Làm Bằng Nhựa, Bộ Mô Hình Bướm, Động Vật, Bọ Cạp, Chuồn Chuồn, Thích Hợp Cho Giáo Dục Trẻ Em, Quà Sinh Nhật ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 6
+   },
+   {
+    "title": "Váy bé gái 3 tầng nhiều mầu sắc đính hoa voan",
+    "link": "https://shop.tiktok.com/vn/pdp/vay-cong-chua-cho-be-3-lop-nhieu-mau-sac-dinh-hoa-voan/1729598268127414702",
+    "snippet": "Váy bé gái 3 tầng nhiều mầu sắc đính hoa voan là một sự lựa chọn hoàn hảo để cho bé yêu diện thôi nôi, đầy tháng, sinh nhật, biểu diễn, chup ảnh, dự tiệc, ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 7
+   },
+   {
+    "title": "Đồng hồ thông minh trẻ em mới T10 có 18 trò chơi giáo ...",
+    "link": "https://shop.tiktok.com/vn/pdp/dong-ho-minh-tre-em-moi-t10-voi-18-tro-choi-giao-duc/1733694492204499979",
+    "snippet": "Đồng hồ thông minh trẻ em mới T10 có 18 trò chơi giáo dục tích hợp sẵn, hỗ trợ nhiều ngôn ngữ, máy ảnh và đèn pin, gọi điện thoại bằng giọng nói, ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}
