@@ -90,10 +90,17 @@ describe('(c) owner 30/09 — a plan section with no data is HIDDEN; a missing r
     expect(missingStagesLine(plan + '\nSau đó qua **Chill Skybar** uống.', users)).toBeNull()
     expect(missingStagesLine('**Lịch buổi**\n- 19:00 ăn tối tại quán A.', users)).toMatch(/^Chặng đi uống và đi chơi bạn muốn/)
     expect(missingStagesLine(plan, ['massage toàn thân tối nay'])).toBeNull()
+    // UAT 30/09 ENT-2 (verbatim): a stage the user turned DOWN is not a request.
+    const ent2 = ['chán quá tối nay làm gì', 'đi với người yêu, quận 3, chill, 500k', 'gợi ý thêm', 'không thích bar', 'lên kế hoạch buổi hẹn']
+    expect(missingStagesLine('**Di chuyển giữa các chặng**\n- Từ 3Đ Chill Cafe đi bộ dạo phố.', ent2)).toBeNull()
+    expect(missingStagesLine('**Lịch buổi**\n- 19:00 cà phê.', ['ko muốn karaoke', 'tối nay đi uống'])).toMatch(/^Chặng đi uống bạn muốn/)
   })
   it('E1-G5 merged sentence: a subject that itself says "và" is not chained with another "và"', () => {
     const t = '**Mình chọn: LONG WANG.** Mình chưa xác nhận được thực đơn hoặc khẩu phần. Chưa có thông tin về chỗ gửi xe. Mình chưa xác nhận được địa điểm và giá. Chưa rõ địa điểm dự phòng.'
     const out = capHedges(t, { lang: 'vi', max: 2 }).text
     expect(out).not.toMatch(/\bvà giá và\b/)
+    // UAT 30/09 ENT-2 plan: "…địa điểm thứ hai được xác nhận, điểm xuất phát và giá" — no verb tail in a subject.
+    const ent2 = capHedges('**Mình chọn: 3Đ Chill Cafe.** Mình chưa xác nhận được thông tin cụ thể của quán. Chưa có địa điểm thứ hai được xác nhận. Mình chưa xác nhận được điểm xuất phát. Chưa có thông tin về giá.', { lang: 'vi', max: 2 }).text
+    expect(ent2).not.toMatch(/được xác nhận,/)
   })
 })

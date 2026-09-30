@@ -202,7 +202,8 @@ const STAGES: Array<{ label: string; asked: RegExp; covered: RegExp }> = [
 ]
 const foldStage = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/gi, 'd').toLowerCase()
 export function missingStagesLine(planText: string, userTexts: readonly string[], lang = 'vi'): string | null {
-  const asked = foldStage(userTexts.join(' \n '))
+  // A stage the user turned DOWN is not a request (UAT 30/09 ENT-2: "không thích bar" → "Chặng đi uống bạn muốn…").
+  const asked = foldStage(userTexts.join(' \n ')).replace(/\b(?:khong|ko|chang|cha|thoi|bo|dung|het)\s+(?:thich|muon|can|di|choi|uong|vao|ra)?\s*(?:\S+\s+)?(?:di uong|uong tiep|nhau|bar|pub|beer|cocktail|di choi|karaoke|xem phim|bida|bowling)\b/g, ' ')
   const plan = foldStage(planText.replace(/\[(TAPPY_PLAN|CTA_BUTTONS|FOLLOWUPS)\][\s\S]*?\[\/\1\]/g, ''))
   const missing = STAGES.filter(s => s.asked.test(asked) && !s.covered.test(plan)).map(s => s.label)
   if (missing.length === 0) return null

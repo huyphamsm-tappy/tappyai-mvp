@@ -54,6 +54,8 @@ function subjectOf(sentence: string, lang: string): string | null {
     ]
   for (const re of patterns) {
     const sub = re.exec(s)?.[1]?.trim().replace(/^(?:được|rõ|cụ thể|có|là)\s+/u, '').replace(/\s+(?:cụ thể|rõ ràng|chính xác)$/u, '')
+      // "địa điểm thứ hai được xác nhận" (UAT 30/09 ENT-2 plan) — the verb tail is not part of the subject.
+      ?.replace(/\s+(?:được|đã được|đã)\s+(?:xác nhận|kiểm(?: tra)?|kiểm chứng)$/u, '')
     if (sub && sub.split(/\s+/).length <= 8 && !/^(?:thông tin|dữ liệu|bằng chứng)$/u.test(sub) && !/^(?:từ|trong|qua)\s+(?:nguồn|dữ liệu|kết quả)/u.test(sub) && cleanSubject(sub)) return sub
   }
   return null
