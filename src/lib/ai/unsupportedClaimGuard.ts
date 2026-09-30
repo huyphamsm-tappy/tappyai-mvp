@@ -183,6 +183,17 @@ export function guardUnsupportedClaims(text: string, ev: ClaimEvidence): Unsuppo
         // Cut from the claim to the end of its clause; the conditional replaces it.
         const clauseEnd = (() => { const r = f.slice(start).search(/[,;.!?\n]|\s(?:va|nhung|hoac)\s/); return r === -1 ? f.length : start + r })()
         const claimed = s.slice(verbStart, verbEnd + fm.index! + fm[0].length)
+        // A PURPOSE clause ("Nên đến 19:00 để có phòng riêng") is not rewritten in place — that read "…để mình chưa
+        // xác nhận được có phòng riêng" (Luna 30/09 §7 b, FOOD-3 plan). The clause goes; the hedge is its own sentence.
+        if (f.slice(Math.max(0, start - 3), start) === 'de ') {
+          const head = s.slice(0, start - 3).replace(/[\s,]+$/, '')
+          const rest = s.slice(clauseEnd).replace(/^\s*(?:👍|🙂|😊)/u, '')
+          const end = /[.!?…]\s*$/.test(rest) ? '' : '.'
+          s = `${head}${rest}${end} Mình chưa xác nhận được ${claimed.replace(/^(?:có|cung cấp|chuyên)\s+/u, 'có ')}.`
+          rewritten.push('service')
+          f = foldAligned(s)
+          break
+        }
         s = `${s.slice(0, start)}mình chưa xác nhận được ${claimed.replace(/^(?:có|cung cấp|chuyên)\s+/u, 'có ')}${s.slice(clauseEnd).replace(/^\s*(?:👍|🙂|😊)/u, '')}`
         rewritten.push('service')
         f = foldAligned(s)

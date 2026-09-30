@@ -21,8 +21,26 @@ const HEDGE = /\b(?:chua (?:thay|co|tim thay|xac nhan|ro|khang dinh|chac)|khong 
 export interface HedgeCapResult { text: string; hedges: number; merged: number; unmergeable: number }
 
 /** The hedge subject: the words after "về / xác nhận (được|rõ) / chưa rõ / chưa có (thông tin về) / about", up to the first clause break. */
+/**
+ * A subject is words about a THING: never itself a hedge, a bracket or a table cell (Luna 30/09 §7 b, TRAVEL-2 plan:
+ * "…giờ chạy và giá vé cụ thể và (chưa có giá)"). A sentence without one stays as written (unmergeable).
+ */
+const cleanSubject = (sub: string): boolean => /^\p{L}/u.test(sub) && !/[()[\]|]/.test(sub) && !/(?:^|\s)(?:chưa|không)(?:\s|$)/u.test(sub)
+
 function subjectOf(sentence: string, lang: string): string | null {
-  const s = sentence.trim().replace(/[.!?…]+$/, '')
+  const s = sentence.trim().replace(/[.!?…]+$/, '').replace(/\*\*/g, '')
+  // The guards' own sentences put the subject BEFORE the verb and the source after it: "Giờ chạy và giá vé cụ thể mình
+  // chưa xác nhận được từ nguồn đã tìm" (travelGuard / hoursGuard). Luna 30/09 §7 b: read after the verb, the subject
+  // became "từ nguồn đã tìm" → "Mình chưa xác nhận được từ nguồn đã tìm và giá".
+  if (lang !== 'en') {
+    const pre = /^(.+?)\s+(?:mình\s+)?chưa (?:xác nhận được|có)\s+(?:từ|trong|qua)\s+(?:nguồn|dữ liệu|kết quả)/iu.exec(s)
+    if (pre) {
+      // Only the last clause: a bold pick line ending ".**" can be glued to this sentence by the splitter.
+      const sub = pre[1].split(/[.:!?;—–]\s*/u).pop()!.trim()
+      if (!sub) return null
+      return sub.split(/\s+/).length <= 8 && cleanSubject(sub) ? sub.charAt(0).toLowerCase() + sub.slice(1) : null
+    }
+  }
   // No `\b` after a Vietnamese letter: "ở" is not \w, so `ở\b` never fires before a space.
   const tail = '\\s+([^,;—–:]+?)(?=\\s+(?:ở|của|nên|với|tại|từ|trên|cho|trong)(?:\\s|$)|\\s*[,;—–:]|$)'
   const patterns = lang === 'en'
@@ -36,9 +54,17 @@ function subjectOf(sentence: string, lang: string): string | null {
     ]
   for (const re of patterns) {
     const sub = re.exec(s)?.[1]?.trim().replace(/^(?:được|rõ|cụ thể|có|là)\s+/u, '').replace(/\s+(?:cụ thể|rõ ràng|chính xác)$/u, '')
-    if (sub && sub.split(/\s+/).length <= 8 && !/^(?:thông tin|dữ liệu|bằng chứng)$/u.test(sub)) return sub
+    if (sub && sub.split(/\s+/).length <= 8 && !/^(?:thông tin|dữ liệu|bằng chứng)$/u.test(sub) && !/^(?:từ|trong|qua)\s+(?:nguồn|dữ liệu|kết quả)/u.test(sub) && cleanSubject(sub)) return sub
   }
   return null
+}
+
+/** The words a subject is ABOUT: "mức giá" / "giá trực tuyến" / "giá cụ thể" are all "giá" (Luna §7 b: "giá và giá"). */
+const coreWords = (sub: string): string[] => normalizeVN(sub.toLowerCase()).replace(/\b(?:muc|cu the|chinh xac|truc tuyen|ro rang|thong tin(?: ve)?)\b/g, ' ').split(/[^a-z0-9]+/).filter(Boolean)
+/** A subject already said by another one (all its core words are in it) is dropped; the longer wording stays. */
+function dedupeSubjects(subjects: string[]): string[] {
+  const cores = subjects.map(coreWords)
+  return subjects.filter((_, i) => !cores.some((c, j) => j !== i && cores[i].every(w => c.includes(w)) && (c.length > cores[i].length || (c.length === cores[i].length && j < i))))
 }
 
 const joinVi = (xs: string[]) => (xs.length <= 1 ? xs.join('') : `${xs.slice(0, -1).join(', ')} và ${xs[xs.length - 1]}`)
@@ -61,6 +87,9 @@ export function capHedges(text: string, opts: { max?: number; lang: string; pick
     if (prot.some(([pa, pb]) => pa === a && pb === b) || !s.trim()) return
     const f = normalizeVN(s.toLowerCase())
     if (!seenPick && names.some(n => f.includes(n))) { seenPick = true; return }
+    // A hedge inside a table row is a cell, not a sentence — never stitched into prose (R15-5 t3 "giá | và giá |").
+    const lineStart = text.lastIndexOf('\n', a) + 1
+    if (/^\s*\|/.test(text.slice(lineStart, a + 1))) return
     if (HEDGE.test(f)) hedgeIdx.push(i)
   })
   if (hedgeIdx.length <= max) return { text, hedges: hedgeIdx.length, merged: 0, unmergeable: 0 }
@@ -74,6 +103,7 @@ export function capHedges(text: string, opts: { max?: number; lang: string; pick
     if (!subjects.some(x => normalizeVN(x.toLowerCase()) === normalizeVN(sub.toLowerCase()))) subjects.push(sub)
   }
   if (mergeIdx.length < 2) return { text, hedges: hedgeIdx.length, merged: 0, unmergeable }
+  subjects.splice(0, subjects.length, ...dedupeSubjects(subjects))
   const merged = opts.lang === 'en'
     ? `I could not confirm ${joinEn(subjects)} — worth a call before you go.`
     : `Mình chưa xác nhận được ${joinVi(subjects)} — nên gọi hỏi trước khi đi.`

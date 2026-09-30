@@ -165,6 +165,28 @@ export function restorePlanHeadings(original: string, guarded: string): string {
   return out.join('\n').replace(/\n{3,}/g, '\n\n')
 }
 
+/**
+ * No empty section in a detailed plan (Luna 30/09 §7 c: "Thời lượng" in spa, "Ăn ở đâu" in travel, "Đi lại & gửi xe"
+ * in food were bare headings — a guard cut every sentence under them, or the model wrote none). The section then says
+ * so in one honest line; nothing is invented. Only approved plan headings count; structured blocks end a section.
+ */
+export function fillEmptyPlanSections(text: string, lang = 'vi'): { text: string; filled: string[] } {
+  const lines = text.split('\n')
+  const out: string[] = []
+  const filled: string[] = []
+  const note = lang === 'en' ? '- No checked information for this part yet.' : '- Chưa có thông tin đã kiểm cho mục này.'
+  for (let i = 0; i < lines.length; i++) {
+    out.push(lines[i])
+    const key = headingKey(lines[i])
+    if (!key) continue
+    let k = i + 1
+    while (k < lines.length && !headingKey(lines[k]) && !/^\s*\[(?:FOLLOWUPS|CTA_BUTTONS|TAPPY_[A-Z_]+)\]/.test(lines[k]) && !/[\p{L}\p{N}]/u.test(lines[k])) k++
+    const nextIsContent = k < lines.length && !headingKey(lines[k]) && !/^\s*\[(?:FOLLOWUPS|CTA_BUTTONS|TAPPY_[A-Z_]+)\]/.test(lines[k])
+    if (!nextIsContent) { out.push(note); filled.push(key) }
+  }
+  return { text: out.join('\n'), filled }
+}
+
 
 /** An approved plan heading line ("**Gọi món**", "## Chi phí") — a label, never a claim (placeClaimGuard skips it). */
 export function isPlanHeadingLine(line: string): boolean {

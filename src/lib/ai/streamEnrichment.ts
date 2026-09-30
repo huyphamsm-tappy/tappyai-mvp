@@ -20,7 +20,7 @@ import { guardPlanTripFacts, guardUngivenTravelDate } from './planTripFactsGuard
 import { repairPlanBlock } from './planJsonRepair'
 import { appendConsultPlanCost, appendPlanBudgetMath, partyCount, perPersonBudget } from './planBudgetMath'
 import { consultRemainingLine, normalizePickSentence, shoppingMarkerNames, shoppingPickName } from './consultative/consultBrain'
-import { restorePlanHeadings } from './consultative/domainFrames'
+import { restorePlanHeadings, fillEmptyPlanSections } from './consultative/domainFrames'
 import { stripStepNarration } from './consultative/stepNarration'
 import { buildActions } from '@/lib/recommendation/actions'
 import { safeFlushPoint, alignReleasedPrefix } from './progressiveFlush'
@@ -823,10 +823,37 @@ const PLAN_BODY_TOKEN = '⁣TAPPYPLANBODY⁣'
  * wins; else the card's first recommendation. The band is the one whose venue name matches — none matches → no band
  * (the line then says "chưa có giá — hỏi quán" for the chosen venue instead of pricing another one).
  */
-export function planCostSubject(text: string, fallbackName: string | null, bands: ReadonlyMap<string, PriceBand>): { name: string | null; band: PriceBand | null } {
+export function planCostSubject(text: string, fallbackName: string | null, bands: ReadonlyMap<string, PriceBand>, candidates: readonly string[] = []): { name: string | null; band: PriceBand | null } {
   const fold = (x: string) => x.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/gi, 'd').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()
   const stated = /\*\*Mình chọn:\s*([^*\n]+?)\*\*/.exec(text)?.[1]?.trim() ?? null
-  const name = stated ?? fallbackName
+  // No "Mình chọn" line: the settled pick only when the PLAN names it; otherwise the venue the plan does name, first
+  // in the text (Luna 30/09 §7 a: ENT-3 plan for BIBO KIDS priced "KHU VUI CHƠI TRẺ EM"; E1-G5 plan for A Xỉu priced
+  // "Cơm Ngon Hà Nội" — both the thread's earlier pick, not the plan's venue).
+  const body = ` ${fold(text.replace(/\[(TAPPY_PLAN|CTA_BUTTONS|FOLLOWUPS)\][\s\S]*?\[\/\1\]/g, ''))} `
+  // Words that never identify ONE venue: its kind, and places (a district in the plan must not pick a venue by it).
+  const GENERIC = /^(?:quan|nha|hang|an|ngon|karaoke|spa|cafe|ca|phe|khu|vui|choi|tre|em|the|bar|pub|salon|nail|tiem|hotel|khach|san|com|bun|pho|lau|nuong|massage|goi|dau|duong|sinh|va|cua|thu|duc|go|vap|binh|thanh|tan|phu|nhuan|hoan|kiem|cau|giay|dong|da|ha|noi|sai|gon|hcm|tp|nang|tay|ho|district|saigon|hanoi|cn|chi|nhanh|co|so)$/
+  const distinctive = (w: string) => w.length >= 3 && !/\d/.test(w) && !GENERIC.test(w)
+  const namedAt = (n: string): number => {
+    const f = fold(n)
+    if (f.length < 3) return -1
+    const whole = body.indexOf(` ${f} `)
+    if (whole >= 0) return whole
+    // A plan writes the short name ("BIBO KIDS" for "KHU VUI CHƠI TRẺ EM BIBO KIDS QUẬN 9 - THỦ ĐỨC"): any two
+    // consecutive words of the name that carry a distinctive one.
+    const w = f.split(' ')
+    let best = -1
+    for (let i = 0; i + 1 < w.length; i++) {
+      if (!distinctive(w[i]) && !distinctive(w[i + 1])) continue
+      const at = body.indexOf(` ${w[i]} ${w[i + 1]} `)
+      if (at >= 0 && (best < 0 || at < best)) best = at
+    }
+    return best
+  }
+  let name = stated ?? fallbackName
+  if (!stated && (!fallbackName || namedAt(fallbackName) < 0)) {
+    const named = [...new Set([...candidates, ...bands.keys()])].filter(Boolean).map(n => ({ n, at: namedAt(n) })).filter(x => x.at >= 0).sort((a, b) => a.at - b.at)[0]
+    if (named) name = named.n
+  }
   if (!name) return { name: null, band: [...bands.values()][0] ?? null }
   const want = fold(name)
   for (const [venue, band] of bands) {
@@ -2860,7 +2887,7 @@ export function applyPlaceEnrichmentStreamFilter(
       const restored = collector?.consultTurn === 'plan' ? restorePlanHeadings(mainText, narrated.text) : narrated.text
       // The cost line is about the venue the PLAN chose ("**Mình chọn: X**"), never simply the first search row —
       // replay FOOD-1 (30/09, level A): the plan for MANMARU priced "FEN Izakaya: 2 người × 100.000đ–600.000đ".
-      const planCost = planCostSubject(restored, collector?.consultPick ?? collector?.placesRecommendations?.[0]?.entity.identity.name ?? null, priceBandsByEntity)
+      const planCost = planCostSubject(restored, collector?.consultPick ?? collector?.placesRecommendations?.[0]?.entity.identity.name ?? null, priceBandsByEntity, [...consultCandidates, ...latestPlaces.map(p => p.name ?? '')])
       // …and its cost section shows code-written arithmetic (the chosen row's band, else the user's own
       // per-person budget) when the model's own numbers did not survive the guards.
       const headed = collector?.consultTurn === 'plan'
@@ -2874,7 +2901,10 @@ export function applyPlaceEnrichmentStreamFilter(
           lang,
         }).text
         : restored
-      const withLine = collector?.consultButtons?.length ? consultRemainingLine(headed, consultCandidates, lang) : headed
+      // …and no section of the plan is left as a bare heading (Luna 30/09 §7 c).
+      const emptyFilled = collector?.consultTurn === 'plan' ? fillEmptyPlanSections(headed, lang) : { text: headed, filled: [] as string[] }
+      if (emptyFilled.filled.length) console.log(JSON.stringify({ type: 'tappyai_plan_empty_sections', filled: emptyFilled.filled }))
+      const withLine = collector?.consultButtons?.length ? consultRemainingLine(emptyFilled.text, consultCandidates, lang) : emptyFilled.text
       // Safety net (replay 29/09): the guards can leave a consult reply with NO words (a compare whose every
       // sentence lacked evidence) — the user then sees only buttons. One honest sentence is put back.
       const proseOnly = withLine.replace(/\[(FOLLOWUPS|CTA_BUTTONS|TAPPY_[A-Z_]+)\][\s\S]*?\[\/\1\]/g, '')
@@ -2896,6 +2926,7 @@ export function applyPlaceEnrichmentStreamFilter(
           console.log(JSON.stringify({ type: 'tappyai_plan_heading_loss', lost, sample: narrated.text.slice(0, 600) }))
         }
         if (headed !== restored) patches.push('plan_cost')
+        if (emptyFilled.filled.length) patches.push('plan_empty_sections')
         if (/Mình còn \d+ lựa chọn/.test(final) && !/Mình còn \d+ lựa chọn/.test(mainText)) patches.push('remaining_line')
         if (emptyReply) patches.push('empty_reply_fallback')
         console.log(JSON.stringify({ type: 'tappyai_consult_patch', turn: collector.consultTurn, patches }))
