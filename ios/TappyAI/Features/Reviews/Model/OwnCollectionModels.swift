@@ -49,6 +49,11 @@ enum OwnCollection: String, CaseIterable, Identifiable, Sendable {
 /// state to every author (found 2026-09-17 while bringing the five collections to iOS).
 struct ReviewListResponse: Decodable, Sendable {
     let reviews: [Review]
+
+    enum CodingKeys: String, CodingKey { case reviews }
+    init(from decoder: Decoder) throws {
+        reviews = try decoder.container(keyedBy: CodingKeys.self).lossyArray(Review.self, forKey: .reviews)
+    }
 }
 
 /// One row of `/api/reviews/liked`, `/saved` and `/shared` — the compact tile shape those routes
@@ -74,7 +79,32 @@ struct CollectionReview: Decodable, Sendable, Identifiable, Hashable {
     var isVideo: Bool { contentType == "video" }
 }
 
+extension CollectionReview {
+    enum CodingKeys: String, CodingKey {
+        case id, placeName, body, photos, thumbnail, contentType, createdAt, likedAt, savedAt, sharedAt
+    }
+
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        id = try c.requiredId(forKey: .id)
+        placeName = c.lenient(String.self, forKey: .placeName)
+        body = c.lenient(String.self, forKey: .body)
+        photos = c.lenient([String].self, forKey: .photos)
+        thumbnail = c.lenient(String.self, forKey: .thumbnail)
+        contentType = c.lenient(String.self, forKey: .contentType)
+        createdAt = c.lenient(String.self, forKey: .createdAt, default: "")
+        likedAt = c.lenient(String.self, forKey: .likedAt)
+        savedAt = c.lenient(String.self, forKey: .savedAt)
+        sharedAt = c.lenient(String.self, forKey: .sharedAt)
+    }
+}
+
 /// `{ reviews: [...] }` — the shape of the three compact collection routes.
 struct CollectionReviewListResponse: Decodable, Sendable {
     let reviews: [CollectionReview]
+
+    enum CodingKeys: String, CodingKey { case reviews }
+    init(from decoder: Decoder) throws {
+        reviews = try decoder.container(keyedBy: CodingKeys.self).lossyArray(CollectionReview.self, forKey: .reviews)
+    }
 }

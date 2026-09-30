@@ -97,7 +97,7 @@ struct ProfileService {
 
     func fetchConversations() async throws -> [ChatHistoryItem] {
         let endpoint = Endpoint(path: "/api/conversations", requiresAuth: true)
-        return try await api.send(endpoint, as: [ChatHistoryItem].self)
+        return try await api.send(endpoint, as: LossyList<ChatHistoryItem>.self).items
     }
 
     func deleteConversation(_ id: String) async throws {

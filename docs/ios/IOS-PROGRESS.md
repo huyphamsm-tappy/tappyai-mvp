@@ -53,6 +53,23 @@ skyline, huy hiệu cửa hàng của mẫu — đúng quy tắc (không có d�
 | Ô ngày sinh màn 18+ | (commit này) |
 - Đã có sẵn trên iOS, không đổi: đăng ảnh / video / YouTube (`CreateReviewView`), Khám phá (`ReviewsFeedView`), hồ sơ người khác (+ tab Chia sẻ ở cụm 1), 5 tab điều hướng giống web/Android, Cài đặt (có thêm dòng Bản quyền).
 
+## Rà toàn bộ model giải mã response (30/09, sau lỗi build 50)
+Nguyên tắc (ghi ở đầu `Core/Networking/LenientDecoding.swift`): chỉ bắt buộc trường màn hình thật sự cần (thường chỉ `id`); trường
+khác optional hoặc có mặc định trung tính (0 / false / "" / []) khi mặc định đó không nói sai điều gì; danh sách bỏ phần tử hỏng, giữ phần
+còn lại (`lossyArray`), thiếu/null = rỗng; số nhận cả `3`, `3.0`, `"3"`; trường thừa bị bỏ qua.
+- Đã áp dụng: Khám phá (`Review`, `FeedResponse` — thiếu `page/limit` vẫn chạy), bình luận, người dùng/tìm người/theo dõi, 5 bộ sưu tập,
+  Đã lưu (`Favorite`, `SavedReview`), Gợi ý, đặt chỗ (2 kiểu), đánh giá địa điểm, Ưu đãi, thông báo, lịch sử chat (4 nơi đọc mảng trần
+  `/api/conversations` → `LossyList`), Planner, gợi ý câu hỏi Home, hồ sơ (`UserProfile` — production KHÔNG gửi `cover_url`), trí nhớ AI
+  (một mục ngân sách hỏng chỉ mất mục đó), theo dõi giá, sở thích, kết nối, đi nhóm, công cụ (tỷ giá: một đồng tiền hỏng chỉ mất đồng đó;
+  Viết content nhận hashtags dạng chuỗi hoặc mảng), danh sách trong thẻ địa điểm/mua sắm của chat (trước: 1 phần tử hỏng = mất cả danh sách).
+- Cố ý GIỮ bắt buộc: token phiên (đăng nhập), `id`, `title` + `officialUrl` của deal (không có thì không phải deal), kết quả chính của dịch /
+  quét / viết content, 3 con số hạn mức của `/api/subscription` (bịa "0 / 0" là nói sai; thiếu thì app lùi về gói Free như trước).
+- Chưa đụng: model Nhạc (tính năng đang ẩn cứng `ProductFlags.showMusic = false`), Scam Shield (đã khoan dung sẵn).
+- Test `ResponseContractDecodeTests`: body THẬT của production cho `/api/reviews/feed`, `/api/deals`, `/api/suggested-prompts` (lấy 30/09,
+  đã thay id/tên/đường dẫn media); route cần đăng nhập thì dựng đúng từng khoá theo `.select(...)` + `NextResponse.json({...})` trên main
+  `f42ae4b` (profile, favorites, notifications, users/[id], comments, conversations, recommendations); cộng các ca hỏng (1 dòng hỏng, list
+  null, số dạng chuỗi, thiếu trường phân trang, thiếu hạn mức).
+
 ## Lỗi TestFlight "Không tải được cấu hình" (build 50) — nguyên nhân + xử lý (30/09)
 Kiểm chỉ bằng đọc code, cấu hình build và một GET công khai tới `/api/config`:
 - **Host**: build 50 (commit `adcb154`, run #50) lấy `TAPPY_API_BASE_URL` từ secret CI; theo ghi chép pipeline đó là PRODUCTION

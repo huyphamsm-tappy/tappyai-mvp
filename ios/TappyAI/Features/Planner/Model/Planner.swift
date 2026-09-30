@@ -29,8 +29,8 @@ struct PlannerConversation: Decodable, Sendable, Equatable {
         id = try c.decode(String.self, forKey: .id)
         title = (try? c.decodeIfPresent(String.self, forKey: .title)) ?? nil
         updatedAt = (try? c.decodeIfPresent(String.self, forKey: .updatedAt)) ?? nil
-        // A malformed message list costs this row its plans, not the whole planner.
-        messages = (try? c.decodeIfPresent([Message].self, forKey: .messages)) ?? []
+        // A malformed message costs only itself, never the row or the whole planner.
+        messages = c.lossyArray(Message.self, forKey: .messages)
     }
 }
 
@@ -121,6 +121,6 @@ struct PlannerService {
 
     func conversations() async throws -> [PlannerConversation] {
         let endpoint = Endpoint(path: "/api/conversations", method: .get, requiresAuth: true)
-        return try await api.send(endpoint, as: [PlannerConversation].self)
+        return try await api.send(endpoint, as: LossyList<PlannerConversation>.self).items
     }
 }

@@ -232,10 +232,24 @@ struct MusicTracksPage: Decodable, Sendable {
     let page: Int?
     let limit: Int?
     let hasMore: Bool
+
+    enum CodingKeys: String, CodingKey { case tracks, page, limit, hasMore }
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        tracks = c.lossyArray(MusicTrack.self, forKey: .tracks)
+        page = c.lenientInt(forKey: .page)
+        limit = c.lenientInt(forKey: .limit)
+        hasMore = c.lenient(Bool.self, forKey: .hasMore, default: false)
+    }
 }
 
 struct MusicCategoriesResponse: Decodable, Sendable {
     let categories: [MusicCategory]
+
+    enum CodingKeys: String, CodingKey { case categories }
+    init(from decoder: Decoder) throws {
+        categories = try decoder.container(keyedBy: CodingKeys.self).lossyArray(MusicCategory.self, forKey: .categories)
+    }
 }
 
 // MARK: - Review creation payload

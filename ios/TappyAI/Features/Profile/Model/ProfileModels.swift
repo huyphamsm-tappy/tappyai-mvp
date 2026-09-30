@@ -190,6 +190,141 @@ struct PlaceReviewsResponse: Codable {
     let reviews: [PlaceReviewAuthor]
 }
 
+// MARK: - Lenient decoding (LenientDecoding.swift): identity required, everything else defaulted.
+// In extensions so the memberwise initialisers stay available.
+
+extension UserProfile {
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        fullName = c.lenient(String.self, forKey: .fullName, default: "")
+        avatarUrl = c.lenient(String.self, forKey: .avatarUrl, default: "")
+        email = c.lenient(String.self, forKey: .email, default: "")
+        bio = c.lenient(String.self, forKey: .bio, default: "")
+        language = c.lenient(String.self, forKey: .language)
+        coverUrl = c.lenient(String.self, forKey: .coverUrl)
+    }
+}
+
+extension UserMemory {
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        locationBase = c.lenient(String.self, forKey: .locationBase)
+        companions = c.lenient(String.self, forKey: .companions)
+        timing = c.lenient(String.self, forKey: .timing)
+        personality = c.lenient(String.self, forKey: .personality)
+        preferences = c.lenient(MemoryPreferences.self, forKey: .preferences)
+            ?? MemoryPreferences(food: nil, spa: nil, entertainment: nil, shopping: nil, avoid: nil)
+        // One malformed budget entry drops that entry only.
+        let rawBudget = c.lenient([String: LossyElement<BudgetRange>].self, forKey: .budget) ?? [:]
+        budget = rawBudget.compactMapValues(\.value)
+        history = c.lossyArray(String.self, forKey: .history)
+        updatedAt = c.lenient(String.self, forKey: .updatedAt)
+    }
+}
+
+extension BudgetRange {
+    enum CodingKeys: String, CodingKey { case min, max }
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        guard let lo = c.lenientInt(forKey: .min) ?? c.lenientInt(forKey: .max),
+              let hi = c.lenientInt(forKey: .max) ?? c.lenientInt(forKey: .min) else {
+            throw DecodingError.dataCorrupted(.init(codingPath: c.codingPath, debugDescription: "budget without bounds"))
+        }
+        min = lo
+        max = hi
+    }
+}
+
+extension ChatHistoryItem {
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        id = try c.requiredId(forKey: .id)
+        title = c.lenient(String.self, forKey: .title, default: "")
+        category = c.lenient(String.self, forKey: .category)
+        updatedAt = c.lenient(String.self, forKey: .updatedAt, default: "")
+        messages = c.lenient([AnyCodable].self, forKey: .messages)
+    }
+}
+
+extension PriceWatch {
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        id = try c.requiredId(forKey: .id)
+        productName = c.lenient(String.self, forKey: .productName, default: "")
+        targetPrice = c.lenientInt(forKey: .targetPrice) ?? 0
+        currentPrice = c.lenientInt(forKey: .currentPrice)
+        status = c.lenient(String.self, forKey: .status, default: "")
+        lastChecked = c.lenient(String.self, forKey: .lastChecked)
+        notifiedAt = c.lenient(String.self, forKey: .notifiedAt)
+        createdAt = c.lenient(String.self, forKey: .createdAt, default: "")
+    }
+}
+
+extension PriceWatchResponse {
+    enum CodingKeys: String, CodingKey { case watches }
+    init(from decoder: Decoder) throws {
+        watches = try decoder.container(keyedBy: CodingKeys.self).lossyArray(PriceWatch.self, forKey: .watches)
+    }
+}
+
+extension PreferencesResponse {
+    enum CodingKeys: String, CodingKey { case preferences, structured }
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        preferences = c.lossyArray(String.self, forKey: .preferences)
+        structured = c.lenient(StructuredPreferences.self, forKey: .structured)
+    }
+}
+
+extension Integration {
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        provider = try c.decode(String.self, forKey: .provider)
+        connected = c.lenient(Bool.self, forKey: .connected, default: false)
+        metadata = c.lenient(IntegrationMeta.self, forKey: .metadata)
+        connectedAt = c.lenient(String.self, forKey: .connectedAt)
+    }
+}
+
+extension IntegrationsResponse {
+    enum CodingKeys: String, CodingKey { case integrations }
+    init(from decoder: Decoder) throws {
+        integrations = try decoder.container(keyedBy: CodingKeys.self).lossyArray(Integration.self, forKey: .integrations)
+    }
+}
+
+extension ProfileBooking {
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        id = try c.requiredId(forKey: .id)
+        serviceName = c.lenient(String.self, forKey: .serviceName, default: "")
+        serviceType = c.lenient(String.self, forKey: .serviceType, default: "")
+        customerName = c.lenient(String.self, forKey: .customerName, default: "")
+        customerPhone = c.lenient(String.self, forKey: .customerPhone, default: "")
+        date = c.lenient(String.self, forKey: .date, default: "")
+        time = c.lenient(String.self, forKey: .time)
+        guests = c.lenientInt(forKey: .guests) ?? 1
+        status = c.lenient(String.self, forKey: .status, default: "pending")
+        notes = c.lenient(String.self, forKey: .notes)
+        placeId = c.lenient(String.self, forKey: .placeId)
+        createdAt = c.lenient(String.self, forKey: .createdAt, default: "")
+    }
+}
+
+extension ProfileBookingsResponse {
+    enum CodingKeys: String, CodingKey { case bookings }
+    init(from decoder: Decoder) throws {
+        bookings = try decoder.container(keyedBy: CodingKeys.self).lossyArray(ProfileBooking.self, forKey: .bookings)
+    }
+}
+
+extension PlaceReviewsResponse {
+    enum CodingKeys: String, CodingKey { case reviews }
+    init(from decoder: Decoder) throws {
+        reviews = try decoder.container(keyedBy: CodingKeys.self).lossyArray(PlaceReviewAuthor.self, forKey: .reviews)
+    }
+}
+
 enum ProfileDestination: Hashable {
     case account
     case editProfile

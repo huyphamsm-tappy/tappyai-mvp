@@ -414,8 +414,8 @@ extension PersistedPlace {
             shortlistPosition: try? c.decode(Int.self, forKey: .shortlistPosition),
             recommended: try? c.decode(Bool.self, forKey: .recommended),
             matchVerdict: try? c.decode(String.self, forKey: .matchVerdict),
-            reasons: (try? c.decode([PersistedPlaceReason].self, forKey: .reasons)) ?? [],
-            actions: (try? c.decode([PersistedPlaceAction].self, forKey: .actions)) ?? []
+            reasons: c.lossyArray(PersistedPlaceReason.self, forKey: .reasons),
+            actions: c.lossyArray(PersistedPlaceAction.self, forKey: .actions)
         )
     }
 }
@@ -425,7 +425,7 @@ extension PlacesMarkerPayload {
         let c = try decoder.container(keyedBy: CodingKeys.self)
         self.init(
             v: (try? c.decode(Int.self, forKey: .v)) ?? 1,
-            items: (try? c.decode([PersistedPlace].self, forKey: .items)) ?? []
+            items: c.lossyArray(PersistedPlace.self, forKey: .items)
         )
     }
 }
@@ -474,15 +474,15 @@ extension LivePlace {
             priceLevel: try? c.decode(Int.self, forKey: .priceLevel),
             priceSignal: try? c.decode(String.self, forKey: .priceSignal),
             distanceKm: try? c.decode(Double.self, forKey: .distanceKm),
-            categories: (try? c.decode([String].self, forKey: .categories)) ?? [],
-            flags: (try? c.decode([String].self, forKey: .flags)) ?? [],
+            categories: c.lossyArray(String.self, forKey: .categories),
+            flags: c.lossyArray(String.self, forKey: .flags),
             rank: (try? c.decode(Int.self, forKey: .rank)) ?? 0,
             shortlistPosition: try? c.decode(Int.self, forKey: .shortlistPosition),
             recommended: try? c.decode(Bool.self, forKey: .recommended),
             matchVerdict: try? c.decode(String.self, forKey: .matchVerdict),
-            reasons: (try? c.decode([LivePlaceReason].self, forKey: .reasons)) ?? [],
+            reasons: c.lossyArray(LivePlaceReason.self, forKey: .reasons),
             tradeOff: try? c.decode(LivePlaceReason.self, forKey: .tradeOff),
-            actions: (try? c.decode([LivePlaceAction].self, forKey: .actions)) ?? []
+            actions: c.lossyArray(LivePlaceAction.self, forKey: .actions)
         )
     }
 }
@@ -495,7 +495,7 @@ extension PlacesLiveView {
             v: (try? c.decode(Int.self, forKey: .v)) ?? 1,
             domain: (try? c.decode(String.self, forKey: .domain)) ?? "",
             ranked: try? c.decode(Bool.self, forKey: .ranked),
-            items: (try? c.decode([LivePlace].self, forKey: .items)) ?? [],
+            items: c.lossyArray(LivePlace.self, forKey: .items),
             mapsSearchUrl: try? c.decode(String.self, forKey: .mapsSearchUrl)
         )
     }

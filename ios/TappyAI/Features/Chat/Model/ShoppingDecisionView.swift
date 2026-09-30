@@ -188,9 +188,10 @@ struct ShoppingEntityView: Codable, Equatable, Sendable, Identifiable {
         priceLow = try? c.decode(Double.self, forKey: .priceLow)
         priceHigh = try? c.decode(Double.self, forKey: .priceHigh)
         image = try? c.decode(String.self, forKey: .image)
-        offers = (try? c.decode([ShoppingOfferView].self, forKey: .offers)) ?? []
+        offers = c.lossyArray(ShoppingOfferView.self, forKey: .offers)
         commerce = try? c.decode(ShoppingCommerceView.self, forKey: .commerce)
-        commerceLinks = try? c.decode([ShoppingCommerceView].self, forKey: .commerceLinks)
+        // nil when absent (a stored marker from before commerceLinks), lossy when present.
+        commerceLinks = c.contains(.commerceLinks) ? c.lossyArray(ShoppingCommerceView.self, forKey: .commerceLinks) : nil
     }
 }
 
@@ -226,7 +227,7 @@ struct ShoppingRecommendationView: Codable, Equatable, Sendable {
         let c = try decoder.container(keyedBy: CodingKeys.self)
         entityKey = try? c.decode(String.self, forKey: .entityKey)
         seller = try? c.decode(String.self, forKey: .seller)
-        reasons = (try? c.decode([ShoppingReason].self, forKey: .reasons)) ?? []
+        reasons = c.lossyArray(ShoppingReason.self, forKey: .reasons)
         tradeOff = try? c.decode(ShoppingReason.self, forKey: .tradeOff)
         conditional = (try? c.decode(Bool.self, forKey: .conditional)) ?? false
     }
@@ -248,7 +249,7 @@ struct ShoppingDecisionView: Codable, Equatable, Sendable {
     init(from decoder: Decoder) throws {
         let c = try decoder.container(keyedBy: CodingKeys.self)
         v = (try? c.decode(Int.self, forKey: .v)) ?? 1
-        entities = (try? c.decode([ShoppingEntityView].self, forKey: .entities)) ?? []
+        entities = c.lossyArray(ShoppingEntityView.self, forKey: .entities)
         recommendation = try? c.decode(ShoppingRecommendationView.self, forKey: .recommendation)
     }
 }

@@ -25,3 +25,36 @@ struct PublicUserProfile: Decodable, Sendable, Identifiable, Hashable {
         return trimmed.isEmpty ? NSLocalizedString("search.user.unnamed", comment: "") : trimmed
     }
 }
+
+/// Lenient: only `id` is required; counts may arrive as numbers or strings.
+extension PublicUserProfile {
+    enum CodingKeys: String, CodingKey {
+        case id, fullName, avatarUrl, followerCount, followingCount, reviewCount, isFollowing, isSelf
+    }
+
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        id = try c.requiredId(forKey: .id)
+        fullName = c.lenient(String.self, forKey: .fullName)
+        avatarUrl = c.lenient(String.self, forKey: .avatarUrl)
+        followerCount = c.lenientInt(forKey: .followerCount)
+        followingCount = c.lenientInt(forKey: .followingCount)
+        reviewCount = c.lenientInt(forKey: .reviewCount)
+        isFollowing = c.lenient(Bool.self, forKey: .isFollowing)
+        isSelf = c.lenient(Bool.self, forKey: .isSelf)
+    }
+}
+
+extension UserSearchResult {
+    enum CodingKeys: String, CodingKey { case id, fullName, avatarUrl, followerCount, followingCount, isFollowing }
+
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        id = try c.requiredId(forKey: .id)
+        fullName = c.lenient(String.self, forKey: .fullName)
+        avatarUrl = c.lenient(String.self, forKey: .avatarUrl)
+        followerCount = c.lenientInt(forKey: .followerCount)
+        followingCount = c.lenientInt(forKey: .followingCount)
+        isFollowing = c.lenient(Bool.self, forKey: .isFollowing)
+    }
+}

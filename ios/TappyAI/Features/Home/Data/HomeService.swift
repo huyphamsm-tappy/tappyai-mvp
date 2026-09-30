@@ -18,6 +18,6 @@ final class HomeService: Sendable {
 
     func conversations() async throws -> [ConversationSummary] {
         let endpoint = Endpoint(path: "/api/conversations", method: .get, requiresAuth: true)
-        return try await api.send(endpoint, as: [ConversationSummary].self)
+        return try await api.send(endpoint, as: LossyList<ConversationSummary>.self).items
     }
 }

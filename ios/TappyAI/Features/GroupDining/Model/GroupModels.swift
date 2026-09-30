@@ -73,3 +73,35 @@ struct GroupJoinForm: Sendable, Equatable {
 enum GroupLimits {
     static let maxMembers = 10
 }
+
+/// Lenient (LenientDecoding.swift): a member that does not decode is dropped, not the room.
+extension GroupRoom {
+    enum CodingKeys: String, CodingKey { case id, name, creatorId, status, suggestion, createdAt, members }
+
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        id = try c.requiredId(forKey: .id)
+        name = c.lenient(String.self, forKey: .name)
+        creatorId = c.lenient(String.self, forKey: .creatorId)
+        status = c.lenient(String.self, forKey: .status)
+        suggestion = c.lenient(String.self, forKey: .suggestion)
+        createdAt = c.lenient(String.self, forKey: .createdAt)
+        members = c.lossyArray(GroupMember.self, forKey: .members)
+    }
+}
+
+extension GroupMember {
+    enum CodingKeys: String, CodingKey { case id, name, budget, foodPreferences, dietaryRestrictions, area, createdAt }
+
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        id = try c.requiredId(forKey: .id)
+        name = c.lenient(String.self, forKey: .name)
+        // A budget typed as a number is still a budget.
+        budget = c.lenient(String.self, forKey: .budget) ?? c.lenientInt(forKey: .budget).map(String.init)
+        foodPreferences = c.lenient(String.self, forKey: .foodPreferences)
+        dietaryRestrictions = c.lenient(String.self, forKey: .dietaryRestrictions)
+        area = c.lenient(String.self, forKey: .area)
+        createdAt = c.lenient(String.self, forKey: .createdAt)
+    }
+}

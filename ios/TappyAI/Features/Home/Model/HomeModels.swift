@@ -2,6 +2,11 @@ import Foundation
 
 struct SuggestedPromptsResponse: Decodable, Sendable {
     let prompts: [SuggestedPrompt]
+
+    enum CodingKeys: String, CodingKey { case prompts }
+    init(from decoder: Decoder) throws {
+        prompts = try decoder.container(keyedBy: CodingKeys.self).lossyArray(SuggestedPrompt.self, forKey: .prompts)
+    }
 }
 
 struct SuggestedPrompt: Decodable, Sendable, Identifiable {

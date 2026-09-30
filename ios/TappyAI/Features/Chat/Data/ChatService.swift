@@ -43,7 +43,8 @@ final class ChatService: Sendable {
             method: .get,
             requiresAuth: true
         )
-        let all = try await api.send(endpoint, as: [Conversation].self)
+        // Lossy: one malformed row must not hide the conversation being opened.
+        let all = try await api.send(endpoint, as: LossyList<Conversation>.self).items
         guard let conversation = all.first(where: { $0.id == id }) else {
             throw AppError.validation(message: "Conversation not found")
         }

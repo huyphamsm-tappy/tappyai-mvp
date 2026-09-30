@@ -4,8 +4,20 @@ struct RatesResponse: Decodable {
     let rates: [String: Double]
     let date: String?
     let fallback: Bool
+
+    enum CodingKeys: String, CodingKey { case rates, date, fallback }
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        // A currency whose value is not a number drops that currency, not the converter.
+        let raw = c.lenient([String: LossyElement<Double>].self, forKey: .rates) ?? [:]
+        rates = raw.compactMapValues(\.value)
+        date = c.lenient(String.self, forKey: .date)
+        fallback = c.lenient(Bool.self, forKey: .fallback, default: false)
+    }
 }
 
+// The result IS the payload for these three: without it there is nothing to show, so it stays
+// required and the screen shows its own error (not a decode crash) when it is missing.
 struct TranslateResponse: Decodable {
     let translation: String
 }
@@ -17,6 +29,15 @@ struct ScanResponse: Decodable {
 struct VietContentResponse: Decodable {
     let caption: String
     let hashtags: String
+
+    enum CodingKeys: String, CodingKey { case caption, hashtags }
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        caption = try c.decode(String.self, forKey: .caption)
+        // "#a #b" today; a list tomorrow would still read as the same line.
+        hashtags = c.lenient(String.self, forKey: .hashtags)
+            ?? c.lossyArray(String.self, forKey: .hashtags).joined(separator: " ")
+    }
 }
 
 final class UtilityToolsService: Sendable {

@@ -21,6 +21,27 @@ struct SubscriptionStatusResponse: Decodable, Sendable {
     let freeDailyLimit: Int
     let todayMessageCount: Int
     let remaining: Int
+
+    // Lenient on FORM (numbers as strings), strict on meaning: the quota numbers are what the
+    // screen shows, so a response without them fails and the caller falls back to `.free` —
+    // inventing "0 / 0" would state a quota the server never sent. `isPro` absent = not Pro,
+    // the most restrictive reading.
+    enum CodingKeys: String, CodingKey { case isPro, status, currentPeriodEnd, freeDailyLimit, todayMessageCount, remaining }
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        func number(_ key: CodingKeys) throws -> Int {
+            guard let n = c.lenientInt(forKey: key) else {
+                throw DecodingError.keyNotFound(key, .init(codingPath: c.codingPath, debugDescription: "quota number missing"))
+            }
+            return n
+        }
+        isPro = c.lenient(Bool.self, forKey: .isPro, default: false)
+        status = c.lenient(String.self, forKey: .status)
+        currentPeriodEnd = c.lenient(String.self, forKey: .currentPeriodEnd)
+        freeDailyLimit = try number(.freeDailyLimit)
+        todayMessageCount = try number(.todayMessageCount)
+        remaining = try number(.remaining)
+    }
 }
 
 /// Reads server entitlement via `GET /api/subscription`. Returns `.free` on any error so the

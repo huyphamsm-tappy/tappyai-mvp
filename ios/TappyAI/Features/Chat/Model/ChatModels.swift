@@ -301,6 +301,20 @@ struct Conversation: Decodable, Sendable, Identifiable {
     }
 }
 
+/// Lenient: a conversation needs an id; a message that does not decode is dropped (one broken
+/// turn must not make the whole history unopenable), and a POST answer without messages is fine.
+extension Conversation {
+    enum CodingKeys: String, CodingKey { case id, title, category, messages }
+
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        id = try c.requiredId(forKey: .id)
+        title = c.lenient(String.self, forKey: .title)
+        category = c.lenient(String.self, forKey: .category)
+        messages = c.lossyArray(ConversationMessage.self, forKey: .messages)
+    }
+}
+
 struct SaveConversationRequest: Encodable, Sendable {
     let title: String
     let category: String

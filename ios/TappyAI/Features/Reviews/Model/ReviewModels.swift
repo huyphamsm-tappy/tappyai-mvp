@@ -73,6 +73,46 @@ struct Review: Codable, Sendable, Identifiable, Hashable {
     }
 }
 
+/// Lenient decoding (see `LenientDecoding.swift`): only `id` is required. Counts and viewer flags
+/// default to 0 / false — the way a row looked before the field existed; nothing is asserted.
+/// In an extension so the memberwise initialiser stays available.
+extension Review {
+    enum CodingKeys: String, CodingKey {
+        case id, userId, placeName, placeAddress, rating, body, photos, likeCount, commentCount, saveCount
+        case createdAt, likedByMe, savedByMe, profiles, contentType, mediaUrl, thumbnail, sourceType
+        case sourceUrl, hashtags, watchTimeAvg, score, music, moderation, isHidden
+    }
+
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        id = try c.requiredId(forKey: .id)
+        userId = c.lenient(String.self, forKey: .userId)
+        placeName = c.lenient(String.self, forKey: .placeName)
+        placeAddress = c.lenient(String.self, forKey: .placeAddress)
+        rating = c.lenientDouble(forKey: .rating)
+        body = c.lenient(String.self, forKey: .body)
+        photos = c.lenient([String].self, forKey: .photos)
+        likeCount = c.lenientInt(forKey: .likeCount) ?? 0
+        commentCount = c.lenientInt(forKey: .commentCount) ?? 0
+        saveCount = c.lenientInt(forKey: .saveCount) ?? 0
+        createdAt = c.lenient(String.self, forKey: .createdAt, default: "")
+        likedByMe = c.lenient(Bool.self, forKey: .likedByMe, default: false)
+        savedByMe = c.lenient(Bool.self, forKey: .savedByMe, default: false)
+        profiles = c.lenient(ReviewProfile.self, forKey: .profiles)
+        contentType = c.lenient(String.self, forKey: .contentType)
+        mediaUrl = c.lenient(String.self, forKey: .mediaUrl)
+        thumbnail = c.lenient(String.self, forKey: .thumbnail)
+        sourceType = c.lenient(String.self, forKey: .sourceType)
+        sourceUrl = c.lenient(String.self, forKey: .sourceUrl)
+        hashtags = c.lenient([String].self, forKey: .hashtags)
+        watchTimeAvg = c.lenientDouble(forKey: .watchTimeAvg)
+        score = c.lenientDouble(forKey: .score)
+        music = c.lenient(ReviewMusic.self, forKey: .music)
+        moderation = c.lenient(ReviewModeration.self, forKey: .moderation)
+        isHidden = c.lenient(Bool.self, forKey: .isHidden)
+    }
+}
+
 struct ReviewComment: Codable, Sendable, Identifiable, Hashable {
     let id: String
     let body: String
@@ -104,14 +144,43 @@ struct UserSearchResult: Decodable, Sendable, Identifiable, Hashable {
     }
 }
 
+extension ReviewComment {
+    enum CodingKeys: String, CodingKey { case id, body, createdAt, userId, profiles }
+
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        id = try c.requiredId(forKey: .id)
+        body = c.lenient(String.self, forKey: .body, default: "")
+        createdAt = c.lenient(String.self, forKey: .createdAt, default: "")
+        userId = c.lenient(String.self, forKey: .userId, default: "")
+        profiles = c.lenient(ReviewProfile.self, forKey: .profiles)
+    }
+}
+
 struct UserSearchResponse: Decodable, Sendable {
     let users: [UserSearchResult]
+
+    enum CodingKeys: String, CodingKey { case users }
+    init(users: [UserSearchResult]) { self.users = users }
+    init(from decoder: Decoder) throws {
+        users = try decoder.container(keyedBy: CodingKeys.self).lossyArray(UserSearchResult.self, forKey: .users)
+    }
 }
 
 struct FeedResponse: Decodable, Sendable {
     let reviews: [Review]
     let page: Int
     let limit: Int
+
+    enum CodingKeys: String, CodingKey { case reviews, page, limit }
+    init(reviews: [Review], page: Int, limit: Int) { self.reviews = reviews; self.page = page; self.limit = limit }
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        reviews = c.lossyArray(Review.self, forKey: .reviews)
+        page = c.lenientInt(forKey: .page) ?? 0
+        // Unknown page size: the rows that arrived are the page (pagination then asks once more).
+        limit = c.lenientInt(forKey: .limit) ?? max(reviews.count, 1)
+    }
 }
 
 struct LikeResponse: Decodable, Sendable {
@@ -125,21 +194,50 @@ struct SaveResponse: Decodable, Sendable {
 struct CommentsResponse: Decodable, Sendable {
     let comments: [ReviewComment]
     let count: Int
+
+    enum CodingKeys: String, CodingKey { case comments, count }
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        comments = c.lossyArray(ReviewComment.self, forKey: .comments)
+        count = c.lenientInt(forKey: .count) ?? comments.count
+    }
 }
 
 struct PostCommentResponse: Decodable, Sendable {
     let comment: ReviewComment
     let count: Int
+
+    enum CodingKeys: String, CodingKey { case comment, count }
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        comment = try c.decode(ReviewComment.self, forKey: .comment)
+        count = c.lenientInt(forKey: .count) ?? 0
+    }
 }
 
 struct DeleteCommentResponse: Decodable, Sendable {
     let ok: Bool
     let count: Int
+
+    enum CodingKeys: String, CodingKey { case ok, count }
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        // A 2xx is the success signal; `ok` only confirms it.
+        ok = c.lenient(Bool.self, forKey: .ok, default: true)
+        count = c.lenientInt(forKey: .count) ?? 0
+    }
 }
 
 struct FollowResponse: Decodable, Sendable {
     let following: Bool
     let followerCount: Int
+
+    enum CodingKeys: String, CodingKey { case following, followerCount }
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        following = try c.decode(Bool.self, forKey: .following)
+        followerCount = c.lenientInt(forKey: .followerCount) ?? 0
+    }
 }
 
 // MARK: - Report a review
