@@ -56,6 +56,19 @@ CONFIG = {
     "video": {"linkProviders": ["youtube"]},
 }
 
+# The EXACT body production (www.tappyai.com, main f42ae4b) served on 30/09 — the one TestFlight
+# build 50 could not decode (`anonDailyLimit`, interests with `key`/`emoji` and no labels).
+PROD_CONFIG = {
+    "freemium": {"freeDailyLimit": 15, "anonDailyLimit": 5},
+    "flags": {"showProUpgrade": False, "showAppConnections": False, "showScamShield": True},
+    "upload": {"maxPhotosPerReview": 6, "maxVideoSizeMb": 150, "maxVideoDurationSec": 300, "maxVideoDurationAcceptSec": 305},
+    "scamShield": {"dailyLimitAuth": 30, "dailyLimitAnon": 10},
+    "video": {"linkProviders": ["youtube"]},
+    "auth": {"providers": [{"id": "google", "enabled": True}, {"id": "zalo", "enabled": True}, {"id": "email", "enabled": True}]},
+    "onboarding": {"interests": [{"id": "food", "emoji": "🍜", "key": "tag.food"}, {"id": "spa", "emoji": "💆", "key": "tag.spa"}],
+                   "cities": ["TP. Hồ Chí Minh", "Hà Nội"]},
+}
+
 FAVORITES = [
     {"id": "f1", "place_id": "p1", "place_name": "Phở Thìn Bờ Hồ", "place_address": "13 Lò Đúc, Hai Bà Trưng, Hà Nội",
      "place_type": "food", "created_at": "2026-09-20T08:00:00.000Z"},
@@ -107,7 +120,10 @@ class Handler(BaseHTTPRequestHandler):
                 self.wfile.write(data)
                 return
         if path == "/api/config":
-            return self._send(200, CONFIG)
+            mode = MODE.get("config", "ok")
+            if mode == "down":
+                return self._send(503, {"error": "unavailable"})
+            return self._send(200, PROD_CONFIG if mode == "prod" else CONFIG)
         if path == "/api/favorites":
             return self._send(200, {"favorites": [] if MODE["saved"] == "empty" else FAVORITES})
         if path == "/api/reviews/saved":

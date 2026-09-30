@@ -49,6 +49,7 @@ struct TappyErrorState: View {
                 .foregroundStyle(TappyColor.textSecondary).multilineTextAlignment(.center)
             if presentation.retryable, let onRetry {
                 Button("common.retry", action: onRetry).buttonStyle(.tappy(.primary)).padding(.top, Spacing.xs)
+                    .accessibilityIdentifier("error-retry")
             }
         }
         .padding(Spacing.lg)

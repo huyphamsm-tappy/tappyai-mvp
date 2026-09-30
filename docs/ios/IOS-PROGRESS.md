@@ -39,6 +39,23 @@ Việc cần Huy đăng nhập: `docs/ios/IOS-REQUESTS.md` §3 (một lần). Y�
 - Sửa bố cục từ ảnh: chip lọc Đã lưu bị cắt, tiêu đề hero Viết content bị cắt "...", mô tả highlight Gợi ý bị cắt.
 - Architecture Guard / Regression Gate đỏ trên nhánh này là lỗi CÓ SẴN từ rc/web-uat (`src/app/go/at/route.ts:25` đọc `x-forwarded-for`), không phải của iOS.
 
+## Lỗi TestFlight "Không tải được cấu hình" (build 50) — nguyên nhân + xử lý (30/09)
+Kiểm chỉ bằng đọc code, cấu hình build và một GET công khai tới `/api/config`:
+- **Host**: build 50 (commit `adcb154`, run #50) lấy `TAPPY_API_BASE_URL` từ secret CI; theo ghi chép pipeline đó là PRODUCTION
+  `https://www.tappyai.com` (+ Supabase prod). `Release.xcconfig` mặc định cũng là www.
+- **Endpoint**: `GET /api/config` (không cần đăng nhập) — màn Đăng nhập và Onboarding đọc nó trước tiên.
+- **Có trên production (main `f42ae4b`) không**: CÓ, trả 200, không bị Vercel protection (chỉ `uat.tappyai.com` bị chặn: 302 → vercel.com/sso-api).
+- **Nguyên nhân**: body production gửi `freemium.anonDailyLimit` (tên cũ); iOS build 50 BẮT BUỘC `freemium.anonLifetimeLimit` (đổi tên
+  15/09 ở rc, chưa lên production) → giải mã cả cấu hình thất bại → "Không tải được cấu hình" cho mọi người. Nếu build trỏ UAT thì cũng
+  hỏng, vì SSO của Vercel.
+- **Sửa (code, chưa có build mới)**: `AppConfig` chỉ bắt buộc `flags` + `upload`; `freemium`/`auth`/`onboarding`/`video` hỏng hoặc thiếu
+  thì thành nil, không kéo cả cấu hình. Chủ đề onboarding: production gửi `key`/`emoji` không có nhãn → lấy nhãn từ `tag.*` trong catalog.
+  Test: `AppConfigDecodeTests` (giải mã nguyên văn body production); UI test `testConfigDownShowsRetryAndRecovers` (server 503 → màn lỗi
+  thân thiện + nút Thử lại → server lên lại → bấm Thử lại vào được đăng nhập, ảnh `14-config-down`) và `testProductionConfigShapeOpensLogin`
+  (ảnh `15-login-prod-config`).
+- **Quyết định (Huy 30/09)**: KHÔNG đưa secret bypass của Vercel vào bất kỳ bản TestFlight nào. CHƯA build TestFlight mới. Bản TestFlight
+  để test thật trỏ PRODUCTION và build SAU KHI release Phase 7. Trước đó iOS nghiệm thu bằng ảnh CI.
+
 ## CI run 36663001381 (commit d9a9136)
 - Build xanh, unit test xanh, **13/13 UI test qua, 13 ảnh chụp đã xuất** (login, 18+, hub khách, Đã lưu có dữ liệu / rỗng / lọc địa điểm,
   Viết content, Gợi ý, 5 thẻ chia sẻ). Bước ghép ảnh đỏ chỉ vì `pip install` bị macOS chặn (PEP 668) — đã thêm `--break-system-packages`.

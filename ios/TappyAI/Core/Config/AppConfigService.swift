@@ -2,8 +2,15 @@ import Foundation
 
 /// Backend-owned product configuration from `GET /api/config` (docs/ios/04 §2.13).
 /// Display values only — enforcement stays server-side. Cached per ADR-007 (presentation data).
+///
+/// 🚨 A FIELD NO SCREEN NEEDS MUST NEVER FAIL THE WHOLE CONFIG. TestFlight build 50 (30/09): the app
+/// required `freemium.anonLifetimeLimit`, production (f42ae4b) still sends the old
+/// `freemium.anonDailyLimit`, so the entire `/api/config` decode threw and login/onboarding showed
+/// "Không tải được cấu hình" for every user. No screen reads the freemium numbers from here
+/// (`EntitlementService` has its own source), so the section is optional, its fields optional, and a
+/// section that does not decode becomes nil instead of taking the rest down with it.
 struct AppConfig: Decodable, Sendable {
-    let freemium: Freemium
+    let freemium: Freemium?
     let flags: Flags
     let upload: Upload
     let auth: Auth?
@@ -18,10 +25,25 @@ struct AppConfig: Decodable, Sendable {
 
     struct Freemium: Decodable, Sendable {
         /// Registered account: AI questions per VN day (one pool shared by every AI feature).
-        let freeDailyLimit: Int
+        let freeDailyLimit: Int?
         /// Anonymous identity: AI questions for its LIFETIME — one trial, once. NOT per day.
         /// Renamed from `anonDailyLimit` (2026-09-15) so no screen can present it as a daily figure.
-        let anonLifetimeLimit: Int
+        /// Nil against a server that still sends the old name (production f42ae4b).
+        let anonLifetimeLimit: Int?
+    }
+
+    private enum CodingKeys: String, CodingKey { case freemium, flags, upload, auth, onboarding, video }
+
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        // Required: every screen that reads config reads these two.
+        flags = try c.decode(Flags.self, forKey: .flags)
+        upload = try c.decode(Upload.self, forKey: .upload)
+        // Everything else: a section that is absent OR malformed is nil, never a failed config.
+        freemium = try? c.decodeIfPresent(Freemium.self, forKey: .freemium)
+        auth = try? c.decodeIfPresent(Auth.self, forKey: .auth)
+        onboarding = try? c.decodeIfPresent(Onboarding.self, forKey: .onboarding)
+        video = try? c.decodeIfPresent(Video.self, forKey: .video)
     }
 
     struct Flags: Decodable, Sendable {
@@ -73,6 +95,20 @@ struct AppConfig: Decodable, Sendable {
             let id: String
             let labelVi: String?
             let labelEn: String?
+            /// What production actually sends: a web i18n key (`tag.food`) and an emoji, no labels.
+            let key: String?
+            let emoji: String?
+
+            /// labelVi/labelEn when sent, else the key looked up in the app catalog (`tag.food` →
+            /// "Ăn uống"), else the id — never an empty chip.
+            func label(locale: String, localize: (String) -> String = { NSLocalizedString($0, comment: "") }) -> String {
+                if let l = (locale == "vi" ? labelVi : labelEn), !l.isEmpty { return l }
+                if let key {
+                    let text = localize(key)
+                    if text != key { return [emoji, text].compactMap { $0 }.joined(separator: " ") }
+                }
+                return id
+            }
         }
     }
 }
@@ -121,10 +157,7 @@ final class AppConfigService: Sendable {
     func onboardingInterests(locale: String) async throws -> [(id: String, label: String)] {
         let cfg = try await config()
         guard let interests = cfg.onboarding?.interests, !interests.isEmpty else { return [] }
-        return interests.map { i in
-            let label = (locale == "vi" ? i.labelVi : i.labelEn) ?? i.id
-            return (id: i.id, label: label)
-        }
+        return interests.map { i in (id: i.id, label: i.label(locale: locale)) }
     }
 
     func onboardingCities() async throws -> [String] {

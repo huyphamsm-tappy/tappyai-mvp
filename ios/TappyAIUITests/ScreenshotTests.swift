@@ -11,7 +11,36 @@ final class ScreenshotTests: XCTestCase {
     override func setUp() {
         super.setUp()
         continueAfterFailure = false
-        setStub(["saved": "full"])
+        setStub(["saved": "full", "config": "ok"])
+    }
+
+    // MARK: - Config failures (TestFlight build 50, 30/09)
+
+    /// `/api/config` unreachable: login shows the friendly error with a retry, and retry recovers
+    /// once the server answers — the screen never stays stuck.
+    func testConfigDownShowsRetryAndRecovers() {
+        setStub(["config": "down"])
+        let app = launch(route: "hub")
+        let signIn = any(app, "profile-guest-signin")
+        XCTAssertTrue(signIn.waitForExistence(timeout: 30))
+        signIn.tap()
+        let retry = any(app, "error-retry")
+        XCTAssertTrue(retry.waitForExistence(timeout: 60), "friendly error with a retry button")
+        shot("14-config-down")
+        setStub(["config": "ok"])
+        retry.tap()
+        XCTAssertTrue(any(app, "auth-guest").waitForExistence(timeout: 60), "retry reaches the login options")
+    }
+
+    /// The exact body production (f42ae4b) serves — old field names — must still open login.
+    func testProductionConfigShapeOpensLogin() {
+        setStub(["config": "prod"])
+        let app = launch(route: "hub")
+        let signIn = any(app, "profile-guest-signin")
+        XCTAssertTrue(signIn.waitForExistence(timeout: 30))
+        signIn.tap()
+        XCTAssertTrue(any(app, "auth-guest").waitForExistence(timeout: 60), "login options from production config")
+        shot("15-login-prod-config")
     }
 
     // MARK: - Screens
