@@ -459,3 +459,14 @@ Hạn chế guard vá: mỗi bản vá sau model giờ được ĐẾM (`tappyai
 - Tiêu đề kế hoạch bị cắt 7/15 → sửa TẬN GỐC (guard đọc «gọi món»/«đặt bàn» trong tiêu đề là khẳng định) → 0/15, bỏ cơ chế «niêm phong».
 - Còn vá nhiều: câu «Mình chọn» thêm bằng code (4/15 lượt chọn), dòng «còn N» (server đếm — đúng thiết kế).
 - `place_claim` + `snippet_price` sửa 9–12/15 lượt mỗi loại → việc tiếp theo: giảm khẳng định không có nguồn ngay ở khung.
+
+## Android AAB release vc10 / 1.0.0 — build 30/09 (từ commit 68d6639, KHÔNG có thay đổi Android nào trên rc sau đó)
+- Build: `bash scripts/release/build-aab.sh 68d6639` (worktree detached `C:/wtbuild-68d6639`, không đụng worktree dùng chung).
+- File: `D:\TappyAI-backups\TappyAI-release-vc10-68d6639.aab` (gốc `C:/wtbuild-68d6639/android/app/build/outputs/bundle/release/app-release.aab`).
+- SHA-256 AAB: `79edd00910821470b4e198c7fd4d9915155ac335d214f12f9fd51b0d3df9c058`
+- Chứng chỉ ký (upload key) SHA-256: `02:5B:35:4D:1C:37:7B:DC:F3:D6:49:4A:71:8E:6B:2D:A4:56:2F:73:2B:CE:0A:42:11:9C:9B:09:37:74:5C:C7` — so với Play Console → App integrity → Upload key certificate. `jarsigner -verify` = "jar verified."
+- BuildConfig (script kiểm, đều `ok`): versionCode 10, versionName 1.0.0, API_BASE_URL `https://www.tappyai.com/`, WEB_APP_URL `https://www.tappyai.com`, GIT_SHA 68d6639, SUPABASE_URL = production (`fwznnobrdctuskgrvuik`), DEBUG=false, **VERCEL_BYPASS_SECRET rỗng**.
+- Quét thêm trên dex của chính AAB: KHÔNG có chuỗi `uat.tappyai.com`; chuỗi duy nhất liên quan là TÊN header `x-vercel-protection-bypass` trong `DeploymentProtectionInterceptor` — vô hiệu khi secret rỗng (`secret.isEmpty()` → không gắn header). Không chứa khoá bypass.
+- Test trước khi build (cùng commit): unit Android debug+release+uat xanh, web scan Android 793 qua, `verify-release-clean` 8/8.
+- Chưa upload gì; Play Console là bước của anh (RELEASE-PLAN §3d). Dọn sau upload: `git -C C:/wtrel worktree remove --force C:/wtbuild-68d6639`.
+- Nhánh local `android/video-held`: 4 commit của nó (video composer, golden chat, share e2e stub, guest giữ Login) ĐÃ nằm trên rc từ 29/09 dưới hash khác (41cd098, 8f6ca1e, f3b8679, 389e321) và đều có trong 68d6639 → bản release CÓ đăng video. Nhánh chỉ còn là bản cũ, không cần gộp.
