@@ -75,6 +75,7 @@ struct AuthFlowView: View {
                 if vm.enabledProviders.contains("zalo") {
                     Button("auth.continueZalo") { Task { await vm.continueWithZalo() } }
                         .buttonStyle(.tappy(.secondary))
+                        .accessibilityIdentifier("auth-zalo")
                 }
                 if vm.enabledProviders.contains("email") {
                     dividerOr
@@ -89,6 +90,7 @@ struct AuthFlowView: View {
                     .accessibilityIdentifier("auth-guest")
                 if let error = vm.errorMessage {
                     Text(error).font(TappyFont.footnote).foregroundStyle(TappyColor.danger)
+                        .accessibilityIdentifier("auth-error")
                 }
             }
             .padding(Spacing.md)

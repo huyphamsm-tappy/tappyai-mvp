@@ -11,7 +11,7 @@ final class ScreenshotTests: XCTestCase {
     override func setUp() {
         super.setUp()
         continueAfterFailure = false
-        setStub(["saved": "full", "config": "ok"])
+        setStub(["saved": "full", "config": "ok", "zalo": "nostate"])
     }
 
     // MARK: - Config failures (TestFlight build 50, 30/09)
@@ -41,6 +41,59 @@ final class ScreenshotTests: XCTestCase {
         signIn.tap()
         XCTAssertTrue(any(app, "auth-guest").waitForExistence(timeout: 60), "login options from production config")
         shot("15-login-prod-config")
+    }
+
+    // MARK: - MOB-1: sign-in callbacks need the state this app made
+
+    /// The fixture server plays the attacker: its `/api/auth/zalo` hands the app someone else's
+    /// session with NO state. The app must refuse it and stay a guest.
+    func testZaloCallbackWithoutStateIsRefused() {
+        zaloAttack(mode: "nostate", shotName: "20-mob1-zalo-no-state")
+    }
+
+    /// Same, with a state the app never made.
+    func testZaloCallbackWithForeignStateIsRefused() {
+        zaloAttack(mode: "wrongstate", shotName: "21-mob1-zalo-wrong-state")
+    }
+
+    /// A sign-in callback opened from outside the app (message, Safari) changes nothing: the
+    /// signed-in fixture account stays signed in and no sign-in screen appears.
+    func testExternalSignInLinkIsIgnored() throws {
+        let app = launch(route: "hub", signedIn: true)
+        XCTAssertTrue(any(app, "profile-edit").waitForExistence(timeout: 30), "fixture account signed in")
+        guard #available(iOS 16.4, *) else { throw XCTSkip("XCUIApplication.open(_:) needs iOS 16.4") }
+        app.open(URL(string: "tappyai://auth/callback#access_token=eyJhbGciOiJub25lIn0.eyJzdWIiOiJhdHRhY2tlciJ9.x&refresh_token=attacker&app_state=attacker")!)
+        app.activate()
+        XCTAssertTrue(any(app, "profile-edit").waitForExistence(timeout: 20), "still the same account")
+        XCTAssertFalse(any(app, "auth-error").exists)
+        shot("22-mob1-external-link")
+    }
+
+    private func zaloAttack(mode: String, shotName: String) {
+        setStub(["zalo": mode])
+        let app = launch(route: "hub")
+        let signIn = any(app, "profile-guest-signin")
+        XCTAssertTrue(signIn.waitForExistence(timeout: 30))
+        signIn.tap()
+        let zalo = any(app, "auth-zalo")
+        XCTAssertTrue(zalo.waitForExistence(timeout: 60), "Zalo button on login")
+        zalo.tap()
+        confirmWebAuthPrompt()
+        let error = any(app, "auth-error")
+        XCTAssertTrue(error.waitForExistence(timeout: 60), "refusal shown")
+        XCTAssertTrue(error.label.contains("không hợp lệ") || error.label.contains("isn't valid"),
+                      "the state-mismatch message, got: \(error.label)")
+        XCTAssertTrue(any(app, "auth-guest").exists, "still on login as a guest — no session imported")
+        shot(shotName)
+    }
+
+    /// ASWebAuthenticationSession's "wants to use … to sign in" alert belongs to SpringBoard.
+    private func confirmWebAuthPrompt() {
+        let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
+        for label in ["Tiếp tục", "Continue"] {
+            let button = springboard.buttons[label]
+            if button.waitForExistence(timeout: 10) { button.tap(); return }
+        }
     }
 
     // MARK: - Signed-in hub (fixture account)

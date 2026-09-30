@@ -11,6 +11,7 @@ final class AuthRepository {
     private let zalo: ZaloAuthController
     private let webAuth: WebAuthenticator
     private let session: SessionStore
+    private let callbackStates: AuthCallbackStateStore
     private let log = AppLogger.auth
 
     /// Deep-link scheme + Google redirect (survey §5.1). Register these in Info.plist + Supabase allow-list (D4).
@@ -19,9 +20,10 @@ final class AuthRepository {
 
     init(auth: AuthService, anon: AnonymousSessionService, gate: ProfileGateService,
          onboarding: OnboardingService, zalo: ZaloAuthController, webAuth: WebAuthenticator,
-         session: SessionStore) {
+         session: SessionStore, callbackStates: AuthCallbackStateStore = AuthCallbackStateStore()) {
         self.auth = auth; self.anon = anon; self.gate = gate; self.onboarding = onboarding
         self.zalo = zalo; self.webAuth = webAuth; self.session = session
+        self.callbackStates = callbackStates
     }
 
     // MARK: Launch
@@ -88,6 +90,7 @@ final class AuthRepository {
         let claimToken = anonymousTokenToClaim()   // C33 — read BEFORE the session is replaced
         let url = try auth.oauthURL(provider: .google, redirectTo: googleRedirect)
         let callback = try await webAuth.authenticate(url: url, callbackScheme: callbackScheme)
+        _ = try AuthCallbackPolicy.google(callback)   // MOB-1: PKCE code only, never a token fragment
         let tokens = try await auth.session(fromCallback: callback)
         await finishAuthentication(tokens)
         await claimAnonymousHistory(claimToken)
@@ -106,17 +109,17 @@ final class AuthRepository {
 
     func signInWithZalo() async throws {
         let claimToken = anonymousTokenToClaim()   // C33
-        let callback = try await zalo.authenticate()
-        // Server sends tokens in the URL fragment: tappyai://auth/callback#access_token=…&refresh_token=…
-        // Parse fragment into query items and hydrate directly; fall back to PKCE if fragment is absent.
-        if let fragment = callback.fragment,
-           let comps = URLComponents(string: "?\(fragment)"),
-           let access = comps.queryItems?.first(where: { $0.name == "access_token" })?.value,
-           let refresh = comps.queryItems?.first(where: { $0.name == "refresh_token" })?.value,
-           !access.isEmpty, !refresh.isEmpty {
+        // MOB-1: a fresh state per attempt; the callback is accepted only if the server echoes it.
+        let appState = callbackStates.begin()
+        let callback: URL
+        do { callback = try await zalo.authenticate(appState: appState) }
+        catch { callbackStates.clear(); throw error }
+        // Server sends tokens in the URL fragment: tappyai://auth/callback#access_token=…&app_state=…
+        switch try AuthCallbackPolicy.zalo(callback, states: callbackStates) {
+        case let .tokens(access, refresh):
             let tokens = try await auth.hydrate(accessToken: access, refreshToken: refresh)
             await finishAuthentication(tokens)
-        } else {
+        case .pkceCode:
             let tokens = try await auth.session(fromCallback: callback)
             await finishAuthentication(tokens)
         }

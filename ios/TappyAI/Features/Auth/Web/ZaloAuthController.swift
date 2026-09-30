@@ -16,12 +16,15 @@ struct ZaloAuthController {
     let callbackScheme: String   // "tappyai"
 
     /// Returns the callback URL captured at the end of the flow (for `AuthService.session(fromCallback:)`).
-    func authenticate(returnTo: String = "/") async throws -> URL {
+    /// `appState` (MOB-1) is echoed back by the server as `app_state` in the callback; the caller
+    /// accepts the callback only when it matches (`AuthCallbackStateStore`).
+    func authenticate(appState: String, returnTo: String = "/") async throws -> URL {
         var components = URLComponents(url: apiBaseURL.appendingPathComponent("/api/auth/zalo"),
                                        resolvingAgainstBaseURL: false)
         components?.queryItems = [
             URLQueryItem(name: "returnTo", value: returnTo),
-            URLQueryItem(name: "platform", value: "ios")   // hint; server keeps existing behavior
+            URLQueryItem(name: "platform", value: "ios"),  // hint; server keeps existing behavior
+            URLQueryItem(name: "app_state", value: appState)
         ]
         guard let startURL = components?.url else {
             throw AppError.unexpected(message: "Invalid Zalo start URL")

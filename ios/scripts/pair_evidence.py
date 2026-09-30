@@ -28,6 +28,8 @@ REFERENCES = {
     "06-saved-places": "step1-hientrang/11-saved.png",
     "07-viet-content": "step1-hientrang/10-viet-content.png",
     "08-recommendations": "step1-hientrang/09-recommendations.png",
+    "20-mob1-zalo-no-state": "login/after-web-vs-android.png",
+    "21-mob1-zalo-wrong-state": "login/after-web-vs-android.png",
 }
 # Share cards have no committed Android render (kept outside git); pair them with the owner's
 # APPROVED layout samples (docs/design/share-layouts) — root-relative paths, labelled as such.

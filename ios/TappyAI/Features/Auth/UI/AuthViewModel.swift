@@ -108,6 +108,7 @@ final class AuthViewModel: AppObservableObject {
             if e == .cancellation { return }
             errorMessage = ErrorPresenter.present(e).message
         }
+        catch let e as AuthCallbackError { errorMessage = e.errorDescription }
         catch { errorMessage = ErrorPresenter.present(.unexpected(message: error.localizedDescription)).message }
     }
 }

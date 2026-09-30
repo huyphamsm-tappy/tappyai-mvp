@@ -111,6 +111,10 @@ RECS = {
 }
 
 
+# Unsigned JWT for an account that is not the tester's (sub "attacker").
+ATTACKER_JWT = "eyJhbGciOiJub25lIn0.eyJzdWIiOiJhdHRhY2tlciIsImV4cCI6NDEwMjQ0NDgwMH0.x"
+
+
 class Handler(BaseHTTPRequestHandler):
     def _send(self, status, body):
         data = json.dumps(body).encode("utf-8")
@@ -136,6 +140,17 @@ class Handler(BaseHTTPRequestHandler):
                 self.end_headers()
                 self.wfile.write(data)
                 return
+        if path == "/api/auth/zalo":
+            # MOB-1 attack shape: someone else's session handed to the app's callback, with no
+            # state ("nostate", default) or a state the app never made ("wrongstate").
+            fragment = "access_token=" + ATTACKER_JWT + "&refresh_token=attacker-refresh&expires_at=4102444800"
+            if MODE.get("zalo") == "wrongstate":
+                fragment += "&app_state=attacker-state"
+            self.send_response(302)
+            self.send_header("Location", "tappyai://auth/callback#" + fragment)
+            self.send_header("Content-Length", "0")
+            self.end_headers()
+            return
         if path == "/api/config":
             mode = MODE.get("config", "ok")
             if mode == "down":

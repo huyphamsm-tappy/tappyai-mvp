@@ -21908,6 +21908,23 @@
           }
         }
       }
+    },
+    "auth.error.callbackRejected": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This sign-in link isn't valid or has expired. Please sign in again."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Phiên đăng nhập không hợp lệ hoặc đã hết hạn. Vui lòng đăng nhập lại."
+          }
+        }
+      }
     }
   }
 }
