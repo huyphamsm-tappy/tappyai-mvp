@@ -5,8 +5,16 @@
 - node_modules + cache npm/tmp/playwright: `D:\TappyAI-wt\.cache\`.
 - Không đụng: rc/web-uat, main, production, UAT, C:\wtrel, C:\wtandroid, worktree Phase 8.
 
+## ▶ TRẠNG THÁI 30/09 ~09:00Z — 3 việc xong, CHỜ anh báo "release Phase 7 xong" để bật trên UAT
+- Báo cáo gộp: `docs/uat/LUNA-REPORT.md` §7–§11. Trang so sánh kế hoạch: https://claude.ai/artifact/A6Kf7iKn4WkC8dPFFsFuo5
+- Cờ (đều mặc định TẮT): `CONSULT_LUNA`, `CONSULT_LUNA_FAST`, `CONSULT_LUNA_PLAN` (+ `LLM_PLAN_PROVIDER=openai`, `LLM_PLAN_REASONING=low` đề xuất), `SERPER_CACHE_V2`.
+- Cấu hình đề xuất bật trên UAT: CONSULT_LUNA=1 · LLM_CONSULT_PROVIDER/LLM_INTENT_PROVIDER=openai (none) · CONSULT_LUNA_FAST=1 · CONSULT_LUNA_PLAN=1 + LLM_PLAN_REASONING=low · SERPER_CACHE_V2=1.
+- Còn mở: 1 lượt low nữa cho kế hoạch du lịch (mới đo 1 lượt); lỗi code Phase 7 ở kế hoạch (dòng "Chi phí" sai quán/số người, câu ghép "giá và giá", mục trống) — báo anh, chưa sửa.
+- Phán quyết đọc tay (ngoài repo): `D:\TappyAI-wt\.cache\verdicts-haiku.json`, `verdicts-luna.json`, `plan-classify.md`.
+
 ## Quyết định đã chốt (owner)
-- Model `gpt-6-luna`, reasoning effort luôn đặt rõ. Lượt tư vấn: none/low (theo đo). Kế hoạch chi tiết: giữ Haiku.
+- Model `gpt-6-luna`, reasoning effort luôn đặt rõ. Lượt tư vấn + ý định: **none** (owner 30/09, không dùng low). Kế hoạch chi tiết: Luna theo §7 báo cáo (du lịch low không công cụ; khác none + 1 lần tìm) — chờ anh duyệt.
+- Trần C: lượt nói thật "không có dữ liệu" tính ĐẠT, không tính vào trần C (owner 30/09).
 - Giá (developers.openai.com, đọc 30/09): vào $0,10/M · cache đọc $0,01/M · cache ghi $0,125/M · ra $0,50/M (token suy luận tính giá ra).
 
 ## Đã làm (commit b5aae63, nhánh local — push bị chặn quyền, chờ anh)
