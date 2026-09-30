@@ -168,7 +168,7 @@ final class ScreenshotTests: XCTestCase {
         XCTAssertFalse(any(app, "delete-submit").isEnabled, "disabled until the word is typed")
         shot("45-delete-form")
         // The field sits at the very bottom edge; bring it up before tapping so it takes keyboard focus.
-        XCTAssertTrue(scrollTo(app, "delete-word"))
+        for _ in 0..<4 where word.frame.maxY > app.frame.height - 120 { app.swipeUp() }
         word.tap()
         if !app.keyboards.firstMatch.waitForExistence(timeout: 5) { word.tap() }
         word.typeText("XÓA")
