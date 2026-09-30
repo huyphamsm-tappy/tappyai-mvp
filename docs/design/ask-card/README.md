@@ -75,6 +75,8 @@ Mảng của thẻ (cho màu ảnh giữ chỗ) = mảng của lượt hỏi; kh
 
 Các mục trên giữ nguyên; chỉ những điểm sau đổi/bổ sung. Web: `src/lib/structuredContent/askCardModel.ts` (bảng) +
 `src/components/chat/AskCard.tsx` (giao diện); test `askCardModel.test.ts`, `AskCard.test.tsx`.
+Android: `android/app/src/main/java/com/tappyai/app/chat/ask/AskCardModel.kt` = bản chép 1:1 của `askCardModel.ts`
+(test `AskCardV2Test` chạy lại ĐÚNG các ca của `askCardModel.test.ts`) + `chat/AskCard.kt` (giao diện).
 
 1. **Tiêu đề / dòng phụ theo mảng** (owner: «tiêu đề/phụ đề/câu hỏi theo từng mảng»). Mảng suy từ `id` câu hỏi:
    `dish`/`mode` → ăn uống · `service`/`special` → spa · `activity`/`vibe`/`artist` → giải trí ·
