@@ -200,7 +200,7 @@ export async function android({ a, shot, check, seeded }) {
     const buttons = ctaOf(raw)
     const hosts = buttons.map((b) => unwrap(b.url))
     check(`${c.id}: nút đặt/mua dẫn đúng loại trang`, buttons.length === 0 || hosts.some((h) => c.expect.test(h)), hosts.join(', ') || '(không có nút — xem ảnh)')
-    if (c.plan) check(`${c.id}: có thẻ kế hoạch`, /\[TAPPY_PLAN\]/.test(raw) && [...seen].some((t) => /Chia sẻ lịch trình|Ngày 1/.test(t)))
+    if (c.plan) check(`${c.id}: có thẻ kế hoạch`, /\[TAPPY_PLAN\]/.test(raw) && [...seen].some((t) => /TAPPY PLAN|Hành trình|Ngày 1/.test(t)))
     // Tap the first đặt/mua/xem button ACTUALLY on screen and prove where it goes. A model CTA that
     // duplicates a place-card action is dropped by design (ctaButtonsOutsideCards, web parity), so
     // the candidates are: the CTA labels still shown, then the card's own action buttons.
@@ -219,9 +219,10 @@ export async function android({ a, shot, check, seeded }) {
         const dat = (log.match(/act=android\.intent\.action\.VIEW dat=(\S+)/) || [])[1] || ''
         shot(`${c.id}-cta-opened`)
         // logcat truncates the URL after the host ("https://go.isclix.com/..."): behind the affiliate
-        // wrapper the merchant is the one the button names ("Tìm trên Lazada").
+        // wrapper the merchant is the one the button names ("Tìm trên Lazada"). Since sub1 option C the
+        // wrapper is Tappy's own /go/at redirect (random sub1 per click), also truncated by logcat.
         const host = unwrap(dat) || dat
-        const ok = !!dat && (c.expect.test(host) || (/isclix|accesstrade|atrk/.test(host) && c.expect.test(label.toLowerCase())))
+        const ok = !!dat && (c.expect.test(host) || (/isclix|accesstrade|atrk|^https:\/\/(uat\.)?tappyai\.com\/(go\/at|\.\.\.)/.test(dat) && c.expect.test(label.toLowerCase())))
         check(`${c.id}: bấm «${label}» mở đúng loại trang`, ok, dat.slice(0, 90))
         await a.dismissForeign(); await a.launch()
       } else check(`${c.id}: bấm được nút «${label}»`, false)
@@ -238,12 +239,9 @@ async function sharePlan(a, shot, check, id) {
   // The composer can take focus on return: close the keyboard first, or a scroll swipe that starts
   // on it is read as glide typing ("TT TT TT…" in the box).
   await a.hideKeyboard()
-  let btn = null
-  for (let k = 0; k < 14 && !btn; k++) {
-    btn = a.find(/Chia sẻ lịch trình/)
-    if (!btn) { a.swipe(k < 7 ? 'up' : 'down'); await a.sleep(700) }
-  }
-  if (!btn) { check(`${id}: nút "Chia sẻ lịch trình"`, false); return }
+  // Plan card v2: the «Chia sẻ» pill in the card's own top bar (above «TAPPY PLAN»).
+  const btn = await a.planShareButton({ max: 32 }) // a full trip answer is long: room to scroll back up to its card
+  if (!btn) { check(`${id}: nút «Chia sẻ» của thẻ kế hoạch`, false); return }
   await a.tap(btn, { after: 2500 })
   await a.waitGone(/Đang tạo liên kết kế hoạch/, { timeout: 30000 }).catch(() => {})
   await a.waitGone(/^Đang tạo ảnh/, { timeout: 30000 }).catch(() => {})

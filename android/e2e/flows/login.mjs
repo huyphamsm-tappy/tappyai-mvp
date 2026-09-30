@@ -18,8 +18,11 @@ export async function android({ a, shot, check, seeded }) {
   // Paste, never type: the emulator's Vietnamese Telex keyboard rewrites typed ASCII ("ex" → "ẽ").
   await a.tap('Email', { after: 700 })
   await a.pasteText(seeded.users.free.email)
-  a.sh('input', 'keyevent', '61') // TAB → the password field
-  await a.sleep(500)
+  // Focus the password field by tapping it (a TAB keyevent no longer moves focus reliably on the emulator).
+  a.sh('input', 'keyevent', '4') // hide the keyboard first so the field is on screen
+  await a.sleep(600)
+  const pw = a.dump().filter((n) => (n.text || n.desc) === 'Mật khẩu').pop()
+  if (pw) await a.tap(pw, { after: 700 })
   await a.pasteText(WRONG())
   a.sh('input', 'keyevent', '4') // hide the keyboard
   await a.sleep(800)
@@ -37,11 +40,19 @@ export async function android({ a, shot, check, seeded }) {
   check('"Tạo tài khoản" mở trình duyệt', !fg.includes('com.tappyai.app.staging') || url.includes('/register'), fg.split('/')[0])
   // Back from the browser, the way a person returns: the login card must still be there.
   // (UAT only: Chrome has no Vercel bypass, so /register shows Vercel's own login — ANDROID-PROGRESS.)
-  for (let i = 0; i < 4 && !a.foreground().includes('com.tappyai.app'); i++) await a.back()
+  // The emulator's Chrome (swiftshader) often hangs on Vercel's page: a system "Chrome isn't responding"
+  // dialog then sits over the app and each Back went to the APP, popping the login card. Close the hung
+  // browser (= leaving it), and press Back only while the browser itself is in front.
+  for (let i = 0; i < 6 && !a.foreground().includes('com.tappyai.app'); i++) {
+    if (a.find(/isn.t responding|không phản hồi/)) { await a.tap(a.find(/^(Close app|Đóng ứng dụng)$/), { after: 1500 }); continue }
+    await a.back()
+  }
+  if (a.find(/isn.t responding|không phản hồi/)) await a.tap(a.find(/^(Close app|Đóng ứng dụng)$/), { after: 1500 })
   await a.sleep(1500)
   check('Back từ trình duyệt → vẫn ở thẻ đăng nhập', a.foreground().includes('com.tappyai.app') && !!a.find(/Tạo tài khoản|Tiếp tục với tư cách Khách|Đăng nhập TappyAI/))
 
-  await a.scrollTo('Tiếp tục với tư cách Khách', { max: 4 })
+  // Back from the browser the card can sit either side of the guest button: look both ways.
+  for (let k = 0; k < 8 && !a.find('Tiếp tục với tư cách Khách'); k++) { a.swipe(k < 4 ? 'up' : 'down'); await a.sleep(700) }
   await a.tap('Tiếp tục với tư cách Khách', { after: 4000 })
   shot('guest')
   check('"Tiếp tục với tư cách Khách" quay lại app (thanh điều hướng)', a.visible('Trang chủ') && a.visible('Tôi'))
