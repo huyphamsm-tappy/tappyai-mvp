@@ -67,6 +67,10 @@ Giá phòng: chưa xác nhận…","price":…`). Phần đầu kế hoạch (ti
 
 ## 2. Web → Android: thay đổi server/API (giữ tương thích ngược)
 
+- 2026-09-30 (web) **Luna đã lên UAT — commit 87007a1** (rc/web-uat = gộp `luna/consult-2026-09-30` @c4ddf3c). Mọi lời gọi AI trên
+  UAT đi qua GPT-6 Luna (kiểm: câu hỏi thật trả lời, annotation `model=openai:none`); `OPENAI_API_KEY` đã đặt cho Preview + Production.
+  API / định dạng phản hồi không đổi. **Android: chạy các luồng chat e2e trên UAT và build APK cuối.**
+
 - 2026-09-30 (Luna) **Luna sẵn sàng gộp — commit f82fcaa** (nhánh `luna/consult-2026-09-30`, phiên web gộp vào rc/web-uat).
   Server chuyển MỌI lời gọi AI sang GPT-6 Luna (Anthropic hết credit). **API và định dạng phản hồi KHÔNG đổi** (luồng chat,
   [TAPPY_PLAN], thẻ, ScamShield, Viết content, dịch, quét ảnh) → **Android không cần sửa.** Khác biệt Android có thể thấy:
