@@ -93,7 +93,7 @@ import { buildDomainFrame, frameDomainOf, frameLibrary, frameRef, PLAN_HEADINGS,
 import { runConsultBrain, consultV2Enabled, wasAskReply, buildAskReply, placeTypeFor, latestShoppingPickPrice, shoppingMarkerRecords } from '@/lib/ai/consultative/consultBrain'
 import { routeConsult } from '@/lib/ai/consultative/consultRouter'
 import { rejectModifierOf, withoutQuotedNames, isFixedPhrase } from '@/lib/ai/consultative/consultRouter'
-import { consultLunaEnabled, consultLunaPlanEnabled, isLunaAnswerTurn, runLunaIntent, mergeIntentWithRules, lunaTurnFacts, withoutReferenceTurns, LUNA_CORE, INTENT_SYSTEM } from '@/lib/ai/consultative/luna'
+import { consultLunaEnabled, consultLunaFastEnabled, skipLunaIntent, consultLunaPlanEnabled, isLunaAnswerTurn, runLunaIntent, mergeIntentWithRules, lunaTurnFacts, withoutReferenceTurns, LUNA_CORE, INTENT_SYSTEM } from '@/lib/ai/consultative/luna'
 import { lunaDataMessage, buildLeakDetector, sanitizeSearchQuery } from '@/lib/ai/consultative/lunaSafety'
 import { eventPreCall, onlyRowsNamed, slimResultForModel, travelPreCall, unshownRows, withoutShownRows } from '@/lib/ai/consultative/consultTravel'
 import { geoGuardArea, guardPlaceGeography } from '@/lib/ai/tools/placeGeoGuard'
@@ -377,7 +377,11 @@ export async function POST(req: Request) {
   // FOOD-2 t4: "… hay Ẩm thực sân vườn Mái Lá?" became a garden-seating constraint).
   const lunaOwnWords = withoutReferenceTurns(withoutQuotedNames(messages), earlyChatState?.shown ?? [])
   const lunaUserTexts = lunaOwnWords.filter((m: { role: string }) => m.role === 'user').map((m: { content: unknown }) => typeof m.content === 'string' ? m.content : Array.isArray(m.content) ? m.content.map((p: { type?: string; text?: string }) => p?.type === 'text' ? p.text ?? '' : '').join(' ') : '').slice(-7)
-  const lunaIntentRun = lunaOn && AI.isConfigured() && !(routed?.confidence === 'rule' && isFixedPhrase(lastText))
+  // CONSULT_LUNA_FAST (default OFF): a SURE continuing turn keeps the rules' decision, its slots read on the user's own
+  // words + the stored consultation (no intent call, ~1.9 s saved — luna.ts skipLunaIntent).
+  const lunaSkipped = lunaOn && consultLunaFastEnabled() && skipLunaIntent(routed, earlyChatState?.domains, lastText)
+  const lunaSkipDecision = lunaSkipped && routed ? { ...routed.decision, known: { ...(earlyChatState?.known ?? {}), ...routeConsult(lunaOwnWords, { hasGps: !!userLocation, lang }).decision.known } } : null
+  const lunaIntentRun = lunaOn && !lunaSkipped && AI.isConfigured() && !(routed?.confidence === 'rule' && isFixedPhrase(lastText))
     ? await runLunaIntent(o => AI.extract(o) as never, messages, { hasGps: !!userLocation, previousWasAsk: wasAskReply(priorAssistantText), deterministicDomain: lastUserMsg ? turnDomain(lastUserMsg, { hasGps: !!userLocation, lang }) : null, userTexts: lunaUserTexts, storedNames: earlyChatState?.shown?.slice(-8) })
     : null
   if (lunaIntentRun) console.log(JSON.stringify({ type: 'tappyai_luna_intent', rules: routed?.confidence ?? null, rulesTurn: routed?.decision.turn ?? null, turn: lunaIntentRun.decision.turn, domains: lunaIntentRun.decision.domains, difficulty: lunaIntentRun.difficulty, served: lunaIntentRun.served, ms: lunaIntentRun.ms, usd: lunaIntentRun.costUsd, dropped: lunaIntentRun.check.dropped, corrected: lunaIntentRun.check.corrected }))
@@ -391,9 +395,9 @@ export async function POST(req: Request) {
   const consultRun = lunaRun ?? (consultOn && routed?.confidence === 'unsure' && AI.isConfigured()
     ? await runConsultBrain(o => AI.generate(o), messages, { hasGps: !!userLocation, previousWasAsk: wasAskReply(priorAssistantText), deterministicDomain: lastUserMsg ? turnDomain(lastUserMsg, { hasGps: !!userLocation, lang }) : null })
     : null)
-  const consult = consultRun?.decision ?? (routed ? routed.decision : null)
+  const consult = consultRun?.decision ?? lunaSkipDecision ?? (routed ? routed.decision : null)
   // Measurement only (CONSULT_DECISION_LOG=1, off by default — replay sets it): the full decision, to check intent reading.
-  if (process.env.CONSULT_DECISION_LOG === '1' && consult) console.log(JSON.stringify({ type: 'tappyai_consult_decision', by: lunaRun ? `luna-${lunaRun.mode}` : consultRun ? 'brain' : 'rules', turn: consult.turn, domains: consult.domains, known: consult.known, area: consult.area ?? null }))
+  if (process.env.CONSULT_DECISION_LOG === '1' && consult) console.log(JSON.stringify({ type: 'tappyai_consult_decision', by: lunaRun ? `luna-${lunaRun.mode}` : consultRun ? 'brain' : lunaSkipped ? 'rules-fast' : 'rules', turn: consult.turn, domains: consult.domains, known: consult.known, area: consult.area ?? null }))
   console.log(JSON.stringify({ type: 'tappyai_consult', by: consultRun ? 'brain' : routed ? 'rules' : 'off', turn: consult?.turn ?? 'fallback', domains: consult?.domains ?? [], ms: consultRun?.ms ?? null, known: consult ? Object.keys(consult.known) : [], brain_in: consultRun?.usage.promptTokens ?? 0, brain_out: consultRun?.usage.completionTokens ?? 0 }))
   // Under Consult V2 a plan is built ONLY when the user accepts (turn "plan"); a trip plan keeps the
   // [TAPPY_PLAN] payload, every other area's plan is the prose plan frame (domainFrames.ts).
@@ -2631,6 +2635,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   // 3 shopping replies naming a 12-word product title were replaced).
   if (lunaOn) enrichment.setLeakCheck(buildLeakDetector([systemShared ?? '', INTENT_SYSTEM, FRAME_CORE, ...(['food', 'shopping', 'travel', 'entertainment', 'spa'] as const).map(d => frameLibrary(d))]))
   // The one targeted extra search a Luna answer may make: its query is cut of private data before Serper (owner rule 3).
+  if (lunaPlan) console.log(JSON.stringify({ type: 'tappyai_luna_plan_data', presearch: presearchAll.map(o => o.toolName), planningIntent: planningIntent ?? null }))
   const lunaGuardTools = <T,>(set: T): T => {
     if (!lunaAnswer || !set) return set
     const privateTexts = [memoryBlock, userLocation?.address ?? '']
@@ -2721,7 +2726,9 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     // PHIÊN LUNA: a Luna answer whose targeted search the code already ran gets the results and NO tool definitions (the
     // no-tool-turn pattern above; tool choice stays 'auto'). Owner: no model-driven tool loops — replay 30/09 TRAVEL-1 t2
     // spent both steps calling tools and sent no text, twice.
-    tools: lunaAnswer && presearchAll.length > 0 ? undefined : lunaGuardTools(lean && tools ? Object.fromEntries(Object.entries(tools).filter(([k]) => consultTools(consult!.domains).includes(k))) as typeof tools : tools),
+    // Luna plan (CONSULT_LUNA_PLAN): gpt-6-luna refuses function tools with reasoning_effort ≠ none on /chat/completions
+    // (measured 30/09: every medium plan call fell back). The plan is written from the code's presearch + the conversation.
+    tools: (lunaAnswer && presearchAll.length > 0) || lunaPlan ? undefined : lunaGuardTools(lean && tools ? Object.fromEntries(Object.entries(tools).filter(([k]) => consultTools(consult!.domains).includes(k))) as typeof tools : tools),
     onFinish: async ({ usage, finishReason, text, steps }) => {
       // Prompt-cache accounting. `usage` is already the SUM across steps, but
       // cache counters live in per-step providerMetadata (the top-level

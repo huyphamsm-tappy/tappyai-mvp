@@ -35,6 +35,8 @@
 import { createHash } from 'node:crypto'
 import { cacheKeyPart } from './cacheKeys'
 import { isDistributedStoreConfigured, namespacedKey } from '@/lib/security/distributedRateLimit'
+import { sanitizeSerperJson } from '@/lib/ai/consultative/lunaSafety'
+import { areaKeyV2, normalizeQueryV2, serperCacheV2Enabled, serperTtlV2 } from './serperCacheV2'
 
 export type SerperCachedEndpoint = 'search' | 'shopping' | 'maps'
 
@@ -69,8 +71,13 @@ export function serperSharedCacheKey(
   variant?: string,
   env: NodeJS.ProcessEnv = process.env,
 ): string {
-  const q = createHash('sha256').update(cacheKeyPart(query)).digest('hex')
   const ep = variant ? `${endpoint}:${variant}` : endpoint
+  // SERPER_CACHE_V2 (default OFF): normalised query + area (serperCacheV2.ts); v1 keys are never read under v2.
+  if (serperCacheV2Enabled(env)) {
+    const q2 = createHash('sha256').update(normalizeQueryV2(query)).digest('hex')
+    return namespacedKey(`serper:v2:${ep}:${q2}:${areaKeyV2(area)}`, env)
+  }
+  const q = createHash('sha256').update(cacheKeyPart(query)).digest('hex')
   return namespacedKey(`serper:v1:${ep}:${q}:${serperAreaKey(area)}`, env)
 }
 
@@ -138,9 +145,12 @@ export async function serperCacheSet(
   if (!CACHEABLE.has(endpoint) || !query.trim() || !isDistributedStoreConfigured(env)) return
   if (!Array.isArray(value) || value.length === 0) return
   try {
-    const json = JSON.stringify(value)
+    const v2 = serperCacheV2Enabled(env)
+    // v2 shares only cleaned public text: an injected title/snippet never reaches another user's turn raw (lunaSafety.ts).
+    const json = JSON.stringify(v2 ? sanitizeSerperJson(value).body : value)
     if (new TextEncoder().encode(json).length > SERPER_CACHE_MAX_BYTES) return
-    await kvCommand(['SET', serperSharedCacheKey(endpoint, query, area, variant, env), json, 'EX', String(serperCacheTtlSeconds(env))], env)
+    const ttl = v2 ? serperTtlV2(endpoint, query, env) : serperCacheTtlSeconds(env)
+    await kvCommand(['SET', serperSharedCacheKey(endpoint, query, area, variant, env), json, 'EX', String(ttl)], env)
   } catch {
     /* fail open */
   }

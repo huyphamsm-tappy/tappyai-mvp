@@ -22,6 +22,32 @@ export function consultLunaEnabled(env: Record<string, string | undefined> = pro
   return v === '1' || v === 'on' || v === 'true'
 }
 
+/** CONSULT_LUNA_FAST (needs CONSULT_LUNA; default OFF): skip the intent call on continuing turns the rules are sure of. */
+export function consultLunaFastEnabled(env: Record<string, string | undefined> = process.env): boolean {
+  const v = (env.CONSULT_LUNA_FAST ?? '').trim().toLowerCase()
+  return consultLunaEnabled(env) && (v === '1' || v === 'on' || v === 'true')
+}
+
+/**
+ * Latency (owner 30/09 — the intent call is ~1.9 s on EVERY Luna turn; Haiku's follow-up/compare were < 1 s because the
+ * rules answered them). The intent call is skipped only when it cannot add anything the code does not already hold:
+ * the router is SURE, the turn continues a stored consultation (its area comes from the session, not the message), and
+ * the message carries no new request — a follow-up / compare question, or a short button-like more / reject / plan.
+ * A new request, an answer to our question, an unsure turn, or a long "tìm chỗ khác, dưới 200k, có chỗ đậu ô tô"
+ * still goes through intent.
+ */
+export function skipLunaIntent(
+  routed: { confidence: 'rule' | 'unsure'; decision: { turn: string; domains: readonly string[] } } | null,
+  storedDomains: readonly string[] | null | undefined,
+  lastText: string,
+): boolean {
+  if (!routed || routed.confidence !== 'rule' || !storedDomains?.length || !routed.decision.domains.length) return false
+  const t = routed.decision.turn
+  if (t === 'followup' || t === 'compare') return true
+  if (t !== 'more' && t !== 'reject' && t !== 'plan') return false
+  return lastText.trim().split(/\s+/).filter(Boolean).length <= 6
+}
+
 /** CONSULT_LUNA_PLAN (default OFF, owner 30/09): the detailed plan runs on role `plan` (Luna, LLM_PLAN_REASONING); only with CONSULT_LUNA. */
 export function consultLunaPlanEnabled(env: Record<string, string | undefined> = process.env): boolean {
   const v = (env.CONSULT_LUNA_PLAN ?? '').trim().toLowerCase()
