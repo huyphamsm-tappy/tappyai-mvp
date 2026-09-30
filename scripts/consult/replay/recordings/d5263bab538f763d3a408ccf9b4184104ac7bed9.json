@@ -1,0 +1,66 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"MSI GF63 Thin i7-11800H/8GB/512GB/Win11\" site:cellphones.com.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:04:38.542Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"MSI GF63 Thin i7-11800H/8GB/512GB/Win11\" site:cellphones.com.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Laptop MSI Gaming GF63 Thin 11UC-1228VN | Giá rẻ, trả góp 0%",
+    "link": "https://cellphones.com.vn/laptop-msi-gaming-gf63-thin-11uc-1228vn.html",
+    "snippet": "Mua ngay Laptop MSI Gaming GF63 Thin 11UC-1228VN giá rẻ - Hỗ trợ trả góp 0%, đổi mới 30 ngày, bảo hành chính hãng, giao hàng tận nơi miễn phí.",
+    "position": 1
+   },
+   {
+    "title": "Laptop MSI GF63 i7 | Thiết kế mạnh mẽ, hiệu năng ổn định",
+    "link": "https://cellphones.com.vn/laptop-msi-gaming-gf63-10sc-812vn.html",
+    "snippet": "Laptop MSI GF63 i7 giá rẻ, cấu hình mạnh, hiệu năng ổn định, bảo hành chính hãng, trả góp 0%, giao ngay tận nhà. Mua ngay MSI GF63 i7 tại đây",
+    "position": 2
+   },
+   {
+    "title": "Laptop MSI GF63 | Mạnh mẽ, nổi bật, giảm đến 2 triệu đồng",
+    "link": "https://cellphones.com.vn/laptop-msi-gaming-msi-gf63-12ucx-841vn.html",
+    "snippet": "Laptop MSI GF63 cấu hình mạnh mẽ, hiệu năng nổi bật, thiết kế hầm hố, bảo hành chính hãng, 1 đổi 1 trong 30 ngày. Mua ngay MSI GF63 giá rẻ nhé",
+    "position": 3
+   },
+   {
+    "title": "Laptop gaming MSI GF63 Thin 11SC 664VN | Giá rẻ, trả góp 0%",
+    "link": "https://cellphones.com.vn/laptop-msi-gaming-gf63-thin-11sc-664vn.html",
+    "snippet": "Mua ngay Laptop gaming MSI GF63 Thin 11SC 664VN giá rẻ - Hỗ trợ trả góp 0%, đổi mới 30 ngày, bảo hành chính hãng, giao hàng tận nơi miễn phí.",
+    "position": 4
+   },
+   {
+    "title": "Laptop MSI Gaming Thin GF63 12VE-454VN | Giá rẻ, trả góp 0%",
+    "link": "https://cellphones.com.vn/laptop-msi-gaming-thin-gf63-12ve-454vn.html",
+    "snippet": "Mua ngay Laptop MSI Gaming Thin GF63 12VE-454VN giá rẻ - Hỗ trợ trả góp 0%, đổi mới 30 ngày, bảo hành chính hãng, giao hàng tận nơi miễn phí.",
+    "position": 5
+   },
+   {
+    "title": "Laptop MSi Gaming GF63 11UC 443VN | Giá rẻ, trả góp 0%",
+    "link": "https://cellphones.com.vn/laptop-msi-gaming-gf63-11uc-443vn.html",
+    "snippet": "Mua ngay Laptop MSi Gaming GF63 11UC 443VN giá rẻ - Hỗ trợ trả góp 0%, đổi mới 30 ngày, bảo hành chính hãng, giao hàng tận nơi miễn phí.",
+    "position": 6
+   },
+   {
+    "title": "Laptop MSI Gaming GF63 Thin 11UD-648VN - Cũ Xước Cấn",
+    "link": "https://cellphones.com.vn/laptop-msi-gaming-gf63-thin-11ud-648vn-cu-xuoc-can.html",
+    "snippet": "Mua Laptop MSI Gaming GF63 Thin 11UD-648VN cũ giá rẻ - Nguồn gốc rõ ràng, bảo hành 6-12 tháng, đổi mới 30 ngày, luôn xuất bán đầy đủ VAT.",
+    "position": 7
+   }
+  ],
+  "credits": 1
+ }
+}

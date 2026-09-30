@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Bản Quán\" OR \"Bản Quán - Đường Thành\" OR \"Bếp Quán Núi Trúc\" Núi Ba Vì, Hà Nội site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:59:23.937Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Bản Quán\" OR \"Bản Quán - Đường Thành\" OR \"Bếp Quán Núi Trúc\" Núi Ba Vì, Hà Nội site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Khám Phá Đặc Sản Vùng Núi Tại Bản Quán",
+    "link": "https://www.tiktok.com/@phamtrang.2401/video/7537288542452485383",
+    "snippet": "Hôm nay mời đoàn mình lên núi, ăn đặc sản vùng núi nha - Bản Quán 2 Đường Thành, HN #reviewanngon #ancungtiktok #learnontiktok #betupe. Khám ...",
+    "position": 1
+   },
+   {
+    "title": "Khám Phá Món Ngon Đặc Sản Bản Quán Tại Hà Nội",
+    "link": "https://www.tiktok.com/@banquan.restaurants/photo/7658239636317211924",
+    "snippet": "Thưởng thức món ngon đậm chất miền núi tại Bản Quán, tìm lại cảm giác ấm áp như về bản làng. #amthuctaybac #banquan. Keywords: món ngon đặc sản ...",
+    "position": 2
+   },
+   {
+    "title": "Bản Quán (@banquan.restaurants)",
+    "link": "https://www.tiktok.com/@banquan.restaurants",
+    "snippet": "Bản Quán · @banquan.restaurants · 02 Đường Thành, HN 81 Phan Kế Bính, HN Đặt bàn tại: 033 915 4812 Menu 2 cơ sở có tại link dưới.",
+    "position": 3
+   },
+   {
+    "title": "Review Bếp Quán Núi Trúc",
+    "link": "https://www.tiktok.com/discover/review-b%E1%BA%BFp-qu%C3%A1n-n%C3%BAi-tr%C3%BAc",
+    "snippet": "Review Bếp Quán Núi Trúc. Khám phá những địa điểm yên tĩnh ở Đà Nẵng giữa nhịp sống hối hả, lý tưởng cho cuộc hành trình khám phá Sơn Trà!",
+    "date": "31 thg 8, 2026",
+    "position": 4
+   },
+   {
+    "title": "Ngày gia đình đưa bố mẹ, ông bà, em bé tới A Bản 📍 76 ...",
+    "link": "https://www.tiktok.com/@phamtrang.2401/video/7382925231641480456",
+    "snippet": "... Đăng Bình. quán này vs bản quán thì cái nào hay hơn ạ? 2025-8-22Trả lời. 0. Dilys36. Mê lắm, nấu ngon tuyệt. Đã ăn mấy lần. 2024-10-20Trả lời. 0.",
+    "position": 5
+   },
+   {
+    "title": "Phố Linh Lang đẹp nhất về Đêm...",
+    "link": "https://www.tiktok.com/@xuan_51222/video/7663114811839892756",
+    "snippet": "Phố Linh Lang đẹp nhất về Đêm...Bà Phương Hằng Nói Về Hà NộiPhố Linh Lang Hà Nội Ktv Nhật BảnQuán Bar Phố Linh Lang Hà NộiPhố Linh Lang Về Đêm ...",
+    "position": 6
+   },
+   {
+    "title": "Bánh bệnh viện: Trải nghiệm ẩm thực độc đáo",
+    "link": "https://www.tiktok.com/@ansaphanoi/video/7533266195903155474",
+    "snippet": "Review Phòng Sinh Bệnh Viện Tâm Anh · Review Bếp Quán Núi Trúc · Review Bánh Ngọt Hỷ Lâm Môn · Review Bệnh Viện Tim Tâm Đức Mức Giá · Review ...",
+    "position": 7
+   },
+   {
+    "title": "Ăn cơm niêu ngon ở Long Biên - Review món ăn Miền Trung",
+    "link": "https://www.tiktok.com/@nglethuthuy/video/7436749237792115984",
+    "snippet": "Xem review đầy đủ về Bếp Cô Ba và bánh mì thịt nguội tại Hà Nội. Ăn ... Bản Quán ‍♀️ #nglethuthuy #banhtrungthu #quàcủabản ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

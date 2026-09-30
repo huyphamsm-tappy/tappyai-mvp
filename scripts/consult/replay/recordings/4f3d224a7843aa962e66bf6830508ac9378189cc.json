@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"asus Gaming Vivobook 16X K3605VC-RP431W\" site:cellphones.com.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:26:05.873Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"asus Gaming Vivobook 16X K3605VC-RP431W\" site:cellphones.com.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Laptop ASUS Gaming Vivobook 16X K3605VC-RP431W",
+    "link": "https://cellphones.com.vn/laptop-asus-vivobook-16x-k3605vc-rp431w.html",
+    "snippet": "Laptop ASUS Gaming Vivobook 16X K3605VC-RP431W. I5-13420H/16GB/512GB PCIE/VGA 4GB RTX3050/16.0 WUXGA 144HZ/WIN11/ĐEN.",
+    "rating": 5,
+    "ratingCount": 5,
+    "position": 1
+   },
+   {
+    "title": "Laptop ASUS Gaming Vivobook 16X K3605VC-RP431W",
+    "link": "https://cellphones.com.vn/laptop-asus-vivobook-16x-k3605vc-rp431w-cu-da-kich-hoat.html",
+    "snippet": "Mua ngay Laptop ASUS Gaming Vivobook 16X K3605VC-RP431W cũ giá rẻ - Nguồn gốc rõ ràng, bảo hành 6-12 tháng, đổi mới 30 ngày, luôn xuất bán đầy đủ VAT.",
+    "position": 2
+   },
+   {
+    "title": "Laptop ASUS Gaming Vivobook 16X K3605VC-RP431W",
+    "link": "https://cellphones.com.vn/laptop-asus-vivobook-16x-k3605vc-rp431w-cu-tray-xuoc.html",
+    "snippet": "Mua ngay Laptop ASUS Gaming Vivobook 16X K3605VC-RP431W cũ giá rẻ - Nguồn gốc rõ ràng, bảo hành 6-12 tháng, đổi mới 30 ngày, luôn xuất bán đầy đủ VAT.",
+    "position": 3
+   },
+   {
+    "title": "ASUS Vivobook 16X: Tưởng văn phòng, hóa ra leo rank",
+    "link": "https://cellphones.com.vn/sforum/danh-gia-hieu-nang-asus-gaming-vivobook-16x",
+    "snippet": "Laptop ASUS Gaming Vivobook 16X K3605VC-RP431W. 20.990.000đ22.090.000đ. HSSV chỉ còn 19.990 ...",
+    "date": "27 thg 6, 2025",
+    "position": 4
+   },
+   {
+    "title": "Asus Vivobook Gaming | Laptop gaming mỏng nhẹ, giá rẻ",
+    "link": "https://cellphones.com.vn/laptop/asus/vivobook/gaming.html",
+    "snippet": "Laptop ASUS Gaming Vivobook 16X K3605VC-RP431W. Sắp về hàng. Trả góp 0%. : 20.990.000đ. 22.090.000đ. Giảm ...",
+    "position": 5
+   },
+   {
+    "title": "ASUS Vivobook 16X: Chọn CPU ổn định hay GPU mạnh hơn",
+    "link": "https://cellphones.com.vn/sforum/so-sanh-asus-gaming-vivobook-16x",
+    "snippet": "Laptop ASUS Gaming Vivobook 16X K3605VC-RP431W. 20.990.000đ22.090.000đ. HSSV chỉ còn 19.990 ...",
+    "date": "26 thg 8, 2025",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 6
+   },
+   {
+    "title": "Laptop ASUS Gaming VivoBook K3605ZC-RP564W",
+    "link": "https://cellphones.com.vn/laptop-asus-gaming-vivobook-k3605zc-rp564w-cu-tray-xuoc.html",
+    "snippet": "Dạ rất tiếc hiện tại sản phẩm này bên em chưa có thông tin về hàng ạ. Dạ mời mình tham khảo thêm qua Laptop ASUS Gaming Vivobook 16X K3605VC-RP431W. Mình vào ...",
+    "position": 7
+   },
+   {
+    "title": "Laptop Asus Gaming | Máy tính gaming Asus giảm đến 6 ...",
+    "link": "https://cellphones.com.vn/laptop/asus/gaming.html",
+    "snippet": "... Laptop ASUS Gaming Vivobook 16X K3605VC-RP431W. Sắp về hàng. Trả góp 0%. : 20.990.000đ. 22.090.000đ. Giảm 5%. Smember giảm ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

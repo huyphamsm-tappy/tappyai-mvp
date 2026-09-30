@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Ốp lưng iPhone 16 Pro Max site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:19:38.664Z",
+ "body": {
+  "searchParameters": {
+   "q": "Ốp lưng iPhone 16 Pro Max site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Ốp Lưng iPhone 16 pro Max Màu Đỏ Của Ustun Dành Cho ...",
+    "link": "https://www.lazada.vn/products/op-lung-iphone-16-pro-max-mau-do-cua-ustun-danh-cho-nam-va-nu-day-deo-chong-roi-bao-ve-cao-cap-phu-hop-voi-apple-16-pro-max-i3148115164.html?srsltid=AU7gw4V7Vpr6Dhly0k-I-SZ79DxV1vSURTmIy17d1N1jUYIJTtm20llT",
+    "snippet": "Ốp Lưng iPhone 16 pro Max Màu Đỏ Của Ustun Dành Cho Nam Và Nữ,.",
+    "rating": 4.9,
+    "ratingCount": 16,
+    "position": 1
+   },
+   {
+    "title": "Ốp Lưng Mỏng Chống Sốc Từ Tính Cho iPhone 16 Pro Max",
+    "link": "https://h5.lazada.vn/products/op-lung-mong-chong-soc-tu-tinh-cho-iphone-16-pro-max-i3300112524.html",
+    "snippet": "LazMall Ốp Lưng Mỏng Chống Sốc Từ Tính Cho iPhone 16 Pro Max · 100% chính hãng · 30 ngày miễn phí trả hàng · Không áp dụng chính sách bảo hành.",
+    "position": 2
+   },
+   {
+    "title": "QBIG | Ốp Lưng iPhone 16 Pro Max Dual Braid",
+    "link": "https://h5.lazada.vn/products/qbig-op-lung-iphone-16-pro-max-dual-braid-i13337028476-s116553068987.html",
+    "snippet": "LazMall QBIG | Ốp Lưng iPhone 16 Pro Max Dual Braid ; Dịch vụ · 100% chính hãng. service. 30 ngày miễn phí trả hàng. service. Không áp dụng chính sách bảo hành.",
+    "position": 3
+   },
+   {
+    "title": "Ốp Lưng iPhone 16 pro Max Bằng Sợi Carbon Kevlar Siêu ...",
+    "link": "https://www.lazada.vn/products/op-lung-iphone-16-pro-max-bang-soi-carbon-kevlar-sieu-mong-bao-ve-toan-dien-chong-truot-bang-kim-loai-mo-phu-kien-kinh-doanh-i3154752265.html?srsltid=AU7gw4VrucYBOtEx9mfUKTWK3OeeytKSfbwr3Esx7Nryuj6WG1gL_GxK",
+    "snippet": "Ốp Lưng iPhone 16 pro Max Bằng Sợi Carbon Kevlar Siêu Mỏng Bảo Vệ Toàn Diện Chống Trượt Bằng Kim Loại Mờ Phụ Kiện Kinh Doanh. 4(5). Tuỳ chọn sản phẩm.",
+    "rating": 4,
+    "ratingCount": 5,
+    "position": 4
+   },
+   {
+    "title": "Ốp lưng iPhone 16 Pro Max / 15 Pro Max / 14 Pro Max nhám mờ ...",
+    "link": "https://h5.lazada.vn/products/op-lung-iphone-16-pro-max-15-pro-max-14-pro-max-nham-mo-sieu-mong-om-may-khong-bo-canh-i2928981598-s14138250913.html",
+    "snippet": "Ốp lưng iPhone nhám mờ siêu mỏng ôm sát không bo cạnh, đảm bảo tầm nhìn tối ưu và bảo vệ hoàn hảo cho iPhone 14 Pro Max, 15 Pro Max và 16 Pro Max.",
+    "position": 5
+   },
+   {
+    "title": "Ốp Lưng iPhone 16 Pro Max Thiết Kế Gấu Bông",
+    "link": "https://www.lazada.vn/products/op-lung-iphone-16-pro-max-thiet-ke-gau-bong-i13352726582.html?srsltid=AU7gw4U6Djf-LxlHw_krokvJMIRsYJtRLocFP0est0bc5wIhGuA3isAF",
+    "snippet": "Thông số. Loại vỏ ốp,Chất liệu ốp,Chức năng ốp ; Giao hàng. Thành phố Hồ Chí Minh, Phường Bến Thành. Giao tiêu chuẩn , Nhận vào 23-28 thg 9. 32.700 ₫. Vận chuyển ...",
+    "position": 6
+   },
+   {
+    "title": "Ốp lưng Iphone 16 Pro Max / 15 Pro Max dẻo màu ôm máy ...",
+    "link": "https://www.lazada.vn/products/op-lung-iphone-16-pro-max-15-pro-max-deo-mau-om-may-chong-soc-bao-ve-camera-i3092618376.html?srsltid=AU7gw4Vd2Vr9fNNzmXE1skyCur1GszVjra2ImY-z79HbIMulq47mGbzo",
+    "snippet": "Ốp lưng iPhone 16 Pro Max dẻo màu ôm máy, chống sốc hiệu quả. Thiết kế ôm sát, bảo vệ camera và toàn bộ máy, phù hợp cho iPhone 15 Pro Max, giúp bảo vệ tối ...",
+    "position": 7
+   },
+   {
+    "title": "UGREEN ốp lưng iphone Magsafe Crystal Transparent ...",
+    "link": "https://www.lazada.vn/products/ugreen-op-lung-iphone-magsafe-crystal-transparent-series-mobile-phone-case-compatible-with-apple-for-iphone-16-pro-max-iphone-16-plus-iphone-16-i2748032300.html?srsltid=AU7gw4WQID8vRM8eoMbjnhpBuxTMRegEu_8Vo1n3RBLVYPp3oeeK__7p",
+    "snippet": "LazMall UGREEN ốp lưng iphone Magsafe Crystal Transparent Series Mobile Phone Case Compatible with Apple for iPhone 16 Pro Max iPhone 16 Plus iPhone 16 · 254.000 ...",
+    "rating": 5,
+    "ratingCount": 30,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

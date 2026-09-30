@@ -1,0 +1,92 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"THE SPACE by\" TP.HCM site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:37:36.174Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"THE SPACE by\" TP.HCM site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "The Local Home - Giá cả và Ưu đãi 2026, TP. Hồ Chí Minh",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-hotel-detail-110843895/local-home-pham-ngu-lao/",
+    "snippet": "Tôi đã có một đêm tuyệt vời, khách sạn nhỏ này nằm ở một con phố nhỏ nhưng không quá khó tìm. Từ khách sạn bạn rất gần chợ Bến Thành, một con phố sầm uất và đông đúc. Nếu có dịp quay lại TP.HCM tôi sẽ ở lại đây lần nữa",
+    "position": 1
+   },
+   {
+    "title": "Khách sạn New Space gần sân bay - Giá cả và Ưu đãi 2026, TP ...",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-hotel-detail-8991258/new-space-saigon-hotel-airport/",
+    "snippet": "Bạn đang tìm đặt phòng Khách sạn New Space gần sân bay tại TP. Hồ Chí Minh? Hãy chọn phòng cho bạn, xem đánh giá khách sạn, so sánh giá cả và đặt kỳ nghỉ hoàn hảo ngay trên Trip.com!",
+    "position": 2
+   },
+   {
+    "title": "Top 10 khách sạn tại TP. Hồ Chí Minh, Việt Nam | Trip.com",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-hotels-list-301/",
+    "snippet": "Khách sạn huyền thoại ở trung tâm TP.HCM, nổi tiếng với dịch vụ đẳng cấp và vị trí thuận tiện, giúp bạn dễ dàng khám phá nhịp sống sôi động của Sài Gòn.",
+    "position": 3
+   },
+   {
+    "title": "Căn hộ dịch vụ tốt nhất tại TP. Hồ Chí Minh cho kỳ nghỉ dài ...",
+    "link": "https://vn.trip.com/hotels/apartments/city/vn/ho-chi-minh-city.html",
+    "snippet": "Đặt căn hộ dịch vụ tại TP. Hồ Chí Minh trên Trip.com. So sánh 1176 chỗ nghỉ dựa trên bố trí phòng, tiện nghi bếp, đánh giá của khách, giá cả và các ưu đãi.",
+    "position": 4
+   },
+   {
+    "title": "Đặt phòng khách sạn & Khách sạn giá rẻ | Trip.com",
+    "link": "https://vn.trip.com/hotels/",
+    "snippet": "Find the best hotel at the best rate. Over 1,200,000 hotels in more than 200 regions. 24/7 Customer Service.",
+    "position": 5
+   },
+   {
+    "title": "Sheraton Saigon Grand Opera Hotel - Giá cả và Ưu đãi 2026, TP ...",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-hotel-detail-993099/sheraton-saigon-grand-opera-hotel/",
+    "snippet": "Bạn đang tìm đặt phòng Sheraton Saigon Grand Opera Hotel tại TP. Hồ Chí Minh? Hãy chọn phòng cho bạn, xem đánh giá khách sạn, so sánh giá cả và đặt kỳ nghỉ hoàn hảo ngay trên Trip.com!",
+    "position": 6
+   },
+   {
+    "title": "Khách sạn được đề xuất tại Quận 3, TP. Hồ Chí Minh cho kỳ ...",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-hotels-list-301/location696501/",
+    "snippet": "Đặt phòng khách sạn tại Quận 3, TP. Hồ Chí Minh trên Trip.com. So sánh các chỗ ở hiện có, đọc nhận xét từ khách đã lưu trú và chọn đúng khách sạn cho chuyến đi của bạn.",
+    "position": 7
+   }
+  ],
+  "relatedSearches": [
+   {
+    "query": "the space by tp.hcm site:vn.trip.com/hotels 2"
+   },
+   {
+    "query": "the space by tp.hcm site:vn.trip.com/hotels code"
+   },
+   {
+    "query": "the space by tp.hcm site:vn.trip.com/hotels 1"
+   },
+   {
+    "query": "the space by tp.hcm site:vn.trip.com/hotels city"
+   },
+   {
+    "query": "the space by tp.hcm site:vn.trip.com/hotels 3"
+   },
+   {
+    "query": "the space by tp.hcm site:vn.trip.com/hotels x"
+   },
+   {
+    "query": "the space by tp.hcm site:vn.trip.com/hotels 4"
+   },
+   {
+    "query": "the space by tp.hcm site:vn.trip.com/hotels o"
+   }
+  ],
+  "credits": 1
+ }
+}

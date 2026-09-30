@@ -1,0 +1,80 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Nơi mua uy tín quà tặng (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:55:17.811Z",
+ "body": {
+  "searchParameters": {
+   "q": "Nơi mua uy tín quà tặng (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Top 10 địa điểm bán quà Tết Bình Dương đa dạng mẫu mã",
+    "link": "https://cellphones.com.vn/sforum/qua-tang-tet-binh-duong",
+    "snippet": "Top 10 địa điểm bán quà Tết Bình Dương uy tín: Food City, Co.op Food, Bách Hóa Xanh... Tiêu chí lựa chọn địa điểm bán quà Tết Bình Dương.",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 1
+   },
+   {
+    "title": "10 địa chỉ bán quà Tết Hải Phòng được người dân tin chọn",
+    "link": "https://cellphones.com.vn/sforum/qua-tang-tet-hai-phong",
+    "snippet": "1. Top 10 cửa hàng bán giỏ quà Tết Hải Phòng chất lượng · 1.1. One Fruit · 1.2. Quà Tết & Rượu Vang Hải Đăng Plaza · 1.3. Siêu thị Co.opmart Hải Phòng · 1.4. Rượu & ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 2
+   },
+   {
+    "title": "18+ quà Tết cho khách hàng 2026 ý nghĩa & tạo thiện cảm",
+    "link": "https://shopee.vn/blog/qua-tet-cho-khach-hang/",
+    "snippet": "Một hộp quà Saffron được đóng gói sang trọng để biếu Tết có mức giá khoảng 500.000 rất phù hợp để làm quà tặng sức khỏe cho khách hàng. Để mua ...",
+    "date": "5 thg 2, 2026",
+    "position": 3
+   },
+   {
+    "title": "Top 15+ món quà tặng nhân viên ý nghĩa nhất 2026",
+    "link": "https://cellphones.com.vn/sforum/qua-tang-nhan-vien",
+    "snippet": "Địa chỉ mua quà tặng nhân viên uy tín. Khi tìm nơi mua quà tặng nhân viên uy tín, CellphoneS là một trong những cái tên được doanh nghiệp tin tưởng hàng đầu.",
+    "position": 4
+   },
+   {
+    "title": "Top 12 địa chỉ mua quà Tết Đà Nẵng giá tốt, uy tín",
+    "link": "https://cellphones.com.vn/sforum/qua-tang-tet-da-nang",
+    "snippet": "12 địa điểm mua quà Tết Đà Nẵng sang trọng, ý nghĩa · CellphoneS · Tuti Fruit Shop · ViGift · Lotte Mart · Mơ Farm · Thỏ Store · MM Mega Market Đà Nẵng · GO! Đà Nẵng.",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 5
+   },
+   {
+    "title": "Top 10+ món quà tặng doanh nghiệp cao cấp, ý nghĩa",
+    "link": "https://cellphones.com.vn/sforum/qua-tang-doanh-nghiep",
+    "snippet": "10+ món quà tặng doanh nghiệp ý nghĩa nhất · Điện thoại thông minh · Laptop · Phụ kiện điện tử · Tivi · Bút ký cao cấp · Bình giữ nhiệt, bộ ly sứ/thủy ...",
+    "date": "3 thg 6, 2025",
+    "position": 6
+   },
+   {
+    "title": "Đồ biếu tết - Giá Tốt, Sale Tháng 09, Freeship 0Đ",
+    "link": "https://shopee.vn/list/%C4%91%E1%BB%93%20bi%E1%BA%BFu%20t%E1%BA%BFt",
+    "snippet": "Nếu bạn đang tìm mua sản phẩm chính hãng từ cửa hàng uy tín, Shopee Việt Nam chính là sự lựa chọn lý tưởng dành cho bạn. Shopee cung cấp đầy đủ các sản phẩm ...",
+    "position": 7
+   },
+   {
+    "title": "Top 15+ quà tặng bạn bè tinh tế và ý nghĩa nhất 2026",
+    "link": "https://cellphones.com.vn/sforum/qua-tang-ban-be",
+    "snippet": "15+ món quà tặng bạn bè ý nghĩa nhất · Điện thoại · Laptop · Tai nghe · Loa bluetooth · Máy cạo râu · Vòng đeo thông minh · Máy chụp hình · USB, thẻ nhớ.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

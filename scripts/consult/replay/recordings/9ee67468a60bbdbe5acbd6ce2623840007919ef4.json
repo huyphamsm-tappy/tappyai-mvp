@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Nhà Hàng Hương Bắc (site:food.grab.com/vn OR site:shopeefood.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:45:41.657Z",
+ "body": {
+  "searchParameters": {
+   "q": "Nhà Hàng Hương Bắc (site:food.grab.com/vn OR site:shopeefood.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Nhà Hàng Hương Vị Bắc - Lam Sơn",
+    "link": "https://shopeefood.vn/ho-chi-minh/nha-hang-huong-vi-bac-lam-son",
+    "snippet": "Xem menu & đặt món trực tuyến từ Nhà Hàng Hương Vị Bắc - Lam Sơn rất dễ dàng. Giao hàng tận nơi trong vòng ít phút.",
+    "position": 1
+   },
+   {
+    "title": "Nhà Hàng Món Bắc",
+    "link": "https://shopeefood.vn/ho-chi-minh/nha-hang-mon-bac",
+    "snippet": "SE 11-1, Cảnh Viên 1, P. Tân Phú, Phú Mỹ Hưng, Quận 7, TP. HCM. Mở cửa. Quán được gắn nhãn Yêu thích là Quán Yêu Thích, gồm những quán đạt chất lượng dịch ...",
+    "position": 2
+   },
+   {
+    "title": "Bếp Thiên Hương - Gà heo ủ muối hoa tiêu Tây bắc",
+    "link": "https://food.grab.com/vn/vi/restaurant/b%E1%BA%BFp-thi%C3%AAn-h%C6%B0%C6%A1ng-g%C3%A0-heo-%E1%BB%A7-mu%E1%BB%91i-hoa-ti%C3%AAu-t%C3%A2y-b%E1%BA%AFc-delivery/5-C6AHVRKUVRE3RN",
+    "snippet": "Bếp Thiên Hương - Gà heo ủ muối hoa tiêu Tây bắc : Mì Xào bò. Mì Xào bò(To). 47.000 · Bếp Thiên Hương - Gà heo ủ muối hoa tiêu Tây bắc : Mì xào bò. Mì xào bò(nhỏ).",
+    "rating": 1,
+    "ratingCount": 8,
+    "position": 3
+   },
+   {
+    "title": "Nhà Hàng Ẩm Thực Trung Hoa - Bún Chả Phố Cổ & Cơm ...",
+    "link": "https://shopeefood.vn/bac-ninh/nha-hang-am-thuc-trung-hoa-bun-cha-pho-co-com-van-phong-nguyen-dang-dao",
+    "snippet": "Nhà Hàng Ẩm Thực Trung Hoa - Bún Chả Phố Cổ & Cơm Văn Phòng - Nguyễn Đăng Đạo. 94 Nguyễn Đăng Đạo, P. Đại Phúc, Tp. Bắc Ninh, Bắc Ninh. Đã đóng. Quán được gắn ...",
+    "position": 4
+   },
+   {
+    "title": "Nhà Hàng Cơm Bắc Hương Thu",
+    "link": "https://shopeefood.vn/da-nang/nha-hang-com-bac-huong-thu",
+    "snippet": "228 Tô Hiến Thành, P. Phước Mỹ, Quận Sơn Trà, Đà Nẵng. Đã đóng. Quán được gắn nhãn Yêu thích là Quán Yêu Thích, gồm những quán đạt chất lượng dịch vụ vượt ...",
+    "position": 5
+   },
+   {
+    "title": "PHỞ CỒ HIẾN - TINH HOA PHỞ BẮC ⭐ 4.5",
+    "link": "https://food.grab.com/vn/vi/restaurant/ph%E1%BB%9F-c%E1%BB%93-hi%E1%BB%81n-bi%E1%BB%83n-h%E1%BB%93-delivery/5-C7T1AGCEGEDHJ6",
+    "snippet": "Combo no bụng chuẩn vị Bắc gồm: Phở tái bò nóng hổi + Quẩy giòn thơm béo + Trứng chần lòng đào ăn cực cuốn. Nước dùng hầm xương đậm vị, ăn là ghiền.",
+    "rating": 4.5,
+    "ratingCount": 21,
+    "position": 6
+   },
+   {
+    "title": "Đinh Trượng Quán - Nước Giải Khát, Đồ Ăn Vặt & Ốc Luộc",
+    "link": "https://food.grab.com/vn/vi/restaurant/%C4%91inh-tr%C6%B0%E1%BB%A3ng-qu%C3%A1n-n%C6%B0%E1%BB%9Bc-gi%E1%BA%A3i-kh%C3%A1t-%C4%91%E1%BB%93-%C4%83n-v%E1%BA%B7t-%E1%BB%91c-lu%E1%BB%99c-delivery/5-C4KFVJAFGY4VLX",
+    "snippet": "Cà phê cốt dừa. 35.000. Cà phê muối. Cà phê muối, hương vị đậm đà, cân bằng ngọt mặn. 35.000. Cà phê thuốc Bắc. Hương vị độc đáo của thuốc Bắc. 45.000. Nước Ép.",
+    "position": 7
+   },
+   {
+    "title": "Chả Giò Truyền Thống Bắc Hương - Ngô Gia Tự ⭐ 4.1",
+    "link": "https://food.grab.com/vn/vi/restaurant/ch%E1%BA%A3-gi%C3%B2-truy%E1%BB%81n-th%E1%BB%91ng-b%E1%BA%AFc-h%C6%B0%C6%A1ng-ng%C3%B4-gia-t%E1%BB%B1-delivery/5-CY2AVEJXG3K1VX",
+    "snippet": "Chả Giò Truyền Thống Bắc Hương - Ngô Gia Tự. Món Miền Bắc Việt Nam. 4.1. Giờ mở cửa. Hôm nay 06:00-20:30. Dành cho bạn. Giò Chả. Các Loại Bánh.",
+    "rating": 4.1,
+    "ratingCount": 114,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

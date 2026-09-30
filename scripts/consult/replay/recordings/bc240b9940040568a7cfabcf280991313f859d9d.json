@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Time House\" OR \"Rong Chơi Coffee Van Garden\" OR \"Xào Xạc cafe & plants\" quan 3 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:39:38.491Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Time House\" OR \"Rong Chơi Coffee Van Garden\" OR \"Xào Xạc cafe & plants\" quan 3 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Xào xạc cafe & plants 📍 453/15 Nguyễn Đình Chiểu ...",
+    "link": "https://www.tiktok.com/@cafehoppersg/photo/7482220926134750471?lang=ro-RO",
+    "snippet": "Xào xạc cafe & plants 453/15 Nguyễn Đình Chiểu, phường 5, quận 3, TpHCM 7:30 am - 10 pm #xaoxac #xaoxaccafe #xaoxaccafeplants #cafe # ...",
+    "position": 1
+   },
+   {
+    "title": "Xào xạc cafe & plants 📍 453/15 Nguyễn Đình Chiểu ...",
+    "link": "https://www.tiktok.com/@cafehoppersg/photo/7482220926134750471?image_index=7",
+    "snippet": "Xào xạc cafe & plants 453/15 Nguyễn Đình Chiểu, phường 5, quận 3, TpHCM 7:30 am - 10 pm #xaoxac #xaoxaccafe #xaoxaccafeplants #cafe # ...",
+    "position": 2
+   },
+   {
+    "title": "Có tin được không mấy mom :)) #timehouse #henhosaigon ...",
+    "link": "https://www.tiktok.com/@timehouse.107/video/7589104648099794184",
+    "snippet": "Time House - Homestay quận 3 -( Thời Đại Vape & Coffee) · author · 501 · 11 ... Time House. 39.8K · recommend-cover. Time House. 24.5K · recommend ...",
+    "position": 3
+   },
+   {
+    "title": "Xào xạc cafe & plants 📍 453/15 Nguyễn Đình Chiểu, phường 5 ...",
+    "link": "https://www.tiktok.com/@cafehoppersg/photo/7482220926134750471?image_index=3&lang=hu-HU",
+    "snippet": "Xào xạc cafe & plants 453/15 Nguyễn Đình Chiểu, phường 5, quận 3, TpHCM 7:30 am - 10 pm #xaoxac #xaoxaccafe #xaoxaccafeplants #cafe #saigon ...",
+    "position": 4
+   },
+   {
+    "title": "Sao mà giận nổi :> #xuhuong #homestay",
+    "link": "https://www.tiktok.com/@timehouse.107/video/7652566009164860692",
+    "snippet": "Time House - Homestay quận 3 -( Thời Đại Vape & Coffee) · author. 572 · 4 ... 3 · recommend-cover. TimeHouse ❣️. 4 · recommend-cover. TimeHouse ...",
+    "position": 5
+   },
+   {
+    "title": "Khám Phá Nhà Văn Hoá Thanh Niên Quận 3",
+    "link": "https://www.tiktok.com/@naoranhcaphe/video/7617434524091206929",
+    "snippet": "... quán cà phê đẹp ở Sài Gòn, không gian sáng tạo quận 3. Đây là bản tóm tắt nội dung do AI tạo ... Rong Chơi Coffee Van Garden · author · 3841 · 17.",
+    "position": 6
+   },
+   {
+    "title": "Xào xạc cafe & plants 📍 453/15 Nguyễn Đình Chiểu, phường 5 ...",
+    "link": "https://www.tiktok.com/@cafehoppersg/photo/7482220926134750471?image_index=1&lang=ja-JP",
+    "snippet": "Xào xạc cafe & plants 453/15 Nguyễn Đình Chiểu, phường 5, quận 3, TpHCM 7:30 am - 10 pm #xaoxac #xaoxaccafe #xaoxaccafeplants #cafe #saigon ...",
+    "position": 7
+   },
+   {
+    "title": "Xoài Xanh Muối Ớt: New Menu at Timehouse Homestay",
+    "link": "https://www.tiktok.com/@timehouse.107/video/7644766658464189716",
+    "snippet": "A unique culinary experience. @TimeHouse ❣️ · âm thanh gốc - TimeHouse ❣️ · Time House - Homestay quận 3 -( Thời Đại Vape & Coffee) · author.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

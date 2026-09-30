@@ -1,0 +1,60 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Dream Palace Ben Thanh Grand Hotel\" TP.HCM site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:37:33.707Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Dream Palace Ben Thanh Grand Hotel\" TP.HCM site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Các khách sạn ở gần Sài Gòn Square, TP. Hồ Chí Minh",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-saigon-square-shopping-mall/hotels-c301m19948910/",
+    "snippet": "Hồ Chí Minh, hãy thử chọn Dream Palace Ben Thanh Grand Hotel (từ 1.868.108₫),Fusion Original Saigon Centre (từ 3.414.530₫)vàKhách sạn Liberty Central Saigon ...",
+    "position": 1
+   },
+   {
+    "title": "Các khách sạn ở gần French Style Architecture Street, TP. ...",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-french-style-architecture-street/hotels-c301m52113455/",
+    "snippet": "Tọa lạc tại Quận 1, Thành phố Hồ Chí Minh, Dream Palace Ben Thanh Grand Hotel này cách Sài Gòn Square vài bước và cách Chợ Bến Thành 3 phút đi bộ. Khách sạn spa ...",
+    "position": 2
+   },
+   {
+    "title": "Tìm Khách Sạn 4 Sao Tại TP. Hồ Chí Minh",
+    "link": "https://vn.trip.com/hotels/star4/city/vn/ho-chi-minh-city.html",
+    "snippet": "Dream Palace Ben Thanh Grand Hotel - 4 Sao. 9,3. Tuyệt Vời. 189 đánh giá. 99+. Dream Palace Ben Thanh Grand Hotel. Khách Sạn Gần Trung tâm Thành phố Hồ Chí Minh ...",
+    "position": 3
+   },
+   {
+    "title": "Khách sạn Boutique tại TP. Hồ Chí Minh",
+    "link": "https://vn.trip.com/hotels/boutique/city/vn/ho-chi-minh-city.html",
+    "snippet": "Dream Palace Ben Thanh Grand Hotel - Boutique. 9,3. Tuyệt Vời. 179 đánh giá. 99+. Dream Palace Ben Thanh Grand Hotel. Khách Sạn Gần Trung tâm Thành phố Hồ Chí ...",
+    "position": 4
+   },
+   {
+    "title": "Khách sạn công tác tại TP. Hồ Chí Minh",
+    "link": "https://vn.trip.com/hotels/business-travel/city/vn/ho-chi-minh-city.html",
+    "snippet": "Dream Palace Ben Thanh Grand Hotel - công tác. 9,3. Tuyệt Vời. 189 đánh giá. 99+. Dream Palace Ben Thanh Grand Hotel. Khách Sạn Gần Trung tâm Thành phố Hồ Chí ...",
+    "position": 5
+   },
+   {
+    "title": "Top 10 khách sạn tại TP. Hồ Chí Minh, Việt Nam",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-hotels-list-301/",
+    "snippet": "\"Nơi này cực kỳ bẩn thỉu.\". 2026-08-26. T. HK Tài khoản khách. Nhóm bạn. Dream Palace Ben Thanh Grand Hotel. \"Vị trí tốt, phòng sạch sẽ, ...",
+    "position": 6
+   }
+  ],
+  "credits": 1
+ }
+}

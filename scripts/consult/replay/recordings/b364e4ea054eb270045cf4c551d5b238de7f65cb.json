@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Set quà tặng học sinh tặng sinh nhật, 1/6 site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:59:32.010Z",
+ "body": {
+  "searchParameters": {
+   "q": "Set quà tặng học sinh tặng sinh nhật, 1/6 site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Set quà văn phòng phẩm Hoạt Hình, bé gái bé trai ...",
+    "link": "https://h5.lazada.vn/products/set-qua-van-phong-pham-hoat-hinh-be-gai-be-trai-qua-sinh-nhatqua-tang-thieu-nhi-16-cho-be-i3081227707.html",
+    "snippet": "- Quà tặng khích lệ học tập: Bộ văn phòng phẩm Cinnamoroll và Melody cũng là phần thưởng lý tưởng cho hành vi tốt, thành tích xuất sắc hoặc hoàn thành bài tập.",
+    "position": 1
+   },
+   {
+    "title": "Hộp quà tặng quà Capybara sinh nhật cho nữ bé gái Set ...",
+    "link": "https://h5.lazada.vn/products/hop-qua-tang-qua-capybara-sinh-nhat-cho-nu-be-gai-set-qua-van-phong-pham-nam-hoc-sinh-qua-tet-thieu-nhi-16-i3081113955-s14796496782.html",
+    "snippet": "- Quà tặng khích lệ học tập: Bộ văn phòng phẩm Cinnamoroll và Melody cũng là phần thưởng lý tưởng cho hành vi tốt, thành tích xuất sắc hoặc hoàn thành bài tập.",
+    "rating": 5,
+    "ratingCount": 15,
+    "position": 2
+   },
+   {
+    "title": "Set Quà Tặng Dụng Cụ Học Tập Hoạt Hình – Văn Phòng ...",
+    "link": "https://h5.lazada.vn/products/set-qua-tang-dung-cu-hoc-tap-hoat-hinh-van-phong-pham-de-thuong-tang-qua-sinh-nhat-16-qua-tot-nghiep-cho-be-i13386763895.html",
+    "snippet": "Set quà tặng đồ dùng học tập hoạt hình là lựa chọn hoàn hảo cho bé trong dịp tựu trường, tốt nghiệp, sinh nhật hoặc khen thưởng. Thiết kế dễ thương theo chủ đề ...",
+    "position": 3
+   },
+   {
+    "title": "Set quà văn phòng phẩm Kuromi quà sinh nhật cho bé gái ...",
+    "link": "https://h5.lazada.vn/products/set-qua-van-phong-pham-hoat-hinh-qua-sinh-nhat-cho-be-gai-qua-tet-thieu-nhi-16-hop-qua-tang-i3081188686.html",
+    "snippet": "- Quà tặng khích lệ học tập: Bộ văn phòng phẩm Cinnamoroll và Melody cũng là phần thưởng lý tưởng cho hành vi tốt, thành tích xuất sắc hoặc hoàn thành bài tập.",
+    "rating": 5,
+    "ratingCount": 32,
+    "position": 4
+   },
+   {
+    "title": "[Tặng Thiệp] Set Quà Đồ Dùng Học Tập My Melody ...",
+    "link": "https://www.lazada.vn/products/tang-thiep-set-qua-do-dung-hoc-tap-my-melody-qua-tang-hoc-sinh-ban-be-nguoi-yeu-dip-le-ky-niem-sinh-nhat-le-16-i2694779589.html?srsltid=AU7gw4UyhvLQQYElQoeBf_CTq2Hfjg46Jr1XGTyvafZLK9VUiBvFhbO5",
+    "snippet": "Set Quà Đồ Dùng Học Tập Melody Đáng Yêu Dành Tặng Bạn Bè, Người Thân. Chi tiết sản phẩm: Set nhỏ: -Hộp 4 bút viết mực gel. -Tập giấy note kèm bút bi.",
+    "position": 5
+   },
+   {
+    "title": "Set Quà Tặng Đồ Dùng Học Tập Capybara",
+    "link": "https://www.lazada.vn/products/set-qua-tang-do-dung-hoc-tap-capybara-van-phong-pham-de-thuong-tang-qua-sinh-nhat-16-qua-tot-nghiep-cho-be-i13386791542.html?srsltid=AU7gw4Wytflpfi4zKmMdzuaMDaYUfDhFZCB3kW2ObNNIwyk0uF7ik50I",
+    "snippet": "Set quà tặng đồ dùng học tập Capybara là lựa chọn hoàn hảo cho bé trong dịp tựu trường, tốt nghiệp, sinh nhật hoặc khen thưởng. Thiết kế dễ thương theo chủ đề ...",
+    "position": 6
+   },
+   {
+    "title": "Hộp Quà Phụ Kiện Tóc Cho Bé Gái – Set Dễ Thương Tặng ...",
+    "link": "https://www.lazada.vn/products/hop-qua-phu-kien-toc-cho-be-gai-set-de-thuong-tang-qua-sinh-nhat-qua-quoc-te-thieu-nhi-16-i13388220296.html?srsltid=AU7gw4XJ0PbG4k7GJlhIziAc9gcZ9ztbnFtm_jiaMslcUPNIsTsvOOVo",
+    "snippet": "Set quà tặng phụ kiện tóc My Melody là lựa chọn hoàn hảo cho bé gái yêu thích phong cách dễ thương. Với thiết kế hộp xô độc đáo cùng nhiều phụ kiện xinh xắn bên ...",
+    "position": 7
+   },
+   {
+    "title": "Set Quà Học Tập Gấu Panda Tặng Học Sinh Quốc Tế ...",
+    "link": "https://www.lazada.vn/products/set-qua-hoc-tap-gau-panda-tang-hoc-sinh-quoc-te-thieu-nhi-16-trung-thu-phan-thuong-cuoi-nam-cho-be-i3078174920.html?srsltid=AU7gw4UcAbiAaBaL-GdWq6v57J7xmAqd1DR80Grm8EMr7r-luNCjRM1V",
+    "snippet": "Set quà tặng sinh nhật giá rẻ học sinh trẻ em văn phòng phẩm dễ thương tặng mồng 1 thág 6, trung thu, noel nhiều set quà cho phụ huynh lựa chọn. Set Quà Học ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

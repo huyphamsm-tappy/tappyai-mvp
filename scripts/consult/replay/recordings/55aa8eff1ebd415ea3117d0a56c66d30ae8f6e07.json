@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"The Nail\" OR \"Iris Nailbar SGN\" OR \"Hani's Nail\" quan 10 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:37:30.070Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"The Nail\" OR \"Iris Nailbar SGN\" OR \"Hani's Nail\" quan 10 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Nails xinh tại Iris Nailbar SGN 💅📸",
+    "link": "https://www.tiktok.com/@irisnailbarsgn/photo/7681231691645668628",
+    "snippet": "Khởi đầu tháng mới với bộ nail xinh tại Iris Nailbar SGN. Dịch vụ làm đẹp, nối mi và đào tạo học viên. Đặt lịch ngay! Keywords: Iris Nailbar SGN ...",
+    "position": 1
+   },
+   {
+    "title": "Too tired for a voice over… Nails by@THE NAIL ATELIER ...",
+    "link": "https://www.tiktok.com/@vanessaagyei_/video/7690977780502334741",
+    "snippet": "Too tired for a voice over… Nails by@THE NAIL ATELIER _UCC NAILTECH she's running a back to school promo #vanessaagyei_ #ghanatiktok #ucc.",
+    "position": 2
+   },
+   {
+    "title": "Lessons at the nail salon 💅 #life #lifelessons # ...",
+    "link": "https://www.tiktok.com/@andiearonow/video/7663111169044974862",
+    "snippet": "TikTok video from Andie Aronow (@andiearonow): “Lessons at the nail salon #life #lifelessons #lifehack #work #worklife”. Nail Tech Life. what if you just ...",
+    "position": 3
+   },
+   {
+    "title": "i'm obsessed with this colorrr @the nail lab NYC #fy #nails",
+    "link": "https://www.tiktok.com/@dianerysl/video/7686614122833661198",
+    "snippet": "782 Likes, TikTok video from dianeryscastillo (@dianerysl): “i'm obsessed with this colorrr @the nail lab NYC #fy #nails”. nails. original ...",
+    "position": 4
+   },
+   {
+    "title": "Took him to the nail lounge as a KING should get his ...",
+    "link": "https://www.tiktok.com/@dvnicag/video/7684728984520625421",
+    "snippet": "Took him to the nail lounge as a KING should get his pedicure on his birthday @Era Nail Lounge | Turkey Lake @мαѕση мυσηg ✝️ ...",
+    "position": 5
+   },
+   {
+    "title": "Bring Back Airbrushed Square Nails at the Nail Salon",
+    "link": "https://www.tiktok.com/@thewnailbar/video/7335554225013034286",
+    "snippet": "Dreaming of Airbrushed Nails! A trip to the nail salon sparked a wave of nostalgia for classic airbrushed nails and squared tips!",
+    "position": 6
+   },
+   {
+    "title": "Mấy ngày này các chị đẹo vô là yêu cầu sơn đỏ, tone màu ...",
+    "link": "https://www.tiktok.com/@irisnailbarsgn/video/7585585312781405461",
+    "snippet": "Video TikTok từ ✨ Iris Nailbar SGN ✨ (@irisnailbarsgn): \"Mấy ngày này các chị đẹo vô là yêu cầu sơn đỏ, tone màu này nhìn cũng ko bị lớn ...",
+    "position": 7
+   },
+   {
+    "title": "𝐓𝐡𝐞 𝐍𝐚𝐢𝐥 𝐁𝐚𝐛𝐞 ☆ (@thenailbabeee)'s video ...",
+    "link": "https://www.tiktok.com/@thenailbabeee/video/7661290475415964941",
+    "snippet": "87 Likes, TikTok video from ☆ The Nail Babe ☆ (@thenailbabeee): “”. the nail girl. original sound - ☆ The Nail Babe ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

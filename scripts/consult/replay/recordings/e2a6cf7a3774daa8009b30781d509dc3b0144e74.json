@@ -1,0 +1,48 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"La Phong Sushi House\" OR \"Chiyoda Sushi Bến Thành\" OR \"MANMARU - Japanese Restaurant - 71 Mạc Đĩnh Chi, Hồ Chí Minh\" quan 1 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:19:20.752Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"La Phong Sushi House\" OR \"Chiyoda Sushi Bến Thành\" OR \"MANMARU - Japanese Restaurant - 71 Mạc Đĩnh Chi, Hồ Chí Minh\" quan 1 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Review Chiyoda Sushi Bến Thành: Menu Sashimi & ...",
+    "link": "https://www.tiktok.com/@anchoidieunghe/video/7280497441852476674",
+    "snippet": "18.5K Lượt thích,113 Bình luận.Video TikTok từ Ăn Chơi Điệu Nghệ ✨ (@anchoidieunghe): \"Bài review Chiyoda Sushi Bến Thành với trải nghiệm ...",
+    "position": 1
+   },
+   {
+    "title": "Từ Chợ Hải Sản Toyosu Đến Bàn Ăn Ngon Miệng",
+    "link": "https://www.tiktok.com/@kilalareview/video/7563583790874889480",
+    "snippet": "Chiyoda Sushi Bến Thành · author · 1529 · 5 ... sushi.trung.quan. Sushi Trung Quán - Phú Mỹ Hưng. Trung Quán ... Lưu liền quán izakaya chuẩn Nhật giữa lòng quận ...",
+    "position": 2
+   },
+   {
+    "title": "Ngồi Lại Sau 1-2 Năm: Khoảnh Khắc Gặp Lại Bạn Bè",
+    "link": "https://www.tiktok.com/@xuan_van_88/video/7676716947404344594",
+    "snippet": "1-2 năm mới có dịp ngồi lại với nhau — chia sẻ khoảnh khắc. @Xuân Văn · âm thanh gốc - Cô Hảo ( giáo viên mầm non ) · Chiyoda Sushi Bến Thành.",
+    "position": 3
+   },
+   {
+    "title": "iTI ddQ - original sound",
+    "link": "https://www.tiktok.com/music/original-sound-7673737917419784990",
+    "snippet": "MANMARU Japanese Restaurant 71 Mạc Đĩnh Chi Hồ Chí Minh. |. নিজ এলাকা স্বপ্ন — ছোটคลিপ্টর জীবন মুহূর্ত. |. DUWAAN Sir Ian ...",
+    "position": 4
+   }
+  ],
+  "credits": 1
+ }
+}

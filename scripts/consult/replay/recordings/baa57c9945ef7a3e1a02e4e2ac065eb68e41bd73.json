@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Michi Sushi\" OR \"Haru Sushi Quận 1\" OR \"FEN Izakaya\" quan 1 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:55:04.677Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Michi Sushi\" OR \"Haru Sushi Quận 1\" OR \"FEN Izakaya\" quan 1 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Michi Sushi (@michi_sushi_42nguyenhue)",
+    "link": "https://www.tiktok.com/@michi_sushi_42nguyenhue",
+    "snippet": "Michi Sushi Chung cư 42 Nguyễn huệ-lầu 7, Bến Nghé, Q.1 Đặt món tại đây · Đã follow · Tài khoản được đề xuất · Tận hưởng trải nghiệm đầy đủ trong ứng dụng.",
+    "position": 1
+   },
+   {
+    "title": "Haru Sushi Quận 1 (@harusushinguyenthaihoc)",
+    "link": "https://www.tiktok.com/@harusushinguyenthaihoc",
+    "snippet": "Haru Sushi Quận 1 (@harusushinguyenthaihoc) trên TikTok |6090 Lượt thích.91 Follower.HARU SUSHI - 93 NGUYỄN THÁI HỌC, PHƯỜNG CẦU ÔNG LÃNH, QUẬN 1.",
+    "position": 2
+   },
+   {
+    "title": "Tình cờ biết đến Fen Izakaya ở 240 Lý Tự Trọng Q1. Quán ...",
+    "link": "https://www.tiktok.com/@ghithichnhau/video/7674929044164480276",
+    "snippet": "Tình cờ biết đến Fen Izakaya ở 240 Lý Tự Trọng Q1. Quán nhậu kiểu Nhật... không ồn ào như mô hình trẻ trung... nhưng cũng không củ kỹ với ...",
+    "position": 3
+   },
+   {
+    "title": "Khám Phá Sushi Ngon Tại Haru Sushi Quận 1",
+    "link": "https://www.tiktok.com/@winter290796/photo/7658315768630709524",
+    "snippet": "Đánh giá: 4.5/5⭐️ Đc: 93 Nguyễn Thái Học, Cầu Ông Lãnh, Hồ Chí Minh #shushi #shushiharu #hcm #quan1. Khám Phá Sushi Ngon Tại Haru Sushi Quận 1.",
+    "position": 4
+   },
+   {
+    "title": "Michi Sushi Nguyễn Huệ",
+    "link": "https://www.tiktok.com/discover/michi-sushi-nguy%E1%BB%85n-hu%E1%BB%87",
+    "snippet": "MICHI SUSHI – ƯU ĐÃI CỰC HẤP DẪN Team mê sushi đâu rồi ơi! Ghé Michi Sushi thưởng thức sashimi tươi ngon và đừng bỏ lỡ những ưu đãi ...",
+    "date": "14 thg 9, 2026",
+    "position": 5
+   },
+   {
+    "title": "Trải Nghiệm Izakaya Thú Vị Tại Fen",
+    "link": "https://www.tiktok.com/@vuvicungyuhi/video/7529149203030052103",
+    "snippet": "Keywords: trải nghiệm izakaya thú vị, ẩm thực Nhật tại Fen Izakaya, quán ăn chill ở quận 1, món ăn ngon tại izakaya, địa điểm ăn uống cho ...",
+    "position": 6
+   },
+   {
+    "title": "Ca sĩ Thanh Duy #thanhduy #oxfam #bridgefest ...",
+    "link": "https://www.tiktok.com/@michi_sushi_42nguyenhue/video/7310602035236195586",
+    "snippet": "... MICHI SUSHI - MÓN NHẬT - GIÁ VIỆT ADDRESS: 42/73, đường Nguyễn Huệ, phường Bến Nghé, Quận 1 (lầu 7) OPEN: 10:00 AM - 22:00 PM (from Monday to Sunday) ...",
+    "position": 7
+   },
+   {
+    "title": "Sushi Haru Quận 1",
+    "link": "https://www.tiktok.com/discover/sushi-haru-qu%E1%BA%ADn-1",
+    "snippet": "Khám phá tiệm sushi giá ổn áp tại Sài Gòn, thưởng thức món ăn hấp dẫn. Đừng bỏ lỡ! 31 Likes, 1 Comments. TikTok video from Haru Sushi Quận 1 (@ ...",
+    "date": "21 thg 9, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

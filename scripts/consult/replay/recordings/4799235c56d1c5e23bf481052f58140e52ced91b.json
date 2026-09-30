@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Bếp Chú Đào Lê Văn Lương (site:food.grab.com/vn OR site:shopeefood.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:19:15.929Z",
+ "body": {
+  "searchParameters": {
+   "q": "Bếp Chú Đào Lê Văn Lương (site:food.grab.com/vn OR site:shopeefood.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Bún Mắm Nêm, Nem Nướng & Trà Sữa - Chú Đào Lochi",
+    "link": "https://shopeefood.vn/ho-chi-minh/bun-mam-nem-nem-nuong-tra-sua-chu-dao-lochi-le-van-luong",
+    "snippet": "Bún Mắm Nêm, Nem Nướng & Trà Sữa - Chú Đào Lochi - Lê Văn Lương. 524 Lê Văn Lương, P. Tân Phong, Quận 7, TP. HCM. Đã đóng. Quán được gắn nhãn Yêu thích là ...",
+    "position": 1
+   },
+   {
+    "title": "Thu hút Khách hàng với combo món",
+    "link": "https://merchant.shopeefood.vn/edu/article/thu-hut-khach-hang-voi-combo-mon",
+    "snippet": "1. Tạo combo món là gì? Lợi ích từ việc tạo combo món? · 2. Gợi ý cách tạo combo với từng nhóm món: Theo khảo sát từ ShopeeFood, nhu cầu ăn uống của khách hàng ...",
+    "position": 2
+   },
+   {
+    "title": "Vô vàn ưu đãi, hàng vạn món ngon | GrabFood VN",
+    "link": "https://food.grab.com/vn/vi/",
+    "snippet": "GrabFood - Dịch vụ giao đồ ăn trực tuyến giúp bạn thỏa mãn cơn thèm ăn với hàng vạn quán ăn.",
+    "position": 3
+   },
+   {
+    "title": "Giao món trực tuyến - Vô vàn ưu đãi, hàng vạn món ngon",
+    "link": "https://food.grab.com/vn/vi//",
+    "snippet": "Dễ dàng nhất - Giờ đây, bạn chỉ cần thực hiện vài cú nhấp chuột hoặc chạm nhẹ là đã có thể đặt đồ ăn. Hãy đặt đồ ăn trực tuyến hoặc tải xuống siêu ứng dụng Grab ...",
+    "position": 4
+   },
+   {
+    "title": "ShopeeFood | Nền tảng giao đồ ăn trực tuyến hàng đầu Việt ...",
+    "link": "https://shopeefood.vn/",
+    "snippet": "Thanh toán nhanh hơn, tiện lợi, an toàn và thường xuyên có nhiều khuyến mãi. Dành cho Merchant. Liên hệ ShopeeFood để cung cấp POS, vân chuyển, ...",
+    "position": 5
+   },
+   {
+    "title": "Boom Cà Phê & Trà Sữa & Sữa Tươi Trân Châu Đường Đen",
+    "link": "https://food.grab.com/vn/vi/restaurant/restaurant/5-CY4JG26FJBLFC2",
+    "snippet": "Bếp Chóp Chép sử dụng 100% chân gà rút xương tươi mỗi ngày, nói không với hàng đông lạnh. Mỗi phần từ 5-6 chân, ngâm cùng cóc non và sốt Thái chua ngọt ...",
+    "rating": 4.8,
+    "ratingCount": 10064,
+    "position": 6
+   },
+   {
+    "title": "Bếp Nhà Kem - Chân Gà Sả Tắc, Sốt Thái",
+    "link": "https://shopeefood.vn/ho-chi-minh/chan-ga-xa-tac-sot-thai-bep-me-kem",
+    "snippet": "Bếp Nhà Kem - Chân Gà Sả Tắc, Sốt Thái. 45/60/12 Lê Cơ, P. An Lạc, Bình Tân, TP. HCM. Mở cửa. Quán được gắn nhãn Yêu thích là Quán Yêu Thích, gồm những quán ...",
+    "position": 7
+   },
+   {
+    "title": "Chóp Chép - Bánh Tráng Trộn & Tóp Mỡ Trứng Lòng Đào",
+    "link": "https://shopeefood.vn/ho-chi-minh/chop-chep-banh-trang-tron-top-mo-trung-long-dao",
+    "snippet": "Chóp Chép - Bánh Tráng Trộn & Tóp Mỡ Trứng Lòng Đào. 14B9 Ngô Tất Tố, P. 19, Bình Thạnh, TP. HCM. Mở cửa. Quán được gắn nhãn Yêu thích là Quán Yêu Thích, ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Fusion Original\" Gần Sài Gòn site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:38:02.316Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Fusion Original\" Gần Sài Gòn site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Fusion Original Saigon Centre - Giá cả và Ưu đãi 2026, TP. ...",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-hotel-detail-94137440/fusion-original-saigon-centre/",
+    "snippet": "Có, Fusion Original Saigon Centre phục vụ bữa sáng được đánh giá cao. Các lựa chọn bữa sáng: Kiểu Âu. Giá phòng tại Fusion Original Saigon Centre là bao nhiêu?",
+    "position": 1
+   },
+   {
+    "title": "Fusion Original Saigon Centre Đánh giá của khách",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-hotel-detail-94137440/fusion-original-saigon-centre/review.html",
+    "snippet": "Fusion Original Saigon Centre. Các đánh giá Fusion Original Saigon Centre. 65 Lê Lợi, P.Bến Nghé, Q.1, Sài Gòn, TP. Hồ Chí Minh.",
+    "position": 2
+   },
+   {
+    "title": "Fusion Original Saigon Centre - Xem 72 Ảnh & Đánh giá",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-hotel-detail-94137440/fusion-original-saigon-centre/photo.html",
+    "snippet": "Khám phá 72 ảnh của Fusion Original Saigon Centre, bao gồm phòng ốc, tiện nghi, cơ sở vật chất và khu vực xung quanh. Sử dụng hình ảnh khách sạn thực tế để ...",
+    "position": 3
+   },
+   {
+    "title": "Các khách sạn ở gần Sài Gòn Square, TP. Hồ Chí Minh",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-saigon-square-shopping-mall/hotels-c301m19948910/",
+    "snippet": "Hồ Chí Minh, hãy thử chọn Dream Palace Ben Thanh Grand Hotel (từ 1.868.108₫),Fusion Original Saigon Centre (từ 3.414.530₫)vàKhách sạn Liberty Central Saigon ...",
+    "position": 4
+   },
+   {
+    "title": "Các khách sạn ở gần , TP. Hồ Chí Minh",
+    "link": "https://vn.trip.com/hotels/landmark/vn/saigon-general-hospital.html",
+    "snippet": "Khách sạn sang trọng nào ở gần SAIGON CENTRE? Fusion Original Saigon Centre (từ 3.419.081₫),Caravelle Saigon (từ 3.682.684₫)vàSedona Suites Ho Chi Minh ...",
+    "position": 5
+   },
+   {
+    "title": "Các khách sạn ở gần Khu vui chơi KIDS - TOP, TP. Hồ Chí ...",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-khu-vui-chi-kids-top/hotels-c301m32389799/",
+    "snippet": "Fusion Original Saigon Centre ... Tọa lạc tại vị trí thuận tiện cho các điểm du lịch, nhà hàng, quán bar và cửa hàng nổi tiếng của thành phố, Fusion Originals ...",
+    "position": 6
+   },
+   {
+    "title": "Các khách sạn nổi tiếng ở gần Hồ Mây Park Vũng Tàu",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-ho-may-culture-ecotourism-park/hotels-c301m16653481/",
+    "snippet": "Fusion Original Saigon Centre ... Tọa lạc tại vị trí thuận tiện cho các điểm du lịch, nhà hàng, quán bar và cửa hàng nổi tiếng của thành phố, Fusion Originals ...",
+    "position": 7
+   },
+   {
+    "title": "Các khách sạn nổi tiếng ở gần Chabad of Vietnam (Saigon)",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-chabad-of-vietnam/hotels-c301m37546853/",
+    "snippet": "Fusion Original Saigon Centre Các khách sạn ở TP. Hồ Chí Minh. Fusion Original Saigon Centre. Khách Sạn Ở Trung tâm Thành phố Hồ Chí Minh, TP. Hồ Chí Minh. 9,3 ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

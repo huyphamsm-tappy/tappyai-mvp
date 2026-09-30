@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Trải nghiệm Ha Spa & Massage tại Quận 1, Hồ Chí Minh",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:28:23.310Z",
+ "body": {
+  "searchParameters": {
+   "q": "Trải nghiệm Ha Spa & Massage tại Quận 1, Hồ Chí Minh",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Trải nghiệm Ha Spa & Massage tại Quận 1, Hồ Chí Minh - Klook",
+    "imageUrl": "https://res.klook.com/image/upload/w_750,h_469,c_fill,q_85/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/acxg3vygwaamwlya54rp.jpg",
+    "imageWidth": 750,
+    "imageHeight": 469,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSMXkyAZ-yeAlouOjTjK5Tj4yP_a8Jgi23j7KUzt_HnA&s=10",
+    "thumbnailWidth": 565,
+    "thumbnailHeight": 353,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/165262-ha-spa-massage-experience-in-district-1-ho-chi-minh/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimage%2Fupload%2Fw_750%2Ch_469%2Cc_fill%2Cq_85%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Facxg3vygwaamwlya54rp.jpg&tbnid=YirHJkXV61AKiM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F165262-ha-spa-massage-experience-in-district-1-ho-chi-minh%2F&docid=Ljhnhe4iyvxsYM&w=750&h=469",
+    "position": 1
+   },
+   {
+    "title": "Trải nghiệm Ha Spa & Massage tại Quận 1, Hồ Chí Minh - Klook",
+    "imageUrl": "https://res.klook.com/images/fl_lossy.progressive,q_65/c_fill,w_1295,h_998/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/n99s7pxwvi8o9x2oanu7/Tr%E1%BA%A3inghi%E1%BB%87mHaSpaMassaget%E1%BA%A1iQu%E1%BA%ADn1,H%E1%BB%93Ch%C3%ADMinh.jpg",
+    "imageWidth": 1295,
+    "imageHeight": 998,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSSPNKM8UnnwLmoilLrWaV0Vx_aU2-9tw_BYluXp7qRQ&s=10",
+    "thumbnailWidth": 510,
+    "thumbnailHeight": 392,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/165262-ha-spa-massage-experience-in-district-1-ho-chi-minh/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Ffl_lossy.progressive%2Cq_65%2Fc_fill%2Cw_1295%2Ch_998%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fn99s7pxwvi8o9x2oanu7%2FTr%25E1%25BA%25A3inghi%25E1%25BB%2587mHaSpaMassaget%25E1%25BA%25A1iQu%25E1%25BA%25ADn1%2CH%25E1%25BB%2593Ch%25C3%25ADMinh.jpg&tbnid=O6QPKljZ7EyBGM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F165262-ha-spa-massage-experience-in-district-1-ho-chi-minh%2F&docid=Ljhnhe4iyvxsYM&w=1295&h=998",
+    "position": 2
+   },
+   {
+    "title": "Trải nghiệm Ha Spa & Massage tại Quận 1, Hồ Chí Minh - Klook",
+    "imageUrl": "https://res.klook.com/image/upload/w_750,h_469,c_fill,q_85/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/cghunvbkrfkfstdlmkrb.jpg",
+    "imageWidth": 750,
+    "imageHeight": 469,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRfdIO57-10IqvrSbdftfEiHLEcPeTica9sifEaohMRMQ&s=10",
+    "thumbnailWidth": 565,
+    "thumbnailHeight": 353,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/165262-ha-spa-massage-experience-in-district-1-ho-chi-minh/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimage%2Fupload%2Fw_750%2Ch_469%2Cc_fill%2Cq_85%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fcghunvbkrfkfstdlmkrb.jpg&tbnid=NrXg4x2VjKBGYM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F165262-ha-spa-massage-experience-in-district-1-ho-chi-minh%2F&docid=Ljhnhe4iyvxsYM&w=750&h=469",
+    "position": 3
+   },
+   {
+    "title": "Trải nghiệm Ha Spa, Massage & Dưỡng Tóc tại Hồ Chí Minh - Klook",
+    "imageUrl": "https://res.klook.com/image/upload/w_750,h_469,c_fill,q_85/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/fs7tlsjc2ncb47qpre6e.jpg",
+    "imageWidth": 750,
+    "imageHeight": 469,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThRyWrxz7Efmv0jYKiRbzUVlazoibkF11SgJ6n2O-dgg&s=10",
+    "thumbnailWidth": 565,
+    "thumbnailHeight": 353,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/43345-ha-spa-massage-ho-chi-minh/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimage%2Fupload%2Fw_750%2Ch_469%2Cc_fill%2Cq_85%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Ffs7tlsjc2ncb47qpre6e.jpg&tbnid=JmC0f-FlmITq_M&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F43345-ha-spa-massage-ho-chi-minh%2F&docid=NxSH5KYVhNWTMM&w=750&h=469",
+    "position": 4
+   },
+   {
+    "title": "Trải nghiệm Ha Spa, Massage & Dưỡng Tóc tại Hồ Chí Minh",
+    "imageUrl": "https://res.klook.com/image/upload/c_crop,h_1250,w_2000,x_0,y_19,z_0.1/w_750,h_469,c_fill,q_85/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/gxrhaelze7cepb33aaeo.jpg",
+    "imageWidth": 750,
+    "imageHeight": 469,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTow1Ji4UVDw6LgiRaTagRdd8ZfxihE72_rE3459ayJCQ&s=10",
+    "thumbnailWidth": 565,
+    "thumbnailHeight": 353,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/43345-ha-spa-massage-ho-chi-minh/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimage%2Fupload%2Fc_crop%2Ch_1250%2Cw_2000%2Cx_0%2Cy_19%2Cz_0.1%2Fw_750%2Ch_469%2Cc_fill%2Cq_85%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fgxrhaelze7cepb33aaeo.jpg&tbnid=jMs_62l6J9T8jM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F43345-ha-spa-massage-ho-chi-minh%2F&docid=NxSH5KYVhNWTMM&w=750&h=469",
+    "position": 5
+   },
+   {
+    "title": "Trải nghiệm Ha Spa, Massage & Dưỡng Tóc tại Hồ Chí Minh - Klook",
+    "imageUrl": "https://res.klook.com/image/upload/w_750,h_469,c_fill,q_85/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/ztmhc3vrxyaqstujzhoa.jpg",
+    "imageWidth": 750,
+    "imageHeight": 469,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSYHS0hqyLJ8sfyJ0idhzodyJ7TLFF-Y2_3cTnBHSYKaA&s=10",
+    "thumbnailWidth": 565,
+    "thumbnailHeight": 353,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/43345-ha-spa-massage-ho-chi-minh/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimage%2Fupload%2Fw_750%2Ch_469%2Cc_fill%2Cq_85%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fztmhc3vrxyaqstujzhoa.jpg&tbnid=TBb4q2WXcwCjKM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F43345-ha-spa-massage-ho-chi-minh%2F&docid=NxSH5KYVhNWTMM&w=750&h=469",
+    "position": 6
+   },
+   {
+    "title": "Massage Quận 1 Sài Gòn - Trị Liệu Cổ Truyền Việt Nam | TikTok",
+    "imageUrl": "https://www.tiktok.com/api/img/?itemId=7530143472125283591&location=0&aid=1988",
+    "imageWidth": 1186,
+    "imageHeight": 1701,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ5QEi_ku3o5xq7be1obgyc9cIl6ddT8Rh5cQZ5uerFoA&s=10",
+    "thumbnailWidth": 462,
+    "thumbnailHeight": 663,
+    "source": "TikTok",
+    "domain": "www.tiktok.com",
+    "link": "https://www.tiktok.com/@haspamassagequan1/video/7530143472125283591",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.tiktok.com%2Fapi%2Fimg%2F%3FitemId%3D7530143472125283591%26location%3D0%26aid%3D1988&tbnid=tGuZWGUmjGDFdM&imgrefurl=https%3A%2F%2Fwww.tiktok.com%2F%40haspamassagequan1%2Fvideo%2F7530143472125283591&docid=CZwMUjVsYehQSM&w=1186&h=1701",
+    "position": 7
+   },
+   {
+    "title": "Trải nghiệm Ha Spa & Massage tại Quận 1, Hồ Chí Minh - Klook",
+    "imageUrl": "https://res.klook.com/images/w_1200,h_630,c_fill,q_65/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/m64cd4xbbg8lkkm6oall/Tr%E1%BA%A3inghi%E1%BB%87mHaSpaMassaget%E1%BA%A1iQu%E1%BA%ADn1,H%E1%BB%93Ch%C3%ADMinh-Klook.jpg",
+    "imageWidth": 1200,
+    "imageHeight": 630,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQw3zzM4BKdac7AokN5JZLcOrOLO_dFLBy4PEst3pjHUA&s",
+    "thumbnailWidth": 310,
+    "thumbnailHeight": 163,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/165262-ha-spa-massage-experience-in-district-1-ho-chi-minh/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Fw_1200%2Ch_630%2Cc_fill%2Cq_65%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fm64cd4xbbg8lkkm6oall%2FTr%25E1%25BA%25A3inghi%25E1%25BB%2587mHaSpaMassaget%25E1%25BA%25A1iQu%25E1%25BA%25ADn1%2CH%25E1%25BB%2593Ch%25C3%25ADMinh-Klook.jpg&tbnid=k0Hel08RQ9lAHM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F165262-ha-spa-massage-experience-in-district-1-ho-chi-minh%2F&docid=Ljhnhe4iyvxsYM&w=1200&h=630",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

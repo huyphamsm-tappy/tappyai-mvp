@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Microsoft Surface Laptop Go site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:20:07.608Z",
+ "body": {
+  "searchParameters": {
+   "q": "Microsoft Surface Laptop Go site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Microsoft Surface Go 2 Cảm Ứng 10.5” | M3-8100Y",
+    "link": "https://shopee.vn/Microsoft-Surface-Go-2-C%E1%BA%A3m-%E1%BB%A8ng-10.5%E2%80%9D-M3-8100Y-Ram-8GB-SSD-128GB-Laptop-2-Trong-1-Ngo%E1%BA%A1i-H%C3%ACnh-93%E2%80%9397-Si%C3%AAu-Nh%E1%BA%B9-i.829234931.29065677489",
+    "snippet": "Mua Microsoft Surface Go 2 Cảm Ứng 10.5” | M3-8100Y | Ram 8GB | SSD 128GB | Laptop 2 Trong 1 | Ngoại Hình 93–97% Siêu Nhẹ giá tốt. Mua hàng qua mạng uy tín, ...",
+    "position": 1
+   },
+   {
+    "title": "Microsoft Surface Laptop Go 2 Full Cảm Ứng | i5 Th11",
+    "link": "https://shopee.vn/Microsoft-Surface-Laptop-Go-2-Full-C%E1%BA%A3m-%E1%BB%A8ng-i5-Th11-Ram-8GB-16GB-SSD-128-256GB-Si%C3%AAu-Nh%E1%BA%B9-1.1kg-M%E1%BB%9Bi-92-99--i.829234931.40168075268",
+    "snippet": "Mua Microsoft Surface Laptop Go 2 Full Cảm Ứng | i5 Th11 | Ram 8GB/16GB | SSD 128/256GB | Siêu Nhẹ 1.1kg | Mới 92-99% giá tốt. Mua hàng qua mạng uy tín, ...",
+    "rating": 5,
+    "ratingCount": 7,
+    "position": 2
+   },
+   {
+    "title": "TPU Da Laptop Bàn Phím Dành Cho Microsoft Surface ...",
+    "link": "https://shopee.vn/TPU-Da-Laptop-B%C3%A0n-Ph%C3%ADm-D%C3%A0nh-Cho-Microsoft-Surface-Laptop-Go-2-3-12.4-inch-Trong-Su%E1%BB%91t-Ch%E1%BB%91ng-Th%E1%BA%A5m-N%C6%B0%E1%BB%9Bc-B%E1%BA%A3o-V%E1%BB%87-%E1%BB%90p-L%C6%B0ng-Ch%E1%BB%91ng-B%E1%BB%A5i-i.288378154.26695291568",
+    "snippet": "Mua TPU Da Laptop Bàn Phím Dành Cho Microsoft Surface Laptop Go 2 3 12.4 inch Trong Suốt Chống Thấm Nước Bảo Vệ Ốp Lưng Chống Bụi giá tốt.",
+    "position": 3
+   },
+   {
+    "title": "Túi Đựng Máy Tính Bảng microsoft surface pro x / 9 / 8 / 7 ...",
+    "link": "https://shopee.vn/T%C3%BAi-%C4%90%E1%BB%B1ng-M%C3%A1y-T%C3%ADnh-B%E1%BA%A3ng-microsoft-surface-pro-x-9-8-7-plus-surface-laptop-go-12.4-12.3-13-inch-C%C3%B3-D%C3%A2y-%C4%90eo-Vai-i.478937282.25552380045",
+    "snippet": "Túi Đựng Máy Tính Bảng microsoft surface pro x / 9 / 8 / 7 plus surface laptop go 12.4 \"12.3-13 inch Có Dây Đeo Vai ... Tặng Voucher 15.000₫ nếu đơn giao sau thời ...",
+    "position": 4
+   },
+   {
+    "title": "HCMin DYNZ02 MICROSOFT SURFACE LAPTOP GO 12.4\" ...",
+    "link": "https://shopee.vn/HCMin-DYNZ02-MICROSOFT-SURFACE-LAPTOP-GO-12.4-1943-BATTERY-AHA42227027-AHA42227028-i.398311447.19586441264",
+    "snippet": "Mua HCMin DYNZ02 MICROSOFT SURFACE LAPTOP GO 12.4\" 1943 BATTERY AHA42227027 AHA42227028 giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 5
+   },
+   {
+    "title": "Màn hình cảm ứng laptop tương thích Microsoft Surface ...",
+    "link": "https://shopee.vn/M%C3%A0n-h%C3%ACnh-c%E1%BA%A3m-%E1%BB%A9ng-laptop-t%C6%B0%C6%A1ng-th%C3%ADch-Microsoft-Surface-Laptop-Go-12.4-inch-Model-1943-i.135615804.52058858761",
+    "snippet": "Mua Màn hình cảm ứng laptop tương thích Microsoft Surface Laptop Go 12.4 inch Model 1943 giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 6
+   },
+   {
+    "title": "Pin laptop Original Battery 916TA135H for Microsoft Surface ...",
+    "link": "https://shopee.vn/Pin-laptop-Original-Battery-916TA135H-for-Microsoft-Surface-Laptop-Go-1943-12.4-Used.-i.680897396.24473161632",
+    "snippet": "Pin laptop Original Battery 916TA135H for Microsoft Surface Laptop Go 1943 12.4\" Used.",
+    "position": 7
+   },
+   {
+    "title": "SurfaceLab_Trần Anh, Cửa hàng trực tuyến",
+    "link": "https://shopee.vn/trananh_techlab",
+    "snippet": "Microsoft Surface Laptop Go 2 Full Cảm Ứng | i5 Th11 | Ram 8GB/16GB | SSD 128/256GB | Siêu Nhẹ 1.1kg | Mới 92-99%. 9.400.000₫. 9.???.??0₫. Thêm vào giỏ hàng.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

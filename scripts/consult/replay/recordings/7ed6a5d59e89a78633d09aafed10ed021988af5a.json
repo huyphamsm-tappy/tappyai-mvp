@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Lakeside House Hanoi - Nhà Bên Hồ",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:58:11.304Z",
+ "body": {
+  "searchParameters": {
+   "q": "Lakeside House Hanoi - Nhà Bên Hồ",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Nhà nghỉ Lakeside, Ba Đình, Hà Nội",
+    "imageUrl": "https://q-xx.bstatic.com/xdata/images/hotel/max500/257521127.jpg?k=19ef0b70fbc04771f63173e0d44ea5c510f4e41fa27df8449e04b88735913ba3&o=",
+    "imageWidth": 333,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9HEhYrPHmNk7o0Tl802a6AajbJJtoVo7OOgxcK1Gbtg&s=10",
+    "thumbnailWidth": 333,
+    "thumbnailHeight": 500,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/lakeside-house/hotel/hanoi-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fq-xx.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax500%2F257521127.jpg%3Fk%3D19ef0b70fbc04771f63173e0d44ea5c510f4e41fa27df8449e04b88735913ba3%26o%3D&tbnid=QXLBdqZh1TLyVM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Flakeside-house%2Fhotel%2Fhanoi-vn.html&docid=-wjvojepX2B9YM&w=333&h=500",
+    "position": 1
+   },
+   {
+    "title": "Lakeside House - Nhà Bên Hồ | Hanoi",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=667235546084284",
+    "imageWidth": 2048,
+    "imageHeight": 1331,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTf_QxVJEnjZypDhPBxedW8gB4qIdKtcIIG271xkS2gyQ&s=10",
+    "thumbnailWidth": 554,
+    "thumbnailHeight": 361,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/lakesidehousefanpage/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D667235546084284&tbnid=Tv9xf1YKcYgZAM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Flakesidehousefanpage%2F&docid=vaXnEANW9sSuJM&w=2048&h=1331",
+    "position": 2
+   },
+   {
+    "title": "Review Lakeside House - Nhà Bên Hồ: Villa nghỉ dưỡng ven hồ | Green SM",
+    "imageUrl": "https://cdn.xanhsm.com/2025/03/6debec14-lakeside-house-nha-ben-ho-2.jpg",
+    "imageWidth": 1000,
+    "imageHeight": 619,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThxdk_DY21KdkeILu8807MwhqO9UbEeB3Tmve5GWhjdw&s=10",
+    "thumbnailWidth": 704,
+    "thumbnailHeight": 435,
+    "source": "Green SM",
+    "domain": "www.greensm.com",
+    "link": "https://www.greensm.com/vn-vi/news/lakeside-house-nha-ben-ho-chuong-my",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.xanhsm.com%2F2025%2F03%2F6debec14-lakeside-house-nha-ben-ho-2.jpg&tbnid=lcpBXj8NblSEzM&imgrefurl=https%3A%2F%2Fwww.greensm.com%2Fvn-vi%2Fnews%2Flakeside-house-nha-ben-ho-chuong-my&docid=_Wv6rYSUnHoeKM&w=1000&h=619",
+    "position": 3
+   },
+   {
+    "title": "Lakeside House - Hanoi, Hà Nội | Hotels.com",
+    "imageUrl": "https://images.trvl-media.com/lodging/46000000/45700000/45692200/45692184/w1534h1024x0y0-afb371fc.jpg?impolicy=fcrop&w=1200&h=800",
+    "imageWidth": 1200,
+    "imageHeight": 800,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSNO0zYFbpJoTT5mF-F8N59s-m9ZOEEUA7TZs0gBvtCqg&s",
+    "thumbnailWidth": 275,
+    "thumbnailHeight": 183,
+    "source": "hotels",
+    "domain": "vi.hotels.com",
+    "link": "https://vi.hotels.com/ho1463149888/lakeside-house-ha-noi-viet-nam/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimages.trvl-media.com%2Flodging%2F46000000%2F45700000%2F45692200%2F45692184%2Fw1534h1024x0y0-afb371fc.jpg%3Fimpolicy%3Dfcrop%26w%3D1200%26h%3D800&tbnid=HeEVjxGAjAqU5M&imgrefurl=https%3A%2F%2Fvi.hotels.com%2Fho1463149888%2Flakeside-house-ha-noi-viet-nam%2F&docid=aWGIOTfg8sEleM&w=1200&h=800",
+    "position": 4
+   },
+   {
+    "title": "Nhận xét về Lakeside House - Hanoi, ưu đãi & hình ảnh 2026 - Expedia",
+    "imageUrl": "https://images.trvl-media.com/lodging/46000000/45700000/45692200/45692184/a9d9e21c.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill",
+    "imageWidth": 767,
+    "imageHeight": 575,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1Me-PkDzBTwSfOhv3X6kXzKRyQRA4eIV44p0pUtJDPg&s",
+    "thumbnailWidth": 259,
+    "thumbnailHeight": 194,
+    "source": "Expedia",
+    "domain": "www.expedia.com.vn",
+    "link": "https://www.expedia.com.vn/Hanoi-Khach-San-Lakeside-House.h45692184.Thong-tin-khach-san",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimages.trvl-media.com%2Flodging%2F46000000%2F45700000%2F45692200%2F45692184%2Fa9d9e21c.jpg%3Fimpolicy%3Dresizecrop%26rw%3D575%26rh%3D575%26ra%3Dfill&tbnid=A1I1sQF22jnsrM&imgrefurl=https%3A%2F%2Fwww.expedia.com.vn%2FHanoi-Khach-San-Lakeside-House.h45692184.Thong-tin-khach-san&docid=_ZtjBRPZwAVMQM&w=767&h=575",
+    "position": 5
+   },
+   {
+    "title": "Lakeside House - Nhà Bên Hồ | Hanoi",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=100083935339160",
+    "imageWidth": 960,
+    "imageHeight": 960,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTayMzmRS4gxPaWU01AdRJ4s3qscP_LAcCZnFvJ83gMVA&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/lakesidehousefanpage/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D100083935339160&tbnid=Q3Bojd9cmZ1sPM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Flakesidehousefanpage%2F&docid=vaXnEANW9sSuJM&w=960&h=960",
+    "position": 6
+   },
+   {
+    "title": "Lakeside House - Hanoi, Hà Nội | Hotels.com",
+    "imageUrl": "https://images.trvl-media.com/lodging/46000000/45700000/45692200/45692184/c0119f97.jpg?impolicy=fcrop&w=1200&h=800",
+    "imageWidth": 1200,
+    "imageHeight": 800,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-nQij_dAnDNe9wo5P9N9nsMdncSd63X8AMqqoH0wIgA&s",
+    "thumbnailWidth": 275,
+    "thumbnailHeight": 183,
+    "source": "hotels",
+    "domain": "vi.hotels.com",
+    "link": "https://vi.hotels.com/ho1463149888/lakeside-house-ha-noi-viet-nam/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimages.trvl-media.com%2Flodging%2F46000000%2F45700000%2F45692200%2F45692184%2Fc0119f97.jpg%3Fimpolicy%3Dfcrop%26w%3D1200%26h%3D800&tbnid=uaarT-4_73ESpM&imgrefurl=https%3A%2F%2Fvi.hotels.com%2Fho1463149888%2Flakeside-house-ha-noi-viet-nam%2F&docid=aWGIOTfg8sEleM&w=1200&h=800",
+    "position": 7
+   },
+   {
+    "title": "Lakeside House - Nhà Bên Hồ | Hanoi",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=667587686049070",
+    "imageWidth": 1080,
+    "imageHeight": 1080,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNT0kjuRHahFT0GjGOsKvOogrrNwLYBOw50xC18Sckxg&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/lakesidehousefanpage/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D667587686049070&tbnid=xsvVC1j3EftbzM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Flakesidehousefanpage%2F&docid=vaXnEANW9sSuJM&w=1080&h=1080",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

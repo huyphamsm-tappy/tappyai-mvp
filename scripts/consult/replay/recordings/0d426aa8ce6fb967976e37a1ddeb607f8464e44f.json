@@ -1,0 +1,42 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Hilton Vacation Club Ocean Beach Club Virginia Beach\" gần vị trí hiện tại site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:20:36.916Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Hilton Vacation Club Ocean Beach Club Virginia Beach\" gần vị trí hiện tại site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Các khách sạn nổi tiếng ở gần Đài tưởng niệm Navy Seal",
+    "link": "https://vn.trip.com/hotels/landmark/us/navy-seal-monument.html",
+    "snippet": "Hilton Vacation Club Ocean Beach Club Virginia Beach Các khách sạn gần Đài tưởng niệm Navy. Hilton Vacation Club Ocean Beach Club Virginia Beach. 8,1/10. Rất ...",
+    "position": 1
+   },
+   {
+    "title": "Các khách sạn ở gần Hiệp hội Nghiên cứu và Khai sáng ...",
+    "link": "https://vn.trip.com/hotels/landmark/us/edgar-cayce's-a.r.e.-association-for-research-and-enlightenment.html",
+    "snippet": "108 đánh giá. Cách Hiệp hội Nghiên cứu và Khai sáng A.R.E. của Edgar Cayce 3.53km. Khi lưu trú tại Hilton Vacation Club Ocean Beach Club Virginia Beach, bạn ...",
+    "position": 2
+   },
+   {
+    "title": "Các khách sạn ở gần Hải đăng Cape Henry, Virginia Beach",
+    "link": "https://vn.trip.com/hotels/landmark/us/cape-henry-lighthouse.1.html",
+    "snippet": "1.546.362₫. /đêm. Hilton Vacation Club Ocean Beach Club Virginia Beach Các khách sạn gần Hải đăng Cape Henry. Hilton Vacation Club Ocean Beach Club Virginia ...",
+    "position": 3
+   }
+  ],
+  "credits": 1
+ }
+}

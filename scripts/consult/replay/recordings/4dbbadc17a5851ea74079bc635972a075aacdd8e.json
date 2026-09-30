@@ -1,0 +1,284 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "Cơm bắc Huy Lùn Nhà hàng Hoàng Tâm Phú Mỹ Hưng món hấp luộc kho không chiên Quận 7",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.734,106.7218,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:45:39.421Z",
+ "body": {
+  "searchParameters": {
+   "q": "Cơm bắc Huy Lùn Nhà hàng Hoàng Tâm Phú Mỹ Hưng món hấp luộc kho không chiên Quận 7",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.734,106.7218,14z",
+   "engine": "google"
+  },
+  "ll": "@10.7339942,106.7217997,14z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Cơm bắc Huy Lùn",
+    "address": "22 Đ. Số 1, Khu đô thị Him Lam, Tân Hưng, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.741027599999999,
+    "longitude": 106.6998381,
+    "rating": 4.8,
+    "ratingCount": 368,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "website": "http://combachuylun.com/",
+    "phoneNumber": "+84 909 294 749",
+    "openingHours": {
+     "Thứ Tư": "06:00–22:00",
+     "Thứ Năm": "06:00–22:00",
+     "Thứ Sáu": "06:00–22:00",
+     "Thứ Bảy": "06:00–22:00",
+     "Chủ Nhật": "06:00–22:00",
+     "Thứ Hai": "06:00–22:00",
+     "Thứ Ba": "06:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPUkCAfdFdiKD0pF8UFy_F8v7bec5Udnn0UARt9INjEjY6V6l-2axkJKuqKeIl7Uk4KaJqZqHLPmdVh0bn5NdjpLejKKB2E9RXIeSInxS32PiGEca2X0VJVk-el7iBvjGlVE9MoX4wonIs",
+    "cid": "6977083196995495298",
+    "fid": "0x31752f46d2aee441:0x60d3943395436582",
+    "placeId": "ChIJQeSu0kYvdTERgmVDlTOU02A"
+   },
+   {
+    "position": 2,
+    "title": "Nhà hàng Hoàng Tâm - Phú Mỹ Hưng",
+    "address": "24 Raymondienne, Khu đô thị Phú Mỹ Hưng, Tân Mỹ, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.7287894,
+    "longitude": 106.726288,
+    "rating": 4.7,
+    "ratingCount": 1231,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "website": "http://nhahanghoangtam.vn/",
+    "phoneNumber": "+84 969 002 200",
+    "openingHours": {
+     "Thứ Tư": "06:30–22:00",
+     "Thứ Năm": "06:30–22:00",
+     "Thứ Sáu": "06:30–22:00",
+     "Thứ Bảy": "06:30–22:00",
+     "Chủ Nhật": "06:30–22:00",
+     "Thứ Hai": "06:30–22:00",
+     "Thứ Ba": "06:30–22:00"
+    },
+    "bookingLinks": [
+     "https://order.ipos.vn/?pos_parent=NHHOANGTAM&source=DEFAULT"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMVEAwoM8limx866k9fqNJRQAQEItv5fs23bIwFAnitxrF0WNPk3Yg2zdORFc5VfwyDdn5TLEX4gtyB7tNbULHX_bCxwzgF-U6Gztt4f00FRCCOjjWAyz7De-xD1NDk2RG2wVodrlLqyW9T",
+    "cid": "5030497825719474300",
+    "fid": "0x3175257d16543d09:0x45cfeb1ea962587c",
+    "placeId": "ChIJCT1UFn0ldTERfFhiqR7rz0U"
+   },
+   {
+    "position": 3,
+    "title": "Nhà Hàng Hương Bắc",
+    "address": "6 Đường B, Khu đô thị Phú Mỹ Hưng, Tân Mỹ, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.731259699999999,
+    "longitude": 106.7245942,
+    "rating": 4.1,
+    "ratingCount": 126,
+    "type": "Nhà hàng châu Á",
+    "types": [
+     "Nhà hàng châu Á"
+    ],
+    "phoneNumber": "+84 933 991 616",
+    "openingHours": {
+     "Thứ Tư": "06:00–22:00",
+     "Thứ Năm": "06:00–22:00",
+     "Thứ Sáu": "06:00–22:00",
+     "Thứ Bảy": "06:00–22:00",
+     "Chủ Nhật": "06:00–22:00",
+     "Thứ Hai": "06:00–22:00",
+     "Thứ Ba": "06:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmME069JWJwJEPlD2LmVY1JGftnC4V6i5TNEzRwALzoRji6sT52TaCQItFvj3_7_WIGeEQ3JakcdRC0GYP0SMHGgqbPTsPEkdJdYH_31sLxZrmRfDkaTr9KHtRZCURQuD5oRMSaK",
+    "cid": "7461721777830454685",
+    "fid": "0x3175250048b843b9:0x678d5c6c4c61659d",
+    "placeId": "ChIJuUO4SAAldTERnWVhTGxcjWc"
+   },
+   {
+    "position": 4,
+    "title": "Hủ tiếu Nam Vang Mỹ Hưng",
+    "address": "5 Đ. Hà Huy Tập, Khu đô thị Phú Mỹ Hưng, Tân Hưng, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7262522,
+    "longitude": 106.7119012,
+    "rating": 4.1,
+    "ratingCount": 302,
+    "type": "Quán ăn nhỏ",
+    "types": [
+     "Quán ăn nhỏ",
+     "Nhà hàng chuyên phục vụ bữa sáng"
+    ],
+    "phoneNumber": "+84 903 989 977",
+    "openingHours": {
+     "Thứ Tư": "06:00–14:00",
+     "Thứ Năm": "06:00–14:00",
+     "Thứ Sáu": "06:00–14:00",
+     "Thứ Bảy": "06:00–14:00",
+     "Chủ Nhật": "06:00–14:00",
+     "Thứ Hai": "06:00–14:00",
+     "Thứ Ba": "06:00–14:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmO20AkZ-Yo-Wu6T6dcX5CTXeOPEKFpSgBfxLsXKipHnXDyVFj3F75n20jxHyXiGX0LXTHYkdfe53yHBBEbydFtNxqxiCIK33LAlDdITwqJMBVjxMMOFg_I5_I9OCuLcyCrCsFWHcA",
+    "cid": "8903143002303957549",
+    "fid": "0x31752f8d84fe7679:0x7b8e5163c4d50a2d",
+    "placeId": "ChIJeXb-hI0vdTERLQrVxGNRjns"
+   },
+   {
+    "position": 5,
+    "title": "GÀ HOÀNG HIẾU Q7",
+    "address": "222 Đ. Lâm Văn Bền, P, Tân Hưng, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7398895,
+    "longitude": 106.7158056,
+    "rating": 4.2,
+    "ratingCount": 578,
+    "type": "Nhà hàng Việt Nam",
+    "types": [
+     "Nhà hàng Việt Nam"
+    ],
+    "phoneNumber": "+84 938 880 384",
+    "openingHours": {
+     "Thứ Tư": "10:00–23:00",
+     "Thứ Năm": "10:00–23:00",
+     "Thứ Sáu": "10:00–23:00",
+     "Thứ Bảy": "10:00–23:00",
+     "Chủ Nhật": "10:00–23:00",
+     "Thứ Hai": "10:00–23:00",
+     "Thứ Ba": "10:00–23:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNhB4hIQgXoHosIWmz9yq3FARf2UbCEwUj0MCRMCPDcAJ0zCkQRDk6Omq7dRfEnwLp4RSJOspuNXYq2Gwx2t89P1IqoMQZtnaUbtj-IxzrlMezg8KBVZx1JeZHl5TNT5Q9c4XPHMe2oa7ZV",
+    "cid": "12411757005514426313",
+    "fid": "0x31752f838df3ea21:0xac3f6b3c782747c9",
+    "placeId": "ChIJIerzjYMvdTERyUcneDxrP6w"
+   },
+   {
+    "position": 6,
+    "title": "Nhà hàng Hoàng Tâm - Nguyễn Cảnh Chân",
+    "address": "TK22/1 Nguyễn Cảnh Chân, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7573803,
+    "longitude": 106.68913769999999,
+    "rating": 4.5,
+    "ratingCount": 2388,
+    "type": "Nhà hàng Việt Nam",
+    "types": [
+     "Nhà hàng Việt Nam",
+     "Nhà hàng"
+    ],
+    "website": "http://www.nhahanghoangtam.com/",
+    "phoneNumber": "+84 773 998 883",
+    "description": "Nhà hàng bình dân có không khí tươi vui, phục vụ chả giò nướng và các món ăn khác của miền Nam.",
+    "openingHours": {
+     "Thứ Tư": "10:00–22:00",
+     "Thứ Năm": "10:00–22:00",
+     "Thứ Sáu": "10:00–22:00",
+     "Thứ Bảy": "10:00–22:00",
+     "Chủ Nhật": "10:00–22:00",
+     "Thứ Hai": "10:00–22:00",
+     "Thứ Ba": "10:00–22:00"
+    },
+    "bookingLinks": [
+     "https://nhahanghoangtam.vn/"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPkR3jWcwL3Gf-XfAMdBXvHPb1NO5pfi5aQp9PQJpu8auCYsYHg0d2_2ZeUuQ1iGuepgpL-YGihq3e2GR--acK9dyMaJlqu--3kwt6xg1ORBBkzOLRyOQJSZWsMIn8xrtIOT262",
+    "cid": "5887006885625114811",
+    "fid": "0x31752f101ed11cfd:0x51b2d9925ff6b0bb",
+    "placeId": "ChIJ_RzRHhAvdTERu7D2X5LZslE"
+   },
+   {
+    "position": 7,
+    "title": "Món Bắc",
+    "address": "19 Phố Tiểu Nam, Khu đô thị Phú Mỹ Hưng, Tân Mỹ, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7221309,
+    "longitude": 106.7298004,
+    "rating": 4.1,
+    "ratingCount": 180,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "phoneNumber": "+84 942 891 111",
+    "openingHours": {
+     "Thứ Tư": "06:30–20:30",
+     "Thứ Năm": "06:30–20:30",
+     "Thứ Sáu": "06:30–20:30",
+     "Thứ Bảy": "06:30–20:30",
+     "Chủ Nhật": "06:30–20:30",
+     "Thứ Hai": "06:30–14:00",
+     "Thứ Ba": "06:30–20:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmN6TXONZXTAUyv54N74G-ktblvdpy-Tp4i7ogqf0kXNFH6oaMTh3qfk2_3SAHsIWlZt-8VUVMxWbAGs1Hpiwarr_XiWDZp-LKNcQQhZnfm4sGAW-TIofuWhziKOGGtFE2lSyJzh",
+    "cid": "14934803617084243809",
+    "fid": "0x3175255dff2d8e7b:0xcf4314c302867f61",
+    "placeId": "ChIJe44t_10ldTERYX-GAsMUQ88"
+   },
+   {
+    "position": 8,
+    "title": "Hàng Dương Quán",
+    "address": "132 Đ. Số 65, Khu định cư Tân Quy Đông, Tân Hưng, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.735612099999999,
+    "longitude": 106.7059747,
+    "rating": 4.2,
+    "ratingCount": 2932,
+    "type": "Nhà hàng hải sản",
+    "types": [
+     "Nhà hàng hải sản"
+    ],
+    "website": "https://hangduongquan.vn/",
+    "phoneNumber": "+84 1800 9478",
+    "openingHours": {
+     "Thứ Tư": "09:00–23:00",
+     "Thứ Năm": "09:00–23:00",
+     "Thứ Sáu": "09:00–23:00",
+     "Thứ Bảy": "09:00–23:00",
+     "Chủ Nhật": "09:00–23:00",
+     "Thứ Hai": "09:00–23:00",
+     "Thứ Ba": "09:00–23:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPvNtrf-2gT-bdyeyMUNdwFsTZK-sDRByNbymu25oPJ1cOE6LpZbnsMzgBc6_9ImPEK5m2ko1s-NxruxC56cdO8antMgT-X4rrskYkbHFfFvkrTV137CYZDycknKck9cfmPuUBvKA",
+    "cid": "8918336038410376823",
+    "fid": "0x31752f9c083bf5f9:0x7bc44b602503d677",
+    "placeId": "ChIJ-fU7CJwvdTERd9YDJWBLxHs"
+   },
+   {
+    "position": 9,
+    "title": "Minh Quán - Hủ tiếu Nam Vang",
+    "address": "77 Đ. Hà Huy Tập, Khu đô thị Phú Mỹ Hưng, Tân Hưng, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7262241,
+    "longitude": 106.7095686,
+    "rating": 4.3,
+    "ratingCount": 357,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "website": "https://www.foody.vn/ho-chi-minh/minh-quan-hu-tieu-nam-vang",
+    "phoneNumber": "+84 9339004",
+    "openingHours": {
+     "Thứ Tư": "06:00–13:00",
+     "Thứ Năm": "06:00–13:00",
+     "Thứ Sáu": "06:00–13:00",
+     "Thứ Bảy": "06:00–13:00",
+     "Chủ Nhật": "06:00–13:00",
+     "Thứ Hai": "06:00–13:00",
+     "Thứ Ba": "06:00–13:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmN3STu7b6LahhIyWsM-TGoz85LQGlf0wlHMMHgKclngAODX-mzWgCVTkVN5YdarIbeb2LZGXwYkMH-LmY7AhfZKf0UgnhCw7I3pRg1LeuRfMutiQZkanfpxqoHVje7oIxbk8pA",
+    "cid": "1058615772346820842",
+    "fid": "0x31752fa6238a3603:0xeb0f56fa85ba8ea",
+    "placeId": "ChIJAzaKI6YvdTER6qhbqG_1sA4"
+   }
+  ],
+  "credits": 3
+ }
+}

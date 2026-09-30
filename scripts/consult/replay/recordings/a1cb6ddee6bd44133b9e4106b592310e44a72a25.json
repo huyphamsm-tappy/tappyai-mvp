@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"The Q villa retreat\" OR \"Mermaid Homestay\" OR \"Khách sạn LUXURY\" núi Bà Đen, Tây Ninh site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:16:59.899Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"The Q villa retreat\" OR \"Mermaid Homestay\" OR \"Khách sạn LUXURY\" núi Bà Đen, Tây Ninh site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "The Q Villa Retreat Tây Ninh: villa có hồ bơi, giá bao gồm ...",
+    "link": "https://www.tiktok.com/@theqvillatayninh/video/7660441210909134100",
+    "snippet": "Tóm tắt nhanh The Q Villa Retreat Tây Ninh là lựa chọn villa nguyên căn gần Núi Bà Đen, phù hợp cho kỳ nghỉ cuối tuần cùng gia đình.",
+    "position": 1
+   },
+   {
+    "title": "The Q Villa Retreat Tây Ninh: Hồ bơi phong cách Bali",
+    "link": "https://www.tiktok.com/@theqvillatayninh/video/7612152147727158548",
+    "snippet": "Trải nghiệm The Q Villa Retreat Tây Ninh, một Bali thu nhỏ với hồ bơi. @The Q villa retreat Tayninh.",
+    "position": 2
+   },
+   {
+    "title": "The Q Villa đúng là nơi lý tưởng cho ai muốn đi Núi Bà ...",
+    "link": "https://www.tiktok.com/@kellyhuynh.85/video/7622310189559041298",
+    "snippet": "The Q Villa đúng là nơi lý tưởng cho ai muốn đi Núi Bà Đen Tây Ninh kết hợp nghỉ dưỡng. ... E liên hệ @The Q villa retreat Tayninh tư vấn nhé. 4- ...",
+    "position": 3
+   },
+   {
+    "title": "Hoàng hôn ở TheQ Villa — Nơi chữa lành và ngắm bình minh ...",
+    "link": "https://www.tiktok.com/@theqvillatayninh/video/7652233542998510869",
+    "snippet": "The Q Villa Retreat Tây Ninh, nơi nghỉ dưỡng tại Tây Ninh, villa đẹp ở Tây Ninh, trải nghiệm nghỉ dưỡng phong cách tropical, hồ bơi yên tĩnh tại Tây Ninh ...",
+    "position": 4
+   },
+   {
+    "title": "The Q villa retreat Tayninh (@theqvillatayninh)",
+    "link": "https://www.tiktok.com/@theqvillatayninh",
+    "snippet": "Bình Minh, TP. Tây Ninh Villa hồ bơi muối điện phân ‍♀️ Sauna, BBQ, Netflix & chill 0362 741 801.Xem video phổ biến của The Q villa retreat ...",
+    "position": 5
+   },
+   {
+    "title": "chỉ có tại TheQ #TheQ #tayninh #nuibaden #villatayninh #villa",
+    "link": "https://www.tiktok.com/@theqvillatayninh/video/7587607922994203924",
+    "snippet": "The Q Villa Retreat là boutique villa nghỉ dưỡng tại Tây Ninh dành cho couple, gia đình và nhóm bạn Có phòng View Hồ Bơi, View Sân Vườn, căn villa nguyên ...",
+    "position": 6
+   },
+   {
+    "title": "Bạn muốn tổ chức tiệc gì??? vừa ấm áp bên gia đình bạn bè ...",
+    "link": "https://www.tiktok.com/@theqvillatayninh/video/7619566005106281749",
+    "snippet": "Gần Núi Bà Đen – Ma Thiên Lãnh, có hồ bơi, phòng ... The Q Villa Retreat Tây Ninh, chỗ ở đẹp Tây Ninh ... Tây Ninh, cảnh đẹp Tây Ninh, tân phú Tây Ninh ...",
+    "position": 7
+   },
+   {
+    "title": "Phát hiện chiếc Homestay giá rẻ ngay chân Núi Bà Đen ...",
+    "link": "https://www.tiktok.com/@lengochieuu/video/7513188886386904327",
+    "snippet": "Trải Nghiệm Tại The Q Villa Retreat Ở Tây Ninh. Khám phá The Q Villa ... Tổng quan Homestay Mermaid (Mermaid homestay) ở Tây Ninh là lựa ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

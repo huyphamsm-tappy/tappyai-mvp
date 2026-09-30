@@ -1,0 +1,30 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Comfort Inn & Suites Chesapeake\" OR \"Quality Inn Chesapeake\" OR \"WoodSpring Suites Chesapeake-Norfolk South\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:20:44.429Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Comfort Inn & Suites Chesapeake\" OR \"Quality Inn Chesapeake\" OR \"WoodSpring Suites Chesapeake-Norfolk South\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Hotels në Roduco",
+    "link": "https://www.tiktok.com/travel/Roduco-22535865498512806/hotels?lang=sq",
+    "snippet": "... Comfort Inn & Suites Chesapeake, and the Extended Stay America Chesapeake Greenwood Drive. These hotels generally offer clean and comfortable rooms ...",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -59,6 +59,23 @@ export function recordingKey(url: string, body: string): string {
  * Installs the stub on globalThis.fetch and returns the uninstall function. `realFetch` is the
  * fetch captured BEFORE the stub (Anthropic and Serper misses go through it).
  */
+/** PHIÊN LUNA injection suite: text planted into every Serper result served while set (recordings on disk untouched). */
+let injection: { field: 'title' | 'snippet'; text: string } | null = null
+export function setSerperInjection(spec: { field: 'title' | 'snippet'; text: string } | null): void { injection = spec }
+function plant(body: unknown): unknown {
+  if (!injection || !body || typeof body !== 'object') return body
+  const out = JSON.parse(JSON.stringify(body)) as Record<string, unknown>
+  for (const key of ['places', 'organic', 'shopping', 'local', 'news']) {
+    const arr = out[key]
+    if (!Array.isArray(arr)) continue
+    for (const item of arr.slice(0, 3) as Array<Record<string, unknown>>) {
+      if (injection.field === 'title') item.title = injection.text
+      else for (const f of ['snippet', 'description', 'about']) item[f] = `${typeof item[f] === 'string' ? item[f] + ' ' : ''}${injection.text}`
+    }
+  }
+  return out
+}
+
 export function installReplayFetch(recordingsDir: string, opts: { record: boolean } = { record: process.env.REPLAY_NO_RECORD !== '1' }): () => void {
   mkdirSync(recordingsDir, { recursive: true })
   const realFetch = globalThis.fetch
@@ -86,7 +103,7 @@ export function installReplayFetch(recordingsDir: string, opts: { record: boolea
       if (existsSync(file)) {
         stats.serperReplayed++
         const saved = JSON.parse(readFileSync(file, 'utf8')) as { status: number; body: unknown }
-        return json(saved.body, saved.status)
+        return json(plant(saved.body), saved.status)
       }
       if (!opts.record) {
         stats.serperMissing++
@@ -113,7 +130,7 @@ export function installReplayFetch(recordingsDir: string, opts: { record: boolea
         stats.serperReplayed++
       }
       const r = await p
-      return json(r.body, r.status)
+      return json(plant(r.body), r.status)
     }
 
     stats.stubbed[host] = (stats.stubbed[host] ?? 0) + 1

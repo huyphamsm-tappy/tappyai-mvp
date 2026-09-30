@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "La Siesta Premium Saigon",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:06:51.269Z",
+ "body": {
+  "searchParameters": {
+   "q": "La Siesta Premium Saigon",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "La Siesta Premium Saigon, TP. Hồ Chí Minh (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/462029553.jpg?k=841a7c13cf14fea3e103d866dd99e405b23a70421c1929c90603e28453c3f607&o=",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrU9GKl3u3RiNDenTOwetDYLpSU_2dcYdt7WJodSrB1Q&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "www.booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/la-siesta-premium-sai-gon.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F462029553.jpg%3Fk%3D841a7c13cf14fea3e103d866dd99e405b23a70421c1929c90603e28453c3f607%26o%3D&tbnid=Cc494DTkOxQ63M&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fla-siesta-premium-sai-gon.vi.html&docid=arAv6xKSspLkWM&w=1024&h=683",
+    "position": 1
+   },
+   {
+    "title": "Wine & Dine - La Siesta Premium Saigon | Luxury Boutique Hotel in Saigon,  Vietnam",
+    "imageUrl": "https://lasiestahotels.com/saigon/wp-content/uploads/2022/09/Flycam_7_Opt_1_R2-2000.jpg",
+    "imageWidth": 2000,
+    "imageHeight": 1497,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQagdGx8XDNK2vfik3kSpuyoEoBc0qdMi0QdkJH1wLCBw&s=10",
+    "thumbnailWidth": 640,
+    "thumbnailHeight": 479,
+    "source": "La Siesta Hotels",
+    "domain": "lasiestahotels.com",
+    "link": "https://lasiestahotels.com/saigon/wine-dine",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flasiestahotels.com%2Fsaigon%2Fwp-content%2Fuploads%2F2022%2F09%2FFlycam_7_Opt_1_R2-2000.jpg&tbnid=EmjjIsBC0_3j9M&imgrefurl=https%3A%2F%2Flasiestahotels.com%2Fsaigon%2Fwine-dine&docid=5O5lp9MpTmcdBM&w=2000&h=1497",
+    "position": 2
+   },
+   {
+    "title": "LA SIESTA PREMIUM SAIGON CENTRAL (Thành phố Hồ Chí Minh) - Đánh giá Khách  sạn & So sánh giá - Tripadvisor",
+    "imageUrl": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2e/09/ac/22/hotel-facade.jpg?w=900&h=500&s=1",
+    "imageWidth": 900,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSOk8pIxMguOpiqmrrEaYpu-Wd9SslbPCDYlBKNUIA6tQ&s=10",
+    "thumbnailWidth": 599,
+    "thumbnailHeight": 333,
+    "source": "Tripadvisor",
+    "domain": "www.tripadvisor.com.vn",
+    "link": "https://www.tripadvisor.com.vn/Hotel_Review-g293925-d28236340-Reviews-La_Siesta_Premium_Saigon_Central-Ho_Chi_Minh_City.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdynamic-media-cdn.tripadvisor.com%2Fmedia%2Fphoto-o%2F2e%2F09%2Fac%2F22%2Fhotel-facade.jpg%3Fw%3D900%26h%3D500%26s%3D1&tbnid=qfO_19tCrjxiWM&imgrefurl=https%3A%2F%2Fwww.tripadvisor.com.vn%2FHotel_Review-g293925-d28236340-Reviews-La_Siesta_Premium_Saigon_Central-Ho_Chi_Minh_City.html&docid=5t7p3Bl3PCErVM&w=900&h=500",
+    "position": 3
+   },
+   {
+    "title": "LA SIESTA PREMIUM SAIGON (Thành phố Hồ Chí Minh) - Đánh giá Khách sạn & So  sánh giá - Tripadvisor",
+    "imageUrl": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2e/31/7c/44/caption.jpg?w=900&h=500&s=1",
+    "imageWidth": 900,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTtCSnKvom_a9YsQmaDVDMQEyexp6_FXNjM7zo9vNMCIw&s=10",
+    "thumbnailWidth": 599,
+    "thumbnailHeight": 333,
+    "source": "Tripadvisor",
+    "domain": "www.tripadvisor.com.vn",
+    "link": "https://www.tripadvisor.com.vn/Hotel_Review-g293925-d25442757-Reviews-La_Siesta_Premium_Saigon-Ho_Chi_Minh_City.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdynamic-media-cdn.tripadvisor.com%2Fmedia%2Fphoto-o%2F2e%2F31%2F7c%2F44%2Fcaption.jpg%3Fw%3D900%26h%3D500%26s%3D1&tbnid=sQ6wV-ceHj35eM&imgrefurl=https%3A%2F%2Fwww.tripadvisor.com.vn%2FHotel_Review-g293925-d25442757-Reviews-La_Siesta_Premium_Saigon-Ho_Chi_Minh_City.html&docid=Tg2SwEFctqYqNM&w=900&h=500",
+    "position": 4
+   },
+   {
+    "title": "La Siesta Premium Saigon | Luxury Boutique Hotel in Saigon, Vietnam",
+    "imageUrl": "https://lasiestahotels.com/saigon/wp-content/uploads/2022/09/Flycam_8_R2-2000.jpg",
+    "imageWidth": 2000,
+    "imageHeight": 1333,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqXYWjzsEWHKYGrcSSM97CEnhyiI1s44gmx8A8c9kFYQ&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "La Siesta Hotels",
+    "domain": "lasiestahotels.com",
+    "link": "https://lasiestahotels.com/saigon/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flasiestahotels.com%2Fsaigon%2Fwp-content%2Fuploads%2F2022%2F09%2FFlycam_8_R2-2000.jpg&tbnid=yLg7y8UqUBRnTM&imgrefurl=https%3A%2F%2Flasiestahotels.com%2Fsaigon%2F&docid=2exubnyTrSRnNM&w=2000&h=1333",
+    "position": 5
+   },
+   {
+    "title": "La Siesta Premium Saigon | Luxury Boutique Hotel in Saigon, Vietnam",
+    "imageUrl": "https://lasiestahotels.com/saigon/wp-content/uploads/2022/09/La-Siesta-Suite_3-2000.jpg",
+    "imageWidth": 2000,
+    "imageHeight": 1333,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgE1_3L5Tz_ToNBdQ-EJGss2LirktsUZX-wdpIkVztXw&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "La Siesta Hotels",
+    "domain": "lasiestahotels.com",
+    "link": "https://lasiestahotels.com/saigon/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flasiestahotels.com%2Fsaigon%2Fwp-content%2Fuploads%2F2022%2F09%2FLa-Siesta-Suite_3-2000.jpg&tbnid=URzCYcHB9fymQM&imgrefurl=https%3A%2F%2Flasiestahotels.com%2Fsaigon%2F&docid=2exubnyTrSRnNM&w=2000&h=1333",
+    "position": 6
+   },
+   {
+    "title": "La Siesta Premium Saigon | Luxury Boutique Hotel in Saigon, Vietnam",
+    "imageUrl": "https://lasiestahotels.com/saigon/wp-content/uploads/2022/09/Flycam_3-2000.jpg",
+    "imageWidth": 2000,
+    "imageHeight": 1375,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfCPqhYBbVhivRhdgPCw5nujQZDw3eBtejR28nOHOcWA&s=10",
+    "thumbnailWidth": 668,
+    "thumbnailHeight": 459,
+    "source": "La Siesta Hotels",
+    "domain": "lasiestahotels.com",
+    "link": "https://lasiestahotels.com/saigon/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flasiestahotels.com%2Fsaigon%2Fwp-content%2Fuploads%2F2022%2F09%2FFlycam_3-2000.jpg&tbnid=1FQFg5Q1Qh0G_M&imgrefurl=https%3A%2F%2Flasiestahotels.com%2Fsaigon%2F&docid=2exubnyTrSRnNM&w=2000&h=1375",
+    "position": 7
+   },
+   {
+    "title": "Swimming Pool - La Siesta Premium Saigon | Luxury Boutique Hotel in Saigon,  Vietnam",
+    "imageUrl": "https://lasiestahotels.com/saigon/wp-content/uploads/2023/06/Flycam_1_Opt_2_R2-2000.jpg",
+    "imageWidth": 2000,
+    "imageHeight": 1497,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdMe36rOBPJ3cXJOgxitBtjxgXZY0guCnFNo58j8Beug&s=10",
+    "thumbnailWidth": 640,
+    "thumbnailHeight": 479,
+    "source": "La Siesta Hotels",
+    "domain": "lasiestahotels.com",
+    "link": "https://lasiestahotels.com/saigon/wellness/swimming-pool",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flasiestahotels.com%2Fsaigon%2Fwp-content%2Fuploads%2F2023%2F06%2FFlycam_1_Opt_2_R2-2000.jpg&tbnid=vFYLqMOnsL_F5M&imgrefurl=https%3A%2F%2Flasiestahotels.com%2Fsaigon%2Fwellness%2Fswimming-pool&docid=Q00l_t2KnVUnbM&w=2000&h=1497",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

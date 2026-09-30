@@ -164,6 +164,9 @@ export interface EnrichmentCollector {
   consultPick?: string | null
   setConsultPick(name: string | null): void
   setConsultShown(names: string[]): void
+  /** PHIÊN LUNA: the reply is checked for a prompt echo / secret shape before it leaves (lunaSafety.ts). */
+  leakCheck?: (text: string) => { leak: boolean; reason: string | null }
+  setLeakCheck(fn: (text: string) => { leak: boolean; reason: string | null }): void
   consultKnown?: Record<string, string>
   /** Consult V2 shopping plan: the chosen product's listed price (route, from the newest shopping card). */
   consultPlanPrice?: { amount: number; seller: string | null } | null
@@ -412,6 +415,8 @@ export function createEnrichmentCollector(turnText = '', earlierUserTexts: reado
     consultRefers: undefined as string[] | undefined,
     consultShown: undefined as string[] | undefined,
     setConsultShown(names: string[]) { this.consultShown = names },
+    leakCheck: undefined as ((text: string) => { leak: boolean; reason: string | null }) | undefined,
+    setLeakCheck(fn: (text: string) => { leak: boolean; reason: string | null }) { this.leakCheck = fn },
     consultKnown: undefined as Record<string, string> | undefined,
     consultPlanPrice: null as { amount: number; seller: string | null } | null,
     setConsultTurn(turn: string, refers?: string[], known?: Record<string, string>) { this.consultTurn = turn; this.consultRefers = refers; this.consultKnown = known },

@@ -1,0 +1,103 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "khách sạn núi gần Sài Gòn",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.7769,106.7009,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:24:12.343Z",
+ "body": {
+  "searchParameters": {
+   "q": "khách sạn núi gần Sài Gòn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.7769,106.7009,14z",
+   "engine": "google"
+  },
+  "ll": "@10.7768941,106.7008997,14z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Wink Saigon Centre, part of Unscripted by Hyatt",
+    "address": "75 Nguyễn Bỉnh Khiêm, Ward, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7912511,
+    "longitude": 106.70048419999999,
+    "rating": 4.3,
+    "ratingCount": 1270,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://www.hyatt.com/unscripted-by-hyatt/en-US/vn100-wink-saigon-centre?src=corp_lclb_google_seo_vn100&utm_source=google&utm_medium=organic&utm_campaign=lmr",
+    "phoneNumber": "+84 28 3826 9999",
+    "description": "Những phòng nghỉ trang nhã trong một khách sạn thời thượng với sảnh chờ theo phong cách công nghiệp, cùng với đồ ăn đường phố mang đi tiện lợi.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlfqHw-joQo7XU214rwaSmsi2qJHY9LzhjDJpbi4xdktIjkuBiN8b6pRoOloj1RKhROt0GCDbWYRzEUsp3kUZiFH1964xQeDtA8lXCnYzep2qJ_VSsfl6RfiWUShxzLZzzPpBCn",
+    "cid": "7042863198907953822",
+    "fid": "0x3175299befc9c843:0x61bd46c3c494729e",
+    "placeId": "ChIJQ8jJ75spdTERnnKUxMNGvWE"
+   },
+   {
+    "position": 2,
+    "title": "Khách Sạn Núi Thành",
+    "address": "3 Đ. Núi Thành, Tân Bình, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.8006593,
+    "longitude": 106.64184089999999,
+    "rating": 3.8,
+    "ratingCount": 173,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "phoneNumber": "+84 28 3810 9668",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWle5dz33R-F_h9i1gHNH_bggyP4ofvmS3J11B_X9Jut6V8WR5Pgfw3g5guUGeQPHAuzH7fhHlZ3WPfw0nsbaqYAR9Phaw8KKS5vbBoEC7QXEXyDE8EpC_I5os9ddXRVXzIx-kZG",
+    "cid": "6802183382160932336",
+    "fid": "0x3175294fccf4b3bb:0x5e6635bf1ec47df0",
+    "placeId": "ChIJu7P0zE8pdTER8H3EHr81Zl4"
+   },
+   {
+    "position": 3,
+    "title": "Khách Sạn Hạnh Phúc - Phòng Đẹp Giá Rẻ 24/24",
+    "address": "265 Nguyễn Trãi, Cầu Ông Lãnh, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7642312,
+    "longitude": 106.68744149999999,
+    "rating": 3.7,
+    "ratingCount": 377,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://hotelgiare.net/",
+    "phoneNumber": "+84 911 688 265",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmjjEp6eud0c3Ot1sN-zvYLMPJOXVjpKQLPMcirT040GFKhTBqWJzq76Spb-Ip9wgSTnRBgWB9DVGSQVl5vnkiPsePL9hDiC6VO0PWzLpLtOHSpPy9hOOEwQE9L1M20LIApUhOJuxJCZiw",
+    "cid": "7776644089008742412",
+    "fid": "0x31752f19dbad8a71:0x6bec3098b601e00c",
+    "placeId": "ChIJcYqt2xkvdTERDOABtpgw7Gs"
+   },
+   {
+    "position": 4,
+    "title": "Khách Sạn Song Nhật",
+    "address": "20/19 Đ. Núi Thành, Tân Bình, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.80003,
+    "longitude": 106.6422632,
+    "rating": 4.2,
+    "ratingCount": 131,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "http://www.songnhathotel.vn/",
+    "phoneNumber": "+84 28 3813 0213",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-proxy/ALd4DhHuj6PZ-7gPhAu6QdJSUFiODyOfc48fRh8GP7Gn9ctvnpltKikvGTMCrOW-VmQO1NpCNgMjAWUmielufDhKMmnb3wX7YGeYKkSLI0QsgVAjWMxFkEGxPHHcSO8jqFmjhyJicPIRptW7S7HUzYlnih5nAYx3fW6WCUoXcPK-WjumBbgQkj1hRKc",
+    "cid": "11491950763438782845",
+    "fid": "0x3175294fcbdb7ceb:0x9f7b9c55170c397d",
+    "placeId": "ChIJ63zby08pdTERfTkMF1Wce58"
+   }
+  ],
+  "credits": 3
+ }
+}

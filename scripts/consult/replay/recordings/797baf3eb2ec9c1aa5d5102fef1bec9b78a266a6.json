@@ -1,0 +1,77 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Son Lụa Diễm Quận 10 site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:27:08.964Z",
+ "body": {
+  "searchParameters": {
+   "q": "Son Lụa Diễm Quận 10 site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Son Cỏ Mềm có tốt không? Top 7+ sản phẩm nên thử",
+    "link": "https://shopee.vn/blog/son-co-mem-co-tot-khong/",
+    "snippet": "Trong vô vàn các dòng son trang điểm trên thị trường hiện nay, Son Lụa Diễm Cỏ Mềm nổi bật như một lựa chọn “xanh” dành cho những ai yêu thích ...",
+    "date": "12 thg 11, 2025",
+    "position": 1
+   },
+   {
+    "title": "Các màu son dành cho học sinh cấp 3 chuẩn “crush quốc ...",
+    "link": "https://shopee.vn/blog/mau-son-danh-cho-hoc-sinh-cap-3/",
+    "snippet": "Chất son mềm mịn, không gây nặng môi, Độ giữ màu không lâu. Giá tham khảo: 198.000đ/thỏi. Son Lụa Diễm là dòng son dưỡng có màu ...",
+    "date": "13 thg 7, 2025",
+    "position": 2
+   },
+   {
+    "title": "5+ màu son cho học sinh da ngăm tươi tắn, không lo xỉn màu",
+    "link": "https://shopee.vn/blog/mau-son-cho-hoc-sinh-da-ngam/",
+    "snippet": "Son Lụa Diễm 106 màu đỏ phù hợp cho học sinh da ngăm Son Lụa Diễm 106 có chất son satin mềm môi, tone đỏ cam trẻ trung dễ dùng hàng ngày ...",
+    "date": "22 thg 7, 2025",
+    "position": 3
+   },
+   {
+    "title": "Bỏ túi 7 loại son không chì giúp làm đẹp không lo thâm môi",
+    "link": "https://shopee.vn/blog/son-khong-chi/",
+    "snippet": "Giá tham khảo (cập nhật đến tháng 05/2025): 198.000 VNĐ/thỏi. Son môi không chứa chì Lụa Diễm Cỏ Mềm (Nguồn: Shopee Blog).",
+    "date": "12 thg 11, 2025",
+    "position": 4
+   },
+   {
+    "title": "Bộ trang điểm cơ bản cho học sinh giúp nàng tự tin đến lớp",
+    "link": "https://shopee.vn/blog/bo-trang-diem-co-ban-cho-hoc-sinh/",
+    "snippet": "Son Lụa Diễm: 101 Đỏ Trầm, 102 Hồng Baby, 103 Cam Hồng Đất, 104 Cam Hồng Đào, 105 Đỏ Nâu Đất, 106 Đỏ Cam, 107 Hồng Đỏ, 108 Đỏ Cherry. Kem Trang ...",
+    "date": "7 thg 11, 2025",
+    "position": 5
+   },
+   {
+    "title": "Cchoi - Giá Tốt, Sale Tháng 09, Freeship 0Đ",
+    "link": "https://shopee.vn/list/cchoi",
+    "snippet": "Son Môi Lụa Diễm Mềm Mịn Mướt Môi Cỏ Mềm 4g. custom-overlay. flag-label Son Môi Lụa Diễm Mềm Mịn Mướt Môi Cỏ Mềm 4g. 230.000₫. 298.000₫. -23%. Mua để nhận quà.",
+    "position": 6
+   },
+   {
+    "title": "Son môi hồng - Giá Tốt, Sale Tháng 09, Freeship 0Đ",
+    "link": "https://shopee.vn/list/son%20m%C3%B4i/h%E1%BB%93ng",
+    "snippet": "[Siêu Hot] Son môi nhung lì dưỡng ẩm kháng nước chống mồ hôi trang điểm cao cấp nhiều màu lựa chọn. 20.000₫. 200.000₫. -90%. Rẻ Vô Địch. rating-star 4.9.",
+    "position": 7
+   },
+   {
+    "title": "Son cỏ mềm - Giá Tốt, Sale Tháng 09, Ship 0 Đồng",
+    "link": "https://shopee.vn/list/son/c%E1%BB%8F%20m%E1%BB%81m",
+    "snippet": "Son Môi Lụa Thành Phần Thiên Nhiên Bảng Màu Đẹp Đa Dạng Cỏ Mềm 4g · Son Lụa Diễm Dưỡng Ẩm Mềm Môi Màu Xinh Cỏ Mềm 4g · (MUA 2 GIẢM 90K) Son Kem 2 Đầu Posshe Siêu ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

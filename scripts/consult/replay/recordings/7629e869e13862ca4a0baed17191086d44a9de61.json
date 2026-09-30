@@ -1,0 +1,66 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Hanoi Exclusive Hotel\" Hà Nội site:www.traveloka.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:59:57.300Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Hanoi Exclusive Hotel\" Hà Nội site:www.traveloka.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Hanoi Exclusive Hotel , Giá giảm 30%, Ảnh & Review ...",
+    "link": "https://www.traveloka.com/vi-vn/hotel/vietnam/hanoi-exclusive-hotel--9000000470189",
+    "snippet": "Hanoi Exclusive Hotel (Hà Nội Exclusive Hotel) phù hợp với ai? Với tiêu chuẩn 3 sao và vị trí đắc địa tại khu vực mua sắm sầm uất, Hanoi Exclusive Hotel (Hà Nội ...",
+    "position": 1
+   },
+   {
+    "title": "Hanoi Exclusive Hotel , Hoan Kiem | Book Now with Deals & ...",
+    "link": "https://www.traveloka.com/en-ph/hotel/vietnam/hanoi-exclusive-hotel--9000000470189",
+    "snippet": "Situated at 40 Hàng Điều, Cửa Đông, Quận Hoàn Kiếm, Hà Nội ... How to Get to Hanoi Exclusive Hotel from the Airport. Reaching Hanoi Exclusive Hotel from Noi ...",
+    "position": 2
+   },
+   {
+    "title": "Khách sạn gần Seasons of Hanoi, Discount tới 30%",
+    "link": "https://www.traveloka.com/vi-vn/hotel/vietnam/landmark/seasons-of-hanoi-91561364004875/21",
+    "snippet": "Hanoi Exclusive Hotel ... \"Khách sạn có vị trí tốt thuận tiện khi đi bộ tham quan các điểm du lịch, anh chị chủ thân thiện, dễ mến, thái độ phục vụ với khách cực ...",
+    "position": 3
+   },
+   {
+    "title": "Khách sạn 3 sao ở Cửa Đông – Từ 112.878 VND",
+    "link": "https://www.traveloka.com/vi-vn/hotel/vietnam/area/ca-ng-30011352/3-star-hotels-in-ca-ng",
+    "snippet": "Nhà thờ chính Hà Nội, St. Joseph nằm trong khoảng cách đi bộ. Tất cả các ... Hanoi Exclusive Hotel , Khách sạn & Spa Ambassador Hà Nội, Hanoi Calido ...",
+    "position": 4
+   },
+   {
+    "title": "Top 20 Best Hotels in Cửa Đông (From USD 4.19)",
+    "link": "https://www.traveloka.com/en-en/hotel/vietnam/area/ca-ng-30011352",
+    "snippet": "Hanoi Exclusive Hotel, a 3-star property in the Hoan Kiem district, provides a solid mid-range option at USD 39.33 per night. Its rating of 9.3 from 124 reviews ...",
+    "position": 5
+   },
+   {
+    "title": "Khách sạn gần BIDV Tam Trinh, Discount tới 30%",
+    "link": "https://www.traveloka.com/vi-vn/hotel/vietnam/landmark/bidv-tam-trinh-91727235890320/35",
+    "snippet": "HOTEL_EXTERIOR 1 Hanoi Exclusive Hotel , Khách sạn BIDV Tam Trinh ... Nhà thờ chính Hà Nội, St. Joseph nằm trong khoảng ... Vị trí tuyệt vời để khám phá Hà Nội cũ.",
+    "position": 6
+   },
+   {
+    "title": "Hanoi Exclusive Hotel , Hoan Kiem",
+    "link": "https://www.traveloka.com/ms-my/hotel/vietnam/hanoi-exclusive-hotel--9000000470189",
+    "snippet": "Penginapan di Hanoi Exclusive Hotel ialah pilihan yang baik apabila anda melawat Cửa Đông. Meja depan 24 jam tersedia untuk memberikan perkhidmatan kepada anda, ...",
+    "position": 7
+   }
+  ],
+  "credits": 1
+ }
+}

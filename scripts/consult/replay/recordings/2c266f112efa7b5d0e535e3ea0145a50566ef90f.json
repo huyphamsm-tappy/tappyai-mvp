@@ -1,0 +1,80 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Bộ quà tặng phong thủy thời trang cao cấp cho người mệnh thủy site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:10:54.973Z",
+ "body": {
+  "searchParameters": {
+   "q": "Bộ quà tặng phong thủy thời trang cao cấp cho người mệnh thủy site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Vòng tay đá tự nhiên cao cấp phong thủy mệnh kim mộc ...",
+    "link": "https://www.lazada.vn/products/vong-tay-da-tu-nhien-cao-cap-phong-thuy-menh-kim-moc-thuy-hoa-tho-son-moc-huong-deo-tay-nam-nu-i2320128967-s11371353883.html?from_gmc=1&fl_tag=1&srsltid=AU7gw4X6jkH5Ksoiayt8xW8yQbHe2fm6CegdOePMOB_rWBADDY54cm49",
+    "snippet": "Đặc điểm nổi bật. Tên sản phẩm: Vòng tay đá tự nhiên cao cấp phong thủy đeo tay nam nữ may mắn bình an. Nhà sản xuất: Sơn Mộc Hương. Kích thước hạt: 8li.",
+    "position": 1
+   },
+   {
+    "title": "🍁Bộ Vòng tay đá mã não trắng vân bông Ni 51,Ni 52 ...",
+    "link": "https://www.lazada.vn/products/bo-vong-tay-da-ma-nao-trang-van-bong-ni-51ni-52ni-54-menh-thuy-kem-nhan-cao-cap-qua-tang-y-nghia-i2634836174.html?srsltid=AU7gw4U44ur4k9_Z-EJz1jrGuc7XzPu9nRH7DlEMQsMfpUUVVRZjNHPF",
+    "snippet": "Mô tả sản phẩm · Chất liệu: Đá Mã Não Trắngthiên nhiên 100% · Hợp mệnh: Mệnh Kim(theo tương hợp) và mệnh Thủy(theo tương sinh) · Đá hỗ trợ tuần hoàn máu, cải thiện ...",
+    "position": 2
+   },
+   {
+    "title": "Bộ vòng và nhẫn giả ngà hàng chuẩn quà tặng phong thủy ...",
+    "link": "https://www.lazada.vn/products/bo-vong-va-nhan-gia-nga-hang-chuan-qua-tang-phong-thuy-mang-lai-thinh-vuong-binh-an-i2108420450.html?srsltid=AU7gw4XBwugyuroEAAg8Nc_QNoVYDMV-pnJQPXaHxaExSOqbvYuTNfij",
+    "snippet": "Gợi ý cho bạn. Top bán chạy. HCM-Mặt Dây Chuyền Hồ Ly Thạch Anh Tóc Đủ Màu. 219.000 ₫. Vòng tay cẩm thạch bản hẹ vàng cho người mệnh kim,sản phẩm phong thủy.",
+    "rating": 5,
+    "ratingCount": 4,
+    "position": 3
+   },
+   {
+    "title": "Vòng Tay Phong Thủy đá Mã Não xanh màu ngọc bích size hạt ...",
+    "link": "https://www.lazada.vn/products/vong-tay-phong-thuy-da-ma-nao-xanh-mau-ngoc-bich-size-hat-99-li-tuyet-dep-thoi-trang-hoa-minh-gem-i13372857614-s116949926366.html?from_gmc=1&fl_tag=1&srsltid=AU7gw4WrIzv7xBlGrZrB27dbbBv_EvCkHII8EG-ERftbeSV8c5i_GJuH",
+    "snippet": "Vòng Tay Phong Thủy đá Mã Não xanh màu ngọc bích size hạt 9.9 li tuyệt đẹp thời trang. ➡ Loại đá: mã não màu xanh đậm sương sâm. ➡ Hình dáng hạt: hạt tròn.",
+    "position": 4
+   },
+   {
+    "title": "( BẢN CAO CẤP) Vòng tay đá mã não trắng mệnh thủy kim ...",
+    "link": "https://www.lazada.vn/products/ban-cao-cap-vong-tay-da-ma-nao-trang-menh-thuy-kim-qua-tang-y-nghia-du-size-i2614949972.html?srsltid=AU7gw4UJPDFhCHAtAX17zBCEFULYsg6xzCJntThQ0b1VQjJK2J2wnnZy",
+    "snippet": "Vòng tay đá mã não trắng chất liệu agate cao cấp, thiết kế cuff sang trọng, phù hợp mệnh thủy kim. Đa dạng kích cỡ từ ni 51 đến ni 58, là món quà ý nghĩa và ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 5
+   },
+   {
+    "title": "MẶT DÂY CHUYỀN THẠCH ANH TRẮNG HÌNH LỤC GIÁC ...",
+    "link": "https://www.lazada.vn/products/mat-day-chuyen-thach-anh-trang-hinh-luc-giac-thoi-trang-ca-tinh-phong-thuy-hop-menh-moc-va-menh-tho-hang-thu-cong-cao-cap-i1537128038.html?srsltid=AU7gw4VKSrpSfVYu_Sz9nxiFuEMUGcCaF-O2YZLhzxRv7rg-gtE8bQHr",
+    "snippet": "- Đem theo một viên tinh thể đá thạch anh trắng bên người như bùa hộ mệnh, bảo trợ bình an. - Thạch anh trắng trong phong thủy màu sắc phù hợp với người.",
+    "rating": 4.6,
+    "ratingCount": 5,
+    "position": 6
+   },
+   {
+    "title": "Nhẫn bạc có thể làm cài áo x letter phong thủy may mắn sang ...",
+    "link": "https://h5.lazada.vn/products/nhan-bac-co-the-lam-cai-ao-x-letter-phong-thuy-may-man-sang-trong-udumbara-i2863160491-s13892780897.html",
+    "snippet": "THÔNG TIN SẢN PHẨM : Tên sản phẩm : Nhẫn bạc có thể làm cài áo x letter phong thủy may mắn sang trọng Udumbara Chất liệu: hợp kim. Kích thước: Freesize",
+    "position": 7
+   },
+   {
+    "title": "Quả Cầu Phong Thủy Thạch Anh Vân Mây Xanh",
+    "link": "https://www.lazada.vn/products/qua-cau-phong-thuy-thach-anh-van-may-xanh-hop-menh-moc-hoa-tang-kem-de-cao-cap-da-thien-nhien-100-i255686621.html?srsltid=AU7gw4WiVWZz_XpYGu2H157huLxXp2-RcC4a-4ctLVqnvSRSColsHbtx",
+    "snippet": "Quả cầu phong thủy Thạch Anh Vân Mây Xanh - quà tặng ý nghĩa hợp mệnh Mộc Hỏa dành cho người tuổi Canh Thân, Dần, Ngọ. Hỗ trợ thăng quan tiến chức, ...",
+    "rating": 3.5,
+    "ratingCount": 2,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Khách sạn LOTTE Sài Gòn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:01:47.127Z",
+ "body": {
+  "searchParameters": {
+   "q": "Khách sạn LOTTE Sài Gòn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Khách sạn LOTTE Sài Gòn, Quận 1, Hồ Chí Minh",
+    "imageUrl": "https://pix10.agoda.net/hotelImages/902/-1/be6f44cdf4f44ac920b2f4dc4a18f431.jpg?va=1&ce=0&s=414x232",
+    "imageWidth": 309,
+    "imageHeight": 232,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQG5UZij_3JwNKAtHcTEgIvMM22Z7cxb_MwPxsc7VVcyg&s=10",
+    "thumbnailWidth": 308,
+    "thumbnailHeight": 232,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/lotte-legend-hotel-saigon/hotel/ho-chi-minh-city-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F902%2F-1%2Fbe6f44cdf4f44ac920b2f4dc4a18f431.jpg%3Fva%3D1%26ce%3D0%26s%3D414x232&tbnid=63Q0QFNrwWNMPM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Flotte-legend-hotel-saigon%2Fhotel%2Fho-chi-minh-city-vn.html&docid=5b5J-SXq9i1-gM&w=309&h=232",
+    "position": 1
+   },
+   {
+    "title": "Khách sạn Lotte Legend Saigon (Sài Gòn) - Chudu24",
+    "imageUrl": "http://du-lich.chudu24.com/f/m/2105/21/khach-san-lotte-legend-saigon-2.jpg",
+    "imageWidth": 1280,
+    "imageHeight": 800,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRpWEdqa8r4JQQRohW9W9HDSHb4maLP5mr6aqlpExVT4A&s=10",
+    "thumbnailWidth": 565,
+    "thumbnailHeight": 353,
+    "source": "Đặt Phòng Khách Sạn - Chudu24",
+    "domain": "khachsan.chudu24.com",
+    "link": "https://khachsan.chudu24.com/ks.669.khach-san-lotte-saigon.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=http%3A%2F%2Fdu-lich.chudu24.com%2Ff%2Fm%2F2105%2F21%2Fkhach-san-lotte-legend-saigon-2.jpg&tbnid=z-_Nsz7ddNtJWM&imgrefurl=https%3A%2F%2Fkhachsan.chudu24.com%2Fks.669.khach-san-lotte-saigon.html&docid=Rq4FZJ2z0uwNlM&w=1280&h=800",
+    "position": 2
+   },
+   {
+    "title": "Khách sạn LOTTE Sài Gòn, Quận 1, Hồ Chí Minh",
+    "imageUrl": "https://pix10.agoda.net/hotelImages/902/-1/84557495905d65ee7fd4e14adc3d978e.png?va=1&ce=0&s=414x232",
+    "imageWidth": 414,
+    "imageHeight": 232,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6fY35LpvX3ZS7EZY7za63Z2ip8CxAnTUGJeJ6VK3xuw&s=10",
+    "thumbnailWidth": 414,
+    "thumbnailHeight": 232,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/lotte-legend-hotel-saigon/hotel/ho-chi-minh-city-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F902%2F-1%2F84557495905d65ee7fd4e14adc3d978e.png%3Fva%3D1%26ce%3D0%26s%3D414x232&tbnid=fZ2XBWxM7BNrxM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Flotte-legend-hotel-saigon%2Fhotel%2Fho-chi-minh-city-vn.html&docid=5b5J-SXq9i1-gM&w=414&h=232",
+    "position": 3
+   },
+   {
+    "title": "Vị trí - KHÁCH SẠN LOTTE SÀI GÒN Giới thiệu | KHÁCH SẠN LOTTE SÀI GÒN",
+    "imageUrl": "https://img.lottehotel.com/cms/asset/2025/02/21/17947/6672-2-2000-mai-LTHO.webp",
+    "imageWidth": 2000,
+    "imageHeight": 1125,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqK5O-QKyQINaxvtlqYsE67jWToPMRhwt4BEPQXDbiSg&s=10",
+    "thumbnailWidth": 597,
+    "thumbnailHeight": 335,
+    "source": "www.lottehotel.com",
+    "domain": "www.lottehotel.com",
+    "link": "https://www.lottehotel.com/saigon-hotel/vi/about/location",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimg.lottehotel.com%2Fcms%2Fasset%2F2025%2F02%2F21%2F17947%2F6672-2-2000-mai-LTHO.webp&tbnid=L9pF721bQR5HcM&imgrefurl=https%3A%2F%2Fwww.lottehotel.com%2Fsaigon-hotel%2Fvi%2Fabout%2Flocation&docid=gHjUSJJ2q05sCM&w=2000&h=1125",
+    "position": 4
+   },
+   {
+    "title": "Lotte Hotel Saigon, TP. Hồ Chí Minh (cập nhật giá năm 2027)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/572572017.jpg?k=01c62079d76d73f4ee51be44db0a500660cc6b11cdca1e28178cda62c7fac087&o=",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQefKsmnkCCxOw7NE-EdlijekjoRtV8mj8LzFag5R-e0g&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/legend-saigon.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F572572017.jpg%3Fk%3D01c62079d76d73f4ee51be44db0a500660cc6b11cdca1e28178cda62c7fac087%26o%3D&tbnid=2MramJBDJhO1AM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Flegend-saigon.vi.html&docid=HG8HnKiMSqn41M&w=1024&h=683",
+    "position": 5
+   },
+   {
+    "title": "Giới thiệu KHÁCH SẠN LOTTE SÀI GÒN - KHÁCH SẠN LOTTE SÀI GÒN",
+    "imageUrl": "https://img.lottehotel.com/cms/asset/2025/01/31/2079/6649-3-2000-mai-LTHO.webp",
+    "imageWidth": 2000,
+    "imageHeight": 1125,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxbip9_Q--ty1hCG7rfqiFF5hnlP0Aczx_q6iHF9LmaA&s=10",
+    "thumbnailWidth": 597,
+    "thumbnailHeight": 335,
+    "source": "www.lottehotel.com",
+    "domain": "www.lottehotel.com",
+    "link": "https://www.lottehotel.com/saigon-hotel/vi/about/information",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimg.lottehotel.com%2Fcms%2Fasset%2F2025%2F01%2F31%2F2079%2F6649-3-2000-mai-LTHO.webp&tbnid=TkMMtqPhjv1u6M&imgrefurl=https%3A%2F%2Fwww.lottehotel.com%2Fsaigon-hotel%2Fvi%2Fabout%2Finformation&docid=AD3E7TBvcPeFSM&w=2000&h=1125",
+    "position": 6
+   },
+   {
+    "title": "Lotte Hotel Saigon, TP. Hồ Chí Minh (cập nhật giá năm 2027)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/443443285.jpg?k=97e847733513b72842c9062d72eb0325702caa3cdb2794e2ebed9c66fbe8d066&o=",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQLPDv5CpHGIJ3fcVzsyMOG_DNt0jbKP4oGYKcgmZeP1w&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/legend-saigon.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F443443285.jpg%3Fk%3D97e847733513b72842c9062d72eb0325702caa3cdb2794e2ebed9c66fbe8d066%26o%3D&tbnid=pkmGi8KesRxSQM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Flegend-saigon.vi.html&docid=HG8HnKiMSqn41M&w=1024&h=683",
+    "position": 7
+   },
+   {
+    "title": "Khách sạn LOTTE Sài Gòn, Quận 1, Hồ Chí Minh",
+    "imageUrl": "https://q-xx.bstatic.com/xdata/images/hotel/max500/530202069.jpg?k=a23b522a7193e5de09ab7a8162d5381e8f625bf89820fb9f6f66250270489276&o=",
+    "imageWidth": 500,
+    "imageHeight": 375,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqBfchFDesxG9h4mLscCMW_9j65Pdwp9UcX7KvpFXrYA&s=10",
+    "thumbnailWidth": 499,
+    "thumbnailHeight": 375,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/lotte-legend-hotel-saigon/hotel/ho-chi-minh-city-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fq-xx.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax500%2F530202069.jpg%3Fk%3Da23b522a7193e5de09ab7a8162d5381e8f625bf89820fb9f6f66250270489276%26o%3D&tbnid=iyfP7-mCcoXezM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Flotte-legend-hotel-saigon%2Fhotel%2Fho-chi-minh-city-vn.html&docid=5b5J-SXq9i1-gM&w=500&h=375",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

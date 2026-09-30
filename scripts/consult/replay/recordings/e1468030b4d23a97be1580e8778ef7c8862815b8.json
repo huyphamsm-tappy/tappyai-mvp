@@ -1,0 +1,80 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "ĐỒ ĂN SƠ CHẾ SẴN ( Ship hỏa tốc Hà Nội )- 1KG site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:19:56.152Z",
+ "body": {
+  "searchParameters": {
+   "q": "ĐỒ ĂN SƠ CHẾ SẴN ( Ship hỏa tốc Hà Nội )- 1KG site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Đuôi trâu Cắt Khúc Làm Sạch Khay 1kg |Giao hỏa tốc HN",
+    "link": "https://www.lazada.vn/products/duoi-trau-cat-khuc-lam-sach-khay-1kg-giao-hoa-toc-hn-family-food-i2413600298.html?srsltid=AU7gw4WBFIeuIi3_Bti_ZL419Syic6XGygh5h8NLiZemjXparVr2Mmyh",
+    "snippet": "▪️ Đóng gói: 500gr. ▪️ Thành phần: 100% thịt nhập khẩu. ▪️ Bảo quản: -18 độ C (ngăn đông tủ lạnh).",
+    "position": 1
+   },
+   {
+    "title": "Thịt Đuôi heo 1kg _ Ship hỏa tốc 1h",
+    "link": "https://h5.lazada.vn/products/thit-duoi-heo-1kg-_-ship-hoa-toc-1h-i2216382458-s10598669639.html",
+    "snippet": "Đuôi heo là một phần ngon miệng của lợn và có thể được sử dụng để chế biến thành nhiều món ăn hấp dẫn. Dưới đây là một số món ăn phổ biến từ đuôi heo: - Xào ...",
+    "position": 2
+   },
+   {
+    "title": "Cánh Gà Khúc Giữa TB Food 650g Đóng Gói Tiện Lợi",
+    "link": "https://www.lazada.vn/products/canh-ga-khuc-giua-tb-food-650g-dong-goi-tien-loi-ship-hoa-toc-ha-noi-i2375005282.html?srsltid=AU7gw4VTrgM_wIx84gE1PzjVHebZ18oMopH1JdyP0bF2n4FJPR-GAAqW",
+    "snippet": "Cánh Gà Khúc Giữa TB Food 650g Đóng Gói Tiện Lợi - Ship Hỏa Tốc Hà Nội ... Rất tiếc, sản phẩm không thể giao đến địa chỉ này. Vui lòng chọn sản phẩm khác.",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 3
+   },
+   {
+    "title": "100% Bạch tuộc nhập khẩu | phù hợp lẩu, nướng BBQ ...",
+    "link": "https://h5.lazada.vn/products/bach-tuoc-do-nhat-nissi-100-bach-tuoc-nhap-khau-phu-hop-lau-nuong-bbq-sasimi-giao-hoa-toc-ha-noi-family-food-i2413548945.html",
+    "snippet": "▪️ Đóng gói: 500gr. ▪️ Thành phần: 100% Bạch tuộc đỏ nhập khẩu. ▪️ Bảo quản: -18 độ C (ngăn đông tủ lạnh).",
+    "position": 4
+   },
+   {
+    "title": "Khoai tây bổ múi cau Bỉ 1kg",
+    "link": "https://www.lazada.vn/products/khoai-tay-bo-mui-cau-bi-1kg-i2411122121.html?srsltid=AU7gw4VIT60rGlbX4kZBMYWvbF9QHTRopCisHigu875byY87EXTBqi9L",
+    "snippet": "Khoai tây bổ múi cau Bỉ 1kg ; Khoai Tây Cọng Bỉ Gói 1Kg ( Ship Now Hà Nội). 68.200 ₫ ; Ngô nếp bung Điện Biên 1KG. 28.900 ₫ ; Bột ớt cay tê 1+2 ướp đồ nướng, rắc ...",
+    "position": 5
+   },
+   {
+    "title": "Chả mực xoắn 500g , Hàng lacusina, chiên, rán, thả lâu ...",
+    "link": "https://www.lazada.vn/products/cha-muc-xoan-500g-hang-lacusina-chien-ran-tha-lau-sieu-ngon-giao-hang-ha-noi-i2291887927.html?srsltid=AU7gw4Ws5zx4kT9alqyvIWjfPFzD9xCy1c7rz2Cvh1jI52qxzD3IK5Wy",
+    "snippet": "Ngô nếp bung Điện Biên 1KG · Cùi bưởi khử đắng, tẩm bột sẵn 1kg, siêu ngon, tiện lợi · Bột ớt cay tê 1+2 ướp đồ nướng, rắc đồ ăn, pha.",
+    "rating": 5,
+    "ratingCount": 21,
+    "position": 6
+   },
+   {
+    "title": "Sữa tươi chiên giòn, bánh sữa tươi siêu ngon (Hỏa tốc 1-3H)",
+    "link": "https://www.lazada.vn/products/sua-tuoi-chien-gion-banh-sua-tuoi-sieu-ngon-hoa-toc-1-3h-i2292086937.html?srsltid=AU7gw4Wp7wjmVHT3jmWed5z3ixYXGz-Yf4nTGgWL6fWSFXbm-g0mAYeY",
+    "snippet": "Sữa tươi chiên giòn, bánh sữa tươi siêu ngon (Hỏa tốc 1-3H) ; Ngô nếp bung Điện Biên 1KG. 28.900 ₫ ; Cùi bưởi khử đắng, tẩm bột sẵn 1kg, siêu ngon, tiện lợi.",
+    "rating": 5,
+    "ratingCount": 3,
+    "position": 7
+   },
+   {
+    "title": "Rau tiến vua khô 1kg, hàng loại 1, rau cung đình, rau cần ...",
+    "link": "https://h5.lazada.vn/products/rau-tien-vua-kho-1kg-hang-loai-1-rau-cung-dinh-rau-can-bien-dai-gion-xanh-muot-dung-tron-goi-i2213940626.html",
+    "snippet": "Chợ Thảo Dược Việt chuyên cung cấp các sản phẩm: · - Bột gia vị, bột thảo mộc, bột làm đẹp · - Trà hoa, trà thảo mộc khô · - Hạt dinh dưỡng, nguyên liệu làm bánh, ...",
+    "rating": 5,
+    "ratingCount": 7,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

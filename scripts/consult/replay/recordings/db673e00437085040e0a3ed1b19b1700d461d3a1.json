@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"QUÁN THUỲ LINH\" OR \"BIA TUYẾT Q9\" OR \"Cửu Vân Quán\" Bình Thạnh site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:08:00.212Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"QUÁN THUỲ LINH\" OR \"BIA TUYẾT Q9\" OR \"Cửu Vân Quán\" Bình Thạnh site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Quán Thuỳ Linh Ung Văn Khiêm",
+    "link": "https://www.tiktok.com/discover/qu%C3%A1n-thu%E1%BB%B3-linh-ung-v%C4%83n-khi%C3%AAm",
+    "snippet": "Quán Thuỳ Linh Ung Văn Khiêm. Khám phá hành trình kiên trì và giá trị bản ... Top Quán Nhậu Bình Thạnh: 25+ Địa Điểm Ngồi Ngon Rẻ Để Chill. Khám phá ...",
+    "position": 1
+   },
+   {
+    "title": "B.i.a Tuyết Q9: không gian rộng thoáng, cũng khá đông ...",
+    "link": "https://www.tiktok.com/@tuanquanxa/video/7644075929903385877",
+    "snippet": "205 Lượt thích,25 Bình luận.Video TikTok từ Tuấn Quán Xá (@tuanquanxa): \"B.i.a Tuyết Q9: không gian rộng thoáng, cũng khá đông khách.",
+    "position": 2
+   },
+   {
+    "title": "Quán 25 Năm Bên Bờ Đêm Và Ánh Sáng",
+    "link": "https://www.tiktok.com/@dicungphuc/video/7535065854396976392",
+    "snippet": "... giúp - TikTok. Khám phá quán 25 năm phục vụ suốt đêm tại Bình Thạnh. Đừng bỏ lỡ. @Đi Cùng Phúc · My Coffee · QUÁN THUỲ LINH Restaurant · author.",
+    "position": 3
+   },
+   {
+    "title": "10 Days: KangNamBiz at Quán Nhậu Bình Thạnh",
+    "link": "https://www.tiktok.com/@biatuyetq9thuduc/video/7689539027720064263",
+    "snippet": "Quán nhậu bình dân tại Bình Thạnh: địa chỉ, món nhậu và bia Tuyết Q9 Tóm tắt nhanh Quán nhậu bình dân ở Bình Thạnh thường phục vụ các món nhậu ...",
+    "position": 4
+   },
+   {
+    "title": "Kangnam Garden Ung Văn Khiêm - Quán mới hoành tráng ...",
+    "link": "https://www.tiktok.com/@tuanquanxa/video/7684570646562508053",
+    "snippet": "Theo thông tin kèm theo, địa điểm trước đây là Bia Tuyết Q9 Ung Văn Khiêm đang “biến hình” thành Kangnam Garden, hứa hẹn mang lại không gian sôi ...",
+    "position": 5
+   },
+   {
+    "title": "Địa điểm mới có team mê lai rai khuya ngay khu Bình ...",
+    "link": "https://www.tiktok.com/@vivucungbum/video/7675701362197400850",
+    "snippet": "Địa điểm mới có team mê lai rai khuya ngay khu Bình Thạnh nè. Đặc biệt giá còn cực kì mềm nữa ... QUÁN THUỲ LINH Restaurant · author. 5044 · 115.",
+    "position": 6
+   },
+   {
+    "title": "Địa điểm xem bóng đá sôi động tại BÌNH THẠNH 🍻🍻 ...",
+    "link": "https://www.tiktok.com/@biatuyetq9thuduc/video/7664538472144833810",
+    "snippet": "... chungketworldcup2026 #WorldCup2026. @QUÁN NHẬU BIA TUYẾT · âm thanh gốc - BIA TUYẾT BÌNH THẠNH · BIA TUYẾT Q9 - Ung Văn Khiêm Restaurant.",
+    "position": 7
+   },
+   {
+    "title": "Bia Tuyết Q9 review",
+    "link": "https://www.tiktok.com/@biatuyetq9thuduc2/video/7688662027522346258",
+    "snippet": "285 Lượt thích,25 Bình luận.Video TikTok từ BIA TUYẾT GÌ VẬY? (@biatuyetq9thuduc2): \"Video review presenting Bia Tuyết Q9.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

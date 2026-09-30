@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Ốp lưng UAG Pathfinder ... site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:41:00.084Z",
+ "body": {
+  "searchParameters": {
+   "q": "Ốp lưng UAG Pathfinder ... site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Ốp lưng UAG Pathfinder SE MagSafe cho các mẫu iPhone ...",
+    "link": "https://shop.tiktok.com/vn/pdp/op-lung-uag-pathfinder-se-magsafe-cho-iphone-17-16-15-14-13-pro-max-chong-soc-hieu-qua-ho-tro-sac-kh/1734028380792587689",
+    "snippet": "Ốp lưng mới UAG cho iPhone 17 Pro Max, 16 Pro Max, 15 Plus, 14 Pro, 13, 12, 11 Pro Max và Plus, cũng như mẫu Plasma XTE Pathfinder, với pin sạc lại được.",
+    "position": 1
+   },
+   {
+    "title": "Ốp lưng UAG Pathfinder / Civilian / Monarch Pro Orange ...",
+    "link": "https://shop.tiktok.com/vn/pdp/op-lung-uag-pathfinder-civilian-monarch-pro-cho-iphone-17-pro/1733176050366645726",
+    "snippet": "Ốp lưng UAG Pathfinder / Civilian / Monarch Pro Orange phiên bản đặc biệt dành cho Ốp lưng cho iPhone 17 Series - UAG PathfinderTính năngKhả năng chống sốc ...",
+    "position": 2
+   },
+   {
+    "title": "ốp lưng uag 17 pro max màu cam",
+    "link": "https://shop.tiktok.com/vn/k/op-lung-uag-17-pro-max-mau-cam",
+    "snippet": "Ốp lưng UAG Pathfinder / Civilian / Monarch Pro Orange phiên bản đặc biệt dành cho iPhone 17 Pro / iPhone 17 Pro Max. 5. 53 sold. ₫1.620.000. ₫2.100.000 ...",
+    "position": 3
+   },
+   {
+    "title": "Ốp Trong Suốt, UAG Pathfinder Chính Hãng, Có Magsafe, ...",
+    "link": "https://shop.tiktok.com/vn/pdp/op-trong-suot-uag-pathfinder-cho-iphone-16e-chong-roi-magsafe/1731370211097609476",
+    "snippet": "Mua Ốp Trong Suốt, UAG Pathfinder Chính Hãng, Có Magsafe, Dành Cho iPhone 16e, Chống Rơi Cấp Độ Quân đội Chắc Chắn, Vỏ Bảo Vệ Trong Suốt trên TikTok Shop.",
+    "rating": 4,
+    "ratingCount": 3,
+    "position": 4
+   },
+   {
+    "title": "ốp lưng uag monarch 17 promax kevlar black",
+    "link": "https://shop.tiktok.com/vn/k/op-lung-uag-monarch-17-promax-kevlar-black",
+    "snippet": "Ốp lưng UAG Pathfinder / Civilian / Monarch Pro Orange phiên bản đặc biệt dành cho iPhone 17 Pro / iPhone 17 Pro Max · Ốp lưng UAG Pathfinder / Civilian / ...",
+    "position": 5
+   },
+   {
+    "title": "Uag case on iphone 17 pro max",
+    "link": "https://shop.tiktok.com/vn/k/uag-case-on-iphone-17-pro-max",
+    "snippet": "[iPhone 17 Pro Max] Ốp lưng chống sốc UAG, chống sốc chuẩn quân đội, Thiết Kế Tactical, Chống Sốc 7.6 Mét, Cấu Trúc Composite Siêu Nhẹ, Tương Thích Sạc Từ ...",
+    "position": 6
+   },
+   {
+    "title": "uag monarch pro crimson iphone 17 pro max",
+    "link": "https://shop.tiktok.com/vn/k/uag-monarch-pro-crimson-iphone-17-pro-max",
+    "snippet": "Ốp lưng UAG Pathfinder / Civilian / Monarch Pro Orange phiên bản đặc biệt dành cho iPhone 17 Pro / iPhone 17 Pro Max. 5. 53 sold. ₫1.620.000. ₫2.100.000 ...",
+    "position": 7
+   },
+   {
+    "title": "magsafe wallet 17 pro max",
+    "link": "https://shop.tiktok.com/vn/k/magsafe-wallet-17-pro-max",
+    "snippet": "Ốp lưng Magsafe iPhone 17 Pro Max UAG Pathfinder - Bảo hành 12 tháng chính hãng.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

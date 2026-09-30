@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "laptop đồ họa dưới 20 triệu hàng mới (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:26:01.612Z",
+ "body": {
+  "searchParameters": {
+   "q": "laptop đồ họa dưới 20 triệu hàng mới (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Laptop dưới 20 triệu | Thiết kế sang trọng, mạnh mẽ, bền bỉ",
+    "link": "https://cellphones.com.vn/bo-loc/laptop-tu-15-20-trieu",
+    "snippet": "MacBook Neo 13 inch A18 Pro 2026 6CPU 5GPU 8GB 256GB | Chính hãng Apple Việt Nam · 18.990.000đ. 19.490.000đ · 3% ; Laptop MSI Modern 15 F1MG-1225VN · 19.190.000đ.",
+    "position": 1
+   },
+   {
+    "title": "Laptop đồ hoạ giá rẻ | Cấu hình mạnh, màu sắc chân thật",
+    "link": "https://cellphones.com.vn/laptop/do-hoa.html",
+    "snippet": "- Laptop ASUS TUF Dash F15 FX517ZC-HN077W - Giá từ 23.990.000 đồng. - Laptop Asus Rog Strix G15 G513IM HN008W - Giá từ 28.490.000 đồng. - Laptop Lenovo Thinkpad ...",
+    "position": 2
+   },
+   {
+    "title": "Laptop dưới 25 triệu | Hiệu năng mạnh mẽ, cấu hình ấn ...",
+    "link": "https://cellphones.com.vn/bo-loc/laptop-tu-20-25-trieu",
+    "snippet": "Hãng sản xuất. Dell; Lenovo; HP · Nhu cầu sử dụng. Học tập - Văn phòng; Cao cấp - Sang trọng; Mỏng nhẹ · CPU. Intel Core i3; Intel Core i5 · Dung lượng RAM. 4GB",
+    "position": 3
+   },
+   {
+    "title": "Laptop dưới 30 triệu | Thiết kế mỏng nhẹ, hiệu năng khủng",
+    "link": "https://cellphones.com.vn/bo-loc/laptop-tu-25-30-trieu",
+    "snippet": "Hãng sản xuất. Dell; Lenovo; HP · Nhu cầu sử dụng. Học tập - Văn phòng; Cao cấp - Sang trọng; Mỏng nhẹ · CPU. Intel Core i3; Intel Core i5 · Dung lượng RAM. 4GB",
+    "position": 4
+   },
+   {
+    "title": "Laptop dưới 10 triệu cấu hình mạnh mẽ, hiệu năng vượt trội",
+    "link": "https://cellphones.com.vn/bo-loc/laptop-duoi-10-trieu",
+    "snippet": "Laptop Dell 14 DC14250 DC4C5375W1 - Bảo hành 2 năm · Học tập - Văn phòng · Cao cấp - Sang trọng · Mỏng nhẹ · Gaming · Đồ họa - Kỹ thuật · Laptop sáng tạo nội dung.",
+    "position": 5
+   },
+   {
+    "title": "Laptop dưới 15 triệu | Hiệu năng mạnh mẽ, cấu hình nổi bật",
+    "link": "https://cellphones.com.vn/bo-loc/laptop-tu-10-15-trieu",
+    "snippet": "Hãng sản xuất. Dell; Lenovo; HP · Nhu cầu sử dụng. Học tập - Văn phòng; Cao cấp - Sang trọng; Mỏng nhẹ · CPU. Intel Core i3; Intel Core i5 · Dung lượng RAM. 4GB",
+    "position": 6
+   },
+   {
+    "title": "Top laptop dưới 20 triệu, chơi game đỉnh, đồ họa ngon ...",
+    "link": "https://cellphones.com.vn/sforum/top-laptop-gaming-hieu-nang-cao-duoi-20-trieu",
+    "snippet": "Top 5 laptop dưới 20 triệu ngon nhất tầm giá · ASUS TUF Gaming A15 FA506NFR - Gaming ngon bổ rẻ · Lenovo LOQ 15ARP9 - \"Chân ái\" của sinh viên.",
+    "date": "26 thg 3, 2025",
+    "position": 7
+   },
+   {
+    "title": "Đây là 5 laptop đồ họa dưới 25 triệu đang cân nhắc trong ...",
+    "link": "https://cellphones.com.vn/sforum/laptop-do-hoa-duoi-25-trieu",
+    "snippet": "Top 5 laptop đồ họa dưới 25 triệu đang cân nhắc · Laptop Gigabyte G5 MF-E2VN333SH · Laptop ASUS Gaming ROG Strix G15 G513IH-HN015T · Laptop Acer Nitro 5 Eagle ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

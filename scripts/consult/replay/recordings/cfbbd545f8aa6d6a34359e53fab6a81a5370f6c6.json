@@ -1,0 +1,66 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "HP ZBook Firefly 14 G7 i7-10510U Máy trạm di động 35,6 cm (14 ) Full HD Intel Core i7 16 GB DDR4-SDRAM 512 GB SSD NVIDIA Quadro P520 Wi-Fi 6 site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:13:58.219Z",
+ "body": {
+  "searchParameters": {
+   "q": "HP ZBook Firefly 14 G7 i7-10510U Máy trạm di động 35,6 cm (14 ) Full HD Intel Core i7 16 GB DDR4-SDRAM 512 GB SSD NVIDIA Quadro P520 Wi-Fi 6 site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Máy tính xách tay - TikTok Shop Vietnam",
+    "link": "https://shop.tiktok.com/vn/c/laptops/601756",
+    "snippet": "[Full HD] [Qua sử dụng] Laptop HP Elitebook 820G3 Core i5/i7 ram 8GB DDR4 SSD 256GB nhỏ gọn mạnh mẽ 5.0 2 đã bán 3.570.000₫",
+    "position": 1
+   },
+   {
+    "title": "Mô hình cối xay gió điện gió năng lượng mặt trời - TikTok ...",
+    "link": "https://shop.tiktok.com/vn/pdp/mo-hinh-coi-xay-gio-nang-luong-mat-troi-hien-dai-tien-dung/1731269665250772189",
+    "snippet": "Mua Mô hình cối xay gió điện gió năng lượng mặt trời trên TikTok Shop. Săn giá siêu hời cho Đồ chơi xây dựng và được freeship mặt hàng đủ điều kiện. Mua sắm ngay để nhận ưu đãi độc quyền!",
+    "position": 2
+   },
+   {
+    "title": "[ FS ] Nồi chiên không dầu 6L Bear QZG-H16K5 (AF-4H16K ...",
+    "link": "https://shop.tiktok.com/vn/pdp/noi-chien-khong-dau-bear-6-2l-1600w-thiet-ke-4d-2-toc-do-gio/1731679116515378830",
+    "snippet": "Mua [ FS ] Nồi chiên không dầu 6L Bear QZG-H16K5 (AF-4H16K) | 1600W - Thiết kế 4D - 2 Tốc độ gió mềm & giòn - Bảo hành 18 tháng trên TikTok Shop. Săn giá siêu hời cho Nồi chiên không dầu và được freeship mặt hàng đủ điều kiện. Mua sắm ngay để nhận ưu đãi độc quyền!",
+    "position": 3
+   },
+   {
+    "title": "Đèn Pin F35 Led lazer zoom tỏa siêu sáng - còi báo động - cắt ...",
+    "link": "https://shop.tiktok.com/vn/pdp/den-pin-f35-sieu-sang-led-lazer-khang-nuoc-6-che-do-sang/1733437594110559335",
+    "snippet": "Mua Đèn Pin F35 Led lazer zoom tỏa siêu sáng - còi báo động - cắt dây an toàn - phá kính - cod led – sạc cho điện thoại - 6 chế độ sáng - kháng nước trên TikTok Shop. Săn giá siêu hời cho Đèn di động và được freeship mặt hàng đủ điều kiện. Mua sắm ngay để nhận ưu đãi độc quyền!",
+    "position": 4
+   },
+   {
+    "title": "[ĐÃ QUA SỬ DỤNG] Fujitsu Arrows Tab Q507, Q508, Q509 Laptop 2 ...",
+    "link": "https://shop.tiktok.com/vn/pdp/laptop-2-in-1-fujitsu-q507-cam-ung-hd-ram-4gb-ssd-64-128gb/1729581215920392578",
+    "snippet": "Mua [ĐÃ QUA SỬ DỤNG] Fujitsu Arrows Tab Q507, Q508, Q509 Laptop 2 in 1 RAM 4Gb SSD 64/128Gb Nhật Bản trên TikTok Shop. Săn giá siêu hời cho Máy tính xách tay và được freeship mặt hàng đủ điều kiện. Mua sắm ngay để nhận ưu đãi độc quyền!",
+    "position": 5
+   },
+   {
+    "title": "Giá Đỡ Laptop Xoay 360°: L08 Swivel Laptop Stand 16'' – Kim ...",
+    "link": "https://shop.tiktok.com/vn/pdp/gia-do-laptop-xoay-360deg-l08-dieu-chinh-do-cao-phu-hop-moi-laptop/1733547343557658525",
+    "snippet": "Mua Giá Đỡ Laptop Xoay 360°: L08 Swivel Laptop Stand 16'' – Kim Loại Chắc Chắn, Điều Chỉnh Độ Cao, Phù Hợp Laptop, Máy Tính Bảng - Gà Lót Chuột trên TikTok Shop. Săn giá siêu hời cho Giá đỡ & Khay để máy tính xách tay và được freeship mặt hàng đủ điều kiện. Mua sắm ngay để nhận ưu đãi độc quyền!",
+    "position": 6
+   },
+   {
+    "title": "Giá đỡ LAPTOP, MACBOOK, IPAD bằng nhôm có thể điều chỉnh được ...",
+    "link": "https://shop.tiktok.com/vn/pdp/gia-do-laptop-nhom-cao-cap-co-the-dieu-chinh-do-cao-tan-nhiet-tot/1729644173859719730",
+    "snippet": "Mua Giá đỡ LAPTOP, MACBOOK, IPAD bằng nhôm có thể điều chỉnh được độ cao, đế tản nhiệt kê laptop nhôm trên TikTok Shop. Săn giá siêu hời cho Giá đỡ & Khay để máy tính xách tay và được freeship mặt hàng đủ điều kiện. Mua sắm ngay để nhận ưu đãi độc quyền!",
+    "position": 7
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "ốp UAG pathfinder magsafe iPhone 17 (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:25:42.945Z",
+ "body": {
+  "searchParameters": {
+   "q": "ốp UAG pathfinder magsafe iPhone 17 (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Pathfinder ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-17-pro-max-uag-pathfinder-with-magsafe.html",
+    "snippet": "Dùng được cho. iPhone 17 Pro Max. Tính năng. Tương thích với MagSafe. Chống rơi từ độ cao 5.5m. Kết cấu nhẹ với lõi mềm chống va đập, bảo vệ đáng tin cậy",
+    "position": 1
+   },
+   {
+    "title": "Ốp lưng chống sốc UAG Pathfinder Magsafe cho iPhone ...",
+    "link": "https://shopee.vn/%E1%BB%90p-l%C6%B0ng-ch%E1%BB%91ng-s%E1%BB%91c-UAG-Pathfinder-Magsafe-cho-iPhone-17-Series-i.16461019.42419322697",
+    "snippet": "Mua Ốp lưng chống sốc UAG Pathfinder Magsafe cho iPhone 17 Series giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn lại ...",
+    "position": 2
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro UAG chống sốc Pathfinder With ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-17-pro-uag-pathfinder-with-magsafe.html",
+    "snippet": "Ốp lưng iPhone 17 Pro UAG Pathfinder With Magsafe đạt chuẩn 18 FT Drop Protection, giảm thiểu hư hại khi rơi rớt nhờ kháng sốc 3X tiêu chuẩn quân đội.",
+    "position": 3
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro UAG chống sốc Pathfinder Clear ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-17-pro-uag-pathfinder-clear-with-magsafe.html",
+    "snippet": "Dùng được cho. iPhone 17 Pro. Tính năng. Tương thích MagSafe. Cấu trúc Composite siêu nhẹ. Khả năng chống va đập vượt trội. Bảo vệ chống rơi từ độ cao 18 ft ...",
+    "position": 4
+   },
+   {
+    "title": "Ốp lưng UAG cho iPhone 17 Series",
+    "link": "https://cellphones.com.vn/phu-kien/bao-da-op-lung/iphone/iphone-17/uag.html",
+    "snippet": "Ốp lưng UAG iPhone 17 Series · Hỗ trợ sạc không dây/MagSafe · Mỏng nhẹ · Chống sốc, va đập · Chống trầy xước · Có chân đứng · Hạn chế ngã màu.",
+    "position": 5
+   },
+   {
+    "title": "Ốp lưng iPhone 13 Pro Max UAG Pathfinder hỗ trợ sạc Magsafe",
+    "link": "https://cellphones.com.vn/so-sanh/op-lung-iphone-13-pro-max-uag-pathfinder-with-magsafe",
+    "snippet": "So sánh chi tiết về giá, cấu hình, ưu nhược điểm giữa: Ốp lưng iPhone 13 Pro Max UAG Pathfinder hỗ trợ sạc Magsafe.",
+    "position": 6
+   },
+   {
+    "title": "Ốp UAG Pathfinder Clear Magsafe iPhone 17 Pro",
+    "link": "https://shopee.vn/%E1%BB%90p-l%C6%B0ng-Pathfinder-Clear-Case-cho-d%C3%B2ng-17-Pro-6.3-inch--i.133330086.55304927929",
+    "snippet": "Mua Ốp UAG Pathfinder Clear Magsafe iPhone 17 Pro - Hàng Chính Hãng giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn ...",
+    "position": 7
+   },
+   {
+    "title": "So sánh Ốp lưng UAG chống sốc Pathfinder cho Apple ...",
+    "link": "https://cellphones.com.vn/so-sanh/op-lung-uag-chong-soc-pathfinder-cho-apple-iphone-11-vs-vong-deo-tay-thong-minh-huawei-band-8",
+    "snippet": "... UAG Mouve With Magsafe. Giá niêm yết: 1.800.000. Giá khuyến mãi: 1.620.000. + Chọn để so sánh. Ốp lưng iPhone 17 ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

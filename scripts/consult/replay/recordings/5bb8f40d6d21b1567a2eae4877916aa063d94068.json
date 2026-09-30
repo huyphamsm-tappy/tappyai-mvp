@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Chùa Xá Lợi\" OR \"Chùa Phước Viên\" OR \"Chùa Phổ Quang\" Núi Bà Đen site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:38:52.853Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Chùa Xá Lợi\" OR \"Chùa Phước Viên\" OR \"Chùa Phổ Quang\" Núi Bà Đen site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Ngôi Chùa Bình Yên & Linh Thiêng cầu đi nước ngoài",
+    "link": "https://www.tiktok.com/@otit2404/video/7682425085373779207",
+    "snippet": "Chùa Phổ Quang được giới thiệu là một trong những ngôi chùa phù hợp: không gian thanh tịnh, phù hợp để tụng niệm và tìm sự an yên. Tính linh ...",
+    "position": 1
+   },
+   {
+    "title": "43 Tr, sở hữu ngày bộ salon siêu to ...",
+    "link": "https://www.tiktok.com/@dangvanphuc70tn/video/7432166452800638226",
+    "snippet": "Chùa Xá Lợi là ngôi chùa lầu đầu tiên tại TP.HCM, tọa lạc số 89 Bà Huyện Thanh Quan, Quận 3. Chùa khởi công năm 1956 và ban đầu có tên \"chùa thờ ...",
+    "position": 2
+   },
+   {
+    "title": "Hướng dẫn đến Chùa Gò Kén Tây Ninh",
+    "link": "https://www.tiktok.com/@tieu_phiphi82/video/7585493380478569749",
+    "snippet": "Chùa Phổ Quang Bến Cát Bình Dương · Chùa Vạn Đức · Giờ Mở Cửa Chùa Châu Thới Bình Dương · Chùa An Lạc Trung Giã Sóc Sơn · Chùa Bình Long Bình ...",
+    "position": 3
+   },
+   {
+    "title": "Lễ Quy Y Tam Bảo Nhân Mùa Phật Đản Tại Chùa Phổ Quang",
+    "link": "https://www.tiktok.com/@chiphat0911/photo/7640665838764215560?image_index=13",
+    "snippet": "Lễ Quy Y Tam Bảo Nhân Mùa Phật Đản Tại Chùa Phổ Quang. Tham gia lễ quy y tam bảo, trở thành phật tử chân chính, và tìm hiểu ý nghĩa của 5 giới cấm tại chùa Phổ ...",
+    "position": 4
+   },
+   {
+    "title": "Ai chưa biết cách Xin Xăm 🙏 thì lưu lại nha 🥰 # ...",
+    "link": "https://www.tiktok.com/@tronviec.official/video/7337315075557985554",
+    "snippet": "Xin Xăm Núi Bà Đen · Hình Xăm Về Bà Nội ... chùa Xá Lợi chùa Vĩnh Nghiêm chùa Vạn Phật chùa Phổ Quang chùa Ông chùa Ngọc Hoàng chùa Giác Lâm...",
+    "position": 5
+   },
+   {
+    "title": "Cốc tẩy bồn cầu #coctayboncau #vienthaboncau ...",
+    "link": "https://www.tiktok.com/@bookholic1909/video/7661629092160097557",
+    "snippet": "... Chùa Phổ Quang ( Kiên Lương ) 19/7 AL - Chùa Ngọc Bửu Hương ( RG ) 20/7 AL - Chùa Vạn Hoà ( Hà Tiên ) 20/7 AL - Chùa Bửu Sơn ( An Biên ) 20 ...",
+    "position": 6
+   },
+   {
+    "title": "Amazing Bay: Mua 3 Tặng 1 & Mã Giảm Giá 5-7%",
+    "link": "https://www.tiktok.com/@otit2404/video/7653872768794053906",
+    "snippet": "Chùa Phổ Quang được giới thiệu là một trong những ngôi chùa phù hợp: không gian thanh tịnh, phù hợp để tụng niệm và tìm sự an yên. Tính linh ...",
+    "position": 7
+   },
+   {
+    "title": "Lễ Phật Đản chùa Thiền Lâm Gò Kén mn tập trung về đông ...",
+    "link": "https://www.tiktok.com/@hannonha/video/7674607820402199815",
+    "snippet": "... Chùa Phổ Quang ( Kiên Lương ) 19/7 AL - Chùa Ngọc Bửu Hương ( RG ) 20/7 AL - Chùa Vạn Hoà ( Hà Tiên ) 20/7 AL - Chùa Bửu Sơn ( An Biên ) 20 ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

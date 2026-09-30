@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"QUÁN 366| QUÁN NHẬU BÙI ĐÌNH TUÝ| QUÁN NHẬU BÌNH THẠNH\" OR \"Quán Thu Hòa\" OR \"QUÁN THUỲ LINH\" Bình Thạnh site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:33:41.940Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"QUÁN 366| QUÁN NHẬU BÙI ĐÌNH TUÝ| QUÁN NHẬU BÌNH THẠNH\" OR \"Quán Thu Hòa\" OR \"QUÁN THUỲ LINH\" Bình Thạnh site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Quán Thuỳ Linh Ung Văn Khiêm",
+    "link": "https://www.tiktok.com/discover/qu%C3%A1n-thu%E1%BB%B3-linh-ung-v%C4%83n-khi%C3%AAm",
+    "snippet": "Quán Thuỳ Linh Ung Văn Khiêm. Khám phá hành trình kiên trì và giá trị bản ... Top Quán Nhậu Bình Thạnh: 25+ Địa Điểm Ngồi Ngon Rẻ Để Chill. Khám phá ...",
+    "position": 1
+   },
+   {
+    "title": "Quán 25 Năm Bên Bờ Đêm Và Ánh Sáng",
+    "link": "https://www.tiktok.com/@dicungphuc/video/7535065854396976392",
+    "snippet": "... giúp - TikTok. Khám phá quán 25 năm phục vụ suốt đêm tại Bình Thạnh. Đừng bỏ lỡ. @Đi Cùng Phúc · My Coffee · QUÁN THUỲ LINH Restaurant · author.",
+    "position": 2
+   },
+   {
+    "title": "Địa điểm mới có team mê lai rai khuya ngay khu Bình ...",
+    "link": "https://www.tiktok.com/@vivucungbum/video/7675701362197400850",
+    "snippet": "Địa điểm mới có team mê lai rai khuya ngay khu Bình Thạnh nè. Đặc biệt giá còn cực kì mềm nữa ... QUÁN THUỲ LINH Restaurant · author. 5044 · 115.",
+    "position": 3
+   },
+   {
+    "title": "5 năm rưỡi không nhậu, hẹn sau 6h",
+    "link": "https://www.tiktok.com/@q.thuylinh23/video/7628586060963941652",
+    "snippet": "Chia sẻ kinh nghiệm cai nhậu 5 năm rưỡi và lời khuyên về thời gian hẹn. @q.thuylinh · âm thanh gốc - AIR Vinahouse · QUÁN THUỲ LINH · author.",
+    "position": 4
+   },
+   {
+    "title": "Nhậu thâu đêm vì thèm, không phải vì buồn",
+    "link": "https://www.tiktok.com/@q.thuylinh23/video/7628809485041093909",
+    "snippet": "... nhậu thâu đêm. Không phải lúc nào cũng là buồn. @q.thuylinh · Lỗi Lầm Em Mang Đi x Đừng Bận Tâm Anh (TN Remix) · QUÁN THUỲ LINH · author. 86 · 0.",
+    "position": 5
+   },
+   {
+    "title": "Bánh Mì Nướng Sốt Bơ Chảy Độc Đáo",
+    "link": "https://www.tiktok.com/@t.h.u.y_l.i.n.h_/video/7616593215923227925",
+    "snippet": "... bình tân, bánh mì nướng nguyên thị tu, quán thuỳ linh bánh mì, bánh mì bình tân ngon, bánh mì nướng sốt bơ, ăn vặt thùy linh, bánh mì sốt bơ ...",
+    "position": 6
+   },
+   {
+    "title": "Lần đầu thử bánh đa cua bún cá ngon tại quận Thủ Đức",
+    "link": "https://www.tiktok.com/@cobelolem195/video/7514245492092570901",
+    "snippet": "Theo tôi ở SG thì quán Thuỳ Linh vẫn có nét riêng ngon nhất . 2025-8-23Trả lời.",
+    "position": 7
+   },
+   {
+    "title": "Kèm quà tặng#nguyenuyen #xuhuongtiktok",
+    "link": "https://www.tiktok.com/@tuuyen1012/video/7672772124381121799?lang=my-MM",
+    "snippet": "... thành Quán Thuỳ Linh đang nhận được nhiều tình cảm: quá trời khách, toàn khách dễ thương, luôn ủng hộ và còn tặng quà cho chủ quán. Thông ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

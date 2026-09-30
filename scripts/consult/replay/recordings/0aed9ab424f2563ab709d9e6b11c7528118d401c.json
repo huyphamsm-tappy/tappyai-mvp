@@ -1,0 +1,48 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Lenovo V15 G4 IRU 83A100PMVN\" site:cellphones.com.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:04:35.901Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Lenovo V15 G4 IRU 83A100PMVN\" site:cellphones.com.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Laptop Lenovo V15 G4 IRU 83A100PMVN | Giá rẻ, trả góp ...",
+    "link": "https://cellphones.com.vn/laptop-lenovo-v15-g4-iru-83a100pmvn.html",
+    "snippet": "Laptop Lenovo V15 G4 IRU 83A100PMVN được tích hợp CPU Intel Core i5-13420H kết hợp với RAM 16GB DDR4-3200, hỗ trợ xử lý các tác vụ nhanh chóng hơn. Kích thước ...",
+    "position": 1
+   },
+   {
+    "title": "Laptop Lenovo V15 G4 IRU 83A100PMVN - Cũ Đẹp | Giá rẻ",
+    "link": "https://cellphones.com.vn/laptop-lenovo-v15-g4-iru-83a100pmvn-cu-dep.html",
+    "snippet": "Laptop Lenovo V15 G4 IRU 83A100PMVN - Cũ Đẹp ; HSSV, Giáo viên đến 644.500đ ; Smember Giảm thêm đến 129.000đ ; Trả góp 0% ; Trả góp 0% ; Giá sản phẩm. 15.990.000đ ...",
+    "position": 2
+   },
+   {
+    "title": "Laptop Lenovo V15 G4 IRU 83A100PMVN - Cũ Trầy Xước",
+    "link": "https://cellphones.com.vn/laptop-lenovo-v15-g4-iru-83a100pmvn-cu-tray-xuoc.html",
+    "snippet": "Mua ngay Laptop Lenovo V15 G4 IRU 83A100PMVN cũ giá rẻ - Nguồn gốc rõ ràng, bảo hành 6-12 tháng, đổi mới 30 ngày, luôn xuất bán đầy đủ VAT.",
+    "position": 3
+   },
+   {
+    "title": "Laptop Lenovo IdeaPad Slim 3 15IAH8 83ER000EVN",
+    "link": "https://cellphones.com.vn/laptop-lenovo-ideapad-slim-3-15iah8-83er000evn-16gb-cu-tray-xuoc.html",
+    "snippet": "... lenovo-v15-g4-iru-83a100pmvn-cu-tray-xuoc.html. Em gửi link mình tham khảo sản phẩm, mình nhớ chọn khu vực của mình hiện tại của mình để đúng ưu đãi nhé. Thân ...",
+    "position": 4
+   }
+  ],
+  "credits": 1
+ }
+}

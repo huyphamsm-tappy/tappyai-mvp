@@ -1,0 +1,80 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Urban Armor Gear Ốp iPhone 11 Pro site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:19:37.190Z",
+ "body": {
+  "searchParameters": {
+   "q": "Urban Armor Gear Ốp iPhone 11 Pro site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Ốp Lưng iPhone 11 Pro UAG Plyo",
+    "link": "https://www.lazada.vn/products/op-lung-iphone-11-pro-uag-plyo-i2038473109.html?srsltid=AU7gw4X0NXfz9j_Vy85tvyezoe8yg5OvOC4DFNbtEnmwdpZgBvZh0LVH",
+    "snippet": "UAG Ốp viền TPU. Cam kết hàng đúng mô tả. Chất lượng đảm bảo An toàn đến Sức Khỏe người sử dụng. Đa dạng mẫu mã, màu sắc, kích cỡ.",
+    "position": 1
+   },
+   {
+    "title": "[HCM]ỐP LƯNG UAG CIVILIAN CHO IPHONE 11 PRO MAX",
+    "link": "https://www.lazada.vn/products/hcmop-lung-uag-civilian-cho-iphone-11-pro-max-iphone-11-iphone-11-pro-hang-chinh-hang-uag-thaibaotrading-i394154208.html?srsltid=AU7gw4XXHchwB27kaHssrMh4SVBxbtB3YNMPvV52BFtgBlHYJSRYXVUg",
+    "snippet": "Đặc điểm nổi bật. Vỏ giáp nhẹ; Cản va đập; Sốc hấp thụ lõi mềm; Các nút xúc giác quá khổ và dễ dàng truy cập vào màn hình cảm ứng và cổng ...",
+    "rating": 5,
+    "ratingCount": 12,
+    "position": 2
+   },
+   {
+    "title": "Ốp Lưng UAG Chống Va Đập Cho iPhone 11, 12, 13 Series An ...",
+    "link": "https://www.lazada.vn/products/pdp-i441188745.html?srsltid=AU7gw4VyLfAX7XVltXQVzoDNpRculkiUGxGK8hsH2TPUNVvZRlTRzkFq",
+    "snippet": "Sản phẩm ốp lưng sản xuất cho iPhone 11, 11 Pro, 11 Pro Max, 12 Mini, 12, 12 Pro, 12 Pro Max, 13 Mini, 13, 13 Pro, 13 Pro Max từ thương hiệu nổi tiếng UAG.",
+    "position": 3
+   },
+   {
+    "title": "Ốp Lưng UAG Chống Va Đập Cho iPhone 11, 12, 13 ...",
+    "link": "https://www.lazada.vn/products/op-lung-uag-chong-va-dap-cho-iphone-11-12-13-series-an-toan-tuyet-doi-i442590975.html?srsltid=AU7gw4XGPcWJmFIi6HoJaFw7yephr73wUJmA1gW4-USKQ0an228-fUCJ",
+    "snippet": "Sản phẩm ốp lưng sản xuất cho iPhone 11,11 Pro, 11 Pro Max, 12 Mini, 12,12 Pro, 12 Pro Max, 13 Mini, 13,13 Pro, 13 Pro Max từ thương hiệu nổi tiếng UAG. Họa ...",
+    "rating": 4.8,
+    "ratingCount": 10,
+    "position": 4
+   },
+   {
+    "title": "Ốp Lưng cho iPhone 11 Pro - UAG Monarch Series",
+    "link": "https://h5.lazada.vn/products/op-lung-cho-iphone-11-pro-uag-monarch-series-i1824463089-s8228081857.html",
+    "snippet": "Ốp lưng Monarch của UAG là dòng cao cấp của hãng này và được đánh giá là sản phẩm vua của ốp lưng. Cao cấp bởi đây là sản phẩm được làm hoàn toàn bằng thủ công, ...",
+    "position": 5
+   },
+   {
+    "title": "Ốp Lưng iPhone 14/14 Plus/14 Pro/14 Pro Max/13/ ...",
+    "link": "https://www.lazada.vn/products/op-lung-iphone-1414-plus14-pro14-pro-max1313-pro13-mini13-pro-max-uag-essential-armor-with-magsafe-series-i1539466933.html?srsltid=AU7gw4WJO2k4laok3K_vyrGRXHeab3H53aoh70bLyUHs3hW4kmFcdfp1",
+    "snippet": "UAG case là 1 trong những vỏ bảo vệ nhận được chứng nhận MIL-STD 810G 516.6 của Quân Đội Mỹ với các thử nghiệm quân sự khi rơi/thả nhưng vẫn bảo đảm thiết bị ...",
+    "position": 6
+   },
+   {
+    "title": "Ốp Lưng UAG Monarch Chống Va Đập Cho iPhone 11 / 12 ...",
+    "link": "https://www.lazada.vn/products/op-lung-uag-monarch-chong-va-dap-cho-iphone-11-12-13-series-an-toan-tuyet-doi-i442762223.html?srsltid=AU7gw4VUyBbG1vNJNQ35e8wKIIEdjRY1Fd0ponPXevay_todGX8kHZYv",
+    "snippet": "Ốp lưng chống va đập UAG cho iPhone 11, 12, 13 series với vật liệu composite dẻo dai, bảo vệ tối ưu 4 góc và cạnh máy. Cải tiến vượt trội từ thương hiệu nổi ...",
+    "rating": 5,
+    "ratingCount": 39,
+    "position": 7
+   },
+   {
+    "title": "[Lấy mã miễn phí vận chuyển] ỐP LƯNG CHỐNG SỐC ...",
+    "link": "https://www.lazada.vn/products/lay-ma-mien-phi-van-chuyen-op-lung-chong-soc-uag-cho-iphone-12-mini-den-12-pro-max-uag-civilian-11-sieu-dep-i1289372968.html?srsltid=AU7gw4WDIM8dHXRPHf2bcfv3rvJ72tadGaj--bZz6kC2sTZymxzwBFkT",
+    "snippet": "- Ốp UAG iphone có đủ các mã từ iphone XS Max, 11 pro, 11, 11promax, 12, 12promax... Sản phẩm có sẵn hàng và giao hàng nhanh chóng.",
+    "rating": 5,
+    "ratingCount": 6,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

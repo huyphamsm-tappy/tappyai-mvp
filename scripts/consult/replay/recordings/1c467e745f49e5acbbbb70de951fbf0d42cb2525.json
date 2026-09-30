@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "L'HÔTEL du LAC HANOI",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:14:02.053Z",
+ "body": {
+  "searchParameters": {
+   "q": "L'HÔTEL du LAC HANOI",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Khách sạn du Lac Hà Nội (L&#39;HÔTEL du LAC Hanoi) Hà Nội, Việt Nam:  Agoda.com có giá rẻ nhất",
+    "imageUrl": "https://pix10.agoda.net/hotelImages/34013977/0/8b7e27b9ff30d240e37af55fe17b23e0.jpg?ce=2&s=414x232",
+    "imageWidth": 154,
+    "imageHeight": 232,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzgtLtlYqXwyVxO7e1oMutOajFsY1bAaFZady0u9AqTg&s=10",
+    "thumbnailWidth": 154,
+    "thumbnailHeight": 232,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/l-hotel-du-lac-hanoi/hotel/hanoi-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F34013977%2F0%2F8b7e27b9ff30d240e37af55fe17b23e0.jpg%3Fce%3D2%26s%3D414x232&tbnid=R1hIsgrq5hniGM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fl-hotel-du-lac-hanoi%2Fhotel%2Fhanoi-vn.html&docid=Q1txPG9k2OGE4M&w=154&h=232",
+    "position": 1
+   },
+   {
+    "title": "L'HÔTEL DU LAC HANOI (Hà Nội) - Đánh giá Khách sạn & So sánh giá -  Tripadvisor",
+    "imageUrl": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2b/9c/37/fa/caption.jpg?w=900&h=500&s=1",
+    "imageWidth": 900,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIua1Gki4uOf7MN3ZLqyE5LUOV2VTtrh8QBhqoXRQyYA&s=10",
+    "thumbnailWidth": 599,
+    "thumbnailHeight": 333,
+    "source": "Tripadvisor",
+    "domain": "www.tripadvisor.com.vn",
+    "link": "https://www.tripadvisor.com.vn/Hotel_Review-g293924-d25168588-Reviews-L_HOTEL_du_LAC_Hanoi-Hanoi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdynamic-media-cdn.tripadvisor.com%2Fmedia%2Fphoto-o%2F2b%2F9c%2F37%2Ffa%2Fcaption.jpg%3Fw%3D900%26h%3D500%26s%3D1&tbnid=igH4XmMYXpxO2M&imgrefurl=https%3A%2F%2Fwww.tripadvisor.com.vn%2FHotel_Review-g293924-d25168588-Reviews-L_HOTEL_du_LAC_Hanoi-Hanoi.html&docid=szMQ5uy2doM44M&w=900&h=500",
+    "position": 2
+   },
+   {
+    "title": "Nhận xét về HÔTEL du LAC Hanoi, ưu đãi & hình ảnh 2026 - Expedia",
+    "imageUrl": "https://images.trvl-media.com/lodging/95000000/94600000/94594600/94594530/1775b8f2.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill",
+    "imageWidth": 767,
+    "imageHeight": 575,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-pFBFqGl6RUzrCdBIEpWiMdkPEiM2qasptF7KJ8sLnQ&s=10",
+    "thumbnailWidth": 516,
+    "thumbnailHeight": 387,
+    "source": "Expedia",
+    "domain": "www.expedia.com.vn",
+    "link": "https://www.expedia.com.vn/Hanoi-Khach-San-GRAND-HOTEL-Du-LAC-Hanoi.h94594530.Thong-tin-khach-san",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimages.trvl-media.com%2Flodging%2F95000000%2F94600000%2F94594600%2F94594530%2F1775b8f2.jpg%3Fimpolicy%3Dresizecrop%26rw%3D575%26rh%3D575%26ra%3Dfill&tbnid=rhs9Dt1pPEhzNM&imgrefurl=https%3A%2F%2Fwww.expedia.com.vn%2FHanoi-Khach-San-GRAND-HOTEL-Du-LAC-Hanoi.h94594530.Thong-tin-khach-san&docid=GXSMVQneXq7DUM&w=767&h=575",
+    "position": 3
+   },
+   {
+    "title": "Nhận xét về L'Hôtel du Lac Hà Nội , ưu đãi & hình ảnh 2026 - Expedia",
+    "imageUrl": "https://images.trvl-media.com/lodging/83000000/82990000/82988600/82988573/23d4fa71.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill",
+    "imageWidth": 862,
+    "imageHeight": 575,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBFvQUDsXhQfGG-yjFU1DJSGlUyUYJlU9RZValSRBDqw&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "Expedia",
+    "domain": "www.expedia.com.vn",
+    "link": "https://www.expedia.com.vn/Hanoi-Khach-San-LHotel-Du-Lac-Hanoi.h82988573.Thong-tin-khach-san",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimages.trvl-media.com%2Flodging%2F83000000%2F82990000%2F82988600%2F82988573%2F23d4fa71.jpg%3Fimpolicy%3Dresizecrop%26rw%3D575%26rh%3D575%26ra%3Dfill&tbnid=0L8svPnMZ3VjuM&imgrefurl=https%3A%2F%2Fwww.expedia.com.vn%2FHanoi-Khach-San-LHotel-Du-Lac-Hanoi.h82988573.Thong-tin-khach-san&docid=iayEZqTA01J7WM&w=862&h=575",
+    "position": 4
+   },
+   {
+    "title": "Khách sạn du Lac Hà Nội (L&#39;HÔTEL du LAC Hanoi) Hà Nội, Việt Nam:  Agoda.com có giá rẻ nhất",
+    "imageUrl": "https://pix10.agoda.net/hotelImages/34013977/0/2b34ade25077f3c5d1fd444ebf1c4828.jpg?ce=0&s=414x232",
+    "imageWidth": 309,
+    "imageHeight": 232,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSorvDXt4PlvFZWUM-tD9P-x132vdpAyo_cBPxTZKyQ_g&s=10",
+    "thumbnailWidth": 308,
+    "thumbnailHeight": 232,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/l-hotel-du-lac-hanoi/hotel/hanoi-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F34013977%2F0%2F2b34ade25077f3c5d1fd444ebf1c4828.jpg%3Fce%3D0%26s%3D414x232&tbnid=pqx_Ehh-0vESMM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fl-hotel-du-lac-hanoi%2Fhotel%2Fhanoi-vn.html&docid=Q1txPG9k2OGE4M&w=309&h=232",
+    "position": 5
+   },
+   {
+    "title": "HÔTEL du LAC Hanoi, Hà Nội | Hotels.com",
+    "imageUrl": "https://images.trvl-media.com/lodging/95000000/94600000/94594600/94594530/21bf03b3.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill",
+    "imageWidth": 767,
+    "imageHeight": 575,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgDtS1R-ahzUt3ilnfTip9303XqdGkSrd-422Jwnljpw&s=10",
+    "thumbnailWidth": 516,
+    "thumbnailHeight": 387,
+    "source": "hotels",
+    "domain": "vi.hotels.com",
+    "link": "https://vi.hotels.com/ho3028024960/grand-hotel-du-lac-hanoi-ha-noi-viet-nam/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimages.trvl-media.com%2Flodging%2F95000000%2F94600000%2F94594600%2F94594530%2F21bf03b3.jpg%3Fimpolicy%3Dresizecrop%26rw%3D575%26rh%3D575%26ra%3Dfill&tbnid=wVabZjSSPwhQqM&imgrefurl=https%3A%2F%2Fvi.hotels.com%2Fho3028024960%2Fgrand-hotel-du-lac-hanoi-ha-noi-viet-nam%2F&docid=vt2QbNFyq5RVVM&w=767&h=575",
+    "position": 6
+   },
+   {
+    "title": "L'HOTEL du LAC HANOI | Boutique Hotel Old Quarter",
+    "imageUrl": "https://hoteldulachanoi.com/UploadFile/Gallery-22112022/Rooms/DuLAC-Sunset-Terrace-Suite/1.jpg",
+    "imageWidth": 1280,
+    "imageHeight": 853,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRR_GlDQP4tjZyUhjF1wnbCQhsqVqLslsq-7ZznxeVcQQ&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "hoteldulachanoi.com",
+    "domain": "hoteldulachanoi.com",
+    "link": "https://hoteldulachanoi.com/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fhoteldulachanoi.com%2FUploadFile%2FGallery-22112022%2FRooms%2FDuLAC-Sunset-Terrace-Suite%2F1.jpg&tbnid=y-EuIV9XVX7u6M&imgrefurl=https%3A%2F%2Fhoteldulachanoi.com%2F&docid=N5cO_dCnrmRGqM&w=1280&h=853",
+    "position": 7
+   },
+   {
+    "title": "Đặt L'HÔTEL du LAC Hà Nội Quận Hoàn Kiếm giá tốt nhất - BestPrice",
+    "imageUrl": "https://owa.bestprice.vn/images/hotels/uploads/lhotel-du-lac-ha-noi-630ed34f356cc.jpg",
+    "imageWidth": 1024,
+    "imageHeight": 576,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRaEFY2KRh1n0sj0vZsm1nPgEBKBO7SXretidJHKvRkXQ&s=10",
+    "thumbnailWidth": 738,
+    "thumbnailHeight": 414,
+    "source": "BestPrice",
+    "domain": "www.bestprice.vn",
+    "link": "https://www.bestprice.vn/khach-san/lhotel-du-lac-ha-noi-3501.html?srsltid=AU7gw4UV0YgVIdn5kjz8KCrpFNpDpoief1In0QDXAQppJkNaYxhKRAQY",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fowa.bestprice.vn%2Fimages%2Fhotels%2Fuploads%2Flhotel-du-lac-ha-noi-630ed34f356cc.jpg&tbnid=zx4WDcK6evxgVM&imgrefurl=https%3A%2F%2Fwww.bestprice.vn%2Fkhach-san%2Flhotel-du-lac-ha-noi-3501.html%3Fsrsltid%3DAU7gw4UV0YgVIdn5kjz8KCrpFNpDpoief1In0QDXAQppJkNaYxhKRAQY&docid=-ph6ED_Ks7wN_M&w=1024&h=576",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

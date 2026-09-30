@@ -1,0 +1,31 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Quà Tặng 3\" site:cellphones.com.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:10:34.714Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Quà Tặng 3\" site:cellphones.com.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Sony tặng 3 game miễn phí cho người chơi PlayStation Plus",
+    "link": "https://cellphones.com.vn/sforum/sony-tang-3-game-mien-phi-cho-nguoi-choi-playstation-plus",
+    "snippet": "... quà tặng 3 game miễn phí cực kỳ hấp dẫn. Cùng điểm qua ba cái tên đang cực hot mà mình đã nhắc ở trên nhé. Mục lục. Ẩn. 1. Deep Rock Galactic ...",
+    "date": "2 thg 1, 2022",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

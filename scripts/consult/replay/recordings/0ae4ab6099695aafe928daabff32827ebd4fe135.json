@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Apple Apple Macbook Neo 13-Inch site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:10:23.296Z",
+ "body": {
+  "searchParameters": {
+   "q": "Apple Apple Macbook Neo 13-Inch site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Máy tính xách tay Apple MacBook Neo 13 inch",
+    "link": "https://www.lazada.vn/products/may-tinh-xach-tay-apple-macbook-neo-13-inch-hang-chinh-hang-i13335434012.html?srsltid=AU7gw4XLNh0Y9a9xJA90-pnrECN7MpT31bv_sbE6Ch70QlifIHVGrhQ7",
+    "snippet": "LazMall Máy tính xách tay Apple MacBook Neo 13 inch - Hàng Chính Hãng ... Trả góp trong 12 tháng, chỉ với 1.499.917 ₫ mỗi tháng. ... Miễn phí vận chuyển khi mua từ ...",
+    "rating": 5,
+    "ratingCount": 9,
+    "position": 1
+   },
+   {
+    "title": "Laptop Apple Macbook Neo A18 PRO 8GB 256GB SSD",
+    "link": "https://www.lazada.vn/products/laptop-apple-macbook-neo-a18-pro-8gb-256gb-ssd-hang-chinh-hang-i13381128377-s116970112873.html?c=liveUpStart&srsltid=AU7gw4Uek1yQ9jc9fiqetBL7ugtjHmD2COYyFNRw6XgzFYTptFrSFerN",
+    "snippet": "Apple MacBook Neo 13 inch A18 Pro là mẫu laptop thế hệ mới hướng đến người dùng cần sự cân bằng giữa hiệu năng, tính di động và trải nghiệm thông minh.",
+    "position": 2
+   },
+   {
+    "title": "Máy tính xách tay Apple MacBook Neo 13 inch - Hàng Chính ...",
+    "link": "https://h5.lazada.vn/products/may-tinh-xach-tay-apple-macbook-neo-13-inch-hang-chinh-hang-saa-i13335434012-s116528200616.html",
+    "snippet": "LazMall Máy tính xách tay Apple MacBook Neo 13 inch - Hàng Chính Hãng SA/A · 100% chính hãng · 30 ngày miễn phí trả hàng · Hóa đơn 1 năm.",
+    "position": 3
+   },
+   {
+    "title": "Đối với Apple MacBook Neo (A18 Pro) 2026 a3404 a3204 13 ...",
+    "link": "https://www.lazada.vn/products/pdp-i13369423024.html?srsltid=AU7gw4V82Uoix823MdyvHhRD5CGxJUGC9iAj-gh766yguPXQyEwo0IQv",
+    "snippet": "Vật chất: Nhựa · Các tính năng: chống trượt, chống bụi, có thể gập lại, Vỏ/da, chống sốc · Phù hợp hoàn hảo cho Macbook Neo ...",
+    "position": 4
+   },
+   {
+    "title": "SIWU | Miếng Dán Bảo Vệ Bàn Phím Cho MacBook Neo ...",
+    "link": "https://www.lazada.vn/products/pdp-i13456752420.html?srsltid=AU7gw4WS3pB4Ur9vPLeS66-LTC4xiMmwO-6MQYUufVD5uMxExEO-du6p",
+    "snippet": "LazMall SIWU | Miếng Dán Bảo Vệ Bàn Phím Cho MacBook Neo Apple MacBook Air M4/M5 15 Inch 13 Inch MacBook pro 14 Inch pro 16 Inch M5M4 Laptop Protection.",
+    "position": 5
+   },
+   {
+    "title": "Laptop Apple Macbook Neo A18 PRO 8GB 256GB SSD",
+    "link": "https://h5.lazada.vn/products/laptop-apple-macbook-neo-a18-pro-8gb-256gb-ssd-hang-chinh-hang-i13381128377-s116970112873.html",
+    "snippet": "Apple MacBook Neo 13 inch A18 Pro là mẫu laptop thế hệ mới hướng đến người dùng cần sự cân bằng giữa hiệu năng, tính di động và trải nghiệm thông minh.",
+    "position": 6
+   },
+   {
+    "title": "Máy tính xách tay Apple MacBook Air 13 inch M5",
+    "link": "https://h5.lazada.vn/products/may-tinh-xach-tay-apple-macbook-air-13-inch-m5-hang-chinh-hang-i13334273827-s116519872394.html",
+    "snippet": "Máy tính xách tay Apple MacBook Neo 13 inch - Hàng Chính Hãng. 19.499.000 ₫ · Điện thoại Apple iPhone 17 Pro Max - Hàng Chính Hãng. 37.990.000 ₫ · Điện thoại ...",
+    "position": 7
+   },
+   {
+    "title": "Miếng Dán Bảo Vệ Bàn Phím Cho MacBook Neo Apple ...",
+    "link": "https://www.lazada.vn/products/siwu-mieng-dan-bao-ve-ban-phim-cho-macbook-neo-apple-macbook-air-m4m5-15-inch-13-inch-macbook-pro-14-inch-pro-16-inch-m5m4-laptop-protection-i3300043990.html?srsltid=AU7gw4WDJYwHzWEqpAMHLdjD--Ms1mcPMC_oHIHhuHG8NtnNdQYxcFuK",
+    "snippet": "SIWU | Miếng Dán Bảo Vệ Bàn Phím Cho MacBook Neo Apple MacBook Air M4/M5 15 Inch 13 Inch MacBook pro 14 Inch pro 16 Inch M5M4 Laptop Protection. Variations.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

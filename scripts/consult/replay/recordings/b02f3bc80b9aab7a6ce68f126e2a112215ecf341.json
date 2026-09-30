@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"UAG Chính Hãng\" site:cellphones.com.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:35:14.906Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"UAG Chính Hãng\" site:cellphones.com.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Bao da UAG - Ốp chống sốc chính hãng, giá rẻ",
+    "link": "https://cellphones.com.vn/phu-kien/uag.html",
+    "snippet": "Mua ngay ốp lưng UAG và bao da UAG chính hãng, chống shock cực tốt. Mua ngay ốp UAG tại CellphoneS với ưu đãi hấp dẫn, giá rẻ, giao hàng miễn phí.",
+    "position": 1
+   },
+   {
+    "title": "Trung tâm bảo hành UAG chính hãng tại Việt Nam",
+    "link": "https://cellphones.com.vn/bao-hanh/uag",
+    "snippet": "Địa chỉ các trung tâm bảo hành UAG Việt Nam tại TPHCM và Hà Nội. Nơi bảo hành các sản phẩm UAG chính hãng trên toàn quốc.",
+    "position": 2
+   },
+   {
+    "title": "Ốp lưng iPhone 15 Pro Max UAG chống sốc Plasma | Giá rẻ",
+    "link": "https://cellphones.com.vn/op-lung-iphone-15-pro-max-uag-plasma.html",
+    "snippet": "Hãy ghé lại hệ thống cửa hàng CellphoneS để sở hữu cho mình chiếc ốp UAG chính hãng, giá rẻ ngay nhé! Xem thêm. Đánh giá Ốp lưng iPhone 15 Pro Max UAG chống ...",
+    "position": 3
+   },
+   {
+    "title": "Ốp lưng cho iPhone XR - UAG Plasma",
+    "link": "https://cellphones.com.vn/op-lung-cho-iphone-x-uag-plasma.html",
+    "snippet": "... UAG chính hãng, chất lượng, uy tín mà bạn còn được sở hữu chiếc ốp này với giá cả dễ chịu hơn nhiều so với việc mua trên trang web chính hãng bên nước ngoài ...",
+    "position": 4
+   },
+   {
+    "title": "Bộ sưu tập ốp UAG cho iPhone 11 series: Bạn thích camo ...",
+    "link": "https://cellphones.com.vn/sforum/bo-suu-tap-op-uag-cho-iphone-11-series-ban-thich-camo-hay-trong-suot",
+    "snippet": "... UAG chính hãng, chi tiết về giá bạn đọc có thể tham khảo phía bên dưới: MUA ỐP UAG CHÍNH HÃNG cho IPHONE 11. Thẻ: Apple iPhone 11Apple iPhone 11 ProApple ...",
+    "position": 5
+   },
+   {
+    "title": "Túi chống nước UAG | Giá rẻ",
+    "link": "https://cellphones.com.vn/tui-chong-nuoc-uag.html",
+    "snippet": "Mua Túi chống nước UAG chính hãng - Giá rẻ, đảm bảo chất lượng, độ bền cao, hỗ trợ giao hàng tận nơi toàn quốc.",
+    "rating": 4.8,
+    "ratingCount": 9,
+    "position": 6
+   },
+   {
+    "title": "CellphoneS chính thức trở thành đại lý bán lẻ ủy quyền ...",
+    "link": "https://cellphones.com.vn/sforum/cellphones-chinh-thuc-tro-thanh-dai-ly-ban-le-uy-quyen-cua-uag-va-spigen",
+    "snippet": "... quý khách hàng. MUA ỐP UAG CHÍNH HÃNG giá tốt · MUA ỐP SPIGEN CHÍNH HÃNG giá tốt. Thẻ: OfficialỐp dán iPhone 11UAG. danh-gia-bai-viet.",
+    "date": "6 thg 2, 2020",
+    "position": 7
+   },
+   {
+    "title": "Ốp lưng iPhone 15 Pro Max UAG Essential Armor hỗ trợ ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-15-pro-max-uag-essential-armor-with-magsafe.html",
+    "snippet": "... UAG chính hãng này với giá cả phải chăng ngay nhé! Xem thêm. Có thể bạn cũng thích. Sản phẩm tương tự ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}
