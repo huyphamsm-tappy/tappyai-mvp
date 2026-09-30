@@ -33,18 +33,42 @@ function addDays(iso: string, n: number): string {
  * search ran for "Núi gần TP.HCM" and Maps answered with hotels on NÚI THÀNH STREET in Tân Bình (inside the city);
  * the reply then said Tân Bình was "30-45 phút" from the city. Names only — no distance or time is claimed here.
  */
-const NEARBY_BY_STYLE: Record<string, Record<string, string>> = {
-  'TP.HCM': { 'núi': 'Tây Ninh', 'biển': 'Vũng Tàu' },
-  'Hà Nội': { 'núi': 'Tam Đảo', 'biển': 'Hạ Long' },
+// In the order a consultant would offer them; "chỗ khác" moves to the next (owner 30/09, TRAVEL-2).
+const NEARBY_BY_STYLE: Record<string, Record<string, string[]>> = {
+  'TP.HCM': { 'núi': ['Tây Ninh', 'Bảo Lộc', 'Xuân Lộc, Đồng Nai'], 'biển': ['Vũng Tàu', 'Phan Thiết', 'Long Hải'] },
+  'Hà Nội': { 'núi': ['Tam Đảo', 'Mộc Châu', 'Ba Vì'], 'biển': ['Hạ Long', 'Cát Bà', 'Sầm Sơn'] },
 }
-export function nearbyDestination(known: Record<string, string>): string | null {
+function nearbyList(known: Record<string, string>): string[] {
   const days = Number((known.so_ngay ?? '').match(/\d+/)?.[0])
-  if (Number.isFinite(days) && days > 3) return null
-  return NEARBY_BY_STYLE[known.xuat_phat?.trim() ?? '']?.[known.phong_cach?.trim() ?? ''] ?? null
+  if (Number.isFinite(days) && days > 3) return []
+  return NEARBY_BY_STYLE[known.xuat_phat?.trim() ?? '']?.[known.phong_cach?.trim() ?? ''] ?? []
 }
 
-export function travelPreCall(known: Record<string, string>, text: string, now = new Date()): TravelPreCall | null {
-  const dest = known.diem_den?.trim() || nearbyDestination(known) || undefined
+/**
+ * Owner 30/09 (TRAVEL-2, level B on the Luna review page): after WE proposed a destination ("núi gần Sài Gòn" → Tây Ninh),
+ * "còn chỗ nào khác" / "đi rồi, chỗ khác đi" asks for another DESTINATION — it was answered with another hotel in Tây Ninh,
+ * and the plan stayed in Tây Ninh. A turn that names lodging ("khách sạn khác", "homestay khác") still means lodging.
+ */
+const DEST_CHANGE = /\b(?:(?:cho|noi|diem|dia diem|vung|tinh) (?:nao |gi )?khac|di roi|toi roi|den roi|doi (?:cho|noi|diem den|dia diem|diem))\b/
+const LODGING = /\b(?:khach san|homestay|resort|nha nghi|villa|phong|ks)\b/
+const foldVi = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/gi, 'd').toLowerCase()
+export const asksOtherDestination = (text: string): boolean => { const f = foldVi(text); return DEST_CHANGE.test(f) && !LODGING.test(f) }
+
+/** The destination WE propose for a terrain-only trip, after every "chỗ khác" the user said; null when none fits. */
+export function nearbyDestination(known: Record<string, string>, userTexts: readonly string[] = []): string | null {
+  const list = nearbyList(known)
+  if (list.length === 0) return null
+  const shifts = userTexts.filter(asksOtherDestination).length
+  return shifts < list.length ? list[shifts] : null
+}
+/** The proposed destinations the user has already turned down (in order). */
+export function nearbyTurnedDown(known: Record<string, string>, userTexts: readonly string[]): string[] {
+  const list = nearbyList(known)
+  return list.slice(0, Math.min(list.length, userTexts.filter(asksOtherDestination).length))
+}
+
+export function travelPreCall(known: Record<string, string>, text: string, now = new Date(), userTexts: readonly string[] = []): TravelPreCall | null {
+  const dest = known.diem_den?.trim() || nearbyDestination(known, userTexts) || undefined
   const origin = known.xuat_phat?.trim()
   const date = isoFromDayMonth(known.ngay, now)
   // The return / checkout the user named ("10/10 đến 12/10") — only when it comes after the start.

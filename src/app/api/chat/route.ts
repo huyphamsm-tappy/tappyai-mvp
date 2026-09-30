@@ -95,7 +95,7 @@ import { routeConsult } from '@/lib/ai/consultative/consultRouter'
 import { rejectModifierOf, withoutQuotedNames, isFixedPhrase } from '@/lib/ai/consultative/consultRouter'
 import { consultLunaEnabled, consultLunaFastEnabled, skipLunaIntent, consultLunaPlanEnabled, LUNA_PLAN_RULE, isLunaAnswerTurn, runLunaIntent, mergeIntentWithRules, lunaTurnFacts, withoutReferenceTurns, LUNA_CORE, INTENT_SYSTEM } from '@/lib/ai/consultative/luna'
 import { lunaDataMessage, buildLeakDetector, sanitizeSearchQuery } from '@/lib/ai/consultative/lunaSafety'
-import { eventPreCall, onlyRowsNamed, slimResultForModel, travelPreCall, unshownRows, withoutShownRows } from '@/lib/ai/consultative/consultTravel'
+import { asksOtherDestination, eventPreCall, nearbyDestination, nearbyTurnedDown, onlyRowsNamed, slimResultForModel, travelPreCall, unshownRows, withoutShownRows } from '@/lib/ai/consultative/consultTravel'
 import { geoGuardArea, guardPlaceGeography } from '@/lib/ai/tools/placeGeoGuard'
 import { compactCandidates, compactProducts, loadChatSessionState, nextChatSessionState, readChatSessionId, saveChatSessionState, type ChatSessionState } from '@/lib/ai/consultative/chatSessionState'
 import { turnUsd, sumCounts, turnCostStream } from '@/lib/ai/turnCost'
@@ -1262,9 +1262,15 @@ export async function POST(req: Request) {
   // "more" / "reject" continues from the hotels the chat-session state kept (0 provider calls) while ≥ 2 are
   // unshown; fewer left → the same hotel search again (its stored args when the slots name no destination).
   const storedStay = chatState?.stay ?? null
+  // Owner 30/09 (TRAVEL-2): "chỗ khác" / "đi rồi" after WE proposed a destination changes the DESTINATION — the stored
+  // hotels (all in the old one) are not reused, the hotel search runs at the next destination, and the model is told.
+  const travelThreadUsers = [...(consultThreadTexts ?? []), lastText]
+  const destinationChange = !!consult && consult.domains[0] === 'travel' && !consult.known.diem_den?.trim() && asksOtherDestination(lastText)
+    ? { turnedDown: nearbyTurnedDown(consult.known, travelThreadUsers), next: nearbyDestination(consult.known, travelThreadUsers) }
+    : null
   const travelMoreTurn = !!consult && (consult.turn === 'more' || consult.turn === 'reject') && consult.domains[0] === 'travel' && !/chuy[eế]n|v[eé]|\bbay\b|m[aá]y bay/i.test(lastText)
   let stayOverride: Array<Record<string, unknown>> | null = null
-  if (travelMoreTurn && storedStay?.rows?.length) {
+  if (travelMoreTurn && storedStay?.rows?.length && !destinationChange?.turnedDown.length) {
     const remaining = unshownRows(storedStay.rows, [...consultShownEver, ...(chatState?.shown ?? [])])
     if (remaining.length >= 2) stayOverride = remaining
     console.log(JSON.stringify({ type: 'tappyai_consult_candidates', turn: consult?.turn, domain: 'travel', stored: storedStay.rows.length, remaining: remaining.length, reused: !!stayOverride }))
@@ -1277,7 +1283,7 @@ export async function POST(req: Request) {
     ? (() => { const c = travelPreCall(consult.known, [...(consultThreadTexts ?? []), lastText].join(' . ')); return c?.name === 'get_flight_prices' ? c : null })()
     : null
   const consultTravelCall = consult && (consult.turn === 'pick' || consult.turn === 'reject' || consult.turn === 'more') && consult.domains[0] === 'travel'
-    ? (stayOverride ? storedStayCall : travelPreCall(consult.known, lastText) ?? storedStayCall)
+    ? (stayOverride ? storedStayCall : travelPreCall(consult.known, lastText, new Date(), travelThreadUsers) ?? (destinationChange?.turnedDown.length ? null : storedStayCall))
     : consultFlightPlanCall
   // R11 (Android 29/09): "vé concert tháng 10" → ask card → answer → a VENUE ("Nhà hát…", "CHÀO SHOW") with no
   // Ticketbox button: the entertainment pick pre-searched places. An event consultation (concert / show /
@@ -2514,7 +2520,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   // R15: a consult trip plan pre-fetches hotel + food + weather in parallel (tripOutcomes, inside finishTurn).
   // Replay r19 TRAVEL-2: "núi gần Sài Gòn" names no destination slot — the plan then searched with none and
   // planned a Saigon hotel. The destination of the hotels this consultation already searched stands in.
-  const tripDest = consult?.known.diem_den?.trim() || (consult?.domains[0] === 'travel' ? storedStay?.args.location : '') || ''
+  const tripDest = consult?.known.diem_den?.trim() || (consult?.domains[0] === 'travel' ? (nearbyDestination(consult.known, travelThreadUsers) ?? storedStay?.args.location) : '') || ''
   const consultTripPrefetch = !!consult && consult.turn === 'plan' && planningIntent === 'trip' && !!tripDest && !consultFlightPlanCall && process.env.CONSULT_TRIP_PREFETCH !== '0'
   const willPresearch = !!(!noToolTurn && tools && preCall) || eveningSearches || (consultTripPrefetch && !!tools)
   const finishTurn = async (): Promise<Response> => {
@@ -2589,7 +2595,13 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
         try { result = await (tools as unknown as Record<string, { execute: (args: unknown, ctx: { toolCallId: string; messages: unknown[] }) => Promise<unknown> }>).search_products.execute({ query: core }, { toolCallId, messages: [] }); (preCall.args as { query: string }).query = core } catch { /* keep the empty result */ }
       }
     }
-    if (consultShownBefore.length) result = withoutShownRows(result, consultShownBefore, { allowEmpty: consult?.turn === 'reject' })
+    if (consultShownBefore.length && !destinationChange?.turnedDown.length) result = withoutShownRows(result, consultShownBefore, { allowEmpty: consult?.turn === 'reject' })
+    if (destinationChange?.turnedDown.length && preCall.name === 'get_hotel_prices' && result && typeof result === 'object') {
+      result = { ...(result as Record<string, unknown>), _tappy_destination_change: destinationChange.next
+        ? `Nguoi dung muon DOI DIEM DEN (khong phai doi khach san). Da loai: ${destinationChange.turnedDown.join(', ')}. Diem den moi: ${destinationChange.next} — cung tieu chi nguoi dung da neu. Noi ro la doi sang ${destinationChange.next}; KHONG goi y lai ${destinationChange.turnedDown.join(', ')}.`
+        : `Nguoi dung muon DOI DIEM DEN; da loai: ${destinationChange.turnedDown.join(', ')}. Khong con goi y san — hoi 1 cau ve noi ho muon.` }
+      console.log(JSON.stringify({ type: 'tappyai_travel_destination_change', turned_down: destinationChange.turnedDown, next: destinationChange.next }))
+    }
     if (consultPlanReuse) result = onlyRowsNamed(result, latestConsultPick(null), assistantTexts.flatMap(t => priorVenuesIn(t).map(v => v.name)))
     if (consultFollowReuse) result = onlyRowsNamed(result, null, [...(consult?.refers ?? []), ...(latestConsultPick(null) ? [latestConsultPick(null) as string] : [])])
     presearchOutcome = { toolCallId, toolName: preCall.name, args: preCall.args as PresearchOutcome['args'], result, ms: Date.now() - t0 }
