@@ -98,4 +98,19 @@ class ChatNoLiteralBoldTest {
         val file = candidates.map { java.io.File(it) }.firstOrNull { it.exists() } ?: return
         assertTrue(file.readText().contains("parseMarkdownBlocks(MarkdownNormalize.balanceBoldPerLine(markdown))"))
     }
+
+    @Test
+    fun `a link inside bold or italic is still a link (Luna 30-09 - raw url on screen)`() {
+        // Luna writes "**Mình chọn: [Tinh Hà “Say Hi” Concert](https://ticketbox.vn/…)**": the bold
+        // body was appended literally, so "[…](https://…)" showed as text. The body is parsed again.
+        val candidates = listOf(
+            "core/designsystem/src/main/java/com/tappyai/core/designsystem/component/TappyMarkdown.kt",
+            "../core/designsystem/src/main/java/com/tappyai/core/designsystem/component/TappyMarkdown.kt",
+            "android/core/designsystem/src/main/java/com/tappyai/core/designsystem/component/TappyMarkdown.kt",
+        )
+        val src = candidates.map { java.io.File(it) }.first { it.exists() }.readText()
+        assertTrue(src.contains("append(buildInlineAnnotated(text.substring(i + 2, end), codeBackground, linkColor))"))
+        assertTrue(src.contains("append(buildInlineAnnotated(text.substring(i + 1, end), codeBackground, linkColor))"))
+        assertFalse(src.contains("append(text.substring(i + 2, end))"))
+    }
 }

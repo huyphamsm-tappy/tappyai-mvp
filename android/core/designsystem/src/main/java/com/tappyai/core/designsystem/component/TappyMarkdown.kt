@@ -232,8 +232,10 @@ private fun buildInlineAnnotated(
             c == '*' && i + 1 < n && text[i + 1] == '*' -> {
                 val end = text.indexOf("**", i + 2)
                 if (end > i) {
+                    // The inner text is itself inline markdown: Luna (30/09) writes a link INSIDE
+                    // bold — "**Mình chọn: [Tên](url)**" — which rendered as raw "[…](https://…)".
                     withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
-                        append(text.substring(i + 2, end))
+                        append(buildInlineAnnotated(text.substring(i + 2, end), codeBackground, linkColor))
                     }
                     i = end + 2
                 } else {
@@ -244,7 +246,7 @@ private fun buildInlineAnnotated(
                 val end = text.indexOf(c, i + 1)
                 if (end > i) {
                     withStyle(SpanStyle(fontStyle = FontStyle.Italic)) {
-                        append(text.substring(i + 1, end))
+                        append(buildInlineAnnotated(text.substring(i + 1, end), codeBackground, linkColor))
                     }
                     i = end + 1
                 } else {
