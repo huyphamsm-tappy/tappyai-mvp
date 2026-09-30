@@ -16,9 +16,13 @@ from PIL import Image, ImageDraw
 
 # iOS shot name -> Android reference (relative to docs/uat/evidence/android-parity)
 REFERENCES = {
-    "01-login": "step1-hientrang/07-login.png",
+    # Post-parity Android shots where they are committed (web | Android composites), else the 28/09 baseline.
+    "01-login": "login/after-web-vs-android.png",
     "02-age-gate": "step1-hientrang/03-age-gate-18.png",
-    "03-hub-guest": "step1-hientrang/06-profile-hub.png",
+    "03-hub-guest": "profile-hub/after-web-vs-android.png",
+    "15-login-prod-config": "login/after-web-vs-android.png",
+    "16-hub-signed-in": "profile-owner/03-tab-Đã đăng.png",
+    "17-hub-restricted": "profile-owner/06-tab-Bị hạn chế.png",
     "04-saved": "step1-hientrang/11-saved.png",
     "05-saved-empty": "step1-hientrang/11-saved.png",
     "06-saved-places": "step1-hientrang/11-saved.png",

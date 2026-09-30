@@ -81,6 +81,23 @@ SAVED = [
     {"id": "r2", "place_name": "Chia sẻ", "body": "Clip cuối tuần ở Đà Lạt.",
      "photos": [], "thumbnail": None, "content_type": "video", "saved_at": "2026-09-26T09:00:00.000Z"},
 ]
+def _review(i, name, img, likes, **extra):
+    row = {"id": f"m{i}", "place_name": name, "body": f"Bài {i}", "photos": [f"http://127.0.0.1:3000/img/{img}.png"],
+           "like_count": likes, "comment_count": 0, "save_count": 0, "created_at": "2026-09-2%dT08:00:00.000Z" % i,
+           "liked_by_me": False, "saved_by_me": False, "content_type": "photo"}
+    row.update(extra)
+    return row
+
+
+MINE = [
+    _review(1, "Phở Thìn Bờ Hồ", "a", 12),
+    _review(2, "The Note Coffee", "c", 7),
+    _review(3, "Bún chả Hương Liên", "d", 3),
+    _review(4, "Chia sẻ", "b", 0, is_hidden=True),
+    _review(5, "Quán mới", "a", 0, moderation={"state": "UNDER_REVIEW", "title": "Đang được xem xét",
+                                              "detail": "Bài của bạn sẽ hiện công khai sau khi được duyệt."}),
+]
+
 RECS = {
     "recommendations": [
         {"placeId": "p1", "placeName": "Phở Thìn Bờ Hồ", "finalScore": 0.91, "matchedSignals": ["food"],
@@ -135,6 +152,21 @@ class Handler(BaseHTTPRequestHandler):
         if path == "/api/preferences":
             # No `preferences` key = "never asked": the app does not open its onboarding sheet.
             return self._send(200, {})
+        # ── Signed-in hub (UI test launches with -uitest-signed-in; sub = uitest-user) ──
+        if path == "/api/profile":
+            return self._send(200, {"full_name": "Minh Anh", "avatar_url": "", "email": "minh.anh@example.com",
+                                    "bio": "Mê phở và cà phê sáng.", "cover_url": "http://127.0.0.1:3000/img/b.png"})
+        if path == "/api/users/uitest-user":
+            return self._send(200, {"id": "uitest-user", "full_name": "Minh Anh", "follower_count": 128,
+                                    "following_count": 36, "review_count": 3, "is_self": True})
+        if path == "/api/reviews/mine":
+            return self._send(200, {"reviews": MINE})
+        if path == "/api/reviews/shared":
+            return self._send(200, {"reviews": SAVED[:1]})
+        if path == "/api/social/connections":
+            return self._send(200, {"users": [{"id": "u2", "full_name": "Lan Phương"}, {"id": "u3", "full_name": "Quốc Bảo"}]})
+        if path == "/api/conversations":
+            return self._send(200, [])
         return self._send(200, {})
 
     def do_POST(self):

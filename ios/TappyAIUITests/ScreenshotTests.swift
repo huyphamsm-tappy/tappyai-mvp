@@ -43,6 +43,17 @@ final class ScreenshotTests: XCTestCase {
         shot("15-login-prod-config")
     }
 
+    // MARK: - Signed-in hub (fixture account)
+
+    func testHubSignedIn() {
+        let app = launch(route: "hub", signedIn: true)
+        XCTAssertTrue(any(app, "profile-hero").waitForExistence(timeout: 30), "hero")
+        XCTAssertTrue(any(app, "profile-tab-posts").waitForExistence(timeout: 30), "content tabs")
+        shot("16-hub-signed-in")
+        any(app, "profile-tab-restricted").tap()
+        shot("17-hub-restricted")
+    }
+
     // MARK: - Screens
 
     /// Login: Google · Zalo · or · Email · Password · Sign in · Create account · Guest.
@@ -136,10 +147,11 @@ final class ScreenshotTests: XCTestCase {
         app.descendants(matching: .any)[id].firstMatch
     }
 
-    private func launch(route: String) -> XCUIApplication {
+    private func launch(route: String, signedIn: Bool = false) -> XCUIApplication {
         let app = XCUIApplication()
         app.launchArguments = ["-uitest-route", route, "-uitest-lang", "vi",
                                "-AppleLanguages", "(vi)", "-AppleLocale", "vi_VN"]
+            + (signedIn ? ["-uitest-signed-in"] : [])
         app.launch()
         return app
     }

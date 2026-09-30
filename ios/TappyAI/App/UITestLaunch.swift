@@ -44,6 +44,17 @@ enum UITestLaunch {
         if let lang = value("-uitest-lang").flatMap(AppLanguage.init(rawValue:)) {
             deps.localization.setLanguage(lang)
         }
+        // A signed-in look for the fixture server only: an unsigned token whose `sub` is the fixture
+        // user. The fixture server does not verify it; a real backend would reject it.
+        if ProcessInfo.processInfo.arguments.contains("-uitest-signed-in") {
+            let payload = Data(#"{"sub":"uitest-user"}"#.utf8).base64EncodedString()
+                .replacingOccurrences(of: "=", with: "")
+            deps.session.didAuthenticate(AuthTokens(accessToken: "e30.\(payload).sig", refreshToken: "uitest",
+                                                    expiresAt: Date().addingTimeInterval(3600)), onboarded: true)
+        } else if value("-uitest-route") != nil {
+            // Every other test is a guest: drop a session an earlier test left in the Keychain.
+            deps.session.logout()
+        }
         guard let route = value("-uitest-route") else { return }
         let router = deps.router
         switch route {

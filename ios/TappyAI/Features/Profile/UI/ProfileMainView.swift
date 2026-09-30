@@ -12,6 +12,13 @@ struct ProfileMainView: View {
     @State private var showAppConnections = false
     @State private var showQR = false
     @State private var showAuth = false
+    @State private var showCompose = false
+    @StateObject private var hub: ProfileHubViewModel
+
+    init(deps: AppDependencies) {
+        self.deps = deps
+        _hub = StateObject(wrappedValue: ProfileHubViewModel(api: deps.api))
+    }
 
     /// Signed-out (anonymous) visitor: the hub shows the sign-in card and locks every row, as the
     /// web `/profile` and Android do (ANDROID-PARITY-MAP L3).
@@ -31,11 +38,22 @@ struct ProfileMainView: View {
                     accountSection
                     settingsSection
                 } else if let profile {
-                    profileCard(profile)
-                    communityShortcuts
+                    // Signed in: the web `/profile` hero + content tabs (Android `ProfileHubV3`).
+                    ProfileHeroView(profile: profile, stats: hub.stats, likes: hub.likes,
+                                    onEdit: { router.push(ProfileDestination.editProfile, on: .profile) },
+                                    onQR: { showQR = true })
+                    ProfileHubContentPanel(
+                        vm: hub,
+                        onOpenReview: { router.push(ReviewsDestination.reviewDetail(id: $0), on: .profile) },
+                        onOpenPlace: { _ in router.push(ProfileDestination.favorites, on: .profile) },
+                        onCompose: { showCompose = true })
                     accountSection
                     if showProUpgrade { proSection }
                     settingsSection
+                    ProfileFollowingCard(following: hub.following,
+                                         onOpen: { router.push(ReviewsDestination.userProfile(id: $0), on: .profile) },
+                                         onSeeAll: { router.push(ProfileDestination.social, on: .profile) })
+                    communityShortcuts
                 }
             }
             .padding(.horizontal, Spacing.md)
@@ -44,9 +62,24 @@ struct ProfileMainView: View {
         .background(TappyColor.background)
         .navigationTitle(Text("profile.title"))
         .navigationBarTitleDisplayMode(.inline)
-        .task { await loadProfile() }
+        .task {
+            await loadProfile()
+            await hub.load(userId: session.userId)
+        }
+        .refreshable {
+            await loadProfile()
+            await hub.load(userId: session.userId, force: true)
+        }
         .fullScreenCover(isPresented: $showAuth) {
             AuthFlowView(repo: deps.authRepository, config: deps.configService) { showAuth = false }
+        }
+        .fullScreenCover(isPresented: $showCompose) {
+            CreateReviewView(deps: deps)
+        }
+        .sheet(isPresented: $showQR) {
+            if let url = ProfileQR.profileURL(userId: session.userId) {
+                ProfileQRView(url: url, displayName: profile?.fullName ?? "")
+            }
         }
     }
 
@@ -112,90 +145,6 @@ struct ProfileMainView: View {
             .overlay(RoundedRectangle(cornerRadius: Radius.md).stroke(TappyColor.border, lineWidth: 1))
         }
         .buttonStyle(.plain)
-    }
-
-    // MARK: - Profile Card
-
-    @ViewBuilder
-    private func profileCard(_ p: UserProfile) -> some View {
-        HStack(spacing: Spacing.md) {
-            avatarView(p)
-            VStack(alignment: .leading, spacing: 4) {
-                Text(p.fullName.isEmpty ? firstName(p) : p.fullName)
-                    .font(.system(size: 17, weight: .bold))
-                    .foregroundStyle(TappyColor.textPrimary)
-                Text(p.email)
-                    .font(.system(size: 13))
-                    .foregroundStyle(TappyColor.textSecondary)
-                    .lineLimit(1)
-                HStack(spacing: Spacing.xs) {
-                    Text("profile.conversationCount \(conversationCount)")
-                        .font(.system(size: 11, weight: .medium))
-                        .foregroundStyle(TappyColor.primary)
-                        .padding(.horizontal, Spacing.sm)
-                        .padding(.vertical, 3)
-                        .background(TappyColor.primary.opacity(0.08))
-                        .clipShape(Capsule())
-                }
-            }
-            Spacer()
-            // No user id, no profile page to point at: the button is hidden rather than sharing
-            // a link that opens nothing.
-            if let url = ProfileQR.profileURL(userId: session.userId) {
-                qrButton(url)
-            }
-        }
-        .padding(Spacing.lg)
-        .background(TappyColor.cardBackground)
-        .clipShape(RoundedRectangle(cornerRadius: Radius.xl))
-        .overlay(
-            RoundedRectangle(cornerRadius: Radius.xl)
-                .stroke(TappyColor.border, lineWidth: 1)
-        )
-    }
-
-    @ViewBuilder
-    private func avatarView(_ p: UserProfile) -> some View {
-        if let url = URL(string: p.avatarUrl), !p.avatarUrl.isEmpty {
-            AsyncImage(url: url) { img in
-                img.resizable().aspectRatio(contentMode: .fill)
-            } placeholder: {
-                Color.gray.opacity(0.2)
-            }
-            .frame(width: 64, height: 64)
-            .clipShape(RoundedRectangle(cornerRadius: Radius.xl))
-        } else {
-            RoundedRectangle(cornerRadius: Radius.xl)
-                .fill(LinearGradient(colors: [TappyColor.primary, TappyColor.primary.opacity(0.6)], startPoint: .topLeading, endPoint: .bottomTrailing))
-                .frame(width: 64, height: 64)
-                .overlay(
-                    Text(String(firstName(p).prefix(1)).uppercased())
-                        .font(.system(size: 24, weight: .bold))
-                        .foregroundStyle(.white)
-                )
-        }
-    }
-
-    @ViewBuilder
-    private func qrButton(_ url: URL) -> some View {
-        // Was a bare share sheet with `https://tappyai.vn/users/…` — a non-canonical host and no
-        // code to scan. Now the web's "Share profile": the QR of the canonical profile URL plus
-        // a share button (`ProfileQRView`).
-        Button {
-            showQR = true
-        } label: {
-            Image(systemName: "qrcode")
-                .font(.system(size: 18))
-                .foregroundStyle(TappyColor.textSecondary)
-                .frame(width: 40, height: 40)
-                .background(TappyColor.surface)
-                .clipShape(RoundedRectangle(cornerRadius: Radius.lg))
-        }
-        .buttonStyle(.plain)
-        .accessibilityLabel(Text("qr.title"))
-        .sheet(isPresented: $showQR) {
-            ProfileQRView(url: url, displayName: profile?.fullName ?? "")
-        }
     }
 
     // MARK: - Account Section
