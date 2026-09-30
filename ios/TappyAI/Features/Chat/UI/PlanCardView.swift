@@ -305,7 +305,7 @@ struct ChatPlanCardView: View {
         publishing = false
         switch outcome {
         case .link(_, let url):
-            if let link = URL(string: url) { UIApplication.shared.open(link) }
+            if let link = URL(string: url) { await UIApplication.shared.open(link) }
         case .signInRequired: linkNote = "chat.planV2.linkSignIn"
         default: linkNote = "chat.planV2.linkFailed"
         }
