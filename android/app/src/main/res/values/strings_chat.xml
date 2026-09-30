@@ -321,9 +321,22 @@
     <string name="ask_v2_sub_type">Pick one or more</string>
     <string name="ask_v2_sub_party">Pick your group</string>
     <string name="ask_v2_sub_time">Pick a time</string>
-    <string name="ask_v2_sub_place">Pick an area</string>
     <string name="ask_v2_sub_budget">Pick a budget</string>
     <string name="ask_v2_free_hint">Or tell me anything else…</string>
     <string name="ask_v2_free_example">E.g. somewhere chill, quiet, with a nice view...</string>
     <string name="ask_v2_cta">Find it for me</string>
+    <string name="ask_v2_sending">Searching…</string>
+    <string name="ask_v2_title_food">What shall we eat today?</string>
+    <string name="ask_v2_sub_food">Pick a few things, Tappy finds the best spot.</string>
+    <string name="ask_v2_example_food">E.g. not spicy, car parking...</string>
+    <string name="ask_v2_title_shopping">What are you looking for?</string>
+    <string name="ask_v2_sub_shopping">Pick a few things, Tappy narrows it down.</string>
+    <string name="ask_v2_example_shopping">E.g. blue, official warranty...</string>
+    <string name="ask_v2_title_travel">What kind of trip?</string>
+    <string name="ask_v2_sub_travel">Pick a few things, Tappy plans the options.</string>
+    <string name="ask_v2_example_travel">E.g. a pool, near the beach, kid-friendly...</string>
+    <string name="ask_v2_title_spa">How would you like to relax today?</string>
+    <string name="ask_v2_sub_spa">Pick a few things, Tappy finds the best place.</string>
+    <string name="ask_v2_example_spa">E.g. female therapist, private room...</string>
+    <string name="ask_v2_example_main">E.g. close to home, mid-range price...</string>
 </resources>

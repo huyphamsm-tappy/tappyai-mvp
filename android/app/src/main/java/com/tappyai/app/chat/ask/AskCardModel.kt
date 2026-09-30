@@ -1,152 +1,168 @@
 package com.tappyai.app.chat.ask
 
 import com.tappyai.app.chat.AskQuestion
-import com.tappyai.app.chat.plan.PlanArea
 import java.text.Normalizer
 
 /**
- * Ask card v2 (Huy 30/09, `docs/design/ask-card/`, R23) — the pure half. The server's
- * `[TAPPY_ASK]` is unchanged (`{id, q, options[≤4]}`); everything the new card adds — the kind of
- * each question (its subtitle, single/multi choice, image tiles or icon tiles), the icon of each
- * option and the image KEY of a "type" option — is derived here from the id and the words, by the
- * SAME table the web uses (README §2–§3), so both clients draw the same card.
+ * Ask card v2 (Huy 30/09, `docs/design/ask-card/README.md` R23 + R23.1) — the pure half, a 1:1 port of
+ * the web's reference `src/lib/structuredContent/askCardModel.ts`, so both clients draw the same card
+ * from the same unchanged `[TAPPY_ASK]` (`{id, q, options[≤4]}`): the area (header), each question's
+ * kind (sub-line, one or many), each option's icon and — for the type question — its image KEY
+ * (looked up in the R22 manifest). The message sent keeps its shape ([sendText]).
  */
-enum class AskKind(val multi: Boolean) { TYPE(true), PARTY(false), TIME(false), PLACE(false), BUDGET(false), OTHER(false) }
+enum class AskArea { FOOD, SHOPPING, TRAVEL, ENTERTAINMENT, SPA, MAIN }
 
-/** The icon of one option (the Compose side maps it to a Material icon). */
+enum class AskKind(val multi: Boolean) { TYPE(true), PARTY(false), TIME(false), BUDGET(false), OTHER(false) }
+
+/** Web lucide name → this enum; the Compose side maps it to a Material icon. */
 enum class AskIcon {
-    PERSON_1, PERSON_2, GROUP_SMALL, GROUP_BIG,
-    SUN, MOON, CALENDAR, CLOCK,
-    PIN, MONEY, HELP, TUNE,
-    MUSIC, MOVIE, BAR, TARGET, CAFE, GRILL, BOWL, RESTAURANT, SPA, BEACH, MOUNTAIN, SHOPPING, MIC,
-    PARK, MUSEUM, FAMILY, NAIL, TECH, BEAUTY, SEAFOOD, RESORT,
+    // type rows
+    MUSIC, FILM, MARTINI, CIRCLE_DOT, COFFEE, FLAME, SOUP, UTENSILS, FLOWER, WAVES, MOUNTAIN, SHOPPING_BAG, MIC, HELP, SPARKLES,
+    // party / time / budget
+    USER, USERS, USERS_ROUND, CALENDAR, MOON, SUN, WALLET,
+    // other (R23.1 optional)
+    MAP_PIN, PLANE, BUS, CAR, BIKE, STORE,
 }
 
-data class AskOptionView(val label: String, val icon: AskIcon, val imageKey: String?, val area: PlanArea?)
+data class AskOptionView(val label: String, val icon: AskIcon, val imageKey: String?)
 
 data class AskQuestionView(val id: String, val number: Int, val title: String, val kind: AskKind, val options: List<AskOptionView>)
 
 object AskCardModel {
 
-    /** Lower-case, no diacritics ("Đi lúc nào?" → "di luc nao?") — how every rule compares. */
-    fun norm(s: String): String = Normalizer.normalize(s.lowercase().replace('đ', 'd'), Normalizer.Form.NFD)
-        .replace(Regex("\\p{Mn}+"), "")
+    /** Lower case, no marks (web `fold`) — ASCII after this, so `\b` is safe. */
+    fun fold(s: String): String = Normalizer.normalize(s, Normalizer.Form.NFD).replace(Regex("[\\u0300-\\u036f]"), "")
+        .replace('đ', 'd').replace('Đ', 'D').lowercase()
 
-    private fun has(text: String, vararg words: String): Boolean {
-        val t = norm(text)
-        return words.any { w -> Regex("(^|[^a-z0-9])" + Regex.escape(w) + "($|[^a-z0-9])").containsMatchIn(t) }
+    /** Lower case WITH marks (web `lower`) — for the words that collide once folded (rạp/rap, lẩu/lâu, đồ/đỏ, chợ/cho). */
+    fun lower(s: String): String = Normalizer.normalize(s, Normalizer.Form.NFC).lowercase()
+
+    /** The area of the ask turn, from the question ids the router emits (web `askAreaOf`). Drives the header. */
+    fun areaOf(questions: List<AskQuestion>): AskArea {
+        val ids = questions.map { it.id }.toSet()
+        if ("dish" in ids || "mode" in ids) return AskArea.FOOD
+        if ("service" in ids || "special" in ids) return AskArea.SPA
+        if ("activity" in ids || "vibe" in ids || "artist" in ids) return AskArea.ENTERTAINMENT
+        if ("date" in ids || "origin" in ids || "transport" in ids) return AskArea.TRAVEL
+        if ("line" in ids || "must" in ids || "condition" in ids || "purpose" in ids) return AskArea.SHOPPING
+        questions.firstOrNull { it.id == "style" }?.let { style ->
+            val spa = Regex("\\b(?:massage|toan than|vai gay|da nong|nail|son gel|dinh da|dap bot|mong|toc|cat|uon|nhuom|phuc hoi|goi)\\b")
+            return if (style.options.any { spa.containsMatchIn(fold(it)) }) AskArea.SPA else AskArea.TRAVEL
+        }
+        // A hotel ask that already knows the dates carries only party / budget per night.
+        if (questions.any { q ->
+                Regex("\\b(?:moi dem|may dem)\\b").containsMatchIn(fold(q.q)) ||
+                    (q.id == "party" && q.options.any { Regex("\\b(?:gia dinh|nhom ban)\\b").containsMatchIn(fold(it)) })
+            }
+        ) return AskArea.TRAVEL
+        return AskArea.MAIN
     }
 
-    private val TYPE_IDS = setOf("style", "type", "kind", "activity", "genre", "artist", "cuisine", "category", "loai", "mon", "product", "dish", "service", "line", "purpose")
+    private val TYPE_IDS = setOf("style", "type", "kind", "activity", "genre", "artist", "cuisine", "category", "loai", "mon", "product", "dish", "service")
     private val PARTY_IDS = setOf("party", "people", "group", "pax")
     private val TIME_IDS = setOf("time", "when", "date", "day")
-    private val PLACE_IDS = setOf("area", "origin", "place", "district", "where")
     private val BUDGET_IDS = setOf("budget", "price")
 
+    /** web `askStepKind`: `id` first, then the words of `q`. */
     fun kindOf(q: AskQuestion): AskKind {
-        val id = q.id.lowercase()
-        return when {
-            id in TYPE_IDS -> AskKind.TYPE
-            id in PARTY_IDS -> AskKind.PARTY
-            id in TIME_IDS -> AskKind.TIME
-            id in PLACE_IDS -> AskKind.PLACE
-            id in BUDGET_IDS -> AskKind.BUDGET
-            has(q.q, "may nguoi", "voi ai", "bao nhieu nguoi") -> AskKind.PARTY
-            has(q.q, "luc nao", "khi nao", "thoi diem", "hom nao", "ngay nao", "may gio", "buoi nao") -> AskKind.TIME
-            has(q.q, "khu vuc", "o dau", "xuat phat") -> AskKind.PLACE
-            has(q.q, "bao nhieu", "gia", "ngan sach", "tam") -> AskKind.BUDGET
-            has(q.q, "lam gi", "choi gi", "loai", "the loai", "kieu", "mon", "thich gi", "hoat dong", "dich vu", "ca si", "dong nao") -> AskKind.TYPE
-            else -> AskKind.OTHER
-        }
+        if (q.id in TYPE_IDS) return AskKind.TYPE
+        if (q.id in PARTY_IDS) return AskKind.PARTY
+        if (q.id in TIME_IDS) return AskKind.TIME
+        if (q.id in BUDGET_IDS) return AskKind.BUDGET
+        val t = fold(q.q)
+        if (Regex("\\b(?:lam gi|loai|the loai|kieu|mon|thich gi|hoat dong|ca si)\\b").containsMatchIn(t)) return AskKind.TYPE
+        if (Regex("\\b(?:may nguoi|voi ai|bao nhieu nguoi)\\b").containsMatchIn(t)) return AskKind.PARTY
+        if (Regex("\\b(?:luc nao|khi nao|thoi diem|hom nao|ngay|gio)\\b").containsMatchIn(t)) return AskKind.TIME
+        if (Regex("\\b(?:bao nhieu|gia|ngan sach|tam)\\b").containsMatchIn(t)) return AskKind.BUDGET
+        return AskKind.OTHER
     }
 
-    /** Options that mean "no preference": no picture, a question-mark icon. */
-    private fun isNoPreference(o: String) = has(o, "chua biet", "khong quan trong", "gi cung duoc", "tuy", "deu duoc", "chua chot", "noi khac")
+    /** web `TILE_ROWS` — the first row whose folded (`f`) or marked (`r`) words match wins. */
+    private class TileRow(val f: Regex?, val r: Regex?, val key: String?, val icon: AskIcon)
 
-    private data class Rule(val words: List<String>, val key: String, val icon: AskIcon, val area: PlanArea)
-
-    /** README §3, in order — the FIRST rule whose word appears in the option wins. */
-    private val RULES = listOf(
-        Rule(listOf("karaoke"), "diem-karaoke", AskIcon.MUSIC, PlanArea.ENTERTAINMENT),
-        Rule(listOf("phim", "rap phim", "cinema"), "diem-rap-phim", AskIcon.MOVIE, PlanArea.ENTERTAINMENT),
-        Rule(listOf("bar", "pub", "bia", "beer", "cocktail"), "diem-bar", AskIcon.BAR, PlanArea.ENTERTAINMENT),
-        Rule(listOf("bida", "bowling", "billiard"), "diem-bida", AskIcon.TARGET, PlanArea.ENTERTAINMENT),
-        Rule(listOf("khu vui choi"), "diem-khu-vui-choi", AskIcon.FAMILY, PlanArea.ENTERTAINMENT),
-        Rule(listOf("cong vien"), "diem-cong-vien", AskIcon.PARK, PlanArea.ENTERTAINMENT),
-        Rule(listOf("thuy cung", "bao tang"), "diem-bao-tang", AskIcon.MUSEUM, PlanArea.ENTERTAINMENT),
-        Rule(listOf("ca phe", "cafe", "coffee", "tra"), "diem-ca-phe", AskIcon.CAFE, PlanArea.FOOD),
-        Rule(listOf("hai san"), "diem-hai-san", AskIcon.SEAFOOD, PlanArea.FOOD),
-        Rule(listOf("lau", "nuong", "bbq"), "diem-lau-nuong", AskIcon.GRILL, PlanArea.FOOD),
-        Rule(listOf("nhat", "han", "sushi"), "diem-mon-nhat-han", AskIcon.BOWL, PlanArea.FOOD),
-        Rule(listOf("mon viet", "pho", "bun", "com", "binh dan"), "diem-mon-viet", AskIcon.BOWL, PlanArea.FOOD),
-        Rule(listOf("an uong", "am thuc", "nha hang", "an"), "diem-an-uong", AskIcon.RESTAURANT, PlanArea.FOOD),
-        Rule(listOf("son gel", "dap bot", "mong", "nail", "dinh da"), "diem-nail", AskIcon.NAIL, PlanArea.SPA),
-        Rule(listOf("cham soc da", "lam dep", "skincare"), "diem-lam-dep", AskIcon.BEAUTY, PlanArea.SPA),
-        Rule(listOf("spa", "massage", "goi dau", "goi", "xong hoi"), "diem-spa", AskIcon.SPA, PlanArea.SPA),
-        Rule(listOf("nghi duong", "resort"), "diem-nghi-duong", AskIcon.RESORT, PlanArea.TRAVEL),
-        Rule(listOf("bien"), "diem-bien", AskIcon.BEACH, PlanArea.TRAVEL),
-        Rule(listOf("nui", "trekking", "cam trai"), "diem-nui", AskIcon.MOUNTAIN, PlanArea.TRAVEL),
-        Rule(listOf("cong nghe", "gaming", "laptop", "dien thoai"), "diem-cong-nghe", AskIcon.TECH, PlanArea.SHOPPING),
-        Rule(listOf("mua sam", "shop", "mall", "cho", "do"), "diem-mua-sam", AskIcon.SHOPPING, PlanArea.SHOPPING),
-        Rule(listOf("nhac", "concert", "show", "live", "pop", "rap", "indie", "acoustic", "hip hop"), "diem-am-nhac", AskIcon.MIC, PlanArea.ENTERTAINMENT),
+    private val TILE_ROWS = listOf(
+        TileRow(Regex("\\bkaraoke\\b"), null, "diem-karaoke", AskIcon.MUSIC),
+        TileRow(Regex("\\b(?:phim|cinema)\\b"), Regex("rạp"), "diem-rap-phim", AskIcon.FILM),
+        TileRow(Regex("\\b(?:bar|pub|bia|beer|cocktail)\\b"), null, "diem-bar-rooftop", AskIcon.MARTINI),
+        TileRow(Regex("\\b(?:bida|billiard)\\b"), null, "diem-bida", AskIcon.CIRCLE_DOT),
+        TileRow(Regex("\\bbowling\\b"), null, "diem-bowling", AskIcon.CIRCLE_DOT),
+        TileRow(Regex("\\b(?:ca phe|cafe|coffee)\\b"), Regex("trà"), "diem-cafe", AskIcon.COFFEE),
+        TileRow(Regex("\\b(?:nuong|bbq)\\b"), Regex("lẩu"), "diem-lau-nuong", AskIcon.FLAME),
+        TileRow(Regex("\\bsushi\\b"), Regex("nhật|hàn"), "diem-mon-nhat-han", AskIcon.SOUP),
+        TileRow(Regex("\\b(?:mon viet|am thuc|nha hang|quan an)\\b"), Regex("phở|bún|cơm|(?<!\\p{L})(?:ăn|món)(?!\\p{L})"), "diem-quan-an", AskIcon.UTENSILS),
+        TileRow(Regex("\\b(?:nail|mong)\\b"), null, "diem-nail", AskIcon.FLOWER),
+        TileRow(Regex("\\b(?:spa|massage|goi dau|goi)\\b"), null, "diem-spa", AskIcon.FLOWER),
+        TileRow(Regex("\\bbien\\b"), null, "diem-bien", AskIcon.WAVES),
+        TileRow(Regex("\\b(?:nui|trekking|cam trai)\\b"), null, "diem-nui", AskIcon.MOUNTAIN),
+        TileRow(Regex("\\b(?:mua sam|shop|shopping|mall)\\b"), Regex("chợ|(?<!\\p{L})đồ(?!\\p{L})"), "diem-mua-sam", AskIcon.SHOPPING_BAG),
+        TileRow(Regex("\\b(?:nhac|concert|show|live|pop|rap|indie|acoustic)\\b"), null, "diem-am-nhac", AskIcon.MIC),
+        TileRow(Regex("\\b(?:chua biet|khong quan trong|gi cung duoc|tuy)\\b"), null, null, AskIcon.HELP),
     )
 
-    private fun ruleOf(option: String): Rule? = if (isNoPreference(option)) null else RULES.firstOrNull { r -> has(option, *r.words.toTypedArray()) }
+    private fun tileRow(option: String): TileRow? {
+        val f = fold(option)
+        val r = lower(option)
+        return TILE_ROWS.firstOrNull { row -> (row.f?.containsMatchIn(f) ?: false) || (row.r?.containsMatchIn(r) ?: false) }
+    }
 
-    /** The STORED-style image key of a TYPE option (`diem-<loai>`), resolved through the manifest; null = no picture. */
-    fun imageKeyOf(option: String): String? = ruleOf(option)?.key
+    /** web `askTileKey`: the image key of a type tile; null = no image ("not sure" options); unmatched → same-name key. */
+    fun tileKeyOf(option: String): String? {
+        tileRow(option)?.let { return it.key }
+        val slug = fold(option).replace(Regex("[^a-z0-9]+"), "-").trim('-').take(40).ifEmpty { "khac" }
+        return "diem-$slug"
+    }
 
-    fun iconOf(kind: AskKind, option: String): AskIcon {
-        if (isNoPreference(option)) return AskIcon.HELP
+    /** web `askIconOf`. */
+    fun iconOf(option: String, kind: AskKind): AskIcon {
+        val f = fold(option)
+        fun m(re: String) = Regex(re).containsMatchIn(f)
         return when (kind) {
-            AskKind.TYPE -> ruleOf(option)?.icon ?: AskIcon.TUNE
+            AskKind.TYPE -> tileRow(option)?.icon ?: AskIcon.SPARKLES
             AskKind.PARTY -> when {
-                has(option, "dong", "nhom ban") -> AskIcon.GROUP_BIG
-                has(option, "gia dinh") -> AskIcon.FAMILY
-                has(option, "3", "3-5", "nhom") -> AskIcon.GROUP_SMALL
-                has(option, "2") -> AskIcon.PERSON_2
-                else -> AskIcon.PERSON_1
+                m("(?:^|\\D)3(?:\\D|$)|\\bnhom\\b|\\bdong\\b|\\bgia dinh\\b") -> AskIcon.USERS_ROUND
+                m("(?:^|\\D)2(?:\\D|$)") -> AskIcon.USERS
+                else -> AskIcon.USER
             }
             AskKind.TIME -> when {
-                has(option, "toi", "dem") -> AskIcon.MOON
-                has(option, "sang", "trua", "chieu") -> AskIcon.SUN
-                has(option, "cuoi tuan", "tuan", "thang", "ngay", "mai", "hom nay") -> AskIcon.CALENDAR
-                else -> AskIcon.CLOCK
+                m("\\b(?:tuan|thang|ngay|chua chot|\\d+n\\d*d?)\\b") -> AskIcon.CALENDAR
+                m("\\b(?:toi|dem)\\b") -> AskIcon.MOON
+                m("\\b(?:sang|trua|chieu)\\b") -> AskIcon.SUN
+                else -> AskIcon.CALENDAR
             }
-            AskKind.PLACE -> AskIcon.PIN
-            AskKind.BUDGET -> AskIcon.MONEY
-            AskKind.OTHER -> AskIcon.TUNE
+            AskKind.BUDGET -> AskIcon.WALLET
+            AskKind.OTHER -> when {
+                m("\\b(?:gan|quan|tp|ha noi|da nang|noi khac|khu vuc)\\b") -> AskIcon.MAP_PIN
+                m("\\bmay bay\\b") -> AskIcon.PLANE
+                m("\\b(?:xe khach|limousine|tau)\\b") -> AskIcon.BUS
+                m("\\b(?:xe rieng|o to|tu lai)\\b") -> AskIcon.CAR
+                m("\\b(?:giao|ship)\\b") -> AskIcon.BIKE
+                m("\\btai quan\\b") -> AskIcon.STORE
+                else -> AskIcon.SPARKLES
+            }
         }
     }
 
     fun viewOf(questions: List<AskQuestion>): List<AskQuestionView> = questions.mapIndexed { i, q ->
         val kind = kindOf(q)
         AskQuestionView(
-            id = q.id,
-            number = i + 1,
-            title = q.q,
-            kind = kind,
-            options = q.options.map { o ->
-                val rule = if (kind == AskKind.TYPE) ruleOf(o) else null
-                AskOptionView(label = o, icon = iconOf(kind, o), imageKey = rule?.key, area = rule?.area)
-            },
+            id = q.id, number = i + 1, title = q.q, kind = kind,
+            options = q.options.map { o -> AskOptionView(o, iconOf(o, kind), if (kind == AskKind.TYPE) tileKeyOf(o) else null) },
         )
     }
 
-    /** The placeholder area of the card: the first TYPE option with an area, else entertainment. */
-    fun areaOf(views: List<AskQuestionView>): PlanArea =
-        views.flatMap { it.options }.firstNotNullOfOrNull { it.area } ?: PlanArea.ENTERTAINMENT
+    /** Sent when nothing is chosen and nothing typed — R23.1: «Tìm cho tôi» still searches (web `ASK_EMPTY_ANSWER`). */
+    const val EMPTY_ANSWER = "Tìm cho tôi"
 
-    /**
-     * The ONE text message the card sends (unchanged shape): questions in order joined " · "; a
-     * multi-choice (TYPE) question's picks joined ", " in the card's option order; free text last.
-     */
+    /** The chosen options (a multi-choice question's picks in the card's option order, ", ") + free text, " · ". */
     fun composeAnswer(views: List<AskQuestionView>, chosen: Map<String, Set<String>>, free: String = ""): String {
         val parts = views.mapNotNull { v ->
-            val picked = v.options.map { it.label }.filter { it in chosen[v.id].orEmpty() }
-            picked.takeIf { it.isNotEmpty() }?.joinToString(", ")
+            v.options.map { it.label }.filter { it in chosen[v.id].orEmpty() }.takeIf { it.isNotEmpty() }?.joinToString(", ")
         }
         val extra = free.trim()
         return (parts + listOfNotNull(extra.takeIf { it.isNotEmpty() })).joinToString(" · ")
     }
+
+    /** web `askSendText`: [composeAnswer], or [EMPTY_ANSWER] when both are empty. */
+    fun sendText(views: List<AskQuestionView>, chosen: Map<String, Set<String>>, free: String = ""): String =
+        composeAnswer(views, chosen, free).ifEmpty { EMPTY_ANSWER }
 }

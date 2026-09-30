@@ -27,53 +27,42 @@
    có view đẹp...»**, nút tròn gửi (máy bay giấy) bên phải — gửi giống nút «Tìm cho tôi».
 4. **Nút «Tìm cho tôi»** (✦ + chữ), gradient xanh, rộng hết thẻ — bật khi đã chọn ít nhất 1 ô hoặc gõ ý khác.
 
-## 2. Loại câu hỏi — `id` trước, không khớp thì chữ `q` (so sau khi bỏ dấu, chữ thường, khớp cả từ)
+## 2. Loại câu hỏi (dùng `id` trước, không khớp thì dùng chữ `q`, không phân biệt hoa thường, bỏ dấu khi so)
 
-Danh sách `id` lấy từ các câu hỏi THẬT của server (§10, 30/09, 15 kịch bản × 5 mảng).
-
-| Loại | `id` | chữ `q` chứa (bỏ dấu) | Dòng phụ | Chọn | Ô |
+| Loại | `id` | chữ `q` chứa | Dòng phụ | Chọn | Ô |
 |---|---|---|---|---|---|
-| LOẠI | `activity` `dish` `style` `service` `line` `purpose` `type` `kind` `genre` `artist` `cuisine` `category` `product` `loai` `mon` | lam gi, choi gi, loai, the loai, kieu, mon, thich gi, hoat dong, dich vu, ca si, dong nao | Chọn một hoặc nhiều | **nhiều** | có ảnh (§3) |
-| AI ĐI | `party` `people` `group` `pax` | may nguoi, voi ai, bao nhieu nguoi | Chọn nhóm phù hợp | một | icon: «đông»/«nhóm bạn» → nhóm lớn · «gia đình» → gia đình · «3»/«nhóm» → nhóm nhỏ · «2» → 2 người · còn lại → 1 người |
-| KHI NÀO | `time` `date` `when` `day` | luc nao, khi nao, thoi diem, hom nao, ngay nao, may gio, buoi nao | Chọn thời điểm | một | icon: tối/đêm → trăng · sáng/trưa/chiều → mặt trời · cuối tuần/tuần/tháng/ngày/mai/hôm nay → lịch · còn lại → đồng hồ |
-| Ở ĐÂU | `area` `origin` `place` `district` `where` | khu vuc, o dau, xuat phat | Chọn khu vực | một | icon ghim |
-| NGÂN SÁCH | `budget` `price` | bao nhieu, gia, ngan sach, tam | Chọn mức giá | một | icon tiền |
-| KHÁC | còn lại (vd `vibe` `must` `condition`) | | (không có) | một | icon chung |
+| LOẠI | `style` `type` `kind` `activity` `genre` `artist` `cuisine` `category` `loai` `mon` `product` | «làm gì», «loại», «thể loại», «kiểu», «món», «thích gì», «hoạt động», «ca sĩ» | Chọn một hoặc nhiều | **nhiều** | có ảnh |
+| AI ĐI | `party` `people` `group` `pax` | «mấy người», «với ai», «bao nhiêu người» | Chọn nhóm phù hợp | một | icon người (1 / 2 / 3 / nhóm) |
+| KHI NÀO | `time` `when` `date` `day` | «lúc nào», «khi nào», «thời điểm», «hôm nào», «ngày», «giờ» | Chọn thời điểm | một | icon: sáng/trưa/chiều → mặt trời, tối/đêm → trăng, cuối tuần/ngày/tuần → lịch |
+| NGÂN SÁCH | `budget` `price` | «bao nhiêu», «giá», «ngân sách», «tầm» | Chọn mức giá | một | icon tiền |
+| KHÁC | còn lại | | (không có) | một | icon chung |
 
-Lựa chọn «chưa biết / không quan trọng / gì cũng được / tuỳ / đều được / chưa chốt / nơi khác» → icon dấu hỏi, không ảnh.
+Icon người theo thứ tự lựa chọn: lựa chọn chứa «1»/«một mình» → 1 người; «2» → 2 người; «3»/«nhóm 3» → 3 người; «đông»/«nhóm» → nhóm.
 
-## 3. Ảnh ô LOẠI — khoá `diem-<loai>` qua manifest ảnh loại điểm (R22), KHÔNG tự chọn ngẫu nhiên
+## 3. Ảnh ô LOẠI — lấy từ manifest ảnh loại điểm (R22), KHÔNG tự chọn ngẫu nhiên
 
-Luật đầu tiên có từ khớp (bỏ dấu, khớp cả từ) trong chữ lựa chọn thắng; khoá tra `GET /api/plan-images/manifest`
-như thẻ kế hoạch; khoá chưa có ảnh (hiện tại: tất cả) → ảnh giữ chỗ gradient theo MẢNG của luật + icon.
-Không khớp luật nào → ảnh giữ chỗ theo mảng của thẻ + icon chung.
+Khoá ảnh = `diem-<loai>` theo từ khoá đầu tiên khớp trong chữ lựa chọn (bỏ dấu, thường), rồi tra
+`GET /api/plan-images/manifest` như thẻ kế hoạch; khoá chưa có ảnh → ảnh giữ chỗ gradient theo mảng + icon.
 
-| Từ (bỏ dấu) | Khoá | Icon | Mảng (màu giữ chỗ) |
-|---|---|---|---|
-| karaoke | `diem-karaoke` | nốt nhạc | giải trí |
-| phim, rap phim, cinema | `diem-rap-phim` | phim | giải trí |
-| bar, pub, bia, beer, cocktail | `diem-bar` | ly | giải trí |
-| bida, bowling, billiard | `diem-bida` | bia bắn | giải trí |
-| khu vui choi | `diem-khu-vui-choi` | gia đình | giải trí |
-| cong vien | `diem-cong-vien` | công viên | giải trí |
-| thuy cung, bao tang | `diem-bao-tang` | bảo tàng | giải trí |
-| ca phe, cafe, coffee, tra | `diem-ca-phe` | tách | ăn uống |
-| hai san | `diem-hai-san` | hải sản | ăn uống |
-| lau, nuong, bbq | `diem-lau-nuong` | bếp nướng | ăn uống |
-| nhat, han, sushi | `diem-mon-nhat-han` | bát | ăn uống |
-| mon viet, pho, bun, com, binh dan | `diem-mon-viet` | bát | ăn uống |
-| an uong, am thuc, nha hang, an | `diem-an-uong` | dao nĩa | ăn uống |
-| son gel, dap bot, mong, nail, dinh da | `diem-nail` | móng | spa |
-| cham soc da, lam dep, skincare | `diem-lam-dep` | làm đẹp | spa |
-| spa, massage, goi dau, goi, xong hoi | `diem-spa` | spa | spa |
-| nghi duong, resort | `diem-nghi-duong` | nghỉ dưỡng | du lịch |
-| bien | `diem-bien` | biển | du lịch |
-| nui, trekking, cam trai | `diem-nui` | núi | du lịch |
-| cong nghe, gaming, laptop, dien thoai | `diem-cong-nghe` | công nghệ | mua sắm |
-| mua sam, shop, mall, cho, do | `diem-mua-sam` | túi | mua sắm |
-| nhac, concert, show, live, pop, rap, indie, acoustic, hip hop | `diem-am-nhac` | micro | giải trí |
+| Từ khoá (khớp chữ lựa chọn) | Khoá | Icon |
+|---|---|---|
+| karaoke | `diem-karaoke` | nốt nhạc |
+| phim, rạp, cinema | `diem-rap-phim` | phim |
+| bar, pub, bia, beer, cocktail | `diem-bar` | ly cocktail |
+| bida, bowling, billiard | `diem-bida` | bia bắn |
+| cà phê, cafe, café, trà | `diem-ca-phe` | tách |
+| lẩu, nướng, bbq | `diem-lau-nuong` | bếp lửa |
+| nhật, hàn, sushi | `diem-mon-nhat-han` | bát đũa |
+| món việt, phở, bún, cơm | `diem-mon-viet` | bát đũa |
+| ăn, món, ẩm thực, nhà hàng | `diem-an-uong` | dao nĩa |
+| spa, massage, gội, nail | `diem-spa` | spa |
+| biển | `diem-bien` | sóng |
+| núi, trekking, cắm trại | `diem-nui` | núi |
+| mua sắm, shop, mall, chợ, đồ | `diem-mua-sam` | túi |
+| nhạc, concert, show, live, pop, rap, indie, acoustic | `diem-am-nhac` | micro |
+| chưa biết, không quan trọng, gì cũng được, tuỳ | (không ảnh) | dấu hỏi |
 
-Mã tham chiếu Android (dùng để đối chiếu từng chữ): `android/app/src/main/java/com/tappyai/app/chat/ask/AskCardModel.kt`.
+Mảng của thẻ (cho màu ảnh giữ chỗ) = mảng của lượt hỏi; không biết thì theo từ khoá của lựa chọn đầu.
 
 ## 4. Kiểm (cả hai client)
 
@@ -86,6 +75,8 @@ Mã tham chiếu Android (dùng để đối chiếu từng chữ): `android/app
 
 Các mục trên giữ nguyên; chỉ những điểm sau đổi/bổ sung. Web: `src/lib/structuredContent/askCardModel.ts` (bảng) +
 `src/components/chat/AskCard.tsx` (giao diện); test `askCardModel.test.ts`, `AskCard.test.tsx`.
+Android: `android/app/src/main/java/com/tappyai/app/chat/ask/AskCardModel.kt` = bản chép 1:1 của `askCardModel.ts`
+(test `AskCardV2Test` chạy lại ĐÚNG các ca của `askCardModel.test.ts`) + `chat/AskCard.kt` (giao diện).
 
 1. **Tiêu đề / dòng phụ theo mảng** (owner: «tiêu đề/phụ đề/câu hỏi theo từng mảng»). Mảng suy từ `id` câu hỏi:
    `dish`/`mode` → ăn uống · `service`/`special` → spa · `activity`/`vibe`/`artist` → giải trí ·

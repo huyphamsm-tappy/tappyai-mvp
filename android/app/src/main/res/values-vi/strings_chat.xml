@@ -318,9 +318,22 @@
     <string name="ask_v2_sub_type">Chọn một hoặc nhiều</string>
     <string name="ask_v2_sub_party">Chọn nhóm phù hợp</string>
     <string name="ask_v2_sub_time">Chọn thời điểm</string>
-    <string name="ask_v2_sub_place">Chọn khu vực</string>
     <string name="ask_v2_sub_budget">Chọn mức giá</string>
     <string name="ask_v2_free_hint">Hoặc nói thêm ý khác…</string>
     <string name="ask_v2_free_example">Ví dụ: muốn chỗ chill, ít ồn, có view đẹp...</string>
     <string name="ask_v2_cta">Tìm cho tôi</string>
+    <string name="ask_v2_sending">Đang tìm…</string>
+    <string name="ask_v2_title_food">Hôm nay ăn gì nhỉ?</string>
+    <string name="ask_v2_sub_food">Chọn nhanh vài thứ, Tappy sẽ tìm quán hợp nhất.</string>
+    <string name="ask_v2_example_food">Ví dụ: không cay, có chỗ đậu ô tô...</string>
+    <string name="ask_v2_title_shopping">Bạn đang tìm món gì?</string>
+    <string name="ask_v2_sub_shopping">Chọn nhanh vài thứ, Tappy sẽ lọc giúp bạn.</string>
+    <string name="ask_v2_example_shopping">Ví dụ: màu xanh, bảo hành chính hãng...</string>
+    <string name="ask_v2_title_travel">Chuyến đi thế nào đây?</string>
+    <string name="ask_v2_sub_travel">Chọn nhanh vài thứ, Tappy sẽ lên phương án.</string>
+    <string name="ask_v2_example_travel">Ví dụ: có hồ bơi, gần biển, cho trẻ nhỏ...</string>
+    <string name="ask_v2_title_spa">Thư giãn kiểu nào hôm nay?</string>
+    <string name="ask_v2_sub_spa">Chọn nhanh vài thứ, Tappy sẽ tìm chỗ hợp nhất.</string>
+    <string name="ask_v2_example_spa">Ví dụ: kỹ thuật viên nữ, phòng riêng...</string>
+    <string name="ask_v2_example_main">Ví dụ: gần nhà, giá vừa phải...</string>
 </resources>
