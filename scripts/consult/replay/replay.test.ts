@@ -220,6 +220,7 @@ describe.skipIf(!ON)('offline replay — chat route, real model, Serper record/r
       const outDir = join(HERE, 'out', `${suite}-${stamp}`)
       mkdirSync(join(outDir, 'raw'), { recursive: true })
       process.env.AUDIT_USAGE_LOG_FILE = join(outDir, 'usage.jsonl')
+      process.env.REPLAY_SERPER_LOG = join(outDir, 'serper.jsonl')
       const rows: TurnRow[] = []
       const startedAt = new Date().toISOString()
       const net0 = netSnapshot()
@@ -230,7 +231,7 @@ describe.skipIf(!ON)('offline replay — chat route, real model, Serper record/r
         writeFileSync(join(outDir, 'summary.md'), markdown(suite, rows, s, meta))
         return s
       }
-      for (const c of convs) { setSerperInjection(c.inject ?? null); try { await runConversation(c, outDir, rows) } finally { setSerperInjection(null) }; flush() }
+      for (const c of convs) { process.env.REPLAY_SERPER_CONV = c.id; setSerperInjection(c.inject ?? null); try { await runConversation(c, outDir, rows) } finally { setSerperInjection(null) }; flush() }
       delete process.env.AUDIT_USAGE_LOG_FILE
       const s = flush()
       process.stdout.write(`\n[replay] ${suite}: ${s.total.pass}/${s.total.turns} turns passed · ${s.crashes.length} crash(es) · mean $${s.cost.meanTurnUsd.toFixed(5)}/turn · out: ${outDir}\n`)

@@ -11,7 +11,7 @@
 // The route's own Serper meter counts every serperPost() as a call, replayed or not, so the turn
 // annotation's `serperCalls` cannot tell them apart. These counters can.
 import { createHash } from 'node:crypto'
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
+import { appendFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 
 export interface NetStats {
@@ -100,6 +100,8 @@ export function installReplayFetch(recordingsDir: string, opts: { record: boolea
 
     if (host === 'google.serper.dev') {
       const body = bodyOf(init)
+      // PHIÊN LUNA cache study: every Serper request the route made, in order (REPLAY_SERPER_LOG, set per out dir).
+      if (process.env.REPLAY_SERPER_LOG) { try { appendFileSync(process.env.REPLAY_SERPER_LOG, JSON.stringify({ conv: process.env.REPLAY_SERPER_CONV ?? null, url, body }) + '\n') } catch { /* study only */ } }
       const key = recordingKey(url, body)
       const file = join(recordingsDir, `${key}.json`)
       if (existsSync(file)) {
