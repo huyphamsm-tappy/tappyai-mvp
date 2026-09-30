@@ -17,15 +17,25 @@ import type { CoreMessage } from 'ai'
 import { CONSULT_DOMAINS, enforceConsultRules, type BrainRun, type ConsultDecision, type ConsultDomain, type ConsultTurn } from './consultBrain'
 import { budgetOf, localAreaOf, partyOf, prep, timeOf, tripDatesOf } from './consultRouter'
 
+/**
+ * Owner 30/09 (URGENT, Anthropic out of credit): the Luna flags default ON with the default provider (GPT-6 Luna).
+ * Explicit '0' / 'off' / 'false' turns one off; with LLM_PROVIDER=claude (the rollback) they default OFF, so the
+ * rollback is the Phase 7 pipeline byte for byte.
+ */
+function flagOn(raw: string | undefined, env: Record<string, string | undefined>): boolean {
+  const v = (raw ?? '').trim().toLowerCase()
+  if (v === '1' || v === 'on' || v === 'true') return true
+  if (v === '0' || v === 'off' || v === 'false') return false
+  return ((env.LLM_PROVIDER ?? '').trim() || 'openai').toLowerCase() !== 'claude'
+}
+
 export function consultLunaEnabled(env: Record<string, string | undefined> = process.env): boolean {
-  const v = (env.CONSULT_LUNA ?? '').trim().toLowerCase()
-  return v === '1' || v === 'on' || v === 'true'
+  return flagOn(env.CONSULT_LUNA, env)
 }
 
 /** CONSULT_LUNA_FAST (needs CONSULT_LUNA; default OFF): skip the intent call on continuing turns the rules are sure of. */
 export function consultLunaFastEnabled(env: Record<string, string | undefined> = process.env): boolean {
-  const v = (env.CONSULT_LUNA_FAST ?? '').trim().toLowerCase()
-  return consultLunaEnabled(env) && (v === '1' || v === 'on' || v === 'true')
+  return consultLunaEnabled(env) && flagOn(env.CONSULT_LUNA_FAST, env)
 }
 
 /**
@@ -68,8 +78,7 @@ export const LUNA_PLAN_RULE = [
 
 /** CONSULT_LUNA_PLAN (default OFF, owner 30/09): the detailed plan runs on role `plan` (Luna, LLM_PLAN_REASONING); only with CONSULT_LUNA. */
 export function consultLunaPlanEnabled(env: Record<string, string | undefined> = process.env): boolean {
-  const v = (env.CONSULT_LUNA_PLAN ?? '').trim().toLowerCase()
-  return consultLunaEnabled(env) && (v === '1' || v === 'on' || v === 'true')
+  return consultLunaEnabled(env) && flagOn(env.CONSULT_LUNA_PLAN, env)
 }
 
 /** A consultation ANSWER turn (served by role `consult`); the detailed plan keeps the Phase 7 model. */

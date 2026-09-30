@@ -4,9 +4,11 @@ import { consultLunaFastEnabled, skipLunaIntent } from './luna'
 const r = (turn: string, confidence: 'rule' | 'unsure' = 'rule', domains = ['food']) => ({ confidence, decision: { turn, domains } })
 
 describe('CONSULT_LUNA_FAST — skip the intent call only when it adds nothing', () => {
-  it('is OFF by default and needs CONSULT_LUNA', () => {
-    expect(consultLunaFastEnabled({})).toBe(false)
-    expect(consultLunaFastEnabled({ CONSULT_LUNA_FAST: '1' })).toBe(false)
+  it('is ON by default with Luna, needs CONSULT_LUNA, OFF under the claude rollback', () => {
+    expect(consultLunaFastEnabled({})).toBe(true)
+    expect(consultLunaFastEnabled({ CONSULT_LUNA_FAST: '0' })).toBe(false)
+    expect(consultLunaFastEnabled({ CONSULT_LUNA: '0', CONSULT_LUNA_FAST: '1' })).toBe(false)
+    expect(consultLunaFastEnabled({ LLM_PROVIDER: 'claude' })).toBe(false)
     expect(consultLunaFastEnabled({ CONSULT_LUNA: '1', CONSULT_LUNA_FAST: '1' })).toBe(true)
   })
   it('skips a sure follow-up / compare on a stored consultation', () => {

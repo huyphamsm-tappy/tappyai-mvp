@@ -60,3 +60,27 @@ describe('withFallback — Luna fails → the default model answers', () => {
     expect((r.providerMetadata as { tappy?: { fellBack?: boolean } }).tappy?.fellBack).toBe(true)
   })
 })
+
+describe('withFallback — the retry is the last try (owner 30/09: HAIKU_FALLBACK off, no Anthropic)', () => {
+  it('a second failure is the error of the call: nothing else is called', async () => {
+    vi.spyOn(console, 'warn').mockImplementation(() => {})
+    let calls = 0
+    const failing = () => model('luna', { doGenerate: async () => { calls++; throw new Error('503') } })
+    await expect(withFallback(failing(), failing(), { firstPartMs: 1000, label: 'fast', fallbackKind: 'luna_retry' }).doGenerate(opts)).rejects.toThrow('503')
+    expect(calls).toBe(2)
+  })
+
+  it('a long single-shot answer is not cut at the first-part wait: generateMs governs doGenerate', async () => {
+    vi.spyOn(console, 'warn').mockImplementation(() => {})
+    const slow = model('luna', { doGenerate: async () => { await new Promise(r => setTimeout(r, 60)); return { text: 'ok', finishReason: 'stop', usage: { promptTokens: 1, completionTokens: 1 }, rawCall: { rawPrompt: null, rawSettings: {} } } as never } })
+    const r = await withFallback(slow, slow, { firstPartMs: 10, generateMs: 1000, label: 'smart' }).doGenerate(opts)
+    expect((r as { text?: string }).text).toBe('ok')
+    expect(console.warn).not.toHaveBeenCalled()
+  })
+
+  it('🔑 SSRF: supportsImageUrls survives the wrapper (a spread drops the SDK getter)', () => {
+    const withGetter = Object.create({ get supportsImageUrls() { return true } }, Object.getOwnPropertyDescriptors(model('luna', {})))
+    expect({ ...withGetter }.supportsImageUrls).toBeUndefined() // the trap itself
+    expect(withFallback(withGetter as LanguageModelV1, withGetter as LanguageModelV1, { firstPartMs: 10, label: 'vision' }).supportsImageUrls).toBe(true)
+  })
+})

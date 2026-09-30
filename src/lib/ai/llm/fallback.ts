@@ -1,6 +1,8 @@
 import type { LanguageModelV1, LanguageModelV1StreamPart } from 'ai'
 
-// ── Routed model with a fallback (owner 2026-09-30, "PHIÊN LUNA": Luna lỗi/timeout → tự chuyển Haiku) ──
+// ── Routed model with a fallback (owner 2026-09-30, "PHIÊN LUNA") ──────────────────────────────────────────────
+// Fallback = ONE retry on Luna by default (the Anthropic account has no credit; HAIKU_FALLBACK=1 makes it Claude).
+// A second failure is the call's error: nothing else is tried.
 // Provider-neutral: wraps two AI-SDK models. The primary serves the call; the fallback serves it when the
 // primary throws before answering, returns an error as its FIRST stream part, or sends nothing within
 // `firstPartMs`. Once the primary has streamed a part the call is committed to it (the client may already
@@ -10,13 +12,17 @@ import type { LanguageModelV1, LanguageModelV1StreamPart } from 'ai'
 // (`tappy.fellBack`), so the per-turn cost names the vendor that actually answered.
 
 export interface FallbackOptions {
-  /** No first stream part (or no generate result) within this many ms → fallback. */
+  /** No first stream part within this many ms → fallback. */
   firstPartMs: number
+  /** No generate result within this many ms → fallback (default: firstPartMs). */
+  generateMs?: number
   label: string
+  /** What the fallback is, for the log line: a Luna retry or the Claude model. */
+  fallbackKind?: 'luna_retry' | 'haiku'
 }
 
-function log(label: string, reason: string, primary: LanguageModelV1, ms: number) {
-  console.warn(JSON.stringify({ type: 'tappyai_llm_fallback', role: label, primary: `${primary.provider}:${primary.modelId}`, reason: reason.slice(0, 200), ms }))
+function log(label: string, reason: string, primary: LanguageModelV1, ms: number, kind?: string) {
+  console.warn(JSON.stringify({ type: 'tappyai_llm_fallback', role: label, primary: `${primary.provider}:${primary.modelId}`, fallback: kind ?? null, reason: reason.slice(0, 200), ms }))
 }
 
 const timeout = <T,>(ms: number): { p: Promise<T>; clear: () => void } => {
@@ -35,14 +41,16 @@ export function withFallback(primary: LanguageModelV1, fallback: LanguageModelV1
     modelId: primary.modelId,
     defaultObjectGenerationMode: primary.defaultObjectGenerationMode,
     supportsStructuredOutputs: primary.supportsStructuredOutputs,
+    // 🔑 SSRF: carried explicitly — a getter on the SDK model is lost by the spread (imageUrlSsrfGuardrail.test.ts).
+    supportsImageUrls: primary.supportsImageUrls,
     async doGenerate(opts) {
       const t0 = Date.now()
-      const t = timeout<never>(o.firstPartMs)
+      const t = timeout<never>(o.generateMs ?? o.firstPartMs)
       try {
         return await Promise.race([primary.doGenerate(opts), t.p])
       } catch (e) {
         if (opts.abortSignal?.aborted) throw e
-        log(o.label, e instanceof Error ? e.message : String(e), primary, Date.now() - t0)
+        log(o.label, e instanceof Error ? e.message : String(e), primary, Date.now() - t0, o.fallbackKind)
         const r = await fallback.doGenerate(opts)
         return { ...r, providerMetadata: markFellBack(r.providerMetadata) as never }
       } finally { t.clear() }
@@ -51,7 +59,7 @@ export function withFallback(primary: LanguageModelV1, fallback: LanguageModelV1
       const t0 = Date.now()
       const t = timeout<never>(o.firstPartMs)
       const viaFallback = async (reason: string) => {
-        log(o.label, reason, primary, Date.now() - t0)
+        log(o.label, reason, primary, Date.now() - t0, o.fallbackKind)
         const r = await fallback.doStream(opts)
         const stream = r.stream.pipeThrough(new TransformStream<LanguageModelV1StreamPart, LanguageModelV1StreamPart>({
           transform(part, c) { c.enqueue(part.type === 'finish' ? { ...part, providerMetadata: markFellBack(part.providerMetadata) as never } : part) },

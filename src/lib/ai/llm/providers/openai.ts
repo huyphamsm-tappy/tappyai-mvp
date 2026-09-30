@@ -28,7 +28,10 @@ const EFFORTS: readonly ReasoningEffort[] = ['none', 'low', 'medium', 'high', 'x
 
 export function reasoningEffortFor(role: ModelRole, env: Record<string, string | undefined> = process.env): ReasoningEffort {
   const v = (env[`LLM_${role.toUpperCase()}_REASONING`] ?? '').trim().toLowerCase() as ReasoningEffort
-  return EFFORTS.includes(v) ? v : 'none'
+  if (EFFORTS.includes(v)) return v
+  // Owner 30/09: travel plans on low (medium measured up to 56–61 s with a fallback; low max 20 s). A plan call that
+  // carries tools (non-travel plans) is sent at none by effortForCall — the API refuses tools with any other effort.
+  return role === 'plan' ? 'low' : 'none'
 }
 
 export interface RawUsage {
@@ -120,6 +123,9 @@ function lunaModel(modelId: string, effort: ReasoningEffort, apiKey: string, str
     modelId: inner.modelId,
     defaultObjectGenerationMode: inner.defaultObjectGenerationMode,
     supportsStructuredOutputs: structured,
+    // 🔑 SSRF (imageUrlSsrfGuardrail.test.ts): the SDK model answers this through a prototype GETTER, which the spread
+    // above drops. Undefined reads as false and the SDK would then DOWNLOAD user-supplied image URLs from our server.
+    supportsImageUrls: inner.supportsImageUrls,
     async doGenerate(opts) {
       const sent = effortFor(opts as never)
       const r = await pick(opts as never).doGenerate(lunaCallOptions(opts as never, sent))

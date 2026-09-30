@@ -8,8 +8,10 @@ const base = (o: Partial<LunaIntent> = {}): LunaIntent => ({
 })
 
 describe('CONSULT_LUNA flag', () => {
-  it('is OFF unless explicitly on', () => {
-    expect(consultLunaEnabled({})).toBe(false)
+  it('is ON by default (owner 30/09: Luna is the production provider); explicit 0 or the claude rollback turns it off', () => {
+    expect(consultLunaEnabled({})).toBe(true)
+    expect(consultLunaEnabled({ LLM_PROVIDER: 'claude' })).toBe(false)
+    expect(consultLunaEnabled({ LLM_PROVIDER: 'claude', CONSULT_LUNA: '1' })).toBe(true)
     expect(consultLunaEnabled({ CONSULT_LUNA: '0' })).toBe(false)
     expect(consultLunaEnabled({ CONSULT_LUNA: '1' })).toBe(true)
     expect(consultLunaEnabled({ CONSULT_LUNA: 'on' })).toBe(true)

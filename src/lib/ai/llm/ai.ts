@@ -93,7 +93,7 @@ export const AI = {
   /** Image + instruction → text (OCR, image analysis). */
   vision(opts: AIVisionOptions) {
     return generateText({
-      model: getProvider().model(opts.role ?? 'vision'),
+      model: modelForRole(opts.role ?? 'vision'),
       messages: buildMessages({
         messages: [{
           role: 'user',

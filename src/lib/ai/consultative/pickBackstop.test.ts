@@ -6,7 +6,12 @@
  * nothing. A prompt rule did not stop it. The backstop: when the body names NO retrieved venue or
  * product, the pick sentence is built from card fields and placed first; the model's text stays.
  */
-import { describe, it, expect, beforeAll, afterAll } from 'vitest'
+import { describe, it, expect, beforeAll, afterAll, vi } from 'vitest'
+
+// The Phase 7 server pick backstop. With Luna on (the production default since 30/09) the server never writes a pick
+// over a Luna reply — that path has its own tests (luna.test.ts). This file keeps guarding the Phase 7 path, which is
+// still what LLM_PROVIDER=claude (the rollback) runs.
+vi.stubEnv('CONSULT_LUNA', '0')
 import { shoppingPickFromMarker } from './pickBackstop'
 import { applyPlaceEnrichmentStreamFilter } from '../streamEnrichment'
 import { createEnrichmentCollector, type ConsultativeV1Context } from '../toolResultSplit'

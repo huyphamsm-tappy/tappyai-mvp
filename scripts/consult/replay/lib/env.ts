@@ -58,28 +58,35 @@ export function prepareReplayEnv(file = process.env.REPLAY_ENV_FILE || DEFAULT_E
   return { serperKey: !!env.SERPER_API_KEY }
 }
 
+function loadOpenAIKey(): void {
+  const file = process.env.REPLAY_OPENAI_KEY_FILE || DEFAULT_OPENAI_KEY_FILE
+  if (!existsSync(file)) throw new Error(`REFUSING: OpenAI key file not found (${file})`)
+  const key = readFileSync(file, 'utf8').trim()
+  if (!key) throw new Error('REFUSING: OpenAI key file is empty')
+  process.env.OPENAI_API_KEY = key
+}
+
 /** Where the owner keeps the OpenAI key for LOCAL replay only (never committed, never printed). */
 export const DEFAULT_OPENAI_KEY_FILE = 'D:/TappyAI-backups/openai-key.txt'
 
 /**
  * PHIÊN LUNA (owner 2026-09-30). REPLAY_LUNA=<answer effort>[,<intent effort>] — e.g. `none`, `low`,
  * `low,none` — turns CONSULT_LUNA on and routes both roles to Luna with EXPLICIT efforts. REPLAY_LUNA=prompt
- * turns the flag on with both roles on Haiku (isolates the prompt). Unset → the Phase 7 pipeline (Haiku).
+ * turns the flag on with both roles on Haiku (isolates the prompt).
+ * Owner 30/09 (Anthropic out of credit, Luna is the production default): unset / `default` → the PRODUCTION defaults
+ * (every role on Luna, CONSULT_LUNA + FAST + PLAN on, plan effort low); `haiku` → LLM_PROVIDER=claude = Phase 7.
  */
 export function applyLunaEnv(): { luna: string | null } {
   for (const k of ['CONSULT_LUNA', 'CONSULT_LUNA_PLAN', 'CONSULT_LUNA_FAST', 'LLM_CONSULT_PROVIDER', 'LLM_INTENT_PROVIDER', 'LLM_PLAN_PROVIDER', 'LLM_CONSULT_REASONING', 'LLM_INTENT_REASONING', 'LLM_PLAN_REASONING', 'LLM_CONSULT_MODEL', 'LLM_INTENT_MODEL', 'LLM_PLAN_MODEL']) delete process.env[k]
   const spec = (process.env.REPLAY_LUNA ?? '').trim().toLowerCase()
-  if (!spec) return { luna: null }
+  if (spec === 'haiku') { process.env.LLM_PROVIDER = 'claude'; return { luna: null } }
+  if (!spec || spec === 'default') { loadOpenAIKey(); return { luna: 'default' } }
   process.env.CONSULT_LUNA = '1'
   if (spec === 'prompt') return { luna: spec }
   const [answer, intent = answer] = spec.split(',').map(s => s.trim())
   const ok = ['none', 'low', 'medium', 'high']
   if (!ok.includes(answer) || !ok.includes(intent)) throw new Error('REFUSING: REPLAY_LUNA must be none|low|medium|high[,<intent effort>] or prompt')
-  const file = process.env.REPLAY_OPENAI_KEY_FILE || DEFAULT_OPENAI_KEY_FILE
-  if (!existsSync(file)) throw new Error(`REFUSING: OpenAI key file not found (${file})`)
-  const key = readFileSync(file, 'utf8').trim()
-  if (!key) throw new Error('REFUSING: OpenAI key file is empty')
-  process.env.OPENAI_API_KEY = key
+  loadOpenAIKey()
   process.env.LLM_CONSULT_PROVIDER = 'openai'; process.env.LLM_CONSULT_REASONING = answer
   process.env.LLM_INTENT_PROVIDER = 'openai'; process.env.LLM_INTENT_REASONING = intent
   // REPLAY_LUNA_PLAN=medium|high|xhigh — the detailed plan on Luna too (CONSULT_LUNA_PLAN).
