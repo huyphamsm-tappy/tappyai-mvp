@@ -273,7 +273,11 @@ export async function POST(req: Request) {
   const framingMessages = mergeClarifyAnswer(messages)
   const framingText: string = (() => { const last = framingMessages[framingMessages.length - 1]; return typeof last?.content === 'string' ? last.content : lastText })()
   const intent = classifyIntent(framingText)
-  const budget = extractBudget(lastText)
+  // Budget is read from what the user ASKED, without the product names copied back from our replies (Luna 30/09,
+  // replay SHOP-3: "… Dell 15 DC15250 Core i5-1334U …" in an "A hay B?" read as a 5.000đ–1.334.000đ budget).
+  const budgetMessages = withoutQuotedNames(messages as Array<{ role: string; content: unknown }>)
+  const budgetLastText = (() => { const u = budgetMessages.filter(m => m.role === 'user').pop(); return typeof u?.content === 'string' ? u.content : lastText })()
+  const budget = extractBudget(budgetLastText)
   const locationIntent = detectLocationIntent(lastText)
   // A "recommend me a movie/show" turn must NOT be routed to the place search
   // (which answers with cinemas). We drop search_places for the turn so the model
@@ -1339,7 +1343,7 @@ export async function POST(req: Request) {
   // SHOP-3: "… Laptop Dell 15 …" in an "A hay B?" became brand = Dell and filtered out every other laptop).
   const shoppingConstraints = deriveShoppingConstraints(
     withoutQuotedNames(messages),
-    budget ?? budgetFromHistory(currentSubjectMessages(messages, { hasGps: !!userLocation, lang }), extractBudget),
+    budget ?? budgetFromHistory(currentSubjectMessages(budgetMessages as typeof messages, { hasGps: !!userLocation, lang }), extractBudget),
   )
 
 
