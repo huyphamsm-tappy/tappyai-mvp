@@ -16,6 +16,8 @@
 // alert as `scope`). Counting is by credits AS BILLED (`SERPER_CREDITS`), added BEFORE the call
 // so a burst cannot slip past the ceiling between the read and the write.
 
+import { consultLunaEnabled } from '@/lib/ai/consultative/luna'
+import { sanitizeSerperJson } from '@/lib/ai/consultative/lunaSafety'
 import { recordSerperCall, SERPER_CREDITS, type SerperEndpoint } from './serperMeter'
 import { incrDailyCounter } from '@/lib/security/kvCounter'
 import { vnToday } from '@/lib/config/product'
@@ -89,7 +91,7 @@ export function __resetSerperAlerts(): void { alerted.warn = ''; alerted.ceiling
 export async function serperPost(endpoint: SerperEndpoint, apiKey: string, body: Record<string, unknown>, timeoutMs: number): Promise<Response | null> {
   if (!(await serperAdmit(endpoint))) return null
   recordSerperCall(endpoint)
-  return Promise.race([
+  const res = await Promise.race([
     fetch(`https://google.serper.dev/${endpoint}`, {
       method: 'POST',
       headers: { 'X-API-KEY': apiKey, 'Content-Type': 'application/json' },
@@ -97,4 +99,13 @@ export async function serperPost(endpoint: SerperEndpoint, apiKey: string, body:
     }),
     new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), timeoutMs)),
   ])
+  // PHIÊN LUNA (CONSULT_LUNA only): search data is untrusted — URLs and instruction text are cleaned out of its free-text
+  // fields before any tool reads it (lunaSafety.sanitizeSerperJson). Flag off → the response untouched.
+  if (!consultLunaEnabled() || !res.ok) return res
+  try {
+    const cleaned = sanitizeSerperJson(await res.clone().json())
+    if (cleaned.changed === 0) return res
+    console.log(JSON.stringify({ type: 'tappyai_luna_untrusted_cleaned', endpoint, fields: cleaned.changed }))
+    return new Response(JSON.stringify(cleaned.body), { status: res.status, headers: { 'content-type': 'application/json' } })
+  } catch { return res }
 }
