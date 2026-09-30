@@ -718,6 +718,15 @@ const QUESTION_RE = /\?|\b(?:khong|ko|hong|chua|bao lau|bao nhieu|may|gi|sao|nao
 const BUTTON_MORE = new Set(['xem them', 'goi y them', 'con cho nao khac', 'show more', 'more'])
 const BUTTON_PLAN = new Set(['len ke hoach chi tiet', 'len ke hoach', 'ok chot', 'chot', 'plan it', 'make a detailed plan'])
 
+/**
+ * A UI contract text — a quick-reply button ("Xem thêm", "Lên kế hoạch chi tiết"), a greeting or thanks.
+ * These stay on code under CONSULT_LUNA (no model reads a button press).
+ */
+export function isFixedPhrase(raw: string): boolean {
+  const fq = prep(raw).f.replace(/[^a-z0-9 ]+/g, ' ').replace(/\s+/g, ' ').trim()
+  return BUTTON_MORE.has(fq) || BUTTON_PLAN.has(fq) || GREETING.test(fq)
+}
+
 const GENERIC_NAME_PREFIX = /^(?:karaoke|quan|nha hang|spa|khach san|tiem|salon|cafe|ca phe|hotel|resort|homestay|chuyen bay|hang|cua hang|shop|bar|pub|rap|cgv|trung tam|tiem nail|nail|barber|op|vietjet|vietnam airlines|bamboo)\s+/
 
 /** `text` without the given names (≥ 6 chars, longest first, case-insensitive) — a quoted pick is a reference. */

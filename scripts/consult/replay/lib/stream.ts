@@ -13,6 +13,12 @@ export interface TurnAnnotation {
   promptCacheRead?: number
   promptCacheWrite?: number
   usd: number
+  intent?: string | null
+  intentUsd?: number
+  answerUsd?: number
+  serperUsd?: number
+  reasoningTokens?: number
+  fellBack?: boolean
 }
 
 export interface ToolFrame { toolCallId: string; toolName?: string; args?: unknown; result?: unknown }

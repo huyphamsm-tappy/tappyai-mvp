@@ -18,7 +18,7 @@ import { searchProducts } from '@/lib/ai/tools/shopping'
 import { getNews, searchPlaces } from '@/lib/ai/tools/food'
 import { getFlightPrices, getHotelPrices, getTransportOptions } from '@/lib/ai/tools/travel'
 import { createTurnEditorial, editorialGate, withTravelEditorial, type TravelEditorialItem } from '@/lib/ai/tools/vnexpressTravel'
-import { AI, type ModelRole } from '@/lib/ai/llm'
+import { AI, type ModelRole, type CallCost } from '@/lib/ai/llm'
 import { validateClientInput, readDecisionEvidenceId, readExploreClipContext } from '@/lib/ai/security/clientInput'
 import { loadExploreClipContext, buildExploreClipBlock, exploreClipLocationHint, type ExploreClipContext } from '@/lib/ai/exploreClipContext'
 import { applyClipTarget, applyClipAlternatives, asksForAlternatives, type ClipTargetStatus } from '@/lib/ai/exploreClipTarget'
@@ -92,7 +92,8 @@ import { tripAskAfter, missingTripFacts } from '@/lib/ai/consultative/tripFacts'
 import { buildDomainFrame, frameDomainOf, frameLibrary, frameRef, PLAN_HEADINGS } from '@/lib/ai/consultative/domainFrames'
 import { runConsultBrain, consultV2Enabled, wasAskReply, buildAskReply, placeTypeFor, latestShoppingPickPrice, shoppingMarkerRecords } from '@/lib/ai/consultative/consultBrain'
 import { routeConsult } from '@/lib/ai/consultative/consultRouter'
-import { rejectModifierOf, withoutQuotedNames } from '@/lib/ai/consultative/consultRouter'
+import { rejectModifierOf, withoutQuotedNames, isFixedPhrase } from '@/lib/ai/consultative/consultRouter'
+import { consultLunaEnabled, isLunaAnswerTurn, runLunaIntent, LUNA_CORE } from '@/lib/ai/consultative/luna'
 import { eventPreCall, onlyRowsNamed, slimResultForModel, travelPreCall, unshownRows, withoutShownRows } from '@/lib/ai/consultative/consultTravel'
 import { geoGuardArea, guardPlaceGeography } from '@/lib/ai/tools/placeGeoGuard'
 import { compactCandidates, compactProducts, loadChatSessionState, nextChatSessionState, readChatSessionId, saveChatSessionState, type ChatSessionState } from '@/lib/ai/consultative/chatSessionState'
@@ -363,9 +364,22 @@ export async function POST(req: Request) {
     && ['more', 'plan', 'followup', 'compare', 'reject'].includes(routedRaw.decision.turn)
     ? { decision: { ...routedRaw.decision, domains: earlyChatState.domains as typeof routedRaw.decision.domains, known: { ...(earlyChatState.known ?? {}), ...routedRaw.decision.known } }, confidence: 'rule' as const }
     : routedRaw
-  const consultRun = consultOn && routed?.confidence === 'unsure' && AI.isConfigured()
-    ? await runConsultBrain(o => AI.generate(o), messages, { hasGps: !!userLocation, previousWasAsk: wasAskReply(priorAssistantText), deterministicDomain: lastUserMsg ? turnDomain(lastUserMsg, { hasGps: !!userLocation, lang }) : null })
+  // PHIÊN LUNA (CONSULT_LUNA, default OFF): every consult turn that is not a button / greeting is read by ONE
+  // structured intent call; code checks each fact against the user's words (luna.ts). A failed read falls
+  // back to the Phase 7 path (the brain only when the rules are unsure).
+  const lunaOn = consultOn && consultLunaEnabled()
+  const lunaUserTexts = messages.filter((m: { role: string }) => m.role === 'user').map((m: { content: unknown }) => typeof m.content === 'string' ? m.content : Array.isArray(m.content) ? m.content.map((p: { type?: string; text?: string }) => p?.type === 'text' ? p.text ?? '' : '').join(' ') : '').slice(-7)
+  const lunaIntentRun = lunaOn && AI.isConfigured() && !(routed?.confidence === 'rule' && isFixedPhrase(lastText))
+    ? await runLunaIntent(o => AI.extract(o) as never, messages, { hasGps: !!userLocation, previousWasAsk: wasAskReply(priorAssistantText), deterministicDomain: lastUserMsg ? turnDomain(lastUserMsg, { hasGps: !!userLocation, lang }) : null, userTexts: lunaUserTexts, storedNames: earlyChatState?.shown?.slice(-8) })
     : null
+  if (lunaIntentRun) console.log(JSON.stringify({ type: 'tappyai_luna_intent', turn: lunaIntentRun.decision.turn, domains: lunaIntentRun.decision.domains, difficulty: lunaIntentRun.difficulty, served: lunaIntentRun.served, ms: lunaIntentRun.ms, usd: lunaIntentRun.costUsd, dropped: lunaIntentRun.check.dropped, corrected: lunaIntentRun.check.corrected }))
+  // A continuing turn the intent could not place keeps the stored consultation's area (same rule as the router's).
+  const lunaRun = lunaIntentRun && lunaIntentRun.decision.domains.length === 0 && earlyChatState?.domains?.length && ['more', 'plan', 'followup', 'compare', 'reject'].includes(lunaIntentRun.decision.turn)
+    ? { ...lunaIntentRun, decision: { ...lunaIntentRun.decision, domains: earlyChatState.domains as typeof lunaIntentRun.decision.domains, known: { ...(earlyChatState.known ?? {}), ...lunaIntentRun.decision.known } } }
+    : lunaIntentRun
+  const consultRun = lunaRun ?? (consultOn && routed?.confidence === 'unsure' && AI.isConfigured()
+    ? await runConsultBrain(o => AI.generate(o), messages, { hasGps: !!userLocation, previousWasAsk: wasAskReply(priorAssistantText), deterministicDomain: lastUserMsg ? turnDomain(lastUserMsg, { hasGps: !!userLocation, lang }) : null })
+    : null)
   const consult = consultRun?.decision ?? (routed ? routed.decision : null)
   console.log(JSON.stringify({ type: 'tappyai_consult', by: consultRun ? 'brain' : routed ? 'rules' : 'off', turn: consult?.turn ?? 'fallback', domains: consult?.domains ?? [], ms: consultRun?.ms ?? null, known: consult ? Object.keys(consult.known) : [], brain_in: consultRun?.usage.promptTokens ?? 0, brain_out: consultRun?.usage.completionTokens ?? 0 }))
   // Under Consult V2 a plan is built ONLY when the user accepts (turn "plan"); a trip plan keeps the
@@ -1570,8 +1584,11 @@ export async function POST(req: Request) {
   // behaviour for every existing caller.
   const pwLang = normalizePwLang(lang === 'en' ? 'en' : 'vi')
 
-  const role: ModelRole = (planningIntent || hasImage) ? 'planning' : isSimpleQuery(lastText, isFirstReply) ? 'fast' : 'smart'
-  console.log(JSON.stringify({ type: 'tappyai_model', model: role, planningIntent }))
+  // PHIÊN LUNA: a consultation ANSWER turn runs on role `consult` (the plan keeps the Phase 7 model).
+  const lunaAnswer = lunaOn && !hasImage && isLunaAnswerTurn(consult, !!planningIntent)
+  const role: ModelRole = lunaAnswer ? 'consult' : (planningIntent || hasImage) ? 'planning' : isSimpleQuery(lastText, isFirstReply) ? 'fast' : 'smart'
+  const roleServed = lunaOn ? AI.serving(role) : null
+  console.log(JSON.stringify({ type: 'tappyai_model', model: role, planningIntent, ...(roleServed ? { served: roleServed.provider, effort: roleServed.effort } : {}) }))
 
   // Truncate history to last 10 messages to control token costs
   // UAT 2026-09-28 (owner P1b, measured on uat @ 1b79b97): after "mua đồ ăn vặt", "tối nay đi đâu chơi
@@ -1834,6 +1851,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           domains: consult.domains,
           consultBlock: consultativeBlock,
           ...(consultLibraryOn ? { library: frameLibrary(consultLibraryDomain) } : {}),
+          ...(lunaAnswer && process.env.CONSULT_LUNA_PROMPT !== '0' ? { core: LUNA_CORE } : {}),
           extra: [memoryBlock ?? '', prefBlock, planningIntent ? buildPlanningBlock(planningIntent, lang, planning ?? {}) : '', styleBlock, shareContextBlock],
         })
       })()
@@ -1923,6 +1941,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   /** onFinish accounting, captured synchronously so the flush-time record can ship it. */
   /** Audit cost sink: bytes of tool results the model read this turn. */
   let auditToolResultChars = 0
+  // PHIÊN LUNA: the answer model's cost per vendor (only filled when CONSULT_LUNA is on).
+  let lunaAnswerCost: { usd: number; reasoningTokens: number; cachedInputTokens: number; cacheWriteTokens: number; served: string[]; fellBack: boolean } | null = null
   let usageAcct: {
     finishReason: string
     promptTokens: number | null; completionTokens: number | null; totalTokens: number | null
@@ -1972,7 +1992,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     const cannedRes = cannedDataStreamResponse(canned, { 'X-Decision-Evidence-Id': evidenceId })
     if (!consult || !cannedRes.body) return cannedRes
     const brainIn = consultRun?.usage.promptTokens ?? 0, brainOut = consultRun?.usage.completionTokens ?? 0
-    return new Response(turnCostStream(cannedRes.body, () => ({ domain: consult?.domains[0] ?? null, turnType: consultAskReply ? 'ask' : kind, model: 'haiku-4.5', tokensIn: brainIn, tokensOut: brainOut, serperCalls: 0, cacheHits: 0, usd: turnUsd({ promptTokens: brainIn, completionTokens: brainOut }) })), { status: cannedRes.status, headers: cannedRes.headers })
+    return new Response(turnCostStream(cannedRes.body, () => ({ domain: consult?.domains[0] ?? null, turnType: consultAskReply ? 'ask' : kind, model: lunaRun?.served ?? 'haiku-4.5', tokensIn: brainIn, tokensOut: brainOut, serperCalls: 0, cacheHits: 0, usd: lunaRun?.costUsd ?? turnUsd({ promptTokens: brainIn, completionTokens: brainOut }), ...(lunaOn ? { intent: lunaRun?.served ?? (consultRun ? 'haiku' : null), intentUsd: lunaRun?.costUsd ?? turnUsd({ promptTokens: brainIn, completionTokens: brainOut }), answerUsd: 0, serperUsd: 0 } : {}) })), { status: cannedRes.status, headers: cannedRes.headers })
   }
 
   /**
@@ -2658,6 +2678,22 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
         if (typeof meta.cacheReadInputTokens === 'number') { cacheReadTokens += meta.cacheReadInputTokens; sawCacheMetadata = true }
         if (typeof meta.cacheCreationInputTokens === 'number') { cacheCreationTokens += meta.cacheCreationInputTokens; sawCacheMetadata = true }
       }
+      if (lunaOn) {
+        const acc = { usd: 0, reasoningTokens: 0, cachedInputTokens: 0, cacheWriteTokens: 0, served: [] as string[], fellBack: false }
+        for (const step of steps ?? []) {
+          const tp = step.providerMetadata?.tappy as { cost?: CallCost; fellBack?: boolean } | undefined
+          if (tp?.fellBack) acc.fellBack = true
+          if (tp?.cost) {
+            acc.usd += tp.cost.usd; acc.reasoningTokens += tp.cost.reasoningTokens; acc.cachedInputTokens += tp.cost.cachedInputTokens; acc.cacheWriteTokens += tp.cost.cacheWriteTokens
+            acc.served.push(`${tp.cost.provider}:${tp.cost.effort ?? '-'}`)
+          } else {
+            const a = step.providerMetadata?.anthropic as { cacheReadInputTokens?: number | null; cacheCreationInputTokens?: number | null } | undefined
+            acc.usd += turnUsd({ promptTokens: step.usage?.promptTokens ?? 0, completionTokens: step.usage?.completionTokens ?? 0, cacheReadTokens: a?.cacheReadInputTokens ?? 0, cacheCreationTokens: a?.cacheCreationInputTokens ?? 0 })
+            acc.served.push(tp?.fellBack ? 'haiku:fallback' : 'haiku')
+          }
+        }
+        lunaAnswerCost = acc
+      }
       // Phase-0: capture the model-side accounting synchronously at generation
       // complete (T9). The single tappyai_usage record now ships from the
       // client-emit transform (logUsage / timeClientEmit) so a buffered turn's
@@ -3031,7 +3067,14 @@ ${completionInstruction(lang)}` },
         const tokensIn = (usageAcct?.promptTokens ?? 0) + (usageAcct?.cacheReadTokens ?? 0) + (usageAcct?.cacheCreationTokens ?? 0) + (consultRun?.usage.promptTokens ?? 0)
         const tokensOut = (usageAcct?.completionTokens ?? 0) + (consultRun?.usage.completionTokens ?? 0)
         const usd = turnUsd({ promptTokens: (usageAcct?.promptTokens ?? 0) + (consultRun?.usage.promptTokens ?? 0), completionTokens: tokensOut, cacheReadTokens: usageAcct?.cacheReadTokens ?? 0, cacheCreationTokens: usageAcct?.cacheCreationTokens ?? 0, serperCredits: d.credits })
-        return { domain: consult?.domains[0] ?? decisionFrame.domains[0] ?? null, turnType: consult?.turn ?? (planningIntent ? 'plan' : 'legacy'), model: 'haiku-4.5', tokensIn, tokensOut, serperCalls: sumCounts(d.calls), cacheHits: sumCounts(d.hits), promptCacheRead: usageAcct?.cacheReadTokens ?? 0, promptCacheWrite: usageAcct?.cacheCreationTokens ?? 0, usd }
+        const base = { domain: consult?.domains[0] ?? decisionFrame.domains[0] ?? null, turnType: consult?.turn ?? (planningIntent ? 'plan' : 'legacy'), model: 'haiku-4.5', tokensIn, tokensOut, serperCalls: sumCounts(d.calls), cacheHits: sumCounts(d.hits), promptCacheRead: usageAcct?.cacheReadTokens ?? 0, promptCacheWrite: usageAcct?.cacheCreationTokens ?? 0, usd }
+        if (!lunaOn) return base
+        // PHIÊN LUNA: each part at its own vendor's price — intent call + answer steps (reasoning tokens are in
+        // the output count) + Serper. The Haiku brain, when it ran instead, keeps the Haiku price.
+        const intentUsd = lunaRun?.costUsd ?? turnUsd({ promptTokens: consultRun?.usage.promptTokens ?? 0, completionTokens: consultRun?.usage.completionTokens ?? 0 })
+        const answerUsd = lunaAnswerCost?.usd ?? 0
+        const serperUsd = turnUsd({ promptTokens: 0, completionTokens: 0, serperCredits: d.credits })
+        return { ...base, model: [...new Set(lunaAnswerCost?.served ?? [])].join('+') || base.model, intent: lunaRun?.served ?? (consultRun ? 'haiku' : null), intentUsd, answerUsd, serperUsd, reasoningTokens: lunaAnswerCost?.reasoningTokens ?? 0, lunaCachedIn: lunaAnswerCost?.cachedInputTokens ?? 0, lunaCacheWrite: lunaAnswerCost?.cacheWriteTokens ?? 0, fellBack: lunaAnswerCost?.fellBack ?? false, usd: Math.round((intentUsd + answerUsd + serperUsd) * 1e6) / 1e6 }
       }).pipeThrough(timeClientEmit(startTime, Date.now, (t) => logUsage(t.ttuaMs)))
     : finalResponse.body
   return new Response(timedBody, { status: finalResponse.status, headers: finalResponse.headers })

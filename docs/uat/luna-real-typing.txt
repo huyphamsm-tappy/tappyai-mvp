@@ -1,0 +1,3 @@
+# Bộ "câu gõ thật" của anh Huy — mỗi dòng một câu (viết tắt, sai chính tả, không dấu, chửi thề… đều được).
+# Dòng bắt đầu bằng # bị bỏ qua. Một hội thoại nhiều lượt: nối các lượt bằng ' || ' trên cùng một dòng.
+
