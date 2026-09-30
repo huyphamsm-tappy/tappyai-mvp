@@ -4,7 +4,7 @@ import { join } from 'node:path'
 
 export interface ReplayTurn { text: string; expect: string | null }
 export interface Conversation { id: string; area: string | null; title?: string; turns: ReplayTurn[]; inject?: { field: 'title' | 'snippet' | 'both'; text: string } }
-export type SuiteName = 'scenarios' | 'firstTurns' | 'owner59' | 'androidR' | 'injection' | 'file' | 'realTyping'
+export type SuiteName = 'scenarios' | 'firstTurns' | 'owner59' | 'androidR' | 'injection' | 'file' | 'realTyping' | 'planHard'
 export const SUITES: SuiteName[] = ['scenarios', 'firstTurns', 'owner59', 'androidR']
 
 const FIX = 'src/lib/ai/consultative/__fixtures__'
@@ -39,6 +39,10 @@ export function loadRealTyping(file = 'docs/uat/luna-real-typing.txt'): Conversa
 
 export function loadSuite(name: SuiteName): Conversation[] {
   if (name === 'realTyping') return loadRealTyping()
+  if (name === 'planHard') {
+    const f = read<{ items: Array<{ id: string; domain: string; turns: ReplayTurn[] }> }>(join('scripts', 'consult', 'replay', 'fixtures', 'planHardCases.json'))
+    return f.items.map(it => ({ id: it.id, area: it.domain, turns: it.turns }))
+  }
   // Injection suite (owner 30/09, from PHIÊN LUNA): not part of `all`, run explicitly with REPLAY_SUITE=injection.
   // `file`: a one-off list in the same shape (REPLAY_FILE=<path>) — replay ONLY the affected turns, never a whole suite.
   if (name === 'injection' || name === 'file') {

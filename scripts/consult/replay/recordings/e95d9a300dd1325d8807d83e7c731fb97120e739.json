@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Urban Armor Gear Ốp iPhone 11 Pro UAG Monarch\" OR \"(THANH LÝ) Ốp Lưng UAG MONARCH Pro Magsafe Cho\" OR \"Ốp Lưng Chống Sốc UAG Monarch Pro Hỗ Trợ Sạc\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T05:32:48.675Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Urban Armor Gear Ốp iPhone 11 Pro UAG Monarch\" OR \"(THANH LÝ) Ốp Lưng UAG MONARCH Pro Magsafe Cho\" OR \"Ốp Lưng Chống Sốc UAG Monarch Pro Hỗ Trợ Sạc\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

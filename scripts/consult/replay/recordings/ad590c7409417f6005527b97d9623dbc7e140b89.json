@@ -1,0 +1,177 @@
+{
+ "url": "https://google.serper.dev/shopping",
+ "request": {
+  "q": "quà tặng thích cà phê 40 tuổi",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 20
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T05:11:23.157Z",
+ "body": {
+  "searchParameters": {
+   "q": "quà tặng thích cà phê 40 tuổi",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "shopping",
+   "num": 40,
+   "page": 1,
+   "engine": "google"
+  },
+  "shopping": [
+   {
+    "title": "Bộ quà tặng Tết Cộng Cà Phê",
+    "source": "minaco.vn",
+    "price": "339.500 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTSOof3ZFHhu4JY0dI3xLJeFmGjPAs_ilLrJNKsZuihQRIzR-hRHYC3_k7rYsB-mXGWrW7P2SmwizAYw3cVKY93t4WDBovM",
+    "productId": "4943664002171857286",
+    "position": 1
+   },
+   {
+    "title": "Set Quà Cà Phê A Bold Style, Quà Tặng Sếp Nam - The Curator",
+    "source": "Chus.vn",
+    "price": "770.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQf8qpggGF0woDJ8moQmsgRa3yymh1aSFhSvoWFfi0UUIG0Xu66Z2wrwsq1XvQLYK0v7ajd1MyI0NzgNy9ILPvoIyg-9IVB0GQHed1YeSewrCvqMQHZl-D0",
+    "productId": "964833838479577685",
+    "position": 2
+   },
+   {
+    "title": "Set Quà an Nhiên",
+    "source": "Công ty TNHH cà phê Đồng Xanh",
+    "price": "259.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcT1mkrP09IgImgK62d8R3F7x5TNoGWceWOG1U7UJyrR5sJcDWYJgOjbOmabym3vcsaKAqc_xVbwLz1L0WOBvTEDHUHrHMG9I2jRRc3tE9NVOSpdtQ1j842v",
+    "productId": "10667458404976707465",
+    "position": 3
+   },
+   {
+    "title": "Quà Tặng Cho Doanh Nhân Ống Đựng Bút Quà Tặng Cao Cấp Cho Doanh Nhân QDN 89",
+    "source": "quatanghoanggia.vn",
+    "price": "1.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSlcxbnLTNXcd8GPYBzZA-AV1MjFqLw7vIQNVehi2LPCWq3DH4NHtY1eN8-O-2ugdKONtt6C-rFSMiXC_DZq2lknRULAzd6Bu4keTEdG0Lj",
+    "productId": "13446852928444875810",
+    "position": 4
+   },
+   {
+    "title": "Set Quà Tặng Cà Phê Espresso – MEE FEE",
+    "source": "Mee Fee",
+    "price": "432.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQhUsrXtCaxsYE7Io3-OSVjOf-00dSwWmWVd6kM__r6f02LQ1qtKZjuGkB62SjY8C23-gPbv8bOFMB0BKWJj0zal-2wMcMA2Ax23z7TxGE",
+    "productId": "17719321057190664661",
+    "position": 5
+   },
+   {
+    "title": "SET quà tặng cà phê - Phúc - Lộc - Thọ - Olive Coffee",
+    "source": "Olive coffee",
+    "price": "1.100.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTPehRu_ExY-ZTBSCTSbypaw1ovscU2Mb-ax9uErkHye4rvfObB1JI9UO4IZsJPvl1WTkuv_m2QYQ1jBzoKYr_oChaLkC9aBU8nqNJawbkm",
+    "productId": "17773247747032458598",
+    "position": 6
+   },
+   {
+    "title": "Hộp Quà Cà Phê & Socola Energy Boost, Quà Tặng Bạn Trai",
+    "source": "Chus.vn",
+    "price": "1.045.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTD5_vIAKB5Gz51P8g_swxbR8FIp8T0OeSu5GW_mTb21PxAuhkbqccFndIAYtKNu4lLvFuNt366iOLp0_caVftXFMUTmgYK1-1_jvIfVXe7",
+    "productId": "18003968108919316577",
+    "position": 7
+   },
+   {
+    "title": "[Gift] Quà Tặng TOOLA Ngẫu Nhiên - Trị Giá Đến 70k - Default Title",
+    "source": "TheGioiSkinFood.com",
+    "price": "49.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQl8QsVBqZOmIZMssikjRegBJo1PpjjwwxvZoVcReKyKofTQKN0rRYKPTn5BAry0GFkoqSnboi8YG5eMzJ1EypIw6rtNPMvy_LQKxJadLR8JD9fENKipg1G",
+    "productId": "4025686064875583149",
+    "position": 8
+   },
+   {
+    "title": "Hộp trái cây làm quà tặng phụ nữ trung niên tuổi 40, 50 - FSNK268",
+    "source": "MKnow",
+    "price": "1.300.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQHL3fWueePSQ6NLqS1-4WucWOV6u6X31v8_j4oKhLoDGIW68GzcxGfh-j9QHN4kSK7pDj89JnX25PTUrrRSswtCiagr4mErelCZmvehCHE",
+    "productId": "4765454753670150558",
+    "position": 9
+   },
+   {
+    "title": "Set Quà Tặng Cà Phê Cao Cấp Mee Fee",
+    "source": "Mee Fee",
+    "price": "540.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSY-Xe8hPVj8ZsT14PwPPpgIOXRHC1HL8Q9qpKvJ42DhwO2d_9PPfLWRtllfVfjJZNINRb-x0UTWyybk1AASFdz2KZKB8D6FduJw5dabLbN",
+    "productId": "10943124075084577408",
+    "position": 10
+   },
+   {
+    "title": "Ô Giả Tầng In Logo Quà Tặng Hội Nghị Giá Tại Xưởng - Quà Tặng Thiên Việt",
+    "source": "Công ty TNHH Quà Tặng Thiên Việt",
+    "price": "135.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQdjVaJRwc3inZ17WW1fu1seb-04CLSFFs8LBmlTjikPkTH4tS2Jhq3lNmO3yAdqXDrbxxbjOsfSWBrEt6_tXj5uwB_0jKyR2EOVCXM3x5tgsC3sNSblaZo",
+    "productId": "16141244526130840490",
+    "position": 11
+   },
+   {
+    "title": "Set quà tặng Trí Tuệ - Dailly",
+    "source": "Công ty cổ phần trà SachsTea",
+    "price": "275.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcS70LOi55lZjFrM7Xw8upnH6mEC-e5qHPWPwRTpFvcWAK1V-cTYD_gaKHfQ8wbGsTmfaMsAnoM0cE6ijrPhw3SgCM85HOwqyahrzMK07H3yreHmZkREQVFP",
+    "productId": "5534526613103937264",
+    "position": 12
+   },
+   {
+    "title": "Set Quà Tặng Cà Phê Cao Cấp Mee Fee - Mini Gift Set",
+    "source": "Mee Fee",
+    "price": "324.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTgDVMCCqRvpGo_Kmfq5b0IrOyiblS7vPddQY_mcUAbgQfym4s7Y3xbMEJQ9raRVbRtVMEKCsM8BgVUzvs_U6dbulkLeZ-hKaUW8FjEmf9j",
+    "productId": "5103220032090785665",
+    "position": 13
+   },
+   {
+    "title": "Bộ Giftset quà tặng độc đáo theo yêu cầu",
+    "source": "Butgokhacten.Vn",
+    "price": "386.400 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRz7F9Brv5ONQ8wxhhvllyhgpecS4lv4VpF696g2sgmKcbtQZip741Lf6VP3_EuPKAQXBsPFjKMjT54rIDh6E1dKlwAdFJ39Sz116Pc0Lg",
+    "productId": "7739092466855828108",
+    "position": 14
+   },
+   {
+    "title": "Set Quà Tặng Caphê Real Bean - Robusta",
+    "source": "happyptmart.com",
+    "price": "315.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSjqthA8y5N7Gf7VCBnufHl5u2zQUQ_ak03cXc9Bz59yDwtPcp4doizxeGX9Nc6IJlDIHEFZNntBgvUKSH-r_EKxNnak4ok4koFxGzyZuyQkFkkRSEEFchi7A",
+    "productId": "6594837183801100083",
+    "position": 15
+   },
+   {
+    "title": "Thẻ quà tặng Cộng Cà Phê",
+    "source": "lifelink.vn",
+    "price": "30.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQpX_OHjdJihfSz626qh_VMkY0lJYxd0hwsOeo3zpJHX93D8YM4VEgck7XM7E7XrlXxrUsuJAadtIDQ_RiBhdSZY326dri_nlEwF3n9j8v0_Asy5pcqrpTw",
+    "productId": "15466950540653157952",
+    "position": 16
+   },
+   {
+    "title": "Set Quà Tặng Mộc Vị Cao Cấp, Sang Trọng",
+    "source": "happynuts.vn",
+    "price": "545.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRZLH1byfIKXw_LFPBZOWLsouQ_y4m83rL1FQBzPxpZOmAfvO7yqZZlO5m67d4ecfs45_vAjdwnAGXIxihuIWEDBWEMhhpzxd_QN4jjOb0",
+    "productId": "1741469411220656975",
+    "position": 17
+   },
+   {
+    "title": "Set Quà Tặng Nữ \"Happier\", Nến Thơm Quả Mọng Và Socola Bỉ - The Curator",
+    "source": "Chus.vn",
+    "price": "462.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcT82lzZMLxsBNmWJD3K1fCNMJet8CWmB9FVoVYb4xCTNDN5j4haQieXMT5jWpQtVqfRGEbYPKz_y7_fZfBEHMUiw1D3aiT_R_fGINDgYPxS",
+    "productId": "1151422461657647049",
+    "position": 18
+   },
+   {
+    "title": "Hộp Quà Tặng Thiếu Nhi 21 - Sweetie Cloud Collection",
+    "source": "vitaminhouse.vn",
+    "price": "151 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRaMOrjW2k9sz3b5w5Eqfu9i7eMZVTf7_jOsW__YJGGkXCpcPTEtZa2pUnLWnNdjMDgDMbfvMu9k3Urr4Emn2-dAAGT-PZmAT2QCXUTy_XW",
+    "productId": "12596882518844523107",
+    "position": 19
+   }
+  ],
+  "credits": 2
+ }
+}

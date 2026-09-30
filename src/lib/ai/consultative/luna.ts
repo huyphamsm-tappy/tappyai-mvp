@@ -22,6 +22,12 @@ export function consultLunaEnabled(env: Record<string, string | undefined> = pro
   return v === '1' || v === 'on' || v === 'true'
 }
 
+/** CONSULT_LUNA_PLAN (default OFF, owner 30/09): the detailed plan runs on role `plan` (Luna, LLM_PLAN_REASONING); only with CONSULT_LUNA. */
+export function consultLunaPlanEnabled(env: Record<string, string | undefined> = process.env): boolean {
+  const v = (env.CONSULT_LUNA_PLAN ?? '').trim().toLowerCase()
+  return consultLunaEnabled(env) && (v === '1' || v === 'on' || v === 'true')
+}
+
 /** A consultation ANSWER turn (served by role `consult`); the detailed plan keeps the Phase 7 model. */
 export function isLunaAnswerTurn(consult: Pick<ConsultDecision, 'turn' | 'domains'> | null, planning: boolean): boolean {
   if (!consult || planning || consult.domains.length === 0) return false

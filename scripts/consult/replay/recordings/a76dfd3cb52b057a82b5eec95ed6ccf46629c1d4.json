@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Ốp lưng iPhone 17 Pro Max UAG chống sốc Essential Armor With Ma\" OR \"Ốp lưng iPhone 17 Pro Max UAG chống sốc Scout With Magsafe\" OR \"[iPhone 17 Pro Max] UAG Chính Hãng\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T05:35:42.910Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Ốp lưng iPhone 17 Pro Max UAG chống sốc Essential Armor With Ma\" OR \"Ốp lưng iPhone 17 Pro Max UAG chống sốc Scout With Magsafe\" OR \"[iPhone 17 Pro Max] UAG Chính Hãng\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Scout With ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-17-pro-max-uag-scout-with-magsafe.html",
+    "snippet": "Mua ốp lưng iPhone 17 Pro Max UAG chống sốc Scout With Magsafe chính hãng - Giá rẻ, đảm bảo chất lượng, độ bền cao, hỗ trợ giao hàng tận nơi toàn quốc.",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 1
+   },
+   {
+    "title": "[iPhone 17 Pro Max] UAG Chính Hãng",
+    "link": "https://shopee.vn/-iPhone-17-Pro-Max-UAG-Ch%C3%ADnh-H%C3%A3ng-Monarch-Pro-Pathfinder-Plasma-Ch%E1%BB%91ng-S%E1%BB%91c-Chu%E1%BA%A9n-Qu%C3%A2n-%C4%90%E1%BB%99i-S%E1%BA%A1c-Magnet-i.898301886.41068409513",
+    "snippet": "Mua [iPhone 17 Pro Max] UAG Chính Hãng - Monarch Pro, Pathfinder, Plasma - Chống Sốc Chuẩn Quân Đội, Sạc Magnet giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 4.9,
+    "ratingCount": 44,
+    "position": 2
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Scout With Magsafe",
+    "link": "https://timgiatot.com.vn/gia/254171-op-lung-iphone-17-pro-max-uag-chong-soc-scout-with-magsafe",
+    "snippet": "So sánh giá Ốp lưng iPhone 17 Pro Max UAG chống sốc Scout With Magsafe: giá từ 850.000 ₫ trên 10 nơi bán, cập nhật tháng 9/2026. Giá từ các sàn lớn.",
+    "position": 3
+   },
+   {
+    "title": "UAG VIỆT NAM — Gian hàng - Shope Quốc Tế",
+    "link": "https://shopequocte.com/shop/898301886/uag-viet-nam",
+    "snippet": "Sản phẩm bán chạy ; [iPhone 17 Pro Max] UAG Chính Hãng - Monarch Pro, -45% · 1.128.000₫ 1.331.000₫ ≈ 62.815원 ; [iPhone 15 Pro/ ProMax] Ốp lưng UAG CHÍNH HÃNG Chố ...",
+    "position": 4
+   },
+   {
+    "title": "Bán giá này thì bảo sao chất lượng ko bằng ngày xưa 🤣",
+    "link": "https://www.facebook.com/groups/506918584183877/posts/1647872076755183/",
+    "snippet": "OCR: Thông tin đơn hàng UAG VIỆT NAM [iPhone 17 Pro Max] UAG Chính Hãng XTE Black/Clear,Óp Kính P 17PRM 2.700.000đ [iPhone 17 Pro Max] UAG ...",
+    "position": 5
+   },
+   {
+    "title": "UAG VIỆT NAM - Shopee Mall Online",
+    "link": "https://shopee.vn/uag_vietnam",
+    "snippet": "298 đã bán · [iPhone 17 Pro Max] UAG Chính Hãng - Monarch Pro, Pathfinder, Plasma. custom-overlay. flag-label [iPhone 17 Pro Max] UAG Chính Hãng - Monarch Pro ...",
+    "position": 6
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max UAG Monarch Pro - Chống Sốc Quân ...",
+    "link": "https://marketplace.tripmap.vn/product/op-lung-iphone-17-pro-max-uag-monarch-pro-chong",
+    "snippet": "Ốp lưng iPhone 17 Pro Max UAG Monarch Pro - Chống Sốc Quân Đội Sạc Magnet Giá Cực Tốt 1.050.000đ · Ốp lưng iPhone 17 Pro Max UAG Chính Hãng - Sự Lựa Chọn Hoàn ...",
+    "position": 7
+   },
+   {
+    "title": "Ốp lưng iPhone 14 Plus / 15 Plus UAG chống sốc Plyo Ice ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-14-plus-uag-plyo-ice-with-magsafe.html",
+    "snippet": "... Ốp lưng iPhone 17 Pro Max UAG chống sốc Scout With Magsafe. Trả góp 0%. : 850.000đ. 1.000.000đ.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

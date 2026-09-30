@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Lana Beauty | GỘI ĐẦU QUẬN 10 | LÀM NAIL QUẬN 10\" OR \"The Nail\" OR \"Dzin Nail Mi Quận 10\" quan 10 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T05:56:14.904Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Lana Beauty | GỘI ĐẦU QUẬN 10 | LÀM NAIL QUẬN 10\" OR \"The Nail\" OR \"Dzin Nail Mi Quận 10\" quan 10 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "The Nail Chic - Tiệm nail mới tại 193 Nguyễn Lâm, P. Diên Hồng ...",
+    "link": "https://www.tiktok.com/@thuy.chung.ly/video/7651110247737740564",
+    "snippet": "The Nail Chic vừa bố trí lại không gian tiệm với hy vọng khách hàng sẽ thích phong cách mới. Địa chỉ: 193 Nguyễn Lâm, Phường Diên Hồng, TP.HCM (Quận 10).",
+    "position": 1
+   },
+   {
+    "title": "Đặc điểm nail Quan 10 tại Sài Gòn",
+    "link": "https://www.tiktok.com/@dzinnailmiquan10_nuphem/video/7631040715178495239",
+    "snippet": "Video TikTok từ ꧁༺chou☘️chou༻꧂ (@dzinnailmiquan10_nuphem): \"Khám phá những phong cách nail độc đáo tại Quan 10, Sài Gòn. Hãy ... Dzin Nail Mi Quận 10 ...",
+    "position": 2
+   },
+   {
+    "title": "i'm obsessed with this colorrr @the nail lab NYC #fy #nails",
+    "link": "https://www.tiktok.com/@dianerysl/video/7686614122833661198",
+    "snippet": "... The Nail Resort in Port Harcourt. Body What defines an almond nail ... Lead Nail xinh mỗi ngày giới thiệu 10 ý tưởng nail art dễ làm để thay đổi ...",
+    "position": 3
+   },
+   {
+    "title": "dzinnailmi #dzinnailmiquan10 #nailquan10 #saigonbeauty ...",
+    "link": "https://www.tiktok.com/@yenchou88/video/7629270629119806741",
+    "snippet": "#dzinnailmi #dzinnailmiquan10 #nailquan10 #saigonbeauty #quan10. #dzinnailmi ... Dzin Nail Mi Quận 10 - Núp Hẻm Giá Sinh Viên · author. 3 · 0.",
+    "position": 4
+   },
+   {
+    "title": "Zarla Larson The Nail Lab | TikTok",
+    "link": "https://www.tiktok.com/discover/zarla-larson-the-nail-lab",
+    "snippet": "@sydneylaurrenn Thank you for the recommendation to this salon Tiny was Fabulous! @The Nail Lab of Cary is Sarah and Zara approved",
+    "date": "7 thg 9, 2026",
+    "position": 5
+   },
+   {
+    "title": "What Is the Nail in Basketball? NBA All‑Star Court Setup",
+    "link": "https://www.tiktok.com/@nba/video/7335896018195729710",
+    "snippet": "The nail is also one of the most underrated terms in basketball. Players often hear the advice to “find the nail” before shooting a free throw.",
+    "position": 6
+   },
+   {
+    "title": "Funny Client Interactions at the Nail Salon",
+    "link": "https://www.tiktok.com/@nailboo/video/7590913075046354231",
+    "snippet": "Laugh at relatable moments with clients at the nail salon! Discover funny nail memes and client stories. #nails #relatablememes #funny #nailtech.",
+    "position": 7
+   },
+   {
+    "title": "Too tired for a voice over… Nails by@THE NAIL ATELIER ...",
+    "link": "https://www.tiktok.com/@vanessaagyei_/video/7690977780502334741",
+    "snippet": "Too tired for a voice over… Nails by@THE NAIL ATELIER _UCC NAILTECH she's running a back to school promo #vanessaagyei_ #ghanatiktok #ucc.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

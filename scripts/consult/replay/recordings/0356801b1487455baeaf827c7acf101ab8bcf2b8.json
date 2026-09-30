@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "quà sinh nhật cho sếp nam thích cà phê (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T05:23:55.466Z",
+ "body": {
+  "searchParameters": {
+   "q": "quà sinh nhật cho sếp nam thích cà phê (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "30+ quà sinh nhật cho nam theo độ tuổi ý nghĩa, thiết thực ...",
+    "link": "https://cellphones.com.vn/sforum/qua-sinh-nhat-cho-nam",
+    "snippet": "Nếu người được bạn tặng quà có sở thích chơi thể thao thì bạn có thể cân nhắc tặng một số món như giày chạy bộ, quần áo thể thao, túi đựng đồ, ...",
+    "date": "30 thg 4, 2023",
+    "rating": 1,
+    "ratingCount": 1,
+    "position": 1
+   },
+   {
+    "title": "15+ món quà Tết cho sếp vừa cao cấp vừa tinh tế, dễ ghi ...",
+    "link": "https://shopee.vn/blog/qua-tet-cho-sep/",
+    "snippet": "Quà phù hợp với sở thích và tính cách sếp như áo sơ mi, đồng hồ, nước hoa, các phụ kiện công nghệ, vật trang trí phong thủy hay tặng rượu vang ...",
+    "date": "6 thg 2, 2026",
+    "position": 2
+   },
+   {
+    "title": "Gợi ý 10+ món quà 8/3 cho sếp nữ giúp bạn ghi điểm tuyệt ...",
+    "link": "https://shopee.vn/blog/qua-8-3-cho-sep-nu/",
+    "snippet": "Tuy nhiên, nếu sếp bạn là một người “đạo cà phê”, hãy chọn những loại máy pha hạt kèm theo các dụng cụ như ấm đun, cối xay, phụ kiện pha chế, ...",
+    "date": "6 thg 3, 2025",
+    "position": 3
+   },
+   {
+    "title": "80+ Lời chúc sinh nhật sếp ngắn gọn, hài hước và ý nghĩa - Tiki",
+    "link": "https://tiki.vn/blog/loi-chuc-sinh-nhat-sep/",
+    "snippet": "Tượng người chơi Golf nam mạ vàng size nhỏ - Quà tặng cho sếp, đối tác thích Golf ... Hộp quà tặng cà phê Phúc - Cá chép overlay badge. Hộp ...",
+    "date": "1 thg 12, 2023",
+    "position": 4
+   },
+   {
+    "title": "CHỢIN, Cửa hàng trực tuyến",
+    "link": "https://shopee.vn/choinvn",
+    "snippet": "1. [HỎA TỐC] Ly Sứ Cốc Sứ Mèo Đen, Mèo Cam Cute, Cốc Nước, Cà Phê, Quà Tặng Sinh Nhật, Quà Valentine ... CÀ PHÊ, Quà Tặng Cho Fan Mèo Và Coffee Lover, Dùng Văn ...",
+    "position": 5
+   },
+   {
+    "title": "Top 16+ [Quà 20/10 cho sếp nữ] 4 \"mẹo\" chọn quà khéo léo",
+    "link": "https://cellphones.com.vn/qua-20-10/cho-sep-nu",
+    "snippet": "Máy massage cổ, vai, gáy, lưng, chân…. 1.300.000 đồng - 4.000.000 đồng ; Đồng hồ đeo tay / Đồng hồ thông minh. 2.000.000 đồng - 4.000.000 đồng ; Thiết bị bếp (nồi ...",
+    "position": 6
+   },
+   {
+    "title": "Quà tặng cho sếp - Giá Tốt, Sale Tháng 09, Ship 0 Đồng",
+    "link": "https://shopee.vn/list/qu%C3%A0%20t%E1%BA%B7ng/cho%20s%E1%BA%BFp",
+    "snippet": "Set Quà Tốt Nghiệp Khắc Tên Gấu Bông Cử Nhân + Ly Khắc Tên Cá Nhân Hóa Tặng Bạn Bè [TẶNG KÈM THIỆP + TÚI]. 80.000₫. 130.000₫. -38%. Mua 2 & giảm 1%.",
+    "position": 7
+   },
+   {
+    "title": "Top 15+ món quà tặng đồng nghiệp nam, nữ ý nghĩa nhất ...",
+    "link": "https://cellphones.com.vn/sforum/qua-tang-dong-nghiep",
+    "snippet": "15+ món quà tặng đồng nghiệp ý nghĩa nhất · Điện thoại · Laptop · Máy tính bảng · Chuột máy tính · Tai nghe Bluetooth · Card màn hình · Loa Bluetooth · Đồng hồ.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

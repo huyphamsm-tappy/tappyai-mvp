@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Ốp lưng Zagg iPhone 16\" site:cellphones.com.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:56:02.024Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Ốp lưng Zagg iPhone 16\" site:cellphones.com.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Mua Ốp lưng ZAGG iPhone 16 Series | Giá rẻ, giao nhanh 2H",
+    "link": "https://cellphones.com.vn/phu-kien/bao-da-op-lung/iphone/iphone-16-series/zagg.html",
+    "snippet": "Ốp lưng ZAGG iPhone 16 Series · Hỗ trợ sạc MagSafe · Hỗ trợ sạc không dây · Chống sốc, va đập · Chống trầy xước · Siêu mỏng · Chống ngả màu.",
+    "position": 1
+   },
+   {
+    "title": "Ốp lưng iPhone 16 Pro Max Zagg London With Magsafe",
+    "link": "https://cellphones.com.vn/op-lung-iphone-16-pro-max-zagg-london-magsafe.html",
+    "snippet": "Đặc biệt, sản phẩm ốp lưng Zagg iPhone 16 Series này còn hỗ trợ sạc MagSafe, giúp tương thích xuất sắc với các thiết bị sạc không dây, tăng thêm sự tiện dụng ...",
+    "position": 2
+   },
+   {
+    "title": "Ốp lưng iPhone 16 Pro Zagg Santa Cruz With Magsafe",
+    "link": "https://cellphones.com.vn/op-lung-iphone-16-pro-zagg-santa-cruz-with-magsafe-more-color.html",
+    "snippet": "... Ốp lưng ZAGG iPhone 16 Series. /. Ốp lưng iPhone 16 Pro Zagg Santa Cruz With Magsafe. Ốp lưng iPhone 16 Pro Zagg Santa Cruz With Magsafe - 1 · Ốp lưng iPhone 16 ...",
+    "position": 3
+   },
+   {
+    "title": "Ốp lưng iPhone 16 Pro Zagg ESNTL Hampton Magsafe ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-16-pro-zagg-esntl-hampton-magsafe-lite-foggy.html",
+    "snippet": "Ốp lưng ZAGG iPhone 16 Series. /. Ốp lưng iPhone 16 Pro Zagg ESNTL Hampton Magsafe Lite Foggy. Ốp lưng iPhone 16 Pro Zagg ESNTL Hampton Magsafe Lite Foggy - 1.",
+    "position": 4
+   },
+   {
+    "title": "Ốp lưng iPhone 16 Plus Zagg Milan With Magsafe | Giá rẻ",
+    "link": "https://cellphones.com.vn/op-lung-iphone-16-plus-zagg-milan-magsafe.html",
+    "snippet": "Được làm từ 84% vật liệu tái chế và còn hỗ trợ sạc không dây và MagSafe, sản phẩm ốp lưng Zagg iPhone 16 Series mang lại sự tiện lợi trong sử dụng hàng ngày.",
+    "position": 5
+   },
+   {
+    "title": "Ốp lưng iPhone 16 Pro Max Zagg Novelty With Magsafe",
+    "link": "https://cellphones.com.vn/op-lung-iphone-16-pro-max-zagg-novelty-magsafe-neko.html",
+    "snippet": "... Ốp lưng ZAGG iPhone 16 Series. /. Ốp lưng iPhone 16 Pro Max Zagg Novelty With Magsafe. Ốp lưng iPhone 16 Pro Max Zagg Novelty With Magsafe - 1 · Ốp lưng iPhone ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 6
+   },
+   {
+    "title": "Ốp lưng iPhone 16 Pro Max Zagg PH Soho With Magsafe",
+    "link": "https://cellphones.com.vn/op-lung-iphone-16-pro-max-zagg-ph-solo-magsafe.html",
+    "snippet": "Hơn thế nữa, chiếc ốp lưng Zagg iPhone 16 Series này còn cho phép sạc không dây với tính năng MagSafe. Bên cạnh đó, phụ kiện cũng được thiết kế mỏng nhẹ ...",
+    "position": 7
+   },
+   {
+    "title": "Ốp lưng iPhone 16 Pro Zagg Crystal Palace With Magsafe ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-16-pro-zagg-crystal-palace-magsafe-ks-clear.html",
+    "snippet": "... Ốp lưng ZAGG iPhone 16 Series. /. Ốp lưng iPhone 16 Pro Zagg Crystal Palace With Magsafe KS Clear. Ốp lưng iPhone 16 Pro Zagg Crystal Palace With Magsafe KS ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

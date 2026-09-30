@@ -1,0 +1,54 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"MANMARU - Japanese Restaurant - 71 Mạc Đĩnh Chi, Hồ Chí Minh\" OR \"Chiyoda Sushi Bến Thành\" OR \"La Phong Sushi House\" quan 1 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T05:43:46.273Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"MANMARU - Japanese Restaurant - 71 Mạc Đĩnh Chi, Hồ Chí Minh\" OR \"Chiyoda Sushi Bến Thành\" OR \"La Phong Sushi House\" quan 1 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Chiyoda Sushi Sài Gòn: Review Sushi Sashimi chất lượng ...",
+    "link": "https://www.tiktok.com/@_.ngoctai._/video/7639721292773592328",
+    "snippet": "... Sushi Sài Gòn: sushi sashimi chuẩn Nhật, chất lượng vượt mong. @✨ Tài Nè ✨ · âm thanh gốc - ✨ Tài Nè ✨ · Chiyoda Sushi Bến Thành · author.",
+    "position": 1
+   },
+   {
+    "title": "Nhà Hàng Nhật Chiyoda Sushi Với Phòng Riêng Đẹp",
+    "link": "https://www.tiktok.com/@dacixian/video/7605274983639665938",
+    "snippet": "Khám phá nhà hàng Chiyoda Sushi, nơi phục vụ món Nhật ngon tại phòng riêng. @Dacixian · original sound · Chiyoda Sushi Bến Thành · author.",
+    "position": 2
+   },
+   {
+    "title": "Ngồi Lại Sau 1-2 Năm: Khoảnh Khắc Gặp Lại Bạn Bè",
+    "link": "https://www.tiktok.com/@xuan_van_88/video/7676716947404344594",
+    "snippet": "1-2 năm mới có dịp ngồi lại với nhau — chia sẻ khoảnh khắc. @Xuân Văn · âm thanh gốc - Cô Hảo ( giáo viên mầm non ) · Chiyoda Sushi Bến Thành.",
+    "position": 3
+   },
+   {
+    "title": "Khám phá Chiyoda Sushi trước giờ phục vụ #chiyodasushi ...",
+    "link": "https://www.tiktok.com/@chiyodasushi.vn/video/7541630872781327633",
+    "snippet": "... phá Chiyoda Sushi trước giờ phục vụ #chiyodasushi #japanesefood #hochiminh. @chiyodasushi.vn · Japan Snacks · Chiyoda Sushi Bến Thành · author.",
+    "position": 4
+   },
+   {
+    "title": "Ms.Ngọc♟️❤️ (@msngoc93)",
+    "link": "https://www.tiktok.com/@msngoc93",
+    "snippet": "Chiyoda Sushi Bến Thành ❤️#saigon #amthucnhatban . 444 · Cuối tuần 2 vợ chồng lòng vòng ra Hải Phòng - Chuyến đi cấp tốc. 566 · Taiwan - Day 3 ...",
+    "position": 5
+   }
+  ],
+  "credits": 1
+ }
+}

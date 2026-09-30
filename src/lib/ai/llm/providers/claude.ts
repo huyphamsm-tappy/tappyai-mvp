@@ -36,6 +36,7 @@ const DEFAULT_MODELS: Record<ModelRole, string> = {
   vision:   'claude-haiku-4-5-20251001',
   consult:  'claude-haiku-4-5-20251001',
   intent:   'claude-haiku-4-5-20251001',
+  plan:     'claude-haiku-4-5-20251001',
 }
 
 /** The resolved default model id per role. Exported for the identity test, which

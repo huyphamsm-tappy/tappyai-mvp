@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Ốp lưng Zagg iPhone 16 site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:56:02.342Z",
+ "body": {
+  "searchParameters": {
+   "q": "Ốp lưng Zagg iPhone 16 site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "[iPhone 16 Series] Ốp lưng ZAGG Novelty Magsafe Neko ...",
+    "link": "https://shopee.vn/-iPhone-16-Series-%E1%BB%90p-l%C6%B0ng-ZAGG-Novelty-Magsafe-Neko-b%E1%BA%A3o-v%E1%BB%87-ch%E1%BB%91ng-s%E1%BB%91c-1.5m-b%E1%BA%A3o-h%C3%A0nh-1-n%C4%83m-1-%C4%91%E1%BB%95i-1-i.164018338.29411312491",
+    "snippet": "Mua [iPhone 16 Series] Ốp lưng ZAGG Novelty Magsafe Neko bảo vệ chống sốc 1.5m bảo hành 1 năm 1 đổi 1 giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 5,
+    "ratingCount": 44,
+    "position": 1
+   },
+   {
+    "title": "[iPhone 16 Series] Tổng hợp ốp lưng ZAGG cao cấp ứng ...",
+    "link": "https://shopee.vn/-iPhone-16-Series-T%E1%BB%95ng-h%E1%BB%A3p-%E1%BB%91p-l%C6%B0ng-ZAGG-cao-c%E1%BA%A5p-%E1%BB%A9ng-d%E1%BB%A5ng-t%E1%BB%AB-Graphene-(c%E1%BB%A9ng-h%C6%A1n-kim-c%C6%B0%C6%A1ng)-ch%E1%BB%91ng-s%E1%BB%91c-t%E1%BB%9Bi-5m-i.164018338.29718559756",
+    "snippet": "Mua [iPhone 16 Series] Tổng hợp ốp lưng ZAGG cao cấp ứng dụng từ Graphene (cứng hơn kim cương) chống sốc tới 5m giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 2
+   },
+   {
+    "title": "[iPhone 16 Series] Ốp lưng ZAGG PH SoHo Magsafe ...",
+    "link": "https://shopee.vn/-iPhone-16-Series-%E1%BB%90p-l%C6%B0ng-ZAGG-PH-SoHo-Magsafe-ch%E1%BB%91ng-s%E1%BB%91c-3m-b%E1%BA%A3o-h%C3%A0nh-1-n%C4%83m-1-%C4%91%E1%BB%95i-1-i.164018338.26509512383",
+    "snippet": "Mua [iPhone 16 Series] Ốp lưng ZAGG PH SoHo Magsafe chống sốc 3m bảo hành 1 năm 1 đổi 1 giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 3
+   },
+   {
+    "title": "Ốp lưng ZAGG Snap RKS Clear dành cho iPhone 16 Pro/ ...",
+    "link": "https://shopee.vn/%E1%BB%90p-l%C6%B0ng-ZAGG-Snap-RKS-Clear-d%C3%A0nh-cho-iPhone-16-Pro-16-Promax-ch%E1%BB%91ng-s%E1%BB%91c-l%C3%AAn-%C4%91%E1%BA%BFn-4m-H%C3%A0ng-ch%C3%ADnh-h%C3%A3ng-i.206824363.27319669471",
+    "snippet": "Mua Ốp lưng ZAGG Snap RKS Clear dành cho iPhone 16 Pro/16 Promax, chống sốc lên đến 4m - Hàng chính hãng giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 5,
+    "ratingCount": 3,
+    "position": 4
+   },
+   {
+    "title": "[iPhone 16/15/14 Series] Ốp lưng ZAGG Matte Iridescent ...",
+    "link": "https://shopee.vn/-iPhone-16-15-14-Series-%E1%BB%90p-l%C6%B0ng-ZAGG-Matte-Iridescent-h%E1%BB%97-tr%E1%BB%A3-s%E1%BA%A1c-kh%C3%B4ng-d%C3%A2y-v%C3%A0-Magsafe-i.164018338.19648862277",
+    "snippet": "Mua [iPhone 16/15/14 Series] Ốp lưng ZAGG Matte Iridescent hỗ trợ sạc không dây và Magsafe giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 5
+   },
+   {
+    "title": "[iPhone 16/15/14/13 Series] Ốp lưng trong suốt Zagg ...",
+    "link": "https://shopee.vn/-iPhone-16-15-14-13-Series-%E1%BB%90p-l%C6%B0ng-trong-su%E1%BB%91t-Zagg-ch%E1%BB%91ng-s%E1%BB%91c-ch%E1%BB%91ng-%E1%BB%91-v%C3%A0ng-H%C3%A0ng-ch%C3%ADnh-h%C3%A3ng-i.206824363.12221612223",
+    "snippet": "Mua [iPhone 16/15/14/13 Series] Ốp lưng trong suốt Zagg chống sốc, chống ố vàng - Hàng chính hãng giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 4.9,
+    "ratingCount": 153,
+    "position": 6
+   },
+   {
+    "title": "[iPhone 16/15 Series] Ốp lưng ZAGG Denali Magsafe có ...",
+    "link": "https://shopee.vn/-iPhone-16-15-Series-%E1%BB%90p-l%C6%B0ng-ZAGG-Denali-Magsafe-c%C3%B3-ch%C3%A2n-g%E1%BA%ADp-ch%E1%BB%91ng-s%E1%BB%91c-5m-b%E1%BA%A3o-h%C3%A0nh-1-n%C4%83m-1-%C4%91%E1%BB%95i-1-i.164018338.20393752980",
+    "snippet": "Mua [iPhone 16/15 Series] Ốp lưng ZAGG Denali Magsafe có chân gập, chống sốc 5m bảo hành 1 năm 1 đổi 1 giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 7
+   },
+   {
+    "title": "Ốp Lưng Chống Sốc ZAGG cho iPhone 16 Pro Max / 16 ...",
+    "link": "https://shopee.vn/%E1%BB%90p-L%C6%B0ng-Ch%E1%BB%91ng-S%E1%BB%91c-ZAGG-cho-iPhone-16-Pro-Max-16-Pro-Crystal-Palace-Snap-S%E1%BA%A1c-Kh%C3%B4ng-D%C3%A2y-T%E1%BB%AB-T%C3%ADnh-i.1045511592.27512020516",
+    "snippet": "Mua Ốp Lưng Chống Sốc ZAGG cho iPhone 16 Pro Max / 16 Pro, Crystal Palace Snap, Sạc Không Dây Từ Tính giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

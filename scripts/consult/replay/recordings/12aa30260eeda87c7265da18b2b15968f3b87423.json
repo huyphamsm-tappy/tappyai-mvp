@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Nhà Của Piêu\" OR \"BIA TUYẾT Q9\" OR \"Tới Nóc | chi nhánh Bình Thạnh\" Bình Thạnh site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T05:45:31.000Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Nhà Của Piêu\" OR \"BIA TUYẾT Q9\" OR \"Tới Nóc | chi nhánh Bình Thạnh\" Bình Thạnh site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Nhà của Piêu: Quán Ăn Ngon Tại Bình Thạnh",
+    "link": "https://www.tiktok.com/@thaodayyy_23/video/7438847001808194837",
+    "snippet": "Khám phá nhà của Piêu, địa điểm quán ăn yêu thích tại Bình Thạnh với những món nướng hấp dẫn. #thaodayyy #ancungtiktok #reviewanngon. Đây là bản ...",
+    "position": 1
+   },
+   {
+    "title": "Nhà Của Piêu Bình Thạnh Menu",
+    "link": "https://www.tiktok.com/discover/nh%C3%A0-c%E1%BB%A7a-pi%C3%AAu-b%C3%ACnh-th%E1%BA%A1nh-menu",
+    "snippet": "Nhà của Piêu là quán nướng nằm trong hẻm tại 68 Ung Văn Khiêm, Thạnh Mỹ Tây, Bình Thạnh, nổi tiếng với không gian chill và các món ăn đa dạng ...",
+    "date": "21 thg 9, 2026",
+    "position": 2
+   },
+   {
+    "title": "Khám Phá Nhà Của Piêu - Ẩm Thực Lai Rai Tây Bắc",
+    "link": "https://www.tiktok.com/@lulureview_/video/7388139423566793992",
+    "snippet": "2764 Lượt thích,65 Bình luận.Video TikTok từ Lu Lu Review (@lulureview_): \"Trải nghiệm món nướng độc đáo tại Nhà Của Piêu.",
+    "position": 3
+   },
+   {
+    "title": "B.i.a Tuyết Q9: không gian rộng thoáng, cũng khá đông ...",
+    "link": "https://www.tiktok.com/@tuanquanxa/video/7644075929903385877",
+    "snippet": "B.i.a Tuyết Q9: không gian rộng thoáng, cũng khá đông khách. #tuanquanxa. @Tuấn Quán Xá · âm thanh gốc - Phố Nhạc · BIA TUYẾT Q9 - Ung ...",
+    "position": 4
+   },
+   {
+    "title": "Kangnam Garden Ung Văn Khiêm - Quán mới hoành tráng ...",
+    "link": "https://www.tiktok.com/@tuanquanxa/video/7684570646562508053",
+    "snippet": "What to expect - Tên địa điểm: Kangnam Garden (trước: Bia Tuyết Q9 Ung Văn Khiêm). - Vị trí: đường Ung Văn Khiêm, Bình Thạnh. - Phong cách: ...",
+    "position": 5
+   },
+   {
+    "title": "Nhà hàng The Rice tại Wyndham Thanh Thủy",
+    "link": "https://www.tiktok.com/@sakuratravel.onsen/video/7487458443301768453",
+    "snippet": "Nhà Của Piêu Bình Thạnh Menu · The Brix Thảo Điền Menu · The Hands Coffee Roastery Biên Hoà Menu · Nhà Hàng Muối Tiêu Hải Phòng · Nhà Hàng Phủ ...",
+    "position": 6
+   },
+   {
+    "title": "Một quán nướng rộng, đẹp vibe Tây Bắc ở Bình Thạnh nè. ...",
+    "link": "https://www.tiktok.com/@copureview/video/7309084723949620488",
+    "snippet": "Nhà của Piêu 42/68 Ung Văn Khiêm, phường 25, Bình Thạnh, TPHCM #nhacuapieu #quannuong #quannuongnhacuapieu #reviewquannuongsaigon #review ...",
+    "position": 7
+   },
+   {
+    "title": "Chuyen024 | Nha Cua Pieu ở Bình Thạnh",
+    "link": "https://www.tiktok.com/@chuyennhapieu/video/7688333552437497108",
+    "snippet": "Video Chuyen024 giới thiệu Nha Cua Pieu, ghi lại cảnh chuyển nhà ở Bình Thạnh. @Chuyện Nhà Piêu · Nép Vào Vai Anh · Nhà Của Piêu Bistro · author.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

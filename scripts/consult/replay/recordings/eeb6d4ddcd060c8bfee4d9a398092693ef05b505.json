@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "A Dổi Tôn Dật Tiên (site:food.grab.com/vn OR site:shopeefood.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T05:59:05.392Z",
+ "body": {
+  "searchParameters": {
+   "q": "A Dổi Tôn Dật Tiên (site:food.grab.com/vn OR site:shopeefood.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "A Dổi - Gà Ta Quán - Crescent Mall",
+    "link": "https://shopeefood.vn/ho-chi-minh/a-doi-ga-ta-quan-crescent-mall",
+    "snippet": "Tầng 4, Tầng 4 Crescent Mall, 101 Tôn Dật Tiên, P. Tân Phong, Quận 7, TP. HCM. Đã đóng. Quán được gắn nhãn Yêu thích là Quán Yêu Thích, gồm những quán đạt ...",
+    "position": 1
+   },
+   {
+    "title": "A Dổi - Gà Ta Quán",
+    "link": "https://shopeefood.vn/thuong-hieu/a-doi-ga-ta-quan",
+    "snippet": "A Dổi - Gà Ta Quán. Đã đóng. A Dổi - Gà Ta Quán - Crescent Mall. Tầng 4, Tầng 4 Crescent Mall, 101 Tôn Dật Tiên, P. Tân Phong, Quận 7, TP. HCM. Tối thiểu 20k ...",
+    "position": 2
+   },
+   {
+    "title": "Tàu Hủ Xe Lam - Crescent Mall",
+    "link": "https://shopeefood.vn/ho-chi-minh/tau-hu-xe-lam-crescent-mall?source_url=foody_ordernow_mobile",
+    "snippet": "Tàu Hủ Xe Lam - Crescent Mall. Tầng 3, Tầng 3, Quầy 39 Crescent Mall, 101 Tôn Dật Tiên, P. Tân Phú, Quận 7, TP. HCM. Đã đóng. Quán được gắn nhãn Yêu thích là ...",
+    "position": 3
+   },
+   {
+    "title": "Food Delivery - The Pizza Company - Crescent Mall",
+    "link": "https://shopeefood.vn/ho-chi-minh/the-pizza-company-crescent-mall?source_url=foody_ordernow_mobile",
+    "snippet": "Tầng 5, Tầng 5 Crescent Mall, 101 Tôn Dật Tiên, P. Tân Phú, Quận 7, TP. HCM. Mở cửa. Quán được gắn nhãn Yêu thích là Quán Yêu Thích, gồm những quán đạt chất ...",
+    "position": 4
+   },
+   {
+    "title": "TOUS les JOURS - Crescent Mall",
+    "link": "https://shopeefood.vn/ho-chi-minh/tous-les-jours-crescent-mall",
+    "snippet": "Gian Hàng GF-W1 & GF-W2, Tầng Trệt - Crescent Mall, 101 Tôn Dật Tiên, P. Tân Phú, Quận 7, TP. HCM. Đã đóng. Quán được gắn nhãn Yêu thích là Quán Yêu Thích, ...",
+    "position": 5
+   },
+   {
+    "title": "Food Delivery - 3SACH MART - Tôn Dật Tiên",
+    "link": "https://shopeefood.vn/ho-chi-minh/3sach-mart-ton-dat-tien",
+    "snippet": "Xem menu & đặt món trực tuyến từ 3SACH MART - Tôn Dật Tiên rất dễ dàng. Giao hàng tận nơi trong vòng ít phút.",
+    "position": 6
+   },
+   {
+    "title": "Chickita - Gà Nướng Lửa Hồng - Crescent Mall",
+    "link": "https://shopeefood.vn/ho-chi-minh/chickita-flame-grilled-chicken-crescent-mall",
+    "snippet": "Tầng 4, Tầng 4F, Crescent Mall, 101 Tôn Dật Tiên, P. Tân Phú, Quận 7, TP. HCM. Đã đóng. Quán được gắn nhãn Yêu thích là Quán Yêu Thích, gồm những quán đạt ...",
+    "position": 7
+   },
+   {
+    "title": "Paris Baguette - Crescent Mall",
+    "link": "https://shopeefood.vn/ho-chi-minh/paris-baguette-crescent-mall?source_url=foody_ordernow_mobile",
+    "snippet": "Lô GF-57 Tầng trệt, Trung Tâm Thương Mại Crescent Mall, 101 Tôn Dật Tiên, P. Tân Phong, Quận 7, TP. HCM. Mở cửa. Quán được gắn nhãn Yêu thích là Quán Yêu ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Homestay Phương Linh – Khách sạn Gần Núi Bà Đen Tây Ninh",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T05:20:27.462Z",
+ "body": {
+  "searchParameters": {
+   "q": "Homestay Phương Linh – Khách sạn Gần Núi Bà Đen Tây Ninh",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Phương Linh Garden: Ẩm Thực Sinh Thái & Homestay  (@amthucsinhthaiphuonglinhgarden) • Facebook",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=1491547059657414",
+    "imageWidth": 2048,
+    "imageHeight": 1152,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTIU4nwqiKNta2QRRbnhfp9RIdZY2Lzdlil1MdwgATAaQ&s=10",
+    "thumbnailWidth": 597,
+    "thumbnailHeight": 335,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/amthucsinhthaiphuonglinhgarden/?locale=vi_VN",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D1491547059657414&tbnid=hZcirTvHmwQG-M&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Famthucsinhthaiphuonglinhgarden%2F%3Flocale%3Dvi_VN&docid=cm9Y2-MBq0Jj9M&w=2048&h=1152",
+    "position": 1
+   },
+   {
+    "title": "Phương Linh Garden: Ẩm Thực Sinh Thái & Homestay  (@amthucsinhthaiphuonglinhgarden) • Facebook",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=1477635987715188",
+    "imageWidth": 1086,
+    "imageHeight": 1448,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgHrx0_pmY18cFPqha1ervLfVy08Wck2WqK2pRiaRjXw&s=10",
+    "thumbnailWidth": 387,
+    "thumbnailHeight": 516,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/amthucsinhthaiphuonglinhgarden/?locale=vi_VN",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D1477635987715188&tbnid=6SsfylM504t3UM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Famthucsinhthaiphuonglinhgarden%2F%3Flocale%3Dvi_VN&docid=cm9Y2-MBq0Jj9M&w=1086&h=1448",
+    "position": 2
+   },
+   {
+    "title": "🏔️ HOMESTAY TÂY NINH VIEW NÚI BÀ ĐEN ẤN TƯỢNG, Tận hưởng kỳ nghỉ trong  không gian xanh mát với view hướng Núi Bà Đen, yên bình nhưng vẫn thuận  tiện di chuyển đến các điểm tham quan nổi tiếng của Tây ...",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=2407126936444807&get_thumbnail=1",
+    "imageWidth": 1080,
+    "imageHeight": 1920,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQhGmZUo7llA2fPBKDY7MrvKzLiYtGYQw7veGmcG82lqw&s=10",
+    "thumbnailWidth": 335,
+    "thumbnailHeight": 597,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/amthucsinhthaiphuonglinhgarden/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D2407126936444807%26get_thumbnail%3D1&tbnid=DCzxtfalurqwhM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Famthucsinhthaiphuonglinhgarden%2F&docid=pSxNvcyk6mXPUM&w=1080&h=1920",
+    "position": 3
+   },
+   {
+    "title": "Phương Linh Garden: Ẩm Thực Sinh Thái & Homestay  (@amthucsinhthaiphuonglinhgarden) • Facebook",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=1475896014555852",
+    "imageWidth": 2048,
+    "imageHeight": 1152,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKhg2K4RrnBOweshjZ6IxPqJHVWDTF84xeG32V1U2auQ&s",
+    "thumbnailWidth": 299,
+    "thumbnailHeight": 168,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/amthucsinhthaiphuonglinhgarden/?locale=vi_VN",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D1475896014555852&tbnid=Cz7tV0f_iiYqsM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Famthucsinhthaiphuonglinhgarden%2F%3Flocale%3Dvi_VN&docid=cm9Y2-MBq0Jj9M&w=2048&h=1152",
+    "position": 4
+   },
+   {
+    "title": "Phương Linh Garden: Ẩm Thực Sinh Thái & Homestay  (@amthucsinhthaiphuonglinhgarden) • Facebook",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=1474981484647305",
+    "imageWidth": 2048,
+    "imageHeight": 1152,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKk5AYyCFL2K0IT69gSlclM1yR9g8K8p-UCZ6QtTs3-g&s",
+    "thumbnailWidth": 299,
+    "thumbnailHeight": 168,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/amthucsinhthaiphuonglinhgarden/?locale=vi_VN",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D1474981484647305&tbnid=Y6Y0afa0nGo8EM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Famthucsinhthaiphuonglinhgarden%2F%3Flocale%3Dvi_VN&docid=cm9Y2-MBq0Jj9M&w=2048&h=1152",
+    "position": 5
+   },
+   {
+    "title": "Phương Linh Garden: Ẩm Thực Sinh Thái & Homestay  (@amthucsinhthaiphuonglinhgarden) • Facebook",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=1476962847782502",
+    "imageWidth": 1149,
+    "imageHeight": 1369,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwsf5dA9-OCTe2mNqEq2KgejVUagTKPfamtGWzBCFB2Q&s",
+    "thumbnailWidth": 206,
+    "thumbnailHeight": 245,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/amthucsinhthaiphuonglinhgarden/?locale=vi_VN",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D1476962847782502&tbnid=DBFw2ST-DDFVBM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Famthucsinhthaiphuonglinhgarden%2F%3Flocale%3Dvi_VN&docid=cm9Y2-MBq0Jj9M&w=1149&h=1369",
+    "position": 6
+   },
+   {
+    "title": "Phương Linh Garden: Ẩm Thực Sinh Thái & Homestay  (@amthucsinhthaiphuonglinhgarden) • Facebook",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=1479406227538164",
+    "imageWidth": 2048,
+    "imageHeight": 1366,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzbtn92NR7YldykUDDLDR3VZPAWKyeoaJVQeLDzzuRFA&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/amthucsinhthaiphuonglinhgarden/?locale=vi_VN",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D1479406227538164&tbnid=DKk1OUqDwlSwRM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Famthucsinhthaiphuonglinhgarden%2F%3Flocale%3Dvi_VN&docid=cm9Y2-MBq0Jj9M&w=2048&h=1366",
+    "position": 7
+   },
+   {
+    "title": "Phương Linh Garden: Ẩm Thực Sinh Thái & Homestay  (@amthucsinhthaiphuonglinhgarden) • Facebook",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=1493517929460327",
+    "imageWidth": 2048,
+    "imageHeight": 1366,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-OAkgaJCq5EcN48yFlQaeJ6NDq5YIC6n4lebhGacLXg&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/amthucsinhthaiphuonglinhgarden/?locale=vi_VN",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D1493517929460327&tbnid=-ik6Lc_1m1-VrM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Famthucsinhthaiphuonglinhgarden%2F%3Flocale%3Dvi_VN&docid=cm9Y2-MBq0Jj9M&w=2048&h=1366",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}
