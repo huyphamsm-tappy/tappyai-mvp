@@ -61,6 +61,15 @@ final class AuthRepository {
         await claimAnonymousHistory(claimToken)
     }
 
+    // MARK: Email + password sign-in
+
+    func signIn(email: String, password: String) async throws {
+        let claimToken = anonymousTokenToClaim()   // C33 — read BEFORE the session is replaced
+        let tokens = try await auth.signIn(email: email, password: password)
+        await finishAuthentication(tokens)
+        await claimAnonymousHistory(claimToken)
+    }
+
     // MARK: Register (survey §1.6) — returns true if a session was issued, false if "check your email"
 
     func register(email: String, password: String, fullName: String) async throws -> Bool {

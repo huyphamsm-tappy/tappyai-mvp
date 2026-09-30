@@ -33,6 +33,11 @@ final class SupabaseAuthService: AuthService {
         return AuthTokens(session: session)
     }
 
+    func signIn(email: String, password: String) async throws -> AuthTokens {
+        let session = try await supabase.auth.signIn(email: email, password: password)
+        return AuthTokens(session: session)
+    }
+
     func register(email: String, password: String, fullName: String) async throws -> AuthTokens? {
         let response = try await supabase.auth.signUp(
             email: email,

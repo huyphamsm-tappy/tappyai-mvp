@@ -9,6 +9,9 @@ final class AuthViewModel: AppObservableObject {
 
     @AppPublished var email = ""
     @AppPublished var code = ""
+    @AppPublished var password = ""
+    /// The email step offers a one-time code instead of a password.
+    @AppPublished var useCode = false
     @AppPublished var mode: Mode = .methods
     @AppPublished var isWorking = false
     @AppPublished var errorMessage: String?
@@ -44,7 +47,13 @@ final class AuthViewModel: AppObservableObject {
     }
 
     var emailValid: Bool { AuthValidation.isValidEmail(email) }
+    var passwordSignInValid: Bool { emailValid && AuthValidation.isValidPassword(password) }
     var codeValid: Bool { AuthValidation.isValidOTP(code) }
+
+    func signInWithPassword() async {
+        guard passwordSignInValid else { errorMessage = NSLocalizedString("auth.error.invalidCredentials", comment: ""); return }
+        await run { try await self.repo.signIn(email: self.email, password: self.password); self.onAuthenticated() }
+    }
 
     func sendOTP() async {
         guard emailValid else { errorMessage = NSLocalizedString("auth.error.invalidEmail", comment: ""); return }

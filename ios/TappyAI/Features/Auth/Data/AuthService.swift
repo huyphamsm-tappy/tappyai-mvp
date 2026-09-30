@@ -11,6 +11,9 @@ protocol AuthService: Sendable {
     func sendEmailOTP(email: String) async throws
     func verifyEmailOTP(email: String, token: String) async throws -> AuthTokens
 
+    /// Email + password sign-in (web `/login`, Android parity L1).
+    func signIn(email: String, password: String) async throws -> AuthTokens
+
     // Email + password registration — survey §1.6
     /// Returns tokens if a session is issued immediately, or nil if email confirmation is required.
     func register(email: String, password: String, fullName: String) async throws -> AuthTokens?

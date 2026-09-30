@@ -82,6 +82,11 @@ struct AuthFlowView: View {
                 }
                 Button("auth.createAccount") { vm.showRegister = true }
                     .buttonStyle(.tappy(.tertiary))
+                    .accessibilityIdentifier("auth-create-account")
+                // Guest: the anonymous session already exists, so continuing is just closing.
+                Button("auth.continueGuest") { onClose() }
+                    .buttonStyle(.tappy(.tertiary))
+                    .accessibilityIdentifier("auth-guest")
                 if let error = vm.errorMessage {
                     Text(error).font(TappyFont.footnote).foregroundStyle(TappyColor.danger)
                 }
@@ -114,9 +119,23 @@ struct AuthFlowView: View {
                 .keyboardType(.emailAddress)
                 .textInputAutocapitalization(.never)
                 .autocorrectionDisabled()
-            Button("auth.sendCode") { Task { await vm.sendOTP() } }
-                .buttonStyle(.tappy(.primary))
-                .disabled(!vm.emailValid)
+                .accessibilityIdentifier("auth-email")
+            if vm.useCode {
+                Button("auth.sendCode") { Task { await vm.sendOTP() } }
+                    .buttonStyle(.tappy(.primary))
+                    .disabled(!vm.emailValid)
+                Button("auth.usePassword") { vm.useCode = false }
+                    .buttonStyle(.tappy(.tertiary))
+            } else {
+                TappyTextField(titleKey: "auth.password", text: $vm.password, isSecure: true)
+                    .accessibilityIdentifier("auth-password")
+                Button("auth.signIn") { Task { await vm.signInWithPassword() } }
+                    .buttonStyle(.tappy(.primary))
+                    .disabled(!vm.passwordSignInValid)
+                    .accessibilityIdentifier("auth-submit")
+                Button("auth.useCode") { vm.useCode = true }
+                    .buttonStyle(.tappy(.tertiary))
+            }
         }
     }
 
