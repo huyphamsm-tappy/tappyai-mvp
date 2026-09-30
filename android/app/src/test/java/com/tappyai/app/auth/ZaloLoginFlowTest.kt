@@ -44,15 +44,15 @@ class ZaloLoginFlowTest {
     @Test
     fun `sign-in opens the backend flow with the android platform marker`() {
         assertEquals(
-            "https://uat.tappyai.com/api/auth/zalo?platform=android&returnTo=/",
-            ZaloSignInClient("https://uat.tappyai.com/").loginUrl(),
+            "https://uat.tappyai.com/api/auth/zalo?platform=android&returnTo=/&app_state=abcDEF_123-x",
+            ZaloSignInClient("https://uat.tappyai.com/").loginUrl("abcDEF_123-x"),
         )
     }
 
     @Test
     fun `the platform marker is what selects the app's own redirect scheme`() {
         // Without it the backend finishes on the web and the app never gets a session.
-        val url = ZaloSignInClient("https://www.tappyai.com/").loginUrl()
+        val url = ZaloSignInClient("https://www.tappyai.com/").loginUrl("s")
         assertTrue(url, url.contains("platform=android"))
         assertTrue(url, url.startsWith("https://www.tappyai.com/api/auth/zalo?"))
     }

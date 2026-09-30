@@ -51,7 +51,10 @@ class UatTestHookActivity : ComponentActivity() {
                     Intent.ACTION_VIEW,
                     Uri.parse(
                         "tappyai://auth-callback#access_token=" + Uri.encode(json.getString("access_token")) +
-                            "&refresh_token=" + Uri.encode(json.getString("refresh_token")),
+                            "&refresh_token=" + Uri.encode(json.getString("refresh_token")) +
+                            // The hook starts the sign-in itself, like the Zalo button: it mints the
+                            // login-CSRF state first, so it goes through the SAME guarded path.
+                            "&state=" + Uri.encode(authRepository.newCallbackState()),
                     ),
                 )
                 lifecycleScope.launch {

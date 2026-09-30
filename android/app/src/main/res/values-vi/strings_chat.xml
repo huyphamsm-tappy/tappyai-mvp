@@ -314,4 +314,5 @@
     <string name="chat_plan_v2_no_price">chưa có giá — hỏi quán</string>
     <string name="chat_plan_v2_full_cta">Xem kế hoạch đầy đủ trên Tappy</string>
     <string name="chat_plan_v2_made_by">Được tạo bởi TAPPY</string>
+    <string name="auth_callback_refused">Liên kết đăng nhập không hợp lệ hoặc đã hết hạn. Vui lòng đăng nhập lại trong ứng dụng.</string>
 </resources>

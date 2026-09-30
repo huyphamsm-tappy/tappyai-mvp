@@ -126,13 +126,24 @@ class AppNavHostViewModel @Inject constructor(
     fun handleDeepLink(intent: Intent) {
         val uri = intent.data ?: return
         if (uri.host == "auth-callback") {
+            // 🔒 A callback for a sign-in this app did not start (no / wrong / expired state) is
+            // refused up front: no callback screen, no navigation, the current session untouched —
+            // only the friendly message. handleOAuthRedirectIntent checks again (and consumes).
+            if (!authRepository.isCallbackForThisApp(uri.toString())) {
+                viewModelScope.launch { _authError.send(stringProvider.get(R.string.auth_callback_refused)) }
+                return
+            }
             viewModelScope.launch {
                 (authDeepLinkParser.parse(uri.toString()) as? AuthRoute.AuthCallback)?.let {
                     navigator.navigateTo(it)
                 }
                 val result = authRepository.handleOAuthRedirectIntent(intent)
                 if (result is NetworkResult.Error) {
-                    _authError.send(stringProvider.get(R.string.chat_toast_signin_failed))
+                    // A refused callback (not started here / wrong or expired state) gets its own
+                    // friendly line; the session is untouched either way.
+                    val refused = (result.error as? com.tappyai.core.network.NetworkError.Unknown)?.throwable is
+                        com.tappyai.features.auth.data.AuthCallbackRejectedException
+                    _authError.send(stringProvider.get(if (refused) R.string.auth_callback_refused else R.string.chat_toast_signin_failed))
                 }
             }
         } else {
