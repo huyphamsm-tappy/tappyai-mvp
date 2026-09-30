@@ -62,20 +62,26 @@ export default function AskCard({ questions, onSend, disabled, lang = 'vi' }: {
   const [sent, setSent] = useState(false)
   const [manifest, setManifest] = useState<Manifest>({})
   useEffect(() => { let live = true; loadManifest().then(m => { if (live) setManifest(m) }); return () => { live = false } }, [])
-  useEffect(() => { if (!sent) draftCache.set(sig, { chosen, free }) }, [sig, chosen, free, sent])
+  // The draft is written IN the tap handler, not in an effect: a tap landing in the same instant as the remount updates
+  // an instance that unmounts before its effects run (UAT 30/09: 1 of 6 first taps lost that way).
+  const draft = () => draftCache.get(sig) ?? { chosen, free }
 
   const locked = !!disabled || sent
   const send = () => {
     if (locked) return
     setSent(true)
+    const d = draft()
     draftCache.delete(sig)
-    onSend(askSendText(questions, chosen, free))
+    onSend(askSendText(questions, d.chosen, d.free))
   }
-  const toggle = (q: AskQuestionView, o: string, multi: boolean) => setChosen(c => {
-    if (!multi) return { ...c, [q.id]: c[q.id] === o ? '' : o }
+  const toggle = (q: AskQuestionView, o: string, multi: boolean) => {
+    const d = draft(), c = d.chosen
     const cur = Array.isArray(c[q.id]) ? (c[q.id] as string[]) : []
-    return { ...c, [q.id]: cur.includes(o) ? cur.filter(x => x !== o) : [...cur, o] }
-  })
+    const next = multi ? { ...c, [q.id]: cur.includes(o) ? cur.filter(x => x !== o) : [...cur, o] } : { ...c, [q.id]: c[q.id] === o ? '' : o }
+    draftCache.set(sig, { chosen: next, free: d.free })
+    setChosen(next)
+  }
+  const typeFree = (v: string) => { draftCache.set(sig, { chosen: draft().chosen, free: v }); setFree(v) }
   const isOn = (q: AskQuestionView, o: string) => { const v = chosen[q.id]; return Array.isArray(v) ? v.includes(o) : v === o }
 
   return (
@@ -159,7 +165,7 @@ export default function AskCard({ questions, onSend, disabled, lang = 'vi' }: {
           <Icons.MessageCircleMore className="h-5 w-5 shrink-0 text-[#7fa7ff]" aria-hidden="true" />
           <label className="min-w-0 flex-1">
             <span className="sr-only">{en ? EN.more : 'Hoặc nói thêm ý khác'}</span>
-            <input id="ask-free-text" value={free} onChange={e => setFree(e.target.value)} disabled={locked}
+            <input id="ask-free-text" value={free} onChange={e => typeFree(e.target.value)} disabled={locked}
               onKeyDown={e => { if (e.key === 'Enter' && !e.nativeEvent.isComposing) { e.preventDefault(); send() } }}
               placeholder={en ? EN.more : 'Hoặc nói thêm ý khác…'}
               className="w-full bg-transparent text-[14px] text-white placeholder:text-[#8494b8] focus:outline-none disabled:opacity-60" />
