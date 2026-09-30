@@ -72,9 +72,9 @@ export async function GET(request: NextRequest) {
       access_token: session.access_token,
       refresh_token: session.refresh_token,
       expires_at: String(session.expires_at ?? Math.floor(Date.now() / 1000) + 3600),
-      // The app accepts the callback only with the state it created (Android reads `state`; `app_state` for iOS/spec).
+      // ONE name for both apps (Android AuthCallbackState.kt + iOS AuthCallbackState.swift read `state`); the app SENDS
+      // it as `app_state` when it starts the sign-in. The app accepts the callback only with the state it created.
       state: appState!,
-      app_state: appState!,
     })
     const scheme = platform === 'android' ? 'tappyai://auth-callback' : 'tappyai://auth/callback'
     const toApp = NextResponse.redirect(`${scheme}#${fragment.toString()}`)

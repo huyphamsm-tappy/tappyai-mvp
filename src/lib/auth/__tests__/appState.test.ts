@@ -68,6 +68,14 @@ describe('/api/auth/zalo — a native start needs the app state', () => {
     expect(c).toMatch(/app_login_state=[^\n]*SameSite=lax/i)
     expect(c).toMatch(/app_login_state=[^\n]*Max-Age=300/i)
   })
+  it('iOS: the same rule — no state → nothing starts; a valid state → Zalo + the 5-minute cookie', async () => {
+    const { GET } = await import('@/app/api/auth/zalo/route')
+    expect(loc(await GET(req('https://uat.tappyai.com/api/auth/zalo?platform=ios')))).toBe('https://uat.tappyai.com/login?error=app_state_invalid')
+    const hex64 = 'a1b2c3d4'.repeat(8) // iOS fallback shape (two UUIDs, no hyphens)
+    const r = await GET(req(`https://uat.tappyai.com/api/auth/zalo?platform=ios&app_state=${hex64}`))
+    expect(loc(r)).toContain('oauth.zaloapp.com')
+    expect(cookiesOut(r)).toMatch(new RegExp(`app_login_state=\\d+\\.${hex64}`))
+  })
   it('web is unchanged (no app state needed)', async () => {
     const { GET } = await import('@/app/api/auth/zalo/route')
     const r = await GET(req('https://uat.tappyai.com/api/auth/zalo?returnTo=/deals'))
@@ -84,7 +92,7 @@ describe('/auth/confirm — the session goes to the app only with the matching s
     const f = new URLSearchParams(l.split('#')[1])
     expect(f.get('access_token')).toBe('AT')
     expect(f.get('state')).toBe(ST)
-    expect(f.get('app_state')).toBe(ST)
+    expect(f.has('app_state')).toBe(false) // one field name for both apps
     expect(cookiesOut(r)).toMatch(/app_login_state=;/)
   })
   it("an attacker's own magic link opened in the victim's browser: refused BEFORE the token is used", async () => {
@@ -101,6 +109,16 @@ describe('/auth/confirm — the session goes to the app only with the matching s
       expect(loc(r)).not.toContain('tappyai://')
       expect(verifyOtp).not.toHaveBeenCalled()
     }
+  })
+  it('iOS: tokens + state go to tappyai://auth/callback (its own scheme); a missing state is refused', async () => {
+    const { GET } = await import('@/app/auth/confirm/route')
+    const ok = await GET(req(`${CONFIRM}&platform=ios&app_state=${ST}`, `app_login_state=${nowS()}.${ST}`))
+    expect(loc(ok).startsWith('tappyai://auth/callback#')).toBe(true)
+    expect(new URLSearchParams(loc(ok).split('#')[1]).get('state')).toBe(ST)
+    verifyOtp.mockClear()
+    const bad = await GET(req(`${CONFIRM}&platform=ios`, ''))
+    expect(loc(bad)).toBe('https://uat.tappyai.com/login?error=app_state_invalid')
+    expect(verifyOtp).not.toHaveBeenCalled()
   })
   it('the web / email-link flow is unchanged: no state needed, web session cookies', async () => {
     const { GET } = await import('@/app/auth/confirm/route')

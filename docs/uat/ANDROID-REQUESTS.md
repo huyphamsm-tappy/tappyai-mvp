@@ -74,8 +74,8 @@ Giá phòng: chưa xác nhận…","price":…`). Phần đầu kế hoạch (ti
   (2) Server giữ state trong cookie `app_login_state` (httpOnly, Secure, SameSite=Lax, **5 phút**, kèm giờ tạo — server tự
   kiểm hạn) → callback Zalo mang tiếp → `/auth/confirm?...&platform=…&app_state=<state>`.
   (3) `/auth/confirm` với `platform=android|ios`: chỉ khi `app_state` của link == cookie và chưa quá 5 phút mới dùng token và
-  chuyển về app: `tappyai://auth-callback#access_token=…&refresh_token=…&expires_at=…&state=<state>&app_state=<state>`
-  (iOS: `tappyai://auth/callback#…` cùng các khoá). Cookie bị xoá ngay (dùng 1 lần). Thiếu / sai / hết hạn / dùng lại →
+  chuyển về app: `tappyai://auth-callback#access_token=…&refresh_token=…&expires_at=…&state=<state>`
+  (iOS: `tappyai://auth/callback#…` cùng các khoá). **TÊN TRƯỜNG THỐNG NHẤT (30/09):** app GỬI `app_state` lúc bắt đầu; server TRẢ về đúng MỘT trường `state` trong fragment — Android (`AuthCallbackState.kt`) và iOS (`AuthCallbackState.swift`) đều đọc `state`. Server không gửi `app_state` trong fragment nữa. `/api/auth/zalo` và `/auth/confirm` nhận cả `platform=android` và `platform=ios` (test cả hai). Cookie bị xoá ngay (dùng 1 lần). Thiếu / sai / hết hạn / dùng lại →
   `/login?error=app_state_invalid`, **KHÔNG tạo phiên** (kiểm TRƯỚC khi dùng token) — link magic của kẻ xấu thêm
   `&platform=android` giờ vô hiệu. (4) App vẫn tự kiểm `state` (Android `AuthCallbackStateGuard`, đã có).
   (5) Google trên app: ID token gốc (Android `signInWith(IDToken)`) — không có token qua deep link; Facebook/OAuth khác: PKCE
