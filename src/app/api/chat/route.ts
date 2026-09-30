@@ -93,7 +93,7 @@ import { buildDomainFrame, frameDomainOf, frameLibrary, frameRef, PLAN_HEADINGS,
 import { runConsultBrain, consultV2Enabled, wasAskReply, buildAskReply, placeTypeFor, latestShoppingPickPrice, shoppingMarkerRecords } from '@/lib/ai/consultative/consultBrain'
 import { routeConsult } from '@/lib/ai/consultative/consultRouter'
 import { rejectModifierOf, withoutQuotedNames, isFixedPhrase } from '@/lib/ai/consultative/consultRouter'
-import { consultLunaEnabled, consultLunaFastEnabled, skipLunaIntent, consultLunaPlanEnabled, isLunaAnswerTurn, runLunaIntent, mergeIntentWithRules, lunaTurnFacts, withoutReferenceTurns, LUNA_CORE, INTENT_SYSTEM } from '@/lib/ai/consultative/luna'
+import { consultLunaEnabled, consultLunaFastEnabled, skipLunaIntent, consultLunaPlanEnabled, LUNA_PLAN_RULE, isLunaAnswerTurn, runLunaIntent, mergeIntentWithRules, lunaTurnFacts, withoutReferenceTurns, LUNA_CORE, INTENT_SYSTEM } from '@/lib/ai/consultative/luna'
 import { lunaDataMessage, buildLeakDetector, sanitizeSearchQuery } from '@/lib/ai/consultative/lunaSafety'
 import { eventPreCall, onlyRowsNamed, slimResultForModel, travelPreCall, unshownRows, withoutShownRows } from '@/lib/ai/consultative/consultTravel'
 import { geoGuardArea, guardPlaceGeography } from '@/lib/ai/tools/placeGeoGuard'
@@ -1895,7 +1895,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           consultBlock: consultativeBlock,
           ...(consultLibraryOn ? { library: frameLibrary(consultLibraryDomain) } : {}),
           ...(lunaAnswer && process.env.CONSULT_LUNA_PROMPT !== '0' ? { core: LUNA_CORE } : {}),
-          extra: [lunaData ? '' : memoryBlock ?? '', prefBlock, planningIntent ? buildPlanningBlock(planningIntent, lang, planning ?? {}) : '', styleBlock, lunaData ? '' : shareContextBlock],
+          extra: [lunaData ? '' : memoryBlock ?? '', prefBlock, planningIntent ? buildPlanningBlock(planningIntent, lang, planning ?? {}) : '', lunaPlan ? LUNA_PLAN_RULE : '', styleBlock, lunaData ? '' : shareContextBlock],
         })
       })()
     : null

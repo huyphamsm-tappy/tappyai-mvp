@@ -48,6 +48,17 @@ export function skipLunaIntent(
   return lastText.trim().split(/\s+/).filter(Boolean).length <= 6
 }
 
+/**
+ * Luna plan turns only (CONSULT_LUNA_PLAN). Replay 30/09: on "đặt món đó luôn, gọi món gì cho đủ no" / "chốt, cần kiểm
+ * tra gì khi mua" / "chốt, chuẩn bị gì trước khi đi" Luna answered the literal question and skipped the plan frame
+ * (3 of 15 plans every run); the owner's checklist requires the whole plan card.
+ */
+export const LUNA_PLAN_RULE = [
+  'LƯỢT NÀY LÀ KẾ HOẠCH CHI TIẾT.',
+  '- Viết ĐỦ mọi mục của khung kế hoạch, đúng thứ tự và đúng tên tiêu đề in đậm của khung — kể cả khi người dùng hỏi một câu cụ thể ("gọi món gì", "kiểm tra gì", "chuẩn bị gì"): trả lời câu đó ở mục phù hợp.',
+  '- Mục không có dữ liệu: ghi "chưa có thông tin" ngay dưới tiêu đề — không bỏ mục, không để mục trống, không đoán, không lấy hiểu biết chung làm sự thật.',
+].join('\n')
+
 /** CONSULT_LUNA_PLAN (default OFF, owner 30/09): the detailed plan runs on role `plan` (Luna, LLM_PLAN_REASONING); only with CONSULT_LUNA. */
 export function consultLunaPlanEnabled(env: Record<string, string | undefined> = process.env): boolean {
   const v = (env.CONSULT_LUNA_PLAN ?? '').trim().toLowerCase()
