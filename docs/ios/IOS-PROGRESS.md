@@ -60,6 +60,12 @@ skyline, huy hiệu cửa hàng của mẫu — đúng quy tắc (không có d�
 - Lỗi thấy trên ảnh `16`/`17`, đã sửa: chip tab hiện khoá thô `profileHub.tab.posts` (`LocalizedStringKey` với nội suy thành khoá định
   dạng "…%@"); ảnh ô lưới tràn sang ô bên cạnh (ảnh fill làm view định kích thước) → ô 3:4 cố định, ảnh là overlay đã cắt.
 
+## CI run 36670956956 (commit e50bc97) — XANH, 18/18 ảnh
+Build, 240/240 unit test (có `ResponseContractDecodeTests`, `AppConfigDecodeTests`), 17/17 UI test, 18 ảnh + 18 ảnh ghép.
+Lỗi cuối (Ưu đãi): identifier đặt trên container đè lên identifier của nút con → test không thấy nút; bỏ id ở container (Ưu đãi, hero
+hub). Đã xem ảnh: `16` chip tab hiện đúng chữ, lưới không tràn; `18` thẻ "Hỏi Tappy trước khi mua" hiện cả khi không có deal.
+Push: từ 30/09 phiên này tự push bằng đúng lệnh `git -C D:/TappyAI-wt/wtios push origin ios/sync-2026-09-30` (hook guard-push).
+
 ## CI run 36668238909 (commit c7b6486) — 238/240 unit test
 Build xanh. 2 test cũ (`OwnCollectionsTests`) khẳng định giải mã PHẢI hỏng (feed thiếu page/limit; dòng rút gọn giải mã thành `Review`)
 — đúng là hành vi đợt rà cố ý đổi. Viết lại: vẫn giữ ý bảo vệ (mỗi route dùng đúng kiểu) nhưng ghim bằng kiểu trả về của service lúc
