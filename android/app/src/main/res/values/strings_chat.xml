@@ -317,4 +317,5 @@
     <string name="chat_plan_v2_no_price">no price yet — ask the venue</string>
     <string name="chat_plan_v2_full_cta">See the full plan on Tappy</string>
     <string name="chat_plan_v2_made_by">Made with TAPPY</string>
+    <string name="auth_callback_refused">This sign-in link is invalid or has expired. Please sign in again from the app.</string>
 </resources>

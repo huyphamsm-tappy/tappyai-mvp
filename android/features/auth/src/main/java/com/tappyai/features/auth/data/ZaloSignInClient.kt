@@ -42,13 +42,15 @@ class ZaloSignInClient @Inject constructor(
     /**
      * The one URL this app opens for Zalo sign-in. Same base-URL concatenation the network layer
      * uses (e.g. RealChatRepository's "${baseUrl}api/chat"); baseUrl ends in '/'. `returnTo=/`
-     * mirrors the web default.
+     * mirrors the web default. `app_state` is this sign-in's login-CSRF state
+     * ([AuthCallbackStateGuard]); the backend echoes it back as `state` in the callback (R24).
      */
-    fun loginUrl(): String = "${baseUrl}api/auth/zalo?platform=android&returnTo=/"
+    fun loginUrl(appState: String): String =
+        "${baseUrl}api/auth/zalo?platform=android&returnTo=/&app_state=${java.net.URLEncoder.encode(appState, "UTF-8")}"
 
     /** [context] must be an Activity context — a Custom Tab launches an activity. Success here only
      *  means the Custom Tab opened; the session completes later via the deep-link callback. */
-    fun launch(context: Context) {
-        CustomTabsIntent.Builder().build().launchUrl(context, Uri.parse(loginUrl()))
+    fun launch(context: Context, appState: String) {
+        CustomTabsIntent.Builder().build().launchUrl(context, Uri.parse(loginUrl(appState)))
     }
 }

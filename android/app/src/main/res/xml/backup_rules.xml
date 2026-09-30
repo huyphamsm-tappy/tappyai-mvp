@@ -3,4 +3,5 @@
      `android:fullBackupContent` mechanism (Auto Backup for Apps). -->
 <full-backup-content>
     <exclude domain="sharedpref" path="tappy_secure_tokens.xml" />
+    <exclude domain="sharedpref" path="tappy_auth_callback_state.xml" />
 </full-backup-content>
