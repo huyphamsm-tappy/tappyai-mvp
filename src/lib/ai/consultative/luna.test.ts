@@ -204,3 +204,14 @@ describe('reference turns are not requirements (replay SHOP-3: Dell brand + i5-1
     expect(out[3].content).toBe('nặng quá, muốn nhẹ hơn')
   })
 })
+
+describe('Luna phrases its pick differently (replay 30/09 final none: the pick vanished)', () => {
+  it('"**X** là lựa chọn mình nghiêng về vì …" becomes the canonical pick', () => {
+    expect(splitPickSentence('Mình hiểu. **Izakaya Unatoto Việt Nam** là lựa chọn mình nghiêng về vì đang mở cửa.'))
+      .toBe('Mình hiểu. **Mình chọn: Izakaya Unatoto Việt Nam**. Vì đang mở cửa.')
+  })
+  it('a reply that already has a pick line is untouched by it', () => {
+    const t = '**Mình chọn: A**. **B** là lựa chọn mình nghiêng về nếu rẻ hơn.'
+    expect(splitPickSentence(t)).toBe(t)
+  })
+})

@@ -311,6 +311,14 @@ export function splitPickSentence(text: string): string {
   text = text.replace(/([Cc]òn(?:\s+khoảng)?\s+)\*\*(\d+)(\s+lựa chọn)?\*\*/g, '$1$2$3')
   // "**Mình chọn: chưa thể …**" is not a pick (replay 30/09 TRAVEL-2 t2): plain text, so no later turn takes it for a name.
   text = text.replace(/\*\*Mình chọn:\s*((?:chưa|không|chờ)\b[^*\n]*)\*\*/giu, (_m, rest: string) => rest.charAt(0).toLocaleUpperCase('vi') + rest.slice(1))
+  // "**X** là lựa chọn mình nghiêng về vì …" IS the pick, phrased differently (replay 30/09 final none FOOD-1 t2: without the
+  // canonical form the pick vanished and every "chỗ đó" after it lost its referent). Only the first such lead, and only
+  // when the reply has no pick line yet; no word is added except the canonical label.
+  if (!/\*\*Mình chọn:/.test(text)) {
+    text = text.replace(/\*\*([^*\n]{2,160})\*\*\s+là\s+(?:lựa chọn|nơi|chỗ|quán|tiệm|khách sạn|mẫu|điểm|địa điểm|phương án)\s+(?:chính\s+)?mình\s+(?:nghiêng về|chọn|chốt|gợi ý|đề xuất|ưu tiên)(?:\s+(?:nhất|hơn))?\s*(?:[,:—–-]\s*)?/u,
+      (_m, name: string) => `**Mình chọn: ${name.trim()}**. `)
+      .replace(/(\*\*Mình chọn: [^*\n]+\*\*\. )(\p{Ll})/u, (_m, head: string, ch: string) => head + ch.toLocaleUpperCase('vi'))
+  }
   const cut = text.search(/\[(?:TAPPY_[A-Z_]+|CTA_BUTTONS|FOLLOWUPS)\]/)
   const prose = cut === -1 ? text : text.slice(0, cut)
   const m = /(\*\*Mình chọn:\s*[^*\n]{2,160}\*\*)[ \t]*(?:—|–|-|:|,)?[ \t]*(vì|bởi vì|do|nhờ|because)?[ \t]*(?=\S)/.exec(prose)
