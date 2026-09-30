@@ -377,10 +377,13 @@ export async function POST(req: Request) {
   // FOOD-2 t4: "… hay Ẩm thực sân vườn Mái Lá?" became a garden-seating constraint).
   const lunaOwnWords = withoutReferenceTurns(withoutQuotedNames(messages), earlyChatState?.shown ?? [])
   const lunaUserTexts = lunaOwnWords.filter((m: { role: string }) => m.role === 'user').map((m: { content: unknown }) => typeof m.content === 'string' ? m.content : Array.isArray(m.content) ? m.content.map((p: { type?: string; text?: string }) => p?.type === 'text' ? p.text ?? '' : '').join(' ') : '').slice(-7)
-  // CONSULT_LUNA_FAST (default OFF): a SURE continuing turn keeps the rules' decision, its slots read on the user's own
-  // words + the stored consultation (no intent call, ~1.9 s saved — luna.ts skipLunaIntent).
+  // CONSULT_LUNA_FAST (default OFF): a SURE continuing turn keeps the rules' decision (no intent call, ~1.9 s saved —
+  // luna.ts skipLunaIntent). Slots = the stored consultation (last turn's checked facts) + only what THIS message adds:
+  // re-reading the whole history with the rules overwrote the stored values with raw ones ("Học thiết kế" → "thiết kế"),
+  // which changed the search query (replay 30/09 fast: SHOP-3 t5 3 rows, all shown → no pick).
   const lunaSkipped = lunaOn && consultLunaFastEnabled() && skipLunaIntent(routed, earlyChatState?.domains, lastText)
-  const lunaSkipDecision = lunaSkipped && routed ? { ...routed.decision, known: { ...(earlyChatState?.known ?? {}), ...routeConsult(lunaOwnWords, { hasGps: !!userLocation, lang }).decision.known } } : null
+  const lunaLastOwn = lunaOwnWords.filter((m: { role: string }) => m.role === 'user').slice(-1)
+  const lunaSkipDecision = lunaSkipped && routed ? { ...routed.decision, known: { ...(earlyChatState?.known ?? {}), ...routeConsult(lunaLastOwn, { hasGps: !!userLocation, lang }).decision.known } } : null
   const lunaIntentRun = lunaOn && !lunaSkipped && AI.isConfigured() && !(routed?.confidence === 'rule' && isFixedPhrase(lastText))
     ? await runLunaIntent(o => AI.extract(o) as never, messages, { hasGps: !!userLocation, previousWasAsk: wasAskReply(priorAssistantText), deterministicDomain: lastUserMsg ? turnDomain(lastUserMsg, { hasGps: !!userLocation, lang }) : null, userTexts: lunaUserTexts, storedNames: earlyChatState?.shown?.slice(-8) })
     : null
