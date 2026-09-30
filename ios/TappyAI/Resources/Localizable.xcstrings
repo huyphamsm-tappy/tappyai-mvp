@@ -14941,13 +14941,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Music copyright policy"
+            "value": "Copyright Policy"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Chính sách bản quyền âm nhạc"
+            "value": "Chính sách bản quyền"
           }
         }
       }
@@ -15114,17 +15114,18 @@
       }
     },
     "settings.memory": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tappy's memory"
+            "value": "Memory"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bộ nhớ Tappy"
+            "value": "Bộ nhớ"
           }
         }
       }
@@ -15210,6 +15211,7 @@
       }
     },
     "settings.terms": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -15220,7 +15222,7 @@
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Điều khoản sử dụng"
+            "value": "Điều khoản dịch vụ"
           }
         }
       }
@@ -23707,6 +23709,295 @@
           "stringUnit": {
             "state": "translated",
             "value": "Đang tìm…"
+          }
+        }
+      }
+    },
+    "settings.subtitle": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Customise TappyAI the way you want"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tùy chỉnh TappyAI theo cách bạn muốn"
+          }
+        }
+      }
+    },
+    "settings.notifications.desc": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Manage notifications from TappyAI"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quản lý thông báo từ TappyAI"
+          }
+        }
+      }
+    },
+    "settings.memory.desc": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "See and manage what Tappy remembers"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Xem và quản lý thông tin Tappy đã nhớ"
+          }
+        }
+      }
+    },
+    "settings.language.desc": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose the display language"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chọn ngôn ngữ hiển thị"
+          }
+        }
+      }
+    },
+    "settings.appearance": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Appearance"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Giao diện"
+          }
+        }
+      }
+    },
+    "settings.appearance.desc": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Follow the system, or always light / dark"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Theo hệ thống, hoặc luôn sáng / tối"
+          }
+        }
+      }
+    },
+    "settings.appearance.system": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "System"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Theo hệ thống"
+          }
+        }
+      }
+    },
+    "settings.appearance.light": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Light"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sáng"
+          }
+        }
+      }
+    },
+    "settings.appearance.dark": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dark"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tối"
+          }
+        }
+      }
+    },
+    "settings.guide.desc": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Learn how to use TappyAI"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tìm hiểu cách sử dụng TappyAI"
+          }
+        }
+      }
+    },
+    "settings.terms.desc": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Read the terms and conditions"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Xem điều khoản và điều kiện"
+          }
+        }
+      }
+    },
+    "settings.privacyPolicy.desc": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "How we protect your data"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cách chúng tôi bảo vệ dữ liệu của bạn"
+          }
+        }
+      }
+    },
+    "settings.copyright.desc": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Report infringing content"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Báo cáo nội dung vi phạm"
+          }
+        }
+      }
+    },
+    "settings.deleteAccount.desc": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Request deletion of your account and data"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gửi yêu cầu xóa tài khoản và dữ liệu của bạn"
+          }
+        }
+      }
+    },
+    "settings.deleteAccountSelf.desc": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Permanently delete your account and data"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Xóa vĩnh viễn tài khoản và dữ liệu của bạn"
+          }
+        }
+      }
+    },
+    "settings.signIn": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sign in"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đăng nhập"
+          }
+        }
+      }
+    },
+    "settings.signIn.desc": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sign in to keep your chat history and continue on your account."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đăng nhập để giữ lại lịch sử trò chuyện và tiếp tục trên tài khoản của bạn."
           }
         }
       }

@@ -91,6 +91,35 @@ gộp) → job *Archive + upload to TestFlight* (chỉ chạy khi bấm tay, kh�
   cập nhật `APPSTORE_PROFILE_BASE64` (profile mới có Push). Thiếu thì build vẫn lên, chỉ không có thông báo đẩy (workflow cảnh báo).
 - Chưa kiểm được ở đây (không có Mac/không chạy build ký): ký số + Apple xử lý — chỉ biết đúng khi chạy job lần đầu sau 50.
 
+## Cài đặt = Android (L11, owner quyết 30/09) — code, chờ CI
+Nguồn: `SettingsScreen.kt` trên rc 68d6639. iOS nay có: dòng phụ «Tùy chỉnh TappyAI theo cách bạn muốn»; thẻ **Tùy chọn** (Thông báo · Bộ nhớ ·
+Ngôn ngữ — hiện «🇻🇳 Tiếng Việt», bấm mở bảng chọn · Giao diện — Theo hệ thống/Sáng/Tối, dùng `ThemeManager`); thẻ **Khác** (Hướng dẫn sử dụng · Điều
+khoản dịch vụ · Chính sách bảo mật · Chính sách bản quyền · Yêu cầu xóa tài khoản / Xóa tài khoản khi server bật); «Phiên bản x»; đăng xuất, còn **khách
+thấy thẻ Đăng nhập** (đăng xuất phiên khách chỉ tạo danh tính ẩn danh mới). Mỗi hàng có ô icon màu + dòng mô tả, nhãn/chữ lấy nguyên từ Android (vi + en).
+- **Nhạc ẩn:** Android không có dòng Nhạc nào trong Cài đặt. iOS trước đây có «Chính sách bản quyền âm nhạc» mở trang nhạc native → bỏ; dòng bản quyền
+  giờ là «Chính sách bản quyền» mở trang web `/copyright` (như Android). Cả deep link `/copyright` cũng mở trang web thay vì trang nhạc native (`AppRouter`).
+- **Khác Android (một điểm, cố ý):** KHÔNG có dòng «Âm thanh thông báo Tappy». Trên Android nó tắt tiếng chuông riêng của app; trên iOS tiếng của push do
+  server đặt trong payload APNs, nên công tắc cục bộ không giữ được lời hứa «vẫn nhận thông báo, chỉ không có tiếng» khi app ở nền. Cần server: cờ theo thiết
+  bị (gửi kèm lúc đăng ký token) để bỏ `sound` khỏi payload — chưa có, chưa ghi IOS-REQUESTS. Khi có thì thêm dòng ~1 giờ.
+- Test: `testSettingsMirrorsAndroid` (đủ hàng, không có chữ «nhạc»/«music», đổi Giao diện thì hàng hiện «Sáng»), `testSettingsAsGuestOffersSignIn`; ảnh `33`, `34`
+  cạnh `step1-hientrang/12-settings.png` (ảnh gốc Android là bản 28/09, TRƯỚC khi Android thêm Âm thanh/Giao diện — chỉ để tham khảo bố cục).
+
+## Yêu cầu Apple BẮT BUỘC trước khi gửi App Store duyệt (30/09) — ước lượng RIÊNG, không nằm trong 17–20 giờ các màn
+Trạng thái kiểm từ code, không phải từ ghi chú cũ. «Giờ iOS» = việc của phiên iOS; việc của Huy/server ghi riêng. Không mục nào kiểm được trọn vẹn bằng CI
+simulator — cần bản TestFlight production chạy trên máy thật.
+
+| # | Yêu cầu (điều khoản) | Trạng thái | Đã có | Còn thiếu | Giờ iOS |
+|---|---|---|---|---|---|
+| 1 | **Sign in with Apple** (4.8 — bắt buộc vì có Google/Zalo) | **MỘT PHẦN** | Capability + entitlement `applesignin`; nút native (AuthenticationServices), nonce SHA-256, `signInWithApple` + `AppleSignInTests`; nút **ẩn** tới khi `/api/config` có `flags.appleSignIn` hoặc provider `apple` | Huy bật provider Apple trong Supabase (Services ID, Team ID, Key ID, .p8 — IOS-REQUESTS A1); chưa thử trên máy thật; **server chưa thu hồi token Apple khi xoá tài khoản** (Apple đòi khi app có Sign in with Apple) | **1,5** (thử thật, ảnh màn đăng nhập có nút, xử lý huỷ / email ẩn). Ngoài iOS: Huy 0,5–1; server thu hồi token ~2–3 |
+| 2 | **Xoá tài khoản bắt đầu từ trong app** (5.1.1(v)) | **MỘT PHẦN** | `AccountDeletionView` + `AccountDeletion` → `POST /api/account/delete`, có khi `flags.accountSelfDelete`; luồng email dự phòng | Production đang **tắt** cờ → app chỉ có luồng gửi email, **không đủ** theo Apple; chưa có UI test/ảnh cho luồng in-app | **1,5** (test + ảnh với cờ bật trong fixture, xác nhận gõ chữ, về lại khách sau khi xoá, kiểm bản thật). Ngoài iOS: Huy bật `ACCOUNT_SELF_DELETE_ENABLED=true` (sau release) |
+| 3 | **Apple IAP** (3.1.1 — chỉ khi bán quyền Pro/nội dung số TRONG app) | **MỘT PHẦN — không bắt buộc cho lần nộp đầu nếu không bán gì** | StoreKit 2 (`StoreKitProvider`), `POST /api/iap/apple/verify`; màn Pro ẩn (`showProUpgrade=false` trên production) | Để nộp không-IAP: chứng minh **không có** bề mặt trả tiền nào trên iOS (Pro, nâng cấp, thanh toán VietQR/SePay của Phase 8 phải ẩn). Nếu bán Pro: sản phẩm trong App Store Connect, `appAccountToken = user.id` (audit 30/09), Restore Purchases, sandbox trên máy thật; server đã sửa API-1 nhưng mới ở nhánh security, chưa lên prod; cần pháp nhân | **1** (rà + test ẩn). Nếu bán Pro: thêm **7–9** |
+| 4 | **Thông báo đẩy qua Firebase (FCM)** | **MỘT PHẦN** | Code FCM (`provider "fcm"`), entitlement `aps-environment`, `APS_ENVIRONMENT=production` ở Release, workflow ghi plist từ secret; thiếu plist thì tắt an toàn, app vẫn chạy | Huy làm 4 bước IOS-REQUESTS §3 (khoá APNs, app iOS trong Firebase, secret `GOOGLE_SERVICE_INFO_PLIST_BASE64`, profile App Store có Push); chưa từng nhận push thật trên máy | **2** (TestFlight máy thật: xin quyền, token lên server, nhận foreground/nền, chạm mở đúng màn, tắt/bật trong Cài đặt). Ngoài iOS: Huy ~1 |
+| 5 | **PrivacyInfo.xcprivacy** + nhãn quyền riêng tư | **CÓ — cần rà** | Manifest trong app: không theo dõi, 13 loại dữ liệu (kể cả Device ID cho FCM), `UserDefaults` lý do CA92.1, có test giữ Device ID | Chưa đối chiếu với báo cáo Privacy Report của bản archive (manifest riêng của Firebase/Supabase; `Package.resolved` chưa commit nên bản SDK trôi); code đọc `FileManager.attributesOfItem` (`.size`) — nếu Apple báo ITMS-91053 phải thêm lý do file-timestamp; nhãn dinh dưỡng trong App Store Connect (A5) chưa khai | **1,5** (2 nếu Apple báo thiếu). Ngoài iOS: Huy/tôi điền nhãn khi tạo bản nộp ~1 |
+
+**Cộng riêng iOS: 7,5 giờ** (1,5 + 1,5 + 1 + 2 + 1,5) nếu không bán Pro trong app; **~16,5 giờ** nếu bán Pro qua IAP. Phần ngoài iOS (Huy: Supabase Apple, cờ xoá tài khoản, Firebase/APNs,
+nhãn; server: thu hồi token Apple) ghi cạnh từng dòng, chưa tính vào giờ iOS. Thứ tự thử trên máy thật, một lần sau khi có TestFlight production: 4 → 1 → 2 → 5.
+Cũng phải có cho hồ sơ duyệt nhưng không nằm trong 5 mục: chặn người dùng + báo cáo nội dung (1.2, Phase 8 — đã quyết nộp iOS sau Phase 8), tài khoản demo cho người duyệt, URL hỗ trợ, phân loại độ tuổi 18+.
+
 ## Còn thiếu so với ANDROID-PARITY-MAP (30/09 tối) — ước lượng
 Đã xong và có ảnh CI: L1 đăng nhập · L3 hub «Tôi» · L4 cổng 18+ · L5 Gợi ý · L6 onboarding 2 bước · L7 Đã lưu · L8 Viết content ·
 L10 hồ sơ người khác (tab Chia sẻ) · L12 Home theo Android · L16 Ưu đãi (thẻ hỏi) · chia sẻ 6 bố cục · thẻ hỏi nhanh v2 · MOB-1.
@@ -100,7 +129,7 @@ L10 hồ sơ người khác (tab Chia sẻ) · L12 Home theo Android · L16 Ưu 
 |---|---|---|---|
 | L2 | Đăng nhập chế độ tối | Màu thích ứng theo hệ thống nên có thể đã đúng; **chưa có ảnh tối** để chứng minh | 0,5 giờ, 1 ảnh |
 | L9 | Composer Ảnh / Video / YouTube | Code có (`CreateReviewView`, 3 loại, tải video 3 bước) nhưng **chưa có ảnh CI** và chưa so với web | 1,5 giờ, 1–2 vòng (cần tài khoản giả + fixture upload) |
-| L11 | Cài đặt | Chưa so hàng với web; Android có thêm Âm thanh/Giao diện/Bản quyền — **Huy chưa quyết** giữ hay bỏ | 1 giờ sau khi có quyết định |
+| L11 | Cài đặt | **ĐÃ LÀM theo Android (owner quyết 30/09)** — xem mục «Cài đặt = Android» dưới; chờ CI ảnh `33`/`34` | 0 (xong; còn xem ảnh CI) |
 | L14 | Chia sẻ + cờ `flags.publicShare` | 6 bố cục xong; iOS **không đọc** `flags.publicShare` (server đã trả) → nút chia sẻ công khai luôn bật | 1 giờ |
 | L15 | Hồ sơ chính chủ: ảnh đại diện | Ảnh bìa xong; tải ảnh đại diện có ở `ProfileService` nhưng **chưa có ảnh CI** | 1 giờ |
 | — | Thẻ kế hoạch trong chat (Android 5c009f9, mẫu Quy Nhơn) | `TripPlanCardView` bản cũ: chưa ảnh hero/điểm dừng qua manifest R22, chưa «Xem kế hoạch đầy đủ trên Tappy». `PlanImageManifest` đã có sẵn để dùng | 3–4 giờ, 2 vòng CI |
@@ -115,7 +144,7 @@ L10 hồ sơ người khác (tab Chia sẻ) · L12 Home theo Android · L16 Ưu 
 | — | **Giao diện trả lời tư vấn mới (consult answer)** | Cố ý CHƯA làm — chờ đặc tả Luna | chờ Luna; ước 4–6 giờ khi có đặc tả |
 | — | Universal Links (`/reviews`, `/users`, `/group`, `/plan`) | Phía web (A6) | phụ thuộc web; iOS 0,5 giờ |
 
-Tổng phần iOS tự làm được ngay: khoảng **17–20 giờ** làm việc, ~10–12 vòng CI. Thứ tự đề xuất sau release: (1) bản TestFlight production +
+Tổng phần iOS tự làm được ngay: khoảng **16–19 giờ** làm việc (đã trừ L11, xong), ~10–12 vòng CI. Chưa gồm yêu cầu Apple ở mục riêng phía trên. Thứ tự đề xuất sau release: (1) bản TestFlight production +
 kiểm chat thật (L13) → (2) thẻ kế hoạch + thẻ địa điểm trong chat (nhìn thấy nhiều nhất) → (3) ảnh CI cho các màn «có mà chưa chụp» theo lô
 → (4) L14/L15/L11 → (5) consult answer khi Luna có đặc tả.
 

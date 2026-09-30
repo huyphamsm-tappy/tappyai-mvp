@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 
 /// Sheets/full-screen covers presented app-wide. Feature cases are added later; a placeholder keeps
 /// the type usable in Phase 0.
@@ -75,7 +76,9 @@ final class AppRouter: AppObservableObject {
             open(ProfileDestination.groupDining, on: .profile)
 
         case .copyrightPolicy:
-            open(ReviewsDestination.copyrightPolicy, on: .profile)
+            // Music is hidden everywhere (copyright), so the native music-policy screen is no longer a
+            // destination: the general policy is the web page, the same one Settings opens.
+            if let url = URL(string: TappyShare.canonicalOrigin + "/copyright") { UIApplication.shared.open(url) }
         }
     }
 

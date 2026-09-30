@@ -43,6 +43,38 @@ final class ScreenshotTests: XCTestCase {
         shot("15-login-prod-config")
     }
 
+    // MARK: - Settings = Android's (L11), Music hidden
+
+    func testSettingsMirrorsAndroid() {
+        let app = launch(route: "settings", signedIn: true, extra: ["-uitest-theme", "dark"])
+        XCTAssertTrue(any(app, "settings-notifications").waitForExistence(timeout: 30), "Options card")
+        for id in ["memory", "language", "appearance", "guide", "terms", "privacy", "copyright", "delete", "signout"] {
+            XCTAssertTrue(scrollTo(app, "settings-" + id), "row \(id)")
+        }
+        XCTAssertFalse(any(app, "settings-signin").exists, "a signed-in user is offered sign-out, not sign-in")
+        let music = app.staticTexts.matching(NSPredicate(format: "label CONTAINS[c] 'nhạc' OR label CONTAINS[c] 'music'"))
+        XCTAssertEqual(music.count, 0, "no music row anywhere in Settings")
+        shot("33-settings")
+        // The appearance picker changes the value shown on its row.
+        app.swipeDown(); app.swipeDown()
+        any(app, "settings-appearance").tap()
+        let light = app.buttons["Sáng"]
+        XCTAssertTrue(light.waitForExistence(timeout: 10), "appearance choices")
+        light.tap()
+        let row = any(app, "settings-appearance")
+        expectation(for: NSPredicate(format: "label CONTAINS 'Sáng'"), evaluatedWith: row)   // case-sensitive: the description says "sáng"
+        waitForExpectations(timeout: 10)
+    }
+
+    func testSettingsAsGuestOffersSignIn() {
+        let app = launch(route: "settings")
+        XCTAssertTrue(scrollTo(app, "settings-signin"), "guest sign-in card")
+        XCTAssertFalse(any(app, "settings-signout").exists, "a guest is not offered sign-out")
+        shot("34-settings-guest")
+        any(app, "settings-signin").tap()
+        XCTAssertTrue(any(app, "auth-guest").waitForExistence(timeout: 30), "opens the login")
+    }
+
     // MARK: - Ask card v2 (R23 + R23.1), all 5 areas beside docs/design/ask-card/ask-card-mockup.png
 
     func testAskCardEntertainmentSelectsAndSends() {

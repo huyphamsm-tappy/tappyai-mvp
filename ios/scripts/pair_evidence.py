@@ -28,6 +28,8 @@ REFERENCES = {
     "06-saved-places": "step1-hientrang/11-saved.png",
     "07-viet-content": "step1-hientrang/10-viet-content.png",
     "08-recommendations": "step1-hientrang/09-recommendations.png",
+    "33-settings": "step1-hientrang/12-settings.png",
+    "34-settings-guest": "step1-hientrang/12-settings.png",
     "23-home": "step1-hientrang/01-home.png",
     "24-home-2": "step1-hientrang/01-home.png",
     "25-home-3": "step1-hientrang/01-home.png",

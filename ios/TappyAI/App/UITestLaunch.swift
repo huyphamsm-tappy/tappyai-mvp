@@ -77,6 +77,9 @@ enum UITestLaunch {
         case "explore": router.switchTo(.explore)
         case "deals": router.switchTo(.deals)
         case "hub": router.switchTo(.profile)
+        case "settings":
+            router.switchTo(.profile)
+            router.push(ProfileDestination.settings, on: .profile)
         case "saved":
             router.switchTo(.profile)
             router.push(ProfileDestination.favorites, on: .profile)
