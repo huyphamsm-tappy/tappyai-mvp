@@ -172,7 +172,10 @@ final class ScreenshotTests: XCTestCase {
         word.tap()
         if !app.keyboards.firstMatch.waitForExistence(timeout: 5) { word.tap() }
         word.typeText("XÓA")
-        XCTAssertTrue(any(app, "delete-submit").isEnabled)
+        let enabled = NSPredicate(format: "isEnabled == true")
+        let wait = XCTWaiter().wait(for: [XCTNSPredicateExpectation(predicate: enabled, object: any(app, "delete-submit"))], timeout: 10)
+        shot("46a-delete-typed")
+        XCTAssertEqual(wait, .completed, "submit enabled after typing; field value: \(String(describing: word.value))")
         any(app, "delete-submit").tap()
         let final = app.alerts.buttons["Xóa vĩnh viễn tài khoản"]
         XCTAssertTrue(final.waitForExistence(timeout: 10), "final confirmation")
