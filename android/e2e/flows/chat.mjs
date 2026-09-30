@@ -12,19 +12,21 @@ export const webAccount = 'e2e.android.pro@example.com'
 
 // expect: which merchant hosts a đặt/mua button may lead to (affiliate wrappers are unwrapped first).
 const CASES = [
-  { id: 'saigon-tonight', turns: ['tối nay có chỗ nào đi chơi ở sài gòn ko'], expect: /google\.|maps|ticketbox|grab|facebook|\.vn|\.com/ },
+  { id: 'saigon-tonight', turns: ['tối nay có chỗ nào đi chơi ở sài gòn ko'], expect: /google\.|maps|ticketbox|grab|facebook|\.vn|\.com/, web: /maps\.google|google\.com\/maps|ticketbox|vebo|ticketgo/ },
   { id: 'pho-q3', turns: ['quán phở ngon quận 3'], expect: /grab\.com|google\.|maps|zalo\.me/ },
   { id: 'pho-q1', turns: ['quán phở ngon quận 1'], expect: /grab\.com|google\.|maps|zalo\.me/ },
   { id: 'pho-delivery', turns: ['đặt phở giao tận nhà quận 1'], expect: /grab\.com|shopeefood|google\.|maps|zalo\.me/ },
   { id: 'headphones', turns: ['tai nghe bluetooth dưới 1 triệu'], expect: /shopee|lazada|tiki|cellphones|thegioididong|fptshop/ },
-  { id: 'snacks-then-q1', turns: ['mua đồ ăn vặt', 'tối nay đi đâu chơi quận 1'], expect: /google\.|maps|grab|shopee|lazada|ticketbox|\.vn|\.com/ },
+  { id: 'snacks-then-q1', turns: ['mua đồ ăn vặt', 'tối nay đi đâu chơi quận 1'], expect: /google\.|maps|grab|shopee|lazada|ticketbox|\.vn|\.com/, web: /maps\.google|google\.com\/maps|ticketbox|vebo|ticketgo/ },
   { id: 'concert', turns: ['vé concert tháng 10'], expect: /ticketbox|ticketgo|vebo|google\./ },
-  { id: 'flight', turns: ['vé máy bay đi Đà Nẵng'], expect: /traveloka|trip\.com|vietjet|vietnamairlines|bambooairways|agoda|booking|google\./ },
+  { id: 'flight', turns: ['vé máy bay đi Đà Nẵng'], expect: /traveloka|trip\.com|vietjet|vietnamairlines|bambooairways|agoda|booking|google\./, dated: true },
   { id: 'hotel', turns: ['khách sạn Đà Lạt cuối tuần'], expect: /booking\.com|agoda|traveloka|trip\.com|google\./ },
   // R14 (chatSessionId): the follow-up «xem thêm» carries no topic of its own — the server's state
   // for this chat must keep it on phở in District 1.
   { id: 'followup-more', turns: ['quán phở ngon quận 1', 'xem thêm'], expect: /grab\.com|google\.|maps|zalo\.me/, mustMention: /phở/i },
   { id: 'trip', turns: ['đi du lịch Đà Nẵng 3 ngày 2 đêm'], expect: /booking\.com|agoda|traveloka|trip\.com|vexere|grab|xanhsm|google\./, plan: true },
+  // Spa / làm đẹp: the fifth quick-ask area (ask-card evidence, 01/10).
+  { id: 'spa', turns: ['massage thư giãn ở quận 1'], expect: /google\.|maps|booking|\.vn|\.com/ },
   // Every fact given up front, so the consult has nothing left to ask: the plan card + its share.
   { id: 'trip-full', turns: ['Lên kế hoạch đi Đà Nẵng 3 ngày 2 đêm tuần sau cho 2 người, ngân sách 10 triệu, bay từ TP.HCM, thích biển và ăn hải sản'], expect: /booking\.com|agoda|traveloka|trip\.com|vexere|grab|xanhsm|google\./, plan: true, share: true },
 ]
@@ -251,6 +253,26 @@ async function sharePlan(a, shot, check, id) {
   await a.back()
 }
 
+/** Waits for a NEW assistant message after the click, the Stop control gone, and its text unchanged for 3 polls. */
+async function settledAnswer(page, before) {
+  const last = () => page.locator('[data-msg-id]').last()
+  const t0 = Date.now()
+  while (Date.now() - t0 < 180000) {
+    if ((await page.locator('[data-msg-id]').count()) > before) break
+    await page.waitForTimeout(1000)
+  }
+  let prev = null
+  let stable = 0
+  while (Date.now() - t0 < 180000) {
+    const busy = await page.locator('[aria-label*="Dừng"],[aria-label*="Stop"]').count()
+    const txt = await last().innerText().catch(() => '')
+    if (!busy && txt && txt === prev) stable++; else stable = 0
+    prev = txt
+    if (stable >= 3) return
+    await page.waitForTimeout(1500)
+  }
+}
+
 export async function web({ w, page, shot, check }) {
   for (const c of cases()) {
     caseStart = Date.now() - 5000
@@ -278,10 +300,11 @@ export async function web({ w, page, shot, check }) {
       }
       await shot(`${c.id}-ask-picked`)
       check(`${c.id}: web thẻ hỏi nhanh ${qs.length} câu, chọn được ${picked.length}`, picked.length === qs.length, picked.join(' · '))
-      await page.locator('[data-ask-send]').last().click().catch(() => {})
-      await page.waitForTimeout(4000)
-      await page.waitForFunction(() => !document.querySelector('[aria-label*="Dừng"],[aria-label*="Stop"]'), null, { timeout: 180000 }).catch(() => {})
-      await page.waitForTimeout(2000)
+      // R25 (web session 01/10): a failed click must be reported, and the next read waits for a NEW, settled answer.
+      const before = await page.locator('[data-msg-id]').count()
+      let sent = true
+      try { await page.locator('[data-ask-send]').last().click({ timeout: 15000 }) } catch (e) { sent = false; check(`${c.id}: web bấm «Tìm cho tôi» được`, false, String(e.message).split(String.fromCharCode(10))[0]) }
+      if (sent) await settledAnswer(page, before)
       raw = (await lastReply(webAccount, picked.join(' · '))) || raw
     } else if (!ctaOf(raw).length && chips.length && !chips.includes(ACCEPT_PLAN) && !c.plan) {
       const chip = page.getByText(chips[0], { exact: true }).last()
@@ -311,8 +334,13 @@ export async function web({ w, page, shot, check }) {
     await shot(`${c.id}-done`)
     const t = await page.locator('body').innerText().catch(() => '')
     check(`${c.id}: web không có ** / marker`, !/\*\*|\[\/?(TAPPY_[A-Z_]+|CTA_BUTTONS|FOLLOWUPS)\]/.test(t))
-    const hrefs = await page.locator('a[href^="http"]').evaluateAll((as) => as.map((x) => x.href)).catch(() => [])
+    // Only the LAST assistant message (earlier turns / page chrome do not count) and the decoded link, so a
+    // merchant behind an affiliate wrapper (go.isclix.com/?url=…, /go/at?u=…) is still visible.
+    const hrefs = await page.locator('[data-msg-id]').last().locator('a[href^="http"]').evaluateAll((as) => as.map((x) => x.href)).catch(() => [])
+    const decoded = hrefs.map((h) => { try { return decodeURIComponent(h) } catch { return h } })
     const hosts = [...ctaOf(raw).map((b) => unwrap(b.url)), ...hrefs.map(unwrap)].filter((h) => h && !/tappyai\.com$/.test(h))
-    check(`${c.id}: web nút/đường dẫn đúng loại trang`, hosts.some((h) => c.expect.test(h)), [...new Set(hosts)].slice(0, 6).join(', '))
+    const kind = c.web || c.expect
+    check(`${c.id}: web nút/đường dẫn đúng loại trang`, decoded.some((h) => kind.test(h)), [...new Set(hosts)].slice(0, 6).join(', ') || '(không có link trong tin nhắn cuối)')
+    if (c.dated) check(`${c.id}: web link có NGÀY`, decoded.some((h) => c.expect.test(h) && /20\d\d[-/]\d\d[-/]\d\d|\d{2}[-/]\d{2}[-/]20\d\d|departure|date=/i.test(h)))
   }
 }
