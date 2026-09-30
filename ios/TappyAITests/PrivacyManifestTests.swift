@@ -25,6 +25,7 @@ final class PrivacyManifestTests: XCTestCase {
             "NSPrivacyCollectedDataTypeName",
             "NSPrivacyCollectedDataTypeUserID",
             "NSPrivacyCollectedDataTypePhotosOrVideos",
+            "NSPrivacyCollectedDataTypeDeviceID",          // FCM registration token (push)
         ] {
             XCTAssertTrue(types.contains(required), required)
         }

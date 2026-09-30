@@ -118,7 +118,7 @@ struct RecommendationsView: View {
     private var sectionHeader: some View {
         HStack {
             Image(systemName: "mappin.and.ellipse").font(.system(size: 15)).foregroundStyle(accent)
-            Text(personalized ? "recommendations.personalized" : "recommendations.popularNearby")
+            Text(LocalizedStringKey(personalized ? "recommendations.personalized" : "recommendations.popularNearby"))
                 .font(.system(size: 15, weight: .semibold)).foregroundStyle(TappyColor.textPrimary)
             Spacer()
             Button { router.switchTo(.explore) } label: {

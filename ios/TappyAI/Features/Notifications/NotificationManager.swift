@@ -1,10 +1,18 @@
 import Foundation
 import UserNotifications
 import UIKit
+import FirebaseCore
+import FirebaseMessaging
 
-/// Manages the full APNs lifecycle: permission check, device-token upload to
-/// POST /api/notifications/subscribe (provider=apns), foreground display, and
-/// notification-tap deep-link routing via the existing DeepLinkHandler.
+/// Manages the push lifecycle: permission check, FCM-token upload to
+/// POST /api/notifications/subscribe (provider=fcm — the only mobile provider the backend accepts,
+/// same as Android), foreground display, and notification-tap deep-link routing via the existing
+/// DeepLinkHandler.
+///
+/// Firebase Cloud Messaging sits on top of APNs: the APNs device token is handed to Firebase, which
+/// mints the FCM registration token the backend sends to. `FirebaseApp.configure()` needs the
+/// `GoogleService-Info.plist` from the Firebase Console; a build without it (a fork, a CI run with
+/// no secret) still works — push is simply inactive (`FirebaseSetup.isAvailable` is false).
 @MainActor
 final class NotificationManager: NSObject {
     private let api: APIClient
@@ -44,19 +52,30 @@ final class NotificationManager: NSObject {
     // MARK: - Token handling (called from AppDelegate)
 
     func handleDeviceToken(_ tokenData: Data) {
-        let hex = tokenData.map { String(format: "%02x", $0) }.joined()
         log.info("APNs token acquired")
-        Task { await uploadToken(hex) }
+        guard FirebaseSetup.isAvailable else {
+            // No Firebase config in this build: the backend rejects a raw APNs token (`apns` is not
+            // an accepted provider), so nothing is uploaded.
+            log.info("Firebase not configured — push inactive")
+            return
+        }
+        Messaging.messaging().delegate = self
+        Messaging.messaging().apnsToken = tokenData
+        // The FCM delegate only fires when the token CHANGES; fetch it now so every launch (and
+        // every sign-in) re-registers the token for the current account.
+        Task { [weak self] in
+            if let token = try? await Messaging.messaging().token() { await self?.uploadToken(token) }
+        }
     }
 
     func handleRegistrationError(_ error: Error) {
         log.error("APNs registration failed: \(error.localizedDescription)")
     }
 
-    private func uploadToken(_ token: String) async {
+    fileprivate func uploadToken(_ token: String) async {
         do {
             let body = try JSONSerialization.data(withJSONObject: [
-                "provider": "apns",
+                "provider": "fcm",
                 "token": token,
             ])
             let endpoint = Endpoint(
@@ -66,9 +85,9 @@ final class NotificationManager: NSObject {
                 requiresAuth: true
             )
             _ = try await api.send(endpoint)
-            log.info("APNs token uploaded")
+            log.info("FCM token uploaded")
         } catch {
-            log.error("APNs token upload failed: \(error.localizedDescription)")
+            log.error("FCM token upload failed: \(error.localizedDescription)")
         }
     }
 
@@ -76,15 +95,47 @@ final class NotificationManager: NSObject {
 
     func unsubscribe() async {
         UIApplication.shared.unregisterForRemoteNotifications()
-        // Backend APNs unsubscription (DELETE /api/notifications/subscribe?provider=apns) is
-        // deferred to the APNs Backend Production Sprint.
-        log.info("APNs unregistered locally")
+        // The server-side subscription is turned off with DELETE /api/notifications/subscribe
+        // (it only ever sets `enabled = false`); the local registration is dropped here.
+        let endpoint = Endpoint(
+            path: "/api/notifications/subscribe",
+            method: .delete,
+            query: [URLQueryItem(name: "provider", value: "fcm")],
+            requiresAuth: true
+        )
+        _ = try? await api.send(endpoint)
+        log.info("push unregistered")
     }
 
     // MARK: - Badge
 
     func clearBadge() {
         UNUserNotificationCenter.current().setBadgeCount(0) { _ in }
+    }
+}
+
+// MARK: - Firebase
+
+/// Firebase is configured only when the build carries a `GoogleService-Info.plist`
+/// (added from a CI secret / the Firebase Console — never committed).
+enum FirebaseSetup {
+    static var isAvailable: Bool {
+        Bundle.main.path(forResource: "GoogleService-Info", ofType: "plist") != nil
+    }
+
+    /// Call once, from `application(_:didFinishLaunchingWithOptions:)`. A no-op without the plist,
+    /// and a no-op when already configured.
+    static func configureIfAvailable() {
+        guard isAvailable, FirebaseApp.app() == nil else { return }
+        FirebaseApp.configure()
+    }
+}
+
+extension NotificationManager: MessagingDelegate {
+    /// A new / refreshed FCM registration token: upload it under `provider: "fcm"`.
+    nonisolated func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
+        guard let fcmToken else { return }
+        Task { @MainActor [self] in await self.uploadToken(fcmToken) }
     }
 }
 

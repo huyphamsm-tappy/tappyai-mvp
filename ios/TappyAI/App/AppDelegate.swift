@@ -7,6 +7,8 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
         log.info("didFinishLaunching")
+        // Firebase Cloud Messaging (push). Must run before the first remote-notification registration.
+        FirebaseSetup.configureIfAvailable()
         return true
     }
 

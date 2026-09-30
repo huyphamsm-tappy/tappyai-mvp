@@ -14,7 +14,12 @@ struct TappyAIApp: App {
                 .environmentObject(deps.router)
                 .environmentObject(deps.theme)
                 .environmentObject(deps.localization)
-                .task { deps.bootstrap() }
+                .task {
+                    deps.bootstrap()
+                    #if DEBUG
+                    UITestLaunch.apply(deps)
+                    #endif
+                }
                 .onOpenURL { deps.handleDeepLink($0.absoluteString) }
                 .onContinueUserActivity(NSUserActivityTypeBrowsingWeb) { activity in
                     guard let url = activity.webpageURL else { return }

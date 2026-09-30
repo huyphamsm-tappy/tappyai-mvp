@@ -159,7 +159,7 @@ struct UserProfileView: View {
             ForEach([Tab.posts, Tab.shares], id: \.self) { t in
                 Button { pickedTab = t } label: {
                     VStack(spacing: 6) {
-                        Text(t == .posts ? "userProfile.tab.posts" : "userProfile.tab.shares")
+                        Text(LocalizedStringKey(t == .posts ? "userProfile.tab.posts" : "userProfile.tab.shares"))
                             .font(TappyFont.callout.weight(tab == t ? .semibold : .regular))
                             .foregroundStyle(tab == t ? TappyColor.textPrimary : TappyColor.textSecondary)
                         Rectangle().fill(tab == t ? TappyColor.primary : Color.clear).frame(height: 2)

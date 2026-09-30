@@ -1,0 +1,69 @@
+#!/usr/bin/env python3
+"""Pairs each iOS screenshot with the matching Android reference image for the CI artifact.
+
+usage: pair_evidence.py <ios-shots-dir> <repo-root> <out-dir>
+
+Android references are the committed evidence under docs/uat/evidence/android-parity (a web|Android
+composite per screen, captured 28/09 on the emulator BEFORE the parity work — the latest Android
+shots are kept outside git). The pair is labelled with what the right-hand image is, so nobody
+mistakes a baseline for a final. A screen with no Android reference is still written (iOS alone)
+and listed in pairs.md as "no Android reference".
+"""
+import os
+import sys
+
+from PIL import Image, ImageDraw
+
+# iOS shot name -> Android reference (relative to docs/uat/evidence/android-parity)
+REFERENCES = {
+    "01-login": "step1-hientrang/07-login.png",
+    "02-age-gate": "step1-hientrang/03-age-gate-18.png",
+    "03-hub-guest": "step1-hientrang/06-profile-hub.png",
+    "04-saved": "step1-hientrang/11-saved.png",
+    "05-saved-empty": "step1-hientrang/11-saved.png",
+    "06-saved-places": "step1-hientrang/11-saved.png",
+    "07-viet-content": "step1-hientrang/10-viet-content.png",
+    "08-recommendations": "step1-hientrang/09-recommendations.png",
+}
+HEIGHT = 1400
+
+
+def fit(img, height):
+    w = round(img.width * height / img.height)
+    return img.resize((w, height))
+
+
+def main(shots_dir, repo, out_dir):
+    os.makedirs(out_dir, exist_ok=True)
+    rows = []
+    for fn in sorted(os.listdir(shots_dir)):
+        if not fn.lower().endswith(".png"):
+            continue
+        name = os.path.splitext(fn)[0]
+        ios = fit(Image.open(os.path.join(shots_dir, fn)).convert("RGB"), HEIGHT)
+        ref_rel = REFERENCES.get(name)
+        ref_path = os.path.join(repo, "docs/uat/evidence/android-parity", ref_rel) if ref_rel else None
+        if ref_path and os.path.exists(ref_path):
+            ref = fit(Image.open(ref_path).convert("RGB"), HEIGHT)
+            canvas = Image.new("RGB", (ios.width + ref.width + 30, HEIGHT + 60), "white")
+            canvas.paste(ios, (0, 60))
+            canvas.paste(ref, (ios.width + 30, 60))
+            d = ImageDraw.Draw(canvas)
+            d.text((10, 20), f"iOS (this build) - {name}", fill="black")
+            d.text((ios.width + 40, 20), "Android reference: web | Android | mockup, baseline 28/09", fill="black")
+            rows.append((name, ref_rel))
+        else:
+            canvas = Image.new("RGB", (ios.width, HEIGHT + 60), "white")
+            canvas.paste(ios, (0, 60))
+            ImageDraw.Draw(canvas).text((10, 20), f"iOS (this build) - {name} - no Android reference", fill="black")
+            rows.append((name, None))
+        canvas.save(os.path.join(out_dir, f"{name}-pair.png"))
+    with open(os.path.join(out_dir, "pairs.md"), "w", encoding="utf-8") as f:
+        f.write("| iOS screenshot | Android reference |\n|---|---|\n")
+        for name, ref in rows:
+            f.write(f"| {name}.png | {ref or 'no Android reference'} |\n")
+    print(f"paired {len(rows)} screenshots")
+
+
+if __name__ == "__main__":
+    main(*sys.argv[1:4])

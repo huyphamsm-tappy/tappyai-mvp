@@ -163,6 +163,21 @@
             </array>
         </dict>
 
+        <!-- Device ID: the Firebase Cloud Messaging registration token, stored server-side so push
+             notifications can be delivered (Data safety: "Mã thiết bị", purpose app functionality). -->
+        <dict>
+            <key>NSPrivacyCollectedDataType</key>
+            <string>NSPrivacyCollectedDataTypeDeviceID</string>
+            <key>NSPrivacyCollectedDataTypeLinked</key>
+            <true/>
+            <key>NSPrivacyCollectedDataTypeTracking</key>
+            <false/>
+            <key>NSPrivacyCollectedDataTypePurposes</key>
+            <array>
+                <string>NSPrivacyCollectedDataTypePurposeAppFunctionality</string>
+            </array>
+        </dict>
+
         <!-- Coarse location: the same nearby-places context; kept alongside precise. -->
         <dict>
             <key>NSPrivacyCollectedDataType</key>

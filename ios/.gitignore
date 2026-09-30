@@ -18,3 +18,5 @@ xcuserdata/
 
 # Secrets (inject locally / via CI)
 Config/Secrets.xcconfig
+# Firebase config (push) — from the Firebase Console / CI secret, never committed
+TappyAI/Resources/GoogleService-Info.plist

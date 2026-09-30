@@ -109,6 +109,7 @@ struct ChatInputBar: View {
                         .background(TappyColor.surface)
                         .clipShape(RoundedRectangle(cornerRadius: Radius.lg, style: .continuous))
                         .focused($isFocused)
+                        .accessibilityIdentifier("chat-input")
                         .disabled(isStreaming)
                         .submitLabel(.send)
                         .onSubmit {

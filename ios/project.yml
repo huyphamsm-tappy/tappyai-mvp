@@ -29,6 +29,11 @@ packages:
   Supabase:
     url: https://github.com/supabase/supabase-swift
     from: "2.0.0"
+  Firebase:
+    # Cloud Messaging only (push, provider "fcm" — same as Android). No Analytics: iOS does not
+    # collect it, and the privacy manifest / App Privacy answers assume that.
+    url: https://github.com/firebase/firebase-ios-sdk
+    from: "11.0.0"
 
 targets:
   TappyAI:
@@ -39,6 +44,8 @@ targets:
     dependencies:
       - package: Supabase
         product: Supabase
+      - package: Firebase
+        product: FirebaseMessaging
     configFiles:
       Debug: Config/Debug.xcconfig
       Release: Config/Release.xcconfig
