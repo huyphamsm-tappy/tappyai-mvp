@@ -282,15 +282,14 @@ export function mergeIntentWithRules(luna: ConsultDecision, routed: { decision: 
   const r = routed.decision
   const same = luna.domains.length === 0 || (r.domains.length > 0 && luna.domains.length === r.domains.length && luna.domains.every(d => r.domains.includes(d)))
   if (!same) return { decision: luna, mode: 'luna' }
-  const known = { ...r.known, ...luna.known }
   const area = luna.area ?? r.area
   const explicit = (t: ConsultTurn) => t === 'plan' || t === 'more' || t === 'compare' || t === 'reject'
   const askOrPick = (t: ConsultTurn) => t === 'ask' || t === 'pick'
   if (luna.turn === r.turn || explicit(r.turn) || (askOrPick(luna.turn) && askOrPick(r.turn))) {
-    return { decision: { ...r, known, ...(area ? { area } : {}), assumptions: r.assumptions.length ? r.assumptions : luna.assumptions }, mode: 'merged' }
+    return { decision: { ...r, known: luna.known, ...(area ? { area } : {}), assumptions: r.assumptions.length ? r.assumptions : luna.assumptions }, mode: 'merged' }
   }
   return {
-    decision: { ...luna, domains: r.domains, known, ...(area ? { area } : {}), ...(luna.query ?? r.query ? { query: luna.query ?? r.query } : {}), ...(luna.refers ?? r.refers ? { refers: luna.refers ?? r.refers } : {}), ...(luna.rejectReason ?? r.rejectReason ? { rejectReason: luna.rejectReason ?? r.rejectReason } : {}) },
+    decision: { ...luna, domains: r.domains, known: luna.known, ...(area ? { area } : {}), ...(luna.query ?? r.query ? { query: luna.query ?? r.query } : {}), ...(luna.refers ?? r.refers ? { refers: luna.refers ?? r.refers } : {}), ...(luna.rejectReason ?? r.rejectReason ? { rejectReason: luna.rejectReason ?? r.rejectReason } : {}) },
     mode: 'luna-turn',
   }
 }
@@ -320,13 +319,36 @@ export function splitPickSentence(text: string): string {
  * a guard after (replay 30/09 ENT-1 t6: "chỗ đó ồn ào đông quá" — the search returned a NEW karaoke, Luna re-picked the
  * rejected one). Reject: the pick just turned down. More: the names already shown (never the main pick again).
  */
-export function lunaTurnFacts(turn: ConsultTurn, state: { pick?: string | null; shown?: string[] } | null | undefined): string {
+export function lunaTurnFacts(turn: ConsultTurn, state: { pick?: string | null; shown?: string[]; known?: Record<string, string> } | null | undefined): string {
   if (!state) return ''
   const shown = [...new Set((state.shown ?? []).filter(Boolean))].slice(-10)
+  // The stated budget travels with a later turn (replay 30/09 SHOP-2 t6: a 70k "random gift" picked for a 1–2 triệu boss gift).
+  const budget = state.known?.ngan_sach ? `NGÂN SÁCH NGƯỜI DÙNG ĐÃ NÓI: ${state.known.ngan_sach} — lựa chọn lệch xa mức này thì nói rõ một câu.` : ''
   if (turn === 'reject') {
-    const lines = [state.pick ? `VỪA BỊ BÁC: ${state.pick} — TUYỆT ĐỐI không chọn lại, không đưa vào phương án khác.` : '', shown.length ? `ĐÃ HIỆN TRƯỚC ĐÓ (không chọn lại làm lựa chọn chính): ${shown.join(' | ')}` : ''].filter(Boolean)
+    const lines = [state.pick ? `VỪA BỊ BÁC: ${state.pick} — TUYỆT ĐỐI không chọn lại, không đưa vào phương án khác.` : '', shown.length ? `ĐÃ HIỆN TRƯỚC ĐÓ (không chọn lại làm lựa chọn chính): ${shown.join(' | ')}` : '', budget].filter(Boolean)
     return lines.length ? ['SỰ THẬT CỦA LƯỢT NÀY (code):', ...lines, 'Chọn ứng viên KHÁC trong kết quả công cụ; không còn ứng viên khác thì nói thật và hỏi một câu.'].join('\n') : ''
   }
-  if (turn === 'more' && shown.length) return ['SỰ THẬT CỦA LƯỢT NÀY (code):', `ĐÃ HIỆN (không chọn lại làm lựa chọn chính): ${shown.join(' | ')}`].join('\n')
+  if (turn === 'more' && (shown.length || budget)) return ['SỰ THẬT CỦA LƯỢT NÀY (code):', shown.length ? `ĐÃ HIỆN (không chọn lại làm lựa chọn chính): ${shown.join(' | ')}` : '', budget].filter(Boolean).join('\n')
   return ''
+}
+
+/**
+ * A user message that copies back a name we showed ("Laptop Aspire Lite 14 hay Laptop Dell 15 DC15250 Core i5-1334U -
+ * Thái Long Computer?") is a REFERENCE turn: its words are not the user's requirements. Replay 30/09 SHOP-3: "Dell" became
+ * a brand constraint and "i5-1334U" a 1.334.000đ budget — the bold-name strip missed the longer pasted title. Under
+ * CONSULT_LUNA such a message is blanked for fact / constraint reading (the conversation the model sees is unchanged).
+ * `shown`: names the consultation showed (stored state + bold names of earlier replies).
+ */
+export function withoutReferenceTurns<M extends { role: string; content: unknown }>(messages: readonly M[], shown: readonly string[]): M[] {
+  const fold = (s: string) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/gi, 'd').toLowerCase().replace(/\s+/g, ' ').trim()
+  const keys = [...new Set(shown.map(fold).filter(n => n.length >= 10))]
+  const bold = (t: string) => [...t.matchAll(/\*\*(?:Mình chọn:\s*)?([^*\n]{10,160})\*\*/g)].map(m => fold(m[1]))
+  const seen = new Set(keys)
+  return messages.map(m => {
+    const text = typeof m.content === 'string' ? m.content : ''
+    if (m.role === 'assistant') { for (const b of bold(text)) seen.add(b); return m }
+    if (m.role !== 'user' || !text) return m
+    const f = fold(text)
+    return [...seen].some(k => f.includes(k)) ? { ...m, content: '' } : m
+  })
 }
