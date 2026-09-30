@@ -296,6 +296,8 @@ export function mergeIntentWithRules(luna: ConsultDecision, routed: { decision: 
  * Structure only: no word is added or removed, so no guard is bypassed (the reason is still judged on its own).
  */
 export function splitPickSentence(text: string): string {
+  // Luna bolds its own count ("Mình còn **34 lựa chọn** nữa") — unbolded so the server's count line replaces it, not doubles it.
+  text = text.replace(/([Cc]òn(?:s+khoảng)?s+)**(d+)(s+lựa chọn)?**/g, '$1$2$3')
   const cut = text.search(/\[(?:TAPPY_[A-Z_]+|CTA_BUTTONS|FOLLOWUPS)\]/)
   const prose = cut === -1 ? text : text.slice(0, cut)
   const m = /(\*\*Mình chọn:\s*[^*\n]{2,160}\*\*)[ \t]*(?:—|–|-|:|,)?[ \t]*(vì|bởi vì|do|nhờ|because)?[ \t]*(?=\S)/.exec(prose)

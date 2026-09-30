@@ -155,6 +155,9 @@ describe('the pick sentence stands alone (a guard cutting the reason keeps the n
     expect(splitPickSentence('Ok. **Mình chọn: Miya Sushi** vì có **1.376 đánh giá**.')).toBe('Ok. **Mình chọn: Miya Sushi**. Vì có **1.376 đánh giá**.')
     expect(splitPickSentence('**Mình chọn: Nori** — 4,8⭐, gần bạn.\n\n[FOLLOWUPS]a[/FOLLOWUPS]')).toBe('**Mình chọn: Nori**. 4,8⭐, gần bạn.\n\n[FOLLOWUPS]a[/FOLLOWUPS]')
   })
+  it('unbolds the model count line so the server count replaces it (replay SHOP-2 t2 showed two count lines)', () => {
+    expect(splitPickSentence('Mình còn **34 lựa chọn** nữa, muốn xem thêm không?')).toBe('Mình còn 34 lựa chọn nữa, muốn xem thêm không?')
+  })
   it('leaves a pick that already ends its sentence, and text without a pick', () => {
     expect(splitPickSentence('**Mình chọn: Nori**. Quán gần.')).toBe('**Mình chọn: Nori**. Quán gần.')
     expect(splitPickSentence('Không có lựa chọn.')).toBe('Không có lựa chọn.')
