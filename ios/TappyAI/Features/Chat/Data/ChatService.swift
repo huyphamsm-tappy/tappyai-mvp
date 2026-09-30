@@ -176,7 +176,8 @@ final class ChatService: Sendable {
     /// `x-tappy-age-declared`. Nil for accounts — their date of birth is read server-side.
     func chatWithContext(messages: [MessagePayload], userPreferences: [String]?, responseStyle: String?,
                         userLocation: [String: Double]? = nil,
-                        guestAgeDeclaration: String? = nil) -> AsyncThrowingStream<StreamFrame, Error> {
+                        guestAgeDeclaration: String? = nil,
+                        chatSessionId: String? = nil) -> AsyncThrowingStream<StreamFrame, Error> {
         var bodyDict: [String: Any] = [
             "messages": messages.map { ["role": $0.role, "content": $0.content] }
         ]
@@ -189,10 +190,17 @@ final class ChatService: Sendable {
         if let loc = userLocation {
             bodyDict["userLocation"] = loc
         }
+        // R14: one UUID per chat, sent on every turn (first turn and guests included).
+        if let sid = chatSessionId, ChatSessionId.isValid(sid) {
+            bodyDict["chatSessionId"] = sid
+        }
         guard let bodyData = try? JSONSerialization.data(withJSONObject: bodyDict) else {
             return AsyncThrowingStream { $0.finish(throwing: AppError.validation(message: "Failed to encode chat request")) }
         }
-        var headers: [String: String] = [:]
+        var headers: [String: String] = [
+            ChatClientDeclaration.surfaceHeader: ChatClientDeclaration.surface,
+            ChatClientDeclaration.capsHeader: ChatClientDeclaration.caps,
+        ]
         if let declared = guestAgeDeclaration, !declared.isEmpty {
             headers[GuestAgeDeclaration.header] = declared
         }
@@ -206,6 +214,17 @@ final class ChatService: Sendable {
         )
         return streaming.stream(endpoint)
     }
+}
+
+/// What this build declares to `/api/chat`. `x-tappy-surface: ios` tells the server the client
+/// draws the place/shopping decision as a card (so the prose must not repeat it) — the server
+/// whitelist does not know "ios" yet (docs/ios/IOS-REQUESTS.md #1). `x-tappy-caps: ask` = this
+/// build parses `[TAPPY_ASK]` (`AskBlock`).
+enum ChatClientDeclaration {
+    static let surfaceHeader = "x-tappy-surface"
+    static let surface = "ios"
+    static let capsHeader = "x-tappy-caps"
+    static let caps = "ask"
 }
 
 private struct MemoryCheckResponse: Decodable {

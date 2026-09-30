@@ -12,7 +12,9 @@ import Foundation
 enum ContentParser {
 
     static func parse(_ content: String) -> ParsedContent {
-        let (textAfterPlan, plan, planJSON) = parsePlanBlock(content)
+        // ASK first: it is a whole-turn question block with nothing else in it worth decoding.
+        let askResult = AskBlock.parse(content)
+        let (textAfterPlan, plan, planJSON) = parsePlanBlock(askResult.text)
         let (textAfterCta, buttons) = parseCTA(textAfterPlan)
         let (textAfterFollowups, followups) = parseFollowups(textAfterCta)
         // D1 — decode the shopping decision instead of discarding it. Decode and strip stay
@@ -35,7 +37,8 @@ enum ContentParser {
             images: images,
             shopping: shopping,
             planJSON: planJSON,
-            places: places
+            places: places,
+            ask: askResult.questions
         )
     }
 
@@ -284,7 +287,7 @@ enum ContentParser {
     /// what produced this bug: `[TAPPY_SHOPPING]` was added server-side and taught to the web
     /// only, and iOS rendered its JSON as message body. When the server gains a marker, it is
     /// added here.
-    static let markerNames = ["TAPPY_PLAN", "CTA_BUTTONS", "FOLLOWUPS", "TAPPY_SHOPPING", "TAPPY_PLACES"]
+    static let markerNames = ["TAPPY_PLAN", "CTA_BUTTONS", "FOLLOWUPS", "TAPPY_SHOPPING", "TAPPY_PLACES", "TAPPY_ASK"]
 
     /// Removes every marker block the decode steps did not consume.
     ///

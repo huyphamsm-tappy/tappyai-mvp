@@ -79,6 +79,9 @@ struct ParsedContent: Equatable, Sendable {
     /// `EMIT_TAPPY_PLACES` is on. Parsing it now is what lets that flag be flipped without raw JSON
     /// reaching a user, which is how `[TAPPY_SHOPPING]` and `[CTA_BUTTONS]` both leaked before.
     var places: [PersistedPlace] = []
+    /// Consult ASK questions (`[TAPPY_ASK]`), shown as `AskCardView` on the last reply. Empty on
+    /// every other turn.
+    var ask: [AskQuestion] = []
 }
 
 struct ParsedImage: Equatable, Sendable, Identifiable {

@@ -14,6 +14,10 @@ final class ChatViewModel: AppObservableObject {
     @AppPublished var thinkHintIndex: Int = 0
     @AppPublished var activeTool: String? = nil
     @AppPublished var conversationId: String? = nil
+    /// R14: the chat's server-side consult-state key. Made once at init (or restored for a chat
+    /// reopened from history) and sent on every turn.
+    let chatSessionId: String
+    private let sessionIdStore = ChatSessionIdStore()
     @AppPublished var hasMemory: Bool = false
     @AppPublished var showOnboarding: Bool = false
     @AppPublished var userPreferences: [String] = []
@@ -103,6 +107,7 @@ final class ChatViewModel: AppObservableObject {
         self.guestAge = guestAge
         self.category = category
         self.conversationId = conversationId
+        self.chatSessionId = ChatSessionId.resolve(historyRowId: conversationId)
         wireReadAloudLanguage()
 
         if let saved = savedMessages {
@@ -502,7 +507,8 @@ final class ChatViewModel: AppObservableObject {
                 userPreferences: self.userPreferences.isEmpty ? nil : self.userPreferences,
                 responseStyle: nil,
                 userLocation: self.activeLocation,
-                guestAgeDeclaration: self.isGuest ? self.guestAge.declaration : nil
+                guestAgeDeclaration: self.isGuest ? self.guestAge.declaration : nil,
+                chatSessionId: self.chatSessionId
             )
 
             do {
@@ -614,6 +620,8 @@ final class ChatViewModel: AppObservableObject {
                 )
                 conversationId = saved.id
             }
+            // Reopening this chat from history later keeps the same chatSessionId (R14).
+            if let id = conversationId { sessionIdStore.put(id, chatSessionId) }
         } catch {
             log.error("persist failed: \(error)")
         }

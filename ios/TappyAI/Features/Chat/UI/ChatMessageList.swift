@@ -78,6 +78,7 @@ struct ChatMessageList: View {
                                 places: msg.livePlaces.map { $0.items.map { $0.toCardView() } }
                                     ?? parsed.places.compactMap { $0.toCardView() },
                                 followups: isLast && !isStreaming ? parsed.followups : [],
+                                ask: isLast && !isStreaming ? parsed.ask : [],
                                 isLastMessage: isLast,
                                 tts: tts,
                                 onRegenerate: isLast ? onRegenerate : nil,
@@ -197,6 +198,8 @@ private struct AssistantBubble: View {
     /// Whether the comparison sheet is open for this row.
     @State private var showComparison = false
     let followups: [String]
+    /// The consult ASK questions of this (last) turn; empty otherwise.
+    var ask: [AskQuestion] = []
     let isLastMessage: Bool
     let tts: TTSManager
     var onRegenerate: (() -> Void)?
@@ -329,6 +332,10 @@ private struct AssistantBubble: View {
                             }
                         }
                     }
+                }
+
+                if !ask.isEmpty {
+                    AskCardView(questions: ask, onSend: onFollowup)
                 }
 
                 // Follow-up chips
