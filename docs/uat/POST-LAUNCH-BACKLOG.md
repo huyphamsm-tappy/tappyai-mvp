@@ -39,3 +39,20 @@ Các việc chủ động hoãn đến sau launch. Mỗi mục ghi rõ vì sao c
 2. Bắt đầu request feed trước khi hydrate (preload / server fetch trang đầu).
 3. Tải lười `ExploreStage` (desktop) trên mobile — test `exploreStage.test.tsx` đang ghim import tĩnh, sửa cùng.
 Bằng chứng + script đo: `gs://tappyai-uat-evidence/evidence/perf-reviews-2026-09-29/`, RELEASE-PROGRESS "/reviews LOAD TIME".
+
+## PL-AI-LUNA — AI tư vấn: lỗi còn sót sau ngưỡng release 30/09 (làm cùng đợt chuyển GPT-6 Luna + làm lại prompt)
+Ngưỡng release (Huy 29/09): mỗi mảng ≥ 17/21 (TB 2 lượt replay), A = 0, B = 0 ở lượt chính. Đạt ngày 30/09 (replay 17:40Z + 17:48Z:
+ăn uống 18,5 · mua sắm 17,5 · du lịch 17,5 · giải trí 18,5 · spa 20,5). Còn lại, theo mức:
+- **B ở ngách (lượt "xem thêm / bác" sau nhiều lượt):**
+  - SHOP-1 t6 "không thích màu đen": nói thật "chưa tìm thấy màu khác" nhưng vẫn viết "Mình chọn: <ốp Scout>" (listing không ghi màu).
+  - SHOP-3 t6 "nặng quá, muốn nhẹ hơn": dữ liệu tìm kiếm không có laptop mới nhẹ < 20 triệu → khi thì nói thật, khi thì chọn lại
+    Aspire Lite 14 ("Lite thường nhẹ") — suy đoán từ tên.
+  - SHOP-2 t4 so sánh (1/4 lượt): chọn món thứ ba thay vì một trong hai món được hỏi; lượt so sánh này còn gọi search_products (10 Serper).
+- **C:** lượt bác/xem thêm hết ứng viên nói thật + gợi ý nới điều kiện nhưng không có "Mình chọn" (FOOD-2 t6, SHOP-3 t6);
+  TRAVEL-3 kế hoạch đôi khi mất link Traveloka — model chép sai URL /go/at dài ~500 ký tự → guard egress xoá. **Rút ngắn link /go/at**
+  (id ngắn lưu server thay vì seal + chữ ký trong URL) sẽ bỏ hẳn lỗi này.
+- **D:** 2 dòng "Mình chọn" trong một lượt (ENT-2 t2, FOOD-3 t6); thiếu dòng "còn N" / tiêu đề kế hoạch; mẹo 1 dòng thay vì 2–3;
+  "~466.000đ+" (giá có nguồn nhưng viết kèm "~"); bộ chấm không nhận "Bạn xem giá trên [Traveloka](…)" (có ngoặc) là câu "xem giá trên Traveloka".
+- **Dữ liệu:** Serper Shopping cho "laptop … nhẹ" trả phụ kiện / dịch vụ sửa → bộ lọc loại sản phẩm (af4f2cb, 5547faa) chặn được nhưng
+  còn rất ít laptop thật; cần nguồn sản phẩm có thông số (trọng lượng, màu) — feed ACCESSTRADE sau khi có API key.
+Bằng chứng: replay `scripts/consult/replay/out/scenarios-2026-09-29T17-*`, phân loại tay trong RELEASE-PROGRESS "AI tư vấn — kết quả cuối".
