@@ -144,6 +144,10 @@ describe('the turn stays with code when the router is sure', () => {
     expect(m.decision.refers).toEqual(['Hộp quà A'])
     expect(mergeIntentWithRules({ domains: ['shopping'], turn: 'pick', known: {}, assumptions: [] }, rule).decision.turn).toBe('ask')
   })
+  it('an explicit action the router matched stays (replay FOOD-2 t7: plan, Luna read a follow-up)', () => {
+    const plan = { ...rule, decision: { ...rule.decision, turn: 'plan' as const } }
+    expect(mergeIntentWithRules({ domains: ['shopping'], turn: 'followup', known: {}, assumptions: [] }, plan).decision.turn).toBe('plan')
+  })
   it('areas disagree, or the router is unsure → Luna decides', () => {
     expect(mergeIntentWithRules({ domains: ['food'], turn: 'pick', known: {}, assumptions: [] }, rule).mode).toBe('luna')
     expect(mergeIntentWithRules({ domains: ['shopping'], turn: 'pick', known: {}, assumptions: [] }, { ...rule, confidence: 'unsure' }).decision.turn).toBe('pick')

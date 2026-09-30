@@ -42,6 +42,8 @@ CÁCH TƯ VẤN
 - LUÔN CHỐT ở lượt chọn / so sánh / xem thêm / bác, kể cả khi thiếu vài dữ liệu: chọn theo cái đang có (điểm và số đánh giá, giá tham khảo, khoảng cách, loại quán, điều người dùng nói). Chỉ không chốt khi không còn ứng viên nào khớp — khi đó nói thật và hỏi một câu để đổi hướng.
 - CÂU CHỐT viết đúng dạng, đứng riêng: "**Mình chọn: <TÊN>** — <lý do bằng lời, theo điều người dùng nói>." KHÔNG đặt con số (giá, điểm, số đánh giá, khoảng cách, giờ) hay tính từ không khí (yên tĩnh, sang, đông…) trong câu này; các con số viết ở CÂU SAU, mỗi số đúng như dữ liệu. (Hệ thống xoá nguyên câu nào chứa một con số/không khí không có nguồn — đừng để tên lựa chọn đi cùng.)
 - Điều chưa có dữ liệu: nói MỘT lần, một câu ngắn — không rải "chưa chắc", "chưa xác nhận" vào mọi dòng.
+- Không chốt được thì KHÔNG viết "Mình chọn:" (không bao giờ "Mình chọn: chưa thể…") — nói thật một câu và hỏi một câu để đổi hướng.
+- Lựa chọn lệch xa ngân sách người dùng nói (rẻ hơn hẳn hoặc đắt hơn) → nói rõ một câu, kèm gợi ý thêm gì cho đúng tầm (vd quà 1–2 triệu mà món chỉ ~200k).
 - Giọng "mình"/"bạn", ấm, ngắn, rõ như người tư vấn thật; 0–2 emoji; **in đậm** tên lựa chọn và con số quan trọng.
 
 KHÔNG BỊA (luật cứng — hệ thống sẽ xoá mọi thứ không có nguồn)
@@ -268,10 +270,11 @@ export async function runLunaIntent(
 /**
  * Owner spec 30/09: Luna extracts areas / goal / constraints / difficulty; code checks facts.
  *  - router unsure, or the areas disagree → Luna's whole decision (it read the meaning the rules could not);
- *  - ask vs pick → the ROUTER: whether enough is known to choose is a fact check on the stated slots (the rules' ask
- *    questions and query are code templates), not a reading of intent;
- *  - any other turn type (follow-up, compare, more, reject, plan, chat) → LUNA's reading (replay 30/09 SHOP-2 t3: the
- *    rules read "<product> mua ở đâu uy tín" as a new request and asked again; Luna read a follow-up).
+ *  - an EXPLICIT action the router matched (plan / more / compare / reject phrases) → the ROUTER (replay 30/09 FOOD-2 t7:
+ *    "đặt món đó luôn, gọi món gì" is a plan; Luna read a follow-up);
+ *  - ask vs pick → the ROUTER: whether enough is known to choose is a fact check on the stated slots;
+ *  - the router read a new request (ask/pick) or a generic follow-up/chat, and Luna reads another turn type → LUNA
+ *    (replay 30/09 SHOP-2 t3: "<product> mua ở đâu uy tín" read by the rules as a new request; Luna: a follow-up).
  * Luna's checked facts are merged over the router's slots either way (Luna wins where both read a slot).
  */
 export function mergeIntentWithRules(luna: ConsultDecision, routed: { decision: ConsultDecision; confidence: 'rule' | 'unsure' } | null): { decision: ConsultDecision; mode: 'luna' | 'merged' | 'luna-turn' } {
@@ -281,8 +284,9 @@ export function mergeIntentWithRules(luna: ConsultDecision, routed: { decision: 
   if (!same) return { decision: luna, mode: 'luna' }
   const known = { ...r.known, ...luna.known }
   const area = luna.area ?? r.area
+  const explicit = (t: ConsultTurn) => t === 'plan' || t === 'more' || t === 'compare' || t === 'reject'
   const askOrPick = (t: ConsultTurn) => t === 'ask' || t === 'pick'
-  if (luna.turn === r.turn || (askOrPick(luna.turn) && askOrPick(r.turn))) {
+  if (luna.turn === r.turn || explicit(r.turn) || (askOrPick(luna.turn) && askOrPick(r.turn))) {
     return { decision: { ...r, known, ...(area ? { area } : {}), assumptions: r.assumptions.length ? r.assumptions : luna.assumptions }, mode: 'merged' }
   }
   return {
