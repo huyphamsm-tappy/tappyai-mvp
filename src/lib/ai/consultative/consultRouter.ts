@@ -572,11 +572,20 @@ function travelView(t: Txt): SlotView {
   const DATE_Q = q('date', kind === 'flight' ? 'Ngày bay?' : 'Đi ngày nào?', kind === 'flight' ? 'Flight date?' : 'When are you going?', ['Cuối tuần này', 'Tuần sau', 'Tháng sau', 'Chưa chốt'], ['This weekend', 'Next week', 'Next month', 'Not fixed'])
   const PARTY_T = q('party', 'Mấy người?', 'How many people?', ['1 người', '2 người', 'Gia đình', 'Nhóm bạn'], ['1', '2', 'Family', 'Friends'])
   if (kind === 'flight' || kind === 'ticket') {
-    count = [date, flightTime, party].filter(Boolean).length
-    enough = !!date
+    // R25 (owner 30/09): a fare link is route + date, and the ask never asked where from — TP.HCM was assumed for everyone.
+    // A ticket to somewhere the user never left from is now ASKED, in the same card (the new frame, the `origin` question of
+    // the trip ask). "Từ …" options read back as "từ Hà Nội" (routeOf). The card holds 3 questions: date, origin, party first;
+    // the time of day cannot change a fare link, so it is asked last (and dropped when the card is full).
+    const needOrigin = kind === 'flight' && !origin
+    count = [date, flightTime, party, kind === 'flight' ? origin : 'x'].filter(Boolean).length
+    enough = !!date && !needOrigin
     if (!date) missing.push(DATE_Q)
-    if (!flightTime) missing.push(q('time', kind === 'flight' ? 'Bay buổi nào?' : 'Đi buổi nào?', 'What time of day?', ['Sáng', 'Chiều', 'Tối'], ['Morning', 'Afternoon', 'Evening']))
+    if (needOrigin) {
+      const from = [['TP.HCM', 'HCMC'], ['Hà Nội', 'Hanoi'], ['Đà Nẵng', 'Da Nang']].filter(([vi]) => vi !== dest)
+      missing.push(q('origin', 'Bay từ đâu?', 'Flying from?', [...from.map(([vi]) => `Từ ${vi}`), 'Từ nơi khác'], [...from.map(([, en]) => `From ${en}`), 'Somewhere else']))
+    }
     if (!party) missing.push(PARTY_T)
+    if (!flightTime) missing.push(q('time', kind === 'flight' ? 'Bay buổi nào?' : 'Đi buổi nào?', 'What time of day?', ['Sáng', 'Chiều', 'Tối'], ['Morning', 'Afternoon', 'Evening']))
   } else if (kind === 'hotel') {
     count = [date || days, party, budget, style].filter(Boolean).length
     enough = !!(date || days) && count >= 3
