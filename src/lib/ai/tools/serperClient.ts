@@ -17,6 +17,7 @@
 // so a burst cannot slip past the ceiling between the read and the write.
 
 import { recordSerperCall, SERPER_CREDITS, type SerperEndpoint } from './serperMeter'
+import { sanitizeSerperJson } from './serperUntrusted'
 import { incrDailyCounter } from '@/lib/security/kvCounter'
 import { vnToday } from '@/lib/config/product'
 
@@ -89,7 +90,7 @@ export function __resetSerperAlerts(): void { alerted.warn = ''; alerted.ceiling
 export async function serperPost(endpoint: SerperEndpoint, apiKey: string, body: Record<string, unknown>, timeoutMs: number): Promise<Response | null> {
   if (!(await serperAdmit(endpoint))) return null
   recordSerperCall(endpoint)
-  return Promise.race([
+  const res = await Promise.race([
     fetch(`https://google.serper.dev/${endpoint}`, {
       method: 'POST',
       headers: { 'X-API-KEY': apiKey, 'Content-Type': 'application/json' },
@@ -97,4 +98,13 @@ export async function serperPost(endpoint: SerperEndpoint, apiKey: string, body:
     }),
     new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), timeoutMs)),
   ])
+  // Search data is untrusted (owner 30/09): URLs and planted instructions leave its free-text fields before any tool
+  // reads them — always, not only under CONSULT_LUNA (serperUntrusted.ts). An unchanged answer is returned as is.
+  if (!res.ok) return res
+  try {
+    const cleaned = sanitizeSerperJson(await res.clone().json())
+    if (cleaned.changed === 0) return res
+    console.log(JSON.stringify({ type: 'tappyai_serper_untrusted_cleaned', endpoint, fields: cleaned.changed }))
+    return new Response(JSON.stringify(cleaned.body), { status: res.status, headers: { 'content-type': 'application/json' } })
+  } catch { return res }
 }

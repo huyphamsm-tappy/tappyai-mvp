@@ -3,8 +3,8 @@ import { existsSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 
 export interface ReplayTurn { text: string; expect: string | null }
-export interface Conversation { id: string; area: string | null; title?: string; turns: ReplayTurn[] }
-export type SuiteName = 'scenarios' | 'firstTurns' | 'owner59' | 'androidR'
+export interface Conversation { id: string; area: string | null; title?: string; turns: ReplayTurn[]; inject?: { field: 'title' | 'snippet' | 'both'; text: string } }
+export type SuiteName = 'scenarios' | 'firstTurns' | 'owner59' | 'androidR' | 'injection'
 export const SUITES: SuiteName[] = ['scenarios', 'firstTurns', 'owner59', 'androidR']
 
 const FIX = 'src/lib/ai/consultative/__fixtures__'
@@ -15,6 +15,11 @@ const AREAS = new Set(['food', 'shopping', 'travel', 'entertainment', 'spa'])
 const read = <T>(p: string): T => JSON.parse(readFileSync(p, 'utf8')) as T
 
 export function loadSuite(name: SuiteName): Conversation[] {
+  // Injection suite (owner 30/09, from PHIÊN LUNA): not part of `all`, run explicitly with REPLAY_SUITE=injection.
+  if (name === 'injection') {
+    const f = read<{ items: Array<{ id: string; domain: string | null; kind: string; inject?: Conversation['inject']; turns: ReplayTurn[] }> }>(join('scripts', 'consult', 'replay', 'fixtures', 'injectionCases.json'))
+    return f.items.map(it => ({ id: it.id, area: it.domain, title: it.kind, turns: it.turns, ...(it.inject ? { inject: it.inject } : {}) }))
+  }
   if (name === 'scenarios') {
     const f = read<{ scenarios: Array<{ id: string; domain: string; turns: Array<{ text: string; expect: string }> }> }>(`${FIX}/multiTurnScenarios.vi.json`)
     return f.scenarios.map(s => ({ id: s.id, area: s.domain, turns: s.turns.map(t => ({ text: t.text, expect: t.expect })) }))

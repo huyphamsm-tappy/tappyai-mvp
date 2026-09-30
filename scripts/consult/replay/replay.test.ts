@@ -21,7 +21,7 @@ function guardChanged(e: Record<string, unknown>): boolean {
   return Object.entries(e).some(([k, v]) => /removed|rewritten|dropped|cut|cleaned|trimmed|moved|restored|stripped|replaced/i.test(k) && k !== 'chars_kept' && ((typeof v === 'number' && v > 0) || (Array.isArray(v) && v.length > 0) || v === true))
 }
 import { prepareReplayEnv, RUN_FLAGS } from './lib/env'
-import { installReplayFetch, netSnapshot, netDelta } from './lib/serperReplay'
+import { installReplayFetch, netSnapshot, netDelta, setSerperInjection } from './lib/serperReplay'
 import { parseDataStream, toolRowCount, toolRowNames } from './lib/stream'
 import { evaluateTurn, mainPickName, alternativeNames, shownNames } from './lib/criteria'
 import { loadSuite, filterOnly, fillPlaceholders, SUITES, type SuiteName, type Conversation } from './lib/suites'
@@ -88,7 +88,7 @@ function suitesToRun(): SuiteName[] {
   const raw = (process.env.REPLAY_SUITE ?? '').trim()
   if (!raw) return []
   if (raw === 'all') return [...SUITES]
-  return raw.split(',').map(s => s.trim()).filter((s): s is SuiteName => (SUITES as string[]).includes(s))
+  return raw.split(',').map(s => s.trim()).filter((s): s is SuiteName => ([...SUITES, 'injection'] as string[]).includes(s))
 }
 
 /** Route log lines worth keeping per turn (JSON lines with a tappyai_* type), plus errors. */
@@ -216,7 +216,7 @@ describe.skipIf(!ON)('offline replay — chat route, real model, Serper record/r
         writeFileSync(join(outDir, 'summary.md'), markdown(suite, rows, s, meta))
         return s
       }
-      for (const c of convs) { await runConversation(c, outDir, rows); flush() }
+      for (const c of convs) { setSerperInjection(c.inject ?? null); try { await runConversation(c, outDir, rows) } finally { setSerperInjection(null) }; flush() }
       delete process.env.AUDIT_USAGE_LOG_FILE
       const s = flush()
       process.stdout.write(`\n[replay] ${suite}: ${s.total.pass}/${s.total.turns} turns passed · ${s.crashes.length} crash(es) · mean $${s.cost.meanTurnUsd.toFixed(5)}/turn · out: ${outDir}\n`)
