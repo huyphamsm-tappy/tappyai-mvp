@@ -16,7 +16,7 @@
 - [x] Route: lượt tư vấn (pick/followup/compare/more/reject/hỏi trong mảng) → role consult + prompt Luna (lõi + luật công cụ của mảng ĐỨNG ĐẦU = phần dùng lại). Kế hoạch chi tiết giữ Haiku. Chi phí/lượt tách: ý định · trả lời · Serper, theo hãng, token suy luận, số lần fallback.
 - [x] Harness replay: `REPLAY_LUNA=none|low[,<effort ý định>]` (hoặc `prompt` = cờ bật, model Haiku), đi thẳng api.openai.com, TTFT mỗi lượt, bảng tách chi phí.
 - [x] Test: 50 test mới xanh; 4.743 test chat/AI xanh khi cờ tắt. 3 lỗi kiến trúc là vi phạm `/go/at` có sẵn trên rc/web-uat (đã sửa ở nhánh release 020ff56) — không phải do phiên này.
-- [x] Mốc Haiku (dùng lại, không chạy lại): replay `C:\wtrel\scripts\consult\replay\out\scenarios-2026-09-29T17-40-46-565Z` + `T17-48-25-357Z` — 94 và 91/105 đạt tiêu chí tự động, $0,00911 / $0,00921 mỗi lượt; đọc tay: ăn uống 18,5 · mua sắm 17,5 · du lịch 17,5 · giải trí 18,5 · spa 20,5. Log có `ttftMs` / `ttuaMs` của route → so thời gian cùng trường.
+- [x] Mốc Haiku (dùng lại, không chạy lại): replay `C:\wtrel\scripts\consult\replay\out\scenarios-2026-09-29T17-40-46-565Z` + `T17-48-25-357Z` — 94 và 91/105 đạt tiêu chí tự động, $0,00911 / $0,00921 mỗi lượt; đọc tay: ăn uống 18,5 · mua sắm 17,5 · du lịch 17,5 · giải trí 18,5 · spa 20,5. Log có `ttftMs` / `ttuaMs` của route → so thời gian cùng trường.
 
 ## Kế hoạch đo (khi có key)
 1. `node scripts/consult/luna/probe.mjs` — key, model id, none/low, usage thô (cache ghi?).
