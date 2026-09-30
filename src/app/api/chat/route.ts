@@ -2602,6 +2602,10 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
         : `Nguoi dung muon DOI DIEM DEN; da loai: ${destinationChange.turnedDown.join(', ')}. Khong con goi y san — hoi 1 cau ve noi ho muon.` }
       console.log(JSON.stringify({ type: 'tappyai_travel_destination_change', turned_down: destinationChange.turnedDown, next: destinationChange.next }))
     }
+    // Owner 30/09: a destination TAPPY proposed ("gần Sài Gòn" + a terrain) — no km or travel time unless the results carry it.
+    if (consult?.domains[0] === 'travel' && !consult.known.diem_den?.trim() && preCall.name === 'get_hotel_prices' && result && typeof result === 'object' && nearbyDestination(consult.known, travelThreadUsers)) {
+      result = { ...(result as Record<string, unknown>), _tappy_destination_distance: 'Diem den nay do TAPPY de xuat. KHONG neu so km hay thoi gian di chuyen tu noi xuat phat neu ket qua khong ghi; can thi noi ban kiem tra ban do.' }
+    }
     if (consultPlanReuse) result = onlyRowsNamed(result, latestConsultPick(null), assistantTexts.flatMap(t => priorVenuesIn(t).map(v => v.name)))
     if (consultFollowReuse) result = onlyRowsNamed(result, null, [...(consult?.refers ?? []), ...(latestConsultPick(null) ? [latestConsultPick(null) as string] : [])])
     presearchOutcome = { toolCallId, toolName: preCall.name, args: preCall.args as PresearchOutcome['args'], result, ms: Date.now() - t0 }

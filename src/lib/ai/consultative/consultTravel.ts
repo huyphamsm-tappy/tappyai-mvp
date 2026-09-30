@@ -33,10 +33,12 @@ function addDays(iso: string, n: number): string {
  * search ran for "Núi gần TP.HCM" and Maps answered with hotels on NÚI THÀNH STREET in Tân Bình (inside the city);
  * the reply then said Tân Bình was "30-45 phút" from the city. Names only — no distance or time is claimed here.
  */
-// In the order a consultant would offer them; "chỗ khác" moves to the next (owner 30/09, TRAVEL-2).
+// Nearest first; "chỗ khác" moves to the next (owner 30/09, TRAVEL-2). Road distance from central TP.HCM, checked 30/09:
+// Núi Dinh ≈ 80 km (VnExpress Du lịch), Núi Bà Đen 85–100 km, Núi Chứa Chan 100–110 km. Bảo Lộc (~4 h) and Phan Thiết are
+// too far for "gần Sài Gòn" and are not offered. Names only: no distance or travel time is ever claimed from this table.
 const NEARBY_BY_STYLE: Record<string, Record<string, string[]>> = {
-  'TP.HCM': { 'núi': ['Tây Ninh', 'Bảo Lộc', 'Xuân Lộc, Đồng Nai'], 'biển': ['Vũng Tàu', 'Phan Thiết', 'Long Hải'] },
-  'Hà Nội': { 'núi': ['Tam Đảo', 'Mộc Châu', 'Ba Vì'], 'biển': ['Hạ Long', 'Cát Bà', 'Sầm Sơn'] },
+  'TP.HCM': { 'núi': ['Núi Dinh, Bà Rịa', 'Tây Ninh', 'Xuân Lộc, Đồng Nai'], 'biển': ['Vũng Tàu', 'Long Hải'] },
+  'Hà Nội': { 'núi': ['Tam Đảo', 'Ba Vì'], 'biển': ['Hạ Long'] },
 }
 function nearbyList(known: Record<string, string>): string[] {
   const days = Number((known.so_ngay ?? '').match(/\d+/)?.[0])

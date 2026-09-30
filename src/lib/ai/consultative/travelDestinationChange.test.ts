@@ -13,20 +13,25 @@ describe('TRAVEL-2 — "chỗ khác" after a proposed destination changes the DE
     expect(asksOtherDestination('xem thêm khách sạn khác')).toBe(false)
     expect(asksOtherDestination('homestay nào khác không')).toBe(false)
   })
-  it('t2 Tây Ninh → t5 Bảo Lộc → t6 Xuân Lộc, and the plan (t7) stays on the last one', () => {
-    expect(nearbyDestination(known, T.slice(0, 2))).toBe('Tây Ninh')
-    expect(nearbyDestination(known, T.slice(0, 5))).toBe('Bảo Lộc')
-    expect(nearbyTurnedDown(known, T.slice(0, 5))).toEqual(['Tây Ninh'])
+  it('nearest first (owner 30/09: Núi Dinh ≈80 km, Núi Bà Đen 85–100, Núi Chứa Chan 100–110; no Bảo Lộc): t2 → t5 → t6, plan on the last', () => {
+    expect(nearbyDestination(known, T.slice(0, 2))).toBe('Núi Dinh, Bà Rịa')
+    expect(nearbyDestination(known, T.slice(0, 5))).toBe('Tây Ninh')
+    expect(nearbyTurnedDown(known, T.slice(0, 5))).toEqual(['Núi Dinh, Bà Rịa'])
     expect(nearbyDestination(known, T.slice(0, 6))).toBe('Xuân Lộc, Đồng Nai')
-    expect(nearbyTurnedDown(known, T.slice(0, 6))).toEqual(['Tây Ninh', 'Bảo Lộc'])
+    expect(nearbyTurnedDown(known, T.slice(0, 6))).toEqual(['Núi Dinh, Bà Rịa', 'Tây Ninh'])
     expect(nearbyDestination(known, T)).toBe('Xuân Lộc, Đồng Nai')
   })
-  it('the hotel search of t5 / t6 runs at the NEW destination, never Tây Ninh', () => {
-    expect(travelPreCall(known, T[4], new Date('2026-09-30T10:00:00Z'), T.slice(0, 5))).toMatchObject({ name: 'get_hotel_prices', args: { location: 'Bảo Lộc' } })
+  it('the hotel search of t5 / t6 runs at the NEW destination, never the one turned down', () => {
+    expect(travelPreCall(known, T[4], new Date('2026-09-30T10:00:00Z'), T.slice(0, 5))).toMatchObject({ name: 'get_hotel_prices', args: { location: 'Tây Ninh' } })
     expect(travelPreCall(known, T[5], new Date('2026-09-30T10:00:00Z'), T.slice(0, 6))).toMatchObject({ name: 'get_hotel_prices', args: { location: 'Xuân Lộc, Đồng Nai' } })
   })
   it('a destination the USER named is never replaced', () => {
     expect(travelPreCall({ ...known, diem_den: 'Đà Lạt' }, 'còn chỗ nào khác', new Date(), [...T.slice(0, 2), 'còn chỗ nào khác'])).toMatchObject({ args: { location: 'Đà Lạt' } })
+  })
+  it('never a far place for "gần Sài Gòn"', () => {
+    const all = [0, 1, 2, 3].map(n => nearbyDestination(known, Array(n).fill('chỗ khác')))
+    expect(all.filter(Boolean).join(' ')).not.toMatch(/Bảo Lộc|Phan Thiết|Đà Lạt/)
+    expect([0, 1, 2].map(n => nearbyDestination({ ...known, phong_cach: 'biển' }, Array(n).fill('chỗ khác')))).toEqual(['Vũng Tàu', 'Long Hải', null])
   })
   it('the list running out gives no invented destination', () => {
     expect(nearbyDestination(known, ['chỗ khác', 'chỗ khác', 'chỗ khác'])).toBeNull()
