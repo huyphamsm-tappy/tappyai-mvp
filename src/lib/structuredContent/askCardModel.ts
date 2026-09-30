@@ -98,7 +98,7 @@ export function askTileKey(option: string): string | null {
 }
 
 /** The icon (lucide name) of an option, by its step kind — README §2 / §3. */
-export function askIconOf(option: string, kind: AskStepKind): string {
+export function askIconOf(option: string, kind: AskStepKind, question = ''): string {
   const f = fold(option)
   if (kind === 'type') return tileRow(option)?.icon ?? 'Sparkles'
   if (kind === 'party') {
@@ -113,7 +113,9 @@ export function askIconOf(option: string, kind: AskStepKind): string {
     return 'CalendarDays'
   }
   if (kind === 'budget') return 'Wallet'
-  // KHÁC — R23.1 optional keyword icons; the README's generic icon otherwise.
+  // KHÁC — R23.1 optional keyword icons; the README's generic icon otherwise. A place question («Khu vực nào?»,
+  // «Xuất phát từ đâu?») gives every option the map pin, so «Bình Thạnh» matches «Quận 1».
+  if (/\b(?:khu vuc|o dau|tu dau|xuat phat|quan nao)\b/.test(fold(question))) return 'MapPin'
   if (/\b(?:gan|quan|tp|ha noi|da nang|noi khac|khu vuc)\b/.test(f)) return 'MapPin'
   if (/\bmay bay\b/.test(f)) return 'Plane'
   if (/\b(?:xe khach|limousine|tau)\b/.test(f)) return 'Bus'

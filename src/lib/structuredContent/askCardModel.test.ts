@@ -58,6 +58,9 @@ describe('askCardModel — README §3: tile image keys and icons', () => {
     expect(askIconOf('3N2Đ', 'time')).toBe('CalendarDays')
     expect(askIconOf('Dưới 1tr', 'budget')).toBe('Wallet')
     expect(FOOD[2].options.map(o => askIconOf(o, 'other'))).toEqual(['MapPin', 'MapPin', 'MapPin', 'MapPin'])
+    // UAT 30/09: «Bình Thạnh» had the generic icon beside «Quận 1» — a place question pins every option.
+    expect(['Bình Thạnh', 'Thủ Đức'].map(o => askIconOf(o, 'other', 'Khu vực nào?'))).toEqual(['MapPin', 'MapPin'])
+    expect(askIconOf('Bình Thạnh', 'other')).toBe('Sparkles')
   })
 })
 

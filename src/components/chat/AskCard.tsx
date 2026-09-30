@@ -31,10 +31,21 @@ function resolveImage(m: Manifest, key: string): string | null {
 const EN = { title: 'What are we looking for?', sub: 'Pick a few things, Tappy finds the rest.', example: 'e.g. quiet, nice view…', more: 'Or tell me anything else…', go: 'Find it for me', sending: 'Searching…' }
 const EN_SUB: Record<string, string> = { type: 'Pick one or more', party: 'Pick your group', time: 'Pick a time', budget: 'Pick a price range', other: '' }
 
+// Display only: a range like "3-5" never breaks at its hyphen (U+2011); the SENT text keeps the option as sent.
+const label = (o: string) => o.replace(/(\d)-(\d)/g, '$1\u2011$2')
+
 function Icon({ name, className }: { name: string; className?: string }) {
   const C = (Icons as unknown as Record<string, Icons.LucideIcon>)[name] ?? Icons.Sparkles
   return <C className={className} aria-hidden="true" />
 }
+
+/**
+ * 🚨 The first reply of a chat is saved and `router.replace`d to /chat/<id>, which REMOUNTS ChatInterface — measured on
+ * UAT 30/09: a tile picked in the first seconds was gone. Same answer as the place card's liveViewCache: an in-memory,
+ * session-only hand-off of the picks (nothing written anywhere), keyed by the questions, dropped on send.
+ */
+const draftCache = new Map<string, { chosen: Record<string, string | string[]>; free: string }>()
+const askSignature = (qs: AskQuestionView[]) => JSON.stringify(qs.map(q => [q.id, q.q, q.options]))
 
 export default function AskCard({ questions, onSend, disabled, lang = 'vi' }: {
   questions: AskQuestionView[]
@@ -45,16 +56,19 @@ export default function AskCard({ questions, onSend, disabled, lang = 'vi' }: {
   const en = lang === 'en'
   const area = useMemo(() => askAreaOf(questions), [questions])
   const head = en ? EN : ASK_HEADER[area]
-  const [chosen, setChosen] = useState<Record<string, string | string[]>>({})
-  const [free, setFree] = useState('')
+  const sig = useMemo(() => askSignature(questions), [questions])
+  const [chosen, setChosen] = useState<Record<string, string | string[]>>(() => draftCache.get(sig)?.chosen ?? {})
+  const [free, setFree] = useState(() => draftCache.get(sig)?.free ?? '')
   const [sent, setSent] = useState(false)
   const [manifest, setManifest] = useState<Manifest>({})
   useEffect(() => { let live = true; loadManifest().then(m => { if (live) setManifest(m) }); return () => { live = false } }, [])
+  useEffect(() => { if (!sent) draftCache.set(sig, { chosen, free }) }, [sig, chosen, free, sent])
 
   const locked = !!disabled || sent
   const send = () => {
     if (locked) return
     setSent(true)
+    draftCache.delete(sig)
     onSend(askSendText(questions, chosen, free))
   }
   const toggle = (q: AskQuestionView, o: string, multi: boolean) => setChosen(c => {
@@ -101,7 +115,7 @@ export default function AskCard({ questions, onSend, disabled, lang = 'vi' }: {
                 const tick = on && (
                   <span className="absolute right-1.5 top-1.5 z-10 flex h-5 w-5 items-center justify-center rounded-full bg-[#3b82f6] ring-2 ring-[#0b1430]"><Icons.Check className="h-3 w-3" strokeWidth={3} aria-hidden="true" /></span>
                 )
-                const icon = askIconOf(o, kind)
+                const icon = askIconOf(o, kind, q.q)
                 if (kind === 'type') {
                   const key = askTileKey(o)
                   const img = key ? resolveImage(manifest, key) : null
@@ -118,7 +132,7 @@ export default function AskCard({ questions, onSend, disabled, lang = 'vi' }: {
                           : <Icon name={icon} className="absolute left-1/2 top-[38%] h-9 w-9 -translate-x-1/2 -translate-y-1/2 text-white/30" />}
                         <div className="absolute inset-x-0 bottom-0 flex items-center gap-1.5 bg-gradient-to-t from-[#0b1226] via-[#0b1226]/75 to-transparent px-2.5 pb-2 pt-6">
                           <Icon name={icon} className={`h-4 w-4 shrink-0 ${on ? 'text-[#93c5fd]' : 'text-[#7fa7ff]'}`} />
-                          <span className="min-w-0 text-[13px] font-medium leading-tight">{o}</span>
+                          <span className="min-w-0 text-[13px] font-medium leading-tight">{label(o)}</span>
                         </div>
                       </div>
                     </button>
@@ -131,7 +145,7 @@ export default function AskCard({ questions, onSend, disabled, lang = 'vi' }: {
                     className={`${base} flex items-center rounded-xl ${shape} ${on ? 'bg-[#11254f] text-[#dbeafe]' : 'bg-[#101b35] text-[#dbe4f7]'}`}>
                     {tick}
                     <Icon name={icon} className={`h-5 w-5 ${on ? 'text-[#60a5fa]' : 'text-[#9fb3dc]'}`} />
-                    <span className={`text-[12.5px] leading-tight ${n >= 4 ? 'text-center' : ''}`}>{o}</span>
+                    <span className={`text-[12.5px] leading-tight ${n >= 4 ? 'text-center' : ''}`}>{label(o)}</span>
                   </button>
                 )
               })}
