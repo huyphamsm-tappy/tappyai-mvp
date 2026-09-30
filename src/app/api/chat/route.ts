@@ -1283,7 +1283,7 @@ export async function POST(req: Request) {
     ? (() => { const c = travelPreCall(consult.known, [...(consultThreadTexts ?? []), lastText].join(' . ')); return c?.name === 'get_flight_prices' ? c : null })()
     : null
   const consultTravelCall = consult && (consult.turn === 'pick' || consult.turn === 'reject' || consult.turn === 'more') && consult.domains[0] === 'travel'
-    ? (stayOverride ? storedStayCall : travelPreCall(consult.known, lastText, new Date(), travelThreadUsers) ?? (destinationChange?.turnedDown.length ? null : storedStayCall))
+    ? (stayOverride ? storedStayCall : travelPreCall(consult.known, consult.turn === 'pick' && wasAskReply(priorAssistantText) ? [...(consultThreadTexts ?? []), lastText].join(' . ') : lastText, new Date(), travelThreadUsers) ?? (destinationChange?.turnedDown.length ? null : storedStayCall))
     : consultFlightPlanCall
   // R11 (Android 29/09): "vé concert tháng 10" → ask card → answer → a VENUE ("Nhà hát…", "CHÀO SHOW") with no
   // Ticketbox button: the entertainment pick pre-searched places. An event consultation (concert / show /
@@ -2601,6 +2601,13 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
         ? `Nguoi dung muon DOI DIEM DEN (khong phai doi khach san). Da loai: ${destinationChange.turnedDown.join(', ')}. Diem den moi: ${destinationChange.next} — cung tieu chi nguoi dung da neu. Noi ro la doi sang ${destinationChange.next}; KHONG goi y lai ${destinationChange.turnedDown.join(', ')}.`
         : `Nguoi dung muon DOI DIEM DEN; da loai: ${destinationChange.turnedDown.join(', ')}. Khong con goi y san — hoi 1 cau ve noi ho muon.` }
       console.log(JSON.stringify({ type: 'tappyai_travel_destination_change', turned_down: destinationChange.turnedDown, next: destinationChange.next }))
+    }
+    // R25 (owner 30/09, Q10): a fare link whose origin / date the CODE supplied — the reply must say so, and must not invent a price.
+    const fareAssumed = (preCall as { assumed?: { origin?: string; date?: string } }).assumed
+    if (preCall.name === 'get_flight_prices' && fareAssumed && result && typeof result === 'object') {
+      const parts = [fareAssumed.origin ? `diem di ${fareAssumed.origin}` : null, fareAssumed.date ? `ngay bay ${fareAssumed.date}` : null].filter(Boolean).join(' va ')
+      result = { ...(result as Record<string, unknown>), _tappy_fare_assumed: `Link ve DA dien san chang + ngay, nhung ${parts} la GIA DINH cua Tappy (nguoi dung chua noi ro). Noi ro trong 1 cau ngan (vd. "Mình lấy ${fareAssumed.origin ? 'xuất phát ' + fareAssumed.origin : ''}${fareAssumed.origin && fareAssumed.date ? ', ' : ''}${fareAssumed.date ? 'ngày ' + fareAssumed.date : ''} — bạn đổi ngay trên trang"). KHONG neu gia ve.` }
+      console.log(JSON.stringify({ type: 'tappyai_flight_link_assumed', origin: fareAssumed.origin ?? null, date: fareAssumed.date ?? null }))
     }
     // Owner 30/09: a destination TAPPY proposed ("gần Sài Gòn" + a terrain) — no km or travel time unless the results carry it.
     if (consult?.domains[0] === 'travel' && !consult.known.diem_den?.trim() && preCall.name === 'get_hotel_prices' && result && typeof result === 'object' && nearbyDestination(consult.known, travelThreadUsers)) {

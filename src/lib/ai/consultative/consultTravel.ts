@@ -6,6 +6,26 @@
 export interface TravelPreCall {
   name: 'get_flight_prices' | 'get_hotel_prices'
   args: Record<string, string>
+  /** What the CODE filled in for a fare link because the user had not said it — the reply must state it (owner 30/09, R25). */
+  assumed?: { origin?: string; date?: string }
+}
+
+/**
+ * "hôm nay / ngày mai / ngày kia / cuối tuần (này) / cuối tuần sau" → YYYY-MM-DD in GMT+7 (a weekend = the Saturday; on a
+ * Saturday or Sunday "cuối tuần này" is today). Anything vaguer ("tuần sau", "tháng sau", "chưa chốt") gives undefined —
+ * no date is guessed for those. Used for the fare link only (owner 30/09 R25: a dated Traveloka link, or the flight turn fails).
+ */
+export function relativeDateIso(text: string | undefined, now = new Date()): string | undefined {
+  const f = (text ?? '').normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/gi, 'd').toLowerCase()
+  const vn = new Date(now.getTime() + 7 * 3600_000)
+  const today = `${vn.getUTCFullYear()}-${String(vn.getUTCMonth() + 1).padStart(2, '0')}-${String(vn.getUTCDate()).padStart(2, '0')}`
+  const dow = vn.getUTCDay() // 0 Sunday … 6 Saturday
+  if (/\bcuoi tuan (?:sau|toi)\b/.test(f)) return addDays(today, (dow === 0 ? 6 : dow === 6 ? 7 : 6 - dow + 7))
+  if (/\bcuoi tuan\b/.test(f)) return addDays(today, dow === 6 || dow === 0 ? 0 : 6 - dow)
+  if (/\bngay kia\b|\bngay mot\b/.test(f)) return addDays(today, 2)
+  if (/\bngay mai\b|\bmai\b/.test(f)) return addDays(today, 1)
+  if (/\bhom nay\b|\btoi nay\b/.test(f)) return today
+  return undefined
 }
 
 /** "10/10", "15/10/2026" → YYYY-MM-DD, the next occurrence on or after today (GMT+7). */
@@ -81,7 +101,18 @@ export function travelPreCall(known: Record<string, string>, text: string, now =
   // provider configured) left the pick with nothing to choose.
   const ticketWords = /v[eé] m[aá]y bay|chuy[eế]n bay|bay (?:s[aá]ng|tr[uư]a|chi[eề]u|t[oố]i|đêm|dem)|1 chi[eề]u|m[oộ]t chi[eề]u|kh[uứ] h[oồ]i/i.test(text)
   const flight = ticketWords || (/m[aá]y bay|\bbay\b/i.test(`${known.phuong_tien ?? ''} ${text}`) && !known.so_ngay && !known.phong_cach)
-  if (flight && origin && dest) return { name: 'get_flight_prices', args: { origin, destination: dest, ...(date ? { departDate: date } : {}), ...(back ? { returnDate: back } : {}) } }
+  if (flight && dest) {
+    // R25 (owner 30/09, Q10): "vé máy bay đi Đà Nẵng" → ask card (date / time / party — never the origin) → the fare call
+    // needed an origin the user never gave, so the hotel search ran and the reply said "chưa có link Traveloka". A fare link is
+    // route + date: TP.HCM stands in for a missing origin (never when it IS the destination) and "cuối tuần này" is read
+    // as the coming Saturday. Both are reported in `assumed` so the reply says them; a date is never guessed for "tuần sau".
+    const from = origin || (/\b(?:tp\.? ?hcm|ho chi minh|sai gon)\b/i.test(dest.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/gi, 'd')) ? undefined : 'TP.HCM')
+    if (from) {
+      const flightDate = date ?? relativeDateIso(`${known.ngay ?? ''} ${known.thoi_gian ?? ''}`, now)
+      const assumed = { ...(origin ? {} : { origin: from }), ...(date || !flightDate ? {} : { date: flightDate }) }
+      return { name: 'get_flight_prices', args: { origin: from, destination: dest, ...(flightDate ? { departDate: flightDate } : {}), ...(back ? { returnDate: back } : {}) }, ...(Object.keys(assumed).length ? { assumed } : {}) }
+    }
+  }
   if (!dest) return null
   const nights = (() => { const n = Number((known.so_ngay ?? '').match(/\d+/)?.[0]); return Number.isFinite(n) && n > 1 ? n - 1 : 1 })()
   return { name: 'get_hotel_prices', args: { location: dest, ...(date ? { checkIn: date, checkOut: back ?? addDays(date, nights) } : {}) } }
