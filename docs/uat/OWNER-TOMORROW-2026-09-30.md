@@ -31,10 +31,13 @@ Chi tiết gốc (nếu cần tra): `RELEASE-PLAN-2026-09-29.md` §3, `RELEASE-G
 
 0. **Vercel (quyết TRƯỚC khi release)** — team đã dùng 100% Function Storage (Hobby, tính theo đỉnh 30 ngày). Hiện KHÔNG bị chặn
    (`softBlock`/`blocked` rỗng), nhưng Hobby có thể chặn deploy khi vượt hạn mức, mà release cần 1 bản production mới.
-   - Quyết: **nâng Pro** (vercel.com → team → Settings → Billing → Upgrade) — hoặc thử deploy trên Hobby (bị chặn thì production
-     `f42ae4b` vẫn chạy, chỉ chưa release được).
-   - Hạ thời gian giữ bản Preview: Project `tappyai-mvp` → Settings → Security → **Deployment Retention Policy** → Preview = 7 ngày
-     → Save (API không cho đổi; hiện 30 ngày).
+   - **Owner chốt 30/09: KHÔNG nâng Pro — release trên Hobby.** Ngay trước deploy production, Claude kiểm lại (chỉ đọc API
+     team: `softBlock`/`blocked`, deploy UAT gần nhất READY). **Bị chặn lúc release → DỪNG, báo Huy ngay** (production
+     `f42ae4b` vẫn chạy): Huy quyết nâng Pro tạm, hoặc lùi release để dời sang Google Cloud.
+   - Sau release: dời hosting sang Google Cloud (PL-HOSTING-GCP) là việc ưu tiên — phiên riêng.
+   - **Supabase — URL Configuration (chỉ xem, I6):** dashboard → Authentication → URL Configuration → Redirect URLs của
+     production chỉ gồm các URL web của TappyAI + `tappyai://auth-callback` (Android) + `tappyai://auth/callback` (iOS);
+     KHÔNG có mục `*`/`**` mở rộng. Chụp ảnh gửi Claude.
 
 1. **ACCESSTRADE (trước deploy)** — pub2.accesstrade.vn → menu tài khoản → trang API → copy **Access Key**.
    Tạo `D:\TappyAI-backups\accesstrade.txt` đúng 2 dòng:
