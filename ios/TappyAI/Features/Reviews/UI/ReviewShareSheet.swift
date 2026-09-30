@@ -23,6 +23,7 @@ struct ReviewShareSheet: View {
     @State private var card: ShareCardFiles.Card?
     @State private var rendering = false
     @State private var feedback: String?
+    @State private var fetchingVideo = false
     private let cardFiles = ShareCardFiles()
 
     private var shareURL: String { TappyShare.reviewURL(review.id) }
@@ -53,6 +54,13 @@ struct ReviewShareSheet: View {
                     HStack(spacing: Spacing.sm) {
                         actionButton("share.save", system: "square.and.arrow.down", id: "share-save") { saveCard() }
                         actionButton("share.sendImage", system: "photo.on.rectangle", id: "share-send-image") { sendImage() }
+                    }
+                    // An uploaded clip goes to TikTok (and any app) as the VIDEO itself — the approved
+                    // exception to "one file" (28/09); if the video cannot be fetched, the card image.
+                    if let videoURL = ClipVideoFile.sourceURL(of: review) {
+                        actionButton(LocalizedStringKey(fetchingVideo ? "share.videoPreparing" : "share.sendVideo"),
+                                     system: "video", id: "share-send-video") { sendVideo(videoURL) }
+                            .disabled(fetchingVideo)
                     }
                     actionButton("review.share.via", system: "square.and.arrow.up", id: "share-link-via") { shareLink() }
 
@@ -165,6 +173,21 @@ struct ReviewShareSheet: View {
     private func sendImage() {
         guard let card else { return }
         present(items: [card.fileURL])
+    }
+
+    private func sendVideo(_ url: URL) {
+        fetchingVideo = true
+        Task { @MainActor in
+            defer { fetchingVideo = false }
+            if let file = await ClipVideoFile.download(url, reviewId: review.id) {
+                present(items: [file])
+            } else if let card {
+                feedback = NSLocalizedString("share.videoFallback", comment: "")
+                present(items: [card.fileURL])
+            } else {
+                feedback = NSLocalizedString("share.cardFailed", comment: "")
+            }
+        }
     }
 
     private func shareLink() {

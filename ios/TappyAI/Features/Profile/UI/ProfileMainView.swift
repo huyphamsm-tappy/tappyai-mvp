@@ -7,6 +7,8 @@ struct ProfileMainView: View {
 
     @State private var profile: UserProfile?
     @State private var conversationCount = 0
+    /// The count is shown only once `/api/conversations` actually answered.
+    @State private var conversationsLoaded = false
     @State private var loading = true
     @State private var showProUpgrade = false
     @State private var showAppConnections = false
@@ -50,9 +52,13 @@ struct ProfileMainView: View {
                     accountSection
                     if showProUpgrade { proSection }
                     settingsSection
+                    ProfileInfoCard(profile: profile,
+                                    onEdit: { router.push(ProfileDestination.editProfile, on: .profile) })
+                    ProfileStatsCard(vm: hub, conversations: conversationsLoaded ? conversationCount : nil)
                     ProfileFollowingCard(following: hub.following,
                                          onOpen: { router.push(ReviewsDestination.userProfile(id: $0), on: .profile) },
                                          onSeeAll: { router.push(ProfileDestination.social, on: .profile) })
+                    ProfileQrCard(onShowQr: { showQR = true })
                     communityShortcuts
                 }
             }
@@ -296,6 +302,7 @@ struct ProfileMainView: View {
             profile = p
             let convs = try? await service.fetchConversations()
             conversationCount = convs?.count ?? 0
+            conversationsLoaded = convs != nil
             if let cfg = try? await deps.configService.config() {
                 showProUpgrade = cfg.flags.showProUpgrade
                 showAppConnections = cfg.flags.showAppConnections ?? false

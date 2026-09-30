@@ -344,6 +344,96 @@ struct ProfileHubContentPanel: View {
     }
 }
 
+// MARK: - Side panels (Android `ProfileInfoCard` / `ProfileStatsCard` / `ProfileQrCard`)
+
+/// A titled card: header row (title + optional action), divider, body.
+private struct HubPanel<Content: View>: View {
+    let title: LocalizedStringKey
+    var action: LocalizedStringKey? = nil
+    var onAction: (() -> Void)? = nil
+    @ViewBuilder var content: () -> Content
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            HStack {
+                Text(title).font(.system(size: 15, weight: .bold)).foregroundStyle(TappyColor.textPrimary)
+                Spacer()
+                if let action, let onAction {
+                    Button(action, action: onAction).font(.system(size: 13, weight: .medium))
+                }
+            }
+            .padding(.horizontal, 16).padding(.vertical, 12)
+            Divider()
+            VStack(alignment: .leading, spacing: 10, content: content).padding(16)
+        }
+        .background(TappyColor.cardBackground)
+        .clipShape(RoundedRectangle(cornerRadius: Radius.xl, style: .continuous))
+        .overlay(RoundedRectangle(cornerRadius: Radius.xl, style: .continuous).stroke(TappyColor.border, lineWidth: 1))
+    }
+}
+
+private struct HubRow: View {
+    let label: LocalizedStringKey
+    let value: String
+    var body: some View {
+        HStack(alignment: .firstTextBaseline, spacing: 12) {
+            Text(label).font(.system(size: 12)).foregroundStyle(TappyColor.textSecondary)
+            Spacer(minLength: 0)
+            Text(value).font(.system(size: 12.5, weight: .semibold)).foregroundStyle(TappyColor.textPrimary).lineLimit(1)
+        }
+    }
+}
+
+struct ProfileInfoCard: View {
+    let profile: UserProfile?
+    let onEdit: () -> Void
+    var body: some View {
+        HubPanel(title: "profileHub.info.title", action: "profileHub.info.edit", onAction: onEdit) {
+            HubRow(label: "profileHub.info.name",
+                   value: (profile?.fullName).flatMap { $0.isEmpty ? nil : $0 } ?? NSLocalizedString("profile.fallbackName", comment: ""))
+            if let email = profile?.email, !email.isEmpty {
+                HubRow(label: "profileHub.info.email", value: email)
+            }
+        }
+    }
+}
+
+/// "Thành tích": six real counts; a count not known yet shows "—", never a made-up 0.
+struct ProfileStatsCard: View {
+    @ObservedObject var vm: ProfileHubViewModel
+    let conversations: Int?
+    var body: some View {
+        HubPanel(title: "profileHub.stats.title") {
+            HubRow(label: "profileHub.stats.posts", value: text(vm.posts?.count))
+            HubRow(label: "profileHub.stats.videos", value: text(vm.posts?.filter { $0.contentType == "video" }.count))
+            HubRow(label: "profileHub.stat.likes", value: text(vm.likes))
+            HubRow(label: "profileHub.stats.savedPosts", value: text(vm.saved?.count))
+            HubRow(label: "profileHub.stats.savedPlaces", value: text(vm.places?.count))
+            HubRow(label: "profileHub.stats.conversations", value: text(conversations))
+        }
+    }
+    private func text(_ n: Int?) -> String { n.map(String.init) ?? "—" }
+}
+
+struct ProfileQrCard: View {
+    let onShowQr: () -> Void
+    var body: some View {
+        HubPanel(title: "profileHub.qr.title") {
+            HStack(spacing: 12) {
+                Text("profileHub.qr.hint").font(.system(size: 12)).foregroundStyle(TappyColor.textSecondary)
+                Spacer()
+                Button(action: onShowQr) {
+                    Label("profileHub.qr.title", systemImage: "qrcode")
+                        .font(.system(size: 13, weight: .semibold)).foregroundStyle(TappyColor.primary)
+                        .padding(.horizontal, 12).padding(.vertical, 6)
+                        .overlay(Capsule().stroke(TappyColor.primary, lineWidth: 1))
+                }
+                .buttonStyle(.plain)
+            }
+        }
+    }
+}
+
 // MARK: - Following preview
 
 struct ProfileFollowingCard: View {
