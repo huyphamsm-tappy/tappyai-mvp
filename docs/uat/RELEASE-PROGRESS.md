@@ -227,6 +227,22 @@ Chưa commit — patch lưu scratchpad (shopR / shopAB5). Chờ Huy (Q-AI-SHOP).
 - Bảo mật 30/09: nhánh `security/hardening-2026-09-30` gộp vào rc (`d4f5c8c`), UAT `6aade7a` smoke 5 luồng đạt; migration #20–#23 vào PHẦN B.
   Apple IAP: production KHÔNG có `APPLE_IAP_*` → verify trả 503, lỗ API-1 đang đóng; không thêm các biến này trước khi `fea7f38` lên prod.
 
+### ✅ Bảo mật 2c–2f (tin gộp 30/09) — UAT `e7a79a9`
+- **2c Serper không tin cậy** (`79c79d7`): chỉ bộ làm sạch của luna `2f16ce8`, KHÔNG kèm Luna, chạy cho mọi lời gọi `serperPost`
+  (`src/lib/ai/tools/serperUntrusted.ts`). Tên thật giữ nguyên (Say Cheese Studio, Reveal Beauty Spa, Quán Quên Lối Về, System Coffee).
+  Tiêm lệnh với Haiku: **12/12 lượt sạch, 0 trượt** (`injectionCheck.mjs`). Bằng chứng: `gs://tappyai-uat-evidence/security-2026-09-30/serper-injection-haiku/`.
+- **2d «Core i5-1334U»**: đã có trong rc từ `af38b73` (budgetFromHistory đọc tin đã bỏ tên chép lại), test dữ liệu SHOP-3 4/4.
+- **2e I6 / R24** (`5eb785f`): `app_state` 5 phút trong cookie httpOnly/Secure/Lax → callback Zalo → `/auth/confirm` kiểm TRƯỚC khi dùng
+  token, trả `state`+`app_state` trong fragment, dùng 1 lần. Test 26/26. Smoke UAT 6/6: Zalo web → Zalo; Android thiếu state → từ chối;
+  có state → Zalo + cookie 5 phút; link magic giả `&platform=android` → từ chối và token KHÔNG bị dùng (cùng link vẫn đăng nhập web →
+  email OK); Google web = PKCE S256. Zalo thật trên app: chờ Android e2e cuối. Supabase Redirect URLs: Huy xem (OWNER-TOMORROW B0).
+- **2f «thích núi, gần Sài Gòn»**: 3 cách gõ (kịch bản, gõ tắt «gan sg / thik nui», một câu) → Tây Ninh / Núi Bà Đen, không Ba Vì.
+- Kiểm toàn bộ: 16.057 test đạt, 3 test quét repo quá 5 giây khi chạy cả bộ (chạy riêng 26/26 đạt); tsc 0; lint chỉ cảnh báo có sẵn;
+  kiến trúc 15/15; SQL grants 0 lỗi; build Vercel UAT READY. Smoke luồng bị đụng: Viết content 200, báo cáo 200, ScamShield CRITICAL,
+  ảnh nhóm không còn EXIF/GPS, thông báo: URL metadata bị chặn 400, endpoint mới 200 (endpoint cũ tái dùng → 500 do luật một
+  chủ/credential có sẵn, không phải lỗi mới). Không có migration mới trong đợt này.
+- **Vercel**: owner chốt KHÔNG nâng Pro; kiểm không bị chặn ngay trước deploy production, bị chặn → dừng (OWNER-TOMORROW B0).
+
 ### ✅ Thẻ hỏi nhanh mới [TAPPY_ASK] — web LIVE UAT `1c5087b` (30/09, chỉ đổi giao diện)
 - Đặc tả chung web + Android: `docs/design/ask-card/README.md` (R23 + **R23.1** §5). Server và tin gửi lên KHÔNG đổi.
   Web `1685c62` + `86f88d3` + `f6b4a31`; Android đã chép 1:1 (`e3aa75c`, `7f1646d`). iOS: `docs/ios/IOS-REQUESTS.md` I-1.
