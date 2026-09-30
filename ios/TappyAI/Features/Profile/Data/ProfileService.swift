@@ -54,6 +54,27 @@ struct ProfileService {
         return resp.avatarUrl
     }
 
+    /// `POST /api/profile` with a `cover` multipart part (≤5 MB, bytes sniffed server-side) → the new
+    /// public `cover_url`. The web's "Thay ảnh bìa".
+    func uploadCover(_ data: Data, boundary: String) async throws -> String? {
+        let endpoint = Endpoint(
+            path: "/api/profile",
+            method: .post,
+            body: data,
+            requiresAuth: true,
+            contentType: "multipart/form-data; boundary=\(boundary)"
+        )
+        let resp = try await api.send(endpoint, as: CoverUploadResponse.self)
+        return resp.coverUrl
+    }
+
+    /// `PATCH /api/profile {"cover_url": null}` — the web's "Gỡ ảnh bìa" (a cover can only be cleared by PATCH).
+    func clearCover() async throws {
+        let body = "{\"cover_url\":null}".data(using: .utf8)
+        let endpoint = Endpoint(path: "/api/profile", method: .patch, body: body, requiresAuth: true)
+        _ = try await api.send(endpoint)
+    }
+
     // MARK: - Memory
 
     func fetchMemory() async throws -> MemoryResponse {
@@ -147,6 +168,13 @@ struct ProfileService {
     func fetchIntegrations() async throws -> IntegrationsResponse {
         let endpoint = Endpoint(path: "/api/integrations", requiresAuth: true)
         return try await api.send(endpoint, as: IntegrationsResponse.self)
+    }
+}
+
+private struct CoverUploadResponse: Codable {
+    var coverUrl: String?
+    enum CodingKeys: String, CodingKey {
+        case coverUrl = "cover_url"
     }
 }
 

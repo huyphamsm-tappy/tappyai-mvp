@@ -7,6 +7,21 @@ import SwiftUI
 struct UserProfileView: View {
     @AppStateObject private var vm: UserProfileViewModel
     @AppEnvironmentState private var router: AppRouter
+    @State private var pickedTab: Tab?
+
+    /// The web's visitor tabs (`v3.publicProfile.tabPosts` / `tabShares`, Android L10): "Chia sẻ" =
+    /// rows with no real place (clips/links posted as "Chia sẻ"); "Bài đăng" = the rest.
+    enum Tab { case posts, shares }
+
+    private static func isShareOnly(_ review: Review) -> Bool {
+        let name = (review.placeName ?? "").trimmingCharacters(in: .whitespaces)
+        return name == "Chia sẻ" || name == "Chia se"
+    }
+    private var posts: [Review] { vm.reviews.filter { !Self.isShareOnly($0) } }
+    private var shares: [Review] { vm.reviews.filter { Self.isShareOnly($0) } }
+    /// The web opens on "Chia sẻ" when the creator has shares and no real-place posts.
+    private var tab: Tab { pickedTab ?? (posts.isEmpty && !shares.isEmpty ? .shares : .posts) }
+    private var shown: [Review] { tab == .shares ? shares : posts }
 
     init(deps: AppDependencies, userId: String) {
         _vm = AppStateObject(wrappedValue: UserProfileViewModel(
@@ -57,6 +72,7 @@ struct UserProfileView: View {
         ScrollView {
             VStack(spacing: Spacing.md) {
                 header
+                tabPicker
                 Divider().overlay(TappyColor.separator)
                 grid
                 if vm.isLoadingMore {
@@ -138,9 +154,28 @@ struct UserProfileView: View {
         }
     }
 
+    private var tabPicker: some View {
+        HStack(spacing: 0) {
+            ForEach([Tab.posts, Tab.shares], id: \.self) { t in
+                Button { pickedTab = t } label: {
+                    VStack(spacing: 6) {
+                        Text(t == .posts ? "userProfile.tab.posts" : "userProfile.tab.shares")
+                            .font(TappyFont.callout.weight(tab == t ? .semibold : .regular))
+                            .foregroundStyle(tab == t ? TappyColor.textPrimary : TappyColor.textSecondary)
+                        Rectangle().fill(tab == t ? TappyColor.primary : Color.clear).frame(height: 2)
+                    }
+                    .frame(maxWidth: .infinity)
+                }
+                .buttonStyle(.plain)
+                .accessibilityAddTraits(tab == t ? .isSelected : [])
+                .accessibilityIdentifier(t == .posts ? "profile-tab-posts" : "profile-tab-shares")
+            }
+        }
+    }
+
     @ViewBuilder
     private var grid: some View {
-        if vm.reviews.isEmpty {
+        if shown.isEmpty {
             TappyEmptyState(
                 systemImage: "square.grid.2x2",
                 title: "userProfile.empty.title",
@@ -148,7 +183,7 @@ struct UserProfileView: View {
             )
         } else {
             LazyVGrid(columns: columns, spacing: 2) {
-                ForEach(vm.reviews) { review in
+                ForEach(shown) { review in
                     Button {
                         router.push(ReviewsDestination.reviewDetail(id: review.id))
                     } label: {

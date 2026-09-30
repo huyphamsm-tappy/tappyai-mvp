@@ -15,6 +15,9 @@ struct EditProfileView: View {
     @State private var error: String?
     @State private var selectedPhoto: PhotosPickerItem?
     @State private var uploadingAvatar = false
+    @State private var coverUrl = ""
+    @State private var selectedCover: PhotosPickerItem?
+    @State private var uploadingCover = false
 
     private var service: ProfileService { ProfileService(api: deps.api) }
 
@@ -31,6 +34,7 @@ struct EditProfileView: View {
                         .padding(.top, 60)
                 } else {
                     avatarSection
+                    coverSection
                     if let error { errorBanner(error) }
                     formSection
                     saveButton
@@ -95,6 +99,52 @@ struct EditProfileView: View {
             Text("editProfile.avatarHint")
                 .font(.system(size: 11))
                 .foregroundStyle(TappyColor.textSecondary)
+        }
+    }
+
+    // MARK: - Cover ("Thay ảnh bìa" / "Gỡ ảnh bìa")
+
+    private var coverSection: some View {
+        VStack(alignment: .leading, spacing: Spacing.sm) {
+            ZStack {
+                if let url = URL(string: coverUrl), !coverUrl.isEmpty {
+                    AsyncImage(url: url) { img in
+                        img.resizable().aspectRatio(contentMode: .fill)
+                    } placeholder: {
+                        TappyColor.surface
+                    }
+                } else {
+                    LinearGradient(colors: [TappyColor.primary.opacity(0.35), Color(hex: 0x8B5CF6).opacity(0.35)],
+                                   startPoint: .topLeading, endPoint: .bottomTrailing)
+                }
+                if uploadingCover { ProgressView() }
+            }
+            .frame(height: 120)
+            .frame(maxWidth: .infinity)
+            .clipShape(RoundedRectangle(cornerRadius: Radius.lg, style: .continuous))
+            .opacity(uploadingCover ? 0.6 : 1)
+            .accessibilityIdentifier("edit-cover")
+
+            HStack(spacing: Spacing.sm) {
+                PhotosPicker(selection: $selectedCover, matching: .images) {
+                    Label("editProfile.cover.change", systemImage: "photo")
+                        .font(.system(size: 13, weight: .semibold))
+                        .foregroundStyle(TappyColor.primary)
+                }
+                .disabled(uploadingCover)
+                if !coverUrl.isEmpty {
+                    Button("editProfile.cover.remove") { Task { await removeCover() } }
+                        .font(.system(size: 13, weight: .medium))
+                        .foregroundStyle(TappyColor.danger)
+                        .disabled(uploadingCover)
+                }
+            }
+            Text("editProfile.cover.hint")
+                .font(.system(size: 11))
+                .foregroundStyle(TappyColor.textSecondary)
+        }
+        .onChange(of: selectedCover) { newValue in
+            if let newValue { Task { await uploadCover(newValue) } }
         }
     }
 
@@ -238,6 +288,7 @@ struct EditProfileView: View {
             bio = p.bio
             email = p.email
             avatarUrl = p.avatarUrl
+            coverUrl = p.coverUrl ?? ""
         } catch {}
         loading = false
     }
@@ -258,6 +309,48 @@ struct EditProfileView: View {
                 self.error = NSLocalizedString("editprofile.error.save", comment: "")
             }
             saving = false
+        }
+    }
+
+    private func uploadCover(_ item: PhotosPickerItem) async {
+        uploadingCover = true
+        error = nil
+        defer { uploadingCover = false; selectedCover = nil }
+
+        guard let rawData = try? await item.loadTransferable(type: Data.self),
+              let image = UIImage(data: rawData),
+              let data = image.jpegData(compressionQuality: 0.85) else {
+            error = NSLocalizedString("editprofile.error.readImage", comment: "")
+            return
+        }
+        if data.count > 5 * 1024 * 1024 {
+            error = NSLocalizedString("editprofile.error.imageTooLarge", comment: "")
+            return
+        }
+        do {
+            let boundary = UUID().uuidString
+            var body = Data()
+            body.append("--\(boundary)\r\n".data(using: .utf8)!)
+            body.append("Content-Disposition: form-data; name=\"cover\"; filename=\"cover.jpg\"\r\n".data(using: .utf8)!)
+            body.append("Content-Type: image/jpeg\r\n\r\n".data(using: .utf8)!)
+            body.append(data)
+            body.append("\r\n--\(boundary)--\r\n".data(using: .utf8)!)
+            if let url = try await service.uploadCover(body, boundary: boundary) {
+                coverUrl = url
+            }
+        } catch {
+            self.error = NSLocalizedString("editprofile.error.upload", comment: "")
+        }
+    }
+
+    private func removeCover() async {
+        uploadingCover = true
+        defer { uploadingCover = false }
+        do {
+            try await service.clearCover()
+            coverUrl = ""
+        } catch {
+            self.error = NSLocalizedString("editprofile.error.upload", comment: "")
         }
     }
 

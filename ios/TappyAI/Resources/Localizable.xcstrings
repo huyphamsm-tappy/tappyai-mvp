@@ -20361,6 +20361,91 @@
           }
         }
       }
+    },
+    "editProfile.cover.change": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Change cover photo"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Thay ảnh bìa"
+          }
+        }
+      }
+    },
+    "editProfile.cover.remove": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remove cover photo"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gỡ ảnh bìa"
+          }
+        }
+      }
+    },
+    "editProfile.cover.hint": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "JPEG, PNG, GIF or WebP up to 5 MB."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "JPEG, PNG, GIF hoặc WebP, tối đa 5 MB."
+          }
+        }
+      }
+    },
+    "userProfile.tab.posts": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Posts"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bài đăng"
+          }
+        }
+      }
+    },
+    "userProfile.tab.shares": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shares"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chia sẻ"
+          }
+        }
+      }
     }
   }
 }

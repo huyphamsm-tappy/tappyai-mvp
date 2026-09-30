@@ -6,6 +6,8 @@ struct UserProfile: Codable {
     var email: String
     var bio: String
     var language: String?
+    /// The profile cover photo (`cover_url`); nil/empty = none. Upload ≤5 MB, cleared by PATCH.
+    var coverUrl: String? = nil
 
     enum CodingKeys: String, CodingKey {
         case fullName = "full_name"
@@ -13,6 +15,7 @@ struct UserProfile: Codable {
         case email
         case bio
         case language
+        case coverUrl = "cover_url"
     }
 }
 
