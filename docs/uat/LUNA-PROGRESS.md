@@ -50,3 +50,6 @@
 | SHOP-1 t6 "không thích màu đen" → server chèn "Mình chọn: Scout (đen)" | B | 2 backstop của server lấy đề xuất của thẻ | lượt bác: backstop không đưa lại tên đã hiện (Haiku mốc cũng có B này) |
 | ENT-1 t6 / TRAVEL-2 t2 "Mình chọn: chưa thể…" | B/C | — | code đưa "SỰ THẬT CỦA LƯỢT" (vừa bị bác, đã hiện, ngân sách) vào lượt bác/xem thêm; bỏ dạng "Mình chọn: chưa…" |
 | FOOD-1 t4 câu chốt lặp 2 lần | D | tách câu chốt đụng phần đã phát | chỉ tách phần CHƯA phát |
+
+## 30/09 06:15 — XONG ĐO. Báo cáo: `docs/uat/LUNA-REPORT.md`
+- Code cuối: 5248246 (sau lượt đo e414950 + 2 sửa đã xác minh). Chờ anh báo "release Phase 7 xong" để đưa lên UAT (cờ CONSULT_LUNA + LLM_* env), chạy thật, duyệt.
