@@ -267,3 +267,24 @@ describe('withoutQuotedNames — names copied from our replies are references (r
     expect(String(out[2].content)).toContain('hay')
   })
 })
+
+describe('UAT §10 T3 (30/09, level B): a sentence pointing into the thread is not a new request', () => {
+  it('"Cái thứ hai có bao gồm ăn sáng không?" after the hotel ask stays travel', () => {
+    const ask = buildAskReply(routeConsult([{ role: 'user', content: 'khach san da nang gan bien duoi 1tr/dem' }], { hasGps: true, lang: 'vi' }).decision.ask!, { lang: 'vi', structured: false })
+    const d = routeConsult([
+      { role: 'user', content: 'khach san da nang gan bien duoi 1tr/dem' },
+      { role: 'assistant', content: ask },
+      { role: 'user', content: 'Cái thứ hai có bao gồm ăn sáng không?' },
+    ], { hasGps: true, lang: 'vi' }).decision
+    expect(d.domains).toEqual(['travel'])
+  })
+  it('a real switch after an ask still switches ("thôi, tìm quán phở quận 3")', () => {
+    const ask = buildAskReply(routeConsult([{ role: 'user', content: 'khach san da nang gan bien duoi 1tr/dem' }], { hasGps: true, lang: 'vi' }).decision.ask!, { lang: 'vi', structured: false })
+    const d = routeConsult([
+      { role: 'user', content: 'khach san da nang gan bien duoi 1tr/dem' },
+      { role: 'assistant', content: ask },
+      { role: 'user', content: 'thôi, tìm quán phở ngon quận 3' },
+    ], { hasGps: true, lang: 'vi' }).decision
+    expect(d.domains).toEqual(['food'])
+  })
+})
