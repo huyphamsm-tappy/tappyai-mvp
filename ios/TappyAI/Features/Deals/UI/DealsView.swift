@@ -112,7 +112,9 @@ struct DealsView: View {
         .background(LinearGradient(colors: [Color(hex: 0x1E2A78), Color(hex: 0x3B2E8F)], startPoint: .topLeading, endPoint: .bottomTrailing))
         .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
         .overlay(RoundedRectangle(cornerRadius: 20, style: .continuous).stroke(Color.white.opacity(0.2), lineWidth: 1))
-        .accessibilityIdentifier("deals-hero")
+        // No identifier on this container: SwiftUI pushes a container's identifier down onto its
+        // direct children, which hid the CTA's own "deals-ask-tappy" from the UI test (CI 30/09),
+        // exactly as it did the hub's guest sign-in button in the first run.
     }
 
     @ViewBuilder

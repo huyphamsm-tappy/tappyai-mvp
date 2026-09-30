@@ -47,7 +47,7 @@ final class ScreenshotTests: XCTestCase {
 
     func testHubSignedIn() {
         let app = launch(route: "hub", signedIn: true)
-        XCTAssertTrue(any(app, "profile-hero").waitForExistence(timeout: 30), "hero")
+        XCTAssertTrue(any(app, "profile-edit").waitForExistence(timeout: 30), "hero with its Edit button")
         XCTAssertTrue(any(app, "profile-tab-posts").waitForExistence(timeout: 30), "content tabs")
         shot("16-hub-signed-in")
         any(app, "profile-tab-restricted").tap()

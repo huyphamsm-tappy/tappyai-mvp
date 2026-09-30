@@ -140,7 +140,7 @@ struct ProfileHeroView: View {
         .background(TappyColor.cardBackground)
         .clipShape(RoundedRectangle(cornerRadius: Radius.xl, style: .continuous))
         .overlay(RoundedRectangle(cornerRadius: Radius.xl, style: .continuous).stroke(TappyColor.border, lineWidth: 1))
-        .accessibilityIdentifier("profile-hero")
+        // No container identifier (it would override "profile-edit"); tests find the hero by its parts.
     }
 
     private var avatar: some View {
