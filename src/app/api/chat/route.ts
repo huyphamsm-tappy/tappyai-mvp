@@ -2604,6 +2604,10 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       ...(hotel && hotel.name === 'get_hotel_prices' ? [{ name: 'get_hotel_prices' as const, args: hotel.args }] : []),
       { name: 'search_places', args: { query: `quán ${taste} ngon ${dest}`, type: 'restaurant', location: dest } },
       { name: 'get_weather', args: { location: dest } },
+      // Luna trip plans run WITHOUT tools (luna.ts / openai adapter), so what to DO there is fetched here too — graded
+      // 30/09: 18/18 Luna trip plans had no beach/sight at all (Haiku found them with its own tool calls, and invented
+      // their fees/hours). Flag-gated: the Phase 7 prefetch is unchanged.
+      ...(lunaPlan ? [{ name: 'search_places' as const, args: { query: `${known.phong_cach === 'biển' ? 'bãi biển đẹp' : known.phong_cach === 'núi' ? 'điểm tham quan núi' : 'điểm tham quan nổi tiếng'} ${dest}`, type: 'attraction', location: dest } }] : []),
     ]
     const run = (name: string) => (tools as unknown as Record<string, { execute: (args: unknown, ctx: { toolCallId: string; messages: unknown[] }) => Promise<unknown> }>)[name]?.execute
     const done = await Promise.all(calls.map(async c => {

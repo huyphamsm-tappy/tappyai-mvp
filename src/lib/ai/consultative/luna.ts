@@ -52,11 +52,18 @@ export function skipLunaIntent(
  * Luna plan turns only (CONSULT_LUNA_PLAN). Replay 30/09: on "đặt món đó luôn, gọi món gì cho đủ no" / "chốt, cần kiểm
  * tra gì khi mua" / "chốt, chuẩn bị gì trước khi đi" Luna answered the literal question and skipped the plan frame
  * (3 of 15 plans every run); the owner's checklist requires the whole plan card.
+ * Hand grading 30/09 (46 Luna plans, 11 fab vs Haiku 177, but mostly C): "chưa có giờ/giá" when the data had them,
+ * one restaurant for 3 meals, no beach/sight on a beach trip, no flight leg, 2 people for a group of 6, "gel + vẽ" dropped,
+ * a rejected place back in the plan. One line per failure kind below.
  */
 export const LUNA_PLAN_RULE = [
   'LƯỢT NÀY LÀ KẾ HOẠCH CHI TIẾT.',
   '- Viết ĐỦ mọi mục của khung kế hoạch, đúng thứ tự và đúng tên tiêu đề in đậm của khung — kể cả khi người dùng hỏi một câu cụ thể ("gọi món gì", "kiểm tra gì", "chuẩn bị gì"): trả lời câu đó ở mục phù hợp.',
   '- Mục không có dữ liệu: ghi "chưa có thông tin" ngay dưới tiêu đề — không bỏ mục, không để mục trống, không đoán, không lấy hiểu biết chung làm sự thật.',
+  '- Dữ liệu tìm được có giờ mở cửa, khoảng giá, địa chỉ, số điện thoại của nơi nào thì GHI RA cho nơi đó — chỉ nói "chưa có" khi dữ liệu thật sự không có.',
+  '- Giữ đủ mọi điều người dùng đã nói: số người, ngân sách, khu vực, ngày giờ, yêu cầu cụ thể (vd "gel + vẽ", "không đồ chiên", "phòng riêng"). Nơi người dùng đã bác hoặc nói "đi rồi" thì KHÔNG đưa lại.',
+  '- Lịch nhiều bữa / nhiều chặng: mỗi bữa, mỗi chặng một nơi KHÁC nhau lấy từ dữ liệu (chỉ lặp lại khi dữ liệu có đúng một nơi — nói rõ vậy). Mỗi chặng người dùng nêu (ăn → chơi → uống) đều có một nơi hoặc ghi "chưa có thông tin" cho chặng đó.',
+  '- Chuyến đi: có chặng đi/về (bay, xe) theo điều người dùng nói, có hoạt động hợp sở thích (biển, núi…) từ dữ liệu điểm tham quan; chỉ đặt vào lịch những nơi đúng loại (khách sạn không phải bữa ăn).',
 ].join('\n')
 
 /** CONSULT_LUNA_PLAN (default OFF, owner 30/09): the detailed plan runs on role `plan` (Luna, LLM_PLAN_REASONING); only with CONSULT_LUNA. */
