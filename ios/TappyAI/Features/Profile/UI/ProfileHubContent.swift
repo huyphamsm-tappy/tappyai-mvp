@@ -16,8 +16,10 @@ import SwiftUI
 enum ProfileHubTab: String, CaseIterable, Identifiable {
     case posts, shared, saved, restricted, hidden, places
     var id: String { rawValue }
-    var titleKey: LocalizedStringKey { LocalizedStringKey("profileHub.tab.\(rawValue)") }
-    var emptyKey: LocalizedStringKey { LocalizedStringKey("profileHub.empty.\(rawValue)") }
+    // 🚨 Concatenate, never interpolate: `LocalizedStringKey("a.\(x)")` becomes the FORMAT key
+    // "a.%@" and the chip showed the raw key (CI screenshot 16, 30/09).
+    var titleKey: LocalizedStringKey { LocalizedStringKey("profileHub.tab." + rawValue) }
+    var emptyKey: LocalizedStringKey { LocalizedStringKey("profileHub.empty." + rawValue) }
 }
 
 @MainActor
@@ -314,6 +316,9 @@ struct ProfileHubContentPanel: View {
     }
 
     private func tile(thumb: String?, body: String?, video: Bool, badge: LocalizedStringKey?) -> some View {
+        // The cell's size comes from a clear 3:4 box; the photo is an overlay CLIPPED to it —
+        // a fill-scaled image as the sizing view spilled across its neighbours (CI screenshot 16).
+        Color.clear.aspectRatio(3.0 / 4.0, contentMode: .fit).overlay {
         ZStack(alignment: .topLeading) {
             Rectangle().fill(TappyColor.surface)
             if let thumb, let url = URL(string: thumb) {
@@ -333,7 +338,8 @@ struct ProfileHubContentPanel: View {
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
         }
-        .aspectRatio(3.0 / 4.0, contentMode: .fill)
+        }
+        .clipped()
         .clipShape(RoundedRectangle(cornerRadius: 8))
     }
 }

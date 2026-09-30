@@ -53,6 +53,13 @@ skyline, huy hiệu cửa hàng của mẫu — đúng quy tắc (không có d�
 | Ô ngày sinh màn 18+ | (commit này) |
 - Đã có sẵn trên iOS, không đổi: đăng ảnh / video / YouTube (`CreateReviewView`), Khám phá (`ReviewsFeedView`), hồ sơ người khác (+ tab Chia sẻ ở cụm 1), 5 tab điều hướng giống web/Android, Cài đặt (có thêm dòng Bản quyền).
 
+## CI run 36666310746 (commit 23dc351) — 16/17 UI test, 17 ảnh
+- Qua: màn lỗi cấu hình + Thử lại (`14`), cấu hình dạng production mở được đăng nhập (`15`), hub đã đăng nhập (`16`, `17`).
+- Đỏ: `testDealsAskCardWhenEmpty` — stub trả `{"deals": []}` không có `success`, `DealsResponse` cũ bắt buộc `success` → màn lỗi, không có
+  thẻ. Chính là lỗi mà đợt rà giải mã (fabce23) sửa (`success` giờ mặc định true).
+- Lỗi thấy trên ảnh `16`/`17`, đã sửa: chip tab hiện khoá thô `profileHub.tab.posts` (`LocalizedStringKey` với nội suy thành khoá định
+  dạng "…%@"); ảnh ô lưới tràn sang ô bên cạnh (ảnh fill làm view định kích thước) → ô 3:4 cố định, ảnh là overlay đã cắt.
+
 ## Rà toàn bộ model giải mã response (30/09, sau lỗi build 50)
 Nguyên tắc (ghi ở đầu `Core/Networking/LenientDecoding.swift`): chỉ bắt buộc trường màn hình thật sự cần (thường chỉ `id`); trường
 khác optional hoặc có mặc định trung tính (0 / false / "" / []) khi mặc định đó không nói sai điều gì; danh sách bỏ phần tử hỏng, giữ phần
