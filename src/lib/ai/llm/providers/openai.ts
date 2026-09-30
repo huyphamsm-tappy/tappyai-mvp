@@ -93,7 +93,14 @@ function lunaModel(modelId: string, effort: ReasoningEffort, apiKey: string, str
   // 'strict': the SDK default 'compatible' omits stream_options.include_usage → a stream reports no usage.
   // parallelToolCalls:false — owner rule 30/09 "at most ONE targeted extra search": replay TRAVEL-1 t2 fired flights +
   // restaurants in parallel on both steps and ended on tool calls with no text (1 of 75 Luna turns).
-  const inner = createOpenAI({ apiKey, compatibility: 'strict' }).chat(modelId, { structuredOutputs: structured, parallelToolCalls: false })
+  // The API rejects parallel_tool_calls on a request with no tools (replay 30/09: every tool-less call fell back), so the
+  // setting lives on a second model used only when the call carries tools.
+  const provider = createOpenAI({ apiKey, compatibility: 'strict' })
+  const plain = provider.chat(modelId, { structuredOutputs: structured })
+  const oneTool = provider.chat(modelId, { structuredOutputs: structured, parallelToolCalls: false })
+  const hasTools = (opts: { mode?: { type?: string; tools?: unknown[] } }) => opts.mode?.type === 'regular' && Array.isArray(opts.mode.tools) && opts.mode.tools.length > 0
+  const inner = plain
+  const pick = (opts: { mode?: { type?: string; tools?: unknown[] } }) => (hasTools(opts) ? oneTool : plain)
   const withCost = (usage: { promptTokens: number; completionTokens: number } | undefined, meta: Record<string, Record<string, unknown>> | undefined) => {
     const cost = openaiCallCost(modelId, usageOf(usage, meta))
     return cost ? { ...(meta ?? {}), tappy: { cost: { ...cost, effort } as unknown as Record<string, unknown> } } : meta
@@ -106,11 +113,11 @@ function lunaModel(modelId: string, effort: ReasoningEffort, apiKey: string, str
     defaultObjectGenerationMode: inner.defaultObjectGenerationMode,
     supportsStructuredOutputs: structured,
     async doGenerate(opts) {
-      const r = await inner.doGenerate(lunaCallOptions(opts as never, effort))
+      const r = await pick(opts as never).doGenerate(lunaCallOptions(opts as never, effort))
       return { ...r, providerMetadata: withCost(r.usage, r.providerMetadata as never) as never }
     },
     async doStream(opts) {
-      const r = await inner.doStream(lunaCallOptions(opts as never, effort))
+      const r = await pick(opts as never).doStream(lunaCallOptions(opts as never, effort))
       const stream = r.stream.pipeThrough(new TransformStream<LanguageModelV1StreamPart, LanguageModelV1StreamPart>({
         transform(part, c) {
           if (part.type === 'finish') c.enqueue({ ...part, providerMetadata: withCost(part.usage, part.providerMetadata as never) as never })
