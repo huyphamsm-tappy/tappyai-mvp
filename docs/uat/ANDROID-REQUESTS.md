@@ -67,6 +67,22 @@ Giá phòng: chưa xác nhận…","price":…`). Phần đầu kế hoạch (ti
 
 ## 2. Web → Android: thay đổi server/API (giữ tương thích ngược)
 
+- 2026-09-30 (web) **R24 / I6 — SERVER ĐÃ LÀM: `app_state` trong đăng nhập Zalo trên app (vá lỗi Cao «ép app vào tài khoản kẻ
+  xấu»)** — rc/web-uat (xem RELEASE-PROGRESS «I6»). **Đặc tả chung Android + iOS:**
+  (1) App mở `/api/auth/zalo?platform=android|ios&returnTo=/&app_state=<state>`; `state` = base64url, **43–128 ký tự**
+  (`^[A-Za-z0-9_-]{43,128}$`; Android 43 là đúng). Thiếu/sai dạng → server KHÔNG mở Zalo, về `/login?error=app_state_invalid`.
+  (2) Server giữ state trong cookie `app_login_state` (httpOnly, Secure, SameSite=Lax, **5 phút**, kèm giờ tạo — server tự
+  kiểm hạn) → callback Zalo mang tiếp → `/auth/confirm?...&platform=…&app_state=<state>`.
+  (3) `/auth/confirm` với `platform=android|ios`: chỉ khi `app_state` của link == cookie và chưa quá 5 phút mới dùng token và
+  chuyển về app: `tappyai://auth-callback#access_token=…&refresh_token=…&expires_at=…&state=<state>&app_state=<state>`
+  (iOS: `tappyai://auth/callback#…` cùng các khoá). Cookie bị xoá ngay (dùng 1 lần). Thiếu / sai / hết hạn / dùng lại →
+  `/login?error=app_state_invalid`, **KHÔNG tạo phiên** (kiểm TRƯỚC khi dùng token) — link magic của kẻ xấu thêm
+  `&platform=android` giờ vô hiệu. (4) App vẫn tự kiểm `state` (Android `AuthCallbackStateGuard`, đã có).
+  (5) Google trên app: ID token gốc (Android `signInWith(IDToken)`) — không có token qua deep link; Facebook/OAuth khác: PKCE
+  (`flowType = PKCE`, deep link chỉ mang `code`, vô dụng nếu thiếu verifier của app). Email: mã OTP trong app — không qua link.
+  Web (Zalo/Google/email link trên trình duyệt) không đổi. Test server: `src/lib/auth/__tests__/appState.test.ts` +
+  `serverSideCallback.test.ts`. **Android: chạy e2e cuối (Zalo trên UAT vào được; link giả không state bị từ chối).**
+
 - 2026-09-30 (web) **R23.1 — THẺ HỎI NHANH MỚI: web đã làm (rc/web-uat `1685c62`), 9 điểm bổ sung cho Android** —
   đọc `docs/design/ask-card/README.md` **§5** (các mục §0–§4 giữ nguyên). Tóm tắt những gì Android cần đổi so với R23:
   (1) tiêu đề / dòng phụ / gợi ý ô ý khác THEO MẢNG (bảng §5.1; giải trí + chung giữ «Tìm gì cho bạn hôm nay?»);

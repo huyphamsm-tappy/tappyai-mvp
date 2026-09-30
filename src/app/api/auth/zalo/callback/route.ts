@@ -3,6 +3,7 @@ import { searchParam } from '@/lib/http/searchParams'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { createZaloProfileVerifier } from '@/lib/zalo/identity'
 import { safeNext, zaloConfirmUrl } from '@/lib/zalo/session'
+import { APP_STATE_COOKIE, appStateFromCookie } from '@/lib/auth/appState'
 
 const ZALO_APP_ID = process.env.ZALO_APP_ID!
 const ZALO_APP_SECRET = process.env.ZALO_APP_SECRET!
@@ -44,6 +45,10 @@ export async function GET(req: NextRequest) {
   const platformCookie = req.cookies.get('zalo_login_platform')?.value
   const platform = platformCookie === 'ios' ? 'ios' : platformCookie === 'android' ? 'android' : 'web'
 
+  // I6 / R24: the app's state, kept since the start of this sign-in; it travels to /auth/confirm, which checks it
+  // against the same cookie. The cookie itself is left for /auth/confirm to clear (single use) — except on failure.
+  const appState = platform === 'web' ? null : appStateFromCookie(req.cookies.get(APP_STATE_COOKIE)?.value)
+
   const clearFlow = (res: NextResponse) => {
     res.cookies.delete('zalo_login_cv')
     res.cookies.delete('zalo_login_state')
@@ -51,10 +56,14 @@ export async function GET(req: NextRequest) {
     res.cookies.delete('zalo_login_platform')
     return res
   }
-  const fail = (reason: string) =>
-    clearFlow(NextResponse.redirect(new URL(`/login?error=${reason}`, origin)))
+  const fail = (reason: string) => {
+    const res = clearFlow(NextResponse.redirect(new URL(`/login?error=${reason}`, origin)))
+    res.cookies.delete(APP_STATE_COOKIE)
+    return res
+  }
 
   if (!code || !codeVerifier || state !== savedState) return fail('zalo_denied')
+  if (platform !== 'web' && !appState) return fail('app_state_invalid')
 
   let accessToken: string
   try {
@@ -94,7 +103,7 @@ export async function GET(req: NextRequest) {
   if (!profile) return fail('zalo_invalid')
 
   try {
-    const confirmUrl = await zaloConfirmUrl(createAdminClient(), { profile, origin, next, platform })
+    const confirmUrl = await zaloConfirmUrl(createAdminClient(), { profile, origin, next, platform, appState })
     return clearFlow(NextResponse.redirect(confirmUrl))
   } catch (e) {
     console.error('[auth/zalo/callback] session:', e)

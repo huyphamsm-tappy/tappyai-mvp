@@ -110,10 +110,18 @@ describe('the happy path never shows the browser a token', () => {
     expect(generateLink).toHaveBeenCalledWith(expect.objectContaining({ email: 'zalo_1111111111@zalo.tappyai.com' }))
   })
 
-  it('a native login still returns through its own scheme', async () => {
-    const res = await GET(callback({ cookies: 'zalo_login_cv=V; zalo_login_state=S1; zalo_login_platform=android' }))
+  it('a native login still returns through its own scheme, carrying the app state (I6 / R24)', async () => {
+    const st = 'A'.repeat(43)
+    const res = await GET(callback({ cookies: `zalo_login_cv=V; zalo_login_state=S1; zalo_login_platform=android; app_login_state=${Math.floor(Date.now() / 1000)}.${st}` }))
     expect(location(res)).toContain('platform=android')
+    expect(location(res)).toContain(`app_state=${st}`)
     expect(location(res)).toContain('next=%2F')
+  })
+
+  it('a native login without the app state signs nobody in (I6 / R24)', async () => {
+    const res = await GET(callback({ cookies: 'zalo_login_cv=V; zalo_login_state=S1; zalo_login_platform=android' }))
+    expect(location(res)).toBe('https://uat.tappyai.com/login?error=app_state_invalid')
+    expect(generateLink).not.toHaveBeenCalled()
   })
 
   it('an off-site `next` is refused', async () => {
