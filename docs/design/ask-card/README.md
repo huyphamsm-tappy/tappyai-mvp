@@ -70,3 +70,41 @@ Mảng của thẻ (cho màu ảnh giữ chỗ) = mảng của lượt hỏi; kh
 - Chọn nhiều ở câu LOẠI → tin nhắn gửi đi có `", "` trong phần câu đó; các câu khác vẫn `" · "`; không có câu nào
   chọn mà có ý khác → chỉ gửi ý khác.
 - Web giữ `data-ask-option="<id>"` / `data-ask-send`; Android giữ testTag `ask-card`, `ask-send`, `ask-free-text`.
+
+## 5. R23.1 — bổ sung khi làm bản web (30/09, theo lời owner) — ÁP CHO CẢ ANDROID
+
+Các mục trên giữ nguyên; chỉ những điểm sau đổi/bổ sung. Web: `src/lib/structuredContent/askCardModel.ts` (bảng) +
+`src/components/chat/AskCard.tsx` (giao diện); test `askCardModel.test.ts`, `AskCard.test.tsx`.
+
+1. **Tiêu đề / dòng phụ theo mảng** (owner: «tiêu đề/phụ đề/câu hỏi theo từng mảng»). Mảng suy từ `id` câu hỏi:
+   `dish`/`mode` → ăn uống · `service`/`special` → spa · `activity`/`vibe`/`artist` → giải trí ·
+   `date`/`origin`/`transport` → du lịch · `line`/`must`/`condition`/`purpose` → mua sắm · chỉ có `style` → spa nếu
+   lựa chọn là massage/nail/tóc…, ngược lại du lịch · câu có «mỗi đêm» hoặc nhóm «Gia đình/Nhóm bạn» → du lịch · còn lại → chung.
+
+   | Mảng | Tiêu đề | Dòng phụ | Gợi ý ô ý khác |
+   |---|---|---|---|
+   | giải trí, chung | Tìm gì cho bạn hôm nay? | Chọn nhanh vài thứ, Tappy sẽ tìm phần còn lại. | Ví dụ: muốn chỗ chill, ít ồn, có view đẹp... (chung: gần nhà, giá vừa phải...) |
+   | ăn uống | Hôm nay ăn gì nhỉ? | Chọn nhanh vài thứ, Tappy sẽ tìm quán hợp nhất. | Ví dụ: không cay, có chỗ đậu ô tô... |
+   | mua sắm | Bạn đang tìm món gì? | Chọn nhanh vài thứ, Tappy sẽ lọc giúp bạn. | Ví dụ: màu xanh, bảo hành chính hãng... |
+   | du lịch | Chuyến đi thế nào đây? | Chọn nhanh vài thứ, Tappy sẽ lên phương án. | Ví dụ: có hồ bơi, gần biển, cho trẻ nhỏ... |
+   | spa | Thư giãn kiểu nào hôm nay? | Chọn nhanh vài thứ, Tappy sẽ tìm chỗ hợp nhất. | Ví dụ: kỹ thuật viên nữ, phòng riêng... |
+
+2. **Id LOẠI thêm `dish` và `service`** (router gửi đúng hai id này cho câu «Món gì / kiểu quán?» và «Muốn làm dịch vụ gì?»).
+3. **Khoá ảnh theo tên owner đặt** (thay các khoá §3 tương ứng): bar/pub/bia/beer/cocktail → `diem-bar-rooftop`;
+   cà phê/cafe/trà → `diem-cafe`; món việt/phở/bún/cơm và ăn/món/ẩm thực/nhà hàng → `diem-quan-an`;
+   bowling → `diem-bowling` (bida/billiard vẫn `diem-bida`); nail/móng → `diem-nail` (spa/massage/gội vẫn `diem-spa`).
+   Thứ tự dòng = thứ tự bảng §3 (dòng đầu khớp thắng: «Bida/bowling» → `diem-bida`, «Cafe/rooftop» → `diem-cafe`).
+   Lựa chọn không khớp dòng nào → khoá giữ chỗ **cùng tên** `diem-<chữ-không-dấu-nối-gạch>` (vd «Dạo phố» → `diem-dao-pho`).
+4. **Từ trùng khi bỏ dấu — so CÓ dấu**: rạp (≠ rap), trà (≠ trả), lẩu (≠ lâu), nhật/hàn, phở/bún/cơm/ăn/món (≠ phố…),
+   chợ (≠ cho), đồ (≠ đỏ). Các từ còn lại so bỏ dấu, nguyên từ (không khớp giữa từ).
+5. **Không chọn gì vẫn gửi được**: nút «Tìm cho tôi» luôn bật; không chọn, không gõ → gửi đúng chữ `Tìm cho tôi`.
+   Sau khi gửi: nút thành «Đang tìm…», cả thẻ khoá (không gửi lần 2).
+6. **Icon**: AI ĐI — lựa chọn có «3»/«nhóm»/«đông»/«gia đình» → nhóm; «2» → 2 người; còn lại → 1 người.
+   KHI NÀO — «tuần/tháng/ngày/chưa chốt/3N2Đ» → lịch; «tối/đêm» → trăng; «sáng/trưa/chiều» → mặt trời.
+   KHÁC (tuỳ chọn) — quận/gần/TP/Hà Nội/Đà Nẵng/nơi khác → ghim bản đồ; máy bay; xe khách/tàu → xe buýt;
+   xe riêng/ô tô → ô tô; giao/ship → xe máy; tại quán → cửa hàng; còn lại icon chung ✦.
+7. **Lưới**: câu LOẠI 3 lựa chọn → 3 cột; 4 lựa chọn → 2×2 trên điện thoại, 1 hàng 4 ô trên màn rộng; 2 → 2 cột.
+   Câu icon 4 lựa chọn: icon trên nhãn dưới (4 cột); 2–3 lựa chọn: icon cạnh nhãn, 1 hàng (như mockup «Chiều nay / Tối nay / Cuối tuần»).
+8. **Ảnh giữ chỗ**: gradient theo mảng (giải trí tím, ăn uống cam, mua sắm xanh ngọc, du lịch xanh biển, spa hồng,
+   chung xanh dương) + icon mờ giữa ô + dải nhãn dưới — giống ô có ảnh thật.
+9. **Mascot trong app**: web `public/tappy/mascot-search.png` (172×192, thu nhỏ từ `tappy-mascot-search.png`), hiện 62×69.

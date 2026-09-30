@@ -22,9 +22,16 @@ export function parseAsk(content: string): { text: string; questions: AskQuestio
   return { text, questions }
 }
 
-/** The user's reply from the chosen options, in question order: "2 người · 100-300k · Món Nhật". */
-export function composeAskAnswer(questions: AskQuestionView[], chosen: Record<string, string>, free = ''): string {
-  const parts = questions.map(q => chosen[q.id]).filter((v): v is string => !!v)
+/**
+ * The user's reply from the chosen options, in question order: "Karaoke, Bida / Bowling · 2 người · Tối nay".
+ * A multi-choice step (the redesigned card's "what kind" tiles) joins its options with ", " — the server reads the
+ * same plain sentence it always did.
+ */
+export function composeAskAnswer(questions: AskQuestionView[], chosen: Record<string, string | string[]>, free = ''): string {
+  const parts = questions.map(q => {
+    const v = chosen[q.id]
+    return Array.isArray(v) ? q.options.filter(o => v.includes(o)).join(', ') : v
+  }).filter((v): v is string => !!v)
   const extra = free.trim()
   return [...parts, ...(extra ? [extra] : [])].join(' · ')
 }
