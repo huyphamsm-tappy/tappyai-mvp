@@ -43,35 +43,43 @@ console.log(`| **tất cả** | ${tot.turns} | ${(tot.serper / tot.turns).toFixe
 const eps = {}; for (const c of calls) eps[c.ep] = (eps[c.ep] ?? 0) + 1
 console.log(`\nYêu cầu Serper trong log: ${calls.length} — ${Object.entries(eps).map(([k, v]) => `${k} ${v}`).join(' · ')}`)
 
-// 2 ─ sharing across conversations (one run = one pass; different conversations stand in for different users)
-function share(keyOf) {
-  let cross = 0, self = 0, n = 0; const owner = new Map(); const perRunSeen = new Map()
-  for (const c of calls) {
+// 2 ─ repeated runs = different users (owner: "bộ câu Phase 7 + bộ gõ đời thường chạy lặp"). Every run of a suite
+// is another user asking the same things in their own words; realTyping conversations are everyday-typing variants of
+// the scenario openers. Requests are replayed in time order (run start from the out-dir stamp) through one shared
+// cache; a hit = the key was stored by ANOTHER user (run × conversation) and has not expired.
+const runStart = dir => { const m = /(\d{4}-\d\d-\d\dT\d\d)-(\d\d)-(\d\d)/.exec(dir); return m ? Date.parse(`${m[1]}:${m[2]}:${m[3]}Z`) : 0 }
+const ttlV1 = () => 86_400
+const ttlV2 = (ep, b) => serperTtlV2(ep, b.q ?? '', {})
+function replayShared(keyOf, ttlOf) {
+  const store = new Map() // key → {user, exp}
+  let n = 0, hit = 0, self = 0
+  const ordered = calls.map((c, i) => ({ c, i })).sort((x, y) => runStart(x.c.run) - runStart(y.c.run) || x.i - y.i)
+  for (const { c } of ordered) {
     if (!CACHED.has(c.ep)) continue
     n++
-    const k = keyOf(c.ep, c.b); const scope = `${c.run}`
-    const seen = perRunSeen.get(scope) ?? new Map(); perRunSeen.set(scope, seen)
-    const first = seen.get(k)
-    if (first === undefined) seen.set(k, c.conv)
-    else if (first === c.conv) self++
-    else cross++
-    owner.set(k, true)
+    const now = runStart(c.run), user = `${c.run}|${c.conv}`, k = keyOf(c.ep, c.b), e = store.get(k)
+    if (e && e.exp > now) { if (e.user === user) self++; else hit++; continue }
+    store.set(k, { user, exp: now + ttlOf(c.ep, c.b) * 1000 })
   }
-  return { n, cross, self, unique: owner.size }
+  return { n, hit, self, unique: store.size }
 }
-const s1 = share(v1Key), s2 = share(v2Key)
-console.log(`\n## 2. Dùng chung trong bộ replay (trong từng lần chạy; hội thoại khác = người dùng khác)\n`)
-console.log(`| khoá | yêu cầu cache được | trúng từ hội thoại KHÁC | trúng lại chính hội thoại | khoá khác nhau |\n|---|---|---|---|---|`)
-console.log(`| v1 (y nguyên) | ${s1.n} | ${s1.cross} (${(100 * s1.cross / s1.n).toFixed(1)}%) | ${s1.self} | ${s1.unique} |`)
-console.log(`| v2 (chuẩn hoá) | ${s2.n} | ${s2.cross} (${(100 * s2.cross / s2.n).toFixed(1)}%) | ${s2.self} | ${s2.unique} |`)
+const r1 = replayShared(v1Key, ttlV1), r2 = replayShared(v2Key, ttlV2)
+const users = new Set(calls.map(c => `${c.run}|${c.conv}`)).size
+console.log(`\n## 2. Chạy lặp = nhiều người dùng (${new Set(calls.map(c => c.run)).size} lần chạy, ${users} hội thoại; một cache chung, theo thứ tự thời gian)\n`)
+console.log(`| khoá / hạn | yêu cầu cache được | trúng từ NGƯỜI KHÁC | trúng lại chính mình | khoá khác nhau |\n|---|---|---|---|---|`)
+console.log(`| v1 · y nguyên · 24 h | ${r1.n} | ${r1.hit} (${(100 * r1.hit / r1.n).toFixed(1)}%) | ${r1.self} | ${r1.unique} |`)
+console.log(`| v2 · chuẩn hoá · theo loại | ${r2.n} | ${r2.hit} (${(100 * r2.hit / r2.n).toFixed(1)}%) | ${r2.self} | ${r2.unique} |`)
 const merged = new Map()
 for (const c of calls) if (CACHED.has(c.ep)) { const k = v2Key(c.ep, c.b); const set = merged.get(k) ?? new Set(); set.add(`${c.b.q}`); merged.set(k, set) }
-const ex = [...merged.values()].filter(s => s.size > 1).slice(0, 6)
-if (ex.length) console.log('\nVí dụ v2 gộp:\n' + ex.map(s => '- ' + [...s].slice(0, 3).map(q => `\`${q}\``).join(' ≡ ')).join('\n'))
+const ex = [...merged.values()].filter(s => s.size > 1)
+console.log(`\nv2 gộp ${ex.length} nhóm cách viết khác nhau thành một khoá. Ví dụ:\n` + ex.slice(0, 6).map(s => '- ' + [...s].slice(0, 3).map(q => `\`${q}\``).join(' ≡ ')).join('\n'))
+// Tone-only merges (owner spec "bỏ dấu"): two source queries equal after folding but different before, beyond area aliases.
+const toneOnly = ex.filter(s => { const a = [...s].map(q => normalizeQueryV2(q)); const raw = [...s].map(q => String(q).normalize('NFC').toLowerCase()); return new Set(a).size === 1 && new Set(raw.map(q => q.replace(/quận|quan/g, 'q'))).size > 1 && [...s].some(q => /[àáảãạăằắẳẵặâầấẩẫậèéẻẽẹêềếểễệìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳýỷỹỵđ]/i.test(q)) && [...s].some(q => !/[àáảãạăằắẳẵặâầấẩẫậèéẻẽẹêềếểễệìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳýỷỹỵđ]/i.test(q.replace(/quận/gi, ''))) })
+console.log(`\nGộp do bỏ dấu (cần xem có khác nghĩa không): ${toneOnly.length}` + (toneOnly.length ? '\n' + toneOnly.slice(0, 5).map(s => '- ' + [...s].map(q => `\`${q}\``).join(' ≡ ')).join('\n') : ''))
 
 // 3 ─ staleness
 const cls = {}
-for (const c of calls) if (CACHED.has(c.ep)) { const t = serperTtlV2(c.ep, c.b.q ?? '', {}); const k = `${c.ep} ${t / 3600}h`; cls[k] = (cls[k] ?? 0) + 1 }
+for (const c of calls) if (CACHED.has(c.ep)) { const t = serperTtlV2(c.ep, c.b.q ?? '', {}); const k = `${classOf(c)} (${t / 3600} h)`; cls[k] = (cls[k] ?? 0) + 1 }
 console.log(`\n## 3. Hạn dùng v2 theo loại (số yêu cầu)\n\n${Object.entries(cls).sort().map(([k, v]) => `- ${k}: ${v}`).join('\n')}`)
 const rec = join('scripts', 'consult', 'replay', 'recordings')
 const timeFields = new Set()
@@ -81,25 +89,31 @@ if (existsSync(rec)) for (const f of readdirSync(rec)) {
 }
 console.log(`- trường liên quan giờ trong kết quả maps đã ghi: ${[...timeFields].join(', ') || '(không)'} — openingHours là lịch TUẦN; "đang mở" do code tính lúc đọc (serperPlaces.ts), nên 3 ngày không đóng băng trạng thái mở/đóng.`)
 
-// 4 ─ projection
+// 4 ─ projection per TTL class. Zipf s=1 over K keys per class (assumed, printed); draws inside one TTL window.
 const perTurn = tot.serper / tot.turns
-const cachedShare = calls.filter(c => CACHED.has(c.ep)).length / Math.max(1, calls.length)
-const mapsShare = calls.filter(c => c.ep === 'maps').length / Math.max(1, calls.filter(c => CACHED.has(c.ep)).length)
-function zipfHit(draws, K) { // expected fraction of draws that repeat an earlier key, Zipf s=1 over K keys
-  if (draws <= 0) return 0
+const cachedCalls = calls.filter(c => CACHED.has(c.ep))
+const cachedShare = cachedCalls.length / Math.max(1, calls.length)
+function classOf(c) { const t = ttlV2(c.ep, c.b); return t <= 3_600 ? 'timely' : c.ep === 'maps' ? 'maps' : t === 6 * 3_600 ? 'price' : t === 3 * 86_400 ? 'link' : 'web' }
+const CLASS = { maps: { K: 4000, v2Days: 3 }, link: { K: 20000, v2Days: 3 }, price: { K: 8000, v2Days: 0.25 }, web: { K: 20000, v2Days: 1 }, timely: { K: 2000, v2Days: 1 / 24 } }
+const share = {}; for (const c of cachedCalls) { const k = classOf(c); share[k] = (share[k] ?? 0) + 1 / cachedCalls.length }
+function zipfHit(draws, K) { // expected fraction of draws that repeat an earlier key in the window, Zipf s=1 over K keys
+  if (draws <= 1) return 0
   let Z = 0; for (let i = 1; i <= K; i++) Z += 1 / i
   let distinct = 0; for (let i = 1; i <= K; i++) distinct += 1 - Math.pow(1 - 1 / i / Z, draws)
   return 1 - distinct / draws
 }
-const inflate = s1.unique / Math.max(1, s2.unique) // v1 splits one need over this many more keys
-const K_MAPS = 4000, K_WEB = 20000
-console.log(`\n## 4. Ước tính theo quy mô\n\nGiả định: 9 lượt/người/tháng (= 900 lượt ở 100 người); ${perTurn.toFixed(2)} yêu cầu Serper/lượt (đo), ${(100 * cachedShare).toFixed(0)}% thuộc loại được cache (search/shopping/maps; images không), trong đó maps ${(100 * mapsShare).toFixed(0)}%. Nhu cầu phân bố Zipf s=1 trên ${K_MAPS} khoá địa điểm và ${K_WEB} khoá web/giá (tên quán cụ thể nên đuôi dài). v1: một khoá thật bị tách thành ×${inflate.toFixed(2)} khoá theo cách viết (đo ở mục 2), TTL 24 h mọi loại. v2: maps 3 ngày, web 12 h, giá 6 h, việc trong ngày 1 h.\n`)
-console.log('| người dùng/tháng | yêu cầu Serper/tháng | không cache | v1 (24 h) | v2 | v2 tiết kiệm thêm so với v1 |\n|---|---|---|---|---|---|')
+const inflate = r1.unique / Math.max(1, r2.unique) // v1 splits one need over this many more keys (measured, section 2)
+console.log(`\n## 4. Ước tính theo quy mô\n\nĐo: ${perTurn.toFixed(2)} yêu cầu Serper/lượt; ${(100 * cachedShare).toFixed(0)}% thuộc loại cache được (images thì không). Theo loại (v2): ${Object.entries(share).map(([k, v]) => `${k} ${(100 * v).toFixed(0)}%`).join(' · ')}.`)
+console.log(`Giả định: 9 lượt/người/tháng (900 lượt ở 100 người); nhu cầu Zipf s=1 trên K khoá mỗi loại — ${Object.entries(CLASS).map(([k, v]) => `${k} K=${v.K}`).join(', ')}; v1 = 24 h mọi loại, số khoá ×${inflate.toFixed(2)} (cách viết khác nhau, đo ở mục 2).\n`)
+console.log('| người dùng/tháng | yêu cầu Serper/tháng | không cache | v1 | v2 | v2 so với v1 |\n|---|---|---|---|---|---|')
 for (const users of [100, 1000]) {
   const month = users * 9 * perTurn, cachedMonth = month * cachedShare
-  const window = (share, days) => cachedMonth * share * days / 30
-  const v1 = mapsShare * zipfHit(window(mapsShare, 1), Math.round(K_MAPS * inflate)) + (1 - mapsShare) * zipfHit(window(1 - mapsShare, 1), Math.round(K_WEB * inflate))
-  const v2 = mapsShare * zipfHit(window(mapsShare, 3), K_MAPS) + (1 - mapsShare) * zipfHit(window(1 - mapsShare, 0.4), K_WEB)
+  let v1 = 0, v2 = 0
+  for (const [k, sh] of Object.entries(share)) {
+    const { K, v2Days } = CLASS[k]
+    v1 += sh * zipfHit(cachedMonth * sh * 1 / 30, Math.round(K * inflate))
+    v2 += sh * zipfHit(cachedMonth * sh * v2Days / 30, K)
+  }
   const usd = h => (month - cachedMonth * h) * 0.001
-  console.log(`| ${users} | ${Math.round(month)} | $${usd(0).toFixed(2)} | $${usd(v1).toFixed(2)} (trúng ${(100 * v1).toFixed(0)}%) | $${usd(v2).toFixed(2)} (trúng ${(100 * v2).toFixed(0)}%) | $${(usd(v1) - usd(v2)).toFixed(2)} |`)
+  console.log(`| ${users} | ${Math.round(month)} | $${usd(0).toFixed(2)} | $${usd(v1).toFixed(2)} (trúng ${(100 * v1).toFixed(0)}%) | $${usd(v2).toFixed(2)} (trúng ${(100 * v2).toFixed(0)}%) | ${usd(v1) - usd(v2) >= 0 ? 'rẻ hơn' : 'đắt hơn'} $${Math.abs(usd(v1) - usd(v2)).toFixed(2)} |`)
 }
