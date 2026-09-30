@@ -8,6 +8,23 @@ là lần biên dịch đầu tiên. Bảng dưới chỉ ghi "PASS" khi có ả
 Việc cần Huy đăng nhập: `docs/ios/IOS-REQUESTS.md` §3 (một lần). Yêu cầu server/Apple: cùng file.
 Hồ sơ nộp App Store (metadata, App Privacy, câu trả lời cho người duyệt): `docs/ios/APPSTORE-SUBMISSION.md`.
 
+## Kết quả đêm 30/09→01/10 — CI run 36759089506 (b96150c) XANH, 54 ảnh; đã mở xem: 30–33, 37, 39, 40, 44–48, 50
+
+| Mục | Trạng thái | Ảnh đã xem / ghi chú |
+|---|---|---|
+| A0 Cài đặt | Đạt một phần | 33 xem so với Android: thứ tự/nhóm/biểu tượng khớp. Lệch CÓ CHỦ Ý: không có dòng «Âm thanh thông báo Tappy» (là kênh thông báo Android; iOS không có tương đương bật/tắt trong app), không có mascot đầu trang. 34/35/36 chưa mở lại. |
+| A1 Báo cáo/chặn | Đạt (flag tắt mặc định) | 37 (form lý do), 39 (xác nhận chặn), 40 (danh sách chặn). 38/41/42/43 chưa mở. Server production chưa bật p8 → xem IOS-REQUESTS I7. |
+| A2 Xoá tài khoản | Đạt | 44 (flag tắt: «Yêu cầu xoá tài khoản» mở email), 45 (form; CHƯA thấy ô nhập — nằm dưới màn hình), 46 (đã xoá + đăng xuất). Test gõ XÓA → xác nhận → xong XANH. |
+| A3 Apple | Code + 47 (nút hiện khi bật cờ). KHÔNG kiểm trên tài khoản Apple thật. | |
+| A4 PrivacyInfo | Xong, có test + bước CI | |
+| A5 Push | Code + test đơn vị; không thử thật được | |
+| B1 Thẻ plan v2 | Đạt | 48, 50 đã xem (ảnh gradient/emoji thay thế vì manifest ảnh; giá «chưa có giá — hỏi quán»). 49, 51–53 chưa mở. |
+| B2 Thẻ địa điểm | CHƯA LÀM (chỉ đọc Android: bộ lọc, carousel, gập) |
+| B3 Thẻ hỏi v2 | 30–32 đã xem |
+| B4 | Màn Android chưa có ở iOS: MapsScreen (không ai gọi), DiscoveryHub/Category, ThreadScreen (Messenger Phase 8), VoiceListening, Games (ẩn) |
+
+Lỗi của tôi trong đêm: 3 lần CI đỏ liên tiếp (trùng `nilIfEmpty`, thiếu `await`, test gõ chữ), đều là lỗi biên dịch/test do tôi viết.
+
 ## Việc của Huy — theo thứ tự (01/10/2026)
 
 Đánh dấu **[ĐĂNG NHẬP]** = cần đăng nhập vào một dịch vụ (tôi không làm thay). Mỗi việc ghi: vào đâu → bấm gì → dán gì.
