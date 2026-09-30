@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "quà cà phê tặng sếp nam (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:22:00.999Z",
+ "body": {
+  "searchParameters": {
+   "q": "quà cà phê tặng sếp nam (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "15+ món quà Tết cho sếp vừa cao cấp vừa tinh tế, dễ ghi ...",
+    "link": "https://shopee.vn/blog/qua-tet-cho-sep/",
+    "snippet": "Quà phù hợp với sở thích và tính cách sếp như áo sơ mi, đồng hồ, nước hoa, các phụ kiện công nghệ, vật trang trí phong thủy hay tặng rượu vang ...",
+    "date": "6 thg 2, 2026",
+    "position": 1
+   },
+   {
+    "title": "[HỎA TỐC 2H] Set Quà Tặng Sinh Nhật IV Coffee",
+    "link": "https://shopee.vn/-H%E1%BB%8EA-T%E1%BB%90C-2H-Set-Qu%C3%A0-T%E1%BA%B7ng-Sinh-Nh%E1%BA%ADt-IV-Coffee-B%E1%BB%99-Qu%C3%A0-T%E1%BA%B7ng-C%C3%A0-Ph%C3%AA-Cho-Ng%C6%B0%E1%BB%9Di-Th%C3%A2n-B%E1%BA%A1n-B%C3%A8-S%E1%BA%BFp-i.1452749061.29974110929",
+    "snippet": "Mua [HỎA TỐC 2H] Set Quà Tặng Sinh Nhật IV Coffee - Bộ Quà Tặng Cà Phê Cho Người Thân, Bạn Bè, Sếp giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 2
+   },
+   {
+    "title": "Quà tặng hưu trí ngộ nghĩnh dành cho nam giới - Cốc cà phê tùy ...",
+    "link": "https://shopee.vn/Qu%C3%A0-t%E1%BA%B7ng-h%C6%B0u-tr%C3%AD-ng%E1%BB%99-ngh%C4%A9nh-d%C3%A0nh-cho-nam-gi%E1%BB%9Bi-C%E1%BB%91c-c%C3%A0-ph%C3%AA-t%C3%B9y-ch%E1%BB%89nh-m%E1%BB%9Bi-l%E1%BA%A1-v%E1%BB%9Bi-c%C3%A2u-n%C3%B3i-h%C3%A0i-h%C6%B0%E1%BB%9Bc-T%E1%BA%A1m-bi%E1%BB%87t-%C4%91%E1%BB%83-l%E1%BA%A1i-qu%C3%A0-cho-%C4%91%E1%BB%93ng-nghi%E1%BB%87p-s%E1%BA%BFp-y-t%C3%A1-gi%C3%A1o-vi%C3%AAn-ng%C6%B0%E1%BB%9Di-ngh%E1%BB%89-h%C6%B0u-%C3%9D-t%C6%B0%E1%BB%9Fng-ti%E1%BB%87c-ngh%E1%BB%89-h%C6%B0u-i.1913699497.48265788622",
+    "snippet": "Quà tặng hưu trí ngộ nghĩnh dành cho nam giới - Cốc cà phê tùy chỉnh mới lạ với câu nói hài hước - Tạm biệt để lại quà cho đồng nghiệp, sếp, y tá, ...",
+    "position": 3
+   },
+   {
+    "title": "Set quà tặng 3 món cà phê - trà - đồ ăn vặt ý nghĩa cho ...",
+    "link": "https://shopee.vn/Set-qu%C3%A0-t%E1%BA%B7ng-3-m%C3%B3n-c%C3%A0-ph%C3%AA-tr%C3%A0-%C4%91%E1%BB%93-%C4%83n-v%E1%BA%B7t-%C3%BD-ngh%C4%A9a-cho-th%E1%BA%A7y-c%C3%B4-s%E1%BA%BFp-v%C3%A0-%C4%91%E1%BB%93ng-nghi%E1%BB%87p-C%E1%BB%99ng-C%C3%A0-Ph%C3%AA-i.354028981.54406709356",
+    "snippet": "Mua Set quà tặng 3 món cà phê - trà - đồ ăn vặt ý nghĩa cho thầy cô, sếp và đồng nghiệp - Cộng Cà Phê giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 4
+   },
+   {
+    "title": "Gợi ý 10+ món quà 8/3 cho sếp nữ giúp bạn ghi điểm tuyệt ...",
+    "link": "https://shopee.vn/blog/qua-8-3-cho-sep-nu/",
+    "snippet": "Tuy nhiên, nếu sếp bạn là một người “đạo cà phê”, hãy chọn những loại máy pha hạt kèm theo các dụng cụ như ấm đun, cối xay, phụ kiện pha chế, ...",
+    "date": "6 thg 3, 2025",
+    "position": 5
+   },
+   {
+    "title": "CHỢIN, Cửa hàng trực tuyến",
+    "link": "https://shopee.vn/choinvn",
+    "snippet": "Ly Cốc Sứ Hình Chó Bark Sĩ In 2 Mặt, Thiết Kế Hài Hước, Quà Tặng Độc Lạ Cho Dân Văn Phòng Và Người Yêu Thú Cưng. 79.000₫. rating-star 4.9 Đánh giá shop.",
+    "position": 6
+   },
+   {
+    "title": "Quà biếu sếp - Giá Tốt, Sale Tháng 09, Ship 0 Đồng",
+    "link": "https://shopee.vn/list/qu%C3%A0/bi%E1%BA%BFu%20s%E1%BA%BFp",
+    "snippet": "Bộ Trà Hộp Gỗ 2 Hũ Chè Uống Thượng Hạng Ngon Quà Tặng Trung Thu Doanh · Yến hũ LAMIE 6 hũ 6,5g tiện lợi, đa dạng vị cho mọi · Set Quà Hộp Bánh Trung Thu Cao Cấp ...",
+    "position": 7
+   },
+   {
+    "title": "Thư giãn, Tôi có một tờ trải cho điều đó - Cà phê gốm thiết kế ...",
+    "link": "https://shopee.vn/Th%C6%B0-gi%C3%A3n-T%C3%B4i-c%C3%B3-m%E1%BB%99t-t%E1%BB%9D-tr%E1%BA%A3i-cho-%C4%91i%E1%BB%81u-%C4%91%C3%B3-C%C3%A0-ph%C3%AA-g%E1%BB%91m-thi%E1%BA%BFt-k%E1%BA%BF-b%E1%BA%A3ng-tr%E1%BA%A3i-m%E1%BB%9Bi-l%E1%BA%A1-d%C3%A0nh-cho-chuy%C3%AAn-gia-CPA-T%C3%A0i-ch%C3%ADnh-Qu%C3%A0-t%E1%BA%B7ng-Gi%C3%A1ng-sinh-%C4%91%E1%BB%99c-%C4%91%C3%A1o-cho-%C4%91%E1%BB%93ng-nghi%E1%BB%87p-s%E1%BA%BFp-k%E1%BA%BF-to%C3%A1n-11-oz-i.1835740909.47011022100?extraParams=%7B%22display_model_id%22%3A435959795763%2C%22model_selection_logic%22%3A3%7D",
+    "snippet": "Mua Thư giãn, Tôi có một tờ trải cho điều đó - Cà phê gốm thiết kế bảng trải mới lạ dành cho chuyên gia CPA & Tài chính - Quà tặng Giáng sinh độc đáo cho ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

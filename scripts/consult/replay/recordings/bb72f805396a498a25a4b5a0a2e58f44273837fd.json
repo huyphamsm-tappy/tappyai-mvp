@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "GILAN BOUTIQUE HOTEL",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:23:40.198Z",
+ "body": {
+  "searchParameters": {
+   "q": "GILAN BOUTIQUE HOTEL",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Gilan Boutique Hotel, Tân Phú (cập nhật giá năm 2027)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/678867258.jpg?k=51a29b3304e5ee6cecc858c4ab5f1e2c5a74c921db213015f3935e46c901a384&o=",
+    "imageWidth": 1024,
+    "imageHeight": 576,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQaZgPBqrWPJBjW1I_jDGHikxJ1A2wujX1i5wdF12YYA&s=10",
+    "thumbnailWidth": 738,
+    "thumbnailHeight": 414,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/gilan-boutique.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F678867258.jpg%3Fk%3D51a29b3304e5ee6cecc858c4ab5f1e2c5a74c921db213015f3935e46c901a384%26o%3D&tbnid=kIOxXk19dswbbM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fgilan-boutique.vi.html&docid=tYFPKZBd23SwgM&w=1024&h=576",
+    "position": 1
+   },
+   {
+    "title": "Gilan Boutique Hotel, Tân Phú (cập nhật giá năm 2027)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/742880642.jpg?k=36a814ec05fedf3f0da51bcb382a37f10aac201fb27316b6adfaddcfb342050b&o=",
+    "imageWidth": 1024,
+    "imageHeight": 768,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZFTQtbVYHuf8IX5LWNhh6n7BmpcIBwEa4DRDHuszZ5g&s=10",
+    "thumbnailWidth": 638,
+    "thumbnailHeight": 480,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/gilan-boutique.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F742880642.jpg%3Fk%3D36a814ec05fedf3f0da51bcb382a37f10aac201fb27316b6adfaddcfb342050b%26o%3D&tbnid=QLFDVythqeaAYM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fgilan-boutique.vi.html&docid=tYFPKZBd23SwgM&w=1024&h=768",
+    "position": 2
+   },
+   {
+    "title": "Gilan Boutique Hotel Nam Cát Tiên, Việt Nam: Agoda.com có giá rẻ nhất",
+    "imageUrl": "https://q-xx.bstatic.com/xdata/images/hotel/max500/910058040.jpg?k=72fe13e9b0d26e5ea00e9bf6e06fb92a54f2352bd37f8ce37cc8a056425b4500&o=",
+    "imageWidth": 500,
+    "imageHeight": 375,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5hTY3QtZx47dLbwzdGK2ofC_e9p-6fgn2yfgcbslJsw&s=10",
+    "thumbnailWidth": 499,
+    "thumbnailHeight": 375,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/gilan-boutique-hotel/hotel/quan-tom-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fq-xx.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax500%2F910058040.jpg%3Fk%3D72fe13e9b0d26e5ea00e9bf6e06fb92a54f2352bd37f8ce37cc8a056425b4500%26o%3D&tbnid=_Sj6BtFIA0jULM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fgilan-boutique-hotel%2Fhotel%2Fquan-tom-vn.html&docid=w1FsYShw0ANWQM&w=500&h=375",
+    "position": 3
+   },
+   {
+    "title": "Gilan Boutique Hotel Nam Cát Tiên, Việt Nam: Agoda.com có giá rẻ nhất",
+    "imageUrl": "https://q-xx.bstatic.com/xdata/images/hotel/max500/910054221.jpg?k=108ffc058007279034e6b2ec2b1dafe62c690cfb727c71d334b98d97f44d6ee9&o=",
+    "imageWidth": 375,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSkXqi5G8YW-1uzIHaXgZU838CuGV0_4SWHpk7C_mHZ7g&s",
+    "thumbnailWidth": 194,
+    "thumbnailHeight": 259,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/gilan-boutique-hotel/hotel/quan-tom-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fq-xx.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax500%2F910054221.jpg%3Fk%3D108ffc058007279034e6b2ec2b1dafe62c690cfb727c71d334b98d97f44d6ee9%26o%3D&tbnid=OQAZE9uT0gQohM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fgilan-boutique-hotel%2Fhotel%2Fquan-tom-vn.html&docid=w1FsYShw0ANWQM&w=375&h=500",
+    "position": 4
+   },
+   {
+    "title": "Gilan Boutique Hotel Nam Cát Tiên, Việt Nam: Agoda.com có giá rẻ nhất",
+    "imageUrl": "https://q-xx.bstatic.com/xdata/images/hotel/max500/910058096.jpg?k=d2eabc4bff9ae2b5dc2c6608802c8d228714638bda366bbcdd69a4aee9cb6378&o=",
+    "imageWidth": 500,
+    "imageHeight": 375,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUDY7A7P1kTGsxXxUJeM0EfqlNC63wTZ5fMwMJ8stv7g&s",
+    "thumbnailWidth": 259,
+    "thumbnailHeight": 194,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/gilan-boutique-hotel/hotel/quan-tom-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fq-xx.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax500%2F910058096.jpg%3Fk%3Dd2eabc4bff9ae2b5dc2c6608802c8d228714638bda366bbcdd69a4aee9cb6378%26o%3D&tbnid=yCuaN-dWLtiakM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fgilan-boutique-hotel%2Fhotel%2Fquan-tom-vn.html&docid=w1FsYShw0ANWQM&w=500&h=375",
+    "position": 5
+   },
+   {
+    "title": "Gilan Boutique Hotel Nam Cát Tiên, Việt Nam: Agoda.com có giá rẻ nhất",
+    "imageUrl": "https://q-xx.bstatic.com/xdata/images/hotel/max500/910058057.jpg?k=f38b08082e780a26612d048010339989f2fcb559a7025b7a9961fa99656e4844&o=",
+    "imageWidth": 375,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR7Cuh3R49YSHw9XodBDUoLZbckJmqrF31awZfuwhqZmw&s=10",
+    "thumbnailWidth": 375,
+    "thumbnailHeight": 500,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/gilan-boutique-hotel/hotel/quan-tom-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fq-xx.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax500%2F910058057.jpg%3Fk%3Df38b08082e780a26612d048010339989f2fcb559a7025b7a9961fa99656e4844%26o%3D&tbnid=SNi675Yh1mKzdM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fgilan-boutique-hotel%2Fhotel%2Fquan-tom-vn.html&docid=w1FsYShw0ANWQM&w=375&h=500",
+    "position": 6
+   },
+   {
+    "title": "Gilan Boutique Hotel Nam Cát Tiên, Việt Nam: Agoda.com có giá rẻ nhất",
+    "imageUrl": "https://q-xx.bstatic.com/xdata/images/hotel/max500/910051839.jpg?k=8fce556580c9f386b89c253f6c476ddfc9c353926e73b1aae895f88a09a5a619&o=",
+    "imageWidth": 500,
+    "imageHeight": 375,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVJnonYZZJ_-0IutrY2-ySti-vvT1aq6HB9-1xZdhqUQ&s",
+    "thumbnailWidth": 259,
+    "thumbnailHeight": 194,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/gilan-boutique-hotel/hotel/quan-tom-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fq-xx.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax500%2F910051839.jpg%3Fk%3D8fce556580c9f386b89c253f6c476ddfc9c353926e73b1aae895f88a09a5a619%26o%3D&tbnid=1UsTK23NfvnUVM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fgilan-boutique-hotel%2Fhotel%2Fquan-tom-vn.html&docid=w1FsYShw0ANWQM&w=500&h=375",
+    "position": 7
+   },
+   {
+    "title": "Gilan Boutique Hotel, Tân Phú (cập nhật giá năm 2027)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/910054822.jpg?k=9843bfb8073a199ca7b4ecd337c79c370dd13dcea1759cb44157cfea5775dc73&o=",
+    "imageWidth": 576,
+    "imageHeight": 768,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVFUljrSM9KFUjVo1w7SPffR-EiQje0ic7jEOHmKiyqQ&s=10",
+    "thumbnailWidth": 480,
+    "thumbnailHeight": 640,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/gilan-boutique.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F910054822.jpg%3Fk%3D9843bfb8073a199ca7b4ecd337c79c370dd13dcea1759cb44157cfea5775dc73%26o%3D&tbnid=pcPrZ1-YDgoeNM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fgilan-boutique.vi.html&docid=tYFPKZBd23SwgM&w=576&h=768",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

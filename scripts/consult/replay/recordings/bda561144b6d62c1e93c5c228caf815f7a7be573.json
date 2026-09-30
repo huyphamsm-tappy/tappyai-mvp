@@ -1,0 +1,42 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Hanami Hotel Danang\" OR \"Khách sạn G8 Luxury Đà Nẵng\" OR \"Bluzen Hotel Danang (Khách sạn Bluzen Đà Nẵng)\" Đà Nẵng site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:23:31.405Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Hanami Hotel Danang\" OR \"Khách sạn G8 Luxury Đà Nẵng\" OR \"Bluzen Hotel Danang (Khách sạn Bluzen Đà Nẵng)\" Đà Nẵng site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "$47/night in Da Nang: 2 Balconies, King Bed & Partial ...",
+    "link": "https://www.tiktok.com/@jackexploretheworld/video/7658876272935701778",
+    "snippet": "Da Nang budget hotel with balconies, cheap beachfront hotel Da Nang Vietnam, $47 per night ... Hanami Hotel Danang · author · 114 · 41.",
+    "position": 1
+   },
+   {
+    "title": "HANAMI HOTEL | TikTok Places",
+    "link": "https://www.tiktok.com/place/Hanami-Hotel-Danang-22535865207437556?language=en",
+    "snippet": "HANAMI HOTEL. 14 videos. 61-63 Hoàng Kế Viêm, Ngũ Hành Sơn, Da Nang 550000, Vietnam. add_to_favorite. 17.9K. ใครไปดานัง นี่คืออีกร้านที่ควรค่าแก่การไปลอง.",
+    "position": 2
+   },
+   {
+    "title": "Logo các đơn vị hành chính Đà Nẵng trước khi sáp nhập",
+    "link": "https://www.tiktok.com/@khaivan004/photo/7671320533476084999",
+    "snippet": "Quận Ngũ Hành Sơn không có biểu trưng (logo) • Nguồn ảnh: Wikipedia tiếng Việt, Google, Hanami Hotel Danang, Biểu tượng - logo (Facebook),...",
+    "position": 3
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,60 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Quán Nhậu 256\" OR \"Cửu Vân Quán\" OR \"QUÁN 366| QUÁN NHẬU BÙI ĐÌNH TUÝ| QUÁN NHẬU BÌNH THẠNH\" Bình Thạnh site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:58:16.187Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Quán Nhậu 256\" OR \"Cửu Vân Quán\" OR \"QUÁN 366| QUÁN NHẬU BÙI ĐÌNH TUÝ| QUÁN NHẬU BÌNH THẠNH\" Bình Thạnh site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Khám Phá Quán Nhậu 256 Nguyễn Gia Trí tại Bình Thạnh",
+    "link": "https://www.tiktok.com/@quan_nhau_256/video/7444057004529831175",
+    "snippet": "Tìm hiểu về quán nhậu 256 Nguyễn Gia Trí ở Bình Thạnh với dịch vụ ngon. @Quán 256 Bình Thạnh.",
+    "position": 1
+   },
+   {
+    "title": "Tiệc Sinh Nhật & Quán Nhậu Vỉa Hè Quận Bình Thạnh",
+    "link": "https://www.tiktok.com/@quan_nhau_256/video/7644509627375209748",
+    "snippet": "Khám phá quán nhậu bình dân, lý tưởng cho tiệc sinh nhật và tụ tập. @Quán 256 Bình Thạnh · âm thanh gốc - Nhựt Hài Dữ Tee · Quán Nhậu 256.",
+    "position": 2
+   },
+   {
+    "title": "Gà nổ muối quán 256 Bình Thạnh - Món streetfood nổi bật",
+    "link": "https://www.tiktok.com/@tinhtungtangvn/video/7638971642059803911",
+    "snippet": "Trải nghiệm gà nổ muối tại quán 256 Bình Thạnh: vị giòn, mặn vừa. @TÍNH TUNG TĂNG · âm thanh gốc - TÍNH TUNG TĂNG · Quán Nhậu 256 · author.",
+    "position": 3
+   },
+   {
+    "title": "Quán 256 Bình Thạnh (@quan_nhau_256)",
+    "link": "https://www.tiktok.com/@quan_nhau_256",
+    "snippet": "Quán 256 Bình Thạnh (@quan_nhau_256) trên TikTok |70.5K Lượt thích.1373 Follower.Địa chỉ : 256 Nguyễn gia Trí, P25, Q Bình Thạnh, Tp hcm ... Quán nhậu 256 Nguyễn ...",
+    "position": 4
+   },
+   {
+    "title": "Xuống CA là chúng ta lên LY #quannhaubinhthanh ...",
+    "link": "https://www.tiktok.com/@quan_nhau_256/video/7667563933439446293",
+    "snippet": "Quán Nhậu 256 · author · 11 · 0 ... Quán 256 Bình Thạnh. 80 · recommend-cover. Quán 256 Bình Thạnh. 6 · recommend-cover.",
+    "position": 5
+   },
+   {
+    "title": "Cà phê một mình tại 135 Nguyễn Cửu Vân, P17, Q.Bình ...",
+    "link": "https://www.tiktok.com/@bichlan.99999/video/7664225659899628820",
+    "snippet": "cà phê một mình Nguyễn Cửu Vân, 135 Nguyễn Cửu Vân quán cà phê, cà phê Bình Thạnh, quán cafe P17 Bình Thạnh, home alone coffee Bình Thạnh ...",
+    "position": 6
+   }
+  ],
+  "credits": 1
+ }
+}

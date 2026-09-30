@@ -163,11 +163,17 @@ export interface EnrichmentCollector {
   /** Consult V2 plan: the pick the conversation settled on (the plan's cost line is about it). */
   consultPick?: string | null
   setConsultPick(name: string | null): void
+  setConsultShown(names: string[]): void
+  /** PHIÊN LUNA: the reply is checked for a prompt echo / secret shape before it leaves (lunaSafety.ts). */
+  leakCheck?: (text: string) => { leak: boolean; reason: string | null }
+  setLeakCheck(fn: (text: string) => { leak: boolean; reason: string | null }): void
   consultKnown?: Record<string, string>
   /** Consult V2 shopping plan: the chosen product's listed price (route, from the newest shopping card). */
   consultPlanPrice?: { amount: number; seller: string | null } | null
   /** Consult V2: the names a compare / follow-up turn is about (router `refers`). */
   consultRefers?: string[]
+  /** PHIÊN LUNA: names the consultation already showed — a reject turn's fallback pick is never one of them. */
+  consultShown?: string[]
   /**
    * Whether a reflex "what kind would you like?" question may survive this
    * reply. Set by the route once a tool result has been judged against the
@@ -407,6 +413,10 @@ export function createEnrichmentCollector(turnText = '', earlierUserTexts: reado
     setConsultButtons(labels: string[]) { this.consultButtons = labels.slice(0, 3) },
     consultTurn: undefined as string | undefined,
     consultRefers: undefined as string[] | undefined,
+    consultShown: undefined as string[] | undefined,
+    setConsultShown(names: string[]) { this.consultShown = names },
+    leakCheck: undefined as ((text: string) => { leak: boolean; reason: string | null }) | undefined,
+    setLeakCheck(fn: (text: string) => { leak: boolean; reason: string | null }) { this.leakCheck = fn },
     consultKnown: undefined as Record<string, string> | undefined,
     consultPlanPrice: null as { amount: number; seller: string | null } | null,
     setConsultTurn(turn: string, refers?: string[], known?: Record<string, string>) { this.consultTurn = turn; this.consultRefers = refers; this.consultKnown = known },

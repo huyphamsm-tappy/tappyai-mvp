@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Quán Núi\" OR \"Sandwich - Hamburger Chía Núi\" OR \"Phá Lấu Dì Nủi\" TP.HCM site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:38:09.185Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Quán Núi\" OR \"Sandwich - Hamburger Chía Núi\" OR \"Phá Lấu Dì Nủi\" TP.HCM site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Bánh Xèo Hải Sản Đặc Biệt Tại Quán Núi Lở",
+    "link": "https://www.tiktok.com/@nuilobinhduong/video/7387605065273560336",
+    "snippet": "Khám phá bánh xèo hải sản tại quán Núi Lở. Khám phá vị ngon của bánh xèo đặc biệt chỉ 150.000. #thaoquanannuilo #xuhuongtiktok #tomkho. Keywords ...",
+    "position": 1
+   },
+   {
+    "title": "Sandwich và Hamburger Chía Núi - Đặc Sản Sài Gòn",
+    "link": "https://www.tiktok.com/@hana.housewife/video/7589095170184842517",
+    "snippet": "Sandwich - Hamburger Chía Núi là một thương hiệu bán đồ ăn nhanh nổi tiếng tại TP. Hồ Chí Minh, chuyên phục vụ các món sandwich và hamburger ...",
+    "position": 2
+   },
+   {
+    "title": "Review Khoai Mì Quết Núi Lở: Món \"Tiền Tỷ\" 10 Người Ăn ...",
+    "link": "https://www.tiktok.com/@lee.haydi/video/7488288600073850118",
+    "snippet": "### Ngoài Khoai Mì Quết, Quán Núi Lở Còn Gì? Bên cạnh món khoai mì quết, quán Núi Lở còn nổi tiếng với bánh xèo giá 200k, một món ăn cũng gây ...",
+    "position": 3
+   },
+   {
+    "title": "Quán Núi của em được mưa rồi nha cục vàng ơi ...",
+    "link": "https://www.tiktok.com/@nuilo66/video/7632591765261864213",
+    "snippet": "147 Lượt thích,Video TikTok từ Thảo Núi Lở (@nuilo66): \"Quán Núi của em được mưa rồi nha cục vàng ơi#nuibadentayninh #nuilo\".âm thanh gốc ...",
+    "position": 4
+   },
+   {
+    "title": "Núp hẻm Tôn Đản - Quán Phá Lấu Dì Nũi ngon nức tiếng ...",
+    "link": "https://www.tiktok.com/@didauofficial/video/7411364070382701840",
+    "snippet": "Phá Lấu Dì Nủi nằm ở giữa hẻm nhé! ❤️ Ai đó chỉ cho mình quán phá lấu ngon gần quận 11 được không? (Không đường Bình Thới nhaaaa) ...",
+    "position": 5
+   },
+   {
+    "title": "Khám phá Quán Núi Lở Dầu Tiếng",
+    "link": "https://www.tiktok.com/@kieu_ha_1994/video/7630747316508462356",
+    "snippet": "Khám phá Quán Núi Lở Dầu Tiếng. Khám phá Quán Núi Lở Dầu Tiếng, điểm đến hấp dẫn tại Bình Dương với nhiều món ngon. #nuilodautieng #trieuview❤ ...",
+    "position": 6
+   },
+   {
+    "title": "Quán Núi Lở Dầu Tiếng#quannuilo #nuilodautieng #xuhuong ...",
+    "link": "https://www.tiktok.com/@kieu_ha_1994/video/7667485097611775252",
+    "snippet": "22 Lượt thích,Video TikTok từ Kiều Hạ-NV Núi Lở (@kieu_ha_1994): \"Quán Núi Lở Dầu Tiếng#quannuilo #nuilodautieng #xuhuong #trieuview❤️tiktok\".âm thanh gốc ...",
+    "position": 7
+   },
+   {
+    "title": "Burger Chía Núi Quận 5",
+    "link": "https://www.tiktok.com/discover/burger-ch%C3%ADa-n%C3%BAi-qu%E1%BA%ADn-5",
+    "snippet": "Sandwich - Hamburger Chía Núi là một thương hiệu bán đồ ăn nhanh nổi tiếng tại TP. Hồ Chí Minh, chuyên phục vụ các món sandwich và hamburger ...",
+    "date": "21 thg 9, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

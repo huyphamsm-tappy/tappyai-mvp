@@ -1,0 +1,42 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "MSI GF63 Thin i7-11800H/8GB/512GB/Win11 site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:04:36.099Z",
+ "body": {
+  "searchParameters": {
+   "q": "MSI GF63 Thin i7-11800H/8GB/512GB/Win11 site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "LAPTOP MSI GAMING CYBORG 15 (A12VE-240VN) (I7 ...",
+    "link": "https://www.lazada.vn/products/laptop-msi-gaming-cyborg-15-a12ve-240vn-i7-12650h8gb512gb-ssdrtx4050-6gb156fhd-144hzwin11den-i2374097522.html?srsltid=AU7gw4UUTXvcgxEGgFUI8afovpH_IPodCd7pxLpgktTPy9NDSEspRxKl",
+    "snippet": "Mô tả sản phẩm ; Mầu sắc. Đen ; Bộ vi xử lý. Intel® Core™ i7-12650H ; Chipset. Intel® ; Bộ nhớ trong. 8GB DDR5 (8GB *1) ; Số khe cắm. 2.",
+    "position": 1
+   },
+   {
+    "title": "LAPTOP MSI GAMING CYBORG 15 (A12VF-267VN) (I7 ...",
+    "link": "https://www.lazada.vn/products/laptop-msi-gaming-cyborg-15-a12vf-267vn-i7-12650h8gb-ram512gb-ssdrtx4060-8gb156-inch-fhd-144hzwin11den-i2374002676.html?srsltid=AU7gw4WNW8W0hbsZO7z3wfb_bRkdPj7ZzN84zWPf9ghSS6t_ZSuf4MCW",
+    "snippet": "LAPTOP MSI GAMING CYBORG 15 (A12VF-267VN) (I7 12650H/8GB RAM/512GB SSD/RTX4060 8GB/15.6 INCH FHD 144HZ/WIN11/ĐEN) ; Mầu sắc. Đen ; Bộ vi xử lý. Intel® Core™ i7- ...",
+    "position": 2
+   },
+   {
+    "title": "Laptop Acer Nitro 5 Eagle AN515-57-5669 NH.QEHSV.001 ...",
+    "link": "https://www.lazada.vn/products/laptop-acer-nitro-5-eagle-an515-57-5669-nhqehsv001-i5-11400h-8gb-512gb-gtx1650-4gb-156fhd-144hz-win11-i2229935714.html?srsltid=AU7gw4XHRx4aqA1-fQUcTdGMlpbm2V8nx5ah8vbHkahLktC-Jqv8YOX5",
+    "snippet": "001 i5-11400H| 8GB| 512GB| GTX1650 4GB| 15.6\"FHD 144Hz| Win11. Tuỳ chọn sản phẩm ... i7-11800H. Tận hưởng trải nghiệm chơi game mượt mà, không bị nhòe với ...",
+    "position": 3
+   }
+  ],
+  "credits": 1
+ }
+}

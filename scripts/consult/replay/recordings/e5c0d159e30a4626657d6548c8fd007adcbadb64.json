@@ -1,0 +1,77 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "laptop Mới (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:42:48.150Z",
+ "body": {
+  "searchParameters": {
+   "q": "laptop Mới (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Laptop | Máy tính xách tay giá rẻ, trả góp 0%, giảm 15 triệu",
+    "link": "https://cellphones.com.vn/laptop.html",
+    "snippet": "Một số dòng laptop mà sinh viên có thể tham khảo như: HP Pavilion; Lenovo IdeaPad; Acer Aspire; ASUS VivoBook; Dell Inspiron. Tuy nhiên, với một số ngành học ...",
+    "position": 1
+   },
+   {
+    "title": "Giải đáp khi mua laptop mới cần làm gì? 11 lưu ý QUAN ...",
+    "link": "https://cellphones.com.vn/sforum/khi-mua-laptop-moi-can-lam-gi",
+    "snippet": "Tìm hiểu khi mua laptop mới cần làm gì? Những việc cần thiết có thể làm: Đăng ký bảo hành cho máy, đặt tên cho máy tính, loại bỏ các phần mềm từ nhà sản ...",
+    "rating": 3.5,
+    "ratingCount": 2,
+    "position": 2
+   },
+   {
+    "title": "Cài đặt máy tính sau khi mua chi tiết từ A–Z cho người mới",
+    "link": "https://cellphones.com.vn/sforum/cai-dat-may-tinh",
+    "snippet": "Cách cài đặt máy tính chuẩn và đầy đủ khi mua về · Cập nhật Windows phiên bản mới nhất · Cập nhật Driver đầy đủ cho máy · Dọn dẹp bloatware không cần thiết · Cài ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 3
+   },
+   {
+    "title": "Laptop dưới 10 triệu cấu hình mạnh mẽ, hiệu năng vượt trội",
+    "link": "https://cellphones.com.vn/bo-loc/laptop-duoi-10-trieu",
+    "snippet": "MacBook Air M5 13 inch 2026 10CPU 8GPU 16GB 512GB | Chính hãng Apple Việt Nam · Laptop Acer Gaming Nitro ProPanel ANV15-52-50VA · Laptop ASUS Vivobook 14 X1404VA- ...",
+    "position": 4
+   },
+   {
+    "title": "Laptop cũ giá rẻ, uy tín, trả góp 0%, dùng thử 7 ngày",
+    "link": "https://cellphones.com.vn/hang-cu/laptop.html",
+    "snippet": "Laptop cũ giá rẻ, giảm HSSV 700k, trả góp 0%, trả trước 0đ, phụ phí 0đ, 7 ngày dùng thử miễn phí, giảm 2tr lên đời. Mua ngay laptop cũ uy tín.",
+    "position": 5
+   },
+   {
+    "title": "Laptop mỏng nhẹ, nhỏ gọn, giá siêu rẻ, giảm đến 16 triệu",
+    "link": "https://cellphones.com.vn/laptop/mong-nhe.html",
+    "snippet": "Laptop Lenovo IdeaPad Slim 3 14IWC11 83RQ002PVN · Laptop ASUS ZenBook 14 UX3405CA-ST648W · Laptop ASUS Vivobook S14 S3407VA-LY147W · Laptop HP OmniBook 7 14- ...",
+    "position": 6
+   },
+   {
+    "title": "Top 5 laptop mới \"ngon - bổ - rẻ\" cho tân sinh viên 2026",
+    "link": "https://cellphones.com.vn/sforum/top-5-laptop-cho-tan-sinh-vien-gia-re",
+    "snippet": "Acer Aspire Lite 14 Gen 2 · Trang bị bộ vi xử lý Intel Core i3-1305U, mang lại hiệu suất ổn định cho các tác vụ văn phòng và giải trí cơ bản.",
+    "date": "29 thg 6, 2026",
+    "position": 7
+   },
+   {
+    "title": "Laptop cảm ứng 2 in 1 giá rẻ | Màn hình nhạy, chất lượng ...",
+    "link": "https://cellphones.com.vn/laptop/cam-ung.html",
+    "snippet": "Laptop HP ProBook 4 G1I 16 BQ5D8PT ; Hãng sản xuất. Lenovo; Dell; HP; ASUS; Microsoft; MSI ; Nhu cầu sử dụng. Học tập - Văn phòng; Mỏng nhẹ; Cao cấp - Sang trọng",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

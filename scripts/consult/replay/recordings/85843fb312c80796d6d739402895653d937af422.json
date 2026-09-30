@@ -1,0 +1,30 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"[iPhone 17 Pro Max] UAG Chính Hãng\" OR \"[iPhone 17 Pro/17 Pro Max] Ốp lưng UAG Pathfinder ...\" OR \"Ốp lưng UAG Pathfinder / Civilian / Monarch Pro cho ...\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:41:03.411Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"[iPhone 17 Pro Max] UAG Chính Hãng\" OR \"[iPhone 17 Pro/17 Pro Max] Ốp lưng UAG Pathfinder ...\" OR \"Ốp lưng UAG Pathfinder / Civilian / Monarch Pro cho ...\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "17 pro max case uag monarch",
+    "link": "https://shop.tiktok.com/vn/k/17-pro-max-case-uag-monarch",
+    "snippet": "Ốp lưng UAG Pathfinder / Civilian / Monarch Pro cho iPhone 17 Pro / 17 Pro Max ...",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

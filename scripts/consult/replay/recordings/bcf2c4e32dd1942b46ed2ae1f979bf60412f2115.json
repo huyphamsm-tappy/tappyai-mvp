@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Cơm tấm Diễm\" OR \"Cơm Tấm Trần Quý Cáp\" OR \"Cơm tấm Long Xuyên Tị Quỳnh\" quan 3 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:55:44.541Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Cơm tấm Diễm\" OR \"Cơm Tấm Trần Quý Cáp\" OR \"Cơm tấm Long Xuyên Tị Quỳnh\" quan 3 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cơm Tấm Long Xuyên Tị Quỳnh Quận 3: 38k, mở 7h–13h",
+    "link": "https://www.tiktok.com/@truongcamcuong21051964/video/7409279480461675783",
+    "snippet": "Cơm Tấm Long Xuyên Tị Quỳnh là địa chỉ cơm tấm được nhiều người tìm kiếm tại Quận 3. Quán nằm ở số 20/12 Kỳ Đồng, phường 9, Quận 3, TP.HCM.",
+    "position": 1
+   },
+   {
+    "title": "Cơm Tấm Long Xuyên Tị Quỳnh #thanhthoiluottet ...",
+    "link": "https://www.tiktok.com/@dicungphuc/video/7319735829046529281",
+    "snippet": "1561 Lượt thích,36 Bình luận.Video TikTok từ Đi Cùng Phúc (@dicungphuc): \"Cơm Tấm Long Xuyên Tị Quỳnh #thanhthoiluottet #hellovietnam ...",
+    "position": 2
+   },
+   {
+    "title": "Top 100 Quán Cơm Tấm Ở Sài Gòn - Tập 4: Trần Quý Cáp",
+    "link": "https://www.tiktok.com/@ansaonoizay_/video/7393316822172421394",
+    "snippet": "Top 100 Quán Cơm Tấm Ở Sài Gòn - Tập 4: Trần Quý Cáp. Khám phá quán cơm tấm Trần Quý Cáp trong top 100 quán ngon Sài Gòn. Tận hưởng ẩm thực ...",
+    "position": 3
+   },
+   {
+    "title": "Cơm tấm chiều ngon nức tiếng quận 8 dời về đây rồi nè ...",
+    "link": "https://www.tiktok.com/@dicungphuc/video/7578855601611033874",
+    "snippet": "237K lượt xem. Cơm Tấm Long Xuyên Tị Quỳnh ...",
+    "position": 4
+   },
+   {
+    "title": "Hiền Lương Chê Cơm Tấm",
+    "link": "https://www.tiktok.com/content/hi%E1%BB%81n-l%C6%B0%C6%A1ng-ch%C3%AA-c%C6%A1m-t%E1%BA%A5m",
+    "snippet": "Top 100 Quán Cơm Tấm Ở Sài Gòn - Tập 4: Trần Quý Cáp. Khám phá quán cơm tấm Trần Quý Cáp trong top 100 quán ngon Sài Gòn. Tận hưởng ẩm thực ...",
+    "date": "8 thg 6, 2026",
+    "position": 5
+   },
+   {
+    "title": "Tiệm Cà Phê Sài Gòn Xưa: Góc Quán Ngon Quận 5",
+    "link": "https://www.tiktok.com/@truongcamcuong21051964/video/7610449909958954256",
+    "snippet": "Ngoài ra, nếu bạn đang tìm kiếm một bữa ăn ngon, Cơm Tấm Trần Quý Cáp tại 260 Võ Văn Tần, phường Bàn Cờ, Quận 3 cũng là một lựa chọn đáng cân ...",
+    "position": 6
+   },
+   {
+    "title": "aqibmobilesbillitang - original sound",
+    "link": "https://www.tiktok.com/music/original-sound-7470897568526191361",
+    "snippet": "Cơm Tấm Long Xuyên Tị Quỳnh. Ở số 20/12 Kỳ Đồng phường 9 quận 3, cơm tấm giá là 38k. Mở cửa từ lúc 7 giờ cho đến 13 giờ. |. Puntos críticos examen práctico ...",
+    "position": 7
+   },
+   {
+    "title": "Raquel Medina-Cleghorn - original sound",
+    "link": "https://www.tiktok.com/music/original-sound-7497827204823255838",
+    "snippet": "Cơm Tấm Long Xuyên Tị Quỳnh. Ở số 20/12 Kỳ Đồng phường 9 quận 3, cơm tấm giá là 38k. Mở cửa từ lúc 7 giờ cho đến 13 giờ. |. car-parking-dünyaya-araba-satma.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Cà Phê Hòa Tan Ưu Lạc 5 site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:59:32.849Z",
+ "body": {
+  "searchParameters": {
+   "q": "Cà Phê Hòa Tan Ưu Lạc 5 site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cà Phê Hòa Tan Ưu Lạc 5 vị Cà Phê Ít Đường - Nội Địa Trung",
+    "link": "https://shopee.vn/C%C3%A0-Ph%C3%AA-H%C3%B2a-Tan-%C6%AFu-L%E1%BA%A1c-5-v%E1%BB%8B-C%C3%A0-Ph%C3%AA-%C3%8Dt-%C4%90%C6%B0%E1%BB%9Dng-N%E1%BB%99i-%C4%90%E1%BB%8Ba-Trung-i.1571126173.27543675838",
+    "snippet": "Mua Cà Phê Hòa Tan Ưu Lạc 5 vị Cà Phê Ít Đường - Nội Địa Trung giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn lại ...",
+    "position": 1
+   },
+   {
+    "title": "H'REN Coffee, Cửa hàng trực tuyến",
+    "link": "https://shopee.vn/hrencoffee_123",
+    "snippet": "H'ren Coffee – Đơn vị sản xuất và phân phối cà phê nguyên chất từ vùng cao nguyên Việt Nam. Chúng tôi mang hương vị cà phê đậm đà, tinh túy đến từng tách cà ...",
+    "position": 2
+   },
+   {
+    "title": "Cà phê gói - Giá Tốt, Miễn Phí Vận Chuyển, Đủ Loại",
+    "link": "https://shopee.vn/list/c%C3%A0%20ph%C3%AA%20g%C3%B3i",
+    "snippet": "Cà phê hoà tan hộp mix 4 vị 8 gói: Bạc xỉu, cốt dừa, cà phê sữa, nâu kem muối, Cộng Cà Phê. 55.900₫. 59.900₫. -7%. Rẻ Vô Địch. rating-star 4.8.",
+    "position": 3
+   },
+   {
+    "title": "Sữa lắc hàn quốc - Giá Tốt, Sale Tháng 09, Ship 0 Đồng",
+    "link": "https://shopee.vn/list/s%E1%BB%AFa%20l%E1%BA%AFc/h%C3%A0n%20qu%E1%BB%91c",
+    "snippet": "Shopee cung cấp đầy đủ các sản phẩm sữa lắc hàn quốc chính hãng với nhiều mức giá ưu đãi vô cùng hấp dẫn. Bạn có thể thỏa thích tham khảo sản phẩm chính hãng từ ...",
+    "position": 4
+   },
+   {
+    "title": "Cà phê daklak - Giá Tốt, Sale Tháng 09, Freeship 0Đ",
+    "link": "https://shopee.vn/list/c%C3%A0%20ph%C3%AA/daklak",
+    "snippet": "1KG Cà phê trộn sẵn pha phin thơm béo đậm đà - Gu truyền thống ( tặng công thức pha chế). 129.200₫. 136.000₫. -5%. Rẻ Vô Địch. rating-star 4.9.",
+    "position": 5
+   },
+   {
+    "title": "Bò lúc lắc - Giá Tốt, Miễn Phí Vận Chuyển, Đủ Loại",
+    "link": "https://shopee.vn/list/b%C3%B2%20l%C3%BAc%20l%E1%BA%AFc",
+    "snippet": "Cà phê hòa tan 3in1 Luwak - C7 Coffee - Túi (30 gói x 17g. custom-overlay. Cà phê hòa tan 3in1 Luwak - C7 Coffee - Túi (30 gói x 17g) 510g. 293.000₫. Rẻ Vô Địch.",
+    "position": 6
+   },
+   {
+    "title": "Cà phê đen hòa tan Robusta & Arabica nguyên chất, cafe ...",
+    "link": "https://shopee.vn/C%C3%A0-ph%C3%AA-%C4%91en-h%C3%B2a-tan-Robusta-Arabica-nguy%C3%AAn-ch%E1%BA%A5t-cafe-nguy%C3%AAn-ch%E1%BA%A5t-h%C3%B2a-tan-kh%C3%B4ng-%C4%91%C6%B0%E1%BB%9Dng-ti%E1%BB%87n-l%E1%BB%A3i-i.279384852.25862918484",
+    "snippet": "Cà phê đen hòa tan Robusta & Arabica nguyên chất, cafe nguyên chất hòa tan không đường tiện lợi ; Chọn loại hàng. Vị. cũ (7 Ro - 3 Ar). Vị. mới (6 Ro - 4 Ar). +1 ...",
+    "rating": 4.8,
+    "ratingCount": 53,
+    "position": 7
+   },
+   {
+    "title": "Cà phê muối 279 - Giá Tốt, Sale Tháng 08, Freeship 0Đ",
+    "link": "https://shopee.vn/list/c%C3%A0%20ph%C3%AA%20mu%E1%BB%91i/279",
+    "snippet": "(Combo 5 bịch ) Muối cà phê hòa tan 279 loại 720gram (45 gói x 16 gram). 850.000₫. Rẻ Vô Địch. Mua ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

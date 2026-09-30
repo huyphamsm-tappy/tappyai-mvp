@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Level Saigon Hotel\" OR \"La Siesta Premium Saigon Central\" OR \"Dream Palace Ben Thanh Grand Hotel\" TP.HCM site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:26:38.768Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Level Saigon Hotel\" OR \"La Siesta Premium Saigon Central\" OR \"Dream Palace Ben Thanh Grand Hotel\" TP.HCM site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "La Siesta Premium Saigon Central: Unforgettable Stay!",
+    "link": "https://www.tiktok.com/@chingching_822/video/7540529674762456327",
+    "snippet": "Experience luxury at La Siesta Premium Saigon Central with great amenities for travelers. Perfect for pre-flight rest! #hochiminhcity #hcm # ...",
+    "position": 1
+   },
+   {
+    "title": "La Siesta Premium Saigon Central Hotel Review",
+    "link": "https://www.tiktok.com/@chelseathefoodie_/photo/7682357596946255111",
+    "snippet": "Discover La Siesta Premium Saigon Central in Ho Chi Minh City, a boutique hotel with friendly staff, great breakfast, and a prime location near ...",
+    "position": 2
+   },
+   {
+    "title": "La Siesta Premium Saigon Central Bar",
+    "link": "https://www.tiktok.com/discover/la-siesta-premium-saigon-central-bar",
+    "snippet": "La Siesta Premium Saigon Central Bar. Khám phá La Siesta Premium Sài Gòn Central - nơi phục vụ tốt nhất với trải nghiệm độc đáo và tiện nghi ...",
+    "date": "8 thg 6, 2026",
+    "position": 3
+   },
+   {
+    "title": "La Siesta Premium Saigon",
+    "link": "https://www.tiktok.com/discover/la-siesta-premium-saigon",
+    "snippet": "Link Bistro nằm ngay tầng trệt khách sạn La Siesta Premium Saigon Central, giữa trung tâm Quận 1 nhưng bước vào lại có cảm giác khá tách biệt khỏi sự ồn ào ...",
+    "position": 4
+   },
+   {
+    "title": "Ho Chi Minh Accommodation La Siesta Premium",
+    "link": "https://www.tiktok.com/discover/ho-chi-minh-accommodation-la-siesta-premium",
+    "snippet": "La Siesta Premium Saigon Central review — Ho Chi Minh hotel help & service. Honest mini-review of La Siesta Premium Saigon Central: friendly staff, comfy ...",
+    "position": 5
+   },
+   {
+    "title": "Món quà trước giờ khởi hành #inspiredbyEHG #EHG20years ...",
+    "link": "https://www.tiktok.com/@inspired.by.lasiesta/video/7670851190346878228",
+    "snippet": "La Siesta Premium Saigon Central · author · 25 · 0 ... TP HCM. Lý do nên tham dự - Tổng hợp nhiều trải ... TP.HCM. Nhóm 1 – Ưu tiên Quán nước, xe đẩy, quán ...",
+    "position": 6
+   },
+   {
+    "title": "Lighthouse Hotel Ho Chi Minh",
+    "link": "https://www.tiktok.com/discover/lighthouse-hotel-ho-chi-minh",
+    "snippet": "โรงแรม Dream Palace Ben Thanh Grand Hotel โฮจิมินห์ ใจกลางเมือง คืนละ 2,xxx. รีวิวโรงแรม Dream Palace Ben Thanh Grand Hotel ใจกลาง HCMC คืนละ 2,xxx เดิน ...",
+    "position": 7
+   },
+   {
+    "title": "Lời cảm ơn đặc biệt của một người hoạ sĩ - The Lewis Lee Effect! ...",
+    "link": "https://www.tiktok.com/@inspired.by.lasiesta/video/7666301691209321748",
+    "snippet": "La Siesta Premium Saigon Central Hotel · author · 11 · 0 ... TP.HCM Hội Điện quang & Y học hạt nhân Việt Nam Tại Bernard, bên cạnh đội ngũ bác sĩ giỏi, giàu ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

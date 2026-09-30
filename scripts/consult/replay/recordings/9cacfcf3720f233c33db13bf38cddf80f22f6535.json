@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Mai Vy Hotel Tây Ninh",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T05:20:09.497Z",
+ "body": {
+  "searchParameters": {
+   "q": "Mai Vy Hotel Tây Ninh",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Mai Vy Hotel Tay Ninh, Tây Ninh (cập nhật giá năm 2027)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/403315078.jpg?k=87c6b95fe4690f83c83be3f07738bf9ff90041a94480b890531a32f5ec53dddc&o=",
+    "imageWidth": 576,
+    "imageHeight": 768,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSEUDncQ2vcjlPye9G3impQBW_PmQO5Z1avwnx7d68cxw&s=10",
+    "thumbnailWidth": 480,
+    "thumbnailHeight": 640,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/mai-vy-tay-ninh-tay-ninh1.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F403315078.jpg%3Fk%3D87c6b95fe4690f83c83be3f07738bf9ff90041a94480b890531a32f5ec53dddc%26o%3D&tbnid=tb64uXlglJ_h-M&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fmai-vy-tay-ninh-tay-ninh1.vi.html&docid=oBgKsdAlr7HUPM&w=576&h=768",
+    "position": 1
+   },
+   {
+    "title": "Mai Vy Hotel Tay Ninh, Tây Ninh (cập nhật giá năm 2027)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/482451302.jpg?k=0fa4f7a93141d0d0d7f7e6f0abc743097ac7118dfa1a05f207f864bb2507cfb0&o=",
+    "imageWidth": 796,
+    "imageHeight": 768,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHPxJnarCulp2uSsbFCSVWYMfVjyD32uhavjKagcZMfA&s=10",
+    "thumbnailWidth": 564,
+    "thumbnailHeight": 543,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/mai-vy-tay-ninh-tay-ninh1.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F482451302.jpg%3Fk%3D0fa4f7a93141d0d0d7f7e6f0abc743097ac7118dfa1a05f207f864bb2507cfb0%26o%3D&tbnid=4LNbg97BCcBtMM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fmai-vy-tay-ninh-tay-ninh1.vi.html&docid=oBgKsdAlr7HUPM&w=796&h=768",
+    "position": 2
+   },
+   {
+    "title": "Mai Vy Hotel Tây Ninh giá mới nhất - Vietgoing",
+    "imageUrl": "https://image.vietgoing.com/hotel/04/33/large/vietgoing_rli2401177119.webp",
+    "imageWidth": 1127,
+    "imageHeight": 800,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJgX7FZ2lbayiIfvr85EcvjrJhlxEbRda8T-muoEAvyA&s=10",
+    "thumbnailWidth": 531,
+    "thumbnailHeight": 376,
+    "source": "Vietgoing",
+    "domain": "vietgoing.com",
+    "link": "https://vietgoing.com/hotel/3633-mai-vy-hotel-tay-ninh.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimage.vietgoing.com%2Fhotel%2F04%2F33%2Flarge%2Fvietgoing_rli2401177119.webp&tbnid=3XRpaZsOmUG3UM&imgrefurl=https%3A%2F%2Fvietgoing.com%2Fhotel%2F3633-mai-vy-hotel-tay-ninh.html&docid=eEjDq9SrpljIEM&w=1127&h=800",
+    "position": 3
+   },
+   {
+    "title": "Khách sạn S79 Mai Vy (S79 Mai Vy Hotel) Tây Ninh, Việt Nam: Agoda.com có  giá rẻ nhất",
+    "imageUrl": "https://q-xx.bstatic.com/xdata/images/hotel/max500/462504205.jpg?k=f4d7cfc8f86826ab618685db2abfe9ad34635a4815355ef6cce0555a3d077345&o=",
+    "imageWidth": 500,
+    "imageHeight": 375,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZWHNMS6Gkg8DsyOYNU_NdrUG_9aAGvPtoryAKN1GGrg&s=10",
+    "thumbnailWidth": 499,
+    "thumbnailHeight": 375,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/mai-vy-hotel-tay-ninh-h33491382/hotel/tay-ninh-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fq-xx.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax500%2F462504205.jpg%3Fk%3Df4d7cfc8f86826ab618685db2abfe9ad34635a4815355ef6cce0555a3d077345%26o%3D&tbnid=prfWkpCgTgGvhM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fmai-vy-hotel-tay-ninh-h33491382%2Fhotel%2Ftay-ninh-vn.html&docid=fAynyEnHaTv6OM&w=500&h=375",
+    "position": 4
+   },
+   {
+    "title": "Mai Vy Hotel | Tây Ninh",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=668517739263479",
+    "imageWidth": 2048,
+    "imageHeight": 1536,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZEiMx6w8fQczqQbGjo7RCXwtdHLfEPH_jA6zLKJdvgA&s=10",
+    "thumbnailWidth": 515,
+    "thumbnailHeight": 388,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/khachsan3saotayninh/?locale=vi_VN",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D668517739263479&tbnid=_F6NGWk7IhY7aM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Fkhachsan3saotayninh%2F%3Flocale%3Dvi_VN&docid=MocdFLBYVkLIiM&w=2048&h=1536",
+    "position": 5
+   },
+   {
+    "title": "Mai Vy Hotel Tây Ninh | Đặt phòng giá tốt tại Vietnam Booking",
+    "imageUrl": "https://cdn2.vietnambooking.com/wp-content/uploads/hotel_pro/hotel_468787/7b02c2c9af0276972bfe62d124eca4ef.jpg",
+    "imageWidth": 900,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT9G0eeCZzBtEPFSycYESOs-SSJxduk8iQxZXPfat0YOQ&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "Vietnam Booking",
+    "domain": "www.vietnambooking.com",
+    "link": "https://www.vietnambooking.com/hotel/vietnam/mai-vy-hotel-tay-ninh.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.vietnambooking.com%2Fwp-content%2Fuploads%2Fhotel_pro%2Fhotel_468787%2F7b02c2c9af0276972bfe62d124eca4ef.jpg&tbnid=v0SAIFeS7jKHxM&imgrefurl=https%3A%2F%2Fwww.vietnambooking.com%2Fhotel%2Fvietnam%2Fmai-vy-hotel-tay-ninh.html&docid=3mJk2lAt97ocLM&w=900&h=600",
+    "position": 6
+   },
+   {
+    "title": "Khách sạn S79 Mai Vy (S79 Mai Vy Hotel) Tây Ninh, Việt Nam: Agoda.com có  giá rẻ nhất",
+    "imageUrl": "https://q-xx.bstatic.com/xdata/images/hotel/max500/373727465.jpg?k=bf1af7534be7296d3732ebf35a9b7afb048cf986d7bf0f6d6bc92efec71912a8&o=",
+    "imageWidth": 500,
+    "imageHeight": 443,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzvOyj6Y6JDh06uaiOsP_dZqf7ZOgeigAIuNfu2BSuXA&s=10",
+    "thumbnailWidth": 475,
+    "thumbnailHeight": 421,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/mai-vy-hotel-tay-ninh-h33491382/hotel/tay-ninh-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fq-xx.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax500%2F373727465.jpg%3Fk%3Dbf1af7534be7296d3732ebf35a9b7afb048cf986d7bf0f6d6bc92efec71912a8%26o%3D&tbnid=hxsFm1HDrnB8MM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fmai-vy-hotel-tay-ninh-h33491382%2Fhotel%2Ftay-ninh-vn.html&docid=fAynyEnHaTv6OM&w=500&h=443",
+    "position": 7
+   },
+   {
+    "title": "Khách sạn Mai Vy Tây Ninh (Mai Vy Hotel Tây Ninh) - Chudu24",
+    "imageUrl": "https://du-lich.chudu24.com/f/m/2401/03/khach-san-mai-vy-tay-ninh.jpg?w=800&h=500",
+    "imageWidth": 800,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSfFL3xZIuO_y-gSL8UaAA-jmBZSW0XhctnrqcH6coEkQ&s=10",
+    "thumbnailWidth": 565,
+    "thumbnailHeight": 353,
+    "source": "Đặt Phòng Khách Sạn - Chudu24",
+    "domain": "khachsan.chudu24.com",
+    "link": "https://khachsan.chudu24.com/ks.14584.khach-san-mai-vy-tay-ninh.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdu-lich.chudu24.com%2Ff%2Fm%2F2401%2F03%2Fkhach-san-mai-vy-tay-ninh.jpg%3Fw%3D800%26h%3D500&tbnid=iVnUCHych7SneM&imgrefurl=https%3A%2F%2Fkhachsan.chudu24.com%2Fks.14584.khach-san-mai-vy-tay-ninh.html&docid=yc8EkcWCfbt0ZM&w=800&h=500",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

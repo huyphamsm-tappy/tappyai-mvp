@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "tiệm nail sơn gel vẽ đẹp Quận 10 site:klook.com/vi/activity",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:24:52.437Z",
+ "body": {
+  "searchParameters": {
+   "q": "tiệm nail sơn gel vẽ đẹp Quận 10 site:klook.com/vi/activity",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Trải Nghiệm Làm Móng tại Tiệm Nail ChocoBusy ở Busan",
+    "link": "https://www.klook.com/vi/activity/98525-chocobusy-nail/",
+    "snippet": "Họ đã tẩy sơn móng miễn phí cho tôi. Họ dành rất nhiều thời gian để chăm sóc móng, rất tỉ mỉ, có cả ngâm chân tinh dầu, massage chân, tẩy tế bào chết và ...",
+    "rating": 4.8,
+    "ratingCount": 6,
+    "position": 1
+   },
+   {
+    "title": "Lash Artist - Tiệm Nail (Lan Kwai Fong)",
+    "link": "https://www.klook.com/vi/activity/60480-lash-artist-nail-salon-treatments-lan-kwai-fong-hong-kong/",
+    "snippet": "Lash Artist - Salon Làm Móng Cao Cấp | Lan Quế Phường (Lan Kwai Fong) · Ưu đãi 1: Đặt hoạt động Klook và được giảm HK$25 khi chi tiêu từ HK$300 trở lên và nhập ...",
+    "position": 2
+   },
+   {
+    "title": "Nail Princess Shinjuku Tokyo",
+    "link": "https://www.klook.com/vi/activity/175160-tokyo-nail-princess/",
+    "snippet": "Đây là một tiệm làm móng và thẩm mỹ viện nổi tiếng ở Shinjuku, với nhiều nghệ sĩ làm móng từng đoạt giải thưởng, chuyên về thiết kế hợp thời trang và nối móng.",
+    "position": 3
+   },
+   {
+    "title": "Tokyo Ikebukuro Tiệm làm móng nối chuyên nghiệp ...",
+    "link": "https://www.klook.com/vi/activity/167200-longnails-emma-nail-extension-specialty-salon-in-ikebukuro-tokyo/",
+    "snippet": "Sơn Gel - Tay: Kèm Hình Ảnh, Thiết Kế Đơn Giản (90 phút). Sơn Gel Tay - Thiết Kế Cầu Kỳ (120 phút): Mang Theo Ảnh Mẫu ... Tiệm nail Garden nail salon Shinjuku ...",
+    "position": 4
+   },
+   {
+    "title": "Nail & eye Belire, một salon làm móng và nối mi kiểu Nhật ...",
+    "link": "https://www.klook.com/vi/activity/191017-nail-eye-belire-shinjuku-tokyo/",
+    "snippet": "Nail&eye Belire Shinjuku quy tụ các chuyên gia làm móng hàng đầu Nhật Bản, cung cấp dịch vụ làm móng chất lượng cao. Chúng tôi sử dụng gel Nhật Bản nhẹ nhàng và ...",
+    "position": 5
+   },
+   {
+    "title": "Salon làm móng tay & móng chân riêng tư Dongdaemun",
+    "link": "https://www.klook.com/vi/activity/161868-private-nail-pedicure-salon-experience-in-seoul-dongdaemun/",
+    "snippet": "'Nail garden' ở Dongdaemun là một tiệm làm móng & chăm sóc móng chân riêng tư 1:1. ✨Tận hưởng sự chăm sóc chuyên nghiệp từ chuyên gia có hơn 10 năm kinh ...",
+    "position": 6
+   },
+   {
+    "title": "Trải Nghiệm Fisukinail Nail Ở Tsim Sha Tsui",
+    "link": "https://www.klook.com/vi/activity/66775-fisukinail-nail-experience-tsim-sha-tsui-hong-kong/",
+    "snippet": "Fisukinail được thành lập vào năm 2015. Nơi đây sử dụng các sản phẩm của Mỹ/Nhật Bản/Đài Loan/Tây Ban Nha và có các bộ sưu tập sơn móng tay độc quyền, an toàn ...",
+    "rating": 4.2,
+    "ratingCount": 6,
+    "position": 7
+   },
+   {
+    "title": "Trải nghiệm Elle'B Beaute Spa tại Chợ Bến Thành, Hồ Chí ...",
+    "link": "https://www.klook.com/vi/activity/146021-elle-b-beaute-spa-experience-in-ben-thanh-market-ho-chi-minh/",
+    "snippet": "Chúng tôi tự hào sử dụng các thương hiệu chuyên nghiệp, thân thiện với môi trường: Davines, Comfort Zone, Dermalogica, CND và Moroccanoil. Tại Cele'B Spa: khi ...",
+    "rating": 4.7,
+    "ratingCount": 50,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

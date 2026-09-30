@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Tour 2 Ngày 1 Đêm Tại Vườn Quốc Gia Nam Cát Tiên ...\" OR \"Tour Cắm Trại 2N1Đ Phú Điền\" gần Sài Gòn site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:07:04.919Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Tour 2 Ngày 1 Đêm Tại Vườn Quốc Gia Nam Cát Tiên ...\" OR \"Tour Cắm Trại 2N1Đ Phú Điền\" gần Sài Gòn site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

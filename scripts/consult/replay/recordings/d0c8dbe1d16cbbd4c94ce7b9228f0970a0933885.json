@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Microsoft Surface Laptop Go 2 i5 RAM 8GB SSD\" OR \"Microsoft Surface Laptop Go\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:20:12.172Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Microsoft Surface Laptop Go 2 i5 RAM 8GB SSD\" OR \"Microsoft Surface Laptop Go\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Microsoft Surface Laptop Go 3 Sage: Small Premium Laptop",
+    "link": "https://www.tiktok.com/@austintechtips/video/7285732970315517226",
+    "snippet": "Overall, the Microsoft Surface Laptop Go 3 focuses on portability and usability. Its compact size, improved base RAM, higher‑resolution display, ...",
+    "position": 1
+   },
+   {
+    "title": "Laptop Case for Microsoft Surface Laptop Go 2 Case 12.4 inch ...",
+    "link": "https://shop.tiktok.com/sg/pdp/laptop-case-for-microsoft-surface-laptop-go-2-more-sizes/1734510399343527521",
+    "snippet": "Laptop Sleeve bag for Microsoft Surface Laptop 12.4 ~ 13.5 ~ 15 inch Laptop Case for Microsoft Surface Laptop Go 2 Case 12.4 inch Funda for Surface Laptop 7.",
+    "position": 2
+   },
+   {
+    "title": "Microsoft Surface Laptop Go 2 Review: Design, Battery & ...",
+    "link": "https://www.tiktok.com/@imparkerburton/video/7112533773274713387",
+    "snippet": "The Microsoft Surface Laptop Go 2 stands out for its design and build quality, especially for a laptop priced around $600.",
+    "position": 3
+   },
+   {
+    "title": "Microsoft Surface Laptop Go 2 12 Inch 2021 Core I5 Gen ...",
+    "link": "https://www.tiktok.com/discover/microsoft-surface-laptop-go-2-12-inch-2021-core-i5-gen-11-g-8-gb-ssd-128-gb",
+    "snippet": "Explore the Microsoft Surface Laptop Go 2 with a 12.4\" PixelSense touchscreen, Intel i5 11th Gen processor, 256GB SSD, and 8GB RAM. Premium ...",
+    "date": "7 thg 9, 2026",
+    "position": 4
+   },
+   {
+    "title": "Microsoft Surface Laptop Go 3 124 Laptop",
+    "link": "https://shop.tiktok.com/us/k/microsoft-surface-laptop-go-3-124-laptop",
+    "snippet": "The Microsoft Surface Laptop Go 3 is an ideal choice for those seeking a versatile and efficient laptop. With its sleek design and powerful features, ...",
+    "position": 5
+   },
+   {
+    "title": "Microsoft Surface Laptop Go Ice Blue i5/8/128",
+    "link": "https://www.tiktok.com/@hoai.surface.computer/video/7684085649858923797",
+    "snippet": "Microsoft Surface laptop go (màu ice blue) Cấu hình : cpu -i5 gen10 -ram 8gb -ssd 128gb Hỗ trợ nâng ssd : 256gb . 512gb . 1T gb tuỳ theo nhu cầu ...",
+    "position": 6
+   },
+   {
+    "title": "Microsoft Surface Laptop Go 3 Sandstone",
+    "link": "https://www.tiktok.com/shop/product/microsoft-surface-laptop-go-3-sandstone",
+    "snippet": "Check out Microsoft Surface Laptop Go 3 Sandstone selection on TikTok Shop and get free shipping on eligible items.",
+    "date": "7 thg 9, 2026",
+    "position": 7
+   },
+   {
+    "title": "Microsoft Surface Laptop Go i5-1035G1 RAM16GB ...",
+    "link": "https://www.tiktok.com/@notebookstation/video/7680865712423980306",
+    "snippet": "Microsoft Surface Laptop Go i5-1035G1 RAM16GB SSD256GB จอ12.4นิ้ว จอทัชกรีน เครื่องเล็กกะทัดรัด พกพาได้สะดวก ขายถูกเพียง 13,900.-เท่านั้น ......",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Set quà tặng học sinh tặng sinh nhật, 1/6 site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:59:32.151Z",
+ "body": {
+  "searchParameters": {
+   "q": "Set quà tặng học sinh tặng sinh nhật, 1/6 site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Set quà 1/6 sinh nhật cho bé gái bút chì lớp 1 hoạt hình đáng ...",
+    "link": "https://shop.tiktok.com/vn/pdp/1735577216107381875",
+    "snippet": "Mua Set quà 1/6 sinh nhật cho bé gái bút chì lớp 1 hoạt hình đáng yêu đồ dùng học tập thiếu nhi giá tốt trên TikTok Shop. Săn giá siêu hời cho và được ...",
+    "position": 1
+   },
+   {
+    "title": "Dụng Cụ Học Tập Cho Sinh Nhật Và 1/6 - Set Quà Tặng Độc ...",
+    "link": "https://shop.tiktok.com/vn/pdp/1734981378807071795?source=anchor",
+    "snippet": "Dụng Cụ Học Tập Cho Sinh Nhật Và 1/6 - Set Quà Tặng Độc Đáo Bao Gồm Túi Đựng Bút Và Thước Kẻ Cho Mùa Tốt NghiệpBộ Đồ Dùng Học Tập Phi hành gia là sự kết hợp ...",
+    "position": 2
+   },
+   {
+    "title": "Quà Tặng dịp sinh nhật, 1/6, trung thu, lễ tết, quà cảm ơn, ...",
+    "link": "https://shop.tiktok.com/vn/pdp/1729728365423200537",
+    "snippet": "Set 10 Túi Gói Quà Tặng, Quà Sinh Nhật, Liên Hoan, Khen Thưởng, Tặng Học Sinh. Gồm Đế Giấy, Túi Kiếng, Tag, Kẽm, Nơ. 4.9. 794 sold. ₫38.250. ₫45.000 ...",
+    "rating": 4.5,
+    "ratingCount": 146,
+    "position": 3
+   },
+   {
+    "title": "Set quà cho bé",
+    "link": "https://shop.tiktok.com/vn/k/set-qua-cho-be",
+    "snippet": "Hộp Quà Văn Phòng Phẩm Cho Học Sinh - Bộ Sản Phẩm Gồm Túi Đựng Bút Dễ Thương Và Đồ Dùng Học Tập Làm Quà Tặng Cho Bé. 4.8. 258 sold. ₫58.500. ₫117.000 ...",
+    "position": 4
+   },
+   {
+    "title": "Tranh Tô màu câu đối Chúc mừng tết 2026 cho học sinh làm quà ...",
+    "link": "https://shop.tiktok.com/vn/pdp/tranh-to-mau-cau-doi-tet-2025-cho-hoc-sinh-set-10-buc-a4-a3/1731719009434766333",
+    "snippet": "Thông tin sản phẩm·Set gồm: 10 tranh chữ tô màu khổ chữ nhật dọc.·Độ dày giấy: 120gsm.·In màu sắc nét: Học sinh chỉ cần tô phần chữ.·Kích thước: 1/2 A4 dọc + ...",
+    "position": 5
+   },
+   {
+    "title": "capybara miniso bánh sinh nhật",
+    "link": "https://shop.tiktok.com/vn/k/capybara-miniso-banh-sinh-nhat",
+    "snippet": "Set Quà Sinh Nhật Capybara LINDO, Quà Tặng Bạn Gái Các Dịp Đặc Biệt, 8/3, 20/10, 14/2, Phụ Kiện Capybara cute, Kẹp Tóc, Cột Tóc, Cài Tóc, Móc Khóa, ...",
+    "position": 6
+   },
+   {
+    "title": "gói kẹo quà trung thu",
+    "link": "https://shop.tiktok.com/vn/k/goi-keo-qua-trung-thu",
+    "snippet": "Set quà tặng bánh kẹo tặng bạn gái bao gồm hộp quà size 21x21x17cm kèm gấu bông cao 20-25cm thích hợp tặng dịp lễ, 20/10, set quà trung thu · Set quà tặng bánh ...",
+    "position": 7
+   },
+   {
+    "title": "Hộp Krarft Gói Quà, Hộp Carton Nắp Cài Trơn Đựng Áo, ...",
+    "link": "https://shop.tiktok.com/vn/pdp/hop-kraft-goi-qua-%C4%91ung-qua-tang-banh-keo-phu-kien/1731353399012263585",
+    "snippet": "Set Túi Bánh Kẹo Tặng Quà 1/6, 20/10, Sinh Nhật Người Yêu, Các Bé Siêu Dễ Thương Hot Trend 2024 - Túi Quà ...",
+    "rating": 4.6,
+    "ratingCount": 53,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

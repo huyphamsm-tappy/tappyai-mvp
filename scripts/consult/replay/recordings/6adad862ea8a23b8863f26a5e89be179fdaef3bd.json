@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Xôi Xéo Bà 3 Béo\" OR \"Beefsteak 100gram CN Quận 7\" OR \"Tràng An Quán\" Quận 7 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T06:01:31.341Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Xôi Xéo Bà 3 Béo\" OR \"Beefsteak 100gram CN Quận 7\" OR \"Tràng An Quán\" Quận 7 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Xôi Xéo Bà 3 Béo Quận 7: 15K Xôi Ngô, Topping 7 Món",
+    "link": "https://www.tiktok.com/@vyvivuuu/video/7481299412853984520",
+    "snippet": "Xôi xéo Bà 3 Béo là một trong những quán xôi quen thuộc được nhắc đến khi tìm món ăn ngon ở Quận 7. Quán nổi tiếng với phần xôi xéo giá chỉ ...",
+    "position": 1
+   },
+   {
+    "title": "Trải nghiệm ẩm thực mang hương vị quê nhà tại Tràng An ...",
+    "link": "https://www.tiktok.com/@duynhatng113/video/7546226434705083656",
+    "snippet": "4577 Lượt thích,58 Bình luận.Video TikTok từ Duy Nhất (@duynhatng113): \"Trải nghiệm ẩm thực mang hương vị quê nhà tại Tràng An Quán ở Quận 7 ...",
+    "position": 2
+   },
+   {
+    "title": "Khám Phá Xôi Xéo Bà 3 Béo Tại Quận 7",
+    "link": "https://www.tiktok.com/@livinpmh/video/7561090378582019329",
+    "snippet": "52 Lượt thích,Video TikTok từ Livin PMH (@livinpmh): \"Xôi xéo Bà 3 Béo tại quận 7 là món ăn hấp dẫn không thể bỏ qua cho bữa trưa!",
+    "position": 3
+   },
+   {
+    "title": "Thưởng Thức Xôi Xéo Bà 3 Béo Tại Quận 2",
+    "link": "https://www.tiktok.com/@crislei168/video/7281250623515888898",
+    "snippet": "Xôi xéo bà 3 Béo - CN mới 37 Nguyễn Quý Đức, Q2. Chỉ từ 15 xiền là có thể thưởng thức được món xôi nức danh và chuẩn bị Bắc rồi. #crislei246 # ...",
+    "position": 4
+   },
+   {
+    "title": "Tràng An Quán: Ẩm Thực Đồng Quê Ngon Quận 7",
+    "link": "https://www.tiktok.com/@angimayoi/video/7519095713175751954",
+    "snippet": "Đất Ốc Quán Quận 7. Tràng An Quán: Ẩm Thực Đồng Quê Ngon Quận 7. Khám phá Tràng An Quán với món ăn đồng quê ấm áp, không gian thân thuộc giúp ...",
+    "position": 5
+   },
+   {
+    "title": "Khám Phá Xôi Vò Cốm và Chè Hoa Cau Ở Quận 7",
+    "link": "https://www.tiktok.com/@xoixeoba3beo204/video/7476081267109285127",
+    "snippet": "Tìm hiểu các địa điểm ẩm thực ngon với Xôi Vò Cốm và Chè Hoa Cau. @Xôi Xéo Bà 3 Béo.",
+    "position": 6
+   },
+   {
+    "title": "Xôi chè gì hong mí bà 😘#fyp #saigon #xoixeoba3beo ...",
+    "link": "https://www.tiktok.com/@xoixeoba3beo204/video/7679468566713847041",
+    "snippet": "âm thanh gốc - Xôi Xéo Bà 3 Béo ... Khi nhắc đến những món ăn ngon tại Sài Gòn, không thể bỏ qua món xôi xéo. Đặc biệt, có một quán xôi xéo được ...",
+    "position": 7
+   },
+   {
+    "title": "Review Xôi Xéo Lá Sen: Đặc Sản Sáng Hà Nội",
+    "link": "https://www.tiktok.com/@nguoitrerongchoi/video/7398173528974970128",
+    "snippet": "Xôi Xéo Bà 3 Béo ở Quận 7 #xoixeoba3beo #amthuchanoi #xoikhuc ... Xôi Xéo Bà 3 Béo Quận 7, review món ăn ngon Sài Gòn, địa điểm ăn ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

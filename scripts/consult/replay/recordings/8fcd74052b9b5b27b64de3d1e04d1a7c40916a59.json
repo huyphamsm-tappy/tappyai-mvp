@@ -1,0 +1,80 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Cà Phê G7 Gu Mạnh X2 300g site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:22:04.540Z",
+ "body": {
+  "searchParameters": {
+   "q": "Cà Phê G7 Gu Mạnh X2 300g site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "HỘP CÀ PHÊ G7 GU MẠNH X2 CÀ PHÊ HÒA TAN / HỘP ...",
+    "link": "https://shopee.vn/H%E1%BB%98P-C%C3%80-PH%C3%8A-G7-GU-M%E1%BA%A0NH-X2-C%C3%80-PH%C3%8A-H%C3%92A-TAN-H%E1%BB%98P-12-G%C3%93I-(-300G)-i.237078067.27909055016",
+    "snippet": "HỘP CÀ PHÊ G7 GU MẠNH X2 CÀ PHÊ HÒA TAN / HỘP 12 GÓI ( 300G). 1/6. 105.900₫. HỘP CÀ PHÊ G7 GU MẠNH X2 CÀ PHÊ HÒA TAN / HỘP 12 GÓI ( 300G).",
+    "position": 1
+   },
+   {
+    "title": "Cà Phê Hòa Tan G7 Gu Mạnh X2 - 1 Hộp 300g (12 gói x 25g)",
+    "link": "https://shopee.vn/C%C3%A0-Ph%C3%AA-H%C3%B2a-Tan-G7-Gu-M%E1%BA%A1nh-X2-1-H%E1%BB%99p-300g-(12-g%C3%B3i-x-25g)-i.26432513.24273828447",
+    "snippet": "Mua Cà Phê Hòa Tan G7 Gu Mạnh X2 - 1 Hộp 300g (12 gói x 25g) giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn lại tiền ...",
+    "rating": 4.8,
+    "ratingCount": 11,
+    "position": 2
+   },
+   {
+    "title": "(12 HỘP HSD 10/2027) Cà phê G7 Gu mạnh X2 3in1 ...",
+    "link": "https://shopee.vn/(12-H%E1%BB%98P-HSD-10-2027)-C%C3%A0-ph%C3%AA-G7-Gu-m%E1%BA%A1nh-X2-3in1-h%E1%BB%99p-12-g%C3%B3i-x-25gr-H%C3%80NG-CH%C3%8DNH-H%C3%83NG-i.64553274.49554795193",
+    "snippet": "Mua (12 HỘP HSD 10/2027) Cà phê G7 Gu mạnh X2 3in1 hộp 12 gói x 25gr - HÀNG CHÍNH HÃNG giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 3
+   },
+   {
+    "title": "Cà phê sữa G7 Gu mạnh X2 3in1 Hộp 300g Trung Nguyên ...",
+    "link": "https://shopee.vn/C%C3%A0-ph%C3%AA-s%E1%BB%AFa-G7-Gu-m%E1%BA%A1nh-X2-3in1-H%E1%BB%99p-300g-Trung-Nguy%C3%AAn-Legend-12-g%C3%B3i-x-25g-i.823866998.20527475978",
+    "snippet": "Mua Cà phê sữa G7 Gu mạnh X2 3in1 Hộp 300g Trung Nguyên Legend 12 gói x 25g giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, ...",
+    "rating": 5,
+    "ratingCount": 69,
+    "position": 4
+   },
+   {
+    "title": "Cà phê G7 gu mạnh x2 Trung Nguyên hộp 300g",
+    "link": "https://shopee.vn/C%C3%A0-ph%C3%AA-G7-gu-m%E1%BA%A1nh-x2-Trung-Nguy%C3%AAn-h%E1%BB%99p-300g-i.10669529.20194541655",
+    "snippet": "Cà phê G7 gu mạnh x2 Trung Nguyên hộp 300g. 1/2. 85.000₫. Cà phê G7 gu mạnh x2 Trung Nguyên hộp 300g.",
+    "rating": 5,
+    "ratingCount": 9,
+    "position": 5
+   },
+   {
+    "title": "[IRUJA VIETNAM] CÀ PHÊ HÒA TAN 3-IN-1 GU MẠNH X2 ...",
+    "link": "https://shopee.vn/-IRUJA-C%C3%A0-Ph%C3%AA-G7-Gu-M%E1%BA%A1nh-X2-3in1-300G-i.1377425884.52064965485",
+    "snippet": "Mua [IRUJA VIETNAM] CÀ PHÊ HÒA TAN 3-IN-1 GU MẠNH X2 TRUNG NGUYÊN G7 12 GÓI X 25G (300G) giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 6
+   },
+   {
+    "title": "Cà phê G7 Gu Mạnh X2 hộp 300g(12gói x25g).",
+    "link": "https://shopee.vn/C%C3%A0-ph%C3%AA-G7-Gu-M%E1%BA%A1nh-X2-h%E1%BB%99p-300g(12g%C3%B3i-x25g).-i.1155729119.29570911775",
+    "snippet": "Mua Cà phê G7 Gu Mạnh X2 hộp 300g(12gói x25g). giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn lại tiền Giao Hàng Miễn ...",
+    "position": 7
+   },
+   {
+    "title": "Cà Phê Sữa Hoà Tan G7 3in1 Gu Mạnh X2 Trung Nguyên ...",
+    "link": "https://shopee.vn/C%C3%A0-Ph%C3%AA-S%E1%BB%AFa-Ho%C3%A0-Tan-G7-3in1-Gu-M%E1%BA%A1nh-X2-Trung-Nguy%C3%AAn-H%E1%BB%99p-12-g%C3%B3i-25gr-.-i.28675337.717460518",
+    "snippet": "Mua Cà Phê Sữa Hoà Tan G7 3in1 Gu Mạnh X2 Trung Nguyên Hộp 12 gói 25gr . giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, ...",
+    "rating": 5,
+    "ratingCount": 1252,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

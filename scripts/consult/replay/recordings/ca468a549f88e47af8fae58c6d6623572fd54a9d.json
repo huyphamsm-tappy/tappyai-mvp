@@ -1,0 +1,566 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "nhà hàng ăn cơm Tây Ninh Tây Ninh",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.7769,106.7009,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:33:31.271Z",
+ "body": {
+  "searchParameters": {
+   "q": "nhà hàng ăn cơm Tây Ninh Tây Ninh",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.7769,106.7009,14z",
+   "engine": "google"
+  },
+  "ll": "@10.7768941,106.7008997,14z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Tráng Ơi! Bánh tráng Tây Ninh",
+    "address": "W2 (đối diện 212, Đ. Ung Văn Khiêm, Thạnh Mỹ Tây, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.8054622,
+    "longitude": 106.7210198,
+    "rating": 4.8,
+    "ratingCount": 118,
+    "type": "Nhà hàng bán đồ ăn mang về",
+    "types": [
+     "Nhà hàng bán đồ ăn mang về",
+     "Tiệm bánh",
+     "Giao đồ ăn"
+    ],
+    "phoneNumber": "+84 965 075 892",
+    "openingHours": {
+     "Thứ Tư": "11:30–22:30",
+     "Thứ Năm": "11:30–22:30",
+     "Thứ Sáu": "11:30–22:30",
+     "Thứ Bảy": "11:30–22:30",
+     "Chủ Nhật": "11:30–22:30",
+     "Thứ Hai": "11:30–22:30",
+     "Thứ Ba": "11:30–22:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNJsFqS0a3XNUzJ5uKFuOYiiVvG26x9uaviu_DPZHZ_1iNvtGEgkTsbgaitOyU4sNYtHPOlBFungiN-oOqAfRRcWUGwQaXDJaSHraXvLjdp15G-V_EY8oTR8O-_3scRjFodvyVpaE8qfWUa",
+    "cid": "4184312060204565433",
+    "fid": "0x3175290058311059:0x3a11a9a639e043b9",
+    "placeId": "ChIJWRAxWAApdTERuUPgOaapETo"
+   },
+   {
+    "position": 2,
+    "title": "Bò tơ Tây Ninh Năm Sánh Quyết Thắng",
+    "address": "759 Nguyễn Duy Trinh, Long Trường, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.790842399999999,
+    "longitude": 106.7843288,
+    "rating": 4.3,
+    "ratingCount": 378,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "phoneNumber": "+84 918 163 646",
+    "openingHours": {
+     "Thứ Tư": "10:00–00:00",
+     "Thứ Năm": "10:00–00:00",
+     "Thứ Sáu": "10:00–00:00",
+     "Thứ Bảy": "10:00–00:00",
+     "Chủ Nhật": "10:00–00:00",
+     "Thứ Hai": "10:00–00:00",
+     "Thứ Ba": "10:00–00:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNUEAZ3vlZON5kVnBYAn2nNXC-TUd11Io-HrhrdvviEZTSYPt_GqICt0jMqJaAJLjKdQPw532DMVyAzZmbNR3ydYgdayMT5GcHXRSj39Ry4oy5Ij04XvKBUZZBBhB84Sqdent57aw",
+    "cid": "4968314773065587032",
+    "fid": "0x31752709ca120e3b:0x44f2fff67ce65958",
+    "placeId": "ChIJOw4SygkndTERWFnmfPb_8kQ"
+   },
+   {
+    "position": 3,
+    "title": "Cơm tấm Tây Ninh",
+    "address": "81 Đ. Võ Duy Ninh, Thạnh Mỹ Tây, Hồ Chí Minh 90000, Việt Nam",
+    "latitude": 10.7919521,
+    "longitude": 106.7158508,
+    "type": "Thức ăn mang về Trung Quốc",
+    "types": [
+     "Thức ăn mang về Trung Quốc"
+    ],
+    "website": "http://comtamtayninh.vn/",
+    "phoneNumber": "+84 373 345 789",
+    "openingHours": {
+     "Thứ Tư": "09:00–17:00",
+     "Thứ Năm": "09:00–17:00",
+     "Thứ Sáu": "09:00–17:00",
+     "Thứ Bảy": "Đóng cửa",
+     "Chủ Nhật": "Đóng cửa",
+     "Thứ Hai": "09:00–17:00",
+     "Thứ Ba": "09:00–17:00"
+    },
+    "thumbnailUrl": "https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid=Hy3otOGFvWx2meInpF2yzQ&cb_client=search.gws-prod.grass&w=80&h=92&yaw=22.99&pitch=0&thumbfov=100",
+    "cid": "1281122522764653924",
+    "fid": "0x317529aaffceb6d5:0x11c776259323b564",
+    "placeId": "ChIJ1bbO_6opdTERZLUjkyV2xxE"
+   },
+   {
+    "position": 4,
+    "title": "Cơm Chiên Siêu Topping",
+    "address": "QPR7+QW7, Đ. Võ Duy Ninh, Thạnh Mỹ Tây, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7919055,
+    "longitude": 106.7147916,
+    "rating": 5,
+    "ratingCount": 2,
+    "type": "Quán ăn nhỏ",
+    "types": [
+     "Quán ăn nhỏ"
+    ],
+    "phoneNumber": "+84 945 612 618",
+    "openingHours": {
+     "Thứ Tư": "08:00–23:00",
+     "Thứ Năm": "08:00–23:00",
+     "Thứ Sáu": "08:00–23:00",
+     "Thứ Bảy": "08:00–23:00",
+     "Chủ Nhật": "08:00–23:00",
+     "Thứ Hai": "08:00–23:00",
+     "Thứ Ba": "08:00–23:00"
+    },
+    "thumbnailUrl": "https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid=Iizm8cJitWEswAioUPSFIQ&cb_client=search.gws-prod.grass&w=80&h=92&yaw=344.21393&pitch=0&thumbfov=100",
+    "cid": "6090202757142683943",
+    "fid": "0x317529006481d453:0x5484bf23ed982127",
+    "placeId": "ChIJU9SBZAApdTERJyGY7SO_hFQ"
+   },
+   {
+    "position": 5,
+    "title": "Hằng Cơm Chiên Dương Châu",
+    "address": "Đ. Võ Duy Ninh, Thạnh Mỹ Tây, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7934102,
+    "longitude": 106.7168318,
+    "rating": 5,
+    "ratingCount": 5,
+    "type": "Quán ăn nhỏ",
+    "types": [
+     "Quán ăn nhỏ"
+    ],
+    "phoneNumber": "+84 945 612 618",
+    "openingHours": {
+     "Thứ Tư": "07:00–22:00",
+     "Thứ Năm": "07:00–22:00",
+     "Thứ Sáu": "07:00–22:00",
+     "Thứ Bảy": "07:00–22:00",
+     "Chủ Nhật": "07:00–22:00",
+     "Thứ Hai": "07:00–22:00",
+     "Thứ Ba": "07:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOXfKmfBACAeeBcA4SeVIxWOOSbT-UzufXTy6gSGx7Q5jVJuMKuOwbwfaEs_cdXiNu7giD-D090QbIxJidNf5OC9B0KvUdMWigmftFkWs69pVc3sCQZXuAgWQ-UR1gc5chdgSJeEjaJL4DV",
+    "cid": "5550152488926544751",
+    "fid": "0x317529002556f103:0x4d061a485fb7836f",
+    "placeId": "ChIJA_FWJQApdTERb4O3X0gaBk0"
+   },
+   {
+    "position": 6,
+    "title": "Cơm Chay Tịnh Độ",
+    "address": "140 Đ. Võ Duy Ninh, Thạnh Mỹ Tây, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7906319,
+    "longitude": 106.7173571,
+    "rating": 4.3,
+    "ratingCount": 316,
+    "type": "Nhà hàng món chay",
+    "types": [
+     "Nhà hàng món chay"
+    ],
+    "website": "https://www.foody.vn/ho-chi-minh/com-chay-tinh-do-vo-duy-ninh",
+    "phoneNumber": "+84 903 635 195",
+    "openingHours": {
+     "Thứ Tư": "06:30–21:00",
+     "Thứ Năm": "06:30–21:00",
+     "Thứ Sáu": "06:30–21:00",
+     "Thứ Bảy": "06:30–21:00",
+     "Chủ Nhật": "06:30–21:00",
+     "Thứ Hai": "06:30–21:00",
+     "Thứ Ba": "06:30–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLdEsqxGiJ-4UHoqbHFl0TDKfb2nNHqiIMvHDgAoumFErQx1x6aFBSrVHDnDAMJxPbxSvIZIiAM_gsFeRtv5MJpDjd-boSntFoYGM_8EiKiKaemKjLLSPB7Vmt3PCjMEK3Qby_FO",
+    "cid": "17087502917556715475",
+    "fid": "0x317528ac4c4e0819:0xed23015ebb6b3fd3",
+    "placeId": "ChIJGQhOTKwodTER0z9ru14BI-0"
+   },
+   {
+    "position": 7,
+    "title": "BẾP NHÀ CÔ NINH | QUÁN ĂN THẢO ĐIỀN",
+    "address": "40 Đường số 54, An Khánh, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.8016972,
+    "longitude": 106.7293413,
+    "rating": 4.8,
+    "ratingCount": 316,
+    "type": "Nhà hàng Việt Nam",
+    "types": [
+     "Nhà hàng Việt Nam"
+    ],
+    "website": "https://www.facebook.com/bepninhbepninh?mibextid=ZbWKwL",
+    "phoneNumber": "+84 342 550 221",
+    "openingHours": {
+     "Thứ Tư": "10:00–14:00, 16:00–21:00",
+     "Thứ Năm": "10:00–14:00, 16:00–21:00",
+     "Thứ Sáu": "10:00–14:00, 16:00–21:00",
+     "Thứ Bảy": "10:00–14:00, 16:00–21:00",
+     "Chủ Nhật": "10:00–14:00, 16:00–21:00",
+     "Thứ Hai": "Đóng cửa",
+     "Thứ Ba": "10:00–14:00, 16:00–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOKWUkkah2qh79MBAHxnl-ATaXFFy4fGDXIv7S9VuZv40TVxYvWuHpAHLXrNFGw3Wvb0QsdE_vEr9gPg9ldh5meHPmm0rg6jCMbiqVJVI_3WYfwQ5xlE7C6pI6jwhoBlMhAK1Z2M5ZKn3PI",
+    "cid": "10807317122160207786",
+    "fid": "0x3175270039b881df:0x95fb4da9b95b27aa",
+    "placeId": "ChIJ34G4OQAndTERqidbualN-5U"
+   },
+   {
+    "position": 8,
+    "title": "Cơm tấm Hoàng Gia",
+    "address": "57 Đ. Bửu Đình, Bình Tây, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.749081499999999,
+    "longitude": 106.6448068,
+    "rating": 4,
+    "ratingCount": 178,
+    "type": "Nhà hàng cơm",
+    "types": [
+     "Nhà hàng cơm"
+    ],
+    "website": "https://www.foody.vn/ho-chi-minh/com-tam-hoang-gia",
+    "phoneNumber": "+84 28 3969 4300",
+    "openingHours": {
+     "Thứ Tư": "06:00–15:00",
+     "Thứ Năm": "06:00–15:00",
+     "Thứ Sáu": "06:00–15:00",
+     "Thứ Bảy": "06:00–15:00",
+     "Chủ Nhật": "06:00–15:00",
+     "Thứ Hai": "06:00–15:00",
+     "Thứ Ba": "06:00–15:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLcxU7qPUiw6F_koyG2aNX-MMmPrhkD_SDM1mbbSFWpS1RumwPL6ZaT_fYNA_Ksm0XYfA3gWQSFBmzQzeHcIq7zCpeVF_UdxeqdOuxaIRx2J-beHNTBCN9rvcT0dNr6UbmzKjsOIPQ",
+    "cid": "3205721532383529055",
+    "fid": "0x31752f122b0e6987:0x2c7d02bfc28a885f",
+    "placeId": "ChIJh2kOKxIvdTERX4iKwr8CfSw"
+   },
+   {
+    "position": 9,
+    "title": "Bánh tráng cuốn Bà Bắc",
+    "address": "40 Số 11, Khánh Hội, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.756958,
+    "longitude": 106.702764,
+    "rating": 4.2,
+    "ratingCount": 662,
+    "type": "Quán ăn nhỏ",
+    "types": [
+     "Quán ăn nhỏ"
+    ],
+    "phoneNumber": "+84 28 3940 2318",
+    "openingHours": {
+     "Thứ Tư": "08:00–22:00",
+     "Thứ Năm": "08:00–22:00",
+     "Thứ Sáu": "08:00–22:00",
+     "Thứ Bảy": "08:00–22:00",
+     "Chủ Nhật": "08:00–22:00",
+     "Thứ Hai": "08:00–22:00",
+     "Thứ Ba": "08:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmP51VD2RFvTd6YsaEwX0jugV9ZxrrdW3gs8JNfw_8E-d3cvpgalRqHAaLoOndreXNLPBiEnyldWxsBzF7fwdyhFjRZPqbSkC2PYJ-RC-HVnK-WkaDjaUpkpZS2OCdEawNvhiBIKBw",
+    "cid": "17328720336780490516",
+    "fid": "0x31752c2bad57ac4d:0xf07bfb55b5e37714",
+    "placeId": "ChIJTaxXrSssdTERFHfjtVX7e_A"
+   },
+   {
+    "position": 10,
+    "title": "Bợm Sushi - Izakaya",
+    "address": "Hẽm 69/30, Nguyễn Gia Trí, Thạnh Mỹ Tây, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.8036572,
+    "longitude": 106.71469409999999,
+    "rating": 4.9,
+    "ratingCount": 1184,
+    "type": "Nhà hàng Nhật Bản",
+    "types": [
+     "Nhà hàng Nhật Bản"
+    ],
+    "phoneNumber": "+84 938 395 617",
+    "openingHours": {
+     "Thứ Tư": "10:00–22:00",
+     "Thứ Năm": "10:00–22:00",
+     "Thứ Sáu": "10:00–22:00",
+     "Thứ Bảy": "10:00–22:00",
+     "Chủ Nhật": "10:00–22:00",
+     "Thứ Hai": "10:00–22:00",
+     "Thứ Ba": "10:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmM5LhU5Pi1g0HqTK2oidU8ev4_VeBoNSS0naeZfb9tDrFm3nxN7vVi_ur76azIQe2Ys11Qf-JK3ug83v8NUVW78gEvUbKHGdlXawKw02Srze6hKJOz1Jg3Oxsmf6OsTzlTnBY3d",
+    "cid": "17469484882611241303",
+    "fid": "0x317527c5b26e104d:0xf27013f185198157",
+    "placeId": "ChIJTRBussUndTERV4EZhfETcPI"
+   },
+   {
+    "position": 11,
+    "title": "CƠM TẤM THƯƠNG OANH",
+    "address": "125 Đ. Võ Duy Ninh, Thạnh Mỹ Tây, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7918652,
+    "longitude": 106.7166903,
+    "rating": 4.8,
+    "ratingCount": 5,
+    "type": "Quán ăn nhỏ",
+    "types": [
+     "Quán ăn nhỏ"
+    ],
+    "openingHours": {
+     "Thứ Tư": "06:00–10:30",
+     "Thứ Năm": "06:00–10:30",
+     "Thứ Sáu": "06:00–10:30",
+     "Thứ Bảy": "06:00–10:30",
+     "Chủ Nhật": "06:00–10:30",
+     "Thứ Hai": "06:00–10:30",
+     "Thứ Ba": "06:00–10:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLd1WU2Keiqv1QEjlT0E46TBnbZPXRG2kYFH24ejUpCJx4pJ9wMwEVii59gfNghSrbgXSolUVLYwHVuMWtAA6OdnRcpiAoMnK0jh67R3GJ5ismeIZq64ocrn_x459M8ObMxdfDMX",
+    "cid": "18205083482854302816",
+    "fid": "0x317529004b6c5061:0xfca572f915dca460",
+    "placeId": "ChIJYVBsSwApdTERYKTcFflypfw"
+   },
+   {
+    "position": 12,
+    "title": "Bò tơ Nhân Phát - 175B Cao Thắng",
+    "address": "175B Cao Thắng, Hòa Hưng, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7746424,
+    "longitude": 106.6758225,
+    "rating": 4.7,
+    "ratingCount": 2172,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "website": "https://botonhanphat.vn/",
+    "phoneNumber": "+84 888 350 325",
+    "openingHours": {
+     "Thứ Tư": "11:00–23:00",
+     "Thứ Năm": "11:00–23:00",
+     "Thứ Sáu": "11:00–23:00",
+     "Thứ Bảy": "11:00–23:00",
+     "Chủ Nhật": "11:00–23:00",
+     "Thứ Hai": "11:00–23:00",
+     "Thứ Ba": "11:00–23:00"
+    },
+    "bookingLinks": [
+     "https://botonhanphat.vn/dat-ban/"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLcCX_vl1_YMgdSY3MRM_uvh2DwYboS4MTznyB1gbRKKQ3fu6tXGkecG94DKEPdTpLOwGhbd-Rmu8u4RXhpua_ieK6QWvmoCNPhiKI7mAzGraA-uEWhpzM5p58S0YLFA3BQayfty8Q",
+    "cid": "18430160163166850244",
+    "fid": "0x31752f1b66d6e299:0xffc515056f1d8cc4",
+    "placeId": "ChIJmeLWZhsvdTERxIwdbwUVxf8"
+   },
+   {
+    "position": 13,
+    "title": "Cơm Tấm Trần Quý Cáp",
+    "address": "260 Võ Văn Tần, Bàn Cờ, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7723107,
+    "longitude": 106.6861794,
+    "rating": 4,
+    "ratingCount": 283,
+    "type": "Nhà hàng cơm",
+    "types": [
+     "Nhà hàng cơm",
+     "Quán ăn nhỏ"
+    ],
+    "website": "https://www.foody.vn/ho-chi-minh/com-tam-tran-quy-cap",
+    "phoneNumber": "+84 28 3839 4659",
+    "openingHours": {
+     "Thứ Tư": "07:00–15:00",
+     "Thứ Năm": "07:00–15:00",
+     "Thứ Sáu": "07:00–15:00",
+     "Thứ Bảy": "07:00–15:00",
+     "Chủ Nhật": "07:00–15:00",
+     "Thứ Hai": "07:00–15:00",
+     "Thứ Ba": "07:00–15:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLejzCDecPWIKuFdGjjjPi1o7rmk_Lkp2VFlxnm934M7jBmGVCUkbq2kyXy9IIOUBovn7AD25Q_vz7cCe2F_e0vbLkoVMvjsMszRTN0HshYFkhxEu7TaG33zi9ZlGfBRjo0Opovg",
+    "cid": "3250210453641828262",
+    "fid": "0x31752f2314baa5f7:0x2d1b112fee9517a6",
+    "placeId": "ChIJ96W6FCMvdTERpheV7i8RGy0"
+   },
+   {
+    "position": 14,
+    "title": "Xã Tây Quán",
+    "address": "35 Đ. Phù Đổng Thiên Vương, Chợ Lớn, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7529445,
+    "longitude": 106.6627367,
+    "rating": 3.9,
+    "ratingCount": 28,
+    "type": "Quán ăn nhỏ",
+    "types": [
+     "Quán ăn nhỏ"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmO-kuDuFoWLq4yO5d9thQ0KiFGuOvSwAOQCitKuRsewjss2PKlrJO78ZD8ahoyj5fct1OkH-daWA2vU_VXTmLJAVh6sCp5OVYhB8Z69mf0Fof6exHnSwM5r6SRVY83xev3Tq3ktwrWvbaJo",
+    "cid": "8287332131162288276",
+    "fid": "0x31752f000d5fed7b:0x730284aa459bf094",
+    "placeId": "ChIJe-1fDQAvdTERlPCbRaqEAnM"
+   },
+   {
+    "position": 15,
+    "title": "Quán 2KU Cá Sạch Từ Côn Đảo",
+    "address": "828 Trường Sa, Nhiêu Lộc, Hồ Chí Minh 008428, Việt Nam",
+    "latitude": 10.7871855,
+    "longitude": 106.683076,
+    "rating": 4.2,
+    "ratingCount": 192,
+    "type": "Quán ăn nhỏ",
+    "types": [
+     "Quán ăn nhỏ"
+    ],
+    "website": "http://quan-2ku-hai-san-sach-tu-con-ao.business.site/",
+    "phoneNumber": "+84 909 068 383",
+    "openingHours": {
+     "Thứ Tư": "10:30–23:00",
+     "Thứ Năm": "10:30–23:00",
+     "Thứ Sáu": "10:30–23:00",
+     "Thứ Bảy": "10:30–23:00",
+     "Chủ Nhật": "10:30–23:00",
+     "Thứ Hai": "10:30–23:00",
+     "Thứ Ba": "Đóng cửa"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNWRBafnewf6UVoWYYaX_y0SVb-yFf8qPvPGyyocUQNk0QvQO7yiHo-fjupVXVonoFvzHFWxGgtGHFJn09tztAwdZ-1aphESxkmKl1L_nFPsFo5BvgBLjVNONbN40WRmwr9J_v0hA",
+    "cid": "5773263528322541275",
+    "fid": "0x31752f2a02d72a7b:0x501ec097486226db",
+    "placeId": "ChIJeyrXAiovdTER2yZiSJfAHlA"
+   },
+   {
+    "position": 16,
+    "title": "A Mà Kitchen Cống Quỳnh",
+    "address": "189 Cống Quỳnh, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.766916199999999,
+    "longitude": 106.6875421,
+    "rating": 4.6,
+    "ratingCount": 1603,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "website": "https://amakitchen.com/",
+    "phoneNumber": "+84 327 378 800",
+    "openingHours": {
+     "Thứ Tư": "10:30–22:15",
+     "Thứ Năm": "10:30–22:15",
+     "Thứ Sáu": "10:30–22:15",
+     "Thứ Bảy": "10:30–22:15",
+     "Chủ Nhật": "10:30–22:15",
+     "Thứ Hai": "10:30–22:15",
+     "Thứ Ba": "10:30–22:15"
+    },
+    "bookingLinks": [
+     "https://m.me/116196114904560"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLeYHB6HDjCjcB-tSzlScFiBC5Kj_55ucz9HlFn_6b8hlkGgUOXKi_FzdFnpApYcupmcWOAOlQl5dgSoGq9jzF5Z12M2Z6LqNvqTn-OuguXXFCF2znt4I_sOrUZoB0qZ1M5Z0Hvo0w1CWJyR",
+    "cid": "70259930786333238",
+    "fid": "0x31752fceebf4ac03:0xf99d08e8768236",
+    "placeId": "ChIJA6z0684vdTERNoJ26Aid-QA"
+   },
+   {
+    "position": 17,
+    "title": "Cơm Gà Chicken Rice",
+    "address": "113/27 Đ. Võ Duy Ninh, Thạnh Mỹ Tây, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7920216,
+    "longitude": 106.71651879999999,
+    "rating": 5,
+    "ratingCount": 1,
+    "type": "Quán ăn nhỏ",
+    "types": [
+     "Quán ăn nhỏ"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMVUqSDMLzSK9o7JSFb9kSVVpxakWtCn6ygXBMXNuZIYEBCGF4JIoVYTyVGjjWfNdwNkafJPeruJQOQfrtjqj-FDWAPE_1E0HL_Hc_jsqYCrZfyeaizQ3M1A7KweLq20J_5N7-LZE9TcsOk",
+    "cid": "3364918891287656242",
+    "fid": "0x317529a6683342c3:0x2eb297e74d33b732",
+    "placeId": "ChIJw0IzaKYpdTERMrczTeeXsi4"
+   },
+   {
+    "position": 18,
+    "title": "Cơm - Mì - Phủ Trứng",
+    "address": "144/24 Đ. Võ Duy Ninh, Ward 22, Thạnh Mỹ Tây, Hồ Chí Minh 77777, Việt Nam",
+    "latitude": 10.7901739,
+    "longitude": 106.71678179999999,
+    "rating": 5,
+    "ratingCount": 1,
+    "type": "Quán ăn nhỏ",
+    "types": [
+     "Quán ăn nhỏ"
+    ],
+    "openingHours": {
+     "Thứ Tư": "09:30–21:00",
+     "Thứ Năm": "09:30–21:00",
+     "Thứ Sáu": "09:30–21:00",
+     "Thứ Bảy": "09:30–21:00",
+     "Chủ Nhật": "09:30–21:00",
+     "Thứ Hai": "09:30–21:00",
+     "Thứ Ba": "09:30–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPV4OB2L07sbikIR1XD3XXr9aqSrRmyCRTE0h6UKKcZ0cUeU-ocGqO7FaHn7LZJy7iAq3IwFSFgCk3ZJMhX7eNYOkdapLjOPWFngB9d0lpxfrkv6Z8RzV2Gnmixvmo0p0drETOjXN7zSfUb",
+    "cid": "3249409253268712418",
+    "fid": "0x317529000d5e80ad:0x2d18387feef2ebe2",
+    "placeId": "ChIJrYBeDQApdTER4uvy7n84GC0"
+   },
+   {
+    "position": 19,
+    "title": "Cơm Tấm Sà Bì Chưởng - Trần Bình Trọng",
+    "address": "179 Trần Bình Trọng, Chợ Quán, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.758552,
+    "longitude": 106.68044909999999,
+    "rating": 4.7,
+    "ratingCount": 7052,
+    "type": "Nhà hàng Việt Nam",
+    "types": [
+     "Nhà hàng Việt Nam"
+    ],
+    "website": "https://www.facebook.com/SaBiChuongbyBrothers",
+    "phoneNumber": "+84 971 095 261",
+    "description": "Nhà hàng phục vụ tại quầy hiện đại, có không gian đơn giản, sáng sủa và những phần cơm cỡ lớn.",
+    "openingHours": {
+     "Thứ Tư": "07:00–21:00",
+     "Thứ Năm": "07:00–21:00",
+     "Thứ Sáu": "07:00–21:00",
+     "Thứ Bảy": "07:00–21:00",
+     "Chủ Nhật": "07:00–21:00",
+     "Thứ Hai": "07:00–21:00",
+     "Thứ Ba": "07:00–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNuEHs6wpaibSETUzlkBffgkupKp64oHcQ3SBJoP_cG8B0jGOj1huf8EBhfc69n-62gDqTg5s_Oj5nVh0fUrzckO9tQjCEnv8SP623LFdydZOPCFXQcdZKEE4L--HUS_JOwudft",
+    "cid": "6687640858450509416",
+    "fid": "0x31752f8438b1e4d9:0x5ccf45ed9954be68",
+    "placeId": "ChIJ2eSxOIQvdTERaL5Ume1Fz1w"
+   },
+   {
+    "position": 20,
+    "title": "MelyFood Hàm Nghi - Cơm Niêu MeLy - Ngon MeLy",
+    "address": "49 Hàm Nghi, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.770503999999999,
+    "longitude": 106.70437,
+    "rating": 4.3,
+    "ratingCount": 146,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "website": "https://www.facebook.com/comnieumely",
+    "phoneNumber": "+84 931 113 949",
+    "openingHours": {
+     "Thứ Tư": "08:00–22:00",
+     "Thứ Năm": "08:00–22:00",
+     "Thứ Sáu": "08:00–22:00",
+     "Thứ Bảy": "08:00–22:00",
+     "Chủ Nhật": "08:00–22:00",
+     "Thứ Hai": "08:00–22:00",
+     "Thứ Ba": "08:00–22:00"
+    },
+    "bookingLinks": [
+     "https://www.google.com/maps/reserve/v/dine/c/BDT09HxK2LM?source=pa&opi=79508299"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmP2T3eoOpQEz1PgT2EFaghSYHAUqnsIcUg8db2I6G5S5pBG0gRMXxZYHYGQNJ3El5NmJUk_S8Jl2tQE0k23ML5lIXzjCBC-s6vAv5X8qNPNBHVQAUvRCQqUTYi_8U3MpC1TT5QBAZ6DpJDs",
+    "cid": "9309806400531276454",
+    "fid": "0x31752f86d4c6e4a7:0x81331398875322a6",
+    "placeId": "ChIJp-TG1IYvdTERpiJTh5gTM4E"
+   }
+  ],
+  "credits": 3
+ }
+}

@@ -1,0 +1,77 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "30 Quà sinh nhật Sếp dưới 1 site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:55:32.720Z",
+ "body": {
+  "searchParameters": {
+   "q": "30 Quà sinh nhật Sếp dưới 1 site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Quà sinh nhật cho nam thiết thực, đa phong cách",
+    "link": "https://shopee.vn/list/qu%C3%A0%20sinh%20nh%E1%BA%ADt%20cho%20nam",
+    "snippet": "Với ngân sách dưới 500.000 VNĐ, bạn có nhiều lựa chọn như ví vải, thắt lưng da, sách, các loại phụ kiện công nghệ (chuột máy tính, lót chuột), hoặc các bộ sản ...",
+    "position": 1
+   },
+   {
+    "title": "Gợi ý 11+ quà 20/10 cho đồng nghiệp độc đáo",
+    "link": "https://shopee.vn/blog/qua-20-10-cho-dong-nghiep/",
+    "snippet": "Nước hoa là một trong những món quà tinh tế và sang trọng, thích hợp để làm quà tặng 20/10 cho đồng nghiệp. Mỗi hương nước hoa đều mang một ...",
+    "date": "22 thg 6, 2026",
+    "position": 2
+   },
+   {
+    "title": "TOP 20+ set quà Tết độc đáo vừa ấn tượng vừa ý nghĩa ...",
+    "link": "https://shopee.vn/blog/qua-tet-doc-dao/",
+    "snippet": "Hộp quà Tết độc đáo hình Việt phục gây ấn tượng mạnh nhờ thiết kế lấy cảm hứng từ trang phục truyền thống như áo dài, áo nhật bình, áo tứ thân.",
+    "date": "26 thg 1, 2026",
+    "position": 3
+   },
+   {
+    "title": "Ngày quốc tế đàn ông là ngày nào? 12+ quà tặng cho ...",
+    "link": "https://shopee.vn/blog/ngay-quoc-te-dan-ong-la-ngay-nao/",
+    "snippet": "Thể hiện lời cảm ơn đến sếp và đồng nghiệp bằng một chai rượu vang hảo hạng là một gợi ý hợp lý. Tuy nhiên, bạn nên tìm hiểu kỹ về sở thích, mùi ...",
+    "date": "5 thg 11, 2025",
+    "position": 4
+   },
+   {
+    "title": "30+ lời chúc 20/10 cho đồng nghiệp vừa ý nghĩa vừa gần gũi",
+    "link": "https://shopee.vn/blog/loi-chuc-20-10-cho-dong-nghiep/",
+    "snippet": "Mong rằng sếp luôn thành công, tự tin và tiếp tục là người dẫn đường tuyệt vời cho chúng em! Lời chúc 20/10 cho sếp nữ (Nguồn: Shopee Blog).",
+    "date": "13 thg 10, 2024",
+    "position": 5
+   },
+   {
+    "title": "20/10 tặng gì? 20+ món quà ý nghĩa cho người phụ nữ ...",
+    "link": "https://shopee.vn/blog/20-10-tang-gi/",
+    "snippet": "Quà 20/10 tặng bạn bè, đồng nghiệp, sếp, đối tác, khách hàng · Chậu cây để bàn · Hộp quà trà hoặc cà phê · Sổ tay cao cấp.",
+    "date": "7 thg 10, 2025",
+    "position": 6
+   },
+   {
+    "title": "Quà sinh nhật ý nghĩa, đa dạng, giao nhanh",
+    "link": "https://shopee.vn/list/qu%C3%A0%20sinh%20nh%E1%BA%ADt",
+    "snippet": "Set Quà Tặng Dễ Thương – Cốc Sứ, Khăn Tắm, Băng Đô Tai Thỏ, Gấu Bông, Quạt Mini – Quà Sinh Nhật, Giáng Sinh, Kỷ Niệm.",
+    "position": 7
+   },
+   {
+    "title": "Quà tặng học sinh - Giá Tốt, Miễn Phí Vận Chuyển, Đủ Loại",
+    "link": "https://shopee.vn/list/qu%C3%A0%20t%E1%BA%B7ng/h%E1%BB%8Dc%20sinh",
+    "snippet": "Bộ Bút Chì 5 Món Hoạt Hình Dễ Thương Kèm Thước Tẩy Chuốt Chì Set Văn · Set quà tặng học sinh trẻ em sinh nhật, 1/6, khai giảng · Bộ Văn Phòng Phẩm Màu Tím Hộp Quà ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

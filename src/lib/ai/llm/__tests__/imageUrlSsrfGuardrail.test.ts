@@ -124,6 +124,13 @@ describe('the production configuration', () => {
 
     expect(model.supportsImageUrls).toBe(true)
   })
+
+  it('🔑 …and so does the routed model AI.vision actually calls (modelForRole, with the retry wrapper)', async () => {
+    // 30/09: the Luna adapter and the fallback wrapper spread the SDK model, which drops its prototype getter —
+    // supportsImageUrls came back undefined (= false = the SDK downloads user URLs). Both now carry it explicitly.
+    const { modelForRole } = await import('../registry')
+    expect(modelForRole('vision').supportsImageUrls).toBe(true)
+  })
 })
 
 describe('what that flag actually decides', () => {

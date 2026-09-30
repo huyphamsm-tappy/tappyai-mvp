@@ -1,0 +1,30 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "MSI Modern 15 F1MG-1225VN site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:46:04.389Z",
+ "body": {
+  "searchParameters": {
+   "q": "MSI Modern 15 F1MG-1225VN site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Laptop Msi Modern 15 F1MG-1225VN (Core 5 120U/ 16GB",
+    "link": "https://www.lazada.vn/products/laptop-msi-modern-15-f1mg-1225vn-core-5-120u-16gb-512gb-windows-11-home-bao-hanh-24-thangii-dac-diem-noi-bat-hieu-nang-xu-ly-on-dinh-chip-intel-core-5-120u-voi-10-nhan-12-luong-va-xung-nhip-50-ghz-xu-ly-muot-ma-cac-tac-vu-van-phong-va-do-hoa-2d-i13392778438.html?srsltid=AU7gw4VteKh8vN5TWTwp4IOgH4WNkZYtZ-86VIz1kW8IxRAAbCQk8Rbe",
+    "snippet": "LazMall Laptop Msi Modern 15 F1MG-1225VN (Core 5 120U/ 16GB/ 512GB/ Windows 11 Home) - Bảo hành 24 tháng · 100% chính hãng · 30 ngày miễn phí trả hàng · Không áp ...",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

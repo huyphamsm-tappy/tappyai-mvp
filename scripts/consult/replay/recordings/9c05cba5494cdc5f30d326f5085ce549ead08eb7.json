@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Wink Saigon Centre, part of Unscripted by Hyatt\" Núi khác ngoài núi Bà Đen, gần Sài Gòn site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T05:13:41.339Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Wink Saigon Centre, part of Unscripted by Hyatt\" Núi khác ngoài núi Bà Đen, gần Sài Gòn site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

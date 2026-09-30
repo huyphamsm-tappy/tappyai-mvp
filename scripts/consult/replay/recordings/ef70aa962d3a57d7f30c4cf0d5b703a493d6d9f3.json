@@ -1,0 +1,243 @@
+{
+ "url": "https://google.serper.dev/shopping",
+ "request": {
+  "q": "quà tặng cà phê cho sếp nam",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 20
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:58:58.155Z",
+ "body": {
+  "searchParameters": {
+   "q": "quà tặng cà phê cho sếp nam",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "shopping",
+   "num": 40,
+   "page": 1,
+   "engine": "google"
+  },
+  "shopping": [
+   {
+    "title": "Set quà tặng phụ kiện thời trang cho nam 5 món cao cấp và sang trọng",
+    "source": "Thomas Nguyen",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+t%E1%BA%B7ng+c%C3%A0+ph%C3%AA+cho+s%E1%BA%BFp+nam&prds=localAnnotatedOfferId:1,catalogid:10794361957651001263,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "1.434.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTVbojy7KhZPCxEB1bBBYIV4QD4Ugx2rbe1ihguThPzeFFYfzGkP3A1r7i0PyKam4r4mBYR-5ZeXAHegX7WvxDgoCoE6tFveaLpnd_bwLk906pjWF9aFnN4m6E",
+    "rating": 5,
+    "ratingCount": 1,
+    "productId": "10794361957651001263",
+    "position": 1
+   },
+   {
+    "title": "Quà tặng 20/10 cho sếp nữ, vợ, cô giáo, giáo viên nữ, mẹ và bạn gái, người yêu nữ quà tặng khăn quàng choàng cổ lụa cao cấp cho nữ văn phòng công sở",
+    "source": "AGANA",
+    "price": "495.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcShS5Ij7g4Z1D1LI-YjDOeQCIJTGWBtuUs15cXz-Yu82qSc7Fo5ouqCM54QGXVfHcTspnUVZ9DHH2j3M42hAJiXu7v_bDoU7YrIewv5nTeFJRjJo7cyC_gAlQ",
+    "productId": "2744621202652917152",
+    "position": 2
+   },
+   {
+    "title": "Combo quà tặng thời trang cho nam 5 món cao cấp",
+    "source": "Thomas Nguyen",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+t%E1%BA%B7ng+c%C3%A0+ph%C3%AA+cho+s%E1%BA%BFp+nam&prds=localAnnotatedOfferId:1,catalogid:17624296411095905924,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "1.055.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQcAko7hsPo_T_xMj_ZorS5rrQL4z7zI2Qxq5x3u_g6jh6QaxUYFyLbUWqFoQR1Sa3P_gP5AgiqgcdUpQb3cGKHLPvEPnFKLjhKAJeEW7el7T9w-1EtjoKF",
+    "rating": 5,
+    "ratingCount": 3,
+    "productId": "17624296411095905924",
+    "position": 3
+   },
+   {
+    "title": "Set Quà Cà Phê A Bold Style, Quà Tặng Sếp Nam - The Curator",
+    "source": "Chus.vn",
+    "price": "770.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQf8qpggGF0woDJ8moQmsgRa3yymh1aSFhSvoWFfi0UUIG0Xu66Z2wrwsq1XvQLYK0v7ajd1MyI0NzgNy9ILPvoIyg-9IVB0GQHed1YeSewrCvqMQHZl-D0",
+    "productId": "964833838479577685",
+    "position": 4
+   },
+   {
+    "title": "Bộ quà tặng phong thủy thời trang cao cấp cho người mệnh thủy",
+    "source": "Thomas Nguyen",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+t%E1%BA%B7ng+c%C3%A0+ph%C3%AA+cho+s%E1%BA%BFp+nam&prds=localAnnotatedOfferId:1,catalogid:1053900763757994511,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "3.314.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSleIkrhonoXcfUY8VlwdS2u5-EXkd4S5aqVCYUkbSDdnyf7_BXoH4jbKP9aHnq_Gciv3F3R3ZgbNXw3yPoIpo_DiC5f9lpKMwbBmFYcZE",
+    "productId": "1053900763757994511",
+    "position": 5
+   },
+   {
+    "title": "Cốc chiết xuất cà phê espresso có vạch chia tay cầm gỗ",
+    "source": "True Cafe",
+    "price": "92.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTmEKYoEBn_Kbd0NL7WsXtCr01InffXfnHSiMOhC-pRH9Xkl0x0uNCWlUVdHzgp051e6EmDlGRuRswDXtHl8SPPOGsQC_UJdt1ZQvD5JFgc",
+    "productId": "16775358882209118333",
+    "position": 6
+   },
+   {
+    "title": "Bộ quà tặng phong thủy thời trang cao cấp cho người mệnh Mộc",
+    "source": "Thomas Nguyen",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+t%E1%BA%B7ng+c%C3%A0+ph%C3%AA+cho+s%E1%BA%BFp+nam&prds=localAnnotatedOfferId:1,catalogid:8100785962324757683,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "4.778.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSVMKZMHnLfTZQifAnnZHYSdaC5V2YydfgyhDuoOY68Tahjvhrwv4am0dDuxjRxkLW1gj2_3e4pGhkxV_N1h2cRFAlXkHZuvHdGHNIB26LLjnlQWzMcSZfg7e4",
+    "rating": 5,
+    "ratingCount": 1,
+    "productId": "8100785962324757683",
+    "position": 7
+   },
+   {
+    "title": "Hộp Quà Tặng 1 Gói Arabica và 1 Gói Summer Day 250G Bột",
+    "source": "Cà Phê Sạch ORG",
+    "price": "390.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTRClkFnamkTVPTx35ENxB8zLO9MMTHnYL7RYF49zuiojGnBJ3L7s5ocxU-UqbgYPIsTPsg9dLr5LHF_ZsWO9irCugq4QhLwQ",
+    "productId": "2513232225703035040",
+    "position": 8
+   },
+   {
+    "title": "Bộ quà tặng Tri Ân 1 cà phê kèm phin và notebook RuNam",
+    "source": "farmersmarket.vn",
+    "price": "1.499.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQCfM0H-w76A2IB7xNOL4E_IQnaaZ9PbfL0vdTjK2hM5XQhoh2DnsgjwOZCDil8x1BMY2hw6VRElcknPwVs1eExCwk0VFF0",
+    "productId": "14584569376688111764",
+    "position": 9
+   },
+   {
+    "title": "Hộp Quà Cà Phê Legend Awakening, Kèm Ly Bã Cà Phê, Quà Tặng Cho Nam",
+    "source": "Chus.vn",
+    "price": "968.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTIXrLSKJ1wOG1XV5Av3qxf-oPHc_uu2YgUxayQ07SjmrNuaiQBu8kxwkaiJCuR8f-ogxZca1zHs6TRhYo4feUx-LXgAfSrtmXhBH6rX-vM",
+    "productId": "15392113037462604850",
+    "position": 10
+   },
+   {
+    "title": "Bộ quà tặng cà phê sang trọng, giá siêu rẻ 2026",
+    "source": "Thành Phát Gift & Decor",
+    "price": "885.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQ-6dZbLnIoU6ymD6ihkqhZ0UhO6j0JRZmHbJYe3vsx3Ct0ACSSZzOD9LajANkKvMAWWMCooWQSd6ansZG5-NeZbOQGCUkknIXR1As1FLLOQa41mIamQFi2Dw",
+    "productId": "6899530742159962406",
+    "position": 11
+   },
+   {
+    "title": "Bộ quà tặng Tết Cộng Cà Phê",
+    "source": "minaco.vn",
+    "price": "339.500 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTSOof3ZFHhu4JY0dI3xLJeFmGjPAs_ilLrJNKsZuihQRIzR-hRHYC3_k7rYsB-mXGWrW7P2SmwizAYw3cVKY93t4WDBovM",
+    "productId": "4943664002171857286",
+    "position": 12
+   },
+   {
+    "title": "Set Quà Tặng Caphê Real Bean - Robusta",
+    "source": "happyptmart.com",
+    "price": "315.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSjqthA8y5N7Gf7VCBnufHl5u2zQUQ_ak03cXc9Bz59yDwtPcp4doizxeGX9Nc6IJlDIHEFZNntBgvUKSH-r_EKxNnak4ok4koFxGzyZuyQkFkkRSEEFchi7A",
+    "productId": "6594837183801100083",
+    "position": 13
+   },
+   {
+    "title": "Hộp Quà Cà Phê & Socola Energy Boost, Quà Tặng Bạn Trai",
+    "source": "Chus.vn",
+    "price": "1.045.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTD5_vIAKB5Gz51P8g_swxbR8FIp8T0OeSu5GW_mTb21PxAuhkbqccFndIAYtKNu4lLvFuNt366iOLp0_caVftXFMUTmgYK1-1_jvIfVXe7",
+    "productId": "18003968108919316577",
+    "position": 14
+   },
+   {
+    "title": "Set Quà Tặng Cà Phê Cao Cấp Mee Fee - Mini Gift Set",
+    "source": "Mee Fee",
+    "price": "324.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTgDVMCCqRvpGo_Kmfq5b0IrOyiblS7vPddQY_mcUAbgQfym4s7Y3xbMEJQ9raRVbRtVMEKCsM8BgVUzvs_U6dbulkLeZ-hKaUW8FjEmf9j",
+    "productId": "5103220032090785665",
+    "position": 15
+   },
+   {
+    "title": "Bộ quà tặng phin cà phê gốm thấp vẽ hoa hướng dương và hộp quà tặng cao cấp CBCFVH001",
+    "source": "myngheviet.vn",
+    "price": "362.340 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQNMF7T2vGVLkhCJS0BAP7Da1_LRZPOb8yO5MT83CVsIr5oiAk6JLHh9JrN9v0tDXM6Gwmb6-JIQOUETIH5abTAXN1QwSKMTyCbX_-RKbU",
+    "productId": "1661799210553222613",
+    "position": 16
+   },
+   {
+    "title": "Hộp Quà Cà Phê Vàng Đặc Sản 04 Món",
+    "source": "1shop.vn",
+    "price": "599.400 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRElCuh-RmyyALmI6Rs8UWpEarY81Su2OCBZhTIfo4s50MjYF_Ei8ctQd6VCu2wMshTzQ-6VdZjT-inTSr0y733eCfKaYwI-FkJ0iagL_Fr",
+    "productId": "10648554612830193476",
+    "position": 17
+   },
+   {
+    "title": "Hộp Quà Care Box Gối Chườm Thêu Tên, Quà Tặng Sức Khỏe - Springhill",
+    "source": "Chus.vn",
+    "price": "525.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQC9u1IuHP2ZFrxlgzwHDxtNhTs-BvtvFX5njia8_6hoosC4le0kWrtdWG-Qq5LdNqox0fH2a10l7sIyFO_-Y5COXB4fT7IH4aKg-VmR5Q",
+    "productId": "13600137052275029283",
+    "position": 18
+   },
+   {
+    "title": "Set Quà Tặng Cà Phê Cao Cấp Mee Fee",
+    "source": "Mee Fee",
+    "price": "540.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSY-Xe8hPVj8ZsT14PwPPpgIOXRHC1HL8Q9qpKvJ42DhwO2d_9PPfLWRtllfVfjJZNINRb-x0UTWyybk1AASFdz2KZKB8D6FduJw5dabLbN",
+    "productId": "10943124075084577408",
+    "position": 19
+   },
+   {
+    "title": "Bộ quà tặng phin cà phê gốm thấp vẽ sen đỏ và hộp quà tặng cao cấp CBCFVH014",
+    "source": "myngheviet.vn",
+    "price": "314.820 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRZyo6uZcf6ZOZO-JINjBYvaCBcLd8X6kCE2oG3sKeRTT9UQoGj4fqkkQWxlkFSnJYwPEMSl_pA1jBs1zgupdGBJA2RcIU-YztthxI5FFO5_sdSCbdG0RGTdg",
+    "productId": "6840839936105814777",
+    "position": 20
+   },
+   {
+    "title": "Hộp quà - Gan Ngỗng Pháp, giỏ quà tết, gio quà tết, quà tặng, quà tết, quà tặng sếp, quà tặng cao cấp, quà tặng vip, quà biếu,",
+    "source": "Alofood",
+    "price": "3.350.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSPQOMewi3rn2P7DExgzG5IzVrLKzj40sVLVQJNSyThngB4BISvbeZTtfCOWC9NVyyiyf86qu_Te_L7zeDg-mFqGyTQxUPo3Z1KuiA8wzY",
+    "productId": "5360733673652967941",
+    "position": 21
+   },
+   {
+    "title": "SET quà tặng cà phê - Phúc - Lộc - Thọ - Olive Coffee",
+    "source": "Olive coffee",
+    "price": "1.100.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTPehRu_ExY-ZTBSCTSbypaw1ovscU2Mb-ax9uErkHye4rvfObB1JI9UO4IZsJPvl1WTkuv_m2QYQ1jBzoKYr_oChaLkC9aBU8nqNJawbkm",
+    "productId": "17773247747032458598",
+    "position": 22
+   },
+   {
+    "title": "Thẻ quà tặng Cộng Cà Phê",
+    "source": "lifelink.vn",
+    "price": "30.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQpX_OHjdJihfSz626qh_VMkY0lJYxd0hwsOeo3zpJHX93D8YM4VEgck7XM7E7XrlXxrUsuJAadtIDQ_RiBhdSZY326dri_nlEwF3n9j8v0_Asy5pcqrpTw",
+    "productId": "15466950540653157952",
+    "position": 23
+   },
+   {
+    "title": "Set Quà Tặng Nến Aurora Bloom Cho Người Đặc Biệt - 220g",
+    "source": "Đại Lý Tinh Dầu Nến Thơm Set Quà",
+    "price": "404 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRRtup00VR_dOuNvd2ORpdroJSmZWbIBsB3jS3BUpRBbWaVxfvHoLa6VL0XHCN-S8tB8g18njs1LKfh2uOBlV2XTe2-8Sd3LjLVWf6P1l80",
+    "productId": "8642456058201722263",
+    "position": 24
+   },
+   {
+    "title": "Hộp Quà Legend Trung Nguyên( LY CAFE SỮA ĐÁ) - Quà Tặng",
+    "source": "gianhangvn.com",
+    "price": "1.900.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQMEjIgQ6JnMEU50m-eOfQq6oblTxUMlwA6Tmax2Aypg_TpiK6khNFAxaz3_27dIyWYuQUiBsGmxMwTUP0MXYdMgHnu-WAi",
+    "productId": "9416153182325934903",
+    "position": 25
+   },
+   {
+    "title": "'Set Quà Ấm Áp Trà Trắng'",
+    "source": "Đại Lý Tinh Dầu Nến Thơm Set Quà",
+    "price": "492 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcS2TH4E8rU9sSih7fFPqy_xVvqp_P8pBKeGImhOzwEgh0FMjy7Hac3ZXheB_Ybw6bmXpW-H1mrx0r8wE5b4WbuxpRqP5xYFkAm7SYWuJmU",
+    "productId": "10416831908086861439",
+    "position": 26
+   }
+  ],
+  "credits": 2
+ }
+}

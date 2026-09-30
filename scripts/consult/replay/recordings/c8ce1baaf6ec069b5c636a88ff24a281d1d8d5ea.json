@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "núi đi chơi 2 ngày 1 đêm cho gia đình 4 người, xe riêng, ngân sách 5 triệu gần Sài Gòn site:klook.com/vi/activity",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:06:46.063Z",
+ "body": {
+  "searchParameters": {
+   "q": "núi đi chơi 2 ngày 1 đêm cho gia đình 4 người, xe riêng, ngân sách 5 triệu gần Sài Gòn site:klook.com/vi/activity",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tour 2 Ngày 1 Đêm Tại Vườn Quốc Gia Nam Cát Tiên ...",
+    "link": "https://www.klook.com/vi/activity/14371-2d1n-nam-cat-tien-national-park-trekking-tour-ho-chi-minh-city/",
+    "snippet": "Đặt tour trekking Vườn Quốc Gia Nam Cát Tiên 2 ngày 1 đêm qua Klook giá tốt hơn, nhiều mã ưu đãi. Tour gồm xe đưa đón từ Sài Gòn và phòng nghỉ qua đêm.",
+    "position": 1
+   },
+   {
+    "title": "Tour Cắm Trại 2N1Đ Phú Điền - Núi Chữ Thập Đồng Nai ...",
+    "link": "https://www.klook.com/vi/activity/71292-phu-dien-field-fiery-cross-reef-mountain-from-ho-chi-minh-city/",
+    "snippet": "Thám hiểm Động Núi Lửa - Hang Dung Nham: Thám hiểm hệ sinh thái núi lửa cách đây 500 năm triệu năm. · Check-in Đầm Sen, núi đá Tình Nhân, đạp xe qua cánh đồng ...",
+    "position": 2
+   },
+   {
+    "title": "Tour Trekking Núi Dinh Trong Ngày - Khởi Hành Từ TP HCM",
+    "link": "https://www.klook.com/vi/activity/65849-dinh-mountain-trekking-tour-from-ho-chi-minh-/",
+    "snippet": "Nằm cách trung tâm thành phố Sài Gòn khoảng 80km, và có độ cao khoảng 500m so với mực nước biển, núi Dinh với rừng cây xanh thẫm cùng không gian trong lành từ ...",
+    "position": 3
+   },
+   {
+    "title": "Tour Đạp Xe Khám Phá Đảo Mekong Bí Ẩn ở Thành phố ...",
+    "link": "https://www.klook.com/vi/activity/110082-saigon-half-day-escape-to-the-hidden-island-cycling-tour/",
+    "snippet": "Tour Đạp Xe Khám Phá Đảo Mekong Bí Ẩn ở Thành phố Hồ Chí Minh (4 Giờ, Nhóm Nhỏ) · Huỷ miễn phí (Gửi yêu cầu trước 24 giờ) · Khởi hành từ Thành phố Hồ Chí Minh.",
+    "rating": 4.6,
+    "ratingCount": 10,
+    "position": 4
+   },
+   {
+    "title": "Tour Riêng Tùy Chỉnh Việt Nam",
+    "link": "https://www.klook.com/vi/activity/175714-klook-vietnam-private-customized-tour/",
+    "snippet": "Du lịch theo tốc độ của riêng bạn, với hướng dẫn viên kiêm tài xế chuyên nghiệp đưa bạn đến các danh lam thắng cảnh và điểm tham quan mang tính biểu tượng trên ...",
+    "position": 5
+   },
+   {
+    "title": "Vé Cáp Treo Núi Bà Đen Ở Tây Ninh",
+    "link": "https://www.klook.com/vi/activity/44561-ba-den-cable-car-ticket-in-tay-ninh/",
+    "snippet": "Đặt vé cáp treo núi Bà Đen ở Tây Ninh qua Klook với giá tốt. Giảm thêm đến 200K trên giá ưu đãi và tận hưởng chuyến tham quan tại núi Bà Đen.",
+    "rating": 4.8,
+    "ratingCount": 2882,
+    "position": 6
+   },
+   {
+    "title": "Private City Transfers in Ho Chi Minh",
+    "link": "https://www.klook.com/vi/activity/6368-private-city-transfer-ho-chi-minh/",
+    "snippet": "Rất khuyến khích cho các chuyến đi trong ngày tiện lợi cho nhóm lớn hoặc chuyến đi gia đình, đặc biệt là đến Núi Bà Đen, sau đó đưa đến sân bay, không cần mang ...",
+    "rating": 4.6,
+    "ratingCount": 134,
+    "position": 7
+   },
+   {
+    "title": "Tour 5 Ngày 4 Đêm Hoàng Su Phì và Chợ Bắc Hà từ Tp. ...",
+    "link": "https://www.klook.com/vi/activity/13072-5d4n-hoang-su-phi-bac-ha-tour-ho-chi-minh/",
+    "snippet": "Điểm tham quan nổi tiếng ở Thành phố Hồ Chí Minh. 1 Địa đạo Củ Chi; 2 Sông Sài Gòn; 3 Bảo tàng Chứng tích Chiến tranh; 4 Chợ Bến Thành; 5 Nhà hát Lớn; 6 Phố đi ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

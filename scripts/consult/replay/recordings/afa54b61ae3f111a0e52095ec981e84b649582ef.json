@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Trung Nguyên Legend - Hộp Quà Tặng Cà Phê Sáng Tạo 8 - Bộ Quà",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:16:04.162Z",
+ "body": {
+  "searchParameters": {
+   "q": "Trung Nguyên Legend - Hộp Quà Tặng Cà Phê Sáng Tạo 8 - Bộ Quà",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Hộp Quà Sáng Tạo 8 - Hộp Quà Giàu Có Trung Nguyên",
+    "imageUrl": "https://drive.gianhangvn.com/image/hop-qua-sang-tao-8-nam-2023-2338939j19274.jpg",
+    "imageWidth": 1000,
+    "imageHeight": 1000,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLVSBxGm1jsoKIAStpUY1FvJMHWK9rDvlqg_4UaPJNzw&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Cà Phê Chồn Legend Trung Nguyên",
+    "domain": "shopcafetrungnguyen.com",
+    "link": "https://shopcafetrungnguyen.com/hop-qua-sang-tao-8-hop-qua-giau-co-trung-nguyen-1406276.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdrive.gianhangvn.com%2Fimage%2Fhop-qua-sang-tao-8-nam-2023-2338939j19274.jpg&tbnid=mwIIulIqkyhTuM&imgrefurl=https%3A%2F%2Fshopcafetrungnguyen.com%2Fhop-qua-sang-tao-8-hop-qua-giau-co-trung-nguyen-1406276.html&docid=HwB30wzybs8L7M&w=1000&h=1000",
+    "position": 1
+   },
+   {
+    "title": "HỘP QUÀ CAO CẤP SÁNG TẠO 8 TRUNG NGUYÊN- GIÀU CÓ",
+    "imageUrl": "https://trungnguyencoffeevn.com/wp-content/uploads/2022/12/5000790-1.jpg",
+    "imageWidth": 1000,
+    "imageHeight": 1000,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQR5SX6IaeeaIQFLz2tdVwtcb2qpUiYReMv31w4XGlosQ&s=10",
+    "thumbnailWidth": 554,
+    "thumbnailHeight": 554,
+    "source": "Cafe Trung Nguyên, Cà Phê Trung Nguyên, Cà Phê",
+    "domain": "trungnguyencoffeevn.com",
+    "link": "https://trungnguyencoffeevn.com/product/https-trungnguyencoffeevn-com-product-hop-qua-cao-cap-ca-phe-chon-legend-trung-nguyen/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Ftrungnguyencoffeevn.com%2Fwp-content%2Fuploads%2F2022%2F12%2F5000790-1.jpg&tbnid=hYaUS3Z1fHoawM&imgrefurl=https%3A%2F%2Ftrungnguyencoffeevn.com%2Fproduct%2Fhttps-trungnguyencoffeevn-com-product-hop-qua-cao-cap-ca-phe-chon-legend-trung-nguyen%2F&docid=9TAW1K1yK5xkCM&w=1000&h=1000",
+    "position": 2
+   },
+   {
+    "title": "HỘP QUÀ CAO CẤP SÁNG TẠO 8 TRUNG NGUYÊN- GIÀU CÓ",
+    "imageUrl": "https://trungnguyencoffeevn.com/wp-content/uploads/2022/12/5000970-3.jpg",
+    "imageWidth": 1000,
+    "imageHeight": 1000,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmg90FHTFiEtqjcIfdTEJ1QWky0_-OpflI5y6jdA5png&s=10",
+    "thumbnailWidth": 554,
+    "thumbnailHeight": 554,
+    "source": "Cafe Trung Nguyên, Cà Phê Trung Nguyên, Cà Phê",
+    "domain": "trungnguyencoffeevn.com",
+    "link": "https://trungnguyencoffeevn.com/product/https-trungnguyencoffeevn-com-product-hop-qua-cao-cap-ca-phe-chon-legend-trung-nguyen/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Ftrungnguyencoffeevn.com%2Fwp-content%2Fuploads%2F2022%2F12%2F5000970-3.jpg&tbnid=sKkHIgjdE0ytGM&imgrefurl=https%3A%2F%2Ftrungnguyencoffeevn.com%2Fproduct%2Fhttps-trungnguyencoffeevn-com-product-hop-qua-cao-cap-ca-phe-chon-legend-trung-nguyen%2F&docid=9TAW1K1yK5xkCM&w=1000&h=1000",
+    "position": 3
+   },
+   {
+    "title": "HỘP QUÀ CAO CẤP SÁNG TẠO 8 TRUNG NGUYÊN- GIÀU CÓ",
+    "imageUrl": "https://trungnguyencoffeevn.com/wp-content/uploads/2022/12/5000790-2.jpg",
+    "imageWidth": 1000,
+    "imageHeight": 1000,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSfW8-lwei4TYs7LpOnxPrpIacZgubLnPQ4vc1JzbVGSA&s=10",
+    "thumbnailWidth": 554,
+    "thumbnailHeight": 554,
+    "source": "Cafe Trung Nguyên, Cà Phê Trung Nguyên, Cà Phê",
+    "domain": "trungnguyencoffeevn.com",
+    "link": "https://trungnguyencoffeevn.com/product/https-trungnguyencoffeevn-com-product-hop-qua-cao-cap-ca-phe-chon-legend-trung-nguyen/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Ftrungnguyencoffeevn.com%2Fwp-content%2Fuploads%2F2022%2F12%2F5000790-2.jpg&tbnid=8mQYbAvM-isa7M&imgrefurl=https%3A%2F%2Ftrungnguyencoffeevn.com%2Fproduct%2Fhttps-trungnguyencoffeevn-com-product-hop-qua-cao-cap-ca-phe-chon-legend-trung-nguyen%2F&docid=9TAW1K1yK5xkCM&w=1000&h=1000",
+    "position": 4
+   },
+   {
+    "title": "Trung Nguyên Legend - Hộp Quà Tặng Cà Phê Sáng Tạo 8 - Bộ Quà Tặng Giàu Có",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-lqfnr0uge0jb97",
+    "imageWidth": 900,
+    "imageHeight": 900,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-kqu08ITvELBe4z3rprDQlXFdVCRZhMAjrFdPrl6SmA&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/Trung-Nguy%C3%AAn-Legend-H%E1%BB%99p-Qu%C3%A0-T%E1%BA%B7ng-C%C3%A0-Ph%C3%AA-S%C3%A1ng-T%E1%BA%A1o-8-B%E1%BB%99-Qu%C3%A0-T%E1%BA%B7ng-Gi%C3%A0u-C%C3%B3-i.195688286.23609877102",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fvn-11134207-7r98o-lqfnr0uge0jb97&tbnid=epMmzkzG2vDLaM&imgrefurl=https%3A%2F%2Fshopee.vn%2FTrung-Nguy%25C3%25AAn-Legend-H%25E1%25BB%2599p-Qu%25C3%25A0-T%25E1%25BA%25B7ng-C%25C3%25A0-Ph%25C3%25AA-S%25C3%25A1ng-T%25E1%25BA%25A1o-8-B%25E1%25BB%2599-Qu%25C3%25A0-T%25E1%25BA%25B7ng-Gi%25C3%25A0u-C%25C3%25B3-i.195688286.23609877102&docid=APOsMecNACpK5M&w=900&h=900",
+    "position": 5
+   },
+   {
+    "title": "Trung Nguyên Legend - Hộp Quà Tặng Cà Phê Sáng Tạo 8 - Bộ Quà Tặng Giàu Có",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-ly6f1ckknc5pd1",
+    "imageWidth": 900,
+    "imageHeight": 900,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSScMtjVfNygCgn6St42zoDdGLDZOoQ_V-WyEajwa54g&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/Trung-Nguy%C3%AAn-Legend-H%E1%BB%99p-Qu%C3%A0-T%E1%BA%B7ng-C%C3%A0-Ph%C3%AA-S%C3%A1ng-T%E1%BA%A1o-8-B%E1%BB%99-Qu%C3%A0-T%E1%BA%B7ng-Gi%C3%A0u-C%C3%B3-i.195688286.23609877102",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fvn-11134207-7r98o-ly6f1ckknc5pd1&tbnid=ktlxr6FUtaf2hM&imgrefurl=https%3A%2F%2Fshopee.vn%2FTrung-Nguy%25C3%25AAn-Legend-H%25E1%25BB%2599p-Qu%25C3%25A0-T%25E1%25BA%25B7ng-C%25C3%25A0-Ph%25C3%25AA-S%25C3%25A1ng-T%25E1%25BA%25A1o-8-B%25E1%25BB%2599-Qu%25C3%25A0-T%25E1%25BA%25B7ng-Gi%25C3%25A0u-C%25C3%25B3-i.195688286.23609877102&docid=APOsMecNACpK5M&w=900&h=900",
+    "position": 6
+   },
+   {
+    "title": "Cafe sáng tạo 8 Trung Nguyên - Cafe Trung Nguyên cao cấp tại Hà Nội....",
+    "imageUrl": "https://trungnguyencoffeevn.com/wp-content/uploads/2018/09/hop-qua-sang-tao-8-trung-nguyen-500gam-1026j.jpg",
+    "imageWidth": 1200,
+    "imageHeight": 1200,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTOvGwqoM9No6HqBg11Nktuiu-f4_iRVSl0dYim3eEehA&s=10",
+    "thumbnailWidth": 554,
+    "thumbnailHeight": 554,
+    "source": "Cafe Trung Nguyên, Cà Phê Trung Nguyên, Cà Phê",
+    "domain": "trungnguyencoffeevn.com",
+    "link": "https://trungnguyencoffeevn.com/product/ca-phe-sang-tao-8-trung-nguyen-500gr/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Ftrungnguyencoffeevn.com%2Fwp-content%2Fuploads%2F2018%2F09%2Fhop-qua-sang-tao-8-trung-nguyen-500gam-1026j.jpg&tbnid=rN7Vu2kVJJ417M&imgrefurl=https%3A%2F%2Ftrungnguyencoffeevn.com%2Fproduct%2Fca-phe-sang-tao-8-trung-nguyen-500gr%2F&docid=tGKQRd6-ebWCLM&w=1200&h=1200",
+    "position": 7
+   },
+   {
+    "title": "Cà phê SÁNG TẠO 8 - HỘP QUÀ TẶNG - KÈM TÚI XÁCH",
+    "imageUrl": "https://huyenthoaiviet.vn/file/HQ%20ST8-Mix-2962f.jpg",
+    "imageWidth": 1024,
+    "imageHeight": 1024,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0MxGbaK43HVQGeRfq_rkmo21xy1eaiWt3sx9i3gmE5A&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "CÀ PHÊ CHỒN",
+    "domain": "huyenthoaiviet.vn",
+    "link": "https://huyenthoaiviet.vn/ca-phe-sang-tao-8-hop-qua-kem-phin-nhom-tui-giay-225.html?srsltid=AU7gw4W5oBnomx__h8L4b7i2iB2YmAe5qn5nV_j0-yf3VBVfOoIa9dxT",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fhuyenthoaiviet.vn%2Ffile%2FHQ%2520ST8-Mix-2962f.jpg&tbnid=lm-rhrI53EhSmM&imgrefurl=https%3A%2F%2Fhuyenthoaiviet.vn%2Fca-phe-sang-tao-8-hop-qua-kem-phin-nhom-tui-giay-225.html%3Fsrsltid%3DAU7gw4W5oBnomx__h8L4b7i2iB2YmAe5qn5nV_j0-yf3VBVfOoIa9dxT&docid=j1anSPZQYQO-TM&w=1024&h=1024",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

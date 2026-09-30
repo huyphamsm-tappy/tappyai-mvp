@@ -1,0 +1,79 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Cà Phê Hòa Tan Ưu Lạc 5 site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:59:31.725Z",
+ "body": {
+  "searchParameters": {
+   "q": "Cà Phê Hòa Tan Ưu Lạc 5 site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "searchInformation": {
+   "didYouMean": "Cà Phê Hòa Tan Lưu Lạc 5 site:shop.tiktok.com/vn"
+  },
+  "organic": [
+   {
+    "title": "coffee cups with no waterproof",
+    "link": "https://shop.tiktok.com/vn/k/coffee-cups-with-no-waterproof",
+    "snippet": "Cốc cà phê có nắp, chất liệu thép không gỉ, cách nhiệt hai lớp, chống đóng cặn và chống va đập, có tay cầm, cốc nước.",
+    "position": 1
+   },
+   {
+    "title": "CHOCMET Cà phê đen 30g (3g x10 )-Không chứa chất ...",
+    "link": "https://shop.tiktok.com/vn/pdp/ca-phe-%C4%91en-chocmet-30g-khong-chat-beo-phu-gia-halal/1732831319434560717",
+    "snippet": "Mua CHOCMET Cà phê đen 30g (3g x10 )-Không chứa chất béo, không gây cảm giác nặng nề,Cà phê phin Mỹ hòa tan trên TikTok Shop. Săn giá siêu hời cho và được ...",
+    "rating": 4.3,
+    "ratingCount": 28,
+    "position": 2
+   },
+   {
+    "title": "uniqlo singapore arcane",
+    "link": "https://shop.tiktok.com/vn/k/uniqlo-singapore-arcane",
+    "snippet": "Cappuccino Sầu riêng Archcafe - Cà phê hoà tan (12 gói x 18g) - Coffee, Cafe. Deal. 4.7. 1124 sold. ₫67.320. ₫78.000. Cappuccino Sầu riêng Archcafe - Cà phê ...",
+    "position": 3
+   },
+   {
+    "title": "ข้าวหอมตราบานเย็น",
+    "link": "https://shop.tiktok.com/vn/k/khaw-hom-tra-baneyn",
+    "snippet": "Khám phá ข้าวหอมตราบานเย็น mới nhất tại TikTok Shop và tận hưởng freeship! Mua sắm những bộ sưu tập độc quyền và khám phá sản phẩm thịnh hành nhất hôm nay.",
+    "position": 4
+   },
+   {
+    "title": "miffy macaron singapore",
+    "link": "https://shop.tiktok.com/vn/k/miffy-macaron-singapore",
+    "snippet": "Khám phá miffy macaron singapore mới nhất tại TikTok Shop và tận hưởng freeship! Mua sắm những bộ sưu tập độc quyền và khám phá sản phẩm thịnh hành nhất hôm ...",
+    "position": 5
+   },
+   {
+    "title": "phantom coffee - TikTok Shop Vietnam",
+    "link": "https://shop.tiktok.com/vn/k/phantom-coffee",
+    "snippet": "Khám phá phantom coffee mới nhất tại TikTok Shop và tận hưởng freeship! Mua sắm những bộ sưu tập độc quyền và khám phá sản phẩm thịnh hành nhất hôm nay.",
+    "position": 6
+   },
+   {
+    "title": "Bình Lắc Pha Chế Nhựa Cao Cấp QT Kitchenware",
+    "link": "https://shop.tiktok.com/vn/pdp/binh-lac-pha-che-nhua-cao-cap-qt-kitchenware-300ml-500ml/1730997201325820242",
+    "snippet": "Bình lắc pha nhựa cao cấp – Đa dạng dung tích cho mọi nhu cầu pha chếBình lắc pha chế nhựa là công cụ cần thiết cho các bartender chuyên nghiệp cũng như ...",
+    "rating": 4.7,
+    "ratingCount": 16,
+    "position": 7
+   },
+   {
+    "title": "kedai coklat tanah merah",
+    "link": "https://shop.tiktok.com/vn/k/kedai-coklat-tanah-merah",
+    "snippet": "Khám phá kedai coklat tanah merah mới nhất tại TikTok Shop và tận hưởng freeship! Mua sắm những bộ sưu tập độc quyền và khám phá sản phẩm thịnh hành nhất ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

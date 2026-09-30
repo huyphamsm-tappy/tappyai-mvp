@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"EVOO 11.6\" Ultra Thin Notebook EVC1167 HD Intel 64 GB 4GB RAM HDMI Black Wind 10\" OR \"HP ZBook Firefly 14 G7 i7-10510U Máy trạm di động 35\" OR \"Laptop Dell Inspiron 15 3520\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:14:01.605Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"EVOO 11.6\" Ultra Thin Notebook EVC1167 HD Intel 64 GB 4GB RAM HDMI Black Wind 10\" OR \"HP ZBook Firefly 14 G7 i7-10510U Máy trạm di động 35\" OR \"Laptop Dell Inspiron 15 3520\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "15.6 Touchscreen Laptop Dell Inspiron 15 Intel i7 32GB ...",
+    "link": "https://yesmeal.com/shop/15-6-touchscreen-laptop-dell-inspiron-15-intel-i7-32gb-ram-1tb-ssd-c4c245",
+    "snippet": "Revolutionize Your Workflow with an Immersive 15.6 Touchscreen Laptop. Take complete control over your creative and professional projects using this premium ...",
+    "rating": 4.8,
+    "ratingCount": 379,
+    "position": 1
+   },
+   {
+    "title": "LAPTOP DELL INSPIRON 15 - Portales/Roswell",
+    "link": "https://enmucampusstore.com/MerchDetail?MerchID=1913292&CategoryName=COMPUTER%20SALES&CatID=37527&Name=COMPUTER%20SALES",
+    "snippet": "LAPTOP DELL INSPIRON 15. 81014482456. Cover Image For LAPTOP DELL INSPIRON 15. LAPTOP DELL INSPIRON 15. 81014482456. Price: $1,017.99. Quantity. Add To Cart.",
+    "position": 2
+   },
+   {
+    "title": "LAPTOP DELL INSPIRON 15 | Caldwell CC & TI",
+    "link": "https://www.thecobrastore.com/MerchDetail?MerchID=1913204&CategoryName=COMPUTER%20SALES&CatID=41589&Name=COMPUTER%20SALES",
+    "snippet": "LAPTOP DELL INSPIRON 15. 81014482456. Cover Image For LAPTOP DELL INSPIRON 15. LAPTOP DELL INSPIRON 15. 81014482456. Price: $1,017.99. Quantity. Add To Cart.",
+    "position": 3
+   },
+   {
+    "title": "New Laptop (Dell Inspiron 15) Install Errors",
+    "link": "https://learn.microsoft.com/en-ca/answers/questions/3981085/new-laptop-dell-inspiron-15-install-errors",
+    "snippet": "Hello,. I just received this laptop in the mail today. I went to \"Check for Updates\" and there are two that keep giving me error messages:.",
+    "position": 4
+   },
+   {
+    "title": "LAPTOP DELL INSPIRON 15",
+    "link": "https://www.myrivershop.com/MerchDetail?MerchID=1913228&type=8&CategoryName=&CatID=-1&Name=",
+    "snippet": "LAPTOP DELL INSPIRON 15. 81014482456. Cover Image For LAPTOP DELL INSPIRON 15. LAPTOP DELL INSPIRON 15. 81014482456. Price: $1,017.99. Quantity. Add To Cart.",
+    "position": 5
+   },
+   {
+    "title": "Laptop Dell Inspiron 15 1545 4GB Intel Celeron HDD 320GB ...",
+    "link": "https://jiji.ng/ha/lagos/computers-and-laptops/laptop-dell-inspiron-15-1545-4gb-intel-celeron-hdd-320gb-yxCuur9hpAzTIXuXUhP4x180.html",
+    "snippet": "Dell inspiron 1545 | intel celeron | 320gb hdd | 4gb ram | price: ₦75,000 only basic details * brand: dell * model: inspiron 1545 * type: notebook ...",
+    "position": 6
+   },
+   {
+    "title": "Laptop Dell Inspiron 15” Plus : r/musicproduction",
+    "link": "https://www.reddit.com/r/musicproduction/comments/n979rm/dell_inspiron_15_plus_laptop/?tl=vi",
+    "snippet": "Nó chạy DAW (Ableton) của mình với tất cả plugin khá nhanh. Thỉnh thoảng load chậm, đôi khi với những project lớn thì CPU mình chạy hết công ...",
+    "position": 7
+   },
+   {
+    "title": "Hướng dẫn tháo lắp , vệ sinh Laptop Dell Inspiron 15 3558",
+    "link": "https://www.youtube.com/watch?v=64CHYFxJaDU",
+    "snippet": "Mình sẽ hướng dẫn các tháo lắp , vệ sinh Laptop Dell Inspiron 15 3558 . Bạn có thể tự làm tại nhà Bạn nào đang sử dụng mẫu này tham khảo ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

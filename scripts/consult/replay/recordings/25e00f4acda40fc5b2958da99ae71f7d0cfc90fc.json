@@ -1,0 +1,66 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Máy xay cà phê thủ công, 40 site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T05:11:32.085Z",
+ "body": {
+  "searchParameters": {
+   "q": "Máy xay cà phê thủ công, 40 site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Máy xay cafe thủ công 40 cấp Lõi gốm Portable Hộp kính Dễ rửa ...",
+    "link": "https://shopee.vn/M%C3%A1y-xay-cafe-th%E1%BB%A7-c%C3%B4ng-40-c%E1%BA%A5p-L%C3%B5i-g%E1%BB%91m-Portable-H%E1%BB%99p-k%C3%ADnh-D%E1%BB%85-r%E1%BB%ADa-M%E1%BB%9Bi-2026-i.1758768233.57707993784",
+    "snippet": "Mua Máy xay cafe thủ công 40 cấp Lõi gốm Portable Hộp kính Dễ rửa Mới 2026 giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn lại tiền Giao Hàng Miễn Phí. XEM NGAY!",
+    "position": 1
+   },
+   {
+    "title": "Máy xay cà phê thủ công cầm tay 40 cấp độ điều chỉnh, lưỡi ...",
+    "link": "https://shopee.vn/M%C3%A1y-xay-c%C3%A0-ph%C3%AA-th%E1%BB%A7-c%C3%B4ng-c%E1%BA%A7m-tay-40-c%E1%BA%A5p-%C4%91%E1%BB%99-%C4%91i%E1%BB%81u-ch%E1%BB%89nh-l%C6%B0%E1%BB%A1i-g%E1%BB%91m-cao-c%E1%BA%A5p-kh%C3%B4ng-c%E1%BA%A7n-%C4%91i%E1%BB%87n-nh%E1%BB%8F-g%E1%BB%8Dn-mang-theo-i.1708207737.46711113523",
+    "snippet": "Bạn thích cà phê thơm đậm đúng gu? Chiếc máy xay thủ công này giúp hạt cà phê được xay đều, hạn chế nóng máy, giữ nguyên hương thơm tự nhiên cho từng ly cà phê mỗi ngày",
+    "position": 2
+   },
+   {
+    "title": "Máy xay cà phê Thủ công/Điện 40 cấp độ Mài gốm Không dây Ít ...",
+    "link": "https://shopee.vn/M%C3%A1y-xay-c%C3%A0-ph%C3%AA-Th%E1%BB%A7-c%C3%B4ng-%C4%90i%E1%BB%87n-40-c%E1%BA%A5p-%C4%91%E1%BB%99-M%C3%A0i-g%E1%BB%91m-Kh%C3%B4ng-d%C3%A2y-%C3%8Dt-%E1%BB%93n-Type-C-M%E1%BB%9Bi-2026-i.1758768233.52208051481",
+    "snippet": "Mua Máy xay cà phê Thủ công/Điện 40 cấp độ Mài gốm Không dây Ít ồn Type-C Mới 2026 giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn lại tiền Giao Hàng Miễn Phí. XEM NGAY!",
+    "position": 3
+   },
+   {
+    "title": "Máy xay cà phê thủ công giá tốt Tháng 9, 2026 | Mua ngay ...",
+    "link": "https://shopee.vn/search?keyword=M%C3%A1y%20xay%20c%C3%A0%20ph%C3%AA%20th%E1%BB%A7%20c%C3%B4ng",
+    "snippet": "Mua Máy xay cà phê thủ công giao tận nơi Voucher Shopee giảm đến 50%. Miễn phí vận chuyển và đổi trả dễ dàng. Thanh toán bảo mật. Đặt mua ngay!",
+    "position": 4
+   },
+   {
+    "title": "Máy xay hạt cà phê thủ công 40 cấp độ cài đặt mài Điều chỉnh ...",
+    "link": "https://shopee.vn/M%C3%A1y-xay-h%E1%BA%A1t-c%C3%A0-ph%C3%AA-th%E1%BB%A7-c%C3%B4ng-40-c%E1%BA%A5p-%C4%91%E1%BB%99-c%C3%A0i-%C4%91%E1%BA%B7t-m%C3%A0i-%C4%90i%E1%BB%81u-ch%E1%BB%89nh-%C4%91%E1%BB%99-th%C3%B4-L%C3%B5i-m%C3%A0i-g%E1%BB%91m-%28KMDJ-KCT-W2%29-i.1031871809.46152922021",
+    "snippet": "Mua Máy xay hạt cà phê thủ công 40 cấp độ cài đặt mài Điều chỉnh độ thô Lõi mài gốm (KMDJ-KCT-W2) giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn lại tiền Giao Hàng Miễn Phí. XEM NGAY!",
+    "position": 5
+   },
+   {
+    "title": "Máy xay cà phê thủ công Circle Joy, Máy xay cà phê CNC cầm ...",
+    "link": "https://shopee.vn/M%C3%A1y-xay-c%C3%A0-ph%C3%AA-th%E1%BB%A7-c%C3%B4ng-Circle-Joy-M%C3%A1y-xay-c%C3%A0-ph%C3%AA-CNC-c%E1%BA%A7m-tay-v%E1%BB%9Bi-40-b%C3%A1nh-r%C4%83ng-c%C3%B3-th%E1%BB%83-%C4%91i%E1%BB%81u-ch%E1%BB%89nh-L%C3%B5i-m%C3%A0i-g%E1%BB%91m-i.1031871809.40977197156",
+    "snippet": "Mua Máy xay cà phê thủ công Circle Joy, Máy xay cà phê CNC cầm tay với 40 bánh răng có thể điều chỉnh, Lõi mài gốm giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn lại tiền Giao Hàng Miễn Phí. XEM NGAY!",
+    "position": 6
+   },
+   {
+    "title": "Máy xay cà phê thủ công Mini 40 cài đặt có thể điều chỉnh ...",
+    "link": "https://shopee.vn/M%C3%A1y-xay-c%C3%A0-ph%C3%AA-th%E1%BB%A7-c%C3%B4ng-Mini-40-c%C3%A0i-%C4%91%E1%BA%B7t-c%C3%B3-th%E1%BB%83-%C4%91i%E1%BB%81u-ch%E1%BB%89nh-C%C3%B4ng-su%E1%BA%A5t-30g-M%C3%A1y-xay-%C4%91%E1%BA%ADu-h%C3%ACnh-n%C3%B3n-i.196261835.51157824026",
+    "snippet": "Mua Máy xay cà phê thủ công Mini 40 cài đặt có thể điều chỉnh Công suất 30g Máy xay đậu hình nón giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn lại tiền Giao Hàng Miễn Phí. XEM NGAY!",
+    "position": 7
+   }
+  ],
+  "credits": 1
+ }
+}

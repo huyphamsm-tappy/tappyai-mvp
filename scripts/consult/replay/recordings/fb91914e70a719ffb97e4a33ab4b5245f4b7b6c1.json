@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Tour 2 Ngày 1 Đêm Tại Vườn Quốc Gia Nam Cát Tiên ...",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:06:51.867Z",
+ "body": {
+  "searchParameters": {
+   "q": "Tour 2 Ngày 1 Đêm Tại Vườn Quốc Gia Nam Cát Tiên ...",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Tour Du lịch Nam Cát Tiên 2 ngày 1 đêm",
+    "imageUrl": "https://dailytravelvietnam.com/vi/images/2015/01/cat-tien-2-ngay-1-dem-10.jpg",
+    "imageWidth": 929,
+    "imageHeight": 619,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpJFOY9FMzuJH2_quOmp8jx2xSe9Xbq36q5eFPL63CDA&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "dailytravelvietnam.com",
+    "domain": "dailytravelvietnam.com",
+    "link": "https://dailytravelvietnam.com/vi/tour/tour-du-lich-nam-cat-tien-2-ngay-1-dem/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdailytravelvietnam.com%2Fvi%2Fimages%2F2015%2F01%2Fcat-tien-2-ngay-1-dem-10.jpg&tbnid=hE3e7LkF1Bw2uM&imgrefurl=https%3A%2F%2Fdailytravelvietnam.com%2Fvi%2Ftour%2Ftour-du-lich-nam-cat-tien-2-ngay-1-dem%2F&docid=OxAzSDnyE04j5M&w=929&h=619",
+    "position": 1
+   },
+   {
+    "title": "Tour 2 ngày 1 đêm - VQG Cát Tiên",
+    "imageUrl": "https://cattiennationalpark.com.vn/wp-content/uploads/2023/01/cattien_-_tour_2n1d_-_cover.png",
+    "imageWidth": 1280,
+    "imageHeight": 720,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMkF0CL3ZGNxAnQqQSB-lh-TsvZrSO900mXHj1EPpQpA&s=10",
+    "thumbnailWidth": 738,
+    "thumbnailHeight": 414,
+    "source": "VQG Cát Tiên",
+    "domain": "cattiennationalpark.com.vn",
+    "link": "https://cattiennationalpark.com.vn/tour-2-ngay-1-dem/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcattiennationalpark.com.vn%2Fwp-content%2Fuploads%2F2023%2F01%2Fcattien_-_tour_2n1d_-_cover.png&tbnid=vyblPGq9vMaNYM&imgrefurl=https%3A%2F%2Fcattiennationalpark.com.vn%2Ftour-2-ngay-1-dem%2F&docid=p70riwhhMc20mM&w=1280&h=720",
+    "position": 2
+   },
+   {
+    "title": "Tour trekking khám phá Nam Cát Tiên 2 ngày 1 đêm chỉ còn 1.850.000Đ",
+    "imageUrl": "https://tinviettravel.com.vn/uploads/tours/2022_03/tour-du-lich-nam-cat-tien-2-ngay-1-dem.jpg",
+    "imageWidth": 1366,
+    "imageHeight": 768,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcToJl3MCZmvXMn6Db_QEXcs8suQrdY2m2I8qIq5xqzYZw&s=10",
+    "thumbnailWidth": 597,
+    "thumbnailHeight": 335,
+    "source": "Tín Việt Travel",
+    "domain": "tinviettravel.com.vn",
+    "link": "https://tinviettravel.com.vn/tour-da-lat/Tour-du-lich-Nam-Cat-Tien-2N1D-Trekking-lua-trai-gia-chi-1-850-000d.html?srsltid=AU7gw4XV6HU6BlB_d43MtgaQy4Zf8uxCtvM1_sGy7cYtx3mKix4Z018O",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Ftinviettravel.com.vn%2Fuploads%2Ftours%2F2022_03%2Ftour-du-lich-nam-cat-tien-2-ngay-1-dem.jpg&tbnid=2yCJmmyvn32gaM&imgrefurl=https%3A%2F%2Ftinviettravel.com.vn%2Ftour-da-lat%2FTour-du-lich-Nam-Cat-Tien-2N1D-Trekking-lua-trai-gia-chi-1-850-000d.html%3Fsrsltid%3DAU7gw4XV6HU6BlB_d43MtgaQy4Zf8uxCtvM1_sGy7cYtx3mKix4Z018O&docid=VRg_mBkulZbnOM&w=1366&h=768",
+    "position": 3
+   },
+   {
+    "title": "Tour Vườn Quốc Gia Nam Cát Tiên 2 Ngày 1 Đêm: Khám Phá Thiên Nhiên Hoang Dã",
+    "imageUrl": "https://www.vietnambooking.com/wp-content/uploads/2022/04/tour-du-lich-vuon-quoc-gia-nam-cat-tien-2n1d-hang-ngay-8.jpg",
+    "imageWidth": 620,
+    "imageHeight": 400,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ008MbnIHU3Ru6-eiLebfaPsoElveCyIBMmhN21LQW0Q&s=10",
+    "thumbnailWidth": 556,
+    "thumbnailHeight": 359,
+    "source": "VietNam Booking",
+    "domain": "www.vietnambooking.com",
+    "link": "https://www.vietnambooking.com/du-lich/tour-du-lich-vuon-quoc-gia-nam-cat-tien-2n1d-hang-ngay.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.vietnambooking.com%2Fwp-content%2Fuploads%2F2022%2F04%2Ftour-du-lich-vuon-quoc-gia-nam-cat-tien-2n1d-hang-ngay-8.jpg&tbnid=CkzoFlOQhXU1vM&imgrefurl=https%3A%2F%2Fwww.vietnambooking.com%2Fdu-lich%2Ftour-du-lich-vuon-quoc-gia-nam-cat-tien-2n1d-hang-ngay.html&docid=MQ5KZTl67XuuaM&w=620&h=400",
+    "position": 4
+   },
+   {
+    "title": "Tour Đi Trek 2 Ngày 1 Đêm Tại Vườn Quốc Gia Nam Cát Tiên - Klook",
+    "imageUrl": "https://res.klook.com/images/fl_lossy.progressive,q_65/c_fill,w_1295,h_971/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/vyo1n72xvfq89g6aff8p/Tour2Ng%C3%A0y1%C4%90%C3%AAmT%E1%BA%A1iV%C6%B0%E1%BB%9DnQu%E1%BB%91cGiaNamC%C3%A1tTi%C3%AAnT%E1%BB%ABTPH%E1%BB%93Ch%C3%ADMinh.jpg",
+    "imageWidth": 1295,
+    "imageHeight": 971,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiA_7VkYl9nQUwxiqwZfbkj5yezHTUPzvyFMf5vCx20A&s=10",
+    "thumbnailWidth": 516,
+    "thumbnailHeight": 387,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/14371-2d1n-nam-cat-tien-national-park-trekking-tour-ho-chi-minh-city/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Ffl_lossy.progressive%2Cq_65%2Fc_fill%2Cw_1295%2Ch_971%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fvyo1n72xvfq89g6aff8p%2FTour2Ng%25C3%25A0y1%25C4%2590%25C3%25AAmT%25E1%25BA%25A1iV%25C6%25B0%25E1%25BB%259DnQu%25E1%25BB%2591cGiaNamC%25C3%25A1tTi%25C3%25AAnT%25E1%25BB%25ABTPH%25E1%25BB%2593Ch%25C3%25ADMinh.jpg&tbnid=HO2fX2g77yAFqM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F14371-2d1n-nam-cat-tien-national-park-trekking-tour-ho-chi-minh-city%2F&docid=hOw6Fcys_WWOMM&w=1295&h=971",
+    "position": 5
+   },
+   {
+    "title": "Tour Du Lịch Nam Cát Tiên 2N1Đ - Trekking & Săn Thú Đêm | Đặt Ngay",
+    "imageUrl": "https://namthientravel.com.vn/wp-content/uploads/2025/12/Tour-Nam-Cat-Tien-2-Ngay-1-Dem.webp",
+    "imageWidth": 1500,
+    "imageHeight": 980,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQj4kvrktXPS-xWCG94KGuGS_pZL-3HE15FMP6bxHWs1Q&s=10",
+    "thumbnailWidth": 685,
+    "thumbnailHeight": 448,
+    "source": "Nam Thiên Travel",
+    "domain": "namthientravel.com.vn",
+    "link": "https://namthientravel.com.vn/tour-du-lich-nam-cat-tien-2-ngay-1-dem/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fnamthientravel.com.vn%2Fwp-content%2Fuploads%2F2025%2F12%2FTour-Nam-Cat-Tien-2-Ngay-1-Dem.webp&tbnid=62oRpHnfH5qdiM&imgrefurl=https%3A%2F%2Fnamthientravel.com.vn%2Ftour-du-lich-nam-cat-tien-2-ngay-1-dem%2F&docid=-gu-Vvx4Q036aM&w=1500&h=980",
+    "position": 6
+   },
+   {
+    "title": "Tour Du Lịch Xanh Khám Phá Vườn Quốc Gia Nam Cát Tiên 2 Ngày 1 Đêm",
+    "imageUrl": "https://www.vietourist.com.vn/public/frontend/uploads/files/tour/tour-nam-cat-tien-du-lich-xanh-vtd.jpg",
+    "imageWidth": 1080,
+    "imageHeight": 1080,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbqsmKw7ZdrWoUd8mO8_2Swn5CW87HVp-N44qF3ehVNQ&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Vietourist Holdings",
+    "domain": "www.vietourist.com.vn",
+    "link": "https://www.vietourist.com.vn/vn/tour/du-lich-xanh/dlx-nct2n1d-904.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.vietourist.com.vn%2Fpublic%2Ffrontend%2Fuploads%2Ffiles%2Ftour%2Ftour-nam-cat-tien-du-lich-xanh-vtd.jpg&tbnid=zzVVR22x3ioo6M&imgrefurl=https%3A%2F%2Fwww.vietourist.com.vn%2Fvn%2Ftour%2Fdu-lich-xanh%2Fdlx-nct2n1d-904.html&docid=C4axdKz-_pPpnM&w=1080&h=1080",
+    "position": 7
+   },
+   {
+    "title": "Tour Nam Cát Tiên 2 ngày 1 đêm từ TP.HCM",
+    "imageUrl": "https://objectstorage.omzcloud.vn/pys-object-storage/web/uploads/posts/avatar/1591702330.jpg",
+    "imageWidth": 512,
+    "imageHeight": 299,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOMaAQRHWDC50Qmp7swCj_C68v3maMMEWAc2gbxoQhfg&s=10",
+    "thumbnailWidth": 511,
+    "thumbnailHeight": 299,
+    "source": "PYS Travel",
+    "domain": "pystravel.vn",
+    "link": "https://pystravel.vn/tour/4439-tour-nam-cat-tien-2-ngay-1-tu-tphcm.html?srsltid=AU7gw4UR53VmXGUmdfRSfdBUnGh7TGtVbUatiGGo6L4z_Jexmr40qfiU",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fobjectstorage.omzcloud.vn%2Fpys-object-storage%2Fweb%2Fuploads%2Fposts%2Favatar%2F1591702330.jpg&tbnid=NwoSe2y3-KWwYM&imgrefurl=https%3A%2F%2Fpystravel.vn%2Ftour%2F4439-tour-nam-cat-tien-2-ngay-1-tu-tphcm.html%3Fsrsltid%3DAU7gw4UR53VmXGUmdfRSfdBUnGh7TGtVbUatiGGo6L4z_Jexmr40qfiU&docid=JdH-oQZ5_cYhzM&w=512&h=299",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

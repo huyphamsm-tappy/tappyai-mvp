@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Ốp lưng UAG Monarch Pro w Magsafe cho iPhone 17",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:19:34.802Z",
+ "body": {
+  "searchParameters": {
+   "q": "Ốp lưng UAG Monarch Pro w Magsafe cho iPhone 17",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Ốp lưng Monarch Pro w Magsafe cho iPhone 17 Pro Max [6.9 inch]",
+    "imageUrl": "https://cdn.hstatic.net/products/200000057534/g_hs_apple_iphone-17-pro-max-2025-lion_monarch-pro_carbon-fiber_std_03_d07718c969814e738d4340b4c7f61689_master.png",
+    "imageWidth": 1500,
+    "imageHeight": 1500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2QkwfEwher2OFTb1-ADBLvvZzrHfCgbFvRJjuVS-ysw&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "UAG VietNam",
+    "domain": "uagvietnam.vn",
+    "link": "https://uagvietnam.vn/products/op-lung-monarch-w-magsafe-cho-iphone-17-pro-max-6-9-inch",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.hstatic.net%2Fproducts%2F200000057534%2Fg_hs_apple_iphone-17-pro-max-2025-lion_monarch-pro_carbon-fiber_std_03_d07718c969814e738d4340b4c7f61689_master.png&tbnid=ygmuLfQbXpzPoM&imgrefurl=https%3A%2F%2Fuagvietnam.vn%2Fproducts%2Fop-lung-monarch-w-magsafe-cho-iphone-17-pro-max-6-9-inch&docid=k5F7g_gZyoHbiM&w=1500&h=1500",
+    "position": 1
+   },
+   {
+    "title": "Ốp lưng Monarch Pro w Magsafe cho iPhone 17 Pro Max [6.9 inch]",
+    "imageUrl": "https://cdn.hstatic.net/products/200000057534/uag_hs_apple_iphone-17-pro-max-2025-lion_monarch-pro_titanium_ndv_01_7a25318b254d4364a5ff60c807eb2127_master.png",
+    "imageWidth": 1500,
+    "imageHeight": 1500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFuyPj1bxyqkOy1vemCWdlnyQ6iYtS5WPx_OW_8niGRQ&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "UAG VietNam",
+    "domain": "uagvietnam.vn",
+    "link": "https://uagvietnam.vn/products/op-lung-monarch-w-magsafe-cho-iphone-17-pro-max-6-9-inch",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.hstatic.net%2Fproducts%2F200000057534%2Fuag_hs_apple_iphone-17-pro-max-2025-lion_monarch-pro_titanium_ndv_01_7a25318b254d4364a5ff60c807eb2127_master.png&tbnid=Estgex4gfE4R3M&imgrefurl=https%3A%2F%2Fuagvietnam.vn%2Fproducts%2Fop-lung-monarch-w-magsafe-cho-iphone-17-pro-max-6-9-inch&docid=k5F7g_gZyoHbiM&w=1500&h=1500",
+    "position": 2
+   },
+   {
+    "title": "Ốp lưng Monarch Pro w Magsafe cho iPhone 17 Pro Max [6.9 inch]",
+    "imageUrl": "https://cdn.hstatic.net/products/200000057534/g_hs_apple_iphone-17-pro-max-2025-lion_monarch-pro_carbon-fiber_prm_01_4f78b1a27dbe43f3b107cf63affd98bf_master.png",
+    "imageWidth": 1125,
+    "imageHeight": 1125,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT_EcjlApMGNbuLoc4gUlYpMoQmDjKNhcXidifMLq3oNA&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "UAG VietNam",
+    "domain": "uagvietnam.vn",
+    "link": "https://uagvietnam.vn/products/op-lung-monarch-w-magsafe-cho-iphone-17-pro-max-6-9-inch",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.hstatic.net%2Fproducts%2F200000057534%2Fg_hs_apple_iphone-17-pro-max-2025-lion_monarch-pro_carbon-fiber_prm_01_4f78b1a27dbe43f3b107cf63affd98bf_master.png&tbnid=Xx1Y33eVx9-2iM&imgrefurl=https%3A%2F%2Fuagvietnam.vn%2Fproducts%2Fop-lung-monarch-w-magsafe-cho-iphone-17-pro-max-6-9-inch&docid=k5F7g_gZyoHbiM&w=1125&h=1125",
+    "position": 3
+   },
+   {
+    "title": "Ốp lưng Monarch Pro w Magsafe cho iPhone 17 Pro Max [6.9 inch]",
+    "imageUrl": "https://cdn.hstatic.net/products/200000057534/uag_hs_apple_iphone-17-pro-max-2025-lion_monarch-pro_titanium_prm_02_700a159a0cb047949949e3f2ff131176_master.png",
+    "imageWidth": 1125,
+    "imageHeight": 1125,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRW43Kq3HSHH1iKNpvYc0v4pTzF4gRSIpUwPFMGdZr6pQ&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "UAG VietNam",
+    "domain": "uagvietnam.vn",
+    "link": "https://uagvietnam.vn/products/op-lung-monarch-w-magsafe-cho-iphone-17-pro-max-6-9-inch",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.hstatic.net%2Fproducts%2F200000057534%2Fuag_hs_apple_iphone-17-pro-max-2025-lion_monarch-pro_titanium_prm_02_700a159a0cb047949949e3f2ff131176_master.png&tbnid=f_ejgbVLM39bQM&imgrefurl=https%3A%2F%2Fuagvietnam.vn%2Fproducts%2Fop-lung-monarch-w-magsafe-cho-iphone-17-pro-max-6-9-inch&docid=k5F7g_gZyoHbiM&w=1125&h=1125",
+    "position": 4
+   },
+   {
+    "title": "Ốp lưng Monarch Pro w Magsafe cho iPhone 17 Pro Max [6.9 inch]",
+    "imageUrl": "https://cdn.hstatic.net/products/200000057534/thi_t_k__ch_a_c__t_n__16__ea2e0497ca294e03bd4ea3b7342f36bb_master.png",
+    "imageWidth": 1080,
+    "imageHeight": 1080,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShOPo0LLO2mWMuWfkGMulbLfVdRMeDaHodHrUi7Ot8lw&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "UAG VietNam",
+    "domain": "uagvietnam.vn",
+    "link": "https://uagvietnam.vn/products/op-lung-monarch-w-magsafe-cho-iphone-17-pro-max-6-9-inch",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.hstatic.net%2Fproducts%2F200000057534%2Fthi_t_k__ch_a_c__t_n__16__ea2e0497ca294e03bd4ea3b7342f36bb_master.png&tbnid=8Z7xoyso4GXKcM&imgrefurl=https%3A%2F%2Fuagvietnam.vn%2Fproducts%2Fop-lung-monarch-w-magsafe-cho-iphone-17-pro-max-6-9-inch&docid=k5F7g_gZyoHbiM&w=1080&h=1080",
+    "position": 5
+   },
+   {
+    "title": "Ốp lưng Monarch Pro w Magsafe cho iPhone 17 Pro [6.3 inch]",
+    "imageUrl": "https://cdn.hstatic.net/products/200000057534/pple_iphone-17-pro-2025-tinman_monarch-pro-kevlar_element-green_std_03_1a97db403e9e4829a22157a28b1bccef_master.png",
+    "imageWidth": 1500,
+    "imageHeight": 1500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-FBYT3Kj5sSYUX5kiAD-IsSGkQmubRpGL7lQim4LMUA&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "UAG VietNam",
+    "domain": "uagvietnam.vn",
+    "link": "https://uagvietnam.vn/products/op-lung-monarch-pro-w-magsafe-cho-iphone-17-pro-6-3-inch",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.hstatic.net%2Fproducts%2F200000057534%2Fpple_iphone-17-pro-2025-tinman_monarch-pro-kevlar_element-green_std_03_1a97db403e9e4829a22157a28b1bccef_master.png&tbnid=OiBjXEOQ4Aj75M&imgrefurl=https%3A%2F%2Fuagvietnam.vn%2Fproducts%2Fop-lung-monarch-pro-w-magsafe-cho-iphone-17-pro-6-3-inch&docid=6ggNY-ePAB0B-M&w=1500&h=1500",
+    "position": 6
+   },
+   {
+    "title": "Ốp lưng Monarch Pro w Magsafe cho iPhone 17 Pro Max [6.9 inch]",
+    "imageUrl": "https://cdn.hstatic.net/products/200000057534/g_hs_apple_iphone-17-pro-max-2025-lion_monarch-pro-kevlar_black_ndv_03_2d05163bc36847b5971a1750f2c92bb1_master.png",
+    "imageWidth": 1500,
+    "imageHeight": 1500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_HFlYx1DzbeJhYZ1noE4G9sx5yhap4bViAT742yh97A&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "UAG VietNam",
+    "domain": "uagvietnam.vn",
+    "link": "https://uagvietnam.vn/products/op-lung-monarch-w-magsafe-cho-iphone-17-pro-max-6-9-inch",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.hstatic.net%2Fproducts%2F200000057534%2Fg_hs_apple_iphone-17-pro-max-2025-lion_monarch-pro-kevlar_black_ndv_03_2d05163bc36847b5971a1750f2c92bb1_master.png&tbnid=RuShG0z7eqLQpM&imgrefurl=https%3A%2F%2Fuagvietnam.vn%2Fproducts%2Fop-lung-monarch-w-magsafe-cho-iphone-17-pro-max-6-9-inch&docid=k5F7g_gZyoHbiM&w=1500&h=1500",
+    "position": 7
+   },
+   {
+    "title": "Ốp lưng Monarch Pro w Magsafe cho iPhone 17 Pro [6.3 inch]",
+    "imageUrl": "https://cdn.hstatic.net/products/200000057534/uag_hs_apple_iphone-17-pro-2025-tinman_monarch-pro-kevlar_black_prm_03_03b0654afa244e95afa7867a2ff5e6c5_master.png",
+    "imageWidth": 1500,
+    "imageHeight": 1500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTxw_W0XkfmDPSF1kOMOAdI_U0yUF7ULhfgzw7nbpot3w&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "UAG VietNam",
+    "domain": "uagvietnam.vn",
+    "link": "https://uagvietnam.vn/products/op-lung-monarch-pro-w-magsafe-cho-iphone-17-pro-6-3-inch",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.hstatic.net%2Fproducts%2F200000057534%2Fuag_hs_apple_iphone-17-pro-2025-tinman_monarch-pro-kevlar_black_prm_03_03b0654afa244e95afa7867a2ff5e6c5_master.png&tbnid=sS72pfiM2sJkxM&imgrefurl=https%3A%2F%2Fuagvietnam.vn%2Fproducts%2Fop-lung-monarch-pro-w-magsafe-cho-iphone-17-pro-6-3-inch&docid=6ggNY-ePAB0B-M&w=1500&h=1500",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Cơm bắc Huy Lùn\" OR \"Ẩm thực sân vườn Mái Lá Quận 7\" OR \"Ẩm Thực Sân Vườn Sông Thương\" quan 7 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T06:07:20.645Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Cơm bắc Huy Lùn\" OR \"Ẩm thực sân vườn Mái Lá Quận 7\" OR \"Ẩm Thực Sân Vườn Sông Thương\" quan 7 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cơm Bắc Huy Lùn - Địa Điểm Ẩm Thực Đúng Vị Bắc",
+    "link": "https://www.tiktok.com/@quanghuyvilla/video/7560164897087180039",
+    "snippet": "Tổng kết: Cơm Bắc Huy Lùn ở Him Lam Q.7 nấu ăn NGON – ĐÚNG VỊ BẮC – GIÁ ỔN – PHÙ HỢP ĂN TRƯA VĂN PHÒNG HOẶC GIA ĐÌNH. Nếu bạn là người miền ...",
+    "position": 1
+   },
+   {
+    "title": "Khám Phá Quán Cơm Bắc Huy Lùn Tại Him Lam, Tân Hưng",
+    "link": "https://www.tiktok.com/@quanghuyvilla/photo/7632546315901078804",
+    "snippet": "Quán Cơm Bắc Huy Lùn là một địa điểm ẩm thực quen thuộc cho những ai yêu thích hương vị cơm nhà miền Bắc truyền thống tại TP.HCM.",
+    "position": 2
+   },
+   {
+    "title": "Ẩm Thực Sân Vườn Mái Lá Quận 7",
+    "link": "https://www.tiktok.com/discover/%E1%BA%A9m-th%E1%BB%B1c-s%C3%A2n-v%C6%B0%E1%BB%9Dn-m%C3%A1i-l%C3%A1-qu%E1%BA%ADn-7",
+    "snippet": "Ẩm Thực Sân Vườn Mái Lá Quận 7: Địa Chỉ, Menu & Không Gian. Ẩm Thực Sân Vườn Mái Lá là nhà hàng với không gian sân vườn thoáng mát, ...",
+    "date": "21 thg 9, 2026",
+    "position": 3
+   },
+   {
+    "title": "Món Heo Mẹt Tây Bắc tại nhà hàng Cơm Bắc Huy Lùn ...",
+    "link": "https://www.tiktok.com/@quanghuyvilla/video/7641152091343359252",
+    "snippet": "Món Heo Mẹt Tây Bắc tại nhà hàng Cơm Bắc Huy Lùn (KDC Him Lam, Quận 7) là dòng sản phẩm đặc sản mới được quán chính thức phục vụ từ ngày ...",
+    "position": 4
+   },
+   {
+    "title": "Ẩm thực sân vườn Lê Vy: Góc trốn chill đồng quê",
+    "link": "https://www.tiktok.com/@levycafe2/video/7629316389542825234",
+    "snippet": "Ẩm Thực Sân Vườn Mái Lá Quận 7 · Lê Nguyễn Trà Vi · Vườn Ẩm Thực N86 Tuy Hoà Phú Yên · Vy Vân Lê Nói Tiếng Việt · Cafe Tuệ Nhi Vĩnh Long · Nhà ...",
+    "position": 5
+   },
+   {
+    "title": "#combac #comvanphongquan7 #comgiadinhngon #xuhuong sơ ...",
+    "link": "https://www.tiktok.com/@th.hng.thy7/video/7653383890068917511",
+    "snippet": "Video TikTok từ CƠM BẮC HUY LÙN (@th.hng.thy7): \"#combac #comvanphongquan7 #comgiadinhngon #xuhuong sơ hở là tiểu phẩm\".original sound - Parekoitv.",
+    "position": 6
+   },
+   {
+    "title": "Công viên ánh sáng mới tại quận 7",
+    "link": "https://www.tiktok.com/@saigonloco/video/7613738104423271700",
+    "snippet": "... Ẩm Thực Sân Vườn Mái Lá Quận 7Cầu Ánh Sao Quận 7Vườn Sao Băng Thái Lan Tập 7 Tiếng ViệtBánh Tầm Bì Quận 7Sao Vàng Limousine Quận 7. Công ...",
+    "position": 7
+   },
+   {
+    "title": "Ẩm Thực Đồng Quê - Tràng An Quán - Trải Nghiệm Hương ...",
+    "link": "https://www.tiktok.com/@thetruong98/video/7345781581669321986",
+    "snippet": "... ẩm thực sân vườn mái lá quận 7, tràng an quán menu, quán hương việt quận 7, nhà hàng quận 7, quán ăn gia đình ngon quận 7. Đây là bản tóm ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

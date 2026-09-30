@@ -1,0 +1,26 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "núi đi chơi 2 ngày 1 đêm cho gia đình 4 người, xe riêng, ngân sách 5 triệu gần Ho Chi Minh City",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.7769,106.7009,12z"
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:06:43.376Z",
+ "body": {
+  "searchParameters": {
+   "q": "núi đi chơi 2 ngày 1 đêm cho gia đình 4 người, xe riêng, ngân sách 5 triệu gần Ho Chi Minh City",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.7769,106.7009,12z",
+   "engine": "google"
+  },
+  "ll": "@10.7769,106.7009,12z",
+  "places": [],
+  "credits": 3
+ }
+}

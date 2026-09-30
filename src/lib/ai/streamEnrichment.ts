@@ -20,6 +20,8 @@ import { guardPlanTripFacts, guardUngivenTravelDate } from './planTripFactsGuard
 import { repairPlanBlock } from './planJsonRepair'
 import { appendConsultPlanCost, appendPlanBudgetMath, partyCount, perPersonBudget } from './planBudgetMath'
 import { consultRemainingLine, normalizePickSentence, shoppingMarkerNames, shoppingPickName } from './consultative/consultBrain'
+import { consultLunaEnabled, splitPickSentence } from './consultative/luna'
+import { LEAK_REPLACEMENT_EN, LEAK_REPLACEMENT_VI } from './consultative/lunaSafety'
 import { restorePlanHeadings, fillEmptyPlanSections } from './consultative/domainFrames'
 import { stripStepNarration } from './consultative/stepNarration'
 import { buildActions } from '@/lib/recommendation/actions'
@@ -1766,9 +1768,13 @@ export function applyPlaceEnrichmentStreamFilter(
    * future change touches. Releases only the prefix `releasableLiveText` vouches for, which for a
    * turn with no link/image token is all of it, in the same frame.
    */
+  let liveLeak = false
   const emitLive = (controller: TransformStreamDefaultController, addition: string) => {
     liveText += addition
     assistantSoFar += addition
+    // PHIÊN LUNA safety: stop releasing the moment the live text echoes the prompt / shows a secret shape.
+    if (liveLeak) return
+    if (collector?.leakCheck?.(liveText).leak) { liveLeak = true; console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'luna_leak', path: 'live' })); return }
     const releasable = releasableLiveText(liveText, false, allowedUrls)
     if (!releasable.startsWith(liveReleased) || releasable.length === liveReleased.length) return
     const slice = releasable.slice(liveReleased.length)
@@ -1807,6 +1813,12 @@ export function applyPlaceEnrichmentStreamFilter(
 
   const flushLive = (controller: TransformStreamDefaultController) => {
     if (bufferMode) return
+    if (liveLeak) {
+      const tail = (liveReleased ? '\n\n' : '') + (/^en/i.test(String(lang)) ? LEAK_REPLACEMENT_EN : LEAK_REPLACEMENT_VI)
+      controller.enqueue(encoder.encode('0:' + JSON.stringify(tail) + '\n'))
+      liveReleased += tail
+      return
+    }
     const settled = releasableLiveText(liveText, true, allowedUrls)
     logEgress('live', liveText, settled)
     // Same final normaliser as the buffered path, but the live prefix is already on the client and
@@ -2010,6 +2022,29 @@ export function applyPlaceEnrichmentStreamFilter(
     const beforeEgress = mainText
     mainText = guardModelEgress(mainText, buildOwned(places), allowedUrls)
     logEgress('settle', beforeEgress, mainText)
+    // PHIÊN LUNA (CONSULT_LUNA only): the pick sentence stands alone, so a guard that cuts an unbacked number or
+    // atmosphere word from the reason cannot take the pick's NAME with it (replay 30/09 FOOD-1 t6: "**Mình chọn: Miya
+    // Sushi** vì có **1.376 đánh giá** …" → place_claim removed the whole sentence, the reply had no pick).
+    // Only the part AFTER what already reached the client is touched: the released prefix must stay a prefix of the
+    // final text, or the whole reply is sent again (replay 30/09 FOOD-1 t4: the pick paragraph appeared twice).
+    if (consultLunaEnabled()) {
+      const pre = !flushedSent ? '' : mainText.startsWith(flushedSent) ? flushedSent : null
+      if (pre !== null) {
+        const rest = mainText.slice(pre.length)
+        const split = splitPickSentence(rest)
+        if (split !== rest) { console.log(JSON.stringify({ type: 'tappyai_consult_patch', turn: 'luna', patches: ['pick_sentence_split'] })); mainText = pre + split }
+      }
+    }
+    // PHIÊN LUNA safety: a reply that echoes the prompt or carries a secret shape is replaced (the released prefix, if
+    // any, stays — it went out before the echo was complete).
+    if (collector?.leakCheck) {
+      const pre = flushedSent && mainText.startsWith(flushedSent) ? flushedSent : ''
+      const verdict = collector.leakCheck(mainText.slice(pre.length))
+      if (verdict.leak) {
+        console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'luna_leak', path: 'settle', reason: verdict.reason }))
+        mainText = pre + (pre ? '\n\n' : '') + (/^en/i.test(String(lang)) ? LEAK_REPLACEMENT_EN : LEAK_REPLACEMENT_VI)
+      }
+    }
 
     /**
      * The card's payload, built here rather than at the end, because whether it
@@ -2502,7 +2537,28 @@ export function applyPlaceEnrichmentStreamFilter(
     // A COMPARE answers "A hay B?" — the pick sentence is never supplied from a card (UAT §10 SHOP-2 t4, 30/09, level B:
     // the compare searched again and the code wrote "Mình chọn: <a third product from the new card>").
     const cardPickFallback = collector?.consultTurn === 'compare' ? null : (shoppingPickName(collector?.shoppingMarker) ?? placePickFallback)
-    const pickNormalized = consultPickTurn ? normalizePickSentence(unlabelled, cardPickFallback) : unlabelled
+    // PHIÊN LUNA: on a reject turn the server never re-offers a name already shown as its fallback pick (replay 30/09
+    // SHOP-1 t6: "không thích màu đen" → the card's recommendation was the black case already shown → a B).
+    const foldName = (n: string) => n.normalize('NFC').toLowerCase().replace(/\s+/g, ' ').trim()
+    // Luna more/reject: an honest "nothing new fits" is kept — the server does not write a pick Luna declined (replay
+    // 30/09 SHOP-3 t6: fallback inserted "Mình chọn: Dell XPS 13 Cũ" after Luna declined it because the user wants new).
+    // PHIÊN LUNA: the pick line is written only for the option Luna's own text leads with ("**X** là lựa chọn mình nghiêng
+    // về…" = Luna's pick, phrased differently — replay 30/09 final none: without it the pick vanished and every "chỗ đó"
+    // after it lost its referent). An option Luna names only to set aside ("mình không chọn … vì bạn muốn máy mới") or
+    // does not name at all is a decline, and stays one.
+    const lunaLeadsWith = (name: string | null): boolean => {
+      if (!name) return false
+      const t = foldName(unlabelled), n = foldName(name).slice(0, 24)
+      const at = t.indexOf(n)
+      if (at < 0) return false
+      const sentence = t.slice(Math.max(0, t.lastIndexOf('.', at) + 1), (t.indexOf('.', at + n.length) + 1) || undefined)
+      const firstBold = /\*\*([^*\n]{2,160})\*\*/.exec(unlabelled)?.[1]
+      return !/không (?:chọn|ưu tiên|phải lựa chọn chính)|loại|chưa khớp/.test(sentence) && !!firstBold && foldName(firstBold).startsWith(n.slice(0, 12))
+    }
+    const lunaDeclinable = consultLunaEnabled() && !lunaLeadsWith(cardPickFallback)
+    const fallbackShown = lunaDeclinable || !!cardPickFallback && consultLunaEnabled() && collector?.consultTurn === 'reject'
+      && (collector?.consultShown ?? []).some(n => { const a = foldName(n), b = foldName(cardPickFallback); return a.length >= 4 && (a.includes(b) || b.includes(a)) })
+    const pickNormalized = consultPickTurn ? normalizePickSentence(unlabelled, fallbackShown ? null : cardPickFallback) : unlabelled
     // Owner 29/09 "hạn chế guard vá": every post-model text patch on a consult turn is COUNTED (logged once per
     // turn below), so a patch that fires often is replaced by a prompt/structure fix instead of piling up.
     const consultPatches: string[] = []
@@ -2844,12 +2900,36 @@ export function applyPlaceEnrichmentStreamFilter(
       // The whole settled reply, not only the not-yet-released body: a pick sentence already streamed
       // (released prefix) is still THE pick (replay TRAVEL-1 t5: backstop "Parosand" + the model's "Meliá").
       if (hasPickSentence || (collector?.consultTurn && /\*\*Mình chọn:/.test(gated.text))) return null
+      // PHIÊN LUNA: a Luna reply with real text and no pick is a deliberate decline ("chưa có điểm núi để chọn đúng") —
+      // the server does not invent one over it (replay 30/09 low TRAVEL-2 t2: backstop "Mình chọn: La Siesta Premium Saigon"
+      // on a mountain trip). The backstop stays for an empty body.
+      if (consultLunaEnabled() && bodyLetters >= 40) {
+        console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'consultative_v1_pick_backstop', step: 'luna_decline_kept' }))
+        return null
+      }
       const altOnly = sentences.some(s => namesKnown(s))
       if (altOnly) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'consultative_v1_pick_backstop', step: 'alternatives_only' }))
       // The engine's Pick, or — when derivePick made none (measured T8: five shortlisted hotels,
       // no pick) — the engine's #1, which V1 rule 8 already names as the default choice.
       const engineFirst = collector?.placesRecommendations?.[0]?.entity.identity.name ?? null
       const place = fallbackSentence(subjectOnly(pickName ?? engineFirst))
+      // PHIÊN LUNA: a reject turn's backstop never re-offers a name the consultation already showed (replay 30/09 SHOP-1
+      // t6: "không thích màu đen" → "Mình chọn **<the black Scout case>**" — Haiku's baseline had the same B).
+      // Luna more/reject: no backstop pick at all — Luna's own pick stands, or its honest "nothing new" does (a backstop
+      // added a second pick on SPA-1 / ENT-1 t5 and a declined one on SHOP-3 t6).
+      if (consultLunaEnabled() && (collector?.consultTurn === 'more' || collector?.consultTurn === 'reject')) {
+        console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'consultative_v1_pick_backstop', step: 'luna_more_reject_skipped' }))
+        return null
+      }
+      if (consultLunaEnabled() && collector?.consultTurn === 'reject') {
+        const f = (s: string) => s.normalize('NFC').toLowerCase().replace(/\s+/g, ' ')
+        const shownKeys = (collector?.consultShown ?? []).map(f).filter(n => n.length >= 4)
+        const offered = f(place ?? shopping?.sentence ?? '')
+        if (offered && shownKeys.some(n => offered.includes(n))) {
+          console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'consultative_v1_pick_backstop', step: 'luna_reject_skipped_shown' }))
+          return null
+        }
+      }
       if (place) return { sentence: place, kind: 'place' as const }
       if (shopping) return { sentence: shopping.sentence, kind: 'shopping' as const }
       return null

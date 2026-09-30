@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "đồ ăn giao tận nơi dưới 100k cho 1 người Quận 7 gia menu thuc don",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T06:01:27.896Z",
+ "body": {
+  "searchParameters": {
+   "q": "đồ ăn giao tận nơi dưới 100k cho 1 người Quận 7 gia menu thuc don",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tiệc tại nhà 1-2 bàn ở đâu nhận Với FLYFOOD: 1 MÓN ...",
+    "link": "https://www.facebook.com/flyfood.vn/posts/ti%E1%BB%87c-t%E1%BA%A1i-nh%C3%A0-1-2-b%C3%A0n-%E1%BB%9F-%C4%91%C3%A2u-nh%E1%BA%ADnv%E1%BB%9Bi-flyfood1-m%C3%B3n-c%C5%A9ng-giao1-b%C3%A0n-c%C5%A9ng-nh%E1%BA%ADn-v%E1%BB%9Bi-th%E1%BB%B1/1040944794794573/",
+    "snippet": "Cho xin menu đi shop. 1y. Flyfood.vn. Dạ em gửi menu giao món tận nơi: https://flyfood.vn Mình tham khảo và chọn món xong nhắn em nhé. flyfood ...",
+    "position": 1
+   },
+   {
+    "title": "Đặt đồ ăn Online cùng GrabFood",
+    "link": "https://www.grab.com/vn/food/",
+    "snippet": "Bật app Grab, chọn “Giao thức ăn\" ở thanh trên cùng của ứng dụng. Đặt ngay · Điền địa chỉ giao thức ăn của bạn. · Lựa chọn nhà hàng yêu thích. · Lựa chọn món ăn từ ...",
+    "position": 2
+   },
+   {
+    "title": "7 thực đơn cho 2 người ăn dưới 100k dễ làm đơn giản ...",
+    "link": "https://www.dienmayxanh.com/vao-bep/goi-y-7-thuc-don-cho-2-nguoi-an-de-lam-don-gian-thom-ngon-gia-11579?srsltid=AU7gw4X97drbOGCny16knbgWqProg3MLaKFge8l3tBuWBJPVKqwHKYBf",
+    "snippet": "7 Trứng chiên bắp cải, đậu que luộc, rau muống xào tỏi · Trứng gà 3 quả: 9.000 đồng · Bắp cải trắng 200gr: 5.000 đồng · Khoai tây 1 củ: 2.000 đồng ...",
+    "date": "23 thg 7, 2021",
+    "position": 3
+   },
+   {
+    "title": "Top 20 quán ăn Quận 7 ngon, đặc sản, đông khách",
+    "link": "https://zalopay.vn/quan-an-quan-7-5511",
+    "snippet": "Khám phá top 20 quán ăn Quận 7 với ẩm thực đa dạng từ Á sang Âu, từ bình dân đến cao cấp: Hủ tiếu Tài Anh, Bò lá lốt Tân Quy, San Fu Lou, ...",
+    "date": "26 thg 5, 2024",
+    "position": 4
+   },
+   {
+    "title": "cần tìm đồ ăn giao liền quận 7",
+    "link": "https://www.facebook.com/groups/1312167629130067/posts/3000327983647348/",
+    "snippet": "cần tìm đồ ăn giao liền quận 7 · Toi le Thanh. Rau câu · Hoa Tâm. ĂN TRONG HẠNH PHÚC – SỐNG TRONG AN YÊN Mỗi món ăn tại Hoa Tâm Chay…",
+    "date": "23 thg 7, 2026",
+    "position": 5
+   },
+   {
+    "title": "Đặt món ăn giao tận nhà",
+    "link": "https://naifood.com/dat-mon-an-giao-tan-nha/",
+    "snippet": "Dịch vụ đặt món ăn giao tận nhà của Naifood được tạo ra dành cho những ai muốn có một bữa ăn ngon, gọn gàng và đủ “khí chất” của một bữa tiệc mà ...",
+    "date": "30 thg 1, 2026",
+    "position": 6
+   },
+   {
+    "title": "Bùng \"plan\" diet với MÓN SANG GIÁ RẺ - QUẬN 7 giảm tới 50 ...",
+    "link": "https://www.facebook.com/shopeefoodvn/videos/m%C3%B3n-sang-gi%C3%A1-r%E1%BA%BB-qu%E1%BA%ADn-7-gi%E1%BA%A3m-t%E1%BB%9Bi-50/481340972691684/",
+    "snippet": "Bùng \"plan\" diet với MÓN SANG GIÁ RẺ - QUẬN 7 giảm tới 50% Link đặt NOW: https://app.now.vn/huTLJ1H9NU (*Chương trình km note riêng từng ...",
+    "position": 7
+   },
+   {
+    "title": "Thực đơn tiệc tại nhà hàng",
+    "link": "https://www.nhahangquangon.com/thuc-don-tiec-tai-nha-hang/",
+    "snippet": "1/ Súp Cua Sò Điệp · 2/ Tôm Sú Rang Muối Hong Kong · 3/ Sườn Hầm Tiêu Xanh – Bánh Mì · 4/ Lẩu Gà Tiềm Ớt Hiểm – Mì Sợi · 5/ Trái Cây Thơm, Dưa Hấu.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

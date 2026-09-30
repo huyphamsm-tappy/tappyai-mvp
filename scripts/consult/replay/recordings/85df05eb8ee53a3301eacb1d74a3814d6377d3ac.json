@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Mì ốc hến Má Lan (site:food.grab.com/vn OR site:shopeefood.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:25:27.040Z",
+ "body": {
+  "searchParameters": {
+   "q": "Mì ốc hến Má Lan (site:food.grab.com/vn OR site:shopeefood.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Mì Ốc Hến Má Lan - Đường Số 11",
+    "link": "https://shopeefood.vn/ho-chi-minh/mi-oc-hen-ma-lan-duong-so-7",
+    "snippet": "Mì Ốc Hến Má Lan - Đường Số 11. 127 Đường Số 11, P. Tân Kiểng, Quận 7, TP. HCM. Mở cửa. Quán được gắn nhãn Yêu thích là Quán Yêu Thích, gồm những quán đạt ...",
+    "position": 1
+   },
+   {
+    "title": "Mì Ốc Hến Má Lan | Mua online tại ShopeeFood.vn",
+    "link": "https://shopeefood.vn/thuong-hieu/mi-oc-hen-ma-lan",
+    "snippet": "Mì Ốc Hến Má Lan. Mì Ốc Hến Má Lan - Đường Số 11. 127 Đường Số 11, P. Tân Kiểng, Quận 7, TP. HCM. Tối thiểu 20k Giá 0. Mã giảm 11%.",
+    "position": 2
+   },
+   {
+    "title": "Food Delivery - Mì Ốc Hến Má Lan - Đường Số 11",
+    "link": "https://shopeefood.vn/ho-chi-minh/mi-oc-hen-ma-lan-duong-so-11",
+    "snippet": "Mì Ốc Hến Má Lan - Đường Số 11. 127 Đường Số 11, P. Tân Kiểng, Quận 7, TP. HCM. Mở cửa. Quán được gắn nhãn Yêu thích là Quán Yêu Thích, gồm những quán đạt ...",
+    "position": 3
+   },
+   {
+    "title": "Mì Ốc Hến Dì Lan - Nguyễn Trường Tộ",
+    "link": "https://shopeefood.vn/ho-chi-minh/mi-oc-hen-di-lan-nguyen-truong-to",
+    "snippet": "Mì Ốc Hến Dì Lan - Nguyễn Trường Tộ. 20/23 Nguyễn Trường Tộ, P. 12, Quận 4, TP. HCM. Mở cửa. Quán được gắn nhãn Yêu thích là Quán Yêu Thích, gồm những quán ...",
+    "position": 4
+   },
+   {
+    "title": "ĐẠI PHÁT TÀI ⭐ 4.2",
+    "link": "https://food.grab.com/vn/vi/restaurant/%C4%91%E1%BA%A1i-ph%C3%A1t-t%C3%A0i-delivery/5-C6WWEKCJANWXA2",
+    "snippet": "hai sản ốc. ĐẠI PHÁT TÀI : hến xào xã ớt. hến xào xã ớt. 100.000. ĐẠI PHÁT TÀI : hến xúc bánh ₫a. hến xúc bánh ₫a. 100.000. ĐẠI PHÁT TÀI : ốc móng Tây xốt bơ ...",
+    "rating": 4.2,
+    "ratingCount": 109,
+    "position": 5
+   },
+   {
+    "title": "Cố Đô 86",
+    "link": "https://food.grab.com/vn/vi/restaurant/c%E1%BB%91-%C4%91%C3%B4-86-delivery/5-C4NDTN3VJFKYE2",
+    "snippet": "129.000. Mì - Miến. mì xào hải sản. Mì xào giòn dai với hải sản tươi ngon. 129.000. mì xào lagim. Đậm đà, tươi ngon và bổ dưỡng. 69.000. mì xào bò. Mì xào thịt ...",
+    "position": 6
+   },
+   {
+    "title": "Vô vàn ưu đãi, hàng vạn món ngon | GrabFood VN",
+    "link": "https://food.grab.com/vn/vi/",
+    "snippet": "GrabFood - Dịch vụ giao đồ ăn trực tuyến giúp bạn thỏa mãn cơn thèm ăn với hàng vạn quán ăn.",
+    "position": 7
+   },
+   {
+    "title": "Giao món trực tuyến - Vô vàn ưu đãi, hàng vạn món ngon",
+    "link": "https://food.grab.com/vn/vi//",
+    "snippet": "Dễ dàng nhất - Giờ đây, bạn chỉ cần thực hiện vài cú nhấp chuột hoặc chạm nhẹ là đã có thể đặt đồ ăn. Hãy đặt đồ ăn trực tuyến hoặc tải xuống siêu ứng dụng Grab ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

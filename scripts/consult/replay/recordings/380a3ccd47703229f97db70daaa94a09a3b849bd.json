@@ -1,0 +1,428 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "khách sạn TP.HCM",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.7769,106.7009,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:37:31.963Z",
+ "body": {
+  "searchParameters": {
+   "q": "khách sạn TP.HCM",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.7769,106.7009,14z",
+   "engine": "google"
+  },
+  "ll": "@10.7768941,106.7008997,14z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Dream Palace Ben Thanh Grand Hotel",
+    "address": "121/137 Lê Lợi, Bến Thành, Hồ Chí Minh 710200, Việt Nam",
+    "latitude": 10.772493599999999,
+    "longitude": 106.69987839999999,
+    "rating": 4.6,
+    "ratingCount": 85,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "phoneNumber": "+84 28 3622 2292",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmP-J5wA_WpR2WXcFWAo-rtVf4IsmTnRQIrQRToOECGo5_TRhceb6dgodcmZQBRls5v1ccdVzqkWaUsHXsLS9cLQdvpvknMZmrn-qfpkzoQRHsePMPBP4jV-3kHwIXu_pGZn_z4dxvw17gaY",
+    "cid": "69225237141747769",
+    "fid": "0x31752f40aa007471:0xf5effc85537839",
+    "placeId": "ChIJcXQAqkAvdTEROXhThfzv9QA"
+   },
+   {
+    "position": 2,
+    "title": "Hotel Majestic Saigon",
+    "address": "1 Đồng Khởi, Sài Gòn, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7729884,
+    "longitude": 106.70607249999999,
+    "rating": 4.5,
+    "ratingCount": 1944,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn",
+     "Nhà hàng"
+    ],
+    "website": "https://www.majesticsaigon.com/",
+    "phoneNumber": "+84 28 3829 5517",
+    "description": "Khách sạn sang trọng với các phòng nghỉ ấm cúng theo phong cách cổ điển, hồ bơi ngoài trời, spa và sòng bạc.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPEwy_Ya4G9wGZFfeRmo54XpV5AJilEe_imjjmDTiWgTQQTh5RKL1imONuMhsgSEAPBaa7D9BLwBnUCdX4LofDQn9CHenZk_fwaKou81ARYPt3tNDGxqkbnn5NWQBKkM5DafEUOPnxB0fk",
+    "cid": "18398927503742282742",
+    "fid": "0x31752f4406baaaab:0xff561f153cb92bf6",
+    "placeId": "ChIJq6q6BkQvdTER9iu5PBUfVv8"
+   },
+   {
+    "position": 3,
+    "title": "Level Saigon Hotel",
+    "address": "118C Bùi Thị Xuân, Bến Thành, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7703966,
+    "longitude": 106.68869199999999,
+    "rating": 4.9,
+    "ratingCount": 560,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "http://levelsaigonhotel.com/",
+    "phoneNumber": "+84 28 3866 8888",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmN5uoxCetE8vqzJMMbO5vXj8IZO84Y0rQbz7mM6bft0G089J7bOr6ArNloIrVL3k0SAJFb9znsnMuVGVOoj0jY9sITGw8pUSyDnXgdS5h7EqiSzpooPBFd38ZKOK7BpKBPkr9tO6w",
+    "cid": "14191640776185090926",
+    "fid": "0x31752f003c616755:0xc4f2d6186c76136e",
+    "placeId": "ChIJVWdhPAAvdTERbhN2bBjW8sQ"
+   },
+   {
+    "position": 4,
+    "title": "THE SPACE by Hoi An",
+    "address": "41 Cô Bắc, Cầu Ông Lãnh, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7650578,
+    "longitude": 106.6952211,
+    "rating": 4.4,
+    "ratingCount": 201,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn",
+     "Tiệm bánh"
+    ],
+    "phoneNumber": "+84 944 904 959",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOAfURam1B1p5RiP5BygNAYIPA4HMdUkUNGLCh1J0IRs6r2W0ToCgTnV8eqyj1x8bnBF7yDjnoRxwBGnV7_wq2GPRB0qbpA9pj-IZVM5kjUMmRUPGvcY6mNt-tOpU4LdfR_ckyA",
+    "cid": "18179415579233944154",
+    "fid": "0x31752f785137b23d:0xfc4a42269071025a",
+    "placeId": "ChIJPbI3UXgvdTERWgJxkCZCSvw"
+   },
+   {
+    "position": 5,
+    "title": "La Siesta Premium Saigon Central",
+    "address": "47-51 Lê Anh Xuân, Bến Thành, Hồ Chí Minh 100000, Việt Nam",
+    "latitude": 10.772017199999999,
+    "longitude": 106.6950147,
+    "rating": 4.9,
+    "ratingCount": 503,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://lasiestahotels.com/saigoncentral/",
+    "phoneNumber": "+84 28 3824 6082",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLeWlYe6Vw7Wah12SlSKRMSBw9dJAenlZqGcfhjR0J_ZOsPXCjwEPvijAysqT9JziTRU_pdIFY4l9aYjUVlF9AFPCrHm05sOfXZppheAcEpwnXdumjsod8C6_69mCt4SH3eefxM",
+    "cid": "7086491525337401090",
+    "fid": "0x31752f3eb70a8779:0x6258467f178d4702",
+    "placeId": "ChIJeYcKtz4vdTERAkeNF39GWGI"
+   },
+   {
+    "position": 6,
+    "title": "Hotel Grand Saigon",
+    "address": "8 Đồng Khởi, Sài Gòn, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.7742233,
+    "longitude": 106.70534509999999,
+    "rating": 4.4,
+    "ratingCount": 4140,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "http://www.hotelgrandsaigon.com/",
+    "phoneNumber": "+84 28 3915 5555",
+    "description": "KS sang trọng có nhà hàng tự chọn, sòng bài, quán cà phê tầng thượng, phòng ở thoáng mát và suite xa hoa.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMjdKRi8twVrdJFE1bJOcS2C6hWM5vBu2s0Amo8UFwSDO31uXhsHZwDakkLMSsW4u7z8EsAbgXAizvNtc_ANEI7t3P2kT-hU0_xS2jrSE3mMmYpmfhjdJyRUmbl5utOGbf4u3X9",
+    "cid": "16755007052944255835",
+    "fid": "0x31752f3c8833587f:0xe885be248fe82b5b",
+    "placeId": "ChIJf1gziDwvdTERWyvojyS-heg"
+   },
+   {
+    "position": 7,
+    "title": "Eastin Grand Hotel Saigon",
+    "address": "253 Đ. Nguyễn Văn Trỗi, Phú Nhuận, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.796825199999999,
+    "longitude": 106.6731823,
+    "rating": 4.4,
+    "ratingCount": 3256,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://www.eastinhotelsresidences.com/eastingrandsaigon/",
+    "phoneNumber": "+84 28 3844 9222",
+    "description": "Khách sạn hiện đại có 5 nhà hàng và quán bar, phòng tập thể dục, bể bơi ngoài trời và hiên tắm nắng.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-proxy/AIM7gW1eNsx4p1QX2eah3uuxq2uLgrQ6JuGuZ3pZbFGh6lw2wlaksLowBj-CdJTa0jbhTBLtX7GTm8CteXT9gdGSy2wU90CcZX8h8cRk_BvZoa2aHCz0n_rg6mk4xO6kCGdIYaQb3OFO7tQQPD2IiBIIvPkq8uduXGS-4lksoenPO7MolFYlL01GKHWl",
+    "cid": "11719299531530086181",
+    "fid": "0x3175292969c6365f:0xa2a350d51940a725",
+    "placeId": "ChIJXzbGaSkpdTERJadAGdVQo6I"
+   },
+   {
+    "position": 8,
+    "title": "La Siesta Premium Saigon",
+    "address": "180 - 188 Lý Tự Trọng, Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.773074099999999,
+    "longitude": 106.69575499999999,
+    "rating": 4.9,
+    "ratingCount": 1009,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://lasiestahotels.com/saigon/",
+    "phoneNumber": "+84 28 3535 4461",
+    "description": "Các phòng nghỉ sang trọng, một số phòng có sân hiên, cùng với quầy bar cocktail trên tầng thượng và hồ bơi vô cực.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOkDOB7C6Ti8RNdOMwYJykX0AIJb-JPLIMm1JpDG0lLUsDEgmmvoWFREZMgjLNkE4cFoGhhmaHY0-muzSS0xCR5yxEfnrwH4ZZPRKhSLsEHl3jmGs2EsSkbHkYWZXJb5eD59tnW",
+    "cid": "15192090976759929852",
+    "fid": "0x31752f12128c4f83:0xd2d5264091315bfc",
+    "placeId": "ChIJg0-MEhIvdTER_FsxkUAm1dI"
+   },
+   {
+    "position": 9,
+    "title": "Sunrise Central Hotel",
+    "address": "135-137 Lý Tự Trọng, Quận 1, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.773627,
+    "longitude": 106.6969237,
+    "rating": 4,
+    "ratingCount": 967,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn",
+     "Nhà trọ"
+    ],
+    "website": "http://www.sunrisecentralhotel.com/",
+    "phoneNumber": "+84 28 3823 4370",
+    "description": "Khách sạn bình dân với phòng ở bài trí đơn giản, có nhà hàng/quầy bar tinh tế và phục vụ bữa sáng miễn phí.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPbr5vPrtFZCREeRnunaH1rSAWdk8kymrGd3F2MT68qNHg7P95FLJYKhW5HFYJUYXJP_K0BAoWOVlfxw7YPgA-w0yWwCbYLGJ92LhEJycI4Ku2UDs7macBJhbr2lxuhNOZRCQDhIDNoN2E",
+    "cid": "7347034766219883620",
+    "fid": "0x31752f39281c2f69:0x65f5e93190fb3464",
+    "placeId": "ChIJaS8cKDkvdTERZDT7kDHp9WU"
+   },
+   {
+    "position": 10,
+    "title": "Kim Đô – Royal Hotel Saigon",
+    "address": "133 Nguyễn Huệ, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.774645,
+    "longitude": 106.70254419999999,
+    "rating": 4.4,
+    "ratingCount": 3175,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://royalhotelsaigon.com/",
+    "phoneNumber": "+84 28 3822 5914",
+    "description": "Khách sạn với thiết kế trang nhã có phòng ở tinh tế, 2 nhà hàng, bể bơi, khu spa và trang bị Wi-Fi miễn phí.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOjYef_yv4Mnm2y_0lAJVddvsd8tKRf59uQn5qwSqNFU_DEBvEYY9ZRsyKV4rxuthFs4C6RO-fpykagtPKrl6Pg31-x1bQPaTARcAyTiR2eTlML4iEBK31TbYG2Ddbwali1MMRnikkRhHjr",
+    "cid": "17012305424355766455",
+    "fid": "0x31752f471c942639:0xec17d9a5fd2d30b7",
+    "placeId": "ChIJOSaUHEcvdTERtzAt_aXZF-w"
+   },
+   {
+    "position": 11,
+    "title": "Central Ngọc Hotel",
+    "address": "216 Đề Thám, Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.767627899999999,
+    "longitude": 106.6940839,
+    "rating": 3.4,
+    "ratingCount": 1279,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://c-central.hoteld2.com/",
+    "phoneNumber": "+84 28 3920 8985",
+    "description": "Khách sạn có phòng ở tinh tế (một số phòng nhìn ra thành phố), nhà hàng, quầy bar sang trọng và Wi-Fi.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-proxy/AIM7gW2n2RVN_IaAcn6r71pmS2HNzFzNEU-8geXuoDASEAJuqaLO6Qb31tU3GrvoMl9WzHxHl581mllTqeCtaJ_U8PoYyQOy0Fh-T3Bwxb0D8_jjHSLmdxoNSJDEHKPGeWTpl1u1JTQtgK7pYNubpQo_sRvnDgUmF_Ops99no9GahdiSfVJobozUzbdI1w",
+    "cid": "8119905866678365549",
+    "fid": "0x31752f3e026996ff:0x70afb35d58f96d6d",
+    "placeId": "ChIJ_5ZpAj4vdTERbW35WF2zr3A"
+   },
+   {
+    "position": 12,
+    "title": "Nhà Khách Người Có Công Tại Thành phố Hồ Chí Minh",
+    "address": "168 Hai Bà Trưng, Tân Định, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7854338,
+    "longitude": 106.6956024,
+    "rating": 3.9,
+    "ratingCount": 775,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn",
+     "Nhà khách"
+    ],
+    "phoneNumber": "+84 28 3824 1688",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmP807Qiv4WPm826yHVWf93LoBB3Op6o_IcAuyx3yZltBgg03Lz7PB6UwDW04AywgMH0d2U_dN7l2gTgOZcRSqTBJKyLwRcwT24h-likWdyrVv7cfSUjsYk136j8TxreOgbnn3nGsA",
+    "cid": "17191243023788155256",
+    "fid": "0x31752f34150062c7:0xee939072704e2178",
+    "placeId": "ChIJx2IAFTQvdTEReCFOcHKQk-4"
+   },
+   {
+    "position": 13,
+    "title": "GRAND HOTEL du LAC Boutique Saigon",
+    "address": "40-42 Phan Bội Châu, Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.773273399999999,
+    "longitude": 106.69855229999999,
+    "rating": 4.9,
+    "ratingCount": 1233,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://grandhoteldulacsaigon.com/",
+    "phoneNumber": "+84 28 3520 0000",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPRqUlkxrnY4Du95gsh9MRG2kip47IeHgOXRI4iT383Lvu23p2G0Z93fELi8F2nnn_vgT-znZVbS_CVMc9Fk0f1biS7jTGncPftTOg11rjoo0ltJaq18PTnnXJUI2ebN-DHTIoIGgb-vWWY",
+    "cid": "15169537866893213658",
+    "fid": "0x31752f3f7839270f:0xd28506517b01bfda",
+    "placeId": "ChIJDyc5eD8vdTER2r8Be1EGhdI"
+   },
+   {
+    "position": 14,
+    "title": "Khách sạn Rex Sài Gòn",
+    "address": "141 Nguyễn Huệ, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7754687,
+    "longitude": 106.7012618,
+    "rating": 4.5,
+    "ratingCount": 8562,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn",
+     "Quán bar",
+     "Quán cà phê",
+     "Cửa hàng xì-gà",
+     "Phòng tập thể dục",
+     "Nhà hàng",
+     "Spa",
+     "Bể bơi"
+    ],
+    "website": "https://www.booking.com/hotel/vn/rex.html?aid=7955654",
+    "phoneNumber": "+84 28 3829 3115",
+    "description": "KS sang trọng có nhà hàng trang nhã, bar tầng thượng mở cửa 24/7, 2 bể bơi ngoài trời, 1 khu spa và phòng tập.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOTbtAAsJKx9sY34i2MmdKPkc4VLsI5toaaC6k6cxJJIUJv-WMJZKv6TpjYQPP-D-U-lf7SSUS7cCwRTrrMGS89DvuME2jpMjIx04SiBkwIWAHX8c8FI8T4Qg0qPbAVS1WFEVmNcg",
+    "cid": "14619009664241218888",
+    "fid": "0x31752f479e4f95db:0xcae127d5b519b548",
+    "placeId": "ChIJ25VPnkcvdTERSLUZtdUn4co"
+   },
+   {
+    "position": 15,
+    "title": "Duc Vuong Saigon Hotel @ Bui Vien",
+    "address": "195 Bùi Viện, Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7657177,
+    "longitude": 106.690996,
+    "rating": 4.4,
+    "ratingCount": 747,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://ducvuonghotel.com/",
+    "phoneNumber": "+84 944 795 511",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNVBM5I8-0HZXoF1n5EoZ5pi29f5ahRwBpcPkklsybr0tW2QIsZnNVGlfqIVyOijXvvP6Tc5ZiUPKfS_3-u0tPPiFqD5FkJTBW6eUpiMY13mabiC9ZVCSS-SO9OxdOGWj8z7yoPNGdkFm-c",
+    "cid": "6106651778676817053",
+    "fid": "0x31752f0a53ed5333:0x54bf2f703309fc9d",
+    "placeId": "ChIJM1PtUwovdTERnfwJM3Avv1Q"
+   },
+   {
+    "position": 16,
+    "title": "Khách sạn Bay Hồ Chí Minh",
+    "address": "7 Ngô Văn Năm, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7806792,
+    "longitude": 106.7069447,
+    "rating": 4.1,
+    "ratingCount": 2295,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "http://www.bayhotelhcm.com/",
+    "phoneNumber": "+84 28 3829 6666",
+    "description": "Khách sạn sang trọng có nhà hàng/quầy bar, phòng tập thể dục, bể bơi sân thượng và phòng chờ phục vụ cocktail.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMQqBR7tcbf2xXco3QqL_ZpISbuawgACH5iIM8LXvv0jGXZ1zFQuh9xucsnVNt6dUQ7XpZ368TCv4oP5Vh7AigcdD6kvd_sIfXv5Dsg1ClpU71aiEGhC17dobXw_ayZq54xheqyBHkYQHnm",
+    "cid": "14360604528059580732",
+    "fid": "0x31752f4f20add6cb:0xc74b1dbb86db813c",
+    "placeId": "ChIJy9atIE8vdTERPIHbhrsdS8c"
+   },
+   {
+    "position": 17,
+    "title": "Wink Saigon Centre, part of Unscripted by Hyatt",
+    "address": "75 Nguyễn Bỉnh Khiêm, Ward, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7912511,
+    "longitude": 106.70048419999999,
+    "rating": 4.3,
+    "ratingCount": 1270,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://www.hyatt.com/unscripted-by-hyatt/en-US/vn100-wink-saigon-centre?src=corp_lclb_google_seo_vn100&utm_source=google&utm_medium=organic&utm_campaign=lmr",
+    "phoneNumber": "+84 28 3826 9999",
+    "description": "Những phòng nghỉ trang nhã trong một khách sạn thời thượng với sảnh chờ theo phong cách công nghiệp, cùng với đồ ăn đường phố mang đi tiện lợi.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPOzBqRSm6APpnlnhXMm58oGJcjwUqbjhJ2vFtBs1nTnkTUuiCOKN1YPJUYKJ8Y7cORA8du69t9qixonvleseZ0yiHqQCioMyymiEq2yIZ66Bn8WfFKSJQTPL1wDZySVKrL_JxJ",
+    "cid": "7042863198907953822",
+    "fid": "0x3175299befc9c843:0x61bd46c3c494729e",
+    "placeId": "ChIJQ8jJ75spdTERnnKUxMNGvWE"
+   },
+   {
+    "position": 18,
+    "title": "The Reverie Saigon",
+    "address": "22-36 Nguyễn Huệ, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7736811,
+    "longitude": 106.70465229999999,
+    "rating": 4.6,
+    "ratingCount": 2142,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://www.thereveriesaigon.com/",
+    "phoneNumber": "+84 28 3823 6688",
+    "description": "Khách sạn cao cấp với phòng ốc sang trọng, có 5 khu vực ăn uống, có cả hồ bơi ngoài trời và spa.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNJa2O9dIEOuYjka_3lOsEamO11FSLM9b-RJw2gtv_rOrTduWrwQc-23dTo1-7XoIOw-6nlqbpfREYnoiSeY0e-ai2SAyL-hJ_tLXUla8wrDNEhR9iuJTPz2z-KBXsrrN4TsPVqpg",
+    "cid": "12683491373053497248",
+    "fid": "0x31752f46b91ff799:0xb004d0342a95cfa0",
+    "placeId": "ChIJmfcfuUYvdTERoM-VKjTQBLA"
+   },
+   {
+    "position": 19,
+    "title": "Nhà nghĩ khách sạn quận 1 Hotel Bao Tran",
+    "address": "546 Võ Văn Kiệt, Street, Cầu Ông Lãnh, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7554083,
+    "longitude": 106.6881112,
+    "rating": 4.4,
+    "ratingCount": 12,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "phoneNumber": "+84 988 422 130",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMMDjxmE8Xzt_BHpxLhKbl3l0qzYUICeMeqnTl2pP6R0DOjj7P8laabgG3Au9hY0G2bZldln3beN1GjjzgV8DbycoFLRu3sFLxS5AG_oKVOvP9aYcBXm8qEwtrW0UwEoQfdRigTCA",
+    "cid": "8610601390480396808",
+    "fid": "0x31752ef9e7ae7869:0x777f0057fe119208",
+    "placeId": "ChIJaXiu5_kudTERCJIR_lcAf3c"
+   },
+   {
+    "position": 20,
+    "title": "Me Saigon Boutique Hotel",
+    "address": "280 Lê Thánh Tôn, Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7718989,
+    "longitude": 106.6953607,
+    "rating": 4.7,
+    "ratingCount": 541,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn",
+     "Khách sạn lưu trú dài hạn",
+     "Nhà hàng",
+     "Khách sạn chăm sóc sức khỏe"
+    ],
+    "website": "https://meboutiquehotel.com/",
+    "phoneNumber": "+84 28 3622 2283",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNSgLAxnPNrk4BdtmfnqglGxsm4HMr3GZeKhTzyxjq00I7oRlIknHGCtIgR7WhTfM8rhijTtMpGpswwEQtz0GPlDbHuws0z1lUXVMSaBpTYu1wupgAQrVhI3QIyqiNKbQqkc9SO",
+    "cid": "8250144543422289710",
+    "fid": "0x31752f0061c20877:0x727e66c04850172e",
+    "placeId": "ChIJdwjCYQAvdTERLhdQSMBmfnI"
+   }
+  ],
+  "credits": 3
+ }
+}

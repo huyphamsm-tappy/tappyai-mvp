@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Mermaid Homestay",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:16:58.258Z",
+ "body": {
+  "searchParameters": {
+   "q": "Mermaid Homestay",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Mermaid Homestay Tây Ninh, Ấp Thanh Sơn (1) (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/666710567.jpg?k=7134fde488943b026a9a091d7b101ffb4610c5fe0aa7bd3e72b7f512f15b0ea5&o=",
+    "imageWidth": 576,
+    "imageHeight": 768,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNxhNgNghrVFjY6p5DbaMcaAa-vEjXzLQ_j7PO8GB6hQ&s=10",
+    "thumbnailWidth": 480,
+    "thumbnailHeight": 640,
+    "source": "www.booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/mermaid-homestay-thanh-pho-tay-ninh.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F666710567.jpg%3Fk%3D7134fde488943b026a9a091d7b101ffb4610c5fe0aa7bd3e72b7f512f15b0ea5%26o%3D&tbnid=vTeImm1q12OOpM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fmermaid-homestay-thanh-pho-tay-ninh.vi.html&docid=hb2DwOzHfByXpM&w=576&h=768",
+    "position": 1
+   },
+   {
+    "title": "Mermaid Homestay Tây Ninh, Ấp Thanh Sơn (1) (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/726427352.jpg?k=6391213e3a27da51e9312bb3f647898fca48add7311027a627afcda917fc34ef&o=",
+    "imageWidth": 511,
+    "imageHeight": 768,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQM-O3kZLxBim588DF24K9cBd31g_WBmwzguJvmnPUOQg&s=10",
+    "thumbnailWidth": 451,
+    "thumbnailHeight": 679,
+    "source": "www.booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/mermaid-homestay-thanh-pho-tay-ninh.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F726427352.jpg%3Fk%3D6391213e3a27da51e9312bb3f647898fca48add7311027a627afcda917fc34ef%26o%3D&tbnid=T2SlX3PAQ37bhM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fmermaid-homestay-thanh-pho-tay-ninh.vi.html&docid=hb2DwOzHfByXpM&w=511&h=768",
+    "position": 2
+   },
+   {
+    "title": "Mermaid Homestay Tây Ninh (Mermaid Homestay Tay Ninh) Tây Ninh, Việt Nam:  Agoda.com có giá rẻ nhất",
+    "imageUrl": "https://q-xx.bstatic.com/xdata/images/hotel/max500/666710577.jpg?k=8a25817b652ca01b72d0d99fb39ea6593f9545c4b7d9637dcc58ab27fc5316ef&o=",
+    "imageWidth": 500,
+    "imageHeight": 375,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJbyNDSymETy9VFAQgKiPt23JwMACb8705vAAeQSNaSg&s",
+    "thumbnailWidth": 259,
+    "thumbnailHeight": 194,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/mermaid-homestay/hotel/tay-ninh-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fq-xx.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax500%2F666710577.jpg%3Fk%3D8a25817b652ca01b72d0d99fb39ea6593f9545c4b7d9637dcc58ab27fc5316ef%26o%3D&tbnid=3_6Qo21baJRLkM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fmermaid-homestay%2Fhotel%2Ftay-ninh-vn.html&docid=F9pFObhyU3S45M&w=500&h=375",
+    "position": 3
+   },
+   {
+    "title": "Mermaid Homestay Tây Ninh | Tây Ninh",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=122097939860500826",
+    "imageWidth": 2048,
+    "imageHeight": 1152,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVqSc4L-rsZQ3SpTIW9T2nCxuettdtY7MJaSnqJCXYTQ&s=10",
+    "thumbnailWidth": 597,
+    "thumbnailHeight": 335,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/p/Mermaid-Homestay-T%C3%A2y-Ninh-61565024790187/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D122097939860500826&tbnid=iXI-BmaUUrSCVM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Fp%2FMermaid-Homestay-T%25C3%25A2y-Ninh-61565024790187%2F&docid=Js3iSX9-0v1oBM&w=2048&h=1152",
+    "position": 4
+   },
+   {
+    "title": "Mermaid Homestay Tây Ninh (Mermaid Homestay Tay Ninh) Tây Ninh, Việt Nam:  Agoda.com có giá rẻ nhất",
+    "imageUrl": "https://q-xx.bstatic.com/xdata/images/hotel/max500/683382574.jpg?k=b0fcf69b082476f76471796cb3aaab842c178e6bce72e26e0526ec17524694a8&o=",
+    "imageWidth": 500,
+    "imageHeight": 375,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRfAh2xq-nkf579s4VhOA2TDBRVvsiYTBNh_y1_WJJpHw&s=10",
+    "thumbnailWidth": 499,
+    "thumbnailHeight": 375,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/mermaid-homestay/hotel/tay-ninh-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fq-xx.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax500%2F683382574.jpg%3Fk%3Db0fcf69b082476f76471796cb3aaab842c178e6bce72e26e0526ec17524694a8%26o%3D&tbnid=BK_kuCdMeQ6_VM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fmermaid-homestay%2Fhotel%2Ftay-ninh-vn.html&docid=F9pFObhyU3S45M&w=500&h=375",
+    "position": 5
+   },
+   {
+    "title": "Mermaid Homestay Tây Ninh, Ấp Thanh Sơn (1) (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/726427151.jpg?k=27b92cfda18b8da57c1675c03ae22b54fae5a3ecf4f43f91a5ca13bd86af3899&o=",
+    "imageWidth": 576,
+    "imageHeight": 768,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiw3YrdaKsusk9L3bPG_rXVmG3yBEHoIAAkxmG7c1q-w&s=10",
+    "thumbnailWidth": 480,
+    "thumbnailHeight": 640,
+    "source": "www.booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/mermaid-homestay-thanh-pho-tay-ninh.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F726427151.jpg%3Fk%3D27b92cfda18b8da57c1675c03ae22b54fae5a3ecf4f43f91a5ca13bd86af3899%26o%3D&tbnid=aEP5MXWr5L8BZM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fmermaid-homestay-thanh-pho-tay-ninh.vi.html&docid=hb2DwOzHfByXpM&w=576&h=768",
+    "position": 6
+   },
+   {
+    "title": "Mermaid Homestay Tây Ninh (Mermaid Homestay Tay Ninh) Tây Ninh, Việt Nam:  Agoda.com có giá rẻ nhất",
+    "imageUrl": "https://q-xx.bstatic.com/xdata/images/hotel/max500/666710556.jpg?k=1ff56bce2c6450ca04c13ff4717616e0d3fdf5d63159885cfc9f29dbcb8f21a5&o=",
+    "imageWidth": 375,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSY3V5Z3N3q_8q0kgiORxhJ7af344tJKD3SU4JLjiJkMw&s=10",
+    "thumbnailWidth": 375,
+    "thumbnailHeight": 500,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/mermaid-homestay/hotel/tay-ninh-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fq-xx.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax500%2F666710556.jpg%3Fk%3D1ff56bce2c6450ca04c13ff4717616e0d3fdf5d63159885cfc9f29dbcb8f21a5%26o%3D&tbnid=etxc9Xtj_b6h9M&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fmermaid-homestay%2Fhotel%2Ftay-ninh-vn.html&docid=F9pFObhyU3S45M&w=375&h=500",
+    "position": 7
+   },
+   {
+    "title": "Mermaid Vũng Tàu 14.06 - Homestay Tại Hồ Giá Từ 770k | Ohdidi",
+    "imageUrl": "https://ohdidi.vn//uploads/static/HOMES/ba-ria-vung-tau/mermaid-1406/mermaid-1406-017.jpg",
+    "imageWidth": 1280,
+    "imageHeight": 854,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvwTVffXZMRsMDBcBNha7O46our4Nb_2hqNfzDn8KiDw&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "Ohdidi",
+    "domain": "ohdidi.vn",
+    "link": "https://ohdidi.vn/homestay/mermaid-vung-tau-1406",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fohdidi.vn%2F%2Fuploads%2Fstatic%2FHOMES%2Fba-ria-vung-tau%2Fmermaid-1406%2Fmermaid-1406-017.jpg&tbnid=IrPVkwGe5vURSM&imgrefurl=https%3A%2F%2Fohdidi.vn%2Fhomestay%2Fmermaid-vung-tau-1406&docid=4oQ_vd7biWmLiM&w=1280&h=854",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

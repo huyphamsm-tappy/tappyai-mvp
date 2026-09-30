@@ -1,0 +1,44 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Popeyes Nguyễn Thị Thập Nguyễn Thị Thập (site:food.grab.com/vn OR site:shopeefood.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:19:16.361Z",
+ "body": {
+  "searchParameters": {
+   "q": "Popeyes Nguyễn Thị Thập Nguyễn Thị Thập (site:food.grab.com/vn OR site:shopeefood.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Gà Rán Popeyes - Nguyễn Thị Thập",
+    "link": "https://shopeefood.vn/ho-chi-minh/ga-ran-popeyes-nguyen-thi-thap",
+    "snippet": "519 Đường Nguyễn Thị Thập, P. Tân Phong, Quận 7, TP. HCM. Đã đóng. Quán được gắn nhãn Yêu thích là Quán Yêu Thích, gồm những quán đạt chất lượng dịch vụ ...",
+    "position": 1
+   },
+   {
+    "title": "Popeyes - Nguyễn Thị Thập ⭐ 4.3",
+    "link": "https://food.grab.com/vn/vi/restaurant/popeyes-nguy%E1%BB%85n-th%E1%BB%8B-th%E1%BA%ADp-delivery/5-C73BRZBBTJNCV2",
+    "snippet": "GrabFood - Dịch vụ giao đồ ăn trực tuyến giúp bạn thỏa mãn cơn thèm ăn với hàng vạn quán ăn.",
+    "rating": 4.3,
+    "ratingCount": 1434,
+    "position": 2
+   },
+   {
+    "title": "Gà Rán Popeyes | Mua online tại ShopeeFood.vn",
+    "link": "https://shopeefood.vn/thuong-hieu/498",
+    "snippet": "Gà Rán Popeyes - Nguyễn Thị Thập. 519 Đường Nguyễn Thị Thập, P. Tân Phong, Quận 7, TP. HCM. Tối thiểu 20k Giá 0. Giảm món. Mã giảm 21k. Mua 1 tặng 1, Voucher ...",
+    "position": 3
+   }
+  ],
+  "credits": 1
+ }
+}

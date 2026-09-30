@@ -1,0 +1,62 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "ĐỒ ĂN SƠ CHẾ SẴN ( Ship hỏa tốc Hà Nội )- 1KG site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:19:55.306Z",
+ "body": {
+  "searchParameters": {
+   "q": "ĐỒ ĂN SƠ CHẾ SẴN ( Ship hỏa tốc Hà Nội )- 1KG site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "COMBO 40 chiếc chân gà CABUNO mix đủ loại",
+    "link": "https://shop.tiktok.com/vn/pdp/chan-ga-cabuno-40-chiec-mix-du-loai-huong-vi-hoan-hao-an-toan-ve-sinh-san-pham-viet-nam-chat-luong-cao/1730991060275726800",
+    "snippet": "Mua COMBO 40 chiếc chân gà CABUNO mix đủ loại trên TikTok Shop. Săn giá siêu hời cho và được freeship mặt hàng đủ điều kiện. Mua sắm ngay để nhận ưu đãi độc ...",
+    "rating": 4.6,
+    "ratingCount": 75,
+    "position": 1
+   },
+   {
+    "title": "1Kg Cẩu Tích Khô Nguyên Liệu Sạch | Hàng Khô Chọn Lọc",
+    "link": "https://shop.tiktok.com/vn/pdp/cau-tich-kho-nguyen-lieu-sach-1kg-de-dung-huong-thao-moc-tien-loi/1733886489172084358",
+    "snippet": "Quy trình sơ chế Cẩu tích sau khi thu hái được làm sạch, cắt khúc vừa dùng và sấy khô đúng độ. Quy trình giúp sản phẩm khô đều, hạn chế ẩm và dễ sử dụng.",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 2
+   },
+   {
+    "title": "MEN NẤU RUOU NÀNG THƠM HƯƠNG NẾP gói 500g",
+    "link": "https://shop.tiktok.com/vn/pdp/men-nau-ruou-nang-thom-goi-500g-chat-luong-dam-bao/1732573049474221624",
+    "snippet": "Độ dầy khối cơm ủ khoảng 20cm . Khi ủ cơm cần phải đậy nilon chọc lỗ 3mm lên thau ủ cơm , các lỗ thoáng cách nhau 10cm nếu không sẽ mất rượu .",
+    "position": 3
+   },
+   {
+    "title": "Thịt chưng mắm tép 500g có bề bề, tôm ( không màu điều) ...",
+    "link": "https://shop.tiktok.com/vn/pdp/thit-chung-mam-tep-500g-handmade-thim-ha-hai-phong-mon-ngon-%C4%91am-%C4%91a-khong-chat-tao-mau-thuc/1730813915771799809",
+    "snippet": "Thịt Chưng Mắm Tép có Nõn Tôm, bề bề Bếp Thím Thanh Hà Hải Phòng ***** Đồ ăn HANDMADE _ THỰC PHẨM SẠCH Chi Tiết : * MẮM TÉP ChưNG HEO CÓ TÔM, ...",
+    "rating": 4.8,
+    "ratingCount": 256,
+    "position": 4
+   },
+   {
+    "title": "10ml màu nước dùng pha nến hoặc xà phòng thơm",
+    "link": "https://shop.tiktok.com/vn/pdp/mau-nuoc-pha-nen-thom-handmade-10ml-lam-xa-phong-thom/1730481633831979491",
+    "snippet": "Màu nước pha nến thơm handmade - Màu dùng làm xà phòng thơm Để tạo màu sắc cho nến thơm hoặc xà phòng thơm có thể sử dụng màu rắn hoặc màu nước.",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 5
+   }
+  ],
+  "credits": 1
+ }
+}

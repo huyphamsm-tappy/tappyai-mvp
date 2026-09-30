@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Ốp lưng UAG iPhone 17 Pro Max site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:41:10.211Z",
+ "body": {
+  "searchParameters": {
+   "q": "Ốp lưng UAG iPhone 17 Pro Max site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Uag case on iphone 17 pro max",
+    "link": "https://shop.tiktok.com/vn/k/uag-case-on-iphone-17-pro-max",
+    "snippet": "[iPhone 17 Pro Max] Ốp lưng chống sốc UAG, chống sốc chuẩn quân đội, Thiết Kế Tactical, Chống Sốc 7.6 Mét, Cấu Trúc Composite Siêu Nhẹ, Tương Thích Sạc Từ ...",
+    "position": 1
+   },
+   {
+    "title": "ốp lưng uag 17 pro max màu cam",
+    "link": "https://shop.tiktok.com/vn/k/op-lung-uag-17-pro-max-mau-cam",
+    "snippet": "Ốp lưng UAG Pathfinder / Civilian / Monarch Pro Orange phiên bản đặc biệt dành cho iPhone 17 Pro / iPhone 17 Pro Max. 5. 53 sold. ₫1.620.000. ₫2.100.000 ...",
+    "position": 2
+   },
+   {
+    "title": "เคส uag ไอโฟน17 pro",
+    "link": "https://shop.tiktok.com/vn/k/ekhs-uag-aioofn-17-pro",
+    "snippet": "[iPhone 17 Pro/Promax] Combo Ốp Lưng UAG và Kính Cường Lực Zagg Chống Sốc Chuẩn Quân đội, Bảo Hành Chính Hãng 12 Tháng. 3 sold. ₫1.130.000. ₫1.500.000 ...",
+    "position": 3
+   },
+   {
+    "title": "i̇phone 17 pro cosmic orange uag case",
+    "link": "https://shop.tiktok.com/vn/k/i-phone-17-pro-cosmic-orange-uag-case",
+    "snippet": "Ốp lưng UAG Pathfinder / Civilian / Monarch Pro Orange phiên bản đặc biệt dành cho iPhone 17 Pro / iPhone 17 Pro Max · Ốp lưng UAG Pathfinder / Civilian / ...",
+    "position": 4
+   },
+   {
+    "title": "uag monarch pro crimson iphone 17 pro max",
+    "link": "https://shop.tiktok.com/vn/k/uag-monarch-pro-crimson-iphone-17-pro-max",
+    "snippet": "Ốp lưng UAG Pathfinder / Civilian / Monarch Pro Orange phiên bản đặc biệt dành cho iPhone 17 Pro / iPhone 17 Pro Max. 5. 53 sold. ₫1.620.000. ₫2.100.000 ...",
+    "position": 5
+   },
+   {
+    "title": "ốp lưng iphone 17 pro max có nút bảo vệ cam",
+    "link": "https://shop.tiktok.com/vn/k/op-lung-iphone-17-pro-max-co-nut-bao-ve-cam",
+    "snippet": "Ốp lưng hình trái tim chấm phù hợp với ốp điện thoại iPhone 17/16/15, ốp bảo vệ iPhone 14/13/12/11 promax, ốp chống sốc hoạt hình dễ thương cho iPhone 17 promax ...",
+    "position": 6
+   },
+   {
+    "title": "ốp lưng uag monarch 17 promax kevlar black",
+    "link": "https://shop.tiktok.com/vn/k/op-lung-uag-monarch-17-promax-kevlar-black",
+    "snippet": "Ốp lưng UAG Pathfinder / Civilian / Monarch Pro Orange phiên bản đặc biệt dành cho iPhone 17 Pro / iPhone 17 Pro Max.",
+    "position": 7
+   },
+   {
+    "title": "Ốp lưng UAG Pathfinder SE MagSafe cho các mẫu iPhone ...",
+    "link": "https://shop.tiktok.com/vn/pdp/op-lung-uag-pathfinder-se-magsafe-cho-iphone-17-16-15-14-13-pro-max-chong-soc-hieu-qua-ho-tro-sac-kh/1734028380792587689",
+    "snippet": "Đặc điểm sản phẩm Ốp chống sốc của thương hiệu UAG có thiết kế độc đáo nổi bật, thu hút sự chú ý, và nhẹ nhưng chống sốc hiệu quả. Được làm từ Polycarbonate ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

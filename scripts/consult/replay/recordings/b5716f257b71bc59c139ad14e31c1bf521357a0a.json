@@ -1,0 +1,79 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "quà tặng thích cà phê sếp nam 40 tuổi thích cà phê (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:22:42.209Z",
+ "body": {
+  "searchParameters": {
+   "q": "quà tặng thích cà phê sếp nam 40 tuổi thích cà phê (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "30+ quà sinh nhật cho nam theo độ tuổi ý nghĩa, thiết thực ...",
+    "link": "https://cellphones.com.vn/sforum/qua-sinh-nhat-cho-nam",
+    "snippet": "Tặng quà sinh nhật cho nam 40 tuổi · Cà vạt · Đồ phong thủy · Ghế massage · Máy pha cà phê · Dược liệu quý · Cây cảnh · Dụng cụ thể thao.",
+    "date": "30 thg 4, 2023",
+    "rating": 1,
+    "ratingCount": 1,
+    "position": 1
+   },
+   {
+    "title": "Top 16+ [Quà 20/10 cho sếp nữ] 4 \"mẹo\" chọn quà khéo léo",
+    "link": "https://cellphones.com.vn/qua-20-10/cho-sep-nu",
+    "snippet": "Ví dụ, một chiếc bút ký thương hiệu quốc tế, một quyển lịch da để bàn hay đồng hồ treo tường kiểu dáng tinh tế…đều là những lựa chọn lý tưởng. Đây cũng là kiểu ...",
+    "position": 2
+   },
+   {
+    "title": "Đồ biếu tết - Giá Tốt, Sale Tháng 09, Freeship 0Đ",
+    "link": "https://shopee.vn/list/%C4%91%E1%BB%93%20bi%E1%BA%BFu%20t%E1%BA%BFt",
+    "snippet": "Set Quà Tâm Trà Vạn Phúc - Hộp Trà Thái Nguyên Biếu Tết, Gia Đình, Đối Tác - Chuẩn VietGAP ATTP, Kèm Túi Quà - Thuận Trà. 495.000₫. 525.000₫.",
+    "position": 3
+   },
+   {
+    "title": "25+ món quà khai trương đẹp, mang lại may mắn và tài lộc",
+    "link": "https://cellphones.com.vn/sforum/qua-khai-truong",
+    "snippet": "1. Tượng Thần Tài · 2. Sản phẩm công nghệ · 3. Đồng hồ treo tường · 4. Hoa tươi - quà tặng khai trương điển hình · 5. Tranh treo · 6. Tượng linh vật · 7. Mèo thần tài ...",
+    "position": 4
+   },
+   {
+    "title": "Đi ăn tất niên mua quà gì? Gợi ý các món quà tinh tế, dễ ...",
+    "link": "https://cellphones.com.vn/sforum/di-an-tat-nien-mua-qua-gi",
+    "snippet": "Gợi ý quà tặng tất niên phổ biến, dễ dùng cho mọi đối tượng · Giỏ quà Tết bánh kẹo, trái cây · Trà, rượu biếu tất niên · Đặc sản vùng miền · Lịch treo tường, lịch ...",
+    "rating": 3,
+    "ratingCount": 1,
+    "position": 5
+   },
+   {
+    "title": "Top 10 Quà Tết thiết thực đáng mua nhất 2026",
+    "link": "https://cellphones.com.vn/sforum/qua-tet-thiet-thuc",
+    "snippet": "Tặng rượu cao cấp cho sếp nam. Rượu cao cấp thể hiện sự trân trọng và đẳng cấp của người tặng, đặc biệt phù hợp để làm quà Tết ...",
+    "position": 6
+   },
+   {
+    "title": "5+ món quà Trung thu cho nhân viên ý nghĩa nhất",
+    "link": "https://shopee.vn/blog/qua-trung-thu-cho-nhan-vien/",
+    "snippet": "Hãy tìm hiểu về sở thích cá nhân của họ để chọn món quà phù hợp, từ đồ ăn, đồ uống đến các sản phẩm văn phòng phẩm hay quà tặng cá nhân.",
+    "date": "7 thg 9, 2024",
+    "position": 7
+   },
+   {
+    "title": "Gợi Ý Món Quà Chia Tay Đồng Nghiệp Đáng Nhớ, Ý Nghĩa ...",
+    "link": "https://tiki.vn/blog/qua-chia-tay-dong-nghiep/",
+    "snippet": "Nếu đồng nghiệp nam là người yêu thích du lịch hay hoạt động ngoài trời, bạn có thể tặng họ những chiếc balo hay giày thể thao nam tiện dụng và ...",
+    "date": "30 thg 3, 2023",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

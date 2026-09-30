@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Paragon Saigon Hotel",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:37:24.666Z",
+ "body": {
+  "searchParameters": {
+   "q": "Paragon Saigon Hotel",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Paragon Saigon Hotel, Ho Chi Minh City | 2026 Updated Prices, Deals",
+    "imageUrl": "https://pix10.agoda.net/hotelImages/301975/-1/4c384439ea9ff5754426e7188342a07c.png?ce=0&s=1024x768",
+    "imageWidth": 1024,
+    "imageHeight": 719,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyC72ria2ecwG_ldSihymXOOccWwHxqxyGpmZIoQcH1Q&s=10",
+    "thumbnailWidth": 533,
+    "thumbnailHeight": 375,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/paragon-saigon-hotel/hotel/ho-chi-minh-city-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F301975%2F-1%2F4c384439ea9ff5754426e7188342a07c.png%3Fce%3D0%26s%3D1024x768&tbnid=A3znMRo_RWO6EM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fparagon-saigon-hotel%2Fhotel%2Fho-chi-minh-city-vn.html&docid=4MlDYx6nxDJ4PM&w=1024&h=719",
+    "position": 1
+   },
+   {
+    "title": "Khách sạn Paragon Saigon (Paragon Saigon Hotel) – Thông tin đầy đủ",
+    "imageUrl": "https://pix10.agoda.net/hotelImages/301975/-1/8f802ea67e1f4a5c42cbf0ce3df4c18a.jpg?va=1&ce=0&s=414x232",
+    "imageWidth": 341,
+    "imageHeight": 232,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZRKdxhZk94LRGPROzL70dU3AELbiiOCwn89dARKNKEg&s=10",
+    "thumbnailWidth": 341,
+    "thumbnailHeight": 231,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/paragon-saigon-hotel/hotel/ho-chi-minh-city-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F301975%2F-1%2F8f802ea67e1f4a5c42cbf0ce3df4c18a.jpg%3Fva%3D1%26ce%3D0%26s%3D414x232&tbnid=LSjLSq6H1oefYM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fparagon-saigon-hotel%2Fhotel%2Fho-chi-minh-city-vn.html&docid=UGCFaPzRiHagrM&w=341&h=232",
+    "position": 2
+   },
+   {
+    "title": "Paragon Saigon Hotel: Tuyệt Tác Pháp - Việt Quận 1",
+    "imageUrl": "https://tranivietnam.com/wp-content/uploads/2025/08/Paragon-Saigon-Hotel-00002-931x594.webp",
+    "imageWidth": 931,
+    "imageHeight": 594,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwlsxpJSP80diTiBmKlsiGS6wbSf5dMBVZqGI0H4o2oA&s=10",
+    "thumbnailWidth": 693,
+    "thumbnailHeight": 442,
+    "source": "Trani Travel",
+    "domain": "tranivietnam.com",
+    "link": "https://tranivietnam.com/st_hotel/paragon-saigon-hotel/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Ftranivietnam.com%2Fwp-content%2Fuploads%2F2025%2F08%2FParagon-Saigon-Hotel-00002-931x594.webp&tbnid=J5VmZS2fFUx4IM&imgrefurl=https%3A%2F%2Ftranivietnam.com%2Fst_hotel%2Fparagon-saigon-hotel%2F&docid=mmoYmkcD1MgQOM&w=931&h=594",
+    "position": 3
+   },
+   {
+    "title": "Khách sạn Paragon Saigon (Paragon Saigon Hotel) – Thông tin đầy đủ",
+    "imageUrl": "https://q-xx.bstatic.com/xdata/images/hotel/max500/397552379.jpg?k=0ef57485464798d095bc654692f4289e88be335135d2d2ac05fef2410fd97d79&o=",
+    "imageWidth": 500,
+    "imageHeight": 334,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPyoYprkWKrV7JpnjMCwwMsw0UVnW0Lras0EVKCfMB8g&s=10",
+    "thumbnailWidth": 500,
+    "thumbnailHeight": 333,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/paragon-saigon-hotel/hotel/ho-chi-minh-city-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fq-xx.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax500%2F397552379.jpg%3Fk%3D0ef57485464798d095bc654692f4289e88be335135d2d2ac05fef2410fd97d79%26o%3D&tbnid=MoXYedVwcXpP9M&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fparagon-saigon-hotel%2Fhotel%2Fho-chi-minh-city-vn.html&docid=UGCFaPzRiHagrM&w=500&h=334",
+    "position": 4
+   },
+   {
+    "title": "KHÁCH SẠN PARAGON SÀI GÒN (Thành phố Hồ Chí Minh) - Đánh giá Khách sạn & So  sánh giá - Tripadvisor",
+    "imageUrl": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/26/2c/37/9a/kha-ch-sa-n-paragon-sa.jpg?w=900&h=500&s=1",
+    "imageWidth": 900,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFiD7OQOno5qpmy_l-H2Rej8T3e7Dm92IEKPCffOFOuQ&s=10",
+    "thumbnailWidth": 599,
+    "thumbnailHeight": 333,
+    "source": "Tripadvisor",
+    "domain": "www.tripadvisor.com.vn",
+    "link": "https://www.tripadvisor.com.vn/Hotel_Review-g293925-d637378-Reviews-Paragon_Saigon_Hotel-Ho_Chi_Minh_City.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdynamic-media-cdn.tripadvisor.com%2Fmedia%2Fphoto-o%2F26%2F2c%2F37%2F9a%2Fkha-ch-sa-n-paragon-sa.jpg%3Fw%3D900%26h%3D500%26s%3D1&tbnid=WyzNLBI7wTREDM&imgrefurl=https%3A%2F%2Fwww.tripadvisor.com.vn%2FHotel_Review-g293925-d637378-Reviews-Paragon_Saigon_Hotel-Ho_Chi_Minh_City.html&docid=LYJVMSPMtTbvSM&w=900&h=500",
+    "position": 5
+   },
+   {
+    "title": "Khách sạn Paragon - Phú Mỹ Hưng SECC, TP. Hồ Chí Minh (cập nhật giá năm  2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/447639698.jpg?k=669e502e63f2373c65d1a536692f5c8457ce9c700a21702c1ec4fc6024055a89&o=",
+    "imageWidth": 576,
+    "imageHeight": 768,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSZ80tOCyge1KyZ6Xa05H21nuvFtSRq6uz_DaOl2akpQ&s=10",
+    "thumbnailWidth": 480,
+    "thumbnailHeight": 640,
+    "source": "www.booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/paragon-quan-75.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F447639698.jpg%3Fk%3D669e502e63f2373c65d1a536692f5c8457ce9c700a21702c1ec4fc6024055a89%26o%3D&tbnid=BePKT3C759dZwM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fparagon-quan-75.vi.html&docid=Nh8ySYZkeor5uM&w=576&h=768",
+    "position": 6
+   },
+   {
+    "title": "Nhận xét về Khách sạn Paragon Saigon, ưu đãi & hình ảnh 2026 - Expedia",
+    "imageUrl": "https://images.trvl-media.com/lodging/6000000/5170000/5164500/5164430/589a455f.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill",
+    "imageWidth": 862,
+    "imageHeight": 575,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS5XZANkz4uu7J8PCjZVrA0uloXgYrx3UUYM5WH405ziw&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "Expedia",
+    "domain": "www.expedia.com.vn",
+    "link": "https://www.expedia.com.vn/Ho-Chi-Minh-City-Khach-San-Paragon-Saigon-Hotel.h5164430.Thong-tin-khach-san",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimages.trvl-media.com%2Flodging%2F6000000%2F5170000%2F5164500%2F5164430%2F589a455f.jpg%3Fimpolicy%3Dresizecrop%26rw%3D575%26rh%3D575%26ra%3Dfill&tbnid=4raVKVnSunyVMM&imgrefurl=https%3A%2F%2Fwww.expedia.com.vn%2FHo-Chi-Minh-City-Khach-San-Paragon-Saigon-Hotel.h5164430.Thong-tin-khach-san&docid=OUTqgXfewepk8M&w=862&h=575",
+    "position": 7
+   },
+   {
+    "title": "Khách sạn Paragon Sài Gòn | Hồ Chí Minh (Sài Gòn) - Chudu24",
+    "imageUrl": "https://du-lich.chudu24.com/f/m/2401/15/khach-san-paragon-sai-gon.jpg?w=800&h=500",
+    "imageWidth": 800,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTxnHUrzcQw37r-XY0CVRumGfIlcMLZpuStUPhCQdvxAA&s",
+    "thumbnailWidth": 284,
+    "thumbnailHeight": 177,
+    "source": "Đặt Phòng Khách Sạn - Chudu24",
+    "domain": "khachsan.chudu24.com",
+    "link": "https://khachsan.chudu24.com/ks.853.khach-san-paragon-sai-gon.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdu-lich.chudu24.com%2Ff%2Fm%2F2401%2F15%2Fkhach-san-paragon-sai-gon.jpg%3Fw%3D800%26h%3D500&tbnid=0VtZO4ZGafZm0M&imgrefurl=https%3A%2F%2Fkhachsan.chudu24.com%2Fks.853.khach-san-paragon-sai-gon.html&docid=gYmz56SjP46oQM&w=800&h=500",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

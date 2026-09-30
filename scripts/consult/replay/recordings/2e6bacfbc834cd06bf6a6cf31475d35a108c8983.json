@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "quà tặng nam, quà sinh nhật cho nam ý nghĩa - set quà tặng bạn trai gấu bông, nước hoa, ví, đồng hồ site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:35:56.109Z",
+ "body": {
+  "searchParameters": {
+   "q": "quà tặng nam, quà sinh nhật cho nam ý nghĩa - set quà tặng bạn trai gấu bông, nước hoa, ví, đồng hồ site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "set quà tặng bạn trai gấu bông, nước hoa, ví, đồng hồ",
+    "link": "https://shopee.vn/Qu%C3%A0-t%E1%BA%B7ng-nam-qu%C3%A0-sinh-nh%E1%BA%ADt-cho-nam-%C3%BD-ngh%C4%A9a-set-qu%C3%A0-t%E1%BA%B7ng-b%E1%BA%A1n-trai-g%E1%BA%A5u-b%C3%B4ng-n%C6%B0%E1%BB%9Bc-hoa-v%C3%AD-%C4%91%E1%BB%93ng-h%E1%BB%93-i.77709902.44276224586",
+    "snippet": "Mua Quà tặng nam, quà sinh nhật cho nam ý nghĩa - set quà tặng bạn trai gấu bông, nước hoa, ví, đồng hồ giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 1
+   },
+   {
+    "title": "TIỆM QUÀ CỦA TALINA, Cửa hàng trực tuyến",
+    "link": "https://shopee.vn/talinastore",
+    "snippet": "Quà sinh nhật cho nam, quà tặng nam ý nghĩa - set quà tặng bạn trai gấu bông, nước hoa, nến thơm. 109.000₫. -9%. Mua để nhận quà. rating-star 4.8.",
+    "position": 2
+   },
+   {
+    "title": "box quà tặng cho nam tinh tế",
+    "link": "https://shopee.vn/list/box%20qu%C3%A0%20t%E1%BA%B7ng/cho%20nam",
+    "snippet": "box quà tặng cho nam đa dạng cho mọi dịp: combo 2–3 món tiện dụng, ví da thật và thắt lưng đồng bộ, thêm lựa chọn nước hoa/grooming.",
+    "position": 3
+   },
+   {
+    "title": "The28sWatch&Gift.sg, Cửa hàng trực tuyến",
+    "link": "https://shopee.vn/28swatches.sg",
+    "snippet": "Túi giấy quà tặng, túi giấy kraft dày dặn, có quai cầm, túi · [Tặng túi + fullbox gói quà] Ví Nam Da PU Thời Trang, Ví · Combo Ví da và Nước hoa nam làm quà tặng ...",
+    "position": 4
+   },
+   {
+    "title": "Set quà tặng bạn trai sinh nhật - Giá Tốt, Sale Tháng 09 ...",
+    "link": "https://shopee.vn/list/set%20qu%C3%A0%20t%E1%BA%B7ng/b%E1%BA%A1n%20trai/sinh%20nh%E1%BA%ADt",
+    "snippet": "Quà tặng nam, quà sinh nhật cho nam ý nghĩa - set quà tặng bạn trai gấu bông, nước hoa, ví, đồng hồ125.000₫ · 7. Set Hộp Quà Tặng Gấu Bông Hình Quả Bóng Đá ...",
+    "position": 5
+   },
+   {
+    "title": "ban trai tui giá tốt Tháng 5, 2026 | Mua ngay",
+    "link": "https://shopee.vn/search?keyword=ban%20trai%20tui",
+    "snippet": "Set quà tặng Nam Giới, tặng Sinh Nhật máy cạo râu NOVORA, hộp quà kèm túi xách, quà tặng giáng sinhquà tặng bạn trai, qu. 244.900₫. -51%. voucher-icon.",
+    "position": 6
+   },
+   {
+    "title": "Quà tặng người yêu nam - Giá Tốt, Sale Tháng 09, Ship ...",
+    "link": "https://shopee.vn/list/qu%C3%A0%20t%E1%BA%B7ng/ng%C6%B0%E1%BB%9Di%20y%C3%AAu/nam",
+    "snippet": "flag-label Quà tặng nam, quà sinh nhật cho nam ý nghĩa - set quà tặng bạn trai gấu bông, nước hoa, ví, đồng hồ. 125.000₫. rating-star 4.8. (Có Khắc Tên) Bóp ...",
+    "position": 7
+   },
+   {
+    "title": "Quà tặng bạn trai, quà sinh nhật cho nam ý nghĩa",
+    "link": "https://shopee.vn/Qu%C3%A0-t%E1%BA%B7ng-b%E1%BA%A1n-trai-qu%C3%A0-sinh-nh%E1%BA%ADt-cho-nam-%C3%BD-ngh%C4%A9a-set-qu%C3%A0-t%E1%BA%B7ng-nam-g%E1%BA%A5u-b%C3%B4ng-v%C3%AD-nam-%C4%91%E1%BB%93ng-h%E1%BB%93-i.1932092370.48818266417",
+    "snippet": "Mua Quà tặng bạn trai, quà sinh nhật cho nam ý nghĩa - set quà tặng nam gấu bông, ví nam, đồng hồ giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

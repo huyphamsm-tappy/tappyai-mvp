@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "quà sinh nhật cho sếp nam 40 tuổi thích cà phê shop website địa chỉ facebook",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:55:28.250Z",
+ "body": {
+  "searchParameters": {
+   "q": "quà sinh nhật cho sếp nam 40 tuổi thích cà phê shop website địa chỉ facebook",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "🎁 SINH NHẬT SẾP – ĐỪNG TẶNG MỘT MÓN QUÀ QUÁ ...",
+    "link": "https://www.facebook.com/lasenda.vn/videos/-sinh-nh%E1%BA%ADt-s%E1%BA%BFp-%C4%91%E1%BB%ABng-t%E1%BA%B7ng-m%E1%BB%99t-m%C3%B3n-qu%C3%A0-qu%C3%A1-quen-thu%E1%BB%99cl%C3%A0m-h%C3%A0nh-ch%C3%ADnh-nh%C3%A2n-s%E1%BB%B1-ch%E1%BA%AFc-h/1421637489890705/",
+    "snippet": "Điểm đặc biệt là hoa sen đá được tạo hình sống động nhiều màu sắc kết hợp cùng cánh buồm nghệ thuật tạo nên một món quà vừa lạ mắt vừa có giá ...",
+    "position": 1
+   },
+   {
+    "title": "25 ý tưởng tặng quà sinh nhật cho nam 40 tuổi ý nghĩa, ...",
+    "link": "https://chiaki.vn/tin-tuc/qua-sinh-nhat-cho-nam-40-tuoi",
+    "snippet": "Một bộ dụng cụ pha cà phê là món quà sinh nhật tinh tế và đầy phong cách dành cho nam giới tuổi 40. Ở độ tuổi này, thưởng thức cà phê không chỉ ...",
+    "date": "15 thg 8, 2025",
+    "position": 2
+   },
+   {
+    "title": "Quà tặng sinh nhật sếp nam: 30 gợi ý tinh tế kèm nơi mua ...",
+    "link": "https://aeonmall-tanphuceladon.com.vn/tin-tuc/qua-tang-sinh-nhat-sep-nam-30-goi-y-tinh-te-kem-noi-mua-uy-tin.html",
+    "snippet": "Tặng quà sinh nhật sếp nam nên ưu tiên sự tinh tế, sang trọng và thiết thực. Các lựa chọn phổ biến bao gồm bút ký cao cấp, đồng hồ, ví da, ...",
+    "date": "23 thg 1, 2026",
+    "position": 3
+   },
+   {
+    "title": "Gợi Ý Quà Tặng Sinh Nhật Sếp Nam Ý Nghĩa",
+    "link": "https://vuonhoatuoi.vn/goi-y-qua-tang-sinh-nhat-sep-nam-y-nghia/?srsltid=AU7gw4XzgRViHAHx4Cak6IS4-gCx1ykiSGiG2kfwne7vvkgodCbtyj8p",
+    "snippet": "Chẳng hạn như sếp của bạn mỗi khi đến văn phòng đều uống một tách cà phê, bạn có thể lựa chọn quà sinh nhật sếp nam là một loại cà phê hảo hạng, ...",
+    "date": "2 thg 5, 2022",
+    "position": 4
+   },
+   {
+    "title": "Sếp bạn có tặng quà sinh nhật cho tất cả người quen bằng ...",
+    "link": "https://www.facebook.com/groups/834058550598705/posts/1829055451099005/",
+    "snippet": "Sếp bạn có tặng quà sinh nhật cho tất cả người quen bằng đồ cũ/dư của mình không? Sếp mình có nhé.",
+    "position": 5
+   },
+   {
+    "title": "40+ quà sinh nhật cho nam, bạn trai, sếp, đàn ông trung niên",
+    "link": "https://urbox.vn/thu-vien/blog/qua-sinh-nhat-cho-nam",
+    "snippet": "Một chiếc áo sơ mi vừa vặn, chất lượng cao là món quà tặng sinh nhật cho nam 30, 40, 50 tuổi cổ điển và thiết thực. Hãy chọn những chất liệu cao ...",
+    "date": "21 thg 7, 2026",
+    "position": 6
+   },
+   {
+    "title": "99+ Quà sinh nhật cho nam ý nghĩa theo tuổi, đối tượng và ...",
+    "link": "https://canifa.com/blog/qua-sinh-nhat-cho-nam?srsltid=AU7gw4Ve0u7CZUYtSsiKh5LbTOyvVmRgatrf22YLbfXAnAG9hzqxBnD5",
+    "snippet": "Đối với người yêu cà phê, bạn có thể chọn máy pha cà phê mini, bình French Press, phin pha cà phê, cốc giữ nhiệt,… Nếu muốn tạo dấu ấn riêng, ...",
+    "date": "21 thg 7, 2026",
+    "position": 7
+   },
+   {
+    "title": "23+ gợi ý quà tặng cho sếp nam ý nghĩa và ấn tượng",
+    "link": "https://www.coolmate.me/blog/qua-tang-cho-sep-nam-y-nghia",
+    "snippet": "23+ gợi ý quà tặng cho sếp nam ý nghĩa và ấn tượng · 1. Tặng quà sếp nam: Rượu vang · 2. Quà tặng sếp nam: Nước hoa · 3. Quà tặng sếp nam: Cà vạt.",
+    "date": "20 thg 6, 2022",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

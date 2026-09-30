@@ -5,12 +5,13 @@
 //                                  REPLAY_NO_RECORD=1 → a miss is answered `{}` (fully offline) and
 //                                  counted as `missing`.
 //   https://api.anthropic.com/*  → passed through (the real model is the point of the harness).
+//   https://api.openai.com/*     → passed through (PHIÊN LUNA; only called when REPLAY_LUNA routes a role there).
 //   anything else                → an empty 200 JSON `{}`; no network. Counted per host.
 //
 // The route's own Serper meter counts every serperPost() as a call, replayed or not, so the turn
 // annotation's `serperCalls` cannot tell them apart. These counters can.
 import { createHash } from 'node:crypto'
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
+import { appendFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 
 export interface NetStats {
@@ -18,10 +19,11 @@ export interface NetStats {
   serperReplayed: number
   serperMissing: number
   anthropic: number
+  openai: number
   stubbed: Record<string, number>
 }
 
-const zero = (): NetStats => ({ serperReal: 0, serperReplayed: 0, serperMissing: 0, anthropic: 0, stubbed: {} })
+const zero = (): NetStats => ({ serperReal: 0, serperReplayed: 0, serperMissing: 0, anthropic: 0, openai: 0, stubbed: {} })
 const stats: NetStats = zero()
 
 export const netSnapshot = (): NetStats => ({ ...stats, stubbed: { ...stats.stubbed } })
@@ -29,7 +31,7 @@ export function netDelta(before: NetStats): NetStats {
   const now = netSnapshot()
   const stubbed: Record<string, number> = {}
   for (const [h, n] of Object.entries(now.stubbed)) { const d = n - (before.stubbed[h] ?? 0); if (d) stubbed[h] = d }
-  return { serperReal: now.serperReal - before.serperReal, serperReplayed: now.serperReplayed - before.serperReplayed, serperMissing: now.serperMissing - before.serperMissing, anthropic: now.anthropic - before.anthropic, stubbed }
+  return { serperReal: now.serperReal - before.serperReal, serperReplayed: now.serperReplayed - before.serperReplayed, serperMissing: now.serperMissing - before.serperMissing, anthropic: now.anthropic - before.anthropic, openai: now.openai - before.openai, stubbed }
 }
 
 const json = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status, headers: { 'content-type': 'application/json' } })
@@ -90,9 +92,16 @@ export function installReplayFetch(recordingsDir: string, opts: { record: boolea
       stats.anthropic++
       return realFetch(input as RequestInfo, init)
     }
+    // PHIÊN LUNA: the routed consult/intent model (only reached when REPLAY_LUNA set the routing env).
+    if (host === 'api.openai.com') {
+      stats.openai++
+      return realFetch(input as RequestInfo, init)
+    }
 
     if (host === 'google.serper.dev') {
       const body = bodyOf(init)
+      // PHIÊN LUNA cache study: every Serper request the route made, in order (REPLAY_SERPER_LOG, set per out dir).
+      if (process.env.REPLAY_SERPER_LOG) { try { appendFileSync(process.env.REPLAY_SERPER_LOG, JSON.stringify({ conv: process.env.REPLAY_SERPER_CONV ?? null, url, body }) + '\n') } catch { /* study only */ } }
       const key = recordingKey(url, body)
       const file = join(recordingsDir, `${key}.json`)
       if (existsSync(file)) {

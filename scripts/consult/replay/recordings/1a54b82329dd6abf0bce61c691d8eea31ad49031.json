@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Ốp lưng iPhone 16 Pro Max Apple With Magsafe Clear",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T05:57:14.781Z",
+ "body": {
+  "searchParameters": {
+   "q": "Ốp lưng iPhone 16 Pro Max Apple With Magsafe Clear",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Ốp Lưng Trong Suốt MagSafe cho iPhone 16 Pro Max",
+    "imageUrl": "https://store.storeimages.cdn-apple.com/1/as-images.apple.com/is/MA7F4?wid=4000&hei=4000&fmt=jpeg&qlt=90&.v=1723162550519",
+    "imageWidth": 4000,
+    "imageHeight": 4000,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0i3gJ7oyjBTg0vVZOt8dlPWi9N5KIVr6g1BYWJWOlaQ&s=10",
+    "thumbnailWidth": 554,
+    "thumbnailHeight": 554,
+    "source": "Apple",
+    "domain": "www.apple.com",
+    "link": "https://www.apple.com/vn/shop/product/ma7f4fe/a/%E1%BB%91p-l%C6%B0ng-trong-su%E1%BB%91t-magsafe-cho-iphone-16-pro-max",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fstore.storeimages.cdn-apple.com%2F1%2Fas-images.apple.com%2Fis%2FMA7F4%3Fwid%3D4000%26hei%3D4000%26fmt%3Djpeg%26qlt%3D90%26.v%3D1723162550519&tbnid=mPDcCjRpwmqz-M&imgrefurl=https%3A%2F%2Fwww.apple.com%2Fvn%2Fshop%2Fproduct%2Fma7f4fe%2Fa%2F%25E1%25BB%2591p-l%25C6%25B0ng-trong-su%25E1%25BB%2591t-magsafe-cho-iphone-16-pro-max&docid=BGV_SC7Wbqo6UM&w=4000&h=4000",
+    "position": 1
+   },
+   {
+    "title": "Ốp Lưng iPhone 16 Pro Apple With Magsafe Clear",
+    "imageUrl": "https://cdn11.dienmaycholon.vn/filewebdmclnew/public/userupload/files/Mtsp/phu-kien/thiet-ke-thoi-thuong-cua-op-lung-iphone-16-pro.jpg",
+    "imageWidth": 1000,
+    "imageHeight": 575,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUeNLgCBjeEu9T4ucN_UDVyAqEFbNWpn3tXpPYUsIV4Q&s=10",
+    "thumbnailWidth": 588,
+    "thumbnailHeight": 340,
+    "source": "Dienmaycholon",
+    "domain": "dienmaycholon.com",
+    "link": "https://dienmaycholon.com/phu-kien-di-dong/op-lung-iphone-16-pro-apple-with-magsafe-clear",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn11.dienmaycholon.vn%2Ffilewebdmclnew%2Fpublic%2Fuserupload%2Ffiles%2FMtsp%2Fphu-kien%2Fthiet-ke-thoi-thuong-cua-op-lung-iphone-16-pro.jpg&tbnid=co9iSe-oOgnEZM&imgrefurl=https%3A%2F%2Fdienmaycholon.com%2Fphu-kien-di-dong%2Fop-lung-iphone-16-pro-apple-with-magsafe-clear&docid=rCFnYlnf4AVzmM&w=1000&h=575",
+    "position": 2
+   },
+   {
+    "title": "Ốp Lưng Trong Suốt MagSafe cho iPhone 16 Pro Max - Apple (VN)",
+    "imageUrl": "https://store.storeimages.cdn-apple.com/1/as-images.apple.com/is/MA7F4_AV3?wid=1144&hei=1144&fmt=jpeg&qlt=90&.v=NTJVVDM5Rjgyai81YTFyMngwbFZObFZya2lKWlJmUEwrYndWOTJiVWJWQUYwVmtIbGRkS25RMVpBRlo0bk5DUVhOSVYxOHNDNHJvY3hOZDdPSnVOemc",
+    "imageWidth": 1144,
+    "imageHeight": 1144,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgwVSo0Lln6HEWCFtK18h-mN5DFFfO5kk7lFk6Cuml2w&s=10",
+    "thumbnailWidth": 554,
+    "thumbnailHeight": 554,
+    "source": "Apple",
+    "domain": "www.apple.com",
+    "link": "https://www.apple.com/vn/shop/product/ma7f4fe/a/%E1%BB%91p-l%C6%B0ng-trong-su%E1%BB%91t-magsafe-cho-iphone-16-pro-max",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fstore.storeimages.cdn-apple.com%2F1%2Fas-images.apple.com%2Fis%2FMA7F4_AV3%3Fwid%3D1144%26hei%3D1144%26fmt%3Djpeg%26qlt%3D90%26.v%3DNTJVVDM5Rjgyai81YTFyMngwbFZObFZya2lKWlJmUEwrYndWOTJiVWJWQUYwVmtIbGRkS25RMVpBRlo0bk5DUVhOSVYxOHNDNHJvY3hOZDdPSnVOemc&tbnid=e-mXzcF91an58M&imgrefurl=https%3A%2F%2Fwww.apple.com%2Fvn%2Fshop%2Fproduct%2Fma7f4fe%2Fa%2F%25E1%25BB%2591p-l%25C6%25B0ng-trong-su%25E1%25BB%2591t-magsafe-cho-iphone-16-pro-max&docid=BGV_SC7Wbqo6UM&w=1144&h=1144",
+    "position": 3
+   },
+   {
+    "title": "Ốp Lưng Trong Suốt MagSafe cho iPhone 16 Pro - Chính hãng Apple",
+    "imageUrl": "https://cdn.hoanghamobile.vn/i/preview/Uploads/2024/09/11/op-ip16-pro-2.png",
+    "imageWidth": 318,
+    "imageHeight": 642,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR5179H0edlyOs6YEAAF83I8kbpFXt78hE9cgcLolQ3jQ&s=10",
+    "thumbnailWidth": 314,
+    "thumbnailHeight": 636,
+    "source": "Hoàng Hà Mobile",
+    "domain": "hoanghamobile.com",
+    "link": "https://hoanghamobile.com/op-lung/op-lung-trong-suot-magsafe-cho-iphone-16-pro-chinh-hang-apple?srsltid=AU7gw4XnJ1sf-6DkhcpiGtma0VtGV_YI-9Z47JWQ6I7Yej7fkcYb3RSj",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.hoanghamobile.vn%2Fi%2Fpreview%2FUploads%2F2024%2F09%2F11%2Fop-ip16-pro-2.png&tbnid=xewZ_06gfGfv1M&imgrefurl=https%3A%2F%2Fhoanghamobile.com%2Fop-lung%2Fop-lung-trong-suot-magsafe-cho-iphone-16-pro-chinh-hang-apple%3Fsrsltid%3DAU7gw4XnJ1sf-6DkhcpiGtma0VtGV_YI-9Z47JWQ6I7Yej7fkcYb3RSj&docid=14KJqTdl66qD5M&w=318&h=642",
+    "position": 4
+   },
+   {
+    "title": "Ốp lưng iPhone 16 Pro Max Clear Case with MagSafe",
+    "imageUrl": "https://uscom.com.vn/wp-content/uploads/2024/08/op-iphone-15-prm-1.webp",
+    "imageWidth": 500,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSwT8J6Zq-mqkGKad64L6w3m5uSACl_tCYf8fDjrNSrQ&s=10",
+    "thumbnailWidth": 500,
+    "thumbnailHeight": 500,
+    "source": "USCOM Apple Store",
+    "domain": "uscom.com.vn",
+    "link": "https://uscom.com.vn/op-lung-iphone-16-pro-max-clear-case-with-magsafe?srsltid=AU7gw4XQAjZuXLokzNtFZzY2O2sLIyzzNQWXqX3RvK9kXhctjypeLGPR",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fuscom.com.vn%2Fwp-content%2Fuploads%2F2024%2F08%2Fop-iphone-15-prm-1.webp&tbnid=35_AJvTNNEHeNM&imgrefurl=https%3A%2F%2Fuscom.com.vn%2Fop-lung-iphone-16-pro-max-clear-case-with-magsafe%3Fsrsltid%3DAU7gw4XQAjZuXLokzNtFZzY2O2sLIyzzNQWXqX3RvK9kXhctjypeLGPR&docid=2qsSLtKhu9eg8M&w=500&h=500",
+    "position": 5
+   },
+   {
+    "title": "Ốp lưng iPhone 16 Pro Max Apple With Magsafe Clear | Giá rẻ",
+    "imageUrl": "https://cdn2.cellphones.com.vn/200x/media/catalog/product/o/p/op-lung-iphone-16-pro-max-apple-magsafe-clear_1_.png",
+    "imageWidth": 200,
+    "imageHeight": 200,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRAfx_I5zsvQMO8J3d4VPYwj-YJhUmuNWi-zfr82sHs7A&s",
+    "thumbnailWidth": 200,
+    "thumbnailHeight": 200,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/op-lung-iphone-16-pro-max-apple-magsafe-clear.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2F200x%2Fmedia%2Fcatalog%2Fproduct%2Fo%2Fp%2Fop-lung-iphone-16-pro-max-apple-magsafe-clear_1_.png&tbnid=drMk6tBNJWCmdM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fop-lung-iphone-16-pro-max-apple-magsafe-clear.html&docid=HoLyrivZQHuGjM&w=200&h=200",
+    "position": 6
+   },
+   {
+    "title": "Ốp lưng MagSafe iPhone 16 Pro Max PC TPU AVA+ OC Crystal Hook",
+    "imageUrl": "https://cdnv2.tgdd.vn/mwg-static/tgdd/Products/Images/60/360000/op-lung-magsafe-iphone-16-pro-max-pc-tpu-ava-oc-crystal-hook-1-639006510503165141.jpg",
+    "imageWidth": 1020,
+    "imageHeight": 680,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9487DmoGAcEJsPGK8XWdbI5HQdMR9M7mTmOFBLHJe8w&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Thegioididong.com",
+    "domain": "www.thegioididong.com",
+    "link": "https://www.thegioididong.com/op-lung-flipcover/op-lung-magsafe-iphone-16-pro-max-pc-tpu-ava-oc-crystal-hook",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdnv2.tgdd.vn%2Fmwg-static%2Ftgdd%2FProducts%2FImages%2F60%2F360000%2Fop-lung-magsafe-iphone-16-pro-max-pc-tpu-ava-oc-crystal-hook-1-639006510503165141.jpg&tbnid=zju5uGyeOg4gEM&imgrefurl=https%3A%2F%2Fwww.thegioididong.com%2Fop-lung-flipcover%2Fop-lung-magsafe-iphone-16-pro-max-pc-tpu-ava-oc-crystal-hook&docid=tr_9veiDmDc6tM&w=1020&h=680",
+    "position": 7
+   },
+   {
+    "title": "Apple Clear Case with MagSafe for iPhone 16 Pro Max - HALOSHOP",
+    "imageUrl": "https://haloshop.vn/wp-content/uploads/2025/03/apple_clear_case_with_magsafe_for_iphone_16_pro_max_42-700x700-3.jpg",
+    "imageWidth": 700,
+    "imageHeight": 700,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSYAg01AsqktJC2XrWR7ggmcUllC-3iPl2-fJSseg4SOw&s=10",
+    "thumbnailWidth": 554,
+    "thumbnailHeight": 554,
+    "source": "haloshop",
+    "domain": "haloshop.vn",
+    "link": "https://haloshop.vn/apple-clear-case-with-magsafe-for-iphone-16-pro-max/?srsltid=AU7gw4W6My0NGnqBgnxUfIShPEsgL5mrxBg6ywmjbgawIsoIiJFfTSQt",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fhaloshop.vn%2Fwp-content%2Fuploads%2F2025%2F03%2Fapple_clear_case_with_magsafe_for_iphone_16_pro_max_42-700x700-3.jpg&tbnid=l42HI6TQdKrB1M&imgrefurl=https%3A%2F%2Fhaloshop.vn%2Fapple-clear-case-with-magsafe-for-iphone-16-pro-max%2F%3Fsrsltid%3DAU7gw4W6My0NGnqBgnxUfIShPEsgL5mrxBg6ywmjbgawIsoIiJFfTSQt&docid=oLUp95TCYyV_pM&w=700&h=700",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

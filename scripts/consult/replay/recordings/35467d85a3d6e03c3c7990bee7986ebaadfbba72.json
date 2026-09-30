@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Nhà Của Piêu\" OR \"QUÁN NHẬU NĂM ZUI | QUÁN NHẬU GẦN ĐÂY | QUÁN NHẬU BÌNH THẠNH | QUÁN ĂN GẦN ĐÂY\" OR \"Quán Nhậu 256\" Bình Thạnh site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:30:35.927Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Nhà Của Piêu\" OR \"QUÁN NHẬU NĂM ZUI | QUÁN NHẬU GẦN ĐÂY | QUÁN NHẬU BÌNH THẠNH | QUÁN ĂN GẦN ĐÂY\" OR \"Quán Nhậu 256\" Bình Thạnh site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Nhà của Piêu: Quán Ăn Ngon Tại Bình Thạnh",
+    "link": "https://www.tiktok.com/@thaodayyy_23/video/7438847001808194837",
+    "snippet": "Nhà của Piêu: Quán Ăn Ngon Tại Bình Thạnh. Khám phá nhà của Piêu, địa điểm quán ăn yêu thích tại Bình Thạnh với những món nướng hấp dẫn. # ...",
+    "position": 1
+   },
+   {
+    "title": "Khám Phá Nhà Của Piêu - Ẩm Thực Lai Rai Tây Bắc",
+    "link": "https://www.tiktok.com/@lulureview_/video/7388139423566793992",
+    "snippet": "Trần Bình Thủ Nhà · Nhà Hàng Bao Tân Bình · Lẩu Riêu Cua Minh Anh. Khám Phá Nhà Của Piêu - Ẩm Thực Lai Rai Tây Bắc. Mới được dẫn đi trải nghiệm ...",
+    "position": 2
+   },
+   {
+    "title": "Nhà Của Piêu Bình Thạnh Menu",
+    "link": "https://www.tiktok.com/discover/nh%C3%A0-c%E1%BB%A7a-pi%C3%AAu-b%C3%ACnh-th%E1%BA%A1nh-menu",
+    "snippet": "Nhà của Piêu là quán nướng nằm trong hẻm tại 68 Ung Văn Khiêm, Thạnh Mỹ Tây, Bình Thạnh, nổi tiếng với không gian chill và các món ăn đa dạng ...",
+    "date": "21 thg 9, 2026",
+    "position": 3
+   },
+   {
+    "title": "Khám Phá Quán Nhậu 256 Nguyễn Gia Trí tại Bình Thạnh",
+    "link": "https://www.tiktok.com/@quan_nhau_256/video/7444057004529831175",
+    "snippet": "Quán nhậu 256 Nguyễn Gia Trí, P25, Q Bình Thạnh, tp hcm#quannhaubinhdan #quanbinhthanh #quannhausinhvien #quannhaungonbinhthanh. Khám Phá Quán ...",
+    "position": 4
+   },
+   {
+    "title": "Nhà hàng The Rice tại Wyndham Thanh Thủy",
+    "link": "https://www.tiktok.com/@sakuratravel.onsen/video/7487458443301768453",
+    "snippet": "Nhà Của Piêu Bình Thạnh Menu · The Brix Thảo Điền Menu · The Hands Coffee Roastery Biên Hoà Menu · Nhà Hàng Muối Tiêu Hải Phòng · Nhà Hàng Phủ ...",
+    "position": 5
+   },
+   {
+    "title": "#Chuyen025 #NhaCuaPieu #ChuyenNhaPieu #binhthanh ...",
+    "link": "https://www.tiktok.com/@chuyennhapieu/video/7689442881261554964",
+    "snippet": "Chuyến 019 | Nhà của Piêu ở Bình Thạnh. Chuyến 019 ghi lại Nhà của Piêu ở Bình Thạnh. Video sử dụng hashtag #Chuyen019, #NhaCuaPieu ...",
+    "position": 6
+   },
+   {
+    "title": "Một quán nướng rộng, đẹp vibe Tây Bắc ở Bình Thạnh nè. ...",
+    "link": "https://www.tiktok.com/@copureview/video/7309084723949620488",
+    "snippet": "Nhà của Piêu 42/68 Ung Văn Khiêm, phường 25, Bình Thạnh, TPHCM #nhacuapieu #quannuong #quannuongnhacuapieu #reviewquannuongsaigon #review ...",
+    "position": 7
+   },
+   {
+    "title": "Quán 256 Bình Thạnh (@quan_nhau_256)",
+    "link": "https://www.tiktok.com/@quan_nhau_256",
+    "snippet": "Quán 256 Bình Thạnh (@quan_nhau_256) trên TikTok |70.5K Lượt thích.1373 Follower.Địa chỉ : 256 Nguyễn gia Trí, P25, Q Bình Thạnh, Tp hcm ... Quán nhậu 256 Nguyễn ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"HT House\" OR \"Golden Sun Hotel\" OR \"Colline Dalat\" Đà Lạt site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:55:53.901Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"HT House\" OR \"Golden Sun Hotel\" OR \"Colline Dalat\" Đà Lạt site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "HT Boutique - Luxury Stay Just 200m from the Market",
+    "link": "https://www.tiktok.com/@ht.house.dalat/video/7666394096310750485",
+    "snippet": "52 Lượt thích,Video TikTok từ HT Boutique By HT House Đà Lạt (@ht.house.dalat): \"Experience luxury at HT Boutique, a homestay located only ...",
+    "position": 1
+   },
+   {
+    "title": "HT Boutique By HT House Đà Lạt",
+    "link": "https://www.tiktok.com/@ht.house.dalat",
+    "snippet": "HT Boutique By HT House Đà Lạt · @ht.house.dalat · HT Boutique Hotel ✨ Chuỗi khách sạn tại trung tâm Đà Lạt ☎️ 08.1971.0443 ⬇️ Đặt phòng tại đây.",
+    "position": 2
+   },
+   {
+    "title": "Hoàng hôn tại HT Boutique 2 - The Lumina Premium",
+    "link": "https://www.tiktok.com/@ht.house.dalat/video/7662771982114491669",
+    "snippet": "Video TikTok từ HT Boutique By HT House Đà Lạt (@ht.house.dalat): \"Hoàng hôn tại HT Boutique 2 - The Lumina Premium #hoteldalat ...",
+    "position": 3
+   },
+   {
+    "title": "Các vợ biết vào đâu đặt phòng chưa ạ 🥰 - #hoteldalat",
+    "link": "https://www.tiktok.com/@ht.house.dalat/video/7660769860409937172",
+    "snippet": "20 Lượt thích,Video TikTok từ HT Boutique By HT House Đà Lạt (@ht.house.dalat): \"Các vợ biết vào đâu đặt phòng chưa ạ #hoteldalat ...",
+    "position": 4
+   },
+   {
+    "title": "Hình như mấy ông chồng chung 1 nhà máy sản xuất thì ...",
+    "link": "https://www.tiktok.com/@ht.house.dalat/video/7690822520986995974",
+    "snippet": "38 Lượt thích,Video TikTok từ HT Boutique By HT House Đà Lạt (@ht.house.dalat): \"Hình như mấy ông chồng chung 1 nhà máy sản xuất thì phải ...",
+    "position": 5
+   },
+   {
+    "title": "Suite Sunset Dalat: Bồn Tắm & View Hoàng Hôn",
+    "link": "https://www.tiktok.com/@ht.house.dalat/video/7657209257871428884",
+    "snippet": "Khám phá Suite Sunset Dalat với bồn tắm cực chill, view hoàng hôn triệu đô. @HT Boutique By HT House Đà Lạt ...",
+    "position": 6
+   },
+   {
+    "title": "Khách sạn Đà Lạt: Cảnh báo và lưu ý khi nghỉ tại hotel",
+    "link": "https://www.tiktok.com/@ht.house.dalat/video/7677942290995760405",
+    "snippet": "31 Lượt thích,Video TikTok từ HT Boutique By HT House Đà Lạt (@ht.house.dalat): \"Cả nhà cẩn thận giúp em nha — cảnh báo kinh nghiệm ở khách ...",
+    "position": 7
+   },
+   {
+    "title": "“Căn phòng view ngập tràn – mở mắt ra là thấy cả Đà Lạt. ...",
+    "link": "https://www.tiktok.com/@ht.house.dalat/video/7689109873295920385",
+    "snippet": "20 Lượt thích,Video TikTok từ HT Boutique By HT House Đà Lạt (@ht.house.dalat): \"“Căn phòng view ngập tràn – mở mắt ra là thấy cả Đà Lạt.” ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

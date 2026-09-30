@@ -1,0 +1,87 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Set quà tặng học sinh tặng sinh nhật, 1/6 site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:59:32.204Z",
+ "body": {
+  "searchParameters": {
+   "q": "Set quà tặng học sinh tặng sinh nhật, 1/6 site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Set quà tặng học sinh tặng sinh nhật, 1/6, trung thu,noel",
+    "link": "https://shopee.vn/Set-qu%C3%A0-t%E1%BA%B7ng-h%E1%BB%8Dc-sinh-t%E1%BA%B7ng-sinh-nh%E1%BA%ADt-1-6-trung-thu-noel-i.329375182.24559637657",
+    "snippet": "Mua Set quà tặng học sinh tặng sinh nhật, 1/6, trung thu,noel giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn lại tiền ...",
+    "rating": 4.8,
+    "ratingCount": 1074,
+    "position": 1
+   },
+   {
+    "title": "Set Quà Tặng Dành Tặng Bé Gái, Phụ Kiện Tóc Đáng Yêu ...",
+    "link": "https://shopee.vn/Set-Qu%C3%A0-T%E1%BA%B7ng-D%C3%A0nh-T%E1%BA%B7ng-B%C3%A9-G%C3%A1i-Ph%E1%BB%A5-Ki%E1%BB%87n-T%C3%B3c-%C4%90%C3%A1ng-Y%C3%AAu-L%C3%A0m-Qu%C3%A0-T%E1%BA%B7ng-H%E1%BB%8Dc-Sinh-Qu%C3%A0-Sinh-Nh%E1%BA%ADt-Qu%E1%BB%91c-T%E1%BA%BF-Thi%E1%BA%BFu-Nhi-1-6-i.1396615789.51459358443",
+    "snippet": "Mua Set Quà Tặng Dành Tặng Bé Gái, Phụ Kiện Tóc Đáng Yêu Làm Quà Tặng Học Sinh, Quà Sinh Nhật, Quốc Tế Thiếu Nhi 1/6 giá tốt. Mua hàng qua mạng uy tín, ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 2
+   },
+   {
+    "title": "Set Quà Tặng Đáng Yêu - Bộ Sưu Tập Đồ Dùng Học Sinh ...",
+    "link": "https://shopee.vn/Set-Qu%C3%A0-T%E1%BA%B7ng-%C4%90%C3%A1ng-Y%C3%AAu-B%E1%BB%99-S%C6%B0u-T%E1%BA%ADp-%C4%90%E1%BB%93-D%C3%B9ng-H%E1%BB%8Dc-Sinh-V%C3%A0-V%C4%83n-Ph%C3%B2ng-Ph%E1%BA%A9m-D%E1%BB%85-Th%C6%B0%C6%A1ng-Qu%C3%A0-T%E1%BA%B7ng-1-6-Qu%C3%A0-Sinh-Nh%E1%BA%ADt-i.1396627937.48309681486",
+    "snippet": "Mua Set Quà Tặng Đáng Yêu - Bộ Sưu Tập Đồ Dùng Học Sinh Và Văn Phòng Phẩm Dễ Thương, Quà Tặng 1/6 Quà Sinh Nhật giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 3
+   },
+   {
+    "title": "[Top Value] Set quà tặng sinh nhật giá rẻ học sinh văn ...",
+    "link": "https://shopee.vn/-Top-Value-Set-qu%C3%A0-t%E1%BA%B7ng-sinh-nh%E1%BA%ADt-gi%C3%A1-r%E1%BA%BB-h%E1%BB%8Dc-sinh-v%C4%83n-ph%C3%B2ng-ph%E1%BA%A9m-d%E1%BB%85-th%C6%B0%C6%A1ng-t%E1%BA%B7ng-1-6-trung-thu-i.1175586038.42227827959",
+    "snippet": "Mua [Top Value] Set quà tặng sinh nhật giá rẻ học sinh văn phòng phẩm dễ thương tặng 1/ 6, trung thu giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 5,
+    "ratingCount": 18,
+    "position": 4
+   },
+   {
+    "title": "Hộp quà tặng quà nhiều món - sinh nhật cho nữ bé gái Set ...",
+    "link": "https://shopee.vn/H%E1%BB%99p-qu%C3%A0-t%E1%BA%B7ng-qu%C3%A0-nhi%E1%BB%81u-m%C3%B3n-sinh-nh%E1%BA%ADt-cho-n%E1%BB%AF-b%C3%A9-g%C3%A1i-Set-qu%C3%A0-v%C4%83n-ph%C3%B2ng-ph%E1%BA%A9m-nam-h%E1%BB%8Dc-sinh-Qu%C3%A0-t%E1%BA%BFt-thi%E1%BA%BFu-nhi-1-6-i.1419825434.26884391086",
+    "snippet": "Mua Hộp quà tặng quà nhiều món - sinh nhật cho nữ bé gái Set quà văn phòng phẩm nam học sinh Quà tết thiếu nhi 1/6 giá tốt. Mua hàng qua mạng uy tín, ...",
+    "rating": 5,
+    "ratingCount": 7,
+    "position": 5
+   },
+   {
+    "title": "Set quà tặng học sinh nữ văn phòng phẩm dễ thương ...",
+    "link": "https://shopee.vn/Set-qu%C3%A0-t%E1%BA%B7ng-h%E1%BB%8Dc-sinh-n%E1%BB%AF-v%C4%83n-ph%C3%B2ng-ph%E1%BA%A9m-d%E1%BB%85-th%C6%B0%C6%A1ng-qu%C3%A0-sinh-nh%E1%BA%ADt-1-6-t%E1%BB%91t-nghi%E1%BB%87p-c%C3%B3-kh%C3%B3a-k%C3%A9o-i.1780930462.53259401388",
+    "snippet": "Mua Set quà tặng học sinh nữ văn phòng phẩm dễ thương, quà sinh nhật 1/6 tốt nghiệp có khóa kéo giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 4.8,
+    "ratingCount": 255,
+    "position": 6
+   },
+   {
+    "title": "15+ món quà 1/6 cho bé gái dễ thương, được yêu thích nhất",
+    "link": "https://shopee.vn/blog/qua-1-6-cho-be-gai/",
+    "snippet": "Xe tập đi · Sách và truyện phát triển trí não · Bộ lego xếp hình · Bộ thẻ học song ngữ · Đồ chơi tô màu.",
+    "date": "13 thg 5, 2026",
+    "position": 7
+   },
+   {
+    "title": "[QUÀ TẶNG] Set quà tặng học sinh, 1/6, sinh nhật 20/10 ...",
+    "link": "https://shopee.vn/-QU%C3%80-T%E1%BA%B6NG-Set-qu%C3%A0-t%E1%BA%B7ng-h%E1%BB%8Dc-sinh-1-6-sinh-nh%E1%BA%ADt-20-10-cho-n%E1%BB%AF-%C4%91%C3%A1ng-y%C3%AAu-H%E1%BB%99p-qu%C3%A0-t%E1%BA%B7ng-ph%E1%BB%A5-ki%E1%BB%87n-t%C3%B3c-cao-c%E1%BA%A5p-cho-b%E1%BA%A1n-g%C3%A1i-i.10072974.28055504458",
+    "snippet": "Shopee Nhà Sách Online Gói Quà Hộp Quà. [QUÀ TẶNG] Set quà tặng học sinh, 1/6, sinh nhật 20/10 cho nữ đáng yêu-Hộp quà tặng phụ kiện tóc cao cấp cho bạn gái.",
+    "rating": 4.2,
+    "ratingCount": 30,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Hanoian Central Hotel & Spa",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:00:01.979Z",
+ "body": {
+  "searchParameters": {
+   "q": "Hanoian Central Hotel & Spa",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Nhận xét về Hanoian Central Hotel & Spa, ưu đãi & hình ảnh 2026 - Expedia",
+    "imageUrl": "https://images.trvl-media.com/lodging/20000000/19120000/19119700/19119671/05b77f46.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill",
+    "imageWidth": 863,
+    "imageHeight": 575,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRVWR2xcRwuKKRcwVWGz8bB9hMhgNCvhHM8huB7FoI8tw&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "Expedia",
+    "domain": "www.expedia.com.vn",
+    "link": "https://www.expedia.com.vn/Hanoi-Khach-San-Hanoian-Central-Hotel-Spa.h19119671.Thong-tin-khach-san",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimages.trvl-media.com%2Flodging%2F20000000%2F19120000%2F19119700%2F19119671%2F05b77f46.jpg%3Fimpolicy%3Dresizecrop%26rw%3D575%26rh%3D575%26ra%3Dfill&tbnid=gD9rCnkO0uZB3M&imgrefurl=https%3A%2F%2Fwww.expedia.com.vn%2FHanoi-Khach-San-Hanoian-Central-Hotel-Spa.h19119671.Thong-tin-khach-san&docid=L_yVVGm0lVVHSM&w=863&h=575",
+    "position": 1
+   },
+   {
+    "title": "HANOIAN CENTRAL HOTEL & SPA (Hà Nội) - Đánh giá Khách sạn & So sánh giá -  Tripadvisor",
+    "imageUrl": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/33/8a/1f/0c/caption.jpg?w=1100&h=1100&s=1",
+    "imageWidth": 1100,
+    "imageHeight": 1100,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUnlJaIMgUkpprDCBYyUX3jw-uEsahivZM6CRSG_aoqw&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Tripadvisor",
+    "domain": "www.tripadvisor.com.vn",
+    "link": "https://www.tripadvisor.com.vn/Hotel_Review-g293924-d18114507-Reviews-Hanoian_Central_Hotel_Spa-Hanoi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdynamic-media-cdn.tripadvisor.com%2Fmedia%2Fphoto-o%2F33%2F8a%2F1f%2F0c%2Fcaption.jpg%3Fw%3D1100%26h%3D1100%26s%3D1&tbnid=aoM4yUo3GNoBpM&imgrefurl=https%3A%2F%2Fwww.tripadvisor.com.vn%2FHotel_Review-g293924-d18114507-Reviews-Hanoian_Central_Hotel_Spa-Hanoi.html&docid=Kx8tWPPQxE8w2M&w=1100&h=1100",
+    "position": 2
+   },
+   {
+    "title": "HANOIAN CENTRAL HOTEL & SPA (Hà Nội) - Đánh giá Khách sạn & So sánh giá -  Tripadvisor",
+    "imageUrl": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/31/c5/2c/2c/balcony-suite-experience.jpg?w=900&h=500&s=1",
+    "imageWidth": 900,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLLtMdCDBdQJVy2KhzaiTIhhge_U7BwSu-9KI4yHDvpQ&s=10",
+    "thumbnailWidth": 599,
+    "thumbnailHeight": 333,
+    "source": "Tripadvisor",
+    "domain": "www.tripadvisor.com.vn",
+    "link": "https://www.tripadvisor.com.vn/Hotel_Review-g293924-d18114507-Reviews-or5-Hanoian_Central_Hotel_Spa-Hanoi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdynamic-media-cdn.tripadvisor.com%2Fmedia%2Fphoto-o%2F31%2Fc5%2F2c%2F2c%2Fbalcony-suite-experience.jpg%3Fw%3D900%26h%3D500%26s%3D1&tbnid=AgRPL6_nBKXnaM&imgrefurl=https%3A%2F%2Fwww.tripadvisor.com.vn%2FHotel_Review-g293924-d18114507-Reviews-or5-Hanoian_Central_Hotel_Spa-Hanoi.html&docid=0uK4jofdokpO-M&w=900&h=500",
+    "position": 3
+   },
+   {
+    "title": "Hanoian Central Hotel & Spa, Hanoi | 2026 Updated Prices, Deals",
+    "imageUrl": "https://pix10.agoda.net/hotelImages/47873905/0/714befef702e562a25788054b95932a8.jpeg?va=1&ce=2&s=414x232",
+    "imageWidth": 154,
+    "imageHeight": 232,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRM1a1GcWQqzrLud7QxV6Rv01GGC0pDzuKGaN_v-XDQJQ&s=10",
+    "thumbnailWidth": 154,
+    "thumbnailHeight": 232,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/hanoian-central-hotel-spa/hotel/hanoi-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F47873905%2F0%2F714befef702e562a25788054b95932a8.jpeg%3Fva%3D1%26ce%3D2%26s%3D414x232&tbnid=TXQYv15JH4oVCM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fhanoian-central-hotel-spa%2Fhotel%2Fhanoi-vn.html&docid=s1BgRze_AqnnAM&w=154&h=232",
+    "position": 4
+   },
+   {
+    "title": "Hanoian Central Hotel & Spa - Vietnam Booking",
+    "imageUrl": "https://cdn2.vietnambooking.com/wp-content/uploads/hotel_pro/hotel_345602/9fa474e5093ed249302d9935d256dee2.jpg",
+    "imageWidth": 620,
+    "imageHeight": 413,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTx4nESempt2LP0LfXCXMGqb2fnvpvDXDs6y72QMgFgQQ&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "VietNam Booking",
+    "domain": "www.vietnambooking.com",
+    "link": "https://www.vietnambooking.com/hotel/vietnam/hanoian-central-hotel-spa.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.vietnambooking.com%2Fwp-content%2Fuploads%2Fhotel_pro%2Fhotel_345602%2F9fa474e5093ed249302d9935d256dee2.jpg&tbnid=Vjmu5pyvRbUgxM&imgrefurl=https%3A%2F%2Fwww.vietnambooking.com%2Fhotel%2Fvietnam%2Fhanoian-central-hotel-spa.html&docid=0Mpx0L3i-W3klM&w=620&h=413",
+    "position": 5
+   },
+   {
+    "title": "Hanoian Central Hotel & Spa Hà Nội giá chỉ 1,553,000₫",
+    "imageUrl": "https://image.vietgoing.com/hotel/01/51/large/vietgoing_nwj2201128234.webp",
+    "imageWidth": 1200,
+    "imageHeight": 675,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT9XxnBdbs7KT8d00buYn8kfLKG_wAEzpa3SFya91p0EA&s=10",
+    "thumbnailWidth": 597,
+    "thumbnailHeight": 335,
+    "source": "Vietgoing",
+    "domain": "vietgoing.com",
+    "link": "https://vietgoing.com/hotel/351-hanoian-central-hotel-spa-ha-noi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimage.vietgoing.com%2Fhotel%2F01%2F51%2Flarge%2Fvietgoing_nwj2201128234.webp&tbnid=CiLfzUK1YxL1SM&imgrefurl=https%3A%2F%2Fvietgoing.com%2Fhotel%2F351-hanoian-central-hotel-spa-ha-noi.html&docid=j56wG-wRsQBjlM&w=1200&h=675",
+    "position": 6
+   },
+   {
+    "title": "HANOIAN CENTRAL HOTEL& SPA",
+    "imageUrl": "https://bevivu.com/wp-content/uploads/image16/2024/02/hanoian-central-hotel-spa080220241707422397.jpeg",
+    "imageWidth": 800,
+    "imageHeight": 801,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzPb18Kr3vQfmSKN08tXeVsSZPLaV1DEz1kyFGrWzCdg&s=10",
+    "thumbnailWidth": 553,
+    "thumbnailHeight": 553,
+    "source": "Bevivu",
+    "domain": "bevivu.com",
+    "link": "https://bevivu.com/hanoian-central-hotel-spa/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fbevivu.com%2Fwp-content%2Fuploads%2Fimage16%2F2024%2F02%2Fhanoian-central-hotel-spa080220241707422397.jpeg&tbnid=7SlOK4Uh_araiM&imgrefurl=https%3A%2F%2Fbevivu.com%2Fhanoian-central-hotel-spa%2F&docid=EIZHbRaE6eypgM&w=800&h=801",
+    "position": 7
+   },
+   {
+    "title": "Hanoian Central Hotel & Spa, Hà Nội (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/909456437.jpg?k=fef833356532c54ecfbfcc039994b2e1c52c22148999af2c2b849e7cab927c7e&o=",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGVyLq5s4Z7HSjZW2aBQeoByuTnJkfZv8ekP8EJumHvw&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/the-hanoian-hotel.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F909456437.jpg%3Fk%3Dfef833356532c54ecfbfcc039994b2e1c52c22148999af2c2b849e7cab927c7e%26o%3D&tbnid=XPEBTW2vWdtoyM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fthe-hanoian-hotel.vi.html&docid=eHGVJXxxfEXsYM&w=1024&h=683",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

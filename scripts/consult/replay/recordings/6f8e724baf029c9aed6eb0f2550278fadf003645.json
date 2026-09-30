@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Ốp lưng UAG iPhone 17 Pro Max\" site:cellphones.com.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:41:10.002Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Ốp lưng UAG iPhone 17 Pro Max\" site:cellphones.com.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Ốp lưng UAG cho iPhone 17 Series",
+    "link": "https://cellphones.com.vn/phu-kien/bao-da-op-lung/iphone/iphone-17/uag.html",
+    "snippet": "... Ốp lưng UAG iPhone 17 Pro Max 3. Mua ốp lưng UAG iPhone 17 Series với giá tốt tại CellphoneS. Giới thiệu về ốp lưng UAG iPhone 17 Series. Ốp lưng UAG iPhone ...",
+    "position": 1
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Pathfinder ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-17-pro-max-uag-pathfinder-with-magsafe.html",
+    "snippet": "Sản phẩm ốp lưng UAG iPhone 17 Pro Max giúp hạn chế rủi ro khi rơi rớt, đồng thời duy trì tính tiện dụng trong việc gắn kết và sạc không dây. Nam châm ...",
+    "position": 2
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Plasma Xte ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-17-pro-max-uag-plasma-xte-with-magsafe.html",
+    "snippet": "Viền nhô cao hạn chế va đập màn hình, vẫn tương thích sạc không dây và sạc bên thứ ba. Trọng lượng ốp lưng UAG iPhone 17 Pro Max 0.13 pound (0.06 kg) và vỏ 25% ...",
+    "position": 3
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Plyo With ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-17-pro-max-uag-plyo-with-magsafe.html",
+    "snippet": "Sản phẩm ốp lưng UAG iPhone 17 Pro Max có góc cạnh bo tròn, đệm khí và viền nhô cao bảo vệ tốt camera lẫn màn hình khi va chạm. Ốp lưng này còn tích hợp ...",
+    "position": 4
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Monarch ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-17-pro-max-uag-monarch-pro-carbon-fiber.html",
+    "snippet": "Sản phẩm ốp lưng UAG iPhone 17 Pro Max lý tưởng cho người dùng thường xuyên di chuyển hoặc hoạt động ngoài trời. Thiết kế mạnh mẽ, chất liệu cao cấp. Ốp lưng ...",
+    "position": 5
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Metropolis Lt ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-17-pro-max-uag-metropolis-lt-with-magsafe-kevlar.html",
+    "snippet": "Có độ tương thích với Magsafe, sạc không dây giúp đảm bảo quá trình kết nối ổn định. Cùng với thiết kế mỏng nhẹ tối ưu, loại ốp lưng UAG iPhone 17 Pro Max này ...",
+    "position": 6
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Pathfinder Se ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-17-pro-max-uag-pathfinder-se-with-magsafe.html",
+    "snippet": "Sản phẩm ốp lưng UAG iPhone 17 Pro Max này đạt tiêu chuẩn chống rơi MIL-SPEC 810G-516.6 với khả năng chịu va đập cao ở độ cao lên đến 4.6 mét. Ốp lưng còn ...",
+    "position": 7
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Plyo Exclusive ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-17-pro-max-uag-plyo-exclusive-cap-with-magsafe.html",
+    "snippet": "Cấu trúc trong suốt giúp ốp giữ lại trọn vẹn nét đẹp ban đầu của mẫu iPhone này. Đồng thời, sản phẩm ốp lưng UAG iPhone 17 Pro Max được định hướng dành cho nhóm ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

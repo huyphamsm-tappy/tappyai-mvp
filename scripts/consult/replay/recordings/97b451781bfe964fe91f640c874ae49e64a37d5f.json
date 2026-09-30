@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Cửu Vân Quán\" OR \"LOCAL “An\" OR \"Tới Nóc | chi nhánh Bình Thạnh\" Bình Thạnh site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:02:19.319Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Cửu Vân Quán\" OR \"LOCAL “An\" OR \"Tới Nóc | chi nhánh Bình Thạnh\" Bình Thạnh site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Local An - Nhau với menu mồi bén giá siêu \"hạt dẻ\". Quán ...",
+    "link": "https://www.tiktok.com/@vmymyv/video/7654206808487251221",
+    "snippet": "Local An - Nhau với menu mồi bén giá siêu \"hạt dẻ\". Quán đang có ngập tràn chương trình khuyến mãi xuyên tuần, cùng hội bạn thân đi chơi ...",
+    "position": 1
+   },
+   {
+    "title": "Seafood ở Bửu Hoà #TikTokFashion #foodfestontiktok #fyp ...",
+    "link": "https://www.tiktok.com/@huysieupham/video/7286778509026987272",
+    "snippet": "This short guide highlights Chang Arang Muoi 92, a local an vặt (snack) spot in Bien Hòa, Đồng Nai. The original tags — #viral ...",
+    "position": 2
+   },
+   {
+    "title": "‏ĐCL sắp trở thành game vô hạn rồi 🤡 #dongcolau #pulssarr ...",
+    "link": "https://www.tiktok.com/@pulssarr98/video/7626889392002436370",
+    "snippet": "Dựng danh sách các địa chỉ và món ăn được dân local thường nhắc: Local An Nhau, quán beer craft, quán nhậu giá rẻ, và món ba rọi lắc sả tắc. Các chỗ đáng thử ở ...",
+    "position": 3
+   },
+   {
+    "title": "Quán Nướng Ngon ở Lạng Sơn",
+    "link": "https://www.tiktok.com/@nunloangquang/video/7439972708466576647",
+    "snippet": "Gợi ý từ video: Mì Cô Kim — chi nhánh số 2 trên phố Tô Hoàng. Điểm ... Local An - Nhau với menu mồi bén giá siêu \"hạt dẻ\". Quán đang có ...",
+    "position": 4
+   },
+   {
+    "title": "trải nghiệm đồ uống mùa hè ở tiệm sữa An Gi Đông Hới",
+    "link": "https://www.tiktok.com/@langthangquangbinh73/video/7644129594811010325",
+    "snippet": "Local An - Nhau - Một quán lai rai đáng thử tại Bình Thạnh nha mấy ní #localannhau #local #quannhaubinhthanh #binhthanh #sg · âm thanh gốc ...",
+    "position": 5
+   },
+   {
+    "title": "Khám Phá Quán Ốc Lề Đường Tại Long Xuyên",
+    "link": "https://www.tiktok.com/@thaodau2712/video/7313109742010895634",
+    "snippet": "- Vận chuyển: Chi phí taxi hoặc xe ôm công nghệ nội thành Long ... local An Giang, địa điểm ăn uống Long Xuyên, ăn vặt miền Tây Long ...",
+    "position": 6
+   },
+   {
+    "title": "Mang ngay quán cafe tới đây cho anh !!! #nuoicon # ...",
+    "link": "https://www.tiktok.com/@thi.xoai1611/video/7676723164935703816",
+    "snippet": "Local An - Nhau với menu mồi bén giá siêu \"hạt dẻ\". Quán đang có ... Chi nhánh Ô Môn vẫn bán bình thường nha khách yêu ơii ...",
+    "position": 7
+   },
+   {
+    "title": "🤔 Đẩy 3 kênh không có cầu xoắn thì đấu nối tiếp hay song ...",
+    "link": "https://www.tiktok.com/@hoangnamaudio.vn/video/7658597873361194256",
+    "snippet": "- Chạy local, an toàn chi phí: tối ưu ONNX cho CPU và có engine ... thanh chỉ với một combo cực kỳ hoàn hảo này đây ạ! Sự kết hợp đỉnh ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

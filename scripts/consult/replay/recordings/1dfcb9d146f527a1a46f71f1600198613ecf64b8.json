@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Sếp nam, 40 tuổi, thích cà phê Cà phê quà tặng thích cà phê (site:shopee.vn OR site:tiki.vn OR site:lazada.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:45:18.528Z",
+ "body": {
+  "searchParameters": {
+   "q": "Sếp nam, 40 tuổi, thích cà phê Cà phê quà tặng thích cà phê (site:shopee.vn OR site:tiki.vn OR site:lazada.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Đồ biếu tết - Giá Tốt, Sale Tháng 09, Freeship 0Đ",
+    "link": "https://shopee.vn/list/%C4%91%E1%BB%93%20bi%E1%BA%BFu%20t%E1%BA%BFt",
+    "snippet": "Mua online đồ biếu tết chất lượng, Voucher Shopee Live giảm tới 50% tại Shopee. Khuyến mãi tháng 09, 2026 . Freeship 0Đ. Mua ngay!",
+    "position": 1
+   },
+   {
+    "title": "15+ món quà Tết tặng đối tác trang trọng, phù hợp nhiều ...",
+    "link": "https://shopee.vn/blog/qua-tet-tang-doi-tac/",
+    "snippet": "Quà Tết tặng đối tác cần chỉn chu từ hình thức đến thông điệp, một món quà phù hợp sẽ giúp duy trì mối quan hệ hợp tác bền lâu.",
+    "date": "21 thg 1, 2026",
+    "position": 2
+   },
+   {
+    "title": "Lịch theo yêu cầu 2026 - Giá Tốt, Sale Tháng 09, Freeship ...",
+    "link": "https://shopee.vn/list/l%E1%BB%8Bch/theo%20y%C3%AAu%20c%E1%BA%A7u/2026",
+    "snippet": "Mua online lịch theo yêu cầu 2026 chất lượng, Voucher Shopee Live giảm tới 50% tại Shopee. Khuyến mãi tháng 09, 2026 . Freeship 0Đ. Mua ngay!",
+    "position": 3
+   },
+   {
+    "title": "Choco Cacao hoà tan Archcafé (Sô cô la) (hộp 12 gói x 20g)",
+    "link": "https://www.lazada.vn/product-reviews/?item_id=1495388630&srsltid=AU7gw4U_se0w_OTkhtWGKOMHw4pB7CnZyRGAYRXAt2iDY-lU8btbDWLj",
+    "snippet": "Mùi vị: ngon, thơm, béo, hợp khẩu vị\\n Dễ chuẩn bị: rất tiện lợi\\n Giá trị dinh dưỡng: ổn\\nĐóng gói sản phẩm đảm bảo. Hữu ích (0).",
+    "position": 4
+   },
+   {
+    "title": "Đánh Giá Sữa bột Anlene hương Cà phê 280G (8 gói x 35g) ...",
+    "link": "https://www.lazada.vn/product-reviews/?item_id=2091010203&srsltid=AU7gw4XuljEG9Xnb4OkitpnlXvdW3xU9Fkz_1msuInJpHtSBc5IS9BD0",
+    "snippet": "Tổng hợp đánh giá và trải nghiệm thực tế của người dùng về Sữa bột Anlene hương Cà phê 280G (8 gói x 35g) gói chia sẵn tiện lợi giúp cơ xương khớp chắc ...",
+    "position": 5
+   },
+   {
+    "title": "Quà Tết cho bố mẹ Giá Tốt, Đa Dạng, Đảm Bảo",
+    "link": "https://shopee.vn/list/qu%C3%A0%20t%E1%BA%BFt/cho%20b%E1%BB%91%20m%E1%BA%B9",
+    "snippet": "Một giỏ quà Tết thường gồm nhiều món như: quà Tết kẹo, quà Tết mứt cùng trà, bánh và cà phê,... Cây, hoa ngày Tết: Ngày xuân thì không thể thiếu được những chậu ...",
+    "position": 6
+   },
+   {
+    "title": "Quà tết 2026 - Giá Tốt, Sale Tháng 09, Freeship 0Đ",
+    "link": "https://shopee.vn/list/qu%C3%A0%20t%E1%BA%BFt/2026",
+    "snippet": "Shopee cung cấp đầy đủ các sản phẩm quà tết 2026 chính hãng với nhiều mức giá ưu đãi vô cùng hấp dẫn. Bạn có thể thỏa thích tham khảo sản phẩm chính hãng từ các ...",
+    "position": 7
+   },
+   {
+    "title": "Gợi Ý Món Quà Chia Tay Đồng Nghiệp Đáng Nhớ, Ý Nghĩa ...",
+    "link": "https://tiki.vn/blog/qua-chia-tay-dong-nghiep/",
+    "snippet": "Nếu đồng nghiệp nam là người yêu thích du lịch hay hoạt động ngoài trời, bạn có thể tặng họ những chiếc balo hay giày thể thao nam tiện dụng và ...",
+    "date": "30 thg 3, 2023",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

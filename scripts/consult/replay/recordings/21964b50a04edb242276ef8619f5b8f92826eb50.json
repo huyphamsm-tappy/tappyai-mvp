@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Urban Armor Gear Ốp iPhone 11 Pro site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:19:36.951Z",
+ "body": {
+  "searchParameters": {
+   "q": "Urban Armor Gear Ốp iPhone 11 Pro site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Ốp Trong Suốt, UAG Pathfinder Chính Hãng, Có Magsafe, ...",
+    "link": "https://shop.tiktok.com/vn/pdp/op-trong-suot-uag-pathfinder-cho-iphone-16e-chong-roi-magsafe/1731370211097609476",
+    "snippet": "·Độ bền mờ bền: Thiết kế đồng khuôn thúc đẩy cấu trúc nhẹ (PC trong suốt) với vỏ ngoài cứng được cấp bằng sáng chế của chúng tôi, lõi mềm chống va đập và ...",
+    "position": 1
+   },
+   {
+    "title": "Ốp iPhone 15 Pro Max, Spigen Ốp Điện Thoại Từ Tính ...",
+    "link": "https://shop.tiktok.com/vn/pdp/op-iphone-15-pro-max-spigen-chong-soc-van-tay-%C4%91en-li/1731413166623918464",
+    "snippet": "·Được làm từ Aerocore Armarid và TPU chống đạn cao cấp cho độ bền tuyệt vời Vỏ ngoài cứng với lớp hoàn thiện bằng carbon và được lót bằng nội thất bằng da lộn ...",
+    "position": 2
+   },
+   {
+    "title": "Ốp Cùng Phong Cách Với Magsafe, CASETiFY G ...",
+    "link": "https://shop.tiktok.com/vn/pdp/op-lung-magsafe-casetify-g-dragon-cho-iphone-15-14-series/1732000292401875328",
+    "snippet": "nó có sự bảo vệ CASETiFY mà bạn biết và mong đợi.Các góc bảo vệ silicon phồng độc đáo, viền nâng và bảo vệ ống kính máy ảnhcó nghĩa là bảo vệ rơi lên đến 2X ...",
+    "position": 3
+   },
+   {
+    "title": "ốp điện thoại MagSafe, Spigen mag armor magfit, được ...",
+    "link": "https://shop.tiktok.com/vn/pdp/op-dien-thoai-magsafe-spigen-mag-armor-cho-iphone-mau-den-li/1731412149841070464",
+    "snippet": "ốp điện thoại MagSafe, Spigen mag armor magfit, được thiết kế cho iPhone 16 Pro Max, 15promax, 14pro, 15plus, 16plus, 13promax, 12, bảo vệ cấp quân đội, ...",
+    "position": 4
+   },
+   {
+    "title": "Ốp SPIGEN, Cho iPhone 16 Và ProMax, Ốp Hai Lớp ...",
+    "link": "https://shop.tiktok.com/vn/pdp/op-spigen-cho-iphone-16-promax-thiet-ke-thoi-trang/1731403836623587712",
+    "snippet": "·Được làm từ sự pha trộn cao cấp của PC và TPU cho độ bền·Bảo vệ thả cấp quân sự thông qua Công nghệ Đệm khí·Bản in chất lượng cao và bền bỉ qua DDP làm nổi ...",
+    "position": 5
+   },
+   {
+    "title": "Ốp Điện Thoại, CASETiFY, Có MagSafe, Dành Cho iPhone ...",
+    "link": "https://shop.tiktok.com/vn/pdp/op-%C4%91ien-thoai-casetify-cho-iphone-16-pro-max-chong-soc-nhe-co-magsafe/1732301860026418569",
+    "snippet": "Ốp Điện Thoại, CASETiFY, Có MagSafe, Dành Cho iPhone 16 Pro Max, 15Promax, 16Pro, 15 / 16 Plus, 14 ProMax, 13Promax, 12 / 12Pro max, 11, Ốp Chống Sốc, Nhẹ, ...",
+    "position": 6
+   },
+   {
+    "title": "Ốp lưng điện thoại di động họa tiết chó tai đen CASETiFY ...",
+    "link": "https://shop.tiktok.com/vn/pdp/op-lung-casetify-hinh-cho-tai-%C4%91en-chong-soc-cho-iphone/1733229347592177033",
+    "snippet": "Ốp lưng điện thoại di động họa tiết chó tai đen CASETiFY phù hợp cho iPhone 17 Pro Max/17 Pro/17 Air/17/16 Pro Max/16 Plus/16/15 Pro Max/15/14 Pro Max/14/13/12 ...",
+    "position": 7
+   },
+   {
+    "title": "Ốp lưng Casetify kiểu rippling với MagSafe dành cho ...",
+    "link": "https://shop.tiktok.com/vn/pdp/op-lung-ripple-chinh-hang-tuong-thich-iphone-17-series-hon-nua/1732512893168878985",
+    "snippet": "Ốp Trong Suốt, UAG Pathfinder Chính Hãng, Có Magsafe, Tương Thích Với iPhone ... Ốp lưng CASETiFY Ripple với MagSafe cho iPhone 15 Pro Max / iPhone 14 Pro ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

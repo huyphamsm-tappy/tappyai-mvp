@@ -1,0 +1,82 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Bộ quà tặng phong thủy thời trang cao cấp cho người mệnh thủy site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:10:55.587Z",
+ "body": {
+  "searchParameters": {
+   "q": "Bộ quà tặng phong thủy thời trang cao cấp cho người mệnh thủy site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "KN07[MắtChimƯng] Vòng tay phong thủy Đá Mắt chim ưng ánh ...",
+    "link": "https://shop.tiktok.com/vn/pdp/vong-tay-phong-thuy-da-tu-nhien-mau-den-anh-vang-cho-menh-thuy-moc/1729754935239084089",
+    "snippet": "·Vòng tay Đá phong thủy·Chất liệu: Mắt chim ưng ánh vàng cao cấp·Size hạt: 12li-16li hạt tròn·Màu sắc: màu Đen ánh vàng·Hợp mệnh: Thủy và Mộc ...",
+    "position": 1
+   },
+   {
+    "title": "( Đã Gia Trì)Vòng Tay Chỉ Ngũ Sắc 5 Mệnh ( Kim- Thuỷ -Mộc",
+    "link": "https://shop.tiktok.com/vn/pdp/tui-gao-treo-xe-may-man-tai-loc-kim-bai-12-con-giap/1731806551594535285",
+    "snippet": "( Đã Gia Trì)Vòng Tay Chỉ Ngũ Sắc 5 Mệnh ( Kim- Thuỷ -Mộc - Hoả - Thổ) Mang Bình An May Mắn Cho Gia Chủ, Quà Tặng Cho Người Thân. Sold by Trí Tuệ - Bình An.",
+    "position": 2
+   },
+   {
+    "title": "vòng đá cẩm thạch",
+    "link": "https://shop.tiktok.com/vn/k/vong-da-cam-thach",
+    "snippet": "Vòng Cẩm Thạch 10mm - Tặng Hộp Quà Tặng - Phụ Kiện Thời Trang Độc Đáo Với Kích Thước 10mm - Sản Phẩm Ý Nghĩa Cho Người Thân Và Bạn Bè · Vòng Cẩm Thạch 10mm - ...",
+    "position": 3
+   },
+   {
+    "title": "Hoàng Linh Vòng Tay Đá Thạch Anh Vàng Phong Thủy ...",
+    "link": "https://shop.tiktok.com/vn/pdp/vong-tay-%C4%91a-thach-anh-vang-hoang-linh-ho-tro-nang-luong-binh-an-may-man-cho-nguoi-menh-tho/1733449754043581845",
+    "snippet": "Mua Hoàng Linh Vòng Tay Đá Thạch Anh Vàng Phong Thủy Thiết Kế Nhỏ Xinh Hỗ Trợ Năng Lượng Bình An May Mắn Cho Người Mệnh Thổ Kim Hỏa trên TikTok Shop.",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 4
+   },
+   {
+    "title": "Lá Bồ Đề Bình An - Phú Quý - Phát Tài - Buôn May Bán Đắt",
+    "link": "https://shop.tiktok.com/vn/pdp/la-bo-%C4%91e-phong-thuy-binh-an-chieu-tai-may-man-qua-tang-y-nghia/1731170025232369255",
+    "snippet": "TIỆM ĐỒ BÌNH AN: CHUYÊN VẬT PHẨM PHONG THỦY BÌNH AN - MAY MẮN - TÀI LỘCLá BỒ Đề Bình An - Phú Quý - Phát Tài - Buôn May Bán ĐắtThông tin sản phẩm- Lá Bồ Đề ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 5
+   },
+   {
+    "title": "Đồng tiền xu phong thuỷ, xu Âm Dương Mạ Vàng quà tặng ...",
+    "link": "https://shop.tiktok.com/vn/pdp/1733354693125899457",
+    "snippet": "Thông Tin Sản Phẩm·Tên Sản Phẩm: Đồng Xu Âm Dương Mạ Vàng quà tặng cao cấp do Golden Gift Việt Nam chế tác thủ công tại Hà Nội. ·Dùng Làm: Quà Tết 2025, ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 6
+   },
+   {
+    "title": "Vòng tay trầm hương tốc vườn",
+    "link": "https://shop.tiktok.com/vn/pdp/vong-tay-tram-huong-cao-cap-mix-%C4%91a-phong-thuy-thu-gian/1731852316770208144",
+    "snippet": "Vòng tay trầm hương được làm từ phôi trầm tốc vườn Quảng Nam. Sản phẩm giúp bạn cảm thấy dễ chịu và thư giãn.Trầm hương chứa năng lượng dương, ...",
+    "rating": 4,
+    "ratingCount": 4,
+    "position": 7
+   },
+   {
+    "title": "Trống đồng Đông Sơn mạ vàng, Quà tặng ...",
+    "link": "https://shop.tiktok.com/vn/pdp/1733633793543210177",
+    "snippet": "Trống đồng Đông Sơn mạ vàng size lớn✨ Đỉnh cao trí tuệ và sáng tạo ✨Trống đồng Đông Sơn mạ vàng thể hiện đỉnh cao trí tuệ và sự sáng tạo độc đáo của người ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

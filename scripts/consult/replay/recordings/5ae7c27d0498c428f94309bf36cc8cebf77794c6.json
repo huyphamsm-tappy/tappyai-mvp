@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"lenovo v15 g4 iru 83A100FYVN\" site:cellphones.com.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:05:00.717Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"lenovo v15 g4 iru 83A100FYVN\" site:cellphones.com.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Laptop Lenovo V15 G4 IRU 83A100FYVN | Giá rẻ, trả góp ...",
+    "link": "https://cellphones.com.vn/laptop-lenovo-v15-g4-iru-83a100fyvn.html",
+    "snippet": "Laptop Lenovo V15 G4 IRU 83A100FYVN. I5-13420H/16GB/512GB PCIE/15.6 FHD/WIN 11/XÁM. 5 ( ...",
+    "rating": 5,
+    "ratingCount": 3,
+    "position": 1
+   },
+   {
+    "title": "Laptop Lenovo V15 G4 IRU 83A100FYVN - Cũ Đẹp | Giá rẻ",
+    "link": "https://cellphones.com.vn/laptop-lenovo-v15-g4-iru-83a100fyvn-cu-dep.html",
+    "snippet": "Laptop Lenovo V15 G4 IRU 83A100FYVN - Cũ Đẹp ; Smember Giảm thêm đến 96.000đ ; Trả góp 0% ; Trả góp 0% ; Giá sản phẩm. 15.490.000đ 9.590.000đ ; Danh sách Cookies.",
+    "position": 2
+   },
+   {
+    "title": "Laptop Lenovo V15 G4 IRU 83A100FYVN - Đã Kích Hoạt",
+    "link": "https://cellphones.com.vn/laptop-lenovo-v15-g4-iru-83a100fyvn-cu-da-kich-hoat.html",
+    "snippet": "Mua ngay Laptop Lenovo V15 G4 IRU 83A100FYVN cũ giá rẻ - Nguồn gốc rõ ràng, bảo hành 6-12 tháng, đổi mới 30 ngày, luôn xuất bán đầy đủ VAT.",
+    "position": 3
+   },
+   {
+    "title": "Laptop Lenovo V15 G4 IRU 83A100FYVN - Cũ Trầy Xước",
+    "link": "https://cellphones.com.vn/laptop-lenovo-v15-g4-iru-83a100fyvn-16gb-cu-tray-xuoc.html",
+    "snippet": "Mua ngay Laptop Lenovo V15 G4 IRU 83A100FYVN cũ giá rẻ - Nguồn gốc rõ ràng, bảo hành 6-12 tháng, đổi mới 30 ngày, luôn xuất bán đầy đủ VAT.",
+    "position": 4
+   },
+   {
+    "title": "Laptop Lenovo V15 G4 IRU 83A100FYVN - Cũ Xước Cấn",
+    "link": "https://cellphones.com.vn/laptop-lenovo-v15-g4-iru-83a100fyvn-cu-xuoc-can.html",
+    "snippet": "Laptop Lenovo V15 G4 IRU 83A100FYVN - Cũ Xước Cấn ; Smember Giảm thêm đến 81.000đ ; Trả góp 0% ; Trả góp 0% ; Giá sản phẩm. 8.090.000đ ; Danh sách Cookies. Việc từ ...",
+    "position": 5
+   },
+   {
+    "title": "So sánh Laptop Lenovo Ideapad 1 11IGL05 - Cũ Đẹp và Surface ...",
+    "link": "https://cellphones.com.vn/so-sanh/laptop-lenovo-ideapad-1-11igl05-81vt006fvn-cu-dep-vs-surface-laptop-pro-7-core-i5-ram-8gb-ssd-128gb-12-3inch-tray-xuoc",
+    "snippet": "... Laptop Lenovo V15 G4 IRU 83A100FYVN - Cũ Trầy Xước. Giá niêm yết: 15.490.000. Giá khuyến mãi: 8.890.000. + Chọn để ...",
+    "position": 6
+   },
+   {
+    "title": "So sánh Laptop Lenovo Ideapad 5 15ITL05 - Cũ Trầy Xước và ...",
+    "link": "https://cellphones.com.vn/so-sanh/laptop-lenovo-ideapad-5-15itl05-82fg016evn-cu-tray-xuoc-vs-laptop-dell-inspiron-3501-5g8tf-cu-tray-xuoc",
+    "snippet": "... Laptop Lenovo V15 G4 IRU 83A100FYVN - Cũ Trầy Xước. Giá niêm yết: 15.490.000. Giá khuyến mãi: 8.890.000. + Chọn để ...",
+    "position": 7
+   },
+   {
+    "title": "Lenovo V15 | Giá tốt, giảm 1.000.000đ, bảo mật hiệu quả",
+    "link": "https://cellphones.com.vn/laptop/lenovo/v-series/lenovo-v15.html",
+    "snippet": "Giá laptop Lenovo V15 bao nhiêu tiền? ; Laptop Lenovo V15 G5 IRL 83HF00BYVN. 24.590.000đ. 22.590.000đ ; Laptop Lenovo V15 G4 IRU 83A100FYVN. 13.990.000đ. 11.990.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

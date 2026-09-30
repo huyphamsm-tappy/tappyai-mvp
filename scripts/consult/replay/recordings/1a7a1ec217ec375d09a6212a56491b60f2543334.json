@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "quà tặng thích cà phê nam, 40 tuổi Cà phê (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:13:03.715Z",
+ "body": {
+  "searchParameters": {
+   "q": "quà tặng thích cà phê nam, 40 tuổi Cà phê (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "30+ quà sinh nhật cho nam theo độ tuổi ý nghĩa, thiết thực ...",
+    "link": "https://cellphones.com.vn/sforum/qua-sinh-nhat-cho-nam",
+    "snippet": "Tặng quà sinh nhật cho nam 40 tuổi · Cà vạt · Đồ phong thủy · Ghế massage · Máy pha cà phê · Dược liệu quý · Cây cảnh · Dụng cụ thể thao.",
+    "date": "30 thg 4, 2023",
+    "rating": 1,
+    "ratingCount": 1,
+    "position": 1
+   },
+   {
+    "title": "Quà sinh nhật cho mẹ 40 tuổi - Giá Tốt, Sale Tháng 09, ...",
+    "link": "https://shopee.vn/list/qu%C3%A0/sinh%20nh%E1%BA%ADt/cho%20m%E1%BA%B9%2040%20tu%E1%BB%95i",
+    "snippet": "Set quà SWEET EMBRACE tặng bạn nữ, hộp quà tặng sinh nhật 5 món kèm · Set quà tặng cho nữ cốc sứ nến thơm, làm quà tặng sinh nhật, · Hộp quà tặng cao cấp màu ...",
+    "position": 2
+   },
+   {
+    "title": "Nên mua quà gì tặng thầy giáo nhân ngày 20/11 thật ý ...",
+    "link": "https://shopee.vn/blog/nen-mua-qua-gi-tang-thay-giao/",
+    "snippet": "Nên mua quà gì tặng thầy giáo ý nghĩa nhân ngày 20/11 · Áo sơ mi nam – quà 20/11 tặng thầy thiết thực · Bút viết · Sổ tay · Đồng hồ đeo tay nam · Cặp ...",
+    "date": "9 thg 6, 2026",
+    "position": 3
+   },
+   {
+    "title": "Top 16+ [Quà 20/10 cho sếp nữ] 4 \"mẹo\" chọn quà khéo léo",
+    "link": "https://cellphones.com.vn/qua-20-10/cho-sep-nu",
+    "snippet": "Danh sách quà tặng. Ngân sách dự kiến ; Máy massage cổ, vai, gáy, lưng, chân…. 1.300.000 đồng - 4.000.000 đồng ; Đồng hồ đeo tay / Đồng hồ thông minh. 2.000.000 ...",
+    "position": 4
+   },
+   {
+    "title": "99+ STT cafe cuối tuần vui vẻ, thả thính, buồn ý nghĩa",
+    "link": "https://cellphones.com.vn/sforum/stt-cafe-cuoi-tuan",
+    "snippet": "Combo ngày chủ nhật: Một ly cà phê sữa đá và đám bạn thân hay tấu hài. Ly cà phê này giúp tôi tỉnh táo, nhưng chuyện xàm xí của tụi mày mới làm tôi vui. STT ...",
+    "position": 5
+   },
+   {
+    "title": "40+ Quà Valentine cho nam ý nghĩa, thiết thực nhất 2026",
+    "link": "https://cellphones.com.vn/sforum/qua-valentine-cho-nam",
+    "snippet": "Gợi ý 40+ quà Valentine cho nam ý nghĩa nhất 2026: Socola, đồng hồ, tai nghe, balo,... Quà tặng Valentine 14/2 cho nam handmade: Khăn len, nến thơm,...",
+    "position": 6
+   },
+   {
+    "title": "Máy xay cà phê thủ công, 40 cài đặt điều chỉnh ...",
+    "link": "https://www.lazada.vn/products/may-xay-ca-phe-thu-cong-40-cai-dat-dieu-chinh-may-xay-ca-phe-cam-tay-may-xay-ca-phe-cam-tay-may-pha-ca-phe-conicalburr-i13329250796.html?srsltid=AU7gw4WTMmL81YPWJS20XezyZQCSIQkbblKqc9NyWYQLteZV9oacFRxr",
+    "snippet": "5. Quà tặng tốt: Máy xay cà phê thủ công của chúng tôi cung cấp niềm vui mài tuyệt vời với thanh lịch và thiết kế sành điệu của nó, hoàn hảo như một món quà cho ...",
+    "position": 7
+   },
+   {
+    "title": "cà phê giá tốt Tháng 9, 2026 | Mua ngay",
+    "link": "https://shopee.vn/search?keyword=c%C3%A0%20ph%C3%AA",
+    "snippet": "Gờ cafe gu HIỆN ĐẠI (đắng dịu) ROBUSTA& ARABICA, cà phê mộc, · Gờ cafe gu TRUYỀN THỐNG (đắng vừa)- 100% ROBUSTA RANG VỪA, · Cà Phê Truyền Thống PHIN ĐẬM 500g, ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}
