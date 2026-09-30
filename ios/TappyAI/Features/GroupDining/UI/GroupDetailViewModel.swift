@@ -134,6 +134,3 @@ final class GroupDetailViewModel: AppObservableObject {
     }
 }
 
-private extension String {
-    var nilIfEmpty: String? { isEmpty ? nil : self }
-}
