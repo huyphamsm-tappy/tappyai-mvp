@@ -113,7 +113,7 @@ object AskCardModel {
     }
 
     /** web `askIconOf`. */
-    fun iconOf(option: String, kind: AskKind): AskIcon {
+    fun iconOf(option: String, kind: AskKind, question: String = ""): AskIcon {
         val f = fold(option)
         fun m(re: String) = Regex(re).containsMatchIn(f)
         return when (kind) {
@@ -131,6 +131,8 @@ object AskCardModel {
             }
             AskKind.BUDGET -> AskIcon.WALLET
             AskKind.OTHER -> when {
+                // web 86f88d3: a place question («Khu vực nào?», «Xuất phát từ đâu?») pins every option.
+                Regex("\\b(?:khu vuc|o dau|tu dau|xuat phat|quan nao)\\b").containsMatchIn(fold(question)) -> AskIcon.MAP_PIN
                 m("\\b(?:gan|quan|tp|ha noi|da nang|noi khac|khu vuc)\\b") -> AskIcon.MAP_PIN
                 m("\\bmay bay\\b") -> AskIcon.PLANE
                 m("\\b(?:xe khach|limousine|tau)\\b") -> AskIcon.BUS
@@ -146,7 +148,7 @@ object AskCardModel {
         val kind = kindOf(q)
         AskQuestionView(
             id = q.id, number = i + 1, title = q.q, kind = kind,
-            options = q.options.map { o -> AskOptionView(o, iconOf(o, kind), if (kind == AskKind.TYPE) tileKeyOf(o) else null) },
+            options = q.options.map { o -> AskOptionView(o, iconOf(o, kind, q.q), if (kind == AskKind.TYPE) tileKeyOf(o) else null) },
         )
     }
 

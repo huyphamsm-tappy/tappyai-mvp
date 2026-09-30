@@ -300,7 +300,7 @@ private fun ImageTile(o: AskOptionView, area: AskArea, manifest: PlanImageManife
         ) {
             Icon(iconOf(o.icon), contentDescription = null, tint = Color(0xFF93C5FD), modifier = Modifier.size(18.dp))
             Spacer(Modifier.width(8.dp))
-            Text(o.label, color = Color.White, fontSize = if (compact) 12.5.sp else 14.sp, fontWeight = FontWeight.Medium, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text(o.label.noWrapHyphen(), color = Color.White, fontSize = if (compact) 12.5.sp else 14.sp, fontWeight = FontWeight.Medium, maxLines = 1, overflow = TextOverflow.Ellipsis)
         }
         if (on) CheckBadge(Modifier.align(Alignment.TopEnd).padding(6.dp))
     }
@@ -326,7 +326,7 @@ private fun IconTile(o: AskOptionView, on: Boolean, enabled: Boolean, stacked: B
                 verticalArrangement = Arrangement.spacedBy(6.dp),
             ) {
                 Icon(iconOf(o.icon), contentDescription = null, tint = iconTint, modifier = Modifier.size(26.dp))
-                Text(o.label, color = textColor, fontSize = 12.5.sp, lineHeight = 15.sp, textAlign = TextAlign.Center, maxLines = 2, overflow = TextOverflow.Ellipsis)
+                Text(o.label.noWrapHyphen(), color = textColor, fontSize = 12.5.sp, lineHeight = 15.sp, textAlign = TextAlign.Center, maxLines = 2, overflow = TextOverflow.Ellipsis)
             }
         } else {
             Row(
@@ -335,7 +335,7 @@ private fun IconTile(o: AskOptionView, on: Boolean, enabled: Boolean, stacked: B
                 horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
             ) {
                 Icon(iconOf(o.icon), contentDescription = null, tint = iconTint, modifier = Modifier.size(24.dp))
-                Text(o.label, color = textColor, fontSize = 13.5.sp, lineHeight = 16.sp, maxLines = 2, overflow = TextOverflow.Ellipsis)
+                Text(o.label.noWrapHyphen(), color = textColor, fontSize = 13.5.sp, lineHeight = 16.sp, maxLines = 2, overflow = TextOverflow.Ellipsis)
             }
         }
         if (on) CheckBadge(Modifier.align(Alignment.TopEnd).padding(4.dp))
@@ -418,3 +418,6 @@ private fun iconOf(icon: AskIcon): ImageVector = when (icon) {
     AskIcon.BIKE -> Icons.Filled.TwoWheeler
     AskIcon.STORE -> Icons.Filled.Storefront
 }
+
+/** web 86f88d3: a range like «3-5» / «700k-1,5tr» never wraps at its hyphen (display only; the sent text is unchanged). */
+private fun String.noWrapHyphen(): String = replace('-', '\u2011')

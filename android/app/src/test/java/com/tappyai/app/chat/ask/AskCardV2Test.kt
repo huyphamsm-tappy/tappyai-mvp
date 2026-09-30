@@ -83,6 +83,9 @@ class AskCardV2Test {
         assertEquals(listOf(AskIcon.SUN, AskIcon.MOON, AskIcon.CALENDAR), ENT[2].options.map { AskCardModel.iconOf(it, AskKind.TIME) })
         assertEquals(AskIcon.CALENDAR, AskCardModel.iconOf("3N2Đ", AskKind.TIME))
         assertEquals(AskIcon.WALLET, AskCardModel.iconOf("Dưới 1tr", AskKind.BUDGET))
+        // web 86f88d3 (UAT 30/09): a place question pins every option.
+        assertEquals(listOf(AskIcon.MAP_PIN, AskIcon.MAP_PIN), listOf("Bình Thạnh", "Thủ Đức").map { AskCardModel.iconOf(it, AskKind.OTHER, "Khu vực nào?") })
+        assertEquals(AskIcon.SPARKLES, AskCardModel.iconOf("Bình Thạnh", AskKind.OTHER))
         assertEquals(List(4) { AskIcon.MAP_PIN }, FOOD[2].options.map { AskCardModel.iconOf(it, AskKind.OTHER) })
     }
 
