@@ -67,6 +67,12 @@ Giá phòng: chưa xác nhận…","price":…`). Phần đầu kế hoạch (ti
 
 ## 2. Web → Android: thay đổi server/API (giữ tương thích ngược)
 
+- 2026-09-30 (Luna) **Luna sẵn sàng gộp — commit f82fcaa** (nhánh `luna/consult-2026-09-30`, phiên web gộp vào rc/web-uat).
+  Server chuyển MỌI lời gọi AI sang GPT-6 Luna (Anthropic hết credit). **API và định dạng phản hồi KHÔNG đổi** (luồng chat,
+  [TAPPY_PLAN], thẻ, ScamShield, Viết content, dịch, quét ảnh) → **Android không cần sửa.** Khác biệt Android có thể thấy:
+  lượt hỏi tiếp/so sánh nhanh hơn (~1 s); khi Luna lỗi 2 lần liên tiếp chat nhận phần lỗi như trước (app hiện câu lỗi
+  sẵn có). Biến môi trường: RELEASE-PROGRESS «LUNA SẴN SÀNG GỘP».
+
 - 2026-09-30 (web) **R24 / I6 — SERVER ĐÃ LÀM: `app_state` trong đăng nhập Zalo trên app (vá lỗi Cao «ép app vào tài khoản kẻ
   xấu»)** — rc/web-uat (xem RELEASE-PROGRESS «I6»). **Đặc tả chung Android + iOS:**
   (1) App mở `/api/auth/zalo?platform=android|ios&returnTo=/&app_state=<state>`; `state` = base64url, **43–128 ký tự**

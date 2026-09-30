@@ -218,3 +218,22 @@ Theo mảng: ăn uống 1/4 · mua sắm 0/3 · giải trí 1/4 · spa 1/3 · du
 4. Ngay cả sau 1–3, ngưỡng 97–98% theo cách chấm này vẫn rất khó. Cần đo lại sau mỗi bước.
 
 **Chi đợt này:** model ~$0,13 + Serper thật ~$1,11 (1.109 lần gọi mới — sau rebase, rc đổi câu tìm nên bản ghi cũ không khớp) = **~$1,24**. **Cả phiên Luna: ~$10,1.**
+
+---
+
+## 13. GẤP 30/09 — Luna thay Anthropic ở MỌI chỗ, lên production cùng release Phase 7 (commit f82fcaa)
+
+- **Rebase** lên rc @95dbe94 (sạch, không xung đột).
+- **Chuyển:** nhà cung cấp mặc định = OpenAI (GPT-6 Luna) cho mọi role. Các lời gọi AI đều đi qua lớp LLM, nên một điểm chuyển ở `registry.ts` phủ hết; `AI.vision` giờ cũng đi qua lớp định tuyến. Danh sách tính năng đã chuyển và bảng biến môi trường: RELEASE-PROGRESS «LUNA SẴN SÀNG GỘP».
+- **Mức suy nghĩ:** none; kế hoạch low; lời gọi có công cụ luôn none.
+- **Khi lỗi:** thử lại Luna 1 lần, rồi đi đường lỗi sẵn có. `HAIKU_FALLBACK` tắt.
+- **Cờ mặc định:** CONSULT_LUNA / _FAST / _PLAN bật; tắt khi `LLM_PROVIDER=claude`.
+- **Sửa lỗ SSRF:** lớp bọc model làm rơi getter `supportsImageUrls`; khi đó SDK tự tải URL ảnh do người dùng đưa vào, từ máy chủ của mình.
+- **Kiểm tra:**
+  - 16.143 test đạt · typecheck · lint 0 · kiến trúc 15/15;
+  - test sống 10/10 tính năng trên Luna, 0 request tới Anthropic.
+- **Replay cấu hình production:**
+  - 95/105 tự động; 105/105 lượt do Luna; 0 lần thử lại; $0,0033/lượt; p50 2,2 s / p90 6,7 s.
+  - Tư vấn: A=0, B=1 (SHOP-3 t5), C=1, D=1.
+  - Kế hoạch: 3/16 đạt (ENT-1, ENT-3, SPA-2), 2 chi tiết bịa. SPA-1 và E1-G5 vẫn trượt: mục chỉ có câu điền chỗ trống / thiếu chặng đi uống.
+- **Chi:** replay ~$0,40 + test sống ~$0,01.

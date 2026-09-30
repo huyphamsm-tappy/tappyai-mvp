@@ -5,6 +5,43 @@ UAT = https://uat.tappyai.com (bound to branch rc/web-uat, audit DB `zdaprdfgpbp
 bypass secret in `D:\TappyAI-backups\vercel-bypass.txt`, header `x-vercel-protection-bypass`, never print it).
 Check the running SHA: `GET /api/version` with the bypass header.
 
+## ▶ LUNA SẴN SÀNG GỘP — commit f82fcaa (nhánh `origin/luna/consult-2026-09-30`), 2026-09-30
+Owner 30/09 (GẤP): Anthropic hết credit, không nạp → GPT-6 Luna lên production CÙNG release Phase 7. Phiên Luna làm code;
+**phiên web gộp nhánh vào rc/web-uat và release.** Nhánh đã rebase lên rc @95dbe94 (có bảo mật, bộ làm sạch Serper, I6,
+thẻ hỏi v2, 3 bản sửa kế hoạch). Chi tiết: `docs/uat/LUNA-REPORT.md` (§7–§13), `docs/uat/LUNA-PROGRESS.md`.
+
+**Đã chuyển — MỌI lời gọi AI đi qua lớp LLM (`src/lib/ai/llm`), mặc định giờ là Luna; không còn chỗ nào gọi Anthropic:**
+chat tư vấn + chat thường (fast/smart/planning, có ảnh = vision), hiểu ý định (structured), kế hoạch chi tiết, ScamShield
+(phân tích tin nhắn + đọc ảnh chụp), quét ảnh `/api/scan`, phân tích nội dung upload (explore), Viết content, dịch, gợi ý
+nhóm, trích/tóm tắt trí nhớ, 4 cron (deal-notifications, morning-brief, price-check, weekly-recap). Không có judge chạy trong app.
+Mức suy nghĩ: none mọi nơi; kế hoạch du lịch low (không công cụ); lời gọi có công cụ luôn none (API chỉ nhận none khi có công cụ).
+Định dạng đầu ra giữ nguyên (Viết content JSON {caption, hashtags}, dịch {translation}, ScamShield JSON…).
+
+**Khi Luna lỗi/timeout:** thử lại Luna 1 lần → vẫn lỗi thì đường lỗi sẵn có của từng nơi (chat: câu «Mình gặp trục trặc…
+Thử lại» + hoàn lượt hỏi). KHÔNG gọi Anthropic (HAIKU_FALLBACK mặc định TẮT). Code Haiku giữ nguyên.
+
+**Kiểm tra:** 16.143 test đạt · typecheck · lint 0 · 15/15 luật kiến trúc. Test sống 10/10 tính năng trên Luna, 0 request tới
+Anthropic (`LUNA_FEATURE_SMOKE=1 npx vitest run scripts/consult/luna/featureSmoke.test.ts`). ⚠ `scripts/controlBytes.test.mjs`
+chập chờn khi chạy CẢ bộ song song (2/3 lần; chạy riêng luôn đạt; lần full cuối 0 trượt). 🔑 Sửa kèm một lỗ SSRF: lớp bọc
+model làm rơi `supportsImageUrls` → SDK sẽ tự tải URL ảnh do user đưa; đã sửa + test.
+Replay cấu hình production (15×7): 95/105 tự động, 105/105 lượt do Luna, 0 thử lại, $0,0033/lượt, chữ đầu p50 2,2 s / p90 6,7 s.
+Chấm tay: lượt tư vấn A=0, B=1 (SHOP-3 t5 chọn máy 4GB cho học thiết kế, có nói rõ hạn chế), C=1, D=1. Kế hoạch 3/16 đạt đủ 10
+điều, 2 chi tiết bịa (Haiku trước: 2/55 đạt, 177 bịa) — lỗi chính: mục kế hoạch chỉ có câu «Chưa có thông tin đã kiểm cho mục này».
+
+**Biến môi trường (Production + Preview):**
+| Biến | Giá trị | Ghi chú |
+|---|---|---|
+| `OPENAI_API_KEY` | **bắt buộc** | thay `ANTHROPIC_API_KEY` trong danh sách 5 biến bắt buộc của `scripts/check-env.mjs` |
+| `LLM_PROVIDER` | **không đặt** (hoặc `openai`) | ⚠ nếu đang có `LLM_PROVIDER=claude` thì XOÁ — `claude` = quay về Haiku |
+| `CONSULT_LUNA`, `CONSULT_LUNA_FAST`, `CONSULT_LUNA_PLAN` | không đặt (mặc định BẬT) | đặt `0` để tắt từng phần |
+| `HAIKU_FALLBACK` | không đặt (TẮT) | `1` chỉ khi Anthropic có credit lại |
+| `LLM_PLAN_REASONING` | không đặt (= low) | tuỳ chọn |
+| `LLM_LUNA_MODEL` | không đặt (= gpt-6-luna) | tuỳ chọn |
+| `LLM_FAST_MODEL` / `LLM_SMART_MODEL` / … | bỏ qua khi dùng Luna | chỉ đọc khi `LLM_PROVIDER=claude` |
+| `SERPER_CACHE_V2` | tuỳ chọn `1` | giá cũ tối đa 6 giờ thay vì 24 giờ; mặc định TẮT |
+| `ANTHROPIC_API_KEY` | để nguyên / bỏ | không còn được dùng |
+**Quay lui:** `LLM_PROVIDER=claude` (cần Anthropic có credit) → đúng pipeline Phase 7 Haiku.
+
 ## Rules from the owner (2026-09-28)
 - **PASS only with a real screenshot on UAT** (headless browser + bypass). Unit tests are not enough.
   UI items: screenshot next to the matching design in `D:\redesign`. Evidence up to 2614652 → `docs/uat/evidence/release-2026-09-28/`.
