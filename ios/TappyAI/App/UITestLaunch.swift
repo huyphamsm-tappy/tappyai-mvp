@@ -61,6 +61,7 @@ enum UITestLaunch {
         case "home": router.switchTo(.home)
         case "chat": router.switchTo(.chat)
         case "explore": router.switchTo(.explore)
+        case "deals": router.switchTo(.deals)
         case "hub": router.switchTo(.profile)
         case "saved":
             router.switchTo(.profile)

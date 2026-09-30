@@ -21585,6 +21585,74 @@
           }
         }
       }
+    },
+    "deals.hero.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ask Tappy before you buy"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hỏi Tappy trước khi mua"
+          }
+        }
+      }
+    },
+    "deals.hero.body": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not sure what to pick? Ask Tappy for advice, comparisons and a suggestion that fits."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chưa chắc nên chọn gì? Hỏi Tappy để được tư vấn, so sánh thông tin và gợi ý lựa chọn phù hợp."
+          }
+        }
+      }
+    },
+    "deals.hero.cta": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ask Tappy now"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hỏi Tappy ngay"
+          }
+        }
+      }
+    },
+    "deals.hero.platforms": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PLATFORMS TAPPY IS TRACKING"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CÁC NỀN TẢNG TAPPY ĐANG TỔNG HỢP"
+          }
+        }
+      }
     }
   }
 }

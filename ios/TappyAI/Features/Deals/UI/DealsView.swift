@@ -3,6 +3,7 @@ import SwiftUI
 struct DealsView: View {
     @AppStateObject private var vm: DealsViewModel
     @AppEnvironmentState private var localization: LocalizationManager
+    @AppEnvironmentState private var router: AppRouter
 
     init(deps: AppDependencies) {
         _vm = AppStateObject(wrappedValue: DealsViewModel(service: DealsService(api: deps.api)))
@@ -34,8 +35,14 @@ struct DealsView: View {
                 .padding(.top, 60)
             case .loaded:
                 if vm.deals.isEmpty {
-                    TappyEmptyState(systemImage: "tag", title: "deals.empty")
-                        .padding(.top, 60)
+                    // The ask-Tappy card shows even with no deals (web `/deals`, Android L16).
+                    ScrollView {
+                        VStack(spacing: Spacing.lg) {
+                            askHero(partners: [])
+                            TappyEmptyState(systemImage: "tag", title: "deals.empty")
+                        }
+                        .padding(Spacing.md)
+                    }
                 } else {
                     list
                 }
@@ -51,12 +58,61 @@ struct DealsView: View {
     private var list: some View {
         ScrollView {
             VStack(spacing: Spacing.sm) {
+                askHero(partners: vm.deals.map(\.partnerName).reduce(into: [String]()) { if !$0.contains($1) { $0.append($1) } })
                 ForEach(vm.deals) { deal in
                     dealCard(deal)
                 }
             }
             .padding(Spacing.md)
         }
+    }
+
+    /// "Hỏi Tappy trước khi mua" — its CTA opens the real Chat. The partner chips are the names the
+    /// feed really returned (no brand logos: the feed sends none).
+    private func askHero(partners: [String]) -> some View {
+        VStack(alignment: .leading, spacing: Spacing.md) {
+            HStack(spacing: Spacing.md) {
+                Image("TappyShopping").resizable().scaledToFit().frame(width: 76, height: 76)
+                    .accessibilityHidden(true)
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("deals.hero.title").font(.system(size: 17, weight: .bold)).foregroundStyle(.white)
+                    Text("deals.hero.body").font(.system(size: 12.5)).foregroundStyle(Color(hex: 0xCBD5E1))
+                }
+            }
+            Button {
+                router.popToRoot(on: .chat)
+                router.switchTo(.chat)
+            } label: {
+                HStack(spacing: 8) {
+                    Text("deals.hero.cta").font(.system(size: 14, weight: .semibold))
+                    Image(systemName: "arrow.right").font(.system(size: 14))
+                }
+                .foregroundStyle(.white)
+                .padding(.horizontal, Spacing.lg).padding(.vertical, Spacing.sm)
+                .background(Capsule().fill(LinearGradient(colors: [Color(hex: 0x6366F1), Color(hex: 0x8B7CFF)],
+                                                          startPoint: .leading, endPoint: .trailing)))
+            }
+            .buttonStyle(.plain)
+            .accessibilityIdentifier("deals-ask-tappy")
+            if !partners.isEmpty {
+                Text("deals.hero.platforms").font(.system(size: 10.5, weight: .semibold)).foregroundStyle(Color(hex: 0x94A3B8))
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: Spacing.xs) {
+                        ForEach(partners, id: \.self) { name in
+                            Text(name).font(.system(size: 11)).foregroundStyle(.white)
+                                .padding(.horizontal, Spacing.xs).padding(.vertical, 5)
+                                .background(RoundedRectangle(cornerRadius: 8).fill(Color.white.opacity(0.12)))
+                        }
+                    }
+                }
+            }
+        }
+        .padding(Spacing.lg)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(LinearGradient(colors: [Color(hex: 0x1E2A78), Color(hex: 0x3B2E8F)], startPoint: .topLeading, endPoint: .bottomTrailing))
+        .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+        .overlay(RoundedRectangle(cornerRadius: 20, style: .continuous).stroke(Color.white.opacity(0.2), lineWidth: 1))
+        .accessibilityIdentifier("deals-hero")
     }
 
     @ViewBuilder

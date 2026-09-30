@@ -54,6 +54,12 @@ final class ScreenshotTests: XCTestCase {
         shot("17-hub-restricted")
     }
 
+    func testDealsAskCardWhenEmpty() {
+        let app = launch(route: "deals")
+        XCTAssertTrue(any(app, "deals-ask-tappy").waitForExistence(timeout: 30), "ask-Tappy card with no deals")
+        shot("18-deals")
+    }
+
     // MARK: - Screens
 
     /// Login: Google · Zalo · or · Email · Password · Sign in · Create account · Guest.

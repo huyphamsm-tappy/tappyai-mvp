@@ -167,6 +167,9 @@ class Handler(BaseHTTPRequestHandler):
             return self._send(200, {"users": [{"id": "u2", "full_name": "Lan Phương"}, {"id": "u3", "full_name": "Quốc Bảo"}]})
         if path == "/api/conversations":
             return self._send(200, [])
+        if path == "/api/deals":
+            # The audit DB has no deals either: the page must still show the ask-Tappy card.
+            return self._send(200, {"deals": []})
         return self._send(200, {})
 
     def do_POST(self):
