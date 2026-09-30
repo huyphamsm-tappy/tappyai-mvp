@@ -27,3 +27,14 @@
 ## 🛑 Chặn
 - **Chưa có key** `D:\TappyAI-backups\openai-key.txt`.
 - **Push nhánh bị chặn quyền**: anh chạy `git -C D:\TappyAI-wt\wtluna push origin luna/consult-2026-09-30` (upstream đã gỡ khỏi rc/web-uat).
+
+## 30/09 sáng — key có, probe + sửa thiết kế trước khi đo
+- Probe (`scripts/consult/luna/probe.mjs`): key + `gpt-6-luna` chạy được ở none/low. **Usage thô CÓ `cache_write_tokens`**: lượt lạnh 2.428/2.431 token vào là cache GHI ($0,125/M), lượt ấm 2.404 cache ĐỌC ($0,01/M). SDK bỏ trường này → adapter tính toàn bộ token vào chưa cache theo giá cache ghi (không bao giờ tính thấp hơn thực tế).
+- Smoke 1–3 hội thoại cho thấy 4 lỗi THIẾT KẾ (đã sửa, có test):
+  1. Luna tự quyết loại lượt → bỏ lượt hỏi (SHOP-1 t1 chốt luôn). → **hỏi/chọn do CODE** (đủ thông tin chưa = kiểm dữ kiện); các loại lượt khác (hỏi thêm/so sánh/xem thêm/bác/kế hoạch) theo **Luna** (SHOP-2 t3: luật đọc "…mua ở đâu uy tín" thành yêu cầu mới, Luna đọc đúng là hỏi thêm).
+  2. Kiểm tra của code **làm rơi "Quận 1"/"q1"** (từ dừng "quận" + "1" ngắn) → sửa `placeSaid`.
+  3. Luna nhét số liệu vào câu "Mình chọn" → guard xoá cả câu → mất lựa chọn (FOOD-1 t6). → code **tách câu chốt** trước guard (chỉ đổi dấu câu, không thêm/bớt chữ) + luật prompt.
+  4. Luna in đậm dòng "còn N" → trùng dòng đếm của server → bỏ in đậm (chỉ khi cờ Luna bật).
+- Các lượt chạy thử trước khi sửa: `scripts/consult/replay/out/_void/` (không tính).
+- Độ trễ: bước hiểu ý định Luna ~2,4–2,8 s/lượt, chạy TRƯỚC mọi thứ (~180–250 token JSON ra). Trả lời Luna tới token đầu ~0,7–1,4 s.
+- Đo chính thức bắt đầu 02:18Z (runner `D:\TappyAI-wt\.cache\run-all.sh`): bộ gốc none×2, low×2 → bộ gõ đời thường none, low, Haiku.
