@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Karaoke Avatar\" OR \"Karaoke MEI\" OR \"Karaoke SAFARI\" Quận 1 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T06:03:12.065Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Karaoke Avatar\" OR \"Karaoke MEI\" OR \"Karaoke SAFARI\" Quận 1 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Karaoke Mei Quận 1: Tiếng Đá Rơi Vào Ly Khó Nha Bro",
+    "link": "https://www.tiktok.com/@mei.karaoke/video/7577767144100875538",
+    "snippet": "Karaoke Mei Quận 1 được biết đến là nơi tụ tập bạn bè, thư giãn và hát hò. Không gian thoải mái, âm thanh vui nhộn và những tình huống bất ngờ ...",
+    "position": 1
+   },
+   {
+    "title": "Còn ai nghĩ karaoke quận 1 rổ rá trên trời nữa thì bước tới ...",
+    "link": "https://www.tiktok.com/@reviewsaigon.59/video/7593323014628986129",
+    "snippet": "Còn ai nghĩ karaoke quận 1 rổ rá trên trời nữa thì bước tới đây ... Karaoke MEI. 38 · recommend-cover. Dạ Dày Không Đáy. 1126 · recommend-cover.",
+    "position": 2
+   },
+   {
+    "title": "Phòng karaoke Avatar - Giá hấp dẫn tại quận 1 Sài Gòn",
+    "link": "https://www.tiktok.com/@avatarkaraokesg/video/7270370684478557446",
+    "snippet": "Khám phá không gian karaoke Avatar độc đáo tại Q1 Saigon, với giá cả phải. @Avatar Karaoke Saigon.",
+    "position": 3
+   },
+   {
+    "title": "Karaoke Avatar Quận 1: Công Nghệ 3D Đột Phá, Giảm 30 ...",
+    "link": "https://www.tiktok.com/@avatarkaraokesg/video/7423246235756203272",
+    "snippet": "Karaoke Avatar Quận 1: Công Nghệ 3D Đột Phá, Giảm 30% Giờ Hát. ### Avatar Karaoke: Trải Nghiệm Hát Karaoke Đột Phá Tại Quận 1 Nếu bạn đang ...",
+    "position": 4
+   },
+   {
+    "title": "Mei Karaoke",
+    "link": "https://www.tiktok.com/@mei.karaoke/video/7689052000020860180",
+    "snippet": "Mei Karaoke. Mei Karaoke offers a karaoke experience. Keywords: mei karaoke,karaoke mei,karaoke mie,hát karaoke,karaoke.",
+    "position": 5
+   },
+   {
+    "title": "Mách bạn khu Karaoke xịn ngay Quận 1 mà zá siêu hạt dẻ ...",
+    "link": "https://www.tiktok.com/@reviewsaigon.59/video/7625152515004288276",
+    "snippet": "Karaoke Hàn Quốc Quận 1. Mách bạn khu Karaoke xịn ngay Quận 1 mà zá siêu hạt dẻ lunn!! ... Karaoke MEI. Đặt trước để được free 1h nha mấy mom. 4-6 ...",
+    "position": 6
+   },
+   {
+    "title": "Khám Phá AVATAR KARAOKE: Địa Điểm Tiệc Tùng Đỉnh ...",
+    "link": "https://www.tiktok.com/@avatarkaraokesg/video/7536174017997180178",
+    "snippet": "Karaoke Avatar · Avatar Kataang Kiss · Kai Avatar · Tuki Avatar · Aang Vrchat Avatar · Avatar Nhóm Hát · Avatar Nghệ Thuật · Avatar Decoration.",
+    "position": 7
+   },
+   {
+    "title": "Nhận set up tiệc sinh nhât karaoke Avatar Q1 ibbox để được ưu ...",
+    "link": "https://www.tiktok.com/@minhanh99999998/video/7664527010760412424",
+    "snippet": "20 Lượt thích,Video TikTok từ Karaoke Avatar Q1 ( Minh Anh ) (@minhanh99999998): \"Nhận set up tiệc sinh nhât karaoke Avatar Q1 ibbox để được ưu đãi nhe ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

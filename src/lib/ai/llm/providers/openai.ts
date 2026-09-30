@@ -24,7 +24,7 @@ const PRICES: Array<[RegExp, { in: number; cachedIn: number; cacheWrite: number;
   [/^gpt-6-luna/, { in: 0.10, cachedIn: 0.01, cacheWrite: 0.125, out: 0.50 }],
 ]
 
-const EFFORTS: readonly ReasoningEffort[] = ['none', 'low', 'medium', 'high']
+const EFFORTS: readonly ReasoningEffort[] = ['none', 'low', 'medium', 'high', 'xhigh']
 
 export function reasoningEffortFor(role: ModelRole, env: Record<string, string | undefined> = process.env): ReasoningEffort {
   const v = (env[`LLM_${role.toUpperCase()}_REASONING`] ?? '').trim().toLowerCase() as ReasoningEffort

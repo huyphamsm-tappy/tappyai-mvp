@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "PHÚ THẮNG GRAND HOTEL - LONG AN",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T05:26:19.812Z",
+ "body": {
+  "searchParameters": {
+   "q": "PHÚ THẮNG GRAND HOTEL - LONG AN",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "PHU THANG GRAND HOTEL, Ðức Hòa (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/293632287.jpg?k=294c46158a18e5398695b04e6303952871cedbf659ee7067f93fd5df1d85919d&o=",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1E-Uz08Qjk-KTARIuFfpW2PAN1IfiOzWR3E_Diu5G6g&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/phu-thang-grand-long-an.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F293632287.jpg%3Fk%3D294c46158a18e5398695b04e6303952871cedbf659ee7067f93fd5df1d85919d%26o%3D&tbnid=qe_hAwPMYAcqJM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fphu-thang-grand-long-an.vi.html&docid=8QWTLNvNwkl6rM&w=1024&h=683",
+    "position": 1
+   },
+   {
+    "title": "PHÚ THẮNG GRAND HOTEL - LONG AN - Giá cả và Ưu đãi 2026, Đức Hòa",
+    "imageUrl": "https://ak-d.tripcdn.com/images/0200q120008gvclkxBDA3_R_960_660_R5_D.webp",
+    "imageWidth": 960,
+    "imageHeight": 660,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTo-hPRYzv2vyI-ihOTEhgnM_vwaeikS3HFpu7Xnio78Q&s=10",
+    "thumbnailWidth": 539,
+    "thumbnailHeight": 371,
+    "source": "Trip.com",
+    "domain": "vn.trip.com",
+    "link": "https://vn.trip.com/hotels/tt-duc-hoa-hotel-detail-72238644/phu-thang-grand-hotel/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fak-d.tripcdn.com%2Fimages%2F0200q120008gvclkxBDA3_R_960_660_R5_D.webp&tbnid=aVFr7KPNBkCmMM&imgrefurl=https%3A%2F%2Fvn.trip.com%2Fhotels%2Ftt-duc-hoa-hotel-detail-72238644%2Fphu-thang-grand-hotel%2F&docid=nN7KjuY0oy4SSM&w=960&h=660",
+    "position": 2
+   },
+   {
+    "title": "Phu Thang Grand Hotel",
+    "imageUrl": "https://phuthanggrandhotel.com/UploadFile/Gallery-20.04/Rooms/Deluxe-double/2.jpg",
+    "imageWidth": 1000,
+    "imageHeight": 667,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRwXSCb0q9TKcLUC_XXI6WBXKJByHLeDF3mwOaV55arMg&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "phuthanggrandhotel.com",
+    "domain": "phuthanggrandhotel.com",
+    "link": "https://phuthanggrandhotel.com/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fphuthanggrandhotel.com%2FUploadFile%2FGallery-20.04%2FRooms%2FDeluxe-double%2F2.jpg&tbnid=RRX59oZEcIJLJM&imgrefurl=https%3A%2F%2Fphuthanggrandhotel.com%2F&docid=vccWmI3liEGv-M&w=1000&h=667",
+    "position": 3
+   },
+   {
+    "title": "Best Price on PHU THANG GRAND HOTEL in Long An + Reviews!",
+    "imageUrl": "https://q-xx.bstatic.com/xdata/images/hotel/max500/293632219.jpg?k=3a0d11466edaaec8188ba3cf01fa1204e3f7c9469693a716a6c8c1333ec3be57&o=",
+    "imageWidth": 333,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZ0jajSBb06lYo0B4gfF0fFFMWg9fEo25lBRUeLxkOWg&s=10",
+    "thumbnailWidth": 333,
+    "thumbnailHeight": 500,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/en-za/phu-thang-grand-hotel-h93025889/hotel/duc-hoa-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fq-xx.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax500%2F293632219.jpg%3Fk%3D3a0d11466edaaec8188ba3cf01fa1204e3f7c9469693a716a6c8c1333ec3be57%26o%3D&tbnid=tktwdWisRsTpVM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fen-za%2Fphu-thang-grand-hotel-h93025889%2Fhotel%2Fduc-hoa-vn.html&docid=1sd-OHB8VAWNhM&w=333&h=500",
+    "position": 4
+   },
+   {
+    "title": "KHÁCH SẠN PHÚ THẮNG (Duc Hoa Ha) - Đánh giá Khách sạn & So sánh giá -  Tripadvisor",
+    "imageUrl": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/1c/ee/df/53/phu-thang-grand-hotel.jpg?w=900&h=500&s=1",
+    "imageWidth": 900,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNV_IkwmLrqAveJeokqY-iQSGessTZC8MSB6jEbZzQXg&s=10",
+    "thumbnailWidth": 599,
+    "thumbnailHeight": 333,
+    "source": "Tripadvisor",
+    "domain": "www.tripadvisor.com.vn",
+    "link": "https://www.tripadvisor.com.vn/Hotel_Review-g23369392-d23303565-Reviews-Phu_Thang_Grand_Hotel-Duc_Hoa_Ha_Duc_Hoa_District_Long_An_Province_Mekong_Delta.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdynamic-media-cdn.tripadvisor.com%2Fmedia%2Fphoto-o%2F1c%2Fee%2Fdf%2F53%2Fphu-thang-grand-hotel.jpg%3Fw%3D900%26h%3D500%26s%3D1&tbnid=XDjdU7RUA8o39M&imgrefurl=https%3A%2F%2Fwww.tripadvisor.com.vn%2FHotel_Review-g23369392-d23303565-Reviews-Phu_Thang_Grand_Hotel-Duc_Hoa_Ha_Duc_Hoa_District_Long_An_Province_Mekong_Delta.html&docid=TfTwmdyQ_iie1M&w=900&h=500",
+    "position": 5
+   },
+   {
+    "title": "Đặt Khách sạn Phú Thắng Grand Long An - Giá tốt nhất | iVIVU",
+    "imageUrl": "https://cdn1.ivivu.com/newcdn/fowardimage?url=https://pix8.agoda.net/hotelImages/22884607/-1/b104ab819755385016f21b796d306ba4.jpg?ca=18&ce=1&s=312x",
+    "imageWidth": 2048,
+    "imageHeight": 1160,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpRYo6mJaAtexWCP_XOQ2kr5vGHdnr16-4tzfWzqfDWA&s=10",
+    "thumbnailWidth": 594,
+    "thumbnailHeight": 336,
+    "source": "iVIVU.com",
+    "domain": "www.ivivu.com",
+    "link": "https://www.ivivu.com/khach-san-long-an/phuthang-grand-hotel",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn1.ivivu.com%2Fnewcdn%2Ffowardimage%3Furl%3Dhttps%3A%2F%2Fpix8.agoda.net%2FhotelImages%2F22884607%2F-1%2Fb104ab819755385016f21b796d306ba4.jpg%3Fca%3D18%26ce%3D1%26s%3D312x&tbnid=ukpQCyh7KCHrGM&imgrefurl=https%3A%2F%2Fwww.ivivu.com%2Fkhach-san-long-an%2Fphuthang-grand-hotel&docid=QglVTDtKzmDjbM&w=2048&h=1160",
+    "position": 6
+   },
+   {
+    "title": "Khách Sạn Phú Thắng Grand Long An review, booking, đánh giá",
+    "imageUrl": "https://diadiemvietnam.vn/wp-content/uploads/2023/03/khach-san-Phu-Thang-Grand.jpg",
+    "imageWidth": 1311,
+    "imageHeight": 652,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQ1lmyQ57dTVzMpXdiD7nsn70kpIYdm3VXaU6fv3VNcQ&s=10",
+    "thumbnailWidth": 738,
+    "thumbnailHeight": 366,
+    "source": "Địa Điểm Việt Nam",
+    "domain": "diadiemvietnam.vn",
+    "link": "https://diadiemvietnam.vn/san-pham/khach-san-phu-thang-grand-long-an/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdiadiemvietnam.vn%2Fwp-content%2Fuploads%2F2023%2F03%2Fkhach-san-Phu-Thang-Grand.jpg&tbnid=K_85b6DTL3WcNM&imgrefurl=https%3A%2F%2Fdiadiemvietnam.vn%2Fsan-pham%2Fkhach-san-phu-thang-grand-long-an%2F&docid=vziRUAjU4zTEiM&w=1311&h=652",
+    "position": 7
+   },
+   {
+    "title": "Phu Thang Grand Hotel, Giá giảm 30%, Ảnh & Review chân thật",
+    "imageUrl": "https://ik.imagekit.io/tvlk/apr-asset/Ixf4aptF5N2Qdfmh4fGGYhTN274kJXuNMkUAzpL5HuD9jzSxIGG5kZNhhHY-p7nw/hotel/asset/20047945-8b2a843943a1846622ed6d3dd1e66eea.png?tr=q-80,c-at_max,w-740,h-500&_src=imagekit",
+    "imageWidth": 740,
+    "imageHeight": 494,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSoOeDifbPA3_ADUJSEe78S0Erf8RuDXlNDWfcVkvPU-w&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "Traveloka",
+    "domain": "www.traveloka.com",
+    "link": "https://www.traveloka.com/vi-vn/hotel/vietnam/phu-thang-grand-hotel-9000000961903",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fik.imagekit.io%2Ftvlk%2Fapr-asset%2FIxf4aptF5N2Qdfmh4fGGYhTN274kJXuNMkUAzpL5HuD9jzSxIGG5kZNhhHY-p7nw%2Fhotel%2Fasset%2F20047945-8b2a843943a1846622ed6d3dd1e66eea.png%3Ftr%3Dq-80%2Cc-at_max%2Cw-740%2Ch-500%26_src%3Dimagekit&tbnid=LVh8WCmna_ISVM&imgrefurl=https%3A%2F%2Fwww.traveloka.com%2Fvi-vn%2Fhotel%2Fvietnam%2Fphu-thang-grand-hotel-9000000961903&docid=zaLI1bgHZgPacM&w=740&h=494",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

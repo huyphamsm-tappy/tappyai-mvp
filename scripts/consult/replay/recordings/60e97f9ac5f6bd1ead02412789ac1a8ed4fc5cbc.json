@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Dream Palace Ben Thanh Grand Hotel\" OR \"Hotel Majestic Saigon\" OR \"Level Saigon Hotel\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T06:11:36.564Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Dream Palace Ben Thanh Grand Hotel\" OR \"Hotel Majestic Saigon\" OR \"Level Saigon Hotel\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Hotel Majestic Saigon 100 Năm Trước | TikTok",
+    "link": "https://www.tiktok.com/discover/hotel-majestic-saigon-100-n%C4%83m-tr%C6%B0%E1%BB%9Bc",
+    "snippet": "Hotel Majestic Saigon 100 Năm Trước. Khám phá lịch sử 100 năm của Hotel Majestic Sài Gòn, đồng hành cùng những kỷ niệm thú vị tại trung tâm ...",
+    "date": "31 thg 8, 2026",
+    "position": 1
+   },
+   {
+    "title": "Dream Palace Ben Thanh Grand Hotel",
+    "link": "https://www.tiktok.com/discover/dream-palace-ben-thanh-grand-hotel",
+    "snippet": "The Dream Palace Ben Thanh Grand Hotel is located in the heart of Ho Chi Minh City, offering a central base for exploring the city. Videos ...",
+    "date": "20 thg 6, 2026",
+    "position": 2
+   },
+   {
+    "title": "Unforgettable Weddings at Hotel Majestic Saigon",
+    "link": "https://www.tiktok.com/@kisswedding/video/7658234616716872980",
+    "snippet": "Hotel Majestic Saigon is not just an exquisite venue for banquets; it is a place where cherished memories of Saigon are intertwined on ...",
+    "position": 3
+   },
+   {
+    "title": "Hotel Majestic Saigon",
+    "link": "https://www.tiktok.com/discover/hotel-majestic-saigon",
+    "snippet": "Hotel Majestic Saigon. Khám phá khách sạn Majestic Sài Gòn với bể bơi tuyệt đẹp, nhà hàng sang trọng và tầm nhìn ra sông. Trải nghiệm dịch vụ 5 sao hàng đầu ...",
+    "position": 4
+   },
+   {
+    "title": "𝗠ườ𝗻𝗴 𝗧𝗵𝗮𝗻𝗵 𝗚𝗿𝗮𝗻𝗱 𝗦𝗮𝗶𝗴𝗼𝗻 𝗖𝗲𝗻𝘁𝗿𝗲 𝗛𝗼𝘁𝗲𝗹 .. ...",
+    "link": "https://www.tiktok.com/@rodeldianeumali/video/7528634828191796487",
+    "snippet": "... Hotel Majestic SaigonGaigu Saigon Quận Tân BìnhGaigu Saigon Binh ThanhHotel Grand Paragon Johor Bahru BerhantuSaigon Vien Dong Hotel Spa ...",
+    "position": 5
+   },
+   {
+    "title": "Hotel Majestic Saigon: La Experiencia Perfecta",
+    "link": "https://www.tiktok.com/@lydazamora/video/7592613493636025608",
+    "snippet": "Hotel Majestic Saigon: La Experiencia Perfecta. Disfruta momentos especiales en el Hotel Majestic Saigon con la mejor compañía. ¡Descubre un servicio ...",
+    "position": 6
+   },
+   {
+    "title": "Hotel Majestic Saigon: Elegance in Ho Chi Minh City",
+    "link": "https://www.tiktok.com/@gladylounina/video/7554669144755473680",
+    "snippet": "The Hotel Majestic Saigon is a 5-star heritage hotel built in 1925. It stands as a timeless icon in the heart of Ho Chi Minh City, Vietnam.",
+    "position": 7
+   },
+   {
+    "title": "Cozy Room Tour at Miracle Boutique Hotel in Saigon",
+    "link": "https://www.tiktok.com/@diaryinfilm/video/7663096989432712469",
+    "snippet": "... Hotel Majestic SaigonGrand Hotel Cap FerratHotel Crescent Court Dallas Grand Presidential SuiteGrand Hotel Localisation Beach TetouanGeiser ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

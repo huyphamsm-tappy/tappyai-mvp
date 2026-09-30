@@ -67,7 +67,7 @@ export const DEFAULT_OPENAI_KEY_FILE = 'D:/TappyAI-backups/openai-key.txt'
  * turns the flag on with both roles on Haiku (isolates the prompt). Unset → the Phase 7 pipeline (Haiku).
  */
 export function applyLunaEnv(): { luna: string | null } {
-  for (const k of ['CONSULT_LUNA', 'LLM_CONSULT_PROVIDER', 'LLM_INTENT_PROVIDER', 'LLM_CONSULT_REASONING', 'LLM_INTENT_REASONING', 'LLM_CONSULT_MODEL', 'LLM_INTENT_MODEL']) delete process.env[k]
+  for (const k of ['CONSULT_LUNA', 'CONSULT_LUNA_PLAN', 'LLM_CONSULT_PROVIDER', 'LLM_INTENT_PROVIDER', 'LLM_PLAN_PROVIDER', 'LLM_CONSULT_REASONING', 'LLM_INTENT_REASONING', 'LLM_PLAN_REASONING', 'LLM_CONSULT_MODEL', 'LLM_INTENT_MODEL', 'LLM_PLAN_MODEL']) delete process.env[k]
   const spec = (process.env.REPLAY_LUNA ?? '').trim().toLowerCase()
   if (!spec) return { luna: null }
   process.env.CONSULT_LUNA = '1'
@@ -82,5 +82,11 @@ export function applyLunaEnv(): { luna: string | null } {
   process.env.OPENAI_API_KEY = key
   process.env.LLM_CONSULT_PROVIDER = 'openai'; process.env.LLM_CONSULT_REASONING = answer
   process.env.LLM_INTENT_PROVIDER = 'openai'; process.env.LLM_INTENT_REASONING = intent
+  // REPLAY_LUNA_PLAN=medium|high|xhigh — the detailed plan on Luna too (CONSULT_LUNA_PLAN).
+  const plan = (process.env.REPLAY_LUNA_PLAN ?? '').trim().toLowerCase()
+  if (plan) {
+    if (!['none', 'low', 'medium', 'high', 'xhigh'].includes(plan)) throw new Error('REFUSING: REPLAY_LUNA_PLAN must be none|low|medium|high|xhigh')
+    process.env.CONSULT_LUNA_PLAN = '1'; process.env.LLM_PLAN_PROVIDER = 'openai'; process.env.LLM_PLAN_REASONING = plan
+  }
   return { luna: spec }
 }

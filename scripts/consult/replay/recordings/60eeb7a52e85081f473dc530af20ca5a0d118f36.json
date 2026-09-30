@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Ốp lưng Zagg iPhone 16\" OR \"Ốp lưng iPhone 16 Pro Max Apple With Magsafe Clear\" OR \"Ốp lưng iPhone 16 Pro Max Slimcase Unique 3 With\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T05:57:19.029Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Ốp lưng Zagg iPhone 16\" OR \"Ốp lưng iPhone 16 Pro Max Apple With Magsafe Clear\" OR \"Ốp lưng iPhone 16 Pro Max Slimcase Unique 3 With\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

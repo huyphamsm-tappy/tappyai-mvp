@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"NHÀ HÀNG NGON\" OR \"Quán ăn ngon Sài Gòn\" OR \"A Xỉu - Quán Ăn Ngon\" gần Sài Gòn site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T05:01:54.099Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"NHÀ HÀNG NGON\" OR \"Quán ăn ngon Sài Gòn\" OR \"A Xỉu - Quán Ăn Ngon\" gần Sài Gòn site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "25 Quán Ăn Ngon Sài Gòn Không Cần Review Vẫn Đông ...",
+    "link": "https://www.tiktok.com/@didauofficial/video/7489300733129510151",
+    "snippet": "Danh sách 25 quán ăn ngon Sài Gòn không cần review vẫn đông nghẹt khách, từ sáng đến tối, nắng mưa vẫn xếp hàng dài. Nhiều quán nổi tiếng vì ...",
+    "position": 1
+   },
+   {
+    "title": "Không phải cơm tấm hay ốc, đây là quán ăn kiểu gia đình ...",
+    "link": "https://www.tiktok.com/@utcungdidau/video/7477966720678858001",
+    "snippet": "Quán Ăn Hàn Quốc Nổi Tiếng Ở Sài Gòn · Quán Ăn Ngon Sài Gòn · Quán Cafe Linh Hàm Nghi Sài Gòn · Quán Ốc Lê Thánh Tôn Sài Gòn · Quán Ăn Ngon Lê ...",
+    "position": 2
+   },
+   {
+    "title": "Khám Phá Ẩm Thực Sài Gòn Cùng Trân",
+    "link": "https://www.tiktok.com/@traanxngg/video/7603051478751677714",
+    "snippet": "Nhật ký đi ăn tiệm dạo gần đây của Trân ở Sài Gònn nếu biến đây thành một series thì chắc vô số tập luôn vì SG nhiều nhà hàng ngon quá mà ...",
+    "position": 3
+   },
+   {
+    "title": "Cơm Tấm Quyền: Sườn Ngon Tuyệt Vời Tại Sài Gòn",
+    "link": "https://www.tiktok.com/@baogia2k3ha/video/7505052146379787538",
+    "snippet": "Quán Ăn Ngon Sài Gòn · Cơm Niêu Sài Gòn 27 Tú Xương · Cơm Tấm Ở Đà Nẵng ... quán này tui ăn hoài gần nhà , sườn 45k , ăn cũng bthương được ...",
+    "position": 4
+   },
+   {
+    "title": "“Lâu lâu các cặp đôi phải ra ngoài hẹn hò” chưa bao giờ là ...",
+    "link": "https://www.tiktok.com/@tg_vivu/video/7497538136659021064",
+    "snippet": "... Sài GònGợi Ý Các Quán Nướng Ngon Ở Sài GònBellozzo Pasta ... GònQuán Ăn Ngon Sài GònQuán Ăn Ngon Gần Rạp Chiếu Phim Quốc Gia. “Lâu ...",
+    "position": 5
+   },
+   {
+    "title": "Khám Phá Múa Cổ Trang Ở Sài Gòn",
+    "link": "https://www.tiktok.com/@saigondidautaaa/video/7588561477758405908",
+    "snippet": "Địa Điểm Quán Ăn Trưa Ngon Ở Sài Gòn · Quán Ăn Ngon Sài Gòn · Quán Ăn Tối Ngon Tại Quận 1 Sài Gòn · Quán Ăn Có Karaoke Phòng Riêng Quận Thủ Đức.",
+    "position": 6
+   },
+   {
+    "title": "Quán Phở Ngon Gần Sân Bay Sài Gòn Có Chỗ Đỗ Xe | TikTok",
+    "link": "https://www.tiktok.com/discover/qu%C3%A1n-ph%E1%BB%9F-ngon-g%E1%BA%A7n-s%C3%A2n-bay-s%C3%A0i-g%C3%B2n-c%C3%B3-ch%E1%BB%97-%C4%91%E1%BB%97-xe",
+    "snippet": "Quán Phở Ngon Gần Sân Bay Sài Gòn Có Chỗ Đỗ Xe. Khám phá các video liên ... Quán Ăn Ngon Sài Gòn · Quán Sài Gòn Phố 575 Lê Trọng Tấn · Quán Phở Nào Ngon ...",
+    "position": 7
+   },
+   {
+    "title": "Khám Phá Ẩm Thực Hong Kong và Sài Gòn",
+    "link": "https://www.tiktok.com/@saigonbeoreview/video/7538448954774637840",
+    "snippet": "Keywords: ẩm thực Hong Kong và Sài Gòn, nhà hàng ngon ở Sài Gòn, món ... 2ng 2 tô mì, 2ly trà chanh gần 500k, gửi xe hơi 30k. Nhưng mà ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

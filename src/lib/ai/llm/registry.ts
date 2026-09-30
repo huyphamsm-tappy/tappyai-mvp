@@ -68,14 +68,14 @@ export function getProvider(): AIProvider {
 // role whose credentials are missing also stays on the default provider. Every routed call carries the
 // default provider's model as its fallback (fallback.ts).
 
-type RoutedRole = Extract<ModelRole, 'consult' | 'intent'>
+type RoutedRole = Extract<ModelRole, 'consult' | 'intent' | 'plan'>
 let openaiProvider: ReturnType<typeof createOpenAIProvider> | null = null
 
 function routedTo(role: ModelRole): 'openai' | null {
-  if (role !== 'consult' && role !== 'intent') return null
+  if (role !== 'consult' && role !== 'intent' && role !== 'plan') return null
   const v = (process.env[`LLM_${role.toUpperCase()}_PROVIDER`] ?? '').trim().toLowerCase()
   if (v !== 'openai') return null
-  openaiProvider ??= createOpenAIProvider({ consult: process.env.LLM_CONSULT_MODEL, intent: process.env.LLM_INTENT_MODEL })
+  openaiProvider ??= createOpenAIProvider({ consult: process.env.LLM_CONSULT_MODEL, intent: process.env.LLM_INTENT_MODEL, plan: process.env.LLM_PLAN_MODEL })
   return openaiProvider.isConfigured() ? 'openai' : null
 }
 
@@ -94,7 +94,8 @@ export function modelForRole(role: ModelRole, opts: { structured?: boolean } = {
   if (routedTo(role) !== 'openai') return base
   const primary = opts.structured ? openaiProvider!.structuredModel(role) : openaiProvider!.model(role)
   const ms = Number(process.env[`LLM_${role.toUpperCase()}_TIMEOUT_MS`])
-  return withFallback(primary, base, { firstPartMs: Number.isFinite(ms) && ms > 0 ? ms : 8000, label: role })
+  // A reasoning plan thinks before its first part: a longer default wait for role `plan` (still under the route's budget).
+  return withFallback(primary, base, { firstPartMs: Number.isFinite(ms) && ms > 0 ? ms : role === 'plan' ? 30000 : 8000, label: role })
 }
 
 /** Test hook: forget the routed provider so env changes take effect. */

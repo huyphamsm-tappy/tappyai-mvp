@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Phở Dịu\" OR \"Phở Hùng\" OR \"Phở Việt Nam\" quan 1 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:55:05.552Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Phở Dịu\" OR \"Phở Hùng\" OR \"Phở Việt Nam\" quan 1 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Trả lời @Rosaisred Phở Hùng (Quận 1) lọt top MICHELIN ...",
+    "link": "https://www.tiktok.com/@nhandian/video/7243072482138230021",
+    "snippet": "Trả lời @Rosaisred Phở Hùng (Quận 1) lọt top MICHELIN ở Sài Gòn, ai thích ăn phở chuẩn miền Nam mà mở tới 3h sáng thì lưu lại :)) # ...",
+    "position": 1
+   },
+   {
+    "title": "Tập 2 Trong Series 100 Quán Phở Ngon",
+    "link": "https://www.tiktok.com/@pika_laca/video/7601097197425478933",
+    "snippet": "Khám Phá Phở Hùng - Tập 2 Trong Series 100 Quán Phở Ngon. Chìm đắm trong hương vị Phở Hùng, một trong 100 quán phở ngon tại Sài Gòn! Trải ...",
+    "position": 2
+   },
+   {
+    "title": "Phở Việt Nam - 14 Phạm Hồng Thái, Phường Bến Thành ...",
+    "link": "https://www.tiktok.com/@davisitonguyen/video/7578405776998305055",
+    "snippet": "... Phở Việt Nam Bằng Tiếng HànPhở Trộn 101 Lê LợiPhở Đất Việt 144 Quán Thánh. Phở Việt Nam - 14 Phạm Hồng Thái, Phường Bến Thành, Quận 1 #. @Đi ...",
+    "position": 3
+   },
+   {
+    "title": "Món Phở Đặc Biệt ở Quán Phở Việt Nam",
+    "link": "https://www.tiktok.com/@phovietnam.homemade/video/7356564852103449872",
+    "snippet": "Mở cửa: 6-22h. Phở Việt Nam - Món Phở Đặc Biệt ở Quán Phở Việt Nam. Khám phá món phở thố đá và nguyên liệu tự nhiên tại các chi nhánh Phở Việt ...",
+    "position": 4
+   },
+   {
+    "title": "Phở Việt Nam by Võ Quốc Quận 2: Phở Gàu & Lõi Rùa 35K",
+    "link": "https://www.tiktok.com/@diancungquoc/video/7496854524339178770",
+    "snippet": "Phở Việt Nam by Võ Quốc ở Quận 2 đang được nhiều người tìm kiếm khi nói đến phở ngon Quận 2. Quán nằm tại 18 Trần Ngọc Diện, mới mở khoảng 2 ...",
+    "position": 5
+   },
+   {
+    "title": "Ăn thử phở Hùng và phở Hiền cạnh nhau: Quán nào ngon ...",
+    "link": "https://www.tiktok.com/@quanvuive2307/video/7458643600339995922",
+    "snippet": "Phở Hiền thắng ở sợi phở mỏng và giá cả phải chăng, trong khi Phở Hùng ghi điểm với nước dùng đậm đà và topping chất lượng. Dù chọn quán nào, ...",
+    "position": 6
+   },
+   {
+    "title": "Phở Việt Nam - Món Ăn Yêu Thích Theo Võ Quốc",
+    "link": "https://www.tiktok.com/@phovietnambyvoquoc/video/7686827549355347221",
+    "snippet": "Trong phần 2, các món ăn được so sánh và lựa chọn bao gồm phở, bánh mì, cơm gà, bò né và lẩu. Keywords: phở việt nam,món ăn yêu thích phở việt, ...",
+    "position": 7
+   },
+   {
+    "title": "PHỞ VIỆT NAM - 66 Trần Quốc Toản, q3; 14 Phạm Hồng ...",
+    "link": "https://www.tiktok.com/@phovietnam.homemade/video/7177643773898411291",
+    "snippet": "... PHỞ VIỆT NAM - 66 Trần Quốc Toản, q3; 14 Phạm Hồng Thái, q1; S36-1 Bùi Bằng Đoàn, khu Hưng Vượng 2, Tân Phong, q7\".nhạc nền - Phở Việt Nam.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,30 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"RUBY HOTEL TÂY NINH\" Tây Ninh site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T05:19:59.667Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"RUBY HOTEL TÂY NINH\" Tây Ninh site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "RUBY HOTEL TÂY NINH - Giá cả và Ưu đãi 2026, Tân Ninh",
+    "link": "https://vn.trip.com/hotels/tay-ninh-hotel-detail-108652907/ruby-hotel/",
+    "snippet": "Giờ nhận phòng tại RUBY HOTEL TÂY NINH bắt đầu từ 14:00-23:30, và giờ trả phòng là 12:00. Có được mang theo thú cưng tại RUBY ...",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

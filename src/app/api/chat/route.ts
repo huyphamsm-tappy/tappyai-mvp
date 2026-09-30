@@ -93,7 +93,7 @@ import { buildDomainFrame, frameDomainOf, frameLibrary, frameRef, PLAN_HEADINGS,
 import { runConsultBrain, consultV2Enabled, wasAskReply, buildAskReply, placeTypeFor, latestShoppingPickPrice, shoppingMarkerRecords } from '@/lib/ai/consultative/consultBrain'
 import { routeConsult } from '@/lib/ai/consultative/consultRouter'
 import { rejectModifierOf, withoutQuotedNames, isFixedPhrase } from '@/lib/ai/consultative/consultRouter'
-import { consultLunaEnabled, isLunaAnswerTurn, runLunaIntent, mergeIntentWithRules, lunaTurnFacts, withoutReferenceTurns, LUNA_CORE, INTENT_SYSTEM } from '@/lib/ai/consultative/luna'
+import { consultLunaEnabled, consultLunaPlanEnabled, isLunaAnswerTurn, runLunaIntent, mergeIntentWithRules, lunaTurnFacts, withoutReferenceTurns, LUNA_CORE, INTENT_SYSTEM } from '@/lib/ai/consultative/luna'
 import { lunaDataMessage, buildLeakDetector, sanitizeSearchQuery } from '@/lib/ai/consultative/lunaSafety'
 import { eventPreCall, onlyRowsNamed, slimResultForModel, travelPreCall, unshownRows, withoutShownRows } from '@/lib/ai/consultative/consultTravel'
 import { geoGuardArea, guardPlaceGeography } from '@/lib/ai/tools/placeGeoGuard'
@@ -1598,7 +1598,9 @@ export async function POST(req: Request) {
 
   // PHIÊN LUNA: a consultation ANSWER turn runs on role `consult` (the plan keeps the Phase 7 model).
   const lunaAnswer = lunaOn && !hasImage && isLunaAnswerTurn(consult, !!planningIntent)
-  const role: ModelRole = lunaAnswer ? 'consult' : (planningIntent || hasImage) ? 'planning' : isSimpleQuery(lastText, isFirstReply) ? 'fast' : 'smart'
+  // CONSULT_LUNA_PLAN: the detailed plan (a consult "plan" turn, or a trip / evening plan) runs on role `plan`.
+  const lunaPlan = consultLunaPlanEnabled() && !hasImage && (consult?.turn === 'plan' || !!planningIntent)
+  const role: ModelRole = lunaAnswer ? 'consult' : lunaPlan ? 'plan' : (planningIntent || hasImage) ? 'planning' : isSimpleQuery(lastText, isFirstReply) ? 'fast' : 'smart'
   const roleServed = lunaOn ? AI.serving(role) : null
   // PHIÊN LUNA safety (owner 30/09): untrusted text — what users wrote, names and snippets from search, memory, shared
   // context — leaves the system prompt; it goes to the model as ONE marked data message (lunaSafety.ts).
@@ -1974,6 +1976,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   /** Audit cost sink: bytes of tool results the model read this turn. */
   let auditToolResultChars = 0
   // PHIÊN LUNA: the answer model's cost per vendor (only filled when CONSULT_LUNA is on).
+  // PHIÊN LUNA: the plan-completion call (a second model call on some plan turns) is priced too (Phase 7 never counted it).
+  let planCompletionUsd = 0
   let lunaAnswerCost: { usd: number; reasoningTokens: number; cachedInputTokens: number; cacheWriteTokens: number; served: string[]; fellBack: boolean } | null = null
   let usageAcct: {
     finishReason: string
@@ -2869,7 +2873,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           ...steps.flatMap(st => ((st.toolResults ?? []) as unknown as Array<{ toolName: string; result?: unknown }>).map(r => ({ toolName: r.toolName, result: r.result }))),
         ]
         const done = await AI.generate({
-          role: 'planning',
+          role: lunaPlan ? 'plan' : 'planning',
           systemShared,
           system: systemPrompt,
           messages: [
@@ -2884,6 +2888,7 @@ ${completionInstruction(lang)}` },
           ],
           maxTokens: 4096,
         })
+        if (lunaOn) { const c = (done.providerMetadata as { tappy?: { cost?: { usd?: number } } } | undefined)?.tappy?.cost; planCompletionUsd += typeof c?.usd === 'number' ? c.usd : turnUsd({ promptTokens: done.usage?.promptTokens ?? 0, completionTokens: done.usage?.completionTokens ?? 0 }) }
         return done.text.trimStart().startsWith('[TAPPY_PLAN]') ? done.text : `[TAPPY_PLAN]${done.text}`
       },
     }), { status: streamed.status, headers: streamed.headers })
@@ -3127,7 +3132,7 @@ ${completionInstruction(lang)}` },
         // PHIÊN LUNA: each part at its own vendor's price — intent call + answer steps (reasoning tokens are in
         // the output count) + Serper. The Haiku brain, when it ran instead, keeps the Haiku price.
         const intentUsd = lunaRun?.costUsd ?? turnUsd({ promptTokens: consultRun?.usage.promptTokens ?? 0, completionTokens: consultRun?.usage.completionTokens ?? 0 })
-        const answerUsd = lunaAnswerCost?.usd ?? 0
+        const answerUsd = (lunaAnswerCost?.usd ?? 0) + planCompletionUsd
         const serperUsd = turnUsd({ promptTokens: 0, completionTokens: 0, serperCredits: d.credits })
         return { ...base, model: [...new Set(lunaAnswerCost?.served ?? [])].join('+') || base.model, intent: lunaRun?.served ?? (consultRun ? 'haiku' : null), intentUsd, answerUsd, serperUsd, reasoningTokens: lunaAnswerCost?.reasoningTokens ?? 0, lunaCachedIn: lunaAnswerCost?.cachedInputTokens ?? 0, lunaCacheWrite: lunaAnswerCost?.cacheWriteTokens ?? 0, fellBack: lunaAnswerCost?.fellBack ?? false, usd: Math.round((intentUsd + answerUsd + serperUsd) * 1e6) / 1e6 }
       }).pipeThrough(timeClientEmit(startTime, Date.now, (t) => logUsage(t.ttuaMs)))

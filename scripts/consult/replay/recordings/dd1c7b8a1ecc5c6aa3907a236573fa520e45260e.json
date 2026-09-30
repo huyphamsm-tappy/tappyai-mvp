@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Tây Ninh City Hotel",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T05:20:09.477Z",
+ "body": {
+  "searchParameters": {
+   "q": "Tây Ninh City Hotel",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "TÂY NINH CITY HOTEL, Tây Ninh (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/416987139.jpg?k=92f432f43b9934102787c19a8d509b2703c2edace266e4144ddcba191918cc9b&o=",
+    "imageWidth": 576,
+    "imageHeight": 768,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNBj0Oq4WK8dN8owpn3YZEXeiJTJhrMKHhnLgFIaFlcw&s=10",
+    "thumbnailWidth": 480,
+    "thumbnailHeight": 640,
+    "source": "www.booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/tay-ninh-city.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F416987139.jpg%3Fk%3D92f432f43b9934102787c19a8d509b2703c2edace266e4144ddcba191918cc9b%26o%3D&tbnid=8kKO7mYQPacmGM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Ftay-ninh-city.vi.html&docid=71M297TJLppC9M&w=576&h=768",
+    "position": 1
+   },
+   {
+    "title": "TÂY NINH CITY HOTEL, Tây Ninh (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/417609446.jpg?k=504ca19a55905217ade50a6448173a58b1ad6d449536a76db9d369fdef8f5256&o=",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTzrmyP8jBLgvIfHgB6qLlt0XzjG0NT-NyPUlFVa8E-Kw&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "www.booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/tay-ninh-city.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F417609446.jpg%3Fk%3D504ca19a55905217ade50a6448173a58b1ad6d449536a76db9d369fdef8f5256%26o%3D&tbnid=IIP_xFwcsHYyLM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Ftay-ninh-city.vi.html&docid=71M297TJLppC9M&w=1024&h=683",
+    "position": 2
+   },
+   {
+    "title": "TÂY NINH CITY HOTEL, Tây Ninh (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/700457191.jpg?k=759dc8a90d7cbca3153f9393518d3f96214f787e52ffe8f663ea0b11131492bc&o=",
+    "imageWidth": 576,
+    "imageHeight": 768,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUYbsbOBvo6ZHP7CyaWnWSwh0Sh7jcJ2cDISb4Dcf8gw&s=10",
+    "thumbnailWidth": 480,
+    "thumbnailHeight": 640,
+    "source": "www.booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/tay-ninh-city.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F700457191.jpg%3Fk%3D759dc8a90d7cbca3153f9393518d3f96214f787e52ffe8f663ea0b11131492bc%26o%3D&tbnid=zb-Jcj2wLVJVLM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Ftay-ninh-city.vi.html&docid=71M297TJLppC9M&w=576&h=768",
+    "position": 3
+   },
+   {
+    "title": "Tây Ninh City Hotel, Tân Ninh | Hotels.com",
+    "imageUrl": "https://images.trvl-media.com/lodging/106000000/105440000/105434000/105433965/f9f50577.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill",
+    "imageWidth": 575,
+    "imageHeight": 767,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIwxReeb0cyCHBDqGJhTaaxE4FwHKMvpkBgj5x5gyRWA&s=10",
+    "thumbnailWidth": 386,
+    "thumbnailHeight": 518,
+    "source": "hotels",
+    "domain": "vi.hotels.com",
+    "link": "https://vi.hotels.com/ho3374886880/tay-ninh-city-hotel-tay-ninh-viet-nam/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimages.trvl-media.com%2Flodging%2F106000000%2F105440000%2F105434000%2F105433965%2Ff9f50577.jpg%3Fimpolicy%3Dresizecrop%26rw%3D575%26rh%3D575%26ra%3Dfill&tbnid=-GJToFR1srlMDM&imgrefurl=https%3A%2F%2Fvi.hotels.com%2Fho3374886880%2Ftay-ninh-city-hotel-tay-ninh-viet-nam%2F&docid=t7tuStgXq5-reM&w=575&h=767",
+    "position": 4
+   },
+   {
+    "title": "Khách sạn New City Hotel Tây Ninh - Chốn nghỉ dưỡng lý tưởng",
+    "imageUrl": "https://ticotravel.com.vn/wp-content/uploads/2022/03/New-City-Hotel-Tay-Ninh-4.jpg",
+    "imageWidth": 1024,
+    "imageHeight": 576,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9LyNHT7hGcKf06ad6DfvEIPJjhpWRVE8Zi4zItjLomQ&s=10",
+    "thumbnailWidth": 738,
+    "thumbnailHeight": 414,
+    "source": "Tico Travel",
+    "domain": "ticotravel.com.vn",
+    "link": "https://ticotravel.com.vn/hotel/new-city-hotel-tay-ninh/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fticotravel.com.vn%2Fwp-content%2Fuploads%2F2022%2F03%2FNew-City-Hotel-Tay-Ninh-4.jpg&tbnid=8ToRseYigkWF7M&imgrefurl=https%3A%2F%2Fticotravel.com.vn%2Fhotel%2Fnew-city-hotel-tay-ninh%2F&docid=W48R4y3vk3P18M&w=1024&h=576",
+    "position": 5
+   },
+   {
+    "title": "TÂY NINH CITY HOTEL, Tây Ninh (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/906486774.jpg?k=0f323a214ee58fb3bf61acdedb770e77479f416744a570e17c69883bfcccc678&o=",
+    "imageWidth": 554,
+    "imageHeight": 655,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUO3Gbs-2JrrPpJCQtEXyNs9eyf0jQFVJ8WQfQeEMASg&s=10",
+    "thumbnailWidth": 509,
+    "thumbnailHeight": 602,
+    "source": "www.booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/tay-ninh-city.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F906486774.jpg%3Fk%3D0f323a214ee58fb3bf61acdedb770e77479f416744a570e17c69883bfcccc678%26o%3D&tbnid=lqxI13bJE2a61M&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Ftay-ninh-city.vi.html&docid=71M297TJLppC9M&w=554&h=655",
+    "position": 6
+   },
+   {
+    "title": "Khách sạn Tây ninh city Vincom | Tây Ninh",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=1026680040324755",
+    "imageWidth": 2047,
+    "imageHeight": 1365,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS3dB9vejAJxc38TfDNiA4FIP8vmcTs4hfVrJ8BV8KUZA&s",
+    "thumbnailWidth": 275,
+    "thumbnailHeight": 183,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/p/Kh%C3%A1ch-s%E1%BA%A1n-T%C3%A2y-ninh-city-Vincom-100089483045958/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D1026680040324755&tbnid=2ojZD0On-Nu5-M&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Fp%2FKh%25C3%25A1ch-s%25E1%25BA%25A1n-T%25C3%25A2y-ninh-city-Vincom-100089483045958%2F&docid=T-6az5Q88cyx0M&w=2047&h=1365",
+    "position": 7
+   },
+   {
+    "title": "Khách sạn TÂY Ninh City Hotel, Tây Ninh - Skyscanner",
+    "imageUrl": "https://content.skyscnr.com/available/1963066890/1963066890_WxH.jpg",
+    "imageWidth": 960,
+    "imageHeight": 640,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzGy2SsYvXBNmD9LzwlOa9itjHNB9up4oJ_CLE5Tl56Q&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "Skyscanner",
+    "domain": "www.skyscanner.com.vn",
+    "link": "https://www.skyscanner.com.vn/khach-san/viet-nam/tay-ninh-hotels/tay-ninh-city-hotel/ht-213557806",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcontent.skyscnr.com%2Favailable%2F1963066890%2F1963066890_WxH.jpg&tbnid=CxaGHHvhfiSJzM&imgrefurl=https%3A%2F%2Fwww.skyscanner.com.vn%2Fkhach-san%2Fviet-nam%2Ftay-ninh-hotels%2Ftay-ninh-city-hotel%2Fht-213557806&docid=ZpoOvZ9MTXS7HM&w=960&h=640",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

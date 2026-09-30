@@ -1,0 +1,36 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Mai Vy Hotel Tây Ninh\" Tây Ninh site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T05:20:05.728Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Mai Vy Hotel Tây Ninh\" Tây Ninh site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "10 khách sạn được đề xuất gần TRUNG TÂM VĂN HÓA ...",
+    "link": "https://vn.trip.com/hotels/tan-ninh-trung-tm-vn-ha-tnh-ty-ninh/hotels-c807297m50673629/",
+    "snippet": "Tọa lạc tại Tân Ninh, Mai Vy Hotel Tây Ninh chỉ cách Tòa thánh Cao Đài 4 phút đi xe. Khách sạn này cách Hồ Dầu Tiếng 21,1 km và cách Núi Bà Đen 24,3 km. Khách ...",
+    "position": 1
+   },
+   {
+    "title": "Khách sạn giá rẻ gần Lotte Cinema Tây Ninh, Tân Ninh",
+    "link": "https://vn.trip.com/hotels/landmark/vn/lotte-cinema-tay-ninh.html",
+    "snippet": "Tọa lạc tại Tân Ninh, Mai Vy Hotel Tây Ninh chỉ cách Tòa thánh Cao Đài 4 phút đi xe. Khách sạn này cách Hồ Dầu Tiếng 21,1 km và cách Núi Bà Đen 24,3 km. Khách ...",
+    "position": 2
+   }
+  ],
+  "credits": 1
+ }
+}

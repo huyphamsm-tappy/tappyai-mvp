@@ -1,0 +1,30 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Mai Vy Hotel Tây Ninh\" chưa muốn đi Tây Ninh site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T05:26:31.876Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Mai Vy Hotel Tây Ninh\" chưa muốn đi Tây Ninh site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Khách sạn giá rẻ gần Lotte Cinema Tây Ninh, Tân Ninh",
+    "link": "https://vn.trip.com/hotels/landmark/vn/lotte-cinema-tay-ninh.html",
+    "snippet": "Tọa lạc tại Tân Ninh, Mai Vy Hotel Tây Ninh chỉ cách Tòa thánh Cao Đài 4 phút đi xe. Khách sạn này cách Hồ Dầu Tiếng 21,1 km và cách Núi Bà Đen 24,3 km. Khách ...",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}
