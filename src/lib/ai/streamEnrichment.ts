@@ -2516,7 +2516,12 @@ export function applyPlaceEnrichmentStreamFilter(
     // A COMPARE answers "A hay B?" — the pick sentence is never supplied from a card (UAT §10 SHOP-2 t4, 30/09, level B:
     // the compare searched again and the code wrote "Mình chọn: <a third product from the new card>").
     const cardPickFallback = collector?.consultTurn === 'compare' ? null : (shoppingPickName(collector?.shoppingMarker) ?? placePickFallback)
-    const pickNormalized = consultPickTurn ? normalizePickSentence(unlabelled, cardPickFallback) : unlabelled
+    // PHIÊN LUNA: on a reject turn the server never re-offers a name already shown as its fallback pick (replay 30/09
+    // SHOP-1 t6: "không thích màu đen" → the card's recommendation was the black case already shown → a B).
+    const foldName = (n: string) => n.normalize('NFC').toLowerCase().replace(/\s+/g, ' ').trim()
+    const fallbackShown = !!cardPickFallback && consultLunaEnabled() && collector?.consultTurn === 'reject'
+      && (collector?.consultShown ?? []).some(n => { const a = foldName(n), b = foldName(cardPickFallback); return a.length >= 4 && (a.includes(b) || b.includes(a)) })
+    const pickNormalized = consultPickTurn ? normalizePickSentence(unlabelled, fallbackShown ? null : cardPickFallback) : unlabelled
     // Owner 29/09 "hạn chế guard vá": every post-model text patch on a consult turn is COUNTED (logged once per
     // turn below), so a patch that fires often is replaced by a prompt/structure fix instead of piling up.
     const consultPatches: string[] = []

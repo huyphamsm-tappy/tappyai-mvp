@@ -302,6 +302,8 @@ export function mergeIntentWithRules(luna: ConsultDecision, routed: { decision: 
 export function splitPickSentence(text: string): string {
   // Luna bolds its own count ("Mình còn **34 lựa chọn** nữa") — unbolded so the server's count line replaces it, not doubles it.
   text = text.replace(/([Cc]òn(?:\s+khoảng)?\s+)\*\*(\d+)(\s+lựa chọn)?\*\*/g, '$1$2$3')
+  // "**Mình chọn: chưa thể …**" is not a pick (replay 30/09 TRAVEL-2 t2): plain text, so no later turn takes it for a name.
+  text = text.replace(/\*\*Mình chọn:\s*((?:chưa|không|chờ)\b[^*\n]*)\*\*/giu, (_m, rest: string) => rest.charAt(0).toLocaleUpperCase('vi') + rest.slice(1))
   const cut = text.search(/\[(?:TAPPY_[A-Z_]+|CTA_BUTTONS|FOLLOWUPS)\]/)
   const prose = cut === -1 ? text : text.slice(0, cut)
   const m = /(\*\*Mình chọn:\s*[^*\n]{2,160}\*\*)[ \t]*(?:—|–|-|:|,)?[ \t]*(vì|bởi vì|do|nhờ|because)?[ \t]*(?=\S)/.exec(prose)
