@@ -18,11 +18,15 @@
 //           maps (places)        3 days  — the weekly openingHours object is stored; open-now is
 //                                          computed by OUR code at read time (serperPlaces.ts), so
 //                                          nothing time-of-day is frozen. Maps-terms caveat: v1 header.
-//           shopping (prices)    6 h     — listing prices / flash sales move within a day.
-//           search (web)         12 h
+//           shopping (prices)    6 h     — /shopping, and a web search limited to a shop site (Shopee, Lazada,
+//                                          Tiki, Cellphones, TikTok Shop, GrabFood…): listing prices move in a day.
+//           link lookup          3 days  — a web search limited to another site (TikTok clip, Klook, Trip.com
+//                                          page for a named venue). 99% of web searches in replay were one of
+//                                          these two kinds (cacheSim.mjs, 30/09).
+//           other web search     24 h
 //           anything time-bound  1 h     — tonight / this week / showtimes / events / gold / FX /
-//                                          promotions / an explicit date (both endpoints).
-//         Each has an env override: SERPER_CACHE_V2_TTL_{MAPS,SHOPPING,SEARCH,TIMELY}_SECONDS.
+//                                          promotions / an explicit date (every endpoint).
+//         Env overrides: SERPER_CACHE_V2_TTL_{MAPS,SHOPPING,LINK,SEARCH,TIMELY}_SECONDS.
 //   data  the value is the tool's own record list (public provider fields only — no user location,
 //         no memory, no distance-from-user), and serperCache.ts runs it through the untrusted-text
 //         sanitizer before it is shared, so a poisoned title is never served to another user raw.
@@ -86,9 +90,13 @@ const envSeconds = (env: Record<string, string | undefined>, name: string, dflt:
 export function serperTtlV2(endpoint: string, query: string, env: Record<string, string | undefined> = process.env): number {
   if (TIMELY.test(query ?? '')) return envSeconds(env, 'SERPER_CACHE_V2_TTL_TIMELY_SECONDS', 3_600)
   if (endpoint === 'maps') return envSeconds(env, 'SERPER_CACHE_V2_TTL_MAPS_SECONDS', 3 * 86_400)
-  if (endpoint === 'shopping') return envSeconds(env, 'SERPER_CACHE_V2_TTL_SHOPPING_SECONDS', 6 * 3_600)
-  return envSeconds(env, 'SERPER_CACHE_V2_TTL_SEARCH_SECONDS', 12 * 3_600)
+  if (endpoint === 'shopping' || SHOP_SITE.test(query ?? '')) return envSeconds(env, 'SERPER_CACHE_V2_TTL_SHOPPING_SECONDS', 6 * 3_600)
+  if (/\bsite:/i.test(query ?? '')) return envSeconds(env, 'SERPER_CACHE_V2_TTL_LINK_SECONDS', 3 * 86_400)
+  return envSeconds(env, 'SERPER_CACHE_V2_TTL_SEARCH_SECONDS', 86_400)
 }
+
+// A web search restricted to a shop: its snippets carry listing prices, so it goes stale like /shopping.
+const SHOP_SITE = /\bsite:(?:[a-z]+\.)?(?:shopee\.vn|lazada\.vn|tiki\.vn|cellphones\.com\.vn|thegioididong\.com|fptshop\.com\.vn|shop\.tiktok\.com|food\.grab\.com)/i
 
 /** The un-namespaced, un-hashed key body (tests + simulator); serperCache.ts hashes the query part. */
 export function serperKeyBodyV2(endpoint: string, query: string, area: SerperCacheAreaV2, variant?: string): string {

@@ -34,7 +34,13 @@ describe('SERPER_CACHE_V2 — TTL by what goes stale', () => {
   it('places 3 days, prices 6 h, web 12 h', () => {
     expect(serperTtlV2('maps', 'phở quận 1', {})).toBe(3 * 86_400)
     expect(serperTtlV2('shopping', 'tai nghe bluetooth', {})).toBe(6 * 3_600)
-    expect(serperTtlV2('search', 'review máy lọc không khí', {})).toBe(12 * 3_600)
+    expect(serperTtlV2('search', 'review máy lọc không khí', {})).toBe(86_400)
+  })
+  it('web searches limited to a shop go stale like prices; other site lookups (clips, activity pages) keep 3 days', () => {
+    expect(serperTtlV2('search', 'Laptop (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn)', {})).toBe(6 * 3_600)
+    expect(serperTtlV2('search', 'quán ăn ngon quận 7 site:food.grab.com', {})).toBe(6 * 3_600)
+    expect(serperTtlV2('search', '"Mộc quán" Đà Nẵng site:tiktok.com', {})).toBe(3 * 86_400)
+    expect(serperTtlV2('search', 'tiệm nail Quận 10 site:klook.com/vi/activity', {})).toBe(3 * 86_400)
   })
   it('anything tied to today is 1 h on every endpoint', () => {
     for (const q of ['lịch chiếu CGV tối nay', 'sự kiện cuối tuần quận 1', 'giá vàng hôm nay', 'flash sale tai nghe', 'concert 15/10'])
