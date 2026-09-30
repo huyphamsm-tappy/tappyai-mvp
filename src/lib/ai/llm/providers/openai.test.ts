@@ -1,7 +1,14 @@
 import { describe, it, expect } from 'vitest'
-import { lunaCallOptions, openaiCallCost, reasoningEffortFor } from './openai'
+import { effortForCall, lunaCallOptions, openaiCallCost, reasoningEffortFor } from './openai'
 
 describe('Luna adapter (PHIÊN LUNA 30/09)', () => {
+  it('a call with function tools goes at none (the API refuses tools with any other effort); a tool-less call keeps the role effort', () => {
+    expect(effortForCall('medium', { mode: { type: 'regular', tools: [{ name: 'search_places' }] } })).toBe('none')
+    expect(effortForCall('medium', { mode: { type: 'regular', tools: [] } })).toBe('medium')
+    expect(effortForCall('high', { mode: { type: 'regular' } })).toBe('high')
+    expect(effortForCall('medium', { mode: { type: 'object-json' } })).toBe('medium')
+  })
+
   it('always sends an explicit effort; unset or unknown → none (never the vendor default medium)', () => {
     expect(reasoningEffortFor('consult', {})).toBe('none')
     expect(reasoningEffortFor('consult', { LLM_CONSULT_REASONING: 'low' })).toBe('low')

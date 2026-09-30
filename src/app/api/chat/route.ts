@@ -2724,9 +2724,11 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     // PHIÊN LUNA: a Luna answer whose targeted search the code already ran gets the results and NO tool definitions (the
     // no-tool-turn pattern above; tool choice stays 'auto'). Owner: no model-driven tool loops — replay 30/09 TRAVEL-1 t2
     // spent both steps calling tools and sent no text, twice.
-    // Luna plan (CONSULT_LUNA_PLAN): gpt-6-luna refuses function tools with reasoning_effort ≠ none on /chat/completions
-    // (measured 30/09: every medium plan call fell back). The plan is written from the code's presearch + the conversation.
-    tools: (lunaAnswer && presearchAll.length > 0) || lunaPlan ? undefined : lunaGuardTools(lean && tools ? Object.fromEntries(Object.entries(tools).filter(([k]) => consultTools(consult!.domains).includes(k))) as typeof tools : tools),
+    // Luna plan (CONSULT_LUNA_PLAN): gpt-6-luna takes function tools only at effort 'none' (the adapter sends 'none' on a
+    // call with tools). A TRIP plan has the code's full presearch (hotels, places, weather) → no tools, the plan effort
+    // applies. Every other plan keeps its tools (replay 30/09: without them E1-G5 planned only the dinner, R16 named no
+    // venue) and so runs at 'none'.
+    tools: (lunaAnswer && presearchAll.length > 0) || (lunaPlan && planningIntent === 'trip') ? undefined : lunaGuardTools(lean && tools ? Object.fromEntries(Object.entries(tools).filter(([k]) => consultTools(consult!.domains).includes(k))) as typeof tools : tools),
     onFinish: async ({ usage, finishReason, text, steps }) => {
       // Prompt-cache accounting. `usage` is already the SUM across steps, but
       // cache counters live in per-step providerMetadata (the top-level

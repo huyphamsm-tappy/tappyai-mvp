@@ -85,6 +85,11 @@ function usageOf(usage: { promptTokens: number; completionTokens: number } | und
   }
 }
 
+/** The effort actually sent: a call carrying function tools goes at 'none' — the only effort the API accepts with tools. */
+export function effortForCall(effort: ReasoningEffort, opts: { mode?: { type?: string; tools?: unknown[] } }): ReasoningEffort {
+  return opts.mode?.type === 'regular' && Array.isArray(opts.mode.tools) && opts.mode.tools.length > 0 ? 'none' : effort
+}
+
 /**
  * One model per (role, effort). The wrapper adds the priced call to the finish part / generate result as
  * `providerMetadata.tappy.cost` (read by the route — a neutral key, no vendor name needed downstream).
@@ -101,9 +106,12 @@ function lunaModel(modelId: string, effort: ReasoningEffort, apiKey: string, str
   const hasTools = (opts: { mode?: { type?: string; tools?: unknown[] } }) => opts.mode?.type === 'regular' && Array.isArray(opts.mode.tools) && opts.mode.tools.length > 0
   const inner = plain
   const pick = (opts: { mode?: { type?: string; tools?: unknown[] } }) => (hasTools(opts) ? oneTool : plain)
-  const withCost = (usage: { promptTokens: number; completionTokens: number } | undefined, meta: Record<string, Record<string, unknown>> | undefined) => {
+  // The API refuses function tools with any effort but 'none' on /chat/completions (replay 30/09: every medium plan call
+  // with tools fell back). A call that carries tools runs at 'none'; the effort actually sent is logged with the cost.
+  const effortFor = (opts: { mode?: { type?: string; tools?: unknown[] } }): ReasoningEffort => effortForCall(effort, opts)
+  const withCost = (usage: { promptTokens: number; completionTokens: number } | undefined, meta: Record<string, Record<string, unknown>> | undefined, sent: ReasoningEffort) => {
     const cost = openaiCallCost(modelId, usageOf(usage, meta))
-    return cost ? { ...(meta ?? {}), tappy: { cost: { ...cost, effort } as unknown as Record<string, unknown> } } : meta
+    return cost ? { ...(meta ?? {}), tappy: { cost: { ...cost, effort: sent } as unknown as Record<string, unknown> } } : meta
   }
   return {
     ...inner,
@@ -113,14 +121,16 @@ function lunaModel(modelId: string, effort: ReasoningEffort, apiKey: string, str
     defaultObjectGenerationMode: inner.defaultObjectGenerationMode,
     supportsStructuredOutputs: structured,
     async doGenerate(opts) {
-      const r = await pick(opts as never).doGenerate(lunaCallOptions(opts as never, effort))
-      return { ...r, providerMetadata: withCost(r.usage, r.providerMetadata as never) as never }
+      const sent = effortFor(opts as never)
+      const r = await pick(opts as never).doGenerate(lunaCallOptions(opts as never, sent))
+      return { ...r, providerMetadata: withCost(r.usage, r.providerMetadata as never, sent) as never }
     },
     async doStream(opts) {
-      const r = await pick(opts as never).doStream(lunaCallOptions(opts as never, effort))
+      const sent = effortFor(opts as never)
+      const r = await pick(opts as never).doStream(lunaCallOptions(opts as never, sent))
       const stream = r.stream.pipeThrough(new TransformStream<LanguageModelV1StreamPart, LanguageModelV1StreamPart>({
         transform(part, c) {
-          if (part.type === 'finish') c.enqueue({ ...part, providerMetadata: withCost(part.usage, part.providerMetadata as never) as never })
+          if (part.type === 'finish') c.enqueue({ ...part, providerMetadata: withCost(part.usage, part.providerMetadata as never, sent) as never })
           else c.enqueue(part)
         },
       }))
