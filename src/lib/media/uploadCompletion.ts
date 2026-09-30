@@ -173,6 +173,14 @@ export async function completeUploadResponse(
   if (!policy.contentTypes.includes(stored)) {
     return { status: 422, body: { error: 'Định dạng tệp không được hỗ trợ' } }
   }
+  // Security audit 2026-09-30: the size was checked only when the session was minted, from the
+  // CLIENT's declared size. The session pins X-Upload-Content-Length, but the object that landed is
+  // what gets published — so its real size is held to the kind's ceiling too, and an oversized
+  // object is deleted rather than confirmed.
+  if (found.size > policy.maxBytes) {
+    try { await provider.deleteObject?.(key) } catch { /* the URL is never returned either way */ }
+    return { status: 413, body: { error: `Tệp vượt quá giới hạn ${Math.floor(policy.maxBytes / (1024 * 1024))}MB` } }
+  }
 
   // F-099 (P1, owner 2026-09-26): a clip, its poster frame or a deal image must not publish where and
   // with what it was made. The client neutralises clip metadata before the PUT; this is the
