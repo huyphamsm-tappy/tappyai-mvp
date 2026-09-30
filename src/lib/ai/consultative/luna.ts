@@ -148,6 +148,15 @@ export function checkIntent(intent: LunaIntent, userTexts: readonly string[], ct
   const dropped: string[] = [], corrected: string[] = []
   const saysAny = (v: string) => fold(v).split(' ').filter(w => w.length >= 2 && !/^(nguoi|khoang|tam|duoi|tren|quan)$/.test(w)).some(w => words.has(w))
   const nearMe = /\b(?:gan day|gan nha|quanh day|gan toi|gan minh|gan em|nearby|near me|around here)\b/.test(t.f)
+  // A place: its words are in the text, OR it is the district/city the code reader finds there ("q1" = "Quận 1" —
+  // replay 30/09: "Quận 1" has no word ≥ 2 letters besides the stop word "quận", so a word match alone dropped it).
+  const coded = localAreaOf(t)
+  const placeSaid = (v: string) => {
+    const fv = fold(v)
+    const d = /^(?:quan|q|district)\s*(\d{1,2})$/.exec(fv)
+    if (d) return new RegExp(`\\b(?:quan|q\\.?|district)\\s?${d[1]}\\b`).test(t.f)
+    return saysAny(v) || (!!coded && fold(coded) === fv)
+  }
 
   // Party: a number the text states (digit or number word), else the code reader's value, else dropped.
   const partyText = partyOf(t)
@@ -177,7 +186,7 @@ export function checkIntent(intent: LunaIntent, userTexts: readonly string[], ct
       case 'ngan_sach': ok = amounts.length > 0 || budgetOf(t) !== null; break
       case 'thoi_gian': case 'gio': ok = timeOf(t) !== null || saysAny(v); break
       case 'ngay': case 'ngay_ve': case 'so_ngay': { const d = tripDatesOf(t); ok = !!(d.date || d.days || d.back) || saysAny(v); break }
-      case 'khu_vuc': case 'diem_den': case 'xuat_phat': ok = saysAny(v) || (nearMe && /gần|near/i.test(v)); break
+      case 'khu_vuc': case 'diem_den': case 'xuat_phat': ok = placeSaid(v) || (nearMe && /gần|near/i.test(v)); break
       default: ok = saysAny(v)
     }
     if (ok) { known.push({ key: k.key, value: v }); seen.add(k.key) } else dropped.push(`${k.key}=${v}`)
@@ -188,8 +197,7 @@ export function checkIntent(intent: LunaIntent, userTexts: readonly string[], ct
 
   // Area: said by the user (or "near me" with a device location), else dropped.
   let area = intent.area?.trim() || null
-  if (area && !(saysAny(area) || (nearMe && ctx.hasGps && /gần|near/i.test(area)))) {
-    const coded = localAreaOf(t)
+  if (area && !(placeSaid(area) || (nearMe && ctx.hasGps && /gần|near/i.test(area)))) {
     if (coded) { corrected.push(`area ${area}→${coded}`); area = coded } else { dropped.push(`area ${area}`); area = null }
   }
 

@@ -44,6 +44,16 @@ describe('code checks the facts the model extracted', () => {
     expect(intent.known).toContainEqual({ key: 'khu_vuc', value: 'Bình Thạnh' })
   })
 
+  it('"q1" / "quận 1" keeps the district slot (replay 30/09: it was dropped)', () => {
+    for (const text of ['toi nay an j ngon q1', 'tối nay ăn gì ngon quận 1']) {
+      const { intent, check } = checkIntent(base({ area: 'Quận 1', known: [{ key: 'khu_vuc', value: 'Quận 1' }] }), [text], { hasGps: false })
+      expect(intent.area).toBe('Quận 1')
+      expect(intent.known).toContainEqual({ key: 'khu_vuc', value: 'Quận 1' })
+      expect(check.dropped).toEqual([])
+    }
+    expect(checkIntent(base({ known: [{ key: 'khu_vuc', value: 'Quận 3' }] }), ['an toi q1'], { hasGps: false }).intent.known).toEqual([])
+  })
+
   it('a mis-normalised area is corrected to the place the text names', () => {
     const { intent, check } = checkIntent(base({ area: 'Quận Nhất' }), ['an toi q1 nhe'], { hasGps: false })
     expect(intent.area).toBe('quận 1')
