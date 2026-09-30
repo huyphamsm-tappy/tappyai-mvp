@@ -1373,8 +1373,7 @@ export async function POST(req: Request) {
   // SHOP-3: "… Laptop Dell 15 …" in an "A hay B?" became brand = Dell and filtered out every other laptop).
   const shoppingConstraints = deriveShoppingConstraints(
     lunaOn ? lunaOwnWords : withoutQuotedNames(messages),
-    // PHIÊN LUNA: under the flag the budget also skips whole reference turns (a pasted card title), not only quoted names.
-    budget ?? budgetFromHistory(currentSubjectMessages((lunaOn ? lunaOwnWords : budgetMessages) as typeof messages, { hasGps: !!userLocation, lang }), extractBudget),
+    budget ?? budgetFromHistory(currentSubjectMessages(budgetMessages as typeof messages, { hasGps: !!userLocation, lang }), extractBudget),
   )
 
 

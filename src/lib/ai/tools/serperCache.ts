@@ -35,7 +35,7 @@
 import { createHash } from 'node:crypto'
 import { cacheKeyPart } from './cacheKeys'
 import { isDistributedStoreConfigured, namespacedKey } from '@/lib/security/distributedRateLimit'
-import { sanitizeSerperJson } from '@/lib/ai/consultative/lunaSafety'
+import { sanitizeSerperJson } from './serperUntrusted'
 import { areaKeyV2, normalizeQueryV2, serperCacheV2Enabled, serperTtlV2 } from './serperCacheV2'
 
 export type SerperCachedEndpoint = 'search' | 'shopping' | 'maps'
@@ -146,7 +146,7 @@ export async function serperCacheSet(
   if (!Array.isArray(value) || value.length === 0) return
   try {
     const v2 = serperCacheV2Enabled(env)
-    // v2 shares only cleaned public text: an injected title/snippet never reaches another user's turn raw (lunaSafety.ts).
+    // v2 shares only cleaned public text: an injected title/snippet never reaches another user's turn raw (serperUntrusted.ts).
     const json = JSON.stringify(v2 ? sanitizeSerperJson(value).body : value)
     if (new TextEncoder().encode(json).length > SERPER_CACHE_MAX_BYTES) return
     const ttl = v2 ? serperTtlV2(endpoint, query, env) : serperCacheTtlSeconds(env)

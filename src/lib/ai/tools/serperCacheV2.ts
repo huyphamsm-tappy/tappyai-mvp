@@ -28,7 +28,7 @@
 //                                          promotions / an explicit date (every endpoint).
 //         Env overrides: SERPER_CACHE_V2_TTL_{MAPS,SHOPPING,LINK,SEARCH,TIMELY}_SECONDS.
 //   data  the value is the tool's own record list (public provider fields only — no user location,
-//         no memory, no distance-from-user), and serperCache.ts runs it through the untrusted-text
+//         no memory, no distance-from-user), and serperCache.ts runs it through the untrusted-text (serperUntrusted.ts)
 //         sanitizer before it is shared, so a poisoned title is never served to another user raw.
 //
 // This file has NO imports on purpose: scripts/consult/luna/cacheSim.mjs loads it straight into node.
