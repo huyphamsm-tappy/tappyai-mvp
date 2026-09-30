@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { checkIntent, consultLunaEnabled, intentToDecision, isLunaAnswerTurn, mergeIntentWithRules, moneyAmounts, runLunaIntent, splitPickSentence, type LunaIntent } from './luna'
+import { checkIntent, consultLunaEnabled, intentToDecision, isLunaAnswerTurn, mergeIntentWithRules, moneyAmounts, runLunaIntent, splitPickSentence, lunaTurnFacts, type LunaIntent } from './luna'
 import { buildLeanConsultSystem, LEAN_CORE } from './leanConsultPrompt'
 
 const base = (o: Partial<LunaIntent> = {}): LunaIntent => ({
@@ -165,5 +165,16 @@ describe('the pick sentence stands alone (a guard cutting the reason keeps the n
   it('leaves a pick that already ends its sentence, and text without a pick', () => {
     expect(splitPickSentence('**Mình chọn: Nori**. Quán gần.')).toBe('**Mình chọn: Nori**. Quán gần.')
     expect(splitPickSentence('Không có lựa chọn.')).toBe('Không có lựa chọn.')
+  })
+})
+
+describe('turn facts from the stored consultation (replay ENT-1 t6: the rejected karaoke was picked again)', () => {
+  it('reject names the pick just turned down and what was shown; more names what was shown', () => {
+    const f = lunaTurnFacts('reject', { pick: 'Karaoke MEI', shown: ['Karaoke MEI', 'Karaoke Avatar'] })
+    expect(f).toContain('VỪA BỊ BÁC: Karaoke MEI')
+    expect(f).toContain('Karaoke Avatar')
+    expect(lunaTurnFacts('more', { shown: ['A', 'B'] })).toContain('A | B')
+    expect(lunaTurnFacts('pick', { pick: 'X', shown: ['X'] })).toBe('')
+    expect(lunaTurnFacts('reject', null)).toBe('')
   })
 })

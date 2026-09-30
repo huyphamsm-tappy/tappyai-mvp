@@ -312,3 +312,19 @@ export function splitPickSentence(text: string): string {
   const cap = reason.charAt(0).toLocaleUpperCase('vi') + reason.slice(1)
   return prose.slice(0, m.index) + `${m[1]}. ${cap}` + (cut === -1 ? '' : text.slice(cut))
 }
+
+/**
+ * The facts of THIS turn the answer model must not miss, from the stored consultation (per chatSessionId) — data in, not
+ * a guard after (replay 30/09 ENT-1 t6: "chỗ đó ồn ào đông quá" — the search returned a NEW karaoke, Luna re-picked the
+ * rejected one). Reject: the pick just turned down. More: the names already shown (never the main pick again).
+ */
+export function lunaTurnFacts(turn: ConsultTurn, state: { pick?: string | null; shown?: string[] } | null | undefined): string {
+  if (!state) return ''
+  const shown = [...new Set((state.shown ?? []).filter(Boolean))].slice(-10)
+  if (turn === 'reject') {
+    const lines = [state.pick ? `VỪA BỊ BÁC: ${state.pick} — TUYỆT ĐỐI không chọn lại, không đưa vào phương án khác.` : '', shown.length ? `ĐÃ HIỆN TRƯỚC ĐÓ (không chọn lại làm lựa chọn chính): ${shown.join(' | ')}` : ''].filter(Boolean)
+    return lines.length ? ['SỰ THẬT CỦA LƯỢT NÀY (code):', ...lines, 'Chọn ứng viên KHÁC trong kết quả công cụ; không còn ứng viên khác thì nói thật và hỏi một câu.'].join('\n') : ''
+  }
+  if (turn === 'more' && shown.length) return ['SỰ THẬT CỦA LƯỢT NÀY (code):', `ĐÃ HIỆN (không chọn lại làm lựa chọn chính): ${shown.join(' | ')}`].join('\n')
+  return ''
+}
