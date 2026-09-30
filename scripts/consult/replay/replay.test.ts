@@ -132,8 +132,22 @@ describe.skipIf(!ON)('offline replay — chat route, real model, Serper record/r
       json: () => Promise.resolve({ messages, userLocation: USER_LOCATION, chatSessionId }),
       signal: undefined,
     }
+    const t0 = Date.now()
     const res = await POST(req as never)
-    return { status: res.status, raw: await res.text(), evidenceId: res.headers.get('X-Decision-Evidence-Id') }
+    // Time to first VISIBLE text (the first `0:` frame with content) — what the user waits for.
+    let raw = '', ttftMs: number | null = null
+    const dec = new TextDecoder()
+    if (res.body) {
+      const reader = res.body.getReader()
+      for (;;) {
+        const { done, value } = await reader.read()
+        if (done) break
+        raw += dec.decode(value, { stream: true })
+        if (ttftMs === null && /(?:^|\n)0:"(?!")/.test(raw)) ttftMs = Date.now() - t0
+      }
+      raw += dec.decode()
+    }
+    return { status: res.status, raw, evidenceId: res.headers.get('X-Decision-Evidence-Id'), ttftMs }
   }
 
   async function runConversation(c: Conversation, outDir: string, rows: TurnRow[]) {
@@ -152,13 +166,13 @@ describe.skipIf(!ON)('offline replay — chat route, real model, Serper record/r
       const netBefore = netSnapshot()
       const cap = captureConsole()
       const t0 = Date.now()
-      let raw = '', status = 0, crash: string | undefined
+      let raw = '', status = 0, crash: string | undefined, ttftMs: number | null = null
       try {
-        const r: { status: number; raw: string; evidenceId: string | null } = await Promise.race([
+        const r: { status: number; raw: string; evidenceId: string | null; ttftMs: number | null } = await Promise.race([
           post([...messages], chatSessionId),
           new Promise<never>((_, rej) => setTimeout(() => rej(new Error(`turn timeout ${TURN_TIMEOUT_MS} ms`)), TURN_TIMEOUT_MS)),
         ])
-        raw = r.raw; status = r.status
+        raw = r.raw; status = r.status; ttftMs = r.ttftMs
         if (r.evidenceId) evidenceId = r.evidenceId
         if (status !== 200) crash = `HTTP ${status}: ${raw.slice(0, 300)}`
       } catch (e) {
@@ -178,7 +192,7 @@ describe.skipIf(!ON)('offline replay — chat route, real model, Serper record/r
         conv: c.id, area: c.area, turnIndex: i + 1, sent, unresolved, expect: t.expect, type: ev.type,
         server: p.turn ? { domain: p.turn.domain, turnType: p.turn.turnType } : null,
         usd: p.turn?.usd ?? 0, tokensIn: p.turn?.tokensIn ?? 0, tokensOut: p.turn?.tokensOut ?? 0, serperCalls: p.turn?.serperCalls ?? 0, cacheHits: p.turn?.cacheHits ?? 0, promptCacheRead: p.turn?.promptCacheRead ?? 0, promptCacheWrite: p.turn?.promptCacheWrite ?? 0, patches: (cap.events as Array<{ type?: string; patches?: string[] }>).filter(e => e.type === 'tappyai_consult_patch').flatMap(e => e.patches ?? []), guards: (cap.events as Array<Record<string, unknown>>).filter(e => e.type === 'tappyai_guard' && guardChanged(e)).map(e => String(e.guard)),
-        net, toolRows, tools: p.tools.map(x => x.toolName ?? '?'), mainPick: pick, alternatives: alts, ms, pass: ev.pass && (unresolved.length === 0 || flightThread), // a flight thread's "chỗ đó" names no place (Q10)
+        net, toolRows, tools: p.tools.map(x => x.toolName ?? '?'), mainPick: pick, alternatives: alts, ms, ttftMs, cost: p.turn ? { model: p.turn.model, intent: p.turn.intent ?? null, intentUsd: p.turn.intentUsd ?? null, answerUsd: p.turn.answerUsd ?? null, serperUsd: p.turn.serperUsd ?? null, reasoningTokens: p.turn.reasoningTokens ?? 0, fellBack: p.turn.fellBack ?? false } : null, pass: ev.pass && (unresolved.length === 0 || flightThread), // a flight thread's "chỗ đó" names no place (Q10)
         checks: unresolved.length ? [...ev.checks, { id: 'placeholders', pass: false, detail: `unresolved: ${unresolved.join(',')}` }] : ev.checks,
         reply: p.text, ...(crash ? { crash } : {}),
       })

@@ -53,5 +53,33 @@ export function prepareReplayEnv(file = process.env.REPLAY_ENV_FILE || DEFAULT_E
   process.env.CCP_ATTRIBUTION_SECRET = randomBytes(24).toString('hex')
   // Keep the model on the provider defaults (Haiku); a stray shell override would skew cost.
   for (const k of ['LLM_PROVIDER', 'LLM_FAST_MODEL', 'LLM_SMART_MODEL', 'LLM_PLANNING_MODEL', 'LLM_VISION_MODEL']) delete process.env[k]
+  applyLunaEnv()
   return { serperKey: !!env.SERPER_API_KEY }
+}
+
+/** Where the owner keeps the OpenAI key for LOCAL replay only (never committed, never printed). */
+export const DEFAULT_OPENAI_KEY_FILE = 'D:/TappyAI-backups/openai-key.txt'
+
+/**
+ * PHIÊN LUNA (owner 2026-09-30). REPLAY_LUNA=<answer effort>[,<intent effort>] — e.g. `none`, `low`,
+ * `low,none` — turns CONSULT_LUNA on and routes both roles to Luna with EXPLICIT efforts. REPLAY_LUNA=prompt
+ * turns the flag on with both roles on Haiku (isolates the prompt). Unset → the Phase 7 pipeline (Haiku).
+ */
+export function applyLunaEnv(): { luna: string | null } {
+  for (const k of ['CONSULT_LUNA', 'LLM_CONSULT_PROVIDER', 'LLM_INTENT_PROVIDER', 'LLM_CONSULT_REASONING', 'LLM_INTENT_REASONING', 'LLM_CONSULT_MODEL', 'LLM_INTENT_MODEL']) delete process.env[k]
+  const spec = (process.env.REPLAY_LUNA ?? '').trim().toLowerCase()
+  if (!spec) return { luna: null }
+  process.env.CONSULT_LUNA = '1'
+  if (spec === 'prompt') return { luna: spec }
+  const [answer, intent = answer] = spec.split(',').map(s => s.trim())
+  const ok = ['none', 'low', 'medium', 'high']
+  if (!ok.includes(answer) || !ok.includes(intent)) throw new Error('REFUSING: REPLAY_LUNA must be none|low|medium|high[,<intent effort>] or prompt')
+  const file = process.env.REPLAY_OPENAI_KEY_FILE || DEFAULT_OPENAI_KEY_FILE
+  if (!existsSync(file)) throw new Error(`REFUSING: OpenAI key file not found (${file})`)
+  const key = readFileSync(file, 'utf8').trim()
+  if (!key) throw new Error('REFUSING: OpenAI key file is empty')
+  process.env.OPENAI_API_KEY = key
+  process.env.LLM_CONSULT_PROVIDER = 'openai'; process.env.LLM_CONSULT_REASONING = answer
+  process.env.LLM_INTENT_PROVIDER = 'openai'; process.env.LLM_INTENT_REASONING = intent
+  return { luna: spec }
 }

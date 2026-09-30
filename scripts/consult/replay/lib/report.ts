@@ -27,6 +27,10 @@ export interface TurnRow {
   mainPick: string | null
   alternatives: string[]
   ms: number
+  /** Time to the first visible text frame (ms); null when the turn streamed no text. */
+  ttftMs?: number | null
+  /** PHIÊN LUNA: the server's per-vendor split (tappy.turn.v1). */
+  cost?: { model?: string; intent: string | null; intentUsd: number | null; answerUsd: number | null; serperUsd: number | null; reasoningTokens: number; fellBack: boolean } | null
   pass: boolean
   checks: Check[]
   reply: string
@@ -79,6 +83,24 @@ export function markdown(suite: string, rows: TurnRow[], s: ReturnType<typeof su
     `- 900 turns/month at the observed mix: ${usd(s.cost.month900)}  (mix: ${Object.entries(s.cost.mix).map(([k, v]) => `${k} ${(v * 100).toFixed(0)}%`).join(' · ')})`,
     '- note: `usd` is the route\'s own figure; it prices every Serper call the meter saw, including replayed ones.', '')
   L.push(...aggTable('By turn type (server)', s.byType), ...aggTable('By area', s.byArea), ...aggTable('By area / turn type', s.byAreaType))
+  // PHIÊN LUNA (30/09): time to first text + cost split by part/vendor + fallbacks.
+  {
+    const q = (xs: number[], p: number) => { if (!xs.length) return null; const a = [...xs].sort((x, y) => x - y); return a[Math.min(a.length - 1, Math.floor(p * (a.length - 1) + 0.5))] }
+    const byT = new Map<string, number[]>()
+    for (const r of rows) if (typeof r.ttftMs === 'number') { const t = r.server?.turnType ?? r.type; byT.set(t, [...(byT.get(t) ?? []), r.ttftMs]) }
+    L.push('### Time to first text (ms)', '', '| turn type | n | median | p90 |', '|---|---|---|---|')
+    for (const [t, xs] of [...byT.entries()].sort()) L.push(`| ${t} | ${xs.length} | ${q(xs, 0.5)} | ${q(xs, 0.9)} |`)
+    const all = rows.map(r => r.ttftMs).filter((x): x is number => typeof x === 'number')
+    L.push(`| all | ${all.length} | ${q(all, 0.5)} | ${q(all, 0.9)} |`, '')
+    const withCost = rows.filter(r => r.cost && (r.cost.intentUsd !== null || r.cost.answerUsd !== null))
+    if (withCost.length) {
+      const sum = (f: (r: TurnRow) => number | null | undefined) => withCost.reduce((n, r) => n + (f(r) ?? 0), 0)
+      const models = new Map<string, number>(); for (const r of withCost) { const m = r.cost?.model ?? '-'; models.set(m, (models.get(m) ?? 0) + 1) }
+      L.push('### Cost split (CONSULT_LUNA)', '', `- intent ${usd(sum(r => r.cost?.intentUsd))} · answer ${usd(sum(r => r.cost?.answerUsd))} · serper ${usd(sum(r => r.cost?.serperUsd))} over ${withCost.length} turns`,
+        `- reasoning tokens (billed as output): ${sum(r => r.cost?.reasoningTokens)} · fallbacks to the default model: ${withCost.filter(r => r.cost?.fellBack).length}`,
+        `- answer served by: ${[...models.entries()].map(([k, v]) => `${k} ×${v}`).join(' · ')}`, '')
+    }
+  }
   // Owner 29/09 "hạn chế guard vá": how often each post-model patch had to change a reply, per turn type.
   {
     const byType = new Map<string, { turns: number; hits: Map<string, number> }>()
@@ -99,7 +121,7 @@ export function markdown(suite: string, rows: TurnRow[], s: ReturnType<typeof su
   L.push('## Turns', '')
   for (const r of rows) {
     L.push(`### ${r.conv} #${r.turnIndex} — ${r.type}${r.server ? ` (server ${r.server.turnType}/${r.server.domain ?? '-'})` : ''} — ${r.pass ? 'PASS' : 'FAIL'}`, '',
-      `> ${r.sent}`, '', `usd ${usd(r.usd)} · in ${r.tokensIn} · out ${r.tokensOut} · serper ${r.serperCalls} (real ${r.net.serperReal}, replayed ${r.net.serperReplayed}) · tools ${r.tools.join(',') || '-'} · rows ${r.toolRows} · ${r.ms} ms`,
+      `> ${r.sent}`, '', `usd ${usd(r.usd)} · in ${r.tokensIn} · out ${r.tokensOut} · serper ${r.serperCalls} (real ${r.net.serperReal}, replayed ${r.net.serperReplayed}) · tools ${r.tools.join(',') || '-'} · rows ${r.toolRows} · ${r.ms} ms · ttft ${r.ttftMs ?? '-'} ms${r.cost?.model ? ` · ${r.cost.model}` : ''}${r.cost?.reasoningTokens ? ` · reasoning ${r.cost.reasoningTokens}` : ''}${r.cost?.fellBack ? ' · FALLBACK' : ''}`,
       `pick: ${r.mainPick ?? '-'} · alts: ${r.alternatives.join(' · ') || '-'}`, '',
       ...r.checks.map(c => `- ${c.pass ? '✓' : c.info ? '·' : '✗'} ${c.id}${c.detail ? ` — ${c.detail}` : ''}`), '',
       '<details><summary>reply</summary>', '', '```', r.reply, '```', '', '</details>', '')

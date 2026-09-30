@@ -1,6 +1,10 @@
 import type { AIProvider } from './provider'
 import type { ModelOverrides, ProviderId } from './types'
+import type { LanguageModelV1 } from 'ai'
+import type { ModelRole } from './types'
 import { createClaudeProvider } from './providers/claude'
+import { createOpenAIProvider } from './providers/openai'
+import { withFallback } from './fallback'
 
 // ── Provider registry — the single place a provider is instantiated ─────────
 //
@@ -54,3 +58,44 @@ export function getProvider(): AIProvider {
       )
   }
 }
+
+// ── Per-role routing (owner 2026-09-30, "PHIÊN LUNA") ────────────────────────────────────────────
+//   LLM_CONSULT_PROVIDER=openai   the `consult` role (consultation answer turns) is served by the OpenAI
+//   LLM_INTENT_PROVIDER=openai    adapter (GPT-6 Luna); `intent` = the structured read of the user's turn.
+//   LLM_<ROLE>_REASONING          none | low | medium | high — always sent explicitly (default none).
+//   LLM_<ROLE>_TIMEOUT_MS         no first stream part within this → the default provider answers (8000).
+// Unset (the default) → the role resolves on the default provider exactly like every other role. A routed
+// role whose credentials are missing also stays on the default provider. Every routed call carries the
+// default provider's model as its fallback (fallback.ts).
+
+type RoutedRole = Extract<ModelRole, 'consult' | 'intent'>
+let openaiProvider: ReturnType<typeof createOpenAIProvider> | null = null
+
+function routedTo(role: ModelRole): 'openai' | null {
+  if (role !== 'consult' && role !== 'intent') return null
+  const v = (process.env[`LLM_${role.toUpperCase()}_PROVIDER`] ?? '').trim().toLowerCase()
+  if (v !== 'openai') return null
+  openaiProvider ??= createOpenAIProvider({ consult: process.env.LLM_CONSULT_MODEL, intent: process.env.LLM_INTENT_MODEL })
+  return openaiProvider.isConfigured() ? 'openai' : null
+}
+
+/** Which vendor + effort serves a role right now (telemetry only — never branch business logic on it). */
+export function roleServing(role: ModelRole): { provider: string; effort: string | null } {
+  if (routedTo(role) === 'openai') return { provider: 'openai', effort: openaiProvider!.effort(role as RoutedRole) }
+  return { provider: getProvider().id, effort: null }
+}
+
+/**
+ * The model for a role. A fresh routed model per call (the adapter keeps a per-call usage sink on it).
+ * `structured` asks for the vendor's strict JSON-schema mode where it has one.
+ */
+export function modelForRole(role: ModelRole, opts: { structured?: boolean } = {}): LanguageModelV1 {
+  const base = getProvider().model(role)
+  if (routedTo(role) !== 'openai') return base
+  const primary = opts.structured ? openaiProvider!.structuredModel(role) : openaiProvider!.model(role)
+  const ms = Number(process.env[`LLM_${role.toUpperCase()}_TIMEOUT_MS`])
+  return withFallback(primary, base, { firstPartMs: Number.isFinite(ms) && ms > 0 ? ms : 8000, label: role })
+}
+
+/** Test hook: forget the routed provider so env changes take effect. */
+export function resetRoutingForTests(): void { openaiProvider = null; provider = null }

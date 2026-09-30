@@ -32,7 +32,7 @@ import type { ModelRole } from '../types'
 // Asserted against the SHIPPED table (imported, never retyped): a copy of the
 // mapping inside the test would let the two drift apart and still pass.
 
-const ROLES: readonly ModelRole[] = ['fast', 'smart', 'planning', 'vision']
+const ROLES: readonly ModelRole[] = ['fast', 'smart', 'planning', 'vision', 'consult', 'intent']
 
 /**
  * A dated Anthropic snapshot: `<family>-<YYYYMMDD>`.

@@ -1,5 +1,6 @@
-import { generateText, streamText, type CoreMessage } from 'ai'
-import { getProvider } from './registry'
+import { generateObject, generateText, streamText, type CoreMessage } from 'ai'
+import type { z } from 'zod'
+import { getProvider, modelForRole, roleServing } from './registry'
 import { repairToolCall } from './toolCallRepair'
 import type { AIGenerateOptions, AIStreamOptions, AIVisionOptions } from './types'
 
@@ -41,10 +42,13 @@ export const AI = {
     return getProvider().isConfigured()
   },
 
+  /** Which vendor + reasoning effort serves a role (telemetry/cost labels only — never branch on this). */
+  serving: roleServing,
+
   /** Single-shot text generation (no tools, no streaming). */
   generate(opts: AIGenerateOptions) {
     return generateText({
-      model: getProvider().model(opts.role ?? 'fast'),
+      model: modelForRole(opts.role ?? 'fast'),
       messages: buildMessages(opts),
       maxTokens: opts.maxTokens,
       temperature: opts.temperature,
@@ -55,7 +59,7 @@ export const AI = {
    * AI SDK stream result (use .toDataStreamResponse() for HTTP streaming). */
   stream(opts: AIStreamOptions) {
     return streamText({
-      model: getProvider().model(opts.role ?? 'smart'),
+      model: modelForRole(opts.role ?? 'smart'),
       messages: buildMessages(opts),
       maxTokens: opts.maxTokens,
       maxSteps: opts.maxSteps,
@@ -68,6 +72,21 @@ export const AI = {
       // A shape mistake in the model's tool arguments (null, number-as-string…) is repaired from
       // the tool's own schema instead of ending the stream (toolCallRepair.ts; every repair logged).
       experimental_repairToolCall: repairToolCall as never,
+    })
+  },
+
+  /**
+   * Structured output: the model returns an object matching `schema` (vendor strict JSON-schema mode where
+   * available, tool mode otherwise). Throws when the output does not validate — callers fail open.
+   */
+  extract<T>(opts: AIGenerateOptions & { schema: z.ZodType<T>; schemaName?: string }) {
+    return generateObject({
+      model: modelForRole(opts.role ?? 'intent', { structured: true }),
+      schema: opts.schema,
+      schemaName: opts.schemaName,
+      messages: buildMessages(opts),
+      maxTokens: opts.maxTokens,
+      temperature: opts.temperature,
     })
   },
 
