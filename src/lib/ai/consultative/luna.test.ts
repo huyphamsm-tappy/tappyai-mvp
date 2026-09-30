@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { checkIntent, consultLunaEnabled, intentToDecision, isLunaAnswerTurn, moneyAmounts, runLunaIntent, type LunaIntent } from './luna'
+import { checkIntent, consultLunaEnabled, intentToDecision, isLunaAnswerTurn, mergeIntentWithRules, moneyAmounts, runLunaIntent, splitPickSentence, type LunaIntent } from './luna'
 import { buildLeanConsultSystem, LEAN_CORE } from './leanConsultPrompt'
 
 const base = (o: Partial<LunaIntent> = {}): LunaIntent => ({
@@ -125,5 +125,38 @@ describe('lean prompt with the Luna core', () => {
     const old = buildLeanConsultSystem({ ...o, domains: [...o.domains] })
     expect(old.shared).toBe(LEAN_CORE)
     expect(old.dynamic).toContain('search_places (type restaurant/cafe/bar)')
+  })
+})
+
+describe('the turn stays with code when the router is sure', () => {
+  const rule = { decision: { domains: ['shopping' as const], turn: 'ask' as const, known: { san_pham: 'ốp' }, assumptions: [], ask: { lead: 'x', questions: [] }, query: 'op uag' }, confidence: 'rule' as const }
+  it('same areas → router turn + ask + query, Luna facts merged over router slots', () => {
+    const m = mergeIntentWithRules({ domains: ['shopping'], turn: 'pick', known: { dong: 'Monarch', san_pham: 'ốp UAG' }, assumptions: [], query: 'ốp uag monarch', area: undefined }, rule)
+    expect(m.mode).toBe('merged')
+    expect(m.decision.turn).toBe('ask')
+    expect(m.decision.query).toBe('op uag')
+    expect(m.decision.known).toEqual({ san_pham: 'ốp UAG', dong: 'Monarch' })
+  })
+  it('a follow-up the rules read as a new ask → the Luna turn (replay SHOP-2 t3); Luna pick vs rules ask → ask', () => {
+    const m = mergeIntentWithRules({ domains: ['shopping'], turn: 'followup', known: {}, assumptions: [], refers: ['Hộp quà A'] }, rule)
+    expect(m.mode).toBe('luna-turn')
+    expect(m.decision.turn).toBe('followup')
+    expect(m.decision.refers).toEqual(['Hộp quà A'])
+    expect(mergeIntentWithRules({ domains: ['shopping'], turn: 'pick', known: {}, assumptions: [] }, rule).decision.turn).toBe('ask')
+  })
+  it('areas disagree, or the router is unsure → Luna decides', () => {
+    expect(mergeIntentWithRules({ domains: ['food'], turn: 'pick', known: {}, assumptions: [] }, rule).mode).toBe('luna')
+    expect(mergeIntentWithRules({ domains: ['shopping'], turn: 'pick', known: {}, assumptions: [] }, { ...rule, confidence: 'unsure' }).decision.turn).toBe('pick')
+  })
+})
+
+describe('the pick sentence stands alone (a guard cutting the reason keeps the name)', () => {
+  it('splits "vì" / "—" reasons into their own sentence, words unchanged', () => {
+    expect(splitPickSentence('Ok. **Mình chọn: Miya Sushi** vì có **1.376 đánh giá**.')).toBe('Ok. **Mình chọn: Miya Sushi**. Vì có **1.376 đánh giá**.')
+    expect(splitPickSentence('**Mình chọn: Nori** — 4,8⭐, gần bạn.\n\n[FOLLOWUPS]a[/FOLLOWUPS]')).toBe('**Mình chọn: Nori**. 4,8⭐, gần bạn.\n\n[FOLLOWUPS]a[/FOLLOWUPS]')
+  })
+  it('leaves a pick that already ends its sentence, and text without a pick', () => {
+    expect(splitPickSentence('**Mình chọn: Nori**. Quán gần.')).toBe('**Mình chọn: Nori**. Quán gần.')
+    expect(splitPickSentence('Không có lựa chọn.')).toBe('Không có lựa chọn.')
   })
 })

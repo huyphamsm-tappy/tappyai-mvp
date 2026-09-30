@@ -39,7 +39,8 @@ CÁCH TƯ VẤN
 - Câu hỏi đã được hỏi ở lượt trước (có nút bấm). Lượt này KHÔNG hỏi lại điều đã biết; thiếu gì thì giả định mức phổ biến và nói rõ "mình giả định …".
 - Người dùng chê/bác → ghi nhận lý do trong một câu, chọn cái KHÁC khớp điều kiện mới; không đưa lại cái đã bị bác.
 - Hỏi thêm/so sánh → trả lời đúng câu hỏi bằng dữ liệu đã có, rồi chốt ("**Mình chọn: …** vì …").
-- LUÔN CHỐT ở lượt chọn / so sánh / xem thêm / bác, kể cả khi thiếu vài dữ liệu: chọn theo cái đang có (điểm và số đánh giá, giá tham khảo, khoảng cách, loại quán, điều người dùng nói) và nêu lý do bằng chính các số đó. Chỉ không chốt khi không còn ứng viên nào khớp — khi đó nói thật và hỏi một câu để đổi hướng.
+- LUÔN CHỐT ở lượt chọn / so sánh / xem thêm / bác, kể cả khi thiếu vài dữ liệu: chọn theo cái đang có (điểm và số đánh giá, giá tham khảo, khoảng cách, loại quán, điều người dùng nói). Chỉ không chốt khi không còn ứng viên nào khớp — khi đó nói thật và hỏi một câu để đổi hướng.
+- CÂU CHỐT viết đúng dạng, đứng riêng: "**Mình chọn: <TÊN>** — <lý do bằng lời, theo điều người dùng nói>." KHÔNG đặt con số (giá, điểm, số đánh giá, khoảng cách, giờ) hay tính từ không khí (yên tĩnh, sang, đông…) trong câu này; các con số viết ở CÂU SAU, mỗi số đúng như dữ liệu. (Hệ thống xoá nguyên câu nào chứa một con số/không khí không có nguồn — đừng để tên lựa chọn đi cùng.)
 - Điều chưa có dữ liệu: nói MỘT lần, một câu ngắn — không rải "chưa chắc", "chưa xác nhận" vào mọi dòng.
 - Giọng "mình"/"bạn", ấm, ngắn, rõ như người tư vấn thật; 0–2 emoji; **in đậm** tên lựa chọn và con số quan trọng.
 
@@ -262,4 +263,46 @@ export async function runLunaIntent(
     console.warn(JSON.stringify({ type: 'tappyai_luna_intent_error', error: (e instanceof Error ? e.message : String(e)).slice(0, 200) }))
     return null
   } finally { clearTimeout(timer) }
+}
+
+/**
+ * Owner spec 30/09: Luna extracts areas / goal / constraints / difficulty; code checks facts.
+ *  - router unsure, or the areas disagree → Luna's whole decision (it read the meaning the rules could not);
+ *  - ask vs pick → the ROUTER: whether enough is known to choose is a fact check on the stated slots (the rules' ask
+ *    questions and query are code templates), not a reading of intent;
+ *  - any other turn type (follow-up, compare, more, reject, plan, chat) → LUNA's reading (replay 30/09 SHOP-2 t3: the
+ *    rules read "<product> mua ở đâu uy tín" as a new request and asked again; Luna read a follow-up).
+ * Luna's checked facts are merged over the router's slots either way (Luna wins where both read a slot).
+ */
+export function mergeIntentWithRules(luna: ConsultDecision, routed: { decision: ConsultDecision; confidence: 'rule' | 'unsure' } | null): { decision: ConsultDecision; mode: 'luna' | 'merged' | 'luna-turn' } {
+  if (!routed || routed.confidence !== 'rule') return { decision: luna, mode: 'luna' }
+  const r = routed.decision
+  const same = luna.domains.length === 0 || (r.domains.length > 0 && luna.domains.length === r.domains.length && luna.domains.every(d => r.domains.includes(d)))
+  if (!same) return { decision: luna, mode: 'luna' }
+  const known = { ...r.known, ...luna.known }
+  const area = luna.area ?? r.area
+  const askOrPick = (t: ConsultTurn) => t === 'ask' || t === 'pick'
+  if (luna.turn === r.turn || (askOrPick(luna.turn) && askOrPick(r.turn))) {
+    return { decision: { ...r, known, ...(area ? { area } : {}), assumptions: r.assumptions.length ? r.assumptions : luna.assumptions }, mode: 'merged' }
+  }
+  return {
+    decision: { ...luna, domains: r.domains, known, ...(area ? { area } : {}), ...(luna.query ?? r.query ? { query: luna.query ?? r.query } : {}), ...(luna.refers ?? r.refers ? { refers: luna.refers ?? r.refers } : {}), ...(luna.rejectReason ?? r.rejectReason ? { rejectReason: luna.rejectReason ?? r.rejectReason } : {}) },
+    mode: 'luna-turn',
+  }
+}
+
+/**
+ * "**Mình chọn: X** vì/— <reason>" → "**Mình chọn: X**. <Reason>" — the first pick sentence only, before any marker.
+ * Structure only: no word is added or removed, so no guard is bypassed (the reason is still judged on its own).
+ */
+export function splitPickSentence(text: string): string {
+  const cut = text.search(/\[(?:TAPPY_[A-Z_]+|CTA_BUTTONS|FOLLOWUPS)\]/)
+  const prose = cut === -1 ? text : text.slice(0, cut)
+  const m = /(\*\*Mình chọn:\s*[^*\n]{2,160}\*\*)[ \t]*(?:—|–|-|:|,)?[ \t]*(vì|bởi vì|do|nhờ|because)?[ \t]*(?=\S)/.exec(prose)
+  if (!m || m.index === undefined) return text
+  const after = prose.slice(m.index + m[0].length)
+  if (!after || /^[.!?\n]/.test(after)) return text
+  const reason = (m[2] ? `${m[2]} ` : '') + after
+  const cap = reason.charAt(0).toLocaleUpperCase('vi') + reason.slice(1)
+  return prose.slice(0, m.index) + `${m[1]}. ${cap}` + (cut === -1 ? '' : text.slice(cut))
 }
