@@ -43,6 +43,11 @@ describe('(a) the code-written "Chi phí" line is about the plan\'s own venue, w
     const plan = '**Lịch buổi**\n- Đi chơi quanh Thủ Đức buổi sáng.\n\n**Chi phí**\n'
     expect(planCostSubject(plan, null, new Map(), ["CT'S HOUSE - KHU VUI CHƠI TRẺ EM THỦ ĐỨC"]).name).toBeNull()
   })
+  it('E1-G5 re-run: an everyday word that folds into the old pick ("giả định" ≈ "Gia Đình") never beats the venue the plan writes in full', () => {
+    const plan = 'Mình giả định: **5 người** · **tối nay (30/09)** — bạn đổi thì mình tính lại.\n\n## **Giờ đến & đặt bàn**\nĐặt bàn qua **0921 942 754** (A Xỉu - Quán Ăn Ngon).\n\n## **Chi phí**\n'
+    const old = 'Nhà Hàng Quán Ăn Gia Đình Ngon - Quán Ăn Bắc Gần Sân Bay - Ngon rẻ Tphcm'
+    expect(planCostSubject(plan, old, new Map(), [old, 'A Xỉu - Quán Ăn Ngon']).name).toBe('A Xỉu - Quán Ăn Ngon')
+  })
 })
 
 describe('(b) the code-built "not confirmed" sentences read as Vietnamese', () => {

@@ -832,15 +832,14 @@ export function planCostSubject(text: string, fallbackName: string | null, bands
   const body = ` ${fold(text.replace(/\[(TAPPY_PLAN|CTA_BUTTONS|FOLLOWUPS)\][\s\S]*?\[\/\1\]/g, ''))} `
   // Words that never identify ONE venue: its kind, and places (a district in the plan must not pick a venue by it).
   const GENERIC = /^(?:quan|nha|hang|an|ngon|karaoke|spa|cafe|ca|phe|khu|vui|choi|tre|em|the|bar|pub|salon|nail|tiem|hotel|khach|san|com|bun|pho|lau|nuong|massage|goi|dau|duong|sinh|va|cua|thu|duc|go|vap|binh|thanh|tan|phu|nhuan|hoan|kiem|cau|giay|dong|da|ha|noi|sai|gon|hcm|tp|nang|tay|ho|district|saigon|hanoi|cn|chi|nhanh|co|so)$/
-  const distinctive = (w: string) => w.length >= 3 && !/\d/.test(w) && !GENERIC.test(w)
-  const namedAt = (n: string): number => {
-    const f = fold(n)
-    if (f.length < 3) return -1
-    const whole = body.indexOf(` ${f} `)
-    if (whole >= 0) return whole
-    // A plan writes the short name ("BIBO KIDS" for "KHU VUI CHƠI TRẺ EM BIBO KIDS QUẬN 9 - THỦ ĐỨC"): any two
-    // consecutive words of the name that carry a distinctive one.
-    const w = f.split(' ')
+  // …and everyday words that fold into a name ("Gia Đình" = "giả định" in "Mình giả định", replay E1-G5 30/09).
+  const COMMON = /^(?:gia|dinh|gan|bay|bac|nam|re|moi|lon|nho|dep|xin|ngay|dem|toi|sang|trua|chieu|nguoi|ban|minh|mon|viet|nhat|han|thai|tphcm|vietnam)$/
+  const distinctive = (w: string) => w.length >= 4 && !/\d/.test(w) && !GENERIC.test(w) && !COMMON.test(w)
+  const wholeAt = (n: string): number => { const f = fold(n); return f.length < 3 ? -1 : body.indexOf(` ${f} `) }
+  // A plan writes the short name ("BIBO KIDS" for "KHU VUI CHƠI TRẺ EM BIBO KIDS QUẬN 9 - THỦ ĐỨC"): two consecutive
+  // words of the name, one of them distinctive. Used only when no name is written in full.
+  const partAt = (n: string): number => {
+    const w = fold(n).split(' ')
     let best = -1
     for (let i = 0; i + 1 < w.length; i++) {
       if (!distinctive(w[i]) && !distinctive(w[i + 1])) continue
@@ -850,9 +849,11 @@ export function planCostSubject(text: string, fallbackName: string | null, bands
     return best
   }
   let name = stated ?? fallbackName
-  if (!stated && (!fallbackName || namedAt(fallbackName) < 0)) {
-    const named = [...new Set([...candidates, ...bands.keys()])].filter(Boolean).map(n => ({ n, at: namedAt(n) })).filter(x => x.at >= 0).sort((a, b) => a.at - b.at)[0]
-    if (named) name = named.n
+  if (!stated) {
+    const pool = [...new Set([...candidates, ...bands.keys()])].filter(Boolean)
+    const earliest = (at: (n: string) => number) => pool.map(n => ({ n, at: at(n) })).filter(x => x.at >= 0).sort((a, b) => a.at - b.at)[0]?.n ?? null
+    if (fallbackName && wholeAt(fallbackName) >= 0) name = fallbackName
+    else name = earliest(wholeAt) ?? (fallbackName && partAt(fallbackName) >= 0 ? fallbackName : null) ?? earliest(partAt) ?? fallbackName
   }
   if (!name) return { name: null, band: [...bands.values()][0] ?? null }
   const want = fold(name)
