@@ -63,7 +63,7 @@ Only after all gates. Each step is in `RELEASE-PLAN-2026-09-29.md` §1/§4; the 
 7. **S1** + #17.
 8. **Feed ingest** (`/api/cron/feed-ingest`, needs `ACCESSTRADE_API_KEY`).
 9. **Smoke** — `scripts/release/verify-prod.mjs` (§ PRODUCTION-VERIFICATION below) + RELEASE-PLAN §5b manual.
-10. Fresh backup → **H1/M1** → **smoke again**.
+10. Fresh backup → **H1/M1** (#18, #19) → security-branch migrations **#20–#23** (merged 30/09, same order as `MIGRATION_ORDER.txt`) → **smoke again**.
 11. **AAB vc10** built from the release SHA (`scripts/release/build-aab.sh <sha>`).
 12. **Play Internal testing** → Huy tests on his phone → **Production track** (app stays **hidden** on Play until Huy makes it public).
 

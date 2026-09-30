@@ -82,3 +82,12 @@ và image optimization có sẵn, Speed Insights, cron trong `vercel.json`, log 
 - **ENT-3 lượt 7** ("ủa cái") và **T4 lượt 1** ("câu này "): ghi chú bị cắt dở — hỏi lại Huy.
 Nguồn: kho `verdicts` của https://claude.ai/artifact/T1ENadG4ZVDHEbnJaaGRFU (chỉ bản ghi ngày 30/09 — các bản ghi không hậu tố `-t<n>`
 là đánh giá cũ 28/09 của trang trước, đã xử lý ở vòng C1/C2).
+
+## PL-SECURITY-30-09 — từ báo cáo bảo mật `docs/security/SECURITY-AUDIT-2026-09-30.md` (Huy 30/09: ghi, làm sau release)
+- **WEB-3 `/r/<slug>`:** trang công khai hiển thị "câu trả lời của TappyAI" lấy từ `conversations.messages` do client ghi → ai cũng dựng
+  được trang tappyai.com giả nội dung + link lừa đảo. Cần Huy chọn: (a) server ký HMAC câu trả lời nó sinh, chỉ chia sẻ bản có chữ ký;
+  (b) tạm: chỉ biến thành link các host nền tảng quen, còn lại chữ thường + nhãn "Nội dung do người dùng chia sẻ".
+- **UP-2 media GCS không thu hồi** khi ẩn / xoá / hạn chế bài — link ảnh/video cũ mở mãi. Làm cùng Phase 8 (signed URL).
+- **UP-4 quét GPS** ảnh đã tải lên **trước 24/09** (trước R-2) trong bucket production; xoá EXIF hàng loạt.
+- **DEP-1 nâng Next.js 15** (14.2.35 hết hỗ trợ; 1 critical + vài high, đa số chỉ ảnh hưởng self-host).
+- **Đổi khoá Google** còn nằm trong 2 file settings của worktree cũ + transcript trên máy (danh sách trong báo cáo) — xoay khoá rồi xoá file.
