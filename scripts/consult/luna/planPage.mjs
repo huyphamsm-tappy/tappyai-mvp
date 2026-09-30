@@ -21,11 +21,14 @@ const digits = s => String(s).replace(/[^\d]/g, '')
 const runs = [] // {label, conv, area, runIdx, ...}
 for (const spec of args) {
   const [label, dirs] = spec.split('=')
-  dirs.split(',').forEach((dir, runIdx) => {
+  // each dir: <path>[@ID+ID…][#runIndex] — a per-dir case filter and the run index the verdict keys use
+  dirs.split(',').forEach((dirSpec, pos) => {
+    const m = /^(.*?)(?:@([^#]+))?(?:#(\d+))?$/.exec(dirSpec)
+    const dir = m[1], dirOnly = m[2] ? new Set(m[2].split('+')) : null, runIdx = m[3] != null ? Number(m[3]) : pos
     const res = JSON.parse(readFileSync(join(dir, 'results.json'), 'utf8'))
     for (const r of res.rows ?? res) {
       const isPlan = r.server?.turnType === 'plan' || /kế hoạch chi tiết|lịch trình chi tiết/i.test(r.sent)
-      if (!isPlan || (only && !only.has(r.conv))) continue
+      if (!isPlan || (only && !only.has(r.conv)) || (dirOnly && !dirOnly.has(r.conv))) continue
       // The owner's set is the plan TURN (the last turn of each planHard case); a first message that says "lên kế hoạch"
       // is the consult opener, not the detailed plan.
       if (r.conv.match(/^(R\d|E1-|DN-)/) && r.turnIndex !== Math.max(...(res.rows ?? res).filter(x => x.conv === r.conv).map(x => x.turnIndex))) continue
@@ -59,7 +62,8 @@ for (const spec of args) {
   })
 }
 const labels = [...new Set(runs.map(r => r.label))]
-const data = JSON.stringify({ labels, runs, at: new Date().toISOString() }).replace(/</g, '\\u003c')
+const NAMES = { Haiku: 'Haiku 4.5', LunaMed: 'Luna — du lịch medium · khác none', LunaLow: 'Luna — du lịch low' }
+const data = JSON.stringify({ labels, names: NAMES, runs, at: new Date().toISOString() }).replace(/</g, '\\u003c')
 
 const html = `<title>Plan Side-by-Side</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
@@ -116,7 +120,7 @@ const rowsFor=l=>D.runs.filter(r=>r.label===l)
 const pct=(a,n)=>n?Math.round(100*a/n)+'%':'–'
 const p50=a=>{const s=[...a].sort((x,y)=>x-y);return s.length?s[Math.floor(s.length/2)]:0}
 S.innerHTML='<tr><th>mô hình</th><th>kế hoạch</th><th>đạt (tự động)</th><th>đạt (đọc tay)</th><th>có số/địa điểm không nguồn</th><th>bịa (đọc tay)</th><th>$ / kế hoạch</th><th>$ / kế hoạch ĐẠT</th><th>thời gian p50</th><th>tối đa</th><th>rơi về Haiku</th></tr>'+D.labels.map(l=>{const r=rowsFor(l),n=r.length,auto=r.filter(x=>x.pass).length,hv=r.filter(x=>x.verdict),hand=hv.filter(x=>x.verdict.pass).length,fab=hv.reduce((s,x)=>s+(x.verdict.fab||0),0),usd=r.reduce((s,x)=>s+x.usd,0),passN=hv.length?hand:auto
-return '<tr><td><b>'+esc(l)+'</b></td><td class=num>'+n+'</td><td class=num>'+auto+' ('+pct(auto,n)+')</td><td class=num>'+(hv.length?hand+'/'+hv.length:'–')+'</td><td class=num>'+r.filter(x=>x.unsourced.length).length+'</td><td class=num>'+(hv.length?fab:'–')+'</td><td class=num>'+fmt$(usd/Math.max(1,n))+'</td><td class=num>'+(passN?fmt$(usd/passN):'–')+'</td><td class=num>'+(p50(r.map(x=>x.ms))/1000).toFixed(1)+' s</td><td class=num>'+(Math.max(0,...r.map(x=>x.ms))/1000).toFixed(1)+' s</td><td class=num>'+r.filter(x=>x.fellBack).length+'</td></tr>'}).join('')
+return '<tr><td><b>'+esc(D.names[l]||l)+'</b></td><td class=num>'+n+'</td><td class=num>'+auto+' ('+pct(auto,n)+')</td><td class=num>'+(hv.length?hand+'/'+hv.length:'–')+'</td><td class=num>'+r.filter(x=>x.unsourced.length).length+'</td><td class=num>'+(hv.length?fab:'–')+'</td><td class=num>'+fmt$(usd/Math.max(1,n))+'</td><td class=num>'+(passN?fmt$(usd/passN):'–')+'</td><td class=num>'+(p50(r.map(x=>x.ms))/1000).toFixed(1)+' s</td><td class=num>'+(Math.max(0,...r.map(x=>x.ms))/1000).toFixed(1)+' s</td><td class=num>'+r.filter(x=>x.fellBack).length+'</td></tr>'}).join('')
 // filters
 const areas=['tất cả',...new Set(D.runs.map(r=>r.area))];let cur='tất cả'
 const F=document.getElementById('filters')
@@ -124,7 +128,7 @@ function drawF(){F.innerHTML=areas.map(a=>'<button aria-pressed="'+(a===cur)+'" 
 F.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;cur=b.dataset.a;drawF();draw()})
 function planHtml(p){if(!p)return '';return '<div class=days>'+(p.days||[]).map(d=>'<div><b>'+esc(d.title||('Ngày '+(d.day??'')))+'</b><ul>'+(d.items||[]).map(it=>'<li>'+(it.time?'<span class=num>'+esc(it.time)+'</span> ':'')+esc(it.name||'')+(it.price?' · <span class=num>'+esc(it.price)+'</span>':'')+(it.description?' — <span class=note>'+esc(it.description)+'</span>':'')+'</li>').join('')+'</ul></div>').join('')+'</div>'}
 function card(r){const v=r.verdict
-return '<div class=col><h3><span>'+esc(r.label)+(r.runIdx?' #'+(r.runIdx+1):'')+'</span><span class=chips><span class="chip '+(r.pass?'p':'f')+'">'+(r.pass?'đạt tự động':'trượt: '+esc(r.failed.join(', ')))+'</span>'+(v?'<span class="chip '+(v.pass?'p':'f')+'">tay: '+(v.pass?'đạt':'trượt')+(v.fab?' · bịa '+v.fab:'')+'</span>':'')+'</span></h3>'+
+return '<div class=col><h3><span>'+esc(D.names[r.label]||r.label)+(r.runIdx?' #'+(r.runIdx+1):'')+'</span><span class=chips><span class="chip '+(r.pass?'p':'f')+'">'+(r.pass?'đạt tự động':'trượt: '+esc(r.failed.join(', ')))+'</span>'+(v?'<span class="chip '+(v.pass?'p':'f')+'">tay: '+(v.pass?'đạt':'trượt')+(v.fab?' · bịa '+v.fab:'')+'</span>':'')+'</span></h3>'+
 '<div class="chips num"><span class=chip>'+(r.ms/1000).toFixed(1)+' s</span><span class=chip>'+fmt$(r.usd)+'</span>'+(r.reasoning?'<span class=chip>suy luận '+r.reasoning+'</span>':'')+'<span class=chip>'+esc(r.model)+'</span>'+(r.fellBack?'<span class="chip w">rơi về Haiku</span>':'')+'</div>'+
 (v&&v.note?'<div class=note>'+esc(v.note)+'</div>':'')+
 (r.unsourced.length?'<div class=uns>không nguồn: '+r.unsourced.map(esc).join(' · ')+'</div>':'')+
