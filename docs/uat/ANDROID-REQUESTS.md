@@ -68,6 +68,11 @@ Giá phòng: chưa xác nhận…","price":…`). Phần đầu kế hoạch (ti
 
 ## 2. Web → Android: thay đổi server/API (giữ tương thích ngược)
 
+- 2026-10-01 (web) **R25 — bộ e2e chat WEB (android/e2e/flows/chat.mjs) cần siết, phiên web KHÔNG sửa thư mục android/:** (1) `page.locator('[data-ask-send]').last().click().catch(() => {})` nuốt lỗi bấm — bấm thất bại phải báo lỗi;
+  (2) đọc link ngay sau bấm, chưa chờ câu trả lời hiện xong — phải chờ có tin nhắn trợ lý MỚI, hết «Dừng», chữ ổn định 3 nhịp; (3) `hrefs` lấy từ cả trang (tin cũ, đầu/cuối trang) — chỉ đọc trong tin nhắn trợ lý CUỐI (`[data-msg-id]` cuối);
+  (4) `expect` khớp mọi `.com`/`.vn` — mỗi ca cần đúng LOẠI link (bản đồ / mua hàng / vé / lưu trú / vé máy bay có ngày). Bản web siết đã viết và chạy trên UAT: `D:/…/scratchpad/pw/webe2e.mjs` (kết quả trong RELEASE-PROGRESS «R25»); 9 ca web «đạt» ở phép kiểm cũ: pho-q3, pho-q1, pho-delivery, headphones, concert, hotel, followup-more, trip, trip-full.
+  **Vé máy bay:** thẻ hỏi giờ có câu `origin` («Bay từ đâu?», các lựa chọn bắt đầu bằng «Từ …») — thẻ Android đã hiển thị được vì cùng bảng `askCardModel`; nếu không có điểm đi, link dùng TP.HCM và câu trả lời nói rõ.
+
 - 2026-09-30 (web) **Luna đã lên UAT — commit 54210f2** (thay dòng 87007a1 bên dưới: thêm 2 sửa trước lượt chạy thật — kế hoạch ẩn mục không có
   dữ liệu + nói chặng thiếu ở cuối; mua sắm không chọn máy thiếu RAM cho mục đích đã nêu; `SERPER_CACHE_V2=1`; I6 fragment chỉ còn `state`).
   API / định dạng không đổi. **Android: chạy luồng chat e2e trên UAT và build APK cuối.**

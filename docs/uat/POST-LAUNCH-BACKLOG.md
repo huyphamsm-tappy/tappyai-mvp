@@ -57,6 +57,14 @@ Ngưỡng release (Huy 29/09): mỗi mảng ≥ 17/21 (TB 2 lượt replay), A =
   còn rất ít laptop thật; cần nguồn sản phẩm có thông số (trọng lượng, màu) — feed ACCESSTRADE sau khi có API key.
 Bằng chứng: replay `scripts/consult/replay/out/scenarios-2026-09-29T17-*`, phân loại tay trong RELEASE-PROGRESS "AI tư vấn — kết quả cuối".
 
+## PL-FLIGHT-ORIGIN-GPS — điểm đi của vé máy bay lấy từ vị trí người dùng (owner 30/09 đêm, R25)
+- Đã làm trong release: thẻ hỏi vé máy bay có câu «Bay từ đâu?» (Từ TP.HCM / Hà Nội / Đà Nẵng / nơi khác) cùng khung thẻ hỏi mới; lời người
+  dùng («từ Hà Nội…», «Hà Nội đi Đà Nẵng») vẫn được đọc trước. Hồ sơ KHÔNG có trường thành phố; trí nhớ chỉ giữ NƠI ĐÃ HỎI (điểm đến), không phải nơi ở.
+  Còn lại: nếu người dùng bỏ qua câu này, link dùng TP.HCM làm giả định và câu trả lời nói rõ («bạn đổi ngay trên trang»).
+- Để sau: đoán điểm đi từ GPS (thành phố có sân bay gần nhất trong ~60 km) để khỏi hỏi. Vì sao chưa làm: bộ định tuyến chỉ biết «có GPS hay
+  không» (không có toạ độ) nên phải đổi chữ ký + thêm bảng thành phố; tự đặt điểm xuất phát chuyến bay theo vị trí là suy diễn riêng tư nên
+  cần owner duyệt cách nói («Mình thấy bạn đang ở …, xuất phát từ đó nhé?»). Làm cùng đợt thẻ hỏi theo mảng du lịch.
+
 ## PL-KV-SPLIT — UAT (Preview) và production dùng CHUNG một kho KV → tách kho riêng cho từng môi trường (owner 30/09)
 - Hiện `KV_URL` / `KV_REST_API_URL` / `KV_REST_API_TOKEN` / `REDIS_URL` trên Vercel là một bộ cho **Production, Preview, Development**.
   Kho này giữ bộ đếm lượt hỏi (Pro 300/ngày, free 15/ngày, burst), giới hạn tốc độ, cache Serper, … → một lượt test nặng trên UAT dùng
