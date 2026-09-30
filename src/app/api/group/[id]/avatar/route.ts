@@ -5,6 +5,7 @@ import { serverMessage } from '@/lib/i18n/serverMessages'
 import { refuseAnonymousSocialWrite } from '@/lib/auth/socialWriteAccess'
 import { getMediaProvider, putMedia, randomMediaSuffix } from '@/lib/media'
 import { sniffImageType, imageExt, imageMime } from '@/lib/security/imageType'
+import { stripImageMetadata } from '@/lib/media/stripImageMetadata'
 
 /** Same ceiling as a profile avatar (`POST /api/profile`). */
 const MAX_AVATAR_BYTES = 3 * 1024 * 1024
@@ -53,11 +54,22 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
     return NextResponse.json({ error: 'bad_image_type', message: serverMessage('media.imageType', requestLocale(req)) }, { status: 400 })
   }
 
+  // R-2, applied here too (security audit 2026-09-30): this route stored the caller's bytes
+  // untouched, so a group picture taken on a phone published its EXIF GPS — the one image upload
+  // the R-2 pass missed. Same rule as the profile avatar: strip, and refuse what cannot be decoded.
+  let clean: Buffer
+  try {
+    clean = (await stripImageMetadata(bytes, kind)).bytes
+  } catch (e) {
+    console.error('[group/avatar] metadata strip failed, refusing upload:', e instanceof Error ? e.message : e)
+    return NextResponse.json({ error: 'bad_image_type', message: serverMessage('media.imageType', requestLocale(req)) }, { status: 400 })
+  }
+
   let blob: { url: string }
   try {
     blob = await putMedia(
       `avatars/group-${groupId}-${randomMediaSuffix()}.${imageExt(kind)}`,
-      file,
+      clean,
       { contentType: imageMime(kind) },
       getMediaProvider(process.env, req)
     )
