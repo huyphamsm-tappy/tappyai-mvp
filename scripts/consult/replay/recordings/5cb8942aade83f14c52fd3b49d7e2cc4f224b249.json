@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Phở Gà Trống Mỹ Viên 🐓\" OR \"Xôi Xéo Bà 3 Béo\" OR \"Beefsteak 100gram CN Quận 7\" quan 7 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:00:54.814Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Phở Gà Trống Mỹ Viên 🐓\" OR \"Xôi Xéo Bà 3 Béo\" OR \"Beefsteak 100gram CN Quận 7\" quan 7 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Xôi Xéo Bà 3 Béo Quận 7: 15K Xôi Ngô, Topping 7 Món",
+    "link": "https://www.tiktok.com/@vyvivuuu/video/7481299412853984520",
+    "snippet": "Xôi xéo Bà 3 Béo là một trong những quán xôi quen thuộc được nhắc đến khi tìm món ăn ngon ở Quận 7. Quán nổi tiếng với phần xôi xéo giá chỉ ...",
+    "position": 1
+   },
+   {
+    "title": "Beefsteak 100g: Món Ăn Đúng Gu Trong Mọi Dịp",
+    "link": "https://www.tiktok.com/@bobittet100g/video/7611446684647918869",
+    "snippet": "Beefsteak 100gram CN Quận 7 · author. 10 · 0 ... 48k Beefsteak 100G Quận 7. 632 · recommend-cover. Solana Vlogs. 1189 · recommend-cover.",
+    "position": 2
+   },
+   {
+    "title": "Beefsteak 100g chỉ 59k tại Quận 7 siêu hời!",
+    "link": "https://www.tiktok.com/@changcheps/video/7596665198828653832",
+    "snippet": "Khám phá bò beefsteak 100g giá chỉ 59k tại Quận 7, hoàn hảo cho cặp. @Chang Chép · nhạc nền - Chang Chép · Beefsteak 100gram CN Quận 7 · author.",
+    "position": 3
+   },
+   {
+    "title": "Khám Phá Xôi Xéo Bà 3 Béo Tại Quận 7",
+    "link": "https://www.tiktok.com/@livinpmh/video/7561090378582019329",
+    "snippet": "52 Lượt thích,Video TikTok từ Livin PMH (@livinpmh): \"Xôi xéo Bà 3 Béo tại quận 7 là món ăn hấp dẫn không thể bỏ qua cho bữa trưa!",
+    "position": 4
+   },
+   {
+    "title": "Sinh viên cuối tháng muốn ăn sang giá rẻ thì nhào dzô, mì ...",
+    "link": "https://www.tiktok.com/@nhandian/video/7292007918063422722",
+    "snippet": "Sinh viên cuối tháng muốn ăn sang giá rẻ thì nhào dzô, mì Ý 29k. @NHÂN ĐI ĂN · nhạc nền - NHÂN ĐI ĂN · Beefsteak 100gram CN Quận 7 · author.",
+    "position": 5
+   },
+   {
+    "title": "Hương Vị Hà Nội Tại Xôi Xéo Bà 3 Béo",
+    "link": "https://www.tiktok.com/@xoixeoba3beo204/video/7441208726490565909",
+    "snippet": "Quán nằm tại Quận 7, là điểm đến lý tưởng để bạn khám phá và thưởng thức hương vị đích thực của Xôi Xéo Chả Cốm. Hãy ghé Xôi Xéo Bà 3 Béo để ...",
+    "position": 6
+   },
+   {
+    "title": "Xôi Xéo Bà 3 Béo (@xoixeoba3beo204)",
+    "link": "https://www.tiktok.com/@xoixeoba3beo204",
+    "snippet": "Xôi Xéo Bà 3 Béo · @xoixeoba3beo204 · ☎ 0942200505 / 6:00-22:00 Cn1: 103 Trần Trọng Cung Q7 Cn2: 37 Nguyễn Quý Đức Q2.",
+    "position": 7
+   },
+   {
+    "title": "Chè truyền thống ở quận 7 mà mí bà phải thử 😙#fyp #saigon # ...",
+    "link": "https://www.tiktok.com/@xoixeoba3beo204/video/7670404774101093648",
+    "snippet": "Video TikTok từ Xôi Xéo Bà 3 Béo (@xoixeoba3beo204): \"Chè truyền thống ở quận 7 mà mí bà phải thử #fyp #saigon #xoixeoba3beo #xoixeo #xoixeoba3beo\".âm ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

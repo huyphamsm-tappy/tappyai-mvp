@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "quà sinh nhật cho sếp nam thích cà phê 1-2 triệu shop website địa chỉ facebook",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:03:41.084Z",
+ "body": {
+  "searchParameters": {
+   "q": "quà sinh nhật cho sếp nam thích cà phê 1-2 triệu shop website địa chỉ facebook",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tuyển dụng 1.380 việc làm tại Bắc Ninh mới (sau sáp nhập ...",
+    "link": "https://www.topcv.vn/tim-viec-lam-moi-nhat-tai-bac-ninh-l4lv2",
+    "snippet": "Khám phá 1.380 việc làm tại Bắc Ninh mới (sau sáp nhập) từ những Nhà tuyển dụng uy tín cùng TopCV ngay hôm nay.",
+    "position": 1
+   },
+   {
+    "title": "Hội Quà tặng Doanh Nghiệp - Quà tặng Cao cấp ✔",
+    "link": "https://www.facebook.com/groups/166231069896329/",
+    "snippet": "TÚI VẢI HỘI NGHỊ – GIẢI PHÁP LƯU TRỮ TRỌN GÓI VÀ SANG TRỌNG: ✔️ Đựng tài liệu, sơ đồ sự kiện. ✔️ Đựng sổ tay, bút ký, thẻ đeo. ✔️ Đựng Catalogue và quà ...",
+    "position": 2
+   },
+   {
+    "title": "Vụ \"tổng tài\" ra lệnh đánh nhân viên quán cà phê: Nạn nhân ...",
+    "link": "https://voz.vn/t/vu-tong-tai-ra-lenh-danh-nhan-vien-quan-ca-phe-nan-nhan-van-chua-nhai-duoc-com.1149374/page-5",
+    "snippet": "Ảnh pts thôi, ngoài đời có thế này đâu. Vợ mình quen thằng cu này bảo lúc đầu nhìn không ra sau thấy tên fb mới nhận ra mà.",
+    "date": "20 thg 9, 2025",
+    "position": 3
+   },
+   {
+    "title": "35 Tuổi tìm việc có dễ không Em đã Gửi hơn 20 CV. Nhưng ...",
+    "link": "https://www.instagram.com/p/DXYKoeiGICO/",
+    "snippet": "35 Tuổi tìm việc có dễ không. Em đã Gửi hơn 20 CV. Nhưng chỉ nhận được 2–3 cuộc gọi phỏng vấn. Còn lại… không có hồi âm",
+    "position": 4
+   },
+   {
+    "title": "Tuyển dụng 108 việc làm tại Xã Mù Cang Chải, Lào Cai mới ...",
+    "link": "https://www.topcv.vn/tim-viec-lam-tai-xa-mu-cang-chai-l39d21712lv2",
+    "snippet": "Khám phá 108 việc làm tại Xã Mù Cang Chải, Lào Cai mới (sau sáp nhập) từ những Nhà tuyển dụng uy tín cùng TopCV ngay hôm nay.",
+    "position": 5
+   },
+   {
+    "title": "Marketing Dược",
+    "link": "https://www.facebook.com/groups/marketingduoc.vn/",
+    "snippet": "Hãy tham gia cùng chúng tôi để xây dựng một cộng đồng chuyên nghiệp và phát triển ngành Marketing Dược tại Việt Nam!",
+    "position": 6
+   },
+   {
+    "title": "'Chạy sô' biếu quà Tết",
+    "link": "https://vnexpress.net/chay-so-bieu-qua-tet-4554315.html",
+    "snippet": "Gần Tết năm nào, Minh Hòa, 44 tuổi, làm trong một công ty xuất nhập khẩu ở Hà Nội cũng chuẩn bị 6 giỏ quà, giá 2-5 triệu để tặng sếp và các mối ...",
+    "date": "30 thg 12, 2022",
+    "position": 7
+   },
+   {
+    "title": "Cà phê như một nguồn chất chống oxy hóa và là thần ... - PMC",
+    "link": "https://translate.google.com/translate?u=https://pmc.ncbi.nlm.nih.gov/articles/PMC11939571/&hl=vi&sl=en&tl=vi&client=srp",
+    "snippet": "Ngoài ra, cà phê là một nguồn giàu chất chống oxy hóa, giúp chống lại stress oxy hóa (OS) và giảm nguy cơ mắc các bệnh mãn tính, bao gồm bệnh tim và ung thư.Beyond neuroprotection and cancer prevention, moderate coffee consumption has been linked to additional health benefits. A daily intake of 1–2 cups has been ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

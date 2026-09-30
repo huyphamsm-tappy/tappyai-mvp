@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"MỲ CAY-GÀ RÁN HÀN QUỐC CHICKEN 3S\" OR \"Bò Lá Lốt Tân Quy\" OR \"Nệm Hoàng Thành\" quan 7 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:01:15.990Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"MỲ CAY-GÀ RÁN HÀN QUỐC CHICKEN 3S\" OR \"Bò Lá Lốt Tân Quy\" OR \"Nệm Hoàng Thành\" quan 7 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "MỲ CAY - GÀ RÁN HÀN QUỐC CHICKEN 3S cho team ...",
+    "link": "https://www.tiktok.com/@1phut_saigon/video/7652689524501351688",
+    "snippet": "MỲ CAY - GÀ RÁN HÀN QUỐC CHICKEN 3S cho team Quận 7 đây ạ. Ăn siu ... Chicken 3s Quan 7 Menu · Quán Nướng 79 Phạm Hữu Lầu Quận 7 · Quán Mơ ...",
+    "position": 1
+   },
+   {
+    "title": "Chicken 3S quận 7: review nhanh món ăn được giới trẻ khen",
+    "link": "https://www.tiktok.com/@changcheps/video/7681173679115439381",
+    "snippet": "Trải nghiệm Chicken 3S quận 7: đồ ăn, khẩu vị và lý do lớp. @Chang Chép · âm thanh gốc - Chang Chép · MỲ CAY-GÀ RÁN HÀN QUỐC CHICKEN 3S Korean ...",
+    "position": 2
+   },
+   {
+    "title": "Mê Bò Lá Lốt Tân Quy Quận 7: Địa Điểm Không Thể Bỏ Qua",
+    "link": "https://www.tiktok.com/@unibaesxoxo/video/7526533169764502792",
+    "snippet": "Mê Bò Lá Lốt Tân Quy Quận 7: Địa Điểm Không Thể Bỏ Qua. Khám phá bò ... bò lá lốt Tân Quy, review đồ ăn quận 7, ăn ngon tại quận 7, quán ...",
+    "position": 3
+   },
+   {
+    "title": "Gà rán Chicken 3S Q7 #streetfood #ancungtiktok ...",
+    "link": "https://www.tiktok.com/@tinhtungtangvn/video/7667533951770152210",
+    "snippet": "@TÍNH TUNG TĂNG · âm thanh gốc - TÍNH TUNG TĂNG · MỲ CAY-GÀ RÁN HÀN QUỐC CHICKEN 3S Korean Restaurant ... Quán Karaoke Quận 7 Phú Mỹ Hưng.",
+    "position": 4
+   },
+   {
+    "title": "Chicken 3s Quan 7 Menu",
+    "link": "https://www.tiktok.com/discover/chicken-3s-quan-7-menu",
+    "snippet": "34.5K1w ago. 1phut_saigon. 1 Phút Sài Gòn. MỲ CAY - GÀ RÁN HÀN QUỐC CHICKEN 3S cho team Quận 7 đây ạ. Ăn siu dính nhoaa #micayquan7 ...",
+    "date": "21 thg 9, 2026",
+    "position": 5
+   },
+   {
+    "title": "Bò Lá Lốt Quận 7: Quán Ngon Như Trước Tại Tân Quy Sài ...",
+    "link": "https://www.tiktok.com/@di_ann224/video/7410769867910991112",
+    "snippet": "### Một Món Ăn Không Thể Bỏ Lỡ Nếu bạn đang tìm kiếm một địa điểm ăn uống ngon và đáng tin cậy tại Quận 7, quán bò lá lốt Tân Quy có thể là một ...",
+    "position": 6
+   },
+   {
+    "title": "mìý_gàrán",
+    "link": "https://www.tiktok.com/tag/m%C3%AC%C3%BD_g%C3%A0r%C3%A1n",
+    "snippet": "MỲ CAY - GÀ RÁN HÀN QUỐC CHICKEN 3S cho team Quận 7 đây ạ. Ăn siu dính nhoaa #garanquan7 #micayquan7 #3s #1phutsaigon · âm thanh gốc - 1 Phút Sài Gòn ...",
+    "position": 7
+   },
+   {
+    "title": "Thấy cái đùi gà của cái quán này là tui phải vượt 15km để ...",
+    "link": "https://www.tiktok.com/@nghiabiu.daily/video/7661222198316633365",
+    "snippet": "Thấy cái đùi gà của cái quán này là tui phải vượt 15km để qua ăn. @nghiabiu.daily · Cute · MỲ CAY-GÀ RÁN HÀN QUỐC CHICKEN 3S Korean Restaurant.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

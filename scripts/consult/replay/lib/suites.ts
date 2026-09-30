@@ -4,7 +4,7 @@ import { join } from 'node:path'
 
 export interface ReplayTurn { text: string; expect: string | null }
 export interface Conversation { id: string; area: string | null; title?: string; turns: ReplayTurn[] }
-export type SuiteName = 'scenarios' | 'firstTurns' | 'owner59' | 'androidR'
+export type SuiteName = 'scenarios' | 'firstTurns' | 'owner59' | 'androidR' | 'realTyping'
 export const SUITES: SuiteName[] = ['scenarios', 'firstTurns', 'owner59', 'androidR']
 
 const FIX = 'src/lib/ai/consultative/__fixtures__'
@@ -14,7 +14,31 @@ const OWNER_COPY = join('scripts', 'consult', 'replay', 'fixtures', 'owner59.jso
 const AREAS = new Set(['food', 'shopping', 'travel', 'entertainment', 'spa'])
 const read = <T>(p: string): T => JSON.parse(readFileSync(p, 'utf8')) as T
 
+/**
+ * PHIÊN LUNA (owner 30/09): the everyday-typing variants of each scenario's opening turns. `docs/uat/luna-real-typing.txt`:
+ * "# <ID>" opens a conversation, each line "original | variant". The variant is sent; the scenario's `expect` of the same
+ * turn index is kept. REPLAY_TYPING_SIDE=original sends the original line instead. Not part of `all` (run explicitly).
+ */
+export function loadRealTyping(file = 'docs/uat/luna-real-typing.txt'): Conversation[] {
+  const f = read<{ scenarios: Array<{ id: string; domain: string; turns: Array<{ text: string; expect: string }> }> }>(`${FIX}/multiTurnScenarios.vi.json`)
+  const byId = new Map(f.scenarios.map(s => [s.id, s]))
+  const side = process.env.REPLAY_TYPING_SIDE === 'original' ? 0 : 1
+  const out: Conversation[] = []
+  for (const raw of readFileSync(file, 'utf8').split(/\r?\n/)) {
+    const line = raw.trim()
+    const head = /^#\s*([A-Z]+-\d+)\s*$/.exec(line)
+    if (head) { const sc = byId.get(head[1]); out.push({ id: head[1], area: sc?.domain ?? null, turns: [] }); continue }
+    if (!line || line.startsWith('#') || !out.length) continue
+    const parts = line.split('|').map(x => x.trim())
+    if (parts.length < 2 || !parts[side]) continue
+    const conv = out[out.length - 1]
+    conv.turns.push({ text: parts[side], expect: byId.get(conv.id)?.turns[conv.turns.length]?.expect ?? null })
+  }
+  return out.filter(c => c.turns.length)
+}
+
 export function loadSuite(name: SuiteName): Conversation[] {
+  if (name === 'realTyping') return loadRealTyping()
   if (name === 'scenarios') {
     const f = read<{ scenarios: Array<{ id: string; domain: string; turns: Array<{ text: string; expect: string }> }> }>(`${FIX}/multiTurnScenarios.vi.json`)
     return f.scenarios.map(s => ({ id: s.id, area: s.domain, turns: s.turns.map(t => ({ text: t.text, expect: t.expect })) }))

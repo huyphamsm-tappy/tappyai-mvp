@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "30 Quà sinh nhật Sếp dưới 1 triệu Sang trọng, Dễ ghi điểm",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:03:42.058Z",
+ "body": {
+  "searchParameters": {
+   "q": "30 Quà sinh nhật Sếp dưới 1 triệu Sang trọng, Dễ ghi điểm",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "30 Quà sinh nhật Sếp dưới 1 triệu Sang trọng, Dễ ghi điểm",
+    "imageUrl": "https://muaquatet.vn/wp-content/uploads/2025/09/1-set-qua-sang-trong.jpg",
+    "imageWidth": 800,
+    "imageHeight": 704,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTlT7-7ORoIiBT5cKxp5-eksbZBGuUD2iB8ULpG8k3whQ&s=10",
+    "thumbnailWidth": 590,
+    "thumbnailHeight": 518,
+    "source": "Mua Quà Tết",
+    "domain": "muaquatet.vn",
+    "link": "https://muaquatet.vn/qua-tang-sinh-nhat-sep-duoi-1-trieu",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fmuaquatet.vn%2Fwp-content%2Fuploads%2F2025%2F09%2F1-set-qua-sang-trong.jpg&tbnid=VcFbLA3rkOmS7M&imgrefurl=https%3A%2F%2Fmuaquatet.vn%2Fqua-tang-sinh-nhat-sep-duoi-1-trieu&docid=3Tyvtq207HoyRM&w=800&h=704",
+    "position": 1
+   },
+   {
+    "title": "30 Quà sinh nhật Sếp dưới 1 triệu Sang trọng, Dễ ghi điểm",
+    "imageUrl": "https://muaquatet.vn/wp-content/uploads/2025/09/21-thuc-pham-chuc-nang-lam-dep.jpg",
+    "imageWidth": 800,
+    "imageHeight": 690,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCq6iqsGpgkm5U158EEZewDW-p8xbuIIEMOS2clGaxyA&s=10",
+    "thumbnailWidth": 596,
+    "thumbnailHeight": 514,
+    "source": "Mua Quà Tết",
+    "domain": "muaquatet.vn",
+    "link": "https://muaquatet.vn/qua-tang-sinh-nhat-sep-duoi-1-trieu",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fmuaquatet.vn%2Fwp-content%2Fuploads%2F2025%2F09%2F21-thuc-pham-chuc-nang-lam-dep.jpg&tbnid=SDan_AQLYgOIwM&imgrefurl=https%3A%2F%2Fmuaquatet.vn%2Fqua-tang-sinh-nhat-sep-duoi-1-trieu&docid=3Tyvtq207HoyRM&w=800&h=690",
+    "position": 2
+   },
+   {
+    "title": "30 Quà sinh nhật Sếp dưới 1 triệu Sang trọng, Dễ ghi điểm",
+    "imageUrl": "https://muaquatet.vn/wp-content/uploads/2025/09/24-bo-ly-tach-cao-cap-tra-ca-phe.jpg",
+    "imageWidth": 800,
+    "imageHeight": 800,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQehPtntWJ5rsZ-StfHNSBx9iYN4ZPuKT88qFzo37ITrQ&s=10",
+    "thumbnailWidth": 554,
+    "thumbnailHeight": 554,
+    "source": "Mua Quà Tết",
+    "domain": "muaquatet.vn",
+    "link": "https://muaquatet.vn/qua-tang-sinh-nhat-sep-duoi-1-trieu",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fmuaquatet.vn%2Fwp-content%2Fuploads%2F2025%2F09%2F24-bo-ly-tach-cao-cap-tra-ca-phe.jpg&tbnid=-IU9NOyid-lf-M&imgrefurl=https%3A%2F%2Fmuaquatet.vn%2Fqua-tang-sinh-nhat-sep-duoi-1-trieu&docid=3Tyvtq207HoyRM&w=800&h=800",
+    "position": 3
+   },
+   {
+    "title": "30 Quà sinh nhật Sếp dưới 1 triệu Sang trọng, Dễ ghi điểm",
+    "imageUrl": "https://muaquatet.vn/wp-content/uploads/2025/09/2-tang-mot-chai-ruou-vang-hoac-ruou-manh.jpg",
+    "imageWidth": 800,
+    "imageHeight": 704,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtRWhKomE6Bmif1XBTzY55-yi67dOCqZ22WlJqXiOrRg&s=10",
+    "thumbnailWidth": 590,
+    "thumbnailHeight": 518,
+    "source": "Mua Quà Tết",
+    "domain": "muaquatet.vn",
+    "link": "https://muaquatet.vn/qua-tang-sinh-nhat-sep-duoi-1-trieu",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fmuaquatet.vn%2Fwp-content%2Fuploads%2F2025%2F09%2F2-tang-mot-chai-ruou-vang-hoac-ruou-manh.jpg&tbnid=wyhQe7xLNwoZEM&imgrefurl=https%3A%2F%2Fmuaquatet.vn%2Fqua-tang-sinh-nhat-sep-duoi-1-trieu&docid=3Tyvtq207HoyRM&w=800&h=704",
+    "position": 4
+   },
+   {
+    "title": "30 Quà sinh nhật Sếp dưới 1 triệu Sang trọng, Dễ ghi điểm",
+    "imageUrl": "https://muaquatet.vn/wp-content/uploads/2025/09/20-hoa-tuoi-kem-thiep-chuc-mung.jpg",
+    "imageWidth": 800,
+    "imageHeight": 690,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRkbbjOUbp-F-GSdkY_XHFNkkL7s7PfoGZEoHPWMNCaHA&s=10",
+    "thumbnailWidth": 596,
+    "thumbnailHeight": 514,
+    "source": "Mua Quà Tết",
+    "domain": "muaquatet.vn",
+    "link": "https://muaquatet.vn/qua-tang-sinh-nhat-sep-duoi-1-trieu",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fmuaquatet.vn%2Fwp-content%2Fuploads%2F2025%2F09%2F20-hoa-tuoi-kem-thiep-chuc-mung.jpg&tbnid=CRiqVVRhxnYwWM&imgrefurl=https%3A%2F%2Fmuaquatet.vn%2Fqua-tang-sinh-nhat-sep-duoi-1-trieu&docid=3Tyvtq207HoyRM&w=800&h=690",
+    "position": 5
+   },
+   {
+    "title": "30 Quà sinh nhật Sếp dưới 1 triệu Sang trọng, Dễ ghi điểm",
+    "imageUrl": "https://muaquatet.vn/wp-content/uploads/2025/09/3-tang-but-ky-cao-cap-cho-sep.jpg",
+    "imageWidth": 800,
+    "imageHeight": 704,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpeAXzvc0Qm9BaRVnjSNfTCqWBY9PXwpuf9LULtL5bPw&s=10",
+    "thumbnailWidth": 590,
+    "thumbnailHeight": 518,
+    "source": "Mua Quà Tết",
+    "domain": "muaquatet.vn",
+    "link": "https://muaquatet.vn/qua-tang-sinh-nhat-sep-duoi-1-trieu",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fmuaquatet.vn%2Fwp-content%2Fuploads%2F2025%2F09%2F3-tang-but-ky-cao-cap-cho-sep.jpg&tbnid=qImcxYFTvHIIbM&imgrefurl=https%3A%2F%2Fmuaquatet.vn%2Fqua-tang-sinh-nhat-sep-duoi-1-trieu&docid=3Tyvtq207HoyRM&w=800&h=704",
+    "position": 6
+   },
+   {
+    "title": "30 Quà sinh nhật Sếp dưới 1 triệu Sang trọng, Dễ ghi điểm",
+    "imageUrl": "https://muaquatet.vn/wp-content/uploads/2025/09/7-ca-vat-hoac-kep-ca-vat-cao-cap.jpg",
+    "imageWidth": 800,
+    "imageHeight": 800,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQs4yenxbvdQk_asyT6FFnlEh3lSW7z660E46xQDrdR0A&s=10",
+    "thumbnailWidth": 554,
+    "thumbnailHeight": 554,
+    "source": "Mua Quà Tết",
+    "domain": "muaquatet.vn",
+    "link": "https://muaquatet.vn/qua-tang-sinh-nhat-sep-duoi-1-trieu",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fmuaquatet.vn%2Fwp-content%2Fuploads%2F2025%2F09%2F7-ca-vat-hoac-kep-ca-vat-cao-cap.jpg&tbnid=gZWLZSYy8NrdGM&imgrefurl=https%3A%2F%2Fmuaquatet.vn%2Fqua-tang-sinh-nhat-sep-duoi-1-trieu&docid=3Tyvtq207HoyRM&w=800&h=800",
+    "position": 7
+   },
+   {
+    "title": "30 Quà sinh nhật Sếp dưới 1 triệu Sang trọng, Dễ ghi điểm",
+    "imageUrl": "https://muaquatet.vn/wp-content/uploads/2025/09/16-my-pham-cham-soc-da-co-ban.jpg",
+    "imageWidth": 800,
+    "imageHeight": 800,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRuUV5b9atQmlPqy5dy1jqNL1cBuat8gnXAev7TLDnq9A&s=10",
+    "thumbnailWidth": 554,
+    "thumbnailHeight": 554,
+    "source": "Mua Quà Tết",
+    "domain": "muaquatet.vn",
+    "link": "https://muaquatet.vn/qua-tang-sinh-nhat-sep-duoi-1-trieu",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fmuaquatet.vn%2Fwp-content%2Fuploads%2F2025%2F09%2F16-my-pham-cham-soc-da-co-ban.jpg&tbnid=HJfaV5wleCwjyM&imgrefurl=https%3A%2F%2Fmuaquatet.vn%2Fqua-tang-sinh-nhat-sep-duoi-1-trieu&docid=3Tyvtq207HoyRM&w=800&h=800",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

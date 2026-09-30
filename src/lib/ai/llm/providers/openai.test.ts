@@ -10,7 +10,7 @@ describe('Luna adapter (PHIÊN LUNA 30/09)', () => {
   })
 
   it('reshapes the call for a reasoning model: max_completion_tokens, no sampling settings, explicit effort', () => {
-    const o = lunaCallOptions({ maxTokens: 600, temperature: 0, topP: 1, providerMetadata: { anthropic: { x: 1 } } }, 'low')
+    const o = lunaCallOptions({ maxTokens: 600, temperature: 0, topP: 1, providerMetadata: { anthropic: { x: 1 } } as Record<string, Record<string, unknown>> }, 'low')
     expect(o.maxTokens).toBeUndefined()
     expect(o.temperature).toBeUndefined()
     expect(o.topP).toBeUndefined()
