@@ -2637,13 +2637,21 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   if (lunaOn) enrichment.setLeakCheck(buildLeakDetector([systemShared ?? '', INTENT_SYSTEM, FRAME_CORE, ...(['food', 'shopping', 'travel', 'entertainment', 'spa'] as const).map(d => frameLibrary(d))]))
   // The one targeted extra search a Luna answer may make: its query is cut of private data before Serper (owner rule 3).
   if (lunaPlan) console.log(JSON.stringify({ type: 'tappyai_luna_plan_data', presearch: presearchAll.map(o => o.toolName), planningIntent: planningIntent ?? null }))
+  // A Luna PLAN turn with tools (non-trip) gets ONE search (owner: at most one targeted extra search). Replay 30/09
+  // E1-G5: at effort none Luna spent every step searching and wrote nothing (empty_reply_fallback) — a second call is
+  // answered by code, without Serper, and the turn keeps a step to write (maxSteps below).
+  let lunaPlanSearches = 0
   const lunaGuardTools = <T,>(set: T): T => {
-    if (!lunaAnswer || !set) return set
+    if (!(lunaAnswer || lunaPlan) || !set) return set
     const privateTexts = [memoryBlock, userLocation?.address ?? '']
     const ownWords = lunaUserTexts.join(' ')
     return Object.fromEntries(Object.entries(set as Record<string, { execute?: (args: Record<string, unknown>, ctx: unknown) => unknown }>).map(([name, t]) => [name, !t?.execute ? t : {
       ...t,
       execute: (args: Record<string, unknown>, ctx: unknown) => {
+        if (lunaPlan && ++lunaPlanSearches > 1) {
+          console.log(JSON.stringify({ type: 'tappyai_luna_plan_search_budget', tool: name, call: lunaPlanSearches }))
+          return { error: 'search_budget_used', note: lang === 'en' ? 'No more searches this turn. Write the full plan now from the data above; mark anything missing as "no information yet".' : 'Hết lượt tìm của lượt này. Viết ngay kế hoạch đầy đủ từ dữ liệu đã có; mục nào thiếu ghi "chưa có thông tin".' }
+        }
         if (typeof args?.query === 'string') {
           const s = sanitizeSearchQuery(args.query, { privateTexts, ownWords })
           if (s.cut.length) { console.log(JSON.stringify({ type: 'tappyai_luna_query_sanitized', tool: name, cut: s.cut })); args = { ...args, query: s.query } }
@@ -2696,7 +2704,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     // UAT 70153e8 (evening plan): a presearched turn run with ONE step still called search_places itself — the
     // step budget ended on the tool call and the reply stopped at "mình sẽ tìm…". It keeps a second step: a turn
     // that writes straight away is unchanged (no second pass is made), a stray tool call now ends in text.
-    maxSteps: consultFollowReuse || consultTripPrefetch || (lean && presearchAll.length > 0 && !planningIntent && !noToolTurn && !eveningBlock) ? 2 : noToolTurn || eveningBlock ? 1 : planningIntent ? (lean ? 3 : 8) : hasImage ? 3 : lean ? 3 : 5,
+    // Luna non-trip plan: one search step + a step that must write (the second search is answered by code, above).
+    maxSteps: lunaPlan && planningIntent !== 'trip' ? 3 : consultFollowReuse || consultTripPrefetch || (lean && presearchAll.length > 0 && !planningIntent && !noToolTurn && !eveningBlock) ? 2 : noToolTurn || eveningBlock ? 1 : planningIntent ? (lean ? 3 : 8) : hasImage ? 3 : lean ? 3 : 5,
     // A one-step consult turn never reads the history breakpoint back — skip its +25% write (claude.ts).
     // A/B 29/09: a consult plan that is not a multi-step trip wrote ~4.2k tokens of history to the cache (1.25×)
     // and read back ~20% — a net loss. The history breakpoint stays only where a second model step is likely.

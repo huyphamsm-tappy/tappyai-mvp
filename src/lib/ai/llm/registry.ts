@@ -95,7 +95,7 @@ export function modelForRole(role: ModelRole, opts: { structured?: boolean } = {
   const primary = opts.structured ? openaiProvider!.structuredModel(role) : openaiProvider!.model(role)
   const ms = Number(process.env[`LLM_${role.toUpperCase()}_TIMEOUT_MS`])
   // A reasoning plan thinks before its first part: a longer default wait for role `plan` (still under the route's budget).
-  return withFallback(primary, base, { firstPartMs: Number.isFinite(ms) && ms > 0 ? ms : role === 'plan' ? 30000 : 8000, label: role })
+  return withFallback(primary, base, { firstPartMs: Number.isFinite(ms) && ms > 0 ? ms : role === 'plan' ? 25000 : 8000, label: role })
 }
 
 /** Test hook: forget the routed provider so env changes take effect. */

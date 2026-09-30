@@ -11,6 +11,10 @@ const outFile = args.shift()
 let verdicts = {}
 const vi = args.indexOf('--verdicts')
 if (vi >= 0) { verdicts = JSON.parse(readFileSync(args[vi + 1], 'utf8')); args.splice(vi, 2) }
+// --only <ids>: the owner's exact test set (older Haiku runs also hold R11 / R15-2..5, which are not in it).
+let only = null
+const oi = args.indexOf('--only')
+if (oi >= 0) { only = new Set(args[oi + 1].split(',')); args.splice(oi, 2) }
 const fold = s => String(s ?? '').normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/gi, 'd').toLowerCase()
 const digits = s => String(s).replace(/[^\d]/g, '')
 
@@ -21,7 +25,10 @@ for (const spec of args) {
     const res = JSON.parse(readFileSync(join(dir, 'results.json'), 'utf8'))
     for (const r of res.rows ?? res) {
       const isPlan = r.server?.turnType === 'plan' || /kế hoạch chi tiết|lịch trình chi tiết/i.test(r.sent)
-      if (!isPlan) continue
+      if (!isPlan || (only && !only.has(r.conv))) continue
+      // The owner's set is the plan TURN (the last turn of each planHard case); a first message that says "lên kế hoạch"
+      // is the consult opener, not the detailed plan.
+      if (r.conv.match(/^(R\d|E1-|DN-)/) && r.turnIndex !== Math.max(...(res.rows ?? res).filter(x => x.conv === r.conv).map(x => x.turnIndex))) continue
       const rawF = join(dir, 'raw', `${r.conv}-t${r.turnIndex}.json`)
       let ev = ''
       for (let t = 1; t <= r.turnIndex; t++) { const f = join(dir, 'raw', `${r.conv}-t${t}.json`); if (existsSync(f)) { const j = JSON.parse(readFileSync(f, 'utf8')); ev += ' ' + j.sent + ' ' + JSON.stringify(j.parsed?.tools ?? []) } }
