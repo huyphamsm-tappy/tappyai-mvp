@@ -22,7 +22,7 @@ import { appendConsultPlanCost, appendPlanBudgetMath, partyCount, perPersonBudge
 import { consultRemainingLine, normalizePickSentence, shoppingMarkerNames, shoppingPickName } from './consultative/consultBrain'
 import { consultLunaEnabled, splitPickSentence } from './consultative/luna'
 import { LEAK_REPLACEMENT_EN, LEAK_REPLACEMENT_VI } from './consultative/lunaSafety'
-import { restorePlanHeadings, fillEmptyPlanSections } from './consultative/domainFrames'
+import { restorePlanHeadings, hideEmptyPlanSections, missingStagesLine } from './consultative/domainFrames'
 import { stripStepNarration } from './consultative/stepNarration'
 import { buildActions } from '@/lib/recommendation/actions'
 import { safeFlushPoint, alignReleasedPrefix } from './progressiveFlush'
@@ -2983,8 +2983,18 @@ export function applyPlaceEnrichmentStreamFilter(
         }).text
         : restored
       // …and no section of the plan is left as a bare heading (Luna 30/09 §7 c).
-      const emptyFilled = collector?.consultTurn === 'plan' ? fillEmptyPlanSections(headed, lang) : { text: headed, filled: [] as string[] }
-      if (emptyFilled.filled.length) console.log(JSON.stringify({ type: 'tappyai_plan_empty_sections', filled: emptyFilled.filled }))
+      // (owner 30/09: a section with no data is HIDDEN, and a requested stage the plan has no place for is said once, at the end)
+      const emptyFilled = (() => {
+        if (collector?.consultTurn !== 'plan') return { text: headed, filled: [] as string[] }
+        const h = hideEmptyPlanSections(headed)
+        const gap = missingStagesLine(h.text, collector.userTexts ?? [userText], lang)
+        if (!gap) return { text: h.text, filled: h.hidden }
+        const lines = h.text.split('\n')
+        const at = lines.findIndex(l => /^\s*\[(?:FOLLOWUPS|CTA_BUTTONS|TAPPY_[A-Z_]+)\]/.test(l))
+        const body = at < 0 ? `${h.text.replace(/\s+$/, '')}\n\n${gap}` : [...lines.slice(0, at), gap, '', ...lines.slice(at)].join('\n')
+        return { text: body, filled: [...h.hidden, 'missing_stage'] }
+      })()
+      if (emptyFilled.filled.length) console.log(JSON.stringify({ type: 'tappyai_plan_empty_sections', hidden: emptyFilled.filled }))
       const withLine = collector?.consultButtons?.length ? consultRemainingLine(emptyFilled.text, consultCandidates, lang) : emptyFilled.text
       // Safety net (replay 29/09): the guards can leave a consult reply with NO words (a compare whose every
       // sentence lacked evidence) — the user then sees only buttons. One honest sentence is put back.

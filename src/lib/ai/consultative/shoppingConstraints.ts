@@ -72,7 +72,16 @@ export interface ShoppingConstraints {
   excludeVariants?: string[]
   /** The user asked FOR an accessory/service, so rule 1 must stand down. */
   wantsAccessory: boolean
+  /**
+   * The least RAM the stated USE needs when no figure was named (owner 30/09, SHOP-3 t5: a 4GB laptop was picked "for
+   * learning design"). Applied only while another candidate states enough (validateShoppingCandidates).
+   */
+  minRamGb?: number | null
 }
+
+/** Uses that need a real machine: graphics / design / video / 3D / games → at least 8GB of RAM. */
+const DEMANDING_USE = /\b(?:thiet ke|do hoa|photoshop|illustrator|premiere|after effects|dung phim|dung video|edit video|chinh sua video|render|3d|autocad|revit|blender|gaming|choi game|game nang)\b/
+export const MIN_RAM_FOR_DEMANDING_USE = 8
 
 export type RejectionReason = 'accessory' | 'service' | 'brand' | 'budget' | 'ram' | 'storage' | 'size' | 'variant' | 'recipient'
 
@@ -421,7 +430,10 @@ export function deriveShoppingConstraints(
     if (rec) k.recipient = rec[1]
     const gender = recipientGenderOf(t)
     if (gender) k.recipientGender = gender
+    if (DEMANDING_USE.test(t)) k.minRamGb = MIN_RAM_FOR_DEMANDING_USE
   }
+  // Only for a computer, and never over a RAM figure the user named themselves.
+  if (k.ramGb !== null || (k.productType !== 'laptop' && k.productType !== 'pc')) k.minRamGb = null
 
   // The LATEST turn that names a product decides whether an accessory is what is wanted: asking for a laptop after
   // asking for a laptop bag is a new question. A turn that names none ("không thích màu đen", "xem thêm") keeps the
@@ -654,6 +666,18 @@ export function validateShoppingCandidates(
     const r = rejectCandidate(c, k)
     if (r) rejected.push(r)
     else kept.push(c)
+  }
+  // The stated USE's minimum RAM (SHOP-3 t5): a listing that STATES less is dropped — but only while another kept
+  // candidate (already within budget) STATES enough. Silence is not a failure; none enough → nothing dropped.
+  const min = k.minRamGb ?? null
+  if (min !== null) {
+    const ram = (c: Candidate) => parseProductSpecs(c.name || '').ram_gb
+    const enough = kept.filter(c => { const r = ram(c); return typeof r === 'number' && r >= min })
+    if (enough.length > 0) {
+      const low = kept.filter(c => { const r = ram(c); return typeof r === 'number' && r < min })
+      for (const c of low) rejected.push({ candidate: c, reason: 'ram', detail: `${ram(c)}GB < ${min}GB for the stated use` })
+      return { kept: kept.filter(c => !low.includes(c)), rejected }
+    }
   }
   return { kept, rejected }
 }

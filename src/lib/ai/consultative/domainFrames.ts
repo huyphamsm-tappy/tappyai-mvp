@@ -165,26 +165,50 @@ export function restorePlanHeadings(original: string, guarded: string): string {
   return out.join('\n').replace(/\n{3,}/g, '\n\n')
 }
 
+/** A line that only says "no information" — a placeholder, not content (the model's own or an older guard's). */
+const PLACEHOLDER_LINE = /^\s*[-*•]?\s*(?:chưa có (?:thông tin|dữ liệu)(?: đã kiểm)?(?: cho mục này)?|không có (?:thông tin|dữ liệu)(?: cho mục này)?|no (?:checked )?information(?: for this part)?(?: yet)?)\s*[.!…]?\s*$/iu
+const STRUCTURED_LINE = /^\s*\[(?:FOLLOWUPS|CTA_BUTTONS|TAPPY_[A-Z_]+)\]/
+
 /**
- * No empty section in a detailed plan (Luna 30/09 §7 c: "Thời lượng" in spa, "Ăn ở đâu" in travel, "Đi lại & gửi xe"
- * in food were bare headings — a guard cut every sentence under them, or the model wrote none). The section then says
- * so in one honest line; nothing is invented. Only approved plan headings count; structured blocks end a section.
+ * No empty section in a detailed plan (owner 30/09: a section with no data is HIDDEN — no heading, no "Chưa có thông tin đã
+ * kiểm cho mục này"). Luna §7 c / §13: SPA-1 "Thời lượng" held only that sentence; bare headings came from a guard cutting
+ * every sentence under them. A section whose lines are all blank or placeholders is removed with its heading. Only
+ * approved plan headings count; structured blocks end a section.
  */
-export function fillEmptyPlanSections(text: string, lang = 'vi'): { text: string; filled: string[] } {
+export function hideEmptyPlanSections(text: string): { text: string; hidden: string[] } {
   const lines = text.split('\n')
   const out: string[] = []
-  const filled: string[] = []
-  const note = lang === 'en' ? '- No checked information for this part yet.' : '- Chưa có thông tin đã kiểm cho mục này.'
+  const hidden: string[] = []
   for (let i = 0; i < lines.length; i++) {
-    out.push(lines[i])
     const key = headingKey(lines[i])
-    if (!key) continue
+    if (!key) { out.push(lines[i]); continue }
     let k = i + 1
-    while (k < lines.length && !headingKey(lines[k]) && !/^\s*\[(?:FOLLOWUPS|CTA_BUTTONS|TAPPY_[A-Z_]+)\]/.test(lines[k]) && !/[\p{L}\p{N}]/u.test(lines[k])) k++
-    const nextIsContent = k < lines.length && !headingKey(lines[k]) && !/^\s*\[(?:FOLLOWUPS|CTA_BUTTONS|TAPPY_[A-Z_]+)\]/.test(lines[k])
-    if (!nextIsContent) { out.push(note); filled.push(key) }
+    while (k < lines.length && !headingKey(lines[k]) && !STRUCTURED_LINE.test(lines[k])) k++
+    const body = lines.slice(i + 1, k)
+    if (body.every(l => !/[\p{L}\p{N}]/u.test(l) || PLACEHOLDER_LINE.test(l))) { hidden.push(key); i = k - 1; continue }
+    out.push(lines[i])
   }
-  return { text: out.join('\n'), filled }
+  return { text: out.join('\n').replace(/\n{3,}/g, '\n\n'), hidden }
+}
+
+/**
+ * The stages the user asked for that the plan gives no place for (owner 30/09, E1-G5: "ăn tối rồi đi chơi rồi đi uống" →
+ * a plan with dinner and karaoke and no drinking venue). One short sentence at the END says which — never a filler section.
+ * Folded, whole-word; a stage counts as covered only when the plan names a place of that kind.
+ */
+const STAGES: Array<{ label: string; asked: RegExp; covered: RegExp }> = [
+  { label: 'đi uống', asked: /\b(?:di uong|uong tiep|nhau|bar|pub|beer|cocktail)\b/, covered: /\b(?:[a-z]*bar|pub|beer|bia|rooftop|lounge|cocktail|quan nhau|club)\b/ },
+  { label: 'đi chơi', asked: /\b(?:di choi|karaoke|xem phim|bida|bowling)\b/, covered: /\b(?:karaoke|xem phim|rap phim|cgv|lotte cinema|galaxy cinema|bida|billiards?|bowling|khu vui choi)\b/ },
+]
+const foldStage = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/gi, 'd').toLowerCase()
+export function missingStagesLine(planText: string, userTexts: readonly string[], lang = 'vi'): string | null {
+  const asked = foldStage(userTexts.join(' \n '))
+  const plan = foldStage(planText.replace(/\[(TAPPY_PLAN|CTA_BUTTONS|FOLLOWUPS)\][\s\S]*?\[\/\1\]/g, ''))
+  const missing = STAGES.filter(s => s.asked.test(asked) && !s.covered.test(plan)).map(s => s.label)
+  if (missing.length === 0) return null
+  return lang === 'en'
+    ? `The ${missing.join(' and ')} part you asked for is not in this plan yet — I have no checked place for it; want me to look?`
+    : `Chặng ${missing.join(' và ')} bạn muốn chưa có trong kế hoạch vì mình chưa có địa điểm đã kiểm — bạn muốn mình tìm thêm không?`
 }
 
 

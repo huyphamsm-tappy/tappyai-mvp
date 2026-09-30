@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { planCostSubject } from '../streamEnrichment'
 import { appendConsultPlanCost } from '../planBudgetMath'
-import { fillEmptyPlanSections } from './domainFrames'
+import { hideEmptyPlanSections, missingStagesLine } from './domainFrames'
 import { capHedges } from './hedgeCap'
 import { guardUnsupportedClaims } from '../unsupportedClaimGuard'
 import { parsePriceBand } from '@/lib/recommendation/priceBand'
@@ -63,14 +63,37 @@ describe('(b) the code-built "not confirmed" sentences read as Vietnamese', () =
   })
 })
 
-describe('(c) no empty section in a detailed plan', () => {
-  it('FOOD-2 / SPA-3: a bare heading gets one honest line; filled sections are untouched', () => {
+describe('(c) owner 30/09 — a plan section with no data is HIDDEN; a missing requested stage is said once at the end', () => {
+  it('FOOD-2 / SPA-3: bare headings disappear with their heading; filled sections are untouched', () => {
     const plan = '**Giờ đến & đặt bàn**\n\n**Gọi món**\n- Bánh cuốn nóng (2–3 phần)\n\n**Đi lại & gửi xe**\n\n**Mẹo địa phương**\n- Ăn ngay khi vừa giao.\n\n[FOLLOWUPS]a|b[/FOLLOWUPS]'
-    const r = fillEmptyPlanSections(plan)
-    expect(r.filled).toEqual(['Giờ đến & đặt bàn', 'Đi lại & gửi xe'])
-    expect(r.text).toContain('**Giờ đến & đặt bàn**\n- Chưa có thông tin đã kiểm cho mục này.')
+    const r = hideEmptyPlanSections(plan)
+    expect(r.hidden).toEqual(['Giờ đến & đặt bàn', 'Đi lại & gửi xe'])
+    expect(r.text).not.toContain('Giờ đến & đặt bàn')
+    expect(r.text).not.toContain('Đi lại & gửi xe')
     expect(r.text).toContain('**Gọi món**\n- Bánh cuốn nóng')
+    expect(r.text).toContain('[FOLLOWUPS]a|b[/FOLLOWUPS]')
     const spa = '**Gói / dịch vụ nên chọn**\n**Đặt lịch**\n- Gọi 0909 000 000.\n**Thời lượng**\n[FOLLOWUPS]x[/FOLLOWUPS]'
-    expect(fillEmptyPlanSections(spa).filled).toEqual(['Gói / dịch vụ nên chọn', 'Thời lượng'])
+    expect(hideEmptyPlanSections(spa).hidden).toEqual(['Gói / dịch vụ nên chọn', 'Thời lượng'])
+  })
+  it('SPA-1 (Luna 30/09, verbatim): "Thời lượng" holding only "Chưa có thông tin đã kiểm cho mục này." is hidden', () => {
+    const plan = '**Chuẩn bị trước khi đến**\nBáo rõ bạn muốn massage toàn thân và kỹ thuật viên nữ.\n\n**Thời lượng**\n- Chưa có thông tin đã kiểm cho mục này.\n\n**Chi phí**\n- Gạo Spa - Massage Hochiminh: chưa có giá — hỏi quán.\n- Tổng: chưa tính được vì chưa có giá có nguồn.\n\n**Lưu ý**\n- Kỹ thuật viên nữ chưa được xác nhận trong dữ liệu.'
+    const r = hideEmptyPlanSections(plan)
+    expect(r.hidden).toEqual(['Thời lượng'])
+    expect(r.text).not.toContain('Thời lượng')
+    expect(r.text).not.toContain('Chưa có thông tin đã kiểm cho mục này')
+    expect(r.text).toContain('**Chi phí**\n- Gạo Spa')
+  })
+  it('E1-G5 (Luna 30/09): "ăn tối rồi đi chơi rồi đi uống" with dinner + karaoke and no drinking place → one sentence', () => {
+    const users = ['Tối nay đi chơi gì với hội bạn 5 người ở Quận 1', 'ăn tối rồi đi chơi rồi đi uống, sôi động, tầm 300k/người', 'Lên kế hoạch chi tiết']
+    const plan = '**Giờ đến & đặt bàn**\nLONG WANG Hồ Con Rùa, 11 Phạm Ngọc Thạch. Đi khoảng 19:00 để ăn tối.\n\n**Đi lại & gửi xe**\nĐiểm karaoke được chọn: **Karaoke MEI**, 159 Hàm Nghi, Quận 1.'
+    expect(missingStagesLine(plan, users)).toBe('Chặng đi uống bạn muốn chưa có trong kế hoạch vì mình chưa có địa điểm đã kiểm — bạn muốn mình tìm thêm không?')
+    expect(missingStagesLine(plan + '\nSau đó qua **Chill Skybar** uống.', users)).toBeNull()
+    expect(missingStagesLine('**Lịch buổi**\n- 19:00 ăn tối tại quán A.', users)).toMatch(/^Chặng đi uống và đi chơi bạn muốn/)
+    expect(missingStagesLine(plan, ['massage toàn thân tối nay'])).toBeNull()
+  })
+  it('E1-G5 merged sentence: a subject that itself says "và" is not chained with another "và"', () => {
+    const t = '**Mình chọn: LONG WANG.** Mình chưa xác nhận được thực đơn hoặc khẩu phần. Chưa có thông tin về chỗ gửi xe. Mình chưa xác nhận được địa điểm và giá. Chưa rõ địa điểm dự phòng.'
+    const out = capHedges(t, { lang: 'vi', max: 2 }).text
+    expect(out).not.toMatch(/\bvà giá và\b/)
   })
 })
