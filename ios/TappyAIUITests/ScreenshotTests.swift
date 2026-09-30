@@ -52,6 +52,9 @@ final class ScreenshotTests: XCTestCase {
         shot("16-hub-signed-in")
         any(app, "profile-tab-restricted").tap()
         shot("17-hub-restricted")
+        // The side panels under the account rows: info, activity, following, QR.
+        app.swipeUp(); app.swipeUp(); app.swipeUp()
+        shot("19-hub-panels")
     }
 
     func testDealsAskCardWhenEmpty() {

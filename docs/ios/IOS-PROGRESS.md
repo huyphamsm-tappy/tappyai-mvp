@@ -60,6 +60,14 @@ skyline, huy hiệu cửa hàng của mẫu — đúng quy tắc (không có d�
 - Lỗi thấy trên ảnh `16`/`17`, đã sửa: chip tab hiện khoá thô `profileHub.tab.posts` (`LocalizedStringKey` với nội suy thành khoá định
   dạng "…%@"); ảnh ô lưới tràn sang ô bên cạnh (ảnh fill làm view định kích thước) → ô 3:4 cố định, ảnh là overlay đã cắt.
 
+## Lô sau run xanh (5e605a6 +)
+- Hub "Tôi": thêm 3 thẻ bên dưới như Android — Thông tin cá nhân (tên, email, Chỉnh sửa), Thành tích (6 con số thật; chưa có số thì "—"),
+  QR Profile. Ảnh CI `19-hub-panels`.
+- Chia sẻ clip ĐÃ TẢI LÊN: nút "Gửi video (TikTok…)" gửi chính file video (≤150 MB, tải về tệp tạm, xong mới dùng); không lấy được thì gửi
+  ảnh thẻ. Clip dạng link (YouTube…) vẫn gửi ảnh thẻ + link. Test `ClipVideoFileTests`. Chưa kiểm trên máy thật.
+- Cài đặt → Thông báo: người đã từ chối quyền thì mở Cài đặt iOS (hộp xin quyền không hiện lại lần hai), giống Android `DIRECT_TO_SETTINGS`.
+- Chưa làm, cần Huy quyết: Home (L12 — bố cục Android riêng đã được duyệt, web khác), onboarding 4 bước theo mockup hay 2 bước như web/Android.
+
 ## CI run 36670956956 (commit e50bc97) — XANH, 18/18 ảnh
 Build, 240/240 unit test (có `ResponseContractDecodeTests`, `AppConfigDecodeTests`), 17/17 UI test, 18 ảnh + 18 ảnh ghép.
 Lỗi cuối (Ưu đãi): identifier đặt trên container đè lên identifier của nút con → test không thấy nút; bỏ id ở container (Ưu đãi, hero
