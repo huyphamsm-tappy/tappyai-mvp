@@ -68,7 +68,8 @@ describe('1 · planted text stays DATA — it cannot close its fence or claim to
   })
 
   it('an Explore clip caption reaches the prompt only inside explore_clip fences', () => {
-    const ctx: ExploreClipContext = { reviewId: 'r1', placeName: PLANTED.placeName, placeAddress: null, caption: PLANTED.clipCaption, hashtags: [] } as ExploreClipContext
+    // buildExploreClipBlock reads only the flat fields; `venue` is irrelevant to the prompt text.
+    const ctx = { reviewId: 'r1', placeName: PLANTED.placeName, placeAddress: null, caption: PLANTED.clipCaption, hashtags: [] } as unknown as ExploreClipContext
     const block = buildExploreClipBlock(ctx, 'vi')
     const spans = block.split(`${FENCE_OPEN}DATA source=explore_clip`).length - 1
     expect(spans).toBe(2) // name + caption, each fenced

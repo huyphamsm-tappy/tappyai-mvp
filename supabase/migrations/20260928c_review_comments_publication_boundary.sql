@@ -73,8 +73,11 @@ AS $$
       OR public.is_content_moderator()
 $$;
 
-REVOKE ALL ON FUNCTION public.is_content_moderator() FROM PUBLIC;
-REVOKE ALL ON FUNCTION public.review_comments_readable(uuid) FROM PUBLIC;
+-- ADR-019: name every role in the REVOKE (Supabase's default privileges grant anon and
+-- authenticated explicitly), then grant back exactly the callers. Both are evaluated inside a
+-- RESTRICTIVE policy for anon and authenticated, so both roles must keep EXECUTE.
+REVOKE ALL ON FUNCTION public.is_content_moderator() FROM PUBLIC, anon, authenticated;
+REVOKE ALL ON FUNCTION public.review_comments_readable(uuid) FROM PUBLIC, anon, authenticated;
 GRANT EXECUTE ON FUNCTION public.is_content_moderator() TO anon, authenticated, service_role;
 GRANT EXECUTE ON FUNCTION public.review_comments_readable(uuid) TO anon, authenticated, service_role;
 
