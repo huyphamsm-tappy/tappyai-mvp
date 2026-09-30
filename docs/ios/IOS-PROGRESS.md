@@ -60,6 +60,11 @@ skyline, huy hiệu cửa hàng của mẫu — đúng quy tắc (không có d�
 - Lỗi thấy trên ảnh `16`/`17`, đã sửa: chip tab hiện khoá thô `profileHub.tab.posts` (`LocalizedStringKey` với nội suy thành khoá định
   dạng "…%@"); ảnh ô lưới tràn sang ô bên cạnh (ảnh fill làm view định kích thước) → ô 3:4 cố định, ảnh là overlay đã cắt.
 
+## CI run 36668238909 (commit c7b6486) — 238/240 unit test
+Build xanh. 2 test cũ (`OwnCollectionsTests`) khẳng định giải mã PHẢI hỏng (feed thiếu page/limit; dòng rút gọn giải mã thành `Review`)
+— đúng là hành vi đợt rà cố ý đổi. Viết lại: vẫn giữ ý bảo vệ (mỗi route dùng đúng kiểu) nhưng ghim bằng kiểu trả về của service lúc
+biên dịch, thay vì dựa vào việc giải mã thất bại. UI test không chạy vì bước unit test đỏ.
+
 ## Rà toàn bộ model giải mã response (30/09, sau lỗi build 50)
 Nguyên tắc (ghi ở đầu `Core/Networking/LenientDecoding.swift`): chỉ bắt buộc trường màn hình thật sự cần (thường chỉ `id`); trường
 khác optional hoặc có mặc định trung tính (0 / false / "" / []) khi mặc định đó không nói sai điều gì; danh sách bỏ phần tử hỏng, giữ phần
