@@ -1,15 +1,16 @@
 import { NextResponse } from 'next/server'
 import { getRequestUser } from '@/lib/auth/getRequestUser'
-import { dailyRateLimit, clientIp, rateLimit } from '@/lib/security/rateLimit'
+import { clientIp } from '@/lib/security/rateLimit'
 import { SCAM_SHIELD_DAILY_LIMIT_AUTH, SCAM_SHIELD_DAILY_LIMIT_ANON } from '@/lib/config/product'
 import { checkQr } from '@/lib/scam-shield'
 import { CHECK_RATE_LIMIT_WINDOW_MS, CHECK_RATE_LIMIT_MAX, QR_MAX_SIZE_BYTES } from '@/lib/scam-shield/config'
+import { publicDailyRateLimit, publicRateLimit } from '@/lib/security/publicRateLimit'
 
 export const maxDuration = 15
 
 export async function POST(req: Request) {
   const ip = clientIp(req)
-  const rl = rateLimit(`ss:${ip}`, CHECK_RATE_LIMIT_MAX, CHECK_RATE_LIMIT_WINDOW_MS)
+  const rl = await publicRateLimit(`ss:${ip}`, CHECK_RATE_LIMIT_MAX, CHECK_RATE_LIMIT_WINDOW_MS)
   if (!rl.ok) {
     return NextResponse.json(
       { error: 'rate_limit', message: 'Too many checks. Try again later.' },
@@ -21,7 +22,7 @@ export async function POST(req: Request) {
   const dailyLimit = user ? SCAM_SHIELD_DAILY_LIMIT_AUTH : SCAM_SHIELD_DAILY_LIMIT_ANON
   const dailyKey = user ? `ss:daily:${user.id}` : `ss:daily:anon:${ip}`
 
-  if (!dailyRateLimit(dailyKey, dailyLimit).ok) {
+  if (!(await publicDailyRateLimit(dailyKey, dailyLimit)).ok) {
     return NextResponse.json(
       { error: 'daily_limit', message: 'Daily check limit reached.' },
       { status: 429 },

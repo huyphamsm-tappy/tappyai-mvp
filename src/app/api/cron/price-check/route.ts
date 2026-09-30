@@ -4,6 +4,7 @@ import { serperPost } from '@/lib/ai/tools/serperClient'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { emitNotification } from '@/lib/notifications/emit'
 import { pw, normalizePwLang, type PwLang } from '@/lib/priceWatch/messages'
+import { isAuthorizedCronRequest } from '@/lib/security/cronAuth'
 
 export const runtime = 'nodejs'
 export const maxDuration = 60
@@ -45,8 +46,7 @@ async function searchCurrentPrice(query: string): Promise<Array<{ title: string;
 // "Now 4.2 triệu — your target is 4.5 triệu".
 
 export async function GET(req: Request) {
-  const secret = process.env.CRON_SECRET
-  if (!secret || req.headers.get('authorization') !== `Bearer ${secret}`) {
+  if (!isAuthorizedCronRequest(req)) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 

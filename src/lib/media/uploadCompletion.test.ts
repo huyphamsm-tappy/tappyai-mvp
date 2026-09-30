@@ -141,6 +141,22 @@ describe('completeUploadResponse — the server, not the browser, decides', () =
     expect(res.body.url).toBeUndefined()
   })
 
+  it('🚨 an object larger than the kind allows is deleted, never confirmed (security audit 2026-09-30)', async () => {
+    const { p } = provider({ size: 5 * 1024 * 1024 + 1, contentType: 'image/png' })  // dealLogo ceiling: 5 MB
+    const deleteObject = vi.fn(async () => undefined)
+    ;(p as unknown as { deleteObject: typeof deleteObject }).deleteObject = deleteObject
+    const res = await completeUploadResponse(body(), ctx, p)
+    expect(res.status).toBe(413)
+    expect(res.body.url).toBeUndefined()
+    expect(deleteObject).toHaveBeenCalledWith(KEY)
+  })
+
+  it('an object exactly at the ceiling is still accepted', async () => {
+    const { p } = provider({ size: 5 * 1024 * 1024, contentType: 'image/png' })
+    const res = await completeUploadResponse(body(), ctx, p)
+    expect(res.status).toBe(200)
+  })
+
   it('fails when the stored content type is outside the kind’s allowlist', async () => {
     const { p } = provider({ size: 10, contentType: 'text/html' })
     const res = await completeUploadResponse(body(), ctx, p)

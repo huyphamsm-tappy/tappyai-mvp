@@ -5,6 +5,7 @@ import { reconcileWindow, cohortWindow } from '@/lib/admin/analytics/rollupWindo
 import { acquisitionFromSignupEvent, upsertAcquisition, type AuthAnalyticsEvent } from '@/lib/admin/analytics/userAcquisitionService'
 import { evaluateAndUpsertActivation, type RawUserEventRow } from '@/lib/admin/analytics/activationEvaluationRunner'
 import { inCodeActivationRuleProvider } from '@/lib/admin/analytics/activationRuleProvider'
+import { isAuthorizedCronRequest } from '@/lib/security/cronAuth'
 
 export const runtime = 'nodejs'
 export const maxDuration = 60
@@ -25,8 +26,7 @@ export const maxDuration = 60
 const RECONCILE_DAYS = 4 // today + 3 prior VN days
 
 export async function GET(req: Request) {
-  const secret = process.env.CRON_SECRET
-  if (!secret || req.headers.get('authorization') !== `Bearer ${secret}`) {
+  if (!isAuthorizedCronRequest(req)) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 

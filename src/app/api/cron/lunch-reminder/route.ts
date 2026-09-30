@@ -1,11 +1,11 @@
 import { getAllSubscribedUserIds } from '@/lib/notifications/send'
 import { emitNotification } from '@/lib/notifications/emit'
 import { NextResponse } from 'next/server'
+import { isAuthorizedCronRequest } from '@/lib/security/cronAuth'
 
 // Runs daily at 04:00 UTC = 11:00 ICT (UTC+7) — configured in vercel.json
 export async function GET(req: Request) {
-  const secret = process.env.CRON_SECRET
-  if (!secret || req.headers.get('authorization') !== `Bearer ${secret}`) {
+  if (!isAuthorizedCronRequest(req)) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 

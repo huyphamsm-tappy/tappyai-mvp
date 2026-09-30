@@ -373,9 +373,10 @@ describe('C8 — drain route wiring: STRUCTURAL (not an executed request)', () =
     expect(ROUTE.length).toBeGreaterThan(1000)
   })
 
-  it('authenticates with CRON_SECRET exactly like the existing seven crons', () => {
-    expect(ROUTE).toContain('process.env.CRON_SECRET')
-    expect(ROUTE).toMatch(/authorization'\)\s*!==\s*`Bearer \$\{secret\}`/)
+  it('authenticates with CRON_SECRET exactly like the other crons', () => {
+    // security-audit L6 — every cron now goes through the constant-time helper.
+    expect(ROUTE).toContain("from '@/lib/security/cronAuth'")
+    expect(ROUTE).toMatch(/if \(!isAuthorizedCronRequest\(req\)\)/)
     expect(ROUTE).toMatch(/status:\s*401/)
   })
 

@@ -1,7 +1,7 @@
 import { getRequestUser } from '@/lib/auth/getRequestUser'
-import { rateLimit } from '@/lib/security/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 import { rebuildProfile } from '@/lib/preferences/profileCache'
+import { publicRateLimit } from '@/lib/security/publicRateLimit'
 
 // POST /api/reviews/[id]/interact  { watch_seconds, completion_rate }
 // Records watch time and updates watch_time_avg on the review.
@@ -11,7 +11,7 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
   if (!user) return NextResponse.json({ ok: true })
 
   // 10 stat writes per user per minute — enough for normal feed use, blocks floods
-  const { ok: allowed } = rateLimit(`interact:${user.id}`, 10, 60_000)
+  const { ok: allowed } = await publicRateLimit(`interact:${user.id}`, 10, 60_000)
   if (!allowed) return NextResponse.json({ ok: true })
 
   let body: { watch_seconds?: number; completion_rate?: number } = {}

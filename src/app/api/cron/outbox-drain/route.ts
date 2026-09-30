@@ -10,6 +10,7 @@ import {
   type ClaimedRow,
   type ConsumerDispatch,
 } from '@/lib/controller/outbox'
+import { isAuthorizedCronRequest } from '@/lib/security/cronAuth'
 
 export const runtime = 'nodejs'
 export const maxDuration = 60
@@ -44,8 +45,7 @@ const BATCH_LIMIT = 100
 const DISPATCH: ConsumerDispatch = new Map()
 
 export async function GET(req: Request) {
-  const secret = process.env.CRON_SECRET
-  if (!secret || req.headers.get('authorization') !== `Bearer ${secret}`) {
+  if (!isAuthorizedCronRequest(req)) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 

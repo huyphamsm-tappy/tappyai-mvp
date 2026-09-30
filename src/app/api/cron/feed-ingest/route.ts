@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { feedMerchants, ingestMerchantFeed, feedRow } from '@/lib/commerce/feedIngest'
+import { isAuthorizedCronRequest } from '@/lib/security/cronAuth'
 
 // B5 (2026-09-20): the ACCESSTRADE feed ingest, one run per approved merchant (the runtime
 // registry decides which), under D6's transport policy. Rows land in `commerce_feed_items`
@@ -15,8 +16,7 @@ export const maxDuration = 300
 const BATCH = 500
 
 export async function GET(req: Request) {
-  const secret = process.env.CRON_SECRET
-  if (!secret || req.headers.get('authorization') !== `Bearer ${secret}`) {
+  if (!isAuthorizedCronRequest(req)) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
   const supabase = createAdminClient()

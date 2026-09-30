@@ -1,13 +1,13 @@
 import { emitNotification } from '@/lib/notifications/emit'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { NextResponse } from 'next/server'
+import { isAuthorizedCronRequest } from '@/lib/security/cronAuth'
 
 const DAYS_AHEAD = 3 // notify users whose booking date is within this many days
 
 // Runs daily at 02:00 UTC = 09:00 ICT (UTC+7) — configured in vercel.json
 export async function GET(req: Request) {
-  const secret = process.env.CRON_SECRET
-  if (!secret || req.headers.get('authorization') !== `Bearer ${secret}`) {
+  if (!isAuthorizedCronRequest(req)) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 

@@ -6,6 +6,7 @@ import { getAllSubscribedUserIds } from '@/lib/notifications/send'
 import { emitNotification } from '@/lib/notifications/emit'
 import { getWeather } from '@/lib/ai/tools/weather'
 import { matchWeatherCityInText } from '@/lib/ai/tools/cacheKeys'
+import { isAuthorizedCronRequest } from '@/lib/security/cronAuth'
 
 export const runtime = 'nodejs'
 export const maxDuration = 60
@@ -69,8 +70,7 @@ async function getWeatherBrief(location: string): Promise<string> {
 }
 
 export async function GET(req: Request) {
-  const secret = process.env.CRON_SECRET
-  if (!secret || req.headers.get('authorization') !== `Bearer ${secret}`) {
+  if (!isAuthorizedCronRequest(req)) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 

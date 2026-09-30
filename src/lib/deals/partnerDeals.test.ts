@@ -216,16 +216,19 @@ describe('promoCountdown', () => {
 })
 
 describe('click counter endpoint', () => {
+  // Deal ids are UUIDs; the route refuses anything else before calling the RPC (audit L1). Each
+  // test uses its own id because a (deal, IP) pair is counted once a day.
   it('calls the increment RPC and returns success', async () => {
-    const res = await clickPost(new Request('http://x'), { params: { id: 'd1' } })
-    expect(rpc).toHaveBeenCalledWith('increment_deal_click', { p_deal_id: 'd1' })
-    expect(await res.json()).toEqual({ success: true })
+    const id = '11111111-1111-4111-8111-111111111111'
+    const res = await clickPost(new Request('http://x'), { params: { id } })
+    expect(rpc).toHaveBeenCalledWith('increment_deal_click', { p_deal_id: id })
+    expect(await res.json()).toEqual({ success: true, counted: true })
   })
 
   it('never blocks link opening — still 200 when the RPC throws', async () => {
     rpcThrows = true
-    const res = await clickPost(new Request('http://x'), { params: { id: 'd1' } })
+    const res = await clickPost(new Request('http://x'), { params: { id: '22222222-2222-4222-8222-222222222222' } })
     expect(res.status).toBe(200)
-    expect(await res.json()).toEqual({ success: true })
+    expect(await res.json()).toEqual({ success: true, counted: false })
   })
 })

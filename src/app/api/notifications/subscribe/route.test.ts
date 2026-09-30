@@ -57,7 +57,34 @@ beforeEach(() => {
   h.state.eqs = []
 })
 
-const WEBPUSH = { endpoint: 'https://push.example/abc', keys: { p256dh: 'p', auth: 'a' } }
+const WEBPUSH = { endpoint: 'https://fcm.googleapis.com/fcm/send/abc', keys: { p256dh: 'p', auth: 'a' } }
+
+describe('security audit 2026-09-30 · the endpoint must be a browser push service (blind SSRF)', () => {
+  it.each([
+    'http://169.254.169.254/latest/meta-data/',
+    'https://attacker.example/collect',
+    'https://fcm.googleapis.com.attacker.example/x',
+    'https://fcm.googleapis.com:8443/fcm/send/abc',
+    'https://user:pw@fcm.googleapis.com/fcm/send/abc',
+    'http://fcm.googleapis.com/fcm/send/abc',
+    'https://localhost/x',
+  ])('refuses %s and stores nothing', async (endpoint) => {
+    const res = await POST(post({ endpoint, keys: WEBPUSH.keys }))
+    expect(res.status).toBe(400)
+    expect(h.state.upsert).toBeNull()
+  })
+
+  it.each([
+    'https://fcm.googleapis.com/fcm/send/abc',
+    'https://updates.push.services.mozilla.com/wpush/v2/abc',
+    'https://web.push.apple.com/QAbc',
+    'https://wns2-by3p.notify.windows.com/w/?token=abc',
+  ])('accepts the real push service %s', async (endpoint) => {
+    const res = await POST(post({ endpoint, keys: WEBPUSH.keys }))
+    expect(res.status).toBe(200)
+    expect(h.state.upsert?.subscription_data?.endpoint).toBe(endpoint)
+  })
+})
 
 describe('POST /api/notifications/subscribe — two transports, one contract', () => {
   it('still stores a web push subscription exactly as before', async () => {

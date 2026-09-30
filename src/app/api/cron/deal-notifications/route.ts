@@ -4,14 +4,14 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { getAllSubscribedUserIds } from '@/lib/notifications/send'
 import { emitNotification } from '@/lib/notifications/emit'
 import { getActiveDeals } from '@/lib/deals/partnerDeals'
+import { isAuthorizedCronRequest } from '@/lib/security/cronAuth'
 
 export const runtime = 'nodejs'
 export const maxDuration = 60
 
 // Runs daily at 00:30 UTC = 07:30 ICT (UTC+7) — configured in vercel.json
 export async function GET(req: Request) {
-  const secret = process.env.CRON_SECRET
-  if (!secret || req.headers.get('authorization') !== `Bearer ${secret}`) {
+  if (!isAuthorizedCronRequest(req)) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
