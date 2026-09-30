@@ -84,7 +84,7 @@ Nguyên tắc chung cho mỗi khoá: **tạo khoá mới → thêm vào Vercel (
 
 ## 5. Sau release — gộp nhánh bảo mật
 
-☐ Khi anh cho phép: review nhánh `security/hardening-2026-09-30` (17 commit, xem báo cáo §11) → merge vào rc → full test → build → deploy.
+☐ Khi anh cho phép: review nhánh `security/hardening-2026-09-30` (22 commit: 6 của `fix/security-medium-low` + 16 mới, xem báo cáo §11) → merge vào rc → full test → build → deploy.
 ☐ Rồi áp migration theo thứ tự (mỗi cái đều có pre-flight + câu kiểm + rollback):
 1. `20260928_revoke_reviews_insert.sql` — **chỉ sau** khi code POST /api/reviews (service role) đã chạy trên prod.
 2. `20260928b_revoke_increment_deal_click_public.sql` — sau khi code deal click (service role) lên prod.
