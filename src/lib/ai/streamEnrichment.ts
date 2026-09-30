@@ -2542,7 +2542,20 @@ export function applyPlaceEnrichmentStreamFilter(
     const foldName = (n: string) => n.normalize('NFC').toLowerCase().replace(/\s+/g, ' ').trim()
     // Luna more/reject: an honest "nothing new fits" is kept — the server does not write a pick Luna declined (replay
     // 30/09 SHOP-3 t6: fallback inserted "Mình chọn: Dell XPS 13 Cũ" after Luna declined it because the user wants new).
-    const lunaDeclinable = consultLunaEnabled() // PHIÊN LUNA: Luna's own pick sentences are normalised above; the server never adds one Luna did not write
+    // PHIÊN LUNA: the pick line is written only for the option Luna's own text leads with ("**X** là lựa chọn mình nghiêng
+    // về…" = Luna's pick, phrased differently — replay 30/09 final none: without it the pick vanished and every "chỗ đó"
+    // after it lost its referent). An option Luna names only to set aside ("mình không chọn … vì bạn muốn máy mới") or
+    // does not name at all is a decline, and stays one.
+    const lunaLeadsWith = (name: string | null): boolean => {
+      if (!name) return false
+      const t = foldName(unlabelled), n = foldName(name).slice(0, 24)
+      const at = t.indexOf(n)
+      if (at < 0) return false
+      const sentence = t.slice(Math.max(0, t.lastIndexOf('.', at) + 1), (t.indexOf('.', at + n.length) + 1) || undefined)
+      const firstBold = /\*\*([^*\n]{2,160})\*\*/.exec(unlabelled)?.[1]
+      return !/không (?:chọn|ưu tiên|phải lựa chọn chính)|loại|chưa khớp/.test(sentence) && !!firstBold && foldName(firstBold).startsWith(n.slice(0, 12))
+    }
+    const lunaDeclinable = consultLunaEnabled() && !lunaLeadsWith(cardPickFallback)
     const fallbackShown = lunaDeclinable || !!cardPickFallback && consultLunaEnabled() && collector?.consultTurn === 'reject'
       && (collector?.consultShown ?? []).some(n => { const a = foldName(n), b = foldName(cardPickFallback); return a.length >= 4 && (a.includes(b) || b.includes(a)) })
     const pickNormalized = consultPickTurn ? normalizePickSentence(unlabelled, fallbackShown ? null : cardPickFallback) : unlabelled
