@@ -243,6 +243,9 @@ Kiểm trên rc hiện tại (sau các sửa dòng chi phí FOOD-1/ENT-1/ENT-2/S
   dòng chi phí — riêng E1-G5 còn sai ("Gia Đình" khớp "giả định") → sửa thêm `ca10919` (test có ca đó). **Lượt replay xác nhận `ca10919` KHÔNG
   chạy được: Anthropic báo HẾT CREDIT** ("credit balance is too low") — cùng lúc UAT trả "An error occurred." cho câu hỏi thật. Chạy lại
   E1-G5/ENT-1/ENT-3/SPA-1/SPA-2 khi có credit.
+- **UAT build bị bỏ qua (đã sửa `26873c0`)**: `scripts/vercel-ignore.mjs` so commit với `HEAD^`; merge `70c7cd3` (bên kia chỉ có commit
+  android) bị đọc là "chỉ android" → SKIP, 5 bản UAT 30/09 chiều bị Canceled. Giờ so với commit ĐÃ DEPLOY (`VERCEL_GIT_PREVIOUS_SHA`);
+  merge không có SHA đó → build. Test bằng đúng merge `70c7cd3`. **UAT hiện chạy `26873c0`** (gồm sửa kế hoạch).
 - Phiên Luna: rebase theo các file trên (`streamEnrichment.ts` planCostSubject, `planBudgetMath.ts`, `domainFrames.ts`, `hedgeCap.ts`, `unsupportedClaimGuard.ts`).
 
 ### ✅ Bảo mật 2c–2f (tin gộp 30/09) — UAT `e7a79a9`
