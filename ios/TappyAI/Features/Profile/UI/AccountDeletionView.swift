@@ -64,6 +64,7 @@ struct AccountDeletionView: View {
                     .padding(Spacing.sm)
                     .background(TappyColor.surface)
                     .clipShape(RoundedRectangle(cornerRadius: Radius.md, style: .continuous))
+                    .accessibilityIdentifier("delete-word")
 
                 if let errorKey {
                     Text(LocalizedStringKey(errorKey))
@@ -85,6 +86,7 @@ struct AccountDeletionView: View {
                 .buttonStyle(.plain)
                 .disabled(deleting || !AccountDeletion.isConfirmWord(typed))
                 .opacity(deleting || !AccountDeletion.isConfirmWord(typed) ? 0.5 : 1)
+                .accessibilityIdentifier("delete-submit")
 
                 Button { dismiss() } label: {
                     Text("account.delete.cancel")
@@ -145,6 +147,7 @@ struct AccountDeletionView: View {
                     .clipShape(RoundedRectangle(cornerRadius: Radius.md, style: .continuous))
             }
             .buttonStyle(.plain)
+            .accessibilityIdentifier("delete-done-home")
             Spacer()
         }
         .padding(Spacing.md)

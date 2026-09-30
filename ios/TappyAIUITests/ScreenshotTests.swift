@@ -11,7 +11,9 @@ final class ScreenshotTests: XCTestCase {
     override func setUp() {
         super.setUp()
         continueAfterFailure = false
-        setStub(["saved": "full", "config": "ok", "zalo": "nostate"])
+        // Every test starts from production's shape: no safety block, no in-app deletion, no Apple button.
+        setStub(["saved": "full", "config": "ok", "zalo": "nostate", "selfdelete": "off", "apple": "off",
+                 "p8": "off", "blocked": [String]()])
     }
 
     // MARK: - Config failures (TestFlight build 50, 30/09)
@@ -48,13 +50,15 @@ final class ScreenshotTests: XCTestCase {
     func testSettingsMirrorsAndroid() {
         let app = launch(route: "settings", signedIn: true, extra: ["-uitest-theme", "dark"])
         XCTAssertTrue(any(app, "settings-notifications").waitForExistence(timeout: 30), "Options card")
+        shot("33-settings")   // the TOP: subtitle + Options card (the bottom is 35)
         for id in ["memory", "language", "appearance", "guide", "terms", "privacy", "copyright", "delete", "signout"] {
             XCTAssertTrue(scrollTo(app, "settings-" + id), "row \(id)")
         }
         XCTAssertFalse(any(app, "settings-signin").exists, "a signed-in user is offered sign-out, not sign-in")
         let music = app.staticTexts.matching(NSPredicate(format: "label CONTAINS[c] 'nhạc' OR label CONTAINS[c] 'music'"))
         XCTAssertEqual(music.count, 0, "no music row anywhere in Settings")
-        shot("33-settings")
+        XCTAssertFalse(any(app, "settings-blocked").exists, "no blocked-accounts row while the server safety flags are off")
+        shot("35-settings-bottom")
         // The appearance picker changes the value shown on its row.
         app.swipeDown(); app.swipeDown()
         any(app, "settings-appearance").tap()
@@ -68,11 +72,131 @@ final class ScreenshotTests: XCTestCase {
 
     func testSettingsAsGuestOffersSignIn() {
         let app = launch(route: "settings")
+        XCTAssertTrue(any(app, "settings-notifications").waitForExistence(timeout: 30), "Options card")
+        shot("36-settings-guest-top")
         XCTAssertTrue(scrollTo(app, "settings-signin"), "guest sign-in card")
         XCTAssertFalse(any(app, "settings-signout").exists, "a guest is not offered sign-out")
         shot("34-settings-guest")
         any(app, "settings-signin").tap()
         XCTAssertTrue(any(app, "auth-guest").waitForExistence(timeout: 30), "opens the login")
+    }
+
+    // MARK: - A1 Safety: report / block (App Store 1.2) — the server's Phase 8 flags are ON in the fixture
+
+    func testSafetyReportAndBlockFromAProfile() {
+        setStub(["p8": "on"])
+        let app = launch(route: "safety-user", signedIn: true, extra: ["-uitest-theme", "dark"])
+        let menu = any(app, "profile-safety")
+        XCTAssertTrue(menu.waitForExistence(timeout: 40), "⋯ on someone else's profile")
+        menu.tap()
+        XCTAssertTrue(any(app, "safety-reason-spam").waitForExistence(timeout: 20), "reason list")
+        XCTAssertFalse(any(app, "safety-submit").isEnabled, "nothing can be sent before a reason is chosen")
+        shot("37-safety-user")
+        any(app, "safety-reason-scam").tap()
+        XCTAssertTrue(any(app, "safety-submit").isEnabled)
+        any(app, "safety-submit").tap()
+        XCTAssertTrue(any(app, "safety-sent").waitForExistence(timeout: 20), "thanks card")
+        shot("38-safety-user-sent")
+        any(app, "safety-block").tap()
+        let confirm = app.alerts.buttons["Chặn"]
+        XCTAssertTrue(confirm.waitForExistence(timeout: 10), "block confirmation")
+        shot("39-safety-block-confirm")
+        confirm.tap()
+        expectation(for: NSPredicate(format: "exists == false"), evaluatedWith: any(app, "safety-block"))
+        waitForExpectations(timeout: 20)   // the sheet closes once the block took effect
+    }
+
+    func testSafetyReportFromAPostAndItsComments() {
+        setStub(["p8": "on"])
+        let app = launch(route: "safety-review", signedIn: true, extra: ["-uitest-theme", "dark"])
+        let menu = any(app, "review-safety")
+        XCTAssertTrue(menu.waitForExistence(timeout: 40), "⋯ on someone else's post")
+        menu.tap()
+        XCTAssertTrue(any(app, "safety-reason-harassment").waitForExistence(timeout: 20))
+        any(app, "safety-close").tap()
+        let comments = any(app, "review-comments")
+        XCTAssertTrue(scrollTo(app, "review-comments"))
+        comments.tap()
+        let commentMenu = any(app, "comment-safety-c1")
+        XCTAssertTrue(commentMenu.waitForExistence(timeout: 20), "⋯ on someone else's comment")
+        shot("42-safety-comments")
+        commentMenu.tap()
+        XCTAssertTrue(any(app, "safety-reason-hate").waitForExistence(timeout: 20), "comment report sheet")
+        shot("43-safety-comment-sheet")
+    }
+
+    func testBlockedAccountsListAndUnblock() {
+        setStub(["p8": "on", "blocked": ["u9"]])
+        let app = launch(route: "settings", signedIn: true, extra: ["-uitest-theme", "dark"])
+        let row = any(app, "settings-blocked")
+        XCTAssertTrue(row.waitForExistence(timeout: 40), "Settings lists «Tài khoản đã chặn» while blocking is on")
+        row.tap()
+        let name = any(app, "blocked-name-u9")
+        XCTAssertTrue(name.waitForExistence(timeout: 30), "the blocked person is listed")
+        expectation(for: NSPredicate(format: "label == 'Quốc Bảo'"), evaluatedWith: name)   // name from the public profile
+        waitForExpectations(timeout: 20)
+        shot("40-blocked-list")
+        any(app, "blocked-unblock-u9").tap()
+        XCTAssertTrue(any(app, "blocked-empty").waitForExistence(timeout: 20), "empty state after unblocking")
+        shot("41-blocked-empty")
+    }
+
+    // MARK: - A2 In-app account deletion (App Store 5.1.1(v)) — both states of the server flag
+
+    /// Flag OFF (production today): the row is the email request, and the app says so.
+    func testAccountDeletionWhenTheServerFlagIsOff() {
+        let app = launch(route: "settings", signedIn: true, extra: ["-uitest-theme", "dark"])
+        XCTAssertTrue(scrollTo(app, "settings-delete"), "delete row")
+        any(app, "settings-delete").tap()
+        let title = app.alerts.firstMatch
+        XCTAssertTrue(title.waitForExistence(timeout: 10), "explanation alert")
+        XCTAssertTrue(title.label.contains("Yêu cầu xoá tài khoản"), "says it is a REQUEST, got: \(title.label)")
+        shot("44-delete-flag-off")
+    }
+
+    /// Flag ON: the full in-app flow — list of what is removed → type the word → final confirm → done → signed out.
+    func testAccountDeletionInAppWhenTheServerFlagIsOn() {
+        setStub(["selfdelete": "on"])
+        let app = launch(route: "settings", signedIn: true, extra: ["-uitest-theme", "dark"])
+        // The row becomes «Xóa tài khoản» once /api/config says the server supports it.
+        expectation(for: NSPredicate(format: "label CONTAINS 'Xóa vĩnh viễn'"), evaluatedWith: any(app, "settings-delete"))
+        XCTAssertTrue(scrollTo(app, "settings-delete"))
+        waitForExpectations(timeout: 40)
+        any(app, "settings-delete").tap()
+        let word = any(app, "delete-word")
+        XCTAssertTrue(word.waitForExistence(timeout: 20), "the confirmation form")
+        XCTAssertFalse(any(app, "delete-submit").isEnabled, "disabled until the word is typed")
+        shot("45-delete-form")
+        word.tap()
+        word.typeText("XÓA")
+        XCTAssertTrue(any(app, "delete-submit").isEnabled)
+        any(app, "delete-submit").tap()
+        let final = app.alerts.buttons["Xóa vĩnh viễn tài khoản"]
+        XCTAssertTrue(final.waitForExistence(timeout: 10), "final confirmation")
+        final.tap()
+        XCTAssertTrue(any(app, "delete-done-home").waitForExistence(timeout: 30), "done screen")
+        shot("46-delete-done")
+    }
+
+    // MARK: - A3 Sign in with Apple — visible only when the server enables it
+
+    func testSignInWithAppleButtonAppearsWhenEnabled() {
+        setStub(["apple": "on"])
+        let app = launch(route: "hub", extra: ["-uitest-theme", "dark"])
+        let signIn = any(app, "profile-guest-signin")
+        XCTAssertTrue(signIn.waitForExistence(timeout: 30))
+        signIn.tap()
+        XCTAssertTrue(any(app, "auth-apple").waitForExistence(timeout: 60), "Sign in with Apple button")
+        shot("47-login-apple")
+    }
+
+    func testSignInWithAppleButtonIsHiddenByDefault() {
+        let app = launch(route: "hub")
+        let signIn = any(app, "profile-guest-signin")
+        XCTAssertTrue(signIn.waitForExistence(timeout: 30))
+        signIn.tap()
+        XCTAssertTrue(any(app, "auth-guest").waitForExistence(timeout: 60))
+        XCTAssertFalse(any(app, "auth-apple").exists, "hidden until the provider is enabled")
     }
 
     // MARK: - Ask card v2 (R23 + R23.1), all 5 areas beside docs/design/ask-card/ask-card-mockup.png
@@ -333,7 +457,7 @@ final class ScreenshotTests: XCTestCase {
     }
 
     /// Switches the fixture server's state (it is a separate process on the CI host).
-    private func setStub(_ mode: [String: String]) {
+    private func setStub(_ mode: [String: Any]) {
         guard let url = URL(string: "http://127.0.0.1:3000/__stub/mode"),
               let body = try? JSONSerialization.data(withJSONObject: mode) else { return }
         var request = URLRequest(url: url)

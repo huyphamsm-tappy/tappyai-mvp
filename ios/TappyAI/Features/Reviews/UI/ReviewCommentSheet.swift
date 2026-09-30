@@ -8,6 +8,8 @@ struct ReviewCommentSheet: View {
     let isAuthenticated: Bool
     let currentUserId: String?
     let errorMessage: String?
+    /// Report a comment / block its author (App Store 1.2) — the ⋯ on someone else's comment.
+    @ObservedObject var safety: SafetyStore
     @Binding var text: String
     let onPost: () -> Void
     let onDelete: (String) -> Void
@@ -15,6 +17,7 @@ struct ReviewCommentSheet: View {
 
     /// First comment asks for the Terms (App Store 1.2); both comment entry points use this sheet.
     @State private var askTerms = false
+    @State private var safetyTarget: SafetyTarget?
     private let consent = TermsConsent()
 
     var body: some View {
@@ -41,7 +44,7 @@ struct ReviewCommentSheet: View {
                 } else {
                     ScrollView {
                         LazyVStack(alignment: .leading, spacing: Spacing.md) {
-                            ForEach(comments) { comment in
+                            ForEach(safety.visible(comments) { $0.userId }) { comment in
                                 commentRow(comment)
                             }
                         }
@@ -68,6 +71,10 @@ struct ReviewCommentSheet: View {
                     Button(NSLocalizedString("common.close", comment: ""), action: onDismiss)
                 }
             }
+        }
+        .sheet(item: $safetyTarget) { target in
+            SafetySheet(target: target, safety: safety) { safetyTarget = nil }
+                .presentationDetents([.large])
         }
         .sheet(isPresented: $askTerms) {
             TermsConsentSheet(
@@ -104,6 +111,17 @@ struct ReviewCommentSheet: View {
                                 .foregroundStyle(TappyColor.danger)
                         }
                         .buttonStyle(.plain)
+                    } else if isAuthenticated, safety.flags.anyEnabled {
+                        Button {
+                            safetyTarget = SafetyTarget(kind: .comment, targetId: comment.id, authorId: comment.userId,
+                                                        authorName: comment.displayName, summary: comment.body)
+                        } label: {
+                            Image(systemName: "ellipsis").font(.system(size: 13)).foregroundStyle(TappyColor.textSecondary)
+                                .padding(.horizontal, 4)
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityLabel(Text("safety.menu"))
+                        .accessibilityIdentifier("comment-safety-" + comment.id)
                     }
                 }
 

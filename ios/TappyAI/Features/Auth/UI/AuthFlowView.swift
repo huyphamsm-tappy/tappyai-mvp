@@ -62,11 +62,15 @@ struct AuthFlowView: View {
                     } onCompletion: { result in
                         let credential = (try? result.get())?.credential as? ASAuthorizationAppleIDCredential
                         let error: Error? = { if case .failure(let e) = result { return e }; return nil }()
-                        Task { await vm.finishApple(identityToken: credential?.identityToken, error: error) }
+                        Task {
+                            await vm.finishApple(identityToken: credential?.identityToken, userId: credential?.user,
+                                                 fullName: credential?.fullName, error: error)
+                        }
                     }
                     .signInWithAppleButtonStyle(colorScheme == .dark ? .white : .black)
                     .frame(height: 48)
                     .clipShape(RoundedRectangle(cornerRadius: Radius.lg))
+                    .accessibilityIdentifier("auth-apple")
                 }
                 if vm.enabledProviders.contains("google") {
                     Button("auth.continueGoogle") { Task { await vm.continueWithGoogle() } }

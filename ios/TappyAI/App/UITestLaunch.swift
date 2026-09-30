@@ -80,6 +80,12 @@ enum UITestLaunch {
         case "settings":
             router.switchTo(.profile)
             router.push(ProfileDestination.settings, on: .profile)
+        case "safety-user":
+            router.switchTo(.profile)
+            router.push(ReviewsDestination.userProfile(id: "u2"), on: .profile)
+        case "safety-review":
+            router.switchTo(.profile)
+            router.push(ReviewsDestination.reviewDetail(id: "r-safety"), on: .profile)
         case "saved":
             router.switchTo(.profile)
             router.push(ProfileDestination.favorites, on: .profile)

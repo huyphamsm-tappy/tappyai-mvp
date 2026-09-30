@@ -16,6 +16,17 @@ struct AppConfig: Decodable, Sendable {
     let auth: Auth?
     let onboarding: Onboarding?
     let video: Video?
+    /// PHASE 8 user-safety surfaces a client may SHOW (`/api/config` → `p8`). The server enforces each
+    /// on its own (a guarded route answers 404 while its flag is off); this only decides whether the
+    /// buttons are drawn. Absent — every server today — means none of them.
+    let p8: P8?
+
+    struct P8: Decodable, Sendable {
+        let userBlocks: Bool?
+        let reports: Bool?
+        let commentModeration: Bool?
+        let accountDeletion: Bool?
+    }
 
     struct Video: Decodable, Sendable {
         /// The platforms a user may import a video from — web `LINK_VIDEO_PROVIDERS`. Optional so
@@ -32,7 +43,7 @@ struct AppConfig: Decodable, Sendable {
         let anonLifetimeLimit: Int?
     }
 
-    private enum CodingKeys: String, CodingKey { case freemium, flags, upload, auth, onboarding, video }
+    private enum CodingKeys: String, CodingKey { case freemium, flags, upload, auth, onboarding, video, p8 }
 
     init(from decoder: Decoder) throws {
         let c = try decoder.container(keyedBy: CodingKeys.self)
@@ -44,6 +55,7 @@ struct AppConfig: Decodable, Sendable {
         auth = try? c.decodeIfPresent(Auth.self, forKey: .auth)
         onboarding = try? c.decodeIfPresent(Onboarding.self, forKey: .onboarding)
         video = try? c.decodeIfPresent(Video.self, forKey: .video)
+        p8 = try? c.decodeIfPresent(P8.self, forKey: .p8)
     }
 
     struct Flags: Decodable, Sendable {

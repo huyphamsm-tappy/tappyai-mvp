@@ -12,6 +12,12 @@ final class AuthRepository {
     private let webAuth: WebAuthenticator
     private let session: SessionStore
     private let callbackStates: AuthCallbackStateStore
+    private let appleCredentials: AppleCredentialStore
+    /// Used only to save the name Apple sends on the first authorisation.
+    private let profile: ProfileService?
+    /// Runs first on every sign-out (and on account deletion, which signs out): set by the composition
+    /// root to remove this device's push registration while the session still authorises the call.
+    var beforeSignOut: (() async -> Void)?
     private let log = AppLogger.auth
 
     /// Deep-link scheme + Google redirect (survey §5.1). Register these in Info.plist + Supabase allow-list (D4).
@@ -20,10 +26,12 @@ final class AuthRepository {
 
     init(auth: AuthService, anon: AnonymousSessionService, gate: ProfileGateService,
          onboarding: OnboardingService, zalo: ZaloAuthController, webAuth: WebAuthenticator,
-         session: SessionStore, callbackStates: AuthCallbackStateStore = AuthCallbackStateStore()) {
+         session: SessionStore, callbackStates: AuthCallbackStateStore = AuthCallbackStateStore(),
+         appleCredentials: AppleCredentialStore = AppleCredentialStore(), profile: ProfileService? = nil) {
         self.auth = auth; self.anon = anon; self.gate = gate; self.onboarding = onboarding
         self.zalo = zalo; self.webAuth = webAuth; self.session = session
         self.callbackStates = callbackStates
+        self.appleCredentials = appleCredentials; self.profile = profile
     }
 
     // MARK: Launch
@@ -98,11 +106,29 @@ final class AuthRepository {
 
     // MARK: Sign in with Apple — native sheet, then Supabase signInWithIdToken (provider apple)
 
-    func signInWithApple(idToken: String, nonce: String) async throws {
+    /// `appleUserId` is kept so a later revocation can be noticed; `fullName` is what Apple sent on the
+    /// FIRST authorisation only (nil afterwards) and is saved once, if the profile has no name yet.
+    func signInWithApple(idToken: String, nonce: String, appleUserId: String? = nil, fullName: String? = nil) async throws {
         let claimToken = anonymousTokenToClaim()   // C33 — read BEFORE the session is replaced
         let tokens = try await auth.signInWithApple(idToken: idToken, nonce: nonce)
+        if let appleUserId, !appleUserId.isEmpty { appleCredentials.record(appleUserId) }
         await finishAuthentication(tokens)
         await claimAnonymousHistory(claimToken)
+        await saveAppleName(fullName)
+    }
+
+    /// Best effort, and never over a name the person already has: Apple's name is a convenience, and
+    /// the sign-in it follows has already succeeded.
+    private func saveAppleName(_ fullName: String?) async {
+        guard let fullName, !fullName.isEmpty, let profile else { return }
+        do {
+            let current = try await profile.fetchProfile()
+            guard current.fullName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return }
+            try await profile.updateProfile(fullName: fullName, bio: nil)
+            log.info("apple name saved to the profile")
+        } catch {
+            log.info("apple name not saved — continuing signed in")
+        }
     }
 
     // MARK: Zalo (survey §5.2 · D2) — one ASWebAuthenticationSession; existing routes; no new endpoints
@@ -136,6 +162,8 @@ final class AuthRepository {
     // MARK: Sign-out (survey §1.3)
 
     func signOut() async {
+        await beforeSignOut?()   // e.g. unregister this device's push token while the session can still authorise it
+        appleCredentials.clear()
         await auth.signOut()
         session.logout()
         await ensureAnonymousSession()   // return to an anonymous session, not a tokenless state

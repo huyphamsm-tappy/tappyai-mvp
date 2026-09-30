@@ -13,8 +13,11 @@ struct ReviewDetailView: View {
     @AppEnvironmentState private var router: AppRouter
 
     private let baseURL: String
+    @ObservedObject private var safety: SafetyStore
+    @State private var safetyTarget: SafetyTarget?
 
     init(deps: AppDependencies, reviewId: String) {
+        _safety = ObservedObject(wrappedValue: deps.safety)
         _vm = AppStateObject(wrappedValue: ReviewDetailViewModel(
             reviewId: reviewId,
             service: ReviewsService(api: deps.api),
@@ -57,6 +60,24 @@ struct ReviewDetailView: View {
         }
         .navigationTitle(Text("reviewDetail.title"))
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            // Report the post / block its author (App Store 1.2): signed-in, not your own post, and
+            // only while a server safety flag is on.
+            if let review = vm.review, vm.isAuthenticated, review.userId != vm.currentUserId, safety.flags.anyEnabled {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button {
+                        safetyTarget = SafetyTarget(kind: .review, targetId: review.id, authorId: review.userId,
+                                                    authorName: review.profiles?.fullName, summary: review.placeName ?? review.body)
+                    } label: { Image(systemName: "ellipsis") }
+                    .accessibilityLabel(Text("safety.menu"))
+                    .accessibilityIdentifier("review-safety")
+                }
+            }
+        }
+        .sheet(item: $safetyTarget) { target in
+            SafetySheet(target: target, safety: safety) { safetyTarget = nil }
+                .presentationDetents([.large])
+        }
         .task { await vm.load() }
         .sheet(isPresented: Binding(get: { vm.showComments }, set: { if !$0 { vm.closeComments() } })) {
             ReviewCommentSheet(
@@ -67,6 +88,7 @@ struct ReviewDetailView: View {
                 isAuthenticated: vm.isAuthenticated,
                 currentUserId: vm.currentUserId,
                 errorMessage: vm.commentError,
+                safety: safety,
                 text: Binding(get: { vm.commentText }, set: { vm.commentText = $0 }),
                 onPost: { vm.postComment() },
                 onDelete: { vm.deleteComment(commentId: $0) },
@@ -262,7 +284,8 @@ struct ReviewDetailView: View {
                 icon: "bubble.right",
                 count: vm.commentCount,
                 labelKey: "review.action.comment",
-                tint: TappyColor.textSecondary
+                tint: TappyColor.textSecondary,
+                id: "review-comments"
             ) { vm.openComments() }
 
             actionButton(
@@ -290,6 +313,7 @@ struct ReviewDetailView: View {
         count: Int?,
         labelKey: String,
         tint: Color,
+        id: String? = nil,
         action: @escaping () -> Void
     ) -> some View {
         Button(action: action) {
@@ -305,6 +329,7 @@ struct ReviewDetailView: View {
         }
         .buttonStyle(.plain)
         .accessibilityLabel(Text(LocalizedStringKey(labelKey)))
+        .accessibilityIdentifier(id ?? "review-action-" + labelKey)
     }
 
     // MARK: - Helpers

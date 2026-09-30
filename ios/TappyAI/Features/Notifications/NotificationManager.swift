@@ -1,3 +1,4 @@
+import Combine
 import Foundation
 import UserNotifications
 import UIKit
@@ -19,13 +20,33 @@ final class NotificationManager: NSObject {
     private let deepLinks: DeepLinkHandler
     private let router: AppRouter
     private let log = AppLogger.app
+    /// The FCM token this device last held — the credential a sign-out / turn-off names, so it releases
+    /// THIS device and never another one of the same account.
+    private var lastToken: String?
+    private var sessionSubscription: AnyCancellable?
 
-    init(api: APIClient, deepLinks: DeepLinkHandler, router: AppRouter) {
+    init(api: APIClient, deepLinks: DeepLinkHandler, router: AppRouter, session: SessionStore? = nil) {
         self.api = api
         self.deepLinks = deepLinks
         self.router = router
         super.init()
         UNUserNotificationCenter.current().delegate = self
+        // The token is uploaded under the signed-in account. At launch that may be nobody yet (the upload
+        // 401s), and a person who signs in later would get no push until the next launch — so register
+        // again whenever an account signs in.
+        sessionSubscription = session?.$state.removeDuplicates().sink { [weak self] state in
+            guard case .authenticated = state else { return }
+            Task { @MainActor in await self?.refreshRegistration() }
+        }
+    }
+
+    /// Uploads the current FCM token for the signed-in account (no-op without Firebase, without permission,
+    /// or before iOS has handed over the APNs token).
+    func refreshRegistration() async {
+        guard FirebaseSetup.isAvailable else { return }
+        let settings = await UNUserNotificationCenter.current().notificationSettings()
+        guard settings.authorizationStatus == .authorized || settings.authorizationStatus == .provisional else { return }
+        if let token = try? await Messaging.messaging().token() { await uploadToken(token) }
     }
 
     // MARK: - Permission & registration
@@ -73,10 +94,14 @@ final class NotificationManager: NSObject {
     }
 
     fileprivate func uploadToken(_ token: String) async {
+        lastToken = token
         do {
+            // `platform` is ignored by today's server (it reads provider + token only); it is sent so the
+            // server can pick the APNs message format for an iOS token once it has one (IOS-REQUESTS I9).
             let body = try JSONSerialization.data(withJSONObject: [
                 "provider": "fcm",
                 "token": token,
+                "platform": "ios",
             ])
             let endpoint = Endpoint(
                 path: "/api/notifications/subscribe",
@@ -93,18 +118,33 @@ final class NotificationManager: NSObject {
 
     // MARK: - Unsubscribe
 
+    /// Turn push off for this device (Settings → Notifications): drop the local registration and disable
+    /// the server-side subscription.
     func unsubscribe() async {
         UIApplication.shared.unregisterForRemoteNotifications()
-        // The server-side subscription is turned off with DELETE /api/notifications/subscribe
-        // (it only ever sets `enabled = false`); the local registration is dropped here.
-        let endpoint = Endpoint(
-            path: "/api/notifications/subscribe",
-            method: .delete,
-            query: [URLQueryItem(name: "provider", value: "fcm")],
-            requiresAuth: true
-        )
-        _ = try? await api.send(endpoint)
+        await releaseThisDevice()
         log.info("push unregistered")
+    }
+
+    /// `DELETE /api/notifications/subscribe` with `{provider:"fcm", credential:<this device's token>}`.
+    ///
+    /// 🚨 The provider and the credential go in the JSON BODY — the route reads `body.provider` and
+    /// `body.credential`. This used to put `provider` in the query string, which the route ignores, so it
+    /// defaulted to `webpush` and switched off the person's WEB push instead of this phone's. The
+    /// credential narrows it to this device's token; without one (no token yet) nothing is sent, because
+    /// a provider-only DELETE would disable whichever device the account's single fcm row now points at.
+    /// Called before every sign-out, so a signed-out phone stops receiving the previous account's pushes.
+    func releaseThisDevice() async {
+        var token = lastToken
+        if token == nil, FirebaseSetup.isAvailable { token = try? await Messaging.messaging().token() }
+        guard let token, !token.isEmpty else { return }
+        do {
+            let body = try JSONSerialization.data(withJSONObject: ["provider": "fcm", "credential": token])
+            _ = try await api.send(Endpoint(path: "/api/notifications/subscribe", method: .delete, body: body, requiresAuth: true))
+            log.info("push subscription released for this device")
+        } catch {
+            log.info("push release failed — the token stays until it is rejected by FCM")
+        }
     }
 
     // MARK: - Badge
@@ -141,6 +181,19 @@ extension NotificationManager: MessagingDelegate {
 
 // MARK: - UNUserNotificationCenterDelegate
 
+extension NotificationManager {
+    /// Where a notification opens. The server's FCM payload carries the target in `data.link`
+    /// (`src/lib/notifications/fcm.ts`); the web push service worker uses `data.url`. Both are read, `link`
+    /// first, and only a non-empty string counts. Whatever it is still goes through `DeepLinkHandler`,
+    /// which refuses sign-in callbacks and anything that is not a known destination.
+    nonisolated static func destination(in userInfo: [AnyHashable: Any]) -> String? {
+        for key in ["link", "url"] {
+            if let value = userInfo[key] as? String, !value.trimmingCharacters(in: .whitespaces).isEmpty { return value }
+        }
+        return nil
+    }
+}
+
 extension NotificationManager: UNUserNotificationCenterDelegate {
     /// Show banner + sound + badge when the app is in the foreground (mirrors Web push-sw.js behaviour).
     nonisolated func userNotificationCenter(
@@ -158,7 +211,7 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
         withCompletionHandler completionHandler: @escaping () -> Void
     ) {
         let userInfo = response.notification.request.content.userInfo
-        if let urlString = userInfo["url"] as? String {
+        if let urlString = Self.destination(in: userInfo) {
             Task { @MainActor [self] in
                 if let target = self.deepLinks.target(for: urlString) {
                     self.router.handle(target)

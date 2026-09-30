@@ -24,6 +24,7 @@ struct ProfileSettingsView: View {
     @AppEnvironmentState private var session: SessionStore
     @ObservedObject private var theme: ThemeManager
     @ObservedObject private var localization: LocalizationManager
+    @ObservedObject private var safety: SafetyStore
 
     @State private var showSignOutConfirm = false
     @State private var confirmDeleteAccount = false
@@ -39,6 +40,7 @@ struct ProfileSettingsView: View {
         self.deps = deps
         _theme = ObservedObject(wrappedValue: deps.theme)
         _localization = ObservedObject(wrappedValue: deps.localization)
+        _safety = ObservedObject(wrappedValue: deps.safety)
     }
 
     private var isSignedIn: Bool { session.state.isAuthenticated }
@@ -161,6 +163,14 @@ struct ProfileSettingsView: View {
                 divider
                 row(id: "memory", icon: "brain.head.profile", accent: 0x7C5CFF, title: "settings.memory", desc: "settings.memory.desc") {
                     router.push(ProfileDestination.tappyKnows, on: .profile)
+                }
+                // App Store 1.2: the person can review and undo their blocks. Shown only while the server
+                // has blocking on (`p8.userBlocks`, default off) and someone is signed in.
+                if safety.flags.userBlocks && isSignedIn {
+                    divider
+                    row(id: "blocked", icon: "hand.raised.fill", accent: 0xF43F5E, title: "safety.blocked.title", desc: "safety.blocked.desc") {
+                        router.push(ProfileDestination.blockedAccounts, on: .profile)
+                    }
                 }
                 divider
                 row(id: "language", icon: "globe", accent: 0xFF9500, title: "settings.language", desc: "settings.language.desc",

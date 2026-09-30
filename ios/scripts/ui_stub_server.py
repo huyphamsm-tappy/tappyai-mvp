@@ -9,6 +9,7 @@ server documents (docs/ios/04_API_CONTRACT.md) with made-up content.
 State is switched by the test itself:  POST /__stub/mode  {"saved": "empty" | "full"}
 Usage: python3 ios/scripts/ui_stub_server.py [port]
 """
+import copy
 import json
 import struct
 import sys
@@ -16,6 +17,8 @@ import zlib
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 MODE = {"saved": "full"}
+# Whom the fixture account has blocked (Phase 8 safety contract): ids, newest first.
+BLOCKED = []
 
 
 def gradient_png(w, h, c1, c2):
@@ -164,7 +167,18 @@ class Handler(BaseHTTPRequestHandler):
             mode = MODE.get("config", "ok")
             if mode == "down":
                 return self._send(503, {"error": "unavailable"})
-            return self._send(200, PROD_CONFIG if mode == "prod" else CONFIG)
+            if mode == "prod":
+                return self._send(200, PROD_CONFIG)
+            cfg = copy.deepcopy(CONFIG)
+            # Server-side switches a test can flip: in-app account deletion, Sign in with Apple,
+            # and the Phase 8 safety block (`p8`) — all OFF in the default fixture, like production.
+            if MODE.get("selfdelete") == "on":
+                cfg["flags"]["accountSelfDelete"] = True
+            if MODE.get("apple") == "on":
+                cfg["flags"]["appleSignIn"] = True
+            if MODE.get("p8") == "on":
+                cfg["p8"] = {"userBlocks": True, "reports": True, "commentModeration": True, "accountDeletion": False}
+            return self._send(200, cfg)
         if path == "/api/favorites":
             return self._send(200, {"favorites": [] if MODE["saved"] == "empty" else FAVORITES})
         if path == "/api/reviews/saved":
@@ -185,6 +199,24 @@ class Handler(BaseHTTPRequestHandler):
         if path == "/api/users/uitest-user":
             return self._send(200, {"id": "uitest-user", "full_name": "Minh Anh", "follower_count": 128,
                                     "following_count": 36, "review_count": 3, "is_self": True})
+        # ── Phase 8 safety: the block list and someone else's profile / post / comments ──
+        if path == "/api/users/blocks":
+            return self._send(200, {"blocks": [{"blocked_id": b, "created_at": "2026-09-30T08:00:00.000Z"} for b in BLOCKED]})
+        if path in ("/api/users/u2", "/api/users/u9"):
+            people = {"u2": "Lan Phương", "u9": "Quốc Bảo"}
+            uid = path.rsplit("/", 1)[1]
+            return self._send(200, {"id": uid, "full_name": people[uid], "follower_count": 41, "following_count": 12,
+                                    "review_count": 3, "is_following": False, "is_self": False})
+        if path == "/api/reviews/r-safety":
+            return self._send(200, _review(21, "Phở Thìn Bờ Hồ", "a", 12, id="r-safety", user_id="u2",
+                                           body="Nước dùng ngọt xương, thịt bò tái lăn thơm.",
+                                           profiles={"full_name": "Lan Phương"}))
+        if path == "/api/reviews/r-safety/comments":
+            return self._send(200, {"count": 2, "comments": [
+                {"id": "c1", "body": "Quán này đông lắm, đi sớm nhé!", "created_at": "2026-09-30T07:00:00.000Z",
+                 "user_id": "u9", "profiles": {"full_name": "Quốc Bảo"}},
+                {"id": "c2", "body": "Cảm ơn bạn đã chia sẻ.", "created_at": "2026-09-30T07:30:00.000Z",
+                 "user_id": "u2", "profiles": {"full_name": "Lan Phương"}}]})
         if path == "/api/reviews/mine":
             return self._send(200, {"reviews": MINE})
         if path == "/api/reviews/shared":
@@ -202,11 +234,30 @@ class Handler(BaseHTTPRequestHandler):
         path = self.path.split("?")[0]
         raw = self._body()
         if path == "/__stub/mode":
-            MODE.update(json.loads(raw or b"{}"))
+            body = json.loads(raw or b"{}")
+            # "blocked": [...] presets the fixture account's block list.
+            if "blocked" in body:
+                BLOCKED[:] = list(body.pop("blocked"))
+            MODE.update(body)
             return self._send(200, MODE)
         if path == "/api/auth/anonymous":
             # No token minting in CI: the app continues as a plain guest.
             return self._send(503, {"error": "unavailable"})
+        # ── Phase 8 safety (POST /api/reports; POST/DELETE /api/users/{id}/block) ──
+        if path == "/api/reports":
+            return self._send(200, {"ok": True})
+        if path.startswith("/api/users/") and path.endswith("/block"):
+            uid = path.split("/")[3]
+            if self.command == "DELETE":
+                if uid in BLOCKED:
+                    BLOCKED.remove(uid)
+                return self._send(200, {"ok": True, "blocked": False})
+            if uid not in BLOCKED:
+                BLOCKED.insert(0, uid)
+            return self._send(200, {"ok": True, "blocked": True})
+        # ── In-app account deletion (`flags.accountSelfDelete` on): the server accepts the confirm word ──
+        if path == "/api/account/delete":
+            return self._send(200, {"ok": True})
         if path == "/api/chat":
             # A guest with no age declaration — the 18+ gate (docs/ios/04_API_CONTRACT.md).
             return self._send(403, {"error": "age_declaration_required",

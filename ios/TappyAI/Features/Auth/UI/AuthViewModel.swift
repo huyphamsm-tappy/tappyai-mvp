@@ -81,7 +81,8 @@ final class AuthViewModel: AppObservableObject {
     }
 
     /// The Apple sheet finished. Cancelling it is silent, like the other providers.
-    func finishApple(identityToken: Data?, error: Error?) async {
+    /// `userId` is Apple's stable id for this person and app; `fullName` is present only the first time.
+    func finishApple(identityToken: Data?, userId: String? = nil, fullName: PersonNameComponents? = nil, error: Error?) async {
         let nonce = appleNonce
         appleNonce = nil
         if let error {
@@ -94,7 +95,11 @@ final class AuthViewModel: AppObservableObject {
             errorMessage = ErrorPresenter.present(.unexpected(message: "apple identity token missing")).message
             return
         }
-        await run { try await self.repo.signInWithApple(idToken: token, nonce: nonce); self.onAuthenticated() }
+        let name = AppleSignIn.displayName(fullName)
+        await run {
+            try await self.repo.signInWithApple(idToken: token, nonce: nonce, appleUserId: userId, fullName: name)
+            self.onAuthenticated()
+        }
     }
 
     func backToMethods() { mode = .methods; code = ""; errorMessage = nil }

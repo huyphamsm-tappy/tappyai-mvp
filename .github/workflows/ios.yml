@@ -80,6 +80,36 @@ jobs:
             CODE_SIGN_IDENTITY="" \
             | tee build/xcodebuild-build.log
 
+      # A4 evidence: which privacy manifests the built app really carries (ours + the SDKs'), and the exact
+      # package versions this build resolved. Apple merges the SDK manifests into the app's Privacy Report.
+      - name: Privacy manifests in the built app
+        run: |
+          app=build/DerivedData/Build/Products/Debug-iphonesimulator/TappyAI.app
+          {
+            echo "### Privacy manifests inside TappyAI.app"
+            echo '| manifest | required-reason API categories |'
+            echo '|---|---|'
+            find "$app" -name PrivacyInfo.xcprivacy | sort | while read -r f; do
+              cats="$(plutil -convert xml1 -o - "$f" 2>/dev/null | grep -o 'NSPrivacyAccessedAPICategory[A-Za-z]*' | sed 's/NSPrivacyAccessedAPICategory//' | sort -u | tr '\n' ' ')"
+              echo "| \`${f#$app/}\` | ${cats:-none} |"
+            done
+            echo
+            echo "### Package versions resolved by this build"
+            resolved="$(find . -name Package.resolved -path '*swiftpm*' | head -1)"
+            if [ -n "$resolved" ]; then
+              python3 -c '
+          import json, sys
+          d = json.load(open(sys.argv[1]))
+          pins = d.get("pins") or d.get("object", {}).get("pins", [])
+          for p in sorted(pins, key=lambda p: p.get("identity") or p.get("package", "")):
+              s = p.get("state", {})
+              print("- %s %s" % (p.get("identity") or p.get("package"), s.get("version") or s.get("revision", "")[:10]))
+          ' "$resolved"
+            else
+              echo "(no Package.resolved found)"
+            fi
+          } | tee build/privacy-manifests.md >> "$GITHUB_STEP_SUMMARY"
+
       - name: Test (TappyAITests)
         run: |
           set -o pipefail
@@ -144,10 +174,11 @@ jobs:
           cat build/pairs/pairs.md >> "$GITHUB_STEP_SUMMARY"
           # PASS only with photos: 8 screens + 5 share cards + 2 config-failure screens + 3 signed-in hub + deals
           # + 3 MOB-1 refusals (Zalo no state / foreign state / external link) + 5 Home V3 (L12)
-          # + 5 ask card v2 areas + 2 Settings (signed in / guest).
+          # + 5 ask card v2 areas + 4 Settings (member top/bottom, guest top/bottom) + 7 safety (report, block,
+          # comments, blocked list) + 3 account deletion + 1 Sign in with Apple.
           count=$(ls build/shots/*.png 2>/dev/null | wc -l | tr -d ' ')
           echo "screenshots: $count"
-          [ "$count" -ge 34 ] || { echo "::error::expected 34 screenshots, got $count"; exit 1; }
+          [ "$count" -ge 47 ] || { echo "::error::expected 47 screenshots, got $count"; exit 1; }
 
       - name: Upload screenshots
         if: always()
@@ -257,9 +288,29 @@ jobs:
             *) echo "::error::TAPPY_API_BASE_URL host is '$host', not production (www.tappyai.com). Refusing to ship."; exit 1 ;;
           esac
           case "$base" in https://*) ;; *) echo "::error::TAPPY_API_BASE_URL is not https"; exit 1 ;; esac
-          code="$(curl -sS -o /dev/null -w '%{http_code}' --max-time 30 "$base/api/config" || echo 000)"
+          code="$(curl -sS -o "$RUNNER_TEMP/prod-config.json" -w '%{http_code}' --max-time 30 "$base/api/config" || echo 000)"
           echo "GET /api/config (no bypass header) -> HTTP $code"
           [ "$code" = "200" ] || { echo "::error::production /api/config answered $code without a bypass header; a tester's phone would get the same"; exit 1; }
+          # What Apple's reviewer will find on THIS server (they run the build against production). None of
+          # these stops a TestFlight build; each is a warning naming the App Review rule it would break.
+          python3 - "$RUNNER_TEMP/prod-config.json" <<'PY'
+          import json, sys
+          try:
+              cfg = json.load(open(sys.argv[1]))
+          except Exception:
+              print("::warning::production /api/config is not JSON; store-readiness flags not checked"); sys.exit(0)
+          flags, p8 = cfg.get("flags") or {}, cfg.get("p8") or {}
+          providers = [p.get("id") for p in (cfg.get("auth") or {}).get("providers", []) if p.get("enabled")]
+          checks = [
+              (flags.get("accountSelfDelete") is True, "accountSelfDelete", "5.1.1(v): account deletion must start inside the app (IOS-REQUESTS I10)"),
+              (p8.get("userBlocks") is True and p8.get("reports") is True, "p8.userBlocks + p8.reports", "1.2: report + block user-generated content (I7)"),
+              (flags.get("appleSignIn") is True or "apple" in providers, "Sign in with Apple", "4.8: required because Google/Zalo sign-in exist (I8)"),
+          ]
+          for ok, name, rule in checks:
+              print(("ok      " if ok else "MISSING ") + name)
+              if not ok:
+                  print("::warning::production has no " + name + " - App Review " + rule)
+          PY
           # I6 / R24: a native Zalo sign-in must be refused unless it carries an app_state. If production does not
           # have it yet, this build's Zalo sign-in cannot work (the app refuses a callback with no state).
           loc="$(curl -sS -o /dev/null -w '%{redirect_url}' --max-time 30 "$base/api/auth/zalo?platform=ios" || true)"

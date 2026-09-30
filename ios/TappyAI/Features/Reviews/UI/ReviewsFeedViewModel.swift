@@ -307,6 +307,14 @@ final class ReviewsFeedViewModel: AppObservableObject {
         }
     }
 
+    /// Drops posts by people the viewer has blocked (App Store 1.2). The server already hides them from
+    /// the next fetch; this makes the feed on screen agree straight away.
+    func dropAuthors(_ blocked: Set<String>) {
+        guard !blocked.isEmpty, reviews.contains(where: { blocked.contains($0.userId ?? "") }) else { return }
+        reviews.removeAll { blocked.contains($0.userId ?? "") }
+        if activeIndex >= reviews.count { activeIndex = max(0, reviews.count - 1) }
+    }
+
     // MARK: - Report (someone else's post)
 
     /// Set when a report finishes; the feed shows it as an alert, then clears it.

@@ -171,6 +171,8 @@ struct PlaceholderShellView: View {
                         SocialView(deps: deps)
                     case .groupDining:
                         GroupDiningView(deps: deps)
+                    case .blockedAccounts:
+                        BlockedAccountsView(deps: deps)
                     }
                 }
         default:

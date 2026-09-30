@@ -19,13 +19,16 @@ struct ReviewPostView: View {
     var onMusicTap: (() -> Void)?
     /// Report someone else's post (web: shown to a signed-in non-owner). Nil hides the menu.
     var onReport: ((ReviewReportReason) -> Void)?
+    /// The Phase 8 safety sheet (report with the full reason list + block the author). When set it
+    /// replaces the one-tap reason menu above; nil = the server has the safety flags off.
+    var onSafety: (() -> Void)?
 
     @State private var showHeartBurst = false
     @State private var singleTapTask: Task<Void, Never>?
     @State private var showOwnMenu = false
     @State private var showReportMenu = false
 
-    private var canReport: Bool { !isOwnPost && isAuthenticated && onReport != nil }
+    private var canReport: Bool { !isOwnPost && isAuthenticated && (onReport != nil || onSafety != nil) }
 
     var body: some View {
         GeometryReader { geo in
@@ -274,7 +277,7 @@ struct ReviewPostView: View {
                         .buttonStyle(.plain)
                     } else if canReport {
                         Button {
-                            showReportMenu = true
+                            if let onSafety { onSafety() } else { showReportMenu = true }
                         } label: {
                             Image(systemName: "ellipsis")
                                 .font(.system(size: 14))

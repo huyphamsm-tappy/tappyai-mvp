@@ -8,9 +8,12 @@ struct ReviewsFeedView: View {
     @State private var videoPlayers: [String: FeedVideoPlayer] = [:]
     @State private var showCreateReview = false
     @State private var soundPageTrackId: String?
+    @ObservedObject private var safety: SafetyStore
+    @State private var safetyTarget: SafetyTarget?
 
     init(deps: AppDependencies) {
         self.deps = deps
+        _safety = ObservedObject(wrappedValue: deps.safety)
         let service = ReviewsService(api: deps.api)
         _vm = AppStateObject(wrappedValue: ReviewsFeedViewModel(
             service: service, session: deps.session
@@ -48,6 +51,7 @@ struct ReviewsFeedView: View {
                 isAuthenticated: vm.isAuthenticated,
                 currentUserId: vm.currentUserId,
                 errorMessage: vm.commentError,
+                safety: safety,
                 text: $vm.commentText,
                 onPost: { vm.postComment() },
                 onDelete: { vm.deleteComment(commentId: $0) },
@@ -68,6 +72,11 @@ struct ReviewsFeedView: View {
         .fullScreenCover(isPresented: $showCreateReview) {
             CreateReviewView(deps: deps)
         }
+        .sheet(item: $safetyTarget) { target in
+            SafetySheet(target: target, safety: safety) { safetyTarget = nil }
+                .presentationDetents([.large])
+        }
+        .onChange(of: safety.blockedIds) { vm.dropAuthors($0) }
         .sheet(item: soundPageBinding) { wrapper in
             NavigationStack {
                 SoundPageView(trackId: wrapper.id, deps: deps)
@@ -79,6 +88,7 @@ struct ReviewsFeedView: View {
         }
         .task {
             await vm.loadFeed()
+            vm.dropAuthors(safety.blockedIds)
         }
         .onChange(of: vm.reviews.map(\.id)) { newIDs in
             let active = Set(newIDs)
@@ -224,7 +234,12 @@ struct ReviewsFeedView: View {
                 onMusicTap: review.music?.trackId != nil ? {
                     soundPageTrackId = review.music?.trackId
                 } : nil,
-                onReport: { vm.reportReview(reviewId: review.id, reason: $0) }
+                onReport: { vm.reportReview(reviewId: review.id, reason: $0) },
+                onSafety: safety.flags.anyEnabled ? {
+                    safetyTarget = SafetyTarget(kind: .review, targetId: review.id, authorId: review.userId,
+                                                authorName: review.profiles?.fullName,
+                                                summary: review.placeName ?? review.body)
+                } : nil
             )
         }
         .ignoresSafeArea()

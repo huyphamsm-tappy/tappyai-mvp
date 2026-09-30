@@ -362,4 +362,6 @@ enum ProfileDestination: Hashable {
     /// canonical origin, and arrived signed-out — where `/group/new` redirects to `/login`. The
     /// feature existed as a row and nowhere else.
     case groupDining
+    /// Settings → Tài khoản đã chặn (App Store 1.2). Only reachable while the server's `p8.userBlocks` is on.
+    case blockedAccounts
 }

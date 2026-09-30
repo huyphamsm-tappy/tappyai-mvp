@@ -8,6 +8,8 @@ struct UserProfileView: View {
     @AppStateObject private var vm: UserProfileViewModel
     @AppEnvironmentState private var router: AppRouter
     @State private var pickedTab: Tab?
+    @ObservedObject private var safety: SafetyStore
+    @State private var safetyTarget: SafetyTarget?
 
     /// The web's visitor tabs (`v3.publicProfile.tabPosts` / `tabShares`, Android L10): "Chia sẻ" =
     /// rows with no real place (clips/links posted as "Chia sẻ"); "Bài đăng" = the rest.
@@ -24,6 +26,7 @@ struct UserProfileView: View {
     private var shown: [Review] { tab == .shares ? shares : posts }
 
     init(deps: AppDependencies, userId: String) {
+        _safety = ObservedObject(wrappedValue: deps.safety)
         _vm = AppStateObject(wrappedValue: UserProfileViewModel(
             userId: userId,
             service: ReviewsService(api: deps.api),
@@ -65,6 +68,23 @@ struct UserProfileView: View {
         }
         .navigationTitle(Text("userProfile.title"))
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            // Report / block someone else (App Store 1.2). Signed-in visitors only, never on your own
+            // profile, and only while a server safety flag is on.
+            if vm.isAuthenticated, !vm.isSelf, safety.flags.anyEnabled, vm.profile != nil {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button {
+                        safetyTarget = SafetyTarget(kind: .user, targetId: vm.userId, authorId: vm.userId,
+                                                    authorName: vm.profile?.displayName, summary: vm.profile?.displayName)
+                    } label: { Image(systemName: "ellipsis") }
+                    .accessibilityLabel(Text("safety.menu"))
+                    .accessibilityIdentifier("profile-safety")
+                }
+            }
+        }
+        .sheet(item: $safetyTarget) { target in
+            SafetySheet(target: target, safety: safety) { safetyTarget = nil }
+        }
         .task { await vm.load() }
     }
 
