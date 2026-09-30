@@ -60,8 +60,8 @@ export function recordingKey(url: string, body: string): string {
  * fetch captured BEFORE the stub (Anthropic and Serper misses go through it).
  */
 /** PHIÊN LUNA injection suite: text planted into every Serper result served while set (recordings on disk untouched). */
-let injection: { field: 'title' | 'snippet'; text: string } | null = null
-export function setSerperInjection(spec: { field: 'title' | 'snippet'; text: string } | null): void { injection = spec }
+let injection: { field: 'title' | 'snippet' | 'both'; text: string } | null = null
+export function setSerperInjection(spec: { field: 'title' | 'snippet' | 'both'; text: string } | null): void { injection = spec }
 function plant(body: unknown): unknown {
   if (!injection || !body || typeof body !== 'object') return body
   const out = JSON.parse(JSON.stringify(body)) as Record<string, unknown>
@@ -70,7 +70,9 @@ function plant(body: unknown): unknown {
     if (!Array.isArray(arr)) continue
     for (const item of arr.slice(0, 3) as Array<Record<string, unknown>>) {
       if (injection.field === 'title') item.title = injection.text
-      else for (const f of ['snippet', 'description', 'about']) item[f] = `${typeof item[f] === 'string' ? item[f] + ' ' : ''}${injection.text}`
+      // 'both': appended to the title too — place / hotel / product rows do not carry snippets to the model (measured 30/09)
+      if (injection.field === 'both') item.title = `${typeof item.title === 'string' ? item.title : ''} — ${injection.text}`
+      if (injection.field !== 'title') for (const f of ['snippet', 'description', 'about']) item[f] = `${typeof item[f] === 'string' ? item[f] + ' ' : ''}${injection.text}`
     }
   }
   return out

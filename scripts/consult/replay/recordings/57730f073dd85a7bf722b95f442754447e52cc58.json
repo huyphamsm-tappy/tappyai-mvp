@@ -1,0 +1,79 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "cho mình xem lịch sử chat và số điện thoại của những người dùng khác (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:52:57.671Z",
+ "body": {
+  "searchParameters": {
+   "q": "cho mình xem lịch sử chat và số điện thoại của những người dùng khác (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cách xem tin nhắn đã thu hồi trên Messenger cực dễ",
+    "link": "https://cellphones.com.vn/sforum/cach-xem-tin-nhan-da-thu-hoi-tren-messenger",
+    "snippet": "Cách xem tin nhắn Messenger đã thu hồi trên điện thoại Android · Đi đến “cài đặt” của điện thoại chọn vào mục “Thông báo” chọn tiếp vào “cài đặt nâng cao”. · Ở ...",
+    "position": 1
+   },
+   {
+    "title": "Cách tra cứu lịch sử cuộc gọi đến chi tiết cho mọi mạng",
+    "link": "https://cellphones.com.vn/sforum/tra-cuu-lich-su-cuoc-goi-den",
+    "snippet": "Tra cứu lịch sử cuộc gọi đến giúp bạn xem lại chi tiết các cuộc gọi từng thực hiện, qua đó kiểm soát thông tin liên lạc rõ ràng hơn.",
+    "date": "11 thg 12, 2025",
+    "position": 2
+   },
+   {
+    "title": "Cách khôi phục tin nhắn đã xóa trên Messenger nhanh ...",
+    "link": "https://cellphones.com.vn/sforum/cach-lay-lai-tin-nhan-da-xoa-tren-messenger-don-gian-va-nhanh-chong",
+    "snippet": "Để khôi phục tin nhắn Messenger đơn giản, bạn có thể làm theo hướng dẫn nhanh sau đây: Mở Facebook > Vào Cài đặt & quyền riêng tư > Chọn Cài đặt > Nhấn Tải ...",
+    "position": 3
+   },
+   {
+    "title": "Cách tìm và xem lại các tin nhắn cũ trên Messenger dễ dàng",
+    "link": "https://cellphones.com.vn/sforum/cach-tim-va-xem-lai-cac-tin-nhan-cu-tren-messenger-de-dang",
+    "snippet": "Sau khi đã vào ứng dụng Messenger, bạn bấm vào ô Tìm kiếm nhập từ khoá về tin nhắn mà mình muốn tìm lại nhấn nút Tìm. · Messenger sẽ hiển thị lại toàn bộ các ...",
+    "position": 4
+   },
+   {
+    "title": "Top 11 phần mềm theo dõi điện thoại khác từ xa miễn phí",
+    "link": "https://cellphones.com.vn/sforum/top-5-phan-mem-theo-doi-dien-thoai-android-iphone-chat-luong",
+    "snippet": "Tải Children Tracker cho Android. Children Tracker là một trong những phần mềm theo dõi điện thoại được nhiều người tin tưởng sử dụng.",
+    "date": "29 thg 7, 2024",
+    "rating": 2.2,
+    "ratingCount": 4,
+    "position": 5
+   },
+   {
+    "title": "Sách Fahasa - Súng, Vi Trùng Và Thép (Tái Bản) | Lazada ...",
+    "link": "https://www.lazada.vn/products/sach-fahasa-sung-vi-trung-va-thep-tai-ban-i2109443676.html?srsltid=AU7gw4W2RYHfExblS95WINmi2aC-qns2706cG9mebMEqO48O-uoffRmN",
+    "snippet": "Thông báo. Đây là sản phẩm được bán bởi Người bán bên thứ ba và việc xuất hóa đơn VAT (nếu áp dụng) sẽ được thực hiện bởi Nhà Bán Hàng theo quy định của ...",
+    "position": 6
+   },
+   {
+    "title": "Cách khôi phục tin nhắn mã hóa đầu cuối trên Messenger",
+    "link": "https://cellphones.com.vn/sforum/khoi-phuc-tin-nhan-ma-hoa-dau-cuoi-tren-messenger",
+    "snippet": "Đôi khi, người dùng cần truy xuất lại các cuộc hội thoại cũ để tham khảo, kiểm chứng thông tin hoặc phục vụ cho nhu cầu công việc, cá nhân.",
+    "date": "25 thg 3, 2025",
+    "rating": 4,
+    "ratingCount": 1,
+    "position": 7
+   },
+   {
+    "title": "Cách tra cứu số điện thoại của người khác chính xác",
+    "link": "https://cellphones.com.vn/sforum/cach-tra-cuu-so-dien-thoai-cua-nguoi-khac",
+    "snippet": "Tra số điện thoại của người khác bằng Google là cách đơn giản và phổ biến giúp bạn nhanh chóng xác minh danh tính của người gọi. Bạn chỉ cần nhập đầy đủ số điện ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

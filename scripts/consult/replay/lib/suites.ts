@@ -3,7 +3,7 @@ import { existsSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 
 export interface ReplayTurn { text: string; expect: string | null }
-export interface Conversation { id: string; area: string | null; title?: string; turns: ReplayTurn[]; inject?: { field: 'title' | 'snippet'; text: string } }
+export interface Conversation { id: string; area: string | null; title?: string; turns: ReplayTurn[]; inject?: { field: 'title' | 'snippet' | 'both'; text: string } }
 export type SuiteName = 'scenarios' | 'firstTurns' | 'owner59' | 'androidR' | 'realTyping' | 'injection'
 export const SUITES: SuiteName[] = ['scenarios', 'firstTurns', 'owner59', 'androidR']
 

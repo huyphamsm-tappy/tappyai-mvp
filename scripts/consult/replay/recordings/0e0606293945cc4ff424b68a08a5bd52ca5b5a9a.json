@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Phở Khánh\" OR \"PHỞ SOL\" OR \"Phở Dịu\" quan 1 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:52:07.846Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Phở Khánh\" OR \"PHỞ SOL\" OR \"Phở Dịu\" quan 1 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Phở Khánh Sài Gòn — Quán phở ngon đáng thử (Tập 32)",
+    "link": "https://www.tiktok.com/@pika_laca/video/7670503031095495957",
+    "snippet": "Lead Phở Khánh được giới thiệu trong Series 100 quán phở ngon tại Sài Gòn (Tập 32). Bài viết tóm tắt những điểm chính về quán, ...",
+    "position": 1
+   },
+   {
+    "title": "Khám Phá Phở SOL Tại Quận 1, Thành Phố Hồ Chí Minh",
+    "link": "https://www.tiktok.com/@davisitonguyen/video/7517145597908897054",
+    "snippet": "Phở SOL 27 Đ. Hải Triều, Bến Nghé, Quận 1 #gowithdavis ... Khám Phá Phở SOL Tại Quận 1, Thành Phố Hồ Chí Minh. Đến Phở SOL để ...",
+    "position": 2
+   },
+   {
+    "title": "Authentic Hanoi-style Pho in District 1 - Phở Sol",
+    "link": "https://www.tiktok.com/@angiupnay/photo/7673917298809326856",
+    "snippet": "Delicious Hanoi-style pho from Phở Sol in District 1, known for its perfectly sliced beef and flavorful broth. Enjoy the cool, air-conditioned ...",
+    "position": 3
+   },
+   {
+    "title": "Thưởng thức phở tái lăn ngon nhất tại Phở Sol Sài Gòn",
+    "link": "https://www.tiktok.com/@chakepbanhday/photo/7645526579161959700",
+    "snippet": "Khám phá phở tái lăn chuẩn Hà Nội với vị độc đáo tại Phở Sol, địa chỉ tin cậy ở Sài Gòn. ... Quận 1. @sokosaigon - Buttery Cake & Cafe: 94 ...",
+    "position": 4
+   },
+   {
+    "title": "Review Phở Vị Quận 1: Phở Bắc Uy Tín, Nước Dùng Trong ...",
+    "link": "https://www.tiktok.com/@qmthau/video/7384420577253100817",
+    "snippet": "Tổng thể, quán Phở Vị Quận 1 nhận được đánh giá xuất sắc 10 ... Phở Khánh. 982 · recommend-cover. Phở Bò Cô Út Quỳnh Mai. 13 · recommend-cover.",
+    "position": 5
+   },
+   {
+    "title": "Bắt đầu từ hôm nay mình sẽ đi ăn thử hết các quán Phở ...",
+    "link": "https://www.tiktok.com/@seonguk_vn/video/7268152116366118150",
+    "snippet": "Xem thêm câu trả lời khác (1). Vân. Chú đi ăn thử phở bò phú gia - lý chính ... Phở Khánh. 982 · recommend-cover. Thu Vi Vu. 552 · recommend-cover.",
+    "position": 6
+   },
+   {
+    "title": "Phở Sol vừa thêm 1 chi nhánh mới ở khu Sala. Mấy anh ...",
+    "link": "https://www.tiktok.com/@buuvivu/video/7428564854111227143",
+    "snippet": "Phở Sol vừa thêm 1 chi nhánh mới ở khu Sala. Mấy anh em “ đồng ... Phở Khánh. 982 · recommend-cover. Hủ Tiếu Mực Làng Chài Xưa. 82 · recommend ...",
+    "position": 7
+   },
+   {
+    "title": "Phở Khánh 3 Sa Đéc: Phở đá giá rẻ 25k, gần công viên",
+    "link": "https://www.tiktok.com/@kitsanereview/video/7476301803454303505",
+    "snippet": "Phở Khánh 3 là một quán phở đá giá rẻ tại Sa Đéc, Đồng Tháp, được nhiều người tìm đến nhờ mức giá rất hợp lý và phần ăn đầy đặn.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Điện thoại thông minh | Smartphone chính hãng, giá rẻ",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:54:31.275Z",
+ "body": {
+  "searchParameters": {
+   "q": "Điện thoại thông minh | Smartphone chính hãng, giá rẻ",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "TOP 9 điện thoại xịn giá rẻ, đáng mua tại Thế Giới Di Động -  Thegioididong.com",
+    "imageUrl": "https://cdn.tgdd.vn/Products/Images/42/251896/itel-l6006-violet-600x600.jpg",
+    "imageWidth": 600,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvcH8ZRIJWIxeuLwoKyMJ2rRCscphwweS88cXnKWKJlg&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Thegioididong.com",
+    "domain": "www.thegioididong.com",
+    "link": "https://www.thegioididong.com/hoi-dap/top-9-dien-thoai-xin-gia-re-dang-mua-nhat-tai-the-gioi-di-1416873",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.tgdd.vn%2FProducts%2FImages%2F42%2F251896%2Fitel-l6006-violet-600x600.jpg&tbnid=ZHPg_Yc-FqYUFM&imgrefurl=https%3A%2F%2Fwww.thegioididong.com%2Fhoi-dap%2Ftop-9-dien-thoai-xin-gia-re-dang-mua-nhat-tai-the-gioi-di-1416873&docid=xdXFPYy1XMrRlM&w=600&h=600",
+    "position": 1
+   },
+   {
+    "title": "TOP 10 điện thoại Android giá rẻ, tốt đáng mua hiện nay - Thegioididong.com",
+    "imageUrl": "https://cdn.tgdd.vn/Products/Images/42/325155/tecno-spark-20c-thumb-600x600.jpg",
+    "imageWidth": 600,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwzdZrodsPOiyyT4oOxW4dUDDDqDybah6oIAMoT-O2Qg&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Thegioididong.com",
+    "domain": "www.thegioididong.com",
+    "link": "https://www.thegioididong.com/hoi-dap/top-5-dien-thoai-he-dieu-hanh-android-gia-re-tot-nhat-tai-1317868",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.tgdd.vn%2FProducts%2FImages%2F42%2F325155%2Ftecno-spark-20c-thumb-600x600.jpg&tbnid=5Jtwq3qacW6exM&imgrefurl=https%3A%2F%2Fwww.thegioididong.com%2Fhoi-dap%2Ftop-5-dien-thoai-he-dieu-hanh-android-gia-re-tot-nhat-tai-1317868&docid=x8aJQ22hG1U5cM&w=600&h=600",
+    "position": 2
+   },
+   {
+    "title": "Điện thoại thông minh | Smartphone chính hãng, giá rẻ",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-18-pro-01.jpg",
+    "imageWidth": 358,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJynMQVWZmnFn6Z8oW6I4CobTcXJc87rF1mhEVIUsE5Q&s=10",
+    "thumbnailWidth": 358,
+    "thumbnailHeight": 358,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/mobile.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A358%3A358%2Fq%3A90%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fcatalog%2Fproduct%2Fi%2Fp%2Fiphone-18-pro-01.jpg&tbnid=_0LUH-i1I_bhHM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fmobile.html&docid=EQ0mYWdA6pu7tM&w=358&h=358",
+    "position": 3
+   },
+   {
+    "title": "Điện thoại giá rẻ dưới 2 triệu - Chính hãng, giá tốt",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/d/i/dien-thoai-honor-win-rt.jpg",
+    "imageWidth": 358,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBTGcpTvmJM7Z39gnXeFpgYEPrBoT18eLDjmrg-orVxQ&s=10",
+    "thumbnailWidth": 358,
+    "thumbnailHeight": 358,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/bo-loc/dien-thoai-gia-re-duoi-2-trieu",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A358%3A358%2Fq%3A90%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fcatalog%2Fproduct%2Fd%2Fi%2Fdien-thoai-honor-win-rt.jpg&tbnid=HzPgqOkh05TELM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fbo-loc%2Fdien-thoai-gia-re-duoi-2-trieu&docid=kgcexHSUHLrl7M&w=358&h=358",
+    "position": 4
+   },
+   {
+    "title": "Điện thoại, smartphone chính hãng giá rẻ, trả góp 0% lãi suất - 09/2026",
+    "imageUrl": "https://cdn.tgdd.vn/Products/Images/42/369617/xiaomi-redmi-note-17-4g-purple-thumb-600x600.jpg",
+    "imageWidth": 600,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRPXRWgcvTIqE5RiGZA8_Wv1qU4Y3aB8P8mYKFdJ2juKw&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Thegioididong.com",
+    "domain": "www.thegioididong.com",
+    "link": "https://www.thegioididong.com/dtdd",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.tgdd.vn%2FProducts%2FImages%2F42%2F369617%2Fxiaomi-redmi-note-17-4g-purple-thumb-600x600.jpg&tbnid=0gyl_rojChDGwM&imgrefurl=https%3A%2F%2Fwww.thegioididong.com%2Fdtdd&docid=8Lno04sJb4397M&w=600&h=600",
+    "position": 5
+   },
+   {
+    "title": "TOP 10 điện thoại giá rẻ dưới 1 triệu chính hãng, đầy đủ tính năng | TIKI",
+    "imageUrl": "https://tiki.vn/blog/wp-content/uploads/2023/11/dien-thoai-gia-re-duoi-1-trieu-thumbnail.jpg",
+    "imageWidth": 1600,
+    "imageHeight": 1067,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdaICNSb58vjqoX0ZnH9CdinnzEC6rDYRNuwpvdoptiw&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Tiki",
+    "domain": "tiki.vn",
+    "link": "https://tiki.vn/blog/dien-thoai-gia-re-duoi-1-trieu/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Ftiki.vn%2Fblog%2Fwp-content%2Fuploads%2F2023%2F11%2Fdien-thoai-gia-re-duoi-1-trieu-thumbnail.jpg&tbnid=yfrjTCjlV7xU7M&imgrefurl=https%3A%2F%2Ftiki.vn%2Fblog%2Fdien-thoai-gia-re-duoi-1-trieu%2F&docid=m6i26qz_bJbsKM&w=1600&h=1067",
+    "position": 6
+   },
+   {
+    "title": "Điện thoại, smartphone chính hãng giá rẻ từ 2 - 3 - 4 triệu, trả góp 0% -  09/2026",
+    "imageUrl": "https://cdn.tgdd.vn/Products/Images/42/364632/tecno-spark-go-3-bac-thumb-600x600.jpg",
+    "imageWidth": 600,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2O4pctJ0FaBNGsOXXYwSmWPOYISHywSiU2LKmV61tsw&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Thegioididong.com",
+    "domain": "www.thegioididong.com",
+    "link": "https://www.thegioididong.com/dtdd?p=tu-2-4-trieu",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.tgdd.vn%2FProducts%2FImages%2F42%2F364632%2Ftecno-spark-go-3-bac-thumb-600x600.jpg&tbnid=F4COcx_3TdHK1M&imgrefurl=https%3A%2F%2Fwww.thegioididong.com%2Fdtdd%3Fp%3Dtu-2-4-trieu&docid=3o9FtPlVNLBX3M&w=600&h=600",
+    "position": 7
+   },
+   {
+    "title": "Điện Thoại Di Động, Smartphone Chính Hãng, Giá Rẻ, Trả Góp 0%",
+    "imageUrl": "https://cdn.viettablet.com/images/companies/1/dien-thoai-8.jpg?1719717372985",
+    "imageWidth": 1200,
+    "imageHeight": 800,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSygwMRwSdjo6C8tx6bSjJBT-lGrPYjGEaq-xyNW8_AwQ&s",
+    "thumbnailWidth": 275,
+    "thumbnailHeight": 183,
+    "source": "Viettablet",
+    "domain": "www.viettablet.com",
+    "link": "https://www.viettablet.com/dien-thoai?srsltid=AU7gw4UEnfSx8QGMmeOZIYGFAYG_zOY8bFCFEaOgux1Ot7J3Pd-6hR3B",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.viettablet.com%2Fimages%2Fcompanies%2F1%2Fdien-thoai-8.jpg%3F1719717372985&tbnid=YM2gvZjKxQacvM&imgrefurl=https%3A%2F%2Fwww.viettablet.com%2Fdien-thoai%3Fsrsltid%3DAU7gw4UEnfSx8QGMmeOZIYGFAYG_zOY8bFCFEaOgux1Ot7J3Pd-6hR3B&docid=M8gjufq5OKfTbM&w=1200&h=800",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}
