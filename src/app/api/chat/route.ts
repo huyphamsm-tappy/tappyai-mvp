@@ -89,7 +89,7 @@ import { filterTransientMemory } from '@/lib/ai/consultative/memoryTransientFilt
 import { plainRequestTopic, appendHistoryTopic } from '@/lib/ai/consultative/memoryTopic'
 import { deriveSearchNow, SPECIFIC_DATE, type SearchNow } from '@/lib/ai/consultative/searchNow'
 import { tripAskAfter, missingTripFacts } from '@/lib/ai/consultative/tripFacts'
-import { buildDomainFrame, frameDomainOf, frameLibrary, frameRef, PLAN_HEADINGS } from '@/lib/ai/consultative/domainFrames'
+import { buildDomainFrame, frameDomainOf, frameLibrary, frameRef, PLAN_HEADINGS, FRAME_CORE } from '@/lib/ai/consultative/domainFrames'
 import { runConsultBrain, consultV2Enabled, wasAskReply, buildAskReply, placeTypeFor, latestShoppingPickPrice, shoppingMarkerRecords } from '@/lib/ai/consultative/consultBrain'
 import { routeConsult } from '@/lib/ai/consultative/consultRouter'
 import { rejectModifierOf, withoutQuotedNames, isFixedPhrase } from '@/lib/ai/consultative/consultRouter'
@@ -2621,7 +2621,9 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   // Provider-specific optimizations (e.g. prompt caching of this large system
   // prompt) are applied inside the active provider adapter — not here.
   // PHIÊN LUNA safety: every reply under the flag is checked for a prompt echo / secret shape before it leaves.
-  if (lunaOn) enrichment.setLeakCheck(buildLeakDetector([systemShared ?? '', systemPrompt, INTENT_SYSTEM]))
+  // STATIC prompt text only — the per-turn prompt carries product/place names a normal reply repeats (final none 30/09:
+  // 3 shopping replies naming a 12-word product title were replaced).
+  if (lunaOn) enrichment.setLeakCheck(buildLeakDetector([systemShared ?? '', INTENT_SYSTEM, FRAME_CORE, ...(['food', 'shopping', 'travel', 'entertainment', 'spa'] as const).map(d => frameLibrary(d))]))
   // The one targeted extra search a Luna answer may make: its query is cut of private data before Serper (owner rule 3).
   const lunaGuardTools = <T,>(set: T): T => {
     if (!lunaAnswer || !set) return set
