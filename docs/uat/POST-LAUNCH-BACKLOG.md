@@ -73,3 +73,12 @@ mỗi môi trường; Load Balancer ≈ 18 USD/tháng + egress; trừ vào credi
 **Mất so với Vercel:** preview URL tự động mỗi nhánh, Deployment Protection + bypass cho UAT, rollback/promote tức thì, edge network
 và image optimization có sẵn, Speed Insights, cron trong `vercel.json`, log theo deployment.
 **Đề xuất:** release trên Vercel (nâng Pro nếu Hobby chặn), đo chi phí thật 1 tháng, rồi mới quyết dời.
+
+## PL-AI-OWNER-UAT-30-09 — góp ý của Huy trên trang duyệt mục 10 (không chặn release)
+- **SPA-2 lượt 7** ("nói lên kế hoạch mà sao ko thấy làm cái broche"): kế hoạch spa / ăn uống / giải trí / mua sắm chỉ là văn bản —
+  thẻ kế hoạch `[TAPPY_PLAN]` hiện chỉ có ở du lịch (quyết định Q-R16). Làm thẻ kế hoạch cho cả 5 mảng cùng R22 (thẻ v2 + manifest ảnh).
+- **T5b lượt 1** (Không đạt, không ghi chú): "đi chơi ở đâu" → thẻ hỏi; lượt 2 (trả lời "3–5 người") AI lại hỏi thêm "chơi gì" (C).
+  Khi user đã trả lời một phần thẻ hỏi, chọn luôn với giả định rõ ràng thay vì hỏi tiếp.
+- **ENT-3 lượt 7** ("ủa cái") và **T4 lượt 1** ("câu này "): ghi chú bị cắt dở — hỏi lại Huy.
+Nguồn: kho `verdicts` của https://claude.ai/artifact/T1ENadG4ZVDHEbnJaaGRFU (chỉ bản ghi ngày 30/09 — các bản ghi không hậu tố `-t<n>`
+là đánh giá cũ 28/09 của trang trước, đã xử lý ở vòng C1/C2).
