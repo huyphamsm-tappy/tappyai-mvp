@@ -13,9 +13,9 @@ import type { AIProvider, CallCost } from '../provider'
 //      `max_tokens` (rejected by reasoning models) and a temperature. lunaCallOptions() reshapes the call.
 //   2. Reasoning effort MUST be explicit — the model's default is `medium`, which costs reasoning tokens on
 //      every turn. It is sent on every request from LLM_<ROLE>_REASONING (default `none`).
-//   3. Every call is priced here (input, cached input, output INCLUDING reasoning tokens). Cache-write tokens
-//      ($0.125/M) are not surfaced by the SDK: uncached input is priced at the input rate ($0.10/M) — the probe
-//      scripts/consult/luna/probe.mjs reads the raw usage to measure how large that gap is.
+//   3. Every call is priced here (cached input, cache writes, output INCLUDING reasoning tokens). The SDK does
+//      not surface cache writes; the probe (scripts/consult/luna/probe.mjs) showed Luna bills almost all uncached
+//      input as cache writes, so uncached input is priced at the cache-write rate ($0.125/M).
 
 const DEFAULT_MODEL = 'gpt-6-luna'
 
@@ -74,7 +74,13 @@ function usageOf(usage: { promptTokens: number; completionTokens: number } | und
   return {
     prompt_tokens: usage.promptTokens,
     completion_tokens: usage.completionTokens,
-    prompt_tokens_details: { cached_tokens: typeof o.cachedPromptTokens === 'number' ? o.cachedPromptTokens : 0 },
+    // Probe 30/09 (scripts/consult/luna/probe.mjs, raw usage): gpt-6-luna reports nearly EVERY uncached input token
+    // as a cache write (2,428 of 2,431 on a cold call; 24 of 27 on a warm one). The SDK drops that field, so the
+    // uncached input is priced as cache writes ($0.125/M) — at worst a slight over-count, never an under-count.
+    prompt_tokens_details: (() => {
+      const cached = typeof o.cachedPromptTokens === 'number' ? o.cachedPromptTokens : 0
+      return { cached_tokens: cached, cache_write_tokens: Math.max(0, usage.promptTokens - cached) }
+    })(),
     completion_tokens_details: { reasoning_tokens: typeof o.reasoningTokens === 'number' ? o.reasoningTokens : 0 },
   }
 }
