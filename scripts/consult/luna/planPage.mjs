@@ -62,7 +62,7 @@ for (const spec of args) {
   })
 }
 const labels = [...new Set(runs.map(r => r.label))]
-const NAMES = { Haiku: 'Haiku 4.5', LunaMed: 'Luna — du lịch medium · khác none', LunaLow: 'Luna — du lịch low' }
+const NAMES = { Haiku: 'Haiku 4.5', LunaMed: 'Luna — du lịch medium · khác none', LunaLow: 'Luna — du lịch low', LunaFinal: 'Luna CUỐI (sau 3 sửa code) — du lịch low · khác none' }
 const data = JSON.stringify({ labels, names: NAMES, runs, at: new Date().toISOString() }).replace(/</g, '\\u003c')
 
 const html = `<title>Plan Side-by-Side</title>

@@ -166,3 +166,55 @@ Theo loại lượt (bật hết): hỏi tiếp 1,0 s · so sánh 1,3 s · xem t
 
 ## 11. Tổng chi đợt này
 Từ 06:20: model ~$1,97 (OpenAI + Anthropic, gồm mốc Haiku E1-G5/DN-1510 và các lượt dự phòng) · Serper thật ~$0,33 (330 lần gọi mới) → **~$2,30**. **Cả phiên Luna: ~$8,9.** (Chấm tay kế hoạch do một agent đọc, không tốn API của dự án.)
+
+---
+
+## 12. Đo lại sau khi phiên web sửa 3 lỗi code kế hoạch (owner 30/09 chiều)
+
+**Làm gì:** rebase nhánh lên origin/rc/web-uat @70c7cd3 (có 43d4395 + ca10919). Bộ làm sạch Serper của nhánh (2f16ce8) được bỏ vì rc đã có bản chung `serperUntrusted.ts`; cache v2 dùng bản đó. Test: 16.135 đạt; 1 test kiểm byte điều khiển trượt khi chạy cả bộ song song nhưng đạt khi chạy riêng.
+
+**Sửa phía Luna trước khi đo** (80ee8ba, sau cờ):
+- kế hoạch du lịch được code tìm sẵn điểm tham quan;
+- luật kế hoạch: ghi giờ/giá có nguồn, giữ mọi ràng buộc, không đưa lại nơi đã bác, mỗi bữa một nơi, có chặng bay.
+
+**Đo:** 1 lượt đủ bộ (15 + 8) và 1 lượt thêm cho du lịch low (6 ca khó + TRAVEL-1..3) = **32 kế hoạch**. Không chạy Haiku. Cùng người chấm, cùng 10 điều, cùng cách đếm bịa.
+
+| | kế hoạch | ĐẠT 10 điều | bịa | bịa / kế hoạch | $ / kế hoạch ĐẠT | thời gian p50 / p90 / max | rơi Haiku |
+|---|---|---|---|---|---|---|---|
+| Haiku (mốc) | 55 | 2 (3,6%) | 177 | 3,2 | $0,524 | du lịch 30/49/51 s | — |
+| Luna trước sửa | 46 | 4 (8,7%) | 11 | 0,24 | $0,071 | du lịch 27/43/56 s | 6 |
+| **Luna CUỐI** | **32** | **5 (15,6%)** | **4** | **0,13** | **$0,034** | **14/17/20 s** (du lịch 15/17/20) | **0** |
+
+Theo mảng: ăn uống 1/4 · mua sắm 0/3 · giải trí 1/4 · spa 1/3 · du lịch 2/18.
+
+**KHÔNG đạt ngưỡng 97–98% của anh** → không đề xuất bỏ Haiku. Bịa và thời gian thì tốt hơn rõ. Chi phí mỗi kế hoạch đạt thấp hơn 15 lần so với Haiku.
+
+**Vì sao 27 kế hoạch trượt** (một kế hoạch có thể trượt nhiều điều):
+
+| điều | số lần | chủ yếu |
+|---|---|---|
+| 10 · thẻ kế hoạch đủ | 21 | 16 là mục chỉ có câu **code chèn "Chưa có thông tin đã kiểm cho mục này"** (bản sửa "không để mục trống" của rc) — nhiều nhất là "Ăn ở đâu" ở 8 kế hoạch du lịch dù lịch trình của chính kế hoạch đó có quán |
+| 3 · nơi khớp nguồn | 10 | cửa hàng quà tặng đặt làm bữa ăn (4), bỏ giá có nguồn (5), khách sạn Long An làm bữa tối (2) |
+| 2 · ràng buộc | 8 | Tây Ninh sau "đi rồi" (2), "tuần này" thành 05–07/10, bỏ "gel + vẽ", karaoke Quận 5, laptop 4GB cho thiết kế, không lọc chuyến sau 8h, bỏ ngân sách 200k |
+| 8 · không truy được nguồn | 4 | 4 chi tiết bịa (menu NIKUTARO, "2,2 km từ Hàng Xanh" là khoảng cách từ user, khách sạn Long An ×2) |
+| 1 · đúng ý định | 2 | E1-G5 thiếu chặng đi chơi; SHOP-2 không chọn được quà |
+| 7 · thời gian | 2 | ENT-3 không có giờ; Ngũ Hành Sơn 17:00 khi đóng 17:30 |
+| 4, 6 | 1 mỗi điều | |
+| 5, 9 | 0 | mọi khối [TAPPY_PLAN] parse đúng |
+
+- **Chỉ riêng câu "Chưa có thông tin đã kiểm" thay nội dung:** 8 kế hoạch trượt chỉ vì chỗ này. Nếu mục được điền từ dữ liệu của chính kế hoạch thì đạt ~13/32 (40%).
+- **Bản sửa dòng Chi phí của rc giữ tốt:** còn sai 3/32 (trước 12/46), và cả 3 đều trượt kèm lỗi model.
+- **Câu ghép "Mình chưa xác nhận được X, Y, giá…" vẫn còn** ở hầu hết kế hoạch. Không tính trượt vì nó, nhưng chưa hết.
+
+**Đường tới 97–98% (việc anh quyết):**
+1. **Code** (phiên web / Phase 7):
+   - mục trống không chỉ đặt câu "chưa có thông tin" — điền "Ăn ở đâu" từ các quán đã có trong lịch trình;
+   - câu ghép vẫn còn.
+2. **Chọn đúng loại nơi bằng code:**
+   - cửa hàng quà hay khách sạn không được làm bữa ăn;
+   - khoảng cách tính từ user không được gán cho điểm khác.
+   Đây là lỗi dữ liệu nên code chặn chắc hơn luật prompt, giống bài học "chỉ guard mới chặn được" ở Phase 7.
+3. **Ràng buộc lượt trước** (nơi đã bác, "tuần này", ngân sách): đưa vào khối dữ liệu Luna của lượt kế hoạch như lượt tư vấn đang làm (hiện lượt kế hoạch chưa có khối "Sự thật của lượt này").
+4. Ngay cả sau 1–3, ngưỡng 97–98% theo cách chấm này vẫn rất khó. Cần đo lại sau mỗi bước.
+
+**Chi đợt này:** model ~$0,13 + Serper thật ~$1,11 (1.109 lần gọi mới — sau rebase, rc đổi câu tìm nên bản ghi cũ không khớp) = **~$1,24**. **Cả phiên Luna: ~$10,1.**
