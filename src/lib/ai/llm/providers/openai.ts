@@ -91,7 +91,9 @@ function usageOf(usage: { promptTokens: number; completionTokens: number } | und
  */
 function lunaModel(modelId: string, effort: ReasoningEffort, apiKey: string, structured: boolean): LanguageModelV1 {
   // 'strict': the SDK default 'compatible' omits stream_options.include_usage → a stream reports no usage.
-  const inner = createOpenAI({ apiKey, compatibility: 'strict' }).chat(modelId, { structuredOutputs: structured })
+  // parallelToolCalls:false — owner rule 30/09 "at most ONE targeted extra search": replay TRAVEL-1 t2 fired flights +
+  // restaurants in parallel on both steps and ended on tool calls with no text (1 of 75 Luna turns).
+  const inner = createOpenAI({ apiKey, compatibility: 'strict' }).chat(modelId, { structuredOutputs: structured, parallelToolCalls: false })
   const withCost = (usage: { promptTokens: number; completionTokens: number } | undefined, meta: Record<string, Record<string, unknown>> | undefined) => {
     const cost = openaiCallCost(modelId, usageOf(usage, meta))
     return cost ? { ...(meta ?? {}), tappy: { cost: { ...cost, effort } as unknown as Record<string, unknown> } } : meta
