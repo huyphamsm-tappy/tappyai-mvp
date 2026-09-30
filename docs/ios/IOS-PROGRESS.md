@@ -90,6 +90,11 @@ manifest hiện rỗng → ảnh giữ chỗ gradient theo mảng + icon (đúng
 gửi «Karaoke, Bida/bowling · 2 người · Tối nay», gửi 1 lần, gửi rỗng = «Tìm cho tôi». Ca «giữ lựa chọn khi remount» của web là
 do `router.replace` của web — iOS không remount thẻ, không áp dụng.
 
+## CI run 36703401131 (859c112) — XANH, 32/32 ảnh
+Build, toàn bộ unit test (có `HomeV3Tests`, `AskCardV2Tests`, `AuthCallbackStateTests`), toàn bộ UI test. Đã xem ảnh ghép:
+`23` hero giờ khớp Android 1 (mascot cạnh chữ, không còn khoảng trống; ô hỏi ngay dưới); `26` video + 5 lĩnh vực + thẻ gợi ý có ảnh
+web; `27` Smart Tools 7 thẻ đúng màu/mascot, «Nhóm ăn» có «Cần đăng nhập». Home (L12), thẻ hỏi nhanh v2 (5 mảng), MOB-1: PASS.
+
 ## CI run 36700541289 (ecec00e) — build + toàn bộ unit test xanh; UI 30/32 ảnh
 - Thẻ hỏi nhanh: cả 6 UI test qua (5 mảng + gửi rỗng); tin gửi «Karaoke, Bida/bowling · 2 người · Tối nay», gửi 1 lần. Đã xem
   `28` (giải trí) và `29` (ăn uống): khớp mockup — tiêu đề theo mảng, số 1/2/3, ô ảnh giữ chỗ tím/cam + icon, ✓ xanh, ô icon.
