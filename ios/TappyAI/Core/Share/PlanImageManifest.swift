@@ -26,7 +26,7 @@ struct PlanImageManifest: Equatable {
             guard seen.insert(k).inserted, let e = entries[k] else { return nil }
             switch e.status {
             case "active":
-                guard let s = e.url, s.hasPrefix("https://") else { return nil }
+                guard let s = e.url, Self.isServable(s) else { return nil }
                 return URL(string: s)
             case "replaced":
                 guard let next = e.replacement, Self.isKey(next) else { return nil }
@@ -36,6 +36,17 @@ struct PlanImageManifest: Equatable {
             }
         }
         return nil
+    }
+
+    /// Only https is ever loaded. DEBUG builds also accept the CI fixture server (`http://127.0.0.1:`), so a
+    /// screenshot can show a real manifest image; a Release build compiles that line out.
+    static func isServable(_ url: String) -> Bool {
+        if url.hasPrefix("https://") { return true }
+        #if DEBUG
+        return url.hasPrefix("http://127.0.0.1:")
+        #else
+        return false
+        #endif
     }
 
     /// Keys are lower-case slugs (`diem-karaoke`, `du-lich-bien-1`).

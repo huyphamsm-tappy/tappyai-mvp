@@ -71,7 +71,8 @@ struct ChatView: View {
                         ageBlocked: AgeBlockedState(isGuest: vm.isGuest, canCorrect: vm.canCorrectAge,
                                                     correcting: vm.ageCorrecting),
                         onStartAgeCorrection: { vm.startAgeCorrection() },
-                        onCancelAgeCorrection: { vm.cancelAgeCorrection() }
+                        onCancelAgeCorrection: { vm.cancelAgeCorrection() },
+                        planShare: vm.planShare
                     )
                 }
 

@@ -8,6 +8,8 @@ struct UITestOverlay: View {
             CardGalleryView(layout: layout)
         } else if let area = UITestLaunch.askRoute {
             AskCardGalleryView(area: area)
+        } else if let area = UITestLaunch.planRoute {
+            PlanCardGalleryView(area: area)
         }
         #else
         EmptyView()
@@ -47,6 +49,12 @@ enum UITestLaunch {
     static var askRoute: String? {
         guard let route = value("-uitest-route"), route.hasPrefix("ask-") else { return nil }
         return String(route.dropFirst(4))
+    }
+
+    /// A `plan-<area>` route shows the plan card v2 with a fixture plan of that area (travel carries stored image keys).
+    static var planRoute: String? {
+        guard let route = value("-uitest-route"), route.hasPrefix("plan-") else { return nil }
+        return String(route.dropFirst(5))
     }
 
     static func apply(_ deps: AppDependencies) {
@@ -142,6 +150,86 @@ struct AskCardGalleryView: View {
             return [q("activity", "Muốn chơi gì?", ["Karaoke", "Xem phim", "Bar/pub", "Bida/bowling"]),
                     q("party", "Mấy người / đi với ai?", ["1 mình", "2 người", "Nhóm 3-5", "Nhóm đông"]),
                     q("time", "Đi lúc mấy giờ?", ["Chiều nay", "Tối nay", "Cuối tuần"])]
+        }
+    }
+}
+
+/// The plan card v2 over the chat background, fed a fixture `[TAPPY_PLAN]` block of one of the five areas
+/// (the shape `docs/ios/IOS-REQUESTS` I-2 / Android R22 describe). Travel carries stored image KEYS that the
+/// fixture server's manifest resolves; the others carry none, so they show the area placeholders.
+struct PlanCardGalleryView: View {
+    let area: String
+
+    var body: some View {
+        ScrollView {
+            if let plan = Self.plan(area) {
+                ChatPlanCardView(plan: plan, planJSON: nil, planShare: nil)
+                    .padding(12)
+            } else {
+                Text("plan fixture did not decode").foregroundStyle(.red).accessibilityIdentifier("plan-fixture-failed")
+            }
+        }
+        .background(Color(hex: 0x050814).ignoresSafeArea())
+        .statusBarHidden(true)
+    }
+
+    static func plan(_ area: String) -> TappyPlan? {
+        try? ResponseDecoder.json.decode(TappyPlan.self, from: Data(json(area).utf8))
+    }
+
+    private static func json(_ area: String) -> String {
+        switch area {
+        case "food":
+            return #"""
+            {"type":"evening","domain":"food","title":"Tối nay ăn gì ở Hà Nội","people":3,"budget_total":"650.000đ",
+             "tagline":"Ba quán, một buổi tối no nê.","duration":"Tối nay · 18:00–21:30","destination":"Hoàn Kiếm, Hà Nội",
+             "days":[{"label":"Tối nay","title":"Ăn theo khẩu vị nhóm","items":[
+               {"time":"18:00","emoji":"🍜","name":"Phở Thìn Bờ Hồ","description":"Phở bò tái lăn, nước dùng ngọt xương","price":"70.000đ/tô","address":"13 Lò Đúc, Hai Bà Trưng"},
+               {"time":"19:30","emoji":"🥢","name":"Bún chả Hương Liên","description":"Bún chả nướng than hoa","price":"chưa có giá","address":"24 Lê Văn Hưu"},
+               {"time":"21:00","emoji":"☕","name":"The Note Coffee","description":"Cà phê ngắm hồ","price":"45.000đ","address":"64 Lương Văn Can"}]}],
+             "highlights":[{"label":"Phở bò tái lăn"},{"label":"Bún chả than hoa"}]}
+            """#
+        case "entertainment":
+            return #"""
+            {"type":"evening","domain":"entertainment","title":"Tối thứ Sáu vui hết mình","people":4,"tagline":"Karaoke rồi bida, không cần nghĩ nhiều.",
+             "duration":"Tối nay · 19:00–23:00","days":[{"label":"Tối nay","items":[
+               {"time":"19:00","emoji":"🎤","name":"Karaoke Nice","description":"Phòng 4 người, có đồ ăn nhẹ","price":"300.000đ/giờ","address":"Quận 1"},
+               {"time":"21:30","emoji":"🎱","name":"Bida Club 9","description":"Bàn lỗ, đông vui","address":"Quận 3"}]}]}
+            """#
+        case "shopping":
+            return #"""
+            {"type":"shopping","domain":"shopping","title":"Săn tai nghe chống ồn","people":1,"budget_total":"3.000.000đ","budget_per_person":"3.000.000đ",
+             "days":[{"label":"Cuối tuần","items":[
+               {"time":"10:00","emoji":"🎧","name":"Sony WH-1000XM4","description":"Chống ồn tốt, pin 30 giờ","price":"3.290.000đ","booking_link":"https://example.com/xm4"},
+               {"time":"11:30","emoji":"🎧","name":"Anker Soundcore Q30","description":"Giá mềm, chống ồn khá","price":"chưa có giá"}]}],
+             "highlights":[{"label":"Chống ồn chủ động"},{"label":"Pin trâu"}]}
+            """#
+        case "spa":
+            return #"""
+            {"type":"spa","domain":"spa","title":"Chiều thư giãn","people":2,"tagline":"Massage rồi gội đầu dưỡng sinh.","duration":"Chiều nay · 15:00–18:00",
+             "days":[{"label":"Chiều nay","items":[
+               {"time":"15:00","emoji":"💆","name":"Spa Lá Xanh","description":"Massage toàn thân 90 phút","price":"550.000đ","address":"Quận 3"},
+               {"time":"17:00","emoji":"🌿","name":"Gội đầu dưỡng sinh Nhà Thuốc","description":"Gội đầu thảo dược","price":"chưa có giá"}]}],
+             "local_tips":[{"text":"Đặt lịch trước 1 tiếng để có giờ đẹp.","basis":"general"}]}
+            """#
+        default:
+            return #"""
+            {"type":"trip","domain":"travel","title":"Quy Nhơn","people":2,"budget_total":"5.000.000đ","budget_per_person":"2.500.000đ/người",
+             "destination":"Quy Nhơn, Bình Định","duration":"3 ngày · 2 đêm","hero_image":"du-lich-bien-1",
+             "tagline":"Biển xanh, ẩm thực ngon, nhịp sống bình yên. Một chuyến đi, theo cách của bạn.",
+             "days":[
+              {"label":"Ngày 1","title":"Khám phá thành phố biển","items":[
+               {"time":"09:00","emoji":"🏖️","name":"Bãi Kỳ Co","description":"Thiên đường biển hoang sơ với làn nước trong xanh","price":"250.000đ","address":"Xã Nhơn Lý, Quy Nhơn","image":"diem-bai-bien","maps_link":"https://maps.example.com/kyco"},
+               {"time":"12:30","emoji":"🦐","name":"Hải sản Nhơn Lý","description":"Thưởng thức hải sản tươi ngon tại làng chài","price":"chưa có giá","address":"Làng chài Nhơn Lý","image":"diem-hai-san"},
+               {"time":"18:30","emoji":"🌉","name":"Quảng trường Quy Nhơn","description":"Dạo biển, thưởng thức ẩm thực đường phố","price":"Miễn phí","address":"Đường Xuân Diệu","image":"diem-quang-truong"}]},
+              {"label":"Ngày 2","title":"Thiên nhiên và văn hóa","items":[
+               {"time":"08:00","emoji":"🏯","name":"Tháp Đôi","description":"Di tích Chăm Pa cổ kính giữa lòng thành phố","price":"20.000đ","address":"Đường Trần Hưng Đạo","image":"diem-di-san"},
+               {"time":"12:00","emoji":"🥞","name":"Bánh xèo tôm nhảy","description":"Đặc sản Quy Nhơn không thể bỏ lỡ","price":"chưa có giá","address":"Đường Diên Hồng","image":"diem-hai-san"}]}],
+             "highlights":[{"label":"Bãi biển tuyệt đẹp","image":"diem-bai-bien"},{"label":"Hải sản tươi ngon","image":"diem-hai-san"},
+                           {"label":"Cảnh quan hùng vĩ","image":"diem-bai-bien"},{"label":"Di sản văn hóa","image":"diem-di-san"}],
+             "cost_breakdown":{"Ăn uống":"1.800.000đ","Di chuyển":"1.200.000đ"},
+             "local_tips":[{"text":"Đi Kỳ Co trước 9 giờ để tránh nắng và đông.","basis":"tool","place":"Bãi Kỳ Co"}]}
+            """#
         }
     }
 }

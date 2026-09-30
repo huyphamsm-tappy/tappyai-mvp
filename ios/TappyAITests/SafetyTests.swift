@@ -32,13 +32,13 @@ final class SafetyTests: XCTestCase {
     // MARK: Contract
 
     func testReasonsAreTheServerWhitelistInOrder() {
-        XCTAssertEqual(ReportReason.allCases.map(\.rawValue),
+        XCTAssertEqual(SafetyReportReason.allCases.map(\.rawValue),
                        ["spam", "harassment", "hate", "sexual", "violence", "self_harm", "scam", "misinformation", "impersonation", "other"])
         XCTAssertEqual(ReportTargetKind.allCases.map(\.rawValue), ["review", "comment", "user"])
     }
 
     func testEveryStringTheSheetShowsHasACatalogEntry() {
-        var keys = ReportReason.allCases.map(\.labelKey) + ReportTargetKind.allCases.map(\.titleKey)
+        var keys = SafetyReportReason.allCases.map(\.labelKey) + ReportTargetKind.allCases.map(\.titleKey)
         keys += [ReportOutcome.sent, .unavailable, .signInRequired, .tooManyRequests, .failed].map(\.messageKey)
         keys += ["safety.intro", "safety.report.heading", "safety.report.submit", "safety.block.heading", "safety.block.explain",
                  "safety.block.confirm", "safety.block.confirmBody", "safety.blocked.title", "safety.blocked.emptyTitle"]

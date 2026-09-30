@@ -14,7 +14,7 @@ struct SafetySheet: View {
     let onClose: () -> Void
 
     @ObservedObject private var safety: SafetyStore
-    @State private var reason: ReportReason?
+    @State private var reason: SafetyReportReason?
     @State private var details = ""
     @State private var sending = false
     @State private var outcome: ReportOutcome?
@@ -92,7 +92,7 @@ struct SafetySheet: View {
                 sentCard
             } else {
                 VStack(spacing: 0) {
-                    ForEach(ReportReason.allCases) { r in
+                    ForEach(SafetyReportReason.allCases) { r in
                         Button { reason = r } label: {
                             HStack(spacing: 12) {
                                 Image(systemName: reason == r ? "largecircle.fill.circle" : "circle")
@@ -106,7 +106,7 @@ struct SafetySheet: View {
                         .buttonStyle(.plain)
                         .accessibilityAddTraits(reason == r ? .isSelected : [])
                         .accessibilityIdentifier("safety-reason-" + r.rawValue)
-                        if r != ReportReason.allCases.last { Divider().padding(.leading, 44) }
+                        if r != SafetyReportReason.allCases.last { Divider().padding(.leading, 44) }
                     }
                 }
                 .background(TappyColor.surface, in: RoundedRectangle(cornerRadius: 12))

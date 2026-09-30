@@ -34,6 +34,8 @@ struct ChatMessageList: View {
     var ageBlocked = AgeBlockedState()
     var onStartAgeCorrection: () -> Void = {}
     var onCancelAgeCorrection: () -> Void = {}
+    /// Publishes a plan for «Xem kế hoạch đầy đủ trên Tappy» on the plan card (nil = the button stays inert).
+    var planShare: PlanSharing? = nil
 
     var body: some View {
         ScrollViewReader { proxy in
@@ -69,6 +71,8 @@ struct ChatMessageList: View {
                                 status: msg.status,
                                 ctaButtons: parsed.ctaButtons,
                                 plan: parsed.plan,
+                                planJSON: parsed.planJSON,
+                                planShare: planShare,
                                 shopping: parsed.shopping,
                                 // LIVE first, DURABLE as the fallback — and never both, or the
                                 // turn would show the same places twice. The live annotation is
@@ -190,6 +194,9 @@ private struct AssistantBubble: View {
     let status: MessageStatus
     let ctaButtons: [CTAButton]
     let plan: TappyPlan?
+    /// The `[TAPPY_PLAN]` block verbatim and the publisher, for the plan card's full-plan button.
+    var planJSON: String? = nil
+    var planShare: PlanSharing? = nil
     /// D1 — the shopping decision for this turn, when the reply carried one.
     /// Defaulted so existing call sites keep compiling unchanged.
     var shopping: ShoppingDecisionView? = nil
@@ -237,7 +244,7 @@ private struct AssistantBubble: View {
 
                 // Plan card
                 if let plan {
-                    TripPlanCardView(plan: plan)
+                    ChatPlanCardView(plan: plan, planJSON: planJSON, planShare: planShare, onShare: onShare)
                 }
 
                 // D1 — the shopping DECISION. Rendered only once streaming ends, like every other
@@ -541,127 +548,7 @@ private struct CTAButtonView: View {
     }
 }
 
-// MARK: - Trip Plan Card
-
-private struct TripPlanCardView: View {
-    let plan: TappyPlan
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: Spacing.sm) {
-            if !plan.title.isEmpty {
-                Text(plan.title)
-                    .font(TappyFont.bodyEmphasis)
-                    .foregroundStyle(TappyColor.textPrimary)
-            }
-            // Web header line: "N people · budget", joined so a missing half leaves no dangling "·".
-            if let summary = PlanCardContent.summary(plan) {
-                Text(summary)
-                    .font(TappyFont.caption)
-                    .foregroundStyle(TappyColor.textSecondary)
-            }
-            ForEach(Array(plan.days.enumerated()), id: \.offset) { index, day in
-                VStack(alignment: .leading, spacing: Spacing.xs) {
-                    Text(day.label.isEmpty ? String(format: NSLocalizedString("chat.plan.dayFallback", comment: ""), index + 1) : day.label)
-                        .font(TappyFont.bodyEmphasis)
-                        .foregroundStyle(TappyColor.textPrimary)
-                    ForEach(Array(day.items.enumerated()), id: \.offset) { _, item in
-                        HStack(alignment: .top, spacing: Spacing.xs) {
-                            if !item.time.isEmpty {
-                                Text(item.time)
-                                    .font(TappyFont.caption)
-                                    .foregroundStyle(TappyColor.textSecondary)
-                                    .frame(width: 50, alignment: .leading)
-                            }
-                            VStack(alignment: .leading, spacing: 2) {
-                                Text([item.emoji, item.name].filter { !$0.isEmpty }.joined(separator: " "))
-                                    .font(TappyFont.callout)
-                                    .foregroundStyle(TappyColor.textPrimary)
-                                if let desc = item.description {
-                                    Text(desc)
-                                        .font(TappyFont.caption)
-                                        .foregroundStyle(TappyColor.textSecondary)
-                                }
-                                if let address = item.address {
-                                    Text("📍 \(address)")
-                                        .font(TappyFont.caption)
-                                        .foregroundStyle(TappyColor.textSecondary)
-                                }
-                                if let price = item.price {
-                                    Text(price)
-                                        .font(TappyFont.caption)
-                                        .foregroundStyle(TappyColor.primary)
-                                }
-                                let maps = PlanCardContent.link(item.mapsLink)
-                                let booking = PlanCardContent.link(item.bookingLink)
-                                if maps != nil || booking != nil {
-                                    HStack(spacing: Spacing.sm) {
-                                        if let maps {
-                                            Link(destination: maps) { Label("chat.plan.map", systemImage: "map") }
-                                        }
-                                        if let booking {
-                                            Link(destination: booking) { Label("chat.plan.bookNow", systemImage: "calendar.badge.plus") }
-                                        }
-                                    }
-                                    .font(TappyFont.caption.weight(.semibold))
-                                    .foregroundStyle(TappyColor.primary)
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            // Local tips: a stop of this plan ("Place: tip"), or flagged general advice.
-            let tips = PlanCardContent.tips(plan)
-            if !tips.isEmpty {
-                Divider()
-                Text("chat.plan.localTips")
-                    .font(TappyFont.caption.weight(.semibold))
-                    .foregroundStyle(TappyColor.textSecondary)
-                ForEach(Array(tips.enumerated()), id: \.offset) { _, tip in
-                    Group {
-                        if let place = tip.place {
-                            Text(verbatim: place + ": ").bold() + Text(verbatim: tip.text)
-                        } else {
-                            Text("chat.plan.generalTip").bold() + Text(verbatim: " · " + tip.text)
-                        }
-                    }
-                    .font(TappyFont.caption)
-                    .foregroundStyle(TappyColor.textSecondary)
-                    .fixedSize(horizontal: false, vertical: true)
-                }
-            }
-
-            if let breakdown = plan.costBreakdown {
-                Divider()
-                Text("chat.plan.costBreakdown")
-                    .font(TappyFont.caption.weight(.semibold))
-                    .foregroundStyle(TappyColor.textSecondary)
-                ForEach(breakdown.keys.sorted(), id: \.self) { key in
-                    HStack {
-                        Text(key).foregroundStyle(TappyColor.textSecondary)
-                        Spacer()
-                        Text(breakdown[key] ?? "").foregroundStyle(TappyColor.textPrimary)
-                    }
-                    .font(TappyFont.caption)
-                }
-                // Web shows the total under the breakdown; the header line above carries it too.
-                if let total = plan.budgetTotal {
-                    HStack {
-                        Text("chat.plan.totalEstimate")
-                        Spacer()
-                        Text(total).foregroundStyle(TappyColor.primary)
-                    }
-                    .font(TappyFont.callout.weight(.bold))
-                    .foregroundStyle(TappyColor.textPrimary)
-                }
-            }
-        }
-        .padding(Spacing.sm)
-        .background(TappyColor.surface)
-        .clipShape(RoundedRectangle(cornerRadius: Radius.md, style: .continuous))
-    }
-}
+// The trip plan card now lives in `ChatPlanCardView` (Features/Chat/UI/PlanCardView.swift, plan card v2).
 
 // MARK: - Streaming Cursor
 

@@ -69,7 +69,8 @@ struct SharePostCard: Equatable, Sendable {
     }
 }
 
-private extension String {
+extension String {
+    /// nil for the empty string (shared by the share cards and the plan model).
     var nilIfEmpty: String? { isEmpty ? nil : self }
 }
 

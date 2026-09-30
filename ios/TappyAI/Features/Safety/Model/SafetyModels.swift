@@ -36,7 +36,8 @@ enum ReportTargetKind: String, Sendable, CaseIterable {
 
 /// The server's reason whitelist, in menu order (`REPORT_REASONS` in `src/app/api/reports/route.ts`, a
 /// mirror of the CHECK constraint in `20260924_p8_reports_sanctions_audit.sql`).
-enum ReportReason: String, CaseIterable, Identifiable, Sendable {
+/// Named apart from Music's `ReportReason` and the review menu's `ReviewReportReason`: three endpoints, three lists.
+enum SafetyReportReason: String, CaseIterable, Identifiable, Sendable {
     case spam, harassment, hate, sexual, violence, selfHarm = "self_harm", scam, misinformation, impersonation, other
 
     var id: String { rawValue }
@@ -62,7 +63,7 @@ struct ReportRequest: Equatable, Sendable {
 
     let kind: ReportTargetKind
     let targetId: String
-    let reason: ReportReason
+    let reason: SafetyReportReason
     let details: String?
 
     func jsonBody() throws -> Data {

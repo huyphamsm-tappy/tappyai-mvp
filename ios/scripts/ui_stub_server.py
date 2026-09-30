@@ -179,6 +179,14 @@ class Handler(BaseHTTPRequestHandler):
             if MODE.get("p8") == "on":
                 cfg["p8"] = {"userBlocks": True, "reports": True, "commentModeration": True, "accountDeletion": False}
             return self._send(200, cfg)
+        if path == "/api/plan-images/manifest":
+            # R22: key -> { status, url }. Fixture "photos" are the gradient PNGs, so a screenshot proves the
+            # KEY -> URL path without shipping artwork; a key not listed here draws its area placeholder.
+            img = "http://127.0.0.1:3000/img/"
+            entries = {"du-lich-bien-1": "a", "diem-bai-bien": "b", "diem-hai-san": "c", "diem-quang-truong": "d",
+                       "diem-di-san": "a", "diem-karaoke": "b", "diem-rap-phim": "c", "diem-bar-rooftop": "d"}
+            return self._send(200, {"version": "ci.1", "images": {
+                k: {"status": "active", "url": img + v + ".png"} for k, v in entries.items()}})
         if path == "/api/favorites":
             return self._send(200, {"favorites": [] if MODE["saved"] == "empty" else FAVORITES})
         if path == "/api/reviews/saved":

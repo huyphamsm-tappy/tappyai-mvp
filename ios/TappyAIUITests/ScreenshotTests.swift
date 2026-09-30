@@ -219,6 +219,38 @@ final class ScreenshotTests: XCTestCase {
     func testAskCardTravel() { askShot("travel", "31-ask-travel", picks: ["3N2Đ", "Biển", "Núi"]) }
     func testAskCardSpa() { askShot("spa", "32-ask-spa", picks: ["Massage", "Tối nay"]) }
 
+    // MARK: - B1 Plan card v2 (docs/design/share-layouts/plan-share.png), all 5 areas
+
+    /// Travel carries stored image KEYS; the fixture manifest serves them, so the card shows images
+    /// (fixture gradients, standing in for the photo library) — and a key it cannot serve stays a placeholder.
+    func testPlanCardTravelResolvesStoredImageKeys() {
+        let app = launch(route: "plan-travel", extra: ["-uitest-theme", "dark"])
+        XCTAssertTrue(any(app, "plan-share").waitForExistence(timeout: 40), "plan card")
+        XCTAssertTrue(any(app, "plan-title").exists)
+        XCTAssertEqual(any(app, "plan-title").label, "Quy Nhơn")
+        XCTAssertTrue(any(app, "plan-price").exists, "a stop with the server's amount")
+        XCTAssertTrue(any(app, "plan-no-price").exists, "«chưa có giá — hỏi quán» for a stop without an amount")
+        XCTAssertEqual(any(app, "plan-no-price").label, "chưa có giá — hỏi quán")
+        shot("48-plan-travel")
+        XCTAssertTrue(scrollTo(app, "plan-overview"), "«Tổng quan chuyến đi»")
+        XCTAssertTrue(scrollTo(app, "plan-highlights"), "«Điểm nổi bật»")
+        XCTAssertTrue(scrollTo(app, "plan-full-cta"), "«Xem kế hoạch đầy đủ trên Tappy»")
+        shot("49-plan-travel-bottom")
+    }
+
+    func testPlanCardFood() { planShot("food", "50-plan-food") }
+    func testPlanCardEntertainment() { planShot("entertainment", "51-plan-entertainment") }
+    func testPlanCardShopping() { planShot("shopping", "52-plan-shopping") }
+    func testPlanCardSpa() { planShot("spa", "53-plan-spa") }
+
+    /// No image keys in the plan: every slot is the area's placeholder (gradient + emoji), never another picture.
+    private func planShot(_ area: String, _ name: String) {
+        let app = launch(route: "plan-" + area, extra: ["-uitest-theme", "dark"])
+        XCTAssertTrue(any(app, "plan-share").waitForExistence(timeout: 40), "plan card")
+        XCTAssertTrue(any(app, "plan-image-placeholder").exists, "placeholder where there is no stored key")
+        shot(name)
+    }
+
     func testAskCardEmptySendSearches() {
         let app = launch(route: "ask-food")
         XCTAssertTrue(any(app, "ask-send").waitForExistence(timeout: 30))

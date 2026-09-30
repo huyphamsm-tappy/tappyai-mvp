@@ -121,20 +121,48 @@ struct TappyPlan: Equatable, Sendable, Decodable {
     let shareText: String?
     let localTips: [LocalTip]?
 
+    // ── Plan card v2 (ANDROID-REQUESTS R22, owner 29/09). All optional: a plan without them still
+    //    draws, every image slot falling back to its area's gradient placeholder. ──
+    /// "travel" | "hotel" | "flight" | "food" | "entertainment" | "shopping" | "spa".
+    let domain: String?
+    /// "Quy Nhơn, Bình Định" — the destination as the server wrote it, never derived here.
+    let destination: String?
+    /// "3 ngày · 2 đêm" / "Tối nay · 18:00–22:30".
+    let duration: String?
+    /// One or two lines under the title.
+    let tagline: String?
+    /// The STORED hero image key (`<mang>-<kieu>-N`, 16:9), resolved through the image manifest.
+    let heroImage: String?
+    /// The server's per-person figure; the app never divides.
+    let budgetPerPerson: String?
+    /// Up to 4 "Điểm nổi bật" tiles, each with its STORED image key.
+    let highlights: [Highlight]?
+
+    struct Highlight: Equatable, Sendable, Decodable {
+        let label: String
+        /// A stored key (`diem-<loai>` or a hero key), never a URL.
+        let image: String?
+    }
+
     struct PlanDay: Equatable, Sendable, Decodable {
         /// "Ngày 1", "Tối nay"… Empty when the block has none; surfaces fall back to "Day N".
         let label: String
         let items: [PlanItem]
+        /// "Khám phá thành phố biển" — the day's theme (plan card v2, optional).
+        let title: String?
 
-        private enum CodingKeys: String, CodingKey { case label, items }
+        private enum CodingKeys: String, CodingKey { case label, items, title }
 
-        init(label: String, items: [PlanItem]) {
+        init(label: String, items: [PlanItem], title: String? = nil) {
             self.label = label
             self.items = items
+            self.title = title
         }
 
         init(from decoder: Decoder) throws {
             let c = try decoder.container(keyedBy: CodingKeys.self)
+            title = ((try? c.decodeIfPresent(String.self, forKey: .title)) ?? nil)?
+                .trimmingCharacters(in: .whitespacesAndNewlines).nilIfEmpty
             label = ((try? c.decodeIfPresent(String.self, forKey: .label)) ?? nil)?
                 .trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
             // Required: a day without `items` is not a plan day.
@@ -154,9 +182,12 @@ struct TappyPlan: Equatable, Sendable, Decodable {
         let bookingLink: String?
         let placeId: String?
         let photoUrl: String?
+        /// Plan card v2: the STORED image key of this stop (`diem-<loai>`, 1:1), resolved via the manifest.
+        /// Never `photoUrl`: the card shows a stored key or its area's placeholder, nothing else.
+        let image: String?
 
         private enum CodingKeys: String, CodingKey {
-            case time, emoji, category, name, description, price, address
+            case time, emoji, category, name, description, price, address, image
             case mapsLink = "maps_link", bookingLink = "booking_link"
             case placeId = "place_id", photoUrl = "photo_url"
         }
@@ -183,6 +214,7 @@ struct TappyPlan: Equatable, Sendable, Decodable {
             bookingLink = text(.bookingLink)
             placeId = text(.placeId)
             photoUrl = text(.photoUrl)
+            image = text(.image)
         }
     }
 
@@ -197,6 +229,8 @@ struct TappyPlan: Equatable, Sendable, Decodable {
         case type, title, people, days
         case budgetTotal = "budget_total", costBreakdown = "cost_breakdown"
         case shareText = "share_text", localTips = "local_tips"
+        case domain, destination, duration, tagline, highlights
+        case heroImage = "hero_image", budgetPerPerson = "budget_per_person"
     }
 
     init(from decoder: Decoder) throws {
@@ -225,6 +259,20 @@ struct TappyPlan: Equatable, Sendable, Decodable {
         shareText = (share?.isEmpty ?? true) ? nil : share
         let tips: [Lossy<LocalTip>]? = (try? c.decodeIfPresent([Lossy<LocalTip>].self, forKey: .localTips)) ?? nil
         localTips = tips?.compactMap(\.value)
+
+        // Plan card v2 — each optional and lenient: a wrong-typed field is absent, never a failed plan.
+        func text(_ key: CodingKeys) -> String? {
+            guard let raw = (try? c.decodeIfPresent(String.self, forKey: key)) ?? nil else { return nil }
+            return raw.trimmingCharacters(in: .whitespacesAndNewlines).nilIfEmpty
+        }
+        domain = text(.domain)
+        destination = text(.destination)
+        duration = text(.duration)
+        tagline = text(.tagline)
+        heroImage = text(.heroImage)
+        budgetPerPerson = PlanPrice.amount(text(.budgetPerPerson))
+        let marked: [Lossy<Highlight>]? = (try? c.decodeIfPresent([Lossy<Highlight>].self, forKey: .highlights)) ?? nil
+        highlights = marked?.compactMap(\.value)
     }
 
     /// Decodes an element or yields nil, so one malformed element does not sink the whole array.
