@@ -6,6 +6,8 @@ struct UITestOverlay: View {
         #if DEBUG
         if let layout = UITestLaunch.cardRoute {
             CardGalleryView(layout: layout)
+        } else if let area = UITestLaunch.askRoute {
+            AskCardGalleryView(area: area)
         }
         #else
         EmptyView()
@@ -20,6 +22,7 @@ struct UITestOverlay: View {
 ///
 ///   -uitest-route <hub|saved|viet|recs|explore|chat|home|card-review|card-clip|card-suggestion|card-plan|card-qr>
 ///   -uitest-lang  <vi|en>                                    force the app language
+///   -uitest-theme dark                                       dark appearance (else system)
 @MainActor
 enum UITestLaunch {
     private static func value(_ flag: String) -> String? {
@@ -40,9 +43,20 @@ enum UITestLaunch {
         }
     }
 
+    /// An `ask-<area>` route shows the ask card v2 with the router's real questions for that area.
+    static var askRoute: String? {
+        guard let route = value("-uitest-route"), route.hasPrefix("ask-") else { return nil }
+        return String(route.dropFirst(4))
+    }
+
     static func apply(_ deps: AppDependencies) {
         if let lang = value("-uitest-lang").flatMap(AppLanguage.init(rawValue:)) {
             deps.localization.setLanguage(lang)
+        }
+        // The Android references are dark; a test asks for dark, every other test gets the system look
+        // back (the mode is persisted, so an earlier test must not leak into the next one).
+        if value("-uitest-route") != nil {
+            deps.theme.mode = value("-uitest-theme") == "dark" ? .dark : .system
         }
         // A signed-in look for the fixture server only: an unsigned token whose `sub` is the fixture
         // user. The fixture server does not verify it; a real backend would reject it.
@@ -73,6 +87,52 @@ enum UITestLaunch {
             router.switchTo(.home)
             router.push(HomeDestination.recommendations, on: .home)
         default: break
+        }
+    }
+}
+
+/// The ask card v2 over the chat background, fed the question sets the router really emits
+/// (web `askCardModel.test.ts`). The sent text is printed under it so a test can read it.
+struct AskCardGalleryView: View {
+    let area: String
+    @State private var sent: String?
+
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 12) {
+                AskCardView(questions: Self.questions(area)) { sent = $0 }
+                if let sent {
+                    Text(sent).font(.footnote).foregroundStyle(.white).accessibilityIdentifier("ask-sent")
+                }
+            }
+            .padding(12)
+        }
+        .background(Color(hex: 0x050814).ignoresSafeArea())
+        .statusBarHidden(true)
+    }
+
+    static func questions(_ area: String) -> [AskQuestion] {
+        func q(_ id: String, _ text: String, _ options: [String]) -> AskQuestion { AskQuestion(id: id, q: text, options: options) }
+        switch area {
+        case "food":
+            return [q("dish", "Món gì / kiểu quán?", ["Món Việt", "Nhật/Hàn", "Lẩu/nướng", "Chưa biết"]),
+                    q("mode", "Ăn tại quán hay giao?", ["Ăn tại quán", "Giao tận nơi"]),
+                    q("area", "Khu vực nào?", ["Gần mình", "Quận 1", "Quận 3", "Quận 7"])]
+        case "spa":
+            return [q("service", "Muốn làm dịch vụ gì?", ["Massage", "Gội đầu dưỡng sinh", "Xông hơi", "Chăm sóc da"]),
+                    q("time", "Khi nào đi?", ["Hôm nay", "Tối nay", "Cuối tuần"])]
+        case "travel":
+            return [q("date", "Đi khi nào, mấy ngày?", ["Cuối tuần 2N1Đ", "3N2Đ", "4-5 ngày", "Chưa chốt"]),
+                    q("origin", "Xuất phát từ đâu?", ["TP.HCM", "Hà Nội", "Đà Nẵng", "Nơi khác"]),
+                    q("style", "Thích kiểu gì?", ["Biển", "Núi", "Ăn uống", "Nghỉ dưỡng"])]
+        case "shopping":
+            return [q("line", "Loại nào?", ["Nhét tai", "Chụp tai", "Chưa biết"]),
+                    q("budget", "Tầm giá bao nhiêu?", ["Dưới 1tr", "1-3tr", "3-5tr", "Trên 5tr"]),
+                    q("must", "Cần chống ồn không?", ["Có chống ồn", "Không cần"])]
+        default:
+            return [q("activity", "Muốn chơi gì?", ["Karaoke", "Xem phim", "Bar/pub", "Bida/bowling"]),
+                    q("party", "Mấy người / đi với ai?", ["1 mình", "2 người", "Nhóm 3-5", "Nhóm đông"]),
+                    q("time", "Đi lúc mấy giờ?", ["Chiều nay", "Tối nay", "Cuối tuần"])]
         }
     }
 }

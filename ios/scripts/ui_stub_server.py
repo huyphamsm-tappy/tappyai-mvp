@@ -98,6 +98,15 @@ MINE = [
                                               "detail": "Bài của bạn sẽ hiện công khai sau khi được duyệt."}),
 ]
 
+# Home's community-video rail: the trending feed, only video rows with a thumbnail are drawn.
+FEED = [
+    _review(11, "Cuối tuần ở Đà Lạt", "b", 12400, content_type="video", thumbnail="http://127.0.0.1:3000/img/b.png",
+            profiles={"full_name": "Minh Anh"}),
+    _review(12, "Chia sẻ", "c", 830, content_type="video", thumbnail="http://127.0.0.1:3000/img/c.png",
+            body="Săn mây Cầu Đất lúc 5h sáng", profiles={"full_name": "Quốc Bảo"}),
+    _review(13, "Phở Thìn Bờ Hồ", "a", 57),
+]
+
 RECS = {
     "recommendations": [
         {"placeId": "p1", "placeName": "Phở Thìn Bờ Hồ", "finalScore": 0.91, "matchedSignals": ["food"],
@@ -162,6 +171,8 @@ class Handler(BaseHTTPRequestHandler):
             return self._send(200, {"reviews": [] if MODE["saved"] == "empty" else SAVED})
         if path == "/api/recommendations":
             return self._send(200, RECS)
+        if path == "/api/reviews/feed":
+            return self._send(200, {"reviews": FEED, "page": 0, "limit": 12})
         if path in ("/api/memory",):
             return self._send(200, {"memory": None})
         if path == "/api/preferences":

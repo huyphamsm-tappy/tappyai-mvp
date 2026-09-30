@@ -143,10 +143,11 @@ jobs:
           echo "### iOS screenshots" >> "$GITHUB_STEP_SUMMARY"
           cat build/pairs/pairs.md >> "$GITHUB_STEP_SUMMARY"
           # PASS only with photos: 8 screens + 5 share cards + 2 config-failure screens + 3 signed-in hub + deals
-          # + 3 MOB-1 refusals (Zalo no state / foreign state / external link).
+          # + 3 MOB-1 refusals (Zalo no state / foreign state / external link) + 5 Home V3 (L12)
+          # + 5 ask card v2 areas.
           count=$(ls build/shots/*.png 2>/dev/null | wc -l | tr -d ' ')
           echo "screenshots: $count"
-          [ "$count" -ge 22 ] || { echo "::error::expected 22 screenshots, got $count"; exit 1; }
+          [ "$count" -ge 32 ] || { echo "::error::expected 32 screenshots, got $count"; exit 1; }
 
       - name: Upload screenshots
         if: always()

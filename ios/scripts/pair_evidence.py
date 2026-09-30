@@ -28,6 +28,11 @@ REFERENCES = {
     "06-saved-places": "step1-hientrang/11-saved.png",
     "07-viet-content": "step1-hientrang/10-viet-content.png",
     "08-recommendations": "step1-hientrang/09-recommendations.png",
+    "23-home": "step1-hientrang/01-home.png",
+    "24-home-2": "step1-hientrang/01-home.png",
+    "25-home-3": "step1-hientrang/01-home.png",
+    "26-home-4": "step1-hientrang/01-home.png",
+    "27-home-5": "step1-hientrang/14-tools.png",
     "20-mob1-zalo-no-state": "login/after-web-vs-android.png",
     "21-mob1-zalo-wrong-state": "login/after-web-vs-android.png",
 }
@@ -39,6 +44,11 @@ DESIGN = {
     "11-card-suggestion": "docs/design/share-layouts/profile-qr.png",
     "12-card-plan": "docs/design/share-layouts/plan-share.png",
     "13-card-qr": "docs/design/share-layouts/profile-qr.png",
+    "28-ask-entertainment": "docs/design/ask-card/ask-card-mockup.png",
+    "29-ask-food": "docs/design/ask-card/ask-card-mockup.png",
+    "30-ask-shopping": "docs/design/ask-card/ask-card-mockup.png",
+    "31-ask-travel": "docs/design/ask-card/ask-card-mockup.png",
+    "32-ask-spa": "docs/design/ask-card/ask-card-mockup.png",
 }
 HEIGHT = 1400
 
@@ -60,7 +70,8 @@ def main(shots_dir, repo, out_dir):
         ref_rel = design_rel or REFERENCES.get(name)
         if design_rel:
             ref_path = os.path.join(repo, design_rel)
-            ref_label = "Approved layout sample (owner pick 29/09)"
+            ref_label = ("Ask card v2 mockup (owner 30/09)" if "ask-card" in design_rel
+                         else "Approved layout sample (owner pick 29/09)")
         else:
             ref_path = os.path.join(repo, "docs/uat/evidence/android-parity", ref_rel) if ref_rel else None
             ref_label = "Android reference: web | Android | mockup, baseline 28/09"

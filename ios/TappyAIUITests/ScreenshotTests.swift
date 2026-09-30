@@ -43,6 +43,73 @@ final class ScreenshotTests: XCTestCase {
         shot("15-login-prod-config")
     }
 
+    // MARK: - Ask card v2 (R23 + R23.1), all 5 areas beside docs/design/ask-card/ask-card-mockup.png
+
+    func testAskCardEntertainmentSelectsAndSends() {
+        let app = launch(route: "ask-entertainment")
+        XCTAssertTrue(any(app, "ask-send").waitForExistence(timeout: 30), "ask card")
+        for label in ["Karaoke", "Bida/bowling", "1 mình", "2 người", "Tối nay"] { option(app, label).tap() }
+        shot("28-ask-entertainment")
+        any(app, "ask-send").tap()
+        let sent = any(app, "ask-sent")
+        XCTAssertTrue(sent.waitForExistence(timeout: 10))
+        XCTAssertEqual(sent.label, "Karaoke, Bida/bowling · 2 người · Tối nay", "type takes several, the others one")
+        any(app, "ask-send").tap()
+        XCTAssertEqual(sent.label, "Karaoke, Bida/bowling · 2 người · Tối nay", "the card locks after one send")
+    }
+
+    func testAskCardFood() { askShot("food", "29-ask-food", picks: ["Món Việt", "Ăn tại quán"]) }
+    func testAskCardShopping() { askShot("shopping", "30-ask-shopping", picks: ["Nhét tai", "1-3tr"]) }
+    func testAskCardTravel() { askShot("travel", "31-ask-travel", picks: ["3N2Đ", "Biển", "Núi"]) }
+    func testAskCardSpa() { askShot("spa", "32-ask-spa", picks: ["Massage", "Tối nay"]) }
+
+    func testAskCardEmptySendSearches() {
+        let app = launch(route: "ask-food")
+        XCTAssertTrue(any(app, "ask-send").waitForExistence(timeout: 30))
+        any(app, "ask-send").tap()
+        XCTAssertEqual(any(app, "ask-sent").label, "Tìm cho tôi")
+    }
+
+    private func askShot(_ area: String, _ name: String, picks: [String]) {
+        let app = launch(route: "ask-" + area)
+        XCTAssertTrue(any(app, "ask-send").waitForExistence(timeout: 30), "ask card")
+        for label in picks { option(app, label).tap() }
+        shot(name)
+    }
+
+    /// An option tile by its visible label (the hyphen is drawn non-breaking).
+    private func option(_ app: XCUIApplication, _ label: String) -> XCUIElement {
+        let shown = label.replacingOccurrences(of: "-", with: "\u{2011}")
+        let el = app.buttons.matching(NSPredicate(format: "label CONTAINS %@", shown)).firstMatch
+        XCTAssertTrue(el.waitForExistence(timeout: 10), "option \(label)")
+        return el
+    }
+
+    // MARK: - Home V3 (Android L12), dark like the Android reference
+
+    func testHomeV3() {
+        let app = launch(route: "home", signedIn: true, extra: ["-uitest-theme", "dark"])
+        let welcome = any(app, "home-welcome")
+        XCTAssertTrue(welcome.waitForExistence(timeout: 30), "hero")
+        XCTAssertTrue(any(app, "home-ask").exists, "ask bar")
+        XCTAssertTrue(any(app, "home-quick-cafe").exists, "quick suggestions")
+        let named = NSPredicate(format: "label CONTAINS %@", "Minh Anh")
+        expectation(for: named, evaluatedWith: welcome)
+        waitForExpectations(timeout: 30)
+        shot("23-home")
+        app.swipeUp()
+        shot("24-home-2")
+        app.swipeUp()
+        XCTAssertTrue(any(app, "home-deals-empty").waitForExistence(timeout: 20), "deals empty card")
+        shot("25-home-3")
+        app.swipeUp(); app.swipeUp()
+        XCTAssertTrue(any(app, "home-suggestion-1").waitForExistence(timeout: 20), "suggestion cards")
+        shot("26-home-4")
+        app.swipeUp(); app.swipeUp(); app.swipeUp()
+        XCTAssertTrue(any(app, "tool-scan").waitForExistence(timeout: 20), "smart tools")
+        shot("27-home-5")
+    }
+
     // MARK: - MOB-1: sign-in callbacks need the state this app made
 
     /// The fixture server plays the attacker: its `/api/auth/zalo` hands the app someone else's
@@ -209,11 +276,11 @@ final class ScreenshotTests: XCTestCase {
         app.descendants(matching: .any)[id].firstMatch
     }
 
-    private func launch(route: String, signedIn: Bool = false) -> XCUIApplication {
+    private func launch(route: String, signedIn: Bool = false, extra: [String] = []) -> XCUIApplication {
         let app = XCUIApplication()
         app.launchArguments = ["-uitest-route", route, "-uitest-lang", "vi",
                                "-AppleLanguages", "(vi)", "-AppleLocale", "vi_VN"]
-            + (signedIn ? ["-uitest-signed-in"] : [])
+            + (signedIn ? ["-uitest-signed-in"] : []) + extra
         app.launch()
         return app
     }

@@ -1,87 +1,77 @@
 import SwiftUI
 
+/// The V3 Home — iOS follows Android's approved layout (owner L12, 30/09), not the web's:
+///
+///   hero → ask bar → 6 quick suggestions → recommendations rail → discover banner →
+///   Scam Shield → deals → community videos → categories → suggestions → recent activity →
+///   Smart Tools
+///
+/// 🚨 HOME IS NOT CHAT. Every entry point switches to Chat (optionally with a prompt through
+/// `router.chatSeed`) or pushes an existing screen — nothing streams a reply here.
 struct HomeView: View {
     @AppStateObject private var vm: HomeViewModel
     @AppEnvironmentState private var router: AppRouter
     @AppEnvironmentState private var localization: LocalizationManager
 
     init(deps: AppDependencies) {
-        let service = HomeService(api: deps.api)
-        _vm = AppStateObject(wrappedValue: HomeViewModel(service: service, session: deps.session))
+        _vm = AppStateObject(wrappedValue: HomeViewModel(
+            home: HomeService(api: deps.api), places: PlacesService(api: deps.api),
+            deals: DealsService(api: deps.api), reviews: ReviewsService(api: deps.api),
+            profile: ProfileService(api: deps.api), session: deps.session))
+    }
+
+    private var hero: HeroGreeting {
+        let english = localization.language.rawValue != "vi"
+        return HeroGreeting.make(
+            engineText: HomeGreeting.heroText(at: Date(), english: english),
+            userName: vm.userName,
+            named: { String(format: NSLocalizedString("home.v3.greetingNamed", comment: ""), $0) },
+            generic: { NSLocalizedString("home.v3.greetingGeneric", comment: "") })
     }
 
     var body: some View {
         ScrollView {
-            // ── P4-11 · AI-FIRST HOME (DD-002 / OD-1) ────────────────────────────
-            //
-            // Order mirrors web and Android after V3's reorder: ask Tappy, then the suggestions
-            // that turn a vague need into a question worth asking, then Continue, then the tools.
-            // The quick actions and the recommendations card used to sit between the entry point
-            // and the suggestions, so the conversation you were in the middle of came last.
-            //
-            // 🚨 HOME IS NOT CHAT. Every entry point here calls `router.switchTo(.chat)` or pushes
-            // a destination — nothing renders a thread or streams a reply in place. Home is a
-            // door, not a room.
-            //
-            // 🚨 NO TOOL WAS REMOVED (DD-002). Quick actions and the recommendations card are both
-            // still here; they moved below the assistant, they did not go.
-            VStack(alignment: .leading, spacing: Spacing.lg) {
-                HomeGreetingSection(
-                    greeting: vm.greeting(locale: localization.language.rawValue),
-                    isAuthenticated: vm.isAuthenticated
-                )
-
-                // Ask Tappy — the primary action.
-                HomeSearchSection {
-                    router.switchTo(.chat)
+            VStack(alignment: .leading, spacing: 28) {
+                VStack(alignment: .leading, spacing: 20) {
+                    HomeHeroSection(hero: hero)
+                    HomeAskBar { router.switchTo(.chat) }
                 }
-
-                HomeAIEntrySection {
-                    router.switchTo(.chat)
+                HomeQuickSuggestionsSection(onOpenChat: { router.switchTo(.chat) }) { action in
+                    switch action.target {
+                    case .chat(let key): ask(NSLocalizedString(key, comment: ""))
+                    case .destination(let dest): router.push(dest, on: .home)
+                    }
                 }
-
-                // Contextual suggestions: the shortest path from "I need something" to a question.
-                HomeSuggestedPromptsSection(
-                    state: vm.suggestedPromptsState,
-                    prompts: vm.suggestedPrompts,
-                    onSelect: { _ in router.switchTo(.chat) },
-                    onRetry: { Task { await vm.loadSuggestedPrompts() } }
-                )
-
-                HomeCategorySection { _ in
-                    router.switchTo(.chat)
+                if case .loaded(let recs) = vm.recommendations {
+                    HomeRecommendationsSection(items: recs) { router.push(HomeDestination.recommendations, on: .home) }
                 }
-
-                // Continue — a returning user mostly resumes.
-                HomeRecentConversationsSection(
-                    state: vm.recentConversationsState,
-                    isAuthenticated: vm.isAuthenticated,
-                    conversations: vm.recentConversations,
-                    onSelect: { id in router.push(HomeDestination.conversation(id: id), on: .home) },
-                    onNewChat: { router.switchTo(.chat) },
-                    onSeeAll: { router.switchTo(.profile) },
-                    onRetry: { Task { await vm.loadRecentConversations() } }
-                )
-
-                // "For You" (ND-001) is a discovery/content preview on EXISTING V3-available
-                // sources. iOS has none wired, and the approved behaviour when nothing can fill
-                // the section is to HIDE it — never to pad it with placeholder content. So there
-                // is deliberately nothing here rather than an empty shell.
-
-                // ── Tools ────────────────────────────────────────────────────────
-                // De-emphasised, never removed.
-                HomeQuickActionsSection { dest in
-                    router.push(dest, on: .home)
+                HomeDiscoverBanner { router.switchTo(.deals) }
+                HomeScamShieldSection { router.push(HomeDestination.scamShield, on: .home) }
+                HomeDealsSection(rail: vm.deals) { router.switchTo(.deals) }
+                if case .loaded(let videos) = vm.videos {
+                    HomeVideosSection(videos: videos) { router.switchTo(.explore) }
                 }
-
-                HomeRecommendationsCard {
-                    router.push(HomeDestination.recommendations, on: .home)
+                HomeCategoriesSection { router.push(HomeDestination.categoryChat($0), on: .home) }
+                HomeSuggestionsSection { ask($0) }
+                HomeRecentSection(rail: vm.recent, language: localization.language.rawValue) {
+                    router.push(HomeDestination.conversation(id: $0), on: .home)
                 }
+                HomeSmartToolsSection(onOpen: { router.push($0.destination, on: .home) },
+                                      onSeeAll: { router.push(HomeDestination.smartTools, on: .home) })
             }
-            .padding(Spacing.md)
+            .padding(.horizontal, 20)
+            .padding(.vertical, 16)
+            .frame(maxWidth: 720)
+            .frame(maxWidth: .infinity)
         }
-        .background(TappyColor.background)
-        .refreshable { await vm.refresh() }
-        .task { await vm.refresh() }
+        .background(HomeV3.background.ignoresSafeArea())
+        .refreshable { await vm.refresh(lang: localization.language.rawValue) }
+        .task { await vm.refresh(lang: localization.language.rawValue) }
+    }
+
+    /// Opens Chat and sends `prompt` there (the chat view consumes `chatSeed`).
+    private func ask(_ prompt: String) {
+        router.chatSeed = prompt
+        router.switchTo(.chat)
     }
 }

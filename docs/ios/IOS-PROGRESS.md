@@ -68,6 +68,32 @@ skyline, huy hiệu cửa hàng của mẫu — đúng quy tắc (không có d�
 - Cài đặt → Thông báo: người đã từ chối quyền thì mở Cài đặt iOS (hộp xin quyền không hiện lại lần hai), giống Android `DIRECT_TO_SETTINGS`.
 - Chưa làm, cần Huy quyết: Home (L12 — bố cục Android riêng đã được duyệt, web khác), onboarding 4 bước theo mockup hay 2 bước như web/Android.
 
+## Home V3 theo Android (L12, owner 30/09) — code, chờ CI
+Thứ tự đúng `HomeScreen.kt`: hero (lời chào theo giờ — bộ câu chép nguyên web/Android, 7 khung giờ, cuối tuần, xoay theo ngày; dòng
+"Hi {tên}! 👋" từ `/api/profile`, khách "Chào bạn! 👋"; 2 nhãn "Luôn sẵn sàng" / "Nhanh · Chính xác · Hữu ích"; mascot TappyWave + quầng
+sáng) → ô hỏi (mở Chat) → 6 gợi ý nhanh (cafe/kế hoạch gửi câu vào Chat qua `chatSeed`; Dịch, Chia bill, Viết caption, Gợi ý du lịch
+mở màn có sẵn) → "Gợi ý dành cho bạn" (`/api/recommendations`, ảnh minh hoạ xoay theo vị trí như Android — không giả ảnh quán) →
+banner "Khám phá thêm" (→ Ưu đãi) → Cảnh báo lừa đảo (→ Scam Shield) → Ưu đãi hôm nay (cùng nguồn tab Ưu đãi; rỗng thì thẻ "Chưa có
+ưu đãi") → Video gợi ý (feed trending, chỉ clip có ảnh; → Khám phá) → Khám phá theo lĩnh vực (5 mục, xuống dòng; mở Chat theo
+category) → Gợi ý cho bạn (6 thẻ, 5 ảnh web `home_inspire_*`, gán ảnh không trùng như web) → Hoạt động gần đây (5 cuộc trò chuyện) →
+Smart Tools (7 thẻ theo registry web, mascot từng công cụ; "Xem tất cả" → trang Smart Tools theo nhóm; "Nhóm ăn" → Tappy Together).
+Bảng màu V3 tối như Android khi máy ở chế độ tối, sáng dùng xám của app. Test `HomeV3Tests`; ảnh CI `23`–`27` (tối, cạnh
+`step1-hientrang/01-home.png`). Onboarding giữ 2 bước ("Bước 1/2", "Bước 2/2") — đã có.
+
+## Thẻ hỏi nhanh v2 (IOS-REQUESTS I-1, R23 + R23.1) — code, chờ CI
+`AskCardModel.swift` = bản chép 1:1 `askCardModel.ts` (mảng → tiêu đề/dòng phụ/gợi ý; loại câu; icon; khoá ảnh `diem-*` kể cả
+từ trùng khi bỏ dấu; `Tìm cho tôi` khi không chọn gì). `AskCardView` theo mockup: mascot kính lúp, câu đánh số, ô ảnh chọn nhiều
+(3 cột / 2×2), ô icon chọn một (bấm lại để bỏ), ô «Hoặc nói thêm ý khác…» có nút gửi, nút «Tìm cho tôi» luôn bật → «Đang tìm…» và
+khoá thẻ. Nền tối cả hai chế độ. Ảnh ô qua manifest R22 (`PlanImageManifest`, tải 1 lần, theo `replaced` ≤3 bước, chỉ https);
+manifest hiện rỗng → ảnh giữ chỗ gradient theo mảng + icon (đúng thoả thuận). Tin gửi đi không đổi dạng. Test `AskCardV2Tests`
+(đúng các ca của web `askCardModel.test.ts` + `AskCard.test.tsx`); UI test 5 mảng `28`–`32` cạnh `ask-card-mockup.png`, kiểm tin
+gửi «Karaoke, Bida/bowling · 2 người · Tối nay», gửi 1 lần, gửi rỗng = «Tìm cho tôi». Ca «giữ lựa chọn khi remount» của web là
+do `router.replace` của web — iOS không remount thẻ, không áp dụng.
+
+## MOB-1 — CI run 36696907475 (b36706a) XANH, 22/22 ảnh
+Đã xem ảnh: `20`/`21` màn đăng nhập báo «Liên kết đăng nhập không hợp lệ hoặc đã hết hạn…», vẫn là khách; `22` link callback từ
+ngoài → vẫn hồ sơ Minh Anh.
+
 ## MOB-1 — chèn phiên đăng nhập qua callback (bảo mật 🟠, 30/09) — đưa vào bản TestFlight tới
 Nguồn: `docs/security/SECURITY-AUDIT-2026-09-30.md` (nhánh `security/hardening-2026-09-30`) MOB-1.
 - **Trước:** Zalo nhập mọi `access_token`/`refresh_token` trong fragment callback, không kiểm lần đăng nhập nào đang chờ.

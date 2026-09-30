@@ -108,6 +108,12 @@ struct PlaceholderShellView: View {
                         ServiceDetailView(service: service, deps: deps)
                     case .favorites:
                         FavoritesView(deps: deps)
+                    case .smartTools:
+                        SmartToolsView()
+                    case .groupDining:
+                        GroupDiningView(deps: deps)
+                    case .categoryChat(let category):
+                        ChatView(deps: deps, category: category)
                     }
                 }
         case .chat:
