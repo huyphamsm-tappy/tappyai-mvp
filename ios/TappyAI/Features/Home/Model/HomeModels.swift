@@ -28,7 +28,8 @@ struct ConversationSummary: Decodable, Sendable, Identifiable {
         id = try c.decode(String.self, forKey: .id)
         title = try c.decodeIfPresent(String.self, forKey: .title)
         category = try c.decodeIfPresent(String.self, forKey: .category)
-        updatedAt = try c.decodeIfPresent(Date.self, forKey: .updatedAt)
+        // Optional: an unparseable timestamp reads as nil instead of failing the whole list.
+        updatedAt = c.decodeLenientDate(forKey: .updatedAt)
         if let arr = try? c.nestedUnkeyedContainer(forKey: .messages) {
             messageCount = arr.count ?? 0
         } else {

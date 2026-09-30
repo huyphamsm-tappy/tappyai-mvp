@@ -332,7 +332,7 @@ final class MusicAudioPlayer: ObservableObject {
         let item = AVPlayerItem(url: audioURL)
         player = AVPlayer(playerItem: item)
         endObserver = NotificationCenter.default.addObserver(
-            forName: .AVPlayerItemDidPlayToEndOfTime,
+            forName: AVPlayerItem.didPlayToEndTimeNotification,
             object: item,
             queue: .main
         ) { [weak self] _ in

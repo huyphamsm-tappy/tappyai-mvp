@@ -100,7 +100,40 @@
             </array>
         </dict>
 
-        <!-- Audio: original sounds recorded and uploaded by users. -->
+        <!-- Phone number: the contact number a user types into a booking request
+             (Discovery BookingFormView -> bookings.customer_phone), shown back in Bookings. -->
+        <dict>
+            <key>NSPrivacyCollectedDataType</key>
+            <string>NSPrivacyCollectedDataTypePhoneNumber</string>
+            <key>NSPrivacyCollectedDataTypeLinked</key>
+            <true/>
+            <key>NSPrivacyCollectedDataTypeTracking</key>
+            <false/>
+            <key>NSPrivacyCollectedDataTypePurposes</key>
+            <array>
+                <string>NSPrivacyCollectedDataTypePurposeAppFunctionality</string>
+            </array>
+        </dict>
+
+        <!-- Date of birth: the 18+ age gate (PATCH /api/profile {dateOfBirth}). Apple has no
+             dedicated type for it, so it is declared as Other Data Types. -->
+        <dict>
+            <key>NSPrivacyCollectedDataType</key>
+            <string>NSPrivacyCollectedDataTypeOtherDataTypes</string>
+            <key>NSPrivacyCollectedDataTypeLinked</key>
+            <true/>
+            <key>NSPrivacyCollectedDataTypeTracking</key>
+            <false/>
+            <key>NSPrivacyCollectedDataTypePurposes</key>
+            <array>
+                <string>NSPrivacyCollectedDataTypePurposeAppFunctionality</string>
+            </array>
+        </dict>
+
+        <!-- Audio: audio files a user uploads as an original sound (Music, POST /api/upload/audio).
+             Music is hidden behind the server flag showMusic, but the flag can turn it on without an
+             app release, so the declaration stays. Voice input is NOT this: SFSpeechRecognizer
+             audio goes to Apple for transcription and never to TappyAI's servers. -->
         <dict>
             <key>NSPrivacyCollectedDataType</key>
             <string>NSPrivacyCollectedDataTypeAudioData</string>
@@ -114,12 +147,28 @@
             </array>
         </dict>
 
-        <!-- Coarse location: sent with AI queries to find nearby places; not stored as a profile field. -->
+        <!-- Precise location: LocationCoordinator asks for kCLLocationAccuracyHundredMeters and the
+             chat request carries the unrounded lat/lng (userLocation) in a signed-in request, so it
+             is declared as precise and linked. Only while the user's location toggle is on. -->
+        <dict>
+            <key>NSPrivacyCollectedDataType</key>
+            <string>NSPrivacyCollectedDataTypePreciseLocation</string>
+            <key>NSPrivacyCollectedDataTypeLinked</key>
+            <true/>
+            <key>NSPrivacyCollectedDataTypeTracking</key>
+            <false/>
+            <key>NSPrivacyCollectedDataTypePurposes</key>
+            <array>
+                <string>NSPrivacyCollectedDataTypePurposeAppFunctionality</string>
+            </array>
+        </dict>
+
+        <!-- Coarse location: the same nearby-places context; kept alongside precise. -->
         <dict>
             <key>NSPrivacyCollectedDataType</key>
             <string>NSPrivacyCollectedDataTypeCoarseLocation</string>
             <key>NSPrivacyCollectedDataTypeLinked</key>
-            <false/>
+            <true/>
             <key>NSPrivacyCollectedDataTypeTracking</key>
             <false/>
             <key>NSPrivacyCollectedDataTypePurposes</key>

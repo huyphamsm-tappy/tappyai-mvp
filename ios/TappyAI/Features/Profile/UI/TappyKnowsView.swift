@@ -323,7 +323,7 @@ struct TappyKnowsView: View {
                         .foregroundStyle(TappyColor.textSecondary)
                         .padding(.horizontal, 2)
 
-                    FlowLayout(spacing: 6) {
+                    TappyKnowsFlowLayout(spacing: 6) {
                         ForEach(Array(m.history.suffix(8).reversed()), id: \.self) { h in
                             HStack(spacing: 4) {
                                 Text(h)
@@ -466,7 +466,7 @@ struct TappyKnowsView: View {
 
     @ViewBuilder
     private func tagList(_ items: [String], color: Color, onRemove: @escaping (Int) -> Void) -> some View {
-        FlowLayout(spacing: 6) {
+        TappyKnowsFlowLayout(spacing: 6) {
             ForEach(Array(items.enumerated()), id: \.offset) { idx, item in
                 HStack(spacing: 4) {
                     Text(item)
@@ -512,9 +512,7 @@ struct TappyKnowsView: View {
     }
 
     private func parseDate(_ iso: String) -> Date? {
-        let f = ISO8601DateFormatter()
-        f.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
-        return f.date(from: iso) ?? ISO8601DateFormatter().date(from: iso)
+        ISO8601Timestamp.date(from: iso)
     }
 
     private func formatDate(_ date: Date) -> String {
@@ -596,7 +594,7 @@ struct TappyKnowsView: View {
 
 // MARK: - Flow Layout
 
-private struct FlowLayout: Layout {
+private struct TappyKnowsFlowLayout: Layout {
     var spacing: CGFloat = 6
 
     func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {

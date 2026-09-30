@@ -35,6 +35,13 @@ struct AppConfig: Decodable, Sendable {
         /// compile-time `ProductFlags.showMusic`, which must carry the same value: a surface
         /// withdrawn for a legal reason cannot wait for the first config response to disappear.
         let showMusic: Bool?
+        /// In-app self-deletion (`POST /api/account/delete`) — mirrors Web
+        /// `ACCOUNT_SELF_DELETE_ENABLED` (`flags.accountSelfDelete`). Absent (older /api/config,
+        /// production today) is treated as off: the app keeps the email request instead.
+        let accountSelfDelete: Bool?
+        /// Sign in with Apple. No server sends it yet (neither rc/web-uat nor main); absent = the
+        /// button stays hidden. See `AppleSignIn.isEnabled`.
+        let appleSignIn: Bool?
     }
 
     struct Upload: Decodable, Sendable {

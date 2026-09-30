@@ -20,19 +20,22 @@ struct AppLogger {
     /// Debug/verbose — only emitted in DEBUG builds.
     func debug(_ message: @autoclosure () -> String) {
         #if DEBUG
-        logger.debug("\(message(), privacy: .public)")
+        let text = message()  // os.Logger interpolation is an escaping autoclosure
+        logger.debug("\(text, privacy: .public)")
         #endif
     }
 
     func info(_ message: @autoclosure () -> String) {
         #if DEBUG
-        logger.info("\(message(), privacy: .public)")
+        let text = message()  // os.Logger interpolation is an escaping autoclosure
+        logger.info("\(text, privacy: .public)")
         #endif
     }
 
     /// Errors are always recorded (Release included), but keep sensitive data private.
     func error(_ message: @autoclosure () -> String) {
-        logger.error("\(message(), privacy: .public)")
+        let text = message()  // os.Logger interpolation is an escaping autoclosure
+        logger.error("\(text, privacy: .public)")
     }
 
     /// Lightweight performance marker. Use around expensive foundation operations only.

@@ -47,8 +47,8 @@ struct RegisterView: View {
         Group {
             if vm.needsEmailConfirmation {
                 TappyEmptyState(systemImage: "envelope.badge",
-                                title: NSLocalizedString("register.checkEmail.title", comment: ""),
-                                message: NSLocalizedString("register.checkEmail.body", comment: ""))
+                                title: "register.checkEmail.title",
+                                message: "register.checkEmail.body")
             } else {
                 form
             }

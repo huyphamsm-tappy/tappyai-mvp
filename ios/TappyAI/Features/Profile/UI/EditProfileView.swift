@@ -43,7 +43,7 @@ struct EditProfileView: View {
         .navigationTitle("editProfile.title")
         .navigationBarTitleDisplayMode(.inline)
         .task { await loadProfile() }
-        .onChange(of: selectedPhoto) { _, newValue in
+        .onChange(of: selectedPhoto) { newValue in  // iOS 16 form (deployment target 16.0)
             if let newValue { Task { await uploadAvatar(newValue) } }
         }
     }

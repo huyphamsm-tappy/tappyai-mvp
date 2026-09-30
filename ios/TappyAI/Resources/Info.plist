@@ -2,6 +2,18 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>CFBundleExecutable</key>
+	<string>$(EXECUTABLE_NAME)</string>
+	<key>CFBundleIdentifier</key>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>$(PRODUCT_NAME)</string>
+	<key>CFBundlePackageType</key>
+	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
 	<key>CFBundleDisplayName</key>
 	<string>TappyAI</string>
 	<key>CFBundleShortVersionString</key>
@@ -42,7 +54,11 @@
 	<key>NSCameraUsageDescription</key>
 	<string>TappyAI uses the camera to record reviews and scan menus/receipts.</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>TappyAI uses the microphone to record video reviews and original sounds.</string>
+	<string>TappyAI uses the microphone for voice input in chat and to record video reviews and original sounds.</string>
+	<!-- Required by App Store processing (ITMS-90683): chat voice input uses SFSpeechRecognizer
+	     (Features/Chat/Data/VoiceInputManager.swift). Build 16 was rejected without it. -->
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>TappyAI turns what you say into a chat message. Your voice is transcribed by Apple speech recognition and is not stored by TappyAI.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>TappyAI accesses your photos to upload reviews and images.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>

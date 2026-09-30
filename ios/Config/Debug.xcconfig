@@ -1,5 +1,4 @@
 // Debug configuration — non-secret defaults. Secrets go in Config/Secrets.xcconfig (gitignored) and override here.
-#include? "Secrets.xcconfig"
 
 PRODUCT_BUNDLE_IDENTIFIER = com.tappyai.ios.debug
 PRODUCT_NAME = TappyAI
@@ -18,3 +17,8 @@ APS_ENVIRONMENT = development
 
 SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG
 GCC_PREPROCESSOR_DEFINITIONS = DEBUG=1
+
+// Last on purpose: in an xcconfig the LAST assignment wins, so this include must come after
+// the placeholders above for Secrets.xcconfig to override them. At the top of the file, every
+// placeholder above silently beat whatever Secrets.xcconfig set.
+#include? "Secrets.xcconfig"
