@@ -241,6 +241,33 @@ jobs:
           } > Config/Secrets.xcconfig
           echo "Secrets.xcconfig defines: $(grep -oE '^[A-Z_]+' Config/Secrets.xcconfig | xargs)"
 
+      # A TestFlight build must talk to PRODUCTION, reachable with NO bypass header: build 50 pointed at the
+      # UAT host, which sits behind Vercel SSO (302), so every tester saw "cannot load config". Never put the
+      # Vercel bypass secret in a build — an installed app can be unpacked. This step refuses a build that
+      # would need one. Only the host name is printed, never a key.
+      - name: Refuse a build that is not pointed at production
+        env:
+          TAPPY_API_BASE_URL: ${{ secrets.TAPPY_API_BASE_URL }}
+        run: |
+          base="${TAPPY_API_BASE_URL%/}"
+          host="$(printf '%s' "$base" | sed -E 's|^https?://([^/:]+).*|\1|')"
+          echo "API host for this build: $host"
+          case "$host" in
+            www.tappyai.com|tappyai.com) ;;
+            *) echo "::error::TAPPY_API_BASE_URL host is '$host', not production (www.tappyai.com). Refusing to ship."; exit 1 ;;
+          esac
+          case "$base" in https://*) ;; *) echo "::error::TAPPY_API_BASE_URL is not https"; exit 1 ;; esac
+          code="$(curl -sS -o /dev/null -w '%{http_code}' --max-time 30 "$base/api/config" || echo 000)"
+          echo "GET /api/config (no bypass header) -> HTTP $code"
+          [ "$code" = "200" ] || { echo "::error::production /api/config answered $code without a bypass header; a tester's phone would get the same"; exit 1; }
+          # I6 / R24: a native Zalo sign-in must be refused unless it carries an app_state. If production does not
+          # have it yet, this build's Zalo sign-in cannot work (the app refuses a callback with no state).
+          loc="$(curl -sS -o /dev/null -w '%{redirect_url}' --max-time 30 "$base/api/auth/zalo?platform=ios" || true)"
+          case "$loc" in
+            *app_state_invalid*) echo "I6 is live on production (an ios sign-in without app_state is refused)." ;;
+            *) echo "::warning::production does not refuse /api/auth/zalo?platform=ios without app_state - I6 is not live there, Zalo sign-in on this build will be refused by the app" ;;
+          esac
+
       # Push (Firebase Cloud Messaging). The plist comes from the Firebase Console (iOS app
       # com.tappyai.ios) and is never committed. Without it the build still ships, with push inactive
       # (FirebaseSetup.isAvailable is false) — so a missing secret is a warning, not a stop.
@@ -344,6 +371,14 @@ jobs:
               echo "::error::the archive still carries placeholder config"; exit 1 ;;
           esac
           [ "$(pb CFBundleVersion)" = "$BUILD_NUMBER" ] || { echo "::error::CFBundleVersion is not $BUILD_NUMBER"; exit 1; }
+          # Production host, and no Vercel bypass key anywhere in the app's Info.plist.
+          case "$(pb TAPPY_API_BASE_URL)" in
+            https://www.tappyai.com|https://tappyai.com) echo "API base                      production" ;;
+            *) echo "::error::the archive's API base is not production"; exit 1 ;;
+          esac
+          if plutil -p "$app/Info.plist" | grep -qi 'bypass'; then
+            echo "::error::a bypass value is present in Info.plist"; exit 1
+          fi
           echo "--- signed entitlements"
           codesign -d --entitlements - --xml "$app" 2>/dev/null | plutil -convert xml1 -o - - | grep -E '<key>|<string>' | sed -E 's/^[[:space:]]+//'
 

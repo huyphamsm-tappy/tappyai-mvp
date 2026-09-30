@@ -28,6 +28,33 @@ final class AuthCallbackStateTests: XCTestCase {
         return URL(string: "tappyai://auth/callback#\(fragment)")!
     }
 
+    // MARK: Contract with the server (I6 / R24, `src/lib/auth/appState.ts`, `src/app/auth/confirm/route.ts`)
+
+    /// The server refuses an `app_state` that does not match `^[A-Za-z0-9_-]{43,128}$`.
+    func testStateFitsTheServersAcceptedFormat() {
+        for _ in 0..<50 {
+            let s = AuthCallbackStateStore.randomState()
+            XCTAssertNotNil(s.range(of: "^[A-Za-z0-9_-]{43,128}$", options: .regularExpression), s)
+        }
+    }
+
+    /// The exact fragment `/auth/confirm` redirects with for `platform=ios`:
+    /// `access_token, refresh_token, expires_at, state` (URLSearchParams-encoded).
+    func testTheServersCallbackIsAccepted() throws {
+        let state = store.begin()
+        let url = URL(string: "tappyai://auth/callback#access_token=eyJhbGciOi.eyJzdWIi.sig&refresh_token=r-t_1&expires_at=1800003600&state=\(state)")!
+        XCTAssertTrue(AuthCallbackURL.isAuthCallback(url))
+        XCTAssertEqual(try AuthCallbackPolicy.zalo(url, states: store), .tokens(access: "eyJhbGciOi.eyJzdWIi.sig", refresh: "r-t_1"))
+    }
+
+    /// `app_state` in the fragment is NOT the echo (Android reads `state`); a callback that only
+    /// carries `app_state` is refused, so both apps stay on one name.
+    func testOnlyStateIsReadNotAppState() {
+        let state = store.begin()
+        let url = URL(string: "tappyai://auth/callback#access_token=A&refresh_token=R&app_state=\(state)")!
+        XCTAssertThrowsError(try AuthCallbackPolicy.zalo(url, states: store))
+    }
+
     // MARK: State store
 
     func testStatesAreRandomAndUrlSafe() {

@@ -68,6 +68,57 @@ skyline, huy hiệu cửa hàng của mẫu — đúng quy tắc (không có d�
 - Cài đặt → Thông báo: người đã từ chối quyền thì mở Cài đặt iOS (hộp xin quyền không hiện lại lần hai), giống Android `DIRECT_TO_SETTINGS`.
 - Chưa làm, cần Huy quyết: Home (L12 — bố cục Android riêng đã được duyệt, web khác), onboarding 4 bước theo mockup hay 2 bước như web/Android.
 
+## Sẵn sàng build TestFlight trỏ PRODUCTION (30/09 tối) — CHƯA build, chờ Huy báo «release Phase 7 xong»
+**Cách chạy khi được báo:** GitHub → Actions → workflow **iOS** → *Run workflow* → chọn nhánh `ios/sync-2026-09-30` (hoặc nhánh đã
+gộp) → job *Archive + upload to TestFlight* (chỉ chạy khi bấm tay, không chạy từ push/PR).
+- **Số build:** `CFBundleVersion` = `github.run_number` của workflow iOS. Build cuối đã lên TestFlight là **50** (run 50, 28/09); workflow
+  hiện đã ở run **62+** và chỉ tăng → lần bấm tới ≥ 63, luôn lớn hơn. Bước «Verify the archive» kiểm `CFBundleVersion == BUILD_NUMBER`.
+  Phiên bản hiển thị `1.0.0` (project.yml) — đổi nếu muốn 1.0.1.
+- **Trỏ production:** `Release.xcconfig` mặc định `https://www.tappyai.com`, nhưng CI ghi đè bằng secret `TAPPY_API_BASE_URL`. Bản 50 hỏng
+  vì secret trỏ host UAT (Vercel SSO, 302). Nay có 3 lớp chặn, đều dừng run TRƯỚC khi lên Apple:
+  1. bước mới «Refuse a build that is not pointed at production»: host của secret phải là `www.tappyai.com`/`tappyai.com`, https, và
+     `GET /api/config` **không kèm header bypass** phải trả 200 (in mã HTTP + tên host, không in khoá);
+  2. «Verify the archive»: `TAPPY_API_BASE_URL` trong Info.plist của bản đã archive phải là production;
+  3. cũng ở đó: nếu `plutil -p Info.plist` có chữ «bypass» → dừng. Kiểm tra mã nguồn: không có chuỗi bypass nào trong `ios/`
+     (Swift, xcconfig, plist, yml, py); secret bypass của Vercel không được workflow này đọc ở bất kỳ bước nào.
+- **I6 trên production:** cùng bước kiểm, gọi `GET /api/auth/zalo?platform=ios` không kèm `app_state`; production đã có I6 nếu trả về
+  `/login?error=app_state_invalid`. Chưa có → cảnh báo (không dừng): đăng nhập Zalo của bản đó sẽ bị app từ chối.
+- **Đối chiếu I6 với rc (54210f2 → 1e96071):** `src/lib/auth/appState.ts`, `/api/auth/zalo`, `/auth/confirm` khớp iOS — app gửi
+  `app_state` (43 ký tự base64url, regex server `^[A-Za-z0-9_-]{43,128}$`), server trả `state` trong **fragment** cho `platform=ios`
+  (`tappyai://auth/callback#access_token=…&refresh_token=…&expires_at=…&state=…`); iOS đọc `state`. Không lệch → không sửa code;
+  thêm `AuthCallbackStateTests` ghim định dạng regex, đúng dạng fragment server và «chỉ `state`, không `app_state`».
+- **Việc Huy vẫn phải làm để build có push** (IOS-REQUESTS §3): khoá APNs, app iOS trong Firebase, secret `GOOGLE_SERVICE_INFO_PLIST_BASE64`,
+  cập nhật `APPSTORE_PROFILE_BASE64` (profile mới có Push). Thiếu thì build vẫn lên, chỉ không có thông báo đẩy (workflow cảnh báo).
+- Chưa kiểm được ở đây (không có Mac/không chạy build ký): ký số + Apple xử lý — chỉ biết đúng khi chạy job lần đầu sau 50.
+
+## Còn thiếu so với ANDROID-PARITY-MAP (30/09 tối) — ước lượng
+Đã xong và có ảnh CI: L1 đăng nhập · L3 hub «Tôi» · L4 cổng 18+ · L5 Gợi ý · L6 onboarding 2 bước · L7 Đã lưu · L8 Viết content ·
+L10 hồ sơ người khác (tab Chia sẻ) · L12 Home theo Android · L16 Ưu đãi (thẻ hỏi) · chia sẻ 6 bố cục · thẻ hỏi nhanh v2 · MOB-1.
+Ước lượng = giờ làm việc + số vòng CI (mỗi vòng ~25 phút, có ảnh mới thì phải xem ảnh).
+
+| # | Màn / việc | Hiện trạng iOS | Ước lượng |
+|---|---|---|---|
+| L2 | Đăng nhập chế độ tối | Màu thích ứng theo hệ thống nên có thể đã đúng; **chưa có ảnh tối** để chứng minh | 0,5 giờ, 1 ảnh |
+| L9 | Composer Ảnh / Video / YouTube | Code có (`CreateReviewView`, 3 loại, tải video 3 bước) nhưng **chưa có ảnh CI** và chưa so với web | 1,5 giờ, 1–2 vòng (cần tài khoản giả + fixture upload) |
+| L11 | Cài đặt | Chưa so hàng với web; Android có thêm Âm thanh/Giao diện/Bản quyền — **Huy chưa quyết** giữ hay bỏ | 1 giờ sau khi có quyết định |
+| L14 | Chia sẻ + cờ `flags.publicShare` | 6 bố cục xong; iOS **không đọc** `flags.publicShare` (server đã trả) → nút chia sẻ công khai luôn bật | 1 giờ |
+| L15 | Hồ sơ chính chủ: ảnh đại diện | Ảnh bìa xong; tải ảnh đại diện có ở `ProfileService` nhưng **chưa có ảnh CI** | 1 giờ |
+| — | Thẻ kế hoạch trong chat (Android 5c009f9, mẫu Quy Nhơn) | `TripPlanCardView` bản cũ: chưa ảnh hero/điểm dừng qua manifest R22, chưa «Xem kế hoạch đầy đủ trên Tappy». `PlanImageManifest` đã có sẵn để dùng | 3–4 giờ, 2 vòng CI |
+| — | Thẻ địa điểm/mua sắm trong chat (2 địa điểm, ảnh lớn — web 2aefaf6) | có `PlaceCardView`, **chưa so với bản mới**, chưa có ảnh CI | 2 giờ, 1–2 vòng |
+| — | Chat rỗng + 11 câu kiểm chat (L13) | Chưa kiểm với server thật; sẽ làm được trên bản TestFlight production | 2 giờ khi có bản TestFlight |
+| — | Khám phá (feed clip + dock), chi tiết bài, bình luận | Có và chạy; **chưa có ảnh CI**, chưa so bố cục với Android/web | 2 giờ, 1–2 vòng |
+| — | Ưu đãi khi CÓ deal (danh sách, thẻ, bộ lọc) | Chỉ có ảnh trạng thái rỗng (`18`); chưa fixture có deal | 1,5 giờ |
+| — | 7 màn công cụ (Quét, Dịch, Tỷ giá, Chia bill, Cảnh báo lừa đảo, Nhóm ăn, Bói) + trang Smart Tools | Có đủ màn; **chưa ảnh CI cạnh `14-tools.png`**, chưa so từng màn | 3 giờ, 2 vòng (fixture cho Dịch/Tỷ giá/Scam) |
+| — | Lịch sử chat, Đặt chỗ, Sở thích, Theo dõi giá, AI Planner, Tappy biết gì, Đi nhóm, Hướng dẫn | Có; **chưa ảnh CI**; nhãn hàng hub đã theo web | 2,5 giờ, 1–2 vòng |
+| — | Sign in with Apple | Code xong, nút ẩn tới khi server bật provider (Apple 4.8) | phụ thuộc Huy (IOS-REQUESTS A1); 0,5 giờ khi bật |
+| — | Push FCM | Code xong, tắt tới khi có plist | phụ thuộc Huy (§3); 1 giờ kiểm thật trên máy khi có |
+| — | **Giao diện trả lời tư vấn mới (consult answer)** | Cố ý CHƯA làm — chờ đặc tả Luna | chờ Luna; ước 4–6 giờ khi có đặc tả |
+| — | Universal Links (`/reviews`, `/users`, `/group`, `/plan`) | Phía web (A6) | phụ thuộc web; iOS 0,5 giờ |
+
+Tổng phần iOS tự làm được ngay: khoảng **17–20 giờ** làm việc, ~10–12 vòng CI. Thứ tự đề xuất sau release: (1) bản TestFlight production +
+kiểm chat thật (L13) → (2) thẻ kế hoạch + thẻ địa điểm trong chat (nhìn thấy nhiều nhất) → (3) ảnh CI cho các màn «có mà chưa chụp» theo lô
+→ (4) L14/L15/L11 → (5) consult answer khi Luna có đặc tả.
+
 ## Home V3 theo Android (L12, owner 30/09) — code, chờ CI
 Thứ tự đúng `HomeScreen.kt`: hero (lời chào theo giờ — bộ câu chép nguyên web/Android, 7 khung giờ, cuối tuần, xoay theo ngày; dòng
 "Hi {tên}! 👋" từ `/api/profile`, khách "Chào bạn! 👋"; 2 nhãn "Luôn sẵn sàng" / "Nhanh · Chính xác · Hữu ích"; mascot TappyWave + quầng
