@@ -70,7 +70,7 @@ final class HomeViewModel: AppObservableObject {
         recent = Self.rail(Array(items.prefix(Self.recentLimit)))
     }
 
-    static func playableVideos(_ reviews: [Review]) -> [Review] {
+    nonisolated static func playableVideos(_ reviews: [Review]) -> [Review] {
         reviews.filter { r in
             r.contentType == "video" && !((r.thumbnail ?? "").isEmpty && (r.mediaUrl ?? "").isEmpty)
         }
