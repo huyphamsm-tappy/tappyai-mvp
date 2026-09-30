@@ -20,6 +20,7 @@ import { guardPlanTripFacts, guardUngivenTravelDate } from './planTripFactsGuard
 import { repairPlanBlock } from './planJsonRepair'
 import { appendConsultPlanCost, appendPlanBudgetMath, partyCount, perPersonBudget } from './planBudgetMath'
 import { consultRemainingLine, normalizePickSentence, shoppingMarkerNames, shoppingPickName } from './consultative/consultBrain'
+import { consultLunaEnabled, splitPickSentence } from './consultative/luna'
 import { restorePlanHeadings, fillEmptyPlanSections } from './consultative/domainFrames'
 import { stripStepNarration } from './consultative/stepNarration'
 import { buildActions } from '@/lib/recommendation/actions'
@@ -2010,6 +2011,13 @@ export function applyPlaceEnrichmentStreamFilter(
     const beforeEgress = mainText
     mainText = guardModelEgress(mainText, buildOwned(places), allowedUrls)
     logEgress('settle', beforeEgress, mainText)
+    // PHIÊN LUNA (CONSULT_LUNA only): the pick sentence stands alone, so a guard that cuts an unbacked number or
+    // atmosphere word from the reason cannot take the pick's NAME with it (replay 30/09 FOOD-1 t6: "**Mình chọn: Miya
+    // Sushi** vì có **1.376 đánh giá** …" → place_claim removed the whole sentence, the reply had no pick).
+    if (consultLunaEnabled()) {
+      const split = splitPickSentence(mainText)
+      if (split !== mainText) { console.log(JSON.stringify({ type: 'tappyai_consult_patch', turn: 'luna', patches: ['pick_sentence_split'] })); mainText = split }
+    }
 
     /**
      * The card's payload, built here rather than at the end, because whether it
