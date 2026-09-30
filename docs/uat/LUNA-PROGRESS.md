@@ -38,3 +38,15 @@
 - Các lượt chạy thử trước khi sửa: `scripts/consult/replay/out/_void/` (không tính).
 - Độ trễ: bước hiểu ý định Luna ~2,4–2,8 s/lượt, chạy TRƯỚC mọi thứ (~180–250 token JSON ra). Trả lời Luna tới token đầu ~0,7–1,4 s.
 - Đo chính thức bắt đầu 02:18Z (runner `D:\TappyAI-wt\.cache\run-all.sh`): bộ gốc none×2, low×2 → bộ gõ đời thường none, low, Haiku.
+
+## 30/09 03:00 — vòng sửa trong lúc đo (mỗi lỗi A/B → sửa gốc rồi đo lại TỪ ĐẦU; lượt cũ ở `out/_void`, `out/_prev`)
+| Lỗi (replay) | Mức | Gốc | Sửa |
+|---|---|---|---|
+| TRAVEL-1 t2: không có chữ, chỉ còn câu backstop "quán hải sản" | C | Luna gọi 2 tool song song / nối tiếp, hết bước | Luna không gọi tool song song; lượt Luna mà code đã tìm trước → không đưa định nghĩa tool (tool choice vẫn 'auto' — khoá kiến trúc) |
+| Tất cả lượt không tool rơi về Haiku | — | API từ chối `parallel_tool_calls` khi không có tool | chỉ gửi khi lượt có tool (fallback đã chạy đúng: 0 crash) |
+| FOOD-2 t7 "đặt món đó luôn" → hỏi thêm | B | Luna đè lượt "kế hoạch" của code | hành động rõ (kế hoạch/xem thêm/so sánh/bác) do CODE; hỏi↔chọn do CODE; loại lượt khác theo Luna |
+| FOOD-2 t4–5 ràng buộc "sân vườn/ngoài trời" | B | chữ trong TÊN quán user chép lại | lượt tham chiếu (chép tên đã hiện) không đưa vào kiểm dữ kiện / ngân sách / ràng buộc |
+| SHOP-3 "Dell" + ngân sách **1.334.000đ** | A/B | "Core i5-1334U - Thái Long Computer" — bộ lọc tên in đậm Phase 7 không bắt tên dài hơn | như trên (chỉ khi cờ Luna). ⚠ **Lỗi này CÓ ở Phase 7** (Haiku chọn "cửa hàng sửa bản lề laptop") → báo anh |
+| SHOP-1 t6 "không thích màu đen" → server chèn "Mình chọn: Scout (đen)" | B | 2 backstop của server lấy đề xuất của thẻ | lượt bác: backstop không đưa lại tên đã hiện (Haiku mốc cũng có B này) |
+| ENT-1 t6 / TRAVEL-2 t2 "Mình chọn: chưa thể…" | B/C | — | code đưa "SỰ THẬT CỦA LƯỢT" (vừa bị bác, đã hiện, ngân sách) vào lượt bác/xem thêm; bỏ dạng "Mình chọn: chưa…" |
+| FOOD-1 t4 câu chốt lặp 2 lần | D | tách câu chốt đụng phần đã phát | chỉ tách phần CHƯA phát |
