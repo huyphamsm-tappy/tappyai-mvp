@@ -299,8 +299,6 @@
     <string name="chat_share_public_copy">Sao chép liên kết</string>
     <string name="chat_share_public_rate_limited">Bạn đã tạo đủ số liên kết công khai hôm nay. Thử lại vào ngày mai nhé.</string>
     <string name="chat_share_public_not_shareable">Câu trả lời này chưa thể chia sẻ công khai.</string>
-    <string name="chat_ask_free_hint">Hoặc gõ thêm ý khác…</string>
-    <string name="chat_ask_send">Gửi</string>
     <string name="chat_plan_v2_kicker">TAPPY PLAN</string>
     <string name="chat_plan_v2_itinerary">Hành trình</string>
     <string name="chat_plan_v2_people">%1$d người</string>
@@ -315,4 +313,14 @@
     <string name="chat_plan_v2_full_cta">Xem kế hoạch đầy đủ trên Tappy</string>
     <string name="chat_plan_v2_made_by">Được tạo bởi TAPPY</string>
     <string name="auth_callback_refused">Liên kết đăng nhập không hợp lệ hoặc đã hết hạn. Vui lòng đăng nhập lại trong ứng dụng.</string>
+    <string name="ask_v2_title">Tìm gì cho bạn hôm nay?</string>
+    <string name="ask_v2_subtitle">Chọn nhanh vài thứ, Tappy sẽ tìm phần còn lại.</string>
+    <string name="ask_v2_sub_type">Chọn một hoặc nhiều</string>
+    <string name="ask_v2_sub_party">Chọn nhóm phù hợp</string>
+    <string name="ask_v2_sub_time">Chọn thời điểm</string>
+    <string name="ask_v2_sub_place">Chọn khu vực</string>
+    <string name="ask_v2_sub_budget">Chọn mức giá</string>
+    <string name="ask_v2_free_hint">Hoặc nói thêm ý khác…</string>
+    <string name="ask_v2_free_example">Ví dụ: muốn chỗ chill, ít ồn, có view đẹp...</string>
+    <string name="ask_v2_cta">Tìm cho tôi</string>
 </resources>

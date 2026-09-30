@@ -13,6 +13,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.tappyai.app.chat.AskCard
 import com.tappyai.app.chat.ChatResponseParser
 import com.tappyai.app.chat.TripPlanCard
 import com.tappyai.app.chat.plan.PlanImageManifest
@@ -23,7 +24,7 @@ import kotlinx.serialization.json.JsonObject
 import java.io.File
 
 /**
- * `uat` build ONLY — draws the plan card v2 from a fixture, OFFLINE (owner 29/09: no real chat while
+ * `uat` build ONLY — draws the plan card v2 (or the ask card v2) from a fixture, OFFLINE (owner 29/09: no real chat while
  * waiting on "AI ổn định"). The e2e runner writes, via `adb shell run-as`, into files/e2e/:
  *  - `plancard.txt` — an assistant reply containing a `[TAPPY_PLAN]…[/TAPPY_PLAN]` block (a saved raw
  *    answer, or fake data with the v2 fields); it goes through the production [ChatResponseParser];
@@ -51,6 +52,8 @@ class UatPlanCardPreviewActivity : ComponentActivity() {
                     .padding(horizontal = 12.dp, vertical = 8.dp),
             ) {
                 parsed.plan?.let { TripPlanCard(plan = it, planJson = parsed.planJson) }
+                // Ask card v2 (R23) from a saved [TAPPY_ASK] answer; «Tìm cho tôi» only logs here.
+                if (parsed.ask.isNotEmpty()) AskCard(questions = parsed.ask, onSend = { android.util.Log.i("UatPreview", "ask answer: $it") })
             }
         }
     }
