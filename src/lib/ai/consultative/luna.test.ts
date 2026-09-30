@@ -162,6 +162,9 @@ describe('the pick sentence stands alone (a guard cutting the reason keeps the n
   it('unbolds the model count line so the server count replaces it (replay SHOP-2 t2 showed two count lines)', () => {
     expect(splitPickSentence('Mình còn **34 lựa chọn** nữa, muốn xem thêm không?')).toBe('Mình còn 34 lựa chọn nữa, muốn xem thêm không?')
   })
+  it('a non-pick written as a pick is unwrapped (replay TRAVEL-2 t2)', () => {
+    expect(splitPickSentence('**Mình chọn: chưa thể chọn điểm núi**. Dữ liệu là khách sạn.')).toBe('Chưa thể chọn điểm núi. Dữ liệu là khách sạn.')
+  })
   it('leaves a pick that already ends its sentence, and text without a pick', () => {
     expect(splitPickSentence('**Mình chọn: Nori**. Quán gần.')).toBe('**Mình chọn: Nori**. Quán gần.')
     expect(splitPickSentence('Không có lựa chọn.')).toBe('Không có lựa chọn.')

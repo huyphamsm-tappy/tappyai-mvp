@@ -368,7 +368,9 @@ export async function POST(req: Request) {
   // structured intent call; code checks each fact against the user's words (luna.ts). A failed read falls
   // back to the Phase 7 path (the brain only when the rules are unsure).
   const lunaOn = consultOn && consultLunaEnabled()
-  const lunaUserTexts = messages.filter((m: { role: string }) => m.role === 'user').map((m: { content: unknown }) => typeof m.content === 'string' ? m.content : Array.isArray(m.content) ? m.content.map((p: { type?: string; text?: string }) => p?.type === 'text' ? p.text ?? '' : '').join(' ') : '').slice(-7)
+  // Checked on the user's OWN words: names copied back from our cards are references, not requirements (replay 30/09
+  // FOOD-2 t4: "… hay Ẩm thực sân vườn Mái Lá?" became a garden-seating constraint).
+  const lunaUserTexts = withoutQuotedNames(messages).filter((m: { role: string }) => m.role === 'user').map((m: { content: unknown }) => typeof m.content === 'string' ? m.content : Array.isArray(m.content) ? m.content.map((p: { type?: string; text?: string }) => p?.type === 'text' ? p.text ?? '' : '').join(' ') : '').slice(-7)
   const lunaIntentRun = lunaOn && AI.isConfigured() && !(routed?.confidence === 'rule' && isFixedPhrase(lastText))
     ? await runLunaIntent(o => AI.extract(o) as never, messages, { hasGps: !!userLocation, previousWasAsk: wasAskReply(priorAssistantText), deterministicDomain: lastUserMsg ? turnDomain(lastUserMsg, { hasGps: !!userLocation, lang }) : null, userTexts: lunaUserTexts, storedNames: earlyChatState?.shown?.slice(-8) })
     : null
@@ -1358,7 +1360,10 @@ export async function POST(req: Request) {
   // SHOP-3: "… Laptop Dell 15 …" in an "A hay B?" became brand = Dell and filtered out every other laptop).
   const shoppingConstraints = deriveShoppingConstraints(
     withoutQuotedNames(messages),
-    budget ?? budgetFromHistory(currentSubjectMessages(messages, { hasGps: !!userLocation, lang }), extractBudget),
+    // PHIÊN LUNA: the budget is read without the names copied from our cards (replay 30/09 SHOP-3: "Laptop Dell 15 DC15250
+    // Core i5-1334U" in an "A hay B?" became a 1.334.000đ budget and emptied every later search). The same defect exists
+    // with the flag off (Haiku picked a hinge-repair shop there) — left untouched for Phase 7, reported to the owner.
+    budget ?? budgetFromHistory(currentSubjectMessages(consultLunaEnabled() ? withoutQuotedNames(messages) : messages, { hasGps: !!userLocation, lang }), extractBudget),
   )
 
 
@@ -1694,6 +1699,7 @@ export async function POST(req: Request) {
   // still belongs in the text: with a card, it is the same content twice.
   enrichment.setRendersDecisionCard(rendersDecisionCard)
   if (consult && consult.turn !== 'ask') enrichment.setConsultTurn(consult.turn, consult.refers, consult.known)
+  if (lunaOn && earlyChatState?.shown?.length) enrichment.setConsultShown(earlyChatState.shown)
   // The plan's cost line prices the pick the conversation settled on (replay ENT-1/ENT-2/SPA-2 30/09: another venue's).
   if (consult?.turn === 'plan') enrichment.setConsultPick(latestConsultPick(null))
   // Shopping plan: the "Tổng chi phí" line is computed from the chosen product's listed price (appendConsultPlanCost).
