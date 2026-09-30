@@ -1,7 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { readFileSync } from 'node:fs'
 import { spawnSync } from 'node:child_process'
-// @ts-expect-error — plain .mjs script, no types
 import { shouldBuild, BUILD_BRANCHES } from './vercel-ignore.mjs'
 
 describe('Vercel ignoreCommand (owner 30/09: Function Storage at 100%)', () => {
