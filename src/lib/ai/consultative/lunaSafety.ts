@@ -29,7 +29,8 @@ const TEMPLATE_WORDS = /\b(?:minh con \d+ lua chon|ban chon nhanh ben duoi)\b/
 export function buildLeakDetector(secrets: readonly string[]): (reply: string) => { leak: boolean; reason: string | null } {
   const set = new Set<string>()
   for (const s of secrets) {
-    const w = words(s)
+    // Example sentences in the frames are meant to be imitated (replay 30/09 SPA-2 t2: a normal reply matched the spa example).
+    const w = words(s.split('\n').filter(l => !/v[ií] d[uụ]\s*:|ví dụ|example/i.test(l)).join('\n'))
     for (let i = 0; i + SHINGLE <= w.length; i++) {
       const sh = w.slice(i, i + SHINGLE).join(' ')
       if (!TEMPLATE_WORDS.test(sh)) set.add(sh)
@@ -39,7 +40,7 @@ export function buildLeakDetector(secrets: readonly string[]): (reply: string) =
     if (SECRET_SHAPE.some(re => re.test(reply))) return { leak: true, reason: 'secret_shape' }
     const w = words(reply)
     let hits = 0
-    for (let i = 0; i + SHINGLE <= w.length; i++) if (set.has(w.slice(i, i + SHINGLE).join(' ')) && ++hits >= 2) return { leak: true, reason: 'prompt_echo' }
+    for (let i = 0; i + SHINGLE <= w.length; i++) if (set.has(w.slice(i, i + SHINGLE).join(' ')) && ++hits >= 3) return { leak: true, reason: 'prompt_echo' }
     return { leak: false, reason: null }
   }
 }

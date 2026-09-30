@@ -209,7 +209,34 @@ export function checkIntent(intent: LunaIntent, userTexts: readonly string[], ct
     if (coded) { corrected.push(`area ${area}→${coded}`); area = coded } else { dropped.push(`area ${area}`); area = null }
   }
 
+  normalizeTravelKnown(known, corrected)
   return { intent: { ...intent, party, budget_vnd_max: budget, known, area }, check: { dropped, corrected } }
+}
+
+/**
+ * Luna's travel facts in the code's vocabulary (normalise, never guess): "Sài Gòn"/"SG"/"HCM" → "TP.HCM"; a "destination"
+ * that is only "gần <nơi đi>" is not one (replay 30/09 last-none TRAVEL-2: diem_den "gần Sài Gòn" sent the hotel search into
+ * the city); a style naming núi / biển → that word (the Phase 7 nearby-destination table keys on it).
+ */
+export function normalizeTravelKnown(known: Array<{ key: string; value: string }>, corrected: string[] = []): void {
+  const f = (s: string) => prep(s).f.trim()
+  const city = (v: string) => /\b(?:sai gon|saigon|sg|hcm|tp\.? ?hcm|ho chi minh)\b/.test(f(v)) ? 'TP.HCM' : /\b(?:ha noi|hanoi|hn)\b/.test(f(v)) ? 'Hà Nội' : null
+  const get = (k: string) => known.find(x => x.key === k)
+  const from = get('xuat_phat')
+  if (from) { const c = city(from.value); if (c && c !== from.value) { corrected.push(`xuat_phat ${from.value}→${c}`); from.value = c } }
+  const dest = get('diem_den')
+  if (dest && /^(?:gan|quanh|xung quanh|ven)\b/.test(f(dest.value))) {
+    const c = city(dest.value)
+    if (c && !get('xuat_phat')) known.push({ key: 'xuat_phat', value: c })
+    known.splice(known.indexOf(dest), 1)
+    corrected.push(`diem_den ${dest.value}→(none: near the origin)`)
+  }
+  const style = get('phong_cach')
+  if (style) {
+    const s = f(style.value)
+    const one = /\bnui\b/.test(s) && !/\bbien\b/.test(s) ? 'núi' : /\bbien\b/.test(s) && !/\bnui\b/.test(s) ? 'biển' : null
+    if (one && one !== style.value) { corrected.push(`phong_cach ${style.value}→${one}`); style.value = one }
+  }
 }
 
 /** The validated intent in the decision shape the rest of the pipeline reads. */
