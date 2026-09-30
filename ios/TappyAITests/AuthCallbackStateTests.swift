@@ -24,7 +24,7 @@ final class AuthCallbackStateTests: XCTestCase {
 
     private func zaloCallback(state: String?, access: String = "ACCESS", refresh: String = "REFRESH") -> URL {
         var fragment = "access_token=\(access)&refresh_token=\(refresh)&expires_at=1800003600"
-        if let state { fragment += "&app_state=\(state)" }
+        if let state { fragment += "&state=\(state)" }
         return URL(string: "tappyai://auth/callback#\(fragment)")!
     }
 
@@ -124,7 +124,7 @@ final class AuthCallbackStateTests: XCTestCase {
 
     func testZaloPkceCallbackNeedsTheStateToo() throws {
         let state = store.begin()
-        let ok = URL(string: "tappyai://auth/callback?code=abc&app_state=\(state)")!
+        let ok = URL(string: "tappyai://auth/callback?code=abc&state=\(state)")!
         XCTAssertEqual(try AuthCallbackPolicy.zalo(ok, states: store), .pkceCode)
         _ = store.begin()
         let noState = URL(string: "tappyai://auth/callback?code=abc")!
@@ -133,7 +133,7 @@ final class AuthCallbackStateTests: XCTestCase {
 
     func testZaloCallbackWithStateButNoSessionIsRejected() {
         let state = store.begin()
-        let url = URL(string: "tappyai://auth/callback#app_state=\(state)")!
+        let url = URL(string: "tappyai://auth/callback#state=\(state)")!
         XCTAssertThrowsError(try AuthCallbackPolicy.zalo(url, states: store)) {
             XCTAssertEqual($0 as? AuthCallbackError, .unexpectedShape)
         }

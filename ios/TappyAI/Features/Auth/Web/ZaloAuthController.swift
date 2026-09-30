@@ -16,7 +16,7 @@ struct ZaloAuthController {
     let callbackScheme: String   // "tappyai"
 
     /// Returns the callback URL captured at the end of the flow (for `AuthService.session(fromCallback:)`).
-    /// `appState` (MOB-1) is echoed back by the server as `app_state` in the callback; the caller
+    /// `appState` (MOB-1) is echoed back by the server as `state` in the callback; the caller
     /// accepts the callback only when it matches (`AuthCallbackStateStore`).
     func authenticate(appState: String, returnTo: String = "/") async throws -> URL {
         var components = URLComponents(url: apiBaseURL.appendingPathComponent("/api/auth/zalo"),

@@ -3,8 +3,8 @@ import { z } from 'zod'
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { isAnonymousUser } from '@/lib/auth/socialWriteAccess'
 import { apiError } from '@/lib/http/apiError'
-import { rateLimit, clientIp } from '@/lib/security/rateLimit'
-import { publicDailyRateLimit } from '@/lib/security/publicRateLimit'
+import { clientIp } from '@/lib/security/rateLimit'
+import { publicDailyRateLimit, publicRateLimit } from '@/lib/security/publicRateLimit'
 import { SCAM_SHARE_DAILY_LIMIT_PER_IP } from '@/lib/config/product'
 import { CHECK_RATE_LIMIT_MAX, CHECK_RATE_LIMIT_WINDOW_MS } from '@/lib/scam-shield/config'
 import { checkUrl } from '@/lib/scam-shield'
@@ -35,7 +35,7 @@ const bodySchema = z.object({
 
 export async function POST(req: NextRequest) {
   const ip = clientIp(req)
-  if (!rateLimit(`ss-share:${ip}`, CHECK_RATE_LIMIT_MAX, CHECK_RATE_LIMIT_WINDOW_MS).ok) return apiError(req, 'rate_limit', 'scam.tooManyChecks', 429)
+  if (!(await publicRateLimit(`ss-share:${ip}`, CHECK_RATE_LIMIT_MAX, CHECK_RATE_LIMIT_WINDOW_MS)).ok) return apiError(req, 'rate_limit', 'scam.tooManyChecks', 429)
   const daily = await publicDailyRateLimit(`ss-share-daily:${ip}`, SCAM_SHARE_DAILY_LIMIT_PER_IP)
   if (!daily.ok) return apiError(req, 'share_daily_limit', 'rate.retryTomorrow', 429)
 

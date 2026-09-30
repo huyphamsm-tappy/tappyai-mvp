@@ -62,7 +62,7 @@ final class ScreenshotTests: XCTestCase {
         let app = launch(route: "hub", signedIn: true)
         XCTAssertTrue(any(app, "profile-edit").waitForExistence(timeout: 30), "fixture account signed in")
         guard #available(iOS 16.4, *) else { throw XCTSkip("XCUIApplication.open(_:) needs iOS 16.4") }
-        app.open(URL(string: "tappyai://auth/callback#access_token=eyJhbGciOiJub25lIn0.eyJzdWIiOiJhdHRhY2tlciJ9.x&refresh_token=attacker&app_state=attacker")!)
+        app.open(URL(string: "tappyai://auth/callback#access_token=eyJhbGciOiJub25lIn0.eyJzdWIiOiJhdHRhY2tlciJ9.x&refresh_token=attacker&state=attacker")!)
         app.activate()
         XCTAssertTrue(any(app, "profile-edit").waitForExistence(timeout: 20), "still the same account")
         XCTAssertFalse(any(app, "auth-error").exists)
@@ -81,7 +81,7 @@ final class ScreenshotTests: XCTestCase {
         confirmWebAuthPrompt()
         let error = any(app, "auth-error")
         XCTAssertTrue(error.waitForExistence(timeout: 60), "refusal shown")
-        XCTAssertTrue(error.label.contains("không hợp lệ") || error.label.contains("isn't valid"),
+        XCTAssertTrue(error.label.contains("không hợp lệ") || error.label.contains("is invalid"),
                       "the state-mismatch message, got: \(error.label)")
         XCTAssertTrue(any(app, "auth-guest").exists, "still on login as a guest — no session imported")
         shot(shotName)

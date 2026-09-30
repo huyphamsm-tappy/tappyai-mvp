@@ -39,3 +39,55 @@ Các việc chủ động hoãn đến sau launch. Mỗi mục ghi rõ vì sao c
 2. Bắt đầu request feed trước khi hydrate (preload / server fetch trang đầu).
 3. Tải lười `ExploreStage` (desktop) trên mobile — test `exploreStage.test.tsx` đang ghim import tĩnh, sửa cùng.
 Bằng chứng + script đo: `gs://tappyai-uat-evidence/evidence/perf-reviews-2026-09-29/`, RELEASE-PROGRESS "/reviews LOAD TIME".
+
+## PL-AI-LUNA — AI tư vấn: lỗi còn sót sau ngưỡng release 30/09 (làm cùng đợt chuyển GPT-6 Luna + làm lại prompt)
+Ngưỡng release (Huy 29/09): mỗi mảng ≥ 17/21 (TB 2 lượt replay), A = 0, B = 0 ở lượt chính. Đạt ngày 30/09 (replay 17:40Z + 17:48Z:
+ăn uống 18,5 · mua sắm 17,5 · du lịch 17,5 · giải trí 18,5 · spa 20,5). Còn lại, theo mức:
+- **B ở ngách (lượt "xem thêm / bác" sau nhiều lượt):**
+  - SHOP-1 t6 "không thích màu đen": nói thật "chưa tìm thấy màu khác" nhưng vẫn viết "Mình chọn: <ốp Scout>" (listing không ghi màu).
+  - SHOP-3 t6 "nặng quá, muốn nhẹ hơn": dữ liệu tìm kiếm không có laptop mới nhẹ < 20 triệu → khi thì nói thật, khi thì chọn lại
+    Aspire Lite 14 ("Lite thường nhẹ") — suy đoán từ tên.
+  - SHOP-2 t4 so sánh (1/4 lượt): chọn món thứ ba thay vì một trong hai món được hỏi; lượt so sánh này còn gọi search_products (10 Serper).
+- **C:** lượt bác/xem thêm hết ứng viên nói thật + gợi ý nới điều kiện nhưng không có "Mình chọn" (FOOD-2 t6, SHOP-3 t6);
+  TRAVEL-3 kế hoạch đôi khi mất link Traveloka — model chép sai URL /go/at dài ~500 ký tự → guard egress xoá. **Rút ngắn link /go/at**
+  (id ngắn lưu server thay vì seal + chữ ký trong URL) sẽ bỏ hẳn lỗi này.
+- **D:** 2 dòng "Mình chọn" trong một lượt (ENT-2 t2, FOOD-3 t6); thiếu dòng "còn N" / tiêu đề kế hoạch; mẹo 1 dòng thay vì 2–3;
+  "~466.000đ+" (giá có nguồn nhưng viết kèm "~"); bộ chấm không nhận "Bạn xem giá trên [Traveloka](…)" (có ngoặc) là câu "xem giá trên Traveloka".
+- **Dữ liệu:** Serper Shopping cho "laptop … nhẹ" trả phụ kiện / dịch vụ sửa → bộ lọc loại sản phẩm (af4f2cb, 5547faa) chặn được nhưng
+  còn rất ít laptop thật; cần nguồn sản phẩm có thông số (trọng lượng, màu) — feed ACCESSTRADE sau khi có API key.
+Bằng chứng: replay `scripts/consult/replay/out/scenarios-2026-09-29T17-*`, phân loại tay trong RELEASE-PROGRESS "AI tư vấn — kết quả cuối".
+
+## PL-HOSTING-GCP — đánh giá dời hosting web từ Vercel sang Google Cloud (owner 30/09: CHỈ GHI, CHƯA LÀM)
+Bối cảnh: 30/09 Vercel báo team `huyphamsm-tappys-projects` dùng 100% Function Storage (10 GB, Hobby, tính theo đỉnh 30 ngày).
+Đã làm ngay: build chỉ `rc/web-uat` + `main` (`scripts/vercel-ignore.mjs`), xoá 6 bản Preview cũ, retention đang 30 ngày.
+**Phương án:** Next.js standalone trong container → **Cloud Run** (min-instances 1 cho production để tránh cold start), **Cloud CDN** +
+HTTPS Load Balancer trước Cloud Run cho tĩnh/ISR, **Cloud Scheduler** gọi 14 cron hiện tại (thay `vercel.json crons`, giữ bearer
+`CRON_SECRET`), **Secret Manager** cho env, **Cloud Build** (hoặc GitHub Actions) build theo nhánh; UAT = service Cloud Run thứ hai.
+**Chi phí (ước, cần đo):** Cloud Run ~ theo vCPU-giây + RAM; 1 instance tối thiểu 1 vCPU/1 GiB chạy liên tục ≈ vài chục USD/tháng
+mỗi môi trường; Load Balancer ≈ 18 USD/tháng + egress; trừ vào credit GCP hiện có. So với Vercel Pro 20 USD/thành viên/tháng.
+**Công sức (ước):** 3–5 ngày: Dockerfile standalone + cache ISR/`revalidate` (Vercel làm hộ), middleware/edge chạy trên Node,
+`next/image` (cần loader hoặc Cloud CDN), domain + SSL (www, uat), preview theo nhánh (tự dựng), log/alert (Cloud Logging).
+**Rủi ro:** ISR/`revalidateTag` và cache dữ liệu Next chạy nhiều instance cần cache dùng chung (hiện dựa vào hạ tầng Vercel);
+`@vercel/*` (KV, analytics, OG `@vercel/og`?) phải thay; header `x-vercel-*` mà code đọc (`clientIp()` ưu tiên `x-vercel-forwarded-for`,
+`x-vercel-protection-bypass` cho UAT) phải đổi sang header của Load Balancer; cold start; mất rollback một chạm.
+**Mất so với Vercel:** preview URL tự động mỗi nhánh, Deployment Protection + bypass cho UAT, rollback/promote tức thì, edge network
+và image optimization có sẵn, Speed Insights, cron trong `vercel.json`, log theo deployment.
+**Đề xuất:** release trên Vercel (nâng Pro nếu Hobby chặn), đo chi phí thật 1 tháng, rồi mới quyết dời.
+
+## PL-AI-OWNER-UAT-30-09 — góp ý của Huy trên trang duyệt mục 10 (không chặn release)
+- **SPA-2 lượt 7** ("nói lên kế hoạch mà sao ko thấy làm cái broche"): kế hoạch spa / ăn uống / giải trí / mua sắm chỉ là văn bản —
+  thẻ kế hoạch `[TAPPY_PLAN]` hiện chỉ có ở du lịch (quyết định Q-R16). Làm thẻ kế hoạch cho cả 5 mảng cùng R22 (thẻ v2 + manifest ảnh).
+- **T5b lượt 1** (Không đạt, không ghi chú): "đi chơi ở đâu" → thẻ hỏi; lượt 2 (trả lời "3–5 người") AI lại hỏi thêm "chơi gì" (C).
+  Khi user đã trả lời một phần thẻ hỏi, chọn luôn với giả định rõ ràng thay vì hỏi tiếp.
+- **ENT-3 lượt 7** ("ủa cái") và **T4 lượt 1** ("câu này "): ghi chú bị cắt dở — hỏi lại Huy.
+Nguồn: kho `verdicts` của https://claude.ai/artifact/T1ENadG4ZVDHEbnJaaGRFU (chỉ bản ghi ngày 30/09 — các bản ghi không hậu tố `-t<n>`
+là đánh giá cũ 28/09 của trang trước, đã xử lý ở vòng C1/C2).
+
+## PL-SECURITY-30-09 — từ báo cáo bảo mật `docs/security/SECURITY-AUDIT-2026-09-30.md` (Huy 30/09: ghi, làm sau release)
+- **WEB-3 `/r/<slug>`:** trang công khai hiển thị "câu trả lời của TappyAI" lấy từ `conversations.messages` do client ghi → ai cũng dựng
+  được trang tappyai.com giả nội dung + link lừa đảo. Cần Huy chọn: (a) server ký HMAC câu trả lời nó sinh, chỉ chia sẻ bản có chữ ký;
+  (b) tạm: chỉ biến thành link các host nền tảng quen, còn lại chữ thường + nhãn "Nội dung do người dùng chia sẻ".
+- **UP-2 media GCS không thu hồi** khi ẩn / xoá / hạn chế bài — link ảnh/video cũ mở mãi. Làm cùng Phase 8 (signed URL).
+- **UP-4 quét GPS** ảnh đã tải lên **trước 24/09** (trước R-2) trong bucket production; xoá EXIF hàng loạt.
+- **DEP-1 nâng Next.js 15** (14.2.35 hết hỗ trợ; 1 critical + vài high, đa số chỉ ảnh hưởng self-host).
+- **Đổi khoá Google** còn nằm trong 2 file settings của worktree cũ + transcript trên máy (danh sách trong báo cáo) — xoay khoá rồi xoá file.

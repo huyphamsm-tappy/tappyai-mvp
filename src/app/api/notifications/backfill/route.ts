@@ -8,6 +8,7 @@ import {
 } from '@/lib/notifications/backfill'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
+import { isAuthorizedCronRequest } from '@/lib/security/cronAuth'
 
 export const runtime = 'nodejs'
 export const maxDuration = 60
@@ -17,8 +18,7 @@ export const maxDuration = 60
 // activity (last 30 days, 100/user cap). Idempotent: refuses to run twice unless
 // ?force=1. Backfilled rows are already-read + push-skipped (never spam phones).
 export async function POST(req: Request) {
-  const secret = process.env.CRON_SECRET
-  if (!secret || req.headers.get('authorization') !== `Bearer ${secret}`) {
+  if (!isAuthorizedCronRequest(req)) {
     return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
   }
 

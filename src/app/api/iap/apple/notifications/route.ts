@@ -18,6 +18,7 @@ import { NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { verifyNotificationPayload, verifyTransactionInfo, JWSVerificationError } from '@/lib/apple-iap/jws'
 import type { NotificationType, JWSTransaction } from '@/lib/apple-iap/types'
+import { checkAppleNotificationEnvelope, checkAppleTransaction } from '@/lib/apple-iap/transactionPolicy'
 
 export async function POST(req: Request) {
   let body: { signedPayload?: string }
@@ -64,6 +65,15 @@ export async function POST(req: Request) {
   // Only process subscription product events
   if (tx.type !== 'Auto-Renewable Subscription') {
     return NextResponse.json({ ok: true })
+  }
+
+  // Security audit 2026-09-30: Apple signs every app's notifications. Only OUR app, in THIS
+  // deployment's environment, for a Pro product, may move a subscription row. (A revoked
+  // transaction is exactly what REVOKE / REFUND carry, so `revoked` is not a refusal here.)
+  const refusal = checkAppleNotificationEnvelope(notification.data) ?? checkAppleTransaction(tx)
+  if (refusal && refusal !== 'revoked') {
+    console.error('[apple/notifications] not a TappyAI Pro notification for this environment:', refusal)
+    return NextResponse.json({ ok: false, reason: refusal })
   }
 
   // ── 3. Dispatch to state handler ─────────────────────────────────────

@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { rateLimit, clientIp } from '@/lib/security/rateLimit'
+import { clientIp } from '@/lib/security/rateLimit'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
 import { evaluateGuestAge, guestAgeCookie } from '@/lib/account/guestAgeDeclaration'
+import { publicRateLimit } from '@/lib/security/publicRateLimit'
 
 /**
  * POST /api/age-declaration — a GUEST's 18+ self-declaration for the chat trial.
@@ -23,7 +24,7 @@ import { evaluateGuestAge, guestAgeCookie } from '@/lib/account/guestAgeDeclarat
  */
 export async function POST(req: NextRequest) {
   const locale = requestLocale(req)
-  const flood = rateLimit(`age-declaration:${clientIp(req)}`, 10, 60_000)
+  const flood = await publicRateLimit(`age-declaration:${clientIp(req)}`, 10, 60_000)
   if (!flood.ok) {
     return NextResponse.json(
       { error: 'rate_limit', message: serverMessage('rate.retryShortly', locale) },

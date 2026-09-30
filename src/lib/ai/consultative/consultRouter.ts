@@ -869,7 +869,9 @@ function routeTurn(turns: Msg[], ui: number, thread: Thread, ctx: RouteCtx): Tur
 
   // 2. The previous Tappy turn asked → this is the answer: pick (never ask twice).
   if (wasAskReply(prevAssistant)) {
-    const fresh = cur.domains.length > 0 && !thread.domains.some(d => cur.domains.includes(d)) && cur.hits.some(h => h.w >= 3)
+    // A sentence that POINTS at something in this thread ("Cái thứ hai có bao gồm ăn sáng không?") is about it, never a new
+    // request — UAT §10 T3 (30/09, level B): "ăn sáng" read as the food area and a hotel question got a restaurant.
+    const fresh = cur.domains.length > 0 && !thread.domains.some(d => cur.domains.includes(d)) && cur.hits.some(h => h.w >= 3) && !(inThread && DEICTIC_RE.test(t.f))
     if (fresh) return { result: pickFrom(cur.domains, userText, 'pick'), thread: { domains: cur.domains, start: ui } }
     if (!inThread) return keep({ turn: 'pick', domains: cur.domains }, 'unsure')
     return { result: pickFrom(thread.domains, threadText(thread.start), 'pick'), thread }

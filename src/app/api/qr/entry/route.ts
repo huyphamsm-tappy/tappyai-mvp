@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { apiError } from '@/lib/http/apiError'
-import { rateLimit, clientIp } from '@/lib/security/rateLimit'
+import { clientIp } from '@/lib/security/rateLimit'
 import { isQrEntryPath, renderQrEntrySvg } from '@/lib/growth/qrEntry'
 import { searchParam } from '@/lib/http/searchParams'
+import { publicRateLimit } from '@/lib/security/publicRateLimit'
 
 // GET /api/qr/entry?path=/food&size=512 — a printable QR for a public entry.
 //
@@ -10,8 +11,8 @@ import { searchParam } from '@/lib/http/searchParams'
 // so this can never mint a QR into a private route or an arbitrary URL.
 export const dynamic = 'force-dynamic'
 
-export function GET(req: NextRequest) {
-  if (!rateLimit(`qr-entry:${clientIp(req)}`, 60, 60_000).ok) return apiError(req, 'rate_limit', 'rate.tooFast', 429)
+export async function GET(req: NextRequest) {
+  if (!(await publicRateLimit(`qr-entry:${clientIp(req)}`, 60, 60_000)).ok) return apiError(req, 'rate_limit', 'rate.tooFast', 429)
   const path = searchParam(req, 'path') || '/'
   if (!isQrEntryPath(path)) return apiError(req, 'invalid_request', 'validation.missingFields', 400)
   const sizeRaw = Number(searchParam(req, 'size') || 512)

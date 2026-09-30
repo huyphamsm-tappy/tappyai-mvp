@@ -1,11 +1,12 @@
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { createAdminClient } from '@/lib/supabase/admin'
-import { rateLimit, clientIp } from '@/lib/security/rateLimit'
+import { clientIp } from '@/lib/security/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 import { rebuildProfile } from '@/lib/preferences/profileCache'
 import { randomUUID } from 'crypto'
 import { ANALYTICS_FORBIDDEN_KEYS, stripForbiddenKeys } from '@/lib/account/userDataClassification'
 import { G1_KNOWN_EVENT_TYPES } from '@/lib/analytics/analytics-contract'
+import { publicRateLimit } from '@/lib/security/publicRateLimit'
 
 // Unified analytics ingestion (Analytics v1.1 §8A). Accepts authenticated AND
 // anonymous events, dedups on the client-generated event_id, and is
@@ -99,7 +100,7 @@ export async function POST(req: NextRequest) {
   const { user, supabase } = await getRequestUser(req)
 
   // Best-effort rate limit per source (§8A.3). Silent drop keeps tracking non-blocking.
-  if (!rateLimit(`track:${clientIp(req)}`, 600, 60_000).ok) {
+  if (!(await publicRateLimit(`track:${clientIp(req)}`, 600, 60_000)).ok) {
     return NextResponse.json({ ok: true })
   }
 

@@ -136,13 +136,20 @@ export async function android({ a, shot, check, seeded }) {
       // A clarify turn: one tap on the first quick reply continues the consultation.
       // ASK card (server honours x-tappy-caps: ask, R10): the first option of each question, then Gửi.
       if (!ctaOf(raw).length && askOf(raw).length && i === c.turns.length - 1) {
-        for (let k = 0; k < 8 && !a.find('Hoặc gõ thêm ý khác…'); k++) { a.swipe('up'); await a.sleep(700) }
+        // Ask card v2 (R23) is taller than the screen: bring each question into view before its tap.
         const qs = askOf(raw)
+        for (let k = 0; k < 4 && !a.find(qs[0].q); k++) { a.swipe('down'); await a.sleep(700) }
+        for (let k = 0; k < 8 && !a.find(qs[0].q); k++) { a.swipe('up'); await a.sleep(700) }
         const picked = []
-        for (const q of qs) { const n = a.find(q.options[0]); if (n) { await a.tap(n, { after: 500 }); picked.push(q.options[0]) } }
+        for (const q of qs) {
+          let n = a.find(q.options[0])
+          for (let k = 0; k < 4 && !n; k++) { a.sh('input', 'swipe', '540', '1500', '540', '1000', '400'); await a.sleep(700); n = a.find(q.options[0]) }
+          if (n) { await a.tap(n, { after: 500 }); picked.push(q.options[0]) }
+        }
         shot(`${c.id}-ask-picked`)
-        const send = a.dump().find((n) => n.text === 'Gửi' && n.clickable !== undefined)
-        check(`${c.id}: thẻ hỏi nhanh có ${qs.length} câu, chọn được ${picked.length}, có nút Gửi`, picked.length === qs.length && !!send, picked.join(' · '))
+        for (let k = 0; k < 6 && !a.find('Tìm cho tôi'); k++) { a.sh('input', 'swipe', '540', '1500', '540', '900', '400'); await a.sleep(700) }
+        const send = a.find('Tìm cho tôi')
+        check(`${c.id}: thẻ hỏi nhanh mới có ${qs.length} câu, chọn được ${picked.length}, có nút «Tìm cho tôi»`, picked.length === qs.length && !!send, picked.join(' · '))
         if (send) {
           await a.tap(send, { after: 3000 })
           const s2 = await settle(a, shot, `${c.id}-ask`)

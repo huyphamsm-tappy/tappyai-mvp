@@ -201,6 +201,44 @@ Patch E2/E2b/E2c lưu ở scratchpad phiên (không trong git) — ý tưởng �
 | AB5 = R + bỏ tên chép lại ở cả 4 lớp + bằng chứng giá kế hoạch + bác không nhận lại cái đã hiện + TRAVEL-2 | 15·15·18·16 | 16.0 | 0 | 1–2 mới | hết "Dell"; nhưng lượt "xem thêm" tìm lại ra **dịch vụ sửa laptop**, lượt bác chọn **ba lô** (B mới, do dữ liệu tìm kiếm) |
 Chưa commit — patch lưu scratchpad (shopR / shopAB5). Chờ Huy (Q-AI-SHOP).
 
+### ▶ AI TƯ VẤN — KẾT QUẢ CUỐI (30/09 trưa) — ngưỡng release ĐẠT, chờ Huy duyệt trang UAT
+- **Replay đủ bộ, 2 lượt (17:40Z + 17:48Z 29/09), TB:** ăn uống 18,5 · mua sắm 17,5 · du lịch 17,5 · giải trí 18,5 · spa 20,5
+  (92,5/105 @ $0,00916/lượt) — cả 5 mảng ≥ 17. Mua sắm đo riêng 4 lượt: 16 · 18 · 18 · 19 = 17,75.
+- **Đọc tay (A/B/C/D):** A = 0 sau các sửa (dòng chi phí kế hoạch tính giá quán khác — FOOD-1/ENT-1/ENT-2/SPA-2 — sửa `2b46088`,
+  `fbb1c3c`, test offline). B còn ở ngách: SHOP-1 lượt 6 (bác "không thích màu đen" → vẫn chọn ốp Scout không ghi màu), T3 lượt 2
+  (câu cố định sau lượt hỏi). B lượt chính SHOP-2 lượt 4 (so sánh bị chèn "Mình chọn" món thứ ba) phát hiện ở UAT → sửa `b01b53c`,
+  test offline. Luna 30/09: ngân sách đọc từ "Core i5-1334U" → sửa `af38b73`, test bằng dữ liệu SHOP-3.
+- **Mục 10 chạy thật trên UAT:** 199 lượt (59 câu + 20 câu ý định trên `fbb1c3c`; 15 kịch bản × 7 lượt trên `55e298e`), ảnh mobile
+  từng lượt, chi phí thật $1,29 (≈ $0,0065/lượt; 900 lượt/tháng ≈ $5,8). Đạt tự động theo mảng: ăn uống 33/35 · mua sắm 30/34 ·
+  du lịch 32/34 · giải trí 34/34 · spa 32/34 · khác 23/28. Trang duyệt: https://claude.ai/artifact/T1ENadG4ZVDHEbnJaaGRFU
+  Bằng chứng: `gs://tappyai-uat-evidence/evidence/s10-2026-09-30/`. ⚠ bộ đo: stream đọc sai mã hoá (cp1252) lúc chạy → chấm lại từ
+  file thô; phần kịch bản chạy lại toàn bộ trên `55e298e` sau khi sửa (không còn câu "chỗ đó/chỗ kia" thay tên).
+- Lỗi còn lại → `POST-LAUNCH-BACKLOG.md` PL-AI-LUNA. Vercel Function Storage 100% → việc 0 trong `OWNER-TOMORROW-2026-09-30.md`.
+- Test toàn bộ trên ứng viên release: 15.824 qua; 5 lỗi → 2 lỗi thật đã sửa (`020ff56`: /go/at giới hạn theo IP nền tảng, số cron
+  14), 1 lỗi timeout do tải máy (qua khi chạy riêng), kiến trúc 15/15.
+
+### ✅ AI tư vấn — owner duyệt ĐẠT (30/09, sau khi sửa lỗi B duy nhất)
+- Trang https://claude.ai/artifact/T1ENadG4ZVDHEbnJaaGRFU, kho `verdicts` ngày 30/09: 59 câu — 54 Đạt, 2 Không đạt, 3 chỉ ghi chú.
+  (Các bản ghi không hậu tố `-t<n>` trong cùng kho là đánh giá cũ 28/09 của trang trước — không tính.)
+- **T3 lượt 2 (B):** "Cái thứ hai có bao gồm ăn sáng không?" sau lượt hỏi → đưa quán ăn. Sửa `329973d` (câu có từ trỏ về luồng hiện tại
+  không phải yêu cầu mới), test offline (trượt khi gỡ sửa), **chụp lại trên UAT: ĐẠT** ("Mình chọn: M Hotel Da Nang"), trang cập nhật (bản 2).
+- **T5b lượt 1** (Không đạt, không ghi chú) → C, backlog PL-AI-OWNER-UAT-30-09. SPA-2 lượt 7 (thẻ kế hoạch) → backlog.
+  ENT-3 lượt 7 "ủa cái", T4 lượt 1 "câu này " — ghi chú bị cắt, đã hỏi lại Huy.
+- Bảo mật 30/09: nhánh `security/hardening-2026-09-30` gộp vào rc (`d4f5c8c`), UAT `6aade7a` smoke 5 luồng đạt; migration #20–#23 vào PHẦN B.
+  Apple IAP: production KHÔNG có `APPLE_IAP_*` → verify trả 503, lỗ API-1 đang đóng; không thêm các biến này trước khi `fea7f38` lên prod.
+
+### ✅ Thẻ hỏi nhanh mới [TAPPY_ASK] — web LIVE UAT `1c5087b` (30/09, chỉ đổi giao diện)
+- Đặc tả chung web + Android: `docs/design/ask-card/README.md` (R23 + **R23.1** §5). Server và tin gửi lên KHÔNG đổi.
+  Web `1685c62` + `86f88d3` + `f6b4a31`; Android đã chép 1:1 (`e3aa75c`, `7f1646d`). iOS: `docs/ios/IOS-REQUESTS.md` I-1.
+- Test: `askCardModel.test.ts` (câu hỏi thật của router, 5 mảng; ghép câu trả lời: chọn nhiều `, `, các câu ` · `, không chọn gì → `Tìm cho tôi`),
+  `AskCard.test.tsx` (chọn nhiều/chọn một, gửi 1 lần rồi khoá, giữ lựa chọn qua lần remount).
+- **Lỗi tìm thấy khi chụp UAT và đã sửa:** câu trả lời đầu tiên của một chat lưu xong thì `router.replace` sang `/chat/<id>` → thẻ remount, mất lựa
+  chọn bấm trong 1–2 giây đầu (thẻ cũ dạng chip cũng bị). Sửa: giữ nháp trong bộ nhớ phiên (không ghi đâu cả), ghi ngay trong lúc bấm.
+  Chụp lại: 6/6 lượt giữ đủ lựa chọn sau 5 giây; lượt giải trí gửi đúng `Karaoke, Xem phim · 2 người · Quận 3`, thẻ biến mất sau khi gửi.
+- Ảnh UAT (mobile 390px + desktop 1280px, 5 mảng + du lịch có câu «Thích kiểu gì?», trạng thái đang gửi, ảnh cạnh mockup):
+  `gs://tappyai-uat-evidence/ask-card-v2-2026-09-30/web-1c5087b/askcard/` (`sbs-mobile-5areas.jpg`, `sbs-desktop-5areas.jpg`).
+  Ảnh ô hiện là ảnh giữ chỗ cùng tên vì manifest ảnh còn rỗng — thêm ảnh = thêm mục vào `src/lib/plans/images/manifest.ts`.
+
 ## Current step
 Overnight run 2026-09-28→29 DONE — final UAT SHA af8b4ba; morning report at the end of this file. Waiting on owner: Q1 (26/9 design), Q7 (AI gate), Q6 (share layout). Login = scratchpad pw/login.mjs (AUDIT only).
 

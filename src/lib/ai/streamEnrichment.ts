@@ -2471,7 +2471,10 @@ export function applyPlaceEnrichmentStreamFilter(
         return candidateKeys.some(k => k.includes(l) || l.includes(k)) ? m : `${lead}${label}${colon}`
       })
       : budgeted
-    const pickNormalized = consultPickTurn ? normalizePickSentence(unlabelled, shoppingPickName(collector?.shoppingMarker) ?? placePickFallback) : unlabelled
+    // A COMPARE answers "A hay B?" — the pick sentence is never supplied from a card (UAT §10 SHOP-2 t4, 30/09, level B:
+    // the compare searched again and the code wrote "Mình chọn: <a third product from the new card>").
+    const cardPickFallback = collector?.consultTurn === 'compare' ? null : (shoppingPickName(collector?.shoppingMarker) ?? placePickFallback)
+    const pickNormalized = consultPickTurn ? normalizePickSentence(unlabelled, cardPickFallback) : unlabelled
     // Owner 29/09 "hạn chế guard vá": every post-model text patch on a consult turn is COUNTED (logged once per
     // turn below), so a patch that fires often is replaced by a prompt/structure fix instead of piling up.
     const consultPatches: string[] = []

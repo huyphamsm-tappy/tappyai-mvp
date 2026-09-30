@@ -145,7 +145,7 @@ class Handler(BaseHTTPRequestHandler):
             # state ("nostate", default) or a state the app never made ("wrongstate").
             fragment = "access_token=" + ATTACKER_JWT + "&refresh_token=attacker-refresh&expires_at=4102444800"
             if MODE.get("zalo") == "wrongstate":
-                fragment += "&app_state=attacker-state"
+                fragment += "&state=attacker-state"
             self.send_response(302)
             self.send_header("Location", "tappyai://auth/callback#" + fragment)
             self.send_header("Content-Length", "0")

@@ -114,7 +114,7 @@ final class AuthRepository {
         let callback: URL
         do { callback = try await zalo.authenticate(appState: appState) }
         catch { callbackStates.clear(); throw error }
-        // Server sends tokens in the URL fragment: tappyai://auth/callback#access_token=…&app_state=…
+        // Server sends tokens in the URL fragment: tappyai://auth/callback#access_token=…&state=…
         switch try AuthCallbackPolicy.zalo(callback, states: callbackStates) {
         case let .tokens(access, refresh):
             let tokens = try await auth.hydrate(accessToken: access, refreshToken: refresh)

@@ -1,5 +1,5 @@
 {
-  "ignoreCommand": "git diff --quiet HEAD^ HEAD -- . ':(exclude)android/'",
+  "ignoreCommand": "node scripts/vercel-ignore.mjs",
   "headers": [
     {
       "source": "/games/supertux/(.*)",

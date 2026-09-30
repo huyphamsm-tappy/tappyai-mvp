@@ -57,6 +57,7 @@ class AuthRepository @Inject constructor(
     private val logger: LoggerProvider,
     private val analytics: AnalyticsProvider,
     private val zaloSignInClient: ZaloSignInClient,
+    private val callbackState: AuthCallbackStateGuardProvider,
     // dagger.Lazy, not a direct injection: AuthRepository is bound as core:network's
     // SessionRefresher, which TokenAuthenticator needs to build OkHttp, which Retrofit needs to
     // build AnonymousAuthApi — a genuine Dagger dependency cycle. Deferring resolution to first
@@ -238,7 +239,18 @@ class AuthRepository @Inject constructor(
      * launch is a Custom-Tab/[context] UI concern). Completion arrives later via the
      * `tappyai://auth-callback` deep link → [handleOAuthRedirectIntent], like every other OAuth.
      */
-    fun startZaloSignIn(context: Context) = zaloSignInClient.launch(context)
+    fun startZaloSignIn(context: Context) = zaloSignInClient.launch(context, newCallbackState())
+
+    /**
+     * 🔒 A fresh login-CSRF state for a sign-in THIS app is starting ([AuthCallbackStateGuard]).
+     * Every flow that ends at `tappyai://auth-callback` must carry it; a callback without the
+     * matching, unexpired state is refused by [handleOAuthRedirectIntent].
+     */
+    fun newCallbackState(): String = callbackState.guard.issue()
+
+    /** Whether [link] is a callback for a sign-in this app started (nothing consumed). */
+    fun isCallbackForThisApp(link: String?): Boolean =
+        callbackState.guard.peek(AuthCallbackStateGuard.stateOf(link)) == AuthCallbackStateGuard.Verdict.ACCEPTED
 
     /**
      * Email + password — the web /login card's consumer sign-in (`supabase.auth.signInWithPassword`,
@@ -293,6 +305,14 @@ class AuthRepository @Inject constructor(
      * every other successful sign-in path.
      */
     suspend fun handleOAuthRedirectIntent(intent: Intent): NetworkResult<Unit> = safeAuthCall {
+        // 🔒 Login CSRF (security review 30/09): only a callback for a sign-in this app started —
+        // matching state, not expired, single use — may import a session. Checked BEFORE any
+        // token or code in the link is touched.
+        val verdict = callbackState.guard.verify(AuthCallbackStateGuard.stateOf(intent.data?.toString()))
+        if (verdict != AuthCallbackStateGuard.Verdict.ACCEPTED) {
+            logger.w("AuthRepository", "auth callback refused: $verdict")
+            throw AuthCallbackRejectedException(verdict)
+        }
         val fragmentSession = parseOAuthFragment(intent)
         if (fragmentSession != null) {
             val expiresAt = JwtDecoder.decode(fragmentSession.accessToken)?.expiresAt ?: 0L

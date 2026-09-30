@@ -72,7 +72,8 @@ skyline, huy hiệu cửa hàng của mẫu — đúng quy tắc (không có d�
 Nguồn: `docs/security/SECURITY-AUDIT-2026-09-30.md` (nhánh `security/hardening-2026-09-30`) MOB-1.
 - **Trước:** Zalo nhập mọi `access_token`/`refresh_token` trong fragment callback, không kiểm lần đăng nhập nào đang chờ.
 - **Sửa** (`Features/Auth/Web/AuthCallbackState.swift`): bấm đăng nhập → state ngẫu nhiên 32 byte (base64url) lưu Keychain
-  (`AfterFirstUnlockThisDeviceOnly`), hạn 10 phút; gửi `app_state`; callback chỉ nhận khi `app_state` khớp (so sánh thời gian hằng)
+  (`AfterFirstUnlockThisDeviceOnly`), hạn 10 phút; gửi `app_state`, server trả lại `state` trong fragment (cùng hợp đồng Android R24);
+  callback chỉ nhận khi `state` khớp (so sánh thời gian hằng)
   và còn hạn; state bị xoá sau mỗi lần kiểm (khớp hay không) → không dùng lại được; lần đăng nhập mới thay state cũ; huỷ/lỗi → xoá.
   Kiểm state TRƯỚC khi đọc token. Google: chỉ nhận PKCE `code`, callback có token bị từ chối (verifier PKCE là ràng buộc một lần).
   Link `tappyai://auth…` mở từ ngoài app (Safari, tin nhắn) không bao giờ là đích điều hướng, không nhập phiên.
@@ -80,7 +81,9 @@ Nguồn: `docs/security/SECURITY-AUDIT-2026-09-30.md` (nhánh `security/hardenin
 - **Test:** `AuthCallbackStateTests` (17 ca: thiếu/sai/rỗng state, dùng lại, hết hạn, sát hạn, thay state, Google, link ngoài).
   UI test (máy chủ fixture đóng vai kẻ xấu, `/api/auth/zalo` trả phiên tài khoản khác): `20` không state, `21` state lạ → báo lỗi, vẫn là
   khách; `22` link callback từ ngoài khi đang đăng nhập → vẫn tài khoản cũ.
-- **Phụ thuộc server I6** (IOS-REQUESTS): tới khi server trả lại `app_state`, đăng nhập Zalo trên iOS bị từ chối (đóng an toàn).
+- **Phụ thuộc server I6** (IOS-REQUESTS = R24 cho `platform=ios`): tới khi server trả lại `state`, đăng nhập Zalo trên iOS bị từ chối
+  (đóng an toàn). Khác Android: Android giữ state đang chờ khi gặp link sai (link từ ngoài có thể tới bất cứ lúc nào); iOS chỉ nhận
+  callback bên trong phiên đăng nhập của chính nó, nên callback sai kết thúc luôn lần đăng nhập đó và xoá state.
 - Chưa làm (audit đề xuất, owner chưa yêu cầu): hỏi xác nhận khi callback đổi sang tài khoản khác; Universal Links thay custom scheme.
 
 ## CI run 36670956956 (commit e50bc97) — XANH, 18/18 ảnh

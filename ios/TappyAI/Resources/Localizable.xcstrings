@@ -21915,13 +21915,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "This sign-in link isn't valid or has expired. Please sign in again."
+            "value": "This sign-in link is invalid or has expired. Please sign in again from the app."
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Phiên đăng nhập không hợp lệ hoặc đã hết hạn. Vui lòng đăng nhập lại."
+            "value": "Liên kết đăng nhập không hợp lệ hoặc đã hết hạn. Vui lòng đăng nhập lại trong ứng dụng."
           }
         }
       }

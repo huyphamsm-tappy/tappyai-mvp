@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { apiError } from '@/lib/http/apiError'
-import { rateLimit, clientIp } from '@/lib/security/rateLimit'
+import { clientIp } from '@/lib/security/rateLimit'
 import {
   createZaloVerifier, createMockZaloVerifier, signZaloIdentity, zaloIdentitySecret, zaloIdentitySetCookie,
   type ZaloIdentityVerifier,
 } from '@/lib/zalo/identity'
+import { publicRateLimit } from '@/lib/security/publicRateLimit'
 
 // POST /api/zalo/mini/verify  { access_token }
 //
@@ -47,7 +48,7 @@ function resolveVerifier(env: NodeJS.ProcessEnv = process.env): ZaloIdentityVeri
 }
 
 export async function POST(req: NextRequest) {
-  if (!rateLimit(`zalo-verify:${clientIp(req)}`, 20, 60_000).ok) return withNoIndex(apiError(req, 'rate_limit', 'rate.tooFast', 429))
+  if (!(await publicRateLimit(`zalo-verify:${clientIp(req)}`, 20, 60_000)).ok) return withNoIndex(apiError(req, 'rate_limit', 'rate.tooFast', 429))
   const secret = zaloIdentitySecret()
   if (!secret) return withNoIndex(apiError(req, 'verification_unavailable', 'server.error', 503))
 

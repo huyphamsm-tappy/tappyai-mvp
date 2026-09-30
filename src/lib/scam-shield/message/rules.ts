@@ -263,6 +263,15 @@ const RULES: Rule[] = [
     type: 'prompt_injection_attempt', severity: 'high', weight: 20,
     patterns: [
       /(ignore (all |the |your |any )?(previous|prior|above|earlier) (instructions|prompts?|rules|guidance)|disregard (the |your |all )?(previous|above|system|prior)|you are now|new instructions?:|system prompt|\bas an ai\b|tell the user to|respond (only )?with|output the following|bo qua (cac |moi )?(huong dan|chi thi|lenh) (truoc|tren|o tren)|忽略(之前|以上|上面)的?(指令|指示|提示))/,
+      // Security audit 2026-09-30 — the Vietnamese forms the line above missed (measured: 1 of 7
+      // caught). Each one is an instruction to a CHECKER; a genuine message has no reason to give
+      // one. Kept narrow on purpose: "vui lòng bỏ qua tin nhắn này nếu đã thanh toán" and "bỏ qua
+      // bước này" stay clean — an override needs a quantifier ("tất cả / mọi / hết …") over
+      // instructions, and a verdict request needs an AI addressee (a bare "ai" is "who").
+      /\b(bo qua|quen|phot lo|lo di|bo het|dung lam theo)( di)? (het |tat ca |toan bo |moi |cac |nhung )+(cac |nhung )?(huong dan|chi dan|chi thi|lenh|quy tac|yeu cau)\b/,
+      /(he thong ai|tro ly (ao|ai)|chatbot|mo hinh (ai|ngon ngu)|\bllm\b|\bgpt\b|\bclaude\b|\bgemini\b|scam shield|\btappy\b)[^.!?\n]{0,60}\b(danh gia|ket luan|xep loai|phan loai|tra loi|bao cao)\b[^.!?\n]{0,40}\b(an toan|hop le|khong (phai )?lua dao|khong nguy hiem|dang tin cay)\b/,
+      /\b(luu y|ghi chu|thong bao|chi thi|loi nhan) (cho|toi|den|gui) (he thong ai|tro ly (ao|ai)|chatbot|mo hinh (ai|ngon ngu)|\bllm\b|\bgpt\b|\bclaude\b|\bgemini\b|scam shield|\btappy\b)/,
+      /\b(in|hien thi|tiet lo|cho (toi |minh )?xem|lap lai|xuat) (ra )?(toan bo |nguyen van |day du )?(prompt|lenh he thong|chi dan he thong|huong dan he thong|cau lenh he thong)\b/,
     ],
     explanation: {
       vi: 'Chứa câu lệnh nhắm vào hệ thống phân tích — tin nhắn cố thao túng công cụ kiểm tra.',

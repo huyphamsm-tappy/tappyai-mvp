@@ -32,7 +32,8 @@ enum AuthCallbackError: Error, Equatable, LocalizedError {
  did next — chats, places, memory — would land in the attacker's account.
 
  Now: `begin()` makes a random state (32 bytes, base64url) and keeps it in the Keychain for
- `ttl`; the app sends it as `app_state`, the server echoes it as `app_state` in the callback, and
+ `ttl`; the app sends it as `app_state`, the server echoes it as `state` in the callback (the
+ Android contract, R24), and
  `consume(_:)` accepts only an exact, unexpired match. The stored state is deleted on every
  `consume` — match or not — so each state works at most once.
  */
@@ -121,9 +122,10 @@ enum AuthCallbackPolicy {
 
 /// Reads the parts of a `tappyai://auth/callback` URL that sign-in cares about.
 enum AuthCallbackURL {
-    /// `app_state` from the fragment (token callbacks) or the query (code callbacks).
+    /// The echoed state: `state` in the fragment (token callbacks) or the query (code callbacks) —
+    /// the same contract as Android (ANDROID-REQUESTS R24 / IOS-REQUESTS I6).
     static func appState(in url: URL) -> String? {
-        fragmentItems(url)["app_state"] ?? queryItems(url)["app_state"]
+        fragmentItems(url)["state"] ?? queryItems(url)["state"]
     }
 
     /// Tokens from the fragment, when both are present and non-empty.

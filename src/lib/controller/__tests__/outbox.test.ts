@@ -373,9 +373,10 @@ describe('C8 — drain route wiring: STRUCTURAL (not an executed request)', () =
     expect(ROUTE.length).toBeGreaterThan(1000)
   })
 
-  it('authenticates with CRON_SECRET exactly like the existing seven crons', () => {
-    expect(ROUTE).toContain('process.env.CRON_SECRET')
-    expect(ROUTE).toMatch(/authorization'\)\s*!==\s*`Bearer \$\{secret\}`/)
+  it('authenticates with CRON_SECRET exactly like the other crons', () => {
+    // security-audit L6 — every cron now goes through the constant-time helper.
+    expect(ROUTE).toContain("from '@/lib/security/cronAuth'")
+    expect(ROUTE).toMatch(/if \(!isAuthorizedCronRequest\(req\)\)/)
     expect(ROUTE).toMatch(/status:\s*401/)
   })
 
@@ -456,6 +457,9 @@ describe('C8 — the drain is wired as a daily cron', () => {
     //   `/api/cron/audit-retention` sweeps audit IP/UA at 90 days and prunes the chain at
     //   12 months behind a verified anchor. Neither can notify anybody; both answer 500
     //   until migrations 20260925c / 20260925d are applied.
-    expect(vercelJson.crons.length).toBe(13)
+    //
+    // 13 -> 14 on 2026-09-29 (R21, owner): `/api/cron/click-attributions-sweep` deletes ACCESSTRADE click joins
+    //   older than 12 months (bounded, service_role only) and logs the count; it notifies nobody.
+    expect(vercelJson.crons.length).toBe(14)
   })
 })

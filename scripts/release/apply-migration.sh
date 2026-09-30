@@ -40,7 +40,11 @@ policy_of() {
       echo VERIFY-ONLY ;;
     20260904_group_read_boundary.sql)
       echo AFTER-DEPLOY ;;
-    20260927_owner_update_column_privileges.sql|20260928_revoke_reviews_insert.sql)
+    # H1 → M1 first, then the security-branch migrations in MIGRATION_ORDER.txt order (owner 30/09): 20260928b needs the
+    # deal-click code (service role) on production; the others are code-independent but ride the same verified window.
+    20260927_owner_update_column_privileges.sql|20260928_revoke_reviews_insert.sql|\
+    20260928b_revoke_increment_deal_click_public.sql|20260928c_review_comments_publication_boundary.sql|\
+    20260930_content_reports_insert_check.sql|20260930b_review_interactions_bounds.sql)
       echo AFTER-SMOKE ;;
     20260913_g1_growth_foundation.sql|20260913_plan_shares.sql|20260915_profile_public_presentation.sql|\
     20260915b_review_likes_private.sql|20260918_g1b_share_ancestry.sql|20260920100000_commerce_providers.sql|\
@@ -48,7 +52,8 @@ policy_of() {
     20260920_f028_dob_self_correct_while_ineligible.sql|20260921_f032_admin_role_actor_from_authuid.sql|\
     20260921_music_tracks_lockdown.sql|20260921_user_events_ga4_event_types.sql|\
     20260921_user_events_shopping_search_event.sql|20260922_groups_avatar_url.sql|\
-    20260925b_decision_evidence_sweep.sql|20260925d_audit_log_pii_retention.sql|d3-one-off-sweep.sql)
+    20260925b_decision_evidence_sweep.sql|20260925d_audit_log_pii_retention.sql|d3-one-off-sweep.sql|\
+    20260929130000_commerce_click_attributions.sql|20260929140000_commerce_click_attributions_r21.sql)
       echo APPLY ;;
     *) echo UNLISTED ;;
   esac

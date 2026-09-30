@@ -3,6 +3,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { getMediaProvider } from '@/lib/media'
 import { revokeGoogleToken } from '@/lib/integrations/googleCalendar'
 import { processAccountDeletionJobs } from '@/lib/account/deletionJobs'
+import { isAuthorizedCronRequest } from '@/lib/security/cronAuth'
 
 export const runtime = 'nodejs'
 export const maxDuration = 60
@@ -15,8 +16,7 @@ export const maxDuration = 60
 // not in the database. Counts only are logged — never tokens, never object names.
 
 export async function GET(req: Request) {
-  const secret = process.env.CRON_SECRET
-  if (!secret || req.headers.get('authorization') !== `Bearer ${secret}`) {
+  if (!isAuthorizedCronRequest(req)) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 

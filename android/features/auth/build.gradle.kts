@@ -36,6 +36,8 @@ dependencies {
     implementation(project(":core:navigation"))
     implementation(project(":core:deeplink"))
     implementation(project(":core:security"))
+    // Login-CSRF state for tappyai://auth-callback (AuthCallbackState.kt), Keystore-wrapped like the tokens.
+    implementation(libs.androidx.security.crypto)
     implementation(project(":core:network"))
     implementation(project(":core:logging"))
     implementation(project(":core:analytics"))

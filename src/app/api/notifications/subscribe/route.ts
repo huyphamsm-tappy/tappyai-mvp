@@ -3,6 +3,7 @@ import { refuseAnonymousSocialWrite } from '@/lib/auth/socialWriteAccess'
 import { NextResponse } from 'next/server'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
+import { isAllowedWebPushEndpoint } from '@/lib/notifications/pushEndpoint'
 
 // POST /api/notifications/subscribe — upsert a Web Push subscription for the current user
 export async function POST(req: Request) {
@@ -64,7 +65,9 @@ export async function POST(req: Request) {
       subscription_data = { token }
     } else {
       const { endpoint, keys } = body
-      if (!endpoint || !keys?.p256dh || !keys?.auth) {
+      // The server POSTs to this URL on every notification: only a browser push service may be
+      // stored (see lib/notifications/pushEndpoint.ts). send.ts re-checks, since PostgREST can write here too.
+      if (!isAllowedWebPushEndpoint(endpoint) || typeof keys?.p256dh !== 'string' || typeof keys?.auth !== 'string' || !keys.p256dh || !keys.auth) {
         return NextResponse.json({ error: 'invalid_input', message: serverMessage('notif.invalidSubscription', requestLocale(req)) }, { status: 400 })
       }
       provider = 'webpush'
