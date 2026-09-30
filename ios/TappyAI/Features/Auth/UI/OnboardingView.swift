@@ -102,7 +102,7 @@ struct OnboardingView: View {
     private var progressHeader: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack(spacing: 10) {
-                Image("TappyLogo").resizable().scaledToFit().frame(width: 40, height: 40)
+                Image("TappyAILogo").resizable().scaledToFit().frame(width: 40, height: 40)
                     .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
                     .accessibilityHidden(true)
                 (Text("Tappy").foregroundColor(TappyColor.textPrimary) + Text("AI").foregroundColor(TappyColor.primary))

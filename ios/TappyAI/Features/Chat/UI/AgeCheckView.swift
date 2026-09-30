@@ -72,7 +72,7 @@ struct AgeCheckView: View {
 
     private var header: some View {
         HStack(spacing: 10) {
-            Image("TappyLogo").resizable().scaledToFit().frame(width: 44, height: 44)
+            Image("TappyAILogo").resizable().scaledToFit().frame(width: 44, height: 44)
                 .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
                 .accessibilityHidden(true)
             VStack(alignment: .leading, spacing: 0) {
@@ -171,7 +171,7 @@ struct AgeCheckView: View {
     private func dateField(_ label: LocalizedStringKey, value: Binding<String>, placeholder: String,
                            options: [String], id: String) -> some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text(label).font(.system(size: 13, weight: .semibold)).foregroundStyle(.white.opacity(0.7))
+            Text(label).font(.system(size: 13, weight: .semibold)).foregroundStyle(.white.opacity(0.7)).lineLimit(1)
             Menu {
                 ForEach(options, id: \.self) { o in
                     Button(o) { value.wrappedValue = o; onEdit() }
@@ -180,17 +180,20 @@ struct AgeCheckView: View {
                 HStack {
                     Text(value.wrappedValue.isEmpty ? placeholder : value.wrappedValue)
                         .font(.system(size: 16))
+                        .lineLimit(1).minimumScaleFactor(0.7)
                         .foregroundStyle(value.wrappedValue.isEmpty ? .white.opacity(0.35) : .white)
                     Spacer(minLength: 0)
                     Image(systemName: "chevron.down").font(.system(size: 12)).foregroundStyle(.white.opacity(0.6))
                 }
-                .padding(.horizontal, 14).padding(.vertical, 13)
+                .padding(.horizontal, 12).padding(.vertical, 13)
+                .frame(maxWidth: .infinity)
                 .background(Color.white.opacity(0.05))
                 .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
                 .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous).stroke(Self.line, lineWidth: 1))
             }
             .accessibilityIdentifier(id)
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 
     // MARK: - Intro / trust

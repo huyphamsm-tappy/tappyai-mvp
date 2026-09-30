@@ -139,11 +139,13 @@ struct CardLockup: View {
 struct CardBanner: View {
     let slogan: String
     let sub: String?
+    /// The band's width: the card width minus its margins (the QR card is wider than the content cards).
+    var width: CGFloat = CardSize.width - CardSize.pad * 2
     var body: some View {
         ZStack(alignment: .topLeading) {
             RoundedRectangle(cornerRadius: CardSize.panelRadius, style: .continuous)
                 .fill(LinearGradient(colors: [CardLight.bannerFrom, CardLight.bannerTo], startPoint: .leading, endPoint: .trailing))
-                .frame(height: CardSize.bannerH)
+                .frame(width: width, height: CardSize.bannerH)
             VStack(spacing: 8) {
                 Text(slogan).font(.system(size: 40, weight: .heavy)).italic().foregroundStyle(.white)
                     .lineLimit(1).minimumScaleFactor(0.5)
@@ -152,13 +154,13 @@ struct CardBanner: View {
                         .lineLimit(1).minimumScaleFactor(0.5)
                 }
             }
-            .frame(width: (CardSize.width - CardSize.pad * 2) * 0.6, height: CardSize.bannerH)
-            .offset(x: (CardSize.width - CardSize.pad * 2) * 0.33)
+            .frame(width: width * 0.6, height: CardSize.bannerH)
+            .offset(x: width * 0.33)
             Image("OtterMascot").resizable().scaledToFit()
                 .frame(height: CardSize.mascotH)
                 .offset(x: 20, y: CardSize.bannerH - CardSize.mascotH + 6)
         }
-        .frame(width: CardSize.width - CardSize.pad * 2, height: CardSize.bannerH, alignment: .topLeading)
+        .frame(width: width, height: CardSize.bannerH, alignment: .topLeading)
     }
 }
 

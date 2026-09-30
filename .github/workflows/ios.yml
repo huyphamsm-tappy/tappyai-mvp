@@ -138,7 +138,7 @@ jobs:
           rm -rf build/ui-attachments build/shots build/pairs
           xcrun xcresulttool export attachments --path build/ui.xcresult --output-path build/ui-attachments
           python3 scripts/export_shots.py build/ui-attachments build/shots
-          python3 -m pip install --quiet pillow
+          python3 -m pip install --quiet --break-system-packages pillow
           python3 scripts/pair_evidence.py build/shots .. build/pairs
           echo "### iOS screenshots" >> "$GITHUB_STEP_SUMMARY"
           cat build/pairs/pairs.md >> "$GITHUB_STEP_SUMMARY"

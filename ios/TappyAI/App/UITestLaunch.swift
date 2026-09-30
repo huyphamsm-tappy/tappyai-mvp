@@ -84,6 +84,7 @@ struct CardGalleryView: View {
                 ProgressView().tint(.white)
             }
         }
+        .statusBarHidden(true)
         .task {
             let card = await ShareCardFiles().card(Self.input(layout))
             image = card?.image

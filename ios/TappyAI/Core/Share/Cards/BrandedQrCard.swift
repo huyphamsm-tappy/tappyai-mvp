@@ -53,8 +53,7 @@ struct BrandedQrCardView: View {
             }
 
             if let slogan, !slogan.isEmpty {
-                CardBanner(slogan: slogan, sub: sloganSub)
-                    .frame(width: width - pad * 2, height: CardSize.bannerH, alignment: .topLeading)
+                CardBanner(slogan: slogan, sub: sloganSub, width: width - pad * 2)
                     .padding(.top, 150)
             }
 

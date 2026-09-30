@@ -39,7 +39,14 @@ Việc cần Huy đăng nhập: `docs/ios/IOS-REQUESTS.md` §3 (một lần). Y�
 - Sửa bố cục từ ảnh: chip lọc Đã lưu bị cắt, tiêu đề hero Viết content bị cắt "...", mô tả highlight Gợi ý bị cắt.
 - Architecture Guard / Regression Gate đỏ trên nhánh này là lỗi CÓ SẴN từ rc/web-uat (`src/app/go/at/route.ts:25` đọc `x-forwarded-for`), không phải của iOS.
 
-## Cụm 2 — ảnh chia sẻ (code viết, chờ CI)
+## CI run 36663001381 (commit d9a9136)
+- Build xanh, unit test xanh, **13/13 UI test qua, 13 ảnh chụp đã xuất** (login, 18+, hub khách, Đã lưu có dữ liệu / rỗng / lọc địa điểm,
+  Viết content, Gợi ý, 5 thẻ chia sẻ). Bước ghép ảnh đỏ chỉ vì `pip install` bị macOS chặn (PEP 668) — đã thêm `--break-system-packages`.
+- Ảnh đã xem: các thẻ chia sẻ đúng mẫu #1/#7 (logo, panel, QR có ngoặc xanh, banner + rái cá, timeline kế hoạch). Còn sửa từ ảnh:
+  banner của thẻ QR rộng 960 trong thẻ 1200 (nay theo bề rộng thẻ), ô Ngày/Tháng của màn 18+ bị co (nay chia đều), logo màn 18+ dùng
+  logo cũ của iOS (nay dùng `tappyai_logo` của Android), thanh trạng thái lọt vào ảnh thẻ (nay ẩn trong màn xem thẻ).
+
+## Cụm 2 — ảnh chia sẻ
 | Việc | Commit |
 |---|---|
 | Thẻ sáng mẫu #1: review, clip Explore, gợi ý (1080×1920), QR hồ sơ/bài; thẻ kế hoạch tối mẫu #7 (`Core/Share/Cards/*`) | 3dd465c |
