@@ -2542,7 +2542,7 @@ export function applyPlaceEnrichmentStreamFilter(
     const foldName = (n: string) => n.normalize('NFC').toLowerCase().replace(/\s+/g, ' ').trim()
     // Luna more/reject: an honest "nothing new fits" is kept — the server does not write a pick Luna declined (replay
     // 30/09 SHOP-3 t6: fallback inserted "Mình chọn: Dell XPS 13 Cũ" after Luna declined it because the user wants new).
-    const lunaDeclinable = consultLunaEnabled() && (collector?.consultTurn === 'reject' || collector?.consultTurn === 'more')
+    const lunaDeclinable = consultLunaEnabled() // PHIÊN LUNA: Luna's own pick sentences are normalised above; the server never adds one Luna did not write
     const fallbackShown = lunaDeclinable || !!cardPickFallback && consultLunaEnabled() && collector?.consultTurn === 'reject'
       && (collector?.consultShown ?? []).some(n => { const a = foldName(n), b = foldName(cardPickFallback); return a.length >= 4 && (a.includes(b) || b.includes(a)) })
     const pickNormalized = consultPickTurn ? normalizePickSentence(unlabelled, fallbackShown ? null : cardPickFallback) : unlabelled
@@ -2887,6 +2887,13 @@ export function applyPlaceEnrichmentStreamFilter(
       // The whole settled reply, not only the not-yet-released body: a pick sentence already streamed
       // (released prefix) is still THE pick (replay TRAVEL-1 t5: backstop "Parosand" + the model's "Meliá").
       if (hasPickSentence || (collector?.consultTurn && /\*\*Mình chọn:/.test(gated.text))) return null
+      // PHIÊN LUNA: a Luna reply with real text and no pick is a deliberate decline ("chưa có điểm núi để chọn đúng") —
+      // the server does not invent one over it (replay 30/09 low TRAVEL-2 t2: backstop "Mình chọn: La Siesta Premium Saigon"
+      // on a mountain trip). The backstop stays for an empty body.
+      if (consultLunaEnabled() && bodyLetters >= 40) {
+        console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'consultative_v1_pick_backstop', step: 'luna_decline_kept' }))
+        return null
+      }
       const altOnly = sentences.some(s => namesKnown(s))
       if (altOnly) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'consultative_v1_pick_backstop', step: 'alternatives_only' }))
       // The engine's Pick, or — when derivePick made none (measured T8: five shortlisted hotels,
