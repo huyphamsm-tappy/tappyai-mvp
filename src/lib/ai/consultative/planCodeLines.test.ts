@@ -104,3 +104,16 @@ describe('(c) owner 30/09 — a plan section with no data is HIDDEN; a missing r
     expect(ent2).not.toMatch(/được xác nhận,/)
   })
 })
+
+describe('(d) owner 30/09 night — the claim guard never rewrites a sentence the model already hedged', () => {
+  it('ENT-1 t3 / SPA-1 t3 (UAT Luna, verbatim) stay as written', () => {
+    const ent = 'Dữ liệu hiện có chưa cho biết Karaoke Avatar có phòng VIP hay không.'
+    const spa = 'Mình chưa có thông tin xác nhận Hyan Spa có phòng riêng; bạn gọi spa hỏi trực tiếp trước khi đến nhé.'
+    expect(guardUnsupportedClaims(ent, { venues: [], sharedTexts: [], userTexts: ['Karaoke Avatar có phòng VIP không'] }).text).toBe(ent)
+    expect(guardUnsupportedClaims(spa, { venues: [], sharedTexts: [], userTexts: ['Hyan Spa có phòng riêng không'] }).text).toBe(spa)
+  })
+  it('a real unsupported claim is still rewritten', () => {
+    const r = guardUnsupportedClaims('Karaoke Avatar có phòng VIP rộng cho 8 người.', { venues: [], sharedTexts: [], userTexts: ['Karaoke Avatar có phòng VIP không'] })
+    expect(r.text).toMatch(/chưa xác nhận được có phòng VIP/)
+  })
+})

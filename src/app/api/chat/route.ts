@@ -1399,7 +1399,15 @@ export async function POST(req: Request) {
      */
     let candidates = allCandidates
     if (toolName === 'search_products' && allCandidates.length > 0) {
-      const { kept, rejected } = validateShoppingCandidates(allCandidates, shoppingConstraints)
+      const { kept, rejected, nearestBelowBudget } = validateShoppingCandidates(allCandidates, shoppingConstraints)
+      // Owner 30/09 (SHOP-2): nothing inside the stated range — one closest listing is kept, and the model is told to SAY so.
+      if (nearestBelowBudget) {
+        r._tappy_budget_nearest = {
+          note: `KHONG co san pham nao trong khoang ${nearestBelowBudget.rangeMin}-${nearestBelowBudget.rangeMax}d nguoi dung dua. NOI THANG dieu nay truoc tien, roi dua san pham duy nhat con lai (${nearestBelowBudget.priceVnd}d) lam lua chon GAN NHAT va noi ly do (re hon ngan sach). Khong goi no la "trong ngan sach".`,
+          range_min: nearestBelowBudget.rangeMin, range_max: nearestBelowBudget.rangeMax, nearest_price: nearestBelowBudget.priceVnd,
+        }
+        console.log(JSON.stringify({ type: 'tappyai_shopping_budget_nearest', range_min: nearestBelowBudget.rangeMin, price: nearestBelowBudget.priceVnd }))
+      }
       if (rejected.length > 0) {
         const rejectedRaw = new Set(rejected.map(x => x.candidate.raw))
         for (const key of ['shopping_results', 'search_results']) {

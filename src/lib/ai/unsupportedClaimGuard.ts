@@ -59,7 +59,9 @@ const FEATURES: ReadonlyArray<{ re: RegExp; label: string }> = [
 
 const NEG_RE = /(?:^|[\s,(*_])(khong|chua)\s+(co|cung cap|ho tro|phuc vu|kinh doanh)\s+((?:cong nghe|dich vu|phong|khu|cho|rap|phong chieu)\s+)?/g
 const CONFIRMED_NEG_RE = /(?:da |vua )?xac nhan\s+(?:la |rang )?/
-const CONDITIONAL_RE = /(?:^|[\s*_(])(?:neu|khi|hoi|xem|goi|kiem tra|chua (?:duoc )?xac nhan|khong (?:chac|xac nhan)|de chac chan)(?=\s)/
+// Already hedged by the model itself — "chưa cho biết X có …", "chưa có thông tin (xác nhận) X có …" (UAT Luna 30/09
+// ENT-1 t3 / SPA-1 t3: R4 turned them into "…chưa cho biết Karaoke Avatar mình chưa xác nhận được có phòng VIP").
+const CONDITIONAL_RE = /(?:^|[\s*_(])(?:neu|khi|hoi|xem|goi|kiem tra|chua (?:duoc )?xac nhan|khong (?:chac|xac nhan)|de chac chan|chua (?:cho biet|ro|thay|biet)|(?:chua|khong) co (?:thong tin|du lieu|bang chung)(?: (?:xac nhan|ve|cho biet))?)(?=\s)/
 /**
  * An indirect question, not a claim: "rạp NÀO có phòng IMAX" (measured round 6, golden T2 t2 — R4
  * turned "kết quả không xác nhận rõ rạp nào có phòng IMAX" into "rạp nào mình chưa xác nhận được có …").

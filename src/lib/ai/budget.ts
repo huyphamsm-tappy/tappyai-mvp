@@ -103,7 +103,9 @@ export function extractBudget(userMessage: string): Budget | null {
   for (const m of t.matchAll(rangeRe)) {
     const numStart = (m.index ?? 0) + m[0].indexOf(m[1])
     if (!m[2] && !m[4] && !unitlessIsMoney(t, numStart, (m.index ?? 0) + m[0].length, [m[1], m[3]])) continue
-    const min = parseMoneyAmount(m[1], m[2] || '')
+    // "1-2 triệu" / "300-500k": the unit written once after the second number belongs to both (UAT Luna 30/09 SHOP-2:
+    // "tầm 1-2 triệu" was read as 1.000đ–2.000.000đ, so 172.000đ and 100.940đ gift boxes passed as "in budget").
+    const min = parseMoneyAmount(m[1], m[2] || m[4] || '')
     const max = parseMoneyAmount(m[3], m[4] || '')
     if (min !== null && max !== null && max >= min && max > 0) return { min, max, type: 'range' as const }
   }

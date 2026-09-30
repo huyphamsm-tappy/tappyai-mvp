@@ -647,6 +647,12 @@ export function shoppingEvidenceNote(gaps: readonly ShoppingGap[], lang: string)
 export interface ValidationResult {
   kept: Candidate[]
   rejected: Rejection[]
+  /**
+   * Owner 30/09 (SHOP-2 "tầm 1-2 triệu", every listing 20k–480k): NOTHING is inside the stated range and every listing
+   * was out only for being CHEAPER than it — the closest one (the dearest below the range) is kept so the reply can say
+   * so plainly and offer it with the reason, instead of a silent 172k pick or an empty answer.
+   */
+  nearestBelowBudget?: { candidate: Candidate; priceVnd: number; rangeMin: number; rangeMax: number }
 }
 
 /**
@@ -677,6 +683,18 @@ export function validateShoppingCandidates(
       const low = kept.filter(c => { const r = ram(c); return typeof r === 'number' && r < min })
       for (const c of low) rejected.push({ candidate: c, reason: 'ram', detail: `${ram(c)}GB < ${min}GB for the stated use` })
       return { kept: kept.filter(c => !low.includes(c)), rejected }
+    }
+  }
+  if (kept.length === 0 && k.budget && (k.budget.type === 'range' || k.budget.type === 'around')) {
+    const bounds = budgetBounds(k.budget)
+    const cheaper = rejected.filter(r => r.reason === 'budget' && typeof r.candidate.attrs.priceVnd === 'number' && r.candidate.attrs.priceVnd < bounds.min)
+    if (cheaper.length > 0 && cheaper.length === rejected.filter(r => r.reason === 'budget').length) {
+      const best = cheaper.reduce((a, b) => ((b.candidate.attrs.priceVnd as number) > (a.candidate.attrs.priceVnd as number) ? b : a))
+      return {
+        kept: [best.candidate],
+        rejected: rejected.filter(r => r !== best),
+        nearestBelowBudget: { candidate: best.candidate, priceVnd: best.candidate.attrs.priceVnd as number, rangeMin: k.budget.min, rangeMax: k.budget.max },
+      }
     }
   }
   return { kept, rejected }
