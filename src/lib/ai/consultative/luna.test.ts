@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { checkIntent, consultLunaEnabled, intentToDecision, isLunaAnswerTurn, mergeIntentWithRules, moneyAmounts, runLunaIntent, splitPickSentence, lunaTurnFacts, withoutReferenceTurns, type LunaIntent } from './luna'
+import { checkIntent, consultLunaEnabled, intentToDecision, isLunaAnswerTurn, mergeIntentWithRules, moneyAmounts, runLunaIntent, splitPickSentence, lunaTurnFacts, withoutReferenceTurns, normalizeTravelKnown, type LunaIntent } from './luna'
 import { buildLeanConsultSystem, LEAN_CORE } from './leanConsultPrompt'
 
 const base = (o: Partial<LunaIntent> = {}): LunaIntent => ({
@@ -213,5 +213,18 @@ describe('Luna phrases its pick differently (replay 30/09 final none: the pick v
   it('a reply that already has a pick line is untouched by it', () => {
     const t = '**Mình chọn: A**. **B** là lựa chọn mình nghiêng về nếu rẻ hơn.'
     expect(splitPickSentence(t)).toBe(t)
+  })
+})
+
+describe('travel facts in the code vocabulary (replay last-none TRAVEL-2: "gần Sài Gòn" searched hotels in the city)', () => {
+  it('"gần Sài Gòn" is not a destination; Sài Gòn → TP.HCM; "thích núi" → núi', () => {
+    const k = [{ key: 'diem_den', value: 'gần Sài Gòn' }, { key: 'phong_cach', value: 'thích núi' }]
+    normalizeTravelKnown(k)
+    expect(k).toEqual([{ key: 'phong_cach', value: 'núi' }, { key: 'xuat_phat', value: 'TP.HCM' }])
+  })
+  it('a real destination stays', () => {
+    const k = [{ key: 'diem_den', value: 'Đà Nẵng' }, { key: 'xuat_phat', value: 'sg' }]
+    normalizeTravelKnown(k)
+    expect(k).toEqual([{ key: 'diem_den', value: 'Đà Nẵng' }, { key: 'xuat_phat', value: 'TP.HCM' }])
   })
 })
