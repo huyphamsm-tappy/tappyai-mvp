@@ -217,6 +217,16 @@ Chưa commit — patch lưu scratchpad (shopR / shopAB5). Chờ Huy (Q-AI-SHOP).
 - Test toàn bộ trên ứng viên release: 15.824 qua; 5 lỗi → 2 lỗi thật đã sửa (`020ff56`: /go/at giới hạn theo IP nền tảng, số cron
   14), 1 lỗi timeout do tải máy (qua khi chạy riêng), kiến trúc 15/15.
 
+### ✅ AI tư vấn — owner duyệt ĐẠT (30/09, sau khi sửa lỗi B duy nhất)
+- Trang https://claude.ai/artifact/T1ENadG4ZVDHEbnJaaGRFU, kho `verdicts` ngày 30/09: 59 câu — 54 Đạt, 2 Không đạt, 3 chỉ ghi chú.
+  (Các bản ghi không hậu tố `-t<n>` trong cùng kho là đánh giá cũ 28/09 của trang trước — không tính.)
+- **T3 lượt 2 (B):** "Cái thứ hai có bao gồm ăn sáng không?" sau lượt hỏi → đưa quán ăn. Sửa `329973d` (câu có từ trỏ về luồng hiện tại
+  không phải yêu cầu mới), test offline (trượt khi gỡ sửa), **chụp lại trên UAT: ĐẠT** ("Mình chọn: M Hotel Da Nang"), trang cập nhật (bản 2).
+- **T5b lượt 1** (Không đạt, không ghi chú) → C, backlog PL-AI-OWNER-UAT-30-09. SPA-2 lượt 7 (thẻ kế hoạch) → backlog.
+  ENT-3 lượt 7 "ủa cái", T4 lượt 1 "câu này " — ghi chú bị cắt, đã hỏi lại Huy.
+- Bảo mật 30/09: nhánh `security/hardening-2026-09-30` gộp vào rc (`d4f5c8c`), UAT `6aade7a` smoke 5 luồng đạt; migration #20–#23 vào PHẦN B.
+  Apple IAP: production KHÔNG có `APPLE_IAP_*` → verify trả 503, lỗ API-1 đang đóng; không thêm các biến này trước khi `fea7f38` lên prod.
+
 ## Current step
 Overnight run 2026-09-28→29 DONE — final UAT SHA af8b4ba; morning report at the end of this file. Waiting on owner: Q1 (26/9 design), Q7 (AI gate), Q6 (share layout). Login = scratchpad pw/login.mjs (AUDIT only).
 
