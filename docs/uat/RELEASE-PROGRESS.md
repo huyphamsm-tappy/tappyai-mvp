@@ -227,6 +227,24 @@ Chưa commit — patch lưu scratchpad (shopR / shopAB5). Chờ Huy (Q-AI-SHOP).
 - Bảo mật 30/09: nhánh `security/hardening-2026-09-30` gộp vào rc (`d4f5c8c`), UAT `6aade7a` smoke 5 luồng đạt; migration #20–#23 vào PHẦN B.
   Apple IAP: production KHÔNG có `APPLE_IAP_*` → verify trả 503, lỗ API-1 đang đóng; không thêm các biến này trước khi `fea7f38` lên prod.
 
+### ✅ 3 lỗi code ở lượt KẾ HOẠCH CHI TIẾT (LUNA-REPORT §7) — sửa trong Phase 7, rc `43d4395` + `ca10919`
+Kiểm trên rc hiện tại (sau các sửa dòng chi phí FOOD-1/ENT-1/ENT-2/SPA-2) bằng replay đúng các hội thoại có lượt kế hoạch lỗi
+(13 kịch bản + E1-G5; replay `scenarios-2026-09-30T10-14` trước sửa): **cả 3 lỗi CÒN** → sửa:
+- **(a) dòng "Chi phí"**: không có «Mình chọn» thì lấy quán KẾ HOẠCH viết ra (tên đủ thắng tên một phần; tên một phần phải có từ riêng,
+  không lấy tên quận/từ thường — "Gia Đình" ≠ "giả định"), không lấy quán chốt cũ của luồng (ENT-3 BIBO KIDS bị ghi "KHU VUI CHƠI TRẺ EM";
+  E1-G5 A Xỉu bị ghi "Cơm Ngon Hà Nội"); khung giá mở của Google giữ lại: «dưới 100.000đ» / «trên 1.000.000đ» (FOOD-2 Bánh Cuốn 1-100.000 ₫ bị ghi
+  "chưa có giá"). Số người: không thấy lệch ở lượt chạy lại (ENT-1 8 người đúng).
+- **(b) câu gộp "chưa xác nhận được"** (`hedgeCap.ts`): câu của guard giữ chủ ngữ thật («giờ chạy và giá vé cụ thể», «giờ mở cửa») thay vì
+  «từ nguồn đã tìm»; một chủ ngữ nói một lần (giá / mức giá / giá trực tuyến); không ghép ô bảng hay «(chưa có giá)». Mệnh đề mục đích
+  «để có phòng riêng» không còn thành «để mình chưa xác nhận được…» mà tách thành câu riêng (`unsupportedClaimGuard.ts`).
+- **(c) mục khung trống**: mục chỉ còn tiêu đề → «- Chưa có thông tin đã kiểm cho mục này.» (`fillEmptyPlanSections`).
+- Test offline bằng đúng các kế hoạch lỗi: `planCodeLines.test.ts` + `hedgeMergePlans.test.ts` — 9/11 ca TRƯỢT khi gỡ sửa; AI + chat 4.741 test đạt.
+- Replay lại các lượt kế hoạch (`scenarios-2026-09-30T10-30` + E1-G5): 0 mục trống, 0 câu gộp lỗi; dòng chi phí đúng quán ở 12/13 kế hoạch có
+  dòng chi phí — riêng E1-G5 còn sai ("Gia Đình" khớp "giả định") → sửa thêm `ca10919` (test có ca đó). **Lượt replay xác nhận `ca10919` KHÔNG
+  chạy được: Anthropic báo HẾT CREDIT** ("credit balance is too low") — cùng lúc UAT trả "An error occurred." cho câu hỏi thật. Chạy lại
+  E1-G5/ENT-1/ENT-3/SPA-1/SPA-2 khi có credit.
+- Phiên Luna: rebase theo các file trên (`streamEnrichment.ts` planCostSubject, `planBudgetMath.ts`, `domainFrames.ts`, `hedgeCap.ts`, `unsupportedClaimGuard.ts`).
+
 ### ✅ Bảo mật 2c–2f (tin gộp 30/09) — UAT `e7a79a9`
 - **2c Serper không tin cậy** (`79c79d7`): chỉ bộ làm sạch của luna `2f16ce8`, KHÔNG kèm Luna, chạy cho mọi lời gọi `serperPost`
   (`src/lib/ai/tools/serperUntrusted.ts`). Tên thật giữ nguyên (Say Cheese Studio, Reveal Beauty Spa, Quán Quên Lối Về, System Coffee).
