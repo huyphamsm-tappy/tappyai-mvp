@@ -19255,6 +19255,363 @@
           }
         }
       }
+    },
+    "vietcontent.hero.eyebrow": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AI content writer"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AI viết content"
+          }
+        }
+      }
+    },
+    "vietcontent.hero.title1": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Captions that hook"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Caption hấp dẫn"
+          }
+        }
+      }
+    },
+    "vietcontent.hero.title2Lead": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "in"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "trong"
+          }
+        }
+      }
+    },
+    "vietcontent.hero.accent": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "seconds"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "vài giây"
+          }
+        }
+      }
+    },
+    "vietcontent.hero.body": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Facebook, TikTok, Instagram — pick a tone and length and let AI do the rest."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Facebook, TikTok, Instagram — chọn tone, độ dài và để AI lo phần còn lại."
+          }
+        }
+      }
+    },
+    "vietcontent.tryExample": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Try an idea"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Thử gợi ý"
+          }
+        }
+      }
+    },
+    "vietcontent.platform.hint": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pick a platform to tune the format and style"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chọn nền tảng để tối ưu định dạng và phong cách"
+          }
+        }
+      }
+    },
+    "vietcontent.tone.hint": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pick the style that suits your content"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chọn phong cách phù hợp với nội dung của bạn"
+          }
+        }
+      }
+    },
+    "vietcontent.length.hint": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pick a caption length"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chọn độ dài caption phù hợp"
+          }
+        }
+      }
+    },
+    "vietcontent.length.short.hint": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1–2 sentences"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1–2 câu"
+          }
+        }
+      }
+    },
+    "vietcontent.length.medium.hint": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "3–5 sentences"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "3–5 câu"
+          }
+        }
+      }
+    },
+    "vietcontent.length.long.hint": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "6–10 sentences"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "6–10 câu"
+          }
+        }
+      }
+    },
+    "vietcontent.hashtags": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Suggested hashtags"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hashtags gợi ý"
+          }
+        }
+      }
+    },
+    "vietcontent.copyAll": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copy all"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copy tất cả"
+          }
+        }
+      }
+    },
+    "vietcontent.copiedAll": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copied all"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đã copy tất cả"
+          }
+        }
+      }
+    },
+    "vietcontent.rewrite": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rewrite"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Viết lại"
+          }
+        }
+      }
+    },
+    "vietcontent.example.1": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A newly opened café in District 3, Saigon: retro decor, great coffee, friendly prices"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quán cà phê mới mở, decor retro, cà phê ngon, giá bình dân, ở quận 3 Sài Gòn"
+          }
+        }
+      }
+    },
+    "vietcontent.example.2": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A 30-year family banh mi stall in Hoi An: crisp crust, homemade pâté, open from 6am"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tiệm bánh mì gia truyền 30 năm ở Hội An, vỏ giòn, pate nhà làm, mở từ 6h sáng"
+          }
+        }
+      }
+    },
+    "vietcontent.example.3": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A local fashion brand launches its autumn–winter collection: linen, 20% off the first week"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shop thời trang local brand ra mắt bộ sưu tập thu đông, chất liệu linen, giảm 20% tuần đầu"
+          }
+        }
+      }
+    },
+    "vietcontent.example.4": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A weekend trip to Da Lat with best friends: cloud hunting, camping, chicken hotpot"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chuyến đi Đà Lạt cuối tuần cùng bạn thân: săn mây, cắm trại, ăn lẩu gà lá é"
+          }
+        }
+      }
+    },
+    "vietcontent.example.5": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A new gym in Thu Duc with evening yoga classes and 1-on-1 personal training"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Phòng gym mới khai trương ở Thủ Đức, có lớp yoga buổi tối và PT kèm 1-1"
+          }
+        }
+      }
     }
   }
 }
