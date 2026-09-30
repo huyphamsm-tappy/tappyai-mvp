@@ -12714,6 +12714,7 @@
       }
     },
     "recommendations.askAboutPlace": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -12801,13 +12802,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Personalised to your taste"
+            "value": "Places that suit you, personalised"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Cá nhân hóa theo sở thích của bạn"
+            "value": "Địa điểm hợp gu, cá nhân hóa"
           }
         }
       }
@@ -12835,7 +12836,7 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Popular places nearby"
+            "value": "Standout places nearby"
           }
         },
         "vi": {
@@ -20119,6 +20120,227 @@
           "stringUnit": {
             "state": "translated",
             "value": "Xây dựng cộng đồng tích cực"
+          }
+        }
+      }
+    },
+    "recommendations.hero.lead": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Discover standout places"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Khám phá những địa điểm nổi bật"
+          }
+        }
+      }
+    },
+    "recommendations.hero.accent": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "near you"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "gần bạn"
+          }
+        }
+      }
+    },
+    "recommendations.hero.subtitle": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Connect with restaurants, interesting places and the community around you."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kết nối với các quán ăn, địa điểm thú vị và cộng đồng xung quanh."
+          }
+        }
+      }
+    },
+    "recommendations.hero.bubble": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Let's explore the world around you!"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cùng khám phá thế giới quanh bạn!"
+          }
+        }
+      }
+    },
+    "recommendations.highlight.discover": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Discover new places"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Khám phá địa điểm mới"
+          }
+        }
+      }
+    },
+    "recommendations.highlight.community": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Connect with the community"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kết nối cộng đồng"
+          }
+        }
+      }
+    },
+    "recommendations.highlight.life": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Experience life around you"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trải nghiệm cuộc sống xung quanh"
+          }
+        }
+      }
+    },
+    "recommendations.seeMore": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "See more"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Xem thêm"
+          }
+        }
+      }
+    },
+    "recommendations.recentlyActive": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recently active"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hoạt động gần đây"
+          }
+        }
+      }
+    },
+    "recommendations.reviewCount": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d reviews"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d đánh giá"
+          }
+        }
+      }
+    },
+    "recommendations.askPrompt": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tell me about %@"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kể mình nghe về %@"
+          }
+        }
+      }
+    },
+    "recommendations.footer.line": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "There are always interesting stories around you"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Thế giới xung quanh bạn luôn có những câu chuyện thú vị"
+          }
+        }
+      }
+    },
+    "recommendations.footer.cta": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Start exploring today!"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hãy bắt đầu khám phá ngay hôm nay!"
           }
         }
       }

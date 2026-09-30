@@ -16,6 +16,9 @@ final class AppRouter: AppObservableObject {
         uniqueKeysWithValues: AppTab.allCases.map { ($0, NavigationPath()) }
     )
     @AppPublished var presentedSheet: AppSheet?
+    /// A message another screen wants the Chat tab to send (e.g. "Hỏi Tappy về chỗ này" on a
+    /// recommendation). The chat view consumes it and clears it.
+    @AppPublished var chatSeed: String?
 
     private let log = AppLogger.navigation
 

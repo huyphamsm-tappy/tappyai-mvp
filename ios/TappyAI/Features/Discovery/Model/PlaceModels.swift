@@ -55,8 +55,24 @@ struct Recommendation: Identifiable, Codable {
     let placeName: String
     let finalScore: Double
     let matchedSignals: [String]
+    /// Additive place facts (server 2026-09-28) from the place's community reviews; absent on older
+    /// servers, in which case the matching chip is simply not drawn.
+    var address: String? = nil
+    var photoUrl: String? = nil
+    var averageRating: Double? = nil
+    var reviewCount: Int? = nil
+    var latestReviewAt: String? = nil
 
     var id: String { placeId }
+
+    /// A community review in the last 14 days — the web's `isRecentlyActive` (a real date, never a guess).
+    var isRecentlyActive: Bool {
+        guard let iso = latestReviewAt else { return false }
+        let f = ISO8601DateFormatter()
+        f.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        guard let date = f.date(from: iso) ?? ISO8601DateFormatter().date(from: iso) else { return false }
+        return Date().timeIntervalSince(date) < 14 * 24 * 3600
+    }
 }
 
 struct Booking: Identifiable, Codable {

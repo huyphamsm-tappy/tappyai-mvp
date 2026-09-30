@@ -158,6 +158,12 @@ struct ChatView: View {
         // The 18+ gate as its own screen (mockup "Xác nhận bạn đủ 18 tuổi"). Closing it leaves the
         // inline prompt in the message list, which still offers the same fields (and, for a blocked
         // account, the one-time correction).
+        // Another screen asked the chat to send something (recommendation "Hỏi Tappy về chỗ này").
+        .onChange(of: router.chatSeed) { seed in
+            guard let seed, !vm.isStreaming else { return }
+            router.chatSeed = nil
+            vm.sendQuickPrompt(seed)
+        }
         .onChange(of: vm.error) { newError in
             ageScreen = newError?.isAgeGate ?? false
         }
@@ -194,6 +200,10 @@ struct ChatView: View {
                 await vm.loadConversation()
             }
             await vm.fetchInitialData()
+            if let seed = router.chatSeed, !vm.isStreaming {
+                router.chatSeed = nil
+                vm.sendQuickPrompt(seed)
+            }
         }
         .onDisappear {
             vm.tts.stop()
