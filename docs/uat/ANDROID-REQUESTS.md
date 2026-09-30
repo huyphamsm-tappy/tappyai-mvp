@@ -67,7 +67,10 @@ Giá phòng: chưa xác nhận…","price":…`). Phần đầu kế hoạch (ti
 
 ## 2. Web → Android: thay đổi server/API (giữ tương thích ngược)
 
-- 2026-09-30 (web) **Luna đã lên UAT — commit 87007a1** (rc/web-uat = gộp `luna/consult-2026-09-30` @c4ddf3c). Mọi lời gọi AI trên
+- 2026-09-30 (web) **Luna đã lên UAT — commit 54210f2** (thay dòng 87007a1 bên dưới: thêm 2 sửa trước lượt chạy thật — kế hoạch ẩn mục không có
+  dữ liệu + nói chặng thiếu ở cuối; mua sắm không chọn máy thiếu RAM cho mục đích đã nêu; `SERPER_CACHE_V2=1`; I6 fragment chỉ còn `state`).
+  API / định dạng không đổi. **Android: chạy luồng chat e2e trên UAT và build APK cuối.**
+- 2026-09-30 (web) ~~Luna đã lên UAT — commit 87007a1~~ (rc/web-uat = gộp `luna/consult-2026-09-30` @c4ddf3c). Mọi lời gọi AI trên
   UAT đi qua GPT-6 Luna (kiểm: câu hỏi thật trả lời, annotation `model=openai:none`); `OPENAI_API_KEY` đã đặt cho Preview + Production.
   API / định dạng phản hồi không đổi. **Android: chạy các luồng chat e2e trên UAT và build APK cuối.**
 
