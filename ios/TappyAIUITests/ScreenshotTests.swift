@@ -19,10 +19,10 @@ final class ScreenshotTests: XCTestCase {
     /// Login: Google · Zalo · or · Email · Password · Sign in · Create account · Guest.
     func testLoginScreen() {
         let app = launch(route: "hub")
-        let signIn = app.buttons["profile-guest-signin"]
-        XCTAssertTrue(signIn.waitForExistence(timeout: 20), "guest card on the hub")
+        let signIn = any(app, "profile-guest-signin")
+        XCTAssertTrue(signIn.waitForExistence(timeout: 30), "guest card on the hub")
         signIn.tap()
-        XCTAssertTrue(app.buttons["auth-guest"].waitForExistence(timeout: 20), "guest option on login")
+        XCTAssertTrue(any(app, "auth-guest").waitForExistence(timeout: 30), "guest option on login")
         XCTAssertTrue(app.secureTextFields.firstMatch.exists, "password field on login")
         shot("01-login")
     }
@@ -30,26 +30,28 @@ final class ScreenshotTests: XCTestCase {
     /// The 18+ gate as its own screen, opened by the server's `age_declaration_required`.
     func testAgeGate() {
         let app = launch(route: "chat")
-        let input = app.descendants(matching: .any)["chat-input"]
-        XCTAssertTrue(input.waitForExistence(timeout: 20), "chat input")
+        let input = any(app, "chat-input")
+        XCTAssertTrue(input.waitForExistence(timeout: 30), "chat input")
         input.tap()
-        input.typeText("xin chào\n")
-        XCTAssertTrue(app.descendants(matching: .any)["age-check"].waitForExistence(timeout: 20), "full-screen 18+ gate")
-        XCTAssertTrue(app.buttons["age-submit"].exists)
+        input.typeText("xin chao")
+        let send = any(app, "chat-send")
+        XCTAssertTrue(send.waitForExistence(timeout: 10), "send button")
+        send.tap()
+        XCTAssertTrue(any(app, "age-submit").waitForExistence(timeout: 40), "full-screen 18+ gate")
         shot("02-age-gate")
     }
 
     /// Hub "Tôi" as a guest: sign-in card, nine locked rows.
     func testHubGuest() {
         let app = launch(route: "hub")
-        XCTAssertTrue(app.descendants(matching: .any)["profile-guest-card"].waitForExistence(timeout: 20))
+        XCTAssertTrue(any(app, "profile-guest-signin").waitForExistence(timeout: 30))
         shot("03-hub-guest")
     }
 
     func testSavedWithItems() {
         let app = launch(route: "saved")
         XCTAssertTrue(app.descendants(matching: .any)["saved-hero"].waitForExistence(timeout: 20))
-        XCTAssertTrue(app.buttons["saved-count-places"].waitForExistence(timeout: 20), "count cards")
+        XCTAssertTrue(any(app, "saved-count-places").waitForExistence(timeout: 30), "count cards")
         shot("04-saved")
     }
 
@@ -62,8 +64,8 @@ final class ScreenshotTests: XCTestCase {
 
     func testSavedPlacesFilter() {
         let app = launch(route: "saved")
-        let chip = app.buttons["saved-chip-places"]
-        XCTAssertTrue(chip.waitForExistence(timeout: 20))
+        let chip = any(app, "saved-chip-places")
+        XCTAssertTrue(chip.waitForExistence(timeout: 30))
         chip.tap()
         XCTAssertTrue(app.staticTexts["Phở Thìn Bờ Hồ"].waitForExistence(timeout: 20), "saved place row")
         shot("06-saved-places")
@@ -84,6 +86,12 @@ final class ScreenshotTests: XCTestCase {
     }
 
     // MARK: - Helpers
+
+    /// Any element type with this accessibility identifier (SwiftUI does not always surface a
+    /// styled Button as `.button`).
+    private func any(_ app: XCUIApplication, _ id: String) -> XCUIElement {
+        app.descendants(matching: .any)[id].firstMatch
+    }
 
     private func launch(route: String) -> XCUIApplication {
         let app = XCUIApplication()

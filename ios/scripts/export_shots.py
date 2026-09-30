@@ -28,6 +28,10 @@ def main(src, out):
             ext = os.path.splitext(att["exportedFileName"])[1] or ".png"
             if ext.lower() != ".png":
                 continue
+            # Only our own "NN-name" attachments; Xcode also attaches "UI Snapshot"/"Synthesized Event"
+            # files (hierarchy dumps saved with a .png name) for failed steps.
+            if not re.match(r"^\d\d-", base):
+                continue
             shutil.copyfile(os.path.join(src, att["exportedFileName"]), os.path.join(out, base + ".png"))
             n += 1
     print(f"exported {n} screenshots to {out}")

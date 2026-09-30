@@ -85,7 +85,6 @@ struct ProfileMainView: View {
         .background(TappyColor.cardBackground)
         .clipShape(RoundedRectangle(cornerRadius: Radius.xl))
         .overlay(RoundedRectangle(cornerRadius: Radius.xl).stroke(TappyColor.border, lineWidth: 1))
-        .accessibilityIdentifier("profile-guest-card")
     }
 
     // MARK: - Community shortcuts (the rows the web/Android hub dropped stay one tap away)

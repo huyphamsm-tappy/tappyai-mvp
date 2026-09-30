@@ -174,6 +174,7 @@ struct ChatInputBar: View {
                         .buttonStyle(.plain)
                         .disabled(!canSend)
                         .accessibilityLabel(Text("chat.send"))
+                        .accessibilityIdentifier("chat-send")
                     }
                 }
                 .padding(.horizontal, Spacing.md)

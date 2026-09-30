@@ -111,6 +111,7 @@ struct RecommendationsView: View {
                 .frame(width: 38, height: 38).background(tint.opacity(0.12)).clipShape(Circle())
                 .overlay(Circle().stroke(tint.opacity(0.3), lineWidth: 1))
             Text(text).font(.system(size: 13)).foregroundStyle(TappyColor.textPrimary)
+                .fixedSize(horizontal: false, vertical: true)
                 .frame(maxWidth: 130, alignment: .leading)
         }
     }

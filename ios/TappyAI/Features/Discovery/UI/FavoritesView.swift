@@ -105,14 +105,14 @@ struct FavoritesView: View {
                     .font(.system(size: 13.5))
                     .foregroundStyle(TappyColor.textSecondary)
                 ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 4) {
+                    HStack(spacing: 2) {
                         ForEach(Filter.allCases) { chip in chipView(chip) }
                     }
                 }
                 .padding(.top, 10)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(20)
+            .padding(16)
         }
         .background(
             LinearGradient(colors: [accent.opacity(0.18), TappyColor.cardBackground],
@@ -126,12 +126,12 @@ struct FavoritesView: View {
     private func chipView(_ chip: Filter) -> some View {
         let active = chip == filter
         return Button { filter = chip } label: {
-            HStack(spacing: 6) {
-                Image(systemName: chip.icon).font(.system(size: 13))
-                Text(chip.labelKey).font(.system(size: 13, weight: .medium))
+            HStack(spacing: 4) {
+                Image(systemName: chip.icon).font(.system(size: 12))
+                Text(chip.labelKey).font(.system(size: 12.5, weight: .medium)).lineLimit(1)
             }
             .foregroundStyle(active ? TappyColor.textPrimary : TappyColor.textSecondary)
-            .padding(.horizontal, 12)
+            .padding(.horizontal, 8)
             .frame(minHeight: 40)
             .background(active ? accent.opacity(0.12) : Color.clear)
             .clipShape(Capsule())

@@ -35,6 +35,14 @@ Việc cần Huy đăng nhập: `docs/ios/IOS-REQUESTS.md` §3 (một lần). Y�
 - Giao diện câu trả lời tư vấn theo khung mới — CHỜ Luna (không làm).
 - Build TestFlight sau khi cụm 2 xong và CI xanh.
 
+## Xác nhận thư mục `C:\wtios-untracked-backup` (30/09) — Huy tự xoá
+24 file (693 KB), đều là file untracked cũ của worktree `ci/ios-build`. So từng file với nhánh này (= `rc/web-uat` fbb1c3c):
+- 20 file GIỐNG HỆT bản đã có trên rc/web-uat.
+- 4 file KHÁC, và bản trên rc/web-uat MỚI HƠN bản backup (chỉ khác ở comment/cách tra chuỗi/helper test, sau khi bỏ khác biệt xuống dòng):
+  `Core/Share/PlanShareService.swift`, `Core/Share/ShareArtifact.swift`, `TappyAITests/CommerceActionContractTests.swift`,
+  `TappyAITests/PlanShareTests.swift`.
+→ Không có gì trong thư mục backup mà rc/web-uat chưa có. Xoá được.
+
 ## Ghi chú kỹ thuật
 - Ảnh Android dùng để ghép là ảnh HIỆN TRẠNG 28/09 đã commit (`docs/uat/evidence/android-parity/step1-hientrang`), không phải bản
   cuối; ảnh Android cuối nằm ngoài git (GCS). Ghi rõ trên từng ảnh ghép.

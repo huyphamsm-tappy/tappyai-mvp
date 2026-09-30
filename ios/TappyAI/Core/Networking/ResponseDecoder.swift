@@ -2,10 +2,18 @@ import Foundation
 
 /// Shared JSON decoding config. The backend returns snake_case fields (e.g. `follower_count`),
 /// so the default converts to camelCase; features may override per-model if needed.
+///
+/// 🚨 TWO MODEL STYLES LIVE IN THIS APP and one `keyDecodingStrategy` cannot serve both:
+/// models with camelCase properties and no `CodingKeys` (need `.convertFromSnakeCase`), and models
+/// with explicit snake_case `CodingKeys` such as `Favorite`/`SavedReview`/`UserProfile` (need the
+/// key UNCHANGED — with `.convertFromSnakeCase` the JSON `place_id` becomes `placeId` before the
+/// lookup and `keyNotFound` follows; CI screenshot run 30/09 showed Saved failing on real-shaped data).
+/// `ResponseJSONDecoder` therefore decodes with default keys after adding a camelCase ALIAS next to
+/// every snake_case key, so both styles find what they ask for.
 enum ResponseDecoder {
     static let json: JSONDecoder = {
-        let d = JSONDecoder()
-        d.keyDecodingStrategy = .convertFromSnakeCase
+        let d = ResponseJSONDecoder()
+        d.keyDecodingStrategy = .useDefaultKeys
         d.dateDecodingStrategy = .custom { decoder in
             let container = try decoder.singleValueContainer()
             let raw = try container.decode(String.self)
@@ -16,6 +24,44 @@ enum ResponseDecoder {
         }
         return d
     }()
+
+    /// Same aliasing, for tests and callers holding raw bytes.
+    static func withCamelCaseAliases(_ data: Data) -> Data {
+        guard let object = try? JSONSerialization.jsonObject(with: data, options: [.fragmentsAllowed]) else { return data }
+        let aliased = alias(object)
+        guard JSONSerialization.isValidJSONObject(aliased),
+              let out = try? JSONSerialization.data(withJSONObject: aliased) else { return data }
+        return out
+    }
+
+    private static func alias(_ value: Any) -> Any {
+        if let dict = value as? [String: Any] {
+            var out: [String: Any] = [:]
+            for (key, inner) in dict {
+                let converted = alias(inner)
+                out[key] = converted
+            }
+            for (key, inner) in out where key.contains("_") {
+                let camel = camelCase(key)
+                if camel != key, out[camel] == nil { out[camel] = inner }
+            }
+            return out
+        }
+        if let array = value as? [Any] { return array.map(alias) }
+        return value
+    }
+
+    /// Foundation's own `convertFromSnakeCase` rule: leading/trailing underscores are kept, the
+    /// rest is split on `_` and every word after the first is capitalised.
+    static func camelCase(_ key: String) -> String {
+        let chars = Array(key)
+        guard let first = chars.firstIndex(where: { $0 != "_" }),
+              let last = chars.lastIndex(where: { $0 != "_" }) else { return key }
+        let lead = String(chars[..<first]), trail = String(chars[(last + 1)...])
+        let words = String(chars[first...last]).split(separator: "_", omittingEmptySubsequences: true).map(String.init)
+        guard let head = words.first else { return key }
+        return lead + head + words.dropFirst().map { $0.prefix(1).uppercased() + $0.dropFirst() }.joined() + trail
+    }
 
     static let jsonEncoder: JSONEncoder = {
         let e = JSONEncoder()
@@ -142,5 +188,12 @@ extension KeyedDecodingContainer {
     /// unparseable all read as nil.
     func decodeLenientDate(forKey key: Key) -> Date? {
         try? decodeIfPresent(Date.self, forKey: key)
+    }
+}
+
+/// `JSONDecoder` that adds camelCase aliases to snake_case keys before decoding — see `ResponseDecoder`.
+final class ResponseJSONDecoder: JSONDecoder, @unchecked Sendable {
+    override func decode<T: Decodable>(_ type: T.Type, from data: Data) throws -> T {
+        try super.decode(type, from: ResponseDecoder.withCamelCaseAliases(data))
     }
 }

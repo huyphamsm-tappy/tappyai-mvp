@@ -74,8 +74,9 @@ struct VietContentView: View {
                 (Text("vietcontent.hero.title1") + Text("\n") + Text("vietcontent.hero.title2Lead") + Text(" ")
                     + Text("vietcontent.hero.accent").foregroundColor(Self.accentLight)
                     + Text(" ✦").foregroundColor(Self.accentLight))
-                    .font(.system(size: 24, weight: .black))
+                    .font(.system(size: 22, weight: .black))
                     .foregroundStyle(.white)
+                    .fixedSize(horizontal: false, vertical: true)
                 Text("vietcontent.hero.body").font(.system(size: 14)).foregroundStyle(.white.opacity(0.8))
             }
             .frame(maxWidth: .infinity, alignment: .leading)
