@@ -94,7 +94,8 @@ export function modelForRole(role: ModelRole, opts: { structured?: boolean } = {
   if (routedTo(role) !== 'openai') return base
   const primary = opts.structured ? openaiProvider!.structuredModel(role) : openaiProvider!.model(role)
   const ms = Number(process.env[`LLM_${role.toUpperCase()}_TIMEOUT_MS`])
-  // A reasoning plan thinks before its first part: a longer default wait for role `plan` (still under the route's budget).
+  // A reasoning plan thinks before its first part: a longer default wait for role `plan`. 25 s, not 30: replay 30/09 a
+  // medium trip plan hit 30 s twice and the Haiku fallback then ended at 50–53 s — too close to Vercel's 60 s.
   return withFallback(primary, base, { firstPartMs: Number.isFinite(ms) && ms > 0 ? ms : role === 'plan' ? 25000 : 8000, label: role })
 }
 
