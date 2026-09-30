@@ -57,6 +57,13 @@ Ngưỡng release (Huy 29/09): mỗi mảng ≥ 17/21 (TB 2 lượt replay), A =
   còn rất ít laptop thật; cần nguồn sản phẩm có thông số (trọng lượng, màu) — feed ACCESSTRADE sau khi có API key.
 Bằng chứng: replay `scripts/consult/replay/out/scenarios-2026-09-29T17-*`, phân loại tay trong RELEASE-PROGRESS "AI tư vấn — kết quả cuối".
 
+## PL-OPENAI-KEY — tạo key OpenAI PRODUCTION trước khi key test hết hạn (owner 30/09, GẤP theo lịch)
+- Release 30/09 chạy GPT-6 Luna bằng `OPENAI_API_KEY` = **key TEST hạn 30 ngày** (`D:\TappyAI-backups\openai-key.txt`, đặt cho
+  Production + Preview ngày 30/09) → hết hạn khoảng **30/10/2026**. Key hết hạn = MỌI tính năng AI trên production lỗi (không còn dự phòng
+  Haiku: Anthropic hết credit, `HAIKU_FALLBACK` tắt).
+- Việc: tạo key production (tổ chức/dự án riêng, giới hạn chi tiêu + cảnh báo), thay trên Vercel Production + Preview, redeploy, smoke 1 câu
+  chat + ScamShield. Làm **trước 25/10** (đặt nhắc lịch).
+
 ## PL-HOSTING-GCP — đánh giá dời hosting web từ Vercel sang Google Cloud (owner 30/09: CHỈ GHI, CHƯA LÀM)
 Bối cảnh: 30/09 Vercel báo team `huyphamsm-tappys-projects` dùng 100% Function Storage (10 GB, Hobby, tính theo đỉnh 30 ngày).
 Đã làm ngay: build chỉ `rc/web-uat` + `main` (`scripts/vercel-ignore.mjs`), xoá 6 bản Preview cũ, retention đang 30 ngày.

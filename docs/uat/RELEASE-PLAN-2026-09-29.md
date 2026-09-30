@@ -170,12 +170,12 @@ read from the source. "eff." = the value the code actually runs with.
 | `ACCOUNT_SELF_DELETE_ENABLED` | OFF | unset → OFF | **`true`** (plain) | **SET `false`** (owner decision) |
 | `NEXT_PUBLIC_PLAY_LISTING_LIVE` | OFF (UAT shows the badge by rule, `VERCEL_ENV !== 'production'`) | unset | unset → OFF | **keep unset** until Huy publishes the Play listing |
 | `AUTH_GOOGLE_ENABLED` | not read by this release (Phase 8 reads it) | set (Sensitive) | set | **keep** on Production |
-| `OPENAI_API_KEY` (**Luna, 30/09**) | required by `check-env` (replaces `ANTHROPIC_API_KEY`) | **set 30/09** (Preview, from `D:\TappyAI-backups\openai-key.txt`, never printed) | **set 30/09** (Production — takes effect only on the release deploy) | none — already set; verify the name on both before deploy |
+| `OPENAI_API_KEY` (**Luna, 30/09 — TEST key, expires in 30 days → backlog PL-OPENAI-KEY**) | required by `check-env` (replaces `ANTHROPIC_API_KEY`) | **set 30/09** (Preview, from `D:\TappyAI-backups\openai-key.txt`, never printed) | **set 30/09** (Production — takes effect only on the release deploy) | none — already set; verify the name on both before deploy |
 | `LLM_PROVIDER` (**Luna**) | unset = **openai (GPT-6 Luna)**; `claude` = roll back to Haiku | unset | unset | **must stay unset** (a `claude` value would call Anthropic, which has no credit) |
 | `CONSULT_LUNA`, `CONSULT_LUNA_FAST`, `CONSULT_LUNA_PLAN` | ON (off only on `0`) | unset → ON | unset | none |
 | `HAIKU_FALLBACK` | OFF (`=== '1'`) | unset → OFF | unset | none — `1` only if Anthropic has credit again |
 | `LLM_PLAN_REASONING`, `LLM_LUNA_MODEL` | `low`, `gpt-6-luna` | unset | unset | none |
-| `SERPER_CACHE_V2` | OFF | unset → OFF | unset | none (as tested) |
+| `SERPER_CACHE_V2` | OFF | **`1` set 30/09** (owner) | **`1` set 30/09** (takes effect on the release deploy) | none — already set |
 | `ANTHROPIC_API_KEY` | no longer read (only with `LLM_PROVIDER=claude` / `HAIKU_FALLBACK=1`) | set | set | leave as is |
 | `LLM_*_MODEL`, `AUDIT_*`, `CCP_EVENT_LOG` | code defaults / harness only | unset | unset | **must stay unset** |
 
