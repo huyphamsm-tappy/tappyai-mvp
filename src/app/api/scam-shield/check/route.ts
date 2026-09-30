@@ -1,12 +1,13 @@
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
 import { getRequestUser } from '@/lib/auth/getRequestUser'
-import { dailyRateLimit, clientIp, rateLimit } from '@/lib/security/rateLimit'
+import { clientIp } from '@/lib/security/rateLimit'
 import { SCAM_SHIELD_DAILY_LIMIT_AUTH, SCAM_SHIELD_DAILY_LIMIT_ANON } from '@/lib/config/product'
 import { checkUrl } from '@/lib/scam-shield'
 import { CHECK_RATE_LIMIT_WINDOW_MS, CHECK_RATE_LIMIT_MAX } from '@/lib/scam-shield/config'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
+import { publicDailyRateLimit, publicRateLimit } from '@/lib/security/publicRateLimit'
 
 export const maxDuration = 15
 
@@ -41,7 +42,7 @@ const bodySchema = z.object({
 
 export async function POST(req: Request) {
   const ip = clientIp(req)
-  const rl = rateLimit(`ss:${ip}`, CHECK_RATE_LIMIT_MAX, CHECK_RATE_LIMIT_WINDOW_MS)
+  const rl = await publicRateLimit(`ss:${ip}`, CHECK_RATE_LIMIT_MAX, CHECK_RATE_LIMIT_WINDOW_MS)
   if (!rl.ok) {
     return NextResponse.json(
       { error: 'rate_limit', message: serverMessage('scam.tooManyChecks', requestLocale(req)) },
@@ -53,7 +54,7 @@ export async function POST(req: Request) {
   const dailyLimit = user ? SCAM_SHIELD_DAILY_LIMIT_AUTH : SCAM_SHIELD_DAILY_LIMIT_ANON
   const dailyKey = user ? `ss:daily:${user.id}` : `ss:daily:anon:${ip}`
 
-  if (!dailyRateLimit(dailyKey, dailyLimit).ok) {
+  if (!(await publicDailyRateLimit(dailyKey, dailyLimit)).ok) {
     return NextResponse.json(
       { error: 'daily_limit', message: serverMessage('scam.dailyLimit', requestLocale(req)) },
       { status: 429 },

@@ -11,7 +11,10 @@ vi.mock('@/lib/share/sharedResultStore', () => ({
 }))
 const auth = { user: null as null | { id: string; is_anonymous?: boolean } }
 vi.mock('@/lib/auth/getRequestUser', () => ({ getRequestUser: async () => ({ user: auth.user, supabase: {} }) }))
-vi.mock('@/lib/security/publicRateLimit', () => ({ publicDailyRateLimit: async () => ({ ok: true, retryAfter: 0, scope: 'instance' }) }))
+vi.mock('@/lib/security/publicRateLimit', () => ({
+  publicDailyRateLimit: async () => ({ ok: true, retryAfter: 0, scope: 'instance' }),
+  publicRateLimit: async () => ({ ok: true, retryAfter: 0, scope: 'instance' }), // M4: burst caps are distributed too
+}))
 const check = vi.fn()
 vi.mock('@/lib/scam-shield', () => ({ checkUrl: (...a: unknown[]) => check(...a) }))
 

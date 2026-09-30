@@ -1,0 +1,127 @@
+# Migration apply order — the ONLY order in which this repository's schema is correct.
+#
+# security-audit M2. 22 legacy migrations have no date prefix (add_*.sql). Sorted by FILE NAME they
+# run after every dated migration, which reopens policies that later migrations closed and turns
+# SECURITY DEFINER counter functions back into INVOKER (the list is frozen in
+# src/lib/db/migrationOrder.test.ts). Those files are already applied in production and are NOT
+# renamed; instead, anything that replays migrations (a new environment, a restore, a test harness)
+# must follow THIS file, top to bottom.
+#
+# How the order was derived (2026-09-28): dated files by their date prefix; each undated file by the
+# date it was first committed. Production was built by hand through the SQL editor and keeps no
+# migration table, so this is the best reconstruction available — the test replays it and checks that
+# every policy the history closed stays closed.
+#
+# Rules (enforced by src/lib/db/migrationOrder.test.ts):
+#   * every NEW migration is named YYYYMMDD[a-z]_name.sql and is APPENDED at the end of this file;
+#   * every file in supabase/migrations/*.sql appears here exactly once (deferred/ and rollback/ excluded);
+#   * dated migrations appear in name order.
+#
+# One path per line, relative to the repository root. Lines starting with # are comments.
+supabase-schema.sql
+supabase/migrations/20260620_place_photos.sql
+supabase/migrations/20260621_notification_subscriptions.sql
+supabase/migrations/add_groups.sql
+supabase/migrations/add_preferences.sql
+supabase/migrations/add_memory_columns.sql
+supabase/migrations/add_price_watches.sql
+supabase/migrations/add_profile_edit.sql
+supabase/migrations/add_review_social.sql
+supabase/migrations/add_social_week2.sql
+supabase/migrations/add_tracking_integrations.sql
+supabase/migrations/20260627_user_memory.sql
+supabase/migrations/add_explore_upgrade.sql
+supabase/migrations/add_phase4.sql
+supabase/migrations/add_event_type_check.sql
+supabase/migrations/add_user_language_preference.sql
+supabase/migrations/20260703_add_reviews_update_policy.sql
+supabase/migrations/20260703_fix_comment_count_trigger.sql
+supabase/migrations/20260703_fix_like_count_trigger.sql
+supabase/migrations/20260703_fix_save_count_trigger.sql
+supabase/migrations/add_billing_customers_isolation.sql
+supabase/migrations/add_counter_security_definer.sql
+supabase/migrations/20260704_add_music_module.sql
+supabase/migrations/20260704_add_reviews_music_column.sql
+supabase/migrations/20260704_backfill_review_counters.sql
+supabase/migrations/20260704_tighten_music_constraints.sql
+supabase/migrations/add_gatea_db_hardening.sql
+supabase/migrations/add_group_members_auth.sql
+supabase/migrations/add_phase4_hardening.sql
+supabase/migrations/add_profiles_email_isolation.sql
+supabase/migrations/add_user_preference_profile.sql
+supabase/migrations/20260705_seed_music_demo_catalog.sql
+supabase/migrations/20260706_add_music_saved_and_type.sql
+supabase/migrations/20260706b_add_music_count_fns.sql
+supabase/migrations/20260706c_repoint_music_audio_local.sql
+supabase/migrations/add_message_feedback.sql
+supabase/migrations/add_music_attribution.sql
+supabase/migrations/add_original_sound_ugc.sql
+supabase/migrations/20260711_anon_chat_usage.sql
+supabase/migrations/20260711_music_ugc_combined.sql
+supabase/migrations/20260712_prod_baseline_and_review_saves_indexes.sql
+supabase/migrations/20260713_analytics_envelope_foundation.sql
+supabase/migrations/20260713_auth_daily_rollup.sql
+supabase/migrations/20260713_backoffice_phase0.sql
+supabase/migrations/20260713_user_acquisition_dimension.sql
+supabase/migrations/20260714_activation_daily_rollup.sql
+supabase/migrations/20260714_activation_dimension.sql
+supabase/migrations/20260714_device_context.sql
+supabase/migrations/20260720_comment_replies_reactions.sql
+supabase/migrations/20260722_notification_realtime.sql
+supabase/migrations/20260724_partner_deals.sql
+supabase/migrations/20260724_partner_deals_hardening.sql
+supabase/migrations/20260724_partner_deals_metadata.sql
+supabase/migrations/20260725_notifications_unification.sql
+supabase/migrations/20260731_partner_deal_translations.sql
+supabase/migrations/20260803_platform_owner.sql
+supabase/migrations/20260807_audit_chain.sql
+supabase/migrations/20260807_platform_hardening_phase0.sql
+supabase/migrations/20260807_platform_owner_revoke_public_execute.sql
+supabase/migrations/20260807b_sync_last_login_revoke_public_execute.sql
+supabase/migrations/20260808_anon_chat_usage_acl_hardening.sql
+supabase/migrations/20260808b_anon_claim_conversations.sql
+supabase/migrations/20260808c_handle_new_user_skip_anonymous.sql
+supabase/migrations/20260813_c8_event_outbox.sql
+supabase/migrations/20260814_c11_session_security.sql
+supabase/migrations/20260817_content_safety_gate.sql
+supabase/migrations/20260818_publication_boundary_rls.sql
+supabase/migrations/20260818b_music_tracks_publication_boundary.sql
+supabase/migrations/20260819_m08_account_status.sql
+supabase/migrations/20260820_b8_owner_recovery.sql
+supabase/migrations/20260820_m01_daily_snapshots.sql
+supabase/migrations/20260820_m04_cohort_metrics.sql
+supabase/migrations/20260821_anon_chat_usage_read.sql
+supabase/migrations/20260821_m08_user_notes.sql
+supabase/migrations/20260821_m09_moderation_queue.sql
+supabase/migrations/20260822_k2_platform_settings.sql
+supabase/migrations/20260824_decision_evidence_state.sql
+supabase/migrations/20260830_push_credential_ownership.sql
+supabase/migrations/20260901_marketing_governance_foundation.sql
+supabase/migrations/20260904_group_read_boundary.sql
+supabase/migrations/20260905_chat_messaging_phase1.sql
+supabase/migrations/20260906_phase6_messenger_reachability.sql
+supabase/migrations/20260908_user_demographics_foundation.sql
+supabase/migrations/20260911_user_memory_discovery_city.sql
+supabase/migrations/20260911b_user_memory_auth_fk.sql
+supabase/migrations/20260913_g1_growth_foundation.sql
+supabase/migrations/20260913_plan_shares.sql
+supabase/migrations/20260915_profile_public_presentation.sql
+supabase/migrations/20260915_review_shares.sql
+supabase/migrations/20260915b_review_likes_private.sql
+supabase/migrations/20260918_g1b_share_ancestry.sql
+supabase/migrations/20260920100000_commerce_providers.sql
+supabase/migrations/20260920110000_commerce_feed_items.sql
+supabase/migrations/20260920_f028_dob_self_correct_while_ineligible.sql
+supabase/migrations/20260921_f032_admin_role_actor_from_authuid.sql
+supabase/migrations/20260921_music_tracks_lockdown.sql
+supabase/migrations/20260921_user_events_ga4_event_types.sql
+supabase/migrations/20260921_user_events_shopping_search_event.sql
+supabase/migrations/20260922_groups_avatar_url.sql
+supabase/migrations/20260922_music_soundhelix_attribution.sql
+supabase/migrations/20260925_account_deletion_cascade_gaps.sql
+supabase/migrations/20260925b_decision_evidence_sweep.sql
+supabase/migrations/20260925c_account_deletion_f096.sql
+supabase/migrations/20260925d_audit_log_pii_retention.sql
+supabase/migrations/20260927100000_commerce_providers_portal_state.sql
+supabase/migrations/20260928b_revoke_increment_deal_click_public.sql
+supabase/migrations/20260928c_review_comments_publication_boundary.sql

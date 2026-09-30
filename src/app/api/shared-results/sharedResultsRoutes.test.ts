@@ -18,7 +18,10 @@ vi.mock('@/lib/share/sharedResultStore', () => ({
 }))
 const auth = { user: null as null | { id: string; is_anonymous?: boolean } }
 vi.mock('@/lib/auth/getRequestUser', () => ({ getRequestUser: async () => ({ user: auth.user, supabase: {} }) }))
-vi.mock('@/lib/security/publicRateLimit', () => ({ publicDailyRateLimit: async () => ({ ok: true, retryAfter: 0, scope: 'instance' }) }))
+vi.mock('@/lib/security/publicRateLimit', () => ({
+  publicDailyRateLimit: async () => ({ ok: true, retryAfter: 0, scope: 'instance' }),
+  publicRateLimit: async () => ({ ok: true, retryAfter: 0, scope: 'instance' }), // M4: burst caps are distributed too
+}))
 vi.mock('@/lib/share/shareRequest', async (orig) => {
   const real = await orig<typeof import('@/lib/share/shareRequest')>()
   return { ...real, resolveShareSource: async () => ({ ok: true, payload: { v: 1, title: 'T', query: 'q', domain: 'food', locale: 'vi', body: 'b', buttons: [], images: [], suggestedQuestions: [], createdAt: '2026-09-13T00:00:00.000Z' }, domain: 'food' }) }
