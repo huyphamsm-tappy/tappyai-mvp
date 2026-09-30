@@ -57,6 +57,13 @@ Ngưỡng release (Huy 29/09): mỗi mảng ≥ 17/21 (TB 2 lượt replay), A =
   còn rất ít laptop thật; cần nguồn sản phẩm có thông số (trọng lượng, màu) — feed ACCESSTRADE sau khi có API key.
 Bằng chứng: replay `scripts/consult/replay/out/scenarios-2026-09-29T17-*`, phân loại tay trong RELEASE-PROGRESS "AI tư vấn — kết quả cuối".
 
+## PL-KV-SPLIT — UAT (Preview) và production dùng CHUNG một kho KV → tách kho riêng cho từng môi trường (owner 30/09)
+- Hiện `KV_URL` / `KV_REST_API_URL` / `KV_REST_API_TOKEN` / `REDIS_URL` trên Vercel là một bộ cho **Production, Preview, Development**.
+  Kho này giữ bộ đếm lượt hỏi (Pro 300/ngày, free 15/ngày, burst), giới hạn tốc độ, cache Serper, … → một lượt test nặng trên UAT dùng
+  chung hạ tầng với production; muốn "trả lượt" cho tài khoản test trên UAT phải ghi vào kho của production (30/09 KHÔNG làm).
+- Việc: tạo kho KV riêng cho Preview (Upstash/Vercel KV), đặt biến riêng cho Preview + Development, giữ Production nguyên; kiểm key prefix
+  theo môi trường; smoke: đếm lượt trên UAT không đổi số của production. Làm SAU release, trước đợt test lớn tiếp theo.
+
 ## PL-OPENAI-KEY — tạo key OpenAI PRODUCTION trước khi key test hết hạn (owner 30/09, GẤP theo lịch)
 - Release 30/09 chạy GPT-6 Luna bằng `OPENAI_API_KEY` = **key TEST hạn 30 ngày** (`D:\TappyAI-backups\openai-key.txt`, đặt cho
   Production + Preview ngày 30/09) → hết hạn khoảng **30/10/2026**. Key hết hạn = MỌI tính năng AI trên production lỗi (không còn dự phòng
