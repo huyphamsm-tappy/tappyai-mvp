@@ -142,10 +142,10 @@ jobs:
           python3 scripts/pair_evidence.py build/shots .. build/pairs
           echo "### iOS screenshots" >> "$GITHUB_STEP_SUMMARY"
           cat build/pairs/pairs.md >> "$GITHUB_STEP_SUMMARY"
-          # PASS only with photos: the suite has 8 screens.
+          # PASS only with photos: the suite has 8 screens + 5 share cards.
           count=$(ls build/shots/*.png 2>/dev/null | wc -l | tr -d ' ')
           echo "screenshots: $count"
-          [ "$count" -ge 8 ] || { echo "::error::expected 8 screenshots, got $count"; exit 1; }
+          [ "$count" -ge 13 ] || { echo "::error::expected 13 screenshots, got $count"; exit 1; }
 
       - name: Upload screenshots
         if: always()

@@ -194,7 +194,7 @@ struct ProfileMainView: View {
         .buttonStyle(.plain)
         .accessibilityLabel(Text("qr.title"))
         .sheet(isPresented: $showQR) {
-            ProfileQRView(url: url)
+            ProfileQRView(url: url, displayName: profile?.fullName ?? "")
         }
     }
 

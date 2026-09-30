@@ -62,7 +62,7 @@ struct ReviewsFeedView: View {
                     baseURL: deps.env.apiBaseURL.absoluteString,
                     onDismiss: { vm.closeShare() }
                 )
-                .presentationDetents([.medium])
+                .presentationDetents([.large])
             }
         }
         .fullScreenCover(isPresented: $showCreateReview) {

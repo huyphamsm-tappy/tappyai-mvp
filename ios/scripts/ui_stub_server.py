@@ -10,10 +10,34 @@ State is switched by the test itself:  POST /__stub/mode  {"saved": "empty" | "f
 Usage: python3 ios/scripts/ui_stub_server.py [port]
 """
 import json
+import struct
 import sys
+import zlib
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 MODE = {"saved": "full"}
+
+
+def gradient_png(w, h, c1, c2):
+    """A w x h diagonal-gradient PNG (no imaging library: zlib + struct only)."""
+    rows = []
+    for y in range(h):
+        row = bytearray([0])
+        for x in range(w):
+            t = (x / max(1, w - 1) + y / max(1, h - 1)) / 2
+            row += bytes(int(c1[i] + (c2[i] - c1[i]) * t) for i in range(3))
+        rows.append(bytes(row))
+
+    def chunk(kind, data):
+        body = kind + data
+        return struct.pack(">I", len(data)) + body + struct.pack(">I", zlib.crc32(body) & 0xFFFFFFFF)
+
+    return (b"\x89PNG\r\n\x1a\n" + chunk(b"IHDR", struct.pack(">IIBBBBB", w, h, 8, 2, 0, 0, 0))
+            + chunk(b"IDAT", zlib.compress(b"".join(rows))) + chunk(b"IEND", b""))
+
+
+IMAGES = {"a": ((255, 176, 32), (240, 69, 122)), "b": ((30, 107, 255), (139, 92, 246)),
+          "c": ((16, 185, 129), (59, 130, 246)), "d": ((245, 158, 11), (239, 68, 68))}
 
 CONFIG = {
     "freemium": {"freeDailyLimit": 20, "anonLifetimeLimit": 5},
@@ -72,6 +96,16 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         path = self.path.split("?")[0]
+        if path.startswith("/img/") and path.endswith(".png"):
+            name = path[5:-4]
+            if name in IMAGES:
+                data = gradient_png(360, 240, *IMAGES[name])
+                self.send_response(200)
+                self.send_header("Content-Type", "image/png")
+                self.send_header("Content-Length", str(len(data)))
+                self.end_headers()
+                self.wfile.write(data)
+                return
         if path == "/api/config":
             return self._send(200, CONFIG)
         if path == "/api/favorites":

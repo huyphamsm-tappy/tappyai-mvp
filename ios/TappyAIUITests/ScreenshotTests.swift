@@ -85,6 +85,20 @@ final class ScreenshotTests: XCTestCase {
         shot("08-recommendations")
     }
 
+    // MARK: - Share cards (the exact file "Lưu về máy" / TikTok / the share sheet send)
+
+    func testShareCardReview() { cardShot(route: "card-review", name: "09-card-review") }
+    func testShareCardClip() { cardShot(route: "card-clip", name: "10-card-clip") }
+    func testShareCardSuggestion() { cardShot(route: "card-suggestion", name: "11-card-suggestion") }
+    func testShareCardPlan() { cardShot(route: "card-plan", name: "12-card-plan") }
+    func testShareCardQR() { cardShot(route: "card-qr", name: "13-card-qr") }
+
+    private func cardShot(route: String, name: String) {
+        let app = launch(route: route)
+        XCTAssertTrue(any(app, "card-preview").waitForExistence(timeout: 60), "\(route): rendered card")
+        shot(name)
+    }
+
     // MARK: - Helpers
 
     /// Any element type with this accessibility identifier (SwiftUI does not always surface a

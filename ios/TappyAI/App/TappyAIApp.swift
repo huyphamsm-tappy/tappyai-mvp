@@ -14,6 +14,7 @@ struct TappyAIApp: App {
                 .environmentObject(deps.router)
                 .environmentObject(deps.theme)
                 .environmentObject(deps.localization)
+                .overlay { UITestOverlay() }
                 .task {
                     deps.bootstrap()
                     #if DEBUG

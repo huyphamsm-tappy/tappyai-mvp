@@ -91,6 +91,9 @@ final class ShareCardFiles {
 
     private var cache: [String: Card] = [:]
 
+    /// `nonisolated` so a SwiftUI view can hold one as a plain property.
+    nonisolated init() {}
+
     /// The card for `input`, rendered once per (layout, link, subject). Nil if rendering failed
     /// (not cached: the next ask retries).
     func card(_ input: ShareCardInput) async -> Card? {

@@ -38,6 +38,11 @@ struct PlanCardData: Equatable, Sendable {
         return photoHosts.contains { host == $0 || host.hasSuffix("." + $0) }
     }
 
+    init(title: String, days: [Day], people: Int? = nil, budgetTotal: String? = nil, summary: String? = nil) {
+        self.title = title; self.days = days; self.people = people
+        self.budgetTotal = budgetTotal; self.summary = summary
+    }
+
     /// The snapshot of a chat plan, with the web snapshot's bounds and photo rule. Nil when it has no stop.
     init?(plan: TappyPlan) {
         let days: [Day] = plan.days.prefix(10).enumerated().compactMap { (i, d) -> Day? in

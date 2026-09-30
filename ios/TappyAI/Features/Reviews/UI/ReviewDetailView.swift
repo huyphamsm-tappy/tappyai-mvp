@@ -80,7 +80,7 @@ struct ReviewDetailView: View {
                     baseURL: baseURL,
                     onDismiss: { vm.showShare = false }
                 )
-                .presentationDetents([.medium])
+                .presentationDetents([.large])
             }
         }
     }

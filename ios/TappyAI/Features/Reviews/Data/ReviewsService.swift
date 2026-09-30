@@ -207,6 +207,23 @@ struct ReviewsService: Sendable {
         return try await api.send(endpoint, as: FollowResponse.self)
     }
 
+    // MARK: - Share history
+
+    /// `POST /api/reviews/{id}/share {"channel": …}` — records ONE completed share (the "Đã chia sẻ"
+    /// history). Called only after the share really happened, never when the sheet merely opens.
+    /// The channel must match `^[a-z0-9][a-z0-9._:-]{0,63}$`: "copy", "native", "ios:<activity type>".
+    /// Best effort: the share already succeeded, so a failure here is not surfaced.
+    func recordShare(reviewId: String, channel: String) async {
+        let safe = String(channel.lowercased().unicodeScalars.map { c -> Character in
+            let ok = (c.value >= 97 && c.value <= 122) || (c.value >= 48 && c.value <= 57) || ".:_-".unicodeScalars.contains(c)
+            return ok ? Character(c) : "-"
+        }.prefix(64))
+        guard let first = safe.first, first.isLetter || first.isNumber,
+              let body = try? JSONSerialization.data(withJSONObject: ["channel": safe]) else { return }
+        let endpoint = Endpoint(path: "/api/reviews/\(reviewId)/share", method: .post, body: body, requiresAuth: true)
+        _ = try? await api.send(endpoint)
+    }
+
     // MARK: - Report review
 
     /// `POST /api/reviews/{id}/report {"reason": …}` — account session required.

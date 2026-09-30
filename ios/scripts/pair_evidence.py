@@ -25,6 +25,15 @@ REFERENCES = {
     "07-viet-content": "step1-hientrang/10-viet-content.png",
     "08-recommendations": "step1-hientrang/09-recommendations.png",
 }
+# Share cards have no committed Android render (kept outside git); pair them with the owner's
+# APPROVED layout samples (docs/design/share-layouts) — root-relative paths, labelled as such.
+DESIGN = {
+    "09-card-review": "docs/design/share-layouts/profile-qr.png",
+    "10-card-clip": "docs/design/share-layouts/profile-qr.png",
+    "11-card-suggestion": "docs/design/share-layouts/profile-qr.png",
+    "12-card-plan": "docs/design/share-layouts/plan-share.png",
+    "13-card-qr": "docs/design/share-layouts/profile-qr.png",
+}
 HEIGHT = 1400
 
 
@@ -41,8 +50,14 @@ def main(shots_dir, repo, out_dir):
             continue
         name = os.path.splitext(fn)[0]
         ios = fit(Image.open(os.path.join(shots_dir, fn)).convert("RGB"), HEIGHT)
-        ref_rel = REFERENCES.get(name)
-        ref_path = os.path.join(repo, "docs/uat/evidence/android-parity", ref_rel) if ref_rel else None
+        design_rel = DESIGN.get(name)
+        ref_rel = design_rel or REFERENCES.get(name)
+        if design_rel:
+            ref_path = os.path.join(repo, design_rel)
+            ref_label = "Approved layout sample (owner pick 29/09)"
+        else:
+            ref_path = os.path.join(repo, "docs/uat/evidence/android-parity", ref_rel) if ref_rel else None
+            ref_label = "Android reference: web | Android | mockup, baseline 28/09"
         if ref_path and os.path.exists(ref_path):
             ref = fit(Image.open(ref_path).convert("RGB"), HEIGHT)
             canvas = Image.new("RGB", (ios.width + ref.width + 30, HEIGHT + 60), "white")
@@ -50,7 +65,7 @@ def main(shots_dir, repo, out_dir):
             canvas.paste(ref, (ios.width + 30, 60))
             d = ImageDraw.Draw(canvas)
             d.text((10, 20), f"iOS (this build) - {name}", fill="black")
-            d.text((ios.width + 40, 20), "Android reference: web | Android | mockup, baseline 28/09", fill="black")
+            d.text((ios.width + 40, 20), ref_label, fill="black")
             rows.append((name, ref_rel))
         else:
             canvas = Image.new("RGB", (ios.width, HEIGHT + 60), "white")
