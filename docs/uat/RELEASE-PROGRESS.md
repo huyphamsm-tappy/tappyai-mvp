@@ -227,6 +227,18 @@ Chưa commit — patch lưu scratchpad (shopR / shopAB5). Chờ Huy (Q-AI-SHOP).
 - Bảo mật 30/09: nhánh `security/hardening-2026-09-30` gộp vào rc (`d4f5c8c`), UAT `6aade7a` smoke 5 luồng đạt; migration #20–#23 vào PHẦN B.
   Apple IAP: production KHÔNG có `APPLE_IAP_*` → verify trả 503, lỗ API-1 đang đóng; không thêm các biến này trước khi `fea7f38` lên prod.
 
+### ✅ Thẻ hỏi nhanh mới [TAPPY_ASK] — web LIVE UAT `1c5087b` (30/09, chỉ đổi giao diện)
+- Đặc tả chung web + Android: `docs/design/ask-card/README.md` (R23 + **R23.1** §5). Server và tin gửi lên KHÔNG đổi.
+  Web `1685c62` + `86f88d3` + `f6b4a31`; Android đã chép 1:1 (`e3aa75c`, `7f1646d`). iOS: `docs/ios/IOS-REQUESTS.md` I-1.
+- Test: `askCardModel.test.ts` (câu hỏi thật của router, 5 mảng; ghép câu trả lời: chọn nhiều `, `, các câu ` · `, không chọn gì → `Tìm cho tôi`),
+  `AskCard.test.tsx` (chọn nhiều/chọn một, gửi 1 lần rồi khoá, giữ lựa chọn qua lần remount).
+- **Lỗi tìm thấy khi chụp UAT và đã sửa:** câu trả lời đầu tiên của một chat lưu xong thì `router.replace` sang `/chat/<id>` → thẻ remount, mất lựa
+  chọn bấm trong 1–2 giây đầu (thẻ cũ dạng chip cũng bị). Sửa: giữ nháp trong bộ nhớ phiên (không ghi đâu cả), ghi ngay trong lúc bấm.
+  Chụp lại: 6/6 lượt giữ đủ lựa chọn sau 5 giây; lượt giải trí gửi đúng `Karaoke, Xem phim · 2 người · Quận 3`, thẻ biến mất sau khi gửi.
+- Ảnh UAT (mobile 390px + desktop 1280px, 5 mảng + du lịch có câu «Thích kiểu gì?», trạng thái đang gửi, ảnh cạnh mockup):
+  `gs://tappyai-uat-evidence/ask-card-v2-2026-09-30/web-1c5087b/askcard/` (`sbs-mobile-5areas.jpg`, `sbs-desktop-5areas.jpg`).
+  Ảnh ô hiện là ảnh giữ chỗ cùng tên vì manifest ảnh còn rỗng — thêm ảnh = thêm mục vào `src/lib/plans/images/manifest.ts`.
+
 ## Current step
 Overnight run 2026-09-28→29 DONE — final UAT SHA af8b4ba; morning report at the end of this file. Waiting on owner: Q1 (26/9 design), Q7 (AI gate), Q6 (share layout). Login = scratchpad pw/login.mjs (AUDIT only).
 
