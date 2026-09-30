@@ -11,7 +11,9 @@
 //             → hồ chí minh; hn → hà nội; đn / da nang → đà nẵng), in the query AND the location string;
 //           · repeated tokens after that (the model often writes the city twice);
 //           · "hồ chí minh" next to a numbered district (only HCM has them).
-//         Diacritics are still NOT folded (cacheKeys.ts: mắt / mất / mát are different words).
+//           · diacritics, LAST (owner spec 30/09 "bỏ dấu"): "quan an" and "quán ăn" share an entry. Known cost:
+//             words that differ only by tone share one too (mắt kính / mất kính — cacheKeys.ts); the queries
+//             here are written by our code/model in full words, so the replay corpus has no such pair (cacheSim.mjs).
 //   TTL   by what goes stale:
 //           maps (places)        3 days  — the weekly openingHours object is stored; open-now is
 //                                          computed by OUR code at read time (serperPlaces.ts), so
@@ -55,7 +57,9 @@ export function normalizeQueryV2(query: string | null | undefined): string {
     out.push(w)
   }
   // Numbered districts ("quận 1") exist only in Hồ Chí Minh, so "phở quận 1" and "phở quận 1 hồ chí minh" are one request.
-  return out.join(' ').replace(/(quận \d{1,2}.*?) hồ chí minh|hồ chí minh (.*?quận \d{1,2})/, (_m, a, b) => a ?? b)
+  const joined = out.join(' ').replace(/(quận \d{1,2}.*?) hồ chí minh|hồ chí minh (.*?quận \d{1,2})/, (_m, a, b) => a ?? b)
+  // Owner spec 30/09: "bỏ dấu". Folded LAST, after the aliases above matched their accented spellings.
+  return joined.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/g, 'd')
 }
 
 export type SerperCacheAreaV2 = { lat: number; lng: number; zoom?: number } | string | null | undefined
