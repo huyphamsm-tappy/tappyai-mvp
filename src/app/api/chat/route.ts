@@ -2665,7 +2665,10 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     // cacheable size, so it was never cached to begin with — measured
     // cacheCreationTokens:0 / cacheReadTokens:0 on every chitchat turn in both
     // the baseline and the post-B1 run. The tool path keeps its own lineage.
-    tools: lean && tools ? Object.fromEntries(Object.entries(tools).filter(([k]) => consultTools(consult!.domains).includes(k))) as typeof tools : tools,
+    // PHIÊN LUNA: a Luna answer whose targeted search the code already ran gets the results and NO tool definitions (the
+    // no-tool-turn pattern above; tool choice stays 'auto'). Owner: no model-driven tool loops — replay 30/09 TRAVEL-1 t2
+    // spent both steps calling tools and sent no text, twice.
+    tools: lunaAnswer && presearchAll.length > 0 ? undefined : lean && tools ? Object.fromEntries(Object.entries(tools).filter(([k]) => consultTools(consult!.domains).includes(k))) as typeof tools : tools,
     onFinish: async ({ usage, finishReason, text, steps }) => {
       // Prompt-cache accounting. `usage` is already the SUM across steps, but
       // cache counters live in per-step providerMetadata (the top-level
