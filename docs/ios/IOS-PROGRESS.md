@@ -29,7 +29,29 @@ Việc cần Huy đăng nhập: `docs/ios/IOS-REQUESTS.md` §3 (một lần). Y�
 | Chuỗi xin quyền camera/ảnh/vị trí/micro (vi+en, khớp `/privacy`) + `PrivacyInfo` thêm Device ID (FCM) | code + test | (cụm này) |
 | UI test simulator + ảnh chụp từng màn + ghép cạnh ảnh Android (artifact `ios-screenshots`) | code; **chưa có run nào** | (cụm này) |
 
-## Chưa làm (cụm 2)
+## Kết quả CI run đầu (36657639419, commit 722653c)
+- **Biên dịch xanh**, toàn bộ unit test xanh (kể cả `ChatContractTests`, `PrivacyManifestTests` có Device ID).
+- UI test: 4/8 qua (hub khách, Đã lưu rỗng, Viết content, Gợi ý), 4 đỏ. Ảnh chụp thật đã xem: hub, Đã lưu, Viết content, Gợi ý hiển thị đúng thiết kế.
+- **Lỗi thật tìm ra nhờ ảnh chụp:** `ResponseDecoder` dùng `.convertFromSnakeCase` nhưng nhiều model (`Favorite`, `SavedReview`, `UserProfile`…)
+  khai `CodingKeys` snake_case → `keyNotFound`, màn Đã lưu ở trạng thái lỗi khi có dữ liệu thật. Sửa ở f7ec551: decoder thêm khoá
+  camelCase bên cạnh khoá snake_case (`ResponseDecoderKeysTests`).
+- 3 lỗi UI test còn lại là lỗi của test (id nút bị container che, gửi tin bằng `\n` không submit) — đã sửa ở f7ec551, chờ run tiếp theo.
+- Sửa bố cục từ ảnh: chip lọc Đã lưu bị cắt, tiêu đề hero Viết content bị cắt "...", mô tả highlight Gợi ý bị cắt.
+- Architecture Guard / Regression Gate đỏ trên nhánh này là lỗi CÓ SẴN từ rc/web-uat (`src/app/go/at/route.ts:25` đọc `x-forwarded-for`), không phải của iOS.
+
+## Cụm 2 — ảnh chia sẻ (code viết, chờ CI)
+| Việc | Commit |
+|---|---|
+| Thẻ sáng mẫu #1: review, clip Explore, gợi ý (1080×1920), QR hồ sơ/bài; thẻ kế hoạch tối mẫu #7 (`Core/Share/Cards/*`) | 3dd465c |
+| Bộ tạo file MỘT LẦN cho mỗi (layout, link): xem trước = Lưu về máy = gửi (`ShareCardFiles`) | 3dd465c |
+| Màn chia sẻ review/clip: chọn mẫu (thẻ bài / mã QR), xem trước, Lưu về máy, Gửi ảnh (TikTok, Zalo… nhận FILE PNG qua share sheet hệ thống), ghi lịch sử chia sẻ `POST /api/reviews/{id}/share` chỉ khi chia sẻ hoàn tất | ee37457 |
+| Màn chia sẻ gợi ý/kế hoạch dùng thẻ đã duyệt; TikTok = gửi file thẻ; kế hoạch đã publish vẫn có "Lưu về máy" | ee37457 |
+| QR hồ sơ: thẻ QR có thương hiệu + Lưu về máy + Gửi ảnh | ee37457 |
+| 5 ảnh chụp thẻ trong CI (`09`–`13`), ghép cạnh mẫu layout đã duyệt | ee37457 |
+- Không có huy hiệu Google Play trên thẻ QR bản iOS (không dùng được trên iPhone; App Store chưa có → không huy hiệu, như web).
+- Chưa làm: gửi VIDEO clip đã tải lên cho TikTok (cần tải file video về máy trước); chia sẻ clip hiện gửi ảnh thẻ.
+
+## Chưa làm
 - Ảnh chia sẻ theo mẫu 1/6/7 (thẻ review/clip/gợi ý sáng 1080×1920, ảnh kế hoạch tối, QR hồ sơ), màn chia sẻ mẫu #6, "Lưu về máy",
   TikTok nhận FILE ảnh/video, ghi lịch sử chia sẻ (`POST /api/reviews/{id}/share`).
 - Giao diện câu trả lời tư vấn theo khung mới — CHỜ Luna (không làm).
