@@ -10,7 +10,7 @@ import { withFallback } from './fallback'
 //
 // Configuration (all optional; defaults in parentheses):
 //   LLM_PROVIDER        which adapter to use: claude | openai | gemini | grok
-//                       | deepseek                                  (claude)
+//                       | deepseek       (openai = GPT-6 Luna since 30/09; claude = Phase 7 rollback)
 //   LLM_FAST_MODEL      model id for the 'fast' role      (provider default)
 //   LLM_SMART_MODEL     model id for the 'smart' role     (provider default)
 //   LLM_PLANNING_MODEL  model id for the 'planning' role  (falls back to
