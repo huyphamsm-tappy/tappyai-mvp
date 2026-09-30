@@ -2839,6 +2839,17 @@ export function applyPlaceEnrichmentStreamFilter(
       // no pick) — the engine's #1, which V1 rule 8 already names as the default choice.
       const engineFirst = collector?.placesRecommendations?.[0]?.entity.identity.name ?? null
       const place = fallbackSentence(subjectOnly(pickName ?? engineFirst))
+      // PHIÊN LUNA: a reject turn's backstop never re-offers a name the consultation already showed (replay 30/09 SHOP-1
+      // t6: "không thích màu đen" → "Mình chọn **<the black Scout case>**" — Haiku's baseline had the same B).
+      if (consultLunaEnabled() && collector?.consultTurn === 'reject') {
+        const f = (s: string) => s.normalize('NFC').toLowerCase().replace(/\s+/g, ' ')
+        const shownKeys = (collector?.consultShown ?? []).map(f).filter(n => n.length >= 4)
+        const offered = f(place ?? shopping?.sentence ?? '')
+        if (offered && shownKeys.some(n => offered.includes(n))) {
+          console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'consultative_v1_pick_backstop', step: 'luna_reject_skipped_shown' }))
+          return null
+        }
+      }
       if (place) return { sentence: place, kind: 'place' as const }
       if (shopping) return { sentence: shopping.sentence, kind: 'shopping' as const }
       return null

@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { checkIntent, consultLunaEnabled, intentToDecision, isLunaAnswerTurn, mergeIntentWithRules, moneyAmounts, runLunaIntent, splitPickSentence, lunaTurnFacts, type LunaIntent } from './luna'
+import { checkIntent, consultLunaEnabled, intentToDecision, isLunaAnswerTurn, mergeIntentWithRules, moneyAmounts, runLunaIntent, splitPickSentence, lunaTurnFacts, withoutReferenceTurns, type LunaIntent } from './luna'
 import { buildLeanConsultSystem, LEAN_CORE } from './leanConsultPrompt'
 
 const base = (o: Partial<LunaIntent> = {}): LunaIntent => ({
@@ -135,7 +135,8 @@ describe('the turn stays with code when the router is sure', () => {
     expect(m.mode).toBe('merged')
     expect(m.decision.turn).toBe('ask')
     expect(m.decision.query).toBe('op uag')
-    expect(m.decision.known).toEqual({ san_pham: 'ốp UAG', dong: 'Monarch' })
+    // Luna's checked facts only — the router's regex slots can come from copied names (replay SHOP-3 'dell')
+    expect(m.decision.known).toEqual({ dong: 'Monarch', san_pham: 'ốp UAG' })
   })
   it('a follow-up the rules read as a new ask → the Luna turn (replay SHOP-2 t3); Luna pick vs rules ask → ask', () => {
     const m = mergeIntentWithRules({ domains: ['shopping'], turn: 'followup', known: {}, assumptions: [], refers: ['Hộp quà A'] }, rule)
@@ -179,5 +180,20 @@ describe('turn facts from the stored consultation (replay ENT-1 t6: the rejected
     expect(lunaTurnFacts('more', { shown: ['A', 'B'] })).toContain('A | B')
     expect(lunaTurnFacts('pick', { pick: 'X', shown: ['X'] })).toBe('')
     expect(lunaTurnFacts('reject', null)).toBe('')
+  })
+})
+
+describe('reference turns are not requirements (replay SHOP-3: Dell brand + i5-1334U budget from a pasted title)', () => {
+  it('blanks a user message that copies back a shown name, keeps the rest', () => {
+    const msgs = [
+      { role: 'user', content: 'học thiết kế, dưới 20 triệu, mới' },
+      { role: 'assistant', content: '**Mình chọn: Laptop Aspire Lite 14**.\n- **Laptop Dell 15 DC15250 Core i5-1334U**: giá cao hơn.' },
+      { role: 'user', content: 'Laptop Aspire Lite 14 hay Laptop Dell 15 DC15250 Core i5-1334U - Thái Long Computer?' },
+      { role: 'user', content: 'nặng quá, muốn nhẹ hơn' },
+    ]
+    const out = withoutReferenceTurns(msgs, [])
+    expect(out[0].content).toBe('học thiết kế, dưới 20 triệu, mới')
+    expect(out[2].content).toBe('')
+    expect(out[3].content).toBe('nặng quá, muốn nhẹ hơn')
   })
 })

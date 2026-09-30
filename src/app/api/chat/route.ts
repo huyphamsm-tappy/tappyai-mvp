@@ -93,7 +93,7 @@ import { buildDomainFrame, frameDomainOf, frameLibrary, frameRef, PLAN_HEADINGS 
 import { runConsultBrain, consultV2Enabled, wasAskReply, buildAskReply, placeTypeFor, latestShoppingPickPrice, shoppingMarkerRecords } from '@/lib/ai/consultative/consultBrain'
 import { routeConsult } from '@/lib/ai/consultative/consultRouter'
 import { rejectModifierOf, withoutQuotedNames, isFixedPhrase } from '@/lib/ai/consultative/consultRouter'
-import { consultLunaEnabled, isLunaAnswerTurn, runLunaIntent, mergeIntentWithRules, lunaTurnFacts, LUNA_CORE } from '@/lib/ai/consultative/luna'
+import { consultLunaEnabled, isLunaAnswerTurn, runLunaIntent, mergeIntentWithRules, lunaTurnFacts, withoutReferenceTurns, LUNA_CORE } from '@/lib/ai/consultative/luna'
 import { eventPreCall, onlyRowsNamed, slimResultForModel, travelPreCall, unshownRows, withoutShownRows } from '@/lib/ai/consultative/consultTravel'
 import { geoGuardArea, guardPlaceGeography } from '@/lib/ai/tools/placeGeoGuard'
 import { compactCandidates, compactProducts, loadChatSessionState, nextChatSessionState, readChatSessionId, saveChatSessionState, type ChatSessionState } from '@/lib/ai/consultative/chatSessionState'
@@ -370,7 +370,8 @@ export async function POST(req: Request) {
   const lunaOn = consultOn && consultLunaEnabled()
   // Checked on the user's OWN words: names copied back from our cards are references, not requirements (replay 30/09
   // FOOD-2 t4: "… hay Ẩm thực sân vườn Mái Lá?" became a garden-seating constraint).
-  const lunaUserTexts = withoutQuotedNames(messages).filter((m: { role: string }) => m.role === 'user').map((m: { content: unknown }) => typeof m.content === 'string' ? m.content : Array.isArray(m.content) ? m.content.map((p: { type?: string; text?: string }) => p?.type === 'text' ? p.text ?? '' : '').join(' ') : '').slice(-7)
+  const lunaOwnWords = withoutReferenceTurns(withoutQuotedNames(messages), earlyChatState?.shown ?? [])
+  const lunaUserTexts = lunaOwnWords.filter((m: { role: string }) => m.role === 'user').map((m: { content: unknown }) => typeof m.content === 'string' ? m.content : Array.isArray(m.content) ? m.content.map((p: { type?: string; text?: string }) => p?.type === 'text' ? p.text ?? '' : '').join(' ') : '').slice(-7)
   const lunaIntentRun = lunaOn && AI.isConfigured() && !(routed?.confidence === 'rule' && isFixedPhrase(lastText))
     ? await runLunaIntent(o => AI.extract(o) as never, messages, { hasGps: !!userLocation, previousWasAsk: wasAskReply(priorAssistantText), deterministicDomain: lastUserMsg ? turnDomain(lastUserMsg, { hasGps: !!userLocation, lang }) : null, userTexts: lunaUserTexts, storedNames: earlyChatState?.shown?.slice(-8) })
     : null
@@ -1359,11 +1360,11 @@ export async function POST(req: Request) {
   // The product constraints read what the user ASKED FOR — not the names they copied back from our cards (replay
   // SHOP-3: "… Laptop Dell 15 …" in an "A hay B?" became brand = Dell and filtered out every other laptop).
   const shoppingConstraints = deriveShoppingConstraints(
-    withoutQuotedNames(messages),
+    lunaOn ? lunaOwnWords : withoutQuotedNames(messages),
     // PHIÊN LUNA: the budget is read without the names copied from our cards (replay 30/09 SHOP-3: "Laptop Dell 15 DC15250
     // Core i5-1334U" in an "A hay B?" became a 1.334.000đ budget and emptied every later search). The same defect exists
     // with the flag off (Haiku picked a hinge-repair shop there) — left untouched for Phase 7, reported to the owner.
-    budget ?? budgetFromHistory(currentSubjectMessages(consultLunaEnabled() ? withoutQuotedNames(messages) : messages, { hasGps: !!userLocation, lang }), extractBudget),
+    budget ?? budgetFromHistory(currentSubjectMessages(lunaOn ? lunaOwnWords : messages, { hasGps: !!userLocation, lang }), extractBudget),
   )
 
 
