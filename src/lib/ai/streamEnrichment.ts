@@ -1986,9 +1986,15 @@ export function applyPlaceEnrichmentStreamFilter(
     // PHIÊN LUNA (CONSULT_LUNA only): the pick sentence stands alone, so a guard that cuts an unbacked number or
     // atmosphere word from the reason cannot take the pick's NAME with it (replay 30/09 FOOD-1 t6: "**Mình chọn: Miya
     // Sushi** vì có **1.376 đánh giá** …" → place_claim removed the whole sentence, the reply had no pick).
+    // Only the part AFTER what already reached the client is touched: the released prefix must stay a prefix of the
+    // final text, or the whole reply is sent again (replay 30/09 FOOD-1 t4: the pick paragraph appeared twice).
     if (consultLunaEnabled()) {
-      const split = splitPickSentence(mainText)
-      if (split !== mainText) { console.log(JSON.stringify({ type: 'tappyai_consult_patch', turn: 'luna', patches: ['pick_sentence_split'] })); mainText = split }
+      const pre = !flushedSent ? '' : mainText.startsWith(flushedSent) ? flushedSent : null
+      if (pre !== null) {
+        const rest = mainText.slice(pre.length)
+        const split = splitPickSentence(rest)
+        if (split !== rest) { console.log(JSON.stringify({ type: 'tappyai_consult_patch', turn: 'luna', patches: ['pick_sentence_split'] })); mainText = pre + split }
+      }
     }
 
     /**
