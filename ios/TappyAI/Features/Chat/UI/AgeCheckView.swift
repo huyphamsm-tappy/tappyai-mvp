@@ -107,12 +107,20 @@ struct AgeCheckView: View {
                     .font(.system(size: 26, weight: .black)).foregroundStyle(.white).multilineTextAlignment(.center)
                 Text("agecheck.desc").font(.system(size: 14)).foregroundStyle(Self.muted)
                     .multilineTextAlignment(.center).padding(.top, 10)
-                HStack(spacing: 10) {
-                    dateField("agecheck.day", value: $day, placeholder: "DD", options: (1...31).map { String(format: "%02d", $0) }, id: "age-day")
-                    dateField("agecheck.month", value: $month, placeholder: "MM", options: (1...12).map { String(format: "%02d", $0) }, id: "age-month")
-                    dateField("agecheck.year", value: $year, placeholder: "YYYY", options: yearOptions, id: "age-year")
-                        .layoutPriority(1)
+                // Fixed shares (1 : 1 : 1.25, as web/Android): a `Menu` label sizes to its content,
+                // so without explicit widths the day/month boxes collapsed (CI screenshot 30/09).
+                GeometryReader { geo in
+                    let unit = (geo.size.width - 20) / 3.25
+                    HStack(alignment: .top, spacing: 10) {
+                        dateField("agecheck.day", value: $day, placeholder: "DD", options: (1...31).map { String(format: "%02d", $0) }, id: "age-day")
+                            .frame(width: unit)
+                        dateField("agecheck.month", value: $month, placeholder: "MM", options: (1...12).map { String(format: "%02d", $0) }, id: "age-month")
+                            .frame(width: unit)
+                        dateField("agecheck.year", value: $year, placeholder: "YYYY", options: yearOptions, id: "age-year")
+                            .frame(width: unit * 1.25)
+                    }
                 }
+                .frame(height: 84)
                 .padding(.top, 20)
                 if let formError {
                     Text(formError).font(.system(size: 13)).foregroundStyle(Color(hex: 0xF87171))

@@ -39,6 +39,20 @@ Việc cần Huy đăng nhập: `docs/ios/IOS-REQUESTS.md` §3 (một lần). Y�
 - Sửa bố cục từ ảnh: chip lọc Đã lưu bị cắt, tiêu đề hero Viết content bị cắt "...", mô tả highlight Gợi ý bị cắt.
 - Architecture Guard / Regression Gate đỏ trên nhánh này là lỗi CÓ SẴN từ rc/web-uat (`src/app/go/at/route.ts:25` đọc `x-forwarded-for`), không phải của iOS.
 
+## CI run 36664553879 (commit 9e8b0b7) — XANH
+Build, unit test, 13/13 UI test, 13 ảnh + 13 ảnh ghép (artifact `ios-screenshots`, `pairs/pairs.md`). Từ ảnh ghép: ô Ngày/Tháng màn 18+
+vẫn bị co (Menu co theo nội dung) → sửa bằng tỉ lệ cố định 1 : 1 : 1,25 như web/Android. Thẻ QR iOS không có handle, chữ viết tay,
+skyline, huy hiệu cửa hàng của mẫu — đúng quy tắc (không có dữ liệu handle; không chữ viết tay/skyline; App Store chưa có).
+
+## Lô tiếp theo (chưa push, chờ CI)
+| Việc | Commit |
+|---|---|
+| Sửa cấu hình theo body production (lỗi TestFlight) + test | 51e353b |
+| Hub "Tôi" khi đã đăng nhập = web `/profile` / Android `ProfileHubV3`: hero (ảnh bìa, avatar, tên, bio, Chỉnh sửa, QR, 3 số liệu), tab Đã đăng / Đã chia sẻ / Đã lưu / Bị hạn chế / Đã ẩn / Địa điểm, "Đang theo dõi"; ảnh CI `16`, `17` (tài khoản giả chỉ trong build DEBUG + máy chủ fixture) | f3208fb |
+| Ưu đãi: thẻ "Hỏi Tappy trước khi mua" (cả khi không có deal, L16); ảnh `18-deals` | f2d4448 |
+| Ô ngày sinh màn 18+ | (commit này) |
+- Đã có sẵn trên iOS, không đổi: đăng ảnh / video / YouTube (`CreateReviewView`), Khám phá (`ReviewsFeedView`), hồ sơ người khác (+ tab Chia sẻ ở cụm 1), 5 tab điều hướng giống web/Android, Cài đặt (có thêm dòng Bản quyền).
+
 ## Lỗi TestFlight "Không tải được cấu hình" (build 50) — nguyên nhân + xử lý (30/09)
 Kiểm chỉ bằng đọc code, cấu hình build và một GET công khai tới `/api/config`:
 - **Host**: build 50 (commit `adcb154`, run #50) lấy `TAPPY_API_BASE_URL` từ secret CI; theo ghi chép pipeline đó là PRODUCTION
