@@ -64,7 +64,7 @@ describe('provider dispatch', () => {
 
   it('reaches every transport a user has registered', async () => {
     h.state.subs = [
-      { id: 's1', provider: 'webpush', subscription_data: { endpoint: 'https://p/1', keys: {} } },
+      { id: 's1', provider: 'webpush', subscription_data: { endpoint: 'https://fcm.googleapis.com/fcm/send/1', keys: {} } },
       { id: 's2', provider: 'fcm', subscription_data: { token: 'tok-abc' } },
     ]
     const result = await sendNotificationToUser('u1', payload)
@@ -97,7 +97,7 @@ describe('provider dispatch', () => {
   it('an FCM row with no token is skipped rather than crashing the whole send', async () => {
     h.state.subs = [
       { id: 's1', provider: 'fcm', subscription_data: {} },
-      { id: 's2', provider: 'webpush', subscription_data: { endpoint: 'https://p/1', keys: {} } },
+      { id: 's2', provider: 'webpush', subscription_data: { endpoint: 'https://fcm.googleapis.com/fcm/send/1', keys: {} } },
     ]
     const result = await sendNotificationToUser('u1', payload)
     expect(result.sent).toBe(2) // both "succeed": one is a no-op, the web push really sends

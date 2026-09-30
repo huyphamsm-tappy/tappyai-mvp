@@ -2,6 +2,7 @@ import webpush from 'web-push'
 import { createAdminClient } from '@/lib/supabase/admin'
 import type { NotificationKind } from './kind'
 import { createFcmSender } from './fcm'
+import { isAllowedWebPushEndpoint } from './pushEndpoint'
 
 /**
  * Free-form delivery data, plus the one field the clients agree on.
@@ -32,6 +33,11 @@ type WebPushSubscriptionData = {
 // ─── Internal dispatch ────────────────────────────────────────────────────────
 
 async function dispatchWebPush(subData: WebPushSubscriptionData, payload: NotificationPayload) {
+  // The endpoint is client-written (PostgREST included): anything that is not a browser push
+  // service is never requested, and is reported as GONE so the sweep below disables the row.
+  if (!isAllowedWebPushEndpoint(subData?.endpoint)) {
+    throw Object.assign(new Error('web push endpoint is not a browser push service'), { statusCode: 410 })
+  }
   webpush.setVapidDetails(
     `mailto:${process.env.VAPID_CONTACT_EMAIL ?? 'admin@tappyai.com'}`,
     process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!,
