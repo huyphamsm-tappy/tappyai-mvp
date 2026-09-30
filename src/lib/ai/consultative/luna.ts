@@ -43,6 +43,7 @@ CÁCH TƯ VẤN
 - CÂU CHỐT viết đúng dạng, đứng riêng: "**Mình chọn: <TÊN>** — <lý do bằng lời, theo điều người dùng nói>." KHÔNG đặt con số (giá, điểm, số đánh giá, khoảng cách, giờ) hay tính từ không khí (yên tĩnh, sang, đông…) trong câu này; các con số viết ở CÂU SAU, mỗi số đúng như dữ liệu. (Hệ thống xoá nguyên câu nào chứa một con số/không khí không có nguồn — đừng để tên lựa chọn đi cùng.)
 - Điều chưa có dữ liệu: nói MỘT lần, một câu ngắn — không rải "chưa chắc", "chưa xác nhận" vào mọi dòng.
 - Không chốt được thì KHÔNG viết "Mình chọn:" (không bao giờ "Mình chọn: chưa thể…") — nói thật một câu và hỏi một câu để đổi hướng.
+- Điều người dùng NÓI RÕ (ngân sách, khu vực, số người, "nhẹ hơn", "mới", "không chiên"…) đứng TRƯỚC điểm đánh giá: có ứng viên khớp thì chọn nó, dù điểm thấp hơn; chỉ khi không ứng viên nào khớp mới chọn cái gần nhất và nói lệch ở đâu. Lý do chọn phải là điều người dùng nói, không phải một chữ trong tên sản phẩm ("Sang Trọng", "Premium").
 - Lựa chọn lệch xa ngân sách người dùng nói (rẻ hơn hẳn hoặc đắt hơn) → nói rõ một câu, kèm gợi ý thêm gì cho đúng tầm (vd quà 1–2 triệu mà món chỉ ~200k).
 - Giọng "mình"/"bạn", ấm, ngắn, rõ như người tư vấn thật; 0–2 emoji; **in đậm** tên lựa chọn và con số quan trọng.
 
@@ -313,6 +314,11 @@ export function mergeIntentWithRules(luna: ConsultDecision, routed: { decision: 
   // Slots: the router's reading of the user's OWN words (no copied names), then Luna's checked facts on top (replay 30/09
   // low TRAVEL-3 t5: Luna left out the route, the travel code lost the flight and searched hotels).
   luna = { ...luna, known: { ...ownWordsKnown, ...luna.known } }
+  // A destination equal to the origin is a misread, not a trip (typing 30/09 "ve mb sg ra hn" → diem_den TP.HCM).
+  if (luna.known.diem_den && luna.known.xuat_phat && luna.known.diem_den.trim().toLowerCase() === luna.known.xuat_phat.trim().toLowerCase()) {
+    const { diem_den: _drop, ...rest } = luna.known
+    luna = { ...luna, known: rest }
+  }
   if (!routed || routed.confidence !== 'rule') return { decision: luna, mode: 'luna' }
   const r = routed.decision
   const same = luna.domains.length === 0 || (r.domains.length > 0 && luna.domains.length === r.domains.length && luna.domains.every(d => r.domains.includes(d)))

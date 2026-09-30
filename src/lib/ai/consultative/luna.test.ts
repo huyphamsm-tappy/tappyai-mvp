@@ -153,6 +153,10 @@ describe('the turn stays with code when the router is sure', () => {
     const m = mergeIntentWithRules({ domains: ['shopping'], turn: 'ask', known: { dong: 'Monarch' }, assumptions: [] }, rule, { diem_den: 'X', dong: 'regex' })
     expect(m.decision.known).toEqual({ diem_den: 'X', dong: 'Monarch' })
   })
+  it('a destination equal to the origin is dropped (typing "ve mb sg ra hn")', () => {
+    const m = mergeIntentWithRules({ domains: ['shopping'], turn: 'ask', known: { xuat_phat: 'TP.HCM' }, assumptions: [] }, rule, { diem_den: 'TP.HCM' })
+    expect(m.decision.known.diem_den).toBeUndefined()
+  })
   it('areas disagree, or the router is unsure → Luna decides', () => {
     expect(mergeIntentWithRules({ domains: ['food'], turn: 'pick', known: {}, assumptions: [] }, rule).mode).toBe('luna')
     expect(mergeIntentWithRules({ domains: ['shopping'], turn: 'pick', known: {}, assumptions: [] }, { ...rule, confidence: 'unsure' }).decision.turn).toBe('pick')
