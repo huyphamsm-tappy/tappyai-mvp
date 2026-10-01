@@ -25,6 +25,8 @@ const CASES = [
   // for this chat must keep it on phở in District 1.
   { id: 'followup-more', turns: ['quán phở ngon quận 1', 'xem thêm'], expect: /grab\.com|google\.|maps|zalo\.me/, mustMention: /phở/i },
   { id: 'trip', turns: ['đi du lịch Đà Nẵng 3 ngày 2 đêm'], expect: /booking\.com|agoda|traveloka|trip\.com|vexere|grab|xanhsm|google\./, plan: true },
+  // The dish is already named: the server's ask carries NO area id (web answers `main`); the app still draws the FOOD card.
+  { id: 'pho-bac', turns: ['ăn phở Bắc tối nay'], expect: /grab\.com|google\.|maps|zalo\.me/ },
   // Spa / làm đẹp: the fifth quick-ask area (ask-card evidence, 01/10).
   { id: 'spa', turns: ['massage thư giãn ở quận 1'], expect: /google\.|maps|booking|\.vn|\.com/ },
   // Every fact given up front, so the consult has nothing left to ask: the plan card + its share.
