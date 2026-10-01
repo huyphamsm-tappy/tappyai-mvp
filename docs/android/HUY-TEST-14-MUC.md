@@ -1,6 +1,6 @@
 # Anh test máy thật — MỘT vòng, 14 mục (bản CUỐI, 01/10)
 
-Máy R58RC0V30BH · APK UAT `TappyAI-UAT-4f4973b.apk` (app «TappyAI UAT», nói chuyện với uat.tappyai.com). Dùng tài khoản test.
+Máy R58RC0V30BH · APK UAT `TappyAI-UAT-891be6c.apk` (app «TappyAI UAT», nói chuyện với uat.tappyai.com). Dùng tài khoản test.
 Mỗi mục: làm → **đạt = thấy gì** → ghi Đạt / Không đạt (+1 dòng nếu không đạt).
 Bản Play (www.tappyai.com — production) KHÔNG nằm trong vòng này.
 
@@ -44,6 +44,6 @@ Bản Play (www.tappyai.com — production) KHÔNG nằm trong vòng này.
 **13. Thông báo BẬT/TẮT** — đăng nhập → cho phép thông báo → Tôi → Cài đặt → «Thông báo» → tắt công tắc «Thông báo đẩy». Nhờ Claude gửi 1 thông báo thử.
 Đạt = công tắc TẮT; **máy KHÔNG nhận thông báo nữa** (server đã ngừng gửi cho máy này). Tắt khi mất mạng → công tắc vẫn BẬT kèm dòng «Chưa tắt được thông báo…». Bật lại → nhận lại thông báo. ☐ Đạt ☐ Không đạt: ______
 
-**14. Xoá tài khoản (theo hợp đồng web: xoá NGAY; Huy chốt cờ BẬT khi release)** — Tôi → Cài đặt → cuộn xuống mục «KHÁC» → hàng cuối, chữ thường, ô xám: «Yêu cầu xóa tài khoản» (UAT hiện cờ TẮT).
+**14. Xoá tài khoản (theo hợp đồng web: xoá NGAY; Huy chốt cờ BẬT khi release)** — Tôi → Cài đặt → cuộn xuống mục «KHÁC» → hàng CUỐI mục (sau «Chính sách bản quyền»), cùng kiểu mọi hàng khác, ô xám (không đỏ), nằm xa «Đăng xuất» (Đăng xuất ở khung riêng bên dưới): «Xóa tài khoản» (cờ BẬT — UAT hiện đang BẬT) hoặc «Yêu cầu xóa tài khoản» (cờ TẮT).
 Cờ TẮT (UAT): bấm → hộp «Yêu cầu xóa tài khoản?» → «Tiếp tục» mở app email soạn sẵn tới support@tappyai.com; không xoá, không đăng xuất. **Không gửi thư thật.**
 Cờ BẬT (khi release): hàng đổi tên «Xóa tài khoản» → hộp «Xóa tài khoản vĩnh viễn? Toàn bộ dữ liệu của bạn sẽ bị xóa ngay…» (có đoạn gói trả phí nếu tài khoản có gói) → gõ XÓA → «Xóa vĩnh viễn tài khoản». **Không làm trên tài khoản thật.** Trên UAT chưa bật được cờ nên chưa kiểm luồng xoá thật trên máy. ☐ Đạt ☐ Không đạt: ______

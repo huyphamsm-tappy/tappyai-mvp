@@ -206,3 +206,32 @@ Chưa ai chạy thử 14 mục trên máy thật; các bước tôi dựng từ 
 - **Đã dùng Luna thật:** khoảng 12 lượt chat trên UAT với tài khoản test (R25 ×2 vòng, spa, 1 lượt gọi API trực tiếp để đo id câu hỏi); không có lượt nào trên production.
 - **Thay đổi file trong `android/` (commit local, không push):** `flows/chat.mjs` (siết check web theo R25 + ca `spa`), `flows/account-delete.mjs` (mới). Mã nguồn ứng dụng Android: **không đổi**; AAB vc10 không bị build lại.
 
+
+---
+
+# VÒNG CUỐI 01/10 chiều — một bản build (commit `891be6c`, local, KHÔNG push)
+
+- **Commit build:** `891be6c` (nhánh `android/parity-2026-09-28-step1`, trên `origin/rc/web-uat` @ `5894a9a`). APK UAT và AAB release build từ CÙNG commit.
+- **APK UAT:** `D:\TappyAI-backups\TappyAI-UAT-891be6c.apk` — SHA-256 `71c34c920103bf1373d05bfd65ebfbc5b2fa5e6f9b9daabe26fe7b31ff339fd7`. **CHƯA cài được lên máy R58RC0V30BH: `adb devices` chỉ thấy emulator (máy chưa cắm/chưa cấp quyền).**
+- **AAB release:** `D:\TappyAI-backups\TappyAI-release-vc10-891be6c.aab` — SHA-256 `12195610e78d3a45656f98e0a938e058eaf5425409c79c38ca3e027a7d09ae5a`; chứng chỉ upload SHA-256 `02:5B:35:4D:1C:37:7B:DC:F3:D6:49:4A:71:8E:6B:2D:A4:56:2F:73:2B:CE:0A:42:11:9C:9B:09:37:74:5C:C7` (trùng khoá tải lên trên Play Console đã đọc); versionCode **10** (Play: cao nhất đã tải = 8), versionName 1.0.0. Script kiểm: API `https://www.tappyai.com/`, DEBUG=false, `VERCEL_BYPASS_SECRET=""`, Supabase production. Tôi quét lại AAB: 0 chuỗi `uat.tappyai.com`/`.staging`/`localhost`, 0 khoá riêng/secret; 1 JWT = khoá anon Supabase (role `anon`, công khai); 1 khoá Firebase `AIza` (công khai); chuỗi `x-vercel-protection-bypass` chỉ là TÊN header (vô hiệu khi secret rỗng); manifest: 11 quyền, target 36/min 26, không `debuggable`/cleartext/`Uat*`; 8/8 thư viện native căn 16 KB.
+- **Test trước build:** unit Android debug+release+uat xanh; test web quét Android 793 qua; `verify-release-clean` 9/9.
+
+## 1a–1e
+- **1a Thẻ hỏi theo mảng — ĐẠT.** `AskCardModel.areaOf(questions, context)`: id (cũ+mới `dish`/`service`/`dest`/`device`/`origin`) trước; không có tín hiệu thì đọc từ lời trò chuyện + chữ trong câu hỏi; không bao giờ mặc định du lịch. Ảnh thật 5 mảng cạnh mẫu `ask-card-5-areas-vs-mockup-v2-0110.png`; tiêu đề đúng ở cả 5 mảng + ca «ăn phở Bắc tối nay» (`pho-bac`). Vì web đã sửa id phía server (`eaefa04`) nên ảnh sau đó không tự chứng minh phần Android; phần Android được chứng minh bằng test đơn vị với bộ id THẬT đo từ UAT trước khi web sửa (`style`/`party`/`budget` → ĂN UỐNG) và ảnh `01-17-53` lúc UAT còn id cũ (thẻ màu cam + ví dụ «không cay…»).
+- **1b Xoá tài khoản — ĐẠT (cờ BẬT chạy thật trên UAT).** Hàng «Xóa tài khoản» là hàng thường cùng kiểu các hàng khác, ô xám đá phiến (không đỏ), HÀNG CUỐI mục «Khác», «Đăng xuất» ở khung riêng bên dưới (ảnh `final-round/2026-10-01T10-35-34/account-delete/android/01-settings-delete-row.png`). Màn xác nhận = chữ R29 của chủ (đoạn gói trả phí chỉ khi app BIẾT có gói: `GET /api/subscription` → `isPro`; không biết → câu chung; biết là free → không có). UAT đã được web BẬT cờ nên flow `account-delete` chạy THẬT với tài khoản tạm trên DB audit: gõ XÓA → «Xóa vĩnh viễn tài khoản» → màn «Tài khoản của bạn đã được xóa» → đăng xuất → admin API xác nhận người dùng biến mất: **7/7** (+ web 2/2). Ảnh preview 3 biến thể (có gói / không biết / free): `delete-confirm-plan-{true,null,false}.png`. KHÔNG xoá gì trên production.
+- **1c Tắt thông báo — ĐẠT (có sửa).** Lỗi thật: tắt công tắc chỉ ghi preference, server vẫn gửi; `onNewToken` còn tự đăng ký lại khi đã tắt. Sửa: `DELETE /api/notifications/subscribe` `{provider:'fcm', credential:<token>}` (hợp đồng server đủ phân biệt thiết bị), lỗi mạng ⇒ công tắc GIỮ BẬT + dòng «Chưa tắt được thông báo…», bật lại ⇒ POST lại, `onNewToken` tôn trọng TẮT. Test: `PushOffTest` + 2 test cũ đổi theo. e2e `notifications-toggle` trên UAT/audit: **5/5** (đăng ký → tắt → server `enabled=false` → bật → `enabled=true`). Đường lỗi mạng chỉ được test đơn vị (không tắt mạng emulator).
+- **1d Firebase Analytics — ĐẠT (kiểm + ghi, KHÔNG tự tắt).** Có trong release, bật mặc định, không có công tắc; log `App measurement collection enabled`. Comment `app/build.gradle.kts` đã sửa; Data safety ghi theo sự thật; quyết có tắt không = **Huy** (3 phương án ở `PLAY-CONSOLE-PASTE.md` A0.2).
+- **1e** không làm Mic native/Khám phá hub: không đụng.
+
+## 2 — Play Console / Google Cloud (chỉ đọc) — xem `PLAY-CONSOLE-PASTE.md` mục A00–A02
+Bảng versionCode, trạng thái phát hành, cảnh báo nguyên văn, so sánh khai báo với mã, chính sách UGC với từng yêu cầu, và SHA khoá ký — đều ở đó. Điểm mấu chốt: **Data safety trên Play hiện khai «không thu thập dữ liệu» và «chưa mã hoá»** (sai nghiêm trọng, phải làm lại); **SHA-1 khoá ký hiện tại của Play (`C2:0A:A1…`) chưa có trong client Google nào**; **thiếu «báo cáo/chặn người dùng» trong app** (UGC).
+
+## 3 — e2e trên UAT (SHA web lúc chạy `5894a9a`/`03358ed`, cờ xoá tài khoản BẬT)
+| Nhóm | Android | Web |
+|---|---|---|
+| notifications-toggle, auth-callback (MOB-1), nav-back, login | 5/5 · 6/6 · 11/11 · 13/13 PASS | — |
+| account-delete (cờ BẬT, xoá thật tài khoản tạm) | 7/7 PASS | 2/2 PASS |
+| chat: kính cường lực · phim · bay từ HCM · 5 mảng (phở, tai nghe, tối nay SG, vé máy bay, spa) · pho-bac · snacks-then-q1 | **PASS tất cả** | PASS trừ snacks-then-q1 và mua-he |
+| chat: «Mùa này đi du lịch ở đâu» | PASS 7/7 (gợi ý Vũng Tàu, có khách sạn) | **FAIL**: tin cuối không có link |
+Lượt đầy đủ trước đó (tất cả ca + non-AI + chia sẻ + Back) chạy trên `6e68862`/`bd8f9b1` (cùng UAT); lượt cuối trên `891be6c` chạy lại tập con ở bảng trên — **không chạy lại đủ mọi flow** (chia sẻ, composer, profile…) trên `891be6c`; ghi rõ để khỏi hiểu nhầm. Web: thêm 2 ca chưa có link ở tin cuối (`mua-he`, `snacks-then-q1`) — việc phiên web.
+Ghi chú: «có phim gì hay» trên Android trả thẻ rạp (DCINE…), KHÔNG phải câu trả lời trực tiếp kèm link CGV như web mô tả ở R28 — chưa rõ do UAT chưa có hay do khác biệt; **chưa kiểm**.
