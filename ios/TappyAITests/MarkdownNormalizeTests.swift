@@ -115,7 +115,7 @@ final class MarkdownNormalizeTests: XCTestCase {
     }
 
     private func blockJSON(_ text: String, _ name: String) -> Any? {
-        guard let re = try? NSRegularExpression(pattern: "\[\(name)\]([\s\S]*?)\[/\(name)\]"),
+        guard let re = try? NSRegularExpression(pattern: #"\[\#(name)\]([\s\S]*?)\[/\#(name)\]"#),
               let m = re.firstMatch(in: text, range: NSRange(text.startIndex..., in: text)),
               let r = Range(m.range(at: 1), in: text),
               let data = String(text[r]).data(using: .utf8) else { return nil }
