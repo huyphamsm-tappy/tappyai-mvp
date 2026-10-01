@@ -150,7 +150,7 @@ struct MessageActionBar: View {
 
     private var ttsPlayerBar: some View {
         HStack(spacing: Spacing.xxs) {
-            Text("🤖").font(.system(size: 16))
+            TappyAvatar(size: 22)
 
             Button(action: onTTSPause) {
                 Image(systemName: isPaused ? "play.fill" : "pause.fill")

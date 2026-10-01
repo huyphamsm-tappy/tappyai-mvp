@@ -722,6 +722,12 @@
         "vi": { "stringUnit": { "state": "translated", "value": "Đăng nhập bằng Zalo trong ứng dụng chưa dùng được. Bạn tạm dùng Google hoặc email nhé." } }
       }
     },
+    "profile.row.account.menuDesc": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Details, bookings, preferences, AI plans" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Thông tin, đặt chỗ, sở thích, kế hoạch AI" } }
+      }
+    },
     "auth.changeEmail": {
       "localizations": {
         "en": {

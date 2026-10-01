@@ -81,8 +81,7 @@ struct ChatEmptyState: View {
 
                 // Mascot + title + memory chip
                 VStack(spacing: Spacing.sm) {
-                    Text("🤖")
-                        .font(.system(size: 64))
+                    TappyAvatar(size: 88)
                     Text(title)
                         .font(TappyFont.headline)
                         .foregroundStyle(TappyColor.textPrimary)

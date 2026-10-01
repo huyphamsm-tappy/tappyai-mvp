@@ -231,9 +231,7 @@ private struct AssistantBubble: View {
     var body: some View {
         HStack(alignment: .top, spacing: Spacing.xs) {
             // Avatar
-            Text("🤖")
-                .font(.system(size: 24))
-                .frame(width: 32, height: 32)
+            TappyAvatar()
 
             VStack(alignment: .leading, spacing: Spacing.xs) {
                 // Message text
@@ -391,9 +389,7 @@ private struct ThinkingIndicator: View {
 
     var body: some View {
         HStack(alignment: .top, spacing: Spacing.xs) {
-            Text("🤖")
-                .font(.system(size: 24))
-                .frame(width: 32, height: 32)
+            TappyAvatar()
 
             HStack(spacing: Spacing.xs) {
                 HStack(spacing: 3) {
@@ -441,9 +437,7 @@ private struct ChatErrorBanner: View {
 
     var body: some View {
         HStack(alignment: .top, spacing: Spacing.xs) {
-            Text("🤖")
-                .font(.system(size: 24))
-                .frame(width: 32, height: 32)
+            TappyAvatar()
 
             VStack(alignment: .leading, spacing: Spacing.xs) {
                 switch error {

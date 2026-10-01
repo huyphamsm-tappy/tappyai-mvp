@@ -84,11 +84,15 @@ enum UITestLaunch {
         }
         // A signed-in look for the fixture server only: an unsigned token whose `sub` is the fixture
         // user. The fixture server does not verify it; a real backend would reject it.
-        if ProcessInfo.processInfo.arguments.contains("-uitest-signed-in") {
+        let signedIn = ProcessInfo.processInfo.arguments.contains("-uitest-signed-in")
+        // `-uitest-expired`: the same account but an access token already past its expiry, so the first API call
+        // tries to renew it, fails, and the app must fall back to guest with the «session ended» notice.
+        let expired = ProcessInfo.processInfo.arguments.contains("-uitest-expired")
+        if signedIn || expired {
             let payload = Data(#"{"sub":"uitest-user"}"#.utf8).base64EncodedString()
                 .replacingOccurrences(of: "=", with: "")
             deps.session.didAuthenticate(AuthTokens(accessToken: "e30.\(payload).sig", refreshToken: "uitest",
-                                                    expiresAt: Date().addingTimeInterval(3600)), onboarded: true)
+                                                    expiresAt: Date().addingTimeInterval(expired ? -60 : 3600)), onboarded: true)
         } else if value("-uitest-route") != nil {
             // Every other test is a guest: drop a session an earlier test left in the Keychain.
             deps.session.logout()

@@ -73,7 +73,7 @@ final class AppDependencies: AppObservableObject {
         // registration, while the session can still authorise the call.
         // A real account's session that cannot be renewed → guest + notice; a fresh guest session keeps chat usable.
         session.onSessionEnded = { [weak self] in Task { await self?.authRepository.ensureAnonymousSession() } }
-        authRepository.beforeSignOut ={ [weak self] in await self?.notificationManager.releaseThisDevice() }
+        authRepository.beforeSignOut = { [weak self] in await self?.notificationManager.releaseThisDevice() }
         AppLogger.app.info("Dependencies composed (env=\(env.kind.rawValue))")
     }
 

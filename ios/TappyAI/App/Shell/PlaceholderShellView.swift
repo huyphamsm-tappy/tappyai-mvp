@@ -137,6 +137,8 @@ struct PlaceholderShellView: View {
             ProfileMainView(deps: deps)
                 .navigationDestination(for: ProfileDestination.self) { dest in
                     switch dest {
+                    case .accountMenu:
+                        AccountMenuView(deps: deps)
                     case .account:
                         AccountView(deps: deps)
                     case .editProfile:

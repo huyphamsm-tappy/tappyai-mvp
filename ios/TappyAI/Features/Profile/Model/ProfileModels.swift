@@ -326,6 +326,8 @@ extension PlaceReviewsResponse {
 }
 
 enum ProfileDestination: Hashable {
+    /// The hub's short «Tài khoản» row: opens the list of personal sections (`AccountMenuView`).
+    case accountMenu
     case account
     case editProfile
     case settings

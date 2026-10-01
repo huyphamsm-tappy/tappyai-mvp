@@ -168,33 +168,15 @@ struct ProfileMainView: View {
                 .padding(.horizontal, 2)
 
             VStack(spacing: 0) {
-                menuRow(icon: "person", label: "profile.row.account", desc: "profile.row.account.desc", dest: .account)
+                // Three short rows, like «Cài đặt»: the personal sections (details, bookings, preferences,
+                // price tracking, AI plans, what Tappy knows, group dining) sit one level down in
+                // `AccountMenuView`. Nothing was removed, only grouped.
+                menuRow(icon: "person", label: "profile.row.account", desc: "profile.row.account.menuDesc", dest: .accountMenu)
+                    .accessibilityIdentifier("hub-account")
                 Divider().padding(.leading, 52)
                 menuRow(icon: "bubble.left.and.bubble.right", label: "profile.row.history", desc: "profile.row.history.desc", dest: .history)
                 Divider().padding(.leading, 52)
-                menuRow(icon: "calendar", label: "profile.row.bookings", desc: "profile.row.bookings.desc", dest: .bookings)
-                Divider().padding(.leading, 52)
-                menuRow(icon: "heart", label: "profile.row.preferences", desc: "profile.row.preferences.desc", dest: .preferences)
-                Divider().padding(.leading, 52)
                 menuRow(icon: "bookmark", label: "profile.row.saved", desc: "profile.row.saved.desc", dest: .favorites)
-                Divider().padding(.leading, 52)
-                menuRow(icon: "arrow.down.right", label: "profile.row.priceWatch", desc: "profile.row.priceWatch.desc", dest: .priceWatches)
-                Divider().padding(.leading, 52)
-                menuRow(icon: "map", label: "profile.row.planner", desc: "profile.row.planner.desc", dest: .planner)
-                Divider().padding(.leading, 52)
-                menuRow(icon: "brain", label: "profile.row.memory", desc: "profile.row.memory.desc", dest: .tappyKnows)
-                Divider().padding(.leading, 52)
-                // Kết nối (App Connections) gated by the backend flag, mirroring Web's
-                // `{SHOW_APP_CONNECTIONS && <MenuItem integrations/>}`. Currently hidden
-                // (flag false, owner decision 2026-07-17); the screen/APIs stay intact
-                // and re-appear the moment the flag flips — no app release needed.
-                if showAppConnections {
-                    menuRow(icon: "link", label: "profile.row.integrations", desc: "profile.row.integrations.desc", dest: .integrations)
-                    Divider().padding(.leading, 52)
-                }
-                // My posts / notifications / following / people search moved to `communityShortcuts`
-                // (web and Android hubs have exactly the nine rows of the mockup).
-                menuRow(icon: "person.3", label: "profile.row.groupDining", desc: "profile.row.groupDining.desc", dest: .groupDining)
             }
             .background(TappyColor.cardBackground)
             .clipShape(RoundedRectangle(cornerRadius: Radius.xl))

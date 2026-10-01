@@ -67,8 +67,7 @@ final class FeedVideoPlayer: AppObservableObject {
         if active {
             watchStart = Date()
             if Self.feedAudioUnlocked {
-                player.isMuted = false
-                isMuted = false
+                setMuted(false)
             }
             if !userPaused {
                 ensurePlaying()
@@ -93,24 +92,29 @@ final class FeedVideoPlayer: AppObservableObject {
     // MARK: - Audio unlock (first user tap anywhere in feed)
 
     func unlockAudio() {
-        guard !Self.feedAudioUnlocked else { return }
-        Self.feedAudioUnlocked = true
-        player.isMuted = false
-        isMuted = false
+        guard !Self.feedAudioUnlocked || isMuted else { return }
+        setMuted(false)
     }
 
-    func toggleMute() {
-        if isMuted {
-            unlockAudio()
-        } else {
-            player.isMuted = true
-            isMuted = true
-        }
+    /// One place decides sound. The person's choice is remembered for the clips that follow
+    /// (`feedAudioUnlocked`), and turning sound ON re-asserts the playback audio session: the microphone
+    /// screen leaves a record category behind, which plays through the earpiece or not at all.
+    func setMuted(_ muted: Bool) {
+        Self.feedAudioUnlocked = !muted
+        player.isMuted = muted
+        player.volume = 1
+        isMuted = muted
+        if !muted { configureAudioSession() }
     }
+
+    /// 🚨 Used to be `if isMuted { unlockAudio() }` with an unlock that returned early once any clip had
+    /// unlocked: after muting, the speaker button could never turn sound back on.
+    func toggleMute() { setMuted(!isMuted) }
 
     // MARK: - Private
 
     private func ensurePlaying() {
+        if !isMuted { configureAudioSession() }   // after the mic screen, the session must be playback again
         player.play()
         isPlaying = true
         startWatchdog()
@@ -143,7 +147,8 @@ final class FeedVideoPlayer: AppObservableObject {
 
     private func configureAudioSession() {
         do {
-            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: .mixWithOthers)
+            // `.playback` = plays with the silent switch on and through the speaker; no mix option, so this clip owns the audio.
+            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .moviePlayback, options: [])
             try AVAudioSession.sharedInstance().setActive(true)
         } catch {}
     }

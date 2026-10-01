@@ -250,6 +250,25 @@ final class ScreenshotTests: XCTestCase {
         XCTAssertFalse(app.buttons["Đăng xuất"].exists, "a guest is never offered «Đăng xuất»")
     }
 
+    /// Signed in: the hub is short (three rows + Cài đặt) and the personal sections sit one level down.
+    func testShortProfileHubAndAccountList() {
+        let app = launch(route: "hub", signedIn: true, extra: ["-uitest-theme", "dark"])
+        let account = any(app, "hub-account")
+        XCTAssertTrue(account.waitForExistence(timeout: 40), "the short Tài khoản row")
+        shot("70-profile-signed-in")
+        account.tap()
+        XCTAssertTrue(any(app, "account-menu-bookings").waitForExistence(timeout: 30), "the list one level down")
+        XCTAssertTrue(any(app, "account-menu-group").exists)
+        shot("71-account-list")
+    }
+
+    /// A session that cannot be renewed: guest + the plain «đăng nhập đã hết» notice.
+    func testExpiredSessionShowsNotice() {
+        let app = launch(route: "hub", extra: ["-uitest-expired", "-uitest-theme", "dark"])
+        XCTAssertTrue(app.alerts["Phiên đăng nhập đã hết"].waitForExistence(timeout: 60), "the session-ended notice")
+        shot("72-session-expired")
+    }
+
     // MARK: - A3 Sign in with Apple — visible only when the server enables it
 
     func testSignInWithAppleButtonAppearsWhenEnabled() {
