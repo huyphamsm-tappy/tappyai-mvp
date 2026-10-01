@@ -37,7 +37,7 @@ let chatBefore: Awaited<ReturnType<typeof chatBlocksShape>>
 let chatRowsBefore: unknown[]
 
 beforeAll(async () => {
-  t = await startBlocksDb(54901, 'userblocks', [])
+  t = await startBlocksDb(54905, 'userblocks', [])
   await t.db.query(`INSERT INTO auth.users (id, is_anonymous) VALUES ('${DAVE}', false)`) // before the schema: the signup trigger is not there yet
   await loadProdSchema(t.db)
   for (const id of [ALICE, BOB, CAROL, DAVE]) await t.db.query(`INSERT INTO public.profiles (id, username) VALUES ($1, $2)`, [id, id.slice(0, 5)])

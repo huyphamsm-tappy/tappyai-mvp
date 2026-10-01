@@ -29,11 +29,11 @@ vi.mock('@/lib/auth/getRequestUser', () => ({
 vi.mock('@/lib/supabase/admin', () => ({ createAdminClient: () => ({ from: () => ({ select: () => ({ eq: () => ({ maybeSingle: async () => ({ data: h.profile, error: null }) }) }) }) }) }))
 vi.mock('@/lib/security/rateLimit', () => ({ rateLimit: (k: string) => { h.limitKeys.push(k); return { ok: h.limit.ok, retryAfter: 0 } } }))
 
-import { POST as reportComment } from '@/app/api/comments/[id]/report/route'
+import { POST as reportComment } from '@/app/api/comments/[commentId]/report/route'
 import { POST as reportUser } from '@/app/api/users/[id]/report/route'
 
-const call = (fn: typeof reportComment, id: string, body: unknown = { reason: 'spam' }) =>
-  fn(new Request('http://localhost/x', { method: 'POST', body: JSON.stringify(body) }) as never, { params: { id } })
+const call = (fn: (req: never, ctx: never) => Promise<Response>, id: string, body: unknown = { reason: 'spam' }) =>
+  fn(new Request('http://localhost/x', { method: 'POST', body: JSON.stringify(body) }) as never, { params: { id, commentId: id } } as never)
 
 describe('POST /api/comments/{id}/report and /api/users/{id}/report', () => {
   const prev = process.env.REPORTS_ENABLED

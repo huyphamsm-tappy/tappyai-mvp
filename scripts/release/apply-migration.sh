@@ -44,7 +44,8 @@ policy_of() {
     # deal-click code (service role) on production; the others are code-independent but ride the same verified window.
     20260927_owner_update_column_privileges.sql|20260928_revoke_reviews_insert.sql|\
     20260928b_revoke_increment_deal_click_public.sql|20260928c_review_comments_publication_boundary.sql|\
-    20260930_content_reports_insert_check.sql|20260930b_review_interactions_bounds.sql)
+    20260930_content_reports_insert_check.sql|20260930b_review_interactions_bounds.sql|\
+    20261001_user_blocks.sql|20261001b_user_reports.sql|20261001d_moderation_standards.sql)
       echo AFTER-SMOKE ;;
     20260913_g1_growth_foundation.sql|20260913_plan_shares.sql|20260915_profile_public_presentation.sql|\
     20260915b_review_likes_private.sql|20260918_g1b_share_ancestry.sql|20260920100000_commerce_providers.sql|\

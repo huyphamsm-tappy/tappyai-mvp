@@ -20,7 +20,7 @@ import {
   publicShareEnabled,
 } from '@/lib/config/product'
 import { selfDeleteEnabled } from '@/lib/account/selfDelete'
-import { userBlocksEnabled, reportsEnabled } from '@/lib/safety/userBlocks'
+import { userBlocksEnabled, reportsEnabled, moderationAdminEnabled } from '@/lib/safety/userBlocks'
 
 // GET /api/config — the backend-owned product configuration, as a stable
 // contract for ALL clients (Web, Android, iOS). Native clients read quotas,
@@ -74,6 +74,8 @@ export async function GET() {
         userBlocks: userBlocksEnabled(),
         commentModeration: userBlocksEnabled(),
         accountDeletion: false,
+        // Violation notices + appeals (GET /api/moderation/decisions, POST …/appeal) and the report-status list: MODERATION_ADMIN_ENABLED.
+        moderationNotices: moderationAdminEnabled(),
       },
       upload: {
         maxPhotosPerReview: MAX_PHOTOS_PER_REVIEW,

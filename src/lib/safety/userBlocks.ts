@@ -19,6 +19,12 @@ export function reportsEnabled(env: Record<string, string | undefined> = process
   return env.REPORTS_ENABLED === 'true'
 }
 
+// The moderation desk, decisions, appeals and the reporter-status API (migration 20261001d). OFF by default;
+// `MODERATION_ADMIN_ENABLED=true` turns them on (every guarded route answers 404 while it is off).
+export function moderationAdminEnabled(env: Record<string, string | undefined> = process.env): boolean {
+  return env.MODERATION_ADMIN_ENABLED === 'true'
+}
+
 export const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
 
 /**

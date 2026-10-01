@@ -12,7 +12,10 @@
 // deliberately absent — NEXT_PUBLIC_POSTHOG_KEY is not set in production and a
 // full page load issues zero requests to any PostHog host.
 
+import { communityEn, communityVi } from './communityGuidelines'
+
 export const en: Record<string, string> = {
+  ...communityEn,
   // ---------------------------------------------------------------- privacy
   'legal.privacy.title': 'Privacy Policy',
   'legal.privacy.effective': 'Effective Date: October 2026',
@@ -251,6 +254,7 @@ export const en: Record<string, string> = {
 }
 
 export const vi: Record<string, string> = {
+  ...communityVi,
   // ---------------------------------------------------------------- privacy
   'legal.privacy.title': 'Chính sách bảo mật',
   'legal.privacy.effective': 'Ngày hiệu lực: Tháng 10 năm 2026',
