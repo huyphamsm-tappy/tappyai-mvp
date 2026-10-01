@@ -11,7 +11,10 @@ import Foundation
 /// file and Android `ChatResponseParser` are part of that change, not a follow-up to it.
 enum ContentParser {
 
-    static func parse(_ content: String) -> ParsedContent {
+    static func parse(_ rawContent: String) -> ParsedContent {
+        // One place for «no literal ** in any answer» (web `normalizeReplyMarkdown`): prose bold balanced, markdown stripped
+        // from the strings inside the marker blocks, before any card sees them.
+        let content = MarkdownNormalize.normalizeReply(rawContent)
         // ASK first: it is a whole-turn question block with nothing else in it worth decoding.
         let askResult = AskBlock.parse(content)
         let (textAfterPlan, plan, planJSON) = parsePlanBlock(askResult.text)

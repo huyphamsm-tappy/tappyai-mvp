@@ -65,7 +65,8 @@ final class AccountDeletionTests: XCTestCase {
                     "account.delete.confirm.label", "account.delete.confirm.word", "account.delete.submit",
                     "account.delete.deleting", "account.delete.cancel", "account.delete.finalConfirm.title",
                     "account.delete.done.title", "account.delete.done.p1", "account.delete.done.p2",
-                    "account.delete.done.home"]
+                    "account.delete.done.home", "account.delete.warning.title", "account.delete.warning.confirm",
+                    "account.delete.plan.known", "account.delete.plan.generic"]
         keys += (1...9).map { "account.delete.removes.\($0)" } + (1...2).map { "account.delete.kept.\($0)" }
         keys += [AccountDeletionOutcome.staffAccount, .signInAgain, .failed].compactMap(\.errorKey)
         for key in keys {

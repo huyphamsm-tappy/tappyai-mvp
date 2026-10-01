@@ -38,6 +38,20 @@ final class AskCardV2Tests: XCTestCase {
         XCTAssertEqual(AskCardModel.sendText(AskCardModel.viewOf(FLIGHT), chosen: ["origin": ["Từ Hà Nội"]]), "Từ Hà Nội")
     }
 
+    /// R28 (server 01/10): `dest` («Bay đến đâu?»), `style` (kind of destination), `device` («Dùng cho iPhone nào?»). The web's
+    /// `askAreaOf` does not map `dest` / `device` either, so the card shows the neutral header — the same on every client.
+    func testR28Ids() {
+        let dest = Q("dest", "Bay đến đâu?", ["Đến Đà Nẵng", "Đến Hà Nội", "Đến Phú Quốc", "Đến nơi khác"])
+        XCTAssertEqual(AskCardModel.areaOf([dest]), .main, "like web: no area id, neutral header")
+        XCTAssertEqual(AskCardModel.kindOf(dest), .other, "an icon step, one pick")
+        let style = Q("style", "Bạn thích kiểu điểm đến nào?", ["Biển", "Núi", "Thành phố", "Nước ngoài"])
+        XCTAssertEqual(AskCardModel.areaOf([style]), .travel)
+        XCTAssertEqual(AskCardModel.kindOf(style), .type, "photo tiles, several picks")
+        let device = Q("device", "Dùng cho iPhone nào?", ["iPhone 15", "iPhone 16", "iPhone 17", "Chưa biết"])
+        XCTAssertEqual(AskCardModel.kindOf(device), .other)
+        XCTAssertEqual(AskCardModel.sendText(AskCardModel.viewOf([dest]), chosen: ["dest": ["Đến Đà Nẵng"]]), "Đến Đà Nẵng")
+    }
+
     func testTheNewRouterIdsKeepFoodAndSpaOutOfTravel() {
         // «dish» / «service» used to be «style», which falls back to travel unless the options are spa words.
         XCTAssertEqual(AskCardModel.areaOf([Q("dish", "Món gì?", ["Phở", "Bún"]), Q("date", "Khi nào?", ["Tối nay"])]), .food)

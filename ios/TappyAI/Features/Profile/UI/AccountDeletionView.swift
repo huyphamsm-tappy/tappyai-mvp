@@ -17,6 +17,8 @@ struct AccountDeletionView: View {
     @State private var deleting = false
     @State private var errorKey: String?
     @State private var deleted = false
+    /// True only when the server says this account has an ACTIVE paid plan (`GET /api/subscription`); any failure reads as «unknown».
+    @State private var hasPaidPlan = false
 
     private static let supportEmail = "support@tappyai.com"
     private static let removes = (1...9).map { "account.delete.removes.\($0)" }
@@ -27,6 +29,7 @@ struct AccountDeletionView: View {
             if deleted { doneView } else { formView }
         }
         .background(TappyColor.background)
+        .task { hasPaidPlan = await deps.entitlements.current() == .pro }
         .navigationTitle(Text("account.delete.title"))
         .navigationBarTitleDisplayMode(.inline)
         .alert(Text("account.delete.finalConfirm.title"), isPresented: $confirmFinal) {
@@ -42,13 +45,22 @@ struct AccountDeletionView: View {
     private var formView: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: Spacing.md) {
-                Text("account.delete.warning")
-                    .font(TappyFont.callout)
-                    .foregroundStyle(TappyColor.danger)
-                    .padding(Spacing.sm)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .background(TappyColor.danger.opacity(0.08))
-                    .clipShape(RoundedRectangle(cornerRadius: Radius.md, style: .continuous))
+                // The web's words (R29): title, what is lost, the paid-plan paragraph (the specific one only when this
+                // account is known to have an active paid plan, else the general one), and the confirm sentence.
+                VStack(alignment: .leading, spacing: Spacing.xs) {
+                    Text("account.delete.warning.title").font(TappyFont.bodyEmphasis)
+                    Text("account.delete.warning")
+                    Text(LocalizedStringKey(hasPaidPlan ? "account.delete.plan.known" : "account.delete.plan.generic"))
+                        .accessibilityIdentifier("delete-plan-text")
+                    Text("account.delete.warning.confirm").fontWeight(.semibold)
+                }
+                .font(TappyFont.callout)
+                .foregroundStyle(TappyColor.danger)
+                .padding(Spacing.sm)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .background(TappyColor.danger.opacity(0.08))
+                .clipShape(RoundedRectangle(cornerRadius: Radius.md, style: .continuous))
+                .accessibilityIdentifier("delete-warning")
 
                 list(headingKey: "account.delete.removes.heading", leadKey: nil, keys: Self.removes)
                 list(headingKey: "account.delete.kept.heading", leadKey: "account.delete.kept.lead", keys: Self.kept)

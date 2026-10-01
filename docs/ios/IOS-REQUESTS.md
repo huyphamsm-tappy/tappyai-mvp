@@ -63,6 +63,16 @@ Không có Bước 1–3, build vẫn lên TestFlight nhưng **không có thông
 
 **Cập nhật 01/10:** Bước 1.3 (profile mới) KHÔNG cần — workflow `ios-profile-check` (run 36816731276) cho thấy profile trong secret `APPSTORE_PROFILE_BASE64` đã có đủ Push, Sign in with Apple, Associated Domains.
 
+## I13 — Đối chiếu với IOS-REQUESTS của web và rc/web-uat 5f1ce4e (01/10, chiều)
+
+Bảng đầy đủ: `docs/ios/PHASE7-CROSSCHECK.md`. Trạng thái các mục của web:
+- **I-1 thẻ hỏi mới:** đã làm (ảnh 28–32).
+- **I-2 `app_state` (đăng nhập Zalo):** đã làm và có ảnh (20–22).
+- **I-3 id `dish`/`service`/`origin`:** đúng sẵn; thêm test cho R28 (`dest`, `style`, `device`). Ảnh thẻ vé máy bay: 61.
+- **I-4 chuỗi «[XÁC NHẬN: 30 ngày]»:** app iOS KHÔNG chứa chuỗi này (đã tìm trong mã và catalogue; thư email xoá tài khoản không nêu số ngày). Chỉ còn trong `docs/ios/APPSTORE-SUBMISSION.md` ở dạng chờ xác nhận, sẽ thay bằng chữ web khi Huy duyệt.
+- **I-5 xoá tài khoản BẬT lúc release:** chữ màn xác nhận đã theo R29 (tiêu đề, đoạn dữ liệu, đoạn gói trả phí bản riêng/bản chung, câu «Gõ XÓA để xác nhận»); đoạn gói riêng chỉ hiện khi `GET /api/subscription` báo `isPro`, lỗi hay free đều đọc là «không biết» ⇒ bản chung. Luồng không đổi. Ảnh 66.
+- **Cờ giọng `STYLE_LUNA6`:** iOS không kiểm đuôi câu hỏi (chỉ dùng khối `[TAPPY_ASK]`), nên không cần đổi.
+
 ## I12 — Regression Gate (web) đỏ trên nhánh iOS: 2 bài kiểm cần phiên web chỉnh (01/10)
 
 Nguyên nhân tìm được bằng cách chạy lại 6 tệp test liên quan iOS ở máy (`npx vitest run …`): 11 lỗi, đã sửa 9 ở phía iOS (đổi tên phần Home theo hợp đồng, trả lại tệp `HomeSectionViews.swift`, đưa dữ liệu mẫu tiếng Việt vào `Diagnostics/UITestGalleries.swift`, khoá dịch dựng động, hằng số «Chia sẻ» vào `Model/`, nhãn `labelKey:` ở Cài đặt, «Trang web»). **Còn 2 lỗi nằm ở chính bài kiểm (thư mục `src/`, ngoài phạm vi iOS):**

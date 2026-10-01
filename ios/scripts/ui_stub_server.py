@@ -321,6 +321,10 @@ class Handler(BaseHTTPRequestHandler):
             return self._send(200, {"reviews": SAVED[:1]})
         if path == "/api/social/connections":
             return self._send(200, {"users": [{"id": "u2", "full_name": "Lan Phương"}, {"id": "u3", "full_name": "Quốc Bảo"}]})
+        if path == "/api/subscription":
+            pro = MODE.get("pro") == "on"
+            return self._send(200, {"isPro": pro, "status": "active" if pro else None, "currentPeriodEnd": None,
+                                    "freeDailyLimit": 20, "todayMessageCount": 3, "remaining": 17})
         if path == "/api/conversations":
             return self._send(200, OLD_CONVERSATIONS if MODE.get("history") == "on" else [])
         if path == "/api/deals":

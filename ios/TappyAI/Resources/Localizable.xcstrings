@@ -518,13 +518,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Deletion is permanent and cannot be undone. Your account is deleted as soon as you confirm."
+            "value": "All your data will be deleted immediately and cannot be recovered: chat history, saved places, posts, photos and clips."
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Việc xóa là vĩnh viễn và không thể hoàn tác. Tài khoản bị xóa ngay khi bạn xác nhận."
+            "value": "Toàn bộ dữ liệu của bạn sẽ bị xóa ngay và không thể khôi phục: lịch sử chat, địa điểm đã lưu, bài đăng, ảnh và clip."
           }
         }
       }
@@ -25290,6 +25290,74 @@
           "stringUnit": {
             "state": "translated",
             "value": "Mở Cài đặt"
+          }
+        }
+      }
+    },
+    "account.delete.warning.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete your account permanently?"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Xóa tài khoản vĩnh viễn?"
+          }
+        }
+      }
+    },
+    "account.delete.plan.known": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your paid plan and any remaining credit will be lost, and Tappy does not refund the unused part. Deleting your account does not cancel your subscription on the App Store or Google Play — cancel it there so you are not charged again."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gói trả phí và credit còn lại sẽ mất, Tappy không hoàn lại phần chưa dùng. Xóa tài khoản không tự hủy gói trên App Store hoặc Google Play, bạn cần hủy gói ở đó để không bị tính phí tiếp."
+          }
+        }
+      }
+    },
+    "account.delete.plan.generic": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "If you have a paid plan, your plan and any remaining credit will be lost, and Tappy does not refund the unused part. Deleting your account does not cancel your subscription on the App Store or Google Play — cancel it there so you are not charged again."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nếu bạn đang có gói trả phí, gói và credit còn lại sẽ mất, Tappy không hoàn lại phần chưa dùng. Xóa tài khoản không tự hủy gói trên App Store hoặc Google Play, bạn cần hủy gói ở đó để không bị tính phí tiếp."
+          }
+        }
+      }
+    },
+    "account.delete.warning.confirm": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Type DELETE to confirm."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gõ XÓA để xác nhận."
           }
         }
       }

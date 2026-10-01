@@ -13,7 +13,7 @@ final class ScreenshotTests: XCTestCase {
         continueAfterFailure = false
         // Every test starts from production's shape: no safety block, no in-app deletion, no Apple button.
         setStub(["saved": "full", "config": "ok", "zalo": "nostate", "selfdelete": "off", "apple": "off",
-                 "p8": "off", "history": "off", "blocked": [String]()])
+                 "p8": "off", "history": "off", "pro": "off", "blocked": [String]()])
     }
 
     // MARK: - Config failures (TestFlight build 50, 30/09)
@@ -188,6 +188,32 @@ final class ScreenshotTests: XCTestCase {
         final.tap()
         XCTAssertTrue(any(app, "delete-done-home").waitForExistence(timeout: 30), "done screen")
         shot("46-delete-done")
+    }
+
+    /// The web's R29 wording: the paid-plan paragraph is the specific one only when the account is known to have a plan.
+    func testAccountDeletionWordingWithAndWithoutAPaidPlan() {
+        setStub(["selfdelete": "on", "pro": "on"])
+        var app = launch(route: "settings", signedIn: true, extra: ["-uitest-theme", "dark"])
+        expectation(for: NSPredicate(format: "label CONTAINS 'Xóa vĩnh viễn'"), evaluatedWith: any(app, "settings-delete"))
+        XCTAssertTrue(scrollTo(app, "settings-delete"))
+        waitForExpectations(timeout: 40)
+        any(app, "settings-delete").tap()
+        XCTAssertTrue(any(app, "delete-plan-text").waitForExistence(timeout: 30))
+        let known = NSPredicate(format: "label BEGINSWITH 'Gói trả phí và credit còn lại sẽ mất'")
+        expectation(for: known, evaluatedWith: any(app, "delete-plan-text"))
+        waitForExpectations(timeout: 20)
+        XCTAssertTrue(app.staticTexts["Xóa tài khoản vĩnh viễn?"].exists, "the web's title")
+        shot("66-delete-warning-paid")
+        app.terminate()
+
+        setStub(["selfdelete": "on", "pro": "off"])
+        app = launch(route: "settings", signedIn: true, extra: ["-uitest-theme", "dark"])
+        expectation(for: NSPredicate(format: "label CONTAINS 'Xóa vĩnh viễn'"), evaluatedWith: any(app, "settings-delete"))
+        XCTAssertTrue(scrollTo(app, "settings-delete"))
+        waitForExpectations(timeout: 40)
+        any(app, "settings-delete").tap()
+        XCTAssertTrue(any(app, "delete-plan-text").waitForExistence(timeout: 30))
+        XCTAssertTrue(any(app, "delete-plan-text").label.hasPrefix("Nếu bạn đang có gói trả phí"), "the general paragraph when the plan is not known")
     }
 
     // MARK: - A3 Sign in with Apple — visible only when the server enables it

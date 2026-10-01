@@ -126,24 +126,29 @@ jobs:
             CODE_SIGN_IDENTITY="" \
             | tee build/xcodebuild-test.log
 
+      # macOS minutes cost ten times on a private repository, and the UI tests are 18 of the 32 minutes: on a push they run only when the
+      # commit message contains [shots]; a pull request or a manual run always runs them.
       # ── Screenshot evidence ────────────────────────────────────────────────────────────────
       # UI tests open each screen against a fixture backend (scripts/ui_stub_server.py on
       # localhost:3000 — the address the Debug build already targets) and attach a full-screen
       # screenshot. A screen is PASS only when its screenshot exists; the exported images are paired
       # with the Android reference image and uploaded as the `ios-screenshots` artifact.
       - name: Start fixture backend
+        if: (github.event_name != 'push' || contains(github.event.head_commit.message, '[shots]'))
         run: |
           nohup python3 scripts/ui_stub_server.py 3000 > build/stub.log 2>&1 &
           for i in $(seq 1 20); do curl -sf http://127.0.0.1:3000/api/config > /dev/null && break; sleep 1; done
           curl -sf http://127.0.0.1:3000/api/config | head -c 120; echo
 
       - name: Prepare simulator (boot, allow location)
+        if: (github.event_name != 'push' || contains(github.event.head_commit.message, '[shots]'))
         run: |
           xcrun simctl boot "${{ steps.sim.outputs.udid }}" || true
           xcrun simctl bootstatus "${{ steps.sim.outputs.udid }}" -b
           xcrun simctl privacy "${{ steps.sim.outputs.udid }}" grant location com.tappyai.ios.debug || true
 
       - name: UI tests (screenshots)
+        if: (github.event_name != 'push' || contains(github.event.head_commit.message, '[shots]'))
         run: |
           set -o pipefail
           rm -rf build/ui.xcresult
@@ -162,7 +167,7 @@ jobs:
             | tee build/xcodebuild-ui.log
 
       - name: Export + pair screenshots
-        if: always()
+        if: always() && (github.event_name != 'push' || contains(github.event.head_commit.message, '[shots]'))
         run: |
           [ -d build/ui.xcresult ] || { echo "::error::no UI test result bundle"; exit 1; }
           rm -rf build/ui-attachments build/shots build/pairs
@@ -178,10 +183,10 @@ jobs:
           # comments, blocked list) + 3 account deletion + 1 Sign in with Apple + 6 plan card v2.
           count=$(ls build/shots/*.png 2>/dev/null | wc -l | tr -d ' ')
           echo "screenshots: $count"
-          [ "$count" -ge 62 ] || { echo "::error::expected 62 screenshots, got $count"; exit 1; }
+          [ "$count" -ge 63 ] || { echo "::error::expected 63 screenshots, got $count"; exit 1; }
 
       - name: Upload screenshots
-        if: always()
+        if: always() && (github.event_name != 'push' || contains(github.event.head_commit.message, '[shots]'))
         uses: actions/upload-artifact@v4
         with:
           name: ios-screenshots
