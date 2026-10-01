@@ -32,6 +32,9 @@ const CASES = [
   // R28 (web 01/10): accessory for a phone is the accessory; cinema now-showing answered directly; season trip; fare from HCM.
   { id: 'kinh-cuong-luc', turns: ['Muốn mua kính cường lực cho iphone', 'iPhone 17 · Cường lực mà'], expect: /shopee|lazada|tiki|cellphones|thegioididong|fptshop|google\./, web: /shopee|lazada|tiki|cellphones|thegioididong|fptshop|google\.|isclix|\/go\/at/ },
   { id: 'phim', turns: ['có phim gì hay'], expect: /cgv|google\.|\.vn|\.com/ },
+  // 02/10 sweep (PL-TOUR-KLOOK, Vexere): which merchant a tour / a coach ticket leads to — whatever the server returns, shown on screen.
+  { id: 'tour-hoi-an', turns: ['đặt tour Hội An 1 ngày'], expect: /klook|viator|getyourguide|traveloka|trip.com|google.|.vn|.com/ },
+  { id: 'xe-khach', turns: ['vé xe khách Sài Gòn đi Đà Lạt'], expect: /vexere|futabus|traveloka|google.|.vn|.com/ },
   { id: 'mua-he', turns: ['Mùa này đi du lịch ở đâu'], expect: /booking|agoda|traveloka|trip\.com|google\.|\.vn|\.com/ },
   { id: 'bay-tu-hcm', turns: ['vé máy bay đi Đà Nẵng bay từ HCM'], expect: /traveloka|trip\.com|vietjet|vietnamairlines|bambooairways|agoda|booking|google\./, dated: true },
   // Every fact given up front, so the consult has nothing left to ask: the plan card + its share.
