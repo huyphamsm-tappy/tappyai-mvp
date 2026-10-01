@@ -33,10 +33,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.common.VideoSize
-import androidx.media3.exoplayer.DefaultLoadControl
 import androidx.media3.exoplayer.ExoPlayer
-import android.util.Log
-import com.tappyai.app.BuildConfig
 import com.tappyai.app.reviews.data.ReviewSourceType
 import com.tappyai.core.designsystem.component.TappyImage
 
@@ -69,24 +66,6 @@ internal fun ReviewFeedVideo(
         else -> ReviewUploadVideoSurface(mediaUrl, thumbnail, active, audioUnlocked, paused, onDuration, modifier)
     }
 }
-
-/**
- * Buffering policy of the feed's players. ExoPlayer's default waits for 2.5 s of media before the first frame and keeps
- * buffering up to 50 s of every clip — and the pager composes the previous and next pages too, so three players each pulled
- * megabytes of a (possibly 50 MB) clip just to show it. A start threshold of 0.5 s and a 15 s ceiling make the first frame
- * come sooner and cap what the neighbours download; playback is unaffected once started (rebuffer resumes after 1.5 s).
- */
-@androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
-private fun feedLoadControl() = DefaultLoadControl.Builder()
-    .setBufferDurationsMs(
-        FEED_MIN_BUFFER_MS, FEED_MAX_BUFFER_MS, FEED_START_BUFFER_MS, FEED_REBUFFER_MS,
-    )
-    .build()
-
-internal const val FEED_MIN_BUFFER_MS = 5_000
-internal const val FEED_MAX_BUFFER_MS = 15_000
-internal const val FEED_START_BUFFER_MS = 500
-internal const val FEED_REBUFFER_MS = 1_500
 
 /**
  * Native-upload video: ExoPlayer rendering onto a TextureView (not a SurfaceView — a SurfaceView owns
@@ -126,9 +105,8 @@ private fun ReviewUploadVideoSurface(
     // a 9:16 clip fills the full-bleed page edge to edge instead of being distorted (reference
     // design 2026-09-13: the video is the canvas).
     var videoSize by remember(url) { mutableStateOf<VideoSize?>(null) }
-    val preparedAtMs = remember(url) { android.os.SystemClock.elapsedRealtime() }
     val player = remember(url) {
-        ExoPlayer.Builder(context).setLoadControl(feedLoadControl()).build().apply {
+        ExoPlayer.Builder(context).build().apply {
             repeatMode = Player.REPEAT_MODE_ONE
             volume = 1f
             setMediaItem(MediaItem.fromUri(url))
@@ -150,8 +128,6 @@ private fun ReviewUploadVideoSurface(
             // when a frame is actually on screen, which is exactly when the poster is redundant.
             override fun onRenderedFirstFrame() {
                 firstFrameRendered = true
-                // Debug/UAT builds only: how long this clip took from prepare() to its first frame (the feed's start-up time).
-                if (BuildConfig.DEBUG) Log.d("ClipPerf", "firstFrame ${android.os.SystemClock.elapsedRealtime() - preparedAtMs} ms ${url.takeLast(24)}")
             }
 
             override fun onVideoSizeChanged(size: VideoSize) {
