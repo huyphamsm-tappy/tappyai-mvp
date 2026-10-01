@@ -294,6 +294,17 @@ Giá phòng: chưa xác nhận…","price":…`). Phần đầu kế hoạch (ti
   Android chỉ cần render markdown in đậm như thường. Mỗi lượt có thêm annotation `8:` `{kind:"tappy.turn.v1", domain, turnType, usd…}` — BỎ QUA.
   Câu trả lời thô lượt chạy cuối (để test offline): sẽ ở `gs://tappyai-uat-evidence/evidence/<SHA>/consult-raw/`.
 
+### R26 (2026-10-01) — Xoá tài khoản: câu trả lời cho phiên Android (web ghi, Android đọc)
+
+**Luồng trong app ĐÃ XONG ở phía web/server từ UAT3 (27/09); không có gì cần Android build lại.** Hành vi là **XOÁ NGAY**, không phải "ghi yêu cầu rồi xử lý trong 24 giờ".
+- Endpoint: `POST /api/account/delete`, body `{"confirm":"XÓA"|"XOÁ"|"DELETE"}` (server kiểm lại từ xác nhận; Bearer JWT dùng được). 200 `{ok:true}` = đã xoá; 400 thiếu từ xác nhận; 401 hết phiên; 403 phiên ẩn danh; 404 `not_available` = cờ TẮT; 409 tài khoản nhân viên; 500 `delete_failed` = tài khoản còn nguyên.
+- Cờ: `ACCOUNT_SELF_DELETE_ENABLED` (chỉ `"true"` mới BẬT; mặc định TẮT ở Production). Client đọc `GET /api/config` → `flags.accountSelfDelete`.
+- Cờ TẮT: hàng «Yêu cầu xóa tài khoản» → trang /delete-account (hướng dẫn gửi email tới hỗ trợ), KHÔNG xoá gì.
+- Cờ BẬT: hàng «Xóa tài khoản» (cuối mục Khác) → trang liệt kê 9 mục bị xoá + 2 mục giữ lại → gõ **XÓA** (EN: DELETE) → nút «Xóa vĩnh viễn tài khoản» → server `auth.admin.deleteUser`, DB cascade → app đăng xuất → màn «Tài khoản của bạn đã được xóa»: "Dữ liệu của bạn đã được xóa khỏi cơ sở dữ liệu; ảnh, video và âm thanh bạn đã tải lên được xóa khỏi kho lưu trữ tệp trong vòng 48 giờ sau đó. Bạn đã được đăng xuất…". Dọn tệp/Google do cron 01:45 VN (`account_deletion_jobs`).
+- **Đối chiếu client:** Android "gõ XÓA → xoá ngay" và iOS "đã xóa" KHÔNG lệch với server. Chỉ có hai chỗ lệch: (1) mô tả của Huy "kín đáo / xử lý trong 24 giờ" không có trong code (hàng nằm cuối mục Khác, màu đỏ; con số thật là "ngay + 48 giờ cho tệp"); (2) màn Android khi cờ TẮT mở hộp «Yêu cầu xóa tài khoản?» rồi email — khớp web.
+- Web KHÔNG đổi sang "ghi yêu cầu": đổi sẽ lệch cả hai app đã port 1:1 (phải build lại) và yếu hơn chính sách Play. Nếu Huy vẫn muốn luồng 24 giờ → quyết định riêng, đụng cả ba client.
+- Chính sách Google Play (https://support.google.com/googleplay/android-developer/answer/13327111): bắt buộc cả (1) đường xoá TRONG app và (2) link web để yêu cầu xoá; email/biểu mẫu/dịch vụ khách hàng được chấp nhận cho phần web; "phải cho người dùng biết sẽ xảy ra gì và hoàn tất trong thời gian hợp lý"; vô hiệu hoá/đóng băng không tính là xoá. ⇒ một app CHỈ mở email để xoá (cờ TẮT) có thể bị từ chối ở bước khai Data deletion nếu app cho tạo tài khoản trong app. Vì vậy cờ nên BẬT trước khi nộp AAB (PHẦN B).
+
 ## 3. Quy tắc bằng chứng mới (chủ dự án, 2026-09-28) — áp dụng cho CẢ phiên Android
 
 - KHÔNG commit ảnh/video vào git nữa (không sửa lịch sử commit cũ).

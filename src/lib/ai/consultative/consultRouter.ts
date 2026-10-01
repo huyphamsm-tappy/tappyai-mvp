@@ -436,11 +436,11 @@ function activityOf(t: Txt): string | null { return label(t, ACTIVITIES) ?? (N('
 
 interface Service { label: string; re: RegExp; vague?: boolean; variant?: { known: RegExp; q: Q } }
 const SERVICES: Service[] = [
-  { label: 'massage', re: W('massage|mat xa|foot massage'), variant: { known: W('toan than|body|chan|foot|co vai gay|vai gay|da nong|thai|nhat|bam huyet|mat'), q: q('style', 'Massage kiểu nào?', 'Which massage?', ['Toàn thân', 'Chân', 'Cổ vai gáy', 'Đá nóng'], ['Full body', 'Foot', 'Neck & shoulders', 'Hot stone']) } },
+  { label: 'massage', re: W('massage|mat xa|foot massage'), variant: { known: W('toan than|body|chan|foot|co vai gay|vai gay|da nong|thai|nhat|bam huyet|mat'), q: q('service', 'Massage kiểu nào?', 'Which massage?', ['Toàn thân', 'Chân', 'Cổ vai gáy', 'Đá nóng'], ['Full body', 'Foot', 'Neck & shoulders', 'Hot stone']) } },
   { label: 'gội đầu dưỡng sinh', re: W('goi dau|duong sinh') }, { label: 'xông hơi', re: W('xong hoi|sauna|tam hoi') },
-  { label: 'làm nail', re: W('nail|lam mong|son mong|son gel|ve mong|dap bot'), variant: { known: W('son gel|gel|ve|dinh da|dap bot|cham soc mong|combo|son thuong'), q: q('style', 'Làm kiểu nào?', 'Which service?', ['Sơn gel', 'Vẽ/đính đá', 'Đắp bột', 'Chăm sóc móng'], ['Gel polish', 'Nail art', 'Acrylic', 'Manicure']) } },
+  { label: 'làm nail', re: W('nail|lam mong|son mong|son gel|ve mong|dap bot'), variant: { known: W('son gel|gel|ve|dinh da|dap bot|cham soc mong|combo|son thuong'), q: q('service', 'Làm kiểu nào?', 'Which service?', ['Sơn gel', 'Vẽ/đính đá', 'Đắp bột', 'Chăm sóc móng'], ['Gel polish', 'Nail art', 'Acrylic', 'Manicure']) } },
   { label: 'cắt tóc', re: W('cat toc|barber|toc nam|hot toc') },
-  { label: 'làm tóc', re: W('uon toc|nhuom toc|duoi toc|lam toc|salon|hair|toc nu'), variant: { known: W('uon|nhuom|duoi|cat|phuc hoi|goi'), q: q('style', 'Làm tóc gì?', 'Which hair service?', ['Cắt', 'Uốn', 'Nhuộm', 'Phục hồi'], ['Cut', 'Perm', 'Color', 'Treatment']) } },
+  { label: 'làm tóc', re: W('uon toc|nhuom toc|duoi toc|lam toc|salon|hair|toc nu'), variant: { known: W('uon|nhuom|duoi|cat|phuc hoi|goi'), q: q('service', 'Làm tóc gì?', 'Which hair service?', ['Cắt', 'Uốn', 'Nhuộm', 'Phục hồi'], ['Cut', 'Perm', 'Color', 'Treatment']) } },
   { label: 'chăm sóc da', re: W('cham soc da|tri mun|nan mun|lay mun|facial') }, { label: 'waxing', re: W('waxing|wax long|triet long') },
   { label: 'nối mi', re: W('noi mi|uon mi') }, { label: 'phun xăm', re: W('phun may|phun moi|xam may') }, { label: 'tắm trắng', re: W('tam trang') },
   { label: 'yoga', re: W('yoga|pilates') }, { label: 'phòng gym', re: W('gym|phong tap') }, { label: 'bấm huyệt', re: W('bam huyet|giac hoi|cao gio') },
@@ -490,7 +490,7 @@ function foodView(t: Txt, gps: boolean): SlotView {
     missing.push(breakfast ? q('dish', 'Ăn sáng món gì?', 'What for breakfast?', ['Phở/bún', 'Bánh mì', 'Cơm tấm', 'Chưa biết'], ['Pho/noodles', 'Banh mi', 'Broken rice', 'Not sure'])
       : q('dish', 'Món gì / kiểu quán?', 'What kind of food?', ['Món Việt', 'Nhật/Hàn', 'Lẩu/nướng', 'Chưa biết'], ['Vietnamese', 'Japanese/Korean', 'Hotpot/BBQ', 'Not sure']))
   } else if (dish.variant && !dish.variant.known.test(t.f) && !(dish.label === 'cà phê' && vibe)) {
-    missing.push(q('style', dish.variant.q, dish.variant.qEn, dish.variant.opts, dish.variant.optsEn))
+    missing.push(q('dish', dish.variant.q, dish.variant.qEn, dish.variant.opts, dish.variant.optsEn))
   }
   if (!party) missing.push(PARTY_Q)
   if (!budget) missing.push(q('budget', 'Tầm bao nhiêu mỗi người?', 'Budget per person?', ['Dưới 100k', '100-300k', '300-500k', 'Trên 500k'], ['Under 100k', '100-300k', '300-500k', 'Over 500k']))
