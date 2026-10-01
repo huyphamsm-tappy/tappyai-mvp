@@ -257,6 +257,25 @@ final class ScreenshotTests: XCTestCase {
         shot(name)
     }
 
+    // MARK: - B4 main-flow screens that had no CI picture
+
+    /// Khám phá: the clip feed. Fixture rows come from the stub's trending feed.
+    func testExploreFeed() {
+        let app = launch(route: "explore", signedIn: true, extra: ["-uitest-theme", "dark"])
+        let row = app.descendants(matching: .any)
+            .matching(NSPredicate(format: "label CONTAINS 'Quốc Bảo' OR label CONTAINS 'Minh Anh' OR label CONTAINS 'Phở Thìn'")).firstMatch
+        XCTAssertTrue(row.waitForExistence(timeout: 60), "a feed row")
+        shot("59-explore")
+    }
+
+    /// A post's detail page with the safety flags OFF: no ⋯ button, so the screen is the pre-Phase-8 one.
+    func testReviewDetailWithoutSafety() {
+        let app = launch(route: "safety-review", signedIn: true, extra: ["-uitest-theme", "dark"])
+        XCTAssertTrue(any(app, "review-comments").waitForExistence(timeout: 60), "detail loaded")
+        XCTAssertFalse(any(app, "review-safety").exists, "no report button while the server flags are off")
+        shot("60-review-detail")
+    }
+
     // MARK: - B2 place decision (chips, paged cards, fold, Maps footer, the four actions)
 
     func testPlaceDecision() {

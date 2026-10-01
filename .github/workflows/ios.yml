@@ -178,7 +178,7 @@ jobs:
           # comments, blocked list) + 3 account deletion + 1 Sign in with Apple + 6 plan card v2.
           count=$(ls build/shots/*.png 2>/dev/null | wc -l | tr -d ' ')
           echo "screenshots: $count"
-          [ "$count" -ge 57 ] || { echo "::error::expected 57 screenshots, got $count"; exit 1; }
+          [ "$count" -ge 59 ] || { echo "::error::expected 59 screenshots, got $count"; exit 1; }
 
       - name: Upload screenshots
         if: always()
