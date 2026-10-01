@@ -235,3 +235,21 @@ Bảng versionCode, trạng thái phát hành, cảnh báo nguyên văn, so sán
 | chat: «Mùa này đi du lịch ở đâu» | PASS 7/7 (gợi ý Vũng Tàu, có khách sạn) | **FAIL**: tin cuối không có link |
 Lượt đầy đủ trước đó (tất cả ca + non-AI + chia sẻ + Back) chạy trên `6e68862`/`bd8f9b1` (cùng UAT); lượt cuối trên `891be6c` chạy lại tập con ở bảng trên — **không chạy lại đủ mọi flow** (chia sẻ, composer, profile…) trên `891be6c`; ghi rõ để khỏi hiểu nhầm. Web: thêm 2 ca chưa có link ở tin cuối (`mua-he`, `snacks-then-q1`) — việc phiên web.
 Ghi chú: «có phim gì hay» trên Android trả thẻ rạp (DCINE…), KHÔNG phải câu trả lời trực tiếp kèm link CGV như web mô tả ở R28 — chưa rõ do UAT chưa có hay do khác biệt; **chưa kiểm**.
+
+
+## VÒNG UGC 01/10 tối — báo cáo + quy tắc cộng đồng + chặn (Huy chọn phương án (b))
+
+**Commit code `684431f` (local, chưa push)** · AAB `D:\TappyAI-backups\TappyAI-release-vc11-684431f.aab` SHA-256 `794795a95a0a13398f5a3af4859849c82eb05c0fb989392a26c3d9cc995e5ff4` (versionCode 11 / 1.0.0, ký bằng khoá tải lên `02:5B:35:4D:…` khớp Play) · APK UAT `TappyAI-UAT-684431f.apk` SHA-256 `9e2d3295c9d707ced6b353672dbd30cc67ca06a867e4a2e77e5a43879385784b`. Phone R58RC0V30BH: chờ máy (adb chỉ thấy emulator).
+
+**Đã làm (có test + ảnh):**
+- (a) Báo cáo bài/clip: menu «…» của bài người khác có «Báo cáo» → 6 lý do → `POST /api/reviews/{id}/report {reason}` (production có sẵn; trả `{ok, reported, alreadyReported?}`; 400/401/403/404/500). Ánh xạ lý do → `spam, harassment, inappropriate, misinformation (cho «Lừa đảo» vì server không có «scam»), copyright, other`. Chỉ khi server nhận mới đóng hộp + ẩn bài khỏi feed/lưới người báo (lưu máy, giữ sau khi mở lại); mất mạng/429/5xx = «Chưa gửi được báo cáo», không báo đã gửi. e2e UAT `safety-report` 17/17 (kể cả mất mạng, đúng 1 hàng `content_reports`, lưới 3→2); ảnh trong `android/e2e/out/2026-10-01T13-41-25/`.
+- Báo cáo bình luận + báo cáo người dùng: `POST /api/reports` (Phase 8) CHỈ khi `/api/config` có `p8.reports=true`; mặc định ẨN.
+- (b) Đồng ý quy tắc cộng đồng trước khi đăng bài/clip: hộp «Quy tắc cộng đồng» + link Điều khoản (https://www.tappyai.com/terms) + support@tappyai.com, nhớ lựa chọn trên máy (phiên bản 1). e2e `composer` 9/9. **Chưa kiểm:** trang /terms của web có nêu đủ quy tắc nội dung (việc của phiên web).
+- (c) Liên hệ vi phạm trong app: support@tappyai.com trong hộp báo cáo và hộp quy tắc (bấm mở email).
+- (d) Chặn người dùng: `POST|DELETE /api/users/{id}/block`, `GET /api/users/blocks`, hợp đồng đúng IOS-REQUESTS I7; nút «Chặn người dùng» (menu bài + menu hồ sơ), «Tài khoản đã chặn» (Cài đặt, trước hàng xoá tài khoản), ẩn bài + bình luận của người bị chặn. **Chỉ hiện khi `GET /api/config` → `p8.userBlocks === true`; mặc định ẨN**. UAT hiện KHÔNG có khối `p8` (đã đo) nên nút chặn ẩn — đúng thiết kế. Ảnh giao diện chặn chỉ có từ màn xem trước UAT dữ liệu giả (`ugc-2026-10-01/preview-*.png`), KHÔNG chạy được với server thật.
+- Test đơn vị mới: 41 (`SafetyRepositoryTest`, `SafetyModelsTest`, `SafetyWiringTest`); toàn bộ debug/release/uat: 1012 test, 0 lỗi.
+
+**Công thật:** ~7 file mới + 12 file sửa trong app, 6 file string/test, 2 flow e2e. Nửa ngày làm + đo + build.
+
+**Cần từ server/web để Block chạy thật (không đổi app):** bật `P8_USER_BLOCKS` (+ `P8_REPORTS_V2`), áp `20260924_p8_user_blocks.sql` (+ `20260924_p8_reports_sanctions_audit.sql`) trên production, và `/api/config` phải trả `p8: {reports, userBlocks, commentModeration}` (phase8 `src/lib/p8/clientFlags.ts`). Khi đó AAB vc11 TỰ hiện nút chặn, không phải phát hành lại.
+**Rủi ro còn lại với Google Play:** nếu nộp khi chưa bật chặn, reviewer sẽ không thấy chặn người dùng → có thể từ chối.

@@ -1,6 +1,6 @@
-# Anh test máy thật — MỘT vòng, 14 mục (bản CUỐI, 01/10)
+# Anh test máy thật — MỘT vòng, 15 mục (bản CUỐI, 01/10 tối)
 
-Máy R58RC0V30BH · APK UAT `TappyAI-UAT-891be6c.apk` (app «TappyAI UAT», nói chuyện với uat.tappyai.com). Dùng tài khoản test.
+Máy R58RC0V30BH · APK UAT `TappyAI-UAT-684431f.apk` (app «TappyAI UAT», nói chuyện với uat.tappyai.com). Dùng tài khoản test.
 Mỗi mục: làm → **đạt = thấy gì** → ghi Đạt / Không đạt (+1 dòng nếu không đạt).
 Bản Play (www.tappyai.com — production) KHÔNG nằm trong vòng này.
 
@@ -9,6 +9,7 @@ Bản Play (www.tappyai.com — production) KHÔNG nằm trong vòng này.
 
 **2. Google** — «Tiếp tục với Google». Đạt = hiện bảng chọn tài khoản Google của hệ thống (không mở trình duyệt), chọn xong vào được app.
 ⚠️ **Chưa thử với bản cài từ Play. Trên APK UAT rất có thể báo «không có thông tin đăng nhập» — đó là THIẾU KHAI BÁO SHA/package, KHÔNG phải lỗi app.** Cụ thể: APK UAT mang id `com.tappyai.app.staging`, ký bằng khoá debug SHA-1 `B1:90:A7:B0:F0:30:29:F7:AD:0E:7A:4C:F2:AE:FB:27:3F:02:54:2F`; Google Cloud (dự án `aerobic-lock-498409-u7`) chỉ có client Android cho `com.tappyai.app` (khoá tải lên + khoá ký CŨ `12:BD:98:F6…`) và `com.tappyai.app.debug` — **không có `.staging`**. Với bản Play thật: khoá ký HIỆN TẠI (SHA-1 `C2:0A:A1:27:E8:4C:2A:17:35:82:67:77:DA:A1:08:65:EF:2B:A9:1D`) cũng CHƯA có trong client nào. Chi tiết: `PLAY-CONSOLE-PASTE.md` mục A01.
+**Nếu Google Cloud báo «Requested entity already exists» khi anh tạo client Android:** cặp package + SHA-1 đã được đăng ký ở MỘT DỰ ÁN KHÁC (nhiều khả năng `sixth-impulse-499009-a2`, có thể thuộc tài khoản Google khác của anh; đây là giả thuyết chưa kiểm). Cách tìm: đăng nhập từng tài khoản Google của anh → console.cloud.google.com → chọn dự án đó → ☰ → APIs & Services → Credentials → tìm OAuth client loại Android có package `com.tappyai.app`. Cách xử lý (xoá client đó rồi tạo mới ở `aerobic-lock-498409-u7`, cùng dự án với web client ID của app) — **đủ các bước bấm ở `PLAY-CONSOLE-PASTE.md` mục G**. Cần đăng nhập và bấm; em không làm.
 ☐ Đạt ☐ Lỗi «không có thông tin đăng nhập» (đúng như trên) ☐ Lỗi khác: ______
 
 **3. Email** — nhập email + mật khẩu tài khoản test → Đăng nhập; thử mật khẩu sai một lần.
@@ -47,3 +48,7 @@ Bản Play (www.tappyai.com — production) KHÔNG nằm trong vòng này.
 **14. Xoá tài khoản (theo hợp đồng web: xoá NGAY; Huy chốt cờ BẬT khi release)** — Tôi → Cài đặt → cuộn xuống mục «KHÁC» → hàng CUỐI mục (sau «Chính sách bản quyền»), cùng kiểu mọi hàng khác, ô xám (không đỏ), nằm xa «Đăng xuất» (Đăng xuất ở khung riêng bên dưới): «Xóa tài khoản» (cờ BẬT — UAT hiện đang BẬT) hoặc «Yêu cầu xóa tài khoản» (cờ TẮT).
 Cờ TẮT (UAT): bấm → hộp «Yêu cầu xóa tài khoản?» → «Tiếp tục» mở app email soạn sẵn tới support@tappyai.com; không xoá, không đăng xuất. **Không gửi thư thật.**
 Cờ BẬT (khi release): hàng đổi tên «Xóa tài khoản» → hộp «Xóa tài khoản vĩnh viễn? Toàn bộ dữ liệu của bạn sẽ bị xóa ngay…» (có đoạn gói trả phí nếu tài khoản có gói) → gõ XÓA → «Xóa vĩnh viễn tài khoản». **Không làm trên tài khoản thật.** Trên UAT chưa bật được cờ nên chưa kiểm luồng xoá thật trên máy. ☐ Đạt ☐ Không đạt: ______
+
+**15. Báo cáo bài đăng + quy tắc cộng đồng (mới, 01/10 tối)** — Khám phá (hoặc hồ sơ người khác → mở một bài; ở màn «Chi tiết» cuộn xuống để thấy nút «…») → «…» → «Báo cáo» → chọn lý do (Spam · Quấy rối hoặc bắt nạt · Nội dung nhạy cảm · Lừa đảo · Vi phạm bản quyền · Khác) → «Gửi báo cáo».
+Đạt = hiện «Đã gửi báo cáo. Cảm ơn bạn.», hộp đóng, bài vừa báo biến khỏi bảng tin/lưới của anh (kể cả sau khi mở lại app). Tắt mạng rồi gửi: hiện «Chưa gửi được báo cáo…», KHÔNG báo đã gửi, bài vẫn còn. Trong hộp có địa chỉ support@tappyai.com. Đăng bài đầu tiên (Khám phá → «+» → viết → «Đăng»): hiện «Quy tắc cộng đồng» có link «Đọc Điều khoản sử dụng»; «Đồng ý và đăng» mới đăng; lần sau không hỏi lại. **Không báo cáo bài thật của người khác** — dùng bài/tài khoản test. ☐ Đạt ☐ Không đạt: ______
+**Nút «Chặn người dùng» và «Tài khoản đã chặn» (Cài đặt) sẽ KHÔNG xuất hiện trên UAT/Play hôm nay** — chúng chỉ hiện khi server bật chặn người dùng (Phase 8: `P8_USER_BLOCKS` + migration `20260924_p8_user_blocks.sql`). Đó là đúng thiết kế, không phải lỗi. Ảnh giao diện chặn (dữ liệu giả, không gửi gì): `D:\TappyAI-backups\android-parity-evidence\ugc-2026-10-01\preview-*.png`.
