@@ -142,6 +142,8 @@ export async function android({ a, shot, check, seeded }) {
       if (!ctaOf(raw).length && askOf(raw).length && i === c.turns.length - 1) {
         // Ask card v2 (R23) is taller than the screen: bring each question into view before its tap.
         const qs = askOf(raw)
+        // The emulator's software-GPU ANR ("TappyAI UAT isn't responding") can land while the card is drawn: answer «Wait».
+        for (let k = 0; k < 4 && a.find(/isn.t responding/); k++) { const w = a.find('Wait'); if (w) await a.tap(w, { after: 3000 }) }
         for (let k = 0; k < 4 && !a.find(qs[0].q); k++) { a.swipe('down'); await a.sleep(700) }
         for (let k = 0; k < 8 && !a.find(qs[0].q); k++) { a.swipe('up'); await a.sleep(700) }
         const picked = []
@@ -152,6 +154,7 @@ export async function android({ a, shot, check, seeded }) {
         }
         // The card's TOP (mascot + the per-area title) for the area evidence — then back down to the send button.
         const HEADER = /^(Hôm nay ăn gì nhỉ\?|Bạn đang tìm món gì\?|Chuyến đi thế nào đây\?|Thư giãn kiểu nào hôm nay\?|Tìm gì cho bạn hôm nay\?)$/
+        for (let k = 0; k < 3 && a.find(/isn.t responding/); k++) { const w = a.find('Wait'); if (w) await a.tap(w, { after: 3000 }) }
         for (let k = 0; k < 6 && !a.find(HEADER); k++) { a.swipe('down'); await a.sleep(600) }
         shot(`${c.id}-ask-header`)
         check(`${c.id}: tiêu đề thẻ hỏi theo mảng`, !!a.find(HEADER), a.texts().find((t) => HEADER.test(t)) || '(không thấy tiêu đề)')

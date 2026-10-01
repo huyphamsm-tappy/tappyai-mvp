@@ -4,6 +4,7 @@
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { asUser } from '../lib/api.mjs'
+import { rest } from '../lib/supabase.mjs'
 
 export const webAccount = 'e2e.android.free@example.com'
 const here = path.dirname(fileURLToPath(import.meta.url))
@@ -28,6 +29,9 @@ export async function android({ a, shot, check, seeded }) {
   // An image in the gallery for the picker.
   a.adb(['push', IMAGE, '/sdcard/Pictures/e2e-wave.png'])
   a.sh('am', 'broadcast', '-a', 'android.intent.action.MEDIA_SCANNER_SCAN_FILE', '-d', 'file:///sdcard/Pictures/e2e-wave.png')
+  // The picked image is always the same file, and the avatar URL follows its content: a LEFTOVER avatar from an earlier
+  // run makes "avatar_url changed" false although the upload worked (01/10: 2 false FAILs). Start from no avatar.
+  await rest.patch(`profiles?id=eq.${seeded.users.free.id}`, { avatar_url: null }).catch(() => {})
   const before = await serverProfile(email)
 
   await a.signIn(email)

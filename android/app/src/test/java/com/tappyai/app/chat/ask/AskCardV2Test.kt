@@ -65,6 +65,18 @@ class AskCardV2Test {
         assertEquals(AskArea.MAIN, AskCardModel.areaOf(generic, "mùa này mưa nhiều"))
     }
 
+    @Test fun `R28 ids - dest is a trip, device is shopping, style-of-destination stays a trip`() {
+        val dest = listOf(q("dest", "Bay đến đâu?", "Đến Đà Nẵng", "Đến Hà Nội", "Đến Phú Quốc", "Đến nơi khác"), q("party", "Mấy người?", "1 người", "2 người"))
+        assertEquals(AskArea.TRAVEL, AskCardModel.areaOf(dest))
+        val device = listOf(q("device", "Dùng cho iPhone nào?", "iPhone 15", "iPhone 14", "iPhone cũ hơn"), q("budget", "Tầm giá bao nhiêu?", "Dưới 200k", "200-500k"))
+        assertEquals(AskArea.SHOPPING, AskCardModel.areaOf(device))
+        val kind = listOf(q("style", "Thích kiểu điểm đến nào?", "Biển", "Núi", "Thành phố", "Nước ngoài"), q("party", "Mấy người?", "1 người", "2 người"))
+        assertEquals(AskArea.TRAVEL, AskCardModel.areaOf(kind))
+        // accessory words alone (no ids) still read as shopping
+        val acc = listOf(q("style", "Loại nào?", "Kính cường lực", "Ốp lưng", "Sạc"), q("party", "Mấy người?", "1 người", "2 người"))
+        assertEquals(AskArea.SHOPPING, AskCardModel.areaOf(acc))
+    }
+
     @Test fun `a trip whose style options are places still reads as TRAVEL`() {
         val trip = listOf(q("style", "Thích kiểu gì?", "Biển", "Núi", "Ăn uống", "Nghỉ dưỡng"), q("party", "Mấy người?", "1 người", "2 người"))
         assertEquals(AskArea.TRAVEL, AskCardModel.areaOf(trip))

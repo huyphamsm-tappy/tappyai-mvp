@@ -53,8 +53,9 @@ object AskCardModel {
         if ("dish" in ids || "mode" in ids) return AskArea.FOOD
         if ("service" in ids || "special" in ids) return AskArea.SPA
         if ("activity" in ids || "vibe" in ids || "artist" in ids) return AskArea.ENTERTAINMENT
-        if ("date" in ids || "origin" in ids || "transport" in ids) return AskArea.TRAVEL
-        if ("line" in ids || "must" in ids || "condition" in ids || "purpose" in ids) return AskArea.SHOPPING
+        // R28 (web 01/10): `dest` = «Bay đến đâu?», `device` = «Dùng cho iPhone nào?» (accessory shopping).
+        if ("date" in ids || "origin" in ids || "transport" in ids || "dest" in ids) return AskArea.TRAVEL
+        if ("line" in ids || "must" in ids || "condition" in ids || "purpose" in ids || "device" in ids) return AskArea.SHOPPING
         questions.firstOrNull { it.id == "style" }?.let { style ->
             if (style.options.any { SPA_WORDS.containsMatchIn(fold(it)) }) return AskArea.SPA
         }
@@ -74,7 +75,7 @@ object AskCardModel {
         AskArea.SPA to Regex("\\b(?:massage|spa|nail|goi dau|xong hoi|cham soc da|lam dep|vai gay|da nong|toan than|lam toc|cat toc|nhuom toc|uon toc|dap bot|dinh da|son gel|tri lieu|body|mong tay|mong chan)\\b"),
         AskArea.FOOD to Regex("\\b(?:pho|bun|mi quang|hu tieu|com|banh mi|banh|lau|nuong|quan an|nha hang|mon an|an uong|an gi|an sang|an trua|an toi|an vat|nhau|buffet|hai san|mon viet|mon nhat|mon han|do an|giao tan noi|an tai quan|vegan|an chay|quan cafe|cafe|ca phe|tra sua|bia)\\b"),
         AskArea.ENTERTAINMENT to Regex("\\b(?:karaoke|xem phim|rap phim|phim|bar|pub|bida|billiard|bowling|concert|ca nhac|live music|giai tri|di choi|vui choi|club|escape room|san khau|nhac song|nightlife)\\b"),
-        AskArea.SHOPPING to Regex("\\b(?:mua sam|tai nghe|nhet tai|chup tai|chong on|dien thoai|laptop|may tinh|tivi|tu lanh|may giat|may anh|thoi trang|dong ho|qua tang|bao hanh|chinh hang|lazada|shopee|tiki|do cong nghe|thiet bi|pin|sac|giay|tui xach)\\b"),
+        AskArea.SHOPPING to Regex("\\b(?:mua sam|tai nghe|nhet tai|chup tai|chong on|iphone|ipad|samsung|phu kien|op lung|kinh cuong luc|dien thoai|laptop|may tinh|tivi|tu lanh|may giat|may anh|thoi trang|dong ho|qua tang|bao hanh|chinh hang|lazada|shopee|tiki|do cong nghe|thiet bi|pin|sac|giay|tui xach)\\b"),
         AskArea.TRAVEL to Regex("\\b(?:du lich|chuyen di|tour|resort|homestay|khach san|nghi duong|bien|nui|ve may bay|chuyen bay|bay tu|bay den|visa|dat phong|lich trinh|3n2d|2n1d|may ngay|may dem|moi dem|di choi xa|phuot)\\b"),
     )
 
