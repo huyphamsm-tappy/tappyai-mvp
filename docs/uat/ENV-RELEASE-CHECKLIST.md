@@ -35,7 +35,7 @@ EN: «Delete your account permanently? All your data will be deleted immediately
 - Web: đoạn gói chỉ hiện khi `subscriptions.status = 'active'` (dữ liệu có sẵn, đã dùng cho huy hiệu Premium) — không thêm field.
 - Android/iOS: chỉ sửa CHỮ (xem ANDROID-REQUESTS R29, IOS-REQUESTS I-5). Server biết gói, app có thể chưa biết ⇒ app dùng bản chung «Nếu bạn đang có gói trả phí, gói và credit còn lại sẽ mất …» nếu không có dữ liệu gói; KHÔNG đổi hợp đồng.
 - Về hoàn tiền: câu «Tappy không hoàn lại phần chưa dùng» và «việc hoàn tiền (nếu có) do App Store/Google Play quyết theo chính sách của họ» **cần người am hiểu quy định bảo vệ người tiêu dùng xem lại** (việc của Huy).
-- **Nút xoá — CẦN HUY QUYẾT:** Huy ghi «kín đáo, chữ thường, không đỏ». Thực tế hiện nay (web VÀ Android) hàng «Xóa tài khoản» là hàng **đỏ** (kiểu nguy hiểm) nằm trong khung cùng nút Đăng xuất; test `settingsDeleteAccountLink` và Android ghim đúng kiểu này. Tôi KHÔNG đổi (đổi = sửa test ghim + lệch Android). Muốn chữ thường thì báo — web đổi 1 dòng, Android cần sửa app.
+- **Nút xoá (Huy 01/10, kiểu TikTok): hàng chữ thường, KHÔNG đỏ, mục «Khác», hàng cuối, xa «Đăng xuất».** Web đã đổi; Android/iOS làm theo R29 / I-5 (app hiện tại còn hàng đỏ cạnh Đăng xuất).
 - Trang web `/delete-account` (link cho Google Play) hoạt động: nói xoá trong app (Cài đặt) hoặc email support@tappyai.com; thêm đoạn gói trả phí/hoàn tiền (App Store/Google Play quyết).
 
 ## 2. Đăng video lên production (PHẦN B-a)
