@@ -61,7 +61,12 @@ export async function android({ a, shot, check }) {
       check('cờ BẬT: hàng đổi nhãn «Xóa tài khoản»', label === 'Xóa tài khoản', label)
       await a.tap(row, { after: 2500 })
       shot('delete-dialog')
-      check('cờ BẬT: hộp liệt kê dữ liệu bị xoá + ô xác nhận XÓA', !!a.find(/Việc xóa sẽ loại bỏ vĩnh viễn/) && !!a.find(/Để xác nhận, hãy gõ/))
+      // R29 text: the lead sentence, the plan line (generic when the app does not know a paid plan; the test account is free → none), the lists.
+      check('cờ BẬT: hộp có chữ R29 «Xóa tài khoản vĩnh viễn? … bị xóa ngay và không thể khôi phục…» + danh sách dữ liệu bị xoá', !!a.find(/Xóa tài khoản vĩnh viễn\?/) && !!a.find(/Việc xóa sẽ loại bỏ vĩnh viễn/))
+      // The typed field sits BELOW the lists (the dialog body scrolls): reach it, focus it, type the word.
+      for (let k = 0; k < 8 && !a.find(/Gõ .* để xác nhận/); k++) { a.sh('input', 'swipe', '540', '1300', '540', '600', '400'); await a.sleep(700) }
+      check('cờ BẬT: có ô «Gõ XÓA để xác nhận.»', !!a.find(/Gõ .* để xác nhận/))
+      await a.tap(a.find(/Gõ .* để xác nhận/), { after: 800 })
       await a.pasteText('XÓA')
       await a.hideKeyboard()
       await a.sleep(800)

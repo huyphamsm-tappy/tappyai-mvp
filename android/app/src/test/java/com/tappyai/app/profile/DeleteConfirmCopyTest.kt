@@ -77,7 +77,8 @@ class DeleteConfirmCopyTest {
         assertTrue(vm.contains("authRepository.signOut()"))
         val screen = read("app/src/main/java/com/tappyai/app/profile/SettingsScreen.kt")
         val row = screen.substringAfter("icon = Icons.Filled.DeleteOutline,").substringBefore("onClick = { confirmDeleteAccount = true },")
-        assertFalse(row.contains("AccentRed") || row.contains("accent =") || row.contains("danger = true"))
+        assertFalse("no red", row.contains("AccentRed") || row.contains("danger = true"))
+        assertTrue("plain row like its siblings (muted slate tile)", row.contains("accent = AccentSlate,"))
         // the flag-OFF branch stays in the code (email request) for any build whose server has the flag off
         assertTrue(screen.contains("Intent.ACTION_SENDTO"))
     }

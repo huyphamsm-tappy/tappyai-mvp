@@ -64,11 +64,14 @@ class SettingsV3Test {
     fun `the dress is V3 - palette, grouped cards, accent tiles, the discreet delete row, the green On`() {
         assertTrue(screen.contains("V3HomeTheme {") && screen.contains(".background(HomeV3.Background)"))
         assertEquals("two groups + the sign-out group", 3, Regex("""ProfileGroupCard \{""").findAll(screen).count())
-        // Huy 01/10: the delete row is DISCREET — plain neutral tile, regular weight, no red — but still the last row of «Khác».
+        // Huy 01/10 (TikTok style): the delete row is the SAME plain row as its siblings - muted slate tile, NO red - the last row of «Khác».
         val delBlock = screen.substringAfter("icon = Icons.Filled.DeleteOutline,").substringBefore("onClick = { confirmDeleteAccount = true },")
-        assertFalse("no red tile on the delete row", delBlock.contains("AccentRed") || delBlock.contains("accent =") || delBlock.contains("danger = true"))
-        assertFalse("no bold title on the delete row", delBlock.contains("titleFontWeight"))
+        assertFalse("no red on the delete row", delBlock.contains("AccentRed") || delBlock.contains("danger = true") || delBlock.contains("errorContainer"))
+        assertTrue("same row style as its siblings: a muted accent tile, semibold title", delBlock.contains("accent = AccentSlate,") && delBlock.contains("titleFontWeight = FontWeight.SemiBold"))
         assertFalse(screen.contains("AccentRed"))
+        assertTrue(screen.contains("private val AccentSlate = Color(0xFF64748B)"))
+        // «Đăng xuất» is NOT next to it: the delete row comes first, the sign-out row sits later in its own group
+        assertTrue(screen.indexOf("Icons.Filled.DeleteOutline") < screen.indexOf("viewModel::signOut"))
         assertTrue(screen.contains("valueColor = if (viewModel.tappyNotificationSoundEnabled) AccentGreen else null,"))
         assertTrue(screen.contains("HorizontalDivider(color = HomeV3.Outline, modifier = Modifier.padding(start = 72.dp))"))
         val en = src("app/src/main/res/values/strings_settings.xml"); val vi = src("app/src/main/res/values-vi/strings_settings.xml")

@@ -259,7 +259,7 @@ fun SettingsScreen(
                         //
                         // Request-based on purpose: support verifies the requester owns the account
                         // before anything is erased. The app deletes nothing itself. The red tile is
-                        // the destructive accent; the confirmation dialog below is unchanged.
+                        // a muted (never red) tile; the confirmation dialog below carries the warning.
                         //
                         // UAT3 P0: where the server offers it (`flags.accountSelfDelete`), the same
                         // row is the in-app deletion — DeleteAccountDialog → POST /api/account/delete
@@ -270,8 +270,11 @@ fun SettingsScreen(
                             title = stringResource(if (viewModel.selfDeleteEnabled && !viewModel.isAnonymous) R.string.settings_delete_account_self else R.string.settings_delete_account),
                             // UAT3 device run: the subtitle still said "Request deletion…" on the in-app flow.
                             subtitle = stringResource(if (viewModel.selfDeleteEnabled && !viewModel.isAnonymous) R.string.settings_delete_account_self_desc else R.string.settings_delete_account_desc),
-                            // Huy 01/10: discreet — the plain neutral row, regular weight, no red tile — but still
-                            // the last row of «Khác» in Settings (findable, as Apple 5.1.1(v) / Google Play require).
+                            // Huy 01/10 (TikTok style, web R29): the SAME plain row style as its siblings in «Khác» — a muted
+                            // slate tile, no red anywhere — the LAST row of the section, and nowhere near «Đăng xuất» (that
+                            // sits alone in its own card below). Findable, as Apple 5.1.1(v) / Google Play require.
+                            accent = AccentSlate,
+                            titleFontWeight = FontWeight.SemiBold,
                             onClick = { confirmDeleteAccount = true },
                         )
                     }
@@ -445,6 +448,7 @@ private val AccentBlue = Color(0xFF3B82F6)
 private val AccentPurple = Color(0xFF7C5CFF)
 private val AccentGreen = Color(0xFF14B58A)
 private val AccentOrange = Color(0xFFF59E0B)
+private val AccentSlate = Color(0xFF64748B)
 
 /** The row label of a mode: Theo hệ thống / Sáng / Tối. */
 @StringRes
