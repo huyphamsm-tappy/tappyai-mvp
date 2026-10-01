@@ -60,7 +60,6 @@ struct AccountDeletionView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .background(TappyColor.danger.opacity(0.08))
                 .clipShape(RoundedRectangle(cornerRadius: Radius.md, style: .continuous))
-                .accessibilityIdentifier("delete-warning")
 
                 list(headingKey: "account.delete.removes.heading", leadKey: nil, keys: Self.removes)
                 list(headingKey: "account.delete.kept.heading", leadKey: "account.delete.kept.lead", keys: Self.kept)
