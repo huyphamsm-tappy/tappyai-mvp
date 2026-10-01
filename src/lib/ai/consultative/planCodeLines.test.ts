@@ -117,3 +117,14 @@ describe('(d) owner 30/09 night — the claim guard never rewrites a sentence th
     expect(r.text).toMatch(/chưa xác nhận được có phòng VIP/)
   })
 })
+
+describe('(d2) a long venue name does not hide the model\'s own hedge from the claim guard', () => {
+  it('FOOD-3 t3 (UAT Luna 01/10, verbatim) stays as written', () => {
+    const t = 'Mình chưa có thông tin xác nhận QUÁN NHẬU NĂM ZUI có phòng riêng; bạn nên gọi quán để kiểm tra.'
+    expect(guardUnsupportedClaims(t, { venues: [], sharedTexts: [], userTexts: ['QUÁN NHẬU NĂM ZUI có phòng riêng không'] }).text).toBe(t)
+  })
+  it('a hedge about ANOTHER clause does not exempt the claim', () => {
+    const r = guardUnsupportedClaims('Mình chưa có thông tin về giá. Quán này có phòng riêng rộng cho 6 người.', { venues: [], sharedTexts: [], userTexts: ['quán có phòng riêng không'] })
+    expect(r.text).toMatch(/chưa xác nhận được có phòng riêng/)
+  })
+})

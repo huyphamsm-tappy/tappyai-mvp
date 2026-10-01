@@ -61,6 +61,7 @@ const NEG_RE = /(?:^|[\s,(*_])(khong|chua)\s+(co|cung cap|ho tro|phuc vu|kinh do
 const CONFIRMED_NEG_RE = /(?:da |vua )?xac nhan\s+(?:la |rang )?/
 // Already hedged by the model itself — "chưa cho biết X có …", "chưa có thông tin (xác nhận) X có …" (UAT Luna 30/09
 // ENT-1 t3 / SPA-1 t3: R4 turned them into "…chưa cho biết Karaoke Avatar mình chưa xác nhận được có phòng VIP").
+const HEDGE_SAME_CLAUSE = /(?:^|[\s*_(])(?:chua|khong) (?:co (?:thong tin|du lieu|bang chung)|cho biet|xac nhan|ro|thay|biet)[^,;.!?\n]{0,90}$/
 const CONDITIONAL_RE = /(?:^|[\s*_(])(?:neu|khi|hoi|xem|goi|kiem tra|chua (?:duoc )?xac nhan|khong (?:chac|xac nhan)|de chac chan|chua (?:cho biet|ro|thay|biet)|(?:chua|khong) co (?:thong tin|du lieu|bang chung)(?: (?:xac nhan|ve|cho biet))?)(?=\s)/
 /**
  * An indirect question, not a claim: "rạp NÀO có phòng IMAX" (measured round 6, golden T2 t2 — R4
@@ -176,7 +177,12 @@ export function guardUnsupportedClaims(text: string, ev: ClaimEvidence): Unsuppo
         if (!fm || fm.index! > 25) continue
         // The hedge must govern THIS claim (just before it) — measured round 6, c40 F8: "cũng có phòng
         // riêng nhưng chưa xác nhận được giá" hedges the PRICE; a sentence-wide check let the room pass.
-        if (CONDITIONAL_RE.test(f.slice(Math.max(0, start - 40), start))) continue
+        // …only within the claim's own sentence: a hedge in the sentence BEFORE says nothing about this one.
+        const sentenceTail = (w: string) => w.slice(Math.max(w.lastIndexOf('. '), w.lastIndexOf('! '), w.lastIndexOf('? '), w.lastIndexOf('; '), w.lastIndexOf('\n')) + 1)
+        if (CONDITIONAL_RE.test(sentenceTail(f.slice(Math.max(0, start - 40), start)))) continue
+        // A long venue name pushes the model's own hedge past 40 chars ("chưa có thông tin xác nhận QUÁN NHẬU NĂM ZUI có phòng
+        // riêng", UAT Luna 01/10 FOOD-3 t3): a hedge verb with NO clause break before the claim still hedges it.
+        if (HEDGE_SAME_CLAUSE.test(sentenceTail(f.slice(Math.max(0, start - 110), start)))) continue
         if (WHICH_BEFORE_RE.test(f.slice(0, verbStart))) continue
         // "cũng có X" → "mình chưa xác nhận được có X" (not "cũng mình chưa …").
         if (f.slice(Math.max(0, start - 5), start) === 'cung ') start -= 5
