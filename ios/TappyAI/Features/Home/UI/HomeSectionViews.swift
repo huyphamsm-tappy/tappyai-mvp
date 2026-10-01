@@ -613,7 +613,7 @@ struct HomeSuggestionsSection: View {
     }
 
     static func text(_ s: Suggestion) -> String {
-        let key = "home.suggestion." + s.id   // composed key: the catalogue holds one entry per suggestion id
+        let key = "home.suggestion." + String(s.id)   // composed key: the catalogue holds one entry per suggestion id
         return NSLocalizedString(key, comment: "")
     }
 
