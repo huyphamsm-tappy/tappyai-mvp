@@ -108,12 +108,16 @@ private fun DockItem(
             Icon(imageVector = item.icon, contentDescription = null, tint = tint, modifier = Modifier.size(24.dp))
         }
         Spacer(modifier = Modifier.height(2.dp))
-        Text(
-            text = item.label,
-            color = if (selected) ExploreV3.Purple else Color.White,
-            fontSize = 12.sp,
-            fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Medium,
-            maxLines = 1,
-        )
+        // The dock has a fixed height: the label follows the system font scale only up to NAV_FONT_SCALE_CAP (matrix 02/10:
+        // at 1.5 the labels were cut off).
+        com.tappyai.core.designsystem.component.CappedFontScale(com.tappyai.core.designsystem.component.NAV_FONT_SCALE_CAP) {
+            Text(
+                text = item.label,
+                color = if (selected) ExploreV3.Purple else Color.White,
+                fontSize = 12.sp,
+                fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Medium,
+                maxLines = 1,
+            )
+        }
     }
 }

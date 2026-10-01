@@ -379,9 +379,15 @@ android {
             initWith(getByName("debug"))
             applicationIdSuffix = ".staging"
             versionNameSuffix = "-uat"
-            isMinifyEnabled = false
+            // `-PTAPPYAI_UAT_MINIFY=true` runs the SAME R8 + resource shrinking + proguard rules as the release build
+            // against the UAT backend, so the e2e flows can prove R8 did not break anything without touching production.
+            // Off by default: the normal UAT build stays the readable, unminified one.
+            val minifyUat = project.findProperty("TAPPYAI_UAT_MINIFY") == "true"
+            isMinifyEnabled = minifyUat
+            isShrinkResources = minifyUat
             isDebuggable = true
             matchingFallbacks += listOf("debug")
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             buildConfigField("String", "API_BASE_URL", "\"https://uat.tappyai.com/\"")
             buildConfigField("String", "WEB_APP_URL", "\"https://uat.tappyai.com\"")
             buildConfigField("String", "SUPABASE_URL", "\"$uatSupabaseUrl\"")
@@ -397,6 +403,17 @@ android {
             }
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             buildConfigField("String", "API_BASE_URL", "\"$releaseApiBaseUrl\"")
+        }
+    }
+
+    // 🔑 The app has its OWN language picker (Vietnamese / English, AppCompatDelegate.setApplicationLocales).
+    // By default a Play bundle delivers only the resources of the DEVICE's languages, so on a phone set to
+    // English a user who picks Vietnamese in the app would get Vietnamese strings missing and see English
+    // (lint: AppBundleLocaleChanges). Both languages ship in the base split instead; the cost is a few
+    // hundred KB of strings. Plain APK installs (the UAT build) are unaffected either way.
+    bundle {
+        language {
+            enableSplit = false
         }
     }
 

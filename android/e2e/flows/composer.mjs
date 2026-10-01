@@ -22,7 +22,9 @@ async function pickNewest(a, kind = 'Photo') {
   const cellRe = new RegExp(`^${kind} taken on`)
   let cell
   for (let i = 0; i < 10 && !cell; i++) {
-    cell = a.dump().find((n) => n.clickable && cellRe.test(n.desc || ''))
+    // Skip zero-length entries («with duration 00:00»): aborted pushes leave them in the emulator gallery, they sort FIRST
+    // (newest), and picking one makes the app say «Không đọc được thông tin video» (02/10: false FAIL on every build).
+    cell = a.dump().find((n) => n.clickable && cellRe.test(n.desc || '') && !/duration 00:00/.test(n.desc || ''))
     if (!cell) await a.sleep(1000)
   }
   if (!cell) throw new Error(`picker: no ${kind} cell`)

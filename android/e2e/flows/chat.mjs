@@ -70,7 +70,7 @@ async function lastReply(email, prompt) {
   const api = await asUser(email)
   for (let i = 0; i < 8; i++) {
     const r = await api('/api/conversations')
-    const conv = (r.json || []).find((c) => Date.parse(c.updated_at || 0) >= caseStart && (c.messages || []).some((m) => m.role === 'user' && (m.content || '').includes(prompt)))
+    const conv = (Array.isArray(r.json) ? r.json : []).find((c) => Date.parse(c.updated_at || 0) >= caseStart && (c.messages || []).some((m) => m.role === 'user' && (m.content || '').includes(prompt)))
     const msgs = conv?.messages || []
     const last = [...msgs].reverse().find((m) => m.role === 'assistant')
     if (last && msgs.indexOf(last) > msgs.findLastIndex((m) => m.role === 'user' && (m.content || '').includes(prompt))) return last.content || ''

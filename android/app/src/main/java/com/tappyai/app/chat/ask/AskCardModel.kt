@@ -195,7 +195,7 @@ object AskCardModel {
     /** The chosen options (a multi-choice question's picks in the card's option order, ", ") + free text, " · ". */
     fun composeAnswer(views: List<AskQuestionView>, chosen: Map<String, Set<String>>, free: String = ""): String {
         val parts = views.mapNotNull { v ->
-            v.options.map { it.label }.filter { it in chosen[v.id].orEmpty() }.takeIf { it.isNotEmpty() }?.joinToString(", ")
+            v.options.map { it.label }.filter { it in chosen[v.id].orEmpty() }.distinct().takeIf { it.isNotEmpty() }?.joinToString(", ")
         }
         val extra = free.trim()
         return (parts + listOfNotNull(extra.takeIf { it.isNotEmpty() })).joinToString(" · ")
