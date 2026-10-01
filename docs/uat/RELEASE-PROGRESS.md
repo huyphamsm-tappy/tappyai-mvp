@@ -518,3 +518,11 @@ Hạn chế guard vá: mỗi bản vá sau model giờ được ĐẾM (`tappyai
 - Bằng chứng (riêng tư): `gs://tappyai-uat-evidence/evidence/c865408/`.
 - Danh sách Huy test: `docs/uat/HUY-TEST-ROUND-FINAL.md`.
 - Sai sót của tôi trong đợt này (đã sửa): commit nhầm tệp tạm (`.uatlogs.jsonl` = bản log UAT 33 KB, `.d7*`, 283 bản ghi Serper mới) bằng `git add -A` — đã gỡ khỏi cây, **nhưng vẫn nằm trong lịch sử commit 26832ad…c865408 đã push** (không force-push); log chỉ gồm sự kiện `tappyai_*` của lượt thử, không có nội dung cá nhân nào tôi thấy.
+
+## 2026-10-01 tối — ĐÓNG BĂNG LẦN 3 (giọng Luna 6 BẬT, xoá tài khoản BẬT trên UAT)
+- Mã web cuối = `f277b4b`; commit chứa ghi chú này chỉ khác ở tài liệu. SHA phục vụ = commit cuối, đo bằng `/api/version`. Điểm quay lại: tag `release-freeze-3fce8b7`.
+- **Cờ trên UAT (Preview, nhánh rc/web-uat):** `STYLE_LUNA6=1` BẬT; `ACCOUNT_SELF_DELETE_ENABLED=true` BẬT (đo `/api/config` → `accountSelfDelete:true`). Production: Huy quyết ở PHẦN B.
+- Regression Gate xanh ở f277b4b: run push **36837703726**, PR **36837713662**; Architecture Guard xanh (36837703712 / 36837713656). Merge Guard đỏ từ trước (không liên quan).
+- Test full cục bộ: 16.255 đạt, 0 lỗi, 80 skip; 15/15 luật kiến trúc.
+- Xoá tài khoản đo trên UAT bằng 2 tài khoản dùng-một-lần tạo mới (DB audit, không đụng tài khoản có sẵn): không gói → không có đoạn gói; có gói (`subscriptions.status='active'`) → có đoạn gói; gõ sai chữ → nút mờ; xoá → hàng chat/hồ sơ/gói = 0, `account_deletion_jobs` +1, người dùng không còn, gọi lần hai → 401. D1/D2/D4 đã áp trên DB audit (đo chỉ-đọc).
+- Bằng chứng: `gs://tappyai-uat-evidence/evidence/f277b4b/`.
