@@ -61,6 +61,9 @@ DESIGN = {
     "31-ask-travel": "docs/design/ask-card/ask-card-mockup.png",
     "32-ask-spa": "docs/design/ask-card/ask-card-mockup.png",
     "61-ask-flight": "docs/design/ask-card/ask-card-mockup.png",
+    "63-voice-idle": "docs/design/voice/voice-mockup.png",
+    "64-voice-text": "docs/design/voice/voice-mockup.png",
+    "65-voice-error": "docs/design/voice/voice-mockup.png",
 }
 HEIGHT = 1400
 
@@ -83,6 +86,7 @@ def main(shots_dir, repo, out_dir):
         if design_rel:
             ref_path = os.path.join(repo, design_rel)
             ref_label = ("Ask card v2 mockup (owner 30/09)" if "ask-card" in design_rel
+                         else "Voice mockup (03. Voice / Chat Input Active)" if "voice" in design_rel
                          else "Approved layout sample (owner pick 29/09)")
         else:
             ref_path = os.path.join(repo, "docs/uat/evidence/android-parity", ref_rel) if ref_rel else None

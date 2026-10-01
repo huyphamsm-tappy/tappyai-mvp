@@ -225,3 +225,15 @@ final class VoiceInputManager: AppObservableObject {
         }
     }
 }
+
+// The listening screen talks to the recogniser through `VoiceRecognizing` (see `VoiceScreen.swift`).
+extension VoiceInputManager: VoiceRecognizing {
+    var changes: AnyPublisher<Void, Never> {
+        // `objectWillChange` fires BEFORE the value changes; hopping to the next main-queue turn lets the screen read the new one.
+        objectWillChange.map { _ in () }.receive(on: DispatchQueue.main).eraseToAnyPublisher()
+    }
+
+    func begin() { startListening(existingText: transcript) }
+
+    func halt() { cancelListening() }
+}

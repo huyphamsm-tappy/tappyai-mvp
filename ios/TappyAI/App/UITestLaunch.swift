@@ -12,6 +12,8 @@ struct UITestOverlay: View {
             PlanCardGalleryView(area: area)
         } else if UITestLaunch.placesRoute {
             PlaceCardsGalleryView()
+        } else if let state = UITestLaunch.voiceRoute {
+            VoiceGalleryView(state: state)
         }
         #else
         EmptyView()
@@ -60,6 +62,12 @@ enum UITestLaunch {
     static var planRoute: String? {
         guard let route = value("-uitest-route"), route.hasPrefix("plan-") else { return nil }
         return String(route.dropFirst(5))
+    }
+
+    /// A `voice-<idle|text|error>` route shows the listening screen in that state (fixture recogniser, no microphone).
+    static var voiceRoute: String? {
+        guard let route = value("-uitest-route"), route.hasPrefix("voice-") else { return nil }
+        return String(route.dropFirst(6))
     }
 
     /// The `places` route shows the place decision (chips, paged cards, fold, Maps footer) with a fixture of five places.

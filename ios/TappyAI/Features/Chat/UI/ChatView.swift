@@ -6,6 +6,7 @@ struct ChatView: View {
     @AppEnvironmentState private var router: AppRouter
     @AppEnvironmentState private var localization: LocalizationManager
     @State private var ageScreen = false
+    @State private var showVoice = false
 
     init(deps: AppDependencies, category: String = "general",
          conversationId: String? = nil, savedMessages: [Conversation.ConversationMessage]? = nil) {
@@ -113,7 +114,7 @@ struct ChatView: View {
                         locale: localization.language.rawValue,
                         onSend: { vm.send() },
                         onStop: { vm.stop() },
-                        onToggleVoice: { vm.toggleVoice() },
+                        onToggleVoice: { showVoice = true },
                         onCancelAutoSend: { vm.cancelAutoSend() },
                         onInsertEmoji: { vm.insertEmoji($0) },
                         onNearby: { vm.nearbySearch() },
@@ -194,6 +195,17 @@ struct ChatView: View {
                 vm.completeOnboarding(prefs: prefs)
             }
             .presentationDetents([.large])
+        }
+        .fullScreenCover(isPresented: $showVoice) {
+            // The listening screen owns its own recogniser. «Gửi» hands over the RECOGNISED text only; while a reply is
+            // still streaming it goes into the box instead, so it is never lost and never sent over a running reply.
+            VoiceListeningView(
+                voice: VoiceInputManager(),
+                sendText: { text in
+                    if vm.isStreaming { vm.inputText = text } else { vm.sendQuickPrompt(text) }
+                },
+                close: { showVoice = false }
+            )
         }
         .task {
             vm.restorePendingChat()

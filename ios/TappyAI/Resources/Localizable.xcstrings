@@ -25174,6 +25174,91 @@
           }
         }
       }
+    },
+    "voice.listen.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "I'm listening…"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tôi đang lắng nghe..."
+          }
+        }
+      }
+    },
+    "voice.listen.subtitle": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Say what you need — TappyAI is always ready to help you!"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hãy nói điều bạn cần, TappyAI luôn sẵn sàng hỗ trợ bạn!"
+          }
+        }
+      }
+    },
+    "voice.listen.sample": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Find me a quiet café with a nice view in Da Lat this weekend"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tìm cho tôi một quán cafe yên tĩnh có view đẹp ở Đà Lạt cuối tuần này"
+          }
+        }
+      }
+    },
+    "voice.listen.stopA11y": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stop listening"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dừng nghe"
+          }
+        }
+      }
+    },
+    "voice.listen.startA11y": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Start listening"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bắt đầu nghe"
+          }
+        }
+      }
     }
   }
 }

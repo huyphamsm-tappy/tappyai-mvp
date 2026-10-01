@@ -39,6 +39,57 @@ def gradient_png(w, h, c1, c2):
             + chunk(b"IDAT", zlib.compress(b"".join(rows))) + chunk(b"IEND", b""))
 
 
+import math
+
+SCENES = {
+    # name: (sky top, sky bottom, sun colour, sun x, sun y, sun radius, hill colours back->front)
+    "scene-dalat": ((255, 183, 120), (255, 120, 140), (255, 236, 179), 0.68, 0.40, 0.11,
+                    [(120, 98, 190), (74, 80, 160), (36, 52, 120)]),
+    "scene-sea": ((86, 166, 255), (180, 226, 255), (255, 244, 200), 0.30, 0.30, 0.09,
+                  [(60, 150, 210), (30, 110, 190), (16, 70, 150)]),
+}
+_SCENE_CACHE = {}
+
+
+def scene_png(name, w=540, h=960):
+    """An illustration drawn in code (sky, sun, layered hills): no third-party picture, no person. Cached."""
+    if name in _SCENE_CACHE:
+        return _SCENE_CACHE[name]
+    top, bottom, sun, sx, sy, sr, hills = SCENES[name]
+    rows = []
+    for y in range(h):
+        row = bytearray([0])
+        ty = y / (h - 1)
+        sky = [top[i] + (bottom[i] - top[i]) * ty for i in range(3)]
+        for x in range(w):
+            px = list(sky)
+            dx, dy = x / w - sx, (y / h - sy) * (h / w)
+            d = math.hypot(dx, dy)
+            if d < sr:
+                px = list(sun)
+            elif d < sr * 1.7:
+                k = 1 - (d - sr) / (sr * 0.7)
+                px = [px[i] + (sun[i] - px[i]) * 0.35 * k for i in range(3)]
+            for layer, colour in enumerate(hills):
+                base = 0.58 + layer * 0.12
+                amp = 0.05 - layer * 0.008
+                edge = base + amp * math.sin(x / w * (3.2 + layer * 1.3) * math.pi + layer * 1.7)
+                if y / h > edge:
+                    shade = 1 - 0.25 * ((y / h - edge) / (1 - edge))
+                    px = [colour[i] * shade for i in range(3)]
+            row += bytes(max(0, min(255, int(v))) for v in px)
+        rows.append(bytes(row))
+
+    def chunk(kind, data):
+        body = kind + data
+        return struct.pack(">I", len(data)) + body + struct.pack(">I", zlib.crc32(body) & 0xFFFFFFFF)
+
+    data = (b"\x89PNG\r\n\x1a\n" + chunk(b"IHDR", struct.pack(">IIBBBBB", w, h, 8, 2, 0, 0, 0))
+            + chunk(b"IDAT", zlib.compress(b"".join(rows))) + chunk(b"IEND", b""))
+    _SCENE_CACHE[name] = data
+    return data
+
+
 IMAGES = {"a": ((255, 176, 32), (240, 69, 122)), "b": ((30, 107, 255), (139, 92, 246)),
           "c": ((16, 185, 129), (59, 130, 246)), "d": ((245, 158, 11), (239, 68, 68))}
 
@@ -142,9 +193,9 @@ MINE = [
 
 # Home's community-video rail: the trending feed, only video rows with a thumbnail are drawn.
 FEED = [
-    _review(11, "Cuối tuần ở Đà Lạt", "b", 12400, content_type="video", thumbnail="http://127.0.0.1:3000/img/b.png",
+    _review(11, "Cuối tuần ở Đà Lạt", "b", 12400, content_type="video", thumbnail="http://127.0.0.1:3000/img/scene-dalat.png",
             profiles={"full_name": "Minh Anh"}),
-    _review(12, "Chia sẻ", "c", 830, content_type="video", thumbnail="http://127.0.0.1:3000/img/c.png",
+    _review(12, "Chia sẻ", "c", 830, content_type="video", thumbnail="http://127.0.0.1:3000/img/scene-sea.png",
             body="Săn mây Cầu Đất lúc 5h sáng", profiles={"full_name": "Quốc Bảo"}),
     _review(13, "Phở Thìn Bờ Hồ", "a", 57),
 ]
@@ -183,8 +234,8 @@ class Handler(BaseHTTPRequestHandler):
         path = self.path.split("?")[0]
         if path.startswith("/img/") and path.endswith(".png"):
             name = path[5:-4]
-            if name in IMAGES:
-                data = gradient_png(360, 240, *IMAGES[name])
+            if name in IMAGES or name in SCENES:
+                data = scene_png(name) if name in SCENES else gradient_png(360, 240, *IMAGES[name])
                 self.send_response(200)
                 self.send_header("Content-Type", "image/png")
                 self.send_header("Content-Length", str(len(data)))

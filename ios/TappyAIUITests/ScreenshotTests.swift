@@ -283,6 +283,37 @@ final class ScreenshotTests: XCTestCase {
         shot("60-review-detail")
     }
 
+    // MARK: - The listening screen (fixture recogniser: no microphone in CI)
+
+    func testVoiceScreenBeforeAnyWordsShowsTheSampleAndDimsSend() {
+        let app = launch(route: "voice-idle", extra: ["-uitest-theme", "dark"])
+        XCTAssertTrue(any(app, "voice-title").waitForExistence(timeout: 40), "the listening screen")
+        XCTAssertTrue(any(app, "voice-sample").exists, "the dim sample sentence")
+        XCTAssertFalse(any(app, "voice-transcript").exists, "the sample is not a transcript")
+        XCTAssertFalse(any(app, "voice-send").isEnabled, "«Gửi» cannot be pressed with nothing recognised")
+        XCTAssertTrue(any(app, "voice-cancel").isEnabled)
+        XCTAssertTrue(any(app, "voice-center").exists)
+        shot("63-voice-idle")
+    }
+
+    func testVoiceScreenWithRecognisedWords() {
+        let app = launch(route: "voice-text", extra: ["-uitest-theme", "dark"])
+        XCTAssertTrue(any(app, "voice-transcript").waitForExistence(timeout: 40), "the recognised words")
+        XCTAssertFalse(any(app, "voice-sample").exists, "the sample disappears once words arrive")
+        XCTAssertTrue(any(app, "voice-send").isEnabled)
+        shot("64-voice-text")
+        any(app, "voice-send").tap()
+        XCTAssertEqual(any(app, "voice-sent").label, "Tìm giúp mình quán cà phê yên tĩnh ở Đà Lạt", "«Gửi» hands over the recognised words only")
+    }
+
+    func testVoiceScreenPermissionError() {
+        let app = launch(route: "voice-error", extra: ["-uitest-theme", "dark"])
+        XCTAssertTrue(any(app, "voice-error").waitForExistence(timeout: 40), "a friendly message, not a hang")
+        XCTAssertFalse(any(app, "voice-send").isEnabled)
+        XCTAssertTrue(any(app, "voice-cancel").isEnabled, "the person can always leave")
+        shot("65-voice-error")
+    }
+
     // MARK: - 1b a saved chat reopened from history
 
     /// The server returns only {role, content}; every card is a marker block inside `content`. Reopening must draw the
