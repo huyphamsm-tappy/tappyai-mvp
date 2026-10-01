@@ -526,3 +526,9 @@ Hạn chế guard vá: mỗi bản vá sau model giờ được ĐẾM (`tappyai
 - Test full cục bộ: 16.255 đạt, 0 lỗi, 80 skip; 15/15 luật kiến trúc.
 - Xoá tài khoản đo trên UAT bằng 2 tài khoản dùng-một-lần tạo mới (DB audit, không đụng tài khoản có sẵn): không gói → không có đoạn gói; có gói (`subscriptions.status='active'`) → có đoạn gói; gõ sai chữ → nút mờ; xoá → hàng chat/hồ sơ/gói = 0, `account_deletion_jobs` +1, người dùng không còn, gọi lần hai → 401. D1/D2/D4 đã áp trên DB audit (đo chỉ-đọc).
 - Bằng chứng: `gs://tappyai-uat-evidence/evidence/f277b4b/`.
+
+### ▶ ĐÊM 01→02/10 — gộp chặn người dùng + báo cáo + kiểm duyệt vào rc/web-uat (cờ TẮT trong mã; BẬT trên Preview)
+- Gộp `sec/user-blocks-slice` (đã duyệt độc lập bởi phiên bảo mật: «Có thể gộp», không còn mức cao/vừa) vào rc/web-uat. Điều kiện gộp đủ 7: bảo mật duyệt ✓; toàn bộ test nhánh gộp xanh (16.484 test; 4 tệp DB cổng cố định chạy ở cổng khác: 111/111) ✓; tsc, quyền SQL, kiến trúc xanh ✓; `next build` thành công trên nhánh gộp ✓; đo feed ≤ 1,3 ms (200 người bị chặn, 300.000 bài) ✓; bốn migration áp + rollback + áp lại thành công trên DB AUDIT ✓; không chạm `reviews/route.ts`, `uploadCompletion.ts` ✓. Regression Gate sau gộp: xem mục đóng băng.
+- Migration mới (production CHƯA áp, thứ tự trong `MIGRATION_ORDER.txt` và `docs/uat/PART-B-FINAL.md`): `20261001_user_blocks`, `20261001b_user_reports`, `20261001c_commerce_providers_cinemas`, `20261001d_moderation_standards`, `20261001e_banned_identity_hash`.
+- Cờ Preview (rc/web-uat): `USER_BLOCKS_ENABLED`, `REPORTS_ENABLED`, `MODERATION_ADMIN_ENABLED` = true; `STYLE_LUNA6`, `ACCOUNT_SELF_DELETE_ENABLED` = true (đã có); `SUBSCRIPTIONS_ENABLED` không đặt (tắt).
+- Tài liệu: `docs/security/USER-BLOCKS-SLICE.md` (§10 SẴN SÀNG DUYỆT, §11 xử lý phát hiện), `MODERATION-STANDARDS.md`, `PART-B-FINAL.md`.
