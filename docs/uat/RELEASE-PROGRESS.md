@@ -494,3 +494,12 @@ Hạn chế guard vá: mỗi bản vá sau model giờ được ĐẾM (`tappyai
 - Test đầy đủ (app + db, `npm test`) trên mã này: 952 file đạt / 16 bỏ qua; 16.184 test đạt, 0 lỗi, 80 skip, 1 todo; cổng "required-suite" OK.
 - 80 skip: 33 `weatherCountryMatrix` + 10 `memoryGate/cacheProbe/domainMatrix/refinementProbe/reviewSourceProbe/toolPayload` (đo thật, cần TAPPY_MEASURE=1); 10 `luna/featureSmoke` (LUNA_FEATURE_SMOKE=1, gọi OpenAI thật); 3 replay audit (AUDIT_REPLAY=1) + 1 `brainEval` (BRAIN_EVAL=1, gọi model thật); 7 `ccpVerificationEvidence` (CCP_VERIFY=1); 14 `profileCollectionsParity`/`sharedPrivacy` (describe.skip từ 17/09 — chờ port tab lên hub V3); 1 `decisionFrame` (it.skip từ 17/09, phụ thuộc guard chưa merge).
 - Dọn: xoá 4 tệp ghi replay CHƯA theo dõi trong `scripts/consult/replay/recordings/` (không xoá tệp đã commit).
+
+## ĐIỂM QUAY LẠI — release-freeze-3fce8b7 (01/10)
+- Tag git **local** `release-freeze-3fce8b7` → `3fce8b7c62eed5374d1f14b21c266e4c98650fd6` (bản đã đóng băng Huy đang test; không push — hook chặn).
+- Deployment Vercel của bản đó vẫn còn: `https://tappyai-p2aqcto8r-huyphamsm-tappys-projects.vercel.app` (Ready).
+- **Quay UAT về ngay (không đụng git, hoàn tác được):**
+  `vercel alias set https://tappyai-p2aqcto8r-huyphamsm-tappys-projects.vercel.app uat.tappyai.com`
+  (lần push kế tiếp lên rc/web-uat sẽ tự gán lại alias cho bản mới).
+- **Quay lại bằng git (không force):** `git -C C:/wtrel checkout -b rollback-to-3fce8b7 release-freeze-3fce8b7` để xem; muốn UAT build lại đúng nội dung đó: `git -C C:/wtrel revert --no-commit 3fce8b7..HEAD && git -C C:/wtrel commit -m "revert to 3fce8b7 content"` rồi push lên rc/web-uat như thường.
+- Kiểm: `curl https://uat.tappyai.com/api/version` phải trả `3fce8b7…`.
