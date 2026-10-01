@@ -20,6 +20,7 @@ import {
   publicShareEnabled,
 } from '@/lib/config/product'
 import { selfDeleteEnabled } from '@/lib/account/selfDelete'
+import { userBlocksEnabled } from '@/lib/safety/userBlocks'
 
 // GET /api/config — the backend-owned product configuration, as a stable
 // contract for ALL clients (Web, Android, iOS). Native clients read quotas,
@@ -62,6 +63,17 @@ export async function GET() {
         // SHOW_PUBLIC_SHARE=false|0 turns it off (build env — redeploy after flipping). Clients hide
         // the "public link" action on false; a missing field (older server) means true.
         publicShare: publicShareEnabled(),
+      },
+      // User-safety surfaces a client may SHOW (Android SafetyApi / iOS AppConfig.P8 already read this block). The server
+      // enforces each on its own (a guarded route answers 404 while its flag is off); this only decides whether the buttons
+      // are drawn. `userBlocks` = USER_BLOCKS_ENABLED (build env — redeploy after flipping). `commentModeration` rides the same
+      // switch (the post's creator may delete comments on it). `reports` stays false: POST /api/reports is not in this release
+      // (post/clip reports are POST /api/reviews/{id}/report, always on). A client that finds no `p8` block means all off.
+      p8: {
+        reports: false,
+        userBlocks: userBlocksEnabled(),
+        commentModeration: userBlocksEnabled(),
+        accountDeletion: false,
       },
       upload: {
         maxPhotosPerReview: MAX_PHOTOS_PER_REVIEW,

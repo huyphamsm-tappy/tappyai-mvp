@@ -349,3 +349,11 @@ Huy quyết: cờ `ACCOUNT_SELF_DELETE_ENABLED` BẬT lúc release; bấm xoá t
 - Vẫn chỉ chụp tài khoản test, không dữ liệu thật/cá nhân.
 - Repo chỉ giữ RELEASE-PROGRESS.md (web) / tài liệu Android với đường dẫn `gs://…` hoặc
   `gs://tappyai-uat-evidence/evidence/<SHA>/…`.
+
+## 4. Chặn người dùng — HỢP ĐỒNG CUỐI (01/10, nhánh sec/user-blocks-slice; chưa merge)
+- Hiện nút «Chặn» CHỈ khi `GET /api/config` → `p8.userBlocks === true` (thiếu khối `p8` = tắt). Không cần build lại: cờ do server bật.
+- `POST /api/users/{id}/block` → `200 {ok:true, blocked:true}`; `DELETE` cùng đường dẫn → `{ok:true, blocked:false}`. Idempotent. 401 chưa đăng nhập; 403 tài khoản ẩn danh; 400 id sai hoặc chính mình; 429 quá 30 lần/phút; 404 thân rỗng khi cờ tắt. Không phân biệt được «tài khoản kia không tồn tại».
+- `GET /api/users/blocks` → `{blocks:[{blocked_id, created_at}]}` (chỉ của chính mình, mới nhất trước, gồm cả chặn từ chat).
+- Sau khi chặn: bài/bình luận hai bên biến mất khỏi feed/danh sách phía server; hồ sơ đối phương 404; client xoá tạm khỏi danh sách đang hiển thị.
+- `p8.commentModeration` (cùng cờ): chủ bài xoá được bình luận trên bài mình (`DELETE /api/reviews/{id}/comments`).
+- `p8.reports` = **false**: KHÔNG gọi `/api/reports`, và chưa có báo cáo bình luận/người dùng. Báo cáo bài/clip vẫn là `POST /api/reviews/{id}/report` (luôn bật).
