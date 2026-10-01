@@ -15,7 +15,7 @@
 export const en: Record<string, string> = {
   // ---------------------------------------------------------------- privacy
   'legal.privacy.title': 'Privacy Policy',
-  'legal.privacy.effective': 'Effective Date: September 2026',
+  'legal.privacy.effective': 'Effective Date: October 2026',
 
   'legal.privacy.s1.heading': '1. Information We Collect',
   'legal.privacy.s1.lead': 'TappyAI may collect:',
@@ -55,14 +55,14 @@ export const en: Record<string, string> = {
   'legal.privacy.s3.heading': '3. Third-Party Services',
   'legal.privacy.s3.lead':
     'To provide AI responses, search and other core features, TappyAI may send relevant user requests to trusted providers, including:',
-  'legal.privacy.s3.b1': 'Anthropic Claude — generates the assistant’s responses.',
-  'legal.privacy.s3.b2': 'Google search services and Serper — retrieve search and place results.',
+  'legal.privacy.s3.b1': 'OpenAI — generates the assistant’s responses. It receives the messages you type, your saved preferences and AI memory, and your location only when you have shared it, so the answer fits you.',
+  'legal.privacy.s3.b2': 'Google search and Google Maps Platform (Places) services, and Serper — retrieve search and place results. These receive the search text, not your account details.',
   'legal.privacy.s3.b3': 'Supabase — hosts our database, authentication and file storage.',
   'legal.privacy.s3.b4': 'Vercel — hosts the website.',
   'legal.privacy.s3.b8':
     'Google Cloud Storage — stores the photos, video and audio you upload.',
   'legal.privacy.s3.b5':
-    'OpenStreetMap Nominatim — turns coordinates into a place name when you share your location.',
+    'OpenStreetMap (Nominatim and Overpass) — turns coordinates into a place name when you share your location, and lists nearby places and hotels.',
   'legal.privacy.s3.b6': 'Stripe — processes payment if you subscribe to a paid plan.',
   'legal.privacy.s3.b7': 'Google and Zalo — handle sign-in when you choose those options.',
   'legal.privacy.s3.b9':
@@ -71,6 +71,10 @@ export const en: Record<string, string> = {
     'Firebase Cloud Messaging (Google) — delivers push notifications to the Android app when you turn them on, using a device token.',
   'legal.privacy.s3.b11':
     'ACCESSTRADE — when you open a partner (affiliate) link, TappyAI attaches a new random code to that one click. The code is different on every click and the partner cannot tell who you are or link your clicks together. TappyAI keeps, on its own servers only, which account or guest session each code belongs to, together with the time, the partner and the link, for 12 months to reconcile partner commissions, then deletes it. The partner’s site then applies its own privacy policy.',
+  'legal.privacy.s3.b12': 'wttr.in — provides the weather for a place name; it receives only that name.',
+  'legal.privacy.s3.b13':
+    'Upstash Redis — keeps usage counters (daily question allowance, rate limits) and short-lived cached results, tied to your account or a guest session.',
+  'legal.privacy.s3.b14': 'Brevo — sends the sign-in and account emails on our behalf.',
   'legal.privacy.s3.p1': 'These providers process data according to their own privacy policies.',
   'legal.privacy.s3.p2':
     'If you turn on notifications, your browser or device also creates a push subscription, which we store in order to deliver those notifications.',
@@ -248,7 +252,7 @@ export const en: Record<string, string> = {
 export const vi: Record<string, string> = {
   // ---------------------------------------------------------------- privacy
   'legal.privacy.title': 'Chính sách bảo mật',
-  'legal.privacy.effective': 'Ngày hiệu lực: Tháng 9 năm 2026',
+  'legal.privacy.effective': 'Ngày hiệu lực: Tháng 10 năm 2026',
 
   'legal.privacy.s1.heading': '1. Thông tin chúng tôi thu thập',
   'legal.privacy.s1.lead': 'TappyAI có thể thu thập:',
@@ -288,14 +292,14 @@ export const vi: Record<string, string> = {
   'legal.privacy.s3.heading': '3. Dịch vụ bên thứ ba',
   'legal.privacy.s3.lead':
     'Để cung cấp câu trả lời AI, tìm kiếm và các tính năng cốt lõi khác, TappyAI có thể gửi các yêu cầu liên quan của người dùng tới những nhà cung cấp đáng tin cậy, bao gồm:',
-  'legal.privacy.s3.b1': 'Anthropic Claude — tạo ra câu trả lời của trợ lý.',
-  'legal.privacy.s3.b2': 'Dịch vụ tìm kiếm của Google và Serper — lấy kết quả tìm kiếm và địa điểm.',
+  'legal.privacy.s3.b1': 'OpenAI — tạo ra câu trả lời của trợ lý. OpenAI nhận các tin nhắn bạn gõ, tùy chọn và bộ nhớ AI đã lưu, và vị trí của bạn chỉ khi bạn đã chia sẻ, để câu trả lời phù hợp với bạn.',
+  'legal.privacy.s3.b2': 'Dịch vụ tìm kiếm của Google, Google Maps Platform (Places) và Serper — lấy kết quả tìm kiếm và địa điểm. Các bên này nhận nội dung tìm kiếm, không nhận thông tin tài khoản của bạn.',
   'legal.privacy.s3.b3': 'Supabase — lưu trữ cơ sở dữ liệu, xác thực và tệp của chúng tôi.',
   'legal.privacy.s3.b4': 'Vercel — vận hành trang web.',
   'legal.privacy.s3.b8':
     'Google Cloud Storage — lưu trữ ảnh, video và âm thanh bạn tải lên.',
   'legal.privacy.s3.b5':
-    'OpenStreetMap Nominatim — chuyển tọa độ thành tên địa điểm khi bạn chia sẻ vị trí.',
+    'OpenStreetMap (Nominatim và Overpass) — chuyển tọa độ thành tên địa điểm khi bạn chia sẻ vị trí, và liệt kê địa điểm, khách sạn gần đó.',
   'legal.privacy.s3.b6': 'Stripe — xử lý thanh toán nếu bạn đăng ký gói trả phí.',
   'legal.privacy.s3.b7': 'Google và Zalo — xử lý đăng nhập khi bạn chọn các phương thức đó.',
   'legal.privacy.s3.b9':
@@ -304,6 +308,10 @@ export const vi: Record<string, string> = {
     'Firebase Cloud Messaging (Google) — gửi thông báo đẩy tới ứng dụng Android khi bạn bật thông báo, dùng một mã thiết bị (token).',
   'legal.privacy.s3.b11':
     'ACCESSTRADE — mỗi lần bạn mở link đối tác (affiliate), TappyAI gắn một mã ngẫu nhiên mới cho riêng lần bấm đó. Mã khác nhau ở mỗi lần bấm, đối tác không biết bạn là ai và không nối được các lần bấm của bạn với nhau. TappyAI chỉ lưu trên máy chủ của mình mã đó thuộc tài khoản hay phiên khách nào, kèm thời điểm, đối tác và đường link, trong 12 tháng để đối soát hoa hồng, sau đó xoá. Sau đó trang của đối tác áp dụng chính sách bảo mật riêng của họ.',
+  'legal.privacy.s3.b12': 'wttr.in — cung cấp thời tiết theo tên địa điểm; chỉ nhận tên địa điểm đó.',
+  'legal.privacy.s3.b13':
+    'Upstash Redis — lưu bộ đếm sử dụng (hạn mức câu hỏi mỗi ngày, giới hạn tần suất) và kết quả lưu đệm ngắn hạn, gắn với tài khoản hoặc phiên khách của bạn.',
+  'legal.privacy.s3.b14': 'Brevo — thay mặt chúng tôi gửi email đăng nhập và email về tài khoản.',
   'legal.privacy.s3.p1': 'Các nhà cung cấp này xử lý dữ liệu theo chính sách bảo mật riêng của họ.',
   'legal.privacy.s3.p2':
     'Nếu bạn bật thông báo, trình duyệt hoặc thiết bị của bạn cũng tạo một đăng ký nhận thông báo đẩy, và chúng tôi lưu đăng ký đó để có thể gửi các thông báo này.',
