@@ -21,6 +21,19 @@ final class AppRouter: AppObservableObject {
     /// recommendation). The chat view consumes it and clears it.
     @AppPublished var chatSeed: String?
 
+    /// The ONE login screen. Every «sign in» entry (chat card, Profile, account icon, locked rows) calls
+    /// `requestLogin()`; the shell presents it over whatever is on screen, so the person never changes tab.
+    @AppPublished var showLogin = false
+    /// Bumped when a sign-in succeeded while the login screen was up; the screen underneath resumes
+    /// what it was doing (chat resends the held message).
+    @AppPublished var loginCompleted = 0
+
+    func requestLogin() { showLogin = true }
+    func loginFinished(signedIn: Bool) {
+        showLogin = false
+        if signedIn { loginCompleted += 1 }
+    }
+
     private let log = AppLogger.navigation
 
     /// SwiftUI binding to a tab's navigation path (for `NavigationStack(path:)`).

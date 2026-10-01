@@ -216,6 +216,40 @@ final class ScreenshotTests: XCTestCase {
         XCTAssertTrue(any(app, "delete-plan-text").label.hasPrefix("Nếu bạn đang có gói trả phí"), "the general paragraph when the plan is not known")
     }
 
+    // MARK: - Login entry points (one screen, no tab switch)
+
+    /// «Đăng nhập để tiếp tục» in the chat opens THE login screen right there — the person stays on the Chat tab —
+    /// and the guest/Hồ sơ state shows no «Đăng xuất».
+    func testChatSignInCardOpensTheLoginScreenInPlace() {
+        setStub(["chat": "auth"])
+        let app = launch(route: "chat", extra: ["-uitest-theme", "dark"])
+        let input = any(app, "chat-input")
+        XCTAssertTrue(input.waitForExistence(timeout: 30))
+        input.tap()
+        input.typeText("Xin chao")
+        any(app, "chat-send").tap()
+        let card = any(app, "chat-signin")
+        XCTAssertTrue(card.waitForExistence(timeout: 30), "the sign-in card")
+        shot("67-chat-blocked")
+        card.tap()
+        XCTAssertTrue(any(app, "auth-guest").waitForExistence(timeout: 30), "the login screen opens at once")
+        XCTAssertTrue(any(app, "auth-google").exists, "Google button")
+        shot("68-login-screen")
+        any(app, "auth-guest").tap()
+        XCTAssertTrue(any(app, "chat-input").waitForExistence(timeout: 10), "still in the chat, not on another tab")
+        setStub(["chat": "off"])
+    }
+
+    func testGuestProfileHasSignInCardAndNoSignOut() {
+        let app = launch(route: "hub", extra: ["-uitest-theme", "dark"])
+        XCTAssertTrue(any(app, "profile-guest-signin").waitForExistence(timeout: 30))
+        shot("69-profile-guest")
+        // The person icon top-left opens login for a guest, never a sign-out sheet.
+        app.navigationBars.buttons.firstMatch.tap()
+        XCTAssertTrue(any(app, "auth-guest").waitForExistence(timeout: 30))
+        XCTAssertFalse(app.buttons["Đăng xuất"].exists, "a guest is never offered «Đăng xuất»")
+    }
+
     // MARK: - A3 Sign in with Apple — visible only when the server enables it
 
     func testSignInWithAppleButtonAppearsWhenEnabled() {

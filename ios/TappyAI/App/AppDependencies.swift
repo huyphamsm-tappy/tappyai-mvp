@@ -71,7 +71,9 @@ final class AppDependencies: AppObservableObject {
         registerServices()
         // Every sign-out (and the sign-out that follows account deletion) first releases THIS phone's push
         // registration, while the session can still authorise the call.
-        authRepository.beforeSignOut = { [weak self] in await self?.notificationManager.releaseThisDevice() }
+        // A real account's session that cannot be renewed → guest + notice; a fresh guest session keeps chat usable.
+        session.onSessionEnded = { [weak self] in Task { await self?.authRepository.ensureAnonymousSession() } }
+        authRepository.beforeSignOut ={ [weak self] in await self?.notificationManager.releaseThisDevice() }
         AppLogger.app.info("Dependencies composed (env=\(env.kind.rawValue))")
     }
 

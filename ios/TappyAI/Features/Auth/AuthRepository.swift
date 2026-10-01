@@ -40,6 +40,11 @@ final class AuthRepository {
     /// adopt a restored user session, else obtain a server-authoritative anonymous session (D1).
     func reconcileOnLaunch() async {
         if let tokens = await auth.currentTokens(), let uid = await auth.currentUserId() {
+            // The SDK also persists the GUEST session: that is a guest, not an account (no profile gate, no sign-out).
+            if tokens.isAnonymousSession {
+                session.didAuthenticate(tokens, onboarded: true)
+                return
+            }
             let onboarded = await gate.isOnboarded(userId: uid)
             session.didAuthenticate(tokens, onboarded: onboarded)
         } else {

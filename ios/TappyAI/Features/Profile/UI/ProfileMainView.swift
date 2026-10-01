@@ -13,7 +13,6 @@ struct ProfileMainView: View {
     @State private var showProUpgrade = false
     @State private var showAppConnections = false
     @State private var showQR = false
-    @State private var showAuth = false
     @State private var showCompose = false
     @StateObject private var hub: ProfileHubViewModel
 
@@ -72,12 +71,18 @@ struct ProfileMainView: View {
             await loadProfile()
             await hub.load(userId: session.userId)
         }
+        // Signing in or out while this tab is on screen: show the right state at once, never a half one.
+        .onChange(of: session.state) { _ in
+            profile = nil
+            loading = true
+            Task {
+                await loadProfile()
+                await hub.load(userId: session.userId, force: true)
+            }
+        }
         .refreshable {
             await loadProfile()
             await hub.load(userId: session.userId, force: true)
-        }
-        .fullScreenCover(isPresented: $showAuth) {
-            AuthFlowView(repo: deps.authRepository, config: deps.configService) { showAuth = false }
         }
         .fullScreenCover(isPresented: $showCompose) {
             CreateReviewView(deps: deps)
@@ -108,7 +113,7 @@ struct ProfileMainView: View {
                         .foregroundStyle(TappyColor.textSecondary)
                 }
             }
-            Button { showAuth = true } label: {
+            Button { router.requestLogin() } label: {
                 Text("profile.guest.signIn")
                     .font(.system(size: 15, weight: .semibold))
                     .foregroundStyle(.white)
@@ -254,7 +259,7 @@ struct ProfileMainView: View {
     private func menuRow(icon: String, label: LocalizedStringKey, desc: LocalizedStringKey, dest: ProfileDestination?, action: (() -> Void)? = nil) -> some View {
         Button {
             if isGuest {
-                showAuth = true
+                router.requestLogin()
             } else if let action {
                 action()
             } else if let dest {

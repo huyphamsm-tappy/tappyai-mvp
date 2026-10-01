@@ -483,6 +483,7 @@ private struct ChatErrorBanner: View {
                                 .clipShape(RoundedRectangle(cornerRadius: Radius.md, style: .continuous))
                         }
                         .buttonStyle(.plain)
+                        .accessibilityIdentifier("chat-signin")
                     }
                     .padding(Spacing.sm)
                     .background(TappyColor.primary.opacity(0.08))

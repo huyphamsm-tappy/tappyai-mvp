@@ -69,8 +69,20 @@ final class AuthViewModel: AppObservableObject {
         await run { try await self.repo.signInWithGoogle(); self.onAuthenticated() }
     }
 
+    /// Zalo needs the server to hand the app a state-bound callback (MOB-1). Until the server that answers
+    /// supports it, the flow ends on a web page or a refused callback: say so in one plain line, never leave
+    /// the screen stuck, and leave Google / email untouched.
     func continueWithZalo() async {
-        await run { try await self.repo.signInWithZalo(); self.onAuthenticated() }
+        isWorking = true; errorMessage = nil
+        defer { isWorking = false }
+        do {
+            try await repo.signInWithZalo()
+            onAuthenticated()
+        } catch let e as AppError where e == .cancellation {
+            return
+        } catch {
+            errorMessage = NSLocalizedString("auth.zalo.unavailable", comment: "")
+        }
     }
 
     /// Starts an Apple request: a fresh nonce, whose SHA-256 goes into the request.

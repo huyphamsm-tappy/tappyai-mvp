@@ -349,6 +349,21 @@ final class ChatViewModel: AppObservableObject {
         startStreaming()
     }
 
+    // MARK: - Resume after login
+
+    /// Whether the held message should be resent once the person has signed in: the turn stopped on a
+    /// «sign in» error and the last message is still the user's.
+    static func shouldResumeAfterLogin(error: ChatError?, lastIsUser: Bool, isStreaming: Bool, signedIn: Bool) -> Bool {
+        guard signedIn, lastIsUser, !isStreaming else { return false }
+        return error == .authRequired || error == .anonLimitReached
+    }
+
+    func resumeAfterLogin() {
+        guard Self.shouldResumeAfterLogin(error: error, lastIsUser: messages.last?.isUser == true,
+                                          isStreaming: isStreaming, signedIn: isAuthenticated) else { return }
+        retry()
+    }
+
     // MARK: - Retry after error
 
     func retry() {

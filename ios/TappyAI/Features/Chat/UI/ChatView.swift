@@ -57,7 +57,7 @@ struct ChatView: View {
                         onFollowup: { vm.sendQuickPrompt($0) },
                         onCopy: { UIPasteboard.general.string = $0 },
                         onShare: { vm.share(messageIndex: $0, lang: localization.language.rawValue) },
-                        onLogin: { vm.stashPendingChat(); router.switchTo(.profile) },
+                        onLogin: { router.requestLogin() },
                         onLike: { vm.likeFeedback(messageIndex: $0, isActive: $1) },
                         onDislike: { vm.dislikeFeedback(messageIndex: $0, isActive: $1) },
                         onReport: { vm.reportFeedback(messageIndex: $0) },
@@ -166,6 +166,8 @@ struct ChatView: View {
             router.chatSeed = nil
             vm.sendQuickPrompt(seed)
         }
+        // Signed in from the «sign in to continue» card: the held message goes out now, in place.
+        .onChange(of: router.loginCompleted) { _ in vm.resumeAfterLogin() }
         .onChange(of: vm.error) { newError in
             ageScreen = newError?.isAgeGate ?? false
         }

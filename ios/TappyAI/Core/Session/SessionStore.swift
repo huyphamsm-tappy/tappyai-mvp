@@ -31,9 +31,16 @@ final class SessionStore: AppObservableObject {
     func bootstrap() {
         if let saved = storage.load() {
             tokens = saved
-            // `onboarded` is unknown until a lightweight profile check in Phase 1; default to authenticated.
-            state = .authenticated(userId: Self.subject(from: saved) ?? "unknown")
-            log.info("bootstrap: restored session")
+            if saved.isAnonymousSession {
+                // A stored GUEST session is still a guest: never "signed in" (see JWTClaims).
+                anonymousId = Self.subject(from: saved)
+                state = .anonymous
+                log.info("bootstrap: restored guest session")
+            } else {
+                // `onboarded` is unknown until a lightweight profile check in Phase 1; default to authenticated.
+                state = .authenticated(userId: Self.subject(from: saved) ?? "unknown")
+                log.info("bootstrap: restored session")
+            }
         } else {
             state = .anonymous
             log.info("bootstrap: anonymous")
@@ -44,6 +51,12 @@ final class SessionStore: AppObservableObject {
     func didAuthenticate(_ tokens: AuthTokens, onboarded: Bool) {
         self.tokens = tokens
         storage.save(tokens)
+        notice = nil
+        if tokens.isAnonymousSession {
+            anonymousId = Self.subject(from: tokens)
+            state = .anonymous
+            return
+        }
         let uid = Self.subject(from: tokens) ?? "unknown"
         state = onboarded ? .authenticated(userId: uid) : .onboarding(userId: uid)
     }
@@ -85,6 +98,27 @@ final class SessionStore: AppObservableObject {
         log.info("logout")
     }
 
+    /// The server/SDK refused to renew a REAL account's session. Back to guest, once, with a notice
+    /// the UI shows ("session ended, sign in again"); a guest session ending is silent (a new one is minted).
+    private func expire() {
+        let wasAccount: Bool
+        switch state {
+        case .authenticated, .onboarding: wasAccount = true
+        case .anonymous, .unknown: wasAccount = false
+        }
+        logout()
+        if wasAccount { notice = .sessionExpired }
+        onSessionEnded?()
+    }
+
+    /// Why the person was returned to guest without asking for it.
+    enum Notice: Equatable, Sendable { case sessionExpired }
+    @AppPublished private(set) var notice: Notice?
+    func clearNotice() { notice = nil }
+
+    /// Set by the composition root: mint a fresh guest session after an expiry so chat keeps working.
+    var onSessionEnded: (() -> Void)?
+
     /// Returns a valid access token, refreshing (single-flight) if it is expiring.
     /// The API client's auth interceptor calls this. Throws if unauthenticated / refresh fails.
     func validAccessToken() async throws -> String {
@@ -96,7 +130,7 @@ final class SessionStore: AppObservableObject {
             storage.save(fresh)
             return fresh.accessToken
         } catch {
-            logout()
+            expire()
             throw AppError.authentication(reason: .refreshFailed)
         }
     }
@@ -111,20 +145,12 @@ final class SessionStore: AppObservableObject {
             storage.save(fresh)
             return fresh.accessToken
         } catch {
-            logout()
+            expire()
             return nil
         }
     }
 
     /// Decode the `sub` (user id) claim from a JWT without verifying the signature
     /// (verification is the backend's job; the client only needs the id for routing).
-    private static func subject(from tokens: AuthTokens) -> String? {
-        let parts = tokens.accessToken.split(separator: ".")
-        guard parts.count >= 2 else { return nil }
-        var b64 = String(parts[1]).replacingOccurrences(of: "-", with: "+").replacingOccurrences(of: "_", with: "/")
-        while b64.count % 4 != 0 { b64 += "=" }
-        guard let data = Data(base64Encoded: b64),
-              let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else { return nil }
-        return json["sub"] as? String
-    }
+    private static func subject(from tokens: AuthTokens) -> String? { tokens.claims?.subject }
 }

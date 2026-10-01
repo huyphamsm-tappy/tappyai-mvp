@@ -72,14 +72,29 @@ struct AuthFlowView: View {
                     .clipShape(RoundedRectangle(cornerRadius: Radius.lg))
                     .accessibilityIdentifier("auth-apple")
                 }
+                // Google and Zalo are two equal-weight choices (web `/login`, Android): white surface, hairline
+                // border, primary text, the provider's own mark. Neither is a «recommended» solid button.
                 if vm.enabledProviders.contains("google") {
-                    Button("auth.continueGoogle") { Task { await vm.continueWithGoogle() } }
-                        .buttonStyle(.tappy(.primary))
+                    Button { Task { await vm.continueWithGoogle() } } label: {
+                        ProviderButtonLabel(titleKey: "auth.continueGoogle") {
+                            Text(verbatim: "G").font(.system(size: 17, weight: .bold)).foregroundStyle(Color(hex: 0x4285F4, alpha: 1))
+                        }
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityIdentifier("auth-google")
+                    Text("auth.googleNote").font(TappyFont.caption).foregroundStyle(TappyColor.textSecondary)
                 }
                 if vm.enabledProviders.contains("zalo") {
-                    Button("auth.continueZalo") { Task { await vm.continueWithZalo() } }
-                        .buttonStyle(.tappy(.secondary))
-                        .accessibilityIdentifier("auth-zalo")
+                    Button { Task { await vm.continueWithZalo() } } label: {
+                        ProviderButtonLabel(titleKey: "auth.continueZalo") {
+                            Text(verbatim: "Zalo").font(.system(size: 9, weight: .black)).foregroundStyle(.white)
+                                .frame(width: 26, height: 22)
+                                .background(Color(hex: 0x0068FF, alpha: 1))
+                                .clipShape(RoundedRectangle(cornerRadius: 5, style: .continuous))
+                        }
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityIdentifier("auth-zalo")
                 }
                 if vm.enabledProviders.contains("email") {
                     dividerOr
@@ -98,6 +113,21 @@ struct AuthFlowView: View {
                 }
             }
             .padding(Spacing.md)
+        }
+    }
+
+    private struct ProviderButtonLabel<Mark: View>: View {
+        let titleKey: LocalizedStringKey
+        @ViewBuilder let mark: () -> Mark
+        var body: some View {
+            HStack(spacing: Spacing.sm) {
+                mark()
+                Text(titleKey).font(TappyFont.bodyEmphasis).foregroundStyle(TappyColor.textPrimary)
+            }
+            .frame(maxWidth: .infinity, minHeight: 48)
+            .background(TappyColor.cardBackground)
+            .clipShape(RoundedRectangle(cornerRadius: Radius.lg, style: .continuous))
+            .overlay(RoundedRectangle(cornerRadius: Radius.lg, style: .continuous).stroke(TappyColor.border, lineWidth: 1))
         }
     }
 

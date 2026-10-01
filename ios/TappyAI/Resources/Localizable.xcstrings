@@ -698,6 +698,30 @@
         }
       }
     },
+    "auth.sessionExpired.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Your sign-in has ended" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Phiên đăng nhập đã hết" } }
+      }
+    },
+    "auth.sessionExpired.message": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Your sign-in has ended, please sign in again. You can keep using Tappy as a guest." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Phiên đăng nhập đã hết, vui lòng đăng nhập lại. Bạn vẫn dùng Tappy như khách được." } }
+      }
+    },
+    "auth.googleNote": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "A secure Google page opens to sign you in. iOS may show a notice about supabase.co: that is our sign-in service." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Trang đăng nhập Google an toàn sẽ mở ra. iOS có thể hiện thông báo về supabase.co: đó là dịch vụ đăng nhập của Tappy." } }
+      }
+    },
+    "auth.zalo.unavailable": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Zalo sign-in is not available in the app yet. Please use Google or email for now." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Đăng nhập bằng Zalo trong ứng dụng chưa dùng được. Bạn tạm dùng Google hoặc email nhé." } }
+      }
+    },
     "auth.changeEmail": {
       "localizations": {
         "en": {

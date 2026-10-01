@@ -11,7 +11,6 @@ struct PlaceholderShellView: View {
     @AppEnvironmentState private var session: SessionStore
     @AppEnvironmentState private var router: AppRouter
 
-    @State private var showAuth = false
     @State private var showSignOut = false
     @State private var showDiagnostics = false
 
@@ -65,8 +64,17 @@ struct PlaceholderShellView: View {
                 .tag(tab)
             }
         }
-        .fullScreenCover(isPresented: $showAuth) {
-            AuthFlowView(repo: deps.authRepository, config: deps.configService) { showAuth = false }
+        .fullScreenCover(isPresented: $router.showLogin) {
+            AuthFlowView(repo: deps.authRepository, config: deps.configService) { router.loginFinished(signedIn: session.state.isAuthenticated) }
+        }
+        .alert(Text("auth.sessionExpired.title"), isPresented: Binding(
+            get: { session.notice == .sessionExpired },
+            set: { if !$0 { session.clearNotice() } }
+        )) {
+            Button { session.clearNotice(); router.requestLogin() } label: { Text("auth.signIn") }
+            Button(role: .cancel) { session.clearNotice() } label: { Text("common.close") }
+        } message: {
+            Text("auth.sessionExpired.message")
         }
         .confirmationDialog(NSLocalizedString("account.title", comment: ""), isPresented: $showSignOut, titleVisibility: .visible) {
             Button(NSLocalizedString("auth.signOut", comment: ""), role: .destructive) { Task { await deps.authRepository.signOut() } }
@@ -181,6 +189,6 @@ struct PlaceholderShellView: View {
     }
 
     private func accountTapped() {
-        if session.state.isAuthenticated { showSignOut = true } else { showAuth = true }
+        if session.state.isAuthenticated { showSignOut = true } else { router.requestLogin() }
     }
 }

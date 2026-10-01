@@ -360,6 +360,9 @@ class Handler(BaseHTTPRequestHandler):
         # ── In-app account deletion (`flags.accountSelfDelete` on): the server accepts the confirm word ──
         if path == "/api/account/delete":
             return self._send(200, {"ok": True})
+        if path == "/api/chat" and MODE.get("chat") == "auth":
+            # No usable session: the «sign in to continue» card (not the 18+ gate).
+            return self._send(401, {"error": "unauthorized"})
         if path == "/api/chat":
             # A guest with no age declaration — the 18+ gate (docs/ios/04_API_CONTRACT.md).
             return self._send(403, {"error": "age_declaration_required",
