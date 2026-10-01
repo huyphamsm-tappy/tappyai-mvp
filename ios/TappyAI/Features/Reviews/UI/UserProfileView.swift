@@ -16,8 +16,7 @@ struct UserProfileView: View {
     enum Tab { case posts, shares }
 
     private static func isShareOnly(_ review: Review) -> Bool {
-        let name = (review.placeName ?? "").trimmingCharacters(in: .whitespaces)
-        return name == "Chia sẻ" || name == "Chia se"
+        ComposerSentinel.isSharePlaceholder(review.placeName)
     }
     private var posts: [Review] { vm.reviews.filter { !Self.isShareOnly($0) } }
     private var shares: [Review] { vm.reviews.filter { Self.isShareOnly($0) } }

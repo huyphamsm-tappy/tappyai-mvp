@@ -157,9 +157,10 @@ struct AskCardView: View {
             }
             .frame(maxWidth: .infinity, minHeight: stacked ? 84 : 56)
             .background(on ? AskPal.onFill : AskPal.tile)
-            .overlay(alignment: .topTrailing) { if on { check.padding(4) } }
             .clipShape(RoundedRectangle(cornerRadius: 14))
             .overlay(RoundedRectangle(cornerRadius: 14).stroke(on ? AskPal.on : AskPal.line, lineWidth: on ? 2 : 1))
+            // On the corner (outside the clip) so a narrow tile's label is never drawn under the tick.
+            .overlay(alignment: .topTrailing) { if on { check.scaleEffect(0.82).offset(x: 6, y: -6) } }
         }
         .buttonStyle(.plain)
         .disabled(sent)

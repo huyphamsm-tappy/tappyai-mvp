@@ -306,7 +306,7 @@ final class ScreenshotTests: XCTestCase {
         XCTAssertTrue(any(app, "place-show-more").exists, "five places, three above the fold")
         XCTAssertTrue(app.staticTexts["Bún chả Hương Liên"].exists)
         XCTAssertTrue(app.buttons["Xem bản đồ"].exists, "action: map")
-        XCTAssertTrue(app.buttons["Website"].exists, "action: website")
+        XCTAssertTrue(app.buttons["Trang web"].exists, "action: website")
         XCTAssertTrue(app.buttons["Tìm review trên Google"].exists, "action: find reviews")
         XCTAssertTrue(app.buttons["Gọi"].exists, "action: call")
         shot("56-places")

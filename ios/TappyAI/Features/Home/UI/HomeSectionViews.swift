@@ -82,7 +82,7 @@ struct HomeTileHeader: View {
 
 /// Welcome line, the time-of-day engine's two lines, the two status pills — mascot on the right
 /// over a soft radial glow, never over the copy.
-struct HomeHeroSection: View {
+struct HomeGreetingSection: View {
     let hero: HeroGreeting
 
     var body: some View {
@@ -185,7 +185,7 @@ struct HomeQuickAction: Identifiable {
     ]
 }
 
-struct HomeQuickSuggestionsSection: View {
+struct HomeSuggestedPromptsSection: View {
     let onOpenChat: () -> Void
     let onAction: (HomeQuickAction) -> Void
 
@@ -312,6 +312,9 @@ struct HomeDiscoverBanner: View {
 // MARK: - Scam Shield
 
 struct HomeScamShieldSection: View {
+    /// Where both the tile header and the check row lead.
+    static let destination = HomeDestination.scamShield
+
     let onOpen: () -> Void
 
     var body: some View {
@@ -432,11 +435,14 @@ struct HomeDealsSection: View {
 
     /// Panel tint per category key (presentation only; the feed carries no colour).
     static func accent(_ key: String) -> Color {
-        switch key.lowercased() {
-        case "food", "an uong", "ăn uống", "food & drink": return Color(hex: 0xFF8A4C)
-        case "travel", "du lich", "du lịch": return Color(hex: 0x3391FF)
-        case "shopping", "mua sam", "mua sắm": return Color(hex: 0xFF5FA2)
-        case "entertainment", "giai tri", "giải trí": return Color(hex: 0x9B6BFF)
+        // Folded (no marks, lower case) so the Vietnamese spellings need no literal of their own.
+        let folded = key.folding(options: [.diacriticInsensitive, .caseInsensitive], locale: Locale(identifier: "en_US_POSIX"))
+            .replacingOccurrences(of: "\u{0111}", with: "d").lowercased()
+        switch folded {
+        case "food", "an uong", "food & drink": return Color(hex: 0xFF8A4C)
+        case "travel", "du lich": return Color(hex: 0x3391FF)
+        case "shopping", "mua sam": return Color(hex: 0xFF5FA2)
+        case "entertainment", "giai tri": return Color(hex: 0x9B6BFF)
         default: return HomeV3.purple
         }
     }
@@ -504,7 +510,7 @@ struct HomeVideosSection: View {
     /// A place-less clip comes back named "Chia sẻ" — a placeholder, not a title; the body stands in.
     static func title(_ review: Review) -> String {
         let place = review.placeName?.trimmingCharacters(in: .whitespaces) ?? ""
-        return (place.isEmpty || place == "Chia sẻ") ? (review.body ?? "") : place
+        return (place.isEmpty || ComposerSentinel.isSharePlaceholder(place)) ? (review.body ?? "") : place
     }
 
     /// 12400 → "12.4K".
@@ -606,14 +612,22 @@ struct HomeSuggestionsSection: View {
         }
     }
 
-    static func text(_ s: Suggestion) -> String { NSLocalizedString("home.suggestion.\(s.id)", comment: "") }
+    static func text(_ s: Suggestion) -> String {
+        let key = "home.suggestion." + s.id   // composed key: the catalogue holds one entry per suggestion id
+        return NSLocalizedString(key, comment: "")
+    }
+
+    static func categoryTitle(_ category: String) -> String {
+        let key = "home.category." + category
+        return NSLocalizedString(key, comment: "").uppercased()
+    }
 
     private func card(text: String, category: String, emoji: String, art: String) -> some View {
         VStack(alignment: .leading, spacing: 0) {
             Color.clear.frame(height: 94)
                 .overlay { HomeInspireImage(name: art) }
                 .overlay(alignment: .bottomLeading) {
-                    Text(NSLocalizedString("home.category." + category, comment: "").uppercased())
+                    Text(Self.categoryTitle(category))
                         .font(.system(size: 9.5, weight: .bold)).kerning(0.6).foregroundStyle(.white)
                         .padding(.horizontal, 8).padding(.vertical, 3)
                         .background(Color(hex: 0x080B12, alpha: 0.66), in: RoundedRectangle(cornerRadius: 6))
@@ -664,7 +678,7 @@ struct HomeInspireImage: View {
 
 // MARK: - Recent activity
 
-struct HomeRecentSection: View {
+struct HomeRecentConversationsSection: View {
     let rail: HomeViewModel.Rail<ConversationSummary>
     let language: String
     let onOpen: (String) -> Void
@@ -724,7 +738,7 @@ struct HomeRecentSection: View {
 
 // MARK: - Smart Tools
 
-struct HomeSmartToolsSection: View {
+struct HomeQuickActionsSection: View {
     let onOpen: (SmartTool) -> Void
     let onSeeAll: () -> Void
 

@@ -350,7 +350,12 @@ enum ContentParser {
             return content
         }
         let range = NSRange(content.startIndex..., in: content)
-        let result = regex.stringByReplacingMatches(in: content, range: range, withTemplate: "$1")
+        // The picture is drawn by the image strip; its alt text is not a caption, so it must not be left behind as a stray line.
+        let result = regex.stringByReplacingMatches(in: content, range: range, withTemplate: "")
+            .replacingOccurrences(of: "
+{3,}", with: "
+
+", options: .regularExpression)
         return result.trimmingCharacters(in: .whitespacesAndNewlines)
     }
 

@@ -33,10 +33,10 @@ struct HomeView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 28) {
                 VStack(alignment: .leading, spacing: 20) {
-                    HomeHeroSection(hero: hero)
+                    HomeGreetingSection(hero: hero)
                     HomeAskBar { router.switchTo(.chat) }
                 }
-                HomeQuickSuggestionsSection(onOpenChat: { router.switchTo(.chat) }) { action in
+                HomeSuggestedPromptsSection(onOpenChat: { router.switchTo(.chat) }) { action in
                     switch action.target {
                     case .chat(let key): ask(NSLocalizedString(key, comment: ""))
                     case .destination(let dest): router.push(dest, on: .home)
@@ -46,17 +46,17 @@ struct HomeView: View {
                     HomeRecommendationsSection(items: recs) { router.push(HomeDestination.recommendations, on: .home) }
                 }
                 HomeDiscoverBanner { router.switchTo(.deals) }
-                HomeScamShieldSection { router.push(HomeDestination.scamShield, on: .home) }
+                HomeScamShieldSection { router.push(HomeScamShieldSection.destination, on: .home) }
                 HomeDealsSection(rail: vm.deals) { router.switchTo(.deals) }
                 if case .loaded(let videos) = vm.videos {
                     HomeVideosSection(videos: videos) { router.switchTo(.explore) }
                 }
                 HomeCategoriesSection { router.push(HomeDestination.categoryChat($0), on: .home) }
                 HomeSuggestionsSection { ask($0) }
-                HomeRecentSection(rail: vm.recent, language: localization.language.rawValue) {
+                HomeRecentConversationsSection(rail: vm.recent, language: localization.language.rawValue) {
                     router.push(HomeDestination.conversation(id: $0), on: .home)
                 }
-                HomeSmartToolsSection(onOpen: { router.push($0.destination, on: .home) },
+                HomeQuickActionsSection(onOpen: { router.push($0.destination, on: .home) },
                                       onSeeAll: { router.push(HomeDestination.smartTools, on: .home) })
             }
             .padding(.horizontal, 20)

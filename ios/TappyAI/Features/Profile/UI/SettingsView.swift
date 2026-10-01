@@ -122,8 +122,9 @@ struct ProfileSettingsView: View {
         Task { try? await ProfileService(api: deps.api).updateLanguage(lang.rawValue) }
     }
 
+    /// Flag + the language named in itself (`AppLanguage.displayName`, which is exempt from localization on purpose).
     static func languageLabel(_ code: String) -> String {
-        code == "vi" ? "🇻🇳 Tiếng Việt" : "🇬🇧 English"
+        (code == "vi" ? "🇻🇳 " : "🇬🇧 ") + (AppLanguage(rawValue: code)?.displayName ?? code)
     }
 
     /// Opens the mail composer with the deletion request already written.
@@ -157,28 +158,28 @@ struct ProfileSettingsView: View {
         VStack(alignment: .leading, spacing: 10) {
             sectionHeader("settings.section.options")
             card {
-                row(id: "notifications", icon: "bell.fill", accent: 0x3391FF, title: "settings.notifications", desc: "settings.notifications.desc") {
+                row(id: "notifications", icon: "bell.fill", accent: 0x3391FF, labelKey: "settings.notifications", desc: "settings.notifications.desc") {
                     router.push(ProfileDestination.notifications, on: .profile)
                 }
                 divider
-                row(id: "memory", icon: "brain.head.profile", accent: 0x7C5CFF, title: "settings.memory", desc: "settings.memory.desc") {
+                row(id: "memory", icon: "brain.head.profile", accent: 0x7C5CFF, labelKey: "settings.memory", desc: "settings.memory.desc") {
                     router.push(ProfileDestination.tappyKnows, on: .profile)
                 }
                 // App Store 1.2: the person can review and undo their blocks. Shown only while the server
                 // has blocking on (`p8.userBlocks`, default off) and someone is signed in.
                 if safety.flags.userBlocks && isSignedIn {
                     divider
-                    row(id: "blocked", icon: "hand.raised.fill", accent: 0xF43F5E, title: "safety.blocked.title", desc: "safety.blocked.desc") {
+                    row(id: "blocked", icon: "hand.raised.fill", accent: 0xF43F5E, labelKey: "safety.blocked.title", desc: "safety.blocked.desc") {
                         router.push(ProfileDestination.blockedAccounts, on: .profile)
                     }
                 }
                 divider
-                row(id: "language", icon: "globe", accent: 0xFF9500, title: "settings.language", desc: "settings.language.desc",
+                row(id: "language", icon: "globe", accent: 0xFF9500, labelKey: "settings.language", desc: "settings.language.desc",
                     value: Self.languageLabel(localization.language.rawValue)) {
                     showLanguagePicker = true
                 }
                 divider
-                row(id: "appearance", icon: "moon.fill", accent: 0x7C5CFF, title: "settings.appearance", desc: "settings.appearance.desc",
+                row(id: "appearance", icon: "moon.fill", accent: 0x7C5CFF, labelKey: "settings.appearance", desc: "settings.appearance.desc",
                     valueKey: "settings.appearance." + theme.mode.rawValue) {
                     showAppearancePicker = true
                 }
@@ -194,15 +195,15 @@ struct ProfileSettingsView: View {
             card {
                 // Usage guidance sits with the reference documents: onboarding runs once and cannot
                 // answer "how does this work?" afterwards.
-                row(id: "guide", icon: "book.fill", accent: 0x3391FF, title: "guide.settingsRow", desc: "settings.guide.desc") {
+                row(id: "guide", icon: "book.fill", accent: 0x3391FF, labelKey: "guide.settingsRow", desc: "settings.guide.desc") {
                     router.push(ProfileDestination.howToUse, on: .profile)
                 }
                 divider
-                row(id: "terms", icon: "doc.text.fill", accent: 0x7C5CFF, title: "settings.terms", desc: "settings.terms.desc") {
+                row(id: "terms", icon: "doc.text.fill", accent: 0x7C5CFF, labelKey: "settings.terms", desc: "settings.terms.desc") {
                     router.push(ProfileDestination.terms, on: .profile)
                 }
                 divider
-                row(id: "privacy", icon: "shield.fill", accent: 0x34D399, title: "settings.privacyPolicy", desc: "settings.privacyPolicy.desc") {
+                row(id: "privacy", icon: "shield.fill", accent: 0x34D399, labelKey: "settings.privacyPolicy", desc: "settings.privacyPolicy.desc") {
                     router.push(ProfileDestination.privacy, on: .profile)
                 }
                 divider
@@ -210,7 +211,7 @@ struct ProfileSettingsView: View {
                 // native screen so web, Android and iOS read ONE policy that cannot drift. (The native
                 // music-copyright page is no longer reachable from here: Music is hidden.) App Review
                 // expects a reachable copyright-report path for user content.
-                row(id: "copyright", icon: "c.circle.fill", accent: 0x7C5CFF, title: "settings.copyright", desc: "settings.copyright.desc") {
+                row(id: "copyright", icon: "c.circle.fill", accent: 0x7C5CFF, labelKey: "settings.copyright", desc: "settings.copyright.desc") {
                     if let url = URL(string: TappyShare.canonicalOrigin + "/copyright") { UIApplication.shared.open(url) }
                 }
                 divider
@@ -220,11 +221,11 @@ struct ProfileSettingsView: View {
                 // (`flags.accountSelfDelete`) a signed-in user gets the in-app deletion instead; the
                 // email request stays the fallback whenever the flag is off, absent, or off at submit.
                 if selfDeleteEnabled && isSignedIn {
-                    row(id: "delete", icon: "trash", accent: 0xF43F5E, title: "settings.deleteAccountSelf", desc: "settings.deleteAccountSelf.desc") {
+                    row(id: "delete", icon: "trash", accent: 0xF43F5E, labelKey: "settings.deleteAccountSelf", desc: "settings.deleteAccountSelf.desc") {
                         showSelfDelete = true
                     }
                 } else {
-                    row(id: "delete", icon: "trash", accent: 0xF43F5E, title: "settings.deleteAccount", desc: "settings.deleteAccount.desc") {
+                    row(id: "delete", icon: "trash", accent: 0xF43F5E, labelKey: "settings.deleteAccount", desc: "settings.deleteAccount.desc") {
                         confirmDeleteAccount = true
                     }
                 }
@@ -287,14 +288,14 @@ struct ProfileSettingsView: View {
 
     /// One row: accent tile, title (follows the in-app language — `LocalizedStringKey`, not
     /// `String(localized:)`), a one-line description, an optional current value, a chevron.
-    private func row(id: String, icon: String, accent: UInt, title: String, desc: String,
+    private func row(id: String, icon: String, accent: UInt, labelKey: String, desc: String,
                      value: String? = nil, valueKey: String? = nil, action: @escaping () -> Void) -> some View {
         Button(action: action) {
             HStack(spacing: 14) {
                 RoundedRectangle(cornerRadius: 12).fill(Color(hex: accent, alpha: 0.16)).frame(width: 40, height: 40)
                     .overlay(Image(systemName: icon).font(.system(size: 17, weight: .semibold)).foregroundStyle(Color(hex: accent)))
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(LocalizedStringKey(title)).font(.system(size: 15, weight: .semibold)).foregroundStyle(HomeV3.onSurface)
+                    Text(LocalizedStringKey(labelKey)).font(.system(size: 15, weight: .semibold)).foregroundStyle(HomeV3.onSurface)
                     Text(LocalizedStringKey(desc)).font(.system(size: 12.5)).foregroundStyle(HomeV3.onSurfaceVariant)
                         .multilineTextAlignment(.leading)
                 }

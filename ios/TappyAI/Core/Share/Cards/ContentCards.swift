@@ -27,7 +27,7 @@ struct SharePostCard: Equatable, Sendable {
     /// Web `reviewShareTitle`: the real place → the caption's first line (≤ 80) → the brand.
     static func shareTitle(placeName: String?, body: String?) -> String {
         let place = (placeName ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
-        if !place.isEmpty, place != "Chia sẻ", place != "Chia se" { return place }
+        if !place.isEmpty, !ComposerSentinel.isSharePlaceholder(place) { return place }
         let line = (body ?? "").components(separatedBy: "\n")
             .map { $0.split(whereSeparator: \.isWhitespace).joined(separator: " ") }
             .first(where: { !$0.isEmpty }) ?? ""
