@@ -4,6 +4,10 @@
 <resources>
     <string name="settings_delete_account_self">Xóa tài khoản</string>
     <string name="settings_delete_account_self_desc">Xóa vĩnh viễn tài khoản và dữ liệu của bạn</string>
+    <!-- R29 (web 01/10): the owner's confirmation text. {GÓI} = plan (app KNOWS an active paid plan) or the generic line (app does not know). -->
+    <string name="account_delete_warn_lead">Xóa tài khoản vĩnh viễn? Toàn bộ dữ liệu của bạn sẽ bị xóa ngay và không thể khôi phục: lịch sử chat, địa điểm đã lưu, bài đăng, ảnh và clip.</string>
+    <string name="account_delete_warn_plan">Gói trả phí và credit còn lại sẽ mất, Tappy không hoàn lại phần chưa dùng. Xóa tài khoản không tự hủy gói trên App Store hoặc Google Play, bạn cần hủy gói ở đó để không bị tính phí tiếp.</string>
+    <string name="account_delete_warn_plan_generic">Nếu bạn đang có gói trả phí, gói và credit còn lại sẽ mất, Tappy không hoàn lại phần chưa dùng. Xóa tài khoản không tự hủy gói trên App Store hoặc Google Play, bạn cần hủy gói ở đó để không bị tính phí tiếp.</string>
     <string name="account_delete_warning">Việc xóa là vĩnh viễn và không thể hoàn tác. Tài khoản bị xóa ngay khi bạn xác nhận.</string>
     <string name="account_delete_removes_heading">Việc xóa sẽ loại bỏ vĩnh viễn:</string>
     <string name="account_delete_kept_heading">Được giữ lại nhưng không còn gắn với bạn</string>
@@ -29,6 +33,6 @@
     <string name="account_delete_removes_9">Kết nối Google Lịch — chúng tôi đồng thời thu hồi quyền truy cập của TappyAI tại Google.</string>
     <string name="account_delete_kept_1">Tin nhắn bạn đã gửi cho người khác vẫn nằm trong cuộc trò chuyện của họ và hiển thị là từ một tài khoản đã xóa.</string>
     <string name="account_delete_kept_2">Báo cáo vi phạm và quyết định kiểm duyệt liên quan đến nội dung hoặc tài khoản được giữ để bảo đảm an toàn và tuân thủ pháp luật, không còn liên kết với tài khoản của bạn.</string>
-    <string name="account_delete_confirm_label">Để xác nhận, hãy gõ %1$s</string>
+    <string name="account_delete_confirm_label">Gõ %1$s để xác nhận.</string>
     <string name="account_delete_done_p2">Bạn sẽ được đăng xuất. Nếu có câu hỏi, hãy liên hệ %1$s.</string>
 </resources>

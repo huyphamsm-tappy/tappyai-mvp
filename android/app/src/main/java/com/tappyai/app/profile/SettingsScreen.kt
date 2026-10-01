@@ -325,6 +325,7 @@ fun SettingsScreen(
         DeleteAccountDialog(
             phase = viewModel.deletePhase,
             supportEmail = SUPPORT_EMAIL,
+            paidPlan = viewModel.paidPlan,
             onDelete = viewModel::deleteAccount,
             onTyping = viewModel::clearDeleteError,
             onDismiss = { confirmDeleteAccount = false; viewModel.clearDeleteError() },

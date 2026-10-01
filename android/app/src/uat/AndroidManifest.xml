@@ -16,5 +16,10 @@
             android:name=".uat.UatPlanCardPreviewActivity"
             android:exported="true"
             android:excludeFromRecents="true" />
+        <!-- The account-deletion confirmation (R29 text) drawn offline, flag-ON look, nothing sent. -->
+        <activity
+            android:name=".uat.UatDeleteConfirmPreviewActivity"
+            android:exported="true"
+            android:excludeFromRecents="true" />
     </application>
 </manifest>

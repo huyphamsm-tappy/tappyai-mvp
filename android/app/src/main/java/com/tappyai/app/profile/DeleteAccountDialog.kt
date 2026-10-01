@@ -40,6 +40,8 @@ import com.tappyai.app.account.data.isDeleteConfirmWord
 fun DeleteAccountDialog(
     phase: DeletePhase?,
     supportEmail: String,
+    /** true = the app KNOWS an active paid plan; false = it knows there is none; null = it does not know (generic line). */
+    paidPlan: Boolean?,
     onDelete: (String) -> Unit,
     onTyping: () -> Unit,
     onDismiss: () -> Unit,
@@ -79,7 +81,13 @@ fun DeleteAccountDialog(
                 modifier = Modifier.heightIn(max = 460.dp).verticalScroll(rememberScrollState()),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                Text(stringResource(R.string.account_delete_warning), color = MaterialTheme.colorScheme.error, fontWeight = FontWeight.SemiBold)
+                // R29: the owner's text — the lead always; the plan line only when the plan is known, the generic line when unknown.
+                Text(stringResource(R.string.account_delete_warn_lead), color = MaterialTheme.colorScheme.error, fontWeight = FontWeight.SemiBold)
+                when (paidPlan) {
+                    true -> Text(stringResource(R.string.account_delete_warn_plan), style = MaterialTheme.typography.bodySmall)
+                    null -> Text(stringResource(R.string.account_delete_warn_plan_generic), style = MaterialTheme.typography.bodySmall)
+                    false -> Unit
+                }
                 Text(stringResource(R.string.account_delete_removes_heading), fontWeight = FontWeight.Bold)
                 REMOVES.forEach { Text("• " + stringResource(it), style = MaterialTheme.typography.bodySmall) }
                 Text(stringResource(R.string.account_delete_kept_heading), fontWeight = FontWeight.Bold)

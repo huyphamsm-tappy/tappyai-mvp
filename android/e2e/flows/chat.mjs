@@ -29,6 +29,11 @@ const CASES = [
   { id: 'pho-bac', turns: ['ăn phở Bắc tối nay'], expect: /grab\.com|google\.|maps|zalo\.me/ },
   // Spa / làm đẹp: the fifth quick-ask area (ask-card evidence, 01/10).
   { id: 'spa', turns: ['massage thư giãn ở quận 1'], expect: /google\.|maps|booking|\.vn|\.com/ },
+  // R28 (web 01/10): accessory for a phone is the accessory; cinema now-showing answered directly; season trip; fare from HCM.
+  { id: 'kinh-cuong-luc', turns: ['Muốn mua kính cường lực cho iphone', 'iPhone 17 · Cường lực mà'], expect: /shopee|lazada|tiki|cellphones|thegioididong|fptshop|google\./, web: /shopee|lazada|tiki|cellphones|thegioididong|fptshop|google\.|isclix|\/go\/at/ },
+  { id: 'phim', turns: ['có phim gì hay'], expect: /cgv|google\.|\.vn|\.com/ },
+  { id: 'mua-he', turns: ['Mùa này đi du lịch ở đâu'], expect: /booking|agoda|traveloka|trip\.com|google\.|\.vn|\.com/ },
+  { id: 'bay-tu-hcm', turns: ['vé máy bay đi Đà Nẵng bay từ HCM'], expect: /traveloka|trip\.com|vietjet|vietnamairlines|bambooairways|agoda|booking|google\./, dated: true },
   // Every fact given up front, so the consult has nothing left to ask: the plan card + its share.
   { id: 'trip-full', turns: ['Lên kế hoạch đi Đà Nẵng 3 ngày 2 đêm tuần sau cho 2 người, ngân sách 10 triệu, bay từ TP.HCM, thích biển và ăn hải sản'], expect: /booking\.com|agoda|traveloka|trip\.com|vexere|grab|xanhsm|google\./, plan: true, share: true },
 ]
