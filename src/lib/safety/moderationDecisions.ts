@@ -130,3 +130,13 @@ export function noticeFor(n: NoticeInput): { title: string; body: string; entity
 }
 
 export const GROUP_PRIORITY = (g: RuleGroupId) => RULE_GROUPS[g].priority
+
+export interface DigestCounts { open: number; new_24h: number; urgent: number; overdue: number }
+/** The daily summary for the reviewers: counts only, never a report, a reporter or content. */
+export function digestNotice(c: DigestCounts): { title: string; body: string } {
+  return {
+    title: c.overdue > 0 ? 'Có báo cáo quá hạn · Overdue reports' : 'Hàng chờ kiểm duyệt · Moderation queue',
+    body: `Hàng chờ kiểm duyệt: ${c.open} đang chờ, ${c.new_24h} mới trong 24 giờ, ${c.urgent} khẩn, ${c.overdue} quá hạn. Mở /admin/moderation.
+Moderation queue: ${c.open} waiting, ${c.new_24h} new in 24 h, ${c.urgent} urgent, ${c.overdue} overdue. Open /admin/moderation.`,
+  }
+}

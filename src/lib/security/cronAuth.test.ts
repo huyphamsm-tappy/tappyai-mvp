@@ -53,9 +53,10 @@ describe('guard — every scheduler route uses it', () => {
     'src/app/api/notifications/backfill/route.ts',
   ]
 
-  it('covers all 15 cron routes and the notifications backfill', () => {
+  it('covers all 17 cron routes and the notifications backfill', () => {
     // 15 since the R21 click-attributions-sweep cron (rc, 2026-09-29) — added after L6 was written.
-    expect(routes.length).toBe(16)
+    // 17 since the two moderation crons (moderation-digest, moderation-snapshot-purge; 02/10, flagged, not scheduled)
+    expect(routes.length).toBe(18)
   })
 
   it.each(routes)('%s', (file) => {

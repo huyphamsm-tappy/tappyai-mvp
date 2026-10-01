@@ -3,7 +3,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { isAuthorizedCronRequest } from '@/lib/security/cronAuth'
 import { emitNotification } from '@/lib/notifications/emit'
 import { moderationAdminEnabled } from '@/lib/safety/userBlocks'
-import { isOverdue } from '@/lib/safety/moderationDecisions'
+import { isOverdue, digestNotice } from '@/lib/safety/moderationDecisions'
 
 export const runtime = 'nodejs'
 export const maxDuration = 30
@@ -37,10 +37,10 @@ export async function GET(req: Request) {
   // Nothing waiting and nothing new: stay quiet (no daily noise).
   if (counts.open === 0) return NextResponse.json({ ok: true, sent: 0, counts })
 
-  const body = `Hàng chờ kiểm duyệt: ${counts.open} đang chờ, ${counts.new_24h} mới trong 24 giờ, ${counts.urgent} khẩn, ${counts.overdue} quá hạn. Mở /admin/moderation.\nModeration queue: ${counts.open} waiting, ${counts.new_24h} new in 24 h, ${counts.urgent} urgent, ${counts.overdue} overdue. Open /admin/moderation.`
+  const note = digestNotice(counts)
   let sent = 0
   for (const userId of recipients) {
-    const r = await emitNotification({ userId, type: 'system', category: 'system', title: counts.overdue > 0 ? 'Có báo cáo quá hạn · Overdue reports' : 'Hàng chờ kiểm duyệt · Moderation queue', body, entityUrl: '/admin/moderation', data: { kind: 'moderation_digest', ...counts } })
+    const r = await emitNotification({ userId, type: 'system', category: 'system', title: note.title, body: note.body, entityUrl: '/admin/moderation', data: { kind: 'moderation_digest', ...counts } })
     if (r.id) sent++
   }
   return NextResponse.json({ ok: true, sent, recipients: recipients.length, counts })
