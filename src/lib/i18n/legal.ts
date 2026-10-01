@@ -73,7 +73,7 @@ export const en: Record<string, string> = {
     'ACCESSTRADE — when you open a partner (affiliate) link, TappyAI attaches a new random code to that one click. The code is different on every click and the partner cannot tell who you are or link your clicks together. TappyAI keeps, on its own servers only, which account or guest session each code belongs to, together with the time, the partner and the link, for 12 months to reconcile partner commissions, then deletes it. The partner’s site then applies its own privacy policy.',
   'legal.privacy.s3.b12': 'wttr.in — provides the weather for a place name; it receives only that name.',
   'legal.privacy.s3.b13':
-    'Upstash Redis — keeps usage counters (daily question allowance, rate limits) and short-lived cached results, tied to your account or a guest session.',
+    'Upstash Redis — keeps usage counters (daily question allowance, rate limits), short-lived cached search results, and the state of your current consultation (what you asked and the options shown) for up to 30 days, under a key that cannot be read back to your account.',
   'legal.privacy.s3.b14': 'Brevo — sends the sign-in and account emails on our behalf.',
   'legal.privacy.s3.p1': 'These providers process data according to their own privacy policies.',
   'legal.privacy.s3.p2':
@@ -310,7 +310,7 @@ export const vi: Record<string, string> = {
     'ACCESSTRADE — mỗi lần bạn mở link đối tác (affiliate), TappyAI gắn một mã ngẫu nhiên mới cho riêng lần bấm đó. Mã khác nhau ở mỗi lần bấm, đối tác không biết bạn là ai và không nối được các lần bấm của bạn với nhau. TappyAI chỉ lưu trên máy chủ của mình mã đó thuộc tài khoản hay phiên khách nào, kèm thời điểm, đối tác và đường link, trong 12 tháng để đối soát hoa hồng, sau đó xoá. Sau đó trang của đối tác áp dụng chính sách bảo mật riêng của họ.',
   'legal.privacy.s3.b12': 'wttr.in — cung cấp thời tiết theo tên địa điểm; chỉ nhận tên địa điểm đó.',
   'legal.privacy.s3.b13':
-    'Upstash Redis — lưu bộ đếm sử dụng (hạn mức câu hỏi mỗi ngày, giới hạn tần suất) và kết quả lưu đệm ngắn hạn, gắn với tài khoản hoặc phiên khách của bạn.',
+    'Upstash Redis — lưu bộ đếm sử dụng (hạn mức câu hỏi mỗi ngày, giới hạn tần suất), kết quả tìm kiếm lưu đệm ngắn hạn, và trạng thái cuộc tư vấn hiện tại của bạn (bạn đã hỏi gì, các lựa chọn đã hiện) tối đa 30 ngày, dưới một khóa băm không đọc ngược ra được tài khoản.',
   'legal.privacy.s3.b14': 'Brevo — thay mặt chúng tôi gửi email đăng nhập và email về tài khoản.',
   'legal.privacy.s3.p1': 'Các nhà cung cấp này xử lý dữ liệu theo chính sách bảo mật riêng của họ.',
   'legal.privacy.s3.p2':
