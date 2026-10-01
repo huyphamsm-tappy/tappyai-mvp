@@ -21,5 +21,10 @@
             android:name=".uat.UatDeleteConfirmPreviewActivity"
             android:exported="true"
             android:excludeFromRecents="true" />
+            <!-- The real safety composables (report, block, blocked list, rules) from fixtures; nothing sent. -->
+        <activity
+            android:name=".uat.UatSafetyPreviewActivity"
+            android:exported="true"
+            android:excludeFromRecents="true" />
     </application>
 </manifest>

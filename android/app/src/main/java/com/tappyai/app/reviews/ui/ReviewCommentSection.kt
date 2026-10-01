@@ -115,6 +115,8 @@ internal fun ReviewCommentItem(
     onReply: () -> Unit = {},
     onToggleReactionPicker: () -> Unit = {},
     onReact: (String) -> Unit = {},
+    /** "Báo cáo" on SOMEONE ELSE's comment — non-null only where the server accepts comment reports. */
+    onReport: (() -> Unit)? = null,
 ) {
     Row(
         modifier = Modifier
@@ -179,6 +181,15 @@ internal fun ReviewCommentItem(
                     fontWeight = FontWeight.Medium,
                     modifier = Modifier.clickable { onReply() },
                 )
+                if (!isOwn && onReport != null) {
+                    Text(
+                        text = stringResource(R.string.safety_report_action),
+                        color = CommentTextSecondary,
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Medium,
+                        modifier = Modifier.clickable { onReport() },
+                    )
+                }
                 val total = comment.reactions.values.sum()
                 if (total > 0) {
                     val emojis = comment.reactions.entries
@@ -244,6 +255,7 @@ internal fun LazyListScope.reviewCommentItems(
     onReply: (ReviewComment) -> Unit = {},
     onToggleReactionPicker: (String) -> Unit = {},
     onReact: (String, String) -> Unit = { _, _ -> },
+    onReportComment: ((String) -> Unit)? = null,
 ) {
     item(key = "comments-header") {
         ReviewCommentsHeader(count = comments.size)
@@ -262,6 +274,7 @@ internal fun LazyListScope.reviewCommentItems(
                 onReply = { onReply(comment) },
                 onToggleReactionPicker = { onToggleReactionPicker(comment.id) },
                 onReact = { key -> onReact(comment.id, key) },
+                onReport = onReportComment?.let { report -> { report(comment.id) } },
             )
         }
         repliesByParent[comment.id]?.forEach { reply ->
@@ -276,6 +289,7 @@ internal fun LazyListScope.reviewCommentItems(
                     onReply = { onReply(reply) },
                     onToggleReactionPicker = { onToggleReactionPicker(reply.id) },
                     onReact = { key -> onReact(reply.id, key) },
+                    onReport = onReportComment?.let { report -> { report(reply.id) } },
                 )
             }
         }

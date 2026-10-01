@@ -164,7 +164,11 @@ fun ProfileTab(
                 onOpenGuide = { navController.navigate(ProfileRoute.Guide) },
                 onOpenTerms = { navController.navigate(ProfileRoute.Terms) },
                 onOpenPrivacy = { openPrivacyPolicy(context) },
+                onOpenBlocked = { navController.navigate(ProfileRoute.BlockedUsers) },
             )
+        }
+        composable<ProfileRoute.BlockedUsers> {
+            com.tappyai.app.safety.ui.BlockedUsersScreen(onBack = { navController.popBackStack() })
         }
         composable<ProfileRoute.Guide> {
             HowToUseScreen(onBack = { navController.popBackStack() })

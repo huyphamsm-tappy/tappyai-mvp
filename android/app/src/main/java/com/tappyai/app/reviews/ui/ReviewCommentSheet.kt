@@ -18,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -29,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tappyai.app.R
+import com.tappyai.app.safety.ui.ReportDialog
 import com.tappyai.core.designsystem.theme.TappySpacing
 
 private val SheetBackground = Color(0xFF000000)
@@ -75,6 +77,18 @@ internal fun ReviewCommentSheet(
         }
     }
 
+    // Report a comment — Phase 8 `/api/reports`, offered only while the server says it has it.
+    val safetyFlags by viewModel.safetyFlags.collectAsStateWithLifecycle()
+    var reportCommentFor by remember { mutableStateOf<String?>(null) }
+    reportCommentFor?.let { commentId ->
+        ReportDialog(
+            title = stringResource(R.string.safety_report_comment_title),
+            onSubmit = { reason -> viewModel.reportComment(commentId, reason) },
+            onFiled = {},
+            onDismiss = { reportCommentFor = null },
+        )
+    }
+
     val dismiss = { onDismiss(uiState.review?.commentCount) }
     ModalBottomSheet(
         onDismissRequest = dismiss,
@@ -116,6 +130,7 @@ internal fun ReviewCommentSheet(
                         reactionPickerFor = null
                         viewModel.toggleReaction(id, key)
                     },
+                    onReportComment = if (safetyFlags.reports) ({ id -> reportCommentFor = id }) else null,
                 )
             }
             ReviewCommentInputBar(

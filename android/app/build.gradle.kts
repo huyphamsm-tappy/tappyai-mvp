@@ -250,7 +250,7 @@ android {
         // found Scam Shield in one and not the other. Nothing on a device, in a bug report or in
         // Play could have told them apart, and Play rejects a reused versionCode outright.
         // 2026-09-28 public launch: 10 (skips 9 so no earlier upload can collide), 1.0.0.
-        versionCode = 10
+        versionCode = 11
         versionName = "1.0.0"
 
         vectorDrawables {

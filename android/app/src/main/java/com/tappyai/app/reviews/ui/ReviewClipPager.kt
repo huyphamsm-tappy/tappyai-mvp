@@ -1,6 +1,12 @@
 package com.tappyai.app.reviews.ui
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Box
+import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.tappyai.app.R
+import com.tappyai.app.safety.ui.BlockConfirmDialog
+import com.tappyai.app.safety.ui.ReportDialog
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.VerticalPager
@@ -60,6 +66,34 @@ internal fun ReviewClipPager(
     var shareSheetFor by remember { mutableStateOf<Review?>(null) }
     shareSheetFor?.let { r -> ReviewShareSheetHost(r, onDismiss = { shareSheetFor = null }) }
 
+    // Report / block (Play's user-generated-content policy). Report goes to the production route and
+    // always shows; Block shows only while the server says it supports blocking (`/api/config` → p8).
+    val safetyFlags by viewModel.safetyFlags.collectAsStateWithLifecycle()
+    var reportFor by remember { mutableStateOf<Review?>(null) }
+    var blockFor by remember { mutableStateOf<Review?>(null) }
+    val safetyScope = rememberCoroutineScope()
+    reportFor?.let { r ->
+        ReportDialog(
+            title = stringResource(R.string.safety_report_post_title),
+            onSubmit = { reason -> viewModel.reportReview(r, reason) },
+            onFiled = {},
+            onDismiss = { reportFor = null },
+        )
+    }
+    blockFor?.let { r ->
+        BlockConfirmDialog(
+            name = r.profiles?.fullName,
+            onConfirm = {
+                blockFor = null
+                safetyScope.launch {
+                    val ok = viewModel.blockAuthor(r)
+                    Toast.makeText(context, context.getString(if (ok) R.string.safety_block_done else R.string.safety_block_failed), Toast.LENGTH_SHORT).show()
+                }
+            },
+            onDismiss = { blockFor = null },
+        )
+    }
+
     // Advance pagination as the user swipes toward the end of the loaded pages.
     LaunchedEffect(pagerState.currentPage) {
         viewModel.onPageSettled(pagerState.currentPage)
@@ -109,6 +143,8 @@ internal fun ReviewClipPager(
                 onFollow = { viewModel.toggleFollow(review) },
                 onDelete = { viewModel.deleteReview(review) },
                 onHide = { viewModel.hideReview(review) },
+                onReport = if (review.userId == currentUserId) null else ({ reportFor = review }),
+                onBlockAuthor = if (review.userId != currentUserId && currentUserId != null && safetyFlags.userBlocks) ({ blockFor = review }) else null,
                 onAskTappy = onAskTappy?.let { ask -> { ask(review) } },
                 bottomClearance = bottomClearance,
             )

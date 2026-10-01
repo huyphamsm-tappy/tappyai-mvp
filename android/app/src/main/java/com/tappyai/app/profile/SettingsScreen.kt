@@ -20,6 +20,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.automirrored.filled.MenuBook
+import androidx.compose.material.icons.filled.Block
 import androidx.compose.material.icons.filled.BrightnessAuto
 import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.filled.DeleteOutline
@@ -64,6 +65,7 @@ import com.tappyai.app.home.HomeV3
 import com.tappyai.app.AppearanceMode
 import com.tappyai.app.home.V3HomeTheme
 import com.tappyai.app.language.AppLanguage
+import com.tappyai.app.safety.SafetyViewModel
 import com.tappyai.core.designsystem.component.TappyBottomSheet
 import com.tappyai.core.designsystem.component.TappyDialog
 import com.tappyai.core.designsystem.component.TappyMenuRow
@@ -105,8 +107,12 @@ fun SettingsScreen(
     onOpenGuide: () -> Unit,
     onOpenTerms: () -> Unit,
     onOpenPrivacy: () -> Unit,
+    /** Opens the blocked-accounts list; the row exists only while the server supports blocking. */
+    onOpenBlocked: () -> Unit = {},
     viewModel: SettingsViewModel = hiltViewModel(),
+    safetyViewModel: SafetyViewModel = hiltViewModel(),
 ) {
+    val safetyFlags by safetyViewModel.flags.collectAsStateWithLifecycle()
     var showLanguagePicker by remember { mutableStateOf(false) }
     var showAppearancePicker by remember { mutableStateOf(false) }
     var confirmDeleteAccount by remember { mutableStateOf(false) }
@@ -233,6 +239,19 @@ fun SettingsScreen(
                             onClick = onOpenPrivacy,
                         )
                         SettingsDivider()
+                        // People the viewer blocked, with "Bỏ chặn". Drawn only while the server says
+                        // it supports blocking (`/api/config` → p8.userBlocks); absent otherwise.
+                        if (safetyFlags.userBlocks) {
+                            TappyMenuRow(
+                                icon = Icons.Filled.Block,
+                                title = stringResource(R.string.safety_blocked_title),
+                                subtitle = stringResource(R.string.safety_blocked_desc),
+                                accent = AccentSlate,
+                                titleFontWeight = FontWeight.SemiBold,
+                                onClick = onOpenBlocked,
+                            )
+                            SettingsDivider()
+                        }
                         // Copyright / notice-and-takedown policy. Opens the web page
                         // (TappyShare.CANONICAL_ORIGIN + "/copyright") rather than a native screen, so
                         // web and Android read ONE policy that cannot drift — the native copy was

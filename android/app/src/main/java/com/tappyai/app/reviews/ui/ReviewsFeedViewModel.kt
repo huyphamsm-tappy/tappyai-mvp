@@ -12,7 +12,13 @@ import com.tappyai.app.reviews.data.ReviewsRepository
 import com.tappyai.features.auth.data.AuthRepository
 import com.tappyai.core.logging.LoggerProvider
 import com.tappyai.core.network.NetworkResult
+import com.tappyai.app.safety.ReportOutcome
+import com.tappyai.app.safety.ReportReason
+import com.tappyai.app.safety.SafetyFlags
+import com.tappyai.app.safety.SafetyRepository
+import com.tappyai.app.safety.withoutHidden
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -69,6 +75,7 @@ class ReviewsFeedViewModel @Inject constructor(
     private val authRepository: AuthRepository,
     private val logger: LoggerProvider,
     private val reviewErrorMessages: ReviewErrorMessages,
+    private val safety: SafetyRepository,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
@@ -81,9 +88,30 @@ class ReviewsFeedViewModel @Inject constructor(
     private var page = 0
     private var loadJob: Job? = null
 
+    /** What the server supports (report-user / block): the rail draws "Chặn người dùng" only when true. */
+    val safetyFlags: StateFlow<SafetyFlags> = safety.flags
+
     init {
         loadFirstPage()
+        viewModelScope.launch { safety.refresh() }
+        // A report or a block takes effect on the rows already on screen at once, not on the next fetch.
+        viewModelScope.launch {
+            combine(safety.blockedIds, safety.reportedIds) { blocked, reported -> blocked to reported }
+                .collect { (blocked, reported) ->
+                    _uiState.update { s -> s.copy(reviews = s.reviews.withoutHidden(blocked, reported, s.currentUserId)) }
+                }
+        }
     }
+
+    /** Reports [review] (the production route). The row leaves the feed only once the server accepted it. */
+    suspend fun reportReview(review: Review, reason: ReportReason): ReportOutcome = safety.reportReview(review.id, reason)
+
+    /** Blocks the author of [review]; true when it took effect (their rows then leave the feed). */
+    suspend fun blockAuthor(review: Review): Boolean = safety.block(review.userId)
+
+    /** Rows without the ones the viewer blocked or reported — applied AFTER end-of-feed is decided from the raw page. */
+    private fun List<Review>.visible(): List<Review> =
+        withoutHidden(safety.blockedIds.value, safety.reportedIds.value, _uiState.value.currentUserId)
 
     /** (Re)load from page 0, replacing the list. Used for initial load, retry, and refresh. */
     fun refresh() = loadFirstPage()
@@ -106,7 +134,7 @@ class ReviewsFeedViewModel @Inject constructor(
             when (val result = loadPage(0, type)) {
                 is NetworkResult.Success -> _uiState.update {
                     it.copy(
-                        reviews = result.data,
+                        reviews = result.data.visible(),
                         isInitialLoading = false,
                         error = null,
                         // A profile's own-posts list and the saved list are one unpaged call each;
@@ -146,7 +174,7 @@ class ReviewsFeedViewModel @Inject constructor(
                     // requests can shift the window and repeat an item — a duplicate key would
                     // crash the pager's keyed items.
                     val existingIds = _uiState.value.reviews.mapTo(HashSet()) { it.id }
-                    val fresh = result.data.filter { it.id !in existingIds }
+                    val fresh = result.data.filter { it.id !in existingIds }.visible()
                     _uiState.update {
                         it.copy(
                             reviews = it.reviews + fresh,

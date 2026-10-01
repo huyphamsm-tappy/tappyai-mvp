@@ -44,7 +44,8 @@ class SettingsV3Test {
         assertTrue("delete stays a confirmed request", body.contains("onClick = { confirmDeleteAccount = true },") && screen.contains("""Uri.parse("mailto:${'$'}SUPPORT_EMAIL")""") && screen.contains("Intent(Intent.ACTION_SENDTO)"))
         assertTrue("version line", body.contains("R.string.settings_version, BuildConfig.VERSION_NAME"))
         assertTrue("guest → sign-in card with the existing Settings copy; account → sign-out", body.contains("if (viewModel.isAnonymous) {") && body.contains("SignInCard(onClick = onSignIn, subtitle = stringResource(R.string.settings_sign_in_desc))") && body.contains("onClick = viewModel::signOut,") && body.contains("R.string.settings_sign_out"))
-        assertEquals("every row is the design-system row", 11, Regex("""TappyMenuRow\(""").findAll(body).count())
+        // 11 + the conditional «Tài khoản đã chặn» row (drawn only while the server supports blocking; see SafetyWiringTest).
+        assertEquals("every row is the design-system row", 12, Regex("""TappyMenuRow\(""").findAll(body).count())
         assertFalse(screen.contains("Switch("))
     }
 

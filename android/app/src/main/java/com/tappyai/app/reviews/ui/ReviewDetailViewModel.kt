@@ -7,6 +7,12 @@ import com.tappyai.app.reviews.data.ReviewComment
 import com.tappyai.app.reviews.data.ReviewErrorMessages
 import com.tappyai.app.reviews.data.ReviewsRepository
 import com.tappyai.features.auth.data.AuthRepository
+import com.tappyai.app.safety.ReportOutcome
+import com.tappyai.app.safety.ReportReason
+import com.tappyai.app.safety.ReportTarget
+import com.tappyai.app.safety.SafetyFlags
+import com.tappyai.app.safety.SafetyRepository
+import com.tappyai.app.safety.withoutBlocked
 import com.tappyai.core.logging.LoggerProvider
 import com.tappyai.core.network.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -53,10 +59,30 @@ class ReviewDetailViewModel @Inject constructor(
     private val authRepository: AuthRepository,
     private val logger: LoggerProvider,
     private val reviewErrorMessages: ReviewErrorMessages,
+    private val safety: SafetyRepository,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ReviewDetailUiState(currentUserId = authRepository.currentUserId()))
     val uiState: StateFlow<ReviewDetailUiState> = _uiState.asStateFlow()
+
+    init {
+        // Comments by someone the viewer blocks are not shown — filtered on load and again whenever the block list changes.
+        viewModelScope.launch {
+            safety.blockedIds.collect { blocked ->
+                _uiState.update { s -> s.copy(comments = s.comments.withoutBlocked(blocked, s.currentUserId)) }
+            }
+        }
+    }
+
+    /** What the server supports — drives "Báo cáo bình luận" (Phase 8 `/api/reports`). */
+    val safetyFlags: StateFlow<SafetyFlags> = safety.flags
+
+    /** Reports a comment. Only meaningful while [safetyFlags] says reports are available. */
+    suspend fun reportComment(commentId: String, reason: ReportReason): ReportOutcome =
+        safety.report(ReportTarget.Comment, commentId, reason)
+
+    /** Reports the review being shown (production route). */
+    suspend fun reportReview(reviewId: String, reason: ReportReason): ReportOutcome = safety.reportReview(reviewId, reason)
 
     private val _events = Channel<DetailEvent>(Channel.BUFFERED)
     val events: Flow<DetailEvent> = _events.receiveAsFlow()
@@ -93,7 +119,11 @@ class ReviewDetailViewModel @Inject constructor(
         viewModelScope.launch {
             when (val result = repository.getComments(reviewId)) {
                 is NetworkResult.Success -> _uiState.update {
-                    it.copy(comments = result.data, isLoadingComments = false, commentsError = null)
+                    it.copy(
+                        comments = result.data.withoutBlocked(safety.blockedIds.value, it.currentUserId),
+                        isLoadingComments = false,
+                        commentsError = null,
+                    )
                 }
                 is NetworkResult.Error -> {
                     logger.e(TAG, "Comments load failed: ${result.error}")

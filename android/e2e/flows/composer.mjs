@@ -40,15 +40,35 @@ async function openComposer(a) {
   if (!a.visible('Bài viết mới')) throw new Error('composer did not open')
 }
 
+// The community-rules agreement (Play UGC policy) is asked ONCE per device, before the first post.
+let termsSeen = false
+let ctx = { shot: () => {}, check: () => {} }
+
 async function post(a, body) {
   await a.tap('Chia sẻ trải nghiệm...', { after: 700 }).catch(() => a.tap(/Chia sẻ trải nghiệm/, { after: 700 }))
   await a.pasteText(body)
   await a.hideKeyboard()
-  await a.tap('Đăng', { after: 8000 })
+  await a.tap('Đăng', { after: 2500 })
+  if (a.visible('Quy tắc cộng đồng')) {
+    ctx.shot('community-rules')
+    if (!termsSeen) {
+      ctx.check('lần đăng đầu: hiện «Quy tắc cộng đồng» có link Điều khoản và support@tappyai.com', a.visible('Đọc Điều khoản sử dụng') && a.visible('support@tappyai.com'))
+      termsSeen = true
+    } else {
+      ctx.check('đã đồng ý rồi mà vẫn hỏi lại', false)
+    }
+    await a.tap('Đồng ý và đăng', { after: 8000 })
+  } else {
+    if (!termsSeen) ctx.check('lần đăng đầu: PHẢI hiện «Quy tắc cộng đồng» trước khi đăng', false)
+    await a.sleep(6000)
+  }
 }
 
 export async function android({ a, shot, check, seeded }) {
   const email = seeded.users.pro.email
+  ctx = { shot, check }
+  // Fresh agreement state: the e2e hook clears app data on launch({fresh}) only for onboarding; clear the one key here.
+  try { a.sh('am', 'force-stop', a.PKG); a.sh('run-as', a.PKG, 'rm', '-f', 'shared_prefs/tappy_safety.xml') } catch { /* the agreement may already be absent */ }
   const stamp = Date.now().toString(36)
   a.adb(['push', IMAGE, '/sdcard/Pictures/e2e-wave.png'])
   a.adb(['push', CLIP, '/sdcard/Movies/e2e-clip.mp4'])

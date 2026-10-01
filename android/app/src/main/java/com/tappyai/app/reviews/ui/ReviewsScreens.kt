@@ -80,6 +80,9 @@ import androidx.lifecycle.compose.LifecycleResumeEffect
 import com.tappyai.app.notifications.InboxBadgeViewModel
 import com.tappyai.app.notifications.UnreadBadge
 import com.tappyai.app.R
+import com.tappyai.app.safety.SafetyViewModel
+import com.tappyai.app.safety.ui.ReportDialog
+import com.tappyai.app.safety.ui.UgcTermsDialog
 import com.tappyai.app.explore.ExploreV3
 import com.tappyai.app.reviews.data.Review
 import com.tappyai.app.reviews.data.ReviewFeedType
@@ -560,6 +563,26 @@ internal fun ReviewDetailScreen(
     // The like list (the count's tap), as on the pager.
     var likesFor by rememberSaveable { mutableStateOf<String?>(null) }
     likesFor?.let { id -> ReviewLikeListSheet(reviewId = id, onDismiss = { likesFor = null }) }
+    // Report the post (production route) or one of its comments (Phase 8, only while the server has it).
+    val safetyFlags by viewModel.safetyFlags.collectAsStateWithLifecycle()
+    var reportPostFor by remember { mutableStateOf<String?>(null) }
+    var reportCommentFor by remember { mutableStateOf<String?>(null) }
+    reportPostFor?.let { id ->
+        ReportDialog(
+            title = stringResource(R.string.safety_report_post_title),
+            onSubmit = { reason -> viewModel.reportReview(id, reason) },
+            onFiled = {},
+            onDismiss = { reportPostFor = null },
+        )
+    }
+    reportCommentFor?.let { id ->
+        ReportDialog(
+            title = stringResource(R.string.safety_report_comment_title),
+            onSubmit = { reason -> viewModel.reportComment(id, reason) },
+            onFiled = {},
+            onDismiss = { reportCommentFor = null },
+        )
+    }
 
     LaunchedEffect(Unit) {
         viewModel.events.collect { event ->
@@ -628,10 +651,12 @@ internal fun ReviewDetailScreen(
                             onAvatarClick = { onAvatarClick(review.userId) },
                             onDelete = {},
                             onHide = {},
+                            onReport = if (review.userId == uiState.currentUserId) null else ({ reportPostFor = review.id }),
                         )
                     }
                 }
                 reviewCommentItems(
+                    onReportComment = if (safetyFlags.reports) ({ id -> reportCommentFor = id }) else null,
                     comments = uiState.comments,
                     nowMillis = nowMillis,
                     currentUserId = uiState.currentUserId,
@@ -753,9 +778,13 @@ private val ComposerHeldNoticeSaver = listSaver<ComposerEvent.Held?, Any>(
 internal fun ReviewComposerHost(
     onBack: () -> Unit,
     viewModel: ReviewComposerViewModel = hiltViewModel(),
+    safetyViewModel: SafetyViewModel = hiltViewModel(),
 ) {
     val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    // The community rules are agreed once, before the first post or clip (Play's UGC policy); the
+    // choice is remembered on the device and asked again only if the rules' version changes.
+    var showTerms by rememberSaveable { mutableStateOf(false) }
     // System photo picker (no runtime permission). Multi-select capped at the review photo limit;
     // the ViewModel additionally trims to the remaining slots and enforces per-file size/type.
     val pickPhotos = rememberLauncherForActivityResult(
@@ -819,6 +848,17 @@ internal fun ReviewComposerHost(
         )
     }
 
+    if (showTerms) {
+        UgcTermsDialog(
+            onAgree = {
+                safetyViewModel.acceptTerms()
+                showTerms = false
+                viewModel.submit(body = body, rating = rating, placeName = placeName, mode = mediaMode)
+            },
+            onDismiss = { showTerms = false },
+        )
+    }
+
     ReviewComposerScreen(
         body = body,
         onBodyChange = { body = it },
@@ -833,7 +873,10 @@ internal fun ReviewComposerHost(
         showRating = showRating,
         onToggleRating = { showRating = !showRating },
         onBack = onBack,
-        onPost = { viewModel.submit(body = body, rating = rating, placeName = placeName, mode = mediaMode) },
+        onPost = {
+            if (safetyViewModel.termsAccepted) viewModel.submit(body = body, rating = rating, placeName = placeName, mode = mediaMode)
+            else showTerms = true
+        },
         photoUrls = uiState.photoUrls,
         isUploadingPhoto = uiState.isUploadingPhoto,
         onPickPhotos = {
