@@ -19,13 +19,20 @@ on:
     paths:
       - ".github/workflows/ios-profile-check.yml"
 
+concurrency:
+  group: ios-profile-check-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 
 jobs:
   check:
     name: Profile vs entitlements
-    runs-on: macos-15
+    # Linux (a tenth of the cost of macOS): `openssl smime` reads the CMS wrapper that `security cms` reads on a Mac.
+    # Runs on a manual run, or when the commit message says [profile-check]; otherwise the job is skipped and costs nothing.
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[profile-check]')
+    runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
@@ -44,9 +51,10 @@ jobs:
           printf '%s' "$APPSTORE_PROFILE_BASE64" | base64 --decode > "$profile" \
             || { echo "::error::the secret is not valid base64"; exit 1; }
           # A mobileprovision is a CMS-signed plist; anything else is not a profile.
-          security cms -D -i "$profile" > "$RUNNER_TEMP/p.plist" 2>/dev/null \
+          openssl smime -inform der -verify -noverify -in "$profile" -out "$RUNNER_TEMP/p.plist" 2>/dev/null \
             || { echo "::error::the secret decodes, but it is not a CMS-signed provisioning profile (.mobileprovision)"; exit 1; }
-          plutil -lint "$RUNNER_TEMP/p.plist" > /dev/null
+          python3 -c 'import plistlib,sys; plistlib.load(open(sys.argv[1],"rb"))' "$RUNNER_TEMP/p.plist" \
+            || { echo "::error::the profile content is not a valid plist"; exit 1; }
           python3 - "$RUNNER_TEMP/p.plist" ios/TappyAI/TappyAI.entitlements <<'PY'
           import datetime, hashlib, os, plistlib, sys
 
@@ -115,7 +123,8 @@ jobs:
 
   firebase-plist:
     name: Firebase config secret (names only)
-    runs-on: macos-15
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[profile-check]')
+    runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
       # Read-only: decodes GOOGLE_SERVICE_INFO_PLIST_BASE64 and prints only whether it is a valid plist and the two PUBLIC
@@ -131,11 +140,17 @@ jobs:
           fi
           f="$RUNNER_TEMP/g.plist"
           printf '%s' "$GOOGLE_SERVICE_INFO_PLIST_BASE64" | base64 --decode > "$f" || { echo "::error::not valid base64"; exit 1; }
-          plutil -lint "$f" > /dev/null || { echo "::error::decoded, but not a valid plist"; exit 1; }
-          bundle="$(plutil -extract BUNDLE_ID raw -o - "$f")"
-          project="$(plutil -extract PROJECT_ID raw -o - "$f")"
-          has_sender="no"; plutil -extract GCM_SENDER_ID raw -o - "$f" > /dev/null 2>&1 && has_sender="yes"
+          read -r bundle project has_sender < <(python3 - "$f" <<'PY'
+          import plistlib, sys
+          try:
+              d = plistlib.load(open(sys.argv[1], "rb"))
+          except Exception:
+              print("INVALID INVALID no"); sys.exit(0)
+          print(d.get("BUNDLE_ID", "-"), d.get("PROJECT_ID", "-"), "yes" if d.get("GCM_SENDER_ID") else "no")
+          PY
+          )
           rm -f "$f"
+          [ "$bundle" != "INVALID" ] || { echo "::error::decoded, but not a valid plist"; exit 1; }
           echo "valid plist           : yes"
           echo "bundle id             : $bundle"
           echo "firebase project id   : $project"

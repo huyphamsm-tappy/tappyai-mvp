@@ -27,6 +27,9 @@ permissions:
 jobs:
   shots:
     name: Export App Store screenshots
+    # macOS minutes cost ten times (private repository): this runs only on a manual run, or when the commit message says so.
+    # A skipped job starts no runner and costs nothing.
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[appstore-shots]')
     runs-on: macos-latest
     timeout-minutes: 45
     defaults:
