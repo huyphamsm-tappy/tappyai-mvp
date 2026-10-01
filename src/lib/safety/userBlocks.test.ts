@@ -33,12 +33,12 @@ function fake(rows: Record<string, Array<{ blocker_id: string; blocked_id: strin
 }
 
 describe('blockedPeers — both directions, both tables, service role', () => {
-  it('finds the people I blocked, the people who blocked me, and chat-only blocks', async () => {
+  it('finds the people I blocked and the people who blocked me; a chat-only block is NOT read (review 02/10)', async () => {
     const admin = fake({
       user_blocks: [{ blocker_id: ME, blocked_id: A }],
       chat_blocks: [{ blocker_id: B, blocked_id: ME }],
     })
-    expect([...(await blockedPeers(admin, ME, [A, B, C]))].sort()).toEqual([A, B].sort())
+    expect([...(await blockedPeers(admin, ME, [A, B, C]))].sort()).toEqual([A].sort())
   })
   it('ignores ids that are not UUIDs and my own id', async () => {
     expect([...(await blockedPeers(fake({ user_blocks: [{ blocker_id: ME, blocked_id: A }] }), ME, ['x', ME, A]))]).toEqual([A])

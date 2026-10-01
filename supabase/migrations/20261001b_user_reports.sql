@@ -5,8 +5,10 @@
 -- GATE: applied to production ONLY under explicit Owner authorization, in the same group as 20261001_user_blocks.sql
 --       (after it), after the pg_dump. Inert until REPORTS_ENABLED=true: the table is written only by the two routes.
 --
--- What a report is: one row per (reporter, target). The reporter can read/insert only their own rows; nobody else can read
--- anything (no policy for it); anonymous sessions cannot file. There is NO update or delete from a client.
+-- What a report is: one row per (reporter, target). The reporter can READ only their own rows; nobody else can read anything (no
+-- policy for it). NO client role can INSERT, UPDATE or DELETE: the two report routes are the only writers (service role), after they have
+-- checked the session (not anonymous), the target (exists, not yours) and a persistent rate limit. A direct REST insert therefore cannot
+-- bury the moderation queue with invented targets (security review 02/10).
 --
 -- Account deletion (decision recorded, Owner may change):
 --   - the REPORTER is deleted  -> reporter_id becomes NULL (ON DELETE SET NULL): the report stays as moderation evidence,
@@ -44,18 +46,11 @@ CREATE INDEX IF NOT EXISTS user_reports_target_idx ON public.user_reports (targe
 
 ALTER TABLE public.user_reports ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS user_reports_select_own ON public.user_reports;
-DROP POLICY IF EXISTS user_reports_insert_own ON public.user_reports;
+DROP POLICY IF EXISTS user_reports_insert_own ON public.user_reports; -- (a draft had one; it never ships)
 CREATE POLICY user_reports_select_own ON public.user_reports FOR SELECT TO authenticated USING (reporter_id = auth.uid());
--- Own rows, not anonymous, and a comment cannot be reported by the person who wrote it.
-CREATE POLICY user_reports_insert_own ON public.user_reports FOR INSERT TO authenticated
-  WITH CHECK (
-    reporter_id = auth.uid()
-    AND NOT COALESCE((auth.jwt() ->> 'is_anonymous')::boolean, false)
-    AND NOT (target_type = 'comment' AND EXISTS (SELECT 1 FROM public.review_comments c WHERE c.id = target_id AND c.user_id = auth.uid()))
-  );
 
 REVOKE ALL ON TABLE public.user_reports FROM PUBLIC, anon, authenticated;
-GRANT SELECT, INSERT ON TABLE public.user_reports TO authenticated;
+GRANT SELECT ON TABLE public.user_reports TO authenticated;
 GRANT ALL ON TABLE public.user_reports TO service_role;
 
 COMMIT;

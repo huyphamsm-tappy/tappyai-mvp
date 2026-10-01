@@ -18,6 +18,7 @@ const h = vi.hoisted(() => ({
   wonAppeals: [] as Array<Record<string, unknown>>,
   ops: [] as Array<{ table: string; op: string; value?: unknown }>,
   insertErr: null as null | { code: string },
+  status: null as null | Record<string, unknown>,
 }))
 vi.mock('@/lib/admin/rbac', async (orig) => ({ ...((await orig()) as Record<string, unknown>), isSameOrigin: () => true }))
 vi.mock('@/lib/admin/permissions', async (orig) => ({ ...((await orig()) as Record<string, unknown>), requireAdminIdentity: h.identity, requirePermission: h.permission }))
@@ -33,7 +34,7 @@ vi.mock('@/lib/supabase/admin', () => ({
       b.select = () => b; b.in = () => b; b.order = () => b; b.limit = () => b
       b.eq = () => b
       b.neq = () => { neqUsed = true; return b }
-      b.maybeSingle = async () => ({ data: table === 'moderation_appeals' ? h.appeal : table === 'moderation_decisions' ? h.decision : null, error: null })
+      b.maybeSingle = async () => ({ data: table === 'moderation_appeals' ? h.appeal : table === 'moderation_decisions' ? (h.decision && /reason/.test('reason') ? { ...h.decision, reason: 'the reason written by the reviewer' } : h.decision) : table === 'account_status' ? h.status : null, error: null })
       b.insert = async (value: unknown) => { h.ops.push({ table, op: 'insert', value }); return { error: h.insertErr } }
       b.update = (value: unknown) => { h.ops.push({ table, op: 'update', value }); return { eq: () => ({ eq: async () => ({ error: null }), then: (r: (v: unknown) => unknown) => Promise.resolve({ error: null }).then(r) }) } }
       b.then = (res: (v: unknown) => unknown) => Promise.resolve({ data: table === 'moderation_decisions' && neqUsed ? h.others : table === 'moderation_appeals' ? h.wonAppeals : [], error: null }).then(res)
@@ -60,6 +61,7 @@ describe('who reaches the desk, and appeals', () => {
     h.identity.mockResolvedValue({ user: { id: ACTOR, email: 'a@tappyai.com' }, actor: { userId: ACTOR, isOwner: false, roles: ['admin'], capabilities: [] } })
     h.permission.mockResolvedValue({}); h.emit.mockResolvedValue({ id: 'n1' })
     h.appeal = { id: APPEAL, decision_id: DEC, status: 'pending' }; h.decision = dec(); h.others = []; h.wonAppeals = []; h.ops = []; h.insertErr = null
+    h.status = { is_banned: true, ban_reason: 'the reason written by the reviewer', is_suspended: true, suspended_until: new Date('2026-10-08T00:00:00Z').toISOString() }
   })
   afterEach(() => { if (prev === undefined) delete process.env.MODERATION_ADMIN_ENABLED; else process.env.MODERATION_ADMIN_ENABLED = prev })
 
@@ -119,7 +121,7 @@ describe('who reaches the desk, and appeals', () => {
     await resolve({ result: 'reversed', note: NOTE })
     expect(h.ops.find((o) => o.table === 'reviews')?.value).toEqual({ publication_state: 'PUBLISHED' })
 
-    h.ops = []; h.decision = dec({ outcome: 'restricted', restrict_days: 7, content_type: 'user', content_snapshot: null })
+    h.ops = []; h.decision = dec({ outcome: 'restricted', restrict_days: 7, content_type: 'user', content_snapshot: null }) // created 2026-10-01 + 7 days = the suspension in h.status
     await resolve({ result: 'reversed', note: NOTE })
     expect(h.unsuspend).toHaveBeenCalledWith(expect.anything(), SUBJECT)
 
@@ -128,6 +130,18 @@ describe('who reaches the desk, and appeals', () => {
     const r = await resolve({ result: 'reversed', note: NOTE })
     expect(h.unsuspend).not.toHaveBeenCalled()
     expect((await r.json()).data.restored.restriction_lifted).toBe(false)
+  })
+
+  it('reversed: a restriction or lock a staff member set BY HAND (not the one this decision wrote) is never lifted (review 02/10)', async () => {
+    h.decision = dec({ outcome: 'restricted', restrict_days: 7, content_type: 'user', content_snapshot: null })
+    h.status = { is_banned: false, ban_reason: null, is_suspended: true, suspended_until: new Date('2027-01-01T00:00:00Z').toISOString() } // a different, manual suspension
+    let r = await resolve({ result: 'reversed', note: NOTE })
+    expect(h.unsuspend).not.toHaveBeenCalled(); expect((await r.json()).data.restored.restriction_lifted).toBe(false)
+    h.appeal = { id: APPEAL, decision_id: DEC, status: 'pending' }; h.ops = []
+    h.decision = dec({ outcome: 'banned', content_type: 'user', content_snapshot: null })
+    h.status = { is_banned: true, ban_reason: 'a note typed by hand', is_suspended: false, suspended_until: null }
+    r = await resolve({ result: 'reversed', note: NOTE })
+    expect(h.unban).not.toHaveBeenCalled(); expect((await r.json()).data.restored.ban_lifted).toBe(false)
   })
 
   it('reversed ban: unbanned only when no other ban stands', async () => {

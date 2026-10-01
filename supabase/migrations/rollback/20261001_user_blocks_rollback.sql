@@ -3,6 +3,7 @@
 BEGIN;
 DROP POLICY IF EXISTS user_blocks_follows_insert ON public.user_follows;
 DROP POLICY IF EXISTS user_blocks_comments_insert ON public.review_comments;
+DROP POLICY IF EXISTS user_blocks_likes_insert ON public.review_likes;
 DROP POLICY IF EXISTS user_blocks_reviews_select ON public.reviews;
 DROP POLICY IF EXISTS user_blocks_comments_select ON public.review_comments;
 DROP POLICY IF EXISTS user_blocks_notifications_select ON public.notifications;

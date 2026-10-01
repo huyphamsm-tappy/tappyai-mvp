@@ -46,7 +46,7 @@ afterAll(async () => { await t?.stop() })
 describe('a report only ever creates a queue row — 100 reports remove, hide and sanction nothing', () => {
   it('100 different people report the same comment', async () => {
     for (let i = 1; i <= N_REPORTERS; i++) {
-      expect(await as(rid(i), `INSERT INTO public.user_reports (reporter_id, target_type, target_id, reason) VALUES ('${rid(i)}','comment','${comment}','harassment')`)).toBeNull()
+      expect(await svc(`INSERT INTO public.user_reports (reporter_id, target_type, target_id, reason) VALUES ('${rid(i)}','comment','${comment}','harassment')`)).toBeNull()
     }
     const queue = await q<{ n: string; open: string }>(`SELECT count(*) n, count(*) FILTER (WHERE status = 'pending') open FROM public.moderation_queue WHERE target_id = '${comment}'`)
     expect(Number(queue[0].n)).toBe(N_REPORTERS)
@@ -65,7 +65,7 @@ describe('a report only ever creates a queue row — 100 reports remove, hide an
 describe('queue priority and the low-trust reporter', () => {
   it('severe reasons are priority 3; ordinary ones 1–2', async () => {
     const mk = async (reporter: string, reason: string) => {
-      await as(reporter, `INSERT INTO public.user_reports (reporter_id, target_type, target_id, reason) VALUES ('${reporter}','user','${CAROL}','${reason}')`)
+      await svc(`INSERT INTO public.user_reports (reporter_id, target_type, target_id, reason) VALUES ('${reporter}','user','${CAROL}','${reason}')`)
     }
     await mk(rid(1), 'child_safety'); await mk(rid(2), 'self_harm'); await mk(rid(3), 'spam'); await mk(rid(4), 'harassment')
     const rows = await q<{ reason: string; priority: number }>(`SELECT reason, priority FROM public.moderation_queue WHERE target_id = '${CAROL}' ORDER BY reason`)
@@ -79,15 +79,15 @@ describe('queue priority and the low-trust reporter', () => {
       await t.db.query(`INSERT INTO public.moderation_queue (type, status, priority, reported_by, target_type, target_id, reason, metadata)
         VALUES ('user_report','dismissed',1,'${rep}','user','${rid(900 + i)}','spam', jsonb_build_object('source_table','user_reports','source_id','old${i}'))`)
     }
-    await as(rep, `INSERT INTO public.user_reports (reporter_id, target_type, target_id, reason) VALUES ('${rep}','user','${ALICE}','spam')`)
-    await as(rep, `INSERT INTO public.user_reports (reporter_id, target_type, target_id, reason) VALUES ('${rep}','user','${BOB}','child_safety')`)
+    await svc(`INSERT INTO public.user_reports (reporter_id, target_type, target_id, reason) VALUES ('${rep}','user','${ALICE}','spam')`)
+    await svc(`INSERT INTO public.user_reports (reporter_id, target_type, target_id, reason) VALUES ('${rep}','user','${BOB}','child_safety')`)
     const rows = await q<{ target_id: string; priority: number }>(`SELECT target_id, priority FROM public.moderation_queue WHERE reported_by = '${rep}' AND status = 'pending' AND target_type = 'user'`)
     expect(Object.fromEntries(rows.map((r) => [r.target_id, r.priority]))).toEqual({ [ALICE]: 0, [BOB]: 3 })
   })
 
   it('child_safety is an accepted reason (and an unknown one still is not)', async () => {
-    expect(await as(rid(60), `INSERT INTO public.user_reports (reporter_id, target_type, target_id, reason) VALUES ('${rid(60)}','user','${ALICE}','child_safety')`)).toBeNull()
-    expect(await as(rid(60), `INSERT INTO public.user_reports (reporter_id, target_type, target_id, reason) VALUES ('${rid(60)}','user','${BOB}','dislike')`)).toBe('23514')
+    expect(await svc(`INSERT INTO public.user_reports (reporter_id, target_type, target_id, reason) VALUES ('${rid(60)}','user','${ALICE}','child_safety')`)).toBeNull()
+    expect(await svc(`INSERT INTO public.user_reports (reporter_id, target_type, target_id, reason) VALUES ('${rid(60)}','user','${BOB}','dislike')`)).toBe('23514')
   })
 })
 
@@ -125,6 +125,8 @@ describe('the ledger is immutable', () => {
       expect(await t.exec(role, `UPDATE public.moderation_decisions SET strike_expires_at = now() WHERE id = '${id}'`)).toBe('42501')
       expect(await t.exec(role, `UPDATE public.moderation_decisions SET subject_user_id = '${CAROL}' WHERE id = '${id}'`)).toBe('42501')
       expect(await t.exec(role, `DELETE FROM public.moderation_decisions WHERE id = '${id}'`)).toBe('42501')
+      // clearing the person's reference is ONLY for an account deletion — a direct UPDATE is refused, whoever runs it (security review 02/10)
+      for (const col of ['subject_user_id', 'reviewer_id']) expect(await t.exec(role, `UPDATE public.moderation_decisions SET ${col} = NULL WHERE id = '${id}'`), `${role}:${col}`).toBe('42501')
     }
     // 0A000: the appeals table references the ledger, so TRUNCATE is refused by the foreign key even before the trigger
     expect(['42501', '0A000']).toContain(await t.exec('postgres', 'TRUNCATE public.moderation_decisions'))
@@ -187,10 +189,10 @@ describe('rollback', () => {
     for (const tbl of ['moderation_decisions', 'moderation_appeals']) expect((await q<{ r: string | null }>(`SELECT to_regclass('public.${tbl}') r`))[0].r).toBeNull()
     expect((await q<{ r: string | null }>(`SELECT to_regclass('public.moderation_queue') r`))[0].r).not.toBeNull()
     expect((await q<{ r: string | null }>(`SELECT to_regclass('public.content_reports') r`))[0].r).not.toBeNull()
-    expect(await as(rid(61), `INSERT INTO public.user_reports (reporter_id, target_type, target_id, reason) VALUES ('${rid(61)}','user','${ALICE}','child_safety')`)).toBe('23514')
+    expect(await svc(`INSERT INTO public.user_reports (reporter_id, target_type, target_id, reason) VALUES ('${rid(61)}','user','${ALICE}','child_safety')`)).toBe('23514')
     // no trigger left: a new report no longer reaches the queue
     const before = Number((await q<{ n: string }>('SELECT count(*) n FROM public.moderation_queue'))[0].n)
-    await as(rid(62), `INSERT INTO public.user_reports (reporter_id, target_type, target_id, reason) VALUES ('${rid(62)}','user','${CAROL}','spam')`)
+    await svc(`INSERT INTO public.user_reports (reporter_id, target_type, target_id, reason) VALUES ('${rid(62)}','user','${CAROL}','spam')`)
     expect(Number((await q<{ n: string }>('SELECT count(*) n FROM public.moderation_queue'))[0].n)).toBe(before)
   })
 })

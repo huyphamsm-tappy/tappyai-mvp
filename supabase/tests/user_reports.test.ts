@@ -12,8 +12,9 @@ let commentBob: string
 let commentAlice: string
 const as = (sub: string, sql: string) => t.exec('authenticated', sql, sub)
 const rowsAs = <T = Record<string, unknown>>(sub: string, sql: string) => t.rows<T>('authenticated', sql, sub)
+// The route is the only writer, with the service role (no client role can INSERT).
 const file = (sub: string, type: string, target: string, reason = 'spam', note = 'null') =>
-  as(sub, `INSERT INTO public.user_reports (reporter_id, target_type, target_id, reason, note) VALUES ('${sub}','${type}','${target}','${reason}',${note})`)
+  t.exec('service_role', `INSERT INTO public.user_reports (reporter_id, target_type, target_id, reason, note) VALUES ('${sub}','${type}','${target}','${reason}',${note})`)
 
 beforeAll(async () => {
   t = await startBlocksDb(54903, 'userreports', [])
@@ -51,14 +52,15 @@ describe('user_reports — table and RLS', () => {
     expect(await file(ALICE, 'user', CAROL)).toBeNull()
   })
 
-  it('cannot report yourself (user) or your own comment', async () => {
+  it('cannot report yourself (user) — the table says so; "your own comment" is the route check', async () => {
     expect(await file(BOB, 'user', BOB)).toBe('23514')
-    expect(await file(ALICE, 'comment', commentAlice)).toBe('42501')
   })
 
-  it('cannot file as someone else, and anonymous sessions cannot file', async () => {
+  it('NO client role can insert, update or delete a report: not as yourself, not as someone else, not anonymous (review 02/10)', async () => {
+    expect(await as(BOB, `INSERT INTO public.user_reports (reporter_id, target_type, target_id, reason) VALUES ('${BOB}','user','${CAROL}','spam')`)).toBe('42501')
     expect(await as(BOB, `INSERT INTO public.user_reports (reporter_id, target_type, target_id, reason) VALUES ('${ALICE}','user','${CAROL}','spam')`)).toBe('42501')
-    expect(await file(ANON_USER, 'user', BOB)).toBe('42501')
+    expect(await as(ANON_USER, `INSERT INTO public.user_reports (reporter_id, target_type, target_id, reason) VALUES ('${ANON_USER}','user','${BOB}','spam')`)).toBe('42501')
+    expect(await t.exec('anon', `INSERT INTO public.user_reports (reporter_id, target_type, target_id, reason) VALUES ('${BOB}','user','${CAROL}','spam')`, null)).toBe('42501')
   })
 
   it('bad target type, reason or a note over 300 characters is refused', async () => {
