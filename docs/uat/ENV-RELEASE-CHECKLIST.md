@@ -35,7 +35,8 @@ EN: «Delete your account permanently? All your data will be deleted immediately
 - Web: đoạn gói chỉ hiện khi `subscriptions.status = 'active'` (dữ liệu có sẵn, đã dùng cho huy hiệu Premium) — không thêm field.
 - Android/iOS: chỉ sửa CHỮ (xem ANDROID-REQUESTS R29, IOS-REQUESTS I-5). Server biết gói, app có thể chưa biết ⇒ app dùng bản chung «Nếu bạn đang có gói trả phí, gói và credit còn lại sẽ mất …» nếu không có dữ liệu gói; KHÔNG đổi hợp đồng.
 - Về hoàn tiền: câu «Tappy không hoàn lại phần chưa dùng» và «việc hoàn tiền (nếu có) do App Store/Google Play quyết theo chính sách của họ» **cần người am hiểu quy định bảo vệ người tiêu dùng xem lại** (việc của Huy).
-- Nút xoá kín đáo (hàng chữ thường cuối mục «Khác»), trang web `/delete-account` (link cho Google Play) vẫn hoạt động: nói cách xoá trong app hoặc liên hệ support@tappyai.com.
+- **Nút xoá — CẦN HUY QUYẾT:** Huy ghi «kín đáo, chữ thường, không đỏ». Thực tế hiện nay (web VÀ Android) hàng «Xóa tài khoản» là hàng **đỏ** (kiểu nguy hiểm) nằm trong khung cùng nút Đăng xuất; test `settingsDeleteAccountLink` và Android ghim đúng kiểu này. Tôi KHÔNG đổi (đổi = sửa test ghim + lệch Android). Muốn chữ thường thì báo — web đổi 1 dòng, Android cần sửa app.
+- Trang web `/delete-account` (link cho Google Play) hoạt động: nói xoá trong app (Cài đặt) hoặc email support@tappyai.com; thêm đoạn gói trả phí/hoàn tiền (App Store/Google Play quyết).
 
 ## 2. Đăng video lên production (PHẦN B-a)
 
@@ -63,11 +64,5 @@ B3 trong OWNER-TOMORROW còn nói đặt trần chi tiêu ở console.anthropic.
 
 Đã sửa trong code (vi + en) để khớp OpenAI; Huy duyệt chữ **trước** khi lên production. Sau khi duyệt, Data safety trên Play (PLAY-CONSOLE-PASTE mục A) phải khai OpenAI là bên nhận dữ liệu chat.
 
-## 6. Chuỗi giữ chỗ «[XÁC NHẬN: …]» (E1, 01/10)
-
-- **Trang người dùng web / email / /privacy / /delete-account / trang xoá trong app: KHÔNG còn chuỗi «[XÁC NHẬN» nào** (tìm toàn bộ `src/`, `public/`, `supabase/`: 0 kết quả). Chuỗi chỉ còn trong tài liệu: `docs/uat/DELETE-ACCOUNT-COPY-DRAFT.md` (dòng 10, 17, 22, 73, 84, 107, 114) và «CẦN HUY XÁC NHẬN» trong `docs/release/PLAY-LISTING.md`.
-- Bản iOS thấy «[XÁC NHẬN: 30 ngày]» là **bản chép tay từ DRAFT trong app iOS** (không phải từ web) — phiên iOS phải thay trước khi build (IOS-REQUESTS I-4).
-- Hai con số web đang hiển thị mà Huy **chưa duyệt / chưa đo** — cần Huy chốt chữ:
-  1. `legal.delete.s1.p2` (đường email, cờ TẮT): hiện «…xóa tài khoản **trong vòng 30 ngày**.» Đề xuất: «…xóa tài khoản trong vòng 30 ngày kể từ khi xác minh xong.» (EN: «…within 30 days of verifying it.»)
-  2. `legal.delete.s4.b3`: hiện «Nhật ký máy chủ … lưu **tối đa 30 ngày** rồi xóa.» — thời hạn **chưa đo** (Vercel/GCP). Đề xuất: bỏ con số, ghi «Nhật ký máy chủ dùng để vận hành dịch vụ được giữ trong thời gian ngắn rồi xóa tự động.» cho tới khi đo xong.
-- Không sửa chữ ở đợt đóng băng này (cần Huy duyệt); chỉ liệt kê.
+## 6. Chuỗi giữ chỗ «[XÁC NHẬN: …]» (E1) — ĐÃ XỬ LÝ 01/10
+- Trang web / email / /privacy / /delete-account / trang xoá trong app: không có chuỗi «[XÁC NHẬN»; hai con số «30 ngày» chưa xác nhận đã BỎ (trang xoá: «…xác minh yêu cầu rồi xóa tài khoản»; nhật ký máy chủ: «giữ trong thời gian ngắn rồi tự động xóa»). Bản iOS còn chuỗi giữ chỗ do chép từ DRAFT (IOS-REQUESTS I-4).

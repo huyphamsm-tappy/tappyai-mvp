@@ -57,6 +57,8 @@ export async function deleteOwnAccount(admin: SupabaseClient, userId: string): P
 
   const { error } = await admin.auth.admin.deleteUser(userId)
   if (!error) return { ok: true }
+  // Deleted a moment ago (a second tap, a retry): the account is already gone — that is the outcome the person asked for.
+  if ((error as { status?: number }).status === 404 || /user_not_found|user not found/i.test(`${error.message ?? ''} ${(error as { code?: string }).code ?? ''}`)) return { ok: true }
   const msg = `${error.message ?? ''} ${(error as { code?: string }).code ?? ''}`
   if (/foreign key|23503|violates|restrict/i.test(msg)) return { ok: false, reason: 'staff_account' }
   return { ok: false, reason: 'failed' }

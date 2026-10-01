@@ -13,5 +13,7 @@ export default async function DeleteAccountSettingsPage() {
   if (!user || user.is_anonymous) redirect('/login')
 
   const { data: profile } = await supabase.from('profiles').select('full_name, avatar_url').eq('id', user.id).maybeSingle()
-  return <DeleteAccountView user={{ name: profile?.full_name ?? null, avatarUrl: profile?.avatar_url ?? null }} />
+  // The paid-plan paragraph shows only for an ACTIVE subscription (same source as the Premium badge); no new field.
+  const { data: subscription } = await supabase.from('subscriptions').select('status').eq('user_id', user.id).maybeSingle()
+  return <DeleteAccountView user={{ name: profile?.full_name ?? null, avatarUrl: profile?.avatar_url ?? null }} hasPaidPlan={subscription?.status === 'active'} />
 }

@@ -95,4 +95,18 @@ describe('POST /api/account/delete', () => {
     expect(body.error).toBe('delete_failed')
     expect(typeof body.message).toBe('string')
   })
+
+  it('owner 01/10: deleting twice is not an error (the second call finds the user already gone)', async () => {
+    h.deleteError = { message: 'User not found', code: 'user_not_found' }
+    const r = await call({ confirm: 'XÓA' })
+    expect(r.status).toBe(200)
+    expect(await r.json()).toEqual({ ok: true })
+  })
+
+  it('owner 01/10: a wrong word deletes nothing (XOA1, empty, missing)', async () => {
+    for (const confirm of ['XOA1', '', undefined, 'xóa nha']) {
+      expect((await call({ confirm })).status).toBe(400)
+    }
+    expect(h.deleted).toEqual([])
+  })
 })
