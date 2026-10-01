@@ -77,3 +77,6 @@ extensions/browser/dist/
 /.voiceblock*
 /*.jsonl
 /*.out
+
+# UAT run captures carry device location and other personal data: never tracked (a private bucket holds them)
+/docs/audit/uat/

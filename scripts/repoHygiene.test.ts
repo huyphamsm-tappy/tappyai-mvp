@@ -27,3 +27,22 @@ describe('no scratch files are committed', () => {
     expect(n).toBeLessThanOrEqual(2008)
   })
 })
+
+// Personal data in audit captures (owner 02/10). A UAT capture once committed the owner's real GPS fix (docs/audit/uat/2026-09-20/gps-proof.json,
+// removed). Captures of runs (location, phone numbers, Google Places rows) belong in the private evidence bucket, not in git.
+import { readFileSync, statSync } from 'node:fs'
+describe('audit captures carry no new personal data', () => {
+  it('nothing under docs/audit/uat/ is tracked (the folder is ignored)', () => {
+    expect(tracked.filter(f => f.startsWith('docs/audit/uat/'))).toEqual([])
+  })
+  it('the number of tracked audit/evidence files that hold a coordinate with 3+ decimals only goes DOWN (ratchet; 02/10 = 20)', () => {
+    const re = /"(?:lat|latitude)": *-?\d+\.\d{3,}/
+    let n = 0
+    for (const f of tracked) {
+      if (!(f.startsWith('docs/audit/') || f.startsWith('docs/uat/evidence/'))) continue
+      if (!/\.(json|jsonl|txt|stdout|md)$/.test(f)) continue
+      try { if (statSync(f).size > 8_000_000) continue; if (re.test(readFileSync(f, 'utf8'))) n++ } catch { /* deleted in the working tree */ }
+    }
+    expect(n).toBeLessThanOrEqual(20)
+  })
+})
