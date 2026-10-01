@@ -80,6 +80,21 @@ describe('the same address cannot sign up again — and nothing else is affected
     const err = await t.db.query(`INSERT INTO auth.users (id, is_anonymous, email) VALUES (gen_random_uuid(), false, 'locked.person@example.com')`).catch((e: Error) => e.message)
     expect(err).toBe('account_unavailable')
   })
+  it('the obvious variants of a locked address are refused too: «+tag», and dots for Gmail (review 02/10)', async () => {
+    expect(await signup('locked.person+promo@example.com')).toBe('P0001')
+    // a locked Gmail address: dots and +tag are ignored by Gmail, so they are ignored here
+    await t.db.query("INSERT INTO public.banned_identities (identity_hash) VALUES (safety_private.identity_hash('Gmail.Locked@gmail.com'))")
+    expect(await signup('gmaillocked@gmail.com')).toBe('P0001')
+    expect(await signup('g.m.a.i.l.locked+x@googlemail.com')).toBe('P0001')
+    expect(await signup('gmaillocked@example.com')).toBe('ok') // dots are only ignored for Gmail
+  })
+  it('changing an existing account to a locked address is refused (UPDATE of email)', async () => {
+    await t.db.query("INSERT INTO auth.users (id, is_anonymous, email) VALUES ('00000000-0000-4000-8000-0000000000aa', false, 'fresh.account@example.com')")
+    const err = await t.db.query("UPDATE auth.users SET email = 'LOCKED.PERSON@example.com' WHERE id = '00000000-0000-4000-8000-0000000000aa'").then(() => 'ok', (e: { code?: string }) => e.code)
+    expect(err).toBe('P0001')
+    await expect(t.db.query("UPDATE auth.users SET email = 'another.fresh@example.com' WHERE id = '00000000-0000-4000-8000-0000000000aa'")).resolves.toBeTruthy()
+    await t.db.query("DELETE FROM public.banned_identities WHERE identity_hash = safety_private.identity_hash('Gmail.Locked@gmail.com')")
+  })
   it('other addresses, the lifted one, and anonymous sign-ins (no e-mail) are untouched', async () => {
     expect(await signup('someone.new@example.com')).toBe('ok')
     expect(await signup('lifted@example.com')).toBe('ok')
@@ -111,6 +126,6 @@ describe('safeguards', () => {
   it('rollback removes the table, the pepper and both triggers', async () => {
     await t.db.query(ROLLBACK_E)
     expect((await q<{ r: string | null }>(`SELECT to_regclass('public.banned_identities') r`))[0].r).toBeNull()
-    expect((await q(`SELECT 1 FROM pg_trigger WHERE tgname IN ('keep_banned_identity','refuse_banned_identity')`)).length).toBe(0)
+    expect((await q(`SELECT 1 FROM pg_trigger WHERE tgname IN ('keep_banned_identity','refuse_banned_identity','refuse_banned_identity_update')`)).length).toBe(0)
   })
 })

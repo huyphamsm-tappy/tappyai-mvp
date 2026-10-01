@@ -78,7 +78,18 @@ export async function POST(req: Request, { params }: { params: { id: string } })
         const reversed = new Set(((won ?? []) as Array<{ decision_id: string }>).map((w) => w.decision_id))
         const nowMs = Date.now()
         const standing = list.some((o) => !reversed.has(o.id) && (d.outcome === 'banned' || new Date(o.created_at).getTime() + (o.restrict_days ?? 0) * 86_400_000 > nowMs))
-        if (!standing) {
+        // ...and only if the account's CURRENT state is the one THIS decision wrote (a lock whose internal note is this decision's reason; a
+        // suspension that ends when this decision's restriction ends). A restriction or lock a staff member set by hand, outside the ledger,
+        // is never lifted by an appeal.
+        const { data: st } = await admin.from('account_status').select('is_banned, ban_reason, is_suspended, suspended_until').eq('user_id', d.subject_user_id).maybeSingle()
+        const status = st as { is_banned: boolean | null; ban_reason: string | null; is_suspended: boolean | null; suspended_until: string | null } | null
+        const reasonRow = await admin.from('moderation_decisions').select('reason').eq('id', d.id).maybeSingle()
+        const decisionReason = (reasonRow.data as { reason: string } | null)?.reason ?? null
+        const endsAt = d.outcome === 'restricted' ? new Date(d.created_at).getTime() + (d.restrict_days ?? 0) * 86_400_000 : 0
+        const ours = d.outcome === 'banned'
+          ? !!status?.is_banned && decisionReason !== null && status.ban_reason === decisionReason
+          : !!status?.is_suspended && !!status.suspended_until && Math.abs(new Date(status.suspended_until).getTime() - endsAt) <= 5 * 60_000
+        if (!standing && ours) {
           try {
             if (d.outcome === 'restricted') { await unsuspendUser(admin, d.subject_user_id); restored.restriction_lifted = true } else { await unbanUser(admin, d.subject_user_id); restored.ban_lifted = true }
           } catch { return adminError('INTERNAL_ERROR', 'Operation failed', 500) }

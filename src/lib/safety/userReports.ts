@@ -58,8 +58,14 @@ export async function handleReport(req: NextRequest, targetType: ReportTarget, t
     if (!data) return done()
   }
 
-  // Plain INSERT through the caller's client: RLS (own row, not anonymous, not your own comment) is the authority.
-  const { error } = await supabase.from('user_reports').insert({ reporter_id: user.id, target_type: targetType, target_id: targetId, reason, note })
+  // The service role writes (no client role has INSERT on user_reports): the checks above are the authority. A PERSISTENT limit too —
+  // the in-memory one is per serverless instance — 10 reports per 10 minutes per account, counted in the table.
+  const writer = createAdminClient()
+  const since = new Date(Date.now() - 600_000).toISOString()
+  const recent = await writer.from('user_reports').select('id', { count: 'exact', head: true }).eq('reporter_id', user.id).gte('created_at', since)
+  if (recent.error) return NextResponse.json({ error: 'report_failed', message: serverMessage('server.error', locale) }, { status: 500 })
+  if ((recent.count ?? 0) >= 10) return NextResponse.json({ error: 'rate_limit', message: serverMessage('rate.tooFast', locale) }, { status: 429 })
+  const { error } = await writer.from('user_reports').insert({ reporter_id: user.id, target_type: targetType, target_id: targetId, reason, note })
   if (error) {
     const code = (error as { code?: string }).code
     if (code === '23505') return NextResponse.json({ ok: true, reported: true, alreadyReported: true })

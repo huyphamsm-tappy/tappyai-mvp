@@ -6,9 +6,8 @@
 --       Inert until someone blocks: every new predicate is "NOT in my blocked set".
 --
 -- WHAT THIS IS NOT (and why it differs from phase8-master 20260924_p8_user_blocks.sql):
---   - It does NOT touch public.chat_blocks: no DROP, no view, no data move. chat_blocks keeps running exactly as it
---     does in production; this file only READS it (inside the private helper) so a block made in chat also hides posts,
---     and the server writes BOTH tables when someone blocks through the new API (so chat honours an API block).
+--   - It does NOT touch public.chat_blocks: no DROP, no view, no data move, and it does not even READ it. The server writes BOTH
+--     tables when someone blocks through the new API (so chat honours an API block).
 --   - No p8_review_author(uuid): that function returned the author of ANY review id to ANY signed-in user (P8-11).
 --     Here the lookup lives in a PRIVATE schema and only answers a yes/no about the CALLER.
 --   - No /api/reports, no sanctions, no audit changes.
@@ -63,7 +62,9 @@ CREATE SCHEMA IF NOT EXISTS safety_private;
 REVOKE ALL ON SCHEMA safety_private FROM PUBLIC, anon;
 GRANT USAGE ON SCHEMA safety_private TO authenticated, service_role;
 
--- Every account that is in a block pair with the CALLER, either direction, from user_blocks AND (read-only) chat_blocks.
+-- Every account that is in a block pair with the CALLER, either direction, from user_blocks ONLY. (An earlier draft also read the release
+-- chat's chat_blocks; that made existing chat blocks bite the moment the migration ran, whatever USER_BLOCKS_ENABLED said — security
+-- review 02/10. A block made through the API writes BOTH tables, so the chat honours it; a block made only in the chat does not hide posts.)
 -- Definer: it must see the rows other people created. It returns ids only of pairs that include the caller.
 CREATE OR REPLACE FUNCTION safety_private.blocked_ids()
 RETURNS uuid[]
@@ -75,8 +76,6 @@ AS $$
   SELECT COALESCE(array_agg(DISTINCT x), '{}'::uuid[]) FROM (
     SELECT blocked_id AS x FROM public.user_blocks WHERE blocker_id = auth.uid()
     UNION ALL SELECT blocker_id FROM public.user_blocks WHERE blocked_id = auth.uid()
-    UNION ALL SELECT blocked_id FROM public.chat_blocks WHERE blocker_id = auth.uid()
-    UNION ALL SELECT blocker_id FROM public.chat_blocks WHERE blocked_id = auth.uid()
   ) t
   WHERE auth.uid() IS NOT NULL
 $$;
@@ -108,6 +107,12 @@ CREATE POLICY user_blocks_follows_insert ON public.user_follows AS RESTRICTIVE
 
 DROP POLICY IF EXISTS user_blocks_comments_insert ON public.review_comments;
 CREATE POLICY user_blocks_comments_insert ON public.review_comments AS RESTRICTIVE
+  FOR INSERT TO authenticated
+  WITH CHECK (NOT safety_private.review_author_blocked(review_id));
+
+-- A blocked person cannot like the blocker's post by calling the REST API directly either (review 02/10).
+DROP POLICY IF EXISTS user_blocks_likes_insert ON public.review_likes;
+CREATE POLICY user_blocks_likes_insert ON public.review_likes AS RESTRICTIVE
   FOR INSERT TO authenticated
   WITH CHECK (NOT safety_private.review_author_blocked(review_id));
 

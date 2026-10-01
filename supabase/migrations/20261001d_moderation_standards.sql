@@ -20,8 +20,9 @@
 --   4. moderation_appeals — one appeal per decision (UNIQUE), resolved once.
 --
 -- P8-4 (Phase 8 review): an append-only ledger whose guard also blocks the FOREIGN-KEY UPDATE that clears a deleted
--- account stops the account from ever being deleted. Here the guard explicitly ALLOWS exactly that transition
--- (subject_user_id / reviewer_id / queue_id / appellant_id / resolved_by → NULL, and purging the comment snapshot) and nothing else.
+-- account stops the account from ever being deleted. Here the guard ALLOWS exactly that transition (subject_user_id / reviewer_id /
+-- queue_id / appellant_id / resolved_by → NULL) but ONLY inside the foreign-key action chain (pg_trigger_depth() > 1), and the comment
+-- snapshot purge only from public.moderation_purge_snapshots. A direct UPDATE by any role is refused.
 -- Account deletion therefore never fails because of a sanction, and what stays behind is anonymous.
 --
 -- Access: every table is service-role only (REVOKE from anon / authenticated, no policies). Clients read their own decisions
@@ -112,14 +113,20 @@ BEGIN
     END LOOP;
   END IF;
   -- the deleted-account clean-up: these columns may go from a value to NULL, never anywhere else
+  -- ...and ONLY from inside the foreign-key action chain of a deleted account (pg_trigger_depth() > 1: the RI trigger's UPDATE fires this one
+  -- nested), or — for the comment snapshot — from public.moderation_purge_snapshots, which flags itself for this transaction. A direct UPDATE
+  -- by any role (service role included) is refused (security review 02/10).
   FOREACH k IN ARRAY nulls LOOP
     IF n ? k AND (n -> k) IS DISTINCT FROM (o -> k) THEN
       IF (n -> k) <> 'null'::jsonb THEN RAISE EXCEPTION '%.% can only be cleared', TG_TABLE_NAME, k USING ERRCODE = '42501'; END IF;
+      IF NOT (pg_trigger_depth() > 1 OR (k = 'content_snapshot' AND current_setting('app.moderation_purge', true) = 'on')) THEN
+        RAISE EXCEPTION '%.% can only be cleared by an account deletion (or the snapshot purge)', TG_TABLE_NAME, k USING ERRCODE = '42501';
+      END IF;
       o := o - k; n := n - k;
     END IF;
   END LOOP;
-  -- resolved_by on an appeal may also be cleared by a deleted reviewer
-  IF TG_TABLE_NAME = 'moderation_appeals' AND (n ->> 'resolved_by') IS NULL AND (o ->> 'resolved_by') IS NOT NULL THEN o := o - 'resolved_by'; n := n - 'resolved_by'; END IF;
+  -- resolved_by on an appeal may also be cleared by a deleted reviewer (same chain)
+  IF TG_TABLE_NAME = 'moderation_appeals' AND (n ->> 'resolved_by') IS NULL AND (o ->> 'resolved_by') IS NOT NULL AND pg_trigger_depth() > 1 THEN o := o - 'resolved_by'; n := n - 'resolved_by'; END IF;
   IF o IS DISTINCT FROM n THEN
     RAISE EXCEPTION '% is append-only: only the deleted-account clean-up (and resolving an appeal once) may change a row', TG_TABLE_NAME USING ERRCODE = '42501';
   END IF;
@@ -132,6 +139,8 @@ CREATE TRIGGER moderation_decisions_guard BEFORE UPDATE OR DELETE ON public.mode
 DROP TRIGGER IF EXISTS moderation_appeals_guard ON public.moderation_appeals;
 CREATE TRIGGER moderation_appeals_guard BEFORE UPDATE OR DELETE ON public.moderation_appeals FOR EACH ROW EXECUTE FUNCTION public.moderation_ledger_guard();
 -- TRUNCATE is refused too.
+DROP TRIGGER IF EXISTS moderation_appeals_no_truncate ON public.moderation_appeals;
+CREATE TRIGGER moderation_appeals_no_truncate BEFORE TRUNCATE ON public.moderation_appeals FOR EACH STATEMENT EXECUTE FUNCTION public.moderation_ledger_guard();
 DROP TRIGGER IF EXISTS moderation_decisions_no_truncate ON public.moderation_decisions;
 CREATE TRIGGER moderation_decisions_no_truncate BEFORE TRUNCATE ON public.moderation_decisions FOR EACH STATEMENT EXECUTE FUNCTION public.moderation_ledger_guard();
 
@@ -144,15 +153,20 @@ GRANT SELECT, INSERT, UPDATE ON TABLE public.moderation_appeals TO service_role;
 
 -- Retention: the comment snapshot exists only so an upheld appeal can restore the comment. Clearing it is the one allowed edit.
 CREATE OR REPLACE FUNCTION public.moderation_purge_snapshots(p_older_than_days integer DEFAULT 60) RETURNS integer
-LANGUAGE sql SECURITY DEFINER SET search_path = public, pg_temp AS $$
+LANGUAGE plpgsql SECURITY DEFINER SET search_path = public, pg_temp AS $$
+DECLARE v_n integer;
+BEGIN
+  PERFORM set_config('app.moderation_purge', 'on', true); -- this transaction only: lets the ledger guard accept the snapshot clean-up
   WITH purged AS (
     UPDATE public.moderation_decisions d SET content_snapshot = NULL
      WHERE d.content_snapshot IS NOT NULL
        AND d.created_at < now() - make_interval(days => GREATEST(p_older_than_days, 30))
        AND NOT EXISTS (SELECT 1 FROM public.moderation_appeals a WHERE a.decision_id = d.id AND a.status = 'pending')
     RETURNING 1)
-  SELECT count(*)::int FROM purged
-$$;
+  SELECT count(*)::int INTO v_n FROM purged;
+  PERFORM set_config('app.moderation_purge', 'off', true);
+  RETURN v_n;
+END $$;
 REVOKE EXECUTE ON FUNCTION public.moderation_purge_snapshots(integer) FROM PUBLIC, anon, authenticated;
 GRANT EXECUTE ON FUNCTION public.moderation_purge_snapshots(integer) TO service_role;
 

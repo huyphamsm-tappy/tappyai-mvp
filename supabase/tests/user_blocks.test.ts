@@ -102,11 +102,11 @@ describe('P8-11 fixed: the helpers are private and answer only about the caller'
     const r = await rowsAs<{ x: boolean }>(CAROL, `SELECT safety_private.review_author_blocked('99999999-9999-4999-8999-999999999999') AS x`)
     expect(r[0].x).toBe(false)
   })
-  it('blocked_ids is empty for a user in no pair and for a session with no identity; it READS the release chat_blocks', async () => {
+  it('blocked_ids is empty for a user in no pair, for a session with no identity, and for a block that exists ONLY in the release chat_blocks (it reads user_blocks only)', async () => {
     expect((await rowsAs<{ x: string[] }>(CAROL, `SELECT safety_private.blocked_ids() AS x`))[0].x).toEqual([])
     expect((await t.rows<{ x: string[] }>('authenticated', `SELECT safety_private.blocked_ids() AS x`, null))[0].x).toEqual([])
-    expect((await rowsAs<{ x: string[] }>(DAVE, `SELECT safety_private.blocked_ids() AS x`))[0].x).toEqual([BOB]) // Dave blocked Bob in the release chat
-    expect((await rowsAs<{ x: string[] }>(BOB, `SELECT safety_private.blocked_ids() AS x`))[0].x).toEqual([DAVE]) // and Bob is in the same pair
+    expect((await rowsAs<{ x: string[] }>(DAVE, `SELECT safety_private.blocked_ids() AS x`))[0].x).toEqual([]) // Dave blocked Bob in the release chat: not read
+    expect((await rowsAs<{ x: string[] }>(BOB, `SELECT safety_private.blocked_ids() AS x`))[0].x).toEqual([])
   })
 })
 
@@ -114,7 +114,7 @@ describe('what a block does, both directions', () => {
   it('A blocks B: neither sees the other’s posts nor comments; a third person still sees both', async () => {
     await block(ALICE, BOB)
     expect(await reviewsSeen(ALICE)).toEqual([R_ALICE, R_CAROL, R_DAVE].sort())
-    expect(await reviewsSeen(BOB)).toEqual([R_BOB, R_CAROL].sort()) // not Alice (API block), not Dave (release-chat block)
+    expect(await reviewsSeen(BOB)).toEqual([R_BOB, R_CAROL, R_DAVE].sort()) // not Alice (API block); Dave's chat-only block is not read
     expect((await reviewsSeen(CAROL)).sort()).toEqual([R_ALICE, R_BOB, R_CAROL, R_DAVE].sort())
     const aliceSees = (await rowsAs<{ user_id: string }>(ALICE, `SELECT user_id FROM public.review_comments WHERE review_id='${R_ALICE}'`)).map((c) => c.user_id)
     expect(aliceSees).not.toContain(BOB)
@@ -148,10 +148,15 @@ describe('what a block does, both directions', () => {
     expect(await as(BOB, `INSERT INTO public.review_comments (review_id, user_id, body) VALUES ('${R_ALICE}','${BOB}','back')`)).toBeNull()
     expect((await rowsAs<{ title: string }>(ALICE, 'SELECT title FROM public.notifications')).length).toBe(3)
   })
-  it('a block made ONLY in the release chat (chat_blocks) also hides posts, both ways: Dave blocked Bob', async () => {
-    expect(await reviewsSeen(DAVE)).not.toContain(R_BOB)
-    expect(await reviewsSeen(BOB)).not.toContain(R_DAVE)
-    expect(await reviewsSeen(CAROL)).toContain(R_BOB)
+  it('a block made ONLY in the release chat (chat_blocks) hides NOTHING: the migration is inert until someone blocks through the API (review 02/10)', async () => {
+    expect(await reviewsSeen(DAVE)).toContain(R_BOB)
+    expect(await reviewsSeen(BOB)).toContain(R_DAVE)
+  })
+  it('a blocked person cannot like the blocker’s post through the REST API (RESTRICTIVE INSERT on review_likes)', async () => {
+    await block(ALICE, BOB)
+    expect(await as(BOB, `INSERT INTO public.review_likes (review_id, user_id) VALUES ('${R_ALICE}','${BOB}')`)).toBe('42501')
+    expect(await as(CAROL, `INSERT INTO public.review_likes (review_id, user_id) VALUES ('${R_ALICE}','${CAROL}')`)).toBeNull()
+    await unblock(ALICE, BOB)
   })
 })
 

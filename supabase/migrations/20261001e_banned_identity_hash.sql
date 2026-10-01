@@ -14,6 +14,8 @@
 --     no reversed appeal) the hash is recorded. It NEVER blocks a deletion: any error is swallowed.
 --   - BEFORE INSERT on auth.users: an address whose hash is in the table is refused with a generic error. A failed LOOKUP never blocks a
 --     sign-up (fail open); only a confirmed match does.
+--   - DATA HANDLING: the pepper lives in the same database as the hashes, so a pg_dump holds both. Treat dumps as confidential (they already
+--     hold every account); moving the pepper to the Vault / an environment variable is a backlog item (security review 02/10).
 --   - lifting it: delete the row (service role). Retention period: the legal minimum is for the owner to confirm with someone who knows
 --     Vietnamese law (docs/security/MODERATION-STANDARDS.md §3); `purge_banned_identities(days)` exists to enforce whatever period is set.
 --
@@ -41,9 +43,22 @@ ALTER TABLE public.banned_identities ENABLE ROW LEVEL SECURITY;
 REVOKE ALL ON TABLE public.banned_identities FROM PUBLIC, anon, authenticated;
 GRANT SELECT, INSERT, DELETE ON TABLE public.banned_identities TO service_role;
 
+-- The address as the hash sees it: lower case, no spaces, no «+tag» in the local part, and no dots for Gmail / Googlemail (where they are
+-- ignored) — so the obvious variants of a locked address hash the same (security review 02/10).
+CREATE OR REPLACE FUNCTION safety_private.normalize_email(p_email text) RETURNS text
+LANGUAGE sql IMMUTABLE AS $$
+  SELECT CASE WHEN position('@' in e) = 0 THEN e ELSE
+           CASE WHEN split_part(e, '@', 2) IN ('gmail.com', 'googlemail.com')
+                THEN replace(split_part(split_part(e, '@', 1), '+', 1), '.', '')
+                ELSE split_part(split_part(e, '@', 1), '+', 1) END
+           || '@' || CASE WHEN split_part(e, '@', 2) = 'googlemail.com' THEN 'gmail.com' ELSE split_part(e, '@', 2) END
+         END
+    FROM (SELECT lower(btrim(p_email)) AS e) s
+$$;
+
 CREATE OR REPLACE FUNCTION safety_private.identity_hash(p_email text) RETURNS text
 LANGUAGE sql STABLE SECURITY DEFINER SET search_path = public, extensions, pg_temp AS $$
-  SELECT encode(hmac(convert_to(lower(btrim(p_email)), 'UTF8'), (SELECT pepper FROM safety_private.identity_pepper WHERE id), 'sha256'), 'hex')
+  SELECT encode(hmac(convert_to(safety_private.normalize_email(p_email), 'UTF8'), (SELECT pepper FROM safety_private.identity_pepper WHERE id), 'sha256'), 'hex')
 $$;
 REVOKE EXECUTE ON FUNCTION safety_private.identity_hash(text) FROM PUBLIC, anon, authenticated;
 GRANT EXECUTE ON FUNCTION safety_private.identity_hash(text) TO service_role;
@@ -86,6 +101,9 @@ END $$;
 REVOKE EXECUTE ON FUNCTION safety_private.refuse_banned_identity() FROM PUBLIC, anon, authenticated;
 DROP TRIGGER IF EXISTS refuse_banned_identity ON auth.users;
 CREATE TRIGGER refuse_banned_identity BEFORE INSERT ON auth.users FOR EACH ROW EXECUTE FUNCTION safety_private.refuse_banned_identity();
+-- ...and changing an existing account's e-mail TO a locked address is refused too (sign up with another address, then change it).
+DROP TRIGGER IF EXISTS refuse_banned_identity_update ON auth.users;
+CREATE TRIGGER refuse_banned_identity_update BEFORE UPDATE OF email ON auth.users FOR EACH ROW WHEN (NEW.email IS DISTINCT FROM OLD.email) EXECUTE FUNCTION safety_private.refuse_banned_identity();
 
 CREATE OR REPLACE FUNCTION public.purge_banned_identities(p_older_than_days integer) RETURNS integer
 LANGUAGE sql SECURITY DEFINER SET search_path = public, pg_temp AS $$

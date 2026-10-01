@@ -29,7 +29,7 @@ export const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]
 
 /**
  * The subset of `ids` that is in a block pair with `me`, in EITHER direction, from `user_blocks` AND the release chat's
- * `chat_blocks`. Service-role client only — never hand the result to the other party.
+ * (the release chat's `chat_blocks` is NOT read: the API writes both tables). Service-role client only — never hand the result to the other party.
  * A failed read returns an EMPTY set: this is a visibility filter on top of RLS, not the authority; the database policies
  * still hold. (Failing closed here would make search unusable on a transient error.)
  */
@@ -38,7 +38,7 @@ export async function blockedPeers(admin: SupabaseClient, me: string, ids: reado
   const list = [...new Set(ids)].filter((id) => UUID_RE.test(id) && id !== me)
   if (list.length === 0) return out
   try {
-    const reads = await Promise.all(['user_blocks', 'chat_blocks'].flatMap((table) => [
+    const reads = await Promise.all(['user_blocks'].flatMap((table) => [
       admin.from(table).select('blocked_id').eq('blocker_id', me).in('blocked_id', list),
       admin.from(table).select('blocker_id').eq('blocked_id', me).in('blocker_id', list),
     ]))

@@ -15,18 +15,25 @@ const h = vi.hoisted(() => ({
   inserts: [] as unknown[],
   limit: { ok: true },
   limitKeys: [] as string[],
+  recentCount: 0,
 }))
 vi.mock('@/lib/auth/getRequestUser', () => ({
   getRequestUser: async () => ({
     user: h.user,
-    supabase: {
-      from: (t: string) => t === 'user_reports'
-        ? { insert: async (row: unknown) => { h.inserts.push(row); return { error: h.insertErr } } }
-        : { select: () => ({ eq: () => ({ maybeSingle: async () => ({ data: h.comment, error: null }) }) }) },
-    },
+    // the caller's own client only reads the comment now (RLS decides visibility); it can no longer insert reports
+    supabase: { from: () => ({ select: () => ({ eq: () => ({ maybeSingle: async () => ({ data: h.comment, error: null }) }) }) }) },
   }),
 }))
-vi.mock('@/lib/supabase/admin', () => ({ createAdminClient: () => ({ from: () => ({ select: () => ({ eq: () => ({ maybeSingle: async () => ({ data: h.profile, error: null }) }) }) }) }) }))
+vi.mock('@/lib/supabase/admin', () => ({
+  createAdminClient: () => ({
+    from: (t: string) => t === 'user_reports'
+      ? {
+          select: () => ({ eq: () => ({ gte: async () => ({ count: h.recentCount, error: null }) }) }),
+          insert: async (row: unknown) => { h.inserts.push(row); return { error: h.insertErr } },
+        }
+      : { select: () => ({ eq: () => ({ maybeSingle: async () => ({ data: h.profile, error: null }) }) }) },
+  }),
+}))
 vi.mock('@/lib/security/rateLimit', () => ({ rateLimit: (k: string) => { h.limitKeys.push(k); return { ok: h.limit.ok, retryAfter: 0 } } }))
 
 import { POST as reportComment } from '@/app/api/comments/[commentId]/report/route'
@@ -40,7 +47,7 @@ describe('POST /api/comments/{id}/report and /api/users/{id}/report', () => {
   beforeEach(() => {
     process.env.REPORTS_ENABLED = 'true'
     h.user = { id: ME, is_anonymous: false }; h.comment = { id: CID, user_id: OTHER }; h.profile = { id: OTHER }
-    h.insertErr = null; h.inserts = []; h.limit = { ok: true }; h.limitKeys = []
+    h.insertErr = null; h.inserts = []; h.limit = { ok: true }; h.limitKeys = []; h.recentCount = 0
   })
   afterEach(() => { if (prev === undefined) delete process.env.REPORTS_ENABLED; else process.env.REPORTS_ENABLED = prev })
 
@@ -104,6 +111,14 @@ describe('POST /api/comments/{id}/report and /api/users/{id}/report', () => {
     expect((await call(reportUser, OTHER)).status).toBe(429)
     expect(h.limitKeys).toEqual([`user-report:${ME}`])
     expect(h.inserts).toEqual([])
+  })
+
+  it('the persistent limit: 10 reports already in the table within 10 minutes → 429 and nothing written, even if the in-memory limiter said yes', async () => {
+    h.recentCount = 10
+    expect((await call(reportUser, OTHER)).status).toBe(429)
+    expect(h.inserts).toEqual([])
+    h.recentCount = 9
+    expect((await call(reportUser, OTHER)).status).toBe(200)
   })
 
   it('a failed write is a 500, never a silent success', async () => {
