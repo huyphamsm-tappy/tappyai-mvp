@@ -10,6 +10,8 @@ struct UITestOverlay: View {
             AskCardGalleryView(area: area)
         } else if let area = UITestLaunch.planRoute {
             PlanCardGalleryView(area: area)
+        } else if UITestLaunch.placesRoute {
+            PlaceCardsGalleryView()
         }
         #else
         EmptyView()
@@ -56,6 +58,9 @@ enum UITestLaunch {
         guard let route = value("-uitest-route"), route.hasPrefix("plan-") else { return nil }
         return String(route.dropFirst(5))
     }
+
+    /// The `places` route shows the place decision (chips, paged cards, fold, Maps footer) with a fixture of five places.
+    static var placesRoute: Bool { value("-uitest-route") == "places" }
 
     static func apply(_ deps: AppDependencies) {
         if let lang = value("-uitest-lang").flatMap(AppLanguage.init(rawValue:)) {
@@ -152,6 +157,43 @@ struct AskCardGalleryView: View {
                     q("time", "Đi lúc mấy giờ?", ["Chiều nay", "Tối nay", "Cuối tuần"])]
         }
     }
+}
+
+/// The place decision over the chat background: five fixture places, three above the fold, chips for the
+/// open / top-rated / Wi-Fi splits, and each card's four decision actions (map, website, find reviews, call).
+struct PlaceCardsGalleryView: View {
+    var body: some View {
+        ScrollView {
+            PlaceCardsView(places: Self.places, mapsSearchURL: "https://www.google.com/maps/search/?api=1&query=bun+cha", shown: 3)
+                .padding(16)
+        }
+        .background(TappyColor.background.ignoresSafeArea())
+        .statusBarHidden(true)
+    }
+
+    private static func actions(_ name: String) -> [PersistedPlaceAction] {
+        let q = name.replacingOccurrences(of: " ", with: "+")
+        return [
+            PersistedPlaceAction(kind: "maps", urlKind: "direct", url: "https://www.google.com/maps/search/?api=1&query=\(q)"),
+            PersistedPlaceAction(kind: "website", urlKind: "direct", url: "https://example.vn/\(q)"),
+            PersistedPlaceAction(kind: "review", urlKind: "search", url: "https://www.google.com/search?q=\(q)+review"),
+            PersistedPlaceAction(kind: "call", urlKind: "direct", url: "tel:+84901234567"),
+        ]
+    }
+
+    static let places: [PlaceCardView] = [
+        PlaceCardView(id: "p1", name: "Bún chả Hương Liên", rank: 0, address: "24 Lê Văn Hưu, Hai Bà Trưng", rating: 4.6, ratingCount: 2300,
+                      openNow: true, priceLevel: 1, categories: ["Quán bún", "Món Việt"], reasons: ["Gần chỗ bạn, đông khách địa phương"],
+                      actions: actions("Bún chả Hương Liên"), flags: ["wifi"]),
+        PlaceCardView(id: "p2", name: "Bún chả 34 Hàng Than", rank: 1, address: "34 Hàng Than, Ba Đình", rating: 4.2, ratingCount: 870,
+                      openNow: false, priceLevel: 1, categories: ["Quán bún"], actions: actions("Bún chả 34 Hàng Than"), flags: []),
+        PlaceCardView(id: "p3", name: "Chả cá Thăng Long", rank: 2, address: "6B Đường Thành, Hoàn Kiếm", rating: 4.5, ratingCount: 1500,
+                      openNow: true, priceLevel: 2, actions: actions("Chả cá Thăng Long"), flags: ["wifi", "vegetarian"]),
+        PlaceCardView(id: "p4", name: "Quán Ăn Ngon", rank: 3, address: "18 Phan Bội Châu", rating: 4.0, ratingCount: 3100,
+                      openNow: true, actions: actions("Quán Ăn Ngon"), flags: []),
+        PlaceCardView(id: "p5", name: "Nem Cua Bể Hải Phòng", rank: 4, address: "12 Ngô Quyền", rating: 3.9, ratingCount: 210,
+                      openNow: false, actions: actions("Nem Cua Bể"), flags: []),
+    ]
 }
 
 /// The plan card v2 over the chat background, fed a fixture `[TAPPY_PLAN]` block of one of the five areas

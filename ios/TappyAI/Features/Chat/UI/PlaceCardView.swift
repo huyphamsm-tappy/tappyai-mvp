@@ -22,17 +22,96 @@ import SwiftUI
 /// and it must never be "fixed" here by re-fetching or by inventing a value.
 struct PlaceCardsView: View {
     let places: [PlaceCardView]
+    /// «Xem tất cả trên bản đồ» — the live annotation's own Maps search URL; nil hides the footer.
+    var mapsSearchURL: String? = nil
+    /// Cards above «Xem thêm» (server `shown`); nil renders every card.
+    var shown: Int? = nil
 
+    @State private var active: PlaceFilterId = .all
+    @State private var expanded = false
+
+    /// Android `PlaceDecisionSection`: chips (only the useful ones) → a horizontally paged row of cards →
+    /// the fold → the Maps footer. A chip restarts the row at its first admitted place.
     var body: some View {
         if places.isEmpty {
             EmptyView()
         } else {
-            VStack(alignment: .leading, spacing: Spacing.sm) {
-                ForEach(places) { place in
-                    PlaceCardRow(place: place)
+            let filters = placeFilters(places)
+            let current = filters.contains(active) ? active : .all
+            let folded = foldedPlaces(places, shown: shown, expanded: expanded, filter: current)
+            VStack(alignment: .leading, spacing: Spacing.md) {
+                if showsPlaceFilterRow(places, filters: filters) {
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(spacing: Spacing.sm) {
+                            ForEach(filters, id: \.self) { f in chip(f, selected: f == current) }
+                        }
+                    }
                 }
+
+                if !folded.pages.isEmpty {
+                    // Card width: the screen less the chat gutters, with the next card peeking when there is one
+                    // (Android `PAGE_PEEK`). Natural height — the row is as tall as its tallest card.
+                    let width = max(UIScreen.main.bounds.width - 32 - (folded.pages.count > 1 ? 40 : 0), 240)
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(alignment: .top, spacing: Spacing.sm) {
+                            ForEach(folded.pages) { place in
+                                PlaceCardRow(place: place).frame(width: width)
+                            }
+                        }
+                    }
+                    .id(current)
+                    .accessibilityIdentifier("place-cards")
+                }
+
+                if let shown, shown > 0, places.count > shown, current == .all, folded.hidden > 0 || expanded {
+                    Button { expanded.toggle() } label: {
+                        Text(expanded ? String(localized: "place.showLess")
+                             : String(format: String(localized: "place.showMore"), folded.hidden))
+                            .font(.system(size: 14, weight: .medium))
+                            .frame(maxWidth: .infinity)
+                    }
+                    .buttonStyle(.plain)
+                    .foregroundStyle(TappyColor.accent)
+                    .accessibilityIdentifier("place-show-more")
+                }
+
+                if let url = mapsSearchURL, !url.isEmpty { exploreMapFooter(url) }
             }
         }
+    }
+
+    private func chip(_ f: PlaceFilterId, selected: Bool) -> some View {
+        Button { active = f; expanded = false } label: {
+            Text(f == .all
+                 ? String(format: String(localized: "place.filter.all"), places.count)
+                 : NSLocalizedString(f.labelKey, comment: ""))
+                .font(.system(size: 13, weight: .medium))
+                .foregroundStyle(selected ? Color.white : TappyColor.textSecondary)
+                .padding(.horizontal, Spacing.md).padding(.vertical, Spacing.xs)
+                .background(selected ? TappyColor.accent : TappyColor.surface, in: Capsule())
+        }
+        .buttonStyle(.plain)
+        .accessibilityIdentifier("place-filter-" + f.rawValue)
+    }
+
+    private func exploreMapFooter(_ url: String) -> some View {
+        Button {
+            if let u = URL(string: url) { UIApplication.shared.open(u) }
+        } label: {
+            HStack(spacing: Spacing.md) {
+                Image(systemName: "map.fill").foregroundStyle(TappyColor.accent)
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("place.exploreMap").font(.system(size: 15, weight: .medium)).foregroundStyle(TappyColor.accent)
+                    Text("place.exploreMap.hint").font(.system(size: 12)).foregroundStyle(TappyColor.textSecondary)
+                }
+                Spacer(minLength: 0)
+                Image(systemName: "chevron.right").font(.system(size: 13)).foregroundStyle(TappyColor.textSecondary)
+            }
+            .padding(Spacing.md)
+            .overlay(RoundedRectangle(cornerRadius: Radius.lg).stroke(TappyColor.border, lineWidth: 1))
+        }
+        .buttonStyle(.plain)
+        .accessibilityIdentifier("place-explore-map")
     }
 }
 
@@ -57,7 +136,8 @@ private struct PlaceCardRow: View {
         // The key is RESOLVED on the server (cross-platform CCP contract): a commerce handoff
         // arrives as `v3.action.purchaseLoginOn` + platform and renders "Mua trên TikTok Shop · cần
         // đăng nhập" here from the same decision web renders. See CommerceActionLabel.swift.
-        placeActionLabel(labelKey: action.labelKey, urlKind: action.urlKind, platform: action.platform).text
+        if action.commerce == nil { return placeActionSpec(action).text }
+        return placeActionLabel(labelKey: action.labelKey, urlKind: action.urlKind, platform: action.platform).text
     }
 
     private var popular: Bool {
@@ -67,10 +147,8 @@ private struct PlaceCardRow: View {
     /// Web groups the same way: the map button leads, the rest follow. An action with no URL is not
     /// a button — it is a lie, and the live projection drops it for the same reason.
     private var usableActions: [PersistedPlaceAction] {
-        let usable = place.actions.filter { !$0.url.isEmpty }
-        let maps = usable.first(where: { $0.kind == "maps" || $0.kind == "directions" })
-        guard let maps else { return usable }
-        return [maps] + usable.filter { $0.id != maps.id }
+        // Android `groupActions`: the commerce lead, then booking-type actions, then Maps, then the rest.
+        groupPlaceActions(place.actions).ordered
     }
 
     private var hoursLine: String? {
@@ -204,7 +282,7 @@ private struct PlaceCardRow: View {
             RoundedRectangle(cornerRadius: Radius.lg)
                 .stroke(TappyColor.border, lineWidth: 1)
         )
-        .accessibilityElement(children: .combine)
+        .accessibilityElement(children: .contain)
     }
 }
 

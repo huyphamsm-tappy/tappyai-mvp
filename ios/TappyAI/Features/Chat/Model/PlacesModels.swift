@@ -191,6 +191,22 @@ struct PlacesLiveView: Codable, Equatable, Sendable {
     var ranked: Bool?
     var items: [LivePlace] = []
     var mapsSearchUrl: String?
+    /// The ids of the places the MODEL named in its reply, pick first, in prose order (web `picked`).
+    var picked: [String] = []
+    /// How many cards sit above «Xem thêm»; nil renders every card.
+    var shown: Int?
+    /// The reply named venues and none matched a row — the order is the engine's, not the model's.
+    var pickUnmatched: Bool = false
+}
+
+extension PlacesLiveView {
+    /// Web `placesRenderOrder`: the model's picks first, then the engine's order for the rest. Never mutates `items`.
+    func renderOrder() -> [LivePlace] {
+        let byId = Dictionary(items.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
+        let first = picked.compactMap { byId[$0] }
+        let seen = Set(first.map(\.id))
+        return first + items.filter { !seen.contains($0.id) }
+    }
 }
 
 /// The annotation's own type tag, verbatim from the server (`liveView.ts`). Checked before the
@@ -228,6 +244,8 @@ struct PlaceCardView: Equatable, Sendable, Identifiable {
     var reasons: [String] = []
     var tradeOff: String?
     var actions: [PersistedPlaceAction] = []
+    /// Provider amenity flags (`wifi`, `outdoorSeating`, `vegetarian`) — only the filter chips read them.
+    var flags: [String] = []
 }
 
 extension LivePlace {
@@ -256,7 +274,8 @@ extension LivePlace {
                     labelKey: $0.labelKey, platform: $0.platform, attributed: $0.attributed,
                     commerce: $0.commerce
                 )
-            }
+            },
+            flags: flags
         )
     }
 }
@@ -496,7 +515,10 @@ extension PlacesLiveView {
             domain: (try? c.decode(String.self, forKey: .domain)) ?? "",
             ranked: try? c.decode(Bool.self, forKey: .ranked),
             items: c.lossyArray(LivePlace.self, forKey: .items),
-            mapsSearchUrl: try? c.decode(String.self, forKey: .mapsSearchUrl)
+            mapsSearchUrl: try? c.decode(String.self, forKey: .mapsSearchUrl),
+            picked: (try? c.decode([String].self, forKey: .picked)) ?? [],
+            shown: try? c.decode(Int.self, forKey: .shown),
+            pickUnmatched: (try? c.decode(Bool.self, forKey: .pickUnmatched)) ?? false
         )
     }
 }

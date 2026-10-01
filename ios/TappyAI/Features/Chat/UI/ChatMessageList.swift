@@ -79,8 +79,10 @@ struct ChatMessageList: View {
                                 // the richer projection and exists for the session that produced
                                 // the turn; it is never persisted, so a reopened conversation has
                                 // only the durable block, which is what that block is for.
-                                places: msg.livePlaces.map { $0.items.map { $0.toCardView() } }
+                                places: msg.livePlaces.map { $0.renderOrder().map { $0.toCardView() } }
                                     ?? parsed.places.compactMap { $0.toCardView() },
+                                placesMapsURL: msg.livePlaces?.mapsSearchUrl,
+                                placesShown: msg.livePlaces?.shown,
                                 followups: isLast && !isStreaming ? parsed.followups : [],
                                 ask: isLast && !isStreaming ? parsed.ask : [],
                                 isLastMessage: isLast,
@@ -202,6 +204,9 @@ private struct AssistantBubble: View {
     var shopping: ShoppingDecisionView? = nil
     /// The turn's place cards, already projected from whichever payload was available.
     var places: [PlaceCardView] = []
+    /// The «Xem tất cả trên bản đồ» link and the fold size, from the live annotation only.
+    var placesMapsURL: String? = nil
+    var placesShown: Int? = nil
     /// Whether the comparison sheet is open for this row.
     @State private var showComparison = false
     let followups: [String]
@@ -254,7 +259,7 @@ private struct AssistantBubble: View {
                 // structured block: a half-arrived card is not a card, and showing one mid-stream
                 // is how partial JSON reached users in the first place.
                 if !places.isEmpty, !isStreaming {
-                    PlaceCardsView(places: places)
+                    PlaceCardsView(places: places, mapsSearchURL: placesMapsURL, shown: placesShown)
                 }
 
                 if let shopping, !isStreaming {

@@ -257,6 +257,33 @@ final class ScreenshotTests: XCTestCase {
         shot(name)
     }
 
+    // MARK: - B2 place decision (chips, paged cards, fold, Maps footer, the four actions)
+
+    func testPlaceDecision() {
+        let app = launch(route: "places", extra: ["-uitest-theme", "dark"])
+        XCTAssertTrue(any(app, "place-filter-all").waitForExistence(timeout: 40), "chip row")
+        XCTAssertEqual(any(app, "place-filter-all").label, "Tất cả (5)")
+        XCTAssertTrue(any(app, "place-filter-open").exists, "open splits 3/5")
+        XCTAssertTrue(any(app, "place-filter-rated").exists, "top-rated splits 2/5")
+        XCTAssertTrue(any(app, "place-filter-wifi").exists, "wifi splits 2/5")
+        XCTAssertFalse(any(app, "place-filter-outdoor").exists, "no row has outdoor seating: no chip")
+        XCTAssertTrue(any(app, "place-show-more").exists, "five places, three above the fold")
+        XCTAssertTrue(app.staticTexts["Bún chả Hương Liên"].exists)
+        XCTAssertTrue(app.buttons["Xem bản đồ"].exists, "action: map")
+        XCTAssertTrue(app.buttons["Website"].exists, "action: website")
+        XCTAssertTrue(app.buttons["Tìm review trên Google"].exists, "action: find reviews")
+        XCTAssertTrue(app.buttons["Gọi"].exists, "action: call")
+        shot("56-places")
+
+        any(app, "place-filter-open").tap()
+        XCTAssertFalse(any(app, "place-show-more").exists, "a chip shows every admitted row, no fold")
+        shot("57-places-open-chip")
+
+        any(app, "place-filter-all").tap()
+        XCTAssertTrue(scrollTo(app, "place-explore-map"), "«Xem tất cả trên bản đồ»")
+        shot("58-places-footer")
+    }
+
     func testAskCardEmptySendSearches() {
         let app = launch(route: "ask-food")
         XCTAssertTrue(any(app, "ask-send").waitForExistence(timeout: 30))
