@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Nhà Nghỉ 278",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T08:14:44.569Z",
+ "body": {
+  "searchParameters": {
+   "q": "Nhà Nghỉ 278",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Nhà nghỉ 278 cửa ông cẩm phả qn 0345922184",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=1025250116817162",
+    "imageWidth": 960,
+    "imageHeight": 1280,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxugbckwjMm227Mlr6MIKz1Iv3RT28S3VQ3wWNYkpDNw&s=10",
+    "thumbnailWidth": 480,
+    "thumbnailHeight": 640,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/groups/reviewvandonn/posts/2573929669728333/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D1025250116817162&tbnid=xPZiXnbJfMGtoM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Fgroups%2Freviewvandonn%2Fposts%2F2573929669728333%2F&docid=sDmOeG4KtSnkYM&w=960&h=1280",
+    "position": 1
+   },
+   {
+    "title": "Nhà nghỉ 278 cửa ông cẩm phả qn 0345922184",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=1025250203483820",
+    "imageWidth": 960,
+    "imageHeight": 1280,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvNgkZx6lm7aWgw2aWlzDEi_nEJ9D2MhmLddC3KjJioA&s=10",
+    "thumbnailWidth": 480,
+    "thumbnailHeight": 640,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/groups/reviewvandonn/posts/2573929669728333/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D1025250203483820&tbnid=UpKLlpMvnKXXjM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Fgroups%2Freviewvandonn%2Fposts%2F2573929669728333%2F&docid=sDmOeG4KtSnkYM&w=960&h=1280",
+    "position": 2
+   },
+   {
+    "title": "278 Motel Vũng Tàu, Bà Rịa (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/879455296.jpg?k=f294a648a0cb616903d0ed166dfe4797eb64b1b3ae49ff25698c3dbdcec428d4&o=",
+    "imageWidth": 1024,
+    "imageHeight": 768,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQB7vVLLxTJX4ta5PZZzqOrnwtJtDqgG7OQlhpdzp5sg&s=10",
+    "thumbnailWidth": 638,
+    "thumbnailHeight": 480,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/278-motel-ho-chi-minh.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F879455296.jpg%3Fk%3Df294a648a0cb616903d0ed166dfe4797eb64b1b3ae49ff25698c3dbdcec428d4%26o%3D&tbnid=iolD3uzBsAuUnM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2F278-motel-ho-chi-minh.vi.html&docid=PFFsxFSr0djU5M&w=1024&h=768",
+    "position": 3
+   },
+   {
+    "title": "Nhà nghỉ 278 cửa ông cẩm phả qn 0345922184",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=1025250246817149",
+    "imageWidth": 960,
+    "imageHeight": 1280,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKMYztJEzaAQSniSezdqKdK-IkEyUfKyuAmZP9lxJOMA&s=10",
+    "thumbnailWidth": 480,
+    "thumbnailHeight": 640,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/groups/reviewvandonn/posts/2573929669728333/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D1025250246817149&tbnid=MiO4PVZRVeGIrM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Fgroups%2Freviewvandonn%2Fposts%2F2573929669728333%2F&docid=sDmOeG4KtSnkYM&w=960&h=1280",
+    "position": 4
+   },
+   {
+    "title": "Nhà nghỉ 278 cửa ông cẩm phả qn 0345922184",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=1025250050150502",
+    "imageWidth": 764,
+    "imageHeight": 1280,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjgByD3JnVC-FvziCCc4VgX7Q9lNpukn-Xjhoi7WVQ-g&s=10",
+    "thumbnailWidth": 428,
+    "thumbnailHeight": 717,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/groups/reviewvandonn/posts/2573929669728333/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D1025250050150502&tbnid=LBF_5Mp74wV7iM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Fgroups%2Freviewvandonn%2Fposts%2F2573929669728333%2F&docid=sDmOeG4KtSnkYM&w=764&h=1280",
+    "position": 5
+   },
+   {
+    "title": "278 Motel Vũng Tàu, Bà Rịa (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/821122241.jpg?k=189ecb9ab1fa5ea4556cf59082c7af0c0bff965856d13818dffa12088a2d08b6&o=",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOPZ7NmecxNZPLSBYuFzqvbkwa9qijLoPKgGQVVP9fmw&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/278-motel-ho-chi-minh.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F821122241.jpg%3Fk%3D189ecb9ab1fa5ea4556cf59082c7af0c0bff965856d13818dffa12088a2d08b6%26o%3D&tbnid=iZH5r9lzU7H7_M&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2F278-motel-ho-chi-minh.vi.html&docid=PFFsxFSr0djU5M&w=1024&h=683",
+    "position": 6
+   },
+   {
+    "title": "HOTEL 278 Cổ phúc, trấn yên, yên bái",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=404078868557969",
+    "imageWidth": 960,
+    "imageHeight": 720,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSEZkvvRKTmLkspmrFi6f6zG40-4klGytl5FXBVIpePRg&s=10",
+    "thumbnailWidth": 515,
+    "thumbnailHeight": 388,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/p/HOTEL-278-C%E1%BB%95-ph%C3%BAc-tr%E1%BA%A5n-y%C3%AAn-y%C3%AAn-b%C3%A1i-100068675765710/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D404078868557969&tbnid=vZFTqdHIPFICoM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Fp%2FHOTEL-278-C%25E1%25BB%2595-ph%25C3%25BAc-tr%25E1%25BA%25A5n-y%25C3%25AAn-y%25C3%25AAn-b%25C3%25A1i-100068675765710%2F&docid=2yuegG9I09n4OM&w=960&h=720",
+    "position": 7
+   },
+   {
+    "title": "278 Motel Vũng Tàu, Bà Rịa (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/821122254.jpg?k=c71f5ee744718d25727d118dbff8a697a45c8ad72e6598b58ffef1f70f35b366&o=",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSeRxIBu6EFGbBkJup2nI3YwtXVlUaKEjNEMF-6OxBneg&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/278-motel-ho-chi-minh.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F821122254.jpg%3Fk%3Dc71f5ee744718d25727d118dbff8a697a45c8ad72e6598b58ffef1f70f35b366%26o%3D&tbnid=CwBtLgoRecAU_M&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2F278-motel-ho-chi-minh.vi.html&docid=PFFsxFSr0djU5M&w=1024&h=683",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

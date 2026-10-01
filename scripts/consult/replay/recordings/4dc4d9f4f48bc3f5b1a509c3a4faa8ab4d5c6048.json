@@ -1,0 +1,374 @@
+{
+ "url": "https://google.serper.dev/shopping",
+ "request": {
+  "q": "\"Set quà tặng cà phê cao cấp\" \"máy xay cầm tay cổ điển\" cốc sứ thiệp viết",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 20
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T08:08:42.879Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Set quà tặng cà phê cao cấp\" \"máy xay cầm tay cổ điển\" cốc sứ thiệp viết",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "shopping",
+   "num": 40,
+   "page": 1,
+   "engine": "google"
+  },
+  "shopping": [
+   {
+    "title": "Set quà tặng cà phê cao cấp - máy xay cầm tay cổ điển kèm cốc sứ, thiệp viết",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=%22Set+qu%C3%A0+t%E1%BA%B7ng+c%C3%A0+ph%C3%AA+cao+c%E1%BA%A5p%22+%22m%C3%A1y+xay+c%E1%BA%A7m+tay+c%E1%BB%95+%C4%91i%E1%BB%83n%22+c%E1%BB%91c+s%E1%BB%A9+thi%E1%BB%87p+vi%E1%BA%BFt&prds=localAnnotatedOfferId:1,catalogid:16764726052803575726,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "466.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTG1doAz10-53CfZk-RndQblLppU63Cv3wSQXljmfWT7dawkkCZMjw2lm10Fslj5j7w2j4xG5OADODHwlS2jm-kknriTX56V8BXdBbkHrf49rSWZ1M5lKv3JoAI",
+    "rating": 5,
+    "ratingCount": 8,
+    "productId": "16764726052803575726",
+    "position": 1
+   },
+   {
+    "title": "Set Quà Như Ý",
+    "source": "Công ty TNHH cà phê Đồng Xanh",
+    "link": "https://www.google.com/search?ibp=oshop&q=%22Set+qu%C3%A0+t%E1%BA%B7ng+c%C3%A0+ph%C3%AA+cao+c%E1%BA%A5p%22+%22m%C3%A1y+xay+c%E1%BA%A7m+tay+c%E1%BB%95+%C4%91i%E1%BB%83n%22+c%E1%BB%91c+s%E1%BB%A9+thi%E1%BB%87p+vi%E1%BA%BFt&prds=localAnnotatedOfferId:1,catalogid:4054858686503426703,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "279.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQiyb-nI9Fcs27HSI2Yftj3s307KO7tUMrnlcxPaDkSnlUK7-7pk5B5B5vxXqqBls6T7I0nLpIZVVETw4Zuz7lMJP3UY9821635CunKNfw",
+    "productId": "4054858686503426703",
+    "position": 2
+   },
+   {
+    "title": "Set quà tặng phụ kiện thời trang cho nam 5 món cao cấp và sang trọng",
+    "source": "Thomas Nguyen",
+    "link": "https://www.google.com/search?ibp=oshop&q=%22Set+qu%C3%A0+t%E1%BA%B7ng+c%C3%A0+ph%C3%AA+cao+c%E1%BA%A5p%22+%22m%C3%A1y+xay+c%E1%BA%A7m+tay+c%E1%BB%95+%C4%91i%E1%BB%83n%22+c%E1%BB%91c+s%E1%BB%A9+thi%E1%BB%87p+vi%E1%BA%BFt&prds=localAnnotatedOfferId:1,catalogid:6300901360403482303,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "1.438.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTi_PxnEn-lUcFs7AaR9-ufvd5W0hR2gpHkusTSoj9jOruV7x0pYLZv-Js2a5m-nZS7kdMcGgXul70K3U5f9zfoZOwakkSj8HEiyE1oJiOnJv9YAbcUDWdvADs",
+    "rating": 5,
+    "ratingCount": 1,
+    "productId": "6300901360403482303",
+    "position": 3
+   },
+   {
+    "title": "Set quà tặng 2026 Người việt xịn Cộng Cà Phê kèm túi đựng quà biếu tặng tết ý nghĩa",
+    "source": "Lazada Vietnam",
+    "link": "https://www.google.com/search?ibp=oshop&q=%22Set+qu%C3%A0+t%E1%BA%B7ng+c%C3%A0+ph%C3%AA+cao+c%E1%BA%A5p%22+%22m%C3%A1y+xay+c%E1%BA%A7m+tay+c%E1%BB%95+%C4%91i%E1%BB%83n%22+c%E1%BB%91c+s%E1%BB%A9+thi%E1%BB%87p+vi%E1%BA%BFt&prds=localAnnotatedOfferId:1,catalogid:16217176465122531315,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "377.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRdpNLtyfSlH-Wd4vLYiucAPzkPbcltnV66mVnX54xBc6U7O2WwHzKOtCd-dIb-QUm7VhaTHYzoO10ro9d---fyp5m7GStIBjBS2Dyq5rhCZbsg5X19tap3Lg",
+    "productId": "16217176465122531315",
+    "position": 4
+   },
+   {
+    "title": "Bộ quà tặng Tân Xuân 1 cà phê kèm phin và ly gốm RuNam",
+    "source": "farmersmarket.vn",
+    "price": "1.499.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTRJ3tKOtgQBX3UmaLUOjjUr35BcFncBS8Pia82vJ-5tMmpfMd-VOhNcbRS50uDE9N4YLXtTvA4NjDYTWyfECQzwTTQ1LZN84lU7coAqAbRY_Agd3_V-IX7MQ",
+    "productId": "8844775001932250778",
+    "position": 5
+   },
+   {
+    "title": "Quà tặng Sổ tay cao cấp và Đồ dùng văn phòng Ruby",
+    "source": "rubygift.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=%22Set+qu%C3%A0+t%E1%BA%B7ng+c%C3%A0+ph%C3%AA+cao+c%E1%BA%A5p%22+%22m%C3%A1y+xay+c%E1%BA%A7m+tay+c%E1%BB%95+%C4%91i%E1%BB%83n%22+c%E1%BB%91c+s%E1%BB%A9+thi%E1%BB%87p+vi%E1%BA%BFt&prds=localAnnotatedOfferId:1,catalogid:13915436821714290749,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "350.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcS2M1gh8O9gD3uiYMA4VWsEWOqetIgQsppG-_fkTp-Gg7K8K2WaaPCtbOAb3HJPFWWvB5dUIwlcUWOu9hyK8Q3IX0LeMiHKCMTpqRmuXmDr1CLC3oXtQw1tOw",
+    "productId": "13915436821714290749",
+    "position": 6
+   },
+   {
+    "title": "Set quà tặng cốc thủy tinh đơn giản sang trọng tặng đối tác, thầy cô giáo bạn bè người thân",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=%22Set+qu%C3%A0+t%E1%BA%B7ng+c%C3%A0+ph%C3%AA+cao+c%E1%BA%A5p%22+%22m%C3%A1y+xay+c%E1%BA%A7m+tay+c%E1%BB%95+%C4%91i%E1%BB%83n%22+c%E1%BB%91c+s%E1%BB%A9+thi%E1%BB%87p+vi%E1%BA%BFt&prds=localAnnotatedOfferId:1,catalogid:7752967189241010434,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "49.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcR9BthCXTp_dyUj8D6fos4wabw1aDuJjjsdADZ6Lvtst24a8l_RtLxhF2m4P7OoZD3K9AwSx_HicsbN-gdML81INlqQabepPOVH0o4-4MHS",
+    "rating": 4.1,
+    "ratingCount": 22,
+    "productId": "7752967189241010434",
+    "position": 7
+   },
+   {
+    "title": "Set Quà Tặng Trân Quý Cao Cấp",
+    "source": "happynuts.vn",
+    "price": "549.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTWtLiRLzQPyEdBj-gPy9pqu6RWTWyLj-hFVs9Df2vPXx5wt7k2h2CZabLIYtP2Xo1O1ZIrNjYFdgKIUA-j1FopYR6DfiRKmNNX8zTjOP98asO16lv6J3IhQQ",
+    "productId": "14578833696091936131",
+    "position": 8
+   },
+   {
+    "title": "Set Quà Tặng Cà Phê 2 Combo Phin Nhôm Nón Lá Cà Phê 250g REAL BEAN COFFEE - Phin nón Culi",
+    "source": "tiki.vn",
+    "price": "500.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQkAZwRcdJOKv3K-ENlHxxARFlNGLsfNfG-MZFrk2DwG8jNZ__S99Iwq75nkkfeq_eE-kDEoeNRxXLPpEsBJlUevG5Skp9Y8j95yRVQQU3qVZe_VCYubQozTg",
+    "productId": "11888364506728612128",
+    "position": 9
+   },
+   {
+    "title": "Set quà tặng golf cao cấp CG006A",
+    "source": "Clickgolf",
+    "price": "1.700.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRryTO9SB7z5XbqMfQXQUSucs3R7GaIzyXFEdEb2DbvTita2wjjpSYC_4ZYdQ0U7BrXDaIIIBCRuWSHQMQs1SbCmIwxdRu73xisReT4t2mT",
+    "productId": "2532747639125295108",
+    "position": 10
+   },
+   {
+    "title": "Set quà tặng cài áo cao cấp sang trọng SG048",
+    "source": "Jollita.vn",
+    "price": "445.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRAFoeMpN6E386AJBPForKIAf2ZQvSNgNjP6PTklskP-W_VExtDS6Jq6jwpiAlXVt_0T2LPQm_Eg9IZ9PIpxvlAG3UP3VDeZhF6Wo2uTIgPJwYM5i2pX8vz",
+    "productId": "2815281629176584385",
+    "position": 11
+   },
+   {
+    "title": "Set Quà Tặng Nến Thơm Thủ Công Ngựa Gỗ Glamor Quà Tặng Bạn Gái Lãng Mạn Sang Trọng Tinh Tế",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=%22Set+qu%C3%A0+t%E1%BA%B7ng+c%C3%A0+ph%C3%AA+cao+c%E1%BA%A5p%22+%22m%C3%A1y+xay+c%E1%BA%A7m+tay+c%E1%BB%95+%C4%91i%E1%BB%83n%22+c%E1%BB%91c+s%E1%BB%A9+thi%E1%BB%87p+vi%E1%BA%BFt&prds=localAnnotatedOfferId:1,catalogid:14082246161713539201,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "490.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQ-E-WaNNwupfGrNsfMF_bu6ntMTgmag82BFTRN5DuARvQQfeXQmRXiECrO7zwcf-6u4noHkTUh0f4M7s3pI36G2Fi0K1tb5ojgvVYIVlWpAKvxi47WA_1Q",
+    "rating": 5,
+    "ratingCount": 1,
+    "productId": "14082246161713539201",
+    "position": 12
+   },
+   {
+    "title": "Set quà tặng cảm ơn GS1029 -Default Title",
+    "source": "An's Gift",
+    "price": "457.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcREVsZQwJdpjJamNiLVAD8xRijb0NTB__bKOsGFyy9A6y7A--raS2nS4h9dim_QDE_ughflOrnTS_lGV5K_m9Uid29nECSu_zWeqBbn_YMy",
+    "productId": "2114906832122301751",
+    "position": 13
+   },
+   {
+    "title": "Set Quà Tặng Hương Thanh Cao Cấp, Sang Trọng",
+    "source": "happynuts.vn",
+    "price": "719.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTpu0AVgRPvo5tuJdN1ihr1iB2JnoMjgsSfaFCWAcvoOpMhJfcL5nrY97UkShFj09DyXywQcMdB9gUKHRVvpD_JNofxVxmwwadSoiSqSPRHpb5UEZHMwKlOaw",
+    "productId": "15009060374398308489",
+    "position": 14
+   },
+   {
+    "title": "Set quà tặng 4 món cà vạt màu xám chì họa tiết loang bản to 7 cm",
+    "source": "Cà vạt Hàn Quốc",
+    "price": "600.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRXVDQImJaynmmHJQL0koTkU45Fz02h4w8Io6y0QKEEiTVF6ktfuxkgloJx4Ij0CzATsKpVIGaZwf-ruPlbmm4P0h_QuhPdDXzEC_v0n7ok-HueUDJSE8x-jlI",
+    "productId": "15019577448218966317",
+    "position": 15
+   },
+   {
+    "title": "Set Quà Tặng Nữ Thư Giãn \"Relaxing Time\", Hộp Quà Sang Trọng",
+    "source": "Chus.vn",
+    "price": "396.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQt-15uf9fWzBoLiCATcPXURCOAY9v-ES7YNridMwCNeVQtD8vyf3Yj-fmiS7dnDpjLAnRoePpckGoFDYDnYWw6eF5xehQOOs5fWJjrhBY",
+    "productId": "8682176828268647032",
+    "position": 16
+   },
+   {
+    "title": "quà tặng ý nghĩa, quà tặng 1/6, quà tặng bạn gái ý nghĩa, quà tặng đáng yêu, box quà tặng xinh nhật, set quà giáng sinh",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=%22Set+qu%C3%A0+t%E1%BA%B7ng+c%C3%A0+ph%C3%AA+cao+c%E1%BA%A5p%22+%22m%C3%A1y+xay+c%E1%BA%A7m+tay+c%E1%BB%95+%C4%91i%E1%BB%83n%22+c%E1%BB%91c+s%E1%BB%A9+thi%E1%BB%87p+vi%E1%BA%BFt&prds=localAnnotatedOfferId:1,catalogid:4665611683174611636,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "119.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcS76IHG9icAM4mSGeK6a7UHjMTqYl3DjhlUki4-l9npo7Jh2D55HNrVic_t_zvmtT8ibC9ECdeNJE8EPcQ6lPxYTy9wNSDEvKDpVebYEAk",
+    "productId": "4665611683174611636",
+    "position": 17
+   },
+   {
+    "title": "Set quà tặng nữ: Quyền quý",
+    "source": "Bá Minh Silk",
+    "price": "5.005.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcT5TwE4pemwij3gGOGQqrjvbMxK064GccxZ4rtJma7fzkYuXr2YzK2cBKiQBn7OTADjvJPl-Hk3GqorQnn0cmIhbE_UF7em_vp1BqNYI0yMMtCIT7ZL3HdN",
+    "productId": "4246939786661737245",
+    "position": 18
+   },
+   {
+    "title": "Set Quà Tặng Trà Thái Nguyên Hộp Gỗ Cao Cấp",
+    "source": "Siêu Thị Trà Halivina",
+    "price": "570.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcT-pXflpTP9Gm2rCaFTp-XNDr_44WrF4FJygdKNpSdZ3_IPMvTF9EXDDB13l2Nv87DMMvg6aeCSCzbn4LAYcOSa-Ob_ZYmp",
+    "productId": "14948190083480081711",
+    "position": 19
+   },
+   {
+    "title": "SET quà tết Cà Phê Phin Giấy- Blackviet Coffee Chất Lượng Nguyên Chất",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=%22Set+qu%C3%A0+t%E1%BA%B7ng+c%C3%A0+ph%C3%AA+cao+c%E1%BA%A5p%22+%22m%C3%A1y+xay+c%E1%BA%A7m+tay+c%E1%BB%95+%C4%91i%E1%BB%83n%22+c%E1%BB%91c+s%E1%BB%A9+thi%E1%BB%87p+vi%E1%BA%BFt&prds=localAnnotatedOfferId:1,catalogid:5118805700311026796,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "250.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRVTdcppA4opExJiPlB0c26VAl1Ss7m-WTRGTnzB0jwUEaqrNu2h7frMxIewHe8Fne_Z8SIMYt-uETZAbnGO5wH4x-McW0QszB4-7UWEW0",
+    "productId": "5118805700311026796",
+    "position": 20
+   },
+   {
+    "title": "Set Quà Trái Cây",
+    "source": "Sieuthiluxy",
+    "price": "499.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcS3sjbTxNyLUmiraR_6ca4d5XEVi9kG4qjz7IFxYjGiOqi0gCjH0SfgIt3RrO3p436u2J6iczLC_70nZOZBi9QLDkw7Jupppqcihsya-q-HZG0tesT6JcjHeA",
+    "productId": "5396073142511593617",
+    "position": 21
+   },
+   {
+    "title": "Set quà tặng 4 món cà vạt đỏ mận họa tiết UFO trắng xanh bản to 8 cm",
+    "source": "Cà vạt Hàn Quốc",
+    "price": "630.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQYy0Lk0qLx5ir06RYdp_j9dkD2ekU69da0Eozcad0LqGIjTdTGb0QLDyPyEwhTiYW3_zDCGcq4iosI1hUhBodaopBAk2hlktu06h6sFhPLnqJlUJC0M3niINQ",
+    "productId": "11401412851544100830",
+    "position": 22
+   },
+   {
+    "title": "Set quà tặng golf cao cấp CG004",
+    "source": "Clickgolf",
+    "price": "1.200.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcT1o0o0QWiHzKRdfOiYvDc2cNzVM6NNkdjhEiuSE0xBEOGh7pT1Y7kLGAvsx2HA67ob7w3gucr_gNzWEkeFdoiKf9nmyk_21qP1vwyg5KuE",
+    "productId": "17207575988889997800",
+    "position": 23
+   },
+   {
+    "title": "[CHỈ 140K - Set Quà Tặng Dùng thử] Combo 2 loại Cafe hạt nguyên chất | Moka, Arabica, Robusta",
+    "source": "Shopee",
+    "price": "140.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTXScE1nvBp15rsEQQwZfjQrnF-kOMVq4TA_ku3w-rsYojzpfrKF2TKcwWAcF8qL2J2YS_lmmpVQ7ByW75EnXtQtaekQ6Xwrs0VMM3h3tp22NmsLyxI5UXAhSWr",
+    "productId": "5275590586006931192",
+    "position": 24
+   },
+   {
+    "title": "Set Quà Tặng Thể Thao GS16 Cho Nữ – Nhẹ Nhàng & Năng Động - CÔNG TY CỔ PHẦN QUÀ TẶNG VUÔNG TRÒN",
+    "source": "Vuông Tròn Gift",
+    "price": "225.800 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQXRnfVQbOxgYz0WStehiYsuNK1GQ4WyuD9B7ADCcZW2iLhsgNt_3-5JoId5CWs2BVQTS1KpaqECzLa1viDpPIOgkUToh-ESxP99Z_MYgAN",
+    "productId": "13237222599830051633",
+    "position": 25
+   },
+   {
+    "title": "Set quà tặng 20/10 cài áo cành mai đính ngọc trai cao cấp",
+    "source": "Jollita.vn",
+    "price": "350.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQMNPank2Jfo4J4FcLZpi9roI6HoaxBti107JFMaf77XiGZ7QZrX5XSpxPXdE1TNSdp8i_sWs6zy1-XI0KAj5h3D5K6S2WcaxjvBIK-4ldw",
+    "productId": "1329582465611494791",
+    "position": 26
+   },
+   {
+    "title": "quà tặng nam, quà sinh nhật cho nam ý nghĩa - set quà tặng bạn trai gấu bông, nước hoa, ví, đồng hồ",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=%22Set+qu%C3%A0+t%E1%BA%B7ng+c%C3%A0+ph%C3%AA+cao+c%E1%BA%A5p%22+%22m%C3%A1y+xay+c%E1%BA%A7m+tay+c%E1%BB%95+%C4%91i%E1%BB%83n%22+c%E1%BB%91c+s%E1%BB%A9+thi%E1%BB%87p+vi%E1%BA%BFt&prds=localAnnotatedOfferId:1,catalogid:18157175072214626669,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "125.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQcfUcWuOeVSdvUEni5dpbamJ3egcI8VZsCjEF8pJ7R9BlyC4xOMRMUwVi3BhZZqRjxvxmCFSivOwBveknD5FsR_w1kOylk0DnaZO_nwGU",
+    "rating": 4.7,
+    "ratingCount": 14,
+    "productId": "18157175072214626669",
+    "position": 27
+   },
+   {
+    "title": "Set quà tặng 4 món cà vạt xanh dương pha loang trắng bản 7 cm",
+    "source": "Cà vạt Hàn Quốc",
+    "price": "470.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQ6RMR6xuPbrVyHmU-rDkUBGHACYfy8X8s7hCQIZJ73ynswaw1hofj3xgEVanVgYqPVU457huTBXVLlodtGec2vwLRjA566eRsGjnNyTrcJCCmC_NxHZNFfzlQ",
+    "productId": "8172863149952911961",
+    "position": 28
+   },
+   {
+    "title": "Set Quà Tặng \"Good Things Inside\", Quà Tặng Doanh Nghiệp",
+    "source": "Chus.vn",
+    "price": "767.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSzn8QjiYr7AzyCn70DAAGyIeBffGiHQorHVRgHgqRVWd73t1hdoJJSIWjlvWHlo9ZdL88MLr-8w-URPAXA9_r_dilQdpUv0Zu-f7Sni0s",
+    "productId": "5681438329137825095",
+    "position": 29
+   },
+   {
+    "title": "Set quà tặng-Nhận gói theo yêu cầu-Quà tặng học sinh dễ thương-Quà khen thưởng cuối năm khai giảng mẫu đa dạng đáng yêu",
+    "source": "Lazada Vietnam",
+    "link": "https://www.google.com/search?ibp=oshop&q=%22Set+qu%C3%A0+t%E1%BA%B7ng+c%C3%A0+ph%C3%AA+cao+c%E1%BA%A5p%22+%22m%C3%A1y+xay+c%E1%BA%A7m+tay+c%E1%BB%95+%C4%91i%E1%BB%83n%22+c%E1%BB%91c+s%E1%BB%A9+thi%E1%BB%87p+vi%E1%BA%BFt&prds=localAnnotatedOfferId:1,catalogid:7310193623609609939,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "30.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQxbgc2uj8AA50TgyBXGXITXOg8W266mXyWX03zzSkxIqyvclsVit9qtBLpTVrA2DHcW54vhYFmwU78GYweYPO9nRXFeMev3qyPzU4zwZBqidfOesFDKnsh",
+    "productId": "7310193623609609939",
+    "position": 30
+   },
+   {
+    "title": "Set Quà Tặng Nến Thơm Và Khăn Quàng Quà Tặng Cho Bạn Gái",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=%22Set+qu%C3%A0+t%E1%BA%B7ng+c%C3%A0+ph%C3%AA+cao+c%E1%BA%A5p%22+%22m%C3%A1y+xay+c%E1%BA%A7m+tay+c%E1%BB%95+%C4%91i%E1%BB%83n%22+c%E1%BB%91c+s%E1%BB%A9+thi%E1%BB%87p+vi%E1%BA%BFt&prds=localAnnotatedOfferId:1,catalogid:9808471588238146054,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "155.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcREY0LMy61HFS7Jeo6faSFc0l65b_kOQLUUxwgCAmES3FpY1OyMXRg1NMWmjJbSlpc2N-bwxeW5ptsw-SWlVecdTQvu2osuMkXqfE6bEoo7",
+    "rating": 4.8,
+    "ratingCount": 9,
+    "productId": "9808471588238146054",
+    "position": 31
+   },
+   {
+    "title": "Set Quà Tặng Cho Nam 2025",
+    "source": "Apa Niche Việt Nam",
+    "price": "1.700.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTY_jWwnrqEypLPbW25qscsqBifw3CfFZV5uMSI3IZa2QMGw9sYBefVXYsoII8myHP1SN69aYByeLmO_acTATZFy6VOCvxJO8orLp9OTkhDjPI3fOIWWJKUDA",
+    "productId": "10234312156804232340",
+    "position": 32
+   },
+   {
+    "title": "Set quà tặng 5 món cà vạt đen trắng họa tiết chong chóng CS-77",
+    "source": "Cà vạt Hàn Quốc",
+    "price": "680.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQAvb186vGMDJs2dIvnZf5c_flMK8IpP9zmMNOCRcPntckJN-F9hLgzzvhBfhhB2afm4TqTJPebjZAPfZmoV-OWINVD1TIFBXMuGkIAA_AhPp1yoxyBCbdcZQ",
+    "productId": "12392281964672510345",
+    "position": 33
+   },
+   {
+    "title": "Set quà tặng - Trâm cài áo chuồn chuồn TCA_1004 -Default Title",
+    "source": "An's Gift",
+    "price": "99.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTmmAyj8gaiQSgyxbOue8QEqgTxM01FVLcurxMo8On_ziLtOrBB5af224zu0muCVzEIVDjeGD2XTaQ5qs2bgA8MzAMH7uncdoPm7f9cbAxOfmiC7kCOecGwkg",
+    "productId": "4849143788526744643",
+    "position": 34
+   },
+   {
+    "title": "set quà tặng bạn trai",
+    "source": "shopee.vn",
+    "price": "5.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQvPSmhPAD5x0y0-EBze4qGMaLKK6L_bikJ2UVsWLV0qLKBfSNjbkyJf9flrmPlIvTS-oF4jmHP9WywO_0bKqiumAf7sfeuj3Z19uixyC3oVJV16pIZf1xp",
+    "productId": "5982324515764070566",
+    "position": 35
+   },
+   {
+    "title": "Bộ tách trà / cà phê Koleksiyon Eser-i Istanbul 6",
+    "source": "Grandbazaarist",
+    "price": "5.165.135 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcR_Vc13feKd4CP_3AmKqcuPYipn31wt8TyeMCaKE4yf97CbtFdSiQ2Uz9E3X1_OrdjXSJaqht-GPuwFxG8Lg3KVrF8XHC3r6QdfWvLm8HO8JjAZPFs41Ilow4U",
+    "rating": 5,
+    "ratingCount": 2,
+    "productId": "1017824439374025977",
+    "position": 36
+   },
+   {
+    "title": "Set quà tặng Cài áo Bông tai Dây chuyền cao cấp sang trọng - 045",
+    "source": "Jollita.vn",
+    "price": "2.040.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTL5u2CTvVOTlh6QJOJxKlajzM6m7g8Gcyxt-kpWONUwntw_tgjwMIrVd0ZmmjgwOYojLQ8IthoMAP4Homf4H10jwEgVS5qiIwXI253OGRJ",
+    "productId": "9616589386504482127",
+    "position": 37
+   },
+   {
+    "title": "Set quà tặng 4 món cà vạt đỏ mận họa tiết chữ K trắng đỏ bản 7 cm",
+    "source": "Cà vạt Hàn Quốc",
+    "price": "630.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTrS_ojsbjM6IZyvyMaZCBBIQdSbpyTSPA6j93VgSPUtkNTg_OdZjHGQ_a-sdItxH_YU-uKNAadMC66pADySJY6WBWkyP6olVAtYKP8SOrHR3aH_Hd8N_Rk-pmF",
+    "productId": "13054124326186570635",
+    "position": 38
+   },
+   {
+    "title": "SET QUÀ TẶNG 4 Bát Sứ Ăn Cơm Hoạ Tiết Bánh Ngọt Sang Xịn , Cute ( TẶNG KÈM HỘP ĐỰNG QUÀ TẶNG )",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=%22Set+qu%C3%A0+t%E1%BA%B7ng+c%C3%A0+ph%C3%AA+cao+c%E1%BA%A5p%22+%22m%C3%A1y+xay+c%E1%BA%A7m+tay+c%E1%BB%95+%C4%91i%E1%BB%83n%22+c%E1%BB%91c+s%E1%BB%A9+thi%E1%BB%87p+vi%E1%BA%BFt&prds=localAnnotatedOfferId:1,catalogid:9736559273128119242,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "150.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTGIzbXouHiWo8Oc9uekFkTUKS3I3b_0oYw8Z0xn4fLMTT9VX9IG6C3Q8gijyEzVPtwroxUI_Zwe-rS8sDqawqwk28Dkn7yn0SULW0WQVuA",
+    "rating": 4.8,
+    "ratingCount": 6,
+    "productId": "9736559273128119242",
+    "position": 39
+   },
+   {
+    "title": "Set Quà Tặng Hữu Cơ 179k",
+    "source": "NT Mart",
+    "price": "179.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRVPZ1ytER9SakUXs51cjCs8ruiJTtxKY_n3G-0v2mmdt_HRWuAk4ROZkVCkvde-x2dw9_DTRLrGdZyeIruHiovb3n56XvFxJ7R8CKQpH8",
+    "productId": "17259048313311499113",
+    "position": 40
+   }
+  ],
+  "credits": 2
+ }
+}

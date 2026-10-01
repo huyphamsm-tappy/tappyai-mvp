@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Trúc Lâm Trí Đức\" OR \"Mộ Cự Thạch\" OR \"Suối ĐÁ (Cẩm Đường)\" Xuân Lộc, Đồng Nai site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T08:10:40.297Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Trúc Lâm Trí Đức\" OR \"Mộ Cự Thạch\" OR \"Suối ĐÁ (Cẩm Đường)\" Xuân Lộc, Đồng Nai site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Hướng dẫn đường đi đến Suối Đá Cẩm Đường",
+    "link": "https://www.tiktok.com/@tranthinhuhao60/video/7341581076608929026",
+    "snippet": "Hướng dẫn đường đi đến Suối Đá Cẩm Đường. Tìm hiểu cách đến Suối Đá Cẩm Đường ở Đồng Nai, một điểm du lịch thiên nhiên tuyệt vời với đường ...",
+    "position": 1
+   },
+   {
+    "title": "Bạn đoán được ở đâu không nè 🥰 #dicungthao ...",
+    "link": "https://www.tiktok.com/@dicungthao/video/7689511195941915910",
+    "snippet": "Trung Đoàn 3 Xuân Lộc Đồng Nai · Mbbg Hồi Xuân ... 3043Lượt chia sẻ. dicungthao. Đi Cùng Thảo. hám phá Mộ Cự Thạch Hàng Gòn Long Khánh Đồng Nai ...",
+    "position": 2
+   },
+   {
+    "title": "hám phá Mộ Cự Thạch Hàng Gòn Long Khánh Đồng Nai ...",
+    "link": "https://www.tiktok.com/@dicungthao/video/7482805271077670162",
+    "snippet": "hám phá Mộ Cự Thạch Hàng Gòn Long Khánh Đồng Nai, tưởng là sẽ đáng sợ nhưng không ngờ là một chuyến đi rất thú vị và cảm giác không đang sợ ...",
+    "position": 3
+   },
+   {
+    "title": "Khám Phá Suối Đá Cẩm Đường Tại Long Khánh",
+    "link": "https://www.tiktok.com/@longkhanhreview/video/7363629727279566098",
+    "snippet": "Khám Phá Suối Đá Cẩm Đường Tại Long Khánh. Trải nghiệm mát mẻ tại suối đá Cẩm Đường Long Khánh, địa điểm lý tưởng cho mùa hè! #longkhanhreview # ...",
+    "position": 4
+   },
+   {
+    "title": "Đập Suối Quýt Cẩm Đường Long Khánh",
+    "link": "https://www.tiktok.com/@lankhaplongkhanh/video/7213253615723629851",
+    "snippet": "... Suối Đá Cẩm Đường. Đập Suối Quýt Cẩm Đường Long Khánh – Hồ Đập Đẹp Đồng Nai. Hồ đập Suối Quýt ở Cẩm Đường, Long Khánh, Đồng Nai là một địa ...",
+    "position": 5
+   },
+   {
+    "title": "Suối Đá Phước Long Đồng Nai: Điểm Đến Hấp Dẫn Cho ...",
+    "link": "https://www.tiktok.com/@cungtamdivietnam/video/7603038494872636680",
+    "snippet": "Suối Đá Cẩm Đường · Suối Đá Măng Tố Bình Thuận · Hồ Cá Suối Đá. Suối Đá Phước Long Đồng Nai: Điểm Đến Hấp Dẫn Cho Du Lịch. ### Khám Phá Suối Đá ...",
+    "position": 6
+   },
+   {
+    "title": "Thiên nhiên thật đẹp #khampha #thác #thaclienai #phongcanh ...",
+    "link": "https://www.tiktok.com/@dicungthao/video/7392581510928321808",
+    "snippet": "2735Lượt chia sẻ. dicungthao. Đi Cùng Thảo. hám phá Mộ Cự Thạch Hàng Gòn Long Khánh Đồng Nai, tưởng là sẽ đáng sợ nhưng không ngờ là một chuyến đi rất thú vị ...",
+    "position": 7
+   },
+   {
+    "title": "Một ngày thật tuyệt cùng sữa tươi lên men thanh trùng ...",
+    "link": "https://www.tiktok.com/@dicungthao/video/7688334733272452372",
+    "snippet": "Thảo Nguyên Hill Xuân Lộc. 18.8KThích. 986Bình luận. 3043Lượt chia sẻ. dicungthao. Đi Cùng Thảo. hám phá Mộ Cự Thạch Hàng Gòn Long Khánh Đồng ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

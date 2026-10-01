@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Ốp lưng iPhone 17 Pro Max UAG chống sốc Essential Armor With Ma\" OR \"Ốp lưng iPhone 17 Pro Max UAG chống sốc Plyo Ice\" OR \"Ốp lưng UAG Pathfinder / Civilian / Monarch Pro cho\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T08:07:43.459Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Ốp lưng iPhone 17 Pro Max UAG chống sốc Essential Armor With Ma\" OR \"Ốp lưng iPhone 17 Pro Max UAG chống sốc Plyo Ice\" OR \"Ốp lưng UAG Pathfinder / Civilian / Monarch Pro cho\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Plyo Ice | Giá rẻ",
+    "link": "https://cellphones.com.vn/op-lung-iphone-17-pro-max-uag-plyo-ice.html",
+    "snippet": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Plyo Ice ; Smember Giảm thêm đến 47.000đ ; Chống sốc và hạn chế trầy xước hiệu quả. Ốp lưng iPhone 17 Pro Max UAG Plyo Ice ...",
+    "position": 1
+   },
+   {
+    "title": "Ốp lưng UAG Pathfinder / Civilian / Monarch Pro cho ...",
+    "link": "https://shopee.vn/%E1%BB%90p-l%C6%B0ng-UAG-Pathfinder-Civilian-Monarch-Pro-cho-iPhone-17-Pro-17-Pro-Max-%E2%80%93-b%E1%BA%A3n-cam-ch%E1%BB%91ng-s%E1%BB%91c-chu%E1%BA%A9n-qu%C3%A2n-%C4%91%E1%BB%99i-i.65304483.53902423205",
+    "snippet": "Ốp lưng UAG Pathfinder / Civilian / Monarch Pro cho iPhone 17 Pro / 17 Pro Max – bản cam chống sốc, chuẩn quân đội. outline grey truck icon. Không hỗ trợ.",
+    "rating": 5,
+    "ratingCount": 3,
+    "position": 2
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Plyo Ice - timgiatot",
+    "link": "https://timgiatot.com.vn/gia/256771-op-lung-iphone-17-pro-max-uag-chong-soc-plyo-ice",
+    "snippet": "So sánh giá Ốp lưng iPhone 17 Pro Max UAG chống sốc Plyo Ice: giá từ 935.000 ₫ trên 2 nơi bán, cập nhật tháng 9/2026. Giá từ các sàn lớn.",
+    "position": 3
+   },
+   {
+    "title": "Kiếm uag với Kiếm ngựa đỏ pass . Không viền hoạc có viền",
+    "link": "https://www.facebook.com/groups/cuongopxin/posts/1527191519173401/",
+    "snippet": "Ốp lưng UAG Pathfinder/ Civilian/ Monarch Pro cho iPhone 17 Pro/17 Pro Max – Bản Cam Đặc Biệt, Chống Sốc Chuẩn Quân Đội Chỉ còn 1.078.440₫.",
+    "position": 4
+   },
+   {
+    "title": "17 pro max case uag monarch",
+    "link": "https://shop.tiktok.com/vn/k/17-pro-max-case-uag-monarch",
+    "snippet": "Ốp lưng UAG Pathfinder / Civilian / Monarch Pro cho iPhone 17 Pro / 17 Pro Max ...",
+    "position": 5
+   },
+   {
+    "title": "Mình cần tìm UAG cho 17 pro",
+    "link": "https://www.facebook.com/groups/337292695886986/posts/917590567857193/",
+    "snippet": "Đây bác https://s.shopee.vn/qeuG3IoVP. s.shopee.vn. Ốp lưng UAG Pathfinder / Civilian / Monarch Pro cho iPhone 17 Pro / 17. 15w · 1 like. Vựa PK. No photo ...",
+    "position": 6
+   },
+   {
+    "title": "uag case 17 pro max monarch deep blue",
+    "link": "https://shop.tiktok.com/vn/k/uag-case-17-pro-max-monarch-deep-blue",
+    "snippet": "Ốp lưng UAG Pathfinder / Civilian / Monarch Pro cho iPhone 17 Pro / 17 Pro Max ...",
+    "position": 7
+   },
+   {
+    "title": "uag pathfinder neon iphone 17 promax",
+    "link": "https://shop.tiktok.com/vn/k/uag-pathfinder-neon-iphone-17-promax",
+    "snippet": "Ốp lưng UAG Pathfinder / Civilian / Monarch Pro cho iPhone 17 Pro / 17 Pro Max ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

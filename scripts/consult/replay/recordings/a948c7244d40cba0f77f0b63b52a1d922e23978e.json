@@ -1,0 +1,415 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "bãi biển đẹp Đà Nẵng Da Nang",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@16.0544,108.2022,12z"
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T08:09:39.085Z",
+ "body": {
+  "searchParameters": {
+   "q": "bãi biển đẹp Đà Nẵng Da Nang",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@16.0544,108.2022,12z",
+   "engine": "google"
+  },
+  "ll": "@16.0714274,108.0618745,12.0536z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Bãi biển Mỹ Khê",
+    "address": "Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0616944,
+    "longitude": 108.24693459999999,
+    "rating": 4.7,
+    "ratingCount": 4672,
+    "type": "Bãi biển",
+    "types": [
+     "Bãi biển"
+    ],
+    "description": "Bãi biển công cộng trải dài 32 km với những bờ cát trắng nguyên sơ và thích hợp cho hoạt động lướt sóng.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPllUvNZvXOlS7OvKXz5w_YFycft20MmBdNnVis5NGN7tchCPMluL-dtJomVj6mhk6AvOHhIIhONXOZWZUBL8ROqAbwRGBtqsOpxketBL5fVpdCdHRb0HX_btHXdd-ICvIulV0K",
+    "cid": "16932280753858696620",
+    "fid": "0x31421782f7fa0ee3:0xeafb8ba272ee55ac",
+    "placeId": "ChIJ4w7694IXQjERrFXucqKL--o"
+   },
+   {
+    "position": 2,
+    "title": "Bãi biển Mỹ Khê",
+    "address": "An Hải, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.047,
+    "longitude": 108.25,
+    "rating": 4.5,
+    "ratingCount": 3087,
+    "type": "Bãi biển",
+    "types": [
+     "Bãi biển"
+    ],
+    "phoneNumber": "+84 919 191 911",
+    "description": "Bãi biển đầy cát dài hơn 30 km, địa điểm sôi động có khu nghỉ dưỡng cao cấp và hoạt động tắm nắng, lướt ván.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMrQTBbyZyAbTJ-fYoElWyqhqDQcWp7WZh-PemxRD0SkhMwzWcxtx_XYq3uLRVMW9SFoCrFftfpPA9gXwwCtqNDgEnVo7On95FZ8bQcSczuHXQzxBGPESb7ZuOxMRRGfEx5H67y",
+    "cid": "1096276010259139485",
+    "fid": "0x3142177a66590321:0xf36c13917474b9d",
+    "placeId": "ChIJIQNZZnoXQjERnUtHFznBNg8"
+   },
+   {
+    "position": 3,
+    "title": "Bãi biển Tiên Sa",
+    "address": "Đà Nẵng, Việt Nam",
+    "latitude": 16.1233125,
+    "longitude": 108.21912479999999,
+    "rating": 4,
+    "ratingCount": 332,
+    "type": "Bãi biển",
+    "types": [
+     "Bãi biển"
+    ],
+    "description": "Vịnh nhỏ có bến tàu đánh cá, khu cho thuê thuyền, nhà hàng ven biển, và điểm ngắm hoàng hôn nổi tiếng.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNnQITHikZnkL61acYTVeBxe-5g32DE4m7Wdk8GfxWPoifgwNOZgXls4q84gO_334Q5Bio2tTX6fJQJI5j5Df8lqlHf-u8VrTRhWYHsDag43ASLcWR1GX_RUouQxiOzEOhVBCqZXQdxw45-",
+    "cid": "14597699671832946787",
+    "fid": "0x314222bb891f6be3:0xca95728275706863",
+    "placeId": "ChIJ42sfibsiQjERY2hwdYJylco"
+   },
+   {
+    "position": 4,
+    "title": "Bãi biển Non Nước",
+    "address": "Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+    "latitude": 15.995533499999999,
+    "longitude": 108.2738648,
+    "rating": 4.4,
+    "ratingCount": 229,
+    "type": "Bãi biển",
+    "types": [
+     "Bãi biển"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMGB5vz8o09U0tpdyu-_LmfGCpjq8TmwN_u1N5jTp6SzxGVTS97Tn1bwM5bvrlO2YIcS6c_DcShu4Sj-asWMRRsBjC9AS8sSlG8m__9Q_nOsXvn71ak6FEPXCi_bUH16vTTk4LbyA",
+    "cid": "7216701684225598983",
+    "fid": "0x314210dcc92cfa5f:0x6426dff2323ae607",
+    "placeId": "ChIJX_osydwQQjERB-Y6MvLfJmQ"
+   },
+   {
+    "position": 5,
+    "title": "Bãi Tắm Non Nước",
+    "address": "273C+42, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0027923,
+    "longitude": 108.2699727,
+    "rating": 4.5,
+    "ratingCount": 184,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch"
+    ],
+    "website": "https://gyg.me/tyukeYbS",
+    "openingHours": {
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày",
+     "Thứ Ba": "Mở cửa cả ngày",
+     "Thứ Tư": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmODIu5aKht1OkeZ4rqXusOw-rUS_J2F_cEcMOdhxDIBjxnqH-XkifRlNGlzy8_q3i7z_GT-Hr8kd17D9n7uiB74QfyWHhouyunDBoA7zhmT65pauB8dLFRBik8uQL6y7vAw0KIb",
+    "cid": "8835301798068481543",
+    "fid": "0x314211bbd65e9fbb:0x7a9d4c2c853dee07",
+    "placeId": "ChIJu59e1rsRQjERB-49hSxMnXo"
+   },
+   {
+    "position": 6,
+    "title": "Bãi Đá Đen",
+    "address": "Sơn Trà, Đà Nẵng, Việt Nam",
+    "latitude": 16.1474562,
+    "longitude": 108.23380429999999,
+    "rating": 4.3,
+    "ratingCount": 373,
+    "type": "Bãi biển",
+    "types": [
+     "Bãi biển"
+    ],
+    "description": "Bãi biển thư thái, đầy cát có các khối đá đen, một nhà hàng hải sản và những ngôi nhà cho thuê trên bãi biển.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMLXMhVzq2A5NPjkC9O5-CrIlJ7HQsWQ5xBI2N8PGfTLcymxXs-vqAVVhrsqEOdDCgVj04obsoQAt-YWwG65o2V66XDRmZmxbKLZ2xZ7kexn4ana9TtRziPYK5HAYAyRfT_hVOM",
+    "cid": "15009595008394327253",
+    "fid": "0x314222d6a895d4bf:0xd04ccb22c9d1f4d5",
+    "placeId": "ChIJv9SVqNYiQjER1fTRySLLTNA"
+   },
+   {
+    "position": 7,
+    "title": "Bãi tắm Mân Thái",
+    "address": "Hoàng Sa, Sơn Trà, Đà Nẵng, Việt Nam",
+    "latitude": 16.089021199999998,
+    "longitude": 108.24959419999999,
+    "rating": 4.4,
+    "ratingCount": 667,
+    "type": "Bãi biển",
+    "types": [
+     "Bãi biển"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMCa-zpzYKBhvu4SgaY9EBNdb_9B7klBnDHhWaD0cPYGBaUNVc4Cv5me9H3Rf_7vvZ8XFFtKNnduaNTaaaBNHnE9ZX89nT_PPEZa4HJoxlim8wbJktsvY-czrpEgekivJlGxJQ0VA",
+    "cid": "13625111672817819896",
+    "fid": "0x314217edf81d8baf:0xbd161ee0a355a0f8",
+    "placeId": "ChIJr4sd-O0XQjER-KBVo-AeFr0"
+   },
+   {
+    "position": 8,
+    "title": "Bãi biển Bắc",
+    "address": "Sơn Trà, Đà Nẵng, Việt Nam",
+    "latitude": 16.123188799999998,
+    "longitude": 108.30680199999999,
+    "rating": 3.4,
+    "ratingCount": 142,
+    "type": "Bãi biển",
+    "types": [
+     "Bãi biển"
+    ],
+    "website": "http://donghai.ga/",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmN21lLjbQk-VZeN_2MGk6CpZSlQtfDO4n368oaqKfnYYSa3LYGARLy65epSXi0LBVyldBnciRndgAx5ib3L-gKQUo8DuplBdTZSj4NFe4UgeRc6ZYNkSXMP5Geg6BqYxsTaW7A",
+    "cid": "7995659981047151974",
+    "fid": "0x31423dbfd0bc9945:0x6ef64a63d31f3d66",
+    "placeId": "ChIJRZm80L89QjERZj0f02NK9m4"
+   },
+   {
+    "position": 9,
+    "title": "Bãi tắm Phạm Văn Đồng",
+    "address": "Đà Nẵng, Việt Nam",
+    "latitude": 16.0732782,
+    "longitude": 108.2468342,
+    "rating": 4.6,
+    "ratingCount": 793,
+    "type": "Bãi biển",
+    "types": [
+     "Bãi biển"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNmEflPUUkLSBFH9fn_8Y_Xg4HMRCSMvlgav6Zvklspf2eev_rkm0D6BXm4d20UmHmunIJy4iwWa1J4tBxpLbz9gcU5j_XqDaSPV6r_cBssfMzxt5Lm-wV8Qf-yU7FHfQuVu8xn",
+    "cid": "17440369157107835571",
+    "fid": "0x3142178599738b33:0xf208a358691762b3",
+    "placeId": "ChIJM4tzmYUXQjERs2IXaVijCPI"
+   },
+   {
+    "position": 10,
+    "title": "Bãi Tắm Biển Mỹ Khê",
+    "address": "364W+JW5 Quảng trường, Nguyễn Văn Thoại, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.05651,
+    "longitude": 108.2473543,
+    "rating": 4.7,
+    "ratingCount": 202,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch"
+    ],
+    "openingHours": {
+     "Thứ Năm": "05:30–18:30",
+     "Thứ Sáu": "05:30–18:30",
+     "Thứ Bảy": "05:30–18:30",
+     "Chủ Nhật": "05:30–18:30",
+     "Thứ Hai": "05:30–18:30",
+     "Thứ Ba": "05:30–18:30",
+     "Thứ Tư": "05:30–18:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmO1x-5z1goPPrO9RDsc32sdHeGSDPqaoPFYUFSi853xkd684V2Q578ber-GO1tbvR-2ZB8ETCdp_AZJdZhiRE6lgMzZxjYi8Rad2KDHyMty4g0hN1lGiHcU7cf5Q5vxjRoopbk4G-BxYmk",
+    "cid": "9377664932922936311",
+    "fid": "0x31421700590eb817:0x822428924d824bf7",
+    "placeId": "ChIJF7gOWQAXQjER90uCTZIoJII"
+   },
+   {
+    "position": 11,
+    "title": "Bãi biển Sơn Trà",
+    "address": "Bến Xe Bus, Sơn Trà, Đà Nẵng, Việt Nam",
+    "latitude": 16.0991295,
+    "longitude": 108.25506159999999,
+    "rating": 4.8,
+    "ratingCount": 439,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch"
+    ],
+    "website": "https://sontraseahotel.com/",
+    "phoneNumber": "+84 936 790 798",
+    "openingHours": {
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày",
+     "Thứ Ba": "Mở cửa cả ngày",
+     "Thứ Tư": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPxQ993cVk-wm8HqbG7AjkBYqdSZezkGMXGpYIKgd-p4qWJuqxYmEsiLIr3tXAgLyWvu4v3Y3ne-J424ijrMDQOaA-NlRzgPRA_phzeM26w56406OA5-P0vWFwT6MGLYvMxDeff",
+    "cid": "4955672832474344518",
+    "fid": "0x31421705ce8b53ad:0x44c6162f52afec46",
+    "placeId": "ChIJrVOLzgUXQjERRuyvUi8WxkQ"
+   },
+   {
+    "position": 12,
+    "title": "Bãi tắm hàng dừa Mỹ Khê",
+    "address": "Premier Village Danang Resort, 99 Võ Nguyên Giáp, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.042512,
+    "longitude": 108.25170879999999,
+    "rating": 4.9,
+    "ratingCount": 207,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPUb1x6fKm9297CIbYg2TA3hU9KEePUSmSsulJr5J7ZaJwgicvq3YgOspjD25cl4FT-6mwkZgiucurfsexkoFpHnUJRne_2IGE8LZ7e4jcH02ekVLTKc47Rt-EgR5Mjr-Ks5O7Udbz5sZ59",
+    "cid": "14967902717443087698",
+    "fid": "0x314217005959ac11:0xcfb8ac37d9cc9d52",
+    "placeId": "ChIJEaxZWQAXQjERUp3M2TesuM8"
+   },
+   {
+    "position": 13,
+    "title": "Bãi tắm Sơn Thủy",
+    "address": "Ngũ Hành Sơn, Đà Nẵng, Việt Nam",
+    "latitude": 16.0159387,
+    "longitude": 108.262836,
+    "rating": 4.2,
+    "ratingCount": 337,
+    "type": "Bãi biển",
+    "types": [
+     "Bãi biển"
+    ],
+    "website": "http://baibiendanang.com/",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmM2ak82n8Y-SH-roPa657wuIpGtXVvFegdqbs4lDog3x6M-d9SaLZldnfLC7pwla9ZvZ-pCySDdppbmdyJhkPmqd2C1IoAVsdGcYcNVpAvNhMLQ3-jy5xFZ4Q8WPYFFqpTjd-8",
+    "cid": "5844046799238728967",
+    "fid": "0x31421735f8be0bcd:0x511a3999cf620d07",
+    "placeId": "ChIJzQu--DUXQjERBw1iz5k5GlE"
+   },
+   {
+    "position": 14,
+    "title": "Bãi tắm T20",
+    "address": "Đà Nẵng, Việt Nam",
+    "latitude": 16.0398823,
+    "longitude": 108.2531363,
+    "rating": 4.5,
+    "ratingCount": 148,
+    "type": "Bãi biển",
+    "types": [
+     "Bãi biển"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOS89-W-y-pBgWOOiJbK-DbZYN_VNNDMY1ZtN9j95Z1l-cwFv3sSYcrOYCduqflqEoYlFb5m7a3WfXKS88zatf-igU5p-nrK-8a1-k-5OpoZKZrz7UZYeY6ehow8TGcNZEbcAhl",
+    "cid": "611354530894595124",
+    "fid": "0x3142177a6e5eac21:0x87bf7b4edcc4434",
+    "placeId": "ChIJIaxebnoXQjERNETM7bT3ewg"
+   },
+   {
+    "position": 15,
+    "title": "Bãi Đá",
+    "address": "Sơn Trà, Đà Nẵng, Việt Nam",
+    "latitude": 16.0991353,
+    "longitude": 108.3008352,
+    "rating": 4.1,
+    "ratingCount": 1047,
+    "type": "Bãi biển",
+    "types": [
+     "Bãi biển"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmP5X7qt7wbHkY6JnfRTHLZ9CS7iNFvxR3WrhPA6p8BkVw3UTIMaRbOll0aOHTDgwOX0Mv1HwfmMlvC4oIlTdEoGGGNv-I9HwS6hxjdNTI1jhLQLURmnihvyf5RO1-1FCXrGNhyJ",
+    "cid": "12805905355412268668",
+    "fid": "0x314216271e640d0d:0xb1b7b712789ee67c",
+    "placeId": "ChIJDQ1kHicWQjERfOaeeBK3t7E"
+   },
+   {
+    "position": 16,
+    "title": "Bãi Cát Vàng",
+    "address": "Bãi Cát Vàng, Sơn Trà, Đà Nẵng, Việt Nam",
+    "latitude": 16.1425136,
+    "longitude": 108.23197789999999,
+    "rating": 4,
+    "ratingCount": 148,
+    "type": "Bãi biển",
+    "types": [
+     "Bãi biển"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMd2GbIT8EDjwBDxduV1KUj4uKK4c4o9ZcfzqDkURsc5xktDHnne7YmAqcgjxcJXOvjY1LcdlDQd6JhfhPj9Rqa2eTOA8Ut1Him5tDeTxPSd_ImohQ_UmPeXvjaXtxn-9nN2CoK",
+    "cid": "12734613328987940378",
+    "fid": "0x314222d20198a6a9:0xb0ba6f5a1247e61a",
+    "placeId": "ChIJqaaYAdIiQjERGuZHElpvurA"
+   },
+   {
+    "position": 17,
+    "title": "Bãi tắm Liên Chiểu",
+    "address": "35Q3+GW4, Nguyễn Tất Thành, Hòa Khánh, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.088755799999998,
+    "longitude": 108.15484119999999,
+    "rating": 4.2,
+    "ratingCount": 386,
+    "type": "Bãi biển công cộng",
+    "types": [
+     "Bãi biển công cộng"
+    ],
+    "website": "https://ghiencheckin.com/blogs/da-nang/bai-tam-lien-chieu-da-nang-ai-cung-nen-ghe-mot-lan",
+    "openingHours": {
+     "Thứ Năm": "05:00–19:00",
+     "Thứ Sáu": "05:00–19:00",
+     "Thứ Bảy": "05:00–19:00",
+     "Chủ Nhật": "05:00–19:00",
+     "Thứ Hai": "05:00–19:00",
+     "Thứ Ba": "05:00–19:00",
+     "Thứ Tư": "05:00–19:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOovbJEmnWuhwX_lpHyWbmsOjRcOMZjYV5p2lcScPX_tOlExfL9-nd1BNj2d35zm2k8qBVb6OmW3rS1EtKOTDU5yI8BuUFv2QkzyBCyZKhjl0f6FeND4C8wDjBM7AePgXR3voQb",
+    "cid": "4330726239558322072",
+    "fid": "0x314218c89fccd181:0x3c19d491d8564798",
+    "placeId": "ChIJgdHMn8gYQjERmEdW2JHUGTw"
+   },
+   {
+    "position": 18,
+    "title": "Bãi biển Nguyễn Tất Thành",
+    "address": "35GG+V96, Thanh Khê, Đà Nẵng, Việt Nam",
+    "latitude": 16.077154999999998,
+    "longitude": 108.1758898,
+    "rating": 4.3,
+    "ratingCount": 7,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch"
+    ],
+    "website": "http://toplistdulich.com/",
+    "thumbnailUrl": "https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid=yhXF2Hlv6H6XQK-ceJ2y8Q&cb_client=search.gws-prod.grass&w=80&h=92&yaw=23.908892&pitch=0&thumbfov=100",
+    "cid": "10677893904071682898",
+    "fid": "0x3142190002764ec5:0x942f7fee8d806b52",
+    "placeId": "ChIJxU52AgAZQjERUmuAje5_L5Q"
+   },
+   {
+    "position": 19,
+    "title": "Bãi Biển làng vân",
+    "address": "545P+4JG Vịnh, Hải Vân, Đà Nẵng, Việt Nam",
+    "latitude": 16.157816699999998,
+    "longitude": 108.1365727,
+    "rating": 3.8,
+    "ratingCount": 126,
+    "type": "Thắng cảnh",
+    "types": [
+     "Thắng cảnh"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMfdRV6fcuaXLsJ192iqV_wqu3O7aylCiyYjDwvfbyHyp4m-EAFp9sHDAcRe-vymRn4lROmVeIpl63titJsuKr1bt_2Gr2C4TBOuJZIrr03BOau11W0xl8ayy1zjEhl2TDndL51",
+    "cid": "13543873133925258053",
+    "fid": "0x314221eed6560faf:0xbbf580db56925345",
+    "placeId": "ChIJrw9W1u4hQjERRVOSVtuA9bs"
+   },
+   {
+    "position": 20,
+    "title": "Biển Thanh Bình",
+    "address": "Ông Ích Khiêm, Khu đô thị Đa Phước, Hải Châu, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0808998,
+    "longitude": 108.20690649999999,
+    "rating": 3.6,
+    "ratingCount": 56,
+    "type": "Bãi biển",
+    "types": [
+     "Bãi biển"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPPKuipQWPf2kKZZM7H1nGg378VJwadIAyUq4izSRsILcMNmAzuu1T0Y6VRRu-VlXU5dLI5QiApOd-YroJf-WtKcQie3ttBhgZ0QHYia97zP282SnIk8P8lFFsmlE132hsO7Al_",
+    "cid": "18212785330871857613",
+    "fid": "0x314218510964c553:0xfcc0cfc3510ff1cd",
+    "placeId": "ChIJU8VkCVEYQjERzfEPUcPPwPw"
+   }
+  ],
+  "credits": 3
+ }
+}

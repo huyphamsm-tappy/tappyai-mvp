@@ -1,0 +1,30 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Nhà Sàn Núi Dinh\" OR \"TROY HOTEL\" OR \"Khách sạn Baly Hotel\" Núi Dinh, Bà Rịa site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T08:10:10.178Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Nhà Sàn Núi Dinh\" OR \"TROY HOTEL\" OR \"Khách sạn Baly Hotel\" Núi Dinh, Bà Rịa site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "hè 2026 : suối tiên",
+    "link": "https://www.tiktok.com/@mairupy24/video/7648978226445929749",
+    "snippet": "- Khu vực: Núi Dinh, gần Bà Rịa — Vũng Tàu; liên ... Những gì người đến thường tìm - \"Nhà sàn Núi Dinh\": nơi nghỉ, điểm dừng chân gần suối. ... Suối Tiên Núi Dinh, ...",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

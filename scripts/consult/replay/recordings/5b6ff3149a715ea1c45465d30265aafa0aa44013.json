@@ -1,0 +1,82 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Set quà tặng cà phê cao cấp - máy xay cầm tay cổ điển kèm cốc sứ, thiệp viết site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T08:08:45.781Z",
+ "body": {
+  "searchParameters": {
+   "q": "Set quà tặng cà phê cao cấp - máy xay cầm tay cổ điển kèm cốc sứ, thiệp viết site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Phin số 7 chất liệu thép không gỉ inox 430 quai cong nắp tròn ...",
+    "link": "https://h5.lazada.vn/products/phin-so-7-chat-lieu-thep-khong-gi-inox-430-quai-cong-nap-tron-chan-thuong-i2074324909.html",
+    "snippet": "Phin siêu lọc số 7 chất liệu inox 430 bền đẹp, thiết kế quai cong tiện lợi, lý tưởng cho việc pha cà phê cao cấp. Nắp tròn chặn thường chắc chắn, ...",
+    "position": 1
+   },
+   {
+    "title": "[QUÀ TẶNG NHẬP KHẨU ] Máy Xay Tay Cà Phê Cổ BE ...",
+    "link": "https://www.lazada.vn/products/qua-tang-nhap-khau-may-xay-tay-ca-phe-co-be-8701-1-may-xay-ca-phe-bang-tay-va-go-thu-cong-may-xay-ca-phe-quay-tay-phong-cach-co-dien-dung-cu-xay-cafe-thu-cong-bang-go-di-dong-co-the-dieu-chinh-i2187338559.html?srsltid=AU7gw4XgbgvvCdNRiWylM9IHQoK53IZP5lPWQUJPQzoobNcGWY_66Sy_",
+    "snippet": "Chất liệu: Gang (sắt) , Gỗ · Công dụng: xay cà phê hạt · Điều chỉnh độ mịn: Có · Cối xay: 50g · Chứa: 50g · Kích cỡ: 26x15x15cm · Khối lượng: 2.2 kg ...",
+    "rating": 4.6,
+    "ratingCount": 20,
+    "position": 2
+   },
+   {
+    "title": "(HỘP QUÀ TẶNG) Cà Phê Sáng Tạo 8 Trung Nguyên",
+    "link": "https://www.lazada.vn/products/hop-qua-tang-ca-phe-sang-tao-8-trung-nguyen-combo-san-pham-trung-nguyen-i1273451148.html?srsltid=AU7gw4V2yfVmIr0WyMVBLhnV78wzKc7Y7mJrVsPem7yVHhyy0R2KXehp",
+    "snippet": "Hộp quà tặng cà phê sáng tạo Trung Nguyên với 8 hộp 500g, gồm cà phê pha phin chất lượng cao và kẹp phin cao cấp. Sản phẩm gồm tổng cộng 16 bánh cà phê, ...",
+    "rating": 4.2,
+    "ratingCount": 11,
+    "position": 3
+   },
+   {
+    "title": "[Thích Hợp Làm quà Tặng] Bộ Cốc Chưng Yến Hâm Nóng ...",
+    "link": "https://www.lazada.vn/products/thich-hop-lam-qua-tang-bo-coc-chung-yen-ham-nong-do-uong-bang-su-coc-su-lam-nong-tu-dong-dun-cafe-chung-yen-cao-cap-i2206656652.html?srsltid=AU7gw4V9AoIxQB-DuI5PpckvcXQmKMmrGNXc85IwQMrGqfg6FOamGW8T",
+    "snippet": "Bộ cốc chưng yến sứ cao cấp với chức năng làm nóng tự động, phù hợp làm quà tặng. Cốc sứ đun cafe chưng yến chất liệu cao cấp, thiết kế tiện lợi, ...",
+    "rating": 5,
+    "ratingCount": 5,
+    "position": 4
+   },
+   {
+    "title": "Cối Xay Cà Phê Bằng Gỗ Hạt Quay Tay Cổ Điển Tiện Lợi",
+    "link": "https://www.lazada.vn/products/coi-xay-ca-phe-bang-go-hat-quay-tay-co-dien-tien-loi-i2209627901.html?srsltid=AU7gw4X-V_rQGHE-Zmyfp1Smawr_bG1_RLgDzeFnRblKpMZv6vMstX0t",
+    "snippet": "Cối xay cà phê bằng gỗ tiện lợi với ren thép không gỉ, thiết kế cổ điển và tinh tế. Máy xay cà phê cầm tay có máng đựng hạt kiểu bát, giúp theo dõi quá trình ...",
+    "rating": 4.8,
+    "ratingCount": 6,
+    "position": 5
+   },
+   {
+    "title": "Hộp Quà Tết Cao Cấp, Set Quà Tặng Cà phê Đặc sản",
+    "link": "https://www.lazada.vn/products/hop-qua-tet-cao-cap-set-qua-tang-ca-phe-dac-san-comnbo-cafe-nguyen-chat-hoa-tan-kem-phin-ly-tu-message-coffee-i2556663447.html?srsltid=AU7gw4U_OgyU4l01jGdgovt2384ykfrq9pWSHOon2MMzA_z6bwA6qlWq",
+    "snippet": "THIẾT KẾ HỘP QUÀ: Hộp Quà Đặc Sản là Là những tinh hoa được Message Coffee gói ghém từ vụ mùa mới. Hộp quà sử dụng sắc xanh chủ đạo tượng trưng ...",
+    "date": "20 thg 1, 2024",
+    "position": 6
+   },
+   {
+    "title": "Máy Xay Cà Phê Cầm Tay Bằng Gỗ Cổ Điển ...",
+    "link": "https://www.lazada.vn/products/may-xay-ca-phe-cam-tay-bang-go-co-dien-may-xay-ca-phe-bang-tay-coi-xay-hat-ca-phe-bang-gom-dung-cu-nha-bep-mini-i1610512045.html?srsltid=AU7gw4XwxMTZl1sxmJgv6U9_gPcp7v_B7ySOqQb9MOqjH-RmKj_vzVBG",
+    "snippet": "Mô tả sản phẩm · Màu sắc: Như hình ảnh hiển thị · Kích thước: xấp xỉ 16x9.5cm · Mài lõi: Gốm sứ · Vật liệu thân máy: Gỗ + thép.",
+    "position": 7
+   },
+   {
+    "title": "Bincoo ấm moka Quà Tặng bộ hộp van duy nhất Bình ...",
+    "link": "https://www.lazada.vn/products/bincoo-am-moka-qua-tang-bo-hop-van-duy-nhat-binh-dung-ca-phe-may-pha-ca-phe-espresso-cho-ngay-le-va-sinh-nhat-mon-qua-tot-nhat-2-ly-3-ly-i2941653641.html?srsltid=AU7gw4W2GuHrOtmbUR7-RPOV_oaUpG4WFyxPXzZQKd6gMeM6txUTfElZ",
+    "snippet": "Bincoo Đầm cà phê Búa tay cầm đàn hồi điền Máy xay bột (51/. 519.957 ₫ · Bincoo tách cà phê cổ điển sáng tạo cốc gốm và đĩa đặt ý Latte cup.",
+    "date": "23 thg 12, 2024",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

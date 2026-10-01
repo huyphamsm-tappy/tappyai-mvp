@@ -6,26 +6,36 @@ chỉ có ở nhánh Phase 8 (đã đỗ) — tệp này mới là bản của r
 🔐 = bước cần đăng nhập tài khoản của Huy. Claude KHÔNG đọc giá trị bí mật nào; chỉ kiểm TÊN biến khi anh yêu cầu.
 Không có bước nào dưới đây được làm trước khi Huy báo "OK release".
 
-## 1. Quyết định của Huy — TRƯỚC khi upload AAB lên Play
+## 1. XOÁ TÀI KHOẢN — BẬT KHI RELEASE (Huy quyết 01/10) — làm đúng thứ tự, mỗi bước xác nhận rồi mới sang bước sau
 
-**`ACCOUNT_SELF_DELETE_ENABLED` (Production, mặc định TẮT).** Đổi chữ trong app, nên phải chốt trước khi dựng/gửi AAB.
+**Quyết định:** người dùng bấm xoá trong app thì tài khoản bị XOÁ LUÔN (không gửi email). Cờ `ACCOUNT_SELF_DELETE_ENABLED` = `true` trên production, **chỉ sau khi Huy báo "OK release"**.
 
-| | Cờ TẮT | Cờ BẬT |
-|---|---|---|
-| Hàng trong Cài đặt → Khác | «Yêu cầu xóa tài khoản» | «Xóa tài khoản» |
-| Bấm vào | hộp xác nhận → mở email tới hỗ trợ; KHÔNG xoá, KHÔNG đăng xuất | trang liệt kê dữ liệu bị xoá → gõ **XÓA** → xoá NGAY → đăng xuất |
-| Tệp ảnh/video/âm thanh | người vận hành xoá theo runbook `docs/ops/ACCOUNT-DELETION.md` | cron 01:45 VN, trong 48 giờ |
+### 1a. D1, D2, D4 là gì — nói bằng tiếng thường
+Khi một người dùng bị xoá, hệ thống chỉ xoá sạch phần dữ liệu nào đã được «nối dây» với tài khoản đó. Ba migration này nối nốt những dây còn thiếu:
+- **D1** — bảng «bộ nhớ AI» của từng người từng bị tạo tay trên production, kiểu dữ liệu sai và KHÔNG nối dây vào tài khoản. Xoá tài khoản xong, bộ nhớ AI (chuyện riêng tư người đó từng kể) **vẫn nằm lại và không ai thấy để dọn**. D1 sửa kiểu dữ liệu và nối dây (đồng thời xoá các dòng mồ côi đã có từ trước).
+- **D2** — hai bảng nhỏ nữa (lưu kết quả tìm kiếm của một cuộc tư vấn, đếm lượt chat của khách) cũng chưa nối dây; xoá tài khoản thì chúng ở lại. D2 chỉ thêm hai sợi dây, không xoá gì.
+- **D4** — chốt phần còn lại của lời hứa «xoá thật»: (i) trang kết quả đã chia sẻ công khai và thông báo mang tên người đó gửi cho người khác sẽ bị xoá theo (trước đây chỉ bị «bỏ tên»); (ii) tạo «chuông báo» tự động: mỗi khi một tài khoản bị xoá, hệ thống xếp việc xoá **ảnh, video, âm thanh đã tải lên** (nằm ở kho lưu trữ tệp, không nằm trong cơ sở dữ liệu) và thu hồi quyền Google Lịch. Không có chuông này thì tệp media **không bao giờ bị dọn**.
+- **Vì sao bị loại khỏi lần release 29/09:** Huy hoãn vì lúc đó cờ xoá tài khoản để TẮT (xoá bằng email), nên chưa cần; thêm nữa production dùng gói Supabase Free **không có sao lưu tự động**, và D1 xoá dữ liệu mồ côi nên cần sao lưu trước.
+- **Các «dây liên kết» có đúng là phần dọn dữ liệu khi xoá không?** Có. UAT từng đo thiếu đúng chỗ đó (bộ nhớ AI và kết quả tư vấn còn lại sau khi xoá tài khoản thử).
+- **Nếu BẬT cờ khi chưa áp cả ba:** (1) một số bảng chặn việc xoá → người dùng bấm xoá thấy lỗi, tài khoản còn nguyên; (2) dữ liệu mồ côi ở lại (bộ nhớ AI, kết quả tư vấn); (3) ảnh/video/âm thanh KHÔNG bị dọn, trang chia sẻ công khai vẫn mở được; (4) cron dọn tệp báo lỗi 500. Tức là «xoá vĩnh viễn» sẽ là lời hứa không giữ được ⇒ KHÔNG bật khi chưa áp.
+- **Đưa vào nhóm áp lúc release: CÓ** — vì cần thiết để xoá đúng. Thứ tự: D1 → D2 → D4. Mỗi file có rollback ở `supabase/migrations/rollback/` (`20260911b_user_memory_auth_fk_rollback.sql`, `20260925_account_deletion_cascade_gaps_rollback.sql`, `20260925c_account_deletion_f096_rollback.sql`). **Đã áp và thử trên DB audit (UAT) — đo 01/10 chỉ-đọc:** `user_memory.user_id` = uuid có dây cascade; hai khoá D2 cascade và đã validate; trigger `trg_enqueue_account_deletion` có; `shared_results.owner_id` và `notifications.actor_id` cascade; bảng `account_deletion_jobs` có.
+- **Rủi ro khi áp trên production:** (i) D1 đổi kiểu cột và XOÁ các dòng mồ côi — không hoàn lại được ⇒ **bắt buộc sao lưu `pg_dump` trước** (DEPLOY-CHECKLIST §0); (ii) cần bảng khoá ngắn trên `user_memory` khi đổi kiểu — làm lúc ít người dùng; (iii) D2 có thể để khoá ở trạng thái «NOT VALID» nếu còn dòng mồ côi (không hỏng, chỉ cảnh báo); (iv) áp sai thứ tự (D2 trước D1) vi phạm điều kiện của file.
 
-- 🛑 **Kiểm D1/D2/D4 đã áp trên production TRƯỚC khi quyết bật cờ** (đo bằng SQL, chỉ đọc):
-  - **D1** `20260911b_user_memory_auth_fk`: `user_memory.user_id` đổi `text → uuid` + khoá ngoại CASCADE tới `auth.users` (xoá cả hàng mồ côi). Kiểm: `select data_type from information_schema.columns where table_name='user_memory' and column_name='user_id'` phải là `uuid`.
-  - **D2** `20260925_account_deletion_cascade_gaps`: hai khoá ngoại còn thiếu `decision_evidence_owner_id_fkey`, `anon_chat_usage_user_id_fkey` → CASCADE. Kiểm: `select conname from pg_constraint where conname in ('decision_evidence_owner_id_fkey','anon_chat_usage_user_id_fkey')` phải trả 2 hàng.
-  - **D4** `20260925c_account_deletion_f096`: đổi hành động của các khoá ngoại còn lại (F-096: `confdeltype` từ `n` sang cascade) **và** tạo trigger `trg_enqueue_account_deletion` (xếp việc dọn tệp ảnh/video/âm thanh + thu hồi Google Lịch vào `account_deletion_jobs`). Kiểm: `select tgname from pg_trigger where tgname='trg_enqueue_account_deletion'` phải có 1 hàng.
-  - Tất cả đều ĐÃ HOÃN ở bản release 29/09 (RELEASE-PLAN §1; cờ để TẮT) và có file rollback ở `supabase/migrations/rollback/`. Hệ quả nếu BẬT cờ khi chưa áp: (i) `auth.admin.deleteUser` có thể **thất bại** vì khoá ngoại không cascade → người dùng bấm xoá thấy lỗi «Chưa xóa được tài khoản» (tài khoản còn nguyên); (ii) bảng không cascade để lại **dữ liệu mồ côi**; (iii) không có trigger ⇒ **ảnh/video/âm thanh đã tải lên KHÔNG bị dọn** và cron `/api/cron/account-deletion-jobs` báo 500. Tức là không an toàn để bật cờ khi chưa áp cả ba — và cần backup trước khi áp (DEPLOY-CHECKLIST §0: production Free, không có backup tự động; D1 xoá hàng mồ côi).
-- Google Play (https://support.google.com/googleplay/android-developer/answer/13327111): app cho tạo tài khoản trong app phải có
-  đường xoá TRONG app **và** link web để yêu cầu xoá; email/biểu mẫu được chấp nhận cho phần web; vô hiệu hoá/đóng băng không tính.
-  Một app chỉ mở email có nguy cơ bị từ chối ở khai báo Data deletion. **Đề xuất của Claude: BẬT.** (Đây là đề xuất, quyết định là của Huy.)
-- Cách bật: 🔐 Vercel → tappyai-mvp → Settings → Environment Variables → thêm `ACCOUNT_SELF_DELETE_ENABLED` = `true`, môi trường **Production** → Save → redeploy production (biến chỉ có hiệu lực ở bản deploy mới).
-- Cờ chỉ có giá trị đúng chữ `true`. Kiểm sau deploy: `GET /api/config` → `flags.accountSelfDelete: true`.
+### 1b. Thứ tự PHẦN B (production) — chỉ sau "OK release"
+1. Sao lưu production (§0 DEPLOY-CHECKLIST).
+2. Áp D1 → D2 → D4; sau mỗi file chạy câu kiểm tương ứng (bên dưới) và ghi kết quả.
+3. Bật `ACCOUNT_SELF_DELETE_ENABLED=true` (Vercel Production) → redeploy → `GET /api/config` phải có `flags.accountSelfDelete: true`.
+4. **XOÁ THỬ** bằng MỘT trong hai tài khoản test production (`qa.release.a@tappyai.com` hoặc `…b`), tài khoản đã có dữ liệu mẫu (chat, địa điểm đã lưu, ảnh): **đếm trước** (hàng: chat, địa điểm lưu, review, bộ nhớ AI, kết quả tư vấn; tệp: số object của user trong bucket) → xoá trong app (gõ XÓA) → **đếm sau** (hàng = 0; tệp = 0 sau khi cron `account-deletion-jobs` chạy, tối đa 48 giờ; chạy tay cron để kiểm ngay).
+5. Chỉ khi bước 4 qua mới báo release xong. Không qua → tắt cờ lại, báo Huy.
+- Câu kiểm: D1 `select data_type from information_schema.columns where table_name='user_memory' and column_name='user_id'` = `uuid`; D2 `select conname from pg_constraint where conname in ('decision_evidence_owner_id_fkey','anon_chat_usage_user_id_fkey')` = 2 hàng; D4 `select tgname from pg_trigger where tgname='trg_enqueue_account_deletion'` = 1 hàng.
+
+### 1c. Chữ cảnh báo trên màn xác nhận (nguyên văn Huy)
+VI: «Xóa tài khoản vĩnh viễn? Toàn bộ dữ liệu của bạn sẽ bị xóa ngay và không thể khôi phục: lịch sử chat, địa điểm đã lưu, bài đăng, ảnh và clip. **[chỉ khi đang có gói trả phí]** Gói trả phí và credit còn lại sẽ mất, Tappy không hoàn lại phần chưa dùng. Xóa tài khoản không tự hủy gói trên App Store hoặc Google Play, bạn cần hủy gói ở đó để không bị tính phí tiếp. Gõ XÓA để xác nhận.»
+EN: «Delete your account permanently? All your data will be deleted immediately and cannot be recovered: chat history, saved places, posts, photos and clips. **[only when you have a paid plan]** Your paid plan and any remaining credit will be lost, and Tappy does not refund the unused part. Deleting your account does not cancel your subscription on the App Store or Google Play — cancel it there so you are not charged again. Type DELETE to confirm.»
+- Web: đoạn gói chỉ hiện khi `subscriptions.status = 'active'` (dữ liệu có sẵn, đã dùng cho huy hiệu Premium) — không thêm field.
+- Android/iOS: chỉ sửa CHỮ (xem ANDROID-REQUESTS R29, IOS-REQUESTS I-5). Server biết gói, app có thể chưa biết ⇒ app dùng bản chung «Nếu bạn đang có gói trả phí, gói và credit còn lại sẽ mất …» nếu không có dữ liệu gói; KHÔNG đổi hợp đồng.
+- Về hoàn tiền: câu «Tappy không hoàn lại phần chưa dùng» và «việc hoàn tiền (nếu có) do App Store/Google Play quyết theo chính sách của họ» **cần người am hiểu quy định bảo vệ người tiêu dùng xem lại** (việc của Huy).
+- Nút xoá kín đáo (hàng chữ thường cuối mục «Khác»), trang web `/delete-account` (link cho Google Play) vẫn hoạt động: nói cách xoá trong app hoặc liên hệ support@tappyai.com.
 
 ## 2. Đăng video lên production (PHẦN B-a)
 

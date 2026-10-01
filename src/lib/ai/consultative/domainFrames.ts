@@ -9,6 +9,8 @@
 // hour, price, rating or venue the evidence does not carry. Unaccented like the rulebook; the
 // headings and examples carry diacritics because the user reads them.
 
+import { voicePickShape } from './styleLuna6'
+
 export type FrameDomain = 'food' | 'shopping' | 'travel' | 'entertainment' | 'spa' | 'main'
 export type FrameTurn = 'pick' | 'followup' | 'compare' | 'more' | 'reject' | 'plan'
 
@@ -94,7 +96,7 @@ export function buildDomainFrame(domain: FrameDomain, turn: FrameTurn = 'pick'):
   let body: string
   if (domain === 'main') body = MAIN
   else if (turn === 'plan') body = `${PLAN_HEAD}\nTIEU DE BAT BUOC — ${domain.toUpperCase()}: ${PLAN_HEADINGS[domain].map(h => `"${h}"`).join(' · ')}\nNOI DUNG: ${PLAN_NOTES[domain]}`
-  else if (turn === 'pick') body = `${PICK_SHAPE}\n${PICK[domain]}`
+  else if (turn === 'pick') body = `${voicePickShape(PICK_SHAPE)}\n${PICK[domain]}`
   else body = `${FOLLOW[turn]}\n${PICK[domain].split('\n')[0]}`
   return `\n\n===== KHUNG TU VAN — ${domain.toUpperCase()} / ${turn.toUpperCase()} =====\n${body}\n${FRAME_CORE}\n=====================================`
 }
@@ -109,7 +111,7 @@ export function frameLibrary(domain: FrameDomain): string {
   const D = domain.toUpperCase()
   return [
     `===== THU VIEN KHUNG TU VAN — ${D} (luot nay chi dung MOT khung: xem dong "KHUNG AP DUNG" o cuoi) =====`,
-    `--- ${D} / PICK ---\n${PICK_SHAPE}\n${PICK[domain]}`,
+    `--- ${D} / PICK ---\n${voicePickShape(PICK_SHAPE)}\n${PICK[domain]}`,
     ...(['followup', 'compare', 'more', 'reject'] as const).map(t => `--- ${D} / ${t.toUpperCase()} ---\n${FOLLOW[t]}\n${PICK[domain].split('\n')[0]}`),
     `--- ${D} / PLAN ---\n${PLAN_HEAD}\nTIEU DE BAT BUOC — ${D}: ${PLAN_HEADINGS[domain].map(h => `"${h}"`).join(' · ')}\nNOI DUNG: ${PLAN_NOTES[domain]}`,
     FRAME_CORE,

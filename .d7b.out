@@ -1,0 +1,13 @@
+
+ RUN  v4.1.9 C:/wtrel
+
+
+[replay] scenarios: 86/105 turns passed · 0 crash(es) · mean $0.00335/turn · out: scripts\consult\replay\out\scenarios-2026-10-01T08-06-10-054Z
+
+[replay] realTyping: 27/30 turns passed · 0 crash(es) · mean $0.00327/turn · out: scripts\consult\replay\out\realTyping-2026-10-01T08-13-26-323Z
+
+ Test Files  2 passed (2)
+      Tests  6 passed (6)
+   Start at  15:06:06
+   Duration  580.05s (transform 2.38s, setup 59ms, import 369ms, tests 579.60s, environment 0ms)
+

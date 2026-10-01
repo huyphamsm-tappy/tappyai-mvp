@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Mua Cà Phê Phin Ngon, An Toàn, Chất Lượng, Giá Tốt",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T08:08:17.046Z",
+ "body": {
+  "searchParameters": {
+   "q": "Mua Cà Phê Phin Ngon, An Toàn, Chất Lượng, Giá Tốt",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Địa chỉ mua cà phê phin chất lượng giá tốt",
+    "imageUrl": "https://classiccoffee.com.vn/files/common/dia-chi-mua-ca-phe-phin-chat-luong-gia-tot-uxqbw.jpg",
+    "imageWidth": 900,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6aro_1Zz6XkSL4xUgnIHpw1fJxcHVrW2_pMqmLab2zQ&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "Classic Coffee Gia Lai",
+    "domain": "classiccoffee.com.vn",
+    "link": "https://classiccoffee.com.vn/tin-tuc/dia-chi-mua-ca-phe-phin-chat-luong-gia-tot-261.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fclassiccoffee.com.vn%2Ffiles%2Fcommon%2Fdia-chi-mua-ca-phe-phin-chat-luong-gia-tot-uxqbw.jpg&tbnid=CNq7ZCACUc_DcM&imgrefurl=https%3A%2F%2Fclassiccoffee.com.vn%2Ftin-tuc%2Fdia-chi-mua-ca-phe-phin-chat-luong-gia-tot-261.html&docid=ed0Lb0PrOvkKoM&w=900&h=600",
+    "position": 1
+   },
+   {
+    "title": "Địa chỉ mua cà phê phin chất lượng giá tốt",
+    "imageUrl": "https://classiccoffee.com.vn/files/common/dia-chi-mua-ca-phe-phin-chat-luong-gia-tot-fe3fd.jpg",
+    "imageWidth": 900,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSrgv_RlcXEdPWcPk52rzrFETynnJ4knb9kqrUkWwiIhA&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "Classic Coffee Gia Lai",
+    "domain": "classiccoffee.com.vn",
+    "link": "https://classiccoffee.com.vn/tin-tuc/dia-chi-mua-ca-phe-phin-chat-luong-gia-tot-261.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fclassiccoffee.com.vn%2Ffiles%2Fcommon%2Fdia-chi-mua-ca-phe-phin-chat-luong-gia-tot-fe3fd.jpg&tbnid=ggF5iBochh5miM&imgrefurl=https%3A%2F%2Fclassiccoffee.com.vn%2Ftin-tuc%2Fdia-chi-mua-ca-phe-phin-chat-luong-gia-tot-261.html&docid=ed0Lb0PrOvkKoM&w=900&h=600",
+    "position": 2
+   },
+   {
+    "title": "TOP CÁC DÒNG SẢN PHẨM CÀ PHÊ BỘT CHUYÊN DÙNG CHO PHA PHIN NGON TRONG K |  Fin Coffee",
+    "imageUrl": "https://bizweb.dktcdn.net/thumb/grande/100/460/865/files/chon-min-1-388f54ea-6d19-4743-bb3d-8f2a4eb25380.jpg?v=1716365679270",
+    "imageWidth": 600,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRr8YZo5sxfM7buvquaS6IF3r3Ge7Q1SkuZtVV5yiJzKw&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Fin Coffee",
+    "domain": "fincoffee.vn",
+    "link": "https://fincoffee.vn/top-cac-dong-san-pham-ca-phe-bot-pha-phin-ngon-chuyen-dung-trong-kinh-doanh-ca-phe",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fbizweb.dktcdn.net%2Fthumb%2Fgrande%2F100%2F460%2F865%2Ffiles%2Fchon-min-1-388f54ea-6d19-4743-bb3d-8f2a4eb25380.jpg%3Fv%3D1716365679270&tbnid=B6aMTWdxIVrMwM&imgrefurl=https%3A%2F%2Ffincoffee.vn%2Ftop-cac-dong-san-pham-ca-phe-bot-pha-phin-ngon-chuyen-dung-trong-kinh-doanh-ca-phe&docid=gaW_nJ-lSIvoFM&w=600&h=600",
+    "position": 3
+   },
+   {
+    "title": "Cà Phê Pha Phin Hay Cà Phê Pha Máy Ngon Hơn? - Horecavn",
+    "imageUrl": "https://horecavn.com/wp-content/uploads/2024/05/ca-phe-pha-phin-hay-ca-phe-pha-may-ngon-hon_20240526201322-scaled.jpg",
+    "imageWidth": 1707,
+    "imageHeight": 2560,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSE5aovXQEEKG356cFhqwicIQJx7D0VEcwotYZ-R2XDmw&s=10",
+    "thumbnailWidth": 452,
+    "thumbnailHeight": 678,
+    "source": "Horecavn",
+    "domain": "horecavn.com",
+    "link": "https://horecavn.com/ca-phe-pha-phin-hay-ca-phe-pha-may-ngon-hon.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fhorecavn.com%2Fwp-content%2Fuploads%2F2024%2F05%2Fca-phe-pha-phin-hay-ca-phe-pha-may-ngon-hon_20240526201322-scaled.jpg&tbnid=w9nIigC34jbo0M&imgrefurl=https%3A%2F%2Fhorecavn.com%2Fca-phe-pha-phin-hay-ca-phe-pha-may-ngon-hon.html&docid=BTbCU22f25xwZM&w=1707&h=2560",
+    "position": 4
+   },
+   {
+    "title": "Cà phê pha phin ngon đậm kẹo thơm béo a/c nào mua ib e ạ",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=122176945760828771",
+    "imageWidth": 1280,
+    "imageHeight": 854,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2cIP-kL-Zy3MRtfjky2C6nxOgCHH6d9XU5eTkOVdziA&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/groups/caphe.hlt.vn/posts/4465545083686327/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D122176945760828771&tbnid=4YsQWF2Vmes0rM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Fgroups%2Fcaphe.hlt.vn%2Fposts%2F4465545083686327%2F&docid=yxFcMUaFwAoQrM&w=1280&h=854",
+    "position": 5
+   },
+   {
+    "title": "Cà phê chế phin số 1 - Cafe rang xay Trung Nguyên",
+    "imageUrl": "https://drive.gianhangvn.com/image/ca-phe-che-phin-1-trung-nguyen-500-gram-750359j12208.jpg",
+    "imageWidth": 484,
+    "imageHeight": 486,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR942dpGtRX9pzVdR9Ek6SNfH7Yq1uotkqef14vTk-jJA&s=10",
+    "thumbnailWidth": 446,
+    "thumbnailHeight": 448,
+    "source": "Cà phê Trung Nguyên",
+    "domain": "bancaphetrungnguyen.com",
+    "link": "https://bancaphetrungnguyen.com/ca-phe-che-phin-1-trung-nguyen-500-gram-275910.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdrive.gianhangvn.com%2Fimage%2Fca-phe-che-phin-1-trung-nguyen-500-gram-750359j12208.jpg&tbnid=e_52okAHkm7eNM&imgrefurl=https%3A%2F%2Fbancaphetrungnguyen.com%2Fca-phe-che-phin-1-trung-nguyen-500-gram-275910.html&docid=ClLppdedbilbQM&w=484&h=486",
+    "position": 6
+   },
+   {
+    "title": "TOP CÁC DÒNG SẢN PHẨM CÀ PHÊ BỘT CHUYÊN DÙNG CHO PHA PHIN NGON TRONG K |  Fin Coffee",
+    "imageUrl": "https://bizweb.dktcdn.net/thumb/grande/100/460/865/files/db-min.png?v=1716367205730",
+    "imageWidth": 600,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScRlptdvsV3NGJXO-w4aCKzTtdxKpdqg1kJgw38P5s4A&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Fin Coffee",
+    "domain": "fincoffee.vn",
+    "link": "https://fincoffee.vn/top-cac-dong-san-pham-ca-phe-bot-pha-phin-ngon-chuyen-dung-trong-kinh-doanh-ca-phe",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fbizweb.dktcdn.net%2Fthumb%2Fgrande%2F100%2F460%2F865%2Ffiles%2Fdb-min.png%3Fv%3D1716367205730&tbnid=AqX9jz7CbkKuqM&imgrefurl=https%3A%2F%2Ffincoffee.vn%2Ftop-cac-dong-san-pham-ca-phe-bot-pha-phin-ngon-chuyen-dung-trong-kinh-doanh-ca-phe&docid=gaW_nJ-lSIvoFM&w=600&h=600",
+    "position": 7
+   },
+   {
+    "title": "Cafe phin mọi người hay dùng loại cà phê brand nào ngon vậy ạ?",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=1011291731964686",
+    "imageWidth": 1535,
+    "imageHeight": 1024,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQqdRciYwg0KxnK6RZE4BxWi6ziKFQ9ecQvTwS0Nef-HA&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/groups/221125859179616/posts/1462386451720211/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D1011291731964686&tbnid=B6KaXqHCWFVlaM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Fgroups%2F221125859179616%2Fposts%2F1462386451720211%2F&docid=nlgH7L9SAVQmsM&w=1535&h=1024",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

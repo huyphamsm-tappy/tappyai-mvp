@@ -1,0 +1,36 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Hộp Quà Cà Phê Legend Awakening, Kèm Ly Bã Cà Phê, Quà Tặng Cho Nam site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T08:08:03.796Z",
+ "body": {
+  "searchParameters": {
+   "q": "Hộp Quà Cà Phê Legend Awakening, Kèm Ly Bã Cà Phê, Quà Tặng Cho Nam site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Combo quà tặng cà phê Kafela Coffee 100% Robusta ...",
+    "link": "https://h5.lazada.vn/products/combo-qua-tang-ca-phe-kafela-coffee-100-robusta-hoac-blend-kem-phin-pha-ca-phe-cao-cap-250g-i1754682865.html",
+    "snippet": "- Vị đắng êm, ngọt, hơi chua nhẹ. Hậu vị đắng êm, ngọt nhẹ. - Ứng dụng: Dùng để pha phin, phù hợp với người có gu cà phê mạnh. 2. TẠI SAO QUÝ KHÁCH NÊN MUA HÀNG ...",
+    "position": 1
+   },
+   {
+    "title": "Cà phê phin giấy túi lọc Kafela Drip Coffee",
+    "link": "https://www.lazada.vn/products/ca-phe-phin-giay-tui-loc-kafela-drip-coffee-i1671239852.html?srsltid=AU7gw4VIt1J3fyiadceeMmecU8CgGYm1CnWBX956mqbdHUd931F7uZ6M",
+    "snippet": "Cà phê phin giấy túi lọc Kafela Drip Coffee. Nguồn gốc: Cầu Đất - Đà Lạt - Lâm Đồng. Chế biến: Theo phương pháp sơ chế ướt. Thành phần: 100% cà phê rang xay ...",
+    "position": 2
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Xôi Xéo Bà 3 Béo\" OR \"Dzai Nhân Quán\" OR \"Kim Quán\" Quận 7 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T08:13:53.206Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Xôi Xéo Bà 3 Béo\" OR \"Dzai Nhân Quán\" OR \"Kim Quán\" Quận 7 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Xôi Xéo Bà 3 Béo Quận 7: 15K Xôi Ngô, Topping 7 Món",
+    "link": "https://www.tiktok.com/@vyvivuuu/video/7481299412853984520",
+    "snippet": "Xôi xéo Bà 3 Béo là một trong những quán xôi quen thuộc được nhắc đến khi tìm món ăn ngon ở Quận 7. Quán nổi tiếng với phần xôi xéo giá chỉ ...",
+    "position": 1
+   },
+   {
+    "title": "Xôi Cua Ngon Nhất Sài Gòn Tại Kim Quán Quận 7",
+    "link": "https://www.tiktok.com/@vo_oanh_vu/video/7256693117808610566",
+    "snippet": "### Kết Luận Với hương vị độc đáo, nguyên liệu tươi ngon và không gian sang trọng, Kim Quán chắc chắn là một điểm đến lý tưởng cho những ai yêu ...",
+    "position": 2
+   },
+   {
+    "title": "Khám Phá Xôi Cua Kim Quán Tại Quận 7",
+    "link": "https://www.tiktok.com/@diancungquoc/video/7621185169541713170",
+    "snippet": "Khám Phá Xôi Cua Kim Quán Tại Quận 7. Tham gia cùng Quốc trải nghiệm Xôi Cua Kim Quán, nơi kết hợp tuyệt vời giữa đặc sản và kỹ thuật nấu nướng!",
+    "position": 3
+   },
+   {
+    "title": "Khám Phá Xôi Xéo Bà 3 Béo Tại Quận 7",
+    "link": "https://www.tiktok.com/@livinpmh/video/7561090378582019329",
+    "snippet": "52 Lượt thích,Video TikTok từ Livin PMH (@livinpmh): \"Xôi xéo Bà 3 Béo tại quận 7 là món ăn hấp dẫn không thể bỏ qua cho bữa trưa!",
+    "position": 4
+   },
+   {
+    "title": "Review Xôi Cua Kim Quán Của Nghệ Sĩ Kim Thư",
+    "link": "https://www.tiktok.com/@babungbuhlys/video/7506501922606615816",
+    "snippet": "Khám Phá Xôi Cua Kim Quán Tại Quận 7. Tham gia cùng Quốc trải nghiệm Xôi Cua Kim Quán, nơi kết hợp tuyệt vời giữa đặc sản và kỹ thuật nấu nướng!",
+    "position": 5
+   },
+   {
+    "title": "Thưởng Thức Xôi Xéo Bà 3 Béo Tại Quận 2",
+    "link": "https://www.tiktok.com/@crislei168/video/7281250623515888898",
+    "snippet": "Xôi xéo bà 3 Béo - CN mới 37 Nguyễn Quý Đức, Q2. Chỉ từ 15 xiền là có thể thưởng thức được món xôi nức danh và chuẩn bị Bắc rồi. #crislei246 # ...",
+    "position": 6
+   },
+   {
+    "title": "Khám Phá Xôi Vò Cốm và Chè Hoa Cau Ở Quận 7",
+    "link": "https://www.tiktok.com/@xoixeoba3beo204/video/7476081267109285127",
+    "snippet": "Tìm hiểu các địa điểm ẩm thực ngon với Xôi Vò Cốm và Chè Hoa Cau. @Xôi Xéo Bà 3 Béo.",
+    "position": 7
+   },
+   {
+    "title": "Xôi chè gì hong mí bà 😘#fyp #saigon #xoixeoba3beo ...",
+    "link": "https://www.tiktok.com/@xoixeoba3beo204/video/7679468566713847041",
+    "snippet": "âm thanh gốc - Xôi Xéo Bà 3 Béo ... Khi nhắc đến những món ăn ngon tại Sài Gòn, không thể bỏ qua món xôi xéo. Đặc biệt, có một quán xôi xéo được ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

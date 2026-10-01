@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "quà tặng bạn trai thích cà phê (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T08:08:29.670Z",
+ "body": {
+  "searchParameters": {
+   "q": "quà tặng bạn trai thích cà phê (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Những người yêu thích cà phê Quà tặng cho nam giới ...",
+    "link": "https://shopee.vn/Nh%E1%BB%AFng-ng%C6%B0%E1%BB%9Di-y%C3%AAu-th%C3%ADch-c%C3%A0-ph%C3%AA-Qu%C3%A0-t%E1%BA%B7ng-cho-nam-gi%E1%BB%9Bi-%C4%90%E1%BB%99ng-v%E1%BA%ADt-t%C3%ADch-c%E1%BB%B1c-M%C3%B3c-trang-tr%C3%AD-c%E1%BB%91c-c%C3%A0-ph%C3%AA-Espresso-M%C3%B3n-qu%C3%A0-vui-nh%E1%BB%99n-d%E1%BB%85-th%C6%B0%C6%A1ng-cho-b%E1%BA%A1n-b%C3%A8-B%E1%BA%A1n-trai-B%E1%BA%A1n-g%C3%A1i-M%E1%BA%B9-B%E1%BB%91-%C4%90%E1%BB%93ng-nghi%E1%BB%87p-%C4%90%C3%A1nh-gi%C3%A1-sinh-nh%E1%BA%ADt-i.1900992958.50614922780",
+    "snippet": "Những người yêu thích cà phê Quà tặng cho nam giới, Động vật tích cực Móc trang trí cốc cà phê Espresso, Món quà vui nhộn dễ thương cho bạn bè, Bạn trai, ...",
+    "position": 1
+   },
+   {
+    "title": "Quà tặng bạn trai ý nghĩa, thiết thực",
+    "link": "https://shopee.vn/list/qu%C3%A0%20t%E1%BA%B7ng/b%E1%BA%A1n%20trai",
+    "snippet": "Nên tặng quà gì cho bạn trai yêu công nghệ? Đối với các chàng trai mê công nghệ, những sản phẩm như đồng hồ thông minh, tai nghe chống ồn, bàn phím cơ hoặc ...",
+    "position": 2
+   },
+   {
+    "title": "Quà Tặng Sinh Nhật Cho Nàng Him Nam Nữ Bạn Gái ...",
+    "link": "https://shopee.vn/Qu%C3%A0-T%E1%BA%B7ng-Sinh-Nh%E1%BA%ADt-Cho-N%C3%A0ng-Him-Nam-N%E1%BB%AF-B%E1%BA%A1n-G%C3%A1i-B%E1%BA%A1n-Trai-T%C3%ADch-C%E1%BB%B1c-M%C3%B3c-C%C3%A0-Ph%C3%AA-Trang-Tr%C3%AD-B%C3%A0n-L%C3%A0m-Vi%E1%BB%87c-D%E1%BB%85-Th%C6%B0%C6%A1ng-Nh%E1%BB%8F-C%C3%A0-Ph%C3%AA-Ng%C6%B0%E1%BB%9Di-Y%C3%AAu-Qu%C3%A0-T%E1%BA%B7ng-Cho-Ng%C6%B0%E1%BB%9Di-B%E1%BA%A1n-Th%C3%A2n-Nh%E1%BA%A5t-C%E1%BA%B7p-V%E1%BB%A3-Ch%E1%BB%93ng-i.1810449983.57059565537",
+    "snippet": "Quà Tặng Sinh Nhật Cho Nàng Him Nam Nữ Bạn Gái Bạn Trai, Tích Cực Móc Cà Phê Trang Trí Bàn Làm Việc, Dễ Thương Nhỏ Cà Phê Người Yêu Quà Tặng Cho Người Bạn Thân ...",
+    "position": 3
+   },
+   {
+    "title": "Món quà sáng tạo vui nhộn, ly gốm, quà sinh nhật, ly cà ...",
+    "link": "https://shopee.vn/M%C3%B3n-qu%C3%A0-s%C3%A1ng-t%E1%BA%A1o-vui-nh%E1%BB%99n-ly-g%E1%BB%91m-qu%C3%A0-sinh-nh%E1%BA%ADt-ly-c%C3%A0-ph%C3%AA-vui-nh%E1%BB%99n-cho-b%E1%BA%A1n-trai-v%C3%A0-b%E1%BA%A1n-g%C3%A1i-qu%C3%A0-%C4%91i%C3%AAu-kh%E1%BA%AFc-c%C3%A1t-i.1551153438.41902727786",
+    "snippet": "Mua Món quà sáng tạo vui nhộn, ly gốm, quà sinh nhật, ly cà phê vui nhộn cho bạn trai và bạn gái, quà điêu khắc cát giá tốt. Mua hàng qua mạng uy tín, ...",
+    "position": 4
+   },
+   {
+    "title": "Cốc tặng bạn trai - Giá Tốt, Sale Tháng 08, Freeship 0Đ",
+    "link": "https://shopee.vn/list/c%E1%BB%91c/t%E1%BA%B7ng%20b%E1%BA%A1n%20trai",
+    "snippet": "[Top Value] Set cốc sứ quà tặng cute dễ thương tặng bạn trai bạn gái sinh nhất tốt nghiệp (Cốc+hộp nơ+thiệp). 69.017₫. 88.000₫. -22%. voucher-icon.",
+    "position": 5
+   },
+   {
+    "title": "Set quà tặng bạn trai sinh nhật - Giá Tốt, Sale Tháng 09 ...",
+    "link": "https://shopee.vn/list/set%20qu%C3%A0%20t%E1%BA%B7ng/b%E1%BA%A1n%20trai/sinh%20nh%E1%BA%ADt",
+    "snippet": "Set quà tặng cho nữ cốc sứ nến thơm, làm quà tặng sinh nhật, bạn bè người yêu, set quà tặng bạn trai sinh nhật. 110.000₫. 169.000₫. -35%. Rẻ Vô Địch. Mua Kèm ...",
+    "position": 6
+   },
+   {
+    "title": "Quà 1 6 cho người yêu - Giá Tốt, Sale Tháng 09, Ship 0 ...",
+    "link": "https://shopee.vn/list/qu%C3%A0%201%206/cho%20ng%C6%B0%E1%BB%9Di%20y%C3%AAu",
+    "snippet": "Shopee cung cấp đầy đủ các sản phẩm quà 1 6 cho người yêu chính hãng với nhiều mức giá ưu đãi vô cùng hấp dẫn. Bạn có thể thỏa thích tham khảo sản phẩm chính ...",
+    "position": 7
+   },
+   {
+    "title": "set quà tặng cà phê - Giá Tốt, Sale Tháng 09, Freeship 0Đ",
+    "link": "https://shopee.vn/list/set%20qu%C3%A0%20t%E1%BA%B7ng/c%C3%A0%20ph%C3%AA",
+    "snippet": "SET QUÀ TẶNG Trọn bộ trải nghiệm cà phê \"Harmony Gift Set\". Món quà tặng trọn vẹn ý nghĩa cho người yêu cà phê.485.000₫ · 5. Hộp Quà Cao Cấp, Set Quà Tặng Cà ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

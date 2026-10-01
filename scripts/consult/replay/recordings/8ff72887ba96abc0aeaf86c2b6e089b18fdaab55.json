@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Set quà tặng cà phê cao cấp - máy xay cầm tay cổ điển kèm cốc sứ, thiệp viết site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T08:08:46.095Z",
+ "body": {
+  "searchParameters": {
+   "q": "Set quà tặng cà phê cao cấp - máy xay cầm tay cổ điển kèm cốc sứ, thiệp viết site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Máy xay cà phê bằng tay",
+    "link": "https://shop.tiktok.com/vn/c/manual-coffee-grinders/860680",
+    "snippet": "Máy xay cà phê hạt kiểu kim cương mới, máy xay thô và mịn có thể điều chỉnh bằng tay, tiết kiệm thời gian và công sức.",
+    "position": 1
+   },
+   {
+    "title": "Bộ Cốc Đĩa Vitage Gốm Sứ Cao Cấp Họa Tiết Hoa Cổ ...",
+    "link": "https://shop.tiktok.com/vn/pdp/1733759027434587703",
+    "snippet": "Mua Bộ Cốc Đĩa Vitage Gốm Sứ Cao Cấp Họa Tiết Hoa Cổ Điển Phong Cách Bắc Âu Kèm Hộp Dùng Làm Quà Tặng trên TikTok Shop. Săn giá siêu hời cho và được ...",
+    "position": 2
+   },
+   {
+    "title": "Sản phẩm không có sẵn tại quốc gia hoặc khu vực này",
+    "link": "https://shop.tiktok.com/vn/pdp/1733948379993703459",
+    "snippet": "[Tặng 3 món] - Máy pha cà phê Winci EM3125, áp suất 20 Bar, tay cầm 51mm, công suất 1350W, bảo hành 1 năm. · [Tặng 3 món] - Máy pha cà phê Winci EM3125, áp suất ...",
+    "position": 3
+   },
+   {
+    "title": "กาแฟโบราณ ตรามือ",
+    "link": "https://shop.tiktok.com/vn/k/kaaef-obran-tra-mueo",
+    "snippet": "Máy Xay Cafe, Xay Tiêu Bằng Tay Grinder Phong Cách Cổ Điển. 2 sold · 345.000. ₫599.000 ; Máy Xay Cafe, Xay Tiêu Bằng Tay Phong Cách Cổ Điển Sang Trọng · 40 sold.",
+    "position": 4
+   },
+   {
+    "title": "homemi ชงกาแฟพกพา",
+    "link": "https://shop.tiktok.com/vn/k/homemi-chngkaaef-phkpha",
+    "snippet": "Cốc tự khuấy cafe chất lỏng mini, cốc khuấy tự động · Cốc tự khuấy cafe chất lỏng mini, cốc khuấy tự động · Máy xay cà phê Máy xay cà phê cầm tay tặng kèm 1 bình ...",
+    "position": 5
+   },
+   {
+    "title": "beno coffee machine",
+    "link": "https://shop.tiktok.com/vn/k/beno-coffee-machine",
+    "snippet": "Máy Xay Cà Phê Cầm Tay B03-5 Mini Điều Chỉnh Độ Mịn Tay Cầm Gỗ Xay Hạt Cà Phê. 1 sold. ₫860.000. ₫1.090.000. Máy Xay Cà Phê Cầm Tay B03-5 Mini Điều Chỉnh Độ ...",
+    "position": 6
+   },
+   {
+    "title": "เครื่องชงกาแฟ duchess",
+    "link": "https://shop.tiktok.com/vn/k/ekhrueong-chngkaaef-duchess",
+    "snippet": "Bình pha cà phê french press 1200ML Bình pha cafe kiểu pháp Ấm pha cà phê trà thủy tinh cao cấp Coffee pot DODO. 3.7. 11 sold. ₫309.000. ₫479.000 ...",
+    "position": 7
+   },
+   {
+    "title": "Cối Xay Cà Phê Gang Đúc Loại Cổ Điển Cao Cấp",
+    "link": "https://shop.tiktok.com/vn/pdp/coi-xay-ca-phe-gang-duc-co-dien-cao-cap-thiet-ke-banh-xe-quay/1729622124631329515",
+    "snippet": "Mô Tả Sản Phẩm Cối xay cà phê hạt phong cách cổ điển kiểu dáng bền mãi với thời gian. Với thiết kế bánh xe quay và bộ bánh răng giảm tốc cho khả năng xay cà ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

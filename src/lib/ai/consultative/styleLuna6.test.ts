@@ -54,7 +54,7 @@ describe('D1/D3/D4/D5: the block says what it must and nothing structural', () =
     expect(b).toMatch(/mac dinh "mình"\/"bạn"/)
   })
   it('humour: capped, 😄 only, switched off in the serious contexts', () => {
-    expect(b).toMatch(/khoang 1/3/); expect(b).toMatch(/chi 😄/)
+    expect(b).toMatch(/khoang 1\/3/); expect(b).toMatch(/chi 😄/)
     for (const k of ['lua dao', 'nan nhan', 'suc khoe', 'khan cap', 'chua co du lieu']) expect(b).toContain(k)
   })
   it('keeps the assumptions (does not delete them) and forbids the dead phrases', () => {
@@ -63,5 +63,20 @@ describe('D1/D3/D4/D5: the block says what it must and nothing structural', () =
   })
   it('touches no structure: no marker, no tool, no number rule', () => {
     expect(b).not.toMatch(/TAPPY_|CTA_BUTTONS|FOLLOWUPS|search_|get_/)
+  })
+})
+
+import { buildDomainFrame, frameLibrary } from './domainFrames'
+describe('D: the pick frame keeps its content and drops only the fixed opening (flag ON)', () => {
+  it('OFF = byte-identical frame; ON = step 1 reworded, rest of the frame untouched', () => {
+    const off = buildDomainFrame('food', 'pick')
+    expect(off).toContain('Mình hiểu bạn cần')
+    process.env.STYLE_LUNA6 = '1'
+    const on = buildDomainFrame('food', 'pick')
+    expect(on).not.toContain('1. Xac nhan 1 cau')
+    expect(on).toContain('khong mo bang "Mình hiểu bạn"')
+    expect(on).toContain('2. **Mình chọn: <TEN>**')
+    expect(on).toContain('KHONG hoi them o luot nay')
+    expect(frameLibrary('food')).toContain('khong mo bang "Mình hiểu bạn"')
   })
 })

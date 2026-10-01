@@ -1,0 +1,149 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "điểm tham quan núi Xuân Lộc, Đồng Nai Xuân Lộc Đồng Nai",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.7769,106.7009,12z"
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T08:10:24.931Z",
+ "body": {
+  "searchParameters": {
+   "q": "điểm tham quan núi Xuân Lộc, Đồng Nai Xuân Lộc Đồng Nai",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.7769,106.7009,12z",
+   "engine": "google"
+  },
+  "ll": "@10.7768062,106.7008955,12z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Suối ĐÁ (Cẩm Đường)",
+    "address": "Q3CW+8G3, Xuân Đường, Đồng Nai, Việt Nam",
+    "latitude": 10.7707511,
+    "longitude": 107.096305,
+    "rating": 4.2,
+    "ratingCount": 263,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9RU-ZC3FPLDIXFPIr43QkU9ZgMVaDoUIockiqiSemYc2PrOtYr_jT3AWRtvCosArquTCqYxzl3NWzchXrIOzttdGRmDGTzHEj_qC9TjP2_FyJfn4zB75ZCQT2FxgzPw9RMjwDPo",
+    "cid": "16651119835035067118",
+    "fid": "0x31751d583063fe1b:0xe714a944bfb9e2ee",
+    "placeId": "ChIJG_5jMFgddTER7uK5v0SpFOc"
+   },
+   {
+    "position": 2,
+    "title": "Mộ Cự Thạch",
+    "address": "Hàng Gòn, Đồng Nai, Việt Nam",
+    "latitude": 10.864336699999999,
+    "longitude": 107.2306775,
+    "rating": 4.3,
+    "ratingCount": 363,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch",
+     "Bảo tàng khảo cổ học"
+    ],
+    "phoneNumber": "+84 916 136 787",
+    "openingHours": {
+     "Thứ Năm": "09:00–17:00",
+     "Thứ Sáu": "09:00–17:00",
+     "Thứ Bảy": "09:00–17:00",
+     "Chủ Nhật": "09:00–17:00",
+     "Thứ Hai": "09:00–17:00",
+     "Thứ Ba": "09:00–17:00",
+     "Thứ Tư": "09:00–17:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9QeoPxtejLOf3UvVakzdcrn4LXsKwM8jvCE0B71XXJuWs2g3SFs5fpQiKxfn7uQBw0E3hZ-Sewo5N3TX7zREivY4nFzCQQ1I-b4LahKIjOHHX0bhr-b1kqOBC0ajE7XFE0ViUnabjo_srFD",
+    "cid": "17461823188032979483",
+    "fid": "0x3174fe386525e73b:0xf254dbac3d62821b",
+    "placeId": "ChIJO-clZTj-dDERG4JiPazbVPI"
+   },
+   {
+    "position": 3,
+    "title": "Khu Du Lịch Bến Xưa",
+    "address": "39A Hà Huy Giáp, An Phú Đông, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.8527195,
+    "longitude": 106.6773975,
+    "rating": 4.3,
+    "ratingCount": 1593,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch"
+    ],
+    "website": "https://benxua.vn/",
+    "phoneNumber": "+84 942 166 166",
+    "description": "Công viên rộng lớn ven sông có bể bơi, nhiều nhà hàng trong các tòa nhà kiểu cổ và hồ hoa súng.",
+    "openingHours": {
+     "Thứ Năm": "07:00–22:00",
+     "Thứ Sáu": "07:00–22:00",
+     "Thứ Bảy": "07:00–22:00",
+     "Chủ Nhật": "07:00–22:00",
+     "Thứ Hai": "07:00–22:00",
+     "Thứ Ba": "07:00–22:00",
+     "Thứ Tư": "07:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9SxAznVNISG9EwdH6lIwj5N3xh1S6kCcROdpywqGIVTRo8U1PoMM620OyJh-TgEklWaCsISxmUHobAnayC7xBiEhc1Yv8soQS1QGBBqySobpOH7nzJrW0Eu0prwj9NWq1DfoNJc",
+    "cid": "255713947382682657",
+    "fid": "0x3175284af5c6aaab:0x38c7a7af5db9421",
+    "placeId": "ChIJq6rG9UoodTERIZTb9Xp6jAM"
+   },
+   {
+    "position": 4,
+    "title": "Trúc Lâm Trí Đức",
+    "address": "RXPF+3FP, ấp 5, An Phước, Đồng Nai, Việt Nam",
+    "latitude": 10.8352686,
+    "longitude": 106.9732621,
+    "rating": 4.7,
+    "ratingCount": 488,
+    "type": "Chùa phật giáo",
+    "types": [
+     "Chùa phật giáo",
+     "Tu viện",
+     "Điểm đến tôn giáo"
+    ],
+    "phoneNumber": "+84 251 3700 897",
+    "openingHours": {
+     "Thứ Năm": "06:00–11:30, 13:00–17:00",
+     "Thứ Sáu": "06:00–11:30, 13:00–17:00",
+     "Thứ Bảy": "06:00–11:30, 13:00–17:00",
+     "Chủ Nhật": "06:00–11:30, 13:00–17:00",
+     "Thứ Hai": "06:00–11:30, 13:00–17:00",
+     "Thứ Ba": "06:00–11:30, 13:00–17:00",
+     "Thứ Tư": "06:00–11:30, 13:00–17:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9SqX-MF2GWC84kcun19x_TuITM_G93lSe0GPrdnebw4iCl1gH15XcZEtNwOYYukJJblPMC4m-CDeQmdW_QkjXxpPzmBulJdjzvjcx9hxLC8CtYrNjyOy-boiOXJ3zfYrGrzJQBa",
+    "cid": "12446858597913052808",
+    "fid": "0x31751e461400c3e1:0xacbc1ff2d21fc688",
+    "placeId": "ChIJ4cMAFEYedTERiMYf0vIfvKw"
+   },
+   {
+    "position": 5,
+    "title": "Làng Du Lịch Sinh Thái Tre Việt - Funland",
+    "address": "25 Phan Văn Đáng, Đại Phước, Đồng Nai 76000, Việt Nam",
+    "latitude": 10.7409152,
+    "longitude": 106.7897587,
+    "rating": 4.2,
+    "ratingCount": 611,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch"
+    ],
+    "website": "http://langdulichtreviet.com/",
+    "phoneNumber": "+84 862 777 827",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9S-gxiF-bAI0OL0MowdpQ04ceAOzYU4Kb-xwQUpLeLP0ZFPTFomDyXJNqVC9FmEQJpzfShFwlYhUAoTQBNB-WwyQ7WDKv92Dy06au0eaUJXpON25xgkqbVdsqA98vWdBM9sIjOa",
+    "cid": "6028451806917096171",
+    "fid": "0x31752467336a98a5:0x53a95cfa70daf2eb",
+    "placeId": "ChIJpZhqM2ckdTER6_LacPpcqVM"
+   }
+  ],
+  "credits": 3
+ }
+}

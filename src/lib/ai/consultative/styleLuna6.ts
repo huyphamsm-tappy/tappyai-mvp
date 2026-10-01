@@ -43,3 +43,13 @@ export function evidenceGapLine(lang: string, compare: string | null): string | 
   if (compare) return `Để so ${compare} thì mình chưa có đủ dữ liệu đã kiểm — nên mình không dám nói bừa. Mở từng thẻ để xem điểm, giờ mở và giá, hoặc bấm "Xem thêm".`
   return 'Phần này mình chưa có dữ liệu đã kiểm nên không dám nói bừa — bạn mở thẻ để xem điểm, giờ mở và giá, hoặc bấm "Xem thêm".'
 }
+
+/**
+ * The frame's step 1 tells the model to open EVERY pick with «Mình hiểu bạn cần … — mình giả định …», and the model obeys the frame
+ * over the voice block (measured 01/10: 14 of 30 picks still opened that way with the block alone). With the layer ON, step 1
+ * keeps its CONTENT (the assumptions the user did not state, said once) and drops only the fixed opening wording.
+ */
+export function voicePickShape(shape: string): string {
+  if (!styleLuna6On()) return shape
+  return shape.replace(/1\. Xac nhan 1 cau:[^\n]*/, '1. Gia dinh Tappy dat (chi phan user CHUA noi): MOT menh de ngan SAU lua chon hoac trong cau ly do — khong mo bang "Mình hiểu bạn", khong nhac lai yeu cau. Cac vi du ben duoi chi minh hoa CAU TRUC: KHONG bat chuoc cau mo cua vi du.')
+}

@@ -325,6 +325,17 @@ Giá phòng: chưa xác nhận…","price":…`). Phần đầu kế hoạch (ti
 - **Trang /privacy** nay ghi OpenAI + wttr.in/Upstash/Brevo/Overpass/Google Maps Platform (R27) — Data safety phải khớp.
 - **Android phải chạy lại e2e trên ĐÚNG SHA cuối** (xem RELEASE-PROGRESS) rồi build APK/AAB cuối.
 
+### R29 (2026-10-01) — Xoá tài khoản BẬT khi release: chỉ sửa CHỮ màn xác nhận (KHÔNG đổi hợp đồng dữ liệu)
+
+Huy quyết: cờ `ACCOUNT_SELF_DELETE_ENABLED` BẬT lúc release; bấm xoá trong app = xoá luôn (như luồng cờ BẬT hiện có: gõ XÓA → `POST /api/account/delete {confirm}` → đăng xuất). Android chỉ đổi chữ ở hộp/ màn xác nhận (hàng «Xóa tài khoản» vẫn kín đáo, cuối mục Khác, không đỏ nổi bật):
+- **Chữ chính xác (VI):** «Xóa tài khoản vĩnh viễn? Toàn bộ dữ liệu của bạn sẽ bị xóa ngay và không thể khôi phục: lịch sử chat, địa điểm đã lưu, bài đăng, ảnh và clip. {GÓI} Gõ XÓA để xác nhận.»
+- **{GÓI} khi app BIẾT tài khoản đang có gói trả phí đang hoạt động:** «Gói trả phí và credit còn lại sẽ mất, Tappy không hoàn lại phần chưa dùng. Xóa tài khoản không tự hủy gói trên App Store hoặc Google Play, bạn cần hủy gói ở đó để không bị tính phí tiếp.»
+- **{GÓI} khi app KHÔNG biết (bản chung):** «Nếu bạn đang có gói trả phí, gói và credit còn lại sẽ mất, Tappy không hoàn lại phần chưa dùng. Xóa tài khoản không tự hủy gói trên App Store hoặc Google Play, bạn cần hủy gói ở đó để không bị tính phí tiếp.»
+- **EN:** «Delete your account permanently? All your data will be deleted immediately and cannot be recovered: chat history, saved places, posts, photos and clips. {PLAN} Type DELETE to confirm.» — {PLAN} known: «Your paid plan and any remaining credit will be lost, and Tappy does not refund the unused part. Deleting your account does not cancel your subscription on the App Store or Google Play — cancel it there so you are not charged again.» — unknown: «If you have a paid plan, your plan and any remaining credit will be lost, and Tappy does not refund the unused part. Deleting your account does not cancel your subscription on the App Store or Google Play — cancel it there so you are not charged again.»
+- Từ xác nhận vẫn **XÓA / DELETE** (server nhận XÓA, XOÁ, DELETE). Chữ «hoàn tiền do App Store/Google Play quyết» nằm ở trang web, không bắt buộc trong hộp.
+- «Có gói trả phí» web lấy từ `subscriptions.status = 'active'`; nếu Android đã đọc `GET /api/subscription` thì dùng chính dữ liệu đó, không thì dùng bản chung. KHÔNG thêm field/endpoint.
+- Thứ tự release: áp D1/D2/D4 → bật cờ → xoá thử tài khoản test (ENV-RELEASE-CHECKLIST §1). Android dò cờ qua `GET /api/config` → `flags.accountSelfDelete` như hiện nay.
+
 ## 3. Quy tắc bằng chứng mới (chủ dự án, 2026-09-28) — áp dụng cho CẢ phiên Android
 
 - KHÔNG commit ảnh/video vào git nữa (không sửa lịch sử commit cũ).

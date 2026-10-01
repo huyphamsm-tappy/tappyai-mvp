@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Tầng 5, Giga Mall, 240-242 Phạm Văn Đồng, Thủ Đức\" OR \"Khu vui chơi (Nhà văn hoá thiếu nhi Thủ Đức)\" OR \"KHU VUI CHƠI TRẺ EM BIBO KIDS QUẬN 9\" Thủ Đức site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T08:12:24.170Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Tầng 5, Giga Mall, 240-242 Phạm Văn Đồng, Thủ Đức\" OR \"Khu vui chơi (Nhà văn hoá thiếu nhi Thủ Đức)\" OR \"KHU VUI CHƠI TRẺ EM BIBO KIDS QUẬN 9\" Thủ Đức site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "KHU VUI CHƠI TRẺ EM BIBO KIDS - Quận 9",
+    "link": "https://www.facebook.com/bibokidsquan9/?locale=vi_VN",
+    "snippet": "KHU VUI CHƠI TRẺ EM BIBO KIDS - Quận 9, Thành phố Hồ Chí Minh. 7.445 người theo dõi · 28 người đang nói về điều này · 549 lượt đăng ký ở đây. BIBO KIDS -...",
+    "rating": 5,
+    "ratingCount": 7,
+    "position": 1
+   },
+   {
+    "title": "KHU VUI CHƠI TRẺ EM BIBO KIDS QUẬN 9 - THỦ ĐỨC",
+    "link": "https://us.trip.com/travel-guide/attraction/ho-chi-minh-city/khu-vui-chi-tr-em-bibo-kids-qun-9-th-c-147563045/",
+    "snippet": "Book KHU VUI CHƠI TRẺ EM BIBO KIDS QUẬN 9 - THỦ ĐỨC tickets online with Trip.com. Check ticket prices, discover deals, read real visitor reviews, ...",
+    "position": 2
+   },
+   {
+    "title": "lọc, rửa và phơi khô hạt cát mỗi tuần ✅ Khu ...",
+    "link": "https://www.facebook.com/bibokidsquan9/posts/-s%E1%BA%A1ch-s%E1%BA%BD-t%E1%BB%ABng-g%C3%B3c-ch%C6%A1i-an-to%C3%A0n-t%E1%BB%ABng-n%E1%BB%A5-c%C6%B0%E1%BB%9Di-t%E1%BA%A1i-bibokids-ni%E1%BB%81m-vui-c%E1%BB%A7a-b%C3%A9-lu%C3%B4n-b%E1%BA%AF/788348207349218/",
+    "snippet": "KHU VUI CHƠI TRẺ EM BIBO KIDS - Quận 9. Oct 28, 2025󰞋󱟠. 󳄫. SẠCH SẼ TỪNG GÓC CHƠI – AN TOÀN TỪNG NỤ CƯỜI Tại Bibokids, niềm vui của bé ...",
+    "position": 3
+   },
+   {
+    "title": "KHU VUI CHƠI TRẺ EM BIBO KIDS QUẬN 9",
+    "link": "https://vn.maptons.com/p/15171233709",
+    "snippet": "KHU VUI CHƠI TRẺ EM BIBO KIDS QUẬN 9 - THỦ ĐỨC, 6 Tăng Nhơn Phú, Việt Nam, bản đồ vị trí, sân chơi, điện thoại +84 902 778 199.",
+    "position": 4
+   },
+   {
+    "title": "Năm Mới Hứng Khởi - Vui Chơi Không Giới Hạn Ở Bibo kids!",
+    "link": "https://www.facebook.com/bibokidsquan9/videos/-n%C4%83m-m%E1%BB%9Bi-h%E1%BB%A9ng-kh%E1%BB%9Fi-vui-ch%C6%A1i-kh%C3%B4ng-gi%E1%BB%9Bi-h%E1%BA%A1n-%E1%BB%9F-bibo-kids-/566279439550386/",
+    "snippet": "... Thủ Đức ☎ Liên hệ: 0967 477 791 ⏰ 8:00 - 22:00. Tam Vo and 38 ... KHU VUI CHƠI TRẺ EM BIBO KIDS - Quận 9 · Videos. Năm Mới Hứng Khởi ...",
+    "position": 5
+   },
+   {
+    "title": "BÉ CHƠI THẢ GA – MẸ KHÔNG LO VỀ GIÁ TẠI BIBO KIDS ...",
+    "link": "https://www.facebook.com/bibokidsquan9/posts/-b%C3%A9-ch%C6%A1i-th%E1%BA%A3-ga-m%E1%BA%B9-kh%C3%B4ng-lo-v%E1%BB%81-gi%C3%A1-t%E1%BA%A1i-bibo-kids-cu%E1%BB%91i-tu%E1%BA%A7n-cho-b%C3%A9-%C4%91i-%C4%91%C3%A2u-ch%C6%A1i-v%E1%BB%AB/826809366836435/",
+    "snippet": "KHU VUI CHƠI TRẺ EM BIBO KIDS - Quận 9. Dec 17, 2025. BÉ CHƠI THẢ ... Giá thì vẫn yêu thương: Thủ Đức: 80K (thường) | 100K (cuối ...",
+    "position": 6
+   },
+   {
+    "title": "【2026胡志明住宿】KHU VUI CHƠI TRẺ EM BIBO KIDS QUẬN 9",
+    "link": "https://www.hopegoo.com/zh-hk/hot-hotels/landmark/khu-vui-ch-i-tr-em-bibo-kids-qu-n-9-th-c-4180844/",
+    "snippet": "KHU VUI CHƠI TRẺ EM BIBO KIDS QUẬN 9 - THỦ ĐỨC附近熱門酒店推薦 ; 2, Lumiere Riverside by Aura Luxury,, 4.7, 3 ; 3, 西貢柏悅酒店,, 4.4, 125 ...",
+    "position": 7
+   },
+   {
+    "title": "KHU VUI CHƠI TRẺ EM BIBO KIDS QUẬN 9 - THỦ ĐỨC",
+    "link": "https://es.trip.com/travel-guide/attraction/ho-chi-minh-city/khu-vui-chi-tr-em-bibo-kids-qun-9-th-c-147563045/",
+    "snippet": "Reserva entradas para KHU VUI CHƠI TRẺ EM BIBO KIDS QUẬN 9 - THỦ ĐỨC online en Trip.com. Consulta los precios de las entradas, descubre ofertas, ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

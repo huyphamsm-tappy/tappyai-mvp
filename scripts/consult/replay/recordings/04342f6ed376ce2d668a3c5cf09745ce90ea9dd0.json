@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "SET QUÀ TẶNG 4 site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T08:08:46.106Z",
+ "body": {
+  "searchParameters": {
+   "q": "SET QUÀ TẶNG 4 site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Gift set budget - TikTok Shop Vietnam",
+    "link": "https://shop.tiktok.com/vn/k/gift-set-budget",
+    "snippet": "Gift set budget · Set quà phối sẵn cho nữ, gồm vòng tay, sổ tay, bút, lọ hoa khô, thiệp mừng, hộp quà và rơm lót · Set quà phối sẵn cho nữ, gồm vòng tay, sổ tay, ...",
+    "position": 1
+   },
+   {
+    "title": "4 pcs friendship gift",
+    "link": "https://shop.tiktok.com/vn/k/4-pcs-friendship-gift",
+    "snippet": "Set quà tặng gấu bông 4 món dễ thương, xinh xắn kèm túi xách, đèn, quà tặng cho người yêu, crush, bạn trai, bạn gái GA07. 0 sold. ₫146.000. ₫246.000 ...",
+    "position": 2
+   },
+   {
+    "title": "bench gift set",
+    "link": "https://shop.tiktok.com/vn/k/bench-gift-set",
+    "snippet": "Kết quả cho \"bench gift set\" ; Set quà tặng gồm 4 scunchies, gấu, hoa baby và thiệp xinh. 10 sold · 97.900 ; BÁT CHÉN DĨA GIA VỊ. 0 sold · 40.000 ; NOUS - Set quà ...",
+    "position": 3
+   },
+   {
+    "title": "41 PCs stationary gift set",
+    "link": "https://shop.tiktok.com/vn/k/41-pcs-stationary-gift-set",
+    "snippet": "Set quà tặng gồm 4 scunchies, gấu, hoa baby và thiệp xinh. 10 sold. ₫97.900 ...",
+    "position": 4
+   },
+   {
+    "title": "brooch gift set",
+    "link": "https://shop.tiktok.com/vn/k/brooch-gift-set",
+    "snippet": "Set quà tặng gồm 4 scunchies, gấu, hoa baby và thiệp xinh. 10 sold · 97.900 ; Set quà CỐC-SỔ TAY-BÚT-GẤU quà tặng cho người yêu, bạn gái, bạn trai, cặp đôi, đồng ...",
+    "position": 5
+   },
+   {
+    "title": "9 pcs set gift",
+    "link": "https://shop.tiktok.com/vn/k/9-pcs-set-gift",
+    "snippet": "(Set quà 9) Trọn bộ quà dành tặng người yêu thương gồm( 4 cây son, bảng phấn mắt, nước hoa, bịt mắt ngủ, bờm tóc, gấu bông, thiệp, đèn, túi và phụ kiện ...",
+    "position": 6
+   },
+   {
+    "title": "birthday gifts for 4 years",
+    "link": "https://shop.tiktok.com/vn/k/birthday-gifts-for-4-years",
+    "snippet": "Set Quà 04 tặng cho các bạn nữ, bạn gái, cho chị/em, cho mẹ, cô giáo. Quà tặng sinh nhật, Quà Valentine, Quà 8/3, Quà 20/10, Quà 20/11, Quà Noel các ngày lễ ...",
+    "position": 7
+   },
+   {
+    "title": "sumangali set door gift",
+    "link": "https://shop.tiktok.com/vn/k/sumangali-set-door-gift",
+    "snippet": "Kết quả cho \"sumangali set door gift\" ; Set quà tặng gồm 4 scunchies, gấu, hoa baby và thiệp xinh. 10 sold · 97.900 ; [NEW] SET 2 DÁN CỬA MÃ ĐÁO THÀNH CÔNG, THẦN ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

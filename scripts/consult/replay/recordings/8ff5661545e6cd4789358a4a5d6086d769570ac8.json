@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Hộp Quà Cà Phê & Socola Energy Boost, Quà Tặng Bạn Trai site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T08:08:04.070Z",
+ "body": {
+  "searchParameters": {
+   "q": "Hộp Quà Cà Phê & Socola Energy Boost, Quà Tặng Bạn Trai site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "SIÊU SALE BLACK FRIDAY CUỐI THÁNG LƯƠNG VỀ",
+    "link": "https://shopee.vn/m/sieu-sale-fmcg-1125",
+    "snippet": "Hộp Quà Trà Hoa Thảo Mộc Enjoy Tea – Thư Giãn Tinh Thần, Dùng Làm Quà Tặng Người Thân. 95.000₫. Hộp Quà Trà Hoa Và Mật Ong – Tăng Cường Sức Khỏe, Dùng Làm Quà.",
+    "position": 1
+   },
+   {
+    "title": "Socola milka - Giá Tốt, Sale Tháng 09, Ship 0 Đồng",
+    "link": "https://shopee.vn/list/socola/milka",
+    "snippet": "Mua online socola milka chất lượng, Voucher Shopee Live giảm tới 50% tại Shopee. Khuyến mãi tháng 09, 2026 . Miễn phí vận chuyển. Mua ngay!",
+    "position": 2
+   },
+   {
+    "title": "Thanh năng lượng energy bar - Giá Tốt, Sale Tháng 09 ...",
+    "link": "https://shopee.vn/list/thanh%20n%C4%83ng%20l%C6%B0%E1%BB%A3ng/energy%20bar",
+    "snippet": "Mua online thanh năng lượng energy bar chất lượng, Voucher Shopee Live giảm tới 50% tại Shopee. Khuyến mãi tháng 09, 2026 . Freeship 0Đ. Mua ngay!",
+    "position": 3
+   },
+   {
+    "title": "sữa nutifood - Giá Tốt, Sale Tháng 09, Freeship 0Đ",
+    "link": "https://shopee.vn/list/s%E1%BB%AFa/nutifood",
+    "snippet": "Sữa dinh dưỡng Socola Vinamilk ADM - Thùng 48 hộp 180ml. custom-overlay ... [TẶNG QUÀ] Thùng 48 hộp sữa pha sẵn Grow Plus ĐỎ ÍT ĐƯỜNG hỗ trợ tăng cân ...",
+    "position": 4
+   },
+   {
+    "title": "Foodmap - Giá Tốt, Sale Tháng 09, Ship 0 Đồng",
+    "link": "https://shopee.vn/list/foodmap",
+    "snippet": "Mua online foodmap chất lượng, Voucher Shopee Live giảm tới 50% tại Shopee. Khuyến mãi tháng 09, 2026 . Miễn phí vận chuyển. Mua ngay!",
+    "position": 5
+   },
+   {
+    "title": "Koko - Giá Tốt, Sale Tháng 09, Freeship 0Đ",
+    "link": "https://shopee.vn/list/Koko",
+    "snippet": "1kg Ngũ cốc granola hạt dinh dưỡng và xoài sấy dẻo - Ngũ cốc ăn sáng tiện lợi giàu dinh dưỡng tốt cho sức khỏe. 185.000₫. 200.000₫. -8%. #ShopThinhHanh.",
+    "position": 6
+   },
+   {
+    "title": "Green lab - Giá Tốt, Miễn Phí Vận Chuyển, Đủ Loại",
+    "link": "https://shopee.vn/list/green%20lab",
+    "snippet": "flag-label Hộp Quà Tặng Nến Thơm Kèm Sáp Hoa Cúc, Cốc Nến Siêu Đáng Yêu, Tặng Bạn Bè, Người Yêu, Đồng Nghiệp. 68.000₫. 100.000₫. -32%. #ShopThinhHanh. rating ...",
+    "position": 7
+   },
+   {
+    "title": "Đồ ăn sáng - Giá Tốt, Sale Tháng 09, Ship 0 Đồng",
+    "link": "https://shopee.vn/list/%C4%91%E1%BB%93%20%C4%83n%20s%C3%A1ng",
+    "snippet": "Ngũ cốc ăn dặm dinh dưỡng Nissin Big cho bé từ 18 tháng vị bắp socola dạng vòng dạng miếng Nhật Bản chính hãng. 68.000₫. 95.000₫.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

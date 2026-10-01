@@ -1,0 +1,81 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Mua cà phê làm quà: 11 gợi ý đáng mua 2025 site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T08:08:18.450Z",
+ "body": {
+  "searchParameters": {
+   "q": "Mua cà phê làm quà: 11 gợi ý đáng mua 2025 site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Phân bón sinh học VoiThaiChem F6 – Phiên Bản Nâng Cấp ...",
+    "link": "https://h5.lazada.vn/products/phan-bon-sinh-hoc-voithaichem-f6-phien-ban-nang-cap-2025-co-chua-axit-amin-khac-phuc-chai-nin-cua-chai-250ml-i3185362747.html",
+    "snippet": "Phân bón sinh học VoiThaiChem F6 – Phiên Bản Nâng Cấp 2025 – Có Chứa Axit Amin – Khắc Phục Chai Nín Cựa (Chai 250ml). Tuỳ chọn sản phẩm.",
+    "date": "6 thg 9, 2025",
+    "position": 1
+   },
+   {
+    "title": "1Kg Túi ly trà sữa, túi đơn, túi đôi | Lazada Việt Nam",
+    "link": "https://www.lazada.vn/products/pdp-i2726029991.html?srsltid=AU7gw4W2KweXh6gIJMnIYK-nrTuBUqylf3jX_ej19Do8a_VM3q1HCifz",
+    "snippet": "Độ bền: Mua goi TV360 cho tai khoan 0933434391 tai Tran trong! [CSKH] Chúc mừng năm mới Ất Tỵ 2025. Kính chúc Quý khách năm mới hạnh phúc, an khang và thịnh ...",
+    "position": 2
+   },
+   {
+    "title": "CÀ PHÊ RANG XAY K MORNING 454G - Date 2025",
+    "link": "https://www.lazada.vn/products/ca-phe-rang-xay-k-morning-454g-date-2025-i2453284915.html?srsltid=AU7gw4WI2PMDQaGFWF2df-KQp0OKSV34I4L5Ha2N4Po55Khhcxv-Uqe9",
+    "snippet": "CÀ PHÊ RANG XAY K MORNING THAY LỜI CHÀO BUỔI SÁNG. Thành phần: 100% Arabica & Robusta. Gu/vị cà phê: Vị đậm đà, hậu vị dài, chua nhẹ dành cho những người gu ...",
+    "position": 3
+   },
+   {
+    "title": "(Combo 2 Gói) Cà phê Sáng Tạo 4 Trung Nguyên( 340gam)",
+    "link": "https://www.lazada.vn/products/combo-2-goi-ca-phe-sang-tao-4-trung-nguyen-340gam-ca-phe-rang-xay-bot-pha-phin-trung-nguyen-i1291618227.html?srsltid=AU7gw4U7_cpX7h1xYazOAqC6Pl2NxiFI6GeOWHgVWAMkQoKZyP2g2MG5",
+    "snippet": "Combo 2 gói cà phê Sáng Tạo 4 Trung Nguyên 340g, cà phê pha phin chất lượng cao từ Arabica và Robusta. Hương vị đậm đà, màu nước nâu sánh, phù hợp uống tại ...",
+    "rating": 5,
+    "ratingCount": 391,
+    "position": 4
+   },
+   {
+    "title": "Ablum 25 Mẫu Đồng Hồ Treo Tường Decor Phong Cách Vintage ...",
+    "link": "https://www.lazada.vn/products/ablum-25-mau-dong-ho-treo-tuong-decor-phong-cach-vintage-co-dien-i2056821085-s9603101550.html?from_gmc=1&fl_tag=1&srsltid=AU7gw4XEZoV-IWPdjblz4S6L5rlOWbWLQtL2eO8MZPMTwWvHLwMu12ic",
+    "snippet": "Chống nước - Dễ dàng vệ sinh - Siêu nhẹ - Độ bền cao - Không phai màu - Bảo hành vận chuyển - Tặng kèm phụ kiện đầy đủ - Hỗ trợ in và thiết kế theo yêu cầu ...",
+    "position": 5
+   },
+   {
+    "title": "Cà phê Arabica Quảng Trị Vietnam Amazing Cup - Nhà vô ...",
+    "link": "https://www.lazada.vn/products/ca-phe-arabica-quang-tri-vietnam-amazing-cup-nha-vo-dich-amazing-cup-2025-i2392369193.html?srsltid=AU7gw4UlZsKUHbXJUZbFxuvKexa3GhHbNk71Ny1OYzXRl3yn2qnXHItt",
+    "snippet": "Đặc điểm nổi bật · Thể tích: 200ml · Xuất xứ: Việt Nam · Dạng đồ uống: Cà phê hạt · Loại thực phẩm: Theo mùa, Cà phê đặc sản · Hạn sử dụng: 3 tháng · Trọng lượng: ...",
+    "rating": 5,
+    "ratingCount": 14,
+    "position": 6
+   },
+   {
+    "title": "Nescafe nước cốt đen đá T10/2025 - Cà phê",
+    "link": "https://www.lazada.vn/products/nescafe-nuoc-cot-den-da-t102025-i2511403286.html?srsltid=AU7gw4UNYl1UnlLZ86rok5Y6n2QopP-80_zP9EicjlVS8Gr3fnudPeYH",
+    "snippet": "Nước cốt cà phê NESCAFÉ đen đá tiện lợi, hương vị đậm đà cho người yêu thích cà phê. Sản phẩm pha sẵn từ bột cà phê rang xay, hương thơm nồng đặc trưng, ...",
+    "rating": 5,
+    "ratingCount": 22,
+    "position": 7
+   },
+   {
+    "title": "Cà phê Chồn LEGEND Trung Nguyên hộp gỗ 225Gr",
+    "link": "https://www.lazada.vn/products/ca-phe-chon-legend-trung-nguyen-hop-go-225gr-i2168510102.html?srsltid=AU7gw4VJtJxuMecNJ435YcauRQn4afG5tbRnspWKiul5Z8fvfbClYC86",
+    "snippet": "Chính vì những phảm chất ưu việt đó, cà phê LEGEND là loại cà phê được chọn phục vụ cho các Hội nghị toàn cầu như ASEM, APEC, WEF, ODA và làm quà tặng đặc biệt ...",
+    "rating": 5,
+    "ratingCount": 2,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}
