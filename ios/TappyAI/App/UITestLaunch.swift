@@ -99,9 +99,13 @@ enum UITestLaunch {
         case "safety-review":
             router.switchTo(.profile)
             router.push(ReviewsDestination.reviewDetail(id: "r-safety"), on: .profile)
-        case "chat-old":
+        case "chat-old", "conv-old", "conv-ask", "conv-plan":
+            // A saved chat from the fixture server (`history` mode): chat-old/conv-old = places, conv-ask, conv-plan.
             router.switchTo(.home)
-            router.push(HomeDestination.conversation(id: "c-old"), on: .home)
+            router.push(HomeDestination.conversation(id: route == "conv-ask" ? "c-ask" : route == "conv-plan" ? "c-plan" : "c-old"), on: .home)
+        case "scam":
+            router.switchTo(.home)
+            router.push(HomeDestination.scamShield, on: .home)
         case "saved":
             router.switchTo(.profile)
             router.push(ProfileDestination.favorites, on: .profile)

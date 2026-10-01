@@ -1,0 +1,134 @@
+name: ios-appstore-shots
+
+# App Store screenshots from the REAL app against the fixture backend (no real user data), on a simulator whose
+# screenshots are one of the sizes App Store Connect accepts for the 6.5" slot: 1242x2688, 2688x1242, 1284x2778, 2778x1284.
+# Output: the artifact `appstore-screenshots` (01-chat-ask.png ... 08-settings.png) and a table of the real pixel sizes.
+# Nothing is signed, archived or uploaded anywhere.
+#
+# Starts by itself when this file or AppStoreShotsTests.swift changes on an ios/** branch (a workflow that lives only on a
+# feature branch is not listed under "Run workflow" until it reaches the default branch).
+# Download: GitHub -> Actions -> the run -> Artifacts (bottom of the run page) -> appstore-screenshots.
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["ios/**"]
+    paths:
+      - ".github/workflows/ios-appstore-shots.yml"
+      - "ios/TappyAIUITests/AppStoreShotsTests.swift"
+
+concurrency:
+  group: ios-appstore-shots-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  shots:
+    name: Export App Store screenshots
+    runs-on: macos-latest
+    timeout-minutes: 45
+    defaults:
+      run:
+        working-directory: ios
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install XcodeGen and generate the project
+        run: |
+          brew install xcodegen
+          xcodegen generate
+          mkdir -p build
+
+      # A simulator whose screenshot is an accepted size: iPhone 14 Plus / 13 Pro Max / 12 Pro Max are 1284x2778,
+      # 11 Pro Max / XS Max are 1242x2688. The first one this Xcode can create is used; the sizes are re-measured below.
+      - name: Create the simulator
+        id: sim
+        run: |
+          RUNTIME=$(xcrun simctl list runtimes -j | python3 -c '
+          import json, sys
+          rs = [r for r in json.load(sys.stdin)["runtimes"] if r.get("isAvailable") and "iOS" in r["identifier"]]
+          rs.sort(key=lambda r: tuple(int(x) for x in r["version"].split(".")))
+          print(rs[-1]["identifier"])
+          ')
+          echo "runtime: $RUNTIME"
+          UDID=""
+          for T in iPhone-14-Plus iPhone-13-Pro-Max iPhone-12-Pro-Max iPhone-11-Pro-Max iPhone-XS-Max; do
+            if UDID=$(xcrun simctl create "AppStore-$T" "com.apple.CoreSimulator.SimDeviceType.$T" "$RUNTIME" 2>/dev/null); then
+              echo "device type: $T"
+              break
+            fi
+            UDID=""
+          done
+          if [ -z "$UDID" ]; then
+            echo "::error::no accepted-size simulator can be created with this Xcode; available device types:"
+            xcrun simctl list devicetypes
+            exit 1
+          fi
+          echo "udid=$UDID" >> "$GITHUB_OUTPUT"
+          xcrun simctl boot "$UDID"
+          xcrun simctl bootstatus "$UDID" -b
+          # A clean, typical status bar (time, full battery, signal) for store pictures.
+          xcrun simctl status_bar "$UDID" override --time "9:41" --batteryState charged --batteryLevel 100 \
+            --cellularMode active --cellularBars 4 --wifiBars 3 --operatorName ""
+          xcrun simctl privacy "$UDID" grant location com.tappyai.ios.debug || true
+
+      - name: Start the fixture backend
+        run: |
+          nohup python3 scripts/ui_stub_server.py 3000 > build/stub.log 2>&1 &
+          for i in $(seq 1 20); do curl -sf http://127.0.0.1:3000/api/config > /dev/null && break; sleep 1; done
+
+      - name: Run AppStoreShotsTests
+        run: |
+          set -o pipefail
+          rm -rf build/appstore.xcresult
+          xcodebuild test \
+            -project TappyAI.xcodeproj \
+            -scheme TappyAI \
+            -configuration Debug \
+            -destination "id=${{ steps.sim.outputs.udid }}" \
+            -derivedDataPath build/DerivedData \
+            -skipPackagePluginValidation \
+            -only-testing:TappyAIUITests/AppStoreShotsTests \
+            -resultBundlePath build/appstore.xcresult \
+            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" \
+            | tee build/xcodebuild-appstore.log
+
+      - name: Export and measure
+        if: always()
+        run: |
+          [ -d build/appstore.xcresult ] || { echo "::error::no result bundle"; exit 1; }
+          rm -rf build/appstore-attachments build/appstore
+          xcrun xcresulttool export attachments --path build/appstore.xcresult --output-path build/appstore-attachments
+          python3 scripts/export_shots.py build/appstore-attachments build/appstore
+          {
+            echo "### App Store screenshots (real pixel sizes)"
+            echo '| file | width x height |'
+            echo '|---|---|'
+          } >> "$GITHUB_STEP_SUMMARY"
+          bad=0
+          count=0
+          for f in build/appstore/*.png; do
+            [ -f "$f" ] || continue
+            w=$(sips -g pixelWidth "$f" | awk '/pixelWidth/ {print $2}')
+            h=$(sips -g pixelHeight "$f" | awk '/pixelHeight/ {print $2}')
+            echo "| $(basename "$f") | ${w} x ${h} |" >> "$GITHUB_STEP_SUMMARY"
+            echo "$(basename "$f"): ${w} x ${h}"
+            count=$((count+1))
+            case "${w}x${h}" in
+              1242x2688|2688x1242|1284x2778|2778x1284) ;;
+              *) echo "::error::$(basename "$f") is ${w}x${h}, not an accepted 6.5-inch size"; bad=1 ;;
+            esac
+          done
+          [ "$count" -ge 8 ] || { echo "::error::expected 8 screenshots, got $count"; exit 1; }
+          [ "$bad" -eq 0 ]
+
+      - name: Upload
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: appstore-screenshots
+          path: ios/build/appstore
+          if-no-files-found: warn
+          retention-days: 30

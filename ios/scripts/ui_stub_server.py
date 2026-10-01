@@ -101,19 +101,35 @@ _OLD_PLACES = json.dumps({"v": 1, "items": [
                  {"kind": "review", "urlKind": "search", "url": "https://www.google.com/search?q=dong+ba+review", "labelKey": "v3.action.reviewSearch"}]},
     {"id": "place:osm:10.78,106.69", "domain": "food", "kind": "place", "rank": 1, "name": "Quán Vỉa Hè", "actions": []},
 ], "mapsSearchUrl": "https://maps.example/q"}, ensure_ascii=False)
-OLD_CONVERSATIONS = [{
-    "id": "c-old", "title": "Tối nay ăn gì ở Quận 1", "category": "food", "updated_at": "2026-09-29T10:00:00.000Z",
-    "messages": [
-        {"role": "user", "content": "Tối nay ăn gì ở Quận 1?"},
-        {"role": "assistant", "content": "Mình gợi ý bún bò nhé.
-
-![Bún bò](http://127.0.0.1:3000/img/c.png)
-
-Nguồn: https://example.vn/bun-bo
-
-[TAPPY_PLACES]" + _OLD_PLACES + "[/TAPPY_PLACES]"},
-    ],
-}]
+_ASK = json.dumps({"v": 1, "questions": [
+    {"id": "dish", "q": "Món gì / kiểu quán?", "options": ["Món Việt", "Nhật/Hàn", "Lẩu/nướng", "Chưa biết"]},
+    {"id": "mode", "q": "Ăn tại quán hay giao?", "options": ["Ăn tại quán", "Giao tận nơi"]},
+    {"id": "area", "q": "Khu vực nào?", "options": ["Gần mình", "Quận 1", "Quận 3", "Quận 7"]},
+]}, ensure_ascii=False)
+_PLAN = json.dumps({"type": "evening", "domain": "food", "title": "Tối nay ăn gì ở Hà Nội", "people": 3, "budget_total": "650.000đ",
+    "tagline": "Ba quán, một buổi tối no nê.", "duration": "Tối nay · 18:00–21:30", "destination": "Hoàn Kiếm, Hà Nội",
+    "days": [{"label": "Tối nay", "title": "Ăn theo khẩu vị nhóm", "items": [
+        {"time": "18:00", "emoji": "🍜", "name": "Phở Thìn Bờ Hồ", "description": "Phở bò tái lăn, nước dùng ngọt xương", "price": "70.000đ/tô", "address": "13 Lò Đúc, Hai Bà Trưng"},
+        {"time": "19:30", "emoji": "🥢", "name": "Bún chả Hương Liên", "description": "Bún chả nướng than hoa", "price": "chưa có giá", "address": "24 Lê Văn Hưu"},
+        {"time": "21:00", "emoji": "☕", "name": "The Note Coffee", "description": "Cà phê ngắm hồ", "price": "45.000đ", "address": "64 Lương Văn Can"}]}],
+    "highlights": [{"label": "Phở bò tái lăn"}, {"label": "Bún chả than hoa"}]}, ensure_ascii=False)
+OLD_CONVERSATIONS = [
+    {"id": "c-old", "title": "Tối nay ăn gì ở Quận 1", "category": "food", "updated_at": "2026-09-29T10:00:00.000Z",
+     "messages": [
+         {"role": "user", "content": "Tối nay ăn gì ở Quận 1?"},
+         {"role": "assistant", "content": "Mình gợi ý bún bò nhé.\n\n![Bún bò](http://127.0.0.1:3000/img/c.png)\n\nNguồn: https://example.vn/bun-bo\n\n[TAPPY_PLACES]" + _OLD_PLACES + "[/TAPPY_PLACES]"},
+     ]},
+    {"id": "c-ask", "title": "Hôm nay ăn gì nhỉ", "category": "food", "updated_at": "2026-09-29T09:00:00.000Z",
+     "messages": [
+         {"role": "user", "content": "Hôm nay ăn gì nhỉ?"},
+         {"role": "assistant", "content": "Để mình chọn đúng quán cho bạn:\n[TAPPY_ASK]" + _ASK + "[/TAPPY_ASK]"},
+     ]},
+    {"id": "c-plan", "title": "Tối nay ăn gì ở Hà Nội", "category": "food", "updated_at": "2026-09-29T08:00:00.000Z",
+     "messages": [
+         {"role": "user", "content": "Lên kế hoạch ăn tối cho 3 người ở Hoàn Kiếm"},
+         {"role": "assistant", "content": "Mình đã xếp một buổi tối cho nhóm 3 người.\n[TAPPY_PLAN]" + _PLAN + "[/TAPPY_PLAN]"},
+     ]},
+]
 
 MINE = [
     _review(1, "Phở Thìn Bờ Hồ", "a", 12),
