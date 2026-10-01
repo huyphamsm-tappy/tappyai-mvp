@@ -69,7 +69,21 @@ final class AppStoreShotsTests: XCTestCase {
 
     // MARK: - helpers
 
-    private func settle() { Thread.sleep(forTimeInterval: 1.5) }
+    /// Lets the screen settle and dismisses the system's location prompt (the simulator's privacy grant can lose the race
+    /// with the first launch). The prompt is the system's own, in the simulator's language.
+    private func settle() {
+        Thread.sleep(forTimeInterval: 1.5)
+        dismissSystemAlerts()
+        Thread.sleep(forTimeInterval: 1.0)
+    }
+
+    private func dismissSystemAlerts() {
+        let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
+        for label in ["Allow While Using App", "Allow Once", "Cho phép khi dùng ứng dụng", "OK"] {
+            let button = springboard.alerts.buttons[label]
+            if button.waitForExistence(timeout: 2) { button.tap(); return }
+        }
+    }
 
     private func any(_ app: XCUIApplication, _ id: String) -> XCUIElement {
         app.descendants(matching: .any)[id].firstMatch
@@ -78,7 +92,7 @@ final class AppStoreShotsTests: XCTestCase {
     private func launch(route: String, signedIn: Bool = false) -> XCUIApplication {
         let app = XCUIApplication()
         app.launchArguments = ["-uitest-route", route, "-uitest-lang", "vi", "-uitest-theme", "dark",
-                               "-AppleLanguages", "(vi)", "-AppleLocale", "vi_VN"]
+                               "-AppleLanguages", "(vi)", "-AppleLocale", "vi_VN", "-uitest-appstore"]
             + (signedIn ? ["-uitest-signed-in"] : [])
         app.launch()
         return app

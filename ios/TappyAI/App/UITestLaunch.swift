@@ -47,6 +47,9 @@ enum UITestLaunch {
         }
     }
 
+    /// App Store pictures: the Debug-only Diagnostics button is not drawn, so the picture shows what a store build shows.
+    static var isAppStoreShot: Bool { ProcessInfo.processInfo.arguments.contains("-uitest-appstore") }
+
     /// An `ask-<area>` route shows the ask card v2 with the router's real questions for that area.
     static var askRoute: String? {
         guard let route = value("-uitest-route"), route.hasPrefix("ask-") else { return nil }

@@ -52,7 +52,7 @@ struct PlaceholderShellView: View {
                                 }
                             }
                             #if DEBUG
-                            if tab != .explore {
+                            if tab != .explore && !UITestLaunch.isAppStoreShot {
                                 ToolbarItem(placement: .navigationBarTrailing) {
                                     Button { showDiagnostics = true } label: { Image(systemName: "ladybug") }
                                         .accessibilityLabel(Text("Diagnostics"))
