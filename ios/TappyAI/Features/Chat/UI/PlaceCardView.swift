@@ -118,7 +118,7 @@ struct PlaceCardsView: View {
 /// Web parity: `priceBand` in PlaceDecision.tsx — one to four symbols, or nothing at all.
 func placePriceBand(_ level: Int?) -> String? {
     guard let level, level >= 1, level <= 4 else { return nil }
-    return String(repeating: "đ", count: level)
+    return String(repeating: "₫", count: level)
 }
 
 private let popularMinRatings = 100
