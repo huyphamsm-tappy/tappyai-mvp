@@ -25,6 +25,16 @@ Hồ sơ nộp App Store (metadata, App Privacy, câu trả lời cho người d
 
 Lỗi của tôi trong đêm: 3 lần CI đỏ liên tiếp (trùng `nilIfEmpty`, thiếu `await`, test gõ chữ), đều là lỗi biên dịch/test do tôi viết.
 
+## Vòng 2 sáng 01/10 — CI run 36801635331 (1b88e83) XANH, 59+ ảnh
+
+- **Xoá tài khoản (đã đọc server rc cc02d4c):** cờ bật = xoá NGAY; cờ tắt = 404 + luồng email thủ công; KHÔNG có bước «ghi yêu cầu → 24 giờ» trong code. Chữ iOS đã khớp (màn 44 cờ tắt, 46 cờ bật). Chi tiết: IOS-REQUESTS I10.
+- **Push (chỉ đọc):** server DELETE đọc body (đúng); Android không có DELETE; một dòng fcm mỗi người ⇒ iOS và Android cùng tài khoản đè token nhau. Chi tiết + file:dòng: IOS-REQUESTS I9.
+- **Ảnh đã xem và kết luận:** 34, 36 (khách, nền sáng) Đạt; 35 Đạt (có «Đăng xuất» cuối); 38, 41, 42, 43 Đạt; 45 + 55 (ô gõ XÓA thấy ở 55, phím đã gõ «XÓA») Đạt; 46 Đạt; 49 **Không đạt lần đầu** (ô «Điểm nổi bật» đè lên nhau vì ảnh phủ kín nới rộng ô) → sửa (ảnh là lớp phủ), xem lại Đạt; 51, 52, 53 Đạt (nút «Xem kế hoạch đầy đủ» mờ vì fixture không có JSON kế hoạch — đúng thiết kế).
+- **B2 thẻ địa điểm (Android `PlaceCard.kt`):** chip lọc (Tất cả/Đang mở cửa/Đánh giá cao/Wi-Fi/Ngoài trời/Chay, chỉ hiện chip chia được kết quả), hàng thẻ cuộn ngang có lộ thẻ kế, «Xem thêm N chỗ»/«Thu gọn» theo `shown`, «Xem tất cả trên bản đồ» theo `mapsSearchUrl`, thứ tự nút: nút mua chính → đặt/giao → bản đồ → còn lại, nhãn «Tìm review trên Google» (trước đây «Xem review»), thứ tự thẻ theo `picked`. Ảnh 56, 57, 58. **Không có** (khác Android): dấu chấm trang, cuộn bám từng thẻ (iOS 16 không có snap), huy hiệu #N. Giá «₫» (trước là «đ», lệch Android).
+- **B3:** ảnh 28 (giải trí) và 29 (ăn uống) đã so với ảnh mẫu: bố cục khớp (mascot, 3 bước đánh số, ô chọn, ô ý khác). Khác ảnh mẫu: ô LOẠI là gradient + icon, không phải ảnh thật (spec: ảnh lấy từ manifest `diem-*`; manifest giả của CI không có khoá này; production chưa kiểm); thẻ cao hơn màn hình nên nút «Tìm cho tôi» không nằm trong ảnh (test bấm được).
+- **B4:** thêm ảnh 59 (Khám phá) và 60 (chi tiết bài, cờ safety tắt). Chưa làm: VoiceListening (UI toàn màn hình nghe; không kiểm được trên CI vì không có micro/nhận giọng nói; iOS đã có nhập giọng nói + khai báo quyền, nên không đổi PrivacyInfo), Discovery hub/category, ThreadScreen, Games (ẩn), L14 cờ `publicShare` (iOS không có hàng «liên kết công khai» trong chat ngoài nút kế hoạch; cần chốt spec).
+- CI: c601349 chỉ đổi tài liệu nên workflow không chạy (lọc `paths`); commit mã cuối c86fa9c/1d24367/68abcb9/1b88e83: run 36798432349 (1d24367) xanh, 36801635331 (1b88e83) xanh.
+
 ## Việc của Huy — theo thứ tự (01/10/2026)
 
 Đánh dấu **[ĐĂNG NHẬP]** = cần đăng nhập vào một dịch vụ (tôi không làm thay). Mỗi việc ghi: vào đâu → bấm gì → dán gì.
