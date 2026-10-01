@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { createEnrichmentCollector } from './toolResultSplit'
-import type { Recommendation } from '@/lib/recommendation/types'
+import type { Recommendation } from '@/lib/recommendation/recommendation'
 
 // PL-PLAN-CARD-RACE (owner UAT 2026-10-01): the same trip request showed hotel cards once and restaurant cards once, because
 // the hotel / food / sights searches run in parallel and the first to finish took the single card block.

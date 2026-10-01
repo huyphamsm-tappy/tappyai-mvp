@@ -66,3 +66,16 @@ describe('(f) «bay từ HCM» is a flight request and asks where to', () => {
     expect(one('lên kế hoạch du lịch Đà Nẵng 3 ngày đi máy bay từ TP.HCM').ask?.lead ?? '').not.toMatch(/chuyến bay/)
   })
 })
+
+import { travelPreCall } from './consultTravel'
+describe('B: the party named goes into the dated fare link', () => {
+  it('«2 người» → passengers 2 (Trip.com quantity / Traveloka ps)', () => {
+    const c = travelPreCall({ diem_den: 'Đà Nẵng', xuat_phat: 'TP.HCM', so_nguoi: '2 người', ngay: 'cuối tuần này', phuong_tien: 'máy bay' }, 'bay từ HCM đến Đà Nẵng cuối tuần này 2 người', new Date('2026-10-01T05:00:00Z'), [])
+    expect(c?.name).toBe('get_flight_prices')
+    expect(c?.args).toMatchObject({ origin: 'TP.HCM', destination: 'Đà Nẵng', departDate: '2026-10-03', passengers: '2' })
+  })
+  it('a family / group of unknown size stays unset (never guessed)', () => {
+    const c = travelPreCall({ diem_den: 'Đà Nẵng', xuat_phat: 'TP.HCM', so_nguoi: 'gia đình', ngay: 'cuối tuần này', phuong_tien: 'máy bay' }, 'bay đến Đà Nẵng cuối tuần này', new Date('2026-10-01T05:00:00Z'), [])
+    expect(c?.args.passengers).toBeUndefined()
+  })
+})

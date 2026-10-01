@@ -110,12 +110,17 @@ export function travelPreCall(known: Record<string, string>, text: string, now =
     if (from) {
       const flightDate = date ?? relativeDateIso(`${known.ngay ?? ''} ${known.thoi_gian ?? ''}`, now)
       const assumed = { ...(origin ? {} : { origin: from }), ...(date || !flightDate ? {} : { date: flightDate }) }
-      return { name: 'get_flight_prices', args: { origin: from, destination: dest, ...(flightDate ? { departDate: flightDate } : {}), ...(back ? { returnDate: back } : {}) }, ...(Object.keys(assumed).length ? { assumed } : {}) }
+      // B (owner 01/10): the party the user named goes into the dated link («2 người» → quantity=2 / ps=2), not a silent 1 adult.
+      const pax = /^\s*(\d{1,2})\s*(?:nguoi|người)/i.exec((known.so_nguoi ?? '').normalize('NFC'))?.[1]
+      return { name: 'get_flight_prices', args: { origin: from, destination: dest, ...(flightDate ? { departDate: flightDate } : {}), ...(back ? { returnDate: back } : {}), ...(pax ? { passengers: pax } : {}) }, ...(Object.keys(assumed).length ? { assumed } : {}) }
     }
   }
   if (!dest) return null
   const nights = (() => { const n = Number((known.so_ngay ?? '').match(/\d+/)?.[0]); return Number.isFinite(n) && n > 1 ? n - 1 : 1 })()
-  return { name: 'get_hotel_prices', args: { location: dest, ...(date ? { checkIn: date, checkOut: back ?? addDays(date, nights) } : {}) } }
+  // B (owner 01/10): a hotel link with the stay dates is the page the user needs («cuối tuần này» → the coming Saturday); the
+  // date is the CODE's reading of a relative phrase, so it is reported in `assumed` and the reply says it.
+  const stayDate = date ?? relativeDateIso(`${known.ngay ?? ''} ${known.thoi_gian ?? ''}`, now)
+  return { name: 'get_hotel_prices', args: { location: dest, ...(stayDate ? { checkIn: stayDate, checkOut: back ?? addDays(stayDate, nights) } : {}) }, ...(!date && stayDate ? { assumed: { date: stayDate } } : {}) }
 }
 
 const foldName = (s: string) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/gi, 'd').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()

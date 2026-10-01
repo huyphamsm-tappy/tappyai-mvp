@@ -2634,6 +2634,10 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       result = { ...(result as Record<string, unknown>), _tappy_fare_assumed: `Link ve DA dien san chang + ngay, nhung ${parts} la GIA DINH cua Tappy (nguoi dung chua noi ro). Noi ro trong 1 cau ngan (vd. "Mình lấy ${fareAssumed.origin ? 'xuất phát ' + fareAssumed.origin : ''}${fareAssumed.origin && fareAssumed.date ? ', ' : ''}${fareAssumed.date ? 'ngày ' + fareAssumed.date : ''} — bạn đổi ngay trên trang"). KHONG neu gia ve.` }
       console.log(JSON.stringify({ type: 'tappyai_flight_link_assumed', origin: fareAssumed.origin ?? null, date: fareAssumed.date ?? null }))
     }
+    if (preCall.name === 'get_hotel_prices' && fareAssumed?.date && result && typeof result === 'object') {
+      result = { ...(result as Record<string, unknown>), _tappy_fare_assumed: `Link dat phong DA dien san ngay nhan phong ${fareAssumed.date} (Tappy doc tu "cuoi tuan" cua nguoi dung). Noi ro trong 1 cau ngan ngay nay la gia dinh, nguoi dung doi ngay tren trang dat phong. KHONG neu gia phong.` }
+      console.log(JSON.stringify({ type: 'tappyai_hotel_link_assumed', date: fareAssumed.date }))
+    }
     // Owner 30/09: a destination TAPPY proposed ("gần Sài Gòn" + a terrain) — no km or travel time unless the results carry it.
     if (consult?.domains[0] === 'travel' && !consult.known.diem_den?.trim() && preCall.name === 'get_hotel_prices' && result && typeof result === 'object' && nearbyDestination(consult.known, travelThreadUsers)) {
       result = { ...(result as Record<string, unknown>), _tappy_destination_distance: 'Diem den nay do TAPPY de xuat. KHONG neu so km hay thoi gian di chuyen tu noi xuat phat neu ket qua khong ghi; can thi noi ban kiem tra ban do.' }
