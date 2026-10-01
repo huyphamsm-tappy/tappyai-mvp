@@ -41,7 +41,7 @@ final class MarkdownNormalizeTests: XCTestCase {
     func testNestedOrUnbalancedNeverLeavesAnOddRun() {
         for s in ["**a **b** c**", "**a **b", "****x", "x**y**z**", "** ** **"] {
             let out = bold(s)
-            XCTAssertEqual(out.components(separatedBy: "**").count - 1 & 1, 0, "\(s) → \(out)")
+            XCTAssertEqual((out.components(separatedBy: "**").count - 1) % 2, 0, "\(s) → \(out)")
         }
     }
 
