@@ -208,7 +208,8 @@ struct ChatView: View {
         }
         .onDisappear {
             vm.tts.stop()
-            vm.voice.stopListening()
+            // Leaving the screen releases the microphone but does NOT hand the text on: nothing is auto-sent after the person has left.
+            vm.voice.cancelListening()
         }
     }
 }
