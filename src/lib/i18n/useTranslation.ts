@@ -15,14 +15,15 @@ import { vi as shareVi, en as shareEn, publicResultVi, publicResultEn } from './
 import { vi as guideVi, en as guideEn } from './guide'
 import { vi as discoveryVi, en as discoveryEn } from './discovery'
 import { vi as accountDeleteVi, en as accountDeleteEn } from './accountDelete'
+import { vi as noticesVi, en as noticesEn } from './moderationNotices'
 import { browserLocale, isAppSurface } from './appSurface'
 
 // Full lookup maps: base dictionary + per-screen wave modules layered on top.
 // Namespaced keys make the merge collision-free.
 const full: Record<Locale, Record<string, string>> = {
   // w6 (age gate, main #251) before v3 so the V3 copy wins any duplicate key.
-  vi: { ...dictionaries.vi, ...w2vi, ...w3vi, ...w4vi, ...w5vi, ...w6vi, ...v3vi, ...adminVi, ...landingVi, ...legalVi, ...shareVi, ...publicResultVi, ...guideVi, ...discoveryVi, ...accountDeleteVi },
-  en: { ...dictionaries.en, ...w2en, ...w3en, ...w4en, ...w5en, ...w6en, ...v3en, ...adminEn, ...landingEn, ...legalEn, ...shareEn, ...publicResultEn, ...guideEn, ...discoveryEn, ...accountDeleteEn },
+  vi: { ...dictionaries.vi, ...w2vi, ...w3vi, ...w4vi, ...w5vi, ...w6vi, ...v3vi, ...adminVi, ...landingVi, ...legalVi, ...shareVi, ...publicResultVi, ...guideVi, ...discoveryVi, ...accountDeleteVi, ...noticesVi },
+  en: { ...dictionaries.en, ...w2en, ...w3en, ...w4en, ...w5en, ...w6en, ...v3en, ...adminEn, ...landingEn, ...legalEn, ...shareEn, ...publicResultEn, ...guideEn, ...discoveryEn, ...accountDeleteEn, ...noticesEn },
 }
 
 const STORAGE_KEY = 'tappy_lang'

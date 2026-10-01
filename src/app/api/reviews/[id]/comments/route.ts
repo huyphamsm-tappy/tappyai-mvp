@@ -191,7 +191,8 @@ export async function DELETE(
     .from('review_comments')
     .delete()
     .eq('id', commentId)
-    .eq('user_id', user.id)
+    // No `.eq('user_id', …)` here (owner 01/10): RLS decides — the comment's AUTHOR, or the creator of the post it is on
+    // (20261001_user_blocks.sql). A comment that is not the caller's to delete matches no row and nothing is deleted.
 
   if (error) return NextResponse.json({ error: 'delete_failed', message: serverMessage('server.deleteFailed', requestLocale(req)) }, { status: 500 })
 

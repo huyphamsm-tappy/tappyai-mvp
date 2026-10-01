@@ -73,6 +73,9 @@ const EXEMPT: Record<string, string> = {
   // It is now guarded, so it must NOT stay listed here: an exemption that sits next to a working
   // guard is a loaded gun. Delete the guard and this line would silently make it legal again.
   'profile': 'self-scoped; an anonymous row is the visitor’s own and is claimed later',
+  'comments/[commentId]/report': 'refuses anonymous callers inside lib/safety/userReports.ts (handleReport → refuseAnonymousSocialWrite; pinned by userReports.test.ts); the route file is a one-line wrapper',
+  'users/[id]/report': 'same wrapper as comments/[commentId]/report — handleReport refuses anonymous callers (403), 10 per 10 minutes per account',
+  'moderation/decisions/[id]/appeal': 'a decision belongs to its subject: an anonymous visitor has none (404, no oracle); one appeal per decision (UNIQUE), 5 per 10 minutes per account',
   // 🗑️ `notifications/subscribe` removed 2026-09-01: the route now calls
   // `refuseAnonymousSocialWrite`, so it is guarded rather than exempt.
   //

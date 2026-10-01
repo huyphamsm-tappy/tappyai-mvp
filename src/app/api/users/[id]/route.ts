@@ -3,6 +3,7 @@ import { publishableFilter } from '@/lib/safety/gate/publicationAccess'
 import { NextRequest, NextResponse } from 'next/server'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
+import { userBlocksEnabled, blockedPeers } from '@/lib/safety/userBlocks'
 
 export const runtime = 'edge'
 
@@ -41,6 +42,14 @@ export async function GET(
   const { user, supabase } = await getRequestUser(req)
 
   const profile = await readPublicProfile(supabase, params.id)
+
+  // A blocked account (either direction) is "not found" — the same answer as an account that does not exist.
+  if (profile && user && user.id !== params.id && userBlocksEnabled()) {
+    const { createAdminClient } = await import('@/lib/supabase/admin')
+    if ((await blockedPeers(createAdminClient(), user.id, [params.id])).has(params.id)) {
+      return NextResponse.json({ error: 'user_not_found', message: serverMessage('social.userNotFound', requestLocale(req)) }, { status: 404 })
+    }
+  }
 
   if (!profile) {
     return NextResponse.json({ error: 'user_not_found', message: serverMessage('social.userNotFound', requestLocale(req)) }, { status: 404 })
