@@ -16,7 +16,7 @@ bảng, chỗ nào khác nhau được nêu rõ), `docs/ios/IOS-REQUESTS.md` (vi
 
 | # | Điều kiện | Điều luật | Ai làm | Ghi chú |
 |---|---|---|---|---|
-| 1 | Production bật **xoá tài khoản trong app** (`ACCOUNT_SELF_DELETE_ENABLED=true`) | 5.1.1(v) | Huy (Vercel) | IOS-REQUESTS I10. Cờ tắt ⇒ app chỉ có luồng gửi email ⇒ bị từ chối |
+| 1 | Production bật **xoá tài khoản trong app** (`ACCOUNT_SELF_DELETE_ENABLED=true`) | 5.1.1(v) | Huy (Vercel) | IOS-REQUESTS I10. Cờ tắt ⇒ app chỉ có luồng gửi email ⇒ bị từ chối. Server đã đọc 01/10: cờ bật = xoá NGAY (tệp ≤ 48 giờ, cần D4); không có bước "yêu cầu → 24 giờ" trong code. Chủ sở hữu hoãn D1/D2/D4 ⇒ cờ TẮT ở Phase 7 |
 | 2 | Production bật **báo cáo + chặn** (`p8_reports_v2`, `p8_user_blocks`, migration Phase 8) | 1.2 | Web + Huy | IOS-REQUESTS I7. Kèm người/quy trình xử lý báo cáo **trong 24 giờ** |
 | 3 | **Sign in with Apple** bật ở Supabase + `/api/config` | 4.8 | Huy + web | IOS-REQUESTS I8. Có Google/Zalo thì bắt buộc có Apple |
 | 4 | Server **thu hồi token Apple** khi xoá tài khoản | 5.1.1(v) | Web | IOS-REQUESTS I8 (3). Chỉ cần khi (3) đã bật |

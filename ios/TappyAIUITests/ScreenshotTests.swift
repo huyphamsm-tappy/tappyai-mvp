@@ -174,7 +174,7 @@ final class ScreenshotTests: XCTestCase {
         word.typeText("XÓA")
         let enabled = NSPredicate(format: "isEnabled == true")
         let wait = XCTWaiter().wait(for: [XCTNSPredicateExpectation(predicate: enabled, object: any(app, "delete-submit"))], timeout: 10)
-        shot("46a-delete-typed")
+        shot("55-delete-typed")
         XCTAssertEqual(wait, .completed, "submit enabled after typing; field value: \(String(describing: word.value))")
         any(app, "delete-submit").tap()
         let final = app.alerts.buttons["Xóa vĩnh viễn tài khoản"]

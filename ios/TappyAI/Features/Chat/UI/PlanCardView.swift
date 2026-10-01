@@ -325,16 +325,17 @@ struct PlanImage: View {
 
     var body: some View {
         let url = manifest.url(for: key)
-        ZStack(alignment: glyphCorner ? .topTrailing : .center) {
-            area.placeholder
-            if let url {
-                AsyncImage(url: url) { $0.resizable().scaledToFill() } placeholder: { Color.clear }
-            } else {
-                Text(glyph).font(.system(size: glyphSize)).padding(glyphCorner ? 16 : 0)
-                    .accessibilityIdentifier("plan-image-placeholder")
+        // The gradient sizes the slot; the picture is an OVERLAY so a scaled-to-fill image can never widen it.
+        area.placeholder
+            .overlay(alignment: glyphCorner ? .topTrailing : .center) {
+                if let url {
+                    AsyncImage(url: url) { $0.resizable().scaledToFill() } placeholder: { Color.clear }
+                } else {
+                    Text(glyph).font(.system(size: glyphSize)).padding(glyphCorner ? 16 : 0)
+                        .accessibilityIdentifier("plan-image-placeholder")
+                }
             }
-        }
-        .clipped()
+            .clipped()
     }
 }
 
