@@ -166,9 +166,15 @@ final class VoiceScreenTests: XCTestCase {
         XCTAssertTrue(VoiceScreenRules.showsSample(" "))
     }
 
+    func testPermissionMessagesAreRecognised() {
+        XCTAssertTrue(VoiceScreenRules.isPermissionError(NSLocalizedString("voice.error.micPermission", comment: "")))
+        XCTAssertTrue(VoiceScreenRules.isPermissionError(NSLocalizedString("voice.error.speechPermission", comment: "")))
+        XCTAssertFalse(VoiceScreenRules.isPermissionError(NSLocalizedString("voice.error.nothingHeard", comment: "")))
+    }
+
     func testEveryStringTheScreenShowsHasACatalogEntry() {
         for key in ["voice.listen.title", "voice.listen.subtitle", "voice.listen.sample", "voice.listen.stopA11y",
-                    "voice.listen.startA11y", "common.cancel", "chat.send"] {
+                    "voice.listen.startA11y", "voice.listen.titleStopped", "voice.openSettings", "common.cancel", "chat.send"] {
             XCTAssertNotEqual(NSLocalizedString(key, comment: ""), key, key)
         }
     }

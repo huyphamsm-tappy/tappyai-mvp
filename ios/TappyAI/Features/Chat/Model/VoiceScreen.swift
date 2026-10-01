@@ -35,6 +35,12 @@ enum VoiceScreenRules {
         transcript.trimmingCharacters(in: .whitespacesAndNewlines)
     }
 
+    /// The two messages that mean «allow it in Settings» (microphone or speech recognition refused).
+    static func isPermissionError(_ message: String) -> Bool {
+        message == NSLocalizedString("voice.error.micPermission", comment: "")
+            || message == NSLocalizedString("voice.error.speechPermission", comment: "")
+    }
+
     /// The dim sample sentence shows only while nothing has been recognised.
     static func showsSample(_ transcript: String) -> Bool { !canSend(transcript) }
 }

@@ -309,6 +309,7 @@ final class ScreenshotTests: XCTestCase {
     func testVoiceScreenPermissionError() {
         let app = launch(route: "voice-error", extra: ["-uitest-theme", "dark"])
         XCTAssertTrue(any(app, "voice-error").waitForExistence(timeout: 40), "a friendly message, not a hang")
+        XCTAssertTrue(any(app, "voice-settings").exists, "a way to the Settings when the permission was refused")
         XCTAssertFalse(any(app, "voice-send").isEnabled)
         XCTAssertTrue(any(app, "voice-cancel").isEnabled, "the person can always leave")
         shot("65-voice-error")

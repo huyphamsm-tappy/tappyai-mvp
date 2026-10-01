@@ -26,7 +26,8 @@ struct VoiceListeningView: View {
                 Spacer(minLength: 24)
                 Image("TappyWave").resizable().scaledToFit().frame(height: 170)
                     .accessibilityHidden(true)
-                Text("voice.listen.title")
+                // Honest about the state: «đang lắng nghe» only while the microphone is really on.
+                Text(LocalizedStringKey(controller.isListening ? "voice.listen.title" : "voice.listen.titleStopped"))
                     .font(.system(size: 26, weight: .bold)).foregroundStyle(.white)
                     .padding(.top, 14)
                     .accessibilityIdentifier("voice-title")
@@ -119,8 +120,18 @@ struct VoiceListeningView: View {
             if let error = controller.error {
                 Text(error)
                     .font(.system(size: 14)).foregroundStyle(Color(hex: 0xFCA5A5))
+                    .fixedSize(horizontal: false, vertical: true)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .accessibilityIdentifier("voice-error")
+                if VoiceScreenRules.isPermissionError(error) {
+                    Button {
+                        if let url = URL(string: UIApplication.openSettingsURLString) { UIApplication.shared.open(url) }
+                    } label: {
+                        Text("voice.openSettings").font(.system(size: 14, weight: .semibold)).foregroundStyle(purple)
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityIdentifier("voice-settings")
+                }
             }
             HStack(alignment: .top, spacing: 12) {
                 // A listening cue, not a control.
