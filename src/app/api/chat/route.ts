@@ -34,6 +34,7 @@ import { normalizePlaces, normalizeHotels, normalizeShopping, type Candidate } f
 import { rankCandidates } from '@/lib/ai/consultative/rank'
 import { shortlistShopping, shortlistCandidates } from '@/lib/ai/consultative/shortlist'
 import { deriveDecisionFrame, qualifiesFor, missingFor, evidenceGap, evidenceSummary, buildDecisionFrameBlock } from '@/lib/ai/consultative/decisionFrame'
+import { voiceLayerBlock } from '@/lib/ai/consultative/styleLuna6'
 import { wantsFilmTitles, movieTitlesReply } from '@/lib/links/movieTitles'
 import { gatePlacesByActivity, agencyRowsToDrop } from '@/lib/ai/consultative/placeTypeGate'
 import { deriveShoppingConstraints, budgetFromHistory, validateShoppingCandidates, unmetConstraintPayload } from '@/lib/ai/consultative/shoppingConstraints'
@@ -1917,7 +1918,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     planning,
   )
   const legacyShared = built?.shared
-  const legacyPrompt = (built ? built.dynamic : buildSystemSimple(lang, memoryBlock)) + styleBlock + shareContextBlock
+  const legacyPrompt = (built ? built.dynamic : buildSystemSimple(lang, memoryBlock)) + styleBlock + voiceLayerBlock() + shareContextBlock
   // Consult V2 lean prompt: small fixed core + this area's tool rules + the frame/state (leanConsultPrompt.ts).
   // Measured on uat 70667d3: the full rulebook made one pick turn 34k input tokens ($0.049).
   // An in-area knowledge question ("chốt, cần kiểm tra gì khi mua") is lean too — measured 30,970 input
@@ -1933,7 +1934,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           consultBlock: consultativeBlock,
           ...(consultLibraryOn ? { library: frameLibrary(consultLibraryDomain) } : {}),
           ...(lunaAnswer && process.env.CONSULT_LUNA_PROMPT !== '0' ? { core: LUNA_CORE } : {}),
-          extra: [lunaData ? '' : memoryBlock ?? '', prefBlock, planningIntent ? buildPlanningBlock(planningIntent, lang, planning ?? {}) : '', lunaPlan ? LUNA_PLAN_RULE : '', styleBlock, lunaData ? '' : shareContextBlock],
+          extra: [lunaData ? '' : memoryBlock ?? '', prefBlock, planningIntent ? buildPlanningBlock(planningIntent, lang, planning ?? {}) : '', lunaPlan ? LUNA_PLAN_RULE : '', styleBlock, voiceLayerBlock(), lunaData ? '' : shareContextBlock],
         })
       })()
     : null

@@ -86,12 +86,13 @@ DAU RA — CHI MOT JSON, khong giai thich:
 - Cau hoi va lua chon viet TIENG VIET CO DAU (tieng Anh neu user viet tieng Anh), ngan, than thien, xung "mình"/"bạn".`
 
 /** The ask reply ends with this sentence — how the next turn recognises that Tappy just asked. */
+import { styleLuna6On, ASK_TAIL_VI_LUNA6, ASK_TAIL_EN_LUNA6, remainingLine } from './styleLuna6'
 export const ASK_TAIL_VI = 'Bạn chọn nhanh bên dưới hoặc gõ tự do nhé — trả lời một phần cũng được.'
 export const ASK_TAIL_EN = 'Tap an answer below or just type — a partial answer is fine.'
 
 export function wasAskReply(assistantText: string | null | undefined): boolean {
   if (!assistantText) return false
-  return assistantText.includes(ASK_TAIL_VI) || assistantText.includes(ASK_TAIL_EN) || assistantText.includes('[TAPPY_ASK]')
+  return assistantText.includes(ASK_TAIL_VI) || assistantText.includes(ASK_TAIL_EN) || assistantText.includes(ASK_TAIL_VI_LUNA6) || assistantText.includes(ASK_TAIL_EN_LUNA6) || assistantText.includes('[TAPPY_ASK]')
 }
 
 const str = (v: unknown, max = 200): string => (typeof v === 'string' ? v.trim().slice(0, max) : '')
@@ -163,7 +164,8 @@ export function brainMessages(messages: Array<{ role: string; content: unknown }
 
 /** Builds the ask reply: readable text for every client + a structured block for clients that render it. */
 export function buildAskReply(ask: NonNullable<ConsultDecision['ask']>, opts: { lang: string; structured: boolean }): string {
-  const tail = opts.lang === 'en' ? ASK_TAIL_EN : ASK_TAIL_VI
+  const lunaVoice = styleLuna6On()
+  const tail = opts.lang === 'en' ? (lunaVoice ? ASK_TAIL_EN_LUNA6 : ASK_TAIL_EN) : (lunaVoice ? ASK_TAIL_VI_LUNA6 : ASK_TAIL_VI)
   const lead = ask.lead || (opts.lang === 'en' ? 'To pick the right one for you:' : 'Để mình chọn đúng cho bạn:')
   if (opts.structured) {
     const block = JSON.stringify({ v: 1, questions: ask.questions })
@@ -244,7 +246,7 @@ export function consultRemainingLine(text: string, candidateNames: readonly stri
   const vi = /(?:Mình\s+)?[Cc]òn(?:\s+khoảng)?\s+\d+\s+lựa chọn[^\n]*/g, en = /I have \d+ more option[^\n]*/g
   const stripped = text.replace(vi, '').replace(en, '').replace(/\n{3,}/g, '\n\n').trimEnd()
   if (n <= 0 || shown === 0) return stripped
-  const line = lang === 'en' ? `I have ${n} more option${n > 1 ? 's' : ''} — want to see more?` : `Mình còn ${n} lựa chọn nữa, muốn xem thêm không?`
+  const line = remainingLine(n, lang) ?? (lang === 'en' ? `I have ${n} more option${n > 1 ? 's' : ''} — want to see more?` : `Mình còn ${n} lựa chọn nữa, muốn xem thêm không?`)
   // Before any trailing marker block, after the prose.
   const m = stripped.match(/\n\s*\[(?:CTA_BUTTONS|FOLLOWUPS|TAPPY_[A-Z_]+)\]/)
   return m && m.index !== undefined ? `${stripped.slice(0, m.index).trimEnd()}\n\n${line}${stripped.slice(m.index)}` : `${stripped}\n\n${line}`

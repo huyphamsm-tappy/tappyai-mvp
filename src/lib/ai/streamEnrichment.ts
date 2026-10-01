@@ -1,4 +1,5 @@
 import { scrubUnsuppliedMarketplaces, stripBarePhotoUrls } from './marketplaceGuard'
+import { evidenceGapLine } from './consultative/styleLuna6'
 import { normalizeVN } from './intent'
 import { findPlaceOffset, proseHeaders, type Header } from './placeMatch'
 import type { EnrichmentCollector } from './toolResultSplit'
@@ -3015,9 +3016,9 @@ export function applyPlaceEnrichmentStreamFilter(
       const refs = collector?.consultRefers ?? []
       const honest = lang === 'en'
         ? 'I don\'t have checked details to answer this yet — open each card for rating, hours and price, or tap "See more".'
-        : refs.length >= 2
+        : evidenceGapLine('vi', refs.length >= 2 ? refs.slice(0, 2).join(' và ') : null) ?? (refs.length >= 2
           ? `Mình chưa có đủ dữ liệu đã kiểm để so sánh ${refs.slice(0, 2).join(' và ')} — bạn mở từng thẻ để xem điểm, giờ mở và giá, hoặc bấm "Xem thêm".`
-          : 'Mình chưa có đủ dữ liệu đã kiểm để trả lời câu này — bạn mở thẻ để xem điểm, giờ mở và giá, hoặc bấm "Xem thêm".'
+          : 'Mình chưa có đủ dữ liệu đã kiểm để trả lời câu này — bạn mở thẻ để xem điểm, giờ mở và giá, hoặc bấm "Xem thêm".')
       const final = emptyReply ? `${honest}\n\n${withLine.replace(/^\s+/, '')}` : withLine
       if (collector?.consultTurn) {
         const patches = [...consultPatches]
