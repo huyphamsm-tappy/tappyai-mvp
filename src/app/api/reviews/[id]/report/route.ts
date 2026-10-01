@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
 import { refuseAnonymousSocialWrite } from '@/lib/auth/socialWriteAccess'
-import { isReportReason } from '@/lib/reviews/reportReasons'
+import { canonicalReportReason } from '@/lib/reviews/reportReasons'
 import { createHash } from 'crypto'
 
 // F-031 — the content-report channel for user-generated content.
@@ -30,7 +30,8 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
 
   let reason = ''
   try { const b = await req.json(); reason = typeof b?.reason === 'string' ? b.reason.trim() : '' } catch { /* invalid below */ }
-  if (!isReportReason(reason)) {
+  const canonical = canonicalReportReason(reason)
+  if (!canonical) {
     return NextResponse.json({ error: 'invalid_reason', message: serverMessage('validation.invalid', requestLocale(req)) }, { status: 400 })
   }
 
@@ -41,7 +42,7 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
   // is refused by RLS (42501). A duplicate is handled below as a no-op — the existing report stands.
   const { error } = await supabase
     .from('content_reports')
-    .insert({ content_id: params.id, reporter_source_id: reporterSourceId, reason })
+    .insert({ content_id: params.id, reporter_source_id: reporterSourceId, reason: canonical })
 
   if (error) {
     const code = (error as { code?: string }).code

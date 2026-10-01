@@ -14,6 +14,11 @@ export function userBlocksEnabled(env: Record<string, string | undefined> = proc
   return env.USER_BLOCKS_ENABLED === 'true'
 }
 
+// Reports of comments/users (migration 20261001b). OFF by default; `REPORTS_ENABLED=true` turns the two routes and p8.reports on.
+export function reportsEnabled(env: Record<string, string | undefined> = process.env): boolean {
+  return env.REPORTS_ENABLED === 'true'
+}
+
 export const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
 
 /**

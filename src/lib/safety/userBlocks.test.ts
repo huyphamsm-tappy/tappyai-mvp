@@ -51,8 +51,8 @@ describe('blockedPeers — both directions, both tables, service role', () => {
 
 describe('the app-visible flag and the files this slice must not touch', () => {
   const read = (rel: string) => readFileSync(join(__dirname, '..', '..', '..', rel), 'utf8')
-  it('/api/config publishes p8.userBlocks from the same switch; reports stays false', () => {
+  it('/api/config publishes p8.userBlocks from the same switch; reports from REPORTS_ENABLED', () => {
     const cfg = read('src/app/api/config/route.ts')
-    expect(cfg).toMatch(/p8: \{[\s\S]*reports: false,[\s\S]*userBlocks: userBlocksEnabled\(\),[\s\S]*commentModeration: userBlocksEnabled\(\)/)
+    expect(cfg).toMatch(/p8: \{[\s\S]*reports: reportsEnabled\(\),[\s\S]*userBlocks: userBlocksEnabled\(\),[\s\S]*commentModeration: userBlocksEnabled\(\)/)
   })
 })

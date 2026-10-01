@@ -7,7 +7,7 @@ Dành cho phiên bảo mật duyệt độc lập: mọi thứ đã viết nằm
 1. **Không cherry-pick 23f157d.** Viết lại từ đầu; chỉ ĐỌC phiên bản phase8 để lấy ý (và để sửa P8-11).
 2. **Không đụng `chat_blocks`.** Migration chỉ ĐỌC nó (qua hàm helper). Test `chat_blocks provably intact` so sánh cấu trúc + chính sách + hàng trước/sau.
 3. **Route viết lại theo helper của rc:** `getRequestUser`, `refuseAnonymousSocialWrite`, `rateLimit` (30/phút/tài khoản, khoá `user-block:<id>`), cờ `USER_BLOCKS_ENABLED` mặc định TẮT ⇒ 404 thân rỗng. Không lộ tài khoản kia có tồn tại không (khoá ngoại 23503 trả như thành công) và không lộ ai chặn ai (RLS chỉ cho đọc hàng do mình tạo).
-4. **Không có `/api/reports`.** Giữ báo cáo bài/clip hiện có (`POST /api/reviews/{id}/report`). **Báo cáo bình luận / người dùng CHƯA làm:** `content_reports.content_id` là khoá ngoại tới `reviews(id)` nên không nhận đích là comment/user. Cần bảng mới hoặc đổi schema + công cụ kiểm duyệt ⇒ **việc Huy quyết**. `p8.reports` giữ `false`.
+4. **Không có `/api/reports`.** Giữ báo cáo bài/clip hiện có. Báo cáo bình luận / người dùng: làm ở §8 bằng bảng riêng `user_reports` (vì `content_reports.content_id` là khoá ngoại tới `reviews`).
 5. **Đã chạy RLS trên DB audit và đo truy vấn** (mục 5).
 6. Tài liệu này.
 
@@ -67,7 +67,17 @@ Migration đã áp lên **DB audit (UAT) — KHÔNG phải production**.
 
 ## 7. Rủi ro / việc cần người quyết
 1. **Lớn nhất:** áp migration lên production là thay đổi RLS trên `reviews`, `review_comments`, `notifications` (bảng nóng). Số đo cho thấy rẻ, nhưng chưa đo trên dữ liệu production thật. Bắt buộc `pg_dump` trước, có rollback.
-2. Báo cáo bình luận/người dùng chưa có (cần quyết định schema).
+2. Hàng chờ kiểm duyệt chưa đọc `user_reports` (xem §8) — cần quy trình vận hành 24 giờ.
 3. `commentModeration` đi chung công tắc `USER_BLOCKS_ENABLED`.
 4. API ghi hai bảng không nằm trong một giao dịch (hai request); có bước thu hồi, nhưng nếu thu hồi cũng lỗi thì còn hàng `user_blocks` không có `chat_blocks` (an toàn theo hướng chặn nhiều hơn, bỏ chặn xoá cả hai).
 5. Đường backfill/emit admin chưa lọc (mục 4).
+
+## 8. Báo cáo bình luận / người dùng (bổ sung 01/10, Huy quyết: LÀM)
+- Migration `20261001b_user_reports.sql` (+ rollback, có trong MIGRATION_ORDER.txt): bảng riêng `user_reports(id, reporter_id, target_type 'comment'|'user', target_id, reason, note ≤300, created_at)`. `content_reports` KHÔNG đổi.
+- Ràng buộc: không tự báo mình (user: CHECK; bình luận của mình: chính sách INSERT), một người một lần cho mỗi đối tượng (UNIQUE), lý do thuộc danh sách (7 chuẩn + 6 của app native, lưu đúng như gửi).
+- RLS: chỉ chọn/thêm hàng của mình; không UPDATE/DELETE từ client; ẩn danh không báo được; người bị báo và người lạ đọc 0 hàng.
+- **Xoá tài khoản (Huy có thể đổi):** người BÁO bị xoá → `reporter_id` thành NULL, báo cáo ở lại ẩn danh làm bằng chứng kiểm duyệt; ĐỐI TƯỢNG bị xoá → hàng ở lại (không có khoá ngoại vì trỏ comment HOẶC user), chỉ chứa uuid + lý do + ghi chú của người khác. Phương án thay: xoá báo cáo về đối tượng đã xoá (một trigger).
+- Hàng chờ kiểm duyệt: hàng chờ hiện có đọc `content_reports` nên KHÔNG đọc bảng này; không tạo hệ thống phạt. Bảng đọc bằng service role. **Việc vận hành 24 giờ cần người/quy trình (Huy).**
+- Route: `POST /api/comments/{id}/report`, `POST /api/users/{id}/report` (cờ `REPORTS_ENABLED`, mặc định tắt ⇒ 404; 10 lần/10 phút; không lộ tồn tại). `p8.reports` = cờ này. Cờ bật tay SAU khi áp migration (thứ tự Part B).
+- Lý do native (Android scam/sensitive; iOS hate/sexual/self_harm/scam/impersonation): bảng người dùng nhận đúng như gửi; route báo cáo bài (`content_reports`, lý do chuẩn) quy về lý do gần nhất.
+- Kiểm: 10 test DB (Postgres nhúng) + 10 test route + chạy lại trên DB audit (báo cáo bình luận/user ok, trùng 23505, tự báo 23514/42501, ẩn danh 42501, người bị báo/người lạ thấy 0, client xoá 42501, xoá người báo → hàng ở lại với reporter_id NULL; đã dọn sạch).
