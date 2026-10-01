@@ -193,9 +193,9 @@ MINE = [
 
 # Home's community-video rail: the trending feed, only video rows with a thumbnail are drawn.
 FEED = [
-    _review(11, "Cuối tuần ở Đà Lạt", "b", 12400, content_type="video", thumbnail="http://127.0.0.1:3000/img/scene-dalat.png",
+    _review(11, "Cuối tuần ở Đà Lạt", "scene-dalat", 12400, content_type="video", thumbnail="http://127.0.0.1:3000/img/scene-dalat.png",
             profiles={"full_name": "Minh Anh"}),
-    _review(12, "Chia sẻ", "c", 830, content_type="video", thumbnail="http://127.0.0.1:3000/img/scene-sea.png",
+    _review(12, "Chia sẻ", "scene-sea", 830, content_type="video", thumbnail="http://127.0.0.1:3000/img/scene-sea.png",
             body="Săn mây Cầu Đất lúc 5h sáng", profiles={"full_name": "Quốc Bảo"}),
     _review(13, "Phở Thìn Bờ Hồ", "a", 57),
 ]
