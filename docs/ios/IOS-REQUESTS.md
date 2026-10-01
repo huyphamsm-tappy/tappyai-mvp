@@ -63,6 +63,13 @@ Không có Bước 1–3, build vẫn lên TestFlight nhưng **không có thông
 
 **Cập nhật 01/10:** Bước 1.3 (profile mới) KHÔNG cần — workflow `ios-profile-check` (run 36816731276) cho thấy profile trong secret `APPSTORE_PROFILE_BASE64` đã có đủ Push, Sign in with Apple, Associated Domains.
 
+## I12 — Regression Gate (web) đỏ trên nhánh iOS: 2 bài kiểm cần phiên web chỉnh (01/10)
+
+Nguyên nhân tìm được bằng cách chạy lại 6 tệp test liên quan iOS ở máy (`npx vitest run …`): 11 lỗi, đã sửa 9 ở phía iOS (đổi tên phần Home theo hợp đồng, trả lại tệp `HomeSectionViews.swift`, đưa dữ liệu mẫu tiếng Việt vào `Diagnostics/UITestGalleries.swift`, khoá dịch dựng động, hằng số «Chia sẻ» vào `Model/`, nhãn `labelKey:` ở Cài đặt, «Trang web»). **Còn 2 lỗi nằm ở chính bài kiểm (thư mục `src/`, ngoài phạm vi iOS):**
+1. `src/lib/i18n/iosParityGuards.test.ts:119` (C33) ghim ĐÚNG 5 lần `claimAnonymousHistory(claimToken)` trong `AuthRepository.swift`; nhánh iOS có 6 đường đăng nhập (thêm email + mật khẩu, commit a6ed6d1) và cả 6 đều nhận lại lịch sử khách. Cần đổi `toBe(5)` → `toBe(6)`.
+2. `src/lib/i18n/iosLocalization.test.ts` «no key is the same string in both languages»: 9 khoá giống nhau ở hai ngôn ngữ vì là tên sản phẩm/từ mượn, và Android cũng để y hệt: `share.card.tagline`, `share.card.badgeReview`, `share.card.badgeClip`, `share.plan.eyebrow`, `profileHub.info.email`, `profileHub.qr.title`, `home.v3.greetingNamed` («Hi %@! 👋», Android `home_v3_greeting_named`), `home.v3.smartTools.title` («Smart Tools», Android `home_v3_smart_tools_title`), `chat.planV2.kicker` («TAPPY PLAN», Android `chat_plan_v2_kicker`). Cần thêm vào `IDENTICAL_BY_DESIGN`.
+Hai lỗi này có từ các commit iOS trước (không phải do một lần sửa gần nhất). Lưu ý riêng: bài kiểm bản `rc/web-uat` hiện tại (40289ae) cũng đỏ, ở `scripts/architecture/controllerRules.test.ts` và `vendorCacheRule.test.ts` — không liên quan iOS.
+
 ## I11 — Lịch sử chat: server chỉ lưu {role, content} (01/10, đọc rc cc02d4c)
 
 `GET /api/conversations` (`src/app/api/conversations/route.ts`) trả tối đa **20** cuộc gần nhất, mỗi tin chỉ `{role, content}`; web (`ChatInterface.tsx:112`) và iOS đều PUT lại đúng hai trường đó. Mọi thẻ chỉ sống lại nếu nằm TRONG `content` dưới dạng khối marker (`[TAPPY_PLACES]`, `[TAPPY_PLAN]`, `[TAPPY_ASK]`…). Hệ quả (không phải lỗi giải mã iOS): thẻ địa điểm sống ở dạng «bền» (mỏng hơn bản trực tiếp; ảnh/giờ mở cửa từ Google không được lưu vì giấy phép), nguồn/ảnh chỉ có khi chúng nằm trong `content`. Nếu phiên web tìm ra ảnh bị mất do lúc lưu cắt `content` hay bỏ marker, sửa ở đó. iOS: giải mã `LossyList` + `lossyArray` nên một tin hỏng không làm mất cả cuộc; xem ảnh CI 62.
