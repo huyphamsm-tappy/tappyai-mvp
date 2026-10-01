@@ -34,6 +34,8 @@ import { normalizePlaces, normalizeHotels, normalizeShopping, type Candidate } f
 import { rankCandidates } from '@/lib/ai/consultative/rank'
 import { shortlistShopping, shortlistCandidates } from '@/lib/ai/consultative/shortlist'
 import { deriveDecisionFrame, qualifiesFor, missingFor, evidenceGap, evidenceSummary, buildDecisionFrameBlock } from '@/lib/ai/consultative/decisionFrame'
+import { wantsFilmTitles, movieTitlesReply } from '@/lib/links/movieTitles'
+import { gatePlacesByActivity } from '@/lib/ai/consultative/placeTypeGate'
 import { deriveShoppingConstraints, budgetFromHistory, validateShoppingCandidates, unmetConstraintPayload } from '@/lib/ai/consultative/shoppingConstraints'
 import { proposeRelaxation } from '@/lib/ai/consultative/relaxation'
 import { classifyTurnIntent } from '@/lib/ai/consultative/intentGate'
@@ -587,7 +589,10 @@ export async function POST(req: Request) {
   }
   // Consult V2: the brain owns the asking. Its ASK turn replaces the old one-question gate; no question
   // is stacked at the end of a pick (the pick ends with "còn N lựa chọn" + the server's buttons).
-  const consultAskReply = consult?.turn === 'ask' && consult.ask
+  // 01/10 (owner, ca b): «có phim gì hay» asks for FILMS. No verified now-showing source exists (PL-MOVIES), so the reply is built by
+  // code — honest, with the cinemas' own pages — and NO search runs (no Serper, no Places, no card of cinemas).
+  const cannedMovie = wantsFilmTitles(lastText) && (!consult || consult.domains.includes('entertainment') || consult.domains.length === 0) ? movieTitlesReply(lang) : null
+  const consultAskReply = !cannedMovie && consult?.turn === 'ask' && consult.ask
     ? buildAskReply(consult.ask, { lang, structured: rendersAskBlock(req.headers.get('x-tappy-surface'), req.headers.get('x-tappy-caps')) })
     : null
   // The pick the plan is built around: the NEWEST reply that stated one (replay FOOD-1: a reject turn that
@@ -644,7 +649,7 @@ export async function POST(req: Request) {
   }
   // Re-evaluated with memory in the account branch (memory is a signal); a `let` for that reason.
   // An ASK turn is not charged (like the old clarify): it costs one small brain call and no search.
-  let quotaExempt = cannedEarly !== null || clarifyGate !== null || consultAskReply !== null
+  let quotaExempt = cannedEarly !== null || clarifyGate !== null || consultAskReply !== null || cannedMovie !== null
 
   // ── ADR-024: decision evidence state ──────────────────────────────────────
   //
@@ -1383,7 +1388,7 @@ export async function POST(req: Request) {
   )
 
 
-  const rankForModel = (toolName: 'search_places' | 'get_hotel_prices' | 'search_products', result: unknown) => {
+  const rankForModel = (toolName: 'search_places' | 'get_hotel_prices' | 'search_products', result: unknown, searchText?: string) => {
     if (!result || typeof result !== 'object') return { result, pick: null }
     const r = result as Record<string, unknown>
     const allCandidates = toolName === 'search_places' ? normalizePlaces(r)
@@ -1404,6 +1409,18 @@ export async function POST(req: Request) {
      * for what they deliberately do NOT do.
      */
     let candidates = allCandidates
+    // 01/10 (owner, ca c): a venue card must BE the kind of venue asked for — «karaoke» never shows a museum. Filtered from the
+    // model's rows too, so the prose cannot cite what the card refuses to show. Nothing left → a truthful "no match", no cards.
+    if (toolName === 'search_places' && allCandidates.length > 0 && searchText) {
+      const gate = gatePlacesByActivity(consult?.known?.hoat_dong, allCandidates, searchText)
+      if (gate.gated && gate.rejected.length > 0) {
+        const gone = new Set(gate.rejected.map(x => x.raw))
+        if (Array.isArray(r.results)) r.results = (r.results as unknown[]).filter(row => !gone.has(row))
+        if (gate.kept.length === 0) r._tappy_constraint_unmet = { activity_wanted: consult?.known?.hoat_dong, excluded_by: { type: gate.rejected.length }, note: 'KHONG co dia diem nao dung loai nguoi dung can. NOI THANG la chua tim thay, KHONG dua dia diem khac loai.' }
+        console.log(JSON.stringify({ type: 'tappyai_place_type_gate', activity: consult?.known?.hoat_dong ?? null, kept: gate.kept.length, rejected: gate.rejected.length, sample: gate.rejected.slice(0, 3).map(x => x.name) }))
+        candidates = gate.kept
+      }
+    }
     if (toolName === 'search_products' && allCandidates.length > 0) {
       const { kept, rejected, nearestBelowBudget } = validateShoppingCandidates(allCandidates, shoppingConstraints)
       // Owner 30/09 (SHOP-2): nothing inside the stated range — one closest listing is kept, and the model is told to SAY so.
@@ -2032,9 +2049,9 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
    * usage line records `llmCalls: 0` so the saving is visible. Everything else — including a
    * fact the prior prose lacks — still reaches the model, which may re-search by name.
    */
-  const canned = consultAskReply ?? cannedEarly ?? clarifyGate?.reply ?? cannedFollowUp
+  const canned = cannedMovie ?? consultAskReply ?? cannedEarly ?? clarifyGate?.reply ?? cannedFollowUp
   if (canned) {
-    const kind = consultAskReply ? 'consult_ask' : intent === 'chitchat' ? 'chitchat' : clarifyGate ? 'clarify' : 'carried_fact'
+    const kind = cannedMovie ? 'movie_titles' : consultAskReply ? 'consult_ask' : intent === 'chitchat' ? 'chitchat' : clarifyGate ? 'clarify' : 'carried_fact'
     console.log(JSON.stringify({ type: 'tappyai_canned_reply', kind, elapsedMs: Date.now() - startTime }))
     const auditFile = process.env.AUDIT_USAGE_LOG_FILE
     if (auditFile) {
@@ -2245,7 +2262,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           // resolved target ranks as normal — one candidate yields no Pick anyway.
           const { result, pick } = clipTarget === 'ambiguous'
             ? { result: filtered, pick: null }
-            : rankForModel('search_places', filtered)
+            : rankForModel('search_places', filtered, query)
           if (pick) turnPick = pick
           // The ranked candidate set of a REAL search goes to the chat-session state ("xem thêm" / "bác" reuse it).
           const rankedRows = (result as { results?: unknown }).results

@@ -73,6 +73,11 @@ export interface ShoppingConstraints {
   /** The user asked FOR an accessory/service, so rule 1 must stand down. */
   wantsAccessory: boolean
   /**
+   * 01/10 (owner, ca d): WHICH accessory was asked for («kính cường lực cho iPhone 17» → screen protector). The listing must be
+   * that kind of thing — a phone is not a screen protector, however well it matches «iPhone 17» (UAT: iPhone 12 card shown).
+   */
+  accessoryWanted?: string | null
+  /**
    * The least RAM the stated USE needs when no figure was named (owner 30/09, SHOP-3 t5: a 4GB laptop was picked "for
    * learning design"). Applied only while another candidate states enough (validateShoppingCandidates).
    */
@@ -83,7 +88,7 @@ export interface ShoppingConstraints {
 const DEMANDING_USE = /\b(?:thiet ke|do hoa|photoshop|illustrator|premiere|after effects|dung phim|dung video|edit video|chinh sua video|render|3d|autocad|revit|blender|gaming|choi game|game nang)\b/
 export const MIN_RAM_FOR_DEMANDING_USE = 8
 
-export type RejectionReason = 'accessory' | 'service' | 'brand' | 'budget' | 'ram' | 'storage' | 'size' | 'variant' | 'recipient'
+export type RejectionReason = 'type' | 'accessory' | 'service' | 'brand' | 'budget' | 'ram' | 'storage' | 'size' | 'variant' | 'recipient'
 
 export interface Rejection {
   candidate: Candidate
@@ -292,6 +297,13 @@ const CONFLICTING_FAMILY: Record<string, RegExp> = {
   headphones: new RegExp(['loa bluetooth', 'loa keo', 'micro thu am'].join('|')),
 }
 
+/** [kind, what the user says (folded), what a listing of that kind carries (folded)] */
+const ACCESSORY_WANTED: ReadonlyArray<readonly [string, RegExp, RegExp]> = [
+  ['screen_protector', /\b(?:kinh cuong luc|cuong luc|mieng dan man hinh|dan man hinh|mieng dan|ppf|kinh bao ve)\b/, /\b(?:cuong luc|dan man hinh|mieng dan|kinh bao ve|ppf|tempered|screen protector|hydrogel|chong nhin trom|kinh)\b/],
+  ['case', /\b(?:op lung|op dien thoai|bao da)\b|(?:^|\s)op(?:\s|$)/, /\b(?:op|op lung|case|bao da|bumper|cover)\b/],
+  ['charger', /\b(?:cu sac|cap sac|day sac|sac nhanh|sac du phong|pin du phong|sac khong day)\b/, /\b(?:sac|cap|charger|cable|adapter|pin du phong|power bank|magsafe)\b/],
+]
+
 /** The user is asking FOR an accessory or a service — rule 1 must not fire. */
 const WANTS_ACCESSORY = new RegExp(
   [
@@ -441,7 +453,7 @@ export function deriveShoppingConstraints(
   const latest = norm(userTexts[userTexts.length - 1] ?? '')
   for (let i = userTexts.length - 1; i >= 0; i--) {
     const t = norm(userTexts[i])
-    if (WANTS_ACCESSORY.test(t)) { k.wantsAccessory = true; break }
+    if (WANTS_ACCESSORY.test(t)) { k.wantsAccessory = true; k.accessoryWanted = ACCESSORY_WANTED.find(([, said]) => said.test(t))?.[0] ?? null; break }
     if (PRODUCT_TYPES.some(([, re]) => re.test(foldForLexicon(userTexts[i])))) break
   }
 
@@ -517,6 +529,12 @@ export function rejectCandidate(c: Candidate, k: ShoppingConstraints): Rejection
   const title = c.name || ''
   const head = headOf(title)
   const full = norm(title)
+
+  // 01/10 (owner, ca d): the accessory asked for decides what a listing must be.
+  if (k.accessoryWanted) {
+    const want = ACCESSORY_WANTED.find(([kind]) => kind === k.accessoryWanted)
+    if (want && !want[2].test(full)) return { candidate: c, reason: 'type', detail: `not a ${k.accessoryWanted}` }
+  }
 
   if (!k.wantsAccessory) {
     if (SERVICE_HEAD.test(head) || SERVICE_ANYWHERE.test(head)) return { candidate: c, reason: 'service', detail: head }
@@ -707,6 +725,7 @@ export function unmetConstraintPayload(k: ShoppingConstraints, rejected: readonl
   return {
     ...(k.budget ? { budget: { max: k.budget.max, type: k.budget.type } } : {}),
     ...(k.productType ? { product_type: k.productType } : {}),
+    ...(k.accessoryWanted ? { accessory_wanted: k.accessoryWanted } : {}),
     ...(k.brand ? { brand: k.brand } : {}),
     ...(k.ramGb !== null ? { ram_gb: k.ramGb } : {}),
     ...(k.storageGb !== null ? { storage_gb: k.storageGb } : {}),

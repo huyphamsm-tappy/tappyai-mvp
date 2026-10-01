@@ -1,3 +1,4 @@
+import { scrubUnsuppliedMarketplaces } from './marketplaceGuard'
 import { normalizeVN } from './intent'
 import { findPlaceOffset, proseHeaders, type Header } from './placeMatch'
 import type { EnrichmentCollector } from './toolResultSplit'
@@ -2022,6 +2023,15 @@ export function applyPlaceEnrichmentStreamFilter(
     const beforeEgress = mainText
     mainText = guardModelEgress(mainText, buildOwned(places), allowedUrls)
     logEgress('settle', beforeEgress, mainText)
+    // 01/10 (owner, ca d): the model does not choose which shop to send the user to — only shops whose links this turn handed over.
+    {
+      // Only what has not reached the client yet: the released prefix must stay a prefix of the final text.
+      const pre = !flushedSent ? '' : mainText.startsWith(flushedSent) ? flushedSent : null
+      if (pre !== null) {
+        const scrubbed = scrubUnsuppliedMarketplaces(mainText.slice(pre.length), allowedUrls)
+        if (scrubbed.removed.length) { console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'marketplace_named_by_model', removed: scrubbed.removed.length })); mainText = pre + scrubbed.text }
+      }
+    }
     // PHIÊN LUNA (CONSULT_LUNA only): the pick sentence stands alone, so a guard that cuts an unbacked number or
     // atmosphere word from the reason cannot take the pick's NAME with it (replay 30/09 FOOD-1 t6: "**Mình chọn: Miya
     // Sushi** vì có **1.376 đánh giá** …" → place_claim removed the whole sentence, the reply had no pick).
