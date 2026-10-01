@@ -17,7 +17,7 @@ struct AccountMenuView: View {
 
     private var items: [Item] {
         var rows = [
-            Item(id: "info", icon: "person", label: "profile.row.account.desc", desc: "profile.row.account.menuDesc", dest: .account),
+            Item(id: "info", icon: "person", label: "profile.row.account.desc", desc: "profile.account.info.desc", dest: .account),
             Item(id: "bookings", icon: "calendar", label: "profile.row.bookings", desc: "profile.row.bookings.desc", dest: .bookings),
             Item(id: "prefs", icon: "heart", label: "profile.row.preferences", desc: "profile.row.preferences.desc", dest: .preferences),
             Item(id: "price", icon: "arrow.down.right", label: "profile.row.priceWatch", desc: "profile.row.priceWatch.desc", dest: .priceWatches),

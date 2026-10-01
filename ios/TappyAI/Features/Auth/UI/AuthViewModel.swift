@@ -80,6 +80,8 @@ final class AuthViewModel: AppObservableObject {
             onAuthenticated()
         } catch let e as AppError where e == .cancellation {
             return
+        } catch let e as AuthCallbackError {
+            errorMessage = e.errorDescription   // a refused callback (wrong/missing state) keeps its own, specific wording
         } catch {
             errorMessage = NSLocalizedString("auth.zalo.unavailable", comment: "")
         }

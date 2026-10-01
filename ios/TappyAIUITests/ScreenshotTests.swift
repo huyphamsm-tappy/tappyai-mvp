@@ -265,7 +265,7 @@ final class ScreenshotTests: XCTestCase {
     /// A session that cannot be renewed: guest + the plain «đăng nhập đã hết» notice.
     func testExpiredSessionShowsNotice() {
         let app = launch(route: "hub", extra: ["-uitest-expired", "-uitest-theme", "dark"])
-        XCTAssertTrue(app.alerts["Phiên đăng nhập đã hết"].waitForExistence(timeout: 60), "the session-ended notice")
+        XCTAssertTrue(app.alerts["Đăng nhập lại nhé"].waitForExistence(timeout: 60), "the session-ended notice")
         shot("72-session-expired")
     }
 

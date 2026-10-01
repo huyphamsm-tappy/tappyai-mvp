@@ -700,8 +700,8 @@
     },
     "auth.sessionExpired.title": {
       "localizations": {
-        "en": { "stringUnit": { "state": "translated", "value": "Your sign-in has ended" } },
-        "vi": { "stringUnit": { "state": "translated", "value": "Phiên đăng nhập đã hết" } }
+        "en": { "stringUnit": { "state": "translated", "value": "Sign in again" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Đăng nhập lại nhé" } }
       }
     },
     "auth.sessionExpired.message": {
@@ -720,6 +720,12 @@
       "localizations": {
         "en": { "stringUnit": { "state": "translated", "value": "Zalo sign-in is not available in the app yet. Please use Google or email for now." } },
         "vi": { "stringUnit": { "state": "translated", "value": "Đăng nhập bằng Zalo trong ứng dụng chưa dùng được. Bạn tạm dùng Google hoặc email nhé." } }
+      }
+    },
+    "profile.account.info.desc": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Name, email, avatar" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Tên, email, ảnh đại diện" } }
       }
     },
     "profile.row.account.menuDesc": {
@@ -25347,13 +25353,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Your paid plan and any remaining credit will be lost, and Tappy does not refund the unused part. Deleting your account does not cancel your subscription on the App Store or Google Play — cancel it there so you are not charged again."
+            "value": "Your paid plan and any remaining credit will be lost, and Tappy does not refund the unused part. Deleting your account does not cancel your subscription on the App Store — cancel it there so you are not charged again."
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Gói trả phí và credit còn lại sẽ mất, Tappy không hoàn lại phần chưa dùng. Xóa tài khoản không tự hủy gói trên App Store hoặc Google Play, bạn cần hủy gói ở đó để không bị tính phí tiếp."
+            "value": "Gói trả phí và credit còn lại sẽ mất, Tappy không hoàn lại phần chưa dùng. Xóa tài khoản không tự hủy gói trên App Store, bạn cần hủy gói ở đó để không bị tính phí tiếp."
           }
         }
       }
@@ -25364,13 +25370,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "If you have a paid plan, your plan and any remaining credit will be lost, and Tappy does not refund the unused part. Deleting your account does not cancel your subscription on the App Store or Google Play — cancel it there so you are not charged again."
+            "value": "If you have a paid plan, your plan and any remaining credit will be lost, and Tappy does not refund the unused part. Deleting your account does not cancel your subscription on the App Store — cancel it there so you are not charged again."
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Nếu bạn đang có gói trả phí, gói và credit còn lại sẽ mất, Tappy không hoàn lại phần chưa dùng. Xóa tài khoản không tự hủy gói trên App Store hoặc Google Play, bạn cần hủy gói ở đó để không bị tính phí tiếp."
+            "value": "Nếu bạn đang có gói trả phí, gói và credit còn lại sẽ mất, Tappy không hoàn lại phần chưa dùng. Xóa tài khoản không tự hủy gói trên App Store, bạn cần hủy gói ở đó để không bị tính phí tiếp."
           }
         }
       }
