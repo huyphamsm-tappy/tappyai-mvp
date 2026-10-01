@@ -125,13 +125,21 @@ là tracking.
 | Giao dịch | Lịch sử mua | Khai (mã có, đang ẩn) | Chức năng ứng dụng | `StoreKitProvider` → `/api/iap/apple/verify`; màn Pro ẩn bởi cờ server `showProUpgrade` (xem §6). **CẦN HUY**: nếu chắc chắn không bao giờ bật trong bản này, có thể bỏ dòng này — nhưng cờ là của server nên khai cho an toàn |
 | Dữ liệu khác | Dữ liệu khác | Có | Chức năng ứng dụng | ngày sinh cho cổng 18+ (Apple không có loại riêng) |
 
-**Không thu thập:** âm thanh/ghi âm (nhập giọng nói dùng nhận dạng của iOS, app chỉ nhận chữ — đã bỏ dòng AudioData khỏi manifest 01/10; Music —
-nơi duy nhất app gửi âm thanh lên — ẩn bằng hằng số lúc biên dịch `ProductFlags.showMusic = false`), danh bạ, lịch sử duyệt web, sức khoẻ, tài
+**Âm thanh giọng nói (SỬA 02/10):** TappyAI **không** thu hay lưu âm thanh (app chỉ nhận chữ; đã bỏ dòng AudioData khỏi manifest 01/10; Music — nơi
+duy nhất app gửi âm thanh lên — ẩn bằng hằng số `ProductFlags.showMusic = false`). Nhưng nhận diện dùng `SFSpeechRecognizer` **không đặt**
+`requiresOnDeviceRecognition`, nên **âm thanh có thể được gửi tới Apple** để nhận diện. **Không được ghi «chạy hoàn toàn trên máy».** Chữ đúng:
+«Nhận diện giọng nói dùng dịch vụ nhận diện của Apple; TappyAI chỉ nhận chữ, không lưu âm thanh.» (Dữ liệu do Apple xử lý theo chính sách của Apple, không
+thuộc nhãn App Privacy của TappyAI.)
+
+**Không thu thập:** ghi âm giọng nói (xem trên), danh bạ, lịch sử duyệt web, sức khoẻ, tài
 chính, thông tin nhạy cảm, nhật ký sự cố, dữ liệu chẩn đoán/hiệu năng (không có Crashlytics/Sentry/MetricKit), analytics của bên thứ ba trên iOS
 (Android có Firebase Analytics; **iOS chỉ có FirebaseMessaging**, không Analytics).
 
-**Bên xử lý dữ liệu thay mặt TappyAI** (không tính là "chia sẻ", theo quyết định Huy 29/09): Anthropic (AI), Supabase (CSDL, đăng nhập), Google Cloud
-(Storage, Logging), Firebase (thông báo). **CẦN HUY** (từ Play): Serper, OSM Overpass/Nominatim, Google Web Risk, Travelpayouts nhận nội dung truy vấn —
+**Bên xử lý dữ liệu thay mặt TappyAI** (không tính là "chia sẻ", theo quyết định Huy 29/09): **OpenAI (AI — nhận nội dung chat/dịch/quét/viết; có màn đồng ý
+trong app từ build 98, xem §9)**, Supabase (CSDL, đăng nhập), Google Cloud (Storage, Logging), Firebase (thông báo), Serper (tìm kiếm web). **CHÚ Ý chữ:**
+chuỗi `integrations.privacy` hiện nói «không chia sẻ với bên thứ ba» — mâu thuẫn với danh sách này. Chữ đề nghị (cho web sửa trang /privacy và chuỗi đó):
+«TappyAI không bán dữ liệu của bạn. Để hoạt động, TappyAI gửi nội dung bạn nhập cho các nhà cung cấp xử lý thay mặt chúng tôi: OpenAI (trả lời AI), Supabase
+(đăng nhập, lưu trữ), Google Cloud và Firebase (lưu tệp, thông báo), Serper (tìm kiếm). Họ chỉ được dùng dữ liệu để cung cấp dịch vụ cho TappyAI.» **CẦN HUY** (từ Play): Serper, OSM Overpass/Nominatim, Google Web Risk, Travelpayouts nhận nội dung truy vấn —
 khuyến nghị coi là bên xử lý.
 
 **API cần lý do (Required Reason API):** chỉ `UserDefaults` (lý do `CA92.1`). Đọc kích thước tệp (`attributesOfItem[.size]`) không thuộc danh sách của
@@ -247,11 +255,11 @@ Mỗi yêu cầu: **ĐÃ ĐỦ** (có file) / **THIẾU** / **CHƯA CHẮC**. Ch
 | 1.2 Nội dung người dùng | có cách lọc, báo cáo, chặn người dùng, có liên hệ công khai | **ĐÃ ĐỦ phía app, CHƯA BẬT trên production**: báo cáo + chặn (`ios/TappyAI/Features/Safety/*`) nằm sau cờ `p8` mặc định tắt; lọc nội dung do cổng an toàn server; liên hệ `support@tappyai.com`. Cần: bật cờ + migration Phase 8 trên production (IOS-REQUESTS I7), người xử lý báo cáo trong 24 giờ (việc của Huy), trang `/support` thật (CHƯA CHẮC) |
 | 5.1.1(v) Xoá tài khoản | xoá được TRONG app | **ĐÃ ĐỦ phía app, CẦN cờ**: `Profile/UI/AccountDeletionView.swift`, ảnh 44–46 và 66. Cờ `ACCOUNT_SELF_DELETE_ENABLED` phải BẬT trên production lúc duyệt (Huy quyết bật lúc release, R29); thứ tự: áp D1/D2/D4 → bật cờ → xoá thử tài khoản test |
 | 4.8 Đăng nhập bên thứ ba | có Google/Zalo thì phải có lựa chọn tương đương (Sign in with Apple) | **ĐÃ ĐỦ phía app, CHƯA BẬT**: `Auth/Data/AppleSignIn.swift`, nút ẩn tới khi server bật provider Apple (IOS-REQUESTS I8; việc Supabase để sau release). Nếu nộp mà nút chưa hiện thì bị 4.8 |
-| 5.1.2(i) Chia sẻ dữ liệu cá nhân với AI bên thứ ba | **«phải nói rõ dữ liệu được chia sẻ với AI bên thứ ba và xin sự đồng ý rõ ràng trước khi chia sẻ»** | **THIẾU**: tin nhắn chat được gửi tới OpenAI (R27: trang /privacy đã ghi OpenAI), nhưng app iOS **không có** màn nói rõ và xin đồng ý trước lần chat đầu (tìm trong mã: không có chuỗi nào nhắc OpenAI/AI bên thứ ba). Đây là điều dễ bị từ chối nhất. Việc cần làm: một màn/hộp đồng ý trước lần chat đầu (cần quyết định sản phẩm + phiên web nếu dùng chung nội dung); ghi vào IOS-REQUESTS |
+| 5.1.2(i) Chia sẻ dữ liệu cá nhân với AI bên thứ ba | **«phải nói rõ dữ liệu được chia sẻ với AI bên thứ ba và xin sự đồng ý rõ ràng trước khi chia sẻ»** | **ĐÃ LÀM phía app (02/10, build 98)**: `Core/Privacy/AIConsent*.swift`. Sheet hiện MỘT lần trước yêu cầu AI đầu tiên (chat, dịch, quét, viết nội dung), nêu gửi gì / cho ai (OpenAI) / để làm gì / xử lý thế nào + link `/privacy`; «Đồng ý» / «Để sau» (không gửi gì, chữ gõ trả lại ô nhập); công tắc «Chia sẻ dữ liệu với AI» ở Cài đặt để rút lại. **Chặn ở hai tầng**: màn hình hỏi trước, và lớp mạng (`URLSessionAPIClient`, `URLSessionStreamingClient`) từ chối `/api/chat|translate|scan|viet-content` khi chưa đồng ý (`AIConsentTests`). **Chữ do Huy duyệt.** Web/Android nên cân nhắc cùng cách (IOS-REQUESTS I14). |
 | — chuỗi mâu thuẫn | | **CHƯA CHẮC**: `integrations.privacy` nói «không chia sẻ với bên thứ ba» (về kết nối ứng dụng) — nên đọc lại cho khỏi mâu thuẫn với việc gửi chat tới OpenAI |
 | 5.1.1 Chính sách quyền riêng tư | URL chính sách, nêu thu thập/ bên thứ ba/ lưu giữ/ xoá | **CHƯA CHẮC**: `www.tappyai.com/privacy` đã cập nhật OpenAI + wttr.in/Upstash/Brevo/Overpass/Google Maps (R27) nhưng "chờ Huy duyệt chữ"; em chưa mở trang để so chữ (trình duyệt đang không hiển thị) |
 | 3.1.1 Hàng hoá số | tính năng mở khoá phải dùng In-App Purchase | **ĐÃ ĐỦ cho bản đầu**: không bán gói (`showProUpgrade` tắt, không có mua trong app). Lưu ý: khi bật Pro phải dùng IAP (RevenueCat, Phase 8) |
-| 2.3.10 Nền tảng khác | không nhắc tên/biểu tượng nền tảng khác trong app hoặc metadata | **CHƯA CHẮC / CÓ RỦI RO**: chữ chính thức của web (R29) trong màn xoá tài khoản có «**Google Play**». Em đã dùng đúng chữ web theo lệnh; nên hỏi web/Huy có dùng bản chỉ nói «App Store» cho iOS không. Mô tả cửa hàng iOS đã tránh nhắc Android |
+| 2.3.10 Nền tảng khác | không nhắc tên/biểu tượng nền tảng khác trong app hoặc metadata | **ĐÃ SỬA (build 97)**: màn xoá tài khoản chỉ nói «App Store». Quét 02/10 toàn bộ chuỗi hiển thị của app: không còn chữ Android / Google Play (chỉ còn trong chú thích mã và một chú thích trong `PrivacyInfo.xcprivacy`, người dùng không thấy). Web và Android nên dùng chữ theo nền tảng (IOS-REQUESTS I14). Mô tả cửa hàng iOS đã tránh nhắc Android |
 | 1.3 / 2.3.6 Độ tuổi | trả lời bảng câu hỏi trung thực | **CHƯA KIỂM TRONG GIAO DIỆN** (§5.4 soạn từ mã; Apple vừa thêm câu hỏi mạng xã hội — «Review New Social Media Questions on Age Ratings» hiện ở App Store Connect của Huy) |
 | 2.1(a) Tài khoản demo | có đăng nhập thì phải đưa tài khoản demo, bật dịch vụ nền | **THIẾU (việc của Huy)**: tạo trên production sau khi web release (§5.3); em không tạo |
 | 5.1.1(ix) Ngành bị quản lý | | **KHÔNG áp dụng** theo hiểu biết (app tư vấn đi chơi/mua sắm; có kiểm tra link lừa đảo nhưng không cung cấp dịch vụ tài chính) — CHƯA CHẮC |
@@ -263,7 +271,8 @@ Mỗi yêu cầu: **ĐÃ ĐỦ** (có file) / **THIẾU** / **CHƯA CHẮC**. Ch
 ## 10. ĐIỀU KIỆN TRƯỚC KHI NỘP (gom lại)
 
 1. Web release Phase 7 xong; **cờ production**: `ACCOUNT_SELF_DELETE_ENABLED=true` (sau D1/D2/D4), cờ báo cáo/chặn Phase 8 + migration, nút Sign in with Apple hiện (provider Apple ở Supabase, thu hồi token khi xoá).
-2. **Màn đồng ý chia sẻ dữ liệu với AI bên thứ ba (5.1.2(i))** — chưa có.
+2. **Màn đồng ý chia sẻ dữ liệu với AI bên thứ ba (5.1.2(i))** — ĐÃ CÓ từ build 98; **kiểm trên iPhone** (đồng ý, để sau, công tắc Cài đặt) và Huy duyệt chữ.
+2b. **Báo cáo/chặn (1.2) theo hợp đồng cuối của server** (`POST /api/reviews|comments|users/{id}/report`, `POST/DELETE /api/users/{id}/block`, `GET /api/users/blocks`; cờ `p8.reports`, `p8.userBlocks`): app đã đổi theo (build 98) nhưng **ẩn tới khi cờ bật** — phải bật trên production trước khi nộp.
 3. Tài khoản demo trên production (Huy tạo) + số điện thoại liên hệ.
 4. Bản build cuối đã qua TestFlight và kiểm trên iPhone thật: đăng nhập Apple, xoá tài khoản, báo cáo/chặn, mic (chấm cam tắt), push (chỉ khi server gửi được tin cho iOS).
 5. Trang `/privacy` đã được Huy duyệt; trang hỗ trợ có thật.

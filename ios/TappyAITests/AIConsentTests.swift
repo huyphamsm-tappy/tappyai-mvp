@@ -113,7 +113,8 @@ final class AIConsentTests: XCTestCase {
         let task = Task { await c.ensure() }
         while !c.isPresenting { await Task.yield() }
         c.agree()
-        XCTAssertTrue(await task.value)
+        let agreed = await task.value
+        XCTAssertTrue(agreed)
         XCTAssertTrue(s.isGranted)
         XCTAssertTrue(c.granted)
         c.withdraw()

@@ -46,6 +46,7 @@ printf '%s' "$GOOGLE_SERVICE_INFO_PLIST_BASE64" | base64 --decode > TappyAI/Reso
 ```
 
 Các biến cần có (trong workflow Xcode Cloud, đánh dấu **Secret**): `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `TAPPY_API_BASE_URL` (phải là `https://www.tappyai.com`, KHÔNG phải địa chỉ UAT, KHÔNG có khoá bypass), `GOOGLE_SERVICE_INFO_PLIST_BASE64`. Giá trị lấy từ máy anh (`D:\secrects`) hoặc từ chỗ anh đã lưu; **đừng gửi nội dung vào chat**.
+**Kiểm lại 02/10 (build 98): vẫn đúng với dự án hiện tại** — không có thư viện/đích mới; tệp tài nguyên mới `bocongan2026.json` và code đồng ý AI chỉ nằm trong thư mục `ios/TappyAI` nên `xcodegen generate` tự nhặt; biến môi trường không đổi. Số build mới nhất trên TestFlight là **97** (98 đang làm): đặt số build của Xcode Cloud **lớn hơn** số lớn nhất đã tải lên.
 Số build: GitHub Actions dùng số lần chạy làm `CFBundleVersion`; Xcode Cloud có biến `CI_BUILD_NUMBER` (chưa kiểm cách chỉnh trong dự án XcodeGen) — số build phải **lớn hơn mọi số đã upload** lên TestFlight.
 
 ## (b) Trên Mac, từng bước bấm
