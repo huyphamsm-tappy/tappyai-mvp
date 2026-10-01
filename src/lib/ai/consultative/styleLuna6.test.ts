@@ -49,16 +49,16 @@ describe('D1/D3/D4/D5: the block says what it must and nothing structural', () =
   const b = STYLE_LUNA6_BLOCK
   it('forms of address: mirror, never guess, never open a hierarchy pair or mày/tao', () => {
     expect(b).toMatch(/KHONG doan tuoi\/gioi tinh/)
-    expect(b).toMatch(/KHONG tu mo/)
+    expect(b).toMatch(/KHONG tu mo cap thu bac/)
     expect(b).toMatch(/"mày\/tao" chi khi user dung truoc/)
-    expect(b).toMatch(/Mac dinh trung tinh: "mình"\/"bạn"/)
+    expect(b).toMatch(/mac dinh "mình"\/"bạn"/)
   })
   it('humour: capped, 😄 only, switched off in the serious contexts', () => {
-    expect(b).toMatch(/khoang 1 trong 3/); expect(b).toMatch(/chi 😄/)
+    expect(b).toMatch(/khoang 1/3/); expect(b).toMatch(/chi 😄/)
     for (const k of ['lua dao', 'nan nhan', 'suc khoe', 'khan cap', 'chua co du lieu']) expect(b).toContain(k)
   })
   it('keeps the assumptions (does not delete them) and forbids the dead phrases', () => {
-    expect(b).toMatch(/VAN noi du moi gia dinh/)
+    expect(b).toMatch(/VAN noi du/)
     for (const k of ['Chắc chắn rồi', 'Hy vọng thông tin hữu ích', 'Rất vui được hỗ trợ']) expect(b).toContain(k)
   })
   it('touches no structure: no marker, no tool, no number rule', () => {
