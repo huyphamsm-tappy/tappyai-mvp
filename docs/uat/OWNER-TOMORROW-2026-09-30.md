@@ -50,7 +50,7 @@ Chi tiết gốc (nếu cần tra): `RELEASE-PLAN-2026-09-29.md` §3, `RELEASE-G
    → **Session pooler** (5432) → copy host vào `D:\TappyAI-backups\pghost.txt`. Tạo `D:\TappyAI-backups\pgpass` một dòng
    `<host>:5432:postgres:postgres.fwznnobrdctuskgrvuik:<mật khẩu DB>` (KHÔNG reset mật khẩu). Báo lead "pgpass ready".
 3. **Trần chi tiêu API production (trước deploy)** —
-   - console.anthropic.com → **Settings → Limits** → đặt **monthly spend limit** cho org mà production dùng
+   - console.anthropic.com → **Settings → Limits** (AI nay chạy trên OpenAI: đặt trần ở platform.openai.com → Settings → Limits) → đặt **monthly spend limit** cho org mà production dùng
      (đề xuất: mức anh chấp nhận cho tháng đầu; ước chi phí tư vấn ≈ $0,009/lượt → 900 lượt/tháng ≈ $8).
      Nếu UAT/replay và production chung org, 29/09 đã chạm giới hạn → nâng đủ cho cả hai.
    - serper.dev → Dashboard → kiểm số credit còn lại (code tự chặn ở 15.000 credit/ngày — `SERPER_DAILY_CREDIT_CEILING`).
@@ -63,6 +63,8 @@ Chi tiết gốc (nếu cần tra): `RELEASE-PLAN-2026-09-29.md` §3, `RELEASE-G
    = SHA lead đưa → **Create a merge commit** (KHÔNG squash/rebase) → Confirm. Không xoá nhánh.
 6. **Bật khách chat (ngay sau deploy, trước smoke)** — Supabase **fwznnobrdctuskgrvuik** (KHÔNG phải zdaprd…) →
    Authentication → **Sign In / Providers** → **Allow anonymous sign-ins = ON** → Save. Báo lead "anonymous ON".
+7a. **Trước khi upload AAB — đọc `docs/uat/ENV-RELEASE-CHECKLIST.md` (01/10):** quyết cờ `ACCOUNT_SELF_DELETE_ENABLED` (đổi chữ trong app),
+   biến `GCP_*` cho đăng video production (+ smoke 1 clip), vân tay App signing key → OAuth client Android cho Google login, trần chi tiêu OpenAI.
 7. **Play Console — Internal testing** (khi lead đưa đường dẫn AAB vc10 build từ SHA release):
    play.google.com/console → TappyAI → App integrity → so SHA-256 upload key với số `build-aab.sh` in ra; App bundle
    explorer: vc10 chưa từng upload → Testing → **Internal testing → Create new release** → upload `app-release.aab` →

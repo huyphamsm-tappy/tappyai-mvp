@@ -305,6 +305,14 @@ Giá phòng: chưa xác nhận…","price":…`). Phần đầu kế hoạch (ti
 - Web KHÔNG đổi sang "ghi yêu cầu": đổi sẽ lệch cả hai app đã port 1:1 (phải build lại) và yếu hơn chính sách Play. Nếu Huy vẫn muốn luồng 24 giờ → quyết định riêng, đụng cả ba client.
 - Chính sách Google Play (https://support.google.com/googleplay/android-developer/answer/13327111): bắt buộc cả (1) đường xoá TRONG app và (2) link web để yêu cầu xoá; email/biểu mẫu/dịch vụ khách hàng được chấp nhận cho phần web; "phải cho người dùng biết sẽ xảy ra gì và hoàn tất trong thời gian hợp lý"; vô hiệu hoá/đóng băng không tính là xoá. ⇒ một app CHỈ mở email để xoá (cờ TẮT) có thể bị từ chối ở bước khai Data deletion nếu app cho tạo tài khoản trong app. Vì vậy cờ nên BẬT trước khi nộp AAB (PHẦN B).
 
+### R27 (2026-10-01) — thẻ hỏi: tiêu đề đúng mảng, câu «Bay từ đâu?», cửa sổ giới thiệu (KHÔNG cần build lại Android/iOS)
+
+- **Sửa phía server (commit eaefa04, đang trên UAT):** câu hỏi món ăn (phở Bắc/Nam, bún, cà phê…) nay có `id` = `dish` (trước `style`), câu hỏi dịch vụ spa (massage / nail / tóc) có `id` = `service` (trước `style`). `askAreaOf` của Android (`AskCardModel.kt`) đã coi `dish` → ăn uống, `service` → spa; nên thẻ ăn uống hết hiện «Chuyến đi thế nào đây?». `style` chỉ còn dùng cho khách sạn / chọn kiểu chuyến đi (đúng là du lịch). Hợp đồng `[TAPPY_ASK]` giữ nguyên.
+- Khi người dùng đã nói rõ món (vd. «ăn phở Bắc tối nay») thẻ chỉ còn Số người / Ngân sách / Khu vực; không câu nào mang id của mảng, nên `askAreaOf` trả `main` và thẻ hiện tiêu đề trung tính «Tìm gì cho bạn hôm nay?» — không sai mảng. Muốn tiêu đề «Hôm nay ăn gì nhỉ?» cho cả trường hợp này thì cần thêm một id báo mảng vào hợp đồng (đụng cả hai app) — chưa làm.
+- **Vé máy bay — câu «Bay từ đâu?»:** id `origin`, 3–4 nút `Từ TP.HCM` / `Từ Hà Nội` / `Từ Đà Nẵng` (bỏ nơi trùng điểm đến) + `Từ nơi khác`. Bước kiểu «khác» (một lựa chọn). `askAreaOf` đã đọc `origin` là du lịch. Android gửi lại câu trả lời dạng văn bản như mọi thẻ («Từ TP.HCM · …»); server đọc «Từ …» là điểm đi.
+- **Cửa sổ «Tappy muốn hiểu bạn hơn!» (chỉ web, 16e5256):** không còn chồng lên thẻ hỏi/ô chọn ngôn ngữ — chờ chọn ngôn ngữ, không hiện khi có thẻ hỏi hoặc câu trả lời đang chạy. Không đụng API hay app.
+- **Trang /privacy (web, chờ Huy duyệt chữ):** nay ghi OpenAI (không còn Anthropic) + wttr.in, Upstash, Brevo, Overpass, Google Maps Platform. Data safety trên Play cần khai OpenAI nhận nội dung chat (phiên Android đã hỏi ở mục 5 báo cáo 01/10 — câu trả lời: CÓ).
+
 ## 3. Quy tắc bằng chứng mới (chủ dự án, 2026-09-28) — áp dụng cho CẢ phiên Android
 
 - KHÔNG commit ảnh/video vào git nữa (không sửa lịch sử commit cũ).

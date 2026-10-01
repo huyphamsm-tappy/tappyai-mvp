@@ -113,3 +113,6 @@ là đánh giá cũ 28/09 của trang trước, đã xử lý ở vòng C1/C2).
 - **UP-4 quét GPS** ảnh đã tải lên **trước 24/09** (trước R-2) trong bucket production; xoá EXIF hàng loạt.
 - **DEP-1 nâng Next.js 15** (14.2.35 hết hỗ trợ; 1 critical + vài high, đa số chỉ ảnh hưởng self-host).
 - **Đổi khoá Google** còn nằm trong 2 file settings của worktree cũ + transcript trên máy (danh sách trong báo cáo) — xoay khoá rồi xoá file.
+
+## PL-PLAN-CARD-RACE — thẻ địa điểm của tin nhắn KẾ HOẠCH chuyến đi do cuộc đua song song quyết định (01/10)
+Lượt kế hoạch lấy trước khách sạn + quán ăn + điểm tham quan + thời tiết SONG SONG (`route.ts` ~2625); tin nhắn chỉ mang MỘT khối thẻ và `setPlacesRecommendations` là «bộ đầu tiên không rỗng thắng» (`toolResultSplit.ts`). Cùng một câu «Lên kế hoạch đi Đà Nẵng 3 ngày 2 đêm…» hai lần chạy trên UAT cho hai kết quả: một lần thẻ khách sạn (nút «Đặt phòng trên Trip.com»), một lần chỉ thẻ quán ăn/điểm tham quan. Link đặt phòng đã nằm ở tin nhắn CHỐT khách sạn ngay trước đó, nên không phải lỗi mất link; nhưng thứ tự không xác định. Đề xuất: chọn thứ tự cố định (khách sạn đã chốt → thẻ quán/điểm tham quan) hoặc gộp hai khối. Chưa sửa vì đã đóng băng và là quyết định sản phẩm.
