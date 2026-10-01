@@ -9,11 +9,10 @@ Nguyên tắc: mỗi dòng có căn cứ file:dòng. Chỗ chưa chắc ghi **[C
 ## A0. Ba điều đã đổi so với bản nháp 29/09 — đọc trước khi dán
 
 1. **Bên xử lý AI đã đổi từ Anthropic sang OpenAI (GPT-6 Luna).** `src/lib/ai/llm/registry.ts:13,51` — mặc định `openai`, `claude` chỉ là rollback.
-   Nội dung chat, ảnh gửi trong chat, văn bản dịch / Viết content / kiểm tra lừa đảo giờ đi tới OpenAI. Nhưng:
-   - trang `/privacy` vẫn chỉ ghi Anthropic: `src/lib/i18n/legal.ts:58` (EN) và `:291` (VI) — **không có OpenAI**;
-   - quyết định của Huy 29/09 ("bên xử lý, không tính chia sẻ") nêu đích danh Anthropic, chưa nêu OpenAI.
-   → **[CẦN HUY XÁC NHẬN]** coi OpenAI cũng là bên xử lý thay mặt TappyAI; **và phiên web phải sửa `/privacy` (thêm OpenAI) TRƯỚC khi gửi
-   Data safety** — Play đối chiếu Data safety với chính sách. Đây là lệch mới, chưa ai xử lý.
+   Nội dung chat, ảnh gửi trong chat, văn bản dịch / Viết content / kiểm tra lừa đảo giờ đi tới OpenAI.
+   - **Cập nhật 01/10:** phiên web đã sửa `/privacy` (commit `16e5256`, `legal.ts`) ghi OpenAI + wttr.in, Upstash, Brevo, Overpass, Google Maps Platform — **chờ Huy duyệt chữ**. Data safety phải khai OpenAI nhận nội dung chat (web đã trả lời "CÓ", R27).
+   - Quyết định của Huy 29/09 ("bên xử lý, không tính chia sẻ") nêu đích danh Anthropic, chưa nêu OpenAI.
+   → **[CẦN HUY XÁC NHẬN]** coi OpenAI cũng là bên xử lý thay mặt TappyAI (nếu không → khai "Có chia sẻ" cho Tin nhắn / Ảnh). Không gửi Data safety trước khi /privacy mới lên production (Play đối chiếu hai bên).
 2. **Firebase Analytics CÓ trong bản release** (`android/core/analytics/build.gradle.kts:35`, `FirebaseAnalyticsProvider.kt:27`); comment sai ở
    `android/app/build.gradle.kts:446-449` ("no Analytics") **đã sửa 01/10** cho khớp. Manifest release có `AppMeasurementService/Receiver`.
    **Đo thực tế (emulator, bản UAT, 01/10, `adb shell setprop log.tag.FA VERBOSE`):** logcat in `App measurement collection enabled` rồi
@@ -24,7 +23,7 @@ Nguyên tắc: mỗi dòng có căn cứ file:dòng. Chỗ chưa chắc ghi **[C
    - Advertising ID **không** thu: `AndroidManifest.xml:26-27` gỡ `AD_ID`, `:74` `google_analytics_adid_collection_enabled=false` (manifest release đã gộp: không có `AD_ID` / `ACCESS_ADSERVICES_AD_ID`). Cờ đồng ý quảng cáo của GA (`ad_storage`, `ad_personalization`…) **không đặt** nên theo mặc định của Firebase (tôi chưa kiểm mặc định này trên tài liệu Android — chưa kiểm).
    - **TẮT được không:** theo tài liệu Firebase có thể (runtime `setAnalyticsCollectionEnabled(false)` — đã thấy trong tài liệu; công tắc trong manifest tôi chỉ nhớ tên `firebase_analytics_collection_enabled` / `firebase_analytics_collection_deactivated`, **chưa kiểm** được tên chính xác từ nguồn). Tắt đòi hỏi bản build mới.
    - **[CẦN HUY QUYẾT — tôi KHÔNG tự tắt]:** (A) giữ như hiện tại, khai "Có thu thập — Tương tác trong app, Mã thiết bị; mục đích Phân tích; không chia sẻ; bắt buộc"; (B) thêm công tắc đồng ý trong Cài đặt (mặc định tắt) — thay đổi sản phẩm, cần bản mới; (C) tắt hẳn Analytics bản này — GA4 mất số liệu Android, bỏ được dòng Analytics khỏi Data safety nhưng FCM token vẫn là "Mã thiết bị". Khuyến nghị của tôi: (A) cho lần phát hành đầu vì đã có trong `/privacy`, nhưng đó là quyết định của anh.
-3. **Cờ xoá tài khoản**: xem mục B (kết quả khác với mô tả "thông báo xử lý trong 24 giờ").
+3. **Cờ xoá tài khoản**: xem mục B — web đã chốt hợp đồng (xoá NGAY khi cờ BẬT; cờ TẮT = email); thiết kế "24 giờ" không có trong code.
 
 ---
 
@@ -63,21 +62,28 @@ Travelpayouts cũng coi là bên xử lý (Overpass là API công cộng không 
 
 ---
 
-## B. Khai báo xoá tài khoản
+## B. Khai báo xoá tài khoản (cập nhật 01/10 theo hợp đồng CUỐI của web — `ANDROID-REQUESTS.md` R26, `ENV-RELEASE-CHECKLIST.md` §1)
 
-**URL trang xoá trên web:** `https://www.tappyai.com/delete-account` (nội dung trang đổi theo cờ, `src/app/delete-account/`).
+**URL trang xoá trên web:** `https://www.tappyai.com/delete-account` (nội dung trang đổi theo cờ — `src/app/delete-account/page.tsx`).
 
-**Trong app (đã đọc code + chụp emulator, xem báo cáo đêm):**
-- Đường vào: **Tôi → Cài đặt → hàng "Yêu cầu xóa tài khoản"** (màu đỏ, biểu tượng thùng rác) — `profile/SettingsScreen.kt:268-272`.
-- **Cờ `ACCOUNT_SELF_DELETE_ENABLED` TẮT** (mặc định, và là giá trị release đã chốt): bấm → hộp "Yêu cầu xóa tài khoản?" → **Tiếp tục** → mở app email với thư soạn sẵn tới `support@tappyai.com`; không có app email → toast chỉ địa chỉ (`SettingsScreen.kt:324-360`). **App không xoá gì; bộ phận hỗ trợ xác minh chủ tài khoản rồi xoá.**
-- **Cờ BẬT**: hàng đổi tên thành "Xóa tài khoản" → hộp có danh sách dữ liệu bị xoá → gõ **XÓA** → nút "Xóa vĩnh viễn tài khoản" → `POST /api/account/delete` → màn "Tài khoản của bạn đã được xóa… ảnh, video, âm thanh xóa khỏi kho tệp trong vòng 48 giờ" → đăng xuất → về trang chủ (`profile/DeleteAccountDialog.kt`, `res/values-vi/strings_account_delete.xml`). **Không có "xử lý trong 24 giờ" trong code** — mô tả đó không khớp; xoá là NGAY, tệp trong 48 giờ. Khách (ẩn danh) không thấy luồng này.
+**Hợp đồng thật (web đã chốt, KHÔNG phải "ghi yêu cầu → 24 giờ"):** `POST /api/account/delete` `{"confirm":"XÓA"|"XOÁ"|"DELETE"}` xoá NGAY (`auth.admin.deleteUser`, DB cascade);
+tệp ảnh/video/âm thanh do cron 01:45 giờ VN dọn trong 48 giờ. 404 `not_available` = cờ TẮT. Cờ `ACCOUNT_SELF_DELETE_ENABLED` (chỉ `true` mới BẬT, Production mặc định TẮT), app đọc `GET /api/config` → `flags.accountSelfDelete`.
+Thiết kế "24 giờ" mà Huy nêu **không có trong code ở bất kỳ client nào**; web nói đổi sang đó là quyết định riêng đụng cả 3 client. Android làm theo web, không tự đoán.
 
-**Hệ quả với khai báo Play nếu cờ TẮT lúc gửi duyệt:**
-- Khai đúng theo thực tế: "app cho phép **yêu cầu** xoá tài khoản" + URL trên. Nếu khai "xoá ngay trong app" khi cờ tắt là **sai sự thật**.
-- Rủi ro duyệt: chính sách Google (đã đọc 01/10, support.google.com/googleplay/android-developer/answer/13327111) yêu cầu "in-app path to delete their app accounts and associated data" cộng một link web. Luồng "gửi yêu cầu bằng email" có đường trong app + link web nhưng **không tự xoá** — tôi **không chắc** người duyệt có chấp nhận (chưa kiểm được, chỉ Google trả lời). Khả năng bị yêu cầu sửa là có.
-- Ngược lại BẬT cờ khi migration D1/D2/D4 chưa áp lên production nghĩa là hứa xoá dữ liệu mà hệ thống chưa xoá hết (`src/lib/account/selfDelete.ts:1-25`; quyết định D1/D2/D4 hoãn, `RELEASE-PLAN` dòng 11) — **không nên bật**.
-- ⚠️ **Lệch cần biết:** `RELEASE-PLAN-2026-09-29.md:170` ghi Production HIỆN `ACCOUNT_SELF_DELETE_ENABLED=true`, release sẽ đặt `false`. Trước khi web đặt `false`, app Android chạy với server production sẽ hiện luồng xoá NGAY. UAT hiện `accountSelfDelete:false` (đo 01/10 qua `GET /api/config`).
-- Mục "Xoá một phần dữ liệu": **Có** — xoá từng cuộc chat, trí nhớ AI, bài, bình luận, mục đã lưu (route `DELETE`, `docs/release/PLAY-LISTING.md` §2).
+**Trong app (Android, đọc code `profile/SettingsScreen.kt:268-275`, `DeleteAccountDialog.kt` + chụp emulator UAT 01/10):**
+- Đường vào: **Tôi → Cài đặt → mục «KHÁC» → hàng cuối «Yêu cầu xóa tài khoản» / «Xóa tài khoản»**. Từ 01/10 là hàng **kín đáo** (ô nền xám, chữ thường, không đỏ) — vẫn là hàng cuối của mục Khác nên dễ tìm.
+- **Cờ TẮT** (UAT, và Production theo mặc định): hàng «Yêu cầu xóa tài khoản» → hộp «Yêu cầu xóa tài khoản?» → **Tiếp tục** → mở app email với thư soạn sẵn tới `support@tappyai.com`; không có app email → toast chỉ địa chỉ. **App không xoá, không đăng xuất**; người trực xác minh rồi xoá theo `docs/uat/ACCOUNT-DELETION-REQUEST-RUNBOOK.md` (`/delete-account` hứa 30 ngày, `legal.ts:179`).
+- **Cờ BẬT**: hàng «Xóa tài khoản» → hộp liệt kê dữ liệu bị xoá → gõ **XÓA** → «Xóa vĩnh viễn tài khoản» → màn «Tài khoản của bạn đã được xóa…» → đăng xuất → về trang chủ. Khách (ẩn danh) không thấy luồng này (server 403). **CHƯA kiểm trên emulator UAT** (UAT cờ TẮT lúc chạy; web chụp tạm ở `81e8016` rồi gỡ).
+
+**Đủ cho Google Play chưa?** (nguồn: support.google.com/googleplay/android-developer/answer/13327111, đọc 01/10; web trích cùng nguồn trong R26)
+- Play yêu cầu CẢ (1) đường xoá tài khoản **trong app** và (2) **link web** để yêu cầu xoá. Email/biểu mẫu được chấp nhận cho phần web; vô hiệu hoá/đóng băng không tính là xoá.
+- **Cờ TẮT = app chỉ mở email → có nguy cơ bị từ chối** ở khai báo Data deletion (app cho tạo tài khoản trong app). Tôi **không chắc** Google chấm thế nào — chỉ Google trả lời được; web cũng đánh giá là có nguy cơ.
+- **Cờ BẬT** đáp ứng (1)+(2), nhưng hứa xoá hết dữ liệu: `src/lib/account/selfDelete.ts:1-25` nói hợp đồng này đúng khi migration D1/D2/D4 đã áp lên production (RELEASE-PLAN §1; D1/D2/D4 từng "hoãn" 29/09). **Huy quyết** ở `ENV-RELEASE-CHECKLIST.md` §1 (đề xuất của web/Claude: BẬT trước khi nộp AAB). Nếu bật mà D1/D2/D4 chưa áp thì app hứa quá mức — kiểm với phiên web trước.
+- iOS (không phải Android): App Store 5.1.1(v) đọc 01/10 — phải có xoá tài khoản TRONG app, link web/email riêng không đủ ⇒ cờ TẮT càng không đạt trên iOS.
+
+**Khai trong Play Console (Data deletion):** "app cho phép tạo tài khoản: Có"; URL xoá = `https://www.tappyai.com/delete-account`; khai "Có" cho xoá trong app **chỉ khi cờ BẬT lúc gửi duyệt** (khai đúng thực tế lúc duyệt — người duyệt mở URL và thử app). Cờ TẮT → khai là "yêu cầu xoá" và chấp nhận rủi ro bị yêu cầu sửa.
+**Xoá một phần dữ liệu không cần xoá tài khoản:** Có — xoá từng cuộc chat, trí nhớ AI, bài đăng, bình luận, mục đã lưu (route `DELETE`, `docs/release/PLAY-LISTING.md` §2).
+**Lệch cần biết:** `RELEASE-PLAN-2026-09-29.md:170` / `RELEASE-GOVERNANCE.md:103` ghi Production HIỆN `ACCOUNT_SELF_DELETE_ENABLED=true`; release đặt lại theo quyết định của Huy ở trên.
 
 ---
 
