@@ -60,3 +60,13 @@ Làm theo thứ tự. Không ai cần gửi lại gì cho tôi ngoài **một fi
 **Bước 5 — App Store Connect** (chỉ khi lên bản nộp): App Privacy → khai theo A5. Hiện tại KHÔNG cần đăng nhập cho TestFlight: secret ký đã có từ build 50.
 
 Không có Bước 1–3, build vẫn lên TestFlight nhưng **không có thông báo đẩy** (workflow in cảnh báo, app chạy bình thường).
+
+**Cập nhật 01/10:** Bước 1.3 (profile mới) KHÔNG cần — workflow `ios-profile-check` (run 36816731276) cho thấy profile trong secret `APPSTORE_PROFILE_BASE64` đã có đủ Push, Sign in with Apple, Associated Domains.
+
+## I11 — Lịch sử chat: server chỉ lưu {role, content} (01/10, đọc rc cc02d4c)
+
+`GET /api/conversations` (`src/app/api/conversations/route.ts`) trả tối đa **20** cuộc gần nhất, mỗi tin chỉ `{role, content}`; web (`ChatInterface.tsx:112`) và iOS đều PUT lại đúng hai trường đó. Mọi thẻ chỉ sống lại nếu nằm TRONG `content` dưới dạng khối marker (`[TAPPY_PLACES]`, `[TAPPY_PLAN]`, `[TAPPY_ASK]`…). Hệ quả (không phải lỗi giải mã iOS): thẻ địa điểm sống ở dạng «bền» (mỏng hơn bản trực tiếp; ảnh/giờ mở cửa từ Google không được lưu vì giấy phép), nguồn/ảnh chỉ có khi chúng nằm trong `content`. Nếu phiên web tìm ra ảnh bị mất do lúc lưu cắt `content` hay bỏ marker, sửa ở đó. iOS: giải mã `LossyList` + `lossyArray` nên một tin hỏng không làm mất cả cuộc; xem ảnh CI 62.
+
+## PL-VOICE-NATIVE — màn Mic mới (web, mockup «03. Voice / Chat Input Active») — LÀM SAU RELEASE
+
+Chưa làm theo yêu cầu của Huy (01/10). Khi làm: màn nghe toàn màn hình theo mockup; không đổi khai báo quyền (iOS đã có nhập giọng nói: `SFSpeechRecognizer` + micro, `Info.plist` đã có hai mô tả). Trước đó nên sửa các lỗi dừng mic đã đọc được ở `VoiceInputManager.swift` (xem IOS-PROGRESS «Mic 01/10»). Cần từ phiên web: mockup xuất ảnh + đặc tả trạng thái (đang nghe / đang xử lý / lỗi / không có quyền).
