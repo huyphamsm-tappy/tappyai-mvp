@@ -134,3 +134,4 @@ supabase/migrations/20260930b_review_interactions_bounds.sql
 supabase/migrations/20261001_user_blocks.sql
 supabase/migrations/20261001b_user_reports.sql
 supabase/migrations/20261001d_moderation_standards.sql
+supabase/migrations/20261001e_banned_identity_hash.sql

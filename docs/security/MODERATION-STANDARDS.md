@@ -1,6 +1,6 @@
 # Tiêu chuẩn kiểm duyệt báo cáo (01/10/2026)
 
-Nhánh `sec/user-blocks-slice` (worktree `D:\TappyAI-wt\wtblock`). CHƯA push, CHƯA áp lên production, CHƯA merge. Dành cho phiên bảo mật duyệt độc lập và cho Huy duyệt chữ + ngưỡng.
+Nhánh `sec/user-blocks-slice` (worktree `D:\TappyAI-wt\wtblock`). CHƯA push, CHƯA áp lên production, CHƯA merge. Dành cho phiên bảo mật duyệt độc lập. **Ngưỡng và hình phạt đã được Huy DUYỆT 02/10/2026**; chữ trang Quy tắc cộng đồng vẫn là bản nháp chờ Huy đọc.
 
 Nguyên tắc Huy đặt ra: **báo cáo không phải bản án.** Nhiều báo cáo không tự động gỡ, ẩn, phạt hay khoá ai. Báo cáo chỉ vào hàng chờ; một người xem xét theo Quy tắc cộng đồng bằng chữ, rồi mới quyết.
 
@@ -25,18 +25,18 @@ người bị xử lý → "Thông báo vi phạm" → kháng nghị một lần
 |---|---|---|---|
 | 1 | Báo cáo ≠ gỡ; nhóm nghiêm trọng ưu tiên; ẩn tạm chỉ khi người duyệt bấm; người báo chỉ ẩn cho chính mình | Trigger chỉ INSERT vào hàng chờ (test: 100 báo cáo → 100 dòng chờ, bình luận/bài/tài khoản không đổi). Priority 3 cho child_safety, self_harm, violence, sexual; mục tiêu 24 giờ; quá hạn hiện nhãn «Quá hạn». «Ẩn tạm» là nút của người duyệt (chỉ bài). `GET /api/reports/mine` trả mã đối tượng đã báo để app tự ẩn cho riêng người báo | **App chưa ẩn cục bộ** (cần sửa app, không bắt build lại bây giờ). **Chưa có cảnh báo chủ động** (email/push) khi quá hạn — chỉ hiện trên màn hình duyệt |
 | 2 | Quy tắc cộng đồng (trang vi/en) | `/community-guidelines`: 10 nhóm (là gì, 3 ví dụ, mức nghiêm trọng, hình phạt tối đa, hạn xem xét), ngoại lệ lợi ích công cộng, báo cáo xử lý thế nào, thang hình phạt, kháng nghị. Viết bằng lời của mình, không chép TikTok. Dòng đầu ghi «bản đề xuất, chờ chủ sản phẩm duyệt chữ» | **Huy duyệt chữ.** **Nhờ người am hiểu luật Việt Nam xem lại, kể cả việc gỡ nội dung theo yêu cầu của cơ quan chức năng** (trang chưa nói gì về việc này). Hộp «Quy tắc cộng đồng» của Android hiện trỏ Điều khoản: đề nghị trỏ `/community-guidelines` ở bản sau |
-| 3 | Hình phạt bậc thang, strike theo nhóm + tính năng, hết hạn, sổ bất biến | Mục 5 bên dưới. Sổ: người duyệt, thời điểm, nhóm, tính năng, mức, hình phạt, mã nội dung, lý do, hạn strike; không UPDATE/DELETE/TRUNCATE (kể cả service role); kết quả kháng nghị nằm ở bảng kháng nghị | Ngưỡng là **đề xuất, Huy duyệt** |
+| 3 | Hình phạt bậc thang, strike theo nhóm + tính năng, hết hạn, sổ bất biến | Mục 5 bên dưới. Sổ: người duyệt, thời điểm, nhóm, tính năng, mức, hình phạt, mã nội dung, lý do, hạn strike; không UPDATE/DELETE/TRUNCATE (kể cả service role); kết quả kháng nghị nằm ở bảng kháng nghị | Ngưỡng đã duyệt 02/10 |
 | 4 | Thông báo cho người bị xử lý; API trạng thái cho người báo; người bị báo không biết ai báo | Thông báo hệ thống (vi + en): nội dung nào, nhóm nào, hình phạt, hạn, cách kháng nghị — không kèm nội dung chữ hay người báo. `GET /api/reports/mine` → 4 trạng thái: `received`, `in_review`, `actioned`, `no_violation`. Hàng chờ/sổ/kháng nghị không có quyền đọc nào cho client | App chưa dùng API này (hợp đồng đã ghi trong ANDROID-REQUESTS / IOS-REQUESTS) |
 | 5 | Kháng nghị một lần | `moderation_appeals` UNIQUE(decision_id); 30 ngày; app: `/profile/notices`; email: người duyệt ghi nhận hộ (`POST /api/admin/moderation/appeals`). Giải quyết một lần; người duyệt khác người quyết nếu có hai người (ghi `same_reviewer`; `MODERATION_APPEAL_DIFFERENT_REVIEWER=true` để bắt buộc). Đảo ngược: bài hiện lại, bình luận phục hồi từ ảnh chụp, gỡ hạn chế/khoá nếu không còn quyết định nào khác, strike không còn được tính | Hiện chỉ có Huy ⇒ `same_reviewer = true` sẽ được ghi. Ảnh chụp bình luận bị gỡ giữ tối đa 60 ngày rồi xoá (`moderation_purge_snapshots`) — **chưa gắn cron**, cần chạy tay hoặc gắn lịch |
 | 6 | Chống lạm dụng báo cáo | Một người một lần/đối tượng (UNIQUE), 10 lần/10 phút. Người báo có ≥ 5 báo cáo và ≥ 80% bị bác → xếp CUỐI hàng (priority 0), vẫn được xem; mức nghiêm trọng không bị hạ. Màn hình duyệt hiện «người báo: N báo cáo, M bị bác» | Cảnh cáo người báo sai là việc người duyệt làm tay (chọn «Cảnh cáo», nhóm Spam) — chưa có nút riêng |
-| 7 | Xoá tài khoản | Sổ và báo cáo ở lại **ẩn danh**: `subject_user_id`, `reviewer_id`, `queue_id`, người kháng nghị đặt NULL khi tài khoản bị xoá. **P8-4 không lặp lại**: cơ chế chặn sửa của sổ cho phép CHÍNH XÁC phép đặt NULL đó (test DB trên Postgres nhúng và trên DB audit thật: xoá người bị phạt + người duyệt đều thành công) | Người **đang bị khoá** không đăng nhập được nên không tự xoá được trong app; yêu cầu xoá qua email sẽ do người vận hành xử lý. **Cách xử lý giữ định danh tối thiểu (ví dụ băm email) trong thời hạn khoá để chống lách: CHƯA làm — cần quyết định pháp lý/quyền riêng tư** |
+| 7 | Xoá tài khoản | Sổ và báo cáo ở lại **ẩn danh**: `subject_user_id`, `reviewer_id`, `queue_id`, người kháng nghị đặt NULL khi tài khoản bị xoá. **P8-4 không lặp lại**: cơ chế chặn sửa của sổ cho phép CHÍNH XÁC phép đặt NULL đó (test DB trên Postgres nhúng và trên DB audit thật: xoá người bị phạt + người duyệt đều thành công) | **Đã làm (Huy chốt 02/10):** người đang bị khoá vĩnh viễn mà tài khoản bị xoá (qua email, do người vận hành) để lại DUY NHẤT một **mã băm có khoá** của email (migration `20261001e`: HMAC-SHA256 với «muối» ngẫu nhiên nằm ở schema riêng, client không đọc được); không giữ email, tên, mã người dùng hay nội dung. Đăng ký lại bằng đúng email đó bị từ chối (thông báo chung `account_unavailable`; tra cứu lỗi thì KHÔNG chặn đăng ký, và việc xoá không bao giờ bị chặn). Gỡ khoá: xoá dòng băm (service role). **Thời hạn lưu mã băm: nhờ người am hiểu luật Việt Nam xác nhận**; hàm `purge_banned_identities(ngày)` sẵn sàng để thi hành thời hạn đó. Test DB: xoá người bị khoá → còn đúng một mã băm và không còn dữ liệu cá nhân nào khác |
 
 ## 4. Quyền và ai là người duyệt
 - Màn hình: `https://www.tappyai.com/admin/moderation` (production, sau khi bật cờ) hoặc `https://uat.tappyai.com/admin/moderation`. Vào bằng tài khoản có vai trò admin của Controller; trang và mọi route kiểm quyền ở máy chủ (test tĩnh + test từ chối 401/403 cho cả bốn route).
 - Quyền theo hành động (dùng lại quyền có sẵn): không vi phạm = `moderation.report.dismiss`; ẩn tạm / cảnh cáo / gỡ bài = `moderation.content.hide`; gỡ bình luận và giải quyết kháng nghị = `moderation.content.delete`; hạn chế = `users.account.suspend`; khoá = `users.account.ban`. Vai trò moderator không có `delete`, nên moderator chưa gỡ được bình luận hay giải quyết kháng nghị.
 - **Ai là người duyệt do Huy chỉ định.** Hiện chỉ Huy (owner) có đủ quyền. Thêm người: Controller → Quản trị → Vai trò (RBAC).
 
-## 5. Thang hình phạt — ĐỀ XUẤT, HUY DUYỆT (một chỗ sửa: `src/lib/safety/communityRules.ts`)
+## 5. Thang hình phạt — HUY ĐÃ DUYỆT 02/10 (một chỗ sửa: `src/lib/safety/communityRules.ts`)
 | Nhóm | Mức mặc định → tối đa | Hình phạt tối đa | Mục tiêu xử lý |
 |---|---|---|---|
 | Spam | 1 → 2 | hạn chế | 72 giờ |
@@ -51,8 +51,8 @@ người bị xử lý → "Thông báo vi phạm" → kháng nghị một lần
 | An toàn trẻ em | 3 → 3 | khoá | **24 giờ** (ưu tiên) |
 
 Bậc: cảnh cáo (không strike) → gỡ nội dung + 1 strike → hạn chế N ngày (mặc định 7, tối đa 30; không đăng/bình luận, vẫn xem được) → khoá vĩnh viễn.
-- Strike hết hạn: **mức 1 sau 90 ngày, mức 2 sau 180 ngày, mức 3 không hết** (đề xuất).
-- Gợi ý (không tự áp): **3 strike còn hiệu lực cùng nhóm + cùng tính năng → xem xét hạn chế; 5 strike còn hiệu lực tổng → xem xét khoá**; mức 3 có thể khoá thẳng (đề xuất).
+- Strike hết hạn: **mức 1 sau 90 ngày, mức 2 sau 180 ngày, mức 3 không hết**.
+- Gợi ý (không tự áp): **3 strike còn hiệu lực cùng nhóm + cùng tính năng → xem xét hạn chế; 5 strike còn hiệu lực tổng → xem xét khoá**; mức 3 có thể khoá thẳng, do người duyệt quyết kèm lý do.
 - Luật cứng trong máy chủ: không vượt hình phạt tối đa của nhóm; **khoá chỉ khi mức 3 hoặc đủ 5 strike còn hiệu lực** (không phải vì số báo cáo); hạn chế 1–30 ngày; mọi quyết định phải có lý do ≥ 10 ký tự.
 - Kháng nghị: 30 ngày, một lần mỗi quyết định.
 
@@ -67,7 +67,12 @@ Cờ `MODERATION_ADMIN_ENABLED` (mặc định TẮT ⇒ các route mới 404, t
 ## 8. Rủi ro lớn và việc cần Huy
 1. **Ngưỡng và chữ**: tất cả là đề xuất; chữ trang quy tắc cần Huy duyệt và người am hiểu luật VN xem (kể cả yêu cầu gỡ nội dung của cơ quan chức năng).
 2. **Một người duyệt duy nhất** ⇒ kháng nghị do chính người quyết xem lại; Apple 1.2 đòi xử lý trong 24 giờ: cần người và quy trình thật (chưa có cảnh báo chủ động).
-3. Bình luận bị gỡ là xoá thật (ảnh chụp giữ 60 ngày để phục hồi) — cron dọn ảnh chụp chưa gắn.
+3. Bình luận bị gỡ là xoá thật (ảnh chụp giữ 60 ngày để phục hồi). Route dọn `GET /api/cron/moderation-snapshot-purge` đã có (sau cờ + CRON secret) nhưng CHƯA đăng ký lịch trong `vercel.json` — dòng cần thêm ở PHẦN B.
 4. Đảo ngược khoá/hạn chế gỡ trạng thái `account_status` kể cả khi nó do thao tác tay khác tạo ra (không phân biệt được nguồn).
-5. Người đang bị khoá + yêu cầu xoá qua email: cần chính sách giữ định danh tối thiểu (xem mục 3, dòng 7).
+5. Thời hạn lưu mã băm của người bị khoá: cần người am hiểu luật xác nhận (mục 3, dòng 7).
 6. App Android/iOS chưa có màn hình trạng thái báo cáo / Thông báo vi phạm / ẩn cục bộ — hợp đồng đã ghi, không cần build lại để server bật.
+
+## 9. Bổ sung 02/10
+- **Tóm tắt hàng chờ mỗi ngày:** `GET /api/cron/moderation-digest` (sau cờ + CRON secret). KHÔNG có kênh email gửi đi trong sản phẩm (chỉ có email xác thực của Supabase), nên bản tóm tắt đi qua hệ thống thông báo (hộp thư + đẩy) tới các tài khoản người duyệt nêu trong `MODERATION_DIGEST_USER_IDS`; chỉ có số đếm (đang chờ, mới 24 giờ, khẩn, quá hạn). Gửi email tới support@tappyai.com cần nối nhà cung cấp thư (Brevo) trước: BACKLOG. **Chưa đăng ký lịch** (dòng cron ở PHẦN B). **Cần người xem hàng chờ mỗi ngày** — Apple 1.2 đòi xử lý kịp thời; hệ thống chỉ nhắc, không tự xử lý.
+- **Dọn ảnh chụp bình luận:** `GET /api/cron/moderation-snapshot-purge`, cùng điều kiện; dòng cron ở PHẦN B.
+- Người duyệt: tạm chỉ Huy (owner); mở thêm sau ở Controller → Vai trò.
