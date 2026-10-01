@@ -53,7 +53,8 @@ policy_of() {
     20260921_music_tracks_lockdown.sql|20260921_user_events_ga4_event_types.sql|\
     20260921_user_events_shopping_search_event.sql|20260922_groups_avatar_url.sql|\
     20260925b_decision_evidence_sweep.sql|20260925d_audit_log_pii_retention.sql|d3-one-off-sweep.sql|\
-    20260929130000_commerce_click_attributions.sql|20260929140000_commerce_click_attributions_r21.sql)
+    20260929130000_commerce_click_attributions.sql|20260929140000_commerce_click_attributions_r21.sql|\
+    20261001c_commerce_providers_cinemas.sql)
       echo APPLY ;;
     *) echo UNLISTED ;;
   esac
