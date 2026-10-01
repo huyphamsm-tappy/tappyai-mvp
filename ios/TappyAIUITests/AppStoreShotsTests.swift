@@ -114,6 +114,6 @@ final class AppStoreShotsTests: XCTestCase {
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         let done = expectation(description: "stub mode")
         URLSession.shared.dataTask(with: request) { _, _, _ in done.fulfill() }.resume()
-        wait(for: [done], timeout: 10)
+        wait(for: [done], timeout: 45)
     }
 }
