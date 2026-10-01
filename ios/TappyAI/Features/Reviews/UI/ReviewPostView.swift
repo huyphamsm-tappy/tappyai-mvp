@@ -99,9 +99,33 @@ struct ReviewPostView: View {
     private func mediaLayer(size: CGSize) -> some View {
         if review.isVideo, !isExternalEmbed, let url = review.mediaUrl, URL(string: url) != nil {
             if isActive || isNeighbor {
-                FeedVideoView(player: videoPlayer.player)
-                    .frame(width: size.width, height: size.height)
-                    .clipped()
+                // The cover is ALWAYS underneath: the video draws over it only once it has a frame, so there is
+                // never a black rectangle. Spinner while it loads; a plain message + «try again» if it cannot.
+                ZStack {
+                    thumbnailView(size: size)
+                    FeedVideoView(player: videoPlayer.player)
+                        .frame(width: size.width, height: size.height)
+                        .clipped()
+                    if isActive, videoPlayer.failed {
+                        VStack(spacing: Spacing.sm) {
+                            Text("feed.video.failed").font(TappyFont.callout).foregroundStyle(.white)
+                            Button { videoPlayer.retry() } label: {
+                                Text("common.retry.action")
+                                    .font(TappyFont.bodyEmphasis).foregroundStyle(.white)
+                                    .padding(.horizontal, Spacing.lg).padding(.vertical, Spacing.xs)
+                                    .background(TappyColor.primary).clipShape(Capsule())
+                            }
+                            .buttonStyle(.plain)
+                            .accessibilityIdentifier("feed-video-retry")
+                        }
+                        .padding(Spacing.md)
+                        .background(.black.opacity(0.55))
+                        .clipShape(RoundedRectangle(cornerRadius: Radius.lg, style: .continuous))
+                    } else if isActive, videoPlayer.isBuffering {
+                        ProgressView().tint(.white).scaleEffect(1.3)
+                    }
+                }
+                .frame(width: size.width, height: size.height)
             } else {
                 thumbnailView(size: size)
             }

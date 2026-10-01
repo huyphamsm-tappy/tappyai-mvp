@@ -33,7 +33,7 @@ final class SafetyTests: XCTestCase {
 
     func testReasonsAreTheServerWhitelistInOrder() {
         XCTAssertEqual(SafetyReportReason.allCases.map(\.rawValue),
-                       ["spam", "harassment", "hate", "sexual", "violence", "self_harm", "scam", "misinformation", "impersonation", "other"])
+                       ["spam", "harassment", "hate", "sexual", "self_harm", "scam", "sensitive", "impersonation", "copyright", "other"])
         XCTAssertEqual(ReportTargetKind.allCases.map(\.rawValue), ["review", "comment", "user"])
     }
 
@@ -48,7 +48,7 @@ final class SafetyTests: XCTestCase {
     func testReportBodyHasOnlyTheServersFields() throws {
         let body = try ReportRequest(kind: .comment, targetId: "c-1", reason: .selfHarm, details: nil).jsonBody()
         let json = try XCTUnwrap(JSONSerialization.jsonObject(with: body) as? [String: String])
-        XCTAssertEqual(json, ["target_type": "comment", "target_id": "c-1", "reason": "self_harm"], "no details key when empty")
+        XCTAssertEqual(json, ["reason": "self_harm"], "the target is in the URL; no details key when empty")
     }
 
     func testDetailsAreTrimmedAndCappedAtTheServersLimit() throws {
@@ -92,12 +92,15 @@ final class SafetyTests: XCTestCase {
         api.responses["/api/users/blocks"] = Data(#"{"blocks":[{"blocked_id":"u9"}]}"#.utf8)
         let service = SafetyService(api: api)
         try await service.report(ReportRequest(kind: .review, targetId: "r-1", reason: .spam, details: nil))
+        try await service.report(ReportRequest(kind: .comment, targetId: "c-1", reason: .hate, details: nil))
+        try await service.report(ReportRequest(kind: .user, targetId: "u5", reason: .scam, details: nil))
         try await service.block(userId: "u2")
         try await service.unblock(userId: "u2")
         let list = try await service.blocks()
 
         XCTAssertEqual(api.sent.map { "\($0.method.rawValue) \($0.path)" },
-                       ["POST /api/reports", "POST /api/users/u2/block", "DELETE /api/users/u2/block", "GET /api/users/blocks"])
+                       ["POST /api/reviews/r-1/report", "POST /api/comments/c-1/report", "POST /api/users/u5/report",
+                        "POST /api/users/u2/block", "DELETE /api/users/u2/block", "GET /api/users/blocks"])
         XCTAssertTrue(api.sent.allSatisfy(\.requiresAuth))
         XCTAssertEqual(list.map(\.blockedId), ["u9"])
     }

@@ -12,6 +12,12 @@ import SwiftUI
 struct ScamShieldView: View {
     @AppStateObject private var vm: ScamShieldViewModel
     @State private var evidenceOpen = false
+    @State private var section: Pane = .check
+    private let knowledge = ScamKnowledge.load()
+
+    private enum Pane { case check, library }
+    /// The library is hidden when the bundled dataset is unreadable (never an empty tab).
+    private var hasLibrary: Bool { !knowledge.scenarios.isEmpty }
 
     init(deps: AppDependencies) {
         let service = UtilityToolsService(api: deps.api)
@@ -25,28 +31,22 @@ struct ScamShieldView: View {
                     .font(TappyFont.body)
                     .foregroundColor(TappyColor.textSecondary)
 
-                TappyTextField(titleKey: "scamShield.urlPlaceholder", text: $vm.url)
-                    .keyboardType(.URL)
-                    .textInputAutocapitalization(.never)
-                    .autocorrectionDisabled()
+                // Fixed, whatever tab is open: where to call if the money has already gone.
+                ScamEmergencyCard()
 
-                Button {
-                    Task { await vm.check() }
-                } label: {
-                    Text(vm.loading
-                         ? NSLocalizedString("scamShield.checking", comment: "")
-                         : NSLocalizedString("scamShield.check", comment: ""))
-                        .frame(maxWidth: .infinity)
-                }
-                .buttonStyle(.tappy(.primary))
-                .disabled(!vm.canCheck)
-
-                if let result = vm.result {
-                    verdictCard(result)
+                if hasLibrary {
+                    Picker("", selection: $section) {
+                        Text("scam.tab.check").tag(Pane.check)
+                        Text("scam.tab.library").tag(Pane.library)
+                    }
+                    .pickerStyle(.segmented)
+                    .accessibilityIdentifier("scam-tabs")
                 }
 
-                if let failure = vm.failure {
-                    unresolvedCard(failure)
+                if section == .library, hasLibrary {
+                    ScamLibraryView(knowledge: knowledge)
+                } else {
+                    checkContent
                 }
 
                 Text(NSLocalizedString("scamShield.disclaimer", comment: ""))
@@ -59,6 +59,34 @@ struct ScamShieldView: View {
         .background(TappyColor.background)
         .navigationTitle(NSLocalizedString("scamShield.title", comment: ""))
         .navigationBarTitleDisplayMode(.inline)
+    }
+
+    /// The link check (the original screen).
+    @ViewBuilder
+    private var checkContent: some View {
+        TappyTextField(titleKey: "scamShield.urlPlaceholder", text: $vm.url)
+            .keyboardType(.URL)
+            .textInputAutocapitalization(.never)
+            .autocorrectionDisabled()
+
+        Button {
+            Task { await vm.check() }
+        } label: {
+            Text(vm.loading
+                 ? NSLocalizedString("scamShield.checking", comment: "")
+                 : NSLocalizedString("scamShield.check", comment: ""))
+                .frame(maxWidth: .infinity)
+        }
+        .buttonStyle(.tappy(.primary))
+        .disabled(!vm.canCheck)
+
+        if let result = vm.result {
+            verdictCard(result)
+        }
+
+        if let failure = vm.failure {
+            unresolvedCard(failure)
+        }
     }
 
     // MARK: - Verdict

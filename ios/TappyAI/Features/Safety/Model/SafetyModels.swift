@@ -34,11 +34,11 @@ enum ReportTargetKind: String, Sendable, CaseIterable {
     var titleKey: String { "safety.report.title." + rawValue }
 }
 
-/// The server's reason whitelist, in menu order (`REPORT_REASONS` in `src/app/api/reports/route.ts`, a
-/// mirror of the CHECK constraint in `20260924_p8_reports_sanctions_audit.sql`).
+/// The server's reason whitelist, in menu order — the final contract (sec/user-blocks-slice):
+/// spam, harassment, hate, sexual, self_harm, scam, sensitive, impersonation, copyright, other.
 /// Named apart from Music's `ReportReason` and the review menu's `ReviewReportReason`: three endpoints, three lists.
 enum SafetyReportReason: String, CaseIterable, Identifiable, Sendable {
-    case spam, harassment, hate, sexual, violence, selfHarm = "self_harm", scam, misinformation, impersonation, other
+    case spam, harassment, hate, sexual, selfHarm = "self_harm", scam, sensitive, impersonation, copyright, other
 
     var id: String { rawValue }
     var labelKey: String { "safety.reason." + rawValue }
@@ -67,7 +67,8 @@ struct ReportRequest: Equatable, Sendable {
     let details: String?
 
     func jsonBody() throws -> Data {
-        var body: [String: String] = ["target_type": kind.rawValue, "target_id": targetId, "reason": reason.rawValue]
+        // The target is in the URL now; the body carries only the reason (and optional details).
+        var body: [String: String] = ["reason": reason.rawValue]
         let trimmed = (details ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
         if !trimmed.isEmpty { body["details"] = String(trimmed.prefix(Self.maxDetails)) }
         return try JSONSerialization.data(withJSONObject: body)

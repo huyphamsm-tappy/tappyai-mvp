@@ -734,6 +734,264 @@
         "vi": { "stringUnit": { "state": "translated", "value": "Thông tin, đặt chỗ, sở thích, kế hoạch AI" } }
       }
     },
+    "time.minutesAgo": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "%d min ago" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "%d phút trước" } }
+      }
+    },
+    "time.hoursAgo": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "%d h ago" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "%d giờ trước" } }
+      }
+    },
+    "time.daysAgo": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "%d d ago" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "%d ngày trước" } }
+      }
+    },
+    "time.monthsAgo": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "%d mo ago" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "%d tháng trước" } }
+      }
+    },
+    "time.yearsAgo": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "%d y ago" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "%d năm trước" } }
+      }
+    },
+    "feed.create.a11y": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Create a post" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Đăng bài mới" } }
+      }
+    },
+    "feed.video.failed": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "This clip could not load." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Không tải được clip này." } }
+      }
+    },
+    "scam.tab.check": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Check a link" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Kiểm tra link" } }
+      }
+    },
+    "scam.tab.library": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Scam scenarios" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Tình huống lừa đảo" } }
+      }
+    },
+    "scam.emergency.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Been scammed?" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Nghi bị lừa?" } }
+      }
+    },
+    "scam.emergency.body": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "If you sent money or shared an OTP, call the police now." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Nếu đã chuyển tiền hoặc lộ mã OTP, gọi Công an ngay." } }
+      }
+    },
+    "scam.emergency.call": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Call 113" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Gọi 113" } }
+      }
+    },
+    "scam.lib.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Scenario" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Tình huống" } }
+      }
+    },
+    "scam.lib.source": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Source: Ministry of Public Security web portal" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Nguồn: Cổng Thông tin điện tử Bộ Công an" } }
+      }
+    },
+    "scam.lib.published": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Published: %@" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Ngày đăng: %@" } }
+      }
+    },
+    "scam.lib.readOriginal": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Read the original warning" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Đọc cảnh báo gốc" } }
+      }
+    },
+    "scam.lib.notGov": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "TappyAI is not a government agency. The warning comes from the Ministry of Public Security; the section marked TappyAI guidance is our own extra advice." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "TappyAI không phải cơ quan nhà nước. Cảnh báo lấy từ Bộ Công an; phần «Hướng dẫn của TappyAI» là lời khuyên thêm của chúng tôi." } }
+      }
+    },
+    "scam.lib.tappyGuidance": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "TappyAI guidance" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Hướng dẫn của TappyAI" } }
+      }
+    },
+    "scam.lib.tappyGuidance.note": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Added by TappyAI, not a quotation from the source." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Do TappyAI bổ sung, không phải trích dẫn từ nguồn." } }
+      }
+    },
+    "scam.lib.warningSigns": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Warning signs" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Dấu hiệu nhận biết" } }
+      }
+    },
+    "scam.lib.commonRequests": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "What they usually ask for" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Họ thường yêu cầu" } }
+      }
+    },
+    "scam.lib.whatToDo": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "What to do" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Nên làm" } }
+      }
+    },
+    "scam.lib.whatNotToDo": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "What not to do" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Không nên làm" } }
+      }
+    },
+    "safety.reason.sensitive": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Sensitive content" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Nội dung nhạy cảm" } }
+      }
+    },
+    "safety.reason.copyright": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Copyright violation" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Vi phạm bản quyền" } }
+      }
+    },
+    "ai.consent.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Let Tappy send your messages to AI?" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Cho Tappy gửi tin nhắn tới AI?" } }
+      }
+    },
+    "ai.consent.intro": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "To answer you, Tappy needs to send what you write to an AI provider. It is your choice, and you can take it back at any time." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Để trả lời bạn, Tappy cần gửi nội dung bạn nhập tới nhà cung cấp AI. Bạn quyết định, và có thể rút lại bất cứ lúc nào." } }
+      }
+    },
+    "ai.consent.what.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "What is sent" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Gửi gì?" } }
+      }
+    },
+    "ai.consent.what.body": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "The messages you type or say. When a feature needs it: your approximate location, a photo you choose to scan, or text you want translated." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Tin nhắn bạn gõ hoặc nói. Khi tính năng cần đến: vị trí gần đúng, ảnh bạn chọn để quét, hoặc đoạn văn bạn muốn dịch." } }
+      }
+    },
+    "ai.consent.who.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Who receives it" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Gửi cho ai?" } }
+      }
+    },
+    "ai.consent.who.body": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Tappy's AI provider (OpenAI), through Tappy's servers." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Nhà cung cấp AI của Tappy (OpenAI), thông qua máy chủ của Tappy." } }
+      }
+    },
+    "ai.consent.why.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "What for" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Để làm gì?" } }
+      }
+    },
+    "ai.consent.why.body": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Only to write the answer, translation or content you asked for." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Chỉ để tạo câu trả lời, bản dịch hoặc nội dung bạn yêu cầu." } }
+      }
+    },
+    "ai.consent.how.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "How it is handled" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Xử lý thế nào?" } }
+      }
+    },
+    "ai.consent.how.body": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "It travels over an encrypted connection. How it is kept and deleted is described in the Privacy Policy." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Nội dung đi qua kết nối mã hoá. Cách lưu giữ và xoá được nêu trong Chính sách quyền riêng tư." } }
+      }
+    },
+    "ai.consent.later.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Not now?" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Chưa muốn?" } }
+      }
+    },
+    "ai.consent.later.body": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Choose Not now and nothing is sent. Parts that need no AI still work, like Deals, Explore and exchange rates. You can change your mind in Settings → Share data with AI." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Chọn «Để sau»: không có gì được gửi đi. Các phần không cần AI vẫn dùng được, như Ưu đãi, Khám phá, tỷ giá. Bạn đổi ý trong Cài đặt → «Chia sẻ dữ liệu với AI»." } }
+      }
+    },
+    "ai.consent.privacy": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Read the Privacy Policy" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Đọc Chính sách quyền riêng tư" } }
+      }
+    },
+    "ai.consent.agree": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Agree" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Đồng ý" } }
+      }
+    },
+    "ai.consent.later": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Not now" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Để sau" } }
+      }
+    },
+    "ai.consent.needed": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Agree to share data with AI to use this feature." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Cần đồng ý chia sẻ dữ liệu với AI để dùng tính năng này." } }
+      }
+    },
+    "ai.settings.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Share data with AI" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Chia sẻ dữ liệu với AI" } }
+      }
+    },
+    "ai.settings.desc": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Lets Tappy send what you write to its AI provider so it can answer. Turn off to stop." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Cho phép gửi nội dung bạn nhập tới nhà cung cấp AI để Tappy trả lời. Tắt để dừng." } }
+      }
+    },
     "auth.changeEmail": {
       "localizations": {
         "en": {

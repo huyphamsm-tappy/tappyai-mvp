@@ -27,6 +27,7 @@ final class URLSessionAPIClient: APIClient {
     private let auth: AuthInterceptor
     private let retry: RetryPolicy
     private let decoder: JSONDecoder
+    private let consent: AIConsentStore
     private let log = AppLogger.network
 
     init(baseURL: URL,
@@ -34,7 +35,9 @@ final class URLSessionAPIClient: APIClient {
          session: URLSession = .shared,
          retry: RetryPolicy = .default,
          decoder: JSONDecoder = ResponseDecoder.json,
-         defaultTimeout: TimeInterval = 30) {
+         defaultTimeout: TimeInterval = 30,
+         consent: AIConsentStore = .shared) {
+        self.consent = consent
         self.builder = RequestBuilder(baseURL: baseURL, defaultTimeout: defaultTimeout)
         self.session = session
         self.auth = auth
@@ -66,6 +69,8 @@ final class URLSessionAPIClient: APIClient {
     }
 
     private func executeRaw(_ endpoint: Endpoint) async throws -> (Data, HTTPURLResponse) {
+        // App Review 5.1.2(i): no AI request leaves the phone before the person has agreed.
+        if consent.blocks(path: endpoint.path) { throw AIConsentStore.blockedError }
         var request = try builder.makeRequest(endpoint)
         if endpoint.requiresAuth { await auth.authorize(&request) }
         return try await execute(request, endpoint: endpoint, didRetryAuth: false, attempt: 0)

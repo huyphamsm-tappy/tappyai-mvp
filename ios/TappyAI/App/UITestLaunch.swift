@@ -74,6 +74,15 @@ enum UITestLaunch {
     static var placesRoute: Bool { value("-uitest-route") == "places" }
 
     static func apply(_ deps: AppDependencies) {
+        // Fixture tests are not about the AI-sharing sheet: they start agreed. The consent tests ask for the
+        // un-agreed state (`-uitest-ai-consent-prompt`), and because the choice is persisted it is reset either way.
+        if value("-uitest-route") != nil {
+            if ProcessInfo.processInfo.arguments.contains("-uitest-ai-consent-prompt") {
+                deps.aiConsent.withdraw()
+            } else {
+                deps.aiConsent.agree()
+            }
+        }
         if let lang = value("-uitest-lang").flatMap(AppLanguage.init(rawValue:)) {
             deps.localization.setLanguage(lang)
         }
@@ -124,6 +133,15 @@ enum UITestLaunch {
         case "saved":
             router.switchTo(.profile)
             router.push(ProfileDestination.favorites, on: .profile)
+        case "translate":
+            router.switchTo(.home)
+            router.push(HomeDestination.translate, on: .home)
+        case "scan":
+            router.switchTo(.home)
+            router.push(HomeDestination.scan, on: .home)
+        case "group":
+            router.switchTo(.home)
+            router.push(HomeDestination.groupDining, on: .home)
         case "viet":
             router.switchTo(.home)
             router.push(HomeDestination.vietContent, on: .home)

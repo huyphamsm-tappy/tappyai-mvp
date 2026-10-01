@@ -466,7 +466,7 @@ private struct ChatErrorBanner: View {
                              ? NSLocalizedString("chat.error.anonLimit", comment: "")
                              : NSLocalizedString("chat.error.authRequired", comment: ""))
                             .font(TappyFont.callout)
-                            .foregroundStyle(TappyColor.primary)
+                            .foregroundStyle(TappyColor.textPrimary)
                         Button(action: onLogin) {
                             Text("chat.signInToContinue")
                                 .font(TappyFont.caption)

@@ -20,7 +20,7 @@ struct FeedVideoView: UIViewRepresentable {
             playerLayer.player = player
             playerLayer.videoGravity = .resizeAspectFill
             layer.addSublayer(playerLayer)
-            backgroundColor = .black
+            backgroundColor = .clear   // the cover image shows through until the first video frame
         }
 
         required init?(coder: NSCoder) { fatalError() }

@@ -65,17 +65,21 @@ final class URLSessionStreamingClient: StreamingClient {
     private let builder: RequestBuilder
     private let session: URLSession
     private let auth: AuthInterceptor
+    private let consent: AIConsentStore
 
-    init(baseURL: URL, auth: AuthInterceptor, session: URLSession = .shared) {
+    init(baseURL: URL, auth: AuthInterceptor, session: URLSession = .shared, consent: AIConsentStore = .shared) {
         self.builder = RequestBuilder(baseURL: baseURL)
         self.session = session
         self.auth = auth
+        self.consent = consent
     }
 
     func stream(_ endpoint: Endpoint) -> AsyncThrowingStream<StreamFrame, Error> {
         AsyncThrowingStream { continuation in
             let task = Task {
                 do {
+                    // App Review 5.1.2(i): no AI request leaves the phone before the person has agreed.
+                    if consent.blocks(path: endpoint.path) { throw AIConsentStore.blockedError }
                     var request = try builder.makeRequest(endpoint)
                     request.setValue("text/event-stream", forHTTPHeaderField: "Accept")
                     if endpoint.requiresAuth { await auth.authorize(&request) }

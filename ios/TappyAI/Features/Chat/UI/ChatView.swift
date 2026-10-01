@@ -22,7 +22,8 @@ struct ChatView: View {
             },
             loadAgeStatus: { [api = deps.api] in
                 try await ProfileService(api: api).fetchAgeStatus()
-            }
+            },
+            consent: deps.aiConsent
         ))
     }
 
@@ -77,33 +78,8 @@ struct ChatView: View {
                     )
                 }
 
-                // DD-011 — device context, visible and revocable. The location was already going
-                // out with every turn and appearing nowhere; this states it and offers a way to
-                // stop. It requests nothing and grants nothing: the permission model is untouched.
-                if vm.locationContextEnabled, vm.hasLocationContext, !vm.isLoadingConversation {
-                    HStack(spacing: Spacing.xxs) {
-                        Text("📍").accessibilityHidden(true)
-                        Text(String(localized: "context.nearYou"))
-                            .font(TappyFont.caption)
-                            .foregroundStyle(TappyColor.textSecondary)
-                        Button {
-                            vm.locationContextEnabled = false
-                        } label: {
-                            Image(systemName: "xmark")
-                                .font(.system(size: 10, weight: .semibold))
-                                .foregroundStyle(TappyColor.textSecondary)
-                        }
-                        .accessibilityLabel(Text("context.removeLocation"))
-                        .minimumTapTarget()
-                    }
-                    .padding(.horizontal, Spacing.sm)
-                    .padding(.vertical, Spacing.xxs)
-                    .background(TappyColor.surface)
-                    .clipShape(Capsule())
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.horizontal, Spacing.md)
-                }
-
+                // DD-011 — device context, visible and revocable (now drawn INSIDE the input bar, next to the
+                // box). It requests nothing and grants nothing: the permission model is untouched.
                 if !vm.isLoadingConversation {
                     ChatInputBar(
                         text: $vm.inputText,
@@ -132,7 +108,9 @@ struct ChatView: View {
                             vm.inputText = localization.language.rawValue == "en"
                             ? "Tappy, track "
                             : "Tappy theo dõi "
-                        }
+                        },
+                        showNearYou: vm.locationContextEnabled && vm.hasLocationContext,
+                        onRemoveNearYou: { vm.locationContextEnabled = false }
                     )
                     // Blocked under 18: the input is locked (and send() refuses too).
                     .disabled(vm.isAgeBlocked)

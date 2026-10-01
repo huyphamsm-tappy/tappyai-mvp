@@ -315,6 +315,13 @@ final class ReviewsFeedViewModel: AppObservableObject {
         if activeIndex >= reviews.count { activeIndex = max(0, reviews.count - 1) }
     }
 
+    /// A post the person just reported leaves their feed straight away.
+    func dropReviews(_ ids: Set<String>) {
+        guard !ids.isEmpty, reviews.contains(where: { ids.contains($0.id) }) else { return }
+        reviews.removeAll { ids.contains($0.id) }
+        if activeIndex >= reviews.count { activeIndex = max(0, reviews.count - 1) }
+    }
+
     // MARK: - Report (someone else's post)
 
     /// Set when a report finishes; the feed shows it as an alert, then clears it.

@@ -98,7 +98,9 @@ final class ChatViewModel: AppObservableObject {
          conversationId: String? = nil, savedMessages: [Conversation.ConversationMessage]? = nil,
          planShare: PlanSharing? = nil, saveDateOfBirth: DateOfBirthSaver? = nil,
          loadAgeStatus: AgeStatusLoader? = nil,
-         guestAge: GuestAgeStore = GuestAgeStore()) {
+         guestAge: GuestAgeStore = GuestAgeStore(),
+         consent: AIConsentCoordinator? = nil) {
+        self.consent = consent
         self.service = service
         self.session = session
         self.planShare = planShare
@@ -497,7 +499,32 @@ final class ChatViewModel: AppObservableObject {
 
     // MARK: - Streaming
 
+    /// «Share data with AI» (App Review 5.1.2(i)): asked once, before the first message goes out.
+    private let consent: AIConsentCoordinator?
+    private var awaitingConsent = false
+
+    /// Whether this turn must wait for the person's answer. When it must, the sheet is shown and the turn
+    /// resumes on «Đồng ý»; on «Để sau» NOTHING is sent and the typed text goes back into the box.
+    private func holdForConsent() -> Bool {
+        guard let consent, !consent.isGranted else { return false }
+        guard !awaitingConsent else { return true }
+        awaitingConsent = true
+        Task { @MainActor [weak self] in
+            let agreed = await consent.ensure()
+            guard let self else { return }
+            self.awaitingConsent = false
+            if agreed {
+                self.startStreaming()
+            } else if let last = self.messages.last, last.isUser {
+                self.inputText = last.content
+                self.messages.removeLast()
+            }
+        }
+        return true
+    }
+
     private func startStreaming() {
+        if holdForConsent() { return }
         // Trim history from the front to stay under the backend's 24 000-char input cap.
         var payloads = messages.map { MessagePayload(role: $0.role.rawValue, content: $0.content) }
         let maxChars = 20_000

@@ -17,6 +17,9 @@ struct ChatInputBar: View {
     let onTonight: () -> Void
     let onTripPrefill: () -> Void
     let onPriceWatchPrefill: () -> Void
+    /// «📍 Gần bạn ✕»: the device-context chip lives WITH the input (right above the box), not floating above the list.
+    var showNearYou = false
+    var onRemoveNearYou: () -> Void = {}
 
     @FocusState private var isFocused: Bool
     @State private var showEmojiPanel = false
@@ -59,6 +62,27 @@ struct ChatInputBar: View {
                             action: onPriceWatchPrefill
                         )
                     }
+                    .padding(.horizontal, Spacing.md)
+                }
+
+                if showNearYou {
+                    HStack(spacing: Spacing.xxs) {
+                        Text("📍").accessibilityHidden(true)
+                        Text(String(localized: "context.nearYou"))
+                            .font(TappyFont.caption)
+                            .foregroundStyle(TappyColor.textSecondary)
+                        Button(action: onRemoveNearYou) {
+                            Image(systemName: "xmark")
+                                .font(.system(size: 10, weight: .semibold))
+                                .foregroundStyle(TappyColor.textSecondary)
+                        }
+                        .accessibilityLabel(Text("context.removeLocation"))
+                        .minimumTapTarget()
+                    }
+                    .padding(.horizontal, Spacing.sm)
+                    .background(TappyColor.surface)
+                    .clipShape(Capsule())
+                    .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.horizontal, Spacing.md)
                 }
 
@@ -220,7 +244,9 @@ struct ChatInputBar: View {
     private func actionChip(label: String, color: Color, action: @escaping () -> Void) -> some View {
         Button(action: action) {
             Text(label)
-                .font(.system(size: 11, weight: .medium))
+                .font(.system(size: 12, weight: .medium))
+                .lineLimit(1)
+                .fixedSize()   // never «Lên kế hoạch tri…»: the row scrolls, the label does not truncate
                 .foregroundStyle(color)
                 .padding(.horizontal, Spacing.sm)
                 .padding(.vertical, 6)

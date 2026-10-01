@@ -34,7 +34,6 @@ struct ProfileSettingsView: View {
     @State private var showSelfDelete = false
     @State private var showLanguagePicker = false
     @State private var showAppearancePicker = false
-    @State private var showAuth = false
 
     init(deps: AppDependencies) {
         self.deps = deps
@@ -108,9 +107,6 @@ struct ProfileSettingsView: View {
                 })
             }
         }
-        .fullScreenCover(isPresented: $showAuth) {
-            AuthFlowView(repo: deps.authRepository, config: deps.configService) { showAuth = false }
-        }
         .task {
             let flag = (try? await deps.configService.config())?.flags.accountSelfDelete
             selfDeleteEnabled = AccountDeletion.usesInAppDeletion(flag: flag)
@@ -165,6 +161,9 @@ struct ProfileSettingsView: View {
                 row(id: "memory", icon: "brain.head.profile", accent: 0x7C5CFF, labelKey: "settings.memory", desc: "settings.memory.desc") {
                     router.push(ProfileDestination.tappyKnows, on: .profile)
                 }
+                // App Review 5.1.2(i): the consent given before the first AI request can be withdrawn here.
+                divider
+                AIConsentSettingsRow(consent: deps.aiConsent)
                 // App Store 1.2: the person can review and undo their blocks. Shown only while the server
                 // has blocking on (`p8.userBlocks`, default off) and someone is signed in.
                 if safety.flags.userBlocks && isSignedIn {
@@ -251,7 +250,7 @@ struct ProfileSettingsView: View {
     }
 
     private var signInCard: some View {
-        Button { showAuth = true } label: {
+        Button { router.requestLogin() } label: {
             HStack(spacing: 14) {
                 RoundedRectangle(cornerRadius: 14).fill(HomeV3.actionGradient).frame(width: 44, height: 44)
                     .overlay(Image(systemName: "person.crop.circle.fill").font(.system(size: 20)).foregroundStyle(.white))
@@ -285,6 +284,29 @@ struct ProfileSettingsView: View {
     }
 
     private var divider: some View { HomeV3.outline.frame(height: 1).padding(.leading, 68) }
+
+    private struct AIConsentSettingsRow: View {
+        @ObservedObject var consent: AIConsentCoordinator
+        var body: some View {
+            HStack(spacing: 14) {
+                RoundedRectangle(cornerRadius: 12).fill(Color(hex: 0x3391FF, alpha: 0.16)).frame(width: 40, height: 40)
+                    .overlay(Image(systemName: "sparkles").font(.system(size: 17, weight: .semibold)).foregroundStyle(Color(hex: 0x3391FF)))
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("ai.settings.title").font(.system(size: 15, weight: .semibold)).foregroundStyle(HomeV3.onSurface)
+                    Text("ai.settings.desc").font(.system(size: 12.5)).foregroundStyle(HomeV3.onSurfaceVariant)
+                        .multilineTextAlignment(.leading)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                Toggle("", isOn: Binding(
+                    get: { consent.granted },
+                    set: { on in if on { consent.requestFromSettings() } else { consent.withdraw() } }
+                ))
+                .labelsHidden()
+                .accessibilityIdentifier("settings-ai-consent")
+            }
+            .padding(.horizontal, 14).padding(.vertical, 12)
+        }
+    }
 
     /// One row: accent tile, title (follows the in-app language — `LocalizedStringKey`, not
     /// `String(localized:)`), a one-line description, an optional current value, a chevron.

@@ -54,9 +54,16 @@ final class SafetyStore: AppObservableObject {
         blockedIds.isEmpty ? items : items.filter { !isBlocked(author($0)) }
     }
 
+    /// Posts / clips the person has just reported in this session: the feed drops them at once (the server
+    /// stops returning them on the next fetch). Cleared with the session.
+    @AppPublished private(set) var reportedReviewIds: Set<String> = []
+
     func report(_ request: ReportRequest) async -> ReportOutcome {
-        do { try await service.report(request); return .sent }
-        catch { return ReportOutcome.from(.failure(error)) }
+        do {
+            try await service.report(request)
+            if request.kind == .review { reportedReviewIds.insert(request.targetId) }
+            return .sent
+        } catch { return ReportOutcome.from(.failure(error)) }
     }
 
     /// Returns whether the block took effect.
@@ -71,5 +78,5 @@ final class SafetyStore: AppObservableObject {
     }
 
     /// Signing out clears the list: it belongs to the account.
-    func reset() { blockedIds = []; blocksLoaded = false }
+    func reset() { blockedIds = []; blocksLoaded = false; reportedReviewIds = [] }
 }

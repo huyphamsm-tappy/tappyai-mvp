@@ -64,6 +64,7 @@ struct PlaceholderShellView: View {
                 .tag(tab)
             }
         }
+        .modifier(AIConsentSheet(consent: deps.aiConsent))
         .fullScreenCover(isPresented: $router.showLogin) {
             AuthFlowView(repo: deps.authRepository, config: deps.configService) { router.loginFinished(signedIn: session.state.isAuthenticated) }
         }

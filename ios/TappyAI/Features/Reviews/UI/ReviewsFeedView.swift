@@ -77,6 +77,7 @@ struct ReviewsFeedView: View {
                 .presentationDetents([.large])
         }
         .onChange(of: safety.blockedIds) { vm.dropAuthors($0) }
+        .onChange(of: safety.reportedReviewIds) { vm.dropReviews($0) }
         .sheet(item: soundPageBinding) { wrapper in
             NavigationStack {
                 SoundPageView(trackId: wrapper.id, deps: deps)
@@ -127,33 +128,25 @@ struct ReviewsFeedView: View {
     // MARK: - Create button (matches Web TikTok-style "+" center nav button)
 
     private var createButton: some View {
+        // Top-right, level with the feed tabs: the old bottom-centre button sat on top of the post's caption.
         VStack {
-            Spacer()
             HStack {
                 Spacer()
                 Button { showCreateReview = true } label: {
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 8)
-                            .fill(Color(red: 105/255, green: 201/255, blue: 208/255))
-                            .frame(width: 42, height: 28)
-                            .offset(x: -4)
-                        RoundedRectangle(cornerRadius: 8)
-                            .fill(Color(red: 254/255, green: 44/255, blue: 85/255))
-                            .frame(width: 42, height: 28)
-                            .offset(x: 4)
-                        RoundedRectangle(cornerRadius: 8)
-                            .fill(.white)
-                            .frame(width: 42, height: 28)
-                        Image(systemName: "plus")
-                            .font(.system(size: 18, weight: .bold))
-                            .foregroundStyle(.black)
-                    }
-                    .frame(width: 50, height: 32)
+                    Image(systemName: "plus")
+                        .font(.system(size: 18, weight: .bold))
+                        .foregroundStyle(.white)
+                        .frame(width: 38, height: 38)
+                        .background(TappyColor.primary)
+                        .clipShape(Circle())
                 }
                 .buttonStyle(.plain)
-                Spacer()
+                .accessibilityIdentifier("feed-create")
+                .accessibilityLabel(Text("feed.create.a11y"))
             }
-            .padding(.bottom, Spacing.lg)
+            .padding(.top, Spacing.xxl - 4)
+            .padding(.trailing, Spacing.md)
+            Spacer()
         }
     }
 

@@ -328,6 +328,22 @@ class Handler(BaseHTTPRequestHandler):
         if path == "/api/conversations":
             return self._send(200, OLD_CONVERSATIONS if MODE.get("history") == "on" else [])
         if path == "/api/deals":
+            if MODE.get("deals") == "on":
+                # The shape production returns today: `title` is the partner's own name, the line that says what it
+                # is lives in `description`, and there are no logos or banners.
+                def deal(i, name, cat, key, desc, url):
+                    return {"id": f"d{i}", "partnerSlug": name.lower().replace(" ", "-"), "partnerName": name,
+                            "partnerType": "affiliate", "category": cat, "categoryKey": key, "title": name,
+                            "description": desc, "officialUrl": url, "bannerImage": None, "logoImage": None,
+                            "isFeatured": False, "discountLabel": None, "voucherCode": None, "endAt": None}
+                return self._send(200, {"success": True, "deals": [
+                    deal(1, "Shopee", "Mua sắm", "shopping", "Sàn mua sắm online — mọi thứ bạn cần", "https://shopee.vn"),
+                    deal(2, "ShopeeFood", "Mua sắm", "shopping", "Đặt đồ ăn & đi chợ, giao tận nơi", "https://shopeefood.vn"),
+                    deal(3, "TikTok Shop", "Mua sắm", "shopping", "Mua sắm giải trí ngay trên TikTok", "https://www.tiktok.com/shop"),
+                    deal(4, "Grab", "Vận chuyển", "transport", "Đặt xe, giao đồ ăn & giao hàng", "https://www.grab.com/vn/"),
+                    deal(5, "Be", "Vận chuyển", "transport", "Ứng dụng gọi xe & giao hàng Việt", "https://be.com.vn"),
+                    deal(6, "Agoda", "Du lịch", "travel", "Đặt khách sạn & vé máy bay giá tốt", "https://www.agoda.com/vi-vn"),
+                    deal(7, "Booking.com", "Du lịch", "travel", "Đặt phòng & chỗ nghỉ khắp thế giới", "https://www.booking.com")]})
             # The audit DB has no deals either: the page must still show the ask-Tappy card.
             return self._send(200, {"deals": []})
         return self._send(200, {})
@@ -346,7 +362,7 @@ class Handler(BaseHTTPRequestHandler):
             # No token minting in CI: the app continues as a plain guest.
             return self._send(503, {"error": "unavailable"})
         # ── Phase 8 safety (POST /api/reports; POST/DELETE /api/users/{id}/block) ──
-        if path == "/api/reports":
+        if path.endswith("/report") and path.split("/")[2] in ("reviews", "comments", "users"):
             return self._send(200, {"ok": True})
         if path.startswith("/api/users/") and path.endswith("/block"):
             uid = path.split("/")[3]

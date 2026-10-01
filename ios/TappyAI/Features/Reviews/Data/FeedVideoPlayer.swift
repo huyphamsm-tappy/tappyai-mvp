@@ -6,6 +6,11 @@ final class FeedVideoPlayer: AppObservableObject {
     @AppPublished private(set) var isPlaying = false
     @AppPublished private(set) var isMuted = true
     @AppPublished var userPaused = false
+    /// True from the moment a clip is asked for until it is really playing (the cover and a spinner show meanwhile).
+    @AppPublished private(set) var isBuffering = false
+    /// The item could not be loaded (network, bad file). The cell shows «try again» instead of a silent black area.
+    @AppPublished private(set) var failed = false
+    private var itemCancellables = Set<AnyCancellable>()
 
     /// Called on deactivation or loop-back with (watchSeconds, completionRate).
     var onInteract: ((Int, Double) -> Void)?
@@ -45,7 +50,27 @@ final class FeedVideoPlayer: AppObservableObject {
         }
 
         let item = AVPlayerItem(url: url)
+        // Start small: a feed clip needs a first frame fast, not a deep buffer (less to download before it shows).
+        item.preferredForwardBufferDuration = 4
         player.replaceCurrentItem(with: item)
+        failed = false
+        isBuffering = true
+        itemCancellables.removeAll()
+        item.publisher(for: \.status)
+            .sink { [weak self] status in
+                Task { @MainActor in
+                    if status == .failed { self?.failed = true; self?.isBuffering = false }
+                }
+            }
+            .store(in: &itemCancellables)
+        player.publisher(for: \.timeControlStatus)
+            .sink { [weak self] status in
+                Task { @MainActor in
+                    guard let self, !self.failed else { return }
+                    self.isBuffering = status != .playing && !self.userPaused
+                }
+            }
+            .store(in: &itemCancellables)
 
         endObserver = NotificationCenter.default.addObserver(
             forName: .AVPlayerItemDidPlayToEndTime,
@@ -59,6 +84,14 @@ final class FeedVideoPlayer: AppObservableObject {
                 self.player.play()
             }
         }
+    }
+
+    /// «Try again» after a failed load: the same URL, from scratch.
+    func retry() {
+        guard let url = currentURL else { return }
+        currentURL = nil
+        load(url: url)
+        if !userPaused { ensurePlaying() }
     }
 
     // MARK: - Active-driven playback (matches Web's `active` prop)

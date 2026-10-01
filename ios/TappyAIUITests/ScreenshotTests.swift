@@ -269,6 +269,91 @@ final class ScreenshotTests: XCTestCase {
         shot("72-session-expired")
     }
 
+    /// Someone else's profile: an even 3-column grid, fixed 3:4 tiles, nothing past the screen edge.
+    func testOtherUserProfileGrid() {
+        let app = launch(route: "safety-user", signedIn: true, extra: ["-uitest-theme", "dark"])
+        XCTAssertTrue(any(app, "profile-tab-posts").waitForExistence(timeout: 40), "the posts / shares tabs")
+        shot("73-user-profile-grid")
+    }
+
+    /// Deals in the shape production returns today: partner name once, a real subtitle, chips not cut.
+    func testDealsProductionShaped() {
+        setStub(["deals": "on"])
+        let app = launch(route: "deals", extra: ["-uitest-theme", "dark"])
+        XCTAssertTrue(any(app, "deals-ask-tappy").waitForExistence(timeout: 40))
+        XCTAssertTrue(app.staticTexts["Sàn mua sắm online — mọi thứ bạn cần"].waitForExistence(timeout: 20), "the subtitle, not the name twice")
+        shot("74-deals-prod-shaped")
+        setStub(["deals": "off"])
+    }
+
+    /// Scam Shield: emergency block, the 25-scenario library with its source block, one scenario.
+    func testScamShieldLibrary() {
+        let app = launch(route: "scam", extra: ["-uitest-theme", "dark"])
+        XCTAssertTrue(any(app, "scam-call-113").waitForExistence(timeout: 40), "the fixed 113 block")
+        shot("75-scam-check")
+        app.buttons["Tình huống lừa đảo"].tap()
+        XCTAssertTrue(any(app, "scam-read-original").waitForExistence(timeout: 20), "the source block with the original link")
+        shot("76-scam-library")
+        let first = any(app, "scam-scenario-1")
+        for _ in 0..<6 where !first.isHittable { app.swipeUp() }
+        first.tap()
+        XCTAssertTrue(any(app, "scam-call-113").waitForExistence(timeout: 20))
+        shot("77-scam-scenario")
+    }
+
+    // MARK: - Tools and the post composer (looked at, not only built)
+
+    func testTranslateScanGroupAndComposerScreens() {
+        var app = launch(route: "translate", signedIn: true, extra: ["-uitest-theme", "dark"])
+        sleep(3)
+        shot("81-translate")
+        app.terminate()
+
+        app = launch(route: "scan", signedIn: true, extra: ["-uitest-theme", "dark"])
+        sleep(3)
+        shot("82-scan")
+        app.terminate()
+
+        app = launch(route: "group", signedIn: true, extra: ["-uitest-theme", "dark"])
+        sleep(3)
+        shot("83-group-dining")
+        app.terminate()
+
+        app = launch(route: "explore", signedIn: true, extra: ["-uitest-theme", "dark"])
+        let create = any(app, "feed-create")
+        XCTAssertTrue(create.waitForExistence(timeout: 40), "the + button, top right")
+        shot("84-explore-plus-top-right")
+        create.tap()
+        sleep(3)
+        shot("85-composer")
+    }
+
+    // MARK: - AI-sharing consent (App Review 5.1.2(i))
+
+    /// Before the first AI request the sheet appears; «Để sau» sends nothing and gives the text back.
+    func testAIConsentSheetAndDecline() {
+        let app = launch(route: "chat", extra: ["-uitest-ai-consent-prompt", "-uitest-theme", "dark"])
+        let input = any(app, "chat-input")
+        XCTAssertTrue(input.waitForExistence(timeout: 30))
+        input.tap()
+        input.typeText("Quan an ngon")
+        any(app, "chat-send").tap()
+        XCTAssertTrue(any(app, "ai-consent-agree").waitForExistence(timeout: 20), "the consent sheet before any AI request")
+        shot("78-ai-consent")
+        any(app, "ai-consent-later").tap()
+        XCTAssertTrue(any(app, "chat-input").waitForExistence(timeout: 10))
+        XCTAssertFalse(any(app, "ai-consent-agree").exists, "closed after «Để sau»")
+        XCTAssertEqual(any(app, "chat-input").value as? String, "Quan an ngon", "nothing sent: the text is back in the box")
+        shot("79-ai-consent-declined")
+    }
+
+    func testAIConsentSwitchInSettings() {
+        let app = launch(route: "settings", signedIn: true, extra: ["-uitest-theme", "dark"])
+        let toggle = any(app, "settings-ai-consent")
+        XCTAssertTrue(toggle.waitForExistence(timeout: 40), "the «Chia sẻ dữ liệu với AI» switch")
+        shot("80-settings-ai-switch")
+    }
+
     // MARK: - A3 Sign in with Apple — visible only when the server enables it
 
     func testSignInWithAppleButtonAppearsWhenEnabled() {

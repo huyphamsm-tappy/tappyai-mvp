@@ -37,7 +37,7 @@ struct VietContentView: View {
     ]
 
     init(deps: AppDependencies) {
-        let service = UtilityToolsService(api: deps.api)
+        let service = UtilityToolsService(api: deps.api, consent: deps.aiConsent)
         _vm = AppStateObject(wrappedValue: VietContentViewModel(service: service))
     }
 

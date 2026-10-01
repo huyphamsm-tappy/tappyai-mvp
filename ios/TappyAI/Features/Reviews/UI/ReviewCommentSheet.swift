@@ -207,10 +207,13 @@ func ago(_ iso: String) -> String {
 
     if seconds < 60 { return NSLocalizedString("common.justNow", comment: "") }
     let minutes = seconds / 60
-    if minutes < 60 { return "\(minutes)p" }
+    // Said in words, as the web does («49 ngày trước»): the bare «49n» read as a number plus a stray letter.
+    func fmt(_ key: String, _ n: Int) -> String { String(format: NSLocalizedString(key, comment: ""), n) }
+    if minutes < 60 { return fmt("time.minutesAgo", minutes) }
     let hours = minutes / 60
-    if hours < 24 { return "\(hours)g" }
+    if hours < 24 { return fmt("time.hoursAgo", hours) }
     let days = hours / 24
-    if days < 365 { return "\(days)n" }
-    return "\(days / 365)y"
+    if days < 30 { return fmt("time.daysAgo", days) }
+    if days < 365 { return fmt("time.monthsAgo", days / 30) }
+    return fmt("time.yearsAgo", days / 365)
 }

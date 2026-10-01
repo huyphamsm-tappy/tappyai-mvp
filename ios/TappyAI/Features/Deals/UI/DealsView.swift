@@ -99,7 +99,7 @@ struct DealsView: View {
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: Spacing.xs) {
                         ForEach(partners, id: \.self) { name in
-                            Text(name).font(.system(size: 11)).foregroundStyle(.white)
+                            Text(name).font(.system(size: 11)).foregroundStyle(.white).lineLimit(1).fixedSize()
                                 .padding(.horizontal, Spacing.xs).padding(.vertical, 5)
                                 .background(RoundedRectangle(cornerRadius: 8).fill(Color.white.opacity(0.12)))
                         }
@@ -134,10 +134,15 @@ struct DealsView: View {
                                 .font(.system(size: 11))
                         }
                     }
-                    Text(deal.title)
-                        .font(.system(size: 14, weight: .medium))
-                        .foregroundStyle(TappyColor.textPrimary)
-                        .lineLimit(2)
+                    // The feed's `title` is often the partner's own name («Shopee» / «Shopee»): never print it twice.
+                    // Then the line under the name is what the partner is for (`description`).
+                    let sub = Self.subtitle(for: deal)
+                    if !sub.isEmpty {
+                        Text(sub)
+                            .font(.system(size: 14, weight: .medium))
+                            .foregroundStyle(TappyColor.textPrimary)
+                            .lineLimit(2)
+                    }
                     if let discount = deal.discountLabel {
                         Text(discount)
                             .font(.system(size: 12, weight: .bold))
@@ -200,6 +205,13 @@ struct DealsView: View {
             .background(color.opacity(0.12))
             .foregroundStyle(color)
             .clipShape(Capsule())
+    }
+
+    static func subtitle(for deal: PartnerDeal) -> String {
+        func norm(_ s: String) -> String { s.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() }
+        let title = deal.title.trimmingCharacters(in: .whitespacesAndNewlines)
+        if !title.isEmpty, norm(title) != norm(deal.partnerName) { return title }
+        return (deal.description ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
     }
 
     private static let palette: [Color] = [.orange, .blue, .purple, .green, .pink, .indigo, .teal, .brown]

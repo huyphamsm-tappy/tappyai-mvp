@@ -42,9 +42,17 @@ struct VietContentResponse: Decodable {
 
 final class UtilityToolsService: Sendable {
     private let api: APIClient
+    /// Asked before translate / scan / write-content send anything to the AI provider (App Review 5.1.2(i)).
+    private let consent: AIConsentCoordinator?
 
-    init(api: APIClient) {
+    init(api: APIClient, consent: AIConsentCoordinator? = nil) {
         self.api = api
+        self.consent = consent
+    }
+
+    /// «Để sau» = the request is not made, and the screen shows the plain «agree to use this» line.
+    private func requireConsent() async throws {
+        if let consent, !(await consent.ensure()) { throw AIConsentStore.blockedError }
     }
 
     func fetchRates() async throws -> RatesResponse {
@@ -53,6 +61,7 @@ final class UtilityToolsService: Sendable {
     }
 
     func translate(text: String, targetLang: String) async throws -> TranslateResponse {
+        try await requireConsent()
         let body = try JSONSerialization.data(withJSONObject: [
             "text": text,
             "targetLang": targetLang
@@ -62,6 +71,7 @@ final class UtilityToolsService: Sendable {
     }
 
     func scan(imageBase64: String, mimeType: String) async throws -> ScanResponse {
+        try await requireConsent()
         let body = try JSONSerialization.data(withJSONObject: [
             "imageBase64": imageBase64,
             "mimeType": mimeType
@@ -71,6 +81,7 @@ final class UtilityToolsService: Sendable {
     }
 
     func generateVietContent(topic: String, platform: String, tone: String, length: String) async throws -> VietContentResponse {
+        try await requireConsent()
         let body = try JSONSerialization.data(withJSONObject: [
             "topic": topic,
             "platform": platform,

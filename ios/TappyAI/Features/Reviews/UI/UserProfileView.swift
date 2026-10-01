@@ -34,9 +34,9 @@ struct UserProfileView: View {
     }
 
     private let columns = [
-        GridItem(.flexible(), spacing: 2),
-        GridItem(.flexible(), spacing: 2),
-        GridItem(.flexible(), spacing: 2),
+        GridItem(.flexible(), spacing: 4),
+        GridItem(.flexible(), spacing: 4),
+        GridItem(.flexible(), spacing: 4),
     ]
 
     var body: some View {
@@ -94,6 +94,7 @@ struct UserProfileView: View {
                 tabPicker
                 Divider().overlay(TappyColor.separator)
                 grid
+                    .padding(.horizontal, Spacing.xs)
                 if vm.isLoadingMore {
                     TappyLoadingIndicator().padding(Spacing.md)
                 }
@@ -169,6 +170,7 @@ struct UserProfileView: View {
                 vm.toggleFollow()
             }
             .buttonStyle(.tappy(following ? .secondary : .primary))
+            .frame(width: 168)   // a pill, not a full-width bar (web / Android)
             .disabled(!vm.isAuthenticated || vm.isTogglingFollow)
         }
     }
@@ -201,7 +203,7 @@ struct UserProfileView: View {
                 message: "userProfile.empty.message"
             )
         } else {
-            LazyVGrid(columns: columns, spacing: 2) {
+            LazyVGrid(columns: columns, spacing: 4) {
                 ForEach(shown) { review in
                     Button {
                         router.push(ReviewsDestination.reviewDetail(id: review.id))
@@ -220,34 +222,40 @@ struct UserProfileView: View {
     }
 
     private func tile(_ review: Review) -> some View {
-        ZStack {
-            TappyColor.surface
-            if let raw = review.thumbnail ?? review.photos?.first, let url = URL(string: raw) {
-                AsyncImage(url: url) { image in
-                    image.resizable().aspectRatio(contentMode: .fill)
-                } placeholder: {
+        // 🚨 The tile's SIZE comes from a clear 3:4 box; the picture is an overlay clipped to it. Before, the
+        // `.fill` image sized the tile itself, so wide photos pushed the grid past the screen edge (tiles
+        // offset, overlapping, the whole page shifted — even the tab underline).
+        Color.clear
+            .aspectRatio(3.0 / 4.0, contentMode: .fit)
+            .overlay {
+                ZStack {
                     TappyColor.surface
-                }
-            } else {
-                Image(systemName: review.isVideo ? "play.rectangle" : "photo")
-                    .font(.system(size: 22))
-                    .foregroundStyle(TappyColor.textSecondary)
-            }
-            if review.isVideo {
-                VStack {
-                    HStack {
-                        Spacer()
-                        Image(systemName: "play.fill")
-                            .font(TappyFont.caption)
-                            .foregroundStyle(.white)
-                            .padding(Spacing.xxs)
+                    if let raw = review.thumbnail ?? review.photos?.first, let url = URL(string: raw) {
+                        AsyncImage(url: url) { image in
+                            image.resizable().aspectRatio(contentMode: .fill)
+                        } placeholder: {
+                            TappyColor.surface
+                        }
+                    } else {
+                        Image(systemName: review.isVideo ? "play.rectangle" : "photo")
+                            .font(.system(size: 22))
+                            .foregroundStyle(TappyColor.textSecondary)
                     }
-                    Spacer()
+                    if review.isVideo {
+                        VStack {
+                            HStack {
+                                Spacer()
+                                Image(systemName: "play.fill")
+                                    .font(TappyFont.caption)
+                                    .foregroundStyle(.white)
+                                    .padding(Spacing.xxs)
+                            }
+                            Spacer()
+                        }
+                    }
                 }
             }
-        }
-        .aspectRatio(3.0 / 4.0, contentMode: .fill)
-        .clipped()
-        .accessibilityLabel(Text("userProfile.openPost"))
+            .clipShape(RoundedRectangle(cornerRadius: Radius.sm, style: .continuous))
+            .accessibilityLabel(Text("userProfile.openPost"))
     }
 }

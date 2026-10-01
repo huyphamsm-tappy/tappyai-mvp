@@ -8,7 +8,7 @@ struct ScanView: View {
     @State private var photoPickerItem: PhotosPickerItem?
 
     init(deps: AppDependencies) {
-        let service = UtilityToolsService(api: deps.api)
+        let service = UtilityToolsService(api: deps.api, consent: deps.aiConsent)
         _vm = AppStateObject(wrappedValue: ScanViewModel(service: service))
     }
 

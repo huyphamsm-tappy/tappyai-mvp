@@ -22,6 +22,8 @@ final class AppDependencies: AppObservableObject {
     let configService: AppConfigService
     let notificationManager: NotificationManager
     let safety: SafetyStore
+    /// One-time «share data with AI» consent (App Review 5.1.2(i)); the networking layer enforces it too.
+    let aiConsent = AIConsentCoordinator()
 
     init(env: AppEnvironment = .current) {
         self.env = env
