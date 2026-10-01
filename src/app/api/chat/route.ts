@@ -35,7 +35,7 @@ import { rankCandidates } from '@/lib/ai/consultative/rank'
 import { shortlistShopping, shortlistCandidates } from '@/lib/ai/consultative/shortlist'
 import { deriveDecisionFrame, qualifiesFor, missingFor, evidenceGap, evidenceSummary, buildDecisionFrameBlock } from '@/lib/ai/consultative/decisionFrame'
 import { wantsFilmTitles, movieTitlesReply } from '@/lib/links/movieTitles'
-import { gatePlacesByActivity } from '@/lib/ai/consultative/placeTypeGate'
+import { gatePlacesByActivity, agencyRowsToDrop } from '@/lib/ai/consultative/placeTypeGate'
 import { deriveShoppingConstraints, budgetFromHistory, validateShoppingCandidates, unmetConstraintPayload } from '@/lib/ai/consultative/shoppingConstraints'
 import { proposeRelaxation } from '@/lib/ai/consultative/relaxation'
 import { classifyTurnIntent } from '@/lib/ai/consultative/intentGate'
@@ -1412,7 +1412,15 @@ export async function POST(req: Request) {
     // 01/10 (owner, ca c): a venue card must BE the kind of venue asked for — «karaoke» never shows a museum. Filtered from the
     // model's rows too, so the prose cannot cite what the card refuses to show. Nothing left → a truthful "no match", no cards.
     if (toolName === 'search_places' && allCandidates.length > 0 && searchText) {
-      const gate = gatePlacesByActivity(consult?.known?.hoat_dong, allCandidates, searchText)
+      // A tour company's listing (and its advert photo) is not a place to go — unless a tour is what was asked for.
+      const agencies = agencyRowsToDrop(allCandidates, searchText)
+      if (agencies.length > 0) {
+        const goneAgencies = new Set(agencies.map(x => x.raw))
+        if (Array.isArray(r.results)) r.results = (r.results as unknown[]).filter(row => !goneAgencies.has(row))
+        candidates = allCandidates.filter(c => !agencies.includes(c))
+        console.log(JSON.stringify({ type: 'tappyai_place_type_gate', gate: 'travel_agency', rejected: agencies.length, sample: agencies.slice(0, 3).map(x => x.name) }))
+      }
+      const gate = gatePlacesByActivity(consult?.known?.hoat_dong, candidates, searchText)
       if (gate.gated && gate.rejected.length > 0) {
         const gone = new Set(gate.rejected.map(x => x.raw))
         if (Array.isArray(r.results)) r.results = (r.results as unknown[]).filter(row => !gone.has(row))
@@ -2643,6 +2651,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   // hotel search), where to eat at the destination (one search, the user's stated taste), the weather.
   const tripOutcomes: PresearchOutcome[] = []
   if (consultTripPrefetch && tools) {
+    enrichment.preferStay = true // the plan's card block is the hotel whichever parallel search returns first (PL-PLAN-CARD-RACE)
     const known = consult?.known ?? {}
     const dest = tripDest
     const hotel = travelPreCall({ ...known, diem_den: dest, phuong_tien: '' }, '')

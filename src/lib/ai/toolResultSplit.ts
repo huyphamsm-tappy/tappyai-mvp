@@ -132,6 +132,13 @@ export interface EnrichmentCollector {
   placesProducer?: ProducerSubject
   setPlacesRecommendations(recs: Recommendation[] | undefined, producer: ProducerSubject | null): void
   /**
+   * A trip PLAN prefetches a hotel search and place searches in PARALLEL and the reply carries ONE card block. "First non-empty
+   * set wins" made the winner whichever search came back first (owner UAT 2026-10-01: the same request showed hotel cards once
+   * and restaurant cards once). With this set, a `stay` producer takes the slot from any other producer, so a plan reliably
+   * carries the booking-critical block — the hotel — and the order of arrival no longer matters.
+   */
+  preferStay?: boolean
+  /**
    * The provider's own map search for this turn, straight off the tool result.
    *
    * The approved composition ends the recommendation block with "see all of these
@@ -444,7 +451,7 @@ export function createEnrichmentCollector(turnText = '', earlierUserTexts: reado
        * producer cannot leave a trace either way.
        */
       if (!admitsProducer(turnText, producer, earlierUserTexts)) return
-      if (recs && recs.length > 0 && !this.placesRecommendations) {
+      if (recs && recs.length > 0 && (!this.placesRecommendations || (this.preferStay && producer === 'stay' && this.placesProducer !== 'stay'))) {
         this.placesRecommendations = recs
         this.placesProducer = producer ?? undefined
       }

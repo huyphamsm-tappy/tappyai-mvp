@@ -21,3 +21,14 @@ describe('(c) «Tìm quận 3 á» while looking for karaoke: the card must be a
     expect(gatePlacesByActivity('rooftop bar', rows, 'rooftop quận 1').gated).toBe(false)
   })
 })
+
+import { agencyRowsToDrop } from './placeTypeGate'
+describe('(e) a tour company is not a place — nor is its advert a photo', () => {
+  const rows = [place('tour quy nhơn 3 ngày 2 đêm', ['Công ty du lịch']), place('Khách Sạn Sala Quy Nhon Beach', ['Khách sạn']), place('Eo Gió', ['Điểm tham quan'])]
+  it('dropped from a hotel / sights search', () => {
+    expect(agencyRowsToDrop(rows, 'khách sạn Quy Nhơn').map(c => c.name)).toEqual(['tour quy nhơn 3 ngày 2 đêm'])
+  })
+  it('kept when the user asked for a tour', () => {
+    expect(agencyRowsToDrop(rows, 'tour Quy Nhơn 3 ngày 2 đêm')).toEqual([])
+  })
+})

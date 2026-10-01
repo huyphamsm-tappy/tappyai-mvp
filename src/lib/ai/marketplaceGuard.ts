@@ -31,3 +31,10 @@ export function scrubUnsuppliedMarketplaces(text: string, allowedUrls: Iterable<
   })
   return { text: removed.length ? kept.join('').replace(/[ \t]{2,}/g, ' ').replace(/\n{3,}/g, '\n\n').trimEnd() : text, removed }
 }
+
+// A photo address (Google user-content / gstatic) printed as TEXT is never useful: images are cards' job. Owner UAT 2026-10-01
+// (ca e): «link googleusercontent.com/gps-cs-s/… in thẳng ra thành chữ». Markdown images/links are untouched.
+const BARE_PHOTO_URL = /(?<![(\[])\bhttps?:\/\/(?:[a-z0-9-]+\.)?(?:googleusercontent\.com|gstatic\.com|ggpht\.com)\/[^\s)\]]+/giu
+export function stripBarePhotoUrls(text: string): string {
+  return text.replace(BARE_PHOTO_URL, '').replace(/[ \t]{2,}/g, ' ').replace(/\n{3,}/g, '\n\n')
+}

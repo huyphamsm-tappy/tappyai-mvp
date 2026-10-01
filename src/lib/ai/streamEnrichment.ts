@@ -1,4 +1,4 @@
-import { scrubUnsuppliedMarketplaces } from './marketplaceGuard'
+import { scrubUnsuppliedMarketplaces, stripBarePhotoUrls } from './marketplaceGuard'
 import { normalizeVN } from './intent'
 import { findPlaceOffset, proseHeaders, type Header } from './placeMatch'
 import type { EnrichmentCollector } from './toolResultSplit'
@@ -2030,6 +2030,8 @@ export function applyPlaceEnrichmentStreamFilter(
       if (pre !== null) {
         const scrubbed = scrubUnsuppliedMarketplaces(mainText.slice(pre.length), allowedUrls)
         if (scrubbed.removed.length) { console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'marketplace_named_by_model', removed: scrubbed.removed.length })); mainText = pre + scrubbed.text }
+        const noBare = stripBarePhotoUrls(scrubbed.removed.length ? scrubbed.text : mainText.slice(pre.length))
+        if (noBare !== (scrubbed.removed.length ? scrubbed.text : mainText.slice(pre.length))) { console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'bare_photo_url' })); mainText = pre + noBare }
       }
     }
     // PHIÊN LUNA (CONSULT_LUNA only): the pick sentence stands alone, so a guard that cuts an unbacked number or

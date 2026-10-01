@@ -21,3 +21,14 @@ describe('(d) a shop the code did not hand over is not recommended by the model'
     expect(scrub('Nothing matched. You can search for it on Shopee.', []).text).toBe('Nothing matched.')
   })
 })
+
+import { stripBarePhotoUrls } from './marketplaceGuard'
+describe('(e) a bare photo address is never printed as text', () => {
+  it('removes it, keeps markdown images and ordinary links', () => {
+    const t = 'MeyResort Bãi Lữ https://lh3.googleusercontent.com/gps-cs-s/AB12cd34=w400 đẹp\n![Ảnh địa điểm](https://lh3.googleusercontent.com/p/x) [Maps](https://maps.google.com/?cid=1)'
+    const r = stripBarePhotoUrls(t)
+    expect(r).not.toMatch(/gps-cs-s/)
+    expect(r).toContain('![Ảnh địa điểm](https://lh3.googleusercontent.com/p/x)')
+    expect(r).toContain('[Maps](https://maps.google.com/?cid=1)')
+  })
+})

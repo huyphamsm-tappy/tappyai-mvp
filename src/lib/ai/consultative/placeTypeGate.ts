@@ -48,3 +48,18 @@ export function gatePlacesByActivity(activity: string | undefined | null, candid
   for (const c of candidates) (venue.test(text(c)) ? kept : rejected).push(c)
   return { kept, rejected, gated: true }
 }
+
+// ── A travel agency / tour company is not a place to go (owner UAT 2026-10-01, ca e) ───────────────────────────────────
+// «📸 Hình ảnh & link review: tour quy nhơn 3 ngày 2 đêm» was a tour company's Maps listing: its owner-uploaded photo is an
+// ADVERT (banner with a phone number), and it was shown as if it were a place in the plan. Such a row never becomes a card
+// or a photo unless the user asked for a tour or an agency.
+const AGENCY = /\b(?:cong ty du lich|cong ty lu hanh|travel agency|tour operator|tour company|dai ly (?:ve|du lich|lu hanh)|lu hanh|tour)\b/
+const WANTS_TOUR = /\b(?:tour|dat tour|cong ty du lich|dai ly|travel agency|lu hanh)\b/
+
+export function isTravelAgency(c: Candidate): boolean { return AGENCY.test(text(c)) }
+
+/** Drops agency rows unless the search itself is for a tour/agency. Returns the rows to remove. */
+export function agencyRowsToDrop(candidates: readonly Candidate[], searchText: string): Candidate[] {
+  if (WANTS_TOUR.test(normalizeVN((searchText || '').toLowerCase()))) return []
+  return candidates.filter(isTravelAgency)
+}
