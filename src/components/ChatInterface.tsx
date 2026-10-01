@@ -38,7 +38,7 @@ import { readPlacesLiveView } from '@/lib/recommendation/liveView'
 import { readProgress } from '@/lib/recommendation/progressAnnotation'
 import { rememberPlacesView, recallPlacesView } from '@/lib/recommendation/liveViewCache'
 import PlaceDecision from '@/components/chat/PlaceDecision'
-import { useTranslation } from '@/lib/i18n/useTranslation'
+import { useTranslation, getStoredLocale } from '@/lib/i18n/useTranslation'
 import { validateModelCtaButtons } from '@/lib/recommendation/ctaValidation'
 import { requestedProviderOf } from '@/lib/ai/tools/commerceIntent'
 import { inputLocaleFor } from '@/lib/voice/config'
@@ -1164,6 +1164,20 @@ export default function ChatInterface({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tts.failed, tts.failedMessage])
 
+  // The first-run «Tappy muốn hiểu bạn hơn» modal must never stack over the language picker or cover a quick-ask card
+  // (owner 2026-10-01 item 2). It waits: language chosen, no ask card on screen, no reply streaming — then it shows once.
+  const [langChosen, setLangChosen] = useState(true)
+  useEffect(() => {
+    if (!showOnboarding) return
+    const check = () => setLangChosen(getStoredLocale() !== null)
+    check()
+    const id = setInterval(check, 400)
+    return () => clearInterval(id)
+  }, [showOnboarding])
+  const lastTurnMsg = messages[messages.length - 1]
+  const askOnScreen = !!lastTurnMsg && lastTurnMsg.role === 'assistant' && typeof lastTurnMsg.content === 'string' && parseAsk(lastTurnMsg.content).questions.length > 0
+  const onboardingReady = showOnboarding && langChosen && !askOnScreen && !isLoading
+
   useEffect(() => {
     fetch('/api/memory')
       .then(r => r.json())
@@ -1351,7 +1365,7 @@ export default function ChatInterface({
 
   return (
     <div className="flex flex-col h-full">
-      {showOnboarding && (
+      {onboardingReady && (
         <OnboardingModal
           onClose={(prefs) => {
             setShowOnboarding(false)
