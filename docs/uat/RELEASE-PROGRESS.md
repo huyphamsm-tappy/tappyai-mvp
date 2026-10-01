@@ -503,3 +503,10 @@ Hạn chế guard vá: mỗi bản vá sau model giờ được ĐẾM (`tappyai
   (lần push kế tiếp lên rc/web-uat sẽ tự gán lại alias cho bản mới).
 - **Quay lại bằng git (không force):** `git -C C:/wtrel checkout -b rollback-to-3fce8b7 release-freeze-3fce8b7` để xem; muốn UAT build lại đúng nội dung đó: `git -C C:/wtrel revert --no-commit 3fce8b7..HEAD && git -C C:/wtrel commit -m "revert to 3fce8b7 content"` rồi push lên rc/web-uat như thường.
 - Kiểm: `curl https://uat.tappyai.com/api/version` phải trả `3fce8b7…`.
+
+## Regression Gate đỏ ở 40289ae — nguyên nhân gốc (01/10)
+- Hai bài đỏ: `scripts/architecture/controllerRules.test.ts` (2 test) và `vendorCacheRule.test.ts` — cùng chạy `scripts/architecture/check.mjs`. Luật bị phạm: **`no-commerce-merchant-hosts-outside-ccp`** — `src/lib/links/movieTitles.ts:28` viết thẳng host nhà cung cấp (cgv.vn, galaxycine.vn…) NGOÀI `src/lib/ccp`. Commit gây ra: **5c89e20** (A1/A2/A4 — câu trả lời «có phim gì hay»).
+- Vì sao phạm: tôi đặt tệp này ở `src/lib/links/` để tránh luật khác (`retrievalArchitecture`: markdown từ nội dung truy xuất chỉ ở `streamEnrichment`) mà **không chạy `scripts/architecture` và `npm test` đầy đủ trước khi push** — chỉ chạy `src/lib/ai`, `src/app/api`, `src/lib`. Né một luật bằng cách chuyển chỗ đã đâm vào luật kế bên.
+- Sửa (không nới luật nào): bảng trang phim đang chiếu chuyển vào `src/lib/ccp/adapters/nowShowing.ts`; `ccpBoundary.test` lại bắt tiếp: **mọi host trong CCP phải thuộc allow-list của registry, danh sách nhà cung cấp ĐÓNG BĂNG (D10)** ⇒ chỉ **CGV** (đã là provider) được link; Galaxy/Lotte/BHD/Beta chỉ nhắc tên. Thêm 4 rạp = quyết định của Huy (PL-MOVIES).
+- Cùng đợt phát hiện thêm một vi phạm quyết định cũ: tôi đã cho link khách sạn điền ngày từ «cuối tuần»; test `flightPickLink` (ghim quyết định 30/09 «không đoán ngày cho khách sạn») đỏ → **đã hoàn lại**.
+- **Quy tắc cho thay đổi sau:** trước KHI PUSH chạy `npm test` đầy đủ (gồm `scripts/architecture`, `src/lib/ccp`, `src/lib/ai/security`), không chỉ thư mục mình sửa; không dời tệp để né một luật; không thêm host thương mại ngoài `src/lib/ccp`; không thêm nhà cung cấp mới.
