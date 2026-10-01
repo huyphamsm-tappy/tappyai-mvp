@@ -60,7 +60,9 @@ describe('CCP module boundary', () => {
     const allowed = new Set(['www.dienmayxanh.com', 'vn.trip.com', 'www.cgv.vn', 'www.klook.com', 'shopee.vn', 'shop.tiktok.com', 'www.tiktok.com', 'www.lazada.vn',
       'www.booking.com', 'www.agoda.com', 'www.traveloka.com', 'vexere.com', 'www.vietnamairlines.com', 'www.vietjetair.com', 'ticketbox.vn',
       // Passthrough search grammars (14 Sep 2026): GrabFood results, CellphoneS catalogue search.
-      'food.grab.com', 'cellphones.com.vn'])
+      'food.grab.com', 'cellphones.com.vn',
+      // Cinema now-showing pages (owner 01/10): Galaxy, Lotte, BHD, Beta join CGV as passthrough providers.
+      'www.galaxycine.vn', 'www.lottecinemavn.com', 'www.bhdstar.vn', 'www.betacinemas.vn'])
     expect([...hosts].filter(h => !allowed.has(h))).toEqual([])
     const registryHosts = new Set(PROVIDER_REGISTRY.flatMap(e => [...e.allowedHosts]))
     expect([...hosts].filter(h => !registryHosts.has(h))).toEqual([])

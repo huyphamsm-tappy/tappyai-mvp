@@ -30,6 +30,6 @@ export const NOW_SHOWING_LINKS = CINEMA_NOW_SHOWING_PAGES
 export function movieTitlesReply(lang: string): string {
   const links = NOW_SHOWING_LINKS.map(l => `- [${l.name}](${l.url})`).join('\n')
   return lang === 'en'
-    ? `I don't have a verified list of what's showing right now, so I won't guess film titles. The cinema chains' own websites (CGV, Galaxy, Lotte, BHD, Beta) list current films and showtimes — here is CGV's:\n\n${links}\n\nPick a film and tell me — I can find a cinema near you.\n\n[FOLLOWUPS]Find a cinema near me[/FOLLOWUPS]`
-    : `Mình chưa có danh sách phim đang chiếu đã kiểm chứng, nên không đoán tên phim cho bạn. Trang web của các cụm rạp (CGV, Galaxy, Lotte, BHD, Beta) đều có phim đang chiếu và lịch chiếu — đây là trang của CGV:\n\n${links}\n\nBạn chọn được phim rồi thì nói mình, mình tìm rạp gần bạn nhé.\n\n[FOLLOWUPS]Tìm rạp gần mình[/FOLLOWUPS]`
+    ? `I don't have a verified list of what's showing right now, so I won't guess film titles. The cinema chains' own websites (CGV, Galaxy, Lotte, BHD, Beta) list current films and showtimes — here are their pages:\n\n${links}\n\nPick a film and tell me — I can find a cinema near you.\n\n[FOLLOWUPS]Find a cinema near me[/FOLLOWUPS]`
+    : `Mình chưa có danh sách phim đang chiếu đã kiểm chứng, nên không đoán tên phim cho bạn. Trang web của các cụm rạp (CGV, Galaxy, Lotte, BHD, Beta) đều có phim đang chiếu và lịch chiếu — đây là trang của từng rạp:\n\n${links}\n\nBạn chọn được phim rồi thì nói mình, mình tìm rạp gần bạn nhé.\n\n[FOLLOWUPS]Tìm rạp gần mình[/FOLLOWUPS]`
 }

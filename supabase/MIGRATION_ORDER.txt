@@ -131,3 +131,4 @@ supabase/migrations/20260929130000_commerce_click_attributions.sql
 supabase/migrations/20260929140000_commerce_click_attributions_r21.sql
 supabase/migrations/20260930_content_reports_insert_check.sql
 supabase/migrations/20260930b_review_interactions_bounds.sql
+supabase/migrations/20261001c_commerce_providers_cinemas.sql
