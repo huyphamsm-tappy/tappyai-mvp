@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Build the signed Play release AAB (vc10 / 1.0.0) from ONE exact commit, in a FRESH worktree.
+# Build the signed Play release AAB (vc11 / 1.0.0) from ONE exact commit, in a FRESH worktree.
 # LEAD-RUN ONLY, from Git Bash. Nothing is uploaded; Play Console is the owner's step (RELEASE-PLAN §3d).
 #
 #   bash scripts/release/build-aab.sh <sha>
@@ -13,7 +13,7 @@
 # Gradle gives the user-home file precedence over the project file, so the template's placeholders
 # never reach the build; app/build.gradle.kts (C19) fails the build if any release value is a placeholder.
 #
-# Verifies: jarsigner -verify ("jar verified."), BuildConfig VERSION_CODE=10, VERSION_NAME="1.0.0",
+# Verifies: jarsigner -verify ("jar verified."), BuildConfig VERSION_CODE=11, VERSION_NAME="1.0.0",
 # API_BASE_URL="https://www.tappyai.com/", WEB_APP_URL="https://www.tappyai.com", GIT_SHA=<sha7>,
 # VERCEL_BYPASS_SECRET="" and a production SUPABASE_URL. Prints the AAB path, its sha256 and the
 # signing certificate fingerprint (compare with Play Console -> App integrity -> Upload key certificate).
@@ -24,7 +24,7 @@ set -euo pipefail
 
 SRC_REPO="${TAPPY_SRC_REPO:-C:/wtrel}"
 export JAVA_HOME="${JAVA_HOME_OVERRIDE:-/c/Program Files/Android/Android Studio/jbr}"
-EXPECT_VC=10
+EXPECT_VC=11
 EXPECT_VN="1.0.0"
 EXPECT_API="https://www.tappyai.com/"
 EXPECT_WEB="https://www.tappyai.com"
