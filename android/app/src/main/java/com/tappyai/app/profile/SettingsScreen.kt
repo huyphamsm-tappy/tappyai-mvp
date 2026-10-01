@@ -270,8 +270,8 @@ fun SettingsScreen(
                             title = stringResource(if (viewModel.selfDeleteEnabled && !viewModel.isAnonymous) R.string.settings_delete_account_self else R.string.settings_delete_account),
                             // UAT3 device run: the subtitle still said "Request deletion…" on the in-app flow.
                             subtitle = stringResource(if (viewModel.selfDeleteEnabled && !viewModel.isAnonymous) R.string.settings_delete_account_self_desc else R.string.settings_delete_account_desc),
-                            accent = AccentRed,
-                            titleFontWeight = FontWeight.SemiBold,
+                            // Huy 01/10: discreet — the plain neutral row, regular weight, no red tile — but still
+                            // the last row of «Khác» in Settings (findable, as Apple 5.1.1(v) / Google Play require).
                             onClick = { confirmDeleteAccount = true },
                         )
                     }
@@ -444,7 +444,6 @@ private val AccentBlue = Color(0xFF3B82F6)
 private val AccentPurple = Color(0xFF7C5CFF)
 private val AccentGreen = Color(0xFF14B58A)
 private val AccentOrange = Color(0xFFF59E0B)
-private val AccentRed = Color(0xFFEF4444)
 
 /** The row label of a mode: Theo hệ thống / Sáng / Tối. */
 @StringRes

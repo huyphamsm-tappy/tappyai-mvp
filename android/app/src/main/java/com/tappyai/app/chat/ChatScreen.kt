@@ -505,6 +505,8 @@ fun ChatScreen(
                                 AskCard(
                                     questions = message.ask,
                                     onSend = viewModel::onFollowupSelected,
+                                    // The area is the conversation's, not the question id's (01/10: phở → «Chuyến đi…»).
+                                    context = askContextFor(messages, message),
                                 )
                             } else if (message.followups.isNotEmpty() && isLast && !isResponding) {
                                 FollowupChips(
@@ -1141,6 +1143,13 @@ private fun TtsPlayerBar(
             Icon(Icons.Filled.Close, contentDescription = stringResource(R.string.chat_action_stop_read_aloud), modifier = Modifier.size(14.dp), tint = onSurfaceVariant)
         }
     }
+}
+
+/** What the ask turn is about: the person's message that opened it + the reply's own lead line (before the questions). */
+private fun askContextFor(messages: List<ChatMessage>, message: ChatMessage): String {
+    val idx = messages.indexOfFirst { it.id == message.id }
+    val asked = if (idx > 0) messages.subList(0, idx).filter { it.role == TappyChatRole.User }.takeLast(2).joinToString(" ") { it.text } else ""
+    return "$asked ${message.text}".trim()
 }
 
 /**

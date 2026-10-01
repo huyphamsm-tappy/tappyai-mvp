@@ -148,6 +148,11 @@ export async function android({ a, shot, check, seeded }) {
           for (let k = 0; k < 4 && !n; k++) { a.sh('input', 'swipe', '540', '1500', '540', '1000', '400'); await a.sleep(700); n = a.find(q.options[0]) }
           if (n) { await a.tap(n, { after: 500 }); picked.push(q.options[0]) }
         }
+        // The card's TOP (mascot + the per-area title) for the area evidence — then back down to the send button.
+        const HEADER = /^(Hôm nay ăn gì nhỉ\?|Bạn đang tìm món gì\?|Chuyến đi thế nào đây\?|Thư giãn kiểu nào hôm nay\?|Tìm gì cho bạn hôm nay\?)$/
+        for (let k = 0; k < 6 && !a.find(HEADER); k++) { a.swipe('down'); await a.sleep(600) }
+        shot(`${c.id}-ask-header`)
+        check(`${c.id}: tiêu đề thẻ hỏi theo mảng`, !!a.find(HEADER), a.texts().find((t) => HEADER.test(t)) || '(không thấy tiêu đề)')
         shot(`${c.id}-ask-picked`)
         for (let k = 0; k < 6 && !a.find('Tìm cho tôi'); k++) { a.sh('input', 'swipe', '540', '1500', '540', '900', '400'); await a.sleep(700) }
         const send = a.find('Tìm cho tôi')

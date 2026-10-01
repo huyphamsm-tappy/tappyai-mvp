@@ -39,6 +39,37 @@ class AskCardV2Test {
         )
     }
 
+    // 🚨 Huy 01/10: the REAL server ask for «quán phở ngon quận 1» (ids style / party / budget — measured on UAT) drew the
+    // TRAVEL header. The area is the conversation's, and a card with no signal is neutral, never a trip.
+    private val PHO = listOf(
+        q("style", "Phở Bắc hay Phở Nam?", "Phở Bắc", "Phở Nam", "Không quan trọng"),
+        q("party", "Đi mấy người?", "1 người", "2 người", "3-5 người", "Nhóm đông"),
+        q("budget", "Tầm bao nhiêu mỗi người?", "Dưới 100k", "100-300k", "300-500k", "Trên 500k"),
+    )
+
+    @Test fun `a food ask with the generic style id is FOOD - from the words, with or without the conversation`() {
+        assertEquals(AskArea.FOOD, AskCardModel.areaOf(PHO))
+        assertEquals(AskArea.FOOD, AskCardModel.areaOf(PHO, "quán phở ngon quận 1 Để chọn đúng quán phở ở quận 1 cho bạn:"))
+        // the same ask under the router's own ids still wins by id (server fixed or not)
+        assertEquals(AskArea.FOOD, AskCardModel.areaOf(FOOD))
+    }
+
+    @Test fun `the conversation decides when the ask itself is generic - and no signal is MAIN, never TRAVEL`() {
+        val generic = listOf(q("style", "Bạn thích kiểu nào?", "Yên tĩnh", "Sôi động", "Không quan trọng"), q("party", "Đi mấy người?", "1 người", "2 người"))
+        assertEquals(AskArea.MAIN, AskCardModel.areaOf(generic))
+        assertEquals(AskArea.SHOPPING, AskCardModel.areaOf(generic, "tôi muốn mua tai nghe bluetooth dưới 1 triệu"))
+        assertEquals(AskArea.ENTERTAINMENT, AskCardModel.areaOf(generic, "tối nay đi karaoke ở sài gòn"))
+        assertEquals(AskArea.SPA, AskCardModel.areaOf(generic, "tìm chỗ massage thư giãn quận 1"))
+        assertEquals(AskArea.TRAVEL, AskCardModel.areaOf(generic, "đi du lịch Đà Nẵng 3 ngày 2 đêm"))
+        // «mùa» / «mưa» are not «mua» (to buy)
+        assertEquals(AskArea.MAIN, AskCardModel.areaOf(generic, "mùa này mưa nhiều"))
+    }
+
+    @Test fun `a trip whose style options are places still reads as TRAVEL`() {
+        val trip = listOf(q("style", "Thích kiểu gì?", "Biển", "Núi", "Ăn uống", "Nghỉ dưỡng"), q("party", "Mấy người?", "1 người", "2 người"))
+        assertEquals(AskArea.TRAVEL, AskCardModel.areaOf(trip))
+    }
+
     @Test fun `LOAI - AI DI - KHI NAO - NGAN SACH - KHAC`() {
         assertEquals(listOf(AskKind.TYPE, AskKind.PARTY, AskKind.TIME), kinds(ENT))
         assertEquals(listOf(AskKind.TYPE, AskKind.OTHER, AskKind.OTHER), kinds(FOOD))

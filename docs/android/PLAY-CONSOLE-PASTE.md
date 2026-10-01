@@ -14,10 +14,16 @@ Nguyên tắc: mỗi dòng có căn cứ file:dòng. Chỗ chưa chắc ghi **[C
    - quyết định của Huy 29/09 ("bên xử lý, không tính chia sẻ") nêu đích danh Anthropic, chưa nêu OpenAI.
    → **[CẦN HUY XÁC NHẬN]** coi OpenAI cũng là bên xử lý thay mặt TappyAI; **và phiên web phải sửa `/privacy` (thêm OpenAI) TRƯỚC khi gửi
    Data safety** — Play đối chiếu Data safety với chính sách. Đây là lệch mới, chưa ai xử lý.
-2. **Firebase Analytics CÓ trong bản release** (`android/core/analytics/build.gradle.kts:35`, `FirebaseAnalyticsProvider.kt:27`), dù comment
-   `android/app/build.gradle.kts:447` còn viết "no Analytics" (comment cũ, sai). Manifest release có `AppMeasurementService/Receiver`.
-   Advertising ID **không** thu: `AndroidManifest.xml:26-27` gỡ `AD_ID`, `:74` `google_analytics_adid_collection_enabled=false`
-   (xác nhận trên manifest release đã gộp: không có `AD_ID` / `ACCESS_ADSERVICES_AD_ID`).
+2. **Firebase Analytics CÓ trong bản release** (`android/core/analytics/build.gradle.kts:35`, `FirebaseAnalyticsProvider.kt:27`); comment sai ở
+   `android/app/build.gradle.kts:446-449` ("no Analytics") **đã sửa 01/10** cho khớp. Manifest release có `AppMeasurementService/Receiver`.
+   **Đo thực tế (emulator, bản UAT, 01/10, `adb shell setprop log.tag.FA VERBOSE`):** logcat in `App measurement collection enabled` rồi
+   `App measurement initialized` ⇒ **thu thập BẬT mặc định, không có công tắc trong app** (không có `setAnalyticsCollectionEnabled`, không có meta-data
+   `firebase_analytics_collection_*` trong manifest). Dòng từng sự kiện ở logcat tôi **chưa bắt được** (cả chế độ debug) — danh sách sự kiện dưới đây dựa trên code + tài liệu Google, không phải bắt gói tin.
+   - **Sự kiện của app (đóng, `Ga4Taxonomy.kt:24-44`):** `sign_up`, `login` (+method, is_first_login), `login_failed`, `logout`, `chat_response`, `save_place`, `search` (chỉ `search_type`), `review_like`, `share`, `recommendation_click`, `report_submitted`, `scam_check`, `chat_opened`, `affiliate_click`, `shopping_search_click`… Tham số chỉ enum/boolean; **không** user id, tên địa điểm, truy vấn, nội dung tin nhắn, URL, token (`FirebaseAnalyticsProvider.kt:11-14`, sự kiện lạ bị bỏ). `screen_view` kèm tên màn hình đã che id (`:33-38`).
+   - **Sự kiện TỰ ĐỘNG của Firebase** (tài liệu Google, support.google.com/analytics/answer/9234069, đọc 01/10): `first_open`, `session_start`, `user_engagement`, `screen_view`, `app_update`, `os_update`, `app_remove`, `notification_receive/open/…`, `app_exception`… cùng ID phiên và ID thể hiện ứng dụng (app-instance id). Tài liệu không liệt kê rõ model máy / hệ điều hành / quốc gia trong mục đó — **chưa kiểm** phần này.
+   - Advertising ID **không** thu: `AndroidManifest.xml:26-27` gỡ `AD_ID`, `:74` `google_analytics_adid_collection_enabled=false` (manifest release đã gộp: không có `AD_ID` / `ACCESS_ADSERVICES_AD_ID`). Cờ đồng ý quảng cáo của GA (`ad_storage`, `ad_personalization`…) **không đặt** nên theo mặc định của Firebase (tôi chưa kiểm mặc định này trên tài liệu Android — chưa kiểm).
+   - **TẮT được không:** theo tài liệu Firebase có thể (runtime `setAnalyticsCollectionEnabled(false)` — đã thấy trong tài liệu; công tắc trong manifest tôi chỉ nhớ tên `firebase_analytics_collection_enabled` / `firebase_analytics_collection_deactivated`, **chưa kiểm** được tên chính xác từ nguồn). Tắt đòi hỏi bản build mới.
+   - **[CẦN HUY QUYẾT — tôi KHÔNG tự tắt]:** (A) giữ như hiện tại, khai "Có thu thập — Tương tác trong app, Mã thiết bị; mục đích Phân tích; không chia sẻ; bắt buộc"; (B) thêm công tắc đồng ý trong Cài đặt (mặc định tắt) — thay đổi sản phẩm, cần bản mới; (C) tắt hẳn Analytics bản này — GA4 mất số liệu Android, bỏ được dòng Analytics khỏi Data safety nhưng FCM token vẫn là "Mã thiết bị". Khuyến nghị của tôi: (A) cho lần phát hành đầu vì đã có trong `/privacy`, nhưng đó là quyết định của anh.
 3. **Cờ xoá tài khoản**: xem mục B (kết quả khác với mô tả "thông báo xử lý trong 24 giờ").
 
 ---

@@ -61,10 +61,14 @@ class SettingsV3Test {
     }
 
     @Test
-    fun `the dress is V3 - palette, grouped cards, accent tiles, the red destructive tile, the green On`() {
+    fun `the dress is V3 - palette, grouped cards, accent tiles, the discreet delete row, the green On`() {
         assertTrue(screen.contains("V3HomeTheme {") && screen.contains(".background(HomeV3.Background)"))
         assertEquals("two groups + the sign-out group", 3, Regex("""ProfileGroupCard \{""").findAll(screen).count())
-        assertTrue(screen.contains("accent = AccentRed,") && screen.contains("private val AccentRed = Color(0xFFEF4444)"))
+        // Huy 01/10: the delete row is DISCREET — plain neutral tile, regular weight, no red — but still the last row of «Khác».
+        val delBlock = screen.substringAfter("icon = Icons.Filled.DeleteOutline,").substringBefore("onClick = { confirmDeleteAccount = true },")
+        assertFalse("no red tile on the delete row", delBlock.contains("AccentRed") || delBlock.contains("accent =") || delBlock.contains("danger = true"))
+        assertFalse("no bold title on the delete row", delBlock.contains("titleFontWeight"))
+        assertFalse(screen.contains("AccentRed"))
         assertTrue(screen.contains("valueColor = if (viewModel.tappyNotificationSoundEnabled) AccentGreen else null,"))
         assertTrue(screen.contains("HorizontalDivider(color = HomeV3.Outline, modifier = Modifier.padding(start = 72.dp))"))
         val en = src("app/src/main/res/values/strings_settings.xml"); val vi = src("app/src/main/res/values-vi/strings_settings.xml")

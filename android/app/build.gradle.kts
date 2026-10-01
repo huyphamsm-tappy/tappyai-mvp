@@ -443,8 +443,10 @@ dependencies {
     // App Links (prepared): the session-bound Custom Tab that shows a public result page in-app.
     // Same library/version features/auth already uses for the Zalo sign-in tab — no new dependency.
     implementation(libs.androidx.browser)
-    // Firebase Cloud Messaging — transport only. The BOM decides the messaging version; nothing
-    // else from Firebase is pulled in (no Analytics, no Crashlytics).
+    // Firebase Cloud Messaging (push token + delivery). The BOM decides the version. Firebase ANALYTICS IS in the
+    // release too: it comes from :core:analytics (firebase-analytics-ktx, below) — closed GA4 event taxonomy, no
+    // user id, Advertising ID off (AndroidManifest.xml). Collection is ON by default and there is no in-app switch
+    // (measured 01/10: "App measurement collection enabled"). There is no Crashlytics. Declared in PLAY-CONSOLE-PASTE.md.
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.messaging.ktx)
     // OkHttp is implementation (non-transitive) in core:network, so RealChatRepository needs
