@@ -510,3 +510,11 @@ Hạn chế guard vá: mỗi bản vá sau model giờ được ĐẾM (`tappyai
 - Sửa (không nới luật nào): bảng trang phim đang chiếu chuyển vào `src/lib/ccp/adapters/nowShowing.ts`; `ccpBoundary.test` lại bắt tiếp: **mọi host trong CCP phải thuộc allow-list của registry, danh sách nhà cung cấp ĐÓNG BĂNG (D10)** ⇒ chỉ **CGV** (đã là provider) được link; Galaxy/Lotte/BHD/Beta chỉ nhắc tên. Thêm 4 rạp = quyết định của Huy (PL-MOVIES).
 - Cùng đợt phát hiện thêm một vi phạm quyết định cũ: tôi đã cho link khách sạn điền ngày từ «cuối tuần»; test `flightPickLink` (ghim quyết định 30/09 «không đoán ngày cho khách sạn») đỏ → **đã hoàn lại**.
 - **Quy tắc cho thay đổi sau:** trước KHI PUSH chạy `npm test` đầy đủ (gồm `scripts/architecture`, `src/lib/ccp`, `src/lib/ai/security`), không chỉ thư mục mình sửa; không dời tệp để né một luật; không thêm host thương mại ngoài `src/lib/ccp`; không thêm nhà cung cấp mới.
+
+## 2026-10-01 chiều — ĐÓNG BĂNG LẦN 2 (khối hoàn chỉnh A–E)
+- Mã web cuối = `c865408` (+ các commit tài liệu/dọn dẹp sau đó chỉ đổi tài liệu và gỡ tệp tạm; SHA phục vụ trên UAT = commit cuối, đo bằng `/api/version`). Điểm quay lại: tag `release-freeze-3fce8b7`.
+- Regression Gate xanh ở `27f333f` (run push 36827156658, PR 36827163991); Architecture Guard xanh (36827156630 / 36827164024). Merge Guard đỏ TỪ TRƯỚC (cả ở 3fce8b7): job «protected work stranded on side branches» — không do thay đổi này.
+- Cờ trên UAT: `STYLE_LUNA6` TẮT (không đặt), `ACCOUNT_SELF_DELETE_ENABLED` TẮT (đã gỡ).
+- Bằng chứng (riêng tư): `gs://tappyai-uat-evidence/evidence/c865408/`.
+- Danh sách Huy test: `docs/uat/HUY-TEST-ROUND-FINAL.md`.
+- Sai sót của tôi trong đợt này (đã sửa): commit nhầm tệp tạm (`.uatlogs.jsonl` = bản log UAT 33 KB, `.d7*`, 283 bản ghi Serper mới) bằng `git add -A` — đã gỡ khỏi cây, **nhưng vẫn nằm trong lịch sử commit 26832ad…c865408 đã push** (không force-push); log chỉ gồm sự kiện `tappyai_*` của lượt thử, không có nội dung cá nhân nào tôi thấy.
