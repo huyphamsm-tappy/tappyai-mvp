@@ -16,6 +16,11 @@ Không có bước nào dưới đây được làm trước khi Huy báo "OK re
 | Bấm vào | hộp xác nhận → mở email tới hỗ trợ; KHÔNG xoá, KHÔNG đăng xuất | trang liệt kê dữ liệu bị xoá → gõ **XÓA** → xoá NGAY → đăng xuất |
 | Tệp ảnh/video/âm thanh | người vận hành xoá theo runbook `docs/ops/ACCOUNT-DELETION.md` | cron 01:45 VN, trong 48 giờ |
 
+- 🛑 **Kiểm D1/D2/D4 đã áp trên production TRƯỚC khi quyết bật cờ** (đo bằng SQL, chỉ đọc):
+  - **D1** `20260911b_user_memory_auth_fk`: `user_memory.user_id` đổi `text → uuid` + khoá ngoại CASCADE tới `auth.users` (xoá cả hàng mồ côi). Kiểm: `select data_type from information_schema.columns where table_name='user_memory' and column_name='user_id'` phải là `uuid`.
+  - **D2** `20260925_account_deletion_cascade_gaps`: hai khoá ngoại còn thiếu `decision_evidence_owner_id_fkey`, `anon_chat_usage_user_id_fkey` → CASCADE. Kiểm: `select conname from pg_constraint where conname in ('decision_evidence_owner_id_fkey','anon_chat_usage_user_id_fkey')` phải trả 2 hàng.
+  - **D4** `20260925c_account_deletion_f096`: đổi hành động của các khoá ngoại còn lại (F-096: `confdeltype` từ `n` sang cascade) **và** tạo trigger `trg_enqueue_account_deletion` (xếp việc dọn tệp ảnh/video/âm thanh + thu hồi Google Lịch vào `account_deletion_jobs`). Kiểm: `select tgname from pg_trigger where tgname='trg_enqueue_account_deletion'` phải có 1 hàng.
+  - Tất cả đều ĐÃ HOÃN ở bản release 29/09 (RELEASE-PLAN §1; cờ để TẮT) và có file rollback ở `supabase/migrations/rollback/`. Hệ quả nếu BẬT cờ khi chưa áp: (i) `auth.admin.deleteUser` có thể **thất bại** vì khoá ngoại không cascade → người dùng bấm xoá thấy lỗi «Chưa xóa được tài khoản» (tài khoản còn nguyên); (ii) bảng không cascade để lại **dữ liệu mồ côi**; (iii) không có trigger ⇒ **ảnh/video/âm thanh đã tải lên KHÔNG bị dọn** và cron `/api/cron/account-deletion-jobs` báo 500. Tức là không an toàn để bật cờ khi chưa áp cả ba — và cần backup trước khi áp (DEPLOY-CHECKLIST §0: production Free, không có backup tự động; D1 xoá hàng mồ côi).
 - Google Play (https://support.google.com/googleplay/android-developer/answer/13327111): app cho tạo tài khoản trong app phải có
   đường xoá TRONG app **và** link web để yêu cầu xoá; email/biểu mẫu được chấp nhận cho phần web; vô hiệu hoá/đóng băng không tính.
   Một app chỉ mở email có nguy cơ bị từ chối ở khai báo Data deletion. **Đề xuất của Claude: BẬT.** (Đây là đề xuất, quyết định là của Huy.)
@@ -47,3 +52,12 @@ B3 trong OWNER-TOMORROW còn nói đặt trần chi tiêu ở console.anthropic.
 ## 5. Trang /privacy
 
 Đã sửa trong code (vi + en) để khớp OpenAI; Huy duyệt chữ **trước** khi lên production. Sau khi duyệt, Data safety trên Play (PLAY-CONSOLE-PASTE mục A) phải khai OpenAI là bên nhận dữ liệu chat.
+
+## 6. Chuỗi giữ chỗ «[XÁC NHẬN: …]» (E1, 01/10)
+
+- **Trang người dùng web / email / /privacy / /delete-account / trang xoá trong app: KHÔNG còn chuỗi «[XÁC NHẬN» nào** (tìm toàn bộ `src/`, `public/`, `supabase/`: 0 kết quả). Chuỗi chỉ còn trong tài liệu: `docs/uat/DELETE-ACCOUNT-COPY-DRAFT.md` (dòng 10, 17, 22, 73, 84, 107, 114) và «CẦN HUY XÁC NHẬN» trong `docs/release/PLAY-LISTING.md`.
+- Bản iOS thấy «[XÁC NHẬN: 30 ngày]» là **bản chép tay từ DRAFT trong app iOS** (không phải từ web) — phiên iOS phải thay trước khi build (IOS-REQUESTS I-4).
+- Hai con số web đang hiển thị mà Huy **chưa duyệt / chưa đo** — cần Huy chốt chữ:
+  1. `legal.delete.s1.p2` (đường email, cờ TẮT): hiện «…xóa tài khoản **trong vòng 30 ngày**.» Đề xuất: «…xóa tài khoản trong vòng 30 ngày kể từ khi xác minh xong.» (EN: «…within 30 days of verifying it.»)
+  2. `legal.delete.s4.b3`: hiện «Nhật ký máy chủ … lưu **tối đa 30 ngày** rồi xóa.» — thời hạn **chưa đo** (Vercel/GCP). Đề xuất: bỏ con số, ghi «Nhật ký máy chủ dùng để vận hành dịch vụ được giữ trong thời gian ngắn rồi xóa tự động.» cho tới khi đo xong.
+- Không sửa chữ ở đợt đóng băng này (cần Huy duyệt); chỉ liệt kê.

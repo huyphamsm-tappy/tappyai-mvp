@@ -313,6 +313,18 @@ Giá phòng: chưa xác nhận…","price":…`). Phần đầu kế hoạch (ti
 - **Cửa sổ «Tappy muốn hiểu bạn hơn!» (chỉ web, 16e5256):** không còn chồng lên thẻ hỏi/ô chọn ngôn ngữ — chờ chọn ngôn ngữ, không hiện khi có thẻ hỏi hoặc câu trả lời đang chạy. Không đụng API hay app.
 - **Trang /privacy (web, chờ Huy duyệt chữ):** nay ghi OpenAI (không còn Anthropic) + wttr.in, Upstash, Brevo, Overpass, Google Maps Platform. Data safety trên Play cần khai OpenAI nhận nội dung chat (phiên Android đã hỏi ở mục 5 báo cáo 01/10 — câu trả lời: CÓ).
 
+### R28 (2026-10-01 chiều) — thay đổi SERVER mà app native cần biết (không đổi hợp đồng; KHÔNG cần build lại để chạy đúng)
+
+- **Thẻ hỏi `[TAPPY_ASK]`:** id mới `dest` («Bay đến đâu?», nút «Đến Đà Nẵng / Đến Hà Nội / Đến Phú Quốc / Đến nơi khác»), `style` hỏi KIỂU điểm đến khi chưa có nơi nào («Biển / Núi / Thành phố / Nước ngoài»), `device` («Dùng cho iPhone nào?» khi mua phụ kiện), `service`/`dish` (R27). Câu trả lời của thẻ vẫn là văn bản nối bằng « · ». Chuỗi một thành phố đứng một mình trong câu trả lời (vd. «3N2Đ · TP.HCM · 2 người») nay được hiểu là **điểm xuất phát**.
+- **Mua phụ kiện:** «kính cường lực / ốp / sạc cho iPhone …» được hiểu là phụ kiện (không còn hỏi «iPhone nào để mua»); thẻ sản phẩm chỉ gồm đúng loại phụ kiện.
+- **«Có phim gì hay»:** server trả lời trực tiếp (không thẻ, không tìm kiếm) kèm 5 link trang phim đang chiếu của CGV/Galaxy/Lotte/BHD/Beta dưới dạng markdown + `[FOLLOWUPS]Tìm rạp gần mình[/FOLLOWUPS]`. Android chỉ cần render markdown như thường.
+- **Thẻ địa điểm:** loại địa điểm phải đúng loại hoạt động (karaoke chỉ ra karaoke); công ty tour/du lịch không bao giờ thành thẻ trừ khi người dùng hỏi tour; tin KẾ HOẠCH chuyến đi luôn mang khối thẻ KHÁCH SẠN.
+- **Link vé máy bay / khách sạn:** số người (vé máy bay) và ngày nhận–trả phòng (khách sạn, khi người dùng nói «cuối tuần …») đã điền sẵn; câu trả lời nói rõ ngày là giả định.
+- **Cờ giọng `STYLE_LUNA6` (mặc định TẮT):** BẬT trên UAT cho vòng test cuối nếu đạt D7; đổi chữ cố định phía server (đuôi thẻ hỏi, dòng «Còn N lựa chọn nữa», câu thiếu dữ liệu). Phát hiện «đây là tin hỏi» của app phải nhận cả hai đuôi: `Bạn chọn nhanh bên dưới hoặc gõ tự do nhé — trả lời một phần cũng được.` và `Chọn nhanh bên dưới, hoặc gõ thẳng ý bạn — trả lời một phần cũng được.` (nếu app có kiểm đuôi này; cách tin cậy là `[TAPPY_ASK]`).
+- **Màn Mic mới:** chỉ web (PL-VOICE-NATIVE cho Android/iOS).
+- **Trang /privacy** nay ghi OpenAI + wttr.in/Upstash/Brevo/Overpass/Google Maps Platform (R27) — Data safety phải khớp.
+- **Android phải chạy lại e2e trên ĐÚNG SHA cuối** (xem RELEASE-PROGRESS) rồi build APK/AAB cuối.
+
 ## 3. Quy tắc bằng chứng mới (chủ dự án, 2026-09-28) — áp dụng cho CẢ phiên Android
 
 - KHÔNG commit ảnh/video vào git nữa (không sửa lịch sử commit cũ).
