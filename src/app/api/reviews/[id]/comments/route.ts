@@ -143,6 +143,8 @@ export async function POST(
     .select('id, body, created_at, user_id, parent_comment_id')
     .single()
 
+  // 42501 = refused by row-level security (a block between the commenter and the post's author): 403, not a server error.
+  if (error?.code === '42501') return NextResponse.json({ error: 'comment_forbidden', message: serverMessage('comment.postFailed', requestLocale(req)) }, { status: 403 })
   if (error) return NextResponse.json({ error: 'comment_failed', message: serverMessage('comment.postFailed', requestLocale(req)) }, { status: 500 })
 
   const [withProfile] = await attachProfiles(supabase, [insertedComment])
