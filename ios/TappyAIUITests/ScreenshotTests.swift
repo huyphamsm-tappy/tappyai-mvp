@@ -13,7 +13,7 @@ final class ScreenshotTests: XCTestCase {
         continueAfterFailure = false
         // Every test starts from production's shape: no safety block, no in-app deletion, no Apple button.
         setStub(["saved": "full", "config": "ok", "zalo": "nostate", "selfdelete": "off", "apple": "off",
-                 "p8": "off", "blocked": [String]()])
+                 "p8": "off", "history": "off", "blocked": [String]()])
     }
 
     // MARK: - Config failures (TestFlight build 50, 30/09)
@@ -224,6 +224,7 @@ final class ScreenshotTests: XCTestCase {
     func testAskCardShopping() { askShot("shopping", "30-ask-shopping", picks: ["Nhét tai", "1-3tr"]) }
     func testAskCardTravel() { askShot("travel", "31-ask-travel", picks: ["3N2Đ", "Biển", "Núi"]) }
     func testAskCardSpa() { askShot("spa", "32-ask-spa", picks: ["Massage", "Tối nay"]) }
+    func testAskCardFlightOrigin() { askShot("flight", "61-ask-flight", picks: ["Từ Hà Nội"]) }
 
     // MARK: - B1 Plan card v2 (docs/design/share-layouts/plan-share.png), all 5 areas
 
@@ -274,6 +275,22 @@ final class ScreenshotTests: XCTestCase {
         XCTAssertTrue(any(app, "review-comments").waitForExistence(timeout: 60), "detail loaded")
         XCTAssertFalse(any(app, "review-safety").exists, "no report button while the server flags are off")
         shot("60-review-detail")
+    }
+
+    // MARK: - 1b a saved chat reopened from history
+
+    /// The server returns only {role, content}; every card is a marker block inside `content`. Reopening must draw the
+    /// text, the markdown image, and the durable place cards (name, rating, photo, the buttons the block carries).
+    func testReopenedChatKeepsCardsAndImage() {
+        setStub(["history": "on"])
+        let app = launch(route: "chat-old", signedIn: true, extra: ["-uitest-theme", "dark"])
+        let place = app.staticTexts["Bún Bò Huế Đông Ba"]
+        XCTAssertTrue(place.waitForExistence(timeout: 60), "the durable place card")
+        XCTAssertTrue(app.staticTexts["Quán Vỉa Hè"].exists, "the sparse place: a name and nothing invented")
+        XCTAssertTrue(app.buttons["Xem bản đồ"].exists, "the map button the block carries")
+        XCTAssertFalse(app.staticTexts.matching(NSPredicate(format: "label CONTAINS 'TAPPY_PLACES'")).firstMatch.exists, "no raw marker text")
+        XCTAssertFalse(app.staticTexts.matching(NSPredicate(format: "label CONTAINS '![' ")).firstMatch.exists, "the markdown image is drawn, not printed")
+        shot("62-chat-history-reopened")
     }
 
     // MARK: - B2 place decision (chips, paged cards, fold, Maps footer, the four actions)

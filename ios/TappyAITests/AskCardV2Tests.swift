@@ -25,6 +25,31 @@ final class AskCardV2Tests: XCTestCase {
                              Q("budget", "Tầm giá bao nhiêu?", ["Dưới 1tr", "1-3tr", "3-5tr", "Trên 5tr"]),
                              Q("must", "Cần chống ồn không?", ["Có chống ồn", "Không cần"])]
 
+    // MARK: I-3 (server 01/10) — the area comes from the question ids, never defaults to travel
+
+    private lazy var FLIGHT = [Q("origin", "Bay từ đâu?", ["Từ TP.HCM", "Từ Hà Nội", "Từ nơi khác"])]
+
+    func testFlightOriginIsATravelAskWithPlacePins() {
+        XCTAssertEqual(AskCardModel.areaOf(FLIGHT), .travel)
+        XCTAssertEqual(AskCardModel.kindOf(FLIGHT[0]), .other, "a one-pick icon step, not the type tiles")
+        let view = AskCardModel.viewOf(FLIGHT)[0]
+        XCTAssertEqual(view.options.map(\.icon), [.mapPin, .mapPin, .mapPin])
+        XCTAssertTrue(view.options.allSatisfy { $0.imageKey == nil })
+        XCTAssertEqual(AskCardModel.sendText(AskCardModel.viewOf(FLIGHT), chosen: ["origin": ["Từ Hà Nội"]]), "Từ Hà Nội")
+    }
+
+    func testTheNewRouterIdsKeepFoodAndSpaOutOfTravel() {
+        // «dish» / «service» used to be «style», which falls back to travel unless the options are spa words.
+        XCTAssertEqual(AskCardModel.areaOf([Q("dish", "Món gì?", ["Phở", "Bún"]), Q("date", "Khi nào?", ["Tối nay"])]), .food)
+        XCTAssertEqual(AskCardModel.areaOf([Q("service", "Dịch vụ gì?", ["Cắt tỉa", "Xông hơi"]), Q("date", "Khi nào?", ["Tối nay"])]), .spa)
+        XCTAssertEqual(AskCardModel.kindOf(Q("dish", "x", ["a"])), .type)
+        XCTAssertEqual(AskCardModel.kindOf(Q("service", "x", ["a"])), .type)
+    }
+
+    func testAnUnknownAskIsMainNotTravel() {
+        XCTAssertEqual(AskCardModel.areaOf([Q("zzz", "Gì đó?", ["a", "b"])]), .main)
+    }
+
     // MARK: README §2 — kinds from `id` first, then the words of `q`
 
     func testAreaOfEachOfTheFiveAreas() {

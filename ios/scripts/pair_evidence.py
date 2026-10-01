@@ -60,6 +60,7 @@ DESIGN = {
     "30-ask-shopping": "docs/design/ask-card/ask-card-mockup.png",
     "31-ask-travel": "docs/design/ask-card/ask-card-mockup.png",
     "32-ask-spa": "docs/design/ask-card/ask-card-mockup.png",
+    "61-ask-flight": "docs/design/ask-card/ask-card-mockup.png",
 }
 HEIGHT = 1400
 

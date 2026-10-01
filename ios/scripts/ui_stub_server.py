@@ -92,6 +92,29 @@ def _review(i, name, img, likes, **extra):
     return row
 
 
+# A saved chat as the server stores it: only {role, content}, the cards live INSIDE `content` as marker blocks
+# (what web and iOS both PUT back). One durable place card carries its photo; one markdown image rides in the prose.
+_OLD_PLACES = json.dumps({"v": 1, "items": [
+    {"id": "place:osm:10.77,106.70", "domain": "food", "kind": "place", "rank": 0, "name": "Bún Bò Huế Đông Ba",
+     "address": "110 Nguyễn Du, Quận 1", "rating": 4.6, "ratingCount": 1284, "image": "http://127.0.0.1:3000/img/a.png",
+     "actions": [{"kind": "maps", "urlKind": "direct", "url": "https://maps.example/a", "labelKey": "v3.action.maps"},
+                 {"kind": "review", "urlKind": "search", "url": "https://www.google.com/search?q=dong+ba+review", "labelKey": "v3.action.reviewSearch"}]},
+    {"id": "place:osm:10.78,106.69", "domain": "food", "kind": "place", "rank": 1, "name": "Quán Vỉa Hè", "actions": []},
+], "mapsSearchUrl": "https://maps.example/q"}, ensure_ascii=False)
+OLD_CONVERSATIONS = [{
+    "id": "c-old", "title": "Tối nay ăn gì ở Quận 1", "category": "food", "updated_at": "2026-09-29T10:00:00.000Z",
+    "messages": [
+        {"role": "user", "content": "Tối nay ăn gì ở Quận 1?"},
+        {"role": "assistant", "content": "Mình gợi ý bún bò nhé.
+
+![Bún bò](http://127.0.0.1:3000/img/c.png)
+
+Nguồn: https://example.vn/bun-bo
+
+[TAPPY_PLACES]" + _OLD_PLACES + "[/TAPPY_PLACES]"},
+    ],
+}]
+
 MINE = [
     _review(1, "Phở Thìn Bờ Hồ", "a", 12),
     _review(2, "The Note Coffee", "c", 7),
@@ -232,7 +255,7 @@ class Handler(BaseHTTPRequestHandler):
         if path == "/api/social/connections":
             return self._send(200, {"users": [{"id": "u2", "full_name": "Lan Phương"}, {"id": "u3", "full_name": "Quốc Bảo"}]})
         if path == "/api/conversations":
-            return self._send(200, [])
+            return self._send(200, OLD_CONVERSATIONS if MODE.get("history") == "on" else [])
         if path == "/api/deals":
             # The audit DB has no deals either: the page must still show the ask-Tappy card.
             return self._send(200, {"deals": []})

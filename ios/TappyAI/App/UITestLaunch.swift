@@ -99,6 +99,9 @@ enum UITestLaunch {
         case "safety-review":
             router.switchTo(.profile)
             router.push(ReviewsDestination.reviewDetail(id: "r-safety"), on: .profile)
+        case "chat-old":
+            router.switchTo(.home)
+            router.push(HomeDestination.conversation(id: "c-old"), on: .home)
         case "saved":
             router.switchTo(.profile)
             router.push(ProfileDestination.favorites, on: .profile)
@@ -147,6 +150,9 @@ struct AskCardGalleryView: View {
             return [q("date", "Đi khi nào, mấy ngày?", ["Cuối tuần 2N1Đ", "3N2Đ", "4-5 ngày", "Chưa chốt"]),
                     q("origin", "Xuất phát từ đâu?", ["TP.HCM", "Hà Nội", "Đà Nẵng", "Nơi khác"]),
                     q("style", "Thích kiểu gì?", ["Biển", "Núi", "Ăn uống", "Nghỉ dưỡng"])]
+        case "flight":
+            // The flight ask the server adds (IOS-REQUESTS I-3): only «Bay từ đâu?» (id `origin`) is specified there.
+            return [q("origin", "Bay từ đâu?", ["Từ TP.HCM", "Từ Hà Nội", "Từ nơi khác"])]
         case "shopping":
             return [q("line", "Loại nào?", ["Nhét tai", "Chụp tai", "Chưa biết"]),
                     q("budget", "Tầm giá bao nhiêu?", ["Dưới 1tr", "1-3tr", "3-5tr", "Trên 5tr"]),

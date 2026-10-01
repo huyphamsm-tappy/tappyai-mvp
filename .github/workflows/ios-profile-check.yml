@@ -1,0 +1,114 @@
+name: ios-profile-check
+
+# Manual, read-only check of the App Store provisioning profile held in the GitHub secret APPSTORE_PROFILE_BASE64.
+#
+# It decodes the profile and prints ONLY: the profile name, the App ID, the expiry date, whether it is an App Store
+# profile, the certificate SHA-1 fingerprints, and the NAMES (never the values of secrets) of the entitlements it grants —
+# then compares them with what ios/TappyAI/TappyAI.entitlements asks for. It does not archive, does not upload, does not
+# call App Store Connect, and never prints the base64 text or any key material.
+#
+# Run: it starts by itself when this file changes on an ios/** branch; or Actions -> "ios-profile-check" -> Run workflow
+# (once the file is on the default branch). NOT the "iOS" workflow: its manual run archives and uploads to TestFlight.
+
+on:
+  workflow_dispatch:
+  # Also runs by itself when this file changes on an ios/** branch: a workflow that exists only on a feature branch
+  # is not listed under "Run workflow" in the GitHub UI until it reaches the default branch.
+  push:
+    branches: ["ios/**"]
+    paths:
+      - ".github/workflows/ios-profile-check.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: Profile vs entitlements
+    runs-on: macos-15
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Decode and compare (names only)
+        env:
+          APPSTORE_PROFILE_BASE64: ${{ secrets.APPSTORE_PROFILE_BASE64 }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+        run: |
+          set -euo pipefail
+          if [ -z "${APPSTORE_PROFILE_BASE64:-}" ]; then
+            echo "::error::secret APPSTORE_PROFILE_BASE64 is not set"
+            exit 1
+          fi
+          profile="$RUNNER_TEMP/p.mobileprovision"
+          printf '%s' "$APPSTORE_PROFILE_BASE64" | base64 --decode > "$profile" \
+            || { echo "::error::the secret is not valid base64"; exit 1; }
+          # A mobileprovision is a CMS-signed plist; anything else is not a profile.
+          security cms -D -i "$profile" > "$RUNNER_TEMP/p.plist" 2>/dev/null \
+            || { echo "::error::the secret decodes, but it is not a CMS-signed provisioning profile (.mobileprovision)"; exit 1; }
+          plutil -lint "$RUNNER_TEMP/p.plist" > /dev/null
+          python3 - "$RUNNER_TEMP/p.plist" ios/TappyAI/TappyAI.entitlements <<'PY'
+          import datetime, hashlib, os, plistlib, sys
+
+          with open(sys.argv[1], "rb") as f:
+              prof = plistlib.load(f)
+          with open(sys.argv[2], "rb") as f:
+              wanted = plistlib.load(f)
+
+          ents = prof.get("Entitlements", {})
+          app_id = ents.get("application-identifier", "")
+          team_secret = os.environ.get("APPLE_TEAM_ID", "")
+          expires = prof.get("ExpirationDate")
+          now = datetime.datetime.utcnow()
+          is_dev = bool(ents.get("get-task-allow")) or "ProvisionedDevices" in prof
+          kind = "App Store (no device list)" if not is_dev and not prof.get("ProvisionsAllDevices") else \
+                 "Enterprise (all devices)" if prof.get("ProvisionsAllDevices") else "Development/Ad Hoc (device list)"
+
+          print("profile name        :", prof.get("Name"))
+          print("app id              :", app_id)
+          print("team ids            :", ", ".join(prof.get("TeamIdentifier", [])))
+          print("team matches secret :", (team_secret in prof.get("TeamIdentifier", [])) if team_secret else "APPLE_TEAM_ID not set")
+          print("type                :", kind)
+          print("expires (UTC)       :", expires, "(EXPIRED)" if expires and expires < now else "(valid)")
+          for i, cert in enumerate(prof.get("DeveloperCertificates", [])):
+              print(f"certificate {i} sha1 :", hashlib.sha1(cert).hexdigest().upper())
+          print()
+          print("entitlements granted (names only):")
+          for k in sorted(ents):
+              print("  -", k)
+
+          # What the app asks for vs what the profile grants.
+          required = [k for k in wanted]
+          problems = []
+          for k in required:
+              if k not in ents:
+                  problems.append(f"MISSING in profile: {k}")
+          if ents.get("aps-environment") not in (None, "production"):
+              problems.append(f"aps-environment in profile is '{ents.get('aps-environment')}', an App Store build needs 'production'")
+          if not app_id.endswith(".com.tappyai.ios"):
+              problems.append(f"App ID '{app_id}' does not end with .com.tappyai.ios")
+          if is_dev:
+              problems.append("this is not an App Store distribution profile")
+          if expires and expires < now:
+              problems.append("the profile has expired")
+          # Sign in with Apple and associated domains: the profile must grant every value the app declares.
+          for k in ("com.apple.developer.applesignin",):
+              if k in ents and k in wanted:
+                  have, need = ents[k], wanted[k]
+                  have = have if isinstance(have, list) else [have]
+                  need = need if isinstance(need, list) else [need]
+                  for n in need:
+                      if n not in have:
+                          problems.append(f"{k}: the profile does not grant value '{n}'")
+
+          print()
+          print("app asks for (names):", ", ".join(sorted(required)))
+          if problems:
+              print("RESULT: NOT OK")
+              for p in problems:
+                  print("  ✗", p)
+              print("::error::the profile in APPSTORE_PROFILE_BASE64 does not cover this app - regenerate it (see docs/ios/IOS-PROGRESS.md)")
+              sys.exit(1)
+          print("RESULT: OK - the profile grants every entitlement the app declares")
+          PY
+          rm -f "$profile" "$RUNNER_TEMP/p.plist"
