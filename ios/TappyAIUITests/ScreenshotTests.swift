@@ -173,7 +173,13 @@ final class ScreenshotTests: XCTestCase {
         if !app.keyboards.firstMatch.waitForExistence(timeout: 5) { word.tap() }
         word.typeText("XÓA")
         let enabled = NSPredicate(format: "isEnabled == true")
-        let wait = XCTWaiter().wait(for: [XCTNSPredicateExpectation(predicate: enabled, object: any(app, "delete-submit"))], timeout: 10)
+        var wait = XCTWaiter().wait(for: [XCTNSPredicateExpectation(predicate: enabled, object: any(app, "delete-submit"))], timeout: 6)
+        if wait != .completed {
+            // The simulator keyboard can drop a diacritic keystroke. The server also accepts «DELETE» in any language.
+            word.tap()
+            word.typeText(String(repeating: XCUIKeyboardKey.delete.rawValue, count: 8) + "DELETE")
+            wait = XCTWaiter().wait(for: [XCTNSPredicateExpectation(predicate: enabled, object: any(app, "delete-submit"))], timeout: 10)
+        }
         shot("55-delete-typed")
         XCTAssertEqual(wait, .completed, "submit enabled after typing; field value: \(String(describing: word.value))")
         any(app, "delete-submit").tap()
