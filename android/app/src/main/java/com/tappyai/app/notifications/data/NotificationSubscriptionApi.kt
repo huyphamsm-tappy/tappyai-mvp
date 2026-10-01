@@ -4,6 +4,7 @@ import kotlinx.serialization.EncodeDefault
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import retrofit2.http.Body
+import retrofit2.http.HTTP
 import retrofit2.http.POST
 
 /**
@@ -22,7 +23,28 @@ import retrofit2.http.POST
 interface NotificationSubscriptionApi {
     @POST("api/notifications/subscribe")
     suspend fun subscribe(@Body body: FcmSubscriptionDto)
+
+    /**
+     * Switches THIS device's server-side subscription off (server `DELETE /api/notifications/subscribe`, body
+     * `{provider?: 'webpush'|'fcm', credential?: string}`): sets `enabled=false` for the session user's row of that
+     * provider, narrowed to this token when `credential` is sent. Retrofit needs [HTTP] for a DELETE with a body.
+     * A non-2xx answer throws (so the caller can tell "off" from "not off").
+     */
+    @HTTP(method = "DELETE", path = "api/notifications/subscribe", hasBody = true)
+    suspend fun unsubscribe(@Body body: FcmUnsubscribeDto)
 }
+
+/**
+ * `credential` is the FCM token (names the device); it is OMITTED when unknown — the app's Json does not encode
+ * defaults — because the server answers 400 to a present-but-null credential. Absent = provider-scoped (the one
+ * `fcm` row the account holds).
+ */
+@OptIn(ExperimentalSerializationApi::class)
+@Serializable
+data class FcmUnsubscribeDto(
+    @EncodeDefault val provider: String = FcmSubscriptionDto.PROVIDER_FCM,
+    val credential: String? = null,
+)
 
 /**
  * 🚨 UAT3 (2026-09-27, measured on a Galaxy A12): `provider` was a DEFAULT value and the app's Json

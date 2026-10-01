@@ -36,6 +36,8 @@ class TappyFirebaseMessagingService : FirebaseMessagingService() {
     override fun onNewToken(token: String) {
         // Fires on install, restore, app-data clear and rotation — the only reliable moment to
         // learn this device's address.
+        // 01/10: a device the person switched OFF must not re-subscribe itself on a rotated token.
+        if (!NotificationPreferenceStore(applicationContext).enabled) return
         scope.launch { subscriptions.register(token) }
     }
 

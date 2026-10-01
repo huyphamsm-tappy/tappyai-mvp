@@ -86,6 +86,7 @@
     <string name="notif_push_on_description">Đang bật — Tappy sẽ nhắc bạn đúng lúc</string>
     <string name="notif_push_off_description">Đang tắt — bật để nhận nhắc nhở từ Tappy</string>
     <string name="notif_toggle_content_description">Bật/tắt thông báo đẩy</string>
+    <string name="notif_off_failed">Chưa tắt được thông báo — kiểm tra mạng rồi thử lại. Thông báo vẫn đang BẬT.</string>
     <string name="notif_os_blocked">Thiết bị đang chặn thông báo của TappyAI. Hãy cho phép trong cài đặt hệ thống để nhận nhắc nhở.</string>
     <string name="notif_os_allow">Cho phép</string>
     <string name="notif_receive_header">BẠN SẼ NHẬN ĐƯỢC GÌ</string>

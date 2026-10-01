@@ -39,12 +39,47 @@ class NotificationsViewModel @Inject constructor(
     private val _pushEnabled = MutableStateFlow(preference.enabled)
     val pushEnabled: StateFlow<Boolean> = _pushEnabled.asStateFlow()
 
-    /** The person's explicit choice: written as-is, ON or OFF, and kept until they change it. */
+    /** True while the OFF call is in flight (the switch is locked). */
+    private val _busy = MutableStateFlow(false)
+    val busy: StateFlow<Boolean> = _busy.asStateFlow()
+
+    /** Set when turning OFF failed (network / server): the switch stays ON and the screen says so. Cleared on the next try. */
+    private val _offFailed = MutableStateFlow(false)
+    val offFailed: StateFlow<Boolean> = _offFailed.asStateFlow()
+
+    /**
+     * The person's explicit choice. ON: written at once and the device is (re)registered (POST). OFF: the server is asked
+     * first (DELETE, this device's token as the credential) and the preference/switch only turn OFF once it answered —
+     * a failure leaves the switch ON and sets [offFailed] (never "off" when it is not).
+     */
     fun setPushEnabled(enabled: Boolean) {
-        preference.write(enabled)
-        _pushEnabled.value = enabled
-        if (enabled) registerDevice()
+        _offFailed.value = false
+        if (enabled) {
+            preference.write(true)
+            _pushEnabled.value = true
+            registerDevice()
+            return
+        }
+        if (_busy.value) return
+        _busy.value = true
+        viewModelScope.launch {
+            val token = currentToken()
+            when (turnPushOff(token) { subscriptions.unregister(it) }) {
+                PushToggleResult.Off -> { preference.write(false); _pushEnabled.value = false }
+                PushToggleResult.NotOff -> _offFailed.value = true
+            }
+            _busy.value = false
+        }
     }
+
+    /** This device's FCM token, or null when FCM cannot answer (offline…): the server call then names no credential. */
+    private suspend fun currentToken(): String? = runCatching {
+        kotlinx.coroutines.suspendCancellableCoroutine<String?> { cont ->
+            FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+                cont.resume(if (task.isSuccessful) task.result?.takeIf { it.isNotBlank() } else null) {}
+            }
+        }
+    }.getOrNull()
 
     /**
      * Asks FCM for this device's token and hands it to the existing subscribe endpoint.

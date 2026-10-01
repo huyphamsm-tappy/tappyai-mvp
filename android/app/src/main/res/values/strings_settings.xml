@@ -91,6 +91,7 @@
     <string name="notif_push_on_description">On — Tappy will remind you at the right time</string>
     <string name="notif_push_off_description">Off — turn on to get reminders from Tappy</string>
     <string name="notif_toggle_content_description">Toggle push notifications</string>
+    <string name="notif_off_failed">Could not turn notifications off — check your connection and try again. They are still ON.</string>
     <string name="notif_os_blocked">Your device is blocking TappyAI notifications. Allow them in system settings to receive reminders.</string>
     <string name="notif_os_allow">Allow</string>
     <string name="notif_receive_header">WHAT YOU\'LL RECEIVE</string>
