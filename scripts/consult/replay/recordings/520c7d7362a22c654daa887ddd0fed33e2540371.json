@@ -1,0 +1,54 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"HAIAN Beach Hotel & Spa\" Đà Nẵng site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:25:35.760Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"HAIAN Beach Hotel & Spa\" Đà Nẵng site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "HAIAN Beach Hotel & Spa - Giá cả và Ưu đãi 2026, Đà Nẵng",
+    "link": "https://vn.trip.com/hotels/da-nang-hotel-detail-20027768/haian-beach-hotel-spa/",
+    "snippet": "HAIAN Beach Hotel & Spa · 45m² | Tầng: 10-20 · Có cửa sổ · Không hút thuốc · Wi-Fi miễn phí.",
+    "position": 1
+   },
+   {
+    "title": "HAIAN Beach Hotel & Spa Đánh giá của khách",
+    "link": "https://vn.trip.com/hotels/da-nang-hotel-detail-20027768/haian-beach-hotel-spa/review.html",
+    "snippet": "Các đánh giá HAIAN Beach Hotel & Spa · Tất cả đánh giá(675) · Đánh giá tích cực(667) · Bữa sáng ngon(214) · Bể bơi sạch sẽ(143) · Hồ bơi tuyệt vời(143) · Gần biển(91).",
+    "position": 2
+   },
+   {
+    "title": "Tìm Khách Sạn 4 Sao Tại Đà Nẵng",
+    "link": "https://vn.trip.com/hotels/star4/city/vn/da-nang.html",
+    "snippet": "HAIAN Beach Hotel & Spa. Khách Sạn Ở Bãi biển Mỹ Khê, Đà Nẵng. 9,5/10. Đáng Kinh Ngạc 666 đánh giá. Tọa lạc tại Ngũ Hành Sơn, Đà Nẵng, HAIAN Beach Hotel & Spa ...",
+    "position": 3
+   },
+   {
+    "title": "Quảng trường Nguyễn Văn Thoại - Khách sạn tại Đà Nẵng",
+    "link": "https://vn.trip.com/hotels/da-nang-qung-trng-nguyn-vn-thoi/hotels-c1356m31940281/",
+    "snippet": "Nếu bạn muốn tìm một khách sạn có bữa ăn sáng gần Quảng trường Nguyễn Văn Thoại ở Đà Nẵng, hãy thử chọn HAIAN Beach Hotel & Spa (từ 1.232.133₫),Menora Grand Da ...",
+    "position": 4
+   },
+   {
+    "title": "Các khách sạn ở gần Chợ Bắc Mỹ An, Đà Nẵng",
+    "link": "https://vn.trip.com/hotels/da-nang-bac-my-an-market/hotels-c1356m17118571/",
+    "snippet": "Khách sạn Balcona Đà Nẵng (từ 1.255.770₫),TMS Hotel Da Nang Beach (từ 1.782.883₫)vàHAIAN Beach Hotel & Spa (từ 1.232.515₫) là một vài khách sạn phổ biến có ...",
+    "position": 5
+   }
+  ],
+  "credits": 1
+ }
+}

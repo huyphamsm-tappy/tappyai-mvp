@@ -1,0 +1,36 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Hanoi Exclusive Hotel\" Hà Nội site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:21:13.775Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Hanoi Exclusive Hotel\" Hà Nội site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Hanoi Exclusive Hotel - Giá cả và Ưu đãi 2026, Hà Nội",
+    "link": "https://vn.trip.com/hotels/hanoi-hotel-detail-49212467/hanoi-exclusive-hotel/",
+    "snippet": "Giờ nhận phòng tại Hanoi Exclusive Hotel bắt đầu từ 14:00, và giờ trả phòng là 12:00. Hanoi Exclusive Hotel có hồ bơi không? Không, Hanoi Exclusive Hotel không ...",
+    "position": 1
+   },
+   {
+    "title": "Các đánh giá Hanoi Exclusive Hotel",
+    "link": "https://vn.trip.com/hotels/hanoi-hotel-detail-49212467/hanoi-exclusive-hotel/review.html",
+    "snippet": "Khám phá đánh giá Hanoi Exclusive Hotel thực tế từ khách du lịch. Với 50 đánh giá đã được xác thực và xếp hạng 9/10, bạn có thể đặt phòng với sự an tâm ...",
+    "position": 2
+   }
+  ],
+  "credits": 1
+ }
+}

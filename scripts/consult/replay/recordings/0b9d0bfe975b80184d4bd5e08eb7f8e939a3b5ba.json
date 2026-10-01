@@ -1,0 +1,30 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"L'HÔTEL du\" Hà Nội site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:21:13.114Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"L'HÔTEL du\" Hà Nội site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Các khách sạn nổi tiếng ở gần Nhà Thờ Lớn Hà Nội",
+    "link": "https://vn.trip.com/hotels/hanoi-saint-joseph-cathedral/hotels-c286m6744795/",
+    "snippet": "L'HOTEL du LAC Hà Nội. Quận Hoàn Kiếm, Hà Nội | Cách Nhà Thờ Lớn Hà Nội 0.25KM. 9,2/10. Tuyệt Vời 356 đánh giá. L'Hôtel du Lac Hà Nội ở trung tâm Hà Nội, cách ...",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

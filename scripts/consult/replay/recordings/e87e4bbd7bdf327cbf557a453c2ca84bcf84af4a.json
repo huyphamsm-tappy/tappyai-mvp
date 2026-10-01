@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Phở Khánh\" OR \"PHỞ SOL\" OR \"Phở Việt Nam\" quan 1 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:38:55.340Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Phở Khánh\" OR \"PHỞ SOL\" OR \"Phở Việt Nam\" quan 1 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Khám Phá Phở SOL Tại Quận 1, Thành Phố Hồ Chí Minh",
+    "link": "https://www.tiktok.com/@davisitonguyen/video/7517145597908897054",
+    "snippet": "Phở SOL 27 Đ. Hải Triều, Bến Nghé, Quận 1 #gowithdavis ... Khám Phá Phở SOL Tại Quận 1, Thành Phố Hồ Chí Minh. Đến Phở SOL để ...",
+    "position": 1
+   },
+   {
+    "title": "Phở Việt Nam - 14 Phạm Hồng Thái, Phường Bến Thành ...",
+    "link": "https://www.tiktok.com/@davisitonguyen/video/7578405776998305055",
+    "snippet": "39 Likes, TikTok video from Đi Đâu Ăn Đó (@davisitonguyen): “Phở Việt Nam - 14 Phạm Hồng Thái, Phường Bến Thành, Quận 1 #gowithdavis ...",
+    "position": 2
+   },
+   {
+    "title": "Phở Khánh Sài Gòn — Quán phở ngon đáng thử (Tập 32)",
+    "link": "https://www.tiktok.com/@pika_laca/video/7670503031095495957",
+    "snippet": "Giới thiệu quán Phở Khánh là một lựa chọn trong danh sách quán ... Phở Việt Nam. 152 · recommend-cover. Bảo Bảo Love Food. 1093 · recommend-cover.",
+    "position": 3
+   },
+   {
+    "title": "Phở Việt Nam by Võ Quốc Quận 2: Phở Gàu & Lõi Rùa 35K",
+    "link": "https://www.tiktok.com/@diancungquoc/video/7496854524339178770",
+    "snippet": "Keywords: phở việt nam by võ quốc quận 2, phở quận 2 ngon, phở gàu 35k quận ... Phở Khánh. 982 · recommend-cover. Thu Vi Vu. 551 · recommend-cover.",
+    "position": 4
+   },
+   {
+    "title": "Khám Phá Phở Việt Nam Tại Quận 3",
+    "link": "https://www.tiktok.com/@nguyenquangdungdirector/video/7541794657475300626",
+    "snippet": "Phở Việt Nam - By Võ Quốc - 72/1 Trần Quốc Toản, Phường Võ Thị Sáu, Quận 3. Khám Phá Phở Việt Nam Tại Quận 3. Thưởng thức phở Việt Nam thơm ngon ...",
+    "position": 5
+   },
+   {
+    "title": "Phở Việt Nam: Công Thức Phở Chay Chuẩn Vị Từ Võ Quốc",
+    "link": "https://www.tiktok.com/@phovietnambyvoquoc/video/7683875654760205588",
+    "snippet": "Phở Khánh. 982 · recommend-cover. phovietnambyvoquoc. 43 · recommend-cover ... combo no nê phở 95.000, phở Việt Nam by Võ Quốc quận 3, bữa trưa ...",
+    "position": 6
+   },
+   {
+    "title": "Phở Việt Nam. - S36-1 đường Bùi Bằng Đoàn, Hưng ...",
+    "link": "https://www.tiktok.com/@phovietnam.homemade/video/7356543993225792785",
+    "snippet": "... K Lượt thích,415 Bình luận.Video TikTok từ Phở Việt Nam (@phovietnam.homemade): \"Phở Việt Nam. - S36 ... Phở Khánh. 981 · recommend-cover. Tiệm A ...",
+    "position": 7
+   },
+   {
+    "title": "Công thức phở ngon#xuhuong #dongchuil",
+    "link": "https://www.tiktok.com/@dongchuildaypho/video/7688774236084784391",
+    "snippet": "Video TikTok từ ĐÔNG CHUIL – DẠY PHỞ VIỆT NAM (@dongchuildaypho): \"Công thức phở ngon#xuhuong #dongchuil\".Công thức phở ngonâm thanh gốc ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

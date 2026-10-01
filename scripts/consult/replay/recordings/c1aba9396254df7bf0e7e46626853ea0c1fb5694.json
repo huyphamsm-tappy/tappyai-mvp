@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Gợi ý 100+ món quà tặng sếp nam nữ cao cấp, ý nghĩa",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:36:53.025Z",
+ "body": {
+  "searchParameters": {
+   "q": "Gợi ý 100+ món quà tặng sếp nam nữ cao cấp, ý nghĩa",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "100+ Món quà tặng sếp nam, quà tặng sếp nữ cao cấp ý nghĩa",
+    "imageUrl": "https://www.tierra.vn/wp-content/uploads/2025/06/nhung-mon-qua-tang-sep-nu-cao-cap-y-nghia-768x1024.jpg",
+    "imageWidth": 768,
+    "imageHeight": 1024,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTP3-u_5Zkr4XiySgrxfndQe0zwFIsnWPr-sQ1T81_jvA&s=10",
+    "thumbnailWidth": 480,
+    "thumbnailHeight": 640,
+    "source": "Tierra Diamond",
+    "domain": "www.tierra.vn",
+    "link": "https://www.tierra.vn/tin-tuc/mua-qua-tang-sep-nam-mua-qua-tang-sep-nu-cao-cap",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.tierra.vn%2Fwp-content%2Fuploads%2F2025%2F06%2Fnhung-mon-qua-tang-sep-nu-cao-cap-y-nghia-768x1024.jpg&tbnid=LQkTFeQKQleZQM&imgrefurl=https%3A%2F%2Fwww.tierra.vn%2Ftin-tuc%2Fmua-qua-tang-sep-nam-mua-qua-tang-sep-nu-cao-cap&docid=gAs5dj7gqeIvfM&w=768&h=1024",
+    "position": 1
+   },
+   {
+    "title": "100+ Món quà tặng sếp nam, quà tặng sếp nữ cao cấp ý nghĩa",
+    "imageUrl": "https://www.tierra.vn/wp-content/uploads/2025/06/qua-tang-sep-nu-bo-my-pham-duong-da.jpg",
+    "imageWidth": 1000,
+    "imageHeight": 1000,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRL6I4Y1iaxpEZ8EwObPDy27nhkQ7mZiKMB7a2H0dtdDw&s=10",
+    "thumbnailWidth": 554,
+    "thumbnailHeight": 554,
+    "source": "Tierra Diamond",
+    "domain": "www.tierra.vn",
+    "link": "https://www.tierra.vn/tin-tuc/mua-qua-tang-sep-nam-mua-qua-tang-sep-nu-cao-cap",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.tierra.vn%2Fwp-content%2Fuploads%2F2025%2F06%2Fqua-tang-sep-nu-bo-my-pham-duong-da.jpg&tbnid=xvSC6nKKIh4ViM&imgrefurl=https%3A%2F%2Fwww.tierra.vn%2Ftin-tuc%2Fmua-qua-tang-sep-nam-mua-qua-tang-sep-nu-cao-cap&docid=gAs5dj7gqeIvfM&w=1000&h=1000",
+    "position": 2
+   },
+   {
+    "title": "100+ Món quà tặng sếp nam, quà tặng sếp nữ cao cấp ý nghĩa",
+    "imageUrl": "https://www.tierra.vn/wp-content/uploads/2025/06/nhung-mon-qua-tang-sep-nam-cao-cap-y-nghia.jpg",
+    "imageWidth": 1000,
+    "imageHeight": 1000,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTa-GK67479y6FLpGSl74UnGP8zGqj-VT4wvGR80ew2ZA&s=10",
+    "thumbnailWidth": 554,
+    "thumbnailHeight": 554,
+    "source": "Tierra Diamond",
+    "domain": "www.tierra.vn",
+    "link": "https://www.tierra.vn/tin-tuc/mua-qua-tang-sep-nam-mua-qua-tang-sep-nu-cao-cap",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.tierra.vn%2Fwp-content%2Fuploads%2F2025%2F06%2Fnhung-mon-qua-tang-sep-nam-cao-cap-y-nghia.jpg&tbnid=HT4Bl8Pmd3ipNM&imgrefurl=https%3A%2F%2Fwww.tierra.vn%2Ftin-tuc%2Fmua-qua-tang-sep-nam-mua-qua-tang-sep-nu-cao-cap&docid=gAs5dj7gqeIvfM&w=1000&h=1000",
+    "position": 3
+   },
+   {
+    "title": "100+ Món quà tặng sếp nam, quà tặng sếp nữ cao cấp ý nghĩa",
+    "imageUrl": "https://www.tierra.vn/wp-content/uploads/2025/06/qua-tang-sep-nu-trang-suc-cao-cap-vang-bac-da-quy.jpg",
+    "imageWidth": 1000,
+    "imageHeight": 1000,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrJAWVzTyNKoC6dV8vK3qj4y_kHBbynLFEBtUMdW4JOA&s=10",
+    "thumbnailWidth": 554,
+    "thumbnailHeight": 554,
+    "source": "Tierra Diamond",
+    "domain": "www.tierra.vn",
+    "link": "https://www.tierra.vn/tin-tuc/mua-qua-tang-sep-nam-mua-qua-tang-sep-nu-cao-cap",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.tierra.vn%2Fwp-content%2Fuploads%2F2025%2F06%2Fqua-tang-sep-nu-trang-suc-cao-cap-vang-bac-da-quy.jpg&tbnid=iT3QrPV3_GRRgM&imgrefurl=https%3A%2F%2Fwww.tierra.vn%2Ftin-tuc%2Fmua-qua-tang-sep-nam-mua-qua-tang-sep-nu-cao-cap&docid=gAs5dj7gqeIvfM&w=1000&h=1000",
+    "position": 4
+   },
+   {
+    "title": "100+ Món quà tặng sếp nam, quà tặng sếp nữ cao cấp ý nghĩa",
+    "imageUrl": "https://www.tierra.vn/wp-content/uploads/2025/06/nhung-mon-qua-phong-thuy-tang-sep-nam.jpg",
+    "imageWidth": 1000,
+    "imageHeight": 1000,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHkJvX0hrMiPiV2zGc1-ZrhBub_ONcBAULNYg-iFnPZw&s=10",
+    "thumbnailWidth": 554,
+    "thumbnailHeight": 554,
+    "source": "Tierra Diamond",
+    "domain": "www.tierra.vn",
+    "link": "https://www.tierra.vn/tin-tuc/mua-qua-tang-sep-nam-mua-qua-tang-sep-nu-cao-cap",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.tierra.vn%2Fwp-content%2Fuploads%2F2025%2F06%2Fnhung-mon-qua-phong-thuy-tang-sep-nam.jpg&tbnid=F-1XrY6IEn_dtM&imgrefurl=https%3A%2F%2Fwww.tierra.vn%2Ftin-tuc%2Fmua-qua-tang-sep-nam-mua-qua-tang-sep-nu-cao-cap&docid=gAs5dj7gqeIvfM&w=1000&h=1000",
+    "position": 5
+   },
+   {
+    "title": "100+ Món quà tặng sếp nam, quà tặng sếp nữ cao cấp ý nghĩa",
+    "imageUrl": "https://www.tierra.vn/wp-content/uploads/2025/06/qua-tang-sep-nu-khan-lua-khan-choang.jpg",
+    "imageWidth": 1000,
+    "imageHeight": 1000,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSt8OK3A4pObA3SlO1RxozkOBDmj5pmygIjTc5L-0NktA&s=10",
+    "thumbnailWidth": 554,
+    "thumbnailHeight": 554,
+    "source": "Tierra Diamond",
+    "domain": "www.tierra.vn",
+    "link": "https://www.tierra.vn/tin-tuc/mua-qua-tang-sep-nam-mua-qua-tang-sep-nu-cao-cap",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.tierra.vn%2Fwp-content%2Fuploads%2F2025%2F06%2Fqua-tang-sep-nu-khan-lua-khan-choang.jpg&tbnid=vW31RG2NestebM&imgrefurl=https%3A%2F%2Fwww.tierra.vn%2Ftin-tuc%2Fmua-qua-tang-sep-nam-mua-qua-tang-sep-nu-cao-cap&docid=gAs5dj7gqeIvfM&w=1000&h=1000",
+    "position": 6
+   },
+   {
+    "title": "100+ Món quà tặng sếp nam, quà tặng sếp nữ cao cấp ý nghĩa",
+    "imageUrl": "https://www.tierra.vn/wp-content/uploads/2025/06/qua-tang-sep-nam-bo-am-tra-cao-cap.jpg",
+    "imageWidth": 1000,
+    "imageHeight": 1000,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRT81kH185SlDy5OQLViG3SLTBLv5z1iMR9we-CdzIzag&s=10",
+    "thumbnailWidth": 554,
+    "thumbnailHeight": 554,
+    "source": "Tierra Diamond",
+    "domain": "www.tierra.vn",
+    "link": "https://www.tierra.vn/tin-tuc/mua-qua-tang-sep-nam-mua-qua-tang-sep-nu-cao-cap",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.tierra.vn%2Fwp-content%2Fuploads%2F2025%2F06%2Fqua-tang-sep-nam-bo-am-tra-cao-cap.jpg&tbnid=2JTHjd3fQ2OApM&imgrefurl=https%3A%2F%2Fwww.tierra.vn%2Ftin-tuc%2Fmua-qua-tang-sep-nam-mua-qua-tang-sep-nu-cao-cap&docid=gAs5dj7gqeIvfM&w=1000&h=1000",
+    "position": 7
+   },
+   {
+    "title": "100+ Món quà tặng sếp nam, quà tặng sếp nữ cao cấp ý nghĩa",
+    "imageUrl": "https://www.tierra.vn/wp-content/uploads/2025/06/qua-tang-sep-nam-but-ky-cao-cap.jpg",
+    "imageWidth": 1000,
+    "imageHeight": 750,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6bbo7xvhyDleAG5otKXcxelasEWnMX2SYYVdMr5H2hQ&s=10",
+    "thumbnailWidth": 638,
+    "thumbnailHeight": 480,
+    "source": "Tierra Diamond",
+    "domain": "www.tierra.vn",
+    "link": "https://www.tierra.vn/tin-tuc/mua-qua-tang-sep-nam-mua-qua-tang-sep-nu-cao-cap",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.tierra.vn%2Fwp-content%2Fuploads%2F2025%2F06%2Fqua-tang-sep-nam-but-ky-cao-cap.jpg&tbnid=KePB7f7ujr-ZXM&imgrefurl=https%3A%2F%2Fwww.tierra.vn%2Ftin-tuc%2Fmua-qua-tang-sep-nam-mua-qua-tang-sep-nu-cao-cap&docid=gAs5dj7gqeIvfM&w=1000&h=750",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

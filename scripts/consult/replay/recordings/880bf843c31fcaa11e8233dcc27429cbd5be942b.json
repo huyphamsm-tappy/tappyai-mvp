@@ -1,0 +1,138 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Platinum Beach Hotel",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:25:48.072Z",
+ "body": {
+  "searchParameters": {
+   "q": "Platinum Beach Hotel",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Khách sạn Platinum Beach Đà Nẵng (Platinum Beach Hotel Da Nang ) Đà Nẵng,  Việt Nam: Agoda.com có giá rẻ nhất",
+    "imageUrl": "https://pix10.agoda.net/hotelImages/31640904/-1/2921920fca1bbc2d2f8304d20aa89153.jpg?va=1&ce=0&s=414x232",
+    "imageWidth": 348,
+    "imageHeight": 232,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRkO9di8y3rLaAlY_Qkf-aA3qXfKtDGR7afSangZbNobg&s=10",
+    "thumbnailWidth": 348,
+    "thumbnailHeight": 232,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/platinum-beach-hotel-da-nang-h31640904/hotel/da-nang-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F31640904%2F-1%2F2921920fca1bbc2d2f8304d20aa89153.jpg%3Fva%3D1%26ce%3D0%26s%3D414x232&tbnid=2ZF1xShbXjHbPM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fplatinum-beach-hotel-da-nang-h31640904%2Fhotel%2Fda-nang-vn.html&docid=gf-fD88nH4LPVM&w=348&h=232",
+    "position": 1
+   },
+   {
+    "title": "Platinum Beach Hotel | Da Nang",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=979436514346531",
+    "imageWidth": 2048,
+    "imageHeight": 1365,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcToyF3A5ZzUBcEbkyNPkJqLhwtSatWohZddK-O1J9L5GA&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/platinumbeachhotel/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D979436514346531&tbnid=FgAM4HUOFc57IM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Fplatinumbeachhotel%2F&docid=BnJagJK_a2CkLM&w=2048&h=1365",
+    "copyright": "0383305909",
+    "creator": "Ha Phong",
+    "position": 2
+   },
+   {
+    "title": "Khách sạn Platinum Beach Đà Nẵng (Platinum Beach Hotel Da Nang ) Đà Nẵng,  Việt Nam: Agoda.com có giá rẻ nhất",
+    "imageUrl": "https://pix10.agoda.net/hotelImages/31640904/0/d89bb9f4980b88b7403eb5edfb77f451.jpg?va=1&ce=2&s=414x232",
+    "imageWidth": 348,
+    "imageHeight": 232,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAZC7JvYXanjQe-sj6r_QgBgjhIAMDdsNzvj3LH0IzNA&s=10",
+    "thumbnailWidth": 348,
+    "thumbnailHeight": 232,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/platinum-beach-hotel-da-nang-h31640904/hotel/da-nang-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F31640904%2F0%2Fd89bb9f4980b88b7403eb5edfb77f451.jpg%3Fva%3D1%26ce%3D2%26s%3D414x232&tbnid=EI_p9UBY8lxKfM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fplatinum-beach-hotel-da-nang-h31640904%2Fhotel%2Fda-nang-vn.html&docid=gf-fD88nH4LPVM&w=348&h=232",
+    "position": 3
+   },
+   {
+    "title": "Platinum Beach Hotel Da Nang, Giá giảm 30%, Ảnh & Review chân thật",
+    "imageUrl": "https://ik.imagekit.io/tvlk/apr-asset/dgXfoyh24ryQLRcGq00cIdKHRmotrWLNlvG-TxlcLxGkiDwaUSggleJNPRgIHCX6/hotel/asset/20058908-46958476d348aebedeccfd3c87d7085d.jpeg?tr=q-80,c-at_max,w-740,h-500&_src=imagekit",
+    "imageWidth": 740,
+    "imageHeight": 493,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSG09-mp8vOL5G8wBD36gPxUAVWtFHzFw7kPttRR31XNw&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "Traveloka",
+    "domain": "www.traveloka.com",
+    "link": "https://www.traveloka.com/vi-vn/hotel/vietnam/platinum-beach-hotel-da-nang-9000001042771",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fik.imagekit.io%2Ftvlk%2Fapr-asset%2FdgXfoyh24ryQLRcGq00cIdKHRmotrWLNlvG-TxlcLxGkiDwaUSggleJNPRgIHCX6%2Fhotel%2Fasset%2F20058908-46958476d348aebedeccfd3c87d7085d.jpeg%3Ftr%3Dq-80%2Cc-at_max%2Cw-740%2Ch-500%26_src%3Dimagekit&tbnid=KPzOO5eQKaFZ9M&imgrefurl=https%3A%2F%2Fwww.traveloka.com%2Fvi-vn%2Fhotel%2Fvietnam%2Fplatinum-beach-hotel-da-nang-9000001042771&docid=M6W-GyrkIiiEcM&w=740&h=493",
+    "position": 4
+   },
+   {
+    "title": "Khách sạn Platinum Beach Đà Nẵng (Platinum Beach Hotel Da Nang ) Đà Nẵng,  Việt Nam: Agoda.com có giá rẻ nhất",
+    "imageUrl": "https://pix10.agoda.net/hotelImages/31640904/-1/4f78f4265a20beed1b4c333cb04152f0.jpg?va=1&ce=0&s=414x232",
+    "imageWidth": 348,
+    "imageHeight": 232,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTUqe_Btu6AJbGeQGSrGhmrQls32U4kFxiKcCyMijYTQ&s=10",
+    "thumbnailWidth": 348,
+    "thumbnailHeight": 232,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/platinum-beach-hotel-da-nang-h31640904/hotel/da-nang-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F31640904%2F-1%2F4f78f4265a20beed1b4c333cb04152f0.jpg%3Fva%3D1%26ce%3D0%26s%3D414x232&tbnid=jdkEr75DiVq_bM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fplatinum-beach-hotel-da-nang-h31640904%2Fhotel%2Fda-nang-vn.html&docid=gf-fD88nH4LPVM&w=348&h=232",
+    "position": 5
+   },
+   {
+    "title": "Khách sạn Platinum Beach Đà Nẵng (Platinum Beach Hotel Da Nang ) Đà Nẵng,  Việt Nam: Agoda.com có giá rẻ nhất",
+    "imageUrl": "https://q-xx.bstatic.com/xdata/images/hotel/max500/442949721.jpg?k=48eea4ec5d417ab4edddfb46a3ae6c6c54925c311cb5e16d044e6788c12abb2e&o=",
+    "imageWidth": 500,
+    "imageHeight": 375,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPcaH1-Eo_MNcY3JCi30iYLe6FS2cWOyTrKVAieep27g&s=10",
+    "thumbnailWidth": 499,
+    "thumbnailHeight": 375,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/platinum-beach-hotel-da-nang-h31640904/hotel/da-nang-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fq-xx.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax500%2F442949721.jpg%3Fk%3D48eea4ec5d417ab4edddfb46a3ae6c6c54925c311cb5e16d044e6788c12abb2e%26o%3D&tbnid=pla7C4l8xXhQWM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fplatinum-beach-hotel-da-nang-h31640904%2Fhotel%2Fda-nang-vn.html&docid=gf-fD88nH4LPVM&w=500&h=375",
+    "position": 6
+   },
+   {
+    "title": "Platinum Beach Hotel & Apartment, Đà Nẵng (cập nhật giá năm 2027)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/670778899.jpg?k=997d8970387aa8c2e72989d039f451badf98bf00afeb8e80ee94a672bd467d48&o=",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4Kf82POdJeQpxH1uxxPNDqu2Nh3fw2BsK_n5USDC7cQ&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "www.booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/anna.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F670778899.jpg%3Fk%3D997d8970387aa8c2e72989d039f451badf98bf00afeb8e80ee94a672bd467d48%26o%3D&tbnid=ECGXA5m8OJInDM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fanna.vi.html&docid=5PjY9h16AsoivM&w=1024&h=683",
+    "position": 7
+   },
+   {
+    "title": "Platinum Hotel Jimbaran Beach Bali Pool: Pictures & Reviews - Tripadvisor",
+    "imageUrl": "https://media-cdn.tripadvisor.com/media/photo-s/2f/cc/61/d9/caption.jpg",
+    "imageWidth": 550,
+    "imageHeight": 412,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSNXytIHVI2TZyiPppxeckmiLEhLJgX09hjEUUj3tRfhg&s=10",
+    "thumbnailWidth": 517,
+    "thumbnailHeight": 386,
+    "source": "Tripadvisor",
+    "domain": "www.tripadvisor.com",
+    "link": "https://www.tripadvisor.com/Hotel_Feature-g3561989-d27186459-zft6217-Platinum_Hotel_Jimbaran_Beach_Bali.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fmedia-cdn.tripadvisor.com%2Fmedia%2Fphoto-s%2F2f%2Fcc%2F61%2Fd9%2Fcaption.jpg&tbnid=xRKWKgrbqT3x3M&imgrefurl=https%3A%2F%2Fwww.tripadvisor.com%2FHotel_Feature-g3561989-d27186459-zft6217-Platinum_Hotel_Jimbaran_Beach_Bali.html&docid=sJV6lCH5sSRb3M&w=550&h=412",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

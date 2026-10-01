@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Những người yêu thích cà phê Quà tặng cho nam giới",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:14:53.254Z",
+ "body": {
+  "searchParameters": {
+   "q": "Những người yêu thích cà phê Quà tặng cho nam giới",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Những người yêu thích cà phê Quà tặng cho nam giới, Động vật tích cực Móc  trang trí cốc cà phê Espresso, Món quà vui nhộn dễ thương cho bạn bè, Bạn",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/sg-11134201-825b5-mr5r8m0n083mf9",
+    "imageWidth": 1024,
+    "imageHeight": 1024,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTFoA9KQUfDpp1sjg0-WlWwR4K15kloTX9BOaf1zXkHw&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/Nh%E1%BB%AFng-ng%C6%B0%E1%BB%9Di-y%C3%AAu-th%C3%ADch-c%C3%A0-ph%C3%AA-Qu%C3%A0-t%E1%BA%B7ng-cho-nam-gi%E1%BB%9Bi-%C4%90%E1%BB%99ng-v%E1%BA%ADt-t%C3%ADch-c%E1%BB%B1c-M%C3%B3c-trang-tr%C3%AD-c%E1%BB%91c-c%C3%A0-ph%C3%AA-Espresso-M%C3%B3n-qu%C3%A0-vui-nh%E1%BB%99n-d%E1%BB%85-th%C6%B0%C6%A1ng-cho-b%E1%BA%A1n-b%C3%A8-B%E1%BA%A1n-trai-B%E1%BA%A1n-g%C3%A1i-M%E1%BA%B9-B%E1%BB%91-%C4%90%E1%BB%93ng-nghi%E1%BB%87p-%C4%90%C3%A1nh-gi%C3%A1-sinh-nh%E1%BA%ADt-i.1900992958.50614922780",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fsg-11134201-825b5-mr5r8m0n083mf9&tbnid=OixpL6gbcSmLMM&imgrefurl=https%3A%2F%2Fshopee.vn%2FNh%25E1%25BB%25AFng-ng%25C6%25B0%25E1%25BB%259Di-y%25C3%25AAu-th%25C3%25ADch-c%25C3%25A0-ph%25C3%25AA-Qu%25C3%25A0-t%25E1%25BA%25B7ng-cho-nam-gi%25E1%25BB%259Bi-%25C4%2590%25E1%25BB%2599ng-v%25E1%25BA%25ADt-t%25C3%25ADch-c%25E1%25BB%25B1c-M%25C3%25B3c-trang-tr%25C3%25AD-c%25E1%25BB%2591c-c%25C3%25A0-ph%25C3%25AA-Espresso-M%25C3%25B3n-qu%25C3%25A0-vui-nh%25E1%25BB%2599n-d%25E1%25BB%2585-th%25C6%25B0%25C6%25A1ng-cho-b%25E1%25BA%25A1n-b%25C3%25A8-B%25E1%25BA%25A1n-trai-B%25E1%25BA%25A1n-g%25C3%25A1i-M%25E1%25BA%25B9-B%25E1%25BB%2591-%25C4%2590%25E1%25BB%2593ng-nghi%25E1%25BB%2587p-%25C4%2590%25C3%25A1nh-gi%25C3%25A1-sinh-nh%25E1%25BA%25ADt-i.1900992958.50614922780&docid=zbpI5JpM9SfrNM&w=1024&h=1024",
+    "position": 1
+   },
+   {
+    "title": "8 Gợi Ý Quà Tặng Cà Phê Độc Đáo Cho Người Yêu Cà Phê",
+    "imageUrl": "https://chus.vn/images/detailed/292/z6011372133000_bd62da5b1052d7aca1c474dcae1193dc_a481d34c51324fdbbe78f9e8a9c32a04_master.webp",
+    "imageWidth": 2048,
+    "imageHeight": 2048,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-bMZyVOWHmC59A5DaTtOqwWqRRKlDDQ-X3SOHj9FmaA&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Chus.vn",
+    "domain": "chus.vn",
+    "link": "https://chus.vn/qua-ca-phe-danh-tang-cho-tin-do-ca-phe-thu-thiet/?srsltid=AU7gw4XJ6qvJ27xq25BUEh2aXwAe8WfR4ZVpRomB_rn4l9qxIzVnwsfa",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fchus.vn%2Fimages%2Fdetailed%2F292%2Fz6011372133000_bd62da5b1052d7aca1c474dcae1193dc_a481d34c51324fdbbe78f9e8a9c32a04_master.webp&tbnid=5jRJ0ErgQS-lKM&imgrefurl=https%3A%2F%2Fchus.vn%2Fqua-ca-phe-danh-tang-cho-tin-do-ca-phe-thu-thiet%2F%3Fsrsltid%3DAU7gw4XJ6qvJ27xq25BUEh2aXwAe8WfR4ZVpRomB_rn4l9qxIzVnwsfa&docid=RBMD3piHuAFmSM&w=2048&h=2048",
+    "position": 2
+   },
+   {
+    "title": "GỢI Ý SET QUÀ TẶNG Ý NGHĨA CHO NGƯỜI ĐAM MÊ CÀ PHÊ | Fin Coffee",
+    "imageUrl": "https://bizweb.dktcdn.net/thumb/grande/100/460/865/files/410076208-332104129711295-904132358850547394-n.jpg?v=1703819336278",
+    "imageWidth": 497,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZVahMmoaABKOzUFoUFR23U3pnq6aZdcK8q6ECHRCqgw&s=10",
+    "thumbnailWidth": 407,
+    "thumbnailHeight": 491,
+    "source": "Fin Coffee",
+    "domain": "fincoffee.vn",
+    "link": "https://fincoffee.vn/goi-y-set-qua-tang-y-nghia-cho-nguoi-dam-me-ca-phe",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fbizweb.dktcdn.net%2Fthumb%2Fgrande%2F100%2F460%2F865%2Ffiles%2F410076208-332104129711295-904132358850547394-n.jpg%3Fv%3D1703819336278&tbnid=bqluZYrTiLkDpM&imgrefurl=https%3A%2F%2Ffincoffee.vn%2Fgoi-y-set-qua-tang-y-nghia-cho-nguoi-dam-me-ca-phe&docid=RmARIIhW4s082M&w=497&h=600",
+    "position": 3
+   },
+   {
+    "title": "Quà tặng cho những người yêu thích cà phê :: Green Plantation",
+    "imageUrl": "https://lazenskakava.s24.cdn-upgates.com/_cache/5/a/5aa50112366f6a6b775e1d99872a0ebf-cokoladovy-darek.jpg",
+    "imageWidth": 1000,
+    "imageHeight": 1000,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRAMqrQLuqFQ0RKH1zzxdNvjLYo8i3v27iq1ZIYYx09GA&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Green Plantation",
+    "domain": "www.greenplantation.eu",
+    "link": "https://www.greenplantation.eu/vi/qua-tang-cho-nhung-nguoi-yeu-thich-ca-phe?srsltid=AU7gw4Uvb6uEUaYWcVDQymkpgp8tyJkEMwTPobSpqtz4g-MZgoe44KF8",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flazenskakava.s24.cdn-upgates.com%2F_cache%2F5%2Fa%2F5aa50112366f6a6b775e1d99872a0ebf-cokoladovy-darek.jpg&tbnid=Eaps50UOOPYBtM&imgrefurl=https%3A%2F%2Fwww.greenplantation.eu%2Fvi%2Fqua-tang-cho-nhung-nguoi-yeu-thich-ca-phe%3Fsrsltid%3DAU7gw4Uvb6uEUaYWcVDQymkpgp8tyJkEMwTPobSpqtz4g-MZgoe44KF8&docid=jKMd3GRV2pQuvM&w=1000&h=1000",
+    "position": 4
+   },
+   {
+    "title": "30+ Set Quà Tặng Đối Tác Nam độc đáo, sang trọng » CT BEE FARM - Mật Ong & Quà  Tặng",
+    "imageUrl": "https://dacsangialaitoi.com/wp-content/uploads/2024/02/SET-PHIN-CAPHE-02-ct.jpg.webp",
+    "imageWidth": 800,
+    "imageHeight": 800,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZoWEDX8DKl0PMAZ4ay5LSeHkzbnMGU341c0WRnPTJyw&s=10",
+    "thumbnailWidth": 554,
+    "thumbnailHeight": 554,
+    "source": "Đặc Sản Tây Nguyên Cô Thủy",
+    "domain": "dacsangialaitoi.com",
+    "link": "https://dacsangialaitoi.com/set-qua-tang-doi-tac-nam/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdacsangialaitoi.com%2Fwp-content%2Fuploads%2F2024%2F02%2FSET-PHIN-CAPHE-02-ct.jpg.webp&tbnid=S5JIRrwZYYDfTM&imgrefurl=https%3A%2F%2Fdacsangialaitoi.com%2Fset-qua-tang-doi-tac-nam%2F&docid=0AaakDl-OYtLYM&w=800&h=800",
+    "position": 5
+   },
+   {
+    "title": "Cà phê và những món quà tặng đàn ông thích nhất | VietLegend",
+    "imageUrl": "https://huyenthoaiviet.vn/image/10-mon-qua-danh-tang-nam-gioi-1406j.jpg",
+    "imageWidth": 600,
+    "imageHeight": 339,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbbnfLH_lhZAr7B0f-3pW-txnXeEsbZHzlVHyj0PN7tA&s=10",
+    "thumbnailWidth": 594,
+    "thumbnailHeight": 336,
+    "source": "CÀ PHÊ CHỒN",
+    "domain": "huyenthoaiviet.vn",
+    "link": "https://huyenthoaiviet.vn/ca-phe-va-nhung-mon-qua-tang-dan-ong-thich-nhat-121d.html?srsltid=AU7gw4X8uzQ_w6Pf99iu1ivSW4fpWxHx06YI2V3FbcJCYu0mdQTbuqwq",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fhuyenthoaiviet.vn%2Fimage%2F10-mon-qua-danh-tang-nam-gioi-1406j.jpg&tbnid=SmK7J52z-fyUCM&imgrefurl=https%3A%2F%2Fhuyenthoaiviet.vn%2Fca-phe-va-nhung-mon-qua-tang-dan-ong-thich-nhat-121d.html%3Fsrsltid%3DAU7gw4X8uzQ_w6Pf99iu1ivSW4fpWxHx06YI2V3FbcJCYu0mdQTbuqwq&docid=M2iIxMvTvvzPgM&w=600&h=339",
+    "position": 6
+   },
+   {
+    "title": "Hộp quà cà phê: Top 5 set quà cao cấp để biếu tặng | CHUS",
+    "imageUrl": "https://chus.vn/images/Blog/H%E1%BB%99p%20qu%C3%A0%20c%C3%A0%20ph%C3%AA%20n%C3%A0o%20sang%20tr%E1%BB%8Dng%20v%C3%A0%20%C3%BD%20ngh%C4%A9a%20nh%E1%BA%A5t%20%C4%91%E1%BB%83%20bi%E1%BA%BFu%20t%E1%BA%B7ng%3F/hop%20qua%20ca%20phe%20cao%20cap%20de%20bieu%20tang_feature.jpg?1775534666120",
+    "imageWidth": 900,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTC_8xpevWl3I3Jnkv-8XZKgoCvGRIL_53kCI9TjWKbcA&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "Chus.vn",
+    "domain": "chus.vn",
+    "link": "https://chus.vn/hop-qua-ca-phe-nao-sang-trong-va-y-nghia-nhat-de-bieu-tang/?srsltid=AU7gw4Xai-bLL21Na2yu399cylt-QcJzopYYVPuzGijbMGC5lflNodi_",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fchus.vn%2Fimages%2FBlog%2FH%25E1%25BB%2599p%2520qu%25C3%25A0%2520c%25C3%25A0%2520ph%25C3%25AA%2520n%25C3%25A0o%2520sang%2520tr%25E1%25BB%258Dng%2520v%25C3%25A0%2520%25C3%25BD%2520ngh%25C4%25A9a%2520nh%25E1%25BA%25A5t%2520%25C4%2591%25E1%25BB%2583%2520bi%25E1%25BA%25BFu%2520t%25E1%25BA%25B7ng%253F%2Fhop%2520qua%2520ca%2520phe%2520cao%2520cap%2520de%2520bieu%2520tang_feature.jpg%3F1775534666120&tbnid=FOequ85WYKARqM&imgrefurl=https%3A%2F%2Fchus.vn%2Fhop-qua-ca-phe-nao-sang-trong-va-y-nghia-nhat-de-bieu-tang%2F%3Fsrsltid%3DAU7gw4Xai-bLL21Na2yu399cylt-QcJzopYYVPuzGijbMGC5lflNodi_&docid=z2KGklLoROle8M&w=900&h=600",
+    "position": 7
+   },
+   {
+    "title": "Quà Tặng Cà Phê – Món Quà Gửi Gắm Hương Vị & Cảm Xúc – The Curator",
+    "imageUrl": "https://file.hstatic.net/200000343349/file/962266072749514_7944259295113528000_n_7b2ddc10df494a708a9f0c7a3dcdd904_1024x1024.jpg",
+    "imageWidth": 1024,
+    "imageHeight": 1024,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSjrtOfOLGdUXvN_fS2r34W7SibWfJRiJrtDFqH-vxA5w&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "The Curator",
+    "domain": "thecurator.vn",
+    "link": "https://thecurator.vn/blogs/news/qua-tang-ca-phe-mon-qua-gui-gam-huong-vi-cam-xuc",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Ffile.hstatic.net%2F200000343349%2Ffile%2F962266072749514_7944259295113528000_n_7b2ddc10df494a708a9f0c7a3dcdd904_1024x1024.jpg&tbnid=4PtKVr-dyO7c3M&imgrefurl=https%3A%2F%2Fthecurator.vn%2Fblogs%2Fnews%2Fqua-tang-ca-phe-mon-qua-gui-gam-huong-vi-cam-xuc&docid=vAtvUOf0noWrKM&w=1024&h=1024",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

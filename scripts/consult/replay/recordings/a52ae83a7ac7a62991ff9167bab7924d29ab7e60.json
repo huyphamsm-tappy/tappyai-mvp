@@ -1,0 +1,85 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Mua cà phê làm quà: 11 gợi ý đáng mua 2025 site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:14:46.518Z",
+ "body": {
+  "searchParameters": {
+   "q": "Mua cà phê làm quà: 11 gợi ý đáng mua 2025 site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "1Kg Túi ly trà sữa, túi đơn, túi đôi | Lazada Việt Nam",
+    "link": "https://www.lazada.vn/products/pdp-i2726029991.html?srsltid=AU7gw4XysCzHGxywMJFq83oa6uAH_R0ZNn1SVgUR0U2OENXgRZmrj_W7",
+    "snippet": "Độ bền: Mua goi TV360 cho tai khoan 0933434391 tai Tran trong! [CSKH] Chúc mừng năm mới Ất Tỵ 2025. Kính chúc Quý khách năm mới hạnh phúc, an khang và thịnh ...",
+    "position": 1
+   },
+   {
+    "title": "Phân bón sinh học VoiThaiChem F6 – Phiên Bản Nâng Cấp ...",
+    "link": "https://h5.lazada.vn/products/phan-bon-sinh-hoc-voithaichem-f6-phien-ban-nang-cap-2025-co-chua-axit-amin-khac-phuc-chai-nin-cua-chai-250ml-i3185362747.html",
+    "snippet": "Phân bón sinh học VoiThaiChem F6 – Phiên Bản Nâng Cấp 2025 – Có Chứa Axit Amin – Khắc Phục Chai Nín Cựa (Chai 250ml). Tuỳ chọn sản phẩm.",
+    "date": "6 thg 9, 2025",
+    "position": 2
+   },
+   {
+    "title": "(New Crop 2025) Specialty Coffee Gói Lang Biang Sơn ...",
+    "link": "https://www.lazada.vn/products/new-crop-2025-specialty-coffee-goi-lang-biang-son-pacamara-100-arabica-lac-duong-huong-trai-cay-nhiet-doi-rang-nhat-goi-250gr-500gr-i2272255908.html?srsltid=AU7gw4XWPPd0kkoDHCPnin1wy-12vC_nFkQSGyZh2IEM_KrsUon5EtZ0",
+    "snippet": "Thông số. Xuất xứ,Mức độ rang cà phê,Hữu cơ ; Giao hàng. Thành phố Hồ Chí Minh, Phường Bến Thành. Giao tiêu chuẩn , Đảm bảo nhận vào 9-11 thg 8. 28.700 ₫.",
+    "rating": 5,
+    "ratingCount": 66,
+    "position": 3
+   },
+   {
+    "title": "Cà phê Chồn LEGEND Trung Nguyên hộp gỗ 225Gr",
+    "link": "https://www.lazada.vn/products/ca-phe-chon-legend-trung-nguyen-hop-go-225gr-i2168510102.html?srsltid=AU7gw4W_JspO4-jv0rb5jU2S-OqjkP7PBhzCzz32uhO-Vc4LH6aPouT0",
+    "snippet": "Nhà sản xuất: Trung Nguyên Thành phần: Arabica, Robusta, Excelsa. Đặc điểm: LEGEND là cà phê chồn được sản xuất bằng phương pháp \"Lên men sinh học\", sản phẩm ...",
+    "rating": 5,
+    "ratingCount": 2,
+    "position": 4
+   },
+   {
+    "title": "(Combo 2 Gói) Cà phê Sáng Tạo 4 Trung Nguyên( 340gam)",
+    "link": "https://www.lazada.vn/products/combo-2-goi-ca-phe-sang-tao-4-trung-nguyen-340gam-ca-phe-rang-xay-bot-pha-phin-trung-nguyen-i1291618227.html?srsltid=AU7gw4V-RLm7aRHOKoozPWQZPxyrSCrvIu5LVkJlCF_i_XHMnJmsNXp1",
+    "snippet": "Combo 2 gói cà phê Sáng Tạo 4 Trung Nguyên 340g, cà phê pha phin chất lượng cao từ Arabica và Robusta. Hương vị đậm đà, màu nước nâu sánh, phù hợp uống tại ...",
+    "rating": 5,
+    "ratingCount": 391,
+    "position": 5
+   },
+   {
+    "title": "Cà Phê Hạt Mộc Success 8 Trung Nguyên Legend 340g. ...",
+    "link": "https://www.lazada.vn/products/ca-phe-hat-moc-success-8-trung-nguyen-legend-340g-100-arabica-sieu-thom-ngon-i1855312539.html?srsltid=AU7gw4WZE-1z7BPptnCWAFTlHzRpkIL-j8DRdSXCkmjwv1Z89qMGa8Rb",
+    "snippet": "Cà phê hạt mộc Trung Nguyên Legend 340g, 100% Arabica siêu thơm, rang mộc nguyên chất. Hương vị trọn vẹn, hậu vị ngọt dịu, cholesterol free, nguồn nguyên ...",
+    "rating": 5,
+    "ratingCount": 7,
+    "position": 6
+   },
+   {
+    "title": "Cà phê hoà tan rang xay 3in1 Cafe sữa đá - Hộp 9 gói x 25gr",
+    "link": "https://www.lazada.vn/products/trung-nguyen-legend-ca-phe-hoa-tan-rang-xay-3in1-cafe-sua-da-hop-9-goi-x-25gr-i351388190.html?srsltid=AU7gw4VoB-td_q9DHU7eXx15pxdlG9z9b1Npu6fwzAxWmQOS2C_X1Hts",
+    "snippet": "Gợi ý cho bạn. Top bán chạy. Trung Nguyên Legend - Cà phê sữa hoà tan rang xay 3in1 Special Edition - Hộp. 128.000 ₫. Cà phê hòa tan đen - Trung Nguyên Legend ...",
+    "rating": 5,
+    "ratingCount": 1458,
+    "position": 7
+   },
+   {
+    "title": "(New Crop 2025) Specialty Coffee Gói Typica Sơn ...",
+    "link": "https://www.lazada.vn/products/new-crop-2025-specialty-coffee-goi-typica-son-pacamara-100-arabica-da-lat-vi-day-phu-hop-pha-da-rang-nhat-goi-250gr-500gr-i2213689678.html?srsltid=AU7gw4WihtxLYgoF6GWLPwCp1hMyT0gxlaJARfhsg7bKC3fteqc6YBd9",
+    "snippet": "Cà phê Typica từ Sơn Farm rang nhạt, đặc sản Việt Nam với vị cân bằng hoàn hảo cho pha chế. Cà phê organics xay cho phin và pour over, mang đến trải nghiệm ...",
+    "rating": 5,
+    "ratingCount": 71,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

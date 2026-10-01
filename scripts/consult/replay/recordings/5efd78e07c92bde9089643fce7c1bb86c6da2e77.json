@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Phin pha cà phê inox 304 site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:24:31.487Z",
+ "body": {
+  "searchParameters": {
+   "q": "Phin pha cà phê inox 304 site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Phin pha cà phê inox 304 Bincoo, sơn tĩnh điện, an toàn sử ...",
+    "link": "https://shopee.vn/Phin-pha-c%C3%A0-ph%C3%AA-inox-304-Bincoo-s%C6%A1n-t%C4%A9nh-%C4%91i%E1%BB%87n-an-to%C3%A0n-s%E1%BB%AD-d%E1%BB%A5ng.-i.1319685888.28323692582",
+    "snippet": "Mua Phin pha cà phê inox 304 Bincoo, sơn tĩnh điện, an toàn sử dụng. giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn ...",
+    "position": 1
+   },
+   {
+    "title": "phin pha coffee inox 304, lọc đều vị đậm",
+    "link": "https://shopee.vn/list/phin/pha%20coffee",
+    "snippet": "phin pha coffee inox 304, lỗ lọc đều 0.3 mm, pha 1–4 ly ổn định; bền, dễ vệ sinh, nắp gài xoay chắc. Chọn ngay mẫu chuẩn vị trên Shopee Việt Nam.",
+    "position": 2
+   },
+   {
+    "title": "Phin pha cafe inox 304 cao cấp phin cafe nhôm trung ...",
+    "link": "https://shopee.vn/Phin-pha-cafe-inox-304-cao-c%E1%BA%A5p-phin-cafe-nh%C3%B4m-trung-nguy%C3%AAn-gi%E1%BB%AF-nguy%C3%AAn-h%C6%B0%C6%A1ng-v%E1%BB%8B-%C4%91%E1%BA%ADm-%C4%91%C3%A0-truy%E1%BB%81n-th%E1%BB%91ng-i.480299907.10782648978",
+    "snippet": "Mua Phin pha cafe inox 304 cao cấp phin cafe nhôm trung nguyên giữ nguyên hương vị đậm đà truyền thống giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 4.9,
+    "ratingCount": 20,
+    "position": 3
+   },
+   {
+    "title": "Phin Pha Cà Phê Inox 304 GOLD Sang Chảnh Công Nghệ ...",
+    "link": "https://shopee.vn/Phin-Pha-Ca%CC%80-Phe%CC%82-Inox-304-GOLD-Sang-Ch%E1%BA%A3nh-C%C3%B4ng-Ngh%E1%BB%87-PVD-25g-Phin-Pha-Cafe-Inox-Galaxy-Coffee-i.67759525.10144515365",
+    "snippet": "Mua Phin Pha Cà Phê Inox 304 GOLD Sang Chảnh Công Nghệ PVD 25g Phin Pha Cafe Inox Galaxy Coffee giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 4.9,
+    "ratingCount": 13,
+    "position": 4
+   },
+   {
+    "title": "Phin pha cà phê inox 304 quai inox, pha cafe ngon, cứng ...",
+    "link": "https://shopee.vn/Phin-pha-c%C3%A0-ph%C3%AA-inox-304-quai-inox-pha-cafe-ngon-c%E1%BB%A9ng-c%C3%A1p-b%E1%BB%81n-b%E1%BB%89-an-to%C3%A0n-d%C3%B9ng-l%C3%A2u-d%C3%A0i-Mixmore-i.51816183.18101218470",
+    "snippet": "Mua Phin pha cà phê inox 304 quai inox, pha cafe ngon, cứng cáp, bền bỉ, an toàn dùng lâu dài Mixmore giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 5,
+    "ratingCount": 394,
+    "position": 5
+   },
+   {
+    "title": "Phin pha cà phê inox 304 kiểu phin cafe nhỏ giọt truyền thống ...",
+    "link": "https://shopee.vn/Phin-pha-c%C3%A0-ph%C3%AA-inox-304-ki%E1%BB%83u-phin-cafe-nh%E1%BB%8F-gi%E1%BB%8Dt-truy%E1%BB%81n-th%E1%BB%91ng-b%E1%BB%99-l%E1%BB%8Dc-c%C3%A0-ph%C3%AA-c-cafe-d%E1%BB%A5ng-c%E1%BB%A5-pha-ch%E1%BA%BF-gia-%C4%91%C3%ACnh-s%E1%BB%89-i.1802820128.27345039995",
+    "snippet": "Mua Phin pha cà phê inox 304 kiểu phin cafe nhỏ giọt truyền thống bộ lọc cà phê c-cafe dụng cụ pha chế gia đình sỉ giá tốt. Mua hàng qua mạng uy tín, ...",
+    "position": 6
+   },
+   {
+    "title": "Phin Cà Phê Long Cam Inox 304 (Nhiều Size Phin 6-10)",
+    "link": "https://shopee.vn/Phin-C%C3%A0-Ph%C3%AA-Long-Cam-Inox-304-(Nhi%E1%BB%81u-Size-Phin-6-10)-L%C6%B0%E1%BB%9Bi-G%C3%A0i-Ti%E1%BB%87n-L%E1%BB%A3i-Pha-%C4%90%E1%BA%ADm-%C4%90%C3%A0-i.95566254.23351219086",
+    "snippet": "Mua Phin Cà Phê Long Cam Inox 304 (Nhiều Size Phin 6-10) - Lưới Gài Tiện Lợi, Pha Đậm Đà giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 7
+   },
+   {
+    "title": "PHIN MÀU, Cửa hàng trực tuyến",
+    "link": "https://shopee.vn/shop_phin_mau",
+    "snippet": "Phin cà phê inox lớn,Phin inox 430 pha 200gr bột cà phê nguyên chất [Khách khắc logo vui lòng liên hệ shop]. 180.000₫. -28%. rating-star 4.9. 358 đã bán.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Laptop Acer Aspire Lite 14 AL14-47P-R0TR",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:04:44.453Z",
+ "body": {
+  "searchParameters": {
+   "q": "Laptop Acer Aspire Lite 14 AL14-47P-R0TR",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Acer Aspire Lite 14 AL14-47P-R0TR - NX.X0PSV.002 (Ryzen 5 3500U, 8GB,  512GB, Full HD, Win11) - Trả góp, giá rẻ",
+    "imageUrl": "https://cdnv2.tgdd.vn/mwg-static/tgdd/Products/Images/44/370863/acer-aspire-lite-14-al14-47p-r0tr-ryzen-5-3500u-nx-x0psv-002-1-639236366815791115.jpg",
+    "imageWidth": 1020,
+    "imageHeight": 680,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTDKctKgLIbrv8th7IkShwGV1O6_njD0MdcGOaDkJZ5PA&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Điện máy XANH",
+    "domain": "www.dienmayxanh.com",
+    "link": "https://www.dienmayxanh.com/laptop/acer-aspire-lite-14-al14-47p-r0tr-ryzen-5-3500u-nx-x0psv-002?srsltid=AU7gw4WG6YGxuVDO9AvER8vAY2qZq7uDe1w6t5xXCLSxBR2KEkZXGjjV",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdnv2.tgdd.vn%2Fmwg-static%2Ftgdd%2FProducts%2FImages%2F44%2F370863%2Facer-aspire-lite-14-al14-47p-r0tr-ryzen-5-3500u-nx-x0psv-002-1-639236366815791115.jpg&tbnid=OaIEdOBLAeXdeM&imgrefurl=https%3A%2F%2Fwww.dienmayxanh.com%2Flaptop%2Facer-aspire-lite-14-al14-47p-r0tr-ryzen-5-3500u-nx-x0psv-002%3Fsrsltid%3DAU7gw4WG6YGxuVDO9AvER8vAY2qZq7uDe1w6t5xXCLSxBR2KEkZXGjjV&docid=dkmmb20qtUgJRM&w=1020&h=680",
+    "position": 1
+   },
+   {
+    "title": "Laptop Acer Aspire Lite 14 AL14-47P-R0TR: Gọn Nhẹ Linh Hoạt, Lựa Chọn Hoàn  Hảo",
+    "imageUrl": "https://bizweb.dktcdn.net/thumb/1024x1024/100/598/846/products/acer-aspire-lite-14-al14-51p-35qd-i3-nxj84sv001-fix-1-638852736626428249.jpg?v=1789532108100",
+    "imageWidth": 1020,
+    "imageHeight": 680,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFP59VNYpTdjr4raAiSHaM1I1sMVsD5y_Jx4XwX3KzUg&s",
+    "thumbnailWidth": 275,
+    "thumbnailHeight": 183,
+    "source": "TIC.VN",
+    "domain": "tic.vn",
+    "link": "https://tic.vn/laptop-acer-aspire-lite-14-al14-47p-r0tr-gon-nhe-linh-hoat-lua-chon-hoan-hao-cho-hoc-tap-amp-di-chuyen",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fbizweb.dktcdn.net%2Fthumb%2F1024x1024%2F100%2F598%2F846%2Fproducts%2Facer-aspire-lite-14-al14-51p-35qd-i3-nxj84sv001-fix-1-638852736626428249.jpg%3Fv%3D1789532108100&tbnid=E4SsuPLXwbyNVM&imgrefurl=https%3A%2F%2Ftic.vn%2Flaptop-acer-aspire-lite-14-al14-47p-r0tr-gon-nhe-linh-hoat-lua-chon-hoan-hao-cho-hoc-tap-amp-di-chuyen&docid=Al6xAMF5poDVpM&w=1020&h=680",
+    "position": 2
+   },
+   {
+    "title": "Acer Aspire Lite 14 AL14-47P-R0TR R5-3500U",
+    "imageUrl": "https://cdn2.fptshop.com.vn/unsafe/800x0/acer_aspire_lite_14_al14_47p_r0tr_3_5c32ba34d0.jpg",
+    "imageWidth": 800,
+    "imageHeight": 499,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSEaUzT4xFP8PUReDkDFEeG7Y3oJqVabswnbHTVflVm_g&s",
+    "thumbnailWidth": 284,
+    "thumbnailHeight": 177,
+    "source": "FPT Shop",
+    "domain": "fptshop.com.vn",
+    "link": "https://fptshop.com.vn/may-tinh-xach-tay/acer-aspire-lite-14-al14-47p-r0tr-r5-3500u",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.fptshop.com.vn%2Funsafe%2F800x0%2Facer_aspire_lite_14_al14_47p_r0tr_3_5c32ba34d0.jpg&tbnid=BNyH36AE-F3aWM&imgrefurl=https%3A%2F%2Ffptshop.com.vn%2Fmay-tinh-xach-tay%2Facer-aspire-lite-14-al14-47p-r0tr-r5-3500u&docid=SiHGVq3aCjQqmM&w=800&h=499",
+    "position": 3
+   },
+   {
+    "title": "Laptop Acer Aspire Lite 14 AL14-47P-R0TR | Giá rẻ, trả góp 0%",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/x/_/x_m_3__136.png",
+    "imageWidth": 358,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJSnZ5fARPvQSB0zZ2v-D6xfCZFaUn6kSCXmgW4nkNbQ&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/laptop-acer-aspire-lite-14-al14-47p-r0tr.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A0%3A358%2Fq%3A90%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fcatalog%2Fproduct%2Fx%2F_%2Fx_m_3__136.png&tbnid=99SYgPua9KlhZM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Flaptop-acer-aspire-lite-14-al14-47p-r0tr.html&docid=-6u-UuPPVKrznM&w=358&h=358",
+    "position": 4
+   },
+   {
+    "title": "Laptop Acer Aspire Lite 14 AL14-47P-R0TR NX.X0PSV.002",
+    "imageUrl": "https://anphat.com.vn/media/product/56919_laptop_acer_aspire_lite_14_al14_47p_r0tr_nx_x0psv__4_.jpg",
+    "imageWidth": 1000,
+    "imageHeight": 1000,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTG9sZF-nZwF3wBXACNVq2g_NyZbGKqbILnf8lYdKg4Ng&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "www.anphatpc.com.vn",
+    "domain": "www.anphatpc.com.vn",
+    "link": "https://www.anphatpc.com.vn/laptop-acer-aspire-lite-14-al14-47p-r0tr-nx.x0psv.002.html?srsltid=AU7gw4Wsk0SIAkzl90gpm7rTrK_k01g11qnlq77b7gv2DXmMJ9-h8w_b",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fanphat.com.vn%2Fmedia%2Fproduct%2F56919_laptop_acer_aspire_lite_14_al14_47p_r0tr_nx_x0psv__4_.jpg&tbnid=Kj_RRVcWEH69EM&imgrefurl=https%3A%2F%2Fwww.anphatpc.com.vn%2Flaptop-acer-aspire-lite-14-al14-47p-r0tr-nx.x0psv.002.html%3Fsrsltid%3DAU7gw4Wsk0SIAkzl90gpm7rTrK_k01g11qnlq77b7gv2DXmMJ9-h8w_b&docid=JTRzlsLkoNI1lM&w=1000&h=1000",
+    "position": 5
+   },
+   {
+    "title": "Acer Aspire Lite 14 AL14-47P-R0TR R5-3500U",
+    "imageUrl": "https://cdn2.fptshop.com.vn/unsafe/828x0/filters:format(webp):quality(75)/acer_aspire_lite_14_al14_47p_r0tr_5_c8f9060826.png",
+    "imageWidth": 828,
+    "imageHeight": 466,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSP9wI-j6CrQEnUYRgYupMHP8hX_BWhJ8N1aHlZIQAOw&s",
+    "thumbnailWidth": 299,
+    "thumbnailHeight": 168,
+    "source": "FPT Shop",
+    "domain": "fptshop.com.vn",
+    "link": "https://fptshop.com.vn/may-tinh-xach-tay/acer-aspire-lite-14-al14-47p-r0tr-r5-3500u",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.fptshop.com.vn%2Funsafe%2F828x0%2Ffilters%3Aformat(webp)%3Aquality(75)%2Facer_aspire_lite_14_al14_47p_r0tr_5_c8f9060826.png&tbnid=9Bz2UDNLitW60M&imgrefurl=https%3A%2F%2Ffptshop.com.vn%2Fmay-tinh-xach-tay%2Facer-aspire-lite-14-al14-47p-r0tr-r5-3500u&docid=SiHGVq3aCjQqmM&w=828&h=466",
+    "position": 6
+   },
+   {
+    "title": "Acer Aspire Lite 14 AL14-47P-R0TR R5-3500U chính hãng, giá rẻ",
+    "imageUrl": "https://cdn2.fptshop.com.vn/unsafe/800x0/acer_aspire_lite_14_al14_47p_r0tr_6_0ca8272d58.jpg",
+    "imageWidth": 800,
+    "imageHeight": 566,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSAwEOJaCY3Nui7We7HHyRoAVWkU7vMSgW8-j__-1BUWQ&s=10",
+    "thumbnailWidth": 531,
+    "thumbnailHeight": 376,
+    "source": "FPT Shop",
+    "domain": "fptshop.com.vn",
+    "link": "https://fptshop.com.vn/may-tinh-xach-tay/acer-aspire-lite-14-al14-47p-r0tr-r5-3500u",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.fptshop.com.vn%2Funsafe%2F800x0%2Facer_aspire_lite_14_al14_47p_r0tr_6_0ca8272d58.jpg&tbnid=thzalA0brrjOKM&imgrefurl=https%3A%2F%2Ffptshop.com.vn%2Fmay-tinh-xach-tay%2Facer-aspire-lite-14-al14-47p-r0tr-r5-3500u&docid=SiHGVq3aCjQqmM&w=800&h=566",
+    "position": 7
+   },
+   {
+    "title": "Laptop Acer Aspire Lite 14 AL14-47P-R0TR",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/g/r/group_945_2_10.png",
+    "imageWidth": 358,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzWc-SlAoKJzOfNGqptpcRmMAQJIwoQmj2n6QU8TmSsw&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/laptop-acer-aspire-lite-14-al14-47p-r0tr.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A0%3A358%2Fq%3A90%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fcatalog%2Fproduct%2Fg%2Fr%2Fgroup_945_2_10.png&tbnid=3fl9BuqdNeR-hM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Flaptop-acer-aspire-lite-14-al14-47p-r0tr.html&docid=-6u-UuPPVKrznM&w=358&h=358",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

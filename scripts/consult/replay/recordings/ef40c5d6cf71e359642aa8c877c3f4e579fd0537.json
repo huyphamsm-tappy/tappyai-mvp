@@ -1,0 +1,77 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "món đồ thích cà phê Sếp nam, 40 tuổi, thích cà phê gia Shopee Tiki Lazada",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:34:30.105Z",
+ "body": {
+  "searchParameters": {
+   "q": "món đồ thích cà phê Sếp nam, 40 tuổi, thích cà phê gia Shopee Tiki Lazada",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Mua Cafe Men Giá Tốt, Giao Nhanh",
+    "link": "https://www.lazada.vn/tag/cafe-men/?srsltid=AU7gw4XvzuJRVpobZG5gsQtls17mU6j2FDbiJdm45U_f3WMtds4ZT_Wo",
+    "snippet": "Cà phê bổ thận tráng dương tăng cường sinh lý nam giới Ba kích Ngọc cẩu nấm Linh chi thơm ngon , hộp 15 gói. ₫55,000. Voucher save 34%. 5.0·10 sold. Vietnam.",
+    "rating": 4.9,
+    "ratingCount": 137,
+    "position": 1
+   },
+   {
+    "title": "Sáu tháng đầu năm, doanh số trên Shopee, TikTok Shop, ...",
+    "link": "https://www.facebook.com/CafeF/videos/s%C3%A1u-th%C3%A1ng-%C4%91%E1%BA%A7u-n%C4%83m-doanh-s%E1%BB%91-tr%C3%AAn-shopee-tiktok-shop-lazada-v%C3%A0-tiki-t%C4%83ng-tr%C3%AAn-40-n/4326695807582043/",
+    "snippet": "Sáu tháng đầu năm, doanh số trên Shopee, TikTok Shop, Lazada và Tiki tăng trên 40%, nhanh hơn 3 lần tốc độ tăng trưởng của ngành bán lẻ nói ...",
+    "position": 2
+   },
+   {
+    "title": "cà phê giá tốt Tháng 9, 2026 | Mua ngay",
+    "link": "https://shopee.vn/search?keyword=c%C3%A0%20ph%C3%AA",
+    "snippet": "Gờ cafe gu HIỆN ĐẠI (đắng dịu) ROBUSTA& ARABICA, cà phê mộc, · Gờ cafe gu TRUYỀN THỐNG (đắng vừa)- 100% ROBUSTA RANG VỪA, · Cà Phê Truyền Thống PHIN ĐẬM 500g, ...",
+    "position": 3
+   },
+   {
+    "title": "Các bác có ai bị nghiện mua hàng online ko? Kiểu lâu ...",
+    "link": "https://www.facebook.com/groups/Grouptinhte/posts/2492118867578710/",
+    "snippet": "Tháng nào cũng có 5 6 đơn. Ae giao đồ cho mình rất thích vì mỗi lần giao mình đều gởi tặng 5 10k uống cà phê. 5y.",
+    "position": 4
+   },
+   {
+    "title": "bịch cà phê- Giá Tốt & Ưu Đãi",
+    "link": "https://www.lazada.vn/tag/b%E1%BB%8Bch-c%C3%A0-ph%C3%AA/?srsltid=AU7gw4Uvtgj03vxTBf8aSpNHwNBQ03DhLjVpjj1YBUqw3N51l88mtvXp",
+    "snippet": "COMBO 5 BỊCH CÀ PHÊ SỮA KOPIKO - Thương hiệu nổi tiếng Thái Lan 20 gói × 25g. ₫319,000. Vietnam · Túi 20 gói cà phê sữa Kopiko nội địa thái lan. ₫45,000.",
+    "rating": 5,
+    "ratingCount": 5465,
+    "position": 5
+   },
+   {
+    "title": "Mua cà phê làm quà: 11 gợi ý đáng mua 2025 kèm lưu ý",
+    "link": "https://hello5.vn/mua-ca-phe-lam-qua-11-goi-y-dang-mua-2025-kem-luu-y/",
+    "snippet": "Cà phê hạt Arabica Cầu Đất (250g) — hương dịu, hậu ngọt. · Cà phê hạt Robusta Đắk Lắk (500g) — vị đậm, thích hợp pha phin hoặc espresso.",
+    "date": "8 thg 11, 2025",
+    "position": 6
+   },
+   {
+    "title": "Cà phê và những món quà tặng đàn ông thích nhất",
+    "link": "https://huyenthoaiviet.vn/ca-phe-va-nhung-mon-qua-tang-dan-ong-thich-nhat-121d.html?srsltid=AU7gw4UTkndmBi6xXhfIA5CdSVw6gxXF_fWXKJPNy8mclLQcSlnJm5-a",
+    "snippet": "Cà phê, áo sơ mi và một số gợi ý “chất ngất” dưới đây giúp bạn lựa chọn được những món quà tặng cho đàn ông mà họ sẽ vô cùng hài lòng và trân quý.",
+    "position": 7
+   },
+   {
+    "title": "Set quà tặng 3 món cà phê - trà - đồ ăn vặt ý nghĩa cho ...",
+    "link": "https://shopee.vn/Set-qu%C3%A0-t%E1%BA%B7ng-3-m%C3%B3n-c%C3%A0-ph%C3%AA-tr%C3%A0-%C4%91%E1%BB%93-%C4%83n-v%E1%BA%B7t-%C3%BD-ngh%C4%A9a-cho-th%E1%BA%A7y-c%C3%B4-s%E1%BA%BFp-v%C3%A0-%C4%91%E1%BB%93ng-nghi%E1%BB%87p-C%E1%BB%99ng-C%C3%A0-Ph%C3%AA-i.354028981.54406709356",
+    "snippet": "Mua Set quà tặng 3 món cà phê - trà - đồ ăn vặt ý nghĩa cho thầy cô, sếp và đồng nghiệp - Cộng Cà Phê giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

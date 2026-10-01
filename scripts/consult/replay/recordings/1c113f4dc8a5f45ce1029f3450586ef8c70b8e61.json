@@ -1,0 +1,82 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Quà tặng sếp nam: Top 20 site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:15:08.063Z",
+ "body": {
+  "searchParameters": {
+   "q": "Quà tặng sếp nam: Top 20 site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "[CÓ QUÀ TẶNG] COMBO Áo Polo Cổ Bẻ SỌC DỌC Vải Thun Cá ...",
+    "link": "https://shop.tiktok.com/vn/pdp/1735063772254144472",
+    "snippet": "Áo polo nam có cổ là item linh hoạt, dễ phối cùng quần jeans, quần âu, hoặc short – tạo nên những outfit nam tính, hiện đại mà không cần đầu tư quá nhiều thời ...",
+    "position": 1
+   },
+   {
+    "title": "Bí Quyết Giành Lợi Thế Trong Mọi Cuộc Đàm Phán - Alpha Books",
+    "link": "https://shop.tiktok.com/vn/pdp/thuong-luong-khong-nhan-nhuong-alpha-books-%C4%91am-phan-hieu-qua-giai-quyet-xung-%C4%91ot-tac-gia-r/1729430522758597585?source=anchor",
+    "snippet": "Thương Lượng Không Nhân NhượngTHÔNG TIN CHUNG·Tác giả: Roger Fisher, William Ury, Bruce Patton·Nhà xuất bản: NXB Thế Giới·Năm xuất bản: Tái bản 2025·Số ...",
+    "position": 2
+   },
+   {
+    "title": "Cá cay Trung Quốc - Đồ ăn vặt tứ xuyên hộp 20g - Snack",
+    "link": "https://shop.tiktok.com/vn/pdp/snack-ca-cay-tu-xuyen-hop-20g-huong-vi-dac-sac-tien-loi/1731500462698105195",
+    "snippet": "Cá cay Trung Quốc là món ăn vặt hấp dẫn đến từ tứ xuyên, được chế biến từ cá tươi ngon và gia vị đặc trưng.·Hương vị phong phú: Được ướp với nước sốt, ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 3
+   },
+   {
+    "title": "bộ đồ tập cho bé gái",
+    "link": "https://shop.tiktok.com/vn/k/bo-do-tap-cho-be-gai",
+    "snippet": "bộ đồ tập cho bé gái · A73 Sét Bé Gái Siêu Xinh Chất Dũi Nhăn Dính Nấm Nổi Áo Chạy Bèo Chất Mềm Mát Thoải Mái · A73 Sét Bé Gái Siêu Xinh Chất Dũi Nhăn Dính Nấm ...",
+    "position": 4
+   },
+   {
+    "title": "que cay bé có thiết kế liền nhau - Mỏng - dài",
+    "link": "https://shop.tiktok.com/vn/pdp/que-cay-sieu-lon-dai-cay-dai-say-kho-qua-tang-tre-em-khong-cay-lam/1732068072625244523",
+    "snippet": "Que cay siêu lớn - Dải cay siêu lớn, lát cay siêu dài sấy khô, dải cay trùm, đồ ăn vặt khổng lồ siêu lớn - dạng que cay có thiết kế 2 mảnh không liền nhau - que ...",
+    "rating": 4.2,
+    "ratingCount": 754,
+    "position": 5
+   },
+   {
+    "title": "Sách 50 Bài Học Cơ Bản Để Trở Thành Người Lịch Thiệp",
+    "link": "https://shop.tiktok.com/vn/pdp/sach-50-bai-hoc-co-ban-de-tro-nen-nguoi-lich-thiep-tan-viet/1729614149538908233",
+    "snippet": "Mua Sách 50 Bài Học Cơ Bản Để Trở Thành Người Lịch Thiệp - Tân Việt trên TikTok Shop. Săn giá siêu hời cho và được freeship mặt hàng đủ điều kiện.",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 6
+   },
+   {
+    "title": "AXIS•DENFLUX Túi Mù Vớ Tất Unisex Cotton Cao Cấp ...",
+    "link": "https://shop.tiktok.com/vn/pdp/axis-denflux-tui-mu-vo-tat-unisex-cotton-tarot-chua-lanh/1734014753182090254",
+    "snippet": "Mua AXIS•DENFLUX Túi Mù Vớ Tất Unisex Cotton Cao Cấp Kèm Thông Điệp Tarot Chữa Lành Độc Đáo Phụ Kiện Thời Trang Y2K Kèm Quà Tặng trên TikTok Shop.",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 7
+   },
+   {
+    "title": "[OFFICIAL FS] Lăn Khử Mùi COLORKEY ROSÉ Hỗ Trợ ...",
+    "link": "https://shop.tiktok.com/vn/pdp/official-lan-khu-mui-colorkey-rose-50ml-ho-tro-duong-sang-da/1733363365547312396",
+    "snippet": "Thông Tin Sản Phẩm✨ Tên Sản Phẩm: Lăn Khử Mùi COLORKEY ROSÉ Hỗ Trợ Dưỡng Sáng Dịu Nhẹ 50ml·Lăn khử mùi COLORKEY ROSÉ là sản phẩm hỗ trợ dưỡng sáng da dịu nhẹ.",
+    "rating": 4.8,
+    "ratingCount": 1093,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

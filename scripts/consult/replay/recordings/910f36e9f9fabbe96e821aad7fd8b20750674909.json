@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Máy xay cà phê có tay quay Máy xay cà phê thủ công nhỏ gọn Máy xay cà phê cầm tay site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:37:14.651Z",
+ "body": {
+  "searchParameters": {
+   "q": "Máy xay cà phê có tay quay Máy xay cà phê thủ công nhỏ gọn Máy xay cà phê cầm tay site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Máy xay cà phê cầm tay - Giá Tốt, Miễn Phí Vận Chuyển, ...",
+    "link": "https://shopee.vn/list/m%C3%A1y%20xay/c%C3%A0%20ph%C3%AA/c%E1%BA%A7m%20tay",
+    "snippet": "Với lõi xay bằng thép không gỉ đã qua xử lý CNC, máy đảm bảo áp lực đều lên hạt cà phê, giúp xay đều và mịn. Thiết kế nhỏ gọn và nhẹ của Shamjina làm cho nó trở ...",
+    "position": 1
+   },
+   {
+    "title": "Máy xay hạt cà phê WANCAI, Máy xay cà phê quay bằng ...",
+    "link": "https://shopee.vn/M%C3%A1y-xay-h%E1%BA%A1t-c%C3%A0-ph%C3%AA-WANCAI-M%C3%A1y-xay-c%C3%A0-ph%C3%AA-quay-b%E1%BA%B1ng-g%E1%BB%91m-th%E1%BB%A7-c%C3%B4ng-M%C3%A1y-xay-c%C3%A0-ph%C3%AA-c%E1%BA%A7m-tay-c%C3%B3-th%E1%BB%83-%C4%91i%E1%BB%81u-ch%E1%BB%89nh-k%C3%ADch-th%C6%B0%E1%BB%9Bc-h%E1%BA%A1t-Mini-m%C3%A0i-h%E1%BA%A1t-c%C3%A0-c%E1%BA%A7m-tay-c%C3%B3-th%E1%BB%83-th%C3%A1o-r%E1%BB%9Di-Du-l%E1%BB%8Bch-i.80060826.41807509004",
+    "snippet": "Máy xay hạt cà phê WANCAI, Máy xay cà phê quay bằng gốm thủ công, Máy xay cà phê cầm tay có thể điều chỉnh kích thước hạt Mini mài hạt cà cầm tay có thể tháo ...",
+    "position": 2
+   },
+   {
+    "title": "Máy xay hạt cà phê thủ công DAWEIF ...",
+    "link": "https://shopee.vn/M%C3%A1y-xay-h%E1%BA%A1t-c%C3%A0-ph%C3%AA-th%E1%BB%A7-c%C3%B4ng-DAWEIF-M%C3%A1y-xay-c%C3%A0-ph%C3%AA-c%E1%BA%A7m-tay-quay-h%E1%BA%A1t-g%E1%BB%97-c%E1%BA%A7m-tay-L%C3%B5i-m%C3%A0i-g%E1%BB%91m-Mini-Tay-c%E1%BA%A7m-c%C3%B3-th%E1%BB%83-th%C3%A1o-r%E1%BB%9Di-M%C3%A1y-xay-c%C3%A0-ph%C3%AA-Nh%C3%A0-b%E1%BA%BFp-i.455437050.47912162282",
+    "snippet": "Máy xay hạt cà phê thủ công DAWEIF, Máy xay cà phê cầm tay quay hạt gỗ cầm tay, Lõi mài gốm Mini Tay cầm có thể tháo rời Máy xay cà phê Nhà bếp.",
+    "position": 3
+   },
+   {
+    "title": "Máy xay cafe mini cầm tay",
+    "link": "https://shopee.vn/list/m%C3%A1y%20xay%20cafe/mini/c%E1%BA%A7m%20tay",
+    "snippet": "Máy Xay Cà Phê Cầm Tay KOUPHIN – Cối Xay Cà Phê Mini Gia Đình, Xay Hạt Thủ Công, Nhỏ Gọn Tiện Lợi ... Máy xay cà phê thủ công cầm tay mini 40 nấc lưỡi gốm 25G.",
+    "position": 4
+   },
+   {
+    "title": "Máy xay cà phê mini thép không gỉ ...",
+    "link": "https://shopee.vn/M%C3%A1y-xay-c%C3%A0-ph%C3%AA-mini-th%C3%A9p-kh%C3%B4ng-g%E1%BB%89-m%C3%A1y-xay-c%C3%A0-ph%C3%AA-c%E1%BA%A7m-tay-%C4%91a-n%C4%83ng-ch%E1%BA%A5t-l%C6%B0%E1%BB%A3ng-cao-i.199624988.29252027706",
+    "snippet": "1/15. 5 phân loại có sẵn. 729.000₫-759.000₫. 839.000₫ - 869.000₫. -13%. Máy xay cà phê mini thép không gỉ, máy xay cà phê cầm tay đa năng chất lượng cao.",
+    "rating": 4.9,
+    "ratingCount": 523,
+    "position": 5
+   },
+   {
+    "title": "Máy xay cà phê quay tay NUOMI, Máy xay hạt cà phê lõi ...",
+    "link": "https://shopee.vn/M%C3%A1y-xay-c%C3%A0-ph%C3%AA-quay-tay-NUOMI-M%C3%A1y-xay-h%E1%BA%A1t-c%C3%A0-ph%C3%AA-l%C3%B5i-m%C3%A0i-b%E1%BA%B1ng-g%E1%BB%91m-th%E1%BB%A7-c%C3%B4ng-M%C3%A1y-m%C3%A0i-h%E1%BA%A1t-Mini-c%C3%B3-th%E1%BB%83-%C4%91i%E1%BB%81u-ch%E1%BB%89nh-k%C3%ADch-th%C6%B0%E1%BB%9Bc-h%E1%BA%A1t-c%C3%B3-th%E1%BB%83-th%C3%A1o-r%E1%BB%9Di-M%C3%A1y-m%C3%A0i-h%E1%BA%A1t-c%C3%A0-ph%C3%AA-c%E1%BA%A7m-tay-c%E1%BA%AFm-tr%E1%BA%A1i-i.1261405943.54656403402",
+    "snippet": "Máy xay cà phê quay tay NUOMI, Máy xay hạt cà phê lõi mài bằng gốm thủ công, Máy mài hạt Mini có thể điều chỉnh kích thước hạt có thể tháo rời Máy mài hạt ...",
+    "position": 6
+   },
+   {
+    "title": "7iln11c4_q, Cửa hàng trực tuyến",
+    "link": "https://shopee.vn/7iln11c4_q?tab=5",
+    "snippet": "Máy xay cà phê thủ công, máy xay cà phê hạt bằng tay quay bằng gỗ có thể điều chỉnh độ mịn ...",
+    "position": 7
+   },
+   {
+    "title": "Máy xay cà phê quay tay COLLARESSQQ ...",
+    "link": "https://shopee.vn/M%C3%A1y-xay-c%C3%A0-ph%C3%AA-quay-tay-COLLARESSQQ-M%C3%A1y-xay-c%C3%A0-ph%C3%AA-c%C3%B3-th%E1%BB%83-%C4%91i%E1%BB%81u-ch%E1%BB%89nh-k%C3%ADch-th%C6%B0%E1%BB%9Bc-c%C3%B3-tay-c%E1%BA%A7m-b%E1%BA%B1ng-th%C3%A9p-kh%C3%B4ng-g%E1%BB%89-M%C3%A1y-xay-c%C3%A0-ph%C3%AA-th%E1%BB%A7-c%C3%B4ng-M%C3%A1y-xay-c%C3%A0-ph%C3%AA-b%E1%BA%B1ng-g%E1%BB%97-kh%C3%B4ng-tr%C6%B0%E1%BB%A3t-b%E1%BA%B1ng-g%E1%BB%91m-h%C3%ACnh-n%C3%B3n-Burr-i.1891557690.55366504114?extraParams=%7B%22display_model_id%22%3A371405221741%2C%22model_selection_logic%22%3A3%7D",
+    "snippet": "Máy xay cà phê quay tay COLLARESSQQ, Máy xay cà phê có thể điều chỉnh kích thước có tay cầm bằng thép không gỉ Máy xay cà phê thủ công, Máy xay cà phê bằng gỗ ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

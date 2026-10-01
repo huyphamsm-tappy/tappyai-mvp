@@ -1,0 +1,83 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Những người yêu thích cà phê Quà tặng cho nam giới site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:14:55.207Z",
+ "body": {
+  "searchParameters": {
+   "q": "Những người yêu thích cà phê Quà tặng cho nam giới site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Set Nước Hoa RIVA 3 Mùi Hot Trend | Quà Tặng Bạn Gái ...",
+    "link": "https://shop.tiktok.com/vn/pdp/1734294031779661184",
+    "snippet": "Nước hoa Riva RED VELVET - Mùi hương sexy , sang chảnh , cuốn hút , lưu hương lâu , phù hợp cho những bữa tiệc. 0 sold.",
+    "position": 1
+   },
+   {
+    "title": "Áp Phích Họa Sĩ Lặn Cà Phê, Tranh Vải ...",
+    "link": "https://shop.tiktok.com/vn/pdp/tranh-canvas-nghe-thuat-treo-tuong-lan-ca-phe-cho-nha-bep/1731146099446547896",
+    "snippet": "Xin lưu ý:1. nó được in bằng máy trên vải.2.Do màn hình khác nhau, có thể có một chút khác biệt về màu sắc.3. kích thước đo bằng tay, có thể có lỗi 1-2 cm.4 ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 2
+   },
+   {
+    "title": "Đồ Chơi Nhồi Bông Hình Rắn Cho Bé Thiết Kế Dễ Thương ...",
+    "link": "https://shop.tiktok.com/vn/pdp/1732083549479732834",
+    "snippet": "Màng mặt nạ Cổ dùng một lần, 100 gói, Bọc nhựa siêu mỏng, cho huyết thanh Spa và chăm sóc chống lão hóa, Nhẹ như lông vũ và khóa ấm!",
+    "date": "14 thg 8, 2026",
+    "position": 3
+   },
+   {
+    "title": "Ghim Tráng Men Hình Anime, Phụ Kiện Huy Hiệu Áo ...",
+    "link": "https://shop.tiktok.com/vn/pdp/ghim-trang-men-hinh-anime-phu-kien-huy-hieu-kim-loai-meo-con-punk-chat-luong-cao/1732004764429683058",
+    "snippet": "Ghim Trâm Cài, Người Yêu Sách Tráng Men, Mèo Đen Trắng Dễ Thương, Trâm ... Quà Tặng Cho Học Sinh, Hàng Đầu 1. 5. 19 sold. ₫38.121 ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 4
+   },
+   {
+    "title": "Đệm đầu gối bằng bông, ấm áp, thích hợp cho chân lạnh ...",
+    "link": "https://shop.tiktok.com/vn/pdp/dem-dau-goi-bong-am-ap-bao-ve-khop-phu-hop-moi-lua-tuoi/1732033242736592109",
+    "snippet": "【Mua một tặng ba 】Bút kẻ mày Mkingpretty hình thanh vàng. Đây là bút chì kẻ mày hai đầu siêu mỏng, rất phù hợp cho người mới bắt đầu và không cần tẩy rửa (xả ...",
+    "rating": 2.8,
+    "ratingCount": 6,
+    "position": 5
+   },
+   {
+    "title": "Vòng Tay Ngọc Hòa Điền Tự Nhiên Mix Bạc S925",
+    "link": "https://shop.tiktok.com/vn/pdp/1734334577903306531",
+    "snippet": "Sản phẩm là món quà ý nghĩa, phù hợp cho những người yêu thích sự tinh tế và duyên dáng. Đặc Điểm Nổi BậtVòng tay có thiết kế mix giữa ngọc hòa điền tự ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 6
+   },
+   {
+    "title": "quà tặng thầy cô 20 tháng 11 lưu niệm",
+    "link": "https://shop.tiktok.com/vn/k/qua-tang-thay-co-20-thang-11-luu-niem",
+    "snippet": "【Bear Chef】Quà tặng ngày nhà giáo 20/11 cốc sứ Ly sứ có nắp 400ml thích hợp làm quà tặng đi kèm có muỗng chất lượng cao cấp.",
+    "position": 7
+   },
+   {
+    "title": "CÀ PHÊ CHỒN BỘT HƯƠNG CHỒN DAKLAK, GÓI 500G",
+    "link": "https://shop.tiktok.com/vn/pdp/1732929447430817676",
+    "snippet": "Lựa chọn ; Cà phê hòa tan Phil - Thơm, đậm, sánh hơn ko trước · 31 sold · 82.000 ; CÀ PHÊ NGUYÊN HUY SỐ 1, GÓI 500G. 88 sold · 68.000 ; Cà phê chồn (ngon) Nguyên Tùng ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,137 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "TOP 15 món quà tặng sinh nhật sếp nam đẳng cấp, ấn tượng",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:36:53.235Z",
+ "body": {
+  "searchParameters": {
+   "q": "TOP 15 món quà tặng sinh nhật sếp nam đẳng cấp, ấn tượng",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "TOP 15 món quà tặng sinh nhật sếp nam đẳng cấp, ấn tượng",
+    "imageUrl": "https://cdn11.dienmaycholon.vn/filewebdmclnew/public/userupload/files/qua-tang-sinh-nhat-sep-nam.jpg",
+    "imageWidth": 743,
+    "imageHeight": 508,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT9Mclo0k_TFOLUq3k7LV8uzrDJxjE73-U7pXLv-_DA6Q&s=10",
+    "thumbnailWidth": 540,
+    "thumbnailHeight": 370,
+    "source": "dienmaycholon.com",
+    "domain": "dienmaycholon.com",
+    "link": "https://dienmaycholon.com/kinh-nghiem-mua-sam/top-15-mon-qua-tang-sinh-nhat-sep-nam-dang-cap-an-tuong-nhat",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn11.dienmaycholon.vn%2Ffilewebdmclnew%2Fpublic%2Fuserupload%2Ffiles%2Fqua-tang-sinh-nhat-sep-nam.jpg&tbnid=xkYQfpxOmOPTlM&imgrefurl=https%3A%2F%2Fdienmaycholon.com%2Fkinh-nghiem-mua-sam%2Ftop-15-mon-qua-tang-sinh-nhat-sep-nam-dang-cap-an-tuong-nhat&docid=B0scfb1HATqmSM&w=743&h=508",
+    "position": 1
+   },
+   {
+    "title": "TOP 15 món quà tặng sinh nhật sếp nam đẳng cấp, ấn tượng",
+    "imageUrl": "https://cdn11.dienmaycholon.vn/filewebdmclnew/public/userupload/files/qua-tang-sinh-nhat-sep-nam-4.jpg",
+    "imageWidth": 600,
+    "imageHeight": 400,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6CNjR5KlOtDYzXmS7h-GVSiwiIuvo8Uut9VS-lFqrJQ&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "dienmaycholon.com",
+    "domain": "dienmaycholon.com",
+    "link": "https://dienmaycholon.com/kinh-nghiem-mua-sam/top-15-mon-qua-tang-sinh-nhat-sep-nam-dang-cap-an-tuong-nhat",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn11.dienmaycholon.vn%2Ffilewebdmclnew%2Fpublic%2Fuserupload%2Ffiles%2Fqua-tang-sinh-nhat-sep-nam-4.jpg&tbnid=y8pFg4JxTypCEM&imgrefurl=https%3A%2F%2Fdienmaycholon.com%2Fkinh-nghiem-mua-sam%2Ftop-15-mon-qua-tang-sinh-nhat-sep-nam-dang-cap-an-tuong-nhat&docid=B0scfb1HATqmSM&w=600&h=400",
+    "position": 2
+   },
+   {
+    "title": "15+ quà tặng sếp nam tinh tế, giúp bạn tạo ấn tượng tốt với sếp",
+    "imageUrl": "https://cdn2.fptshop.com.vn/unsafe/1920x0/filters:format(webp):quality(75)/qua_tang_sep_nam_thumb_80521530a4.jpg",
+    "imageWidth": 1920,
+    "imageHeight": 1280,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQCCu2AvbCXQeXO4WO0Dqri3HoGBzCsqblM122l1Lq7A&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "FPT Shop",
+    "domain": "fptshop.com.vn",
+    "link": "https://fptshop.com.vn/tin-tuc/dien-may/qua-tang-sep-nam-165279",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.fptshop.com.vn%2Funsafe%2F1920x0%2Ffilters%3Aformat(webp)%3Aquality(75)%2Fqua_tang_sep_nam_thumb_80521530a4.jpg&tbnid=nXOqCDY54RXhVM&imgrefurl=https%3A%2F%2Ffptshop.com.vn%2Ftin-tuc%2Fdien-may%2Fqua-tang-sep-nam-165279&docid=TWHsHb4t21HFAM&w=1920&h=1280",
+    "position": 3
+   },
+   {
+    "title": "TOP 15 quà tặng sếp cực sang trọng, tạo ấn tượng tốt",
+    "imageUrl": "https://cdn11.dienmaycholon.vn/filewebdmclnew/public/userupload/files/qua-tang-cho-sep-ruou-vang.png",
+    "imageWidth": 800,
+    "imageHeight": 533,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGlulGrPKn_DHS0TQCKNtuF-bALPrxJz4cAAUsCz0cVA&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "Dienmaycholon",
+    "domain": "dienmaycholon.com",
+    "link": "https://dienmaycholon.com/kinh-nghiem-mua-sam/top-15-qua-tang-sep-cuc-sang-trong-tao-an-tuong-tot",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn11.dienmaycholon.vn%2Ffilewebdmclnew%2Fpublic%2Fuserupload%2Ffiles%2Fqua-tang-cho-sep-ruou-vang.png&tbnid=UUQ5H23MlLiQLM&imgrefurl=https%3A%2F%2Fdienmaycholon.com%2Fkinh-nghiem-mua-sam%2Ftop-15-qua-tang-sep-cuc-sang-trong-tao-an-tuong-tot&docid=s8DDY1lebgVG-M&w=800&h=533",
+    "position": 4
+   },
+   {
+    "title": "20 Gợi ý quà tặng sinh nhật sếp nam lịch sự và ấn tượng - SagoGifts",
+    "imageUrl": "https://sagogifts.vn/wp-content/uploads/tang-qua-sinh-nhat-cho-sep-hop-dung-xi-ga.jpg",
+    "imageWidth": 800,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRitsz8lHV80oq6Ps26Iu1edFZ_Kq9z1p6xL4AoAbJ4hg&s=10",
+    "thumbnailWidth": 515,
+    "thumbnailHeight": 388,
+    "source": "SagoGifts",
+    "domain": "sagogifts.vn",
+    "link": "https://sagogifts.vn/qua-tang-sinh-nhat-sep-nam/?srsltid=AU7gw4UGOAVzXn6LkIGB8PkkVJ6QHe4jQLjWbma0OGSCPd4HWo1W_7Xy",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fsagogifts.vn%2Fwp-content%2Fuploads%2Ftang-qua-sinh-nhat-cho-sep-hop-dung-xi-ga.jpg&tbnid=z6CEbYcYm3ZWoM&imgrefurl=https%3A%2F%2Fsagogifts.vn%2Fqua-tang-sinh-nhat-sep-nam%2F%3Fsrsltid%3DAU7gw4UGOAVzXn6LkIGB8PkkVJ6QHe4jQLjWbma0OGSCPd4HWo1W_7Xy&docid=un565hBcT5qeXM&w=800&h=600",
+    "creator": "SagoGifts, sagogifts.vn",
+    "position": 5
+   },
+   {
+    "title": "15+ gợi ý tinh tế mua quà tặng sếp nam ghi điểm tuyệt đối",
+    "imageUrl": "https://cdn.watchstore.vn/wp-content/uploads/2025/06/dac-san-vung-mien-tinh-te.jpg",
+    "imageWidth": 1100,
+    "imageHeight": 660,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSt8JMwup7PiLVph9QlJv-7GD0_TS7cKyQiWKfO_8mPYg&s=10",
+    "thumbnailWidth": 713,
+    "thumbnailHeight": 429,
+    "source": "WatchStore",
+    "domain": "www.watchstore.vn",
+    "link": "https://www.watchstore.vn/tu-van-chon-mua/mua-qua-tang-sep-nam/?srsltid=AU7gw4Wh4jnmu_umKk40CwGrhDwrjWfx7gWZD2gllOubxalrVosRpgSd",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.watchstore.vn%2Fwp-content%2Fuploads%2F2025%2F06%2Fdac-san-vung-mien-tinh-te.jpg&tbnid=P2i68FjAdnyqJM&imgrefurl=https%3A%2F%2Fwww.watchstore.vn%2Ftu-van-chon-mua%2Fmua-qua-tang-sep-nam%2F%3Fsrsltid%3DAU7gw4Wh4jnmu_umKk40CwGrhDwrjWfx7gWZD2gllOubxalrVosRpgSd&docid=QCRAUlZCm8rM_M&w=1100&h=660",
+    "position": 6
+   },
+   {
+    "title": "Top 25 món quà tặng sếp nam sang trọng & ý nghĩa 2026",
+    "imageUrl": "https://statics.vinpearl.com/qua-tang-sep-nam%200_1683807725.jpg",
+    "imageWidth": 750,
+    "imageHeight": 750,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQhaiodBguFuAz3EVdfL-bU5n8crBfleEzcxYTD2O6LOQ&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Vinpearl",
+    "domain": "vinpearl.com",
+    "link": "https://vinpearl.com/vi/qua-tang-sep-nam-tinh-te",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fstatics.vinpearl.com%2Fqua-tang-sep-nam%25200_1683807725.jpg&tbnid=DyyF6gHhMF26eM&imgrefurl=https%3A%2F%2Fvinpearl.com%2Fvi%2Fqua-tang-sep-nam-tinh-te&docid=yiaTnQwTZi0yhM&w=750&h=750",
+    "position": 7
+   },
+   {
+    "title": "Quà tặng sinh nhật sếp nam: 30 gợi ý tinh tế kèm nơi mua uy tín | AEON MALL  Tân Phú Celadon - Điểm vui chơi và mua sắm tuyệt vời cho",
+    "imageUrl": "https://aeonmall-review-rikkei.cdn.vccloud.vn/public/wp/16/editors/dttJ4Nit8WRUFIX445zl7KbubUld1uxxI7i86qMy.jpg",
+    "imageWidth": 2048,
+    "imageHeight": 2048,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTYrVAGLIOuM-Nj0_J3LanPnA9-B0Y-thxfe9e1RlBXZw&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "AEON MALL Tân Phú Celadon",
+    "domain": "aeonmall-tanphuceladon.com.vn",
+    "link": "https://aeonmall-tanphuceladon.com.vn/tin-tuc/qua-tang-sinh-nhat-sep-nam-30-goi-y-tinh-te-kem-noi-mua-uy-tin.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Faeonmall-review-rikkei.cdn.vccloud.vn%2Fpublic%2Fwp%2F16%2Feditors%2FdttJ4Nit8WRUFIX445zl7KbubUld1uxxI7i86qMy.jpg&tbnid=AW2JU067T0mIzM&imgrefurl=https%3A%2F%2Faeonmall-tanphuceladon.com.vn%2Ftin-tuc%2Fqua-tang-sinh-nhat-sep-nam-30-goi-y-tinh-te-kem-noi-mua-uy-tin.html&docid=mlHK0mS_zZ_4oM&w=2048&h=2048",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

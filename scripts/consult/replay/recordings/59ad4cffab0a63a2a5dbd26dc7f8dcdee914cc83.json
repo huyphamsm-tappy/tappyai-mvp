@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Ốp lưng iPhone 17 Pro Max UAG Essential Armor MagSafe không màu đen dưới 1 triệu (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:03:32.372Z",
+ "body": {
+  "searchParameters": {
+   "q": "Ốp lưng iPhone 17 Pro Max UAG Essential Armor MagSafe không màu đen dưới 1 triệu (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Essential ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-17-pro-max-uag-essential-armor-with-magsafe.html",
+    "snippet": "Ốp lưng iPhone 17 Pro Max UAG Essential Armor With Magsafe sở hữu thiết kế siêu bền, kết hợp lõi hấp thụ lực cùng viền nhô cao bảo vệ camera và màn hình. Sản ...",
+    "position": 1
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Pathfinder Se ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-17-pro-max-uag-pathfinder-se-with-magsafe.html",
+    "snippet": "Ốp lưng iPhone 17 Pro Max UAG Essential Armor With Magsafe sở hữu thiết kế siêu bền, kết hợp lõi hấp thụ lực cùng viền nhô cao bảo vệ camera và màn hình. Sản ...",
+    "position": 2
+   },
+   {
+    "title": "Ốp lưng iPhone 16 Pro Max UAG chống sốc Essential ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-16-pro-max-uag-essential-armor-magsafe.html",
+    "snippet": "Ốp lưng iPhone 16 Pro Max UAG Essential Armor Magsafe được thiết kế với cấu trúc đúc liền cùng lớp lõi mềm chống va đập, bảo vệ toàn diện cho thiết bị.",
+    "position": 3
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Plasma Xte ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-17-pro-max-uag-plasma-xte-with-magsafe.html",
+    "snippet": "Dùng được cho. iPhone 17 Pro Max. Tính năng. Tương thích MagSafe. Siêu nhẹ. Chân đế kim loại tích hợp. Khả năng chống rơi từ độ cao 6m",
+    "position": 4
+   },
+   {
+    "title": "Ốp lưng iPhone Air UAG chống sốc Essential Armor With ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-air-uag-chong-soc-essential-armor-with-magsafe.html",
+    "snippet": "Ốp lưng iPhone Air UAG chống sốc Essential Armor with MagSafe đạt chuẩn quân đội, bảo vệ điện thoại trước va đập hiệu quả. Phụ kiện được làm từ vật liệu ...",
+    "position": 5
+   },
+   {
+    "title": "Ốp lưng UAG chống sốc Pathfinder cho Apple iPhone 12 ...",
+    "link": "https://cellphones.com.vn/op-lung-uag-chong-soc-pathfinder-cho-iphone-12-max-pro.html",
+    "snippet": "Ốp lưng UAG chống sốc Pathfinder cho Apple iPhone 12 Max/Pro - Chống sốc an toàn · Chất liệu nhựa cao cấp bền bỉ, thiết kế vừa vặn với mặt lưng · Đạt chuẩn chống ...",
+    "position": 6
+   },
+   {
+    "title": "Ốp lưng iPhone 15 Pro Max UAG chống sốc Plyo hỗ trợ ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-15-pro-max-uag-plyo-with-magsafe.html",
+    "snippet": "Ốp lưng iPhone 15 Pro Max UAG chống sốc Plyo hỗ trợ sạc Magsafe ; Smember Giảm thêm đến 46.000đ ; Giá sản phẩm. 1.300.000đ 910.000đ ; Danh sách Cookies. Việc từ ...",
+    "rating": 5,
+    "ratingCount": 2,
+    "position": 7
+   },
+   {
+    "title": "Ốp lưng UAG cho iPhone 16 (Plus, Pro, Pro Max) giá tốt",
+    "link": "https://cellphones.com.vn/phu-kien/bao-da-op-lung/iphone/iphone-16-series/uag.html",
+    "snippet": "Ốp lưng UAG iPhone 16 Series là sự lựa chọn hoàn hảo cho những ai yêu thích sự mạnh mẽ và bền bỉ. Với thiết kế đặc trưng và chất liệu cao cấp, UAG một lần nữa ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

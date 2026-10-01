@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Ambassador Inn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:31:37.974Z",
+ "body": {
+  "searchParameters": {
+   "q": "Ambassador Inn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Hotel Ambassador Inn, Termas de Río Hondo (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/680366060.jpg?k=bd8ab01d665ddd7616bd61a57d39dcc98f97acbd093901643eae98af7b3f6a27&o=",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGXZ7QwvDenolxVKIh6VXzlVIZ9RN2Of0BLUHdtf-jeA&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "www.booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/ar/ambassador-inn.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F680366060.jpg%3Fk%3Dbd8ab01d665ddd7616bd61a57d39dcc98f97acbd093901643eae98af7b3f6a27%26o%3D&tbnid=DkByNfWY9Wh9hM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Far%2Fambassador-inn.vi.html&docid=wx65ug7cAHF1CM&w=1024&h=683",
+    "position": 1
+   },
+   {
+    "title": "THE AMBASSADOR INN - Hotel Reviews (Ocean City, MD)",
+    "imageUrl": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0b/6a/6c/81/building.jpg?w=900&h=500&s=1",
+    "imageWidth": 864,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIJ9RWHM0Nh0aqvunogi4p6emKtHORCHcBlHuoLZGHKw&s=10",
+    "thumbnailWidth": 588,
+    "thumbnailHeight": 340,
+    "source": "Tripadvisor",
+    "domain": "www.tripadvisor.com",
+    "link": "https://www.tripadvisor.com/Hotel_Review-g41298-d1644503-Reviews-The_Ambassador_Inn-Ocean_City_Maryland.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdynamic-media-cdn.tripadvisor.com%2Fmedia%2Fphoto-o%2F0b%2F6a%2F6c%2F81%2Fbuilding.jpg%3Fw%3D900%26h%3D500%26s%3D1&tbnid=VP_CmUWL6Mk6JM&imgrefurl=https%3A%2F%2Fwww.tripadvisor.com%2FHotel_Review-g41298-d1644503-Reviews-The_Ambassador_Inn-Ocean_City_Maryland.html&docid=bzSAX_WwfwZk3M&w=864&h=500",
+    "position": 2
+   },
+   {
+    "title": "Ambassador Inn, Kissimmee (updated prices 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/403832973.jpg?k=beba5c8c84fce0d129a1ed84a2e51a262ceb15e8543c502fa42086de1a2b37d3&o=",
+    "imageWidth": 576,
+    "imageHeight": 768,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQL7zmO7hr4VAftf7HtxDbIokRqezvFHfRsYwcR9OFAdQ&s=10",
+    "thumbnailWidth": 480,
+    "thumbnailHeight": 640,
+    "source": "www.booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/us/ambassador-inn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F403832973.jpg%3Fk%3Dbeba5c8c84fce0d129a1ed84a2e51a262ceb15e8543c502fa42086de1a2b37d3%26o%3D&tbnid=o-undTXad31HOM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fus%2Fambassador-inn.html&docid=HMJKYBfHDPpMnM&w=576&h=768",
+    "position": 3
+   },
+   {
+    "title": "Ambassador Inn",
+    "imageUrl": "https://ambassadorinnflorida.com/img/the-town-01.jpg",
+    "imageWidth": 1200,
+    "imageHeight": 900,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIFS6YHhHm92z5WEMhiSTYiHEMhRA7EqF5dBS3t7p1HQ&s=10",
+    "thumbnailWidth": 515,
+    "thumbnailHeight": 388,
+    "source": "ambassadorinnflorida.com",
+    "domain": "ambassadorinnflorida.com",
+    "link": "https://ambassadorinnflorida.com/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fambassadorinnflorida.com%2Fimg%2Fthe-town-01.jpg&tbnid=genT0ZEs8skw3M&imgrefurl=https%3A%2F%2Fambassadorinnflorida.com%2F&docid=irbZhPDK5HZGjM&w=1200&h=900",
+    "position": 4
+   },
+   {
+    "title": "AMBASSADOR INN (Alhambra) - Đánh giá Nhà trọ - Tripadvisor",
+    "imageUrl": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/06/b1/b0/1f/ambassador-inn.jpg?w=500&h=-1&s=1",
+    "imageWidth": 500,
+    "imageHeight": 373,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHbYlJRg5fYd_6rsTK1po7azJmjXn3ZAJcpAnXyDXjRA&s",
+    "thumbnailWidth": 259,
+    "thumbnailHeight": 194,
+    "source": "Tripadvisor",
+    "domain": "www.tripadvisor.com.vn",
+    "link": "https://www.tripadvisor.com.vn/Hotel_Review-g29078-d1223721-Reviews-Ambassador_Inn-Alhambra_California.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdynamic-media-cdn.tripadvisor.com%2Fmedia%2Fphoto-o%2F06%2Fb1%2Fb0%2F1f%2Fambassador-inn.jpg%3Fw%3D500%26h%3D-1%26s%3D1&tbnid=SElSsth6odliWM&imgrefurl=https%3A%2F%2Fwww.tripadvisor.com.vn%2FHotel_Review-g29078-d1223721-Reviews-Ambassador_Inn-Alhambra_California.html&docid=NjDGo1Qt-3xewM&w=500&h=373",
+    "position": 5
+   },
+   {
+    "title": "Ambassador Inn & Suites Tuscaloosa University I-20, Tuscaloosa (updated  prices 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max500/735801561.jpg?k=e48a2a0edbee68e36b4c840860cac8cd883c5c6e46dbd4cafd8a02ed01280971&o=&hp=1",
+    "imageWidth": 500,
+    "imageHeight": 333,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBcXAcVsSjMazVoA4le7IqQR6nJ2LnZez18Cc82KQ0vQ&s=10",
+    "thumbnailWidth": 500,
+    "thumbnailHeight": 333,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/us/ambassador-inn-suites.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax500%2F735801561.jpg%3Fk%3De48a2a0edbee68e36b4c840860cac8cd883c5c6e46dbd4cafd8a02ed01280971%26o%3D%26hp%3D1&tbnid=TX4yo5r3FxDzOM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fus%2Fambassador-inn-suites.html&docid=O9Q4rUqVIJxocM&w=500&h=333",
+    "position": 6
+   },
+   {
+    "title": "Ambassador Inn & Suites | Official Site - Book Direct",
+    "imageUrl": "https://images.squarespace-cdn.com/content/v1/62700615a4e3fd4861ba19c6/026f5f80-c239-4d7a-8328-38a7595d2cc5/DSC03149-min.jpg",
+    "imageWidth": 1000,
+    "imageHeight": 667,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRZUX8pQe-v82Ni1UHGksogX2dE6Yk0jXPTmvKx6vmWbQ&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "www.ambassadorcapecod.com",
+    "domain": "www.ambassadorcapecod.com",
+    "link": "https://www.ambassadorcapecod.com/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimages.squarespace-cdn.com%2Fcontent%2Fv1%2F62700615a4e3fd4861ba19c6%2F026f5f80-c239-4d7a-8328-38a7595d2cc5%2FDSC03149-min.jpg&tbnid=lb6b8cKgQaWMSM&imgrefurl=https%3A%2F%2Fwww.ambassadorcapecod.com%2F&docid=8O7C32iLDLBXCM&w=1000&h=667",
+    "position": 7
+   },
+   {
+    "title": "Ambassador INN Tafila, Jordan: Agoda.com có giá rẻ nhất",
+    "imageUrl": "https://q-xx.bstatic.com/xdata/images/hotel/max500/744033964.jpg?k=d76343be70adcfdc85bf988a1dd734ec9022ed78cce458993b397bdb27449106&o=",
+    "imageWidth": 399,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQktLmYX3Mngem3Jr6Ys6iTM9J13Sis75e0_Alw7gDjfg&s",
+    "thumbnailWidth": 200,
+    "thumbnailHeight": 251,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/ambassador-inn/hotel/tafila-jo.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fq-xx.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax500%2F744033964.jpg%3Fk%3Dd76343be70adcfdc85bf988a1dd734ec9022ed78cce458993b397bdb27449106%26o%3D&tbnid=tmlvekI9MH2qUM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fambassador-inn%2Fhotel%2Ftafila-jo.html&docid=ehZ2305WJrBlLM&w=399&h=500",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

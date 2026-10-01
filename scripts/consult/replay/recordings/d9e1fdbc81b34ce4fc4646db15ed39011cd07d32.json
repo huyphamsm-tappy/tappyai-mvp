@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"HP ZBook Firefly 14 G7 i7-10510U Máy trạm di động 35\" OR \"Laptop Dell Inspiron 15 3520\" OR \"Dell Latitude 7410 (i7 Gen 10)\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:15:34.469Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"HP ZBook Firefly 14 G7 i7-10510U Máy trạm di động 35\" OR \"Laptop Dell Inspiron 15 3520\" OR \"Dell Latitude 7410 (i7 Gen 10)\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Dell Latitude 7410 – i7 Gen 10 | RAM 16GB | SSD 256GB",
+    "link": "https://www.tiktok.com/@lap5sao2026/video/7679474743854075144",
+    "snippet": "Dell Latitude 7410 – i7 Gen 10 | RAM 16GB | SSD 256GB | Màn hình 14\" FHD CHỈ: 8tr500k (Giảm thêm 250k) + Bảo hành VIP CHÚ Ý: Máy ...",
+    "position": 1
+   },
+   {
+    "title": "Laptop Dell Inspiron 15 3520: Deal Hời Black Friday",
+    "link": "https://www.tiktok.com/@hoanghamobileoffical/video/7577635574564097301",
+    "snippet": "Khám phá deal laptop Dell Inspiron 15 3520 siêu hấp dẫn với cấu hình mạnh, giá chỉ dưới 15 triệu! #hoanghamobile #yeucongnghe #review # ...",
+    "position": 2
+   },
+   {
+    "title": "Review Laptop Dell Inspiron 15 3520 Cảm Ứng Mới Nhất",
+    "link": "https://www.tiktok.com/@laptop24h/video/7477880626218126600",
+    "snippet": "Review Laptop Dell Inspiron 15 3520 Cảm Ứng Mới Nhất. Khám phá Dell Inspiron 15 3520 i5 gen 12 với màn hình cảm ứng. Đánh giá chi tiết và ...",
+    "position": 3
+   },
+   {
+    "title": "Laptop Dell Inspiron 15 3520 - Giá Rẻ với Hiệu Suất Cao",
+    "link": "https://www.tiktok.com/@n.trungdinh/photo/7542365327041056021",
+    "snippet": "Laptop Dell Inspiron 15 3520 - Giá Rẻ với Hiệu Suất Cao. Mua ngay laptop Dell Inspiron 15 3520 đẹp 99% với CPU i5, RAM 8GB và SSD 512GB. Hỗ trợ trả góp 0% và ...",
+    "position": 4
+   },
+   {
+    "title": "Dell Latitude 5450 Laptop with Core Ultra 7 Processor",
+    "link": "https://www.tiktok.com/@amtcomputers/video/7561123545414126856",
+    "snippet": "Laptop Dell Inspiron 15 3520 I3 1215u 512gb 16gb Ram · Laptop Moderness Lt1505 16 512g 156 19201080p Windows 11 · Rekomendasi Laptop Touch ...",
+    "position": 5
+   },
+   {
+    "title": "Laptop Dell Inspiron 15 3520: Estudios y Oficina",
+    "link": "https://www.tiktok.com/@emmtec_/video/7630921771704716551",
+    "snippet": "Laptop Dell Inspiron 15 3520: Estudios y Oficina. Descubre la Dell Inspiron 15 3520: ideal para estudios, universidad y trabajo. Rendimiento ...",
+    "position": 6
+   },
+   {
+    "title": "Bài học đắt giá khi dùng laptop Dell",
+    "link": "https://www.tiktok.com/@laptopchaywin/video/7632662035368660245",
+    "snippet": "Laptop Dell Inspiron 15 3520 I3 1215u 512gb 16gb Ram · Pap Laptop · The Best Laptop · Laptop Dell Inspiron 3520 Review Teclado Iluminado · Dell ...",
+    "position": 7
+   },
+   {
+    "title": "Laptop Dell Inspiron 15 3520 của khách bị lỗi cắm sạc ...",
+    "link": "https://www.tiktok.com/@sualaptopphunggia79/video/7655619347678760210",
+    "snippet": "Laptop Dell Inspiron 15 3520 của khách bị lỗi cắm sạc không nhận. Nhận sửa các lỗi: ○Laptop không lên nguồn ○Sạc không vào pin ○Màn hình ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

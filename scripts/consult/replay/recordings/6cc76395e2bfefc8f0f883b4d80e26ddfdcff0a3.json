@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Phở Khánh\" OR \"Phở Dịu\" OR \"Phở Hùng\" quan 1 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:38:47.825Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Phở Khánh\" OR \"Phở Dịu\" OR \"Phở Hùng\" quan 1 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tập 2 Trong Series 100 Quán Phở Ngon",
+    "link": "https://www.tiktok.com/@pika_laca/video/7601097197425478933",
+    "snippet": "Khám Phá Phở Hùng - Tập 2 Trong Series 100 Quán Phở Ngon. Chìm đắm trong hương vị Phở Hùng, một trong 100 quán phở ngon tại Sài Gòn! Trải ...",
+    "position": 1
+   },
+   {
+    "title": "Trả lời @Rosaisred Phở Hùng (Quận 1) lọt top MICHELIN ...",
+    "link": "https://www.tiktok.com/@nhandian/video/7243072482138230021",
+    "snippet": "Trả lời @Rosaisred Phở Hùng (Quận 1) lọt top MICHELIN ở Sài Gòn, ai thích ăn phở chuẩn miền Nam mà mở tới 3h sáng thì lưu lại :)) # ...",
+    "position": 2
+   },
+   {
+    "title": "Phở Khánh Sài Gòn — Quán phở ngon đáng thử (Tập 32)",
+    "link": "https://www.tiktok.com/@pika_laca/video/7670503031095495957",
+    "snippet": "Phở Hùng Gù Hà Đông · Phở Lộc Bình. Phở Khánh Sài Gòn — Quán phở ngon đáng thử (Tập 32). Lead Phở Khánh được giới thiệu trong Series 100 quán ...",
+    "position": 3
+   },
+   {
+    "title": "Ăn thử phở Hùng và phở Hiền cạnh nhau: Quán nào ngon ...",
+    "link": "https://www.tiktok.com/@quanvuive2307/video/7458643600339995922",
+    "snippet": "Phở Hiền thắng ở sợi phở mỏng và giá cả phải chăng, trong khi Phở Hùng ghi điểm với nước dùng đậm đà và topping chất lượng. Dù chọn quán nào, ...",
+    "position": 4
+   },
+   {
+    "title": "Delicious Pho at Phở Hùng Lạc Phương in District 3",
+    "link": "https://www.tiktok.com/@truongcamcuong21051964/video/7597801178256231696",
+    "snippet": "Phở Hùng Lạc Phương. Ở số 221/11 Võ Văn Tần phường Bàn Cờ quận 3, phở nạm và móng bò giá là 60k. Tô phở này mình ăn thấy cũng ngon nhưng mà đặc ...",
+    "position": 5
+   },
+   {
+    "title": "Một quán phở ngon có tiếng nằm ngay khu Tân Phú tô đặc ...",
+    "link": "https://www.tiktok.com/@toiladansaigon/video/7312738967626042642",
+    "snippet": "... Phở Hùng Ngân #toiladansaigon #reviewsaigon #phở # ... Phở Khánh. 982 · recommend-cover. phovietnambyvoquoc. 156 · recommend-cover.",
+    "position": 6
+   },
+   {
+    "title": "Phở Hùng: Tô 67 Bình Giã, Tân Bình - Nấu Phở Chăm Chút",
+    "link": "https://www.tiktok.com/@phohungto/video/7529861863346015506",
+    "snippet": "Phở Hùng, một địa điểm nổi tiếng tại số 67 đường Bình Giã, Phường 13, Quận Tân Bình, mang đến trải nghiệm ẩm thực đặc sắc với món phở thơm ngon.",
+    "position": 7
+   },
+   {
+    "title": "Phở Hùng Ngân 8 Quận Tân Phú: Quán Phở Ngon 32 Lê ...",
+    "link": "https://www.tiktok.com/@phohungngancs_8/video/7523794022696078600",
+    "snippet": "Phở Hùng Ngân 8 tại 32 Lê Khôi, Phú Thạnh, Quận Tân Phú được nhiều người biết đến là một trong những quán phở đông nhất khu vực.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

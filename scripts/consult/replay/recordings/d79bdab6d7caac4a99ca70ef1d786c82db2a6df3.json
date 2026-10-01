@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "món đồ thích cà phê (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:24:27.285Z",
+ "body": {
+  "searchParameters": {
+   "q": "món đồ thích cà phê (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cốc cà phê Cupa Joe – Cốc đựng đồ ăn thủy tinh Borosilicate ...",
+    "link": "https://shopee.vn/C%E1%BB%91c-c%C3%A0-ph%C3%AA-Cupa-Joe-%E2%80%93-C%E1%BB%91c-%C4%91%E1%BB%B1ng-%C4%91%E1%BB%93-%C4%83n-th%E1%BB%A7y-tinh-Borosilicate-20oz-c%C3%B3-n%E1%BA%AFp-ch%E1%BB%91ng-tr%C3%A0n-%E2%80%93-M%C3%B3n-qu%C3%A0-m%E1%BB%9Bi-l%E1%BA%A1-ng%E1%BB%99-ngh%C4%A9nh-d%C3%A0nh-cho-nh%E1%BB%AFng-ng%C6%B0%E1%BB%9Di-y%C3%AAu-th%C3%ADch-c%C3%A0-ph%C3%AA-b%E1%BB%91-v%C4%83n-ph%C3%B2ng-du-l%E1%BB%8Bch-amp-Th%C3%AAm-i.1859604113.47862332449?extraParams=%7B%22display_model_id%22%3A406067693619%2C%22model_selection_logic%22%3A3%7D",
+    "snippet": "Mua Cốc cà phê Cupa Joe – Cốc đựng đồ ăn thủy tinh Borosilicate 20oz có nắp chống tràn – Món quà mới lạ ngộ nghĩnh dành cho những người yêu thích cà phê, bố,",
+    "position": 1
+   },
+   {
+    "title": "PlumHOUSE 1 cốc cà phê thủy tinh hai vách có thiết kế ...",
+    "link": "https://shopee.vn/PlumHOUSE-1-c%E1%BB%91c-c%C3%A0-ph%C3%AA-th%E1%BB%A7y-tinh-hai-v%C3%A1ch-c%C3%B3-thi%E1%BA%BFt-k%E1%BA%BF-hoa-th%E1%BA%ADt-b%C3%AAn-trong.-Th%C3%ADch-h%E1%BB%A3p-cho-c%C3%A0-ph%C3%AA-s%E1%BB%AFa-v%C3%A0-%C4%91%E1%BB%93-u%E1%BB%91ng.-Ch%E1%BB%89-r%E1%BB%ADa-tay-th%C3%B4i.-M%C3%B3n-qu%C3%A0-ng%C3%A0y-l%E1%BB%85-ho%C3%A0n-h%E1%BA%A3o.-VN-i.348253305.56103142279",
+    "snippet": "PlumHOUSE 1 cốc cà phê thủy tinh hai vách có thiết kế hoa thật bên trong. Thích hợp cho cà phê, sữa và đồ uống. Chỉ rửa tay thôi. Món quà ngày lễ hoàn hảo.",
+    "position": 2
+   },
+   {
+    "title": "[ShopeeVIP] Hướng dẫn sử dụng ưu đãi từ đối tác Highlands ...",
+    "link": "https://help.shopee.vn/4/article/204209-%5BShopeeVIP%5D-H%C6%B0%E1%BB%9Bng-d%E1%BA%ABn-s%E1%BB%AD-d%E1%BB%A5ng-%C6%B0u-%C4%91%C3%A3i-t%E1%BB%AB-%C4%91%E1%BB%91i-t%C3%A1c-Highlands-Coffee",
+    "snippet": "Bước 3: Chọn cửa hàng Highlands Coffee mong muốn nhận sản phẩm, sau đó lựa chọn đồ uống hoặc sản phẩm yêu thích và thêm vào giỏ hàng. Bước 4 ...",
+    "date": "4 thg 8, 2026",
+    "position": 3
+   },
+   {
+    "title": "5+ mẫu trang trí trung thu quán cafe đẹp, ấn tượng theo ...",
+    "link": "https://shopee.vn/blog/trang-tri-trung-thu-quan-cafe/",
+    "snippet": "5+ mẫu trang trí trung thu quán cafe đẹp, ấn tượng theo từng phong cách ; 3.1 Khóm Coffee & Tea ; 3.2 Lạc Concept ; 3.3 The Seat Cafe ; 3.4 Trăng ...",
+    "date": "14 thg 9, 2026",
+    "position": 4
+   },
+   {
+    "title": "25 + Quán cà phê mua mang về gần đây ở Hà Nội, Sài Gòn",
+    "link": "https://cellphones.com.vn/sforum/quan-ca-phe-mua-mang-ve-gan-day",
+    "snippet": "15+ Quán cà phê mua mang về gần đây Hà Nội · Quán Ka · AHA Cafe · Gigi De Coffee · Cộng Cà Phê · Ro Coffee · The Coffee Bean and Tea Leaf · Kafa Cafe · Tous Les Jours.",
+    "position": 5
+   },
+   {
+    "title": "4 Miếng Thìa Mèo Cà Phê Muỗng Cà Phê Mini Mèo Con ...",
+    "link": "https://shopee.vn/4-Mi%E1%BA%BFng-Th%C3%ACa-M%C3%A8o-C%C3%A0-Ph%C3%AA-Mu%E1%BB%97ng-C%C3%A0-Ph%C3%AA-Mini-M%C3%A8o-Con-Khu%E1%BA%A5y-Th%C3%ACa-Inox-Treo-C%E1%BB%91c-C%C3%A0-Ph%C3%AA-Thi%E1%BA%BFt-K%E1%BA%BF-D%E1%BB%85-Th%C6%B0%C6%A1ng-%C4%90%E1%BB%83-Tr%E1%BB%99n-M%C3%B3n-Tr%C3%A1ng-Mi%E1%BB%87ng-%C4%90%E1%BB%93-U%E1%BB%91ng-Th%C3%ADch-H%E1%BB%A3p-Cho-i.329424209.50364490080",
+    "snippet": "4 Miếng Thìa Mèo Cà Phê Muỗng Cà Phê Mini Mèo Con Khuấy Thìa Inox Treo Cốc Cà Phê Thiết Kế Dễ Thương Để Trộn Món Tráng Miệng Đồ Uống Thích Hợp Cho.",
+    "position": 6
+   },
+   {
+    "title": "Bộ Đồ Pha và Lưu Trữ Cà Phê",
+    "link": "https://h5.lazada.vn/products/bo-do-pha-va-luu-tru-ca-phe-i3317674694-s16203076991.html",
+    "snippet": "Sản phẩm này cung cấp một bộ hoàn chỉnh để pha cà phê, bao gồm bình cà phê rót bằng tay, máy xay cầm tay và giá đựng đậu, khiến nó trở thành sự lựa chọn hoàn ...",
+    "position": 7
+   },
+   {
+    "title": "Cốc thủy tinh ống hút gấu dễ thương, Bộ đồ uống trong ...",
+    "link": "https://shopee.vn/C%E1%BB%91c-th%E1%BB%A7y-tinh-%E1%BB%91ng-h%C3%BAt-g%E1%BA%A5u-d%E1%BB%85-th%C6%B0%C6%A1ng-B%E1%BB%99-%C4%91%E1%BB%93-u%E1%BB%91ng-trong-su%E1%BB%91t-di-%C4%91%E1%BB%99ng-20oz-Th%C3%ADch-h%E1%BB%A3p-cho-c%C3%A0-ph%C3%AA-n%C6%B0%E1%BB%9Bc-tr%C3%A1i-c%C3%A2y-s%E1%BB%AFa-tr%C3%A0-%C4%91%C3%B3-l%C3%A0-m%E1%BB%99t-m%C3%B3n-qu%C3%A0-l%C3%BD-t%C6%B0%E1%BB%9Fng-cho-b%C3%A9-g%C3%A1i-thanh-thi%E1%BA%BFu-ni%C3%AAn-ti%E1%BB%87c-t%C3%B9ng-du-l%E1%BB%8Bch-%C4%91i-bi%E1%BB%83n.-Global-L%E1%BB%B1a-ch%E1%BB%8Dn-1GEU-i.1913780293.56315701907",
+    "snippet": "Cốc thủy tinh ống hút gấu dễ thương, Bộ đồ uống trong suốt di động 20oz, Thích hợp cho cà phê, nước trái cây, sữa, trà, đó là một món quà lý tưởng cho bé ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

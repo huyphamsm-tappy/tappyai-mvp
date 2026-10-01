@@ -1,0 +1,36 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Bobo Farm Lý Phục Man (site:food.grab.com/vn OR site:shopeefood.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:09:49.164Z",
+ "body": {
+  "searchParameters": {
+   "q": "Bobo Farm Lý Phục Man (site:food.grab.com/vn OR site:shopeefood.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Bobo Farm - Gà Rán - 4 Lý Phục Man",
+    "link": "https://shopeefood.vn/ho-chi-minh/bobo-farm-ga-ran-lam-van-ben",
+    "snippet": "4 Đường Lý Phục Man, P. Bình Thuận, Quận 7, TP. HCM. Mở cửa. Quán được gắn nhãn Yêu thích là Quán Yêu Thích, gồm những quán đạt chất lượng dịch vụ vượt trội ...",
+    "position": 1
+   },
+   {
+    "title": "Bobo Farm Gà Rán | Mua online tại ShopeeFood.vn",
+    "link": "https://shopeefood.vn/thuong-hieu/bo-bo-farm-ga-ran",
+    "snippet": "Hẹn giao vào 09:30. Yêu thích. Bobo Farm - Gà Rán - 4 Lý Phục Man. 4 Đường Lý Phục Man, P. Bình Thuận, Quận 7, TP. HCM. Tối thiểu 20k Giá 0. Giảm món. Mã giảm ...",
+    "position": 2
+   }
+  ],
+  "credits": 1
+ }
+}

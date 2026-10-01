@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Laptop Acer Aspire Lite 14 AL14-53M-53E8",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:04:45.235Z",
+ "body": {
+  "searchParameters": {
+   "q": "Laptop Acer Aspire Lite 14 AL14-53M-53E8",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Laptop Acer Aspire Lite 14 AL14-53M-53E8",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/x/_/x_m_2_175.png",
+    "imageWidth": 358,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYot0iYGbtGNaW_N9tH3vYW7qC_zmfRKMsmGux3FooqA&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/laptop-acer-aspire-lite-14-al14-53m-53e8.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A0%3A358%2Fq%3A90%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fcatalog%2Fproduct%2Fx%2F_%2Fx_m_2_175.png&tbnid=Cxv5MkYX0VhkZM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Flaptop-acer-aspire-lite-14-al14-53m-53e8.html&docid=TAzzYrZQ3ffVyM&w=358&h=358",
+    "position": 1
+   },
+   {
+    "title": "Laptop Acer Aspire Lite 14 AL14-53M-53E8 NX.DEFSV.001 giá rẻ",
+    "imageUrl": "https://cdn.ankhang.vn/media/product/31796_laptop_acer_aspire_lite_14_al14_53m_53e8_nx_defsv_001__2_.jpg",
+    "imageWidth": 800,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1OxyHj1snTPBCCRQUNlQGlnucVbYP1YVifJVvpwkWDg&s",
+    "thumbnailWidth": 259,
+    "thumbnailHeight": 194,
+    "source": "An Khang",
+    "domain": "www.ankhang.vn",
+    "link": "https://www.ankhang.vn/laptop-acer-aspire-lite-14-al14-53m-53e8-nx-defsv-001.html?srsltid=AU7gw4W3MTd49x_tATJvJfbk05zkAt8_gUMIpydGJEENirvp_MdfccT7",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.ankhang.vn%2Fmedia%2Fproduct%2F31796_laptop_acer_aspire_lite_14_al14_53m_53e8_nx_defsv_001__2_.jpg&tbnid=aslc2QVp85jB4M&imgrefurl=https%3A%2F%2Fwww.ankhang.vn%2Flaptop-acer-aspire-lite-14-al14-53m-53e8-nx-defsv-001.html%3Fsrsltid%3DAU7gw4W3MTd49x_tATJvJfbk05zkAt8_gUMIpydGJEENirvp_MdfccT7&docid=LQjID-BRHOMYtM&w=800&h=600",
+    "position": 2
+   },
+   {
+    "title": "Laptop Acer Aspire Lite 14 AL14-53M-53E8 NX.DEFSV.001 giá rẻ",
+    "imageUrl": "https://cdn.ankhang.vn/media/product/31796_laptop_acer_aspire_lite_14_al14_53m_53e8_nx_defsv_001__5_.jpg",
+    "imageWidth": 800,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQn6upQwlzmCotMuQX0PmT7q9iXNcC0wlo--Q5JCEd8qg&s",
+    "thumbnailWidth": 259,
+    "thumbnailHeight": 194,
+    "source": "An Khang",
+    "domain": "www.ankhang.vn",
+    "link": "https://www.ankhang.vn/laptop-acer-aspire-lite-14-al14-53m-53e8-nx-defsv-001.html?srsltid=AU7gw4X07VzR7T94P00AlFBhTXkY8j_jLbt19e_GeJRcgOl75Wpk-Lav",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.ankhang.vn%2Fmedia%2Fproduct%2F31796_laptop_acer_aspire_lite_14_al14_53m_53e8_nx_defsv_001__5_.jpg&tbnid=VAmhilSDy2BrYM&imgrefurl=https%3A%2F%2Fwww.ankhang.vn%2Flaptop-acer-aspire-lite-14-al14-53m-53e8-nx-defsv-001.html%3Fsrsltid%3DAU7gw4X07VzR7T94P00AlFBhTXkY8j_jLbt19e_GeJRcgOl75Wpk-Lav&docid=LQjID-BRHOMYtM&w=800&h=600",
+    "position": 3
+   },
+   {
+    "title": "Laptop Acer Aspire Lite 14 AL14-53M-53E8",
+    "imageUrl": "https://cdn.hstatic.net/products/1000233206/al14-53m-53e8_ed4f48079ba747bc9eaa3ed35551d288.png",
+    "imageWidth": 1200,
+    "imageHeight": 1200,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgdhj0aFmwgiHhzsxBNodW1y1SPCUhc574AvbIfA4AbA&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Hangchinhhieu.vn",
+    "domain": "hangchinhhieu.vn",
+    "link": "https://hangchinhhieu.vn/products/laptop-acer-aspire-lite-14-al14-53m-53e8?srsltid=AU7gw4XQIoiuvBxsrf5LbAm1ovDbwwXr8AL1kciA9lL_K3uesOL9MVRY",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.hstatic.net%2Fproducts%2F1000233206%2Fal14-53m-53e8_ed4f48079ba747bc9eaa3ed35551d288.png&tbnid=_pqhMqU6-1wAzM&imgrefurl=https%3A%2F%2Fhangchinhhieu.vn%2Fproducts%2Flaptop-acer-aspire-lite-14-al14-53m-53e8%3Fsrsltid%3DAU7gw4XQIoiuvBxsrf5LbAm1ovDbwwXr8AL1kciA9lL_K3uesOL9MVRY&docid=HRPbl8KAfkF7RM&w=1200&h=1200",
+    "position": 4
+   },
+   {
+    "title": "Laptop Acer Aspire Lite 14 AL14-53M-53E8",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/x/_/x_m_1__1_111.png",
+    "imageWidth": 358,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQb0IzNi9R-eAqXWlz_J18lM3bFHfz6OY78nb6CE-wQA&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/laptop-acer-aspire-lite-14-al14-53m-53e8.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A0%3A358%2Fq%3A90%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fcatalog%2Fproduct%2Fx%2F_%2Fx_m_1__1_111.png&tbnid=oC8aLXmDxpwEHM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Flaptop-acer-aspire-lite-14-al14-53m-53e8.html&docid=TAzzYrZQ3ffVyM&w=358&h=358",
+    "position": 5
+   },
+   {
+    "title": "Laptop Acer Aspire Lite 14 AL14-53M-53E8 (Core 5-120U/ 16GB/ 512GB/ 14\"  FHD+ IPS/ Win 11)",
+    "imageUrl": "https://cdn.hstatic.net/products/200000722513/acer-aspire-lite-14-al14-53m-53e8-core-5-120u-8gb-512gb-14-0-fhd-ips-1_acdaef2a122444c98f37b6c3108fdcc8.jpg",
+    "imageWidth": 900,
+    "imageHeight": 900,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSppu9p54O9Zi5ym001BD9k9RgLJCnPZhb653cl-M3ww&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "GEARVN",
+    "domain": "gearvn.com",
+    "link": "https://gearvn.com/products/laptop-acer-aspire-lite-14-al14-53m-53e8-core-5-120u-8gb-512gb-14-0-fhd-ips?srsltid=AU7gw4VJ99afBupeT4IQ9sRHypp3X94c0Ay1DnlgwlRYTk5zLKQBcCgg",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.hstatic.net%2Fproducts%2F200000722513%2Facer-aspire-lite-14-al14-53m-53e8-core-5-120u-8gb-512gb-14-0-fhd-ips-1_acdaef2a122444c98f37b6c3108fdcc8.jpg&tbnid=DoFTjZTG8m06pM&imgrefurl=https%3A%2F%2Fgearvn.com%2Fproducts%2Flaptop-acer-aspire-lite-14-al14-53m-53e8-core-5-120u-8gb-512gb-14-0-fhd-ips%3Fsrsltid%3DAU7gw4VJ99afBupeT4IQ9sRHypp3X94c0Ay1DnlgwlRYTk5zLKQBcCgg&docid=aW20A-nm6yneoM&w=900&h=900",
+    "position": 6
+   },
+   {
+    "title": "Laptop Acer Aspire Lite 14 AL14-53M-53E8 NX.DEFSV.001 giá rẻ",
+    "imageUrl": "https://cdn.ankhang.vn/media/product/31796_laptop_acer_aspire_lite_14_al14_53m_53e8_nx_defsv_001__3_.jpg",
+    "imageWidth": 800,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTeDsl88zW5wLe7nvsjYfkh2yZi-hLgdsLLMelPxuOMyw&s",
+    "thumbnailWidth": 259,
+    "thumbnailHeight": 194,
+    "source": "An Khang",
+    "domain": "www.ankhang.vn",
+    "link": "https://www.ankhang.vn/laptop-acer-aspire-lite-14-al14-53m-53e8-nx-defsv-001.html?srsltid=AU7gw4X4n-vxb59ssgzChGjmwMJInMWNopa9y71bkHpWg_voep08cmCl",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.ankhang.vn%2Fmedia%2Fproduct%2F31796_laptop_acer_aspire_lite_14_al14_53m_53e8_nx_defsv_001__3_.jpg&tbnid=qN9OU1dMqpQaVM&imgrefurl=https%3A%2F%2Fwww.ankhang.vn%2Flaptop-acer-aspire-lite-14-al14-53m-53e8-nx-defsv-001.html%3Fsrsltid%3DAU7gw4X4n-vxb59ssgzChGjmwMJInMWNopa9y71bkHpWg_voep08cmCl&docid=LQjID-BRHOMYtM&w=800&h=600",
+    "position": 7
+   },
+   {
+    "title": "Laptop Acer Aspire Lite 14 AL14-53M-53E8 | Core 5-120U",
+    "imageUrl": "https://songphuong.vn/Content/uploads/2026/09/Laptop-Acer-Aspire-Lite-14-AL14-53M-53E8-1.webp",
+    "imageWidth": 850,
+    "imageHeight": 850,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvkYSaeqHboUPvTDswbw07bkyX_2WKoHbMp52XXI-lyg&s=10",
+    "thumbnailWidth": 554,
+    "thumbnailHeight": 554,
+    "source": "Song Phương",
+    "domain": "songphuong.vn",
+    "link": "https://songphuong.vn/product/laptop-acer-aspire-lite-14-al14-53m-53e8/?srsltid=AU7gw4X66ibVZIT5BwMJxxvz6nsKyEarExKEIWpakIM-4ju8ldbR86_p",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fsongphuong.vn%2FContent%2Fuploads%2F2026%2F09%2FLaptop-Acer-Aspire-Lite-14-AL14-53M-53E8-1.webp&tbnid=p4lupFx-hxsTSM&imgrefurl=https%3A%2F%2Fsongphuong.vn%2Fproduct%2Flaptop-acer-aspire-lite-14-al14-53m-53e8%2F%3Fsrsltid%3DAU7gw4X66ibVZIT5BwMJxxvz6nsKyEarExKEIWpakIM-4ju8ldbR86_p&docid=lsEMsHPsgyFrvM&w=850&h=850",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

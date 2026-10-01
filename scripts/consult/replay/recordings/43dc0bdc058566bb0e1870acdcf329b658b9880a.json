@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Mua cà phê làm quà: 11 gợi ý đáng mua 2025 site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:14:46.274Z",
+ "body": {
+  "searchParameters": {
+   "q": "Mua cà phê làm quà: 11 gợi ý đáng mua 2025 site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Quà cho nam 19/11 - Giá Tốt, Sale Tháng 09, Ship 0 Đồng ...",
+    "link": "https://shopee.vn/list/qu%C3%A0/cho%20nam/19%2011",
+    "snippet": "Bó hoa giấy nhún bánh kẹo quà tặng dịp lễ, sinh nhật kỷ niệm, bó bánh kẹo dễ thương ngon. Quà tặng bạn nam 19/11. 64.350₫. 71.500₫.",
+    "position": 1
+   },
+   {
+    "title": "Chân váy len dài mùa đông - Giá Tốt, Sale Tháng 09, Ship 0 ...",
+    "link": "https://shopee.vn/list/ch%C3%A2n%20v%C3%A1y/len/d%C3%A0i%20m%C3%B9a%20%C4%91%C3%B4ng",
+    "snippet": "Chân Váy Midi Chữ A Vải Len Lông Thỏ Dáng Dài 88cm Xẻ Sau Cạp Chun Basic Dễ Mặc Phong Cách Đi Làm Đi Chơi. 89.000₫. 140.000₫. -36%. rating-star 4.9.",
+    "position": 2
+   },
+   {
+    "title": "Cộng Cà Phê",
+    "link": "https://shopee.vn/congcaphe_official",
+    "snippet": "Mua cà phê phin giấy, cà phê bạc xỉu hòa tan - trà - đồ pha chế, cà men, túi vải,... Cộng Cà Phê chính hãng tại Shopee ưu đãi tháng 10/2026.",
+    "position": 3
+   },
+   {
+    "title": "Cà Phê Đồng Xanh, Cửa hàng trực tuyến",
+    "link": "https://shopee.vn/caphedongxanh",
+    "snippet": "Cà phê Arabica A Lưới Huế chế biến khô mùa vụ mới 2025 - 2026 250g. custom ... Gợi Ý Riêng Cho Bạn. Combo 10 gói Cà phê muối Huế hoà tan (chính gốc).",
+    "position": 4
+   },
+   {
+    "title": "5+ mẫu trang trí trung thu quán cafe đẹp, ấn tượng theo ...",
+    "link": "https://shopee.vn/blog/trang-tri-trung-thu-quan-cafe/",
+    "snippet": "Gợi ý 7+ địa chỉ quán cafe trang trí trung thu đẹp, phù hợp check-in dịp lễ ở HCM · Khóm Coffee & Tea · Lạc Concept · The Seat Cafe · Trăng non ...",
+    "date": "14 thg 9, 2026",
+    "position": 5
+   },
+   {
+    "title": "18+ quà Tết cho khách hàng 2026 ý nghĩa & tạo thiện cảm",
+    "link": "https://shopee.vn/blog/qua-tet-cho-khach-hang/",
+    "snippet": "Một hộp quà Saffron được đóng gói sang trọng để biếu Tết có mức giá khoảng 500.000 rất phù hợp để làm quà tặng sức khỏe cho khách hàng. Để mua ...",
+    "date": "5 thg 2, 2026",
+    "position": 6
+   },
+   {
+    "title": "Top 20+ quà Tết cao cấp và ý nghĩa dành cho mọi đối tượng",
+    "link": "https://shopee.vn/blog/qua-tet/",
+    "snippet": "Giới tính: Một số món quà tặng Tết phù hợp với đàn ông là rượu, cà phê, trà, cà vạt, thắt lưng, đồ điện tử, đồ công nghệ,… Bên cạnh đó, quà Tết ...",
+    "date": "9 thg 2, 2026",
+    "position": 7
+   },
+   {
+    "title": "20+ món quà tặng 20/11 ý nghĩa, thiết thực cho thầy cô giáo",
+    "link": "https://shopee.vn/blog/qua-tang-20-11-y-nghia/",
+    "snippet": "Vì vậy lựa chọn trà và cà phê là một món quà tặng ngày nhà giáo thiết thực mà bạn không nên bỏ qua. Giá tham khảo: 100,000 – 200,000 VNĐ. Trà – ...",
+    "date": "6 thg 11, 2025",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

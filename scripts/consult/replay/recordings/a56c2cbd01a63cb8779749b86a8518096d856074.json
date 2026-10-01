@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Motel Ruby Bà Rịa\" Núi Dinh, Bà Rịa site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:05:42.193Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Motel Ruby Bà Rịa\" Núi Dinh, Bà Rịa site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

@@ -1,0 +1,44 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Gợi ý 100+ site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:36:54.902Z",
+ "body": {
+  "searchParameters": {
+   "q": "Gợi ý 100+ site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "[GIÁ ĐỘC QUYỀN TRÊN LIVE ] THẢM TRẢI SÀN BALI DECOR ...",
+    "link": "https://shop.tiktok.com/vn/pdp/tham-trai-san-bali-decor-80x2m-50x1m2-ni-li-de-cao-su/1732571152819455126",
+    "snippet": "Thảm Bali Decor chính là lựa chọn hoàn hảo!Đặc điểm nổi bật:· Chất liệu vải nỉ lì cao cấp: Bề mặt mềm mịn, thoải mái khi bước chân, tạo cảm giác êm ái và ấm ...",
+    "position": 1
+   },
+   {
+    "title": "[2025 Hàng Có Sẵn] Rèm giường tầng KTX, tạo không gian ...",
+    "link": "https://shop.tiktok.com/vn/pdp/rem-giuong-tang-ktx-chong-nang-muoi-thiet-ke-dep-cho-sinh-vien/1732233147712636543",
+    "snippet": "... ý muốnGỢI Ý SỐ LƯỢNG MUA PHÙ HỢPDùng 1 tấm: Che mặt trước giườngDùng 2 tấm: Che 3 mặt (trái – phải – trước) như ảnh mẫuDùng 3 tấm: Che đủ 4 mặt và 1 tấm làm ...",
+    "position": 2
+   },
+   {
+    "title": "Bộ sách Những Ngón Tay Bận Rộn - Sách thiếu nhi ...",
+    "link": "https://shop.tiktok.com/vn/pdp/bo-sach-nhung-ngon-tay-ban-ron-sach-thieu-nhi-finybooks/1731658296945183581",
+    "snippet": "Bộ sách bao gồm 3 câu chuyện nhỏ đầy màu sắc và vui nhộn, mỗi câu chuyện đều tập trung vào một môi trường sống khác nhau. Nội dung sách chi tiết.",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 3
+   }
+  ],
+  "credits": 1
+ }
+}

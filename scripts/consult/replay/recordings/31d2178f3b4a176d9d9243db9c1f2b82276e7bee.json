@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Mt Rose Hotel",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:31:38.174Z",
+ "body": {
+  "searchParameters": {
+   "q": "Mt Rose Hotel",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Hotel Fayetteville NC | United States | Mt Rose Hotel",
+    "imageUrl": "https://static.wixstatic.com/media/15480a_0633e1b566f24973a4b5eb895c923e18~mv2_d_5472_3648_s_4_2.jpg/v1/fill/w_640,h_427,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/15480a_0633e1b566f24973a4b5eb895c923e18~mv2_d_5472_3648_s_4_2.jpg",
+    "imageWidth": 640,
+    "imageHeight": 427,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQgJc0V7rpcyl7QzlsY60pBna3ZDHvfi8n-eKA9XOpdCA&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "www.mtrosehotel.com",
+    "domain": "www.mtrosehotel.com",
+    "link": "https://www.mtrosehotel.com/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fstatic.wixstatic.com%2Fmedia%2F15480a_0633e1b566f24973a4b5eb895c923e18~mv2_d_5472_3648_s_4_2.jpg%2Fv1%2Ffill%2Fw_640%2Ch_427%2Cal_c%2Cq_80%2Cusm_0.66_1.00_0.01%2Cenc_avif%2Cquality_auto%2F15480a_0633e1b566f24973a4b5eb895c923e18~mv2_d_5472_3648_s_4_2.jpg&tbnid=YBYsWTpNQdg22M&imgrefurl=https%3A%2F%2Fwww.mtrosehotel.com%2F&docid=RevUX9J1DjFM8M&w=640&h=427",
+    "position": 1
+   },
+   {
+    "title": "Mt. Rose Hotel, Fayetteville (updated prices 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/415348141.jpg?k=72e394a007fafef91aaf103b83d8b0b099f64c84fa0439e6c457b059087ee8e5&o=",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQ6JtzA7F7gOkmkViqS8H1nz3OskwdaLdCW-xD5QUpqg&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/us/mt-rose.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F415348141.jpg%3Fk%3D72e394a007fafef91aaf103b83d8b0b099f64c84fa0439e6c457b059087ee8e5%26o%3D&tbnid=54B7TStm7RRbvM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fus%2Fmt-rose.html&docid=pXbxBCc8DUR_CM&w=1024&h=683",
+    "position": 2
+   },
+   {
+    "title": "Mt. Rose Hotel, Fayetteville (updated prices 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/135652691.jpg?k=a6c20c8388c4a010d8ff470a13d030e941ee9b65bf64c67ea81a7431549c342e&o=",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ0Uqi3_qrUpcQxVB1J4jmjhGTb79YoJsaRNpS_wNJYdw&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/us/mt-rose.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F135652691.jpg%3Fk%3Da6c20c8388c4a010d8ff470a13d030e941ee9b65bf64c67ea81a7431549c342e%26o%3D&tbnid=083Ans-XdhKr1M&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fus%2Fmt-rose.html&docid=pXbxBCc8DUR_CM&w=1024&h=683",
+    "position": 3
+   },
+   {
+    "title": "Mt. Rose Hotel, Fayetteville: Hotel Reviews, Rooms & Prices | Hotels.com",
+    "imageUrl": "https://images.trvl-media.com/lodging/25000000/24300000/24290300/24290225/d5518d3d.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill",
+    "imageWidth": 767,
+    "imageHeight": 575,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyM-5Evmo4SkqMQ07hvvkMyzcuGPSKlXBXnpdWFalr7w&s",
+    "thumbnailWidth": 259,
+    "thumbnailHeight": 194,
+    "source": "Hotels.com",
+    "domain": "www.hotels.com",
+    "link": "https://www.hotels.com/ho778287200/mt-rose-hotel-fayetteville-united-states-of-america/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimages.trvl-media.com%2Flodging%2F25000000%2F24300000%2F24290300%2F24290225%2Fd5518d3d.jpg%3Fimpolicy%3Dresizecrop%26rw%3D575%26rh%3D575%26ra%3Dfill&tbnid=t7AiWMari1nZGM&imgrefurl=https%3A%2F%2Fwww.hotels.com%2Fho778287200%2Fmt-rose-hotel-fayetteville-united-states-of-america%2F&docid=BUx5LDimN8lyDM&w=767&h=575",
+    "position": 4
+   },
+   {
+    "title": "Mt. Rose Hotel, Fayetteville (NC) | 2026 Updated Prices, Deals",
+    "imageUrl": "https://q-xx.bstatic.com/xdata/images/hotel/max500/415348537.jpg?k=1e65ad1704f896bcbb5339c09d3eddbffc34b73355cce2622cbb43fe6adb5bfa&o=",
+    "imageWidth": 500,
+    "imageHeight": 333,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgDR0T21KyMHmOzI3RHDzRTJe53f25R8cupDKGruEfoQ&s=10",
+    "thumbnailWidth": 500,
+    "thumbnailHeight": 333,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/mt-rose-hotel/hotel/fayetteville-nc-us.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fq-xx.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax500%2F415348537.jpg%3Fk%3D1e65ad1704f896bcbb5339c09d3eddbffc34b73355cce2622cbb43fe6adb5bfa%26o%3D&tbnid=Koi8AX_k4jwKUM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fmt-rose-hotel%2Fhotel%2Ffayetteville-nc-us.html&docid=LhPQb51awC6iCM&w=500&h=333",
+    "position": 5
+   },
+   {
+    "title": "Mt. Rose Hotel, Fayetteville (updated prices 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/127241144.jpg?k=17380205c74f4cd02eb2ce27e4308cf5417f09b49e6bd6bb1ce23e008a779699&o=",
+    "imageWidth": 1024,
+    "imageHeight": 768,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS6IDwMvSiqIi_Ey5oDX5QFLw0ulTna4BFQ5PFAxWLOpA&s=10",
+    "thumbnailWidth": 638,
+    "thumbnailHeight": 480,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/us/mt-rose.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F127241144.jpg%3Fk%3D17380205c74f4cd02eb2ce27e4308cf5417f09b49e6bd6bb1ce23e008a779699%26o%3D&tbnid=UMhqGTFDVaJfMM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fus%2Fmt-rose.html&docid=pXbxBCc8DUR_CM&w=1024&h=768",
+    "position": 6
+   },
+   {
+    "title": "Mt. Rose Hotel from $44. Fayetteville Hotel Deals & Reviews - KAYAK",
+    "imageUrl": "https://www.kayak.com/rimg/himg/33/28/78/expedia_group-109789-5f6a9273-849664.jpg?width=836&height=607&crop=true",
+    "imageWidth": 836,
+    "imageHeight": 607,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReslwOLbBzWey5rQ2W1xTuBJNjDyNd7G04WrSwJSQIHA&s",
+    "thumbnailWidth": 264,
+    "thumbnailHeight": 191,
+    "source": "KAYAK",
+    "domain": "www.kayak.com",
+    "link": "https://www.kayak.com/Fayetteville-Hotels-Mt-Rose-Hotel.109789.ksp",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.kayak.com%2Frimg%2Fhimg%2F33%2F28%2F78%2Fexpedia_group-109789-5f6a9273-849664.jpg%3Fwidth%3D836%26height%3D607%26crop%3Dtrue&tbnid=SOUtFnT_Z6J3rM&imgrefurl=https%3A%2F%2Fwww.kayak.com%2FFayetteville-Hotels-Mt-Rose-Hotel.109789.ksp&docid=K4DLtzYKMq_lkM&w=836&h=607",
+    "position": 7
+   },
+   {
+    "title": "Mt. Rose Hotel, Fayetteville: Hotel Reviews, Rooms & Prices | Hotels.com",
+    "imageUrl": "https://images.trvl-media.com/lodging/25000000/24300000/24290300/24290225/019e68b4.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill",
+    "imageWidth": 1022,
+    "imageHeight": 575,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCjIwm1ojkA856c-E3z_2zR8p9LUcTT9aqPe0oHF2t7g&s",
+    "thumbnailWidth": 299,
+    "thumbnailHeight": 168,
+    "source": "Hotels.com",
+    "domain": "www.hotels.com",
+    "link": "https://www.hotels.com/ho778287200/mt-rose-hotel-fayetteville-united-states-of-america/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimages.trvl-media.com%2Flodging%2F25000000%2F24300000%2F24290300%2F24290225%2F019e68b4.jpg%3Fimpolicy%3Dresizecrop%26rw%3D575%26rh%3D575%26ra%3Dfill&tbnid=B0H3-cforgKYUM&imgrefurl=https%3A%2F%2Fwww.hotels.com%2Fho778287200%2Fmt-rose-hotel-fayetteville-united-states-of-america%2F&docid=BUx5LDimN8lyDM&w=1022&h=575",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "món đồ thích cà phê Sếp nam, 40 tuổi shop website địa chỉ facebook",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:36:51.903Z",
+ "body": {
+  "searchParameters": {
+   "q": "món đồ thích cà phê Sếp nam, 40 tuổi shop website địa chỉ facebook",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Được mọi người ủng hộ và quan tâm, mình xin phép ...",
+    "link": "https://www.facebook.com/groups/httpschuquancaphe.vn/posts/4167651043271448/",
+    "snippet": "Được mọi người ủng hộ và quan tâm, mình xin phép được chia sẻ hình ảnh toàn bộ các góc của quán mình và một vài dòng tâm sự ạ.",
+    "position": 1
+   },
+   {
+    "title": "Ở ĐÂU RẺ? SHOP TUYẾT MAI RẺ HƠN \"GIẢM SÂU\" 50%",
+    "link": "https://www.facebook.com/DiaDiemAnUong/videos/-%E1%BB%9F-%C4%91%C3%A2u-r%E1%BA%BB-shop-tuy%E1%BA%BFt-mai-r%E1%BA%BB-h%C6%A1n-gi%E1%BA%A3m-s%C3%A2u-50-70-gi%E1%BB%9D-th%C3%AC-hi%E1%BB%83u-sao-shop-tuy%E1%BA%BFt-mai-l/3533853366775830/",
+    "snippet": "List deal hời ngập tràn: Thùng mì 3 Miền 69k, 10 gói khăn giấy ướt 49k, lạp xưởng Thái 65k, chả lụa/chả Huế từ 40k, bánh kẹo sữa chỉ từ 19k...",
+    "position": 2
+   },
+   {
+    "title": "BEANZY - Chia sẻ đồ chơi, cà phê \"XỊN\" NHẬT - TRUNG",
+    "link": "https://www.facebook.com/groups/beanzy/",
+    "snippet": "THÔNG SỐ SẢN PHẨM: • Thương hiệu: BLACKANT • Dung tích: 550ml (Nhu cầu vừa đủ cho cả ngày) hoặc 800ml • Trọng lượng: Siêu nhẹ chỉ 190g • Kích thước: 7.1cm x ...",
+    "position": 3
+   },
+   {
+    "title": "MỖI SÁNG ĐẦY NĂNG LƯỢNG CÙNG CF BÁO – 40 NAM ...",
+    "link": "https://www.facebook.com/groups/849820936200106/posts/1794242978424559/",
+    "snippet": "Món ăn sáng ngon – đủ chất ☕ Cà phê đậm vị, thơm ngon Nguyên liệu tươi ngon, chuẩn bị mỗi ngày Một bữa sáng ngon giúp bạn có thêm năng ...",
+    "position": 4
+   },
+   {
+    "title": "Một chiếc quán cà phê đầy tâm huyết của u40 nhưng tâm hồn ...",
+    "link": "https://www.facebook.com/groups/httpschuquancaphe.vn/posts/8856432974393208/",
+    "snippet": "Quán cần trang bị thêm dù lệch tâm, dù đúng tâm cho khách ngồi ban ngày ơ ven hồ thì vui lòng liên hệ DÙ QUÂN THÀNH ạ! ... No photo description ...",
+    "position": 5
+   },
+   {
+    "title": "PJ's Coffee Việt Nam (@Pjscoffeevietnam)",
+    "link": "https://www.facebook.com/Pjscoffeevietnam/?locale=vi_VN",
+    "snippet": "Chỉ cần thực hiện 3 bước siêu đơn giản: 1️⃣ Quét mã Zalo để kết nối với chúng mình. 2️⃣ Bấm \"Quan tâm\" và đăng ký thành viên để gia nhập cộng đồng yêu cà ...",
+    "rating": 4.8,
+    "ratingCount": 43,
+    "position": 6
+   },
+   {
+    "title": "Bạn tập trung bán hàng – cà phê để chúng tôi lo Không cần ...",
+    "link": "https://www.facebook.com/camdi.vn/videos/-b%E1%BA%A1n-t%E1%BA%ADp-trung-b%C3%A1n-h%C3%A0ng-c%C3%A0-ph%C3%AA-%C4%91%E1%BB%83-ch%C3%BAng-t%C3%B4i-lokh%C3%B4ng-c%E1%BA%A7n-m%E1%BA%A5t-th%E1%BB%9Di-gian-t%C3%ACm-ngu%E1%BB%93n-/2002976940316379/",
+    "snippet": "Bạn tập trung bán hàng – cà phê để chúng tôi lo Không cần mất thời gian tìm nguồn nguyên liệu Không lo chất lượng mỗi lần nhập khác nhau ...",
+    "position": 7
+   },
+   {
+    "title": "Nhã Nam Books N' Coffee (@nhanambooksncoffee)",
+    "link": "https://www.facebook.com/nhanambooksncoffee/",
+    "snippet": "Chỉ một trang này thôi, một trang duy nhất thôi mà! ☺️ Địa chỉ: 24A, đường D5, Phường 25, Quận Bình Thạnh, TP.HCM #nhanambooksncoffee # ...",
+    "rating": 4.4,
+    "ratingCount": 115,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

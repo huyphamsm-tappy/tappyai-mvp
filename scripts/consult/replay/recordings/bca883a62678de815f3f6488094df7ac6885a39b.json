@@ -1,0 +1,86 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "massage trị liệu vai gáy quan 1 site:klook.com/vi/activity",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:41:09.929Z",
+ "body": {
+  "searchParameters": {
+   "q": "massage trị liệu vai gáy quan 1 site:klook.com/vi/activity",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Gội Đầu Thảo Dược, Massage và Chăm Sóc Da Mặt tại ...",
+    "link": "https://www.klook.com/vi/activity/201167-chi-tu-herbal-hair-wash-spa-in-ho-chi-minh-city/",
+    "snippet": "Chị Tư Spa - Gội Đầu Thảo Dược & Trị Liệu Chi Nhánh 10 Quận 1 (Hair Wash, Facial & Body Massage) ... massage cổ vai gáy khoảng 5 phút lúc đầu rất dễ chịu.",
+    "rating": 4.8,
+    "ratingCount": 61,
+    "position": 1
+   },
+   {
+    "title": "泰二 SPA・足道・按摩 | Chi nhánh La Hồ Thủy Bối",
+    "link": "https://www.klook.com/vi/activity/191234-tai-er-spa-foot-care-massage-shuibei-store/",
+    "snippet": "Gội đầu dưỡng sinh + massage vai cổ chuyên sâu (60 phút). Chăm sóc da mặt Estée Lauder + gội đầu trị liệu + massage vai cổ (80 phút). Chọn 1 trong 3 liệu pháp ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 2
+   },
+   {
+    "title": "Trải Nghiệm L'Belle Beauty Spa ở Sài Gòn",
+    "link": "https://www.klook.com/vi/activity/55089-l-belle-beauty-spa-sai-gon/",
+    "snippet": "Trị Liệu \"Cổ - Vai - Gáy\" với Ngải Cứu (60 phút). Gội Đầu Bồ Kết (25 phút) ... Shinrin Spa: Gội Đầu & Massage tại Quận 1, TP. Hồ Chí Minh. ☆ 4.8 (470).",
+    "rating": 4.1,
+    "ratingCount": 14,
+    "position": 3
+   },
+   {
+    "title": "Trải nghiệm Lilo Spa và Massage tại Thành phố Hồ Chí Minh",
+    "link": "https://www.klook.com/vi/activity/129195-lilo-spa-and-massage-experience-in-ho-chi-minh/",
+    "snippet": "Lilo Spa & Massage tại Quận 1 Thành phố Hồ Chí Minh. 4.4 / 5. 64 Đánh giá ... [Combo 2] Gội đầu, massage đầu, cổ, vai gáy & gội đầu [90']. Ngày mở: Hiệu ...",
+    "rating": 4.4,
+    "ratingCount": 64,
+    "position": 4
+   },
+   {
+    "title": "泰二SPA·影院足道·泰餐(Trụ sở chính Thâm Quyến)",
+    "link": "https://www.klook.com/vi/activity/190855-tai-er-spa-cinema-foot-therapy-thai-food-shenzhen-general-store/",
+    "snippet": "Các gói dịch vụ · Món Thái + Spa tinh dầu toàn thân + 1 trong 4 lựa chọn massage đầu vai gáy/đá nóng/thảo dược/chân (120 phút) · SPA dưỡng thận và eo cho kỹ thuật ...",
+    "position": 5
+   },
+   {
+    "title": "Trải nghiệm Elle'B Beaute Spa tại Chợ Bến Thành, Hồ Chí ...",
+    "link": "https://www.klook.com/vi/activity/146021-elle-b-beaute-spa-experience-in-ben-thanh-market-ho-chi-minh/",
+    "snippet": "Gội đầu 60 phút ở ElleB khác biệt hoàn toàn so với những spa khác mà tôi từng đến. Họ massage cổ & vai cho bạn trước, khi bạn NẰM SẤP. Một kiểu massage đúng ...",
+    "rating": 4.7,
+    "ratingCount": 50,
+    "position": 6
+   },
+   {
+    "title": "Trải nghiệm ThaiThai Massage tại Sukhumvit 25 ở Bangkok",
+    "link": "https://www.klook.com/vi/activity/136762-thaithai-massage-at-sukhumvit-25-experience-in-bangkok/",
+    "snippet": "Liệu trình đặc trưng của chúng tôi là liệu pháp 5 trong 1 bao gồm massage đầu, cổ, vai, tay và chân ... liệu trình Massage Thái đích thực và trị liệu. Peng ****** ...",
+    "rating": 4.3,
+    "ratingCount": 34,
+    "position": 7
+   },
+   {
+    "title": "SMARTER SPA của Shiman Đặc｜Cần đặt hẹn trước",
+    "link": "https://www.klook.com/vi/activity/76249-tainan-smart-spa-massage/",
+    "snippet": "SMARTER đưa SPA lên một tầm cao mới của sự sang trọng và chăm sóc cao cấp. Điều trị đúng bệnh! Đau đầu, vai, cổ, cánh tay được cải thiện ngay lập tức, ...",
+    "rating": 3.8,
+    "ratingCount": 4,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

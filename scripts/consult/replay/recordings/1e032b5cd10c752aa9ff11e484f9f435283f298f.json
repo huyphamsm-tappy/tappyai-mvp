@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Gội Đầu Dưỡng Sinh Spa Chăm Sóc Da Chuỵ Ba Signature\" OR \"Mela Spa\" OR \"Gội Đầu Dưỡng Sinh Quận 3 HẺM SPA\" quan 3 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:09:11.072Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Gội Đầu Dưỡng Sinh Spa Chăm Sóc Da Chuỵ Ba Signature\" OR \"Mela Spa\" OR \"Gội Đầu Dưỡng Sinh Quận 3 HẺM SPA\" quan 3 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Mela Spa #melaspa #massage #goidauduongsinh ...",
+    "link": "https://www.tiktok.com/@mela.spa5/video/7617429765498080519",
+    "snippet": "... #massage #goidauduongsinh #chamsocda #trilieu. @Mela Spa. Hợp tác có trả phí. ĐIỀU TUYỆT VỜI · Mela Spa - Massage gội đầu dưỡng sinh Quận 3.",
+    "position": 1
+   },
+   {
+    "title": "Mela Spa (@mela.spa5)",
+    "link": "https://www.tiktok.com/@mela.spa5",
+    "snippet": "Mela Spa tại 224 Nguyễn Thiện Thuật, Phường Bàn Cờ (quận 3 cũ), là điểm đến lý tưởng cho Khách Hàng tìm đến sự thư giãn và phục hồi sức khoẻ.",
+    "position": 2
+   },
+   {
+    "title": "Mela Spa - khôi phục năng lượng, nuôi dưỡng vẻ đẹp",
+    "link": "https://www.tiktok.com/@mela.spa5/video/7615662514084334855",
+    "snippet": "Mela Spa - khôi phục năng lượng, nuôi dưỡng vẻ đẹp #melaspa #massage #goidauduongsinh #trilieu #chamsocda · recommend-cover. Mela Spa · recommend- ...",
+    "position": 3
+   },
+   {
+    "title": "Mela Spa",
+    "link": "https://www.tiktok.com/@mela.spa5/video/7620791655506906376",
+    "snippet": "Video TikTok từ Mela Spa (@mela.spa5): \"Mela Spa\".Ít ai để ý rằng, một buổi thư giãn trọn vẹn không chỉ đến từ đôi tay kỹ thuật viên, ...",
+    "position": 4
+   },
+   {
+    "title": "Bạn đã thử chưa? #melaspa #goidauduongsinh #massage ...",
+    "link": "https://www.tiktok.com/@mela.spa5/video/7673513283336293639",
+    "snippet": "51 Lượt thích,Video TikTok từ Mela Spa (@mela.spa5): \"Bạn đã thử chưa? #melaspa #goidauduongsinh #massage #chamsocda #viral\".âm thanh gốc ...",
+    "position": 5
+   },
+   {
+    "title": "CapCut",
+    "link": "https://www.tiktok.com/@nth26.03/video/7642978156458052882",
+    "snippet": "Có một Mela Spa giữa quận 3. Bạn biết chợ Bàn Cờ hông? Mela ở đó đó ☺️ Mela có món nghề đỉnh chóp - GỘI ĐẦU DƯỠNG SINH VÀ MASSAGE. Bạn ghé Mela để thử xem ...",
+    "position": 6
+   },
+   {
+    "title": "Lễ tân spa cấp tốc Tiếng Anh #spatienganh ...",
+    "link": "https://www.tiktok.com/@tienganhspasieudongian/video/7689054443647683846",
+    "snippet": "... @Tiếng Anh spa siêu đơn giản · âm thanh gốc - Tiếng Anh spa siêu đơn giản · Mela Spa - Massage gội đầu dưỡng sinh Quận 3 · author. 92 · 1.",
+    "position": 7
+   },
+   {
+    "title": "Hướng dẫn massage Mela trị liệu chăm sóc da đầu và tinh ...",
+    "link": "https://www.tiktok.com/@trc.nguyn7283/video/7631607774111223048",
+    "snippet": "Massage vùng cổ gáy và sau đầu để giảm căng thẳng toàn bộ vùng đầu — kỹ thuật quan trọng trong gội đầu dưỡng sinh. ... Mela Spa - Massage gội đầu ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

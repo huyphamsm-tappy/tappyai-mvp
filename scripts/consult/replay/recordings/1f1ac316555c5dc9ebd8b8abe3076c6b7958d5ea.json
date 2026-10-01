@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Cà Phê Hạt Rang – Pha Máy site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:04:07.039Z",
+ "body": {
+  "searchParameters": {
+   "q": "Cà Phê Hạt Rang – Pha Máy site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "CÀ PHÊ HẠT RANG MỘC CHẤT (PHA MÁY) TÚI 1 KG",
+    "link": "https://www.lazada.vn/products/pdp-i1854939207.html?srsltid=AU7gw4V-tditKhk5eeKoQtvfZZ40kU5Xjw9ePGAIyRogI0gk_tM5Uqd8",
+    "snippet": "Mô tả sản phẩm · 1 dòng cà phê rang mộc tự nhiên kết hợp 3 loại cà phê robusta, culi và arabica tạo nên 1 hương vị đặc biệt mang đến cho người dùng thưởng thức.",
+    "position": 1
+   },
+   {
+    "title": "Cà phê hạt Arabica gói 200g (ST) - Rang mộc - Đắng nhẹ ...",
+    "link": "https://www.lazada.vn/products/ca-phe-hat-arabica-goi-200g-st-rang-moc-dang-nhe-chua-thanh-pha-maypha-phin-copen-coffee-i1229621865.html?srsltid=AU7gw4XDcMe835_rLltvsrFj8cYdSjQ9BBkkertpmd9yNwSk_KYQBkzF",
+    "snippet": "LazMall Cà phê hạt Arabica gói 200g (ST) - Rang mộc - Đắng nhẹ, chua thanh - Pha máy/pha phin - Copen Coffee · 100% chính hãng · 30 ngày miễn phí trả hàng · Không ...",
+    "rating": 4.8,
+    "ratingCount": 38,
+    "position": 2
+   },
+   {
+    "title": "Combo cà phê hạt pha máy Milano Coffee",
+    "link": "https://h5.lazada.vn/products/combo-ca-phe-hat-pha-may-milano-coffee-ca-phe-hat-rang-moc-va-ca-phe-hat-nguyen-chat-robusta-1kg-i13423552407-s117164627382.html",
+    "snippet": "LazMall Combo cà phê hạt pha máy Milano Coffee - Cà phê hạt rang mộc và cà phê hạt nguyên chất Robusta (1kg) · 100% chính hãng · 30 ngày miễn phí trả hàng · Không ...",
+    "position": 3
+   },
+   {
+    "title": "Hạt cà phê rang mộc vị đậm đà tương đương với ...",
+    "link": "https://www.lazada.vn/products/pdp-i1225832289.html?srsltid=AU7gw4UEm7OEDGKE3j-cQVuaNMJUsmV42Hc6JXhbZ19T4xQStGffPPbb",
+    "snippet": "[CHÍNH HÃNG]Cà phê hạt nguyên chất pha máy cao cấp Perfetto Delta Series Intenso 1000g - Hạt cà phê rang mộc vị đậm đà tương đương với HẠT CÀ PHÊ RANG MỘC ...",
+    "position": 4
+   },
+   {
+    "title": "Cà phê hạt Sinloy Blue Winter Spring Summer Blend 500g ...",
+    "link": "https://www.lazada.vn/products/ca-phe-hat-sinloy-blue-winter-spring-summer-blend-500g-rang-tuoi-nguyen-chat-cho-pha-espresso-pour-over-va-pha-may-i13340726365.html?srsltid=AU7gw4XZbAIIjUmxTUA7ycFUI69st2RvFe_6xwVMetlkTLjUB6jEXtuV",
+    "snippet": "1/2. promotion. 402.000 ₫. LazMall Cà phê hạt Sinloy Blue Winter Spring Summer Blend 500g rang tươi nguyên chất cho pha espresso, pour over và pha máy. 4.9(160).",
+    "rating": 4.9,
+    "ratingCount": 160,
+    "position": 5
+   },
+   {
+    "title": "500gram cà phê hạt - PHA MÁY - Robusta rang mộc (tỉ lệ ...",
+    "link": "https://www.lazada.vn/products/500gram-ca-phe-hat-pha-may-robusta-rang-moc-ti-le-hai-chin-98-cafe-sach-lam-dong-ca-phe-my-anh-vietnamese-coffee-i1204641013.html?srsltid=AU7gw4XawOGraCf4cGOs81YqfPnEb1dPYF33Xno2AwHNhImO1JGYTqjP",
+    "snippet": "135.000 ₫155.000 ₫-13%. 500gram cà phê hạt - PHA MÁY - Robusta rang mộc (tỉ lệ hái chín> 98%) - Cafe sạch Lâm Đồng - Cà phê Mỹ Anh - vietnamese coffee. 5(44).",
+    "rating": 5,
+    "ratingCount": 44,
+    "position": 6
+   },
+   {
+    "title": "[CHUYÊN BIỆT PHA MÁY] Cà phê Espresso hạt rang mộc ...",
+    "link": "https://www.lazada.vn/products/chuyen-biet-pha-may-ca-phe-espresso-hat-rang-moc-cafe-pha-may-chuyen-biet-voi-huong-vi-dam-da-chua-thanh-nhe-va-thom-goi-500g-tu-golden-mountain-coffee-i1863871099.html?srsltid=AU7gw4VIzy7JiCp2HN64m9-VFZJjddF1aqXz1k_egyD133CMsWaHyjXg",
+    "snippet": "[CHUYÊN BIỆT PHA MÁY] Cà phê Espresso hạt rang mộc, cafe pha máy chuyên biệt với hương vị đậm đà chua thanh nhẹ và thơm gói 500g từ Golden Mountain Coffee.",
+    "position": 7
+   },
+   {
+    "title": "Cà phê hạt Bourbon Espresso gói 250g -Rang nhạt, ít đắng ...",
+    "link": "https://h5.lazada.vn/products/ca-phe-hat-bourbon-espresso-goi-250g-rang-nhat-it-dang-chua-nhe-pha-maypha-phin-copen-coffee-i829752840.html",
+    "snippet": "Đặc tính sản phẩm: Đắng nhẹ xen lẫn một ít vị chua và ngọt, hương thơm Arabica dịu nhẹ, dài lâu. · Cấp độ rang: Light. · Đạt tiêu chuẩn ISO 22000 : 2005 · Phù hợp ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

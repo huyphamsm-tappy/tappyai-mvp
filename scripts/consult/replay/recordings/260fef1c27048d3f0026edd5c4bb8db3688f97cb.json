@@ -1,0 +1,389 @@
+{
+ "url": "https://google.serper.dev/shopping",
+ "request": {
+  "q": "quà cà phê cho sếp nam thích cà phê 1-2 triệu hộp quà cà phê Chus.vn Hộp Quà Cà Phê Legend Awakening Kèm Ly Bã Cà Phê",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 20
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:24:42.114Z",
+ "body": {
+  "searchParameters": {
+   "q": "quà cà phê cho sếp nam thích cà phê 1-2 triệu hộp quà cà phê Chus.vn Hộp Quà Cà Phê Legend Awakening Kèm Ly Bã Cà Phê",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "shopping",
+   "num": 40,
+   "page": 1,
+   "engine": "google"
+  },
+  "shopping": [
+   {
+    "title": "Hộp Quà Caffeine Kick-Start, Cà Phê, Ly Và Sách, Quà Cho Nam",
+    "source": "Chus.vn",
+    "price": "759.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQrrRBGE3UkE_JFJAjQ8NklLyriY1X7gQeybfK8JeKbzo4_1MjnkSRxC20cZN8Bs35bBoO5TrAT1yrpkAsmNwlTHVdNwRlrBSkJi5Cb-VUJLgx4_f3XV97T8Q",
+    "productId": "438311978503090748",
+    "position": 1
+   },
+   {
+    "title": "Combo: Hộp quà Cafe chồn 500g + Bột kem pha cà phê",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+c%C3%A0+ph%C3%AA+cho+s%E1%BA%BFp+nam+th%C3%ADch+c%C3%A0+ph%C3%AA+1-2+tri%E1%BB%87u+h%E1%BB%99p+qu%C3%A0+c%C3%A0+ph%C3%AA+Chus.vn+H%E1%BB%99p+Qu%C3%A0+C%C3%A0+Ph%C3%AA+Legend+Awakening+K%C3%A8m+Ly+B%C3%A3+C%C3%A0+Ph%C3%AA&prds=localAnnotatedOfferId:1,catalogid:5226597345674381238,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "953.350 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTXLcLRoQpuhlpsNwfczV3DZ_hzUHaO0QOUfasVxLARIvPNjh5_TslBKryfXT-FHuHlPXmaIrVBQxHkioUFwrJ_ZePhHShGP1Xz0yUkZE1q4FN97U8O5p5_8w",
+    "rating": 5,
+    "ratingCount": 1,
+    "productId": "5226597345674381238",
+    "position": 2
+   },
+   {
+    "title": "Hộp Quà Trà & Cà Phê Classic, Kèm Dụng Cụ Pha & Socola - The Curator",
+    "source": "Chus.vn",
+    "price": "902.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTkpZdMwupmiwum64L6uRM9T_N0eo42S6mqzoQyUQTJxnuL9OmmmozikBYTq268UmnfwbDwILK5WvEKLd9-hpaZFfFeK6lye6pz8msUYiG8",
+    "productId": "18017191066135113842",
+    "position": 3
+   },
+   {
+    "title": "Hộp Quà Cà Phê Robusta Full Energy, Kèm Phin & Tách - The Curator",
+    "source": "Chus.vn",
+    "price": "820.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQdKZo8Nh9ZEw8VbP_tFKqC4b6VEhZXfLLPg2ejkwdajIShFBaL5CIT7eUbA7-Yky04nhhfdbJCDJTTkKKs-BggeQ9rg6Tuwa_wmfeNC_0",
+    "productId": "15584038009675525723",
+    "position": 4
+   },
+   {
+    "title": "1KG CÀ PHÊ TRỘN LOẠI CAO CẤP PHA PHIN - ĐẶC SẢN TÂY NGUYÊN ( chuyên pha cho các quán cà phê)",
+    "source": "Shopee",
+    "price": "130.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSSPVCx466gc9rW_kBi_5BAdC3wZO3kcnrxcbSW4FFOhsCj-zE1PSuYF1OPfhDuqLji2tZZutEQvFn6AoUoOAERa1FsPPeU1CNNyctjIfnFDrz0wAaPpzRI",
+    "rating": 4.7,
+    "ratingCount": 127,
+    "productId": "1449215497870832779",
+    "position": 5
+   },
+   {
+    "title": "Cafe bột Chí Tài thơm ngon số 1",
+    "source": "Lazada Vietnam",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+c%C3%A0+ph%C3%AA+cho+s%E1%BA%BFp+nam+th%C3%ADch+c%C3%A0+ph%C3%AA+1-2+tri%E1%BB%87u+h%E1%BB%99p+qu%C3%A0+c%C3%A0+ph%C3%AA+Chus.vn+H%E1%BB%99p+Qu%C3%A0+C%C3%A0+Ph%C3%AA+Legend+Awakening+K%C3%A8m+Ly+B%C3%A3+C%C3%A0+Ph%C3%AA&prds=localAnnotatedOfferId:1,catalogid:9858114160289123574,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "75.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSLXKWUBteYJZ-zLwi7O3RChWbO2KIgamQXkkVtyJ3d8LxXi58V_WGLkpQbJplpC9NAQP_xBPYuTZAUwoXIxVUtIlaHb5IwOoVEVneYgf-4W1eWY3upB7s",
+    "productId": "9858114160289123574",
+    "position": 6
+   },
+   {
+    "title": "Hộp Quà Cà Phê Everyday Coffee, Kèm Phin Pha, Vị Đậm Đà",
+    "source": "Chus.vn",
+    "price": "396.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcR87aeQQ9uZczPm_TyjH4WCQUG8-aVXg35CWseiimelZpnf35ktqpkrFqQ68j8L-zpHvn7JQl3KnBC9rm4DWHc6a57ipDgJAMivgqBW8Exg",
+    "productId": "9836827294863689660",
+    "position": 7
+   },
+   {
+    "title": "Cà phê Hương chồn đặc biệt số 1 500g",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+c%C3%A0+ph%C3%AA+cho+s%E1%BA%BFp+nam+th%C3%ADch+c%C3%A0+ph%C3%AA+1-2+tri%E1%BB%87u+h%E1%BB%99p+qu%C3%A0+c%C3%A0+ph%C3%AA+Chus.vn+H%E1%BB%99p+Qu%C3%A0+C%C3%A0+Ph%C3%AA+Legend+Awakening+K%C3%A8m+Ly+B%C3%A3+C%C3%A0+Ph%C3%AA&prds=localAnnotatedOfferId:1,catalogid:3927768498829652162,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "66.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcT61vOL6dzJhUId-vAic-c9-lLo9WeVZr8as6G9cOdSJ4ECuiVMy16hScAGwK3L9wS-qiscS73iZQ-iICNZjYgjHxyEoxe5fwOBn_foQZs",
+    "productId": "3927768498829652162",
+    "position": 8
+   },
+   {
+    "title": "Hộp Quà Cà Phê Just Coffee, Kèm Phin Nhôm & Ly Sứ",
+    "source": "Chus.vn",
+    "price": "605.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTP4fVA8E07ehwTi6ibHKJSgLI9wAm3VZfLWsU9ENOCB2e0ZkD6R2P5gTf1Ldy3il9X1-wS4_zMOUYRUnOrboBEMX7pAkxyC8orOYohXew",
+    "productId": "617822992319533955",
+    "position": 9
+   },
+   {
+    "title": "Bột cà phê không rang 1kg",
+    "source": "Nhà sách Thái Hà",
+    "price": "359.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTaLVSEm0W54u6JcZetDXbvNGxQpe1OJQFvqnIUQI7aVSLooUhPIJPz4zNGxKjxUttEaNJFyqJyg4V4H7R4FWBplmez5w1_bzCeCRtuzMmPGHAOSgH3cZPR",
+    "productId": "6573875274308167804",
+    "position": 10
+   },
+   {
+    "title": "combo cà phê pha phim đức mạnh +cà phê pha phim mạnh hiếu gói 500g trộn đều pha chung cho ra ly cà phê ngon đậm đà",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+c%C3%A0+ph%C3%AA+cho+s%E1%BA%BFp+nam+th%C3%ADch+c%C3%A0+ph%C3%AA+1-2+tri%E1%BB%87u+h%E1%BB%99p+qu%C3%A0+c%C3%A0+ph%C3%AA+Chus.vn+H%E1%BB%99p+Qu%C3%A0+C%C3%A0+Ph%C3%AA+Legend+Awakening+K%C3%A8m+Ly+B%C3%A3+C%C3%A0+Ph%C3%AA&prds=localAnnotatedOfferId:1,catalogid:6035038545289827318,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "148.310 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQzwvHZ6fYkyjwJ_b0FVf6DJDHB30FfBPLzEGymmI1H5lpQjSv1vclqvmPro8WKeV-Zl9gtSUs_7iTTWNRb0kf7fWegZQ3US84B5mfKIHLVLAH3F_r1vsw4",
+    "rating": 5,
+    "ratingCount": 2,
+    "productId": "6035038545289827318",
+    "position": 11
+   },
+   {
+    "title": "Cà phê đen có đường hòa tan 2in1",
+    "source": "Công ty cổ phần cà phê Mê Trang",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+c%C3%A0+ph%C3%AA+cho+s%E1%BA%BFp+nam+th%C3%ADch+c%C3%A0+ph%C3%AA+1-2+tri%E1%BB%87u+h%E1%BB%99p+qu%C3%A0+c%C3%A0+ph%C3%AA+Chus.vn+H%E1%BB%99p+Qu%C3%A0+C%C3%A0+Ph%C3%AA+Legend+Awakening+K%C3%A8m+Ly+B%C3%A3+C%C3%A0+Ph%C3%AA&prds=localAnnotatedOfferId:1,catalogid:4507228005035934393,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "79.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQfpHN_r77bSRPW-fEWrvHMQ4laZ9nPPZEtYa1JkqPDXOaFdF9lBu1aTFm1tQPIu-wQjrG9YVuW2LnjGcvVSyN8KiQ1TPl7edWuKGEWV2F4UxRFWtEPzr0Yfq4",
+    "productId": "4507228005035934393",
+    "position": 12
+   },
+   {
+    "title": "Hộp quà cao cấp cà phê chồn Legendee trung nguyên mã CF05",
+    "source": "azolaco.com",
+    "price": "1.849.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTmC0ep22y86XKVPwjgtM9qSYXgK8WL8Kh8EKUDOUWGaVakpuyiMnr0_ch06VkH9a9DfBBPCopmw6upC0UUTfRDT-1IOy0ZLFgJQKXGr1GLlPYseZegycCB",
+    "productId": "15512433983801246088",
+    "position": 13
+   },
+   {
+    "title": "Combo 2 hộp Cà phê Omen - tăng cường bản lĩnh phái mạnh",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+c%C3%A0+ph%C3%AA+cho+s%E1%BA%BFp+nam+th%C3%ADch+c%C3%A0+ph%C3%AA+1-2+tri%E1%BB%87u+h%E1%BB%99p+qu%C3%A0+c%C3%A0+ph%C3%AA+Chus.vn+H%E1%BB%99p+Qu%C3%A0+C%C3%A0+Ph%C3%AA+Legend+Awakening+K%C3%A8m+Ly+B%C3%A3+C%C3%A0+Ph%C3%AA&prds=localAnnotatedOfferId:1,catalogid:3771367248341009018,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "120.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcShsbXSX7euepU5uC7DGCG0Kjf1iWIACNgMGc2GMtK5rpcC_v4wcf0dAIWW37HcYEYCK6XEzpPiQ95igl7ZJWI4l2G58XVA0yHWD8s-yUE",
+    "productId": "3771367248341009018",
+    "position": 14
+   },
+   {
+    "title": "Cafe PHIN & Bánh Mì Que Combo Cafe sữa PHIN / ICE / Pate chà bông",
+    "source": "Kefoff",
+    "price": "49.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTGzGgGpG_vaL_mwj5Ru_F3teR9A7awogCclwvxjts7_iVRwoeaXaCEvKyf7pkY1QuAvVcVbJRYP9JLiSvQaVMDAXnYFBeWpqq1ive22OA",
+    "productId": "15440585927932924492",
+    "position": 15
+   },
+   {
+    "title": "Cà Phê Bột LÀ VIỆT PHA PHIN F1 100% Arabica 1kg Vị Hài Hòa",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+c%C3%A0+ph%C3%AA+cho+s%E1%BA%BFp+nam+th%C3%ADch+c%C3%A0+ph%C3%AA+1-2+tri%E1%BB%87u+h%E1%BB%99p+qu%C3%A0+c%C3%A0+ph%C3%AA+Chus.vn+H%E1%BB%99p+Qu%C3%A0+C%C3%A0+Ph%C3%AA+Legend+Awakening+K%C3%A8m+Ly+B%C3%A3+C%C3%A0+Ph%C3%AA&prds=localAnnotatedOfferId:1,catalogid:13960225751555771776,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "512.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcT-nWpAHRMhSwh3AKBadVgX9UYnDPdFwJFsS5rDH4tbpsk_FwUXakMG29c15XPjYOPLSxIR35OxtPRCOFxf2wA1upid7cBklR6ZhTXecj0",
+    "rating": 4.9,
+    "ratingCount": 48,
+    "productId": "13960225751555771776",
+    "position": 16
+   },
+   {
+    "title": "Cà phê chè THA-1 (6-8 tháng tuổi, cao từ 20 đến 30cm)",
+    "source": "shopee.vn",
+    "price": "5.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTRJCPLiF7BFRDo_cFenjUC085lCyOYvhevqrZsuYefgBxeE0vXzZF33bTFqeqWm1g9MZ2ZTml1JnQxCJqpJrCnWTwlPuWfjpuP3Ysxj6U",
+    "productId": "14415115956086800906",
+    "position": 17
+   },
+   {
+    "title": "1kg cà phê pha phim trí phát hương chồn đặc biệt hạt Robusta chuẩn gu đậm đà thơm sánh béo hậu ngọt nhẹ",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+c%C3%A0+ph%C3%AA+cho+s%E1%BA%BFp+nam+th%C3%ADch+c%C3%A0+ph%C3%AA+1-2+tri%E1%BB%87u+h%E1%BB%99p+qu%C3%A0+c%C3%A0+ph%C3%AA+Chus.vn+H%E1%BB%99p+Qu%C3%A0+C%C3%A0+Ph%C3%AA+Legend+Awakening+K%C3%A8m+Ly+B%C3%A3+C%C3%A0+Ph%C3%AA&prds=localAnnotatedOfferId:1,catalogid:242214221825886744,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "195.500 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSKD7dh25R6yp-GaQ_zABwsB-KutayYhQCufQUOfZH4H_f6elMDL6-XEK10MuVb10VnmPnz8GQEvUyv24TGYI5sPpi3wvq9nqYpLE7E_Titcz8lEQKOByv5",
+    "productId": "242214221825886744",
+    "position": 18
+   },
+   {
+    "title": "Cà Phê Chồn Arabica ĐắkLắk - 1kg Thắng Coffee - Cafe xay pha phin truyền thống.",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+c%C3%A0+ph%C3%AA+cho+s%E1%BA%BFp+nam+th%C3%ADch+c%C3%A0+ph%C3%AA+1-2+tri%E1%BB%87u+h%E1%BB%99p+qu%C3%A0+c%C3%A0+ph%C3%AA+Chus.vn+H%E1%BB%99p+Qu%C3%A0+C%C3%A0+Ph%C3%AA+Legend+Awakening+K%C3%A8m+Ly+B%C3%A3+C%C3%A0+Ph%C3%AA&prds=localAnnotatedOfferId:1,catalogid:13098737846193038336,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "150.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQ3ANbDRU42QajTq2nVLMLG_Jri1ucYlxJBlQcmChUNe7hSh5nWgMaLAi833DGHbe3gaazn1Q4XX9_DawUUvQFPAUbLpSMpQ1K18EIQCkDVce4TYqG3UxMi",
+    "rating": 2,
+    "ratingCount": 1,
+    "productId": "13098737846193038336",
+    "position": 19
+   },
+   {
+    "title": "Cà phê Cacao Mộc Tâm Hộp 15 Gói Chính Hãng Cao Cấp - Cà phê thơm ngon cho chị em kiểm soát thân hình hoàn hảo an toàn",
+    "source": "Lazada Vietnam",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+c%C3%A0+ph%C3%AA+cho+s%E1%BA%BFp+nam+th%C3%ADch+c%C3%A0+ph%C3%AA+1-2+tri%E1%BB%87u+h%E1%BB%99p+qu%C3%A0+c%C3%A0+ph%C3%AA+Chus.vn+H%E1%BB%99p+Qu%C3%A0+C%C3%A0+Ph%C3%AA+Legend+Awakening+K%C3%A8m+Ly+B%C3%A3+C%C3%A0+Ph%C3%AA&prds=localAnnotatedOfferId:1,catalogid:793822851505503770,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "53.900 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcT7SPyd27X_y6yQ6sZIBUDAGfZBVWNX2P4ieIZUgJARnS3AghNhm1-1id68xX1SenMXdYiXeGwlBaP8NWlFurerLjHXMSYQuA2eVvdH5VI",
+    "productId": "793822851505503770",
+    "position": 20
+   },
+   {
+    "title": "Cà phê bột Nguyên chất bao đỏ gói 500g Nguyên chất 100%, được lựa chọn từ những hạt Cà phê chín",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+c%C3%A0+ph%C3%AA+cho+s%E1%BA%BFp+nam+th%C3%ADch+c%C3%A0+ph%C3%AA+1-2+tri%E1%BB%87u+h%E1%BB%99p+qu%C3%A0+c%C3%A0+ph%C3%AA+Chus.vn+H%E1%BB%99p+Qu%C3%A0+C%C3%A0+Ph%C3%AA+Legend+Awakening+K%C3%A8m+Ly+B%C3%A3+C%C3%A0+Ph%C3%AA&prds=localAnnotatedOfferId:1,catalogid:11092333853911878297,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "129.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSSuHwuCx2Cr1QhQXFNsP0RSA2P5xG3OVL4WMhMBPf6_pmpEjDVVAuuukinNpyR22KgyTD3jWrAVf4SvtW4fMW3RaiIiMritAx1t5zVC_U",
+    "productId": "11092333853911878297",
+    "position": 21
+   },
+   {
+    "title": "[RẺ VÔ ĐỊCH Chính Hãng] Cà Phê Cacao Hộp 15 Gói Cà Phê giúp chị em cân bằng vóc dáng hoàn hảo eo thon dáng ngọc",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+c%C3%A0+ph%C3%AA+cho+s%E1%BA%BFp+nam+th%C3%ADch+c%C3%A0+ph%C3%AA+1-2+tri%E1%BB%87u+h%E1%BB%99p+qu%C3%A0+c%C3%A0+ph%C3%AA+Chus.vn+H%E1%BB%99p+Qu%C3%A0+C%C3%A0+Ph%C3%AA+Legend+Awakening+K%C3%A8m+Ly+B%C3%A3+C%C3%A0+Ph%C3%AA&prds=localAnnotatedOfferId:1,catalogid:17542591349048985103,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "53.900 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSffKTW3ER3dk-qk45lC2VMKq9MS9hHD_3TJ6LwSNzfLI-5lAvW_1pAvJQhp8cYDXqVLgObNdML6O5-Fg1WlVPYZsqeAhV7tGe79rS5E0U",
+    "rating": 5,
+    "ratingCount": 1,
+    "productId": "17542591349048985103",
+    "position": 22
+   },
+   {
+    "title": "CÀ PHÊ BỘT NGUYÊN CHẤT NGUYÊN AN COFFEE",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+c%C3%A0+ph%C3%AA+cho+s%E1%BA%BFp+nam+th%C3%ADch+c%C3%A0+ph%C3%AA+1-2+tri%E1%BB%87u+h%E1%BB%99p+qu%C3%A0+c%C3%A0+ph%C3%AA+Chus.vn+H%E1%BB%99p+Qu%C3%A0+C%C3%A0+Ph%C3%AA+Legend+Awakening+K%C3%A8m+Ly+B%C3%A3+C%C3%A0+Ph%C3%AA&prds=localAnnotatedOfferId:1,catalogid:3054054304253947357,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "177.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSFa5pZEnzrIiGv0tp-IHGpE3LiBYlXeoXPGB54ImIyvW6meHmrmCGQBALFcxWB45bdu-qhBBtWaDtxUme5bjKMLaKI0nSZD5x_pEAYw3A",
+    "productId": "3054054304253947357",
+    "position": 23
+   },
+   {
+    "title": "Cà Phê Bột Bích Thao Sơn La - Đạt chuẩn OCOP 5 Sao",
+    "source": "Công Ty Cổ Phần Thực Phẩm Sạch Tab",
+    "price": "250.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTDUo592ZgOUa3d7TeniCQYxNv_3E5MZ4jDEyYTISRPaDkFOQ5BfkiDk0yqjXnWXCCccsvmXO20PW1ECmAXFtyR-_Zoq0k9nQgsH1NcDtA",
+    "productId": "17798844601653462745",
+    "position": 24
+   },
+   {
+    "title": "Combo 2 Bịch Cà Phê Nguyên Chất Coffee [500gram/Bịch + Tặng 1 Phin Inox NGON RẺ",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+c%C3%A0+ph%C3%AA+cho+s%E1%BA%BFp+nam+th%C3%ADch+c%C3%A0+ph%C3%AA+1-2+tri%E1%BB%87u+h%E1%BB%99p+qu%C3%A0+c%C3%A0+ph%C3%AA+Chus.vn+H%E1%BB%99p+Qu%C3%A0+C%C3%A0+Ph%C3%AA+Legend+Awakening+K%C3%A8m+Ly+B%C3%A3+C%C3%A0+Ph%C3%AA&prds=localAnnotatedOfferId:1,catalogid:7749926975163508183,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "240.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQOLL0BCA1ztA9CJHbq6frh2vuoTbETb9wXDcmgmbfrYbHps_FrZHf3kip3UlJL2zgZb6Qp9H54jBtpJsG2RUj5pg7IgG9u9Mx1gIQfedI",
+    "productId": "7749926975163508183",
+    "position": 25
+   },
+   {
+    "title": "Combo 1 kg Cà Phê Bột Nguyên Vũ",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+c%C3%A0+ph%C3%AA+cho+s%E1%BA%BFp+nam+th%C3%ADch+c%C3%A0+ph%C3%AA+1-2+tri%E1%BB%87u+h%E1%BB%99p+qu%C3%A0+c%C3%A0+ph%C3%AA+Chus.vn+H%E1%BB%99p+Qu%C3%A0+C%C3%A0+Ph%C3%AA+Legend+Awakening+K%C3%A8m+Ly+B%C3%A3+C%C3%A0+Ph%C3%AA&prds=localAnnotatedOfferId:1,catalogid:8355006365126752448,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "75.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQtvcwkYHrzcVqe4EimtNMtU8eDXw9_JXH_go3VgCrhafTI7yEU9mlQgM-P8wzgRpRmQKQ-Ms2q1byPjVx1TXl9cQIfZPx76zFNgPCKnY0",
+    "rating": 5,
+    "ratingCount": 1,
+    "productId": "8355006365126752448",
+    "position": 26
+   },
+   {
+    "title": "1KG 2 gói Cafe trộn truyền thống pha phin thơm ngon, đậm đà, tạng công thức pha chuẩn",
+    "source": "Shopee",
+    "price": "180.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSNKrwKKqjV9OnSLjMzNXzwIEZDxSw-OGqaLQlOkhzwujJBWobmjFRU9MH_b91ZE4xjOizrD1WuzkMAaGMUChUlIxLV9e6RilWOASrCSDI",
+    "productId": "1507110810654881150",
+    "position": 27
+   },
+   {
+    "title": "Cà phê Arabica đặc biệt – Số 1 - Chợ Việt Online",
+    "source": "Chợ Việt Online",
+    "price": "400.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQLJtba_Gv-7177sya13KhBi80BR1rvdKfEX0fEcCpXvHmMbRxEqfikRxPT_VmHxukTKT2Wlmy7fXN_yaKLQAidIt5p4dG_YsKaPFtrQVJQgFr5FY6PZgpqZw",
+    "productId": "5128027639182798414",
+    "position": 28
+   },
+   {
+    "title": "Hộp cà phê hòa tan Expresso Pure Black (10 gói)",
+    "source": "Shopee",
+    "price": "40.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcR_Xtyua67puoFISpo3gtKv4uKaD9f0IbeqDSyR-vtW1h3C-PnhN7wSwyBja9QGGcR6lh70loRkPrVgzLComnkQ6FcI9DTgnMs6Xoo-xSGUb9Su1A4rOxkA",
+    "rating": 5,
+    "ratingCount": 5,
+    "productId": "13655736674326969530",
+    "position": 29
+   },
+   {
+    "title": "Hộp cà phê Expresso hòa tan sữa Cappuccino (11g x 16 Gói), Không Đường",
+    "source": "Shopee",
+    "price": "65.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRklomK6l4rA06z63bk3IEzyDbTW2rh-ePB-O5ceRNBrjEwYB1vT-GhM2kHp1I5zdb_AkiJagcBzBIxR6gyk-UFeaF883mzbtN57Y2tiXzj0vRqbWtGyYG_",
+    "rating": 4.9,
+    "ratingCount": 16,
+    "productId": "958199778326475049",
+    "position": 30
+   },
+   {
+    "title": "Cà phê bột - Rang mộc Pha Phin Truyền Thống Mộc Thanh Trà. Túi Zip Kraft có van một chiều",
+    "source": "Mộc Thanh Trà Việt Nam",
+    "price": "110.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRdhWf5AAUhb9EL9TUjqS6oANC25oDx1oZ41Fdl6YU-gPjKoAyphmAPTsuYTI7hXlX_fvwHhjgppEWP2WvLNTIeNapZmZ85",
+    "productId": "4329326340356552805",
+    "position": 31
+   },
+   {
+    "title": "Phát Hải Combo 1kg Cà Phê 2 Loại Tách Trắng & Đỏ Hương Vị Đậm Chuẩn Pha Phin Truyền Thống",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+c%C3%A0+ph%C3%AA+cho+s%E1%BA%BFp+nam+th%C3%ADch+c%C3%A0+ph%C3%AA+1-2+tri%E1%BB%87u+h%E1%BB%99p+qu%C3%A0+c%C3%A0+ph%C3%AA+Chus.vn+H%E1%BB%99p+Qu%C3%A0+C%C3%A0+Ph%C3%AA+Legend+Awakening+K%C3%A8m+Ly+B%C3%A3+C%C3%A0+Ph%C3%AA&prds=localAnnotatedOfferId:1,catalogid:17999565909521046411,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "128.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRBcO1aS5ixKaK44JjqhMvdSMmB4zJqJTRBb18WWT1F3cf3qhO_6c1gBPOHaEl9F0oqeDJaai6z0j8D5gYymxXx6PDmcrk29x--gW-4IHA",
+    "productId": "17999565909521046411",
+    "position": 32
+   },
+   {
+    "title": "Cà phê S2 thượng hạng KENBAR 1kg - pha phin & máy đều được",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+c%C3%A0+ph%C3%AA+cho+s%E1%BA%BFp+nam+th%C3%ADch+c%C3%A0+ph%C3%AA+1-2+tri%E1%BB%87u+h%E1%BB%99p+qu%C3%A0+c%C3%A0+ph%C3%AA+Chus.vn+H%E1%BB%99p+Qu%C3%A0+C%C3%A0+Ph%C3%AA+Legend+Awakening+K%C3%A8m+Ly+B%C3%A3+C%C3%A0+Ph%C3%AA&prds=localAnnotatedOfferId:1,catalogid:5517017395829156135,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "67.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcS8iWTYjsk5HtmHHhM_ksMm_ztYocqxOVeCYErhC6qJ-Ov0hdbiGeN-lZK2JU8JQdNn2By4115SesHq7W4M4lctobKa8OOR5-aC-A995e1h",
+    "rating": 5,
+    "ratingCount": 9,
+    "productId": "5517017395829156135",
+    "position": 33
+   },
+   {
+    "title": "Cà phê hỗ trợ giảm cân Cacao Premium Coffe, kiểm soát cân nặng, hỗ trợ cân bằng vóc dáng cân đối - Hộp 15 gói",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+c%C3%A0+ph%C3%AA+cho+s%E1%BA%BFp+nam+th%C3%ADch+c%C3%A0+ph%C3%AA+1-2+tri%E1%BB%87u+h%E1%BB%99p+qu%C3%A0+c%C3%A0+ph%C3%AA+Chus.vn+H%E1%BB%99p+Qu%C3%A0+C%C3%A0+Ph%C3%AA+Legend+Awakening+K%C3%A8m+Ly+B%C3%A3+C%C3%A0+Ph%C3%AA&prds=localAnnotatedOfferId:1,catalogid:10058118435312858394,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "69.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTvNvRbYYGnmuuExE6NZQKkRCTd3BDAeY_jid2sbylTIrytGkmdxlx-doZ3Oz5l4k5x_2g_wNwtAUoSe4smI_W8vmnGvrJn_d7OigAa6o8",
+    "rating": 4.6,
+    "ratingCount": 13,
+    "productId": "10058118435312858394",
+    "position": 34
+   },
+   {
+    "title": "Cà Phê Đen Pha Sẵn 100% Nguyên Chất,Thơm Ngon,Nồng Nàn Đóng Chai 250ml - Tiệm Nhà Đậu Food&Drink",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+c%C3%A0+ph%C3%AA+cho+s%E1%BA%BFp+nam+th%C3%ADch+c%C3%A0+ph%C3%AA+1-2+tri%E1%BB%87u+h%E1%BB%99p+qu%C3%A0+c%C3%A0+ph%C3%AA+Chus.vn+H%E1%BB%99p+Qu%C3%A0+C%C3%A0+Ph%C3%AA+Legend+Awakening+K%C3%A8m+Ly+B%C3%A3+C%C3%A0+Ph%C3%AA&prds=localAnnotatedOfferId:1,catalogid:13196786158485440154,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "75.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcT_5szbPHvCPuMy66lWj6p6_Kd1UqTLvsDqll_Ek0o1Oj7gOmTwWY2jno_drXYTEMXAmMoDoSQeHnuWakK8hr2_0hd-aHAWKgMnO1kvsYezmIDzci1Os1o",
+    "rating": 4.8,
+    "ratingCount": 6,
+    "productId": "13196786158485440154",
+    "position": 35
+   },
+   {
+    "title": "Combo 2 gói Cà phê Nguyên tâm số 1",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+c%C3%A0+ph%C3%AA+cho+s%E1%BA%BFp+nam+th%C3%ADch+c%C3%A0+ph%C3%AA+1-2+tri%E1%BB%87u+h%E1%BB%99p+qu%C3%A0+c%C3%A0+ph%C3%AA+Chus.vn+H%E1%BB%99p+Qu%C3%A0+C%C3%A0+Ph%C3%AA+Legend+Awakening+K%C3%A8m+Ly+B%C3%A3+C%C3%A0+Ph%C3%AA&prds=localAnnotatedOfferId:1,catalogid:10900680973397860822,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "220.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRRe8ZDEUvdc9PoBva0nxKrggy96owwtde2s3MDSSf80h3PBBlbZ7TdzypUT656Ws2-2AzgtETW9n8Uam9gtKFVHDTbZi0hf6mxFZOHcfn0N13RUmGf0BTe6Q",
+    "productId": "10900680973397860822",
+    "position": 36
+   },
+   {
+    "title": "1KG Cà phê Bột Amathuot - Cà phê kem muối - có hương liệu và phụ gia",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+c%C3%A0+ph%C3%AA+cho+s%E1%BA%BFp+nam+th%C3%ADch+c%C3%A0+ph%C3%AA+1-2+tri%E1%BB%87u+h%E1%BB%99p+qu%C3%A0+c%C3%A0+ph%C3%AA+Chus.vn+H%E1%BB%99p+Qu%C3%A0+C%C3%A0+Ph%C3%AA+Legend+Awakening+K%C3%A8m+Ly+B%C3%A3+C%C3%A0+Ph%C3%AA&prds=localAnnotatedOfferId:1,catalogid:3607802835738270476,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "139.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcThfjZveDxG2BFt9KA9nadnU14z-5kTR-ag5eutoycilnVHuHY5Hm1dLNQr7xS4upKf66ZvCE97LYMZ5k799Se81OSFXZ15XNEULZL6RhKQ",
+    "rating": 5,
+    "ratingCount": 3,
+    "productId": "3607802835738270476",
+    "position": 37
+   },
+   {
+    "title": "Cà phê nguyên chất Arabica - Cafe pha phin chua thanh, thơm ngon, hậu vị ngọt ngào - Hali Coffee định lượng 200gr, 1000g",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+c%C3%A0+ph%C3%AA+cho+s%E1%BA%BFp+nam+th%C3%ADch+c%C3%A0+ph%C3%AA+1-2+tri%E1%BB%87u+h%E1%BB%99p+qu%C3%A0+c%C3%A0+ph%C3%AA+Chus.vn+H%E1%BB%99p+Qu%C3%A0+C%C3%A0+Ph%C3%AA+Legend+Awakening+K%C3%A8m+Ly+B%C3%A3+C%C3%A0+Ph%C3%AA&prds=localAnnotatedOfferId:1,catalogid:13181372502951621202,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "89.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTSJbEc_Rq_FiE39mVdC6tLjtB1eMLAm3FAJqBQNH1t4MwsENxn1RAqcDKxZcl1UuA3l90Y8Ruky-bdyAVx84vtz3yG7wNZ0-Ku58hFIB5s",
+    "rating": 5,
+    "ratingCount": 5,
+    "productId": "13181372502951621202",
+    "position": 38
+   },
+   {
+    "title": "[TẶNG 2 GÓI CÀ PHÊ] Hộp 20 Gói Cà Phê Hoà Tan Vị Chocolate Truyền Thống Của Mỹ, Giúp Sáng Tạo Ngày Mới",
+    "source": "shopee.vn",
+    "price": "158.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSOrp6XUW4aOSBLLw3lwV1_xk9npHHhiMFAnlSOBQnxIsREIvxaY7ZTH9XphERtjw5JWXZJDDCY2CEJ-ZYmbi0Uc8tNY4pSgw",
+    "rating": 5,
+    "ratingCount": 6,
+    "productId": "6395260850938658713",
+    "position": 39
+   }
+  ],
+  "credits": 2
+ }
+}

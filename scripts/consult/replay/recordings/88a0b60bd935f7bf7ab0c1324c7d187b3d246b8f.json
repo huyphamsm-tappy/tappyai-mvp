@@ -1,0 +1,83 @@
+{
+ "url": "https://google.serper.dev/shopping",
+ "request": {
+  "q": "quà tặng sếp nam 40 tuổi thích cà phê không tặng cà phê phin, ngân sách 1-2 triệu, quà cà phê phụ kiện ly bình giữ nhiệt máy xay",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 20
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:15:02.345Z",
+ "body": {
+  "searchParameters": {
+   "q": "quà tặng sếp nam 40 tuổi thích cà phê không tặng cà phê phin, ngân sách 1-2 triệu, quà cà phê phụ kiện ly bình giữ nhiệt máy xay",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "shopping",
+   "num": 40,
+   "page": 1,
+   "engine": "google"
+  },
+  "shopping": [
+   {
+    "title": "Quà tặng người già",
+    "source": "H&H Nutrition",
+    "price": "540.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQmGvB2kx_jvGnTiOvoNds0FpyX9NnykJrWEwDeRhWxuL1TXvlAyXS3zKPIWygvpD8aUAQ15-oOlmi7YL0huM0XUOE48w0-9endLMcgnJvIVNqUbj6zM_MB",
+    "rating": 5,
+    "ratingCount": 4,
+    "productId": "18183883648343833819",
+    "position": 1
+   },
+   {
+    "title": "Quà tặng cho sếp nam | Tượng ngựa Bạch Ngọc màu trắng 10,62kg | Có Hộp Đẹp & Giấy Kiểm Định Đá Quý",
+    "source": "Decora.vn",
+    "price": "20.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRF74S-qzeLGgFtWlbJW_GSOLA-ZLAqio6r47HlDnhts0yD3wTsO9-yHeQI-ywuGI4KygERJOBxmjWIcFLZiordf6ygOeDUSo9tbD3zd69c",
+    "productId": "11482912572884169794",
+    "position": 2
+   },
+   {
+    "title": "Qùa Tặng Cho Người Yêu Nam Giới",
+    "source": "Thegioisonmoi.com",
+    "price": "1.599.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTPQwJ5J7I_xEcodGvEus4i3xJCTK6d0utk43Fe8ceqPeZ1UOGoFXIWBefM1_rYktaPsRrGDsTV-uETsBxq9bUC5zLwhA2tQuomopxKgHI",
+    "productId": "294270490446794939",
+    "position": 3
+   },
+   {
+    "title": "Bộ quà tặng cho giới văn phòng ý nghĩa, giá rẻ 2026",
+    "source": "Thành Phát Gift & Decor",
+    "price": "320.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQ0o2tpmvt5egBRHLlJrAnBIGbEe3D0GePnKEUa0hB4wspu-uGwpMmoeOwxiw1rrqt7f9sskgncEULtV_c85mmqljxJb7uxE-yaWQFkhYdzS7qLWP8_yUx9",
+    "productId": "2240891915339002921",
+    "position": 4
+   },
+   {
+    "title": "Combo bộ quà tặng (Quyển sổ tay, bình giữ nhiệt, cây viết) - CTUMP Pros",
+    "source": "Ký túc xá Trường Đại học Y Dược Cần Thơ",
+    "price": "400.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSmVEfbEJIdapQb6Pk41X_i_j0SlSp4kSxKRYNGcQQ9Ak3LoaTQ3zqgwM5QQ2XfAWG3DXDmWuHHjElXxikQ8xnNunnzvCP4hQ",
+    "productId": "4229890366765242400",
+    "position": 5
+   },
+   {
+    "title": "Quà Tặng Sếp Nữ Cao Cấp - Gỗ Hóa Thạch 14.1kg Đồ Trang Trí Phòng Khách Sang Trọng",
+    "source": "Decora.vn",
+    "price": "31.000.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTwYG5uj8hK9_6Pj9hVk4vCEPlsb7hHvrEKscZ3LDjUYqAxNtcHyW9qQzsrM-OJr7BPvr3RnCD-Lsm5bE8wG6yGLs8_XeSULYzdt4FE7Ao",
+    "productId": "1205566080452247336",
+    "position": 6
+   },
+   {
+    "title": "Quà tặng cho khách hàng nữ hộp gỗ - FSNK327",
+    "source": "MKnow",
+    "price": "2.700.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRplT6zzqNfVoHOKVB0XT0nsM77q4wwQ0xhqkIe7Fa4iws4fxyLgfb4bq-LUwG5l5TpWcBypAq0oFwLy0gx4EpRioSX4iqbVWNgrQZEVvf2",
+    "productId": "7133627022387985372",
+    "position": 7
+   }
+  ],
+  "credits": 2
+ }
+}

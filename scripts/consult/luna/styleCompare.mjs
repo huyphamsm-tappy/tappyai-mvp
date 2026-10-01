@@ -1,11 +1,11 @@
-// node scripts/consult/luna/styleCompare.mjs <A1 out dir> <A2 out dir> <B out dir> [<json out>]
+// node scripts/consult/luna/styleCompare.mjs <A1 dirs> <A2 dirs> <B dirs> [<json out>]   (each = comma list of replay out dirs: scenarios,realTyping)
 // STYLE_LUNA6 measurement (owner 01/10, D7): A1/A2 = flag OFF twice (noise floor), B = flag ON, same retrieved data (Serper replay).
 // Structural delta = what code builds (turn type, tool rows, card names, picks, alternatives, markers). Everything that is the MODEL's
 // own choice is listed per turn against the A1↔A2 noise, never waved away.
 import { readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 const [a1d, a2d, bd, outFile] = process.argv.slice(2)
-const load = d => JSON.parse(readFileSync(join(d, 'results.json'), 'utf8')).rows
+const load = ds => ds.split(',').flatMap(d => JSON.parse(readFileSync(join(d, 'results.json'), 'utf8')).rows.map(r => ({ ...r, conv: d.split('-')[0] + ':' + r.conv })))
 const key = r => `${r.conv}#${r.turnIndex}`
 const A1 = new Map(load(a1d).map(r => [key(r), r])), A2 = new Map(load(a2d).map(r => [key(r), r])), B = new Map(load(bd).map(r => [key(r), r]))
 const keys = [...A1.keys()].filter(k => A2.has(k) && B.has(k))

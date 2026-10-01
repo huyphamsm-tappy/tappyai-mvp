@@ -1,0 +1,79 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Gợi ý 100+ site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:36:56.444Z",
+ "body": {
+  "searchParameters": {
+   "q": "Gợi ý 100+ site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Gợi ý 100+ lời chúc 8/3 cho mẹ ý nghĩa, ngắn gọn và cảm ...",
+    "link": "https://shopee.vn/blog/loi-chuc-8-3-cho-me/",
+    "snippet": "Lời chúc 8/3 cho mẹ là cách đơn giản nhưng đầy yêu thương để bạn bày tỏ lòng biết ơn trong ngày Quốc tế Phụ nữ. Không cần quá dài dòng, ...",
+    "date": "1 thg 3, 2026",
+    "position": 1
+   },
+   {
+    "title": "Gợi ý 100+ stt độc thân siêu hợp với hội FA",
+    "link": "https://shopee.vn/blog/stt-doc-than/",
+    "snippet": "Độc thân không đồng nghĩa với cô đơn, những loạt stt độc thân sau đây của Shopee Blog sẽ giúp bạn có thêm ý tưởng đăng mạng xã hội thật hay!",
+    "date": "10 thg 6, 2026",
+    "position": 2
+   },
+   {
+    "title": "100+ lời chúc valentine trắng ngọt ngào, ý nghĩa nhất",
+    "link": "https://shopee.vn/blog/loi-chuc-valentine-trang/",
+    "snippet": "Bạn có thể gửi những lời chúc ngắn gọn, dễ thương hoặc sáng tạo, tùy theo tính cách và sở thích của bạn và người ấy. Dưới đây là 100+ lời chúc ...",
+    "date": "1 thg 3, 2026",
+    "position": 3
+   },
+   {
+    "title": "100+ lời chúc 8/3 cảm động dành tặng người phụ nữ bạn ...",
+    "link": "https://shopee.vn/blog/loi-chuc-8-3/",
+    "snippet": "Chúc em một ngày 8/3 thật vui vẻ và ý nghĩa, đầy hạnh phúc và thành công trong công việc. Em là người phụ nữ mạnh mẽ và đáng quý, luôn là nguồn ...",
+    "date": "1 thg 3, 2026",
+    "position": 4
+   },
+   {
+    "title": "100+ gợi ý chúc Tết bạn bè sao cho vui vẻ đúng không khí ...",
+    "link": "https://shopee.vn/blog/chuc-tet-ban-be/",
+    "snippet": "Thơ chúc tết bạn bè hay · 1. Tết đến Xuân về. Chúc bạn may mắn · 2. Chúc bạn năm mới. Tiền vào như nước · 3. Chúc bạn năm mới. Mọi điều như ý.",
+    "date": "5 thg 2, 2026",
+    "position": 5
+   },
+   {
+    "title": "100+ câu chúc Giáng sinh hay và ý nghĩa dành cho mọi đối ...",
+    "link": "https://shopee.vn/blog/cau-chuc-giang-sinh/",
+    "snippet": "Gợi ý 100+ câu chúc Giáng sinh cho mọi người. Câu chúc Giáng sinh cho gia đình hay và ý nghĩa. Dưới đây là 10 câu chúc Giáng sinh và năm mới ...",
+    "date": "8 thg 12, 2025",
+    "position": 6
+   },
+   {
+    "title": "50+ lời chúc 8/3 cho bạn bè vui vẻ, dễ thương và ý nghĩa",
+    "link": "https://shopee.vn/blog/loi-chuc-8-3-cho-ban-be/",
+    "snippet": "Nhân dịp đặc biệt 8/3 này chúc cậu ăn mãi không mập, rạng rỡ hơn hoa, tươi cười cả ngày, tiền tiêu rủng rỉnh, quà đếm mỏi tay. >> Xem thêm: Gợi ...",
+    "date": "1 thg 3, 2026",
+    "position": 7
+   },
+   {
+    "title": "In Phát Tín, Cửa hàng trực tuyến",
+    "link": "https://shopee.vn/shop/485186681",
+    "snippet": "Trang trí bàn thờ Phật, tranh Đức Phật Thích Ca, ảnh gỗ tráng gương · 100+ Tranh slogan tạo động lực có khung kèm đinh treo, trang trí bàn.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

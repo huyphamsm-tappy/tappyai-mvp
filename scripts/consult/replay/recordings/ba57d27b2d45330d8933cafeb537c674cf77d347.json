@@ -1,0 +1,62 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Cà phê S2 thượng hạng KENBAR 1kg site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:24:47.251Z",
+ "body": {
+  "searchParameters": {
+   "q": "Cà phê S2 thượng hạng KENBAR 1kg site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "1Kg cà phê S2 Gu Đậm Thượng Hạng KENBAR",
+    "link": "https://shopee.vn/1Kg-c%C3%A0-ph%C3%AA-S2-Gu-%C4%90%E1%BA%ADm-Th%C6%B0%E1%BB%A3ng-H%E1%BA%A1ng-KENBAR-C%C3%A0-ph%C3%AA-m%E1%BB%99c-Rang-xay-nguy%C3%AAn-ch%E1%BA%A5t-h%C6%B0%C6%A1ng-Th%C6%A1m-T%E1%BB%B1-Nhi%C3%AAn-H%E1%BA%ADu-V%E1%BB%8B-%C4%90%E1%BA%ADm-%C4%90%C3%A0-i.282769027.46452281158?extraParams=%7B%22display_model_id%22%3A425219313498%2C%22model_selection_logic%22%3A2%7D",
+    "snippet": "Mua 1Kg cà phê S2 Gu Đậm Thượng Hạng KENBAR - Cà phê mộc, Rang xay nguyên chất, hương Thơm Tự Nhiên, Hậu Vị Đậm Đà giá tốt. Mua hàng qua mạng uy tín, ...",
+    "position": 1
+   },
+   {
+    "title": "Cà phê S2 thượng hạng KENBAR 1kg - pha phin & máy ...",
+    "link": "https://shopee.vn/C%C3%A0-ph%C3%AA-S2-th%C6%B0%E1%BB%A3ng-h%E1%BA%A1ng-KENBAR-1kg-pha-phin-m%C3%A1y-%C4%91%E1%BB%81u-%C4%91%C6%B0%E1%BB%A3c-i.582050842.54552318926",
+    "snippet": "Mua Cà phê S2 thượng hạng KENBAR 1kg - pha phin & máy đều được giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn lại ...",
+    "rating": 5,
+    "ratingCount": 43,
+    "position": 2
+   },
+   {
+    "title": "1kg cà phê S2 KENBAR mộc rang xay - 80%Robusta 20 ...",
+    "link": "https://shopee.vn/1kg-c%C3%A0-ph%C3%AA-S2-KENBAR-m%E1%BB%99c-rang-xay-80-Robusta-20-Arabica-Gu-V%E1%BB%ABa-Th%C6%A1m-H%E1%BA%ADu-%C4%90%E1%BA%ADm-i.475630052.53302274476",
+    "snippet": "Mua 1kg cà phê S2 KENBAR mộc rang xay - 80%Robusta 20%Arabica Gu Vừa Thơm Hậu Đậm giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, ...",
+    "position": 3
+   },
+   {
+    "title": "Cà Phê S2 Thượng Hạng KENBAR - Mộc rang xay nguyên ...",
+    "link": "https://shopee.vn/C%C3%A0-Ph%C3%AA-S2-Th%C6%B0%E1%BB%A3ng-H%E1%BA%A1ng-KENBAR-M%E1%BB%99c-rang-xay-nguy%C3%AAn-ch%E1%BA%A5t-pha-phin-pha-m%C3%A1y-%C4%91%E1%BB%81u-ngon-i.584525650.51402825580",
+    "snippet": "Mua Cà Phê S2 Thượng Hạng KENBAR - Mộc rang xay nguyên chất, pha phin, pha máy đều ngon giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 4
+   },
+   {
+    "title": "Trà ngọc trang - Giá Tốt, Sale Tháng 09, Freeship 0Đ",
+    "link": "https://shopee.vn/list/tr%C3%A0%20ng%E1%BB%8Dc%20trang",
+    "snippet": "Mua online trà ngọc trang chất lượng, Voucher Shopee Live giảm tới 50% tại Shopee. Khuyến mãi tháng 09, 2026 . Freeship 0Đ. Mua ngay!",
+    "position": 5
+   },
+   {
+    "title": "Trà hoa hồng chatramue - Giá Tốt, Sale Tháng 09, ...",
+    "link": "https://shopee.vn/list/tr%C3%A0%20hoa%20h%E1%BB%93ng/chatramue",
+    "snippet": "Trà Mộc Xuân Dưỡng Tóc (Cho tóc rụng - bạc) 12 vị thảo mộc Nuôi Dưỡng Dưỡng tóc từ bên trong. 134.000₫. 265.000₫. -49%. voucher-icon. Rẻ Vô Địch.",
+    "position": 6
+   }
+  ],
+  "credits": 1
+ }
+}

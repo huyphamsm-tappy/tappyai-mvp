@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Cà phê nguyên chất Arabica - Cafe pha phin chua thanh, thơm ngon, hậu vị ngọt ngào - Hali Coffee định lượng 200gr, 1000g\" site:cellphones.com.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:24:44.583Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Cà phê nguyên chất Arabica - Cafe pha phin chua thanh, thơm ngon, hậu vị ngọt ngào - Hali Coffee định lượng 200gr, 1000g\" site:cellphones.com.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

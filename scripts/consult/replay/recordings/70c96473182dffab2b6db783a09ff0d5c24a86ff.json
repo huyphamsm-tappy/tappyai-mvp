@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Bộ Quà Tặng Cao Cấp site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:14:55.302Z",
+ "body": {
+  "searchParameters": {
+   "q": "Bộ Quà Tặng Cao Cấp site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Quà tặng doanh nghiệp cao cấp - Giá Tốt, Miễn Phí Vận ...",
+    "link": "https://shopee.vn/list/qu%C3%A0%20t%E1%BA%B7ng/doanh%20nghi%E1%BB%87p/cao%20c%E1%BA%A5p",
+    "snippet": "Bộ Quà Tặng Sổ Tay Cao Cấp A5 Kèm Bút Kim Loại - Quà Tặng Sang Trọng Doanh Nghiệp -Minkey Shop70.000₫ · 7. Bộ Ấm Chén Men Ngọc Thuỷ Mặc 6 Món Cao Cấp [ HOÀNG ...",
+    "position": 1
+   },
+   {
+    "title": "[Combo Sổ Ly Bút] Bộ quà tặng - Giftset cao cấp in khắc ...",
+    "link": "https://shopee.vn/-Combo-S%E1%BB%95-Ly-B%C3%BAt-B%E1%BB%99-qu%C3%A0-t%E1%BA%B7ng-Giftset-cao-c%E1%BA%A5p-in-kh%E1%BA%AFc-t%C3%AAn-logo-n%E1%BB%99i-dung-theo-y%C3%AAu-c%E1%BA%A7u.-Qu%C3%A0-t%E1%BA%B7ng-%C3%BD-ngh%C4%A9a-i.37958502.18577068784",
+    "snippet": "Mua [Combo Sổ Ly Bút] Bộ quà tặng - Giftset cao cấp in khắc tên, logo, nội dung theo yêu cầu. Quà tặng ý nghĩa giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 2
+   },
+   {
+    "title": "BỘ QUÀ TẶNG CAO CẤP CHO NAM",
+    "link": "https://shopee.vn/B%E1%BB%98-QU%C3%80-T%E1%BA%B6NG-CAO-C%E1%BA%A4P-CHO-NAM-i.76364810.5875513427",
+    "snippet": "Mua BỘ QUÀ TẶNG CAO CẤP CHO NAM giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn lại tiền Giao Hàng Miễn Phí. XEM NGAY!",
+    "position": 3
+   },
+   {
+    "title": "Bộ Quà Tặng Sinh Nhật, Tốt nghiệp cao cấp SPECIALLY",
+    "link": "https://shopee.vn/B%E1%BB%99-Qu%C3%A0-T%E1%BA%B7ng-Sinh-Nh%E1%BA%ADt-T%E1%BB%91t-nghi%E1%BB%87p-cao-c%E1%BA%A5p-SPECIALLY-H%E1%BB%99p-qu%C3%A0-k%C3%A8m-t%C3%BAi-x%C3%A1ch-T%E1%BA%B7ng-ng%C6%B0%E1%BB%9Di-y%C3%AAu-b%E1%BA%A1n-b%C3%A8-i.1111086699.25433901197",
+    "snippet": "Mua Bộ Quà Tặng Sinh Nhật, Tốt nghiệp cao cấp SPECIALLY - Hộp quà kèm túi xách - Tặng người yêu, bạn bè giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 5,
+    "ratingCount": 87,
+    "position": 4
+   },
+   {
+    "title": "18+ gợi ý quà Tết cho doanh nghiệp chỉn chu và ý nghĩa",
+    "link": "https://shopee.vn/blog/qua-tet-cho-doanh-nghiep/",
+    "snippet": "18+ quà Tết cho doanh nghiệp vô cùng thiết thực, ý nghĩa · Bộ chén Bát Tràng · Khay mứt sứ · Bút ký khắc tên cao cấp · Giỏ quà Tết · Hộp quà rượu ...",
+    "date": "21 thg 1, 2026",
+    "position": 5
+   },
+   {
+    "title": "Bộ quà tặng sang trọng,Quà tặng kỷ niệm cao cấp hộp ...",
+    "link": "https://shopee.vn/B%E1%BB%99-qu%C3%A0-t%E1%BA%B7ng-sang-tr%E1%BB%8Dng-Qu%C3%A0-t%E1%BA%B7ng-k%E1%BB%B7-ni%E1%BB%87m-cao-c%E1%BA%A5p-h%E1%BB%99p-sang-tr%E1%BB%8Dng-T%E1%BA%B7ng-qu%C3%A0-cho-b%E1%BA%A1n-b%C3%A8-Qu%C3%A0-n%C4%83m-m%E1%BB%9Bi-i.1259000890.48754720281?extraParams=%7B%22display_model_id%22%3A370436138277%2C%22model_selection_logic%22%3A3%7D",
+    "snippet": "Mua Bộ quà tặng sang trọng,Quà tặng kỷ niệm cao cấp hộp sang trọng,Tặng quà cho bạn bè Quà năm mới giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 6
+   },
+   {
+    "title": "Carol QUÀ TẶNG CAO CẤP, Cửa hàng trực tuyến",
+    "link": "https://shopee.vn/quatangcaocap_luxurybox",
+    "snippet": "Bộ quà tặng Ly giữ nhiệt và bút ký (tặng ống hút) , khắc laser tên riêng làm quà tặng sinh nhật. 316.494₫. rating-star 5.0. 38 đã bán.",
+    "position": 7
+   },
+   {
+    "title": "BỘ QUÀ TẶNG CAO CẤP - Nâu kẻ sọc",
+    "link": "https://shopee.vn/B%E1%BB%98-QU%C3%80-T%E1%BA%B6NG-CAO-C%E1%BA%A4P-N%C3%A2u-k%E1%BA%BB-s%E1%BB%8Dc-i.76364810.6564079361",
+    "snippet": "Mua BỘ QUÀ TẶNG CAO CẤP - Nâu kẻ sọc giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn lại tiền Giao Hàng Miễn Phí. XEM ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

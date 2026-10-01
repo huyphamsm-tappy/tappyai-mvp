@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Bãi biển Mỹ Khê\" OR \"Bãi biển Mỹ Khê\" OR \"Bãi biển Non Nước\" Đà Nẵng site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:16:18.065Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Bãi biển Mỹ Khê\" OR \"Bãi biển Mỹ Khê\" OR \"Bãi biển Non Nước\" Đà Nẵng site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Chụp ảnh ở bãi biển Mỹ Khê Đà Nẵng",
+    "link": "https://www.tiktok.com/@linh.nng91/video/7682246777872911636",
+    "snippet": "Chụp ảnh ở bãi biển Mỹ Khê Đà Nẵng: góc đẹp nhất để sống ảo. Một góc Mỹ Khê đẹp thế này, bạn đã từng chụp chưa? Mỹ Khê là một trong những bãi ...",
+    "position": 1
+   },
+   {
+    "title": "Trải nghiệm bãi biển Mỹ Khê tuyệt đẹp tại Đà Nẵng",
+    "link": "https://www.tiktok.com/@danang_didau/video/7506844830782295304",
+    "snippet": "Anh Sẽ Gặp Em Ở Đà Nẵng. Trải nghiệm bãi biển Mỹ Khê tuyệt đẹp tại Đà Nẵng. Khám phá vẻ đẹp biển Mỹ Khê và những hoạt động thú vị tại Đà Nẵng.",
+    "position": 2
+   },
+   {
+    "title": "Bình minh 4:30 sáng ở bãi biển Mỹ Khê Đà Nẵng",
+    "link": "https://www.tiktok.com/@_matchalatte1201_/video/7655860870265851154",
+    "snippet": "Lead Dậy từ 4:30 sáng để ngắm bình minh trên bãi biển Mỹ Khê, Đà Nẵng là trải nghiệm dành cho người yêu khoảnh khắc yên tĩnh và ánh sáng đẹp ...",
+    "position": 3
+   },
+   {
+    "title": "Hướng Dẫn Đường Đến Bãi Biển Mỹ Khê Đà Nẵng",
+    "link": "https://www.tiktok.com/@tuangogo_danang/video/7495536517306125575",
+    "snippet": "Khám phá cách đến bãi biển Mỹ Khê và chỗ để xe tiện lợi. Cùng xem bình minh tuyệt đẹp ở Đà Nẵng! #danang #biendanang #mykhebeach. Đây là bản tóm ...",
+    "position": 4
+   },
+   {
+    "title": "Góc Đà Nẵng: Kỷ niệm ở bãi biển Mỹ Khê",
+    "link": "https://www.tiktok.com/@linh.nng91/video/7682999215953415445",
+    "snippet": "Góc Đà Nẵng: Kỷ niệm ở bãi biển Mỹ Khê. Góc Đà Nẵng này chắc nhiều người từng đi qua rồi — bãi biển Mỹ Khê là điểm kết nối nhiều kỷ niệm với ...",
+    "position": 5
+   },
+   {
+    "title": "Bình minh bãi biển Non Nước Đà Nẵng tuyệt đẹp",
+    "link": "https://www.tiktok.com/@just.kienn/video/7645526638813302037",
+    "snippet": "Bình minh tại bãi biển Non Nước, Đà Nẵng mang đến một khung cảnh tuyệt đẹp và yên bình. Khi những tia nắng đầu tiên hé rạng, ...",
+    "position": 6
+   },
+   {
+    "title": "Bãi Biển Mỹ Khê Đà Nẵng – Phần Cuối Vlog Du Lịch",
+    "link": "https://www.tiktok.com/@huongiangdaily/video/7667523076430646549",
+    "snippet": "Kết luận Bãi Biển Mỹ Khê Đà Nẵng vẫn là điểm đến lý tưởng cho ai muốn tận hưởng biển, tắm nắng và ghi lại những khung cảnh đẹp. Phần cuối vlog ...",
+    "position": 7
+   },
+   {
+    "title": "Bãi biển Mỹ Khê về đêm: hướng dẫn tham quan và trải ...",
+    "link": "https://www.tiktok.com/@dangminh115/video/7664455683802287378",
+    "snippet": "Bãi biển Mỹ Khê về đêm: hướng dẫn tham quan và trải nghiệm Bãi biển Mỹ Khê vào ban đêm giữ nguyên nét êm đềm và lãng mạn của một trong những ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

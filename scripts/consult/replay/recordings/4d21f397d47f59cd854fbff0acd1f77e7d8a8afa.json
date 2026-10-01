@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"寿司と天ぷら居酒屋かむら- Izakaya Kamura\" OR \"Matsuri Japanese Restaurant\" OR \"Japan Eats\" Quận 1 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:30:09.799Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"寿司と天ぷら居酒屋かむら- Izakaya Kamura\" OR \"Matsuri Japanese Restaurant\" OR \"Japan Eats\" Quận 1 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Trải nghiệm ẩm thực Nhật Bản tại Japan Eats Quận 1 cùng ...",
+    "link": "https://www.tiktok.com/@japan.eats8386/video/7683145286822284565",
+    "snippet": "Video TikTok từ JAPAN EATS (@japan.eats8386): \"Khám phá hương vị Nhật Bản đích thực tại Japan Eats Quận 1 cùng trải nghiệm ẩm thực độc đáo.",
+    "position": 1
+   },
+   {
+    "title": "Ăn trưa tại JAPAN EATS Q1 — review món Nhật tại 5/70 ...",
+    "link": "https://www.tiktok.com/@minaapham/video/7668909303234972949",
+    "snippet": "Không gian và vị trí JAPAN EATS nằm trên đường Nguyễn Trung Ngạn, khu vực trung tâm Quận 1, thuận tiện cho giờ nghỉ trưa. Không gian quán phù ...",
+    "position": 2
+   },
+   {
+    "title": "JAPAN EATS (@japan.eats8386)",
+    "link": "https://www.tiktok.com/@japan.eats8386",
+    "snippet": "Nhà hàng Nhật JAPAN EATS 5/70 Nguyễn Trung Ngạn,Bến Nghé,Q1,HCM ☎️0903636940 ... Một chiếc quán Nhật ngon, núp hẻm mà tui mới phát hiện ra ở quận.",
+    "position": 3
+   },
+   {
+    "title": "Review Món Cơm Lươn Nhật Bản ở Quận 1 | Japan Eats",
+    "link": "https://www.tiktok.com/@dunimdnsyl68/video/7335801076911803666",
+    "snippet": "Review Món Cơm Lươn Nhật Bản ở Quận 1 | Japan Eats. Hidden away in a small alley in District 1, Saigon is Japan X, a Japanese restaurant ...",
+    "position": 4
+   },
+   {
+    "title": "Khám Phá Quán Nhật Ngon Ở Quận 1 Sài Gòn",
+    "link": "https://www.tiktok.com/@thongdongdoday/video/7415230620638498066",
+    "snippet": "Keywords: quán ăn Nhật ở Quận 1 Sài Gòn, địa điểm ăn uống ngon, review quán ăn Quận 1, các quán ăn ngon ở Sài Gòn, Japan eats Quận 1, ...",
+    "position": 5
+   },
+   {
+    "title": "Chấn động Chấn động📣📣 Vegan Omurice đã có mặt tại Japan ...",
+    "link": "https://www.tiktok.com/@japan.eats8386/video/7658583863463038228",
+    "snippet": "Top 3 món cá “gây thương nhớ” tại Japan Eats ✨ Không cầu kỳ, chỉ cần đúng vị: – Cá hồi : mềm, béo, tươi – Cá saba: thơm bơ, cực bắt cơm – Lươn Nhật: sốt ...",
+    "position": 6
+   },
+   {
+    "title": "Khám Phá Japan Eats - Địa Điểm Ẩm Thực Nhật Bản Tại ...",
+    "link": "https://www.tiktok.com/@saigonbeoreview/video/7445589323149233409",
+    "snippet": "Tìm hiểu về Japan Eats, nơi hội tụ món Nhật ngon tuyệt tại Sài Gòn. Đến ngay hôm nay để thưởng thức! #AnCungTikTok #saigonbeoreview. Keywords: ...",
+    "position": 7
+   },
+   {
+    "title": "SINH NHẬT LUNG LINH – HẸN HÒ LÃNG MẠN TẠI \"SÂN ...",
+    "link": "https://www.tiktok.com/@matsuringuyenhue/video/7636300504489839893",
+    "snippet": "499 Lượt thích,Video TikTok từ Matsuri Japanese Restaurant (@matsuringuyenhue): \" SINH NHẬT LUNG LINH – HẸN HÒ LÃNG MẠN TẠI \"SÂN VƯỜN TRÊN ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

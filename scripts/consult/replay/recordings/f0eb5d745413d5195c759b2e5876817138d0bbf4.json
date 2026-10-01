@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Cà phê sữa hoà tan Wake Up Mekong Xanh (24gói× 18g) HSD 2027 site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:35:21.859Z",
+ "body": {
+  "searchParameters": {
+   "q": "Cà phê sữa hoà tan Wake Up Mekong Xanh (24gói× 18g) HSD 2027 site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

@@ -1,0 +1,77 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "món đồ thích cà phê Sếp nam, 40 tuổi (site:shopee.vn OR site:tiki.vn OR site:lazada.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:36:51.593Z",
+ "body": {
+  "searchParameters": {
+   "q": "món đồ thích cà phê Sếp nam, 40 tuổi (site:shopee.vn OR site:tiki.vn OR site:lazada.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Đồ biếu tết - Giá Tốt, Sale Tháng 09, Freeship 0Đ",
+    "link": "https://shopee.vn/list/%C4%91%E1%BB%93%20bi%E1%BA%BFu%20t%E1%BA%BFt",
+    "snippet": "flag-label Sâm Núi Trường Bạch Hoang Dã Sấy Khô 40-50g – Sâm Khô 6 Năm Tuổi, Hộp Quà Biếu Cao Cấp Dành Tặng Bố Mẹ Sếp, Biếu Tết. 384.000₫. 389.000₫. -1 ...",
+    "position": 1
+   },
+   {
+    "title": "15+ món quà Tết tặng đối tác trang trọng, phù hợp nhiều ...",
+    "link": "https://shopee.vn/blog/qua-tet-tang-doi-tac/",
+    "snippet": "Một gợi ý khi mua quà Tết tặng đối tác là chọn cây Bonsai tài lộc. Mỗi một loại cây sẽ được người nghệ nhân tạo hình một cách khéo léo với những ...",
+    "date": "21 thg 1, 2026",
+    "position": 2
+   },
+   {
+    "title": "5+ món quà Trung thu cho nhân viên ý nghĩa nhất",
+    "link": "https://shopee.vn/blog/qua-trung-thu-cho-nhan-vien/",
+    "snippet": "Sổ tay và bút viết là món quà Trung thu cho nhân viên thiết thực dành tặng cho nhân viên trong dịp Trung thu. Những món quà này không chỉ giúp ...",
+    "date": "7 thg 9, 2024",
+    "position": 3
+   },
+   {
+    "title": "10+ Món quà Tết cho bố mẹ người yêu ý nghĩa nhất, khéo léo ...",
+    "link": "https://tiki.vn/blog/qua-tet-cho-bo-me-nguoi-yeu/",
+    "snippet": "Set Quà Tặng Cà Phê 1 – Combo Phin Nhôm + Ly Sứ – Cà Phê overlay ... Sức khỏe là vấn đề mà tất cả mọi người đều quan tâm, nhất là với người lớn ...",
+    "date": "20 thg 12, 2023",
+    "position": 4
+   },
+   {
+    "title": "Gợi Ý Món Quà Chia Tay Đồng Nghiệp Đáng Nhớ, Ý Nghĩa ...",
+    "link": "https://tiki.vn/blog/qua-chia-tay-dong-nghiep/",
+    "snippet": "Ly uống nước hoặc bình giữ nhiệt còn có công dụng giữ cho cơ thể luôn được cung cấp đủ lượng nước và duy trì sức khỏe. Bạn có thể chọn những ...",
+    "date": "30 thg 3, 2023",
+    "position": 5
+   },
+   {
+    "title": "Quà Tết cho bố mẹ Giá Tốt, Đa Dạng, Đảm Bảo",
+    "link": "https://shopee.vn/list/qu%C3%A0%20t%E1%BA%BFt/cho%20b%E1%BB%91%20m%E1%BA%B9",
+    "snippet": "Thực phẩm chức năng: Càng về già thì chúng ta càng cần quan tâm hơn đến sức khỏe của bố mẹ vì vậy những loại thực phẩm chức năng chắc hẳn sẽ là món quà tặng Tết ...",
+    "position": 6
+   },
+   {
+    "title": "Quà tết 2026 - Giá Tốt, Sale Tháng 09, Freeship 0Đ",
+    "link": "https://shopee.vn/list/qu%C3%A0%20t%E1%BA%BFt/2026",
+    "snippet": "Shopee cung cấp đầy đủ các sản phẩm quà tết 2026 chính hãng với nhiều mức giá ưu đãi vô cùng hấp dẫn. Bạn có thể thỏa thích tham khảo sản phẩm chính hãng từ các ...",
+    "position": 7
+   },
+   {
+    "title": "22 Món Quà 8/3 Cho Vợ Ý Nghĩa Và Được Yêu Thích 2024 | TIKI",
+    "link": "https://tiki.vn/blog/qua-8-3-cho-vo/",
+    "snippet": "Chọn quà 8/3 cho vợ là việc mà các chàng tốn rất nhiều thời gian. Tiki gợi ý cho bạn các món quà 8/3 ý nghĩa trong dịp lễ này.",
+    "date": "10 thg 2, 2023",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

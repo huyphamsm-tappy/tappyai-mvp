@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"May Xưa Spa Quận 1 - Massage body, Foot, Gội đầu dưỡng sinh, tắm tẩy tế bào dưỡng mịn, xông hơi\" quan 1 site:klook.com/vi/activity",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:39:13.490Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"May Xưa Spa Quận 1 - Massage body, Foot, Gội đầu dưỡng sinh, tắm tẩy tế bào dưỡng mịn, xông hơi\" quan 1 site:klook.com/vi/activity",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

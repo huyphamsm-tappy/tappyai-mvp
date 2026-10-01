@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Motel Ruby Bà Rịa",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:05:46.569Z",
+ "body": {
+  "searchParameters": {
+   "q": "Motel Ruby Bà Rịa",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Ruby Motel Bà Rịa, Thành phố Hồ Chí Minh | Hotels.com",
+    "imageUrl": "https://images.trvl-media.com/lodging/103000000/102680000/102676700/102676697/343b8f32.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill",
+    "imageWidth": 575,
+    "imageHeight": 805,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1U8wwUUKVJ9I-C68-xoWy38-bHEEn3zU__tUupBMYPg&s=10",
+    "thumbnailWidth": 378,
+    "thumbnailHeight": 529,
+    "source": "hotels",
+    "domain": "vi.hotels.com",
+    "link": "https://vi.hotels.com/ho3286654304/ruby-motel-ba-ria-thi-xa-ba-ria-viet-nam/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimages.trvl-media.com%2Flodging%2F103000000%2F102680000%2F102676700%2F102676697%2F343b8f32.jpg%3Fimpolicy%3Dresizecrop%26rw%3D575%26rh%3D575%26ra%3Dfill&tbnid=BU3S8BLp1ooS3M&imgrefurl=https%3A%2F%2Fvi.hotels.com%2Fho3286654304%2Fruby-motel-ba-ria-thi-xa-ba-ria-viet-nam%2F&docid=6_iQ43Wodjt5iM&w=575&h=805",
+    "position": 1
+   },
+   {
+    "title": "Khách sạn Ruby Motel TP Bà Rịa | Ba Ria",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=122106652016180763",
+    "imageWidth": 2048,
+    "imageHeight": 1536,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ3bvTQiydQqOGieh8S3Pd17nnfeRqg-9Y4jru1jXCkrQ&s=10",
+    "thumbnailWidth": 515,
+    "thumbnailHeight": 388,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/rubymotelbaria/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D122106652016180763&tbnid=Q6RDIR1uVkhKoM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Frubymotelbaria%2F&docid=oimQnnfk2iCecM&w=2048&h=1536",
+    "position": 2
+   },
+   {
+    "title": "Khách sạn Ruby Motel Bà Rịa, Bà Rịa | Skyscanner",
+    "imageUrl": "https://content.skyscnr.com/available/2202809960/2202809960_WxH.jpg",
+    "imageWidth": 480,
+    "imageHeight": 640,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHZBdkN41rh-1jmbgaz72m2KOGnaSnHAsV2byt11ZHlw&s",
+    "thumbnailWidth": 194,
+    "thumbnailHeight": 259,
+    "source": "Skyscanner",
+    "domain": "www.skyscanner.com.vn",
+    "link": "https://www.skyscanner.com.vn/khach-san/viet-nam/ba-ria-hotels/khach-san-ruby-motel-ba-ria/ht-218284663",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcontent.skyscnr.com%2Favailable%2F2202809960%2F2202809960_WxH.jpg&tbnid=7iWvgrvBhW1-CM&imgrefurl=https%3A%2F%2Fwww.skyscanner.com.vn%2Fkhach-san%2Fviet-nam%2Fba-ria-hotels%2Fkhach-san-ruby-motel-ba-ria%2Fht-218284663&docid=zYwK3XdD9_xG7M&w=480&h=640",
+    "position": 3
+   },
+   {
+    "title": "Ruby Motel Bà Rịa, Bà Rịa (cập nhật giá năm 2027)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/914078115.jpg?k=5aee46174515488b2ed0e94351adf6c2e564a9ee298c2d01a0b061de27ff0149&o=",
+    "imageWidth": 1024,
+    "imageHeight": 767,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSEhwFLlIsj5I7CKfxWiP9uFaOb7C2b2MBFWUgoqoiuJA&s=10",
+    "thumbnailWidth": 640,
+    "thumbnailHeight": 479,
+    "source": "www.booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/ruby-motel-thanh-pho-ba-ria3.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F914078115.jpg%3Fk%3D5aee46174515488b2ed0e94351adf6c2e564a9ee298c2d01a0b061de27ff0149%26o%3D&tbnid=LAnlo44SFEVS_M&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fruby-motel-thanh-pho-ba-ria3.vi.html&docid=7GpFYRdRW17kBM&w=1024&h=767",
+    "position": 4
+   },
+   {
+    "title": "Ruby Motel Bà Rịa, Bà Rịa (cập nhật giá năm 2027)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/914079901.jpg?k=3ec652bfa1050eca20f6346132be6316325fd85f2cec1e3bb6744f375d861045&o=",
+    "imageWidth": 960,
+    "imageHeight": 768,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRPwzpnu37-f1-6caqXywd2VOsBkx6HRuK_m4gHAL2E3A&s=10",
+    "thumbnailWidth": 618,
+    "thumbnailHeight": 495,
+    "source": "www.booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/ruby-motel-thanh-pho-ba-ria3.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F914079901.jpg%3Fk%3D3ec652bfa1050eca20f6346132be6316325fd85f2cec1e3bb6744f375d861045%26o%3D&tbnid=VcC2gFl88B1LIM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fruby-motel-thanh-pho-ba-ria3.vi.html&docid=7GpFYRdRW17kBM&w=960&h=768",
+    "position": 5
+   },
+   {
+    "title": "Ruby Motel Bà Rịa, Thành phố Hồ Chí Minh | Hotels.com",
+    "imageUrl": "https://images.trvl-media.com/lodging/103000000/102680000/102676700/102676697/20e2bc54.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill",
+    "imageWidth": 575,
+    "imageHeight": 767,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRuw3GG5z3ew26QDem88RlRK7BO5LbSupF2RTah_eO_BA&s",
+    "thumbnailWidth": 194,
+    "thumbnailHeight": 259,
+    "source": "hotels",
+    "domain": "vi.hotels.com",
+    "link": "https://vi.hotels.com/ho3286654304/ruby-motel-ba-ria-thi-xa-ba-ria-viet-nam/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimages.trvl-media.com%2Flodging%2F103000000%2F102680000%2F102676700%2F102676697%2F20e2bc54.jpg%3Fimpolicy%3Dresizecrop%26rw%3D575%26rh%3D575%26ra%3Dfill&tbnid=ZQujqG6XoFMJZM&imgrefurl=https%3A%2F%2Fvi.hotels.com%2Fho3286654304%2Fruby-motel-ba-ria-thi-xa-ba-ria-viet-nam%2F&docid=6_iQ43Wodjt5iM&w=575&h=767",
+    "position": 6
+   },
+   {
+    "title": "Ruby Motel Bà Rịa, Bà Rịa (cập nhật giá năm 2027)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/518905025.jpg?k=7c92d4e465b44bdaa8780fbe46e81a03c397bbb7cea83996bdce1920267e6a1a&o=",
+    "imageWidth": 1024,
+    "imageHeight": 768,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrthv1YcjTTV2qJACXi8_4f3KarMGKUu72NVI9eDPARw&s=10",
+    "thumbnailWidth": 638,
+    "thumbnailHeight": 480,
+    "source": "www.booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/ruby-motel-thanh-pho-ba-ria3.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F518905025.jpg%3Fk%3D7c92d4e465b44bdaa8780fbe46e81a03c397bbb7cea83996bdce1920267e6a1a%26o%3D&tbnid=G-SWtir87xFJvM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fruby-motel-thanh-pho-ba-ria3.vi.html&docid=7GpFYRdRW17kBM&w=1024&h=768",
+    "position": 7
+   },
+   {
+    "title": "Khách sạn Ruby Motel Bà Rịa - Giá cả và Ưu đãi 2026, TP. Hồ Chí Minh",
+    "imageUrl": "https://ak-d.tripcdn.com/images/0203l12000dag9adq6BE2_R_960_660_R5_D.webp",
+    "imageWidth": 960,
+    "imageHeight": 660,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7CgAsq3adAgg5OcBrqw2o487XZNAIBBGbqy7xrTm81A&s",
+    "thumbnailWidth": 271,
+    "thumbnailHeight": 186,
+    "source": "Trip.com",
+    "domain": "vn.trip.com",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-hotel-detail-117231385/khach-san-ruby-motel-ba-ria/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fak-d.tripcdn.com%2Fimages%2F0203l12000dag9adq6BE2_R_960_660_R5_D.webp&tbnid=5OAmYvsNf_1HcM&imgrefurl=https%3A%2F%2Fvn.trip.com%2Fhotels%2Fho-chi-minh-city-hotel-detail-117231385%2Fkhach-san-ruby-motel-ba-ria%2F&docid=jbNjKPkzYoR0LM&w=960&h=660",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

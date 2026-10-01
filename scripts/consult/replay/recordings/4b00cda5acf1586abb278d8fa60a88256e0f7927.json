@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Quán cà phê đợi một người\" OR \"Xào Xạc cafe & plants\" OR \"Phê La\" Quận 3 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:11:17.371Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Quán cà phê đợi một người\" OR \"Xào Xạc cafe & plants\" OR \"Phê La\" Quận 3 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Quán Cà Phê Đợi Một Người Quận 3 – Góc Nhỏ Ấm Cúng ...",
+    "link": "https://www.tiktok.com/@duydayvlog/video/7367281162647096592",
+    "snippet": "Quán cà phê Đợi Một Người tại 136/5 Trần Quang Diệu, Phường 15, Quận 3, TP.HCM là một góc nhỏ mang cảm giác ấm cúng và yên bình giữa lòng ...",
+    "position": 1
+   },
+   {
+    "title": "Quán Cà Phê Đợi Một Người Ở Quận 3",
+    "link": "https://www.tiktok.com/@chamdidau/video/7362067427053587730",
+    "snippet": "Quán Cà Phê Đợi Một Người Ở Quận 3: Một Điểm Hẹn Xinh Xắn. Khám phá ... Keywords: quán cà phê đợi một người, quán cafe quận 3, đường đi quán ...",
+    "position": 2
+   },
+   {
+    "title": "Chi nhánh Phê La cực chill ngay tại Quận 3 ...",
+    "link": "https://www.tiktok.com/@saigondidautaaa/video/7330201421733776647",
+    "snippet": "Phê La: Quán Cà Phê Đẹp Ở Quận 3. Khám phá quán cà phê Phê La với không gian ngập tràn nắng tại Quận 3. Tìm hiểu view đẹp và những trải ...",
+    "position": 3
+   },
+   {
+    "title": "Khám Phá Cửa Hàng Phê La Mới Tại Quận 5 HCM",
+    "link": "https://www.tiktok.com/@phela_xinchaoo/video/7387795688312081671",
+    "snippet": "Phê La Quận 3. Khám Phá Cửa Hàng Phê La Mới Tại Quận 5 HCM. Khám phá không gian và thực đơn độc đáo tại Phê La, 994 Trần Hưng Đạo, Quận 5.",
+    "position": 4
+   },
+   {
+    "title": "Tạm gác âu lo lại mình cùng đi Phê La chi nhánh mới ...",
+    "link": "https://www.tiktok.com/@lee.haydi/video/7157261988249308443",
+    "snippet": "Phê La Hồ Tùng Mậu là quán cafe mộc mạc nằm ở số 125 Hồ Tùng Mậu, phường Bến Nghé, Quận 1, TP.HCM. Quán được nhiều người tìm đến vì không gian ...",
+    "position": 5
+   },
+   {
+    "title": "Phê La: Quán Cà Phê Đẹp Ở Quận 3",
+    "link": "https://www.tiktok.com/@quiz_didaukhum/video/7154908789995556122",
+    "snippet": "Khám phá quán cà phê Phê La với không gian ngập tràn nắng tại Quận 3. @Quiz Đi Đâu Khum.",
+    "position": 6
+   },
+   {
+    "title": "Phê La Hồ Con Rùa trở lại rồi Đồng Chill ơiiii #PhêLa",
+    "link": "https://www.tiktok.com/@phela_xinchaoo/video/7512493303921691912",
+    "snippet": "Dù bạn đang tìm kiếm một quán cà phê yên tĩnh để làm việc hay một nơi để gặp gỡ bạn bè, Phê La Quận 3 đều đáp ứng được mong đợi của bạn. Hãy ...",
+    "position": 7
+   },
+   {
+    "title": "Xào xạc cafe & plants 📍 453/15 Nguyễn Đình Chiểu ...",
+    "link": "https://www.tiktok.com/@cafehoppersg/photo/7482220926134750471?lang=ro-RO",
+    "snippet": "Xào xạc cafe & plants 453/15 Nguyễn Đình Chiểu, phường 5, quận 3, TpHCM 7:30 am - 10 pm #xaoxac #xaoxaccafe #xaoxaccafeplants #cafe ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

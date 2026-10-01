@@ -1,5 +1,6 @@
 import { normalizeVN } from '@/lib/ai/intent'
 import { detectMovieRecommendationIntent } from '@/lib/ai/intent'
+import { CINEMA_NOW_SHOWING_PAGES } from '@/lib/ccp/adapters/nowShowing'
 
 // ── «Có phim gì hay?» asks for FILMS, not for cinemas ───────────────────────────────────────────────────────────────
 //
@@ -23,18 +24,12 @@ export function wantsFilmTitles(text: string): boolean {
   return FILM_TITLES.test(t) || detectMovieRecommendationIntent(text)
 }
 
-/** The cinemas' own «now showing» pages (opened and answered 200 on 2026-10-01). Plain links, no tracking. */
-export const NOW_SHOWING_LINKS: ReadonlyArray<{ name: string; url: string }> = [
-  { name: 'CGV', url: 'https://www.cgv.vn/default/movies/now-showing.html' },
-  { name: 'Galaxy Cinema', url: 'https://www.galaxycine.vn/phim-dang-chieu/' },
-  { name: 'Lotte Cinema', url: 'https://www.lottecinemavn.com/LCHS/Contents/Movie/Movie-List.aspx' },
-  { name: 'BHD Star', url: 'https://www.bhdstar.vn/phim/' },
-  { name: 'Beta Cinemas', url: 'https://www.betacinemas.vn/phim.htm' },
-]
+/** The cinemas' own «now showing» pages — owned by the CCP (merchant URL grammars live in src/lib/ccp). */
+export const NOW_SHOWING_LINKS = CINEMA_NOW_SHOWING_PAGES
 
 export function movieTitlesReply(lang: string): string {
   const links = NOW_SHOWING_LINKS.map(l => `- [${l.name}](${l.url})`).join('\n')
   return lang === 'en'
-    ? `I don't have a verified list of what's showing right now, so I won't guess film titles. The cinemas' own pages list current films and showtimes:\n\n${links}\n\nPick a film and tell me — I can find a cinema near you.\n\n[FOLLOWUPS]Find a cinema near me[/FOLLOWUPS]`
-    : `Mình chưa có danh sách phim đang chiếu đã kiểm chứng, nên không đoán tên phim cho bạn. Trang chính thức của các cụm rạp có phim đang chiếu và lịch chiếu:\n\n${links}\n\nBạn chọn được phim rồi thì nói mình, mình tìm rạp gần bạn nhé.\n\n[FOLLOWUPS]Tìm rạp gần mình[/FOLLOWUPS]`
+    ? `I don't have a verified list of what's showing right now, so I won't guess film titles. The cinema chains' own websites (CGV, Galaxy, Lotte, BHD, Beta) list current films and showtimes — here is CGV's:\n\n${links}\n\nPick a film and tell me — I can find a cinema near you.\n\n[FOLLOWUPS]Find a cinema near me[/FOLLOWUPS]`
+    : `Mình chưa có danh sách phim đang chiếu đã kiểm chứng, nên không đoán tên phim cho bạn. Trang web của các cụm rạp (CGV, Galaxy, Lotte, BHD, Beta) đều có phim đang chiếu và lịch chiếu — đây là trang của CGV:\n\n${links}\n\nBạn chọn được phim rồi thì nói mình, mình tìm rạp gần bạn nhé.\n\n[FOLLOWUPS]Tìm rạp gần mình[/FOLLOWUPS]`
 }

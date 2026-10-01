@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"RELAX SPA MASSAGE VAI, CỔ, GÁY. BODY MASSAGE, FOOT MASSAGE, GỘI ĐẦU DƯỠNG SINH QUẬN 1\" quan 1 site:klook.com/vi/activity",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:39:39.662Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"RELAX SPA MASSAGE VAI, CỔ, GÁY. BODY MASSAGE, FOOT MASSAGE, GỘI ĐẦU DƯỠNG SINH QUẬN 1\" quan 1 site:klook.com/vi/activity",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

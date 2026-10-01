@@ -1,0 +1,24 @@
+{
+ "url": "https://google.serper.dev/shopping",
+ "request": {
+  "q": "món đồ thích cà phê Sếp nam, 40 tuổi",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 20
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:36:50.128Z",
+ "body": {
+  "searchParameters": {
+   "q": "món đồ thích cà phê Sếp nam, 40 tuổi",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "shopping",
+   "num": 40,
+   "page": 1,
+   "engine": "google"
+  },
+  "shopping": [],
+  "credits": 2
+ }
+}

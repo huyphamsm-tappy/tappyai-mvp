@@ -1,0 +1,80 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Phin pha cà phê LÀ VIỆT phiên bản Essential với 2 site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:24:31.456Z",
+ "body": {
+  "searchParameters": {
+   "q": "Phin pha cà phê LÀ VIỆT phiên bản Essential với 2 site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Phin Essential Là Việt Hai Kiểu Pha Mới Truyền Thống & Cân ...",
+    "link": "https://www.lazada.vn/products/phin-essential-la-viet-hai-kieu-pha-moi-truyen-thong-can-bang-an-toan-cho-nguoi-dung-i517722508-s1038816081.html?from_gmc=1&fl_tag=1&srsltid=AU7gw4XsE2R5gei_Y9yhq4HX3ZqXp56YlaiJkaxqQPcBoyvXhrRGUf9x",
+    "snippet": "- Là một phiên bản cải tiến của chiếc phin truyền thống, Là Việt Phin được kèm theo một đĩa tản nước để có thể dùng như một dụng cụ drip, cho vị cà phê cân bằng ...",
+    "position": 1
+   },
+   {
+    "title": "Phin Essential Là Việt Kiểu Pha Mới Truyền Thống & Cân Bằng ...",
+    "link": "https://www.lazada.vn/products/phin-essential-la-viet-kieu-pha-moi-truyen-thong-can-bang-an-toan-cho-nguoi-dung-i517722508.html?srsltid=AU7gw4X6Z_F5qlj-fbTfFvIwdpi64Rspqz7Pknr-MB9fsq6ll4E5JPcf",
+    "snippet": "- Là một phiên bản cải tiến của chiếc phin truyền thống, Là Việt Phin được kèm theo một đĩa tản nước để có thể dùng như một dụng cụ drip, cho vị cà phê cân bằng ...",
+    "position": 2
+   },
+   {
+    "title": "Tamper cán gỗ đầu inox 56, dụng cụ pha cà phê ...",
+    "link": "https://www.lazada.vn/products/pdp-i13445495042.html?srsltid=AU7gw4WT43PxRc1GA25xRVMgqv86yUE_u8nysDIwhekEpUS-1W7ylUY4",
+    "snippet": "Dụng cụ nén cà phê này đa năng, vừa là dụng cụ nén cà phê, vừa là que khuấy, lại vừa là que khuấy sữa, là một bổ sung đa năng cho bộ dụng cụ nhà bếp của bạn.",
+    "position": 3
+   },
+   {
+    "title": "SHIN Cà Phê - Phin giấy tiện lợi - Hộp 10 gói",
+    "link": "https://www.lazada.vn/products/ca-phe-shin-blend-shin-ca-phe-phin-giay-tien-loi-hop-10-goi-i757672221.html?srsltid=AU7gw4WMxc5R_CO1J53OP49rMTQVqnapK4Eb---ksx4k8cOdV6VAJz1M",
+    "snippet": "Phiên bản phin giấy tiện lợi của SHIN Blend ra đời nhằm đáp ứng nhu cầu thưởng thức nhanh chóng mà vẫn đảm bảo chất lượng. Với hương cam chanh tươi mát, hậu ...",
+    "rating": 5,
+    "ratingCount": 5,
+    "position": 4
+   },
+   {
+    "title": "Nescafe Cà Phê Sô Cô La (hộp 10 gói x 20g)",
+    "link": "https://www.lazada.vn/products/nescafe-ca-phe-so-co-la-hop-10-goi-x-20g-i504438220.html?srsltid=AU7gw4WSLW69nkhCX71ynEkDJz3cCewjeik5ZaDK6LcPgsgWHIphBOtK",
+    "snippet": "NESCAFÉ giới thiệu sản phẩm mới NESCAFÉ 3in1 Cà Phê Sôcôla, phiên bản mash-up giữa cà phê với ca cao cho vị đắng hòa quyện với vị ngọt của sữa thật, đem lại ly ...",
+    "rating": 4.7,
+    "ratingCount": 17,
+    "position": 5
+   },
+   {
+    "title": "Ấm đun nước siêu tốc Kitchen Art 1722 1.7L",
+    "link": "https://h5.lazada.vn/products/am-dun-nuoc-sieu-toc-kitchen-art-1722-17l-i13445769659.html",
+    "snippet": "Đun sôi nước ngay lập tức với tính năng làm nóng cực nhanh của Kitchen Art 1722, hoàn hảo cho những giờ giải lao uống trà nhanh hoặc mì ăn liền. Sử dụng đa năng.",
+    "position": 6
+   },
+   {
+    "title": "Bộ Dụng Cụ pha Matcha gồm Chawan, Chổi Chasen ...",
+    "link": "https://www.lazada.vn/products/nidomi-essential-basics-bo-dung-cu-pha-matcha-gom-chawan-choi-chasen-chan-de-muong-tre-i13416040223-s117141868472.html?from_gmc=1&fl_tag=1&srsltid=AU7gw4Ug1LKFUuXwp4UsTZS7wyn_KmENNtsa1vX-rYaP1UlZ_BkNOYo4",
+    "snippet": "Để pha matcha chuẩn phong cách Nhật Bản, bạn sẽ cần những dụng cụ truyền thống sau: Chasen – Chổi đánh trà: Dụng cụ quan trọng nhất! Làm từ tre, giúp đánh ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 7
+   },
+   {
+    "title": "[MẪU MỚI NHẤT CẢI TIẾN 2 phiên bản ] GIẢM CÂN ...",
+    "link": "https://www.lazada.vn/products/mau-moi-nhat-cai-tien-2-phien-ban-giam-can-slimming-care-x3-cam-ket-chinh-hang-cong-ty-ho-tro-giam-can-an-toan-tuyet-doi-i1394000851.html?srsltid=AU7gw4UDz34NkJ1dyi17NiPLtRB1hD2JcdIgBZqO6ZFtzoHSLkfVIgxy",
+    "snippet": "Giảm cân an toàn Slimming Care X3 với 2 phiên bản L1 và L2, hỗ trợ detox hiệu quả cho nam nữ. Sản phẩm cam kết chính hãng, giúp giảm cân an toàn và hiệu quả ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

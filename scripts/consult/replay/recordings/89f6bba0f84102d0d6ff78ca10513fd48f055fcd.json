@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Những người yêu thích cà phê Quà tặng cho nam giới site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:14:54.706Z",
+ "body": {
+  "searchParameters": {
+   "q": "Những người yêu thích cà phê Quà tặng cho nam giới site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cốc Cà Phê Hình Ô Tô Sáng Tạo Bằng Thép Không Gỉ, Đồ ...",
+    "link": "https://www.lazada.vn/products/coc-ca-phe-hinh-o-to-sang-tao-bang-thep-khong-gi-do-trang-tri-ban-lam-viec-qua-tang-hai-huoc-danh-cho-nam-gioi-ban-trai-bo-chong-nguoi-yeu-thich-o-to-i13355875405.html?srsltid=AU7gw4Xk15D7-uojqYPTMIauSxJaZJHg_jY-OvBl5qYUDy8hOgvw1AaA",
+    "snippet": "Hoàn hảo làm quà tặng cho nam giới, bạn trai, bố hoặc những người đam mê xe hơi, chiếc cốc này chắc chắn sẽ mang lại nụ cười trên khuôn mặt của bất kỳ ai.",
+    "position": 1
+   },
+   {
+    "title": "HENGHOME Sáng Tạo Moka Nồi Keychain Mini Cà Phê Maker ...",
+    "link": "https://h5.lazada.vn/products/henghome-sang-tao-moka-noi-keychain-mini-ca-phe-maker-mat-day-chuyen-de-thuong-ben-vong-chia-khoa-cho-ca-phe-nhung-nguoi-yeu-thich-ba-lo-trang-tri-noi-that-qua-tang-i13434032509-s117222972371.html",
+    "snippet": "5. cảm xúc duy trì: Mini cà phê nồi Keychain là lý tưởng cho những người yêu thích cà phê và một món quà tuyệt vời cho những người yêu thích cà phê. Hãy để mọi ...",
+    "position": 2
+   },
+   {
+    "title": "2000 Hạt Nổ Hương Trái Cây & Bạc Hà DIY, Vị Bạc Hà Đá Đen ...",
+    "link": "https://h5.lazada.vn/products/2000-hat-no-huong-trai-cay-bac-ha-diy-vi-bac-ha-da-den-phu-kien-thuoc-la-qua-tang-cho-nam-gioi-i13403114171.html",
+    "snippet": "Sản phẩm này là một món quà tuyệt vời dành cho những người đàn ông thích thuốc lá bạc hà, mang đến một trải nghiệm hút thuốc độc đáo và thú vị. Hương Vị Đa ...",
+    "position": 3
+   },
+   {
+    "title": "Hoạt Hình Động Vật Văn Bản Nghệ Thuật Cà Phê In ...",
+    "link": "https://www.lazada.vn/products/hoat-hinh-dong-vat-van-ban-nghe-thuat-ca-phe-in-canvas-poster-toi-gian-nghe-thuat-treo-tuong-de-trang-tri-phong-nguoi-yeu-ca-phe-qua-tang-i13352411871.html?srsltid=AU7gw4VUjD8H5B-W0eeFlGN-AWSY3Gihp0NvPJ81bFCfF99V3xb_--Ta",
+    "snippet": "Tác phẩm nghệ thuật độc đáo theo chủ đề cà phê này là một món quà lý tưởng cho những người yêu thích cà phê, tạo thêm dấu ấn cá nhân cho không gian của họ.",
+    "position": 4
+   },
+   {
+    "title": "Trung Nguyên Legend Bộ Quà Tặng Giàu Có",
+    "link": "https://www.lazada.vn/products/trung-nguyen-legend-bo-qua-tang-giau-co-mon-qua-chua-dung-tinh-hoa-truyen-thong-ca-phe-viet-i2367316564.html?srsltid=AU7gw4XVal1p9Sv2K5Iai0Z5viy8exmf__otmy5_pNr6FLg-KUFYII01",
+    "snippet": "Loại hộp 500gr thích hợp làm quà tặng cho những người am hiểu và sành về cà phê. HƯỚNG DẪN SỬ DỤNG: - Phù hợp với mọi cách uống. HƯỚNG DẪN BẢO QUẢN: - Bảo ...",
+    "position": 5
+   },
+   {
+    "title": "Trung Nguyên Legend - Phin nhôm hoa văn màu đen Vĩ ...",
+    "link": "https://www.lazada.vn/products/trung-nguyen-legend-phin-nhom-hoa-van-mau-den-vi-nhan-i720328878.html?srsltid=AU7gw4WaHH4DV7nh-PYq1kmUuQF45sHVKTIRYOhFbIRieRHtDbuEw4qD",
+    "snippet": "- Chất liệu nhôm thích hợp nhất cho một chiếc phin lọc cà phê. Vì nó có có thể giữ nhiệt tốt hơn các chất liệu khác và không gây hại tới sức khỏe khi sử dụng.",
+    "rating": 4.9,
+    "ratingCount": 539,
+    "position": 6
+   },
+   {
+    "title": "Sinloy Coffee | Hạt Cà Phê Ethiopia G1 Chọn Lọc 250g",
+    "link": "https://h5.lazada.vn/products/sinloy-coffee-hat-ca-phe-ethiopia-g1-chon-loc-250g-i13340556802.html",
+    "snippet": "Với 250g hạt cà phê, gói này cung cấp nguồn cung dồi dào cho những người yêu thích cà phê, hoàn hảo cho cả sử dụng cá nhân và chia sẻ với bạn bè và gia đình.",
+    "rating": 4.7,
+    "ratingCount": 22,
+    "position": 7
+   },
+   {
+    "title": "Trung Nguyên Legend - Cà phê rang xay Gourmet Blend",
+    "link": "https://www.lazada.vn/products/trung-nguyen-legend-ca-phe-rang-xay-gourmet-blend-hop-500gr-i352494239.html?srsltid=AU7gw4XhFLhE25KFB0jtr6ZseG9_97Ddr3Orievy39rO0XwfiWajQ9r0",
+    "snippet": "Cà phê rang xay Gourmet Blend Trung Nguyên 500gr - lựa chọn cao cấp từ vùng đấtBuôn Ma Thuột. Hương vị đậm đà, mùi thơm nồng nàn, phù hợp cho người yêu ...",
+    "rating": 5,
+    "ratingCount": 1149,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Gợi ý 100+ site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:36:55.245Z",
+ "body": {
+  "searchParameters": {
+   "q": "Gợi ý 100+ site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Expressions For English Speaking 100+ Chủ Đề Về Đời Sống",
+    "link": "https://www.lazada.vn/products/sach-fahasa-expressions-for-english-speaking-100-chu-de-ve-doi-song-i1988608603-s9210297359.html?from_gmc=1&fl_tag=1&srsltid=AU7gw4UhtzSvoDL732YdMfFuqyxwrl8jdTbIeUNdfxqe7JRd0Y5cdhfn",
+    "snippet": "Sách Fahasa - Expressions For English Speaking là bộ sách giáo dục tiếng Anh hữu ích với 100+ chủ đề cuộc sống. Thiết kế sách giấy mềm, hướng dẫn hiệu quả ...",
+    "position": 1
+   },
+   {
+    "title": "Sách - Thử Thách Stem - 100+ Câu Đố Để Trẻ Sáng Tạo Hơn",
+    "link": "https://www.lazada.vn/products/sach-thu-thach-stem-100-cau-do-de-tre-sang-tao-hon-i1860647200-s8427734134.html?from_gmc=1&fl_tag=1&srsltid=AU7gw4WK6atUatVXRZVVZ4oyPZbfjmCyw8p0J8xe2abbJghXIFWFDbMH",
+    "snippet": "Mô tả sản phẩm. Thử Thách Stem - 100+ Câu Đố Để Trẻ Sáng Tạo Hơn. “Thử thách STEM” là cuốn sách nhỏ là tập hợp các câu hỏi về chủ đề STEM, từ việc tìm ra ...",
+    "position": 2
+   },
+   {
+    "title": "Bộ Đồ Chơi Lắp Ráp Đồ Gia Dụng Cổ Điển 100+ Mảnh Chủ Đề ...",
+    "link": "https://www.lazada.vn/products/bo-do-choi-lap-rap-do-gia-dung-co-dien-100-manh-chu-de-nha-cua-hien-dai-trang-tri-nha-cua-thoi-trang-cho-bo-suu-tap-phong-hoc-i13356609821-s116831798490.html?from_gmc=1&fl_tag=1&srsltid=AU7gw4X7vBYcD06zQrljIFf1ml0MkekJgDLTnfE6VedBLLAZ0B7Amm_-",
+    "snippet": "Bộ Đồ Chơi Lắp Ráp Đồ Gia Dụng Cổ Điển 100+ Mảnh Chủ Đề Nhà Cửa Hiện Đại Trang Trí Nhà Cửa Thời Trang Cho Bộ Sưu Tập Phòng Học. Tuỳ chọn sản phẩm.",
+    "position": 3
+   },
+   {
+    "title": "Đồng Hồ Thông Minh GOOJODOQ GPS, AI Phân Tích Sức Khỏe ...",
+    "link": "https://h5.lazada.vn/products/dong-ho-thong-minh-goojodoq-gps-ai-phan-tich-suc-khoe-giac-ngubluetooth-nghe-goichong-nuoc-3atm-i13444293091-s117247053128.html",
+    "snippet": "Hơn 100 mặt số có sẵn trong ứng dụng, từ tối giản, hiện đại đến thể thao, cổ điển. Tải lên tối đa 3 video ngắn hoặc 3 ảnh từ điện thoại để làm mặt đồng hồ động ...",
+    "position": 4
+   },
+   {
+    "title": "Băng dính y tế cá nhân UGO tana tiệt trùng ( hộp 100+ 2 ...",
+    "link": "https://www.lazada.vn/products/bang-dinh-y-te-ca-nhan-ugo-tana-tiet-trung-hop-100-2-mieng-i2090162286-s9810375084.html?from_gmc=1&fl_tag=1&srsltid=AU7gw4Vqa2WYSmHod4KOcY6AahBbgmVFgvqq0J89QJorxW70ImDXim_o",
+    "snippet": "MÔ TẢ SẢN PHẨM. Băng dính cá nhân y tếUGOTANA có lớp băng ngoài làm bằng vải Viscose và Polyamide co giãn tốt, không thấm nước.",
+    "position": 5
+   },
+   {
+    "title": "Sách Ngoại Văn - Fahasa - 100+ First Words - Animals",
+    "link": "https://www.lazada.vn/products/fahasa-100-first-words-animals-i2740183423-s13420106281.html?from_gmc=1&fl_tag=1&srsltid=AU7gw4WyYbOWv0HEXRfWstLzBt2y8PYIupkagXAKZrxXyd79WvnROk4t",
+    "snippet": "Đặc điểm nổi bật ; Nhà xuất bản · Miles Kelly Publishing ; Năm xuất bản · 2022 ; Số trang · 24 ; Hình thức · Bìa Mềm ; Trọng lượng · 0.11",
+    "position": 6
+   },
+   {
+    "title": "For Clever Kids - Word Games: Nhanh Mắt Bắt Từ",
+    "link": "https://www.lazada.vn/products/sach-fahasa-for-clever-kids-word-games-nhanh-mat-bat-tu-100-tro-choi-tu-vung-i1161520279.html?srsltid=AU7gw4XccAxf6g9I3Oxa0KOqIYMxDZuXPYE0VIYkZwSI8eozpLAw512Z",
+    "snippet": "Crossword Challenges sẽ thử thách các em bằng hơn 130 ô chữ đầy bất ngờ và thú vị, với các cấp độ từ đơn giản tới “cực khoai”. Nhanh mắt bắt từ là gợi ý ...",
+    "position": 7
+   },
+   {
+    "title": "Mô hình lắp ráp 9686 CHUẨN 396 PCS",
+    "link": "https://www.lazada.vn/products/mo-hinh-lap-rap-9686-chuan-396-pcs-hop-chuyen-dung-13-ngan-sach-in-100-mo-hinh-goi-y-tuong-thich-dong-education-tec-i2662404390.html?srsltid=AU7gw4WlvCMeCFSDFEFoe3DrirXZ8xsHCdvZ7htxqeyUYu94UwQ6kGn_",
+    "snippet": "Mô hình lắp ráp 9686 CHUẨN 396 PCS - Hộp chuyên dụng 13 ngăn SÁCH IN - 100+ mô hình gợi ý tương thích dòng education Tec. Tuỳ chọn sản phẩm.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Vanda Hotel\" Đà Nẵng site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:25:44.038Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Vanda Hotel\" Đà Nẵng site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Khách sạn Vanda - Giá cả và Ưu đãi 2026, Đà Nẵng",
+    "link": "https://vn.trip.com/hotels/da-nang-hotel-detail-2603560/vanda-hotel/",
+    "snippet": "Tôi đã có một kỳ nghỉ tuyệt vời tại Vanda Hotel Đà Nẵng! Phòng ốc sạch sẽ, tiện nghi, vị trí thuận tiện và nhân viên thì thân thiện, nhiệt tình. Nói chung ...",
+    "position": 1
+   },
+   {
+    "title": "Khách sạn Vanda - Xem 89 Ảnh & Đánh giá",
+    "link": "https://vn.trip.com/hotels/da-nang-hotel-detail-2603560/vanda-hotel/photo.html",
+    "snippet": "Vị trí khách sạn ở Long Kiều rất thuận tiện. Bên cạnh là viện bảo tàng, bên tay trái bờ sông đi xuống là một con phố quán bar. Cơ sở hạ tầng của khách sạn tương ...",
+    "position": 2
+   },
+   {
+    "title": "Các đánh giá Khách sạn Vanda",
+    "link": "https://vn.trip.com/hotels/da-nang-hotel-detail-2603560/vanda-hotel/review.html",
+    "snippet": "Tôi đã có một kỳ nghỉ tuyệt vời tại Vanda Hotel Đà Nẵng! Phòng ốc sạch sẽ, tiện nghi, vị trí thuận tiện và nhân viên thì thân thiện, nhiệt tình. Nói chung ...",
+    "position": 3
+   },
+   {
+    "title": "Các khách sạn ở gần Công viên Hòa Cường Bắc, Đà Nẵng",
+    "link": "https://vn.trip.com/hotels/da-nang-cng-vin-khu-tp-th-ho-cng/hotels-c1356m29490809/",
+    "snippet": "Khách sạn Vanda. Trung tâm thành phố Đà Nẵng, Đà Nẵng | Cách Công viên Hòa Cường Bắc 1.94KM. 9,2/10. Tuyệt Vời 463 đánh giá. Vanda Hotel ở trung tâm Đà Nẵng ...",
+    "position": 4
+   },
+   {
+    "title": "Khách sạn giá rẻ gần Cảng hàng không quốc tế Đà Nẵng ...",
+    "link": "https://vn.trip.com/hotels/da-nang-da-nang-international-airport/hotels-c1356a4325706/",
+    "snippet": "Trung tâm thành phố Đà Nẵng, Đà Nẵng | Cách Cảng hàng không quốc tế Đà Nẵng 2.17KM. 9,2/10. Tuyệt Vời 462 đánh giá. Vanda Hotel ở trung tâm Thành phố Đà Nẵng ...",
+    "position": 5
+   },
+   {
+    "title": "Các khách sạn ở gần Công viên Bắc Tượng đài 2 Tháng 9 ...",
+    "link": "https://vn.trip.com/hotels/da-nang-cng-vin-bc-tng-i-2-thng-9/hotels-c1356m39873163/",
+    "snippet": "Trung tâm thành phố Đà Nẵng, Đà Nẵng | Cách Công viên Bắc Tượng đài 2 Tháng 9 2.08KM. 9,2/10. Tuyệt Vời 462 đánh giá. Vanda Hotel ở trung tâm Thành phố Đà Nẵng ...",
+    "position": 6
+   },
+   {
+    "title": "10 khách sạn được đề xuất gần Bảo tàng Văn hóa Sa Huỳnh",
+    "link": "https://vn.trip.com/hotels/landmark/vn/museum-of-sa-huynh-&-champa-culture.html",
+    "snippet": "Trung tâm thành phố Đà Nẵng | Cách Bảo tàng Văn hóa Sa Huỳnh - Chămpa 0.09km. Vanda Hotel ở trung tâm Đà Nẵng, chỉ cách Sông Hàn 3 phút đi bộ và cách Cầu ...",
+    "position": 7
+   },
+   {
+    "title": "Các khách sạn ở gần Giáo Xứ Chính Toà Đà Nẵng, Đà Nẵng",
+    "link": "https://vn.trip.com/hotels/da-nang-da-nang-cathedral/hotels-c1356m6792591/",
+    "snippet": "Trung tâm thành phố Đà Nẵng, Đà Nẵng | Cách Giáo Xứ Chính Toà Đà Nẵng 0.67KM. 9,2/10. Tuyệt Vời 464 đánh giá. Vanda Hotel ở trung tâm Đà Nẵng, chỉ cách Sông ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

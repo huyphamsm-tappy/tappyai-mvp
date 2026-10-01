@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Matsuri Japanese Restaurant\" OR \"Sushinokando Bitexco\" OR \"Haru Sushi Quận 1\" quan 1 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:40:12.108Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Matsuri Japanese Restaurant\" OR \"Sushinokando Bitexco\" OR \"Haru Sushi Quận 1\" quan 1 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Haru Sushi Quận 1 (@harusushinguyenthaihoc)",
+    "link": "https://www.tiktok.com/@harusushinguyenthaihoc",
+    "snippet": "Haru Sushi Quận 1 (@harusushinguyenthaihoc) trên TikTok |6090 Lượt thích.91 Follower.HARU SUSHI - 93 NGUYỄN THÁI HỌC, PHƯỜNG CẦU ÔNG LÃNH, QUẬN 1.",
+    "position": 1
+   },
+   {
+    "title": "Matsuri Japanese Restaurant (@matsurirestaurant)",
+    "link": "https://www.tiktok.com/@matsurirestaurant",
+    "snippet": "Matsuri Japanese Restaurant · @matsurirestaurant · Nhà hàng Nhật ngon view sông Bến Bạch Đằng https://matsurirestaurant.com.vn/.",
+    "position": 2
+   },
+   {
+    "title": "Sushi băng chuyền từ 29k tại SUSHINOKANDO Bitexco",
+    "link": "https://www.tiktok.com/@phat_su/video/7670529259726736648",
+    "snippet": "Xếp chồng đĩa sushi chỉ từ 29k tại SUSHINOKANDO Bitexco, buffet và sushi băng chuyền. @Lang Thang With Phát.",
+    "position": 3
+   },
+   {
+    "title": "Sushinokando Bitexco: Buffet sushi băng chuyền siêu tiết ...",
+    "link": "https://www.tiktok.com/@sushi.nokando.bit/video/7632243491996765457",
+    "snippet": "Nhà hàng sushi có view cửa kính siu đẹp ngay Quận 1 Món dễ ... SUSHINOKANDO BITEXCO: ĐỒNG GIÁ 29K – BÙNG NỔ HƯƠNG VỊ ✨ Thương ...",
+    "position": 4
+   },
+   {
+    "title": "Khám Phá Sushi Ngon Tại Haru Sushi Quận 1",
+    "link": "https://www.tiktok.com/@winter290796/photo/7658315768630709524",
+    "snippet": "Đánh giá: 4.5/5⭐️ Đc: 93 Nguyễn Thái Học, Cầu Ông Lãnh, Hồ Chí Minh #shushi #shushiharu #hcm #quan1. Khám Phá Sushi Ngon Tại Haru Sushi Quận 1.",
+    "position": 5
+   },
+   {
+    "title": "Cứ ăn từng đĩa, biết đâu mình lại trở thành quán quân sự ...",
+    "link": "https://www.tiktok.com/@sushi.nokando.bit/video/7661978043598032149?lang=lt",
+    "snippet": "Sushinokando Bitexco: Enjoy Authentic Sushi for Just 29K! Sushinokando, the renowned conveyor belt sushi brand, has officially landed at the ...",
+    "position": 6
+   },
+   {
+    "title": "Nhà hàng phong cách Izakaya sân vườn tại Landmark 81 ...",
+    "link": "https://www.tiktok.com/@matsuringuyenhue/video/7638486520206249236",
+    "snippet": "Nhà hàng phong cách Izakaya sân vườn tại Landmark 81 Matsuri Japanese Restaurant - Vincom Landmark 81 Đặt bàn qua Fanpage Fb & Nhận ưu đãi.",
+    "position": 7
+   },
+   {
+    "title": "Top Sushi Experience at Sushi Nokando",
+    "link": "https://www.tiktok.com/@sushi.nokando.bit/video/7653065134197263636",
+    "snippet": "60 Lượt thích,Video TikTok từ SUSHINOKANDO BITEXCO (@sushi.nokando.bit): \"Discover the freshest sushi crafted with selected ingredients at ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

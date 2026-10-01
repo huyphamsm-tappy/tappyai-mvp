@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Cà Phê Hạt Rang – Pha Máy site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:04:08.507Z",
+ "body": {
+  "searchParameters": {
+   "q": "Cà Phê Hạt Rang – Pha Máy site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cà phê hạt nguyên chất - Giá Tốt, Sale Tháng 09, Ship 0 ...",
+    "link": "https://shopee.vn/list/c%C3%A0%20ph%C3%AA/h%E1%BA%A1t/nguy%C3%AAn%20ch%E1%BA%A5t",
+    "snippet": "Cà phê CULI đặc biệt rang mộc nguyên chất B'Lao Farm gu mạnh vị đắng đậm dành cho pha máy và pha phin Túi giấy 250g/500g. 40.000₫. 60.000₫.",
+    "position": 1
+   },
+   {
+    "title": "1 Kg Cà Phê Hạt Rang Nguyên Chất, Dòng Pha Máy ...",
+    "link": "https://shopee.vn/1-Kg-C%C3%A0-Ph%C3%AA-H%E1%BA%A1t-Rang-Nguy%C3%AAn-Ch%E1%BA%A5t-D%C3%B2ng-Pha-M%C3%A1y-Robusta-V%C3%A0-Arabica-Roka-Espresso-i.391359740.23126172896",
+    "snippet": "1 Kg Cà Phê Hạt Rang Nguyên Chất, Dòng Pha Máy Robusta Và Arabica - Roka Espresso ; Chọn loại hàng. 100%. Robusta. Blend. 90% Ro-10% Ara. +3 ; 100%. Robusta.",
+    "position": 2
+   },
+   {
+    "title": "Cà phê hạt Robusta gói 200g (ST) - Copen Coffee",
+    "link": "https://shopee.vn/C%C3%A0-ph%C3%AA-h%E1%BA%A1t-Robusta-g%C3%B3i-200g-(ST)-Rang-m%E1%BB%99c-%C4%90%E1%BA%AFng-%C4%91%E1%BA%ADm-th%C6%A1m-n%E1%BB%93ng-Pha-m%C3%A1y-pha-phin-Copen-Coffee-i.137493122.3458712101",
+    "snippet": "Cà phê hạt Robusta gói 200g (ST) - Rang mộc - Đắng đậm, thơm nồng - Pha máy/pha phin - Copen Coffee ; Chọn loại hàng. XAY. THÔ PHA PHIN. NGUYÊN. HẠT. +1 ; XAY.",
+    "rating": 4.9,
+    "ratingCount": 304,
+    "position": 3
+   },
+   {
+    "title": "Cà Phê Hạt Đặc Biệt Lộc Phát 1KG Rang Vừa - Dùng Pha ...",
+    "link": "https://shopee.vn/C%C3%A0-Ph%C3%AA-H%E1%BA%A1t-%C4%90%E1%BA%B7c-Bi%E1%BB%87t-L%E1%BB%99c-Ph%C3%A1t-1KG-Rang-V%E1%BB%ABa-D%C3%B9ng-Pha-C%C3%A0-Ph%C3%AA-M%C3%A1y-(C%C3%A0-Ph%C3%AA-S%E1%BB%AFa-C%C3%A0-Ph%C3%AA-%C4%90en)-i.290700377.50351155285",
+    "snippet": "Mua Cà Phê Hạt Đặc Biệt Lộc Phát 1KG Rang Vừa - Dùng Pha Cà Phê Máy (Cà Phê Sữa, Cà Phê Đen) giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 5,
+    "ratingCount": 9,
+    "position": 4
+   },
+   {
+    "title": "Cà Phê HẠT Rang Nguyên Chất 100% Arabica Pha Phin ...",
+    "link": "https://shopee.vn/C%C3%A0-Ph%C3%AA-H%E1%BA%A0T-Rang-Nguy%C3%AAn-Ch%E1%BA%A5t-100-Arabica-Pha-Phin-Pha-M%C3%A1y-%C4%90%E1%BA%ADm-%C4%90%C3%A0-250g-500g-1kg-i.817298209.56202188529",
+    "snippet": "Mua Cà Phê HẠT Rang Nguyên Chất 100% Arabica Pha Phin Pha Máy Đậm Đà 250g/ 500g/ 1kg giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, ...",
+    "rating": 5,
+    "ratingCount": 9,
+    "position": 5
+   },
+   {
+    "title": "COFFEE BEAN SÀI GÒN, Cửa hàng trực tuyến",
+    "link": "https://shopee.vn/gogocoffee",
+    "snippet": "Cà phê hạt rang tại xưởng dùng cho pha máy và pha phin. Hạt s18, theo TCXK đúng gu mong muốn, giá tại xưởng. 185.000 ...",
+    "position": 6
+   },
+   {
+    "title": "Cà phê Roka, Cửa hàng trực tuyến",
+    "link": "https://shopee.vn/rokacoffeedn",
+    "snippet": "COMBO Cà Phê Pha Phin Rang Xay Truyền Thống Vị Đậm Đà Thơm Tự Nhiên - Roka Black + Roka Đỏ. 248.500₫. rating-star 5.0. 39 đã bán · (500 Gram) Cà Phê Pha ...",
+    "position": 7
+   },
+   {
+    "title": "Cà Phê Nhất Khu, Cửa hàng trực tuyến",
+    "link": "https://shopee.vn/caphenhatkhu",
+    "snippet": "500g cà phê thượng hạng premium kết hợp 4 loại cà phê có moka vị đậm đà đắng êm, hậu vị kéo dài thơm. 156.000₫. -13%. rating-star 4.9. 4k+ đã bán.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

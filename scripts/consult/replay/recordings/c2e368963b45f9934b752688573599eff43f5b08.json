@@ -1,0 +1,42 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Platinum Beach Hotel\" Đà Nẵng site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:25:43.457Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Platinum Beach Hotel\" Đà Nẵng site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Khách sạn Platinum Beach Đà Nẵng - Giá cả và Ưu đãi ...",
+    "link": "https://vn.trip.com/hotels/da-nang-hotel-detail-92373443/platinum-beach-hotel-apartment/",
+    "snippet": "Nếu bạn đang tìm một khách sạn ấm cúng gần biển ở Đà Nẵng thì Platinum Beach Hotel & Apartment là một lựa chọn khá tốt.",
+    "position": 1
+   },
+   {
+    "title": "Các đánh giá Khách sạn Platinum Beach Đà Nẵng",
+    "link": "https://vn.trip.com/hotels/da-nang-hotel-detail-92373443/platinum-beach-hotel-apartment/review.html",
+    "snippet": "Nếu bạn đang tìm một khách sạn ấm cúng gần biển ở Đà Nẵng thì Platinum Beach Hotel & Apartment là một lựa chọn khá tốt.",
+    "position": 2
+   },
+   {
+    "title": "Khách sạn view biển tốt nhất tại Đà Nẵng cho kỳ nghỉ ...",
+    "link": "https://vn.trip.com/hotels/seaview/city/vn/da-nang.html",
+    "snippet": "Platinum Beach Hotel tọa lạc ở Mỹ An, Thành phố Đà Nẵng, cách Bãi biển Mỹ Khê vài bước và cách Sông Hàn 2 phút lái xe. Khách sạn này cách Cầu Rồng 3,5 km và ...",
+    "position": 3
+   }
+  ],
+  "credits": 1
+ }
+}

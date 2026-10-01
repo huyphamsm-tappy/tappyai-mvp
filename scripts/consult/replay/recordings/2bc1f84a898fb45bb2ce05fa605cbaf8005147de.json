@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"寿司と天ぷら居酒屋かむら- Izakaya Kamura\" OR \"Nhân Sushi-Bito\" quan 1 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:41:41.834Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"寿司と天ぷら居酒屋かむら- Izakaya Kamura\" OR \"Nhân Sushi-Bito\" quan 1 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Nhân Sushi - Bito 📍 62 Ngô Đức Kế, phường Bến Nghé, quận 1, ...",
+    "link": "https://www.tiktok.com/@cafehoppersg/photo/7511709341330967816?image_index=7",
+    "snippet": "Nhân Sushi - Bito 62 Ngô Đức Kế, phường Bến Nghé, quận 1, TpHCM 10:30 am - 2:30 pm | 5 pm - 10:30 pm | ( Sat & Sun 4:30 pm - 10:30 pm) Đối với các ...",
+    "position": 1
+   },
+   {
+    "title": "Nhân Sushi - Bito 📍 62 Ngô Đức Kế, phường Bến Nghé, quận 1, ...",
+    "link": "https://www.tiktok.com/@cafehoppersg/photo/7511709341330967816?image_index=13&lang=fi-FI",
+    "snippet": "Nhân Sushi - Bito 62 Ngô Đức Kế, phường Bến Nghé, quận 1, TpHCM 10:30 am - 2:30 pm | 5 pm - 10:30 pm | ( Sat & Sun 4:30 pm - 10:30 pm) Đối với các ...",
+    "position": 2
+   },
+   {
+    "title": "Nhà hàng sushi chất lượng cao gần Bitexco tại Sài Gòn",
+    "link": "https://www.tiktok.com/@cafehoppersg/photo/7511709341330967816",
+    "snippet": "Nhân Sushi - Bito 62 Ngô Đức Kế, phường Bến Nghé, quận 1, TpHCM 10:30 am - 2:30 pm | 5 pm - 10:30 pm | ( Sat & Sun 4:30 pm - 10:30 pm) ...",
+    "position": 3
+   },
+   {
+    "title": "Nhà hàng sushi chất lượng cao gần Bitexco tại Sài Gòn",
+    "link": "https://www.tiktok.com/@cafehoppersg/photo/7511709341330967816?image_index=5",
+    "snippet": "Nhân Sushi - Bito 62 Ngô Đức Kế, phường Bến Nghé, quận 1, TpHCM 10:30 am - 2:30 pm | 5 pm - 10:30 pm | ( Sat & Sun 4:30 pm - 10:30 pm) ...",
+    "position": 4
+   },
+   {
+    "title": "胡志明日本街最火的店",
+    "link": "https://www.tiktok.com/discover/%E8%83%A1%E5%BF%97%E6%98%8E-%E6%97%A5%E6%9C%AC%E8%A1%97%E6%9C%80%E7%81%AB%E7%9A%84%E5%BA%97",
+    "snippet": "胡志明 Sài Gòn 《寿司と天ぷら居酒屋かむら- Izakaya Kamura》 在一郡日本街日料一級戰區 餐廳基本上都不太踩雷 ⚡️ 《Izakaya Kamura》",
+    "date": "31 thg 8, 2026",
+    "position": 5
+   },
+   {
+    "title": "胡志明一郡海鮮餐廳",
+    "link": "https://www.tiktok.com/discover/%E8%83%A1%E5%BF%97%E6%98%8E%E4%B8%80%E9%83%A1%E6%B5%B7%E9%AE%AE%E9%A4%90%E5%BB%B3",
+    "snippet": "87221週前. jiang0112. 小江. 在越南胡志明市第一郡日本街（Thái Văn Lung）內 寿司と天ぷら居酒屋かむら- Izakaya Kamura 是一家深受當地日本人 商務人士與觀光客喜愛的 ...",
+    "position": 6
+   },
+   {
+    "title": "日本街胡志明附近飯店",
+    "link": "https://www.tiktok.com/discover/%E6%97%A5%E6%9C%AC%E8%A1%97-%E8%83%A1%E5%BF%97%E6%98%8E%E9%99%84%E8%BF%91%E9%A3%AF%E5%BA%97",
+    "snippet": "86511週前. jiang0112. 小江. 在越南胡志明市第一郡日本街（Thái Văn Lung）內 寿司と天ぷら居酒屋かむら- Izakaya Kamura 是一家深受當地日本人 商務 ...",
+    "date": "17 thg 8, 2026",
+    "position": 7
+   },
+   {
+    "title": "胡志明日本街日本料理",
+    "link": "https://www.tiktok.com/discover/%E8%83%A1%E5%BF%97%E6%98%8E%E6%97%A5%E6%9C%AC%E8%A1%97%E6%97%A5%E6%9C%AC%E6%96%99%E7%90%86",
+    "snippet": "28 Thái Văn Lung, Quan 1, HCM Enya Izakaya 15B/21, Đ. Lê ... 《寿司と天ぷら居酒屋かむら- Izakaya Kamura》 在一郡日本街日料 ...",
+    "date": "10 thg 8, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

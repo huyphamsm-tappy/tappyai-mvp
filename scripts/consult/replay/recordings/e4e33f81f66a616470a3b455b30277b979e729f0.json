@@ -1,0 +1,80 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "PHIN PHA CÀ PHÊ INOX CÓ QUAI CẦM LOẠI 1 site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:35:09.422Z",
+ "body": {
+  "searchParameters": {
+   "q": "PHIN PHA CÀ PHÊ INOX CÓ QUAI CẦM LOẠI 1 site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "PHIN PHA CÀ PHÊ INOX CÓ QUAI CẦM LOẠI 1",
+    "link": "https://shopee.vn/PHIN-PHA-C%C3%80-PH%C3%8A-INOX-C%C3%93-QUAI-C%E1%BA%A6M-LO%E1%BA%A0I-1-i.902671562.28761181911",
+    "snippet": "PHIN PHA CÀ PHÊ INOX CÓ QUAI CẦM LOẠI 1. 1/8. 45.900₫-85.900₫. PHIN PHA CÀ PHÊ INOX CÓ QUAI CẦM LOẠI 1.",
+    "rating": 5,
+    "ratingCount": 10,
+    "position": 1
+   },
+   {
+    "title": "Phin pha cà phê inox 304 quai inox, pha cafe ngon, cứng ...",
+    "link": "https://shopee.vn/Phin-pha-c%C3%A0-ph%C3%AA-inox-304-quai-inox-pha-cafe-ngon-c%E1%BB%A9ng-c%C3%A1p-b%E1%BB%81n-b%E1%BB%89-an-to%C3%A0n-d%C3%B9ng-l%C3%A2u-d%C3%A0i-Mixmore-i.51816183.18101218470",
+    "snippet": "Mua Phin pha cà phê inox 304 quai inox, pha cafe ngon, cứng cáp, bền bỉ, an toàn dùng lâu dài Mixmore giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 5,
+    "ratingCount": 394,
+    "position": 2
+   },
+   {
+    "title": "Phin cà phê INOX cao cấp Tithafac chất lượng cao nhiều ...",
+    "link": "https://shopee.vn/Phin-c%C3%A0-ph%C3%AA-INOX-cao-c%E1%BA%A5p-Tithafac-ch%E1%BA%A5t-l%C6%B0%E1%BB%A3ng-cao-nhi%E1%BB%81u-size-Phin-c%C3%A0-ph%C3%AA-1-quai-c%E1%BA%A7m-i.618477222.19478976144",
+    "snippet": "... Phin cà phê 1 quai cầm. 1/11. 2 phân loại có sẵn. 28.600₫-93.500₫. Phin cà phê INOX cao cấp Tithafac chất lượng cao nhiều size, Phin cà phê 1 quai cầm.",
+    "position": 3
+   },
+   {
+    "title": "Phin pha cà phê,phin cà phê inox quai nhựa khắc logo,tên ...",
+    "link": "https://shopee.vn/Phin-pha-c%C3%A0-ph%C3%AA-phin-c%C3%A0-ph%C3%AA-inox-quai-nh%E1%BB%B1a-kh%E1%BA%AFc-logo-t%C3%AAn-theo-y%C3%AAu-c%E1%BA%A7u-i.430937222.19675594430",
+    "snippet": "Phin pha cà phê,phin cà phê inox quai nhựa khắc logo,tên theo yêu cầu. 1/9. 2 phân loại có sẵn. 40.000₫-54.000₫. 50.000₫ - 55.000₫. -20%. Phin pha cà ...",
+    "position": 4
+   },
+   {
+    "title": "Phin pha cà phê cao cấp - Giá Tốt, Sale Tháng 09, ...",
+    "link": "https://shopee.vn/list/phin%20pha%20c%C3%A0%20ph%C3%AA/cao%20c%E1%BA%A5p",
+    "snippet": "Phin pha cà phê nhôm dày ANODE cao cấp màu đen chất lượng, phin nhôm dày pha cafe ngon từ Đậm Cafe. 159.000₫. 199.000₫. -20%. Rẻ Vô Địch. Mua để nhận quà.",
+    "position": 5
+   },
+   {
+    "title": "Phin inox nhiều size quai nhựa nắp bằng pha cà phê ...",
+    "link": "https://shopee.vn/Phin-inox-nhi%E1%BB%81u-size-quai-nh%E1%BB%B1a-n%E1%BA%AFp-b%E1%BA%B1ng-pha-c%C3%A0-ph%C3%AA-phin-c%E1%BB%A9ng-c%C3%A1p-d%C3%A0nh-cho-gia-%C4%91%C3%ACnh-qu%C3%A1n-c%C3%A0-ph%C3%AA-xe-%C4%91%E1%BA%A9y-Mixmore-i.51816183.43103302874",
+    "snippet": "Phin inox nhiều size quai nhựa nắp bằng pha cà phê phin, cứng cáp dành cho gia đình, quán cà phê, xe đẩy Mixmore. outline grey truck icon. Không hỗ trợ.",
+    "rating": 5,
+    "ratingCount": 34,
+    "position": 6
+   },
+   {
+    "title": "Phin pha cà phê inox cao cấp đủ size Phin pha cafe với Ly ...",
+    "link": "https://shopee.vn/Phin-pha-c%C3%A0-ph%C3%AA-inox-cao-c%E1%BA%A5p-%C4%91%E1%BB%A7-size-Phin-pha-cafe-v%E1%BB%9Bi-Ly-th%E1%BB%A7y-tinh-Ph%E1%BB%85u-pha-c%C3%A0-ph%C3%AA-nh%E1%BB%8F-gi%E1%BB%8Dt-TKMinhAnh-i.395243510.46901753466",
+    "snippet": "1/17. 8 phân loại có sẵn. 59.965₫-75.965₫. 75.000₫ - 99.000₫. -20%. Phin pha cà phê inox cao cấp đủ size Phin pha cafe với Ly thủy tinh Phễu pha cà phê nhỏ giọt ...",
+    "rating": 4.6,
+    "ratingCount": 441,
+    "position": 7
+   },
+   {
+    "title": "Phin xanh - Giá Tốt, Sale Tháng 09, Ship 0 Đồng",
+    "link": "https://shopee.vn/list/phin%20xanh",
+    "snippet": "flag-label Phin pha Cà Phê iNox LONG CAM Nắp cài đủ size 9CMX9CM Hộp xanh hàng loại 1. 60.000₫. rating-star 5.0. Cốc ủ iMat có phin lọc, giữ nhiệt 12 tiếng, ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

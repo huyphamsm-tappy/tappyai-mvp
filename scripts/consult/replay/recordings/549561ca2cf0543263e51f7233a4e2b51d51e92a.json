@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Set quà tặng cốc thủy tinh đơn giản sang trọng tặng đối tác, thầy cô giáo bạn bè người thân site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:36:08.739Z",
+ "body": {
+  "searchParameters": {
+   "q": "Set quà tặng cốc thủy tinh đơn giản sang trọng tặng đối tác, thầy cô giáo bạn bè người thân site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Set quà tặng cốc thủy tinh đơn giản sang trọng tặng đối tác ...",
+    "link": "https://shopee.vn/Set-qu%C3%A0-t%E1%BA%B7ng-c%E1%BB%91c-th%E1%BB%A7y-tinh-%C4%91%C6%A1n-gi%E1%BA%A3n-sang-tr%E1%BB%8Dng-t%E1%BA%B7ng-%C4%91%E1%BB%91i-t%C3%A1c-th%E1%BA%A7y-c%C3%B4-gi%C3%A1o-b%E1%BA%A1n-b%C3%A8-ng%C6%B0%E1%BB%9Di-th%C3%A2n-i.329375182.22250068204",
+    "snippet": "Shopee Nhà Cửa & Đời Sống Dụng cụ pha chế Chén, cốc & kính. Set quà tặng cốc thủy tinh đơn giản sang trọng tặng đối tác, thầy cô giáo bạn bè người thân.",
+    "position": 1
+   },
+   {
+    "title": "[Top Value] Set quà tặng cốc thủy tinh đơn giản sang trọng ...",
+    "link": "https://shopee.vn/-Top-Value-Set-qu%C3%A0-t%E1%BA%B7ng-c%E1%BB%91c-th%E1%BB%A7y-tinh-%C4%91%C6%A1n-gi%E1%BA%A3n-sang-tr%E1%BB%8Dng-t%E1%BA%B7ng-%C4%91%E1%BB%91i-t%C3%A1c-th%E1%BA%A7y-c%C3%B4-gi%C3%A1o-b%E1%BA%A1n-b%C3%A8-ng%C6%B0%E1%BB%9Di-th%C3%A2n-i.1175586038.54054150414",
+    "snippet": "Mua [Top Value] Set quà tặng cốc thủy tinh đơn giản sang trọng tặng đối tác, thầy cô giáo bạn bè người thân giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 5,
+    "ratingCount": 2,
+    "position": 2
+   },
+   {
+    "title": "quà tặng cô giáo mầm non - Giá Tốt, Sale Tháng 09, ...",
+    "link": "https://shopee.vn/list/qu%C3%A0%20t%E1%BA%B7ng/c%C3%B4%20gi%C3%A1o%20m%E1%BA%A7m%20non",
+    "snippet": "Set quà sinh nhật cho nam, quà tặng bạn trai, gồm cốc sứ, móc khóa gấu , thiệp và hộp quà tặng ,set quà tặng tốt nghiệp. 125.000₫. 189.000₫.",
+    "position": 3
+   },
+   {
+    "title": "10+ món quà tặng cô giáo chủ nhiệm ý nghĩa và tinh tế nhất",
+    "link": "https://shopee.vn/blog/qua-tang-co-giao-chu-nhiem/",
+    "snippet": "Vì thế, bạn có thể chọn những sản phẩm thiết thực như sổ, bút, thước, giấy note,… và gói thành một hộp quà chỉn chu để gửi tặng đến giáo viên ...",
+    "date": "6 thg 11, 2025",
+    "position": 4
+   },
+   {
+    "title": "20+ món quà tặng 20/11 ý nghĩa, thiết thực cho thầy cô giáo",
+    "link": "https://shopee.vn/blog/qua-tang-20-11-y-nghia/",
+    "snippet": "Một chiếc bình giữ nhiệt đựng nước, trà, cà phê sẽ vô cùng cần thiết đối với thầy. Đây là một món quà thiết thực và ý nghĩa mà bạn nên cân nhắc.",
+    "date": "6 thg 11, 2025",
+    "position": 5
+   },
+   {
+    "title": "9+ món quà tặng cô giáo tiểu học chu đáo và chân thành",
+    "link": "https://shopee.vn/blog/qua-tang-co-giao-tieu-hoc/",
+    "snippet": "Với cô giáo khoảng 25-35 tuổi, có thể lựa chọn món quà như túi xách, nến thơm, mỹ phẩm hoặc ví. Đối với những cô giáo lớn tuổi hơn (36-60 tuổi) ...",
+    "date": "6 thg 11, 2025",
+    "position": 6
+   },
+   {
+    "title": "15+ món quà 8/3 cho cô giáo thể hiện sự biết ơn sâu sắc",
+    "link": "https://shopee.vn/blog/qua-8-3-cho-co-giao/",
+    "snippet": "15+ quà 8/3 cho cô giáo vừa tinh tế vừa kinh tế · Bình/ ly giữ nhiệt · Máy rửa mặt · Đồng hồ đeo tay · Máy sấy tóc · Các thiết bị gia dụng · Cây cảnh ...",
+    "date": "6 thg 3, 2025",
+    "position": 7
+   },
+   {
+    "title": "Set quà tặng bạn bè - Giá Tốt, Sale Tháng 09, Ship 0 Đồng",
+    "link": "https://shopee.vn/list/set/qu%C3%A0%20t%E1%BA%B7ng/b%E1%BA%A1n%20b%C3%A8",
+    "snippet": "Set quà tặng cho nữ cốc sứ nến thơm, làm quà tặng sinh nhật, bạn bè người yêu, set quà tặng bạn trai sinh nhật. 110.000₫. 169.000₫.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

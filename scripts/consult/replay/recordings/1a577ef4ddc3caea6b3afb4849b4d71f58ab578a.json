@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"The Nail\" OR \"Iris Nailbar SGN\" OR \"Tiệm Nail Quận 10\" Quận 10 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:11:51.301Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"The Nail\" OR \"Iris Nailbar SGN\" OR \"Tiệm Nail Quận 10\" Quận 10 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tiệm Nail Quận 10 - Mở Cửa Hàng Ngày",
+    "link": "https://www.tiktok.com/@meinail98/video/7657058810376326420",
+    "snippet": "Video TikTok từ Tiệm Nail Quận 10 (@meinail98): \"Khám phá tiệm nail tại Quận 10, mở cửa hàng ngày từ 9 giờ sáng đến 8 giờ tối.",
+    "position": 1
+   },
+   {
+    "title": "Review tiệm nail quận 10: làm móng đẹp, có quà khai trương",
+    "link": "https://www.tiktok.com/@nghihaydii/video/7642696834481179924",
+    "snippet": "review tiệm nails quận 10, tiệm nail quận 10 đánh giá, làm nail ... thẻ nail quận 10, workshop làm túi thơm miễn phí. Đây là bản tóm tắt ...",
+    "position": 2
+   },
+   {
+    "title": "Vlog Bé Thảo: Bí Mật Tiệm Nail Quận 10",
+    "link": "https://www.tiktok.com/@thaothichlamnail94/video/7657838476699716871",
+    "snippet": "Vlog của bé Thảo #nailquận10 #tiệmnailquận10 #làmmóngquận10 #tiệmlàmmóngquận10. Vlog Bé Thảo: Bí Mật Tiệm Nail Quận 10. Chào mừng bạn đến với ...",
+    "position": 3
+   },
+   {
+    "title": "Tiệm nail gội đầu ở quận 10 giá mềm chỉ 75K sơn gel mà ...",
+    "link": "https://www.tiktok.com/@thudidaurua/video/7534663646899719431",
+    "snippet": "Tiệm nail gội đầu ở quận 10 giá mềm chỉ 75K sơn gel mà sử dụng ... ✨ Iris Nailbar SGN ✨. 206 · recommend-cover. Tiệm neo thư giãn. 2677.",
+    "position": 4
+   },
+   {
+    "title": "Tiệm nail quận 10 – gọi đâu chill, xu hướng nail viral",
+    "link": "https://www.tiktok.com/@mior.beautyroom/video/7690180844597693697",
+    "snippet": "Tiệm nail quận 10 – gọi đâu chill, xu hướng nail viral. Video tập trung vào tiệm nail quận 10 và dùng các hashtag liên quan: #tiemnailquan10, # ...",
+    "position": 5
+   },
+   {
+    "title": "Đặt lịch trước giúp e nha khách iu ơi ✿ 𝘖𝘱𝘦𝘯 𝘥𝘢𝘪𝘭𝘺",
+    "link": "https://www.tiktok.com/@meinail98/video/7669326971620347157?lang=ceb-PH",
+    "snippet": "TikTok nga video gikan kang Tiệm Nail Quận 10 (@meinail98): \"Đặt lịch trước giúp e nha khách iu ơi ✿ Open daily : 9am - 20pm ...",
+    "position": 6
+   },
+   {
+    "title": "Làm Nail Đẹp & Bóc Thăm Trúng Thưởng",
+    "link": "https://www.tiktok.com/@nailoanhtrinh93/video/7610423763502402836",
+    "snippet": "Tiệm Nail Quận 10: Làm Nail Đẹp & Bóc Thăm Trúng Thưởng. Khách hàng của chúng tôi tỏ ra vô cùng thích thú với dịch vụ làm nail tại tiệm. Không ...",
+    "position": 7
+   },
+   {
+    "title": "Biến hình 🤣🤣 #nails #xuhuong #mei #quan10",
+    "link": "https://www.tiktok.com/@meinail98/video/7680089116528200980",
+    "snippet": "31 Lượt thích,Video TikTok từ Tiệm Nail Quận 10 (@meinail98): \"Biến hình #nails #xuhuong #mei #quan10\".original sound - Megan Josol Art ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

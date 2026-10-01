@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Máy xay cà phê có tay quay Máy xay cà phê thủ công nhỏ gọn Máy xay cà phê cầm tay site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:37:14.577Z",
+ "body": {
+  "searchParameters": {
+   "q": "Máy xay cà phê có tay quay Máy xay cà phê thủ công nhỏ gọn Máy xay cà phê cầm tay site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Máy Xay Cà Phê Bằng Thép Không Gỉ Cầm Tay Có Tay Quay ...",
+    "link": "https://www.lazada.vn/products/may-xay-ca-phe-bang-thep-khong-gi-cam-tay-co-tay-quay-co-the-dieu-chinh-do-tho-cua-ca-phe-nap-co-the-thao-roi-may-xay-hat-ca-phe-i13431759007.html?srsltid=AU7gw4Xvu5HOGcPKDxP_6CK4A9Vuavy92rRMfJ7kFKJrhiw3YRf-yx4E",
+    "snippet": "Máy Xay Cà Phê Bằng Thép Không Gỉ Cầm Tay Có Tay Quay Có Thể Điều Chỉnh Độ Thô Của Cà Phê Nắp Có Thể Tháo Rời Máy Xay Hạt Cà Phê. Tuỳ chọn sản phẩm.",
+    "position": 1
+   },
+   {
+    "title": "Máy Xay Cà Phê Cầm Tay Bằng Thép Không Gỉ ...",
+    "link": "https://h5.lazada.vn/products/may-xay-ca-phe-cam-tay-bang-thep-khong-gi-may-xay-hat-mini-quay-tay-cho-handbrew-de-dang-lam-sach-phu-kien-nha-bep-i2581084698.html",
+    "snippet": "Nhỏ gọn và nhẹ, máy xay cà phê thủ công này rất phù hợp cho các hoạt động ngoài trời như cắm trại và đi bộ đường dài.",
+    "rating": 4.9,
+    "ratingCount": 81,
+    "position": 2
+   },
+   {
+    "title": "Circle Joy | Máy Xay Cà Phê Bằng Tay Di Động CNC",
+    "link": "https://h5.lazada.vn/products/circle-joy-may-xay-ca-phe-bang-tay-di-dong-cnc-i3233871738-s15550177893.html",
+    "snippet": "cliton | Máy Xay Cà Phê Điều Chỉnh Tự Động và Thủ Công. 614.000 ₫. Circle Joy | Máy Xay Cà Phê Bằng Tay Di Động. 316.000 ₫. cliton | Máy Pha Cà Phê Espresso Di ...",
+    "rating": 5,
+    "ratingCount": 6,
+    "position": 3
+   },
+   {
+    "title": "MONGDIO | Máy Xay Cà Phê Quay Tay Kiểu Cổ Điển",
+    "link": "https://www.lazada.vn/products/mongdio-may-xay-ca-phe-quay-tay-kieu-co-dien-i3261843550.html?srsltid=AU7gw4VdtR7eK5BWaqzja7wxrCfEVehbBoRpY4v2HOTFh58lT1VD7XGE",
+    "snippet": "Máy xay cà phê thủ công Mongdio rất dễ làm sạch, giúp việc bảo trì trở nên dễ dàng sau mỗi lần sử dụng. Thiết kế cổ điển.",
+    "rating": 4.9,
+    "ratingCount": 34,
+    "position": 4
+   },
+   {
+    "title": "INOXTO Quay tay Máy xay cà phê thủ công Mũi mài gốm Dụng ...",
+    "link": "https://www.lazada.vn/products/pdp-i13459569304.html?srsltid=AU7gw4XX9PgJM7eV80V3k0DJFIzZwmtZCc9If1yFaMNhz3NJjBgGT4mU",
+    "snippet": "INOXTO Quay tay Máy xay cà phê thủ công Mũi mài gốm Dụng cụ nhà bếp Máy xay cầm tay có thể điều chỉnh độ mịn. Bền bỉ Hộ Gia Đình Nhỏ Máy xay cà phê Sử dụng ...",
+    "position": 5
+   },
+   {
+    "title": "【FORESIGHT】Máy Xay Cà Phê Cầm Tay Lõi Gốm Ceramic",
+    "link": "https://www.lazada.vn/products/pdp-i13438069513.html?srsltid=AU7gw4VTx12kOg5Ny3dQh-Em_9hhvpHUFNXW6AN7pmD3On2PjYNsOacr",
+    "snippet": "1. Tháo nắp trên và cho hạt cà phê vào thân máy. · 2. Đậy nắp lại, gắn tay quay vào phần trục. · 3. Quay đều tay theo chiều kim đồng hồ. · 4. Khi cảm thấy nhẹ tay ...",
+    "position": 6
+   },
+   {
+    "title": "【i Cafilas】[GR] Máy Xay Cà Phê Bằng Tay Máy Xay Hạt Cà Phê ...",
+    "link": "https://h5.lazada.vn/products/i-cafilasgr-may-xay-ca-phe-bang-tay-may-xay-hat-ca-phe-thu-cong-hinh-non-cam-tay-mini-may-lac-bot-may-phun-ca-phe-khuon-nhua-keo-hoa-mau-in-day-sua-ca-phe-cho-may-dap-noi-kieu-phap-i1289037950-s4886449325.html",
+    "snippet": "Máy xay cà phê bằng tay i Cafilas với thiết kế nhỏ gọn, dễ sử dụng, phù hợp pha chế cà phê thủ công. Dễ dàng điều chỉnh độ mịn, không ồn, thích hợp cho việc ...",
+    "position": 7
+   },
+   {
+    "title": "CuddleCove Máy xay cà phê cầm tay mini lưỡi gốm điều ...",
+    "link": "https://www.lazada.vn/products/cuddlecove-may-xay-ca-phe-cam-tay-mini-luoi-gom-dieu-chinh-do-xay-nho-gon-mang-di-du-lich-pha-pour-over-i13420626010-s117162030116.html?from_gmc=1&fl_tag=1&srsltid=AU7gw4URlPCUeXux3GN5u2f4HsrY-OFDnRjqDG9mfv0rYAx5zKvWSe1c",
+    "snippet": "Máy xay cà phê mini cầm tay của chúng tôi dùng lõi gốm chống mòn, giúp xay đều và hạn chế nóng bột trong lúc xay. Thiết kế nhỏ gọn, dễ cầm, phù hợp cho người ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

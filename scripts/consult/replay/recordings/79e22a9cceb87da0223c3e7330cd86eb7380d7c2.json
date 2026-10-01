@@ -1,0 +1,80 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "PHIN PHA CÀ PHÊ INOX CÓ QUAI CẦM LOẠI 1 site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:35:09.635Z",
+ "body": {
+  "searchParameters": {
+   "q": "PHIN PHA CÀ PHÊ INOX CÓ QUAI CẦM LOẠI 1 site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "PHIM CA PHÊ INOX SỐ 8 có tay cầm bằng inox",
+    "link": "https://shop.tiktok.com/vn/pdp/phin-ca-phe-inox-so-8-quai-vuong-%C4%91uong-kinh-8cm-pha-1-ly/1731531335995262257",
+    "snippet": "PHIN PHA CÀ PHÊ INOX SỐ 8 - QUAI VUÔNG ( Mẫu mới) ️ Phim inox số 8 - pha được 1 ly. ️ Đường kính 8 cao 8 cm **Lưu ý: -khi sử dụng các sản phẩm chất liệu inox ...",
+    "position": 1
+   },
+   {
+    "title": "PHIM CA PHÊ INOX SỐ 8 có tay cầm bằng inox",
+    "link": "https://shop.tiktok.com/vn/pdp/phin-ca-phe-inox-so-8-quai-vuong-duong-kinh-8cm-pha-1-ly/1731531335995262257",
+    "snippet": "PHIN PHA CÀ PHÊ INOX SỐ 8 - QUAI VUÔNG ( Mẫu mới) ️ Phim inox số 8 - pha được 1 ly. ️ Đường kính 8 cao 8 cm **Lưu ý: -khi sử dụng các sản phẩm chất liệu ...",
+    "position": 2
+   },
+   {
+    "title": "Phin pha cafe inox cao cấp 304 số 7 chất liệu thép không ...",
+    "link": "https://shop.tiktok.com/vn/pdp/1730429906568448930",
+    "snippet": "+ Phin gồm có 4 bộ phận: nắp phin, thân phin, rế phin và lưới gài. Phin pha cafe inox cao cấp 304 số 7 chất liệu thép không gỉ, nắp Thông ...",
+    "rating": 4.6,
+    "ratingCount": 64,
+    "position": 3
+   },
+   {
+    "title": "Phin pha cafê nhôm nhiều size",
+    "link": "https://shop.tiktok.com/vn/pdp/phin-pha-cafe-nhom-%C4%91a-nang-voi-thiet-ke-tien-loi-ben-bi/1730551632369322343",
+    "snippet": "Có nắp đậy hạn chế bụi bay vào. - Tấm lọc được đục nhiều lỗ nhỏ tròn đều giúp cà phê ra đều và không bị cặn. - Giá thành rẻ, dễ sử dụng. Khám phá thêm sản ...",
+    "rating": 4.8,
+    "ratingCount": 5,
+    "position": 4
+   },
+   {
+    "title": "TikTok Shop Vietnam",
+    "link": "https://shop.tiktok.com/vn/pdp/1734079060593969111",
+    "snippet": "Phin Pha Cà Phê Inox Cao Cấp Không Rỉ. 4.3. 2743 sold. ₫32.900. ₫37.500. Máy Tạo Bọt Sữa ...",
+    "position": 5
+   },
+   {
+    "title": "Phin cafe inox 430 size lớn pha từ 100g-300g cafe",
+    "link": "https://shop.tiktok.com/vn/pdp/phin-cafe-inox-430-size-lon-pha-tu-100g-300g-chat-luong-cao/1734377943418504990",
+    "snippet": "Mua Phin cafe inox 430 size lớn pha từ 100g-300g cafe - XEM KĨ KÍCH THƯỚC TRƯỚC KHI MUA trên TikTok Shop. Săn giá siêu hời cho và được freeship mặt hàng đủ ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 6
+   },
+   {
+    "title": "phin cà phê inox nút vặn 8cm 9cm 10cm",
+    "link": "https://shop.tiktok.com/vn/pdp/phin-ca-phe-inox-nut-van-8cm-9cm-10cm-kich-thuoc-linh-hoat-pha-ca-phe-%C4%91a-luong-thiet-ke-sang-tr/1732084165692851832",
+    "snippet": "Thiết kế tiện lợi và sangtrọng, phù hợp mọi không gian.* * * * ✓ Kích thước linh hoạt: 8cm, 9cm, 10cm. * ✓ Dùng cho gia đình và quán cà phê: Tiện ích và thẩm ...",
+    "position": 7
+   },
+   {
+    "title": "Phin Inox Dùng Để Pha Cà Phê, Pha Truyền Thống Chiết ...",
+    "link": "https://shop.tiktok.com/vn/pdp/phin-inox-pha-ca-phe-truyen-thong-ben-an-toan-cho-thuc-pham/1732287334487393520",
+    "snippet": "1. Vật liệu: ·. Làm từ inox (thép không gỉ), an toàn cho thực phẩm, không bị oxy hóa khi tiếp xúc với nước sôi và cà phê. · · 2. Công dụng: ·. Dùng để pha cà phê ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

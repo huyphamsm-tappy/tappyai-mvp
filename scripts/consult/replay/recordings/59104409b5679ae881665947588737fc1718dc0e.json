@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Holiday Inn Express & Suites Hope Mills-Fayetteville Arpt by IHG\" OR \"Red Roof Inn & Suites Fayetteville\" OR \"Mt Rose Hotel\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:31:39.513Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Holiday Inn Express & Suites Hope Mills-Fayetteville Arpt by IHG\" OR \"Red Roof Inn & Suites Fayetteville\" OR \"Mt Rose Hotel\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

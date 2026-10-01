@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Máy xay cà phê có tay quay Máy xay cà phê thủ công nhỏ gọn Máy xay cà phê cầm tay site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:37:14.707Z",
+ "body": {
+  "searchParameters": {
+   "q": "Máy xay cà phê có tay quay Máy xay cà phê thủ công nhỏ gọn Máy xay cà phê cầm tay site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Máy xay cà phê bằng tay",
+    "link": "https://shop.tiktok.com/vn/c/manual-coffee-grinders/860680",
+    "snippet": "Máy xay cà phê hạt kiểu kim cương mới, máy xay thô và mịn có thể điều chỉnh bằng tay, tiết kiệm thời gian và công sức.",
+    "position": 1
+   },
+   {
+    "title": "Máy Xay Cà Phê, Thủ Công, Tay Quay, Thép Không Gỉ ...",
+    "link": "https://shop.tiktok.com/vn/pdp/may-xay-ca-phe-thu-quay-thep-khong-gi-ban-chay/1732204334577648721",
+    "snippet": "Cốc Khuấy Tự Động, 1 Cái, Có Màn Hình Hiển Thị Nhiệt Độ, Có Thể Sạc Lại USB, Cốc Du Lịch Kín, Thích Hợp Để Khuấy Sữa, Sô Cô La, Mocha, Cà Phê, Cầm Tay Và Dễ Vệ ...",
+    "position": 2
+   },
+   {
+    "title": "Máy xay hạt cà phê cầm tay,Xay thủ công màu Inox,cối xay cafe ...",
+    "link": "https://shop.tiktok.com/vn/pdp/may-xay-hat-ca-phe-cam-tay-mau-inox-thiet-ke-tien-loi-ben-%C4%91ep/1730707791415576960",
+    "snippet": "Mua Máy xay hạt cà phê cầm tay,Xay thủ công màu Inox,cối xay cafe bằng tay trên TikTok Shop. Săn giá siêu hời cho và được freeship mặt hàng đủ điều kiện.",
+    "position": 3
+   },
+   {
+    "title": "Máy xay cà phê dùng tay vận hành (tay quay), giao hàng nội địa; ...",
+    "link": "https://shop.tiktok.com/vn/pdp/1735162225023223411",
+    "snippet": "Loại: Máy xay đậu chạy bằng tay quayMàu sắc: ĐenChất liệu: PolyesterTrọng lượng: 189 gKích thước: 14 * 8 * 6 cmĐóng gói bao gồm: túi OPPGhi chú:Do cài đặt độ ...",
+    "position": 4
+   },
+   {
+    "title": "Sản phẩm không có sẵn tại quốc gia hoặc khu vực này",
+    "link": "https://shop.tiktok.com/vn/pdp/1733948379993703459",
+    "snippet": "[Tặng 3 món] - Máy pha cà phê Winci EM3125, áp suất 20 Bar, tay cầm 51mm, công suất 1350W, bảo hành 1 năm. · [Tặng 3 món] - Máy pha cà phê Winci EM3125, áp suất ...",
+    "position": 5
+   },
+   {
+    "title": "Máy Xay Cà Phê HB583,Xay Hạt Cafe Pha Espresso,tích ...",
+    "link": "https://shop.tiktok.com/vn/pdp/may-xay-ca-phe-hb583-25-muc-%C4%91o-%C4%91ay-bot-tay-cam-inox/1730973961833515392",
+    "snippet": "Mua Máy Xay Cà Phê HB583,Xay Hạt Cafe Pha Espresso,tích hợp 25 chế độ xay, 2 in 1,thích hợp 51mm tay cầm Inox Pha Cafe cối coffee cối xay trên TikTok Shop.",
+    "rating": 4.4,
+    "ratingCount": 19,
+    "position": 6
+   },
+   {
+    "title": "Máy xay cà phê điện cầm tay CGE01 | CERA+ | lưỡi 10 ...",
+    "link": "https://shop.tiktok.com/vn/pdp/may-xay-ca-phe-mini-cera-voi-cong-suat-manh-me-thiet-ke-nho-gon/1730353558578301317",
+    "snippet": "Mua Máy xay cà phê điện cầm tay CGE01 | CERA+ | lưỡi 10 cách thép SUS420 | Pin 1600mAh | Thân máy bằng hợp kim nhôm trên TikTok Shop.",
+    "position": 7
+   },
+   {
+    "title": "Máy Xay Cà Phê Máy Xay Hạt Cà Phê Điện Máy Xay Đậu ...",
+    "link": "https://shop.tiktok.com/vn/pdp/1734563283758712485",
+    "snippet": "Nguồn điện: 220V / 50Hz ; Dung tích phễu: ~200g hạt cà phê ; Trọng lượng: 3.6 kg ; Tốc độ xay: khoảng 6–9 phút/kg tùy độ mịn ; Kích thước nhỏ gọn, dễ đặt trên quầy.",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

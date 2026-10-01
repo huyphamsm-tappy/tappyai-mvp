@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Cà Phê Hòa Tan Đen Americano Premium King Coffee Hộp 15 Gói 1g\" site:cellphones.com.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:35:21.614Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Cà Phê Hòa Tan Đen Americano Premium King Coffee Hộp 15 Gói 1g\" site:cellphones.com.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

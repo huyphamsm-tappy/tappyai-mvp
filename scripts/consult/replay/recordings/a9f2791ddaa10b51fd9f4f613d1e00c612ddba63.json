@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Izakaya Unatoto Việt Nam\" OR \"KOHAKU RAMEN & UDON\" OR \"Aniki Nhà Hàng Nhật Quận 1\" Quận 1 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:20:06.880Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Izakaya Unatoto Việt Nam\" OR \"KOHAKU RAMEN & UDON\" OR \"Aniki Nhà Hàng Nhật Quận 1\" Quận 1 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Review Ẩm Thực Nhật Bản Aniki — Nhà hàng Nhật quận 1",
+    "link": "https://www.tiktok.com/@aniki_restaurant/video/7638582596653698325",
+    "snippet": "... Aniki, nhà hàng Nhật quận 1, ẩm thực Nhật giản đơn, trải nghiệm nhà hàng Aniki, món Nhật cân bằng hương vị, Aniki restaurant review, review ...",
+    "position": 1
+   },
+   {
+    "title": "Kohaku Ramen & Udon Vincom Long Xuyên",
+    "link": "https://www.tiktok.com/@angiangbietgireviewnay/video/7680174712680467720",
+    "snippet": "Tổng quan nhanh Kohaku Ramen & Udon nằm ở tầng trệt trung tâm thương mại Vincom Long Xuyên. Quán chuyên phục vụ các món mì kiểu Nhật gồm ...",
+    "position": 2
+   },
+   {
+    "title": "Kohaku Ramen & Udon Hà Nội Centre: Mua 1 Tặng 1 Khai ...",
+    "link": "https://www.tiktok.com/@langthanghanoi68/video/7648252491846487317",
+    "snippet": "Kohaku Ramen & Udon vừa chính thức mở tại Hanoi Centre, mang đến trải nghiệm ramen và udon chuẩn vị Nhật ngay trong trung tâm ẩm thực Hà Nội ...",
+    "position": 3
+   },
+   {
+    "title": "Trong tháng 9 này sashimi mua 1 mà được 2 nên ăn thả ga ...",
+    "link": "https://www.tiktok.com/@aniki_restaurant/video/7688639036340096277",
+    "snippet": "Video TikTok từ Aniki - Nhà hàng Nhật Bản (@aniki_restaurant): \"Trong tháng 9 này sashimi mua 1 ... Aniki Nhà Hàng Nhật Quận 1 · author. 18 · 3.",
+    "position": 4
+   },
+   {
+    "title": "Best Seller Aniki - Ramen Vị Tỏi Đen #anikirestaurant # ...",
+    "link": "https://www.tiktok.com/@aniki_restaurant/video/7683894953130478869",
+    "snippet": "Aniki Nhà Hàng Nhật Quận 1 · author · 19 · 0 ... 1 Tặng 1 còn áp dụng. Nhà hàng cảm ơn khách đã ủng hộ và khuyến khích khách tranh thủ ghé thưởng ...",
+    "position": 5
+   },
+   {
+    "title": "Team mê ramen, udon, đồ Nhật đâu rùiii 🥹 ở Sài Gòn thì ...",
+    "link": "https://www.tiktok.com/@bechang3tuoi/video/7648650651710295316",
+    "snippet": "Team mê ramen, udon, đồ Nhật đâu rùiii ở Sài Gòn thì nhiều. @Chang Thích Đi Chơi · Time to Eat · KOHAKU RAMEN & UDON - HANOI CENTRE ...",
+    "position": 6
+   },
+   {
+    "title": "Review Kohaku Ramen & Udon Phan Văn Trị",
+    "link": "https://www.tiktok.com/@thithididaudo79/video/7536908321568083218",
+    "snippet": "**Không gian và Dịch vụ** Kohaku Ramen & Udon nằm tại địa chỉ 400/87 Phan Văn Trị, phường An Nhơn, Gò Vấp. Quán mang đậm phong cách Nhật Bản với ...",
+    "position": 7
+   },
+   {
+    "title": "KOHAKU RAMEN & UDON Long Xuyên: review quán mì ...",
+    "link": "https://www.tiktok.com/@byleochopchep2413/video/7680860635936197908",
+    "snippet": "KOHAKU RAMEN & UDON (Long Xuyên) — Tổng quan nhanh Một bữa chiều tại Kohaku Ramen & Udon ở Long Xuyên mang đến trải nghiệm ẩm thực dành cho ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

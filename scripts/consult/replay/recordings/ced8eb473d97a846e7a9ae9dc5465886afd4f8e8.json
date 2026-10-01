@@ -1,0 +1,77 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "món ăn giao tận nơi dưới 100k cho một người Quận 7 gia menu thuc don",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:20:16.667Z",
+ "body": {
+  "searchParameters": {
+   "q": "món ăn giao tận nơi dưới 100k cho một người Quận 7 gia menu thuc don",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "30 mâm cơm dưới 100k đảm bảo các tiêu chí ngon - bổ",
+    "link": "https://www.facebook.com/groups/gdl.lanvaobep/posts/874132048097675/",
+    "snippet": "30 mâm cơm dưới 100k đảm bảo các tiêu chí ngon - bổ - rẻ cho gia đình nhỏ tham khảo Ngọc Thoan #vaobepvuithayba.",
+    "position": 1
+   },
+   {
+    "title": "Hôm nay ăn gì? 99+ món ăn ngon dễ làm, dinh dưỡng, tiết ...",
+    "link": "https://zalopay.vn/hom-nay-an-gi-ngon-re-4863",
+    "snippet": "Nấu món gì cho người chán ăn? 8 thực đơn giàu dinh dưỡng cho người biếng ăn. 1. Canh trứng nấm - Giá xào thịt heo. Canh trứng nấm và giá xào ...",
+    "date": "28 thg 7, 2025",
+    "position": 2
+   },
+   {
+    "title": "Gợi ý 7 bữa cơm chiều giá 100k cho gia đình đơn giản dễ ...",
+    "link": "https://www.dienmayxanh.com/vao-bep/goi-y-7-thuc-don-bua-com-chieu-gia-100k-cho-gia-dinh-don-gian-10797?srsltid=AU7gw4XyFLXOrUZOCk0gEtkGQJHYxP_0et5fiD3HF8KnDBwPwLk-QwF8",
+    "snippet": "1. Đậu hũ nhồi thịt sốt cà chua - Súp lơ xanh luộc - Trứng chiên nước mắm - Canh mướp thịt băm · 2. Cá lóc kho riềng - Cải ngọt xào - Canh rau củ ...",
+    "date": "17 thg 6, 2021",
+    "position": 3
+   },
+   {
+    "title": "30 mâm cơm giá rẻ chỉ với 100k mỗi ngày, đủ 3-4 món, ...",
+    "link": "https://baomoi.com/30-mam-com-gia-re-chi-voi-100k-moi-ngay-du-3-4-mon-ngon-nhu-nha-hang-am-nhu-gia-dinh-c51858501.epi",
+    "snippet": "Mâm cơm gia đình tiết kiệm, đơn giản với những món ăn ngon đủ dưỡng chất cho một ngày làm việc vất vả. Món ăn ngon 27. - Khô cá chiên. - Mực ...",
+    "date": "1 thg 4, 2025",
+    "position": 4
+   },
+   {
+    "title": "Bữa cơm 1 mình: 20+ món ngon, thực đơn 7 ngày dễ nấu ...",
+    "link": "https://www.bachhoaxanh.com/kinh-nghiem-hay/bua-com-1-minh-20-mon-ngon-thuc-don-7-ngay-de-nau-khong-co-don-1584303",
+    "snippet": "2Top những món ăn \"chân ái\" cho bữa cơm một mình · Trứng chiên/hấp đủ kiểu · Thịt rang cháy cạnh/tôm rang · Cá chiên sả ớt · Canh rau củ thập cẩm · Cơm trộn Bibimbap ...",
+    "position": 5
+   },
+   {
+    "title": "Tiệc tại nhà 1-2 bàn ở đâu nhận Với FLYFOOD: 1 MÓN ...",
+    "link": "https://www.facebook.com/flyfood.vn/posts/ti%E1%BB%87c-t%E1%BA%A1i-nh%C3%A0-1-2-b%C3%A0n-%E1%BB%9F-%C4%91%C3%A2u-nh%E1%BA%ADnv%E1%BB%9Bi-flyfood1-m%C3%B3n-c%C5%A9ng-giao1-b%C3%A0n-c%C5%A9ng-nh%E1%BA%ADn-v%E1%BB%9Bi-th%E1%BB%B1/1040944794794573/",
+    "snippet": "Tiệc tại nhà 1-2 bàn ở đâu nhận Với FLYFOOD: 1 MÓN CŨNG GIAO 1 BÀN CŨNG NHẬN - Với thực đơn 100 Món Ngon Thực đơn từ #1.999k/bàn Với ...",
+    "position": 6
+   },
+   {
+    "title": "Cơm Niêu Cuội - Quán cơm gia đình quận 7 ngon rẻ ở ...",
+    "link": "https://pasgo.vn/blog/com-nieu-cuoi-quan-com-gia-dinh-quan-7-5803",
+    "snippet": "Nếu đang tìm một quán cơm gia đình quận 7 vừa ngon, vừa gần gũi, Cơm Niêu Cuội là địa chỉ đáng trải nghiệm. Từ niêu cơm nóng hổi đến những món ...",
+    "date": "23 thg 6, 2026",
+    "position": 7
+   },
+   {
+    "title": "Đặt món ăn giao tận nhà",
+    "link": "https://naifood.com/dat-mon-an-giao-tan-nha/",
+    "snippet": "Dịch vụ đặt món ăn giao tận nhà của Naifood được tạo ra dành cho những ai muốn có một bữa ăn ngon, gọn gàng và đủ “khí chất” của một bữa tiệc mà ...",
+    "date": "30 thg 1, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

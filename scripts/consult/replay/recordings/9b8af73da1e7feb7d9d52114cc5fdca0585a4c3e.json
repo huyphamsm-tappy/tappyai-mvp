@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Laptop Aspire Lite 14 máy mới dưới 20 triệu thiết kế nhẹ (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:04:43.571Z",
+ "body": {
+  "searchParameters": {
+   "q": "Laptop Aspire Lite 14 máy mới dưới 20 triệu thiết kế nhẹ (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Laptop Acer Aspire Lite 14 AL14-47P-R0TR",
+    "link": "https://cellphones.com.vn/laptop-acer-aspire-lite-14-al14-47p-r0tr.html",
+    "snippet": "Laptop Acer Aspire Lite 14 AL14-47P-R0TR – Kiểu dáng đẹp, hiệu suất tối ưu 1.1. RAM 8GB chuẩn DDR4, ổ cứng 512GB 1.2. Thiết kế gọn nhẹ, màu sắc tinh tế 1.3.",
+    "position": 1
+   },
+   {
+    "title": "Top laptop 14 inch mỏng nhẹ, mạnh mẽ, giá chưa tới 15 triệu",
+    "link": "https://cellphones.com.vn/sforum/top-laptop-14-inch-mong-nhe",
+    "snippet": "Với bộ vi xử lý Intel Core i5-12500H và 16GB RAM, máy cho hiệu suất xử lý nhanh chóng và mượt mà. Ổ cứng 512GB PCIe cung cấp không gian lưu trữ lớn cùng với tốc ...",
+    "position": 2
+   },
+   {
+    "title": "Laptop Acer Aspire Lite 14 AL14-53M-53E8",
+    "link": "https://cellphones.com.vn/laptop-acer-aspire-lite-14-al14-53m-53e8.html",
+    "snippet": "Laptop Acer Aspire Lite 14 AL14-53M-53E8 ; Lên đời chỉ từ 19.760.000đ ; Trợ giá đến 3.000.000đ ; Thông số kỹ thuật · 2 x USB-C (USB 3.2 Gen 1, 5Gbps, hỗ trợ ...",
+    "position": 3
+   },
+   {
+    "title": "Laptop dưới 20 triệu | Thiết kế sang trọng, mạnh mẽ, bền bỉ",
+    "link": "https://cellphones.com.vn/bo-loc/laptop-tu-15-20-trieu",
+    "snippet": "Hãng sản xuất. Dell; Lenovo; HP · Nhu cầu sử dụng. Học tập - Văn phòng; Cao cấp - Sang trọng; Mỏng nhẹ · CPU. Intel Core i3; Intel Core i5 · Dung lượng RAM. 4GB",
+    "position": 4
+   },
+   {
+    "title": "Acer Aspire Lite 14 | Trả góp 0% 12 tháng, giảm đến 1 triệu",
+    "link": "https://cellphones.com.vn/laptop/acer/aspire/lite-14.html",
+    "snippet": "Laptop Acer Aspire Lite 14 là dòng máy tính xách tay mỏng nhẹ, được trang bị cấu hình mạnh mẽ, đủ sức xử lý trơn tru các tác vụ thường ngày của người dùng.",
+    "position": 5
+   },
+   {
+    "title": "Laptop Acer Aspire Lite 14 AL14-44P-R0SP",
+    "link": "https://cellphones.com.vn/laptop-acer-aspire-lite-14-al14-44p-r0sp.html",
+    "snippet": "Sức mạnh từ dòng Ryzen 7 7730U vượt trội · Thiết kế màu bạc mỏng nhẹ chỉ 1.3 kg · Pin 58Wh bền bỉ đi kèm sạc nhanh Type-C · Đa dạng cổng kết nối và Wi-Fi thế hệ ...",
+    "position": 6
+   },
+   {
+    "title": "Điểm mặt 3 laptop Acer Aspire Lite",
+    "link": "https://cellphones.com.vn/sforum/so-sanh-bo-3-laptop-acer-aspire-lite-14-15-16",
+    "snippet": "Acer Aspire Lite 14 là dòng máy có thân hình nhỏ gọn của một laptop 14 inches. Lớp vỏ ngoài được làm hoàn toàn từ nhựa được tô điểm bằng những ...",
+    "date": "21 thg 4, 2025",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 7
+   },
+   {
+    "title": "Laptop Acer Aspire Lite 14 AL14-57P-59HB",
+    "link": "https://cellphones.com.vn/laptop-acer-aspire-lite-14-al14-57p-59hb.html",
+    "snippet": "Thiết kế mỏng nhẹ 1.2 kg màu Lunar Gray thanh lịch 1.4. Sức mạnh từ Intel Core 5 thế hệ mới 1.5. Pin 50Wh và sạc nhanh 65W Type-C 1.6. Màn hình 14 inch IPS ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

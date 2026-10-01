@@ -1,0 +1,36 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Chiyoda Sushi Bến Thành\" OR \"La Phong Sushi House\" OR \"MANMARU - Japanese Restaurant - 71 Mạc Đĩnh Chi, Hồ Chí Minh\" quan 1 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:12:12.670Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Chiyoda Sushi Bến Thành\" OR \"La Phong Sushi House\" OR \"MANMARU - Japanese Restaurant - 71 Mạc Đĩnh Chi, Hồ Chí Minh\" quan 1 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Ngồi Lại Sau 1-2 Năm: Khoảnh Khắc Gặp Lại Bạn Bè",
+    "link": "https://www.tiktok.com/@xuan_van_88/video/7676716947404344594",
+    "snippet": "1-2 năm mới có dịp ngồi lại với nhau — chia sẻ khoảnh khắc. @Xuân Văn · âm thanh gốc - Cô Hảo ( giáo viên mầm non ) · Chiyoda Sushi Bến Thành.",
+    "position": 1
+   },
+   {
+    "title": "iTI ddQ - original sound",
+    "link": "https://www.tiktok.com/music/original-sound-7673737917419784990",
+    "snippet": "MANMARU Japanese Restaurant 71 Mạc Đĩnh Chi Hồ Chí Minh. |. নিজ এলাকা স্বপ্ন — ছোটคลিপ্টর জীবন মুহূর্ত. |. DUWAAN Sir Ian ...",
+    "position": 2
+   }
+  ],
+  "credits": 1
+ }
+}

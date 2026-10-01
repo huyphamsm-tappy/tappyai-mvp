@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Mua Cà Phê Phin Ngon, An Toàn, Chất Lượng, Giá Tốt site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:14:46.454Z",
+ "body": {
+  "searchParameters": {
+   "q": "Mua Cà Phê Phin Ngon, An Toàn, Chất Lượng, Giá Tốt site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Coffee phin - Giá Tốt, Miễn Phí Vận Chuyển, Đủ Loại",
+    "link": "https://shopee.vn/list/coffee/phin",
+    "snippet": "Phin pha cà phê nhôm dày ANODE cao cấp màu đen chất lượng, phin nhôm dày pha cafe ngon từ Đậm Cafe. 159.000₫. 199.000₫. -20%. Rẻ Vô Địch. Mua để nhận quà.",
+    "position": 1
+   },
+   {
+    "title": "Cà phê đen nguyên chất - Giá Tốt, Sale Tháng 09, ...",
+    "link": "https://shopee.vn/list/c%C3%A0%20ph%C3%AA/%C4%91en/nguy%C3%AAn%20ch%E1%BA%A5t",
+    "snippet": "Cà phê ROBUSTA rang mộc nguyên chất B'Lao Farm gu truyền thống vị đắng đậm dành cho pha máy và pha phin Túi giấy R1. 90.000₫. 150.000₫.",
+    "position": 2
+   },
+   {
+    "title": "cà phê phin cầu đất - Giá Tốt, Sale Tháng 08, Freeship 0Đ",
+    "link": "https://shopee.vn/list/c%C3%A0%20ph%C3%AA/phin%20c%E1%BA%A7u%20%C4%91%E1%BA%A5t",
+    "snippet": "Cà Phê Arabica Cầu Đất Rang Mộc Nguyên Chất Rio Coffee Vị Chua Thanh Hương Trái Cây Pha Máy Pha Phin Pour Over. 475.000₫. Hàng mới về · Cà Phê ,cafe Arabica ...",
+    "position": 3
+   },
+   {
+    "title": "Phin pha cà phê cao cấp - Giá Tốt, Sale Tháng 09, ...",
+    "link": "https://shopee.vn/list/phin%20pha%20c%C3%A0%20ph%C3%AA/cao%20c%E1%BA%A5p",
+    "snippet": "Phin pha cà phê nhôm dày ANODE cao cấp màu đen chất lượng, phin nhôm dày pha cafe ngon từ Đậm Cafe. 159.000₫. 199.000₫. -20%. Rẻ Vô Địch. Mua để nhận quà.",
+    "position": 4
+   },
+   {
+    "title": "Cafe rang xay nguyên chất - Giá Tốt, Sale Tháng 09, ...",
+    "link": "https://shopee.vn/list/cafe/rang%20xay/nguy%C3%AAn%20ch%E1%BA%A5t",
+    "snippet": "Cà phê CULI đặc biệt rang mộc nguyên chất B'Lao Farm gu mạnh vị đắng đậm dành cho pha máy và pha phin Túi giấy 250g/500g. 40.000₫. 60.000₫.",
+    "position": 5
+   },
+   {
+    "title": "Bột cà phê nguyên chất - Giá Tốt, Sale Tháng 09, Freeship ...",
+    "link": "https://shopee.vn/list/b%E1%BB%99t%20c%C3%A0%20ph%C3%AA/nguy%C3%AAn%20ch%E1%BA%A5t",
+    "snippet": "Cà phê CULI đặc biệt rang mộc nguyên chất B'Lao Farm gu mạnh vị đắng đậm dành cho pha máy và pha phin Túi giấy 250g/500g. 40.000₫. 60.000₫.",
+    "position": 6
+   },
+   {
+    "title": "Cà phê đa dạng, giao nhanh toàn quốc",
+    "link": "https://shopee.vn/list/c%C3%A0%20ph%C3%AA",
+    "snippet": "Cà phê CULI đặc biệt rang mộc nguyên chất B'Lao Farm gu mạnh vị đắng đậm dành cho pha máy và pha phin Túi giấy 250g/500g. 40.000₫. 60.000₫.",
+    "position": 7
+   },
+   {
+    "title": "Cà phê gourmet blend trung phin - Giá Tốt, Sale Tháng 09 ...",
+    "link": "https://shopee.vn/list/c%C3%A0%20ph%C3%AA/gourmet%20blend%20trung/phin",
+    "snippet": "[Date mới] Cà phê Gourmet Blend hộp 500g (2 gói x 250g) Cà phê rang xay pha phin Trung Nguyên. 190.000₫. 209.000₫. -9%. Rẻ Vô Địch. Mua giá bán buôn/ bán sỉ.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

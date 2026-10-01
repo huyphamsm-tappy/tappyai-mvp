@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Cloud Pot SC Vivo City Nguyễn Văn Linh (site:food.grab.com/vn OR site:shopeefood.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:30:20.791Z",
+ "body": {
+  "searchParameters": {
+   "q": "Cloud Pot SC Vivo City Nguyễn Văn Linh (site:food.grab.com/vn OR site:shopeefood.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

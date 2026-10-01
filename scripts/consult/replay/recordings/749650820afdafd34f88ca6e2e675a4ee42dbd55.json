@@ -1,0 +1,44 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Hộp Quà Cà Phê Cao Cấp Đặc Sản Việt CTG339 site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:38:12.557Z",
+ "body": {
+  "searchParameters": {
+   "q": "Hộp Quà Cà Phê Cao Cấp Đặc Sản Việt CTG339 site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Set quà tặng cà phê hộp gỗ cao cấp CTG339 làm ...",
+    "link": "https://www.lazada.vn/products/set-qua-tang-ca-phe-hop-go-cao-cap-ctg339-lam-qua-tang-doi-tac-khach-hang-qua-tang-cho-nguoi-nuoc-ngoai-i2414916708.html?srsltid=AU7gw4X6K-2jR3ezL5bSas3HS89Gtp1Dg9yzvpyYxHWkwlbmtyYrvlvY",
+    "snippet": "Cà phê rang xay: Loại cà phê được chọn lọc từ những hạt cà phê chất lượng cao, rang xay theo công thức đặc biệt để giữ nguyên hương vị thơm ngon, đậm đà.",
+    "rating": 5,
+    "ratingCount": 2,
+    "position": 1
+   },
+   {
+    "title": "Set quà tặng 20/11, Quà tặng thầy cô giáo viên ngày nhà ...",
+    "link": "https://www.lazada.vn/products/set-qua-tang-2011-qua-tang-thay-co-giao-vien-ngay-nha-giao-viet-nam-y-nghia-tinh-te-tu-mat-ong-tra-hoa-va-hat-ct-bee-i2668363830.html?srsltid=AU7gw4XsrM4WEb4oB6VaszYkcQQcO8NimpwA5B7XiIH-562j0lGtgaxj",
+    "snippet": "Hộp quà tặng ngày 20/11 của chúng tôi bao gồm những thành phần độc đáo để bạn có thể lựa chọn như set trà hoa thảo mộc, mật ong hoa rừng, hạt dinh dưỡng, set ...",
+    "position": 2
+   },
+   {
+    "title": "Set quà tặng 20/11, Quà tặng thầy cô giáo viên ngày nhà ...",
+    "link": "https://h5.lazada.vn/products/set-qua-tang-2011-qua-tang-thay-co-giao-vien-ngay-nha-giao-viet-nam-y-nghia-tinh-te-tu-mat-ong-tra-hoa-va-hat-ct-bee-i2668363830-s13067674976.html",
+    "snippet": "Hộp quà tặng ngày 20/11 của chúng tôi bao gồm những thành phần độc đáo để bạn có thể lựa chọn như set trà hoa thảo mộc, mật ong hoa rừng, hạt dinh dưỡng, set ...",
+    "position": 3
+   }
+  ],
+  "credits": 1
+ }
+}

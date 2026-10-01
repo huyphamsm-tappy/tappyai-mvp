@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Ốp lưng UAG chống sốc Pathfinder cho Apple iPhone 12",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:03:33.979Z",
+ "body": {
+  "searchParameters": {
+   "q": "Ốp lưng UAG chống sốc Pathfinder cho Apple iPhone 12",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Ốp lưng Pathfinder cho iPhone 12 Pro Max [6.7 inch] – UAG VietNam",
+    "imageUrl": "https://product.hstatic.net/200000057534/product/1000px_apple_iphone6.7_2020_pat_blk_std_pt01_45223d8c094b44898604a5f170bf5133_master.jpeg",
+    "imageWidth": 1000,
+    "imageHeight": 1000,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSjx4MvddnSb3lsURDZgiLaGeE3lGWHhtZnpyDBtTdYBw&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "UAG VietNam",
+    "domain": "uagvietnam.vn",
+    "link": "https://uagvietnam.vn/products/op-lung-pathfinder-cho-iphone-12-pro-max-6-7-inch",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fproduct.hstatic.net%2F200000057534%2Fproduct%2F1000px_apple_iphone6.7_2020_pat_blk_std_pt01_45223d8c094b44898604a5f170bf5133_master.jpeg&tbnid=87ejV7ttxRUvmM&imgrefurl=https%3A%2F%2Fuagvietnam.vn%2Fproducts%2Fop-lung-pathfinder-cho-iphone-12-pro-max-6-7-inch&docid=G0eyCIC3gIqocM&w=1000&h=1000",
+    "position": 1
+   },
+   {
+    "title": "Ốp lưng Pathfinder cho iPhone 12 Pro Max [6.7 inch] – UAG VietNam",
+    "imageUrl": "https://product.hstatic.net/200000057534/product/1000px_apple_iphone6.7_2020_pat_org_std_pt01_6ecdfd20de1a4a3883667727ff24cf14_master.jpeg",
+    "imageWidth": 1000,
+    "imageHeight": 1000,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpZ7MIJp8snvh1zT9nYcY4x1QuRHowNKk0wXvTauF7KA&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "UAG VietNam",
+    "domain": "uagvietnam.vn",
+    "link": "https://uagvietnam.vn/products/op-lung-pathfinder-cho-iphone-12-pro-max-6-7-inch",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fproduct.hstatic.net%2F200000057534%2Fproduct%2F1000px_apple_iphone6.7_2020_pat_org_std_pt01_6ecdfd20de1a4a3883667727ff24cf14_master.jpeg&tbnid=lqfDs8BBmPMMpM&imgrefurl=https%3A%2F%2Fuagvietnam.vn%2Fproducts%2Fop-lung-pathfinder-cho-iphone-12-pro-max-6-7-inch&docid=G0eyCIC3gIqocM&w=1000&h=1000",
+    "position": 2
+   },
+   {
+    "title": "Ốp lưng Pathfinder SE cho iPhone 12 Pro Max [6.7 inch] – UAG VietNam",
+    "imageUrl": "https://product.hstatic.net/200000057534/product/1000px_apple_iphone6.7_2020_patse_frc_std_pt01_d23744f3a2fe4ce7a7ad997f083c917b_master.jpeg",
+    "imageWidth": 1000,
+    "imageHeight": 1000,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVcjw6sQRUUU4d0-rwqwJ3HVix9mNXF9RKcIdNgzNM7g&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "UAG VietNam",
+    "domain": "uagvietnam.vn",
+    "link": "https://uagvietnam.vn/products/op-lung-pathfinder-se-cho-iphone-12-pro-max-6-7-inch",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fproduct.hstatic.net%2F200000057534%2Fproduct%2F1000px_apple_iphone6.7_2020_patse_frc_std_pt01_d23744f3a2fe4ce7a7ad997f083c917b_master.jpeg&tbnid=8VXRmy3_t6K7kM&imgrefurl=https%3A%2F%2Fuagvietnam.vn%2Fproducts%2Fop-lung-pathfinder-se-cho-iphone-12-pro-max-6-7-inch&docid=_sCvCFBBfVp90M&w=1000&h=1000",
+    "position": 3
+   },
+   {
+    "title": "Ốp lưng UAG chống sốc Pathfinder cho Apple iPhone 12 Pro Max chính hãng giá  rẻ",
+    "imageUrl": "https://cdn2.cellphones.com.vn/x/media/catalog/product/a/p/apple_iphone6.7_2020_pat_blk_std_pt04.png",
+    "imageWidth": 500,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwgXTo2w2SNBb8MS6F_A34tUBDrXjJ6uhx4tuamD8rAA&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/op-lung-uag-chong-soc-pathfinder-cho-iphone-12-pro-max.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Fx%2Fmedia%2Fcatalog%2Fproduct%2Fa%2Fp%2Fapple_iphone6.7_2020_pat_blk_std_pt04.png&tbnid=KjyEMdGBPpxAEM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fop-lung-uag-chong-soc-pathfinder-cho-iphone-12-pro-max.html&docid=BZmBRhC1kx4GdM&w=500&h=500",
+    "position": 4
+   },
+   {
+    "title": "Ốp lưng Pathfinder cho iPhone 12 Pro Max [6.7 inch] – UAG VietNam",
+    "imageUrl": "https://product.hstatic.net/200000057534/product/ax_6.7_pathfinder_sales_sheet_english_4a3b7335e3724c5386b0938ffa581f12_5c43d565c98c45ab9aa0bfea8d08bc84_master.jpeg",
+    "imageWidth": 1000,
+    "imageHeight": 1000,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTX2pZEPDpYOpHqNWelAIxA8Qtq5P0JCsgS9e7kgevPzQ&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "UAG VietNam",
+    "domain": "uagvietnam.vn",
+    "link": "https://uagvietnam.vn/products/op-lung-pathfinder-cho-iphone-12-pro-max-6-7-inch",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fproduct.hstatic.net%2F200000057534%2Fproduct%2Fax_6.7_pathfinder_sales_sheet_english_4a3b7335e3724c5386b0938ffa581f12_5c43d565c98c45ab9aa0bfea8d08bc84_master.jpeg&tbnid=3jl-QphGqgqTNM&imgrefurl=https%3A%2F%2Fuagvietnam.vn%2Fproducts%2Fop-lung-pathfinder-cho-iphone-12-pro-max-6-7-inch&docid=G0eyCIC3gIqocM&w=1000&h=1000",
+    "position": 5
+   },
+   {
+    "title": "Ốp UAG Pathfinder SE W Magsafe cho iPhone – iPhukien",
+    "imageUrl": "https://product.hstatic.net/200000454999/product/z4746545846204_b016afa7f0f0052eefa6dd5c1c9862bf_e5e4d897616c459481d3de4df53680f7_master.jpg",
+    "imageWidth": 2048,
+    "imageHeight": 2048,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReLQk8_WObixVniwUE1VniNO5kob-rOvuw2QjOhXgPYw&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "iPhukien",
+    "domain": "iphukien.vn",
+    "link": "https://iphukien.vn/products/op-uag-pathfinder-se-magsafe-cho-iphone",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fproduct.hstatic.net%2F200000454999%2Fproduct%2Fz4746545846204_b016afa7f0f0052eefa6dd5c1c9862bf_e5e4d897616c459481d3de4df53680f7_master.jpg&tbnid=uHgQo1epLKDS0M&imgrefurl=https%3A%2F%2Fiphukien.vn%2Fproducts%2Fop-uag-pathfinder-se-magsafe-cho-iphone&docid=T-byB6cj49T4FM&w=2048&h=2048",
+    "position": 6
+   },
+   {
+    "title": "Ốp lưng Pathfinder cho iPhone 12 Pro Max [6.7 inch] – UAG VietNam",
+    "imageUrl": "https://product.hstatic.net/200000057534/product/1000px_apple_iphone6.7_2020_pat_wht_std_pt01_619494585c3b450fb3be28f7521f3911.jpeg",
+    "imageWidth": 1000,
+    "imageHeight": 1000,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT95ARuD_cs1ZXxNTUbwdC-yPVCaDzpPsHRWwGnxr63-A&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "UAG VietNam",
+    "domain": "uagvietnam.vn",
+    "link": "https://uagvietnam.vn/products/op-lung-pathfinder-cho-iphone-12-pro-max-6-7-inch",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fproduct.hstatic.net%2F200000057534%2Fproduct%2F1000px_apple_iphone6.7_2020_pat_wht_std_pt01_619494585c3b450fb3be28f7521f3911.jpeg&tbnid=bn5fE8g6JYLd1M&imgrefurl=https%3A%2F%2Fuagvietnam.vn%2Fproducts%2Fop-lung-pathfinder-cho-iphone-12-pro-max-6-7-inch&docid=G0eyCIC3gIqocM&w=1000&h=1000",
+    "position": 7
+   },
+   {
+    "title": "Ốp lưng UAG chống sốc Pathfinder cho Apple iPhone 12 / 12 Pro",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/o/p/op-lung-uag-chong-soc-pathfinder-cho-iphone-12-max-pro.jpeg",
+    "imageWidth": 358,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpxRI5rXFBM5frKgneM87cfvdXZfg-yx2wMqzPWfHXzQ&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/op-lung-uag-chong-soc-pathfinder-cho-iphone-12-max-pro.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A0%3A358%2Fq%3A90%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fcatalog%2Fproduct%2Fo%2Fp%2Fop-lung-uag-chong-soc-pathfinder-cho-iphone-12-max-pro.jpeg&tbnid=RY6v06lTHahfpM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fop-lung-uag-chong-soc-pathfinder-cho-iphone-12-max-pro.html&docid=w_oOk6WUee0QEM&w=358&h=358",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

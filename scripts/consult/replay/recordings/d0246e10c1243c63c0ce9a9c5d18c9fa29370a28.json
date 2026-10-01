@@ -1,0 +1,67 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "quà sinh nhật sếp nam 40 tuổi thích cà phê, cà phê hạt đặc sản hoặc phụ kiện pha cà phê, ngân sách 1–2 triệu, không phải hộp quà cà phê Legend Awakening (site:shopee.vn OR site:tiki.vn OR site:lazada.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:38:07.804Z",
+ "body": {
+  "searchParameters": {
+   "q": "quà sinh nhật sếp nam 40 tuổi thích cà phê, cà phê hạt đặc sản hoặc phụ kiện pha cà phê, ngân sách 1–2 triệu, không phải hộp quà cà phê Legend Awakening (site:shopee.vn OR site:tiki.vn OR site:lazada.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Hộp Quà Cà Phê Cao Cấp Đặc Sản Việt CTG339, Cafe Rang Xay Kèm ...",
+    "link": "https://shopee.vn/Set-C%C3%A0-Ph%C3%AA-Qu%C3%A0-Bi%E1%BA%BFu-T%E1%BA%B7ng-Cao-C%E1%BA%A5p-Qu%C3%A0-T%E1%BA%B7ng-Kh%C3%A1ch-H%C3%A0ng-%C4%90%E1%BB%91i-T%C3%A1c-Qu%C3%A0-T%E1%BA%B7ng-Cho-S%E1%BA%BFp-Nam-i.394342126.22339287308",
+    "snippet": "Mua Hộp Quà Cà Phê Cao Cấp Đặc Sản Việt CTG339, Cafe Rang Xay Kèm Phin - Combo Sáng Tạo giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn lại tiền Giao Hàng Miễn Phí. XEM NGAY!",
+    "position": 1
+   },
+   {
+    "title": "Set Cà Phê Quà Tặng & 4 Trà Thảo Mộc CTG355 - ĐẶC SẢN CÀ PHÊ ...",
+    "link": "https://shopee.vn/Set-C%C3%A0-Ph%C3%AA-Qu%C3%A0-T%E1%BA%B7ng-4-Tr%C3%A0-Th%E1%BA%A3o-M%E1%BB%99c-CTG355-%C4%90%E1%BA%B6C-S%E1%BA%A2N-C%C3%80-PH%C3%8A-VI%E1%BB%86T-L%C3%80M-QU%C3%80-BI%E1%BA%BEU-%C3%9D-NGH%C4%A8A-i.394342126.24902641258",
+    "snippet": "Mua Set Cà Phê Quà Tặng & 4 Trà Thảo Mộc CTG355 - ĐẶC SẢN CÀ PHÊ VIỆT LÀM QUÀ BIẾU Ý NGHĨA giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn lại tiền Giao Hàng Miễn Phí. XEM NGAY!",
+    "position": 2
+   },
+   {
+    "title": "Set Quà Tặng Cafe Cao Cấp, Hương Vị Đậm Đà, Sang Trọng | tiki.vn",
+    "link": "https://tiki.vn/search?q=set%20qu%C3%A0%20t%E1%BA%B7ng%20cafe",
+    "snippet": "Mua ngay set quà tặng cafe chất lượng tại Tiki. Sản phẩm với hương vị đậm đà và bao bì sang trọng, là món quà ý nghĩa. Giao hàng tận nơi, đóng gói kỹ lưỡng. Mua ngay!",
+    "position": 3
+   },
+   {
+    "title": "20+ Quà tặng sếp nam, sếp nữ sang trọng, tinh tế, tạo ấn ...",
+    "link": "https://tiki.vn/blog/qua-tang-sep/",
+    "snippet": "Nên tặng quà gì cho sếp vào dịp đặc biệt? Hãy cùng Tiki Blog tìm hiểu và ghi điểm với TOP 20+ món quà tặng sếp nam, sếp nữ sang trọng, ý nghĩa nhất.",
+    "date": "Dec 16, 2023",
+    "position": 4
+   },
+   {
+    "title": "Mua Quà Biếu Sếp Nam Giá Tốt, Giao Nhanh | Lazada Việt Nam",
+    "link": "https://www.lazada.vn/tag/qu%C3%A0-bi%E1%BA%BFu-s%E1%BA%BFp-nam/",
+    "snippet": "Mua quà biếu sếp nam chất lượng cao với giá ưu đãi, freeship toàn quốc chỉ từ 0Đ và tận hưởng tới 6 tầng giảm giá hấp dẫn. Khuyến mãi mỗi ngày, mua ngay quà biếu sếp nam tại Lazada Việt Nam!",
+    "position": 5
+   },
+   {
+    "title": "Mua Cà Phê Hạt, Cà Phê Hòa Tan Giá Tốt Hôm Nay | Lazada.vn",
+    "link": "https://www.lazada.vn/ca-phe/",
+    "snippet": "Mua Cà Phê Rang Xay, Cà Phê Hòa Tan Ngon Từ Nescafe, Trung Nguyên Coffee, Highlands giá ưu đãi hôm nay. Mua cà phê hạt tại Lazada với nhiều voucher giảm giá, giao hàng nhanh, bảo quản tuyệt đối.",
+    "position": 6
+   },
+   {
+    "title": "[HỎA TỐC 2H] Set Quà Tặng Sinh Nhật IV Coffee - Bộ Quà Tặng ...",
+    "link": "https://shopee.vn/-H%E1%BB%8EA-T%E1%BB%90C-2H-Set-Qu%C3%A0-T%E1%BA%B7ng-Sinh-Nh%E1%BA%ADt-IV-Coffee-B%E1%BB%99-Qu%C3%A0-T%E1%BA%B7ng-C%C3%A0-Ph%C3%AA-Cho-Ng%C6%B0%E1%BB%9Di-Th%C3%A2n-B%E1%BA%A1n-B%C3%A8-S%E1%BA%BFp-i.1452749061.29974110929",
+    "snippet": "Mua [HỎA TỐC 2H] Set Quà Tặng Sinh Nhật IV Coffee - Bộ Quà Tặng Cà Phê Cho Người Thân, Bạn Bè, Sếp giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn lại tiền Giao Hàng Miễn Phí. XEM NGAY!",
+    "position": 7
+   }
+  ],
+  "credits": 1
+ }
+}

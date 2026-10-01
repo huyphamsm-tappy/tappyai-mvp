@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "quà sinh nhật sếp nam 40 tuổi thích cà phê, cà phê hạt đặc sản hoặc phụ kiện pha cà phê, ngân sách 1–2 triệu, không phải hộp quà cà phê Legend Awakening shop website địa chỉ facebook",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:38:09.928Z",
+ "body": {
+  "searchParameters": {
+   "q": "quà sinh nhật sếp nam 40 tuổi thích cà phê, cà phê hạt đặc sản hoặc phụ kiện pha cà phê, ngân sách 1–2 triệu, không phải hộp quà cà phê Legend Awakening shop website địa chỉ facebook",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Khách Sạn Ngọc Mai",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:06:08.448Z",
+ "body": {
+  "searchParameters": {
+   "q": "Khách Sạn Ngọc Mai",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Khách sạn Ngọc Mai (Ngọc Mai Hotel) Rạch Giá (Kiên Giang), Việt Nam:  Agoda.com có giá rẻ nhất",
+    "imageUrl": "https://pix10.agoda.net/hotelImages/33500170/-1/9277b77889328274e0528d90a42d411e.jpg?ce=0&s=1024x768",
+    "imageWidth": 997,
+    "imageHeight": 768,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQO9xc-yjaPNWyupaQVXD0LwHdJBOGOLDEBsCTXWTWk9A&s=10",
+    "thumbnailWidth": 510,
+    "thumbnailHeight": 392,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/ng-c-mai-hotel/hotel/rach-gia-kien-giang-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F33500170%2F-1%2F9277b77889328274e0528d90a42d411e.jpg%3Fce%3D0%26s%3D1024x768&tbnid=xu3s23dI18WLuM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fng-c-mai-hotel%2Fhotel%2Frach-gia-kien-giang-vn.html&docid=mc_WQjz0UcojsM&w=997&h=768",
+    "position": 1
+   },
+   {
+    "title": "Khách sạn Ngọc Mai, Bãi Cháy | Hotels.com",
+    "imageUrl": "https://images.trvl-media.com/lodging/35000000/34480000/34475000/34474972/c47d7325.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill",
+    "imageWidth": 767,
+    "imageHeight": 575,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQlmSHbTPnl_wCh0vECosbS_pHKIv-Fv8w1vzx4R3v6aA&s=10",
+    "thumbnailWidth": 516,
+    "thumbnailHeight": 387,
+    "source": "hotels",
+    "domain": "vi.hotels.com",
+    "link": "https://vi.hotels.com/ho1104199104/khach-san-ngoc-mai-ha-long-viet-nam/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimages.trvl-media.com%2Flodging%2F35000000%2F34480000%2F34475000%2F34474972%2Fc47d7325.jpg%3Fimpolicy%3Dresizecrop%26rw%3D575%26rh%3D575%26ra%3Dfill&tbnid=52vc0jaOCTUFAM&imgrefurl=https%3A%2F%2Fvi.hotels.com%2Fho1104199104%2Fkhach-san-ngoc-mai-ha-long-viet-nam%2F&docid=0H28lgMZasQENM&w=767&h=575",
+    "position": 2
+   },
+   {
+    "title": "NGOC MAI HOTEL (Vịnh Hạ Long) - Đánh giá Khách sạn - Tripadvisor",
+    "imageUrl": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/16/ff/1d/57/getlstd-property-photo.jpg?w=900&h=500&s=1",
+    "imageWidth": 900,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRoAN5rlAtkV17N-Fjof-d30ebX5MZ26-M6giASCiphZQ&s=10",
+    "thumbnailWidth": 599,
+    "thumbnailHeight": 333,
+    "source": "Tripadvisor",
+    "domain": "www.tripadvisor.com.vn",
+    "link": "https://www.tripadvisor.com.vn/Hotel_Review-g293923-d6771560-Reviews-Ngoc_Mai_Hotel-H_Long_Bay_Quang_Ninh_Province.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdynamic-media-cdn.tripadvisor.com%2Fmedia%2Fphoto-o%2F16%2Fff%2F1d%2F57%2Fgetlstd-property-photo.jpg%3Fw%3D900%26h%3D500%26s%3D1&tbnid=4fe3dB-Ya8oj0M&imgrefurl=https%3A%2F%2Fwww.tripadvisor.com.vn%2FHotel_Review-g293923-d6771560-Reviews-Ngoc_Mai_Hotel-H_Long_Bay_Quang_Ninh_Province.html&docid=VBVOyA13ZQBzqM&w=900&h=500",
+    "position": 3
+   },
+   {
+    "title": "Khách sạn Ngọc Mai Phú – HDV Local",
+    "imageUrl": "https://hdvlocal.com/cdn/shop/files/KhachsanNgocMaiPhuDaLat1.jpg?v=1711866004&width=1445",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNFZ6efw8VuCKABgmpalp57xw660KJT50aXK7gyjXycA&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "HDV Local",
+    "domain": "hdvlocal.com",
+    "link": "https://hdvlocal.com/products/khach-san-ngoc-mai-phu?srsltid=AU7gw4Ua1gcxcNxTexAe5OEYqVdM3QYCgRi45UYp8gu2L64SXGJrYSAW",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fhdvlocal.com%2Fcdn%2Fshop%2Ffiles%2FKhachsanNgocMaiPhuDaLat1.jpg%3Fv%3D1711866004%26width%3D1445&tbnid=GL0FnHjJYC8ExM&imgrefurl=https%3A%2F%2Fhdvlocal.com%2Fproducts%2Fkhach-san-ngoc-mai-phu%3Fsrsltid%3DAU7gw4Ua1gcxcNxTexAe5OEYqVdM3QYCgRi45UYp8gu2L64SXGJrYSAW&docid=4B-JMHX15N_5BM&w=1024&h=683",
+    "position": 4
+   },
+   {
+    "title": "Khách Sạn Ngọc Mai (@khach.san.ngoc.mai.2024) • Facebook",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=122105621108100424",
+    "imageWidth": 1152,
+    "imageHeight": 1145,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTc82U9jf4LfrMCCfYMzc8yZRwGzP7FuMy3pDYbKGi3pA&s=10",
+    "thumbnailWidth": 448,
+    "thumbnailHeight": 446,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/khach.san.ngoc.mai.2024/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D122105621108100424&tbnid=wENH7n6vBy__LM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Fkhach.san.ngoc.mai.2024%2F&docid=iPSViu6YNzbF0M&w=1152&h=1145",
+    "position": 5
+   },
+   {
+    "title": "Khách sạn Ngọc Mai, Bãi Cháy | Hotels.com",
+    "imageUrl": "https://images.trvl-media.com/lodging/35000000/34480000/34475000/34474972/f3414994.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill",
+    "imageWidth": 575,
+    "imageHeight": 575,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTeNwY1UlqPbcv34YUVb2u2whP-r8BCW0z_F3RwRe9xFA&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "hotels",
+    "domain": "vi.hotels.com",
+    "link": "https://vi.hotels.com/ho1104199104/khach-san-ngoc-mai-ha-long-viet-nam/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimages.trvl-media.com%2Flodging%2F35000000%2F34480000%2F34475000%2F34474972%2Ff3414994.jpg%3Fimpolicy%3Dresizecrop%26rw%3D575%26rh%3D575%26ra%3Dfill&tbnid=lV0Fuy9LZE_a4M&imgrefurl=https%3A%2F%2Fvi.hotels.com%2Fho1104199104%2Fkhach-san-ngoc-mai-ha-long-viet-nam%2F&docid=0H28lgMZasQENM&w=575&h=575",
+    "position": 6
+   },
+   {
+    "title": "Ngọc Mai Hotel ở Rạch Giá | Giá mới nhất và ưu đãi hấp dẫn 2026 - Klook  Việt Nam",
+    "imageUrl": "https://q-xx.bstatic.com/xdata/images/hotel/max500/520171911.jpg?k=a45e622fe9853903e7590104f62e956c18d2b7470e18e25dbb6809bef15a1aed&o=&s=312x",
+    "imageWidth": 500,
+    "imageHeight": 420,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZG1NXDR-SVDYKzzTPCdfFdQ6fMwCpVY8xAgJ1IMRzrQ&s=10",
+    "thumbnailWidth": 487,
+    "thumbnailHeight": 410,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/hotels/detail/1217647-ngoc-mai-hotel/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fq-xx.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax500%2F520171911.jpg%3Fk%3Da45e622fe9853903e7590104f62e956c18d2b7470e18e25dbb6809bef15a1aed%26o%3D%26s%3D312x&tbnid=Tf1iX4yCb3jNWM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Fhotels%2Fdetail%2F1217647-ngoc-mai-hotel%2F&docid=BousQ1jvExngPM&w=500&h=420",
+    "position": 7
+   },
+   {
+    "title": "Ngoc Mai 1 Hotel, Cần Thơ (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/484190076.jpg?k=b2b47a7cac9a87d0b0a62f0a9b1ca2007665900c40511f7ae58f0fd4b7253d80&o=",
+    "imageWidth": 576,
+    "imageHeight": 768,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-ZmY8mp0P1WuXNPk9rnhQwyp9ucxRqUCxtXfzPTaH2w&s=10",
+    "thumbnailWidth": 480,
+    "thumbnailHeight": 640,
+    "source": "www.booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/ngoc-mai-1.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F484190076.jpg%3Fk%3Db2b47a7cac9a87d0b0a62f0a9b1ca2007665900c40511f7ae58f0fd4b7253d80%26o%3D&tbnid=SyjYvAn9oE87JM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fngoc-mai-1.vi.html&docid=yewo7oUTqWPMcM&w=576&h=768",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

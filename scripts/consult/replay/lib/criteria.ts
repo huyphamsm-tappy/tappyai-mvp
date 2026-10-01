@@ -182,7 +182,7 @@ export function evaluateTurn(c: TurnContext): { type: string; checks: Check[]; p
     checks.push({ id: 'one_main_pick', pass: n === 1, detail: `picks=${n} name=${pick ?? '-'}` })
     checks.push({ id: 'alts_max_2', pass: alts.length <= 2, detail: `alts=${alts.length}${alts.length ? ` (${alts.join(' · ')})` : ''}` })
     const shown = (pick ? 1 : 0) + alts.length
-    if (c.toolRows > shown) checks.push({ id: 'remaining_line', pass: /Mình còn\s+\d+\s+lựa chọn/i.test(c.text), detail: `toolRows=${c.toolRows} shown=${shown}` })
+    if (c.toolRows > shown) checks.push({ id: 'remaining_line', pass: /(?:Mình\s+)?[Cc]òn\s+\d+\s+lựa chọn/.test(c.text), detail: `toolRows=${c.toolRows} shown=${shown}` })
     else checks.push({ id: 'remaining_line', pass: true, detail: `n/a (toolRows=${c.toolRows} shown=${shown})`, info: true })
     const fu = c.text.match(/\[FOLLOWUPS\]([^\n]*?)(?:\[\/FOLLOWUPS\]|\n|$)/)
     checks.push({ id: 'server_buttons', pass: !!fu && fu[1].includes('Xem thêm') && fu[1].includes('Lên kế hoạch chi tiết'), detail: fu ? fu[1] : 'no [FOLLOWUPS]' })

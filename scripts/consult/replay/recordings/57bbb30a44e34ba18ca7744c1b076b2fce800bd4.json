@@ -1,0 +1,36 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Cà phê nguyên chất Arabica - Cafe pha phin chua thanh, thơm ngon, hậu vị ngọt ngào - Hali Coffee định lượng 200gr, 1000g site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:24:45.254Z",
+ "body": {
+  "searchParameters": {
+   "q": "Cà phê nguyên chất Arabica - Cafe pha phin chua thanh, thơm ngon, hậu vị ngọt ngào - Hali Coffee định lượng 200gr, 1000g site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cafe pha phin chua thanh, thơm ngon, hậu vị ngọt ngào",
+    "link": "https://shopee.vn/C%C3%A0-ph%C3%AA-nguy%C3%AAn-ch%E1%BA%A5t-Arabica-Cafe-pha-phin-chua-thanh-th%C6%A1m-ngon-h%E1%BA%ADu-v%E1%BB%8B-ng%E1%BB%8Dt-ng%C3%A0o-Hali-Coffee-%C4%91%E1%BB%8Bnh-l%C6%B0%E1%BB%A3ng-200gr-1000g-i.804997332.19224860034",
+    "snippet": "Shopee Bách Hóa Online Đồ uống Cà phê. Cà phê nguyên chất Arabica - Cafe pha phin chua thanh, thơm ngon, hậu vị ngọt ngào - Hali Coffee định lượng 200gr, 1000g.",
+    "position": 1
+   },
+   {
+    "title": "Cà Phê Hali, Cửa hàng trực tuyến",
+    "link": "https://shopee.vn/caphehali",
+    "snippet": "Cafe nguyên chất Culi - Cà phê hạt vị đắng gắt, hương thơm say đắm - Hali Coffee định lượng 500gr, 1000gr. 149.000₫. rating-star 5.0. 12 đã bán · Cà phê ...",
+    "position": 2
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,80 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Phin pha cà phê inox 304 site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:24:31.500Z",
+ "body": {
+  "searchParameters": {
+   "q": "Phin pha cà phê inox 304 site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Phin pha cà phê inox 304 cao cấp ( phin cá nhân ) Dụng cụ barista",
+    "link": "https://www.lazada.vn/products/phin-pha-c-ph-inox-304-cao-cp--phin-c-nhn---dng-c-barista-i3256530983.html?srsltid=AU7gw4VKXSLLysXpN3zXo1Q2dZfp1CgvdFCsTN9GumP1sBmlAnry2opU",
+    "snippet": "Phin pha cà phê inox 304 cao cấp ( phin cá nhân ) | Dụng cụ barista. Thông tin sản phẩm : Chất liệu : inox 304 , sáng bóng. Kích thước : như ảnh mô tả.",
+    "position": 1
+   },
+   {
+    "title": "Phin pha cafe cà phê inox 304 mạ màu vàng công nghệ PVD",
+    "link": "https://www.lazada.vn/products/phin-pha-cafe-ca-phe-inox-304-ma-mau-vang-cong-nghe-pvd-i238139855.html?srsltid=AU7gw4Vn-k3rXv9vzMdFjgH3O4QRngAIyQLA___cGfRXuhjYyw7Kvvji",
+    "snippet": "Phin pha cà phê inox 304 mạ vàng PVD cao cấp, dày 0.6mm, an toàn cho sức khỏe. Thiết kế sang trọng, điều chỉnh lực nén dễ dàng, vệ sinh bằng chất tẩy trung ...",
+    "rating": 4.6,
+    "ratingCount": 19,
+    "position": 2
+   },
+   {
+    "title": "Phin pha cafe inox size Đủ Kích Cỡ",
+    "link": "https://www.lazada.vn/products/phin-cafe-inox-304-de-lien-phin-pha-cafe-inox-size-du-kich-co-i2051026684.html?srsltid=AU7gw4X624jQ0Racgri1R4ZxWGGL4pHB9KGzKw98jqTHNAyRQMmNhaQb",
+    "snippet": "Phin pha cafe inox đế liền, được làm từ chất liệu inox 304 chất lượng cao, có nhiều kích cỡ từ số 6 đến số 10. Phù hợp cho việc pha cà phê truyền thống tại ...",
+    "rating": 5,
+    "ratingCount": 26,
+    "position": 3
+   },
+   {
+    "title": "Phin Pha Cà Phê Inox Không Đáy & Có Đáy 58mm",
+    "link": "https://www.lazada.vn/products/pdp-i13451320100.html?srsltid=AU7gw4Whx5S-ofvW9J1bNk92mvZv3RJuVxrMnEdqQGMHWrNdaWc_fe84",
+    "snippet": "LazMall Phin Pha Cà Phê Inox Không Đáy & Có Đáy 58mm · 100% chính hãng · 30 ngày miễn phí trả hàng · Không áp dụng chính sách bảo hành.",
+    "position": 4
+   },
+   {
+    "title": "Phin pha cà phê Inox cao cấp( Inox 304) - In logo Con Chồn",
+    "link": "https://h5.lazada.vn/products/phin-pha-ca-phe-inox-cao-cap-inox-304-in-logo-con-chon-i1275082358.html",
+    "snippet": "Phin pha cà phê Inox cao cấp 304 Huyền Thoại với thiết kế 170ml, chất liệu inox 304 an toàn, sáng bóng. Lỗ phin phân bổ đồng đều, mật độ cao, giúp lọc cà ...",
+    "rating": 4.8,
+    "ratingCount": 9,
+    "position": 5
+   },
+   {
+    "title": "Phin Pha Cà Phê Inox.....",
+    "link": "https://www.lazada.vn/products/phin-pha-ca-phe-inox-i2392197123.html?srsltid=AU7gw4W6J75_lMTSTxFzOUClakOkBjccjyFFgGL7joGnK4g9IijHUKSe",
+    "snippet": "Phin Inox: điểm mạnh nổi trội của chiếc phin này nằm ở chất liệu Inox 304 của phin với bề mặt sáng bóng vượt trội, không rỉ sét. Phin được thiết kế đẹp mắt với ...",
+    "position": 6
+   },
+   {
+    "title": "[HCM]Phin Cà Phê INOX 304 Mạ Vàng Cao Cấp Ti Vặn",
+    "link": "https://www.lazada.vn/products/hcmphin-ca-phe-inox-304-ma-vang-cao-cap-ti-van-i371998740.html?srsltid=AU7gw4VlWrYalAonGmJpknU1Rv6iN7-me0wfk9ydSy_JKcnq1-c3iUfz",
+    "snippet": "Phin được làm từ Inox 304 dày 0.6mm ,an toàn sức khỏe, tay cầm bằng Inox 201. Ngoài vẻ ngoài sang trọng phần lưới chặn liên kết với phin bằng ren giúp điều ...",
+    "rating": 5,
+    "ratingCount": 21,
+    "position": 7
+   },
+   {
+    "title": "Phin pha cà phê inox 304 cao cấp ( phin cá nhân ) Dụng cụ barista",
+    "link": "https://www.lazada.vn/products/phin-pha-ca-phe-inox-304-cao-cap-phin-ca-nhan-dung-cu-barista-i3256712360.html?srsltid=AU7gw4ViR3lkOCcrZ0Fns3yPOul5f4gmOpgMpzTeiSIsK1AaWyyCg95_",
+    "snippet": "Thép không gỉ Trung Quốc. Phin pha cà phê inox 304 cao cấp phin cá nhân Dụng cụ barista. Thông tin sản phẩm: Chất liệu: inox 304, sáng bóng Kích thước: như ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

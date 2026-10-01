@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Cà phê S2 thượng hạng KENBAR 1kg site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:24:44.742Z",
+ "body": {
+  "searchParameters": {
+   "q": "Cà phê S2 thượng hạng KENBAR 1kg site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "1Kg cà phê PHIN Gu Đậm Đặc Biệt KENBAR",
+    "link": "https://shop.tiktok.com/vn/pdp/1734839081366685372",
+    "snippet": "Cà Phê Gu Đậm Đặc Biệt KENBAR Thương hiệu: KENBAR Cà Phê Gu Đậm Đặc Biệt KENBAR Túi: 200g/1kg Hạn sử dụng: 12 thángThành Phần: 80% Robusta, 20% CuliTrải ...",
+    "position": 1
+   },
+   {
+    "title": "Pha Hồng Trà Cam Ngũ Vị, Pha Trà Chanh, Trà Sữa ...",
+    "link": "https://shop.tiktok.com/vn/pdp/tra-hong-kenbar-1kg-huong-thom-qua-de-uong-pha-tra-chanh/1731035907447294458",
+    "snippet": "5g trà đến 7g trà vào 140ml- 170ml nước sôi (90°-100°C) khuấy đêu ủ khoảng 3-5 phút (lọc trà lấy cốt trà, tùy vào khẩu vị muốn đậm nhạt trà tăng thời gian ...",
+    "rating": 4.9,
+    "ratingCount": 50,
+    "position": 2
+   },
+   {
+    "title": "Bột MATCHA NGUYÊN CHẤT Đặc Biệt KENBAR",
+    "link": "https://shop.tiktok.com/vn/pdp/bot-matcha-nguyen-chat-%C4%91ac-biet-kenbar-min-%C4%91am-vi-dung-pha-che-lam-banh/1733947492009149946",
+    "snippet": "Thông tin sản phẩm·Tên: Bột Matcha Nguyên Chất Đặc Biệt Kenbar·Quy cách đóng gói: 100g/300g/500g·Thành phần: 100% búp trà xanh tuyển chọn nguyên chất.·Bảo quản: ...",
+    "rating": 3.8,
+    "ratingCount": 17,
+    "position": 3
+   },
+   {
+    "title": "Trà Xanh Lài Ngọc Lan KENBAR 200Gram - Pha Trà ...",
+    "link": "https://shop.tiktok.com/vn/pdp/tra-xanh-lai-lan-kenbar-200gr-tra-chanh-tra-sua-tra-trai-cay/1729991562194618874",
+    "snippet": "1KG Cà Phê S1 S2 Gu Đậm Thượng Hạng KENBAR - Cà phê mộc, Rang xay nguyên chất, hương Thơm Tự ...",
+    "rating": 4.7,
+    "ratingCount": 366,
+    "position": 4
+   },
+   {
+    "title": "Combo Cà Phê LU, Siêu Đất Cafe, Cà Phê Vợt - Bộ Pha ...",
+    "link": "https://shop.tiktok.com/vn/pdp/combo-ca-phe-lu-sieu-%C4%91at-cafe-ca-phe-vot-pha-truyen-thong/1733385118030267898",
+    "snippet": "1KG Cà Phê S1 S2 Gu Đậm Thượng Hạng KENBAR - Cà phê mộc, Rang xay nguyên chất, hương Thơm Tự ...",
+    "rating": 4.6,
+    "ratingCount": 173,
+    "position": 5
+   },
+   {
+    "title": "Bột Sương Sáo Kenbar 50g - làm thạch ...",
+    "link": "https://shop.tiktok.com/vn/pdp/1732938734994621946",
+    "snippet": "CÁCH SỬ DỤNG:- 50g bột sương sáo + 100g đường trộn đều (để dễ khuấy và bột không bị vón cục) cho hỗn hợp vào 1 lít nước lạnh khuấy tan.(Muốn dùng cứng hoặc mềm ...",
+    "rating": 4.9,
+    "ratingCount": 68,
+    "position": 6
+   },
+   {
+    "title": "Cẩm Nang Ăn Vặt KENBAR - Mì Cay, Chân Gà Sốt Thái ...",
+    "link": "https://shop.tiktok.com/vn/pdp/cam-nang-an-vat-kenbar-huong-dan-lam-mon-an-vat-thom-ngon/1732784234659874298",
+    "snippet": "1KG Cà Phê S1 S2 Gu Đậm Thượng Hạng KENBAR - Cà phê mộc, Rang xay nguyên chất, hương Thơm Tự ...",
+    "position": 7
+   }
+  ],
+  "credits": 1
+ }
+}

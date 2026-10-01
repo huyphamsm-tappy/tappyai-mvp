@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "quà cà phê tặng sếp nam hộp quà cà phê khác Legend Awakening ngân sách 1-2 triệu (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:35:20.495Z",
+ "body": {
+  "searchParameters": {
+   "q": "quà cà phê tặng sếp nam hộp quà cà phê khác Legend Awakening ngân sách 1-2 triệu (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

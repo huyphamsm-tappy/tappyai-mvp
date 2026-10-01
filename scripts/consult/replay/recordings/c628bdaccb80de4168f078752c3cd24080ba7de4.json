@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"MASSAGE HẠ SPA QUẬN 1\" OR \"CHARM SPA Garden\" OR \"Massage Cổ Phong Q1\" quan 1 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:39:20.223Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"MASSAGE HẠ SPA QUẬN 1\" OR \"CHARM SPA Garden\" OR \"Massage Cổ Phong Q1\" quan 1 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Thư Giãn Tại Charm Spa Garden Quận 1",
+    "link": "https://www.tiktok.com/@charmspagardenquan1/video/7636350570244197640",
+    "snippet": "Charm Spa Garden Quận 1 nổi bật với không gian xanh mát, sang trọng và cực kỳ chill, mang đến trải nghiệm thư giãn đúng nghĩa. Charm Spa Garden ...",
+    "position": 1
+   },
+   {
+    "title": "Charm Spa Garden Quận 1 (@charmspagardenquan1)",
+    "link": "https://www.tiktok.com/@charmspagardenquan1",
+    "snippet": "Không gian phòng massage gia đình Charm spa Garden Quận 1 #MassageQuan1 #charmspagardenquan1 #. 995 · spa Garden giữa Quận 1 ✨ Charm Spa Garden Quận 1 — nơi ...",
+    "position": 2
+   },
+   {
+    "title": "Bạn đang tìm MASSAGE QUẬN 1 nhưng muốn một nơi ...",
+    "link": "https://www.tiktok.com/@charmspagardenquan1/video/7685264046618201362",
+    "snippet": "Video TikTok từ Charm Spa Garden Quận 1 (@charmspagardenquan1): \"Bạn đang tìm MASSAGE QUẬN 1 nhưng muốn một nơi thật chill ✨ Massage ...",
+    "position": 3
+   },
+   {
+    "title": "Massage Hạ Spa Quận 1",
+    "link": "https://www.tiktok.com/discover/massage-h%E1%BA%A1-spa-qu%E1%BA%ADn-1",
+    "snippet": "11.9M bài đăng. Hãy khám phá video liên quan đến Massage Hạ Spa Quận 1 trên TikTok. Xem thêm video về Spa Massage Quận 1, Các Spa Massage Quận 1, Shiva Spa ...",
+    "position": 4
+   },
+   {
+    "title": "📍 Mình trải nghiệm tại: Massage Cổ Phong Q1 106-108 Lê ...",
+    "link": "https://www.tiktok.com/@cobidimassage/video/7534701041246293255",
+    "snippet": "Mình trải nghiệm tại: Massage Cổ Phong Q1 106-108 Lê Thị Riêng, Quận 1, Tp.HCM #matxa #thưgiãn #massagecophong #massagecotruyen #spaquan1 # ...",
+    "position": 5
+   },
+   {
+    "title": "SPA GỘI ĐẦU DƯỠNG SINH QUẬN 1 mở khuya, team văn ...",
+    "link": "https://www.tiktok.com/@hanyu339/video/7647507707544489236",
+    "snippet": "SPA GỘI ĐẦU DƯỠNG SINH QUẬN 1 mở khuya, team văn phòng thích mê luôn #haspamassagecotruyen ... MASSAGE HẠ SPA QUẬN 1 · author. 1670 · 19.",
+    "position": 6
+   },
+   {
+    "title": "Chữa Lành ở Spa Cực Thư Giãn Quận 1 sài gòn ...",
+    "link": "https://www.tiktok.com/@haspamassagequan1/video/7648603618714619157",
+    "snippet": "Chữa Lành ở Spa Cực Thư Giãn Quận 1 sài gòn #thebestspahochiminh #spahochiminhcity #spaquan1 #spadistrict1 #massagequan1 ... MASSAGE HẠ SPA QUẬN 1.",
+    "position": 7
+   },
+   {
+    "title": "Massage Cổ Phong Q1 – Traditional Relaxation in Saigon ...",
+    "link": "https://www.tiktok.com/@vietjoetv/video/7643474438796643591",
+    "snippet": "Massage Cổ Phong Q1 – Traditional Relaxation in Saigon ‍♂️🕯️ @Cổ Phong - Gội đầu dưỡng sinh A massage spot in District 1 ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Tiệm lẩu Hongkong\" OR \"Lẩu Bò Quang Khải\" OR \"LẨU NGON 79\" quan 1 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:41:27.339Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Tiệm lẩu Hongkong\" OR \"Lẩu Bò Quang Khải\" OR \"LẨU NGON 79\" quan 1 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Lẩu Ngon 79 Nguyễn Trãi — Review quán Thái ngon ở ...",
+    "link": "https://www.tiktok.com/@giadinhtihi/video/7644233790897868049",
+    "snippet": "Dẫn nhập Lẩu Ngon 79 trên đường Nguyễn Trãi là điểm ăn uống được nhắc đến trong nhiều lượt tìm kiếm về món Thái và lẩu ở Quận 1.",
+    "position": 1
+   },
+   {
+    "title": "Ăn một lần là nhớ cả đời cùng Quán Lẩu Ngon 79, đồ ...",
+    "link": "https://www.tiktok.com/@diadiemanuong/video/7358775159106309397",
+    "snippet": "Ăn một lần là nhớ cả đời cùng Quán Lẩu Ngon 79, đồ ăn ngon hấp dẫn mà giá thì rất bình dân ngay trong trung tâm Quận 1 #diadiemanuong ...",
+    "position": 2
+   },
+   {
+    "title": "Quán Lẩu Bò Nổi Tiếng Võ Văn Kiệt",
+    "link": "https://www.tiktok.com/@saigonbeoreview/video/7250051615435050245",
+    "snippet": "Lẩu bò Quang Khải là một trong những quán lẩu bò trứ danh ở Sài Gòn, tọa lạc tại số 338 đường Võ Văn Kiệt, phường Cô Giang, Quận 1. Quán nổi ...",
+    "position": 3
+   },
+   {
+    "title": "Lẩu Ngon 79 Nguyễn Trãi",
+    "link": "https://www.tiktok.com/discover/l%E1%BA%A9u-ngon-79-nguy%E1%BB%85n-tr%C3%A3i",
+    "snippet": "Đạo mê món Thái bơi hết vào đây, nồi lẩu lá chúc chua cay với dĩa gỏi đâm vị đỉnh chóp Lẩu Ngon 79 - 245/23 Nguyễn Trãi, ...",
+    "date": "21 thg 9, 2026",
+    "position": 4
+   },
+   {
+    "title": "Lẩu Núp Hẻm Siêu Ngon Tại 79 Nguyễn Thị Tú",
+    "link": "https://www.tiktok.com/@ngocduy_diachianuong/video/7423250127286013202",
+    "snippet": "Nước lẩu đậm vị, cá tươi và các loại rau đi kèm tạo nên trải nghiệm ăn lẩu trọn vẹn. Nhiều người tìm kiếm “lẩu cá 79” hoặc “lẩu ngon 79 Quận 1” ...",
+    "position": 5
+   },
+   {
+    "title": "Lẩu Bò Quang Khải: Hơn 30 Năm Ngon Tại Quận 1",
+    "link": "https://www.tiktok.com/@ansapsaigon/video/7298334391078554898",
+    "snippet": "Lẩu Bò Quang Khải: Quán lẩu bò gia truyền hơn 30 năm tại Quận 1 Khám phá quán lẩu bò Quang Khải nổi tiếng, đã phục vụ thực khách Sài Gòn ...",
+    "position": 6
+   },
+   {
+    "title": "Lẩu ngon 79 nấu bằng lá chúc siêu chất lượng ở quận 1, ...",
+    "link": "https://www.tiktok.com/@lee.haydi/video/7426219077745511688",
+    "snippet": "Lẩu ngon 79 nấu bằng lá chúc siêu chất lượng ở quận 1, mừng sinh nhật 2 tuổi ngập tràn ưu đãi #laungon #laungon79 #AnCungTikTok #LearnOnTikTok # ...",
+    "position": 7
+   },
+   {
+    "title": "Tiệm Lẩu Hongkong Chất Lượng Mở Xuyên Tết",
+    "link": "https://www.tiktok.com/@ansapsaigon/video/7604796287124327688",
+    "snippet": "Tiệm Lẩu Hongkong Chất Lượng Mở Xuyên Tết. Khám phá tiệm lẩu Hongkong chất lượng với hương vị tuyệt vời và giá cả hợp lý, mở cửa xuyên Tết đến 2 ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

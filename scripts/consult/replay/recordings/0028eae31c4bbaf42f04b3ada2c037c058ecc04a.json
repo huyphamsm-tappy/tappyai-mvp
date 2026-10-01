@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Danang Boutique Hotel",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:25:48.647Z",
+ "body": {
+  "searchParameters": {
+   "q": "Danang Boutique Hotel",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "DANANG BOUTIQUE HOTEL (Đà Nẵng) - Đánh giá Khách sạn & So sánh giá -  Tripadvisor",
+    "imageUrl": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/19/ee/cb/3b/danang-boutique-hotel.jpg?w=900&h=500&s=1",
+    "imageWidth": 900,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRAB1dT895vQdKn5-KF8cxtQbtfyWcrEFFXt5EvqxyESw&s=10",
+    "thumbnailWidth": 599,
+    "thumbnailHeight": 333,
+    "source": "Tripadvisor",
+    "domain": "www.tripadvisor.com.vn",
+    "link": "https://www.tripadvisor.com.vn/Hotel_Review-g298085-d13201672-Reviews-Danang_Boutique_Hotel-Da_Nang.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdynamic-media-cdn.tripadvisor.com%2Fmedia%2Fphoto-o%2F19%2Fee%2Fcb%2F3b%2Fdanang-boutique-hotel.jpg%3Fw%3D900%26h%3D500%26s%3D1&tbnid=RKR2suBs3bYOzM&imgrefurl=https%3A%2F%2Fwww.tripadvisor.com.vn%2FHotel_Review-g298085-d13201672-Reviews-Danang_Boutique_Hotel-Da_Nang.html&docid=VtOsoxDNpAVPuM&w=900&h=500",
+    "position": 1
+   },
+   {
+    "title": "Danang Boutique Hotel, Hải Châu, Đà Nẵng",
+    "imageUrl": "https://pix10.agoda.net/hotelImages/594/5943676/5943676_18110617010069517436.jpg?ca=7&ce=1&s=414x232",
+    "imageWidth": 309,
+    "imageHeight": 232,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGdY0rBiA67KheDWRYPi7VzvWeQCbvAzXdVmfq0oXdsw&s=10",
+    "thumbnailWidth": 308,
+    "thumbnailHeight": 232,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/danang-boutique-hotel/hotel/da-nang-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F594%2F5943676%2F5943676_18110617010069517436.jpg%3Fca%3D7%26ce%3D1%26s%3D414x232&tbnid=L3K6YaIDqESeVM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fdanang-boutique-hotel%2Fhotel%2Fda-nang-vn.html&docid=R019GTXheXV3wM&w=309&h=232",
+    "position": 2
+   },
+   {
+    "title": "Danang Boutique Hotel, Hải Châu, Đà Nẵng",
+    "imageUrl": "https://q-xx.bstatic.com/xdata/images/hotel/max500/141614763.jpg?k=bb776ccea18cb2df1d406b81f9b5a15a8e2db907762d72e95d5e9d4715083091&o=",
+    "imageWidth": 500,
+    "imageHeight": 332,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMPdSgUCZYwB-Z8gzXb8EYtfEcOW3IoTklumZPwntyWA&s=10",
+    "thumbnailWidth": 500,
+    "thumbnailHeight": 331,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/danang-boutique-hotel/hotel/da-nang-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fq-xx.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax500%2F141614763.jpg%3Fk%3Dbb776ccea18cb2df1d406b81f9b5a15a8e2db907762d72e95d5e9d4715083091%26o%3D&tbnid=GPQV5ViFIvh2bM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fdanang-boutique-hotel%2Fhotel%2Fda-nang-vn.html&docid=R019GTXheXV3wM&w=500&h=332",
+    "position": 3
+   },
+   {
+    "title": "Danang Boutique Hotel, Đà Nẵng (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/245624781.jpg?k=b1f8d59e13164d5d526e65339196fa8ff095898fb1f4801770aa5ef3bd44300d&o=",
+    "imageWidth": 1024,
+    "imageHeight": 681,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRS6W6iMXfHm3_nl783I_Y3c31P3g6Q3CGs7St6HSbxzQ&s=10",
+    "thumbnailWidth": 679,
+    "thumbnailHeight": 450,
+    "source": "www.booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/danang-boutique.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F245624781.jpg%3Fk%3Db1f8d59e13164d5d526e65339196fa8ff095898fb1f4801770aa5ef3bd44300d%26o%3D&tbnid=R1R6ZIpDF3ShBM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fdanang-boutique.vi.html&docid=1Wt9u3mElXVFIM&w=1024&h=681",
+    "position": 4
+   },
+   {
+    "title": "TA Danang Boutique Hotel, Đà Nẵng (cập nhật giá năm 2027)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/458575758.jpg?k=4ade1a8863d29a67040d9c0bb0cd4ddc31645979acca93910ac6991943b236e9&o=",
+    "imageWidth": 1024,
+    "imageHeight": 768,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRVotjk1rwWYc7neLLcTAXcsihLdgfufFTGVpH3TJo6PA&s=10",
+    "thumbnailWidth": 638,
+    "thumbnailHeight": 480,
+    "source": "www.booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/ta-boutique-ngu-hanh-son.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F458575758.jpg%3Fk%3D4ade1a8863d29a67040d9c0bb0cd4ddc31645979acca93910ac6991943b236e9%26o%3D&tbnid=ZdBBhu47__g0lM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fta-boutique-ngu-hanh-son.vi.html&docid=hbMDRsaIEdlQpM&w=1024&h=768",
+    "position": 5
+   },
+   {
+    "title": "Cozy Danang Boutique Hotel, Đà Nẵng | Hotels.com",
+    "imageUrl": "https://images.trvl-media.com/lodging/79000000/78540000/78537500/78537446/b5e26887.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill",
+    "imageWidth": 861,
+    "imageHeight": 575,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdAKD2dvzci97hFL-kW8VHja1vJAYnK4_NcCGgkEzYCw&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "hotels",
+    "domain": "vi.hotels.com",
+    "link": "https://vi.hotels.com/ho2514198272/cozy-da-nang-boutique-hotel-a-nang-viet-nam/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimages.trvl-media.com%2Flodging%2F79000000%2F78540000%2F78537500%2F78537446%2Fb5e26887.jpg%3Fimpolicy%3Dresizecrop%26rw%3D575%26rh%3D575%26ra%3Dfill&tbnid=dTy_MoF-OvxwjM&imgrefurl=https%3A%2F%2Fvi.hotels.com%2Fho2514198272%2Fcozy-da-nang-boutique-hotel-a-nang-viet-nam%2F&docid=cT4Fn3qGD4gArM&w=861&h=575",
+    "position": 6
+   },
+   {
+    "title": "Saha Casa Boutique Hotel Da Nang, Đà Nẵng (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/552946809.jpg?k=fa20dd7e5afbd8e1daa800a310146cc6d98a91a39f6e4d6b76c34f1ab1936898&o=",
+    "imageWidth": 540,
+    "imageHeight": 768,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxPU97NejRrdqoJZH4dLmRaiIqptqD--wkss4QlaYylg&s=10",
+    "thumbnailWidth": 464,
+    "thumbnailHeight": 660,
+    "source": "www.booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/saha-casa-boutique-da-nang.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F552946809.jpg%3Fk%3Dfa20dd7e5afbd8e1daa800a310146cc6d98a91a39f6e4d6b76c34f1ab1936898%26o%3D&tbnid=T2EfpJhFRmqP6M&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fsaha-casa-boutique-da-nang.vi.html&docid=KrLvh443NXl_eM&w=540&h=768",
+    "position": 7
+   },
+   {
+    "title": "COZY DANANG BOUTIQUE HOTEL (Đà Nẵng) - Đánh giá Khách sạn & So sánh giá -  Tripadvisor",
+    "imageUrl": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/26/cf/db/a1/cozy-danang-boutique.jpg?w=900&h=500&s=1",
+    "imageWidth": 900,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTifuIG0SjQ2C1Hkf5rNOgkYNpJznmnCqWAyqbn5U5bow&s=10",
+    "thumbnailWidth": 599,
+    "thumbnailHeight": 333,
+    "source": "Tripadvisor",
+    "domain": "www.tripadvisor.com.vn",
+    "link": "https://www.tripadvisor.com.vn/Hotel_Review-g298085-d24102969-Reviews-Cozy_Danang_Boutique_Hotel-Da_Nang.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdynamic-media-cdn.tripadvisor.com%2Fmedia%2Fphoto-o%2F26%2Fcf%2Fdb%2Fa1%2Fcozy-danang-boutique.jpg%3Fw%3D900%26h%3D500%26s%3D1&tbnid=aF2st9zRDvYXzM&imgrefurl=https%3A%2F%2Fwww.tripadvisor.com.vn%2FHotel_Review-g298085-d24102969-Reviews-Cozy_Danang_Boutique_Hotel-Da_Nang.html&docid=qC4ma1fEiWRR5M&w=900&h=500",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

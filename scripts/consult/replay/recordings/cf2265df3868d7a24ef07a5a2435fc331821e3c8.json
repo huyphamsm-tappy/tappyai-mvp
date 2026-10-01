@@ -1,0 +1,134 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "khách sạn Xuân Lộc, Đồng Nai",
+  "gl": "vn",
+  "hl": "vi"
+ },
+ "status": 200,
+ "recordedAt": "2026-10-01T06:05:59.682Z",
+ "body": {
+  "searchParameters": {
+   "q": "khách sạn Xuân Lộc, Đồng Nai",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "engine": "google"
+  },
+  "ll": "@10.943117,107.3752155,13z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Khách sạn Minh Phương",
+    "address": "XC33+29M, ĐT766, Xuân Lộc, Đồng Nai, Việt Nam",
+    "latitude": 10.953055299999999,
+    "longitude": 107.4028527,
+    "rating": 4,
+    "ratingCount": 65,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "phoneNumber": "+84 251 3751 869",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlHkrP2tGKZEcKvrzuUBBHzcy0VfLGh7wtByO0_lWvojji20mecsKpQ7b6czcB6mn2niKY4OCIXtli4ZnzAvCqHh52NHPcxfyE3JGTE_6vyTLA81Doj90p549kG7ZUy3rgu1QKo",
+    "cid": "14470626204346144508",
+    "fid": "0x317451c8d8ffcbd7:0xc8d1fddd3b82d6fc",
+    "placeId": "ChIJ18v_2MhRdDER_NaCO9390cg"
+   },
+   {
+    "position": 2,
+    "title": "Khách Sạn Hà Thi",
+    "address": "138 Hùng Vương, Xuân Lộc, Đồng Nai, Việt Nam",
+    "latitude": 10.920287199999999,
+    "longitude": 107.4008152,
+    "rating": 3.6,
+    "ratingCount": 288,
+    "type": "Trạm nghỉ",
+    "types": [
+     "Trạm nghỉ"
+    ],
+    "phoneNumber": "+84 251 2678 999",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmTQ5J0SaTXNbN73lL9CkYxBDs9BTEJBXXViBb5_nmmogxZN-wibPr141FKzHuUHsZlwAUKGEs0BZBN4QXKBTOTGSzGeV7LnbCNloW473vU-Wur06iJ44UPfEIu5iWxPjJOrVA",
+    "cid": "13713062653508772709",
+    "fid": "0x317453e3b0950ff1:0xbe4e95d41510e365",
+    "placeId": "ChIJ8Q-VsONTdDERZeMQFdSVTr4"
+   },
+   {
+    "position": 3,
+    "title": "Khách Sạn Ngọc Mai",
+    "address": "1 Nguyễn Huệ, Xuân Lộc, Đồng Nai, Việt Nam",
+    "latitude": 10.9239914,
+    "longitude": 107.4082014,
+    "rating": 3.7,
+    "ratingCount": 24,
+    "type": "Khách sạn nghỉ dưỡng",
+    "types": [
+     "Khách sạn nghỉ dưỡng"
+    ],
+    "phoneNumber": "+84 946 363 076",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnKCKfphKNOSAIdFvQ6HI2TQCrNFXq0R_YE0yKV_R7nPrB4kZiXWRYpfC-X6IHS3_6tfP_HpThG9KdApGCBes2Ld0S88fIp0QqjHR3cXO0V37khAQ-otOR44hDLEfHUMivpUQCZzb16RTDl",
+    "cid": "3073026122396708074",
+    "fid": "0x317453dd57c95b65:0x2aa594fa0af3acea",
+    "placeId": "ChIJZVvJV91TdDER6qzzCvqUpSo"
+   },
+   {
+    "position": 4,
+    "title": "Ha Thi 2 Hotel",
+    "address": "Xuân Hòa, Đồng Nai, Việt Nam",
+    "latitude": 10.910169999999999,
+    "longitude": 107.422646,
+    "rating": 3.4,
+    "ratingCount": 45,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "phoneNumber": "+84 929 190 929",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlYZ_Cd7KdJaMKHDrHA0psfDe-OOjfGBZMbnqwcmbWpUfsz7dgl4suIcmF0EoIkVHlA5f8lg6PafaFZ2HoExPaaA9xFdz35aZC-kS8FkNvKB5rgfEpkaGqE7hskFsrwaEnNg3E",
+    "cid": "6255681723806518251",
+    "fid": "0x317453cfb88fffff:0x56d0a5623f640beb",
+    "placeId": "ChIJ__-PuM9TdDER6wtkP2Kl0FY"
+   },
+   {
+    "position": 5,
+    "title": "Nhà nghỉ Hương Trinh",
+    "address": "5 Hùng Vương, Xuân Lộc, Đồng Nai, Việt Nam",
+    "latitude": 10.913612599999999,
+    "longitude": 107.39822009999999,
+    "rating": 3.6,
+    "ratingCount": 57,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn",
+     "Nhà nghỉ trượt tuyết"
+    ],
+    "phoneNumber": "+84 397 716 684",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWm5FNo0EvL_4011gDNomf2f7cx6oReC08-zkpZw_2gZHZ1h5sceSUVX8zi6qMwygx9DrD1ESj6HEmYUqRmbTNPwcilGkSy9Uur0tth37DITomVYkRAZVDfuRUz2kRLAQp0yujqq4g",
+    "cid": "16714075230550822558",
+    "fid": "0x317453e52512ffbd:0xe7f452de02230e9e",
+    "placeId": "ChIJvf8SJeVTdDERng4jAt5S9Oc"
+   },
+   {
+    "position": 6,
+    "title": "Nhà Nghỉ 199",
+    "address": "X8GH+C4F, ĐT763, Xuân Lộc, Đồng Nai, Việt Nam",
+    "latitude": 10.976064,
+    "longitude": 107.3277849,
+    "rating": 4.1,
+    "ratingCount": 48,
+    "type": "Trạm nghỉ",
+    "types": [
+     "Trạm nghỉ"
+    ],
+    "phoneNumber": "+84 965 371 411",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkbA6jZ1RtNcJ3NG86zn3x8i1jjmg4cyoXZkYFKJBRAj1JTNZrMpOrjCnODygOArajpgjN9Rxk9WqzI6pYmKY5n7Idy5_bIH7pdbJR445JjM88UmiSD5MLCOsaD4kDuZv2WtQh9",
+    "cid": "2728326816763175885",
+    "fid": "0x317457adc4c3d373:0x25dcf6c8d85763cd",
+    "placeId": "ChIJc9PDxK1XdDERzWNX2Mj23CU"
+   }
+  ],
+  "credits": 3
+ }
+}
