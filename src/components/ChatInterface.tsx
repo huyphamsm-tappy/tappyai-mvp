@@ -26,6 +26,7 @@ import { parseCTA } from '@/lib/structuredContent/parseCta'
 import { parseFollowups } from '@/lib/structuredContent/parseFollowups'
 import { parseAsk } from '@/lib/structuredContent/parseAsk'
 import AskCard from '@/components/chat/AskCard'
+import VoiceOverlay from '@/components/chat/VoiceOverlay'
 import { classifyOutboundAction, emitQuery, emitResultAction, hostOf } from '@/lib/analytics/g1Events'
 import ShoppingDecision from '@/components/chat/ShoppingDecision'
 import ComparisonBlock from '@/components/chat/structured/ComparisonBlock'
@@ -42,6 +43,7 @@ import { useTranslation, getStoredLocale } from '@/lib/i18n/useTranslation'
 import { validateModelCtaButtons } from '@/lib/recommendation/ctaValidation'
 import { requestedProviderOf } from '@/lib/ai/tools/commerceIntent'
 import { inputLocaleFor } from '@/lib/voice/config'
+import { readMicEnabled } from '@/lib/voice/micSetting'
 import { TappyMascot } from '@/components/TappyMascot'
 import { getTappyPose } from '@/lib/TappyMascotState'
 import { track } from '@/lib/tracking/tracker'
@@ -996,8 +998,51 @@ export default function ChatInterface({
     setPendingSend(false)
   }, [])
 
-  // Voice input (Web Speech API). Dictation fills the input box, then auto-sends
-  // after a short grace window the user can cancel (to review/edit first).
+  // Voice input (Web Speech API) — the voice SCREEN (owner 01/10, mockup 03). Recognition fills `voiceText`, NEVER the input box,
+  // and nothing is sent until the user taps «Gửi». The mic is a privacy surface: it opens only on a tap, and EVERY way out
+  // (Hủy, Gửi, back/route change, tab or app in the background, an error, 60 s without a result, unmount) detaches the
+  // handlers and aborts the session, so the browser's mic indicator goes away (iPhone Safari kept the orange dot after the
+  // user had stopped talking — owner 01/10, h).
+  const VOICE_IDLE_MS = 60_000 // no recognised text for this long → the mic is switched off and the screen closes
+  const [voiceOpen, setVoiceOpen] = useState(false)
+  const [voiceText, setVoiceText] = useState('')
+  const voiceIdleRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const voiceBaseTextRef = useRef('')
+  const [voiceFirstUse, setVoiceFirstUse] = useState(false)
+  const [micAllowed, setMicAllowed] = useState(true)
+  useEffect(() => { setMicAllowed(readMicEnabled()) }, [])
+  useEffect(() => {
+    if (!voiceOpen) return
+    try { if (!localStorage.getItem('tappy_mic_asked')) { setVoiceFirstUse(true); localStorage.setItem('tappy_mic_asked', '1') } } catch { /* storage blocked */ }
+  }, [voiceOpen])
+
+  const releaseRecognition = useCallback(() => {
+    if (voiceIdleRef.current) { clearTimeout(voiceIdleRef.current); voiceIdleRef.current = null }
+    const r = recognitionRef.current
+    recognitionRef.current = null
+    if (r) {
+      r.onstart = null; r.onend = null; r.onerror = null; r.onresult = null
+      try { r.abort() } catch { /* already stopped */ }
+    }
+    setIsListening(false)
+  }, [])
+
+  const closeVoice = useCallback(() => {
+    releaseRecognition()
+    setVoiceOpen(false)
+    setVoiceText('')
+    voiceBaseTextRef.current = ''
+    setVoiceError(null)
+  }, [releaseRecognition])
+
+  const armVoiceIdle = useCallback(() => {
+    if (voiceIdleRef.current) clearTimeout(voiceIdleRef.current)
+    voiceIdleRef.current = setTimeout(() => {
+      releaseRecognition()
+      setVoiceError(t('voice.overlay.timeout'))
+    }, VOICE_IDLE_MS)
+  }, [releaseRecognition, t])
+
   const startVoice = useCallback(() => {
     const SpeechRecognitionCtor = window.SpeechRecognition || window.webkitSpeechRecognition
     if (!SpeechRecognitionCtor) {
@@ -1013,35 +1058,25 @@ export default function ChatInterface({
     }
     setVoiceError(null)
     cancelAutoSend()
+    releaseRecognition()
     voiceSpokeRef.current = false
     posthog.capture('mic_used')
     const recognition = new SpeechRecognitionCtor()
     recognition.lang = inputLocale
-    recognition.interimResults = true // live transcript into the input as you speak
+    recognition.interimResults = true // the recognised text appears live on the voice screen
     recognition.continuous = false
     recognition.maxAlternatives = 1
     recognitionRef.current = recognition
-    // Preserve anything already typed; dictation appends after it.
-    voiceBaseRef.current = input ? input.replace(/\s+$/, '') + ' ' : ''
+    // Resuming after a pause keeps what was already recognised.
+    voiceBaseTextRef.current = voiceText ? voiceText.replace(/\s+$/, '') + ' ' : ''
+    setVoiceOpen(true)
 
     recognition.onstart = () => { setIsListening(true); setVoiceError(null) }
     recognition.onend = () => {
-      setIsListening(false)
-      // Auto-send with a 2s grace window (user's chosen behavior): only if real
-      // speech was captured. The status line lets them tap to cancel and edit.
-      if (voiceSpokeRef.current) {
-        setPendingSend(true)
-        autoSendTimerRef.current = setTimeout(() => {
-          autoSendTimerRef.current = null
-          setPendingSend(false)
-          const form = document.getElementById('chat-form') as HTMLFormElement | null
-          form?.requestSubmit()
-        }, 2000)
-      }
+      // The session is over: drop it completely so the browser can release the microphone.
+      if (recognitionRef.current === recognition) releaseRecognition()
     }
     recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
-      setIsListening(false)
-      cancelAutoSend()
       switch (event.error) {
         case 'not-allowed':
         case 'service-not-allowed':
@@ -1054,35 +1089,63 @@ export default function ChatInterface({
           setVoiceError(t('voice.audioCapture'))
           break
         case 'aborted':
-          break // user/unmount stopped — no message needed
+          break // we stopped it — no message needed
         default:
           setVoiceError(t('voice.recognitionError'))
       }
+      if (recognitionRef.current === recognition) releaseRecognition()
     }
     recognition.onresult = (event: SpeechRecognitionEvent) => {
       let transcript = ''
       for (let i = 0; i < event.results.length; i++) transcript += event.results[i][0].transcript
       if (transcript.trim()) voiceSpokeRef.current = true
-      // Fill the input live; onend then queues the auto-send (cancellable).
-      setInput(voiceBaseRef.current + transcript)
+      setVoiceText(voiceBaseTextRef.current + transcript)
+      armVoiceIdle()
     }
-    // Optimistic instant feedback: the button reacts the moment it's tapped,
-    // before the permission prompt / onstart resolves (onstart confirms it,
-    // onerror/onend reset it). Guarantees the user always sees an on/off change.
+    // Optimistic instant feedback before the permission prompt resolves (onstart confirms; onerror/onend reset).
     setIsListening(true)
+    armVoiceIdle()
     try {
       recognition.start()
     } catch {
       // start() throws if called while already running or blocked — never fail silently.
-      setIsListening(false)
+      releaseRecognition()
       setVoiceError(t('voice.startFailed'))
     }
-  }, [input, setInput, cancelAutoSend, t, locale])
+  }, [cancelAutoSend, releaseRecognition, armVoiceIdle, t, locale, voiceText])
 
-  const stopVoice = useCallback(() => {
-    recognitionRef.current?.stop() // lets the final result land, then onend fires
-    setIsListening(false)
-  }, [])
+  // The centre button: stop listening (the text stays) — and while stopped, listen again.
+  const toggleVoice = useCallback(() => {
+    if (recognitionRef.current) {
+      const r = recognitionRef.current
+      try { r.stop() } catch { /* already stopped */ }
+      // stop() lets the last result land; if the engine never reports the end (seen on iOS), abort it ourselves.
+      setTimeout(() => { if (recognitionRef.current === r) releaseRecognition() }, 1500)
+      setIsListening(false)
+    } else {
+      startVoice()
+    }
+  }, [releaseRecognition, startVoice])
+
+  const sendVoice = useCallback(() => {
+    const text = voiceText.trim()
+    if (!text) return
+    closeVoice()
+    append({ role: 'user', content: text })
+  }, [voiceText, closeVoice, append])
+
+  // Kept for the composer button's pressed state.
+  const stopVoice = useCallback(() => { closeVoice() }, [closeVoice])
+
+  // The mic must not stay on behind the user's back: background tab / app switch / navigation away.
+  useEffect(() => {
+    if (!voiceOpen) return
+    const hide = () => { if (document.visibilityState === 'hidden') closeVoice() }
+    const leave = () => closeVoice()
+    document.addEventListener('visibilitychange', hide)
+    window.addEventListener('pagehide', leave)
+    return () => { document.removeEventListener('visibilitychange', hide); window.removeEventListener('pagehide', leave) }
+  }, [voiceOpen, closeVoice])
 
   // Kill any live/dangling recognition on unmount so it can't fire callbacks
   // (or keep the mic open) after the component is gone.
@@ -1094,6 +1157,7 @@ export default function ChatInterface({
         try { r.abort() } catch { /* already stopped */ }
         recognitionRef.current = null
       }
+      if (voiceIdleRef.current) clearTimeout(voiceIdleRef.current)
       if (autoSendTimerRef.current) clearTimeout(autoSendTimerRef.current)
     }
   }, [])
@@ -1364,7 +1428,10 @@ export default function ChatInterface({
   }, [category, locale])
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="relative flex flex-col h-full">
+      {voiceOpen && (
+        <VoiceOverlay listening={isListening} text={voiceText} error={voiceError} firstUse={voiceFirstUse} onToggle={toggleVoice} onCancel={closeVoice} onSend={sendVoice} />
+      )}
       {onboardingReady && (
         <OnboardingModal
           onClose={(prefs) => {
@@ -1944,12 +2011,6 @@ export default function ChatInterface({
             </div>
           )}
           {/* Voice status — user always knows the state (listening / auto-sending / error) */}
-          {isListening && (
-            <div role="status" aria-live="polite" className="flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs self-start max-w-full bg-orange-50 dark:bg-orange-900/20 text-[#FF9500]">
-              <span className="w-2 h-2 rounded-full bg-[#FF9500] animate-pulse flex-shrink-0" />
-              <span>Đang nghe… nói xong Tappy tự gửi (bạn có 2 giây để sửa trước).</span>
-            </div>
-          )}
           {!isListening && pendingSend && (
             <button
               type="button"
@@ -1960,7 +2021,7 @@ export default function ChatInterface({
               <span>Đang gửi trong giây lát… chạm để sửa trước khi gửi.</span>
             </button>
           )}
-          {!isListening && !pendingSend && voiceError && (
+          {!voiceOpen && !isListening && !pendingSend && voiceError && (
             <div role="status" aria-live="polite" className="flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs self-start max-w-full bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400">
               <span>{voiceError}</span>
             </div>
@@ -2017,8 +2078,8 @@ export default function ChatInterface({
               </div>
             )}
           </div>
-          {/* Nút microphone màu cam #FF9500 */}
-          <button
+          {/* Nút microphone màu cam #FF9500 — hidden when the user switched the microphone off in Settings */}
+          {micAllowed && <button
             type="button"
             onClick={isListening ? stopVoice : startVoice}
             disabled={isLoading}
@@ -2036,7 +2097,7 @@ export default function ChatInterface({
                tap to stop"). Previously used MicOff (a slashed mic), which reads as
                "mic disabled" and confused users about the on/off state. */}
             <Mic size={18} className={isListening ? 'text-white' : 'text-[#FF9500]'} />
-          </button>
+          </button>}
           {isLoading ? (
             <button type="button" onClick={() => stop()} aria-label="Dừng trả lời" className="w-11 h-11 rounded-2xl bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 flex items-center justify-center transition-all flex-shrink-0">
               <Square size={15} className="text-gray-700 dark:text-gray-200 fill-current" />

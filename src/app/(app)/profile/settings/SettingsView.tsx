@@ -8,6 +8,7 @@ import V3Shell, { V3Footer } from '@/components/v3/V3Shell'
 import Panel from '@/components/v3/Panel'
 import { Bell, BookOpen, Brain, FileText, Shield, Trash2, SlidersHorizontal, LifeBuoy } from 'lucide-react'
 import LanguageSwitcher from './LanguageSwitcher'
+import MicSwitch from './MicSwitch'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 
 // Client view for Settings so all text is reactive to the language toggle.
@@ -43,6 +44,7 @@ export default function SettingsView({ user, selfDelete = false }: {
             <MenuItem icon={Bell} label={t('settings.notifications')} description={t('settings.notifications.desc')} href="/profile/notifications" />
             <MenuItem icon={Brain} label={t('settings.memory')} description={t('settings.memory.desc')} href="/profile/tappy-knows" />
             <LanguageSwitcher />
+            <MicSwitch />
           </div>
         </Panel>
 

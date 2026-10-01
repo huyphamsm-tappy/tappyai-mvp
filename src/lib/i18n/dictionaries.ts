@@ -37,6 +37,8 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     // (R.string.settings_delete_account), which Google Play requires to be
     // discoverable in-app as well as on the open web.
     'settings.deleteAccount': 'Yêu cầu xóa tài khoản',
+    'settings.mic': 'Micrô',
+    'settings.mic.desc': 'Cho phép nói để nhập trong chat. Micrô chỉ bật khi bạn bấm.',
 
     // Common
     'common.or': 'hoặc',
@@ -329,6 +331,8 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     'settings.version': 'Current version: {v}',
     'settings.signOut': 'Sign out',
     'settings.deleteAccount': 'Request Account Deletion',
+    'settings.mic': 'Microphone',
+    'settings.mic.desc': 'Allow speaking to type in chat. The mic only turns on when you tap it.',
 
     // Common
     'common.or': 'or',
