@@ -264,6 +264,23 @@ Chưa commit — patch lưu scratchpad (shopR / shopAB5). Chờ Huy (Q-AI-SHOP).
 - Bảo mật 30/09: nhánh `security/hardening-2026-09-30` gộp vào rc (`d4f5c8c`), UAT `6aade7a` smoke 5 luồng đạt; migration #20–#23 vào PHẦN B.
   Apple IAP: production KHÔNG có `APPLE_IAP_*` → verify trả 503, lỗ API-1 đang đóng; không thêm các biến này trước khi `fea7f38` lên prod.
 
+### ▶ ĐÊM 30/09→01/10 — sửa B của trang Luna, R25, thẻ hỏi vé máy bay (UAT = `b88a499`, mã release; sau đó chỉ có commit tài liệu)
+- **Trang duyệt (cùng link, bản 2):** https://claude.ai/artifact/KtAqAkz3s1hUdpsZQUiQnV — 35 hội thoại / 125 lượt trên Luna: **A = 0, B = 0**, C = 9, D = 11.
+  9 hội thoại chụp lại sau 0:02 trên UAT (FOOD-1, FOOD-3, SHOP-3, SPA-3 chạy đủ 7 lượt; SHOP-2, TRAVEL-2, ENT-2, ENT-1, SPA-1 chạy lại).
+- **B cũ đã hết:** SHOP-2 chọn set 1.150.000đ trong 1–2 triệu (nguyên nhân: «1-2 triệu» bị đọc là 1.000đ–2.000.000đ); TRAVEL-2 đổi ĐIỂM ĐẾN khi nói «chỗ khác / đi rồi»
+  (Núi Dinh → Tây Ninh → Xuân Lộc, kế hoạch theo Xuân Lộc); khoảng cách tra 30/09: Núi Dinh ≈80 km (VnExpress), Núi Bà Đen 85–100 km, Núi Chứa Chan 100–110 km (mia.vn) — Bảo Lộc bỏ vì quá xa.
+  **Lệch tin nhắn 01/10:** tin ghi «Tây Ninh → Bảo Lộc → Xuân Lộc»; tôi làm theo lệnh trước (xếp theo khoảng cách thật) nên thứ tự là Núi Dinh → Tây Ninh → Xuân Lộc.
+- **R25 (3 ca chat web không có nút/link):** vé máy bay = LỖI THẬT (lệnh tìm vé cần điểm đi mà bộ hiểu ý không có → chạy tìm khách sạn); đã sửa `d016346` + hỏi «Bay từ đâu?» trong thẻ hỏi `848133c`.
+  Karaoke tối nay / đồ ăn vặt Q1: server gửi ĐỦ thẻ địa điểm (8 nơi, 3–6 hành động mỗi nơi); phép kiểm cũ trượt vì cửa sổ giới thiệu lần đầu «Tappy muốn hiểu bạn hơn!» phủ lên thẻ hỏi, mọi lần bấm hết giờ và e2e cũ nuốt lỗi. Khi đóng cửa sổ: đạt 2/2.
+  Chưa xử lý (chờ anh quyết): hai bộ 3 câu hỏi chồng nhau ở lần chat đầu.
+- **E2E web chặt** (`scratchpad/pw/webe2e.mjs`, chạy trên UAT `cc02d4c`): 9/11 ĐẠT — flight, snacks-then-q1, pho-q3, pho-q1, pho-delivery, headphones, concert, hotel, followup-more; TRƯỢT: saigon-tonight (cửa sổ giới thiệu; đạt khi đóng nó, 2/2 trên b88a499),
+  trip (tin kế hoạch cuối có thẻ quán + bản đồ nhưng không có link khách sạn — chưa rõ nguyên nhân). **trip-full chưa chạy lại.** Phép kiểm cũ của android/e2e/flows/chat.mjs đã ghi ở ANDROID-REQUESTS (R25) — không sửa thư mục android/.
+- **Số test (rõ từng bộ):** bộ FULL gồm test DB trên mã release `b88a499`: **16.263 test, 16.180 đạt, 1 trượt** = `scripts/controlBytes.test.mjs` hết giờ 5 giây vì quét `scripts/` đang chứa file replay chạy đêm (chạy riêng với giới hạn dài: 3/3 đạt). Bộ full trước đó trên `f1e7dc9`: 16.246 / 16.164 / 0 trượt.
+  12.754–12.755 = bộ con `src/lib` + `src/app/api`; 5.826 = bộ con `src/lib/ai` + `src/app/api/chat` — không phải full.
+- **Xoá tài khoản:** cờ TẮT (trạng thái UAT, quyết định cho production) — ĐÃ chụp: dòng «Yêu cầu xóa tài khoản» → trang hướng dẫn email support@tappyai.com, không có nút xoá. Cờ BẬT: CHƯA kiểm (cần đặt biến Preview + deploy thêm; sẽ chụp đến bước xác nhận, không bấm xoá).
+- **Lỗi mã tìm thấy trong đêm và đã sửa:** câu ghép của bộ lọc khi tên quán dài (b88a499); thẻ hỏi vé máy bay thiếu điểm đi (848133c).
+- **Chưa làm / chưa kiểm:** FOOD-3 lượt 3 chưa chụp lại sau b88a499; cờ xoá tài khoản BẬT; trip-full web e2e; link khách sạn trong tin kế hoạch (trip); test APK Android cuối; GPS cho điểm đi (backlog PL-FLIGHT-ORIGIN-GPS).
+
 ### ▶ LUNA TRÊN UAT — chạy thật rút gọn 30/09 tối (UAT `3e763fb`), trang duyệt https://claude.ai/artifact/KtAqAkz3s1hUdpsZQUiQnV
 - Gộp `luna/consult-2026-09-30` (@c4ddf3c) vào rc = `87007a1`; 16.150 test (2 quét repo quá giờ khi chạy cả bộ, chạy riêng đạt) · tsc · lint 0 lỗi ·
   kiến trúc 15/15 · build Vercel. Gói `@ai-sdk/openai@1.3.24` thêm vào node_modules dùng chung (khớp integrity lockfile).
