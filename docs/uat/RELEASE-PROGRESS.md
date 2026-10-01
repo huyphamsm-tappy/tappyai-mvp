@@ -487,3 +487,10 @@ Hạn chế guard vá: mỗi bản vá sau model giờ được ĐẾM (`tappyai
 - Test trước khi build (cùng commit): unit Android debug+release+uat xanh, web scan Android 793 qua, `verify-release-clean` 8/8.
 - Chưa upload gì; Play Console là bước của anh (RELEASE-PLAN §3d). Dọn sau upload: `git -C C:/wtrel worktree remove --force C:/wtbuild-68d6639`.
 - Nhánh local `android/video-held`: 4 commit của nó (video composer, golden chat, share e2e stub, guest giữ Login) ĐÃ nằm trên rc từ 29/09 dưới hash khác (41cd098, 8f6ca1e, f3b8679, 389e321) và đều có trong 68d6639 → bản release CÓ đăng video. Nhánh chỉ còn là bản cũ, không cần gộp.
+
+## 2026-10-01 — ĐÓNG BĂNG WEB (SHA cuối)
+- Mã web cuối = `81e8016` (đã gồm eaefa04 id thẻ hỏi, 3c-onboarding gate, /privacy OpenAI, R26/R27, ENV-RELEASE-CHECKLIST). Commit chứa ghi chú này chỉ khác `81e8016` ở tài liệu; SHA UAT phục vụ = commit này, đo bằng `GET /api/version`.
+- UAT chạy với `ACCOUNT_SELF_DELETE_ENABLED` ĐÃ GỠ (cờ TẮT, như production mặc định). Cờ BẬT được chụp tạm ở `81e8016` (trang xoá + gõ XÓA, KHÔNG bấm xoá) rồi gỡ biến và deploy lại.
+- Test đầy đủ (app + db, `npm test`) trên mã này: 952 file đạt / 16 bỏ qua; 16.184 test đạt, 0 lỗi, 80 skip, 1 todo; cổng "required-suite" OK.
+- 80 skip: 33 `weatherCountryMatrix` + 10 `memoryGate/cacheProbe/domainMatrix/refinementProbe/reviewSourceProbe/toolPayload` (đo thật, cần TAPPY_MEASURE=1); 10 `luna/featureSmoke` (LUNA_FEATURE_SMOKE=1, gọi OpenAI thật); 3 replay audit (AUDIT_REPLAY=1) + 1 `brainEval` (BRAIN_EVAL=1, gọi model thật); 7 `ccpVerificationEvidence` (CCP_VERIFY=1); 14 `profileCollectionsParity`/`sharedPrivacy` (describe.skip từ 17/09 — chờ port tab lên hub V3); 1 `decisionFrame` (it.skip từ 17/09, phụ thuộc guard chưa merge).
+- Dọn: xoá 4 tệp ghi replay CHƯA theo dõi trong `scripts/consult/replay/recordings/` (không xoá tệp đã commit).
