@@ -348,3 +348,9 @@ Huy quyết: cờ `ACCOUNT_SELF_DELETE_ENABLED` BẬT lúc release; bấm xoá t
 - Vẫn chỉ chụp tài khoản test, không dữ liệu thật/cá nhân.
 - Repo chỉ giữ RELEASE-PROGRESS.md (web) / tài liệu Android với đường dẫn `gs://…` hoặc
   `gs://tappyai-uat-evidence/evidence/<SHA>/…`.
+
+### Gửi phiên WEB từ Android (01/10 tối) — hai ca không có link ở tin cuối (KHÔNG sửa bên Android)
+Chạy trên UAT `03358ed`; Android PASS cả hai, phía web của e2e FAIL một kiểm: «nút/đường dẫn đúng loại trang — không có link trong tin nhắn cuối».
+1. `mua-he`: câu hỏi nguyên văn **«Mùa này đi du lịch ở đâu»** → thẻ hỏi (Chuyến đi thế nào đây?) → chọn «Biển · Cuối tuần 2N1Đ · TP.HCM» → tin trả lời cuối không có link vé/khách sạn. Log: `D:\TappyAI-backups\android-parity-evidence\overnight-2026-10-01\final-round\h2-mua-he.log`; ảnh: `C:\wtandroid\android\e2e\out\2026-10-01T09-43-52`.
+2. `snacks-then-q1`: câu 1 **«mua đồ ăn vặt»**, câu 2 **«tối nay đi đâu chơi quận 1»** → tin cuối không có link. Log `...\final-round\h2-snacks-then-q1.log`; ảnh `C:\wtandroid\android\e2e\out\2026-10-01T09-51-58`.
+Có thể câu trả lời đúng là không cần link (ví dụ gợi ý chỗ chơi) và kiểm của e2e quá chặt — web quyết.

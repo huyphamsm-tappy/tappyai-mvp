@@ -194,3 +194,21 @@ Chỉ làm SAU khi web báo "OK release" và smoke production xong (mục C).
 6. Tạo bản phát hành Sản xuất: Phát hành công khai → **Tạo bản phát hành mới** (nút hiện đang xám — có thể do chưa chọn quốc gia; xem lại sau bước 5) → tải `TappyAI-release-vc10-<sha>.aab` (đường dẫn trong báo cáo) → tên bản `1.0.0 (10)` → ghi chú vi/en → chọn phát hành **từng phần 10–20%** nếu giao diện cho chọn → **Xem trước và xác nhận**. 🔐
 7. **Gửi để xem xét / Bắt đầu phát hành** — nút cuối (Trang tổng quan → «Gửi bản phát hành cho Google xem xét» / «Phát hành ứng dụng của bạn…»). 🔐 **Chỉ Huy bấm.**
 8. (Tên nút ở bước 7–8 là suy từ giao diện Play thường gặp; tôi chưa thấy vì chưa có bản phát hành — có thể khác chút.) Sau khi phát hành: tăng tỉ lệ ở Phát hành công khai → Quản lý bản phát hành → «Tăng tỷ lệ phát hành»; tạm dừng/gỡ: cùng trang → «Tạm dừng bản phát hành» (nếu có sự cố); theo dõi 24 giờ đầu ở **Theo dõi và cải thiện → Android vitals → Sự cố và lỗi ANR** (ngưỡng "hành vi xấu" của Google tôi chỉ nhớ gần đúng — crash ~1,09%, ANR ~0,47% — **chưa kiểm nguồn**).
+
+## F. Bổ sung chốt 01/10 tối (chỉ đọc + đo; KHÔNG điền Play Console)
+
+**F1. Ghi chú reviewer — bổ sung theo phương án UGC Huy chọn** (dán nối vào mục D):
+- (a) release nguyên trạng: "Users can report a review/clip (feed menu) and report copyright via https://www.tappyai.com/copyright. A user-blocking feature is NOT in this version." — nói thật; có rủi ro bị từ chối.
+- (b) báo cáo + chặn trong app: "Every review, clip and comment has a Report action (reason list) and every profile has Block user; blocked users' content is hidden; reports are reviewed by the team." — chỉ dán SAU khi build (b) tồn tại.
+- (c) chờ Phase 8: không phát hành công khai.
+Quyền và lý do: vị trí (chỉ khi cho phép, tìm quanh đây), camera/ảnh/clip (đăng bài), micro (nhận giọng nói do hệ thống Android xử lý), thông báo (tuỳ chọn, tắt được trong Cài đặt). Giọng nói trên web chạy trong trình duyệt. AI: OpenAI (xử lý thay mặt TappyAI — Huy xác nhận). ScamShield: kiểm tra tin nhắn/link/QR, không tra số điện thoại. Xoá tài khoản: Tôi → Cài đặt → Khác → «Xóa tài khoản», xoá ngay, hoặc https://www.tappyai.com/delete-account.
+
+**F2. Nhóm tuổi**: bỏ «16–17», chỉ giữ «18+» (code: cổng ngày sinh 18+ chặn chat và đăng bài — `age/`, `onboarding/`).
+
+**F3. Quốc gia (ĐỀ XUẤT, Huy quyết)**: bước 1 chỉ Việt Nam (ứng dụng tiếng Việt, địa điểm/giá VN, dịch vụ xoá dữ liệu & hỗ trợ bằng tiếng Việt); mở thêm sau 1–2 tuần nếu ổn. Alpha hiện ở 178 quốc gia nhưng không có nghĩa sản xuất phải vậy.
+
+**F4. Phát hành từng phần**: 10% → 20% → 50% → 100%, mỗi bước chờ ≥24 giờ không có crash/ANR bất thường. Tạm dừng: Phát hành công khai → Quản lý bản phát hành → «Tạm dừng». Gỡ hoàn toàn: «Hủy xuất bản ứng dụng» ở Cài đặt nâng cao (tên nút gần đúng — chưa kiểm). 24 giờ đầu xem **Theo dõi và cải thiện → Android vitals → Sự cố và ANR**, và Firebase Crashlytics nếu có (**chưa kiểm app có Crashlytics không**).
+
+**F5. Backlog (không làm bây giờ)**: khuyến nghị Android 15 edge-to-edge báo API cũ (`setStatusBarColor`…) — đến từ thư viện (Material/Compose), không phải mã của TappyAI; chỉ cần nâng thư viện sau.
+
+**F6. Google đăng nhập (đọc 01/10 tối)**: dự án `imposing-league-499203-q8`, `speedy-method-500203-f2`, `pristine-skein-499103-g8`, `boreal-physics-499008-a1` — Google Auth Platform «chưa cấu hình», KHÔNG có client nào. `sixth-impulse-499009-a2` — không có quyền truy cập (không đọc được). Firebase `aerobic-lock-498409-u7`, app `com.tappyai.app`: bảng «SHA certificate fingerprints» TRỐNG. Vậy khoá ký Play hiện tại (`C2:0A:A1:…`) không có ở đâu → Google đăng nhập trên bản cài từ Play CHƯA chạy được cho tới khi Huy tạo client Android mới (mục A01 + HÀNG CHỜ). DAL SHA-256 `29:62:B4:…`: chưa giải thích được vì sao khác các chứng chỉ đọc được (giả thuyết, chưa kiểm: khoá ký đã xoay vòng; không ảnh hưởng đăng nhập Google, chỉ liên quan App Links).
