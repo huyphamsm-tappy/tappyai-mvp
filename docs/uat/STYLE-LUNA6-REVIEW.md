@@ -1,4 +1,4 @@
-# STYLE_LUNA6 — giọng văn Luna 6 (01/10) — KẾT QUẢ: cấu trúc an toàn, hiệu quả giọng yếu, cờ KHÔNG bật trên UAT
+# STYLE_LUNA6 — giọng văn Luna 6 (01/10) — KẾT QUẢ SAU TIÊU CHÍ MỚI CỦA HUY: ĐẠT, cờ BẬT trên UAT
 
 Trang duyệt cho Huy: https://claude.ai/artifact/BDvoiEi39BbpxSVsDdoeU5 (riêng tư). Mã: `src/lib/ai/consultative/styleLuna6.ts` (MỘT tệp). Cờ: `STYLE_LUNA6=1` (server env), **mặc định TẮT**.
 
@@ -29,3 +29,19 @@ Cờ **KHÔNG bật trên UAT** (xưng hô không đạt, hiệu quả giọng y
 
 ## Chữ cố định (D6)
 Xem bảng trên trang duyệt: 3 chuỗi do server dựng đã viết lại sau cờ (đuôi thẻ hỏi, «Còn N lựa chọn nữa», câu thiếu dữ liệu một chỗ và so sánh); phát hiện «đây là tin hỏi» nhận cả hai đuôi. Chuỗi do CLIENT dựng (tiêu đề thẻ hỏi theo mảng, «Những lựa chọn sát nhất…») chỉ liệt kê — PL-CLIENT-STRINGS.
+
+
+## CẬP NHẬT chiều 01/10 — tiêu chí xưng hô đơn giản hoá (Huy quyết) + lớp giọng rút gọn
+Tiêu chí (a) mới: «mình/bạn» mặc định là ĐẠT; không xưng sai, không đoán giới tính/tuổi, không tự mở cặp thứ bậc, «mày/tao» không bao giờ tự mở. 12 câu: không ca nào xưng sai hoặc tự mở cặp thứ bậc ⇒ **ĐẠT**. Lớp xưng hô rút xuống 1 dòng.
+Hai vòng rút gọn (B2, B3) trên cùng 135 lượt/cùng dữ liệu; A trung bình của hai lần TẮT = 688.031 token vào:
+| | A (TẮT, TB 2 lần) | B (bản đầu) | B2 (khối ngắn) | **B3 (khối ngắn + bước 1 của khung chốt)** |
+|---|---|---|---|---|
+| token vào | 688.031 | 759.489 (+10,4%) | 718.301 (+4,4%) | **730.538 (+6,2%)** |
+| lượt chốt mở «Mình hiểu bạn…» (/30) | 22 | 15 | 14 | **0** |
+| lượt chốt nêu giả định (/30) | 26 | 27 | 23 | 23 |
+| câu có emoji | 18,5 | 14 | 19 | 14 |
+| cụm cấm | 0,5 | 1 | 0 | 0 |
+- Bước 1 của khung chốt (`domainFrames.ts` PICK_SHAPE) bắt «Mình hiểu bạn cần …» và model nghe khung hơn nghe lớp giọng; dưới cờ BẬT, `voicePickShape()` chỉ thay phần câu mở cố định, giữ nguyên nội dung giả định. Cờ TẮT: khung giống từng byte.
+- Delta code dựng quy cho cờ = 0 (SHOP-2#5/#7 xuất hiện ngẫu nhiên ở cả hai chế độ, đo 3+3 lần). B3 khác cả hai A ở 10 lượt không giải thích bằng nhiễu — đều là lựa chọn của model.
+- **Rủi ro còn lại, nói thẳng:** lượt chốt có nêu giả định giảm 26 → 23 trên 30 (khoảng 3 lượt model bỏ câu giả định). Không có lượt nào bịa thông tin; nhưng «không bỏ giả định» chưa đạt 100%. Tắt cờ là quay về ngay.
+**Quyết định:** theo tiêu chí mới của Huy, D ĐẠT ⇒ `STYLE_LUNA6=1` được bật trên UAT cho vòng test cuối. Production do Huy bật/tắt ở PHẦN B.
