@@ -237,3 +237,35 @@ AI answers can be wrong; the app says so and asks people to double-check opening
 - Khai "Lịch sử mua" hay bỏ; khai "Số điện thoại" (đã khai Có).
 - Có bật liên kết affiliate theo phương án C (không chia sẻ dữ liệu) như đã chọn 29/09 cho cả iOS.
 - Số điện thoại/email liên hệ cho người duyệt; có tạo tài khoản demo không.
+
+## 9. Đối chiếu App Review Guidelines hiện hành (đọc 01/10/2026 từ https://developer.apple.com/app-store/review/guidelines/)
+
+Mỗi yêu cầu: **ĐÃ ĐỦ** (có file) / **THIẾU** / **CHƯA CHẮC**. Chỉ ghi, không sửa mã.
+
+| Điều | Yêu cầu (tóm lược) | Trạng thái | Chỗ nào / việc cần làm |
+|---|---|---|---|
+| 1.2 Nội dung người dùng | có cách lọc, báo cáo, chặn người dùng, có liên hệ công khai | **ĐÃ ĐỦ phía app, CHƯA BẬT trên production**: báo cáo + chặn (`ios/TappyAI/Features/Safety/*`) nằm sau cờ `p8` mặc định tắt; lọc nội dung do cổng an toàn server; liên hệ `support@tappyai.com`. Cần: bật cờ + migration Phase 8 trên production (IOS-REQUESTS I7), người xử lý báo cáo trong 24 giờ (việc của Huy), trang `/support` thật (CHƯA CHẮC) |
+| 5.1.1(v) Xoá tài khoản | xoá được TRONG app | **ĐÃ ĐỦ phía app, CẦN cờ**: `Profile/UI/AccountDeletionView.swift`, ảnh 44–46 và 66. Cờ `ACCOUNT_SELF_DELETE_ENABLED` phải BẬT trên production lúc duyệt (Huy quyết bật lúc release, R29); thứ tự: áp D1/D2/D4 → bật cờ → xoá thử tài khoản test |
+| 4.8 Đăng nhập bên thứ ba | có Google/Zalo thì phải có lựa chọn tương đương (Sign in with Apple) | **ĐÃ ĐỦ phía app, CHƯA BẬT**: `Auth/Data/AppleSignIn.swift`, nút ẩn tới khi server bật provider Apple (IOS-REQUESTS I8; việc Supabase để sau release). Nếu nộp mà nút chưa hiện thì bị 4.8 |
+| 5.1.2(i) Chia sẻ dữ liệu cá nhân với AI bên thứ ba | **«phải nói rõ dữ liệu được chia sẻ với AI bên thứ ba và xin sự đồng ý rõ ràng trước khi chia sẻ»** | **THIẾU**: tin nhắn chat được gửi tới OpenAI (R27: trang /privacy đã ghi OpenAI), nhưng app iOS **không có** màn nói rõ và xin đồng ý trước lần chat đầu (tìm trong mã: không có chuỗi nào nhắc OpenAI/AI bên thứ ba). Đây là điều dễ bị từ chối nhất. Việc cần làm: một màn/hộp đồng ý trước lần chat đầu (cần quyết định sản phẩm + phiên web nếu dùng chung nội dung); ghi vào IOS-REQUESTS |
+| — chuỗi mâu thuẫn | | **CHƯA CHẮC**: `integrations.privacy` nói «không chia sẻ với bên thứ ba» (về kết nối ứng dụng) — nên đọc lại cho khỏi mâu thuẫn với việc gửi chat tới OpenAI |
+| 5.1.1 Chính sách quyền riêng tư | URL chính sách, nêu thu thập/ bên thứ ba/ lưu giữ/ xoá | **CHƯA CHẮC**: `www.tappyai.com/privacy` đã cập nhật OpenAI + wttr.in/Upstash/Brevo/Overpass/Google Maps (R27) nhưng "chờ Huy duyệt chữ"; em chưa mở trang để so chữ (trình duyệt đang không hiển thị) |
+| 3.1.1 Hàng hoá số | tính năng mở khoá phải dùng In-App Purchase | **ĐÃ ĐỦ cho bản đầu**: không bán gói (`showProUpgrade` tắt, không có mua trong app). Lưu ý: khi bật Pro phải dùng IAP (RevenueCat, Phase 8) |
+| 2.3.10 Nền tảng khác | không nhắc tên/biểu tượng nền tảng khác trong app hoặc metadata | **CHƯA CHẮC / CÓ RỦI RO**: chữ chính thức của web (R29) trong màn xoá tài khoản có «**Google Play**». Em đã dùng đúng chữ web theo lệnh; nên hỏi web/Huy có dùng bản chỉ nói «App Store» cho iOS không. Mô tả cửa hàng iOS đã tránh nhắc Android |
+| 1.3 / 2.3.6 Độ tuổi | trả lời bảng câu hỏi trung thực | **CHƯA KIỂM TRONG GIAO DIỆN** (§5.4 soạn từ mã; Apple vừa thêm câu hỏi mạng xã hội — «Review New Social Media Questions on Age Ratings» hiện ở App Store Connect của Huy) |
+| 2.1(a) Tài khoản demo | có đăng nhập thì phải đưa tài khoản demo, bật dịch vụ nền | **THIẾU (việc của Huy)**: tạo trên production sau khi web release (§5.3); em không tạo |
+| 5.1.1(ix) Ngành bị quản lý | | **KHÔNG áp dụng** theo hiểu biết (app tư vấn đi chơi/mua sắm; có kiểm tra link lừa đảo nhưng không cung cấp dịch vụ tài chính) — CHƯA CHẮC |
+
+**Nhận dạng giọng nói (sửa một câu trong §4 và nhắc trước khi khai):** app dùng `SFSpeechRecognizer` và **không** yêu cầu nhận diện trên thiết bị (`requiresOnDeviceRecognition` không được đặt), nên âm thanh **có thể được gửi tới Apple** để nhận diện. Không được ghi «chạy hoàn toàn trên máy». Chữ đúng cho người duyệt: «Nhận diện giọng nói dùng dịch vụ nhận diện của Apple; app chỉ nhận chữ, không lưu âm thanh.»
+
+**Đọc App Store Connect (mục 4a của lệnh): CHƯA LÀM** — Chrome của Huy đang không hiển thị trang (cửa sổ 0×0), nên em chưa đi qua được các mục cột trái để lấy danh sách ô bắt buộc/cảnh báo nguyên văn. Việc này nằm trong HÀNG CHỜ.
+
+## 10. ĐIỀU KIỆN TRƯỚC KHI NỘP (gom lại)
+
+1. Web release Phase 7 xong; **cờ production**: `ACCOUNT_SELF_DELETE_ENABLED=true` (sau D1/D2/D4), cờ báo cáo/chặn Phase 8 + migration, nút Sign in with Apple hiện (provider Apple ở Supabase, thu hồi token khi xoá).
+2. **Màn đồng ý chia sẻ dữ liệu với AI bên thứ ba (5.1.2(i))** — chưa có.
+3. Tài khoản demo trên production (Huy tạo) + số điện thoại liên hệ.
+4. Bản build cuối đã qua TestFlight và kiểm trên iPhone thật: đăng nhập Apple, xoá tài khoản, báo cáo/chặn, mic (chấm cam tắt), push (chỉ khi server gửi được tin cho iOS).
+5. Trang `/privacy` đã được Huy duyệt; trang hỗ trợ có thật.
+6. App Privacy, độ tuổi, mã hoá/xuất khẩu: **Huy xác nhận từng câu** rồi mới điền.
+7. Khoá repo SAU release (chuyển CI sang Xcode Cloud nếu cần).
