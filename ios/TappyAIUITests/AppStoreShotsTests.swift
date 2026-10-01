@@ -46,6 +46,7 @@ final class AppStoreShotsTests: XCTestCase {
         let row = app.descendants(matching: .any)
             .matching(NSPredicate(format: "label CONTAINS 'Minh Anh' OR label CONTAINS 'Quốc Bảo'")).firstMatch
         XCTAssertTrue(row.waitForExistence(timeout: 60), "a feed row")
+        Thread.sleep(forTimeInterval: 3)   // the drawn fixture picture is fetched from the stub
         settle(); shot("05-explore")
         app.terminate()
 
