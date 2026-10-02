@@ -40,6 +40,12 @@ def gradient_png(w, h, c1, c2):
 
 
 import math
+import os
+
+STORE_ART = {
+    "a": "diem-quan-an", "b": "diem-lau-nuong", "c": "diem-cafe", "d": "diem-quan-an",
+    "scene-dalat": "diem-nui", "scene-sea": "diem-bien",
+}
 
 SCENES = {
     # name: (sky top, sky bottom, sun colour, sun x, sun y, sun radius, hill colours back->front)
@@ -194,7 +200,7 @@ OLD_CONVERSATIONS = [
 MINE = [
     _review(1, "Phở Thìn Bờ Hồ", "a", 12),
     _review(2, "The Note Coffee", "c", 7),
-    _review(3, "Bún chả Hương Liên", "d", 3),
+    _review(3, "Bún chả Hương Liên", "b", 3),
     _review(4, "Chia sẻ", "b", 0, is_hidden=True),
     _review(5, "Quán mới", "a", 0, moderation={"state": "UNDER_REVIEW", "title": "Đang được xem xét",
                                               "detail": "Bài của bạn sẽ hiện công khai sau khi được duyệt."}),
@@ -202,7 +208,7 @@ MINE = [
 
 # Home's community-video rail: the trending feed, only video rows with a thumbnail are drawn.
 FEED = [
-    _review(11, "Cuối tuần ở Đà Lạt", "scene-dalat", 12400, content_type="video", thumbnail="http://127.0.0.1:3000/img/scene-dalat.png",
+    _review(11, "Cuối tuần ở Đà Lạt", "scene-dalat", 12400, content_type="video", body="Săn mây và cà phê view núi, cuối tuần là phải lên Đà Lạt", thumbnail="http://127.0.0.1:3000/img/scene-dalat.png",
             profiles={"full_name": "Minh Anh"}),
     _review(12, "Chia sẻ", "scene-sea", 830, content_type="video", thumbnail="http://127.0.0.1:3000/img/scene-sea.png",
             body="Săn mây Cầu Đất lúc 5h sáng", profiles={"full_name": "Quốc Bảo"}),
@@ -243,6 +249,19 @@ class Handler(BaseHTTPRequestHandler):
         path = self.path.split("?")[0]
         if path.startswith("/img/") and path.endswith(".png"):
             name = path[5:-4]
+            # App Store pictures: illustrations (square WebP, no text/logo/person) from the web repo's plan-images,
+            # kept here (test host only) so the app itself carries no extra image.
+            art = STORE_ART.get(name)
+            art_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "stub-images", str(art) + ".webp")
+            if art and os.path.exists(art_path):
+                with open(art_path, "rb") as fh:
+                    data = fh.read()
+                self.send_response(200)
+                self.send_header("Content-Type", "image/webp")
+                self.send_header("Content-Length", str(len(data)))
+                self.end_headers()
+                self.wfile.write(data)
+                return
             if name in IMAGES or name in SCENES:
                 data = scene_png(name) if name in SCENES else gradient_png(360, 240, *IMAGES[name])
                 self.send_response(200)

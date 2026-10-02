@@ -109,11 +109,23 @@ class PagingViewController<Content: View>: UIPageViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .black
+        tuneScrollView()
+    }
 
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        tuneScrollView()
+    }
+
+    /// The page controller's own scroll view adds the status-bar safe area as a content inset, which pushed every
+    /// page ~47 pt down and left a black band above the picture (seen in the App Store shot, 02/10). The feed hides the
+    /// status bar and draws edge to edge, so the inset must never be applied.
+    private func tuneScrollView() {
         for sub in view.subviews {
             if let scrollView = sub as? UIScrollView {
                 scrollView.showsVerticalScrollIndicator = false
                 scrollView.showsHorizontalScrollIndicator = false
+                scrollView.contentInsetAdjustmentBehavior = .never
             }
         }
     }

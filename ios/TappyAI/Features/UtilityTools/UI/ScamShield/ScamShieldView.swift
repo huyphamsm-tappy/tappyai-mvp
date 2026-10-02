@@ -69,6 +69,9 @@ struct ScamShieldView: View {
         .background(TappyColor.background)
         .navigationTitle(NSLocalizedString("scamShield.title", comment: ""))
         .navigationBarTitleDisplayMode(.inline)
+        // Opaque bar: scrolled content no longer ghosts through the title and the status bar (App Store shot 06).
+        .toolbarBackground(TappyColor.background, for: .navigationBar)
+        .toolbarBackground(.visible, for: .navigationBar)
         .confirmationDialog(Text("scam.link.confirm.title"), isPresented: Binding(
             get: { confirmOpenLink != nil }, set: { if !$0 { confirmOpenLink = nil } }
         ), titleVisibility: .visible) {
