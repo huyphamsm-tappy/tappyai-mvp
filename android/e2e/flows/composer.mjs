@@ -24,7 +24,10 @@ async function pickNewest(a, kind = 'Photo') {
   for (let i = 0; i < 10 && !cell; i++) {
     // Skip zero-length entries («with duration 00:00»): aborted pushes leave them in the emulator gallery, they sort FIRST
     // (newest), and picking one makes the app say «Không đọc được thông tin video» (02/10: false FAIL on every build).
-    cell = a.dump().find((n) => n.clickable && cellRe.test(n.desc || '') && !/duration 00:00/.test(n.desc || ''))
+    const nodes = a.dump()
+    cell = nodes.find((n) => n.clickable && cellRe.test(n.desc || '') && !/duration 00:00/.test(n.desc || ''))
+    // 02/10: NO "first big cell" fallback here. This flow UPLOADS the picked item to UAT; on a real phone the newest item can be the
+    // owner's own screenshot (it was, once). Without the labelled cell (emulator picker) the flow stops instead of guessing.
     if (!cell) await a.sleep(1000)
   }
   if (!cell) throw new Error(`picker: no ${kind} cell`)

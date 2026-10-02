@@ -29,3 +29,35 @@ Nhánh Web làm nguồn: `origin/rc/web-uat` @ `56a26aeb72d3ae1dacb484885df04e69
 | Google OAuth SHA | Các SHA khoá ký nằm trong `PLAY-CONSOLE-PASTE.md` mục A01/G (đọc Play Console + Google Cloud 01/10); không có bằng chứng client Google đã được sửa/tạo lại (việc của Huy / phiên GCP) | docs Android | BLOCKED |
 
 **Kết luận bảng:** PASS đủ để sửa mã Android theo hợp đồng (matcher, chữ link/QR/tin nhắn, lý do `reason_vi`, báo cáo bình luận/người dùng). BLOCKED còn lại: cờ production, Google OAuth, phê duyệt pháp lý chữ. → KHÔNG build AAB phát hành cho tới khi các mục BLOCKED có bằng chứng; chỉ build APK UAT để kiểm.
+
+---
+## Kết quả Bước 4 (sau khi đối chiếu) — 02/10, mã `8763be5`+
+
+**Sửa trong Android (theo hợp đồng Web, `origin/rc/web-uat` @ `56a26ae`):**
+| Việc | File | Bằng chứng |
+|---|---|---|
+| Matcher tin nhắn = bản sao đúng `match.ts` của web (bảng cụm có trọng số, ngưỡng 6/4, chống đếm đôi) | `scamshield/data/ScenarioMatcher.kt` (sinh từ web) | `ScenarioMatcherTest`: 15 fixture của web đều đúng kịch bản + «mạnh»; ca yếu; 7 tin bình thường không khớp |
+| Link/QR-link: đọc `verdict` + `reason_vi/reason_en`, chữ tiêu đề/nội dung link của web | `ScamShieldDtos.kt`, `RealScamShieldRepository.kt`, `ScamShieldResult.kt`, `ScamVerdict.kt` | `ScamCheckContractTest` (JSON thật của UAT 02/10), phản hồi thật trên máy thật: «Đường link có đặc điểm thường gặp ở link giả mạo» + lý do tiếng Việt |
+| Chữ 3 trạng thái, tình huống, 113, disclaimer, QR không phải link: chép đúng từ `scamVerdict.ts`/`scamQr.ts` | `strings_scam_local.xml` (vi/en) | `ScamWordingCopyTest` (43 câu × 2 ngôn ngữ so từng ký tự) |
+| QR classifier = bản sao `payload.ts` (bare host, scheme thanh toán, app_link, preview 500) | `QrCodes.kt` | `QrCodesTest` |
+| Báo cáo bình luận/người dùng dùng đúng 2 route riêng; KHÔNG còn `POST /api/reports` | `SafetyApi.kt`, `SafetyRepository.kt` | `SafetyRepositoryTest` |
+| Menu bài trong màn Chi tiết thiếu «Chặn người dùng» (lỗi Android thật) → thêm, chỉ khi `p8.userBlocks` | `ReviewsScreens.kt`, `ReviewDetailViewModel.kt` | `DetailBlockWiringTest`; máy thật: safety-report 17/17 |
+
+**Test:** Debug / Release / UAT unit: mỗi bộ 1068 test, 0 lỗi (chạy 02/10 sau lần sửa cuối).
+
+**Máy thật R58RC0V30BH (Samsung A12s, Android 11, 720×1600), APK UAT dựng từ `8763be5`:**
+| Luồng | Kết quả | Bằng chứng |
+|---|---|---|
+| Lá chắn — tin nhắn (bình thường / phạt nguội / Trung thu / link giả) | PASS 16/16 | `e2e/out/2026-10-02T11-18-26/scam-shield-parity/android/*.png` (đã mở xem) |
+| Lá chắn — QR (link giả / chữ / thanh toán / Wi-Fi / huỷ chọn ảnh) | PASS 7/7 | `e2e/out/2026-10-02T11-45-06/...` (đã mở xem) |
+| Báo cáo bài + chặn người dùng + mất mạng + hàng `content_reports` trên server | PASS 17/17 | `out/phone-safety3.log` |
+| nav-back, tuổi 18+, Gợi ý, Deals, thông báo | PASS (lượt trước, bản `1b12a7c`/`401a3e6`) | log trong `e2e/out/` |
+| Hộp «Quy tắc cộng đồng» lần đăng đầu | PASS (2/3 kiểm tra đầu của composer) | `out/2026-10-02T12-17-45/composer/android/02-community-rules.png` |
+| Đăng clip lên UAT | FAIL/chưa kiểm: bộ test không chọn được clip trên bộ chọn Samsung (xem cảnh báo) | `07-error.png` |
+| Chat: thẻ hỏi 5 mảng, kính cường lực, phim 5 link rạp, vé máy bay «Bay từ đâu?» | **chưa kiểm trên máy thật**: bộ test cần cài app giả Zalo trùng gói với Zalo thật của máy (INSTALL_FAILED_VERSION_DOWNGRADE) — KHÔNG ép cài | — |
+| Chia sẻ (Zalo/Messenger/TikTok) | chưa kiểm trên máy thật (cùng lý do) | — |
+| Đăng nhập Zalo / Google | chưa kiểm (cần tài khoản thật) | — |
+
+**⚠ Sự cố trong lúc kiểm (đã gỡ nguyên nhân):** ở bước «đăng ảnh», bộ test chọn «ảnh mới nhất» trên Samsung và đã đăng lên UAT (tài khoản test `e2e.android.pro`, DB audit) MỘT ảnh chụp màn hình của app đang có trong máy anh (không thấy thông tin cá nhân trong ảnh: danh sách ShopeeFood/TikTok Shop/Grab). Đã bỏ cách chọn đó khỏi luồng đăng bài, đã xoá hai tệp mẫu khỏi thư viện máy. Bài/ảnh trên UAT chưa xoá (cần anh quyết).
+
+**AAB:** KHÔNG build. Lý do: còn mục BLOCKED (cờ production, Google OAuth, phê duyệt pháp lý chữ). AAB đang giữ `1b12a7c` (SHA-256 `bd0f659b…15c6`) đã LỖI THỜI so với mã hiện tại.

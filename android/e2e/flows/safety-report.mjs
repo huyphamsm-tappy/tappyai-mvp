@@ -63,7 +63,7 @@ export async function android({ a, shot, check, seeded }) {
 
     // 2) Có mạng lại.
     a.sh('svc', 'wifi', 'enable'); a.sh('svc', 'data', 'enable')
-    await a.sleep(7000)
+    await a.sleep(15000)
     await a.tap('Gửi báo cáo', { after: 5000 })
     shot('sent')
     const rows = await reportRows(ids)
