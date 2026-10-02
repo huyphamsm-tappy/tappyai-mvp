@@ -138,11 +138,37 @@ Trạng thái: **iOS App 1.0 — Prepare for Submission**. App Review: «Items y
 
 *(Ghi chú cũ về lần thử thất bại ngày 02/10 sáng — Chrome chưa đăng nhập — đã hết hiệu lực.)*
 
+### 1c. Ba mục ASC cần Huy QUYẾT (đề xuất 02/10 — em **chưa điền** gì)
+
+**(1) Content Rights** — câu Apple hỏi: «Does your app contain, show, or access third-party content?» và nhắc: «Apps that contain, show, or access third-party content must have all the necessary rights to that content or be otherwise permitted to use it under the laws of each App Store country or region in which they're available.» (developer.apple.com/help/app-store-connect/reference/app-information, đọc 02/10).
+
+Với TappyAI câu trả lời đúng sự thật là **«Có» (app có hiển thị nội dung bên thứ ba)** — chọn «Không» là sai vì app có nội dung người dùng đăng. Chọn «Có» nghĩa là Huy **cam kết có quyền** với từng nguồn dưới đây; Huy kiểm từng dòng, dòng nào chưa chắc thì xử lý trước khi chọn:
+
+| Nội dung bên thứ ba trong app | Quyền dựa vào đâu | Chắc chưa? |
+|---|---|---|
+| Bài, clip, bình luận, ảnh người dùng đăng | Điều khoản dịch vụ: người dùng cấp quyền hiển thị cho TappyAI; có báo cáo/chặn/gỡ | **CHƯA CHẮC**: `/terms` có điều khoản cấp quyền cho nội dung người dùng không — web xác nhận |
+| Dữ liệu địa điểm (OpenStreetMap / Overpass; tên, địa chỉ) | Giấy phép ODbL, **bắt buộc ghi nguồn «© OpenStreetMap contributors»** | **THIẾU**: em đã tìm trong mã iOS (02/10): KHÔNG có chuỗi «OpenStreetMap» nào — cần thêm dòng ghi nguồn (việc nhỏ của phiên iOS, cần một bản build; chờ lệnh) |
+| Liên kết bản đồ/đánh giá Google, kiểm link (Google Web Risk) | Điều khoản dịch vụ API của Google; app chỉ mở liên kết/gọi API | thường ổn — Huy xác nhận tài khoản API hợp lệ |
+| Cảnh báo lừa đảo của **Bộ Công an** (25 kịch bản: tiêu đề + tóm tắt «như đã công bố», có khối nguồn «Cổng Thông tin điện tử Bộ Công an», ngày đăng, nút «Đọc cảnh báo gốc», dòng «TappyAI không phải cơ quan nhà nước») | thông tin công bố công khai, dẫn nguồn đầy đủ; **không phải quyền ta tự có** | **CẦN HUY (và nếu cần ý kiến pháp lý)**: xác nhận được trích dẫn thế này; phương án an toàn hơn: chỉ hiện tiêu đề + liên kết tới bài gốc, bỏ phần tóm tắt chép nguyên |
+| Hình minh hoạ do công cụ AI tạo (mascot Tappy, tranh minh hoạ) | điều khoản của công cụ tạo ảnh cho phép dùng thương mại | **CHƯA CHẮC**: Huy xác nhận công cụ nào và điều khoản |
+| Tên/biểu tượng đối tác (Google, Zalo) trên nút đăng nhập; tên Shopee/Grab… trong Ưu đãi | dùng để nhận diện đúng theo hướng dẫn thương hiệu của họ; Ưu đãi chỉ hiện chữ tên | ổn nếu giữ đúng cách dùng |
+
+**Đề xuất:** chọn **«Có — và tôi có đủ quyền»** chỉ SAU KHI Huy đã chốt 4 dòng «CHƯA CHẮC/CẦN HUY» ở trên. Em **không tự chọn** — đây là khai báo pháp lý.
+
+**(2) Digital Services Act (DSA)** — Apple (developer.apple.com/help/app-store-connect/manage-compliance-information/manage-european-union-digital-services-act-trader-requirements, đọc 02/10):
+- **Khi nào bắt buộc:** khi app được phân phối ở **bất kỳ lãnh thổ nào trong 27 nước EU**. Apple phải xác minh và hiển thị thông tin liên hệ của «trader» (Điều 30–31 DSA).
+- **Nếu chỉ chọn Việt Nam:** Apple nói nhà phát triển phân phối **ngoài EU** thì «không hành động như trader trên App Store» và **không phải cung cấp thông tin trader**. Trạng thái khai (trader / không phải trader) được chọn **lúc nộp** trong App Store Connect và đổi được theo từng app ở App Information → *App Store Regulations & Permits*. Giao diện hiện nút «Set Up» ở mục này; **CHƯA CHẮC** ASC có chặn «Add for Review» nếu bỏ trống khi chỉ có Việt Nam — Huy xem lúc bấm (em không bấm).
+- **Hệ quả nếu sau này thêm nước EU:** phải khai trước khi bán ở đó; **TappyAI nhiều khả năng là «trader»** (có thu hoa hồng liên kết/bán hàng ⇒ «acting for purposes relating to trade, business»), khi đó **thông tin liên hệ (địa chỉ, điện thoại, email) sẽ hiện công khai ở EU**. Không nên khai «không phải trader» nếu thực chất có doanh thu — đó là khai sai.
+- **Đề xuất:** bản đầu **chỉ Việt Nam** ⇒ chưa cần khai trader; ghi vào backlog «trước khi mở EU: khai DSA, chọn địa chỉ liên hệ công khai».
+
+**(3) Apple Silicon Mac / Apple Vision Pro** (trang Pricing and Availability: hộp «Make this app available» cho Mac và cho Vision Pro): **đề xuất TẮT cả hai** — app chỉ thiết kế/kiểm cho iPhone (`TARGETED_DEVICE_FAMILY: "1"`), chưa thử trên Mac (chuột/bàn phím, camera, push, quyền) hay Vision Pro; mở sẵn sẽ buộc người duyệt kiểm cả hai nơi và dễ bị từ chối (4.0/2.4.1). Bật sau khi đã thử. **Chưa điền.**
+
 ---
 
 ## 3. Ảnh chụp màn hình
 
-**Bản cuối 02/10:** workflow `ios-appstore-shots` chụp **10 ảnh giao diện TỐI**, tiếng Việt, từ ứng dụng thật chạy với máy chủ giả (không có người thật), thanh trạng thái sạch 9:41, trên máy **6.5″ (1284 × 2778)** — vì App Store Connect của app này CHỈ hiện khe 6.5″ (§1b); máy 6.9″ (1320 × 2868) chỉ là phương án dự phòng; kích thước thật in vào tóm tắt của run. (Bộ 6.9″ chụp trước đó nằm ở `appstore-screenshotsun-*` — không dùng để nộp.) Tên tệp: `01-chat-ask` (thẻ hỏi nhanh) · `02-chat-plan` (thẻ kế hoạch) · `03-chat-places` (thẻ địa điểm) · `04-home` · `05-explore` (feed clip, tranh vẽ giả) · `06-scam-message` (Lá chắn: tin nhắn «giống tình huống Mã QR giả») · `07-scam-qr` (mã QR chứa link bị chặn) · `08-profile` (Hồ sơ gọn) · `09-ai-consent` (màn đồng ý chia sẻ dữ liệu với AI) · `10-settings`. Thư mục Huy đọc được: **`D:\TappyAI-backups\appstore-screenshots\`**. Huy **duyệt từng ảnh** trước khi đăng.
+**Bản cuối 02/10:** workflow `ios-appstore-shots` chụp **10 ảnh giao diện TỐI**, tiếng Việt, từ ứng dụng thật chạy với máy chủ giả (không có người thật), thanh trạng thái sạch 9:41, trên máy **6.5″ (1284 × 2778)** — vì App Store Connect của app này CHỈ hiện khe 6.5″ (§1b); máy 6.9″ (1320 × 2868) chỉ là phương án dự phòng; kích thước thật in vào tóm tắt của run. (Bộ 6.9″ chụp trước đó nằm ở `appstore-screenshots
+un-*` — không dùng để nộp.) Tên tệp: `01-chat-ask` (thẻ hỏi nhanh) · `02-chat-plan` (thẻ kế hoạch) · `03-chat-places` (thẻ địa điểm) · `04-home` · `05-explore` (feed clip, tranh vẽ giả) · `06-scam-message` (Lá chắn: tin nhắn «giống tình huống Mã QR giả») · `07-scam-qr` (mã QR chứa link bị chặn) · `08-profile` (Hồ sơ gọn) · `09-ai-consent` (màn đồng ý chia sẻ dữ liệu với AI) · `10-settings`. Thư mục Huy đọc được: **`D:\TappyAI-backups\appstore-screenshots\`**. Huy **duyệt từng ảnh** trước khi đăng.
 
 *(Bản kế hoạch cũ bên dưới giữ để tham khảo.)*
 
