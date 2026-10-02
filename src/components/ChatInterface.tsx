@@ -2,7 +2,7 @@
 
 import { useChat } from 'ai/react'
 import type { Message } from 'ai'
-import { useEffect, useRef, useState, useCallback } from 'react'
+import { useEffect, useMemo, useRef, useState, useCallback } from 'react'
 import { flushSync } from 'react-dom'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
@@ -50,6 +50,9 @@ import { track } from '@/lib/tracking/tracker'
 import { ensureAnonymousSession } from '@/lib/auth/ensureAnonymousSession'
 import { attachSavedContext, type SavedMessage } from '@/lib/chat/savedContext'
 import { withCompactedHistory } from '@/lib/chat/requestHistory'
+import { withCutWatch } from '@/lib/chat/streamCut'
+import MessageBoundary, { Deferred } from '@/components/chat/MessageBoundary'
+import { useStickToBottom } from '@/components/chat/useStickToBottom'
 import { balanceBoldPerLine } from '@/lib/chat/markdownNormalize'
 import { cleanRepeats } from '@/lib/chat/replyRepeat'
 import { isAgeGateMessage, redirectToAgeCheck } from '@/lib/account/ageGateClient'
@@ -681,7 +684,11 @@ export default function ChatInterface({
 }: ChatInterfaceProps) {
   const router = useRouter()
   const { t, locale } = useTranslation()
-  const bottomRef = useRef<HTMLDivElement>(null)
+  // A1 (2026-10-02): the thread stays pinned to its end while it grows (see useStickToBottom).
+  const { scrollRef, contentRef, pin } = useStickToBottom<HTMLDivElement, HTMLDivElement>()
+  // A reply stream that closed without its finish frame (streamCut.ts): the UI offers «answer again».
+  const [streamCut, setStreamCut] = useState(false)
+  const cutAwareFetch = useMemo(() => withCutWatch(withCompactedHistory, () => setStreamCut(true)), [])
   const inputRef = useRef<HTMLTextAreaElement>(null)
   // Tracks the in-flight save so internal_booking clicks can await it before
   // navigating — prevents the race where the user clicks before router.replace
@@ -868,7 +875,7 @@ export default function ChatInterface({
     // blocks; over budget, the oldest turns go) so a long thread never hits the server's input
     // budget and 413s on every turn. Only the request body changes — see lib/chat/requestHistory.
     // Done in `fetch` rather than experimental_prepareRequestBody, which would drop `body` below.
-    fetch: withCompactedHistory,
+    fetch: cutAwareFetch,
     body: {
       ...(userLocation ? { userLocation: { lat: userLocation.lat, lng: userLocation.lng, address: userLocation.address } } : {}),
       ...(userPreferences.length > 0 ? { userPreferences } : {}),
@@ -1320,9 +1327,12 @@ export default function ChatInterface({
     } catch { /* storage unavailable — nothing to restore */ }
   }
 
+  // A message the user just sent always brings the view to the end; the growth of the thread afterwards is followed by
+  // useStickToBottom's observer (not by a one-off smooth scroll aimed before the content had finished growing).
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }, [messages])
+    if (messages[messages.length - 1]?.role === 'user') pin()
+  }, [messages, pin])
+  useEffect(() => { if (isLoading) setStreamCut(false) }, [isLoading])
 
   // Auto-focus input on mount and when conversationId changes
   useEffect(() => {
@@ -1440,8 +1450,8 @@ export default function ChatInterface({
           }}
         />
       )}
-      <div className="flex-1 overflow-y-auto">
-        <div className="max-w-container-content mx-auto w-full px-4 py-5">
+      <div ref={scrollRef} style={{ overflowAnchor: "none" }} className="flex-1 overflow-y-auto">
+        <div ref={contentRef} className="max-w-container-content mx-auto w-full px-4 py-5">
           {messages.length === 0 && (
             <div className="flex flex-col items-center justify-center min-h-[60vh] gap-6 animate-fade-in">
               <div className="text-center">
@@ -1522,6 +1532,17 @@ export default function ChatInterface({
           >
             {messages.map((msg, msgIdx) => {
               if (msg.role === 'assistant') {
+                // A1 (2026-10-02): every assistant message renders inside its OWN error boundary, parsing included
+                // (Deferred runs the callback inside the boundary), so one broken message can never blank the chat frame.
+                return (
+                  <MessageBoundary
+                    key={msg.id}
+                    resetKey={typeof msg.content === 'string' ? msg.content.length : 0}
+                    rawText={typeof msg.content === 'string' ? msg.content : ''}
+                    labels={{ title: t('chat.messageBroken'), retry: t('chat.messageRetry'), copy: t('chat.messageCopy'), copied: t('chat.messageCopied') }}
+                    onError={(e) => { console.error('chat message render failed:', e); try { posthog.capture('chat_message_render_failed', { message: String(e?.message).slice(0, 120) }) } catch { /* analytics only */ } }}
+                  >
+                    <Deferred render={() => {
                 const { text: textAfterPlan, plan } = parsePlan(msg.content)
                 // Validated, not raw: a model-authored purchase promise backed by a
                 // homepage or a search page is downgraded to the honest search label.
@@ -1761,6 +1782,9 @@ export default function ChatInterface({
                     </div>
                   </div>
                 )
+                    }} />
+                  </MessageBoundary>
+                )
               }
               const msgAttachments = (msg as any).experimental_attachments as Array<{ url: string; name?: string; contentType?: string }> | undefined
               return (
@@ -1808,6 +1832,22 @@ export default function ChatInterface({
                   <span key={progress ? `p:${progress.stage}` : toolHint ? activeTool : thinkHintIdx} className="text-xs text-gray-400 dark:text-gray-500 animate-fade-in" data-testid="turn-progress" data-stage={progress?.stage}>
                     {progress ? progress.text : toolHint ? toolHint[locale === 'en' ? 1 : 0] : THINK_HINTS[thinkHintIdx % THINK_HINTS.length]}
                   </span>
+                </div>
+              </div>
+            )}
+            {/* A reply whose stream closed without its finish frame is half an answer: say so and offer to answer again. */}
+            {streamCut && !error && !isLoading && (
+              <div role="status" data-testid="stream-cut" className="flex gap-3 animate-fade-in">
+                <TappyAvatar category={category} error />
+                <div className="flex-1 min-w-0 rounded-2xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/40 px-4 py-3 text-sm text-amber-800 dark:text-amber-200">
+                  <p className="leading-relaxed">{t('chat.streamCut')}</p>
+                  <button
+                    type="button"
+                    onClick={() => { setStreamCut(false); reload() }}
+                    className="mt-2 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-xs font-medium transition-colors"
+                  >
+                    <RotateCcw size={13} /> {t('chat.streamCutRetry')}
+                  </button>
                 </div>
               </div>
             )}
@@ -1899,7 +1939,6 @@ export default function ChatInterface({
               </div>
             )}
           </div>
-          <div ref={bottomRef} />
         </div>
       </div>
       <div className="flex-shrink-0 px-4 pb-4 pt-2 border-t border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-950">
