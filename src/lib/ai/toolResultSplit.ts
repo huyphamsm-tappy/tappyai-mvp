@@ -173,6 +173,9 @@ export interface EnrichmentCollector {
   /** Consult V2 turn type — the prose-shape guard follows the approved frame for it (2 alternatives; a plan is not reshaped). */
   consultTurn?: string
   setConsultTurn(turn: string, refers?: string[], known?: Record<string, string>): void
+  /** The area of the turn ('flight' for a fare turn) — the advice floor (adviceFloor.ts) picks its tips by it. */
+  consultDomain?: string
+  setConsultDomain(domain: string | undefined): void
   /** Consult V2 plan: the pick the conversation settled on (the plan's cost line is about it). */
   consultPick?: string | null
   setConsultPick(name: string | null): void
@@ -431,6 +434,8 @@ export function createEnrichmentCollector(turnText = '', earlierUserTexts: reado
     leakCheck: undefined as ((text: string) => { leak: boolean; reason: string | null }) | undefined,
     setLeakCheck(fn: (text: string) => { leak: boolean; reason: string | null }) { this.leakCheck = fn },
     consultKnown: undefined as Record<string, string> | undefined,
+    consultDomain: undefined as string | undefined,
+    setConsultDomain(domain: string | undefined) { this.consultDomain = domain },
     consultPlanPrice: null as { amount: number; seller: string | null } | null,
     setConsultTurn(turn: string, refers?: string[], known?: Record<string, string>) { this.consultTurn = turn; this.consultRefers = refers; this.consultKnown = known },
     consultPick: null as string | null,

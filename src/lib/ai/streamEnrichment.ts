@@ -24,6 +24,9 @@ import { appendConsultPlanCost, appendPlanBudgetMath, partyCount, perPersonBudge
 import { stripModelMediaInProse, dropEmptyMediaBlocks } from './modelMedia'
 import { insertBeforeMarkers } from './wrongModel'
 import { footerRemaining, CARDS_SHOWN as CARD_FOLD_SHOWN } from './cardCounts'
+import { applyTripBudgetEstimate, dropEmptyModelBudget } from './tripBudgetEstimate'
+import { adviceEnabled } from './consultative/adviceBlock'
+import { ensureAdviceFloor } from './consultative/adviceFloor'
 import { consultRemainingLineN, normalizePickSentence, shoppingMarkerNames, shoppingPickName } from './consultative/consultBrain'
 import { consultLunaEnabled, splitPickSentence } from './consultative/luna'
 import { LEAK_REPLACEMENT_EN, LEAK_REPLACEMENT_VI } from './consultative/lunaSafety'
@@ -2654,7 +2657,7 @@ export function applyPlaceEnrichmentStreamFilter(
       const consultPlan = collector?.consultTurn === 'plan'
       const shape = !hasVenues || consultPlan ? { text: atmosphere.text, stats: { sentences_in: 0, sentences_out: 0, listing_removed: 0, alternatives_removed: 0, capped: 0 } } : guardProseShape(atmosphere.text, {
         rendersCard: v1.rendersCard,
-        ...(collector?.consultTurn ? { maxAlternatives: 2, maxSentences: 9 } : {}),
+        ...(collector?.consultTurn ? { maxAlternatives: 2, maxSentences: adviceEnabled() ? 13 : 9 } : {}),
         venues: snippetPlaceNames.map(name => ({
           name,
           rating: ratingsByEntity.get(name)?.[0] ?? null,
@@ -2994,8 +2997,9 @@ export function applyPlaceEnrichmentStreamFilter(
       const planCost = planCostSubject(restored, collector?.consultPick ?? collector?.placesRecommendations?.[0]?.entity.identity.name ?? null, priceBandsByEntity, [...consultCandidates, ...latestPlaces.map(p => p.name ?? '')])
       // …and its cost section shows code-written arithmetic (the chosen row's band, else the user's own
       // per-person budget) when the model's own numbers did not survive the guards.
-      const headed = collector?.consultTurn === 'plan'
-        ? appendConsultPlanCost(restored, {
+      const restoredBudget = collector?.consultTurn === 'plan' && adviceEnabled() ? dropEmptyModelBudget(restored) : restored
+      const headedCost = collector?.consultTurn === 'plan'
+        ? appendConsultPlanCost(restoredBudget, {
           people: partyCount(collector.consultKnown?.so_nguoi),
           band: planCost.band,
           // The history is trimmed to 3 turns, so the per-person budget stated earlier comes from the router's slot.
@@ -3005,12 +3009,15 @@ export function applyPlaceEnrichmentStreamFilter(
           lang,
         }).text
         : restored
+      // A4 (02/10): a TRIP plan with no sourced prices still carries a budget — an estimated range by category, labelled as such.
+      const headed = collector?.consultTurn === 'plan' && adviceEnabled() ? applyTripBudgetEstimate(headedCost, { lang, fallbackPeople: partyCount(collector.consultKnown?.so_nguoi) }).text : headedCost
       // …and no section of the plan is left as a bare heading (Luna 30/09 §7 c).
       // (owner 30/09: a section with no data is HIDDEN, and a requested stage the plan has no place for is said once, at the end)
       const emptyFilled = (() => {
         if (collector?.consultTurn !== 'plan') return { text: headed, filled: [] as string[] }
         const h = hideEmptyPlanSections(headed)
-        const gap = missingStagesLine(h.text, collector.userTexts ?? [userText], lang)
+        // A trip plan is not an evening out: "lập kế hoạch đi chơi Đà Nẵng" asked for no karaoke / bar stage (02/10, A4).
+        const gap = /"type"\s*:\s*"trip"/.test(h.text) ? null : missingStagesLine(h.text, collector.userTexts ?? [userText], lang)
         if (!gap) return { text: h.text, filled: h.hidden }
         const lines = h.text.split('\n')
         const at = lines.findIndex(l => /^\s*\[(?:FOLLOWUPS|CTA_BUTTONS|TAPPY_[A-Z_]+)\]/.test(l))
@@ -3018,7 +3025,11 @@ export function applyPlaceEnrichmentStreamFilter(
         return { text: body, filled: [...h.hidden, 'missing_stage'] }
       })()
       if (emptyFilled.filled.length) console.log(JSON.stringify({ type: 'tappyai_plan_empty_sections', hidden: emptyFilled.filled }))
-      const withLine = consultRemainingLineN(emptyFilled.text, footerRemaining(placesView), lang, { add: !!collector?.consultButtons?.length })
+      const withLineBase = consultRemainingLineN(emptyFilled.text, footerRemaining(placesView), lang, { add: !!collector?.consultButtons?.length })
+      // A5 (02/10): a pick/more/reject that came back without tips / a next step gets the curated GENERAL ones (adviceFloor.ts).
+      const advised = adviceEnabled() && collector?.consultTurn ? ensureAdviceFloor(withLineBase, { domain: collector.consultDomain, turn: collector.consultTurn, known: collector.consultKnown, lang }) : { text: withLineBase, added: [] as string[] }
+      if (advised.added.length) console.log(JSON.stringify({ type: 'tappyai_advice_floor', turn: collector?.consultTurn, domain: collector?.consultDomain, added: advised.added }))
+      const withLine = advised.text
       // Safety net (replay 29/09): the guards can leave a consult reply with NO words (a compare whose every
       // sentence lacked evidence) — the user then sees only buttons. One honest sentence is put back.
       const proseOnly = withLine.replace(/\[(FOLLOWUPS|CTA_BUTTONS|TAPPY_[A-Z_]+)\][\s\S]*?\[\/\1\]/g, '')
