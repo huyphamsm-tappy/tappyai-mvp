@@ -55,6 +55,10 @@ struct ReviewPostView: View {
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+        // Inside the page controller the hosted view still gets the status bar's safe-area inset, so the GeometryReader
+        // above was 59 pt short and the picture started below a black band. The status bar is hidden in the feed: let the
+        // picture run to the very top. (The caption sits at the bottom and is not affected.)
+        .ignoresSafeArea(edges: .top)
         .onChange(of: isActive) { newValue in
             if review.isVideo, !isExternalEmbed, let url = review.mediaUrl, let videoURL = URL(string: url) {
                 if isActive || isNeighbor {
