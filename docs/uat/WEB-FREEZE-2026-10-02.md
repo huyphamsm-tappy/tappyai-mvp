@@ -19,3 +19,7 @@
 
 ## CẬP NHẬT chiều 02/10 — SHA đóng băng mới: `9474f65774aea4b2d89a618b9a5ff492fcdc39e5`
 Chỉ chữ pháp lý (/privacy, /terms, /delete-account) + Scam Shield web giải mã QR ngay trong trình duyệt (ảnh không tải lên). Regression Gate (push + PR) xanh, Architecture Guard xanh, `/api/version` = SHA trên. Bằng chứng: `docs/uat/SCAM-SHIELD-PARITY.md` §4, `docs/uat/LEGAL-TEXT-REVIEW-2026-10-02.md`; ảnh ở `gs://tappyai-uat-evidence/evidence/9474f65/scam/`. Commit tài liệu sau SHA này KHÔNG đẩy lên rc/web-uat để giữ nguyên SHA đã kiểm; Part B dùng 9474f65.
+
+## CẬP NHẬT tối 02/10 — KHỐI DUY NHẤT (thay SHA 9474f65). SHA CUỐI = commit chứa tệp này (ghi 40 ký tự trong báo cáo)
+Nhóm A (A1–A10) + nhóm B (B1–B4) gộp trên `final/web-2026-10-02`, đẩy MỘT lần. Danh sách test một lượt: `docs/uat/HUY-TEST-ONE-PASS-2026-10-02.md`. Chữ ScamShield để người am hiểu luật xem: `docs/uat/SCAMSHIELD-WORDING-FOR-REVIEW.md`. Chỗ gọi AI ngoài chat: `docs/uat/AI-CALLS-OUTSIDE-CHAT.md`. Việc để sau: `docs/uat/POST-LAUNCH-BACKLOG.md`.
+Từ lúc đẩy KHÔNG đổi mã nữa trừ lỗi chặn release. Phần ảnh thẻ hỏi (PART-B §4.9 và «Lùi ảnh thẻ hỏi») nằm trong khối này, không còn đẩy riêng.
