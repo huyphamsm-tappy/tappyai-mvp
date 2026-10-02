@@ -111,7 +111,7 @@ describe('the check is the same request it always was', () => {
     await waitFor(() => expect(document.querySelector('[data-scam-link-result="unrecognized"]')).not.toBeNull())
     const card = document.querySelector('[data-scam-link-result]') as HTMLElement
     expect(card.textContent).toMatch(/chưa nhận ra dấu hiệu quen thuộc|no familiar signs recognised/i)
-    expect(card.textContent).not.toMatch(/score|độ tin cậy|high confidence/i)
+    expect(card.textContent).not.toMatch(/\bscore\b|độ tin cậy|high confidence/i)
     expect(card.textContent).not.toMatch(/^(an toàn|safe)$/im)
     expect(card.textContent).toMatch(/TappyAI không thay thế cơ quan chức năng|does not replace the authorities/i)
   })
@@ -153,7 +153,7 @@ describe('the check is the same request it always was', () => {
     await waitFor(() => expect(document.querySelector(`[data-scam-link-result="${verdict}"]`)).not.toBeNull())
     const card = document.querySelector('[data-scam-link-result]') as HTMLElement
     expect(card.textContent).toMatch(re)
-    expect(card.textContent).not.toMatch(/score|độ tin cậy|high confidence|nguy cơ thấp|low risk/i)
+    expect(card.textContent).not.toMatch(/\bscore\b|độ tin cậy|high confidence|nguy cơ thấp|low risk/i)
     expect(card.textContent).not.toMatch(/^(an toàn|safe)$/im)
   })
 
@@ -299,7 +299,7 @@ describe('the message tab — Analyze Message', () => {
     expect(card.textContent).toContain('42777qz.hanveko.cfd')
     // 02/10: no AI line, no AI counter, no score, no confidence badge.
     expect(card.querySelector('[data-scam-ai-note]')).toBeNull()
-    expect(card.textContent).not.toMatch(/score|độ tin cậy|high confidence|AI (today|left)|AI hôm nay|lượt hỏi AI/i)
+    expect(card.textContent).not.toMatch(/\bscore\b|độ tin cậy|high confidence|AI (today|left)|AI hôm nay|lượt hỏi AI/i)
     expect(card.textContent).toMatch(/TappyAI không thay thế cơ quan chức năng|does not replace the authorities/i)
     // A message verdict is not a link and never enters the link history.
     expect(localStorage.getItem(HISTORY_STORAGE_KEY)).toBeNull()

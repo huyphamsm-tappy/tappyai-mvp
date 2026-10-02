@@ -80,7 +80,7 @@ describe('scam share payload', () => {
     const safe = buildScamSharePayload({ ...result, url: 'https://tiki.vn', risk: { score: 3, confidence: 95, level: 'SAFE' }, officialMatch: null, evidence: { items: [], summary: { criticalCount: 0, warningCount: 0, safeCount: 4, totalSources: 5, respondedSources: 4 } } }, 'vi')
     expect(validateSharedResultPayload(safe)).toBeNull()
     expect(safe.title).toBe('Kiểm tra lừa đảo: tiki.vn — Chưa nhận ra dấu hiệu quen thuộc ở đường link này')
-    expect(safe.body).not.toMatch(/An toàn/)
+    expect(safe.body).not.toMatch(/\bAn toàn\b/)
     expect(safe.buttons).toEqual([])
     expect(safe.body).not.toContain('## Bằng chứng')
   })

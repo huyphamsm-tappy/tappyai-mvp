@@ -258,7 +258,7 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     'video.mute': 'Tắt tiếng',
 
     // Scam Shield
-    'scamShield.title': 'Kiểm Tra An Toàn',
+    'scamShield.title': 'Kiểm tra kỹ',
     'scamShield.subtitle': 'Kiểm tra liên kết, website, mã QR',
     'scamShield.urlPlaceholder': 'Nhập URL hoặc tên miền...',
     'scamShield.check': 'Kiểm tra',
@@ -539,7 +539,7 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     'video.mute': 'Mute',
 
     // Scam Shield
-    'scamShield.title': 'Safety Check',
+    'scamShield.title': 'Check it first',
     'scamShield.subtitle': 'Check links, websites, QR codes',
     'scamShield.urlPlaceholder': 'Enter URL or domain...',
     'scamShield.check': 'Check',
