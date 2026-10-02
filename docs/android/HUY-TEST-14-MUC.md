@@ -1,6 +1,6 @@
 # Anh test máy thật — MỘT vòng, 15 mục (bản CUỐI, 01/10 tối)
 
-Máy R58RC0V30BH · APK UAT `TappyAI-UAT-597698b.apk` (app «TappyAI UAT», nói chuyện với uat.tappyai.com). Dùng tài khoản test.
+Máy R58RC0V30BH · APK UAT `TappyAI-UAT-1b12a7c.apk` (app «TappyAI UAT», nói chuyện với uat.tappyai.com). Dùng tài khoản test.
 Mỗi mục: làm → **đạt = thấy gì** → ghi Đạt / Không đạt (+1 dòng nếu không đạt).
 Bản Play (www.tappyai.com — production) KHÔNG nằm trong vòng này.
 

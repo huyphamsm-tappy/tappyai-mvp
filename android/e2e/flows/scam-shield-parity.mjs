@@ -12,14 +12,14 @@ const QR = (n) => path.join(here, '../fixtures/qr', n)
 async function up(a, q, max = 8) {
   for (let i = 0; i < max; i++) {
     const n = a.find(q)
-    if (n && n.y2 < 2050 && n.y1 > 200) return n
+    if (n && n.y2 < a.screen()[1] * 0.854 && n.y1 > 200) return n
     a.swipe('up'); await a.sleep(900)
   }
   // Not below: it is above (e.g. after a long result). A SHORT downward drag from mid-screen, never from the top edge.
   for (let i = 0; i < 10; i++) {
     const n = a.find(q)
-    if (n && n.y2 < 2050 && n.y1 > 200) return n
-    a.sh('input', 'swipe', '540', '900', '540', '1500', '400'); await a.sleep(800)
+    if (n && n.y2 < a.screen()[1] * 0.854 && n.y1 > 200) return n
+    a.swipe('down'); await a.sleep(800)
   }
   throw new Error('could not scroll to ' + q)
 }
@@ -36,7 +36,12 @@ async function seen(a, re, max = 7) {
 async function pickNewestPhoto(a) {
   let cell
   for (let i = 0; i < 12 && !cell; i++) {
-    cell = a.dump().find((n) => n.clickable && /^Photo taken on/.test(n.desc || ''))
+    const nodes = a.dump()
+    cell = nodes.find((n) => n.clickable && /^Photo taken on/.test(n.desc || ''))
+    // Samsung's picker has no «Photo taken on» labels: the newest picture is the first big cell of the grid.
+    if (!cell && nodes.some((n) => /Gần đây|Recent/.test(n.text || n.desc || ''))) {
+      cell = nodes.filter((n) => n.clickable && n.x2 - n.x1 > 150 && n.y2 - n.y1 > 150 && n.y1 > a.screen()[1] * 0.5).sort((x, y) => x.y1 - y.y1 || x.x1 - y.x1)[0]
+    }
     if (!cell) await a.sleep(1000)
   }
   if (!cell) throw new Error('picker: no photo cell')
@@ -57,7 +62,7 @@ async function pushQr(a, name) {
 async function openScam(a) {
   await a.tap('Trang chủ', { after: 3000 })
   let scam = a.find(/Kiểm tra ngay/)
-  for (let i = 0; i < 6 && !(scam && scam.y1 > 250 && scam.y2 < 2050); i++) { a.swipe('up'); await a.sleep(900); scam = a.find(/Kiểm tra ngay/) }
+  for (let i = 0; i < 6 && !(scam && scam.y1 > 250 && scam.y2 < a.screen()[1] * 0.854); i++) { a.swipe('up'); await a.sleep(900); scam = a.find(/Kiểm tra ngay/) }
   if (!scam) throw new Error('ScamShield entry not found on Home')
   await a.tap(scam, { after: 4000 })
 }
@@ -72,7 +77,7 @@ async function scanQr(a, name, shot) {
   await pushQr(a, name)
   await up(a, 'Quét mã QR')
   await a.tap('Quét mã QR', { after: 1500 })
-  const zone = a.dump().filter((n) => n.clickable && n.y1 > 500).sort((x, y) => (y.x2 - y.x1) * (y.y2 - y.y1) - (x.x2 - x.x1) * (x.y2 - x.y1))[0]
+  const zone = a.dump().filter((n) => /Quét mã QR/.test(n.text || n.desc || '') && n.y2 > n.y1).sort((x, y) => x.y1 - y.y1)[1]
   if (!zone) throw new Error('QR drop zone not found')
   await a.tap(zone, { after: 2500 })
   await pickNewestPhoto(a)
@@ -142,9 +147,9 @@ export async function android({ a, shot, check, seeded }) {
   await reopen(a)
   await up(a, 'Quét mã QR')
   await a.tap('Quét mã QR', { after: 1200 })
-  const zone = a.dump().filter((n) => n.clickable && n.y1 > 500).sort((x, y) => (y.x2 - y.x1) * (y.y2 - y.y1) - (x.x2 - x.x1) * (x.y2 - x.y1))[0]
+  const zone = a.dump().filter((n) => /Quét mã QR/.test(n.text || n.desc || '') && n.y2 > n.y1).sort((x, y) => x.y1 - y.y1)[1]
   await a.tap(zone, { after: 2500 })
   await a.back(); await a.sleep(1500)
   shot('picker-cancelled')
-  check('huỷ chọn ảnh → vẫn ở màn Lá chắn, không sập', a.visible(/Quét mã QR/) && a.foreground().includes(a.PKG))
+  check('huỷ chọn ảnh → vẫn ở màn Lá chắn, không sập', a.visible(/Quét mã QR/) && /tappyai/.test(a.foreground()))
 }

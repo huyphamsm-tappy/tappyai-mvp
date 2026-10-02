@@ -1,6 +1,6 @@
 # Việc của bản cập nhật SAU release (chốt 02/10, Huy)
 
-Không làm trong AAB `597698b`. Thứ tự gợi ý: trên xuống.
+Không làm trong AAB `1b12a7c`. Thứ tự gợi ý: trên xuống.
 
 | # | Việc | Ghi chú / bằng chứng |
 |---|---|---|

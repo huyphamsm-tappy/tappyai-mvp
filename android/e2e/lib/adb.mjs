@@ -84,7 +84,7 @@ export async function scrollTo(q, { max = 8 } = {}) {
   for (const dir of ['down', 'up']) {
     for (let i = 0; i < max; i++) {
       const n = find(q)
-      if (n && n.y2 < 2050 && n.y1 > 200) return n
+      if (n && n.y2 < screen()[1] * 0.854 && n.y1 > 200) return n
       if (dir === 'down' && i >= 3) break
       swipe(dir)
       await sleep(900)
@@ -112,9 +112,16 @@ export async function scrollRowTo(q, rowQ, { max = 6, from = 650, to = 120 } = {
   }
   throw new Error(`could not scroll the row to ${q}`)
 }
+let _wh
+/** [width, height] of the screen (the harness was written for 1080x2400; a phone may be 720x1600). */
+export function screen() {
+  if (!_wh) { const m = sh('wm', 'size').match(/(\d+)x(\d+)/); _wh = m ? [Number(m[1]), Number(m[2])] : [1080, 2400] }
+  return _wh
+}
 export function swipe(dir = 'up') {
-  const [a, b] = dir === 'up' ? [1750, 700] : [700, 1750]
-  sh('input', 'swipe', '540', String(a), '540', String(b), '450')
+  const [w, h] = screen()
+  const [a, b] = dir === 'up' ? [h * 0.73, h * 0.29] : [h * 0.29, h * 0.73]
+  sh('input', 'swipe', String(Math.round(w / 2)), String(Math.round(a)), String(Math.round(w / 2)), String(Math.round(b)), '450')
 }
 /** BACK only when the soft keyboard is up — a BACK with no keyboard would leave the screen. */
 export async function hideKeyboard() {
@@ -137,7 +144,8 @@ export async function pasteText(text) {
 // ── app lifecycle ────────────────────────────────────────────────────────────
 export function foreground() {
   const out = sh('dumpsys', 'activity', 'activities')
-  return (out.match(/topResumedActivity=ActivityRecord\{\S+ \S+ (\S+)/) || [])[1] || ''
+  // Android 12+ prints topResumedActivity; Android 11 only mResumedActivity.
+  return (out.match(/(?:topResumedActivity|mResumedActivity)[:=]\s*ActivityRecord\{\S+ \S+ (\S+)/) || [])[1] || ''
 }
 export async function launch({ fresh = false } = {}) {
   if (fresh) sh('am', 'force-stop', PKG)

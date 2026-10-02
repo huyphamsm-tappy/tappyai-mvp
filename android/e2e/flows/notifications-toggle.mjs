@@ -23,7 +23,7 @@ async function waitRow(userId, want, ms = 60000) {
 
 export async function android({ a, shot, check, seeded }) {
   const user = seeded.users.other
-  a.sh('pm', 'grant', a.PKG, 'android.permission.POST_NOTIFICATIONS')
+  try { a.sh('pm', 'grant', a.PKG, 'android.permission.POST_NOTIFICATIONS') } catch { /* Android < 13 */ }
   await rest.del(`notification_subscriptions?user_id=eq.${user.id}`).catch(() => {})
   await a.signIn(user.email)
   check('đăng nhập → thiết bị tự đăng ký FCM (server: enabled=true)', await waitRow(user.id, true))
