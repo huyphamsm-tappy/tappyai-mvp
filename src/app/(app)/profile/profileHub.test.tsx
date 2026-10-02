@@ -22,6 +22,7 @@ Object.defineProperty(window, 'matchMedia', {
   }),
 })
 
+import { accountMoreRows } from './ProfileRows'
 import ProfileView from './ProfileView'
 import { setLocale } from '@/lib/i18n/useTranslation'
 
@@ -273,14 +274,14 @@ describe('content comes from the gated endpoints, and only from them', () => {
   it('offers the five content states, then places', () => {
     const { container } = renderHub()
     const tabs = [...container.querySelectorAll('[data-profile-content] .v3-chip')].map((c) => c.textContent)
-    expect(tabs).toEqual(['Published', 'Shared', 'Saved', 'Restricted', 'Hidden', 'Places'])
+    expect(tabs).toEqual(['Published', 'Shared', 'Saved', 'In review / Restricted', 'Hidden', 'Places'])
   })
 
   it('the Vietnamese labels are the owner\'s wording', () => {
     setLocale('vi')
     const { container } = renderHub()
     const tabs = [...container.querySelectorAll('[data-profile-content] .v3-chip')].map((c) => c.textContent)
-    expect(tabs).toEqual(['Đã đăng', 'Đã chia sẻ', 'Đã lưu', 'Bị hạn chế', 'Đã ẩn', 'Địa điểm'])
+    expect(tabs).toEqual(['Đã đăng', 'Đã chia sẻ', 'Đã lưu', 'Chờ duyệt / Bị hạn chế', 'Đã ẩn', 'Địa điểm'])
   })
 })
 
@@ -358,8 +359,12 @@ describe('the hub stays an account hub, not a replacement for other products', (
     const hrefs = [...container.querySelectorAll('.v3-panel li a[href]')].map((a) => a.getAttribute('href'))
     // The routes the SHARED inventory owns (ProfileRows). The Inbox lives in the shell's own
     // Account group, not in this list — asserting it here would test the wrong component.
+    // Compact hub (2026-10-02): the hub draws Tài khoản + Cài đặt; the other eight rows are one tap
+    // deeper, on /profile/account (`accountMoreRows`).
+    expect(hrefs).toEqual(['/profile/account', '/profile/settings'])
+    const reachable = [...hrefs, ...accountMoreRows().map((r) => r.href)]
     for (const route of ['/planner', '/profile/settings', '/profile/history', '/profile/favorites', '/profile/price-watches']) {
-      expect(hrefs, `${route} must stay reachable from Profile`).toContain(route)
+      expect(reachable, `${route} must stay reachable from Profile`).toContain(route)
     }
   })
 

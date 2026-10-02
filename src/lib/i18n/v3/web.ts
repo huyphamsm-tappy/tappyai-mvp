@@ -679,7 +679,7 @@ export const vi: Record<string, string> = {
   // Bị hạn chế / Đã ẩn — then saved places.
   'v3.profile.tabPosts': 'Đã đăng',
   'v3.profile.tabSaved': 'Đã lưu',
-  'v3.profile.tabRestricted': 'Bị hạn chế',
+  'v3.profile.tabRestricted': 'Chờ duyệt / Bị hạn chế',
   'v3.profile.tabPlaces': 'Địa điểm',
   'v3.profile.emptyPosts': 'Bạn chưa đăng bài viết nào.',
   'v3.profile.emptySaved': 'Bạn chưa lưu bài viết nào.',
@@ -1316,7 +1316,7 @@ export const en: Record<string, string> = {
   'v3.profile.statLikes': 'Likes',
   'v3.profile.tabPosts': 'Published',
   'v3.profile.tabSaved': 'Saved',
-  'v3.profile.tabRestricted': 'Restricted',
+  'v3.profile.tabRestricted': 'In review / Restricted',
   'v3.profile.tabPlaces': 'Places',
   'v3.profile.emptyPosts': "You haven't posted anything yet.",
   'v3.profile.emptySaved': "You haven't saved any posts yet.",

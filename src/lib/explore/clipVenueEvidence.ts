@@ -266,7 +266,7 @@ export function clipTargetMetric(res: ClipVenueResolution | null | undefined): C
 // ── Product measurement ─────────────────────────────────────────────────────
 
 /** The three surfaces that offer "Hỏi Tappy về chỗ này", plus the server's answer. */
-export type AskTappyPlaceSurface = 'feed' | 'explore_desktop' | 'review_detail' | 'chat_server'
+export type AskTappyPlaceSurface = 'feed' | 'explore_desktop' | 'clip_viewer' | 'review_detail' | 'chat_server'
 
 /**
  * The `ask_tappy_place` event payload — the same shape from every surface.
