@@ -127,6 +127,7 @@ struct ScamQRView: View {
     private var deniedCard: some View {
         VStack(alignment: .leading, spacing: Spacing.xs) {
             Text("scam.qr.denied").font(TappyFont.callout).foregroundStyle(TappyColor.textPrimary)
+                .accessibilityIdentifier("scam-qr-denied")
             Button { if let url = URL(string: UIApplication.openSettingsURLString) { UIApplication.shared.open(url) } } label: {
                 Text("scam.qr.openSettings").font(TappyFont.callout.weight(.semibold))
             }
@@ -135,7 +136,6 @@ struct ScamQRView: View {
         .padding(Spacing.md).frame(maxWidth: .infinity, alignment: .leading)
         .background(TappyColor.secondary.opacity(0.12))
         .clipShape(RoundedRectangle(cornerRadius: Radius.lg, style: .continuous))
-        .accessibilityIdentifier("scam-qr-denied")
     }
 
     private func infoCard(_ key: LocalizedStringKey) -> some View {
@@ -157,6 +157,7 @@ struct ScamQRView: View {
                 Image(systemName: "qrcode").font(.title2).foregroundStyle(TappyColor.secondary)
                 VStack(alignment: .leading, spacing: 2) {
                     Text("scam.qr.found").font(TappyFont.caption).foregroundStyle(TappyColor.textSecondary)
+                        .accessibilityIdentifier("scam-qr-result")
                     Text(LocalizedStringKey(payload.kindKey)).font(TappyFont.headline).foregroundStyle(TappyColor.textPrimary)
                 }
             }
@@ -176,6 +177,5 @@ struct ScamQRView: View {
         .background(TappyColor.cardBackground)
         .clipShape(RoundedRectangle(cornerRadius: Radius.lg, style: .continuous))
         .overlay(RoundedRectangle(cornerRadius: Radius.lg, style: .continuous).stroke(TappyColor.border, lineWidth: 1))
-        .accessibilityIdentifier("scam-qr-result")
     }
 }

@@ -291,7 +291,7 @@ final class ScreenshotTests: XCTestCase {
         let app = launch(route: "scam", extra: ["-uitest-theme", "dark"])
         XCTAssertTrue(any(app, "scam-call-113").waitForExistence(timeout: 40), "the fixed 113 block")
         shot("75-scam-check")
-        app.buttons["Tình huống lừa đảo"].tap()
+        app.buttons["Tình huống"].tap()
         XCTAssertTrue(any(app, "scam-read-original").waitForExistence(timeout: 20), "the source block with the original link")
         shot("76-scam-library")
         let first = any(app, "scam-scenario-1")

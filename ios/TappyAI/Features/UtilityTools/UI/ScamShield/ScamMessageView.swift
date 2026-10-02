@@ -75,15 +75,14 @@ struct ScamMessageView: View {
             deeperSection
             actions(outcome)
         }
-        .accessibilityElement(children: .contain)
-        .accessibilityIdentifier("scam-msg-result")
     }
 
-    private func headerCard(icon: String, tint: Color, titleKey: LocalizedStringKey, detail: String? = nil) -> some View {
+    /// 🚨 Identifiers go on LEAF views only: an identifier on a container overwrites its children's (the button ids below).
+    private func headerCard(icon: String, tint: Color, titleKey: LocalizedStringKey, id: String, detail: String? = nil) -> some View {
         HStack(alignment: .top, spacing: Spacing.sm) {
             Image(systemName: icon).font(.title2).foregroundStyle(tint)
             VStack(alignment: .leading, spacing: 2) {
-                Text(titleKey).font(TappyFont.headline).foregroundStyle(tint)
+                Text(titleKey).font(TappyFont.headline).foregroundStyle(tint).accessibilityIdentifier(id)
                 if let detail { Text(detail).font(TappyFont.callout).foregroundStyle(TappyColor.textPrimary) }
             }
         }
@@ -94,7 +93,7 @@ struct ScamMessageView: View {
             VStack(alignment: .leading, spacing: Spacing.sm) {
                 // «Giống», not «là»: the match is a reading of words, not a finding about the sender.
                 headerCard(icon: "exclamationmark.shield.fill", tint: TappyColor.danger, titleKey: "scam.msg.matched.title",
-                           detail: scenario.official.title)
+                           id: "scam-msg-matched", detail: scenario.official.title)
                 Text(scenario.official.summary).font(TappyFont.callout).foregroundStyle(TappyColor.textPrimary)
                 signalList(signals)
                 ScamSourceBlock(source: scenario.source)
@@ -108,35 +107,32 @@ struct ScamMessageView: View {
                 adviceBlock(signals)
             }
         }
-        .accessibilityIdentifier("scam-msg-matched")
     }
 
     private func unsureCard(_ signals: [ScamMessageSignal]) -> some View {
         TappyCard {
             VStack(alignment: .leading, spacing: Spacing.sm) {
-                headerCard(icon: "questionmark.diamond.fill", tint: TappyColor.secondary, titleKey: "scam.msg.unsure.title")
+                headerCard(icon: "questionmark.diamond.fill", tint: TappyColor.secondary, titleKey: "scam.msg.unsure.title", id: "scam-msg-unsure")
                 Text("scam.msg.unsure.body").font(TappyFont.callout).foregroundStyle(TappyColor.textPrimary)
                 signalList(signals)
                 adviceBlock(signals)
                 ForEach(knowledge.official.preventionMeasures.prefix(3), id: \.self) { tip in
-                    Label { Text(tip).font(TappyFont.callout) } icon: { Image(systemName: "checkmark.circle") }
+                    Label { Text(tip).font(TappyFont.callout) } icon: { Image(systemName: "info.circle") }
                         .foregroundStyle(TappyColor.textPrimary)
                 }
                 Text("scam.msg.notGov").font(TappyFont.caption).foregroundStyle(TappyColor.textSecondary)
             }
         }
-        .accessibilityIdentifier("scam-msg-unsure")
     }
 
     /// 🚨 Never a green shield and never «safe»: nothing familiar was seen, which is not the same thing.
     private var noSignsCard: some View {
         TappyCard {
             VStack(alignment: .leading, spacing: Spacing.sm) {
-                headerCard(icon: "shield.lefthalf.filled", tint: TappyColor.textSecondary, titleKey: "scam.msg.nosigns.title")
+                headerCard(icon: "shield.lefthalf.filled", tint: TappyColor.textSecondary, titleKey: "scam.msg.nosigns.title", id: "scam-msg-nosigns")
                 Text("scam.msg.nosigns.body").font(TappyFont.callout).foregroundStyle(TappyColor.textPrimary)
             }
         }
-        .accessibilityIdentifier("scam-msg-nosigns")
     }
 
     private func signalList(_ signals: [ScamMessageSignal]) -> some View {
@@ -236,6 +232,7 @@ struct ScamMessageView: View {
         TappyCard {
             VStack(alignment: .leading, spacing: Spacing.sm) {
                 Text("scam.msg.deeper.title").font(TappyFont.headline).foregroundStyle(TappyColor.textPrimary)
+                    .accessibilityIdentifier("scam-msg-analysis")
                 Text(LocalizedStringKey(ScamShieldLevelCopy.levelKey(a.level))).font(TappyFont.bodyEmphasis)
                     .foregroundStyle(ScamShieldLevelCopy.color(a.level))
                 if !a.summary.isEmpty { Text(a.summary).font(TappyFont.callout).foregroundStyle(TappyColor.textPrimary) }
@@ -255,7 +252,6 @@ struct ScamMessageView: View {
                 }
             }
         }
-        .accessibilityIdentifier("scam-msg-analysis")
     }
 
     // MARK: Actions (share — never the message itself)
