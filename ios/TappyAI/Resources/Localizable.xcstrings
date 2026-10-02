@@ -1000,14 +1000,25 @@
     "scam.msg.placeholder": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Paste the message here…" } }, "vi": { "stringUnit": { "state": "translated", "value": "Dán nội dung tin nhắn vào đây…" } } } },
     "scam.msg.paste": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Paste from clipboard" } }, "vi": { "stringUnit": { "state": "translated", "value": "Dán từ bộ nhớ tạm" } } } },
     "scam.msg.check": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Check this message" } }, "vi": { "stringUnit": { "state": "translated", "value": "Kiểm tra tin nhắn" } } } },
-    "scam.msg.privacy": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "The message is read on your phone: it is not sent anywhere and not kept. Only if you choose Analyse deeper, and agree to share data with AI, is the text sent for analysis." } }, "vi": { "stringUnit": { "state": "translated", "value": "Tin nhắn được đọc ngay trên máy: không gửi đi, không lưu lại. Chỉ khi bạn chọn «Phân tích sâu hơn» và đồng ý chia sẻ dữ liệu với AI thì nội dung mới được gửi đi để phân tích." } } } },
-    "scam.msg.matched.title": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "This message looks like the scenario:" } }, "vi": { "stringUnit": { "state": "translated", "value": "Tin nhắn này giống tình huống:" } } } },
+    "scam.msg.privacy": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Matched against a built-in list of scenarios and rules: no AI is used and the message text is not stored." } }, "vi": { "stringUnit": { "state": "translated", "value": "Đối chiếu bằng danh sách tình huống và quy tắc có sẵn: không dùng AI, không lưu nội dung tin nhắn." } } } },
+    "scam.msg.matched.title": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Familiar scam signs found" } }, "vi": { "stringUnit": { "state": "translated", "value": "Có dấu hiệu lừa đảo quen thuộc" } } } },
+    "scam.msg.matched.body": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "This looks like a scam tactic the authorities have warned about. Do not do what it asks." } }, "vi": { "stringUnit": { "state": "translated", "value": "Nội dung này giống một thủ đoạn lừa đảo đã được cơ quan chức năng cảnh báo. Đừng làm theo yêu cầu trong đó." } } } },
     "scam.msg.matched.more": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "See the scenario in detail" } }, "vi": { "stringUnit": { "state": "translated", "value": "Xem chi tiết tình huống" } } } },
-    "scam.msg.unsure.title": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "No familiar trick recognised, but something looks off" } }, "vi": { "stringUnit": { "state": "translated", "value": "Chưa nhận ra thủ đoạn quen thuộc, nhưng có điểm đáng ngờ" } } } },
-    "scam.msg.unsure.body": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "The message has some signs common in scam messages, though it does not fit one scenario exactly. Be careful." } }, "vi": { "stringUnit": { "state": "translated", "value": "Tin nhắn có một số dấu hiệu thường thấy ở tin lừa đảo, dù không khớp hẳn tình huống nào. Hãy thận trọng." } } } },
+    "scam.msg.unsure.title": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Some suspicious signs found" } }, "vi": { "stringUnit": { "state": "translated", "value": "Có một số dấu hiệu đáng ngờ" } } } },
+    "scam.msg.unsure.body": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Not enough to be certain, but stop and verify through an official channel before doing anything." } }, "vi": { "stringUnit": { "state": "translated", "value": "Chưa đủ để kết luận, nhưng bạn nên dừng lại và xác minh qua kênh chính thức trước khi làm bất cứ điều gì." } } } },
     "scam.msg.notGov": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "TappyAI is not a government agency. The general advice comes from the Ministry of Public Security." } }, "vi": { "stringUnit": { "state": "translated", "value": "TappyAI không phải cơ quan nhà nước. Lời khuyên chung lấy từ khuyến cáo của Bộ Công an." } } } },
-    "scam.msg.nosigns.title": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "No familiar scam signs seen" } }, "vi": { "stringUnit": { "state": "translated", "value": "Chưa thấy dấu hiệu lừa đảo quen thuộc" } } } },
-    "scam.msg.nosigns.body": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Tappy found nothing that matches known tricks. This is not a guarantee of safety: if the message asks for money, an OTP, a password or a click, check yourself with the official phone number or app." } }, "vi": { "stringUnit": { "state": "translated", "value": "Tappy không tìm thấy dấu hiệu nào giống các thủ đoạn đã biết. Đây không phải bảo đảm an toàn: nếu tin yêu cầu tiền, mã OTP, mật khẩu hoặc bấm link, hãy tự kiểm tra bằng số điện thoại hoặc ứng dụng chính thức." } } } },
+    "scam.msg.nosigns.title": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "No familiar signs recognised" } }, "vi": { "stringUnit": { "state": "translated", "value": "Chưa nhận ra dấu hiệu quen thuộc" } } } },
+    "scam.msg.nosigns.body": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "This does NOT mean it is safe: do not send money, do not read out any OTP code, do not tap unknown links; verify through an official channel." } }, "vi": { "stringUnit": { "state": "translated", "value": "Điều này KHÔNG có nghĩa là an toàn: đừng chuyển tiền, đừng đọc mã OTP, đừng bấm link lạ; hãy xác minh qua kênh chính thức." } } } },
+    "scamVerdict.link.familiar.title": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "This link has traits that are common in fake links" } }, "vi": { "stringUnit": { "state": "translated", "value": "Đường link có đặc điểm thường gặp ở link giả mạo" } } } },
+    "scamVerdict.link.familiar.body": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "This describes the traits of the link, not a conclusion about any particular organisation or domain. Do not sign in or enter an OTP or card details on this page." } }, "vi": { "stringUnit": { "state": "translated", "value": "Đây là nhận định về đặc điểm của đường link, không phải kết luận về một tổ chức hay tên miền cụ thể. Đừng đăng nhập, đừng nhập OTP hay thông tin thẻ trên trang này." } } } },
+    "scamVerdict.link.suspicious.title": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "This link has some suspicious traits" } }, "vi": { "stringUnit": { "state": "translated", "value": "Đường link có một số điểm đáng ngờ" } } } },
+    "scamVerdict.link.suspicious.body": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Not enough to be certain. Do not enter personal details or an OTP; open the official website or app yourself." } }, "vi": { "stringUnit": { "state": "translated", "value": "Chưa đủ để kết luận. Đừng nhập thông tin cá nhân hay mã OTP; hãy tự mở website hoặc ứng dụng chính thức." } } } },
+    "scamVerdict.link.unrecognized.title": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "No familiar signs recognised in this link" } }, "vi": { "stringUnit": { "state": "translated", "value": "Chưa nhận ra dấu hiệu quen thuộc ở đường link này" } } } },
+    "scamVerdict.link.unrecognized.body": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "This does NOT mean it is safe: do not send money, do not read out any OTP code, do not tap unknown links; verify through an official channel." } }, "vi": { "stringUnit": { "state": "translated", "value": "Điều này KHÔNG có nghĩa là an toàn: đừng chuyển tiền, đừng đọc mã OTP, đừng bấm link lạ; hãy xác minh qua kênh chính thức." } } } },
+    "scamVerdict.disclaimer": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "TappyAI does not replace the authorities." } }, "vi": { "stringUnit": { "state": "translated", "value": "TappyAI không thay thế cơ quan chức năng." } } } },
+    "scamVerdict.scenario.report": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Report to the nearest police station or call 113 if you suspect a scam." } }, "vi": { "stringUnit": { "state": "translated", "value": "Báo ngay cho Công an nơi gần nhất hoặc gọi 113 nếu nghi ngờ bị lừa." } } } },
+    "scamVerdict.link.reasons": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Specific reasons" } }, "vi": { "stringUnit": { "state": "translated", "value": "Lý do cụ thể" } } } },
+    "scamVerdict.qr.noVerdict": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "TappyAI has not checked this content. Do not follow instructions in it if you are unsure; verify through an official channel." } }, "vi": { "stringUnit": { "state": "translated", "value": "TappyAI chưa kiểm tra nội dung này. Đừng làm theo hướng dẫn trong đó nếu bạn không chắc; hãy xác minh qua kênh chính thức." } } } },
     "scam.msg.why": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Why Tappy thinks so" } }, "vi": { "stringUnit": { "state": "translated", "value": "Vì sao Tappy nghĩ vậy" } } } },
     "scam.msg.advice.title": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Do not" } }, "vi": { "stringUnit": { "state": "translated", "value": "Đừng làm" } } } },
     "scam.msg.advice.otp": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Do not read out or enter an OTP or password for anyone." } }, "vi": { "stringUnit": { "state": "translated", "value": "Không đọc hay nhập mã OTP, mật khẩu cho bất kỳ ai." } } } },
@@ -1021,10 +1032,6 @@
     "scam.msg.links.title": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Links in the message" } }, "vi": { "stringUnit": { "state": "translated", "value": "Link trong tin nhắn" } } } },
     "scam.msg.links.note": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Tappy has not opened any link. Tap Check link to send just that link for checking." } }, "vi": { "stringUnit": { "state": "translated", "value": "Tappy chưa mở link nào. Chạm «Kiểm tra link» để gửi riêng đường link đó đi kiểm tra." } } } },
     "scam.msg.links.check": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Check link" } }, "vi": { "stringUnit": { "state": "translated", "value": "Kiểm tra link" } } } },
-    "scam.msg.deeper.button": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Analyse deeper with AI" } }, "vi": { "stringUnit": { "state": "translated", "value": "Phân tích sâu hơn bằng AI" } } } },
-    "scam.msg.deeper.running": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Analysing…" } }, "vi": { "stringUnit": { "state": "translated", "value": "Đang phân tích…" } } } },
-    "scam.msg.deeper.note": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "The text of the message is sent to the AI provider for analysis (you must agree to share data with AI). It is not kept." } }, "vi": { "stringUnit": { "state": "translated", "value": "Nội dung tin nhắn sẽ được gửi tới nhà cung cấp AI để phân tích (cần bạn đồng ý chia sẻ dữ liệu với AI). Tin nhắn không được lưu lại." } } } },
-    "scam.msg.deeper.title": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "AI analysis" } }, "vi": { "stringUnit": { "state": "translated", "value": "Phân tích bằng AI" } } } },
     "scam.msg.deeper.failed": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Could not analyse deeper right now. The result above is still valid." } }, "vi": { "stringUnit": { "state": "translated", "value": "Chưa phân tích sâu được lúc này. Kết quả ở trên vẫn dùng được." } } } },
     "scam.msg.deeper.quota": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "You have used today's AI questions." } }, "vi": { "stringUnit": { "state": "translated", "value": "Bạn đã dùng hết lượt hỏi AI hôm nay." } } } },
     "scam.msg.deeper.unavailable": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Deeper analysis is not on the current server yet. The result above is still valid." } }, "vi": { "stringUnit": { "state": "translated", "value": "Tính năng phân tích sâu chưa có trên máy chủ hiện tại. Kết quả ở trên vẫn dùng được." } } } },
@@ -14695,108 +14702,6 @@
         }
       }
     },
-    "scamShield.level.critical": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Do not open this"
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Đừng mở link này"
-          }
-        }
-      }
-    },
-    "scamShield.level.high": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "High risk"
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Rủi ro cao"
-          }
-        }
-      }
-    },
-    "scamShield.level.inconclusive": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Not enough evidence"
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Chưa đủ căn cứ"
-          }
-        }
-      }
-    },
-    "scamShield.level.low": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Low risk"
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Rủi ro thấp"
-          }
-        }
-      }
-    },
-    "scamShield.level.medium": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Be careful"
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Hãy cẩn thận"
-          }
-        }
-      }
-    },
-    "scamShield.level.safe": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Looks safe"
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Có vẻ an toàn"
-          }
-        }
-      }
-    },
     "scamShield.officialMatch": {
       "extractionState": "manual",
       "localizations": {
@@ -14810,23 +14715,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Trang chính thức của %1$@ (%2$@)"
-          }
-        }
-      }
-    },
-    "scamShield.score": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Risk score %1$d · confidence %2$d%%"
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Điểm rủi ro %1$d · độ tin cậy %2$d%%"
           }
         }
       }

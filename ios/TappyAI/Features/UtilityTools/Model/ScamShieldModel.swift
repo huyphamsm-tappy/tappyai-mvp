@@ -68,8 +68,16 @@ struct ScamEvidenceItem: Decodable, Identifiable {
     let severity: ScamSignalSeverity
     let summary: String
     let detail: String
+    /// WEB 93948b2: `reasonCode`, `reason_vi`, `reason_en` — a finished sentence per finding (older servers send none).
+    let reasonCode: String
+    let reasonVi: String
+    let reasonEn: String
 
-    enum CodingKeys: String, CodingKey { case source, severity, summary, detail }
+    enum CodingKeys: String, CodingKey {
+        case source, severity, summary, detail, reasonCode
+        case reasonVi = "reason_vi"
+        case reasonEn = "reason_en"
+    }
 
     init(from decoder: Decoder) throws {
         let c = try decoder.container(keyedBy: CodingKeys.self)
@@ -77,7 +85,20 @@ struct ScamEvidenceItem: Decodable, Identifiable {
         severity = (try? c.decode(ScamSignalSeverity.self, forKey: .severity)) ?? .unknown
         summary = (try? c.decode(String.self, forKey: .summary)) ?? ""
         detail = (try? c.decode(String.self, forKey: .detail)) ?? ""
+        reasonCode = (try? c.decode(String.self, forKey: .reasonCode)) ?? ""
+        reasonVi = (try? c.decode(String.self, forKey: .reasonVi)) ?? ""
+        reasonEn = (try? c.decode(String.self, forKey: .reasonEn)) ?? ""
     }
+
+    /// The reason sentence in the reader's language (the other language if one is empty); nil when the server sent none.
+    func reason(vietnamese: Bool) -> String? {
+        let preferred = vietnamese ? reasonVi : reasonEn
+        let text = preferred.isEmpty ? (vietnamese ? reasonEn : reasonVi) : preferred
+        return text.isEmpty ? nil : text
+    }
+
+    /// WEB 93948b2: only `warning` / `critical` findings become reasons (a `safe` finding is «normal», not shown).
+    var isReasonWorthy: Bool { severity == .warning || severity == .critical }
 }
 
 struct ScamEvidenceReport: Decodable {
@@ -126,8 +147,13 @@ struct ScamCheckResult: Decodable {
     let officialMatch: ScamOfficialEntity?
     let actions: [ScamRecommendedAction]
     let cached: Bool
+    /// WEB 65685a7 adds `verdict` (familiar / suspicious / unrecognized) to a link result; nil from an older server.
+    let serverVerdict: ScamVerdict?
 
-    enum CodingKeys: String, CodingKey { case url, risk, evidence, officialMatch, actions, cached }
+    /// What the screen shows: the server's verdict when it sent one, else the same mapping the web uses on `risk.level`.
+    var verdict: ScamVerdict { serverVerdict ?? ScamVerdict.link(level: risk.level) }
+
+    enum CodingKeys: String, CodingKey { case url, risk, evidence, officialMatch, actions, cached, verdict }
 
     init(from decoder: Decoder) throws {
         let c = try decoder.container(keyedBy: CodingKeys.self)
@@ -138,6 +164,7 @@ struct ScamCheckResult: Decodable {
         officialMatch = try? c.decodeIfPresent(ScamOfficialEntity.self, forKey: .officialMatch)
         actions = (try? c.decode([ScamRecommendedAction].self, forKey: .actions)) ?? []
         cached = (try? c.decode(Bool.self, forKey: .cached)) ?? false
+        serverVerdict = ScamVerdict(server: try? c.decodeIfPresent(String.self, forKey: .verdict))
     }
 }
 

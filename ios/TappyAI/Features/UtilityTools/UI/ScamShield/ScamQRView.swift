@@ -164,10 +164,12 @@ struct ScamQRView: View {
             if !payload.preview.isEmpty {
                 Text(payload.preview).font(TappyFont.caption).foregroundStyle(TappyColor.textSecondary).lineLimit(3)
             }
-            // 🚨 The warning is for EVERY kind, links included: a code is not a reason to open or pay anything.
-            Text(LocalizedStringKey(payload.warningKey)).font(TappyFont.callout).foregroundStyle(TappyColor.textPrimary)
             if case .link = payload {
+                // A link goes to the link check; its three-state verdict is drawn below.
                 Text("scam.qr.linkChecking").font(TappyFont.caption).foregroundStyle(TappyColor.textSecondary)
+            } else {
+                // Any other kind: the kind is named and the app says plainly it has NOT checked the content.
+                Text(LocalizedStringKey(payload.warningKey)).font(TappyFont.callout).foregroundStyle(TappyColor.textPrimary)
             }
             Button { vm.clearQR() } label: { Text("scam.qr.again").font(TappyFont.callout.weight(.semibold)) }
                 .accessibilityIdentifier("scam-qr-again")

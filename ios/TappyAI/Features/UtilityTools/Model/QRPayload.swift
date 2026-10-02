@@ -32,20 +32,9 @@ enum QRPayload: Equatable, Sendable {
         }
     }
 
-    /// The warning for every kind that is NOT a link (a link gets the full link check instead).
-    var warningKey: String {
-        switch self {
-        case .link: return "scam.qr.warn.link"
-        case .wifi: return "scam.qr.warn.wifi"
-        case .contact: return "scam.qr.warn.contact"
-        case .phone: return "scam.qr.warn.phone"
-        case .sms: return "scam.qr.warn.sms"
-        case .email: return "scam.qr.warn.email"
-        case .payment: return "scam.qr.warn.payment"
-        case .crypto: return "scam.qr.warn.crypto"
-        case .text: return "scam.qr.warn.text"
-        }
-    }
+    /// The line for every kind that is NOT a link (a link gets the full link check and its three-state verdict instead).
+    /// WEB `scamVerdict.qr.noVerdict` (commit 93948b2, SCAM-SHIELD-PARITY §8): one sentence for all non-link codes.
+    var warningKey: String { "scamVerdict.qr.noVerdict" }
 
     static func classify(_ raw: String) -> QRPayload {
         let s = raw.trimmingCharacters(in: .whitespacesAndNewlines)

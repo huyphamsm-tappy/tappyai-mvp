@@ -1,7 +1,7 @@
 import SwiftUI
 
-/// How a risk level looks and is worded — shared by the link check, the QR check and the message analysis, so one
-/// vocabulary (an-toàn / nghi ngờ / nguy hiểm / chưa đủ thông tin) is used everywhere.
+/// How a verdict looks — shared by the link check, the QR check and the message check, so one vocabulary of three
+/// states (familiar / suspicious / unrecognized, `ScamVerdict`) is used everywhere. Never «safe».
 ///
 /// 🚨 Exhaustive over `ScamRiskLevel`, no `default`: a new level stops compiling here until it is given a deliberate
 /// look. «Unknown» and «inconclusive» are neutral slate — never the green shield.
@@ -19,14 +19,21 @@ enum ScamShieldLevelCopy {
         }
     }
 
-    static func levelKey(_ level: ScamRiskLevel) -> String {
-        switch level {
-        case .safe: return "scamShield.level.safe"
-        case .low: return "scamShield.level.low"
-        case .medium: return "scamShield.level.medium"
-        case .high: return "scamShield.level.high"
-        case .critical: return "scamShield.level.critical"
-        case .inconclusive, .unknown: return "scamShield.level.inconclusive"
+    /// The three public states (WEB 65685a7): familiar = orange-red, suspicious = amber, unrecognized = neutral slate.
+    /// Never green: nothing the app says is «safe».
+    static func color(_ verdict: ScamVerdict) -> Color {
+        switch verdict {
+        case .familiar: return Color(red: 0.92, green: 0.35, blue: 0.05)
+        case .suspicious: return Color(red: 0.79, green: 0.54, blue: 0.02)
+        case .unrecognized: return slate
+        }
+    }
+
+    static func glyph(_ verdict: ScamVerdict) -> String {
+        switch verdict {
+        case .familiar: return "xmark.shield.fill"
+        case .suspicious: return "exclamationmark.shield.fill"
+        case .unrecognized: return "shield.lefthalf.filled.slash"
         }
     }
 

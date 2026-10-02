@@ -2,15 +2,13 @@ import SwiftUI
 import UIKit
 
 /// «Kiểm tra tin nhắn» — paste a message. The reading happens ON THE PHONE against the ministry's 25 scenarios; the
-/// text is not sent, kept or logged. Only if the person taps «Phân tích sâu hơn» (and agreed to share data with AI)
-/// does the text go to the server analysis.
+/// text is not sent, kept or logged. No AI is used for a message (WEB 65685a7: AI off for the message check), and the
+/// result is one of three states (`ScamVerdict`), never «safe».
 struct ScamMessageView: View {
     @ObservedObject var vm: ScamShieldViewModel
     let knowledge: ScamKnowledge
     /// Start the link check for a link found in the message.
     let onCheckLink: (String) -> Void
-
-    private static var isVietnamese: Bool { LocalizationManager.currentLanguageCode == "vi" }
 
     var body: some View {
         VStack(alignment: .leading, spacing: Spacing.md) {
@@ -72,7 +70,8 @@ struct ScamMessageView: View {
             }
 
             if !outcome.links.isEmpty { linksCard(outcome.links) }
-            deeperSection
+            // Printed under EVERY verdict (WEB `scamVerdict.disclaimer`).
+            Text("scamVerdict.disclaimer").font(TappyFont.caption).foregroundStyle(TappyColor.textSecondary)
             actions(outcome)
         }
     }
@@ -94,9 +93,12 @@ struct ScamMessageView: View {
                 // «Giống», not «là»: the match is a reading of words, not a finding about the sender.
                 headerCard(icon: "exclamationmark.shield.fill", tint: TappyColor.danger, titleKey: "scam.msg.matched.title",
                            id: "scam-msg-matched", detail: scenario.official.title)
+                Text("scam.msg.matched.body").font(TappyFont.callout).foregroundStyle(TappyColor.textPrimary)
                 Text(scenario.official.summary).font(TappyFont.callout).foregroundStyle(TappyColor.textPrimary)
                 signalList(signals)
                 ScamSourceBlock(source: scenario.source)
+                // WEB `scamVerdict.scenario.report`: shown when a scenario matched.
+                Text("scamVerdict.scenario.report").font(TappyFont.callout.weight(.semibold)).foregroundStyle(TappyColor.textPrimary)
                 NavigationLink {
                     ScamScenarioDetailView(scenario: scenario, advice: knowledge.official)
                 } label: {
@@ -194,61 +196,6 @@ struct ScamMessageView: View {
                         }
                         .accessibilityIdentifier("scam-msg-check-link")
                     }
-                }
-            }
-        }
-    }
-
-    // MARK: Deeper analysis (server, AI) — opt-in
-
-    @ViewBuilder
-    private var deeperSection: some View {
-        if let analysis = vm.messageAnalysis {
-            analysisCard(analysis)
-        } else {
-            VStack(alignment: .leading, spacing: Spacing.xs) {
-                Button { Task { await vm.analyzeMessageDeeper() } } label: {
-                    HStack {
-                        if vm.messageAnalyzing { ProgressView().tint(TappyColor.primary) }
-                        Text(vm.messageAnalyzing ? "scam.msg.deeper.running" : "scam.msg.deeper.button")
-                    }
-                    .font(TappyFont.bodyEmphasis).foregroundStyle(TappyColor.primary)
-                    .frame(maxWidth: .infinity).padding(.vertical, 14)
-                    .background(TappyColor.primary.opacity(0.10))
-                    .clipShape(RoundedRectangle(cornerRadius: Radius.lg, style: .continuous))
-                }
-                .buttonStyle(.plain)
-                .disabled(vm.messageAnalyzing)
-                .accessibilityIdentifier("scam-msg-deeper")
-                Text("scam.msg.deeper.note").font(TappyFont.caption).foregroundStyle(TappyColor.textSecondary)
-                if let failure = vm.messageAnalysisFailure {
-                    Text(failure).font(TappyFont.caption).foregroundStyle(TappyColor.danger).accessibilityIdentifier("scam-msg-deeper-failure")
-                }
-            }
-        }
-    }
-
-    private func analysisCard(_ a: ScamMessageAnalysis) -> some View {
-        TappyCard {
-            VStack(alignment: .leading, spacing: Spacing.sm) {
-                Text("scam.msg.deeper.title").font(TappyFont.headline).foregroundStyle(TappyColor.textPrimary)
-                    .accessibilityIdentifier("scam-msg-analysis")
-                Text(LocalizedStringKey(ScamShieldLevelCopy.levelKey(a.level))).font(TappyFont.bodyEmphasis)
-                    .foregroundStyle(ScamShieldLevelCopy.color(a.level))
-                if !a.summary.isEmpty { Text(a.summary).font(TappyFont.callout).foregroundStyle(TappyColor.textPrimary) }
-                ForEach(a.signals.prefix(6)) { s in
-                    if !s.explanation.isEmpty {
-                        Label { Text(s.explanation).font(TappyFont.callout) } icon: { Image(systemName: "exclamationmark.triangle.fill") }
-                            .foregroundStyle(TappyColor.textPrimary)
-                    }
-                }
-                ForEach(a.doNot.prefix(4)) { d in
-                    Label { Text(d.label(vietnamese: Self.isVietnamese)).font(TappyFont.callout) } icon: { Image(systemName: "hand.raised.fill") }
-                        .foregroundStyle(TappyColor.textPrimary)
-                }
-                ForEach(a.doNow.prefix(4)) { d in
-                    Label { Text(d.label(vietnamese: Self.isVietnamese)).font(TappyFont.callout) } icon: { Image(systemName: "checkmark.circle") }
-                        .foregroundStyle(TappyColor.textPrimary)
                 }
             }
         }

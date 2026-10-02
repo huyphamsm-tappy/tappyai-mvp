@@ -180,7 +180,7 @@ struct ScamShieldView: View {
     private static func shareText(_ result: ScamCheckResult) -> String {
         [NSLocalizedString("scam.share.header", comment: ""),
          String(format: NSLocalizedString("scam.share.link", comment: ""), result.url,
-                NSLocalizedString(ScamShieldLevelCopy.levelKey(result.risk.level), comment: "")),
+                NSLocalizedString(result.verdict.linkTitleKey, comment: "")),
          NSLocalizedString("scam.share.footer", comment: "")].joined(separator: "\n")
     }
 
@@ -189,14 +189,15 @@ struct ScamShieldView: View {
     private func verdictCard(_ result: ScamCheckResult) -> some View {
         TappyCard {
             VStack(alignment: .leading, spacing: Spacing.sm) {
+                // Three states only (WEB 65685a7 / 93948b2): never «safe», never a score or a confidence figure.
                 HStack(spacing: Spacing.sm) {
-                    Image(systemName: Self.glyph(for: result.risk.level))
+                    Image(systemName: ScamShieldLevelCopy.glyph(result.verdict))
                         .font(.title2)
-                        .foregroundColor(Self.color(for: result.risk.level))
+                        .foregroundColor(ScamShieldLevelCopy.color(result.verdict))
                     VStack(alignment: .leading, spacing: 2) {
-                        Text(NSLocalizedString(Self.levelKey(for: result.risk.level), comment: ""))
+                        Text(NSLocalizedString(result.verdict.linkTitleKey, comment: ""))
                             .font(TappyFont.headline)
-                            .foregroundColor(Self.color(for: result.risk.level))
+                            .foregroundColor(ScamShieldLevelCopy.color(result.verdict))
                         Text(result.url)
                             .font(TappyFont.caption)
                             .foregroundColor(TappyColor.textSecondary)
@@ -204,10 +205,9 @@ struct ScamShieldView: View {
                     }
                 }
 
-                Text(String(format: NSLocalizedString("scamShield.score", comment: ""),
-                            result.risk.score, result.risk.confidence))
-                    .font(TappyFont.caption)
-                    .foregroundColor(TappyColor.textSecondary)
+                Text(NSLocalizedString(result.verdict.linkBodyKey, comment: ""))
+                    .font(TappyFont.callout)
+                    .foregroundColor(TappyColor.textPrimary)
 
                 if let entity = result.officialMatch {
                     Label(
@@ -230,7 +230,18 @@ struct ScamShieldView: View {
                     }
                 }
 
-                if !result.evidence.items.isEmpty {
+                // WEB 93948b2: the specific reasons, one finished sentence each, only for warning / critical findings.
+                let reasons = result.evidence.items.filter(\.isReasonWorthy).compactMap { $0.reason(vietnamese: Self.isVietnamese) }
+                if !reasons.isEmpty {
+                    Text(NSLocalizedString("scamVerdict.link.reasons", comment: ""))
+                        .font(TappyFont.bodyEmphasis)
+                    VStack(alignment: .leading, spacing: 4) {
+                        ForEach(reasons, id: \.self) { reason in
+                            Text("• " + reason).font(TappyFont.callout)
+                        }
+                    }
+                } else if !result.evidence.items.isEmpty {
+                    // An older server sends no reason sentences: the technical findings stay behind the toggle.
                     Button {
                         evidenceOpen.toggle()
                     } label: {
@@ -260,6 +271,11 @@ struct ScamShieldView: View {
                         }
                     }
                 }
+
+                // Printed under EVERY verdict (WEB `scamVerdict.disclaimer`).
+                Text(NSLocalizedString("scamVerdict.disclaimer", comment: ""))
+                    .font(TappyFont.caption)
+                    .foregroundColor(TappyColor.textSecondary)
             }
         }
     }
@@ -287,45 +303,6 @@ struct ScamShieldView: View {
 
     /// The neutral colour reserved for "no verdict". Never used for a real risk level.
     private static let slate = Color(red: 0.39, green: 0.45, blue: 0.55)
-
-    /// 🚨 Exhaustive over `ScamRiskLevel` with no `default` branch: adding a level to the enum
-    /// stops compiling here until it has been given a deliberate appearance, rather than falling
-    /// through to whatever the author picked last. Mirrors `LEVEL_STYLES` in ScamShieldResult.tsx.
-    private static func color(for level: ScamRiskLevel) -> Color {
-        switch level {
-        case .safe: return Color(red: 0.09, green: 0.64, blue: 0.29)
-        case .low: return Color(red: 0.15, green: 0.39, blue: 0.92)
-        case .medium: return Color(red: 0.79, green: 0.54, blue: 0.02)
-        case .high: return Color(red: 0.92, green: 0.35, blue: 0.05)
-        case .critical: return Color(red: 0.86, green: 0.15, blue: 0.15)
-        case .inconclusive: return slate
-        case .unknown: return slate
-        }
-    }
-
-    private static func glyph(for level: ScamRiskLevel) -> String {
-        switch level {
-        case .safe: return "checkmark.shield.fill"
-        case .low: return "checkmark.shield.fill"
-        case .medium: return "exclamationmark.shield.fill"
-        case .high: return "xmark.shield.fill"
-        case .critical: return "xmark.shield.fill"
-        case .inconclusive: return "shield.lefthalf.filled.slash"
-        case .unknown: return "shield.lefthalf.filled.slash"
-        }
-    }
-
-    private static func levelKey(for level: ScamRiskLevel) -> String {
-        switch level {
-        case .safe: return "scamShield.level.safe"
-        case .low: return "scamShield.level.low"
-        case .medium: return "scamShield.level.medium"
-        case .high: return "scamShield.level.high"
-        case .critical: return "scamShield.level.critical"
-        case .inconclusive: return "scamShield.level.inconclusive"
-        case .unknown: return "scamShield.level.inconclusive"
-        }
-    }
 
     /// Read at render time from the app's own language, the same value RequestBuilder sends as
     /// Accept-Language — not the device locale, which can differ.

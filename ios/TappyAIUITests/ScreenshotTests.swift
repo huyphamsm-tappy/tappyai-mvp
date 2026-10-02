@@ -322,14 +322,14 @@ final class ScreenshotTests: XCTestCase {
         shot("87-scam-message-normal")
     }
 
-    func testScamMessageUnsureThenAIAnalysis() {
+    /// WEB 65685a7: no AI for the message check — the «suspicious» result has no «analyse deeper with AI» entry.
+    func testScamMessageUnsureHasNoAIEntry() {
         let app = scamLaunch(["-uitest-scam-message", "Bạn đã trúng thưởng một phần quà đặc biệt."])
         XCTAssertTrue(any(app, "scam-msg-unsure").waitForExistence(timeout: 40))
         shot("88-scam-message-unsure")
-        for _ in 0..<4 where !any(app, "scam-msg-deeper").isHittable { app.swipeUp() }
-        any(app, "scam-msg-deeper").tap()
-        XCTAssertTrue(any(app, "scam-msg-analysis").waitForExistence(timeout: 30), "the server analysis, after consent")
-        shot("89-scam-message-ai")
+        for _ in 0..<2 { app.swipeUp() }
+        XCTAssertFalse(any(app, "scam-msg-deeper").exists, "no AI analysis entry for a message")
+        shot("89-scam-message-no-ai")
     }
 
     func testScamQRLinkAndWifiAndEmpty() {
