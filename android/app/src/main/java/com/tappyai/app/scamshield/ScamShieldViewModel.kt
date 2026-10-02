@@ -196,14 +196,14 @@ class ScamShieldViewModel @Inject constructor(
         }
     }
 
-    val canAnalyze: Boolean get() = message.isNotBlank() || messageUrl.isNotBlank() || screenshot != null
+    val canAnalyze: Boolean get() = message.isNotBlank() || messageUrl.isNotBlank() || (ScamShieldFlags.MESSAGE_AI && screenshot != null)
 
     /** Analyze Message: at least one of text / link / screenshot; the result is its own card, never a history row. */
     fun analyzeMessage() {
         if (!canAnalyze || state is ScamShieldUiState.Checking) return
+        if (!ScamShieldFlags.MESSAGE_AI) { analyzeMessageOnDevice(); return }
         val shot = screenshot
-        // Static first: a text-only message (no link anywhere in it, no screenshot) that matches an official scenario with HIGH
-        // confidence is answered from the bundled dataset — no request, no model, no quota, and the text never leaves the phone.
+        // (AI path, behind the OFF flag) Static first: a text-only message that matches an official scenario with HIGH confidence.
         if (shot == null && messageUrl.isBlank() && !ScenarioMatcher.containsLink(message)) {
             val known = ScenarioMatcher.match(message)
             if (known != null && known.confidence == ScenarioConfidence.High) {
@@ -224,6 +224,35 @@ class ScamShieldViewModel @Inject constructor(
             when (val o = repository.analyzeMessage(message.trim(), messageUrl.trim(), shot?.bytes, shot?.mimeType, preferVietnameseLabels = vietnamese())) {
                 is MessageAnalysisOutcome.Verdict -> { trackScamCheck("message", o.result.level); ScamShieldUiState.MessageResult(o.result) }
                 is MessageAnalysisOutcome.Failed -> ScamShieldUiState.Failed(o.failure)
+            }
+        }
+    }
+
+    /**
+     * The message check WITHOUT any AI (decision A8, 02/10): the text is matched against the 25 official scenarios on the phone
+     * (sure match → "familiar signs", partial → "some suspicious signs"); with no match and a link (the link field or a link in the text),
+     * ONLY that link goes to the link check; with neither, "no familiar signs recognised". No token, no quota, no consent dialog,
+     * nothing stored, no history row, no analytics event with the text.
+     */
+    private fun analyzeMessageOnDevice() {
+        val text = message.trim()
+        val match = if (text.isBlank()) null else ScenarioMatcher.match(text)
+        val scenario = match?.let { m -> knowledge.allScenarios().firstOrNull { it.id == m.scenarioId } }
+        if (match != null && scenario != null) {
+            inFlight?.cancel(); inFlight = null
+            state = ScamShieldUiState.KnownScenario(scenario, match)
+            return
+        }
+        val link = messageUrl.trim().ifBlank { ScenarioMatcher.firstLink(text) }
+        if (link.isNullOrBlank()) {
+            inFlight?.cancel(); inFlight = null
+            state = ScamShieldUiState.NoMatch
+            return
+        }
+        run {
+            when (val o = repository.check(link, preferVietnameseLabels = vietnamese())) {
+                is ScamCheckOutcome.Verdict -> ScamShieldUiState.Result(o.result)
+                is ScamCheckOutcome.Failed -> ScamShieldUiState.Failed(o.failure)
             }
         }
     }
@@ -286,7 +315,18 @@ sealed interface ScamShieldUiState {
     data class MessageResult(val result: MessageAnalysis) : ScamShieldUiState
     /** A message that matches an official scenario with high confidence, answered ON THE DEVICE (no request, no AI). */
     data class KnownScenario(val scenario: ScamScenario, val match: ScenarioMatch) : ScamShieldUiState
+    /** A pasted message with no link that matched no known scenario: "no familiar signs recognised" — NOT "safe". Nothing was sent anywhere. */
+    data object NoMatch : ScamShieldUiState
     /** A QR code that is not a web link: named and warned about, never acted on. Nothing was sent anywhere. */
     data class QrNotice(val payload: QrPayload.Other) : ScamShieldUiState
     data class Failed(val failure: ScamCheckFailure) : ScamShieldUiState
+}
+
+/**
+ * Feature flags of Scam Shield. [MESSAGE_AI] = the AI message analysis (server `analyze`, shared AI quota, "send to AI?" consent,
+ * screenshots). OFF by decision A8 (02/10): the message check is the on-device scenario match + the link check only. The old code
+ * stays behind this flag so it can come back without a rewrite.
+ */
+internal object ScamShieldFlags {
+    const val MESSAGE_AI: Boolean = false
 }

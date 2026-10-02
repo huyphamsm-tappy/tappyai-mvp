@@ -24,7 +24,6 @@ import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.icons.filled.Flag
 import androidx.compose.material.icons.filled.GppBad
-import androidx.compose.material.icons.filled.GppGood
 import androidx.compose.material.icons.filled.GppMaybe
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Language
@@ -78,13 +77,14 @@ internal class LevelTone(val fg: Color, val soft: Color, val border: Color, val 
 internal fun toneFor(level: RiskLevel): LevelTone {
     val dark = HomeV3.Background.luminance() < 0.5f
     return when (level) {
-        RiskLevel.SAFE -> LevelTone(V3Tone.Emerald, V3Tone.Emerald.copy(alpha = 0.14f), V3Tone.Emerald.copy(alpha = 0.34f), Icons.Filled.GppGood, R.string.scam_shield_level_safe)
-        RiskLevel.LOW -> LevelTone(HomeV3.Purple, v3AccentSoft(), HomeV3.Purple.copy(alpha = 0.34f), Icons.Filled.GppGood, R.string.scam_shield_level_low)
-        RiskLevel.MEDIUM -> LevelTone(V3Tone.Amber, V3Tone.Amber.copy(alpha = 0.16f), V3Tone.Amber.copy(alpha = 0.38f), Icons.Filled.GppMaybe, R.string.scam_shield_level_medium)
-        RiskLevel.HIGH -> LevelTone(if (dark) SsHighDark else SsHighLight, SsHighSoft.copy(alpha = 0.16f), SsHighSoft.copy(alpha = 0.40f), Icons.Filled.GppMaybe, R.string.scam_shield_level_high)
-        RiskLevel.CRITICAL -> LevelTone(V3Tone.Rose, V3Tone.Rose.copy(alpha = 0.16f), V3Tone.Rose.copy(alpha = 0.42f), Icons.Filled.GppBad, R.string.scam_shield_level_critical)
+        // 02/10 (decision A7/A8): there is NO "safe" appearance. SAFE, LOW and the unresolved levels are all the same neutral slate
+        // "no familiar signs recognised" — never green, never a shield-check glyph, never a reassuring word.
+        RiskLevel.SAFE, RiskLevel.LOW -> LevelTone(HomeV3.OnSurfaceVariant, HomeV3.SurfaceVariant, HomeV3.Outline, Icons.Filled.GppMaybe, R.string.scam_verdict_unrecognized)
+        RiskLevel.MEDIUM -> LevelTone(V3Tone.Amber, V3Tone.Amber.copy(alpha = 0.16f), V3Tone.Amber.copy(alpha = 0.38f), Icons.Filled.GppMaybe, R.string.scam_verdict_suspicious)
+        RiskLevel.HIGH -> LevelTone(if (dark) SsHighDark else SsHighLight, SsHighSoft.copy(alpha = 0.16f), SsHighSoft.copy(alpha = 0.40f), Icons.Filled.GppMaybe, R.string.scam_verdict_familiar)
+        RiskLevel.CRITICAL -> LevelTone(V3Tone.Rose, V3Tone.Rose.copy(alpha = 0.16f), V3Tone.Rose.copy(alpha = 0.42f), Icons.Filled.GppBad, R.string.scam_verdict_familiar)
         // Neutral slate + the "maybe" glyph: visibly not a verdict, visibly not a clean bill of health.
-        RiskLevel.INCONCLUSIVE, RiskLevel.UNKNOWN -> LevelTone(HomeV3.OnSurfaceVariant, HomeV3.SurfaceVariant, HomeV3.Outline, Icons.Filled.GppMaybe, R.string.scam_shield_level_inconclusive)
+        RiskLevel.INCONCLUSIVE, RiskLevel.UNKNOWN -> LevelTone(HomeV3.OnSurfaceVariant, HomeV3.SurfaceVariant, HomeV3.Outline, Icons.Filled.GppMaybe, R.string.scam_verdict_unrecognized)
     }
 }
 
@@ -111,26 +111,9 @@ internal fun LevelBadge(level: RiskLevel, small: Boolean = false) {
     }
 }
 
-/** `ConfidenceBadge`: ≥80 the SAFE tone, ≥50 MEDIUM, else INCONCLUSIVE. */
-@Composable
-internal fun ConfidenceBadge(confidence: Int) {
-    val (labelRes, tone) = when {
-        confidence >= 80 -> R.string.scam_shield_v3_confidence_high to toneFor(RiskLevel.SAFE)
-        confidence >= 50 -> R.string.scam_shield_v3_confidence_medium to toneFor(RiskLevel.MEDIUM)
-        else -> R.string.scam_shield_v3_confidence_low to toneFor(RiskLevel.INCONCLUSIVE)
-    }
-    Text(
-        text = stringResource(labelRes),
-        color = tone.fg,
-        fontSize = 11.sp,
-        fontWeight = FontWeight.Medium,
-        modifier = Modifier.clip(CircleShape).background(tone.soft).padding(horizontal = 8.dp, vertical = 2.dp),
-    )
-}
-
 /** The shared card head: glyph tile, level word + confidence, a sub-line, the score. */
 @Composable
-private fun VerdictHead(tone: LevelTone, score: Int, confidence: Int, subline: String?, sublineBold: Boolean) {
+private fun VerdictHead(tone: LevelTone, subline: String?, sublineBold: Boolean) {
     Row(
         modifier = Modifier.fillMaxWidth().padding(16.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -140,10 +123,7 @@ private fun VerdictHead(tone: LevelTone, score: Int, confidence: Int, subline: S
             Icon(tone.icon, contentDescription = null, tint = tone.fg, modifier = Modifier.size(26.dp))
         }
         Column(modifier = Modifier.weight(1f)) {
-            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                Text(text = stringResource(tone.labelRes), color = tone.fg, fontSize = 17.sp, lineHeight = 20.sp, fontWeight = FontWeight.ExtraBold)
-                ConfidenceBadge(confidence)
-            }
+            Text(text = stringResource(tone.labelRes), color = tone.fg, fontSize = 17.sp, lineHeight = 21.sp, fontWeight = FontWeight.ExtraBold)
             if (subline != null) {
                 Text(
                     text = subline,
@@ -156,11 +136,6 @@ private fun VerdictHead(tone: LevelTone, score: Int, confidence: Int, subline: S
                 )
             }
         }
-        Column(horizontalAlignment = Alignment.End) {
-            Text(text = score.toString(), color = tone.fg, fontSize = 24.sp, lineHeight = 24.sp, fontWeight = FontWeight.ExtraBold)
-            // Language-neutral; the same word in both dictionaries.
-            Text(text = stringResource(R.string.scam_shield_v3_score).uppercase(), color = HomeV3.OnSurfaceVariant, fontSize = 9.5.sp, letterSpacing = 1.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.padding(top = 4.dp))
-        }
     }
 }
 
@@ -169,16 +144,46 @@ private fun VerdictHead(tone: LevelTone, score: Int, confidence: Int, subline: S
 internal fun VerdictCard(result: ScamCheckResult) {
     val tone = toneFor(result.level)
     Column(modifier = Modifier.fillMaxWidth().clip(V3PanelShape).background(tone.soft).border(1.dp, tone.border, V3PanelShape)) {
-        VerdictHead(tone = tone, score = result.score, confidence = result.confidence, subline = result.url, sublineBold = false)
+        VerdictHead(tone = tone, subline = result.url, sublineBold = false)
         Column(modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
+            // Never "this link is a scam" and never "safe": either the link has traits commonly seen in fake links, or nothing familiar
+            // was recognised — which is said to mean NOTHING about safety.
+            Text(
+                text = stringResource(if (VerdictKind.fromRisk(result.level) == VerdictKind.Unrecognized) R.string.scam_verdict_unrecognized_body else R.string.scam_verdict_link_traits),
+                color = HomeV3.OnSurface,
+                fontSize = 13.5.sp,
+                lineHeight = 19.sp,
+                fontWeight = FontWeight.SemiBold,
+            )
+            val reasons = result.evidence.filter { it.severity == SignalSeverity.WARNING || it.severity == SignalSeverity.CRITICAL }.take(4)
+            if (reasons.isNotEmpty()) ReasonsSection(reasons)
             result.officialMatch?.let { OfficialSection(it) }
             if (result.actions.isNotEmpty()) ActionsSection(result.actions)
             if (result.evidence.isNotEmpty()) EvidenceSection(result.evidence)
+            EmergencyAndDisclaimer()
         }
     }
 }
 
-/** `OfficialSection`: the SAFE-tinted box with the brand, its website and hotline as links. */
+/** The specific reasons (the engine's own warning / critical findings), always visible — the full list stays collapsed below. */
+@Composable
+internal fun ReasonsSection(items: List<EvidenceItem>) {
+    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        Text(text = stringResource(R.string.scam_verdict_reasons), color = HomeV3.OnSurfaceVariant, fontSize = 13.sp, fontWeight = FontWeight.SemiBold)
+        items.forEach { item ->
+            Row(
+                modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(8.dp)).background(HomeV3.SurfaceVariant).padding(10.dp),
+                verticalAlignment = Alignment.Top,
+                horizontalArrangement = Arrangement.spacedBy(10.dp),
+            ) {
+                Box(modifier = Modifier.padding(top = 5.dp).size(8.dp).clip(CircleShape).background(if (item.severity == SignalSeverity.CRITICAL) V3Tone.Rose else V3Tone.Amber))
+                Text(text = item.summary, color = HomeV3.OnSurface, fontSize = 12.5.sp, lineHeight = 17.sp, modifier = Modifier.weight(1f))
+            }
+        }
+    }
+}
+
+/** `OfficialSection`: the neutral box with the brand, its website and hotline as links. */
 @Composable
 private fun OfficialSection(entity: OfficialEntity) {
     val tone = toneFor(RiskLevel.SAFE)
@@ -419,7 +424,7 @@ internal fun MessageResultCard(result: MessageAnalysis) {
     val dangerous = result.level == RiskLevel.MEDIUM || result.level == RiskLevel.HIGH || result.level == RiskLevel.CRITICAL
     val typeLabel = result.scamType?.let { scamTypeRes(it) }?.let { stringResource(it) }
     Column(modifier = Modifier.fillMaxWidth().clip(V3PanelShape).background(tone.soft).border(1.dp, tone.border, V3PanelShape)) {
-        VerdictHead(tone = tone, score = result.score, confidence = result.confidence, subline = typeLabel, sublineBold = true)
+        VerdictHead(tone = tone, subline = typeLabel, sublineBold = true)
 
         Column(modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp)) {
             // The plain-language summary — the model's, or the server's deterministic fallback.

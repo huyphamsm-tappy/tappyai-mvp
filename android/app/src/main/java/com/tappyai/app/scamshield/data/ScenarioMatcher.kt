@@ -94,5 +94,18 @@ object ScenarioMatcher {
     /** Whether [text] carries a link-like token: such a message goes to the link engine, so it is not answered from the cue table alone. */
     fun containsLink(text: String): Boolean = LINK.containsMatchIn(text)
 
+    /** The first link-like token of [text], normalised to an `https://` URL, or null. Only this goes to the link check. */
+    fun firstLink(text: String): String? {
+        val m = LINK.find(text) ?: return null
+        val schemeOrWww = m.value.startsWith("http", ignoreCase = true) || m.value.startsWith("www.", ignoreCase = true)
+        var s = m.range.first
+        if (!schemeOrWww) while (s > 0 && !text[s - 1].isWhitespace()) s--
+        var e = m.range.last + 1
+        while (e < text.length && !text[e].isWhitespace()) e++
+        val token = text.substring(s, e).trim { it in ".,;:!?()«»<>" || it.code == 34 || it.code == 39 }
+        if (token.isBlank()) return null
+        return if (token.startsWith("http", ignoreCase = true)) token else "https://$token"
+    }
+
     private val LINK = Regex("""(?i)(https?://|www\.|\b[a-z0-9-]+\.(com|vn|net|org|info|top|xyz|site|online|club|vip|cc|tk|ml|ga|cf|gq|me|io|link|click|app)\b)""")
 }

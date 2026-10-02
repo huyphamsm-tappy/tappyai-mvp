@@ -47,6 +47,23 @@ class ScenarioMatcherTest {
         assertEquals(ScenarioConfidence.Possible, m!!.confidence)
     }
 
+    // ── the link that goes to the link check (and nothing else) ──
+
+    @Test fun `firstLink returns the first link as an https URL, trimmed of punctuation`() {
+        assertEquals("https://nop-phat.top/abc", ScenarioMatcher.firstLink("nộp phạt tại https://nop-phat.top/abc, nhanh lên"))
+        assertEquals("https://www.vietcombank-xacthuc.com", ScenarioMatcher.firstLink("vào www.vietcombank-xacthuc.com để xác minh"))
+        assertEquals("https://nop-phat.vn", ScenarioMatcher.firstLink("truy cập nop-phat.vn ngay!"))
+        assertEquals("http://a.example/x", ScenarioMatcher.firstLink("xem (http://a.example/x)"))
+        assertNull(ScenarioMatcher.firstLink("Chiều nay đi ăn phở nha, 6h gặp ở quán cũ."))
+        assertNull(ScenarioMatcher.firstLink(""))
+    }
+
+    @Test fun `the Trung thu parcel message is a partial match - some suspicious signs, not a sure scam`() {
+        val m = ScenarioMatcher.match("Bưu phẩm Trung thu của bạn đã đến, quét mã QR đính kèm để nhận")
+        assertNotNull(m)
+        assertEquals(ScenarioConfidence.Possible, m!!.confidence)
+    }
+
     // ── ordinary messages are not scams ──
 
     @Test fun `ordinary messages never reach a high match`() {

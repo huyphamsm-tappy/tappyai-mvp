@@ -72,11 +72,11 @@ class ScamShieldV3Test {
         val form = s.substringAfter("ScamShieldTab.Message ->").substringBefore("(viewModel.state as? ScamShieldUiState.Failed)")
         assertTrue("the message form: title, subtitle, 5-row text, link, screenshot, quota hint, CTA",
             form.contains("R.string.scam_v3_msg_title") && form.contains("R.string.scam_v3_msg_subtitle") && form.contains("minLines = 5") && form.contains("R.string.scam_v3_msg_urlPlaceholder") &&
-                form.contains("R.string.scam_v3_msg_upload") && form.contains("R.string.scam_v3_msg_removeScreenshot") && form.contains("R.string.scam_v3_msg_quotaHint, ScamShieldViewModel.ANON_LIFETIME_LIMIT.toString(), ScamShieldViewModel.FREE_DAILY_LIMIT.toString()") &&
+                form.contains("R.string.scam_v3_msg_upload") && form.contains("R.string.scam_v3_msg_removeScreenshot") && form.contains("R.string.scam_msg_local_hint, ScamShieldViewModel.ANON_LIFETIME_LIMIT.toString(), ScamShieldViewModel.FREE_DAILY_LIMIT.toString()") &&
                 form.contains("R.string.scam_v3_msg_analyzing else R.string.scam_v3_msg_cta") && form.contains("enabled = viewModel.canAnalyze && !checking") && form.contains("onClick = viewModel::analyzeMessage"))
         assertTrue("switching tabs clears the verdict, as the web's switchTab does", vm.contains("fun selectTab(next: ScamShieldTab)") && vm.substringAfter("fun selectTab").substringBefore("}").contains("state = ScamShieldUiState.Idle"))
         assertTrue("the web's bounds: 4000 chars, 5 MB, JPEG/PNG/WebP", vm.contains("const val MESSAGE_MAX_CHARS = 4_000") && vm.contains("const val SCREENSHOT_MAX_BYTES = 5 * 1024 * 1024") && vm.contains("listOf(\"image/jpeg\", \"image/png\", \"image/webp\")"))
-        assertTrue("at least one of text / link / screenshot", vm.contains("message.isNotBlank() || messageUrl.isNotBlank() || screenshot != null"))
+        assertTrue("at least one of text / link / screenshot", vm.contains("message.isNotBlank() || messageUrl.isNotBlank() || (ScamShieldFlags.MESSAGE_AI && screenshot != null)"))
         assertTrue("the rose error box, inside the tool panel", result.contains("V3Tone.Rose.copy(alpha = 0.10f)") && result.contains(".border(1.dp, V3Tone.Rose, shape)"))
     }
 
@@ -84,11 +84,11 @@ class ScamShieldV3Test {
     fun `the verdict cards are tinted by the level - six hues, HIGH's own pair, INCONCLUSIVE neutral - and the message card reads verdict, why, wants, do not, do now, links`() {
         val s = result
         assertTrue(s.contains(".background(tone.soft).border(1.dp, tone.border, V3PanelShape)"))
-        assertTrue(s.contains("RiskLevel.SAFE -> LevelTone(V3Tone.Emerald") && s.contains("RiskLevel.LOW -> LevelTone(HomeV3.Purple") && s.contains("RiskLevel.MEDIUM -> LevelTone(V3Tone.Amber"))
+        assertTrue(s.contains("RiskLevel.SAFE, RiskLevel.LOW -> LevelTone(HomeV3.OnSurfaceVariant") && s.contains("RiskLevel.MEDIUM -> LevelTone(V3Tone.Amber"))
         assertTrue("HIGH is the feature-scoped --ss-high pair", s.contains("Color(0xFFB4400C)") && s.contains("Color(0xFFFB923C)") && s.contains("if (dark) SsHighDark else SsHighLight"))
         assertTrue(s.contains("RiskLevel.CRITICAL -> LevelTone(V3Tone.Rose"))
         assertTrue("INCONCLUSIVE and UNKNOWN are neutral slate, never green", s.contains("RiskLevel.INCONCLUSIVE, RiskLevel.UNKNOWN -> LevelTone(HomeV3.OnSurfaceVariant, HomeV3.SurfaceVariant, HomeV3.Outline, Icons.Filled.GppMaybe"))
-        assertTrue(s.contains("R.string.scam_shield_v3_score") && s.contains("confidence >= 80 ->") && s.contains("confidence >= 50 ->"))
+        assertTrue("02/10 (A7): no score, no confidence badge, no \"safe\" word", !s.contains("R.string.scam_shield_v3_score") && !s.contains("ConfidenceBadge(") && !s.contains("scam_shield_level_safe") && !s.contains("GppGood"))
         assertTrue("URL card: official, actions, evidence", s.contains("OfficialSection(") && s.contains("ActionsSection(") && s.contains("EvidenceSection("))
         assertTrue("the web's action glyph map", listOf("\"stop\" ->", "\"link\" ->", "\"phone\" ->", "\"flag\" ->", "\"warning\" ->", "\"search\" ->", "\"check\" ->").all { s.contains(it) })
 

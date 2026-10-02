@@ -209,7 +209,7 @@ fun ScamShieldScreen(
                         ScamShieldTab.Message -> Column(modifier = Modifier.padding(top = 16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                             Column {
                                 Text(text = stringResource(R.string.scam_v3_msg_title), color = HomeV3.OnSurface, fontSize = 16.sp, fontWeight = FontWeight.Bold)
-                                Text(text = stringResource(R.string.scam_v3_msg_subtitle), color = HomeV3.OnSurfaceVariant, fontSize = 13.sp, lineHeight = 17.sp, modifier = Modifier.padding(top = 2.dp))
+                                Text(text = stringResource(if (ScamShieldFlags.MESSAGE_AI) R.string.scam_v3_msg_subtitle else R.string.scam_msg_subtitle_local), color = HomeV3.OnSurfaceVariant, fontSize = 13.sp, lineHeight = 17.sp, modifier = Modifier.padding(top = 2.dp))
                             }
                             ToolTextField(
                                 value = viewModel.message,
@@ -230,38 +230,40 @@ fun ScamShieldScreen(
                                 leadingIcon = { Icon(Icons.Filled.Link, contentDescription = null, tint = HomeV3.OnSurfaceVariant, modifier = Modifier.size(17.dp)) },
                                 textSize = 14.sp,
                             )
-                            val shot = viewModel.screenshot
-                            if (shot != null) {
-                                Row(
-                                    modifier = Modifier.heightIn(min = 44.dp).clip(CircleShape).background(HomeV3.SurfaceVariant).border(1.dp, HomeV3.Outline, CircleShape).padding(start = 14.dp, end = 6.dp, top = 6.dp, bottom = 6.dp),
-                                    verticalAlignment = Alignment.CenterVertically,
-                                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                                ) {
-                                    Icon(Icons.Filled.AddPhotoAlternate, contentDescription = null, tint = HomeV3.OnSurface, modifier = Modifier.size(16.dp))
-                                    Text(text = shot.name, color = HomeV3.OnSurface, fontSize = 13.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.widthIn(max = 180.dp))
-                                    Box(
-                                        modifier = Modifier.size(28.dp).clip(CircleShape).clickable(role = Role.Button, onClickLabel = stringResource(R.string.scam_v3_msg_removeScreenshot), onClick = viewModel::removeScreenshot),
-                                        contentAlignment = Alignment.Center,
-                                    ) { Icon(Icons.Filled.Close, contentDescription = stringResource(R.string.scam_v3_msg_removeScreenshot), tint = HomeV3.OnSurfaceVariant, modifier = Modifier.size(14.dp)) }
-                                }
-                            } else {
-                                Row(
-                                    modifier = Modifier
-                                        .heightIn(min = 44.dp)
-                                        .clip(CircleShape)
-                                        .background(HomeV3.SurfaceVariant)
-                                        .border(1.dp, HomeV3.Outline, CircleShape)
-                                        .clickable(enabled = !checking, role = Role.Button) { pickScreenshot.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)) }
-                                        .padding(horizontal = 16.dp, vertical = 10.dp),
-                                    verticalAlignment = Alignment.CenterVertically,
-                                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                                ) {
-                                    Icon(Icons.Filled.AddPhotoAlternate, contentDescription = null, tint = HomeV3.OnSurface, modifier = Modifier.size(16.dp))
-                                    Text(text = stringResource(R.string.scam_v3_msg_upload), color = HomeV3.OnSurface, fontSize = 13.sp, fontWeight = FontWeight.SemiBold)
+                            if (ScamShieldFlags.MESSAGE_AI) {
+                                val shot = viewModel.screenshot
+                                if (shot != null) {
+                                    Row(
+                                        modifier = Modifier.heightIn(min = 44.dp).clip(CircleShape).background(HomeV3.SurfaceVariant).border(1.dp, HomeV3.Outline, CircleShape).padding(start = 14.dp, end = 6.dp, top = 6.dp, bottom = 6.dp),
+                                        verticalAlignment = Alignment.CenterVertically,
+                                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                                    ) {
+                                        Icon(Icons.Filled.AddPhotoAlternate, contentDescription = null, tint = HomeV3.OnSurface, modifier = Modifier.size(16.dp))
+                                        Text(text = shot.name, color = HomeV3.OnSurface, fontSize = 13.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.widthIn(max = 180.dp))
+                                        Box(
+                                            modifier = Modifier.size(28.dp).clip(CircleShape).clickable(role = Role.Button, onClickLabel = stringResource(R.string.scam_v3_msg_removeScreenshot), onClick = viewModel::removeScreenshot),
+                                            contentAlignment = Alignment.Center,
+                                        ) { Icon(Icons.Filled.Close, contentDescription = stringResource(R.string.scam_v3_msg_removeScreenshot), tint = HomeV3.OnSurfaceVariant, modifier = Modifier.size(14.dp)) }
+                                    }
+                                } else {
+                                    Row(
+                                        modifier = Modifier
+                                            .heightIn(min = 44.dp)
+                                            .clip(CircleShape)
+                                            .background(HomeV3.SurfaceVariant)
+                                            .border(1.dp, HomeV3.Outline, CircleShape)
+                                            .clickable(enabled = !checking, role = Role.Button) { pickScreenshot.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)) }
+                                            .padding(horizontal = 16.dp, vertical = 10.dp),
+                                        verticalAlignment = Alignment.CenterVertically,
+                                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                                    ) {
+                                        Icon(Icons.Filled.AddPhotoAlternate, contentDescription = null, tint = HomeV3.OnSurface, modifier = Modifier.size(16.dp))
+                                        Text(text = stringResource(R.string.scam_v3_msg_upload), color = HomeV3.OnSurface, fontSize = 13.sp, fontWeight = FontWeight.SemiBold)
+                                    }
                                 }
                             }
                             Text(
-                                text = stringResource(R.string.scam_v3_msg_quotaHint, ScamShieldViewModel.ANON_LIFETIME_LIMIT.toString(), ScamShieldViewModel.FREE_DAILY_LIMIT.toString()),
+                                text = stringResource(if (ScamShieldFlags.MESSAGE_AI) R.string.scam_v3_msg_quotaHint else R.string.scam_msg_local_hint, ScamShieldViewModel.ANON_LIFETIME_LIMIT.toString(), ScamShieldViewModel.FREE_DAILY_LIMIT.toString()),
                                 color = HomeV3.OnSurfaceVariant,
                                 fontSize = 12.sp,
                                 lineHeight = 16.sp,
@@ -276,7 +278,7 @@ fun ScamShieldScreen(
                         }
                     }
 
-                    if (viewModel.askAiConsent) {
+                    if (ScamShieldFlags.MESSAGE_AI && viewModel.askAiConsent) {
                     AlertDialog(
                         onDismissRequest = viewModel::dismissAiConsent,
                         title = { Text(stringResource(R.string.scam_ai_consent_title)) },
@@ -291,8 +293,9 @@ fun ScamShieldScreen(
                 // ── 4. The verdict ──
                 (viewModel.state as? ScamShieldUiState.Result)?.let { VerdictCard(it.result) }
                 (viewModel.state as? ScamShieldUiState.MessageResult)?.let { MessageResultCard(it.result) }
-                (viewModel.state as? ScamShieldUiState.KnownScenario)?.let { KnownScenarioCard(it.scenario, viewModel) }
+                (viewModel.state as? ScamShieldUiState.KnownScenario)?.let { KnownScenarioCard(it.scenario, it.match, viewModel) }
                 (viewModel.state as? ScamShieldUiState.QrNotice)?.let { QrNoticeCard(it.payload) }
+                if (viewModel.state is ScamShieldUiState.NoMatch) NoMatchCard()
 
                 // ── 5. Official anti-fraud knowledge ──
                 ScamKnowledgeSection(viewModel = viewModel)

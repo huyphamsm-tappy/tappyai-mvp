@@ -37,6 +37,7 @@ import com.tappyai.app.personal.V3Tone
 import com.tappyai.app.scamshield.data.QrKind
 import com.tappyai.app.scamshield.data.QrPayload
 import com.tappyai.app.scamshield.data.ScamScenario
+import com.tappyai.app.scamshield.data.ScenarioMatch
 import com.tappyai.app.share.TappyShare
 
 /**
@@ -47,28 +48,67 @@ import com.tappyai.app.share.TappyShare
  * that never contains the message or the code.
  */
 @Composable
-internal fun KnownScenarioCard(scenario: ScamScenario, viewModel: ScamShieldViewModel) {
+internal fun KnownScenarioCard(scenario: ScamScenario, match: ScenarioMatch, viewModel: ScamShieldViewModel) {
     val context = LocalContext.current
-    val shape = RoundedCornerShape(16.dp)
+    val kind = VerdictKind.fromScenario(match.confidence)
     val shareText = stringResource(R.string.scam_known_share, scenario.official.title, TappyShare.CANONICAL_ORIGIN + "/scam-shield")
     ToolPanel {
         Row(verticalAlignment = Alignment.Top, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-            Icon(Icons.Filled.WarningAmber, contentDescription = null, tint = V3Tone.Rose, modifier = Modifier.padding(top = 2.dp).size(22.dp))
+            Icon(Icons.Filled.WarningAmber, contentDescription = null, tint = if (kind == VerdictKind.Familiar) V3Tone.Rose else V3Tone.Amber, modifier = Modifier.padding(top = 2.dp).size(22.dp))
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = stringResource(R.string.scam_known_title, scenario.official.title),
-                    color = HomeV3.OnSurface,
-                    fontSize = 16.sp,
+                    text = stringResource(if (kind == VerdictKind.Familiar) R.string.scam_verdict_familiar else R.string.scam_verdict_suspicious),
+                    color = if (kind == VerdictKind.Familiar) V3Tone.Rose else V3Tone.Amber,
+                    fontSize = 17.sp,
                     lineHeight = 21.sp,
-                    fontWeight = FontWeight.Bold,
+                    fontWeight = FontWeight.ExtraBold,
+                )
+                Text(
+                    text = stringResource(if (kind == VerdictKind.Familiar) R.string.scam_known_title else R.string.scam_verdict_possible_scenario, scenario.official.title),
+                    color = HomeV3.OnSurface,
+                    fontSize = 14.sp,
+                    lineHeight = 19.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    modifier = Modifier.padding(top = 4.dp),
                 )
                 Row(modifier = Modifier.padding(top = 6.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                     Icon(Icons.Filled.Verified, contentDescription = null, tint = V3Tone.Emerald, modifier = Modifier.size(14.dp))
-                    Text(text = stringResource(R.string.scam_known_badge), color = V3Tone.Emerald, fontSize = 12.sp, lineHeight = 16.sp, fontWeight = FontWeight.SemiBold)
+                    Text(text = stringResource(if (kind == VerdictKind.Familiar) R.string.scam_known_badge else R.string.scam_known_badge_partial), color = V3Tone.Emerald, fontSize = 12.sp, lineHeight = 16.sp, fontWeight = FontWeight.SemiBold)
                 }
             }
         }
         ScenarioDetail(scenario = scenario, viewModel = viewModel)
+        EmergencyAndDisclaimer(modifier = Modifier.padding(top = 14.dp))
+        ShareResultButton(text = shareText, context = context, modifier = Modifier.padding(top = 10.dp))
+    }
+}
+
+/** A message that matched no known scenario: the third state — never "safe", always the reminder to verify and the fixed 113 block. */
+@Composable
+internal fun NoMatchCard() {
+    val context = LocalContext.current
+    val shareText = stringResource(R.string.scam_verdict_share_unrecognized, TappyShare.CANONICAL_ORIGIN + "/scam-shield")
+    ToolPanel {
+        Row(verticalAlignment = Alignment.Top, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+            Icon(Icons.Filled.Info, contentDescription = null, tint = HomeV3.OnSurfaceVariant, modifier = Modifier.padding(top = 2.dp).size(22.dp))
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = stringResource(R.string.scam_verdict_unrecognized),
+                    color = HomeV3.OnSurface,
+                    fontSize = 17.sp,
+                    lineHeight = 21.sp,
+                    fontWeight = FontWeight.ExtraBold,
+                )
+                Text(
+                    text = stringResource(R.string.scam_verdict_unrecognized_body),
+                    color = HomeV3.OnSurface,
+                    fontSize = 13.5.sp,
+                    lineHeight = 19.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    modifier = Modifier.padding(top = 6.dp),
+                )
+            }
+        }
         EmergencyAndDisclaimer(modifier = Modifier.padding(top = 14.dp))
         ShareResultButton(text = shareText, context = context, modifier = Modifier.padding(top = 10.dp))
     }
@@ -122,7 +162,7 @@ internal fun QrNoticeCard(payload: QrPayload.Other) {
 
 /** The fixed emergency line and the "TappyAI is not a state agency" note. Text is fixed; nothing about the input is in it. */
 @Composable
-private fun EmergencyAndDisclaimer(modifier: Modifier = Modifier) {
+internal fun EmergencyAndDisclaimer(modifier: Modifier = Modifier) {
     val shape = RoundedCornerShape(12.dp)
     Column(modifier = modifier.fillMaxWidth().clip(shape).background(V3Tone.Rose.copy(alpha = 0.10f)).border(1.dp, V3Tone.Rose.copy(alpha = 0.34f), shape).padding(12.dp)) {
         Row(verticalAlignment = Alignment.Top, horizontalArrangement = Arrangement.spacedBy(8.dp)) {

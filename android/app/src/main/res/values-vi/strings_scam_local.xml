@@ -2,8 +2,9 @@
     <!-- Scam Shield: kết quả tạo NGAY TRÊN MÁY (khớp tình huống Bộ Công an, mã QR không phải link) -->
     <string name="scam_known_title">Giống thủ đoạn: %1$s</string>
     <string name="scam_known_badge">Khớp với cảnh báo của Bộ Công an · không dùng AI · tin nhắn không rời khỏi máy bạn</string>
+    <string name="scam_known_badge_partial">Có phần giống cảnh báo của Bộ Công an · không dùng AI · tin nhắn không rời khỏi máy bạn</string>
     <string name="scam_known_share">Tin nhắn tôi nhận được giống thủ đoạn lừa đảo «%1$s» trong cảnh báo của Bộ Công an. Kiểm tra thêm tại %2$s</string>
-    <string name="scam_not_state_agency">TappyAI không phải cơ quan nhà nước. Phần cảnh báo gốc là của Bộ Công an; phần lời khuyên là của TappyAI.</string>
+    <string name="scam_not_state_agency">TappyAI không thay thế cơ quan chức năng. Phần cảnh báo gốc là của Bộ Công an; phần lời khuyên là của TappyAI.</string>
     <string name="scam_emergency_113">Nếu nghi ngờ mình đang bị lừa: dừng chuyển tiền, báo Công an nơi gần nhất hoặc gọi 113.</string>
     <string name="scam_share_result">Chia sẻ kết quả</string>
 
@@ -32,4 +33,15 @@
     <string name="scam_ai_consent_body">Tin nhắn này không khớp chắc với thủ đoạn nào đã biết. Để phân tích tiếp, nội dung (và ảnh nếu có) sẽ được gửi tới máy chủ TappyAI và nhà cung cấp AI (OpenAI) chỉ để trả kết quả này. TappyAI không lưu nội dung tin nhắn.</string>
     <string name="scam_ai_consent_accept">Đồng ý gửi</string>
     <string name="scam_ai_consent_decline">Không gửi</string>
+    <!-- 02/10 — ba trạng thái duy nhất (quyết định A7/A8): KHÔNG BAO GIỜ «An toàn», không điểm số, không «Độ tin cậy» -->
+    <string name="scam_verdict_familiar">Có dấu hiệu lừa đảo quen thuộc</string>
+    <string name="scam_verdict_suspicious">Có một số dấu hiệu đáng ngờ</string>
+    <string name="scam_verdict_unrecognized">Chưa nhận ra dấu hiệu quen thuộc</string>
+    <string name="scam_verdict_unrecognized_body">Điều này KHÔNG có nghĩa là an toàn: đừng chuyển tiền, đừng đọc mã OTP, đừng bấm link lạ; hãy xác minh qua kênh chính thức.</string>
+    <string name="scam_verdict_link_traits">Đường link có đặc điểm thường gặp ở link giả mạo.</string>
+    <string name="scam_verdict_reasons">Lý do cụ thể</string>
+    <string name="scam_verdict_possible_scenario">Có phần giống thủ đoạn: %1$s</string>
+    <string name="scam_verdict_share_unrecognized">Tôi vừa kiểm tra một tin nhắn bằng TappyAI: chưa nhận ra dấu hiệu quen thuộc (điều này không có nghĩa là an toàn). Kiểm tra thêm tại %1$s</string>
+    <string name="scam_msg_subtitle_local">Dán tin nhắn hoặc mô tả tình huống đáng ngờ. TappyAI đối chiếu ngay trên máy bạn với các thủ đoạn lừa đảo đã biết; nội dung tin nhắn không được gửi đi.</string>
+    <string name="scam_msg_local_hint">Nếu có đường link, chỉ đường link đó được gửi đi kiểm tra. TappyAI không lưu tin nhắn.</string>
 </resources>

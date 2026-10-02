@@ -1,6 +1,5 @@
-// 02/10 — Lá chắn lừa đảo đồng bộ 3 nền tảng (Android): tin nhắn khớp tình huống chính thức (trên máy, không gọi server),
-// tin nhắn bình thường (KHÔNG bị gắn lừa đảo; hỏi đồng ý AI trước khi gửi), QR giải mã trên máy:
-// link nguy hiểm → chỉ link đi kiểm tra; QR chữ / thanh toán / Wi-Fi → nêu loại + cảnh báo, không gửi đi đâu.
+// 02/10 — Lá chắn lừa đảo, BA TRẠNG THÁI (quyết định A7/A8): không «An toàn», không điểm số, không «Độ tin cậy», không AI cho tin nhắn.
+// Tin nhắn khớp trên máy (quen thuộc / đáng ngờ / chưa nhận ra); chỉ đường link đi kiểm tra; QR giải mã trên máy.
 // Fixtures: node/gradle `TAPPY_QR_OUT=android/e2e/fixtures/qr gradlew :app:testUatUnitTest --tests '*QrCodesTest*'`.
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -82,69 +81,87 @@ async function scanQr(a, name, shot) {
   await a.tap(zone, { after: 2500 })
   await pickNewestPhoto(a)
   await a.sleep(7000)
-  await seen(a, /Mã QR này là|Chi tiết phân tích|Khuyến nghị|Không đọc được/, 4)
+  await seen(a, /Mã QR này là|Có dấu hiệu lừa đảo quen thuộc|Có một số dấu hiệu đáng ngờ|Chưa nhận ra dấu hiệu|Không đọc được/, 4)
   shot(name.replace('.png', ''))
 }
+
+async function runMessage(a, text) {
+  await reopen(a)
+  await up(a, 'Phân tích tin nhắn')
+  await a.tap('Phân tích tin nhắn', { after: 1500 })
+  const field = a.find(/Ví dụ: Một người/)
+  await a.tap(field, { after: 800 })
+  await a.pasteText(text)
+  await a.hideKeyboard()
+  await up(a, 'Phân tích ngay')
+  await a.tap('Phân tích ngay', { after: 3000 })
+}
+
+// Words that must NEVER appear on a result (decision A7): a safe verdict, a score, a confidence figure, the AI quota.
+const FORBIDDEN = /^An toàn$|^Safe$|Độ tin cậy|^Score$|^SCORE$|lượt hỏi AI|Gửi tin nhắn cho AI/
 
 export async function android({ a, shot, check, seeded }) {
   await a.signIn(seeded.users.other.email)
   await openScam(a)
   shot('scamshield-open')
-
-  // ── tin nhắn lừa đảo mẫu → khớp tĩnh ──
   await up(a, 'Phân tích tin nhắn')
-  await a.tap('Phân tích tin nhắn', { after: 1500 })
-  const field = a.dump().find((n) => n.clickable && /Ví dụ: Một người tự xưng/.test(n.text || n.desc || '')) || a.find(/Ví dụ: Một người/)
-  await a.tap(field, { after: 800 })
-  await a.pasteText('Thông báo phạt nguội: xe của bạn vi phạm giao thông, vui lòng nộp phạt trong 24 giờ để tránh bị xử lý.')
-  await a.hideKeyboard()
-  await up(a, 'Phân tích ngay')
-  await a.tap('Phân tích ngay', { after: 3000 })
-  shot('message-scam-known')
-  check('tin lừa đảo mẫu → «Giống thủ đoạn» (khớp trên máy)', a.visible(/Giống thủ đoạn/))
-  check('có khối khẩn cấp 113', await seen(a, /113/))
-  check('có dòng «TappyAI không phải cơ quan nhà nước»', await seen(a, /TappyAI không phải cơ quan nhà nước/))
-  check('có nút chia sẻ kết quả', await seen(a, /Chia sẻ kết quả/))
-  shot('message-scam-known-bottom')
-  check('KHÔNG hỏi gửi AI (không đi server)', !a.visible(/Gửi tin nhắn cho AI/))
+  check('ô tin nhắn không còn chữ «lượt hỏi AI» / ảnh chụp màn hình (AI đã tắt)', !a.visible(/lượt hỏi AI/) && !a.visible('Tải ảnh chụp màn hình'))
 
-  // ── tin nhắn bình thường → không bị gắn lừa đảo; hỏi đồng ý AI ──
-  await reopen(a)
-  await up(a, 'Phân tích tin nhắn')
-  await a.tap('Phân tích tin nhắn', { after: 1500 })
-  const f2 = a.find(/Ví dụ: Một người/)
-  await a.tap(f2, { after: 800 })
-  await a.pasteText('Chiều nay đi ăn phở nha, 6h gặp ở quán cũ.')
-  await a.hideKeyboard()
-  await up(a, 'Phân tích ngay')
-  await a.tap('Phân tích ngay', { after: 2500 })
-  shot('message-normal-consent')
-  check('tin bình thường không khớp thủ đoạn → hỏi đồng ý gửi AI', a.visible(/Gửi tin nhắn cho AI/))
-  await a.tap('Không gửi', { after: 1500 })
-  check('«Không gửi» → không gửi gì (không có «Đang phân tích»)', !a.visible(/Đang phân tích/))
-  await up(a, 'Phân tích ngay')
-  await a.tap('Phân tích ngay', { after: 1500 })
-  await a.tap('Đồng ý gửi', { after: 15000 })
-  shot('message-normal-result')
-  check('đồng ý → server trả kết quả, không gắn «Giống thủ đoạn»', !a.visible(/Giống thủ đoạn/) && !a.visible(/Đang phân tích/))
+  // 1) tin bình thường → chưa nhận ra dấu hiệu quen thuộc (KHÔNG phải an toàn)
+  await runMessage(a, 'Chiều nay đi ăn phở nha, 6h gặp ở quán cũ.')
+  check('tin bình thường → «Chưa nhận ra dấu hiệu quen thuộc»', await seen(a, /Chưa nhận ra dấu hiệu quen thuộc/))
+  check('…kèm «KHÔNG có nghĩa là an toàn»', await seen(a, /KHÔNG có nghĩa là an toàn/, 2))
+  check('…kèm «TappyAI không thay thế cơ quan chức năng» và 113', (await seen(a, /không thay thế cơ quan chức năng/, 3)) && a.visible(/113/))
+  check('…không «An toàn», không điểm, không «Độ tin cậy», không hộp hỏi AI', !a.dump().some((n) => FORBIDDEN.test((n.text || n.desc || '').trim())))
+  shot('normal-message')
 
-  // ── QR ──
+  // 2) tin phạt nguội → quen thuộc (khớp tĩnh), có nguồn
+  await runMessage(a, 'Thông báo phạt nguội: xe của bạn vi phạm giao thông, vui lòng nộp phạt trong 24 giờ để tránh bị xử lý.')
+  check('tin phạt nguội → «Có dấu hiệu lừa đảo quen thuộc»', await seen(a, /Có dấu hiệu lừa đảo quen thuộc/))
+  shot('scam-message-known-top')
+  check('…kèm tên tình huống «Giống thủ đoạn»', await seen(a, /Giống thủ đoạn/, 2))
+  check('…kèm khối nguồn chính thức (Bộ Công an)', await seen(a, /Nguồn: Bộ Công an|Thông tin từ nguồn chính thức/, 5))
+  check('…kèm 113 và «không thay thế cơ quan chức năng» và nút chia sẻ', (await seen(a, /113/, 8)) && (await seen(a, /không thay thế cơ quan chức năng/, 3)) && (await seen(a, /Chia sẻ kết quả/, 3)))
+  check('…không «An toàn», không điểm, không «Độ tin cậy»', !a.dump().some((n) => FORBIDDEN.test((n.text || n.desc || '').trim())))
+  shot('scam-message-known')
+
+  // 3) tin Trung thu → có một số dấu hiệu đáng ngờ
+  await runMessage(a, 'Bưu phẩm Trung thu của bạn đã đến, quét mã QR đính kèm để nhận')
+  check('tin Trung thu → «Có một số dấu hiệu đáng ngờ»', await seen(a, /Có một số dấu hiệu đáng ngờ/))
+  shot('trung-thu-top')
+  check('…kèm tình huống «Có phần giống thủ đoạn»', await seen(a, /Có phần giống thủ đoạn/, 2))
+  shot('trung-thu-message')
+
+  // 4) tin có link giả → chỉ link đi kiểm tra; không kết luận về tổ chức, nói «đặc điểm thường gặp ở link giả mạo»
+  await runMessage(a, 'Vui lòng xác minh tài khoản tại https://vietcombank-xacthuc-taikhoan.top/login')
+  check('tin có link giả → thẻ kết quả link «Có dấu hiệu lừa đảo quen thuộc» hoặc «đáng ngờ»', await seen(a, /Có dấu hiệu lừa đảo quen thuộc|Có một số dấu hiệu đáng ngờ/))
+  check('…nói «đặc điểm thường gặp ở link giả mạo»', await seen(a, /đặc điểm thường gặp ở link giả mạo/, 2))
+  check('…kèm lý do cụ thể', await seen(a, /Lý do cụ thể/, 3))
+  check('…không điểm, không «Độ tin cậy», không «Nguy cơ cao»', !a.dump().some((n) => FORBIDDEN.test((n.text || n.desc || '').trim()) || /^Nguy cơ cao$|^Rất nguy hiểm$/.test((n.text || '').trim())))
+  shot('link-in-message')
+
+  // 5) QR link giả (mã dựng ra) → chỉ link giải mã đi kiểm tra
   await reopen(a)
   await scanQr(a, 'qr-link-danger.png', shot)
-  check('QR link: chỉ link giải mã đi kiểm tra → ra kết quả kiểm tra link', a.visible(/Nguy cơ|Mức độ|Độ tin cậy|nguy hiểm|Nguy hiểm|đáng ngờ|Chưa xác định|Chi tiết phân tích|Khuyến nghị/i))
+  check('QR link giả → «Có dấu hiệu lừa đảo quen thuộc» hoặc «đáng ngờ»', await seen(a, /Có dấu hiệu lừa đảo quen thuộc|Có một số dấu hiệu đáng ngờ/, 3))
+  shot('qr-link-top')
+  check('…không điểm, không «Độ tin cậy», không «An toàn»', !a.dump().some((n) => FORBIDDEN.test((n.text || n.desc || '').trim())))
 
+  // 6) QR chữ / thanh toán / Wi-Fi → nêu loại, không hành động, không gửi ảnh
   await reopen(a)
   await scanQr(a, 'qr-text.png', shot)
   check('QR chữ → nêu loại «Mã QR này là»', await seen(a, /Mã QR này là/, 1))
   await reopen(a)
   await scanQr(a, 'qr-payment.png', shot)
-  check('QR thanh toán → nêu loại thanh toán', a.visible(/Mã QR này là.*thanh toán|thanh toán/i))
+  check('QR thanh toán → nêu loại thanh toán', a.visible(/thanh toán/i))
   await reopen(a)
   await scanQr(a, 'qr-wifi.png', shot)
   check('QR Wi-Fi → hiện tên mạng, KHÔNG hiện mật khẩu', (await seen(a, /Cafe Mo/, 3)) && !a.visible(/matkhau/))
 
-  // ── từ chối chọn ảnh (huỷ picker) → không sập ──
-  await reopen(a)
+  // 7) huỷ chọn ảnh → không sập
+  await a.back(); await a.sleep(1200)
+  await a.tap('Trang chủ', { after: 2500 })
+  await openScam(a)
   await up(a, 'Quét mã QR')
   await a.tap('Quét mã QR', { after: 1200 })
   const zone = a.dump().filter((n) => /Quét mã QR/.test(n.text || n.desc || '') && n.y2 > n.y1).sort((x, y) => x.y1 - y.y1)[1]
