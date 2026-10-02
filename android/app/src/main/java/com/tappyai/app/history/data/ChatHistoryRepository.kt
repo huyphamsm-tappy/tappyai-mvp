@@ -1,6 +1,7 @@
 package com.tappyai.app.history.data
 
 import com.tappyai.app.history.Conversation
+import com.tappyai.app.history.ConversationWithMessages
 import com.tappyai.app.history.StoredChatMessage
 import com.tappyai.core.network.NetworkResult
 
@@ -24,6 +25,13 @@ interface ChatHistoryRepository {
      * An id with no match (already deleted, wrong id) resolves to an empty list, not an error.
      */
     suspend fun getConversationMessages(id: String): NetworkResult<List<StoredChatMessage>>
+
+    /**
+     * Every conversation the list read returns, each with its stored turns — the one read the
+     * AI Planner needs to derive plans the way the web's `derivePlans` does, without a second
+     * endpoint. Same 20-row window as [getConversations]; same rows, not re-fetched per id.
+     */
+    suspend fun getConversationsWithMessages(): NetworkResult<List<ConversationWithMessages>>
 
     /**
      * Creates a conversation and returns its new server id — the chat flow keeps that id and

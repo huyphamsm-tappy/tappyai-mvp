@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "UAG Monarch Pro Case iPhone 17 site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T19:18:37.903Z",
+ "body": {
+  "searchParameters": {
+   "q": "UAG Monarch Pro Case iPhone 17 site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "17 pro max case uag monarch",
+    "link": "https://shop.tiktok.com/vn/k/17-pro-max-case-uag-monarch",
+    "snippet": "Ốp lưng UAG Monarch Pro w Magnetic cho iPhone 17 Series. 0 sold · 1.892.000. ₫2.200.000 ; Ốp lưng Magsafe iPhone 17 Pro UAG Monarch Pro Kevlar - Bảo hành 12 tháng ...",
+    "position": 1
+   },
+   {
+    "title": "UAG Monarch Pro Kevlar iPhone 17 Pro Max",
+    "link": "https://shop.tiktok.com/vn/k/uag-monarch-pro-kevlar-iphone-17-pro-max",
+    "snippet": "UAG Monarch Pro Kevlar iPhone 17 Pro Max ; 5. 50 sold · 1.140.000. ₫1.650.000 ; 5. 5 sold · 1.600.000. ₫1.998.000 ; 4.6. 1891 sold · 19.500. ₫40.000 ...",
+    "position": 2
+   },
+   {
+    "title": "i̇phone 17 pro max uag monarch pro",
+    "link": "https://shop.tiktok.com/vn/k/iphone-17-pro-max-uag-monarch-pro",
+    "snippet": "Ốp lưng UAG Pathfinder / Civilian / Monarch Pro Orange phiên bản đặc biệt dành cho iPhone 17 Pro / iPhone 17 Pro Max. 5. 53 sold. ₫1.620.000. ₫2.100.000 ...",
+    "position": 3
+   },
+   {
+    "title": "Uag case on iphone 17 pro max",
+    "link": "https://shop.tiktok.com/vn/k/uag-case-on-iphone-17-pro-max",
+    "snippet": "Uag case on iphone 17 pro max ; 143 sold · 1.140.000. ₫1.400.000 ; 3 sold · 1.130.000. ₫1.500.000 ; 2 sold · 2.850.000. ₫3.000.000 ...",
+    "position": 4
+   },
+   {
+    "title": "uag monarch pro crimson iphone 17 pro max",
+    "link": "https://shop.tiktok.com/vn/k/uag-monarch-pro-crimson-iphone-17-pro-max",
+    "snippet": "Ốp lưng UAG Pathfinder / Civilian / Monarch Pro Orange phiên bản đặc biệt dành cho iPhone 17 Pro / iPhone 17 Pro Max. 5. 53 sold. ₫1.620.000. ₫2.100.000 ...",
+    "position": 5
+   },
+   {
+    "title": "i̇phone 17 pro cosmic orange uag case",
+    "link": "https://shop.tiktok.com/vn/k/i-phone-17-pro-cosmic-orange-uag-case",
+    "snippet": "Ốp Điện Thoại CASENEAL, Chống Rơi, Ốp Cứng, Thiết Kế Hình Gấu Ngôi Sao, Thích Hợp Cho iPhone 17ProMax, 17pro, 17, 16promax, 16, 15promax, 15, 14promax, 13, ...",
+    "position": 6
+   },
+   {
+    "title": "เคส uag ไอโฟน17 pro",
+    "link": "https://shop.tiktok.com/vn/k/ekhs-uag-aioofn-17-pro",
+    "snippet": "Ốp lưng Magsafe iPhone 17 Pro UAG Monarch Pro Kevlar - Bảo hành 12 tháng chính hãng.",
+    "position": 7
+   },
+   {
+    "title": "Ốp lưng UAG Pathfinder / Civilian / Monarch Pro Orange ...",
+    "link": "https://shop.tiktok.com/vn/pdp/op-lung-uag-pathfinder-civilian-monarch-pro-cho-iphone-17-pro/1733176050366645726",
+    "snippet": "... iPhone 17 Series - UAG Monarch Pro Ốp lưng UAG Pathfinder / Civilian / Monarch Pro Orange phiên bản đặc biệt dành cho ·Khả năng chống sốc lên đến 7.6 mét ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

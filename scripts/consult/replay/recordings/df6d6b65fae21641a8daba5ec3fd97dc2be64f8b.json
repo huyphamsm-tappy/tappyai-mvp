@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Massage Golden\" OR \"Rose Spa 224 Lý Tự Trọng\" OR \"May Xưa Spa Quận 1\" quan 1 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:50:48.083Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Massage Golden\" OR \"Rose Spa 224 Lý Tự Trọng\" OR \"May Xưa Spa Quận 1\" quan 1 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Review Massage Golden",
+    "link": "https://www.tiktok.com/discover/review-massage-golden",
+    "snippet": "Review Massage Golden. Discover videos related to Review Massage Golden on TikTok. Last updated 2026-09-07. 5 Likes, 1 Comments. TikTok video from ...",
+    "position": 1
+   },
+   {
+    "title": "Golden Spa Kovan",
+    "link": "https://www.tiktok.com/discover/golden-spa-kovan",
+    "snippet": "#goldenspa #spaday #relaxation #massage. Golden Spa Makadi, Cleopatra Spa experience, luxury spa services, professional massage therapists, relaxing spa ...",
+    "position": 2
+   },
+   {
+    "title": "Golden Thai Spa Ajman Nuiemia | TikTok",
+    "link": "https://www.tiktok.com/discover/golden-thai-spa-ajman-nuiemia",
+    "snippet": "... Massage. Golden Spa Semarang buka setiap hari. Info jam operasi, layanan massage, dan promo makan harian. Jangan lupa mampir! 381 Likes, 6 ...",
+    "date": "7 thg 9, 2026",
+    "position": 3
+   },
+   {
+    "title": "Kerala Spa Golden",
+    "link": "https://www.tiktok.com/discover/kerala-spa-golden",
+    "snippet": "Golden Spa Semarang: Buka Setiap Hari — Promo & Layanan Massage. Golden Spa Semarang buka setiap hari. Info jam operasi, layanan massage, dan promo makan ...",
+    "position": 4
+   },
+   {
+    "title": "Golden Triangle Massage Center",
+    "link": "https://www.tiktok.com/discover/golden-triangle-massage-center",
+    "snippet": "Golden Triangle 1 Penang 泰式按摩 Thai Massage [ Full ... TikTok video from Golden Shield Massage (@golden. 66.6K1w ago. golden ...",
+    "date": "12 thg 8, 2026",
+    "position": 5
+   },
+   {
+    "title": "Massage khoẻ KTV tay nghề cao Giúp phục hồi sức ...",
+    "link": "https://www.tiktok.com/@massagehungthinh/video/7628147767285681416",
+    "snippet": "Massage GOLDEN. 2086 · recommend-cover. Lily Rì Viu. 49 · recommend-cover ... Con nổi ban những vết chấm đỏ được 1 thời gian nhưng mẹ chỉ nghĩ ...",
+    "position": 6
+   },
+   {
+    "title": "Trải nghiệm InterContinental Đà Nẵng: resort đắt nhất Việt ...",
+    "link": "https://www.tiktok.com/@danangspainsider/video/7632555182961773845",
+    "snippet": "Spa và trải nghiệm massage Golden Lotus Spa có mặt tại đây hơn 23 năm. Không gian spa đón khách với trà và bầu không khí rất dễ chịu. Trải ...",
+    "position": 7
+   },
+   {
+    "title": "Massage Thái 목포 Thái Lan",
+    "link": "https://www.tiktok.com/discover/massage-th%C3%A1i-%EB%AA%A9%ED%8F%AC-th%C3%A1i-lan",
+    "snippet": "31 Likes, 1 Comments. TikTok video from Stephanie Miles (@svmiless) ... TikTok video from Golden Moni Massage (@golden. 4061 tuần trước.",
+    "date": "10 thg 8, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,170 @@
+{
+  "id": "T4",
+  "text": "Cuối tuần này gia đình 4 người đi đâu gần Sài Gòn?",
+  "parent": null,
+  "status": 200,
+  "ms": 15483,
+  "evidenceId": "326e860c-9454-4e58-a935-3180d6ea490e",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "điểm tham quan gia đình cuối tuần gần Sài Gòn",
+        "location": "Quận 1 TP HCM",
+        "type": "attraction"
+      }
+    },
+    {
+      "tool": "get_weather",
+      "args": {
+        "location": "TP HCM"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Đường sách Thành phố Hồ Chí Minh",
+      "rating": 4.6,
+      "count": 12809,
+      "hours": "08:00–21:00",
+      "distance_km": 0.5,
+      "address": "2 Đ. Nguyễn Văn Bình, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Dinh Độc Lập",
+      "rating": 4.5,
+      "count": 48590,
+      "hours": "07:00–18:00",
+      "distance_km": 0.6,
+      "address": "Bến Thành, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Bến Bạch Đằng",
+      "rating": 4.5,
+      "count": 10044,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 0.7,
+      "address": "2 Tôn Đức Thắng, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Công viên Tao Đàn",
+      "rating": 4.5,
+      "count": 15648,
+      "hours": "07:00–22:00",
+      "distance_km": 1,
+      "address": "Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Cầu đi bộ vượt sông Sài Gòn",
+      "rating": 5,
+      "count": 1,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 0.7,
+      "address": "Công viên Bến Bạch Đằng, Tôn Đức Thắng, Quận 1, Hồ Chí Minh 900000, Việt Nam"
+    },
+    {
+      "name": "Công Viên Bờ Sông Sài Gòn Tp Thủ Đức",
+      "rating": 4.6,
+      "count": 634,
+      "hours": "06:00–22:00",
+      "distance_km": 1.1,
+      "address": "QPC5+MWF, An Khánh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Hồ Con Rùa",
+      "rating": 4.3,
+      "count": 4714,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 0.8,
+      "address": "Công trường Quốc Tế, Xuân Hòa, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Thảo Cầm Viên Sài Gòn",
+      "rating": 4.3,
+      "count": 36881,
+      "hours": "07:00–18:30",
+      "distance_km": 1.2,
+      "address": "2 Nguyễn Bỉnh Khiêm, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Saigon Water Go",
+      "rating": 4.4,
+      "count": 91,
+      "hours": "08:00–00:00",
+      "distance_km": 0.7,
+      "address": "10B Tôn Đức Thắng, Sài Gòn, Hồ Chí Minh 71006, Việt Nam"
+    },
+    {
+      "name": "Công viên dạ cầu Sài Gòn 1",
+      "rating": 4.3,
+      "count": 189,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 4.1,
+      "address": "QPXJ+CHH, An Khánh, Hồ Chí Minh, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "Đường sách Thành phố Hồ Chí Minh",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 4.6,
+        "reviews": 12809,
+        "distance_km": 0.5,
+        "open_now": true,
+        "opening_hours": "08:00–21:00"
+      }
+    },
+    {
+      "name": "Dinh Độc Lập",
+      "role": null,
+      "evidence": {
+        "rating": 4.5,
+        "reviews": 48590,
+        "distance_km": 0.6,
+        "open_now": false,
+        "opening_hours": "07:00–18:00"
+      }
+    },
+    {
+      "name": "Bến Bạch Đằng",
+      "role": null,
+      "evidence": {
+        "rating": 4.5,
+        "reviews": 10044,
+        "distance_km": 0.7,
+        "open_now": true,
+        "opening_hours": "Mở cửa cả ngày"
+      }
+    }
+  ],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình sẽ tìm những địa điểm vui chơi gần Sài Gòn phù hợp cho gia đình 4 người cuối tuần này nhé! 🎯\n\nCuối tuần này TP.HCM có mưa nhẹ, nhiệt độ khoảng 26-33°C 🌧️ Mình gợi ý **Đường sách Thành phố Hồ Chí Minh** — nơi lý tưởng cho gia đình vì gần (chỉ 0.5km), có không gian thoáng mát, quán cà phê, sách báo, và phù hợp khi trời mưa. Đánh giá **4.6⭐ (12.809 đánh giá)**, mở cửa 08:00–21:00.\n\nNgoài ra, **Dinh Độc Lập** (0.6km) cũng hay — tham quan lịch sử, nhưng đóng cửa lúc 18:00 nên nên đi sớm. **Bến Bạch Đằng** (0.7km) mở cả ngày, tuyệt vời để dạo bộ ven sông.\n\nBạn muốn chọn nơi nào, hay cần gợi ý thêm về hoạt động cụ thể (ăn uống, vui chơi trẻ em)?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem Đường sách trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=18199100751481245008\",\"primary\":true},{\"label\":\"📍 Xem Dinh Độc Lập trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=1695404177673260394\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Quán ăn gần đó|Hoạt động cho trẻ em|Khách sạn gần Sài Gòn[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Cuối tuần này gia đình 4 người đi đâu gần Sài Gòn?"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình sẽ tìm những địa điểm vui chơi gần Sài Gòn phù hợp cho gia đình 4 người cuối tuần này nhé! 🎯\n\nCuối tuần này TP.HCM có mưa nhẹ, nhiệt độ khoảng 26-33°C 🌧️ Mình gợi ý **Đường sách Thành phố Hồ Chí Minh** — nơi lý tưởng cho gia đình vì gần (chỉ 0.5km), có không gian thoáng mát, quán cà phê, sách báo, và phù hợp khi trời mưa. Đánh giá **4.6⭐ (12.809 đánh giá)**, mở cửa 08:00–21:00.\n\nNgoài ra, **Dinh Độc Lập** (0.6km) cũng hay — tham quan lịch sử, nhưng đóng cửa lúc 18:00 nên nên đi sớm. **Bến Bạch Đằng** (0.7km) mở cả ngày, tuyệt vời để dạo bộ ven sông.\n\nBạn muốn chọn nơi nào, hay cần gợi ý thêm về hoạt động cụ thể (ăn uống, vui chơi trẻ em)?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem Đường sách trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=18199100751481245008\",\"primary\":true},{\"label\":\"📍 Xem Dinh Độc Lập trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=1695404177673260394\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Quán ăn gần đó|Hoạt động cho trẻ em|Khách sạn gần Sài Gòn[/FOLLOWUPS]"
+    }
+  ]
+}

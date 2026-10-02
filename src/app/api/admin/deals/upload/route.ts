@@ -14,6 +14,7 @@ import { distributedRateLimit } from '@/lib/security/distributedRateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 import {
   createUploadSessionResponse,
+  sameHostOrigin,
   isCreateUploadSessionBody,
 } from '@/lib/media/uploadRoute'
 import { completeUploadResponse, isCompleteUploadBody } from '@/lib/media/uploadCompletion'
@@ -98,7 +99,7 @@ export async function POST(req: NextRequest) {
     if (isCreateUploadSessionBody(body)) {
       const result = await createUploadSessionResponse(
         body,
-        { ownerId: user.id, allowedKinds: ALLOWED_KINDS },
+        { ownerId: user.id, allowedKinds: ALLOWED_KINDS, origin: sameHostOrigin(req) },
         // `req` carries the deployment's OIDC token in production.
         getMediaProvider(process.env, req)
       )

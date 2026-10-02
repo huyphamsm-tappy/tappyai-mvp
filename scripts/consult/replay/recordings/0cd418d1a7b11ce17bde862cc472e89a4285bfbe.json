@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Ngũ Hành Sơn\" OR \"Cầu Vàng\" OR \"Cầu Rồng\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T01:08:10.330Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Ngũ Hành Sơn\" OR \"Cầu Vàng\" OR \"Cầu Rồng\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tham Quan Ngũ Hành Sơn Đà Nẵng: Động Âm Phủ & 5 Núi",
+    "link": "https://www.tiktok.com/@mc.hienvinh/video/7535008488053902610",
+    "snippet": "Ngũ Hành Sơn ở Đà Nẵng là một trong những điểm tham quan nổi tiếng với cảnh quan hang động, núi đá và suối nước tự nhiên.",
+    "position": 1
+   },
+   {
+    "title": "Cầu Vàng Đà Nẵng: Cầu Bàn Tay Ở Đâu, Cách Đi & Kinh ...",
+    "link": "https://www.tiktok.com/@nhandian/video/7284525700940303618",
+    "snippet": "Giới Thiệu Cầu Rồng Đà Nẵng Bằng Tiếng Nhật · Hội Quý Bà Độc Thân Đà Nẵng · Vòng Số 8 Cầu Thuận Phước Đà Nẵng. Cầu Vàng Đà Nẵng: Cầu Bàn Tay Ở ...",
+    "position": 2
+   },
+   {
+    "title": "Khám Phá Cầu Vàng Bà Nà Hills",
+    "link": "https://www.tiktok.com/@anatolii_lobanov/video/7350455712939609377",
+    "snippet": "14.3K Lượt thích,96 Bình luận.Video TikTok từ Anatolii Lobanov (@anatolii_lobanov): \"Trải nghiệm vẻ đẹp tuyệt vời của Cầu Vàng tại Bà Nà ...",
+    "position": 3
+   },
+   {
+    "title": "Cầu Rồng Đà Nẵng phun lửa nước 6 ngày mừng Quốc ...",
+    "link": "https://www.tiktok.com/@vivudanang243/video/7677565973016235285",
+    "snippet": "Cầu Rồng, biểu tượng nổi tiếng của thành phố, sẽ có màn trình diễn phun lửa và phun nước liên tục trong suốt 6 ngày để chào mừng ngày lễ lớn của ...",
+    "position": 4
+   },
+   {
+    "title": "Cầu Vàng hay Làng Pháp ở Bà Nà Hills: nên đi đâu trước?",
+    "link": "https://www.tiktok.com/@hanigotravel/video/7685358869819739412",
+    "snippet": "Cầu Vàng là cây cầu nổi bật, có cấu trúc cầu bắc qua vực và là điểm chụp ảnh chính. Làng Pháp là khu kiến trúc tái hiện phong cách châu Âu với ...",
+    "position": 5
+   },
+   {
+    "title": "Khám Phá Ngũ Hành Sơn Tại Đà Nẵng",
+    "link": "https://www.tiktok.com/@klook_vietnam/video/7488187032158637330",
+    "snippet": "Ngũ Hành Sơn không chỉ nổi tiếng với Thuỷ Sơn tuyệt đẹp cùng nhiều điểm tham quan linh thiêng. Mà 4 ngọn núi còn lại như Kim Sơn, Hoả Sơn, ...",
+    "position": 6
+   },
+   {
+    "title": "Cây cầu \"nhái\" Cầu Vàng ở Đà Nẵng gây xôn xao dù chưa ...",
+    "link": "https://www.tiktok.com/@dantri.com.vn/video/7594335841552502033",
+    "snippet": "Cách Chụp Ảnh Trên Cầu Vàng Đà Nẵng · Cầu Rồng Đà Nẵng Bị Ngập · Trại Cá Vàng Đà Nẵng · Tiệm Vàng Đà Nẵng 1 Phân · Vàng 18k Đeo Chung Vs ...",
+    "position": 7
+   },
+   {
+    "title": "Quá Trình Xây Dựng Cầu Vàng Tại Bà Nà Hills",
+    "link": "https://www.tiktok.com/@media.vnex/video/7596772157422685448",
+    "snippet": "Khám phá quá trình xây dựng cầu Vàng trên Bà Nà Hills Đà Nẵng và những đường nét nghệ thuật độc đáo. #danang #banahills. Keywords: quá trình xây ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

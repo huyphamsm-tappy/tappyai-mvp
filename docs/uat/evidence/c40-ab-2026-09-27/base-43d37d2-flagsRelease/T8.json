@@ -1,0 +1,71 @@
+{
+  "id": "T8",
+  "text": "Resort Phú Quốc cho kỷ niệm 1 năm, sang chút",
+  "parent": null,
+  "status": 200,
+  "ms": 18885,
+  "evidenceId": "1e89efcd-b22f-48a5-9daf-4c2733ea76aa",
+  "toolCalls": [
+    {
+      "tool": "get_hotel_prices",
+      "args": {
+        "location": "Phú Quốc"
+      }
+    }
+  ],
+  "rows": [],
+  "shortlist": [
+    {
+      "name": "The Poplar Resort",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 320
+      }
+    },
+    {
+      "name": "Ocean Bay Resort & Spa Phu Quoc",
+      "role": null,
+      "evidence": {
+        "rating": 4.7,
+        "reviews": 3183
+      }
+    },
+    {
+      "name": "Thiên Thanh Phú Quốc Resort",
+      "role": null,
+      "evidence": {
+        "rating": 4.7,
+        "reviews": 1759
+      }
+    }
+  ],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình tìm resort sang chút ở Phú Quốc cho kỷ niệm 1 năm của bạn nhé! 🏝️\n\nMình chọn **The Poplar Resort** cho bạn! 🌟\n\n Không gian sang trọng, dịch vụ chất lượng, lý tưởng để tạo khoảnh khắc lãng mạn.\n\nGiá phòng thay đổi theo ngày cụ thể — bạn định check-in khi nào? Mình sẽ giúp bạn xem giá chính xác nhé! 💕\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🏨 Booking.com - The Poplar Resort\",\"type\":\"booking\",\"url\":\"https://www.booking.com/hotel/vn/the-poplar-phu-quoc.vi.html\",\"primary\":true},{\"label\":\"📍 Google Maps - The Poplar Resort\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=5913138990079404431\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Ngày check-in cụ thể?|Có ưu tiên gì khác (bãi biển, hồ bơi)?|Xem thêm resort khác|[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Resort Phú Quốc cho kỷ niệm 1 năm, sang chút"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm resort sang chút ở Phú Quốc cho kỷ niệm 1 năm của bạn nhé! 🏝️\n\nMình chọn **The Poplar Resort** cho bạn! 🌟\n\n Không gian sang trọng, dịch vụ chất lượng, lý tưởng để tạo khoảnh khắc lãng mạn.\n\nGiá phòng thay đổi theo ngày cụ thể — bạn định check-in khi nào? Mình sẽ giúp bạn xem giá chính xác nhé! 💕\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🏨 Booking.com - The Poplar Resort\",\"type\":\"booking\",\"url\":\"https://www.booking.com/hotel/vn/the-poplar-phu-quoc.vi.html\",\"primary\":true},{\"label\":\"📍 Google Maps - The Poplar Resort\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=5913138990079404431\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Ngày check-in cụ thể?|Có ưu tiên gì khác (bãi biển, hồ bơi)?|Xem thêm resort khác|[/FOLLOWUPS]"
+    }
+  ]
+}

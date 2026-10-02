@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Con đường làm đẹp Hộp quà tặng cốc cà phê gốm sứ",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T19:19:11.673Z",
+ "body": {
+  "searchParameters": {
+   "q": "Con đường làm đẹp Hộp quà tặng cốc cà phê gốm sứ",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Bộ tách trà, cà phê gốm sứ cao cấp kèm hộp quà tặng sang trọng",
+    "imageUrl": "https://cdn.gumic.vn/storage/gumicvn/39012/q7layo03.jpg",
+    "imageWidth": 800,
+    "imageHeight": 800,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnmjYHtv71AxVREv_UayDnTcIP2gZWJMHHnWiQQvU0RA&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Mua sắm thông minh, trải nghiệm giá tốt",
+    "domain": "gumic.vn",
+    "link": "https://gumic.vn/bo-tach-tra-ca-phe-gom-su-cao-cap-kem-hop-qua-tang-sang-trong?srsltid=AU7gw4WFv34v2VAMr_FE5RZglHQeK64ZZx8Q_2I3qcLbnUi53YHGOzLX",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.gumic.vn%2Fstorage%2Fgumicvn%2F39012%2Fq7layo03.jpg&tbnid=OuqonnFWn-N9wM&imgrefurl=https%3A%2F%2Fgumic.vn%2Fbo-tach-tra-ca-phe-gom-su-cao-cap-kem-hop-qua-tang-sang-trong%3Fsrsltid%3DAU7gw4WFv34v2VAMr_FE5RZglHQeK64ZZx8Q_2I3qcLbnUi53YHGOzLX&docid=luBwTZqK6a-UiM&w=800&h=800",
+    "position": 1
+   },
+   {
+    "title": "Cốc Sứ Uống Cà Phê In Hình Dễ Thương Kèm Muỗng Và Nắp Đậy Dùng Làm",
+    "imageUrl": "https://bizweb.dktcdn.net/thumb/1024x1024/100/501/249/products/z4850503916599-2637cd7da8f2640bde41ef0769b9486f.jpg?v=1699163613090",
+    "imageWidth": 1024,
+    "imageHeight": 1024,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLE8wJ0xsonr5VixLK5JOGhzSf9UpTM76hk1XOBZTSoQ&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "quà tặng happy gift",
+    "domain": "happygift.com.vn",
+    "link": "https://happygift.com.vn/coc-su-uong-ca-phe-in-hinh-de-thuong-kem-muong-va-nap-day-dung-lam-qua-tang",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fbizweb.dktcdn.net%2Fthumb%2F1024x1024%2F100%2F501%2F249%2Fproducts%2Fz4850503916599-2637cd7da8f2640bde41ef0769b9486f.jpg%3Fv%3D1699163613090&tbnid=J4dvDZ9sXGOKhM&imgrefurl=https%3A%2F%2Fhappygift.com.vn%2Fcoc-su-uong-ca-phe-in-hinh-de-thuong-kem-muong-va-nap-day-dung-lam-qua-tang&docid=SRogQcdwByaoDM&w=1024&h=1024",
+    "position": 2
+   },
+   {
+    "title": "Bộ tách trà, cà phê gốm sứ cao cấp kèm hộp quà tặng sang trọng",
+    "imageUrl": "https://cdn.gumic.vn/storage/gumicvn/39015/hidb1rxp.jpg",
+    "imageWidth": 800,
+    "imageHeight": 800,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQb04Dw4URwf6fePzN8AlAWOUQUqKHRaoip78LoKagurw&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Mua sắm thông minh, trải nghiệm giá tốt",
+    "domain": "gumic.vn",
+    "link": "https://gumic.vn/bo-tach-tra-ca-phe-gom-su-cao-cap-kem-hop-qua-tang-sang-trong?srsltid=AU7gw4VOABUtE_2sbul3I3UfvYQGDpNm9jXPDMwjEHCmPeReLotYFqkf",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.gumic.vn%2Fstorage%2Fgumicvn%2F39015%2Fhidb1rxp.jpg&tbnid=0miFm9GX041U6M&imgrefurl=https%3A%2F%2Fgumic.vn%2Fbo-tach-tra-ca-phe-gom-su-cao-cap-kem-hop-qua-tang-sang-trong%3Fsrsltid%3DAU7gw4VOABUtE_2sbul3I3UfvYQGDpNm9jXPDMwjEHCmPeReLotYFqkf&docid=luBwTZqK6a-UiM&w=800&h=800",
+    "position": 3
+   },
+   {
+    "title": "Cốc sứ quà tặng - Giá Tốt, Sale Tháng 09, Ship 0 Đồng | Shopee Việt Nam",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-lyjkn50bqq1914",
+    "imageWidth": 800,
+    "imageHeight": 800,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIVyRfBa9jE8fWdMUES918gTWbIvFfPFer3SKY8nl8yg&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/list/c%E1%BB%91c%20s%E1%BB%A9/qu%C3%A0%20t%E1%BA%B7ng",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fvn-11134207-7r98o-lyjkn50bqq1914&tbnid=fsRxSOZE0mg6oM&imgrefurl=https%3A%2F%2Fshopee.vn%2Flist%2Fc%25E1%25BB%2591c%2520s%25E1%25BB%25A9%2Fqu%25C3%25A0%2520t%25E1%25BA%25B7ng&docid=vbJaXQ9dfimXmM&w=800&h=800",
+    "position": 4
+   },
+   {
+    "title": "RA MẮT HỘP QUÀ PHIN GỐM - QUÀ TẶNG VĂN HOÁ VIỆT NAM 🎁, Một trọn bộ cà phê  Việt Nam được chuẩn bị sẵn sàng để trở thành món quà chỉn chu và trang nhã.  Thiết kế hộp quà mới lấy cảm hứng từ những danh ...",
+    "imageUrl": "https://lookaside.instagram.com/seo/google_widget/crawler/?media_id=3795811028714796784",
+    "imageWidth": 1440,
+    "imageHeight": 1800,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ954BuoGvxrafJEVXv0xK3f0eMc80uzG8ZrRDWcxrO3g&s=10",
+    "thumbnailWidth": 399,
+    "thumbnailHeight": 501,
+    "source": "Instagram",
+    "domain": "www.instagram.com",
+    "link": "https://www.instagram.com/p/DStbh7HjmEj/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.instagram.com%2Fseo%2Fgoogle_widget%2Fcrawler%2F%3Fmedia_id%3D3795811028714796784&tbnid=L20WEL0de_j-mM&imgrefurl=https%3A%2F%2Fwww.instagram.com%2Fp%2FDStbh7HjmEj%2F&docid=YvxO37EoJue67M&w=1440&h=1800",
+    "position": 5
+   },
+   {
+    "title": "Bộ tách trà, cà phê gốm sứ cao cấp kèm hộp quà tặng sang trọng",
+    "imageUrl": "https://gumic.vn/storage/gumicvn/images/WwucPnGduGp1AyCVNKLyvDgTRhGlTEDjwzsxq8tU.jpg",
+    "imageWidth": 800,
+    "imageHeight": 800,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJrmrvPEVrYbYrBcz7YifzjZ4nwnCseHvjK_a2W9QDtw&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Mua sắm thông minh, trải nghiệm giá tốt",
+    "domain": "gumic.vn",
+    "link": "https://gumic.vn/bo-tach-tra-ca-phe-gom-su-cao-cap-kem-hop-qua-tang-sang-trong?srsltid=AU7gw4XX2YBFgiLsvpggFPDQhQfmgx4KM9ji_D6ssyzWcFR1BZNbfoyb",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fgumic.vn%2Fstorage%2Fgumicvn%2Fimages%2FWwucPnGduGp1AyCVNKLyvDgTRhGlTEDjwzsxq8tU.jpg&tbnid=Bghi0eXI85pziM&imgrefurl=https%3A%2F%2Fgumic.vn%2Fbo-tach-tra-ca-phe-gom-su-cao-cap-kem-hop-qua-tang-sang-trong%3Fsrsltid%3DAU7gw4XX2YBFgiLsvpggFPDQhQfmgx4KM9ji_D6ssyzWcFR1BZNbfoyb&docid=luBwTZqK6a-UiM&w=800&h=800",
+    "position": 6
+   },
+   {
+    "title": "Bộ tách trà, cà phê gốm sứ cao cấp kèm hộp quà tặng sang trọng",
+    "imageUrl": "https://cdn.gumic.vn/storage/gumicvn/39011/conversions/slxbj0f6-thumb.jpg",
+    "imageWidth": 1200,
+    "imageHeight": 648,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT9icjJs7zY6--Z7oblLCd2aa02L5hu3va8geGYEQBU9A&s",
+    "thumbnailWidth": 305,
+    "thumbnailHeight": 165,
+    "source": "Mua sắm thông minh, trải nghiệm giá tốt",
+    "domain": "gumic.vn",
+    "link": "https://gumic.vn/bo-tach-tra-ca-phe-gom-su-cao-cap-kem-hop-qua-tang-sang-trong?srsltid=AU7gw4Usq7IHffiwH6KH4NAS3CzK7_cAuMbrle4RAjZKCsyqd9zxwWl9",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.gumic.vn%2Fstorage%2Fgumicvn%2F39011%2Fconversions%2Fslxbj0f6-thumb.jpg&tbnid=YicL12MMGOoTFM&imgrefurl=https%3A%2F%2Fgumic.vn%2Fbo-tach-tra-ca-phe-gom-su-cao-cap-kem-hop-qua-tang-sang-trong%3Fsrsltid%3DAU7gw4Usq7IHffiwH6KH4NAS3CzK7_cAuMbrle4RAjZKCsyqd9zxwWl9&docid=luBwTZqK6a-UiM&w=1200&h=648",
+    "position": 7
+   },
+   {
+    "title": "Cốc Quà Tặng Lưu Niệm Bằng Sứ Đẹp (Mẫu Mới 2023) | Blog Vietclay",
+    "imageUrl": "https://bizweb.dktcdn.net/100/435/747/files/coc-qua-tang-luu-niem-bang-su-dep.jpg?v=1651584979087",
+    "imageWidth": 1200,
+    "imageHeight": 900,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTndFbSJKUXJ06FBSzC7l2k2qamR_tSSKqoUEdiEB3pUQ&s=10",
+    "thumbnailWidth": 638,
+    "thumbnailHeight": 480,
+    "source": "Vietclay",
+    "domain": "vietclay.com",
+    "link": "https://vietclay.com/coc-qua-tang-luu-niem-bang-su-dep?srsltid=AU7gw4VVwB9lVr4_5DnDXW8FTm4w2_xOLUJFmTydRTmV9RVrIN2ymcIe",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fbizweb.dktcdn.net%2F100%2F435%2F747%2Ffiles%2Fcoc-qua-tang-luu-niem-bang-su-dep.jpg%3Fv%3D1651584979087&tbnid=tOvDPzkpAgdN-M&imgrefurl=https%3A%2F%2Fvietclay.com%2Fcoc-qua-tang-luu-niem-bang-su-dep%3Fsrsltid%3DAU7gw4VVwB9lVr4_5DnDXW8FTm4w2_xOLUJFmTydRTmV9RVrIN2ymcIe&docid=9TGc01agz47xzM&w=1200&h=900",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

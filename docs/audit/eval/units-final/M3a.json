@@ -1,0 +1,36 @@
+{
+  "id": "M3a",
+  "text": "quán này mở mấy giờ?",
+  "vertical": "food",
+  "unit": "SCHEDULE_TICKET",
+  "parent": "FV1",
+  "surface": "web",
+  "status": 200,
+  "ttfb": 2101,
+  "ms": 4753,
+  "evidenceId": "23e9503c-c0d7-4582-811e-81b48857ff57",
+  "toolCalls": [],
+  "toolResults": [],
+  "frames8": [],
+  "prose": "22:30** hàng ngày, nên bạn hoàn toàn có thể đi ăn tối ngay 👌\n\nGiờ mở cửa mình chưa xác nhận được từ nguồn đã tìm — bạn kiểm tra trên Maps trước khi đi.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Maps - Nhà Hàng Ngon\",\"type\":\"maps\",\"url\":\"https://www.google.com/maps/search/Nha+Hang+Ngon+Quan+1\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Đặt bàn trước không|Có wifi để làm việc không|Quán khác gần đây[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Tìm quán ăn tối ngon gần Quận 1 cho 2 người"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình gợi ý **Nhà Hàng Ngon** — cách bạn chỉ 0.1km, đang mở cửa, với 4⭐ từ 11.408 đánh giá Google Maps. Quán chuyên ẩm thực Việt Nam, phục vụ tối đến 22:30, rất phù hợp cho bữa tối 2 người 👍\n\nNếu muốn hải sản sang trọng hơn, **Hải Sản Hoàng Gia** (1.9km) có 4.7⭐ từ 965 đánh giá, mở đến nửa đêm, nhưng giá cao hơn. Hoặc **Hàng Dương Quán** (0.6km) với 4.5⭐ từ 718 đánh giá, ẩm thực Việt truyền thống.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Maps - Nhà Hàng Ngon\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=13622103453648835628\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Hải sản Quận 1|Nhà hàng Nhật|Quán ăn bình dân ngon[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "quán này mở mấy giờ?"
+    },
+    {
+      "role": "assistant",
+      "content": "22:30** hàng ngày, nên bạn hoàn toàn có thể đi ăn tối ngay 👌\n\nGiờ mở cửa mình chưa xác nhận được từ nguồn đã tìm — bạn kiểm tra trên Maps trước khi đi.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Maps - Nhà Hàng Ngon\",\"type\":\"maps\",\"url\":\"https://www.google.com/maps/search/Nha+Hang+Ngon+Quan+1\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Đặt bàn trước không|Có wifi để làm việc không|Quán khác gần đây[/FOLLOWUPS]"
+    }
+  ],
+  "at": "2026-09-20T08:01:00.983Z"
+}

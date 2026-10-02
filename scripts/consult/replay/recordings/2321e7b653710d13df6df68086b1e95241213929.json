@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Laptop Acer Aspire 3 A315-59-38PG (Intel Core i3-1215U | 8GB | 512GB | Intel UHD | 15.6 inch | Win 11 | Bạc)\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:55:02.171Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Laptop Acer Aspire 3 A315-59-38PG (Intel Core i3-1215U | 8GB | 512GB | Intel UHD | 15.6 inch | Win 11 | Bạc)\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

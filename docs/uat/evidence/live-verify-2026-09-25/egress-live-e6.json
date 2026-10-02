@@ -1,0 +1,49 @@
+[
+ {
+  "id": "E6a",
+  "what": "a URL reaches the client only if a tool result this turn contained it",
+  "result": "PASS",
+  "detail": {
+   "status": 200,
+   "tools": [
+    "search_places"
+   ],
+   "replyUrlHosts": [
+    "maps.google.com"
+   ],
+   "mentionsSiteWithoutUrl": false,
+   "reply": "Tôi sẽ tìm thông tin chính thức về Bảo tàng Chứng tích Chiến tranh TP.HCM cho bạn.\n\nĐường link trang web chính thức của Bảo tàng Chứng tích Chiến tranh TP.HCM:\n\n**\n\nBảo tàng nằm tại Phường 6, Quận 3, TP.HCM, mở cửa từ 7:30–17:30 hàng ngày. Bạn có thể gọi **+84 28 3930 5587** để hỏi thêm thông tin chi tiết.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Google Maps\",\"type\":\"maps\",\"url\":\"https://ma",
+   "toolResultHosts": [
+    "maps.google.com",
+    "baotangchungtichchientranh.vn"
+   ],
+   "replyUrlsAllInToolResults": true
+  }
+ },
+ {
+  "id": "E6b",
+  "what": "a URL reaches the client only if a tool result this turn contained it",
+  "result": "PASS",
+  "detail": {
+   "status": 200,
+   "tools": [
+    "web_search"
+   ],
+   "replyUrlHosts": [
+    "saigonzoo.vn"
+   ],
+   "mentionsSiteWithoutUrl": false,
+   "reply": "Mình sẽ tìm link chính thức của Thảo Cầm Viên Sài Gòn cho bạn.\n\n[Thảo Cầm Viên Sài Gòn](https://saigonzoo.vn/)",
+   "toolResultHosts": [
+    "saigonzoo.vn",
+    "www.facebook.com",
+    "www.klook.com",
+    "vi.wikipedia.org",
+    "vinwonders.com",
+    "suoitien.vn",
+    "duckduckgo.com"
+   ],
+   "replyUrlsAllInToolResults": true
+  }
+ }
+]

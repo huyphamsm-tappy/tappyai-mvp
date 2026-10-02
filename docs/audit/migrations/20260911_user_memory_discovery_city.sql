@@ -1,0 +1,27 @@
+-- ============================================================================
+-- user_memory.discovery_city — the destination / discovery interest.
+--
+-- SEPARATE FROM location_base ON PURPOSE. The two carry different meanings and
+-- must never be inferred from one another:
+--
+--   location_base   — where the user LIVES or usually is (residence / usual
+--                     area). Written by chat extraction from statements like
+--                     "tôi sống ở Hà Nội".
+--   discovery_city  — a city the user wants to EXPLORE / travel to, which is
+--                     NOT necessarily where they are. Written by onboarding and
+--                     by chat extraction from "tôi muốn đi Quy Nhơn".
+--
+-- ADDITIVE AND NON-DESTRUCTIVE. `IF NOT EXISTS` so it is safe to re-run, and it
+-- touches no existing column. Existing `location_base` values are LEFT ALONE —
+-- they are ambiguous under the new model (some are old onboarding destinations,
+-- some are real residences) and must not be bulk-reinterpreted as discovery.
+--
+-- Nullable, no default: absence means "not known", the same shape every other
+-- optional memory column uses (companions / timing / personality).
+--
+-- SECURITY: the column inherits user_memory's existing access model unchanged.
+-- All reads and writes go through `memoryService` (the single gateway), which
+-- pins `user_id` server-side; no RLS or grant change is needed or made here.
+-- ============================================================================
+ALTER TABLE public.user_memory
+  ADD COLUMN IF NOT EXISTS discovery_city text;

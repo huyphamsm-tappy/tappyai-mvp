@@ -1,0 +1,24 @@
+{
+  "id": "G5c",
+  "group": "used-purchase-risk",
+  "criteria": [
+    "Leads with ownership/legal: registration, liens/ngân hàng thế chấp, accident/flood history, VIN check, deposit scams; then condition",
+    "No invented numbers",
+    "Scam-vector pointer where relevant"
+  ],
+  "turns": [
+    {
+      "user": "mua ô tô cũ tầm 300 triệu cần check gì",
+      "status": 200,
+      "elapsedMs": 14802,
+      "textFrames": 448,
+      "tools": [],
+      "toolResults": [],
+      "annotations": [],
+      "cardItems": [],
+      "duplicate": null,
+      "text": "Mua ô tô cũ là quyết định lớn, nên cần kiểm tra kỹ trước khi chuyển tiền. Dưới đây là những điểm quan trọng bạn nên check:\n\n**🚨 TRƯỚC TIÊN — RỦI RO GIAO DỊCH:**\n- **Giấy tờ pháp lý**: Kiểm tra giấy đăng ký, chứng thực nguồn gốc xe (không phải xe cấp, xe nợ trả góp, xe bị khoá từ xa). Yêu cầu chủ xe xuất trình giấy tờ gốc, không phải bản sao.\n- **Chủ sở hữu**: Đảm bảo người bán là chủ xe thực sự. Nếu mua qua trung gian/nhóm Facebook, hỏi rõ lý do bán, kiểm tra lịch sử chủ xe.\n- **Nợ/Khoá**: Kiểm tra xe có nợ phí trước bạ, phí bảo hiểm, hay bị khoá từ xa không (liên hệ Cục Đăng ký Xe hoặc công an giao thông).\n- **Giao dịch an toàn**: Gặp trực tiếp, kiểm tra xe xong mới chuyển tiền (không cọc trước). Nếu mua online, dùng dịch vụ bảo vệ người mua (nếu có).\n\n**🔧 KIỂM TRA TÌNH TRẠNG XE:**\n- **Ngoại thất**: Kiểm tra vết va đập, sơn, gỉ sét, độ kín khít của cửa/cốp.\n- **Nội thất**: Ghế, vô lăng, bảng điều khiển, điều hoà, âm thanh, cửa sổ điện.\n- **Động cơ**: Nghe tiếng gầm (có bất thường không), kiểm tra dầu, nước làm mát, khí thải.\n- **Lốp & phanh**: Độ mòn lốp, phanh có kêu không, độ cứng phanh.\n- **Khung gầm**: Kiểm tra có bị tai nạn nặng, hàn sửa không (nếu có thể, dùng máy quét khung gầm).\n- **Số km**: Kiểm tra đồng hồ công tơ mét có chính xác (so với tình trạng xe).\n\n**💡 LỜI KHUYÊN:**\n- Nên mua từ **đại lý uy tín** hoặc **chủ xe cá nhân có danh giá tốt** (nếu mua online, kiểm tra review).\n- Nếu không chắc, **thuê thợ sửa xe độc lập** kiểm tra trước khi mua (chi phí ~500k-1M, nhưng đáng giá).\n- **Không vội**: Nếu giá quá rẻ so với thị trường hoặc người bán gấp gáp, cần cảnh báo.\n\nBạn đang tìm mua ô tô loại nào (sedan, SUV, bán tải) và hãng nào? Mình có thể giúp bạn tìm các lựa chọn uy tín trong tầm giá 300 triệu nếu bạn muốn.",
+      "visible": "Mua ô tô cũ là quyết định lớn, nên cần kiểm tra kỹ trước khi chuyển tiền. Dưới đây là những điểm quan trọng bạn nên check:\n\n**🚨 TRƯỚC TIÊN — RỦI RO GIAO DỊCH:**\n- **Giấy tờ pháp lý**: Kiểm tra giấy đăng ký, chứng thực nguồn gốc xe (không phải xe cấp, xe nợ trả góp, xe bị khoá từ xa). Yêu cầu chủ xe xuất trình giấy tờ gốc, không phải bản sao.\n- **Chủ sở hữu**: Đảm bảo người bán là chủ xe thực sự. Nếu mua qua trung gian/nhóm Facebook, hỏi rõ lý do bán, kiểm tra lịch sử chủ xe.\n- **Nợ/Khoá**: Kiểm tra xe có nợ phí trước bạ, phí bảo hiểm, hay bị khoá từ xa không (liên hệ Cục Đăng ký Xe hoặc công an giao thông).\n- **Giao dịch an toàn**: Gặp trực tiếp, kiểm tra xe xong mới chuyển tiền (không cọc trước). Nếu mua online, dùng dịch vụ bảo vệ người mua (nếu có).\n\n**🔧 KIỂM TRA TÌNH TRẠNG XE:**\n- **Ngoại thất**: Kiểm tra vết va đập, sơn, gỉ sét, độ kín khít của cửa/cốp.\n- **Nội thất**: Ghế, vô lăng, bảng điều khiển, điều hoà, âm thanh, cửa sổ điện.\n- **Động cơ**: Nghe tiếng gầm (có bất thường không), kiểm tra dầu, nước làm mát, khí thải.\n- **Lốp & phanh**: Độ mòn lốp, phanh có kêu không, độ cứng phanh.\n- **Khung gầm**: Kiểm tra có bị tai nạn nặng, hàn sửa không (nếu có thể, dùng máy quét khung gầm).\n- **Số km**: Kiểm tra đồng hồ công tơ mét có chính xác (so với tình trạng xe).\n\n**💡 LỜI KHUYÊN:**\n- Nên mua từ **đại lý uy tín** hoặc **chủ xe cá nhân có danh giá tốt** (nếu mua online, kiểm tra review).\n- Nếu không chắc, **thuê thợ sửa xe độc lập** kiểm tra trước khi mua (chi phí ~500k-1M, nhưng đáng giá).\n- **Không vội**: Nếu giá quá rẻ so với thị trường hoặc người bán gấp gáp, cần cảnh báo.\n\nBạn đang tìm mua ô tô loại nào (sedan, SUV, bán tải) và hãng nào? Mình có thể giúp bạn tìm các lựa chọn uy tín trong tầm giá 300 triệu nếu bạn muốn."
+    }
+  ]
+}

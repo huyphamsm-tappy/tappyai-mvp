@@ -29,6 +29,13 @@ export interface UploadSessionRequest {
   contentType: string
   /** Declared byte length; bound into the session at init. */
   sizeBytes: number
+  /**
+   * The browser origin that will PUT to the session. GCS returns CORS headers on the session's
+   * PUT responses only for the Origin declared when the session was opened — without it the file
+   * lands but the browser cannot read the answer and reports a failure (measured on UAT 2026-09-28).
+   * Only ever the caller's own same-host origin (see `sameHostOrigin`).
+   */
+  origin?: string
 }
 
 /**
@@ -65,6 +72,15 @@ export interface MediaProvider {
    * reason `createUploadSession` is: Blob has no client-direct session.
    */
   statObject?(key: string): Promise<StoredObjectInfo | null>
+  /**
+   * F-096 · every object name under ONE owner's prefix (all pages). Only account deletion uses it;
+   * a prefix that does not name exactly one owner is refused (see `assertOwnerScopedPrefix`).
+   */
+  listObjects?(prefix: string): Promise<string[]>
+  /** F-096 · deletes one object. true = deleted, false = already gone (404). */
+  deleteObject?(key: string): Promise<boolean>
+  /** F-099 · `length` bytes of a stored object from `offset` (authenticated ranged read). */
+  readRange?(key: string, offset: number, length: number): Promise<Uint8Array>
 }
 
 /** The minimum an upload must satisfy to count as complete. */
@@ -105,6 +121,17 @@ export class MediaUploadSessionError extends Error {
         : `Media provider "${provider}" did not open an upload session (${reason}, HTTP ${status})`
     )
     this.name = 'MediaUploadSessionError'
+  }
+}
+
+/**
+ * Listing or deleting stored objects failed (F-096 account deletion). Status code only — never the
+ * provider's response body or an object name, which carries a user id.
+ */
+export class MediaStorageError extends Error {
+  constructor(provider: MediaProviderId, operation: 'list' | 'delete' | 'read', status?: number) {
+    super(`Media provider "${provider}" ${operation} failed${status === undefined ? '' : ` (HTTP ${status})`}`)
+    this.name = 'MediaStorageError'
   }
 }
 

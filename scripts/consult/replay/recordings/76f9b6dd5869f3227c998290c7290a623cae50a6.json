@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Trung Tâm Massage Khỏe Mạnh Gia Vận",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:29:55.252Z",
+ "body": {
+  "searchParameters": {
+   "q": "Trung Tâm Massage Khỏe Mạnh Gia Vận",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Trung Tâm Massage Khỏe Mạnh Gia Vận - Klook",
+    "imageUrl": "https://res.klook.com/images/fl_lossy.progressive,q_65/c_fill,w_720,h_528/w_44,x_8,y_8,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/avreiq8g6o8b8dvv0kei/%C4%90%C3%A0iTrungFengjia%7CJiankangJiaTrungt%C3%A2mMassageN%C4%83ng%C4%91%E1%BB%99ng%7CC%E1%BA%A7n%C4%91%E1%BA%B7tl%E1%BB%8Bchh%E1%BA%B9nqua%C4%91i%E1%BB%87ntho%E1%BA%A1i.jpg",
+    "imageWidth": 720,
+    "imageHeight": 528,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRD5YXVtgYDWPou5oRrCaojHTPpHch5Vy8OCeXdi3SDVA&s",
+    "thumbnailWidth": 262,
+    "thumbnailHeight": 192,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/55348-taichung-food-body-massage/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Ffl_lossy.progressive%2Cq_65%2Fc_fill%2Cw_720%2Ch_528%2Fw_44%2Cx_8%2Cy_8%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Favreiq8g6o8b8dvv0kei%2F%25C4%2590%25C3%25A0iTrungFengjia%257CJiankangJiaTrungt%25C3%25A2mMassageN%25C4%2583ng%25C4%2591%25E1%25BB%2599ng%257CC%25E1%25BA%25A7n%25C4%2591%25E1%25BA%25B7tl%25E1%25BB%258Bchh%25E1%25BA%25B9nqua%25C4%2591i%25E1%25BB%2587ntho%25E1%25BA%25A1i.jpg&tbnid=h5tZMjvNuV9dOM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F55348-taichung-food-body-massage%2F&docid=1tOhtmKWNUQhtM&w=720&h=528",
+    "position": 1
+   },
+   {
+    "title": "Trung Tâm Massage Khỏe Mạnh Gia Vận - Klook",
+    "imageUrl": "https://res.klook.com/images/fl_lossy.progressive,q_65/c_fill,w_1295,h_864/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/bbzpr4cngtosxuaedvbg/%C4%90%C3%A0iTrungFengjia%7CJiankangJiaTrungt%C3%A2mMassageN%C4%83ng%C4%91%E1%BB%99ng%7CC%E1%BA%A7n%C4%91%E1%BA%B7tl%E1%BB%8Bchh%E1%BA%B9nqua%C4%91i%E1%BB%87ntho%E1%BA%A1i.jpg",
+    "imageWidth": 1295,
+    "imageHeight": 864,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTO1CAwTCody5FGS7vhqIqrp1aRggOFrbcpwgRDiLNqbg&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/55348-taichung-food-body-massage/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Ffl_lossy.progressive%2Cq_65%2Fc_fill%2Cw_1295%2Ch_864%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fbbzpr4cngtosxuaedvbg%2F%25C4%2590%25C3%25A0iTrungFengjia%257CJiankangJiaTrungt%25C3%25A2mMassageN%25C4%2583ng%25C4%2591%25E1%25BB%2599ng%257CC%25E1%25BA%25A7n%25C4%2591%25E1%25BA%25B7tl%25E1%25BB%258Bchh%25E1%25BA%25B9nqua%25C4%2591i%25E1%25BB%2587ntho%25E1%25BA%25A1i.jpg&tbnid=nYyuEqPqmBMJZM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F55348-taichung-food-body-massage%2F&docid=1tOhtmKWNUQhtM&w=1295&h=864",
+    "position": 2
+   },
+   {
+    "title": "Trung Tâm Massage Khỏe Mạnh Gia Vận - Klook",
+    "imageUrl": "https://res.klook.com/images/fl_lossy.progressive,q_65/c_fill,w_720,h_552/w_44,x_8,y_8,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/deo7erho0oveuammqwwr/%C4%90%C3%A0iTrungFengjia%7CJiankangJiaTrungt%C3%A2mMassageN%C4%83ng%C4%91%E1%BB%99ng%7CC%E1%BA%A7n%C4%91%E1%BA%B7tl%E1%BB%8Bchh%E1%BA%B9nqua%C4%91i%E1%BB%87ntho%E1%BA%A1i.jpg",
+    "imageWidth": 720,
+    "imageHeight": 552,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRM4ejQjneOKvgri62Xqldi5xn5OVdhkJb2Xozld7od-A&s",
+    "thumbnailWidth": 256,
+    "thumbnailHeight": 197,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/55348-taichung-food-body-massage/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Ffl_lossy.progressive%2Cq_65%2Fc_fill%2Cw_720%2Ch_552%2Fw_44%2Cx_8%2Cy_8%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fdeo7erho0oveuammqwwr%2F%25C4%2590%25C3%25A0iTrungFengjia%257CJiankangJiaTrungt%25C3%25A2mMassageN%25C4%2583ng%25C4%2591%25E1%25BB%2599ng%257CC%25E1%25BA%25A7n%25C4%2591%25E1%25BA%25B7tl%25E1%25BB%258Bchh%25E1%25BA%25B9nqua%25C4%2591i%25E1%25BB%2587ntho%25E1%25BA%25A1i.jpg&tbnid=7SH1Porw-utpBM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F55348-taichung-food-body-massage%2F&docid=1tOhtmKWNUQhtM&w=720&h=552",
+    "position": 3
+   },
+   {
+    "title": "Trung Tâm Massage Khỏe Mạnh Gia Vận - Klook",
+    "imageUrl": "https://res.klook.com/images/fl_lossy.progressive,q_65/c_fill,w_1295,h_863/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/x7gg5x41wte4kjnnu38s/%C4%90%C3%A0iTrungFengjia%7CJiankangJiaTrungt%C3%A2mMassageN%C4%83ng%C4%91%E1%BB%99ng%7CC%E1%BA%A7n%C4%91%E1%BA%B7tl%E1%BB%8Bchh%E1%BA%B9nqua%C4%91i%E1%BB%87ntho%E1%BA%A1i.jpg",
+    "imageWidth": 1295,
+    "imageHeight": 863,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQLKL51KkxJgmwEVVyjwzPrSk_wQ_Xe5zClCHe7mKzg6Q&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/55348-taichung-food-body-massage/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Ffl_lossy.progressive%2Cq_65%2Fc_fill%2Cw_1295%2Ch_863%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fx7gg5x41wte4kjnnu38s%2F%25C4%2590%25C3%25A0iTrungFengjia%257CJiankangJiaTrungt%25C3%25A2mMassageN%25C4%2583ng%25C4%2591%25E1%25BB%2599ng%257CC%25E1%25BA%25A7n%25C4%2591%25E1%25BA%25B7tl%25E1%25BB%258Bchh%25E1%25BA%25B9nqua%25C4%2591i%25E1%25BB%2587ntho%25E1%25BA%25A1i.jpg&tbnid=e8HV8-yh2fuaaM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F55348-taichung-food-body-massage%2F&docid=1tOhtmKWNUQhtM&w=1295&h=863",
+    "position": 4
+   },
+   {
+    "title": "Top 12+ địa chỉ massage khỏe có tay nghề tốt tại TP.HCM",
+    "imageUrl": "https://hispa.vn/wp-content/uploads/2025/08/massage-khoe-10.jpg",
+    "imageWidth": 1000,
+    "imageHeight": 700,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQRYF_4YoIjKoZvYT0WmDCALmej7JeYIV4iPcmx-M074g&s=10",
+    "thumbnailWidth": 662,
+    "thumbnailHeight": 463,
+    "source": "Hi Spa",
+    "domain": "hispa.vn",
+    "link": "https://hispa.vn/massage-khoe/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fhispa.vn%2Fwp-content%2Fuploads%2F2025%2F08%2Fmassage-khoe-10.jpg&tbnid=OehTWhh5W6koYM&imgrefurl=https%3A%2F%2Fhispa.vn%2Fmassage-khoe%2F&docid=VFix0kicO3CXZM&w=1000&h=700",
+    "position": 5
+   },
+   {
+    "title": "TOP 15+ Địa Điểm Massage Tân Phú Nổi Tiếng Đông Khách",
+    "imageUrl": "https://haspamassage.vn/wp-content/uploads/2026/04/nhe-spa-massage-tri-lieu-dia-chi-massage-o-tan-phu-noi-tieng.png",
+    "imageWidth": 1000,
+    "imageHeight": 800,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIxbCRfoDbc7DWSPzIoqD-aX84oCQTpkXGeaRAN8ETTg&s=10",
+    "thumbnailWidth": 618,
+    "thumbnailHeight": 495,
+    "source": "Hạ Spa",
+    "domain": "haspamassage.vn",
+    "link": "https://haspamassage.vn/massage-tan-phu/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fhaspamassage.vn%2Fwp-content%2Fuploads%2F2026%2F04%2Fnhe-spa-massage-tri-lieu-dia-chi-massage-o-tan-phu-noi-tieng.png&tbnid=GVkDWqkLHy2tJM&imgrefurl=https%3A%2F%2Fhaspamassage.vn%2Fmassage-tan-phu%2F&docid=eQC51g0-0gIe6M&w=1000&h=800",
+    "position": 6
+   },
+   {
+    "title": "Top 12+ địa chỉ massage khỏe có tay nghề tốt tại TP.HCM",
+    "imageUrl": "https://hispa.vn/wp-content/uploads/2025/08/massage-khoe-2.jpg",
+    "imageWidth": 1000,
+    "imageHeight": 700,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUcDe3mcfnECmh6e8sS3RVbni4F5omqg13nA8UcO_KJg&s=10",
+    "thumbnailWidth": 662,
+    "thumbnailHeight": 463,
+    "source": "Hi Spa",
+    "domain": "hispa.vn",
+    "link": "https://hispa.vn/massage-khoe/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fhispa.vn%2Fwp-content%2Fuploads%2F2025%2F08%2Fmassage-khoe-2.jpg&tbnid=hdtj4kvKlMM4MM&imgrefurl=https%3A%2F%2Fhispa.vn%2Fmassage-khoe%2F&docid=VFix0kicO3CXZM&w=1000&h=700",
+    "position": 7
+   },
+   {
+    "title": "Cửu Vân Long - Massage Khoẻ Tân Phú on Reels | Facebook",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=914138101097626&get_thumbnail=1",
+    "imageWidth": 576,
+    "imageHeight": 1024,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTm-hPZPH6hO7KPcSOAQhVzIQqXwtlnCDRehM_XBdo9Uw&s",
+    "thumbnailWidth": 168,
+    "thumbnailHeight": 300,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/hanhvunguyenthihanhvu/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D914138101097626%26get_thumbnail%3D1&tbnid=aH2Ag44jjMjrFM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Fhanhvunguyenthihanhvu%2F&docid=i9S9O_03fDC26M&w=576&h=1024",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

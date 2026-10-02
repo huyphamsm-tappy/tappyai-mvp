@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Iris Nailbar SGN\" OR \"Tiệm Nail Quận 10\" OR \"Molsy Nails & Beauty\" quan 10 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:31:12.028Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Iris Nailbar SGN\" OR \"Tiệm Nail Quận 10\" OR \"Molsy Nails & Beauty\" quan 10 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Nails xinh tại Iris Nailbar SGN 💅📸",
+    "link": "https://www.tiktok.com/@irisnailbarsgn/photo/7681231691645668628",
+    "snippet": "Hoà Hưng (Quận 10), Tp.HCM Hotline: 033 7979 106 ... Keywords: Iris Nailbar SGN,Nails Quận 10,Nối mi thiết kế,Đào tạo học ...",
+    "position": 1
+   },
+   {
+    "title": "Review tiệm nail quận 10: làm móng đẹp, có quà khai trương",
+    "link": "https://www.tiktok.com/@nghihaydii/video/7642696834481179924",
+    "snippet": "928 Lượt thích,Video TikTok từ Nghi hay đi (@nghihaydii): \"Đánh giá chi tiết tiệm nail quận 10: không gian ẩn, dụng cụ xịn, thợ tay nghề cao ...",
+    "position": 2
+   },
+   {
+    "title": "Tiệm Nail Quận 10 - Mở Cửa Hàng Ngày",
+    "link": "https://www.tiktok.com/@meinail98/video/7657058810376326420",
+    "snippet": "Video TikTok từ Tiệm Nail Quận 10 (@meinail98): \"Khám phá tiệm nail tại Quận 10, mở cửa hàng ngày từ 9 giờ sáng đến 8 giờ tối.",
+    "position": 3
+   },
+   {
+    "title": "Vlog Bé Thảo: Bí Mật Tiệm Nail Quận 10",
+    "link": "https://www.tiktok.com/@thaothichlamnail94/video/7657838476699716871",
+    "snippet": "Keywords: vlog bé thảo, tiệm nail quận 10, làm móng quận 10, nail quận 10, dịch vụ làm móng, tiệm làm móng, chăm sóc móng, làm đẹp móng, tiệm ...",
+    "position": 4
+   },
+   {
+    "title": "Tiệm nail gội đầu ở quận 10 giá mềm chỉ 75K sơn gel mà ...",
+    "link": "https://www.tiktok.com/@thudidaurua/video/7534663646899719431",
+    "snippet": "Tiệm nail gội đầu ở quận 10 giá mềm chỉ 75K sơn gel mà sử dụng ... ✨ Iris Nailbar SGN ✨. 206 · recommend-cover. Tiệm neo thư giãn. 2677.",
+    "position": 5
+   },
+   {
+    "title": "Tiệm Nail Quận 10: Hoàn thành 50% thi công sửa chữa",
+    "link": "https://www.tiktok.com/@1997.beauty/photo/7631422475410099464",
+    "snippet": "Xem tiến độ sửa chữa tiệm nail Quận 10, hoàn thành 50% với nhiều cải thiện đáng kể. Vlog làm nail thú vị. Keywords: tiệm nail quận 10,sửa chữa ...",
+    "position": 6
+   },
+   {
+    "title": "493/62 Cách Mạng Tháng 8 , quận 10 #nails #nailquan10 ...",
+    "link": "https://www.tiktok.com/@meinail98/video/7646681209048665365",
+    "snippet": "Video TikTok từ Tiệm Nail Quận 10 (@meinail98): \" 493/62 Cách Mạng Tháng 8 , quận 10 #nails #nailquan10 #nailmatmeo\".âm thanh gốc - Linh ...",
+    "position": 7
+   },
+   {
+    "title": "Biến hình 🤣🤣 #nails #xuhuong #mei #quan10",
+    "link": "https://www.tiktok.com/@meinail98/video/7680089116528200980",
+    "snippet": "31 Lượt thích,Video TikTok từ Tiệm Nail Quận 10 (@meinail98): \"Biến hình #nails #xuhuong #mei #quan10\".original sound - Megan Josol Art ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

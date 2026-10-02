@@ -1,0 +1,29 @@
+{
+  "id": "G5b",
+  "group": "used-purchase-risk",
+  "criteria": [
+    "Leads with ownership: cà vẹt/registration matches seller and frame/engine numbers, stolen vehicle, sang tên procedure, deposit scams; then mechanical checks",
+    "No invented numbers",
+    "Scam-vector pointer to 'Cảnh báo lừa đảo' where relevant"
+  ],
+  "turns": [
+    {
+      "user": "mua xe máy cũ Honda Wave cần kiểm tra gì",
+      "status": 200,
+      "elapsedMs": 14009,
+      "usage": {
+        "promptTokens": 3,
+        "completionTokens": 917
+      },
+      "textFrames": 1,
+      "tools": [],
+      "toolResults": [],
+      "annotations": [],
+      "cardItems": [],
+      "duplicate": null,
+      "text": "Mình hiểu bạn đang cân nhắc mua xe máy cũ Honda Wave. Đây là quyết định mua hàng có giá trị cao nên cần kiểm tra kỹ trước khi chuyển tiền. Dưới đây là những điểm **rủi ro chính** và **cách kiểm tra** bạn nên biết:\n\n## 🚨 Rủi ro trước tiên\n- **Giấy tờ không chính chủ** → không sang tên được, bị thu hồi\n- **Xe bị khóa từ xa** → chủ cũ còn nợ, không thể sử dụng\n- **Nợ trả góp** → phải chịu trách nhiệm pháp lý\n- **Lừa đảo cọc tiền** → gặp người lạ, chuyển tiền trước rồi biến mất\n\n**Trước khi chuyển tiền, bạn dán tin nhắn, link hoặc mã QR của người bán vào **Cảnh báo lừa đảo** trong TappyAI để kiểm tra nhé.**\n\n## ✅ Kiểm tra giấy tờ & pháp lý (BẮT BUỘC)\n- **Giấy đăng ký xe** (chính chủ, còn hạn)\n- **Giấy chứng thực** (nếu có)\n- **Biên lai mua bán** (nếu có lịch sử)\n- Kiểm tra trên **Cục Đăng ký Xe** (online) xem xe có bị khóa, nợ hay không\n\n## 🔧 Kiểm tra tình trạng xe (GẶP TRỰC TIẾP)\n- **Khung gầm & thân xe**: có bị va chạm, rỉ sét, sơn lại không\n- **Động cơ**: nổ máy nghe có bất thường, khí thải màu gì\n- **Lốp & phanh**: độ mòn, phanh còn hiệu lực không\n- **Số km chạy**: kiểm tra đồng hồ (có thể bị chỉnh)\n- **Các bộ phận**: đèn, còi, gương, khóa có hoạt động bình thường\n\n## 💰 Cách trả tiền an toàn\n- **Gặp trực tiếp** tại địa điểm công cộng, không gặp ở nơi vắng\n- **Kiểm tra xe xong mới trả tiền** (không cọc trước)\n- **Giữ bằng chứng** (ảnh xe, giấy tờ, biên lai)\n- **Nên mang theo người thân** để chứng kiến\n\n## 🎯 Quyết định\n**Chỉ mua khi**: giấy tờ chính chủ, xe không bị khóa/nợ, tình trạng máy tốt, giá hợp lý so với thị trường, và bạn đã xem trực tiếp.\n\nBạn đã tìm được chiếc xe cụ thể chưa, hay cần mình giúp tìm Honda Wave cũ ở khu vực nào?",
+      "visible": "Mình hiểu bạn đang cân nhắc mua xe máy cũ Honda Wave. Đây là quyết định mua hàng có giá trị cao nên cần kiểm tra kỹ trước khi chuyển tiền. Dưới đây là những điểm **rủi ro chính** và **cách kiểm tra** bạn nên biết:\n\n## 🚨 Rủi ro trước tiên\n- **Giấy tờ không chính chủ** → không sang tên được, bị thu hồi\n- **Xe bị khóa từ xa** → chủ cũ còn nợ, không thể sử dụng\n- **Nợ trả góp** → phải chịu trách nhiệm pháp lý\n- **Lừa đảo cọc tiền** → gặp người lạ, chuyển tiền trước rồi biến mất\n\n**Trước khi chuyển tiền, bạn dán tin nhắn, link hoặc mã QR của người bán vào **Cảnh báo lừa đảo** trong TappyAI để kiểm tra nhé.**\n\n## ✅ Kiểm tra giấy tờ & pháp lý (BẮT BUỘC)\n- **Giấy đăng ký xe** (chính chủ, còn hạn)\n- **Giấy chứng thực** (nếu có)\n- **Biên lai mua bán** (nếu có lịch sử)\n- Kiểm tra trên **Cục Đăng ký Xe** (online) xem xe có bị khóa, nợ hay không\n\n## 🔧 Kiểm tra tình trạng xe (GẶP TRỰC TIẾP)\n- **Khung gầm & thân xe**: có bị va chạm, rỉ sét, sơn lại không\n- **Động cơ**: nổ máy nghe có bất thường, khí thải màu gì\n- **Lốp & phanh**: độ mòn, phanh còn hiệu lực không\n- **Số km chạy**: kiểm tra đồng hồ (có thể bị chỉnh)\n- **Các bộ phận**: đèn, còi, gương, khóa có hoạt động bình thường\n\n## 💰 Cách trả tiền an toàn\n- **Gặp trực tiếp** tại địa điểm công cộng, không gặp ở nơi vắng\n- **Kiểm tra xe xong mới trả tiền** (không cọc trước)\n- **Giữ bằng chứng** (ảnh xe, giấy tờ, biên lai)\n- **Nên mang theo người thân** để chứng kiến\n\n## 🎯 Quyết định\n**Chỉ mua khi**: giấy tờ chính chủ, xe không bị khóa/nợ, tình trạng máy tốt, giá hợp lý so với thị trường, và bạn đã xem trực tiếp.\n\nBạn đã tìm được chiếc xe cụ thể chưa, hay cần mình giúp tìm Honda Wave cũ ở khu vực nào?",
+      "preGuard": "Mình hiểu bạn đang cân nhắc mua xe máy cũ Honda Wave. Đây là quyết định mua hàng có giá trị cao nên cần kiểm tra kỹ trước khi chuyển tiền. Dưới đây là những điểm **rủi ro chính** và **cách kiểm tra** bạn nên biết:\n\n## 🚨 Rủi ro trước tiên\n- **Giấy tờ không chính chủ** → không sang tên được, bị thu hồi\n- **Xe bị khóa từ xa** → chủ cũ còn nợ, không thể sử dụng\n- **Nợ trả góp** → phải chịu trách nhiệm pháp lý\n- **Lừa đảo cọc tiền** → gặp người lạ, chuyển tiền trước rồi biến mất\n\n**Trước khi chuyển tiền, bạn dán tin nhắn, link hoặc mã QR của người bán vào **Cảnh báo lừa đảo** trong TappyAI để kiểm tra nhé.**\n\n## ✅ Kiểm tra giấy tờ & pháp lý (BẮT BUỘC)\n- **Giấy đăng ký xe** (chính chủ, còn hạn)\n- **Giấy chứng thực** (nếu có)\n- **Biên lai mua bán** (nếu có lịch sử)\n- Kiểm tra trên **Cục Đăng ký Xe** (online) xem xe có bị khóa, nợ hay không\n\n## 🔧 Kiểm tra tình trạng xe (GẶP TRỰC TIẾP)\n- **Khung gầm & thân xe**: có bị va chạm, rỉ sét, sơn lại không\n- **Động cơ**: nổ máy nghe có bất thường, khí thải màu gì\n- **Lốp & phanh**: độ mòn, phanh còn hiệu lực không\n- **Số km chạy**: kiểm tra đồng hồ (có thể bị chỉnh)\n- **Các bộ phận**: đèn, còi, gương, khóa có hoạt động bình thường\n\n## 💰 Cách trả tiền an toàn\n- **Gặp trực tiếp** tại địa điểm công cộng, không gặp ở nơi vắng\n- **Kiểm tra xe xong mới trả tiền** (không cọc trước)\n- **Giữ bằng chứng** (ảnh xe, giấy tờ, biên lai)\n- **Nên mang theo người thân** để chứng kiến\n\n## 🎯 Quyết định\n**Chỉ mua khi**: giấy tờ chính chủ, xe không bị khóa/nợ, tình trạng máy tốt, giá hợp lý so với thị trường, và bạn đã xem trực tiếp.\n\nBạn đã tìm được chiếc xe cụ thể chưa, hay cần mình giúp tìm Honda Wave cũ ở khu vực nào?"
+    }
+  ]
+}

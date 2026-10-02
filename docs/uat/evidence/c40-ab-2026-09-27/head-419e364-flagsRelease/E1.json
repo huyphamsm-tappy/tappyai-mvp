@@ -1,0 +1,180 @@
+{
+  "id": "E1",
+  "text": "Tối nay đi chơi gì với hội bạn 5 người ở Quận 1",
+  "parent": null,
+  "status": 200,
+  "ms": 15569,
+  "evidenceId": "0e0d1b78-4b18-40e2-8774-14a38033cc9a",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "giải trí buổi tối Quận 1",
+        "location": "Quận 1, TP.HCM",
+        "type": "bar"
+      }
+    },
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "karaoke Quận 1",
+        "location": "Quận 1, TP.HCM",
+        "type": "bar"
+      }
+    },
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "quán ăn đêm Quận 1",
+        "location": "Quận 1, TP.HCM",
+        "type": "restaurant"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "The Lủi - Quán Nhậu Chill Quận 1 Sài Gòn",
+      "rating": 4.9,
+      "count": 513,
+      "hours": "17:00–23:30",
+      "address": "177 Nguyễn Cư Trinh, Cầu Ông Lãnh, Hồ Chí Minh 71000, Việt Nam"
+    },
+    {
+      "name": "Méo Meo Cat Cafe - Cafe thú cưng Quận 1",
+      "rating": 4.8,
+      "count": 1100,
+      "hours": "09:00–22:00",
+      "address": "30 Phan Bội Châu, Bến Thành, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Công viên Tao Đàn",
+      "rating": 4.5,
+      "count": 15648,
+      "hours": "07:00–22:00",
+      "address": "Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Saigon Skydeck",
+      "rating": 4.4,
+      "count": 12733,
+      "hours": "09:30–21:30",
+      "address": "36 Hồ Tùng Mậu, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "MEOW BILLIARDS CLUB CỐNG QUỲNH - CÂU LẠC BỘ BIDA LỖ - BI-A LỖ",
+      "rating": 4.5,
+      "count": 534,
+      "hours": "Mở cửa cả ngày",
+      "address": "Hẻm 189 Cống Quỳnh, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Phố đi bộ Bùi Viện",
+      "rating": 4.3,
+      "count": 27462,
+      "hours": "Mở cửa cả ngày",
+      "address": "Bùi Viện Phạm Ngũ Lão, phường, Bến Thành, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Cung Văn hóa Lao động TP.HCM",
+      "rating": 4.4,
+      "count": 877,
+      "hours": "06:00–21:30",
+      "address": "55B Nguyễn Thị Minh Khai, Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Phố Nhật Sài Gòn",
+      "rating": 4.3,
+      "count": 2638,
+      "hours": "Mở cửa cả ngày",
+      "address": "8A Thái Văn Lung, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Sân Khấu Thế Giới Trẻ",
+      "rating": 4.4,
+      "count": 913,
+      "address": "125 Đ. Cống Quỳnh, Cầu Ông Lãnh, Hồ Chí Minh 700000, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "The Lủi - Quán Nhậu Chill Quận 1 Sài Gòn",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 513,
+        "open_now": true,
+        "opening_hours": "17:00–23:30"
+      }
+    },
+    {
+      "name": "Méo Meo Cat Cafe - Cafe thú cưng Quận 1",
+      "role": null,
+      "evidence": {
+        "rating": 4.8,
+        "reviews": 1100,
+        "open_now": true,
+        "opening_hours": "09:00–22:00"
+      }
+    },
+    {
+      "name": "Công viên Tao Đàn",
+      "role": null,
+      "evidence": {
+        "rating": 4.5,
+        "reviews": 15648,
+        "open_now": true,
+        "opening_hours": "07:00–22:00"
+      }
+    }
+  ],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình tìm các địa điểm giải trí gần bạn ở Quận 1 cho buổi tối nay nhé! 🎉\n\nMình gợi ý **The Lủi - Quán Nhậu Chill** cho bạn! 🍺 Quán này đang mở cửa, có **4.9⭐ (513 đánh giá)** — không gian chill, phù hợp để hội bạn 5 người ngồi nhậu thoải mái tối nay.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem The Lủi trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=13472285667380578245\",\"primary\":true},{\"label\":\"🌐 Website Méo Meo Cat Cafe\",\"type\":\"website\",\"url\":\"https://meomeocafe.com.vn/\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Nhậu ở quán nào khác|Ăn tối rồi hát karaoke|Dạo phố Bùi Viện[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Tối nay đi chơi gì với hội bạn 5 người ở Quận 1"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm các địa điểm giải trí gần bạn ở Quận 1 cho buổi tối nay nhé! 🎉\n\nMình gợi ý **The Lủi - Quán Nhậu Chill** cho bạn! 🍺 Quán này đang mở cửa, có **4.9⭐ (513 đánh giá)** — không gian chill, phù hợp để hội bạn 5 người ngồi nhậu thoải mái tối nay.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem The Lủi trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=13472285667380578245\",\"primary\":true},{\"label\":\"🌐 Website Méo Meo Cat Cafe\",\"type\":\"website\",\"url\":\"https://meomeocafe.com.vn/\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Nhậu ở quán nào khác|Ăn tối rồi hát karaoke|Dạo phố Bùi Viện[/FOLLOWUPS]"
+    }
+  ]
+}

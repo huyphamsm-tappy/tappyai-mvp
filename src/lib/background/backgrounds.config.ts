@@ -21,6 +21,26 @@ export interface BackgroundDescriptor {
   alt: string
   /** CSS object-position for the image (e.g. 'center', 'center 40%'). */
   position: string
+  /**
+   * How the image meets the viewport.
+   *
+   * `cover` fills the viewport and CROPS whatever does not fit. `contain` shows
+   * the WHOLE image and leaves a band, which `fill` then continues.
+   *
+   * 🚨 This exists because "cover" quietly hides a lot of artwork on any viewport
+   * that is taller than the asset. Measured on this asset (1672×941, 16:9):
+   * 1920×1080 shows 99.9%, but 1440×950 shows 85.3% and 1280×850 shows 84.8% —
+   * a quarter of the width gone, and invisibly, because a cropped photo still
+   * looks like a photo.
+   */
+  fit?: 'cover' | 'contain'
+  /**
+   * Colour behind the image, continuing it into the band `contain` leaves.
+   * MEASURED FROM THE ASSET, never picked by eye: the mean of its top rows, which
+   * are near-uniform sky (spread of 47/255 across 1672px), so the join reads as
+   * more sky rather than as a letterbox.
+   */
+  fill?: string
   /** Optional CSS background applied over the image in LIGHT theme (V1: none). */
   overlayLight?: string
   /** Optional CSS background applied over the image in DARK theme. */
@@ -36,11 +56,32 @@ export const BACKGROUNDS = {
     id: 'default',
     src: '/backgrounds/home-desktop-v5.webp',
     alt: '',
-    position: 'center',
-    // Light: no overlay (rely on a clean-centre asset). Dark: subtle tint so
-    // card/text stay readable when the UI is in dark theme — this preserves the
-    // existing production behavior, it is not a new light-mode overlay.
-    overlayDark: 'rgba(0, 0, 0, 0.4)',
+    // 🚨 `cover`, NOT `contain` — and this is a REVERSAL, recorded so it does not get
+    // "fixed" back. `contain` was chosen to show 100% of the artwork, and it did: it also
+    // left a 140px band of flat sampled sky across the top, which reads as a blue strip
+    // rather than as a photograph. The approved reference has no band; the scene fills the
+    // canvas and is simply cropped by it. Showing every pixel is not the goal — matching
+    // the reference composition is.
+    //
+    // Anchored slightly above centre so the crop keeps the skyline and the water, which are
+    // the subject, and gives away the empty upper sky first.
+    position: 'center 42%',
+    fit: 'cover',
+    // Both overlays are RETUNED for the V3 surface, and the reason is that the
+    // readability work moved. The 0.4 dark tint was set when content sat directly
+    // on the photograph and the overlay was the only thing keeping text legible.
+    // V3 puts translucent panels over the scene, so the panels now carry that job
+    // and the overlay only has to stop the artwork competing — at 0.4 on top of
+    // those panels the skyline flattened into a grey field, which is precisely the
+    // "so darkened the artwork becomes invisible" failure. Measured by eye against
+    // the render at 0.4 / 0.22 / 0.28.
+    //
+    // `overlayLight` was reserved in this interface for exactly this ("add only if
+    // post-UAT readability requires it"). It is required now: in light theme the
+    // dark section headings that sit OUTSIDE a panel fell onto the bright flower
+    // bed at the foot of the photo and lost their contrast.
+    overlayLight: 'rgba(255, 255, 255, 0.42)',
+    overlayDark: 'rgba(0, 0, 0, 0.28)',
   },
 } satisfies Record<string, BackgroundDescriptor>
 

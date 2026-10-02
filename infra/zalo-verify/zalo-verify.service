@@ -1,0 +1,42 @@
+[Unit]
+Description=zalo-verify (Zalo access token -> user id, Vietnam egress)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=zalo-verify
+Group=zalo-verify
+# ZALO_VERIFY_SECRET and PORT. Mode 0640 root:zalo-verify; never printed by the installer.
+EnvironmentFile=/etc/zalo-verify/env
+ExecStart=/usr/bin/node /opt/zalo-verify/server.mjs
+Restart=on-failure
+RestartSec=2s
+
+# Hardening. The service needs outbound HTTPS and a loopback listener, nothing else.
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectKernelLogs=yes
+ProtectControlGroups=yes
+ProtectClock=yes
+ProtectHostname=yes
+ProtectProc=invisible
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+RestrictNamespaces=yes
+RestrictRealtime=yes
+RestrictSUIDSGID=yes
+LockPersonality=yes
+SystemCallArchitectures=native
+CapabilityBoundingSet=
+AmbientCapabilities=
+UMask=0077
+MemoryMax=256M
+TasksMax=64
+
+[Install]
+WantedBy=multi-user.target

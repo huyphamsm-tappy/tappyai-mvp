@@ -16,9 +16,17 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tappyai.app.R
 import com.tappyai.app.chat.data.ChatException
+import com.tappyai.app.chat.data.GuestAgeStore
 import com.tappyai.app.chat.data.ChatRepository
+import com.tappyai.app.chat.data.CommerceHandoffReporter
+import com.tappyai.core.analytics.AnalyticsProvider
+import com.tappyai.app.chat.data.ChatStreamEvent
 import com.tappyai.app.chat.data.MessageFeedback
 import com.tappyai.app.chat.data.MessageFeedbackRepository
+import com.tappyai.app.chat.data.PublishedShare
+import com.tappyai.app.chat.data.SharePreview
+import com.tappyai.app.chat.data.ShareOutcome
+import com.tappyai.app.chat.data.SharedResultRepository
 import com.tappyai.app.chat.data.MessageLanguage
 import com.tappyai.app.chat.data.SuggestedPromptsRepository
 import com.tappyai.app.chat.data.VoiceLanguageRepository
@@ -49,14 +57,22 @@ class ChatViewModel @Inject constructor(
     private val chatRepository: ChatRepository,
     private val chatHistoryRepository: ChatHistoryRepository,
     private val messageFeedbackRepository: MessageFeedbackRepository,
+    private val sharedResultRepository: SharedResultRepository,
     private val suggestedPromptsRepository: SuggestedPromptsRepository,
     private val mapsRepository: MapsRepository,
     private val voiceLanguageRepository: VoiceLanguageRepository,
+    private val commerceHandoffReporter: CommerceHandoffReporter,
+    private val analytics: AnalyticsProvider,
+    private val guestAgeStore: GuestAgeStore,
     private val languageManager: LanguageManager,
     private val logger: LoggerProvider,
     private val stringProvider: StringProvider,
     @ApplicationContext private val context: android.content.Context,
+    private val productFlags: com.tappyai.app.config.ProductFlagsRepository,
 ) : ViewModel() {
+
+    /** The web's SHOW_PUBLIC_SHARE (`/api/config` flags.publicShare); false until the server says on. */
+    val publicShareEnabled: kotlinx.coroutines.flow.StateFlow<Boolean> = productFlags.publicShare
 
     val category: ChatCategory = savedStateHandle.get<String>("category")
         ?.let { name -> ChatCategory.entries.find { it.name.equals(name, ignoreCase = true) } }
@@ -83,6 +99,17 @@ class ChatViewModel @Inject constructor(
     var conversationId: String? = savedStateHandle.get<String>("conversationId")
         private set
 
+    // R14: one id per chat, on every turn (a reopened chat reuses the one stored with its row).
+    private val sessionIdStore = ChatSessionIdStore(context)
+    private val chatSessionId: String = ChatSessionId.resolve(
+        saved = savedStateHandle.get<String>(ChatSessionId.SAVED_KEY),
+        historyRowId = conversationId,
+        stored = sessionIdStore::get,
+    ).also { id ->
+        savedStateHandle[ChatSessionId.SAVED_KEY] = id
+        conversationId?.let { sessionIdStore.put(it, id) }
+    }
+
     /**
      * A message to auto-send once on entry — the native equivalent of the web's `/chat?q=…`
      * (see `ChatInterface`'s `initialMessage` effect). Set only when arriving from an "ask Tappy
@@ -104,6 +131,15 @@ class ChatViewModel @Inject constructor(
     // streams the last assistant message's text live via useSmoothText + formatMessage.
     private val _streamingText = MutableStateFlow("")
     val streamingText: StateFlow<String> = _streamingText.asStateFlow()
+
+    // A1 (2026-09-20): what the in-flight turn has said about itself so far. The server's own
+    // progress sentence (`tappy.progress.v1`) replaces the rotating generic hint while it is
+    // present, and the place set it sent (the engine's `preliminary` fold, then the decision) is
+    // rendered under the streaming bubble instead of a blank. Both are reset with the stream.
+    private val _streamingHint = MutableStateFlow<String?>(null)
+    val streamingHint: StateFlow<String?> = _streamingHint.asStateFlow()
+    private val _streamingPlaces = MutableStateFlow<PlacesLiveView?>(null)
+    val streamingPlaces: StateFlow<PlacesLiveView?> = _streamingPlaces.asStateFlow()
 
     // True only while a resumed conversation's history is still loading, so the Welcome state
     // doesn't flash before the real messages arrive (see init{} below). Chats started fresh
@@ -173,6 +209,31 @@ class ChatViewModel @Inject constructor(
 
     private var speechRecognizer: SpeechRecognizer? = null
     private val _isListening = MutableStateFlow(false)
+
+    /**
+     * How loud the microphone is right now, 0..1.
+     *
+     * [SpeechRecognizer] already delivers this through `onRmsChanged` on every voice turn; the
+     * callback was simply empty, so the value was measured and thrown away. Surfacing it drives a
+     * waveform that moves with the user's actual voice instead of an animation pretending to.
+     * NOT a new audio pipeline — no recorder, no buffer, no permission beyond the RECORD_AUDIO the
+     * mic already asks for.
+     */
+    private val _voiceLevel = MutableStateFlow(0f)
+    val voiceLevel: StateFlow<Float> = _voiceLevel.asStateFlow()
+
+    /**
+     * True while the full-screen listening UI owns the turn.
+     *
+     * The inline composer mic auto-sends the moment recognition finishes — web parity, and it stays
+     * exactly that way. The listening screen shows an explicit "Gửi", and a button that sends a
+     * message the app already sent is not a button. So the auto-send is deferred for that entry
+     * point only, and the recognised text waits in [input] until the user taps send or cancel.
+     */
+    private var deferVoiceAutoSend = false
+
+    /** The draft as it was when listening started, so a cancelled voice turn restores it. */
+    private var voiceInputBase: String? = null
     /** True while the in-app voice recogniser is actively listening — drives the mic recording
      *  animation (mirrors the web chat's `isListening`). */
     val isListening: StateFlow<Boolean> = _isListening.asStateFlow()
@@ -222,16 +283,43 @@ class ChatViewModel @Inject constructor(
     private var ttsIntentionalStop = false
 
     init {
+        viewModelScope.launch { productFlags.refresh() }
         val id = conversationId
+        // chat_opened (RUNBOOK §3.19) — fires once when a fresh main chat opens. A
+        // resumed conversation (conversationId != null) is a continuation, matching
+        // web's !isContinuation gate; the ViewModel is created once per screen open.
+        if (id == null) analytics.track("chat_opened")
         if (id != null) {
             viewModelScope.launch {
                 when (val result = chatHistoryRepository.getConversationMessages(id)) {
                     is NetworkResult.Success -> {
                         _messages.value = result.data.map { stored ->
+                            val isUser = stored.role == "user"
+                            // 🚨 A REOPENED CONVERSATION USED TO LOSE EVERY STRUCTURED CARD.
+                            // The stored content is the raw reply, markers and all, so the plan,
+                            // the CTA buttons, the shopping decision and the inline photo galleries
+                            // are all still in there — they just were never decoded on this path.
+                            // The message was built with `text = stored.content`, which both showed
+                            // the raw marker text and rendered no cards. Running the SAME parser
+                            // the live path runs is what makes a restored turn identical to the
+                            // turn the user originally received, which is what web and iOS do.
+                            val parsed = if (isUser) null else ChatResponseParser.parse(stored.content)
                             ChatMessage(
                                 id = nextId++,
-                                role = if (stored.role == "user") TappyChatRole.User else TappyChatRole.Assistant,
-                                text = stored.content,
+                                role = if (isUser) TappyChatRole.User else TappyChatRole.Assistant,
+                                text = parsed?.text ?: stored.content,
+                                plan = parsed?.plan,
+                                // The share payload too — without it a plan reopened from history
+                                // could not be shared ("Không chia sẻ được kế hoạch này từ đây",
+                                // e2e share-plan 2026-09-29); web shares it.
+                                planJson = parsed?.planJson,
+                                ctaButtons = parsed?.ctaButtons ?: emptyList(),
+                                followups = parsed?.followups ?: emptyList(),
+                                ask = parsed?.ask ?: emptyList(),
+                                shopping = parsed?.shopping,
+                                places = parsed?.places ?: emptyList(),
+                                segments = parsed?.segments ?: emptyList(),
+                                raw = if (isUser) "" else stored.content,
                             )
                         }
                     }
@@ -294,17 +382,25 @@ class ChatViewModel @Inject constructor(
      * a live partial transcript flows into the input as the user speaks, and on a final result the
      * recognised text is appended and the message is AUTO-SENT — the same behaviour as web (no extra
      * manual tap). Toggling while already listening stops it. RECORD_AUDIO is requested by the screen.
+     *
+     * [deferAutoSend] is the full-screen listening UI's entry point: recognition still runs the
+     * same way, but the final text waits in [input] for an explicit send (see [deferVoiceAutoSend]).
      */
-    fun startVoiceInput() {
+    fun startVoiceInput(deferAutoSend: Boolean = false) {
         if (_isListening.value) { stopVoiceInput(); return }
         if (!SpeechRecognizer.isRecognitionAvailable(context)) return
+        deferVoiceAutoSend = deferAutoSend
         val base = input
+        voiceInputBase = base
         val recognizer = SpeechRecognizer.createSpeechRecognizer(context)
         speechRecognizer = recognizer
         recognizer.setRecognitionListener(object : RecognitionListener {
             override fun onReadyForSpeech(params: Bundle?) { _isListening.value = true }
             override fun onBeginningOfSpeech() {}
-            override fun onRmsChanged(rmsdB: Float) {}
+            override fun onRmsChanged(rmsdB: Float) {
+                // SpeechRecognizer reports roughly -2..10 dB; fold that onto 0..1 for the waveform.
+                _voiceLevel.value = ((rmsdB + 2f) / 12f).coerceIn(0f, 1f)
+            }
             override fun onBufferReceived(buffer: ByteArray?) {}
             override fun onEndOfSpeech() { _isListening.value = false }
             override fun onError(error: Int) {
@@ -322,7 +418,9 @@ class ChatViewModel @Inject constructor(
                 val text = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)?.firstOrNull()
                 if (!text.isNullOrBlank()) {
                     input = if (base.isBlank()) text else "$base $text"
-                    onSend() // web parity: auto-send once recognition completes
+                    // Web parity: auto-send once recognition completes — unless the full-screen
+                    // listening UI owns this turn, in which case its own send button does.
+                    if (!deferVoiceAutoSend) onSend()
                 }
             }
             override fun onEvent(eventType: Int, params: Bundle?) {}
@@ -341,6 +439,20 @@ class ChatViewModel @Inject constructor(
         speechRecognizer?.let { runCatching { it.stopListening() }; runCatching { it.destroy() } }
         speechRecognizer = null
         _isListening.value = false
+        _voiceLevel.value = 0f
+        deferVoiceAutoSend = false
+    }
+
+    /**
+     * The listening screen's cancel: stops recognition AND restores the draft to what it was
+     * before listening began, so a half-recognised sentence does not stay in the composer as if
+     * the user had typed it.
+     */
+    fun cancelVoiceInput() {
+        val base = voiceInputBase
+        stopVoiceInput()
+        if (base != null) input = base
+        voiceInputBase = null
     }
 
     fun onImagePicked(uri: Uri) { pendingImageUri = uri }
@@ -356,6 +468,18 @@ class ChatViewModel @Inject constructor(
     }
 
     fun onMoodSelected(mood: MoodChip) = sendUserMessage(mood.prompt)
+
+    /**
+     * The 18+ screen said "eligible" (it already stored the guest's declaration, or PATCHed the
+     * account's date of birth): drop the refusal bubble and re-send the interrupted turn.
+     */
+    fun onAgeConfirmed() {
+        val current = _messages.value
+        val lastAssistantIndex = current.indexOfLast { it.role == TappyChatRole.Assistant }
+        val history = if (lastAssistantIndex != -1 && current[lastAssistantIndex].isError) current.take(lastAssistantIndex) else current
+        _messages.value = history
+        if (history.lastOrNull()?.role == TappyChatRole.User) streamAssistantReply(history)
+    }
 
     fun onQuickPromptSelected(prompt: String) = sendUserMessage(prompt)
 
@@ -495,6 +619,32 @@ class ChatViewModel @Inject constructor(
     suspend fun removeFavorite(placeId: String): Boolean =
         mapsRepository.removeFavorite(placeId) is NetworkResult.Success
 
+    /**
+     * A Commerce Link was drawn / followed (CCP event 6, web `reportCommerceHandoff`). The card has
+     * already fired the merchant intent; this only reports the opaque ids and the analytics event.
+     */
+    fun onCommerceActionRendered(commerce: LiveCommerceFacts) = commerceHandoffReporter.rendered(commerce)
+    fun onCommerceHandoff(commerce: LiveCommerceFacts, opened: Boolean) = commerceHandoffReporter.tapped(commerce, opened)
+
+    /**
+     * recommendation_click (RUNBOOK §3.19) — the user tapped a recommended place / product card.
+     * The vertical only (the per-place `domain`, or the chat category when a card carries none);
+     * never the place or product.
+     */
+    fun onRecommendationClick(domain: String) {
+        analytics.track("recommendation_click", mapOf("domain" to domain.ifBlank { category.name.lowercase() }))
+    }
+
+    /**
+     * shopping_search_click — a tap on a shopping offer's "Xem/Tìm trên …" search-redirect
+     * link (a demand signal while real buy buttons are sparse). Separate from affiliate_click.
+     * [platform] is the marketplace enum only (see sellerPlatform); the seller string, product
+     * name and URL are never sent.
+     */
+    fun onShoppingSearchClick(platform: String) {
+        analytics.track("shopping_search_click", mapOf("domain" to "shopping", "platform" to platform))
+    }
+
     private fun sendUserMessage(text: String, imageUri: Uri? = null) {
         _messages.update { it + ChatMessage(id = nextId++, role = TappyChatRole.User, text = text, imageUri = imageUri) }
         input = ""
@@ -509,10 +659,24 @@ class ChatViewModel @Inject constructor(
         respondingJob = viewModelScope.launch {
             _isAssistantResponding.value = true
             _streamingText.value = ""
+            _streamingHint.value = null
+            _streamingPlaces.value = null
 
             try {
                 val reply = StringBuilder()
-                chatRepository.streamReply(history).collect { token ->
+                // The turn's LIVE place decision, if the stream carried one. It arrives on its own
+                // `8:` frame, usually before the prose finishes, and is held here until the message
+                // is built — it is never appended to the text, which is why it cannot leak into the
+                // reply, into TTS, or into what gets persisted.
+                var livePlaces: PlacesLiveView? = null
+                chatRepository.streamReply(history, chatSessionId).collect { event ->
+                    val token = when (event) {
+                        is ChatStreamEvent.Text -> event.delta
+                        // The last place frame is the turn's view (the preliminary set is replaced
+                        // by the decision); both are shown live as they arrive.
+                        is ChatStreamEvent.Places -> { livePlaces = event.view; _streamingPlaces.value = event.view; return@collect }
+                        is ChatStreamEvent.Progress -> { _streamingHint.value = event.text; return@collect }
+                    }
                     reply.append(token)
                     // Surface the running text with structured blocks stripped but image markdown
                     // RETAINED — the UI segments it live, so each recommendation's photos render
@@ -525,7 +689,10 @@ class ChatViewModel @Inject constructor(
                 // them from the visible text — web parity (see ChatResponseParser). Web parses
                 // followups from the reply itself; keep the dedicated endpoint as a fallback when
                 // the model didn't inline any, so existing Android followups don't regress.
-                val parsed = ChatResponseParser.parse(reply.toString())
+                // UAT3: one reply, not two — a reply that streamed the same answer twice is kept as
+                // its last version, on screen AND in what is saved (ReplyRepeat, web parity).
+                val finalReply = ReplyRepeat.cleanRepeats(reply.toString())
+                val parsed = ChatResponseParser.parse(finalReply)
                 val followups = parsed.followups.ifEmpty { chatRepository.getFollowups(category) }
                 _messages.update { msgs ->
                     msgs + ChatMessage(
@@ -533,22 +700,47 @@ class ChatViewModel @Inject constructor(
                         role = TappyChatRole.Assistant,
                         text = parsed.text,
                         plan = parsed.plan,
+                        planJson = parsed.planJson,
                         ctaButtons = parsed.ctaButtons,
                         segments = parsed.segments,
                         followups = followups,
+                        ask = parsed.ask,
+                        // D1 — the decision the block carries, which Android used to discard.
+                        shopping = parsed.shopping,
+                        places = parsed.places,
+                        livePlaces = livePlaces,
+                        // Share parity (V3): the same `8:` decision projected for the share sheet.
+                        placesView = livePlaces?.toShareView(),
+                        // What gets SAVED. See [ChatMessage.raw]: the stripped text cannot rebuild
+                        // a card, so the unstripped reply is carried alongside it.
+                        raw = finalReply,
                     )
                 }
                 persistConversation()
+                // chat_response (RUNBOOK §3.19) — one hit per completed AI answer; feature
+                // is the domain enum (matches web's `feature`), never the reply text.
+                analytics.track("chat_response", mapOf("feature" to category.name.lowercase()))
             } catch (e: CancellationException) {
                 // User tapped Stop — suppress the indicator via onStop(); just rethrow.
                 throw e
             } catch (e: ChatException) {
+                // A refusal with a remedy renders as a bubble the user can act on (never a dead
+                // error line): sign in, or declare 18+ on this device. Everything else keeps the
+                // server's sentence as before.
+                val action = when (e) {
+                    is ChatException.AuthRequired, is ChatException.AnonLimitReached -> ChatErrorAction.SignIn
+                    is ChatException.AgeDeclarationRequired -> ChatErrorAction.DeclareAge
+                    // A signed-in account with no date of birth: the same 18+ screen (web /age-check).
+                    is ChatException.AgeGate -> if (e.code == "age_verification_required") ChatErrorAction.VerifyAge else null
+                    else -> null
+                }
                 _messages.update { msgs ->
                     msgs + ChatMessage(
                         id = nextId++,
                         role = TappyChatRole.Assistant,
-                        text = e.message ?: stringProvider.get(R.string.chat_error_generic),
+                        text = e.message?.takeIf { it.isNotBlank() } ?: stringProvider.get(R.string.chat_error_generic),
                         isError = true,
+                        errorAction = action,
                     )
                 }
             } catch (e: Exception) {
@@ -564,6 +756,8 @@ class ChatViewModel @Inject constructor(
             } finally {
                 _isAssistantResponding.value = false
                 _streamingText.value = ""
+                _streamingHint.value = null
+                _streamingPlaces.value = null
             }
         }
     }
@@ -617,6 +811,60 @@ class ChatViewModel @Inject constructor(
         }
     }
 
+    // ── G1 share-out: a turn → public result page (parity with the web's SharePreviewDialog) ──
+
+    private val _sharePublic = MutableStateFlow<SharePublicState>(SharePublicState.Idle)
+    val sharePublic: StateFlow<SharePublicState> = _sharePublic.asStateFlow()
+
+    /** The share language: the app's language, which is also what the server would infer. */
+    private val shareLocale: String
+        get() = if (languageManager.current == AppLanguage.English) "en" else "vi"
+
+    /**
+     * Opens the preview for a finished, PERSISTED assistant turn. Returns false when the turn
+     * cannot be shared publicly yet (unsaved chat or an error bubble) so the caller falls back to
+     * the plain-text share — the same branch the web takes on `!conversationId`.
+     */
+    fun onSharePublic(messageId: Long): Boolean {
+        val id = conversationId ?: return false
+        val index = persistedIndexOf(messageId) ?: return false
+        _sharePublic.value = SharePublicState.Loading
+        viewModelScope.launch {
+            _sharePublic.value = when (val outcome = sharedResultRepository.preview(id, index, shareLocale)) {
+                is ShareOutcome.Success -> SharePublicState.Preview(id, index, outcome.data, outcome.data.title)
+                else -> SharePublicState.Failed(outcome.toFailure())
+            }
+        }
+        return true
+    }
+
+    fun onSharePublicTitleChange(title: String) {
+        val current = _sharePublic.value as? SharePublicState.Preview ?: return
+        _sharePublic.value = current.copy(title = title.take(120))
+    }
+
+    fun onConfirmSharePublic() {
+        val current = _sharePublic.value as? SharePublicState.Preview ?: return
+        _sharePublic.value = SharePublicState.Publishing
+        viewModelScope.launch {
+            _sharePublic.value = when (val outcome = sharedResultRepository.publish(current.conversationId, current.messageIndex, current.title, shareLocale)) {
+                is ShareOutcome.Success -> SharePublicState.Published(outcome.data)
+                else -> SharePublicState.Failed(outcome.toFailure())
+            }
+        }
+    }
+
+    fun onDismissSharePublic() {
+        _sharePublic.value = SharePublicState.Idle
+    }
+
+    private fun ShareOutcome<*>.toFailure(): SharePublicFailure = when (this) {
+        is ShareOutcome.AccountRequired -> SharePublicFailure.AccountRequired
+        is ShareOutcome.RateLimited -> SharePublicFailure.RateLimited
+        is ShareOutcome.NotShareable -> SharePublicFailure.NotShareable
+        else -> SharePublicFailure.Network
+    }
+
     /** Reports a message — matches the web's `saveFeedback('report', 'user_reported')`; one-way,
      *  no un-report affordance on either platform. */
     fun onReportMessage(messageId: Long) {
@@ -627,6 +875,9 @@ class ChatViewModel @Inject constructor(
         val index = persistedIndexOf(messageId) ?: return
         viewModelScope.launch {
             messageFeedbackRepository.saveFeedback(id, index, MessageFeedback.Report, REPORT_REASON)
+            // report_submitted (F-031 / RUNBOOK §3.19) — the fixed reason enum only,
+            // never the reported message id, author or text.
+            analytics.track("report_submitted", mapOf("reason" to REPORT_REASON))
         }
     }
 
@@ -645,7 +896,12 @@ class ChatViewModel @Inject constructor(
     private suspend fun persistConversation() {
         val stored = _messages.value
             .filterNot { it.isError }
-            .map { StoredChatMessage(role = if (it.role == TappyChatRole.User) "user" else "assistant", content = it.text) }
+            // 🚨 `raw`, NOT `text`. `text` has had every structured block decoded and REMOVED, so
+            // saving it threw away the plan, the CTA buttons and the shopping decision — the
+            // reopened conversation could never show them again because the data was gone from
+            // storage, not merely undecoded. Web and iOS both save the unstripped content for this
+            // exact reason. `ifBlank` covers user turns, which have no raw form and need none.
+            .map { StoredChatMessage(role = if (it.role == TappyChatRole.User) "user" else "assistant", content = it.raw.ifBlank { it.text }) }
         if (stored.isEmpty()) return
 
         // Same title rule as the web: first message's text, capped at 50 chars.
@@ -657,7 +913,11 @@ class ChatViewModel @Inject constructor(
                 category = category.name.lowercase(),
                 messages = stored,
             )) {
-                is NetworkResult.Success -> conversationId = result.data
+                is NetworkResult.Success -> {
+                    conversationId = result.data
+                    // Reopening this chat from history later keeps the same chatSessionId (R14).
+                    sessionIdStore.put(result.data, chatSessionId)
+                }
                 is NetworkResult.Error -> logger.w(TAG, "Conversation create failed: ${result.error}")
             }
         } else {
@@ -689,3 +949,15 @@ class ChatViewModel @Inject constructor(
         const val REPORT_REASON = "user_reported"
     }
 }
+
+/** The share-out flow, mirrored from the web dialog's stages: loading → preview → publishing → published. */
+sealed interface SharePublicState {
+    data object Idle : SharePublicState
+    data object Loading : SharePublicState
+    data class Preview(val conversationId: String, val messageIndex: Int, val preview: SharePreview, val title: String) : SharePublicState
+    data object Publishing : SharePublicState
+    data class Published(val share: PublishedShare) : SharePublicState
+    data class Failed(val reason: SharePublicFailure) : SharePublicState
+}
+
+enum class SharePublicFailure { AccountRequired, RateLimited, NotShareable, Network }

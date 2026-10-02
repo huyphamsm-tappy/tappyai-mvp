@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "DAKYO NAIL Seongsu: Trải Nghiệm Làm Móng Nghệ Thuật & K ...",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T19:23:16.177Z",
+ "body": {
+  "searchParameters": {
+   "q": "DAKYO NAIL Seongsu: Trải Nghiệm Làm Móng Nghệ Thuật & K ...",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Dakyo Nail Chi nhánh Seongsu - Seoul, Hàn Quốc (Creatrip)",
+    "imageUrl": "https://cf.creatrip.com/original/spot/14841/04hw94qp88bsu1uuzvqzdzl00tfpdhg5.jpg?d=500x500&q=75&f=webp",
+    "imageWidth": 500,
+    "imageHeight": 390,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSZZ6cJcp9GMCzKcBGYPm-PSBI5S8CN-ymeChLAnyHmA&s=10",
+    "thumbnailWidth": 500,
+    "thumbnailHeight": 390,
+    "source": "Creatrip",
+    "domain": "creatrip.com",
+    "link": "https://creatrip.com/vi/spot/14841?srsltid=AU7gw4Vzr3Ym4IoFXCCxCdkP32DQR2OrBT2uQ_mmuNQHgA_Sob_Zwjqx",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.creatrip.com%2Foriginal%2Fspot%2F14841%2F04hw94qp88bsu1uuzvqzdzl00tfpdhg5.jpg%3Fd%3D500x500%26q%3D75%26f%3Dwebp&tbnid=8KjjAwRPoNy2OM&imgrefurl=https%3A%2F%2Fcreatrip.com%2Fvi%2Fspot%2F14841%3Fsrsltid%3DAU7gw4Vzr3Ym4IoFXCCxCdkP32DQR2OrBT2uQ_mmuNQHgA_Sob_Zwjqx&docid=7UL0ArKuPnGUnM&w=500&h=390",
+    "position": 1
+   },
+   {
+    "title": "Trải Nghiệm Làm Móng Nghệ Thuật Hey Objet ở Seoul - Klook",
+    "imageUrl": "https://res.klook.com/images/w_1200,h_630,c_fill,q_65/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/zrznuqd48fbbbsoe9du4/Tr%E1%BA%A3iNghi%E1%BB%87mL%C3%A0mM%C3%B3ngNgh%E1%BB%87Thu%E1%BA%ADtHeyObjet%E1%BB%9FSeoul-Klook.jpg",
+    "imageWidth": 1200,
+    "imageHeight": 630,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMYPxuRg259Rhk0GcrLtOPWR_5rZ8uQY0Pf_1KwIeUfQ&s=10",
+    "thumbnailWidth": 617,
+    "thumbnailHeight": 324,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/91226-nail-experience/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Fw_1200%2Ch_630%2Cc_fill%2Cq_65%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fzrznuqd48fbbbsoe9du4%2FTr%25E1%25BA%25A3iNghi%25E1%25BB%2587mL%25C3%25A0mM%25C3%25B3ngNgh%25E1%25BB%2587Thu%25E1%25BA%25ADtHeyObjet%25E1%25BB%259FSeoul-Klook.jpg&tbnid=GaxK8hmWorLpeM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F91226-nail-experience%2F&docid=RepyRYd3VF3lhM&w=1200&h=630",
+    "position": 2
+   },
+   {
+    "title": "Dakyo Nail Chi nhánh Seongsu - Seoul, Hàn Quốc (Creatrip)",
+    "imageUrl": "https://cf.creatrip.com/original/spot/14841/zbzqypjz3rf0te5ns2q7zos468v30pem.jpg?d=500x500&q=75&f=webp",
+    "imageWidth": 500,
+    "imageHeight": 390,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRyg0fsBioUG4tpTVB3vPmbZ7W685iCnN2eTQJwoOmH-A&s=10",
+    "thumbnailWidth": 500,
+    "thumbnailHeight": 390,
+    "source": "Creatrip",
+    "domain": "creatrip.com",
+    "link": "https://creatrip.com/vi/spot/14841?srsltid=AU7gw4VLUWGavi27hrlDjk_QHLsFd31aU4ryWiq96UWlP5kdcLyMziyp",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.creatrip.com%2Foriginal%2Fspot%2F14841%2Fzbzqypjz3rf0te5ns2q7zos468v30pem.jpg%3Fd%3D500x500%26q%3D75%26f%3Dwebp&tbnid=lywzfLS6npCPeM&imgrefurl=https%3A%2F%2Fcreatrip.com%2Fvi%2Fspot%2F14841%3Fsrsltid%3DAU7gw4VLUWGavi27hrlDjk_QHLsFd31aU4ryWiq96UWlP5kdcLyMziyp&docid=7UL0ArKuPnGUnM&w=500&h=390",
+    "position": 3
+   },
+   {
+    "title": "Trải Nghiệm Làm Móng Nghệ Thuật Hey Objet ở Seoul - Klook",
+    "imageUrl": "https://res.klook.com/image/upload/w_750,h_469,c_fill,q_85/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/aahpvnaigvqj9kxszv2k.jpg",
+    "imageWidth": 750,
+    "imageHeight": 469,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLWvMFo9SL6-7-XpgT-ZIvNjYUXlSP3SJiGeQQ9pJKzw&s=10",
+    "thumbnailWidth": 565,
+    "thumbnailHeight": 353,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/91226-nail-experience/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimage%2Fupload%2Fw_750%2Ch_469%2Cc_fill%2Cq_85%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Faahpvnaigvqj9kxszv2k.jpg&tbnid=BQunloWeJ2EBYM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F91226-nail-experience%2F&docid=RepyRYd3VF3lhM&w=750&h=469",
+    "position": 4
+   },
+   {
+    "title": "Dakyo Nail Chi nhánh Seongsu - Seoul, Hàn Quốc (Creatrip)",
+    "imageUrl": "https://cf.creatrip.com/original/spot/14841/0c1hhmwkk8y1tbk7r1t37lnse1o7u3rm.jpg?d=1600x900&q=75&f=webp",
+    "imageWidth": 1000,
+    "imageHeight": 900,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQl9wDseObw3o2ZaS35qQCDmGVKiXG-9GA2-zl2VAlZA&s=10",
+    "thumbnailWidth": 584,
+    "thumbnailHeight": 525,
+    "source": "Creatrip",
+    "domain": "creatrip.com",
+    "link": "https://creatrip.com/vi/spot/14841?srsltid=AU7gw4XGnZ7pChEjX7lpuwk0ujeCcyUquqz3Zg5ATX3af57Jjk1yPR_t",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.creatrip.com%2Foriginal%2Fspot%2F14841%2F0c1hhmwkk8y1tbk7r1t37lnse1o7u3rm.jpg%3Fd%3D1600x900%26q%3D75%26f%3Dwebp&tbnid=LV5oz-si1Sp6mM&imgrefurl=https%3A%2F%2Fcreatrip.com%2Fvi%2Fspot%2F14841%3Fsrsltid%3DAU7gw4XGnZ7pChEjX7lpuwk0ujeCcyUquqz3Zg5ATX3af57Jjk1yPR_t&docid=7UL0ArKuPnGUnM&w=1000&h=900",
+    "position": 5
+   },
+   {
+    "title": "Trải Nghiệm Làm Móng Nghệ Thuật Hey Objet ở Seoul - Klook",
+    "imageUrl": "https://res.klook.com/image/upload/w_750,h_469,c_fill,q_85/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/wxgnl3zjmdxbttehtjtp.jpg",
+    "imageWidth": 750,
+    "imageHeight": 469,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhf3nOiGK6ddl-N5Kts_ezTf3YOxuQN3HGEyGY6-EvuA&s=10",
+    "thumbnailWidth": 565,
+    "thumbnailHeight": 353,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/91226-nail-experience/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimage%2Fupload%2Fw_750%2Ch_469%2Cc_fill%2Cq_85%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fwxgnl3zjmdxbttehtjtp.jpg&tbnid=xtjWg_F5sQ9RLM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F91226-nail-experience%2F&docid=RepyRYd3VF3lhM&w=750&h=469",
+    "position": 6
+   },
+   {
+    "title": "Nghệ thuật móng tay yêu thích của người nổi tiếng tại Dakyo Nail Apgujeong",
+    "imageUrl": "https://cf.creatrip.com/original/spot/14675/tfccrrw3bs88lwujazg1t939zxm0if6l.jpg?d=1600x900&q=75&f=webp",
+    "imageWidth": 1155,
+    "imageHeight": 900,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcB1zH1x5qO--QTSxwFJ7cW0mmHQgDJP9D_5HPRXDgEg&s=10",
+    "thumbnailWidth": 627,
+    "thumbnailHeight": 489,
+    "source": "Creatrip",
+    "domain": "creatrip.com",
+    "link": "https://creatrip.com/vi/spot/14675?srsltid=AU7gw4ViN9dE0oJxT9rd9y9O8a9kmyzzHs8tSCEv-lSrmdRExLfh1E1P",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.creatrip.com%2Foriginal%2Fspot%2F14675%2Ftfccrrw3bs88lwujazg1t939zxm0if6l.jpg%3Fd%3D1600x900%26q%3D75%26f%3Dwebp&tbnid=1u5tFNJqE897XM&imgrefurl=https%3A%2F%2Fcreatrip.com%2Fvi%2Fspot%2F14675%3Fsrsltid%3DAU7gw4ViN9dE0oJxT9rd9y9O8a9kmyzzHs8tSCEv-lSrmdRExLfh1E1P&docid=5vLMN60dZSDj-M&w=1155&h=900",
+    "position": 7
+   },
+   {
+    "title": "Trải Nghiệm Làm Móng Nghệ Thuật Hey Objet ở Seoul - Klook",
+    "imageUrl": "https://res.klook.com/image/upload/w_750,h_469,c_fill,q_85/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/cl03ox9ifm20nibuuec9.jpg",
+    "imageWidth": 750,
+    "imageHeight": 469,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrA8VIROrsryxBoWn4HKxqhdjUGpWN3vSpyzp9UNblnQ&s",
+    "thumbnailWidth": 284,
+    "thumbnailHeight": 177,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/91226-nail-experience/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimage%2Fupload%2Fw_750%2Ch_469%2Cc_fill%2Cq_85%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fcl03ox9ifm20nibuuec9.jpg&tbnid=BXEk7BIL7H_e6M&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F91226-nail-experience%2F&docid=RepyRYd3VF3lhM&w=750&h=469",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

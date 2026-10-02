@@ -44,6 +44,40 @@ export interface UsageEvent {
   memoryExtract: number
   toolCalls: number
   elapsedMs: number
+
+  // ── P1-3: the fields a cost model actually needs ──────────────────────────
+  //
+  // Token counts alone cannot answer "what does a turn cost": the same 12k
+  // tokens bill at three different rates depending on whether they were
+  // written to cache, read from cache, or sent fresh, and WHICH MODEL served
+  // them decides the rate card. `providerId` + `modelRole` supply that half.
+  //
+  // The latency marks are here for a cost reason, not a performance one: they
+  // are what separates provider time from our own work, so a rise in spend can
+  // be attributed to more inference rather than to a slower tail. They were
+  // already computed and already printed on the console line — this only stops
+  // them being thrown away.
+  //
+  // Every field is a number, a null, or a closed vocabulary string. Nothing
+  // here can carry a prompt, a completion, or anything identifying a person;
+  // ALLOWED_PAYLOAD_KEYS and privacy.test.ts hold that line independently.
+
+  /** Which adapter served the turn ('claude'). Never a model id — that stays inside the adapter. */
+  providerId: string
+  /** Semantic role the route asked for: 'fast' | 'smart' | 'planning' | 'vision'. */
+  modelRole: string
+  /** t0 → the model request being sent. Our own pre-flight work (auth, quota, prompt build). */
+  preModelMs: number | null
+  /** t0 → first text token back. null when the turn produced no text. */
+  ttftMs: number | null
+  /** t0 → generation complete (T9). */
+  modelFinishMs: number | null
+  /** t0 → first byte the client can render (T7). Differs from ttft on a buffered turn. */
+  ttuaMs: number | null
+  /** Generation-complete → final byte out: the enrichment/emit tail. */
+  postModelMs: number | null
+  /** Summed wall-clock inside tool execute()s. null when no tool ran. */
+  toolMs: number | null
 }
 
 /**
@@ -166,6 +200,112 @@ export interface SystemErrorEvent {
   code: string
 }
 
+// ── Commerce Capability Platform — the six approved commerce events (D5, P6-C) ─
+//
+// Emitted by src/lib/ccp through its own typed sink and bridged here by
+// src/lib/ccp/events/observabilityBridge.ts. Same discipline as every event
+// above: operational facts only. Specifically NO merchant URL (the link is
+// identified by a truncated hash, `linkDigest`), no product/hotel/venue name,
+// no user identifier — `actorHash`/`sessionHash` are salted one-way hashes
+// the CCP request may carry, never an id that resolves back to a person.
+//
+// Arrays and objects the CCP-side event carries (`configurationKeys`,
+// `paramsPreserved`, ranking `features`) are flattened here to closed-
+// vocabulary strings or dropped, because `sanitizePayload` keeps scalars only.
+//
+// 🚨 NOT public.user_events. Commerce activity must not become an AI-behaviour
+// signal (owner decision P6-C); it goes to Cloud Logging like the rest of this file.
+
+/** A CommerceRequest entered the resolver. */
+export interface CommerceRequestEvent {
+  type: 'commerce_request'
+  requestId: string
+  /** Closed vocabulary: food_drink | shopping | entertainment | travel | spa. */
+  domain: string
+  /** Closed vocabulary (INTENT_TYPES), e.g. 'book_hotel'. */
+  intentType: string
+  /** Closed vocabulary (COMMERCE_CAPABILITIES), e.g. 'table_reservation' — the capability ranking compared on. */
+  capability?: string
+  /** Comma-joined configuration FIELD NAMES (checkIn,checkOut,adults) — never values. */
+  configurationFields: string
+  actorHash?: string
+  sessionHash?: string
+  /** 'web' | 'android' | 'ios' */
+  platform?: string
+}
+
+/** One provider adapter was asked for offers. */
+export interface CommerceProviderSearchEvent {
+  type: 'commerce_provider_search'
+  requestId: string
+  providerId: string
+  offersCount: number
+  /** realtime | near_realtime | static | unknown */
+  freshnessType?: string
+  latencyMs: number
+  errorCode?: string
+}
+
+/** The ranker's first choice for the request. Score only; the feature vector stays in CCP's own log line. */
+export interface CommerceProviderSelectedEvent {
+  type: 'commerce_provider_selected'
+  requestId: string
+  providerId: string
+  merchantId: string
+  score: number
+  rankingVersion: string
+}
+
+/** A Commerce Link was built and validated. */
+export interface CommerceDeepLinkResolvedEvent {
+  type: 'commerce_deep_link_resolved'
+  requestId: string
+  linkId: string
+  providerId: string
+  merchantId: string
+  domain: string
+  /** LINK_KINDS vocabulary, e.g. 'DIRECT_DEEP_LINK'. */
+  kind: string
+  depth: number
+  guestDepth: number
+  authenticatedDepth: number | null
+  /** AuthRequiredAt vocabulary, e.g. 'before_selection'. */
+  authRequiredAt: string
+  /** Comma-joined configuration field names the URL carries / lost — names, never values. */
+  paramsPreserved: string
+  paramsDropped: string
+  trackingPresent: boolean
+  trackingNetwork?: string
+  freshnessType: string
+  expiresAt: string | null
+  confidence: number
+  /** First 16 hex chars of sha256(url). Identifies a link across events; cannot reproduce the URL. */
+  linkDigest: string
+}
+
+/** The validation step's outcome for one link (grammar / param echo / wrapper). */
+export interface CommerceDeepLinkValidatedEvent {
+  type: 'commerce_deep_link_validated'
+  linkId: string
+  /** ValidationStatus vocabulary, e.g. 'param_echo_ok' | 'wrapper_rejected'. */
+  status: string
+  /** 'static' | 'decode' | 'head' */
+  method: string
+  ms: number
+  /** Wrapper outcome as a closed reason ('not_configured', 'param_echo_failed: hotelId'), never a URL. */
+  reason?: string
+}
+
+/** The user opened a Commerce Link (POST /api/commerce/handoff, best-effort). */
+export interface CommerceHandoffEvent {
+  type: 'commerce_handoff'
+  linkId: string
+  requestId: string
+  actorHash?: string
+  sessionHash?: string
+  platform?: string
+}
+
 export type ObservabilityEvent =
   | UsageEvent
   | TtsRequestEvent
@@ -176,6 +316,12 @@ export type ObservabilityEvent =
   | AiProviderFailureEvent
   | RequestErrorEvent
   | SystemErrorEvent
+  | CommerceRequestEvent
+  | CommerceProviderSearchEvent
+  | CommerceProviderSelectedEvent
+  | CommerceDeepLinkResolvedEvent
+  | CommerceDeepLinkValidatedEvent
+  | CommerceHandoffEvent
 
 /**
  * Severity per event type.
@@ -194,6 +340,12 @@ const SEVERITY: Record<ObservabilityEvent['type'], EventSeverity> = {
   ai_provider_failure: 'ERROR',
   request_error: 'ERROR',
   system_error: 'ERROR',
+  commerce_request: 'INFO',
+  commerce_provider_search: 'INFO',
+  commerce_provider_selected: 'INFO',
+  commerce_deep_link_resolved: 'INFO',
+  commerce_deep_link_validated: 'INFO',
+  commerce_handoff: 'INFO',
 }
 
 export function severityOf(event: ObservabilityEvent): EventSeverity {
@@ -223,12 +375,22 @@ export const ALLOWED_PAYLOAD_KEYS: ReadonlySet<string> = new Set([
   // model accounting — counters only
   'intent', 'finishReason', 'promptTokens', 'completionTokens', 'totalTokens',
   'cacheReadTokens', 'cacheCreationTokens', 'llmCalls', 'memoryExtract', 'toolCalls', 'elapsedMs',
+  // P1-3 cost attribution: which adapter/role served the turn, and the latency marks that
+  // separate provider time from our own. Numbers and closed vocabularies only.
+  'modelRole', 'preModelMs', 'ttftMs', 'modelFinishMs', 'ttuaMs', 'postModelMs', 'toolMs',
   // tts counters — charactersSynthesized and characters are COUNTS, never the characters themselves
   'requests', 'cacheHits', 'cacheMisses', 'charactersSynthesized', 'errors', 'totalLatencyMs',
   'characters', 'cacheHit',
   // closed vocabularies and status codes
   'stage', 'status', 'language', 'operation', 'provider', 'kind', 'reason', 'identitySource',
   'providerId', 'role', 'route', 'code', 'scope', 'dropped',
+  // CCP commerce events (D5 / P6-C). Field NAMES only; no value here is ever a URL or a person.
+  'requestId', 'domain', 'intentType', 'capability', 'configurationFields', 'actorHash', 'sessionHash', 'platform',
+  'offersCount', 'freshnessType', 'latencyMs', 'errorCode',
+  'merchantId', 'score', 'rankingVersion',
+  'linkId', 'depth', 'guestDepth', 'authenticatedDepth', 'authRequiredAt', 'paramsPreserved', 'paramsDropped',
+  'trackingPresent', 'trackingNetwork', 'expiresAt', 'confidence', 'linkDigest',
+  'method', 'ms',
 ])
 
 /**

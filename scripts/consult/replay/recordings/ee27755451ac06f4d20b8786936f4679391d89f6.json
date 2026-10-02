@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Hộp Đựng Quà Tặng Kèm Phụ Kiện Dây Da Sang Trọng",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T00:48:25.901Z",
+ "body": {
+  "searchParameters": {
+   "q": "Hộp Đựng Quà Tặng Kèm Phụ Kiện Dây Da Sang Trọng",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "100+ mẫu hộp da giftset đẹp, cao cấp, đựng bộ quà tặng",
+    "imageUrl": "https://unison.com.vn/thumb/600x600/2/data/upload/100-mau-hop-da-giftset-dep-cao-cap-dung-bo-qua-tang-unison-8.jpg",
+    "imageWidth": 600,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQm1TVUWvW5o4t3hMygU8w7tRmKmaSgr4qTZV6UN2JLtg&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Uni-Son",
+    "domain": "unison.com.vn",
+    "link": "https://unison.com.vn/hop-da-dung-bo-qua-tang-giftset-box.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Funison.com.vn%2Fthumb%2F600x600%2F2%2Fdata%2Fupload%2F100-mau-hop-da-giftset-dep-cao-cap-dung-bo-qua-tang-unison-8.jpg&tbnid=bEp_1LRQB_mhNM&imgrefurl=https%3A%2F%2Funison.com.vn%2Fhop-da-dung-bo-qua-tang-giftset-box.html&docid=r7OUPGgJBX5X-M&w=600&h=600",
+    "position": 1
+   },
+   {
+    "title": "100+ mẫu hộp da giftset đẹp, cao cấp, đựng bộ quà tặng",
+    "imageUrl": "https://unison.com.vn/thumb/600x600/2/data/upload/100-mau-hop-da-giftset-dep-cao-cap-dung-bo-qua-tang-unison-21.jpg",
+    "imageWidth": 600,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTDx4nDFqNOjqmgy_lA8xrKzwHvSfcfv2Zu5EwbuuQMAA&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Uni-Son",
+    "domain": "unison.com.vn",
+    "link": "https://unison.com.vn/hop-da-dung-bo-qua-tang-giftset-box.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Funison.com.vn%2Fthumb%2F600x600%2F2%2Fdata%2Fupload%2F100-mau-hop-da-giftset-dep-cao-cap-dung-bo-qua-tang-unison-21.jpg&tbnid=HeerzJDCwO7nBM&imgrefurl=https%3A%2F%2Funison.com.vn%2Fhop-da-dung-bo-qua-tang-giftset-box.html&docid=r7OUPGgJBX5X-M&w=600&h=600",
+    "position": 2
+   },
+   {
+    "title": "Mẫu những hộp quà tặng sang trọng, đẳng cấp",
+    "imageUrl": "https://file.hstatic.net/1000253397/file/z5557004595347_8ffb649332eed7e21bcc28521b1bf0f2_result_51199459b5cd48e08c286881d069fcd7_grande.jpg",
+    "imageWidth": 600,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9WDXTdFzO9BbKNvsYHumxAe0KjfwJYArBCX64pZqkwA&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "In Viễn Đông",
+    "domain": "inviendong.com",
+    "link": "https://inviendong.com/products/mau-nhung-hop-qua-tang-moi-tai-in-nhanh-vien-dong?srsltid=AU7gw4WLxIbdePGtUQji0Ppr43DCFgaU_lRFS0RECCzM8awJ24s2Sf3o",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Ffile.hstatic.net%2F1000253397%2Ffile%2Fz5557004595347_8ffb649332eed7e21bcc28521b1bf0f2_result_51199459b5cd48e08c286881d069fcd7_grande.jpg&tbnid=AYH1uZULtaDVkM&imgrefurl=https%3A%2F%2Finviendong.com%2Fproducts%2Fmau-nhung-hop-qua-tang-moi-tai-in-nhanh-vien-dong%3Fsrsltid%3DAU7gw4WLxIbdePGtUQji0Ppr43DCFgaU_lRFS0RECCzM8awJ24s2Sf3o&docid=SgVQiAFJs7apcM&w=600&h=600",
+    "position": 3
+   },
+   {
+    "title": "Hộp Mica Trong Suốt Kèm Bìa Thư Quai Da Đựng Quà Đa Dạng (Không Kèm Hoa Và  Nơ)",
+    "imageUrl": "https://cdn.hstatic.net/products/200000617989/h_p_qu__98f5611186994ce8b90d0f10d31983bf.png",
+    "imageWidth": 800,
+    "imageHeight": 800,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGqWW7-8GncmXrxFZbLHuIedGRawOBqNM6xUZ_V96Kow&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "annguy.beauty",
+    "domain": "annguy.vn",
+    "link": "https://annguy.vn/products/hop-mica-trong-suot-dung-qua-da-dang?srsltid=AU7gw4UmeLX1bYc2ojo0e8COXZmiIrJFPOUKCrT2DFZpPyxGTAM_tjUr",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.hstatic.net%2Fproducts%2F200000617989%2Fh_p_qu__98f5611186994ce8b90d0f10d31983bf.png&tbnid=fU9r_6e_2VFpXM&imgrefurl=https%3A%2F%2Fannguy.vn%2Fproducts%2Fhop-mica-trong-suot-dung-qua-da-dang%3Fsrsltid%3DAU7gw4UmeLX1bYc2ojo0e8COXZmiIrJFPOUKCrT2DFZpPyxGTAM_tjUr&docid=GPS0OrhaEMUFUM&w=800&h=800",
+    "position": 4
+   },
+   {
+    "title": "100+ mẫu hộp da giftset đẹp, cao cấp, đựng bộ quà tặng",
+    "imageUrl": "https://unison.com.vn/thumb/600x600/2/data/upload/100-mau-hop-da-giftset-dep-cao-cap-dung-bo-qua-tang-unison-2.jpg",
+    "imageWidth": 600,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1gmdkFYw1ONWEhmyA5D4MBJQZLN_sRLHJa4NEDwQ9Xg&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Uni-Son",
+    "domain": "unison.com.vn",
+    "link": "https://unison.com.vn/hop-da-dung-bo-qua-tang-giftset-box.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Funison.com.vn%2Fthumb%2F600x600%2F2%2Fdata%2Fupload%2F100-mau-hop-da-giftset-dep-cao-cap-dung-bo-qua-tang-unison-2.jpg&tbnid=ADJHsBbhXdQNtM&imgrefurl=https%3A%2F%2Funison.com.vn%2Fhop-da-dung-bo-qua-tang-giftset-box.html&docid=r7OUPGgJBX5X-M&w=600&h=600",
+    "position": 5
+   },
+   {
+    "title": "Hộp quà tặng - Giá Tốt, Miễn Phí Vận Chuyển, Đủ Loại | Shopee Việt Nam",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/sg-11134253-7rdxg-md7uh8fcxw7o17",
+    "imageWidth": 768,
+    "imageHeight": 768,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQG7epUr1GiCASeVDp0GysXySknTxbUiFNW6xqXsBAgYg&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/list/h%E1%BB%99p%20qu%C3%A0%20t%E1%BA%B7ng",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fsg-11134253-7rdxg-md7uh8fcxw7o17&tbnid=ll-PuBihyD_IeM&imgrefurl=https%3A%2F%2Fshopee.vn%2Flist%2Fh%25E1%25BB%2599p%2520qu%25C3%25A0%2520t%25E1%25BA%25B7ng&docid=TuSE7No0A_YSyM&w=768&h=768",
+    "position": 6
+   },
+   {
+    "title": "Hộp quà sang trọng cửa sổ trong suốt tự gấp dễ dàng HOPDUNGQUA-01",
+    "imageUrl": "https://tamshoppe.vn/Thumb/Web/Resources/Uploaded/2/images/san-pham/Tong-hop/hop-qua-sang-trong-cua-so-trong-suot-tu-gap-12_w400_h300.jpg",
+    "imageWidth": 400,
+    "imageHeight": 300,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTt6psFrz8NC2BFXY3xK8YQo_FRwr2emCmqnXPl7TmgfA&s=10",
+    "thumbnailWidth": 399,
+    "thumbnailHeight": 300,
+    "source": "Tâm Shoppe",
+    "domain": "tamshoppe.vn",
+    "link": "https://tamshoppe.vn/hop-qua-sang-trong-cua-so-trong-suot-tu-gap-de-dang-hqg01",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Ftamshoppe.vn%2FThumb%2FWeb%2FResources%2FUploaded%2F2%2Fimages%2Fsan-pham%2FTong-hop%2Fhop-qua-sang-trong-cua-so-trong-suot-tu-gap-12_w400_h300.jpg&tbnid=gM_x3FG7jlyv9M&imgrefurl=https%3A%2F%2Ftamshoppe.vn%2Fhop-qua-sang-trong-cua-so-trong-suot-tu-gap-de-dang-hqg01&docid=kziPwinBjmC6WM&w=400&h=300",
+    "position": 7
+   },
+   {
+    "title": "100+ mẫu hộp da giftset đẹp, cao cấp, đựng bộ quà tặng",
+    "imageUrl": "https://unison.com.vn/thumb/600x600/2/data/upload/100-mau-hop-da-giftset-dep-cao-cap-dung-bo-qua-tang-unison-14.jpg",
+    "imageWidth": 600,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRofhzlYZqIYtnn42numVr02MMNPkFPUwHvFOJ_gok5XQ&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Uni-Son",
+    "domain": "unison.com.vn",
+    "link": "https://unison.com.vn/hop-da-dung-bo-qua-tang-giftset-box.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Funison.com.vn%2Fthumb%2F600x600%2F2%2Fdata%2Fupload%2F100-mau-hop-da-giftset-dep-cao-cap-dung-bo-qua-tang-unison-14.jpg&tbnid=BvuC5d-z-qigBM&imgrefurl=https%3A%2F%2Funison.com.vn%2Fhop-da-dung-bo-qua-tang-giftset-box.html&docid=r7OUPGgJBX5X-M&w=600&h=600",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

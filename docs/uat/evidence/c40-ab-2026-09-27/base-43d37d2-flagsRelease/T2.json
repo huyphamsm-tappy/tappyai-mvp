@@ -1,0 +1,46 @@
+{
+  "id": "T2",
+  "text": "khach san da nang gan bien duoi 1tr/dem",
+  "parent": null,
+  "status": 200,
+  "ms": 14326,
+  "evidenceId": "bc7c8907-1560-401a-b09f-67fa7bb7629d",
+  "toolCalls": [
+    {
+      "tool": "get_hotel_prices",
+      "args": {
+        "location": "Đà Nẵng"
+      }
+    }
+  ],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình tìm khách sạn Đà Nẵng gần biển trong tầm giá dưới 1 triệu cho bạn nhé.\n\nMình thấy danh sách khách sạn Đà Nẵng nhưng chưa có thông tin giá cụ thể trong kết quả. Hầu hết các khách sạn trong danh sách đều nằm ở khu vực Ngũ Hành Sơn hoặc An Hải — những khu gần biển nhất.\n\n Bạn có ngày check-in cụ thể không? Mình có thể tìm lại với ngày đó để xem giá chính xác hơn.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🏨 Booking.com - Đà Nẵng\",\"type\":\"booking\",\"url\":\"https://www.booking.com/searchresults.vi.html?ss=%C4%90%C3%A0%20N%E1%BA%B5ng\",\"primary\":true}]}[/CTA_BUTTONS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "khach san da nang gan bien duoi 1tr/dem"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm khách sạn Đà Nẵng gần biển trong tầm giá dưới 1 triệu cho bạn nhé.\n\nMình thấy danh sách khách sạn Đà Nẵng nhưng chưa có thông tin giá cụ thể trong kết quả. Hầu hết các khách sạn trong danh sách đều nằm ở khu vực Ngũ Hành Sơn hoặc An Hải — những khu gần biển nhất.\n\n Bạn có ngày check-in cụ thể không? Mình có thể tìm lại với ngày đó để xem giá chính xác hơn.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🏨 Booking.com - Đà Nẵng\",\"type\":\"booking\",\"url\":\"https://www.booking.com/searchresults.vi.html?ss=%C4%90%C3%A0%20N%E1%BA%B5ng\",\"primary\":true}]}[/CTA_BUTTONS]"
+    }
+  ]
+}

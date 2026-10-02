@@ -1,0 +1,173 @@
+{
+  "id": "E1",
+  "text": "Tối nay đi chơi gì với hội bạn 5 người ở Quận 1",
+  "parent": null,
+  "status": 200,
+  "ms": 12876,
+  "evidenceId": "e7ddc90a-ccdd-4757-9097-fccd116d31bd",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "quán ăn tối Quận 1",
+        "location": "Quận 1, TP.HCM",
+        "type": "restaurant"
+      }
+    },
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "karaoke Quận 1",
+        "location": "Quận 1, TP.HCM",
+        "type": "bar"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "えびすEbisu District1( Udon & Sushi)",
+      "rating": 4.7,
+      "count": 1024,
+      "price": "200-600 N ₫",
+      "hours": "11:30–22:30",
+      "address": "2A Chu Mạnh Trinh, Bến Nghé, Quận 1, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Hải Sản Hoàng Gia - 180 Trần Hưng Đạo Quận 1",
+      "rating": 4.7,
+      "count": 981,
+      "hours": "08:00–00:00",
+      "address": "180 Trần Hưng Đạo, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Izakaya Choioinoodle | Nhà Hàng Nhật Quận 1 | Mì Ramen Ngon Trần Hưng Đạo",
+      "rating": 4.8,
+      "count": 201,
+      "price": "100-200 N ₫",
+      "hours": "11:00–22:00",
+      "address": "25 Trần Hưng Đạo, Bến Thành, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Quán nhậu quận 1 - HẢI SẢN QUÝ DẬU",
+      "rating": 4.7,
+      "count": 280,
+      "price": "100-300 N ₫",
+      "hours": "15:00–02:00",
+      "address": "147 Hoàng Sa, Tân Định, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Quán Bụi - Lê Thánh Tôn - Authentic Vietnamese Cuisine",
+      "rating": 4.5,
+      "count": 1209,
+      "price": "200-600 N ₫",
+      "hours": "07:00–23:00",
+      "address": "222 - 224 Lê Thánh Tôn, Bến Thành, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Quán Bụi Central, Sài Gòn - Authentic Vietnamese Cuisine",
+      "rating": 4.5,
+      "count": 900,
+      "price": "200-800 N ₫",
+      "hours": "07:00–23:00",
+      "address": "1B Ngô Văn Năm, Quận 1, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Hàng Dương Quán Quận 1",
+      "rating": 4.5,
+      "count": 723,
+      "hours": "09:00–23:30",
+      "address": "32-34 Ngô Đức Kế, Phường, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Trần Ký Mì Gia | Tiệm Mì Quận 1 | Mì Người Hoa Quận 1",
+      "rating": 4.6,
+      "count": 145,
+      "price": "1-100.000 ₫",
+      "hours": "06:30–21:30",
+      "address": "127 Ký Con, Bến Thành, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Nhà hàng hải sản & lẩu Yeebo (Quận 1) - Yeebo Seafood and Hotpot Restaurant (District 1)",
+      "rating": 4.2,
+      "count": 657,
+      "hours": "09:00–14:00, 17:00–22:00",
+      "address": "Không nằm trong Lim Tower, 1 Lê Thánh Tôn, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Quán ăn ngon Sài Gòn",
+      "rating": 4.1,
+      "count": 1156,
+      "price": "100-400 N ₫",
+      "hours": "08:00–22:30",
+      "address": "138 Nam Kỳ Khởi Nghĩa, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "えびすEbisu District1( Udon & Sushi)",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 4.7,
+        "reviews": 1024,
+        "open_now": true,
+        "opening_hours": "11:30–22:30"
+      }
+    },
+    {
+      "name": "Hải Sản Hoàng Gia - 180 Trần Hưng Đạo Quận 1",
+      "role": null,
+      "evidence": {
+        "rating": 4.7,
+        "reviews": 981,
+        "open_now": true,
+        "opening_hours": "08:00–00:00"
+      }
+    },
+    {
+      "name": "Izakaya Choioinoodle | Nhà Hàng Nhật Quận 1 | Mì Ramen Ngon Trần Hưng Đạo",
+      "role": null,
+      "evidence": {
+        "rating": 4.8,
+        "reviews": 201,
+        "open_now": true,
+        "opening_hours": "11:00–22:00"
+      }
+    }
+  ],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ]
+  ],
+  "prose": "Tối nay bạn muốn chơi gì cụ thể? Karaoke, bar, quán ăn, hay hoạt động khác? Mình sẽ tìm những địa điểm phù hợp cho nhóm 5 người ở Quận 1 lúc này! 🎉Karaoke, bar, quán ăn, hay hoạt động khác? Mình sẽ tìm những địa điểm phù hợp cho nhóm 5 người ở Quận 1 lúc này! 🎉\n\nMình tìm được vài quán ăn tối hay ở Quận 1 cho nhóm bạn! 🍽️\n\nNgoài ra còn\n\nGrabFood · [BeFood](https://be.com.vn/)\n\n**Hải Sản Hoàng Gia** (4.7⭐, mở đến 00:00) nếu bạn muốn ăn hải sản, hay\n\n![Ảnh địa điểm](https://lh3.googleusercontent.com/gps-cs-s/AHRPTWllW7wliBsmRjWlvUjswOla1NN-31AYUba8abJ06oWIfNF7R_9EDH3h-x-SsIZ7z5Baue9MQ5WU7N3rnBUID_LCm2iIyYjkUNJa1C9FHFc2Omqi8EZaiE11PS6SwwcTBk3FE5I)\n\n**Izakaya Choioinoodle** (4.8⭐) nếu thích mì ramen.\n\nMình sẽ tìm thêm cho bạn! 🎤\n\n![Ảnh địa điểm](https://lh3.googleusercontent.com/gps-cs-s/AHRPTWl-TSxSzCXJni8mTt0Xh2x0DLBg3EyLJH5DG3a9ZsJ_48RyLBwnXvY4V85LUEK1bmd2wa4bUeAigra_han54YDa1R_ec9oFb4gtsOO-qWscSiVVW1i3d3ADtC3KIGVjViC07YBaRThBtv0J)\n[GrabFood](https://food.grab.com/vn/vi/restaurants?search=Izakaya%20Choioinoodle%20%7C%20Nh%C3%A0%20H%C3%A0ng%20Nh%E1%BA%ADt%20Qu%E1%BA%ADn%201%20%7C%20M%C3%AC%20Ramen%20Ngon%20Tr%E1%BA%A7n%20H%C6%B0ng%20%C4%90%E1%BA%A1o%20Qu%E1%BA%ADn%201%2C%20TP.HCM) · [BeFood](https://be.com.vn/)[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Maps - Ebisu\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=15517132992011241645\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]karaoke Quận 1 tối nay|bar sang chút Quận 1|quán ăn hải sản Quận 1[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Tối nay đi chơi gì với hội bạn 5 người ở Quận 1"
+    },
+    {
+      "role": "assistant",
+      "content": "Tối nay bạn muốn chơi gì cụ thể? Karaoke, bar, quán ăn, hay hoạt động khác? Mình sẽ tìm những địa điểm phù hợp cho nhóm 5 người ở Quận 1 lúc này! 🎉Karaoke, bar, quán ăn, hay hoạt động khác? Mình sẽ tìm những địa điểm phù hợp cho nhóm 5 người ở Quận 1 lúc này! 🎉\n\nMình tìm được vài quán ăn tối hay ở Quận 1 cho nhóm bạn! 🍽️\n\nNgoài ra còn\n\nGrabFood · [BeFood](https://be.com.vn/)\n\n**Hải Sản Hoàng Gia** (4.7⭐, mở đến 00:00) nếu bạn muốn ăn hải sản, hay\n\n![Ảnh địa điểm](https://lh3.googleusercontent.com/gps-cs-s/AHRPTWllW7wliBsmRjWlvUjswOla1NN-31AYUba8abJ06oWIfNF7R_9EDH3h-x-SsIZ7z5Baue9MQ5WU7N3rnBUID_LCm2iIyYjkUNJa1C9FHFc2Omqi8EZaiE11PS6SwwcTBk3FE5I)\n\n**Izakaya Choioinoodle** (4.8⭐) nếu thích mì ramen.\n\nMình sẽ tìm thêm cho bạn! 🎤\n\n![Ảnh địa điểm](https://lh3.googleusercontent.com/gps-cs-s/AHRPTWl-TSxSzCXJni8mTt0Xh2x0DLBg3EyLJH5DG3a9ZsJ_48RyLBwnXvY4V85LUEK1bmd2wa4bUeAigra_han54YDa1R_ec9oFb4gtsOO-qWscSiVVW1i3d3ADtC3KIGVjViC07YBaRThBtv0J)\n[GrabFood](https://food.grab.com/vn/vi/restaurants?search=Izakaya%20Choioinoodle%20%7C%20Nh%C3%A0%20H%C3%A0ng%20Nh%E1%BA%ADt%20Qu%E1%BA%ADn%201%20%7C%20M%C3%AC%20Ramen%20Ngon%20Tr%E1%BA%A7n%20H%C6%B0ng%20%C4%90%E1%BA%A1o%20Qu%E1%BA%ADn%201%2C%20TP.HCM) · [BeFood](https://be.com.vn/)[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Maps - Ebisu\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=15517132992011241645\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]karaoke Quận 1 tối nay|bar sang chút Quận 1|quán ăn hải sản Quận 1[/FOLLOWUPS]"
+    }
+  ]
+}

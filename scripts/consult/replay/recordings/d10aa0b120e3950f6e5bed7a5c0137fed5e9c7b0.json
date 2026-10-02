@@ -1,0 +1,62 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"MASSAGE DUBAI LUXURY\" OR \"May Xưa Spa Quận 1\" OR \"Massage tận nơi Sài Gòn\" quan 1 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T04:17:24.324Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"MASSAGE DUBAI LUXURY\" OR \"May Xưa Spa Quận 1\" OR \"Massage tận nơi Sài Gòn\" quan 1 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Review Massage Dubai Luxury Trung Quốc",
+    "link": "https://www.tiktok.com/discover/review-massage-dubai-luxury-trung-qu%E1%BB%91c",
+    "snippet": "Khám phá các video liên quan đến Review Massage Dubai Luxury Trung Quốc trên TikTok. ... Book any massage over 180 AED and enjoy a 1-hour full ...",
+    "date": "14 thg 9, 2026",
+    "position": 1
+   },
+   {
+    "title": "Nhóm Massage Tận Nơi Sài Gòn",
+    "link": "https://www.tiktok.com/discover/nh%C3%B3m-massage-t%E1%BA%ADn-n%C6%A1i-s%C3%A0i-g%C3%B2n",
+    "snippet": "Nhóm Massage Tận Nơi Sài Gòn. Khám phá các video liên quan đến Nhóm Massage Tận Nơi Sài Gòn trên TikTok. Cập nhật lần cuối 2026-09-07. 11 Likes, 1 Comments.",
+    "position": 2
+   },
+   {
+    "title": "check var cushion nhà Meiking có ưu và khuyết điểm gì? ...",
+    "link": "https://www.tiktok.com/@ngophuonglinhneee/video/7579235487366384904",
+    "snippet": "Review Massage Dubai Luxury Trung Quốc · Review Cám Khuyên Trung Quốc · Merythod Cushion · Review Cushion Clio Hà Linh · Quantekkel Review.",
+    "position": 3
+   },
+   {
+    "title": "Dubai Nha Trang",
+    "link": "https://www.tiktok.com/discover/dubai-nha-trang",
+    "snippet": "Review Massage Dubai Luxury Trung Quốc · Massafer Dubai Nha Trang. 967Thích. 93Bình luận. 332Lượt chia sẻ. Massage Dubai trải nghiệm tại Nha ...",
+    "date": "7 thg 9, 2026",
+    "position": 4
+   },
+   {
+    "title": "Massage Tận Nơi Sài Gòm",
+    "link": "https://www.tiktok.com/discover/massage-t%E1%BA%ADn-n%C6%A1i-s%C3%A0i-g%C3%B2m",
+    "snippet": "... 1 | Massage Quận 1 · Ren Spa Quận 10 · Olenii Spa Quận 10 · Sen Boutique Spa Danang ... massage tận nơi Sài Gòn. 834 Likes, 81 Comments. TikTok video from App ...",
+    "position": 5
+   },
+   {
+    "title": "Hoa Đà Massage Nha Trang",
+    "link": "https://www.tiktok.com/discover/hoa-%C4%91%C3%A0-massage-nha-trang",
+    "snippet": "Hướng dẫn tham quan chợ đêm Nha Trang: ăn uống, mua sắm, khám phá văn hóa địa ... Review Massage Dubai Luxury Trung Quốc · Massage Dubai Discovery Garden.",
+    "position": 6
+   }
+  ],
+  "credits": 1
+ }
+}

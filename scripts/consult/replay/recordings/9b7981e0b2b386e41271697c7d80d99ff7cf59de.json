@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"The Nail\" OR \"Tiệm Nail Quận 10\" OR \"ME IN NAIL\" quan 10 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T04:18:06.197Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"The Nail\" OR \"Tiệm Nail Quận 10\" OR \"ME IN NAIL\" quan 10 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Manifest các anh thấy được bài này, để các chị em mình ...",
+    "link": "https://www.tiktok.com/@mein.nail/video/7690517763185593607",
+    "snippet": "... ☎️0867.960.979 ME IN NAIL QUẬN 10: 218 Nguyễn Tiểu La, Phường 8, Quận 10 ☎️0867.984.979 ME IN NAIL HIM LAM QUẬN.",
+    "position": 1
+   },
+   {
+    "title": "Vlog Bé Thảo: Bí Mật Tiệm Nail Quận 10",
+    "link": "https://www.tiktok.com/@thaothichlamnail94/video/7657838476699716871",
+    "snippet": "Vlog của bé Thảo #nailquận10 #tiệmnailquận10 #làmmóngquận10 #tiệmlàmmóngquận10. Vlog Bé Thảo: Bí Mật Tiệm Nail Quận 10. Chào mừng bạn đến với ...",
+    "position": 2
+   },
+   {
+    "title": "Review tiệm nail quận 10: làm móng đẹp, có quà khai trương",
+    "link": "https://www.tiktok.com/@nghihaydii/video/7642696834481179924",
+    "snippet": "review tiệm nails quận 10, tiệm nail quận 10 đánh giá, làm nail ... thẻ nail quận 10, workshop làm túi thơm miễn phí. Đây là bản tóm tắt ...",
+    "position": 3
+   },
+   {
+    "title": "ME IN NAIL (@mein.nail)",
+    "link": "https://www.tiktok.com/@mein.nail",
+    "snippet": "... Quận Bình Thạnh ☎️0867.960.979 ME IN NAIL QUẬN 10: 218 Nguyễn Tiểu La, Phường 8, Quận 10 ☎️0867.984.979 ME IN NAIL HIM LAM QUẬN ...",
+    "position": 4
+   },
+   {
+    "title": "Tiệm Nail Quận 10 - Mở Cửa Hàng Ngày",
+    "link": "https://www.tiktok.com/@meinail98/video/7657058810376326420",
+    "snippet": "Video TikTok từ Tiệm Nail Quận 10 (@meinail98): \"Khám phá tiệm nail tại Quận 10, mở cửa hàng ngày từ 9 giờ sáng đến 8 giờ tối.",
+    "position": 5
+   },
+   {
+    "title": "Nay kiêng làm móng hẻ bà — trend Namiinailstu tiệm nail ...",
+    "link": "https://www.tiktok.com/@namii.nailstu/video/7678629235606572306",
+    "snippet": "Kết thúc Video ngắn này truyền tải thông điệp rõ ràng: một buổi sáng may mắn tại tiệm nail Quận 10 khiến chủ tiệm quyết định nghỉ sớm. Người xem ...",
+    "position": 6
+   },
+   {
+    "title": "493/62 Cách Mạng Tháng 8 , quận 10 #nails #nailquan10 ...",
+    "link": "https://www.tiktok.com/@meinail98/video/7646681209048665365",
+    "snippet": "Video TikTok từ Tiệm Nail Quận 10 (@meinail98): \" 493/62 Cách Mạng Tháng 8 , quận 10 #nails #nailquan10 #nailmatmeo\".âm thanh gốc - Linh ...",
+    "position": 7
+   },
+   {
+    "title": "Biến hình 🤣🤣 #nails #xuhuong #mei #quan10",
+    "link": "https://www.tiktok.com/@meinail98/video/7680089116528200980",
+    "snippet": "31 Lượt thích,Video TikTok từ Tiệm Nail Quận 10 (@meinail98): \"Biến hình #nails #xuhuong #mei #quan10\".original sound - Megan Josol Art ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

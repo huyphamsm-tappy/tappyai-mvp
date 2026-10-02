@@ -62,38 +62,19 @@ describe('the legacy ADMIN_IDS authorization gate is gone and cannot return', ()
   })
 })
 
-describe('the one remaining ADMIN_IDS reader is a notification list, not a gate', () => {
-  // `src/app/api/music/tracks/[id]/report/route.ts` still reads process.env.ADMIN_IDS.
-  // It never imported `src/lib/admin.ts` — it inlined the env parse — so deleting
-  // that module does not touch it. What must never happen is this reader quietly
-  // becoming an authorization decision, which is the exact shape `isAdmin` had:
-  // `ADMIN_IDS.includes(userId)`.
-  const path = 'src/app/api/music/tracks/[id]/report/route.ts'
-  const src = readFileSync(path, 'utf8')
-
-  it('authorizes on the session, and refuses anonymous callers', () => {
-    expect(src).toContain('getRequestUser')
-    expect(src).toMatch(/if\s*\(!user\)\s*return[\s\S]{0,120}status:\s*401/)
-  })
-
-  it('never tests membership of ADMIN_IDS — that is what made isAdmin a gate', () => {
-    expect(src).not.toMatch(/adminIds\s*\.\s*includes\s*\(/)
-    expect(src).not.toMatch(/ADMIN_IDS\s*\.\s*includes\s*\(/)
-  })
-
-  it('passes each id DIRECTLY to emitNotification and to nothing else', () => {
-    // Tightened after a mutation survived: a "map(...) … emitNotification within
-    // N characters" rule still matched `adminIds.map(id => fetch('https://x/' +
-    // id).then(() => emitNotification(...)))`, which exfiltrates the admin user
-    // ids to an external host on the way. The list is a set of real user UUIDs,
-    // so where it goes is the point — requiring the arrow body to BE the
-    // emitNotification call leaves no room in between.
-    expect(src).toMatch(/adminIds\s*\.\s*map\s*\(\s*\w+\s*=>\s*emitNotification\s*\(/)
-  })
-
-  it('reporting is open to any signed-in user — removal changed no permission', () => {
-    // A regression here would mean the copyright/abuse channel had silently become
-    // admin-only, which would break the takedown SLA rather than secure anything.
-    expect(src).not.toMatch(/requirePermission|requirePagePermission|permissionEngine/)
+describe('ADMIN_IDS is no longer read as an authorization gate anywhere', () => {
+  // The last reader was `src/app/api/music/tracks/[id]/report/route.ts`, which inlined an
+  // ADMIN_IDS env parse to fan a report notification out to admins. That route was retired with
+  // music reuse (F-024 — it now answers 410 Gone), so no source reads ADMIN_IDS at all. The guard
+  // this suite exists for — ADMIN_IDS must never become `ADMIN_IDS.includes(userId)`, the shape the
+  // deprecated isAdmin gate had — is now upheld by the strongest possible fact: nothing reads it.
+  it('no source reads process.env.ADMIN_IDS (comments aside)', () => {
+    const offenders = sourceFiles()
+      .filter((f) => f !== 'src/lib/admin/legacyAdminGate.test.ts')
+      .filter((f) => {
+        const withoutComments = readFileSync(f, 'utf8').replace(/\/\/[^\n]*/g, '').replace(/\/\*[\s\S]*?\*\//g, '')
+        return /process\.env\.ADMIN_IDS|\bADMIN_IDS\b/.test(withoutComments)
+      })
+    expect(offenders).toEqual([])
   })
 })

@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Trải nghiệm La Spa & Massage Premium tại Quận 1, Hồ ...",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:19:14.208Z",
+ "body": {
+  "searchParameters": {
+   "q": "Trải nghiệm La Spa & Massage Premium tại Quận 1, Hồ ...",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "La Spa & Massage Premium Experience in District 1, Ho Chi Minh - Klook",
+    "imageUrl": "https://res.klook.com/images/fl_lossy.progressive,q_65/c_fill,w_1295,h_863/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/i4t67xv4v7fis18s5aaa/LaSpaMassagePremiumExperienceinDistrict1,HoChiMinh.jpg",
+    "imageWidth": 1295,
+    "imageHeight": 863,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVH69rI46kANp9PDY64eSgHw7HOprwvqVBAQByfEj0Bg&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/en-MY/activity/157287-la-spa-massage-premium-experience-in-district-1-ho-chi-minh/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Ffl_lossy.progressive%2Cq_65%2Fc_fill%2Cw_1295%2Ch_863%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fi4t67xv4v7fis18s5aaa%2FLaSpaMassagePremiumExperienceinDistrict1%2CHoChiMinh.jpg&tbnid=rKYuMBl5GriAVM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fen-MY%2Factivity%2F157287-la-spa-massage-premium-experience-in-district-1-ho-chi-minh%2F&docid=4wKJ2II7EA757M&w=1295&h=863",
+    "position": 1
+   },
+   {
+    "title": "Trải nghiệm La Spa & Massage Premium tại Quận 1, Hồ Chí Minh - Klook",
+    "imageUrl": "https://res.klook.com/image/upload/w_750,h_469,c_fill,q_85/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/hzwt0m5flgr9scgu9yf4.jpg",
+    "imageWidth": 750,
+    "imageHeight": 469,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7K93H_aL9Z6OKih-nRL_JMgoXpaMD5Y1kIbGOW0chIQ&s",
+    "thumbnailWidth": 284,
+    "thumbnailHeight": 177,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/157287-la-spa-massage-premium-experience-in-district-1-ho-chi-minh/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimage%2Fupload%2Fw_750%2Ch_469%2Cc_fill%2Cq_85%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fhzwt0m5flgr9scgu9yf4.jpg&tbnid=_fLFR_iZHhvfNM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F157287-la-spa-massage-premium-experience-in-district-1-ho-chi-minh%2F&docid=7AKM6RD0jW_8cM&w=750&h=469",
+    "position": 2
+   },
+   {
+    "title": "Trải nghiệm La Spa & Massage Premium tại Quận 1, Hồ Chí Minh - Klook",
+    "imageUrl": "https://res.klook.com/images/w_1200,h_630,c_fill,q_65/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/ijrwonyol9j84tmyhp2t/Tr%E1%BA%A3inghi%E1%BB%87mLaSpaMassagePremiumt%E1%BA%A1iQu%E1%BA%ADn1,H%E1%BB%93Ch%C3%ADMinh-Klook.jpg",
+    "imageWidth": 1200,
+    "imageHeight": 630,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyoUWw8zbNgzXCi_PainCwJ5HAEqnmEfqRIh4eTd1Ptg&s=10",
+    "thumbnailWidth": 617,
+    "thumbnailHeight": 324,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/157287-la-spa-massage-premium-experience-in-district-1-ho-chi-minh/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Fw_1200%2Ch_630%2Cc_fill%2Cq_65%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fijrwonyol9j84tmyhp2t%2FTr%25E1%25BA%25A3inghi%25E1%25BB%2587mLaSpaMassagePremiumt%25E1%25BA%25A1iQu%25E1%25BA%25ADn1%2CH%25E1%25BB%2593Ch%25C3%25ADMinh-Klook.jpg&tbnid=Hcpq3pH4mQN-7M&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F157287-la-spa-massage-premium-experience-in-district-1-ho-chi-minh%2F&docid=7AKM6RD0jW_8cM&w=1200&h=630",
+    "position": 3
+   },
+   {
+    "title": "Trải nghiệm La Spa & Massage Premium tại Quận 1, Hồ Chí Minh - Klook",
+    "imageUrl": "https://res.klook.com/image/upload/w_750,h_469,c_fill,q_85/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/cm5x73xydec2g8gzcklv.jpg",
+    "imageWidth": 750,
+    "imageHeight": 469,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIusul6qcdMHIvyAWuYQvDb-xD5L9vrq6QdLXOyCSHrw&s",
+    "thumbnailWidth": 284,
+    "thumbnailHeight": 177,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/157287-la-spa-massage-premium-experience-in-district-1-ho-chi-minh/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimage%2Fupload%2Fw_750%2Ch_469%2Cc_fill%2Cq_85%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fcm5x73xydec2g8gzcklv.jpg&tbnid=Jqk1fFepme3ckM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F157287-la-spa-massage-premium-experience-in-district-1-ho-chi-minh%2F&docid=7AKM6RD0jW_8cM&w=750&h=469",
+    "position": 4
+   },
+   {
+    "title": "Trải nghiệm La Spa & Massage Premium tại Quận 1, Hồ Chí Minh - Klook",
+    "imageUrl": "https://res.klook.com/images/w_1200,h_630,c_fill,q_65/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/amdjlo3m0ispg6qkbhjj/Tr%E1%BA%A3inghi%E1%BB%87mLaSpaMassagePremiumt%E1%BA%A1iQu%E1%BA%ADn1,H%E1%BB%93Ch%C3%ADMinh-Klook.jpg",
+    "imageWidth": 1200,
+    "imageHeight": 630,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRh0It11ZRkC1MZ1ZuovDmaNUrnwniL6xBGKIOZ2iZX_w&s=10",
+    "thumbnailWidth": 617,
+    "thumbnailHeight": 324,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/157287-la-spa-massage-premium-experience-in-district-1-ho-chi-minh/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Fw_1200%2Ch_630%2Cc_fill%2Cq_65%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Famdjlo3m0ispg6qkbhjj%2FTr%25E1%25BA%25A3inghi%25E1%25BB%2587mLaSpaMassagePremiumt%25E1%25BA%25A1iQu%25E1%25BA%25ADn1%2CH%25E1%25BB%2593Ch%25C3%25ADMinh-Klook.jpg&tbnid=JN__VTSnW221QM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F157287-la-spa-massage-premium-experience-in-district-1-ho-chi-minh%2F&docid=7AKM6RD0jW_8cM&w=1200&h=630",
+    "position": 5
+   },
+   {
+    "title": "Trải nghiệm La Spa & Massage Premium tại Quận 1, Hồ Chí Minh - Klook",
+    "imageUrl": "https://res.klook.com/images/w_1200,h_630,c_fill,q_65/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/ybtuepxgp7zivaxdkp3l/Tr%E1%BA%A3inghi%E1%BB%87mLaSpaMassagePremiumt%E1%BA%A1iQu%E1%BA%ADn1,H%E1%BB%93Ch%C3%ADMinh-Klook.jpg",
+    "imageWidth": 1200,
+    "imageHeight": 630,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxhkm_i4rlJ9yYDSL2XwZoj-MyK7EQ5A0yFr2aPXWLHw&s",
+    "thumbnailWidth": 310,
+    "thumbnailHeight": 163,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/157287-la-spa-massage-premium-experience-in-district-1-ho-chi-minh/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Fw_1200%2Ch_630%2Cc_fill%2Cq_65%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fybtuepxgp7zivaxdkp3l%2FTr%25E1%25BA%25A3inghi%25E1%25BB%2587mLaSpaMassagePremiumt%25E1%25BA%25A1iQu%25E1%25BA%25ADn1%2CH%25E1%25BB%2593Ch%25C3%25ADMinh-Klook.jpg&tbnid=_Xj4sZlz9vNrSM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F157287-la-spa-massage-premium-experience-in-district-1-ho-chi-minh%2F&docid=7AKM6RD0jW_8cM&w=1200&h=630",
+    "position": 6
+   },
+   {
+    "title": "Trải nghiệm La Spa & Massage Premium tại Quận 1, Hồ Chí Minh - Klook",
+    "imageUrl": "https://res.klook.com/images/w_1200,h_630,c_fill,q_65/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/ay0jqknsdkmui0labvss/Tr%E1%BA%A3inghi%E1%BB%87mLaSpaMassagePremiumt%E1%BA%A1iQu%E1%BA%ADn1,H%E1%BB%93Ch%C3%ADMinh-Klook.jpg",
+    "imageWidth": 1200,
+    "imageHeight": 630,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRwEs8I6A2sZIIs4OHcwuHseQXKvnUVp3U9mXwB9hEqxw&s=10",
+    "thumbnailWidth": 617,
+    "thumbnailHeight": 324,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/157287-la-spa-massage-premium-experience-in-district-1-ho-chi-minh/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Fw_1200%2Ch_630%2Cc_fill%2Cq_65%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fay0jqknsdkmui0labvss%2FTr%25E1%25BA%25A3inghi%25E1%25BB%2587mLaSpaMassagePremiumt%25E1%25BA%25A1iQu%25E1%25BA%25ADn1%2CH%25E1%25BB%2593Ch%25C3%25ADMinh-Klook.jpg&tbnid=9NfRyeWVE0vSwM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F157287-la-spa-massage-premium-experience-in-district-1-ho-chi-minh%2F&docid=7AKM6RD0jW_8cM&w=1200&h=630",
+    "position": 7
+   },
+   {
+    "title": "Trải nghiệm La Spa & Massage Premium tại Quận 1, Hồ Chí Minh - Klook",
+    "imageUrl": "https://res.klook.com/images/w_1200,h_630,c_fill,q_65/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/icrllvpjfxvmhxywnvnw/Tr%E1%BA%A3inghi%E1%BB%87mLaSpaMassagePremiumt%E1%BA%A1iQu%E1%BA%ADn1,H%E1%BB%93Ch%C3%ADMinh-Klook.jpg",
+    "imageWidth": 1200,
+    "imageHeight": 630,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKsvWIFiVK0JvWlFz-vGzVldG0nstaMW8gndQc--wQLQ&s",
+    "thumbnailWidth": 310,
+    "thumbnailHeight": 163,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/157287-la-spa-massage-premium-experience-in-district-1-ho-chi-minh/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Fw_1200%2Ch_630%2Cc_fill%2Cq_65%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Ficrllvpjfxvmhxywnvnw%2FTr%25E1%25BA%25A3inghi%25E1%25BB%2587mLaSpaMassagePremiumt%25E1%25BA%25A1iQu%25E1%25BA%25ADn1%2CH%25E1%25BB%2593Ch%25C3%25ADMinh-Klook.jpg&tbnid=NAHluold5bW8UM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F157287-la-spa-massage-premium-experience-in-district-1-ho-chi-minh%2F&docid=7AKM6RD0jW_8cM&w=1200&h=630",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

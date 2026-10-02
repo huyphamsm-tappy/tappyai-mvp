@@ -4,6 +4,7 @@ import { render, screen, cleanup, waitFor, within } from '@testing-library/react
 import userEvent from '@testing-library/user-event'
 import { UserSessionsPanel } from './UserSessionsPanel'
 import { en as enStrings } from '@/lib/i18n/admin'
+import { setLocale } from '@/lib/i18n/useTranslation'
 
 // Controller V2 — Component 11 Session Security: the Controller surface.
 //
@@ -69,7 +70,9 @@ function stubFetch(handlers: Record<string, () => { status?: number; body: unkno
 
 const listOk = (rows: unknown[]) => ({ body: { data: rows } })
 
-beforeEach(() => vi.unstubAllGlobals())
+// The panel is asserted through `enStrings` and English accessible names ("End session", "Sign out
+// everywhere"), so the locale is stated: the product default is Vietnamese.
+beforeEach(() => { vi.unstubAllGlobals(); setLocale('en') })
 
 // ===========================================================================
 // §7 — who may list

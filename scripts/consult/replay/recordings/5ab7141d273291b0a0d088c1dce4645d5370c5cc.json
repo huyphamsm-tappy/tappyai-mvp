@@ -1,0 +1,40 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Máy tính xách tay/ Laptop Acer Aspire 3 A315-59-381E site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:55:10.833Z",
+ "body": {
+  "searchParameters": {
+   "q": "Máy tính xách tay/ Laptop Acer Aspire 3 A315-59-381E site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Máy tính xách tay/ Laptop Acer Aspire 3 A315-59-381E(NX. ...",
+    "link": "https://shopee.vn/M%C3%A1y-t%C3%ADnh-x%C3%A1ch-tay-Laptop-Acer-Aspire-3-A315-59-381E(NX.K6TSV.006)(i3-1215U)-(B%E1%BA%A1c)-B%E1%BA%A3o-h%C3%A0nh-12-th%C3%A1ng-i.469040198.23579413715",
+    "snippet": "Mua Máy tính xách tay/ Laptop Acer Aspire 3 A315-59-381E(NX.K6TSV.006)(i3-1215U) (Bạc)-Bảo hành 12 tháng giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 5,
+    "ratingCount": 9,
+    "position": 1
+   },
+   {
+    "title": "Sạc dành cho Laptop Acer Aspire 3 A315-56 ...",
+    "link": "https://shopee.vn/S%E1%BA%A1c-d%C3%A0nh-cho-Laptop-Acer-Aspire-3-A315-56-A315-59-A315-58G-i.1247566075.25143297316",
+    "snippet": "Sạc dành cho Laptop Acer Aspire 3 A315-56 A315-59 A315-58G. outline grey truck icon. Không hỗ trợ. Linh kiện Laptopminhha. Online 36 phút trước.",
+    "rating": 5,
+    "ratingCount": 29,
+    "position": 2
+   }
+  ],
+  "credits": 1
+ }
+}

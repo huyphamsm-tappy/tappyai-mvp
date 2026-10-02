@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Quán Nhậu Bờ Kè\" OR \"Nhà Hàng 56\" OR \"The Street Sương Nguyệt Anh\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:11:13.722Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Quán Nhậu Bờ Kè\" OR \"Nhà Hàng 56\" OR \"The Street Sương Nguyệt Anh\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Quán Nhậu Bờ Kè Mở Cửa Đến 5h Sáng",
+    "link": "https://www.tiktok.com/@cambone_2010/video/7540944048161377556",
+    "snippet": "Quán Nhậu Bờ Kè Mở Cửa Đến 5h Sáng. Khám phá quán nhậu bờ kè, nơi mở cửa đến 5h sáng cho những cú đêm, phục vụ món ngon và đồ uống hấp dẫn.",
+    "position": 1
+   },
+   {
+    "title": "Nhà Hàng 56 - Quận 10 (@nh.hang.56)",
+    "link": "https://www.tiktok.com/@nh.hang.56",
+    "snippet": "Đ.Đồng Nai Q10 (P.Hoà Hưng) 0865 947 556 · Hòa chung không khí nhộn nhịp cùng ca sĩ Hồ Việt Trung tại Nhà Hàng 56 · Phòng Tiệc 40 khách tại Nhà Hàng 56 .",
+    "position": 2
+   },
+   {
+    "title": "Quán nhậu Bờ Kè Chụt 29/38 Vĩnh Nguyên cũ Nha Trang ...",
+    "link": "https://www.tiktok.com/@thanh.van1612/video/7664847876006219029",
+    "snippet": "Quán Nhậu Ven Biển Phú Yên. Quán nhậu Bờ Kè Chụt 29/38 Vĩnh Nguyên cũ Nha Trang #0397386068 sdt.",
+    "position": 3
+   },
+   {
+    "title": "Khám Phá Nhà Hàng Sang Trọng Nhất Quận 10",
+    "link": "https://www.tiktok.com/@nh.hang.56/video/7519495356120435986",
+    "snippet": "189 Lượt thích,Video TikTok từ Nhà Hàng 56 - Quận 10 (@nh.hang.56): \"Tìm hiểu về nhà hàng 56 tại Quận 10 với phòng VIP sang trọng và các món ...",
+    "position": 4
+   },
+   {
+    "title": "Tuyển Dụng Nhân Viên Phục Vụ Tại Nhà Hàng 56 - Quận 10",
+    "link": "https://www.tiktok.com/@nh.hang.56/photo/7663755192998890773",
+    "snippet": "Nhà Hàng 56 đang tuyển dụng nhân viên phục vụ. Địa chỉ: 56 Đồng Nai, Phường 15, Quận 10. Liên hệ: 0833 555 657. Keywords: tuyển dụng nhân viên ...",
+    "position": 5
+   },
+   {
+    "title": "Út Mai Quán - Quán nhậu bờ kè Trường Sa rất cảm ...",
+    "link": "https://www.tiktok.com/@quannhauutmai/video/7496500196008922375",
+    "snippet": "Út Mai Quán - Quán nhậu bờ kè Trường Sa rất cảm ơn Quý Khách đã yêu thương và ủng hộ ; âm thanh gốc - Trường du lịch. 9987 · 5676 ...",
+    "position": 6
+   },
+   {
+    "title": "Món Súp Cua Ngon Tại Quán Nhậu Bờ Kè Hoàng Sa",
+    "link": "https://www.tiktok.com/@lankhapsaigon/video/7439726069256637703",
+    "snippet": "Món Súp Cua Ngon Tại Quán Nhậu Bờ Kè Hoàng Sa. Khám phá quán súp cua thơm ngon chỉ 15xu ở Bờ Kè Hoàng Sa. Không thể bỏ lỡ! #supcua #quan1 ...",
+    "position": 7
+   },
+   {
+    "title": "Nghe nói Cần Thơ sắp có chỗ để vừa ăn ngon ...",
+    "link": "https://www.tiktok.com/@trai.nghiem.cung.an/video/7679430237171551509",
+    "snippet": "... vừa ăn ngon, vừa có cảnh chill. @Trải Nghiệm Cùng An · âm thanh gốc - Trải Nghiệm Cùng An · Ẩm thực - Quán nhậu Bờ Kè AP89 · author. 146 · 77.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,18 +1,33 @@
-import { createClient, type SupabaseClient } from '@supabase/supabase-js'
+import { createAdminClient } from '@/lib/supabase/admin'
 import type { MusicTrack } from '../types/track'
 import type { MusicCategory } from '../types/category'
 import type { MusicProvider } from '../types/provider'
 import type { MusicBrowseFilter, MusicSearchFilter, MusicTracksPage } from '../types/search'
+import { isServableMediaUrl } from '@/lib/media/servableMedia'
 
-// All four read policies on these tables are unconditionally public
-// (no auth.uid() dependency), so a bare anon-key client — with no cookie or
-// browser-storage dependency — is safe and correct here. This same client
-// works identically whether the caller is a browser hook or a server route
-// handler, matching the Repository -> Supabase single-hop dependency rule.
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-)
+// ============================================================================
+// SERVER-ONLY. The catalogue is read through the service-role client, behind
+// the `/api/music/*` GET routes — never from a browser.
+// ============================================================================
+// This used to be a bare anon-key client that hooks called straight from the
+// page, and that was the F-034 finding: every client could read the whole
+// `music_tracks` table over PostgREST, including the retired borrowed-sound
+// rows. 20260921_music_tracks_lockdown revoked the anon/authenticated grants
+// and dropped the ordinary-role policies; they stay revoked. The library is
+// served by these functions, from a route handler, with the filter below.
+//
+// 🚨 THE LIBRARY, NOT THE REUSE PATH. Phase 7 restores the Music LIBRARY
+// (curated, licensed tracks a person picks as a soundtrack) — not "use this
+// sound" (taking the audio of another user's clip). The difference is a row's
+// `music_type`: `LIBRARY_TYPES` are served; `original_sound` (a clip's own audio,
+// registered so others could borrow it) is never returned by any function here,
+// whatever the id. That is the whole enforcement, so it lives in ONE place.
+//
+// 🔑 Attribution travels with the track. CC-BY (the Jamendo catalogue) and the
+// SoundHelix seed both require crediting the artist; `license` and `sourceUrl`
+// are read here so every surface that shows a track can show its credit.
+
+export const LIBRARY_TYPES = ['royalty_free', 'licensed'] as const
 
 const DEFAULT_LIMIT = 20
 const MAX_LIMIT = 50
@@ -27,6 +42,8 @@ interface TrackRow {
   cover_url: string | null
   category_id: string | null
   provider_id: string
+  license: string | null
+  source_url: string | null
 }
 
 function mapTrackRow(row: TrackRow): MusicTrack {
@@ -37,9 +54,23 @@ function mapTrackRow(row: TrackRow): MusicTrack {
     durationSec: row.duration_sec,
     audioUrl: row.audio_url,
     previewUrl: row.preview_url,
-    coverUrl: row.cover_url,
+    /**
+     * 🚨 THE RETIRED BLOB HOST IS FILTERED OUT HERE, AND THAT IS THE MUSIC
+     * LIBRARY'S BROKEN-THUMBNAIL BUG.
+     *
+     * Covers written before the storage move live on Vercel Blob, and those
+     * objects are GONE — measured against production data: every
+     * `*.public.blob.vercel-storage.com` cover answers 404. `isServableMediaUrl`
+     * is the app's existing answer to exactly this, and `cover_url` is already
+     * one of its `MEDIA_FIELDS`. Nulling here rather than at each route covers
+     * browse, search and by-id in one place, and `MusicThumbnail` already draws
+     * a real fallback for a null cover.
+     */
+    coverUrl: isServableMediaUrl(row.cover_url) ? row.cover_url : null,
     categoryId: row.category_id,
     providerId: row.provider_id,
+    license: row.license,
+    sourceUrl: row.source_url,
   }
 }
 
@@ -70,7 +101,16 @@ function buildIlikePattern(term: string): string {
 }
 
 const TRACK_COLUMNS =
-  'id, title, artist, duration_sec, audio_url, preview_url, cover_url, category_id, provider_id'
+  'id, title, artist, duration_sec, audio_url, preview_url, cover_url, category_id, provider_id, license, source_url'
+
+/** Every track read starts here: active, and a LIBRARY type. Nothing else is ever selected. */
+function libraryTracks() {
+  return createAdminClient()
+    .from('music_tracks')
+    .select(TRACK_COLUMNS)
+    .eq('is_active', true)
+    .in('music_type', [...LIBRARY_TYPES])
+}
 
 export async function getTrackById(id: string): Promise<MusicTrack | null> {
   // 🚨 `.limit(1)`, deliberately NOT `.maybeSingle()`.
@@ -83,18 +123,12 @@ export async function getTrackById(id: string): Promise<MusicTrack | null> {
   // the request flipped from `200 {row}` to `406 {error}`, an error response
   // does not replace a stored success, and production went on serving the held
   // clip's media URL from the last good 200 — for hours after the database had
-  // stopped returning the row to anyone. Measured: four distinct anon query
-  // shapes returned nothing, while this call still answered with the row.
+  // stopped returning the row to anyone.
   //
   // A list request makes "no rows" an ordinary success (`200 []`), so it stores
   // and replaces like every other read. One row still yields that one row, and
   // the caller contract — `MusicTrack | null` — is unchanged.
-  const { data, error } = await supabase
-    .from('music_tracks')
-    .select(TRACK_COLUMNS)
-    .eq('id', id)
-    .eq('is_active', true)
-    .limit(1)
+  const { data, error } = await libraryTracks().eq('id', id).limit(1)
 
   if (error || !data || data.length === 0) return null
   return mapTrackRow(data[0] as TrackRow)
@@ -105,11 +139,7 @@ export async function getTracks(filter: MusicBrowseFilter = {}): Promise<MusicTr
   const limit = clampLimit(filter.limit)
   const offset = page * limit
 
-  let query = supabase
-    .from('music_tracks')
-    .select(TRACK_COLUMNS)
-    .eq('is_active', true)
-
+  let query = libraryTracks()
   if (filter.categoryId) {
     query = query.eq('category_id', filter.categoryId)
   }
@@ -134,10 +164,7 @@ export async function searchTracks(filter: MusicSearchFilter): Promise<MusicTrac
   if (!term) return { tracks: [], page, limit, hasMore: false }
 
   const pattern = buildIlikePattern(term)
-  const { data, error } = await supabase
-    .from('music_tracks')
-    .select(TRACK_COLUMNS)
-    .eq('is_active', true)
+  const { data, error } = await libraryTracks()
     .or(`title.ilike.${pattern},artist.ilike.${pattern}`)
     .order('created_at', { ascending: false })
     .range(offset, offset + limit)
@@ -150,7 +177,7 @@ export async function searchTracks(filter: MusicSearchFilter): Promise<MusicTrac
 }
 
 export async function getCategories(): Promise<MusicCategory[]> {
-  const { data, error } = await supabase
+  const { data, error } = await createAdminClient()
     .from('music_categories')
     .select('id, slug, label_i18n, sort_order')
     .eq('is_active', true)
@@ -166,63 +193,8 @@ export async function getCategories(): Promise<MusicCategory[]> {
   }))
 }
 
-// Append-only usage log write. Unlike the read paths, this cannot use the
-// module's own anon client: music_usage's INSERT policy is
-// WITH CHECK (auth.uid() = user_id), which the anon client (no session) can
-// never satisfy. So the caller passes in its own authenticated client (an API
-// route's per-request Supabase client) and RLS enforces that user_id matches
-// the signed-in user. Best-effort — the caller treats failures as non-fatal.
-export async function recordUsage(
-  client: SupabaseClient,
-  row: { trackId: string; entityType: string; entityId: string; userId: string }
-): Promise<void> {
-  await client.from('music_usage').insert({
-    track_id: row.trackId,
-    entity_type: row.entityType,
-    entity_id: row.entityId,
-    user_id: row.userId,
-  })
-}
-
-// Registers a clip's own audio as a reusable "original sound" (TikTok model).
-// Phase 1: audio_url is a POINTER to the clip's media_url — no audio extraction,
-// no ffmpeg. Later (Phase 2) we can extract audio to its own file and just swap
-// what audio_url points at; every reader already goes through audio_url.
-// Requires the caller's AUTHENTICATED client: the music_tracks INSERT RLS policy
-// is WITH CHECK (auth.uid() = uploaded_by AND music_type = 'original_sound' AND
-// rights_confirmed = true), which the module's anon read client can't satisfy.
-// Returns the new track id, or null on any failure (best-effort — never blocks
-// the post that triggered it).
-export async function insertOriginalSoundTrack(
-  client: SupabaseClient,
-  row: { title: string; artist: string | null; durationSec: number; audioUrl: string; coverUrl: string | null; uploadedBy: string }
-): Promise<string | null> {
-  const { data: provider } = await client
-    .from('music_providers').select('id').eq('slug', 'internal').single()
-  if (!provider) return null
-  const { data, error } = await client
-    .from('music_tracks')
-    .insert({
-      title: row.title,
-      artist: row.artist,
-      duration_sec: row.durationSec,
-      audio_url: row.audioUrl,
-      preview_url: row.audioUrl,
-      cover_url: row.coverUrl,
-      provider_id: provider.id,
-      music_type: 'original_sound',
-      uploaded_by: row.uploadedBy,
-      rights_confirmed: true,
-      is_active: true,
-    })
-    .select('id')
-    .single()
-  if (error || !data) return null
-  return data.id as string
-}
-
 export async function getProviders(): Promise<MusicProvider[]> {
-  const { data, error } = await supabase
+  const { data, error } = await createAdminClient()
     .from('music_providers')
     .select('id, slug, name')
     .order('name', { ascending: true })

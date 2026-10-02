@@ -1,0 +1,27 @@
+{
+ "login": "submitted → /",
+ "ask": {
+  "sent": "sent",
+  "ms": 55634,
+  "status": 200
+ },
+ "card": {
+  "tips": "📍 Mẹo địa phương Nướng Đường Tàu Đà Lạt: Nướng Đường Tàu nổi tiếng với thịt nướng Tây Nguyên và rau rừng tươi - hãy thử thêm cơm lam nếu có Quán Dì 5 - Nướng Tây Nguyên - Lẩu Cá Tầm Đà Lạt: Lẩu cá tầm là đặc sản Đà Lạt, cá tươi từ hồ Tuyền Lâm - nên gọi thêm rau rừng và nấm địa phương",
+  "hasPlanShare": true
+ },
+ "share": "/plan/7esQ59X4frcyFacebookSao",
+ "brochure": {
+  "status": "Không tìm thấy kế hoạch này | TappyAI",
+  "tipsShown": false,
+  "notFound": false
+ },
+ "planner": {
+  "hasImg": false,
+  "glyph": true,
+  "title": "Chuyến đi Đà Lạt 2 ngày 1 đêm - Trải nghiệm ẩm thực địa phương\nChuyến đi\n2 ngày\n"
+ },
+ "http": [
+  "404 GET http://localhost:3007/plan/7esQ59X4frcyFacebookSao"
+ ],
+ "errors": []
+}

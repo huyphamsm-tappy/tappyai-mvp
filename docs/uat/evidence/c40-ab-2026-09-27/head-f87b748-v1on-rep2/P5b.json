@@ -1,0 +1,172 @@
+{
+  "id": "P5b",
+  "text": "dưới 300k",
+  "parent": "P5",
+  "status": 200,
+  "ms": 17590,
+  "evidenceId": "7cd8ca47-3f88-4dfb-bcc7-ba00b2714560",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "spa massage",
+        "type": "spa"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "LaVie En Spa - Massage Hochiminh | Massage near me | 胡志明市按摩",
+      "rating": 4.8,
+      "count": 192,
+      "hours": "09:00–02:30",
+      "distance_km": 0.9,
+      "address": "255 Lý Tự Trọng, P. Phú Thuận, Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "森嶼SPA - SPA Thái Lan chính thống/MASSAGE tinh dầu"
+    },
+    {
+      "name": "Trải nghiệm Spa và Massage tại The Spa By Thalgo ở ..."
+    },
+    {
+      "name": "SIZ SPA - Best Massage Spa and Packages - District 1",
+      "rating": 4.9,
+      "count": 1073,
+      "hours": "10:00–22:15",
+      "distance_km": 1.7,
+      "address": "154 Đ. Cống Quỳnh, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Spa & Massage Lisa",
+      "rating": 4.7,
+      "count": 421,
+      "hours": "09:00–02:00",
+      "distance_km": 0.5,
+      "address": "13 Đông Du, Quận 1, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Raku Spa Massage",
+      "rating": 4.7,
+      "count": 109,
+      "hours": "09:00–22:00",
+      "distance_km": 1.7,
+      "address": "153/3 Nguyễn Thị Minh Khai, Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Massage Tân Sơn Nhất | Spa massage Tân Bình | Spa Huyền Healing - Dưỡng Sinh Đông Y",
+      "rating": 4.8,
+      "count": 121,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 5.6,
+      "address": "197 Đ. Nguyễn Thái Bình, Tân Sơn Nhất, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Serene Head Spa & Massage - Saigon Branch",
+      "rating": 5,
+      "count": 198,
+      "hours": "09:30–23:00",
+      "distance_km": 0.4,
+      "address": "54 Đông Du, Ward, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Spa Massage 205",
+      "rating": 4.4,
+      "count": 45,
+      "hours": "08:00–01:00",
+      "distance_km": 0.7,
+      "address": "205 Lý Tự Trọng, Bến Thành, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Gạo Spa - Massage Hochiminh",
+      "rating": 4.5,
+      "count": 189,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 0.8,
+      "address": "231 Lý Tự Trọng, p, Bến Thành, Hồ Chí Minh 71000, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình giả sử bạn muốn massage gần vị trí hiện tại (Quận 1) hôm nay. Tuy nhiên, cần lưu ý là **cả 10 chỗ tìm được đều chưa xác nhận được giá cụ thể**, nên mình không thể đảm bảo nằm trong ngân sách dưới 300k VND.\n\n**Serene Head Spa & Massage** — **5⭐ (198 đánh giá Google Maps)**, cách bạn chỉ ~0.4km, mở 09:30–23:00.\n\n**Spa & Massage Lisa** — **4.7⭐ (421 đánh giá Google Maps)**, cách ~0.5km, mở 09:00–02:00.\n\nCả hai đều ở Quận 1 gần vị trí bạn. Bạn có thể gọi trước để hỏi giá gói massage phù hợp với ngân sách không?\n\nKết quả chưa có mức giá, nên mình chưa khẳng định được có vừa ngân sách của bạn không.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem Serene Head Spa trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=13719755983101528130\",\"primary\":true},{\"label\":\"🌐 Website Serene Head Spa\",\"type\":\"website\",\"url\":\"https://saigon.serenespa.vn/\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Gọi để hỏi giá massage|Xem các spa khác ở Quận 1|Massage chuyên trị liệu hay thư giãn[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "massage"
+    },
+    {
+      "role": "assistant",
+      "content": "Để chọn đúng chỗ, mình cần biết thêm:\n• Tầm giá? (dưới 300k / 300–500k / trên 500k)\n• Mấy người? (1–2 người / 3–5 người / nhóm đông)\nBạn trả lời phần nào cũng được, phần còn lại mình tự giả sử và nói rõ.\n\n[FOLLOWUPS]dưới 300k|300–500k|trên 500k[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "dưới 300k"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn muốn massage gần vị trí hiện tại (Quận 1) hôm nay. Tuy nhiên, cần lưu ý là **cả 10 chỗ tìm được đều chưa xác nhận được giá cụ thể**, nên mình không thể đảm bảo nằm trong ngân sách dưới 300k VND.\n\n**Serene Head Spa & Massage** — **5⭐ (198 đánh giá Google Maps)**, cách bạn chỉ ~0.4km, mở 09:30–23:00.\n\n**Spa & Massage Lisa** — **4.7⭐ (421 đánh giá Google Maps)**, cách ~0.5km, mở 09:00–02:00.\n\nCả hai đều ở Quận 1 gần vị trí bạn. Bạn có thể gọi trước để hỏi giá gói massage phù hợp với ngân sách không?\n\nKết quả chưa có mức giá, nên mình chưa khẳng định được có vừa ngân sách của bạn không.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem Serene Head Spa trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=13719755983101528130\",\"primary\":true},{\"label\":\"🌐 Website Serene Head Spa\",\"type\":\"website\",\"url\":\"https://saigon.serenespa.vn/\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Gọi để hỏi giá massage|Xem các spa khác ở Quận 1|Massage chuyên trị liệu hay thư giãn[/FOLLOWUPS]"
+    }
+  ]
+}

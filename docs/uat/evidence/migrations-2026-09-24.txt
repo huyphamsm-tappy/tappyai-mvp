@@ -1,0 +1,51 @@
+# Migration reconciliation evidence — 2026-09-24
+
+## G1 apply on AUDIT (PRE-FLIGHT CHECK 2 passed)
+PRE-FLIGHT CHECK 2: the running app (.env.local of g1-place-guard) points at zdaprdfgpbpnxyofagmc = AUDIT (non-prod). Proceeding.
+BEFORE: {"shared_results":false,"anon_identity_map":false,"fn_bump":false,"parent_id":false,"owner_is_anonymous":false,"sr_rls":null,"aim_rls":null,"sr_policies":0,"aim_policies":0}
+APPLIED 20260913_g1_growth_foundation.sql
+APPLIED 20260918_g1b_share_ancestry.sql
+AFTER : {"shared_results":true,"anon_identity_map":true,"fn_bump":true,"parent_id":true,"owner_is_anonymous":true,"sr_rls":true,"aim_rls":true,"sr_policies":2,"aim_policies":0}
+anon/authenticated table grants: [{"grantee":"authenticated","p":"SELECT"}]
+
+## shared_results probe BEFORE apply
+PRE-FLIGHT: supabase ref zdaprdfgpbpnxyofagmc (audit)
+POST /api/shared-results → 500 {"error":"server_error","message":"Lỗi server"}
+GET /feed.xml → 200
+GET /sitemap.xml → 200
+GET /food → 200
+GET /api/oembed?url=http%3A%2F%2Flocalhost%3 → 404
+slug: (none)
+
+## shared_results probe AFTER apply
+PRE-FLIGHT: supabase ref zdaprdfgpbpnxyofagmc (audit)
+POST /api/shared-results → 201 {"id":"…","slug":"QNgw8uoghB","path":"/r/QNgw8uoghB","url":"…","title":"Lên lịch trình 1 ngà
+GET /r/QNgw8uoghB → 200
+GET /r/QNgw8uoghB/og.png → 200
+GET /api/shared-results/QNgw8uoghB → 200
+GET /feed.xml → 200
+GET /sitemap.xml → 200
+GET /food → 200
+GET /api/oembed?url=http%3A%2F%2Flocalhost%3 → 200
+slug: QNgw8uoghB
+
+## All 16 release-delta migrations on AUDIT (read-only)
+20260905_chat_messaging_phase1             audit: true
+20260906_phase6_messenger_reachability     audit: true
+20260913_g1_growth_foundation              audit: true
+20260913_plan_shares                       audit: true
+20260915_profile_public_presentation       audit: true
+20260915_review_shares                     audit: true
+20260918_g1b_share_ancestry                audit: true
+20260920100000_commerce_providers          audit: true
+20260920110000_commerce_feed_items         audit: true
+20260920_f028_dob_self_correct             audit: true
+20260921_f032_admin_role_actor             audit: true
+20260921_music_tracks_lockdown             audit: true
+20260921_user_events_ga4_event_types       audit: true
+20260921_user_events_shopping_search       audit: true
+20260922_groups_avatar_url                 audit: true
+20260922_music_soundhelix_attribution      audit: true
+
+## Dev server log line for the BEFORE POST (500)
+[shared-results] create failed: Could not find the table 'public.shared_results' in the schema cache

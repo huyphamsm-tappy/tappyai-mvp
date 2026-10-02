@@ -1,0 +1,645 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "nhà hàng ăn ngon Đà Nẵng Da Nang",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@16.0544,108.2022,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T01:16:49.674Z",
+ "body": {
+  "searchParameters": {
+   "q": "nhà hàng ăn ngon Đà Nẵng Da Nang",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@16.0544,108.2022,14z",
+   "engine": "google"
+  },
+  "ll": "@16.0543915,108.2021997,14z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Mộc quán Seafood Đà Nẵng",
+    "address": "26 Tô Hiến Thành, An Hải, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0640292,
+    "longitude": 108.2415578,
+    "rating": 4.8,
+    "ratingCount": 30573,
+    "type": "Nhà hàng hải sản",
+    "types": [
+     "Nhà hàng hải sản",
+     "Nhà hàng"
+    ],
+    "website": "https://mocseafood.com/",
+    "phoneNumber": "+84 905 665 058",
+    "openingHours": {
+     "Thứ Ba": "10:30–22:30",
+     "Thứ Tư": "10:30–22:30",
+     "Thứ Năm": "10:30–22:30",
+     "Thứ Sáu": "10:30–22:30",
+     "Thứ Bảy": "10:30–22:30",
+     "Chủ Nhật": "10:30–22:30",
+     "Thứ Hai": "10:30–22:30"
+    },
+    "bookingLinks": [
+     "http://pf.kakao.com/_AxcgZxj/chat",
+     "https://business.facebook.com/latest/inbox/messenger?asset_id=332627847363931&mailbox_id=332627847363931&selected_item_id=100002245787074&thread_type=FB_MESSAGE"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLc0ZZWQdctXcL21PchhFzklmrwCz5KBxjqtU9g03J-gQdV4DIStyqOp2zC2ZvA1jYuq7gGaS0iEUKEQsIvSjAjhFIWJ_zLxIBF20vUPeZCHrtYO8yWSQucsLditpTeScZbfU_4M",
+    "cid": "2059427300039139311",
+    "fid": "0x314217721a8aafc7:0x1c948e37d3931fef",
+    "placeId": "ChIJx6-KGnIXQjER7x-T0zeOlBw"
+   },
+   {
+    "position": 2,
+    "title": "NGON DA NANG - VIETNAMESE CUISINE RESTAURANT",
+    "address": "88B Lê Quang Đạo, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0494988,
+    "longitude": 108.2456527,
+    "rating": 4.9,
+    "ratingCount": 2214,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "website": "https://ngondanangrestaurant.com/",
+    "phoneNumber": "+84 387 979 043",
+    "openingHours": {
+     "Thứ Ba": "09:00–22:30",
+     "Thứ Tư": "09:00–22:30",
+     "Thứ Năm": "09:00–22:30",
+     "Thứ Sáu": "09:00–22:30",
+     "Thứ Bảy": "09:00–22:30",
+     "Chủ Nhật": "09:00–22:30",
+     "Thứ Hai": "09:00–22:30"
+    },
+    "bookingLinks": [
+     "https://ngondanangrestaurant.com/reservation/",
+     "https://wa.me/qr/QR4A56WCIJBHN1"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLdUvRg4vEFcF1hH2Rbn6Tmg6drMtsYaKaeeaoNPRa5Ey7kHq0tn4XTWtmCJIAUceG9ZYdJaMP8GpzSrNNco6QqDE8BtbzNiltvLO2vr9FhNEKix_VgsubH-rPs5zWb_QQj_7FzFucdQuEAH",
+    "cid": "9932503529764339621",
+    "fid": "0x3142178f48e403f1:0x89d75755edeabfa5",
+    "placeId": "ChIJ8QPkSI8XQjERpb_q7VVX14k"
+   },
+   {
+    "position": 3,
+    "title": "Ngon Phố Đà - Homey Authentic Vietnamese Cuisine",
+    "address": "300 Võ Nguyên Giáp, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.04943,
+    "longitude": 108.2485706,
+    "rating": 4.9,
+    "ratingCount": 598,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "website": "http://ngonphoda.com/",
+    "phoneNumber": "+84 812 641 316",
+    "openingHours": {
+     "Thứ Ba": "10:00–22:00",
+     "Thứ Tư": "10:00–22:00",
+     "Thứ Năm": "10:00–22:00",
+     "Thứ Sáu": "10:00–22:00",
+     "Thứ Bảy": "10:00–22:00",
+     "Chủ Nhật": "10:00–22:00",
+     "Thứ Hai": "10:00–22:00"
+    },
+    "bookingLinks": [
+     "https://ngonphoda.com/",
+     "https://book.chope.co/booking?source=google_dining&rid=ngonphoda2605vn&rwg_token=AE37R_ifJFqmmHAUPG9VghZfbMik58E1f9Gq7fPRzKdYAygr6_Mfn3Wp1U9GtXQtkrE1oxfejwTegyREKHxhHU6BXfxujMPVrycbbcJGzyUa7OkiDNvd4eE%3D",
+     "https://www.google.com/maps/reserve/v/dine/c/hwMPchKIpUM?source=pa&opi=79508299"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLdxQk-tDGgp-Mx_iozACEAjUJ6a3PXZu1_VCHMXRSdItpx7JxQ32yEY2ygzxtQGUCSMABE0mug3sCQH74ZnHsKetJZMhqZegYfh5Ywj05auh8PFVTtFuahxPLrae8LtVr1P2sQF1va-x12_",
+    "cid": "13640010682201251552",
+    "fid": "0x314217ca176b97d9:0xbd4b0d7295239ee0",
+    "placeId": "ChIJ2ZdrF8oXQjER4J4jlXINS70"
+   },
+   {
+    "position": 4,
+    "title": "Cơm nhà vui",
+    "address": "86 Đ. 2 Tháng 9, Hải Châu, Đà Nẵng 10000, Việt Nam",
+    "latitude": 16.0566182,
+    "longitude": 108.22206709999999,
+    "rating": 4.8,
+    "ratingCount": 2202,
+    "type": "Nhà hàng Việt Nam",
+    "types": [
+     "Nhà hàng Việt Nam"
+    ],
+    "phoneNumber": "+84 933 865 786",
+    "openingHours": {
+     "Thứ Ba": "10:00–22:00",
+     "Thứ Tư": "10:00–22:00",
+     "Thứ Năm": "10:00–22:00",
+     "Thứ Sáu": "10:00–22:00",
+     "Thứ Bảy": "10:00–22:00",
+     "Chủ Nhật": "10:00–22:00",
+     "Thứ Hai": "10:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLfvsVX83pJTQ8Y_iUMLfLXDQkyT3D_ICk_X-1EjT4SOaVCmPlmwFu4Fu5rCzBCjo3b52IsZCIB4pkENWH4c129k5w6bYNCn1ZZKXvERIn-wBjp2dJSpOiq5V7dLjnqthcFsv3Kr",
+    "cid": "10812984134081417631",
+    "fid": "0x314219ab4ef3958b:0x960f6fc7c1db919f",
+    "placeId": "ChIJi5XzTqsZQjERn5HbwcdvD5Y"
+   },
+   {
+    "position": 5,
+    "title": "Ngon Hà Nội Xưa Restaurant",
+    "address": "285 Hồ Nghinh, Sơn Trà, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.065637799999998,
+    "longitude": 108.2433879,
+    "rating": 4.7,
+    "ratingCount": 1299,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng",
+     "Cửa hàng bán thực phẩm đặc sản",
+     "Nhà hàng phở"
+    ],
+    "phoneNumber": "+84 868 891 563",
+    "openingHours": {
+     "Thứ Ba": "09:30–22:00",
+     "Thứ Tư": "09:30–22:00",
+     "Thứ Năm": "09:30–22:00",
+     "Thứ Sáu": "09:30–22:00",
+     "Thứ Bảy": "09:30–22:00",
+     "Chủ Nhật": "09:30–22:00",
+     "Thứ Hai": "09:30–22:00"
+    },
+    "bookingLinks": [
+     "https://www.google.com/maps/reserve/v/dine/c/qETenCcliWA?source=pa&opi=79508299"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOgtsZJ7fX7mWKaIvnLr7giTRDLuU-39Zm8ZvbhAytEQlx-sH_Pq5FgCwL9flMNSrv519xcZYit-WTnjieaxx5OqRQ18OPioDw-BF3wFB_O8ZRNg7OGS89DuETjEWcWQHGRBbu159Z3_Ghs",
+    "cid": "5915270611312402098",
+    "fid": "0x314217e8aa46d2b9:0x52174347d1955eb2",
+    "placeId": "ChIJudJGqugXQjERsl6V0UdDF1I"
+   },
+   {
+    "position": 6,
+    "title": "Quán Cô Hồng - Đặc Sản Đà Nẵng",
+    "address": "103 Nguyễn Văn Thoại, An Hải, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0543959,
+    "longitude": 108.2393137,
+    "rating": 4.5,
+    "ratingCount": 2771,
+    "type": "Nhà hàng Việt Nam",
+    "types": [
+     "Nhà hàng Việt Nam",
+     "Nhà hàng"
+    ],
+    "website": "http://www.quancohong.com/",
+    "phoneNumber": "+84 905 935 755",
+    "openingHours": {
+     "Thứ Ba": "09:00–21:30",
+     "Thứ Tư": "09:00–21:30",
+     "Thứ Năm": "09:00–21:30",
+     "Thứ Sáu": "09:00–21:30",
+     "Thứ Bảy": "09:00–21:30",
+     "Chủ Nhật": "09:00–21:30",
+     "Thứ Hai": "09:00–21:30"
+    },
+    "bookingLinks": [
+     "https://order.ipos.vn/menu?pos_parent=BRAND-JTWU&pos_id=60559"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLeyQsseoPcKVEn4yJU4pkIuKZAZqWhvjt9IUo3MkVA1ZYviTRlhVKlfg1Eu3Iv1-TVYJb0o7oQoM_zx-b-odyndSVlb-TbpOW44oGUALLnpF4HZ7ki91QQ6Q6s68SXG0gWXK9OF747W9KzI",
+    "cid": "7125493191301868430",
+    "fid": "0x3142172a308c2623:0x62e2d64e15032b8e",
+    "placeId": "ChIJIyaMMCoXQjERjisDFU7W4mI"
+   },
+   {
+    "position": 7,
+    "title": "Ăn Thôi",
+    "address": "114 Bạch Đằng, Hải Châu, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0682463,
+    "longitude": 108.2248133,
+    "rating": 4.8,
+    "ratingCount": 8098,
+    "type": "Nhà hàng Việt Nam",
+    "types": [
+     "Nhà hàng Việt Nam",
+     "Nhà hàng"
+    ],
+    "website": "https://an-thoi.vn/",
+    "phoneNumber": "+84 987 824 285",
+    "openingHours": {
+     "Thứ Ba": "10:30–21:30",
+     "Thứ Tư": "10:30–21:30",
+     "Thứ Năm": "10:30–21:30",
+     "Thứ Sáu": "10:30–21:30",
+     "Thứ Bảy": "10:30–21:30",
+     "Chủ Nhật": "10:30–21:30",
+     "Thứ Hai": "10:30–21:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLcKJsDYJ9w6W_QN3rvn65owDjUnYiJAPCwyDY9_xpQG5JveC7SlqBCsjPksLMSoLXLJBn0EPJ-DWEzYhMdU3oT8c6IPBf4FWjtUhDlwhX6CNQybvHGasCz6mHwo9zM2-kiXTQId",
+    "cid": "15967010791412460319",
+    "fid": "0x3142194921d15361:0xdd9637b7caf7eb1f",
+    "placeId": "ChIJYVPRIUkZQjERH-v3yrc3lt0"
+   },
+   {
+    "position": 8,
+    "title": "Bếp Cuốn Đà Nẵng - Michelin Selected 2025-2026",
+    "address": "31-33 Trần Bạch Đằng, An Hải, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0579628,
+    "longitude": 108.2451505,
+    "rating": 4.9,
+    "ratingCount": 18058,
+    "type": "Nhà hàng Việt Nam",
+    "types": [
+     "Nhà hàng Việt Nam",
+     "Nhà hàng"
+    ],
+    "website": "https://www.facebook.com/DINNER.LUNCH.BEPCUON/",
+    "phoneNumber": "+84 702 689 989",
+    "openingHours": {
+     "Thứ Ba": "10:30–21:00",
+     "Thứ Tư": "10:30–21:00",
+     "Thứ Năm": "10:30–21:00",
+     "Thứ Sáu": "10:30–21:00",
+     "Thứ Bảy": "10:30–21:00",
+     "Chủ Nhật": "10:30–21:00",
+     "Thứ Hai": "10:30–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLeYlJ8Wx0o6ZKvvVKjaXs9GgdUzzHbTHG1Us-e1nTVX7HOOyinq575t64jaPYaP-6J4wzy3Xc3d1YzkrqeFcJBv3HZfBriKYFavyppVgJLmk-vJBwY0W0aSGI1bNmQIzZDS3CyFwg",
+    "cid": "15858543023798826021",
+    "fid": "0x314217f4632748f9:0xdc14dcdba4c73425",
+    "placeId": "ChIJ-UgnY_QXQjERJTTHpNvcFNw"
+   },
+   {
+    "position": 9,
+    "title": "Nhà hàng Nhà Gỗ Việt Đà Nẵng",
+    "address": "49 Nguyễn Thái Học, Hải Châu, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0679495,
+    "longitude": 108.2232911,
+    "rating": 4.6,
+    "ratingCount": 2539,
+    "type": "Nhà hàng Việt Nam",
+    "types": [
+     "Nhà hàng Việt Nam"
+    ],
+    "website": "https://nhagoviet.imweb.me/",
+    "phoneNumber": "+84 342 454 487",
+    "openingHours": {
+     "Thứ Ba": "09:00–21:00",
+     "Thứ Tư": "09:00–21:00",
+     "Thứ Năm": "09:00–21:00",
+     "Thứ Sáu": "09:00–21:00",
+     "Thứ Bảy": "09:00–21:00",
+     "Chủ Nhật": "09:00–21:00",
+     "Thứ Hai": "09:00–21:00"
+    },
+    "bookingLinks": [
+     "https://wa.me/84342454487",
+     "https://m.me/531019130075275"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLfC5aNW61f65P11QGwh3O5RYYmR1xkOed5KVairWNSTHBrEIV1z9g3nPAYbXW7r43s6LY4hxrNVWgmv8wneiP3IAGGaDycuwZqB1ufvt-LYZhxbadatG_5es_2HDHWfpOWl24gwcSKpbEHE",
+    "cid": "12664944836025868011",
+    "fid": "0x3142196e455d2b63:0xafc2ec3a033d5eeb",
+    "placeId": "ChIJYytdRW4ZQjER6149Azrswq8"
+   },
+   {
+    "position": 10,
+    "title": "Cơm Nhà Vui",
+    "address": "133 Hà Bổng, An Hải, Đà Nẵng 10000, Việt Nam",
+    "latitude": 16.0659232,
+    "longitude": 108.2445434,
+    "rating": 4.7,
+    "ratingCount": 2912,
+    "type": "Nhà hàng Việt Nam",
+    "types": [
+     "Nhà hàng Việt Nam"
+    ],
+    "website": "https://www.facebook.com/comngondanang133",
+    "phoneNumber": "+84 931 886 133",
+    "openingHours": {
+     "Thứ Ba": "10:00–22:00",
+     "Thứ Tư": "10:00–22:00",
+     "Thứ Năm": "10:00–22:00",
+     "Thứ Sáu": "10:00–22:00",
+     "Thứ Bảy": "10:00–22:00",
+     "Chủ Nhật": "10:00–22:00",
+     "Thứ Hai": "10:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLfnjuwlyAiJgpv8FcVd0SzNvsZyAZpAZkNk54hm_aU86BG7O2_ge6Vl2BdRklohZld0RUVwj0B7-qnm9kydvODLg611bAcZscapq9hvMkDlIkoVFV-4RnzbeEA0uX-TSpFiG1fH",
+    "cid": "14759426183335990526",
+    "fid": "0x314217731e592bd1:0xccd403ea3a5754fe",
+    "placeId": "ChIJ0StZHnMXQjER_lRXOuoD1Mw"
+   },
+   {
+    "position": 11,
+    "title": "Nhà An - Vietnamese local food restaurant and vegan",
+    "address": "101 Hồ Nghinh, An Hải, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0749852,
+    "longitude": 108.2430715,
+    "rating": 4.8,
+    "ratingCount": 4133,
+    "type": "Nhà hàng Việt Nam",
+    "types": [
+     "Nhà hàng Việt Nam"
+    ],
+    "website": "https://business.google.com/v/_/015465186915816999829/5124/_?caid=22362394273&agid=183520665744&gclid=Cj0KCQjwhr6_BhD4ARIsAH1YdjDMXsK-asvuUcT0rHvt2qeBwccqCRWbrHsOoRA0GbV7CRWnb4WL1p8aAi9bEALw_wcB&gad_source=6&gclid=Cj0KCQjwqcO_BhDaARIsACz62vPe1sNvGlEZyRfKIZwXze7icWTF59gaGvL3bEFvKZyJQ-LqS_nnPXIaAvj7EALw_wcB",
+    "phoneNumber": "+84 903 518 699",
+    "openingHours": {
+     "Thứ Ba": "10:00–23:00",
+     "Thứ Tư": "10:00–23:00",
+     "Thứ Năm": "10:00–23:00",
+     "Thứ Sáu": "10:00–23:00",
+     "Thứ Bảy": "10:00–23:00",
+     "Chủ Nhật": "10:00–23:00",
+     "Thứ Hai": "10:00–23:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLcmnPUhebA5akDMetKUYufTIUgEGkarkXPsqGyVq1dTUXYPFzhwNDDPZwG7EI7l6M-RiviOmSmAMshKUR7Pe0uc4I4ANDJVkaytU12oZgi9Fy8WnHTifmGcxpSvaC87q5fItcASkL7hey6V",
+    "cid": "2211008984260745311",
+    "fid": "0x3142170d14f5ea4f:0x1eaf14f4ee0f185f",
+    "placeId": "ChIJT-r1FA0XQjERXxgP7vQUrx4"
+   },
+   {
+    "position": 12,
+    "title": "Nhà Bếp Xưa Restaurant",
+    "address": "64 Hà Bổng, Sơn Trà, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0660246,
+    "longitude": 108.244216,
+    "rating": 4.8,
+    "ratingCount": 9175,
+    "type": "Nhà hàng Việt Nam",
+    "types": [
+     "Nhà hàng Việt Nam"
+    ],
+    "phoneNumber": "+84 906 123 858",
+    "openingHours": {
+     "Thứ Ba": "10:30–21:30",
+     "Thứ Tư": "10:00–21:30",
+     "Thứ Năm": "10:00–21:30",
+     "Thứ Sáu": "10:00–21:30",
+     "Thứ Bảy": "10:00–21:30",
+     "Chủ Nhật": "10:00–21:30",
+     "Thứ Hai": "10:00–21:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLeX9wjjqXypCzBooEPB0glRknIxS1Xs60YxjSo_zsH5L9cCxMSL1B7-Ng36-OobXZjVYtypYLR7-i4KqxPC23Mf5VfRUFvNdKPWl7So3PZV7JQKZTLxX4z4bMNL2C8WdTTTlPWC",
+    "cid": "17223004486738205102",
+    "fid": "0x314217f1aeaab4db:0xef0467544cfd59ae",
+    "placeId": "ChIJ27SqrvEXQjERrln9TFRnBO8"
+   },
+   {
+    "position": 13,
+    "title": "Thìa Gỗ Đà Nẵng",
+    "address": "53 Phan Thúc Duyện, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.052986699999998,
+    "longitude": 108.2415777,
+    "rating": 4.7,
+    "ratingCount": 7651,
+    "type": "Nhà hàng Việt Nam",
+    "types": [
+     "Nhà hàng Việt Nam",
+     "Nhà hàng cao cấp",
+     "Nhà hàng"
+    ],
+    "website": "http://danang.thiagorestaurant.com/",
+    "phoneNumber": "+84 236 3689 005",
+    "description": "Nhà hàng bình dân phục vụ chả giò, phở, bánh mì và các món ăn đặc trưng khác của Việt Nam cùng với bia.",
+    "openingHours": {
+     "Thứ Ba": "10:00–22:00",
+     "Thứ Tư": "10:00–22:00",
+     "Thứ Năm": "10:00–22:00",
+     "Thứ Sáu": "10:00–22:00",
+     "Thứ Bảy": "10:00–22:00",
+     "Chủ Nhật": "10:00–22:00",
+     "Thứ Hai": "10:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLfukOSp2vS3lAX1CLOj2p6M2jKpknl93W1Iv5l2mUp5tTw8Evi1TRHgDn0bV5SlAd5_3q1yh-E5deVAgYzTTDXbdnOlSqioEZst4P8sejYVVw2lZl2iLuKPjgUi8Qm4w2EZQ-J4",
+    "cid": "5776029369530758645",
+    "fid": "0x314219c3b54c18d7:0x5028941bdf1ab5f5",
+    "placeId": "ChIJ1xhMtcMZQjER9bUa3xuUKFA"
+   },
+   {
+    "position": 14,
+    "title": "Nhà hàng Ngon Thị Hoa",
+    "address": "Str, 100 Lê Quang Đạo, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.048904399999998,
+    "longitude": 108.2458626,
+    "rating": 4.4,
+    "ratingCount": 1802,
+    "type": "Nhà hàng Việt Nam",
+    "types": [
+     "Nhà hàng Việt Nam",
+     "Quán cà phê",
+     "Nhà hàng"
+    ],
+    "website": "http://ngonthihoarestaurant.com/",
+    "phoneNumber": "+84 967 220 100",
+    "openingHours": {
+     "Thứ Ba": "06:00–22:00",
+     "Thứ Tư": "06:00–22:00",
+     "Thứ Năm": "06:00–22:00",
+     "Thứ Sáu": "06:00–22:00",
+     "Thứ Bảy": "06:00–22:00",
+     "Chủ Nhật": "06:00–22:00",
+     "Thứ Hai": "06:00–22:00"
+    },
+    "bookingLinks": [
+     "https://www.facebook.com/NgonThiHoa",
+     "https://www.google.com/maps/reserve/v/dine/c/Q4HHsiAmycc?source=pa&opi=79508299"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLfa7q8eWjYzUxZXBJMY3rdm_n6PpcubmROOGfbkLEP8PkSyrIrWcU4Msy_xJYHTUdMPlZ-xrPXMA7scbHu8ZpPiz69EnsgwcLhd8eiRjv2IJvoB2HzbEP2XZjZJirb2gSTcW9Zy",
+    "cid": "641975279915482831",
+    "fid": "0x314217f73d08ac15:0x8e8c11da1f1becf",
+    "placeId": "ChIJFawIPfcXQjERz77xoR3B6Ag"
+   },
+   {
+    "position": 15,
+    "title": "Nhà Hàng Bếp Xưa",
+    "address": "27 Nguyễn Chí Thanh, Hải Châu, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.079032599999998,
+    "longitude": 108.2202324,
+    "rating": 4.4,
+    "ratingCount": 546,
+    "type": "Nhà hàng gia đình",
+    "types": [
+     "Nhà hàng gia đình",
+     "Nhà hàng Việt Nam"
+    ],
+    "website": "http://bepxuadanang.com/",
+    "phoneNumber": "+84 966 204 562",
+    "openingHours": {
+     "Thứ Ba": "10:00–14:00, 16:00–21:00",
+     "Thứ Tư": "10:00–14:00, 16:00–21:00",
+     "Thứ Năm": "10:00–14:00, 16:00–21:00",
+     "Thứ Sáu": "10:00–14:00, 16:00–21:00",
+     "Thứ Bảy": "10:00–14:00, 16:00–21:00",
+     "Chủ Nhật": "10:00–14:00, 16:00–21:00",
+     "Thứ Hai": "10:00–14:00, 16:00–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNNAQC0u0c1A1EjCWORa2l42Z6sjMxElrAeIxpweCoSyNsNsUyy9M0WXPsK6cp-GpgC-QQmOpGovJ9LCUeCrhwuP08Aem5UUHgpD-BcHfwacdE7mLEa2oMtJ0upZswxuvQPjTkQ",
+    "cid": "979233038137368402",
+    "fid": "0x314219d42db3708d:0xd96ef428e811f52",
+    "placeId": "ChIJjXCzLdQZQjERUh-BjkLvlg0"
+   },
+   {
+    "position": 16,
+    "title": "Nhà hàng Madame Lân",
+    "address": "04 Bạch Đằng, Hải Châu, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.081406299999998,
+    "longitude": 108.2232528,
+    "rating": 4.3,
+    "ratingCount": 13910,
+    "type": "Nhà hàng Việt Nam",
+    "types": [
+     "Nhà hàng Việt Nam",
+     "Nhà hàng"
+    ],
+    "website": "http://madamelan.vn/",
+    "phoneNumber": "+84 905 697 555",
+    "openingHours": {
+     "Thứ Ba": "06:30–21:30",
+     "Thứ Tư": "06:30–21:30",
+     "Thứ Năm": "06:30–21:30",
+     "Thứ Sáu": "06:30–21:30",
+     "Thứ Bảy": "06:30–21:30",
+     "Chủ Nhật": "06:30–21:30",
+     "Thứ Hai": "06:30–21:30"
+    },
+    "bookingLinks": [
+     "https://madamelan.vn/dat-cho"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLeoJwVgy19wzNB9b_vphxrajEEKoMppgod6qatEeR0PZFRuhH-tLl3ophYxTCE2SGAFH9MMwWxDjnL3Q2BkVhcTjmwJv4UskTLPBL263nvLwTKGV8L34PsIqRDk8M9ovczDiErpgQ",
+    "cid": "14048210979961660194",
+    "fid": "0x31421831ce4d457b:0xc2f54574a65b6322",
+    "placeId": "ChIJe0VNzjEYQjERImNbpnRF9cI"
+   },
+   {
+    "position": 17,
+    "title": "Nhà Hàng Lão Đại",
+    "address": "100 Võ Văn Kiệt, An Hải, Đà Nẵng 100000, Việt Nam",
+    "latitude": 16.0620191,
+    "longitude": 108.235918,
+    "rating": 4,
+    "ratingCount": 2970,
+    "type": "Nhà hàng hải sản",
+    "types": [
+     "Nhà hàng hải sản",
+     "Phòng tiệc",
+     "Quán bia sân vườn",
+     "Nhà hàng giá rẻ",
+     "Nhà hàng gia đình",
+     "Nhà hàng",
+     "Nhà bán buôn hải sản"
+    ],
+    "website": "https://laodaiseafood.com/",
+    "phoneNumber": "+84 966 666 895",
+    "description": "Nhà hàng rộng rãi, nhộn nhịp có chỗ ngồi ngoài trời, bể chứa hải sản, cocktail và món ăn địa phương.",
+    "openingHours": {
+     "Thứ Ba": "Mở cửa cả ngày",
+     "Thứ Tư": "Mở cửa cả ngày",
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày"
+    },
+    "bookingLinks": [
+     "https://www.facebook.com/LaoDaiDaNang"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLeV-BG5lXBfgITUj8MNiKJKiVIwpbtaxmfC0J8zTDvhYJO5JgcxyiSEFhYXDIRMyz8Ez8NqDg9N16vmwedYTNPj5QmarOkWrA2dQ87E7FTGFC84iZ0JKyxe8A44kCQd4FBuB1BD",
+    "cid": "2196483325407730845",
+    "fid": "0x314219d5305a5279:0x1e7b79f26dff1c9d",
+    "placeId": "ChIJeVJaMNUZQjERnRz_bfJ5ex4"
+   },
+   {
+    "position": 18,
+    "title": "Nhà hàng Mr.Anh",
+    "address": "340 Ông Ích Khiêm, Thanh Khê, Đà Nẵng 590000, Việt Nam",
+    "latitude": 16.0677722,
+    "longitude": 108.2137944,
+    "rating": 4.8,
+    "ratingCount": 1537,
+    "type": "Nhà hàng Việt Nam",
+    "types": [
+     "Nhà hàng Việt Nam"
+    ],
+    "website": "https://www.facebook.com/NhaHangMrAnh.DN",
+    "phoneNumber": "+84 934 951 751",
+    "openingHours": {
+     "Thứ Ba": "10:30–20:00",
+     "Thứ Tư": "10:30–20:00",
+     "Thứ Năm": "10:30–20:00",
+     "Thứ Sáu": "10:30–20:00",
+     "Thứ Bảy": "10:30–20:00",
+     "Chủ Nhật": "10:30–20:00",
+     "Thứ Hai": "10:30–20:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLd7CXGKnFUe3VzvXUN3KMShx6OxldRCwhn8IouH_78g75orWn2LLWrkERozVp-gfNbBHEJa7BXWf-O2jJnQhZiT8c1aIkcpqrtWPm6CLbXa6ahnoTrNszLCgOcMpNjtfoSCvtWoqwfU-aWf",
+    "cid": "580947635210473999",
+    "fid": "0x314219d02e46f057:0x80ff0cbd5d2d20f",
+    "placeId": "ChIJV_BGLtAZQjERD9LS1cvwDwg"
+   },
+   {
+    "position": 19,
+    "title": "Cơm Niêu - An Nam Quán",
+    "address": "78 Trần Bạch Đằng, P, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0556756,
+    "longitude": 108.2457347,
+    "rating": 4.4,
+    "ratingCount": 862,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "website": "https://annamquan.info/",
+    "phoneNumber": "+84 788 661 233",
+    "openingHours": {
+     "Thứ Ba": "09:00–21:30",
+     "Thứ Tư": "09:00–21:30",
+     "Thứ Năm": "09:00–21:30",
+     "Thứ Sáu": "09:00–21:30",
+     "Thứ Bảy": "09:00–21:30",
+     "Chủ Nhật": "09:00–21:30",
+     "Thứ Hai": "09:00–21:30"
+    },
+    "bookingLinks": [
+     "https://www.facebook.com/comnieuannam"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLd83FO0zyZAReYroNiMgh5hqHnh8QP6_odb2GSnhI9qIQQH7AHX9VjRkw_nYy3MRoRmnxDUWHATFWEuwduQ1jAQO9Ua1KT4T-k1oXdTbZuKiNNEtItHqwDFrfkdnf00q9I-qwE4",
+    "cid": "4171387266071898488",
+    "fid": "0x314217098bedaa67:0x39e3be9e16cda978",
+    "placeId": "ChIJZ6rtiwkXQjEReKnNFp6-4zk"
+   },
+   {
+    "position": 20,
+    "title": "Cơm Ngon Đà Nẵng - Bếp Huế",
+    "address": "185 Nguyễn Văn Thoại, An Hải, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.055332099999998,
+    "longitude": 108.24266279999999,
+    "rating": 4,
+    "ratingCount": 411,
+    "type": "Nhà hàng Việt Nam",
+    "types": [
+     "Nhà hàng Việt Nam",
+     "Nhà hàng",
+     "Nhà hàng cơm"
+    ],
+    "website": "https://bephue.com/",
+    "phoneNumber": "+84 779 476 540",
+    "openingHours": {
+     "Thứ Ba": "10:00–20:30",
+     "Thứ Tư": "10:00–20:30",
+     "Thứ Năm": "10:00–20:30",
+     "Thứ Sáu": "10:00–20:30",
+     "Thứ Bảy": "10:00–20:30",
+     "Chủ Nhật": "10:00–20:30",
+     "Thứ Hai": "10:00–20:30"
+    },
+    "bookingLinks": [
+     "https://www.facebook.com/huekitchen"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLeZ6Aziq-uccFI5xWTCLl5PQ9T9H8ulrefe3LkCzqCjjSHVO47v4U8VOKjV7CCcxjG_f1IyMOgWd256-DRyieHKBM8xANWWVEGgt0BZZN1PQRCF7iwHDissjwLzMXcfEGP1OPd8EQ",
+    "cid": "9190432399528364470",
+    "fid": "0x314217d4ce9ed8b5:0x7f8af9930a2109b6",
+    "placeId": "ChIJtdieztQXQjERtgkhCpP5in8"
+   }
+  ],
+  "credits": 3
+ }
+}

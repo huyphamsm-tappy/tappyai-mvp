@@ -48,7 +48,7 @@ function literalKeysUsedInCode(): { key: string; file: string }[] {
   }
   const root = path.join(__dirname, '..', '..', '..')
   walk(path.join(root, 'components', 'admin'))
-  walk(path.join(root, 'app', 'admin'))
+  walk(path.join(root, 'app', '(app)', 'admin'))
   // The Controller's PUBLIC surface lives outside /admin — it is the one
   // Controller screen an anonymous visitor can reach, so it is also the one
   // whose missing key would be visible to someone who is not an admin. It uses

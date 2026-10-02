@@ -1,0 +1,15 @@
+composer: [quan cafe yen tinh quan 3]
+shot 10-p1
+10-p1 | error_bubble=NO | quy_nhon_on_screen=NO | waited=16s
+composer: [spa goi dau quan phu nhuan]
+shot 11-p2
+11-p2 | error_bubble=NO | quy_nhon_on_screen=NO | waited=24s
+composer: [rap phim gan quan 1]
+shot 12-p3
+12-p3 | error_bubble=NO | quy_nhon_on_screen=NO | waited=20s
+composer: [quan lau ngon quan 5]
+shot 13-p4
+13-p4 | error_bubble=NO | quy_nhon_on_screen=NO | waited=20s
+composer: [karaoke quan binh thanh]
+shot 14-p5
+14-p5 | error_bubble=NO | quy_nhon_on_screen=NO | waited=20s

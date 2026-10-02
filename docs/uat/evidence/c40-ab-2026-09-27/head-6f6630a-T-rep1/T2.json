@@ -1,0 +1,82 @@
+{
+  "id": "T2",
+  "text": "khach san da nang gan bien duoi 1tr/dem",
+  "parent": null,
+  "status": 200,
+  "ms": 17326,
+  "evidenceId": "78c590cb-5478-4dc5-90cd-aa7ff4243d0e",
+  "toolCalls": [
+    {
+      "tool": "get_hotel_prices",
+      "args": {
+        "location": "Đà Nẵng",
+        "checkIn": "2026-10-03",
+        "checkOut": "2026-10-04"
+      }
+    }
+  ],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình chọn **M Hotel Da Nang** — 4.8⭐ (2.860 đánh giá Google Maps).\n\nĐể gợi ý chính xác, mình cần tìm ngay.\n\n Hệ thống chưa hiển thị giá trực tiếp — bạn có thể kiểm tra giá realtime trên **Booking.com** hoặc **Agoda** để lọc theo mức giá.\n\nKết quả chưa có mức giá, nên mình chưa khẳng định được có vừa ngân sách của bạn không.",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "khach san da nang gan bien duoi 1tr/dem"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình chọn **M Hotel Da Nang** — 4.8⭐ (2.860 đánh giá Google Maps).\n\nĐể gợi ý chính xác, mình cần tìm ngay.\n\n Hệ thống chưa hiển thị giá trực tiếp — bạn có thể kiểm tra giá realtime trên **Booking.com** hoặc **Agoda** để lọc theo mức giá.\n\nKết quả chưa có mức giá, nên mình chưa khẳng định được có vừa ngân sách của bạn không."
+    }
+  ]
+}

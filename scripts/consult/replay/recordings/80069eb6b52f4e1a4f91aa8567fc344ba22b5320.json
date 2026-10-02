@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Hotel Majestic Saigon",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:16:42.296Z",
+ "body": {
+  "searchParameters": {
+   "q": "Hotel Majestic Saigon",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "KHÁCH SẠN MAJESTIC SÀI GÒN",
+    "imageUrl": "https://www.majesticsaigon.com/wp-content/uploads/sites/258/2023/10/KAL00751-2200x1200.jpg",
+    "imageWidth": 2200,
+    "imageHeight": 1200,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS08mmAvWcPvqhWUaI1Ol-OGzMFsdPl-A28DGi1Ei0s6g&s=10",
+    "thumbnailWidth": 738,
+    "thumbnailHeight": 402,
+    "source": "www.majesticsaigon.com",
+    "domain": "www.majesticsaigon.com",
+    "link": "https://www.majesticsaigon.com/vi/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.majesticsaigon.com%2Fwp-content%2Fuploads%2Fsites%2F258%2F2023%2F10%2FKAL00751-2200x1200.jpg&tbnid=Err_ADQdK8_zaM&imgrefurl=https%3A%2F%2Fwww.majesticsaigon.com%2Fvi%2F&docid=5eur_5kWsYJngM&w=2200&h=1200",
+    "position": 1
+   },
+   {
+    "title": "VỀ KHÁCH SẠN",
+    "imageUrl": "https://www.majesticsaigon.com/wp-content/uploads/sites/258/2023/04/slideshow-1-2000x1200.png",
+    "imageWidth": 2000,
+    "imageHeight": 1200,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTIG9slNBSoDcUma1D33gux1pIyzfa5cWMjEDk_G_r26A&s=10",
+    "thumbnailWidth": 713,
+    "thumbnailHeight": 429,
+    "source": "HOTEL MAJESTIC SAIGON",
+    "domain": "www.majesticsaigon.com",
+    "link": "https://www.majesticsaigon.com/vi/our-hotel/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.majesticsaigon.com%2Fwp-content%2Fuploads%2Fsites%2F258%2F2023%2F04%2Fslideshow-1-2000x1200.png&tbnid=lexWM_TKzPn67M&imgrefurl=https%3A%2F%2Fwww.majesticsaigon.com%2Fvi%2Four-hotel%2F&docid=LAMrhQimXXFTUM&w=2000&h=1200",
+    "position": 2
+   },
+   {
+    "title": "KHÁCH SẠN MAJESTIC SÀI GÒN",
+    "imageUrl": "https://www.majesticsaigon.com/wp-content/uploads/sites/258/2022/10/hotel_majestic_home-2200x1200.jpg",
+    "imageWidth": 2200,
+    "imageHeight": 1200,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReN7lNyTwtYqO25AvasU1m7D25-B-ZMUJ8OOS5eiSpBg&s=10",
+    "thumbnailWidth": 738,
+    "thumbnailHeight": 402,
+    "source": "www.majesticsaigon.com",
+    "domain": "www.majesticsaigon.com",
+    "link": "https://www.majesticsaigon.com/vi/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.majesticsaigon.com%2Fwp-content%2Fuploads%2Fsites%2F258%2F2022%2F10%2Fhotel_majestic_home-2200x1200.jpg&tbnid=Lj5bkqXBYvuzlM&imgrefurl=https%3A%2F%2Fwww.majesticsaigon.com%2Fvi%2F&docid=5eur_5kWsYJngM&w=2200&h=1200",
+    "position": 3
+   },
+   {
+    "title": "Hotel Majestic Saigon, TP. Hồ Chí Minh (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/770591387.jpg?k=77f7290f81286039d65913a737488324ff4e40a3d38bad3632c3c24cfc6a43ed&o=",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTOlXWUX8ay9Hw5-tbMKrFanDsNRmE-FkOTIzeWPN_ihQ&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/majestic-saigon.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F770591387.jpg%3Fk%3D77f7290f81286039d65913a737488324ff4e40a3d38bad3632c3c24cfc6a43ed%26o%3D&tbnid=k7YyNDWlYkP3ZM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fmajestic-saigon.vi.html&docid=g-Dc_DvB3UO4nM&w=1024&h=683",
+    "position": 4
+   },
+   {
+    "title": "Hotel Majestic (Saigon) - Wikipedia",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/b/b5/Hotel_Majestic%2C_Saigon%2C_2023_%2801%29.jpg?utm_source=en.wikipedia.org&utm_campaign=index&utm_content=original",
+    "imageWidth": 3064,
+    "imageHeight": 2187,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJNKHR5JoZBbUrrSjWv5u0VjGn3YeLpRyDyPqIdT2nsA&s=10",
+    "thumbnailWidth": 528,
+    "thumbnailHeight": 378,
+    "source": "Wikipedia",
+    "domain": "en.wikipedia.org",
+    "link": "https://en.wikipedia.org/wiki/Hotel_Majestic_(Saigon)",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fupload.wikimedia.org%2Fwikipedia%2Fcommons%2Fb%2Fb5%2FHotel_Majestic%252C_Saigon%252C_2023_%252801%2529.jpg%3Futm_source%3Den.wikipedia.org%26utm_campaign%3Dindex%26utm_content%3Doriginal&tbnid=tBmj1AgoW4hFbM&imgrefurl=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FHotel_Majestic_(Saigon)&docid=fans0D-RtDAb2M&w=3064&h=2187",
+    "position": 5
+   },
+   {
+    "title": "Hotel Majestic Saigon – Thông tin đầy đủ",
+    "imageUrl": "https://q-xx.bstatic.com/xdata/images/hotel/max500/572040539.jpg?k=52e67c8843c4b43cd6632f47049e1b3168216181e05c6564c2e33b13cc1c5410&o=",
+    "imageWidth": 500,
+    "imageHeight": 333,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQK6wH59Pp0_RGSh8rSvheaxCzVsfdt3JAJa1beIlUdWA&s=10",
+    "thumbnailWidth": 500,
+    "thumbnailHeight": 333,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/hotel-majestic-saigon/hotel/ho-chi-minh-city-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fq-xx.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax500%2F572040539.jpg%3Fk%3D52e67c8843c4b43cd6632f47049e1b3168216181e05c6564c2e33b13cc1c5410%26o%3D&tbnid=I9cCE-lPX7-WNM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fhotel-majestic-saigon%2Fhotel%2Fho-chi-minh-city-vn.html&docid=H2e3mT0o5MdwEM&w=500&h=333",
+    "position": 6
+   },
+   {
+    "title": "HOTEL MAJESTIC SAIGON (Thành phố Hồ Chí Minh) - Đánh giá Khách sạn & So  sánh giá - Tripadvisor",
+    "imageUrl": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/05/ef/80/12/hotel-majestic-saigon.jpg?w=900&h=500&s=1",
+    "imageWidth": 900,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTEhEBB3N6Y_Ie0G92_gm_p-VXenzrWl6cmrop-gMDb0w&s=10",
+    "thumbnailWidth": 599,
+    "thumbnailHeight": 333,
+    "source": "Tripadvisor",
+    "domain": "www.tripadvisor.com.vn",
+    "link": "https://www.tripadvisor.com.vn/Hotel_Review-g293925-d302780-Reviews-Hotel_Majestic_Saigon-Ho_Chi_Minh_City.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdynamic-media-cdn.tripadvisor.com%2Fmedia%2Fphoto-o%2F05%2Fef%2F80%2F12%2Fhotel-majestic-saigon.jpg%3Fw%3D900%26h%3D500%26s%3D1&tbnid=W9yuwh_GCrfhbM&imgrefurl=https%3A%2F%2Fwww.tripadvisor.com.vn%2FHotel_Review-g293925-d302780-Reviews-Hotel_Majestic_Saigon-Ho_Chi_Minh_City.html&docid=OAgm3-3mR_u1yM&w=900&h=500",
+    "position": 7
+   },
+   {
+    "title": "KHÁCH SẠN MAJESTIC SÀI GÒN",
+    "imageUrl": "https://www.majesticsaigon.com/wp-content/uploads/sites/258/2023/10/Catinat-3-2200x1200.jpg",
+    "imageWidth": 2200,
+    "imageHeight": 1200,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQ3ttM_luS6xZk23fLedUBpIbWlPLp00yOFs3JCsjcow&s=10",
+    "thumbnailWidth": 738,
+    "thumbnailHeight": 402,
+    "source": "www.majesticsaigon.com",
+    "domain": "www.majesticsaigon.com",
+    "link": "https://www.majesticsaigon.com/vi/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.majesticsaigon.com%2Fwp-content%2Fuploads%2Fsites%2F258%2F2023%2F10%2FCatinat-3-2200x1200.jpg&tbnid=nXwEvB-torwl0M&imgrefurl=https%3A%2F%2Fwww.majesticsaigon.com%2Fvi%2F&docid=5eur_5kWsYJngM&w=2200&h=1200",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

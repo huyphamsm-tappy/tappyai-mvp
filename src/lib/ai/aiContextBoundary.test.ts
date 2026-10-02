@@ -321,6 +321,9 @@ describe('the identity block reaches the Chat prompt', () => {
     const code = readFileSync(join(process.cwd(), 'src/app/api/chat/route.ts'), 'utf8')
     expect(code).toContain('buildIdentityBlock(chatContext.identity)')
     // …and it is built from the band the gate already computed, not a second RPC.
-    expect(code).toContain('buildChatPromptContext(user.id, supabase, ageGate.ageBand)')
+    // `ageBand` is assigned from `ageGate.ageBand` inside the account branch of the
+    // gate (a guest's declaration never yields a band — D1 revised, 2026-09-17).
+    expect(code).toContain('ageBand = ageGate.ageBand')
+    expect(code).toContain('buildChatPromptContext(user.id, supabase, ageBand)')
   })
 })

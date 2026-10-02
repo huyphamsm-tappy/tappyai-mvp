@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Lost - Drink & Chill\" OR \"Mascara - The Chill Bar\" OR \"Hem Chill Rooftop Bar Thao Dien\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:43:25.348Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Lost - Drink & Chill\" OR \"Mascara - The Chill Bar\" OR \"Hem Chill Rooftop Bar Thao Dien\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Đi chill mà không ún gụ thì phải làm sao? Thì mình ...",
+    "link": "https://www.tiktok.com/@mascara.thechillbar/video/7616775023864450325",
+    "snippet": "Video TikTok từ MASCARA - The Chill Bar (@mascara.thechillbar): \"Đi chill mà không ún gụ thì phải làm sao? Thì mình Mocktail đi há.",
+    "position": 1
+   },
+   {
+    "title": "LOST - Drink & Chill Open Late Night",
+    "link": "https://www.tiktok.com/@bitchytamdiary/photo/7680570190815300884",
+    "snippet": "LOST - Drink & Chill Open Late Night. LOST bar is open until 3 AM for late-night chill sessions with good food and reasonable prices. Highly ...",
+    "position": 2
+   },
+   {
+    "title": "Làm bartender nhưng mê cầu lông🏸 #mascarabar ...",
+    "link": "https://www.tiktok.com/@mascara.thechillbar/video/7659762860721065234",
+    "snippet": "Video TikTok từ MASCARA - The Chill Bar (@mascara.thechillbar): \"Làm bartender nhưng mê cầu lông #mascarabar #barchill #barchill ...",
+    "position": 3
+   },
+   {
+    "title": "Chill Vibes at Mascara Bar for Every Mood",
+    "link": "https://www.tiktok.com/@mascara.thechillbar/photo/7654597354120678664",
+    "snippet": "29 Likes, TikTok video from MASCARA - The Chill Bar (@mascara.thechillbar): “No matter your mood, come chill at Mascara Bar!",
+    "position": 4
+   },
+   {
+    "title": "a better day... 🖤🥃 #viral #fypシ゚ #lostdrinkandchill # ...",
+    "link": "https://www.tiktok.com/@yuri1217_/video/7619253251094957320",
+    "snippet": "... #xuhuongtiktok. a better day... #viral #fypシ゚ #lostdrinkandchill. @Yuri ♡ · âm thanh gốc - prodkaixolit · Lost - Drink & Chill · author.",
+    "position": 5
+   },
+   {
+    "title": "Cold Brew Coffee with Apple and Mango",
+    "link": "https://www.tiktok.com/@mascara.thechillbar/photo/7652723349780565266",
+    "snippet": "20 Likes, TikTok video from MASCARA - The Chill Bar (@mascara.thechillbar): “Experience cold brew coffee with apple and mango.",
+    "position": 6
+   },
+   {
+    "title": "Miss Hương Giang Vietnam in Bimagene Nation gown ...",
+    "link": "https://www.tiktok.com/@bimagene.nation/video/7643304699201916180",
+    "snippet": "MASCARA - The Chill Bar. Đến Mascara, ý tưởng thăng hoa là có thiệt nha. 1ngày trướcTrả lời. Đã thích bởi nhà sáng tạo. 250. Bimagene Nation ...",
+    "position": 7
+   },
+   {
+    "title": "Đi thăm anh tôi @Phú Hiển đi làm nhưng ko thể ko lên hát ...",
+    "link": "https://www.tiktok.com/@cecetruongsings/video/7616766915758902546",
+    "snippet": "... tôi @Phú Hiển đi làm nhưng ko thể ko lên hát be. @ CeCe Trương · original sound - CeCe Trương · Lost - Drink & Chill · author. 62 · 1.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

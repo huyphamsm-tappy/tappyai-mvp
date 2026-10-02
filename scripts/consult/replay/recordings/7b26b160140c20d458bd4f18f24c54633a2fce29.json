@@ -1,0 +1,617 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "karaoke sôi động quận 1 8 người quan 1",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.7769,106.7009,12z"
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:17:11.593Z",
+ "body": {
+  "searchParameters": {
+   "q": "karaoke sôi động quận 1 8 người quan 1",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.7769,106.7009,12z",
+   "engine": "google"
+  },
+  "ll": "@10.7768062,106.7008955,12z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Karaoke MEI",
+    "address": "159-161-163 Hàm Nghi, Quận 1, Hồ Chí Minh 710000, Việt Nam",
+    "latitude": 10.7707176,
+    "longitude": 106.6997596,
+    "rating": 4.9,
+    "ratingCount": 1519,
+    "priceLevel": "100-200 N ₫",
+    "type": "Quán bar karaoke",
+    "types": [
+     "Quán bar karaoke"
+    ],
+    "website": "https://www.facebook.com/KaraokeMei/",
+    "phoneNumber": "+84 364 180 486",
+    "openingHours": {
+     "Thứ Hai": "09:00–03:00",
+     "Thứ Ba": "09:00–03:00",
+     "Thứ Tư": "09:00–03:00",
+     "Thứ Năm": "09:00–03:00",
+     "Thứ Sáu": "09:00–03:00",
+     "Thứ Bảy": "09:00–03:00",
+     "Chủ Nhật": "09:00–03:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9SR84q8jJ8DoqR3jKtSrMbhqEXWtIhzTuaqxTwMB52NN7J8Vg0egpWSdsVidIQEZezzQPDBYFDj_cKVvo_O5M2SW4Va54agt0aI4bVMd8PuFoJfuF_dBazMr3WfpAWj0_CaxMfPOA",
+    "cid": "1743439115304590801",
+    "fid": "0x31752f4f316fd245:0x1831f0a363405dd1",
+    "placeId": "ChIJRdJvMU8vdTER0V1AY6PwMRg"
+   },
+   {
+    "position": 2,
+    "title": "Karaoke SAFARI",
+    "address": "202 Nguyễn Trãi, Bến Thành, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.7678102,
+    "longitude": 106.6885021,
+    "rating": 4.3,
+    "ratingCount": 453,
+    "type": "Quán bar karaoke",
+    "types": [
+     "Quán bar karaoke"
+    ],
+    "website": "https://www.facebook.com/Safari-Karaoke-109490391822168",
+    "phoneNumber": "+84 899 202 568",
+    "openingHours": {
+     "Thứ Hai": "11:00–04:00",
+     "Thứ Ba": "11:00–04:00",
+     "Thứ Tư": "11:00–04:00",
+     "Thứ Năm": "11:00–04:00",
+     "Thứ Sáu": "11:00–04:00",
+     "Thứ Bảy": "11:00–04:00",
+     "Chủ Nhật": "11:00–04:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9QHaqqoXT3Jn5KNszXlrhbGEl46cXTtjWuGU6MHZ7ab5up4OJU4J_eJRv4I5-4Ibsv6cwjAbBMhTMD2Qk2du3L2K-QAljq8mne-FqPvx2W4TXXgRryFA-njYaeUpAB8rhqFLU2cPKOlldtj",
+    "cid": "13874040439977271757",
+    "fid": "0x31752f944bd5b8af:0xc08a7e45b83fe1cd",
+    "placeId": "ChIJr7jVS5QvdTERzeE_uEV-isA"
+   },
+   {
+    "position": 3,
+    "title": "Luxury Karaoke",
+    "address": "103 Bùi Thị Xuân, Quận 1, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.7678171,
+    "longitude": 106.68659389999999,
+    "rating": 4.3,
+    "ratingCount": 67,
+    "priceLevel": "300-400 N ₫",
+    "type": "Quán bar karaoke",
+    "types": [
+     "Quán bar karaoke"
+    ],
+    "website": "http://luxuryktv.vn/",
+    "phoneNumber": "+84 987 009 030",
+    "openingHours": {
+     "Thứ Hai": "13:00–03:00",
+     "Thứ Ba": "13:00–03:00",
+     "Thứ Tư": "13:00–03:00",
+     "Thứ Năm": "13:00–03:00",
+     "Thứ Sáu": "13:00–03:00",
+     "Thứ Bảy": "13:00–03:00",
+     "Chủ Nhật": "13:00–03:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9RFiPHOKMcO5JXkFUkpVZeCs2UeNHXLK684kNf_JgrfL3jxMvOHc0_fERdT2-VrXYSWG5YvGJJ9yNALzVSbkDWb-yruLvu-r7R-yie_DUF5l-upqnlGGQDP_uatJCh1mLpjgko",
+    "cid": "15563876384183762303",
+    "fid": "0x31752f13c30b4999:0xd7fdff1c475d3d7f",
+    "placeId": "ChIJmUkLwxMvdTERfz1dRxz__dc"
+   },
+   {
+    "position": 4,
+    "title": "Kingdom Karaoke",
+    "address": "67 Phạm Viết Chánh, Cầu Ông Lãnh, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.7657452,
+    "longitude": 106.6824834,
+    "rating": 4.3,
+    "ratingCount": 2067,
+    "type": "Quán bar karaoke",
+    "types": [
+     "Quán bar karaoke"
+    ],
+    "website": "https://kingdomkaraoke.com/",
+    "phoneNumber": "+84 938 737 272",
+    "openingHours": {
+     "Thứ Hai": "10:00–05:00",
+     "Thứ Ba": "10:00–05:00",
+     "Thứ Tư": "10:00–05:00",
+     "Thứ Năm": "10:00–05:00",
+     "Thứ Sáu": "10:00–05:00",
+     "Thứ Bảy": "10:00–05:00",
+     "Chủ Nhật": "10:00–05:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9RTNBZ_qefiRFZrH-YOv1hOx4tLjRqELhmKCPG07FjdajEFO5oIj9I7NvzqwsYeObtuWf0vVtRE2kt9KnCrJHx2YH1NT4nEkcj7vhxwD1JTbotudjF8jzfCyYmulnhzLX09uGakeOESYno",
+    "cid": "4134951517314821589",
+    "fid": "0x31752f18d3898e4b:0x39624c7f41032dd5",
+    "placeId": "ChIJS46J0xgvdTER1S0DQX9MYjk"
+   },
+   {
+    "position": 5,
+    "title": "Karaoke Avatar",
+    "address": "61-63-65 Phạm Viết Chánh, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7658948,
+    "longitude": 106.68258469999999,
+    "rating": 4.9,
+    "ratingCount": 6413,
+    "priceLevel": "100-500 N ₫",
+    "type": "Quán bar karaoke",
+    "types": [
+     "Quán bar karaoke"
+    ],
+    "website": "https://karaokeavatar.com/",
+    "phoneNumber": "+84 915 031 111",
+    "description": "Quán bar karaoke thành phố từ năm 2010 có phục vụ đêm khuya, các phòng theo chủ đề, giờ ưu đãi, tiệc và sự kiện.",
+    "openingHours": {
+     "Thứ Hai": "12:00–05:00",
+     "Thứ Ba": "12:00–05:00",
+     "Thứ Tư": "12:00–05:00",
+     "Thứ Năm": "12:00–05:00",
+     "Thứ Sáu": "12:00–05:00",
+     "Thứ Bảy": "12:00–05:00",
+     "Chủ Nhật": "12:00–05:00"
+    },
+    "bookingLinks": [
+     "https://www.facebook.com/Avatar.Karaoke"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9Rv9_p15dUx-zNI2S2RAmthyTDHOdxIV2YnldyuK5_uiF0IeTfUQqPfO7jkw0g9edO_ZI36tL3DMWkFwd9glFcQYok5rQimJWbsai6hJGc03SWf-_IlXEXN612GUPNBbQMv--Lt",
+    "cid": "15540783769004242466",
+    "fid": "0x31752f18d78c84f5:0xd7abf47fd2a77622",
+    "placeId": "ChIJ9YSM1xgvdTERInan0n_0q9c"
+   },
+   {
+    "position": 6,
+    "title": "21 LUXURY RESTAURANT",
+    "address": "21 Bùi Thị Xuân, Quận 1, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.771705299999999,
+    "longitude": 106.69044029999999,
+    "rating": 4.2,
+    "ratingCount": 71,
+    "type": "Quán bar karaoke",
+    "types": [
+     "Quán bar karaoke"
+    ],
+    "website": "http://luxuryktv.vn/",
+    "phoneNumber": "+84 981 666 808",
+    "openingHours": {
+     "Thứ Hai": "13:00–03:00",
+     "Thứ Ba": "13:00–03:00",
+     "Thứ Tư": "13:00–03:00",
+     "Thứ Năm": "13:00–03:00",
+     "Thứ Sáu": "13:00–03:00",
+     "Thứ Bảy": "13:00–03:00",
+     "Chủ Nhật": "13:00–03:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9R-pwz_kkV9Cs_Xw4hAn9-kCqODS3RX_AzDDiy83eFKxRAZhyg2Q9NvxX4e8fq5PxL2HQq0O1Pnuq6RIG7A8fZNXKV1XxIha8nlPQQKNVxan89fBVC_vP4Ndce95O1fQTWoUYI",
+    "cid": "17770128613473900735",
+    "fid": "0x31752fe2787bdb73:0xf69c2dd2e31dd8bf",
+    "placeId": "ChIJc9t7eOIvdTERv9gd49ItnPY"
+   },
+   {
+    "position": 7,
+    "title": "Karaoke iCool 90 Mạc Đĩnh Chi",
+    "address": "90 Mạc Đĩnh Chi, Tân Định, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7882231,
+    "longitude": 106.6960819,
+    "rating": 4.6,
+    "ratingCount": 1106,
+    "priceLevel": "100-500 N ₫",
+    "type": "Quán bar karaoke",
+    "types": [
+     "Quán bar karaoke"
+    ],
+    "phoneNumber": "+84 28 7777 9936",
+    "openingHours": {
+     "Thứ Ba": "Mở cửa cả ngày",
+     "Thứ Tư": "Mở cửa cả ngày",
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày"
+    },
+    "bookingLinks": [
+     "https://karaoke.com.vn/datphong/"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9TeeTceTWpCYYkOyWgzflBz4R7N4yU4zjA68FX9-qjMOrnP0amcWFXEkpLevGTNUukoM2x7EiNZR4Pt8EZp8pZbpavnEsG96PZpsu75LDIc31wTR2JdgVRYzHxNAGpYvk8mnPI",
+    "cid": "2467523872920348158",
+    "fid": "0x31752f602cfd9a39:0x223e67e39036a5fe",
+    "placeId": "ChIJOZr9LGAvdTER_qU2kONnPiI"
+   },
+   {
+    "position": 8,
+    "title": "Limited Karaoke",
+    "address": "363 Phạm Ngũ Lão, Bến Thành, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7670926,
+    "longitude": 106.6895407,
+    "rating": 3.8,
+    "ratingCount": 97,
+    "priceLevel": "Trên 1 Tr ₫",
+    "type": "Quán bar karaoke",
+    "types": [
+     "Quán bar karaoke"
+    ],
+    "website": "https://www.limitedkaraoke.com/",
+    "phoneNumber": "+84 909 991 413",
+    "openingHours": {
+     "Thứ Hai": "16:00–04:00",
+     "Thứ Ba": "16:00–04:00",
+     "Thứ Tư": "16:00–04:00",
+     "Thứ Năm": "16:00–04:00",
+     "Thứ Sáu": "16:00–04:00",
+     "Thứ Bảy": "16:00–04:00",
+     "Chủ Nhật": "16:00–04:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9So5xnZ-DnXqsPEJGsaNglK_utjTwUyTXGornWp1z0SdQ4Sf9lwfeByHR9JEgQmaPCq3cZEJRFtHkg4SrdcYm9_z1tBvBYQqLigwqQIKVG8FHnScXPXeqRjz4-gMJE2xSkugDDE",
+    "cid": "14907568176229611977",
+    "fid": "0x31752f415750009f:0xcee25245c91579c9",
+    "placeId": "ChIJnwBQV0EvdTERyXkVyUVS4s4"
+   },
+   {
+    "position": 9,
+    "title": "Dubai business Club",
+    "address": "16 Mạc Thị Bưởi, Sài Gòn, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.775948,
+    "longitude": 106.70515789999999,
+    "rating": 4.4,
+    "ratingCount": 76,
+    "priceLevel": "Trên 1 Tr ₫",
+    "type": "Quán bar karaoke",
+    "types": [
+     "Quán bar karaoke"
+    ],
+    "phoneNumber": "+84 902 311 100",
+    "openingHours": {
+     "Thứ Hai": "17:00–02:00",
+     "Thứ Ba": "17:00–02:00",
+     "Thứ Tư": "17:00–02:00",
+     "Thứ Năm": "17:00–02:00",
+     "Thứ Sáu": "17:00–02:00",
+     "Thứ Bảy": "17:00–02:00",
+     "Chủ Nhật": "17:00–02:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9Q8lG2aw5qv-4NQawvK2y-fYA5LE2_nPOSxlyYfaKpt0LwZQ6Nx52M_7AuDxmmJlEvwvLlHkhHdPUPCEQLpzKwU8Ec2480-HmG1TjUzykd_BNWCUJvUu_EKYOakcz1fBjsMIKFsJA",
+    "cid": "17759728720393228848",
+    "fid": "0x31752fbd1674e0b1:0xf6773b2d16575230",
+    "placeId": "ChIJseB0Fr0vdTERMFJXFi07d_Y"
+   },
+   {
+    "position": 10,
+    "title": "Atlantis",
+    "address": "31 Đề Thám, Cầu Ông Lãnh, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7632359,
+    "longitude": 106.6958018,
+    "rating": 3.6,
+    "ratingCount": 61,
+    "priceLevel": "Trên 1 Tr ₫",
+    "type": "Quán bar karaoke",
+    "types": [
+     "Quán bar karaoke"
+    ],
+    "website": "https://happycorp.com.vn/",
+    "phoneNumber": "+84 913 566 531",
+    "openingHours": {
+     "Thứ Hai": "16:00–04:00",
+     "Thứ Ba": "16:00–04:00",
+     "Thứ Tư": "16:00–04:00",
+     "Thứ Năm": "16:00–04:00",
+     "Thứ Sáu": "16:00–04:00",
+     "Thứ Bảy": "16:00–04:00",
+     "Chủ Nhật": "16:00–04:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9S1lf7D6eb5QpP7tyMLNDEe31oD1VBgyJbBL4U-DRZ1kX_iEeF71bw9CRPZkBUYLqNrSlI1oy0SIQSvzYSBMBSyWQRwL0wGeBm8dJmbKFz4SQwkrXI9vmQpMGxKBDQ4lBWPRwcTWuHOn2I",
+    "cid": "12791525637622644219",
+    "fid": "0x31752f3590f76089:0xb184a0cb85ccbdfb",
+    "placeId": "ChIJiWD3kDUvdTER-73MhcughLE"
+   },
+   {
+    "position": 11,
+    "title": "Karaoke Crystal KTV - Quận 5",
+    "address": "QM4M+XC, Chợ Quán, Hồ Chí Minh 52000, Việt Nam",
+    "latitude": 10.7574375,
+    "longitude": 106.6835625,
+    "rating": 4.7,
+    "ratingCount": 241,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Quán bar karaoke",
+    "types": [
+     "Quán bar karaoke"
+    ],
+    "phoneNumber": "+84 812 539 999",
+    "openingHours": {
+     "Thứ Ba": "Mở cửa cả ngày",
+     "Thứ Tư": "Mở cửa cả ngày",
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9SN98M18D4zAAA28FlzsnxXEP3dGThDYO-Dc68DhupWGfeCs5dAvhm3ErfPUJbOGzv6MWrdZqwoLuwp0DIGyNJk_aLYCPHD8JOjQlnxMxUXevMpZ6RN0nuJRkVWfFe5yX4lvVqE4kOurMKX",
+    "cid": "6409698744229711658",
+    "fid": "0x31752f007931d797:0x58f3d30c3f144f2a",
+    "placeId": "ChIJl9cxeQAvdTERKk8UPwzT81g"
+   },
+   {
+    "position": 12,
+    "title": "The Lủi - Quán Nhậu Chill Quận 1 Sài Gòn",
+    "address": "177 Nguyễn Cư Trinh, Cầu Ông Lãnh, Hồ Chí Minh 71000, Việt Nam",
+    "latitude": 10.762949299999999,
+    "longitude": 106.6880678,
+    "rating": 4.9,
+    "ratingCount": 514,
+    "priceLevel": "200-300 N ₫",
+    "type": "Quán bia",
+    "types": [
+     "Quán bia"
+    ],
+    "phoneNumber": "+84 933 544 639",
+    "openingHours": {
+     "Thứ Ba": "17:00–23:30",
+     "Thứ Tư": "17:00–23:30",
+     "Thứ Năm": "17:00–23:30",
+     "Thứ Sáu": "17:00–23:30",
+     "Thứ Bảy": "17:00–23:30",
+     "Chủ Nhật": "17:00–23:30",
+     "Thứ Hai": "17:00–23:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9TxO088nL8WliE_Sg37v64poxrGecsj6Ydoj7GA_QAQzZ6cNmRiDgaCPe8REa2l5y1R3MESCFW-Kz9mFS1GyNReC6gphF1KIhL_J48zMOVLkNjzm3zJACMjvLiBvD2r56KRdR7YdZ5tHS9e",
+    "cid": "13472285667380578245",
+    "fid": "0x31752fd3fcdd82ff:0xbaf72c6f6cce47c5",
+    "placeId": "ChIJ_4Ld_NMvdTERxUfObG8s97o"
+   },
+   {
+    "position": 13,
+    "title": "Karaoke ICOOL",
+    "address": "147 Dạ Nam, Chánh Hưng, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.7480847,
+    "longitude": 106.6840852,
+    "rating": 4.6,
+    "ratingCount": 481,
+    "type": "Quán bar karaoke",
+    "types": [
+     "Quán bar karaoke"
+    ],
+    "website": "https://icool.simplybook.asia/",
+    "phoneNumber": "+84 28 7777 9936",
+    "openingHours": {
+     "Thứ Ba": "Mở cửa cả ngày",
+     "Thứ Tư": "Mở cửa cả ngày",
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày"
+    },
+    "bookingLinks": [
+     "https://karaoke.com.vn/datphong/",
+     "https://www.google.com/maps/reserve/v/dine/c/B4l5voJkCJY?source=pa&opi=79508299"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9SEZcS6ZjcgoxeWWAG_wwDBuKsRAn8pg-FVFJ6h6yD_E0Yc0uXkBKnXS0hNCw39rQmHGCRZqei0km2ivCN7om2kcZJfLoWbkCdYCJXYqa2ZOHmu4CyYWDhA09oiGvGVjuBu82yb",
+    "cid": "8129059891224659",
+    "fid": "0x31752f5bb6cadbf1:0x1ce1563f2ca053",
+    "placeId": "ChIJ8dvKtlsvdTERU6AsP1bhHAA"
+   },
+   {
+    "position": 14,
+    "title": "Quán Karaoke",
+    "address": "92 Ký Con, P, Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.767040999999999,
+    "longitude": 106.698837,
+    "rating": 4,
+    "ratingCount": 1,
+    "type": "Quán bar karaoke",
+    "types": [
+     "Quán bar karaoke"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9Sx41Us-8PANa23eFYjnzVPoAsvgMHuYJE7rRZDkL7vTsIyfNhRQ8y_8kBSy9oqwyym8IoAOW7HybFMz0Gv1_rbI4_9HchMPEUojubRKYrOwxwWgTNWeBzGQgupAiVwG7xpNpZr",
+    "cid": "9477605583032626300",
+    "fid": "0x31752f155c0e207b:0x8387381031eb2c7c",
+    "placeId": "ChIJeyAOXBUvdTERfCzrMRA4h4M"
+   },
+   {
+    "position": 15,
+    "title": "Catwalk Bar & KTV",
+    "address": "15B4 Lê Thánh Tôn, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7805427,
+    "longitude": 106.7047872,
+    "rating": 4.4,
+    "ratingCount": 42,
+    "priceLevel": "400-500 N ₫",
+    "type": "Quán bar karaoke",
+    "types": [
+     "Quán bar karaoke",
+     "Quán bar"
+    ],
+    "website": "https://www.facebook.com/CatWalkBarnKaraoke",
+    "phoneNumber": "+84 974 656 311",
+    "openingHours": {
+     "Thứ Hai": "19:00–01:00",
+     "Thứ Ba": "19:00–01:00",
+     "Thứ Tư": "19:00–01:00",
+     "Thứ Năm": "19:00–01:00",
+     "Thứ Sáu": "19:00–01:00",
+     "Thứ Bảy": "19:00–01:00",
+     "Chủ Nhật": "19:00–01:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9SpLWutNQTdSB4TJRsCn4UZRGBcjYetPfukwyVRmlNkdYZbOGBoKsTSqMtlOmwB8CYwj5EC1P8pwHXw7yYIUFObve6Pfr6NUpu0C7yZqmQVO6Sd7GEPODmMmyIL16Md-8KtDW_H",
+    "cid": "4569155262710997220",
+    "fid": "0x31752f12bdbe1b6f:0x3f68e680c57ee0e4",
+    "placeId": "ChIJbxu-vRIvdTER5OB-xYDmaD8"
+   },
+   {
+    "position": 16,
+    "title": "Karaoke ICOOL",
+    "address": "266-268-270 Phan Xích Long, Cầu Kiệu, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.7981634,
+    "longitude": 106.6891733,
+    "rating": 4.8,
+    "ratingCount": 3105,
+    "priceLevel": "100-600 N ₫",
+    "type": "Quán bar karaoke",
+    "types": [
+     "Quán bar karaoke"
+    ],
+    "website": "http://karaoke.com.vn/",
+    "phoneNumber": "+84 28 7777 9936",
+    "openingHours": {
+     "Thứ Ba": "Mở cửa cả ngày",
+     "Thứ Tư": "Mở cửa cả ngày",
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày"
+    },
+    "bookingLinks": [
+     "https://www.google.com/maps/reserve/v/dine/c/12o6ccg_oas?source=pa&opi=79508299"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9So0R4d-wRtqKB37HlHzF19K-rf7M92olt52JO0zBWh1skmMC2qTJg1LCoFvYKIYzBRMY2sHAwtjHskDRtzaUZ9ogiA8tSpzcU7x3YuV_Un5qxAfCc8ddeYZhrYI6pTCAU1UU34",
+    "cid": "13143947893713978227",
+    "fid": "0x317529de6a8c396f:0xb668aef83f10c373",
+    "placeId": "ChIJbzmMat4pdTERc8MQP_iuaLY"
+   },
+   {
+    "position": 17,
+    "title": "Karaoke ICOOL - Trần Não Vòng Xoay Thủ Thiêm",
+    "address": "18/9 Trần Não, P, An Khánh, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.7868046,
+    "longitude": 106.7299297,
+    "rating": 4.7,
+    "ratingCount": 2128,
+    "priceLevel": "200-800 N ₫",
+    "type": "Quán bar karaoke",
+    "types": [
+     "Quán bar karaoke",
+     "Nhà hàng"
+    ],
+    "website": "https://icool.simplybook.asia/",
+    "phoneNumber": "+84 28 7777 9936",
+    "openingHours": {
+     "Thứ Ba": "Mở cửa cả ngày",
+     "Thứ Tư": "Mở cửa cả ngày",
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày"
+    },
+    "bookingLinks": [
+     "https://www.google.com/maps/reserve/v/dine/c/WXkr4KZQK6k?source=pa&opi=79508299"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9SH0Gh6gWegQQHTe1IIzkNm3sHmkIX_F6pdeUNoaxgixDgcxTGEqxPhZUDtO3YlEwO1TPaERytxXmE_6897VR67A7qY_XRrJGOoHrO11D1qGF_r2Azl3OC8wfVNjRorQX3EhxRX7tCvgQ4o",
+    "cid": "15658365514507253880",
+    "fid": "0x317525b12fc85f91:0xd94db0794f6e7878",
+    "placeId": "ChIJkV_IL7EldTEReHhuT3mwTdk"
+   },
+   {
+    "position": 18,
+    "title": "Karaoke Santori",
+    "address": "176 Đ. Lê Văn Thọ, Thông Tây Hội, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.8421336,
+    "longitude": 106.6572922,
+    "rating": 4.5,
+    "ratingCount": 358,
+    "priceLevel": "100-600 N ₫",
+    "type": "Quán bar karaoke",
+    "types": [
+     "Quán bar karaoke",
+     "Karaoke theo video"
+    ],
+    "website": "https://www.facebook.com/SantoriKaraoke",
+    "phoneNumber": "+84 587 176 176",
+    "openingHours": {
+     "Thứ Ba": "Mở cửa cả ngày",
+     "Thứ Tư": "Mở cửa cả ngày",
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày"
+    },
+    "bookingLinks": [
+     "https://www.google.com/maps/reserve/v/dine/c/OVlMdhZLao8?source=pa&opi=79508299"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9TpEzKMANDTQKVeGkoXWdd3l-woKxnpa-UiVdSpH4qbdNj45ft88sSrHD7GfRtJegrTlwZxrIJkmdqLjj5jc3vhbDJ4zuJZkQbsHFJCx2klxbJWBB8PWFxNfPqjfAujwGMzouVK",
+    "cid": "17009804611308589550",
+    "fid": "0x3175292c08b48d2d:0xec0ef72c13d991ee",
+    "placeId": "ChIJLY20CCwpdTER7pHZEyz3Duw"
+   },
+   {
+    "position": 19,
+    "title": "Karaoke Dragon Palace",
+    "address": "145 Đ. số 9A, Khu dân cư Trung Sơn, Bình Hưng, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7350664,
+    "longitude": 106.6897438,
+    "rating": 4.1,
+    "ratingCount": 2730,
+    "priceLevel": "Trên 1 Tr ₫",
+    "type": "Quán bar karaoke",
+    "types": [
+     "Quán bar karaoke"
+    ],
+    "website": "https://dragonpalacekaraoke.com/",
+    "phoneNumber": "+84 903 330 145",
+    "description": "Quán bar karaoke nổi bật có phòng riêng sinh động, phục vụ cocktail thủ công và món ăn địa phương ở quầy bar.",
+    "openingHours": {
+     "Thứ Ba": "Mở cửa cả ngày",
+     "Thứ Tư": "Mở cửa cả ngày",
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày"
+    },
+    "bookingLinks": [
+     "http://zalo.me/0903330145"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9TmlsSBdOlI1bCHOmPxbxq0UF54oUdf8ANqnX6BY7jHxKZjwb4I-R1DlybK7ibRKx8K2HDr4_RbjAn0o4aiBsSyWhfW3IFGtFtcmb-8Da03ipRKQoLPBh1U_smO3Mf5zNaRaByr",
+    "cid": "5461580258516444913",
+    "fid": "0x31752f0061056275:0x4bcb6e4ef528a6f1",
+    "placeId": "ChIJdWIFYQAvdTER8aYo9U5uy0s"
+   },
+   {
+    "position": 20,
+    "title": "KARAOKE MONACO KTV",
+    "address": "676 Sư Vạn Hạnh, Hòa Hưng, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.770855599999999,
+    "longitude": 106.67028619999999,
+    "rating": 4.2,
+    "ratingCount": 1442,
+    "type": "Quán bar karaoke",
+    "types": [
+     "Quán bar karaoke"
+    ],
+    "website": "https://www.facebook.com/KaraokeKTSuVanHanh?mibextid=LQQJ4d",
+    "phoneNumber": "+84 948 258 651",
+    "openingHours": {
+     "Thứ Ba": "Mở cửa cả ngày",
+     "Thứ Tư": "Mở cửa cả ngày",
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày"
+    },
+    "bookingLinks": [
+     "https://www.facebook.com/SantoriKaraoke",
+     "https://www.foryou-hochiminh.com/"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9S7JADuzu53JAQhA3IdQS3rcNd2sDlY1I738gAqaeSK7AnJqvBZ7H_h1jU16VKNxMYxXoREuil-shZ-wfvVs5SajWTokCub8ArGIIB-iSMUhHh7EosE-HRRBhiuwRnBu2SGcIII7g",
+    "cid": "5025819559616015517",
+    "fid": "0x31752eddd93b896f:0x45bf4c42f41f6c9d",
+    "placeId": "ChIJb4k72d0udTERnWwf9EJMv0U"
+   }
+  ],
+  "credits": 3
+ }
+}

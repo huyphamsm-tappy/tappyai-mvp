@@ -1,0 +1,33 @@
+{
+  "id": "E2b",
+  "text": "dưới 200k/người",
+  "parent": "E2",
+  "status": 200,
+  "ms": 4987,
+  "evidenceId": "2528ebe4-bcfa-4358-a599-ce8a344a3032",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình hiểu bạn muốn xem phim với ngân sách dưới 200k/người.\n\nBạn muốn mình tìm thêm thông tin về các rạp phim khác gần Quận 1 không, hoặc bạn đang tìm một hoạt động giải trí khác với ngân sách dưới 200k (như karaoke, quán cà phê, công viên...)?",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "rap phim nao gan q1"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm các rạp phim gần Quận 1 cho bạn nhé.\n\nMình chọn **CGV Liberty Citypoint** cho bạn — cách bạn chỉ 0.2km, đánh giá 4.4⭐ từ 1.751 lượt đánh giá, gần nhất trong khu vực.\n\n\n[FOLLOWUPS]Phim gì đang chiếu?|Giá vé bao nhiêu?|Rạp nào có ghế VIP?[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "dưới 200k/người"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình hiểu bạn muốn xem phim với ngân sách dưới 200k/người.\n\nBạn muốn mình tìm thêm thông tin về các rạp phim khác gần Quận 1 không, hoặc bạn đang tìm một hoạt động giải trí khác với ngân sách dưới 200k (như karaoke, quán cà phê, công viên...)?"
+    }
+  ]
+}

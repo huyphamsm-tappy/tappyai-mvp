@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Tầng 5, Giga Mall, 240-242 Phạm Văn Đồng, Thủ Đức\" OR \"KHU VUI CHƠI TRẺ EM BIBO KIDS QUẬN 9\" OR \"TiNiWorld GigaMall\" Thủ Đức site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T04:28:38.929Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Tầng 5, Giga Mall, 240-242 Phạm Văn Đồng, Thủ Đức\" OR \"KHU VUI CHƠI TRẺ EM BIBO KIDS QUẬN 9\" OR \"TiNiWorld GigaMall\" Thủ Đức site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Bài Đánh Giá TiniWorld Gigamall Thủ Đức: 50 Góc Chơi ...",
+    "link": "https://www.tiktok.com/@nhamomtuyen/video/7461230100147735826",
+    "snippet": "TiniWorld Gigamall Thủ Đức là khu vui chơi trẻ em rộng lớn với hơn 50 góc chơi được đầu tư chỉn chu và an toàn. Khi khu vui chơi mở lại với ...",
+    "position": 1
+   },
+   {
+    "title": "Trung Thu này chẳng cần đi đâu xa, cứ đến tiNiWorld là có ...",
+    "link": "https://www.tiktok.com/@giadinhbemay1/video/7686840886348500242",
+    "snippet": "... cần đi đâu xa, cứ đến tiNiWorld là có cả một. @Gia Đình Bé Mây · âm thanh gốc - Gia Đình Bé Mây · tiNiWorld Gigamall Thủ Đức · author. 1207.",
+    "position": 2
+   },
+   {
+    "title": "Khu Vui Chơi TiNiWorld Mừng Khai Trương Gigamall",
+    "link": "https://www.tiktok.com/@tiniworldofficial/video/7464838735646084360",
+    "snippet": "Nhanh chân đến tiNiWorld Gigamall – Tầng 5, Gigamall Thủ Đức trong dịp Tết này để tận hưởng ngay thôi! ⏰ 9:00 - 22:00 mỗi ngày. ... Khu Vui ...",
+    "position": 3
+   },
+   {
+    "title": "Cùng Siêu nhí khám phá Thế giới nghệ thuật sắc màu tại ...",
+    "link": "https://www.tiktok.com/@tiniworldofficial/video/7636788811149724935",
+    "snippet": "tiNiWorld Việt Nam · Tác giả. Dạ tiNiWorld Giga Mall ở Tầng 5 TTTM, giá vé trong tuần T2-T6: 130.000đ/vé, cuối tuần lễ: 160.000/vé đã bao gồm 1 bé và 1 phụ ...",
+    "position": 4
+   },
+   {
+    "title": "Gigamall tiniWorld Review & Kids' Adventure with Cô ...",
+    "link": "https://www.tiktok.com/@kimkhanh_mot/video/7392579769348443400",
+    "snippet": "14.5K Lượt thích,406 Bình luận.Video TikTok từ Mót nè (@kimkhanh_mot): \"Experience the latest at tiniWorld Gigamall with Cô Khánh! Join the ...",
+    "position": 5
+   },
+   {
+    "title": "Sinh Nhật Kim Khánh Tại TiniWorld | Vui Quá",
+    "link": "https://www.tiktok.com/@kimkhanh_mot/video/7663759731730812181",
+    "snippet": "... của Kim Khánh tại TiniWorld, một ngày thật đáng nhớ! @Hướng nội chơi tiktok · Dongchio_COTICHVIETNAM · tiNiWorld Gigamall Thủ Đức · author. 10.",
+    "position": 6
+   },
+   {
+    "title": "Khúc đi hết mình, khúc về mệt xỉuu 😂 #tuoithocuacon # ...",
+    "link": "https://www.tiktok.com/@duongvevuon/video/7674311356002127112",
+    "snippet": "tiNiWorld Gigamall Thủ Đức · author · 17 · 0 ... Đặt tủ & bộ bàn ghế gỗ bên của bác ở làng mộc Chợ Thủ (Chợ mới-An Giang) giao về tận nhà với ...",
+    "position": 7
+   },
+   {
+    "title": "Bán cà phê tại Thủ Đức gần Gigamall",
+    "link": "https://www.tiktok.com/@caphe.mo/photo/7616974997730446609",
+    "snippet": "... , please report at: Feedback and help - TikTok · Lỡ Cả Đời Không Rực Rỡ Thì Sao · Tầng 5, Giga Mall, 240-242 Phạm Văn Đồng, Thủ Đức · author.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

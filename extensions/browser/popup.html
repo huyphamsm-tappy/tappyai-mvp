@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>TappyAI</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header class="head">
+    <img src="icons/icon-32.png" width="24" height="24" alt="">
+    <strong>TappyAI</strong>
+    <label class="lang"><span data-i18n="popupLanguage"></span>
+      <select id="lang" aria-label="Language">
+        <option value="vi">Tiếng Việt</option>
+        <option value="en">English</option>
+      </select>
+    </label>
+  </header>
+
+  <form id="ask" class="ask">
+    <textarea id="q" rows="3" maxlength="1000"></textarea>
+    <button type="submit" class="primary" data-i18n="popupAsk"></button>
+  </form>
+
+  <section class="page">
+    <p id="page-title" class="page-title" hidden></p>
+    <p id="page-host" class="page-host" hidden></p>
+    <p id="not-web" class="muted" hidden data-i18n="popupNotWebPage"></p>
+    <button id="ask-page" type="button" data-i18n="popupAskPage"></button>
+    <button id="check-page" type="button" data-i18n="popupCheckPage"></button>
+  </section>
+
+  <footer class="foot">
+    <button id="open" type="button" class="link" data-i18n="popupOpen"></button>
+    <p class="muted small" data-i18n="popupPrivacy"></p>
+  </footer>
+
+  <script type="module" src="popup.js"></script>
+</body>
+</html>

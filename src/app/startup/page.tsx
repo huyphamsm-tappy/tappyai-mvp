@@ -1,4 +1,4 @@
-import { BRAND_NAME, LOGO, SITE_URL, SUPPORT_EMAIL } from '@/components/landing/config'
+import { organizationJsonLd } from '@/lib/discovery/siteJsonLd'
 import LandingHeader from '@/components/landing/LandingHeader'
 import LandingHero from '@/components/landing/LandingHero'
 import LandingWhatIs from '@/components/landing/LandingWhatIs'
@@ -10,26 +10,18 @@ import LandingTechnology from '@/components/landing/LandingTechnology'
 import LandingAbout from '@/components/landing/LandingAbout'
 import LandingContact from '@/components/landing/LandingContact'
 import LandingFooter from '@/components/landing/LandingFooter'
+import JsonLd from '@/components/JsonLd'
 
 // Organization structured data. Server-rendered so crawlers get it without
-// executing scripts. Values mirror the verified contacts in landing/config.
-const organizationJsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'Organization',
-  name: BRAND_NAME,
-  url: SITE_URL,
-  logo: `${SITE_URL}${LOGO}`,
-  email: SUPPORT_EMAIL,
-  founder: { '@type': 'Person', name: 'Huy Pham' },
-}
+// executing scripts. The ONE Organization node the home page and /about also
+// emit (src/lib/discovery/siteJsonLd.ts) — same @id, same facts, so an answer
+// engine meets one entity, not three. Contacts still come from landing/config.
+const organization = organizationJsonLd()
 
 export default function StartupPage() {
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
-      />
+      <JsonLd data={organization} />
 
       <LandingHeader />
 

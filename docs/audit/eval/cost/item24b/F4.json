@@ -1,0 +1,159 @@
+{
+  "id": "F4",
+  "text": "Cả nhà 6 người có con nít ăn trưa cuối tuần, cần chỗ đậu xe ô tô, Phú Nhuận",
+  "parent": null,
+  "status": 200,
+  "ms": 20041,
+  "evidenceId": "d62dac56-fa6d-4987-8dc6-e056a382b707",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "nhà hàng quán ăn gia đình Phú Nhuận có chỗ đậu xe",
+        "location": "Phú Nhuận, TP HCM",
+        "type": "restaurant"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Tám Riêu - Phan Xích Long",
+      "rating": 4.8,
+      "count": 2106,
+      "price": "100-200 N ₫",
+      "hours": "10:30–21:30",
+      "distance_km": 2.9,
+      "address": "235 Phan Xích Long, Cầu Kiệu, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Man Tang Guo Phan Xích Long",
+      "rating": 4.6,
+      "count": 1877,
+      "price": "300-800 N ₫",
+      "hours": "10:30–22:30",
+      "distance_km": 2.7,
+      "address": "169 171 Phan Xích Long, Cầu Kiệu, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Nhà hàng Hoàng Tâm - Phan Xích Long",
+      "rating": 4.5,
+      "count": 1661,
+      "price": "200-600 N ₫",
+      "hours": "06:30–22:00",
+      "distance_km": 3,
+      "address": "352 Phan Xích Long, Cầu Kiệu, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Ốc Hân - Quán Ốc Ngon Phú Nhuận",
+      "rating": 4.6,
+      "count": 238,
+      "price": "200-300 N ₫",
+      "hours": "11:00–23:00",
+      "distance_km": 2.8,
+      "address": "9 Hoa Sứ, Cầu Kiệu, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Quán Ăn Gia Đình Ngọc Hương",
+      "rating": 4.5,
+      "count": 100,
+      "price": "100-200 N ₫",
+      "hours": "15:00–05:00",
+      "distance_km": 2.4,
+      "address": "592 Trường Sa, Quận Phú Nhuận, Hồ Chí Minh 70000, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "Tám Riêu - Phan Xích Long",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 4.8,
+        "reviews": 2106,
+        "distance_km": 2.9,
+        "open_now": true,
+        "opening_hours": "10:30–21:30",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Man Tang Guo Phan Xích Long",
+      "role": null,
+      "evidence": {
+        "rating": 4.6,
+        "reviews": 1877,
+        "distance_km": 2.7,
+        "open_now": true,
+        "opening_hours": "10:30–22:30",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Nhà hàng Hoàng Tâm - Phan Xích Long",
+      "role": null,
+      "evidence": {
+        "rating": 4.5,
+        "reviews": 1661,
+        "distance_km": 3,
+        "open_now": true,
+        "opening_hours": "06:30–22:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Ốc Hân - Quán Ốc Ngon Phú Nhuận",
+      "role": null,
+      "evidence": {
+        "rating": 4.6,
+        "reviews": 238,
+        "distance_km": 2.8,
+        "open_now": true,
+        "opening_hours": "11:00–23:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Quán Ăn Gia Đình Ngọc Hương",
+      "role": null,
+      "evidence": {
+        "rating": 4.5,
+        "reviews": 100,
+        "distance_km": 2.4,
+        "open_now": false,
+        "opening_hours": "15:00–05:00",
+        "attributes": [
+          "hợp gia đình (\"Quán Ăn Gia Đình Ngọc Hương\")"
+        ]
+      }
+    }
+  ],
+  "hardGaps": [
+    "parking",
+    "kids"
+  ],
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình gợi ý **Tám Riêu - Phan Xích Long** cho bữa trưa gia đình hôm nay. Quán có **4.8⭐ (2.106 đánh giá Google Maps)**, cách bạn khoảng 2.9km, mở cửa đến 21:30 nên hoàn toàn phù hợp. Đây là nhà hàng ẩm thực Việt nổi tiếng, không gian rộng rãi, thích hợp cho nhóm 6 người với con nhỏ, giá cơm phổ thông 100-200k/người.\n\nNếu muốn thay thế, **Man Tang Guo** (4.6⭐, 2.7km) cũng tốt và gần hơn một chút, chuyên ẩm thực Trung Quốc, phù hợp gia đình.\n\nMình chưa thấy bằng chứng về chỗ đậu xe, phù hợp trẻ em ở các quán này — nên gọi hỏi trước khi đi.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🍽️ GrabFood - Tám Riêu\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/vi/restaurants?search=T%C3%A1m+Ri%C3%AAu+Ph%C3%BA+Nhu%E1%BA%ADn\",\"primary\":true},{\"label\":\"📍 Google Maps - Tám Riêu\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=5129199686849166520\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Gọi trước để đặt bàn|Quán nào gần nhất|Có menu cho trẻ em không[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Cả nhà 6 người có con nít ăn trưa cuối tuần, cần chỗ đậu xe ô tô, Phú Nhuận"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình gợi ý **Tám Riêu - Phan Xích Long** cho bữa trưa gia đình hôm nay. Quán có **4.8⭐ (2.106 đánh giá Google Maps)**, cách bạn khoảng 2.9km, mở cửa đến 21:30 nên hoàn toàn phù hợp. Đây là nhà hàng ẩm thực Việt nổi tiếng, không gian rộng rãi, thích hợp cho nhóm 6 người với con nhỏ, giá cơm phổ thông 100-200k/người.\n\nNếu muốn thay thế, **Man Tang Guo** (4.6⭐, 2.7km) cũng tốt và gần hơn một chút, chuyên ẩm thực Trung Quốc, phù hợp gia đình.\n\nMình chưa thấy bằng chứng về chỗ đậu xe, phù hợp trẻ em ở các quán này — nên gọi hỏi trước khi đi.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🍽️ GrabFood - Tám Riêu\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/vi/restaurants?search=T%C3%A1m+Ri%C3%AAu+Ph%C3%BA+Nhu%E1%BA%ADn\",\"primary\":true},{\"label\":\"📍 Google Maps - Tám Riêu\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=5129199686849166520\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Gọi trước để đặt bàn|Quán nào gần nhất|Có menu cho trẻ em không[/FOLLOWUPS]"
+    }
+  ]
+}

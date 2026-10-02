@@ -29,13 +29,20 @@ const MESSAGES = {
     vi: 'Vui lòng thử lại vào ngày mai.',
     en: 'Please try again tomorrow.',
   },
+  // ONE shared AI question pool (2026-09-15): the anonymous allowance is a one-time trial, not a
+  // daily one — so its copy must not promise "tomorrow". The registered copy keeps "today".
   'chat.anonLimit': {
-    vi: 'Bạn đã dùng hết {n} câu hỏi miễn phí hôm nay. Đăng nhập để tiếp tục trò chuyện với Tappy!',
-    en: "You've used all {n} free questions for today. Sign in to keep chatting with Tappy!",
+    vi: 'Bạn đã dùng hết {n} câu hỏi AI dùng thử. Đăng nhập để có {d} câu hỏi AI mỗi ngày với Tappy!',
+    en: "You've used all {n} free trial AI questions. Sign in for {d} AI questions a day with Tappy!",
   },
   'chat.freeLimit': {
-    vi: 'Bạn đã dùng hết {n} tin nhắn miễn phí hôm nay. Hẹn gặp lại bạn vào ngày mai nhé!',
-    en: "You've used all {n} free messages for today. See you again tomorrow!",
+    vi: 'Bạn đã dùng hết {n} câu hỏi AI hôm nay (tính chung mọi tính năng). Hẹn gặp lại bạn vào ngày mai nhé!',
+    en: "You've used all {n} AI questions for today (across every feature). See you again tomorrow!",
+  },
+  // A2 (2026-09-20): a Pro account's daily ceiling — far above real use; a graceful sentence, never a wall.
+  'chat.proDailyLimit': {
+    vi: 'Hôm nay bạn đã dùng tới {n} lượt hỏi Tappy — mức trần để giữ dịch vụ ổn định cho mọi người. Hẹn gặp lại bạn vào ngày mai nhé!',
+    en: "You've reached today's ceiling of {n} Tappy turns — a limit that keeps the service steady for everyone. See you again tomorrow!",
   },
   'chat.tooLong': {
     vi: 'Tin nhắn quá dài. Vui lòng rút gọn.',
@@ -74,6 +81,13 @@ const MESSAGES = {
     vi: 'Hãy đăng nhập để đăng bài, bình luận và theo dõi.',
     en: 'Sign in to post, comment and follow.',
   },
+  // Chat's own sign-in prompt (owner D1, 2026-09-17: chat requires an account). The social
+  // sentence above talks about posting and following, which is not what a guest asked Tappy;
+  // Android shows this sentence verbatim in the error bubble, so it must read as the prompt.
+  'auth.chatAccountRequired': {
+    vi: 'Hãy đăng nhập để trò chuyện với Tappy.',
+    en: 'Sign in to chat with Tappy.',
+  },
 
   // ── 18+ eligibility ────────────────────────────────────────────────────────
   // Two states, two sentences. "We need your date of birth" and "you may not use
@@ -86,6 +100,13 @@ const MESSAGES = {
   'age.ineligible': {
     vi: 'TappyAI chỉ dành cho người từ 18 tuổi trở lên.',
     en: 'TappyAI is only available to people aged 18 and over.',
+  },
+  // A GUEST on the chat trial has not declared their age yet (owner D1 revised,
+  // 2026-09-17). Android shows this sentence verbatim in the error bubble, so it
+  // must read as the instruction, not as a refusal.
+  'age.declarationRequired': {
+    vi: 'Vui lòng xác nhận bạn đủ 18 tuổi để dùng thử Tappy.',
+    en: 'Please confirm you are 18 or older to try Tappy.',
   },
   // The single self-correction has been used. Says what to do next rather than
   // restating the refusal.
@@ -141,6 +162,9 @@ const MESSAGES = {
   'media.imageTooLarge3': { vi: 'Ảnh tối đa 3MB', en: 'Images can be at most 3MB' },
   'media.imageTooLarge6': { vi: 'Ảnh quá lớn. Vui lòng chọn ảnh nhỏ hơn 6MB.', en: 'That image is too large. Please choose one under 6MB.' },
   'media.uploadFailed': { vi: 'Không thể tải ảnh lên. Vui lòng thử lại.', en: "Couldn't upload the image. Please try again." },
+  // P2a (2026-09-28): the storage identity (WIF/OIDC) or Cloud Storage itself is unreachable —
+  // retrying right away will not help, so the copy says the SERVICE is down, not "try again".
+  'media.uploadUnavailable': { vi: 'Dịch vụ tải ảnh đang tạm gián đoạn. Ảnh của bạn chưa được lưu — vui lòng thử lại sau.', en: "Photo uploads are temporarily unavailable. Your photo wasn't saved — please try again later." },
   'media.fileNotFound': { vi: 'Không tìm thấy file', en: 'File not found' },
   'media.videoTooLong': { vi: 'Video quá dài. Vui lòng chọn video tối đa {n} giây.', en: 'That video is too long. Please choose one up to {n} seconds.' },
 
@@ -158,6 +182,9 @@ const MESSAGES = {
   'content.badFormat': { vi: 'Kết quả không đúng định dạng, vui lòng thử lại.', en: 'The result came back malformed — please try again.' },
 
   // Per-feature rate limits. `{n}` is the daily allowance.
+  'share.notShareable': { vi: 'Kết quả này chưa thể chia sẻ công khai.', en: 'This result cannot be shared publicly.' },
+  'share.publicUnavailable': { vi: 'Chia sẻ công khai đang tạm tắt.', en: 'Public sharing is turned off for now.' },
+  'chat.shareFollowUpLimit': { vi: 'Bạn đã hỏi đủ số câu cho kết quả này hôm nay. Đăng nhập để hỏi Tappy thoải mái hơn nhé.', en: "You've asked all the follow-ups this result allows today. Sign in to keep asking Tappy." },
   'rate.tooFast': { vi: 'Bạn thao tác quá nhanh, vui lòng thử lại sau giây lát.', en: "You're going a bit fast — please try again in a moment." },
   'rate.postLimit': { vi: 'Bạn đã đăng quá {n} bài hôm nay. Thử lại vào ngày mai nhé.', en: "You've posted {n} times today. Please try again tomorrow." },
   'rate.uploadLimit': { vi: 'Bạn đã tải lên {n} ảnh hôm nay. Thử lại vào ngày mai nhé.', en: "You've uploaded {n} images today. Please try again tomorrow." },
@@ -167,7 +194,9 @@ const MESSAGES = {
   'review.signInToReview': { vi: 'Cần đăng nhập để đánh giá', en: 'Please sign in to write a review' },
   'review.alreadyReviewed': { vi: 'Bạn đã đánh giá địa điểm này rồi.', en: "You've already reviewed this place." },
   'media.signInToUpload': { vi: 'Cần đăng nhập để tải ảnh', en: 'Please sign in to upload images' },
-  'media.imageTooLarge5': { vi: 'File ảnh phải nhỏ hơn 5MB', en: 'Images must be smaller than 5MB' },
+  // {n} is MAX_PHOTO_SIZE_MB. The number was baked into the key name AND the copy, so raising
+  // the constant would have kept telling the user 5MB while the server enforced something else.
+  'media.imageTooLarge': { vi: 'File ảnh phải nhỏ hơn {n}MB', en: 'Images must be smaller than {n}MB' },
   'media.videoTooLongSec': { vi: 'Video quá dài. Vui lòng chọn video tối đa {n} giây.', en: 'That video is too long. Please choose one up to {n} seconds.' },
   'media.noFile': { vi: 'Không có file', en: 'No file was provided' },
   'media.uploadProtocol': { vi: 'Giao thức tải lên không còn được hỗ trợ', en: 'That upload method is no longer supported' },
@@ -249,6 +278,11 @@ const MESSAGES = {
   'scam.checkFailed': { vi: 'Chưa kiểm tra được liên kết này. Vui lòng thử lại.', en: "Couldn't check this link. Please try again." },
   'scam.tooManyChecks': { vi: 'Bạn kiểm tra quá nhiều lần. Vui lòng thử lại sau.', en: 'Too many checks. Please try again later.' },
   'scam.dailyLimit': { vi: 'Bạn đã dùng hết lượt kiểm tra hôm nay.', en: "You've used all of today's checks." },
+  // Scam Shield · Analyze Message.
+  'scam.analyzeEmpty': { vi: 'Hãy dán tin nhắn, thêm liên kết hoặc tải ảnh chụp màn hình.', en: 'Paste a message, add a link, or upload a screenshot.' },
+  'scam.analyzeInvalidImage': { vi: 'Ảnh không hợp lệ hoặc quá lớn (tối đa 5 MB, JPEG/PNG/WebP).', en: 'The image is not valid or too large (max 5 MB, JPEG/PNG/WebP).' },
+  'scam.screenshotUnavailable': { vi: 'Hiện chưa đọc được ảnh chụp màn hình. Hãy dán nội dung tin nhắn vào ô chữ.', en: 'Screenshots cannot be read right now. Please paste the message text instead.' },
+  'scam.analyzeFailed': { vi: 'Chưa phân tích được tin nhắn này. Vui lòng thử lại.', en: "Couldn't analyze this message. Please try again." },
 
 
   // ── W2 · voice ──────────────────────────────────────────────────────────────
@@ -261,6 +295,12 @@ const MESSAGES = {
   // ── W2 · link resolution (the chat composer) ────────────────────────────────
   'links.urlRequired': { vi: 'Vui lòng nhập đường liên kết.', en: 'Please enter a link.' },
   'links.unsupportedSource': { vi: 'Nguồn liên kết này chưa được hỗ trợ.', en: 'That kind of link is not supported yet.' },
+
+  // ── UAT3 P0 · in-app account deletion (/api/account/delete) ─────────────────
+  'account.deleteUnavailable': { vi: 'Chức năng tự xóa tài khoản chưa được bật. Hãy gửi yêu cầu xóa qua trang hướng dẫn.', en: 'Self-service deletion is not available here. Please send a deletion request instead.' },
+  'account.deleteConfirmRequired': { vi: 'Hãy gõ từ xác nhận để xóa tài khoản.', en: 'Type the confirmation word to delete your account.' },
+  'account.deleteStaff': { vi: 'Tài khoản có quyền quản trị không thể tự xóa. Vui lòng liên hệ bộ phận hỗ trợ.', en: 'An account with admin access cannot be deleted from here. Please contact support.' },
+  'account.deleteFailed': { vi: 'Chưa xóa được tài khoản. Tài khoản của bạn vẫn còn nguyên — vui lòng thử lại.', en: 'Your account was not deleted and is unchanged. Please try again.' },
 
   'notif.markReadFailed': { vi: 'Không thể đánh dấu đã đọc.', en: "Couldn't mark these as read." },
 } as const satisfies Record<string, Message>

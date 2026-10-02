@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"KHU VUI CHƠI TRẺ EM BIBO KIDS THỦ ĐỨC\" OR \"Khu vui chơi (Nhà văn hoá thiếu nhi Thủ Đức)\" Thủ Đức site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T04:39:06.235Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"KHU VUI CHƠI TRẺ EM BIBO KIDS THỦ ĐỨC\" OR \"Khu vui chơi (Nhà văn hoá thiếu nhi Thủ Đức)\" Thủ Đức site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Lễ hội mới ở Thủ Đức — mở cổng tự do, siêu vui",
+    "link": "https://www.tiktok.com/@lankhapthuduc/video/7662629263270579474",
+    "snippet": "... Thủ Đức với cổng mở tự do, hoạt. @Lăn Khắp Thủ Đức · âm thanh gốc - Lăn Khắp Thủ Đức · Khu vui chơi (Nhà văn hoá thiếu nhi Thủ Đức) · author.",
+    "position": 1
+   },
+   {
+    "title": "hội chợ Thái Lan",
+    "link": "https://www.tiktok.com/@my220988/video/7643258034000645384",
+    "snippet": "Mở ứng dụng. #hội chợ Thái Lan #. @ngoc Mỵ88 · âm thanh gốc - AIR Vinahouse · Khu vui chơi (Nhà văn hoá thiếu nhi Thủ Đức) · author. 129 · 12.",
+    "position": 2
+   },
+   {
+    "title": "Ae thủ đức ủng hộ dữ quá kkkk#viralvideo #viral #xuhuong ...",
+    "link": "https://www.tiktok.com/@b.gi.da.nontuy.ho/video/7681565789388049685",
+    "snippet": "Ae thủ đức ủng hộ dữ quá kkkk#viralvideo #viral #xuhuong #hottrend. Ae thủ đức ... Khu vui chơi (Nhà văn hoá thiếu nhi Thủ Đức) · author · 34 · 1.",
+    "position": 3
+   },
+   {
+    "title": "Thú Đức Tóc Trắng Ghê Quá: \"Tao Cho Mày Chết!\"",
+    "link": "https://www.tiktok.com/@truongle1408/video/7674284275201789205",
+    "snippet": "Keywords: thú đức tóc trắng, thú đức ghê quá, thú đức cho mày chết, thú đức ... Khu vui chơi (Nhà văn hoá thiếu nhi Thủ Đức) · author. 2480 · 34.",
+    "position": 4
+   },
+   {
+    "title": "Uống là phải quay lại là anh em đón được hương vị đẳng ...",
+    "link": "https://www.tiktok.com/@bogiaduanon_thuduc/video/7681893750418738452",
+    "snippet": "... Lượt thích,Video TikTok từ Tiệm nhỏ Bơ Dừa thủ đức ( ... Khu vui chơi (Nhà văn hoá thiếu nhi Thủ Đức) · author · 206 · 5.",
+    "position": 5
+   },
+   {
+    "title": "Dạt ra hết cho chuỵ #mamnon #thieunhi #fyp",
+    "link": "https://www.tiktok.com/@kmnioahn/video/7615607838982917396",
+    "snippet": "Dạt ra hết cho chuỵ #mamnon #thieunhi #fyp. @ · âm thanh gốc - ductrung87.1 · Khu vui chơi (Nhà văn hoá thiếu nhi Thủ Đức) · author · 32 · 0.",
+    "position": 6
+   },
+   {
+    "title": "Phồn Giản - tiểu thuyết của Quân Ước",
+    "link": "https://www.tiktok.com/@ndtn_01/video/7661255075917991189",
+    "snippet": "... tác giả Quân Ước: chủ đề,. @Nhất Diệp Tố Niên · Sau Này Em Cưới Ai Rồi Remix · Khu vui chơi (Nhà văn hoá thiếu nhi Thủ Đức) · author. 378.",
+    "position": 7
+   },
+   {
+    "title": "Thủ Đức nên thử: trải nghiệm Bò Già Dưa Non đang gây sốt",
+    "link": "https://www.tiktok.com/@bogiaduanon_thuduc/video/7681589580088364309",
+    "snippet": "... Thủ Đức, xu hướng ẩm thực Thủ Đức, đồ ăn viral Sài Gòn. Đây là bản tóm tắt nội ... Khu vui chơi (Nhà văn hoá thiếu nhi Thủ Đức) · author · 11 · 1.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

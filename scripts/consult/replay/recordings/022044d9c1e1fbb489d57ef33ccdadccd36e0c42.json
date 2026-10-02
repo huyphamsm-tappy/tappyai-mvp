@@ -1,0 +1,331 @@
+{
+ "url": "https://google.serper.dev/shopping",
+ "request": {
+  "q": "quà cà phê tặng sếp nam",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 20
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:21:59.140Z",
+ "body": {
+  "searchParameters": {
+   "q": "quà cà phê tặng sếp nam",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "shopping",
+   "num": 40,
+   "page": 1,
+   "engine": "google"
+  },
+  "shopping": [
+   {
+    "title": "Bộ quà tặng Tri Ân 1 cà phê kèm phin và notebook RuNam",
+    "source": "farmersmarket.vn",
+    "price": "1.499.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQCfM0H-w76A2IB7xNOL4E_IQnaaZ9PbfL0vdTjK2hM5XQhoh2DnsgjwOZCDil8x1BMY2hw6VRElcknPwVs1eExCwk0VFF0",
+    "productId": "14584569376688111764",
+    "position": 1
+   },
+   {
+    "title": "Set Quà Tặng Cà Phê 2 Combo Phin Nhôm Nón Lá Cà Phê 250g REAL BEAN COFFEE - Phin nón Culi",
+    "source": "tiki.vn",
+    "price": "500.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQd5jZkdvY9X_BQsu_adWGOLCex_VbB4FEk8JtABWZ_7WkrQk4ifXHU2NVOMAohEeVQYjplX2iB3oqdsfFa7nOMddObiuNpbksvtbhKNcQKGdKgxbu9wN1f-Q",
+    "productId": "11888364506728612128",
+    "position": 2
+   },
+   {
+    "title": "Set Quà Cà Phê A Bold Style, Quà Tặng Sếp Nam - The Curator",
+    "source": "Chus.vn",
+    "price": "770.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTf852VbpPrAGRB_C4RJl-7uxqNRPE-7aDCipCMtwWEv-lLlaFX8FGtVQc8S29QPyjVWqJdK3FeaEB0ImJYJqDz0xVIygpR9gwrJz2qqI2EXSmScqj9zJVn",
+    "productId": "964833838479577685",
+    "position": 3
+   },
+   {
+    "title": "Xe cà phê take away đẹp-xe bán cafe mang đi lắp ráp",
+    "source": "quaybanhangdidonggiare.com",
+    "price": "1.300.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSMz0N-Vdnl7QwxplU-pDKUpKwMtp84M7WMlES3KIkQCFlSIaHO0uVPSO92ee2tbczZvRrQhdgW5NprPQvrdp8oNRyc91-b",
+    "productId": "13660459711548079926",
+    "position": 4
+   },
+   {
+    "title": "Set Quà Tặng Cà Phê Cao Cấp Mee Fee - Mini Gift Set",
+    "source": "Mee Fee",
+    "price": "324.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTS-FrkNTOVdDxJ4YxhYGkSmlA2UopFpLJ6rC0mva1g8JvTTbJkBqLKcsgEazNgUJ8j8JatKRGTELkA3lAbr6OfGZyh43Tuabui0BkR3Khg",
+    "productId": "5103220032090785665",
+    "position": 5
+   },
+   {
+    "title": "Set Quà Tặng Doanh Nghiệp - Phin Cà Phê & Ly Lọc Trà Hoa Cúc",
+    "source": "myngheviet.vn",
+    "price": "535.140 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSjgcsShl6FBDCQMt6A3OvpcUdJZkMSvg-LMBOGLSZPh2FlQHVvw7xkQPcJPCtg93_TVQUq2V6BTS8_W7p4dT5gI5xwF4tQlA",
+    "productId": "14148027369518678973",
+    "position": 6
+   },
+   {
+    "title": "SET quà tặng cà phê - Phúc - Lộc - Thọ - Olive Coffee",
+    "source": "Olive coffee",
+    "price": "1.100.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQFyTEKmi_kC5fC3b7-YVJ0KXDpfBwBes7hFuHdXJp-h3XyUMu9WChjRva70Z4dU0F31rMeAmwzDyoFFBLW0Vvw0lLOOcmP5JAuozNr_8a0",
+    "productId": "17773247747032458598",
+    "position": 7
+   },
+   {
+    "title": "Quà Tặng Đĩa Biểu Trưng Pewter Viền Hoa 24k ACT GOLD ISO 9001:2015 quà tân gia cao cấp - Quà tặng 80 năm thành lập CAND, Quà Tặng Tri Ân,Quà tặng đại",
+    "source": "actgold.com.vn",
+    "price": "4.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcS81EeBjk8l2OAggLyvb8E9c8utSdbkmzSsVo9L8ZDZuupUb2AYr-ScZlE11h4uHjX2avqed0kVphy3DyC0qmPoBMMqLYxTqIYxf9KCxyKYEkvhhQpzLPEXYQ",
+    "productId": "6058609450741397846",
+    "position": 8
+   },
+   {
+    "title": "Quà tặng Ly giữ nhiệt LGN01B 510ml",
+    "source": "Quà Tặng Legonna",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+c%C3%A0+ph%C3%AA+t%E1%BA%B7ng+s%E1%BA%BFp+nam&prds=localAnnotatedOfferId:1,catalogid:2072987726068980909,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "170.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTzRUEfECFNVaa0ekRGt5pgi98orBBeQzb4H0tA-9qS9IOCT6IOptqXjksAFYYlvjZzbv2XC_uGLL_7VQECgBn6xlIAi20U7w",
+    "productId": "2072987726068980909",
+    "position": 9
+   },
+   {
+    "title": "Quà tặng 20/10 cho sếp nữ, vợ, cô giáo, giáo viên nữ, mẹ và bạn gái, người yêu nữ quà tặng khăn quàng choàng cổ lụa cao cấp cho nữ văn phòng công sở",
+    "source": "AGANA",
+    "price": "495.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQR6LM45eesP-W06zJpqWvrwpdnhL16X5RvgmiGGP5jsXya6VtfODy4K6-Ys0p_bEA7wTre4MGFRhhu0vzhhd6AFSK-Aid2GdCgGiTHKyCd7K0Ofb1BaImxF30",
+    "productId": "2744621202652917152",
+    "position": 10
+   },
+   {
+    "title": "Bộ quà tặng Tân Xuân 1 cà phê kèm phin và ly gốm RuNam",
+    "source": "farmersmarket.vn",
+    "price": "1.499.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTRJ3tKOtgQBX3UmaLUOjjUr35BcFncBS8Pia82vJ-5tMmpfMd-VOhNcbRS50uDE9N4YLXtTvA4NjDYTWyfECQzwTTQ1LZN84lU7coAqAbRY_Agd3_V-IX7MQ",
+    "productId": "8844775001932250778",
+    "position": 11
+   },
+   {
+    "title": "Hộp Quà Tặng 1 Gói Arabica và 1 Gói Summer Day 250G Bột",
+    "source": "Cà Phê Sạch ORG",
+    "price": "390.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTRClkFnamkTVPTx35ENxB8zLO9MMTHnYL7RYF49zuiojGnBJ3L7s5ocxU-UqbgYPIsTPsg9dLr5LHF_ZsWO9irCugq4QhLwQ",
+    "productId": "2513232225703035040",
+    "position": 12
+   },
+   {
+    "title": "'Set Quà Ấm Áp Trà Trắng'",
+    "source": "Đại Lý Tinh Dầu Nến Thơm Set Quà",
+    "price": "492 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRPLHozTY8C4DP1lxkOdZIl1nJgRxaXgU5B0WwpnK3Wr2N38tqmK34SAIOGMh1duOmGOQNWKelVK9iubjrhPqghycgbW9M40QwEN32qOmI",
+    "productId": "10416831908086861439",
+    "position": 13
+   },
+   {
+    "title": "Cà Phê Sài Gòn Wake-Up Gói 456g",
+    "source": "7-Eleven Việt Nam",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+c%C3%A0+ph%C3%AA+t%E1%BA%B7ng+s%E1%BA%BFp+nam&prds=localAnnotatedOfferId:1,catalogid:16525951857454069907,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "79.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQvELSnTFeIFtZ3rOZSv_P-GaONjFdO8799mbKkdrm3OHVp4nhEysWU0DJfn4fZu8pNYNMgDtOjqCQS8cnidz-mj1xBFqKLyIA1obdO-joo1RqoifXIIXz0lA",
+    "productId": "16525951857454069907",
+    "position": 14
+   },
+   {
+    "title": "Bộ quà tặng doanh nghiệp \"Coffee Time\"- Kèm phin & Ly sứ đen",
+    "source": "Chus.vn",
+    "price": "715.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRfq06IDrCd5NztuXaObpN_4IEERbbvZHda7lqfg3UxfEufnVDdxPcAUi685FM8o7TBgoGb6ftE-2fgtaXtCrRcq024et4fncQBiWBJHoA",
+    "productId": "1845317798050364623",
+    "position": 15
+   },
+   {
+    "title": "Hộp quà - Gan Ngỗng Pháp, giỏ quà tết, gio quà tết, quà tặng, quà tết, quà tặng sếp, quà tặng cao cấp, quà tặng vip, quà biếu,",
+    "source": "Alofood",
+    "price": "3.350.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTnp0EVBgup38YQ4aa13GaPXHTF5vgHTrLY-o0GgYCzsonjn4pN3O5lclzlXEz8F_9a81tv5EgQcu4JPSwX235SgqI6QegSTVbqudGe5Ak",
+    "productId": "5360733673652967941",
+    "position": 16
+   },
+   {
+    "title": "cà phê Myanmar Salween vẻ đẹp cà phê từ đất nước ngọc Phỉ Thúy",
+    "source": "visty.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+c%C3%A0+ph%C3%AA+t%E1%BA%B7ng+s%E1%BA%BFp+nam&prds=localAnnotatedOfferId:1,catalogid:5825021916768739623,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "98.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTWlNjySCFya3QMzZYY1zIgPc-lAS9LLHQxY4C3z0jfGGKNbmOqFEyJ00LZyp2ZsqeLJs2A9lyylfWfvprd8OV65a7kpLnTolB5a876dHxS",
+    "productId": "5825021916768739623",
+    "position": 17
+   },
+   {
+    "title": "Cà Phê G7 Gu Mạnh X2 300g",
+    "source": "Thế Giới Cà Phê",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+c%C3%A0+ph%C3%AA+t%E1%BA%B7ng+s%E1%BA%BFp+nam&prds=localAnnotatedOfferId:1,catalogid:9346032149873629532,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "66.914 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcT-Kv_trmKT8FGuDov1E7S6mNIa3kBoA0Kkpedf_Jf6ytUE7GPKBnatzY0RlRICAe-3dOh24rmXI--dU-Eumsze8qc9g4ZW",
+    "rating": 4.9,
+    "ratingCount": 940,
+    "productId": "9346032149873629532",
+    "position": 18
+   },
+   {
+    "title": "Bộ cốc 2 lớp và phin pha cà phê 2in1 du lịch, cắm trại - tặng 1 thìa khuấy cà phê",
+    "source": "Du Mục camping - camping shop",
+    "price": "285.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRXa9jdgR9NdWrFHwV8oFC8Nb8F9x2n5mOmjUhxoMASagcm223PLSzNXdimPFmZVJxIO7PAFjxsZ0QyXsx5-K3UemPgKMM2Iw1oF-q_G_pAzW5dWk8zF5Qe",
+    "productId": "4620272797698587524",
+    "position": 19
+   },
+   {
+    "title": "Cà phê hoà tan Latte yến mạch hiệu Cafe 21 (10 gói x 25g) vàng - Mini Japan Store - Hồ Chí Minh",
+    "source": "Mini japan",
+    "price": "169.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcS_W7jhX25V8kf7sfpzmsj2gx-DABDPtl8lLzjALQBUkcGvCsdCedSuTTs0yCrQxE0U2ZSedGvFTL0owvlyjfzsA0fn7R66Dt-tCOcSiSw",
+    "productId": "3023541258149370601",
+    "position": 20
+   },
+   {
+    "title": "Vòi Chiết Cà Phê Single / Double",
+    "source": "Hoàng Hiệp Coffee",
+    "price": "145.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRK80Z8D-xU0ejuIKMcykwullI82NDZx0jPVgHCJuVSbHkZh1fPpvvZqN_sdd6Odv9qzacayVFzCIXKJjfRSc9lEpnjiNkcQzptk8EGyrL9ovGjfR73v6d2lA",
+    "productId": "7845568633041039155",
+    "position": 21
+   },
+   {
+    "title": "Cà phê đen Nhật Bản ít đường Key Coffee 1L",
+    "source": "Cửa Hàng Hachi Hachi Japan Shop",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+c%C3%A0+ph%C3%AA+t%E1%BA%B7ng+s%E1%BA%BFp+nam&prds=localAnnotatedOfferId:1,catalogid:5945414265503423479,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "115.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQkSYLGCd9YUsK_8TUT8wX8ZG6uT36xeVs6muuk03yBaqKMAHsMzCx6vQbeEySi3aURr8HCArRnHdrxUtHf-3D0jXlaqiMsUyjIsfN_BhFS",
+    "rating": 4.8,
+    "ratingCount": 329,
+    "productId": "5945414265503423479",
+    "position": 22
+   },
+   {
+    "title": "Bộ bếp đun cà phê gốm đen lòng vàng đun cà phê",
+    "source": "Gốm 10",
+    "price": "65.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSXQlieMjp2Hn-YbwZ51Ui1uKf8L5yLSS1pECyOVwyHqVQUPHJrAjAXKLr1sPXlMz8rUSxAsxJw2HZmwBLtdygvjTFPd80lFOyJ0AwQ8K42",
+    "productId": "7787473354753334301",
+    "position": 23
+   },
+   {
+    "title": "Cà Phê Đen Bold84 250ml",
+    "source": "Classic Deli VN",
+    "price": "34.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQqVBy2gxCaMJolnOoJMUyuHnekrTVzE1GE4qEv-zy1RldDNWc36kZMHqsqBq9ZmCVSi3LFX9m8EfmNYL6khj2OKO1UyPw_",
+    "productId": "9168372526918545720",
+    "position": 24
+   },
+   {
+    "title": "Cà phê Ca cao(10 gói x 25g/hộp) - HẾT HÀNG",
+    "source": "saunhung.com",
+    "price": "130.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSXmsb69_xjn6ljAZ_4eAOTInDv-liaheAVvDL8zldVbK1qBHQSmtxuX16SMtegfPIysH2cQtNGk91BFguNWvr79fIiF8Licf3Yr__nc2wZ7huCB7cTk-7ing",
+    "productId": "18424434295499857620",
+    "position": 25
+   },
+   {
+    "title": "Hạt cà phê rang Espresso 500gr - Lúave",
+    "source": "Chi Gourmet Store",
+    "price": "268.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQyuKB7pcOLJQFofJIv2HlMvz4oyKP1VtqxmwozhJ78q52u4Dc5a_xTGSxRwnRf4KPCaXP8zKN4qbw-8zA4pmIhKbD2MX5OONpZmP9YwS2cZOA9rJ_jRUZHSg",
+    "productId": "10097325533005927460",
+    "position": 26
+   },
+   {
+    "title": "Cà phê hòa tan UCC Coffee The Blend 117 18G",
+    "source": "Mini japan",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+c%C3%A0+ph%C3%AA+t%E1%BA%B7ng+s%E1%BA%BFp+nam&prds=localAnnotatedOfferId:1,catalogid:14067566285692495446,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "52.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTf18eGFlELFIChWlpgLXuGAJK_w8pg2BZnf7Cn7GAcl2eoaQ87oniapgOzSMe36GcjSk4uIEH173wDWly1VKT1dTgrh9rb5AgNz5mM-nIg1KipJJUxdNQrSA",
+    "productId": "14067566285692495446",
+    "position": 27
+   },
+   {
+    "title": "Bộ Phin Cà Phê Misc Assortment Chỉ Vàng 170ml ML I Sứ TB 27071501403",
+    "source": "Gốm Sứ Thu Ba",
+    "price": "446.040 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTRACAG_ppQInofpRBq96CHsyNAID69ol6iaVNS1QUj34Hxj4-Yi8CMaxJiCIcE6qdLt6A4xXh6d2GrtMFdMac24EdlpF8b",
+    "productId": "12963403778058951898",
+    "position": 28
+   },
+   {
+    "title": "Cà phê hòa tan Key Coffee",
+    "source": "Cửa Hàng Hachi Hachi Japan Shop",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+c%C3%A0+ph%C3%AA+t%E1%BA%B7ng+s%E1%BA%BFp+nam&prds=localAnnotatedOfferId:1,catalogid:2045313519404021279,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "239.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRQMWcPITdgYot_dKnMzKAhFGnFRJpP74ZvWfeakInDRkWKwwDhrruHS-rPtljf_7vaGHeoxN9Oncg3ST_LjELeF4sN8DTDOSKUt6lOGjcjr7SZY9CbtSJEJuU",
+    "rating": 4.9,
+    "ratingCount": 640,
+    "productId": "2045313519404021279",
+    "position": 29
+   },
+   {
+    "title": "Chanh Mật Ong Nắp Đen Hàn Quốc Lọ 1kg -Lọ thủy tinh 1kg",
+    "source": "Thế Giới Hồng Sâm",
+    "price": "250.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRnuqCxBDuTav2p7UpLpKS5yL2iGqq4T4Gu_kFcfkm3_UsZ_u0ha6n9pxaVAiRqmWPM6VEEz7O3t8Mcmck4TRKR4SBWObX6pzYnsdYXDYUKsl1sjaAEq3ej9klr",
+    "productId": "5033265629513910433",
+    "position": 30
+   },
+   {
+    "title": "Cà Phê Hòa Tan Lamant Cappuccino Vị Sô-cô-la Hộp 20g*6",
+    "source": "menaselect.com",
+    "price": "49.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSPV5eXMlb-sUXyMN7P6lBxmyTk3o5PofnCB00knbJswa43YiP0jgiQDxsB-ezhOM0WYsYkSCEtw8SNn2bGOmh8sq_pVixq_n1GKNv-WxkVmqCOQCD_2z4S",
+    "productId": "12539443628482568824",
+    "position": 31
+   },
+   {
+    "title": "Cà phê Tazza Núi 100Ara",
+    "source": "Cubes Asia",
+    "price": "1.944.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTe0SG9a40NAYVGDkXfKQNt8bNqR0RLl7NtN6H34avXy3uoLa9Nbm3qgar7U2ohemjXX2YHnscTYc2AQJZBnQj-wDa0vsbiNkI3oG9wTAp_PdVHzY5frQNJ",
+    "productId": "7403326348014182197",
+    "position": 32
+   },
+   {
+    "title": "Cà phê hòa tan vàng Kahve Dünyası 100 gr (3.22oz)",
+    "source": "Grandbazaarist",
+    "price": "233.752 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRnprqwm8F5Bhh9Z0rRjU-rqh6gWwf7K_JySWN3d2xS41K49qORxuKLvZq8RZWVzmVHTt2i87FFNh54sSSw95imATfvNjWH2IGLyL5SqyTzj_-eyWwoprFD",
+    "rating": 4.5,
+    "ratingCount": 72,
+    "productId": "17302330503391693876",
+    "position": 33
+   },
+   {
+    "title": "Chanh Mật Ong Nắp Vàng Hàn Quốc Lọ 1kg -Lọ thủy tinh 1kg",
+    "source": "Thế Giới Hồng Sâm",
+    "price": "240.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRnZAW-tv4kLun-UNOW1443j9UkSL-gUxShCoLSNbEkS7q7KzugzND49pP3EJ4DY2j-mo_cO_aLXprYMEgTWMOtYlorUr-7wduTvTRciU5S9q6aIcsx1qLSTw",
+    "productId": "8053469348751936546",
+    "position": 34
+   },
+   {
+    "title": "Cà Phê Hữu Cơ Hàm Rồng Túi Lọc",
+    "source": "MewTheme",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+c%C3%A0+ph%C3%AA+t%E1%BA%B7ng+s%E1%BA%BFp+nam&prds=localAnnotatedOfferId:1,catalogid:15498136825949425817,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "143.900 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRJI2WmcAxgQSuejWOB5YsFKtSb2QiTj_oYfSrwAI5Cx3M5hi-EisoW2uRDcfWQMzPQgIMzb29eRLMVz2t4YuvMI08PH3BlNw",
+    "productId": "15498136825949425817",
+    "position": 35
+   },
+   {
+    "title": "Cà phê hòa tan vàng Kahve Dünyası 200 gr (7oz)",
+    "source": "Grandbazaarist",
+    "price": "363.615 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTEh_dJH2eHJYO7t2nhvC-xtf1T8_4-O7lt0EoVxtPOBR4uZhIj6HIYYqNACWMOir5rjzkUnAyLQFjOJydaiu5RLOPg8sL_pHWcgMP_eMp6AtKzls7HSqMpMw",
+    "rating": 4.5,
+    "ratingCount": 72,
+    "productId": "16887735788920463184",
+    "position": 36
+   }
+  ],
+  "credits": 2
+ }
+}

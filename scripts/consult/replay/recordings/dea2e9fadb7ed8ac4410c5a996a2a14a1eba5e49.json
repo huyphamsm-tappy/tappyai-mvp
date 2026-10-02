@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"寿司と天ぷら居酒屋かむら- Izakaya Kamura\" OR \"izakaya Matsuki\" OR \"ME-TETSU IZAKAYA\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:05:43.799Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"寿司と天ぷら居酒屋かむら- Izakaya Kamura\" OR \"izakaya Matsuki\" OR \"ME-TETSU IZAKAYA\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Me Tetsu Izakaya",
+    "link": "https://www.tiktok.com/discover/me-tetsu-izakaya",
+    "snippet": "Trải nghiệm quán Nhật Me-Tetsu Izakaya: takoyaki, ẩm thực Izakaya. Khám phá Me-Tetsu Izakaya: takoyaki, món Nhật, không gian izakaya và cảm nhận ẩm thực ...",
+    "position": 1
+   },
+   {
+    "title": "Izakaya Matsuki: Quán Nhật Mở Cửa Đến 4h Sáng",
+    "link": "https://www.tiktok.com/@vine.2905/video/7588025629925313812",
+    "snippet": "Izakaya Matsuki: Quán Nhật Mở Cửa Đến 4h Sáng. Khám phá Izakaya ... izakaya Matsuki, món sò điệp nướng bơ, mì ý sốt trứng cá tuyết, ẩm ...",
+    "position": 2
+   },
+   {
+    "title": "mê quán izakaya lowkey này mãi thoaiii📍izakaya matsuki",
+    "link": "https://www.tiktok.com/@bachuareview/video/7402577127196888336",
+    "snippet": "Gái Linh Lang. mê quán izakaya lowkey này mãi thoaiii izakaya matsuki - 26 linh lang, ba.",
+    "position": 3
+   },
+   {
+    "title": "Izakaya Matsuki - Chi nhánh mới trung tâm Q1",
+    "link": "https://www.tiktok.com/@thphg__/video/7631200566013660436",
+    "snippet": "Izakaya Matsuki - Chi nhánh mới trung tâm Q1. Khám phá chi nhánh mới của Izakaya Matsuki tại trung tâm Q1 với vibe đẹp cực. Thưởng thức món ...",
+    "position": 4
+   },
+   {
+    "title": "Tận Hưởng Sushi Tại ME-TETSU IZAKAYA II",
+    "link": "https://www.tiktok.com/@oihienday/video/7554330613499677973",
+    "snippet": "Khám phá hương vị tuyệt vời tại ME-TETSU IZAKAYA II với buffet sushi phong phú! Tham gia ngay để thưởng thức! #oihienday #hiendian #foodie # ...",
+    "position": 5
+   },
+   {
+    "title": "Izakaya Matsuki Quận 1 - Quán lai rai sang, đồ ăn Nhật ngon",
+    "link": "https://www.tiktok.com/@thongdongdoday/video/7667531161605917960",
+    "snippet": "Lead Izakaya Matsuki ở Quận 1 là lựa chọn lý tưởng để “lai rai” chill: không gian sang, thiết kế mang phong cách Nhật, đồ ăn ngon và nhiều ...",
+    "position": 6
+   },
+   {
+    "title": "Izakaya Matsuki quận 1 – review quán Nhật vibe sang xịn",
+    "link": "https://www.tiktok.com/@dichoimoingay/video/7644536263168675093",
+    "snippet": "Lead Izakaya Matsuki là một quán Nhật mang vibe sang xịn, nằm ngay trung tâm quận 1. Review này tập trung vào không gian tone đen, các món nên thử trên menu ...",
+    "position": 7
+   },
+   {
+    "title": "Quán Nhậu Kiểu Nhật Đỉnh Tại Me Tetsu Izakaya",
+    "link": "https://www.tiktok.com/@hhuyennhiii/video/7474974960386149639",
+    "snippet": "Quán Nhậu Kiểu Nhật Đỉnh Tại Me Tetsu Izakaya. Khám phá quán nhậu Nhật với nhiều món nhắm ngon tại Me Tetsu Izakaya. Chắc chắn bạn sẽ không ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

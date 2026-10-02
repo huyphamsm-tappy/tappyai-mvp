@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "ZIN QUA SỬ DỤNG BỘ NGUỒN Cục sạc ADAPTER laptop",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:54:44.324Z",
+ "body": {
+  "searchParameters": {
+   "q": "ZIN QUA SỬ DỤNG BỘ NGUỒN Cục sạc ADAPTER laptop",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Bộ Sạc Zin Laptop LITEON PA-1231-16A 230W for Acer",
+    "imageUrl": "https://hunganh.vn/cdn/upload/images/sac-laptop-pa-1231-16a-230w-for-acer.jpg",
+    "imageWidth": 900,
+    "imageHeight": 900,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTF9HC5kNA0HSaKzA4fpPX9Y8zQeyC8-qExSZEHJsSDkg&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Laptop Hùng Anh",
+    "domain": "hunganh.vn",
+    "link": "https://hunganh.vn/linh-kien-laptop/bo-sac-laptop-liteon-pa-1231-16a-230w.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fhunganh.vn%2Fcdn%2Fupload%2Fimages%2Fsac-laptop-pa-1231-16a-230w-for-acer.jpg&tbnid=PDdCHPouf8D6xM&imgrefurl=https%3A%2F%2Fhunganh.vn%2Flinh-kien-laptop%2Fbo-sac-laptop-liteon-pa-1231-16a-230w.html&docid=-ThTgb-NymDeVM&w=900&h=900",
+    "position": 1
+   },
+   {
+    "title": "Sạc Laptop Dell E5430 Adapter Zin",
+    "imageUrl": "https://pinsaclaptop.vn/UserFiles/RadEditor/Product/Images/S%E1%BA%A1c/Asus/fb.png",
+    "imageWidth": 889,
+    "imageHeight": 800,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8RjX_b1teZ0seRT7If3pgBW4Ij3zalgYM3qX6Ee5Kkg&s=10",
+    "thumbnailWidth": 471,
+    "thumbnailHeight": 424,
+    "source": "PinSacLaptop.vn",
+    "domain": "pinsaclaptop.vn",
+    "link": "https://pinsaclaptop.vn/sac-adapter-laptop-dell-e5430_p7075.htm",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpinsaclaptop.vn%2FUserFiles%2FRadEditor%2FProduct%2FImages%2FS%25E1%25BA%25A1c%2FAsus%2Ffb.png&tbnid=8GkfGkksr08IEM&imgrefurl=https%3A%2F%2Fpinsaclaptop.vn%2Fsac-adapter-laptop-dell-e5430_p7075.htm&docid=VWFRhUk7tMb4GM&w=889&h=800",
+    "position": 2
+   },
+   {
+    "title": "Sạc (Adapter) Dell Precision/Alienware 180 Watt - Kim lớn 7.4mm - 74X5J -  DW5G3",
+    "imageUrl": "https://laptopnhatlinh.vn/wp-content/uploads/2024/04/106.png",
+    "imageWidth": 900,
+    "imageHeight": 900,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWOH0BaRBcgmYxRFwVR6OoqUQq94Mrew1Vy_f7q9QVTA&s=10",
+    "thumbnailWidth": 554,
+    "thumbnailHeight": 554,
+    "source": "Laptop Nhật Linh",
+    "domain": "laptopnhatlinh.vn",
+    "link": "https://laptopnhatlinh.vn/sac-adapter-dell-precision-alienware-180-watt-kim-lon-7-4mm-74x5j-dw5g3/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flaptopnhatlinh.vn%2Fwp-content%2Fuploads%2F2024%2F04%2F106.png&tbnid=6AlwpEvxvU1vEM&imgrefurl=https%3A%2F%2Flaptopnhatlinh.vn%2Fsac-adapter-dell-precision-alienware-180-watt-kim-lon-7-4mm-74x5j-dw5g3%2F&docid=68htD-MUzt2qDM&w=900&h=900",
+    "position": 3
+   },
+   {
+    "title": "Sạc laptop Asus 90w type c 20V-4.5A | Phương Tín Laptop",
+    "imageUrl": "https://phuongtin.vn/wp-content/uploads/2025/10/adapter-laptop-asus-90w-type-c-zin.jpg",
+    "imageWidth": 850,
+    "imageHeight": 640,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNX9ioaCvmhZS4eHS5ZlXVvvCCAwMGW-plm1NhkW6Y8w&s=10",
+    "thumbnailWidth": 638,
+    "thumbnailHeight": 480,
+    "source": "Phương Tín Laptop",
+    "domain": "phuongtin.vn",
+    "link": "https://phuongtin.vn/san-pham/sac-adapter-laptop-asus-90w-type-c-20v-4-5a/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fphuongtin.vn%2Fwp-content%2Fuploads%2F2025%2F10%2Fadapter-laptop-asus-90w-type-c-zin.jpg&tbnid=mEvLwhevQAoFLM&imgrefurl=https%3A%2F%2Fphuongtin.vn%2Fsan-pham%2Fsac-adapter-laptop-asus-90w-type-c-20v-4-5a%2F&docid=lhkqb0kqH2zrMM&w=850&h=640",
+    "position": 4
+   },
+   {
+    "title": "Sạc laptop HP 18.5V-3.5A đầu kim lớn zin",
+    "imageUrl": "https://linhkienminhkhoa.vn/wp-content/uploads/2023/09/Sac-laptop-HP-18.5V-3.5A-dau-kim-lon-zin-1-700x700.webp",
+    "imageWidth": 700,
+    "imageHeight": 700,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJKPpRcZ4iHR-hyglFfXbESBkAqaWu4mmAuD1IHROmBA&s=10",
+    "thumbnailWidth": 554,
+    "thumbnailHeight": 554,
+    "source": "Linh Kiện Minh Khoa",
+    "domain": "linhkienminhkhoa.vn",
+    "link": "https://linhkienminhkhoa.vn/sac-laptop-hp-18-5v-3-5a-dau-kim-lon-zin/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flinhkienminhkhoa.vn%2Fwp-content%2Fuploads%2F2023%2F09%2FSac-laptop-HP-18.5V-3.5A-dau-kim-lon-zin-1-700x700.webp&tbnid=QvWz32rELX23kM&imgrefurl=https%3A%2F%2Flinhkienminhkhoa.vn%2Fsac-laptop-hp-18-5v-3-5a-dau-kim-lon-zin%2F&docid=PAzoV05wo8A46M&w=700&h=700",
+    "position": 5
+   },
+   {
+    "title": "Sạc laptop HP 45W 19.5V-2.31A đầu kim nhỏ Zin",
+    "imageUrl": "https://linhkienminhkhoa.vn/wp-content/uploads/2025/07/Sac-laptop-HP-45W-19.5V-2.31A-dau-kim-nho-Zin-3.webp",
+    "imageWidth": 700,
+    "imageHeight": 700,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmt6H6mxdvp3LrLKOo2fZEDV4d7xFDkesTaYgSKMz4EQ&s=10",
+    "thumbnailWidth": 554,
+    "thumbnailHeight": 554,
+    "source": "Linh Kiện Minh Khoa",
+    "domain": "linhkienminhkhoa.vn",
+    "link": "https://linhkienminhkhoa.vn/sac-laptop-hp-45w-19-5v-2-31a-dau-kim-nho-zin/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flinhkienminhkhoa.vn%2Fwp-content%2Fuploads%2F2025%2F07%2FSac-laptop-HP-45W-19.5V-2.31A-dau-kim-nho-Zin-3.webp&tbnid=1nkyYurEF1UYiM&imgrefurl=https%3A%2F%2Flinhkienminhkhoa.vn%2Fsac-laptop-hp-45w-19-5v-2-31a-dau-kim-nho-zin%2F&docid=_TseBklYE2e4AM&w=700&h=700",
+    "position": 6
+   },
+   {
+    "title": "Adapter laptop Asus 19v-1.75A đầu nhỏ ( vuông ,zin ) - Saigon Computer",
+    "imageUrl": "https://saigoncomputer.vn/uploads/product/Adapter_laptop_Asus_19v-1.75A_%C4%91%C3%A2%CC%80u_nho%CC%89_(_vu%C3%B4ng_,zin_)_.jpg",
+    "imageWidth": 600,
+    "imageHeight": 597,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCpNcGma2MPscxyBmgOWR1MIM4dXJVQQiz9fwa1K3g8Q&s=10",
+    "thumbnailWidth": 448,
+    "thumbnailHeight": 446,
+    "source": "Saigon Computer",
+    "domain": "saigoncomputer.vn",
+    "link": "https://saigoncomputer.vn/Adapter-laptop-Asus-19v-175A-dau-nho-vuong-zin.html?srsltid=AU7gw4VU-qHVuHHXIBMu85j4CoH8BNRoBmg0ntCmI42v_vIEETgZCWD1",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fsaigoncomputer.vn%2Fuploads%2Fproduct%2FAdapter_laptop_Asus_19v-1.75A_%25C4%2591%25C3%25A2%25CC%2580u_nho%25CC%2589_(_vu%25C3%25B4ng_%2Czin_)_.jpg&tbnid=FJ5zGCj9VJ8a5M&imgrefurl=https%3A%2F%2Fsaigoncomputer.vn%2FAdapter-laptop-Asus-19v-175A-dau-nho-vuong-zin.html%3Fsrsltid%3DAU7gw4VU-qHVuHHXIBMu85j4CoH8BNRoBmg0ntCmI42v_vIEETgZCWD1&docid=IyghsSWMXgF4FM&w=600&h=597",
+    "position": 7
+   },
+   {
+    "title": "Phân biệt Adapter (Xạc) zin và Adapter nhái | GIA TÍN Computer",
+    "imageUrl": "https://giatin.com.vn/wp-content/uploads/2019/11/phan-biet-adapter-sac-laptop-zin-chinh-hang-nhai.jpg",
+    "imageWidth": 850,
+    "imageHeight": 660,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQk5_gFBYkB9q7JN6Eu8m4AqM7idM96E3BwuQU9ruaUdA&s=10",
+    "thumbnailWidth": 628,
+    "thumbnailHeight": 488,
+    "source": "GIA TÍN Computer",
+    "domain": "giatin.com.vn",
+    "link": "https://giatin.com.vn/ky-thuat/phan-biet-adapter-xac-zin-va-adapter-nhai.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fgiatin.com.vn%2Fwp-content%2Fuploads%2F2019%2F11%2Fphan-biet-adapter-sac-laptop-zin-chinh-hang-nhai.jpg&tbnid=FfiA2nqsOU_XwM&imgrefurl=https%3A%2F%2Fgiatin.com.vn%2Fky-thuat%2Fphan-biet-adapter-xac-zin-va-adapter-nhai.html&docid=YL84Umk6M20DuM&w=850&h=660",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

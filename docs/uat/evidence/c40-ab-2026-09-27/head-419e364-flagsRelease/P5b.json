@@ -1,0 +1,207 @@
+{
+  "id": "P5b",
+  "text": "dưới 300k",
+  "parent": "P5",
+  "status": 200,
+  "ms": 20001,
+  "evidenceId": "b54d91cb-8903-493a-a510-e52602707da5",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "massage spa dưới 300k Quận 1",
+        "location": "Quận 1, TP HCM",
+        "type": "spa"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Massage Cổ Phong Q1",
+      "rating": 4.9,
+      "count": 3179,
+      "hours": "09:00–22:30",
+      "distance_km": 1.3,
+      "address": "106 - 108 Lê Thị Riêng, Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Trạm Relax Spa - Gội đầu dưỡng sinh Herbal Headspa & Massage Quận 1",
+      "rating": 4.9,
+      "count": 421,
+      "hours": "10:00–02:00",
+      "distance_km": 0.9,
+      "address": "127 Đ. Calmette, Bến Thành, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "MASSAGE HẠ SPA QUẬN 1",
+      "rating": 4.9,
+      "count": 3550,
+      "hours": "09:30–22:30",
+      "distance_km": 2.3,
+      "address": "49 Phạm Viết Chánh, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Bloom Spa Quận 1 - Massage Body & Gội Đầu Dưỡng Sinh",
+      "rating": 4.9,
+      "count": 539,
+      "hours": "09:00–22:00",
+      "distance_km": 1.1,
+      "address": "165/48 Nguyễn Thái Bình, Bến Thành, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "SIZ SPA - Best Massage Spa and Packages - District 1",
+      "rating": 4.9,
+      "count": 1072,
+      "hours": "10:00–22:15",
+      "distance_km": 1.7,
+      "address": "154 Đ. Cống Quỳnh, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "RELAX SPA MASSAGE VAI, CỔ, GÁY. BODY MASSAGE, FOOT MASSAGE, GỘI ĐẦU DƯỠNG SINH QUẬN 1",
+      "rating": 4.8,
+      "count": 533,
+      "hours": "09:00–22:00",
+      "distance_km": 1.2,
+      "address": "65B Lê Thị Riêng, Bến Thành, Hồ Chí Minh 71009, Việt Nam"
+    },
+    {
+      "name": "CHARM SPA Garden - Massage Spa Quận 1",
+      "rating": 4.9,
+      "count": 234,
+      "hours": "10:00–00:00",
+      "distance_km": 2.1,
+      "address": "116 Trần Đình Xu, Cầu Ông Lãnh, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "SoYoung Spa Quận 1",
+      "rating": 5,
+      "count": 35,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 2.2,
+      "address": "55/34 Trần Đình Xu, Cầu Ông Lãnh, Hồ Chí Minh 07000, Việt Nam"
+    },
+    {
+      "name": "Phaya Thai Spa Quận 1",
+      "rating": 4.6,
+      "count": 620,
+      "hours": "09:00–22:00",
+      "distance_km": 1.3,
+      "address": "10B Sương Nguyệt Anh, Bến Thành, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Passion Spa Quận 1 - Chi Nhánh Đặng Thị Nhu",
+      "rating": 4.5,
+      "count": 20,
+      "hours": "10:00–00:00",
+      "distance_km": 0.9,
+      "address": "20 Đặng Thị Nhu, Bến Thành, Hồ Chí Minh, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "Massage Cổ Phong Q1",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 3179,
+        "distance_km": 1.3,
+        "open_now": true,
+        "opening_hours": "09:00–22:30"
+      }
+    },
+    {
+      "name": "Trạm Relax Spa - Gội đầu dưỡng sinh Herbal Headspa & Massage Quận 1",
+      "role": null,
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 421,
+        "distance_km": 0.9,
+        "open_now": true,
+        "opening_hours": "10:00–02:00"
+      }
+    },
+    {
+      "name": "MASSAGE HẠ SPA QUẬN 1",
+      "role": null,
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 3550,
+        "distance_km": 2.3,
+        "open_now": true,
+        "opening_hours": "09:30–22:30"
+      }
+    }
+  ],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình chọn **Massage Cổ Phong Q1** cho bạn! 💆‍♀️ Spa này có **4.9⭐ (3.179 đánh giá Google Maps)** — rất được tin tưởng với hơn 3.000 khách đánh giá. Cách bạn 1.3km, mở đến 22:30 nên rất tiện.\n\nNếu bạn muốn **gần hơn**, **Trạm Relax Spa** chỉ 0.9km, cũng 4.9⭐ và mở đến 2:00 sáng — tuyệt vời nếu bạn muốn gội đầu dưỡng sinh hoặc massage muộn. Hoặc **Hạ Spa** có **3.550 đánh giá** (nhiều nhất), cách 2.3km, nếu bạn muốn chọn spa lớn với dịch vụ đa dạng.\n\n⚠️ Cần lưu ý: Mình chưa xác nhận được giá cụ thể của các spa này trên trang web.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Massage Cổ Phong Q1\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=3381478916670750901\",\"primary\":true},{\"label\":\"🌐 Website\",\"type\":\"website\",\"url\":\"https://massagecophongquan1.com/\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Gọi để hỏi giá|Xem Trạm Relax Spa|Xem Hạ Spa[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "massage"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm spa/massage gần bạn ở Quận 1 nhé! 🧖‍♀️\n\nMình chọn **Senva Spa - Quận 1** cho bạn! 💆‍♀️ Spa này có **4.9⭐ (854 đánh giá Google Maps)** — rất được tin tưởng. Cách bạn chỉ ~1km, mở đến 23:00 nên rất tiện. Ngoài ra, **Hyan Spa** cũng tuyệt vời với rating 5⭐ và gần hơn (0.9km), hoặc nếu bạn muốn nhiều lựa chọn dịch vụ, **Hạ Spa** có 3.550 đánh giá — spa lớn với đủ loại massage.\n\nBạn muốn massage loại nào — body massage, foot massage hay gội đầu?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem Senva Spa trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=3479517558071959535\",\"primary\":true},{\"label\":\"🌐 Website Hyan Spa\",\"type\":\"website\",\"url\":\"https://hyanspa.com/\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Hyan Spa gần hơn|Hạ Spa có nhiều dịch vụ|Xem tất cả spa gần đây[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "dưới 300k"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình chọn **Massage Cổ Phong Q1** cho bạn! 💆‍♀️ Spa này có **4.9⭐ (3.179 đánh giá Google Maps)** — rất được tin tưởng với hơn 3.000 khách đánh giá. Cách bạn 1.3km, mở đến 22:30 nên rất tiện.\n\nNếu bạn muốn **gần hơn**, **Trạm Relax Spa** chỉ 0.9km, cũng 4.9⭐ và mở đến 2:00 sáng — tuyệt vời nếu bạn muốn gội đầu dưỡng sinh hoặc massage muộn. Hoặc **Hạ Spa** có **3.550 đánh giá** (nhiều nhất), cách 2.3km, nếu bạn muốn chọn spa lớn với dịch vụ đa dạng.\n\n⚠️ Cần lưu ý: Mình chưa xác nhận được giá cụ thể của các spa này trên trang web.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Massage Cổ Phong Q1\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=3381478916670750901\",\"primary\":true},{\"label\":\"🌐 Website\",\"type\":\"website\",\"url\":\"https://massagecophongquan1.com/\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Gọi để hỏi giá|Xem Trạm Relax Spa|Xem Hạ Spa[/FOLLOWUPS]"
+    }
+  ]
+}

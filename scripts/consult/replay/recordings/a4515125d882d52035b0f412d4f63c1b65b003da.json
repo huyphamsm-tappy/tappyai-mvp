@@ -1,0 +1,80 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "20+ Quà Tặng Sinh Nhật Sếp Dưới 1 site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:03:45.916Z",
+ "body": {
+  "searchParameters": {
+   "q": "20+ Quà Tặng Sinh Nhật Sếp Dưới 1 site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "20/10 tặng gì? 20+ món quà ý nghĩa cho người phụ nữ ...",
+    "link": "https://shopee.vn/blog/20-10-tang-gi/",
+    "snippet": "Quà 20/10 tặng bạn bè, đồng nghiệp, sếp, đối tác, khách hàng · Chậu cây để bàn · Hộp quà trà hoặc cà phê · Sổ tay cao cấp.",
+    "date": "7 thg 10, 2025",
+    "position": 1
+   },
+   {
+    "title": "TOP 20+ set quà Tết độc đáo vừa ấn tượng vừa ý nghĩa ...",
+    "link": "https://shopee.vn/blog/qua-tet-doc-dao/",
+    "snippet": "Hộp quà mứt Tết độc lạ · Giỏ quà Tết bánh kẹo độc đáo · Hộp quà tết thực phẩm độc đáo · Set quà Tết gia vị độc lạ · Hộp quà đồ ăn Tết độc đáo · Hộp ...",
+    "date": "26 thg 1, 2026",
+    "position": 2
+   },
+   {
+    "title": "Top 20+ quà Tết cao cấp và ý nghĩa dành cho mọi đối tượng",
+    "link": "https://shopee.vn/blog/qua-tet/",
+    "snippet": "Vì vậy, bạn có thể lựa chọn bộ ấm trà, chén trà làm quà tặng cho cấp trên và khách hàng. Bộ ấm chén trà thường sẽ được đặt gọn trong hộp quà ...",
+    "date": "9 thg 2, 2026",
+    "position": 3
+   },
+   {
+    "title": "Top 20+ quà Tết tốt cho sức khỏe ý nghĩa, thiết thực",
+    "link": "https://shopee.vn/blog/qua-tet-suc-khoe/",
+    "snippet": "Top 20+ quà Tết tốt cho sức khỏe ý nghĩa, thiết thực · Yến sào thượng hạng · Đông trùng hạ thảo · Nhụy hoa nghệ tây saffron · Sâm ngọc linh · Sữa ...",
+    "date": "23 thg 1, 2026",
+    "position": 4
+   },
+   {
+    "title": "Giỏ quà Tết gồm những gì? Checklist đầy đủ từ A–Z cho ...",
+    "link": "https://shopee.vn/blog/gio-qua-tet-gom-nhung-gi/",
+    "snippet": "Các giỏ quà nhỏ gọn gồm bánh kẹo cao cấp, cà phê, socola hoặc đặc sản vùng miền là lựa chọn phù hợp. Không cần quá cầu kỳ về giá trị, điều quan ...",
+    "date": "16 thg 2, 2026",
+    "position": 5
+   },
+   {
+    "title": "11+ cách trang trí giỏ quà Tết tinh tế, nhìn là muốn tặng ngay",
+    "link": "https://shopee.vn/blog/trang-tri-gio-qua-tet/",
+    "snippet": "Cùng với giỏ quà trái cây, mẫu giỏ quà Tết các loại hạt cũng được nhiều người yêu thích lối sống lành mạnh ưa chuộng. Tuy nhiên, so với trái cây ...",
+    "date": "21 thg 1, 2026",
+    "position": 6
+   },
+   {
+    "title": "Top 18+ phần quà Tết cho nhân viên thiết thực, dễ ứng dụng",
+    "link": "https://shopee.vn/blog/qua-tet-cho-nhan-vien/",
+    "snippet": "Hộp quà Tết cao cấp – Quà tặng ý nghĩa cho nhân viên · Giỏ quà bánh Tết · Bộ ấm, chén trà · Rượu vang · Đồng hồ · Hộp quà hạt dinh dưỡng · Hộp quà Tết ...",
+    "date": "5 thg 2, 2026",
+    "position": 7
+   },
+   {
+    "title": "Top 15+ quà Tết cho bố mẹ ý nghĩa cho năm mới thêm trọn ...",
+    "link": "https://shopee.vn/blog/qua-tet-cho-bo-me/",
+    "snippet": "Nhân sâm Hàn Quốc · Máy lọc không khí mini · Đông trùng hạ thảo · Yến sào · Viên uống DHC · Ghế massage · Hạt dinh dưỡng · Viên uống vitamin E 400.",
+    "date": "6 thg 2, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

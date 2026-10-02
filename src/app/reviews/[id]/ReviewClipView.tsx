@@ -21,6 +21,7 @@ import { useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { ClipViewer } from '@/app/reviews/ProfileTab'
 import type { Review } from '@/app/reviews/feedShared'
+import { goBack } from '@/lib/nav/inAppBack'
 
 export default function ReviewClipView({ review, me }: { review: Review; me: string | null }) {
   const router = useRouter()
@@ -31,18 +32,17 @@ export default function ReviewClipView({ review, me }: { review: Review; me: str
   // tab already counts as an entry, so a shared link opened in a fresh tab measured 2 and
   // `router.back()` walked out of the site to `about:blank`. Measured, not reasoned about.
   //
-  // The referrer is the honest signal. Same-origin means an app page loaded this one, so going
-  // back lands on it. Empty (a pasted URL, a push notification's `openWindow`) or cross-origin (a
-  // link shared into a chat app) means there is nothing of ours behind us, and the feed is the
-  // right home. The worst case is now "lands on the feed", never "leaves the product".
-  const close = useCallback(() => {
-    let cameFromThisApp = false
-    try {
-      cameFromThisApp = !!document.referrer && new URL(document.referrer).origin === window.location.origin
-    } catch { cameFromThisApp = false }
-    if (cameFromThisApp) router.back()
-    else router.push('/reviews')
-  }, [router])
+  // 🚨 `document.referrer` was the next attempt and it was ALSO wrong, in the other direction:
+  // the browser sets it once per document load and never on a client-side navigation. A tab
+  // that opened on `/profile` (referrer empty) and then tapped a clip in the grid arrived here
+  // with an empty referrer, was judged "from outside", and Back pushed the feed — Profile →
+  // post → Back → Explore (Phase 7, item 7).
+  //
+  // `lib/nav/inAppBack` counts the app's own history entries per tab from the router's
+  // pathname changes, so "is the previous entry ours?" is answered by what actually happened.
+  // Nothing of ours behind us (a pasted URL, a push notification's `openWindow`, a link shared
+  // into a chat app) still lands on the feed — never outside the product.
+  const close = useCallback(() => goBack(router, '/reviews'), [router])
 
   return <ClipViewer posts={[review]} startIndex={0} me={me} onClose={close} />
 }

@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Haru Sushi Quận 1\" OR \"MANMARU - Japanese Restaurant - 71 Mạc Đĩnh Chi, Hồ Chí Minh\" OR \"La Phong Sushi House\" quan 1 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:56:33.859Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Haru Sushi Quận 1\" OR \"MANMARU - Japanese Restaurant - 71 Mạc Đĩnh Chi, Hồ Chí Minh\" OR \"La Phong Sushi House\" quan 1 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Haru Sushi Quận 1 (@harusushinguyenthaihoc)",
+    "link": "https://www.tiktok.com/@harusushinguyenthaihoc",
+    "snippet": "Haru Sushi Quận 1 (@harusushinguyenthaihoc) trên TikTok |6090 Lượt thích.91 Follower.HARU SUSHI - 93 NGUYỄN THÁI HỌC, PHƯỜNG CẦU ÔNG LÃNH, QUẬN 1.",
+    "position": 1
+   },
+   {
+    "title": "Khám Phá Sushi Ngon Tại Haru Sushi Quận 1",
+    "link": "https://www.tiktok.com/@winter290796/photo/7658315768630709524",
+    "snippet": "Đánh giá: 4.5/5⭐️ Đc: 93 Nguyễn Thái Học, Cầu Ông Lãnh, Hồ Chí Minh #shushi #shushiharu #hcm #quan1. Khám Phá Sushi Ngon Tại Haru Sushi Quận 1.",
+    "position": 2
+   },
+   {
+    "title": "haruquan1 #harusushi Apply nhanh tay đến với gia đình Haru ...",
+    "link": "https://www.tiktok.com/@harusushinguyenthaihoc/video/7655219300701048072",
+    "snippet": "Video TikTok từ Haru Sushi Quận 1 (@harusushinguyenthaihoc): \"#haruquan1 #harusushi Apply nhanh tay đến với gia đình Haru Quận 1 nhá \".âm thanh gốc ...",
+    "position": 3
+   },
+   {
+    "title": "Sushi Haru Quận 1",
+    "link": "https://www.tiktok.com/discover/sushi-haru-qu%E1%BA%ADn-1",
+    "snippet": "Khám phá tiệm sushi giá ổn áp tại Sài Gòn, thưởng thức món ăn hấp dẫn. Đừng bỏ lỡ! 31 Likes, 1 Comments. TikTok video from Haru Sushi Quận 1 (@ ...",
+    "date": "21 thg 9, 2026",
+    "position": 4
+   },
+   {
+    "title": "𝐻𝒶𝓂𝒾💫 - âm thanh gốc",
+    "link": "https://www.tiktok.com/music/%C3%A2m-thanh-g%E1%BB%91c-%F0%9D%90%BB%F0%9D%92%B6%F0%9D%93%82%F0%9D%92%BE%F0%9F%92%AB-7653444457517386503",
+    "snippet": "Khám Phá Sushi Ngon Tại Haru Sushi Quận 1. |. Have you tried this place? #chai #fyp #boba. |. edgar-murders-his-wife-stroyteller. |. Тапсырыс қабылданады — жазу ...",
+    "position": 5
+   },
+   {
+    "title": "Nhân Viên Sushi Haru",
+    "link": "https://www.tiktok.com/discover/nh%C3%A2n-vi%C3%AAn-sushi-haru",
+    "snippet": "Haru Sushi Quận 1. Ai nói nhân viên nhà hàng chỉ biết làm? Tụi mình ... TikTok video from Quan Minh Quốc (@quanminhquoc). 71821 tuần ...",
+    "date": "7 thg 9, 2026",
+    "position": 6
+   },
+   {
+    "title": "Sushi Haru Nguyễn Thái Học",
+    "link": "https://www.tiktok.com/discover/sushi-haru-nguy%E1%BB%85n-th%C3%A1i-h%E1%BB%8Dc",
+    "snippet": "... quan trọng là lên món siêu siêu nhanh!!! ... Xem clip hài hước và năng động. 4415 Likes, 98 Comments. TikTok video from Haru Sushi Quận 1 (@ ...",
+    "date": "21 thg 9, 2026",
+    "position": 7
+   },
+   {
+    "title": "For 11 amazing years, we've been serving fresh sushi ...",
+    "link": "https://www.tiktok.com/@harusushi_helsinki/photo/7639835486097493251",
+    "snippet": "8750 · recommend-cover. sofiatiia <3. 7497 · recommend-cover. Haru Sushi Quận 1. 4413 · recommend-cover. Haru Sushi Quận 7. 3899 · recommend- ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

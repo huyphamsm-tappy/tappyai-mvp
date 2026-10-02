@@ -1,0 +1,16 @@
+{
+ "at": "2026-09-26",
+ "browser": "Claude desktop built-in browser (Chromium), tab at https://example.com (no app data), clip held in memory",
+ "how": "src/lib/media/clipMetadata.ts transpiled with the repo's TypeScript (browser-transpile.cjs, no edits) and injected; phone-like transform = make-phone-like.mjs ported 1:1; played from Blob URLs",
+ "bytes": {
+  "plain": { "size": 112399, "sha256": "2d3d85d099a91f2b94f4041036f84b1f2831c19a0a86c9a0be3e5ef35d97ef16" },
+  "phoneLike": { "size": 112868, "sha256": "51e588fb3f469668d21e72c4278ffc7370d23a0ad1b46d51613d737a96229497", "serverCheck": ["creation-time", "metadata-box", "location", "device-or-author"] },
+  "neutralizedInBrowser": { "size": 112868, "sha256": "db032156c72abfd846a557e2ae57b1fc2badb5f5b8a0d1f93d714f0a86340d44", "serverCheck": [], "equalsObjectDownloadedFromBucket": true }
+ },
+ "playback": {
+  "phone-like (before neutralize)": { "duration": 6.016, "size": "320x180", "playedTo": 0.812, "seeks": "1→1, 3→3, 5.5→5.5, 0.2→0.2, 4→4 (readyState 4, no error)", "buffered": [[0, 6.02]], "frames": { "total": 338, "dropped": 0, "corrupted": 0 } },
+  "neutralized (as stored in bucket)": { "duration": 6.016, "size": "320x180", "playedTo": 0.811, "seeks": "1→1, 3→3, 5.5→5.5, 0.2→0.2, 4→4 (readyState 4, no error)", "buffered": [[0, 6.02]], "frames": { "total": 337, "dropped": 0, "corrupted": 0 }, "frameShownAfterSeek5.5": "5.5s (burned-in timestamp, screenshot)" }
+ },
+ "httpRanges": "see proof.json rangeReads: 4 ranged GETs on the stored object → 206, correct Content-Range, bytes match",
+ "notTested": "HTTP-range seeking by a <video> element against the public URL (the proof bucket was non-public and is deleted); the player-side seek was tested on identical bytes via Blob URL"
+}

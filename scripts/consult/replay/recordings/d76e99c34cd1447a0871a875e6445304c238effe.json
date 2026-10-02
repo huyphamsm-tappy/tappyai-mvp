@@ -1,0 +1,57 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "Nhà hàng Thịt Nướng Nhật NIKUTARO Quận 1",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.7769,106.7009,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:19:24.636Z",
+ "body": {
+  "searchParameters": {
+   "q": "Nhà hàng Thịt Nướng Nhật NIKUTARO Quận 1",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.7769,106.7009,14z",
+   "engine": "google"
+  },
+  "ll": "@10.7817036,106.7024355,18.0536z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Nhà hàng Thịt Nướng Nhật NIKUTARO",
+    "address": "2B1 Chu Mạnh Trinh, Bến Nghé, Quận 1, Hồ Chí Minh 80000, Việt Nam",
+    "latitude": 10.7817036,
+    "longitude": 106.70501039999999,
+    "rating": 4.7,
+    "ratingCount": 516,
+    "type": "Nhà hàng món Yakiniku",
+    "types": [
+     "Nhà hàng món Yakiniku",
+     "Nhà hàng Nhật Bản",
+     "Nhà hàng"
+    ],
+    "website": "https://nikutarosaigon.com/en",
+    "phoneNumber": "+84 28 3822 6441",
+    "openingHours": {
+     "Thứ Tư": "11:00–02:00",
+     "Thứ Năm": "11:00–02:00",
+     "Thứ Sáu": "11:00–02:00",
+     "Thứ Bảy": "11:00–02:00",
+     "Chủ Nhật": "11:00–22:00",
+     "Thứ Hai": "11:00–02:00",
+     "Thứ Ba": "11:00–02:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOY2vRONRk1CJUPfdihBWpgaBcI0SkeWja_NIEdk0-a2Vvz6x6HJp70qJ2JEhfHmWTu2mKrorP9MtUMJKRBUD-cAMCqFpYR4lUleAEW7xKNjJPYEl39Jw_X49OC_wENUntJeSAw",
+    "cid": "13322067257092342768",
+    "fid": "0x31752fca71a6c3a1:0xb8e17d9644da03f0",
+    "placeId": "ChIJocOmccovdTER8APaRJZ94bg"
+   }
+  ],
+  "credits": 3
+ }
+}

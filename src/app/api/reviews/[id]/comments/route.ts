@@ -8,7 +8,7 @@ import { searchParam } from '@/lib/http/searchParams'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
 import { refuseAnonymousSocialWrite } from '@/lib/auth/socialWriteAccess'
-import { getAccountRestriction, accountRestrictionMessage, accountRestrictionCode } from '@/lib/account/accountStatus'
+import { getAccountRestriction, accountRestrictionMessage, accountRestrictionCode, accountRestrictionStatus } from '@/lib/account/accountStatus'
 
 type CommentProfile = { full_name: string | null; avatar_url: string | null }
 
@@ -119,7 +119,8 @@ export async function POST(
   if (restriction.blocked) {
     return NextResponse.json(
       { error: accountRestrictionMessage(restriction), code: accountRestrictionCode(restriction.reason!) },
-      { status: 403 }
+      // 503 when the status could not be READ (R-4) — retryable, and not a verdict on the user.
+      { status: accountRestrictionStatus(restriction.reason!) }
     )
   }
 
@@ -142,6 +143,8 @@ export async function POST(
     .select('id, body, created_at, user_id, parent_comment_id')
     .single()
 
+  // 42501 = refused by row-level security (a block between the commenter and the post's author): 403, not a server error.
+  if (error?.code === '42501') return NextResponse.json({ error: 'comment_forbidden', message: serverMessage('comment.postFailed', requestLocale(req)) }, { status: 403 })
   if (error) return NextResponse.json({ error: 'comment_failed', message: serverMessage('comment.postFailed', requestLocale(req)) }, { status: 500 })
 
   const [withProfile] = await attachProfiles(supabase, [insertedComment])
@@ -190,7 +193,8 @@ export async function DELETE(
     .from('review_comments')
     .delete()
     .eq('id', commentId)
-    .eq('user_id', user.id)
+    // No `.eq('user_id', …)` here (owner 01/10): RLS decides — the comment's AUTHOR, or the creator of the post it is on
+    // (20261001_user_blocks.sql). A comment that is not the caller's to delete matches no row and nothing is deleted.
 
   if (error) return NextResponse.json({ error: 'delete_failed', message: serverMessage('server.deleteFailed', requestLocale(req)) }, { status: 500 })
 

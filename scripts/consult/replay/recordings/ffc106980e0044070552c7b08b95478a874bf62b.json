@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Quà Tặng 3 site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:54:03.230Z",
+ "body": {
+  "searchParameters": {
+   "q": "Quà Tặng 3 site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "tặng quà 8 3",
+    "link": "https://shop.tiktok.com/vn/k/tang-qua-8-3",
+    "snippet": "Khám phá tặng quà 8 3 mới nhất tại TikTok Shop và tận hưởng freeship! Mua sắm những bộ sưu tập độc quyền và khám phá sản phẩm thịnh hành nhất hôm nay.",
+    "position": 1
+   },
+   {
+    "title": "bb3 400 ver 2 secret thỏ đen - TikTok Shop Vietnam",
+    "link": "https://shop.tiktok.com/vn/k/bb3-400-ver-2-secret-tho-den",
+    "snippet": "Gấu bông Baby Three thỏ khổng lồ size 6000%- 8000% Blindbox Túi mù - Phiên bản thú nhồi bông - Gấu Bông Thú nhồi bông toy đồ chơi.",
+    "position": 2
+   },
+   {
+    "title": "8 3 quà - TikTok Shop Vietnam",
+    "link": "https://shop.tiktok.com/vn/k/8-3-qua",
+    "snippet": "Quà tặng Trung Thu -Tổ Yến Vụn Ốp Tổ Nguyên Chất quà TẶNG Siêu Nở (Tặng Táo, Đường, Đông Trùng, Túi giấy) ít lông dễ nhặt Yến sào Quỳnh Anh.",
+    "position": 3
+   },
+   {
+    "title": "đồ công giao thông cho bé chất liệu cotton mềm mại thoáng ...",
+    "link": "https://shop.tiktok.com/vn/pdp/do-cong-an-cho-be-cotton-mem-mau-sac-tuoi-sang-size-da-dang/1734305658745882172",
+    "snippet": "Mua đồ công giao thông cho bé chất liệu cotton mềm mại thoáng mát thiết kế màu sắc tươi sáng kích thước đa dạng phù hợp cho bé từ 3 đến 10 tuổi trên TikTok ...",
+    "position": 4
+   },
+   {
+    "title": "[QUÀ TẶNG KHÔNG BÁN] 3 Card May Mắn Ngẫu Nhiên ...",
+    "link": "https://shop.tiktok.com/vn/pdp/1734015253282195423",
+    "snippet": "Mua [QUÀ TẶNG KHÔNG BÁN] 3 Card May Mắn Ngẫu Nhiên Ngôn Tình trên TikTok Shop. Săn giá siêu hời cho và được freeship mặt hàng đủ điều kiện.",
+    "position": 5
+   },
+   {
+    "title": "top những món quà tặng mẹ 8 3",
+    "link": "https://shop.tiktok.com/vn/k/top-nhung-mon-qua-tang-me-8-3",
+    "snippet": "Set quà sinh nhật tặng bạn gái túi xách nữ tặng mẹ ngày 8/3 20/10 20/11 cho mẹ cô giáo 7K STORE TX03. 4.8. 1182 sold. ₫239.000. ₫350.000 ...",
+    "position": 6
+   },
+   {
+    "title": "shop quà tặng ngày 8 3",
+    "link": "https://shop.tiktok.com/vn/k/shop-qua-tang-ngay-8-3",
+    "snippet": "Set Quà Bánh Kẹo quà 8/3 , SINH NHẬT , 14/3 , Ngày kỉ niệm kèm thiệp Xinh ... quà 8 3 tặng người thương · quà mùng 8 tháng ba cho các bạn nữ · chủ nhật là ...",
+    "position": 7
+   },
+   {
+    "title": "ca phe phố tặng ly",
+    "link": "https://shop.tiktok.com/vn/k/ca-phe-pho-tang-ly",
+    "snippet": "ca phe phố tặng ly ; combo 3hộp 30gói tặng 3 ly thủy tinh. 4.8. 2799 sold · 129.999 ; Cà phê phố đen hộp 2 hộp tặng ly kim cương. 4.8. 216 sold · 99.000 ; cà phê phố ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

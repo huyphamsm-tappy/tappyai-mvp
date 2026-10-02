@@ -1,0 +1,25 @@
+{
+  "id": "F4",
+  "text": "Cả nhà 6 người có con nít ăn trưa cuối tuần, cần chỗ đậu xe ô tô, Phú Nhuận",
+  "parent": null,
+  "status": 200,
+  "ms": 3372,
+  "evidenceId": "fe24dcdc-a95c-4306-93da-39d8b39f4b57",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình giả sử bạn muốn tìm quán ăn trưa gia đình ở Phú Nhuận với chỗ đậu xe và phù hợp trẻ em. Để gợi ý đúng ý, mình cần biết tầm giá bạn dự tính cho bữa cơm này nhé — dưới 100k/người, 100–200k/người, hay trên 200k/người?\n\n[FOLLOWUPS]dưới 100k/người|100–200k/người|trên 200k/người[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Cả nhà 6 người có con nít ăn trưa cuối tuần, cần chỗ đậu xe ô tô, Phú Nhuận"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn muốn tìm quán ăn trưa gia đình ở Phú Nhuận với chỗ đậu xe và phù hợp trẻ em. Để gợi ý đúng ý, mình cần biết tầm giá bạn dự tính cho bữa cơm này nhé — dưới 100k/người, 100–200k/người, hay trên 200k/người?\n\n[FOLLOWUPS]dưới 100k/người|100–200k/người|trên 200k/người[/FOLLOWUPS]"
+    }
+  ]
+}

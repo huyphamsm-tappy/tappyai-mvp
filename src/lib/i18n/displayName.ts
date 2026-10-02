@@ -8,8 +8,8 @@
  *
  *     user?.full_name?.split(' ').pop() || user?.email?.split('@')[0] || 'bạn'
  *
- * — `src/app/page.tsx`, `src/components/Header.tsx`, `src/app/profile/page.tsx` and
- * `src/app/profile/account/page.tsx`. The previous fix round removed the Vietnamese literal from
+ * — `src/app/page.tsx`, `src/components/Header.tsx`, `src/app/(app)/profile/page.tsx` and
+ * `src/app/(app)/profile/account/page.tsx`. The previous fix round removed the Vietnamese literal from
  * ONE of them, so an English session still read **"Good morning, bạn"** on `/`, `/profile` and
  * `/login` — the Header being the worst of the four, because it renders on nearly every screen.
  *

@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "quà tặng thích cà phê 40 tuổi shop website địa chỉ facebook",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T05:11:24.970Z",
+ "body": {
+  "searchParameters": {
+   "q": "quà tặng thích cà phê 40 tuổi shop website địa chỉ facebook",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Set quà Cà phê Đặc Sản cao cấp dành tặng cho người thân ...",
+    "link": "https://www.facebook.com/messagecoffee.vn/videos/set-qu%C3%A0-c%C3%A0-ph%C3%AA-%C4%91%E1%BA%B7c-s%E1%BA%A3n-cao-c%E1%BA%A5p-d%C3%A0nh-t%E1%BA%B7ng-cho-ng%C6%B0%E1%BB%9Di-th%C3%A2n-%C4%91%E1%BB%91i-t%C3%A1c-b%E1%BA%A1n-b%C3%A8-n%C4%83m-ch%C3%A2um/1978878976058975/",
+    "snippet": "Set quà Cà phê Đặc Sản cao cấp dành tặng cho người thân, đối tác, bạn bè năm châu Message Coffee có SHIP HOẢ TỐC khu vực Hồ Chí Minh - Mời ...",
+    "position": 1
+   },
+   {
+    "title": "Cafe.net.vn",
+    "link": "https://www.facebook.com/cafe.net.vn/posts/c%C3%A0-ph%C3%AA-legendm%C3%B3n-qu%C3%A0-t%E1%BA%B7ng-sang-tr%E1%BB%8Dng-%C4%91%E1%BA%A7y-%C3%BD-ngh%C4%A9ath%C6%B0%E1%BB%9Fng-th%E1%BB%A9c-c%C3%A0-ph%C3%AA-trung-nguy%C3%AAn-/954162613414432/",
+    "snippet": "Sự kết hợp giữa vị đậm đà của cà phê sữa đá trứ danh và vị bùi béo, thơm ngậy của mè đen mang lại cảm giác dễ chịu, cân bằng vị giác nhờ lớp kem ...",
+    "position": 2
+   },
+   {
+    "title": "Quà tặng marketing - quà tặng khuyến mãi",
+    "link": "https://www.facebook.com/groups/360628627763192/",
+    "snippet": "Phiên bản quà tặng cao cấp, tặng - Biểu tượng của tinh tế và tri ân. Cà phê Chồn Legend Revived từ Huyền Thoại Núi được chọn làm quốc phẩm quà tặng cho Cơ ...",
+    "position": 3
+   },
+   {
+    "title": "Flex chiếc em dâu tặng quà lúc nửa đêm ❤️ Gần 11h ...",
+    "link": "https://www.facebook.com/groups/groupyeubep/posts/2070297513354393/",
+    "snippet": "Cành cà phê có quả to quả nhỏ, màu xanh, màu vàng, màu đỏ rất đẹp mắt. Cắm xong là nửa đêm mà mình cứ ngồi ngắm em ấy thấy thật là ưng cái vẻ ...",
+    "position": 4
+   },
+   {
+    "title": "Gợi ý quà tặng cho những tâm hồn yêu cà phê. Một món ...",
+    "link": "https://www.facebook.com/thecurator.vn/videos/-g%E1%BB%A3i-%C3%BD-qu%C3%A0-t%E1%BA%B7ng-cho-nh%E1%BB%AFng-t%C3%A2m-h%E1%BB%93n-y%C3%AAu-c%C3%A0-ph%C3%AAm%E1%BB%99t-m%C3%B3n-qu%C3%A0-nh%E1%BB%8F-d%C3%A0nh-cho-ng%C6%B0%E1%BB%9Di-lu%C3%B4n-/1308355827518680/",
+    "snippet": "Gợi ý quà tặng cho những tâm hồn yêu cà phê. Một món quà nhỏ dành cho người luôn bắt đầu ngày mới bằng hương cà phê.",
+    "position": 5
+   },
+   {
+    "title": "Nonla Coffee Vietnam",
+    "link": "https://www.facebook.com/nonlacoffeevietnam/posts/-set-qu%C3%A0-nonla-coffee-m%C3%B3n-qu%C3%A0-cu%E1%BB%91i-n%C4%83m-%C4%91%E1%BA%A7y-tinh-t%E1%BA%BF-gi%C3%A1ng-sinh-year-end-t%E1%BA%A5t-ni%C3%AAn-/122115882225010468/",
+    "snippet": "Sản phẩm từ NONLA Coffee mang phong vị mộc mạc – ấm áp – sang trọng, là lựa chọn hoàn hảo để làm quà cho mọi đối tượng: bạn bè, đồng nghiệp, ...",
+    "position": 6
+   },
+   {
+    "title": "35 quà tặng sinh nhật cho mẹ 40 tuổi ý nghĩa và thiết thực ...",
+    "link": "https://hanh.com.vn/blogs/qua-tang/35-qua-tang-sinh-nhat-cho-me-40-tuoi-y-nghia-va-thiet-thuc-nhat",
+    "snippet": "Các tông màu như đỏ đô, xanh đen hoặc họa tiết hoa nhã nhặn sẽ giúp mẹ trông trẻ trung nhưng vẫn giữ được sự quý phái. Một chiếc áo chất lượng ...",
+    "date": "28 thg 6, 2026",
+    "position": 7
+   },
+   {
+    "title": "41 Món Quà Tuyệt Vời Nhất Dành Cho Người Yêu Cà Phê",
+    "link": "https://translate.google.com/translate?u=https://www.nytimes.com/wirecutter/gifts/best-gifts-for-coffee-lovers/&hl=vi&sl=en&tl=vi&client=srp",
+    "snippet": "Chúng tôi gợi ý ấm đun nước, bình đựng cà phê, hạt cà phê và một vài món quà bất ngờ đầy thú vị dành cho người bạn yêu thích cà phê của bạn.Shaped like a beehive, the heatproof borosilicate glass has a silicone rubber lid, and both pieces are microwave safe. Kitchen editor Marilyn ...",
+    "date": "10 thg 6, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

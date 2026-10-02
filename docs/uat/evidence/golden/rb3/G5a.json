@@ -1,0 +1,24 @@
+{
+  "id": "G5a",
+  "group": "used-purchase-risk",
+  "criteria": [
+    "Leads with iCloud Activation Lock / Find My, MDM, stolen-device (IMEI/blacklist) and deposit scams; then condition checks",
+    "No unsupported numeric thresholds",
+    "Points to 'Cảnh báo lừa đảo' for the online-deposit/stranger-seller vector"
+  ],
+  "turns": [
+    {
+      "user": "mua iPhone 13 cũ thì cần check gì",
+      "status": 200,
+      "elapsedMs": 10626,
+      "textFrames": 296,
+      "tools": [],
+      "toolResults": [],
+      "annotations": [],
+      "cardItems": [],
+      "duplicate": null,
+      "text": "Mua iPhone 13 cũ cần check kỹ để tránh mất tiền. Dưới đây là những điểm quan trọng:\n\n**Rủi ro trước tiên (tránh mất tiền):**\n- **Nguồn gốc & giấy tờ**: Kiểm tra IMEI trên hóa đơn, giấy bảo hành — tránh máy trom cắp, máy khóa iCloud, máy nợ trả góp chưa thanh toán\n- **Khóa từ xa**: Hỏi người bán có khóa Find My không, yêu cầu họ tắt trước khi giao máy\n- **Cách thanh toán an toàn**: Gặp trực tiếp, kiểm tra xong mới chuyển tiền, giữ bằng chứng giao dịch\n\n**Kiểm tra tình trạng vật lý:**\n- **Pin**: Mở Settings → Battery → Battery Health — pin trên 80% là tốt, dưới 70% tính giá lại\n- **Màn hình**: Kiểm tra vết nứt, chấm đen, độ sáng, màu sắc có bình thường không\n- **Nút bấm & loa**: Thử tất cả nút (âm lượng, nguồn, home), loa có tiếng lạ không\n- **Camera**: Chụp thử, kiểm tra có vết xước lens, lấy nét bình thường không\n- **Vỏ máy**: Xem có trầy xước, móp méo, ố vàng không\n\n**Trước khi chuyển tiền, bạn dán tin nhắn, link hoặc mã QR của người bán vào **Cảnh báo lừa đảo** trong TappyAI để kiểm tra nhé.**\n\nChỉ mua khi: xem máy trực tiếp, đã thoát hết tài khoản iCloud, pin ≥70%, không có vết nứt màn hình, và giấy tờ rõ ràng.\n\n[FOLLOWUPS]Tìm iPhone 13 cũ ở đâu|Giá iPhone 13 cũ hiện nay|Cách kiểm tra IMEI[/FOLLOWUPS]\n\nCác con số phần trăm / mốc nêu trên là kinh nghiệm chung, không phải số liệu từ nguồn đã tìm — dùng làm gợi ý, không phải ngưỡng cứng.",
+      "visible": "Mua iPhone 13 cũ cần check kỹ để tránh mất tiền. Dưới đây là những điểm quan trọng:\n\n**Rủi ro trước tiên (tránh mất tiền):**\n- **Nguồn gốc & giấy tờ**: Kiểm tra IMEI trên hóa đơn, giấy bảo hành — tránh máy trom cắp, máy khóa iCloud, máy nợ trả góp chưa thanh toán\n- **Khóa từ xa**: Hỏi người bán có khóa Find My không, yêu cầu họ tắt trước khi giao máy\n- **Cách thanh toán an toàn**: Gặp trực tiếp, kiểm tra xong mới chuyển tiền, giữ bằng chứng giao dịch\n\n**Kiểm tra tình trạng vật lý:**\n- **Pin**: Mở Settings → Battery → Battery Health — pin trên 80% là tốt, dưới 70% tính giá lại\n- **Màn hình**: Kiểm tra vết nứt, chấm đen, độ sáng, màu sắc có bình thường không\n- **Nút bấm & loa**: Thử tất cả nút (âm lượng, nguồn, home), loa có tiếng lạ không\n- **Camera**: Chụp thử, kiểm tra có vết xước lens, lấy nét bình thường không\n- **Vỏ máy**: Xem có trầy xước, móp méo, ố vàng không\n\n**Trước khi chuyển tiền, bạn dán tin nhắn, link hoặc mã QR của người bán vào **Cảnh báo lừa đảo** trong TappyAI để kiểm tra nhé.**\n\nChỉ mua khi: xem máy trực tiếp, đã thoát hết tài khoản iCloud, pin ≥70%, không có vết nứt màn hình, và giấy tờ rõ ràng.\n\nCác con số phần trăm / mốc nêu trên là kinh nghiệm chung, không phải số liệu từ nguồn đã tìm — dùng làm gợi ý, không phải ngưỡng cứng."
+    }
+  ]
+}

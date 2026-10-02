@@ -1,0 +1,180 @@
+{
+  "id": "T5b",
+  "text": "3–5 người",
+  "parent": "T5",
+  "status": 200,
+  "ms": 16914,
+  "evidenceId": "4bfc05ba-4536-46b3-a6c6-542ffd9531b4",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "địa điểm vui chơi giải trí",
+        "type": "attraction"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Khu vui chơi thiếu nhi",
+      "rating": 4.2,
+      "count": 32,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 9.9,
+      "address": "244 Chiến Lược, Bình Trị Đông, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Khu Vui chơi Trẻ em - Công viên Gia Định",
+      "rating": 4.3,
+      "count": 461,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 4.9,
+      "address": "RM6F+WCM, Đ. Đặng Văn Sâm, Đức Nhuận, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Coffee - Tea - Khu vui chơi trẻ em",
+      "rating": 4.7,
+      "count": 10,
+      "hours": "07:00–22:00",
+      "distance_km": 25.5,
+      "address": "Tổ 9 khu phố Hương Phước, phường, Phước Tân, Đồng Nai, Việt Nam"
+    },
+    {
+      "name": "Khu vui chơi trẻ em Rainbow",
+      "rating": 4.7,
+      "count": 27,
+      "hours": "08:30–22:00",
+      "distance_km": 27.5,
+      "address": "16 Đường 28/4, K Phước Hải, Long Thành, Đồng Nai, Việt Nam"
+    },
+    {
+      "name": "Khu Vui Chơi PHƯỚC THIỀN",
+      "rating": 4.4,
+      "count": 27,
+      "hours": "17:00–22:00",
+      "distance_km": 25.2,
+      "address": "Bến Sắn, Nhơn Trạch, Đồng Nai, Việt Nam"
+    },
+    {
+      "name": "Khu Giải Trí PH GAME - CN Hùng Vương",
+      "rating": 4.9,
+      "count": 331,
+      "hours": "09:00–22:00",
+      "distance_km": 4.8,
+      "address": "126 Đ. Hồng Bàng, Chợ Lớn, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Khu vui chơi trẻ em SKY ZONE Cầu Suối Độn",
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 25.5,
+      "address": "VWC7+4MH, D. Diên Nghệ, Tam Phước, Đồng Nai, Việt Nam"
+    },
+    {
+      "name": "Khu Vui Chơi BABYSHARK",
+      "rating": 4.7,
+      "count": 33,
+      "hours": "17:00–22:00",
+      "distance_km": 30.2,
+      "address": "15 Nguyễn Hoàng, Tam Phước, Đồng Nai, Việt Nam"
+    },
+    {
+      "name": "Khu Vui Chơi Trẻ Em NHÀ GẤU",
+      "rating": 5,
+      "count": 7,
+      "hours": "07:00–22:00",
+      "distance_km": 25.7,
+      "address": "tổ 11 Đinh Quan Ân, Phước Tân, Đồng Nai, Việt Nam"
+    },
+    {
+      "name": "Khu vui chơi patin-xe điện",
+      "rating": 4.7,
+      "count": 18,
+      "hours": "17:30–22:00",
+      "distance_km": 29.2,
+      "address": "PX45+XFP, Đ. Hùng Vương, Phước An, Đồng Nai, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình giả sử bạn muốn đi chơi hôm nay ở gần Quận 1 với nhóm 3–5 người, tầm giá phổ thông.\n**PH GAME - CN Hùng Vương** là lựa chọn hợp lý nhất cho nhóm bạn. Với **4.9⭐ (331 đánh giá Google Maps)**, đây là trung tâm giải trí được đánh giá cao nhất, chỉ cách bạn ~4.8km, mở cửa từ 9:00–22:00. Phù hợp để nhóm bạn tụ tập chơi game, vui chơi trong không gian rộng rãi.\n\nNgoài ra, **Công viên Gia Định** (4.3⭐, 461 đánh giá) cũng là lựa chọn thay thế tốt nếu bạn muốn không khí ngoài trời, gần hơn (~4.9km), và có nhiều hoạt động cho nhóm.\n\nBạn có muốn biết thêm chi tiết về hoạt động cụ thể nào không — chơi game, chơi trẻ em, hay hoạt động ngoài trời?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - PH GAME\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=9938196655876771598\",\"primary\":true},{\"label\":\"🌐 Facebook - PH GAME\",\"type\":\"website\",\"url\":\"https://www.facebook.com/share/1AjXeE1Q7z/?mibextid=wwXIfr\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Chơi game hay hoạt động ngoài trời?|Có muốn biết giá vé không?|Nên đặt chỗ trước không?[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "đi chơi ở đâu"
+    },
+    {
+      "role": "assistant",
+      "content": "Để chọn đúng chỗ, mình cần biết thêm:\n• Tầm giá? (dưới 200k/người / 200–500k/người / trên 500k/người)\n• Mấy người? (1–2 người / 3–5 người / nhóm đông)\nBạn trả lời phần nào cũng được, phần còn lại mình tự giả sử và nói rõ.\n\n[FOLLOWUPS]dưới 200k/người|200–500k/người|trên 500k/người[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "3–5 người"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn muốn đi chơi hôm nay ở gần Quận 1 với nhóm 3–5 người, tầm giá phổ thông.\n**PH GAME - CN Hùng Vương** là lựa chọn hợp lý nhất cho nhóm bạn. Với **4.9⭐ (331 đánh giá Google Maps)**, đây là trung tâm giải trí được đánh giá cao nhất, chỉ cách bạn ~4.8km, mở cửa từ 9:00–22:00. Phù hợp để nhóm bạn tụ tập chơi game, vui chơi trong không gian rộng rãi.\n\nNgoài ra, **Công viên Gia Định** (4.3⭐, 461 đánh giá) cũng là lựa chọn thay thế tốt nếu bạn muốn không khí ngoài trời, gần hơn (~4.9km), và có nhiều hoạt động cho nhóm.\n\nBạn có muốn biết thêm chi tiết về hoạt động cụ thể nào không — chơi game, chơi trẻ em, hay hoạt động ngoài trời?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - PH GAME\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=9938196655876771598\",\"primary\":true},{\"label\":\"🌐 Facebook - PH GAME\",\"type\":\"website\",\"url\":\"https://www.facebook.com/share/1AjXeE1Q7z/?mibextid=wwXIfr\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Chơi game hay hoạt động ngoài trời?|Có muốn biết giá vé không?|Nên đặt chỗ trước không?[/FOLLOWUPS]"
+    }
+  ]
+}

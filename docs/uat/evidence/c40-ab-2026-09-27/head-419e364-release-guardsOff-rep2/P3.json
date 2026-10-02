@@ -1,0 +1,33 @@
+{
+  "id": "P3",
+  "text": "chỗ đó có đặt trước được không?",
+  "parent": "P2",
+  "status": 200,
+  "ms": 6456,
+  "evidenceId": "87315806-eeed-45d6-ac4b-cb0f5290ba98",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình chưa có thông tin về khả năng đặt trước của các spa này từ hệ thống. Để chắc chắn, bạn nên:\n\n1. **Gọi trực tiếp** - Xem số điện thoại trên Google Maps của từng spa\n2. **Nhắn Facebook** - Nếu spa có fanpage, nhắn tin hỏi về đặt trước\n3. **Ghé trực tiếp** - Vì các spa massage chân thường không yêu cầu đặt trước, bạn có thể đến và chọn giờ ngay\n\nSpa massage chân ở Quận 1 thường khá linh hoạt với khách walk-in, nhất là vào buổi chiều/tối. Nếu bạn muốn chắc chắn có chỗ vào giờ cụ thể nào, gọi trước 30 phút là an toàn nhất 👍",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "spa massage chan gan q1 duoi 300k"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm được 10 spa massage chân ở Quận 1, nhưng chưa xác nhận được giá cụ thể của các chỗ này.\n\nChỗ này được nhiều khách review tích cực lâu nay, nên chất lượng khá ổn định.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website - MASSAGE HẠ SPA\",\"type\":\"website\",\"url\":\"https://haspamassage.vn/\",\"primary\":true},{\"label\":\"📍 Google Maps - MASSAGE HẠ SPA\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=5564503278764968347\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Gọi hỏi giá massage chân|Xem spa khác ở Quận 1|Tìm spa gần vị trí khác[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "chỗ đó có đặt trước được không?"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình chưa có thông tin về khả năng đặt trước của các spa này từ hệ thống. Để chắc chắn, bạn nên:\n\n1. **Gọi trực tiếp** - Xem số điện thoại trên Google Maps của từng spa\n2. **Nhắn Facebook** - Nếu spa có fanpage, nhắn tin hỏi về đặt trước\n3. **Ghé trực tiếp** - Vì các spa massage chân thường không yêu cầu đặt trước, bạn có thể đến và chọn giờ ngay\n\nSpa massage chân ở Quận 1 thường khá linh hoạt với khách walk-in, nhất là vào buổi chiều/tối. Nếu bạn muốn chắc chắn có chỗ vào giờ cụ thể nào, gọi trước 30 phút là an toàn nhất 👍"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+ "id": "M2",
+ "group": "switch-food-spa-entertainment",
+ "turns": [
+  {
+   "user": "trưa nay ăn gì dưới 100k quận 3",
+   "text": "Mình giả sử bạn muốn ăn trưa hôm nay ở quận 3 với ngân sách dưới 100k. Để gợi ý đúng ý, mình cần tìm các quán ăn trưa phù hợp ngay.\n\nMình chọn **Quán Ăn Vặt Hẻm 16** cho bạn — quán này có giá dưới 100k, và được đánh giá 4.7⭐ từ 89 khách hàng. Quán mở từ 11:00 đến 19:00, nên bạn có thể ăn trưa bình thường. Ăn vặt ở đây vừa ngon vừa rẻ, phù hợp cho bữa trưa nhanh gọn.\n\nNếu bạn muốn cơm niêu thay vì ăn vặt, **Cơm Niêu Đẩu** cũng là lựa chọn tốt — 4.7⭐ (467 đánh giá), mở từ 7h sáng, và đang mở cửa lúc này.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Maps - Quán Ăn Vặt Hẻm 16\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=15871974343931156735\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Cơm niêu ở quận 3|Quán ăn vặt ngon|Ăn trưa gần đây[/FOLLOWUPS]"
+  },
+  {
+   "user": "chiều đi gội đầu massage ở đâu gần đó",
+   "text": "Để chọn đúng chỗ, mình cần biết thêm:\n• Tầm giá? (dưới 300k / 300–500k / trên 500k)\n• Mấy người? (1–2 người / 3–5 người / nhóm đông)\nBạn trả lời phần nào cũng được, phần còn lại mình tự giả sử và nói rõ.\n\n[FOLLOWUPS]dưới 300k|300–500k|trên 500k[/FOLLOWUPS]"
+  },
+  {
+   "user": "tối nay xem phim rạp nào gần quận 3",
+   "text": "Để chọn đúng chỗ, mình cần biết thêm:\n• Tầm giá? (dưới 200k/người / 200–500k/người / trên 500k/người)\n• Mấy người? (1–2 người / 3–5 người / nhóm đông)\nBạn trả lời phần nào cũng được, phần còn lại mình tự giả sử và nói rõ.\n\n[FOLLOWUPS]dưới 200k/người|200–500k/người|trên 500k/người[/FOLLOWUPS]"
+  }
+ ]
+}

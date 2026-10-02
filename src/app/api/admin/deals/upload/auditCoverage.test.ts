@@ -38,6 +38,7 @@ vi.mock('@/lib/media', () => ({ getMediaProvider: () => ({ id: 'gcs' }) }))
 vi.mock('@/lib/media/uploadRoute', () => ({
   isCreateUploadSessionBody: () => bodyIsSession,
   createUploadSessionResponse: async () => sessionResult,
+  sameHostOrigin: () => null,
 }))
 vi.mock('@/lib/media/uploadCompletion', () => ({
   isCompleteUploadBody: () => bodyIsComplete,

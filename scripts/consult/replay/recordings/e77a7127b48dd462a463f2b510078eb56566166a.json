@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Nori - Modern Izakaya\" OR \"FEN Izakaya\" OR \"Haru Sushi Quận 1\" quan 1 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:06:20.237Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Nori - Modern Izakaya\" OR \"FEN Izakaya\" OR \"Haru Sushi Quận 1\" quan 1 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Nori Modern Izakaya Quận 1: Review quán Nhật Lý Tự Trọng",
+    "link": "https://www.tiktok.com/@lulureview_/video/7517598383498890514",
+    "snippet": "Nori Modern Izakaya nằm ngay mặt tiền đường Lý Tự Trọng, Quận 1 là một quán izakaya Nhật Bản thu hút nhiều người tìm đến nhờ không gian hiện ...",
+    "position": 1
+   },
+   {
+    "title": "Nori Modern Izakaya: Trải nghiệm ẩm thực Nhật Bản hiện đại",
+    "link": "https://www.tiktok.com/@norisaigon/video/7355480358286085393",
+    "snippet": "Nori Modern Izakaya - Kết hợp giữa văn hóa ẩm thực truyền thống Nhật Bản và phong cách hiện đại.",
+    "position": 2
+   },
+   {
+    "title": "Tình cờ biết đến Fen Izakaya ở 240 Lý Tự Trọng Q1. Quán ...",
+    "link": "https://www.tiktok.com/@ghithichnhau/video/7674929044164480276",
+    "snippet": "Tình cờ biết đến Fen Izakaya ở 240 Lý Tự Trọng Q1. Quán nhậu kiểu Nhật... không ồn ào như mô hình trẻ trung... nhưng cũng không củ kỹ với ...",
+    "position": 3
+   },
+   {
+    "title": "Haru Sushi Quận 1 (@harusushinguyenthaihoc)",
+    "link": "https://www.tiktok.com/@harusushinguyenthaihoc",
+    "snippet": "Haru Sushi Quận 1 (@harusushinguyenthaihoc) trên TikTok |6090 Lượt thích.91 Follower.HARU SUSHI - 93 NGUYỄN THÁI HỌC, PHƯỜNG CẦU ÔNG LÃNH, QUẬN 1.",
+    "position": 4
+   },
+   {
+    "title": "NORI (@norisaigon)",
+    "link": "https://www.tiktok.com/@norisaigon",
+    "snippet": "NORI Modern Izakaya ▫ 114 - 114A Ly Tu Trong, Ben Thanh Ward, HCM ▫ Call to Book: 0798 777 779 · Đã follow · Tài khoản được đề xuất · Tận hưởng trải nghiệm đầy ...",
+    "position": 5
+   },
+   {
+    "title": "Nori Restaurant Quận 1",
+    "link": "https://www.tiktok.com/discover/nori-restaurant-qu%E1%BA%ADn-1",
+    "snippet": "Nếu bạn đang tìm kiếm nhà hàng sushi Quận 1 vừa sang trọng vừa chuẩn vị Nhật, NORI – Modern Izakaya tại 114 – 114A Lý Tự Trọng, P. Bến Thành là ...",
+    "date": "21 thg 9, 2026",
+    "position": 6
+   },
+   {
+    "title": "Ngon đến mức… m.a cũng phải hoá trang👻 Hóa thân ngày ...",
+    "link": "https://www.tiktok.com/@norisaigon/video/7566450067356372232",
+    "snippet": "Nếu bạn đang tìm kiếm nhà hàng sushi Quận 1 vừa sang trọng vừa chuẩn vị Nhật, NORI – Modern Izakaya tại 114 – 114A Lý Tự Trọng, P. Bến Thành ...",
+    "position": 7
+   },
+   {
+    "title": "Trải Nghiệm Izakaya Thú Vị Tại Fen",
+    "link": "https://www.tiktok.com/@vuvicungyuhi/video/7529149203030052103",
+    "snippet": "Keywords: trải nghiệm izakaya thú vị, ẩm thực Nhật tại Fen Izakaya, quán ăn chill ở quận 1, món ăn ngon tại izakaya, địa điểm ăn uống cho ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

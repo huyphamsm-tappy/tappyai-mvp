@@ -1,0 +1,13 @@
+== project confirm
+aerobic-lock-498409-u7	1023373437508	ACTIVE
+== create (non-public)
+Creating gs://tappyai-media-audit/...
+tappyai-media-audit	enforced
+== run prove.mts → proof.json (one earlier run crashed in MY reader after uploading one synthetic clip; that object was removed with 'gcloud storage rm gs://tappyai-media-audit/videos/**' before the rerun)
+== independent listing
+ERROR: (gcloud.storage.ls) One or more URLs matched no objects.
+== delete bucket
+..........................
+== describe after delete
+ERROR: (gcloud.storage.buckets.describe) gs://tappyai-media-audit not found: 404.
+tappyai-media-prod: not named by any command. No permission granted or changed.

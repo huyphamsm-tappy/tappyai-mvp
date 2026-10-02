@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"PHÚ THẮNG GRAND HOTEL - LONG AN\" Tây Ninh site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T05:20:06.038Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"PHÚ THẮNG GRAND HOTEL - LONG AN\" Tây Ninh site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "PHÚ THẮNG GRAND HOTEL - LONG AN - Giá cả và Ưu ...",
+    "link": "https://vn.trip.com/hotels/tt-duc-hoa-hotel-detail-72238644/phu-thang-grand-hotel/",
+    "snippet": "PHÚ THẮNG GRAND HOTEL - LONG AN · Chỗ đậu xe miễn phí · Bữa sáng ngon miệng · Có dịch vụ đưa đến sân bay · Vị trí lý tưởng.",
+    "position": 1
+   },
+   {
+    "title": "Các đánh giá PHÚ THẮNG GRAND HOTEL - LONG AN",
+    "link": "https://vn.trip.com/hotels/tt-duc-hoa-hotel-detail-72238644/phu-thang-grand-hotel/review.html",
+    "snippet": "Khám phá đánh giá PHÚ THẮNG GRAND HOTEL - LONG AN thực tế từ khách du lịch. Với 193 đánh giá đã được xác thực và xếp hạng 8.4/10, bạn có thể đặt phòng với ...",
+    "position": 2
+   },
+   {
+    "title": "Top 10 khách sạn tại Mỹ Hạnh, Việt Nam với giá từ 821.818₫",
+    "link": "https://vn.trip.com/hotels/my-hanh-hotels-list-806661/",
+    "snippet": "PHÚ THẮNG GRAND HOTEL - LONG AN. Khu Công Nghiệp Tân Đô, Ấp Bình Tiền 2, Đức Hòa. 8,2 (185 đánh giá). \"Ăn uống ở gần ...",
+    "position": 3
+   },
+   {
+    "title": "Top khách sạn tốt nhất tại Lộc Giang, Việt Nam",
+    "link": "https://vn.trip.com/hotels/loc-giang-hotels-list-459471/",
+    "snippet": "PHÚ THẮNG GRAND HOTEL - LONG AN ... \"Tôi đến đây công tác, và vị trí khách sạn cũng khá ổn.\" 1 đêm 1.195.645₫. Đặt ngay.",
+    "position": 4
+   },
+   {
+    "title": "Top khách sạn tốt nhất tại Trảng Bàng, Việt Nam",
+    "link": "https://vn.trip.com/hotels/trang-bang-hotels-list-697155/",
+    "snippet": "Giá cả rất phải chăng ở Bavet.\" 1 đêm 699.850₫. Đặt ngay. PHÚ THẮNG GRAND HOTEL - LONG AN. 8,6 (199 đánh giá). PHÚ THẮNG GRAND HOTEL - LONG AN. Khu ...",
+    "position": 5
+   },
+   {
+    "title": "Khách sạn 3 sao tốt nhất tại Đức Hòa cho kỳ nghỉ thoải mái",
+    "link": "https://vn.trip.com/hotels/star3/city/vn/tt-duc-hoa.html",
+    "snippet": "PHÚ THẮNG GRAND HOTEL - LONG AN (từ 1.197.604₫), KHÁCH SẠN CĂM HUY (từ 821.657₫) và Kim Tan Motel - Tan Do Industrial Park (từ 1.030.947₫) có phục vụ bữa sáng ...",
+    "position": 6
+   },
+   {
+    "title": "Top 10 khách sạn tại Đức Hòa, Việt Nam",
+    "link": "https://vn.trip.com/hotels/tt-duc-hoa-hotels-list-454669/",
+    "snippet": "Số Đánh Giá. 273 ; Số Khách Sạn. 10 ; Giá Ngày Trong Tuần. 906.213₫ ; Giá Cuối Tuần. 906.213₫ ; Khách sạn thịnh hành. PHÚ THẮNG GRAND HOTEL - LONG AN ...",
+    "position": 7
+   },
+   {
+    "title": "Top khách sạn tốt nhất tại Chantrea, Campuchia",
+    "link": "https://vn.trip.com/hotels/chanthrea-hotels-list-90434/",
+    "snippet": "PHÚ THẮNG GRAND HOTEL - LONG AN ... \"Giá cả phải chăng, rất đáng đồng tiền.\" 1 đêm 1.210.494₫. Đặt ngay. Như Ý ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

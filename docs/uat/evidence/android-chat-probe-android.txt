@@ -1,0 +1,7 @@
+HTTP 200 text/event-stream
+9: tool search_places
+8: tappy.places.v1 items=8 domain=food preliminary=true first={"name":"Phở Nhất Vị - Nguyễn Thị Minh Khai","image":true,"rating":4.9,"actions":["maps","review","website","call"]}
+8: tappy.places.v1 items=8 domain=food preliminary=false first={"name":"Phở Nhất Vị - Nguyễn Thị Minh Khai","image":true,"rating":4.9,"actions":["review","maps","website","call","review"]}
+annotation kinds: tappy.progress.v1,tappy.places.v1,tappy.progress.v1,tappy.places.v1
+markdown images in prose: 0 | GrabFood/ShopeeFood links in prose: 0 | [TAPPY_PLACES] marker: false
+prose head: "Mình tìm quán phở ngon ở Quận 1 cho bạn nhé.\n\nMình chọn **Phở Nhất Vị - Nguyễn Thị Minh Khai** cho bạn 👍 Quán này có **4.9⭐ (1.103 đánh giá Google Maps)** — lượng đánh giá lớn như vậy là bằng chứng đủ mạnh để mình tin tưởng. Cách bạn khoảng 1.7km, mở cửa cả n"

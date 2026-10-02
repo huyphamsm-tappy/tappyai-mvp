@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "quán bánh giao tận nơi đồ chiên quan 7 gia menu thuc don",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:25:08.177Z",
+ "body": {
+  "searchParameters": {
+   "q": "quán bánh giao tận nơi đồ chiên quan 7 gia menu thuc don",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Bánh Kem Thỏ Tây | Bánh Kem Ngon Quận 7",
+    "link": "https://banhkemthotay.vn/",
+    "snippet": "Tiệm bánh kem Thỏ Tây chuyên bánh kem sinh nhật đẹp, thiết kế theo yêu cầu tại Quận 7, TP.HCM. Giao hàng hỏa tốc, nguyên liệu tươi, mẫu bắt trend. Đặt ngay.",
+    "position": 1
+   },
+   {
+    "title": "10 quán ăn vặt Quận 7 giá rẻ bình dân “ngon số dách”",
+    "link": "https://www.bachhoaxanh.com/kinh-nghiem-hay/10-quan-an-vat-quan-7-gia-re-binh-dan-ngon-so-dach-1393351",
+    "snippet": "Menu của quán: Bánh flan, trái cây xô, cocktail,... Món yêu thích tại quán: Bánh flan sữa, bánh flan lá dứa, trái cây tô, trái cây dầm sữa,...",
+    "position": 2
+   },
+   {
+    "title": "Ăn Vặt Quận 7 - Nhà Bè",
+    "link": "https://www.facebook.com/groups/anvatquan7nhabe/",
+    "snippet": "BURRITO HEO NƯỚNG 65K – NGẬP TRÀN TOPPING, CÀNG ĂN CÀNG CUỐN! Thơm lừng góc phố với lớp phô mai tan chảy béo ngậy quyện cùng sốt sánh mịn, cắn ngập miệng ...",
+    "position": 3
+   },
+   {
+    "title": "Thức ăn nhanh ngon tại Quận 7 - Thổ Địa Ăn Uống - MoMo",
+    "link": "https://www.momo.vn/page/thuc-an-nhanh-tai-quan-7-3-4-268",
+    "snippet": "El Barón Bistro And Drinks - Hưng Phước 4 · Gà rán & Khoai lang lắc - Mr.Thịnh - Đường số 17 · Bột Chiên & Ăn Vặt - Đường Số 17 · Lẩu Bò Giáo Sĩ - Trần Xuân Soạn.",
+    "rating": 4.5,
+    "ratingCount": 19,
+    "position": 4
+   },
+   {
+    "title": "TRẢI NGHIỆM THIÊN ĐƯỜNG ĂN VẶT ...",
+    "link": "https://www.facebook.com/ansapsaigon/videos/tr%E1%BA%A3i-nghi%E1%BB%87m-thi%C3%AAn-%C4%91%C6%B0%E1%BB%9Dng-%C4%83n-v%E1%BA%B7t-%C4%91a-d%E1%BA%A1ng-c%C3%A1c-m%C3%B3n-m%C3%A0-c%E1%BB%B1c-k%E1%BB%B3-r%E1%BA%BB-%E1%BB%9F-khu-qu%E1%BA%ADn-7-b%C3%A1nh-fl/1535097181750005/",
+    "snippet": "TRẢI NGHIỆM THIÊN ĐƯỜNG ĂN VẶT ĐA DẠNG CÁC MÓN MÀ CỰC KỲ RẺ Ở KHU QUẬN 7 Bánh Flan dì Chi 35/8B Đ. Số 8, Tân Kiểng, Quận 7, ...",
+    "position": 5
+   },
+   {
+    "title": "Những món ăn vặt giao hàng tận nơi quận 7 không thể bỏ ...",
+    "link": "https://banhmique.com/tin-tuc/nhung-mon-an-vat-giao-hang-tan-noi-quan-7-khong-the-bo-qua-zq9pyq98",
+    "snippet": "Những món ăn vặt giao hàng tận nơi quận 7 · Bánh tráng Tám Ghiền · Nem nướng Đà Lạt Saru · Rong biển cháy tỏi · Bánh mì que BMQ · LIÊN HỆ · HỖ TRỢ · THEO DÕI BMQ TRÊN ...",
+    "position": 6
+   },
+   {
+    "title": "Tiệm bánh kem Quận 7 giá rẻ nhiều mẫu đẹp ấn tượng ...",
+    "link": "https://banhngot.vn/banh-kem-quan-7?srsltid=AU7gw4VnP1AgzUFEBHdNQRoHLSXcJ8sQuB15iY9EWSvmTQS1EFbtr8iP",
+    "snippet": "Tiệm bánh kem quận 7 Giá rẻ Giao tận tay có VAT cho khách hàng công ty. ✓ Bánh kem tại cửa hàng bánh kem quận 7: Bánh ngon, ít ngọt, 500+ mẫu đẹp mới nhất.",
+    "position": 7
+   },
+   {
+    "title": "quận 7 khu vực phú thuận...có tiệm bánh trung thu nào ...",
+    "link": "https://www.facebook.com/groups/hoisalesnhaphanphoi/posts/4402898853295065/",
+    "snippet": "Bánh mì CHAY ĐÂY BẾP CHAY có \" BÁNH MÌ QUE CHAY\" giá chỉ 15k vào ngày MÙNG 1 VÀ NGÀY RẰM HÀNG THÁNG Ạ Với các loại TOPPING siêu ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

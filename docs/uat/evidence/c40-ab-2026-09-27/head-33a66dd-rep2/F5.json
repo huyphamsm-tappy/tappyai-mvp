@@ -1,0 +1,33 @@
+{
+  "id": "F5",
+  "text": "quán này mở mấy giờ?",
+  "parent": "F4",
+  "status": 200,
+  "ms": 612,
+  "evidenceId": "1151ebbc-afe7-4754-8f92-ce447c36d7eb",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "**Quán Ăn Gia Đình Ngọc Hương** mở cửa 15:00–05:00.\n\n(Theo thông tin mình tìm được ở lượt trước — nên gọi xác nhận trước khi đi nhé.)",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Cả nhà 6 người có con nít ăn trưa cuối tuần, cần chỗ đậu xe ô tô, Phú Nhuận"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình chọn **Quán Ăn Gia Đình Ngọc Hương** — 4.5⭐ (100 đánh giá Google Maps); giờ mở cửa theo Google Maps: 15:00–05:00.\n\nTrong lúc đó, mình sẽ tìm các quán phù hợp cho gia đình 6 người.\n\nQuán có website và được nhiều người review tích cực. Tuy nhiên quán đóng cửa lúc 21:30, nên nếu bạn ăn trưa thì mở từ 10:30 sáng.\n\nNgoài ra, **Quán Ăn Gia Đình Ngọc Hương** (4.5⭐, 100 đánh giá) cũng là lựa chọn tốt — chuyên hải sản, giá tương tự, và đang mở cửa lúc này.\n\nTầm giá bạn dự tính là bao nhiêu/người?\n\nMình chưa thấy bằng chứng về chỗ đậu xe, phù hợp trẻ em ở các quán này — nên gọi hỏi trước khi đi.\n\n[FOLLOWUPS]dưới 100k/người|100–200k/người|trên 200k/người[/FOLLOWUPS]\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem Tám Riêu trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=5129199686849166520\",\"primary\":true}]}[/CTA_BUTTONS]\n\nBạn muốn tầm giá khoảng bao nhiêu (dưới 100k/người / 100–200k/người / trên 200k/người)?"
+    },
+    {
+      "role": "user",
+      "content": "quán này mở mấy giờ?"
+    },
+    {
+      "role": "assistant",
+      "content": "**Quán Ăn Gia Đình Ngọc Hương** mở cửa 15:00–05:00.\n\n(Theo thông tin mình tìm được ở lượt trước — nên gọi xác nhận trước khi đi nhé.)"
+    }
+  ]
+}

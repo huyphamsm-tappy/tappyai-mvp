@@ -107,11 +107,17 @@ export function evaluateAgeEligibility(
   if (age === null) return UNKNOWN
 
   const used = typeof row.corrections_used === 'number' ? row.corrections_used : 0
-  const canSelfCorrect = used < MAX_SELF_CORRECTIONS
   const ageBand = (row.age_band as AgeBand | null) ?? null
+  const status: AgeEligibilityStatus = age >= MINIMUM_AGE ? 'eligible' : 'ineligible'
+
+  // F-028: an INELIGIBLE user may always self-correct — a mistyped date that reads as under-age
+  // must not be a lockout. This mirrors set_user_date_of_birth(), which now refuses a correction
+  // only while the user is currently eligible. An eligible user still gets exactly
+  // MAX_SELF_CORRECTIONS (1); the general limit is unchanged.
+  const canSelfCorrect = status === 'ineligible' ? true : used < MAX_SELF_CORRECTIONS
 
   return {
-    status: age >= MINIMUM_AGE ? 'eligible' : 'ineligible',
+    status,
     ageBand,
     age,
     canSelfCorrect,

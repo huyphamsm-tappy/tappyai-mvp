@@ -138,7 +138,9 @@ const arm = (target = SUCCESSOR, reason = REASON, minutes = 30) =>
 
 beforeAll(async () => {
   dataDir = mkdtempSync(join(tmpdir(), 'pg-b8-'))
-  pg = new EmbeddedPostgres({ databaseDir: dataDir, user: 'postgres', password: 'postgres', port: PORT, persistent: false })
+  // Without these, initdb inherits the Windows locale and builds a WIN1252 cluster, which
+  // rejects the em-dashes / ✅ in our own migration text (same fix as audit_chain.test.ts).
+  pg = new EmbeddedPostgres({ databaseDir: dataDir, user: 'postgres', password: 'postgres', port: PORT, persistent: false, initdbFlags: ['--encoding=UTF8', '--locale=C'] })
   await pg.initialise()
   await pg.start()
   await pg.createDatabase('test')

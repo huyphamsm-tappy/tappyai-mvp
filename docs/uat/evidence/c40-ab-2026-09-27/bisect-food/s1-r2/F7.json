@@ -1,0 +1,199 @@
+{
+  "id": "F7",
+  "text": "ăn gì ngon giờ",
+  "parent": null,
+  "status": 200,
+  "ms": 14201,
+  "evidenceId": "7bd825c0-bef4-4e3e-9089-77433e30023f",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "quán ăn ngon bua toi",
+        "location": "Quận 1, TP.HCM",
+        "type": "restaurant"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "BÒ TƠ QUÁN MỘC 486 Nguyễn Thị Minh Khai",
+      "rating": 4.9,
+      "count": 6039,
+      "hours": "10:00–23:00",
+      "distance_km": 2.3,
+      "address": "486 Nguyễn Thị Minh Khai, Bàn Cờ, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Quán nhậu quận 1 - HẢI SẢN QUÝ DẬU",
+      "rating": 4.7,
+      "count": 280,
+      "hours": "15:00–02:00",
+      "distance_km": 2,
+      "address": "147 Hoàng Sa, Tân Định, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Quán Bụi - Sài Gòn Pearl",
+      "rating": 4.6,
+      "count": 995,
+      "hours": "07:00–23:00",
+      "distance_km": 2.5,
+      "address": "31, D5/92 Nguyễn Hữu Cảnh, Saigon Pearl, Thạnh Mỹ Tây, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Chanh Bistro Rooftop",
+      "rating": 4.5,
+      "count": 1299,
+      "hours": "10:30–23:00",
+      "distance_km": 0.7,
+      "address": "Rooftop level, 215 Lý Tự Trọng, Bến Thành, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Quán Bụi - Lê Thánh Tôn - Authentic Vietnamese Cuisine",
+      "rating": 4.5,
+      "count": 1209,
+      "hours": "07:00–23:00",
+      "distance_km": 0.7,
+      "address": "222 - 224 Lê Thánh Tôn, Bến Thành, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Quán Bụi Central, Sài Gòn - Authentic Vietnamese Cuisine",
+      "rating": 4.5,
+      "count": 901,
+      "hours": "07:00–23:00",
+      "distance_km": 0.7,
+      "address": "1B Ngô Văn Năm, Quận 1, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Hàng Dương Quán Quận 1",
+      "rating": 4.5,
+      "count": 723,
+      "hours": "09:00–23:30",
+      "distance_km": 0.6,
+      "address": "32-34 Ngô Đức Kế, Phường, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Béo Ơi Quán - Món ngon Hà Nội",
+      "rating": 4.5,
+      "count": 1026,
+      "hours": "10:30–22:00",
+      "distance_km": 0.9,
+      "address": "Hẻm 15M kế bên, 15/20, hẻm phía bên tay trái!, Nguyễn Thị Minh Khai/số 17A quán cuối, Sài Gòn, Hồ Chí Minh 00084, Việt Nam"
+    },
+    {
+      "name": "Quán ăn ngon Sài Gòn",
+      "rating": 4.1,
+      "count": 1156,
+      "hours": "08:00–22:30",
+      "distance_km": 0.4,
+      "address": "138 Nam Kỳ Khởi Nghĩa, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "NHÀ HÀNG NGON",
+      "rating": 4,
+      "count": 11428,
+      "hours": "07:30–22:30",
+      "distance_km": 0.1,
+      "address": "160 Pasteur, Quận 1, Hồ Chí Minh, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "BÒ TƠ QUÁN MỘC 486 Nguyễn Thị Minh Khai",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 6039,
+        "distance_km": 2.3,
+        "open_now": true,
+        "opening_hours": "10:00–23:00"
+      }
+    },
+    {
+      "name": "Quán nhậu quận 1 - HẢI SẢN QUÝ DẬU",
+      "role": null,
+      "evidence": {
+        "rating": 4.7,
+        "reviews": 280,
+        "distance_km": 2,
+        "open_now": true,
+        "opening_hours": "15:00–02:00"
+      }
+    },
+    {
+      "name": "Quán Bụi - Sài Gòn Pearl",
+      "role": null,
+      "evidence": {
+        "rating": 4.6,
+        "reviews": 995,
+        "distance_km": 2.5,
+        "open_now": true,
+        "opening_hours": "07:00–23:00"
+      }
+    }
+  ],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình tìm những quán ăn ngon gần bạn lúc này nhé! 🍽️\n\nMình chọn **Bò Tơ Quán Mộc** cho bạn! Đặc biệt là bò nướng ngon, tươi mới, và dịch vụ tốt. Quán đang mở cửa đến 23:00 nên bạn còn thời gian để thưởng thức bữa tối thoải mái.\n\nNgoài ra, nếu bạn thích hải sản, **Quán nhậu Hải Sản Quý Dậu** cũng là lựa chọn tuyệt vời (4.7⭐, gần hơn một chút), hoặc **Quán Bụi** nếu muốn ăn Việt Nam truyền thống (4.6⭐, nhiều chi nhánh).\n\n 😊\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Maps - Bò Tơ Quán Mộc\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=13037705567458725001\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Bò nướng hay lẩu?|Quán nào gần nhất?|Có đồ ăn vặt không?[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "ăn gì ngon giờ"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm những quán ăn ngon gần bạn lúc này nhé! 🍽️\n\nMình chọn **Bò Tơ Quán Mộc** cho bạn! Đặc biệt là bò nướng ngon, tươi mới, và dịch vụ tốt. Quán đang mở cửa đến 23:00 nên bạn còn thời gian để thưởng thức bữa tối thoải mái.\n\nNgoài ra, nếu bạn thích hải sản, **Quán nhậu Hải Sản Quý Dậu** cũng là lựa chọn tuyệt vời (4.7⭐, gần hơn một chút), hoặc **Quán Bụi** nếu muốn ăn Việt Nam truyền thống (4.6⭐, nhiều chi nhánh).\n\n 😊\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Maps - Bò Tơ Quán Mộc\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=13037705567458725001\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Bò nướng hay lẩu?|Quán nào gần nhất?|Có đồ ăn vặt không?[/FOLLOWUPS]"
+    }
+  ]
+}

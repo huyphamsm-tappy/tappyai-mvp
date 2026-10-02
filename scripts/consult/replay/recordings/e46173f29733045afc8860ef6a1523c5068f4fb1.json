@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Quà Tặng TOOLA Ngẫu Nhiên - Trị Giá Đến 70k site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:12:14.814Z",
+ "body": {
+  "searchParameters": {
+   "q": "Quà Tặng TOOLA Ngẫu Nhiên - Trị Giá Đến 70k site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Mã Giảm Giá Chính Thức | Ngày 15 Sale Giữa Tháng",
+    "link": "https://shopee.vn/m/ma-giam-gia-15-04-2026?uls_trackid=56cvii0i02td&utm_content=3scsLeZ4Mh33T8U3zRVYevqzCQyD",
+    "snippet": "flag-label Dép Cross baya band clog Nam Nữ Viền Màu \"Tặng Kèm 6Chram Size Nữ Ngẫu Nhiên\" , Dép Sục Cross Unisex Màu Sắc Đa Dạng. #ShopThinhHanh. 159.600₫. Áo ...",
+    "position": 1
+   },
+   {
+    "title": "1 set baby three - Giá Tốt, Sale Tháng 08, Freeship 0Đ",
+    "link": "https://shopee.vn/list/1%20set/baby/three",
+    "snippet": "SaLe 1 set 99k áo kèm quần hình ngẫu nhiên: 10-30kg set bộ baby three labubu áo tay viền quần jean loang Loai 1). 99.000₫. rating-star 4.8.",
+    "position": 2
+   },
+   {
+    "title": "Mẹo săn mã khuyến mãi Shopee cực nhanh, nhiều deal hời",
+    "link": "https://shopee.vn/blog/meo-san-ma-khuyen-mai-shopee/",
+    "snippet": "Shop Voucher (Voucher từ người bán): Mã giảm giá do từng shop phát hành và chỉ áp dụng cho sản phẩm thuộc shop, không dùng được cho các shop ...",
+    "date": "19 thg 5, 2026",
+    "position": 3
+   },
+   {
+    "title": "Shopee",
+    "link": "https://shopee.vn/collections/4549540",
+    "snippet": "Combo 12 gói khăn ướt Mamamy Tropical 90 tờ KHÔNG HƯƠNG THƠM cao cấp cho mẹ và bé 100% sợi tự nhiên và rayon. 559.000₫. -17%. rating-star 4.9. 10k+ đã bán.",
+    "position": 4
+   },
+   {
+    "title": "Cushion lucenbase - Giá Tốt, Sale Tháng 09, Ship 0 Đồng",
+    "link": "https://shopee.vn/list/cushion/lucenbase",
+    "snippet": "[BẢN CAO CẤP] Tặng kèm lõi thay Cushion Lucenbase cấp ẩm, kiềm dầu · [HÀNG CÔNG TY] Cushion Lucenbase bản cao cấp kiềm dầu, chống nước, · Cushion hỗ trợ chống ...",
+    "position": 5
+   },
+   {
+    "title": "Cushion menow - Giá Tốt, Sale Tháng 09, Ship 0 Đồng",
+    "link": "https://shopee.vn/list/cushion/menow",
+    "snippet": "Cushion dưỡng ẩm nâng tone kháng nước Hexze 15g [TẶNG LÕI THAY THẾ 15g]. 18.000₫. rating-star 3.5 · Phấn nước dành cho da dầu mụn Dr.PONG Acne Ace Longwear ...",
+    "position": 6
+   },
+   {
+    "title": "Bbia Official Store",
+    "link": "https://shopee.vn/shop/9277307",
+    "snippet": "Giảm 70k₫. Đơn tối thiểu 499k₫ ; Giảm 40k₫. Đơn tối thiểu 379k₫ ; Giảm 12%. Đơn tối thiểu 320k₫ Capped at 40k₫ ; Giảm 10%. Đơn tối thiểu 279k₫ Capped at 30k₫.",
+    "position": 7
+   },
+   {
+    "title": "chổi nhựa quét nước bền chắc cán inox",
+    "link": "https://shopee.vn/list/ch%E1%BB%95i%20nh%E1%BB%B1a/qu%C3%A9t%20n%C6%B0%E1%BB%9Bc",
+    "snippet": "chổi nhựa quét nước bền bỉ với sợi cước PP và cán inox 1.2 m, đẩy nước sạch sàn ban công, nhà tắm. Săn ngay ưu đãi, số lượng có hạn trên Shopee.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

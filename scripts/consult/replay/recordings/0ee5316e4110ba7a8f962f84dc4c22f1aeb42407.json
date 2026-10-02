@@ -1,0 +1,139 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Khách Sạn Song Nhật",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:56:08.329Z",
+ "body": {
+  "searchParameters": {
+   "q": "Khách Sạn Song Nhật",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Khách sạn Song Nhật",
+    "imageUrl": "http://www.songnhathotel.vn/images/slides/_MG_1647-1920x745.jpg",
+    "imageWidth": 1920,
+    "imageHeight": 745,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQa7rSCtX5RcdENeGwR1AOIAEL0MWbY1GCmwDSG3ESRIA&s=10",
+    "thumbnailWidth": 719,
+    "thumbnailHeight": 278,
+    "source": "www.songnhathotel.vn",
+    "domain": "www.songnhathotel.vn",
+    "link": "http://www.songnhathotel.vn/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=http%3A%2F%2Fwww.songnhathotel.vn%2Fimages%2Fslides%2F_MG_1647-1920x745.jpg&tbnid=hNDu35NpSS-xSM&imgrefurl=http%3A%2F%2Fwww.songnhathotel.vn%2F&docid=NypYAOvfJu-jGM&w=1920&h=745",
+    "creator": "Photographer: light ray",
+    "position": 1
+   },
+   {
+    "title": "Song Nhat Hotel, Tân Bình, Hồ Chí Minh",
+    "imageUrl": "https://pix10.agoda.net/hotelImages/297155/0/bb3c5a3e0f961b84e21510eadc33bb85.jpeg?va=1&s=800x600",
+    "imageWidth": 800,
+    "imageHeight": 533,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTAPh9knC0iUStu1-X5-VHRjH-mki1Rjgun9leoNu60qg&s",
+    "thumbnailWidth": 275,
+    "thumbnailHeight": 183,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/song-nhat-hotel/hotel/ho-chi-minh-city-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F297155%2F0%2Fbb3c5a3e0f961b84e21510eadc33bb85.jpeg%3Fva%3D1%26s%3D800x600&tbnid=wRwuvrwr5lG02M&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fsong-nhat-hotel%2Fhotel%2Fho-chi-minh-city-vn.html&docid=XPvrwtmSMVde_M&w=800&h=533",
+    "position": 2
+   },
+   {
+    "title": "Khách sạn Song Nhật",
+    "imageUrl": "http://www.songnhathotel.vn/images/room/_MG_1711_750x389.jpg",
+    "imageWidth": 750,
+    "imageHeight": 389,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1BkWg_UIQvdoAgxLJzgi_x7XdJTNasyn6BEb0qrxH0w&s=10",
+    "thumbnailWidth": 619,
+    "thumbnailHeight": 323,
+    "source": "www.songnhathotel.vn",
+    "domain": "www.songnhathotel.vn",
+    "link": "http://www.songnhathotel.vn/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=http%3A%2F%2Fwww.songnhathotel.vn%2Fimages%2Froom%2F_MG_1711_750x389.jpg&tbnid=zYYvsYyqmtr1RM&imgrefurl=http%3A%2F%2Fwww.songnhathotel.vn%2F&docid=NypYAOvfJu-jGM&w=750&h=389",
+    "creator": "Photographer: light ray",
+    "position": 3
+   },
+   {
+    "title": "Khách Sạn Song Nhật - Giá cả và Ưu đãi 2026, TP. Hồ Chí Minh",
+    "imageUrl": "https://aw-d.tripcdn.com/images/0225q12000dofkbmi9F23.jpg",
+    "imageWidth": 2048,
+    "imageHeight": 1365,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbWx7Z16bVmaITgpDkK39ngN4ekH73DF_Aj67eXEf3sw&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "Trip.com",
+    "domain": "vn.trip.com",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-hotel-detail-5467581/song-nhat-hotel/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Faw-d.tripcdn.com%2Fimages%2F0225q12000dofkbmi9F23.jpg&tbnid=wqSqaELyIPkLxM&imgrefurl=https%3A%2F%2Fvn.trip.com%2Fhotels%2Fho-chi-minh-city-hotel-detail-5467581%2Fsong-nhat-hotel%2F&docid=OTirs4eaxFDQQM&w=2048&h=1365",
+    "position": 4
+   },
+   {
+    "title": "Song Nhat Hotel, Tân Bình, Hồ Chí Minh",
+    "imageUrl": "https://pix10.agoda.net/hotelImages/297155/3524982/4837215ef232e2a88da44095d6399e0f.jpeg?va=1&s=1024x768",
+    "imageWidth": 1024,
+    "imageHeight": 682,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ65eAbUbm8-TdYRdCiSkvIiTInX55sn_EmhJXMQj11nA&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/song-nhat-hotel/hotel/ho-chi-minh-city-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F297155%2F3524982%2F4837215ef232e2a88da44095d6399e0f.jpeg%3Fva%3D1%26s%3D1024x768&tbnid=IVJan5_C8WgUZM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fsong-nhat-hotel%2Fhotel%2Fho-chi-minh-city-vn.html&docid=XPvrwtmSMVde_M&w=1024&h=682",
+    "position": 5
+   },
+   {
+    "title": "Khách sạn Khách Sạn Song Nhật, Thành phố Hồ Chí Minh - Skyscanner",
+    "imageUrl": "https://content.skyscnr.com/available/1985867439/1985867439_WxH.jpg",
+    "imageWidth": 960,
+    "imageHeight": 640,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRazQt9CZT-sxgZyH6-zbs5wznJpcQWnaZ57EzDGDT_5g&s",
+    "thumbnailWidth": 275,
+    "thumbnailHeight": 183,
+    "source": "Skyscanner",
+    "domain": "www.skyscanner.com.vn",
+    "link": "https://www.skyscanner.com.vn/khach-san/viet-nam/thanh-pho-ho-chi-minh-hotels/khach-san-song-nhat/ht-134132865",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcontent.skyscnr.com%2Favailable%2F1985867439%2F1985867439_WxH.jpg&tbnid=tx39A_yQ3ERryM&imgrefurl=https%3A%2F%2Fwww.skyscanner.com.vn%2Fkhach-san%2Fviet-nam%2Fthanh-pho-ho-chi-minh-hotels%2Fkhach-san-song-nhat%2Fht-134132865&docid=uytNCSRCsGFjAM&w=960&h=640",
+    "position": 6
+   },
+   {
+    "title": "SONG NHAT HOTEL (Thành phố Hồ Chí Minh) - Đánh giá Khách sạn & So sánh giá  - Tripadvisor",
+    "imageUrl": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0d/bb/6e/b9/song-nhat-hotel.jpg?w=1200&h=1200&s=1",
+    "imageWidth": 1200,
+    "imageHeight": 1200,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGeRqgx0FUlDiUPGjxKMoQTK34xceGGDIkSkeU4gG1UA&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Tripadvisor",
+    "domain": "www.tripadvisor.com.vn",
+    "link": "https://www.tripadvisor.com.vn/Hotel_Review-g293925-d3751242-Reviews-Song_Nhat_Hotel-Ho_Chi_Minh_City.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdynamic-media-cdn.tripadvisor.com%2Fmedia%2Fphoto-o%2F0d%2Fbb%2F6e%2Fb9%2Fsong-nhat-hotel.jpg%3Fw%3D1200%26h%3D1200%26s%3D1&tbnid=C3bYz992La8gYM&imgrefurl=https%3A%2F%2Fwww.tripadvisor.com.vn%2FHotel_Review-g293925-d3751242-Reviews-Song_Nhat_Hotel-Ho_Chi_Minh_City.html&docid=gkFAwcLeYaxg8M&w=1200&h=1200",
+    "position": 7
+   },
+   {
+    "title": "Hotel Song Nhật - 20/19 Núi Thành, P. 13, Tân Bình, TP.HCM | Ho Chi Minh  City",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=100088397881317",
+    "imageWidth": 3285,
+    "imageHeight": 1275,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS02pQ9xGuz9VzEXAgjGEK803OkYP2MKjIYAtHCayrxxQ&s=10",
+    "thumbnailWidth": 719,
+    "thumbnailHeight": 278,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/khachsansongnhat/?locale=vi_VN",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D100088397881317&tbnid=b19cFtICKdDJmM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Fkhachsansongnhat%2F%3Flocale%3Dvi_VN&docid=a1Wt2gbj5t4nsM&w=3285&h=1275",
+    "creator": "Photographer: light ray",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

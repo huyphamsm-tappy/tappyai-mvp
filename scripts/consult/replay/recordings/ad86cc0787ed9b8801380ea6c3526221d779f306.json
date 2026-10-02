@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Laptop Aspire Lite 14\" OR \"Laptop Dell 15 DC15250 Core i5-1334U\" OR \"Laptop chơi game làm việc ram 4G ổ 350G giá rẻ\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:54:36.059Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Laptop Aspire Lite 14\" OR \"Laptop Dell 15 DC15250 Core i5-1334U\" OR \"Laptop chơi game làm việc ram 4G ổ 350G giá rẻ\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Laptop Dell 15 DC15250 Core i5 1334U (8GB RAM ...",
+    "link": "https://www.tiktok.com/@nguyencongpc.vn/video/7650089824078155029",
+    "snippet": "Laptop Dell 15 DC15250 Core i5 1334U (8GB RAM, 512GB SSD, 15.6 inch. @Nguyễn Công PC Store. Laptop Dell 15 DC15250 Core i5 1334U (8GB RAM ...",
+    "position": 1
+   },
+   {
+    "title": "So Sánh Laptop Aspire Lite 14 và 15: Nên Chọn Loại Nào?",
+    "link": "https://www.tiktok.com/@anphat.official/video/7493763701263142162",
+    "snippet": "So Sánh Laptop Aspire Lite 14 và 15: Nên Chọn Loại Nào? Khám phá ưu điểm của Aspire Lite 14 và 15. Đánh giá chi tiết tại đây để chọn laptop ...",
+    "position": 2
+   },
+   {
+    "title": "acer laptop aspire lite 14",
+    "link": "https://shop.tiktok.com/ph/k/acer-laptop-aspire-lite-14",
+    "snippet": "acer laptop aspire lite 14 ; 0 sold · 37,959.00. ₱49,925.00 ; 3 sold · 30,999.00 ; 0 sold · 41,099.00. ₱53,589.00 ...",
+    "position": 3
+   },
+   {
+    "title": "acer laptop aspire lite 14",
+    "link": "https://shop.tiktok.com/my/k/acer-laptop-aspire-lite-14",
+    "snippet": "Terokai acer laptop aspire lite 14 terkini pada TikTok Shop dan nikmati penghantaran percuma! Beli-belah koleksi eksklusif dan temukan produk trending yang ...",
+    "position": 4
+   },
+   {
+    "title": "Aspire Lite 14: Perfect Laptop for Work and Study",
+    "link": "https://www.tiktok.com/@unipc.ph/video/7546473272515251463",
+    "snippet": "Work + Study laptop? Aspire Lite 14 with Lifetime MS Office! #unipc #laptopforwork #laptopforstudy #aspirelite #laptop · Laptop Acer Aspire ...",
+    "position": 5
+   },
+   {
+    "title": "ACER LAPTOP ASPIRE LITE 14 AL14-37P-C3DZ ...",
+    "link": "https://www.tiktok.com/@nabila01_88/video/7617597383991414024",
+    "snippet": "ACER LAPTOP ASPIRE LITE 14 AL14-37P-C3DZ/AL14-37P-C1UK/AL14-37P-C18U 14\" FHD INTEL N150 RAM 8GB STORAGE 512GB SSD INTEL GRAPHICS WINDOWS 11#laptop #tablet #fyp ...",
+    "position": 6
+   },
+   {
+    "title": "Pilihan Warna Laptop Aspire Lite 14 Favorit",
+    "link": "https://www.tiktok.com/@acerid/video/7512077698823359750",
+    "snippet": "Pilihan Warna Laptop Aspire Lite 14 Favorit. Temukan pilihan warna Aspire Lite 14: light silver, fresh blue, dan rose sakura. Mana yang ...",
+    "position": 7
+   },
+   {
+    "title": "ACER LAPTOP ASPIRE LITE 14 # ...",
+    "link": "https://www.tiktok.com/@matchahie/video/7676770836350536980",
+    "snippet": "Open app. ACER LAPTOP ASPIRE LITE 14 #laptop #acer #aceraspirelite14 ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

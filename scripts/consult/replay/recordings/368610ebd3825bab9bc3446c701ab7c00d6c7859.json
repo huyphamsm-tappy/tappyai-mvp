@@ -1,0 +1,66 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "ốp lưng UAG iPhone 17 Pro Max màu không đen (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:21:12.551Z",
+ "body": {
+  "searchParameters": {
+   "q": "ốp lưng UAG iPhone 17 Pro Max màu không đen (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Ốp lưng UAG cho iPhone 17 Series - CellphoneS",
+    "link": "https://cellphones.com.vn/phu-kien/bao-da-op-lung/iphone/iphone-17/uag.html",
+    "snippet": "Ốp iPhone 17 Pro Max UAG được thiết kế hướng tới sự mạnh mẽ và bền bỉ, rất phù hợp với mẫu máy có kích thước lớn. Phần vỏ ngoài được gia công tỉ mỉ với các đường góc cạnh rõ ràng, giúp tăng độ bám và tạo cảm giác chắc chắn khi cầm trên tay.",
+    "position": 1
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Essential Armor With ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-17-pro-max-uag-essential-armor-with-magsafe.html",
+    "snippet": "Mua ốp lưng iPhone 17 Pro Max UAG chống sốc Essential Armor With Magsafe chính hãng - Giá rẻ, đảm bảo chất lượng, độ bền cao, hỗ trợ giao hàng tận nơi toàn quốc.",
+    "position": 2
+   },
+   {
+    "title": "[iPhone 17 Pro Max] Ốp lưng UAG chính hãng chống sốc chuẩn ...",
+    "link": "https://shopee.vn/-iPhone-17-Pro-Max-%E1%BB%90p-l%C6%B0ng-UAG-ch%C3%ADnh-h%C3%A3ng-ch%E1%BB%91ng-s%E1%BB%91c-chu%E1%BA%A9n-qu%C3%A2n-%C4%91%E1%BB%99i-h%E1%BB%97-tr%E1%BB%A3-s%E1%BA%A1c-t%E1%BB%AB-t%C3%ADnh-i.153125852.47454577082",
+    "snippet": "Mua [iPhone 17 Pro Max] Ốp lưng UAG chính hãng chống sốc chuẩn quân đội, hỗ trợ sạc từ tính giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn lại tiền Giao Hàng Miễn Phí. XEM NGAY!",
+    "position": 3
+   },
+   {
+    "title": "Ốp Lưng iPhone 17 Pro Max Hãng UAG Monarch Pro - Chống Bẩn ...",
+    "link": "https://shopee.vn/%E1%BB%90p-L%C6%B0ng-iPhone-17-Pro-Max-H%C3%A3ng-UAG-Monarch-Pro-Ch%E1%BB%91ng-B%E1%BA%A9n-Ch%E1%BB%91ng-S%E1%BB%91c-Masafe-B%E1%BA%A3o-V%E1%BB%87-Camera-Cao-C%E1%BA%A5p-Ch%C3%ADnh-H%C3%A3ng-i.337310229.46953894828",
+    "snippet": "Mua Ốp Lưng iPhone 17 Pro Max Hãng UAG Monarch Pro - Chống Bẩn, Chống Sốc, Masafe, Bảo Vệ Camera, Cao Cấp - Chính Hãng giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn lại tiền Giao Hàng Miễn Phí. XEM NGAY!",
+    "position": 4
+   },
+   {
+    "title": "Ốp lưng UAG Pathfinder Pro chính hãng với Magsafe cho iPhone ...",
+    "link": "https://www.lazada.vn/products/op-lung-uag-pathfinder-pro-chinh-hang-voi-magsafe-cho-iphone-17-pro-max-iphone-17-pro-iphone-17-air-iphone-17-vo-dien-thoai-cap-bac-quan-su-go-ghe-chong-roi-dap-bao-ve-trong-suot-i3257771899.html",
+    "snippet": "Ốp lưng UAG Pathfinder Pro chính hãng với Magsafe cho iPhone 17 Pro Max / iPhone 17 Pro / iPhone 17 Air / iPhone 17 vỏ điện thoại cấp bậc quân sự gồ ghề chống rơi đập bảo vệ trong suốt App 4(1) 317.000₫",
+    "position": 5
+   },
+   {
+    "title": "Ốp lưng UAG Pathfinder mới với Magsafe & Chân đế cho iPhone ...",
+    "link": "https://www.lazada.vn/products/op-lung-uag-pathfinder-moi-voi-magsafe-chan-de-cho-iphone-17-pro-max-17-air-16-pro-max-15-pro-14-plus-13-vo-dien-thoai-go-ghe-cao-cap-chiu-luc-cao-vo-bao-ve-chong-va-dap-chong-va-dap-i3290817002.html",
+    "snippet": "Ốp lưng UAG Pathfinder mới với Magsafe & Chân đế cho iPhone 17 Pro Max 17 Air 16 Pro Max 15 Pro 14 Plus 13 vỏ điện thoại gồ ghề cao cấp chịu lực cao Vỏ bảo vệ chống va đập chống va đập App 227.268₫ 375.375 ₫ -39%",
+    "position": 6
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Civilian With Magsafe",
+    "link": "https://cellphones.com.vn/op-lung-iphone-17-pro-max-uag-civilian-with-magsafe.html",
+    "snippet": "Ốp lưng iPhone 17 Pro Max UAG Civilian With MagSafe mang đến khả năng bảo vệ toàn diện cùng thiết kế tinh gọn, nâng trải nghiệm sử dụng lên tầm cao mới. Sản phẩm kết hợp vật liệu cao cấp và lõi đệm thông minh, giúp máy an toàn trước va chạm hằng ngày. Đồng thời, ốp lưng còn có nhiều phiên bản màu, tôn cá ...",
+    "position": 7
+   }
+  ],
+  "credits": 1
+ }
+}

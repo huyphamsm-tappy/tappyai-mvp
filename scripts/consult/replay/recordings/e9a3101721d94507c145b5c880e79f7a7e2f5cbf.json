@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"ĐIỂM TÂM\" OR \"Bếp Quà Sáng\" OR \"Quán ăn sáng chị Hoà & Hồng\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T00:39:59.980Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"ĐIỂM TÂM\" OR \"Bếp Quà Sáng\" OR \"Quán ăn sáng chị Hoà & Hồng\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "XE ĐIỂM TÂM NGƯỜI HOA 5 MÓN 20K/PHẦN Quận 11",
+    "link": "https://www.tiktok.com/@didauofficial/video/7577306555809271047",
+    "snippet": "XE ĐIỂM TÂM NGƯỜI HOA 5 MÓN 20K/PHẦN Quận 11. Khám phá xe điểm tâm người Hoa với 5 món ngon chỉ 20K/phần tại Quận 11. Khách đông nghẹt ...",
+    "position": 1
+   },
+   {
+    "title": "Quán điểm tâm sáng 259 Hồng Bàng #ancungtiktok ...",
+    "link": "https://www.tiktok.com/@sayhihuy/video/7286783831519071506",
+    "snippet": "768 Lượt thích,44 Bình luận.Video TikTok từ Nhật Huy | sayhihuy (@sayhihuy): \"Quán điểm tâm sáng 259 Hồng Bàng #ancungtiktok #reviewanngon ...",
+    "position": 2
+   },
+   {
+    "title": "Khám Phá Ẩm Thực Điểm Tâm Sáng Người Hoa",
+    "link": "https://www.tiktok.com/@utcungdidau/video/7559917897598962952",
+    "snippet": "ẩm thực người Hoa, điểm tâm sáng ngon, món dimsum đặc sắc, các món điểm tâm, trải nghiệm ẩm thực cuối tuần, điểm tâm từ người Hoa, ăn sáng ...",
+    "position": 3
+   },
+   {
+    "title": "38k điểm tâm dimsum nhân tôm nguyên bản tại Mì gà Ngũ ...",
+    "link": "https://www.tiktok.com/@migaxe.vn/video/7661622450941086997",
+    "snippet": "38k một phần điểm tâm (dimsum) nguyên bản, tôm bóc vỏ quết mịn là nguyên liệu chính và chủ yếu của các món điểm tâm (dimsum) bán tại Mì gà Ngũ ...",
+    "position": 4
+   },
+   {
+    "title": "Đi ăn điểm tâm bình dân chuẩn người Hoa ở Sài Gòn nè ...",
+    "link": "https://www.tiktok.com/@hi.vidayyy/video/7533653386646834452",
+    "snippet": "13.3K Lượt thích,187 Bình luận.Video TikTok từ Vi Đây ౨ৎ (@hi.vidayyy): \"Đi ăn điểm tâm bình dân chuẩn người Hoa ở Sài Gòn nè mọi người ...",
+    "position": 5
+   },
+   {
+    "title": "điểm tâm sáng chợ Gạch Chanh đồng giá 15k",
+    "link": "https://www.tiktok.com/@trai.nha.que_67/video/7673663978840575253",
+    "snippet": "- Món ăn nổi bật: Những món điểm tâm phổ biến ở chợ gồm các loại bánh, xôi, bún nhẹ, và đồ ăn vặt địa phương. Ngoài ra, có ghi chú về bán sầu ...",
+    "position": 6
+   },
+   {
+    "title": "Điểm tâm sáng truyền thống người Hoa đủ món núp hẻm ...",
+    "link": "https://www.tiktok.com/@ninismile0611/video/7476848262788435208",
+    "snippet": "1377 Lượt thích,38 Bình luận.Video TikTok từ Lăn Cùng NiNi (@ninismile0611): \"Điểm tâm sáng truyền thống người Hoa đủ món núp hẻm q11 ...",
+    "position": 7
+   },
+   {
+    "title": "Điểm tâm sáng ở quê: Thực đơn và cách làm đơn giản",
+    "link": "https://www.tiktok.com/@trungtiktoker79/video/7665534797652954388",
+    "snippet": "Thực đơn phổ biến cho điểm tâm sáng ở quê - Cơm nguội, canh hoặc nước luộc rau cùng vài lát thịt luộc hoặc trứng rán. - Bánh mì ăn kèm đồ chấm ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

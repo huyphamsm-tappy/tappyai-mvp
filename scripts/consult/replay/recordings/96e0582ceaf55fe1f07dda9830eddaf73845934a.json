@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Khách sạn G8 Luxury Đà Nẵng",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T00:49:54.399Z",
+ "body": {
+  "searchParameters": {
+   "q": "Khách sạn G8 Luxury Đà Nẵng",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Khách sạn G8 Luxury Đà Nẵng (G8 Luxury Hotel Da Nang) – Thông tin đầy đủ",
+    "imageUrl": "https://pix10.agoda.net/hotelImages/8825326/-1/17714107aca4c471dbd982ec94376a0e.jpg?ce=0&s=1024x768",
+    "imageWidth": 1024,
+    "imageHeight": 681,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeJCE071puAZ5JxeHCmgMFWpRu8w3kCu9vjX5bz75FKw&s=10",
+    "thumbnailWidth": 549,
+    "thumbnailHeight": 364,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/g8-luxury-hotel-and-spa-da-nang/hotel/da-nang-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F8825326%2F-1%2F17714107aca4c471dbd982ec94376a0e.jpg%3Fce%3D0%26s%3D1024x768&tbnid=oiSA3Z2i0E5uFM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fg8-luxury-hotel-and-spa-da-nang%2Fhotel%2Fda-nang-vn.html&docid=4EdfnfHFPYFynM&w=1024&h=681",
+    "position": 1
+   },
+   {
+    "title": "khách sạn G8 Luxury Đà nẵng, khách sạn đà nẵng, khách sạn đà nẵng giá rẻ",
+    "imageUrl": "https://giclandhotel.com/uploads/tt_hinh/-1566259499-w6t8m.jpg",
+    "imageWidth": 436,
+    "imageHeight": 640,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPOE0f2ywXEbn8spzlff64CmyPAGgW6m2w-8nvmJWSug&s=10",
+    "thumbnailWidth": 369,
+    "thumbnailHeight": 542,
+    "source": "GIC HOTELS",
+    "domain": "giclandhotel.com",
+    "link": "https://giclandhotel.com/khach-san-g8-luxury-da-nang-59-le-duan-thanh-pho-da-nang.htm",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fgiclandhotel.com%2Fuploads%2Ftt_hinh%2F-1566259499-w6t8m.jpg&tbnid=Pkw05TzdkROmZM&imgrefurl=https%3A%2F%2Fgiclandhotel.com%2Fkhach-san-g8-luxury-da-nang-59-le-duan-thanh-pho-da-nang.htm&docid=L2OaKOw0fw0ncM&w=436&h=640",
+    "position": 2
+   },
+   {
+    "title": "G8 Luxury Hotel Da Nang, Đà Nẵng (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/540596848.jpg?k=ffad2ff3143c2066ea947723fc8c90f50899be7adffaffee0a7a5a68c28d9ef8&o=",
+    "imageWidth": 1024,
+    "imageHeight": 716,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiePwyb4aqAIxgvdecbsMPyO0Uk4Ted8Cfkdmc2vKriw&s=10",
+    "thumbnailWidth": 662,
+    "thumbnailHeight": 463,
+    "source": "www.booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/gic-land-luxury-and-spa.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F540596848.jpg%3Fk%3Dffad2ff3143c2066ea947723fc8c90f50899be7adffaffee0a7a5a68c28d9ef8%26o%3D&tbnid=ZyD2mTZlOTOf7M&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fgic-land-luxury-and-spa.vi.html&docid=e1f2LrxWTQR9KM&w=1024&h=716",
+    "position": 3
+   },
+   {
+    "title": "GIC LUXURY HOTEL DA NANG",
+    "imageUrl": "https://g8group.vn/uploads/tt_hinh/gic-luxury-hotel-da-nang-1589784289-sbjKB.jpg",
+    "imageWidth": 513,
+    "imageHeight": 768,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIRedrasMtjg21QhZ9adfzBXkDQsgcTCtRScMYO_agxw&s=10",
+    "thumbnailWidth": 365,
+    "thumbnailHeight": 547,
+    "source": "G8 GROUP",
+    "domain": "g8group.vn",
+    "link": "https://g8group.vn/g8-luxury-hotel-da-nang-sp117.htm",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fg8group.vn%2Fuploads%2Ftt_hinh%2Fgic-luxury-hotel-da-nang-1589784289-sbjKB.jpg&tbnid=camSswPgbZmMYM&imgrefurl=https%3A%2F%2Fg8group.vn%2Fg8-luxury-hotel-da-nang-sp117.htm&docid=0hy04DZ_SiEboM&w=513&h=768",
+    "position": 4
+   },
+   {
+    "title": "G8 Luxury Hotel Da Nang, Đà Nẵng (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/540596963.jpg?k=2b4b36cc1e2d1c59456116b71371d48ec44cdb02f5e78bfb0549e9971f367025&o=",
+    "imageWidth": 1024,
+    "imageHeight": 752,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTo5rjOP35hKwQBK_6ldfSX6etnc5uTTo32mRjWWBxY0g&s=10",
+    "thumbnailWidth": 644,
+    "thumbnailHeight": 474,
+    "source": "www.booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/gic-land-luxury-and-spa.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F540596963.jpg%3Fk%3D2b4b36cc1e2d1c59456116b71371d48ec44cdb02f5e78bfb0549e9971f367025%26o%3D&tbnid=Wy2gFTLHa1ajqM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fgic-land-luxury-and-spa.vi.html&docid=e1f2LrxWTQR9KM&w=1024&h=752",
+    "position": 5
+   },
+   {
+    "title": "khách sạn G8 Luxury Đà nẵng, khách sạn đà nẵng, khách sạn đà nẵng giá rẻ",
+    "imageUrl": "https://giclandhotel.com/uploads/tt_hinh/-1592206631-s6D8.jpg",
+    "imageWidth": 800,
+    "imageHeight": 533,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQoRvZGmMseJ8fOapZEy5kdlZGJjImHAyB__LXIJLh3wQ&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "GIC HOTELS",
+    "domain": "giclandhotel.com",
+    "link": "https://giclandhotel.com/khach-san-g8-luxury-da-nang-59-le-duan-thanh-pho-da-nang.htm",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fgiclandhotel.com%2Fuploads%2Ftt_hinh%2F-1592206631-s6D8.jpg&tbnid=dYTc4I7-6WLP-M&imgrefurl=https%3A%2F%2Fgiclandhotel.com%2Fkhach-san-g8-luxury-da-nang-59-le-duan-thanh-pho-da-nang.htm&docid=L2OaKOw0fw0ncM&w=800&h=533",
+    "position": 6
+   },
+   {
+    "title": "Khách sạn G8 Luxury & Spa Đà Nẵng (G8 Luxury Hotel Danang) - Chudu24",
+    "imageUrl": "https://du-lich.chudu24.com/f/m/2305/25/khach-san-gic-luxury-spa-da-nang-1.jpg?w=800&h=500",
+    "imageWidth": 800,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTm4XNt8hBLkrZ1uz_wvXDSgfKsrODjbVnW0hEGjQc4g&s=10",
+    "thumbnailWidth": 565,
+    "thumbnailHeight": 353,
+    "source": "Đặt Phòng Khách Sạn - Chudu24",
+    "domain": "khachsan.chudu24.com",
+    "link": "https://khachsan.chudu24.com/ks.6187.khach-san-g8-luxury-spa-da-nang.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdu-lich.chudu24.com%2Ff%2Fm%2F2305%2F25%2Fkhach-san-gic-luxury-spa-da-nang-1.jpg%3Fw%3D800%26h%3D500&tbnid=Drl2l11zp-qDtM&imgrefurl=https%3A%2F%2Fkhachsan.chudu24.com%2Fks.6187.khach-san-g8-luxury-spa-da-nang.html&docid=p86aBT5GTpZMGM&w=800&h=500",
+    "position": 7
+   },
+   {
+    "title": "G8 LUXURY HOTEL AND SPA DA NANG - 2026 Reviews (Vietnam)",
+    "imageUrl": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2f/6d/53/b1/caption.jpg?w=1200&h=1200&s=1",
+    "imageWidth": 1200,
+    "imageHeight": 1200,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSr3wHUGu2Y2CVxjfc4LAkiVe0BIzbkh6xV9rJTLCR33g&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Tripadvisor",
+    "domain": "www.tripadvisor.com",
+    "link": "https://www.tripadvisor.com/Hotel_Review-g298085-d17853463-Reviews-G8_Luxury_Hotel_and_Spa_Da_Nang-Da_Nang.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdynamic-media-cdn.tripadvisor.com%2Fmedia%2Fphoto-o%2F2f%2F6d%2F53%2Fb1%2Fcaption.jpg%3Fw%3D1200%26h%3D1200%26s%3D1&tbnid=on6HWnaOCctbYM&imgrefurl=https%3A%2F%2Fwww.tripadvisor.com%2FHotel_Review-g298085-d17853463-Reviews-G8_Luxury_Hotel_and_Spa_Da_Nang-Da_Nang.html&docid=D366qqw-31THvM&w=1200&h=1200",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

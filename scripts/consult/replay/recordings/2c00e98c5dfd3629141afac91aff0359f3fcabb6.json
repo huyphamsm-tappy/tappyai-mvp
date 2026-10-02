@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Ốp lưng chống sốc UAG Monarch cho iPhone 12 Pro Max",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:53:50.278Z",
+ "body": {
+  "searchParameters": {
+   "q": "Ốp lưng chống sốc UAG Monarch cho iPhone 12 Pro Max",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Ốp lưng Monarch cho iPhone 12 Pro Max [6.7 inch] – UAG VietNam",
+    "imageUrl": "https://product.hstatic.net/200000057534/product/1000px_apple_iphone6.7_2020_mon_cbf_std_pt01_a93dc662d3c14a0a8f3faeed8cef529b.png",
+    "imageWidth": 1000,
+    "imageHeight": 1000,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8FShpRUwySM8xqQiAj4LOCLaPC3CnVZ3GCklMAi9zew&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "UAG VietNam",
+    "domain": "uagvietnam.vn",
+    "link": "https://uagvietnam.vn/products/op-lung-monarch-cho-iphone-12-pro-max-6-7-inch",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fproduct.hstatic.net%2F200000057534%2Fproduct%2F1000px_apple_iphone6.7_2020_mon_cbf_std_pt01_a93dc662d3c14a0a8f3faeed8cef529b.png&tbnid=aL-eOM6aWYZgmM&imgrefurl=https%3A%2F%2Fuagvietnam.vn%2Fproducts%2Fop-lung-monarch-cho-iphone-12-pro-max-6-7-inch&docid=D_DIE19XXPrFTM&w=1000&h=1000",
+    "position": 1
+   },
+   {
+    "title": "Ốp lưng chống sốc UAG Monarch cho iPhone 12 Max/Pro chính hãng giá rẻ",
+    "imageUrl": "https://cdn2.cellphones.com.vn/x/media/catalog/product/1/0/1000px_apple_iphone6.7_2020_mon_crm_std_pt01_2.png",
+    "imageWidth": 500,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQH-P0cc-cUIKIVcVvuI-Le5U5c085IQ8E7RXiZrBnJnA&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/op-lung-chong-soc-uag-monarch-cho-iphone-12-max-pro.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Fx%2Fmedia%2Fcatalog%2Fproduct%2F1%2F0%2F1000px_apple_iphone6.7_2020_mon_crm_std_pt01_2.png&tbnid=tGyTm8bVuMpY6M&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fop-lung-chong-soc-uag-monarch-cho-iphone-12-max-pro.html&docid=XLjP1ExSB6zZkM&w=500&h=500",
+    "position": 2
+   },
+   {
+    "title": "Ốp Lưng Chống Sốc U.A.G iPhone 12 Pro Max",
+    "imageUrl": "https://file.hstatic.net/1000190136/file/op_lung_chong_soc_u.a.g_iphone_12_pro_max__2__7817c9ad278446a384b7e4c99601c14e_grande.png",
+    "imageWidth": 395,
+    "imageHeight": 544,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGi_giv5qVcLze7jxbvQtCPW3NByuNRAExlAOBw9iiRA&s=10",
+    "thumbnailWidth": 381,
+    "thumbnailHeight": 524,
+    "source": "Minmobile",
+    "domain": "minmobile.com.vn",
+    "link": "https://minmobile.com.vn/products/op-lung-chong-soc-u-a-g-iphone-12-pro-max",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Ffile.hstatic.net%2F1000190136%2Ffile%2Fop_lung_chong_soc_u.a.g_iphone_12_pro_max__2__7817c9ad278446a384b7e4c99601c14e_grande.png&tbnid=S5rIkkZl6toutM&imgrefurl=https%3A%2F%2Fminmobile.com.vn%2Fproducts%2Fop-lung-chong-soc-u-a-g-iphone-12-pro-max&docid=fCTeBotwLAMEUM&w=395&h=544",
+    "position": 3
+   },
+   {
+    "title": "Ốp lưng Monarch cho iPhone 12 Pro Max [6.7 inch] – UAG VietNam",
+    "imageUrl": "https://product.hstatic.net/200000057534/product/apple_iphone6.7_2020_mon_crm_ndv_pt03_d85776c69d1c46ba9f74eb7832fc51b8_b48104799aff402b8689ffb7be1a51fc_master.jpeg",
+    "imageWidth": 2048,
+    "imageHeight": 2048,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT93lgVqP_kG7mSS_SQNN53iP7PlMQKcCQMC4QCaSMTRg&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "UAG VietNam",
+    "domain": "uagvietnam.vn",
+    "link": "https://uagvietnam.vn/products/op-lung-monarch-cho-iphone-12-pro-max-6-7-inch",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fproduct.hstatic.net%2F200000057534%2Fproduct%2Fapple_iphone6.7_2020_mon_crm_ndv_pt03_d85776c69d1c46ba9f74eb7832fc51b8_b48104799aff402b8689ffb7be1a51fc_master.jpeg&tbnid=otwXj3ShgbBBQM&imgrefurl=https%3A%2F%2Fuagvietnam.vn%2Fproducts%2Fop-lung-monarch-cho-iphone-12-pro-max-6-7-inch&docid=D_DIE19XXPrFTM&w=2048&h=2048",
+    "position": 4
+   },
+   {
+    "title": "Ốp UAG Monarch Pro Kevlar Chống Sốc Đạt Chuẩn Tích Hợp Sạc Từ Tính Chính  Hãng cho iPhone 17 Pro| 17 Pro Max",
+    "imageUrl": "https://cdn.hstatic.net/products/200000507079/z7275163663232_1b3dd340bb6ea365af278d5bcf0fc2d4_0c7c2c0dd7bb414ca4c82ee2b2b4fcb6_master.jpg",
+    "imageWidth": 1920,
+    "imageHeight": 1920,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzrNj1AM3VziunuaGW2Mn9IlIJoggg2vPpedynzS_ZTA&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Xù Case",
+    "domain": "xucase.com",
+    "link": "https://xucase.com/products/op-lung-uag-monarch-pro-magsafe-cao-cap-chinh-hang-danh-cho-iphone-15-pro-15-pro-max?srsltid=AU7gw4XdVj3Gbwfv-M5IUNgBF0a_HERa8pblZGOxenLlsUC8Q8Wxx2f0",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.hstatic.net%2Fproducts%2F200000507079%2Fz7275163663232_1b3dd340bb6ea365af278d5bcf0fc2d4_0c7c2c0dd7bb414ca4c82ee2b2b4fcb6_master.jpg&tbnid=h18y2SuTcy3sOM&imgrefurl=https%3A%2F%2Fxucase.com%2Fproducts%2Fop-lung-uag-monarch-pro-magsafe-cao-cap-chinh-hang-danh-cho-iphone-15-pro-15-pro-max%3Fsrsltid%3DAU7gw4XdVj3Gbwfv-M5IUNgBF0a_HERa8pblZGOxenLlsUC8Q8Wxx2f0&docid=kfWi_JhbvykVeM&w=1920&h=1920",
+    "position": 5
+   },
+   {
+    "title": "Ốp lưng Monarch cho iPhone 12 Pro Max [6.7 inch] – UAG VietNam",
+    "imageUrl": "https://product.hstatic.net/200000057534/product/apple_iphone6.7_2020_mon_crm_ndv_pt02_d5c11616fee74bdbbb3d9c1a407c5f3a_49b3c90091744351a6be2795e07c8b1c_master.jpeg",
+    "imageWidth": 2048,
+    "imageHeight": 2048,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCsqcssBNfK3kGRy63LSOwmj10kwPzWxJca6ToY8IKdw&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "UAG VietNam",
+    "domain": "uagvietnam.vn",
+    "link": "https://uagvietnam.vn/products/op-lung-monarch-cho-iphone-12-pro-max-6-7-inch",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fproduct.hstatic.net%2F200000057534%2Fproduct%2Fapple_iphone6.7_2020_mon_crm_ndv_pt02_d5c11616fee74bdbbb3d9c1a407c5f3a_49b3c90091744351a6be2795e07c8b1c_master.jpeg&tbnid=Kp2Knv8ZIl98RM&imgrefurl=https%3A%2F%2Fuagvietnam.vn%2Fproducts%2Fop-lung-monarch-cho-iphone-12-pro-max-6-7-inch&docid=D_DIE19XXPrFTM&w=2048&h=2048",
+    "position": 6
+   },
+   {
+    "title": "UAG CHÍNH HÃNG] Ốp lưng UAG Monarch lPhone 12 Pro Max | Shopee Việt Nam",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mmbjvquehp8vce",
+    "imageWidth": 1024,
+    "imageHeight": 1024,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcST5ORG0pRkNHlVkYBEeVW_8or6-CMuu-9lbfSQArmtBA&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/-UAG-CH%C3%8DNH-H%C3%83NG-%E1%BB%90p-l%C6%B0ng-UAG-Monarch-lPhone-12-Pro-Max-i.42399182.41279560059",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fvn-11134207-81ztc-mmbjvquehp8vce&tbnid=JuTlWFUq6Bd_gM&imgrefurl=https%3A%2F%2Fshopee.vn%2F-UAG-CH%25C3%258DNH-H%25C3%2583NG-%25E1%25BB%2590p-l%25C6%25B0ng-UAG-Monarch-lPhone-12-Pro-Max-i.42399182.41279560059&docid=YYGUfmMob2T4sM&w=1024&h=1024",
+    "position": 7
+   },
+   {
+    "title": "Ốp lưng UAG Monarch Pro Magsafe cao cấp chính hãng dành cho iPhone 15 – Xù  Case",
+    "imageUrl": "https://cdn.hstatic.net/products/200000507079/khung_website______1__00cde05d9bd540ada3db9ee0d0897f03_master.png",
+    "imageWidth": 1080,
+    "imageHeight": 1080,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSEvuUi-P7oJ3CmBgzsl9yhuImaiUQtl9NxCMTGWx3JUw&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Xù Case",
+    "domain": "xucase.com",
+    "link": "https://xucase.com/products/op-lung-uag-monarch-pro-magsafe-cao-cap-chinh-hang-danh-cho-iphone-15-pro-15-pro-max?srsltid=AU7gw4Va6orHHiEOPy8HF1Op8ybIIpdNdRwiLghAW-oX2yIk2tQJ2Mbj",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.hstatic.net%2Fproducts%2F200000507079%2Fkhung_website______1__00cde05d9bd540ada3db9ee0d0897f03_master.png&tbnid=T2HiYp2lfOVNQM&imgrefurl=https%3A%2F%2Fxucase.com%2Fproducts%2Fop-lung-uag-monarch-pro-magsafe-cao-cap-chinh-hang-danh-cho-iphone-15-pro-15-pro-max%3Fsrsltid%3DAU7gw4Va6orHHiEOPy8HF1Op8ybIIpdNdRwiLghAW-oX2yIk2tQJ2Mbj&docid=kfWi_JhbvykVeM&w=1080&h=1080",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

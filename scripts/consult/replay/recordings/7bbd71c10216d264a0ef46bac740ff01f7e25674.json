@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Acer Aspire 3 A315-59-38PG (Intel Core i3-1215U | 8GB | 512GB | Intel UHD | 15.6 inch | Win 11 site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:54:56.318Z",
+ "body": {
+  "searchParameters": {
+   "q": "Acer Aspire 3 A315-59-38PG (Intel Core i3-1215U | 8GB | 512GB | Intel UHD | 15.6 inch | Win 11 site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

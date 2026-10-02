@@ -85,17 +85,6 @@ vi.mock('@/lib/auth/getRequestUser', () => ({ getRequestUser: h.getRequestUser }
 // the guard rather than the notification pipeline, and so no test opens a socket.
 vi.mock('@/lib/supabase/admin', () => ({ createAdminClient: () => h.builder }))
 vi.mock('@/lib/notifications/emit', () => ({ emitNotification: vi.fn(async () => undefined) }))
-// `@/modules/music/server` reaches musicRepository.ts, which builds a Supabase
-// client at MODULE scope. That construction needs a WebSocket, which Node 20 —
-// what CI runs — does not provide natively, so importing the reviews route for
-// real fails there while passing on a newer local Node. Mocking the module keeps
-// the eager client out of the graph entirely; none of it runs before the 403.
-vi.mock('@/modules/music/server', () => ({
-  createSelection: vi.fn(async () => null),
-  getTrack: vi.fn(async () => null),
-  recordUsage: vi.fn(async () => undefined),
-  createOriginalSound: vi.fn(async () => null),
-}))
 
 import { POST as reviewsPOST } from './reviews/route'
 import { POST as commentsPOST } from './reviews/[id]/comments/route'

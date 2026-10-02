@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "quà tặng thích cà phê 40 tuổi gia Shopee Tiki Lazada",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T05:11:24.866Z",
+ "body": {
+  "searchParameters": {
+   "q": "quà tặng thích cà phê 40 tuổi gia Shopee Tiki Lazada",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "SET QUÀ TRUNG THU ĐANG SIÊU RẺ",
+    "link": "https://www.facebook.com/groups/sangiamgiakhuyenmai/posts/29015844188021946/",
+    "snippet": "MÌ CUNG ĐÌNH SALE ĐẬM SÂU GIÁ CHỈ 1850¥/THÙNG ⚡️⚡️NGUYÊN KIỆN 10 THÙNG - EM SẴN 3 VỊ BÒ HẦM, TÔM CHUA CAY, SƯỜN HEO DATE ...",
+    "position": 1
+   },
+   {
+    "title": "QUÀ TẾT TINH TẾ – VỪA VẶN KINH TẾ Không cần món ...",
+    "link": "https://www.instagram.com/p/DUfAJHQDUcU/",
+    "snippet": "Combo Gắn Kết Tâm Giao là lựa chọn dễ dùng, phù hợp cho gia đình, người thân hay đối tác dịp Tết. Combo gồm: 1 hộp Trà lá sen 1 hộp Bột ...",
+    "position": 2
+   },
+   {
+    "title": "Lazada sinh nhật, cớ gì Tiki với Shopee cũng khuyến mãi để ...",
+    "link": "https://www.youtube.com/watch?v=7KRphFHc9zY",
+    "snippet": "Sinh nhật Lazada giảm gía nhưng các sàn khác như tiki hay shopee cũng tung khuyến mãi giảm giá tương tự để mừng sinh nhật đối thủ.",
+    "position": 3
+   },
+   {
+    "title": "Mua Quà Tặng Cho Người Giá Tốt, Giao Nhanh",
+    "link": "https://www.lazada.vn/tag/qu%C3%A0-t%E1%BA%B7ng-cho-ng%C6%B0%E1%BB%9Di/?srsltid=AU7gw4XLawD7nS9UcusfyJ4h52HlEo-Di21POU-4eOLDlVExuHbZm6f0",
+    "snippet": "Mua quà tặng cho người chất lượng cao với giá ưu đãi, freeship toàn quốc chỉ từ 0Đ và tận hưởng tới 6 tầng giảm giá hấp dẫn. Khuyến mãi mỗi ngày, ...",
+    "rating": 4.7,
+    "ratingCount": 2012,
+    "position": 4
+   },
+   {
+    "title": "Lazada, Tiki, Shopee tung những chiêu nào để kích thích ...",
+    "link": "https://cafef.vn/lazada-tiki-shopee-tung-nhung-chieu-nao-de-kich-thich-nguoi-dung-tieu-tien-trong-ngay-9-9-20210908102012368.chn",
+    "snippet": "Quà tặng Shopee - Hàng đồng giá 1K, 9K: Ngoài cơ hội mua được sản phẩm từ thương hiệu nổi tiếng với mức giá tốt hơn ngày thường khá nhiều.",
+    "date": "8 thg 9, 2021",
+    "position": 5
+   },
+   {
+    "title": "Shopee Việt Nam | Mua Sắm Online",
+    "link": "https://shopee.vn/",
+    "snippet": "[ Combo 10 Lõi + 1 Cây ] Lăn Bụi Quần Áo/ Sofa, Ga Giường Siêu Tiếp Kiệm 10cm , Lăn Tóc Dính, Lăn Bụi Thảm , Quần Áo. Rẻ Vô Địch. 37.730₫.",
+    "position": 6
+   },
+   {
+    "title": "Mua cà phê làm quà: 11 gợi ý đáng mua 2025 kèm lưu ý",
+    "link": "https://hello5.vn/mua-ca-phe-lam-qua-11-goi-y-dang-mua-2025-kem-luu-y/",
+    "snippet": "Cà phê hạt Arabica Cầu Đất (250g) — hương dịu, hậu ngọt. · Cà phê hạt Robusta Đắk Lắk (500g) — vị đậm, thích hợp pha phin hoặc espresso.",
+    "date": "8 thg 11, 2025",
+    "position": 7
+   },
+   {
+    "title": "MÁY XAY SINH TỐ CẦM TAY - VỪA TIỆN GỌN, LẠI TƯƠI ...",
+    "link": "https://www.facebook.com/locknlockvietnam/posts/m%C3%A1y-xay-sinh-t%E1%BB%91-c%E1%BA%A7m-tay-v%E1%BB%ABa-ti%E1%BB%87n-g%E1%BB%8Dn-l%E1%BA%A1i-t%C6%B0%C6%A1i-ngon-t%E1%BA%B7ng-ngay-15-m%C3%A1y-xay-sinh-t%E1%BB%91-/3709754829121052/",
+    "snippet": "... cà phê đen cho vào máy xay. Xây khoảng 1 phút cho thêm đá vào xây ... Shopee, Lazada, Tiki nhé. Cảm ơn bạn! https://www.lazada.vn/shop ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

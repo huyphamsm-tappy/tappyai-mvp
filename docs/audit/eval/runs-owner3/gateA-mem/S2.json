@@ -1,0 +1,254 @@
+{
+  "id": "S2",
+  "text": "mua laptop van phong duoi 15tr",
+  "parent": null,
+  "status": 200,
+  "ms": 20531,
+  "evidenceId": "aceea97e-c4e6-453f-872d-a8a75c0f6c03",
+  "toolCalls": [
+    {
+      "tool": "search_products",
+      "args": {
+        "query": "laptop văn phòng dưới 15 triệu"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Laptop dưới 15 triệu | Hiệu năng mạnh mẽ, cấu hình nổi bật"
+    },
+    {
+      "name": "Top Laptop Cho Dân Văn Phòng Dưới 15 Triệu"
+    },
+    {
+      "name": "TOP 10 laptop văn phòng giá rẻ dưới 15 triệu 2026"
+    },
+    {
+      "name": "5+ Laptop 15 triệu đồng cấu hình mạnh đáng mua"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "[TAPPY_SHOPPING]{\"v\":1,\"entities\":[],\"requested\":null,\"recommendation\":{\"entityKey\":null,\"seller\":\"Shopee\",\"reasons\":[{\"attribute\":\"rating\",\"evidence\":\"rated 4.7\",\"params\":{\"value\":4.7}},{\"attribute\":\"price\",\"evidence\":\"2200000 VND\",\"params\":{\"priceVnd\":2200000}},{\"attribute\":\"reviewCount\",\"evidence\":\"33 reviews\",\"params\":{\"count\":33}}],\"tradeOff\":{\"attribute\":\"reviewCount\",\"evidence\":\"124 reviews\",\"params\":{\"count\":124}},\"conditional\":false}}[/TAPPY_SHOPPING]\n\nMình tìm laptop văn phòng dưới 15 triệu cho bạn ngay.\n\nMình chọn **Laptop Core i5 Gen 2-3-4 chơi game giải trí văn phòng** trên Shopee — giá chỉ **2.200.000đ** với rating **4.7⭐ (33 đánh giá)**, rất phù hợp cho công việc văn phòng và còn dư ngân sách. Máy này có Core i5, SSD 120GB, chính hãng, qua sử dụng nhưng chất lượng tốt.\n\nNếu bạn muốn cấu hình mới hơn và mạnh hơn, **Dell Vostro 15 inch 3520** (14.850.000đ) là lựa chọn thay thế — Intel Core i5-1235U, 8GB RAM, 512GB SSD, màn hình 120Hz, có 124 đánh giá trên Google. Máy này mới, bảo hành chính hãng nhưng gần hết ngân sách.\n\nBạn ưu tiên giá rẻ hay cấu hình mới hơn?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛒 Tìm trên Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=laptop+v%C4%83n+ph%C3%B2ng+d%C6%B0%E1%BB%9Bi+15+tri%E1%BB%87u\",\"primary\":true},{\"label\":\"📦 Tìm trên Lazada\",\"type\":\"search\",\"url\":\"https://www.lazada.vn/catalog/?q=laptop+v%C4%83n+ph%C3%B2ng+d%C6%B0%E1%BB%9Bi+15+tri%E1%BB%87u\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Dell Vostro 15 inch 3520|HP Pavilion 15s|ASUS Vivobook 15[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "mua laptop van phong duoi 15tr"
+    },
+    {
+      "role": "assistant",
+      "content": "[TAPPY_SHOPPING]{\"v\":1,\"entities\":[],\"requested\":null,\"recommendation\":{\"entityKey\":null,\"seller\":\"Shopee\",\"reasons\":[{\"attribute\":\"rating\",\"evidence\":\"rated 4.7\",\"params\":{\"value\":4.7}},{\"attribute\":\"price\",\"evidence\":\"2200000 VND\",\"params\":{\"priceVnd\":2200000}},{\"attribute\":\"reviewCount\",\"evidence\":\"33 reviews\",\"params\":{\"count\":33}}],\"tradeOff\":{\"attribute\":\"reviewCount\",\"evidence\":\"124 reviews\",\"params\":{\"count\":124}},\"conditional\":false}}[/TAPPY_SHOPPING]\n\nMình tìm laptop văn phòng dưới 15 triệu cho bạn ngay.\n\nMình chọn **Laptop Core i5 Gen 2-3-4 chơi game giải trí văn phòng** trên Shopee — giá chỉ **2.200.000đ** với rating **4.7⭐ (33 đánh giá)**, rất phù hợp cho công việc văn phòng và còn dư ngân sách. Máy này có Core i5, SSD 120GB, chính hãng, qua sử dụng nhưng chất lượng tốt.\n\nNếu bạn muốn cấu hình mới hơn và mạnh hơn, **Dell Vostro 15 inch 3520** (14.850.000đ) là lựa chọn thay thế — Intel Core i5-1235U, 8GB RAM, 512GB SSD, màn hình 120Hz, có 124 đánh giá trên Google. Máy này mới, bảo hành chính hãng nhưng gần hết ngân sách.\n\nBạn ưu tiên giá rẻ hay cấu hình mới hơn?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛒 Tìm trên Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=laptop+v%C4%83n+ph%C3%B2ng+d%C6%B0%E1%BB%9Bi+15+tri%E1%BB%87u\",\"primary\":true},{\"label\":\"📦 Tìm trên Lazada\",\"type\":\"search\",\"url\":\"https://www.lazada.vn/catalog/?q=laptop+v%C4%83n+ph%C3%B2ng+d%C6%B0%E1%BB%9Bi+15+tri%E1%BB%87u\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Dell Vostro 15 inch 3520|HP Pavilion 15s|ASUS Vivobook 15[/FOLLOWUPS]"
+    }
+  ],
+  "toolResults": [
+    {
+      "query": "laptop văn phòng dưới 15 triệu",
+      "source": "Google Search (Serper)",
+      "search_results": [
+        {
+          "title": "Laptop dưới 15 triệu | Hiệu năng mạnh mẽ, cấu hình nổi bật",
+          "link": "https://cellphones.com.vn/bo-loc/laptop-tu-10-15-trieu",
+          "snippet": "Laptop ASUS Vivobook 15 X1504VA-BQ2076W · 14.490.000đ. 15.990.000đ. Giảm 9% · 145.000đ ; Laptop Acer Aspire Lite Gen 2 AL14-52M-32KV · 13.490.000đ · 135.000đ ; Laptop ...",
+          "has_purchase": true,
+          "has_photo": true
+        },
+        {
+          "title": "Top Laptop Cho Dân Văn Phòng Dưới 15 Triệu",
+          "link": "https://www.anphatpc.com.vn/top-laptop-cho-dan-van-phong-duoi-15-trieu.html?srsltid=AU7gw4XFjhGG8D9G-PXf0lVTDgrLsyCG1iNyk2qvays3fju1H7mN2pZN",
+          "snippet": "1. Laptop HP 14s/15s (Intel Core i5-1335U, RAM 16GB, SSD 512GB) · 2. Laptop Dell Inspiron 14 5440 (Intel Core i5-1235U, RAM 16GB, SSD 512GB) · 3.",
+          "has_purchase": true,
+          "has_photo": true
+        },
+        {
+          "title": "TOP 10 laptop văn phòng giá rẻ dưới 15 triệu 2026",
+          "link": "https://laptoptitan.vn/top-10-laptop-van-phong-gia-re-duoi-15-trieu-2026/?srsltid=AU7gw4W4FvKxe8bzLjKmoCWGN4KE3VNSgIdOvT5HM-O_tH6oDMKgUMMw",
+          "snippet": "BẢNG TỔNG HỢP 10 LAPTOP VĂN PHÒNG DƯỚI 15 TRIỆU 2026 ; 7, ASUS Vivobook Go 15 E1504FA, AMD Ryzen 5 7520U ; 8, Lenovo IdeaPad 1 15ALC7, AMD Ryzen 5 ...",
+          "has_purchase": true,
+          "has_photo": true
+        },
+        {
+          "title": "5+ Laptop 15 triệu đồng cấu hình mạnh đáng mua",
+          "link": "https://camngot.vn/laptop-15-trieu.html",
+          "snippet": "Giá tham khảo: 14.990.000 – 15.490.000 đồng. HP Envy 15 x360 2022 là mẫu laptop 15 triệu đồng được nhiều người dùng hiện nay yêu thích và lựa ...",
+          "has_purchase": true,
+          "has_photo": true
+        }
+      ],
+      "shopping_results": [
+        {
+          "title": "Laptop Core i5 Gen 2-3-4 chơi game giải trí văn phòng ( Core i5 | SSD 120GB ) | Chính hãng | Qua sử dụng",
+          "link": "https://www.google.com/search?ibp=oshop&q=laptop+v%C4%83n+ph%C3%B2ng+d%C6%B0%E1%BB%9Bi+15+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,productid:11629906187885443552,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "source": "Shopee",
+          "price": 2200000,
+          "priceText": "2.200.000 ₫",
+          "productId": "11629906187885443552",
+          "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcT-5lHpEHBIFPvKMAg6dRmy94WBrGPfMDog7t8Fhx52repJett4jO1BYpH261WXywh4xU0cxKoikXRRl-W2GG0oJZV0_2gfN6hDugFEoAAWl-F8Myb2tDc",
+          "rating": 4.7,
+          "ratingCount": 33,
+          "position": 30
+        },
+        {
+          "title": "Dell Vostro 15 inch 3520 i5 1235U/8GB/512GB/120Hz",
+          "link": "https://www.google.com/search?ibp=oshop&q=laptop+v%C4%83n+ph%C3%B2ng+d%C6%B0%E1%BB%9Bi+15+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,productid:9367269278037525074,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "source": "Bạch Long Store",
+          "price": 14850000,
+          "priceText": "14.850.000 ₫",
+          "productId": "9367269278037525074",
+          "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRkYnDma86SONbAcoR1_7DiwIan51Hbv4QjoTt-3Zq2bUQ5n7WUeoP_NJ72_JsSxySS6bNnfECfftitWrAK9xLDJnhutLggmwC1SBa2g8fAZweVO4OhkBEj",
+          "rating": 4.3,
+          "ratingCount": 124,
+          "position": 28
+        },
+        {
+          "title": "HP Pavilion 15s-fq5077tu",
+          "link": "https://www.google.com/search?ibp=oshop&q=laptop+v%C4%83n+ph%C3%B2ng+d%C6%B0%E1%BB%9Bi+15+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,productid:12503972584019889745,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "source": "OnlyLap",
+          "price": 12890000,
+          "priceText": "12.890.000 ₫",
+          "productId": "12503972584019889745",
+          "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQ9fiVIFXZcCzW-iaA5fOksUqX5MMmhyOkKegyzI-mgs2s-WQpKewMiR_iZFm7HmCRyH-C_HUsIG75IznyyE11nOY306VVLC8pLwawpYrrB1DKuTeoK7i72sQ",
+          "rating": 4,
+          "ratingCount": 3,
+          "position": 36
+        },
+        {
+          "title": "Cho thuê laptop HP cấu hình cao, theo ngày tại Hồ Chí Minh",
+          "link": "https://www.google.com/search?ibp=oshop&q=laptop+v%C4%83n+ph%C3%B2ng+d%C6%B0%E1%BB%9Bi+15+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,productid:8549991389090146653,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "source": "ictsaigon.com.vn",
+          "price": 49000,
+          "priceText": "49.000 ₫",
+          "productId": "8549991389090146653",
+          "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTYEgNwuDDnuspvjTuVglddTcsilRbkLUWTvDEZGJXAPqqCqFPrX4tqB1X_GU_BfhtejXD24lkbKt8_qd1woROtakbEb5SbvSEfU0xh3L4J",
+          "position": 31
+        },
+        {
+          "title": "Sơn Laptop Tân Trang Laptop - Đà Nẵng",
+          "link": "https://www.google.com/search?ibp=oshop&q=laptop+v%C4%83n+ph%C3%B2ng+d%C6%B0%E1%BB%9Bi+15+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,productid:3268871989914946151,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "source": "Trâm Anh Laptop",
+          "price": 100000,
+          "priceText": "100.000 ₫",
+          "productId": "3268871989914946151",
+          "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQD7_Wwy3iqWFNwENEWUy7A2MyILTbMKdwOZF0O9e2VajDngfuIbH3wEJKBSHC6yLg653ZqcbBa-TeTfAgdumo0wP2uY4Uz7COXmimUbq_H",
+          "position": 29
+        },
+        {
+          "title": "XI Cặp Túi 15 6 Inch Laptop Túi Văn Phòng Kinh Doanh Cho Nam Nữ",
+          "link": "https://www.google.com/search?ibp=oshop&q=laptop+v%C4%83n+ph%C3%B2ng+d%C6%B0%E1%BB%9Bi+15+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,productid:17947447355083792076,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "source": "Shopee",
+          "price": 148553,
+          "priceText": "148.553 ₫",
+          "productId": "17947447355083792076",
+          "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTYiNsnsD89hGFKRdH62YRwKxKcsujVB9DchOHmaCjk7jDAi2NiIKD4DirsR8WbpCkS_TXvW6dkVC2QOQug53jmIz8_jMLRH6t93xOdF0A",
+          "position": 37
+        }
+      ],
+      "shop_info_results": [
+        {
+          "title": "Các ct tư vấn giùm e 1 con laptop văn phòng tầm 15tr với ạ.",
+          "link": "https://www.facebook.com/groups/cuongtruewireless/posts/2245527049570908/",
+          "snippet": "Mình đang tìm hiểu về các dòng laptop trong tầm giá dưới 15 triệu đồng (cả máy mới và đã qua sử dụng) mà có thể đáp ứng tốt nhu cầu học tập và ..."
+        },
+        {
+          "title": "TOP 6 laptop dưới 15 triệu làm việc, học tập đáng mua",
+          "link": "https://www.thegioididong.com/hoi-dap/top-10-mau-laptop-tot-gia-duoi-15-trieu-dang-mua-nhat-hien-1376359",
+          "snippet": "HP 245 G10 R5 7530U là mẫu laptop văn phòng nổi bật với thiết kế gọn nhẹ, độ bền đạt chuẩn quân đội và hiệu năng ổn định từ vi xử lý AMD Ryzen 5 7530U. Máy được ..."
+        },
+        {
+          "title": "TrieuBom - Laptop nội địa Trung Quốc",
+          "link": "https://www.facebook.com/groups/trieubom/",
+          "snippet": "Em cần tìm laptop tầm 15-20, CPU Ryzen 7 8745H / 8845HS hoặc 225H, 255h RAM từ 16GB trở lên. Ưu tiên máy mỏng nhẹ, không có VGA rời, ngoại hình đẹp và dùng ..."
+        },
+        {
+          "title": "Nhóm mua bán sỉ, lẻ laptop, pc, linh kiện điện tử nhập ...",
+          "link": "https://www.facebook.com/groups/congdong.tuvan.hoidap.maytinh/?locale=vi_VN",
+          "snippet": "MÁY TÍNH QUANG ANH THANH LÝ MÁY TÍNH & LAPTOP VĂN PHÒNG GIÁ CHỈ TỪ 2 TRIỆU Máy tính - Laptop văn phòng: Cấu hình ổn định, phù hợp làm việc, học tập."
+        },
+        {
+          "title": "Top 5 laptop văn phòng dưới 15 triệu mạnh mẽ không thua ...",
+          "link": "https://cellphones.com.vn/sforum/laptop-van-phong-duoi-15-trieu",
+          "snippet": "Laptop Dell Latitude 3520 70251603 - Laptop cho dân văn phòng dưới 15 triệu · Laptop Lenovo ideapad 3 15ITL6 - Hiệu năng cực cao, ổn định · Laptop Asus Vivobook ..."
+        },
+        {
+          "title": "Laptop văn phòng từ 10 - 15 Triệu",
+          "link": "https://maytinhnguyenthanh.com/collections/laptop-tu-10-15-trieu",
+          "snippet": "Laptop văn phòng từ 10 - 15 Triệu · Laptop ASUS ExpertBook P1403CVA-i308-50W (Intel Core i3-1315U , Intel UHD , 14 inch FHD , 8GB , 512GB , Win 11 , Xám)."
+        }
+      ],
+      "links": [
+        {
+          "name": "Shopee",
+          "url": "https://shopee.vn/search?keyword=laptop%20v%C4%83n%20ph%C3%B2ng%20d%C6%B0%E1%BB%9Bi%2015%20tri%E1%BB%87u"
+        },
+        {
+          "name": "Lazada",
+          "url": "https://www.lazada.vn/catalog/?q=laptop%20v%C4%83n%20ph%C3%B2ng%20d%C6%B0%E1%BB%9Bi%2015%20tri%E1%BB%87u"
+        }
+      ],
+      "note": "Gia tham khao tu ket qua tim kiem hien tai, co the da thay doi theo thoi gian va phien ban san pham - bam link de xem gia chinh xac va mua hang.",
+      "_tappy_total_found": 16,
+      "_tappy_ranking": {
+        "pick": "Laptop Core i5 Gen 2-3-4 chơi game giải trí văn phòng ( Core i5 | SSD 120GB ) | Chính hãng | Qua sử dụng",
+        "decided_by": [
+          {
+            "attribute": "rating",
+            "evidence": "rated 4.7"
+          },
+          {
+            "attribute": "price",
+            "evidence": "2200000 VND"
+          },
+          {
+            "attribute": "reviewCount",
+            "evidence": "33 reviews - Dell Vostro 15 inch 3520 i5 1235U/8GB/512GB/120Hz: 124 reviews (KHONG duoc goi pick la \"nhat\" o reviewCount)"
+          }
+        ],
+        "not_chosen": "Dell Vostro 15 inch 3520 i5 1235U/8GB/512GB/120Hz",
+        "not_chosen_leads_on": {
+          "attribute": "reviewCount",
+          "evidence": "124 reviews"
+        }
+      },
+      "_tappy_synthesis": {
+        "ban_hoi": null,
+        "nhom_san_pham": [],
+        "de_xuat": {
+          "noi_ban": "Shopee",
+          "ly_do": [
+            {
+              "attribute": "rating",
+              "evidence": "rated 4.7",
+              "params": {
+                "value": 4.7
+              }
+            },
+            {
+              "attribute": "price",
+              "evidence": "2200000 VND",
+              "params": {
+                "priceVnd": 2200000
+              }
+            },
+            {
+              "attribute": "reviewCount",
+              "evidence": "33 reviews",
+              "params": {
+                "count": 33
+              }
+            }
+          ],
+          "danh_doi": {
+            "attribute": "reviewCount",
+            "evidence": "124 reviews",
+            "params": {
+              "count": 124
+            }
+          },
+          "nghieng_ve": false
+        }
+      }
+    }
+  ],
+  "frames8Raw": []
+}

@@ -23,6 +23,11 @@ object AppModule {
     @Named("baseUrl")
     fun provideBaseUrl(): String = BuildConfig.API_BASE_URL
 
+    /** Empty in every variant except `uat` — see DeploymentProtectionInterceptor. */
+    @Provides
+    @Named("vercelBypassSecret")
+    fun provideVercelBypassSecret(): String = BuildConfig.VERCEL_BYPASS_SECRET
+
     @Provides
     @Named("isDebug")
     fun provideIsDebug(): Boolean = BuildConfig.DEBUG
@@ -53,6 +58,15 @@ object AppModule {
      * AccountRepository → AccountApi → Retrofit → OkHttpClient. `LanguageManager` needs the
      * repository only to sync the choice to the backend, which reading the current value does not.
      */
+    /**
+     * The guest's stored 18+ declaration for core:network's GuestAgeInterceptor. Read on the OkHttp
+     * thread (never the main thread), from the same DataStore value ChatScreen's gate writes.
+     */
+    @Provides
+    @Singleton
+    fun provideGuestAgeProvider(store: com.tappyai.app.chat.data.GuestAgeStore): com.tappyai.core.network.GuestAgeProvider =
+        com.tappyai.core.network.GuestAgeProvider { kotlinx.coroutines.runBlocking { store.declared() } }
+
     @Provides
     @Singleton
     fun provideAppLanguageProvider(): AppLanguageProvider =

@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Set quà tặng cà phê cao cấp - máy xay cầm tay cổ điển kèm cốc sứ, thiệp viết site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:09:09.873Z",
+ "body": {
+  "searchParameters": {
+   "q": "Set quà tặng cà phê cao cấp - máy xay cầm tay cổ điển kèm cốc sứ, thiệp viết site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Si Cafe - From Farm To Cup, Cửa hàng trực tuyến",
+    "link": "https://shopee.vn/sicafe.official",
+    "snippet": "Hộp Quà Tặng Cà Phê Sang Trọng Cao Cấp. 483.000 ; Hộp Quà Cà Phê Vị Hài Hòa. 450.000 ; Hộp Quà Cà Phê Hòa Tan. 163.000 ; SET Cà Phê Cân Bằng. 208.000 ; Hộp Quà Cà ...",
+    "position": 1
+   },
+   {
+    "title": "An Corner Coffee - Shopee Mall Online",
+    "link": "https://shopee.vn/ancorner",
+    "snippet": "Mua sản phẩm chính hãng với ưu đãi hấp dẫn, freeship và đảm bảo tại Shopee. An Corner chuyên cung cấp sản pha caffe và trà Cao cấp, Cốc sứ đồ dùng pha chế.",
+    "position": 2
+   },
+   {
+    "title": "Set quà - Giá Tốt, Sale Tháng 09, Ship 0 Đồng",
+    "link": "https://shopee.vn/list/set%20qu%C3%A0",
+    "snippet": "< CnaBpc > Hộp quà sang trọng có quạt cầm tay, Quà kỷ niệm cao cấp, Quà tặng ngày lễ & tốt nghiệp cho những dịp đặc biệt mới. 125.312₫. 142.400₫.",
+    "position": 3
+   },
+   {
+    "title": "Máy xay cầm tay cổ điển Bộ máy pha cà phê ...",
+    "link": "https://shopee.vn/M%C3%A1y-xay-c%E1%BA%A7m-tay-c%E1%BB%95-%C4%91i%E1%BB%83n-B%E1%BB%99-m%C3%A1y-pha-c%C3%A0-ph%C3%AA-m%C3%A1y-xay-h%E1%BA%A1t-c%C3%A0-ph%C3%AA-m%C3%A1y-xay-c%E1%BA%A7m-tay-H%E1%BB%99p-Qu%C3%A0-T%E1%BA%B7ng-qu%C3%A0-t%E1%BA%B7ng-i.1594792915.43520508773",
+    "snippet": "2 phân loại có sẵn. 747.942₫. Máy xay cầm tay cổ điển Bộ máy pha cà phê máy xay hạt cà phê máy xay cầm tay Hộp Quà Tặng quà tặng. outline grey truck icon.",
+    "position": 4
+   },
+   {
+    "title": "Hộp Quà Cao Cấp, Set Quà Tặng Cà phê Đặc sản",
+    "link": "https://shopee.vn/H%E1%BB%99p-Qu%C3%A0-Cao-C%E1%BA%A5p-Set-Qu%C3%A0-T%E1%BA%B7ng-C%C3%A0-ph%C3%AA-%C4%90%E1%BA%B7c-s%E1%BA%A3n-Combo-Cafe-nguy%C3%AAn-ch%E1%BA%A5t-h%C3%B2a-tan-k%C3%A8m-phin-th%C3%ACa-t%E1%BB%AB-Message-Coffee-i.241946261.25558654426",
+    "snippet": "Mua Hộp Quà Cao Cấp, Set Quà Tặng Cà phê Đặc sản- Combo Cafe nguyên chất, hòa tan kèm phin, thìa từ Message Coffee giá tốt. Mua hàng qua mạng uy tín, ...",
+    "position": 5
+   },
+   {
+    "title": "LuxHaus - Đồ uống trà & càphê, Cửa hàng trực tuyến",
+    "link": "https://shopee.vn/luxhaus",
+    "snippet": "Máy xay cà phê mini kiểu dáng cổ điển !!! Máy xay cà phê mini kiểu dáng cổ điển !!! 135.000 ; Giấy lọc cà phê coffee filter Pour over V60 drip hộp 100 tờ. 69.000 ...",
+    "position": 6
+   },
+   {
+    "title": "1.wci giá tốt Tháng 8, 2026 | Mua ngay",
+    "link": "https://shopee.vn/search?keyword=1.wci",
+    "snippet": "Cốc định lượng thông minh Winci KC252 ,Nhiều đơn vị đo tiện lợi, Màn hình led trực quan, bảo hành 1 năm. 1.115.000₫. 1.350.000₫. -17%. voucher-icon.",
+    "position": 7
+   },
+   {
+    "title": "TRÀ QUÁN AN KHANG, Cửa hàng trực tuyến",
+    "link": "https://shopee.vn/ankhangtraquan",
+    "snippet": "Cối xay cafe máy xay cafe mini cầm tay cối xay cà phê cầm tay máy. 225.000 ... quà tặng cao cấp, pha tiện dụng, có vali xách tay đẹp. 480.000₫. Đã bán 2.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

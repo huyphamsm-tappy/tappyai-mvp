@@ -53,6 +53,8 @@ data class EvidenceItemDto(
 @Serializable
 data class RecommendedActionDto(
     val priority: String = "secondary",
+    /** `stop | link | phone | flag | warning | search | check` — the glyph the web draws (`ACTION_ICONS`). */
+    val icon: String = "",
     @SerialName("label_vi") val labelVi: String = "",
     @SerialName("label_en") val labelEn: String = "",
 )

@@ -1,0 +1,180 @@
+{
+  "id": "E5b",
+  "text": "đi chơi / giải trí",
+  "parent": "E5",
+  "status": 200,
+  "ms": 14145,
+  "evidenceId": "c92727bb-cbd9-4bc7-a491-e7e9315cbabe",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "địa điểm vui chơi giải trí",
+        "type": "attraction"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Khu vui chơi thiếu nhi",
+      "rating": 4.2,
+      "count": 32,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 9.9,
+      "address": "244 Chiến Lược, Bình Trị Đông, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Khu Vui chơi Trẻ em - Công viên Gia Định",
+      "rating": 4.3,
+      "count": 461,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 4.9,
+      "address": "RM6F+WCM, Đ. Đặng Văn Sâm, Đức Nhuận, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Coffee - Tea - Khu vui chơi trẻ em",
+      "rating": 4.7,
+      "count": 10,
+      "hours": "07:00–22:00",
+      "distance_km": 25.5,
+      "address": "Tổ 9 khu phố Hương Phước, phường, Phước Tân, Đồng Nai, Việt Nam"
+    },
+    {
+      "name": "Khu vui chơi trẻ em Rainbow",
+      "rating": 4.7,
+      "count": 27,
+      "hours": "08:30–22:00",
+      "distance_km": 27.5,
+      "address": "16 Đường 28/4, K Phước Hải, Long Thành, Đồng Nai, Việt Nam"
+    },
+    {
+      "name": "Khu Vui Chơi PHƯỚC THIỀN",
+      "rating": 4.4,
+      "count": 27,
+      "hours": "17:00–22:00",
+      "distance_km": 25.2,
+      "address": "Bến Sắn, Nhơn Trạch, Đồng Nai, Việt Nam"
+    },
+    {
+      "name": "Khu Giải Trí PH GAME - CN Hùng Vương",
+      "rating": 4.9,
+      "count": 331,
+      "hours": "09:00–22:00",
+      "distance_km": 4.8,
+      "address": "126 Đ. Hồng Bàng, Chợ Lớn, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Khu vui chơi trẻ em SKY ZONE Cầu Suối Độn",
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 25.5,
+      "address": "VWC7+4MH, D. Diên Nghệ, Tam Phước, Đồng Nai, Việt Nam"
+    },
+    {
+      "name": "Khu Vui Chơi BABYSHARK",
+      "rating": 4.7,
+      "count": 33,
+      "hours": "17:00–22:00",
+      "distance_km": 30.2,
+      "address": "15 Nguyễn Hoàng, Tam Phước, Đồng Nai, Việt Nam"
+    },
+    {
+      "name": "Khu Vui Chơi Trẻ Em NHÀ GẤU",
+      "rating": 5,
+      "count": 7,
+      "hours": "07:00–22:00",
+      "distance_km": 25.7,
+      "address": "tổ 11 Đinh Quan Ân, Phước Tân, Đồng Nai, Việt Nam"
+    },
+    {
+      "name": "Khu vui chơi patin-xe điện",
+      "rating": 4.7,
+      "count": 18,
+      "hours": "17:30–22:00",
+      "distance_km": 29.2,
+      "address": "PX45+XFP, Đ. Hùng Vương, Phước An, Đồng Nai, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình giả sử bạn muốn tìm một địa điểm vui chơi gần vị trí hiện tại, phù hợp cho cuối tuần — mình chọn **Khu Giải Trí PH GAME - CN Hùng Vương** cho bạn 👍\n\nNơi này có **4.9⭐ (331 đánh giá Google Maps)**. Khoảng cách chỉ ~4.8km từ vị trí bạn, mở cửa từ 09:00–22:00 nên rất linh hoạt cho cuối tuần. Đây là trung tâm giải trí với nhiều trò chơi, phù hợp để tụ tập và thư giãn.\n\nNếu bạn muốn lựa chọn khác, **Khu Vui chơi Trẻ em - Công viên Gia Định** cũng rất tốt (4.3⭐, 461 đánh giá), gần hơn (~4.9km) và là công viên nên không khí thoáng, mở cửa cả ngày.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - PH GAME\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=9938196655876771598\",\"primary\":true},{\"label\":\"🌐 Facebook - PH GAME\",\"type\":\"website\",\"url\":\"https://www.facebook.com/share/1AjXeE1Q7z/?mibextid=wwXIfr\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Chơi game arcade|Đi công viên|Karaoke hay bar[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "cuối tuần làm gì"
+    },
+    {
+      "role": "assistant",
+      "content": "Để chọn đúng chỗ, mình cần biết thêm:\n• Bạn muốn làm gì? (ăn uống / đi chơi / giải trí / spa & làm đẹp)\nBạn trả lời phần nào cũng được, phần còn lại mình tự giả sử và nói rõ.\n\n[FOLLOWUPS]ăn uống|đi chơi / giải trí|spa & làm đẹp[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "đi chơi / giải trí"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn muốn tìm một địa điểm vui chơi gần vị trí hiện tại, phù hợp cho cuối tuần — mình chọn **Khu Giải Trí PH GAME - CN Hùng Vương** cho bạn 👍\n\nNơi này có **4.9⭐ (331 đánh giá Google Maps)**. Khoảng cách chỉ ~4.8km từ vị trí bạn, mở cửa từ 09:00–22:00 nên rất linh hoạt cho cuối tuần. Đây là trung tâm giải trí với nhiều trò chơi, phù hợp để tụ tập và thư giãn.\n\nNếu bạn muốn lựa chọn khác, **Khu Vui chơi Trẻ em - Công viên Gia Định** cũng rất tốt (4.3⭐, 461 đánh giá), gần hơn (~4.9km) và là công viên nên không khí thoáng, mở cửa cả ngày.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - PH GAME\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=9938196655876771598\",\"primary\":true},{\"label\":\"🌐 Facebook - PH GAME\",\"type\":\"website\",\"url\":\"https://www.facebook.com/share/1AjXeE1Q7z/?mibextid=wwXIfr\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Chơi game arcade|Đi công viên|Karaoke hay bar[/FOLLOWUPS]"
+    }
+  ]
+}

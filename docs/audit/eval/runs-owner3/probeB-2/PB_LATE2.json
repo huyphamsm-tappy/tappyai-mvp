@@ -1,0 +1,958 @@
+{
+  "id": "PB_LATE2",
+  "text": "quán ăn nào gần Quận 1 còn mở giờ này không",
+  "parent": null,
+  "status": 200,
+  "ms": 9837,
+  "evidenceId": "58d83ec7-0524-4125-a0f6-a15d596a4926",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "quán ăn tối mở khuya Quận 1",
+        "location": "Quận 1, TP.HCM",
+        "type": "restaurant"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Hàng Dương Quán Quận 1",
+      "rating": 4.5,
+      "count": 717,
+      "hours": "09:00–23:30",
+      "distance_km": 0.6,
+      "address": "32-34 Ngô Đức Kế, Phường, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Quán Ụt Ụt - Bến Thành",
+      "rating": 4.4,
+      "count": 6202,
+      "hours": "11:00–22:30",
+      "distance_km": 1.4,
+      "address": "168 Võ Văn Kiệt, P, Bến Thành, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "CƠM TẤM NGON 3 MIỀN QUẬN 1",
+      "rating": 4.5,
+      "count": 130,
+      "hours": "08:00–22:00",
+      "distance_km": 2.7,
+      "address": "106Bis Nguyễn Văn Cừ, Cầu Ông Lãnh, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Quán Ăn Hùng Xíu",
+      "rating": 4.1,
+      "count": 76,
+      "hours": "17:00–04:00",
+      "distance_km": 1.2,
+      "address": "15 Nguyễn Văn Tráng, Bến Thành, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Nhà hàng Thịt Nướng Nhật NIKUTARO",
+      "rating": 4.7,
+      "count": 504,
+      "hours": "11:00–02:00",
+      "distance_km": 0.7,
+      "address": "2B1 Chu Mạnh Trinh, Bến Nghé, Quận 1, Hồ Chí Minh 80000, Việt Nam"
+    },
+    {
+      "name": "Quán nhậu quận 1 - HẢI SẢN QUÝ DẬU",
+      "rating": 4.7,
+      "count": 278,
+      "hours": "15:00–02:00",
+      "distance_km": 2,
+      "address": "147 Hoàng Sa, Tân Định, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Sài Gòn Xưa và Nay",
+      "rating": 4,
+      "count": 1274,
+      "hours": "11:00–01:00",
+      "distance_km": 0.4,
+      "address": "37 Nguyễn Trung Trực, Bến Thành, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Chi Rứa Quán | Nhà Hàng Huế Quận 1",
+      "rating": 3.9,
+      "count": 358,
+      "hours": "08:30–22:00",
+      "distance_km": 0.9,
+      "address": "15/29 Nguyễn Thị Minh Khai, Sài Gòn, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Izakaya MATSUKI 18A Thai Van Lung",
+      "rating": 4.9,
+      "count": 1620,
+      "hours": "17:00–02:00",
+      "distance_km": 0.5,
+      "address": "18 Thái Văn Lung, Bến Nghé, Quận 1, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Cục Gạch Quán",
+      "rating": 4.3,
+      "count": 4260,
+      "hours": "09:00–23:30",
+      "distance_km": 2.2,
+      "address": "10 Đặng Tất, Tân Định, Hồ Chí Minh, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình giả sử bạn muốn ăn tối hôm nay ở Quận 1 với giá phổ thông. Để tìm quán mở khuya lúc này, mình sẽ tìm ngay nhé.\n\nMình chọn **Izakaya MATSUKI** cho bạn — **4.9⭐ (1.620 đánh giá Google Maps)**, cách bạn chỉ 0.5km, mở đến 2h sáng nên hoàn toàn phù hợp ăn tối khuya. Quán Nhật Bản chất lượng cao, lý tưởng nếu bạn muốn ăn gì đó đặc biệt hơn.\n\nHoặc **Quán Ăn Hùng Xíu** (1.2km, mở đến 4h sáng) nếu bạn muốn ăn khuya thật sự 🍜\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛵 GrabFood - Izakaya MATSUKI\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/vi/restaurants?search=Izakaya+MATSUKI+Quan+1\",\"primary\":true},{\"label\":\"📍 Maps - Izakaya MATSUKI\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=4790017852003369032\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Hàng Dương Quán gần hơn|Quán Ăn Hùng Xíu mở khuya|Cục Gạch Quán ăn Việt[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "quán ăn nào gần Quận 1 còn mở giờ này không"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn muốn ăn tối hôm nay ở Quận 1 với giá phổ thông. Để tìm quán mở khuya lúc này, mình sẽ tìm ngay nhé.\n\nMình chọn **Izakaya MATSUKI** cho bạn — **4.9⭐ (1.620 đánh giá Google Maps)**, cách bạn chỉ 0.5km, mở đến 2h sáng nên hoàn toàn phù hợp ăn tối khuya. Quán Nhật Bản chất lượng cao, lý tưởng nếu bạn muốn ăn gì đó đặc biệt hơn.\n\nHoặc **Quán Ăn Hùng Xíu** (1.2km, mở đến 4h sáng) nếu bạn muốn ăn khuya thật sự 🍜\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛵 GrabFood - Izakaya MATSUKI\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/vi/restaurants?search=Izakaya+MATSUKI+Quan+1\",\"primary\":true},{\"label\":\"📍 Maps - Izakaya MATSUKI\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=4790017852003369032\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Hàng Dương Quán gần hơn|Quán Ăn Hùng Xíu mở khuya|Cục Gạch Quán ăn Việt[/FOLLOWUPS]"
+    }
+  ],
+  "toolResults": [
+    {
+      "source": "Serper Maps",
+      "count": 20,
+      "location": "Quận 1, TP.HCM",
+      "results": [
+        {
+          "name": "Hàng Dương Quán Quận 1",
+          "place_id": "ChIJ8bkqqCpTaDERsRgpzDYTR18",
+          "address": "32-34 Ngô Đức Kế, Phường, Sài Gòn, Hồ Chí Minh, Việt Nam",
+          "phone": "+84 968 817 788",
+          "google_rating": "4.5⭐ (717 đánh giá Google Maps)",
+          "rating_value": 4.5,
+          "rating_count": 717,
+          "distance_km": 0.6,
+          "open_now": true,
+          "opening_hours": "09:00–23:30",
+          "place_types": [
+            "Nhà hàng"
+          ],
+          "has_delivery": true,
+          "has_order": true,
+          "maps_link": "https://maps.google.com/?cid=6865477283024017585",
+          "booking_links": [
+            "https://hangduongquan.com/dat-ban.html"
+          ],
+          "website_uri": "http://hangduongquan.com/",
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=6865477283024017585",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Quán Ụt Ụt - Bến Thành",
+          "place_id": "ChIJ_co_3hQvdTERw5ftRmnYNdU",
+          "address": "168 Võ Văn Kiệt, P, Bến Thành, Hồ Chí Minh 70000, Việt Nam",
+          "phone": "+84 28 3914 4500",
+          "google_rating": "4.4⭐ (6.202 đánh giá Google Maps)",
+          "rating_value": 4.4,
+          "rating_count": 6202,
+          "distance_km": 1.4,
+          "open_now": true,
+          "opening_hours": "11:00–22:30",
+          "place_types": [
+            "Nhà hàng Mỹ",
+            "Nhà hàng món nướng",
+            "Quán bia sân vườn",
+            "Nhà hàng Phương Tây"
+          ],
+          "has_delivery": true,
+          "has_order": true,
+          "maps_link": "https://maps.google.com/?cid=15363423650517456835",
+          "website_uri": "http://www.quanutut.com/",
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=15363423650517456835",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "CƠM TẤM NGON 3 MIỀN QUẬN 1",
+          "place_id": "ChIJkxglVwAvdTERxk8dfsvpSG8",
+          "address": "106Bis Nguyễn Văn Cừ, Cầu Ông Lãnh, Hồ Chí Minh 700000, Việt Nam",
+          "google_rating": "4.5⭐ (130 đánh giá Google Maps)",
+          "rating_value": 4.5,
+          "rating_count": 130,
+          "distance_km": 2.7,
+          "open_now": true,
+          "opening_hours": "08:00–22:00",
+          "place_types": [
+            "Quán ăn nhỏ"
+          ],
+          "has_delivery": true,
+          "has_order": true,
+          "maps_link": "https://maps.google.com/?cid=8018916196736651206",
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=8018916196736651206",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Quán Ăn Hùng Xíu",
+          "place_id": "ChIJ3ZXGtz0vdTERrDJI7PaonYU",
+          "address": "15 Nguyễn Văn Tráng, Bến Thành, Hồ Chí Minh, Việt Nam",
+          "phone": "+84 909 488 181",
+          "google_rating": "4.1⭐ (76 đánh giá Google Maps)",
+          "rating_value": 4.1,
+          "rating_count": 76,
+          "distance_km": 1.2,
+          "open_now": true,
+          "opening_hours": "17:00–04:00",
+          "place_types": [
+            "Quán ăn nhỏ"
+          ],
+          "has_delivery": true,
+          "has_order": true,
+          "maps_link": "https://maps.google.com/?cid=9628037356867564204",
+          "website_uri": "https://www.foody.vn/ho-chi-minh/hung-xiu",
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=9628037356867564204",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Nhà hàng Thịt Nướng Nhật NIKUTARO",
+          "place_id": "ChIJocOmccovdTER8APaRJZ94bg",
+          "address": "2B1 Chu Mạnh Trinh, Bến Nghé, Quận 1, Hồ Chí Minh 80000, Việt Nam",
+          "phone": "+84 28 3822 6441",
+          "google_rating": "4.7⭐ (504 đánh giá Google Maps)",
+          "rating_value": 4.7,
+          "rating_count": 504,
+          "distance_km": 0.7,
+          "open_now": true,
+          "opening_hours": "11:00–02:00",
+          "place_types": [
+            "Nhà hàng món Yakiniku",
+            "Nhà hàng Nhật Bản",
+            "Nhà hàng"
+          ],
+          "has_delivery": true,
+          "has_order": true,
+          "maps_link": "https://maps.google.com/?cid=13322067257092342768",
+          "booking_links": [
+            "https://www.google.com/maps/reserve/v/dine/c/GDe3tA43UX8?source=pa&opi=79508299"
+          ],
+          "website_uri": "https://nikutarosaigon.com/en",
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=13322067257092342768",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Quán nhậu quận 1 - HẢI SẢN QUÝ DẬU",
+          "place_id": "ChIJhZ8nqJQpdTEReHhWLYAkY3w",
+          "address": "147 Hoàng Sa, Tân Định, Hồ Chí Minh, Việt Nam",
+          "phone": "+84 833 233 963",
+          "google_rating": "4.7⭐ (278 đánh giá Google Maps)",
+          "rating_value": 4.7,
+          "rating_count": 278,
+          "distance_km": 2,
+          "open_now": true,
+          "opening_hours": "15:00–02:00",
+          "place_types": [
+            "Nhà hàng châu Á",
+            "Trang trại hải sản"
+          ],
+          "has_delivery": true,
+          "has_order": true,
+          "maps_link": "https://maps.google.com/?cid=8963047816332474488",
+          "website_uri": "https://www.facebook.com/profile.php?id=61585781067778",
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=8963047816332474488",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Sài Gòn Xưa và Nay",
+          "place_id": "ChIJEVER-TgvdTERyBiwL1f0ORQ",
+          "address": "37 Nguyễn Trung Trực, Bến Thành, Hồ Chí Minh, Việt Nam",
+          "phone": "+84 28 3822 2337",
+          "google_rating": "4⭐ (1.274 đánh giá Google Maps)",
+          "rating_value": 4,
+          "rating_count": 1274,
+          "distance_km": 0.4,
+          "open_now": true,
+          "opening_hours": "11:00–01:00",
+          "place_types": [
+            "Nhà hàng"
+          ],
+          "has_delivery": true,
+          "has_order": true,
+          "maps_link": "https://maps.google.com/?cid=1457464609730468040",
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=1457464609730468040",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Chi Rứa Quán | Nhà Hàng Huế Quận 1",
+          "place_id": "ChIJX3SlOecvdTERCIFG6j5UgsY",
+          "address": "15/29 Nguyễn Thị Minh Khai, Sài Gòn, Hồ Chí Minh 70000, Việt Nam",
+          "phone": "+84 972 663 335",
+          "google_rating": "3.9⭐ (358 đánh giá Google Maps)",
+          "rating_value": 3.9,
+          "rating_count": 358,
+          "distance_km": 0.9,
+          "open_now": true,
+          "opening_hours": "08:30–22:00",
+          "place_types": [
+            "Nhà hàng"
+          ],
+          "has_delivery": true,
+          "has_order": true,
+          "maps_link": "https://maps.google.com/?cid=14304087995677311240",
+          "booking_links": [
+            "https://www.google.com/maps/reserve/v/dine/c/u56bn3FcqbM?source=pa&opi=79508299"
+          ],
+          "website_uri": "https://chiruaquan.com/",
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=14304087995677311240",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Izakaya MATSUKI 18A Thai Van Lung",
+          "place_id": "ChIJnXYN28IvdTERSMBwmNuPeUI",
+          "address": "18 Thái Văn Lung, Bến Nghé, Quận 1, Hồ Chí Minh 700000, Việt Nam",
+          "phone": "+84 703 838 955",
+          "google_rating": "4.9⭐ (1.620 đánh giá Google Maps)",
+          "rating_value": 4.9,
+          "rating_count": 1620,
+          "distance_km": 0.5,
+          "open_now": true,
+          "opening_hours": "17:00–02:00",
+          "place_types": [
+            "Nhà hàng Nhật Bản"
+          ],
+          "has_delivery": true,
+          "has_order": true,
+          "maps_link": "https://maps.google.com/?cid=4790017852003369032",
+          "booking_links": [
+            "https://www.facebook.com/izakayaMATSUKI?mibextid=LQQJ4d"
+          ],
+          "website_uri": "https://www.facebook.com/izakayaMATSUKI",
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=4790017852003369032",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Cục Gạch Quán",
+          "place_id": "ChIJpaATms0odTERiyQ7q1ewGIs",
+          "address": "10 Đặng Tất, Tân Định, Hồ Chí Minh, Việt Nam",
+          "phone": "+84 28 3848 0144",
+          "google_rating": "4.3⭐ (4.260 đánh giá Google Maps)",
+          "rating_value": 4.3,
+          "rating_count": 4260,
+          "distance_km": 2.2,
+          "open_now": true,
+          "opening_hours": "09:00–23:30",
+          "place_types": [
+            "Nhà hàng Việt Nam",
+            "Nhà hàng"
+          ],
+          "has_delivery": true,
+          "has_order": true,
+          "maps_link": "https://maps.google.com/?cid=10022954861294462091",
+          "website_uri": "http://cucgachquan.com/",
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=10022954861294462091",
+              "attributed": true
+            }
+          ]
+        }
+      ],
+      "_tappy_place_domain": "food",
+      "place_search_status": "has_results",
+      "_tappy_evidence_gap": {
+        "qualified": 10,
+        "total": 10,
+        "needed": [
+          "openingHours",
+          "distance"
+        ],
+        "action": "recommend"
+      },
+      "results_note": "Day la TOAN BO 10 ket qua theo thu tu nha cung cap, KHONG phai thu tu uu tien — ban tu chon cho dung tinh huong (rut gon: chi cac truong de chon); the (card) cua user hien anh/dia chi/SDT/nut hanh dong.",
+      "_tappy_hard_backed_by": {
+        "late_open": [
+          "Hàng Dương Quán Quận 1",
+          "Quán Ăn Hùng Xíu",
+          "Nhà hàng Thịt Nướng Nhật NIKUTARO",
+          "Quán nhậu quận 1 - HẢI SẢN QUÝ DẬU",
+          "Sài Gòn Xưa và Nay",
+          "Izakaya MATSUKI 18A Thai Van Lung",
+          "Cục Gạch Quán"
+        ]
+      },
+      "_tappy_evidence_note": "CHI cac quan nay co bang chung ve giờ mở khuya: Hàng Dương Quán Quận 1, Quán Ăn Hùng Xíu, Nhà hàng Thịt Nướng Nhật NIKUTARO, Quán nhậu quận 1 - HẢI SẢN QUÝ DẬU, Sài Gòn Xưa và Nay, Izakaya MATSUKI 18A Thai Van Lung. Chon trong so do cho nhu cau nay; KHONG noi dieu do ve quan khac."
+    }
+  ],
+  "frames8Raw": [
+    [
+      {
+        "kind": "tappy.places.v1",
+        "v": 1,
+        "domain": "food",
+        "ranked": true,
+        "items": [
+          {
+            "id": "place:osm:10.78008,106.70391",
+            "domain": "food",
+            "kind": "place",
+            "name": "Izakaya MATSUKI 18A Thai Van Lung",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWl6v8ibZxyhRSs-X2ssYlP_2CT3uowzjXPFqGHmcbE_DLi_VuV0PFecOQPd33Dose0hzqVn5qFi36Sk3nnsG4VwexLNEKylUJn2UhXTJ4A81tamP6zg6tKfkrAeDHknoigSMEYY",
+            "address": "18 Thái Văn Lung, Bến Nghé, Quận 1, Hồ Chí Minh 700000, Việt Nam",
+            "rating": 4.9,
+            "ratingCount": 1620,
+            "openingHours": "17:00–02:00",
+            "openNow": true,
+            "phone": "+84 703 838 955",
+            "openingHoursWeek": {
+              "Thứ Bảy": "17:00–02:00",
+              "Chủ Nhật": "17:00–02:00",
+              "Thứ Hai": "17:00–02:00",
+              "Thứ Ba": "17:00–02:00",
+              "Thứ Tư": "17:00–02:00",
+              "Thứ Năm": "17:00–02:00",
+              "Thứ Sáu": "17:00–02:00"
+            },
+            "distanceKm": 0.5,
+            "categories": [
+              "Nhà hàng Nhật Bản"
+            ],
+            "rank": 8,
+            "shortlistPosition": 1,
+            "recommended": true,
+            "reasons": [
+              {
+                "attribute": "distance",
+                "evidence": "0.5km away"
+              },
+              {
+                "attribute": "openNow",
+                "evidence": "open now"
+              },
+              {
+                "attribute": "rating",
+                "evidence": "rated 4.9"
+              }
+            ],
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=Izakaya%20MATSUKI%2018A%20Thai%20Van%20Lung%20Qu%E1%BA%ADn%201%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=4790017852003369032",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Izakaya%20MATSUKI%2018A%20Thai%20Van%20Lung%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://www.facebook.com/izakayaMATSUKI",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84703838955",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.77353,106.70534",
+            "domain": "food",
+            "kind": "place",
+            "name": "Hàng Dương Quán Quận 1",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWk7g2BVaeQzrQCzncDbWzfktYl9RwfvM8PPVGb-IT_DSwyghQX0VdTk0qxdOsaRoDD1-bSR-veYXZsLTPbIS8eIEycMWxzb1WrnQZv1xL4OUS0V1vaO8SfvB53K807cOxVmZp3nYi-faY0",
+            "address": "32-34 Ngô Đức Kế, Phường, Sài Gòn, Hồ Chí Minh, Việt Nam",
+            "rating": 4.5,
+            "ratingCount": 717,
+            "openingHours": "09:00–23:30",
+            "openNow": true,
+            "phone": "+84 968 817 788",
+            "openingHoursWeek": {
+              "Thứ Bảy": "09:00–23:30",
+              "Chủ Nhật": "09:00–23:30",
+              "Thứ Hai": "09:00–23:30",
+              "Thứ Ba": "09:00–23:30",
+              "Thứ Tư": "09:00–23:30",
+              "Thứ Năm": "09:00–23:30",
+              "Thứ Sáu": "09:00–23:30"
+            },
+            "distanceKm": 0.6,
+            "categories": [
+              "Nhà hàng"
+            ],
+            "rank": 0,
+            "shortlistPosition": 3,
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=H%C3%A0ng%20D%C6%B0%C6%A1ng%20Qu%C3%A1n%20Qu%E1%BA%ADn%201%20Qu%E1%BA%ADn%201%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=6865477283024017585",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=H%C3%A0ng%20D%C6%B0%C6%A1ng%20Qu%C3%A1n%20Qu%E1%BA%ADn%201%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84968817788",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.76468,106.69844",
+            "domain": "food",
+            "kind": "place",
+            "name": "Quán Ụt Ụt - Bến Thành",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmY-YMO9QyLyFlULIm1dP3UkT_Te4QEBDiaLArDF_6IjaxaTvQdN5g_crlYKKLq9sWmsXaCXU_610T64GuEeU8MHyfdJ_z24eP-N17L38o52cT7IBc5ZOS_2qPEVNYXdc4hWX-CZEzHgcI",
+            "address": "168 Võ Văn Kiệt, P, Bến Thành, Hồ Chí Minh 70000, Việt Nam",
+            "rating": 4.4,
+            "ratingCount": 6202,
+            "openingHours": "11:00–22:30",
+            "openNow": true,
+            "phone": "+84 28 3914 4500",
+            "openingHoursWeek": {
+              "Thứ Bảy": "11:00–22:30",
+              "Chủ Nhật": "11:00–22:30",
+              "Thứ Hai": "11:00–22:30",
+              "Thứ Ba": "11:00–22:30",
+              "Thứ Tư": "11:00–22:30",
+              "Thứ Năm": "11:00–22:30",
+              "Thứ Sáu": "11:00–22:30"
+            },
+            "distanceKm": 1.4,
+            "categories": [
+              "Nhà hàng Mỹ",
+              "Nhà hàng món nướng",
+              "Quán bia sân vườn",
+              "Nhà hàng Phương Tây"
+            ],
+            "rank": 1,
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=Qu%C3%A1n%20%E1%BB%A4t%20%E1%BB%A4t%20-%20B%E1%BA%BFn%20Th%C3%A0nh%20Qu%E1%BA%ADn%201%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=15363423650517456835",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20%E1%BB%A4t%20%E1%BB%A4t%20-%20B%E1%BA%BFn%20Th%C3%A0nh%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+842839144500",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.75799,106.68483",
+            "domain": "food",
+            "kind": "place",
+            "name": "CƠM TẤM NGON 3 MIỀN QUẬN 1",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnIY4jz8bHFePx4lOcd1XJCoEkpZWXBkOT0KdnOsEkcY8fe8Mew7Llc44UlbaV1eHtrLz-K5KtGvTWBRqTE2STP5AkGbzrBvVGoG57PAUPhl01dMRTXrxDvZhGoUdvJ3vrjJdQczo0nDDam",
+            "address": "106Bis Nguyễn Văn Cừ, Cầu Ông Lãnh, Hồ Chí Minh 700000, Việt Nam",
+            "rating": 4.5,
+            "ratingCount": 130,
+            "openingHours": "08:00–22:00",
+            "openNow": true,
+            "openingHoursWeek": {
+              "Thứ Bảy": "08:00–22:00",
+              "Chủ Nhật": "08:00–22:00",
+              "Thứ Hai": "08:00–22:00",
+              "Thứ Ba": "08:00–22:00",
+              "Thứ Tư": "08:00–22:00",
+              "Thứ Năm": "08:00–22:00",
+              "Thứ Sáu": "08:00–22:00"
+            },
+            "distanceKm": 2.7,
+            "categories": [
+              "Quán ăn nhỏ"
+            ],
+            "rank": 2,
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=C%C6%A0M%20T%E1%BA%A4M%20NGON%203%20MI%E1%BB%80N%20QU%E1%BA%ACN%201%20Qu%E1%BA%ADn%201%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=8018916196736651206",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=C%C6%A0M%20T%E1%BA%A4M%20NGON%203%20MI%E1%BB%80N%20QU%E1%BA%ACN%201%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.76994,106.69226",
+            "domain": "food",
+            "kind": "place",
+            "name": "Quán Ăn Hùng Xíu",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnkovDc5LtJrK48m2tnsSvVzztQgHVyyqv4gZDKdqHj2V61ARDOriEFC8sBh2rkbUZp0EYT9tfAx_rBf532NBXq25I7if5Klx9s9QsHhKwtN7k_lisqstROpMCgvWmdgfjWS_Fn",
+            "address": "15 Nguyễn Văn Tráng, Bến Thành, Hồ Chí Minh, Việt Nam",
+            "rating": 4.1,
+            "ratingCount": 76,
+            "openingHours": "17:00–04:00",
+            "openNow": true,
+            "phone": "+84 909 488 181",
+            "openingHoursWeek": {
+              "Thứ Bảy": "17:00–04:00",
+              "Chủ Nhật": "17:00–04:00",
+              "Thứ Hai": "17:00–04:00",
+              "Thứ Ba": "17:00–04:00",
+              "Thứ Tư": "17:00–04:00",
+              "Thứ Năm": "17:00–04:00",
+              "Thứ Sáu": "17:00–04:00"
+            },
+            "distanceKm": 1.2,
+            "categories": [
+              "Quán ăn nhỏ"
+            ],
+            "rank": 3,
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=Qu%C3%A1n%20%C4%82n%20H%C3%B9ng%20X%C3%ADu%20Qu%E1%BA%ADn%201%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=9628037356867564204",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20%C4%82n%20H%C3%B9ng%20X%C3%ADu%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://www.foody.vn/ho-chi-minh/hung-xiu",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84909488181",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.78170,106.70501",
+            "domain": "food",
+            "kind": "place",
+            "name": "Nhà hàng Thịt Nướng Nhật NIKUTARO",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmhPJUTYgwgjQHw1aMLXCaEQff1lyYU9JiYE2aGE3_zoERgljjW3iIFAWotbU4uzXjrPaGtbbbSn-d22TGq6tsCUmSsgz7awQ0Lk4RY1eCqoywMjG8BKGbDO_RawNFXXZNZ-7PK",
+            "address": "2B1 Chu Mạnh Trinh, Bến Nghé, Quận 1, Hồ Chí Minh 80000, Việt Nam",
+            "rating": 4.7,
+            "ratingCount": 504,
+            "openingHours": "11:00–02:00",
+            "openNow": true,
+            "phone": "+84 28 3822 6441",
+            "openingHoursWeek": {
+              "Thứ Bảy": "11:00–02:00",
+              "Chủ Nhật": "11:00–22:00",
+              "Thứ Hai": "11:00–02:00",
+              "Thứ Ba": "11:00–02:00",
+              "Thứ Tư": "11:00–02:00",
+              "Thứ Năm": "11:00–02:00",
+              "Thứ Sáu": "11:00–02:00"
+            },
+            "distanceKm": 0.7,
+            "categories": [
+              "Nhà hàng món Yakiniku",
+              "Nhà hàng Nhật Bản",
+              "Nhà hàng"
+            ],
+            "rank": 4,
+            "shortlistPosition": 2,
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=Nh%C3%A0%20h%C3%A0ng%20Th%E1%BB%8Bt%20N%C6%B0%E1%BB%9Bng%20Nh%E1%BA%ADt%20NIKUTARO%20Qu%E1%BA%ADn%201%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=13322067257092342768",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Nh%C3%A0%20h%C3%A0ng%20Th%E1%BB%8Bt%20N%C6%B0%E1%BB%9Bng%20Nh%E1%BA%ADt%20NIKUTARO%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://nikutarosaigon.com/en",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+842838226441",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.79358,106.69402",
+            "domain": "food",
+            "kind": "place",
+            "name": "Quán nhậu quận 1 - HẢI SẢN QUÝ DẬU",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmv1svxwjTShU1msycIhxllc6VT9bHje6ymA-EiaShE4gqFSx6JD9Nx8XMkz5Dx6TEywPJpHJuC2k3XPC7awfEvc44r-PCtU4lbU0AjpOYpThOgicRJAE9mfABjcxC0lyHr-ODA9w",
+            "address": "147 Hoàng Sa, Tân Định, Hồ Chí Minh, Việt Nam",
+            "rating": 4.7,
+            "ratingCount": 278,
+            "openingHours": "15:00–02:00",
+            "openNow": true,
+            "phone": "+84 833 233 963",
+            "openingHoursWeek": {
+              "Thứ Bảy": "15:00–02:00",
+              "Chủ Nhật": "15:00–02:00",
+              "Thứ Hai": "15:00–02:00",
+              "Thứ Ba": "15:00–02:00",
+              "Thứ Tư": "15:00–02:00",
+              "Thứ Năm": "15:00–02:00",
+              "Thứ Sáu": "15:00–02:00"
+            },
+            "distanceKm": 2,
+            "categories": [
+              "Nhà hàng châu Á",
+              "Trang trại hải sản"
+            ],
+            "rank": 5,
+            "shortlistPosition": 4,
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=Qu%C3%A1n%20nh%E1%BA%ADu%20qu%E1%BA%ADn%201%20-%20H%E1%BA%A2I%20S%E1%BA%A2N%20QU%C3%9D%20D%E1%BA%ACU%20Qu%E1%BA%ADn%201%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=8963047816332474488",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20nh%E1%BA%ADu%20qu%E1%BA%ADn%201%20-%20H%E1%BA%A2I%20S%E1%BA%A2N%20QU%C3%9D%20D%E1%BA%ACU%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://www.facebook.com/profile.php?id=61585781067778",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84833233963",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.77531,106.69734",
+            "domain": "food",
+            "kind": "place",
+            "name": "Sài Gòn Xưa và Nay",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmqpIBn5TRhDTnu_P3vN3gSdZDxQeW30ZkIbPY8BiX9GiNIX8jsvUGwnwFpb_gJL4U1Ae3nN8p76x_rkLozKUkDRLmhCoZDpD8SQsHHtunTmqVLluwhcBrimqEQ8MgTTXRnIR16WnzZ5pZT",
+            "address": "37 Nguyễn Trung Trực, Bến Thành, Hồ Chí Minh, Việt Nam",
+            "rating": 4,
+            "ratingCount": 1274,
+            "openingHours": "11:00–01:00",
+            "openNow": true,
+            "phone": "+84 28 3822 2337",
+            "openingHoursWeek": {
+              "Thứ Bảy": "11:00–01:00",
+              "Chủ Nhật": "11:00–01:00",
+              "Thứ Hai": "11:00–01:00",
+              "Thứ Ba": "11:00–01:00",
+              "Thứ Tư": "11:00–01:00",
+              "Thứ Năm": "11:00–01:00",
+              "Thứ Sáu": "11:00–01:00"
+            },
+            "distanceKm": 0.4,
+            "categories": [
+              "Nhà hàng"
+            ],
+            "rank": 6,
+            "shortlistPosition": 5,
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=S%C3%A0i%20G%C3%B2n%20X%C6%B0a%20v%C3%A0%20Nay%20Qu%E1%BA%ADn%201%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=1457464609730468040",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=S%C3%A0i%20G%C3%B2n%20X%C6%B0a%20v%C3%A0%20Nay%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+842838222337",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          }
+        ],
+        "mapsSearchUrl": "https://maps.google.com/maps?q=qu%C3%A1n%20%C4%83n%20t%E1%BB%91i%20m%E1%BB%9F%20khuya%20Qu%E1%BA%ADn%201%20Qu%E1%BA%ADn%201%2C%20TP.HCM",
+        "picked": [
+          "place:osm:10.76994,106.69226",
+          "place:osm:10.77353,106.70534"
+        ],
+        "shown": 3
+      }
+    ]
+  ]
+}

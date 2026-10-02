@@ -1,0 +1,30 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Minh Toan SAFI Ocean Hotel\" Da Nang site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T02:49:41.849Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Minh Toan SAFI Ocean Hotel\" Da Nang site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Khách sạn Minh Toàn SAFI Ocean - Giá cả và Ưu đãi 2026 ...",
+    "link": "https://vn.trip.com/hotels/da-nang-hotel-detail-51735466/minh-toan-ocean-hotel/",
+    "snippet": "Khách sạn Minh Toàn SAFI Ocean(Minh Toan Safi Ocean Hotel). Khách sạn Minh Toàn SAFI Ocean. Minh Toan Safi Ocean Hotel. 224 Võ Nguyên Giáp, Q., An Hải, Đà Nẵng ...",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -6,7 +6,12 @@ import { fileURLToPath } from 'node:url'
 // maps the '@' path alias to ./src (mirrors tsconfig paths). Does not affect the
 // Next.js build. Per-file environment is set via `// @vitest-environment jsdom`.
 
-const alias = { '@': fileURLToPath(new URL('./src', import.meta.url)) }
+const alias = {
+  '@': fileURLToPath(new URL('./src', import.meta.url)),
+  // `import 'server-only'` (lib/supabase/admin.ts) is resolved by Next's own bundler, per layer.
+  // Tests run on the server side, so they get Next's no-op server build of it.
+  'server-only': fileURLToPath(new URL('./node_modules/next/dist/compiled/server-only/empty.js', import.meta.url)),
+}
 
 /**
  * ============================================================================
@@ -47,6 +52,8 @@ export default defineConfig({
         test: {
           name: 'app',
           include: ['src/**/*.test.{ts,tsx}', 'scripts/**/*.test.{ts,mjs}'],
+          // The simulated browser speaks Vietnamese; see the file for why.
+          setupFiles: ['src/test/browserLanguage.setup.ts', 'src/test/consultativeFlag.setup.ts'],
         },
       },
       {

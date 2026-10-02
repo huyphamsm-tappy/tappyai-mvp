@@ -1,0 +1,25 @@
+{
+  "id": "T5",
+  "text": "đi chơi ở đâu",
+  "parent": null,
+  "status": 200,
+  "ms": 4962,
+  "evidenceId": "07621618-6003-4889-b070-6451c7a50a84",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình hiểu bạn muốn tìm chỗ chơi gần đây! 🎉 Để gợi ý đúng ý bạn, mình cần biết thêm một chút:\n\n**Bạn thích loại gì?**\n- 🍽️ Quán ăn/cafe\n- 🎬 Rạp phim, karaoke, bar\n- 🏊 Công viên, bể bơi, khu vui chơi\n- 💆 Spa, massage\n- 🛍️ Mua sắm\n\nHay bạn muốn đi với ai (bạn bè, gia đình, người yêu) để mình gợi ý phù hợp hơn?\n\n",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "đi chơi ở đâu"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình hiểu bạn muốn tìm chỗ chơi gần đây! 🎉 Để gợi ý đúng ý bạn, mình cần biết thêm một chút:\n\n**Bạn thích loại gì?**\n- 🍽️ Quán ăn/cafe\n- 🎬 Rạp phim, karaoke, bar\n- 🏊 Công viên, bể bơi, khu vui chơi\n- 💆 Spa, massage\n- 🛍️ Mua sắm\n\nHay bạn muốn đi với ai (bạn bè, gia đình, người yêu) để mình gợi ý phù hợp hơn?\n\n"
+    }
+  ]
+}

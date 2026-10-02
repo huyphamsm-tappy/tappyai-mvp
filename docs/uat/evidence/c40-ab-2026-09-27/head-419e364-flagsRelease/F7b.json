@@ -1,0 +1,207 @@
+{
+  "id": "F7b",
+  "text": "dưới 100k/người",
+  "parent": "F7",
+  "status": 200,
+  "ms": 16016,
+  "evidenceId": "381d61f2-b3be-4b3e-ae99-a56a40c9b881",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "quán ăn binh dân dưới 100k Quận 1",
+        "location": "Quận 1, TP.HCM",
+        "type": "restaurant"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Hàng Dương Quán Quận 1",
+      "rating": 4.5,
+      "count": 723,
+      "hours": "09:00–23:30",
+      "distance_km": 0.6,
+      "address": "32-34 Ngô Đức Kế, Phường, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Peofood - Xôi Bắc chuẩn vị",
+      "rating": 4.5,
+      "count": 336,
+      "hours": "06:00–13:00, 17:00–21:00",
+      "distance_km": 1,
+      "address": "180 Ký Con, Bến Thành, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Quán Bụi Original, Sài Gòn - Authentic Vietnamese Cuisine",
+      "rating": 4.3,
+      "count": 4232,
+      "hours": "07:00–23:00",
+      "distance_km": 0.7,
+      "address": "19 Ngô Văn Năm, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Quán ăn gia đình 79",
+      "rating": 4.4,
+      "count": 517,
+      "hours": "16:00–00:00",
+      "distance_km": 1.6,
+      "address": "44 Đề Thám, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Ann Quán",
+      "rating": 4.2,
+      "count": 1279,
+      "hours": "07:00–01:00",
+      "distance_km": 0.6,
+      "address": "66 Ngô Đức Kế, Phường, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Ốc Đào",
+      "rating": 4.2,
+      "count": 2472,
+      "hours": "11:00–22:15",
+      "distance_km": 2.2,
+      "address": "212B/D48 Nguyễn Trãi, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Quán ăn ngon Sài Gòn",
+      "rating": 4.1,
+      "count": 1156,
+      "hours": "08:00–22:30",
+      "distance_km": 0.4,
+      "address": "138 Nam Kỳ Khởi Nghĩa, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Sài Gòn Xưa và Nay",
+      "rating": 4,
+      "count": 1274,
+      "hours": "11:00–01:00",
+      "distance_km": 0.4,
+      "address": "37 Nguyễn Trung Trực, Bến Thành, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Cơm Bắc Làng Cua Đồng",
+      "rating": 4,
+      "count": 498,
+      "hours": "07:00–14:30, 17:00–21:00",
+      "distance_km": 1,
+      "address": "Hẻm 18A Nguyễn Thi Minh Khai, Quận 1, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Cơm tấm A Dũng",
+      "rating": 3.9,
+      "count": 443,
+      "hours": "07:30–23:30",
+      "distance_km": 2.2,
+      "address": "28 Số 25, Khánh Hội, Hồ Chí Minh, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "Hàng Dương Quán Quận 1",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 4.5,
+        "reviews": 723,
+        "distance_km": 0.6,
+        "open_now": true,
+        "opening_hours": "09:00–23:30"
+      }
+    },
+    {
+      "name": "Peofood - Xôi Bắc chuẩn vị",
+      "role": null,
+      "evidence": {
+        "rating": 4.5,
+        "reviews": 336,
+        "distance_km": 1,
+        "open_now": true,
+        "opening_hours": "06:00–13:00, 17:00–21:00"
+      }
+    },
+    {
+      "name": "Quán Bụi Original, Sài Gòn - Authentic Vietnamese Cuisine",
+      "role": null,
+      "evidence": {
+        "rating": 4.3,
+        "reviews": 4232,
+        "distance_km": 0.7,
+        "open_now": true,
+        "opening_hours": "07:00–23:00"
+      }
+    }
+  ],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình tìm lại những quán ăn ngon dưới 100k/người gần bạn nhé! 🍽️\n\nMình chọn **Hàng Dương Quán Quận 1** cho bạn! 🍲 Quán này có **4.5⭐ (723 đánh giá Google Maps)**, chỉ cách bạn 0.6km, và đang mở cửa đến 23:30. Đây là nhà hàng Việt Nam gia đình, phục vụ cơm, phở, các món nướng — rất phù hợp cho bữa tối.\n\nTuy nhiên, mình chưa xác nhận được giá cụ thể của quán này, nên bạn nên kiểm tra trực tiếp trên Google Maps hoặc gọi quán (0968 817 788) để chắc chắn giá dưới 100k/người nhé.\n\nNếu muốn chắc chắn hơn, **Peofood - Xôi Bắc chuẩn vị** (4.5⭐, 1km) cũng là lựa chọn tốt — chuyên xôi, cơm, giá thường rẻ hơn, nhưng đóng cửa lúc 21:00.\n\n*TappyAI dựa trên đánh giá thực tế từ Google Maps để gợi ý — bạn tự quyết định và kiểm tra giá trước khi đặt nhé.*\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Maps - Hàng Dương Quán\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=6865477283024017585\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Xem quán khác gần đây|Tìm quán ăn khuya|Gợi ý quán ăn khác[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "ăn gì ngon giờ"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm những quán ăn ngon gần bạn lúc này nhé! 🍽️\n\nMình chọn **Ben.la - Mâm cơm nhà quận 1** cho bạn! 🍚 Quán này có **4.9⭐ (83 đánh giá Google Maps)** và chỉ cách bạn 0.5km, rất gần. Tuy nhiên, quán đóng cửa lúc 17:00 nên giờ này (20:34) không mở được.\n\nNếu muốn ăn ngay, mình gợi ý **Izakaya Choioinoodle** — nhà hàng Nhật chuyên mì ramen, **4.8⭐ (201 đánh giá)**, đang mở cửa đến 22:00, cách bạn 0.9km. Hoặc **Ebisu District1** — udon & sushi, **4.7⭐ (1.024 đánh giá)**, mở đến 22:30, cách 0.7km.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Maps - Izakaya Choioinoodle\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=6525976663471549326\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Mì ramen ngon ở đâu|Hải sản tươi Quận 1|Cơm Việt gần đây[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "dưới 100k/người"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm lại những quán ăn ngon dưới 100k/người gần bạn nhé! 🍽️\n\nMình chọn **Hàng Dương Quán Quận 1** cho bạn! 🍲 Quán này có **4.5⭐ (723 đánh giá Google Maps)**, chỉ cách bạn 0.6km, và đang mở cửa đến 23:30. Đây là nhà hàng Việt Nam gia đình, phục vụ cơm, phở, các món nướng — rất phù hợp cho bữa tối.\n\nTuy nhiên, mình chưa xác nhận được giá cụ thể của quán này, nên bạn nên kiểm tra trực tiếp trên Google Maps hoặc gọi quán (0968 817 788) để chắc chắn giá dưới 100k/người nhé.\n\nNếu muốn chắc chắn hơn, **Peofood - Xôi Bắc chuẩn vị** (4.5⭐, 1km) cũng là lựa chọn tốt — chuyên xôi, cơm, giá thường rẻ hơn, nhưng đóng cửa lúc 21:00.\n\n*TappyAI dựa trên đánh giá thực tế từ Google Maps để gợi ý — bạn tự quyết định và kiểm tra giá trước khi đặt nhé.*\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Maps - Hàng Dương Quán\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=6865477283024017585\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Xem quán khác gần đây|Tìm quán ăn khuya|Gợi ý quán ăn khác[/FOLLOWUPS]"
+    }
+  ]
+}

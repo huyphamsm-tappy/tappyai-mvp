@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Lakeside House Hanoi - Nhà Bên Hồ\" Núi Ba Vì, Hà Nội site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T03:12:42.795Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Lakeside House Hanoi - Nhà Bên Hồ\" Núi Ba Vì, Hà Nội site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

@@ -1,0 +1,138 @@
+{
+  "id": "E6",
+  "text": "Karaoke cho 10 người tầm 100k/người Gò Vấp",
+  "parent": null,
+  "status": 200,
+  "ms": 17482,
+  "evidenceId": "826a3b77-435c-454e-a2f7-cfa6264c9107",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "karaoke Gò Vấp",
+        "location": "Gò Vấp, TP.HCM",
+        "type": "bar"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "KAMELA Music Box",
+      "rating": 4.8,
+      "count": 287,
+      "price": "1-100.000 ₫",
+      "hours": "10:00–03:00",
+      "address": "214/2 Nguyễn Oanh, Gò Vấp, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Karaoke Santori",
+      "rating": 4.5,
+      "count": 358,
+      "price": "100-600 N ₫",
+      "hours": "Mở cửa cả ngày",
+      "address": "176 Đ. Lê Văn Thọ, Thông Tây Hội, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "KARAOKE NEWSTYLE",
+      "rating": 4.2,
+      "count": 1237,
+      "price": "100-200 N ₫",
+      "hours": "10:00–04:00",
+      "address": "40 Đ. Lê Đức Thọ, Hạnh Thông, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Karaoke Hạ Trắng",
+      "rating": 3.4,
+      "count": 185,
+      "price": "100-700 N ₫",
+      "hours": "Mở cửa cả ngày",
+      "address": "11 Đ. Số 4, Hạnh Thông, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Karaoke Queen Star",
+      "rating": 4.2,
+      "count": 194,
+      "hours": "Mở cửa cả ngày",
+      "address": "378 Đ. Nguyễn Văn Lượng, An Hội Đông, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Karaoke X-Men",
+      "rating": 3.8,
+      "count": 112,
+      "hours": "Mở cửa cả ngày",
+      "address": "14 Đ. Số 4, Hạnh Thông, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Karaoke CADILLAC",
+      "rating": 3.8,
+      "count": 58,
+      "hours": "Mở cửa cả ngày",
+      "address": "1388 Đ. Lê Đức Thọ, An Hội Tây, Hồ Chí Minh 700000, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình chọn **KAMELA Music Box** — 4.8⭐ (287 đánh giá Google Maps); giờ mở cửa theo Google Maps: 10:00–03:00.\n\nMình giả sử bạn muốn đi karaoke hôm nay ở Gò Vấp với nhóm 10 người, ngân sách khoảng 100k/người. Để tìm được quán phù hợp, mình sẽ tìm kiếm ngay.\n\nQuán ở 214/2 Nguyễn Oanh, Gò Vấp, gần vị trí bạn.\n\nNếu muốn thêm lựa chọn, **Karaoke Santori** cũng tốt — **4.5⭐ (358 đánh giá)**, mở cả ngày.\n\nLưu ý: 3 quán khác (Queen Star, X-Men, Cadillac) chưa xác nhận được giá cụ thể, nên bạn nên gọi trước để hỏi giá gói nhóm 10 người.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem KAMELA Music Box\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=9919035890912573737\",\"primary\":true}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Gọi trước để hỏi giá gói nhóm|Xem thêm quán karaoke khác|Cần gợi ý quán ăn gần đó[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Karaoke cho 10 người tầm 100k/người Gò Vấp"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình chọn **KAMELA Music Box** — 4.8⭐ (287 đánh giá Google Maps); giờ mở cửa theo Google Maps: 10:00–03:00.\n\nMình giả sử bạn muốn đi karaoke hôm nay ở Gò Vấp với nhóm 10 người, ngân sách khoảng 100k/người. Để tìm được quán phù hợp, mình sẽ tìm kiếm ngay.\n\nQuán ở 214/2 Nguyễn Oanh, Gò Vấp, gần vị trí bạn.\n\nNếu muốn thêm lựa chọn, **Karaoke Santori** cũng tốt — **4.5⭐ (358 đánh giá)**, mở cả ngày.\n\nLưu ý: 3 quán khác (Queen Star, X-Men, Cadillac) chưa xác nhận được giá cụ thể, nên bạn nên gọi trước để hỏi giá gói nhóm 10 người.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem KAMELA Music Box\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=9919035890912573737\",\"primary\":true}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Gọi trước để hỏi giá gói nhóm|Xem thêm quán karaoke khác|Cần gợi ý quán ăn gần đó[/FOLLOWUPS]"
+    }
+  ]
+}

@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Fusion Original Saigon Centre",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:37:01.352Z",
+ "body": {
+  "searchParameters": {
+   "q": "Fusion Original Saigon Centre",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Trang chủ - Fusion Original Saigon Centre",
+    "imageUrl": "https://saigoncentre.fusionoriginals.com/wp-content/uploads/2020/11/FOSC_Images-8-scaled.jpg",
+    "imageWidth": 2560,
+    "imageHeight": 1708,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnIlpbLLeL_MrGZV-u82CKLmHVP9wyvrOUrNBOCif54Q&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Fusion Original Saigon Centre",
+    "domain": "saigoncentre.fusionoriginals.com",
+    "link": "https://saigoncentre.fusionoriginals.com/vi/trang-chu/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fsaigoncentre.fusionoriginals.com%2Fwp-content%2Fuploads%2F2020%2F11%2FFOSC_Images-8-scaled.jpg&tbnid=ktaTpz8y_LjD-M&imgrefurl=https%3A%2F%2Fsaigoncentre.fusionoriginals.com%2Fvi%2Ftrang-chu%2F&docid=4oUEBq6BFxReFM&w=2560&h=1708",
+    "position": 1
+   },
+   {
+    "title": "Fusion Original Saigon Centre, TP. Hồ Chí Minh (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/358169129.jpg?k=471206802ff927dbc3a0f2220c55339fdd595bbd342554119809e99d63b83cc1&o=",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSYQ1uzKUyPFn--7zEyK8br-zVNiz9jMst1vZgGi9Qu3A&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "www.booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/fusion-original-saigon-centre.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F358169129.jpg%3Fk%3D471206802ff927dbc3a0f2220c55339fdd595bbd342554119809e99d63b83cc1%26o%3D&tbnid=9hratYwDKB2JsM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Ffusion-original-saigon-centre.vi.html&docid=Oci18fV2KmhSJM&w=1024&h=683",
+    "position": 2
+   },
+   {
+    "title": "Fusion Original Saigon Centre Hồ Chí Minh, Việt Nam: Agoda.com có giá rẻ  nhất",
+    "imageUrl": "https://q-xx.bstatic.com/xdata/images/hotel/max500/358169099.jpg?k=d0dbcacadced0e970e2b924edb2e53c3be5ca00b34f2a70dc4999eb8de2c882b&o=",
+    "imageWidth": 500,
+    "imageHeight": 334,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDZhaSckofe5oFLZBYsqMp5nBwq_Japkwglwty1L5LKQ&s=10",
+    "thumbnailWidth": 500,
+    "thumbnailHeight": 333,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/fusion-original-saigon-centre/hotel/ho-chi-minh-city-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fq-xx.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax500%2F358169099.jpg%3Fk%3Dd0dbcacadced0e970e2b924edb2e53c3be5ca00b34f2a70dc4999eb8de2c882b%26o%3D&tbnid=_K8BrjHSgmdPtM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Ffusion-original-saigon-centre%2Fhotel%2Fho-chi-minh-city-vn.html&docid=poX1XYKgv7VvzM&w=500&h=334",
+    "position": 3
+   },
+   {
+    "title": "Fusion Original Saigon Centre - Khách Sạn Đẳng Cấp",
+    "imageUrl": "https://tranivietnam.com/wp-content/uploads/2025/08/Fusion-Original-Saigon-Centre-00001-931x594.webp",
+    "imageWidth": 931,
+    "imageHeight": 594,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPmxMYDreq1YSJ3aqlD5z1bkYEUxoJLJU1aJB5lOQ8Og&s=10",
+    "thumbnailWidth": 693,
+    "thumbnailHeight": 442,
+    "source": "Trani Travel",
+    "domain": "tranivietnam.com",
+    "link": "https://tranivietnam.com/st_hotel/fusion-original-saigon-centre/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Ftranivietnam.com%2Fwp-content%2Fuploads%2F2025%2F08%2FFusion-Original-Saigon-Centre-00001-931x594.webp&tbnid=e5kjCwEN4v-6YM&imgrefurl=https%3A%2F%2Ftranivietnam.com%2Fst_hotel%2Ffusion-original-saigon-centre%2F&docid=3xluWw4kagrUbM&w=931&h=594",
+    "position": 4
+   },
+   {
+    "title": "Trang chủ - Fusion Original Saigon Centre",
+    "imageUrl": "https://saigoncentre.fusionoriginals.com/wp-content/uploads/2021/07/FOSC_Images-21-scaled.jpg",
+    "imageWidth": 2560,
+    "imageHeight": 1708,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8AhRXeqOa-FMtNijsNWet2FlIMxx_FFOmuEQ3wWfkmw&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Fusion Original Saigon Centre",
+    "domain": "saigoncentre.fusionoriginals.com",
+    "link": "https://saigoncentre.fusionoriginals.com/vi/trang-chu/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fsaigoncentre.fusionoriginals.com%2Fwp-content%2Fuploads%2F2021%2F07%2FFOSC_Images-21-scaled.jpg&tbnid=ESOGXRnp1v5ZaM&imgrefurl=https%3A%2F%2Fsaigoncentre.fusionoriginals.com%2Fvi%2Ftrang-chu%2F&docid=4oUEBq6BFxReFM&w=2560&h=1708",
+    "position": 5
+   },
+   {
+    "title": "Đặt Fusion Original Saigon Centre Quận 1 giá tốt nhất - BestPrice",
+    "imageUrl": "https://owa.bestprice.vn/images/hotels/uploads/fusion-original-saigon-centre-6513a04481108.jpg",
+    "imageWidth": 1024,
+    "imageHeight": 576,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSksgE8YvTMbmRRtvxdRHyFjpwSl6plWawfk-XvKjeceA&s=10",
+    "thumbnailWidth": 738,
+    "thumbnailHeight": 414,
+    "source": "BestPrice",
+    "domain": "www.bestprice.vn",
+    "link": "https://www.bestprice.vn/khach-san/fusion-original-saigon-center-3321.html?srsltid=AU7gw4X0oyZejnb_KXS9zg6cdWVVgZ0Enr61XJOcXpU0k9OTEoK6L0wM",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fowa.bestprice.vn%2Fimages%2Fhotels%2Fuploads%2Ffusion-original-saigon-centre-6513a04481108.jpg&tbnid=lGQT7ShAqOcGLM&imgrefurl=https%3A%2F%2Fwww.bestprice.vn%2Fkhach-san%2Ffusion-original-saigon-center-3321.html%3Fsrsltid%3DAU7gw4X0oyZejnb_KXS9zg6cdWVVgZ0Enr61XJOcXpU0k9OTEoK6L0wM&docid=scl6oST8BrboIM&w=1024&h=576",
+    "position": 6
+   },
+   {
+    "title": "Rooms | Fusion Original Saigon Centre",
+    "imageUrl": "https://saigoncentre.fusionoriginals.com/wp-content/uploads/2020/11/FOSC_Premium-Deluxe-scaled.jpg",
+    "imageWidth": 2560,
+    "imageHeight": 1708,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-5cGRx5JjRqJurCgYCOY-_HfPGfq60iI5Fpj6c56ldA&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Fusion Original Saigon Centre - fusionoriginals.com",
+    "domain": "saigoncentre.fusionoriginals.com",
+    "link": "https://saigoncentre.fusionoriginals.com/rooms/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fsaigoncentre.fusionoriginals.com%2Fwp-content%2Fuploads%2F2020%2F11%2FFOSC_Premium-Deluxe-scaled.jpg&tbnid=dGU-u5oGic9YFM&imgrefurl=https%3A%2F%2Fsaigoncentre.fusionoriginals.com%2Frooms%2F&docid=apBz2P0OcayU6M&w=2560&h=1708",
+    "position": 7
+   },
+   {
+    "title": "Fusion Original Saigon Centre",
+    "imageUrl": "https://saigoncentre.fusionoriginals.com/wp-content/uploads/2021/07/FOSC_Images-30-scaled.jpg",
+    "imageWidth": 2560,
+    "imageHeight": 1708,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSvmjVdXzDvTJ-mUevesrzLdsjuD3sUjpi85H9CGeMWA&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "fusionoriginals.com",
+    "domain": "saigoncentre.fusionoriginals.com",
+    "link": "https://saigoncentre.fusionoriginals.com/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fsaigoncentre.fusionoriginals.com%2Fwp-content%2Fuploads%2F2021%2F07%2FFOSC_Images-30-scaled.jpg&tbnid=dZiW6EyhbljAiM&imgrefurl=https%3A%2F%2Fsaigoncentre.fusionoriginals.com%2F&docid=ptfvDWH0JCANDM&w=2560&h=1708",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

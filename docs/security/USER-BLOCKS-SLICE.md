@@ -1,0 +1,105 @@
+# Chặn người dùng — lát cắt thu hẹp (01/10/2026)
+
+Nhánh `sec/user-blocks-slice` (từ `rc/web-uat`), worktree `D:\TappyAI-wt\wtblock`. CHƯA push, CHƯA áp lên production, CHƯA merge.
+Dành cho phiên bảo mật duyệt độc lập: mọi thứ đã viết nằm ở đây.
+
+## 1. Đã làm so với 6 điều kiện của Huy
+1. **Không cherry-pick 23f157d.** Viết lại từ đầu; chỉ ĐỌC phiên bản phase8 để lấy ý (và để sửa P8-11).
+2. **Không đụng `chat_blocks`.** Migration chỉ ĐỌC nó (qua hàm helper). Test `chat_blocks provably intact` so sánh cấu trúc + chính sách + hàng trước/sau.
+3. **Route viết lại theo helper của rc:** `getRequestUser`, `refuseAnonymousSocialWrite`, `rateLimit` (30/phút/tài khoản, khoá `user-block:<id>`), cờ `USER_BLOCKS_ENABLED` mặc định TẮT ⇒ 404 thân rỗng. Không lộ tài khoản kia có tồn tại không (khoá ngoại 23503 trả như thành công) và không lộ ai chặn ai (RLS chỉ cho đọc hàng do mình tạo).
+4. **Không có `/api/reports`.** Giữ báo cáo bài/clip hiện có. Báo cáo bình luận / người dùng: làm ở §8 bằng bảng riêng `user_reports` (vì `content_reports.content_id` là khoá ngoại tới `reviews`).
+5. **Đã chạy RLS trên DB audit và đo truy vấn** (mục 5).
+6. Tài liệu này.
+
+## 2. Những gì đã viết
+| Tệp | Nội dung |
+|---|---|
+| `supabase/migrations/20261001_user_blocks.sql` | bảng `user_blocks` + RLS (chỉ select/insert/delete hàng của mình; tài khoản ẩn danh bị từ chối insert), schema riêng `safety_private` (không lộ qua REST) với `blocked_ids()` và `review_author_blocked(uuid)` (SECURITY DEFINER, `search_path` ghim, EXECUTE chỉ cho authenticated/service_role), 5 chính sách RESTRICTIVE (follows INSERT, comments INSERT, reviews SELECT, comments SELECT, notifications SELECT) + 1 PERMISSIVE (chủ bài xoá được bình luận trên bài mình), GRANT tường minh theo ADR-019 |
+| `supabase/migrations/rollback/20261001_user_blocks_rollback.sql` | gỡ chính sách → hàm → schema → bảng; `chat_blocks` không đụng |
+| `src/lib/safety/userBlocks.ts` | cờ + `blockedPeers()` (lọc phía server khi dùng admin client) |
+| `src/app/api/users/[id]/block/route.ts` | POST (ghi cả `user_blocks` VÀ `chat_blocks`, upsert idempotent; nếu hàng chat lỗi thì thu hồi hàng kia, trả 500 — không chặn nửa vời; xoá follow hai chiều) / DELETE (xoá cả hai bảng) |
+| `src/app/api/users/blocks/route.ts` | GET danh sách của chính mình (gộp hai bảng, không trùng, mới nhất trước; lỗi đọc = 500, không bao giờ trả «rỗng» giả) |
+| `src/app/api/config/route.ts` | thêm `p8: {reports:false, userBlocks, commentModeration, accountDeletion:false}` |
+| `src/app/api/users/search/route.ts`, `users/[id]/route.ts` | admin client ⇒ lọc phía server (người bị chặn/đã chặn mình không hiện; hồ sơ trả 404) |
+| `src/app/api/reviews/[id]/comments/route.ts` | DELETE bỏ bộ lọc `.eq('user_id',…)`; RLS quyết (tác giả comment HOẶC chủ bài) |
+| tests | `supabase/tests/user_blocks.test.ts` (20), `user_blocks.measure.test.ts` (đo), `userBlocksHarness.ts`, unit cho 2 route + lib |
+
+**Không sửa:** `src/app/api/reviews/route.ts`, `uploadCompletion.ts`, mã chat, `chat_blocks`.
+
+## 3. Sửa P8-11 (oracle tồn tại tài khoản)
+Bản phase8 để client gọi thẳng hàm trả «X có chặn tôi không» ⇒ dò được quan hệ chặn. Bản này: hàm chỉ ở schema `safety_private` (PostgREST không thấy), chỉ trả boolean/mảng của CHÍNH người gọi (`auth.uid()`), dùng bên trong chính sách. Người dùng không tự gọi được.
+
+## 4. Kiểm toán mọi đường ĐỌC
+| Đường | Client | Trạng thái |
+|---|---|---|
+| Feed Khám phá / Mới nhất / Đang theo dõi, lưới hồ sơ, danh sách review, bộ sưu tập, trang SSR bài | client của người dùng (RLS) | **lọc bởi chính sách RESTRICTIVE trên `reviews`** |
+| Bình luận (GET) | RLS | lọc bởi chính sách trên `review_comments` |
+| Thông báo | RLS | lọc bởi chính sách trên `notifications` (theo `actor_id`) |
+| Số like | cột `like_count` trên `reviews` | không lộ danh tính; bài bị ẩn thì không thấy |
+| `users/search` | **admin** | lọc server (`blockedPeers`) + test |
+| `users/[id]` | **admin** | lọc server ⇒ 404 + test |
+| `reviews/route.ts` (ghi) | admin (writer) | chỉ ghi bài của chính người gọi; không đọc dữ liệu xã hội của người khác ⇒ không đổi |
+| `reviews/[id]/like` | RLS đọc bài; admin chỉ INSERT milestone | người bị chặn không thấy bài ⇒ không like được |
+| `comments` owner lookup | admin | chỉ tra chủ bài để gửi thông báo; INSERT đi qua RLS (bị chặn = 42501) |
+| `notifications/backfill`, `lib/notifications/emit.ts` | admin | **CHƯA lọc**: backfill là cron một lần (cần CRON secret), chỉ tạo thông báo; emit ghi thông báo — người nhận bị chặn sẽ không THẤY nó (chính sách SELECT). Chưa có bộ lọc ở phía ghi. |
+| `/api/admin/*`, cron | admin | cố ý không lọc (công cụ vận hành) |
+
+**Còn chưa lọc ở phía server (liệt kê thẳng):** backfill thông báo, emit thông báo (ghi), các route admin/cron. Không có đường người dùng nào đọc dữ liệu xã hội bằng admin mà chưa lọc, ngoài những mục trên đã sửa.
+Chưa rà: dữ liệu bên trong các RPC SECURITY DEFINER cũ (nếu có RPC feed gộp) — **nhờ phiên bảo mật xác nhận**.
+
+## 5. Đo truy vấn (EXPLAIN ANALYZE, trung vị 7 lần)
+**Dữ liệu tổng hợp trên Postgres nhúng (schema prod), 300.000 review / 600.000 bình luận / 100.000 thông báo / 3.000 người** — `docs/security/USER-BLOCKS-MEASURE.json`. Đơn vị ms.
+| Truy vấn | Trước | Sau (mảng InitPlan, bản gửi đi) 0 / 10 / 200 chặn | Phương án hàm-theo-dòng (bỏ) |
+|---|---|---|---|
+| explore_pool_200 | 0,36 | 1,76 / 1,18 / 2,22 | 272 / 147 / 305 |
+| latest_page_20 | 0,12 | 1,54 / 0,81 / 1,56 | 81 / 42 / 91 |
+| following_feed_20 | 0,52 | 1,97 / 1,44 / 2,60 | 36 / 15 / 57 |
+| profile_grid_30 | 0,25 | 1,58 / 1,15 / 1,94 | 154 / 65 / 150 |
+| comments_50 | 0,04 | 1,32 / 0,85 / 1,52 | 1,7 / 1,0 / 1,4 |
+| notifications_50 | 0,04 | 1,31 / 0,80 / 1,57 | 1,7 / 0,8 / 1,6 |
+Kết luận: chi phí thêm ≈ 1–2 ms cố định (tính tập bị chặn một lần/câu lệnh), không phụ thuộc số dòng; không cần thêm index. Hàm gọi từng dòng chậm 100–800× ⇒ không dùng.
+
+**DB audit thật** (26 review, 1 bình luận, 316 người — quá nhỏ để nói về quy mô): trước 0,04–0,09 ms, sau 0,50–0,58 ms. Số liệu quy mô lấy từ bộ dữ liệu tổng hợp ở trên, **không** có số đo trên dữ liệu production.
+
+## 6. Kết quả RLS trên DB audit (3 tài khoản tạm, đã xoá sạch, 0 dòng sót)
+A chặn B ⇒ A thấy bài {a,c}, B thấy {b,c} (không thấy bài của nhau), C thấy cả ba; follow cả hai chiều 42501; B bình luận bài của A 42501 và A bình luận bài của B 42501; C bình luận bài của A được; B đọc `user_blocks` = 0 hàng; tài khoản ẩn danh chặn bị 42501; bỏ chặn ⇒ khôi phục đủ {a,b,c}; xoá tài khoản có hàng chặn ⇒ hàng chặn về 0.
+Migration đã áp lên **DB audit (UAT) — KHÔNG phải production**.
+
+## 7. Rủi ro / việc cần người quyết
+1. **Lớn nhất:** áp migration lên production là thay đổi RLS trên `reviews`, `review_comments`, `notifications` (bảng nóng). Số đo cho thấy rẻ, nhưng chưa đo trên dữ liệu production thật. Bắt buộc `pg_dump` trước, có rollback.
+2. Hàng chờ kiểm duyệt chưa đọc `user_reports` (xem §8) — cần quy trình vận hành 24 giờ.
+3. `commentModeration` đi chung công tắc `USER_BLOCKS_ENABLED`.
+4. API ghi hai bảng không nằm trong một giao dịch (hai request); có bước thu hồi, nhưng nếu thu hồi cũng lỗi thì còn hàng `user_blocks` không có `chat_blocks` (an toàn theo hướng chặn nhiều hơn, bỏ chặn xoá cả hai).
+5. Đường backfill/emit admin chưa lọc (mục 4).
+
+## 8. Báo cáo bình luận / người dùng (bổ sung 01/10, Huy quyết: LÀM)
+- Migration `20261001b_user_reports.sql` (+ rollback, có trong MIGRATION_ORDER.txt): bảng riêng `user_reports(id, reporter_id, target_type 'comment'|'user', target_id, reason, note ≤300, created_at)`. `content_reports` KHÔNG đổi.
+- Ràng buộc: không tự báo mình (user: CHECK; bình luận của mình: chính sách INSERT), một người một lần cho mỗi đối tượng (UNIQUE), lý do thuộc danh sách (7 chuẩn + 6 của app native, lưu đúng như gửi).
+- RLS: chỉ chọn/thêm hàng của mình; không UPDATE/DELETE từ client; ẩn danh không báo được; người bị báo và người lạ đọc 0 hàng.
+- **Xoá tài khoản (Huy có thể đổi):** người BÁO bị xoá → `reporter_id` thành NULL, báo cáo ở lại ẩn danh làm bằng chứng kiểm duyệt; ĐỐI TƯỢNG bị xoá → hàng ở lại (không có khoá ngoại vì trỏ comment HOẶC user), chỉ chứa uuid + lý do + ghi chú của người khác. Phương án thay: xoá báo cáo về đối tượng đã xoá (một trigger).
+- Hàng chờ kiểm duyệt: hàng chờ hiện có đọc `content_reports` nên KHÔNG đọc bảng này; không tạo hệ thống phạt. Bảng đọc bằng service role. **Việc vận hành 24 giờ cần người/quy trình (Huy).**
+- Route: `POST /api/comments/{id}/report`, `POST /api/users/{id}/report` (cờ `REPORTS_ENABLED`, mặc định tắt ⇒ 404; 10 lần/10 phút; không lộ tồn tại). `p8.reports` = cờ này. Cờ bật tay SAU khi áp migration (thứ tự Part B).
+- Lý do native (Android scam/sensitive; iOS hate/sexual/self_harm/scam/impersonation): bảng người dùng nhận đúng như gửi; route báo cáo bài (`content_reports`, lý do chuẩn) quy về lý do gần nhất.
+- Kiểm: 10 test DB (Postgres nhúng) + 10 test route + chạy lại trên DB audit (báo cáo bình luận/user ok, trùng 23505, tự báo 23514/42501, ẩn danh 42501, người bị báo/người lạ thấy 0, client xoá 42501, xoá người báo → hàng ở lại với reporter_id NULL; đã dọn sạch).
+
+## 10. SẴN SÀNG DUYỆT — 02/10/2026, nhánh `sec/user-blocks-slice` @ 3ade17a (mã nguồn; tệp này ghi thêm sau)
+Trạng thái: toàn bộ test của nhánh xanh (16.475 test; 4 tệp DB chạy ở cổng riêng vì cổng cố định 54329/54381/54390 đang bị tiến trình ngoài giữ — kết quả 111/111 đạt; `jsonLd.test.tsx` đỏ khi chạy cả bộ vì tải, đạt khi chạy riêng, đỏ y hệt trên rc), tsc 0 lỗi, kiểm quyền SQL 0 lỗi, kiểm kiến trúc 15/15, không chạm `reviews/route.ts` và `uploadCompletion.ts`.
+Phạm vi cần duyệt (chỉ đọc): (1) `20261001_user_blocks`, (2) `20261001b_user_reports`, (3) `20261001d_moderation_standards`, (4) `20261001e_banned_identity_hash` (2 trigger trên `auth.users`, mã băm HMAC, fail-open), (5) hai route chặn, hai route báo cáo, sáu route kiểm duyệt (`decide`, `desk`, `appeals`, `appeals/[id]/resolve`, `moderation/decisions`, `…/appeal`, `reports/mine`), hai cron (`moderation-digest`, `moderation-snapshot-purge`), (6) bộ lọc phía máy chủ ở `users/search` và `users/[id]`, (7) trang `/admin/moderation` + `/profile/notices` + `/community-guidelines`. Tài liệu: `docs/security/USER-BLOCKS-SLICE.md`, `MODERATION-STANDARDS.md`, `docs/uat/PART-B-FINAL.md`.
+DB audit (UAT): bốn migration đã áp, rollback chạy thử (e → d → b → chặn) rồi áp lại thành công; `chat_blocks` và `content_reports` nguyên vẹn; mã băm: khoá + xoá người dùng thật bằng Auth Admin để lại đúng một mã băm, đăng ký lại cùng email bị từ chối.
+
+## 11. Duyệt độc lập của phiên BẢO MẬT (02/10, nhánh @ eda1fa2): GỘP CÓ ĐIỀU KIỆN, không có lỗi mức cao — xử lý
+| # | Mức | Phát hiện | Xử lý |
+|---|---|---|---|
+| 1 | Vừa | `user_reports` cho `authenticated` INSERT thẳng qua REST ⇒ bỏ qua giới hạn và kiểm tra tồn tại; 200 báo cáo child_safety lên id bịa chôn hàng chờ | **Đã sửa:** migration b không còn chính sách INSERT và `REVOKE INSERT` khỏi client; hai route ghi bằng service role SAU khi kiểm (không ẩn danh, đối tượng tồn tại, không phải của mình) và có giới hạn **bền vững** 10 báo cáo/10 phút đếm trong bảng (thêm vào giới hạn trong bộ nhớ). Test DB: cả bốn kiểu INSERT trực tiếp đều 42501; test route: giới hạn bền vững |
+| 2 | Vừa | `blocked_ids()` đọc `chat_blocks` ⇒ chặn chat có sẵn có hiệu lực ngay khi áp migration, không theo cờ | **Đã sửa:** hàm chỉ đọc `user_blocks`; bộ lọc phía máy chủ (`blockedPeers`) cũng vậy. API chặn vẫn ghi cả hai bảng nên chat tôn trọng chặn từ API; chặn chỉ làm trong chat không ẩn bài. Migration giờ thật sự không hoạt động cho tới khi ai đó chặn qua API. Huy không cần đếm `chat_blocks` nữa |
+| 3 | Vừa/thấp | Đảo ngược kháng nghị gỡ MỌI khoá/tạm khoá, kể cả lệnh nhân viên đặt tay | **Đã sửa:** chỉ gỡ khi trạng thái hiện tại đúng là cái quyết định này đã ghi (khoá: ghi chú nội bộ trùng lý do của quyết định; tạm khoá: hạn trùng ±5 phút với ngày quyết định + số ngày); ngược lại giữ nguyên và trả `restriction_lifted/ban_lifted: false`. Test |
+| 4 | Thấp | Service role đặt `subject_user_id`/`reviewer_id`/… NULL bất kỳ lúc nào | **Đã sửa:** chỉ cho phép trong chuỗi hành động khoá ngoại khi xoá tài khoản (`pg_trigger_depth() > 1`); ảnh chụp bình luận chỉ xoá qua `moderation_purge_snapshots` (tự đặt cờ trong giao dịch). Test: UPDATE trực tiếp bị 42501 cho cả `service_role` và `postgres`; xoá tài khoản vẫn thành công |
+| 5 | Thấp | `moderation_appeals` thiếu trigger chặn TRUNCATE | **Đã sửa** |
+| 6 | Thấp | Người bị chặn chèn thẳng `review_likes` vào bài của người chặn | **Đã sửa:** chính sách RESTRICTIVE INSERT `user_blocks_likes_insert` (+ rollback). Test |
+| 7 | Thấp | Follow có từ trước một lần chặn trong chat không bị xoá | Không còn liên quan (mục 2: chặn trong chat không bị đọc); chặn qua API vẫn xoá follow hai chiều |
+| 8 | Thấp | RPC `review_likers` (definer) không xét chặn | **Ghi backlog** (PL-BLOCK-REVIEW-LIKERS): đọc mã, chưa chạy thử; chỉ lộ danh sách người thích của bài |
+| 9 | Thấp | Chủ bài xoá bình luận người khác có hiệu lực ngay khi áp migration, trong khi `/api/config` báo `commentModeration` theo cờ | **Chấp nhận, ghi rõ:** chính sách DB là quyền của chủ bài (đã đúng với bản chất «quản lý bình luận trên bài mình»); cờ chỉ quyết định nút hiện trong app. Nêu trong PHẦN B |
+| 10 | Thấp | 20261001e: (a) đăng ký email khác rồi ĐỔI sang email bị khoá | **Đã sửa:** trigger BEFORE UPDATE OF email |
+|  |  | (b) biến thể «+thẻ», bỏ dấu chấm | **Đã sửa:** chuẩn hoá trước khi băm (+thẻ bỏ; chấm bỏ cho Gmail/Googlemail; googlemail → gmail). Test |
+|  |  | (c) pepper cùng DB nên bản pg_dump có đủ pepper + băm | **Ghi nhận trong migration + PHẦN B:** dump coi như dữ liệu mật (đã chứa mọi tài khoản); đưa pepper sang Vault/biến môi trường là backlog (PL-BANNED-PEPPER) |
+|  |  | (d) lỗi P0001 cho biết email từng bị khoá | **Chấp nhận:** GoTrue trả lỗi chung («Database error…»); đo trên DB audit thật: thông báo rỗng |

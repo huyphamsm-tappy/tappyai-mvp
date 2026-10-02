@@ -32,15 +32,9 @@ vi.mock('next/link', () => ({ default: (p: any) => <a href={typeof p.href === 's
 vi.mock('next/navigation', () => ({ useRouter: () => ({ push: vi.fn(), refresh: vi.fn(), replace: vi.fn() }), useSearchParams: () => new URLSearchParams() }))
 vi.mock('@/components/explore/VideoPlayer', () => ({ default: () => <div data-testid="video-player" /> }))
 vi.mock('@/lib/explore/behaviorTracker', () => ({ attachWatchTracker: () => () => {} }))
-vi.mock('./ReviewMusicDisc', () => ({ default: () => null }))
-vi.mock('./SoundSheet', () => ({ default: () => null }))
 vi.mock('./LikeListSheet', () => ({ default: ({ reviewId }: { reviewId: string }) => <div data-testid="like-list" data-review={reviewId} /> }))
 vi.mock('@/app/reviews/LikeListSheet', () => ({ default: ({ reviewId }: { reviewId: string }) => <div data-testid="like-list" data-review={reviewId} /> }))
 vi.mock('@/lib/i18n/useTranslation', () => ({ useTranslation: () => ({ t: (k: string) => k, locale: 'vi', setLocale: vi.fn() }) }))
-vi.mock('@/modules/music', () => ({
-  useMusicTrack: () => ({ track: null, loading: false }),
-  getPreviewUrl: (t: any) => t?.previewUrl ?? t?.audioUrl ?? '',
-}))
 
 const ME = 'me-user'
 const AUTHOR = 'other-author'

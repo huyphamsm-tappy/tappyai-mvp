@@ -21,6 +21,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import javax.inject.Named
 
 /**
  * Deliberately does **not** navigate away on a successful Google/Facebook sign-in — the
@@ -37,7 +38,11 @@ class LoginViewModel @Inject constructor(
     private val navigator: TappyNavigator,
     private val networkErrorMessages: NetworkErrorMessages,
     private val stringProvider: StringProvider,
+    @Named("isDebug") val isDebug: Boolean,
 ) : ViewModel() {
+
+    /** Debug builds only — see [AuthRepository.enterDebugGuest]. A no-op in release. */
+    fun onDebugGuestClick() = authRepository.enterDebugGuest()
 
     var email by mutableStateOf("")
         private set
@@ -47,6 +52,41 @@ class LoginViewModel @Inject constructor(
 
     fun onEmailChange(value: String) {
         email = value
+    }
+
+    var password by mutableStateOf("")
+        private set
+
+    fun onPasswordChange(value: String) {
+        password = value
+    }
+
+    /**
+     * The web card's email + password sign-in. Every refusal shows the same message — the
+     * provider's own text ("user not found" vs "wrong password") would make this form an
+     * account-enumeration oracle, the rule the web applies too. Success needs no navigation here:
+     * the session flipping to Authenticated routes the app, as for Google.
+     */
+    fun onPasswordSignInClick() {
+        val emailValue = email.trim()
+        if (emailValue.isEmpty() || password.isEmpty() || _uiState.value is UiState.Loading) return
+        viewModelScope.launch {
+            _uiState.value = UiState.Loading
+            when (authRepository.signInWithPassword(emailValue, password)) {
+                is NetworkResult.Success -> _uiState.value = UiState.Success(Unit)
+                is NetworkResult.Error -> _uiState.value = UiState.Error(stringProvider.get(R.string.auth_signin_failed))
+            }
+        }
+    }
+
+    /**
+     * "Tiếp tục với tư cách Khách" — the web's `handleGuest` returns to where the visitor came from.
+     * Reached from inside the app, that is the shell still on the back stack ([popBack]); on a cold
+     * start with no session at all, a guest session is created and the session change routes on.
+     */
+    fun onContinueAsGuest(popBack: () -> Boolean) {
+        if (popBack()) return
+        viewModelScope.launch { authRepository.ensureAnonymousSession() }
     }
 
     fun onGoogleSignInClick(context: Context) {

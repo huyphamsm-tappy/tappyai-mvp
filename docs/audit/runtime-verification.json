@@ -1,0 +1,44 @@
+{
+  "generatedAt": "2026-09-17T07:04:44.402Z",
+  "base": "http://localhost:3101",
+  "next_env_files": [
+    ".env.local"
+  ],
+  "effective": {
+    "NEXT_PUBLIC_SUPABASE_URL": "https://zdaprdfgpbpnxyofagmc.supabase.co",
+    "supabase_ref": "zdaprdfgpbpnxyofagmc",
+    "anon_key_ref": "zdaprdfgpbpnxyofagmc",
+    "service_key_ref": "zdaprdfgpbpnxyofagmc",
+    "KV_REST_API_URL": "ABSENT",
+    "KV_REST_API_TOKEN": "ABSENT",
+    "UPSTASH_REDIS_REST_URL": "ABSENT",
+    "KV_URL": "ABSENT",
+    "REDIS_URL": "ABSENT",
+    "LLM_PROVIDER": "ABSENT",
+    "LLM_FAST_MODEL": "ABSENT",
+    "LLM_SMART_MODEL": "ABSENT",
+    "LLM_PLANNING_MODEL": "ABSENT",
+    "ANTHROPIC_API_KEY": "PRESENT",
+    "SERPER_API_KEY": "PRESENT",
+    "GOOGLE_PLACES_API_KEY": "PRESENT",
+    "GCP_LOGGING_ENABLED": "ABSENT",
+    "prod_ref_present_anywhere": false
+  },
+  "api_version": {
+    "v": "dev"
+  },
+  "api_subscription": {
+    "status": 200,
+    "body": {
+      "isPro": true,
+      "status": "active",
+      "currentPeriodEnd": "2027-09-17T06:44:28.522454+00:00",
+      "freeDailyLimit": 15,
+      "quotaPeriod": "day",
+      "isAnonymous": false,
+      "todayMessageCount": 0,
+      "remaining": 15
+    }
+  },
+  "api_subscription_unauthenticated": 401
+}

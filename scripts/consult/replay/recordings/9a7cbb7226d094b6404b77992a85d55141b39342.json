@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Karaoke MEI\" OR \"Karaoke Avatar\" OR \"Karaoke SAFARI\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T00:51:28.634Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Karaoke MEI\" OR \"Karaoke Avatar\" OR \"Karaoke SAFARI\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Karaoke MEI",
+    "link": "https://www.tiktok.com/@mei.karaoke",
+    "snippet": "Karaoke MEI (@mei.karaoke) trên TikTok |714.1K Lượt thích.5903 Follower.Follow, đặt trước - Giảm 30% giá giờ 159-161-163 Hàm Nghi, Bến Thành, ...",
+    "position": 1
+   },
+   {
+    "title": "Mei.karaoke",
+    "link": "https://www.tiktok.com/@karaoke.mei",
+    "snippet": "Mei.karaoke (@karaoke.mei) trên TikTok |42 Lượt thích.Xem video mới nhất từ Mei.karaoke (@karaoke.mei) ... @karaoke.mei. 0Đã follow. 9Follower. 42Lượt thích.",
+    "position": 2
+   },
+   {
+    "title": "Ai để ý sẽ không thấy #bar #club #j4f #karaoke #karaokemei",
+    "link": "https://www.tiktok.com/@mei.karaoke/video/7673877556805864724",
+    "snippet": "Cùng hòa mình vào không khí sôi động tại Karaoke Mei, nơi hội tụ niềm đam mê bóng đá và âm nhạc. ... Karaoke Mei hứa hẹn sẽ mang đến một ...",
+    "position": 3
+   },
+   {
+    "title": "Karaoke AVATAR Cần Thơ",
+    "link": "https://www.tiktok.com/@honghotcantho65ct/video/7686689936371666197",
+    "snippet": "AI Video Summary: Karaoke AVATAR in Cần Thơ offers a modern decor experience, serving as a restaurant and karaoke venue. Explore the atmosphere ...",
+    "position": 4
+   },
+   {
+    "title": "Karaoke mei: Khi bạn đi với \"trai\"",
+    "link": "https://www.tiktok.com/@mei.karaoke/video/7680864284263337236",
+    "snippet": "Câu chuyện \"hài hước\" xoay quanh việc đi hát karaoke cùng \"trai\" tại Karaoke mei. Ban đầu, bà chả chỉ muốn \"ăn chã húi\" và được phục vụ ...",
+    "position": 5
+   },
+   {
+    "title": "karaokemei #karaoke #fyp",
+    "link": "https://www.tiktok.com/@mei.karaoke/video/7689052000020860180",
+    "snippet": "Chúng ta tự hào về các chiến binh đã thi đấu hết mình, mang vinh quang về cho Tổ quốc. Việt Nam ơi, thật tuyệt vời! âm thanh gốc - Karaoke MEI.",
+    "position": 6
+   },
+   {
+    "title": "Buồn của anh #fyp #karaokemei #genz #thattinh #hat",
+    "link": "https://www.tiktok.com/@mei.karaoke/video/7679079731995692309",
+    "snippet": "Video TikTok từ Karaoke MEI (@mei.karaoke): \"Buồn của anh #fyp #karaokemei #genz #thattinh #hat\".âm thanh gốc - Karaoke MEI.",
+    "position": 7
+   },
+   {
+    "title": "#j4fun #karaokemei #fyp #karaoke #trend",
+    "link": "https://www.tiktok.com/@mei.karaoke/video/7687982009787878676",
+    "snippet": "Video TikTok từ Karaoke MEI (@mei.karaoke): \"#j4fun #karaokemei #fyp #karaoke #trend\".âm thanh gốc - Dũng Nguyễn.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

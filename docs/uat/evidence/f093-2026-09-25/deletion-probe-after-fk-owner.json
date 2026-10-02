@@ -1,0 +1,19 @@
+{
+ "label": "after-fk-owner",
+ "email": "<redacted — see label>",
+ "at": "2026-09-25T05:40:51.312Z",
+ "columnsScanned": 497,
+ "before": {
+  "public.conversations.user_id": 7,
+  "public.decision_evidence.owner_id": 3,
+  "public.groups.creator_id": 1,
+  "public.profiles.id": 1,
+  "public.user_demographics.user_id": 1,
+  "public.user_events.user_id": 236,
+  "public.user_memory.user_id": 1
+ },
+ "deleteError": null,
+ "after": {},
+ "survivors": {},
+ "rolledBack": true
+}

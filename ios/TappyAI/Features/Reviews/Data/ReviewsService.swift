@@ -63,9 +63,36 @@ struct ReviewsService: Sendable {
     /// 🚨 This is the ONLY endpoint that returns `Review.moderation` for every row, which is what
     /// tells an author WHY a post of theirs is not public. Without it the composer's one-time
     /// notice is the only place they are ever told, and it is gone as soon as it is dismissed.
-    func fetchMyReviews() async throws -> FeedResponse {
+    ///
+    /// Decoded as `ReviewListResponse`, not `FeedResponse`: the route sends `{ reviews }` with no
+    /// `page`/`limit`, and the feed shape declares both required — see `ReviewListResponse`.
+    func fetchMyReviews() async throws -> ReviewListResponse {
         let endpoint = Endpoint(path: "/api/reviews/mine", method: .get, requiresAuth: true)
-        return try await api.send(endpoint, as: FeedResponse.self)
+        return try await api.send(endpoint, as: ReviewListResponse.self)
+    }
+
+    // MARK: - The bearer's own collections (`OwnCollection`)
+
+    /// `GET /api/reviews/liked` — the posts this account has liked, newest like first.
+    ///
+    /// The same shape, gate and cap as `/saved`: the bearer's own likes only (no user parameter),
+    /// hidden and held posts filtered out server-side, unservable media stripped, 100 at most.
+    func fetchLikedReviews() async throws -> CollectionReviewListResponse {
+        let endpoint = Endpoint(path: "/api/reviews/liked", method: .get, requiresAuth: true)
+        return try await api.send(endpoint, as: CollectionReviewListResponse.self)
+    }
+
+    /// `GET /api/reviews/saved` — the posts this account has saved, newest save first.
+    func fetchSavedReviews() async throws -> CollectionReviewListResponse {
+        let endpoint = Endpoint(path: "/api/reviews/saved", method: .get, requiresAuth: true)
+        return try await api.send(endpoint, as: CollectionReviewListResponse.self)
+    }
+
+    /// `GET /api/reviews/shared` — the posts this account has shared (`review_shares`), one per
+    /// post with its latest share first; the route collapses the history rows.
+    func fetchSharedReviews() async throws -> CollectionReviewListResponse {
+        let endpoint = Endpoint(path: "/api/reviews/shared", method: .get, requiresAuth: true)
+        return try await api.send(endpoint, as: CollectionReviewListResponse.self)
     }
 
     // MARK: - Single review

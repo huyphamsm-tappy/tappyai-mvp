@@ -1,0 +1,595 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "điểm tham quan Đà Lạt Da Lat",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@11.9404,108.4583,12z"
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T19:08:31.010Z",
+ "body": {
+  "searchParameters": {
+   "q": "điểm tham quan Đà Lạt Da Lat",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@11.9404,108.4583,12z",
+   "engine": "google"
+  },
+  "ll": "@11.9402966,108.4582955,12z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Khu du lịch Thác Datanla",
+    "address": "QL20 Đèo Prenn, Xuân Hương - Đà Lạt, Lâm Đồng 66000, Việt Nam",
+    "latitude": 11.9034324,
+    "longitude": 108.4496999,
+    "rating": 4.4,
+    "ratingCount": 25360,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch"
+    ],
+    "website": "https://dalattourist.com.vn/",
+    "phoneNumber": "+84 981 166 068",
+    "description": "Khu thắng cảnh nhộn nhịp có nhiều thác nước nhỏ, tàu lượn siêu tốc, tuyến cáp treo và các con đường mòn đi bộ.",
+    "openingHours": {
+     "Thứ Ba": "07:30–16:30",
+     "Thứ Tư": "07:30–16:30",
+     "Thứ Năm": "07:30–16:30",
+     "Thứ Sáu": "07:30–16:30",
+     "Thứ Bảy": "07:30–16:30",
+     "Chủ Nhật": "07:30–16:30",
+     "Thứ Hai": "07:30–16:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnLdt4rc9wOwznEmrUvkZ6gr9Ol4DO37g6GiUkHMz_YdX5GrQmPNHNwyCknJJm5PEkgnii2Vt81AeP0i5PLAcpgfNGD-ecyxhfnd0tCdmS_bm2phQlNdHSij7gZLB7Pf47O5FK0",
+    "cid": "17928424083927973989",
+    "fid": "0x317114a1a4b93341:0xf8ce8eb72915c065",
+    "placeId": "ChIJQTO5pKEUcTERZcAVKbeOzvg"
+   },
+   {
+    "position": 2,
+    "title": "Quảng trường Lâm Viên",
+    "address": "Đ. Trần Quốc Toản, Xuân Hương - Đà Lạt, Lâm Đồng, Việt Nam",
+    "latitude": 11.9393622,
+    "longitude": 108.44520299999999,
+    "rating": 4.5,
+    "ratingCount": 14672,
+    "type": "Quảng trường",
+    "types": [
+     "Quảng trường",
+     "Điểm thu hút khách du lịch"
+    ],
+    "description": "Quảng trường ven hồ nổi bật với những tòa nhà ốp kính hiện đại nổi tiếng, có nhiều quầy thực phẩm và sự kiện âm nhạc.",
+    "openingHours": {
+     "Thứ Ba": "Mở cửa cả ngày",
+     "Thứ Tư": "Mở cửa cả ngày",
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlCyF0Er4B1ZgI-oNzMHRupl2YwacphwH5wLl8ZS3z1jxH1N_4V0eH88Adbs6yWJlnuJ-1QgKc-mYAf63sPcWnYreWmL-e2pxO9HxpcNKiPTpZRrIEK-tG5Ox-ZsX_obuv23OKjDg",
+    "cid": "7416178250348386697",
+    "fid": "0x31711324a3fe0629:0x66eb8ed37afe5989",
+    "placeId": "ChIJKQb-oyQTcTERiVn-etOO62Y"
+   },
+   {
+    "position": 3,
+    "title": "Vườn hoa Đà Lạt",
+    "address": "02 Đ. Trần Nhân Tông, Lâm Viên - Đà Lạt, Lâm Đồng, Việt Nam",
+    "latitude": 11.950247899999999,
+    "longitude": 108.4498289,
+    "rating": 4.2,
+    "ratingCount": 4270,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch",
+     "Công viên",
+     "Vườn"
+    ],
+    "website": "https://vuonhoathanhphodalat.com.vn/",
+    "phoneNumber": "+84 263 3837 771",
+    "openingHours": {
+     "Thứ Ba": "06:30–18:00",
+     "Thứ Tư": "06:30–18:00",
+     "Thứ Năm": "06:30–18:00",
+     "Thứ Sáu": "06:30–18:00",
+     "Thứ Bảy": "06:30–18:00",
+     "Chủ Nhật": "06:30–18:00",
+     "Thứ Hai": "06:30–18:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWli-0yvcIu5MbKMz0SM4jVJl_Pe5bMx-eZAS061lHe37Tx9SjAH2cyGBUnOHzdHpBbfnsp-k6makCB6HUkgIhaBbiP1aB5sVderE0r5GLQD_CxQrmTr-kkznudsY3YutbBAy0ARPw",
+    "cid": "7108760654706798290",
+    "fid": "0x317113cc83ae4a67:0x62a76426d1126ed2",
+    "placeId": "ChIJZ0qug8wTcTER0m4S0SZkp2I"
+   },
+   {
+    "position": 4,
+    "title": "Thung lũng Tình Yêu",
+    "address": "3-5-7 Đường Mai Anh Đào, Lâm Viên - Đà Lạt, Lâm Đồng, Việt Nam",
+    "latitude": 11.9788096,
+    "longitude": 108.44830809999999,
+    "rating": 4.4,
+    "ratingCount": 20220,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch"
+    ],
+    "website": "https://ticketssee.com/thunglungtinhyeu/",
+    "description": "Công viên lãng mạn có tác phẩm ng.thuật kỳ lạ, vườn đặc sắc và hồ nước có những chiếc thuyền hình thiên nga.",
+    "openingHours": {
+     "Thứ Ba": "07:30–17:00",
+     "Thứ Tư": "07:30–17:00",
+     "Thứ Năm": "07:30–17:00",
+     "Thứ Sáu": "07:30–17:00",
+     "Thứ Bảy": "07:30–17:00",
+     "Chủ Nhật": "07:30–17:00",
+     "Thứ Hai": "07:30–17:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWl4OotUq7NlqEgiyTA9tQCPnSxl2kbBD7SCLXITqXf7kjuzxRtvnEZbtZIGxBYFlLc71vAWk-mpJ1bAIhmTS64u7hpnoZf9razAKPIuxb59l6flfSu0iR3lyZSxFZFqnR2LNCfa",
+    "cid": "13350656737474802166",
+    "fid": "0x317112bd43e6a173:0xb9470f91635c71f6",
+    "placeId": "ChIJc6HmQ70ScTER9nFcY5EPR7k"
+   },
+   {
+    "position": 5,
+    "title": "Khu du lịch Fresh Garden Dalat",
+    "address": "90B Vạn Thành, Cam Ly - Đà Lạt, Lâm Đồng 670000, Việt Nam",
+    "latitude": 11.9476933,
+    "longitude": 108.4090729,
+    "rating": 4.3,
+    "ratingCount": 3592,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch"
+    ],
+    "website": "https://freshdalat.vn/",
+    "phoneNumber": "+84 908 974 949",
+    "openingHours": {
+     "Thứ Ba": "07:30–17:30",
+     "Thứ Tư": "07:30–17:30",
+     "Thứ Năm": "07:30–17:30",
+     "Thứ Sáu": "07:30–17:30",
+     "Thứ Bảy": "07:30–17:30",
+     "Chủ Nhật": "07:30–17:30",
+     "Thứ Hai": "07:30–17:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmwiAEQzGGhESzoAnCP1gH37YWxyxuJzxVk4NtPPTG5IYG1AJeOmj4hR5RnNuaOf6qRMyXg-AP1xXRW5O6MrTLrNA1_AOe7jaxnma0hGcFkmc61sZl1seb7YSR2fUHLwI3nrjWJ",
+    "cid": "4050295607137020464",
+    "fid": "0x31716db652927bcd:0x38358a6532ba2a30",
+    "placeId": "ChIJzXuSUrZtcTERMCq6MmWKNTg"
+   },
+   {
+    "position": 6,
+    "title": "Đường Hầm Điêu Khắc",
+    "address": "Thành phố Đà Lạt, Lâm Đồng 66000, Việt Nam",
+    "latitude": 11.882505199999999,
+    "longitude": 108.41156939999999,
+    "rating": 4.2,
+    "ratingCount": 16568,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch"
+    ],
+    "phoneNumber": "+84 338 985 899",
+    "description": "Khu trưng bày nghệ thuật với các tác phẩm điêu khắc bằng đất sét khổng lồ đủ thể loại từ thằn lằn đến tàu hỏa.",
+    "openingHours": {
+     "Thứ Ba": "07:00–17:00",
+     "Thứ Tư": "07:00–17:00",
+     "Thứ Năm": "07:00–17:00",
+     "Thứ Sáu": "07:00–17:00",
+     "Thứ Bảy": "07:00–17:00",
+     "Chủ Nhật": "07:00–17:00",
+     "Thứ Hai": "07:00–17:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlBSdqAKXCIQgfNJr1D_1txztZ2cDrpxSlSOKyfa90pbZCFhXPo9CsFkTr-auTvvYMlCeZHqvs-hK3rXxikOgPqOm6tYUBxON3vCuiYjpmIVI9Xo3bWxlwAPk0YBa2A4iUcKmJBwwmCIGe4",
+    "cid": "4438438102778886233",
+    "fid": "0x31716b38c34667bf:0x3d987ff049b1b859",
+    "placeId": "ChIJv2dGwzhrcTERWbixSfB_mD0"
+   },
+   {
+    "position": 7,
+    "title": "Làng hoa Vạn Thành - Khu du lịch VẠN HOA ĐÀ LẠT",
+    "address": "40 Vạn Thành, Cam Ly - Đà Lạt, Lâm Đồng 66113, Việt Nam",
+    "latitude": 11.947042699999999,
+    "longitude": 108.41315159999999,
+    "rating": 4.4,
+    "ratingCount": 1751,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch",
+     "Đại lý du lịch tham quan"
+    ],
+    "website": "https://vanhoadalat.com.vn/",
+    "phoneNumber": "+84 931 119 903",
+    "openingHours": {
+     "Thứ Ba": "07:00–17:00",
+     "Thứ Tư": "07:00–17:00",
+     "Thứ Năm": "07:00–17:00",
+     "Thứ Sáu": "07:00–17:00",
+     "Thứ Bảy": "07:00–17:00",
+     "Chủ Nhật": "07:00–17:00",
+     "Thứ Hai": "07:00–17:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWklHuQ9V3LDlbrIhlYBvr0YkmpTqnHYDeYjxOEYTTcqk9v2x9UVpvLJuRC8DRso0vQF-jt0hz7SAYGfHzZpcNdzjM9zYVMyiaavU3oUvVIFEWkxqTTMGsTPH8jI98NAIqgeeRMkwmChk2w",
+    "cid": "15528743316674814661",
+    "fid": "0x31716d8b2cea55f3:0xd7812dc58e9fa2c5",
+    "placeId": "ChIJ81XqLIttcTERxaKfjsUtgdc"
+   },
+   {
+    "position": 8,
+    "title": "KDL Sinh Thái Cao Nguyên Hoa Đà Lạt",
+    "address": "Đèo, Tiểu khu 158, Cam Ly - Đà Lạt, Lâm Đồng, Việt Nam",
+    "latitude": 11.9266145,
+    "longitude": 108.3712692,
+    "rating": 4.5,
+    "ratingCount": 4166,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch"
+    ],
+    "website": "https://www.facebook.com/KDLSinhThaiCaoNguyenHoaDaLat/",
+    "phoneNumber": "+84 983 855 556",
+    "openingHours": {
+     "Thứ Ba": "07:00–16:30",
+     "Thứ Tư": "07:00–16:30",
+     "Thứ Năm": "07:00–16:30",
+     "Thứ Sáu": "07:00–16:30",
+     "Thứ Bảy": "07:00–16:30",
+     "Chủ Nhật": "07:00–16:30",
+     "Thứ Hai": "07:00–16:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlOCH1ObHdkLl-bf5kP0NdxVil5PoQKIWAYR5W7DlF35J9gL4eIfxxGn_3GXVqjQdFqv0BbExjBkNk70arKMKNrGLb6fuwXnG6LEoigU1DY1EopdK7Ilgr8N5TDvObii2rMSBCX",
+    "cid": "2201333556298856468",
+    "fid": "0x31716dcb980c42cb:0x1e8cb534cf573814",
+    "placeId": "ChIJy0IMmMttcTERFDhXzzS1jB4"
+   },
+   {
+    "position": 9,
+    "title": "Làng Nấm Đà Lạt",
+    "address": "Cam Ly, Thôn Măng Lin, Lang Biang - Đà Lạt, Lâm Đồng 66107, Việt Nam",
+    "latitude": 11.9679062,
+    "longitude": 108.38880859999999,
+    "rating": 4.9,
+    "ratingCount": 2482,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch",
+     "Công ty công nghệ sinh học",
+     "Tham quan trang trại hộ gia đình",
+     "Nhà hàng món lẩu",
+     "Trang trại hữu cơ"
+    ],
+    "website": "https://langnamdalat.com/",
+    "phoneNumber": "+84 889 222 888",
+    "openingHours": {
+     "Thứ Ba": "08:00–17:00",
+     "Thứ Tư": "08:00–17:00",
+     "Thứ Năm": "08:00–17:00",
+     "Thứ Sáu": "08:00–17:00",
+     "Thứ Bảy": "08:00–17:00",
+     "Chủ Nhật": "08:00–17:00",
+     "Thứ Hai": "08:00–17:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnCvpNY_STWQP54fpXTXUjXqjVhjCawiPRTSX9Q4rB0avWCTgYC4NCv_xHI4pc2ciy_UIB7YvyUnm5K3cbp_yXsZPYl_IYlOZ2Wh9rvj-U7QyEneBtIhsSRZ8tBDOPdHEE6DLE4nQ",
+    "cid": "9162349584810285832",
+    "fid": "0x31716deca1c796bb:0x7f27346736909b08",
+    "placeId": "ChIJu5bHoextcTERCJuQNmc0J38"
+   },
+   {
+    "position": 10,
+    "title": "Đồi Mộng Mơ Đà Lạt",
+    "address": "Số 5 Đường Mai Anh Đào, Lâm Viên - Đà Lạt, Lâm Đồng 670000, Việt Nam",
+    "latitude": 11.9778728,
+    "longitude": 108.445152,
+    "rating": 4.3,
+    "ratingCount": 3114,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch"
+    ],
+    "phoneNumber": "+84 263 3821 448",
+    "description": "Khu nghỉ dưỡng nằm giữa những rừng thông và vườn hoa rực rỡ với nhà hàng và sân gôn 9 lỗ.",
+    "openingHours": {
+     "Thứ Ba": "07:30–17:30",
+     "Thứ Tư": "07:30–17:30",
+     "Thứ Năm": "07:30–17:30",
+     "Thứ Sáu": "07:30–17:30",
+     "Thứ Bảy": "07:30–17:30",
+     "Chủ Nhật": "07:30–17:30",
+     "Thứ Hai": "07:30–17:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnPwYW4QG_KP7vR2R52IkhvOhTyRb8HrEi7jg_CgXrW9OyS6i2wSuMj4_E2D3HqGi82Pa0gYbuYRTwZeUlxvu4Uah0TmFxK2yGHn9zjoUBenML6Akumjy1Ho7uMnlafhPHNr09P",
+    "cid": "2556882152207176419",
+    "fid": "0x317112bcf31cf46b:0x237bdec53ed852e3",
+    "placeId": "ChIJa_Qc87wScTER41LYPsXeeyM"
+   },
+   {
+    "position": 11,
+    "title": "Ngàn Thông Cầu Kính Đà Lạt",
+    "address": "Đường Mai Anh Đào, Lâm Viên - Đà Lạt, Lâm Đồng 670000, Việt Nam",
+    "latitude": 11.9786232,
+    "longitude": 108.44572199999999,
+    "rating": 4.2,
+    "ratingCount": 169,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch"
+    ],
+    "phoneNumber": "+84 912 805 279",
+    "openingHours": {
+     "Thứ Ba": "07:30–17:00",
+     "Thứ Tư": "07:30–17:00",
+     "Thứ Năm": "07:30–17:00",
+     "Thứ Sáu": "07:30–17:00",
+     "Thứ Bảy": "07:30–17:00",
+     "Chủ Nhật": "07:30–17:00",
+     "Thứ Hai": "07:30–17:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWn45hZ9xpXpBwgJJCScILuWHAQvAazShCu88VEtPQ1HMfwSSi8Fu5JIU5OCSJw_nYaRm9YXLDhcOnB5IXx3I-riquHseWztB4oLYGpfZ0WicAqzYPRfBGfGH2CMNhPrTwPINsP0",
+    "cid": "10409984636059041650",
+    "fid": "0x31711368b7c9154f:0x9077b1df3d92bf72",
+    "placeId": "ChIJTxXJt2gTcTERcr-SPd-xd5A"
+   },
+   {
+    "position": 12,
+    "title": "Đường Hầm Hỏa Xa Đà Lạt",
+    "address": "WG2J+4J8, QL20, Xuân Trường - Đà Lạt, Lâm Đồng, Việt Nam",
+    "latitude": 11.9002977,
+    "longitude": 108.53159199999999,
+    "rating": 4.1,
+    "ratingCount": 797,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch"
+    ],
+    "openingHours": {
+     "Thứ Ba": "Mở cửa cả ngày",
+     "Thứ Tư": "Mở cửa cả ngày",
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmTot1qso2BlxzC3snWs3sa77T8Vr-w7sl2WwYoOXjY-fFyC60QwEInwPu8ACoErOMkzFc56AWmfodt2kh6HS0Wg44sQu1YiNhsRQ8g0EOB83gMZv0T8NJLPo10xDVDVbOWPpEa",
+    "cid": "11881858765411722544",
+    "fid": "0x3171116a1495aab1:0xa4e4d79827ba2530",
+    "placeId": "ChIJsaqVFGoRcTERMCW6J5jX5KQ"
+   },
+   {
+    "position": 13,
+    "title": "Khu du lịch Lá Phong",
+    "address": "45 Đường Đặng Thái Thân, Xuân Hương - Đà Lạt, Lâm Đồng, Việt Nam",
+    "latitude": 11.9285753,
+    "longitude": 108.45165139999999,
+    "rating": 4.1,
+    "ratingCount": 3322,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch"
+    ],
+    "phoneNumber": "+84 901 233 994",
+    "description": "Khu rừng có hàng nghìn cây phong, anh đào và tùng bách cùng quán cà phê, khu cắm trại và nhà trọ dưới mặt đất.",
+    "openingHours": {
+     "Thứ Ba": "07:30–17:30",
+     "Thứ Tư": "07:30–17:30",
+     "Thứ Năm": "07:30–17:30",
+     "Thứ Sáu": "07:30–17:30",
+     "Thứ Bảy": "07:30–17:30",
+     "Chủ Nhật": "07:30–17:30",
+     "Thứ Hai": "07:30–17:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmDt6afSAqjB5hTcAI7QFlWqqruv_LjzohCJepVtQ-1MhpZpmmx6C75dTHULdojQXAoO62dTNvRHaEBOWHCvOeIzgvYHJ7zshU2XA8PZnhmEcXOnlrGqXE7aMfbi9jFibOvFDC1",
+    "cid": "3162938822105498960",
+    "fid": "0x3171133e5090ba29:0x2be50419c9e40550",
+    "placeId": "ChIJKbqQUD4TcTERUAXkyRkE5Ss"
+   },
+   {
+    "position": 14,
+    "title": "Khu Du Lịch Lang Biang",
+    "address": "305 Langbiang, Lang Biang - Đà Lạt, Lâm Đồng 672700, Việt Nam",
+    "latitude": 12.0193208,
+    "longitude": 108.4243879,
+    "rating": 4.1,
+    "ratingCount": 8910,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch",
+     "Thắng cảnh"
+    ],
+    "website": "https://dalattourist.com.vn/",
+    "phoneNumber": "+84 263 3839 456",
+    "openingHours": {
+     "Thứ Ba": "07:30–17:00",
+     "Thứ Tư": "07:30–17:00",
+     "Thứ Năm": "07:30–17:00",
+     "Thứ Sáu": "07:30–17:00",
+     "Thứ Bảy": "07:30–17:00",
+     "Chủ Nhật": "07:30–17:00",
+     "Thứ Hai": "07:30–17:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWk_tPNf_NwQo3wwtRJEQIEAW1entnQDiDkC2zpQhckgIoeNtEWm-Z9tiaxp1V5DsGgKuHhlIezjwetC-JzoloCTJPv85BgehTP5Kj-xnruC1FDaIRvuq1qyPZ7m6DE0IOCs_GS1",
+    "cid": "288633811461070287",
+    "fid": "0x317174a555555555:0x4016eec1a4dddcf",
+    "placeId": "ChIJVVVVVaV0cTERz91NGuxuAQQ"
+   },
+   {
+    "position": 15,
+    "title": "Khu Du Lịch Thuý Thuận Đà Lạt",
+    "address": "Tổ 13 Thôn 1, Cam Ly - Đà Lạt, Lâm Đồng 670000, Việt Nam",
+    "latitude": 11.9129442,
+    "longitude": 108.3392851,
+    "rating": 4.6,
+    "ratingCount": 1682,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch"
+    ],
+    "phoneNumber": "+84 327 977 535",
+    "openingHours": {
+     "Thứ Ba": "07:00–17:30",
+     "Thứ Tư": "07:00–17:30",
+     "Thứ Năm": "07:00–17:30",
+     "Thứ Sáu": "07:00–17:30",
+     "Thứ Bảy": "07:00–17:30",
+     "Chủ Nhật": "07:00–17:30",
+     "Thứ Hai": "07:00–17:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmlqU3sMX4Ho54lva52ZR3vi5_JAkzY2oMTY7DaLDf_YtYUXhlxa8EpPI3dedgHGkE-Po54gECG-AHxxuohcyVu315EfegxwNp4qQezwF4bRBnmRQGNSEG0RPVg5fwmJZAAagjx",
+    "cid": "3094093166832154717",
+    "fid": "0x31716d49ddce1969:0x2af06d578efe785d",
+    "placeId": "ChIJaRnO3UltcTERXXj-jldt8Co"
+   },
+   {
+    "position": 16,
+    "title": "Nhà lao thiếu nhi Đà Lạt",
+    "address": "9A Hồ Xuân Hương, Lâm Viên - Đà Lạt, Lâm Đồng 66000, Việt Nam",
+    "latitude": 11.9524896,
+    "longitude": 108.4706777,
+    "rating": 4.6,
+    "ratingCount": 443,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch",
+     "Bảo tàng"
+    ],
+    "website": "http://www.baotanglamdong.com.vn/",
+    "phoneNumber": "+84 263 3577 234",
+    "openingHours": {
+     "Thứ Ba": "07:15–11:30, 13:30–17:00",
+     "Thứ Tư": "07:15–11:30, 13:30–17:00",
+     "Thứ Năm": "07:15–11:30, 13:30–17:00",
+     "Thứ Sáu": "07:15–11:30, 13:30–17:00",
+     "Thứ Bảy": "07:15–11:30, 13:30–17:00",
+     "Chủ Nhật": "07:15–11:30, 13:30–17:00",
+     "Thứ Hai": "07:15–11:30, 13:30–17:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmxGPP9WpnPby0Q1NOjDlgynxsAHmkxF3haBzow3WfPX8mjQJz0dQTxOoCMgk2vDMcHHorFgKxOEwmVZf2KyGu-H5LTZR10DEVaLvwTuiOYTnSpAkN4fjIN24bqjH_l7I4eIXgRig",
+    "cid": "1077363387316484296",
+    "fid": "0x317112feb56bc6cd:0xef3904aeb02b8c8",
+    "placeId": "ChIJzcZrtf4ScTERyLgC60qQ8w4"
+   },
+   {
+    "position": 17,
+    "title": "Mongo Land - Đà Lạt",
+    "address": "Tổ 16 thôn 1, Tà Nung, Cam Ly - Đà Lạt, Lâm Đồng 670000, Việt Nam",
+    "latitude": 11.9157314,
+    "longitude": 108.3392217,
+    "rating": 4.5,
+    "ratingCount": 10626,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch"
+    ],
+    "phoneNumber": "+84 983 577 377",
+    "openingHours": {
+     "Thứ Ba": "07:00–17:30",
+     "Thứ Tư": "07:00–17:30",
+     "Thứ Năm": "07:00–17:30",
+     "Thứ Sáu": "07:00–17:30",
+     "Thứ Bảy": "07:00–17:30",
+     "Chủ Nhật": "07:00–17:30",
+     "Thứ Hai": "07:00–17:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmt9GO9m-N3WiR2kfgWRymnvisCSR5IFiegdGh76gBN4cQFI64ilq3k5SfVAIoBy7czg2TLSIIpUp_l22CSvu4MypuqFI6hAQDxQhtWYtWu1ia_39l-tCGzn9Nrs0PiRICNjzEp",
+    "cid": "5245936244841217186",
+    "fid": "0x31716d80e5a43fe5:0x48cd4f38741b7ca2",
+    "placeId": "ChIJ5T-k5YBtcTERonwbdDhPzUg"
+   },
+   {
+    "position": 18,
+    "title": "Khu Du Lịch Cáp Treo Đà Lạt",
+    "address": "WCFV+5HC Đồi Robin, Xuân Hương - Đà Lạt, Lâm Đồng 66116, Việt Nam",
+    "latitude": 11.9232151,
+    "longitude": 108.4437784,
+    "rating": 4.4,
+    "ratingCount": 5392,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch",
+     "Tàu điện cáp treo"
+    ],
+    "website": "https://www.dalattourist.com.vn/",
+    "phoneNumber": "+84 966 984 212",
+    "description": "Cáp treo nhiều màu sắc nhìn ra toàn cảnh thành phố và rừng thông, ngoài ra còn đi đến Thiền Viện Trúc Lâm.",
+    "openingHours": {
+     "Thứ Ba": "07:30–11:45, 13:00–16:45",
+     "Thứ Tư": "07:30–11:45, 13:00–16:45",
+     "Thứ Năm": "07:30–11:45, 13:00–16:45",
+     "Thứ Sáu": "07:30–11:45, 13:00–16:45",
+     "Thứ Bảy": "07:30–16:45",
+     "Chủ Nhật": "07:30–16:45",
+     "Thứ Hai": "07:30–11:45, 13:00–16:45"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmhhYbawq1i5F9lY_-EfkhKlIp1NUTHCK2P5EdUKrv8vYvNmw5fH_f0U2jRVGG5Z8ZNwpU4sSRNmnQL70vlHRBNDQC1pKB-MzO0zk_5xVVV8mKLo9_Na01TNjL9LHPgmFzwDrnXpw",
+    "cid": "13584580655396373767",
+    "fid": "0x31711347082ec713:0xbc862021c38b4507",
+    "placeId": "ChIJE8cuCEcTcTERB0WLwyEghrw"
+   },
+   {
+    "position": 19,
+    "title": "Khu Du Lịch Sinh Thái Hoa Sơn Điền Trang",
+    "address": "Tiểu khu 159 Phường 5 hướng đi đèo, 159 ĐT725, Cam Ly - Đà Lạt, Lâm Đồng 670000, Việt Nam",
+    "latitude": 11.9338538,
+    "longitude": 108.3761498,
+    "rating": 3.9,
+    "ratingCount": 3728,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch",
+     "Đại lý du lịch tham quan",
+     "Đại lý du lịch"
+    ],
+    "phoneNumber": "+84 868 588 886",
+    "openingHours": {
+     "Thứ Ba": "07:00–17:00",
+     "Thứ Tư": "07:00–17:00",
+     "Thứ Năm": "07:00–17:00",
+     "Thứ Sáu": "07:00–17:00",
+     "Thứ Bảy": "07:00–17:00",
+     "Chủ Nhật": "07:00–17:00",
+     "Thứ Hai": "07:00–17:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnEiuGzsNW_l_MgWDt7ynfABwUgz4CS8pNbRPmrHtCYQ7TAGz7DeNOKXU-nvfvnNx1JEegdYdOyOTyJ8g9ymDWvQrY0ET0tUrjPWWgjCvPi0PSfQGlsajHFOsHBEL20dWvni9aKLg",
+    "cid": "2762253960309042758",
+    "fid": "0x31716c5efa3906b7:0x26557f5783a2ee46",
+    "placeId": "ChIJtwY5-l5scTERRu6ig1d_VSY"
+   },
+   {
+    "position": 20,
+    "title": "Thác Cam Ly",
+    "address": "WCV9+G3P, 8b Đường Hoàng Văn Thụ, Cam Ly - Đà Lạt, Lâm Đồng, Việt Nam",
+    "latitude": 11.9418046,
+    "longitude": 108.4208479,
+    "rating": 3.2,
+    "ratingCount": 3006,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch"
+    ],
+    "phoneNumber": "+84 263 3834 372",
+    "description": "Hồ và thác nước nhỏ, đơn sơ nằm giữa không gian giản dị và có tính phí tham quan.",
+    "openingHours": {
+     "Thứ Ba": "07:00–17:00",
+     "Thứ Tư": "07:00–17:00",
+     "Thứ Năm": "07:00–17:00",
+     "Thứ Sáu": "07:00–17:00",
+     "Thứ Bảy": "07:00–17:00",
+     "Chủ Nhật": "07:00–17:00",
+     "Thứ Hai": "07:00–17:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkE126kV7-XgEZN6SsTxaLAGnp81ITkpknTUHPcp_apyVj6mgTruJuv0SyD9WvWovAMqIkyxRqgdxG9vd2w1HWCbrYpWjZ4bJKYJbT18RTIIYymUWu-Xq8Phh3IC_7rUwH8Lvdnwg",
+    "cid": "3717547526993202889",
+    "fid": "0x31716cdad637aa1b:0x339761c7860fcec9",
+    "placeId": "ChIJG6o31tpscTERyc4PhsdhlzM"
+   }
+  ],
+  "credits": 3
+ }
+}

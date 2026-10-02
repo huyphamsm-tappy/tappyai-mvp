@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Acer AL14-45P-R2PL\" OR \"Acer Aspire Lite 14\" OR \"Acer Aspire Lite 14 AL14-44P\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:56:21.209Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Acer AL14-45P-R2PL\" OR \"Acer Aspire Lite 14\" OR \"Acer Aspire Lite 14 AL14-44P\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Acer Aspire Lite 14 DDR5 Blank Screen Fixes technicians ...",
+    "link": "https://www.tiktok.com/@jbv_computers/video/7680922048465472789",
+    "snippet": "Troubleshooting Acer Aspire Lite 14 (DDR5, Type-C) blank screen — common causes, diagnostic tips and what files techs need. #Acer #AspireLite # ...",
+    "position": 1
+   },
+   {
+    "title": "Acer Aspire Lite 14 review: Best laptop under Rs. 80K?",
+    "link": "https://www.tiktok.com/@itticomputers/video/7673481310882532629",
+    "snippet": "Lead Acer Aspire Lite 14 is positioned as a lightweight, practical laptop for students, office work, assignments and everyday use, ...",
+    "position": 2
+   },
+   {
+    "title": "acer aspire lite 14 accessories",
+    "link": "https://shop.tiktok.com/sg/k/acer-aspire-lite-14-accessories",
+    "snippet": "Explore the latest acer aspire lite 14 accessories at TikTok Shop and enjoy free shipping! Shop exclusive collections and discover top trending products ...",
+    "position": 3
+   },
+   {
+    "title": "The Nude Pink Acer Aspire Lite 14 is here to help you stay ...",
+    "link": "https://www.tiktok.com/@gigahertz_official/video/7626666707037244690",
+    "snippet": "The Nude Pink Acer Aspire Lite 14 is here to help you stay stylish and efficient! With 512GB of Storage, you're able to keep your files ...",
+    "position": 4
+   },
+   {
+    "title": "acer aspire lite 14 pink cover case",
+    "link": "https://shop.tiktok.com/vn/k/acer-aspire-lite-14-pink-cover-case",
+    "snippet": "Khám phá acer aspire lite 14 pink cover case mới nhất tại TikTok Shop và tận hưởng freeship! Mua sắm những bộ sưu tập độc quyền và khám phá sản phẩm thịnh ...",
+    "position": 5
+   },
+   {
+    "title": "Acer Aspire Lite 14 N355 review — 8GB RAM 512GB SSD ...",
+    "link": "https://www.tiktok.com/@megatechputalisadak/video/7664618927833484565",
+    "snippet": "Lead Acer Aspire Lite 14 N355 positions itself as a budget-friendly laptop offering 8GB RAM and a 512GB SSD. The listing highlights that its ...",
+    "position": 6
+   },
+   {
+    "title": "Shockproof Laptop Sleeve Case for Acer Aspire Lite 14 ...",
+    "link": "https://shop.tiktok.com/ph/pdp/shockproof-laptop-sleeve-case-for-acer-aspire-lite-14-inch/1734161193502607344",
+    "snippet": "Shockproof Laptop Sleeve Case for Acer Aspire Lite 14 2024 AL14-31P AL14-31 AL14-72 / AL14-51M AL14-51 AL14 51M 14 inch Notebook Handbag Briefcase11 inch/12 ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 7
+   },
+   {
+    "title": "Acer Aspire Lite 14: Budget Laptop for Work and Study",
+    "link": "https://www.tiktok.com/@unipc.ph/video/7471226342357454100",
+    "snippet": "Discover the Acer Aspire Lite 14, a budget-friendly laptop perfect for students and professionals. Lightweight, powerful, and ideal for everyday ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,33 @@
+{
+  "id": "T3",
+  "text": "Cái thứ hai có bao gồm ăn sáng không?",
+  "parent": "T2",
+  "status": 200,
+  "ms": 4174,
+  "evidenceId": "2f1816d8-af26-49d2-ba0b-40e384dfa9dc",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình chưa có kết quả tìm kiếm khách sạn cụ thể ở Đà Nẵng để xem chi tiết về ăn sáng. Để gợi ý chính xác, bạn cho mình biết:\n\n1. **Mấy người** sẽ ở?\nSau đó mình sẽ tìm các khách sạn gần biển dưới 1 triệu/đêm và kiểm tra xem cái nào có ăn sáng kèm theo nhé.",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "khach san da nang gan bien duoi 1tr/dem"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn muốn ở 1 đêm gần đây (cuối tuần tới), check-in 2026-10-03, check-out 2026-10-04. Để gợi ý đúng ý, mình cần biết: **mấy người** sẽ ở?\n\n[FOLLOWUPS]1–2 người|3–5 người|nhóm đông[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "Cái thứ hai có bao gồm ăn sáng không?"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình chưa có kết quả tìm kiếm khách sạn cụ thể ở Đà Nẵng để xem chi tiết về ăn sáng. Để gợi ý chính xác, bạn cho mình biết:\n\n1. **Mấy người** sẽ ở?\nSau đó mình sẽ tìm các khách sạn gần biển dưới 1 triệu/đêm và kiểm tra xem cái nào có ăn sáng kèm theo nhé."
+    }
+  ]
+}

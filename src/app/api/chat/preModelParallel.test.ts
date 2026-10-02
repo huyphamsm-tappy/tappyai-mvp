@@ -22,12 +22,12 @@ const SRC = readFileSync(join(__dirname, 'route.ts'), 'utf8')
 /** Source with comments removed — a rule must hold in CODE, not in prose about code. */
 const CODE = SRC.replace(/\/\/.*$/gm, '').replace(/\/\*[\s\S]*?\*\//g, '')
 
-/** The four reads that were serial and are now batched. */
+/** The reads that were serial and are now batched. The quota is no longer among them: since
+ *  2026-09-15 it is a SPEND on the shared AI question pool, made after `isPro` is known. */
 const BATCHED = [
   'buildChatPromptContext',
   'getUpcomingEvents',
   'subscriptions',
-  'countTodayUserMessages',
 ] as const
 
 /** The single `Promise.all([...])` holding them, extracted for containment checks. */
@@ -54,11 +54,14 @@ describe('the account-restriction short-circuit still runs FIRST', () => {
 
   it('returns 403 on restriction.blocked, still between the gate and the batch', () => {
     const gate = CODE.search(/await\s+getAccountRestriction/)
-    const four03 = CODE.indexOf('403', gate)
+    // R-4: the literal 403 became `accountRestrictionStatus(reason)` — 403 for a real sanction,
+    // 503 when the status could not be read. The property under test is the SHORT-CIRCUIT, and
+    // that is what is measured: the refusal still happens before the batch spends any read.
+    const refusal = CODE.indexOf('accountRestrictionStatus(', gate)
     const batch = CODE.indexOf('await Promise.all([')
-    expect(four03).toBeGreaterThan(gate)
-    expect(four03, 'the 403 must short-circuit before any batched read').toBeLessThan(batch)
-    expect(CODE).toMatch(/if\s*\(\s*restriction\.blocked\s*\)\s*\{[\s\S]{0,400}?403/)
+    expect(refusal).toBeGreaterThan(gate)
+    expect(refusal, 'the refusal must short-circuit before any batched read').toBeLessThan(batch)
+    expect(CODE).toMatch(/if\s*\(\s*restriction\.blocked\s*\)\s*\{[\s\S]{0,500}?accountRestrictionStatus\s*\(/)
   })
 
   it('does not put any batched read above the gate', () => {
@@ -73,12 +76,12 @@ describe('the account-restriction short-circuit still runs FIRST', () => {
   })
 })
 
-describe('all four reads still happen, and happen together', () => {
+describe('all three reads still happen, and happen together', () => {
   it.each(BATCHED)('%s is inside the Promise.all batch', (name) => {
     expect(batchBlock(), `${name} must be one of the parallel tasks`).toContain(name)
   })
 
-  it('awaits the batch exactly once — not four separate awaits', () => {
+  it('awaits the batch exactly once — not three separate awaits', () => {
     const block = batchBlock()
     // `getUpcomingEvents` is deliberately exempt: it lives inside the calendar
     // async IIFE, which awaits its own dynamic import and lookup. That await is
@@ -99,7 +102,7 @@ describe('all four reads still happen, and happen together', () => {
   })
 
   it('has no second, sequential await of a batched read anywhere in the route', () => {
-    // `buildChatPromptContext` and `countTodayUserMessages` are the two that were
+    // `buildChatPromptContext` (and, historically, `countTodayUserMessages`) were the ones that were
     // previously `const x = await f(...)`. Re-introducing that form is the exact
     // regression this guards.
     expect(CODE).not.toMatch(/await\s+buildChatPromptContext\s*\(/)
@@ -131,11 +134,18 @@ describe('calendar cannot take the batch down with it', () => {
   })
 })
 
-describe('isPro semantics for the quota count are unchanged', () => {
-  it('enforces the free cap only when the user is not Pro', () => {
-    // The count may now be computed for everyone (it is speculative, off the
-    // serial path) — but ENFORCEMENT must still be gated on !isPro.
-    expect(CODE).toMatch(/if\s*\(\s*!\s*isPro\s*&&\s*todayMsgCount\s*>=\s*FREE_DAILY_LIMIT\s*\)/)
+describe('isPro semantics for the quota are unchanged', () => {
+  it('spends from the shared pool only when the user is not Pro, and only after isPro is known', () => {
+    // R-3 split the single condition so the metering flag is set AFTER the spend. 🔧 2026-09-24:
+    // a deterministic/canned turn (quotaExempt) is also metered without a spend, so the guard is
+    // `if (isPro || quotaExempt) { quotaMetered = true } else { const spend = await consumeAiQuestion(...) }`.
+    // The property is unchanged — Pro and canned spend nothing, and the spend happens only once
+    // `isPro` is known — and both halves are asserted here.
+    expect(CODE).toMatch(/if\s*\(\s*isPro \|\| quotaExempt\s*\)\s*\{[\s\S]{0,120}?quotaMetered = true/)
+    expect(CODE).toMatch(/\}\s*else\s*\{[\s\S]{0,200}?const spend = await consumeAiQuestion\(aiQuotaIdentity\(user, clientIp\(req\)\)\)/)
+    const spend = CODE.indexOf('const spend = await consumeAiQuestion(aiQuotaIdentity(user, clientIp(req)))', CODE.indexOf('isPro = new Date'))
+    expect(spend).toBeGreaterThan(CODE.indexOf('isPro = new Date(subData.current_period_end)'))
+    expect(batchBlock()).not.toContain('consumeAiQuestion')
   })
 
   it('still derives isPro from an active subscription with a future period end', () => {

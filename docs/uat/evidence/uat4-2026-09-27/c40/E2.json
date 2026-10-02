@@ -1,0 +1,146 @@
+{
+  "id": "E2",
+  "text": "rap phim nao gan q1",
+  "parent": null,
+  "status": 200,
+  "ms": 13668,
+  "evidenceId": "42b7a597-31f6-46cd-bd23-6154687157eb",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "rạp phim Quận 1",
+        "location": "Quận 1, TP.HCM",
+        "type": "cinema"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Galaxy Cinema Nguyễn Du",
+      "rating": 4.3,
+      "count": 9380,
+      "address": "116 Nguyễn Du, Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "CGV Liberty Citypoint",
+      "rating": 4.4,
+      "count": 1751,
+      "address": "Khách sạn Liberty Citypoint, Pasteur, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "CGV Vincom Center Đồng Khởi",
+      "rating": 4.3,
+      "count": 4507,
+      "address": "72 Lê Thánh Tôn, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Cinestar Quốc Thanh",
+      "rating": 4.2,
+      "count": 6034,
+      "address": "271 Nguyễn Trãi, Cầu Ông Lãnh, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "DCINE Bến Thành",
+      "rating": 4.3,
+      "count": 1260,
+      "address": "6 Mạc Đĩnh Chi, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Beta Cinemas Trần Quang Khải",
+      "rating": 4.1,
+      "count": 1326,
+      "address": "62 Trần Quang Khải, Tân Định, Hồ Chí Minh 70000, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "Galaxy Cinema Nguyễn Du",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 4.3,
+        "reviews": 9380
+      }
+    },
+    {
+      "name": "CGV Liberty Citypoint",
+      "role": null,
+      "evidence": {
+        "rating": 4.4,
+        "reviews": 1751
+      }
+    },
+    {
+      "name": "CGV Vincom Center Đồng Khởi",
+      "role": null,
+      "evidence": {
+        "rating": 4.3,
+        "reviews": 4507
+      }
+    }
+  ],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình tìm các rạp phim gần Quận 1 cho bạn nhé.\n\nMình chọn **Galaxy Cinema Nguyễn Du** cho bạn — **4.3⭐ (9.380 đánh giá Google Maps)** với lượng đánh giá lớn nhất, chứng tỏ chất lượng ổn định. Rạp này nằm trung tâm Quận 1, tiện lợi cho bạn.\n\n[FOLLOWUPS]Phim gì đang chiếu hôm nay?|Muốn đặt vé trực tiếp?|Rạp nào gần nhất từ vị trí bạn?[/FOLLOWUPS]\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Maps - Galaxy Cinema\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=7959510044504727677\",\"primary\":false}]}[/CTA_BUTTONS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "rap phim nao gan q1"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm các rạp phim gần Quận 1 cho bạn nhé.\n\nMình chọn **Galaxy Cinema Nguyễn Du** cho bạn — **4.3⭐ (9.380 đánh giá Google Maps)** với lượng đánh giá lớn nhất, chứng tỏ chất lượng ổn định. Rạp này nằm trung tâm Quận 1, tiện lợi cho bạn.\n\n[FOLLOWUPS]Phim gì đang chiếu hôm nay?|Muốn đặt vé trực tiếp?|Rạp nào gần nhất từ vị trí bạn?[/FOLLOWUPS]\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Maps - Galaxy Cinema\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=7959510044504727677\",\"primary\":false}]}[/CTA_BUTTONS]"
+    }
+  ]
+}

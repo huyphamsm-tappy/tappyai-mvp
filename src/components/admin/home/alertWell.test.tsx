@@ -1,6 +1,7 @@
 // @vitest-environment jsdom
-import { describe, it, expect, afterEach } from 'vitest'
+import { describe, it, expect, afterEach, beforeEach } from 'vitest'
 import { render, screen, cleanup } from '@testing-library/react'
+import { setLocale } from '@/lib/i18n/useTranslation'
 import { AlertWell } from './AlertWell'
 import { AttentionPanel } from './AttentionPanel'
 import { vi as viStrings, en as enStrings } from '@/lib/i18n/admin'
@@ -11,8 +12,11 @@ import { ALERT_SEVERITY_ORDER, type ControllerAlert } from '@/lib/controller/ale
 // The server derived, ordered and permission-filtered the list (proved in
 // src/lib/controller/__tests__/alerts.test.ts). This proves the surface shows
 // it faithfully, shows a real answer when there is nothing, and adds nothing of
-// its own. useTranslation resolves to the default locale (en) under test.
+// its own. The assertions read the EN catalogue, so the locale is STATED below:
+// "the default locale (en) under test" was never a product property, only
+// jsdom's `navigator.language`. The product default is Vietnamese.
 
+beforeEach(() => setLocale('en'))
 afterEach(cleanup)
 
 const alert = (over: Partial<ControllerAlert> = {}): ControllerAlert => ({

@@ -1,0 +1,1129 @@
+{
+  "id": "E6",
+  "text": "Karaoke cho 10 người tầm 100k/người Gò Vấp",
+  "parent": null,
+  "status": 200,
+  "ms": 13469,
+  "evidenceId": "2242f2a8-fc1c-4bee-a35c-496f46a45752",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "karaoke Gò Vấp",
+        "location": "Gò Vấp, TP HCM",
+        "type": "bar"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Karaoke Avatar",
+      "rating": 4.9,
+      "count": 6384,
+      "price": "100-500 N ₫",
+      "hours": "12:00–05:00",
+      "distance_km": 2.3,
+      "address": "61-63-65 Phạm Viết Chánh, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Karaoke ICOOL",
+      "rating": 4.8,
+      "count": 850,
+      "price": "100-600 N ₫",
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 3.1,
+      "address": "41 Phan Chu Trinh, Bình Thạnh, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Karaoke ICOOL",
+      "rating": 4.8,
+      "count": 3050,
+      "price": "100-600 N ₫",
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 4,
+      "address": "120 Đ. Thành Thái, Hòa Hưng, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Kingdom Karaoke",
+      "rating": 4.3,
+      "count": 2053,
+      "hours": "10:00–05:00",
+      "distance_km": 2.4,
+      "address": "67 Phạm Viết Chánh, Cầu Ông Lãnh, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Le Café des Stagiaires",
+      "rating": 4.5,
+      "count": 1196,
+      "price": "100-500 N ₫",
+      "hours": "16:00–02:00",
+      "distance_km": 4.1,
+      "address": "8-10 Đường số 54, An Khánh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "The WANN",
+      "rating": 4.2,
+      "count": 396,
+      "hours": "17:00–03:30",
+      "distance_km": 0.7,
+      "address": "74-76 Nam Kỳ Khởi Nghĩa, Sài Gòn, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "KARAOKE MONACO KTV",
+      "rating": 4.2,
+      "count": 1442,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 3.4,
+      "address": "676 Sư Vạn Hạnh, Hòa Hưng, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Karaoke Nnice 16 Cộng Hòa",
+      "rating": 4,
+      "count": 2377,
+      "price": "200-500 N ₫",
+      "hours": "09:00–02:00",
+      "distance_km": 5.1,
+      "address": "16 Cộng Hòa, Tân Sơn Nhất, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Karaoke Uyển Nhi",
+      "rating": 4.2,
+      "count": 6,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 6.7,
+      "address": "90 Bình Giã, Tân Bình, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Karaoke FYou III",
+      "rating": 3.6,
+      "count": 402,
+      "hours": "11:00–23:30",
+      "distance_km": 3.6,
+      "address": "519-521 Sư Vạn Hạnh, Hòa Hưng, Hồ Chí Minh 70000, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "Karaoke Avatar",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 6384,
+        "distance_km": 2.3,
+        "open_now": true,
+        "opening_hours": "12:00–05:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Karaoke ICOOL",
+      "role": null,
+      "evidence": {
+        "rating": 4.8,
+        "reviews": 850,
+        "distance_km": 3.1,
+        "open_now": true,
+        "opening_hours": "Mở cửa cả ngày",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Karaoke ICOOL",
+      "role": null,
+      "evidence": {
+        "rating": 4.8,
+        "reviews": 3050,
+        "distance_km": 4,
+        "open_now": true,
+        "opening_hours": "Mở cửa cả ngày",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Kingdom Karaoke",
+      "role": null,
+      "evidence": {
+        "rating": 4.3,
+        "reviews": 2053,
+        "distance_km": 2.4,
+        "open_now": true,
+        "opening_hours": "10:00–05:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Le Café des Stagiaires",
+      "role": null,
+      "evidence": {
+        "rating": 4.5,
+        "reviews": 1196,
+        "distance_km": 4.1,
+        "open_now": false,
+        "opening_hours": "16:00–02:00",
+        "attributes": []
+      }
+    }
+  ],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Để tìm được phòng karaoke phù hợp, mình cần gọi tìm kiếm ngay.\n\nMình chọn **Karaoke Avatar** cho bạn — **4.9⭐ (6.384 đánh giá Google Maps)**, cách vị trí bạn khoảng 2.3km, mở từ 12:00 đến 05:00. Đây là karaoke được đánh giá cao nhất trong khu vực với hơn 6.000 lượt review, rất phù hợp cho nhóm 10 người.\n\nThay thế: **Karaoke ICOOL** (4.8⭐, 850 đánh giá) cũng là lựa chọn tốt nếu bạn muốn mở cửa cả ngày, nhưng xa hơn một chút (3.1km).\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website - Karaoke Avatar\",\"type\":\"website\",\"url\":\"https://karaokeavatar.com/\",\"primary\":true},{\"label\":\"📍 Google Maps - Karaoke Avatar\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=15540783769004242466\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Gọi đặt phòng ngay|Xem thêm karaoke khác|Cần giúp gì nữa?[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Karaoke cho 10 người tầm 100k/người Gò Vấp"
+    },
+    {
+      "role": "assistant",
+      "content": "Để tìm được phòng karaoke phù hợp, mình cần gọi tìm kiếm ngay.\n\nMình chọn **Karaoke Avatar** cho bạn — **4.9⭐ (6.384 đánh giá Google Maps)**, cách vị trí bạn khoảng 2.3km, mở từ 12:00 đến 05:00. Đây là karaoke được đánh giá cao nhất trong khu vực với hơn 6.000 lượt review, rất phù hợp cho nhóm 10 người.\n\nThay thế: **Karaoke ICOOL** (4.8⭐, 850 đánh giá) cũng là lựa chọn tốt nếu bạn muốn mở cửa cả ngày, nhưng xa hơn một chút (3.1km).\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website - Karaoke Avatar\",\"type\":\"website\",\"url\":\"https://karaokeavatar.com/\",\"primary\":true},{\"label\":\"📍 Google Maps - Karaoke Avatar\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=15540783769004242466\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Gọi đặt phòng ngay|Xem thêm karaoke khác|Cần giúp gì nữa?[/FOLLOWUPS]"
+    }
+  ],
+  "toolResults": [
+    {
+      "source": "Serper Maps",
+      "count": 10,
+      "location": "Gò Vấp, TP HCM",
+      "results": [
+        {
+          "name": "Karaoke Avatar",
+          "place_id": "ChIJ9YSM1xgvdTERInan0n_0q9c",
+          "address": "61-63-65 Phạm Viết Chánh, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+          "phone": "+84 915 031 111",
+          "google_rating": "4.9⭐ (6.384 đánh giá Google Maps)",
+          "rating_value": 4.9,
+          "rating_count": 6384,
+          "price_range_text": "100-500 N ₫",
+          "distance_km": 2.3,
+          "open_now": true,
+          "opening_hours": "12:00–05:00",
+          "place_types": [
+            "Quán bar karaoke"
+          ],
+          "maps_link": "https://maps.google.com/?cid=15540783769004242466",
+          "booking_links": [
+            "https://www.facebook.com/Avatar.Karaoke"
+          ],
+          "website_uri": "https://karaokeavatar.com/",
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=15540783769004242466",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Karaoke ICOOL",
+          "place_id": "ChIJz9yFLXgpdTERfDl-qFc_NRA",
+          "address": "41 Phan Chu Trinh, Bình Thạnh, Hồ Chí Minh 70000, Việt Nam",
+          "phone": "+84 28 7777 9936",
+          "google_rating": "4.8⭐ (850 đánh giá Google Maps)",
+          "rating_value": 4.8,
+          "rating_count": 850,
+          "price_range_text": "100-600 N ₫",
+          "distance_km": 3.1,
+          "open_now": true,
+          "opening_hours": "Mở cửa cả ngày",
+          "place_types": [
+            "Quán bar karaoke"
+          ],
+          "maps_link": "https://maps.google.com/?cid=1167909324094060924",
+          "booking_links": [
+            "https://karaoke.com.vn/datphong/",
+            "https://www.google.com/maps/reserve/v/dine/c/JzikqaS1R5w?source=pa&opi=79508299"
+          ],
+          "website_uri": "https://icool.simplybook.asia/",
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=1167909324094060924",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Karaoke ICOOL",
+          "place_id": "ChIJoZZG-X0vdTERAUvuIEeuByw",
+          "address": "120 Đ. Thành Thái, Hòa Hưng, Hồ Chí Minh 70000, Việt Nam",
+          "phone": "+84 28 7777 9936",
+          "google_rating": "4.8⭐ (3.050 đánh giá Google Maps)",
+          "rating_value": 4.8,
+          "rating_count": 3050,
+          "price_range_text": "100-600 N ₫",
+          "distance_km": 4,
+          "open_now": true,
+          "opening_hours": "Mở cửa cả ngày",
+          "place_types": [
+            "Quán bar karaoke"
+          ],
+          "maps_link": "https://maps.google.com/?cid=3172696083024202497",
+          "booking_links": [
+            "https://karaoke.com.vn/datphong/",
+            "https://www.google.com/maps/reserve/v/dine/c/_L_4h6SohT8?source=pa&opi=79508299"
+          ],
+          "website_uri": "https://icool.simplybook.asia/",
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=3172696083024202497",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Kingdom Karaoke",
+          "place_id": "ChIJS46J0xgvdTER1S0DQX9MYjk",
+          "address": "67 Phạm Viết Chánh, Cầu Ông Lãnh, Hồ Chí Minh 70000, Việt Nam",
+          "phone": "+84 938 737 272",
+          "google_rating": "4.3⭐ (2.053 đánh giá Google Maps)",
+          "rating_value": 4.3,
+          "rating_count": 2053,
+          "distance_km": 2.4,
+          "open_now": true,
+          "opening_hours": "10:00–05:00",
+          "place_types": [
+            "Quán bar karaoke"
+          ],
+          "maps_link": "https://maps.google.com/?cid=4134951517314821589",
+          "website_uri": "https://kingdomkaraoke.com/",
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=4134951517314821589",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Le Café des Stagiaires",
+          "place_id": "ChIJOy8wzF0ndTERKKGM6-KTceo",
+          "address": "8-10 Đường số 54, An Khánh, Hồ Chí Minh, Việt Nam",
+          "phone": "+84 979 722 264",
+          "google_rating": "4.5⭐ (1.196 đánh giá Google Maps)",
+          "rating_value": 4.5,
+          "rating_count": 1196,
+          "price_range_text": "100-500 N ₫",
+          "distance_km": 4.1,
+          "open_now": false,
+          "opening_hours": "16:00–02:00",
+          "place_types": [
+            "Quán bar",
+            "Quán bia sân vườn",
+            "Nhà hàng Bỉ",
+            "Quán ăn nhỏ",
+            "Quán bar cocktail",
+            "DJ",
+            "Nơi tổ chức sự kiện",
+            "Nhà hàng Pháp",
+            "Quán bar ca nhạc trực tiếp",
+            "Quán rượu"
+          ],
+          "maps_link": "https://maps.google.com/?cid=16893446280067195176",
+          "booking_links": [
+            "https://links.cafestagiaires.vn/booking?utm_source=google&utm_medium=link&utm_campaign=2022-2023"
+          ],
+          "website_uri": "https://links.cafestagiaires.vn/",
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=16893446280067195176",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "The WANN",
+          "place_id": "ChIJHWVRsxkvdTERHdprxNSuAPI",
+          "address": "74-76 Nam Kỳ Khởi Nghĩa, Sài Gòn, Hồ Chí Minh 70000, Việt Nam",
+          "phone": "+84 933 020 202",
+          "google_rating": "4.2⭐ (396 đánh giá Google Maps)",
+          "rating_value": 4.2,
+          "rating_count": 396,
+          "distance_km": 0.7,
+          "open_now": false,
+          "opening_hours": "17:00–03:30",
+          "place_types": [
+            "Quán bar",
+            "Nhà hàng"
+          ],
+          "maps_link": "https://maps.google.com/?cid=17438129986030262813",
+          "website_uri": "https://newthewann.com/",
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=17438129986030262813",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "KARAOKE MONACO KTV",
+          "place_id": "ChIJb4k72d0udTERnWwf9EJMv0U",
+          "address": "676 Sư Vạn Hạnh, Hòa Hưng, Hồ Chí Minh 70000, Việt Nam",
+          "phone": "+84 948 258 651",
+          "google_rating": "4.2⭐ (1.442 đánh giá Google Maps)",
+          "rating_value": 4.2,
+          "rating_count": 1442,
+          "distance_km": 3.4,
+          "open_now": true,
+          "opening_hours": "Mở cửa cả ngày",
+          "place_types": [
+            "Quán bar karaoke"
+          ],
+          "maps_link": "https://maps.google.com/?cid=5025819559616015517",
+          "booking_links": [
+            "https://www.facebook.com/SantoriKaraoke",
+            "https://www.foryou-hochiminh.com/"
+          ],
+          "website_uri": "https://www.facebook.com/KaraokeKTSuVanHanh?mibextid=LQQJ4d",
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=5025819559616015517",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Karaoke Nnice 16 Cộng Hòa",
+          "place_id": "ChIJez1MjTApdTERZwNRomThbmM",
+          "address": "16 Cộng Hòa, Tân Sơn Nhất, Hồ Chí Minh 700000, Việt Nam",
+          "phone": "+84 901 899 900",
+          "google_rating": "4⭐ (2.377 đánh giá Google Maps)",
+          "rating_value": 4,
+          "rating_count": 2377,
+          "price_range_text": "200-500 N ₫",
+          "distance_km": 5.1,
+          "open_now": true,
+          "opening_hours": "09:00–02:00",
+          "place_types": [
+            "Quán bar karaoke",
+            "Quán cà phê",
+            "Nhà hàng"
+          ],
+          "maps_link": "https://maps.google.com/?cid=7164911879529235303",
+          "booking_links": [
+            "http://nnice.com.vn/chi-nhanh"
+          ],
+          "website_uri": "http://www.nnice.com.vn/",
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=7164911879529235303",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Karaoke Uyển Nhi",
+          "place_id": "ChIJFTjZjLkpdTERpovpwRVNHwQ",
+          "address": "90 Bình Giã, Tân Bình, Hồ Chí Minh 70000, Việt Nam",
+          "phone": "+84 972 756 868",
+          "google_rating": "4.2⭐ (6 đánh giá Google Maps)",
+          "rating_value": 4.2,
+          "rating_count": 6,
+          "distance_km": 6.7,
+          "open_now": true,
+          "opening_hours": "Mở cửa cả ngày",
+          "place_types": [
+            "Karaoke theo video"
+          ],
+          "maps_link": "https://maps.google.com/?cid=297040856272702374",
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=297040856272702374",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Karaoke FYou III",
+          "place_id": "ChIJS8WKCt4udTER-Yz8l4LOyhM",
+          "address": "519-521 Sư Vạn Hạnh, Hòa Hưng, Hồ Chí Minh 70000, Việt Nam",
+          "phone": "+84 28 3862 6126",
+          "google_rating": "3.6⭐ (402 đánh giá Google Maps)",
+          "rating_value": 3.6,
+          "rating_count": 402,
+          "distance_km": 3.6,
+          "open_now": true,
+          "opening_hours": "11:00–23:30",
+          "place_types": [
+            "Quán bar karaoke"
+          ],
+          "maps_link": "https://maps.google.com/?cid=1426179292307164409",
+          "website_uri": "https://www.facebook.com/FYOUIII",
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=1426179292307164409",
+              "attributed": true
+            }
+          ]
+        }
+      ],
+      "_tappy_place_domain": "entertainment",
+      "place_search_status": "has_results",
+      "_tappy_shortlist": [
+        {
+          "rank": 0,
+          "id": "ChIJ9YSM1xgvdTERInan0n_0q9c",
+          "name": "Karaoke Avatar",
+          "role": "best_overall",
+          "evidence": {
+            "rating": 4.9,
+            "reviews": 6384,
+            "distance_km": 2.3,
+            "open_now": true,
+            "opening_hours": "12:00–05:00",
+            "attributes": []
+          },
+          "why": [
+            "rated 4.9",
+            "2.3km away",
+            "6384 reviews"
+          ],
+          "missing": [
+            "price"
+          ]
+        },
+        {
+          "rank": 1,
+          "id": "ChIJz9yFLXgpdTERfDl-qFc_NRA",
+          "name": "Karaoke ICOOL",
+          "role": null,
+          "evidence": {
+            "rating": 4.8,
+            "reviews": 850,
+            "distance_km": 3.1,
+            "open_now": true,
+            "opening_hours": "Mở cửa cả ngày",
+            "attributes": []
+          },
+          "why": [
+            "rated 4.8",
+            "3.1km away",
+            "850 reviews"
+          ],
+          "missing": [
+            "price"
+          ]
+        },
+        {
+          "rank": 2,
+          "id": "ChIJoZZG-X0vdTERAUvuIEeuByw",
+          "name": "Karaoke ICOOL",
+          "role": null,
+          "evidence": {
+            "rating": 4.8,
+            "reviews": 3050,
+            "distance_km": 4,
+            "open_now": true,
+            "opening_hours": "Mở cửa cả ngày",
+            "attributes": []
+          },
+          "why": [
+            "rated 4.8",
+            "4km away",
+            "3050 reviews"
+          ],
+          "missing": [
+            "price"
+          ]
+        },
+        {
+          "rank": 3,
+          "id": "ChIJS46J0xgvdTER1S0DQX9MYjk",
+          "name": "Kingdom Karaoke",
+          "role": null,
+          "evidence": {
+            "rating": 4.3,
+            "reviews": 2053,
+            "distance_km": 2.4,
+            "open_now": true,
+            "opening_hours": "10:00–05:00",
+            "attributes": []
+          },
+          "why": [
+            "rated 4.3",
+            "2.4km away",
+            "2053 reviews"
+          ],
+          "missing": [
+            "price"
+          ]
+        },
+        {
+          "rank": 4,
+          "id": "ChIJOy8wzF0ndTERKKGM6-KTceo",
+          "name": "Le Café des Stagiaires",
+          "role": null,
+          "evidence": {
+            "rating": 4.5,
+            "reviews": 1196,
+            "distance_km": 4.1,
+            "open_now": false,
+            "opening_hours": "16:00–02:00",
+            "attributes": []
+          },
+          "why": [
+            "rated 4.5",
+            "4.1km away",
+            "1196 reviews"
+          ],
+          "missing": [
+            "price"
+          ]
+        }
+      ],
+      "_tappy_evidence_gap": {
+        "qualified": 10,
+        "total": 10,
+        "needed": [
+          "price",
+          "distance"
+        ],
+        "action": "recommend"
+      },
+      "_tappy_ranking": {
+        "pick": "Karaoke Avatar",
+        "decided_by": [
+          {
+            "attribute": "rating",
+            "evidence": "rated 4.9"
+          },
+          {
+            "attribute": "distance",
+            "evidence": "2.3km away"
+          },
+          {
+            "attribute": "reviewCount",
+            "evidence": "6384 reviews"
+          }
+        ],
+        "not_chosen": "Karaoke ICOOL"
+      },
+      "results_note": "Day la TOAN BO 10 ket qua, rut gon (chi cac truong de chon); the (card) cua user hien anh/dia chi/SDT/nut hanh dong."
+    }
+  ],
+  "frames8Raw": [
+    [
+      {
+        "kind": "tappy.places.v1",
+        "v": 1,
+        "domain": "entertainment",
+        "ranked": true,
+        "items": [
+          {
+            "id": "place:osm:10.76589,106.68258",
+            "domain": "entertainment",
+            "kind": "place",
+            "name": "Karaoke Avatar",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWk27Kgw4MvRe-RkxcN0GI0XJKfKHWYGlSKEGnY7jtnbjCvcLMFWxaobx-P_75xNYISc4QQr-CgSOjiokOSFXwmnF1iAi5xTKMMbr5DBN_v-G64kKZYcpXwU0spq5o7Cro02aABQ1lv--TE",
+            "address": "61-63-65 Phạm Viết Chánh, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+            "rating": 4.9,
+            "ratingCount": 6384,
+            "openingHours": "12:00–05:00",
+            "openNow": true,
+            "phone": "+84 915 031 111",
+            "priceRangeText": "100-500 N ₫",
+            "openingHoursWeek": {
+              "Thứ Bảy": "12:00–05:00",
+              "Chủ Nhật": "12:00–05:00",
+              "Thứ Hai": "12:00–05:00",
+              "Thứ Ba": "12:00–05:00",
+              "Thứ Tư": "12:00–05:00",
+              "Thứ Năm": "12:00–05:00",
+              "Thứ Sáu": "12:00–05:00"
+            },
+            "distanceKm": 2.3,
+            "categories": [
+              "Quán bar karaoke"
+            ],
+            "rank": 0,
+            "shortlistPosition": 1,
+            "recommended": true,
+            "reasons": [
+              {
+                "attribute": "rating",
+                "evidence": "rated 4.9"
+              },
+              {
+                "attribute": "distance",
+                "evidence": "2.3km away"
+              },
+              {
+                "attribute": "reviewCount",
+                "evidence": "6384 reviews"
+              }
+            ],
+            "actions": [
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://karaokeavatar.com/",
+                "labelKey": "v3.action.website",
+                "platform": "Official Website"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=15540783769004242466",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Karaoke%20Avatar%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84915031111",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.80437,106.70152",
+            "domain": "entertainment",
+            "kind": "place",
+            "name": "Karaoke ICOOL",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWm0NxrIVuhjYb0eMRUmtsc1lum02knq5it1jyHi1mS-MPanzoT8zbtRevaVWAhJxo-Cne4laNlJeRTrOm0cCa4GtsLqNQBSJ_xR2xcTsEvQr0vgfZES9eUcertbgdf9GwT0ZglQ",
+            "address": "41 Phan Chu Trinh, Bình Thạnh, Hồ Chí Minh 70000, Việt Nam",
+            "rating": 4.8,
+            "ratingCount": 850,
+            "openingHours": "Mở cửa cả ngày",
+            "openNow": true,
+            "phone": "+84 28 7777 9936",
+            "priceRangeText": "100-600 N ₫",
+            "openingHoursWeek": {
+              "Thứ Bảy": "Mở cửa cả ngày",
+              "Chủ Nhật": "Mở cửa cả ngày",
+              "Thứ Hai": "Mở cửa cả ngày",
+              "Thứ Ba": "Mở cửa cả ngày",
+              "Thứ Tư": "Mở cửa cả ngày",
+              "Thứ Năm": "Mở cửa cả ngày",
+              "Thứ Sáu": "Mở cửa cả ngày"
+            },
+            "distanceKm": 3.1,
+            "categories": [
+              "Quán bar karaoke"
+            ],
+            "rank": 1,
+            "shortlistPosition": 3,
+            "actions": [
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://icool.simplybook.asia/",
+                "labelKey": "v3.action.website",
+                "platform": "Official Website"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=1167909324094060924",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Karaoke%20ICOOL%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+842877779936",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.77464,106.66444",
+            "domain": "entertainment",
+            "kind": "place",
+            "name": "Karaoke ICOOL",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWm0NxrIVuhjYb0eMRUmtsc1lum02knq5it1jyHi1mS-MPanzoT8zbtRevaVWAhJxo-Cne4laNlJeRTrOm0cCa4GtsLqNQBSJ_xR2xcTsEvQr0vgfZES9eUcertbgdf9GwT0ZglQ",
+            "address": "120 Đ. Thành Thái, Hòa Hưng, Hồ Chí Minh 70000, Việt Nam",
+            "rating": 4.8,
+            "ratingCount": 3050,
+            "openingHours": "Mở cửa cả ngày",
+            "openNow": true,
+            "phone": "+84 28 7777 9936",
+            "priceRangeText": "100-600 N ₫",
+            "openingHoursWeek": {
+              "Thứ Bảy": "Mở cửa cả ngày",
+              "Chủ Nhật": "Mở cửa cả ngày",
+              "Thứ Hai": "Mở cửa cả ngày",
+              "Thứ Ba": "Mở cửa cả ngày",
+              "Thứ Tư": "Mở cửa cả ngày",
+              "Thứ Năm": "Mở cửa cả ngày",
+              "Thứ Sáu": "Mở cửa cả ngày"
+            },
+            "distanceKm": 4,
+            "categories": [
+              "Quán bar karaoke"
+            ],
+            "rank": 2,
+            "shortlistPosition": 3,
+            "actions": [
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://icool.simplybook.asia/",
+                "labelKey": "v3.action.website",
+                "platform": "Official Website"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=3172696083024202497",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Karaoke%20ICOOL%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+842877779936",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.76575,106.68248",
+            "domain": "entertainment",
+            "kind": "place",
+            "name": "Kingdom Karaoke",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnYEEHkvb8GfBzs1iqIyaizHqJ_2bzYYzzmeludTQ_dhvomOZPggcHdHOvw6L0Os87dq_vrtJ4NT6JXyeLlfblst6YZbFeeBO8oxTxBepFMEpPOa209ywVoyS8yxGLtxwuyuPkbLmhNbFUP",
+            "address": "67 Phạm Viết Chánh, Cầu Ông Lãnh, Hồ Chí Minh 70000, Việt Nam",
+            "rating": 4.3,
+            "ratingCount": 2053,
+            "openingHours": "10:00–05:00",
+            "openNow": true,
+            "phone": "+84 938 737 272",
+            "openingHoursWeek": {
+              "Thứ Bảy": "10:00–05:00",
+              "Chủ Nhật": "10:00–05:00",
+              "Thứ Hai": "10:00–05:00",
+              "Thứ Ba": "10:00–05:00",
+              "Thứ Tư": "10:00–05:00",
+              "Thứ Năm": "10:00–05:00",
+              "Thứ Sáu": "10:00–05:00"
+            },
+            "distanceKm": 2.4,
+            "categories": [
+              "Quán bar karaoke"
+            ],
+            "rank": 3,
+            "shortlistPosition": 4,
+            "actions": [
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://kingdomkaraoke.com/",
+                "labelKey": "v3.action.website",
+                "platform": "Official Website"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=4134951517314821589",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Kingdom%20Karaoke%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84938737272",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.80108,106.72907",
+            "domain": "entertainment",
+            "kind": "place",
+            "name": "Le Café des Stagiaires",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkbeWtJzWrupiYCdNwxycPXX5PoEjkd8QN6KoJqhyvpfUPvqVNIrcbIPidxVf2D30Bt9iYPm2kTgCY0fbBaysG8IwHx6ptLzguuSxQPRWJAAjRo64EMX3j4yP9iTrsmX8Zr8c_oSrRMsAwX",
+            "address": "8-10 Đường số 54, An Khánh, Hồ Chí Minh, Việt Nam",
+            "rating": 4.5,
+            "ratingCount": 1196,
+            "openingHours": "16:00–02:00",
+            "openNow": false,
+            "phone": "+84 979 722 264",
+            "priceRangeText": "100-500 N ₫",
+            "openingHoursWeek": {
+              "Thứ Bảy": "16:00–02:00",
+              "Chủ Nhật": "16:00–00:00",
+              "Thứ Hai": "17:00–00:00",
+              "Thứ Ba": "17:00–00:00",
+              "Thứ Tư": "17:00–00:00",
+              "Thứ Năm": "17:00–01:00",
+              "Thứ Sáu": "16:00–02:00"
+            },
+            "distanceKm": 4.1,
+            "categories": [
+              "Quán bar",
+              "Quán bia sân vườn",
+              "Nhà hàng Bỉ",
+              "Quán ăn nhỏ",
+              "Quán bar cocktail",
+              "DJ",
+              "Nơi tổ chức sự kiện",
+              "Nhà hàng Pháp",
+              "Quán bar ca nhạc trực tiếp",
+              "Quán rượu"
+            ],
+            "rank": 4,
+            "shortlistPosition": 5,
+            "actions": [
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://links.cafestagiaires.vn/",
+                "labelKey": "v3.action.website",
+                "platform": "Official Website"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=16893446280067195176",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Le%20Caf%C3%A9%20des%20Stagiaires%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84979722264",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.77042,106.70157",
+            "domain": "entertainment",
+            "kind": "place",
+            "name": "The WANN",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlm596atSoIuv2jYtAYYFcPyWI2_hMyfm0MAmlMSBo_K3qSbqscwMHePrYxKdhlD797nqK2vLRRbPDyIDXqbATGMoxoG5zctOYcMmodeCrWXHGiNGzMS1SrFIv1xO_Ow_T6i-2KkLFC7zw",
+            "address": "74-76 Nam Kỳ Khởi Nghĩa, Sài Gòn, Hồ Chí Minh 70000, Việt Nam",
+            "rating": 4.2,
+            "ratingCount": 396,
+            "openingHours": "17:00–03:30",
+            "openNow": false,
+            "phone": "+84 933 020 202",
+            "openingHoursWeek": {
+              "Thứ Bảy": "17:00–03:30",
+              "Chủ Nhật": "17:00–03:30",
+              "Thứ Hai": "17:00–03:30",
+              "Thứ Ba": "17:00–03:30",
+              "Thứ Tư": "17:00–03:30",
+              "Thứ Năm": "17:00–03:30",
+              "Thứ Sáu": "17:00–03:30"
+            },
+            "distanceKm": 0.7,
+            "categories": [
+              "Quán bar",
+              "Nhà hàng"
+            ],
+            "rank": 5,
+            "actions": [
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://newthewann.com/",
+                "labelKey": "v3.action.website",
+                "platform": "Official Website"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=17438129986030262813",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=The%20WANN%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84933020202",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.77086,106.67029",
+            "domain": "entertainment",
+            "kind": "place",
+            "name": "KARAOKE MONACO KTV",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlIwEDckZUteTRlCIHgEbkrf_6oIiUTbmhe9rTENYBAYBYX7IsDuQF_FuFRwFHJ_ncgtRUxH7sMfR2udy9AapX8_FPcMjqbwIjyFYDG355xfxlJiE260j7e2JcVuvk1xZcpzV2r",
+            "address": "676 Sư Vạn Hạnh, Hòa Hưng, Hồ Chí Minh 70000, Việt Nam",
+            "rating": 4.2,
+            "ratingCount": 1442,
+            "openingHours": "Mở cửa cả ngày",
+            "openNow": true,
+            "phone": "+84 948 258 651",
+            "openingHoursWeek": {
+              "Thứ Bảy": "Mở cửa cả ngày",
+              "Chủ Nhật": "Mở cửa cả ngày",
+              "Thứ Hai": "Mở cửa cả ngày",
+              "Thứ Ba": "Mở cửa cả ngày",
+              "Thứ Tư": "Mở cửa cả ngày",
+              "Thứ Năm": "Mở cửa cả ngày",
+              "Thứ Sáu": "Mở cửa cả ngày"
+            },
+            "distanceKm": 3.4,
+            "categories": [
+              "Quán bar karaoke"
+            ],
+            "rank": 6,
+            "actions": [
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://www.facebook.com/KaraokeKTSuVanHanh?mibextid=LQQJ4d",
+                "labelKey": "v3.action.website",
+                "platform": "Official Website"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=5025819559616015517",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=KARAOKE%20MONACO%20KTV%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84948258651",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.80097,106.66086",
+            "domain": "entertainment",
+            "kind": "place",
+            "name": "Karaoke Nnice 16 Cộng Hòa",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmtODzSoRXT0IKkk1dR4Je8TLQ6rtDb0KMj8kN3zRBrlLV70jHtlThfsUoQLY5g-5hFQmXajNnSIzrxis4o2V41sd-LhTHzxiKyJNMIzOVfD06VaTStmzRd3_BtkCbnCZn0nyauP0iGyt6Z",
+            "address": "16 Cộng Hòa, Tân Sơn Nhất, Hồ Chí Minh 700000, Việt Nam",
+            "rating": 4,
+            "ratingCount": 2377,
+            "openingHours": "09:00–02:00",
+            "openNow": true,
+            "phone": "+84 901 899 900",
+            "priceRangeText": "200-500 N ₫",
+            "openingHoursWeek": {
+              "Thứ Bảy": "09:00–02:00",
+              "Chủ Nhật": "09:00–02:00",
+              "Thứ Hai": "09:00–02:00",
+              "Thứ Ba": "09:00–02:00",
+              "Thứ Tư": "09:00–02:00",
+              "Thứ Năm": "09:00–02:00",
+              "Thứ Sáu": "09:00–02:00"
+            },
+            "distanceKm": 5.1,
+            "categories": [
+              "Quán bar karaoke",
+              "Quán cà phê",
+              "Nhà hàng"
+            ],
+            "rank": 7,
+            "actions": [
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=7164911879529235303",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Karaoke%20Nnice%2016%20C%E1%BB%99ng%20H%C3%B2a%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84901899900",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          }
+        ],
+        "mapsSearchUrl": "https://maps.google.com/maps?q=karaoke%20G%C3%B2%20V%E1%BA%A5p%20G%C3%B2%20V%E1%BA%A5p%2C%20TP%20HCM",
+        "picked": [
+          "place:osm:10.76589,106.68258",
+          "place:osm:10.80437,106.70152",
+          "place:osm:10.77464,106.66444"
+        ],
+        "shown": 3
+      }
+    ]
+  ]
+}

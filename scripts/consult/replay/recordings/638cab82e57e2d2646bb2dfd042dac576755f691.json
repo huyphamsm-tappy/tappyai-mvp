@@ -1,0 +1,386 @@
+{
+ "url": "https://google.serper.dev/shopping",
+ "request": {
+  "q": "laptop đồ họa dưới 20 triệu hàng mới",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 20
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:25:59.589Z",
+ "body": {
+  "searchParameters": {
+   "q": "laptop đồ họa dưới 20 triệu hàng mới",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "shopping",
+   "num": 40,
+   "page": 1,
+   "engine": "google"
+  },
+  "shopping": [
+   {
+    "title": "Laptop Dell 15 DC15250 MCW52",
+    "source": "CellphoneS",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+%C4%91%E1%BB%93+h%E1%BB%8Da+d%C6%B0%E1%BB%9Bi+20+tri%E1%BB%87u+h%C3%A0ng+m%E1%BB%9Bi&prds=localAnnotatedOfferId:1,catalogid:18223076252425367046,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "26.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSDxFIVEjBtSBeLsTbtD5v8R4QmgG0yNNPlZnH4EKTHSKbwXQcQ1doVK8j4nFdfHE-O9800XdEap6U1-4pkiyn7ZpbUD-W3hA2mHeR2_nN6uXknEciVU9Wh",
+    "rating": 2,
+    "ratingCount": 1,
+    "productId": "18223076252425367046",
+    "position": 1
+   },
+   {
+    "title": "Laptop Dell Pro 14 Essential PV14250 - PV14250-120U-16512W-BL (Core 5 120U, 16GB, 512GB, Full HD+, OfficeH24+365, Win11)",
+    "source": "Thế Giới Di Động",
+    "price": "27.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQvPqcG84HMJovUkDZkhlQxQxh1mQdKxR0WVqtOOMxpz3l8IjlrPEuGq3Ba5Ai6JyannWLjgo-1YBONX_bHzdElMLvnqus6jm2r7cE4vlxpHUaA3Xhlq0nCGQ",
+    "productId": "2398077882628320334",
+    "position": 2
+   },
+   {
+    "title": "HP Envy 13 2020 Windows 10 Core i7-1065G7 / RAM 8GB / SSD 512GB / UHD",
+    "source": "Lapvip",
+    "price": "24.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRhWS55IH7XsLtSo-vFM8jHD6zbqxNxWwtH5rmuRmcpBF993iB4440AYejbNciR3MVSGXpGlehegomJE8qhoCOlf14skmaTlJ6r2aO1QJ6v59n_7jY3huYf",
+    "productId": "10442396121179919863",
+    "position": 3
+   },
+   {
+    "title": "Laptop Dell 15 Pro Essential PV 15250 (VKVKD) | Intel Core 3-100U, 8GB DDR5, SSD 512GB NVMe, 15.6\"",
+    "source": "Tinhocngoisao.com",
+    "price": "13.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcScyte2dz2zKeKPuOLt5wdkm4lp5JCJjHPonaAlL_QkV9PabZzvcuwCzZ84OIcf5iX-JX-6DYYmsU3K36-KxBzEAYHhYEw43gS4vSPYy_gIkDuNG2UtoesA",
+    "productId": "2626577051031025136",
+    "position": 4
+   },
+   {
+    "title": "Laptop Dell 15 DC15250 1XVHG V2 - Nhập khẩu chính hãng",
+    "source": "CellphoneS",
+    "price": "22.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSDxFIVEjBtSBeLsTbtD5v8R4QmgG0yNNPlZnH4EKTHSKbwXQcQ1doVK8j4nFdfHE-O9800XdEap6U1-4pkiyn7ZpbUD-W3hA2mHeR2_nN6uXknEciVU9Wh",
+    "rating": 4.8,
+    "ratingCount": 48,
+    "productId": "15995354984431339596",
+    "position": 5
+   },
+   {
+    "title": "Lenovo Thinkpad X1 Carbon Gen 13 - Core Ultra 7 265U, RAM 32GB, SSD 1TB, 14\" FHD",
+    "source": "lapvip.com.vn",
+    "price": "46.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQDA-BlsVBBYWiRrTMDgD9s6Z4MA4lL4bDn5L6piofMmyeNBeZskQT3Z5Kz9BFGAjO8YGX-dPz8N18eMVVajSCle-8w6gS1hA",
+    "rating": 4.8,
+    "ratingCount": 7,
+    "productId": "9167483477866695726",
+    "position": 6
+   },
+   {
+    "title": "Laptop Dell Pro Essential PV14250, 14” 2K 300nits WVA/IPS, Core 7 150U (Up to 5.4Ghz, 10 cores), 16GD5 (1x16GB) bus 5200 (up to 32GB), 1TB SSD NVMe,",
+    "source": "mhm.vn",
+    "price": "27.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTIaEp2Zb7zmuPyd3X4zbxsrkXP9xXy9X1HQevXVymA2z1mSeRZUqsggevWsn-T-jB3g9iXlinin3-ZKUwfN9hHMII_uBgp",
+    "productId": "10154386254480053907",
+    "position": 7
+   },
+   {
+    "title": "[Mới 100%] Laptop Dell 14 DC14250-DC4C5386W (Core 5 120U, Intel Graphics, 16GB, 512GB, 14\" FHD+ IPS, OfficeH24+365, Win11)",
+    "source": "No.1 Computer",
+    "price": "25.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRuFJ1JesfuDMnaqnW1bzPoSufBs0Tt6iGIkgGb2b3ABOVkVPc_nWW596ftvqT-oHl8IQBdAU3QNbMq_F8LHWGNR2sYu61IsoGZTMaS6j5j",
+    "productId": "5820130367415967397",
+    "position": 8
+   },
+   {
+    "title": "Lenovo Thinkpad X13i Gen 4 (2023) Core i7-1360P, RAM 32 GB, SSD 2TB, 2.8K OLED",
+    "source": "Lapvip",
+    "price": "30.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcS37XLAT2siE4GI9OW4Q_Dcb_v0rLI4DkZr0z6yW8Z3HhYPqT29SDaGN_ZHu-DuvgopT_gtQuXjZ_lMBk6ulJCFOYtxNyan6osq4sitBE1cE9MPX_dEcFqO",
+    "productId": "12514048220775088177",
+    "position": 9
+   },
+   {
+    "title": "Laptop Dell 15 Pro Essential PV 15250 (VKVKD) | Intel Core 3-100U, 8GB DDR5, SSD 512GB NVMe, 15.6\" FHD IPS 120Hz, Intel Graphics, Dos/Ubuntu, Đen",
+    "source": "Tin Học Anh Phát",
+    "price": "14.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRbR6F8RjAFjcQb-Dr5X0gCo2e-jq1ZckHO4dMFMhqPmONlKY4SGNfbPxQXHJsHBv3zJwSoVaDSQtyNdFZYNnMzUD_hT0JYeUhEWeBpa9OYxkPrqVgb7fvq",
+    "productId": "2081426703077320427",
+    "position": 10
+   },
+   {
+    "title": "Laptop Dell 14 DC14250 Core 5 120U/16GB/1TB/14''FHD/Win11/Office Home 2024/Microsoft 365 (F0FTK5)",
+    "source": "Manosa VN",
+    "price": "23.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQXpeVvaU17ke1PUQuArtzGxNCeXxls9B9IlLhiaxX2P_xhkFg-xa4qf7LB-s7ZxMdJG2Oor_YkV0EPrgjtrN7Xzcf2rhaTJfIBhPs6nwm34-Qd94m5oByUcg",
+    "productId": "5879710378686327268",
+    "position": 11
+   },
+   {
+    "title": "Laptop Dell 14 DC14250 DC4C5386W /Core 5 120U/16GB/512GB/14300nitsIPS/54Whr/W11/OffH2024 + Microsof",
+    "source": "MediaMart",
+    "price": "25.590.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQzb7P-3fui5_D1fBiCyQkPExsn-9v-29ZDS5SUBkK8GC9rMIV8NJjbBtdWhWcpr5KN3B3SG4O2eLnSg2f3W9nXnx0DS-k2TOncwoVEa3EZ4LQSyb6jYhXvsg",
+    "rating": 4.8,
+    "ratingCount": 6,
+    "productId": "4768796378868727479",
+    "position": 12
+   },
+   {
+    "title": "Laptop Dell 14 DC14250 - DC4C5375W1-2Y (Core 5 120U, 16GB, 512GB, Full HD, OfficeHS24+365, Win11)",
+    "source": "Thế Giới Di Động",
+    "price": "28.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSZVbH7gNk6H6kvbhWiJadF_e9hOrgQE-c6M0nPqGliALeS7TXRt1FcAtOJ_g2uljRV7oatxXYYVWWaWvxo4l6er656LdYX_juBO4wrahL5oe3jV8B_iqm0",
+    "rating": 4.8,
+    "ratingCount": 6,
+    "productId": "10217685703969990811",
+    "position": 13
+   },
+   {
+    "title": "Laptop Dell 15 DC15250-i5U165W11SLU-27 | i5-1334U, 16GB DDR5, SSD 512GB, 15.6\" FHD, Win 11, Bạc",
+    "source": "Tinhocngoisao.com",
+    "price": "22.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSM-PS5px0eFmPaEx7wf5kRpc1QUeky05orHfJAgGbFvX_TjEKM3dwan1JTQ52kiqrnHl2ob7wlsha-8XeHFQcKn8jBloHFXOvJrcq8RZJl7HOSTUHD8RL3tQ",
+    "rating": 4.8,
+    "ratingCount": 48,
+    "productId": "4201369534949979971",
+    "position": 14
+   },
+   {
+    "title": "Vĩnh Hoàng - Laptop Dell Inspiron 5320 i5 1240P/ 16GB/SSD 512GB/ 13.3’’ FHD /Win 11/Bạc",
+    "source": "vinhhoang.com",
+    "price": "17.000.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTRVFcOiX3F-L4I2vYv57QDiEtY2Y0CHy_oVVu3lFmqfZVAyTcTPzuRxBrtfwG0fkgaHHtdQn_ye1lrsigjCaIcATQiLWcoXLRn5O2DfXz3DkONGoipRy38Mg",
+    "productId": "9880517801997416621",
+    "position": 15
+   },
+   {
+    "title": "TÚI LAPTOP NỮ YASMIENA BROWN PRIMARY",
+    "source": "Aldo VN",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+%C4%91%E1%BB%93+h%E1%BB%8Da+d%C6%B0%E1%BB%9Bi+20+tri%E1%BB%87u+h%C3%A0ng+m%E1%BB%9Bi&prds=localAnnotatedOfferId:1,catalogid:142870014011113066,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "2.550.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcT02zFkEhEwNBOhYmLD4rLdtl-eeg_DafLu8fOcWxQJAYGlBpM4-sHCn2JlpdDrp5BVqD5DLTyp6Cjwt5NdiiC_2TEDX-Et4iH71V99RNvgux1dfJe61TdT",
+    "productId": "142870014011113066",
+    "position": 16
+   },
+   {
+    "title": "Laptop Dell 14 DC14250 F0FTK5 (Core 5-120U/ Ram 16GB/ SSD 1TB/ 14 inch/ Windows 11 Home/ 1Y/ Bạc)",
+    "source": "Thành Nhân TNC",
+    "price": "25.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSeUvoboxwnBFAzv9k_kPurBf6t7YSgdqr1UN_zPLa7mnMCvGnmaTg3ZLCasHmb1xez73M94xb-mO7vL-Pw65NMy475wlYiIDIsXWX3_doI-dAmzNTCEmBg",
+    "rating": 4.8,
+    "ratingCount": 6,
+    "productId": "6377350330979481027",
+    "position": 17
+   },
+   {
+    "title": "Laptop Dell 14 DC14250 C3U85W11SLU (Core 3 100U/ 8GB/ 512GB SSD/ 14 inch WUXGA/ Win 11/ Office/ Silver/ 1Y)",
+    "source": "Máy Tính TSC",
+    "price": "18.999.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTV29PSe6jozoBMNTV_cgyA-YtkWnuS7oa8iitzFv-07S7ePHkml66MBi9vsO0LPFuanDY0B-I_4upzqUx6WEa3QM1fK4w-SyuMisw3-ibFIaH2cc4V5wH5",
+    "productId": "1137614477186873128",
+    "position": 18
+   },
+   {
+    "title": "Thu Mua Laptop Asus 2020 Core i3",
+    "source": "Bảo Hành One",
+    "price": "7.890.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcS8bnp8cqTnpNJ89rI8cMbHHmkydW5DTam5KxVxlpkzYlAews8zKDU1jATQieuwOAshF-PjKpzc2w4j256PGuQaJ6sqZEbeDd63rXEFCc7Y6NBXhXJw_evv",
+    "productId": "16182984648028944465",
+    "position": 19
+   },
+   {
+    "title": "Túi nam công sở đựng laptop",
+    "source": "LaForce",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+%C4%91%E1%BB%93+h%E1%BB%8Da+d%C6%B0%E1%BB%9Bi+20+tri%E1%BB%87u+h%C3%A0ng+m%E1%BB%9Bi&prds=localAnnotatedOfferId:1,catalogid:7180726142937250641,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "3.650.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTawxRFBArKzMMt8UcyBdCtLbL_7Ili0s7x00s5GQsskjm78axLKio7kkmdZuN1RlAHUc-RW91XAr6fh1QAkM834MaSGYHZshSztLm8iVpr3J-Y6TJDzLHVlg",
+    "productId": "7180726142937250641",
+    "position": 20
+   },
+   {
+    "title": "Laptop Lenovo ThinkPad X1 Carbon Gen 13 Aura Edition 21NS010JVN",
+    "source": "CenterLap.com",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+%C4%91%E1%BB%93+h%E1%BB%8Da+d%C6%B0%E1%BB%9Bi+20+tri%E1%BB%87u+h%C3%A0ng+m%E1%BB%9Bi&prds=localAnnotatedOfferId:1,catalogid:13189759463222775462,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "72.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSQj0hxKg_BNwZ_z6xNNwwWr1OXFh6xWWCr1xrezv2hZX_fyWsP9KV1rZRskw_5nYK2PzsezoeaSQoyBZyWv5xeF8BMpZtmbCR7jqD0PQnp6MiLmltFT9PC",
+    "productId": "13189759463222775462",
+    "position": 21
+   },
+   {
+    "title": "Laptop Dell 15 DC15250 - DC15250-i5U165W11SLU-27 (i5 1334U, 16GB, 512GB, 15.6 Full HD 120Hz, OfficeHS24365, Win11)",
+    "source": "Trường Phát PC",
+    "price": "23.300.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQ9W3avH8vRWvBw8M0G-jr3NfPap7nDevm3KuhUHIBs8SRXkWJcOOa7S0KMoloNtMrnf0M3z9Guj4uugkXZDKgy5GeqZLLdZcuWRiDOHpH-rqrm8rUWjWdc",
+    "rating": 4.8,
+    "ratingCount": 48,
+    "productId": "7467394024134745450",
+    "position": 22
+   },
+   {
+    "title": "Dell Pro Max 14 Premium MA14250 Laptop Workstation 14 inch, Core Ultra 7 265H, 32GB RAM, 2TB SSD, RTX PRO 1000 8GB, Màn FHD+, Win11",
+    "source": "Lapvip",
+    "price": "69.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSYDEgMvot3fR1CG-kJpxFwpUT118wfbJb15YVYYv3_LhZu-knoWZWk9G6F6SVveOu_IuuhmSuoYNlNXg7krXC33vntwRueALsfGrCJgXjRFAHKcTrk6dt8Hg",
+    "rating": 3.8,
+    "ratingCount": 44,
+    "productId": "8557885730841241537",
+    "position": 23
+   },
+   {
+    "title": "TUMI - Balo laptop Raina cỡ trung",
+    "source": "DAFC online",
+    "price": "23.590.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRbtTxOUUmx_NHr9QwBr8CtTkPc5UbKlSycV0OepoWTgi-ApWU_daFvUm-vJDIafJp9o6Eo16rm5y8TnLQlw82DOwAqXj3sfH3My1rSr2MaKZjgKOlESxUfiZY",
+    "rating": 4.5,
+    "ratingCount": 6,
+    "productId": "6011099386018979759",
+    "position": 24
+   },
+   {
+    "title": "Laptop Dell 14 CORE 7-150U/14 inch FHD+ IPS/16GB/512GB DC14250 F0FTK7",
+    "source": "Vua Thợ Mall",
+    "price": "28.890.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRP2rDWmMDJDKsGpLBR8wEqdlujQNUd4aWMHXHjFGCq2to6TKi9N8n76RpI448whl4ZOgcaoltSV-9gYznzuPuGP7-ovJGEsWw1U4r9uVOfDicHy6ShRIvpBA",
+    "rating": 4.8,
+    "ratingCount": 6,
+    "productId": "9760874595087133944",
+    "position": 25
+   },
+   {
+    "title": "TÚI LAPTOP NAM JORREN",
+    "source": "Aldo VN",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+%C4%91%E1%BB%93+h%E1%BB%8Da+d%C6%B0%E1%BB%9Bi+20+tri%E1%BB%87u+h%C3%A0ng+m%E1%BB%9Bi&prds=localAnnotatedOfferId:1,catalogid:12868315003459281864,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "2.350.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTRFPabuElpdG3-0SsMzioKsXTARInrLvocZzvaKSleFRra7v0Wf4-xifsHslY3siYq41ll9xL8sxvsSVMjBdu9glncKy2aYFb42hlpRoM8suoCelq6BQ--BA",
+    "productId": "12868315003459281864",
+    "position": 26
+   },
+   {
+    "title": "Túi xách đeo vai Thule Gauntlet 5 Macbook Attaché",
+    "source": "apple8",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+%C4%91%E1%BB%93+h%E1%BB%8Da+d%C6%B0%E1%BB%9Bi+20+tri%E1%BB%87u+h%C3%A0ng+m%E1%BB%9Bi&prds=localAnnotatedOfferId:1,catalogid:7097878874712366683,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "2.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRTlahQ6JfHxs9RbUQUMLl6w6NC1EGis8Wkb48bvfQaEBr0t7tYPgUgwq5n181yJjS3wV706n2VjyHwbSwLMFbOAc6jPVW8EU8R_q-xj7C95bWNkB6cpSiz5Q",
+    "rating": 4.9,
+    "ratingCount": 13,
+    "productId": "7097878874712366683",
+    "position": 27
+   },
+   {
+    "title": "Túi xách nam da bò đựng laptop",
+    "source": "LaForce",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+%C4%91%E1%BB%93+h%E1%BB%8Da+d%C6%B0%E1%BB%9Bi+20+tri%E1%BB%87u+h%C3%A0ng+m%E1%BB%9Bi&prds=localAnnotatedOfferId:1,catalogid:5246472623709368800,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "3.650.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSZ7vSvh0LOrGEF9e81XxF1K83mAOJNMWWNNgE1nOfOsAhmvbGA7SwZaXHguG0qzDOx82gEdBmY5uInUDgX0294LzB6HV7D5mvNNx405WjGcMpS4UKN-Cwe",
+    "productId": "5246472623709368800",
+    "position": 28
+   },
+   {
+    "title": "Thu Mua Laptop Asus 2021 Core i3",
+    "source": "Bảo Hành One",
+    "price": "5.290.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcROW4SQzdzF1bJ9mPYFH51FVs70K39Wxw6AbLZku2PRvvUupQL7knIFPjI8xIG9b1KJpGXb3OLR5J_0qNofq3P9VZ6Ci-RqnGwTj1rdq4nHzM6JQKPwqtlD",
+    "productId": "8276462255943314518",
+    "position": 29
+   },
+   {
+    "title": "ACE. Tokyo_Túi đeo vai laptop 14in Ruggmaster2 20L",
+    "source": "House Of Luggage",
+    "price": "6.240.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTWSFUzonwK0nK4YBxuYjjPIiF1eFEukZgekIi26tgh6usmWAjYGnhKQyU8zvcL1WogOxlN-VJHbFNjoohwxH0KZ_dWXojDHIwwfBGPKQeAsFSrJICwz5A7pw",
+    "productId": "13643170180509951600",
+    "position": 30
+   },
+   {
+    "title": "Balo Laptop Đa Ngăn",
+    "source": "John Henry & Freelancers",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+%C4%91%E1%BB%93+h%E1%BB%8Da+d%C6%B0%E1%BB%9Bi+20+tri%E1%BB%87u+h%C3%A0ng+m%E1%BB%9Bi&prds=localAnnotatedOfferId:1,catalogid:3119506074390892263,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "1.380.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTZn_zVMrWQjH7JKbvDtWIy1ysm9LOs9D2DtdS7DPmiGa13KWCeysmXQkdPNRNlQkg018hrmMoOWW8X_2En2rj8JKk73Bkx68DOsHee3DAPgNaWV-S96HUlAo0",
+    "productId": "3119506074390892263",
+    "position": 31
+   },
+   {
+    "title": "Laptop Dell Pro 14 Essential CORE 7-150U/14 inch/16GB/1TB PV14250-PV14250-150U-161TBU",
+    "source": "Vua Thợ Mall",
+    "price": "27.890.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRLkpFtXbxsDJWfBQ4gkPHaE7qUTVc88eZ5GRv22osYz5ZNPaoFvMhQT0R3VJVf2H3Qv3zqr8sNDux6EOrc1HQJS9DKfV44yXolacku4ZqkBWodNaesPhJw3w",
+    "rating": 4.4,
+    "ratingCount": 42,
+    "productId": "5894460616610748740",
+    "position": 32
+   },
+   {
+    "title": "TÚI LAPTOP NỮ YASMIENA",
+    "source": "Aldo VN",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+%C4%91%E1%BB%93+h%E1%BB%8Da+d%C6%B0%E1%BB%9Bi+20+tri%E1%BB%87u+h%C3%A0ng+m%E1%BB%9Bi&prds=localAnnotatedOfferId:1,catalogid:17142810781689268732,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "2.550.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQbIWcyAI-pV1t-FADkB994vyA3Pc3CeVTuURfu2GzRQsO43GoBAZ0xCq6h-EiWACwH8cgxbjTGuHQSJCAyswSLMbTluxNgLeJG2tuWqZqqpy7UD4dZ2RJyvQ",
+    "productId": "17142810781689268732",
+    "position": 33
+   },
+   {
+    "title": "Balo laptop 17 inch",
+    "source": "balochinhhang.com",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+%C4%91%E1%BB%93+h%E1%BB%8Da+d%C6%B0%E1%BB%9Bi+20+tri%E1%BB%87u+h%C3%A0ng+m%E1%BB%9Bi&prds=localAnnotatedOfferId:1,catalogid:17893068758721989293,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "799.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRMKUlTP-e3_conDt5o_yMsq_Jx030BJX6sF8w9pztKvwlndTcOfrvEkEELBZFG1dl9xuN1V4uXWkPFNKV1awOomGH6Rq2qxftPE56CHEUp7dbxrWCiPXoA",
+    "productId": "17893068758721989293",
+    "position": 34
+   },
+   {
+    "title": "TUMI - Túi laptop cỡ lớn",
+    "source": "DAFC online",
+    "price": "20.290.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTTaMfKiP2TOHT-03VPcpPNhJD8y51bZmEph8Gx5XiF60Fdge3Qrnv_snB8IUhzsqXDc5bw6Hd1WpDuBE1m3fTOLNJkEdxz8YYf0_LlOB3De2YQkOakKeLHwpw",
+    "rating": 4.6,
+    "ratingCount": 9,
+    "productId": "8934490019628073074",
+    "position": 35
+   },
+   {
+    "title": "Túi xách đựng laptop",
+    "source": "LaForce",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+%C4%91%E1%BB%93+h%E1%BB%8Da+d%C6%B0%E1%BB%9Bi+20+tri%E1%BB%87u+h%C3%A0ng+m%E1%BB%9Bi&prds=localAnnotatedOfferId:1,catalogid:7065926296498346104,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "4.020.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQbc5t5MEMy5fCG3CKVPq7W7dXLtb4giGUdf7kSjaanGlM6x2ksoDG2UrGhtD1wql-Hnu0S_6875J7QRxa1fa22K9MnRCi_dSqBpthCe3xZnYsYDHlqJKAWpw",
+    "productId": "7065926296498346104",
+    "position": 36
+   },
+   {
+    "title": "Thu Mua Laptop HP Spectre Core i3",
+    "source": "Bảo Hành One",
+    "price": "12.290.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTn9HSxrQrfnQ7SO2LzGLu1q28LcUyesbB9AixSCvY2SIRuepIzj0uyIVYOnVXqHSCqPUE89lhl-N9hIIZ_idc9XH99e94u2wyIAGGrnesa3a-SjcgWEt4d",
+    "productId": "6350639281178789929",
+    "position": 37
+   },
+   {
+    "title": "Túi Laptop Hồng (Size 320x240x24mm)",
+    "source": "Tinhocngoisao.com",
+    "price": "500.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRLIeFKvkg2gvebhdMvF13hdtOrreD5ce4eW4nkUvPHBKym7K5uu6QNGtPllmR4sfY7NQCVLrxumgz9B5vMvCGd9lXeL5irhTdL1KGEND3aP_8dsfQ75wSUgQ",
+    "productId": "12551149065178943126",
+    "position": 38
+   },
+   {
+    "title": "Túi Laptop 13 Inch Tunaco Wov MB133 - Hàng Apple8",
+    "source": "apple8",
+    "price": "1.149.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTgcqskdjb3J07nPdIfElz0MIXs-gVMBX012gV6R50aOylGQTDqdB_paprJf6UU0ND1TCHz1S4EZOC38DklbQ6MeI4U9w6xrnd8nOlWxFsnWCzjiZvlWYfm",
+    "productId": "18079634412600349367",
+    "position": 39
+   },
+   {
+    "title": "Laptop Dell 14 DC14250 Core 5 120U/16GB/512GB/14\"FHD+/Win11/Office Home 2024/Microsoft 365",
+    "source": "Fptshop.com.vn",
+    "price": "26.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcS9ezWFTiiJJYNwWMr6U0E_2AHYHEiIvr-qPVVqPXMI1F41Ogw7COaYNzw4zha_DIGj62STw5nUdPvfcifx2cRbnkGhgb7O1B_yc2WS0ctUzZd9UGX6oi6j6Wc",
+    "rating": 4.8,
+    "ratingCount": 6,
+    "productId": "17936137465786487198",
+    "position": 40
+   }
+  ],
+  "credits": 2
+ }
+}

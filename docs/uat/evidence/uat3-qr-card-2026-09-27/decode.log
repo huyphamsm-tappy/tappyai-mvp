@@ -1,0 +1,12 @@
+qr-u1.png 1200x2062
+  full                         -> OK  'https://www.tappyai.com/users/3a87306c-e06b-482d-8480-547ed3d1fe93'
+  phone 540px                  -> OK  'https://www.tappyai.com/users/3a87306c-e06b-482d-8480-547ed3d1fe93'
+  print 3.5cm@300dpi 413px     -> OK  'https://www.tappyai.com/users/3a87306c-e06b-482d-8480-547ed3d1fe93'
+  print 413px + blur           -> OK  'https://www.tappyai.com/users/3a87306c-e06b-482d-8480-547ed3d1fe93'
+  tiny 300px                   -> OK  'https://www.tappyai.com/users/3a87306c-e06b-482d-8480-547ed3d1fe93'
+qr-u2.png 1200x2062
+  full                         -> OK  'https://www.tappyai.com/users/a674c5af-7388-4e6e-8681-35d25c1a408c'
+  phone 540px                  -> OK  'https://www.tappyai.com/users/a674c5af-7388-4e6e-8681-35d25c1a408c'
+  print 3.5cm@300dpi 413px     -> OK  'https://www.tappyai.com/users/a674c5af-7388-4e6e-8681-35d25c1a408c'
+  print 413px + blur           -> OK  'https://www.tappyai.com/users/a674c5af-7388-4e6e-8681-35d25c1a408c'
+  tiny 300px                   -> OK  'https://www.tappyai.com/users/a674c5af-7388-4e6e-8681-35d25c1a408c'

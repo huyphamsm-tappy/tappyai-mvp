@@ -1,0 +1,44 @@
+{
+  "id": "T7",
+  "text": "Vé máy bay Sài Gòn Hà Nội tuần sau rẻ nhất",
+  "parent": null,
+  "status": 200,
+  "ms": 7448,
+  "evidenceId": "91fe9045-ae47-409b-8b6d-0f4ed81a667a",
+  "toolCalls": [
+    {
+      "tool": "get_flight_prices",
+      "args": {
+        "origin": "SGN",
+        "destination": "HAN"
+      }
+    }
+  ],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình giả sử bạn muốn bay tuần sau (khoảng 5-11 tháng 10). Hiện tại mình chưa có kết quả giá cụ thể từ hệ thống, nhưng bạn có thể tìm chuyến bay rẻ nhất qua các nền tảng đáng tin cậy dưới đây:\n\n[Trip.com](https://go.isclix.com/deep_link/6277265300509373567/6455552313033835511?url=https%3A%2F%2Fvn.trip.com%2Fflights%2Fshowfarefirst%3Fdcity%3Dsgn%26acity%3Dhan%26ddate%3D2026-10-05%26flighttype%3Dow%26class%3Dy%26quantity%3D1%26locale%3Dvi-VN%26curr%3DVND&utm_source=tappyai&utm_medium=ccp&sub1=f5e57577b4dd0dd803a41834) · [Traveloka](https://go.isclix.com/deep_link/6277265300509373567/6654251588167732819?url=https%3A%2F%2Fwww.traveloka.com%2Fvi-VN%2Fflight%2Ffullsearch%3Fap%3DSGN.HAN%26dt%3D05-10-2026.null%26ps%3D1.0.0%26sc%3DECONOMY&utm_source=tappyai&utm_medium=ccp&sub1=f5e57577b4dd0dd803a41834)\n\nMẹo: Giá vé thường rẻ hơn vào **thứ 3-5** và bay **sáng sớm hoặc tối muộn**. Bạn nên so sánh giá trên cả hai trang để chọn chuyến tốt nhất.\n\nNgày bay cụ thể nào bạn định đi?\n\n[FOLLOWUPS]Ngày bay nào?|Mấy người đi?|Có cần chuyến về không?[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Vé máy bay Sài Gòn Hà Nội tuần sau rẻ nhất"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn muốn bay tuần sau (khoảng 5-11 tháng 10). Hiện tại mình chưa có kết quả giá cụ thể từ hệ thống, nhưng bạn có thể tìm chuyến bay rẻ nhất qua các nền tảng đáng tin cậy dưới đây:\n\n[Trip.com](https://go.isclix.com/deep_link/6277265300509373567/6455552313033835511?url=https%3A%2F%2Fvn.trip.com%2Fflights%2Fshowfarefirst%3Fdcity%3Dsgn%26acity%3Dhan%26ddate%3D2026-10-05%26flighttype%3Dow%26class%3Dy%26quantity%3D1%26locale%3Dvi-VN%26curr%3DVND&utm_source=tappyai&utm_medium=ccp&sub1=f5e57577b4dd0dd803a41834) · [Traveloka](https://go.isclix.com/deep_link/6277265300509373567/6654251588167732819?url=https%3A%2F%2Fwww.traveloka.com%2Fvi-VN%2Fflight%2Ffullsearch%3Fap%3DSGN.HAN%26dt%3D05-10-2026.null%26ps%3D1.0.0%26sc%3DECONOMY&utm_source=tappyai&utm_medium=ccp&sub1=f5e57577b4dd0dd803a41834)\n\nMẹo: Giá vé thường rẻ hơn vào **thứ 3-5** và bay **sáng sớm hoặc tối muộn**. Bạn nên so sánh giá trên cả hai trang để chọn chuyến tốt nhất.\n\nNgày bay cụ thể nào bạn định đi?\n\n[FOLLOWUPS]Ngày bay nào?|Mấy người đi?|Có cần chuyến về không?[/FOLLOWUPS]"
+    }
+  ]
+}

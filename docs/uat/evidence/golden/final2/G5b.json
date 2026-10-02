@@ -1,0 +1,24 @@
+{
+  "id": "G5b",
+  "group": "used-purchase-risk",
+  "criteria": [
+    "Leads with ownership: cà vẹt/registration matches seller and frame/engine numbers, stolen vehicle, sang tên procedure, deposit scams; then mechanical checks",
+    "No invented numbers",
+    "Scam-vector pointer to 'Cảnh báo lừa đảo' where relevant"
+  ],
+  "turns": [
+    {
+      "user": "mua xe máy cũ Honda Wave cần kiểm tra gì",
+      "status": 200,
+      "elapsedMs": 15542,
+      "textFrames": 480,
+      "tools": [],
+      "toolResults": [],
+      "annotations": [],
+      "cardItems": [],
+      "duplicate": null,
+      "text": "Mua xe máy cũ là quyết định lớn, nên cần kiểm tra kỹ trước khi chuyển tiền. Dưới đây là những điểm quan trọng bạn nên xem:\n\n**Trước khi chuyển tiền:**\n• **Giấy tờ pháp lý** — kiểm tra giấy đăng ký xe, chứng thực nguồn gốc (không phải xe trộm cắp, không bị khoá từ xa, không nợ trả góp). Yêu cầu người bán cung cấp bản gốc, không phải bản sao.\n• **Chủ sở hữu** — đảm bảo người bán là chủ xe trên giấy tờ, hoặc có giấy ủy quyền hợp lệ nếu không phải chủ.\n• **Tình trạng pháp lý** — kiểm tra xe có bị cấm đăng ký, nợ thuế, hay bị phong tỏa không (có thể hỏi công an giao thông hoặc kiểm tra online).\n\n**Kiểm tra tình trạng xe (nên gặp trực tiếp):**\n• **Động cơ** — nổ máy xem có khó hay không, nghe tiếng gầm có bất thường không, để chạy một lúc rồi kiểm tra khí thải (màu xám/đen = có vấn đề).\n• **Khung gầm & thân xe** — kiểm tra có bị va đập, gỉ sét, hay dấu hiệu sửa chữa lớn không. Nếu có dấu sơn lại, có thể xe từng bị tai nạn.\n• **Bánh xe & phanh** — kiểm tra độ mòn lốp, phanh có còn hiệu lực không (phanh tay, phanh chân).\n• **Dầu nhớt & chất lỏng** — kiểm tra mức dầu, nước làm mát, nước phanh có đủ không.\n• **Các bộ phận điện** — đèn pha, đèn phanh, còi, chìa khóa có hoạt động bình thường không.\n• **Số km chạy** — kiểm tra đồng hồ công tơ mét (Wave cũ thường chạy 5,000–15,000 km/năm tùy cách sử dụng).\n\n**Lưu ý khi gặp người bán:**\n• Gặp **trực tiếp tại nơi công cộng** (không phải nhà riêng), nếu có thể mang theo người thân.\n• **Yêu cầu test lái** để cảm nhận tình trạng xe.\n• Nếu giá **rẻ bất thường** so với thị trường (chênh >20%), hãy cẩn thận — có thể xe bị ẩu, hay người bán muốn chốt nhanh.\n• **Không chuyển tiền trước** — chỉ chuyển sau khi kiểm tra xong và đã xem giấy tờ gốc.\n\n**Trước khi chuyển tiền, bạn dán tin nhắn, link hoặc mã QR của người bán vào **Cảnh báo lừa đảo** trong TappyAI để kiểm tra nhé.**\n\nNếu bạn đang tìm mua Wave cũ cụ thể nào, mình có thể giúp bạn tìm kiếm các tin đăng trên các nền tảng uy tín. Bạn có nhu cầu gì thêm không?",
+      "visible": "Mua xe máy cũ là quyết định lớn, nên cần kiểm tra kỹ trước khi chuyển tiền. Dưới đây là những điểm quan trọng bạn nên xem:\n\n**Trước khi chuyển tiền:**\n• **Giấy tờ pháp lý** — kiểm tra giấy đăng ký xe, chứng thực nguồn gốc (không phải xe trộm cắp, không bị khoá từ xa, không nợ trả góp). Yêu cầu người bán cung cấp bản gốc, không phải bản sao.\n• **Chủ sở hữu** — đảm bảo người bán là chủ xe trên giấy tờ, hoặc có giấy ủy quyền hợp lệ nếu không phải chủ.\n• **Tình trạng pháp lý** — kiểm tra xe có bị cấm đăng ký, nợ thuế, hay bị phong tỏa không (có thể hỏi công an giao thông hoặc kiểm tra online).\n\n**Kiểm tra tình trạng xe (nên gặp trực tiếp):**\n• **Động cơ** — nổ máy xem có khó hay không, nghe tiếng gầm có bất thường không, để chạy một lúc rồi kiểm tra khí thải (màu xám/đen = có vấn đề).\n• **Khung gầm & thân xe** — kiểm tra có bị va đập, gỉ sét, hay dấu hiệu sửa chữa lớn không. Nếu có dấu sơn lại, có thể xe từng bị tai nạn.\n• **Bánh xe & phanh** — kiểm tra độ mòn lốp, phanh có còn hiệu lực không (phanh tay, phanh chân).\n• **Dầu nhớt & chất lỏng** — kiểm tra mức dầu, nước làm mát, nước phanh có đủ không.\n• **Các bộ phận điện** — đèn pha, đèn phanh, còi, chìa khóa có hoạt động bình thường không.\n• **Số km chạy** — kiểm tra đồng hồ công tơ mét (Wave cũ thường chạy 5,000–15,000 km/năm tùy cách sử dụng).\n\n**Lưu ý khi gặp người bán:**\n• Gặp **trực tiếp tại nơi công cộng** (không phải nhà riêng), nếu có thể mang theo người thân.\n• **Yêu cầu test lái** để cảm nhận tình trạng xe.\n• Nếu giá **rẻ bất thường** so với thị trường (chênh >20%), hãy cẩn thận — có thể xe bị ẩu, hay người bán muốn chốt nhanh.\n• **Không chuyển tiền trước** — chỉ chuyển sau khi kiểm tra xong và đã xem giấy tờ gốc.\n\n**Trước khi chuyển tiền, bạn dán tin nhắn, link hoặc mã QR của người bán vào **Cảnh báo lừa đảo** trong TappyAI để kiểm tra nhé.**\n\nNếu bạn đang tìm mua Wave cũ cụ thể nào, mình có thể giúp bạn tìm kiếm các tin đăng trên các nền tảng uy tín. Bạn có nhu cầu gì thêm không?"
+    }
+  ]
+}

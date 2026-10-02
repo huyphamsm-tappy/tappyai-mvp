@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Ẩm thực sân vườn Mái Lá Quận 7\" OR \"Bamos Coffee Quận 7\" OR \"Cà Phê Sân Vườn Du Mục\" quan 7 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T03:09:14.732Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Ẩm thực sân vườn Mái Lá Quận 7\" OR \"Bamos Coffee Quận 7\" OR \"Cà Phê Sân Vườn Du Mục\" quan 7 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Bamos Coffee Quận 7: Tiệm Cà Phê 24 Giờ Lý Tưởng",
+    "link": "https://www.tiktok.com/@bacxiuneee_/video/7380205560756522256",
+    "snippet": "Bamos Coffee Quận 7: Tiệm Cà Phê 24 Giờ Lý Tưởng. Khám phá Bamos Coffee quận 7, tiệm cà phê không bao giờ đóng cửa. Đến để thưởng thức không ...",
+    "position": 1
+   },
+   {
+    "title": "Bamos Coffee Quận 7 - Cafe biệt thự núp hẻm 24/7, sân ...",
+    "link": "https://www.tiktok.com/@bamos.xinchao/video/7621056556284595477",
+    "snippet": "Kết luận Bamos Coffee Quận 7 là lựa chọn linh hoạt giữa sân vườn và phòng lạnh, hoạt động 24/7, phục vụ cả nhu cầu làm việc lẫn giải trí với ...",
+    "position": 2
+   },
+   {
+    "title": "Review Bamos Coffee Quận 7 — Quán cafe Saigon được ...",
+    "link": "https://www.tiktok.com/@junie.daily/video/7655334947321908501",
+    "snippet": "355 Lượt thích,Video TikTok từ JUNIE DAILY (@junie.daily): \"Khám phá Bamos Coffee Quận 7: không gian, menu và lý do nên ghé qua. Review quán ...",
+    "position": 3
+   },
+   {
+    "title": "Bamos coffee quận 7 chiếc cà phê gần nhà nằm cuối con ...",
+    "link": "https://www.tiktok.com/@duydayvlog/video/7401531728860433680",
+    "snippet": "Coffee: Bamos coffee quận 7 chiếc cà phê gần nhà nằm cuối con đường cạnh sông mát mẻ và yên tĩnh quán mở 24/7 nên mọi người đến lúc nào cũng ...",
+    "position": 4
+   },
+   {
+    "title": "Bamos Coffee Quận 7: Cafe 24h Mở Xuyên Đêm ...",
+    "link": "https://www.tiktok.com/@meo_dihia/video/7609923540674006293",
+    "snippet": "Sore Cafe Quận 7. Bamos Coffee Quận 7: Cafe 24h Mở Xuyên Đêm, Boardgame & Không Phụ Thu. ### Bamos Coffee: Quán Cafe 24h Quận 7 Lý Tưởng Cho Đêm ...",
+    "position": 5
+   },
+   {
+    "title": "Nhân viên chụp hình không gian quán cho Sếp",
+    "link": "https://www.tiktok.com/@bamos.xinchao/video/7686795046871485704",
+    "snippet": "... quán,không gian quán đẹp. Đây là bản tóm tắt nội dung do AI tạo và không nhằm mục đích cung ... Bamos Coffee Quận 7 - Cà phê 24h · author · 25 · 3.",
+    "position": 6
+   },
+   {
+    "title": "Khám Phá Quán Cà Phê Mái Lá Tại An Giang",
+    "link": "https://www.tiktok.com/@nhadep4phuong/video/7614796380107836693",
+    "snippet": "Quán Uyên Lẩ Gà Lá É Biên Hoà · Vườn Hoa Mẫu Đơn Trung Quốc Siêu Đẹp · Ẩm Thực Sân Vườn Mái Lá Quận 7 · Quán Hoa Lá Cành Phủ Lý Hà Nam.",
+    "position": 7
+   },
+   {
+    "title": "Ẩm Thực Sân Vườn Mái Lá Quận 7",
+    "link": "https://www.tiktok.com/discover/%E1%BA%A9m-th%E1%BB%B1c-s%C3%A2n-v%C6%B0%E1%BB%9Dn-m%C3%A1i-l%C3%A1-qu%E1%BA%ADn-7",
+    "snippet": "Ẩm Thực Sân Vườn Mái Lá Quận 7: Địa Chỉ, Menu & Không Gian. Ẩm Thực Sân Vườn Mái Lá là nhà hàng với không gian sân vườn thoáng mát, ...",
+    "date": "8 ngày trước",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

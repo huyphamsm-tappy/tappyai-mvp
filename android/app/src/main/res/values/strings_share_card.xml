@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Share cards + the approved share sheet (#6) — web ShareMenu / cards copy, owner picks 29/09. -->
+<resources>
+    <string name="share_card_lang" translatable="false">en</string>
+    <string name="share_card_tagline">One Agent. One Conversation. Everyday Life.</string>
+    <string name="share_card_scan">Scan to see it on TappyAI</string>
+    <string name="share_card_slogan">Connect · Explore · Share</string>
+    <string name="share_card_slogan_sub">Better everyday experiences with TappyAI!</string>
+    <string name="share_card_byline">By {name}</string>
+    <string name="share_card_more_places">+{n} more places</string>
+    <string name="share_card_post_scan_hint">Scan the QR code to see this post on TappyAI</string>
+    <string name="share_card_profile_scan_hint">Scan this QR code to view my TappyAI profile</string>
+    <string name="share_card_invite">and let\'s connect!</string>
+    <string name="share_card_website_label">Visit the website</string>
+    <string name="share_card_feat1">A smart AI agent</string>
+    <string name="share_card_feat2">Discover places</string>
+    <string name="share_card_feat3">Connect with people</string>
+    <string name="share_card_feat4">A better everyday life</string>
+    <string name="share_card_play_badge_top">Get it on</string>
+    <string name="share_card_get_app_pre">Get</string>
+    <string name="share_card_get_app_post">now</string>
+    <string name="share_card_get_app_sub">The full experience on every device</string>
+    <string name="share_card_or_website">Or visit the website</string>
+    <string name="share_card_badge_review">Review</string>
+    <string name="share_card_badge_clip">Clip</string>
+    <string name="share_card_badge_suggestion">Tappy picks</string>
+    <string name="share_v6_title">Share with everyone</string>
+    <string name="share_v6_subtitle">Spread great places and experiences with TappyAI!</string>
+    <string name="share_v6_line_profile">See my profile on TappyAI</string>
+    <string name="share_v6_line_post">See this post on TappyAI</string>
+    <string name="share_v6_line_suggestion">A TappyAI suggestion</string>
+    <string name="share_v6_line_plan">See this plan on TappyAI</string>
+    <string name="share_v6_copy_link">Copy link</string>
+    <string name="share_v6_copy_content">Copy content</string>
+    <string name="share_v6_card_title">Share image</string>
+    <string name="share_v6_card_loading">Creating the image…</string>
+    <string name="share_v6_card_failed">The image could not be created — the link still shares.</string>
+    <string name="share_v6_card_hint">This exact image is saved to your device and sent to TikTok.</string>
+    <string name="share_v6_layout_review">Review card</string>
+    <string name="share_v6_layout_clip">Clip card</string>
+    <string name="share_v6_layout_post">QR code</string>
+    <string name="share_v6_layout_profile">Profile QR</string>
+    <string name="share_v6_layout_suggestion">Suggestion card</string>
+    <string name="share_v6_layout_plan">Plan image</string>
+    <string name="share_v6_layout_default">Image</string>
+    <string name="share_v6_quick">Share quickly via apps</string>
+    <string name="share_v6_other">More options</string>
+    <string name="share_v6_inbox">Tappy Inbox</string>
+    <string name="share_v6_inbox_desc">Send via TappyAI</string>
+    <string name="share_v6_save">Save to device</string>
+    <string name="share_v6_save_desc">Save the image or link to your device</string>
+    <string name="share_v6_more">Other apps</string>
+    <string name="share_v6_more_desc">More sharing options</string>
+    <string name="share_v6_public_desc">A public page, private details hidden</string>
+    <string name="share_v6_banner_title">Explore the world around you with TappyAI!</string>
+    <string name="share_v6_banner_sub">Great food • Fun outings • Smart shopping • And more</string>
+    <string name="share_v6_tiktok_video">TikTok (video)</string>
+    <string name="share_v6_tiktok_image">TikTok (image)</string>
+    <string name="share_v6_close">Close</string>
+    <string name="share_v6_plan_link_pending">Creating the plan link…</string>
+    <string name="share_v6_plan_link_sign_in">Sign in to create a plan link — sharing as text for now</string>
+    <string name="share_v6_plan_link_failed">The plan link could not be created — sharing as text for now</string>
+    <string name="share_v6_plan_link_required">This app needs the plan link</string>
+    <string name="share_v6_saved_card">Image saved to Pictures/TappyAI</string>
+</resources>

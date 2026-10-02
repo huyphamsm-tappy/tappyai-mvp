@@ -1,0 +1,39 @@
+=== tsc --noEmit ===
+tsc exit=0 secs=29
+=== next lint ===
+
+./src/components/ui/BrandLogo.tsx
+54:7  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./src/lib/TappyMascotState.ts
+41:5  Warning: React Hook useMemo has a missing dependency: 'state'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/basic-features/eslint#disabling-rules
+lint exit=0 secs=20
+=== vitest run ===
+2026-09-20 19:10:25.347 +07 [16084] ERROR:  permission denied for table daily_snapshots
+2026-09-20 19:10:25.347 +07 [16084] STATEMENT:  INSERT INTO daily_snapshots (snapshot_date) VALUES ('2026-08-01')
+
+
+stdout | supabase/tests/daily_snapshots_rollup.test.ts > access boundary - the dashboard is not a data-leak surface > anon cannot run the rollup function
+2026-09-20 19:10:25.354 +07 [16084] ERROR:  permission denied for function fn_rollup_daily_snapshots
+2026-09-20 19:10:25.354 +07 [16084] STATEMENT:  SELECT fn_rollup_daily_snapshots('2026-08-01','2026-08-01')
+
+
+stdout | supabase/tests/daily_snapshots_rollup.test.ts > access boundary - the dashboard is not a data-leak surface > authenticated cannot run the rollup function
+2026-09-20 19:10:25.355 +07 [16084] ERROR:  permission denied for function fn_rollup_daily_snapshots
+2026-09-20 19:10:25.355 +07 [16084] STATEMENT:  SELECT fn_rollup_daily_snapshots('2026-08-01','2026-08-01')
+
+
+ ✓ |db| supabase/tests/daily_snapshots_rollup.test.ts (40 tests) 3352ms
+ ✓ |db| supabase/tests/chat_messaging_boundary.test.ts (38 tests) 3280ms
+ ✓ |db| supabase/tests/broadcast_audience_invariants.test.ts (15 tests) 3049ms
+ ✓ |db| supabase/tests/portAllocation.test.ts (3 tests) 5ms
+
+ Test Files  735 passed | 11 skipped (746)
+      Tests  13864 passed | 69 skipped (13933)
+   Start at  19:07:01
+   Duration  210.66s (transform 45.68s, setup 0ms, import 199.36s, tests 372.90s, environment 264.87s)
+
+JSON report written to C:/Users/Admin/AppData/Local/Temp/claude/D--Claude-Projects-TappyAI--worktrees-g1-growth/89302721-91af-4d74-9d1b-c9d52232820f/scratchpad/baseline/vitest-report.json
+vitest exit=0 secs=213

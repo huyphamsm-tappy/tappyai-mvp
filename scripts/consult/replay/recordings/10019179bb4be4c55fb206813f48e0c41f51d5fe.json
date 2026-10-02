@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Ốp UAG 17 pro max Monarch hoặc Pathfinder MagSafe (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:20:55.924Z",
+ "body": {
+  "searchParameters": {
+   "q": "Ốp UAG 17 pro max Monarch hoặc Pathfinder MagSafe (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Ốp lưng UAG cho iPhone 17 Series",
+    "link": "https://cellphones.com.vn/phu-kien/bao-da-op-lung/iphone/iphone-17/uag.html",
+    "snippet": "Hỗ trợ sạc không dây/MagSafe; Mỏng nhẹ; Chống sốc, va đập; Chống trầy xước; Có chân đứng; Hạn chế ngã màu. Dòng iPhone. iPhone 17 Pro Max; iPhone 17 Pro",
+    "position": 1
+   },
+   {
+    "title": "[iPhone 17 Pro Max] UAG Chính Hãng",
+    "link": "https://shopee.vn/-iPhone-17-Pro-Max-UAG-Ch%C3%ADnh-H%C3%A3ng-Monarch-Pro-Pathfinder-Plasma-Ch%E1%BB%91ng-S%E1%BB%91c-Chu%E1%BA%A9n-Qu%C3%A2n-%C4%90%E1%BB%99i-S%E1%BA%A1c-Magnet-i.898301886.41068409513",
+    "snippet": "Mua [iPhone 17 Pro Max] UAG Chính Hãng - Monarch Pro, Pathfinder, Plasma - Chống Sốc Chuẩn Quân Đội, Sạc Magnet giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 4.9,
+    "ratingCount": 44,
+    "position": 2
+   },
+   {
+    "title": "Ốp lưng iPhone 15 Pro Max UAG Chống Sốc Monarch ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-15-pro-max-uag-monarch-with-magsafe-more-color.html",
+    "snippet": "Ốp lưng iPhone 15 Pro Max UAG Monarch With MagSafe More Color nổi bật với kết cấu bảo vệ nhiều lớp, hỗ trợ sạc không dây MagSafe, trọng lượng khoảng 59g.",
+    "position": 3
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Pathfinder ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-17-pro-max-uag-pathfinder-with-magsafe.html",
+    "snippet": "Dùng được cho. iPhone 17 Pro Max. Tính năng. Tương thích với MagSafe. Chống rơi từ độ cao 5.5m. Kết cấu nhẹ với lõi mềm chống va đập, bảo vệ đáng tin cậy",
+    "position": 4
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Monarch ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-17-pro-max-uag-monarch-pro-exclusive-cap-carbon-fiber.html",
+    "snippet": "Dùng được cho. iPhone 17 Pro Max. Tính năng. Lõi Chống Sốc Lớp đệm bảo vệ chống va chạm và sốc. Tương thích MagSafe. Bảo vệ chống va đập từ độ cao 7,6 mét",
+    "position": 5
+   },
+   {
+    "title": "So sánh Ốp lưng UAG Monarch Series cho iPhone SE ...",
+    "link": "https://cellphones.com.vn/so-sanh/op-lung-cho-iphone-6s-7-8-uag-monarch-series-vs-op-lung-iphone-14-pro-max-apple-silicone-case-with-magsafe-clear",
+    "snippet": "So sánh chi tiết về giá, cấu hình, ưu nhược điểm giữa: Ốp lưng UAG Monarch Series cho iPhone SE 2020/7/8 và Ốp lưng iPhone 14 Pro Max Apple Silicone Case hỗ ...",
+    "position": 6
+   },
+   {
+    "title": "So sánh Ốp lưng chống sốc cho iPhone XS Max",
+    "link": "https://cellphones.com.vn/so-sanh/op-lung-chong-soc-cho-iphone-xs-max-uag-monarch-carbon-fiber-vs-quat-thong-minh-mi-smart-standing-fan-2-lite",
+    "snippet": "So sánh chi tiết về giá, cấu hình, ưu nhược điểm giữa: Ốp lưng chống sốc cho iPhone XS Max - UAG Monarch Carbon Fiber và Quạt thông minh Xiaomi Mi Smart",
+    "position": 7
+   },
+   {
+    "title": "So sánh Ốp lưng UAG Monarch Series cho iPhone SE ...",
+    "link": "https://cellphones.com.vn/so-sanh/op-lung-cho-iphone-6s-7-8-uag-monarch-series-vs-dong-ho-thong-minh-huami-amazfit-bip-u-pro",
+    "snippet": "So sánh chi tiết về giá, cấu hình, ưu nhược điểm giữa: Ốp lưng UAG Monarch Series cho iPhone SE 2020/7/8 và Đồng hồ thông minh Huami Amazfit Bip U Pro.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

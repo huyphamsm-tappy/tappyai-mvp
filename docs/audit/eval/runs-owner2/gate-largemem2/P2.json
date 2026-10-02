@@ -1,0 +1,1042 @@
+{
+  "id": "P2",
+  "text": "spa massage chan gan q1 duoi 300k",
+  "parent": null,
+  "status": 200,
+  "ms": 15058,
+  "evidenceId": "ffe6eff0-b3c9-4eb4-85f4-ec79f71bccf5",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "spa massage chân Quận 1",
+        "location": "Quận 1, TP.HCM",
+        "type": "spa"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Hyan Spa | Foot Spa | Body Massage | Hair Spa Quận 1",
+      "rating": 5,
+      "count": 100,
+      "hours": "10:00–21:00",
+      "distance_km": 0.9,
+      "address": "17C Nguyễn Thị Minh Khai, Cầu Ông Lãnh, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "CHẠM SPA",
+      "rating": 4.9,
+      "count": 189,
+      "hours": "10:00–19:30",
+      "distance_km": 1.3,
+      "address": "82/20A Mạc Đĩnh Chi, Đa Kao, Quận 1, Thành phố Hồ Chí Minh 700000, Mạc Đĩnh Chi, Tân Định, Hồ Chí Minh 71000, Việt Nam"
+    },
+    {
+      "name": "RELAX SPA MASSAGE VAI, CỔ, GÁY. BODY MASSAGE, FOOT MASSAGE, GỘI ĐẦU DƯỠNG SINH QUẬN 1",
+      "rating": 4.8,
+      "count": 532,
+      "hours": "09:00–22:00",
+      "distance_km": 1.2,
+      "address": "65B Lê Thị Riêng, Bến Thành, Hồ Chí Minh 71009, Việt Nam"
+    },
+    {
+      "name": "Qispa Head & Massage Quận 1",
+      "rating": 4.8,
+      "count": 71,
+      "hours": "01:30–01:00",
+      "distance_km": 1,
+      "address": "321 Lý Tự Trọng, Quận 1, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "MASSAGE HẠ SPA QUẬN 1",
+      "rating": 4.9,
+      "count": 3518,
+      "hours": "09:30–22:30",
+      "distance_km": 2.3,
+      "address": "49 Phạm Viết Chánh, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "Hyan Spa | Foot Spa | Body Massage | Hair Spa Quận 1",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 5,
+        "reviews": 100,
+        "distance_km": 0.9,
+        "open_now": true,
+        "opening_hours": "10:00–21:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "CHẠM SPA",
+      "role": null,
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 189,
+        "distance_km": 1.3,
+        "open_now": true,
+        "opening_hours": "10:00–19:30",
+        "attributes": []
+      }
+    },
+    {
+      "name": "RELAX SPA MASSAGE VAI, CỔ, GÁY. BODY MASSAGE, FOOT MASSAGE, GỘI ĐẦU DƯỠNG SINH QUẬN 1",
+      "role": null,
+      "evidence": {
+        "rating": 4.8,
+        "reviews": 532,
+        "distance_km": 1.2,
+        "open_now": true,
+        "opening_hours": "09:00–22:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Qispa Head & Massage Quận 1",
+      "role": null,
+      "evidence": {
+        "rating": 4.8,
+        "reviews": 71,
+        "distance_km": 1,
+        "open_now": true,
+        "opening_hours": "01:30–01:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "MASSAGE HẠ SPA QUẬN 1",
+      "role": null,
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 3518,
+        "distance_km": 2.3,
+        "open_now": true,
+        "opening_hours": "09:30–22:30",
+        "attributes": []
+      }
+    }
+  ],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình chọn **Hyan Spa** cho bạn — cách vị trí bạn chỉ 0.9km, đạt 5⭐ từ 100 đánh giá Google Maps, và đang mở cửa. Spa này chuyên massage chân, body massage, gội đầu dưỡng sinh — đúng những gì bạn cần.\nHai lựa chọn khác cũng rất tốt: **CHẠM SPA** (4.9⭐, 189 đánh giá, 1.3km) hoặc **RELAX SPA** (4.8⭐, 532 đánh giá, 1.2km) nếu bạn muốn so sánh thêm. Cả ba đều mở cửa bây giờ và nằm gần Quận 1.\n\nLưu ý: Mình chưa tìm thấy giá cụ thể trên kết quả tìm kiếm, bạn nên gọi hoặc vào website để xác nhận giá massage chân có phù hợp ngân sách dưới 300k không nhé.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website — Hyan Spa\",\"type\":\"website\",\"url\":\"https://hyanspa.com/\",\"primary\":true},{\"label\":\"📍 Google Maps — Hyan Spa\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=4888533510458212203\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Giá massage chân bao nhiêu?|Spa nào có gội đầu dưỡng sinh?|Có spa couple gần đây không?[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "spa massage chan gan q1 duoi 300k"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình chọn **Hyan Spa** cho bạn — cách vị trí bạn chỉ 0.9km, đạt 5⭐ từ 100 đánh giá Google Maps, và đang mở cửa. Spa này chuyên massage chân, body massage, gội đầu dưỡng sinh — đúng những gì bạn cần.\nHai lựa chọn khác cũng rất tốt: **CHẠM SPA** (4.9⭐, 189 đánh giá, 1.3km) hoặc **RELAX SPA** (4.8⭐, 532 đánh giá, 1.2km) nếu bạn muốn so sánh thêm. Cả ba đều mở cửa bây giờ và nằm gần Quận 1.\n\nLưu ý: Mình chưa tìm thấy giá cụ thể trên kết quả tìm kiếm, bạn nên gọi hoặc vào website để xác nhận giá massage chân có phù hợp ngân sách dưới 300k không nhé.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website — Hyan Spa\",\"type\":\"website\",\"url\":\"https://hyanspa.com/\",\"primary\":true},{\"label\":\"📍 Google Maps — Hyan Spa\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=4888533510458212203\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Giá massage chân bao nhiêu?|Spa nào có gội đầu dưỡng sinh?|Có spa couple gần đây không?[/FOLLOWUPS]"
+    }
+  ],
+  "toolResults": [
+    {
+      "source": "Serper Maps",
+      "count": 20,
+      "location": "Quận 1, TP.HCM",
+      "results": [
+        {
+          "name": "Hyan Spa | Foot Spa | Body Massage | Hair Spa Quận 1",
+          "address": "17C Nguyễn Thị Minh Khai, Cầu Ông Lãnh, Hồ Chí Minh 70000, Việt Nam",
+          "phone": "+84 932 665 046",
+          "website_uri": "https://hyanspa.com/",
+          "place_id": "ChIJtZLG52UvdTERa390w1OP10M",
+          "rating_value": 5,
+          "google_rating": "5⭐ (100 đánh giá Google Maps)",
+          "rating_count": 100,
+          "place_types": [
+            "Spa"
+          ],
+          "maps_link": "https://maps.google.com/?cid=4888533510458212203",
+          "opening_hours": "10:00–21:00",
+          "open_now": true,
+          "distance_km": 0.9,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "label": "📍 Google Maps — Hyan Spa | Foot Spa | Body Massage | Hair Spa Quận 1",
+              "url": "https://maps.google.com/?cid=4888533510458212203",
+              "attributed": true
+            },
+            {
+              "kind": "official_website",
+              "label": "🌐 Website — Hyan Spa | Foot Spa | Body Massage | Hair Spa Quận 1",
+              "url": "https://hyanspa.com/",
+              "attributed": true
+            },
+            {
+              "kind": "youtube_search_fallback",
+              "label": "🔎 Tìm video review trên YouTube",
+              "url": "https://www.youtube.com/results?search_query=Hyan%20Spa%20%7C%20Foot%20Spa%20%7C%20Body%20Massage%20%7C%20Hair%20Spa%20Qu%E1%BA%ADn%201%20review",
+              "attributed": false
+            }
+          ],
+          "has_maps": true,
+          "has_website": true,
+          "has_photo": true,
+          "has_hours": true,
+          "has_phone": true,
+          "has_reviews": "search"
+        },
+        {
+          "name": "CHẠM SPA",
+          "address": "82/20A Mạc Đĩnh Chi, Đa Kao, Quận 1, Thành phố Hồ Chí Minh 700000, Mạc Đĩnh Chi, Tân Định, Hồ Chí Minh 71000, Việt Nam",
+          "phone": "+84 986 837 471",
+          "website_uri": "https://chamspa.vn/",
+          "place_id": "ChIJN2bNbbYvdTER8omz4l4i03A",
+          "rating_value": 4.9,
+          "google_rating": "4.9⭐ (189 đánh giá Google Maps)",
+          "rating_count": 189,
+          "place_types": [
+            "Spa",
+            "Spa mặt",
+            "Bác sĩ trị liệu xoa bóp"
+          ],
+          "maps_link": "https://maps.google.com/?cid=8129879543259564530",
+          "booking_links": [
+            "https://zalo.me/0986837471",
+            "https://www.fresha.com/book-now/cham-spa-pb9j4tne/all-offer?id=3106941&pId=3006513&rwg_token=AE37R_jw_6xYQMs2yCwVFoPYuq08ZsZd8TMkNvj8clXVpPjLlCVUn8tykwMhuH8i9guQc0oAcsJBRx5Rwt-N5JLT6b0JHxVYAReTfcYvJy97Xj9zxad0mLc%3D"
+          ],
+          "opening_hours": "10:00–19:30",
+          "open_now": true,
+          "distance_km": 1.3,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "label": "📍 Google Maps — CHẠM SPA",
+              "url": "https://maps.google.com/?cid=8129879543259564530",
+              "attributed": true
+            },
+            {
+              "kind": "official_website",
+              "label": "🌐 Website — CHẠM SPA",
+              "url": "https://chamspa.vn/",
+              "attributed": true
+            },
+            {
+              "kind": "youtube_search_fallback",
+              "label": "🔎 Tìm video review trên YouTube",
+              "url": "https://www.youtube.com/results?search_query=CH%E1%BA%A0M%20SPA%20review",
+              "attributed": false
+            }
+          ],
+          "has_maps": true,
+          "has_website": true,
+          "has_photo": true,
+          "has_hours": true,
+          "has_phone": true,
+          "has_reviews": "search"
+        },
+        {
+          "name": "RELAX SPA MASSAGE VAI, CỔ, GÁY. BODY MASSAGE, FOOT MASSAGE, GỘI ĐẦU DƯỠNG SINH QUẬN 1",
+          "address": "65B Lê Thị Riêng, Bến Thành, Hồ Chí Minh 71009, Việt Nam",
+          "phone": "+84 934 044 545",
+          "website_uri": "http://duongsinhrelax.com/",
+          "place_id": "ChIJv4on67YvdTERVatLuSCHNIU",
+          "rating_value": 4.8,
+          "google_rating": "4.8⭐ (532 đánh giá Google Maps)",
+          "rating_count": 532,
+          "place_types": [
+            "Spa sức khỏe"
+          ],
+          "maps_link": "https://maps.google.com/?cid=9598445280450816853",
+          "opening_hours": "09:00–22:00",
+          "open_now": true,
+          "distance_km": 1.2,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "label": "📍 Google Maps — RELAX SPA MASSAGE VAI, CỔ, GÁY. BODY MASSAGE, FOOT MASSAGE, GỘI ĐẦU DƯỠNG SINH QUẬN 1",
+              "url": "https://maps.google.com/?cid=9598445280450816853",
+              "attributed": true
+            },
+            {
+              "kind": "official_website",
+              "label": "🌐 Website — RELAX SPA MASSAGE VAI, CỔ, GÁY. BODY MASSAGE, FOOT MASSAGE, GỘI ĐẦU DƯỠNG SINH QUẬN 1",
+              "url": "http://duongsinhrelax.com/",
+              "attributed": true
+            },
+            {
+              "kind": "youtube_search_fallback",
+              "label": "🔎 Tìm video review trên YouTube",
+              "url": "https://www.youtube.com/results?search_query=RELAX%20SPA%20MASSAGE%20VAI%2C%20C%E1%BB%94%2C%20G%C3%81Y.%20BODY%20MASSAGE%2C%20FOOT%20MASSAGE%2C%20G%E1%BB%98I%20%C4%90%E1%BA%A6U%20D%C6%AF%E1%BB%A0NG%20SINH%20QU%E1%BA%ACN%201%20review",
+              "attributed": false
+            }
+          ],
+          "has_maps": true,
+          "has_website": true,
+          "has_photo": true,
+          "has_hours": true,
+          "has_phone": true,
+          "has_reviews": "search"
+        },
+        {
+          "name": "Qispa Head & Massage Quận 1",
+          "address": "321 Lý Tự Trọng, Quận 1, Hồ Chí Minh 70000, Việt Nam",
+          "phone": "+84 935 862 333",
+          "website_uri": "https://www.facebook.com/share/1824i8ykMh/?mibextid=wwXIfr",
+          "place_id": "ChIJv36EzT4vdTERUeLQmB1g49o",
+          "rating_value": 4.8,
+          "google_rating": "4.8⭐ (71 đánh giá Google Maps)",
+          "rating_count": 71,
+          "place_types": [
+            "Spa"
+          ],
+          "maps_link": "https://maps.google.com/?cid=15772556000215753297",
+          "opening_hours": "01:30–01:00",
+          "open_now": true,
+          "distance_km": 1,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "label": "📍 Google Maps — Qispa Head & Massage Quận 1",
+              "url": "https://maps.google.com/?cid=15772556000215753297",
+              "attributed": true
+            },
+            {
+              "kind": "official_website",
+              "label": "🌐 Website — Qispa Head & Massage Quận 1",
+              "url": "https://www.facebook.com/share/1824i8ykMh/?mibextid=wwXIfr",
+              "attributed": true
+            },
+            {
+              "kind": "youtube_search_fallback",
+              "label": "🔎 Tìm video review trên YouTube",
+              "url": "https://www.youtube.com/results?search_query=Qispa%20Head%20%26%20Massage%20Qu%E1%BA%ADn%201%20review",
+              "attributed": false
+            }
+          ],
+          "has_maps": true,
+          "has_website": true,
+          "has_photo": true,
+          "has_hours": true,
+          "has_phone": true,
+          "has_reviews": "search"
+        },
+        {
+          "name": "MASSAGE HẠ SPA QUẬN 1",
+          "address": "49 Phạm Viết Chánh, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+          "phone": "+84 945 705 000",
+          "website_uri": "https://haspamassage.vn/",
+          "place_id": "ChIJHW16QcUvdTERm0lIAkAWOU0",
+          "rating_value": 4.9,
+          "google_rating": "4.9⭐ (3.518 đánh giá Google Maps)",
+          "rating_count": 3518,
+          "place_types": [
+            "Spa mát xa",
+            "Spa ban ngày",
+            "Spa mặt",
+            "Spa sức khỏe",
+            "Spa đá nóng",
+            "Bác sĩ trị liệu xoa bóp",
+            "Câu lạc bộ spa và sức khỏe"
+          ],
+          "maps_link": "https://maps.google.com/?cid=5564503278764968347",
+          "booking_links": [
+            "https://haspamassage.vn/",
+            "https://www.fresha.com/book-now/ha-spa-massage-dgcon1r3/all-offer?id=1530289&pId=1453251&rwg_token=AE37R_ggiBZb4cCTqFaBLZUQoqKKQdmBCXUryqLlwu2eUhtyfIjmG9JCoDQSom9NZW1W3YMzbKYIM-X_B-h1afsXDlXbsQw2svqpYHxSuueMImJAqx5kGxw%3D"
+          ],
+          "opening_hours": "09:30–22:30",
+          "open_now": true,
+          "distance_km": 2.3,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "label": "📍 Google Maps — MASSAGE HẠ SPA QUẬN 1",
+              "url": "https://maps.google.com/?cid=5564503278764968347",
+              "attributed": true
+            },
+            {
+              "kind": "official_website",
+              "label": "🌐 Website — MASSAGE HẠ SPA QUẬN 1",
+              "url": "https://haspamassage.vn/",
+              "attributed": true
+            },
+            {
+              "kind": "youtube_search_fallback",
+              "label": "🔎 Tìm video review trên YouTube",
+              "url": "https://www.youtube.com/results?search_query=MASSAGE%20H%E1%BA%A0%20SPA%20QU%E1%BA%ACN%201%20review",
+              "attributed": false
+            }
+          ],
+          "has_maps": true,
+          "has_website": true,
+          "has_photo": true,
+          "has_hours": true,
+          "has_phone": true,
+          "has_reviews": "search"
+        }
+      ],
+      "google_maps_search": "https://maps.google.com/maps?q=spa%20massage%20ch%C3%A2n%20Qu%E1%BA%ADn%201%20Qu%E1%BA%ADn%201%2C%20TP.HCM",
+      "_tappy_place_domain": "spa",
+      "place_search_status": "has_results",
+      "_LENH_BAT_BUOC": "⚠️ LENH BAT BUOC - DOC TRUOC KHI VIET PHAN HOI: Nguoi dung co budget dưới 300k VND - THAP HON gia khach san cao cap. TUYET DOI KHONG duoc de cap bat ky thuong hieu nao sau day du chi la de so sanh hay goi y: Pullman, Marriott, Hilton, Sheraton, Intercontinental, Sofitel, Novotel, Melia, Hyatt, Wyndham, Movenpick, Radisson, Imperial, Renaissance, Lotte, JW Marriott, Grand Mercure. Chi de cap cac khach san co trong search_results (da duoc loc theo budget). Neu khong con search_results phu hop, bao user nang budget.",
+      "_tappy_shortlist": [
+        {
+          "rank": 0,
+          "id": "ChIJtZLG52UvdTERa390w1OP10M",
+          "name": "Hyan Spa | Foot Spa | Body Massage | Hair Spa Quận 1",
+          "role": "best_overall",
+          "evidence": {
+            "rating": 5,
+            "reviews": 100,
+            "distance_km": 0.9,
+            "open_now": true,
+            "opening_hours": "10:00–21:00",
+            "attributes": []
+          },
+          "why": [
+            "0.9km away",
+            "rated 5",
+            "100 reviews"
+          ],
+          "missing": [
+            "price"
+          ]
+        },
+        {
+          "rank": 1,
+          "id": "ChIJN2bNbbYvdTER8omz4l4i03A",
+          "name": "CHẠM SPA",
+          "role": null,
+          "evidence": {
+            "rating": 4.9,
+            "reviews": 189,
+            "distance_km": 1.3,
+            "open_now": true,
+            "opening_hours": "10:00–19:30",
+            "attributes": []
+          },
+          "why": [
+            "1.3km away",
+            "rated 4.9",
+            "189 reviews"
+          ],
+          "missing": [
+            "price"
+          ]
+        },
+        {
+          "rank": 2,
+          "id": "ChIJv4on67YvdTERVatLuSCHNIU",
+          "name": "RELAX SPA MASSAGE VAI, CỔ, GÁY. BODY MASSAGE, FOOT MASSAGE, GỘI ĐẦU DƯỠNG SINH QUẬN 1",
+          "role": null,
+          "evidence": {
+            "rating": 4.8,
+            "reviews": 532,
+            "distance_km": 1.2,
+            "open_now": true,
+            "opening_hours": "09:00–22:00",
+            "attributes": []
+          },
+          "why": [
+            "1.2km away",
+            "rated 4.8",
+            "532 reviews"
+          ],
+          "missing": [
+            "price"
+          ]
+        },
+        {
+          "rank": 3,
+          "id": "ChIJv36EzT4vdTERUeLQmB1g49o",
+          "name": "Qispa Head & Massage Quận 1",
+          "role": null,
+          "evidence": {
+            "rating": 4.8,
+            "reviews": 71,
+            "distance_km": 1,
+            "open_now": true,
+            "opening_hours": "01:30–01:00",
+            "attributes": []
+          },
+          "why": [
+            "1km away",
+            "rated 4.8",
+            "71 reviews"
+          ],
+          "missing": [
+            "price"
+          ]
+        },
+        {
+          "rank": 4,
+          "id": "ChIJHW16QcUvdTERm0lIAkAWOU0",
+          "name": "MASSAGE HẠ SPA QUẬN 1",
+          "role": null,
+          "evidence": {
+            "rating": 4.9,
+            "reviews": 3518,
+            "distance_km": 2.3,
+            "open_now": true,
+            "opening_hours": "09:30–22:30",
+            "attributes": []
+          },
+          "why": [
+            "2.3km away",
+            "rated 4.9",
+            "3518 reviews"
+          ],
+          "missing": [
+            "price"
+          ]
+        }
+      ],
+      "_tappy_budget_evidence": false,
+      "_tappy_evidence_gap": {
+        "qualified": 10,
+        "total": 10,
+        "needed": [
+          "price",
+          "distance"
+        ],
+        "action": "recommend"
+      },
+      "_tappy_ranking": {
+        "pick": "Hyan Spa | Foot Spa | Body Massage | Hair Spa Quận 1",
+        "decided_by": [
+          {
+            "attribute": "distance",
+            "evidence": "0.9km away"
+          },
+          {
+            "attribute": "rating",
+            "evidence": "rated 5"
+          },
+          {
+            "attribute": "reviewCount",
+            "evidence": "100 reviews - CHẠM SPA: 189 reviews (KHONG duoc goi pick la \"nhat\" o reviewCount)"
+          }
+        ],
+        "not_chosen": "CHẠM SPA",
+        "not_chosen_leads_on": {
+          "attribute": "reviewCount",
+          "evidence": "189 reviews"
+        },
+        "conditional": true
+      },
+      "results_note": "Hien thi 5/10 ket qua tot nhat theo engine; cac ket qua khac da co tren the (card) cua user."
+    }
+  ],
+  "frames8Raw": [
+    [
+      {
+        "kind": "tappy.places.v1",
+        "v": 1,
+        "domain": "spa",
+        "ranked": true,
+        "items": [
+          {
+            "id": "place:osm:10.78526,106.70049",
+            "domain": "spa",
+            "kind": "place",
+            "name": "Hyan Spa | Foot Spa | Body Massage | Hair Spa Quận 1",
+            "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmO35BELcBO3YcU-KYWgcSbrQwavsM8Eymw3s2s1jdIv5NkMHE7uSkX2Ib2m5XHj6VZSHY4iZQyroVmV862tLCF3xnE9OQPjMmMDVjutfEbOCK8XvEWe_PuS9C9eHZ_ydaYQ9O4T_DYMpNoZ",
+            "address": "17C Nguyễn Thị Minh Khai, Cầu Ông Lãnh, Hồ Chí Minh 70000, Việt Nam",
+            "rating": 5,
+            "ratingCount": 100,
+            "openingHours": "10:00–21:00",
+            "openNow": true,
+            "phone": "+84 932 665 046",
+            "openingHoursWeek": {
+              "Thứ Sáu": "10:00–21:00",
+              "Thứ Bảy": "10:00–21:00",
+              "Chủ Nhật": "10:00–21:00",
+              "Thứ Hai": "10:00–21:00",
+              "Thứ Ba": "10:00–21:00",
+              "Thứ Tư": "10:00–21:00",
+              "Thứ Năm": "10:00–21:00"
+            },
+            "distanceKm": 0.9,
+            "categories": [
+              "Spa"
+            ],
+            "rank": 0,
+            "shortlistPosition": 1,
+            "recommended": true,
+            "reasons": [
+              {
+                "attribute": "distance",
+                "evidence": "0.9km away"
+              },
+              {
+                "attribute": "rating",
+                "evidence": "rated 5"
+              },
+              {
+                "attribute": "reviewCount",
+                "evidence": "100 reviews"
+              }
+            ],
+            "tradeOff": {
+              "attribute": "reviewCount",
+              "evidence": "189 reviews"
+            },
+            "actions": [
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://hyanspa.com/",
+                "labelKey": "v3.action.website",
+                "platform": "Official Website"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=4888533510458212203",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84932665046",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Hyan%20Spa%20%7C%20Foot%20Spa%20%7C%20Body%20Massage%20%7C%20Hair%20Spa%20Qu%E1%BA%ADn%201%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.78807,106.69650",
+            "domain": "spa",
+            "kind": "place",
+            "name": "CHẠM SPA",
+            "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmMSBig2lJkPS9LeZ3ifAd6hLtIr83D2k0kxNDcGhRmP_AveZB9VCASPna1mA-EzFUyukh7VVXoJIRQT3XPWKsJO_2_PkOEVmqI0BPl3xg9tVk8XhHTvgcIu4vdDQ7iLJJeFzVjg8Eug__oI",
+            "address": "82/20A Mạc Đĩnh Chi, Đa Kao, Quận 1, Thành phố Hồ Chí Minh 700000, Mạc Đĩnh Chi, Tân Định, Hồ Chí Minh 71000, Việt Nam",
+            "rating": 4.9,
+            "ratingCount": 189,
+            "openingHours": "10:00–19:30",
+            "openNow": true,
+            "phone": "+84 986 837 471",
+            "openingHoursWeek": {
+              "Thứ Sáu": "10:00–19:30",
+              "Thứ Bảy": "10:00–19:30",
+              "Chủ Nhật": "10:00–19:30",
+              "Thứ Hai": "10:00–19:30",
+              "Thứ Ba": "Đóng cửa",
+              "Thứ Tư": "10:00–19:30",
+              "Thứ Năm": "10:00–19:30"
+            },
+            "distanceKm": 1.3,
+            "categories": [
+              "Spa",
+              "Spa mặt",
+              "Bác sĩ trị liệu xoa bóp"
+            ],
+            "rank": 1,
+            "shortlistPosition": 2,
+            "actions": [
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://chamspa.vn/",
+                "labelKey": "v3.action.website",
+                "platform": "Official Website"
+              },
+              {
+                "kind": "review",
+                "urlKind": "direct",
+                "url": "https://www.tiktok.com/@cham.119/video/7669299975389580552",
+                "labelKey": "v3.action.reviewOn",
+                "platform": "TikTok",
+                "attributed": true
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=8129879543259564530",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84986837471",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=CH%E1%BA%A0M%20SPA%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.77107,106.69117",
+            "domain": "spa",
+            "kind": "place",
+            "name": "RELAX SPA MASSAGE VAI, CỔ, GÁY. BODY MASSAGE, FOOT MASSAGE, GỘI ĐẦU DƯỠNG SINH QUẬN 1",
+            "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmNklLGuETotmlC2eZJuzhbgzDkJIvSq5Vk2wrjO8s5DW5wa1AMUEYsQpKN_2h5h70U_lLXS75KNC2OAilCfgxasy7_Z4kangG8jT0tfoZ7ZSDiVsgpSFijRPVzlfYJUa8BrarT7",
+            "address": "65B Lê Thị Riêng, Bến Thành, Hồ Chí Minh 71009, Việt Nam",
+            "rating": 4.8,
+            "ratingCount": 532,
+            "openingHours": "09:00–22:00",
+            "openNow": true,
+            "phone": "+84 934 044 545",
+            "openingHoursWeek": {
+              "Thứ Sáu": "09:00–22:00",
+              "Thứ Bảy": "09:00–22:00",
+              "Chủ Nhật": "09:00–22:00",
+              "Thứ Hai": "09:00–22:00",
+              "Thứ Ba": "09:00–22:00",
+              "Thứ Tư": "09:00–22:00",
+              "Thứ Năm": "09:00–22:00"
+            },
+            "distanceKm": 1.2,
+            "categories": [
+              "Spa sức khỏe"
+            ],
+            "rank": 2,
+            "shortlistPosition": 3,
+            "actions": [
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=9598445280450816853",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84934044545",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=RELAX%20SPA%20MASSAGE%20VAI%2C%20C%E1%BB%94%2C%20G%C3%81Y.%20BODY%20MASSAGE%2C%20FOOT%20MASSAGE%2C%20G%E1%BB%98I%20%C4%90%E1%BA%A6U%20D%C6%AF%E1%BB%A0NG%20SINH%20QU%E1%BA%ACN%201%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.77153,106.69379",
+            "domain": "spa",
+            "kind": "place",
+            "name": "Qispa Head & Massage Quận 1",
+            "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmNYmzVO3rOX6Tj63l2D6nkblx-w82YM4QtRhlewJ0yfF643YKP6-zNQxFeKNkNvu83EZSVeRcHYIypRKbvsGD5Kg48agEIOAs1GNXsQqstji0A40K8yqkteORQNEZlwlyYWUXnt4SanhFJ9",
+            "address": "321 Lý Tự Trọng, Quận 1, Hồ Chí Minh 70000, Việt Nam",
+            "rating": 4.8,
+            "ratingCount": 71,
+            "openingHours": "01:30–01:00",
+            "openNow": true,
+            "phone": "+84 935 862 333",
+            "openingHoursWeek": {
+              "Thứ Sáu": "01:30–01:00",
+              "Thứ Bảy": "Đóng cửa",
+              "Chủ Nhật": "09:30–23:30",
+              "Thứ Hai": "09:30–23:30",
+              "Thứ Ba": "00:00–23:30",
+              "Thứ Tư": "09:30–23:30",
+              "Thứ Năm": "01:00–23:30"
+            },
+            "distanceKm": 1,
+            "categories": [
+              "Spa"
+            ],
+            "rank": 3,
+            "shortlistPosition": 4,
+            "actions": [
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://www.facebook.com/share/1824i8ykMh/?mibextid=wwXIfr",
+                "labelKey": "v3.action.website",
+                "platform": "Official Website"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=15772556000215753297",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84935862333",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Qispa%20Head%20%26%20Massage%20Qu%E1%BA%ADn%201%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.76618,106.68293",
+            "domain": "spa",
+            "kind": "place",
+            "name": "MASSAGE HẠ SPA QUẬN 1",
+            "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmOc4_24ETLO76yYSptQiH0ADpRezKAuj2tEA3tDOrNsIwbxibekpJ184Yi-ey2Q0o68reyB8kKlgZeUxeGDvVgrQXHP3e2-Uv2p1UpAALNLqTQgfBWSaxHkkSsGM95ju5naINRR5AY4wpIh",
+            "address": "49 Phạm Viết Chánh, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+            "rating": 4.9,
+            "ratingCount": 3518,
+            "openingHours": "09:30–22:30",
+            "openNow": true,
+            "phone": "+84 945 705 000",
+            "openingHoursWeek": {
+              "Thứ Sáu": "09:30–22:30",
+              "Thứ Bảy": "09:30–22:30",
+              "Chủ Nhật": "09:30–22:30",
+              "Thứ Hai": "09:30–22:30",
+              "Thứ Ba": "09:30–22:30",
+              "Thứ Tư": "09:30–22:30",
+              "Thứ Năm": "09:30–22:30"
+            },
+            "distanceKm": 2.3,
+            "categories": [
+              "Spa mát xa",
+              "Spa ban ngày",
+              "Spa mặt",
+              "Spa sức khỏe",
+              "Spa đá nóng",
+              "Bác sĩ trị liệu xoa bóp",
+              "Câu lạc bộ spa và sức khỏe"
+            ],
+            "rank": 4,
+            "shortlistPosition": 5,
+            "actions": [
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://haspamassage.vn/",
+                "labelKey": "v3.action.website",
+                "platform": "Official Website"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=5564503278764968347",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84945705000",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=MASSAGE%20H%E1%BA%A0%20SPA%20QU%E1%BA%ACN%201%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.79179,106.69123",
+            "domain": "spa",
+            "kind": "place",
+            "name": "Vĩnh Khang Spa - Foot Massage - Body Massage",
+            "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmO6Ks-Q9eA2wWcGw-0rrdBVAJ77GrEPhfveyHifmBjJVzzIf6Dx5lpVhowyojqXl0aeyFFiZp7RS7t3ZsV-JKWQqPOBVuilDkIjixCvX3Lhk-EvCsisZTAhu-W-NxB5HgzDpyD7fg",
+            "address": "143D Trần Quang Khải, Quận 1, Hồ Chí Minh 70000, Việt Nam",
+            "rating": 4.9,
+            "ratingCount": 820,
+            "openingHours": "10:00–22:00",
+            "openNow": true,
+            "phone": "+84 966 202 168",
+            "openingHoursWeek": {
+              "Thứ Sáu": "10:00–22:00",
+              "Thứ Bảy": "10:00–22:00",
+              "Chủ Nhật": "10:00–22:00",
+              "Thứ Hai": "10:00–22:00",
+              "Thứ Ba": "10:00–22:00",
+              "Thứ Tư": "10:00–22:00",
+              "Thứ Năm": "10:00–22:00"
+            },
+            "distanceKm": 2,
+            "categories": [
+              "Spa mát xa",
+              "Spa"
+            ],
+            "rank": 5,
+            "actions": [
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://massagevinhkhang.com/",
+                "labelKey": "v3.action.website",
+                "platform": "Official Website"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=7122886160580659329",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84966202168",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=V%C4%A9nh%20Khang%20Spa%20-%20Foot%20Massage%20-%20Body%20Massage%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.76786,106.69361",
+            "domain": "spa",
+            "kind": "place",
+            "name": "Dora 1 spa | nail quận 1 | mi quận 1 | massage quận 1",
+            "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmN0oDO3C-UIOgxCxJCvbv2MG6ZIwnAh4Dcmw5QsWw31oT3OKchWR3JwJTGNb_hOqcMadZZDURXaqXfFKdzc_cg6mqThuYVXt-G_Y7a4s6DwWjpXcSYHZhrzy4vCVi3IespM6Bjvu7dbA8yt",
+            "address": "219A Đề Thám, Bến Thành, Hồ Chí Minh, Việt Nam",
+            "rating": 4.8,
+            "ratingCount": 28,
+            "openingHours": "10:00–23:30",
+            "openNow": true,
+            "phone": "+84 705 549 297",
+            "openingHoursWeek": {
+              "Thứ Sáu": "10:00–23:30",
+              "Thứ Bảy": "10:00–23:30",
+              "Chủ Nhật": "10:00–23:30",
+              "Thứ Hai": "10:00–23:30",
+              "Thứ Ba": "10:00–23:30",
+              "Thứ Tư": "10:00–23:30",
+              "Thứ Năm": "10:00–23:30"
+            },
+            "distanceKm": 1.3,
+            "categories": [
+              "Spa sức khỏe"
+            ],
+            "rank": 6,
+            "actions": [
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://dora1spa.com/",
+                "labelKey": "v3.action.website",
+                "platform": "Official Website"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=3547127242242525679",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84705549297",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Dora%201%20spa%20%7C%20nail%20qu%E1%BA%ADn%201%20%7C%20mi%20qu%E1%BA%ADn%201%20%7C%20massage%20qu%E1%BA%ADn%201%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.78172,106.70552",
+            "domain": "spa",
+            "kind": "place",
+            "name": "LV SPA - body massage - foot massage Quận 1",
+            "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmNnioQ4b-wjnxQnF7-XzTQhQEzgQ7jAkDB4EMJ0l9f1ZmQXJst3xKjKqVfeZtU-0pyinpi4Zgpl6y5EHm5A6TuvnBYbz3x2tyjggEl9qudxJ24dvUq7N1H4hxKqIGjrXOEAROlj",
+            "address": "8B Lê Thánh Tôn, Sài Gòn, Hồ Chí Minh 71006, Việt Nam",
+            "rating": 4.6,
+            "ratingCount": 33,
+            "openingHours": "09:00–01:00",
+            "openNow": true,
+            "phone": "+84 862 331 330",
+            "openingHoursWeek": {
+              "Thứ Sáu": "09:00–01:00",
+              "Thứ Bảy": "09:00–01:00",
+              "Chủ Nhật": "09:00–01:00",
+              "Thứ Hai": "09:00–01:00",
+              "Thứ Ba": "09:00–01:00",
+              "Thứ Tư": "09:00–01:00",
+              "Thứ Năm": "09:00–01:00"
+            },
+            "distanceKm": 0.7,
+            "categories": [
+              "Spa mát xa"
+            ],
+            "rank": 7,
+            "actions": [
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://lvspanail.com/",
+                "labelKey": "v3.action.website",
+                "platform": "Official Website"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=2976052766405070112",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84862331330",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=LV%20SPA%20-%20body%20massage%20-%20foot%20massage%20Qu%E1%BA%ADn%201%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          }
+        ],
+        "mapsSearchUrl": "https://maps.google.com/maps?q=spa%20massage%20ch%C3%A2n%20Qu%E1%BA%ADn%201%20Qu%E1%BA%ADn%201%2C%20TP.HCM"
+      }
+    ]
+  ]
+}

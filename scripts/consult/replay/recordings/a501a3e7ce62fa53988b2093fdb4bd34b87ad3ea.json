@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Ngon Phố Đà - Homey Authentic Vietnamese Cuisine\" OR \"Cơm nhà vui\" OR \"Cơm Nhà Vui\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T02:27:06.880Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Ngon Phố Đà - Homey Authentic Vietnamese Cuisine\" OR \"Cơm nhà vui\" OR \"Cơm Nhà Vui\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cơm nhà ở tiẹm hồi nào cũng ngon hihi. 📍 Cơm Nhà Vui",
+    "link": "https://www.tiktok.com/@ln.i.check.in/video/7571276707970272530",
+    "snippet": "Cơm nhà ở tiẹm hồi nào cũng ngon hihi. Cơm Nhà Vui - 86 đường 2/9. #danang #chillwithtiktok #checkindanang #danangangi.",
+    "position": 1
+   },
+   {
+    "title": "Cung Bậc Cơm Nhà Tại Nhà Vui",
+    "link": "https://www.tiktok.com/@comnhavuidanang/video/7506137209242750216",
+    "snippet": "Video TikTok từ Cơm Nhà Vui (@comnhavuidanang): \"Khám phá 3 cung bậc cảm xúc: set Thích, set Nhớ, set Yêu tại Nhà Vui.",
+    "position": 2
+   },
+   {
+    "title": "Cơm nhà mỗi ngày: bí quyết ăn cơm nhà vui và tiết kiệm",
+    "link": "https://www.tiktok.com/@huynhngoctham/video/7640857570080476436",
+    "snippet": "Cơm nhà mỗi ngày: bí quyết ăn cơm nhà vui và tiết kiệm. Có những ngày ăn cơm nhà nhưng cũng hên xui lắm — đó là cảm nhận nhiều gia đình chia ...",
+    "position": 3
+   },
+   {
+    "title": "Cơm Nhà Vui Đà Nẵng: Quán Ngon Cho Du Khách",
+    "link": "https://www.tiktok.com/@chuchuctyn/video/7675219343063403797",
+    "snippet": "Cơm Nhà Vui tọa lạc tại Đà Nẵng và dễ dàng tìm thấy trên bản đồ chỉ với cụm từ \"cơm nhà vui ở Đà Nẵng\". Ấn tượng đầu tiên về quán chính là sự ...",
+    "position": 4
+   },
+   {
+    "title": "Mukkbang Cơm Nhà Vui Vẻ Tại Trường",
+    "link": "https://www.tiktok.com/@thichgaran1501/video/7614010095487388948",
+    "snippet": "Mukkbang Cơm Nhà Vui Vẻ Tại Trường. Tham gia mukbang cơm nhà thú vị cùng máy nói và bè bạn! Trải nghiệm ẩm thực độc đáo ngay tại trường ...",
+    "position": 5
+   },
+   {
+    "title": "Ăn cơm nhà, vui vẻ cùng bạn bè",
+    "link": "https://www.tiktok.com/@na.286/video/7628858492421557525",
+    "snippet": "Ăn cơm nhà, vui vẻ cùng bạn bè. Thưởng thức bữa cơm ấm cúng tại nhà cùng bạn bè, chia sẻ những khoảnh khắc vui vẻ. #gana #viral #xuhuong ...",
+    "position": 6
+   },
+   {
+    "title": "Đi ăn cơm trưa thôi mà sao hay “drama” quá 😆 📍 ...",
+    "link": "https://www.tiktok.com/@anchoi_muonnoi/video/7317647261930982664",
+    "snippet": "... Cơm Nhà Vui - 133 Hà Bổng, Đà Nẵng #fyp #dfbmedia # ... Đi ăn cơm trưa thôi mà sao hay “drama” quá Cơm Nhà Vui - 133 Hà ...",
+    "position": 7
+   },
+   {
+    "title": "Seri Cơm Nhà Vui Khỏe (Dành cho gia đình).#comnhanau ...",
+    "link": "https://www.tiktok.com/@dla_1510/video/7663364872004046087",
+    "snippet": "Video TikTok từ Cô Duyên (@dla_1510): \"Seri Cơm Nhà Vui Khỏe (Dành cho gia đình).#comnhanau #comdambac # @Cô Duyên @Cô Duyên @Cô Duyên\".âm ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

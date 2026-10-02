@@ -30,6 +30,7 @@ sealed interface AccountEvent {
     data object Saved : AccountEvent
     data class SaveFailed(val message: String) : AccountEvent
     data class AvatarUploadFailed(val message: String) : AccountEvent
+    data class CoverFailed(val message: String) : AccountEvent
 }
 
 /**
@@ -55,6 +56,8 @@ class AccountViewModel @Inject constructor(
     var isSaving by mutableStateOf(false)
         private set
     var isUploadingAvatar by mutableStateOf(false)
+        private set
+    var isUploadingCover by mutableStateOf(false)
         private set
 
     var editName by mutableStateOf("")
@@ -155,6 +158,56 @@ class AccountViewModel @Inject constructor(
         }
     }
 
+    /**
+     * The web's /profile/edit "Thay ảnh bìa": image only, ≤ 5MB ([MAX_COVER_BYTES], the web's
+     * COVER_MAX_BYTES), multipart `cover` to `POST /api/profile`. Same IO rule as [onAvatarPicked].
+     */
+    fun onCoverPicked(uri: Uri) {
+        if (isUploadingCover) return
+        viewModelScope.launch {
+            isUploadingCover = true
+            val bytes = try {
+                withContext(Dispatchers.IO) { context.contentResolver.openInputStream(uri)?.use { it.readBytes() } }
+            } catch (e: Exception) {
+                logger.e(TAG, "Failed to read picked cover", e)
+                null
+            }
+            val mimeType = context.contentResolver.getType(uri)
+            val rejection = when {
+                bytes == null -> R.string.account_cover_error
+                mimeType == null || !mimeType.startsWith("image/") -> R.string.account_cover_not_image
+                bytes.size > MAX_COVER_BYTES -> R.string.account_cover_too_large
+                else -> null
+            }
+            if (rejection != null || bytes == null || mimeType == null) {
+                isUploadingCover = false
+                _events.send(AccountEvent.CoverFailed(stringProvider.get(rejection ?: R.string.account_cover_error)))
+                return@launch
+            }
+            when (val result = repository.uploadCover(bytes, mimeType)) {
+                is NetworkResult.Success -> profile = profile?.copy(coverUrl = result.data)
+                is NetworkResult.Error -> {
+                    logger.e(TAG, "Cover upload failed: ${result.error}")
+                    _events.send(AccountEvent.CoverFailed(accountErrorMessages.toUserMessage(result.error)))
+                }
+            }
+            isUploadingCover = false
+        }
+    }
+
+    /** The web's "Gỡ ảnh bìa". */
+    fun onRemoveCover() {
+        if (isUploadingCover) return
+        viewModelScope.launch {
+            isUploadingCover = true
+            when (val result = repository.clearCover()) {
+                is NetworkResult.Success -> profile = profile?.copy(coverUrl = null)
+                is NetworkResult.Error -> _events.send(AccountEvent.CoverFailed(accountErrorMessages.toUserMessage(result.error)))
+            }
+            isUploadingCover = false
+        }
+    }
+
     fun onSave() {
         if (isSaving) return
         val name = editName.trim()
@@ -182,5 +235,7 @@ class AccountViewModel @Inject constructor(
         const val TAG = "AccountViewModel"
         // Matches the web's client + server-side avatar size cap exactly (src/app/api/profile/route.ts).
         const val MAX_AVATAR_BYTES = 3 * 1024 * 1024
+        /** The web's COVER_MAX_BYTES (MAX_PHOTO_SIZE_MB = 5). */
+        const val MAX_COVER_BYTES = 5 * 1024 * 1024
     }
 }

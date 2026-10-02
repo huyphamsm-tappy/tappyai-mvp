@@ -51,6 +51,17 @@
 	<string>TappyAI uses your location to find nearby places and personalize suggestions.</string>
 
 	<!-- Custom URL scheme for OAuth callbacks (Google/Zalo). Also register a universal-link domain (D4). -->
+	<!-- Share sheet (Core/Share/TappyShare.appScheme): canOpenURL answers false for any scheme
+	     not listed here, so this must stay identical to TappyShare.queriedSchemes. -->
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>fb-messenger</string>
+		<string>zalo</string>
+		<string>whatsapp</string>
+		<string>tg</string>
+		<string>viber</string>
+		<string>line</string>
+	</array>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>

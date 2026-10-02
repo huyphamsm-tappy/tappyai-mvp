@@ -1,0 +1,80 @@
+{
+  "id": "T2",
+  "text": "khach san da nang gan bien duoi 1tr/dem",
+  "parent": null,
+  "status": 200,
+  "ms": 14273,
+  "evidenceId": "d289a38b-fae1-4b5b-8d26-ff1b814a965d",
+  "toolCalls": [
+    {
+      "tool": "get_hotel_prices",
+      "args": {
+        "location": "Đà Nẵng"
+      }
+    }
+  ],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình thấy kết quả tìm được nhưng chưa có thông tin giá cụ thể từ các trang booking.\n**Bạn dự định check-in ngày nào và check-out ngày nào?** (Vì giá sẽ khác tùy theo ngày cụ thể)\n\nGiờ chạy và giá vé cụ thể mình chưa xác nhận được từ nguồn đã tìm — bạn xem trên trang đặt vé.\n\n[FOLLOWUPS]Ngày check-in/check-out cụ thể?|Muốn ở gần bãi biển nào?|Cần tiện nghi gì?[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "khach san da nang gan bien duoi 1tr/dem"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình thấy kết quả tìm được nhưng chưa có thông tin giá cụ thể từ các trang booking.\n**Bạn dự định check-in ngày nào và check-out ngày nào?** (Vì giá sẽ khác tùy theo ngày cụ thể)\n\nGiờ chạy và giá vé cụ thể mình chưa xác nhận được từ nguồn đã tìm — bạn xem trên trang đặt vé.\n\n[FOLLOWUPS]Ngày check-in/check-out cụ thể?|Muốn ở gần bãi biển nào?|Cần tiện nghi gì?[/FOLLOWUPS]"
+    }
+  ]
+}

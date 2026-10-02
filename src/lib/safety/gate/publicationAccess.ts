@@ -44,16 +44,19 @@ export const PUBLISHABLE_FILTER = 'publication_state.is.null,publication_state.e
  * nothing and costs nothing, and the query keeps its existing shape rather than
  * needing a conditional branch at each call site.
  *
- * Once `CONTENT_SAFETY_SCHEMA_MIGRATED=true` the real filter applies. The two
- * switches are separate precisely so the migration and the gate can be turned on
- * in either order without a broken window between them.
+ * 🚨 R19 (Android, UAT 2026-09-29): that window is over — `20260817_content_safety_gate` is on the audit
+ * and the production databases — yet the filter still waited for `CONTENT_SAFETY_SCHEMA_MIGRATED=true`.
+ * UAT never set it, so every surface built on this filter (feed, "Gợi ý cho bạn", profiles, single
+ * reads) showed RESTRICTED posts: "Bài Bị Hạn Chế (E2E)" became a recommendation with "1 đánh giá".
+ * Fail-closed now: the real filter applies unless the flag is EXPLICITLY `false` (a database without
+ * the column). An unset flag can no longer turn content safety off.
  */
 export function publishableFilter(
   env: Readonly<Record<string, string | undefined>> = process.env,
 ): string {
-  return env.CONTENT_SAFETY_SCHEMA_MIGRATED === 'true'
-    ? PUBLISHABLE_FILTER
-    : 'id.not.is.null';
+  return env.CONTENT_SAFETY_SCHEMA_MIGRATED === 'false'
+    ? 'id.not.is.null'
+    : PUBLISHABLE_FILTER;
 }
 
 /**

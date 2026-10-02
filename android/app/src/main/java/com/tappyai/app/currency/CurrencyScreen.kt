@@ -1,23 +1,44 @@
 package com.tappyai.app.currency
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.filled.Bolt
+import androidx.compose.material.icons.filled.Paid
+import androidx.compose.material.icons.filled.Verified
+import androidx.compose.material.icons.outlined.Language
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
+import com.tappyai.app.home.HomeV3
+import com.tappyai.app.tools.ToolCard
+import com.tappyai.app.tools.ToolChip
+import com.tappyai.app.tools.ToolCoin
+import com.tappyai.app.tools.ToolGlobe
+import com.tappyai.app.tools.ToolHero
+import com.tappyai.app.tools.ToolHue
+import com.tappyai.app.tools.ToolOrbit
+import com.tappyai.app.tools.ToolSegment
+import com.tappyai.app.tools.ToolTextField
+import com.tappyai.app.tools.ToolV3Page
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.icons.filled.SwapHoriz
@@ -25,7 +46,6 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -43,10 +63,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.tappyai.app.R
 import com.tappyai.core.designsystem.component.TappyBottomSheet
-import com.tappyai.core.designsystem.component.TappyCard
-import com.tappyai.core.designsystem.component.TappyTextField
-import com.tappyai.core.designsystem.theme.TappyContainers
-import com.tappyai.core.designsystem.theme.TappyShapes
 import com.tappyai.core.designsystem.theme.TappySpacing
 import java.text.NumberFormat
 import java.time.format.DateTimeFormatter
@@ -67,54 +83,48 @@ fun CurrencyScreen(
 ) {
     var pickerTarget by remember { mutableStateOf<PickerTarget?>(null) }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState()),
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        Column(
-            modifier = Modifier
-                .widthIn(max = TappyContainers.content)
-                .fillMaxWidth()
-                .padding(TappySpacing.xl),
-            verticalArrangement = Arrangement.spacedBy(TappySpacing.lg),
-        ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                IconButton(onClick = onBack) {
-                    Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.common_back))
-                }
-                Text(text = stringResource(R.string.currency_title), style = MaterialTheme.typography.titleLarge)
-            }
+    ToolV3Page(onBack = onBack) {
+        ToolHero(
+            hue = ToolHue.Navy,
+            eyebrow = stringResource(R.string.smart_tool_currency),
+            title1 = stringResource(R.string.currency_title),
+            title2 = null,
+            body = stringResource(R.string.tool_currency_subtitle),
+            chips = listOf(
+                ToolChip(Icons.Filled.Bolt, stringResource(R.string.tool_currency_chip_fast)),
+                ToolChip(Icons.Filled.Verified, stringResource(R.string.tool_currency_chip_currencies, CURRENCIES.size)),
+                ToolChip(Icons.Outlined.Language, stringResource(R.string.tool_currency_chip_source)),
+            ),
+            mascotRes = R.drawable.tappy_wave,
+            scene = { CurrencyScene() },
+        )
+        AmountCard(
+            amount = viewModel.amount,
+            onAmountChange = viewModel::onAmountChange,
+            onQuickAmount = viewModel::onQuickAmount,
+        )
 
-            AmountCard(
-                amount = viewModel.amount,
-                onAmountChange = viewModel::onAmountChange,
-                onQuickAmount = viewModel::onQuickAmount,
-            )
+        CurrencySelectorsCard(
+            from = viewModel.fromCurrency,
+            to = viewModel.toCurrency,
+            onOpenFrom = { pickerTarget = PickerTarget.From },
+            onOpenTo = { pickerTarget = PickerTarget.To },
+            onSwap = viewModel::swap,
+        )
 
-            CurrencySelectorsCard(
-                from = viewModel.fromCurrency,
-                to = viewModel.toCurrency,
-                onOpenFrom = { pickerTarget = PickerTarget.From },
-                onOpenTo = { pickerTarget = PickerTarget.To },
-                onSwap = viewModel::swap,
-            )
+        ResultCard(
+            loading = viewModel.loadingRates,
+            converted = viewModel.converted,
+            numAmount = viewModel.numAmount,
+            from = viewModel.fromCurrency,
+            to = viewModel.toCurrency,
+            rate = viewModel.rate,
+        )
 
-            ResultCard(
-                loading = viewModel.loadingRates,
-                converted = viewModel.converted,
-                numAmount = viewModel.numAmount,
-                from = viewModel.fromCurrency,
-                to = viewModel.toCurrency,
-                rate = viewModel.rate,
-            )
-
-            RateInfoFooter(
-                fallback = viewModel.fallback,
-                rateDateIso = viewModel.rateDateIso,
-            )
-        }
+        RateInfoFooter(
+            fallback = viewModel.fallback,
+            rateDateIso = viewModel.rateDateIso,
+        )
     }
 
     pickerTarget?.let { target ->
@@ -131,6 +141,16 @@ fun CurrencyScreen(
 
 private enum class PickerTarget { From, To }
 
+/** The hero scene: a soft globe, an orbit and three coin tokens ($ € ¥), as on the web. */
+@Composable
+private fun BoxScope.CurrencyScene() {
+    ToolGlobe(size = 190.dp, alignment = Alignment.TopEnd, color = Color(0x662563EB), modifier = Modifier.offset(x = 24.dp, y = (-10).dp))
+    ToolOrbit(size = 230.dp, alignment = Alignment.Center, modifier = Modifier.offset(y = 8.dp))
+    ToolCoin(symbol = "$", a = Color(0xFF2563EB), b = Color(0xFF3B82F6), alignment = Alignment.TopStart, size = 44.dp, modifier = Modifier.offset(x = 8.dp, y = 26.dp))
+    ToolCoin(symbol = "€", a = Color(0xFF7C3AED), b = Color(0xFFA78BFA), alignment = Alignment.TopEnd, size = 40.dp, modifier = Modifier.offset(x = (-6).dp, y = 4.dp))
+    ToolCoin(symbol = "¥", a = Color(0xFFF59E0B), b = Color(0xFFFBBF24), alignment = Alignment.CenterEnd, size = 36.dp, modifier = Modifier.offset(x = (-10).dp, y = 30.dp))
+}
+
 @Composable
 private fun AmountCard(
     amount: String,
@@ -141,28 +161,23 @@ private fun AmountCard(
     // remember (rather than a top-level `NumberFormat.getNumberInstance` call per label) keeps
     // the pattern consistent with ResultCard below.
     val vnFormatter = remember { NumberFormat.getNumberInstance(Locale("vi", "VN")) }
-    TappyCard {
-        Column(verticalArrangement = Arrangement.spacedBy(TappySpacing.sm)) {
-            Text(
-                text = stringResource(R.string.currency_amount_label),
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-            TappyTextField(
-                value = amount,
-                onValueChange = onAmountChange,
-                placeholder = stringResource(R.string.currency_amount_placeholder),
-                singleLine = true,
-                keyboardType = KeyboardType.Decimal,
-            )
-            Row(horizontalArrangement = Arrangement.spacedBy(TappySpacing.sm)) {
-                QUICK_AMOUNTS.forEach { value ->
-                    QuickAmountChip(
-                        label = formatGrouped(value.toDouble(), vnFormatter),
-                        selected = amount == value,
-                        onClick = { onQuickAmount(value) },
-                    )
-                }
+    ToolCard(title = stringResource(R.string.currency_amount_label), icon = Icons.Filled.Paid) {
+        ToolTextField(
+            value = amount,
+            onValueChange = onAmountChange,
+            placeholder = stringResource(R.string.currency_amount_placeholder),
+            singleLine = true,
+            keyboardType = KeyboardType.Decimal,
+            textSize = 28.sp,
+            leadingIcon = { Icon(Icons.Filled.Paid, contentDescription = null, tint = HomeV3.Purple) },
+        )
+        Row(horizontalArrangement = Arrangement.spacedBy(TappySpacing.sm)) {
+            QUICK_AMOUNTS.forEach { value ->
+                QuickAmountChip(
+                    label = formatGrouped(value.toDouble(), vnFormatter),
+                    selected = amount == value,
+                    onClick = { onQuickAmount(value) },
+                )
             }
         }
     }
@@ -170,20 +185,7 @@ private fun AmountCard(
 
 @Composable
 private fun QuickAmountChip(label: String, selected: Boolean, onClick: () -> Unit) {
-    val colors = MaterialTheme.colorScheme
-    Row(
-        modifier = Modifier
-            .clip(TappyShapes.input)
-            .background(if (selected) colors.primary else colors.surfaceVariant)
-            .clickable(onClick = onClick)
-            .padding(horizontal = TappySpacing.md, vertical = TappySpacing.xs),
-    ) {
-        Text(
-            text = label,
-            style = MaterialTheme.typography.bodySmall,
-            color = if (selected) colors.onPrimary else colors.onSurfaceVariant,
-        )
-    }
+    ToolSegment(text = label, selected = selected, onClick = onClick, minHeight = 44.dp)
 }
 
 @Composable
@@ -194,17 +196,27 @@ private fun CurrencySelectorsCard(
     onOpenTo: () -> Unit,
     onSwap: () -> Unit,
 ) {
-    TappyCard {
+    ToolCard {
         Row(
             horizontalArrangement = Arrangement.spacedBy(TappySpacing.sm),
             verticalAlignment = Alignment.Bottom,
         ) {
             CurrencySelectorField(label = stringResource(R.string.currency_from_label), currency = from, onClick = onOpenFrom, modifier = Modifier.weight(1f))
-            IconButton(onClick = onSwap) {
+            // The swap disc (`.v3-fx-swap`): the accent fill, sitting between the two selectors.
+            Box(
+                modifier = Modifier
+                    .padding(bottom = 4.dp)
+                    .size(48.dp)
+                    .clip(CircleShape)
+                    .background(HomeV3.Purple)
+                    .clickable(onClickLabel = stringResource(R.string.currency_swap_description), onClick = onSwap),
+                contentAlignment = Alignment.Center,
+            ) {
                 Icon(
                     imageVector = Icons.Filled.SwapHoriz,
-                    contentDescription = stringResource(R.string.currency_swap_description),
-                    tint = MaterialTheme.colorScheme.primary,
+                    contentDescription = null,
+                    tint = Color.White,
+                    modifier = Modifier.size(22.dp),
                 )
             }
             CurrencySelectorField(label = stringResource(R.string.currency_to_label), currency = to, onClick = onOpenTo, modifier = Modifier.weight(1f))
@@ -220,32 +232,22 @@ private fun CurrencySelectorField(
     modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(TappySpacing.xs)) {
-        Text(
-            text = label,
-            style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-        )
+        Text(text = label, color = HomeV3.OnSurfaceVariant, fontSize = 13.sp, fontWeight = FontWeight.SemiBold)
+        val shape = RoundedCornerShape(16.dp)
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .clip(TappyShapes.input)
-                .background(MaterialTheme.colorScheme.surfaceVariant)
+                .heightIn(min = 56.dp)
+                .clip(shape)
+                .background(HomeV3.SurfaceVariant)
+                .border(1.dp, HomeV3.Outline, shape)
                 .clickable(onClick = onClick)
-                .padding(horizontal = TappySpacing.md, vertical = TappySpacing.md),
+                .padding(horizontal = 14.dp, vertical = 12.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Text(
-                text = "${currency.flag} ${currency.code}",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurface,
-            )
-            Icon(
-                imageVector = Icons.Filled.ExpandMore,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.height(18.dp),
-            )
+            Text(text = "${currency.flag} ${currency.code}", color = HomeV3.OnSurface, fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
+            Icon(imageVector = Icons.Filled.ExpandMore, contentDescription = null, tint = HomeV3.OnSurfaceVariant, modifier = Modifier.height(18.dp))
         }
     }
 }
@@ -263,24 +265,41 @@ private fun ResultCard(
     // allocation) on every formatAmount call — this card recomposes on every keystroke in the
     // amount field via the ViewModel's debounced conversion, up to 4 calls per recomposition.
     val vnFormatter = remember { NumberFormat.getNumberInstance(Locale("vi", "VN")) }
+    val shape = RoundedCornerShape(24.dp)
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(TappyShapes.card)
-            .background(MaterialTheme.colorScheme.primaryContainer)
-            .padding(TappySpacing.xl),
+            .shadow(14.dp, shape, ambientColor = Color(0x733B82F6), spotColor = Color(0x733B82F6))
+            .clip(shape)
+            .background(Brush.linearGradient(listOf(Color(0xFF2563EB), Color(0xFF4F46E5), Color(0xFF6D28D9))))
+            .border(1.dp, Color(0x5993C5FD), shape)
+            .padding(TappySpacing.xxl),
         verticalArrangement = Arrangement.spacedBy(TappySpacing.xs),
     ) {
-        val onColor = MaterialTheme.colorScheme.onPrimaryContainer
+        val onColor = Color.White
+        Text(
+            text = stringResource(R.string.tool_currency_result_label).uppercase(),
+            color = Color(0xFFBFDBFE),
+            fontSize = 12.5.sp,
+            letterSpacing = 1.2.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(bottom = 6.dp),
+        )
         when {
-            loading -> Row(
-                horizontalArrangement = Arrangement.spacedBy(TappySpacing.sm),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                // .size(), not .height() alone — height-only left the width unconstrained,
-                // relying on the indicator's intrinsic default rather than a true 16dp circle.
-                CircularProgressIndicator(modifier = Modifier.size(16.dp), color = onColor, strokeWidth = 2.dp)
-                Text(text = stringResource(R.string.currency_loading_rates), style = MaterialTheme.typography.bodySmall, color = onColor)
+            loading -> {
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(TappySpacing.sm),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    // .size(), not .height() alone — height-only left the width unconstrained,
+                    // relying on the indicator's intrinsic default rather than a true 16dp circle.
+                    CircularProgressIndicator(modifier = Modifier.size(16.dp), color = onColor, strokeWidth = 2.dp)
+                    Text(text = stringResource(R.string.currency_loading_rates), style = MaterialTheme.typography.bodySmall, color = onColor)
+                }
+                Column(modifier = Modifier.padding(top = 12.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                    Box(modifier = Modifier.fillMaxWidth(0.66f).height(40.dp).clip(RoundedCornerShape(10.dp)).background(Color.White.copy(alpha = 0.16f)))
+                    Box(modifier = Modifier.fillMaxWidth(0.33f).height(14.dp).clip(RoundedCornerShape(7.dp)).background(Color.White.copy(alpha = 0.16f)))
+                }
             }
 
             converted != null -> {
@@ -295,7 +314,10 @@ private fun ResultCard(
                 )
                 Text(
                     text = formatAmount(converted, to.decimals, vnFormatter),
-                    style = MaterialTheme.typography.headlineLarge,
+                    fontSize = 40.sp,
+                    lineHeight = 46.sp,
+                    fontWeight = FontWeight.ExtraBold,
+                    letterSpacing = (-0.5).sp,
                     color = onColor,
                 )
                 Text(
@@ -304,7 +326,7 @@ private fun ResultCard(
                     color = onColor,
                 )
                 if (rate != null) {
-                    HorizontalDivider(modifier = Modifier.padding(vertical = TappySpacing.sm))
+                    HorizontalDivider(modifier = Modifier.padding(vertical = TappySpacing.sm), color = Color.White.copy(alpha = 0.2f))
                     Text(
                         text = stringResource(
                             R.string.currency_rate_line,

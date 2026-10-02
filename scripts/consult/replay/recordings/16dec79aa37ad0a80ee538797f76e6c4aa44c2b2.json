@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"KHU VUI CHƠI TRẺ EM\" OR \"Khu Vui Chơi Play More\" Thủ Đức site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:40:54.099Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"KHU VUI CHƠI TRẺ EM\" OR \"Khu Vui Chơi Play More\" Thủ Đức site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Khu Vui Chơi Trẻ Em Thủ Đức Sea Wonder Hiệp Bình Mới",
+    "link": "https://www.tiktok.com/@vivucungtri/video/7633249088858852615",
+    "snippet": "Nếu bạn đang tìm khu vui chơi trẻ em ở Thủ Đức, khu vui chơi Sea Wonder Hiệp Bình là một lựa chọn đáng để tham khảo. Địa điểm này thường ...",
+    "position": 1
+   },
+   {
+    "title": "Sea Wonder Hiệp Bình Thủ Đức: Cafe Khu Vui Chơi Trẻ ...",
+    "link": "https://www.tiktok.com/@hieupham6899/video/7600363275896818965",
+    "snippet": "Sea Wonder Premium Kids Cafe vừa khai trương tại Hiệp Bình, Thủ Đức, mang đến khu vui chơi trẻ em kết hợp cà phê dành cho cả bé và phụ huynh ...",
+    "position": 2
+   },
+   {
+    "title": "Khu vui chơi trẻ em mới tại Thủ Đức",
+    "link": "https://www.tiktok.com/@beli.review/video/7665678483355438344",
+    "snippet": "Khu Vui Chơi Triển Trẻ Con Lãm Đông Anh Ở Khu Mấy · Khu Vui Chơi Trẻ Em Nhà Sách Trí Đức · Khu Trò Chơi Trẻ Em Hùng Vương Plaza · Khu Vui Chơi ...",
+    "position": 3
+   },
+   {
+    "title": "Khu vui chơi trẻ em ở Thủ Đức có ảo thuật, chú hề và mascot",
+    "link": "https://www.tiktok.com/@beli.review/video/7645905282521926920",
+    "snippet": "Giới thiệu nhanh Khu vui chơi trẻ em tại Thủ Đức kết hợp nhiều hoạt động giải trí: ảo thuật, chú hề và mascot đáng yêu, phù hợp cho gia đình ...",
+    "position": 4
+   },
+   {
+    "title": "Khu vui chơi trẻ em Thủ Đức: Giá vé 50k",
+    "link": "https://www.tiktok.com/@khuvuichoitudothuduc/video/7614006099145936135",
+    "snippet": "Địa chỉ 127 đường số 9, Linh Xuân, TPHCM. #khuvuichoitudo #khuvuichoitreem #anvat. Keywords: khu vui chơi trẻ em thủ đức, khu vui chơi trẻ em ...",
+    "position": 5
+   },
+   {
+    "title": "Funny Garden Thủ Đức - Khu vui chơi trẻ em, cà phê và ...",
+    "link": "https://www.tiktok.com/@tamdichill/video/7646024641873464584",
+    "snippet": "Funny Garden Thủ Đức - Khu vui chơi trẻ em, cà phê và giải trí. Giới thiệu nhanh Funny Garden Thủ Đức là một địa điểm kết hợp khu vui chơi ...",
+    "position": 6
+   },
+   {
+    "title": "Khu Vui Chơi Trẻ Em và Cafe Sân Vườn Thủ Đức",
+    "link": "https://www.tiktok.com/@beli.review/video/7544556739790638352",
+    "snippet": "Khu tổ hợp vui chơi trẻ em và cafe sân vườn ngay Thủ Đức #cafe #cofee #khuvuichoi #thieunhi #2thang9. Khu Vui Chơi Trẻ Em và Cafe Sân Vườn Thủ ...",
+    "position": 7
+   },
+   {
+    "title": "CT's House Kid & Coffee Thủ Đức: Khu vui chơi trẻ em",
+    "link": "https://www.tiktok.com/@khuvuichoictshousethuduc/photo/7617766421338000647",
+    "snippet": "CT's House Kid & Coffee Thủ Đức: Khu vui chơi trẻ em. CT's House Kid & Coffee tại Thủ Đức cung cấp không gian vui chơi sạch sẽ, an toàn với ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,169 @@
+import { describe, it, expect } from 'vitest'
+import { readFileSync } from 'node:fs'
+import { planPresearch, presearchMessages, presearchFrames, prefixBody, deferredBody, searchingFrame, type PresearchOutcome } from './presearch'
+import { deriveSituation } from './situationFrame'
+
+// ─────────────────────────────────────────────────────────────────────────────
+// A1(c) — THE ROUTE RUNS THE FIRST SEARCH, THE MODEL WRITES THE PROSE.
+//
+// Step 1 of a place turn (≈6–7.7 s measured) only emitted the tool call the
+// search-now directive already named. The pre-search runs that call before the
+// model and hands over a completed tool-call / tool-result pair; the client
+// stream gets the same `9:` / `a:` frames. These pin the plan (arguments come
+// from the directive and the frame only), the two message shapes, the frame
+// bytes, and the stream prefix.
+// ─────────────────────────────────────────────────────────────────────────────
+
+const need = { budget: null as never, location: { text: 'Quận 1', gps: null } }
+const situation = deriveSituation(['ăn gì ngon giờ — dưới 100k/người'], need, { hasGps: true })
+
+describe('planPresearch', () => {
+  it('a place directive becomes the call: query + type, and the stated area when there is one', () => {
+    const plan = planPresearch({ query: 'quán ăn tối ngon', type: 'restaurant', exact: true }, situation)
+    expect(plan).toEqual({ toolName: 'search_places', args: { query: 'quán ăn tối ngon', type: 'restaurant', location: 'Quận 1' }, exact: true })
+  })
+  it('no area stated ⇒ no location argument (the tool centres on GPS)', () => {
+    const s = deriveSituation(['ăn gì ngon giờ'], { budget: null as never, location: { text: null, gps: null } }, { hasGps: true })
+    expect(planPresearch({ query: 'quán ăn ngon', type: 'restaurant', exact: true }, s)?.args).toEqual({ query: 'quán ăn ngon', type: 'restaurant' })
+  })
+  it('never for shopping or hotels (their turns keep the model step), never without a directive, never on clip / plan / movie turns', () => {
+    expect(planPresearch({ query: 'nước hoa', type: 'product', exact: true }, situation)).toBeNull()
+    expect(planPresearch({ query: 'Phú Quốc', type: 'hotel', exact: false }, situation)).toBeNull()
+    expect(planPresearch(null, situation)).toBeNull()
+    expect(planPresearch({ query: 'quán ăn ngon', type: 'restaurant', exact: true }, null)).toBeNull()
+    expect(planPresearch({ query: 'quán ăn ngon', type: 'restaurant', exact: true }, situation, { clip: true })).toBeNull()
+    expect(planPresearch({ query: 'quán ăn ngon', type: 'restaurant', exact: true }, situation, { planning: true })).toBeNull()
+    expect(planPresearch({ query: 'quán ăn ngon', type: 'restaurant', exact: true }, situation, { movie: true })).toBeNull()
+  })
+})
+
+// UAT4 A/B (27 Sep 2026): the suggested directive of a SPECIFIED request was pre-searched as-is —
+// "tim quan bun bo ngon o q1 duoi 80k" became `quán ăn khuya @ null` (measured live, 2 rows).
+describe('planPresearch — only the exact call is run before the model', () => {
+  const s = deriveSituation(['tim quan bun bo ngon o q1 duoi 80k'], { budget: null as never, location: { text: null, gps: null } }, { hasGps: true })
+  it('a suggestion (exact: false) goes back to the model to sharpen — no pre-search', () => {
+    expect(planPresearch({ query: 'quán ăn khuya', type: 'restaurant', exact: false }, s)).toBeNull()
+    expect(planPresearch({ query: 'quán karaoke', type: 'attraction', exact: false }, situation)).toBeNull()
+    expect(planPresearch({ query: 'spa massage', type: 'spa', exact: false }, situation)).toBeNull()
+  })
+  it('a "more" turn repeats its search even from a suggestion', () => {
+    expect(planPresearch({ query: 'spa massage', type: 'spa', exact: false }, situation, { more: true })?.args.query).toBe('spa massage')
+  })
+  it('an exact call with no place in the situation takes the district stated earlier in the subject', () => {
+    expect(planPresearch({ query: 'rạp chiếu phim', type: 'cinema', exact: true }, s, { statedArea: 'Quận 1' })?.args.location).toBe('Quận 1')
+    expect(planPresearch({ query: 'quán ăn ngon', type: 'restaurant', exact: true }, situation, { statedArea: 'Quận 7' })?.args.location).toBe('Quận 1') // the situation's own place wins
+  })
+})
+
+const outcome: PresearchOutcome = { toolCallId: 'presearch_abc', toolName: 'search_places', args: { query: 'quán ăn ngon', type: 'restaurant', location: 'Quận 1' }, result: { source: 'serper_maps', count: 1, results: [{ name: 'Quán A' }] }, ms: 1200 }
+
+describe('what the model and the client receive', () => {
+  it('the model gets an assistant tool-call and a tool result, in that order, with the same id', () => {
+    const ms = presearchMessages(outcome)
+    expect(ms.map(m => m.role)).toEqual(['assistant', 'tool'])
+    expect(ms[0].content).toEqual([{ type: 'tool-call', toolCallId: 'presearch_abc', toolName: 'search_places', args: outcome.args }])
+    expect(ms[1].content).toEqual([{ type: 'tool-result', toolCallId: 'presearch_abc', toolName: 'search_places', result: outcome.result }])
+  })
+  it('the client gets the SDK\'s own frame shapes: 9: (call) then a: (result)', () => {
+    const f = presearchFrames(outcome)
+    const [l9, la, rest] = f.split('\n')
+    expect(rest).toBe('')
+    expect(JSON.parse(l9.slice(2))).toEqual({ toolCallId: 'presearch_abc', toolName: 'search_places', args: outcome.args })
+    expect(JSON.parse(la.slice(2))).toEqual({ toolCallId: 'presearch_abc', result: outcome.result })
+    expect(l9.startsWith('9:') && la.startsWith('a:')).toBe(true)
+  })
+  it('prefixBody yields the frames first, then the model stream, byte for byte', async () => {
+    const enc = new TextEncoder()
+    const model = new ReadableStream<Uint8Array>({ start(c) { c.enqueue(enc.encode('0:"Mình chọn"\n')); c.enqueue(enc.encode('d:{"finishReason":"stop"}\n')); c.close() } })
+    const text = await new Response(prefixBody(presearchFrames(outcome), model)).text()
+    expect(text).toBe(presearchFrames(outcome) + '0:"Mình chọn"\nd:{"finishReason":"stop"}\n')
+  })
+  it('route.ts wires it: the plan from the directive, the frames onto the response, the pair into the model messages, the count into usage', () => {
+    const route = readFileSync('src/app/api/chat/route.ts', 'utf8')
+    expect(route).toMatch(/let presearchPlan = consultativeV1 \? planPresearch\(searchNow, situation/)
+    // One call: the place search or (owner 2026-09-28, c40 T7) the fare call.
+    expect(route).toMatch(/\[preCall\.name\]\.execute\(preCall\.args/)
+    expect(route).toMatch(/presearchPlan && toolExecutes\('search_places'\) \? \{ name: 'search_places', args: presearchPlan\.args \}/)
+    expect(route).toMatch(/prefixBody\(presearchAll\.map\(presearchFrames\)\.join\(''\), sdkResponse\.body\)/)
+    // Consult V2 (cost §6): the model's copy of the rows drops link/id fields; the frames keep the full result.
+    // R15: a pre-fetched trip plan (toolCallId 'trip_…') reads at most 4 rows per source.
+    expect(route).toMatch(/\[\.\.\.modelMessages, \.\.\.presearchAll\.flatMap\(o => presearchMessages\(consult \? \{ \.\.\.o, result: slimResultForModel\(o\.result(?:, o\.toolCallId\.startsWith\('trip_'\) \? 4 : undefined)?\) \} : o\)\)\]/)
+    expect(route).toMatch(/\+ \(presearchOutcome \? 1 : 0\)/)
+  })
+})
+
+describe('A1(b): the first byte does not wait for the search', () => {
+  const NL = String.fromCharCode(10)
+  it("the searching frame is a progress annotation in the turn's language", () => {
+    const [l, rest] = searchingFrame('vi').split(NL)
+    expect(rest).toBe('')
+    expect(JSON.parse(l.slice(2))).toEqual([{ kind: 'tappy.progress.v1', v: 1, stage: 'searching', text: 'Đang tìm chỗ quanh bạn…' }])
+    expect(JSON.parse(searchingFrame('en').slice(2))[0].text).toBe('Searching places around you…')
+  })
+  it("the prefix is readable BEFORE the turn resolves; the turn's own bytes follow unchanged", async () => {
+    let release!: () => void
+    const gate = new Promise<void>(r => { release = r })
+    const body = '0:"Mình chọn"' + NL + 'd:{"finishReason":"stop"}' + NL
+    const produce = async () => { await gate; return new Response(body) }
+    const reader = deferredBody(searchingFrame('vi'), produce).getReader()
+    const first = await reader.read()
+    expect(new TextDecoder().decode(first.value)).toBe(searchingFrame('vi'))
+    release()
+    let rest = ''
+    for (;;) { const { done, value } = await reader.read(); if (done) break; rest += new TextDecoder().decode(value) }
+    expect(rest).toBe(body)
+  })
+  it('a non-OK response or a throw inside the turn ends the stream with the SDK error part, never a hang', async () => {
+    const text = async (p: () => Promise<Response>) => new Response(deferredBody('', p)).text()
+    const errorTail = '3:"ai_error"' + NL + 'd:{"finishReason":"error"}' + NL
+    expect(await text(async () => new Response('{"error":"ai_error"}', { status: 502 }))).toBe(errorTail)
+    expect(await text(async () => { throw new Error('boom') })).toBe(errorTail)
+  })
+  it('route.ts wires it: a pre-search turn returns the deferred body with the evidence id header; every other turn runs the same closure directly', () => {
+    const route = readFileSync('src/app/api/chat/route.ts', 'utf8')
+    expect(route).toMatch(/const finishTurn = async \(\): Promise<Response> => \{/)
+    expect(route).toMatch(/if \(willPresearch\) \{\s*return new Response\(deferredBody\(searchingFrame\(lang\), finishTurn\), \{[^}]*'X-Decision-Evidence-Id': evidenceId/)
+    expect(route).toMatch(/return finishTurn\(\)\s*\}\s*$/)
+    expect(route).toMatch(/if \(willPresearch && preCall && !eveningSearches\) \{/)
+  })
+})
+
+
+// Owner 2026-09-28 (c40 T7): the fare call is run before the model when two airports are named.
+import { planFlightPresearch } from './presearch'
+describe('planFlightPresearch', () => {
+  const now = new Date('2026-09-28T03:00:00Z')
+  const flight = (q: string) => ({ query: q, type: 'flight' as const, exact: false })
+  it('"Vé máy bay Sài Gòn Hà Nội tuần sau rẻ nhất" → SGN → HAN, no date', () => {
+    expect(planFlightPresearch(flight('x'), 'Vé máy bay Sài Gòn Hà Nội tuần sau rẻ nhất', now)).toEqual({ toolName: 'get_flight_prices', args: { origin: 'SGN', destination: 'HAN' } })
+  })
+  it('a dd/mm date becomes departDate (next occurrence); order follows the text', () => {
+    expect(planFlightPresearch(flight('x'), 've may bay tu da nang ve tp hcm 12/10', now)?.args).toEqual({ origin: 'DAD', destination: 'SGN', departDate: '2026-10-12' })
+    expect(planFlightPresearch(flight('x'), 'bay Hà Nội đi Phú Quốc 5/1', now)?.args.departDate).toBe('2027-01-05')
+  })
+  it('one airport only, a non-flight directive, or a planning turn ⇒ no pre-search (the model decides)', () => {
+    expect(planFlightPresearch(flight('x'), 've may bay di da nang 12/10', now)).toBeNull()
+    expect(planFlightPresearch({ query: 'x', type: 'restaurant', exact: true }, 'Sài Gòn Hà Nội', now)).toBeNull()
+    expect(planFlightPresearch(flight('x'), 'Vé máy bay Sài Gòn Hà Nội', now, { planning: true })).toBeNull()
+  })
+})
+
+// Golden B2 (2026-09-28): a lossless suggestion is pre-searched; a lossy one still goes to the model.
+import { queryCoversRequest } from './presearch'
+describe('queryCoversRequest', () => {
+  it('B2 — party / age / "gần đây" are carried by other means: covered', () => {
+    expect(queryCoversRequest('quán ăn ngon có khu trẻ em', 'Tìm quán ăn cho gia đình 5-6 người, có bé dưới 5 tuổi, gần đây')).toBe(true)
+    expect(queryCoversRequest('quán bún bò ngon', 'tim quan bun bo ngon o q1 duoi 80k')).toBe(true)
+    expect(queryCoversRequest('quán karaoke', 'Karaoke cho 10 người tầm 100k/người Gò Vấp', 'Gò Vấp')).toBe(true)
+  })
+  it('a word the query lacks keeps the model step: cuisine, sub-service, format', () => {
+    expect(queryCoversRequest('quán ăn ngon yên tĩnh', 'quán Nhật yên tĩnh Quận 1')).toBe(false)
+    expect(queryCoversRequest('spa massage', 'spa massage chan gan q1 duoi 300k')).toBe(false)
+    expect(queryCoversRequest('rạp chiếu phim', 'Rạp chiếu phim IMAX ở TP HCM')).toBe(false)
+  })
+  it('planPresearch runs a covered suggestion, not a lossy one', () => {
+    const s = deriveSituation(['Tìm quán ăn cho gia đình 5-6 người, có bé dưới 5 tuổi, gần đây'], { budget: null as never, location: { text: null, gps: null } }, { hasGps: true })
+    expect(planPresearch({ query: 'quán ăn ngon có khu trẻ em', type: 'restaurant', exact: false }, s, { userText: 'Tìm quán ăn cho gia đình 5-6 người, có bé dưới 5 tuổi, gần đây' })?.args.query).toBe('quán ăn ngon có khu trẻ em')
+    expect(planPresearch({ query: 'spa massage', type: 'spa', exact: false }, situation, { userText: 'spa massage chan gan q1' })).toBeNull()
+  })
+})

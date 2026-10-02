@@ -1,0 +1,84 @@
+{
+  "label": "uat4-p1-golden-d965363-T2-rep1",
+  "base": "http://localhost:3007",
+  "calls": 2,
+  "at": "2026-09-28T01:02:36.571Z",
+  "cases": [
+    {
+      "id": "T2",
+      "group": "entertainment-imax",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 16268,
+          "usage": {
+            "promptTokens": 2733,
+            "completionTokens": 471
+          },
+          "tools": [
+            "search_places"
+          ],
+          "cards": [
+            [
+              "CGV Vincom Center Đồng Khởi",
+              "Cinestar Satra Quận 6",
+              "CGV Giga Mall Thủ Đức",
+              "CGV Vincom Thủ Đức",
+              "CGV Sư Vạn Hạnh",
+              "Galaxy GO! An Lạc",
+              "Mega GS Cinemas Lý Chính Thắng",
+              "CGV Vincom Plaza Phan Văn Trị"
+            ],
+            [
+              "CGV Vincom Center Đồng Khởi",
+              "Cinestar Satra Quận 6",
+              "CGV Giga Mall Thủ Đức",
+              "CGV Vincom Thủ Đức",
+              "CGV Sư Vạn Hạnh",
+              "Galaxy GO! An Lạc",
+              "Mega GS Cinemas Lý Chính Thắng",
+              "CGV Vincom Plaza Phan Văn Trị"
+            ]
+          ],
+          "dup": false,
+          "chars": 706
+        },
+        {
+          "status": 200,
+          "ms": 14256,
+          "usage": {
+            "promptTokens": 2839,
+            "completionTokens": 622
+          },
+          "tools": [
+            "search_places"
+          ],
+          "cards": [
+            [
+              "CGV Vivo City",
+              "CGV Vincom Center Landmark 81",
+              "CGV Hoàng Văn Thụ",
+              "CGV Sư Vạn Hạnh",
+              "Galaxy Cinema Nguyễn Du",
+              "Aeon Beta Central Premium",
+              "Cinestar Quốc Thanh",
+              "Galaxy Cinema Thiso Mall"
+            ],
+            [
+              "CGV Liberty Citypoint",
+              "CGV Vivo City",
+              "CGV Vincom Center Landmark 81",
+              "CGV Hoàng Văn Thụ",
+              "CGV Sư Vạn Hạnh",
+              "Galaxy Cinema Nguyễn Du",
+              "Aeon Beta Central Premium",
+              "Cinestar Quốc Thanh"
+            ]
+          ],
+          "dup": false,
+          "chars": 679
+        }
+      ]
+    }
+  ]
+}

@@ -236,8 +236,15 @@ engine) trong cùng PR với adapter, để code vendor đó cũng bị khóa v�
 
 1. **Ngôn ngữ phản hồi = ngôn ngữ của TIN NHẮN MỚI NHẤT của user**, trừ khi user yêu cầu
    rõ ràng ("Answer in English", "Trả lời bằng tiếng Việt") — yêu cầu rõ ràng LUÔN thắng.
-   Không bao giờ đọc UI locale, browser language, profile, hay các lượt chat trước.
-2. **Phát hiện ngôn ngữ chỉ có MỘT nơi:** `detectLang()` + `detectExplicitLangRequest()`
+   ~~Không bao giờ đọc UI locale, browser language, profile, hay các lượt chat trước.~~
+   **SỬA ĐỔI bởi ADR-027 (2026-09-09):** khi văn bản tin nhắn KHÔNG tự quyết định được ngôn ngữ
+   — điển hình là tiếng Việt gõ không dấu, `detectLang` đọc thành `en` và đã trả lời người dùng
+   Việt bằng tiếng Anh trên production — route dùng **locale của chính request đó** (`?lang=` /
+   `Accept-Language`) trước khi rơi về heuristic. Thứ tự bắt buộc:
+   `detectExplicitLangRequest → detectLangConfident → requestLocale → detectLang`.
+   VẪN CẤM đọc `profiles.language`, lịch sử hội thoại hay country, và ngôn ngữ AI vẫn không được
+   lưu ở bất kỳ đâu. Chi tiết: `ADR-027-chat-response-language-client-locale.md`.
+2. **Phát hiện ngôn ngữ chỉ có MỘT nơi:** `detectLang()` + `detectLangConfident()` + `detectExplicitLangRequest()`
    trong `src/lib/ai/intent.ts`, gọi tại MỘT call site (`/api/chat`). Cấm viết detector thứ hai
    ở bất kỳ đâu (route khác, tool, client). Detector phải đánh giá **cả câu** (tỷ lệ từ có dấu
    viết thường + từ chức năng tiếng Việt) — một ký tự đơn lẻ KHÔNG BAO GIỜ được quyết định

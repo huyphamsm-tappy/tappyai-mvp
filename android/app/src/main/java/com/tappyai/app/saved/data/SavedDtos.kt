@@ -74,6 +74,7 @@ fun SavedReviewDto.toDomain(): SavedReview = SavedReview(
     thumbnailUrl = thumbnail,
     // Backend orders by saved_at (falling back to the review's created_at) — mirror that.
     savedAtMillis = parseTimestampMillis(savedAt ?: createdAt) ?: 0L,
+    isVideo = contentType == "video",
 )
 
 /** Parses a Postgres/ISO-8601 timestamp to epoch millis; null/unparseable → null. */

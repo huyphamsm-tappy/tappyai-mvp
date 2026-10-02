@@ -1,0 +1,84 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Set quà tặng phụ kiện thời trang cho nam 5 site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:11:48.494Z",
+ "body": {
+  "searchParameters": {
+   "q": "Set quà tặng phụ kiện thời trang cho nam 5 site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Bộ Quà Tặng Sinh Nhật Thời Trang Nam Cao Cấp",
+    "link": "https://www.lazada.vn/products/bo-qua-tang-sinh-nhat-thoi-trang-nam-cao-cap-set-5-san-pham-nuoc-hoa-luu-huong-dong-ho-thoi-trang-vi-da-but-ky-moc-khoa-i914550639.html?srsltid=AU7gw4VFR1RaoHAI8gOxpTDSOPM2_-VsJghyl-wa_bnYfH8zDCYXXD-d",
+    "snippet": "Bộ Quà Tặng Sinh Nhật Thời Trang Nam Cao Cấp - Sét 5 sản phẩm (Nước hoa lưu hương, đồng hồ thời trang, ví da, bút ký, móc khoá) · Black Friday Shop. Theo dõi.",
+    "rating": 5,
+    "ratingCount": 3,
+    "position": 1
+   },
+   {
+    "title": "Sét quà tặng sinh nhật nam Thời Trang Cao Cấp (Combo 3 ...",
+    "link": "https://www.lazada.vn/products/qua-tang-nam-manin-black-set-qua-tang-sinh-nhat-nam-thoi-trang-cao-cap-combo-3-san-pham-dong-ho-nam-vi-da-nuoc-hoa-kem-hop-full-phu-kien-i1365583677.html?srsltid=AU7gw4UrJu4JwmduL4-NQLlIQOtL84X53rlgX120VOaAc9R3I6xGdMw0",
+    "snippet": "Quà tặng nam MANIN BLACK - Sét quà tặng sinh nhật nam Thời Trang Cao Cấp (Combo 3 sản phẩm: Đồng hồ nam, Ví da, Nước hoa kèm hộp full phụ kiện).",
+    "rating": 4.9,
+    "ratingCount": 7,
+    "position": 2
+   },
+   {
+    "title": "Bộ quà tặng sinh nhật cho bạn nam, chồng (combo 5 sản ...",
+    "link": "https://www.lazada.vn/products/qua-tang-nam-bo-qua-tang-sinh-nhat-cho-ban-nam-chong-combo-5-san-pham-i885790353.html?srsltid=AU7gw4Xs19EsQa3fOCHyRSiXhlipzDEwAOjBPWa76OTlzCWuAlj-k8TY",
+    "snippet": "❤️Bộ quà tặng JESOU là một món quà độc đáo, tất cả đều được gói gọn trong một chiếc hộp dành tặng cha, anh em, đồng nghiệp... tặng người thương trong một ngày ...",
+    "rating": 5,
+    "ratingCount": 19,
+    "position": 3
+   },
+   {
+    "title": "Combo gồm: Đồng hồ Sạc dự phòng Ví da Bút ký Dây ...",
+    "link": "https://www.lazada.vn/products/set-qua-tang-sinh-nhat-thoi-trang-nam-cao-cap-combo-gom-dong-ho-sac-du-phong-vi-da-but-ky-day-sac-dang-moc-khoa-cho-nam-i1714216949.html?srsltid=AU7gw4V3mSEYNAagXsHOVB1nJfKBbApE4dpWAqZN6s22aCS-zqYmA_dn",
+    "snippet": "Combo quà tặng sinh nhật nam cao cấp, bao gồm đồng hồ sạc dự phòng, ví da, bút ký và dây sạc dạng móc khóa. Thiết kế thời trang, chất lượng cao, ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 4
+   },
+   {
+    "title": "Set 5 Dây Buộc Tóc – Thiết Kế Đơn Giản Thắt Nút Hình Nơ Xinh ...",
+    "link": "https://www.lazada.vn/products/set-5-day-buoc-toc-thiet-ke-don-gian-that-nut-hinh-no-xinh-xan-phu-kien-thoi-trang-hot-trend-danh-cho-nu-i3282639880-s15813622942.html?srsltid=AU7gw4XaI0hzB_8xgMrye8ie7U76l16R2IKZrrVFb5VegdN4ZM8Ch4ZA",
+    "snippet": "Set 5 dây buộc tóc phong cách tối giản là lựa chọn hoàn hảo dành cho các bạn nữ yêu thích sự nhẹ nhàng nhưng không kém phần cá tính. Thiết kế thắt nút tạo điểm ...",
+    "position": 5
+   },
+   {
+    "title": "SET PHỤ KIỆN QUÀ TẶNG NGƯỜI YÊU DỊP LỄ, SINH NHẬT",
+    "link": "https://www.lazada.vn/products/combo-qua-tang-ban-gai-nha-nhan-set-phu-kien-qua-tang-nguoi-yeu-dip-le-sinh-nhat-i1809184009.html?srsltid=AU7gw4VJ6P-feTd9M9kxpTHQurz5ygAEVEVTMe-YD321x-HO5IS3gJn_",
+    "snippet": "COMBO QUÀ TẶNG BẠN GÁI NHÃ NHẶN Gồm: 1 Băng đô tai thỏ cà rốt màu ngẫu nhiên. 1 Móc khoá GẤU BÔNG trắng. 1 Giấy note hình hộp sữa màu ngẫu nhiên.",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 6
+   },
+   {
+    "title": "Quà tặng nam thời trang cao cấp-Combo 7 sản phẩm ...",
+    "link": "https://www.lazada.vn/products/qua-tang-nam-thoi-trang-cao-cap-combo-7-san-phamnuoc-hoa-dong-ho-vi-da-day-lungca-vat-but-ky-nut-mang-set-i1365262196.html?srsltid=AU7gw4V0yQMw7l8Rr7vWPCrJY5O5M7EA2woKUykVEA3gIygJVeQdXBSg",
+    "snippet": "Quà tặng nam thời trang cao cấp-Combo 7 sản phẩm(Nước hoa, Đồng hồ, Ví da, Dây lưng,Cà vạt, Bút ký, nút măng-set) · Đặc điểm nổi bật · Mô tả sản phẩm.",
+    "rating": 5,
+    "ratingCount": 24,
+    "position": 7
+   },
+   {
+    "title": "Xả hàng Quà tặng sinh nhật cho nam ý nghĩa và thiết thực nhất ...",
+    "link": "https://www.lazada.vn/products/xa-hang-qua-tang-sinh-nhat-cho-nam-y-nghia-va-thiet-thuc-nhat-qua-valentine-doc-daoqua-valentine-cho-nguoi-yeu-qua-tang-nam-moi-_-full-tui-hop-dung-qua-tang-y-hinh-anh-chup-that-i1715115852.html?srsltid=AU7gw4VFDfkqscGCdPKb5I71DmgM2Z2V3QhVK85JOFBq-Fsbjkk5pjZL",
+    "snippet": "Bộ quà tặng sinh nhật nam ý nghĩa với bóp ví da bò thời trang. Thiết kế cá tính, phù hợp làm quà-noel hoặc ngày Valentine cho người yêu, kèm túi và hộp đựng ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

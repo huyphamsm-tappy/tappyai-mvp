@@ -57,8 +57,11 @@ const MACHINE_TO_MACHINE = [
   /^src\/app\/api\/webhooks\//,
   /^src\/app\/api\/iap\/apple\/notifications\//,
   /^src\/app\/api\/stripe\/webhook\//,
-  /^src\/app\/api\/debug-places\//,
-  /^src\/app\/api\/test-photos\//,
+  // /api/debug-places and /api/test-photos were deleted (F-014): unauthenticated in non-prod,
+  // gated only by CRON_SECRET in prod, calling paid providers on every hit. Owner decision: remove.
+  // /api/track is a fire-and-forget analytics beacon — the client sends via sendBeacon/fetch and
+  // never reads the body, so its `persist_failed` code (F-027) is machine-facing, not user-facing.
+  /^src\/app\/api\/track\//,
   /^src\/app\/api\/health\//,
   /^src\/app\/api\/version\//,
 ]
@@ -73,6 +76,10 @@ const ALLOWED_CODE_EXPRESSIONS = [
   // The validator's own discriminated code — `clientInput.ts` types it as a union of snake_case
   // literals, so it cannot carry a sentence.
   'validated.code',
+  // `accountRestrictionCode()` is typed to return exactly 'account_banned' | 'account_suspended'
+  // (lib/account/accountStatus.ts) — a code by construction, never prose. The paired message goes
+  // in `message`, which is the shape this file asks for.
+  'accountRestrictionCode(restriction.reason!)',
   // The 18+ gate's code. `ageEligibilityCode()` returns `AgeEligibilityCode`, a union of exactly
   // two snake_case literals ('age_ineligible' | 'age_verification_required'), so the compiler —
   // not this list — is what guarantees it cannot carry a sentence. Same standard as the entry

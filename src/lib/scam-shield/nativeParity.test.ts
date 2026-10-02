@@ -101,10 +101,17 @@ describe('B09 — the backend stays the only authority on risk', () => {
   })
 })
 
+// 2026-09-17: the Android verdict cards (URL + message) and the level tone map live in
+// `ScamShieldResult.kt`; the page composition stays in `ScamShieldScreen.kt`.
+const androidVerdict = () => read(join(ANDROID, 'ScamShieldResult.kt'))
+/** `RiskLevel.X ->`, or `RiskLevel.X, RiskLevel.Y ->` — a named branch either way. */
+const levelBranch = (level: string) => new RegExp(`RiskLevel\\.${level}(, RiskLevel\\.\\w+)* ->`)
+
 describe('B09 — every backend risk level is handled on both clients', () => {
   it.each(LEVELS)('Android gives %s a deliberate appearance', (level) => {
-    const screen = read(join(ANDROID, 'ScamShieldScreen.kt'))
-    expect(screen).toContain(`RiskLevel.${level} ->`)
+    // A level may share a branch with another (`RiskLevel.INCONCLUSIVE, RiskLevel.UNKNOWN ->`);
+    // it must still be NAMED in the exhaustive `when`, never reached through an `else`.
+    expect(androidVerdict()).toMatch(levelBranch(level))
   })
 
   it.each(LEVELS)('iOS gives %s a deliberate appearance', (level) => {
@@ -144,14 +151,16 @@ describe('B09 — an unresolved check can never look safe', () => {
   })
 
   it('Android draws INCONCLUSIVE and UNKNOWN in neutral slate, never green', () => {
-    const screen = read(join(ANDROID, 'ScamShieldScreen.kt'))
+    const screen = androidVerdict()
     const safeLine = screen.split('\n').find((l) => l.includes('RiskLevel.SAFE ->'))!
-    const greenHex = safeLine.match(/0xFF[0-9A-F]{6}/)![0]
+    // The V3 palette token SAFE is drawn in (`LEVEL_TONE.SAFE` on the web is the same emerald).
+    const green = safeLine.match(/V3Tone\.Emerald/)![0]
 
     for (const level of ['INCONCLUSIVE', 'UNKNOWN']) {
-      const line = screen.split('\n').find((l) => l.includes(`RiskLevel.${level} ->`))!
-      expect(line, `${level} must not reuse the SAFE colour`).not.toContain(greenHex)
+      const line = screen.split('\n').find((l) => levelBranch(level).test(l))!
+      expect(line, `${level} must not reuse the SAFE colour`).not.toContain(green)
       expect(line, `${level} must not use the reassuring shield glyph`).not.toContain('GppGood')
+      expect(line, `${level} must be the neutral slate`).toContain('HomeV3.OnSurfaceVariant')
     }
   })
 
@@ -173,9 +182,11 @@ describe('B09 — an unresolved check can never look safe', () => {
   it('neither client has an else/default branch that could swallow a new level', () => {
     // A catch-all would let a level added later fall through to whatever the author wrote last,
     // instead of failing the build until someone decides how it should look.
-    const android = read(join(ANDROID, 'ScamShieldScreen.kt'))
-    const appearance = android.slice(android.indexOf('private fun appearanceFor'))
-      .split('\n}')[0]
+    const android = androidVerdict()
+    const at = android.indexOf('internal fun toneFor')
+    expect(at, 'the Android tone map must exist').toBeGreaterThan(0)
+    const appearance = android.slice(at).split('\n}')[0]
+    for (const level of LEVELS) expect(appearance).toContain(`RiskLevel.${level}`)
     expect(appearance).not.toContain('else ->')
 
     const ios = read(IOS_VIEW)
@@ -184,7 +195,7 @@ describe('B09 — an unresolved check can never look safe', () => {
   })
 
   it('a failed check routes to the unresolved presentation on both clients', () => {
-    expect(read(join(ANDROID, 'ScamShieldScreen.kt'))).toMatch(/ScamShieldUiState\.Failed -> UnresolvedCard/)
+    expect(read(join(ANDROID, 'ScamShieldScreen.kt'))).toMatch(/as\? ScamShieldUiState\.Failed\)\?\.let \{ failed -> UnresolvedCard\(failed\.failure/)
     expect(read(IOS_VIEW)).toMatch(/vm\.failure\s*\{[\s\S]{0,80}unresolvedCard/)
   })
 })

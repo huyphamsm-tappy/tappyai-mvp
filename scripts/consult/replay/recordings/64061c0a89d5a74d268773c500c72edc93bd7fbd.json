@@ -1,0 +1,86 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "gội đầu dưỡng sinh Quận 3 site:klook.com/vi/activity",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:21:30.375Z",
+ "body": {
+  "searchParameters": {
+   "q": "gội đầu dưỡng sinh Quận 3 site:klook.com/vi/activity",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Đại An, Đài Bắc: Gội đầu dưỡng sinh kiểu Việt 24H - Dômei",
+    "link": "https://www.klook.com/vi/activity/125966-domei-spa-in-taipei/",
+    "snippet": "Trải nghiệm gội đầu kiểu Việt tại Dômei, quận Da'an, Đài Bắc (gần ga tàu điện ngầm Zhongxiao Dunhua) · Nằm ở khu vực phía Đông của thành phố Đài Bắc, được Google ...",
+    "rating": 4.7,
+    "ratingCount": 14,
+    "position": 1
+   },
+   {
+    "title": "Quán Spa Massage & Gội Đầu Nhất Đầu Hùng · Chi nhánh ...",
+    "link": "https://www.klook.com/vi/activity/190734-yi-tou-xiong-massage-spa-futian-branch/",
+    "snippet": "Quán Spa Massage & Gội Đầu Nhất Đầu Hùng · Chi nhánh Futian · Trải nghiệm trị liệu đầu chuyên sâu · Ốc đảo giải tỏa căng thẳng đô thị · Không gian trang nhã và yên ...",
+    "rating": 4.1,
+    "ratingCount": 10,
+    "position": 2
+   },
+   {
+    "title": "Đài Nam: Kim Phú Túc Dưỡng Sinh Hội Quán (Cần đặt ...",
+    "link": "https://www.klook.com/vi/activity/100142-jinfuzu-massage/",
+    "snippet": "Đài Nam: Kim Phú Túc Dưỡng Sinh Hội Quán (Cần đặt hẹn qua điện thoại) · Lựa chọn hàng đầu cho dịch vụ massage chân chất lượng cao tại Đài Nam, được đánh giá 4.8 ...",
+    "position": 3
+   },
+   {
+    "title": "Shinrin Spa: Gội Đầu & Massage tại Quận 1, TP. Hồ Chí Minh",
+    "link": "https://www.klook.com/vi/activity/151252-shinrin-spa-massage-experience-in-district-1-ho-chi-minh/",
+    "snippet": "Trải nghiệm Shinrin Yoku Spa tại Quận 3, TP. Hồ Chí Minh. ☆ 5.0 (32). ₫ 79,500. Giảm 40. Sale · Yubii Spa & Massage tại Quận 3, Hồ Chí Minh. ☆ 4.8 (34).",
+    "rating": 4.8,
+    "ratingCount": 470,
+    "position": 4
+   },
+   {
+    "title": "Gội đầu dưỡng sinh kiểu Việt Hoa SPA",
+    "link": "https://www.klook.com/vi/activity/159097-flower-spa-vietnamese-hair-wash/",
+    "snippet": "Cung cấp dịch vụ chu đáo, lựa chọn kết hợp tinh dầu cao cấp theo thuộc tính cơ thể của bạn, sau đó sử dụng các kỹ thuật massage độc đáo để giúp bạn đạt được sự ...",
+    "rating": 5,
+    "ratingCount": 5,
+    "position": 5
+   },
+   {
+    "title": "Trải nghiệm massage Trung Quốc tại Mouxinyuan Health ...",
+    "link": "https://www.klook.com/vi/activity/169776-muxinyuan-health-center-mrt-sun-yat-sen-memorial-hall-station/",
+    "snippet": "Được Google đánh giá 4,9 sao, tọa lạc tại Quận Da'an, Đài Bắc, cách Lối ra số 2 của ga tàu điện ngầm Sun Yat-Sen Memorial Hall 2 phút đi bộ, giao thông cực ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 6
+   },
+   {
+    "title": "Liệu trình gội đầu dưỡng sinh truyền thống Hàn Quốc tại ...",
+    "link": "https://www.klook.com/vi/activity/2616-korean-traditional-hair-scalp-care-seoul/",
+    "snippet": "Trải nghiệm liệu pháp chăm sóc da đầu K-medicine giúp thư giãn sâu và phục hồi sức sống; Tận hưởng quy trình dưỡng ẩm hiệu quả cho mái tóc chắc khỏe, ...",
+    "rating": 4.8,
+    "ratingCount": 119,
+    "position": 7
+   },
+   {
+    "title": "Trải Nghiệm L'Belle Beauty Spa ở Sài Gòn",
+    "link": "https://www.klook.com/vi/activity/55089-l-belle-beauty-spa-sai-gon/",
+    "snippet": "Gội Đầu Bồ Kết (25 phút). Combo Gội Đầu Dưỡng Sinh & Massage Đầu Vai Cổ(60 phút). Massage Body Thư Giãn với Đá Nóng (60 phút). Hoàn tất lựa chọn các thông tin ...",
+    "rating": 4.1,
+    "ratingCount": 14,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

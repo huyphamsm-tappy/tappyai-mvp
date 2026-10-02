@@ -1,0 +1,21 @@
+=== B: drain to 1 remaining, then 5 parallel — exactly 1 must pass ===
+peek B: used=0 remaining=15 limit=15
+peek B: used=1 remaining=14 limit=15
+peek B: used=2 remaining=13 limit=15
+peek B: used=3 remaining=12 limit=15
+peek B: used=4 remaining=11 limit=15
+peek B: used=5 remaining=10 limit=15
+peek B: used=6 remaining=9 limit=15
+peek B: used=7 remaining=8 limit=15
+peek B: used=8 remaining=7 limit=15
+peek B: used=9 remaining=6 limit=15
+peek B: used=10 remaining=5 limit=15
+peek B: used=11 remaining=4 limit=15
+peek B: used=12 remaining=3 limit=15
+peek B: used=13 remaining=2 limit=15
+peek B: used=14 remaining=1 limit=15
+B before race: remaining = 1
+race result: 200×1  429×4  other×0
+peek B: used=15 remaining=0 limit=15
+B after race: used = 15 remaining = 0
+LLM-reaching requests this run (status 200): 15

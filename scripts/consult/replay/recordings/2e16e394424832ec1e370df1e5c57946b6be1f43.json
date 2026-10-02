@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"The Q villa retreat\" OR \"Meliá Vinpearl Tây Ninh\" OR \"Homestay Phương Linh\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T03:13:58.846Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"The Q villa retreat\" OR \"Meliá Vinpearl Tây Ninh\" OR \"Homestay Phương Linh\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "The Q villa retreat Tayninh (@theqvillatayninh)",
+    "link": "https://www.tiktok.com/@theqvillatayninh",
+    "snippet": "The Q villa retreat Tayninh · @theqvillatayninh · Số 567 , Trần Phú, P. Bình Minh, TP. Tây Ninh Villa hồ bơi muối điện phân ‍♀️ Sauna, BBQ, Netflix & ...",
+    "position": 1
+   },
+   {
+    "title": "Kết thúc mùa hè đầy sôi động. The Q xin cảm ơn quý ...",
+    "link": "https://www.tiktok.com/@theqvillatayninh/video/7682365782642150676",
+    "snippet": "Video TikTok từ The Q villa retreat Tayninh (@theqvillatayninh): \"Kết thúc mùa hè đầy sôi động. The Q xin cảm ơn quý khách đã tin tưởng lựa ...",
+    "position": 2
+   },
+   {
+    "title": "The Q Villa Retreat Tây Ninh: Địa Điểm Chill Mới Hứa Hẹn ...",
+    "link": "https://www.tiktok.com/@trang_nghia_trung/video/7585041578108964117",
+    "snippet": "The Q Villa Retreat Tây Ninh: Điểm Đến Mới Hứa Hẹn Cho Những Ai Muốn \"Chill\" Nếu bạn đang tìm kiếm một địa điểm mới sẽ trở nên \"hot\" tại Tây ...",
+    "position": 3
+   },
+   {
+    "title": "The Q Villa Retreat Tây Ninh: villa có hồ bơi, giá bao gồm ...",
+    "link": "https://www.tiktok.com/@theqvillatayninh/video/7660441210909134100",
+    "snippet": "Tóm tắt nhanh The Q Villa Retreat Tây Ninh là lựa chọn villa nguyên căn gần Núi Bà Đen, phù hợp cho kỳ nghỉ cuối tuần cùng gia đình.",
+    "position": 4
+   },
+   {
+    "title": "The Q Villa Retreat Tây Ninh – Địa điểm tổ chức sinh nhật ...",
+    "link": "https://www.tiktok.com/@trang_nghia_trung/video/7618997028668050708",
+    "snippet": "Kết luận The Q Villa Retreat Tây Ninh là lựa chọn rất ưng ý để tổ chức sinh nhật hoặc nghỉ dưỡng nhóm: đầy đủ tiện nghi (hồ bơi, khu chơi trẻ em) ...",
+    "position": 5
+   },
+   {
+    "title": "Khám Phá The Q Villa Retreat Tại Tây Ninh",
+    "link": "https://www.tiktok.com/@theqvillatayninh/video/7589653706354822421",
+    "snippet": "The Q Villa Retreat – boutique retreat phong cách Modern Tropical với không gian yên tĩnh, hồ bơi đẹp, phòng ốc xịn và trải nghiệm ở được chăm ...",
+    "position": 6
+   },
+   {
+    "title": "The Q Villa Retreat Tây Ninh: Hồ bơi phong cách Bali",
+    "link": "https://www.tiktok.com/@theqvillatayninh/video/7612152147727158548",
+    "snippet": "The Q Villa Retreat Tây Ninh: Hồ bơi phong cách Bali. Trải nghiệm The Q Villa Retreat Tây Ninh, một Bali thu nhỏ với hồ bơi tuyệt đẹp. Đặt ...",
+    "position": 7
+   },
+   {
+    "title": "Tới Tây Ninh là nhất định phải ở đây nha! The Q Villa Retreat",
+    "link": "https://www.tiktok.com/@theqvillatayninh/video/7591409226187050261",
+    "snippet": "Lưu lại để có dịp đi Tây Ninh hay kiếm chỗ chữa lành nha! The Q Villa Retreat - 567 Trần Phú, Tân Phước, Tây Ninh #theqvillaretreat # ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

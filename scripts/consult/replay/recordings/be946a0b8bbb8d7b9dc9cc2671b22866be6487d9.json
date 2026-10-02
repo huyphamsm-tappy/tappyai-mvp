@@ -1,0 +1,84 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Cà Phê G7 Gu Mạnh X2 300g site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:22:04.129Z",
+ "body": {
+  "searchParameters": {
+   "q": "Cà Phê G7 Gu Mạnh X2 300g site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cà Phê Hòa Tan G7 Gu Mạnh X2 Hộp 300g (12 gói x 25g)",
+    "link": "https://www.lazada.vn/products/ca-phe-hoa-tan-g7-gu-manh-x2-hop-300g-12-goi-x-25g-i2623671567.html?srsltid=AU7gw4WegnPZHcptAdCfelBRfW51rw05DojTGthoVhqF5TtEaL_AJYAo",
+    "snippet": "Đặc điểm : Cà phê hòa tan X2 có hương vị mạnh gấp đôi các loại cà phê hòa tan thông thường. Hạn sử dụng : 24 tháng.",
+    "position": 1
+   },
+   {
+    "title": "( Freeship ) Cà Phê Sữa Hoà Tan G7 3in1 Gu mạnh X2 ...",
+    "link": "https://www.lazada.vn/products/freeship-ca-phe-sua-hoa-tan-g7-3in1-gu-manh-x2-hop-12-goi-25gr-trung-nguyen-i1242971217.html?srsltid=AU7gw4WXJsuJFbrv47AjGwwfmXxtVXLLU1dYTpI059HVTdIYxfMynqkd",
+    "snippet": "Đặc điểm:Cà phê hòatan có hương vị mạnh gấp đôi các loại cà phê hòa tan thông thường. Hạn sử dụng:2 năm. Khối lượng:Hộp 12 góix 25gr. Cà phê G7 Gu Mạnh X2 ...",
+    "rating": 5,
+    "ratingCount": 191,
+    "position": 2
+   },
+   {
+    "title": "(Combo 2 hộp)Cà Phê G7 Gu Mạnh X2 3in1 Trung Nguyên",
+    "link": "https://www.lazada.vn/products/combo-2-hopca-phe-g7-gu-manh-x2-3in1-trung-nguyen-i952936417.html?srsltid=AU7gw4VjvtCzmIu_4p6QBxc7c0ZXdct7NRL0pAoVlVwhp5IGc7vaMZwJ",
+    "snippet": "Cà phê G7 gu mạnh X2 là sản phẩm cà phê giúp tăng cường sự tỉnh táo, tập trung giúp kích hoạt trí não, gia tăng sáng tạo và hiệu suất làm việc… đặc biệt là ...",
+    "rating": 5,
+    "ratingCount": 42,
+    "position": 3
+   },
+   {
+    "title": "Cà Phê G7 Gu Mạnh X2 3in1 12 Gói x 25G",
+    "link": "https://www.lazada.vn/products/ca-phe-g7-gu-manh-x2-3in1-12-goi-x-25g-i659026296.html?srsltid=AU7gw4VdGnFh46zu6Uy9OAQ8jpLfnAW6I4Q9A8PM3-72vTUJ_sAE99VV",
+    "snippet": "Đặc điểm nổi bật: G7 X2 3in1 được chiết xuất từ những phần tinh túy có trong từng hạt cà phê, trên công nghệ hàng đầu và bí quyết không thể sao chép để cho ra ...",
+    "rating": 5,
+    "ratingCount": 4,
+    "position": 4
+   },
+   {
+    "title": "Cà phê G7 Gu Mạnh X2 3in1 Trung Nguyên - Combo 5 hộp",
+    "link": "https://www.lazada.vn/products/ca-phe-g7-gu-manh-x2-3in1-trung-nguyen-combo-5-hop-i952918699.html?srsltid=AU7gw4WypAbE8slyn0VagvXRnnuXEld1AxUfbM7oIQsDuf8qMzfp8qIV",
+    "snippet": "Cà phê G7 gu mạnh X2 là sản phẩm mới đầu tiên ra mắt thị trường trong năm 2013. Là bước đột phá sáng tạo của một năm sáng tạo Trung Nguyên.",
+    "rating": 5,
+    "ratingCount": 22,
+    "position": 5
+   },
+   {
+    "title": "GUMANH_Cà phê G7 hòa tan Gu mạnh 3in1 (12 gói* 25gr)",
+    "link": "https://www.lazada.vn/products/gumanh_ca-phe-g7-hoa-tan-gu-manh-3in1-12-goi-25gr-i2406133716.html?srsltid=AU7gw4W43O_DK0yjCbhFbZDShIFMIt7Pp0J7H88GR5LEFUQP9gIVdGO9",
+    "snippet": "Đặc điểm nổi bật ... Cà phê hòa tan có hương vị (Cà phê + Đường + Sữa.) mạnh gấp đôi các loại cà phê hòa tan thông thường. Cà phê G7 Gu Mạnh 3in1 có hương vị mạnh ...",
+    "rating": 5,
+    "ratingCount": 95,
+    "position": 6
+   },
+   {
+    "title": "CÀ PHÊ HÒA TAN ĐEN ĐÁ G7 Hộp 240g (15 gói x 16g)",
+    "link": "https://www.lazada.vn/products/ca-phe-hoa-tan-den-da-g7-hop-240g-15-goi-x-16g-i1448314915.html?srsltid=AU7gw4X8eoqIIaS2smFYfmlCuYrMkzCYbQNi9fjkXQT8fALH7HjGeFmH",
+    "snippet": "G7 hòa tan đen, sản phẩm, chiết xuất trực tiếp từ những hạt cà phê xanh, sạch, thuần khiết từ vùng đất bazan huyền thoại Buôn Ma Thuột kết hợp bí quyết khác ...",
+    "rating": 5,
+    "ratingCount": 7,
+    "position": 7
+   },
+   {
+    "title": "Trà Atiso phổ thông Tâm Châu gói 200g",
+    "link": "https://www.lazada.vn/products/tra-atiso-pho-thong-tam-chau-goi-200g-i2799678938.html?srsltid=AU7gw4XbQeZ06G8P-CkSc3N0aNV_k9VUE3zJ-PYCqo96bI6yMXW3_9Gz",
+    "snippet": "Cà Phê Hòa Tan G7 Gu Mạnh X2 Hộp 300g (12 gói x 25g). 95.000 ₫ · Trà Tứ Quý Hoa Lài Không đường 100gr gói. 25.000 ₫ · Bột Kem Pha Cà Phê Nestlé Coffee Mate 450g.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

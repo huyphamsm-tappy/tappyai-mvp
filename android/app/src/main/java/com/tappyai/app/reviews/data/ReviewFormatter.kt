@@ -48,27 +48,33 @@ fun groupNotifications(
             else -> n.id
         }
         val existing = map[key]
+        // A platform-originated row (deal / explore / system) has no actor; the web keeps
+        // `actors: []` for those rather than a nameless phantom.
+        val actor = if (n.actorId.isNotBlank()) NotificationActor(id = n.actorId, name = n.actorName, avatar = n.actorAvatar) else null
         if (existing != null) {
-            val actor = NotificationActor(id = n.actorId, name = n.actorName, avatar = n.actorAvatar)
-            val alreadyPresent = existing.actors.any { it.id == n.actorId }
-            val updatedActors = if (alreadyPresent) existing.actors else existing.actors + actor
+            val alreadyPresent = actor == null || existing.actors.any { it.id == actor.id }
+            val updatedActors = if (alreadyPresent) existing.actors else existing.actors + actor!!
             val newerTimestamp = if (parseIsoMillis(n.createdAt) > parseIsoMillis(existing.createdAt))
                 n.createdAt else existing.createdAt
             map[key] = existing.copy(
                 actors = updatedActors,
                 count = existing.count + 1,
                 createdAt = newerTimestamp,
+                unread = existing.unread || n.readAt == null,
             )
         } else {
             map[key] = ReviewGroupedNotification(
                 id = n.id,
                 type = n.type,
+                category = n.category,
                 url = n.url,
-                actors = listOf(NotificationActor(id = n.actorId, name = n.actorName, avatar = n.actorAvatar)),
+                actors = listOfNotNull(actor),
+                title = n.title,
                 text = n.text,
                 commentBody = if (n.type == "comment") n.text else null,
                 createdAt = n.createdAt,
                 count = 1,
+                unread = n.readAt == null,
             )
         }
     }

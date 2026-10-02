@@ -1,0 +1,44 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Acer Swift Lite 14 AI SFL14-51M-78XZ site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:54:47.006Z",
+ "body": {
+  "searchParameters": {
+   "q": "Acer Swift Lite 14 AI SFL14-51M-78XZ site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Laptop Acer Swift Lite 14 AI SFL14-51M-78XZ (Ultra 7- ...",
+    "link": "https://shopee.vn/Laptop-Acer-Swift-Lite-14-AI-SFL14-51M-78XZ-(Ultra-7-155U-Onboard-graphics-16GB-512GB-Windows-11)-B%E1%BA%A3o-h%C3%A0nh-12-th%C3%A1n-i.646318024.29588578750",
+    "snippet": "Mua Laptop Acer Swift Lite 14 AI SFL14-51M-78XZ (Ultra 7-155U/ Onboard graphics/ 16GB/ 512GB/ Windows 11) - Bảo hành 12 thán giá tốt.",
+    "position": 1
+   },
+   {
+    "title": "Laptop Acer Swift Lite 14 SFL14-51M-78XZ Ultra7 155U/AI/ ...",
+    "link": "https://shopee.vn/Laptop-Acer-Swift-Lite-14-SFL14-51M-78XZ-Ultra7-155U-AI-16GB-512GB-Win11-i.1431261217.46406174223",
+    "snippet": "Mua Laptop Acer Swift Lite 14 SFL14-51M-78XZ Ultra7 155U/AI/16GB/512GB/Win11 giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, ...",
+    "rating": 5,
+    "ratingCount": 2,
+    "position": 2
+   },
+   {
+    "title": "Laptop Acer Swift Lite 14 AI SFL14-51M-78XZ (U7-155U ...",
+    "link": "https://shopee.vn/Laptop-Acer-Swift-Lite-14-AI-SFL14-51M-78XZ-(U7-155U-16GB-512GB-14-WUXGA-Win-11-B%E1%BA%A1c)-Ch%C3%ADnh-h%C3%A3ng-B%E1%BA%A3o-h%C3%A0nh-2-N%C4%83m-3S1-i.1253280646.29837775770",
+    "snippet": "Mua Laptop Acer Swift Lite 14 AI SFL14-51M-78XZ (U7-155U, 16GB, 512GB, 14\" WUXGA, Win 11, Bạc) Chính hãng Bảo hành 2 Năm 3S1 giá tốt.",
+    "position": 3
+   }
+  ],
+  "credits": 1
+ }
+}

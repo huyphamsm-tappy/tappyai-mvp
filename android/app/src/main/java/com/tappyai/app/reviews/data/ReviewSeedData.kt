@@ -42,7 +42,6 @@ val SEED_REVIEWS = listOf(
         hashtags = listOf("banhmi", "saigonfood", "streetfood", "quan1"),
         watchTimeAvg = null,
         score = 0.95,
-        music = null,
     ),
     Review(
         id = "review-002",
@@ -68,13 +67,6 @@ val SEED_REVIEWS = listOf(
         hashtags = listOf("caphe", "coffeeshop", "saigon", "congcaphe"),
         watchTimeAvg = 45.2,
         score = 0.82,
-        music = ReviewMusic(
-            version = 1,
-            trackId = "track-001",
-            startSec = 0,
-            volume = 0.8,
-            origin = "attached",
-        ),
     ),
     Review(
         id = "review-003",
@@ -100,7 +92,6 @@ val SEED_REVIEWS = listOf(
         hashtags = listOf("pho", "hanoi", "phothin", "vietnamfood"),
         watchTimeAvg = null,
         score = 0.98,
-        music = null,
     ),
     Review(
         id = "review-004",
@@ -126,7 +117,6 @@ val SEED_REVIEWS = listOf(
         hashtags = listOf("buncha", "hanoi", "obama"),
         watchTimeAvg = null,
         score = 0.75,
-        music = null,
     ),
     Review(
         id = "review-005",
@@ -155,7 +145,6 @@ val SEED_REVIEWS = listOf(
         hashtags = listOf("landmark81", "saigon", "skyview", "sunset"),
         watchTimeAvg = null,
         score = 0.60,
-        music = null,
     ),
     Review(
         id = "review-006",
@@ -186,7 +175,6 @@ val SEED_REVIEWS = listOf(
         hashtags = listOf("seafood", "oc", "saigonfood", "nhaudem"),
         watchTimeAvg = null,
         score = 0.88,
-        music = null,
     ),
     Review(
         id = "review-007",
@@ -212,13 +200,6 @@ val SEED_REVIEWS = listOf(
         hashtags = listOf("dalat", "nightmarket", "travel", "vietnam"),
         watchTimeAvg = 62.8,
         score = 0.91,
-        music = ReviewMusic(
-            version = 1,
-            trackId = "track-002",
-            startSec = 15,
-            volume = 1.0,
-            origin = "library",
-        ),
     ),
     Review(
         id = "review-008",
@@ -244,7 +225,6 @@ val SEED_REVIEWS = listOf(
         hashtags = null,
         watchTimeAvg = null,
         score = 0.30,
-        music = null,
     ),
     Review(
         id = "review-009",
@@ -270,13 +250,6 @@ val SEED_REVIEWS = listOf(
         hashtags = listOf("eggcoffee", "hanoi", "caphetrung", "oldquarter"),
         watchTimeAvg = 28.5,
         score = 0.70,
-        music = ReviewMusic(
-            version = 1,
-            trackId = "track-003",
-            startSec = 5,
-            volume = 0.6,
-            origin = "attached",
-        ),
     ),
     Review(
         id = "review-010",
@@ -308,7 +281,6 @@ val SEED_REVIEWS = listOf(
         hashtags = listOf("hoian", "ancienttown", "travel", "quangnam", "lanterns"),
         watchTimeAvg = null,
         score = 0.99,
-        music = null,
     ),
 )
 
@@ -370,110 +342,6 @@ val SEED_COMMENTS = listOf(
         profiles = SEED_PROFILES[6],
     ),
 )
-
-val SEED_NOTIFICATIONS = listOf(
-    ReviewNotification(
-        id = "notif-001",
-        type = "like",
-        actorId = "user-002",
-        actorName = "Lan Nguyễn",
-        actorAvatar = "https://i.pravatar.cc/150?u=user-002",
-        text = "đã thích bài viết của bạn",
-        url = "/reviews/review-001",
-        createdAt = "2026-07-11T10:00:00+07:00",
-    ),
-    ReviewNotification(
-        id = "notif-002",
-        type = "like",
-        actorId = "user-003",
-        actorName = "Hùng Phạm",
-        actorAvatar = "https://i.pravatar.cc/150?u=user-003",
-        text = "đã thích bài viết của bạn",
-        url = "/reviews/review-001",
-        createdAt = "2026-07-11T09:45:00+07:00",
-    ),
-    ReviewNotification(
-        id = "notif-003",
-        type = "like",
-        actorId = "user-004",
-        actorName = "Thu Lê",
-        actorAvatar = "https://i.pravatar.cc/150?u=user-004",
-        text = "đã thích bài viết của bạn",
-        url = "/reviews/review-001",
-        createdAt = "2026-07-11T09:30:00+07:00",
-    ),
-    ReviewNotification(
-        id = "notif-004",
-        type = "follow",
-        actorId = "user-005",
-        actorName = "Đức Võ",
-        actorAvatar = "https://i.pravatar.cc/150?u=user-005",
-        text = "đã theo dõi bạn",
-        url = "/profile/user-005",
-        createdAt = "2026-07-11T08:00:00+07:00",
-    ),
-    ReviewNotification(
-        id = "notif-005",
-        type = "comment",
-        actorId = "user-002",
-        actorName = "Lan Nguyễn",
-        actorAvatar = "https://i.pravatar.cc/150?u=user-002",
-        text = "Mình cũng vừa ăn tuần trước, ngon thật sự!",
-        url = "/reviews/review-001",
-        createdAt = "2026-07-10T15:00:00+07:00",
-    ),
-    ReviewNotification(
-        id = "notif-006",
-        type = "profile_view",
-        actorId = "user-007",
-        actorName = "Quốc Đặng",
-        actorAvatar = "https://i.pravatar.cc/150?u=user-007",
-        text = "đã xem trang cá nhân của bạn",
-        url = "/profile/user-007",
-        createdAt = "2026-07-10T12:00:00+07:00",
-    ),
-    ReviewNotification(
-        id = "notif-007",
-        type = "profile_view",
-        actorId = "user-008",
-        actorName = "Hạnh Bùi",
-        actorAvatar = "https://i.pravatar.cc/150?u=user-008",
-        text = "đã xem trang cá nhân của bạn",
-        url = "/profile/user-008",
-        createdAt = "2026-07-10T11:30:00+07:00",
-    ),
-    ReviewNotification(
-        id = "notif-008",
-        type = "like",
-        actorId = "user-006",
-        actorName = "Mai Hoàng",
-        actorAvatar = null,
-        text = "đã thích bài viết của bạn",
-        url = "/reviews/review-003",
-        createdAt = "2026-07-09T14:00:00+07:00",
-    ),
-    ReviewNotification(
-        id = "notif-009",
-        type = "comment",
-        actorId = "user-003",
-        actorName = "Hùng Phạm",
-        actorAvatar = "https://i.pravatar.cc/150?u=user-003",
-        text = "Giá bao nhiêu một ổ vậy bạn?",
-        url = "/reviews/review-001",
-        createdAt = "2026-07-10T15:30:00+07:00",
-    ),
-    ReviewNotification(
-        id = "notif-010",
-        type = "follow",
-        actorId = "user-008",
-        actorName = "Hạnh Bùi",
-        actorAvatar = "https://i.pravatar.cc/150?u=user-008",
-        text = "đã theo dõi bạn",
-        url = "/profile/user-008",
-        createdAt = "2026-07-09T07:00:00+07:00",
-    ),
-)
-
 val SEED_HOT_PLACES = listOf(
     ReviewHotPlace(placeName = "Bánh Mì Huỳnh Hoa", count = 342),
     ReviewHotPlace(placeName = "Phở Thìn Bờ Hồ", count = 289),

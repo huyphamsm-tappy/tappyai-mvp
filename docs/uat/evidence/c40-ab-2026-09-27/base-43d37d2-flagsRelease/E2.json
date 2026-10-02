@@ -1,0 +1,148 @@
+{
+  "id": "E2",
+  "text": "rap phim nao gan q1",
+  "parent": null,
+  "status": 200,
+  "ms": 11027,
+  "evidenceId": "cae7efde-c6d4-4ce5-8917-aac845dc04c9",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "rạp phim",
+        "location": "Quận 1, TP.HCM",
+        "type": "cinema"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "CGV Liberty Citypoint",
+      "rating": 4.4,
+      "count": 1751,
+      "distance_km": 0.2,
+      "address": "Khách sạn Liberty Citypoint, Pasteur, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "CGV Vincom Center Đồng Khởi",
+      "rating": 4.3,
+      "count": 4507,
+      "distance_km": 0.2,
+      "address": "72 Lê Thánh Tôn, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Galaxy Cinema Nguyễn Du",
+      "rating": 4.3,
+      "count": 9380,
+      "distance_km": 0.9,
+      "address": "116 Nguyễn Du, Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "DCINE Bến Thành",
+      "rating": 4.3,
+      "count": 1260,
+      "distance_km": 0.8,
+      "address": "6 Mạc Đĩnh Chi, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Mega GS Cinemas - Cao Thắng",
+      "rating": 4.3,
+      "count": 3436,
+      "distance_km": 2.2,
+      "address": "19 Cao Thắng, Bàn Cờ, Hồ Chí Minh 72418, Việt Nam"
+    },
+    {
+      "name": "Cinestar Quốc Thanh",
+      "rating": 4.2,
+      "count": 6034,
+      "distance_km": 2.1,
+      "address": "271 Nguyễn Trãi, Cầu Ông Lãnh, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Beta Cinemas Trần Quang Khải",
+      "rating": 4.1,
+      "count": 1326,
+      "distance_km": 1.9,
+      "address": "62 Trần Quang Khải, Tân Định, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "CGV Lý Chính Thắng",
+      "rating": 4.1,
+      "count": 1690,
+      "distance_km": 2.1,
+      "address": "83 Lý Chính Thắng, Xuân Hòa, Hồ Chí Minh 72408, Việt Nam"
+    },
+    {
+      "name": "Mega GS Cinemas Lý Chính Thắng",
+      "rating": 4,
+      "count": 2591,
+      "distance_km": 2.1,
+      "address": "212 Lý Chính Thắng, Nhiêu Lộc, Hồ Chí Minh 72414, Việt Nam"
+    },
+    {
+      "name": "Rạp Đống Đa",
+      "rating": 4.1,
+      "count": 1710,
+      "distance_km": 3.9,
+      "address": "890 Trần Hưng Đạo, An Đông, Hồ Chí Minh 70010, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "CGV Liberty Citypoint",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 4.4,
+        "reviews": 1751,
+        "distance_km": 0.2
+      }
+    },
+    {
+      "name": "CGV Vincom Center Đồng Khởi",
+      "role": null,
+      "evidence": {
+        "rating": 4.3,
+        "reviews": 4507,
+        "distance_km": 0.2
+      }
+    },
+    {
+      "name": "Galaxy Cinema Nguyễn Du",
+      "role": null,
+      "evidence": {
+        "rating": 4.3,
+        "reviews": 9380,
+        "distance_km": 0.9
+      }
+    }
+  ],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình tìm các rạp phim gần Quận 1 cho bạn nhé.\n\nMình chọn **CGV Liberty Citypoint** cho bạn — cách bạn chỉ 0.2km, đánh giá 4.4⭐ từ 1.751 lượt đánh giá, gần nhất trong khu vực.\n\n\n[FOLLOWUPS]Phim gì đang chiếu?|Giá vé bao nhiêu?|Rạp nào có ghế VIP?[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "rap phim nao gan q1"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm các rạp phim gần Quận 1 cho bạn nhé.\n\nMình chọn **CGV Liberty Citypoint** cho bạn — cách bạn chỉ 0.2km, đánh giá 4.4⭐ từ 1.751 lượt đánh giá, gần nhất trong khu vực.\n\n\n[FOLLOWUPS]Phim gì đang chiếu?|Giá vé bao nhiêu?|Rạp nào có ghế VIP?[/FOLLOWUPS]"
+    }
+  ]
+}

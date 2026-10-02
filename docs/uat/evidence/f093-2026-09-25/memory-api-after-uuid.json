@@ -1,0 +1,20 @@
+{
+ "M1_get": {
+  "status": 200,
+  "memoryReturned": true,
+  "pass": true
+ },
+ "M2_patch": {
+  "status": 200,
+  "ok": true,
+  "updatedAtBefore": "2026-09-25 05:25:41.767",
+  "updatedAtAfter": "2026-09-25 05:33:50.798",
+  "locationUnchanged": true,
+  "pass": true
+ },
+ "M3_rls_own_rows_only": {
+  "rowsVisible": 1,
+  "allOwn": true,
+  "pass": true
+ }
+}

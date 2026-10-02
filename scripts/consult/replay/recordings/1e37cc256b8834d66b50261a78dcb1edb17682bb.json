@@ -1,0 +1,26 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"HALO Skybar Saigon\" site:klook.com/vi/activity",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:18:15.918Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"HALO Skybar Saigon\" site:klook.com/vi/activity",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "searchInformation": {
+   "didYouMean": "\"HALO Sky Bar Saigon\" site:klook.com/vi/activity"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

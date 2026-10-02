@@ -1,0 +1,4 @@
+ okhttp.OkHttpClient: --> POST http://localhost:3007/api/notifications/subscribe
+ okhttp.OkHttpClient: --> POST http://localhost:3007/api/notifications/subscribe
+ okhttp.OkHttpClient: <-- 200 OK http://localhost:3007/api/notifications/subscribe (646ms)
+ okhttp.OkHttpClient: <-- 200 OK http://localhost:3007/api/notifications/subscribe (654ms)

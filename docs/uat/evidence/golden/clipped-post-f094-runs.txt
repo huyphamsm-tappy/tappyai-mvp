@@ -1,0 +1,44 @@
+post-egress-f086: turns=28 withPreGuard=0 CLIPPED=n/a (headless 0, broken-bold 0, broken-paren 0; listed, not counted: connective 0, middle-cut 0, tail-cut 0) · lower-case-start proxy=7
+   B2 t1  lower-start: phù hợp bữa trưa hay tối.
+   B4 t1  lower-start: nếu bạn ưu tiên **không dây**, **Huawei FreeBuds 7i** là lựa 
+   B4 t2  lower-start: nếu bạn có thêm budget, **HyperX Cloud Stinger 2 Core** là lự
+   B4 t3  lower-start: bao gồm xe khách khứ hồi, ăn uống và tham quan miễn phí. Thời
+   D2 t1  lower-start: có wifi và đồ ăn nhẹ.
+   T1 t2  lower-start: các hoạt động khác. Bạn có thể nâng cấp khách sạn hoặc thêm c
+   T3 t2  lower-start: mình có thể tìm thêm nhiều lựa chọn hơn không? 😊
+post-f094: turns=28 withPreGuard=28 CLIPPED=4 (headless 0, broken-bold 3, broken-paren 1; listed, not counted: connective 0, middle-cut 5, tail-cut 0) · lower-case-start proxy=0
+   B1 t1  broken-bold: **1.- Tình trạng 99% như tên ghi, nhưng tieu đề không rõ dung lượng và pin cụ thể bao nhiêu
+   B1 t1  broken-bold: **2.- Ghi rõ vỏ & kính 98-99%, **nhưng pin không đạt 98-99% như bạn muốn** Trước khi chuyển tiền, vì
+   B3 t1  (review) middle-cut: 🍚 Quán này có **4.5⭐**, đang mở cửa, và là quán ăn gia đình chuyên cơm Việt ngon.
+   B3 t2  broken-paren: Ngoài ra còn có **Samsung Galaxy S25 FE** (4.9⭐, 18 đánh giá nếu bạn muốn máy mới hơn
+   B3 t2  (review) middle-cut: 📸 Chiếc này có **5⭐** từ người dùng, RAM 12GB và bộ nhớ 128GB.
+   B4 t1  broken-bold: Mình chọn **Tai nghe Headphone Bluetooth HAVIT H612BT Pro**** từ Hoàng Hà Mobile.
+   B4 t2  (review) middle-cut: Đây là lựa chọn cân bằng tốt nhất, nhưng vẫn có đánh giá **4.8⭐ từ 170 người dùng**, chứng tỏ chất lượng khá ổ
+   B4 t2  (review) middle-cut: **HyperX Cloud Stinger 2 Core** — nếu bạn chơi game, có mic tốt
+   B4 t3  (review) middle-cut: *Gợi ý dựa trên kết quả tìm kiếm thực tế, quyền quyết định là của bạn.*
+post-f094b: turns=28 withPreGuard=28 CLIPPED=0 (headless 0, broken-bold 0, broken-paren 0; listed, not counted: connective 1, middle-cut 7, tail-cut 0) · lower-case-start proxy=0
+   B2 t1  (review) middle-cut: 🎯 Quán này chỉ cách bạn 0.5km, không gian rộng rãi phù hợp cho gia đình 5-6 người, mở đến 23:30 nên rất linh 
+   B3 t2  (review) middle-cut: **Nếu bạn ưu tiên giá rẻ hơn**, **Samsung Galaxy A17 5G Chính Hãng** từ 24hStore cũng là lựa chọn tốt, có 489 
+   B3 t2  (review) middle-cut: **Samsung Galaxy A37 5G** — RAM 8GB, dung lượng 128GB, nếu bạn muốn cấu hình mạnh hơn
+   B3 t2  (review) middle-cut: **Samsung Galaxy Note 20 Ultra 5G** — cao cấp hơn, nhưng chỉ có 3 đánh giá nên chưa chắc
+   B4 t1  (review) middle-cut: Nếu muốn tiết kiệm hơn — rẻ hơn rất nhiều, nhưng đánh giá thấp hơn (4.2⭐, 74 lượt).
+   B4 t1  (review) middle-cut: Các lựa chọn khác như **Huawei FreeBuds 7i** hay **Philips H5205** cũng có đánh giá tốt, nhưng giá cao hơn.
+   B4 t2  (review) middle-cut: **4.2⭐ (497 đánh giá)** — thiết kế over-ear thoải mái, chống ồn chủ động ANC.
+   D2 t1  (review) connective: **FOCUS SPACE** nếu bạn cần không gian chuyên dụng cho học tập & làm việc, mở đến 11h tối.
+post-f094c: turns=28 withPreGuard=28 CLIPPED=5 (headless 1, broken-bold 0, broken-paren 4; listed, not counted: connective 1, middle-cut 3, tail-cut 0) · lower-case-start proxy=0
+   B1 t1  broken-paren: Tuy nhiên, mình thấy có **2 tin iPhone 15 Pro Max cũ 99%** từ **táo xanh**, đánh giá 5⭐ từ 31 người)
+   B1 t1  headless: **bạn nên**.
+   B3 t2  broken-paren: **Lựa chọn thay thế rẻ hơn:** **Samsung Galaxy A17 5G Chính Hãng** (24hStore, rating 4.8⭐ từ 489 đán
+   B3 t2  (review) middle-cut: **Nếu muốn camera tốt hơn:** **Samsung Galaxy A52** hoặc **Samsung Galaxy A37 5G** có thể có cấu hình camera m
+   B4 t1  (review) middle-cut: Nếu bạn muốn tiết kiệm hơn, có thể xem **tai nghe nhét tai có dây** — rẻ hơn rất nhiều nhưng tuy danh giá 4.2⭐
+   B4 t1  (review) middle-cut: Các lựa chọn khác như **ATK N9 Ultra** hay **Huawei FreeBuds 7i** cũng đáng xem nếu bạn muốn tai nghe không dâ
+   B4 t2  broken-paren: **ATK N9 Ultra**, 4.6⭐) — không dây, giá gần HyperX
+   B4 t2  broken-paren: **Huawei FreeBuds 7i**, 4.7⭐) — cao nhất trong danh sách, nhưng gần hết ngan sách
+   T3 t2  (review) connective: **Bún Riêu Gánh Chợ Bến Thành** gần nhất (chỉ 0.4km), giá rẻ, nhưng đóng cửa lúc 19:00 nên bạn cần nhanh tay!
+post-f094d: turns=28 withPreGuard=28 CLIPPED=0 (headless 0, broken-bold 0, broken-paren 0; listed, not counted: connective 0, middle-cut 6, tail-cut 0) · lower-case-start proxy=0
+   B1 t1  (review) middle-cut: **táo xanh** — đây là lựa chọn mình nghiêng về vì pin đúng yêu cầu của bạn, danh giá cao, nhưng giá cao hơn cá
+   B1 t1  (review) middle-cut: **xoanstore.vn** - iPhone 15 Pro Max 256GB cũ 98-99%, có nhiều đánh giá hơn, không đúng yêu cầu 98-99% của bạn
+   B3 t2  (review) middle-cut: 📸 Chiếc này có rating 4.9⭐ từ 18 đánh giá — là lựa chọn tốt nhất về chất lượng và giá trong tầm trung.
+   B4 t1  (review) middle-cut: Nếu muốn tiết kiệm hơn — rẻ hơn rất nhiều, nhưng đánh giá thấp hơn (4.2⭐, 74 lượt).
+   B4 t1  (review) middle-cut: Ngoài ra còn **Huawei FreeBuds 7i** — tai nghe không dây, đánh giá cao 4.7⭐, nhưng gần sát ngân sách của bạn.
+   B4 t2  (review) middle-cut: Rẻ hơn rất nhiều, nhưng đánh giá thấp hơn và số lượt đánh giá ít.

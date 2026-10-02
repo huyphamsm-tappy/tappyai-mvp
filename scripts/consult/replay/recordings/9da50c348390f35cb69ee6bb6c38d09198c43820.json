@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Cà phê Linh\" OR \"Tiệm cà phê Sài Gòn Xưa\" OR \"Tiệm cà phê EM Ở ĐÂU\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:57:39.431Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Cà phê Linh\" OR \"Tiệm cà phê Sài Gòn Xưa\" OR \"Tiệm cà phê EM Ở ĐÂU\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tiệm Cà Phê Linh - Tái Hiện Sài Gòn Xưa và Nay",
+    "link": "https://www.tiktok.com/@baro.phe/video/7234435488730402053",
+    "snippet": "Tiệm Cà Phê Em Ở Đâu · Tiệm Cà Phê Tích Tắc · Tiệm Cà Phê Nhớ Hoài · Tiệm Cà Phê Mậu Kỷ · Tiệm Cà Phê Linh · Tiệm Cà Phê Cánh Cam · Tiệm Cà Phê ...",
+    "position": 1
+   },
+   {
+    "title": "Tiệm Cà Phê Em Ở Đâu",
+    "link": "https://www.tiktok.com/discover/ti%E1%BB%87m-c%C3%A0-ph%C3%AA-em-%E1%BB%9F-%C4%91%C3%A2u",
+    "snippet": "80.2M bài đăng. Hãy khám phá video liên quan đến Tiệm Cà Phê Em Ở Đâu trên TikTok. Xem thêm video về Tiệm Cà Phê Nọong Ơi Ở Đâu, Quán Cafe Em Ở Đâu, Tiệm Cà ...",
+    "position": 2
+   },
+   {
+    "title": "Tiệm cà phê Linh IEC Tứ Hiệp: Quán cafe chill, góc sống ...",
+    "link": "https://www.tiktok.com/@thanh.thanh_tri/video/7665575910657084693",
+    "snippet": "Lead Tiệm cà phê Linh vừa được phát hiện ngay khu IEC Tứ Hiệp — một quán cafe chill với đồ uống ngon và nhiều góc sống ảo.",
+    "position": 3
+   },
+   {
+    "title": "Results for \"Cà phê linh chi\"",
+    "link": "https://shop.tiktok.com/sg/k/ca-phe-linh-chi",
+    "snippet": "Results for \"Cà phê linh chi\" · Cà phê laura ( vị đông trùng hạ thảo, vị nấm linh chi) của Nhật Kim Anh hộp 10 gói · Cà phê laura ( vị đông trùng hạ thảo, vị nấm ...",
+    "position": 4
+   },
+   {
+    "title": "Khám Phá Tiệm Cà Phê Sài Gòn Xưa Về Đêm",
+    "link": "https://www.tiktok.com/@bacxiuneee_/video/7350679983775436034",
+    "snippet": "Khám Phá Tiệm Cà Phê Sài Gòn Xưa Về Đêm. Tiệm cà phê Sài Gòn xưa đẹp hoài niệm, góc chill lý tưởng cho buổi tối thư giãn. Trải nghiệm ngay ...",
+    "position": 5
+   },
+   {
+    "title": "Tiệm Cà Phê Linh Mới Ở Quận 1 Với View Bitexco",
+    "link": "https://www.tiktok.com/@baro.phe/video/7569433852045790484",
+    "snippet": "Khám phá tiệm cà phê Linh mới với view ngắm Bitexco tuyệt đẹp ở quận 1. Đừng bỏ lỡ! #coffee #cafe #reviewcafe #saigon #paophe. Đây là bản tóm ...",
+    "position": 6
+   },
+   {
+    "title": "Tiệm Cà Phê Linh: Nơi Giữa Sự Ồn Ào",
+    "link": "https://www.tiktok.com/@vivichan._/video/7234762283472178437",
+    "snippet": "Tiệm Cà Phê Linh: Nơi Giữa Sự Ồn Ào. Khám phá tiệm cà phê Linh, chốn yên bình giữa Sài Gòn náo nhiệt. Trải nghiệm không gian retro độc đáo ...",
+    "position": 7
+   },
+   {
+    "title": "Tiệm Cà Phê Linh 1975",
+    "link": "https://www.tiktok.com/discover/ti%E1%BB%87m-c%C3%A0-ph%C3%AA-linh-1975",
+    "snippet": "Tiệm cà phê thập niên xưa tại Sài Gòn. Khám phá tiệm cà phê linh với không gian vintage mang đậm chất Sài Gòn 1975. Thử ngay vị ngon của quá khứ!",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

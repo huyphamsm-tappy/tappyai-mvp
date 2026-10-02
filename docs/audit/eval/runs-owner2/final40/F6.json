@@ -1,0 +1,664 @@
+{
+  "id": "F6",
+  "text": "quán số 2 có đông không?",
+  "parent": "F1",
+  "status": 200,
+  "ms": 13880,
+  "evidenceId": "83dddceb-27b4-4ed2-81da-ee0a89ced393",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "Hải Sản Hoàng Gia Quận 1",
+        "location": "Quận 1, TP.HCM",
+        "type": "restaurant"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Hải Sản Hoàng Gia",
+      "rating": 4.8,
+      "count": 1245,
+      "price": "Trên 1 Tr ₫",
+      "hours": "08:00–00:00",
+      "distance_km": 0.7,
+      "address": "192 Lý Tự Trọng, Bến Thành, Hồ Chí Minh 710200, Việt Nam"
+    },
+    {
+      "name": "Hải Sản Hoàng Gia - 37 Lý Tự Trọng Quận 1",
+      "rating": 4.6,
+      "count": 1694,
+      "price": "Trên 1 Tr ₫",
+      "hours": "08:00–00:00",
+      "distance_km": 0.3,
+      "address": "37 Lý Tự Trọng, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Hải Sản Hoàng Gia - 180 Trần Hưng Đạo Quận 1",
+      "rating": 4.7,
+      "count": 959,
+      "price": "Trên 1 Tr ₫",
+      "hours": "08:00–00:00",
+      "distance_km": 1.9,
+      "address": "180 Trần Hưng Đạo, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "Hải Sản Hoàng Gia",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 4.8,
+        "reviews": 1245,
+        "distance_km": 0.7,
+        "open_now": true,
+        "opening_hours": "08:00–00:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Hải Sản Hoàng Gia - 37 Lý Tự Trọng Quận 1",
+      "role": null,
+      "evidence": {
+        "rating": 4.6,
+        "reviews": 1694,
+        "distance_km": 0.3,
+        "open_now": true,
+        "opening_hours": "08:00–00:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Hải Sản Hoàng Gia - 180 Trần Hưng Đạo Quận 1",
+      "role": null,
+      "evidence": {
+        "rating": 4.7,
+        "reviews": 959,
+        "distance_km": 1.9,
+        "open_now": true,
+        "opening_hours": "08:00–00:00",
+        "attributes": []
+      }
+    }
+  ],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình tìm thông tin về tình trạng đông của **Hải Sản Hoàng Gia** nhé.\n\nHải Sản Hoàng Gia có **4.8⭐ (1.245 đánh giá Google Maps)** — rất cao, nên quán khá nổi tiếng và thường có khách. Tuy nhiên, mình không có dữ liệu cụ thể về tình trạng đông vào lúc tối nay.\n\nNgoài ra, có chi nhánh gần hơn tại **37 Lý Tự Trọng (chỉ 0.3km)** nếu chi nhánh chính đông quá.",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Tìm quán ăn tối ngon gần Quận 1 cho 2 người"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm quán ăn tối ngon gần Quận 1 cho 2 người nhé.\n\nMình chọn **Izakaya Choioinoodle** cho bữa tối của 2 người. Quán có **4.8⭐ (201 đánh giá Google Maps)** — rất cao, chỉ cách bạn 0.9km, mở đến 22:00 nên hoàn hảy cho tối nay. Đây là nhà hàng Nhật chuyên mì ramen ngon, phù hợp cho bữa tối lãng mạn hay thân mật.\n\nNếu muốn hải sản, **Hải Sản Hoàng Gia** cũng tuyệt vời với 4.7⭐ (959 đánh giá) — nhiều người review hơn, nhưng xa hơn một chút (1.9km) và mức giá có thể cao hơn. Quán mở đến nửa đêm nên rất tiện.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛵 GrabFood - Izakaya Choioinoodle\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/vi/restaurants?search=Izakaya+Choioinoodle+Quan+1\",\"primary\":true},{\"label\":\"📍 Maps - Izakaya Choioinoodle\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=6525976663471549326\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Hải Sản Hoàng Gia có gì đặc biệt?|Quán nào gần nhất?|Có quán nào ăn chay không?[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "quán số 2 có đông không?"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm thông tin về tình trạng đông của **Hải Sản Hoàng Gia** nhé.\n\nHải Sản Hoàng Gia có **4.8⭐ (1.245 đánh giá Google Maps)** — rất cao, nên quán khá nổi tiếng và thường có khách. Tuy nhiên, mình không có dữ liệu cụ thể về tình trạng đông vào lúc tối nay.\n\nNgoài ra, có chi nhánh gần hơn tại **37 Lý Tự Trọng (chỉ 0.3km)** nếu chi nhánh chính đông quá."
+    }
+  ],
+  "toolResults": [
+    {
+      "source": "Serper Maps",
+      "count": 3,
+      "location": "Quận 1, TP.HCM",
+      "results": [
+        {
+          "name": "Hải Sản Hoàng Gia",
+          "address": "192 Lý Tự Trọng, Bến Thành, Hồ Chí Minh 710200, Việt Nam",
+          "phone": "+84 1900 0303",
+          "website_uri": "https://haisanhoanggia.com/",
+          "place_id": "ChIJR-gASuQvdTERDH9c4TlxjE0",
+          "rating_value": 4.8,
+          "google_rating": "4.8⭐ (1.245 đánh giá Google Maps)",
+          "rating_count": 1245,
+          "price_range_text": "Trên 1 Tr ₫",
+          "place_types": [
+            "Nhà hàng",
+            "Nhà hàng hải sản"
+          ],
+          "maps_link": "https://maps.google.com/?cid=5587965731067952908",
+          "booking_links": [
+            "https://s.ldplink.me/RhqgD",
+            "https://www.google.com/maps/reserve/v/dine/c/Q9Spy0V7tdE?source=pa&opi=79508299"
+          ],
+          "opening_hours": "08:00–00:00",
+          "open_now": true,
+          "distance_km": 0.7,
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "label": "📍 Google Maps — Hải Sản Hoàng Gia",
+              "url": "https://maps.google.com/?cid=5587965731067952908",
+              "attributed": true
+            },
+            {
+              "kind": "official_website",
+              "label": "🌐 Website — Hải Sản Hoàng Gia",
+              "url": "https://haisanhoanggia.com/",
+              "attributed": true
+            },
+            {
+              "kind": "youtube_search_fallback",
+              "label": "🔎 Tìm video review trên YouTube",
+              "url": "https://www.youtube.com/results?search_query=H%E1%BA%A3i%20S%E1%BA%A3n%20Ho%C3%A0ng%20Gia%20review",
+              "attributed": false
+            }
+          ],
+          "has_order": true,
+          "has_delivery": true,
+          "has_maps": true,
+          "has_website": true,
+          "has_photo": true,
+          "has_hours": true,
+          "has_phone": true,
+          "has_reviews": "search"
+        },
+        {
+          "name": "Hải Sản Hoàng Gia - 37 Lý Tự Trọng Quận 1",
+          "address": "37 Lý Tự Trọng, Sài Gòn, Hồ Chí Minh, Việt Nam",
+          "phone": "+84 1900 0303",
+          "website_uri": "https://haisanhoanggia.com/",
+          "place_id": "ChIJK4cKZkgvdTERdUtNZM2gOes",
+          "rating_value": 4.6,
+          "google_rating": "4.6⭐ (1.694 đánh giá Google Maps)",
+          "rating_count": 1694,
+          "price_range_text": "Trên 1 Tr ₫",
+          "place_types": [
+            "Nhà hàng",
+            "Nhà hàng hải sản"
+          ],
+          "maps_link": "https://maps.google.com/?cid=16949755476597099381",
+          "booking_links": [
+            "https://s.ldplink.me/CvwTi"
+          ],
+          "opening_hours": "08:00–00:00",
+          "open_now": true,
+          "distance_km": 0.3,
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "label": "📍 Google Maps — Hải Sản Hoàng Gia - 37 Lý Tự Trọng Quận 1",
+              "url": "https://maps.google.com/?cid=16949755476597099381",
+              "attributed": true
+            },
+            {
+              "kind": "official_website",
+              "label": "🌐 Website — Hải Sản Hoàng Gia - 37 Lý Tự Trọng Quận 1",
+              "url": "https://haisanhoanggia.com/",
+              "attributed": true
+            },
+            {
+              "kind": "youtube_search_fallback",
+              "label": "🔎 Tìm video review trên YouTube",
+              "url": "https://www.youtube.com/results?search_query=H%E1%BA%A3i%20S%E1%BA%A3n%20Ho%C3%A0ng%20Gia%20-%2037%20L%C3%BD%20T%E1%BB%B1%20Tr%E1%BB%8Dng%20Qu%E1%BA%ADn%201%20review",
+              "attributed": false
+            }
+          ],
+          "has_order": true,
+          "has_delivery": true,
+          "has_maps": true,
+          "has_website": true,
+          "has_photo": true,
+          "has_hours": true,
+          "has_phone": true,
+          "has_reviews": "search"
+        },
+        {
+          "name": "Hải Sản Hoàng Gia - 180 Trần Hưng Đạo Quận 1",
+          "address": "180 Trần Hưng Đạo, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+          "phone": "+84 1900 0303",
+          "website_uri": "https://haisanhoanggia.com/",
+          "place_id": "ChIJUYzahRQvdTERt3F0asXGmng",
+          "rating_value": 4.7,
+          "google_rating": "4.7⭐ (959 đánh giá Google Maps)",
+          "rating_count": 959,
+          "price_range_text": "Trên 1 Tr ₫",
+          "place_types": [
+            "Nhà hàng",
+            "Nhà hàng hải sản"
+          ],
+          "maps_link": "https://maps.google.com/?cid=8690476982161666487",
+          "booking_links": [
+            "https://s.ldplink.me/qPMj7",
+            "https://www.google.com/maps/reserve/v/dine/c/vG3sFEFo0Xw?source=pa&opi=79508299"
+          ],
+          "opening_hours": "08:00–00:00",
+          "open_now": true,
+          "distance_km": 1.9,
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "label": "📍 Google Maps — Hải Sản Hoàng Gia - 180 Trần Hưng Đạo Quận 1",
+              "url": "https://maps.google.com/?cid=8690476982161666487",
+              "attributed": true
+            },
+            {
+              "kind": "official_website",
+              "label": "🌐 Website — Hải Sản Hoàng Gia - 180 Trần Hưng Đạo Quận 1",
+              "url": "https://haisanhoanggia.com/",
+              "attributed": true
+            },
+            {
+              "kind": "youtube_search_fallback",
+              "label": "🔎 Tìm video review trên YouTube",
+              "url": "https://www.youtube.com/results?search_query=H%E1%BA%A3i%20S%E1%BA%A3n%20Ho%C3%A0ng%20Gia%20-%20180%20Tr%E1%BA%A7n%20H%C6%B0ng%20%C4%90%E1%BA%A1o%20Qu%E1%BA%ADn%201%20review",
+              "attributed": false
+            }
+          ],
+          "has_order": true,
+          "has_delivery": true,
+          "has_maps": true,
+          "has_website": true,
+          "has_photo": true,
+          "has_hours": true,
+          "has_phone": true,
+          "has_reviews": "search"
+        }
+      ],
+      "google_maps_search": "https://maps.google.com/maps?q=H%E1%BA%A3i%20S%E1%BA%A3n%20Ho%C3%A0ng%20Gia%20Qu%E1%BA%ADn%201%20Qu%E1%BA%ADn%201%2C%20TP.HCM",
+      "_tappy_place_domain": "food",
+      "place_search_status": "has_results",
+      "price_search_results": [
+        {
+          "title": "Menu Chế Biến món Hải Sản Tươi Sống",
+          "link": "https://haisanhoanggia.com/pages/menu-che-bien",
+          "snippet": "Chế biến đa dạng ... Hải Sản Hoàng Gia mang đến dịch vụ chế biến hải sản tươi sống: hấp, nướng, rang muối, sốt bơ tỏi, sashimi… Tiện lợi và nhanh chóng.",
+          "evidence_scope": "area"
+        },
+        {
+          "title": "Chi Nhánh, Menu & Giá 2026 - Hải Sản Hoàng Gia Quận 7",
+          "link": "https://haisanhoanggia.com/blogs/goc-am-thuc/hai-san-hoang-gia-quan-7",
+          "snippet": "Đây là nơi khách chọn hải sản sống tại bể, cân tại chỗ và được chế biến ngay (hấp, nướng, rang muối, sốt bơ tỏi, sashimi), với hơn 50 loại hải ...",
+          "evidence_scope": "area"
+        },
+        {
+          "title": "Danh Sách Hệ Thống Các Chi Nhánh Của Hải Sản Hoàng Gia",
+          "link": "https://haisanhoanggia.com/pages/supermarket",
+          "snippet": "TP.HCM - Quận 1 cũ: 192A Lý Tự Trọng, Phường Bến Thành · TP.HCM - Quận 2 cũ: 16 Quốc Hương, Phường An Khánh · TP.HCM - Quận 7 cũ: 103A Nguyễn Thị Thập, Phường ...",
+          "evidence_scope": "entity",
+          "evidence_about": "Hải Sản Hoàng Gia - 37 Lý Tự Trọng Quận 1"
+        },
+        {
+          "title": "Hải Sản Hoàng Gia, Thành phố Hồ Chí Minh - Đánh giá về nhà hàng",
+          "link": "https://www.tripadvisor.com.vn/Restaurant_Review-g293925-d26672317-Reviews-H_i_S_n_Hoang_Gia-Ho_Chi_Minh_City.html",
+          "snippet": "Tiếp tục trong ứng dụng. Tóm lược. Đang đóng cửa. 37 Lý Lý Tự Trọng Phường Bến Ghé, Quận 1, Thành phố Hồ Chí Minh 710200 Việt Nam. Trang web. Menu. Bản đồ. Đánh ...",
+          "evidence_scope": "entity",
+          "evidence_about": "Hải Sản Hoàng Gia - 37 Lý Tự Trọng Quận 1"
+        },
+        {
+          "title": "Trang chủ - Hải Sản Hoàng Gia",
+          "link": "https://haisanhoanggia.com/pages/frontpage",
+          "snippet": "Từ những chú tôm hùm đỏ Úc, cua hoàng đế chắc nịch, cá mú béo ngậy đến sò điệp nhật ngọt thanh, tất cả đều được tuyển chọn kỹ lưỡng và chế biến bởi đội ngũ đầu ...",
+          "evidence_scope": "area"
+        },
+        {
+          "title": "Hải Sản Hoàng Gia",
+          "link": "https://haisanhoanggia.com/",
+          "snippet": "Hải Sản Hoàng Gia tại 235 Nguyễn Tri Phương là một địa điểm đáng để ghé thử. ... Ở đây, bạn không chỉ gọi món qua menu mà còn được trực tiếp lựa chọn hải sản sống ...",
+          "evidence_scope": "area"
+        }
+      ],
+      "price_note": "Gia tham khao tu ket qua tim kiem hien tai (menu/dich vu/ve...), co the khac theo chi nhanh, thoi diem va da thay doi theo thoi gian.",
+      "price_evidence": {
+        "evidence_type": "REVIEW_SUPPORTED",
+        "source_type": "search_snippet",
+        "evidence_scope": "entity"
+      },
+      "_tappy_shortlist": [
+        {
+          "rank": 0,
+          "id": "ChIJR-gASuQvdTERDH9c4TlxjE0",
+          "name": "Hải Sản Hoàng Gia",
+          "role": "best_overall",
+          "evidence": {
+            "rating": 4.8,
+            "reviews": 1245,
+            "distance_km": 0.7,
+            "open_now": true,
+            "opening_hours": "08:00–00:00",
+            "attributes": []
+          },
+          "why": [
+            "rated 4.8",
+            "0.7km away",
+            "1245 reviews"
+          ],
+          "missing": []
+        },
+        {
+          "rank": 1,
+          "id": "ChIJK4cKZkgvdTERdUtNZM2gOes",
+          "name": "Hải Sản Hoàng Gia - 37 Lý Tự Trọng Quận 1",
+          "role": null,
+          "evidence": {
+            "rating": 4.6,
+            "reviews": 1694,
+            "distance_km": 0.3,
+            "open_now": true,
+            "opening_hours": "08:00–00:00",
+            "attributes": []
+          },
+          "why": [
+            "rated 4.6",
+            "0.3km away",
+            "1694 reviews"
+          ],
+          "missing": []
+        },
+        {
+          "rank": 2,
+          "id": "ChIJUYzahRQvdTERt3F0asXGmng",
+          "name": "Hải Sản Hoàng Gia - 180 Trần Hưng Đạo Quận 1",
+          "role": null,
+          "evidence": {
+            "rating": 4.7,
+            "reviews": 959,
+            "distance_km": 1.9,
+            "open_now": true,
+            "opening_hours": "08:00–00:00",
+            "attributes": []
+          },
+          "why": [
+            "rated 4.7",
+            "1.9km away",
+            "959 reviews"
+          ],
+          "missing": []
+        }
+      ],
+      "_tappy_evidence_gap": {
+        "qualified": 3,
+        "total": 3,
+        "needed": [
+          "rating",
+          "reviewCount",
+          "distance"
+        ],
+        "action": "recommend"
+      },
+      "_tappy_ranking": {
+        "pick": "Hải Sản Hoàng Gia",
+        "decided_by": [
+          {
+            "attribute": "rating",
+            "evidence": "rated 4.8"
+          },
+          {
+            "attribute": "distance",
+            "evidence": "0.7km away - Hải Sản Hoàng Gia - 37 Lý Tự Trọng Quận 1: 0.3km away (KHONG duoc goi pick la \"nhat\" o distance)"
+          },
+          {
+            "attribute": "reviewCount",
+            "evidence": "1245 reviews"
+          }
+        ],
+        "not_chosen": "Hải Sản Hoàng Gia - 37 Lý Tự Trọng Quận 1",
+        "not_chosen_leads_on": {
+          "attribute": "distance",
+          "evidence": "0.3km away"
+        },
+        "conditional": true
+      }
+    }
+  ],
+  "frames8Raw": [
+    [
+      {
+        "kind": "tappy.places.v1",
+        "v": 1,
+        "domain": "food",
+        "ranked": true,
+        "items": [
+          {
+            "id": "place:osm:10.77296,106.69547",
+            "domain": "food",
+            "kind": "place",
+            "name": "Hải Sản Hoàng Gia",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWn_MbTXiT8NNaOIGnEU4wOAtEvPCZIEIna_0MipqTZ_6PWpq_xOKL0maVpOYqdjwIekX7QU98JVv8R3r8TSMp-BUIaEVMafdwIAIh-hO5zalaXxckIKQsVr04IPGFSGhfCGgh5ZyvOYTlU",
+            "address": "192 Lý Tự Trọng, Bến Thành, Hồ Chí Minh 710200, Việt Nam",
+            "rating": 4.8,
+            "ratingCount": 1245,
+            "openingHours": "08:00–00:00",
+            "openNow": true,
+            "phone": "+84 1900 0303",
+            "priceRangeText": "Trên 1 Tr ₫",
+            "openingHoursWeek": {
+              "Thứ Sáu": "08:00–00:00",
+              "Thứ Bảy": "08:00–00:00",
+              "Chủ Nhật": "08:00–00:00",
+              "Thứ Hai": "08:00–00:00",
+              "Thứ Ba": "08:00–00:00",
+              "Thứ Tư": "08:00–00:00",
+              "Thứ Năm": "08:00–00:00"
+            },
+            "distanceKm": 0.7,
+            "categories": [
+              "Nhà hàng",
+              "Nhà hàng hải sản"
+            ],
+            "rank": 0,
+            "shortlistPosition": 1,
+            "recommended": true,
+            "reasons": [
+              {
+                "attribute": "rating",
+                "evidence": "rated 4.8"
+              },
+              {
+                "attribute": "distance",
+                "evidence": "0.7km away"
+              },
+              {
+                "attribute": "reviewCount",
+                "evidence": "1245 reviews"
+              }
+            ],
+            "tradeOff": {
+              "attribute": "distance",
+              "evidence": "0.3km away"
+            },
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=H%E1%BA%A3i%20S%E1%BA%A3n%20Ho%C3%A0ng%20Gia%20Qu%E1%BA%ADn%201%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=5587965731067952908",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=H%E1%BA%A3i%20S%E1%BA%A3n%20Ho%C3%A0ng%20Gia%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://haisanhoanggia.com/",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+8419000303",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.77919,106.70232",
+            "domain": "food",
+            "kind": "place",
+            "name": "Hải Sản Hoàng Gia - 37 Lý Tự Trọng Quận 1",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWm96j0KB5min49dt7zqTRqEzNnvc_gK_dW4y7yp89Nc8Dy6XgM8NO361xNU2hQt7nKq7SM3W4HcWbaoIK1gYY8HmDDrR_isaWU3pjoL-5cV2mlNXWzPuo1aXLAoWn50QrLjzGocdA3GrXTD",
+            "address": "37 Lý Tự Trọng, Sài Gòn, Hồ Chí Minh, Việt Nam",
+            "rating": 4.6,
+            "ratingCount": 1694,
+            "openingHours": "08:00–00:00",
+            "openNow": true,
+            "phone": "+84 1900 0303",
+            "priceSignal": "price_search_results",
+            "priceRangeText": "Trên 1 Tr ₫",
+            "openingHoursWeek": {
+              "Thứ Sáu": "08:00–00:00",
+              "Thứ Bảy": "08:00–00:00",
+              "Chủ Nhật": "08:00–00:00",
+              "Thứ Hai": "08:00–00:00",
+              "Thứ Ba": "08:00–00:00",
+              "Thứ Tư": "08:00–00:00",
+              "Thứ Năm": "08:00–00:00"
+            },
+            "distanceKm": 0.3,
+            "categories": [
+              "Nhà hàng",
+              "Nhà hàng hải sản"
+            ],
+            "rank": 1,
+            "shortlistPosition": 2,
+            "actions": [
+              {
+                "kind": "review",
+                "urlKind": "direct",
+                "url": "https://www.tiktok.com/@haisanhoanggia/video/7548733944464805128",
+                "labelKey": "v3.action.reviewOn",
+                "platform": "TikTok",
+                "attributed": true
+              },
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=H%E1%BA%A3i%20S%E1%BA%A3n%20Ho%C3%A0ng%20Gia%20-%2037%20L%C3%BD%20T%E1%BB%B1%20Tr%E1%BB%8Dng%20Qu%E1%BA%ADn%201%20Qu%E1%BA%ADn%201%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=16949755476597099381",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://haisanhoanggia.com/",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+8419000303",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=H%E1%BA%A3i%20S%E1%BA%A3n%20Ho%C3%A0ng%20Gia%20-%2037%20L%C3%BD%20T%E1%BB%B1%20Tr%E1%BB%8Dng%20Qu%E1%BA%ADn%201%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.76306,106.69074",
+            "domain": "food",
+            "kind": "place",
+            "name": "Hải Sản Hoàng Gia - 180 Trần Hưng Đạo Quận 1",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWl1doXSHKqQ3E2jcQxvVsfDrgFPng-1olX4Cz77F3t3Tr-p3K0Qq5CwpvN3MUivrzetaPG0E9h_T7ezO_70KracT3laNdLlgVFTbwLl87pQ6TxvWzJFZ77cpvA1fIm_ptbp79_DmA",
+            "address": "180 Trần Hưng Đạo, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+            "rating": 4.7,
+            "ratingCount": 959,
+            "openingHours": "08:00–00:00",
+            "openNow": true,
+            "phone": "+84 1900 0303",
+            "priceRangeText": "Trên 1 Tr ₫",
+            "openingHoursWeek": {
+              "Thứ Sáu": "08:00–00:00",
+              "Thứ Bảy": "08:00–00:00",
+              "Chủ Nhật": "08:00–00:00",
+              "Thứ Hai": "08:00–00:00",
+              "Thứ Ba": "08:00–00:00",
+              "Thứ Tư": "08:00–00:00",
+              "Thứ Năm": "08:00–00:00"
+            },
+            "distanceKm": 1.9,
+            "categories": [
+              "Nhà hàng",
+              "Nhà hàng hải sản"
+            ],
+            "rank": 2,
+            "shortlistPosition": 3,
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=H%E1%BA%A3i%20S%E1%BA%A3n%20Ho%C3%A0ng%20Gia%20-%20180%20Tr%E1%BA%A7n%20H%C6%B0ng%20%C4%90%E1%BA%A1o%20Qu%E1%BA%ADn%201%20Qu%E1%BA%ADn%201%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=8690476982161666487",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=H%E1%BA%A3i%20S%E1%BA%A3n%20Ho%C3%A0ng%20Gia%20-%20180%20Tr%E1%BA%A7n%20H%C6%B0ng%20%C4%90%E1%BA%A1o%20Qu%E1%BA%ADn%201%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://haisanhoanggia.com/",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+8419000303",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          }
+        ],
+        "mapsSearchUrl": "https://maps.google.com/maps?q=H%E1%BA%A3i%20S%E1%BA%A3n%20Ho%C3%A0ng%20Gia%20Qu%E1%BA%ADn%201%20Qu%E1%BA%ADn%201%2C%20TP.HCM"
+      }
+    ]
+  ]
+}

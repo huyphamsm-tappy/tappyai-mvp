@@ -11,6 +11,15 @@
 > and the Android/iOS "backend is the sole language authority" parity rule — is normatively defined in
 > **`docs/architecture/ADR-016-ai-language-detection-and-localization.md`** and `docs/architecture/AI_PLATFORM.md` §8.
 > Where this document and ADR-016 disagree, **ADR-016 wins**.
+>
+> **⚠️ ADDENDUM 2026-09-09 — §2.1's "per-message detection is the SOLE source of truth" and §2.3 are SUPERSEDED
+> by `docs/architecture/ADR-027-chat-response-language-client-locale.md`.** Detection stays first among the text
+> signals and nothing about it is weakened, but it no longer decides alone: when the message text does not settle
+> the language, `/api/chat` uses the language the CLIENT sends (`?lang=` / `Accept-Language`) before falling back
+> to the heuristic. The reason is the case §2.3 never considered — Vietnamese typed **without diacritics**, which
+> reads as English and answered Vietnamese users in English in production. What §2.1 forbids is still forbidden:
+> `profiles.language` is never read by the chat route, and no AI language is stored per user (§3's `ai_language`
+> is still not proposed). Where this document and ADR-027 disagree, **ADR-027 wins**.
 
 > **Phase:** Architecture Week — Part 3
 > **Status:** Design/analysis only — no code changes, no migrations
@@ -32,7 +41,7 @@
 
 ### 2.1 UI Language vs. AI Response Language — kept explicitly separate
 These are architecturally already separate today (AI language has no dependency on anything UI-related, since no UI language setting exists to conflate it with). The proposal's job is to **keep them separate once a UI language setting is introduced**, not to build a new separation mechanism:
-- A future `profiles.language` value must **never** be read by `detectLang()`'s per-message flow. Per-message detection remains the sole source of truth for what language the AI responds in, for every message after the first (§2.3).
+- A future `profiles.language` value must **never** be read by `detectLang()`'s per-message flow. ~~Per-message detection remains the sole source of truth for what language the AI responds in, for every message after the first (§2.3).~~ **AMENDED by ADR-027 (2026-09-09):** the prohibition on reading `profiles.language` stands and is still enforced — but per-message detection is no longer the *sole* source. The request's own locale (`?lang=` / `Accept-Language`) breaks the tie when the text does not settle it. The AI language is still stored nowhere.
 - **Recommendation, explicitly scoped down from the brief's example list:** for MVP, **do not build full UI translation** (i.e., do not translate the hundred-plus hardcoded Vietnamese strings across the app into English or any other language). TappyAI is a Vietnam-first product (confirmed by its own branding copy — "trợ lý AI thuần Việt" — appearing verbatim across Home, Login, and the app manifest). No evidence anywhere in this codebase suggests a non-Vietnamese UI is needed for MVP. Translating the UI is a large, unscoped content-production effort (every string in every component), not an architecture task, and is not proposed here. What **is** proposed is the minimal data model (§3) so this can be added later without a data migration — architecture-ready, not built.
 
 ### 2.2 Default Language
@@ -40,6 +49,7 @@ These are architecturally already separate today (AI language has no dependency 
 - **Settings override:** once a `profiles.language` field exists (§3), a Settings toggle can let a logged-in user set it explicitly — but since UI translation isn't proposed for MVP, this toggle's only proposed MVP effect is informational/stored, not yet UI-changing. This avoids building a toggle that does nothing visible, while still capturing the preference for later.
 
 ### 2.3 AI Language Strategy
+> **Superseded by ADR-027 (2026-09-09).** The section below is kept as the record of what was decided in 2026-07; the binding chain is now ADR-027 §2 (`explicit request → what the text clearly says → the client's locale → detection`). Its conclusion "zero new code and zero new schema" held for the schema and no longer holds for the code: there is new code, and still no new schema.
 - **Where the AI gets its language from:** `detectLang(lastText)`, per message — unchanged, already correct (§1).
 - **When to override (the one genuine design gap):** the very **first** message of a new session has no prior conversation to detect a pattern from, but `detectLang` already runs on that first message's own text and works correctly today (it doesn't need conversation history — it detects from the current message alone, confirmed via `intent.ts`). So there is **no actual cold-start gap** to fix — `profiles.language` is not needed to seed the first AI response. This corrects an assumption the brief's structure might imply (that AI language needs a stored fallback); verified against the actual code, it doesn't.
 - **When to keep per-message detection (i.e., always):** mixed-language conversations already work correctly (§1) — no change proposed.

@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"MASSAGE DUBAI LUXURY\" OR \"Massage tận nơi Sài Gòn\" OR \"Gạo Spa\" quan 1 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T04:06:46.689Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"MASSAGE DUBAI LUXURY\" OR \"Massage tận nơi Sài Gòn\" OR \"Gạo Spa\" quan 1 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Gạo Spa gội đầu siêu rẻ chỉ 29k #goidauthaoduoc ...",
+    "link": "https://www.tiktok.com/@02baoanh/video/7502039618146094343",
+    "snippet": "Review Lúa Mạch Spa Ở Vĩnh Long · Spa Vuốt Lướt Phú Nhuận. Gạo Spa gội đầu siêu rẻ chỉ 29k #goidauthaoduoc #goidaulongxuyen #gaospalongxuyen # ...",
+    "position": 1
+   },
+   {
+    "title": "Mầm Gạo Spa (@mamgaospa)",
+    "link": "https://www.tiktok.com/@mamgaospa",
+    "snippet": "Mầm Gạo Spa (@mamgaospa) trên TikTok |15.7K Lượt thích.1567 Follower. 69 Hoa Lan, P. Cầu Kiệu 33/24 Quốc Hương, P. An Khánh No TIP Spa.",
+    "position": 2
+   },
+   {
+    "title": "Gạo Spa Wellness",
+    "link": "https://www.tiktok.com/discover/g%E1%BA%A1o-spa-wellness",
+    "snippet": "Khám phá Gạo Spa & Wellness, nơi thư giãn và chăm sóc sắc đẹp tuyệt vời. Ưu đãi triệt lông cho học sinh sinh viên, trải nghiệm ngay hôm nay!",
+    "position": 3
+   },
+   {
+    "title": "Tắm trắng thiên nhiên Bạch Quý Phi 😚 lâu lâu Mầm sale 1 ...",
+    "link": "https://www.tiktok.com/@mamgaospa/video/7676316350926589204",
+    "snippet": "... 1 lần chỉ còn 589k/lần (khi mua từ 4 lần) ... Quận 2 (Thủ Đức): 33/24 Quốc Hương, phường An Khánh | 0917 414 040\".âm thanh gốc - Mầm Gạo Spa.",
+    "position": 4
+   },
+   {
+    "title": "Video của Mầm Gạo Spa (@mamgaospa) với bản nhạc Lucky ...",
+    "link": "https://www.tiktok.com/@mamgaospa/video/7638237376237653268",
+    "snippet": "Mầm Gạo Spa. 1 · recommend-cover. Mầm Gạo Spa. 2 ... Quận 2 (Thủ Đức): 33/24 Quốc Hương, phường An Khánh ... Còn nếu bạn ở Quận 2 (Thủ Đức), hãy đến Mầm Quận ...",
+    "position": 5
+   },
+   {
+    "title": "Vừa làm việc vừa chill cùng Mầm nha 🥰 ------------------------- ...",
+    "link": "https://www.tiktok.com/@mamgaospa/video/7658684442285722900",
+    "snippet": "... Quận 2 (Thủ Đức): 33/24 Quốc Hương, phường An Khánh| 0917 414 040\".âm thanh gốc - Mầm Gạo Spa.",
+    "position": 6
+   },
+   {
+    "title": "Video của Gạo spa (Gội đầu ở đảo lý sơn) (@gao.spa97) với ...",
+    "link": "https://www.tiktok.com/@gao.spa97/video/7644961770653650197",
+    "snippet": "43 Lượt thích,Video TikTok từ Gạo spa (Gội đầu ở đảo lý sơn) (@gao.spa97).âm thanh gốc - Gạo spa - Gạo spa (Gội đầu ở đảo lý sơn).",
+    "position": 7
+   },
+   {
+    "title": "Review Massage Dubai Luxury Trung Quốc",
+    "link": "https://www.tiktok.com/discover/review-massage-dubai-luxury-trung-qu%E1%BB%91c",
+    "snippet": "Review Massage Dubai Luxury Trung Quốc · Khám phá các video liên quan đến Review Massage Dubai Luxury Trung Quốc trên TikTok.",
+    "date": "14 thg 9, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

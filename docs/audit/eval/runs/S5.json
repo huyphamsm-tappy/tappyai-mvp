@@ -1,0 +1,25 @@
+{
+  "id": "S5",
+  "text": "quà sinh nhật cho bạn gái tầm 1tr",
+  "parent": null,
+  "status": 200,
+  "ms": 5645,
+  "evidenceId": "3ab2dbad-3190-4a72-8873-d97e439e8fe0",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình giúp bạn tìm quà sinh nhật cho bạn gái trong tầm 1 triệu đồng nhé! 🎁\n\nTrước tiên, mình cần biết bạn gái thích loại quà gì để gợi ý chính xác hơn? Ví dụ:\n- **Đồ dùng cá nhân** (mỹ phẩm, nước hoa, túi xách, phụ kiện)\n- **Công nghệ** (tai nghe, smartwatch, sạc dự phòng)\n- **Trải nghiệm** (spa, ăn tối sang trọng, vé xem phim/concert)\n- **Đồ trang trí/quà lưu niệm** (nến thơm, hoa, trang sức)",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "quà sinh nhật cho bạn gái tầm 1tr"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giúp bạn tìm quà sinh nhật cho bạn gái trong tầm 1 triệu đồng nhé! 🎁\n\nTrước tiên, mình cần biết bạn gái thích loại quà gì để gợi ý chính xác hơn? Ví dụ:\n- **Đồ dùng cá nhân** (mỹ phẩm, nước hoa, túi xách, phụ kiện)\n- **Công nghệ** (tai nghe, smartwatch, sạc dự phòng)\n- **Trải nghiệm** (spa, ăn tối sang trọng, vé xem phim/concert)\n- **Đồ trang trí/quà lưu niệm** (nến thơm, hoa, trang sức)"
+    }
+  ]
+}

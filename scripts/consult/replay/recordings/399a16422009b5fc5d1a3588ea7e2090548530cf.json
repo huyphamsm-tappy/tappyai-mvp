@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Hanami Hotel Danang",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:27:14.056Z",
+ "body": {
+  "searchParameters": {
+   "q": "Hanami Hotel Danang",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "HANAMI HOTEL DANANG (Đà Nẵng) - Đánh giá Nhà trọ đặc biệt & So sánh giá -  Tripadvisor",
+    "imageUrl": "https://media-cdn.tripadvisor.com/media/photo-p/12/08/a0/75/getlstd-property-photo.jpg",
+    "imageWidth": 550,
+    "imageHeight": 824,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4gMFp1EHEAgQzxSUd6dBO-I4oNAdSq9GQFZoDuUNK-A&s=10",
+    "thumbnailWidth": 365,
+    "thumbnailHeight": 547,
+    "source": "Tripadvisor",
+    "domain": "www.tripadvisor.com.vn",
+    "link": "https://www.tripadvisor.com.vn/Hotel_Review-g298085-d13454359-Reviews-Hanami_Hotel_Danang-Da_Nang.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fmedia-cdn.tripadvisor.com%2Fmedia%2Fphoto-p%2F12%2F08%2Fa0%2F75%2Fgetlstd-property-photo.jpg&tbnid=vIBy6staum--XM&imgrefurl=https%3A%2F%2Fwww.tripadvisor.com.vn%2FHotel_Review-g298085-d13454359-Reviews-Hanami_Hotel_Danang-Da_Nang.html&docid=DW_U34uv2fWK6M&w=550&h=824",
+    "position": 1
+   },
+   {
+    "title": "Hanami Hotel Đà Nẵng: Sự lựa chọn hoàn hảo cho kỳ nghỉ tại thành phố biển",
+    "imageUrl": "https://baocamau.vn/image/ckeditor/2024/20240928/images/QC-1.jpg",
+    "imageWidth": 1000,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWf0QuKC5056j9jKvbrUG8vepPCMfpTztIofP1jVMAcQ&s=10",
+    "thumbnailWidth": 576,
+    "thumbnailHeight": 347,
+    "source": "Báo Cà Mau",
+    "domain": "baocamau.vn",
+    "link": "https://baocamau.vn/hanami-hotel-da-nang-su-lua-chon-hoan-hao-cho-ky-nghi-tai-thanh-pho-bien-a34699.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fbaocamau.vn%2Fimage%2Fckeditor%2F2024%2F20240928%2Fimages%2FQC-1.jpg&tbnid=GbfHdS0wfASO9M&imgrefurl=https%3A%2F%2Fbaocamau.vn%2Fhanami-hotel-da-nang-su-lua-chon-hoan-hao-cho-ky-nghi-tai-thanh-pho-bien-a34699.html&docid=GQtQgnX7P8YCtM&w=1000&h=600",
+    "position": 2
+   },
+   {
+    "title": "HANAMI HOTEL DANANG (Đà Nẵng) - Đánh giá Nhà trọ đặc biệt & So sánh giá -  Tripadvisor",
+    "imageUrl": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/12/08/a0/75/getlstd-property-photo.jpg?w=900&h=500&s=1",
+    "imageWidth": 900,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSkVE8VczwlmZPXAt5DSLj5LyD2_PKOneCUVMPslZSG2g&s=10",
+    "thumbnailWidth": 599,
+    "thumbnailHeight": 333,
+    "source": "Tripadvisor",
+    "domain": "www.tripadvisor.com.vn",
+    "link": "https://www.tripadvisor.com.vn/Hotel_Review-g298085-d13454359-Reviews-Hanami_Hotel_Danang-Da_Nang.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdynamic-media-cdn.tripadvisor.com%2Fmedia%2Fphoto-o%2F12%2F08%2Fa0%2F75%2Fgetlstd-property-photo.jpg%3Fw%3D900%26h%3D500%26s%3D1&tbnid=-V5JUPLgFWpWhM&imgrefurl=https%3A%2F%2Fwww.tripadvisor.com.vn%2FHotel_Review-g298085-d13454359-Reviews-Hanami_Hotel_Danang-Da_Nang.html&docid=DW_U34uv2fWK6M&w=900&h=500",
+    "position": 3
+   },
+   {
+    "title": "Hanami Hotel Danang, Đà Nẵng (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/463967730.jpg?k=4810b81c14897195be87f89d00b0ee1811a93b1e8a64d69f33e9f7f4d7060ef0&o=",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNch_PcjXfYrlfJ_MVhhFcStZrJ4o1UArExY74whS4TQ&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "www.booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/hanami-danang.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F463967730.jpg%3Fk%3D4810b81c14897195be87f89d00b0ee1811a93b1e8a64d69f33e9f7f4d7060ef0%26o%3D&tbnid=2DtJbJ_YVzRYuM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fhanami-danang.vi.html&docid=JXjmbjQmNC_CHM&w=1024&h=683",
+    "position": 4
+   },
+   {
+    "title": "Hanami Hotel Danang, Phước Mỹ, Đà Nẵng",
+    "imageUrl": "https://pix10.agoda.net/property/4435798/1329868991/9d23e53c19e1bee54ca83c29fd08346d.jpeg?ce=3&s=414x232",
+    "imageWidth": 414,
+    "imageHeight": 206,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2WZ4whEgt_R_GrFX9ZpweT1ILJ5a2uLfCx-4P8YRFjA&s",
+    "thumbnailWidth": 318,
+    "thumbnailHeight": 158,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/hanami-hotel-danang_2/hotel/da-nang-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2Fproperty%2F4435798%2F1329868991%2F9d23e53c19e1bee54ca83c29fd08346d.jpeg%3Fce%3D3%26s%3D414x232&tbnid=T-j58_k0LuxgwM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fhanami-hotel-danang_2%2Fhotel%2Fda-nang-vn.html&docid=2u7ESs-A3WcNQM&w=414&h=206",
+    "position": 5
+   },
+   {
+    "title": "Đặt Hanami Hotel Đà Nẵng Trung tâm thành phố Đà Nẵng giá tốt nhất -  BestPrice",
+    "imageUrl": "https://owa.bestprice.vn/images/hotels/large/hanami-hotel-da-nang-64b510c8df527-848x477.jpg",
+    "imageWidth": 848,
+    "imageHeight": 477,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcGlKlnS_liu9DYABSU6QOfk5fsDQORvKP4lG9EL3GMQ&s=10",
+    "thumbnailWidth": 738,
+    "thumbnailHeight": 414,
+    "source": "BestPrice",
+    "domain": "www.bestprice.vn",
+    "link": "https://www.bestprice.vn/khach-san/hanami-hotel-da-nang-3330.html?srsltid=AU7gw4W9qLO96rQT7ja9-HqXzwgjTUaiW1rYz7yzDHO2rx3omDLoazgb",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fowa.bestprice.vn%2Fimages%2Fhotels%2Flarge%2Fhanami-hotel-da-nang-64b510c8df527-848x477.jpg&tbnid=bXO67hClcyq1EM&imgrefurl=https%3A%2F%2Fwww.bestprice.vn%2Fkhach-san%2Fhanami-hotel-da-nang-3330.html%3Fsrsltid%3DAU7gw4W9qLO96rQT7ja9-HqXzwgjTUaiW1rYz7yzDHO2rx3omDLoazgb&docid=eNPG6Rcq-FlQSM&w=848&h=477",
+    "position": 6
+   },
+   {
+    "title": "Hanami Hotel Danang, Phước Mỹ, Đà Nẵng",
+    "imageUrl": "https://q-xx.bstatic.com/xdata/images/hotel/max500/232912107.jpg?k=1af09d26d93a42de5406bdbffe14b92b71cdab2e152b350902f1245acfb6b248&o=",
+    "imageWidth": 500,
+    "imageHeight": 333,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ87Z98pfVVD2FWYqVZSXl45dhHgOrFbOf_Di35t-JQyA&s=10",
+    "thumbnailWidth": 500,
+    "thumbnailHeight": 333,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/hanami-hotel-danang_2/hotel/da-nang-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fq-xx.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax500%2F232912107.jpg%3Fk%3D1af09d26d93a42de5406bdbffe14b92b71cdab2e152b350902f1245acfb6b248%26o%3D&tbnid=8GumBz3vU4Y5BM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fhanami-hotel-danang_2%2Fhotel%2Fda-nang-vn.html&docid=2u7ESs-A3WcNQM&w=500&h=333",
+    "position": 7
+   },
+   {
+    "title": "Hanami Hotel Danang - Khách Sạn Đà Nẵng Giá Rẻ Gần Biển",
+    "imageUrl": "https://cdn.hanamihotel.com/wp-content/uploads/2018/09/phong-can-ho-honeymoon-1-giuong-doi-2.jpg?strip=all",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgBv5Gc247lPlNG7tlsBfJ2ryZBX84fU9-E2k4SaP54w&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "hanamihotel.com",
+    "domain": "hanamihotel.com",
+    "link": "https://hanamihotel.com/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.hanamihotel.com%2Fwp-content%2Fuploads%2F2018%2F09%2Fphong-can-ho-honeymoon-1-giuong-doi-2.jpg%3Fstrip%3Dall&tbnid=HMwsJAD4ity7zM&imgrefurl=https%3A%2F%2Fhanamihotel.com%2F&docid=ZGKU6sFsj7-_WM&w=1024&h=683",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

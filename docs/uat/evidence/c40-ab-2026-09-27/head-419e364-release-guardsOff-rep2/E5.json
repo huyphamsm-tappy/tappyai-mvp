@@ -1,0 +1,25 @@
+{
+  "id": "E5",
+  "text": "cuối tuần làm gì",
+  "parent": null,
+  "status": 200,
+  "ms": 5732,
+  "evidenceId": "c93b69c4-1359-413d-8652-49495baeefe8",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Chào bạn! 👋 Cuối tuần này (27-28/9) bạn muốn làm gì? Mình có thể giúp bạn:\n\n🍽️ **Tìm quán ăn ngon** - từ phở, cơm tấm đến quán cafe hay nhà hàng\n🛍️ **Mua sắm** - tìm đồ cần thiết hoặc quà tặng\n🎬 **Giải trí** - xem phim, karaoke, bar, hoặc hoạt động ngoài trời\n🧖 **Spa/làm đẹp** - thư giãn sau tuần làm việc\n🎯 **Kế hoạch du lịch** - nếu muốn đi chơi xa\n\nBạn có ý tưởng gì chưa, hay muốn mình gợi ý? 😊\n\n[FOLLOWUPS]Ăn gì ngon|Xem phim gì|Đi đâu chơi[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "cuối tuần làm gì"
+    },
+    {
+      "role": "assistant",
+      "content": "Chào bạn! 👋 Cuối tuần này (27-28/9) bạn muốn làm gì? Mình có thể giúp bạn:\n\n🍽️ **Tìm quán ăn ngon** - từ phở, cơm tấm đến quán cafe hay nhà hàng\n🛍️ **Mua sắm** - tìm đồ cần thiết hoặc quà tặng\n🎬 **Giải trí** - xem phim, karaoke, bar, hoặc hoạt động ngoài trời\n🧖 **Spa/làm đẹp** - thư giãn sau tuần làm việc\n🎯 **Kế hoạch du lịch** - nếu muốn đi chơi xa\n\nBạn có ý tưởng gì chưa, hay muốn mình gợi ý? 😊\n\n[FOLLOWUPS]Ăn gì ngon|Xem phim gì|Đi đâu chơi[/FOLLOWUPS]"
+    }
+  ]
+}

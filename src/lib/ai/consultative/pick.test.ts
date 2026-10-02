@@ -395,3 +395,53 @@ describe('PICK-08 — implicit purchase intent enables a Pick without stated cri
     expect(derivePick(rankCandidates(one, need), need, { implicitPurchaseIntent: true })).toBeNull()
   })
 })
+
+describe('🚨 a reason the runner-up beats carries its own correction', () => {
+  // MEASURED TWICE on "Làm đẹp chăm sóc da gần đây": the engine picked a 0.5km
+  // venue over a 0.3km one (wifi broke the tie), disclosed that correctly in
+  // `not_chosen_leads_on` — and the reply still said "gần nhất chỉ 0.5km",
+  // naming the 0.3km venue one clause later. The disclosure was three lines away
+  // from the number being read.
+  const WIFI_BEATS_NEARER = [
+    place('Tiệm Nail Phương Chuột', { distanceKm: 0.5, wifi: true }),
+    place('Thuan Beauty Salon', { distanceKm: 0.3 }),
+  ]
+  const NEAR_AND_WIFI = profile({ priorities: [prio('distance'), prio('wifi')] })
+  const pick = derivePick(rankCandidates(WIFI_BEATS_NEARER, NEAR_AND_WIFI), NEAR_AND_WIFI)!
+  const payload = buildPickPayload(pick) as {
+    decided_by: Array<{ attribute: string; evidence: string }>
+    not_chosen?: string
+    not_chosen_leads_on?: { attribute: string; evidence: string }
+  }
+
+  it('the engine still picks on the whole profile, not distance alone', () => {
+    expect(pick.candidate.name).toBe('Tiệm Nail Phương Chuột')
+    expect(payload.not_chosen).toBe('Thuan Beauty Salon')
+    expect(payload.not_chosen_leads_on?.attribute).toBe('distance')
+  })
+
+  it('🚨 the distance reason names the closer venue INLINE', () => {
+    const distance = payload.decided_by.find(r => r.attribute === 'distance')!
+    expect(distance.evidence).toContain('Thuan Beauty Salon')
+    expect(distance.evidence).toMatch(/nhat/)
+  })
+
+  it('a reason the runner-up does NOT beat is left alone', () => {
+    const wifi = payload.decided_by.find(r => r.attribute === 'wifi')
+    if (wifi) expect(wifi.evidence).not.toContain('Thuan Beauty Salon')
+  })
+
+  it('🚨 nothing is added when the runner-up leads on a DIFFERENT attribute', () => {
+    // A runner-up that is cheaper says nothing about how close the pick is.
+    const p2 = derivePick(rankCandidates(DECISIVE, DISTANCE_FIRST), DISTANCE_FIRST)!
+    const payload2 = buildPickPayload(p2) as { decided_by: Array<{ attribute: string; evidence: string }> }
+    for (const r of payload2.decided_by) {
+      expect(r.evidence, r.attribute).not.toContain('KHONG duoc goi')
+    }
+  })
+
+  it('the values it repeats come from the engine, never from new ones', () => {
+    const distance = payload.decided_by.find(r => r.attribute === 'distance')!
+    expect(distance.evidence).toContain(payload.not_chosen_leads_on!.evidence)
+  })
+})

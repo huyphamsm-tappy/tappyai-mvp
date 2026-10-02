@@ -119,9 +119,11 @@ describe('F3 — public profile post count', () => {
     expect(await countFor(null)).toBe(1)
   })
 
-  it('the guard is inert before the schema migration, so deploy order stays safe', async () => {
-    process.env.CONTENT_SAFETY_SCHEMA_MIGRATED = ''
+  it('R19: an UNSET flag still excludes a restricted post; only an explicit "false" (no column) counts it', async () => {
     h.state.rows = [review('PUBLISHED'), review('RESTRICTED')]
+    process.env.CONTENT_SAFETY_SCHEMA_MIGRATED = ''
+    expect(await countFor(null)).toBe(1)
+    process.env.CONTENT_SAFETY_SCHEMA_MIGRATED = 'false'
     expect(await countFor(null)).toBe(2)
   })
 })

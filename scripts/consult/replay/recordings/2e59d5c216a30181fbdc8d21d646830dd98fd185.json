@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Khách sạn G8 Luxury Đà Nẵng\" OR \"Bluzen Hotel Danang (Khách sạn Bluzen Đà Nẵng)\" OR \"DLG Hotel Danang\" Đà Nẵng site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:53:26.792Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Khách sạn G8 Luxury Đà Nẵng\" OR \"Bluzen Hotel Danang (Khách sạn Bluzen Đà Nẵng)\" OR \"DLG Hotel Danang\" Đà Nẵng site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Trải Nghiệm Khách Sạn Bên Biển Tại Đà Nẵng",
+    "link": "https://www.tiktok.com/@dlgdanang/video/7637814526527737106",
+    "snippet": "Video TikTok từ DLG Hotel Danang (@dlgdanang): \"Khách sạn bên biển với dịch vụ tiện nghi mang đến cho bạn mùa hè đáng nhớ tại Đà Nẵng. Khám ...",
+    "position": 1
+   },
+   {
+    "title": "(English below) Tận hưởng kỳ nghỉ trọn vẹn tại DLG Hotel ...",
+    "link": "https://www.tiktok.com/@review.danang.tui/video/7498766012444151058",
+    "snippet": "(English below) Tận hưởng kỳ nghỉ trọn vẹn tại DLG Hotel Danang, nơi kết hợp hoàn hảo giữa thư giãn và công việc. Experience the perfect blend of work and ...",
+    "position": 2
+   },
+   {
+    "title": "DLG Hotel Đà Nẵng review: trải nghiệm sang chảnh sát biển",
+    "link": "https://www.tiktok.com/@anchoicungost/video/7662299625231060244",
+    "snippet": "DLG Hotel Đà Nẵng review, khách sạn Đà Nẵng sát biển, phòng view đẹp Đà Nẵng, buffet sáng khách sạn Đà Nẵng ... DLG Hotel Danang · author · 4 · 0.",
+    "position": 3
+   },
+   {
+    "title": "다낭dlg호텔",
+    "link": "https://www.tiktok.com/discover/%EB%8B%A4%EB%82%ADdlg%ED%98%B8%ED%85%94",
+    "snippet": "DLG Hotel Danang. Tận hưởng kỳ nghỉ cùng người thân yêu tại khách sạn 5 sao ... POV: Bạn nghỉ dưỡng tại khách sạn 5 sao sở hữu 100% phòng view biển tại Đà Nẵng!",
+    "position": 4
+   },
+   {
+    "title": "Tìm kiếm nhân sự cho đội Tiền sảnh DLG",
+    "link": "https://www.tiktok.com/@hr.dlghotelxinchao/video/7470374843884653831",
+    "snippet": "#danang. #hrteamdlghoteldanang. recommend-cover. DLG Hotel Danang. 53 · recommend-cover. PhongTalks Quản trị khách sạn. 5 · recommend-cover.",
+    "position": 5
+   },
+   {
+    "title": "hrdlghoteldanang",
+    "link": "https://www.tiktok.com/tag/hrdlghoteldanang",
+    "snippet": "âm thanh gốc - DLG Hotel Danang ... Thành phố bừng tỉnh dưới nắng hè rực rỡ hòa cùng sắc xanh của đại dương, như một lời mời để gia đình cùng nhau tận hưởng hành ...",
+    "position": 6
+   },
+   {
+    "title": "3d Illusions Space Hotel",
+    "link": "https://www.tiktok.com/discover/3d-illusions-space-hotel",
+    "snippet": "DLG Hotel Danang, 3D hotel experience, virtual hotel tour, Da Nang tourism, 3D scanning technology, Space 3D tour, immersive hotel ...",
+    "date": "29 thg 6, 2026",
+    "position": 7
+   },
+   {
+    "title": "Собрали подборку отелей в Дананге с удобным ...",
+    "link": "https://www.tiktok.com/@dolcevitatourkz/video/7635098298734464276",
+    "snippet": "... Dlg Hotel Danang 5* ✓ Prince Hotel Da Nang 5* ✓ Radisson Hotel Danang 5* ✓ Nesta Celia Da Nang Hotel 5* Сохрани и поделись с другом ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

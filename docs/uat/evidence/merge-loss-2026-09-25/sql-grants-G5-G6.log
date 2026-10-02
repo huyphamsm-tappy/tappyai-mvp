@@ -1,0 +1,14 @@
+SQL Grant Guard — Supabase grant model (docs/architecture/ADR-019-supabase-grant-model.md)
+
+  ℹ legacy (pinned, not blocking): 9 finding(s) across 6 file(s)
+      supabase/migrations/20260711_anon_chat_usage.sql
+      supabase/migrations/20260713_auth_daily_rollup.sql
+      supabase/migrations/20260803_platform_owner.sql
+      supabase/migrations/add_counter_security_definer.sql
+      supabase/migrations/add_phase4.sql
+      supabase/migrations/add_phase4_hardening.sql
+      → These predate ADR-019. Touching one makes it an ERROR.
+
+Base ref: origin/main (842379b)  ·  changed files in scope: 36
+Rules: G1 declare-roles · G2 revoke-public-is-not-enough · G3 allowlist-integrity · G4 legacy-ratchet · G5 world-readable-select · G6 sensitive-isolation
+Result: 0 error(s), 9 info, 6 pinned legacy file(s).

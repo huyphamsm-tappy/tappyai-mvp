@@ -1,0 +1,30 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "làm nail sơn gel tiệm nhỏ quan 10 site:klook.com/vi/activity",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:00:45.808Z",
+ "body": {
+  "searchParameters": {
+   "q": "làm nail sơn gel tiệm nhỏ quan 10 site:klook.com/vi/activity",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tokyo Ikebukuro Tiệm làm móng nối chuyên nghiệp ...",
+    "link": "https://www.klook.com/vi/activity/167200-longnails-emma-nail-extension-specialty-salon-in-ikebukuro-tokyo/",
+    "snippet": "Salon của chúng tôi chuyên về nối móng, hỗ trợ khách hàng mang theo thiết kế riêng. Chúng tôi phục vụ những ai mong muốn có được \"độ dài và kiểu dáng yêu thích\" ...",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

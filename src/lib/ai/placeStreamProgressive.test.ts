@@ -34,7 +34,7 @@ async function run(deltas: string[], opts: { placeIntent: boolean; travelIntent?
 describe('a places turn releases its money-free opening early', () => {
   it('emits the opening sentence before the reply is finished', async () => {
     const { frames } = await run(
-      ['Mình tìm quán bún bò ở Quận 3 nhé. ', 'Quán mở cửa từ 6h sáng.'],
+      ['Mình tìm quán bún bò ở Quận 3 nhé. ', 'Quán nằm gần chợ Bàn Cờ.'],
       { placeIntent: true },
     )
     // More than one frame means something went out before the final reconstruction.
@@ -44,20 +44,20 @@ describe('a places turn releases its money-free opening early', () => {
 
   it('never sends the released prefix twice', async () => {
     const { joined } = await run(
-      ['Mình tìm quán bún bò ở Quận 3 nhé. ', 'Quán mở cửa từ 6h sáng.'],
+      ['Mình tìm quán bún bò ở Quận 3 nhé. ', 'Quán nằm gần chợ Bàn Cờ.'],
       { placeIntent: true },
     )
     expect(joined.split('Mình tìm quán bún bò ở Quận 3 nhé.').length - 1).toBe(1)
-    expect(joined.split('Quán mở cửa từ 6h sáng.').length - 1).toBe(1)
+    expect(joined.split('Quán nằm gần chợ Bàn Cờ.').length - 1).toBe(1)
   })
 
   it('delivers the whole reply, losing nothing', async () => {
     const { joined } = await run(
-      ['Mình tìm quán bún bò ở Quận 3 nhé. ', 'Quán mở cửa từ 6h sáng.'],
+      ['Mình tìm quán bún bò ở Quận 3 nhé. ', 'Quán nằm gần chợ Bàn Cờ.'],
       { placeIntent: true },
     )
     expect(joined).toContain('Mình tìm quán bún bò ở Quận 3 nhé.')
-    expect(joined).toContain('Quán mở cửa từ 6h sáng.')
+    expect(joined).toContain('Quán nằm gần chợ Bàn Cờ.')
   })
 })
 

@@ -1,0 +1,24 @@
+{
+  "id": "G5b",
+  "group": "used-purchase-risk",
+  "criteria": [
+    "Leads with ownership: cà vẹt/registration matches seller and frame/engine numbers, stolen vehicle, sang tên procedure, deposit scams; then mechanical checks",
+    "No invented numbers",
+    "Scam-vector pointer to 'Cảnh báo lừa đảo' where relevant"
+  ],
+  "turns": [
+    {
+      "user": "mua xe máy cũ Honda Wave cần kiểm tra gì",
+      "status": 200,
+      "elapsedMs": 17285,
+      "textFrames": 536,
+      "tools": [],
+      "toolResults": [],
+      "annotations": [],
+      "cardItems": [],
+      "duplicate": null,
+      "text": "Mua xe máy cũ là quyết định lớn, nên cần kiểm tra kỹ trước khi chuyển tiền. Dưới đây là những điểm quan trọng bạn nên check:\n\n**Rủi ro trước tiên:**\n- **Xe bị khoá từ xa** (chủ cũ còn nợ trả góp, ngân hàng khoá) → xe sẽ không thể khởi động được sau khi mua\n- **Giấy tờ không chính chủ** (chủ sở hữu trên giấy khác với người bán) → không thể sang tên được\n- **Xe bị thế chấp** (chủ cũ dùng làm bảo chứng cho khoản vay) → bạn sẽ mất xe nếu chủ cũ không trả nợ\n- **Lừa đảo** (gặp người lạ, cọc trước rồi biến mất) → gặp trực tiếp, kiểm tra xong mới trả tiền\n\n**Kiểm tra giấy tờ & pháp lý:**\n- Giấy đăng ký xe (chủ sở hữu phải là người bán)\n- Biên lai thuế môn bài còn hạn\n- Bảo hiểm xe (nếu còn)\n- Lịch sử bảo dưỡng (nếu có)\n\n**Kiểm tra tình trạng xe:**\n- **Khung gầm & thân xe**: có bị va chạm, rỉ sét, hàn vá không\n- **Động cơ**: khởi động có khó không, tiếng gầm có bất thường không, khí thải màu gì\n- **Lốp xe**: độ mòn, có bị nứt không, áp suất bao nhiêu\n- **Phanh**: phanh trước/sau có hiệu lực không, có kêu lạ không\n- **Dầu nhớt**: màu sắc, mùi, mức dầu\n- **Bình xăng**: có rỉ không, xăng còn bao lâu\n- **Đèn & điện**: đèn pha, đèn phanh, còi, chỉ số đồng hồ có hoạt động không\n- **Số km đã chạy**: so sánh với tình trạng xe (xe chạy 50.000km nhưng mòn như 100.000km là dấu hiệu lạ)\n\n**Lái thử:**\n- Khởi động lạnh & nóng\n- Tăng tốc, giảm tốc có mượt không\n- Vào cua có bị lắc lư không\n- Phanh có hiệu lực, không kêu lạ\n\n**Giá cả:**\n- So sánh giá với các xe tương tự trên chợ (Chotot, Facebook Marketplace)\n- Nếu giá rẻ bất thường so với thị trường → cần nghi ngờ\n\n**Trước khi chuyển tiền:**\nNếu bạn gặp người lạ hoặc không chắc chắn, hãy dán tin nhắn, link hoặc mã QR của người bán vào **Cảnh báo lừa đảo** trong TappyAI để kiểm tra nhé.\n\n**Lời khuyên cuối cùng:** Chỉ mua khi đã xem xe trực tiếp, kiểm tra xong, và gặp trực tiếp chủ cũ để ký giấy tờ. Nếu có gì không rõ, đừng vội — an toàn hơn là mất tiền.\n\n[FOLLOWUPS]Kiểm tra xe ở đâu uy tín|Cách sang tên xe máy|Giá Honda Wave cũ hiện nay[/FOLLOWUPS]",
+      "visible": "Mua xe máy cũ là quyết định lớn, nên cần kiểm tra kỹ trước khi chuyển tiền. Dưới đây là những điểm quan trọng bạn nên check:\n\n**Rủi ro trước tiên:**\n- **Xe bị khoá từ xa** (chủ cũ còn nợ trả góp, ngân hàng khoá) → xe sẽ không thể khởi động được sau khi mua\n- **Giấy tờ không chính chủ** (chủ sở hữu trên giấy khác với người bán) → không thể sang tên được\n- **Xe bị thế chấp** (chủ cũ dùng làm bảo chứng cho khoản vay) → bạn sẽ mất xe nếu chủ cũ không trả nợ\n- **Lừa đảo** (gặp người lạ, cọc trước rồi biến mất) → gặp trực tiếp, kiểm tra xong mới trả tiền\n\n**Kiểm tra giấy tờ & pháp lý:**\n- Giấy đăng ký xe (chủ sở hữu phải là người bán)\n- Biên lai thuế môn bài còn hạn\n- Bảo hiểm xe (nếu còn)\n- Lịch sử bảo dưỡng (nếu có)\n\n**Kiểm tra tình trạng xe:**\n- **Khung gầm & thân xe**: có bị va chạm, rỉ sét, hàn vá không\n- **Động cơ**: khởi động có khó không, tiếng gầm có bất thường không, khí thải màu gì\n- **Lốp xe**: độ mòn, có bị nứt không, áp suất bao nhiêu\n- **Phanh**: phanh trước/sau có hiệu lực không, có kêu lạ không\n- **Dầu nhớt**: màu sắc, mùi, mức dầu\n- **Bình xăng**: có rỉ không, xăng còn bao lâu\n- **Đèn & điện**: đèn pha, đèn phanh, còi, chỉ số đồng hồ có hoạt động không\n- **Số km đã chạy**: so sánh với tình trạng xe (xe chạy 50.000km nhưng mòn như 100.000km là dấu hiệu lạ)\n\n**Lái thử:**\n- Khởi động lạnh & nóng\n- Tăng tốc, giảm tốc có mượt không\n- Vào cua có bị lắc lư không\n- Phanh có hiệu lực, không kêu lạ\n\n**Giá cả:**\n- So sánh giá với các xe tương tự trên chợ (Chotot, Facebook Marketplace)\n- Nếu giá rẻ bất thường so với thị trường → cần nghi ngờ\n\n**Trước khi chuyển tiền:**\nNếu bạn gặp người lạ hoặc không chắc chắn, hãy dán tin nhắn, link hoặc mã QR của người bán vào **Cảnh báo lừa đảo** trong TappyAI để kiểm tra nhé.\n\n**Lời khuyên cuối cùng:** Chỉ mua khi đã xem xe trực tiếp, kiểm tra xong, và gặp trực tiếp chủ cũ để ký giấy tờ. Nếu có gì không rõ, đừng vội — an toàn hơn là mất tiền."
+    }
+  ]
+}

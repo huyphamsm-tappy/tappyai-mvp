@@ -1,0 +1,64 @@
+{
+  "id": "P3",
+  "text": "chỗ đó có đặt trước được không?",
+  "parent": "P2",
+  "status": 200,
+  "ms": 10072,
+  "evidenceId": "b06fb7b5-d671-4c26-b124-4a553d7046db",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "Hyan Spa massage chân Quận 1",
+        "location": "Quận 1, TP.HCM",
+        "type": "spa"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Hyan Spa | Foot Spa | Body Massage | Hair Spa Quận 1",
+      "rating": 5,
+      "count": 100,
+      "hours": "10:00–21:00",
+      "distance_km": 0.9,
+      "address": "17C Nguyễn Thị Minh Khai, Cầu Ông Lãnh, Hồ Chí Minh 70000, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình tìm thông tin đặt trước cho Hyan Spa nhé.\n\nHyan Spa có website riêng và số điện thoại, nên bạn hoàn toàn có thể gọi hoặc vào website để đặt trước. Mình khuyên bạn gọi **+84 932 665 046** hoặc vào [website Hyan Spa](https://hyanspa.com/) để xác nhận lịch và giá massage chân cụ thể — spa mở từ 10h sáng đến 9h tối nên bạn có thời gian linh hoạt để chọn.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website — Hyan Spa\",\"type\":\"website\",\"url\":\"https://hyanspa.com/\",\"primary\":true},{\"label\":\"📍 Google Maps — Hyan Spa\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=4888533510458212203\",\"primary\":false}]}[/CTA_BUTTONS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "spa massage chan gan q1 duoi 300k"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm spa massage chân gần Quận 1 cho bạn nhé.\n\nMình chọn **Hyan Spa** cho bạn — cách vị trí bạn chỉ 0.9km, đạt 5⭐ từ 100 đánh giá Google Maps, và đang mở cửa. Spa này chuyên massage chân, body massage, và gội đầu, rất phù hợp với nhu cầu của bạn 👍\n\nNgoài ra, **RELAX SPA** cũng là lựa chọn tốt nếu bạn muốn nhiều review hơn — 4.8⭐ từ 532 đánh giá, cách bạn 1.2km, mở từ 9h sáng đến 10h tối nên linh hoạt hơn.\n\nMình chưa tìm thấy giá cụ thể trên trang tìm kiếm, nhưng bạn có thể gọi hoặc vào website của spa để hỏi giá massage chân.\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website — Hyan Spa\",\"type\":\"website\",\"url\":\"https://hyanspa.com/\",\"primary\":true},{\"label\":\"📍 Google Maps — Hyan Spa\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=4888533510458212203\",\"primary\":false}]}[/CTA_BUTTONS]"
+    },
+    {
+      "role": "user",
+      "content": "chỗ đó có đặt trước được không?"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm thông tin đặt trước cho Hyan Spa nhé.\n\nHyan Spa có website riêng và số điện thoại, nên bạn hoàn toàn có thể gọi hoặc vào website để đặt trước. Mình khuyên bạn gọi **+84 932 665 046** hoặc vào [website Hyan Spa](https://hyanspa.com/) để xác nhận lịch và giá massage chân cụ thể — spa mở từ 10h sáng đến 9h tối nên bạn có thời gian linh hoạt để chọn.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website — Hyan Spa\",\"type\":\"website\",\"url\":\"https://hyanspa.com/\",\"primary\":true},{\"label\":\"📍 Google Maps — Hyan Spa\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=4888533510458212203\",\"primary\":false}]}[/CTA_BUTTONS]"
+    }
+  ]
+}

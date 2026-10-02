@@ -1,0 +1,33 @@
+{
+  "id": "P7b",
+  "text": "1–2 người",
+  "parent": "P7",
+  "status": 200,
+  "ms": 6824,
+  "evidenceId": "735efe56-f038-41f4-94c1-69e2cf860135",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Cảm ơn bạn! Mình đã hiểu — gội đầu dưỡng sinh cho 1–2 người gần đây.\n\n**Serene Head Spa & Massage** vẫn là lựa chọn mình nghiêng về nhất — **5⭐ (198 đánh giá Google Maps)**, chuyên gội đầu dưỡng sinh, mở 9:30–23:00, cách bạn ~0.4km.\n\n**Spa & Massage Lisa** (0.5km) — **4.7⭐ (421 đánh giá)**, mở đến 2:00 sáng, nếu bạn muốn đi vào buổi tối hoặc đêm khuya.\n\nCả hai đều có dịch vụ gội đầu dưỡng sinh riêng, phù hợp cho 1–2 người.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website - Serene Head Spa & Massage\",\"type\":\"website\",\"url\":\"https://www.google.com/maps/search/Serene+Head+Spa+Massage+Quan+1+TP+HCM\",\"primary\":true},{\"label\":\"📍 Google Maps - Serene Head Spa & Massage\",\"type\":\"maps\",\"url\":\"https://www.google.com/maps/search/Serene+Head+Spa+Massage+Dong+Du+Quan+1\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Giá gội đầu bao nhiêu?|Có dịch vụ massage thêm không?|Spa nào mở sớm nhất?[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "gội đầu dưỡng sinh gần đây"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn muốn gội đầu dưỡng sinh gần vị trí hiện tại (Quận 1) trong hôm nay. Mình tìm được vài spa tốt quanh đây:\n\n**Serene Head Spa & Massage** (cách bạn ~0.4km) là lựa chọn mình nghiêng về nhất — **5⭐ (198 đánh giá Google Maps)**, chuyên gội đầu dưỡng sinh, mở từ 9:30–23:00. Spa này nằm ngay trên đường Đông Du, rất gần và dễ tìm.\n\nNếu muốn lựa chọn khác, **Spa & Massage Lisa** (0.5km) cũng tốt — **4.7⭐ (421 đánh giá)**, mở cả ngày đến 2:00 sáng, tiện nếu bạn muốn đi vào buổi tối.\n\n[FOLLOWUPS]dưới 300k|300–500k|trên 500k[/FOLLOWUPS]\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Serene Head Spa\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=13719755983101528130\",\"primary\":true},{\"label\":\"🌐 Website - Serene Head Spa\",\"type\":\"website\",\"url\":\"https://saigon.serenespa.vn/\",\"primary\":false}]}[/CTA_BUTTONS]\n\nBạn muốn tầm giá khoảng bao nhiêu (dưới 300k / 300–500k / trên 500k)?"
+    },
+    {
+      "role": "user",
+      "content": "1–2 người"
+    },
+    {
+      "role": "assistant",
+      "content": "Cảm ơn bạn! Mình đã hiểu — gội đầu dưỡng sinh cho 1–2 người gần đây.\n\n**Serene Head Spa & Massage** vẫn là lựa chọn mình nghiêng về nhất — **5⭐ (198 đánh giá Google Maps)**, chuyên gội đầu dưỡng sinh, mở 9:30–23:00, cách bạn ~0.4km.\n\n**Spa & Massage Lisa** (0.5km) — **4.7⭐ (421 đánh giá)**, mở đến 2:00 sáng, nếu bạn muốn đi vào buổi tối hoặc đêm khuya.\n\nCả hai đều có dịch vụ gội đầu dưỡng sinh riêng, phù hợp cho 1–2 người.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website - Serene Head Spa & Massage\",\"type\":\"website\",\"url\":\"https://www.google.com/maps/search/Serene+Head+Spa+Massage+Quan+1+TP+HCM\",\"primary\":true},{\"label\":\"📍 Google Maps - Serene Head Spa & Massage\",\"type\":\"maps\",\"url\":\"https://www.google.com/maps/search/Serene+Head+Spa+Massage+Dong+Du+Quan+1\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Giá gội đầu bao nhiêu?|Có dịch vụ massage thêm không?|Spa nào mở sớm nhất?[/FOLLOWUPS]"
+    }
+  ]
+}

@@ -1,0 +1,77 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:vnexpress.net/du-lich TP HCM",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T04:36:28.276Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:vnexpress.net/du-lich TP HCM",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Du lịch TP HCM thu 208.000 tỷ đồng trong 10 tháng",
+    "link": "https://vnexpress.net/du-lich-tp-hcm-thu-208-000-ty-dong-trong-10-thang-4959405.html",
+    "snippet": "Ngành du lịch TP HCM đã đón gần 6,6 triệu khách quốc tế trong 10 tháng, đang tăng tốc để đạt mục tiêu 10 triệu lượt khách, doanh thu kỳ vọng ...",
+    "date": "3 thg 11, 2025",
+    "position": 1
+   },
+   {
+    "title": "Tin tức Du lịch Hồ Chí Minh: Khám phá địa danh, văn hóa ...",
+    "link": "https://vnexpress.net/du-lich/diem-den/viet-nam/ho-chi-minh",
+    "snippet": "Thông tin Du lịch Hồ Chí Minh 2019 tại VnExpress, chia sẻ kinh nghiệm, hình ảnh, video về văn hóa, ẩm thực, con người, những địa điểm đẹp nhất ở Hồ Chí ...",
+    "position": 2
+   },
+   {
+    "title": "Du lịch TP HCM thu hơn 22 nghìn tỷ đồng sau một tháng ...",
+    "link": "https://vnexpress.net/du-lich-tp-hcm-thu-hon-22-nghin-ty-dong-sau-mot-thang-sap-nhap-4920368.html",
+    "snippet": "Sau một tháng sáp nhập, TP HCM mới ghi nhận doanh thu du lịch tăng 45%, đạt hơn 22.000 tỷ đồng, định hướng trở thành trung tâm du lịch MICE hàng ...",
+    "date": "30 thg 7, 2025",
+    "position": 3
+   },
+   {
+    "title": "Du lịch TP HCM thu gần 234.000 tỷ đồng sau 11 tháng",
+    "link": "https://vnexpress.net/du-lich-tp-hcm-thu-gan-234-000-ty-dong-sau-11-thang-4988415.html",
+    "snippet": "Sau 11 tháng, ngành du lịch TP HCM đạt doanh thu gần 234.000 tỷ đồng, bằng 80,5% so với mục tiêu phấn đấu năm là 290.000 đồng. - VnExpress.",
+    "date": "1 thg 12, 2025",
+    "position": 4
+   },
+   {
+    "title": "Khách Tây nghĩ gì về an ninh tại TP HCM",
+    "link": "https://video.vnexpress.net/du-lich/khach-tay-nghi-gi-ve-an-ninh-tai-tp-hcm-3370465.html",
+    "snippet": "Ngày càng nhiều khách du lịch nước ngoài đến TP HCM, với họ an ninh là điều quan ngại nhưng cũng có nhiều du khách cho rằng không có gì để lo lắng vì bảo vệ ...",
+    "position": 5
+   },
+   {
+    "title": "du lịch TP HCM",
+    "link": "https://video.vnexpress.net/du-lich-tp-hcm/tag-227634-1.html",
+    "snippet": "Quán hủ tiếu 50 năm hút khách ở TP HCM 21 ; Tái hiện không gian Tết xưa ở trung tâm Sài Gòn 17 ; Không gian trước chợ Bến Thành hút khách chụp hình Tết 24.",
+    "position": 6
+   },
+   {
+    "title": "'Du lịch' khắp TP HCM trong giãn cách",
+    "link": "https://vnexpress.net/du-lich-khap-tp-hcm-trong-gian-cach-4289116.html",
+    "snippet": "Với bản đồ tương tác thông minh 3D/360, du khách có thể tham quan hơn 20 điểm du lịch nổi tiếng tại TP HCM mà không cần ra khỏi nhà.",
+    "date": "4 thg 6, 2021",
+    "position": 7
+   },
+   {
+    "title": "Du lịch TP HCM kỳ vọng 'bùng nổ' dịp 30/4",
+    "link": "https://vnexpress.net/du-lich-tp-hcm-ky-vong-bung-no-dip-30-4-4870057.html",
+    "snippet": "Lượng khách và các dịch vụ tăng đột biến một tháng trước kỳ nghỉ 30/4 khiến các doanh nghiệp và ngành du lịch kỳ vọng 5 ngày nghỉ sẽ là dịp ...",
+    "date": "5 thg 4, 2025",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Băn khoăn chọn quà cho sếp nam, đây là bí kíp dành ...",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:45:20.994Z",
+ "body": {
+  "searchParameters": {
+   "q": "Băn khoăn chọn quà cho sếp nam, đây là bí kíp dành ...",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Băn khoăn chọn quà cho sếp nam, đây là bí kíp dành cho bạn",
+    "imageUrl": "https://img.gotit.vn/compress/gotit_website/1701159354_2yjz7.jpg",
+    "imageWidth": 1100,
+    "imageHeight": 672,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4YmUrwGAPF4LpVUAPvtGUEiRW3TN600oyWWfsqymS5Q&s",
+    "thumbnailWidth": 287,
+    "thumbnailHeight": 175,
+    "source": "Got It",
+    "domain": "www.gotit.vn",
+    "link": "https://www.gotit.vn/blog/qua-sinh-nhat-cho-sep-nam.122",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimg.gotit.vn%2Fcompress%2Fgotit_website%2F1701159354_2yjz7.jpg&tbnid=48xu7y9SoiQBVM&imgrefurl=https%3A%2F%2Fwww.gotit.vn%2Fblog%2Fqua-sinh-nhat-cho-sep-nam.122&docid=qb6OQOCAh2xBEM&w=1100&h=672",
+    "position": 1
+   },
+   {
+    "title": "Băn khoăn chọn quà cho sếp nam, đây là bí kíp dành cho bạn",
+    "imageUrl": "https://img.gotit.vn/gotit_website_photos/4/cloud1/chon-qua-sinh-nhat-cho-sep-nam-cuc-ky-de-dang-neu-ban-nam-duoc-nhung-bi-kip-co-ban.jpg",
+    "imageWidth": 640,
+    "imageHeight": 400,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRM-cqlBS_aNH0loTp1ffdk2ef8b2ozWjrcSDA1hl0DgA&s=10",
+    "thumbnailWidth": 565,
+    "thumbnailHeight": 353,
+    "source": "Got It",
+    "domain": "www.gotit.vn",
+    "link": "https://www.gotit.vn/blog/qua-sinh-nhat-cho-sep-nam.122",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimg.gotit.vn%2Fgotit_website_photos%2F4%2Fcloud1%2Fchon-qua-sinh-nhat-cho-sep-nam-cuc-ky-de-dang-neu-ban-nam-duoc-nhung-bi-kip-co-ban.jpg&tbnid=VI62rxyXLs7ReM&imgrefurl=https%3A%2F%2Fwww.gotit.vn%2Fblog%2Fqua-sinh-nhat-cho-sep-nam.122&docid=qb6OQOCAh2xBEM&w=640&h=400",
+    "position": 2
+   },
+   {
+    "title": "Băn khoăn chọn quà cho sếp nam, đây là bí kíp dành cho bạn",
+    "imageUrl": "https://img.gotit.vn/gotit_website_photos/4/cloud1/qua-sinh-nhat-cho-sep-nam-luon-phai-dat-chat-luong-len-hang-dau.jpg",
+    "imageWidth": 640,
+    "imageHeight": 400,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbhE8D5Rf5CkPUgqba7u_2MJnTVbzaJu-m72sV22N1lQ&s=10",
+    "thumbnailWidth": 565,
+    "thumbnailHeight": 353,
+    "source": "Got It",
+    "domain": "www.gotit.vn",
+    "link": "https://www.gotit.vn/blog/qua-sinh-nhat-cho-sep-nam.122",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimg.gotit.vn%2Fgotit_website_photos%2F4%2Fcloud1%2Fqua-sinh-nhat-cho-sep-nam-luon-phai-dat-chat-luong-len-hang-dau.jpg&tbnid=0y9_gl3n6fwZtM&imgrefurl=https%3A%2F%2Fwww.gotit.vn%2Fblog%2Fqua-sinh-nhat-cho-sep-nam.122&docid=qb6OQOCAh2xBEM&w=640&h=400",
+    "position": 3
+   },
+   {
+    "title": "Bí quyết chọn quà tặng sinh nhật sếp tinh tế, ghi điểm",
+    "imageUrl": "https://phuctuonggold.vn/wp-content/uploads/2026/06/qua-tang-sinh-nhat-sep.jpg",
+    "imageWidth": 1000,
+    "imageHeight": 1000,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcVI1AeE-G98Sc4qPiyRQNF2yR6ItW9WEqTXJJ_xvRlA&s=10",
+    "thumbnailWidth": 554,
+    "thumbnailHeight": 554,
+    "source": "Phúc Tường Gold",
+    "domain": "phuctuonggold.vn",
+    "link": "https://phuctuonggold.vn/qua-tang-sinh-nhat-sep/?srsltid=AU7gw4WFDUF09VVicHgz22PFBSov2XRYuH1EiBuay0PfwEe2903SEwhx",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fphuctuonggold.vn%2Fwp-content%2Fuploads%2F2026%2F06%2Fqua-tang-sinh-nhat-sep.jpg&tbnid=mfj4LnziEAoMPM&imgrefurl=https%3A%2F%2Fphuctuonggold.vn%2Fqua-tang-sinh-nhat-sep%2F%3Fsrsltid%3DAU7gw4WFDUF09VVicHgz22PFBSov2XRYuH1EiBuay0PfwEe2903SEwhx&docid=LdBiPCLv1lK6UM&w=1000&h=1000",
+    "position": 4
+   },
+   {
+    "title": "Quà tặng sếp nam: Tiêu chí lựa chọn và gợi ý phù hợp từng dịp quan trọng",
+    "imageUrl": "https://quatangphale.com.vn/uploads/tin-tuc-su-kien/2026_01/image-20260131145343-1.png",
+    "imageWidth": 598,
+    "imageHeight": 400,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR38WAI7efTXtUihD3lWnjdoAqn44oV93sG4BWZk9xmfQ&s",
+    "thumbnailWidth": 274,
+    "thumbnailHeight": 184,
+    "source": "Quà Tặng Pha Lê",
+    "domain": "quatangphale.com.vn",
+    "link": "https://quatangphale.com.vn/tin-tuc-su-kien/tu-van-qua-tang/qua-tang-sep-nam-1391.html?srsltid=AU7gw4VPR9JrwbfLFY1rtwAUr5xAFIgNikYQWk0qasjqI2gX8rvYzB-J",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fquatangphale.com.vn%2Fuploads%2Ftin-tuc-su-kien%2F2026_01%2Fimage-20260131145343-1.png&tbnid=L-EcqXe79cawNM&imgrefurl=https%3A%2F%2Fquatangphale.com.vn%2Ftin-tuc-su-kien%2Ftu-van-qua-tang%2Fqua-tang-sep-nam-1391.html%3Fsrsltid%3DAU7gw4VPR9JrwbfLFY1rtwAUr5xAFIgNikYQWk0qasjqI2gX8rvYzB-J&docid=MZyQOioRqmUg0M&w=598&h=400",
+    "position": 5
+   },
+   {
+    "title": "Tặng Quà Sinh Nhật Cho Sếp Nam: Bí Quyết Chọn Quà Khiến Sếp Hài Lòng",
+    "imageUrl": "https://congtyquatang.com.vn/wp-content/uploads/2024/09/Thumbnail-congtyquatang.com_.vn-10.jpg",
+    "imageWidth": 768,
+    "imageHeight": 468,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWxYh-F1qe2Re2CuYbJyZA7q2zSqCi1oSUZQ-VJakjTg&s=10",
+    "thumbnailWidth": 708,
+    "thumbnailHeight": 432,
+    "source": "Quà tặng DTH",
+    "domain": "congtyquatang.com.vn",
+    "link": "https://congtyquatang.com.vn/tang-qua-sinh-nhat-cho-sep-nam/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcongtyquatang.com.vn%2Fwp-content%2Fuploads%2F2024%2F09%2FThumbnail-congtyquatang.com_.vn-10.jpg&tbnid=wh8fqPHm9f3YrM&imgrefurl=https%3A%2F%2Fcongtyquatang.com.vn%2Ftang-qua-sinh-nhat-cho-sep-nam%2F&docid=y90yJqiK99ynrM&w=768&h=468",
+    "position": 6
+   },
+   {
+    "title": "20 món quà tặng sếp nam, sếp nữ ý nghĩa giúp bạn tạo ấn tượng tốt",
+    "imageUrl": "https://cdn.tgdd.vn//News/1367698//a21-730x500.jpg",
+    "imageWidth": 730,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfTLo43eU_BwxfhUqcN-U5Rq-jmmXM1qrGVigFvqRpCA&s=10",
+    "thumbnailWidth": 541,
+    "thumbnailHeight": 369,
+    "source": "Điện máy XANH",
+    "domain": "www.dienmayxanh.com",
+    "link": "https://www.dienmayxanh.com/kinh-nghiem-hay/20-mon-qua-tang-sep-nam-sep-nu-tinh-te-sang-tro-1367698?srsltid=AU7gw4VRLz_0XWaftEzq3-68TNl-hXAP3ZjvJyRUl76jUJMX0W2Qj4MQ",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.tgdd.vn%2F%2FNews%2F1367698%2F%2Fa21-730x500.jpg&tbnid=9NyBJNKQPDWaXM&imgrefurl=https%3A%2F%2Fwww.dienmayxanh.com%2Fkinh-nghiem-hay%2F20-mon-qua-tang-sep-nam-sep-nu-tinh-te-sang-tro-1367698%3Fsrsltid%3DAU7gw4VRLz_0XWaftEzq3-68TNl-hXAP3ZjvJyRUl76jUJMX0W2Qj4MQ&docid=_eVe9u_yz0SCpM&w=730&h=500",
+    "position": 7
+   },
+   {
+    "title": "Top 6 Quà Tặng Sếp Nam Vừa Độc Đáo Vừa Ý Nghĩa",
+    "imageUrl": "https://donghominhtuong.com.vn/wp-content/uploads/2022/06/rr1.jpg.webp%22",
+    "imageWidth": 800,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGHmul53WYXLzIFymk_2EYAK26q-U76n7vZ3KWbJC_ZA&s=10",
+    "thumbnailWidth": 638,
+    "thumbnailHeight": 480,
+    "source": "Đồng Hồ Minh Tường",
+    "domain": "donghominhtuong.com.vn",
+    "link": "https://donghominhtuong.com.vn/qua-tang-sep-nam-doc-dao-y-nghia/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdonghominhtuong.com.vn%2Fwp-content%2Fuploads%2F2022%2F06%2Frr1.jpg.webp%2522&tbnid=o30Qhhd2RgbjiM&imgrefurl=https%3A%2F%2Fdonghominhtuong.com.vn%2Fqua-tang-sep-nam-doc-dao-y-nghia%2F&docid=mxNR6dHMBhEcJM&w=800&h=600",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

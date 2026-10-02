@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Meliá Vinpearl Tây Ninh",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:55:05.888Z",
+ "body": {
+  "searchParameters": {
+   "q": "Meliá Vinpearl Tây Ninh",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Meliá Vinpearl Tay Ninh | Giá tốt nhất trực tuyến hotel 5 ***** tại Tây Ninh  | Melia.com",
+    "imageUrl": "https://dam.melia.com/melia/file/rE89x3aGMZJQCA4oRV4E.jpg?im=RegionOfInterestCrop=(1665,2000),regionOfInterest=(1771.5,1180.5)",
+    "imageWidth": 1665,
+    "imageHeight": 2000,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSzZnMnq7yRNIuhbBwRpIOsfcW8vgWrHnPRFZrzoQ7NA&s=10",
+    "thumbnailWidth": 407,
+    "thumbnailHeight": 491,
+    "source": "Melia Hotels",
+    "domain": "www.melia.com",
+    "link": "https://www.melia.com/vi/hotels/vietnam/tay-ninh/melia-vinpearl-tay-ninh",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdam.melia.com%2Fmelia%2Ffile%2FrE89x3aGMZJQCA4oRV4E.jpg%3Fim%3DRegionOfInterestCrop%3D(1665%2C2000)%2CregionOfInterest%3D(1771.5%2C1180.5)&tbnid=LYOr00Jo-yc-HM&imgrefurl=https%3A%2F%2Fwww.melia.com%2Fvi%2Fhotels%2Fvietnam%2Ftay-ninh%2Fmelia-vinpearl-tay-ninh&docid=t36Xj8ejpO9CvM&w=1665&h=2000",
+    "position": 1
+   },
+   {
+    "title": "Khách sạn Melia Vinpearl Tây Ninh - Chudu24",
+    "imageUrl": "https://du-lich.chudu24.com/f/m/2405/20/khach-san-melia-vinpearl-tay-ninh-0.jpg?w=800&h=532",
+    "imageWidth": 800,
+    "imageHeight": 532,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTEC-tLeQ35wzS6tZMA_2o_g5ruYIqWp7ewtTy3bir6AA&s=10",
+    "thumbnailWidth": 549,
+    "thumbnailHeight": 364,
+    "source": "Đặt Phòng Khách Sạn - Chudu24",
+    "domain": "khachsan.chudu24.com",
+    "link": "https://khachsan.chudu24.com/ks.5726.khach-san-melia-vinpearl-tay-ninh.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdu-lich.chudu24.com%2Ff%2Fm%2F2405%2F20%2Fkhach-san-melia-vinpearl-tay-ninh-0.jpg%3Fw%3D800%26h%3D532&tbnid=JGiQAc7NId5aeM&imgrefurl=https%3A%2F%2Fkhachsan.chudu24.com%2Fks.5726.khach-san-melia-vinpearl-tay-ninh.html&docid=BpP7AXLAprwo7M&w=800&h=532",
+    "position": 2
+   },
+   {
+    "title": "Melia Vinpearl Tay Ninh – địa điểm nghỉ dưỡng lý tưởng tại Tây Ninh",
+    "imageUrl": "https://statics.vinpearl.com/%E1%BA%A2nh%201.jpg",
+    "imageWidth": 700,
+    "imageHeight": 466,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSOuF9XNcuD6AEz3noPis8vEH3t2o8TU8bV-FqU4iFOMw&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "Vinpearl",
+    "domain": "vinpearl.com",
+    "link": "https://vinpearl.com/vi/review-melia-vinpearl-tay-ninh-co-gi-hay-dat-phong-gia-tot-o-dau",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fstatics.vinpearl.com%2F%25E1%25BA%25A2nh%25201.jpg&tbnid=ys6ktyvJPvV6RM&imgrefurl=https%3A%2F%2Fvinpearl.com%2Fvi%2Freview-melia-vinpearl-tay-ninh-co-gi-hay-dat-phong-gia-tot-o-dau&docid=r0Jq_0taNBi7_M&w=700&h=466",
+    "position": 3
+   },
+   {
+    "title": "Khách sạn Melia Vinpearl Tây Ninh - Chudu24",
+    "imageUrl": "https://du-lich.chudu24.com/f/m/2405/20/khach-san-melia-vinpearl-tay-ninh-1.jpg?w=800&h=500",
+    "imageWidth": 800,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSRtKqzZkUwZxKZzZoU58-IG-LYirab8auoezgx5Ra3Sg&s=10",
+    "thumbnailWidth": 565,
+    "thumbnailHeight": 353,
+    "source": "Đặt Phòng Khách Sạn - Chudu24",
+    "domain": "khachsan.chudu24.com",
+    "link": "https://khachsan.chudu24.com/ks.5726.khach-san-melia-vinpearl-tay-ninh.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdu-lich.chudu24.com%2Ff%2Fm%2F2405%2F20%2Fkhach-san-melia-vinpearl-tay-ninh-1.jpg%3Fw%3D800%26h%3D500&tbnid=P1vKeFSG5uBGRM&imgrefurl=https%3A%2F%2Fkhachsan.chudu24.com%2Fks.5726.khach-san-melia-vinpearl-tay-ninh.html&docid=BpP7AXLAprwo7M&w=800&h=500",
+    "position": 4
+   },
+   {
+    "title": "Meliá Vinpearl Tay Ninh | Giá tốt nhất trực tuyến hotel 5 ***** tại Tây Ninh  | Melia.com",
+    "imageUrl": "https://dam.melia.com/melia/file/NExYYzcBFztgYgc2coya.jpg?im=RegionOfInterestCrop=(2000,1000),regionOfInterest=(1771.5,1181.5)",
+    "imageWidth": 2000,
+    "imageHeight": 1000,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJAIvWGqfx_UvzakgCSXs9W6x4NTCTJFiOpo_htwILVA&s=10",
+    "thumbnailWidth": 632,
+    "thumbnailHeight": 316,
+    "source": "Melia Hotels",
+    "domain": "www.melia.com",
+    "link": "https://www.melia.com/vi/hotels/vietnam/tay-ninh/melia-vinpearl-tay-ninh",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdam.melia.com%2Fmelia%2Ffile%2FNExYYzcBFztgYgc2coya.jpg%3Fim%3DRegionOfInterestCrop%3D(2000%2C1000)%2CregionOfInterest%3D(1771.5%2C1181.5)&tbnid=prioaoyvBLeHyM&imgrefurl=https%3A%2F%2Fwww.melia.com%2Fvi%2Fhotels%2Fvietnam%2Ftay-ninh%2Fmelia-vinpearl-tay-ninh&docid=t36Xj8ejpO9CvM&w=2000&h=1000",
+    "position": 5
+   },
+   {
+    "title": "Tìm hiểu bảng giá phòng Melia Vinpearl Tay Ninh chi tiết",
+    "imageUrl": "https://statics.vinpearl.com/gia-phong-vinpearl-tay-ninh-1.jpg",
+    "imageWidth": 700,
+    "imageHeight": 467,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSC1dztshGrbg2HzTIM1XLc1Obu0Za5p_4ASS3eAPDZYw&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "Vinpearl",
+    "domain": "vinpearl.com",
+    "link": "https://vinpearl.com/vi/bang-gia-phong-melia-vinpearl-tay-ninh",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fstatics.vinpearl.com%2Fgia-phong-vinpearl-tay-ninh-1.jpg&tbnid=O2JseBzEmXHTrM&imgrefurl=https%3A%2F%2Fvinpearl.com%2Fvi%2Fbang-gia-phong-melia-vinpearl-tay-ninh&docid=wiG2MwaxxbG2EM&w=700&h=467",
+    "position": 6
+   },
+   {
+    "title": "Melia Vinpearl Tây Ninh| Khách sạn 5 sao | Công ty du lịch Elite Tour",
+    "imageUrl": "https://bizweb.dktcdn.net/thumb/1024x1024/100/562/154/products/overview-d0967eab-b64c-48f9-9fff-c8d097582e89.jpg?v=1753977490517",
+    "imageWidth": 1024,
+    "imageHeight": 618,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkeTdLt0OA0xLJoR3CmxjjGtyE2pO4x_uANo73hSFCcQ&s=10",
+    "thumbnailWidth": 576,
+    "thumbnailHeight": 347,
+    "source": "Elite Tour",
+    "domain": "elitetour.com.vn",
+    "link": "https://elitetour.com.vn/vinpearl-hotel-tay-ninh",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fbizweb.dktcdn.net%2Fthumb%2F1024x1024%2F100%2F562%2F154%2Fproducts%2Foverview-d0967eab-b64c-48f9-9fff-c8d097582e89.jpg%3Fv%3D1753977490517&tbnid=l-Br32cXH4OFqM&imgrefurl=https%3A%2F%2Felitetour.com.vn%2Fvinpearl-hotel-tay-ninh&docid=9ZrLruq9eNatXM&w=1024&h=618",
+    "position": 7
+   },
+   {
+    "title": "Melia Vinpearl Tây Ninh, Tân Ninh | Hotels.com",
+    "imageUrl": "https://images.trvl-media.com/lodging/33000000/32580000/32575000/32574952/80c6e508.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill",
+    "imageWidth": 861,
+    "imageHeight": 575,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTndxFElQF8vw-d4xEcby7pAcT6WM6dA1glzbZnEGzeLA&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "hotels",
+    "domain": "vi.hotels.com",
+    "link": "https://vi.hotels.com/ho1043398464/vinpearl-hotel-tay-ninh-tay-ninh-viet-nam/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimages.trvl-media.com%2Flodging%2F33000000%2F32580000%2F32575000%2F32574952%2F80c6e508.jpg%3Fimpolicy%3Dresizecrop%26rw%3D575%26rh%3D575%26ra%3Dfill&tbnid=5BIx2YSnFENELM&imgrefurl=https%3A%2F%2Fvi.hotels.com%2Fho1043398464%2Fvinpearl-hotel-tay-ninh-tay-ninh-viet-nam%2F&docid=e3qNe8zhhKC_QM&w=861&h=575",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

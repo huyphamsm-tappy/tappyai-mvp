@@ -1,0 +1,36 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Meliá Vinpearl Tây Ninh\" Tây Ninh, Núi Bà Đen site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T03:13:26.038Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Meliá Vinpearl Tây Ninh\" Tây Ninh, Núi Bà Đen site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Khách sạn Melia Vinpearl Tây Ninh - Giá cả và Ưu đãi ...",
+    "link": "https://vn.trip.com/hotels/tan-ninh-hotel-detail-28122419/vinpearl-hotel-tay-ninh/",
+    "snippet": "Khách sạn Melia Vinpearl Tây Ninh ; 7 · Phòng Deluxe Hướng Phố · 1 Giường queen hay 2 Giường đơn. 32m² | Tầng: 7-22 ; 4 · Phòng Premium Nhìn Ra Núi · 1 Giường đôi hay ...",
+    "position": 1
+   },
+   {
+    "title": "Top khách sạn tốt nhất tại Dương Minh Châu, Việt Nam",
+    "link": "https://vn.trip.com/hotels/duong-minh-chau-district-hotels-list-458923/",
+    "snippet": "Gợi ý nơi lưu trú lân cận. Khách sạn Melia Vinpearl Tây Ninh. 9,6 (235 đánh giá). Khách sạn Melia Vinpearl Tây Ninh. 90 Lê Duẩn, Tân Ninh. \"Khách ...",
+    "position": 2
+   }
+  ],
+  "credits": 1
+ }
+}

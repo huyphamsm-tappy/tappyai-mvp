@@ -1,0 +1,33 @@
+{
+  "id": "F6",
+  "text": "quán số 2 có đông không?",
+  "parent": "F1",
+  "status": 200,
+  "ms": 6001,
+  "evidenceId": "148d7da4-a57d-4ae0-b0fe-85bdb7281ac1",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Thông thường, các quán udon & sushi ở Quận 1 vào giờ tối (21:28) thường khá đông, nhất là vào cuối tuần.\n\nCách tốt nhất là bạn gọi điện trực tiếp cho quán hoặc check Google Maps để xem đánh giá thời gian chờ hiện tại. Ngoài ra\n\nBạn muốn mình tìm thêm quán khác có thông tin rõ ràng hơn không, hay bạn sẽ thử quán này?",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Tìm quán ăn tối ngon gần Quận 1 cho 2 người"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm quán ăn tối ngon gần Quận 1 cho bạn nhé! 🍽️\n\nMình chọn **Izakaya Choioinoodle** cho bạn! Ngoài ra, **えびすEbisu District1** cũng là lựa chọn tuyệt vời nếu bạn thích udon & sushi — có 1.024 đánh giá với 4.7⭐, mở đến 22:30.\n\nCả hai quán đều ở Quận 1. Bạn muốn chọn quán nào?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Maps - Izakaya Choioinoodle\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=6525976663471549326\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Ebisu udon & sushi|Hải sản Hoàng Gia|Quán Bụi Việt Nam[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "quán số 2 có đông không?"
+    },
+    {
+      "role": "assistant",
+      "content": "Thông thường, các quán udon & sushi ở Quận 1 vào giờ tối (21:28) thường khá đông, nhất là vào cuối tuần.\n\nCách tốt nhất là bạn gọi điện trực tiếp cho quán hoặc check Google Maps để xem đánh giá thời gian chờ hiện tại. Ngoài ra\n\nBạn muốn mình tìm thêm quán khác có thông tin rõ ràng hơn không, hay bạn sẽ thử quán này?"
+    }
+  ]
+}

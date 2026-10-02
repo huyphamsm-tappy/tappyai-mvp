@@ -117,6 +117,8 @@ struct CreateReviewView: View {
                     Divider().foregroundStyle(TappyColor.border)
                     placeSection
                     ratingSection
+                    // Music hidden by default — `musicSection` self-gates on `ProductFlags.showMusic`
+                    // (owner decision 2026-09-24). One flag, wired to native via /api/config.
                     musicSection
                     errorBanner
                     Spacer().frame(height: Spacing.xxl)
@@ -159,7 +161,12 @@ struct CreateReviewView: View {
                     .disabled(!vm.canPost || vm.submitting || vm.isUploading)
                 }
             }
-            .sheet(isPresented: $vm.musicPickerOpen) {
+            // Nothing can set `musicPickerOpen` while Music is hidden — the button is gone — and
+            // the binding is refused here as well so a deep link or a restored state cannot open it.
+            .sheet(isPresented: Binding(
+                get: { ProductFlags.showMusic && vm.musicPickerOpen },
+                set: { vm.musicPickerOpen = $0 }
+            )) {
                 MusicPickerView(vm: vm)
             }
             .onAppear {
@@ -728,7 +735,17 @@ struct CreateReviewView: View {
 
     // MARK: - Music
 
+    // Music is hidden on every platform while its licensing is open (`ProductFlags.showMusic`).
+    // The section collapses to nothing: no Add-music button, no selected-track card, and the
+    // picker below is not attached either.
+    @ViewBuilder
     private var musicSection: some View {
+        if ProductFlags.showMusic {
+            musicSectionBody
+        }
+    }
+
+    private var musicSectionBody: some View {
         VStack(alignment: .leading, spacing: Spacing.xs) {
             if vm.music == nil {
                 Button { vm.openMusicPicker() } label: {

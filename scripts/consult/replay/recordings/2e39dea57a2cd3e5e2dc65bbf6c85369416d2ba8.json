@@ -1,0 +1,32 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Quà Tặng TOOLA Ngẫu Nhiên - Trị Giá Đến 70k site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:12:14.515Z",
+ "body": {
+  "searchParameters": {
+   "q": "Quà Tặng TOOLA Ngẫu Nhiên - Trị Giá Đến 70k site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Nước lau kính oto CASF THACO 5 lít rửa kính xe hơi không ...",
+    "link": "https://h5.lazada.vn/products/nuoc-lau-kinh-oto-casf-thaco-5-lit-rua-kinh-xe-hoi-khong-can-pha-tieu-chuan-nhat-ban-i2294577677.html",
+    "snippet": "Nước rửa kính ô tô pha sẵn WF2002 không chỉ giúp tẩy nhanh vết ố, sạch cặn canxi, mà còn tăng bảo vệ cho cần gạt mưa, cho kính xe sáng bóng vượt trội, đem lại ...",
+    "rating": 4.8,
+    "ratingCount": 13,
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

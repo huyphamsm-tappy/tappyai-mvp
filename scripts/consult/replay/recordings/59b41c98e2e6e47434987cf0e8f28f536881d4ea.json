@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Quà tặng hưu trí ngộ nghĩnh dành cho nam giới - Cốc cà phê tùy",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:22:02.205Z",
+ "body": {
+  "searchParameters": {
+   "q": "Quà tặng hưu trí ngộ nghĩnh dành cho nam giới - Cốc cà phê tùy",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Ly Thủy Tinh Vẽ Tay Vũ Điệu Bạch Tuộc Tùy Chỉnh Tên, Quà Sinh Nhật",
+    "imageUrl": "https://cdn.chus.vn/images/detailed/302/z6676819309151_3603276e6356aaebb6251c45d4444618_toun-nx.jpg",
+    "imageWidth": 1280,
+    "imageHeight": 1280,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTYXNEzDE_dSOp1PQKuTgzT88jbf3Vl8Jt1PbOwflf6bw&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Chus.vn",
+    "domain": "chus.vn",
+    "link": "https://chus.vn/ly-thuy-tinh-ve-tay-vu-dieu-bach-tuot-ruc-ro-amy-art-shop/?srsltid=AU7gw4VNCNPGfiE9aRtQDdhvE2syQPs-3B0x4naytwy0R-TjSBYHZugG",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.chus.vn%2Fimages%2Fdetailed%2F302%2Fz6676819309151_3603276e6356aaebb6251c45d4444618_toun-nx.jpg&tbnid=kUKq0YqAdM_E3M&imgrefurl=https%3A%2F%2Fchus.vn%2Fly-thuy-tinh-ve-tay-vu-dieu-bach-tuot-ruc-ro-amy-art-shop%2F%3Fsrsltid%3DAU7gw4VNCNPGfiE9aRtQDdhvE2syQPs-3B0x4naytwy0R-TjSBYHZugG&docid=uknDvqJ59gcsiM&w=1280&h=1280",
+    "position": 1
+   },
+   {
+    "title": "Ly Cốc Sứ Giục Nữa Thì Vào Mà Làm In Hình Chú Lười Hài Hước, Ly Cà Phê Dân  Văn Phòng, Quà Tặng Vui Nhộn",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/vn-11134275-820l4-mivksygut79ead",
+    "imageWidth": 1024,
+    "imageHeight": 1024,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDOd0QSJjaNIXVs_qBpiMw3RsvGlwGBPTOxH96ifqVQQ&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/Ly-C%E1%BB%91c-S%E1%BB%A9-Gi%E1%BB%A5c-N%E1%BB%AFa-Th%C3%AC-V%C3%A0o-M%C3%A0-L%C3%A0m-In-H%C3%ACnh-Ch%C3%BA-L%C6%B0%E1%BB%9Di-H%C3%A0i-H%C6%B0%E1%BB%9Bc-Ly-C%C3%A0-Ph%C3%AA-D%C3%A2n-V%C4%83n-Ph%C3%B2ng-Qu%C3%A0-T%E1%BA%B7ng-Vui-Nh%E1%BB%99n-i.1067066081.52703955495",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fvn-11134275-820l4-mivksygut79ead&tbnid=1cofsEk2Tk7MAM&imgrefurl=https%3A%2F%2Fshopee.vn%2FLy-C%25E1%25BB%2591c-S%25E1%25BB%25A9-Gi%25E1%25BB%25A5c-N%25E1%25BB%25AFa-Th%25C3%25AC-V%25C3%25A0o-M%25C3%25A0-L%25C3%25A0m-In-H%25C3%25ACnh-Ch%25C3%25BA-L%25C6%25B0%25E1%25BB%259Di-H%25C3%25A0i-H%25C6%25B0%25E1%25BB%259Bc-Ly-C%25C3%25A0-Ph%25C3%25AA-D%25C3%25A2n-V%25C4%2583n-Ph%25C3%25B2ng-Qu%25C3%25A0-T%25E1%25BA%25B7ng-Vui-Nh%25E1%25BB%2599n-i.1067066081.52703955495&docid=xzn-6vPSsbV6tM&w=1024&h=1024",
+    "position": 2
+   },
+   {
+    "title": "Ly Thủy Tinh Vẽ Tay Vũ Điệu Bạch Tuộc Tùy Chỉnh Tên, Quà Sinh Nhật",
+    "imageUrl": "https://chus.vn/images/detailed/301/z6676863275361_38be3f81eead1a5cc441dc2f6ff90c88_21mw-4x.jpg",
+    "imageWidth": 1280,
+    "imageHeight": 1280,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ3yS88R5uCAK1IUnrc3I3MnHLhi6qMUhULquYgQqIuYg&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Chus.vn",
+    "domain": "chus.vn",
+    "link": "https://chus.vn/ly-thuy-tinh-ve-tay-vu-dieu-bach-tuot-ruc-ro-amy-art-shop/?srsltid=AU7gw4WycuzqlOEKC55UOxTklRoYtzt3G_ZGue1XLigd4tE7oZRh1S5X",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fchus.vn%2Fimages%2Fdetailed%2F301%2Fz6676863275361_38be3f81eead1a5cc441dc2f6ff90c88_21mw-4x.jpg&tbnid=pyrs54wbJ6fhcM&imgrefurl=https%3A%2F%2Fchus.vn%2Fly-thuy-tinh-ve-tay-vu-dieu-bach-tuot-ruc-ro-amy-art-shop%2F%3Fsrsltid%3DAU7gw4WycuzqlOEKC55UOxTklRoYtzt3G_ZGue1XLigd4tE7oZRh1S5X&docid=uknDvqJ59gcsiM&w=1280&h=1280",
+    "position": 3
+   },
+   {
+    "title": "Cốc Gốm Vô Diện 330ml Vuốt Tay Ngộ Nghĩnh, Đáng Yêu - Meow pottery",
+    "imageUrl": "https://cdn.chus.vn/images/detailed/283/9_gw2e-x0.jpeg",
+    "imageWidth": 1080,
+    "imageHeight": 1080,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTr-revUkrEwGa1v4TS9_EYk4hEQ23OFOt4UAtIilS5Fw&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Chus.vn",
+    "domain": "chus.vn",
+    "link": "https://chus.vn/coc-vo-dien-gom-su-meow-pottery/?srsltid=AU7gw4WiEXN-BucXKiO0_vkuW1k2eDnwniXs1OHWQFRyX0-yXdTab0SL",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.chus.vn%2Fimages%2Fdetailed%2F283%2F9_gw2e-x0.jpeg&tbnid=rJEtKgbewnREEM&imgrefurl=https%3A%2F%2Fchus.vn%2Fcoc-vo-dien-gom-su-meow-pottery%2F%3Fsrsltid%3DAU7gw4WiEXN-BucXKiO0_vkuW1k2eDnwniXs1OHWQFRyX0-yXdTab0SL&docid=niY3AAdDSJHn9M&w=1080&h=1080",
+    "position": 4
+   },
+   {
+    "title": "Những người yêu thích cà phê Quà tặng cho nam giới, Động vật tích cực Móc  trang trí cốc cà phê Espresso, Món quà vui nhộn dễ thương cho bạn bè, Bạn",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/sg-11134201-82590-mr5r6mfgagw086",
+    "imageWidth": 1024,
+    "imageHeight": 1024,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSfTVMVnGVR4BAkXlwrHBvJTqJi8_aQnsG3JOSCsjxxMQ&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/Nh%E1%BB%AFng-ng%C6%B0%E1%BB%9Di-y%C3%AAu-th%C3%ADch-c%C3%A0-ph%C3%AA-Qu%C3%A0-t%E1%BA%B7ng-cho-nam-gi%E1%BB%9Bi-%C4%90%E1%BB%99ng-v%E1%BA%ADt-t%C3%ADch-c%E1%BB%B1c-M%C3%B3c-trang-tr%C3%AD-c%E1%BB%91c-c%C3%A0-ph%C3%AA-Espresso-M%C3%B3n-qu%C3%A0-vui-nh%E1%BB%99n-d%E1%BB%85-th%C6%B0%C6%A1ng-cho-b%E1%BA%A1n-b%C3%A8-B%E1%BA%A1n-trai-B%E1%BA%A1n-g%C3%A1i-M%E1%BA%B9-B%E1%BB%91-%C4%90%E1%BB%93ng-nghi%E1%BB%87p-%C4%90%C3%A1nh-gi%C3%A1-sinh-nh%E1%BA%ADt-i.1900992958.50614922780",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fsg-11134201-82590-mr5r6mfgagw086&tbnid=mK75MG9xVU1aoM&imgrefurl=https%3A%2F%2Fshopee.vn%2FNh%25E1%25BB%25AFng-ng%25C6%25B0%25E1%25BB%259Di-y%25C3%25AAu-th%25C3%25ADch-c%25C3%25A0-ph%25C3%25AA-Qu%25C3%25A0-t%25E1%25BA%25B7ng-cho-nam-gi%25E1%25BB%259Bi-%25C4%2590%25E1%25BB%2599ng-v%25E1%25BA%25ADt-t%25C3%25ADch-c%25E1%25BB%25B1c-M%25C3%25B3c-trang-tr%25C3%25AD-c%25E1%25BB%2591c-c%25C3%25A0-ph%25C3%25AA-Espresso-M%25C3%25B3n-qu%25C3%25A0-vui-nh%25E1%25BB%2599n-d%25E1%25BB%2585-th%25C6%25B0%25C6%25A1ng-cho-b%25E1%25BA%25A1n-b%25C3%25A8-B%25E1%25BA%25A1n-trai-B%25E1%25BA%25A1n-g%25C3%25A1i-M%25E1%25BA%25B9-B%25E1%25BB%2591-%25C4%2590%25E1%25BB%2593ng-nghi%25E1%25BB%2587p-%25C4%2590%25C3%25A1nh-gi%25C3%25A1-sinh-nh%25E1%25BA%25ADt-i.1900992958.50614922780&docid=zbpI5JpM9SfrNM&w=1024&h=1024",
+    "position": 5
+   },
+   {
+    "title": "In Ly Sứ Theo Yêu Cầu: Quà Tặng Độc Đáo, Chất Lượng Cao",
+    "imageUrl": "https://xuonginthiennam.com/wp-content/uploads/2025/06/In-Ly-Su-Theo-Yeu-Cau-Giai-Phap-Qua-Tang-Doc-Dao-Gia-Tot-Xuong-In-Thien-Nam-5.jpg",
+    "imageWidth": 960,
+    "imageHeight": 819,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQ7ys7FPgocSJ_1eTO8bmjRlm3qAGWKgO64XS1VwsNqA&s=10",
+    "thumbnailWidth": 599,
+    "thumbnailHeight": 511,
+    "source": "Xưởng In Thiên Nam",
+    "domain": "xuonginthiennam.com",
+    "link": "https://xuonginthiennam.com/san-pham/in-ly-su/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fxuonginthiennam.com%2Fwp-content%2Fuploads%2F2025%2F06%2FIn-Ly-Su-Theo-Yeu-Cau-Giai-Phap-Qua-Tang-Doc-Dao-Gia-Tot-Xuong-In-Thien-Nam-5.jpg&tbnid=Nl7al83kandKWM&imgrefurl=https%3A%2F%2Fxuonginthiennam.com%2Fsan-pham%2Fin-ly-su%2F&docid=crwv2_E7aELFHM&w=960&h=819",
+    "position": 6
+   },
+   {
+    "title": "In Ly Sứ Theo Yêu Cầu: Quà Tặng Độc Đáo, Chất Lượng Cao",
+    "imageUrl": "https://xuonginthiennam.com/wp-content/uploads/2025/06/In-Ly-Su-Theo-Yeu-Cau-Giai-Phap-Qua-Tang-Doc-Dao-Gia-Tot-Xuong-In-Thien-Nam-20.jpg",
+    "imageWidth": 1664,
+    "imageHeight": 1740,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQv_Ij5pp5j8_Cki4hZLKVduZypcoa1g5JqLNA6x67Isg&s=10",
+    "thumbnailWidth": 542,
+    "thumbnailHeight": 566,
+    "source": "Xưởng In Thiên Nam",
+    "domain": "xuonginthiennam.com",
+    "link": "https://xuonginthiennam.com/san-pham/in-ly-su/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fxuonginthiennam.com%2Fwp-content%2Fuploads%2F2025%2F06%2FIn-Ly-Su-Theo-Yeu-Cau-Giai-Phap-Qua-Tang-Doc-Dao-Gia-Tot-Xuong-In-Thien-Nam-20.jpg&tbnid=kD5EfM-AC8YRBM&imgrefurl=https%3A%2F%2Fxuonginthiennam.com%2Fsan-pham%2Fin-ly-su%2F&docid=crwv2_E7aELFHM&w=1664&h=1740",
+    "position": 7
+   },
+   {
+    "title": "Quà tặng Maustic cho ông nội, Giữ bình tĩnh và ông sẽ cố định cốc cà phê, Quà  tặng sinh nhật Giáng sinh của ông nội, Quà tặng tốt nhất từ cháu,",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/sg-11134201-823qu-moxrg5dt5sea5a",
+    "imageWidth": 1024,
+    "imageHeight": 1024,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6MTzlQxGZ4HZytewNw5_M-0kC42q2oVNUnYC36YCMWg&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/Qu%C3%A0-t%E1%BA%B7ng-Maustic-cho-%C3%B4ng-n%E1%BB%99i-Gi%E1%BB%AF-b%C3%ACnh-t%C4%A9nh-v%C3%A0-%C3%B4ng-n%E1%BB%99i-s%E1%BA%BD-c%E1%BB%91-%C4%91%E1%BB%8Bnh-c%E1%BB%91c-c%C3%A0-ph%C3%AA-Qu%C3%A0-t%E1%BA%B7ng-sinh-nh%E1%BA%ADt-Gi%C3%A1ng-sinh-c%E1%BB%A7a-%C3%B4ng-n%E1%BB%99i-Qu%C3%A0-t%E1%BA%B7ng-%C3%B4ng-n%E1%BB%99i-t%E1%BB%91t-nh%E1%BA%A5t-t%E1%BB%AB-ch%C3%A1u-C%E1%BB%91c-c%C3%A0-ph%C3%AA-%C3%B4ng-n%E1%BB%99i-11-i.1842057978.46661510466",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fsg-11134201-823qu-moxrg5dt5sea5a&tbnid=QDvGJHsbG6fnoM&imgrefurl=https%3A%2F%2Fshopee.vn%2FQu%25C3%25A0-t%25E1%25BA%25B7ng-Maustic-cho-%25C3%25B4ng-n%25E1%25BB%2599i-Gi%25E1%25BB%25AF-b%25C3%25ACnh-t%25C4%25A9nh-v%25C3%25A0-%25C3%25B4ng-n%25E1%25BB%2599i-s%25E1%25BA%25BD-c%25E1%25BB%2591-%25C4%2591%25E1%25BB%258Bnh-c%25E1%25BB%2591c-c%25C3%25A0-ph%25C3%25AA-Qu%25C3%25A0-t%25E1%25BA%25B7ng-sinh-nh%25E1%25BA%25ADt-Gi%25C3%25A1ng-sinh-c%25E1%25BB%25A7a-%25C3%25B4ng-n%25E1%25BB%2599i-Qu%25C3%25A0-t%25E1%25BA%25B7ng-%25C3%25B4ng-n%25E1%25BB%2599i-t%25E1%25BB%2591t-nh%25E1%25BA%25A5t-t%25E1%25BB%25AB-ch%25C3%25A1u-C%25E1%25BB%2591c-c%25C3%25A0-ph%25C3%25AA-%25C3%25B4ng-n%25E1%25BB%2599i-11-i.1842057978.46661510466&docid=WJkRfV0L5XnwlM&w=1024&h=1024",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

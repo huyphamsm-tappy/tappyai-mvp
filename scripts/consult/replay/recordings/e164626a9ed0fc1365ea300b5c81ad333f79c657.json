@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Khách sạn G8 Luxury\" Đà Nẵng site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:27:10.035Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Khách sạn G8 Luxury\" Đà Nẵng site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Các đánh giá Khách sạn G8 Luxury Đà Nẵng",
+    "link": "https://vn.trip.com/hotels/da-nang-hotel-detail-46562878/g8-luxury-hotel-da-nang/review.html",
+    "snippet": "Khám phá đánh giá Khách sạn G8 Luxury Đà Nẵng thực tế từ khách du lịch. Với 320 đánh giá đã được xác thực và xếp hạng 8.6/10, bạn có thể đặt phòng với sự an ...",
+    "position": 1
+   },
+   {
+    "title": "Khách sạn G8 Luxury Đà Nẵng - Giá cả và Ưu đãi 2026, ...",
+    "link": "https://vn.trip.com/hotels/da-nang-hotel-detail-46562878/g8-luxury-hotel-da-nang/",
+    "snippet": "Khách sạn G8 Luxury Đà Nẵng · 30m² | Tầng: 7-18 · Có cửa sổ · Không hút thuốc.",
+    "position": 2
+   },
+   {
+    "title": "Khách sạn G8 Luxury Đà Nẵng - Xem 196 Ảnh & Đánh giá",
+    "link": "https://vn.trip.com/hotels/da-nang-hotel-detail-46562878/g8-luxury-hotel-da-nang/photo.html",
+    "snippet": "Khám phá 196 ảnh của Khách sạn G8 Luxury Đà Nẵng, bao gồm phòng ốc, tiện nghi, cơ sở vật chất và khu vực xung quanh. Sử dụng hình ảnh khách sạn thực tế để ...",
+    "position": 3
+   },
+   {
+    "title": "Các khách sạn ở gần Sân vận động Chi Lăng, Đà Nẵng",
+    "link": "https://vn.trip.com/hotels/da-nang-chi-lang-stadium/hotels-c1356m9566030/",
+    "snippet": "Chọn ngày đi của bạn để xem giá mới nhất. Khách sạn G8 Luxury Đà Nẵng. 8,6/10. Rất Tốt. 323 đánh giá. Trung tâm thành phố Đà Nẵng | Cách Sân vận động Chi Lăng ...",
+    "position": 4
+   },
+   {
+    "title": "Khách sạn giá rẻ gần Parkson Đà Nẵng, Đà Nẵng",
+    "link": "https://vn.trip.com/hotels/landmark/vn/parkson.html",
+    "snippet": "Khách sạn G8 Luxury Đà Nẵng Các khách sạn gần Parkson Đà Nẵng. Khách sạn G8 Luxury Đà Nẵng. 8,6/10. Rất Tốt. 323 đánh giá. Trung tâm thành phố Đà Nẵng | Cách ...",
+    "position": 5
+   },
+   {
+    "title": "Khách sạn giá rẻ gần Trường THPT Phan Châu Trinh, Đà ...",
+    "link": "https://vn.trip.com/hotels/da-nang-phan-chu-trinh-high-school/hotels-c1356m11093119/",
+    "snippet": "Khách sạn G8 Luxury Đà Nẵng. 8,6/10. Rất Tốt. 323 đánh giá. Trung tâm thành phố Đà Nẵng | Cách Trường THPT Phan Châu Trinh 0.35km. G8 ...",
+    "position": 6
+   },
+   {
+    "title": "Khách sạn giá rẻ gần Ga Đà Nẵng, Đà Nẵng",
+    "link": "https://vn.trip.com/hotels/da-nang-nng-railway-station/hotels-c1356r4328565/",
+    "snippet": "Khách sạn G8 Luxury Đà Nẵng. 8,6/10. Rất Tốt. 323 đánh giá. Trung tâm thành phố Đà Nẵng | Cách Ga Đà Nẵng 0.93km. G8 Luxury Hotel Đà ...",
+    "position": 7
+   },
+   {
+    "title": "Công viên Cầu vượt Ngã Ba Huế - Khách sạn tại Đà Nẵng",
+    "link": "https://vn.trip.com/hotels/da-nang-cng-vin-cu-vt-ng-ba-hu/hotels-c1356m28198019/",
+    "snippet": "Khách sạn G8 Luxury Đà Nẵng · 8,6 · 323 đánh giá ; Elite Luxury Hotel & Apartment by Elite24 · 8,9 · 207 đánh giá ; Wink Danang Centre, Unscripted by Hyatt - Lưu trú ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

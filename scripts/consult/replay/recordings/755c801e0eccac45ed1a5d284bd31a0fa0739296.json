@@ -1,0 +1,79 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Quà tặng nhân viên 018 site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:12:15.067Z",
+ "body": {
+  "searchParameters": {
+   "q": "Quà tặng nhân viên 018 site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Top 18+ phần quà Tết cho nhân viên thiết thực, dễ ứng dụng",
+    "link": "https://shopee.vn/blog/qua-tet-cho-nhan-vien/",
+    "snippet": "Hộp quà Tết cao cấp – Quà tặng ý nghĩa cho nhân viên · Giỏ quà bánh Tết · Bộ ấm, chén trà · Rượu vang · Đồng hồ · Hộp quà hạt dinh dưỡng · Hộp quà Tết ...",
+    "date": "5 thg 2, 2026",
+    "position": 1
+   },
+   {
+    "title": "18+ gợi ý quà Tết cho doanh nghiệp chỉn chu và ý nghĩa",
+    "link": "https://shopee.vn/blog/qua-tet-cho-doanh-nghiep/",
+    "snippet": "Hoa quả sấy sẽ dễ bảo quản và có hộp đựng quà bắt mắt, gọn gàng, tinh tế hơn khi dành tặng các doanh nghiệp. Bạn nên chọn những bộ quà tặng có ...",
+    "date": "21 thg 1, 2026",
+    "position": 2
+   },
+   {
+    "title": "Gợi ý 15+ quà tặng 8/3 cho nhân viên nữ ghi dấu ấn",
+    "link": "https://shopee.vn/blog/qua-tang-8-3-cho-nhan-vien-nu/",
+    "snippet": "Đồ dùng tiện ích văn phòng – Quà 8/3 cho nhân viên công sở thiết thực · Gối cổ, gối tựa lưng · Bộ chăn gối văn phòng · Ly cốc sứ · Bình giữ nhiệt.",
+    "date": "28 thg 2, 2026",
+    "position": 3
+   },
+   {
+    "title": "18+ quà Tết cho khách hàng 2026 ý nghĩa & tạo thiện cảm",
+    "link": "https://shopee.vn/blog/qua-tet-cho-khach-hang/",
+    "snippet": "Cách thức tặng quà: Nên tặng trực tiếp tận tay người nhận, kèm theo một tấm thiệp cảm ơn và chúc mừng năm mới nữa nhé. Trên đây là gợi ý những ...",
+    "date": "5 thg 2, 2026",
+    "position": 4
+   },
+   {
+    "title": "Gợi ý 13+ quà 20/10 cho nhân viên thiết thực và ấn tượng",
+    "link": "https://shopee.vn/blog/qua-20-10-cho-nhan-vien/",
+    "snippet": "Gợi ý quà tặng 20/10 cho nhân viên ấn tượng · Bộ sản phẩm chăm sóc da, làm đẹp · Son môi · Kem dưỡng da · Hộp quà thảo mộc và trà · Nước hoa · Bộ chăn ...",
+    "date": "13 thg 10, 2024",
+    "position": 5
+   },
+   {
+    "title": "Tặng quà Tết cho người lớn tuổi: 10+ gợi ý tinh tế, dễ ghi ...",
+    "link": "https://shopee.vn/blog/tang-qua-tet-cho-nguoi-lon-tuoi/",
+    "snippet": "Gợi ý 11+ món quà Tết sức khỏe · Tặng sữa canxi cho người lớn tuổi · Đông trùng hạ thảo · Yến sào · Saffron – Nhụy hoa nghệ tây · Viên uống bổ não.",
+    "date": "21 thg 1, 2026",
+    "position": 6
+   },
+   {
+    "title": "5+ món quà Trung thu cho nhân viên ý nghĩa nhất",
+    "link": "https://shopee.vn/blog/qua-trung-thu-cho-nhan-vien/",
+    "snippet": "Sổ tay và bút viết là món quà Trung thu cho nhân viên thiết thực dành tặng cho nhân viên trong dịp Trung thu. Những món quà này không chỉ giúp ...",
+    "date": "7 thg 9, 2024",
+    "position": 7
+   },
+   {
+    "title": "Tradder 18 Chiếc 2.76 Inch Gương Nhỏ Gọn Cảm Hứng Số ...",
+    "link": "https://shopee.vn/Tradder-18-Chi%E1%BA%BFc-2.76-Inch-G%C6%B0%C6%A1ng-Nh%E1%BB%8F-G%E1%BB%8Dn-C%E1%BA%A3m-H%E1%BB%A9ng-S%E1%BB%91-L%C6%B0%E1%BB%A3ng-L%E1%BB%9Bn-Quinceanera-Nh%C3%A2n-Vi%C3%AAn-Tr%C3%A2n-Tr%E1%BB%8Dng-Qu%C3%A0-T%E1%BA%B7ng-Trang-%C4%90i%E1%BB%83m-V%C3%AD-B%E1%BB%8F-T%C3%BAi-G%C6%B0%C6%A1ng-Cho-N%E1%BB%AF-Ng%C3%A0y-C%E1%BB%A7a-M%E1%BA%B9-Valentine-%C4%90%E1%BB%93ng-Nghi%E1%BB%87p-Qu%C3%A0-T%E1%BA%B7ng-Y-T%C3%A1-i.1804903013.58159199595?extraParams=%7B%22display_model_id%22%3A360815805825%2C%22model_selection_logic%22%3A3%7D",
+    "snippet": "Tradder 18 Chiếc 2.76 Inch Gương Nhỏ Gọn Cảm Hứng Số Lượng Lớn Quinceanera Nhân Viên Trân Trọng Quà Tặng Trang Điểm Ví Bỏ Túi Gương Cho Nữ Ngày Của Mẹ Valentine ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

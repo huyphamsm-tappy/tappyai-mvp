@@ -1,0 +1,30 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Level Saigon Hotel\" Gần Sài Gòn site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:38:18.118Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Level Saigon Hotel\" Gần Sài Gòn site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Level Saigon - Giá cả và Ưu đãi 2026, TP. Hồ Chí Minh",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-hotel-detail-122177701/level-saigon-hotel/",
+    "snippet": "Level Saigon(Level SaiGon Hotel). Level Saigon. Level SaiGon Hotel.",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

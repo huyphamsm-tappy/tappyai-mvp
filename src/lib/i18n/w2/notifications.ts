@@ -1,4 +1,4 @@
-// i18n keys for the Notifications screen (src/app/profile/notifications).
+// i18n keys for the Notifications screen (src/app/(app)/profile/notifications).
 // Flat map, one entry per t('notifications.*') key referenced by the screen.
 export const vi: Record<string, string> = {
   'notifications.title': 'Thông báo',
@@ -10,6 +10,15 @@ export const vi: Record<string, string> = {
   'notifications.denied.descBefore': 'Bạn đã chặn thông báo. Để bật lại, hãy vào',
   'notifications.denied.descPath': 'Cài đặt trình duyệt → Quyền trang web → Thông báo',
   'notifications.denied.descAfter': 'và cho phép TappyAI.',
+
+  // The Tappy notifications preference (2026-09-13): ON by default, OFF until switched back.
+  // It governs the in-app badge, the chime and the deal prompt. Device push permission and the
+  // device's push subscription stay their own control below.
+  'notifications.master.title': 'Thông báo từ Tappy',
+  'notifications.master.on': 'Đang bật — hiện huy hiệu chưa đọc, âm báo và lời nhắc trong ứng dụng',
+  'notifications.master.off': 'Đã tắt — không hiện huy hiệu, âm báo hay lời nhắc; sẽ giữ tắt cho tới khi bạn bật lại',
+  'notifications.master.note': 'Thông báo đẩy của thiết bị này (cần quyền của trình duyệt) được bật/tắt riêng ở dưới.',
+  'notifications.master.toggleAria': 'Bật/tắt thông báo từ Tappy',
 
   'notifications.push.title': 'Thông báo đẩy',
   'notifications.push.on': 'Đang bật — Tappy sẽ nhắc bạn đúng lúc',
@@ -50,6 +59,12 @@ export const en: Record<string, string> = {
   'notifications.denied.descBefore': 'You’ve blocked notifications. To re-enable them, go to',
   'notifications.denied.descPath': 'Browser settings → Site permissions → Notifications',
   'notifications.denied.descAfter': 'and allow TappyAI.',
+
+  'notifications.master.title': 'Notifications from Tappy',
+  'notifications.master.on': 'On — unread badge, chime and in-app reminders are shown',
+  'notifications.master.off': 'Off — no badge, chime or reminders; stays off until you turn it back on',
+  'notifications.master.note': 'Push notifications for this device (they need the browser’s permission) are switched separately below.',
+  'notifications.master.toggleAria': 'Turn notifications from Tappy on or off',
 
   'notifications.push.title': 'Push notifications',
   'notifications.push.on': 'On — Tappy will remind you at the right time',

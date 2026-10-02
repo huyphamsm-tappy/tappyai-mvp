@@ -1,0 +1,260 @@
+{
+  "id": "T2",
+  "group": "entertainment-imax",
+  "criteria": [
+    "Turn 2 searches specifically for IMAX; does not re-ask whether the user means IMAX",
+    "Renders cards (annotation items) for the cinemas it names",
+    "If it cannot confirm which cinema has an IMAX screen, says so ONCE and gives a way to check; does not present uncertain cinemas as answers",
+    "Uses 'phòng chiếu IMAX', not 'sàn IMAX'"
+  ],
+  "turns": [
+    {
+      "user": "Rạp chiếu phim IMAX ở TP HCM",
+      "status": 200,
+      "elapsedMs": 14905,
+      "textFrames": 2,
+      "tools": [
+        {
+          "name": "search_places",
+          "args": {
+            "query": "rạp chiếu phim IMAX TP HCM",
+            "location": "TP HCM",
+            "type": "cinema"
+          }
+        }
+      ],
+      "toolResults": [
+        null
+      ],
+      "annotations": [
+        {
+          "type": "tappy.progress.v1",
+          "stage": "found"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "CGV Liberty Citypoint",
+              "rating": 4.4,
+              "price": null,
+              "category": null,
+              "hours": null,
+              "open": null,
+              "picked": null
+            },
+            {
+              "name": "CGV Vincom Center Đồng Khởi",
+              "rating": 4.3,
+              "price": null,
+              "category": null,
+              "hours": null,
+              "open": null,
+              "picked": null
+            },
+            {
+              "name": "Galaxy Cinema Nguyễn Du",
+              "rating": 4.3,
+              "price": null,
+              "category": null,
+              "hours": null,
+              "open": null,
+              "picked": null
+            },
+            {
+              "name": "CGV Sư Vạn Hạnh",
+              "rating": 4.4,
+              "price": null,
+              "category": null,
+              "hours": null,
+              "open": null,
+              "picked": null
+            },
+            {
+              "name": "Cinestar Quốc Thanh",
+              "rating": 4.2,
+              "price": null,
+              "category": null,
+              "hours": null,
+              "open": null,
+              "picked": null
+            },
+            {
+              "name": "Galaxy Cinema Thiso Mall",
+              "rating": 4.3,
+              "price": null,
+              "category": null,
+              "hours": null,
+              "open": null,
+              "picked": null
+            },
+            {
+              "name": "CGV Vivo City",
+              "rating": 4.4,
+              "price": null,
+              "category": null,
+              "hours": null,
+              "open": null,
+              "picked": null
+            },
+            {
+              "name": "CGV Vincom Center Landmark 81",
+              "rating": 4.2,
+              "price": null,
+              "category": null,
+              "hours": null,
+              "open": null,
+              "picked": null
+            }
+          ],
+          "preliminary": true,
+          "domain": "entertainment"
+        },
+        {
+          "type": "tappy.progress.v1",
+          "stage": "finishing"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "CGV Liberty Citypoint",
+              "rating": 4.4,
+              "price": null,
+              "category": null,
+              "hours": null,
+              "open": null,
+              "picked": true
+            },
+            {
+              "name": "CGV Vincom Center Đồng Khởi",
+              "rating": 4.3,
+              "price": null,
+              "category": null,
+              "hours": null,
+              "open": null,
+              "picked": null
+            },
+            {
+              "name": "Galaxy Cinema Nguyễn Du",
+              "rating": 4.3,
+              "price": null,
+              "category": null,
+              "hours": null,
+              "open": null,
+              "picked": null
+            },
+            {
+              "name": "CGV Sư Vạn Hạnh",
+              "rating": 4.4,
+              "price": null,
+              "category": null,
+              "hours": null,
+              "open": null,
+              "picked": null
+            },
+            {
+              "name": "Cinestar Quốc Thanh",
+              "rating": 4.2,
+              "price": null,
+              "category": null,
+              "hours": null,
+              "open": null,
+              "picked": null
+            },
+            {
+              "name": "Galaxy Cinema Thiso Mall",
+              "rating": 4.3,
+              "price": null,
+              "category": null,
+              "hours": null,
+              "open": null,
+              "picked": null
+            },
+            {
+              "name": "CGV Vivo City",
+              "rating": 4.4,
+              "price": null,
+              "category": null,
+              "hours": null,
+              "open": null,
+              "picked": null
+            },
+            {
+              "name": "CGV Vincom Center Landmark 81",
+              "rating": 4.2,
+              "price": null,
+              "category": null,
+              "hours": null,
+              "open": null,
+              "picked": null
+            }
+          ],
+          "picked": [
+            "place:osm:10.77470,106.70063",
+            "place:osm:10.77792,106.70195"
+          ],
+          "domain": "entertainment"
+        }
+      ],
+      "cardItems": [
+        [
+          "CGV Liberty Citypoint",
+          "CGV Vincom Center Đồng Khởi",
+          "Galaxy Cinema Nguyễn Du",
+          "CGV Sư Vạn Hạnh",
+          "Cinestar Quốc Thanh",
+          "Galaxy Cinema Thiso Mall",
+          "CGV Vivo City",
+          "CGV Vincom Center Landmark 81"
+        ],
+        [
+          "CGV Liberty Citypoint",
+          "CGV Vincom Center Đồng Khởi",
+          "Galaxy Cinema Nguyễn Du",
+          "CGV Sư Vạn Hạnh",
+          "Cinestar Quốc Thanh",
+          "Galaxy Cinema Thiso Mall",
+          "CGV Vivo City",
+          "CGV Vincom Center Landmark 81"
+        ]
+      ],
+      "duplicate": null,
+      "text": "Mình tìm thông tin về các rạp chiếu phim IMAX ở TP HCM cho bạn.\n\nMình tìm được các rạp chiếu phim ở TP HCM, nhưng **không có rạp IMAX chuyên biệt** trong kết quả. Tuy nhiên, một số rạp lớn như **CGV** và **Galaxy Cinema** có thể có sảnh chiếu IMAX hoặc định dạng màn hình lớn.\n\n**Gợi ý:**\n- **CGV Liberty Citypoint** (cách bạn 0.2km) - **4.4⭐ (1.748 đánh giá)** - rạp gần nhất, chất lượng tốt\n- **CGV Vincom Center Đồng Khởi** (0.2km) - **4.3⭐ (4.502 đánh giá)** - vị trí trung tâm\n- **Galaxy Cinema Nguyễn Du** (0.9km) - **4.3⭐ (9.374 đánh giá)** - rạp lớn, nhiều sảnh\n\nBạn nên **gọi trực tiếp hoặc vào website CGV/Galaxy** để xác nhận xem rạp nào có sảnh IMAX hoặc định dạng màn hình lớn nhất. Bạn muốn xem phim gì hay cần thông tin chi tiết về rạp nào không? 🎬\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🎬 Galaxy Cinema Nguyễn Du\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=7959510044504727677\",\"primary\":false}]}[/CTA_BUTTONS]",
+      "visible": "Mình tìm thông tin về các rạp chiếu phim IMAX ở TP HCM cho bạn.\n\nMình tìm được các rạp chiếu phim ở TP HCM, nhưng **không có rạp IMAX chuyên biệt** trong kết quả. Tuy nhiên, một số rạp lớn như **CGV** và **Galaxy Cinema** có thể có sảnh chiếu IMAX hoặc định dạng màn hình lớn.\n\n**Gợi ý:**\n- **CGV Liberty Citypoint** (cách bạn 0.2km) - **4.4⭐ (1.748 đánh giá)** - rạp gần nhất, chất lượng tốt\n- **CGV Vincom Center Đồng Khởi** (0.2km) - **4.3⭐ (4.502 đánh giá)** - vị trí trung tâm\n- **Galaxy Cinema Nguyễn Du** (0.9km) - **4.3⭐ (9.374 đánh giá)** - rạp lớn, nhiều sảnh\n\nBạn nên **gọi trực tiếp hoặc vào website CGV/Galaxy** để xác nhận xem rạp nào có sảnh IMAX hoặc định dạng màn hình lớn nhất. Bạn muốn xem phim gì hay cần thông tin chi tiết về rạp nào không? 🎬"
+    },
+    {
+      "user": "quận nào cũng được",
+      "status": 200,
+      "elapsedMs": 16320,
+      "textFrames": 2,
+      "tools": [
+        {
+          "name": "search_places",
+          "args": {
+            "query": "rạp chiếu phim IMAX TP HCM",
+            "location": "TP HCM",
+            "type": "cinema"
+          }
+        }
+      ],
+      "toolResults": [
+        null
+      ],
+      "annotations": [
+        {
+          "type": "tappy.progress.v1",
+          "stage": "found"
+        },
+        {
+          "type": "tappy.progress.v1",
+          "stage": "finishing"
+        }
+      ],
+      "cardItems": [],
+      "duplicate": null,
+      "text": "Mình tìm các rạp chiếu phim IMAX ở TP HCM cho bạn.\n\nMình tìm được các rạp chiếu phim ở TP HCM, nhưng **không có rạp IMAX chuyên biệt** trong danh sách. Tuy nhiên, các rạp lớn dưới đây có thể có sảnh IMAX hoặc định dạng màn hình lớn:\n\n**CGV Liberty Citypoint** — **4.4⭐ (1.748 đánh giá)** — cách bạn 0.2km, gần nhất và chất lượng tốt. Rạp này nằm ở Quận 1, tiện lợi để xem phim.\n\n![Ảnh địa điểm](https://lh3.googleusercontent.com/gps-cs-s/AHRPTWk3SemybV27_qm0l0bfqqm5UgjE44t4VjsEqijHZ1kDqp49FOXZUn2-A1cM5LwtGzCnysHBuwOyhlZ2EKC2zZa4uPLomYZa_GAXYf7j1ouVV4Gfz-bu6dLv1mKJAmG8cG5rfzwrUQ)\n[Google Maps](https://maps.google.com/?cid=8041718674423256569)\n\n**CGV Vincom Center Đồng Khởi** — **4.3⭐ (4.502 đánh giá)** — cũng cách 0.2km, vị trí trung tâm, nhiều sảnh chiếu.\n\n![Ảnh địa điểm](https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmBoy5fIwhaDSciAfmrJxM71vK6XRSzFgnsF9Lz7YMwmvPGsrCiprMHuQuUoBmcyU2eBFKJGL21s4awZBzhPwYQdEaY0ufS_he6WKfo_Eeins-U57eMjXujF8gMThe4W4qZfX5Jbg)\n[Official Website](https://www.cgv.vn/default/cinox/site/cgv-vincom-dong-khoi) · [Google Maps](https://maps.google.com/?cid=11214787039782498171)\n\n**Galaxy Cinema Nguyễn Du** — **4.3⭐ (9.374 đánh giá)** — cách 0.9km, rạp lớn với nhiều sảnh, được đánh giá cao nhất về số lượng khách.\n\nMình nghiêng về **CGV Liberty Citypoint** vì gần nhất, đánh giá tốt, và bạn có thể kiểm tra trực tiếp xem rạp nào có sảnh IMAX. Bạn muốn xem phim gì hay cần thông tin chi tiết hơn không? 🎬\n\n![Ảnh địa điểm](https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlE--6-6rMQfi84RFZV6r8vIAr0o7NuurD81FNKeGcZQhDepu0k5PUVBnFTvGZCXkEF4Cjd34pBys7kxI49OxL15Il2MgmoyNatxfuiBrzqPjnkC6xxgi7SG24H6oj80k_ABMtKxA)\n[Official Website](https://galaxycine.vn/) · [Google Maps](https://maps.google.com/?cid=7959510044504727677)\n\n\n[FOLLOWUPS]xem phim gì hôm nay|giá vé CGV bao nhiêu|rạp nào có sảnh lớn nhất[/FOLLOWUPS]",
+      "visible": "Mình tìm các rạp chiếu phim IMAX ở TP HCM cho bạn.\n\nMình tìm được các rạp chiếu phim ở TP HCM, nhưng **không có rạp IMAX chuyên biệt** trong danh sách. Tuy nhiên, các rạp lớn dưới đây có thể có sảnh IMAX hoặc định dạng màn hình lớn:\n\n**CGV Liberty Citypoint** — **4.4⭐ (1.748 đánh giá)** — cách bạn 0.2km, gần nhất và chất lượng tốt. Rạp này nằm ở Quận 1, tiện lợi để xem phim.\n\n![Ảnh địa điểm](https://lh3.googleusercontent.com/gps-cs-s/AHRPTWk3SemybV27_qm0l0bfqqm5UgjE44t4VjsEqijHZ1kDqp49FOXZUn2-A1cM5LwtGzCnysHBuwOyhlZ2EKC2zZa4uPLomYZa_GAXYf7j1ouVV4Gfz-bu6dLv1mKJAmG8cG5rfzwrUQ)\n[Google Maps](https://maps.google.com/?cid=8041718674423256569)\n\n**CGV Vincom Center Đồng Khởi** — **4.3⭐ (4.502 đánh giá)** — cũng cách 0.2km, vị trí trung tâm, nhiều sảnh chiếu.\n\n![Ảnh địa điểm](https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmBoy5fIwhaDSciAfmrJxM71vK6XRSzFgnsF9Lz7YMwmvPGsrCiprMHuQuUoBmcyU2eBFKJGL21s4awZBzhPwYQdEaY0ufS_he6WKfo_Eeins-U57eMjXujF8gMThe4W4qZfX5Jbg)\n[Official Website](https://www.cgv.vn/default/cinox/site/cgv-vincom-dong-khoi) · [Google Maps](https://maps.google.com/?cid=11214787039782498171)\n\n**Galaxy Cinema Nguyễn Du** — **4.3⭐ (9.374 đánh giá)** — cách 0.9km, rạp lớn với nhiều sảnh, được đánh giá cao nhất về số lượng khách.\n\nMình nghiêng về **CGV Liberty Citypoint** vì gần nhất, đánh giá tốt, và bạn có thể kiểm tra trực tiếp xem rạp nào có sảnh IMAX. Bạn muốn xem phim gì hay cần thông tin chi tiết hơn không? 🎬\n\n![Ảnh địa điểm](https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlE--6-6rMQfi84RFZV6r8vIAr0o7NuurD81FNKeGcZQhDepu0k5PUVBnFTvGZCXkEF4Cjd34pBys7kxI49OxL15Il2MgmoyNatxfuiBrzqPjnkC6xxgi7SG24H6oj80k_ABMtKxA)\n[Official Website](https://galaxycine.vn/) · [Google Maps](https://maps.google.com/?cid=7959510044504727677)"
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Khách Sạn Parosand\" Da Nang site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T19:20:08.439Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Khách Sạn Parosand\" Da Nang site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Parosand Da Nang Hotel - Xem 159 Ảnh & Đánh giá",
+    "link": "https://vn.trip.com/hotels/da-nang-hotel-detail-7935602/parosand-da-nang-hotel/photo.html",
+    "snippet": "Kính gửi Quý khách, Khách sạn Parosand Đà Nẵng xin gửi lời chào trân trọng nhất và hy vọng mọi điều tốt đẹp nhất đến quý khách. Cảm ơn quý khách đã dành ...",
+    "position": 1
+   },
+   {
+    "title": "Các đánh giá Khách sạn & Căn hộ Parosand Hanoi",
+    "link": "https://vn.trip.com/hotels/hanoi-hotel-detail-33996842/parosand-hanoi-hotel-and-apartment/review.html",
+    "snippet": "... nâng cao chất lượng dịch vụ mỗi ngày. Chúng ... Kính gửi Quý khách, Cảm ơn quý khách đã dành thời gian chia sẻ trải nghiệm của mình tại Khách sạn Parosand.",
+    "position": 2
+   }
+  ],
+  "credits": 1
+ }
+}

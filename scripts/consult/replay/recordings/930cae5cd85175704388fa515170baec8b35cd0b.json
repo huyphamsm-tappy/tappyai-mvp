@@ -1,0 +1,148 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "khách sạn Vũng Tàu",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.346,107.0843,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:54:31.151Z",
+ "body": {
+  "searchParameters": {
+   "q": "khách sạn Vũng Tàu",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.346,107.0843,14z",
+   "engine": "google"
+  },
+  "ll": "@10.3459944,107.0842997,14z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Melissa - Vung Tau | Khách Sạn Bãi Sau Vũng Tàu",
+    "address": "23D Thùy Vân, Vũng Tàu, Hồ Chí Minh 790000, Việt Nam",
+    "latitude": 10.3305475,
+    "longitude": 107.087373,
+    "rating": 4.6,
+    "ratingCount": 365,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn",
+     "Khách sạn lưu trú dài hạn",
+     "Khách sạn tình yêu",
+     "Khách sạn nghỉ dưỡng"
+    ],
+    "phoneNumber": "+84 968 900 893",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLcss3Yr_IkEj21YnRw07vHHEHENFAaY9c1OeNfZ2dkTZyYoAxOUyXYv48PnwW2iD__aKEY0pylZ2GItp8huEOi46ltAHr8mwW5snMx4hIQaJWjFHhCRe-8DWowKmdXHvUsq1MEK",
+    "cid": "6995876162440303960",
+    "fid": "0x317565599537a55f:0x6116584dd2e09558",
+    "placeId": "ChIJX6U3lVlldTERWJXg0k1YFmE"
+   },
+   {
+    "position": 2,
+    "title": "Fusion Suites Vũng Tàu",
+    "address": "2 Trương Công Định, Phường, Vũng Tàu, Hồ Chí Minh 78000, Việt Nam",
+    "latitude": 10.341619999999999,
+    "longitude": 107.07585979999999,
+    "rating": 4.8,
+    "ratingCount": 4821,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn",
+     "Quán bar",
+     "Quán cà phê",
+     "Nhà hàng"
+    ],
+    "website": "https://fusion-suites.com/vungtau/",
+    "phoneNumber": "+84 254 6257 272",
+    "description": "Khách sạn cao cấp nhìn ra vịnh, có phòng ở sang trọng, 10 bể bơi ngoài trời, spa và nhà hàng.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLdIjBwXFKkqrv6to8WytJlEIJ4sZGSBpiQCM6PnahOypFokZlMTmBtOl7tFmHXA-tKSBnJE1KNClb1kNoRDKLXCaOwdUJYqNCmo4NoxDgTR1Wr2_K6496gXBQqHSoUAvjDUORj-un59WR6f",
+    "cid": "11541417421017603290",
+    "fid": "0x31756f119ff08151:0xa02b59fed0425cda",
+    "placeId": "ChIJUYHwnxFvdTER2lxC0P5ZK6A"
+   },
+   {
+    "position": 3,
+    "title": "Vias Hotel Vung Tau",
+    "address": "179 Thùy Vân, Tam Thắng, Hồ Chí Minh 790000, Việt Nam",
+    "latitude": 10.3524061,
+    "longitude": 107.10142359999999,
+    "rating": 4.6,
+    "ratingCount": 1541,
+    "type": "Khách sạn nghỉ dưỡng",
+    "types": [
+     "Khách sạn nghỉ dưỡng"
+    ],
+    "website": "https://viashotels.com/",
+    "phoneNumber": "+84 254 3541 111",
+    "description": "Khách sạn sang trọng nhìn ra biển, có phòng ở tinh tế, 4 địa điểm ăn uống và bể bơi tầng thượng.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLd1-7d4cwnHUnL6zjjDYHCipMEh4Mt09lcZU00INjH3TpxECwCitV0VbMpeX7RetdUhZHYox2kH6X_1sb4dIqWtpQNlP5Mnpu5uXqm42KHGQknmuSrhAWma0XqmYzdq02IEEvY1Bw",
+    "cid": "14863993309474711187",
+    "fid": "0x31756585b0238e2d:0xce4783298305e693",
+    "placeId": "ChIJLY4jsIVldTERk-YFgymDR84"
+   },
+   {
+    "position": 4,
+    "title": "Aloha Hotel Vũng Tàu",
+    "address": "12 La Văn Cầu, Vũng Tàu, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.3380475,
+    "longitude": 107.090392,
+    "rating": 4.8,
+    "ratingCount": 682,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://www.facebook.com/alohahotelvt/",
+    "phoneNumber": "+84 792 280 695",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLeGFUA5ePPJHeRAI8uPC_YIhZR0pHGDmKJU7pwgH8wMGudMbLH05veoA9vVs_SRPJAKlhZuJvC9TGghzCwxWu4TD3XuVBJX0YefF4AMsM29v4XUrx0U8Rkm4WDdlGIlJzhHnMlv",
+    "cid": "3451061210137607478",
+    "fid": "0x31756fd267bbf749:0x2fe4a1e2d861bd36",
+    "placeId": "ChIJSfe7Z9JvdTERNr1h2OKh5C8"
+   },
+   {
+    "position": 5,
+    "title": "One Season Boutique Hotel Vung Tau – Beachfront",
+    "address": "47 Thùy Vân, Vũng Tàu, Hồ Chí Minh 00700, Việt Nam",
+    "latitude": 10.33107,
+    "longitude": 107.088518,
+    "rating": 4.8,
+    "ratingCount": 267,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://oneseasonhotelvungtau.vn/",
+    "phoneNumber": "+84 908 888 604",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLcW3RJYzWwSWePeRdRV3BKFQ7o_iNj0CPk2rE6ov4r4sU1AcN9PsJYKKBW9317jOXlEygLazE9bbaI5bCIPOmRYvVjTl0sfaZYCesFtHvnlt2OTWXv82OEYAIKQsyjlHRmS6SEsaGOOgbs",
+    "cid": "8162934383641063978",
+    "fid": "0x31752744dfe6ad5b:0x71489192a5bf722a",
+    "placeId": "ChIJW63m30QndTERKnK_pZKRSHE"
+   },
+   {
+    "position": 6,
+    "title": "Victory Hotel Vung Tau",
+    "address": "83QR+4C, 149 Thùy Vân, Vũng Tàu, Hồ Chí Minh 78000, Việt Nam",
+    "latitude": 10.3385746,
+    "longitude": 107.0912506,
+    "rating": 4.8,
+    "ratingCount": 2569,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://victoryvungtau.com/",
+    "phoneNumber": "+84 254 6556 888",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLfqTpm3sgtxB0D8iaBNQQYxHI5ii8lNG8fCqG6lZIF8Ex0JeATufboKP22Uu212BaVGRqvwHLDs2kPseaxaVRy2dCfHl3jXlO3Ln_7jex381ve2eOBTxkFtcbBLy5DOMGhOCh9oLXLqmKc",
+    "cid": "16927681765482019855",
+    "fid": "0x31756f65d60b1e17:0xeaeb34e10669bc0f",
+    "placeId": "ChIJFx4L1mVvdTERD7xpBuE06-o"
+   }
+  ],
+  "credits": 3
+ }
+}

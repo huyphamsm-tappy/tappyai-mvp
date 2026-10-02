@@ -1,0 +1,138 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "khách sạn chưa muốn đi Tây Ninh",
+  "gl": "vn",
+  "hl": "vi"
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T05:26:30.167Z",
+ "body": {
+  "searchParameters": {
+   "q": "khách sạn chưa muốn đi Tây Ninh",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "engine": "google"
+  },
+  "ll": "@11.3173867,106.1429592,14z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Khách sạn Vườn Cau Tây Ninh",
+    "address": "18A hẻm 25 Lạc Long Quân, Khu phố 3, Tân Ninh, Tây Ninh, Việt Nam",
+    "latitude": 11.301772099999999,
+    "longitude": 106.12025659999999,
+    "rating": 4.7,
+    "ratingCount": 528,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "http://salatani.vn/",
+    "phoneNumber": "+84 848 646 566",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmblBPOnYa841JY8GSWM2YNVypz_Lpk7L_E3CpibSs8LzafbnK7rTtIQBD34R00exKf5LDEpPEU-qLfzkxR_O5T2E8ET7bEVKSKxnVfFSdDpAgVz5XJastJAYntFStPLNCtewIo",
+    "cid": "11585189642645306566",
+    "fid": "0x310b6bb053e52d43:0xa0c6dc9959687cc6",
+    "placeId": "ChIJQy3lU7BrCzERxnxoWZncxqA"
+   },
+   {
+    "position": 2,
+    "title": "Meliá Vinpearl Tây Ninh",
+    "address": "90 Lê Duẩn Block 5, Ward 3, 63 Lê Duẩn, Khu phố 1, Tân Ninh, Tây Ninh, Việt Nam",
+    "latitude": 11.3194511,
+    "longitude": 106.1001903,
+    "rating": 4.9,
+    "ratingCount": 4614,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://www.melia.com/vi/hotels/vietnam/tay-ninh/melia-vinpearl-tay-ninh?utm_campaign=google&utm_content=6117&utm_medium=organic&utm_source=directories",
+    "phoneNumber": "+84 276 3728 888",
+    "description": "Khách sạn sang trọng có phòng ở cao cấp, nhà hàng, quầy bar, khu spa và bể bơi trong nhà.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWn_0vrQgYvj31ptfg3ST_IkhIdphgXnpHVMekuazQjohKhxkXINNLgBi_0OoIds9wcj3YS6kL5SrEWDmh88Au0uOx03jghmTKfMQeujqhUJU90APQOgWMmJvDjO1R5XNueaQn5PPw",
+    "cid": "428108144602996216",
+    "fid": "0x310b6bb0e777c9c3:0x5f0f216dc835df8",
+    "placeId": "ChIJw8l357BrCzER-F2D3Bby8AU"
+   },
+   {
+    "position": 3,
+    "title": "Khách sạn Hoàng Mai",
+    "address": "130 Nguyễn Hữu Thọ, Hiệp Thạnh, Tân Ninh, Tây Ninh 800000, Việt Nam",
+    "latitude": 11.322662,
+    "longitude": 106.12086,
+    "rating": 4.1,
+    "ratingCount": 162,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "phoneNumber": "+84 276 3888 979",
+    "description": "Khách sạn bình dị có phòng ở thoáng mát giản dị, Wi-Fi, tủ lạnh nhỏ và TV thông minh.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnG9dCy1Nkh8hhWXYRw1YoyRGOR64PUIEM67qKH93RfYUPOntF7275XKBvqcvIrjpeGk4IPgsWnajKCzXDwd8yqqwtNm1jOL9iSYV5k-c3X_V6yUPQS8qd3GsCIIWDQBOLCIzZI",
+    "cid": "9418195148019303456",
+    "fid": "0x310b6bb82ee8f2fd:0x82b426965eff8420",
+    "placeId": "ChIJ_fLoLrhrCzERIIT_XpYmtII"
+   },
+   {
+    "position": 4,
+    "title": "Mai Vy Hotel Tây Ninh",
+    "address": "150 Đường 30/4, KP4, Tân Ninh, Tây Ninh 84000, Việt Nam",
+    "latitude": 11.3002892,
+    "longitude": 106.1022921,
+    "rating": 4,
+    "ratingCount": 383,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://maivyhotel.com.vn/",
+    "phoneNumber": "+84 941 556 998",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkwaKVDM-GhZRDXNRpn8sFfoc3d8iTsU92Y0DgSRH3AOnJgl_KQcasT2o5_z6YrXwn1Q1SOjWFM32GuLv45tGrX0kR0aTp6kcPsjnDsSmpfLUY-1yuvcXYDF_SF02S-z1-rAb3h",
+    "cid": "16761724635879073879",
+    "fid": "0x310b6b2730355873:0xe89d9bbfb87c6857",
+    "placeId": "ChIJc1g1MCdrCzERV2h8uL-bneg"
+   },
+   {
+    "position": 5,
+    "title": "ChillCine Hotel Tây Ninh - HomeStay - Home",
+    "address": "33 Hẻm số 59 Cách Mạng Tháng 8, Tây Ninh, 840000, Việt Nam",
+    "latitude": 11.310873899999999,
+    "longitude": 106.1105596,
+    "rating": 4.9,
+    "ratingCount": 32,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "phoneNumber": "+84 989 760 000",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWneJhkTfPHVbKUQx6pZmsHZfg9RpV8QmVTDRYdJQI1i75RHsl9fqD3AEuMulE0W7eYsgFbvr0m5kXODP5LmbxpCG5iMQCWEjOI06fstDQ6exh98QHUH4qB-WZU_pJErDYAQxr_Rvmp3wOz1",
+    "cid": "8607358661472504331",
+    "fid": "0x310b6be23131e513:0x77737b194f734a0b",
+    "placeId": "ChIJE-UxMeJrCzERC0pzTxl7c3c"
+   },
+   {
+    "position": 6,
+    "title": "Hotel Cù Lao 2",
+    "address": "85MP+Q7X, Đ. tỉnh 781 xã Phan - núi Bà, ấp Phước, Dương Minh Châu, Tây Ninh, Việt Nam",
+    "latitude": 11.3344843,
+    "longitude": 106.185728,
+    "rating": 3.7,
+    "ratingCount": 60,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "phoneNumber": "+84 276 3897 652",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlu5y7i1x0CVPY1tyYCmHVeSQqk5_WGr6Tn_SCLpFF5POFUADDgDWSE_Qp1W67vyeSDyhZZPX5pVFpePw_f5dEJ7nXqRlCL4JukrqtvnTZWFsNqeGMjw-2o9AnDZqVH1Kr1S1VZJDwappgx",
+    "cid": "8071788881266732252",
+    "fid": "0x310b42279226d41d:0x7004c138a9d9ecdc",
+    "placeId": "ChIJHdQmkidCCzER3OzZqTjBBHA"
+   }
+  ],
+  "credits": 3
+ }
+}

@@ -1,5 +1,6 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextRequest, NextResponse } from 'next/server'
+import { APP_STATE_COOKIE, checkAppState } from '@/lib/auth/appState'
 
 export async function GET(request: NextRequest) {
   const { searchParams, origin } = new URL(request.url)
@@ -18,6 +19,20 @@ export async function GET(request: NextRequest) {
 
   if (!tokenHash || !type) {
     return NextResponse.redirect(`${origin}/login?error=missing_token`)
+  }
+
+  // I6 / R24 (security 30/09): a session goes to the APP only for a sign-in the app started in THIS browser — the link's
+  // `app_state` must equal the httpOnly cookie set at the start, within 5 minutes. Checked BEFORE the token is used, so
+  // an attacker's own magic link with `&platform=android` creates no session at all. The cookie is single use.
+  const appState = searchParams.get('app_state')
+  if (platform !== 'web') {
+    const verdict = checkAppState(appState, request.cookies.get(APP_STATE_COOKIE)?.value)
+    if (verdict !== 'ok') {
+      console.warn(JSON.stringify({ type: 'tappyai_auth_app_state_refused', platform, verdict }))
+      const refused = NextResponse.redirect(`${origin}/login?error=app_state_invalid`)
+      refused.cookies.delete(APP_STATE_COOKIE)
+      return refused
+    }
   }
 
   const sessionCookies: Array<{ name: string; value: string; options: any }> = []
@@ -57,9 +72,14 @@ export async function GET(request: NextRequest) {
       access_token: session.access_token,
       refresh_token: session.refresh_token,
       expires_at: String(session.expires_at ?? Math.floor(Date.now() / 1000) + 3600),
+      // ONE name for both apps (Android AuthCallbackState.kt + iOS AuthCallbackState.swift read `state`); the app SENDS
+      // it as `app_state` when it starts the sign-in. The app accepts the callback only with the state it created.
+      state: appState!,
     })
     const scheme = platform === 'android' ? 'tappyai://auth-callback' : 'tappyai://auth/callback'
-    return NextResponse.redirect(`${scheme}#${fragment.toString()}`)
+    const toApp = NextResponse.redirect(`${scheme}#${fragment.toString()}`)
+    toApp.cookies.delete(APP_STATE_COOKIE)
+    return toApp
   }
 
   const { data: profile } = await supabase

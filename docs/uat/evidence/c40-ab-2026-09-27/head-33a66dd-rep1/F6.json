@@ -1,0 +1,33 @@
+{
+  "id": "F6",
+  "text": "quán số 2 có đông không?",
+  "parent": "F1",
+  "status": 200,
+  "ms": 4392,
+  "evidenceId": "c3b0993a-6414-4200-b359-a7ce5beededc",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình chưa có kết quả tìm kiếm chi tiết về các quán khác để so sánh tình trạng đông khách. Để gợi ý quán số 2 phù hợp với nhu cầu của bạn, mình cần biết thêm:\n\n**Bạn ưu tiên điều gì ở quán số 2?**\n\nMình sẽ tìm lại với tiêu chí cụ thể để gợi ý quán phù hợp hơn nhé.",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Tìm quán ăn tối ngon gần Quận 1 cho 2 người"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn muốn ăn tối hôm nay ở quanh Quận 1, tầm giá phổ thông. Để gợi ý đúng ý bạn, mình sẽ tìm ngay các quán ăn tối ngon gần vị trí của bạn.\n\nMình chọn **Hải Sản Hoàng Gia** cho bạn — quán này có **4.7⭐ (982 đánh giá Google Maps)**, chuyên hải sản tươi ngon, phục vụ tối đến nửa đêm, rất phù hợp cho bữa tối 2 người. Quán nằm ở 180 Trần Hưng Đạo, Quận 1, gần vị trí của bạn.\n\n[FOLLOWUPS]dưới 100k/người|100–200k/người|trên 200k/người[/FOLLOWUPS]\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🍽️ Đặt bàn - Hải Sản Hoàng Gia\",\"type\":\"website\",\"url\":\"https://s.ldplink.me/qPMj7\",\"primary\":true},{\"label\":\"📍 Xem trên Maps - Hải Sản Hoàng Gia\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=8690476982161666487\",\"primary\":false}]}[/CTA_BUTTONS]\n\nBạn muốn tầm giá khoảng bao nhiêu (dưới 100k/người / 100–200k/người / trên 200k/người)?"
+    },
+    {
+      "role": "user",
+      "content": "quán số 2 có đông không?"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình chưa có kết quả tìm kiếm chi tiết về các quán khác để so sánh tình trạng đông khách. Để gợi ý quán số 2 phù hợp với nhu cầu của bạn, mình cần biết thêm:\n\n**Bạn ưu tiên điều gì ở quán số 2?**\n\nMình sẽ tìm lại với tiêu chí cụ thể để gợi ý quán phù hợp hơn nhé."
+    }
+  ]
+}

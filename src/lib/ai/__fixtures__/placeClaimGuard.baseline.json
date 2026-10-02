@@ -1,0 +1,548 @@
+{
+  "P15-r1": {
+    "query": "Tìm cho tôi một spa thư giãn, sạch sẽ, giá hợp lý.",
+    "pick": "MASSAGE HẠ SPA QUẬN 1",
+    "shortlist": [
+      "MASSAGE HẠ SPA QUẬN 1",
+      "AN’s spa",
+      "MASSAGE HẠ SPA Tân Bình"
+    ],
+    "rows": [
+      {
+        "name": "MASSAGE HẠ SPA QUẬN 1",
+        "rating": 4.9,
+        "count": 3516,
+        "phone": "+84 945 705 000",
+        "hours": "09:30–22:30",
+        "distance_km": null
+      },
+      {
+        "name": "AN’s spa",
+        "rating": 4.9,
+        "count": 3371,
+        "phone": "+84 768 924 300",
+        "hours": "10:00–23:30",
+        "distance_km": null
+      },
+      {
+        "name": "MASSAGE HẠ SPA Tân Bình",
+        "rating": 4.9,
+        "count": 2743,
+        "phone": "+84 908 661 683",
+        "hours": "08:30–22:00",
+        "distance_km": null
+      },
+      {
+        "name": "Lụa Spa Quận 11 -Massage Body",
+        "rating": 5,
+        "count": 558,
+        "phone": "+84 961 786 809",
+        "hours": "09:30–19:30",
+        "distance_km": null
+      },
+      {
+        "name": "Sả Spa & Onsen",
+        "rating": 4.9,
+        "count": 1937,
+        "phone": "+84 938 789 246",
+        "hours": "09:30–23:30",
+        "distance_km": null
+      },
+      {
+        "name": "Trạm Sạc Đầu | Gội Đầu Thư Giãn An Đông",
+        "rating": 5,
+        "count": 249,
+        "phone": "+84 702 222 105",
+        "hours": "09:00–20:00",
+        "distance_km": null
+      },
+      {
+        "name": "Nara Spa | Massage & Hair Spa Quận 3",
+        "rating": 4.9,
+        "count": 1122,
+        "phone": "+84 369 750 993",
+        "hours": "11:00–21:30",
+        "distance_km": null
+      },
+      {
+        "name": "SPA Cô Chủ Nhỏ | Trị Liệu - Thư Giãn - Gội Dưỡng Sinh |",
+        "rating": 5,
+        "count": 115,
+        "phone": "+84 789 600 088",
+        "hours": "09:30–21:00",
+        "distance_km": null
+      },
+      {
+        "name": "MASSAGE VENUS",
+        "rating": 4.9,
+        "count": 422,
+        "phone": "+84 931 867 968",
+        "hours": "Mở cửa cả ngày",
+        "distance_km": null
+      },
+      {
+        "name": "Massage Quang Thư Quận 10",
+        "rating": 4.8,
+        "count": 351,
+        "phone": "+84 902 911 328",
+        "hours": "10:00–03:00",
+        "distance_km": null
+      }
+    ]
+  },
+  "P15-r2": {
+    "query": "Tìm cho tôi một spa thư giãn, sạch sẽ, giá hợp lý.",
+    "pick": "Sunyata Retreat Hill Spa",
+    "shortlist": [
+      "Sunyata Retreat Hill Spa",
+      "MASSAGE HẠ SPA QUẬN 1",
+      "Onsen Wellness Việt l Tắm khoáng nóng - Massage trị liệu Tân Bình"
+    ],
+    "rows": [
+      {
+        "name": "Sunyata Retreat Hill Spa",
+        "rating": 4.9,
+        "count": 3571,
+        "phone": "+84 917 757 509",
+        "hours": "10:00–01:00",
+        "distance_km": null
+      },
+      {
+        "name": "MASSAGE HẠ SPA QUẬN 1",
+        "rating": 4.9,
+        "count": 3516,
+        "phone": "+84 945 705 000",
+        "hours": "09:30–22:30",
+        "distance_km": null
+      },
+      {
+        "name": "Onsen Wellness Việt l Tắm khoáng nóng - Massage trị liệu Tân Bình",
+        "rating": 5,
+        "count": 749,
+        "phone": "+84 848 394 839",
+        "hours": "08:00–21:00",
+        "distance_km": null
+      },
+      {
+        "name": "Sả Spa Garden",
+        "rating": 4.9,
+        "count": 2157,
+        "phone": "+84 981 789 357",
+        "hours": "09:00–22:30",
+        "distance_km": null
+      },
+      {
+        "name": "Sả Spa & Onsen",
+        "rating": 4.9,
+        "count": 1937,
+        "phone": "+84 938 789 246",
+        "hours": "09:30–23:30",
+        "distance_km": null
+      },
+      {
+        "name": "Trạm Sạc Đầu | Gội Đầu Thư Giãn An Đông",
+        "rating": 5,
+        "count": 249,
+        "phone": "+84 702 222 105",
+        "hours": "09:00–20:00",
+        "distance_km": null
+      },
+      {
+        "name": "Healing Touch Spa | Massage Trị Liệu & Dưỡng Sinh, An Phú, Quận 2",
+        "rating": 5,
+        "count": 199,
+        "phone": "+84 901 878 622",
+        "hours": "09:00–20:30",
+        "distance_km": null
+      },
+      {
+        "name": "SPA Cô Chủ Nhỏ | Trị Liệu - Thư Giãn - Gội Dưỡng Sinh |",
+        "rating": 5,
+        "count": 115,
+        "phone": "+84 789 600 088",
+        "hours": "09:30–21:00",
+        "distance_km": null
+      },
+      {
+        "name": "TarZan Spa For Men",
+        "rating": 4.8,
+        "count": 965,
+        "phone": "+84 938 882 939",
+        "hours": "11:00–22:00",
+        "distance_km": null
+      },
+      {
+        "name": "Massage Quang Thư Quận 10",
+        "rating": 4.8,
+        "count": 351,
+        "phone": "+84 902 911 328",
+        "hours": "10:00–03:00",
+        "distance_km": null
+      }
+    ]
+  },
+  "P8-r1": {
+    "query": "Tôi đang ở đây, tìm chỗ ăn gần tôi.",
+    "pick": "Vua Chả Cá - Số 42-44-46 Trần Hưng Đạo, Q.1, TP. HCM",
+    "shortlist": [
+      "Vua Chả Cá - Số 42-44-46 Trần Hưng Đạo, Q.1, TP. HCM",
+      "Cơm Ngon Hà Nội",
+      "Nhà hàng chay Phương Mai"
+    ],
+    "rows": [
+      {
+        "name": "Vua Chả Cá - Số 42-44-46 Trần Hưng Đạo, Q.1, TP. HCM",
+        "rating": 4.9,
+        "count": 4605,
+        "phone": "+84 869 820 699",
+        "hours": "10:30–22:30",
+        "distance_km": 1.4
+      },
+      {
+        "name": "Cơm Ngon Hà Nội",
+        "rating": 4.9,
+        "count": 279,
+        "phone": null,
+        "hours": "10:00–19:30",
+        "distance_km": 0.9
+      },
+      {
+        "name": "Nhà hàng chay Phương Mai",
+        "rating": 4.9,
+        "count": 3386,
+        "phone": "+84 888 339 257",
+        "hours": "09:00–21:30",
+        "distance_km": 1.7
+      },
+      {
+        "name": "Béo Ơi Quán - Món ngon Hà Nội",
+        "rating": 4.6,
+        "count": 1187,
+        "phone": "+84 911 208 761",
+        "hours": "10:30–22:00",
+        "distance_km": 0.9
+      },
+      {
+        "name": "Hàng Dương Quán Quận 1",
+        "rating": 4.5,
+        "count": 717,
+        "phone": "+84 968 817 788",
+        "hours": "09:00–23:30",
+        "distance_km": 0.6
+      },
+      {
+        "name": "Quán Bụi Original, Sài Gòn - Authentic Vietnamese Cuisine",
+        "rating": 4.3,
+        "count": 4220,
+        "phone": "+84 28 3829 1515",
+        "hours": "07:00–23:00",
+        "distance_km": 0.7
+      },
+      {
+        "name": "NHÀ HÀNG NGON",
+        "rating": 4,
+        "count": 11405,
+        "phone": "+84 28 3827 7131",
+        "hours": "07:30–22:30",
+        "distance_km": 0.1
+      },
+      {
+        "name": "Ann Quán",
+        "rating": 4.2,
+        "count": 1279,
+        "phone": "+84 28 3622 6666",
+        "hours": "07:00–01:00",
+        "distance_km": 0.6
+      },
+      {
+        "name": "Quán ăn ngon Sài Gòn",
+        "rating": 4.1,
+        "count": 1152,
+        "phone": "+84 28 3825 7179",
+        "hours": "08:00–22:30",
+        "distance_km": 0.4
+      },
+      {
+        "name": "Sài Gòn Xưa và Nay",
+        "rating": 4,
+        "count": 1274,
+        "phone": "+84 28 3822 2337",
+        "hours": "11:00–01:00",
+        "distance_km": 0.4
+      }
+    ]
+  },
+  "P3-r1": {
+    "query": "Tìm quán ăn tối dưới 500k cho 2 người, yên tĩnh.",
+    "pick": "QUÁN ĂN NGON - Nguyên Sinh Bistro - est. 1942",
+    "shortlist": [
+      "QUÁN ĂN NGON - Nguyên Sinh Bistro - est. 1942",
+      "Asanoha - Modern Japanese Hotpot",
+      "A Mà Kitchen Cống Quỳnh"
+    ],
+    "rows": [
+      {
+        "name": "QUÁN ĂN NGON - Nguyên Sinh Bistro - est. 1942",
+        "rating": 4.8,
+        "count": 2935,
+        "phone": "+84 988 575 754",
+        "hours": "06:00–21:00",
+        "distance_km": null
+      },
+      {
+        "name": "Asanoha - Modern Japanese Hotpot",
+        "rating": 4.7,
+        "count": 659,
+        "phone": "+84 28 3535 6866",
+        "hours": "10:30–22:00",
+        "distance_km": null
+      },
+      {
+        "name": "A Mà Kitchen Cống Quỳnh",
+        "rating": 4.6,
+        "count": 1565,
+        "phone": "+84 327 378 800",
+        "hours": "10:30–22:15",
+        "distance_km": null
+      },
+      {
+        "name": "Hàng Dương Quán Quận 1",
+        "rating": 4.5,
+        "count": 717,
+        "phone": "+84 968 817 788",
+        "hours": "09:00–23:30",
+        "distance_km": null
+      },
+      {
+        "name": "Cục Gạch Quán",
+        "rating": 4.3,
+        "count": 4260,
+        "phone": "+84 28 3848 0144",
+        "hours": "09:00–23:30",
+        "distance_km": null
+      },
+      {
+        "name": "Ốc Đào",
+        "rating": 4.2,
+        "count": 2459,
+        "phone": "+84 909 437 033",
+        "hours": "11:00–22:15",
+        "distance_km": null
+      },
+      {
+        "name": "Ann Quán",
+        "rating": 4.2,
+        "count": 1279,
+        "phone": "+84 28 3622 6666",
+        "hours": "07:00–01:00",
+        "distance_km": null
+      },
+      {
+        "name": "Ốc luộc HÀ NGUYÊN - CN Quận 1 | Ốc luộc mắm gừng Hà Nội chi nhánh Quận 1",
+        "rating": 4.2,
+        "count": 421,
+        "phone": "+84 966 018 039",
+        "hours": "14:00–22:00",
+        "distance_km": null
+      },
+      {
+        "name": "Quán ăn ngon Sài Gòn",
+        "rating": 4.1,
+        "count": 1152,
+        "phone": "+84 28 3825 7179",
+        "hours": "08:00–22:30",
+        "distance_km": null
+      },
+      {
+        "name": "Sài Gòn Xưa và Nay",
+        "rating": 4,
+        "count": 1274,
+        "phone": "+84 28 3822 2337",
+        "hours": "11:00–01:00",
+        "distance_km": null
+      }
+    ]
+  },
+  "S7-r1": {
+    "query": "Tìm nhà hàng tầm 300-500k/người ở Quận 1.",
+    "pick": "Truyền Thuyết ChamPong Quận 1 - 전설의짬뽕 1군점",
+    "shortlist": [
+      "Truyền Thuyết ChamPong Quận 1 - 전설의짬뽕 1군점",
+      "QUÁN ĂN NGON - Nguyên Sinh Bistro - est. 1942",
+      "BULMAKYEOLSAM [Quận 1]"
+    ],
+    "rows": [
+      {
+        "name": "Truyền Thuyết ChamPong Quận 1 - 전설의짬뽕 1군점",
+        "rating": 4.9,
+        "count": 4325,
+        "phone": "+84 902 304 634",
+        "hours": "10:40–22:00",
+        "distance_km": null
+      },
+      {
+        "name": "QUÁN ĂN NGON - Nguyên Sinh Bistro - est. 1942",
+        "rating": 4.8,
+        "count": 2935,
+        "phone": "+84 988 575 754",
+        "hours": "06:00–21:00",
+        "distance_km": null
+      },
+      {
+        "name": "BULMAKYEOLSAM [Quận 1]",
+        "rating": 4.8,
+        "count": 1049,
+        "phone": "+84 868 655 012",
+        "hours": "15:00–03:00",
+        "distance_km": null
+      },
+      {
+        "name": "Gogi House Trần Hưng Đạo Quận 1",
+        "rating": 4.7,
+        "count": 763,
+        "phone": "+84 28 7300 5259",
+        "hours": "11:00–22:00",
+        "distance_km": null
+      },
+      {
+        "name": "Lẩu HongKong Tiêm Sa Chuỷ 80s - Dakao Q1",
+        "rating": 4.7,
+        "count": 465,
+        "phone": "+84 937 296 783",
+        "hours": "10:00–23:00",
+        "distance_km": null
+      },
+      {
+        "name": "A Mà Kitchen Cống Quỳnh",
+        "rating": 4.6,
+        "count": 1565,
+        "phone": "+84 327 378 800",
+        "hours": "10:30–22:15",
+        "distance_km": null
+      },
+      {
+        "name": "Quán Bụi Central, Sài Gòn - Authentic Vietnamese Cuisine",
+        "rating": 4.5,
+        "count": 889,
+        "phone": "+84 28 6271 1214",
+        "hours": "07:00–23:00",
+        "distance_km": null
+      },
+      {
+        "name": "Hàng Dương Quán Quận 1",
+        "rating": 4.5,
+        "count": 717,
+        "phone": "+84 968 817 788",
+        "hours": "09:00–23:30",
+        "distance_km": null
+      },
+      {
+        "name": "Nhà Hàng Phố 79 (chi nhánh 1)",
+        "rating": 4.2,
+        "count": 632,
+        "phone": "+84 906 916 779",
+        "hours": "09:00–23:30",
+        "distance_km": null
+      },
+      {
+        "name": "Buffet Gánh Khách Sạn Bông Sen",
+        "rating": 4.1,
+        "count": 522,
+        "phone": "+84 901 141 497",
+        "hours": "06:00–21:00",
+        "distance_km": null
+      }
+    ]
+  },
+  "P9-r1": {
+    "query": "Tìm giúp tôi một quán cafe gần Landmark 81.",
+    "pick": "RuNam Vincom Landmark 81",
+    "shortlist": [
+      "RuNam Vincom Landmark 81",
+      "MOON COFFEE AND APARTMENT",
+      "Cafe & ăn vặt Leo-TP"
+    ],
+    "rows": [
+      {
+        "name": "RuNam Vincom Landmark 81",
+        "rating": 4.6,
+        "count": 697,
+        "phone": "+84 28 3620 9522",
+        "hours": "07:00–22:00",
+        "distance_km": null
+      },
+      {
+        "name": "MOON COFFEE AND APARTMENT",
+        "rating": 4.7,
+        "count": 57,
+        "phone": "+84 919 083 400",
+        "hours": "07:00–21:00",
+        "distance_km": null
+      },
+      {
+        "name": "Cafe & ăn vặt Leo-TP",
+        "rating": 4.6,
+        "count": 39,
+        "phone": null,
+        "hours": "17:30–23:30",
+        "distance_km": null
+      },
+      {
+        "name": "Starbucks",
+        "rating": 4.3,
+        "count": 1650,
+        "phone": "+84 28 3636 9858",
+        "hours": "06:30–22:00",
+        "distance_km": null
+      },
+      {
+        "name": "U Café",
+        "rating": 4.4,
+        "count": 311,
+        "phone": "+84 28 3636 0190",
+        "hours": "07:00–21:00",
+        "distance_km": null
+      },
+      {
+        "name": "Bờ Sông Landmark 87 Coffee",
+        "rating": 4.3,
+        "count": 240,
+        "phone": "+84 902 819 679",
+        "hours": "16:30–23:00",
+        "distance_km": null
+      },
+      {
+        "name": "Buôn Cà Phê",
+        "rating": 4.2,
+        "count": 118,
+        "phone": "+84 906 868 098",
+        "hours": "07:00–22:00",
+        "distance_km": null
+      },
+      {
+        "name": "Highlands Coffee Vincom Landmark 81",
+        "rating": 3.9,
+        "count": 275,
+        "phone": null,
+        "hours": "10:00–21:00",
+        "distance_km": null
+      },
+      {
+        "name": "Phúc Long",
+        "rating": 3.8,
+        "count": 405,
+        "phone": "+84 28 7100 1968",
+        "hours": "10:00–21:30",
+        "distance_km": null
+      },
+      {
+        "name": "KATINAT Coffee & Tea House - Landmark 81",
+        "rating": 3.6,
+        "count": 275,
+        "phone": "+84 28 7303 7166",
+        "hours": "07:00–22:00",
+        "distance_km": null
+      }
+    ]
+  }
+}

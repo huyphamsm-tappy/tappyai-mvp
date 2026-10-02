@@ -56,6 +56,37 @@ class LanguageManager @Inject constructor(
      */
     fun currentLanguageTag(): String = AppLanguageResolver.currentTag()
 
+    /**
+     * The language the product should actually be in right now.
+     *
+     * [current] is null until the user picks one, and AppCompat then falls back to the DEVICE
+     * locale — which is how a Vietnamese-first product shipped an English UI to anyone whose phone
+     * was not set to Vietnamese, including every fresh install on an `en-US` emulator or handset.
+     * The string resources were never the problem (1118 of 1119 keys are translated); the locale
+     * being resolved was.
+     *
+     * Vietnamese is the default because that is the product's language, not because of where the
+     * device happens to be. An explicit choice always wins.
+     */
+    val effective: AppLanguage
+        get() = current ?: AppLanguage.Vietnamese
+
+    /**
+     * Applies the product default on first run, so Android resolves `values-vi/` rather than the
+     * default `values/` set. Idempotent: once the user has chosen, this does nothing.
+     *
+     * It is also what makes the product default reach the backend: from here on
+     * `AppCompatDelegate.getApplicationLocales()` is non-empty, so [AppLanguageResolver] — and
+     * therefore the `Accept-Language` on every request — reports `vi` rather than the handset's
+     * locale (ADR-027 step 2).
+     */
+    fun applyDefaultIfUnset() {
+        if (current != null) return
+        AppCompatDelegate.setApplicationLocales(
+            LocaleListCompat.forLanguageTags(AppLanguage.Vietnamese.tag),
+        )
+    }
+
     suspend fun setLanguage(language: AppLanguage) {
         AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(language.tag))
         val result = accountRepository.updateLanguage(language.tag)

@@ -1,17 +1,23 @@
 // @vitest-environment jsdom
-import { describe, it, expect, afterEach } from 'vitest'
+import { describe, it, expect, afterEach, beforeEach } from 'vitest'
 import { render, screen, cleanup } from '@testing-library/react'
 import { DeniedView } from './DeniedView'
 import { en as enStrings } from '@/lib/i18n/admin'
+import { setLocale } from '@/lib/i18n/useTranslation'
 import { DENIAL_REASONS, type DisplayReason } from '@/lib/admin/denial'
 
 // Controller V2 — B5, Denial UX (01_ARCH §8), the rendered surface.
 //
 // The server decided everything shown here; this proves the page states it, and
-// states nothing else. `useTranslation` resolves to the default locale (en)
-// under test — both-locale coverage is proven in src/lib/admin/denial.test.ts,
-// which asserts every key exists in vi and en AND that the two differ.
+// states nothing else. The assertions read the EN catalogue, so the locale is
+// STATED below rather than inherited — both-locale coverage is proven in
+// src/lib/admin/denial.test.ts, which asserts every key exists in vi and en AND
+// that the two differ.
 
+// 🚨 This used to say "`useTranslation` resolves to the default locale (en) under test", which
+// was never a property of the product — it was `navigator.language` in jsdom. The product default
+// is Vietnamese, so a test that wants English copy has to ask for English.
+beforeEach(() => setLocale('en'))
 afterEach(cleanup)
 
 const PERMISSION = {

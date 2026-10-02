@@ -526,9 +526,17 @@ describe('a search-level TikTok result renders as a related video', () => {
     const text = out.split('\n').filter(l => l.startsWith('0:'))
       .map(l => JSON.parse(l.slice(2))).join('')
 
-    // The photo belongs to Quán A and sits with it; the video belongs to the search and comes last.
+    // The photo belongs to Quán A and sits with it; the video belongs to the search, so it comes
+    // after the place block and its markdown link is complete.
     expect(text.lastIndexOf('Video liên quan')).toBeGreaterThan(text.indexOf('Quán A'))
-    expect(text.trimEnd().endsWith(')')).toBe(true)
+
+    // The video ends the PROSE. It used to end the whole string, but structured marker suffixes
+    // ([TAPPY_SHOPPING], [TAPPY_PLACES]) are appended after the prose by design — they are machine
+    // blocks, not something the reader is meant to end on. So the assertion is that nothing of the
+    // reply's prose follows the link, not that nothing at all does.
+    const firstMarkerAt = text.search(/\[TAPPY_[A-Z]+\]/)
+    const prose = firstMarkerAt === -1 ? text : text.slice(0, firstMarkerAt)
+    expect(prose.trimEnd().endsWith(')')).toBe(true)
   })
 
   it('renders nothing when the search produced no video', async () => {

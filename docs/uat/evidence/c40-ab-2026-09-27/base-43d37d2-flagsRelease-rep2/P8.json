@@ -1,0 +1,164 @@
+{
+  "id": "P8",
+  "text": "Spa nào mở khuya sau 22h ở Quận 3",
+  "parent": null,
+  "status": 200,
+  "ms": 13622,
+  "evidenceId": "e5201738-0423-43c5-9840-789957fc6d1c",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "spa mở khuya sau 22h Quận 3",
+        "location": "Quận 3, TP.HCM",
+        "type": "spa"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Sả Spa Garden",
+      "rating": 4.9,
+      "count": 2217,
+      "hours": "09:00–22:30",
+      "distance_km": 1.2,
+      "address": "40D Phạm Ngọc Thạch, Xuân Hòa, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Sả Spa & Onsen",
+      "rating": 4.9,
+      "count": 2010,
+      "hours": "09:30–23:30",
+      "distance_km": 1.3,
+      "address": "60 Sương Nguyệt Anh, Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Nara Spa | Massage & Hair Spa Quận 3",
+      "rating": 4.9,
+      "count": 1165,
+      "hours": "11:00–21:30",
+      "distance_km": 2.5,
+      "address": "595/74 Đường Nguyễn Đình Chiểu, Bàn Cờ, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Massage Trị Liệu Lụa Spa Quận 3",
+      "rating": 4.8,
+      "count": 587,
+      "hours": "09:00–19:00",
+      "distance_km": 1.1,
+      "address": "179A Hai Bà Trưng, Xuân Hòa, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Mela Spa - Massage gội đầu dưỡng sinh Quận 3",
+      "rating": 5,
+      "count": 256,
+      "hours": "09:00–21:00",
+      "distance_km": 2.6,
+      "address": "224 Đ. Nguyễn Thiện Thuật, Bàn Cờ, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Tỉnh Thức Spa - Spa Quận 3 - Body Massage | Facial Care",
+      "rating": 4.9,
+      "count": 845,
+      "hours": "10:00–20:30",
+      "distance_km": 2.8,
+      "address": "118/54 Trần Quang Diệu, Nhiêu Lộc, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Win Win Spa | Dưỡng Sinh Đông Y Quận 3 | Massage Body Quận 3",
+      "rating": 4.8,
+      "count": 668,
+      "hours": "09:00–21:00",
+      "distance_km": 2.1,
+      "address": "222 Lý Chính Thắng, Nhiêu Lộc, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "AN MIÊN SPA - GỘI ĐẦU THẢO DƯỢC & MASSAGE QUẬN 3",
+      "rating": 4.8,
+      "count": 513,
+      "hours": "09:00–22:00",
+      "distance_km": 2.1,
+      "address": "274/1 Nam Kỳ Khởi Nghĩa, Xuân Hòa, Hồ Chí Minh 72120, Việt Nam"
+    },
+    {
+      "name": "YUBII SPA Quận 3 - Massage và Gội đầu dưỡng sinh",
+      "rating": 4.8,
+      "count": 154,
+      "hours": "10:30–21:30",
+      "distance_km": 2.1,
+      "address": "06 Đ. Kỳ Đồng, Nhiêu Lộc, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Massage SAIGON STAR l Massage Thư Giãn Quận 3",
+      "rating": 4.7,
+      "count": 51,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 0.8,
+      "address": "204 Nguyễn Thị Minh Khai, Xuân Hòa, Hồ Chí Minh, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "Sả Spa Garden",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 2217,
+        "distance_km": 1.2,
+        "open_now": true,
+        "opening_hours": "09:00–22:30"
+      }
+    },
+    {
+      "name": "Sả Spa & Onsen",
+      "role": null,
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 2010,
+        "distance_km": 1.3,
+        "open_now": true,
+        "opening_hours": "09:30–23:30"
+      }
+    },
+    {
+      "name": "Nara Spa | Massage & Hair Spa Quận 3",
+      "role": null,
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 1165,
+        "distance_km": 2.5,
+        "open_now": true,
+        "opening_hours": "11:00–21:30"
+      }
+    }
+  ],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình tìm spa mở khuya ở Quận 3 cho bạn nhé.\n\nMình tìm được 2 spa mở khuya sau 22h ở Quận 3 cho bạn:\n\n**Sả Spa & Onsen** 🌟 **4.9⭐ (2.010 đánh giá Google Maps)**\nMở đến 23:30 — spa này mở muộn nhất trong khu vực. Cách bạn ~1.3km, chuyên dịch vụ spa sức khỏe với đánh giá rất cao từ hơn 2.000 khách hàng.\n\n**Sả Spa Garden** 🌟 **4.9⭐ (2.217 đánh giá Google Maps)**\nMở đến 22:30 — gần nhất với bạn (~1.2km), cũng có rating 4.9 với 2.217 đánh giá. Nếu bạn muốn spa gần và chất lượng cao, đây là lựa chọn tốt.\n\nNgoài ra, **AN MIÊN SPA** (mở đến 22:00) cũng là lựa chọn khác với 4.8⭐ nếu bạn muốn thử gói gội đầu thảo dược.\n\nMình nghiêng về **Sả Spa & Onsen** vì mở muộn nhất (23:30) nên bạn có thời gian linh hoạt hơn khi an khuya. 👍\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website - Sả Spa & Onsen\",\"type\":\"website\",\"url\":\"http://www.saspa.vn/\",\"primary\":true},{\"label\":\"📍 Google Maps - Sả Spa & Onsen\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=12171671680762964051\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Sả Spa Garden gần hơn?|Dịch vụ nào bạn muốn?|Có spa nào khác mở 24h không?[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Spa nào mở khuya sau 22h ở Quận 3"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm spa mở khuya ở Quận 3 cho bạn nhé.\n\nMình tìm được 2 spa mở khuya sau 22h ở Quận 3 cho bạn:\n\n**Sả Spa & Onsen** 🌟 **4.9⭐ (2.010 đánh giá Google Maps)**\nMở đến 23:30 — spa này mở muộn nhất trong khu vực. Cách bạn ~1.3km, chuyên dịch vụ spa sức khỏe với đánh giá rất cao từ hơn 2.000 khách hàng.\n\n**Sả Spa Garden** 🌟 **4.9⭐ (2.217 đánh giá Google Maps)**\nMở đến 22:30 — gần nhất với bạn (~1.2km), cũng có rating 4.9 với 2.217 đánh giá. Nếu bạn muốn spa gần và chất lượng cao, đây là lựa chọn tốt.\n\nNgoài ra, **AN MIÊN SPA** (mở đến 22:00) cũng là lựa chọn khác với 4.8⭐ nếu bạn muốn thử gói gội đầu thảo dược.\n\nMình nghiêng về **Sả Spa & Onsen** vì mở muộn nhất (23:30) nên bạn có thời gian linh hoạt hơn khi an khuya. 👍\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website - Sả Spa & Onsen\",\"type\":\"website\",\"url\":\"http://www.saspa.vn/\",\"primary\":true},{\"label\":\"📍 Google Maps - Sả Spa & Onsen\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=12171671680762964051\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Sả Spa Garden gần hơn?|Dịch vụ nào bạn muốn?|Có spa nào khác mở 24h không?[/FOLLOWUPS]"
+    }
+  ]
+}

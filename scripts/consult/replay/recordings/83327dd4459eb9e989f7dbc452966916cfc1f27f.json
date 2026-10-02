@@ -1,0 +1,59 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "Aniki Nhà Hàng Nhật Quận 1 Quận 1 Ho Chi Minh City",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.7769,106.7009,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:10:19.531Z",
+ "body": {
+  "searchParameters": {
+   "q": "Aniki Nhà Hàng Nhật Quận 1 Quận 1 Ho Chi Minh City",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.7769,106.7009,14z",
+   "engine": "google"
+  },
+  "ll": "@10.7951202,106.6883277,18.0536z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Aniki Nhà Hàng Nhật Quận 1",
+    "address": "112 Trần Khắc Chân, Quận 1, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7951202,
+    "longitude": 106.6909026,
+    "rating": 4.9,
+    "ratingCount": 450,
+    "priceLevel": "100-300 N ₫",
+    "type": "Nhà hàng Nhật Bản",
+    "types": [
+     "Nhà hàng Nhật Bản"
+    ],
+    "website": "https://www.aniki.vn/",
+    "phoneNumber": "+84 944 665 407",
+    "openingHours": {
+     "Thứ Ba": "10:00–14:00, 17:00–22:00",
+     "Thứ Tư": "10:00–14:00, 17:00–22:00",
+     "Thứ Năm": "10:00–14:00, 17:00–22:00",
+     "Thứ Sáu": "10:00–14:00, 17:00–22:00",
+     "Thứ Bảy": "10:00–14:00, 17:00–22:00",
+     "Chủ Nhật": "10:00–14:00, 17:00–22:00",
+     "Thứ Hai": "10:00–14:00, 17:00–22:00"
+    },
+    "bookingLinks": [
+     "https://www.aniki.vn/reservation"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlSvkqKcy1wuTifKTkV7O_UQhvS45rz21IyeQN15Q5_SrJ5HrzXfhUOyNBPthi2KdztcOGHL96Vi6Lwf8fVpOcvLindk7moAVPOJT9mzHSDiUQJJB8avYIUYlrhDIs1LkTotY3AbZjrubnw",
+    "cid": "16756436020149602015",
+    "fid": "0x31752929a3242bbd:0xe88ad1c7ea93c6df",
+    "placeId": "ChIJvSskoykpdTER38aT6sfRiug"
+   }
+  ],
+  "credits": 3
+ }
+}

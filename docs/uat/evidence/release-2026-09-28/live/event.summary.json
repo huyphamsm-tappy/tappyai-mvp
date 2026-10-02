@@ -1,0 +1,20 @@
+{
+  "caseId": "event",
+  "base": "https://uat.tappyai.com",
+  "at": "2026-09-28T06:12:18.717Z",
+  "guest": "anonymous session (token not stored)",
+  "turns": [
+    {
+      "user": "mua vé concert tháng 10 ở Sài Gòn",
+      "status": 200,
+      "ms": 10495,
+      "literalDoubleStar": 14,
+      "unbalancedBoldLines": [],
+      "proseTail": "ụ thể không? 🎵\n\n\n\n🔗 Liên kết chính thức: [BADASS CITY 2026 · Ticketbox](https://ticketbox.vn/badasscity-saigon2026-25170) · [SUPER JUNIOR 20th Anniversary TOUR in HO CHI MINH ... · Ticketbox](https://ticketbox.vn/super-junior-20th-anniversary-tour-in-ho-chi-minh-city-25471) · [U-KNOW PROJECT 26 : SCENE#1 in HO CHI MINH CITY · Ticketbox](https://ticketbox.vn/u-know-project-26-scene1-in-hcm-26405)",
+      "placeActions": [],
+      "shopping": null,
+      "plan": null,
+      "cta": null
+    }
+  ]
+}

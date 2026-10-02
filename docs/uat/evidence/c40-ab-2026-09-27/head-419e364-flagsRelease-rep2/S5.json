@@ -1,0 +1,25 @@
+{
+  "id": "S5",
+  "text": "quà sinh nhật cho bạn gái tầm 1tr",
+  "parent": null,
+  "status": 200,
+  "ms": 6640,
+  "evidenceId": "0c6e4a12-0a13-489a-9075-aa40e7f315fd",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình giúp bạn tìm quà sinh nhật cho bạn gái trong tầm 1 triệu đồng nhé! 🎁\n\nĐể gợi ý đúng ý bạn, mình cần biết thêm:\n- **Bạn gái thích gì?** (trang sức, mỹ phẩm, điện tử, thời trang, phụ kiện, sách...)\n- **Có ưu tiên gì không?** (cái gì bạn biết cô ấy đang cần hoặc muốn)\n\nHoặc nếu bạn muốn mình tìm luôn, có thể nói **một vài loại quà** bạn đang cân nhắc, mình sẽ so sánh giá và chất lượng trên Shopee/Lazada/TikTok Shop để bạn chọn.\n\n[FOLLOWUPS]Trang sức bạc|Tai nghe không dây|Kem dưỡng da|Túi xách|Đồng hồ[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "quà sinh nhật cho bạn gái tầm 1tr"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giúp bạn tìm quà sinh nhật cho bạn gái trong tầm 1 triệu đồng nhé! 🎁\n\nĐể gợi ý đúng ý bạn, mình cần biết thêm:\n- **Bạn gái thích gì?** (trang sức, mỹ phẩm, điện tử, thời trang, phụ kiện, sách...)\n- **Có ưu tiên gì không?** (cái gì bạn biết cô ấy đang cần hoặc muốn)\n\nHoặc nếu bạn muốn mình tìm luôn, có thể nói **một vài loại quà** bạn đang cân nhắc, mình sẽ so sánh giá và chất lượng trên Shopee/Lazada/TikTok Shop để bạn chọn.\n\n[FOLLOWUPS]Trang sức bạc|Tai nghe không dây|Kem dưỡng da|Túi xách|Đồng hồ[/FOLLOWUPS]"
+    }
+  ]
+}

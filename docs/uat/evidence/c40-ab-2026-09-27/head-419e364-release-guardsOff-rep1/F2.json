@@ -1,0 +1,191 @@
+{
+  "id": "F2",
+  "text": "tim quan bun bo ngon o q1 duoi 80k",
+  "parent": null,
+  "status": 200,
+  "ms": 12178,
+  "evidenceId": "923e8504-81dc-40d2-9d8c-f561527a4cf6",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "bún bò Quận 1",
+        "location": "Quận 1, TP.HCM",
+        "type": "restaurant"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Bún Bò Cô Tiên | Bún Bò Ngon Quận 1 | Bún Bò Ngon Bùi Viện",
+      "rating": 5,
+      "count": 8,
+      "price": "1-100.000 ₫",
+      "hours": "08:00–12:30",
+      "address": "84/32 Bùi Viện, Bến Thành, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "BẾP ÔNG CẬU | BÚN BÒ THỐ ĐÁ QUẬN 1",
+      "rating": 4.8,
+      "count": 1011,
+      "price": "1-100.000 ₫",
+      "hours": "06:30–22:00",
+      "address": "4E Võ Thị Sáu, Tân Định, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "BÚN BÒ HUẾ 175 CÔ GIANG QUẬN 1",
+      "rating": 4.8,
+      "count": 63,
+      "price": "1-100.000 ₫",
+      "hours": "06:00–13:00",
+      "address": "175 Cô Giang, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Bún Bò Huế Ty (CN Sài Gòn)",
+      "rating": 4.7,
+      "count": 128,
+      "price": "1-100.000 ₫",
+      "hours": "06:30–13:30, 17:00–22:00",
+      "address": "23 Trần Nguyên Đán, Tân Định, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Bò Né Bà Nũi",
+      "rating": 4.2,
+      "count": 1856,
+      "price": "1-100.000 ₫",
+      "hours": "07:20–22:30",
+      "address": "94 Nguyễn Thái Bình, Phường, Quận 1, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Bún Bò Bò Kho Hà | Bún Bò Ngon Quận 1",
+      "rating": 4.3,
+      "count": 12,
+      "price": "1-100.000 ₫",
+      "hours": "06:00–21:00",
+      "address": "57 Nguyễn Hữu Cầu, Tân Định, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Bún bò 146 Lê Thánh Tôn",
+      "rating": 4.2,
+      "count": 87,
+      "price": "1-100.000 ₫",
+      "hours": "19:30–03:00",
+      "address": "146 Lê Thánh Tôn, Bến Thành, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Bún Bò Huế 24H",
+      "rating": 4.1,
+      "count": 420,
+      "price": "1-100.000 ₫",
+      "hours": "Mở cửa cả ngày",
+      "address": "139 Tôn Thất Đạm, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Chi Rứa Quán | Nhà Hàng Huế Quận 1",
+      "rating": 3.9,
+      "count": 357,
+      "price": "1-100.000 ₫",
+      "hours": "08:30–22:00",
+      "address": "15/29 Nguyễn Thị Minh Khai, Sài Gòn, Hồ Chí Minh 70000, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "Bún Bò Cô Tiên | Bún Bò Ngon Quận 1 | Bún Bò Ngon Bùi Viện",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 5,
+        "reviews": 8,
+        "price_up_to_vnd": 100000,
+        "open_now": false,
+        "opening_hours": "08:00–12:30"
+      }
+    },
+    {
+      "name": "BẾP ÔNG CẬU | BÚN BÒ THỐ ĐÁ QUẬN 1",
+      "role": null,
+      "evidence": {
+        "rating": 4.8,
+        "reviews": 1011,
+        "price_up_to_vnd": 100000,
+        "open_now": true,
+        "opening_hours": "06:30–22:00"
+      }
+    },
+    {
+      "name": "BÚN BÒ HUẾ 175 CÔ GIANG QUẬN 1",
+      "role": null,
+      "evidence": {
+        "rating": 4.8,
+        "reviews": 63,
+        "price_up_to_vnd": 100000,
+        "open_now": false,
+        "opening_hours": "06:00–13:00"
+      }
+    }
+  ],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Địa chỉ 84/32 Bùi Viện, Bến Thành, gần vị trí bạn đang ở.\nChỉ khác là review nhiều hơn nên có thể đông hơn.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Maps - Bún Bò Cô Tiên\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=712999985558320213\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Bếp Ông Cậu có gì khác?|Quán bún bò nào mở 24h?|Tìm quán khác ở Quận 1[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "tim quan bun bo ngon o q1 duoi 80k"
+    },
+    {
+      "role": "assistant",
+      "content": "Địa chỉ 84/32 Bùi Viện, Bến Thành, gần vị trí bạn đang ở.\nChỉ khác là review nhiều hơn nên có thể đông hơn.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Maps - Bún Bò Cô Tiên\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=712999985558320213\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Bếp Ông Cậu có gì khác?|Quán bún bò nào mở 24h?|Tìm quán khác ở Quận 1[/FOLLOWUPS]"
+    }
+  ]
+}

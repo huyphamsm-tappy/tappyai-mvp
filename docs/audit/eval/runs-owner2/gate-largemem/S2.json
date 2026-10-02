@@ -1,0 +1,311 @@
+{
+  "id": "S2",
+  "text": "mua laptop van phong duoi 15tr",
+  "parent": null,
+  "status": 200,
+  "ms": 14506,
+  "evidenceId": "29869d87-f6dd-496e-a6a3-5d57817f0db1",
+  "toolCalls": [
+    {
+      "tool": "search_products",
+      "args": {
+        "query": "laptop văn phòng dưới 15 triệu"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Máy tính xách tay/ Laptop HP",
+      "rating": 4.9,
+      "count": 63,
+      "price": 4490000
+    },
+    {
+      "name": "Laptop HP 15s fq5229TU i3 1215U/8GB/512GB/15.6 inch FHD Win 11 Natural Silver (8U237PA)",
+      "rating": 5,
+      "count": 2,
+      "price": 9800000
+    },
+    {
+      "name": "Laptop Acer Aspire Lite 15 AL15-41P-R3QL NX.J54SV.001 (Ryzen 7 5700U/ Ram 8GB/ SSD 512GB/ Windows 11 Home/ 1Y/ Bạc)",
+      "rating": 5,
+      "count": 3,
+      "price": 12790000
+    },
+    {
+      "name": "Laptop Acer Aspire Lite 15 AL15-71P-517D NX.J7KSV.001 (Intel Core i5-12450H | 16GB | 512GB | Intel UHD | 15.6 inch FHD | Win 11 | Bạc) - Nakio",
+      "rating": 5,
+      "count": 2,
+      "price": 13950000
+    },
+    {
+      "name": "Laptop Lenovo V15 G4 IRU (83A100WRVN) (core I3-1315U/RAM 8GB/256GB SSD/Intel UHD Graphics/15.6\" FHD/NoOS) (Xám)",
+      "rating": 4.5,
+      "count": 54,
+      "price": 11290000
+    },
+    {
+      "name": "Surface Laptop 3 I7-1065G7 | 16Gb | 256GB | TOUCH",
+      "rating": 4.4,
+      "count": 38,
+      "price": 11400000
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "[TAPPY_SHOPPING]{\"v\":1,\"entities\":[{\"key\":\"uncertain:0\",\"name\":\"Máy tính xách tay/ Laptop HP\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":true,\"priceLow\":4490000,\"priceHigh\":4490000,\"image\":\"https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcR4YEew9zSu2fo9IC9wloXQj6KAUQ2hLyNMJt-mxumZPPymVEDtC0sbQqgs-Ki5yvcP1Ke66AlvgttdrxjjGB7cpNjeVyWEjZ_EmsPgSZM\",\"offers\":[{\"seller\":\"Viettablet\",\"url\":\"https://www.google.com/search?ibp=oshop&q=laptop+v%C4%83n+ph%C3%B2ng+d%C6%B0%E1%BB%9Bi+15+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,catalogid:1365506906807070924,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":4490000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.9,\"ratingCount\":63}]},{\"key\":\"uncertain:1\",\"name\":\"Laptop HP 15s fq5229TU i3 1215U/8GB/512GB/15.6 inch FHD Win 11 Natural Silver (8U237PA)\",\"config\":\"8GB · 512GB · 15 inch\",\"specs\":[{\"key\":\"ram\",\"value\":8},{\"key\":\"storage\",\"value\":512},{\"key\":\"size\",\"value\":\"15 inch\"}],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":9800000,\"priceHigh\":9800000,\"image\":\"https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTQtg1_vByywL2ampb54J6B16QPX6g8XIoisxqwUOMLlXDx4uCIxFO09oroA12JV-7PGgkJEr1fFVKQWWrto-L7C6h2Q6mh7IUyHTLE_CVaE1QK9KVL483MCw\",\"offers\":[{\"seller\":\"Manosa VN\",\"url\":\"https://www.google.com/search?ibp=oshop&q=laptop+v%C4%83n+ph%C3%B2ng+d%C6%B0%E1%BB%9Bi+15+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,productid:5175282266357981583,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":9800000,\"currency\":\"VND\",\"condition\":null,\"rating\":5,\"ratingCount\":2}]},{\"key\":\"uncertain:2\",\"name\":\"Laptop Acer Aspire Lite 15 AL15-41P-R3QL NX.J54SV.001 (Ryzen 7 5700U/ Ram 8GB/ SSD 512GB/ Windows 11 Home/ 1Y/ Bạc)\",\"config\":\"8GB · 512GB\",\"specs\":[{\"key\":\"ram\",\"value\":8},{\"key\":\"storage\",\"value\":512}],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":12790000,\"priceHigh\":12790000,\"image\":\"https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQX1Ws_--ZB1DsUXGi4BuF1RyR8xFmEb-mm1MfDQNmfmLIs1iGHeleRchR6beAAebtWWPyIcJyC0lpX_4B-hJp-S5scoYDWLPIhS1aop7RSC76CGflYiI8o\",\"offers\":[{\"seller\":\"Thành Nhân TNC\",\"url\":\"https://www.google.com/search?ibp=oshop&q=laptop+v%C4%83n+ph%C3%B2ng+d%C6%B0%E1%BB%9Bi+15+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,productid:4085269306331750520,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":12790000,\"currency\":\"VND\",\"condition\":null,\"rating\":5,\"ratingCount\":3}]},{\"key\":\"uncertain:3\",\"name\":\"Laptop Acer Aspire Lite 15 AL15-71P-517D NX.J7KSV.001 (Intel Core i5-12450H | 16GB | 512GB | Intel UHD | 15.6 inch FHD | Win 11 | Bạc) - Nakio\",\"config\":\"16GB · 512GB · 15 inch\",\"specs\":[{\"key\":\"ram\",\"value\":16},{\"key\":\"storage\",\"value\":512},{\"key\":\"size\",\"value\":\"15 inch\"}],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":13950000,\"priceHigh\":13950000,\"image\":\"https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTIwU9WzxkVNlF0joQkpBfe2TY5mgMd5BVftZNz7oCxLqtwDlHb-dLY5NKDlraT1s5Ni08PvFuQIwp8XtTb3BQSrR_2O4Aho4A5kbWlI7AM9escJWFG-80w\",\"offers\":[{\"seller\":\"Nakio Computer\",\"url\":\"https://www.google.com/search?ibp=oshop&q=laptop+v%C4%83n+ph%C3%B2ng+d%C6%B0%E1%BB%9Bi+15+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,productid:7949307936769700898,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":13950000,\"currency\":\"VND\",\"condition\":null,\"rating\":5,\"ratingCount\":2}]},{\"key\":\"uncertain:4\",\"name\":\"Laptop Lenovo V15 G4 IRU (83A100WRVN) (core I3-1315U/RAM 8GB/256GB SSD/Intel UHD Graphics/15.6\\\" FHD/NoOS) (Xám)\",\"config\":\"8GB · 256GB\",\"specs\":[{\"key\":\"ram\",\"value\":8},{\"key\":\"storage\",\"value\":256}],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":11290000,\"priceHigh\":11290000,\"image\":\"https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTtVNNw6ZISjypC2TTaGCAmucVTrmPBQemgV_GkM62udZQxJw86q1cCCuoeRiuiNPQ-SukIG_FRodRdvdHZZVx1EUlx12M4JkrZyvHCswvELQW8L92UoMMhcw\",\"offers\":[{\"seller\":\"Hugotech.vn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=laptop+v%C4%83n+ph%C3%B2ng+d%C6%B0%E1%BB%9Bi+15+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,productid:11192077450370609310,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":11290000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.5,\"ratingCount\":54}]},{\"key\":\"uncertain:5\",\"name\":\"Surface Laptop 3 I7-1065G7 | 16Gb | 256GB | TOUCH\",\"config\":\"16GB · 256GB\",\"specs\":[{\"key\":\"ram\",\"value\":16},{\"key\":\"storage\",\"value\":256}],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":11400000,\"priceHigh\":11400000,\"image\":\"https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTESp32fu4PkAePDA54gbR2phUVFDixxCCQ5cgfULYifB71VqQk0zSL91k8_mxrE9A6h4DWPnrtDL_M5u4_KfEAv8mZ4RWZa8ajA_PrYRwt-6Cn6-F30ZxP\",\"offers\":[{\"seller\":\"laptophssv.com\",\"url\":\"https://www.google.com/search?ibp=oshop&q=laptop+v%C4%83n+ph%C3%B2ng+d%C6%B0%E1%BB%9Bi+15+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,productid:2108905979773679840,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":11400000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.4,\"ratingCount\":38}]}],\"requested\":null,\"recommendation\":{\"entityKey\":\"uncertain:0\",\"seller\":\"Viettablet\",\"reasons\":[{\"attribute\":\"rating\",\"evidence\":\"rated 4.9\",\"params\":{\"value\":4.9}},{\"attribute\":\"price\",\"evidence\":\"4490000 VND\",\"params\":{\"priceVnd\":4490000}},{\"attribute\":\"reviewCount\",\"evidence\":\"63 reviews\",\"params\":{\"count\":63}}],\"tradeOff\":{\"attribute\":\"rating\",\"evidence\":\"rated 5\",\"params\":{\"value\":5}},\"conditional\":false}}[/TAPPY_SHOPPING]\n\nMình chọn **Máy tính xách tay/ Laptop HP** — 4.490.000₫, 4.9⭐ (63 đánh giá), tại Viettablet — phù hợp nhất với yêu cầu của bạn trong các kết quả tìm được.\n\nĐây là lựa chọn tiết kiệm nhất trong danh sách.\n\nTuy nhiên, trang hiện tại chưa ghi rõ cấu hình chi tiết của chiếc HP đầu tiên (RAM, chip, dung lượng), nên bạn nên kiểm tra kỹ trước khi mua để chắc chắn nó phù hợp với công việc của bạn.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛒 Tìm trên Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=laptop+v%C4%83n+ph%C3%B2ng+d%C6%B0%E1%BB%9Bi+15+tri%E1%BB%87u\",\"primary\":true},{\"label\":\"📦 Tìm trên Lazada\",\"type\":\"search\",\"url\":\"https://www.lazada.vn/catalog/?q=laptop+v%C4%83n+ph%C3%B2ng+d%C6%B0%E1%BB%9Bi+15+tri%E1%BB%87u\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Laptop nào tốt cho lập trình|Laptop dưới 10 triệu|Laptop chơi game dưới 15 triệu[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "mua laptop van phong duoi 15tr"
+    },
+    {
+      "role": "assistant",
+      "content": "[TAPPY_SHOPPING]{\"v\":1,\"entities\":[{\"key\":\"uncertain:0\",\"name\":\"Máy tính xách tay/ Laptop HP\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":true,\"priceLow\":4490000,\"priceHigh\":4490000,\"image\":\"https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcR4YEew9zSu2fo9IC9wloXQj6KAUQ2hLyNMJt-mxumZPPymVEDtC0sbQqgs-Ki5yvcP1Ke66AlvgttdrxjjGB7cpNjeVyWEjZ_EmsPgSZM\",\"offers\":[{\"seller\":\"Viettablet\",\"url\":\"https://www.google.com/search?ibp=oshop&q=laptop+v%C4%83n+ph%C3%B2ng+d%C6%B0%E1%BB%9Bi+15+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,catalogid:1365506906807070924,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":4490000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.9,\"ratingCount\":63}]},{\"key\":\"uncertain:1\",\"name\":\"Laptop HP 15s fq5229TU i3 1215U/8GB/512GB/15.6 inch FHD Win 11 Natural Silver (8U237PA)\",\"config\":\"8GB · 512GB · 15 inch\",\"specs\":[{\"key\":\"ram\",\"value\":8},{\"key\":\"storage\",\"value\":512},{\"key\":\"size\",\"value\":\"15 inch\"}],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":9800000,\"priceHigh\":9800000,\"image\":\"https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTQtg1_vByywL2ampb54J6B16QPX6g8XIoisxqwUOMLlXDx4uCIxFO09oroA12JV-7PGgkJEr1fFVKQWWrto-L7C6h2Q6mh7IUyHTLE_CVaE1QK9KVL483MCw\",\"offers\":[{\"seller\":\"Manosa VN\",\"url\":\"https://www.google.com/search?ibp=oshop&q=laptop+v%C4%83n+ph%C3%B2ng+d%C6%B0%E1%BB%9Bi+15+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,productid:5175282266357981583,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":9800000,\"currency\":\"VND\",\"condition\":null,\"rating\":5,\"ratingCount\":2}]},{\"key\":\"uncertain:2\",\"name\":\"Laptop Acer Aspire Lite 15 AL15-41P-R3QL NX.J54SV.001 (Ryzen 7 5700U/ Ram 8GB/ SSD 512GB/ Windows 11 Home/ 1Y/ Bạc)\",\"config\":\"8GB · 512GB\",\"specs\":[{\"key\":\"ram\",\"value\":8},{\"key\":\"storage\",\"value\":512}],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":12790000,\"priceHigh\":12790000,\"image\":\"https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQX1Ws_--ZB1DsUXGi4BuF1RyR8xFmEb-mm1MfDQNmfmLIs1iGHeleRchR6beAAebtWWPyIcJyC0lpX_4B-hJp-S5scoYDWLPIhS1aop7RSC76CGflYiI8o\",\"offers\":[{\"seller\":\"Thành Nhân TNC\",\"url\":\"https://www.google.com/search?ibp=oshop&q=laptop+v%C4%83n+ph%C3%B2ng+d%C6%B0%E1%BB%9Bi+15+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,productid:4085269306331750520,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":12790000,\"currency\":\"VND\",\"condition\":null,\"rating\":5,\"ratingCount\":3}]},{\"key\":\"uncertain:3\",\"name\":\"Laptop Acer Aspire Lite 15 AL15-71P-517D NX.J7KSV.001 (Intel Core i5-12450H | 16GB | 512GB | Intel UHD | 15.6 inch FHD | Win 11 | Bạc) - Nakio\",\"config\":\"16GB · 512GB · 15 inch\",\"specs\":[{\"key\":\"ram\",\"value\":16},{\"key\":\"storage\",\"value\":512},{\"key\":\"size\",\"value\":\"15 inch\"}],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":13950000,\"priceHigh\":13950000,\"image\":\"https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTIwU9WzxkVNlF0joQkpBfe2TY5mgMd5BVftZNz7oCxLqtwDlHb-dLY5NKDlraT1s5Ni08PvFuQIwp8XtTb3BQSrR_2O4Aho4A5kbWlI7AM9escJWFG-80w\",\"offers\":[{\"seller\":\"Nakio Computer\",\"url\":\"https://www.google.com/search?ibp=oshop&q=laptop+v%C4%83n+ph%C3%B2ng+d%C6%B0%E1%BB%9Bi+15+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,productid:7949307936769700898,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":13950000,\"currency\":\"VND\",\"condition\":null,\"rating\":5,\"ratingCount\":2}]},{\"key\":\"uncertain:4\",\"name\":\"Laptop Lenovo V15 G4 IRU (83A100WRVN) (core I3-1315U/RAM 8GB/256GB SSD/Intel UHD Graphics/15.6\\\" FHD/NoOS) (Xám)\",\"config\":\"8GB · 256GB\",\"specs\":[{\"key\":\"ram\",\"value\":8},{\"key\":\"storage\",\"value\":256}],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":11290000,\"priceHigh\":11290000,\"image\":\"https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTtVNNw6ZISjypC2TTaGCAmucVTrmPBQemgV_GkM62udZQxJw86q1cCCuoeRiuiNPQ-SukIG_FRodRdvdHZZVx1EUlx12M4JkrZyvHCswvELQW8L92UoMMhcw\",\"offers\":[{\"seller\":\"Hugotech.vn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=laptop+v%C4%83n+ph%C3%B2ng+d%C6%B0%E1%BB%9Bi+15+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,productid:11192077450370609310,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":11290000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.5,\"ratingCount\":54}]},{\"key\":\"uncertain:5\",\"name\":\"Surface Laptop 3 I7-1065G7 | 16Gb | 256GB | TOUCH\",\"config\":\"16GB · 256GB\",\"specs\":[{\"key\":\"ram\",\"value\":16},{\"key\":\"storage\",\"value\":256}],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":11400000,\"priceHigh\":11400000,\"image\":\"https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTESp32fu4PkAePDA54gbR2phUVFDixxCCQ5cgfULYifB71VqQk0zSL91k8_mxrE9A6h4DWPnrtDL_M5u4_KfEAv8mZ4RWZa8ajA_PrYRwt-6Cn6-F30ZxP\",\"offers\":[{\"seller\":\"laptophssv.com\",\"url\":\"https://www.google.com/search?ibp=oshop&q=laptop+v%C4%83n+ph%C3%B2ng+d%C6%B0%E1%BB%9Bi+15+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,productid:2108905979773679840,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":11400000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.4,\"ratingCount\":38}]}],\"requested\":null,\"recommendation\":{\"entityKey\":\"uncertain:0\",\"seller\":\"Viettablet\",\"reasons\":[{\"attribute\":\"rating\",\"evidence\":\"rated 4.9\",\"params\":{\"value\":4.9}},{\"attribute\":\"price\",\"evidence\":\"4490000 VND\",\"params\":{\"priceVnd\":4490000}},{\"attribute\":\"reviewCount\",\"evidence\":\"63 reviews\",\"params\":{\"count\":63}}],\"tradeOff\":{\"attribute\":\"rating\",\"evidence\":\"rated 5\",\"params\":{\"value\":5}},\"conditional\":false}}[/TAPPY_SHOPPING]\n\nMình chọn **Máy tính xách tay/ Laptop HP** — 4.490.000₫, 4.9⭐ (63 đánh giá), tại Viettablet — phù hợp nhất với yêu cầu của bạn trong các kết quả tìm được.\n\nĐây là lựa chọn tiết kiệm nhất trong danh sách.\n\nTuy nhiên, trang hiện tại chưa ghi rõ cấu hình chi tiết của chiếc HP đầu tiên (RAM, chip, dung lượng), nên bạn nên kiểm tra kỹ trước khi mua để chắc chắn nó phù hợp với công việc của bạn.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛒 Tìm trên Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=laptop+v%C4%83n+ph%C3%B2ng+d%C6%B0%E1%BB%9Bi+15+tri%E1%BB%87u\",\"primary\":true},{\"label\":\"📦 Tìm trên Lazada\",\"type\":\"search\",\"url\":\"https://www.lazada.vn/catalog/?q=laptop+v%C4%83n+ph%C3%B2ng+d%C6%B0%E1%BB%9Bi+15+tri%E1%BB%87u\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Laptop nào tốt cho lập trình|Laptop dưới 10 triệu|Laptop chơi game dưới 15 triệu[/FOLLOWUPS]"
+    }
+  ],
+  "toolResults": [
+    {
+      "query": "laptop văn phòng dưới 15 triệu",
+      "source": "Google Shopping (Serper)",
+      "search_results": [
+        {
+          "title": "Máy tính xách tay/ Laptop HP",
+          "link": "https://www.google.com/search?ibp=oshop&q=laptop+v%C4%83n+ph%C3%B2ng+d%C6%B0%E1%BB%9Bi+15+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,catalogid:1365506906807070924,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "price": 4490000,
+          "price_vnd": 4490000,
+          "source": "Viettablet",
+          "rating": 4.9,
+          "rating_count": 63,
+          "product_id": "1365506906807070924",
+          "has_purchase": true,
+          "has_photo": true
+        },
+        {
+          "title": "Laptop HP 15s fq5229TU i3 1215U/8GB/512GB/15.6 inch FHD Win 11 Natural Silver (8U237PA)",
+          "link": "https://www.google.com/search?ibp=oshop&q=laptop+v%C4%83n+ph%C3%B2ng+d%C6%B0%E1%BB%9Bi+15+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,productid:5175282266357981583,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "price": 9800000,
+          "price_vnd": 9800000,
+          "source": "Manosa VN",
+          "rating": 5,
+          "rating_count": 2,
+          "product_id": "5175282266357981583",
+          "ram_gb": 8,
+          "storage_gb": 512,
+          "spec_source": "Laptop HP 15s fq5229TU i3 1215U/8GB/512GB/15.6 inch FHD Win 11 Natural Silver (8U237PA)",
+          "has_purchase": true,
+          "has_photo": true
+        },
+        {
+          "title": "Laptop Acer Aspire Lite 15 AL15-41P-R3QL NX.J54SV.001 (Ryzen 7 5700U/ Ram 8GB/ SSD 512GB/ Windows 11 Home/ 1Y/ Bạc)",
+          "link": "https://www.google.com/search?ibp=oshop&q=laptop+v%C4%83n+ph%C3%B2ng+d%C6%B0%E1%BB%9Bi+15+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,productid:4085269306331750520,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "price": 12790000,
+          "price_vnd": 12790000,
+          "source": "Thành Nhân TNC",
+          "rating": 5,
+          "rating_count": 3,
+          "product_id": "4085269306331750520",
+          "ram_gb": 8,
+          "storage_gb": 512,
+          "spec_source": "Laptop Acer Aspire Lite 15 AL15-41P-R3QL NX.J54SV.001 (Ryzen 7 5700U/ Ram 8GB/ SSD 512GB/ Windows 11 Home/ 1Y/ Bạc)",
+          "has_purchase": true,
+          "has_photo": true
+        },
+        {
+          "title": "Laptop Acer Aspire Lite 15 AL15-71P-517D NX.J7KSV.001 (Intel Core i5-12450H | 16GB | 512GB | Intel UHD | 15.6 inch FHD | Win 11 | Bạc) - Nakio",
+          "link": "https://www.google.com/search?ibp=oshop&q=laptop+v%C4%83n+ph%C3%B2ng+d%C6%B0%E1%BB%9Bi+15+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,productid:7949307936769700898,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "price": 13950000,
+          "price_vnd": 13950000,
+          "source": "Nakio Computer",
+          "rating": 5,
+          "rating_count": 2,
+          "product_id": "7949307936769700898",
+          "ram_gb": 16,
+          "storage_gb": 512,
+          "spec_source": "Laptop Acer Aspire Lite 15 AL15-71P-517D NX.J7KSV.001 (Intel Core i5-12450H | 16GB | 512GB | Intel UHD | 15.6 inch FHD | Win 11 | Bạc) - Nakio",
+          "has_purchase": true,
+          "has_photo": true
+        },
+        {
+          "title": "Laptop Lenovo V15 G4 IRU (83A100WRVN) (core I3-1315U/RAM 8GB/256GB SSD/Intel UHD Graphics/15.6\" FHD/NoOS) (Xám)",
+          "link": "https://www.google.com/search?ibp=oshop&q=laptop+v%C4%83n+ph%C3%B2ng+d%C6%B0%E1%BB%9Bi+15+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,productid:11192077450370609310,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "price": 11290000,
+          "price_vnd": 11290000,
+          "source": "Hugotech.vn",
+          "rating": 4.5,
+          "rating_count": 54,
+          "product_id": "11192077450370609310",
+          "ram_gb": 8,
+          "storage_gb": 256,
+          "spec_source": "Laptop Lenovo V15 G4 IRU (83A100WRVN) (core I3-1315U/RAM 8GB/256GB SSD/Intel UHD Graphics/15.6\" FHD/NoOS) (Xám)",
+          "has_purchase": true,
+          "has_photo": true
+        },
+        {
+          "title": "Surface Laptop 3 I7-1065G7 | 16Gb | 256GB | TOUCH",
+          "link": "https://www.google.com/search?ibp=oshop&q=laptop+v%C4%83n+ph%C3%B2ng+d%C6%B0%E1%BB%9Bi+15+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,productid:2108905979773679840,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "price": 11400000,
+          "price_vnd": 11400000,
+          "source": "laptophssv.com",
+          "rating": 4.4,
+          "rating_count": 38,
+          "product_id": "2108905979773679840",
+          "ram_gb": 16,
+          "storage_gb": 256,
+          "spec_source": "Surface Laptop 3 I7-1065G7 | 16Gb | 256GB | TOUCH",
+          "has_purchase": true,
+          "has_photo": true
+        }
+      ],
+      "links": [
+        {
+          "name": "Shopee",
+          "url": "https://shopee.vn/search?keyword=laptop%20v%C4%83n%20ph%C3%B2ng%20d%C6%B0%E1%BB%9Bi%2015%20tri%E1%BB%87u"
+        },
+        {
+          "name": "Lazada",
+          "url": "https://www.lazada.vn/catalog/?q=laptop%20v%C4%83n%20ph%C3%B2ng%20d%C6%B0%E1%BB%9Bi%2015%20tri%E1%BB%87u"
+        }
+      ],
+      "note": "Gia tham khao tu ket qua tim kiem hien tai, co the da thay doi theo thoi gian va phien ban san pham - bam link de xem gia chinh xac va mua hang.",
+      "_tappy_total_found": 23,
+      "_tappy_ranking": {
+        "pick": "Máy tính xách tay/ Laptop HP",
+        "decided_by": [
+          {
+            "attribute": "rating",
+            "evidence": "rated 4.9 - Laptop HP 15s fq5229TU i3 1215U/8GB/512GB/15.6 inch FHD Win 11 Natural Silver (8U237PA): rated 5 (KHONG duoc goi pick la \"nhat\" o rating)"
+          },
+          {
+            "attribute": "price",
+            "evidence": "4490000 VND"
+          },
+          {
+            "attribute": "reviewCount",
+            "evidence": "63 reviews"
+          }
+        ],
+        "not_chosen": "Laptop HP 15s fq5229TU i3 1215U/8GB/512GB/15.6 inch FHD Win 11 Natural Silver (8U237PA)",
+        "not_chosen_leads_on": {
+          "attribute": "rating",
+          "evidence": "rated 5"
+        }
+      },
+      "_tappy_evidence": "\n\n===== BANG CHUNG QUYET DINH (DU LIEU THAT, DA CHOT) =====\nHe thong da chon tu du lieu that. Moi con so ben duoi da duoc chot.\n\nDA CHON: Máy tính xách tay/ Laptop HP\n  - noi ban: Viettablet\n  - gia: 4490000 VND\n  - danh gia san pham: 4.9   so luot: 63\n  - RAM: KHONG CO DU LIEU   dung luong: KHONG CO DU LIEU\n  - chip: KHONG CO DU LIEU\n  - tinh trang/nguon goc: KHONG CO DU LIEU\n  - bao hanh: KHONG CO DU LIEU\n\nPHUONG AN 2: Laptop HP 15s fq5229TU i3 1215U/8GB/512GB/15.6 inch FHD Win 11 Natural Silver (8U237PA)\n  - noi ban: Manosa VN\n  - gia: 9800000 VND\n  - danh gia san pham: 5   so luot: 2\n  - RAM: 8GB   dung luong: 512GB\n  - chip: KHONG CO DU LIEU\n  - tinh trang/nguon goc: KHONG CO DU LIEU\n  - bao hanh: KHONG CO DU LIEU\n  - hon o diem: rating — rated 5\n\nCAC LUA CHON KHAC (chenh lech gia so voi lua chon da chon, con so that):\n  - Laptop Acer Aspire Lite 15 AL15-41P-R3QL NX.J54SV.001 (Ryzen 7 5700U/ Ram 8GB/ SSD 512GB/ Windows 11 Home/ 1Y/ Bạc) | Thành Nhân TNC | 12790000 VND | chenh: 8300000 VND\n  - Laptop Acer Aspire Lite 15 AL15-71P-517D NX.J7KSV.001 (Intel Core i5-12450H | 16GB | 512GB | Intel UHD | 15.6 inch FHD | Win 11 | Bạc) - Nakio | Nakio Computer | 13950000 VND | chenh: 9460000 VND\n  - Laptop Lenovo V15 G4 IRU (83A100WRVN) (core I3-1315U/RAM 8GB/256GB SSD/Intel UHD Graphics/15.6\" FHD/NoOS) (Xám) | Hugotech.vn | 11290000 VND | chenh: 6800000 VND\n  - Surface Laptop 3 I7-1065G7 | 16Gb | 256GB | TOUCH | laptophssv.com | 11400000 VND | chenh: 6910000 VND\n\nLY DO DA CHON: rating — rated 4.9; price — 4490000 VND; reviewCount — 63 reviews\n\n\nTONG SO TIN DANG TIM DUOC: 23 (danh sach tren la phan da chon loc).\n\nUSER HOI CAU HINH: chip=KHONG CO DU LIEU, RAM=KHONG CO DU LIEU, dung luong=KHONG CO DU LIEU\nCHUA DU BANG CHUNG de khang dinh tin dang nay dung cau hinh user hoi. PHAI noi ro la tieu de khong ghi du, KHONG duoc coi nhu khop.\n\nCHI DUOC NOI NHUNG DIEU SAU (ngoai ra khong duoc khang dinh them thuoc tinh nao):\n  - ten tin dang: Máy tính xách tay/ Laptop HP\n  - noi ban: Viettablet\n  - gia: 4490000 VND (con so chinh xac, KHONG lam tron sang \"khoang\")\n  - danh gia san pham: 4.9 (KHONG phai Google Maps)\n  - so luot danh gia: 63\n\nKHONG CO DU LIEU VE: RAM, dung luong, chip, tinh trang/nguon goc (chinh hang, like new, cu, sealed, refurb), bao hanh.\nLUAT CUNG:\n- Nhung muc ghi \"KHONG CO DU LIEU\" nghia la KHONG AI NOI — KHONG phai bang 0, KHONG phai la \"khong co\".\n  TUYET DOI KHONG doan, KHONG suy ra tu ten shop, ten mien, uy tin, gia, thuong hieu, hay tin dang khac.\n- Neu user hoi ve mot muc KHONG CO DU LIEU: noi thang la nguon hien tai khong ghi.\n- Gia phai doc dung con so tren, KHONG duoc noi \"khoang\", KHONG duoc lam tron.\n- Danh gia o tren la danh gia SAN PHAM. KHONG duoc goi no la Google Maps hay bat ky nguon nao khac.\n- Chenh lech gia phai dung dung con so \"chenh\" o tren, KHONG duoc uoc luong.\n- Neu khong co diem nao chung minh duoc phuong an 2 hon: noi thang la khong co danh doi nao duoc chung minh,\n  TUYET DOI KHONG bia ra mot diem tru.\n==========================================",
+      "_tappy_synthesis": {
+        "ban_hoi": null,
+        "nhom_san_pham": [
+          {
+            "name": "Máy tính xách tay/ Laptop HP",
+            "config": "",
+            "offerCount": 1,
+            "priceLow": 4490000,
+            "priceHigh": 4490000,
+            "sellers": [
+              "Viettablet"
+            ],
+            "recommended": true,
+            "matchesRequest": "chua_ro"
+          },
+          {
+            "name": "Laptop HP 15s fq5229TU i3 1215U/8GB/512GB/15.6 inch FHD Win 11 Natural Silver (8U237PA)",
+            "config": "8GB · 512GB · 15 inch",
+            "offerCount": 1,
+            "priceLow": 9800000,
+            "priceHigh": 9800000,
+            "sellers": [
+              "Manosa VN"
+            ],
+            "recommended": false,
+            "matchesRequest": "chua_ro"
+          },
+          {
+            "name": "Laptop Acer Aspire Lite 15 AL15-41P-R3QL NX.J54SV.001 (Ryzen 7 5700U/ Ram 8GB/ SSD 512GB/ Windows 11 Home/ 1Y/ Bạc)",
+            "config": "8GB · 512GB",
+            "offerCount": 1,
+            "priceLow": 12790000,
+            "priceHigh": 12790000,
+            "sellers": [
+              "Thành Nhân TNC"
+            ],
+            "recommended": false,
+            "matchesRequest": "chua_ro"
+          },
+          {
+            "name": "Laptop Acer Aspire Lite 15 AL15-71P-517D NX.J7KSV.001 (Intel Core i5-12450H | 16GB | 512GB | Intel UHD | 15.6 inch FHD | Win 11 | Bạc) - Nakio",
+            "config": "16GB · 512GB · 15 inch",
+            "offerCount": 1,
+            "priceLow": 13950000,
+            "priceHigh": 13950000,
+            "sellers": [
+              "Nakio Computer"
+            ],
+            "recommended": false,
+            "matchesRequest": "chua_ro"
+          },
+          {
+            "name": "Laptop Lenovo V15 G4 IRU (83A100WRVN) (core I3-1315U/RAM 8GB/256GB SSD/Intel UHD Graphics/15.6\" FHD/NoOS) (Xám)",
+            "config": "8GB · 256GB",
+            "offerCount": 1,
+            "priceLow": 11290000,
+            "priceHigh": 11290000,
+            "sellers": [
+              "Hugotech.vn"
+            ],
+            "recommended": false,
+            "matchesRequest": "chua_ro"
+          },
+          {
+            "name": "Surface Laptop 3 I7-1065G7 | 16Gb | 256GB | TOUCH",
+            "config": "16GB · 256GB",
+            "offerCount": 1,
+            "priceLow": 11400000,
+            "priceHigh": 11400000,
+            "sellers": [
+              "laptophssv.com"
+            ],
+            "recommended": false,
+            "matchesRequest": "chua_ro"
+          }
+        ],
+        "de_xuat": {
+          "noi_ban": "Viettablet",
+          "ly_do": [
+            {
+              "attribute": "rating",
+              "evidence": "rated 4.9",
+              "params": {
+                "value": 4.9
+              }
+            },
+            {
+              "attribute": "price",
+              "evidence": "4490000 VND",
+              "params": {
+                "priceVnd": 4490000
+              }
+            },
+            {
+              "attribute": "reviewCount",
+              "evidence": "63 reviews",
+              "params": {
+                "count": 63
+              }
+            }
+          ],
+          "danh_doi": {
+            "attribute": "rating",
+            "evidence": "rated 5",
+            "params": {
+              "value": 5
+            }
+          },
+          "nghieng_ve": false
+        }
+      }
+    }
+  ],
+  "frames8Raw": []
+}

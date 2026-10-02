@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Ốp lưng UAG iPhone 17 Pro Max site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:41:09.649Z",
+ "body": {
+  "searchParameters": {
+   "q": "Ốp lưng UAG iPhone 17 Pro Max site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "[iPhone 17 Pro Max] Ốp lưng UAG/ ZAGG/ PITAKA chống ...",
+    "link": "https://shopee.vn/-iPhone-17-Pro-Max-%E1%BB%90p-l%C6%B0ng-UAG-ZAGG-PITAKA-ch%E1%BB%91ng-s%E1%BB%91c-b%E1%BA%A3o-h%C3%A0nh-ch%E1%BB%91ng-%E1%BB%91-v%C3%A0ng-H%C3%A0ng-ch%C3%ADnh-h%C3%A3ng-i.206824363.25796994129",
+    "snippet": "Mua [iPhone 17 Pro Max] Ốp lưng UAG/ ZAGG/ PITAKA chống sốc, bảo hành chống ố vàng - Hàng chính hãng giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 5,
+    "ratingCount": 12,
+    "position": 1
+   },
+   {
+    "title": "Ốp lưng UAG Monarch Pro w Magnetic cho iPhone 17 ...",
+    "link": "https://shopee.vn/%E1%BB%90p-l%C6%B0ng-UAG-Monarch-Pro-w-Magnetic-cho-iPhone-17-Pro-Max-6.9-inch--i.241319331.43818320892",
+    "snippet": "Mua Ốp lưng UAG Monarch Pro w Magnetic cho iPhone 17 Pro Max [6.9 inch] giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, ...",
+    "position": 2
+   },
+   {
+    "title": "Ốp lưng từ tính UAG Meteorite cho iphone 18 Pro Max 17 ...",
+    "link": "https://shopee.vn/%E1%BB%90p-l%C6%B0ng-t%E1%BB%AB-t%C3%ADnh-UAG-Meteorite-cho-iPhone-17-Pro-Max-17Air-16-15-14-13-Promax-V%E1%BB%8F-b%E1%BA%A3o-v%E1%BB%87-ch%E1%BB%91ng-s%E1%BB%91c-i.1135944486.57103900194",
+    "snippet": "Ốp lưng từ tính UAG Meteorite cho iphone 18 Pro Max 17 Pro Max Air 16 15 14 13 Promax Vỏ bảo vệ chống sốc. outline green truck icon.",
+    "rating": 5,
+    "ratingCount": 2,
+    "position": 3
+   },
+   {
+    "title": "[Chính hãng] UAG Plyo Ốp iPhone 17 Pro / 17 Pro Max có ...",
+    "link": "https://shopee.vn/-Ch%C3%ADnh-h%C3%A3ng-UAG-Plyo-%E1%BB%90p-iPhone-17-Pro-17-Pro-Max-c%C3%B3-magtic-trong-su%E1%BB%91t-m%C3%A0u-m%C3%A1y-%C4%91%E1%BA%B9p-i.51941513.24478623608",
+    "snippet": "Mua [Chính hãng] UAG Plyo Ốp iPhone 17 Pro / 17 Pro Max có magtic trong suốt màu máy đẹp giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 5,
+    "ratingCount": 2,
+    "position": 4
+   },
+   {
+    "title": "Ốp lưng UAG Civilian cho iPhone 17 Pro Max - Olive/Orange",
+    "link": "https://shopee.vn/%E1%BB%90p-l%C6%B0ng-UAG-Civilian-cho-iPhone-17-Pro-Max-Olive-Orange-B%E1%BA%A3o-h%C3%A0nh-12-th%C3%A1ng-i.1383043614.41968795291",
+    "snippet": "Mua Ốp lưng UAG Civilian cho iPhone 17 Pro Max - Olive/Orange - Bảo hành 12 tháng giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, ...",
+    "position": 5
+   },
+   {
+    "title": "Ốp lưng UAG Civilian cho iPhone 17 Pro Max - Mallard",
+    "link": "https://shopee.vn/%E1%BB%90p-l%C6%B0ng-UAG-Civilian-cho-iPhone-17-Pro-Max-Mallard-B%E1%BA%A3o-h%C3%A0nh-12-th%C3%A1ng-i.1383043614.42618784130",
+    "snippet": "Mua Ốp lưng UAG Civilian cho iPhone 17 Pro Max - Mallard - Bảo hành 12 tháng giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, ...",
+    "position": 6
+   },
+   {
+    "title": "Ốp Lưng Trong Suốt Chống Sốc Sạc Không Dây Từ Tính UAG ...",
+    "link": "https://shopee.vn/%E1%BB%90p-L%C6%B0ng-Trong-Su%E1%BB%91t-Ch%E1%BB%91ng-S%E1%BB%91c-S%E1%BA%A1c-Kh%C3%B4ng-D%C3%A2y-T%E1%BB%AB-T%C3%ADnh-UAG-cho-iPhone-17-Pro-Max-17-Pro-17-Scout-Clear-Magnetic-i.1234615703.26592305598",
+    "snippet": "Ốp Lưng Trong Suốt Chống Sốc Sạc Không Dây Từ Tính UAG cho iPhone 17 Pro Max / 17 Pro / 17, Scout Clear Magnetic. outline grey truck icon. Không hỗ trợ.",
+    "position": 7
+   },
+   {
+    "title": "Ốp lưng UAG Pathfinder Claer cho iPhone 17 Pro Max",
+    "link": "https://shopee.vn/%E1%BB%90p-l%C6%B0ng-UAG-Pathfinder-Claer-cho-iPhone-17-Pro-Max-Active-Neon-B%E1%BA%A3o-h%C3%A0nh-12-th%C3%A1ng-i.1383043614.43268930963",
+    "snippet": "Mua Ốp lưng UAG Pathfinder Claer cho iPhone 17 Pro Max - Active Neon - Bảo hành 12 tháng giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

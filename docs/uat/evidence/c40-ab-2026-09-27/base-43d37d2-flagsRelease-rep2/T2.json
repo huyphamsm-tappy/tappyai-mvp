@@ -1,0 +1,46 @@
+{
+  "id": "T2",
+  "text": "khach san da nang gan bien duoi 1tr/dem",
+  "parent": null,
+  "status": 200,
+  "ms": 13410,
+  "evidenceId": "323c7f72-e15f-422c-8680-38c41787468d",
+  "toolCalls": [
+    {
+      "tool": "get_hotel_prices",
+      "args": {
+        "location": "Đà Nẵng"
+      }
+    }
+  ],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình tìm khách sạn Đà Nẵng gần biển trong tầm giá dưới 1 triệu cho bạn nhé.\n\nMình thấy danh sách khách sạn Đà Nẵng gần biển, nhưng cần xem giá cụ thể để chắc nằm trong tầm 1 triệu. Hệ thống chưa hiển thị giá chi tiết từ Booking/Agoda — bạn cần bấm vào link để xem giá realtime theo ngày bạn muốn lưu trú.\n\n Bạn có thể kiểm tra giá tại [Booking.com](https://www.booking.com/searchresults.vi.html?ss=%C4%90%C3%A0%20N%E1%BA%B5ng) hoặc Agoda để xem có phòng nào dưới 1 triệu không.\n\nBạn định check-in ngày nào để mình tìm giá chính xác hơn? 🏨\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🏨 Booking.com - M Hotel Da Nang\",\"type\":\"booking\",\"url\":\"https://www.booking.com/searchresults.vi.html?ss=M+Hotel+Da+Nang\",\"primary\":true},{\"label\":\"📍 Google Maps - M Hotel Da Nang\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=7069989189938949055\",\"primary\":false}]}[/CTA_BUTTONS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "khach san da nang gan bien duoi 1tr/dem"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm khách sạn Đà Nẵng gần biển trong tầm giá dưới 1 triệu cho bạn nhé.\n\nMình thấy danh sách khách sạn Đà Nẵng gần biển, nhưng cần xem giá cụ thể để chắc nằm trong tầm 1 triệu. Hệ thống chưa hiển thị giá chi tiết từ Booking/Agoda — bạn cần bấm vào link để xem giá realtime theo ngày bạn muốn lưu trú.\n\n Bạn có thể kiểm tra giá tại [Booking.com](https://www.booking.com/searchresults.vi.html?ss=%C4%90%C3%A0%20N%E1%BA%B5ng) hoặc Agoda để xem có phòng nào dưới 1 triệu không.\n\nBạn định check-in ngày nào để mình tìm giá chính xác hơn? 🏨\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🏨 Booking.com - M Hotel Da Nang\",\"type\":\"booking\",\"url\":\"https://www.booking.com/searchresults.vi.html?ss=M+Hotel+Da+Nang\",\"primary\":true},{\"label\":\"📍 Google Maps - M Hotel Da Nang\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=7069989189938949055\",\"primary\":false}]}[/CTA_BUTTONS]"
+    }
+  ]
+}

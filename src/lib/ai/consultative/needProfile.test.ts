@@ -355,3 +355,57 @@ describe('NP-PRIO-02 — a spec noun with an evaluative modifier IS a request', 
     expect(keys('dung lượng pin tốt')).not.toContain('storage')
   })
 })
+
+// ── Phase D (2026-09-20): entertainment VENUES the lexicon must know ──
+// Measured live (run 19): "rạp CGV Vincom Đồng Khởi" matched no venue noun, the domain stayed null
+// and the whole consultative stack stood down (v1Active:false) on a cinema turn.
+describe('Phase D — cinema chains, karaoke, water parks, aquariums are entertainment venues', () => {
+  it.each([
+    'tối nay rạp CGV Vincom Đồng Khởi chiếu phim gì?',
+    'rạp Galaxy Nguyễn Du có suất nào tối nay?',
+    'karaoke gần đây cho 10 người',
+    'công viên nước nào gần Sài Gòn cho trẻ em?',
+    'thủy cung ở đâu gần đây?',
+    'chỗ chơi bowling gần Quận 7',
+  ])('%s → entertainment / places', (text) => {
+    const p = deriveNeedProfile(turns(text))
+    expect(p.domain).toBe('places')
+    expect(p.subject).toBe('entertainment')
+  })
+
+  it('a Galaxy phone is still a phone', () => {
+    expect(deriveNeedProfile(turns('mua điện thoại Galaxy S24 ở đâu rẻ?')).subject).toBe('phone')
+    expect(deriveNeedProfile(turns('Galaxy Cinema Kinh Dương Vương có gần không?')).subject).toBe('entertainment')
+  })
+})
+
+describe('E3 — a message that opens with a buy verb is shopping whatever venue noun follows', () => {
+  it('"mua tinh dầu massage body chính hãng online" → shopping, no spa subject (measured PP2)', () => {
+    const p = deriveNeedProfile(turns('mua tinh dầu massage body chính hãng online'))
+    expect(p.domain).toBe('shopping')
+    expect(p.subject).toBeNull()
+  })
+  it('"loa karaoke gia đình" is a speaker, not the karaoke venue kind (measured EP1)', () => {
+    const p = deriveNeedProfile(turns('loa karaoke gia đình dưới 3 triệu loại nào hát hay'))
+    expect(p.domain).toBe('shopping')
+  })
+})
+
+// UAT4 A/B (27 Sep 2026): a district written the way users write it left the location empty.
+describe('location — every district the route recognises', () => {
+  const loc = (...turns: string[]) => deriveNeedProfile(turns.map(content => ({ role: 'user', content }))).location.text
+  it('"q1", named districts and unaccented forms', () => {
+    expect(loc('tim quan bun bo ngon o q1 duoi 80k')).toBe('Quận 1')
+    expect(loc('Karaoke cho 10 người tầm 100k/người Gò Vấp')).toBe('Gò Vấp')
+    expect(loc('cafe Bình Thạnh yên tĩnh')).toBe('Bình Thạnh')
+    expect(loc('nha hang phu nhuan')).toBe('Phú Nhuận')
+  })
+  it('the spelled-out form and the city list are read as before; no district ⇒ still null', () => {
+    expect(loc('quán ốc ngon quận 4')).toBe('quan 4')
+    expect(loc('ăn gì ngon giờ')).toBeNull()
+    expect(loc('mua tai nghe 10 người dùng')).toBeNull()
+  })
+  it('a district named in a later turn replaces the earlier one', () => {
+    expect(loc('karaoke cho 10 người ở q1', 'thôi Gò Vấp đi')).toBe('Gò Vấp')
+  })
+})

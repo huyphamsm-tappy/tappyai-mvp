@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Khách Sạn Dalat Palace",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T02:36:32.023Z",
+ "body": {
+  "searchParameters": {
+   "q": "Khách Sạn Dalat Palace",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Khách sạn Dalat Palace – Wikipedia tiếng Việt",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/0/04/Dalat_Palace_Hotel.jpg?utm_source=vi.wikipedia.org&utm_campaign=index&utm_content=original",
+    "imageWidth": 3066,
+    "imageHeight": 2063,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqR7Hjn32olZs5805ZHmEcBFjs3tbZVZq3SRE3OeEJhw&s=10",
+    "thumbnailWidth": 545,
+    "thumbnailHeight": 366,
+    "source": "Wikipedia",
+    "domain": "vi.wikipedia.org",
+    "link": "https://vi.wikipedia.org/wiki/Kh%C3%A1ch_s%E1%BA%A1n_Dalat_Palace",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fupload.wikimedia.org%2Fwikipedia%2Fcommons%2F0%2F04%2FDalat_Palace_Hotel.jpg%3Futm_source%3Dvi.wikipedia.org%26utm_campaign%3Dindex%26utm_content%3Doriginal&tbnid=lVgosnKNg4RN4M&imgrefurl=https%3A%2F%2Fvi.wikipedia.org%2Fwiki%2FKh%25C3%25A1ch_s%25E1%25BA%25A1n_Dalat_Palace&docid=BgrZB39kVSH0SM&w=3066&h=2063",
+    "position": 1
+   },
+   {
+    "title": "Chào Mừng – Dalat Palace Heritage Hotel",
+    "imageUrl": "https://www.dalatpalacehotel.com/wp-content/uploads/elementor/thumbs/3-3-r9uh9nghwss3m4lsyuzd45tvd0szqca3kqprtxx5ws.jpg",
+    "imageWidth": 1340,
+    "imageHeight": 670,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-8MpEZPANJ0ag8ep29CQZ-2y_YH5KTwAmivIV7aCphQ&s=10",
+    "thumbnailWidth": 738,
+    "thumbnailHeight": 369,
+    "source": "www.dalatpalacehotel.com",
+    "domain": "www.dalatpalacehotel.com",
+    "link": "https://www.dalatpalacehotel.com/chao-mung/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.dalatpalacehotel.com%2Fwp-content%2Fuploads%2Felementor%2Fthumbs%2F3-3-r9uh9nghwss3m4lsyuzd45tvd0szqca3kqprtxx5ws.jpg&tbnid=EGe2S8xNusrRqM&imgrefurl=https%3A%2F%2Fwww.dalatpalacehotel.com%2Fchao-mung%2F&docid=-MbH9bkt8Eh3VM&w=1340&h=670",
+    "position": 2
+   },
+   {
+    "title": "Chào Mừng – Dalat Palace Heritage Hotel",
+    "imageUrl": "https://www.dalatpalacehotel.com/wp-content/uploads/elementor/thumbs/5--r9uh9pc6aguo9cj2nvsm95csjsjq5qhk900qshudkc.jpg",
+    "imageWidth": 1340,
+    "imageHeight": 670,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRo1pjXkDXXlzn5bxPPQInS-Bvq-uClF2WT9hVEZ1JfFA&s=10",
+    "thumbnailWidth": 738,
+    "thumbnailHeight": 369,
+    "source": "www.dalatpalacehotel.com",
+    "domain": "www.dalatpalacehotel.com",
+    "link": "https://www.dalatpalacehotel.com/chao-mung/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.dalatpalacehotel.com%2Fwp-content%2Fuploads%2Felementor%2Fthumbs%2F5--r9uh9pc6aguo9cj2nvsm95csjsjq5qhk900qshudkc.jpg&tbnid=4mhC36eqZbJjrM&imgrefurl=https%3A%2F%2Fwww.dalatpalacehotel.com%2Fchao-mung%2F&docid=-MbH9bkt8Eh3VM&w=1340&h=670",
+    "position": 3
+   },
+   {
+    "title": "Dalat Palace Heritage Hotel, Đà Lạt (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/247303492.jpg?k=d552b21cafc096f1c7e7fd5d836c78440ec1185a135cf667dbdea9c0c3907e67&o=",
+    "imageWidth": 1024,
+    "imageHeight": 575,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9O3dhMMChS4a_nfrDMrl4ON8-Xd7gAwr2tsYSG7HfIA&s=10",
+    "thumbnailWidth": 738,
+    "thumbnailHeight": 414,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/dalat-palace.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F247303492.jpg%3Fk%3Dd552b21cafc096f1c7e7fd5d836c78440ec1185a135cf667dbdea9c0c3907e67%26o%3D&tbnid=w_wmVL_ABYZe7M&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fdalat-palace.vi.html&docid=UUVsQDBW-Eb0FM&w=1024&h=575",
+    "position": 4
+   },
+   {
+    "title": "Chào Mừng – Dalat Palace Heritage Hotel",
+    "imageUrl": "https://www.dalatpalacehotel.com/wp-content/uploads/elementor/thumbs/6-3-r9uh9qa0havykyhpie78tn4956f3dflal4o89rsze4.jpg",
+    "imageWidth": 1340,
+    "imageHeight": 670,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhc8i_j_JTW1JguXZm2rXWD6T69sbt5gAKtxoHrv_E2Q&s=10",
+    "thumbnailWidth": 738,
+    "thumbnailHeight": 369,
+    "source": "www.dalatpalacehotel.com",
+    "domain": "www.dalatpalacehotel.com",
+    "link": "https://www.dalatpalacehotel.com/chao-mung/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.dalatpalacehotel.com%2Fwp-content%2Fuploads%2Felementor%2Fthumbs%2F6-3-r9uh9qa0havykyhpie78tn4956f3dflal4o89rsze4.jpg&tbnid=e4NivnUpPv5T6M&imgrefurl=https%3A%2F%2Fwww.dalatpalacehotel.com%2Fchao-mung%2F&docid=-MbH9bkt8Eh3VM&w=1340&h=670",
+    "position": 5
+   },
+   {
+    "title": "Dalat Palace Heritage Hotel, Đà Lạt (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/680499762.jpg?k=3b9add0bca4625414ebec50dc7d564addcd9e1b387998191e49933ab081b15a0&o=",
+    "imageWidth": 1024,
+    "imageHeight": 575,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1thmTuWc5q21DMiZgHVHW2h1W84MT3uN9OZG0P3BsQg&s=10",
+    "thumbnailWidth": 738,
+    "thumbnailHeight": 414,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/dalat-palace.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F680499762.jpg%3Fk%3D3b9add0bca4625414ebec50dc7d564addcd9e1b387998191e49933ab081b15a0%26o%3D&tbnid=NqvgSq8S0kGqsM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fdalat-palace.vi.html&docid=UUVsQDBW-Eb0FM&w=1024&h=575",
+    "position": 6
+   },
+   {
+    "title": "Khách sạn Đà Lạt Palace Heritage, Trung tâm Thành phố Đà Lạt, Đà Lạt",
+    "imageUrl": "https://pix10.agoda.net/hotelImages/10949/0/2102e3cdd293293b30313dec3a0f2a06.jpg?va=1&ce=2&s=414x232",
+    "imageWidth": 414,
+    "imageHeight": 232,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcStubCs2A-aYj7URwrZaAJX2aSokrkuKZhCNRXEytQdwQ&s=10",
+    "thumbnailWidth": 414,
+    "thumbnailHeight": 232,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/dalat-palace-heritage-hotel/hotel/dalat-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F10949%2F0%2F2102e3cdd293293b30313dec3a0f2a06.jpg%3Fva%3D1%26ce%3D2%26s%3D414x232&tbnid=D878Hs-CEJYtxM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fdalat-palace-heritage-hotel%2Fhotel%2Fdalat-vn.html&docid=oe8Cs2fwh8ZCaM&w=414&h=232",
+    "position": 7
+   },
+   {
+    "title": "Chào Mừng – Dalat Palace Heritage Hotel",
+    "imageUrl": "https://www.dalatpalacehotel.com/wp-content/uploads/elementor/thumbs/2-3-r9uh9minpyqtain64ckqjo2ermxmin6d8m2acnyk30.jpg",
+    "imageWidth": 1340,
+    "imageHeight": 670,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJ0CK5YOxeXrk-8wp4i2WeAjhtMKKgFz5AfKSC2_zkLw&s=10",
+    "thumbnailWidth": 738,
+    "thumbnailHeight": 369,
+    "source": "www.dalatpalacehotel.com",
+    "domain": "www.dalatpalacehotel.com",
+    "link": "https://www.dalatpalacehotel.com/chao-mung/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.dalatpalacehotel.com%2Fwp-content%2Fuploads%2Felementor%2Fthumbs%2F2-3-r9uh9minpyqtain64ckqjo2ermxmin6d8m2acnyk30.jpg&tbnid=UW5D6SSpM-AEzM&imgrefurl=https%3A%2F%2Fwww.dalatpalacehotel.com%2Fchao-mung%2F&docid=-MbH9bkt8Eh3VM&w=1340&h=670",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,35 @@
+{
+  "id": "T5b",
+  "text": "3–5 người",
+  "parent": "T5",
+  "status": 200,
+  "ms": 2933,
+  "evidenceId": "3184b202-66a3-4cff-b527-1dbf1fed52a3",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình giả sử bạn đi 5 người, hôm nay, gần vị trí hiện tại (Quận 1), tầm giá phổ thông, và tìm chỗ vui chơi giải trí. Để gợi ý chính xác, mình cần biết:\n\n**Bạn muốn chơi gì?** (karaoke / quán bar / cà phê / trò chơi điện tử / cơm quán / chỗ khác?)",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "đi chơi ở đâu"
+    },
+    {
+      "role": "assistant",
+      "content": "Để chọn đúng chỗ, mình cần biết thêm:\n• Tầm giá? (dưới 200k/người / 200–500k/người / trên 500k/người)\n• Mấy người? (1–2 người / 3–5 người / nhóm đông)\nBạn trả lời phần nào cũng được, phần còn lại mình tự giả sử và nói rõ.\n\n[FOLLOWUPS]dưới 200k/người|200–500k/người|trên 500k/người[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "3–5 người"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn đi 5 người, hôm nay, gần vị trí hiện tại (Quận 1), tầm giá phổ thông, và tìm chỗ vui chơi giải trí. Để gợi ý chính xác, mình cần biết:\n\n**Bạn muốn chơi gì?** (karaoke / quán bar / cà phê / trò chơi điện tử / cơm quán / chỗ khác?)"
+    }
+  ],
+  "toolResults": [],
+  "frames8Raw": []
+}

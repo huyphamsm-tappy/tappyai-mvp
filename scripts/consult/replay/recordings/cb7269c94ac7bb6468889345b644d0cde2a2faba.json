@@ -1,0 +1,60 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Khách sạn Sammy\" Đà Lạt site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:12:29.901Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Khách sạn Sammy\" Đà Lạt site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Các đánh giá Khách sạn Sammy",
+    "link": "https://vn.trip.com/hotels/dalat-hotel-detail-713887/sammy-dalat-hotel/review.html",
+    "snippet": "Khách sạn nằm cách chợ đêm Đà Lạt khoảng 1,5km và khoảng 20 phút đi bộ. ... Đánh giá Khách sạn Sammy, Khách sạn Sammy đánh giá của khách, Khách sạn ...",
+    "position": 1
+   },
+   {
+    "title": "Khách sạn Sammy Vũng Tàu - Giá cả và Ưu đãi 2026, TP. ...",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-hotel-detail-713529/sammy-hotel-vung-tau/",
+    "snippet": "Sân bay gần nhất là Cảng hàng không quốc tế Tân Sơn Nhất, cách đó khoảng cách theo đường thẳng từ khách sạn: 70,6km. Chính sách hủy phòng tại Khách sạn Sammy ...",
+    "position": 2
+   },
+   {
+    "title": "Khách sạn Sammy - Giá cả và Ưu đãi 2026, Thành phố Vinh",
+    "link": "https://vn.trip.com/hotels/vinh-city-hotel-detail-118834064/sammy-hotel-khach-san-sammy/",
+    "snippet": "Giờ nhận phòng tại Khách sạn Sammy bắt đầu từ 14:00-23:30, và giờ trả phòng là 11:00. Giá phòng tại Khách sạn Sammy là bao nhiêu? Giá phòng tại Khách sạn Sammy ...",
+    "position": 3
+   },
+   {
+    "title": "Khách sạn tại Na Uy",
+    "link": "https://vn.trip.com/hotels/country/norway.html",
+    "snippet": "... Khách sạn Sammy Vũng TàuMinh Quân HotelRezen Hotel Wuzhen（Xizha Scenic Area). Chuyến Bay Từ Các Thành Phố Phổ Biến. vé máy bay đi phú quốcvé máy bay hà nội ...",
+    "position": 4
+   },
+   {
+    "title": "Các khách sạn ở gần VinWonders Cửa Hội, Thành phố Vinh",
+    "link": "https://vn.trip.com/hotels/vinh-city-vinwonders-cua-hoi/hotels-c6237m55031753/",
+    "snippet": "Khách sạn Sammy ở Cửa Lò, trên bãi biển, cách Quảng trường Hồ Chí Minh 16,9 ... Đà Lạt Thành phố VinhVé máy bay TP. Hồ Chí Minh Thành phố VinhVé máy ...",
+    "position": 5
+   },
+   {
+    "title": "Khách sạn và Ưu đãi Khách sạn Tốt nhất ở Lãnh thổ Bắc Úc, Úc",
+    "link": "https://vn.trip.com/hotels/province/au-northern-territory.html",
+    "snippet": "... Khách sạn Sammy Vũng TàuNhà nghỉ Minh An. Chuyến Bay Từ Các Thành Phố Phổ Biến. vé máy bay đi phú quốcvé máy bay hà nội sài gònvé máy bay đi đà lạtvé máy bay đi ...",
+    "position": 6
+   }
+  ],
+  "credits": 1
+ }
+}

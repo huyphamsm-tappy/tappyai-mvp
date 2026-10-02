@@ -1,0 +1,123 @@
+{
+  "id": "F8",
+  "text": "Sinh nhật sếp, tiếp khách 8 người, phòng riêng, tầm 500k/người, Quận 1",
+  "parent": null,
+  "status": 200,
+  "ms": 14095,
+  "evidenceId": "3ffb1c74-5dc8-4734-b5f1-210cc821574f",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "nhà hàng phòng riêng sinh nhật tiệc 8 người Quận 1",
+        "location": "Quận 1, TP.HCM",
+        "type": "restaurant"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Quán nhậu quận 1 - HẢI SẢN QUÝ DẬU",
+      "rating": 4.7,
+      "count": 280,
+      "price": "100-300 N ₫",
+      "hours": "15:00–02:00",
+      "address": "147 Hoàng Sa, Tân Định, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Hàng Dương Quán Quận 1",
+      "rating": 4.5,
+      "count": 723,
+      "hours": "09:00–23:30",
+      "address": "32-34 Ngô Đức Kế, Phường, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Nhà Hàng Tửu Lầu 13",
+      "rating": 4.7,
+      "count": 278,
+      "hours": "Mở cửa cả ngày",
+      "address": "6 Nam Quốc Cang, P, Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Nhà Hàng Maison Mận-Đỏ",
+      "rating": 4.6,
+      "count": 619,
+      "hours": "14:00–22:00",
+      "address": "27J Đ. Trần Nhật Duật, Tân Định, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Nhà hàng Tân Hải Vân",
+      "rating": 4.3,
+      "count": 3401,
+      "hours": "Mở cửa cả ngày",
+      "address": "152 Nguyễn Trãi, Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": [
+    "private_room"
+  ],
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình chọn **Quán nhậu quận 1 - HẢI SẢN QUÝ DẬU** — 4.7⭐ (280 đánh giá Google Maps); giờ mở cửa theo Google Maps: 15:00–02:00.\n\nMình giả sử bạn cần tìm quán ăn hôm nay ở Quận 1 cho tiệc sinh nhật sếp với 8 người, có phòng riêng, tầm 500k/người.\n\nMình tìm được 5 quán ở Quận 1, nhưng cần lưu ý: **chưa xác nhận được giá cụ thể** của hầu hết quán (ngoài Hải Sản Quý Dậu), và **chưa có dữ liệu về phòng riêng** — bạn nên gọi trước để xác nhận.\n\nĐây là lựa chọn mình gợi ý vì có dữ liệu giá rõ ràng, phù hợp tiệc sinh nhật. Gọi **0833 233 963** để xác nhận phòng riêng cho 8 người.\n\nNgoài ra, **Nhà Hàng Tửu Lầu 13** (6 Nam Quốc Cang) — **4.7⭐ (278 đánh giá)** — mở cả ngày, chuyên lẩu/nhậu, cũng là lựa chọn tốt nếu bạn muốn không khí sinh nhật sôi động hơn. Gọi **0902 505 761** để hỏi phòng riêng.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Maps - Hải Sản Quý Dậu\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=8963047816332474488\",\"primary\":true}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Gọi xác nhận phòng riêng|Tìm quán khác ở Quận 1|Cần gợi ý menu sinh nhật[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Sinh nhật sếp, tiếp khách 8 người, phòng riêng, tầm 500k/người, Quận 1"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình chọn **Quán nhậu quận 1 - HẢI SẢN QUÝ DẬU** — 4.7⭐ (280 đánh giá Google Maps); giờ mở cửa theo Google Maps: 15:00–02:00.\n\nMình giả sử bạn cần tìm quán ăn hôm nay ở Quận 1 cho tiệc sinh nhật sếp với 8 người, có phòng riêng, tầm 500k/người.\n\nMình tìm được 5 quán ở Quận 1, nhưng cần lưu ý: **chưa xác nhận được giá cụ thể** của hầu hết quán (ngoài Hải Sản Quý Dậu), và **chưa có dữ liệu về phòng riêng** — bạn nên gọi trước để xác nhận.\n\nĐây là lựa chọn mình gợi ý vì có dữ liệu giá rõ ràng, phù hợp tiệc sinh nhật. Gọi **0833 233 963** để xác nhận phòng riêng cho 8 người.\n\nNgoài ra, **Nhà Hàng Tửu Lầu 13** (6 Nam Quốc Cang) — **4.7⭐ (278 đánh giá)** — mở cả ngày, chuyên lẩu/nhậu, cũng là lựa chọn tốt nếu bạn muốn không khí sinh nhật sôi động hơn. Gọi **0902 505 761** để hỏi phòng riêng.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Maps - Hải Sản Quý Dậu\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=8963047816332474488\",\"primary\":true}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Gọi xác nhận phòng riêng|Tìm quán khác ở Quận 1|Cần gợi ý menu sinh nhật[/FOLLOWUPS]"
+    }
+  ]
+}

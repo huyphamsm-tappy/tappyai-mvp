@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Michi Sushi\" quan 1 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T04:31:55.090Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Michi Sushi\" quan 1 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Michi Sushi (@michi_sushi_42nguyenhue)",
+    "link": "https://www.tiktok.com/@michi_sushi_42nguyenhue",
+    "snippet": "Michi Sushi Chung cư 42 Nguyễn huệ-lầu 7, Bến Nghé, Q.1 Đặt món tại đây · Đã follow · Tài khoản được đề xuất · Tận hưởng trải nghiệm đầy đủ trong ứng dụng.",
+    "position": 1
+   },
+   {
+    "title": "Michi Sushi Nguyễn Huệ",
+    "link": "https://www.tiktok.com/discover/michi-sushi-nguy%E1%BB%85n-hu%E1%BB%87",
+    "snippet": "Khám phá các video liên quan đến Michi Sushi Nguyễn Huệ trên TikTok. ... Quận 1 (lầu 7) OPEN: 10:00 AM - 22:00 PM (from Monday to Sunday)",
+    "date": "14 thg 9, 2026",
+    "position": 2
+   },
+   {
+    "title": "Ăn Sushi Trên Thuyền Khổng Lồ Tại Quận 1",
+    "link": "https://www.tiktok.com/@thon_foodie/video/7211907584675040538",
+    "snippet": "Michi Sushi Nguyễn Huệ · Sushi Hạ Long · Sushi Bà Rịa · Hagi Sushi Nguyễn ... Ăn Sushi Trên Thuyền Khổng Lồ Tại Quận 1: Review Chi Nhánh Mới Của ...",
+    "position": 3
+   },
+   {
+    "title": "Ca sĩ Thanh Duy #thanhduy #oxfam #bridgefest ...",
+    "link": "https://www.tiktok.com/@michi_sushi_42nguyenhue/video/7310602035236195586",
+    "snippet": "... MICHI SUSHI - MÓN NHẬT - GIÁ VIỆT ADDRESS: 42/73, đường Nguyễn Huệ, phường Bến Nghé, Quận 1 (lầu 7) OPEN: 10:00 AM - 22:00 PM (from Monday to Sunday) ...",
+    "position": 4
+   },
+   {
+    "title": "Sơn Tùng M-TP Đếm Ngược Đón 2025 Tại Phố Đi Bộ",
+    "link": "https://www.tiktok.com/@michi_sushi_42nguyenhue/video/7449321349237017863",
+    "snippet": "5031 Lượt thích,255 Bình luận.Video TikTok từ Michi Sushi (@michi_sushi_42nguyenhue): \"Tham gia cùng Sơn Tùng M-TP đếm ngược đón năm mới ...",
+    "position": 5
+   },
+   {
+    "title": "sushisan #sushi #explorepage #fyp #res...",
+    "link": "https://www.tiktok.com/@mariebarbieee/video/7617323782864162061",
+    "snippet": "Love Sushi Frisco · Sushi Cinta Giratoria Costa Rica · Sushi Love Biedronka · Love Sushi Bucuresti · Michi Sushi Nguyễn Huệ · Sushi Love Gent.",
+    "position": 6
+   },
+   {
+    "title": "Review Michi Sushi Nguyễn Huệ Tuy Hòa Phú Yên",
+    "link": "https://www.tiktok.com/discover/review-michi-sushi-nguy%E1%BB%85n-hu%E1%BB%87-tuy-h%C3%B2a-ph%C3%BA-y%C3%AAn",
+    "snippet": "Khám phá review nhà hàng Michi Sushi tại Nguyễn Huệ Tuy Hòa. Trải nghiệm ẩm thực Nhật Bản hấp dẫn tại HCM! Nhấn vào để biết thêm!",
+    "date": "27 thg 7, 2026",
+    "position": 7
+   },
+   {
+    "title": "Một quán Sushi tại Vĩnh Yên anh em đáng phải thử. ...",
+    "link": "https://www.tiktok.com/@ansapvinhphuc88/video/7144332925796961562",
+    "snippet": "Review Michi Sushi Nguyễn Huệ Tuy Hòa Phú Yên · Sushi Hạ Long · Sushi Triệu Việt Vương · Sushi Suka Vietnam · Quán Sushi Ở Châu Đốc An Giang.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

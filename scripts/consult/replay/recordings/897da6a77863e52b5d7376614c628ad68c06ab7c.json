@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Karaoke iCool 90 Mạc Đĩnh Chi\" OR \"Karaoke Nnice 121 Võ Thị Sáu\" OR \"NOVA SG Music Box\" quan 1 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T02:37:53.253Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Karaoke iCool 90 Mạc Đĩnh Chi\" OR \"Karaoke Nnice 121 Võ Thị Sáu\" OR \"NOVA SG Music Box\" quan 1 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Khám Phá Nova SG Music Box: Karaoke Chỉ 12K",
+    "link": "https://www.tiktok.com/@hungoididau/video/7569833532399406356",
+    "snippet": "Tìm hiểu Nova SG Music Box tại TPHCM với giá hát karaoke chỉ 12.000đ. @Hưng Ơi Đi Đâu.",
+    "position": 1
+   },
+   {
+    "title": "Vui chơi ca hát chỉ từ 15ka/1 người tại Nova SG Music Box ...",
+    "link": "https://www.tiktok.com/@phat_su/video/7583550268646706440",
+    "snippet": "2953 Lượt thích,59 Bình luận.Video TikTok từ Lang Thang With Phát (@phat_su): \"Vui chơi ca hát chỉ từ 15ka/1 người tại Nova SG Music Box ...",
+    "position": 2
+   },
+   {
+    "title": "Quán hoạt động 24/7 ạ #musicboxtanphu #novasgmusicbox",
+    "link": "https://www.tiktok.com/@novasg.musicbox/video/7686923050549251348",
+    "snippet": "Nova SG Music Box mang đến những giai điệu phù hợp để khuấy động không khí văn phòng, biến những giờ làm việc căng thẳng trở nên nhẹ nhàng ...",
+    "position": 3
+   },
+   {
+    "title": "NOVA SG MUSIC BOX TÂN PHÚ",
+    "link": "https://www.tiktok.com/@novasg.musicbox/video/7591056723838864661",
+    "snippet": "NOVA SG MUSIC BOX – KARAOKE GIÁ RẺ NHẤT TÂN PHÚ 174 Tây Thạnh, Tân Phú Bạn đang tìm quán hát: ✓ Giá rẻ – phòng đẹp ✓ Đi 1 mình ...",
+    "position": 4
+   },
+   {
+    "title": "Vui Chơi Ca Hát Thú Vị Tại Nova SG Music Box",
+    "link": "https://www.tiktok.com/@hanadichoi79/video/7601401054508371218",
+    "snippet": "Vui Chơi Ca Hát Thú Vị Tại Nova SG Music Box. Khám phá trải nghiệm ca hát hấp dẫn chỉ với 15k/1h tại Nova SG Music Box! Đừng bỏ lỡ! # ...",
+    "position": 5
+   },
+   {
+    "title": "Checkin tại quán 100% có quà nha cả nhà ôi ♥️ ...",
+    "link": "https://www.tiktok.com/@novasg.musicbox/video/7581753131969596693",
+    "snippet": "Checkin tại quán 100% có quà nha cả nhà ôi ♥️#diadiemhenho #musicboxtanphu. @NOVA SG MUSIC BOX TÂN PHÚ.",
+    "position": 6
+   },
+   {
+    "title": "NOVA SG MUSIC BOX TÂN PHÚ (@novasg.musicbox)",
+    "link": "https://www.tiktok.com/@novasg.musicbox",
+    "snippet": "NOVA SG MUSIC BOX TÂN PHÚ · @novasg.musicbox · Địa chỉ: 174 Tây Thạnh , phường Tây Thạnh , Tân Phú Lh zl 0783 491 535 Hd 24/7.",
+    "position": 7
+   },
+   {
+    "title": "Giảm 20% hết tháng 5 - #musicboxtanphu - #musicbox",
+    "link": "https://www.tiktok.com/@novasg.musicbox/video/7635982755066563860",
+    "snippet": "161 Lượt thích,Video TikTok từ NOVA SG MUSIC BOX TÂN PHÚ (@novasg.musicbox): \"Giảm 20% hết tháng 5 #musicboxtanphu #musicbox #tanphu ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,930 @@
+{
+  "id": "F2",
+  "text": "tim quan bun bo ngon o q1 duoi 80k",
+  "parent": null,
+  "status": 200,
+  "ms": 14444,
+  "evidenceId": "5638f0d2-e644-4dae-af7e-fcb19156ad78",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "bún bò ngon Quận 1",
+        "location": "Quận 1, TP.HCM",
+        "type": "restaurant"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "BẾP ÔNG CẬU | BÚN BÒ THỐ ĐÁ QUẬN 1",
+      "rating": 4.9,
+      "count": 1008,
+      "hours": "06:30–22:00",
+      "distance_km": 1.7,
+      "address": "4E Võ Thị Sáu, Tân Định, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "BÚN BÒ HUẾ 175 CÔ GIANG QUẬN 1",
+      "rating": 4.9,
+      "count": 61,
+      "hours": "06:00–13:00",
+      "distance_km": 1.9,
+      "address": "175 Cô Giang, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Chi Rứa Quán | Nhà Hàng Huế Quận 1",
+      "rating": 3.9,
+      "count": 358,
+      "hours": "08:30–22:00",
+      "distance_km": 0.9,
+      "address": "15/29 Nguyễn Thị Minh Khai, Sài Gòn, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Bún Bò Huế 24H",
+      "rating": 4.1,
+      "count": 419,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 0.6,
+      "address": "139 Tôn Thất Đạm, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Bún Bò Huế Nam Giao - Since 1991",
+      "rating": 4.3,
+      "count": 554,
+      "hours": "06:00–23:00",
+      "distance_km": 1.3,
+      "address": "242 Đề Thám, Bến Thành, Hồ Chí Minh 10000, Việt Nam"
+    },
+    {
+      "name": "Bún Bò Bò Kho Hà | Bún Bò Ngon Quận 1",
+      "rating": 4.3,
+      "count": 12,
+      "hours": "06:00–21:00",
+      "distance_km": 1.9,
+      "address": "57 Nguyễn Hữu Cầu, Tân Định, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Bún Bò Cô Tiên | Bún Bò Ngon Quận 1 | Bún Bò Ngon Bùi Viện",
+      "rating": 5,
+      "count": 8,
+      "hours": "08:00–12:30",
+      "distance_km": 1.4,
+      "address": "84/32 Bùi Viện, Bến Thành, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Quán Ăn Huế O Xuân",
+      "rating": 3.9,
+      "count": 690,
+      "hours": "06:00–21:30",
+      "distance_km": 1.9,
+      "address": "22 Nguyễn Hữu Cầu, Tân Định, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Quán Nam Giao",
+      "rating": 4.1,
+      "count": 1131,
+      "hours": "07:30–21:00",
+      "distance_km": 0.5,
+      "address": "136/15 Lê Thánh Tôn, Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Bún bò Huế O Tâm",
+      "rating": 4.9,
+      "count": 104,
+      "hours": "11:30–02:00",
+      "distance_km": 1.8,
+      "address": "12B Nguyễn Huy Tự, Tân Định, Hồ Chí Minh, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình chọn **Bếp Ông Cậu | Bún Bò Thố Đá** — quán này có **4.9⭐ (1.008 đánh giá)** và cách bạn chỉ 1.7km, đang mở cửa đến 22:00.\n\nNếu muốn lựa chọn khác, **Bún Bò Huế 24H** (4.1⭐, 0.6km) gần nhất và mở cả ngày, hoặc **Bún Bò Huế O Tâm** (4.9⭐, 1.8km) mở đến 2 sáng nếu bạn muốn ăn tối muộn.\n\nKết quả chưa có mức giá, nên mình chưa khẳng định được có vừa ngân sách của bạn không.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛵 GrabFood - Bếp Ông Cậu\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/vi/restaurants?search=B%E1%BA%BFp+%C3%94ng+C%E1%BA%ADu+Qu%E1%BA%ADn+1\",\"primary\":true},{\"label\":\"📍 Maps - Bếp Ông Cậu\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=9652206292157517277\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Bún bò Huế 24H gần hơn|Quán nào mở đến muộn|Bún bò nào rẻ nhất[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "tim quan bun bo ngon o q1 duoi 80k"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình chọn **Bếp Ông Cậu | Bún Bò Thố Đá** — quán này có **4.9⭐ (1.008 đánh giá)** và cách bạn chỉ 1.7km, đang mở cửa đến 22:00.\n\nNếu muốn lựa chọn khác, **Bún Bò Huế 24H** (4.1⭐, 0.6km) gần nhất và mở cả ngày, hoặc **Bún Bò Huế O Tâm** (4.9⭐, 1.8km) mở đến 2 sáng nếu bạn muốn ăn tối muộn.\n\nKết quả chưa có mức giá, nên mình chưa khẳng định được có vừa ngân sách của bạn không.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛵 GrabFood - Bếp Ông Cậu\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/vi/restaurants?search=B%E1%BA%BFp+%C3%94ng+C%E1%BA%ADu+Qu%E1%BA%ADn+1\",\"primary\":true},{\"label\":\"📍 Maps - Bếp Ông Cậu\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=9652206292157517277\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Bún bò Huế 24H gần hơn|Quán nào mở đến muộn|Bún bò nào rẻ nhất[/FOLLOWUPS]"
+    }
+  ],
+  "toolResults": [
+    {
+      "source": "Serper Maps",
+      "count": 20,
+      "location": "Quận 1, TP.HCM",
+      "results": [
+        {
+          "name": "BẾP ÔNG CẬU | BÚN BÒ THỐ ĐÁ QUẬN 1",
+          "place_id": "ChIJA9NUagApdTER3c3WrnuG84U",
+          "address": "4E Võ Thị Sáu, Tân Định, Hồ Chí Minh 70000, Việt Nam",
+          "phone": "+84 979 479 601",
+          "google_rating": "4.9⭐ (1.008 đánh giá Google Maps)",
+          "rating_value": 4.9,
+          "rating_count": 1008,
+          "distance_km": 1.7,
+          "open_now": true,
+          "opening_hours": "06:30–22:00",
+          "place_types": [
+            "Nhà hàng"
+          ],
+          "has_delivery": true,
+          "has_order": true,
+          "maps_link": "https://maps.google.com/?cid=9652206292157517277",
+          "website_uri": "http://bepongcau.vn/",
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=9652206292157517277",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "BÚN BÒ HUẾ 175 CÔ GIANG QUẬN 1",
+          "place_id": "ChIJEaazOp0vdTERDdDGfE1F_c0",
+          "address": "175 Cô Giang, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+          "phone": "+84 903 653 613",
+          "google_rating": "4.9⭐ (61 đánh giá Google Maps)",
+          "rating_value": 4.9,
+          "rating_count": 61,
+          "distance_km": 1.9,
+          "open_now": false,
+          "opening_hours": "06:00–13:00",
+          "place_types": [
+            "Quán ăn nhỏ"
+          ],
+          "has_delivery": true,
+          "has_order": true,
+          "maps_link": "https://maps.google.com/?cid=14843096145991225357",
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=14843096145991225357",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Chi Rứa Quán | Nhà Hàng Huế Quận 1",
+          "place_id": "ChIJX3SlOecvdTERCIFG6j5UgsY",
+          "address": "15/29 Nguyễn Thị Minh Khai, Sài Gòn, Hồ Chí Minh 70000, Việt Nam",
+          "phone": "+84 972 663 335",
+          "google_rating": "3.9⭐ (358 đánh giá Google Maps)",
+          "rating_value": 3.9,
+          "rating_count": 358,
+          "distance_km": 0.9,
+          "open_now": true,
+          "opening_hours": "08:30–22:00",
+          "place_types": [
+            "Nhà hàng"
+          ],
+          "has_delivery": true,
+          "has_order": true,
+          "maps_link": "https://maps.google.com/?cid=14304087995677311240",
+          "booking_links": [
+            "https://www.google.com/maps/reserve/v/dine/c/u56bn3FcqbM?source=pa&opi=79508299"
+          ],
+          "website_uri": "https://chiruaquan.com/",
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=14304087995677311240",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Bún Bò Huế 24H",
+          "place_id": "ChIJwaopqIEvdTERue6oQHeorI0",
+          "address": "139 Tôn Thất Đạm, Sài Gòn, Hồ Chí Minh, Việt Nam",
+          "google_rating": "4.1⭐ (419 đánh giá Google Maps)",
+          "rating_value": 4.1,
+          "rating_count": 419,
+          "distance_km": 0.6,
+          "open_now": true,
+          "opening_hours": "Mở cửa cả ngày",
+          "place_types": [
+            "Gian hàng rong"
+          ],
+          "has_delivery": true,
+          "has_order": true,
+          "maps_link": "https://maps.google.com/?cid=10208719685481459385",
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=10208719685481459385",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Bún Bò Huế Nam Giao - Since 1991",
+          "place_id": "ChIJCV-NAM8vdTERc-LpDMBqx_8",
+          "address": "242 Đề Thám, Bến Thành, Hồ Chí Minh 10000, Việt Nam",
+          "phone": "+84 28 3836 9446",
+          "google_rating": "4.3⭐ (554 đánh giá Google Maps)",
+          "rating_value": 4.3,
+          "rating_count": 554,
+          "distance_km": 1.3,
+          "open_now": true,
+          "opening_hours": "06:00–23:00",
+          "place_types": [
+            "Nhà hàng",
+            "Quán mì"
+          ],
+          "has_delivery": true,
+          "has_order": true,
+          "maps_link": "https://maps.google.com/?cid=18430817373119963763",
+          "website_uri": "https://www.facebook.com/namgiaosince1991?mibextid=LQQJ4d",
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=18430817373119963763",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Bún Bò Bò Kho Hà | Bún Bò Ngon Quận 1",
+          "place_id": "ChIJgxw5IgApdTERK2AfoXjgLHA",
+          "address": "57 Nguyễn Hữu Cầu, Tân Định, Hồ Chí Minh, Việt Nam",
+          "phone": "+84 919 570 536",
+          "google_rating": "4.3⭐ (12 đánh giá Google Maps)",
+          "rating_value": 4.3,
+          "rating_count": 12,
+          "distance_km": 1.9,
+          "open_now": true,
+          "opening_hours": "06:00–21:00",
+          "place_types": [
+            "Quán ăn nhỏ"
+          ],
+          "has_delivery": true,
+          "has_order": true,
+          "maps_link": "https://maps.google.com/?cid=8083082239927083051",
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=8083082239927083051",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Bún Bò Cô Tiên | Bún Bò Ngon Quận 1 | Bún Bò Ngon Bùi Viện",
+          "place_id": "ChIJrXCzWwAvdTERVfQPkLUV5Qk",
+          "address": "84/32 Bùi Viện, Bến Thành, Hồ Chí Minh, Việt Nam",
+          "phone": "+84 919 402 182",
+          "google_rating": "5⭐ (8 đánh giá Google Maps)",
+          "rating_value": 5,
+          "rating_count": 8,
+          "distance_km": 1.4,
+          "open_now": false,
+          "opening_hours": "08:00–12:30",
+          "place_types": [
+            "Quán ăn nhỏ"
+          ],
+          "has_delivery": true,
+          "has_order": true,
+          "maps_link": "https://maps.google.com/?cid=712999985558320213",
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=712999985558320213",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Quán Ăn Huế O Xuân",
+          "place_id": "ChIJgwOD5MwodTERA0umiLgvhoU",
+          "address": "22 Nguyễn Hữu Cầu, Tân Định, Hồ Chí Minh, Việt Nam",
+          "phone": "+84 931 203 886",
+          "google_rating": "3.9⭐ (690 đánh giá Google Maps)",
+          "rating_value": 3.9,
+          "rating_count": 690,
+          "distance_km": 1.9,
+          "open_now": true,
+          "opening_hours": "06:00–21:30",
+          "place_types": [
+            "Quán ăn"
+          ],
+          "has_delivery": true,
+          "has_order": true,
+          "maps_link": "https://maps.google.com/?cid=9621430123536730883",
+          "website_uri": "https://www.facebook.com/monanhueoxuan/",
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=9621430123536730883",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Quán Nam Giao",
+          "place_id": "ChIJ705xyDgvdTERWasa4yBxRHk",
+          "address": "136/15 Lê Thánh Tôn, Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+          "phone": "+84 28 3825 0261",
+          "google_rating": "4.1⭐ (1.131 đánh giá Google Maps)",
+          "rating_value": 4.1,
+          "rating_count": 1131,
+          "distance_km": 0.5,
+          "open_now": true,
+          "opening_hours": "07:30–21:00",
+          "place_types": [
+            "Nhà hàng Việt Nam"
+          ],
+          "has_delivery": true,
+          "has_order": true,
+          "maps_link": "https://maps.google.com/?cid=8738233563068672857",
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=8738233563068672857",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Bún bò Huế O Tâm",
+          "place_id": "ChIJMcKeN9cpdTERnb7ZTo8fEIs",
+          "address": "12B Nguyễn Huy Tự, Tân Định, Hồ Chí Minh, Việt Nam",
+          "phone": "+84 908 863 445",
+          "google_rating": "4.9⭐ (104 đánh giá Google Maps)",
+          "rating_value": 4.9,
+          "rating_count": 104,
+          "distance_km": 1.8,
+          "open_now": true,
+          "opening_hours": "11:30–02:00",
+          "place_types": [
+            "Quán ăn nhỏ"
+          ],
+          "has_delivery": true,
+          "has_order": true,
+          "maps_link": "https://maps.google.com/?cid=10020543871263030941",
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=10020543871263030941",
+              "attributed": true
+            }
+          ]
+        }
+      ],
+      "_tappy_place_domain": "food",
+      "place_search_status": "has_results",
+      "_tappy_evidence_gap": {
+        "qualified": 10,
+        "total": 10,
+        "needed": [
+          "rating",
+          "reviewCount",
+          "price",
+          "distance"
+        ],
+        "action": "recommend"
+      },
+      "results_note": "Day la TOAN BO 10 ket qua theo thu tu nha cung cap, KHONG phai thu tu uu tien — ban tu chon cho dung tinh huong (rut gon: chi cac truong de chon); the (card) cua user hien anh/dia chi/SDT/nut hanh dong.",
+      "_tappy_budget_evidence": false
+    }
+  ],
+  "frames8Raw": [
+    [
+      {
+        "kind": "tappy.places.v1",
+        "v": 1,
+        "domain": "food",
+        "ranked": true,
+        "items": [
+          {
+            "id": "place:osm:10.79149,106.69530",
+            "domain": "food",
+            "kind": "place",
+            "name": "BẾP ÔNG CẬU | BÚN BÒ THỐ ĐÁ QUẬN 1",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmHlMW_eLKJE6DgR_DOtSD-fOqI7Ou1SbBRJPOqm5eQb1nWp5zmUbKg16raJUD1VsqzT7b4WtqN6T4AzlMFkqG_loRM3I9Lw4-vOtWUHEv2V7bNcHrkcZ8fjeDlXq-plvtr6IgNnROhWFE",
+            "address": "4E Võ Thị Sáu, Tân Định, Hồ Chí Minh 70000, Việt Nam",
+            "rating": 4.9,
+            "ratingCount": 1008,
+            "openingHours": "06:30–22:00",
+            "openNow": true,
+            "phone": "+84 979 479 601",
+            "openingHoursWeek": {
+              "Thứ Bảy": "06:30–22:00",
+              "Chủ Nhật": "06:30–22:00",
+              "Thứ Hai": "06:30–22:00",
+              "Thứ Ba": "06:30–22:00",
+              "Thứ Tư": "06:30–22:00",
+              "Thứ Năm": "06:30–22:00",
+              "Thứ Sáu": "06:30–22:00"
+            },
+            "distanceKm": 1.7,
+            "categories": [
+              "Nhà hàng"
+            ],
+            "rank": 0,
+            "shortlistPosition": 1,
+            "recommended": true,
+            "reasons": [
+              {
+                "attribute": "rating",
+                "evidence": "rated 4.9"
+              },
+              {
+                "attribute": "distance",
+                "evidence": "1.7km away"
+              },
+              {
+                "attribute": "reviewCount",
+                "evidence": "1008 reviews"
+              }
+            ],
+            "tradeOff": {
+              "attribute": "rating",
+              "evidence": "rated 5"
+            },
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=B%E1%BA%BEP%20%C3%94NG%20C%E1%BA%ACU%20%7C%20B%C3%9AN%20B%C3%92%20TH%E1%BB%90%20%C4%90%C3%81%20QU%E1%BA%ACN%201%20Qu%E1%BA%ADn%201%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=9652206292157517277",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=B%E1%BA%BEP%20%C3%94NG%20C%E1%BA%ACU%20%7C%20B%C3%9AN%20B%C3%92%20TH%E1%BB%90%20%C4%90%C3%81%20QU%E1%BA%ACN%201%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84979479601",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.76183,106.69364",
+            "domain": "food",
+            "kind": "place",
+            "name": "BÚN BÒ HUẾ 175 CÔ GIANG QUẬN 1",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkKyEDb1vz95ZO6ZeYej1SzIc_IgBk6wDXDVhfPK0a8YHlx6Kag1ndJDshfT3mZ8pxa_DVqn0Ud26nt6C_zpoPtspDjaTiqMBEMGWL38MO6UTdvBMBAIuEN6YJXDvjGYDA9WfSmMA",
+            "address": "175 Cô Giang, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+            "rating": 4.9,
+            "ratingCount": 61,
+            "openingHours": "06:00–13:00",
+            "openNow": false,
+            "phone": "+84 903 653 613",
+            "openingHoursWeek": {
+              "Thứ Bảy": "06:00–13:00",
+              "Chủ Nhật": "06:00–13:00",
+              "Thứ Hai": "06:00–13:00",
+              "Thứ Ba": "06:00–13:00",
+              "Thứ Tư": "06:00–13:00",
+              "Thứ Năm": "06:00–13:00",
+              "Thứ Sáu": "06:00–13:00"
+            },
+            "distanceKm": 1.9,
+            "categories": [
+              "Quán ăn nhỏ"
+            ],
+            "rank": 1,
+            "shortlistPosition": 4,
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=B%C3%9AN%20B%C3%92%20HU%E1%BA%BE%20175%20C%C3%94%20GIANG%20QU%E1%BA%ACN%201%20Qu%E1%BA%ADn%201%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=14843096145991225357",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=B%C3%9AN%20B%C3%92%20HU%E1%BA%BE%20175%20C%C3%94%20GIANG%20QU%E1%BA%ACN%201%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84903653613",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.78513,106.70106",
+            "domain": "food",
+            "kind": "place",
+            "name": "Chi Rứa Quán | Nhà Hàng Huế Quận 1",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnW0xT1H-HKYn-c1ZEzsVZm7aqS65oIgxy6yzyG6EU7moUzRvqV3rcyrds78P14CtqXWuvxx2tW5cZ__9GNapVaq4lXKpQqcNIieaR9dHErElsvPLRi1Jt1i3XoiiQmaUGIzNgH4g",
+            "address": "15/29 Nguyễn Thị Minh Khai, Sài Gòn, Hồ Chí Minh 70000, Việt Nam",
+            "rating": 3.9,
+            "ratingCount": 358,
+            "openingHours": "08:30–22:00",
+            "openNow": true,
+            "phone": "+84 972 663 335",
+            "openingHoursWeek": {
+              "Thứ Bảy": "08:30–22:00",
+              "Chủ Nhật": "08:30–22:00",
+              "Thứ Hai": "08:30–22:00",
+              "Thứ Ba": "08:30–22:00",
+              "Thứ Tư": "08:30–22:00",
+              "Thứ Năm": "08:30–22:00",
+              "Thứ Sáu": "08:30–22:00"
+            },
+            "distanceKm": 0.9,
+            "categories": [
+              "Nhà hàng"
+            ],
+            "rank": 2,
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=Chi%20R%E1%BB%A9a%20Qu%C3%A1n%20%7C%20Nh%C3%A0%20H%C3%A0ng%20Hu%E1%BA%BF%20Qu%E1%BA%ADn%201%20Qu%E1%BA%ADn%201%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=14304087995677311240",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Chi%20R%E1%BB%A9a%20Qu%C3%A1n%20%7C%20Nh%C3%A0%20H%C3%A0ng%20Hu%E1%BA%BF%20Qu%E1%BA%ADn%201%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://chiruaquan.com/",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84972663335",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.77225,106.70273",
+            "domain": "food",
+            "kind": "place",
+            "name": "Bún Bò Huế 24H",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlNV5cB0RwJehjCORJKhV5OIyY-sreR537EyR3EWvEIIh3s5NFX8f6RLU8xlyAT7u8OUEKhDm3h1sqTTfKWdLrUyuNLt1h_yjGK54U0nQFXIoeBS8yRvn6dzzjLUVemfanAO9NA",
+            "address": "139 Tôn Thất Đạm, Sài Gòn, Hồ Chí Minh, Việt Nam",
+            "rating": 4.1,
+            "ratingCount": 419,
+            "openingHours": "Mở cửa cả ngày",
+            "openNow": true,
+            "openingHoursWeek": {
+              "Thứ Bảy": "Mở cửa cả ngày",
+              "Chủ Nhật": "Mở cửa cả ngày",
+              "Thứ Hai": "Mở cửa cả ngày",
+              "Thứ Ba": "Mở cửa cả ngày",
+              "Thứ Tư": "Mở cửa cả ngày",
+              "Thứ Năm": "Mở cửa cả ngày",
+              "Thứ Sáu": "Mở cửa cả ngày"
+            },
+            "distanceKm": 0.6,
+            "categories": [
+              "Gian hàng rong"
+            ],
+            "rank": 3,
+            "actions": [
+              {
+                "kind": "review",
+                "urlKind": "direct",
+                "url": "https://www.tiktok.com/@muoitoday/video/7090375306569092379",
+                "labelKey": "v3.action.reviewOn",
+                "platform": "TikTok",
+                "attributed": true
+              },
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=B%C3%BAn%20B%C3%B2%20Hu%E1%BA%BF%2024H%20Qu%E1%BA%ADn%201%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=10208719685481459385",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=B%C3%BAn%20B%C3%B2%20Hu%E1%BA%BF%2024H%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.76802,106.69387",
+            "domain": "food",
+            "kind": "place",
+            "name": "Bún Bò Huế Nam Giao - Since 1991",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWk50077NFG4XaVZCb5rG6kQiPIzTDoj3yXtPgxZboR4FcG70LwtVQfabP2wXSQ7jTfg5M7DhT7jqmWOBdYBHNIyKzk-CaWMRj10ujBwUU17KAP-UdCk4z5cJ3XClqUzXHcK0io",
+            "address": "242 Đề Thám, Bến Thành, Hồ Chí Minh 10000, Việt Nam",
+            "rating": 4.3,
+            "ratingCount": 554,
+            "openingHours": "06:00–23:00",
+            "openNow": true,
+            "phone": "+84 28 3836 9446",
+            "openingHoursWeek": {
+              "Thứ Bảy": "06:00–23:00",
+              "Chủ Nhật": "06:00–23:00",
+              "Thứ Hai": "06:00–23:00",
+              "Thứ Ba": "06:00–23:00",
+              "Thứ Tư": "06:00–23:00",
+              "Thứ Năm": "06:00–23:00",
+              "Thứ Sáu": "06:00–23:00"
+            },
+            "distanceKm": 1.3,
+            "categories": [
+              "Nhà hàng",
+              "Quán mì"
+            ],
+            "rank": 4,
+            "shortlistPosition": 5,
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=B%C3%BAn%20B%C3%B2%20Hu%E1%BA%BF%20Nam%20Giao%20-%20Since%201991%20Qu%E1%BA%ADn%201%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=18430817373119963763",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=B%C3%BAn%20B%C3%B2%20Hu%E1%BA%BF%20Nam%20Giao%20-%20Since%201991%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://www.facebook.com/namgiaosince1991?mibextid=LQQJ4d",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+842838369446",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.79077,106.69113",
+            "domain": "food",
+            "kind": "place",
+            "name": "Bún Bò Bò Kho Hà | Bún Bò Ngon Quận 1",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmrtnZcsELrnS6nvzRhLGSCw04HTUTYVJQFb65W9mFlLcGmhXuAThyaFksXqbvNhyn4nUIziHFml82es9XqGbHXoEO05TuDKfujdCu9U4ohR6n_4LZxdmM8KHzoeWdpFw5PfguBe1DbbGFL",
+            "address": "57 Nguyễn Hữu Cầu, Tân Định, Hồ Chí Minh, Việt Nam",
+            "rating": 4.3,
+            "ratingCount": 12,
+            "openingHours": "06:00–21:00",
+            "openNow": true,
+            "phone": "+84 919 570 536",
+            "openingHoursWeek": {
+              "Thứ Bảy": "06:00–21:00",
+              "Chủ Nhật": "06:00–21:00",
+              "Thứ Hai": "06:00–21:00",
+              "Thứ Ba": "06:00–21:00",
+              "Thứ Tư": "06:00–21:00",
+              "Thứ Năm": "06:00–21:00",
+              "Thứ Sáu": "06:00–21:00"
+            },
+            "distanceKm": 1.9,
+            "categories": [
+              "Quán ăn nhỏ"
+            ],
+            "rank": 5,
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=B%C3%BAn%20B%C3%B2%20B%C3%B2%20Kho%20H%C3%A0%20%7C%20B%C3%BAn%20B%C3%B2%20Ngon%20Qu%E1%BA%ADn%201%20Qu%E1%BA%ADn%201%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=8083082239927083051",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=B%C3%BAn%20B%C3%B2%20B%C3%B2%20Kho%20H%C3%A0%20%7C%20B%C3%BAn%20B%C3%B2%20Ngon%20Qu%E1%BA%ADn%201%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84919570536",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.76743,106.69304",
+            "domain": "food",
+            "kind": "place",
+            "name": "Bún Bò Cô Tiên | Bún Bò Ngon Quận 1 | Bún Bò Ngon Bùi Viện",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkXfvg0Jq_s1u0_E6k01980rrcNygdEMZvt0JIK9oXa6nIh6W65nfFVq3K-ArtIrCDQyoH_2h5gC0_7b5M64pacAJFuFREvatDWLix1nGvgNuQWd3i3ipkhUwxfylGnJdSCvBt-xI_Eryy-",
+            "address": "84/32 Bùi Viện, Bến Thành, Hồ Chí Minh, Việt Nam",
+            "rating": 5,
+            "ratingCount": 8,
+            "openingHours": "08:00–12:30",
+            "openNow": false,
+            "phone": "+84 919 402 182",
+            "openingHoursWeek": {
+              "Thứ Bảy": "08:00–12:30",
+              "Chủ Nhật": "08:00–12:30",
+              "Thứ Hai": "08:00–12:30",
+              "Thứ Ba": "08:00–12:30",
+              "Thứ Tư": "08:00–12:30",
+              "Thứ Năm": "08:00–12:30",
+              "Thứ Sáu": "08:00–12:30"
+            },
+            "distanceKm": 1.4,
+            "categories": [
+              "Quán ăn nhỏ"
+            ],
+            "rank": 6,
+            "shortlistPosition": 2,
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=B%C3%BAn%20B%C3%B2%20C%C3%B4%20Ti%C3%AAn%20%7C%20B%C3%BAn%20B%C3%B2%20Ngon%20Qu%E1%BA%ADn%201%20%7C%20B%C3%BAn%20B%C3%B2%20Ngon%20B%C3%B9i%20Vi%E1%BB%87n%20Qu%E1%BA%ADn%201%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=712999985558320213",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=B%C3%BAn%20B%C3%B2%20C%C3%B4%20Ti%C3%AAn%20%7C%20B%C3%BAn%20B%C3%B2%20Ngon%20Qu%E1%BA%ADn%201%20%7C%20B%C3%BAn%20B%C3%B2%20Ngon%20B%C3%B9i%20Vi%E1%BB%87n%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84919402182",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.79146,106.69124",
+            "domain": "food",
+            "kind": "place",
+            "name": "Quán Ăn Huế O Xuân",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkd5RXSZRrWRXJW1G0qAsbr9XGERM86ohkwx45-7KntbBxQ5Jgg9w-V7EDtsb3sv8JOSpCfR47m6Rpqy1MmWo9vfn1wKn68M116NWTAERuUsDIKinjTcaiEdNzs18N7p3bBnLQ",
+            "address": "22 Nguyễn Hữu Cầu, Tân Định, Hồ Chí Minh, Việt Nam",
+            "rating": 3.9,
+            "ratingCount": 690,
+            "openingHours": "06:00–21:30",
+            "openNow": true,
+            "phone": "+84 931 203 886",
+            "openingHoursWeek": {
+              "Thứ Bảy": "06:00–21:30",
+              "Chủ Nhật": "06:00–21:30",
+              "Thứ Hai": "06:00–21:30",
+              "Thứ Ba": "06:00–21:30",
+              "Thứ Tư": "06:00–21:30",
+              "Thứ Năm": "06:00–21:30",
+              "Thứ Sáu": "06:00–21:30"
+            },
+            "distanceKm": 1.9,
+            "categories": [
+              "Quán ăn"
+            ],
+            "rank": 7,
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=Qu%C3%A1n%20%C4%82n%20Hu%E1%BA%BF%20O%20Xu%C3%A2n%20Qu%E1%BA%ADn%201%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=9621430123536730883",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20%C4%82n%20Hu%E1%BA%BF%20O%20Xu%C3%A2n%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://www.facebook.com/monanhueoxuan/",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84931203886",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          }
+        ],
+        "mapsSearchUrl": "https://maps.google.com/maps?q=b%C3%BAn%20b%C3%B2%20ngon%20Qu%E1%BA%ADn%201%20Qu%E1%BA%ADn%201%2C%20TP.HCM",
+        "picked": [
+          "place:osm:10.79149,106.69530",
+          "place:osm:10.77225,106.70273"
+        ],
+        "shown": 3
+      }
+    ]
+  ]
+}

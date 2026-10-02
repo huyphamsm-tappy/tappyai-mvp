@@ -13,3 +13,14 @@ data class UserSearchResult(
     val followingCount: Int,
     val isFollowing: Boolean,
 )
+
+/** One person who currently likes a post (`GET /api/reviews/{id}/likes`). Only the three public profile fields. */
+data class Liker(
+    val id: String,
+    val fullName: String?,
+    val avatarUrl: String?,
+    val createdAt: String,
+)
+
+/** One page of likers; [nextCursor] is the `before` for the next page, null at the end. */
+data class LikersPage(val likers: List<Liker>, val nextCursor: String?)

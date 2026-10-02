@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Hanoi Exclusive Hotel",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:00:01.617Z",
+ "body": {
+  "searchParameters": {
+   "q": "Hanoi Exclusive Hotel",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Hanoi Exclusive Hotel, Hà Nội | Hotels.com",
+    "imageUrl": "https://images.trvl-media.com/lodging/42000000/41510000/41501800/41501773/b8d189b7.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill",
+    "imageWidth": 575,
+    "imageHeight": 862,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHajjEdsDhRL3V1RpYfuKtyaGY6GOjOPXpLesMyv9b3g&s=10",
+    "thumbnailWidth": 365,
+    "thumbnailHeight": 547,
+    "source": "hotels",
+    "domain": "vi.hotels.com",
+    "link": "https://vi.hotels.com/ho1329056736/hanoi-exclusive-hotel-ha-noi-viet-nam/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimages.trvl-media.com%2Flodging%2F42000000%2F41510000%2F41501800%2F41501773%2Fb8d189b7.jpg%3Fimpolicy%3Dresizecrop%26rw%3D575%26rh%3D575%26ra%3Dfill&tbnid=je-F6saDi9BEVM&imgrefurl=https%3A%2F%2Fvi.hotels.com%2Fho1329056736%2Fhanoi-exclusive-hotel-ha-noi-viet-nam%2F&docid=-cpgQPOZFCB_MM&w=575&h=862",
+    "position": 1
+   },
+   {
+    "title": "HANOI EXCLUSIVE HOTEL (Hà Nội) - Đánh giá Khách sạn & So sánh giá -  Tripadvisor",
+    "imageUrl": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/1a/49/a3/b2/hanoi-exclusive-hotel.jpg?w=900&h=500&s=1",
+    "imageWidth": 900,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSh3Y2WjXD9ktAVvGkPENu0xkycQAmx0gj6XPUKZBJ0WA&s=10",
+    "thumbnailWidth": 599,
+    "thumbnailHeight": 333,
+    "source": "Tripadvisor",
+    "domain": "www.tripadvisor.com.vn",
+    "link": "https://www.tripadvisor.com.vn/Hotel_Review-g293924-d19656691-Reviews-Hanoi_Exclusive_Hotel-Hanoi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdynamic-media-cdn.tripadvisor.com%2Fmedia%2Fphoto-o%2F1a%2F49%2Fa3%2Fb2%2Fhanoi-exclusive-hotel.jpg%3Fw%3D900%26h%3D500%26s%3D1&tbnid=rKIf7XtGJAjtAM&imgrefurl=https%3A%2F%2Fwww.tripadvisor.com.vn%2FHotel_Review-g293924-d19656691-Reviews-Hanoi_Exclusive_Hotel-Hanoi.html&docid=fh9cTjsUhrae8M&w=900&h=500",
+    "position": 2
+   },
+   {
+    "title": "Tour service at Hanoi Exclusive Hotel | Official website of Exclusive Hotel",
+    "imageUrl": "http://6.img.izshop.vn/tv30/advert/2023/03/z415991682383461f231840df427ed2677e8d3ffb2eace.jpg",
+    "imageWidth": 960,
+    "imageHeight": 1280,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvyEzk9hPoNpOqv-uVSpAtl4i3zKRm6TsIpedtM_FQuw&s=10",
+    "thumbnailWidth": 387,
+    "thumbnailHeight": 516,
+    "source": "hanoiexclusivehotel.com",
+    "domain": "hanoiexclusivehotel.com",
+    "link": "http://hanoiexclusivehotel.com/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=http%3A%2F%2F6.img.izshop.vn%2Ftv30%2Fadvert%2F2023%2F03%2Fz415991682383461f231840df427ed2677e8d3ffb2eace.jpg&tbnid=WPn2-lKwclKP4M&imgrefurl=http%3A%2F%2Fhanoiexclusivehotel.com%2F&docid=XmrZSKcHE5QysM&w=960&h=1280",
+    "position": 3
+   },
+   {
+    "title": "Hanoi Exclusive Hotel, Hà Nội | Hotels.com",
+    "imageUrl": "https://images.trvl-media.com/lodging/42000000/41510000/41501800/41501773/73873204.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill",
+    "imageWidth": 862,
+    "imageHeight": 575,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTBQZWdi5Bebbs0pAb1GLhAcQFSwVJXX9XS9F1eI0Thxw&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "hotels",
+    "domain": "vi.hotels.com",
+    "link": "https://vi.hotels.com/ho1329056736/hanoi-exclusive-hotel-ha-noi-viet-nam/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimages.trvl-media.com%2Flodging%2F42000000%2F41510000%2F41501800%2F41501773%2F73873204.jpg%3Fimpolicy%3Dresizecrop%26rw%3D575%26rh%3D575%26ra%3Dfill&tbnid=U1XSMRLdIjqwgM&imgrefurl=https%3A%2F%2Fvi.hotels.com%2Fho1329056736%2Fhanoi-exclusive-hotel-ha-noi-viet-nam%2F&docid=-cpgQPOZFCB_MM&w=862&h=575",
+    "position": 4
+   },
+   {
+    "title": "Khách Sạn Exclusive Hà Nội, Phố Cổ, Hà Nội",
+    "imageUrl": "https://q-xx.bstatic.com/xdata/images/hotel/max500/230551803.jpg?k=ed0f56b04868b9519e52b5bee406701ef8fb042271c6361ff9d839e2b16fe669&o=",
+    "imageWidth": 500,
+    "imageHeight": 334,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDGtK5ILhf2gRhibDq-eRyEoq-XUudwKTYHbSCFfZKRg&s=10",
+    "thumbnailWidth": 500,
+    "thumbnailHeight": 333,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/hanoi-exclusive-hotel/hotel/hanoi-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fq-xx.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax500%2F230551803.jpg%3Fk%3Ded0f56b04868b9519e52b5bee406701ef8fb042271c6361ff9d839e2b16fe669%26o%3D&tbnid=mbaTdOjLYe6C5M&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fhanoi-exclusive-hotel%2Fhotel%2Fhanoi-vn.html&docid=2-5HPjJLH2Cw-M&w=500&h=334",
+    "position": 5
+   },
+   {
+    "title": "Hanoi Exclusive Hotel at 40 Hàng Điếu street, Hanoi Old Quarter, Hoan Kiem  District, Hanoi, Vietnam !!!",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=1034583461789696",
+    "imageWidth": 1080,
+    "imageHeight": 1440,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrCielNOguL1LG4Qe9-5romV5CtCuxxlJT_vMmRBFk-A&s=10",
+    "thumbnailWidth": 387,
+    "thumbnailHeight": 516,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/hanoiexclusivehotel/posts/hanoi-exclusive-hotel-at-40-h%C3%A0ng-%C4%91i%E1%BA%BFu-street-hanoi-old-quarter-hoan-kiem-distric/1034583595123016/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D1034583461789696&tbnid=ZQbpmVn3avC-mM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Fhanoiexclusivehotel%2Fposts%2Fhanoi-exclusive-hotel-at-40-h%25C3%25A0ng-%25C4%2591i%25E1%25BA%25BFu-street-hanoi-old-quarter-hoan-kiem-distric%2F1034583595123016%2F&docid=gMvq_nEm1zDNIM&w=1080&h=1440",
+    "position": 6
+   },
+   {
+    "title": "Hanoi Exclusive Hotel, Hà Nội (cập nhật giá năm 2027)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/230641951.jpg?k=0d80e24dceffbe76c944439e1271d1ba2fcd2c2a3729ae12e611cc8a4396e1ee&o=",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWPYGZf7o6Yc0ngYquTNNpXZQRu0AoefHfwXScD4riWg&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/hanoi-xclusive.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F230641951.jpg%3Fk%3D0d80e24dceffbe76c944439e1271d1ba2fcd2c2a3729ae12e611cc8a4396e1ee%26o%3D&tbnid=Z1TjiezQJNpN1M&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fhanoi-xclusive.vi.html&docid=odektScagmuhEM&w=1024&h=683",
+    "position": 7
+   },
+   {
+    "title": "Khách Sạn Exclusive Hà Nội, Phố Cổ, Hà Nội",
+    "imageUrl": "https://pix10.agoda.net/hotelImages/9924368/-1/d4b49c657e8cdc9b4e3c87a09bbedd77.jpg?va=1&ca=13&ce=1&s=414x232",
+    "imageWidth": 348,
+    "imageHeight": 232,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ08Xehcsrjl-g-qT1tnuOK91HxXjNbtU-uZGfJihX2oA&s=10",
+    "thumbnailWidth": 348,
+    "thumbnailHeight": 232,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/hanoi-exclusive-hotel/hotel/hanoi-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F9924368%2F-1%2Fd4b49c657e8cdc9b4e3c87a09bbedd77.jpg%3Fva%3D1%26ca%3D13%26ce%3D1%26s%3D414x232&tbnid=ZQF2u7b3fdHZnM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fhanoi-exclusive-hotel%2Fhotel%2Fhanoi-vn.html&docid=2-5HPjJLH2Cw-M&w=348&h=232",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

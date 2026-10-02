@@ -1,0 +1,83 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "spa massage quan 3 site:klook.com/vi/activity",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:44:59.381Z",
+ "body": {
+  "searchParameters": {
+   "q": "spa massage quan 3 site:klook.com/vi/activity",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "森嶼SPA - SPA Thái Lan chính thống/MASSAGE tinh dầu",
+    "link": "https://www.klook.com/vi/activity/134349-senyu-spa-thai-spa-essential-oil-massage-optional-from-3-branches/",
+    "snippet": "Spa âm nhạc & hương liệu thư giãn · Massage Thái chuyên nghiệp, chất lượng dịch vụ cao cấp · Vị trí giao thông thuận tiện · Giá cả rõ ràng, không có phí dịch vụ và ...",
+    "position": 1
+   },
+   {
+    "title": "KOKORO Spa & Aesthetic tại Quận 3, Hồ Chí Minh",
+    "link": "https://www.klook.com/vi/activity/147260-kokoro-spa-aesthetic-in-district-3-ho-chi-minh/",
+    "snippet": "Kokoro Spa & Aesthetic, tọa lạc tại trung tâm Quận 3, là một lựa chọn tuyệt vời để chăm sóc sức khỏe và thư giãn theo phong cách Nhật Bản. Kokoro Spa & ...",
+    "position": 2
+   },
+   {
+    "title": "Trải nghiệm Yubii Spa & Massage tại Hồ Chí Minh",
+    "link": "https://www.klook.com/vi/activity/143550-yubii-spa-massage-experience-in-ho-chi-minh/",
+    "snippet": "Buổi Massage thực sự rất tốt - nhân viên Massage chu đáo và tạo áp lực vừa phải. Phòng ốc sạch sẽ và không có mùi hương.",
+    "rating": 4.8,
+    "ratingCount": 35,
+    "position": 3
+   },
+   {
+    "title": "Quán Spa Massage & Gội Đầu Nhất Đầu Hùng · Chi nhánh ...",
+    "link": "https://www.klook.com/vi/activity/190734-yi-tou-xiong-massage-spa-futian-branch/",
+    "snippet": "Spa rất thư giãn, nhân viên thân thiện và có tay nghề cao. Tóc tôi cảm thấy siêu mềm mượt sau đó Họ cũng phục vụ trà và món tráng miệng rất ngon. Cửa hàng ...",
+    "rating": 4.1,
+    "ratingCount": 10,
+    "position": 4
+   },
+   {
+    "title": "Túc Duyệt Dưỡng Sinh Hội Quán｜Phiếu massage Spa｜ ...",
+    "link": "https://www.klook.com/vi/activity/89303-zu-yue-massage-taichung/",
+    "snippet": "Massage chất lượng với giá cả phải chăng, tận hưởng sự thư giãn sâu sắc · Tất cả đều là các kỹ thuật viên giàu kinh nghiệm phục vụ, tay nghề điêu luyện, giúp bạn ...",
+    "rating": 4.7,
+    "ratingCount": 49,
+    "position": 5
+   },
+   {
+    "title": "Trải nghiệm Shinrin Yoku Spa tại Quận 3, TP. Hồ Chí Minh",
+    "link": "https://www.klook.com/vi/activity/208415-shinrin-yoku-spa-experience-in-district-3-ho-chi-minh-city/",
+    "snippet": "Nhân viên thân thiện và nhẹ nhàng, dịch vụ chu đáo. Sau khi trị liệu, chúng tôi cảm thấy thư thái hơn rất nhiều, đặc biệt là gội đầu và massage siêu dễ chịu.",
+    "rating": 5,
+    "ratingCount": 32,
+    "position": 6
+   },
+   {
+    "title": "Cao Hùng | TEALING Thai Spa Massage Thái Lan",
+    "link": "https://www.klook.com/vi/activity/68668-laque-thai-villa-spa-kaohsiung/",
+    "snippet": "Công nghệ spa Tealing thai bắt nguồn sâu xa ở Chiang Mai, Thái Lan. Nơi đây có tính năng mát-xa Gulanna truyền thống của Thái Lan.",
+    "rating": 4.9,
+    "ratingCount": 107,
+    "position": 7
+   },
+   {
+    "title": "Trải Nghiệm Phân Tích Màu Sắc Cá Nhân & Da Tại Seoul ...",
+    "link": "https://www.klook.com/vi/activity/235444-personal-color-and-skin-analysis-experience-in-seoul/",
+    "snippet": "Khám phá màu sắc trang phục, màu trang điểm, họa tiết và phụ kiện tôn da nhất của bạn thông qua việc thử màu cá nhân gần Cung điện ...",
+    "date": "9 thg 9, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

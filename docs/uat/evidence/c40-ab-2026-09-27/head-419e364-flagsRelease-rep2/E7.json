@@ -1,0 +1,25 @@
+{
+  "id": "E7",
+  "text": "Xem phim gì hay tối nay",
+  "parent": null,
+  "status": 200,
+  "ms": 8608,
+  "evidenceId": "bf967af7-390b-4643-9665-0393962db726",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Tối nay bạn muốn xem phim gì? Mình gợi ý 3 bộ phim hay cho bạn:\n\n**1. Deadpool & Wolverine** — Nếu thích hành động sôi động, hài hước và những pha hành động cực kỳ, bộ phim này là lựa chọn tuyệt vời. Sự kết hợp giữa Deadpool và Wolverine tạo nên những cảnh quay vô cùng mãn nhãn 🎬\n\n**2. Twisters** — Nếu muốn xem phim thảm họa kịch tính với những cảnh quay về lốc xoáy ấn tượng, bộ phim này sẽ không làm bạn thất vọng. Phù hợp nếu bạn thích cảm giác hồi hộp.\n\n**3. Inside Out 2** — Nếu muốn thứ gì đó nhẹ nhàng, vui vẻ nhưng cũng sâu sắc, bộ phim hoạt hình này rất đáng xem. Phù hợp để thư giãn sau một ngày dài.\n\nBạn muốn xem ở đâu (rạp chiếu hay nền tảng streaming) hay cần gợi ý thêm thể loại khác? 😊\n\n[FOLLOWUPS]xem ở rạp nào gần đây|gợi ý phim kinh dị|xem phim online ở đâu[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Xem phim gì hay tối nay"
+    },
+    {
+      "role": "assistant",
+      "content": "Tối nay bạn muốn xem phim gì? Mình gợi ý 3 bộ phim hay cho bạn:\n\n**1. Deadpool & Wolverine** — Nếu thích hành động sôi động, hài hước và những pha hành động cực kỳ, bộ phim này là lựa chọn tuyệt vời. Sự kết hợp giữa Deadpool và Wolverine tạo nên những cảnh quay vô cùng mãn nhãn 🎬\n\n**2. Twisters** — Nếu muốn xem phim thảm họa kịch tính với những cảnh quay về lốc xoáy ấn tượng, bộ phim này sẽ không làm bạn thất vọng. Phù hợp nếu bạn thích cảm giác hồi hộp.\n\n**3. Inside Out 2** — Nếu muốn thứ gì đó nhẹ nhàng, vui vẻ nhưng cũng sâu sắc, bộ phim hoạt hình này rất đáng xem. Phù hợp để thư giãn sau một ngày dài.\n\nBạn muốn xem ở đâu (rạp chiếu hay nền tảng streaming) hay cần gợi ý thêm thể loại khác? 😊\n\n[FOLLOWUPS]xem ở rạp nào gần đây|gợi ý phim kinh dị|xem phim online ở đâu[/FOLLOWUPS]"
+    }
+  ]
+}

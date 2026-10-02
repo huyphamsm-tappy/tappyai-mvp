@@ -1,0 +1,131 @@
+{
+  "id": "E2",
+  "text": "rap phim nao gan q1",
+  "parent": null,
+  "status": 200,
+  "ms": 10879,
+  "evidenceId": "913bbcbd-2345-4c70-ba9b-72385181ba3c",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "rạp chiếu phim",
+        "type": "cinema",
+        "location": "Quận 1"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "CGV Vincom Center Đồng Khởi",
+      "rating": 4.3,
+      "count": 4507,
+      "address": "72 Lê Thánh Tôn, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Galaxy Cinema Nguyễn Du",
+      "rating": 4.3,
+      "count": 9381,
+      "address": "116 Nguyễn Du, Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Cinestar Quốc Thanh",
+      "rating": 4.2,
+      "count": 6033,
+      "address": "271 Nguyễn Trãi, Cầu Ông Lãnh, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "CGV Liberty Citypoint",
+      "rating": 4.4,
+      "count": 1751,
+      "address": "Khách sạn Liberty Citypoint, Pasteur, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "DCINE Bến Thành",
+      "rating": 4.3,
+      "count": 1260,
+      "address": "6 Mạc Đĩnh Chi, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Beta Cinemas Trần Quang Khải",
+      "rating": 4.1,
+      "count": 1326,
+      "address": "62 Trần Quang Khải, Tân Định, Hồ Chí Minh 70000, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình giả sử bạn muốn xem phim hôm nay ở Quận 1. Có 6 rạp gần bạn, mình chọn **CGV Liberty Citypoint** — đạt **4.4⭐ (1.751 đánh giá)** cao nhất, nằm trên đường Pasteur, rất gần vị trí bạn.\n\nNếu muốn chọn khác: **Galaxy Cinema Nguyễn Du** cũng 4.3⭐ nhưng có 9.381 đánh giá (nhiều người đánh giá nhất), hoặc **CGV Vincom Center Đồng Khởi** nếu thích trung tâm thương mại lớn.\n\nTầm giá vé phim bao nhiêu? 🎬\n\n[FOLLOWUPS]dưới 100k|100–150k|trên 150k[/FOLLOWUPS]\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🎬 Chọn suất chiếu - CGV Liberty\",\"type\":\"website\",\"url\":\"https://www.cgv.vn/default/cinox/site/cgv-vincom-dong-khoi\",\"primary\":true},{\"label\":\"📍 Xem trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=8041718674423256569\",\"primary\":false}]}[/CTA_BUTTONS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "rap phim nao gan q1"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn muốn xem phim hôm nay ở Quận 1. Có 6 rạp gần bạn, mình chọn **CGV Liberty Citypoint** — đạt **4.4⭐ (1.751 đánh giá)** cao nhất, nằm trên đường Pasteur, rất gần vị trí bạn.\n\nNếu muốn chọn khác: **Galaxy Cinema Nguyễn Du** cũng 4.3⭐ nhưng có 9.381 đánh giá (nhiều người đánh giá nhất), hoặc **CGV Vincom Center Đồng Khởi** nếu thích trung tâm thương mại lớn.\n\nTầm giá vé phim bao nhiêu? 🎬\n\n[FOLLOWUPS]dưới 100k|100–150k|trên 150k[/FOLLOWUPS]\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🎬 Chọn suất chiếu - CGV Liberty\",\"type\":\"website\",\"url\":\"https://www.cgv.vn/default/cinox/site/cgv-vincom-dong-khoi\",\"primary\":true},{\"label\":\"📍 Xem trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=8041718674423256569\",\"primary\":false}]}[/CTA_BUTTONS]"
+    }
+  ]
+}

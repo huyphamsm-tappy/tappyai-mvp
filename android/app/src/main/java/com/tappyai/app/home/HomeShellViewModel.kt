@@ -1,6 +1,7 @@
 package com.tappyai.app.home
 
 import androidx.lifecycle.ViewModel
+import com.tappyai.app.navigation.PendingShellDestination
 import com.tappyai.core.common.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,7 +18,9 @@ import javax.inject.Inject
  * the shell already knows how to show the loading state.
  */
 @HiltViewModel
-class HomeShellViewModel @Inject constructor() : ViewModel() {
+class HomeShellViewModel @Inject constructor(
+    private val pendingShellDestination: PendingShellDestination,
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow<UiState<Unit>>(UiState.Loading)
     val uiState: StateFlow<UiState<Unit>> = _uiState.asStateFlow()
@@ -25,4 +28,13 @@ class HomeShellViewModel @Inject constructor() : ViewModel() {
     init {
         _uiState.value = UiState.Success(Unit)
     }
+
+    /**
+     * P4-14 — the shell destination a notification asked for, if any, taken exactly once.
+     *
+     * Reading it through the ViewModel rather than injecting the holder into the Composable keeps
+     * the screen free of the deep-link layer: the shell is told where it was asked to open, and
+     * does not know or care who asked.
+     */
+    fun consumePendingDestination(): HomeRoute? = pendingShellDestination.consume()
 }

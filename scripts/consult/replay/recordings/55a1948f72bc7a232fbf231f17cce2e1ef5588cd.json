@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"CAT TIEN FARMER LODGE\" Cát Tiên site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T02:35:55.325Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"CAT TIEN FARMER LODGE\" Cát Tiên site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Ngọc Tiên Farmer Eco Lodge - Giá cả và Ưu đãi 2026, ...",
+    "link": "https://vn.trip.com/hotels/nui-tuong-hotel-detail-11105938/ngoc-tien-farmer-eco-lodge/",
+    "snippet": "Ấp 4, Nam Cát Tiên, Đồng Nai, Nam Cát Tiên, Đồng NaiXem Bản Đồ. 8,8/10Rất tốtĐánh giá từ bên thứ ba. Vị Trí Rất Tốt. Bản đồ. Điểm nổi bật: CAT TIEN FARMER LODGE.",
+    "position": 1
+   },
+   {
+    "title": "Cát Tiên Jungle Lodge - Giá cả và Ưu đãi 2026, Nam ...",
+    "link": "https://vn.trip.com/hotels/cat-tien-hotel-detail-3801289/cat-tien-jungle-lodge/",
+    "snippet": "Số 854, ấp 1, Xã, Nam Cát Tiên, Đồng NaiXem Bản Đồ. 7,6/10Tốt. 34 đánh giá. Vị Trí Rất Tốt. Điểm tham quan: CAT TIEN FARMER LODGE.",
+    "position": 2
+   },
+   {
+    "title": "Green Hope Lodge - Giá cả và Ưu đãi 2026, Nam Cát Tiên",
+    "link": "https://vn.trip.com/hotels/cat-tien-hotel-detail-7194515/green-hope-lodge/",
+    "snippet": "Green Hope Lodge. xã Nam Cát Tiên, huyện Tân Phú, Nam Cát Tiên, Đồng NaiXem Bản Đồ ... Các khách sạn gần Sông Đồng NaiCác khách sạn gần CAT TIEN FARMER LODGE ...",
+    "position": 3
+   },
+   {
+    "title": "Homestay tốt nhất tại Nam Cát Tiên cho kỳ nghỉ như ở nhà",
+    "link": "https://vn.trip.com/hotels/homestays/city/vn/cat-tien.html",
+    "snippet": "Các khách sạn Homestay nổi tiếng tại Nam Cát Tiên ; Cat Tien Farmer Lodge · 212.787₫ ; Bìa Rừng Ecolodge · 630.624₫ ; Cat Tien Nature Hotel · 282.427₫.",
+    "position": 4
+   },
+   {
+    "title": "Sunny Eco Lodge - Giá cả và Ưu đãi 2026, Nam Cát Tiên",
+    "link": "https://vn.trip.com/hotels/tra-co-hotel-detail-105558006/sunny-eco-lodge/",
+    "snippet": "Ấp 1, xã Nam Cát Tiên, Cát, Nam Cát Tiên, Đồng NaiXem Bản Đồ. 9,0/10Tuyệt Vời. 1 đánh giá. Vị Trí Nổi Bật. Điểm tham quan: CAT TIEN FARMER LODGE.",
+    "position": 5
+   },
+   {
+    "title": "Thuy Tien Ecolodge - Giá cả và Ưu đãi 2026, Nam Cát Tiên",
+    "link": "https://vn.trip.com/hotels/cat-tien-hotel-detail-69308842/thuy-tien-ecolodge/",
+    "snippet": "Bạn đang tìm đặt phòng Thuy Tien Ecolodge tại Nam Cát Tiên? Hãy chọn ... Cát Tiên Jungle LodgeCat Tien Nature HotelCat Tien Farm StayCat Tien Farmer Lodge ...",
+    "position": 6
+   },
+   {
+    "title": "Các khách sạn ở gần Sông Đồng Nai, Nam Cát Tiên",
+    "link": "https://vn.trip.com/hotels/cat-tien-dong-nai-river/hotels-c77085m51032925/",
+    "snippet": "Cat Tien Farmer Lodge tọa lạc tại Nam Cát Tiên, chỉ cách Chùa Hồng Trung Sơn và Vườn quốc gia Cát Tiên 5 phút lái xe. Lodge này nằm cùng khu vực với Thác Dambri ...",
+    "position": 7
+   },
+   {
+    "title": "KHU NGHỈ DƯỠNG HƯƠNG RỪNG - Giá cả và Ưu đãi ...",
+    "link": "https://vn.trip.com/hotels/cat-tien-hotel-detail-105203319/khu-ngh-dng-hng-rng/",
+    "snippet": "Cát Tiên Jungle LodgeCat Tien Nature HotelKhu nghỉ dưỡng sinh thái ... CAT TIEN FARMER LODGECác khách sạn gần Sông Đồng Nai. Khách sạn gần các điểm ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

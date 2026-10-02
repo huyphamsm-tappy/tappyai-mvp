@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Karaoke ICOOL\" OR \"Luu Bar\" OR \"Drinks Bar\" Bình Thạnh site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:53:01.841Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Karaoke ICOOL\" OR \"Luu Bar\" OR \"Drinks Bar\" Bình Thạnh site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Trải nghiệm karaoke tuyệt vời tại ICOOL Bình Thạnh",
+    "link": "https://www.tiktok.com/@sontinh2302/video/7327667170324811026",
+    "snippet": "Karaoke ICOOL Nhạc Việt - Anh. 1639 · recommend-cover. Kiwi Kiwi. 329 ... Kaka Music Box Bình Thạnh. 635 · recommend-cover. ICOOL-Ung Văn Khiêm ...",
+    "position": 1
+   },
+   {
+    "title": "Karaoke ICool Bình Thạnh - Nhạc Buồn Cho Người Cô Đơn",
+    "link": "https://www.tiktok.com/@karaokeicoolnhacviet_anh/video/7660086397151317268",
+    "snippet": "Karaoke ICool Bình Thạnh - Nhạc Buồn Cho Người Cô Đơn. Video này tập trung vào trải nghiệm karaoke tại ICool Bình Thạnh, mang đến những bản nhạc ...",
+    "position": 2
+   },
+   {
+    "title": "Khách Chờ Hạnh Phúc tại Karaoke ICOOL Bình Thạnh",
+    "link": "https://www.tiktok.com/@karaoke_icool/video/7361339914765503762",
+    "snippet": "Karaoke ICOOL 122 Ung Văn Khiêm , p25 Bình Thạnh #icooluvk #icoolungvankhiem #karaoke #xuhuongtiktok. Khách Chờ Hạnh Phúc tại Karaoke ICOOL Bình ...",
+    "position": 3
+   },
+   {
+    "title": "Nhức Tiềm Thức Karaoke - Karaoke iCool (Bình Thạnh, ...",
+    "link": "https://www.tiktok.com/@karaokeicoolnhacviet_anh/video/7662688848819932436",
+    "snippet": "Kết thúc Video này phù hợp cho người tìm kiếm bản karaoke Nhức Tiềm Thức và thông tin liên quan đến hệ thống Karaoke iCool (Bình Thạnh, Phan Chu ...",
+    "position": 4
+   },
+   {
+    "title": "Hệ thống Karaoke Icool đồng zá 59 cành/ 1 tiếng rẻ quá ...",
+    "link": "https://www.tiktok.com/@langthangsaigon59/video/7312417465034755330",
+    "snippet": "Hệ thống Karaoke Icool đồng zá 59 cành/ 1 tiếng rẻ quá nè mấy má ơi #xuhuong #alibabamedia #CapCut #langthangsaigon #viral #learnontiktok # ...",
+    "position": 5
+   },
+   {
+    "title": "📍140 Lê Văn Việt, P. Hiệp Phú, TP. Thủ Đức #karaokeicool ...",
+    "link": "https://www.tiktok.com/@karaokeicool/video/7293142099828952328",
+    "snippet": "673 Lượt thích,27 Bình luận.Video TikTok từ KARAOKE ICOOL (@karaokeicool): \" 140 Lê Văn Việt, P. Hiệp Phú, TP. Thủ Đức #karaokeicool ...",
+    "position": 6
+   },
+   {
+    "title": "💋 PLAYLIST VỀ NHỮNG NỤ HÔN 💋 #KaraokeICOOL",
+    "link": "https://www.tiktok.com/@karaokeicool/video/7659687098441633045",
+    "snippet": "Video TikTok từ KARAOKE ICOOL (@karaokeicool): \" PLAYLIST VỀ NHỮNG NỤ HÔN #KaraokeICOOL\".âm thanh gốc - KARAOKE ICOOL.",
+    "position": 7
+   },
+   {
+    "title": "100k Đi Hát Karaoke iCool Có Được Không?",
+    "link": "https://www.tiktok.com/@karaokeicool/video/7684516896321932552",
+    "snippet": "Video TikTok từ KARAOKE ICOOL (@karaokeicool): \"Khám phá combo hấp dẫn tại iCool với chỉ 100k, bạn có thể vừa ăn, vừa uống, vừa hát karaoke ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

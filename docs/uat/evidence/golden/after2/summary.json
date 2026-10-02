@@ -1,0 +1,545 @@
+{
+  "label": "after2",
+  "base": "http://localhost:3000",
+  "calls": 19,
+  "at": "2026-09-22T07:18:52.625Z",
+  "cases": [
+    {
+      "id": "T1",
+      "group": "travel-multiturn",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 42948,
+          "tools": [
+            "search_places",
+            "search_places",
+            "get_hotel_prices",
+            "get_weather"
+          ],
+          "cards": [
+            [
+              "Hải Sản Ku Tom Đà Nẵng",
+              "Buffet Hải Sản Đà Nẵng Mr Mộc",
+              "Mộc quán Seafood Đà Nẵng",
+              "Thèm Hải Sản",
+              "Nhà Hàng Hải Sản - Ơ Kìa",
+              "Hải sản My Hanh Seafood",
+              "Hải Sản Đà Nẵng Bé Biển",
+              "Quán Hải Sản Thời Cổ Đà Nẵng - Seafood Restaurant"
+            ],
+            [
+              "Nhà Hàng Hải Sản - Ơ Kìa",
+              "Hải Sản Ku Tom Đà Nẵng",
+              "Buffet Hải Sản Đà Nẵng Mr Mộc",
+              "Mộc quán Seafood Đà Nẵng",
+              "Thèm Hải Sản",
+              "Hải sản My Hanh Seafood",
+              "Hải Sản Đà Nẵng Bé Biển",
+              "Quán Hải Sản Thời Cổ Đà Nẵng - Seafood Restaurant"
+            ]
+          ],
+          "dup": false,
+          "chars": 979
+        },
+        {
+          "status": 200,
+          "ms": 38385,
+          "tools": [
+            "get_flight_prices",
+            "search_places",
+            "search_places",
+            "get_hotel_prices",
+            "get_weather"
+          ],
+          "cards": [
+            [
+              "Hải Sản Ku Tom Đà Nẵng",
+              "Mộc quán Seafood Đà Nẵng",
+              "Thèm Hải Sản",
+              "Nhà Hàng Hải Sản - Ơ Kìa",
+              "Hải sản My Hanh Seafood",
+              "Hải Sản Đà Nẵng Bé Biển",
+              "Quán Hải Sản Thời Cổ Đà Nẵng - Seafood Restaurant",
+              "Nhà Hàng Biển Việt"
+            ],
+            [
+              "Mộc quán Seafood Đà Nẵng",
+              "Hải Sản Ku Tom Đà Nẵng",
+              "Thèm Hải Sản",
+              "Nhà Hàng Hải Sản - Ơ Kìa",
+              "Hải sản My Hanh Seafood",
+              "Hải Sản Đà Nẵng Bé Biển",
+              "Quán Hải Sản Thời Cổ Đà Nẵng - Seafood Restaurant",
+              "Nhà Hàng Biển Việt"
+            ]
+          ],
+          "dup": false,
+          "chars": 744
+        },
+        {
+          "status": 200,
+          "ms": 38225,
+          "tools": [
+            "search_places",
+            "search_places",
+            "get_hotel_prices",
+            "get_weather",
+            "get_flight_prices"
+          ],
+          "cards": [
+            [
+              "Cầu Vàng",
+              "Bãi biển Sơn Trà",
+              "Đỉnh Bàn Cờ",
+              "Cầu Rồng",
+              "Ba Na Hills",
+              "Ngũ Hành Sơn",
+              "Nhà Vọng Cảnh",
+              "Công viên Suối khoáng nóng Núi Thần Tài Đà Nẵng"
+            ],
+            [
+              "Nhà Vọng Cảnh",
+              "Cầu Vàng",
+              "Bãi biển Sơn Trà",
+              "Đỉnh Bàn Cờ",
+              "Cầu Rồng",
+              "Ba Na Hills",
+              "Ngũ Hành Sơn",
+              "Công viên Suối khoáng nóng Núi Thần Tài Đà Nẵng"
+            ]
+          ],
+          "dup": false,
+          "chars": 907
+        }
+      ]
+    },
+    {
+      "id": "T2",
+      "group": "entertainment-imax",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 16624,
+          "tools": [
+            "search_places"
+          ],
+          "cards": [
+            [
+              "CGV Liberty Citypoint",
+              "CGV Vincom Center Đồng Khởi",
+              "Galaxy Cinema Nguyễn Du",
+              "CGV Sư Vạn Hạnh",
+              "Cinestar Quốc Thanh",
+              "Galaxy Cinema Thiso Mall",
+              "CGV Vivo City",
+              "CGV Vincom Center Landmark 81"
+            ],
+            [
+              "CGV Liberty Citypoint",
+              "CGV Vincom Center Đồng Khởi",
+              "Galaxy Cinema Nguyễn Du",
+              "CGV Sư Vạn Hạnh",
+              "Cinestar Quốc Thanh",
+              "Galaxy Cinema Thiso Mall",
+              "CGV Vivo City",
+              "CGV Vincom Center Landmark 81"
+            ]
+          ],
+          "dup": false,
+          "chars": 601
+        },
+        {
+          "status": 200,
+          "ms": 11149,
+          "tools": [
+            "search_places"
+          ],
+          "cards": [
+            [
+              "CGV Liberty Citypoint",
+              "CGV Vincom Center Đồng Khởi",
+              "Galaxy Cinema Nguyễn Du",
+              "CGV Sư Vạn Hạnh",
+              "Cinestar Quốc Thanh",
+              "Galaxy Cinema Thiso Mall",
+              "CGV Vivo City",
+              "CGV Vincom Center Landmark 81"
+            ],
+            [
+              "CGV Liberty Citypoint",
+              "CGV Vincom Center Đồng Khởi",
+              "Galaxy Cinema Nguyễn Du",
+              "CGV Sư Vạn Hạnh",
+              "Cinestar Quốc Thanh",
+              "Galaxy Cinema Thiso Mall",
+              "CGV Vivo City",
+              "CGV Vincom Center Landmark 81"
+            ]
+          ],
+          "dup": false,
+          "chars": 920
+        }
+      ]
+    },
+    {
+      "id": "T3",
+      "group": "food-constraints",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 12811,
+          "tools": [
+            "search_places"
+          ],
+          "cards": [
+            [
+              "Cơm Ngon Hà Nội",
+              "Ben.la - Mâm cơm nhà quận 1",
+              "Quán Bụi - Lê Thánh Tôn - Authentic Vietnamese Cuisine",
+              "Quán Bụi Central, Sài Gòn - Authentic Vietnamese Cuisine",
+              "Hàng Dương Quán Quận 1",
+              "Béo Ơi Quán - Món ngon Hà Nội",
+              "Cơm Niêu Chú Chen - Quận 1",
+              "Quán Bụi Original, Sài Gòn - Authentic Vietnamese Cuisine"
+            ],
+            [
+              "Cơm Ngon Hà Nội",
+              "Ben.la - Mâm cơm nhà quận 1",
+              "Quán Bụi - Lê Thánh Tôn - Authentic Vietnamese Cuisine",
+              "Quán Bụi Central, Sài Gòn - Authentic Vietnamese Cuisine",
+              "Hàng Dương Quán Quận 1",
+              "Béo Ơi Quán - Món ngon Hà Nội",
+              "Cơm Niêu Chú Chen - Quận 1",
+              "Quán Bụi Original, Sài Gòn - Authentic Vietnamese Cuisine"
+            ]
+          ],
+          "dup": false,
+          "chars": 352
+        },
+        {
+          "status": 200,
+          "ms": 14307,
+          "tools": [
+            "search_places"
+          ],
+          "cards": [
+            [
+              "The Cajun Cua",
+              "Bún Riêu Gánh Chợ Bến Thành",
+              "Quán Ăn Út Hương"
+            ],
+            [
+              "Bún Riêu Gánh Chợ Bến Thành",
+              "The Cajun Cua",
+              "Quán Ăn Út Hương"
+            ]
+          ],
+          "dup": false,
+          "chars": 238
+        }
+      ]
+    },
+    {
+      "id": "T4",
+      "group": "used-purchase-risk",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 17363,
+          "tools": [
+            "search_products"
+          ],
+          "cards": [],
+          "dup": false,
+          "chars": 552
+        },
+        {
+          "status": 200,
+          "ms": 13911,
+          "tools": [],
+          "cards": [],
+          "dup": false,
+          "chars": 1583
+        }
+      ]
+    },
+    {
+      "id": "G1a",
+      "group": "travel-single",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 16334,
+          "tools": [
+            "search_places",
+            "get_weather"
+          ],
+          "cards": [
+            [
+              "QUÁN ỐC HẢI SẢN SƯƠNG",
+              "Nhà hàng hải sản La Sirena",
+              "Hàu Nướng Oyster Box",
+              "Nhà hàng Gành Hào 1",
+              "Ốc Tự Nhiên Vũng Tàu - Ốc Tự Nhiên 2",
+              "Hải Sản Bờ Biển",
+              "NaKa buffet Hải sản",
+              "Quán hải sản Hùng Chi"
+            ],
+            [
+              "QUÁN ỐC HẢI SẢN SƯƠNG",
+              "Nhà hàng hải sản La Sirena",
+              "Hàu Nướng Oyster Box",
+              "Nhà hàng Gành Hào 1",
+              "Ốc Tự Nhiên Vũng Tàu - Ốc Tự Nhiên 2",
+              "Hải Sản Bờ Biển",
+              "NaKa buffet Hải sản",
+              "Quán hải sản Hùng Chi"
+            ]
+          ],
+          "dup": false,
+          "chars": 867
+        }
+      ]
+    },
+    {
+      "id": "G1b",
+      "group": "entertainment-single",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 13058,
+          "tools": [
+            "search_places"
+          ],
+          "cards": [
+            [
+              "FIGHT STATION - PS5 PES Cinema Nintendo TÂN MỸ QUẬN 7",
+              "LOTTE Mart Quận 7",
+              "HDRADIO Quận 7 - Audio & Home Cinema & Karaoke",
+              "Chiin Coffee & Cinema Quận 7",
+              "kidzooona & Tiny Mollyfantasy LOTTE MART QUẬN 7",
+              "LOTTE Cinema Nam Sài Gòn",
+              "CGV Vivo City",
+              "Cà Phê Phim Hd"
+            ],
+            [
+              "Chiin Coffee & Cinema Quận 7",
+              "FIGHT STATION - PS5 PES Cinema Nintendo TÂN MỸ QUẬN 7",
+              "LOTTE Mart Quận 7",
+              "HDRADIO Quận 7 - Audio & Home Cinema & Karaoke",
+              "kidzooona & Tiny Mollyfantasy LOTTE MART QUẬN 7",
+              "LOTTE Cinema Nam Sài Gòn",
+              "CGV Vivo City",
+              "Cà Phê Phim Hd"
+            ]
+          ],
+          "dup": false,
+          "chars": 334
+        }
+      ]
+    },
+    {
+      "id": "G3a",
+      "group": "food-hours-budget",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 16245,
+          "tools": [
+            "search_places"
+          ],
+          "cards": [
+            [
+              "ViDa Cafe | CÀ PHÊ NGON QUẬN 3 | CÀ PHÊ SÀI GÒN QUẬN 3",
+              "Little HaNoi Egg Coffee (Dien Bien Phu)",
+              "The Hummingbird Café & Roastery",
+              "Winnie Coffee & Tea | QUÁN CAFE ĐẸP QUẬN 3 | QUÁN CAFE CHECK IN QUẬN 3",
+              "Barista Collective",
+              "The Coffee House - Cao Thắng",
+              "Cooku’s nest café",
+              "Tiệm cà phê Cư Xá 30"
+            ],
+            [
+              "ViDa Cafe | CÀ PHÊ NGON QUẬN 3 | CÀ PHÊ SÀI GÒN QUẬN 3",
+              "Little HaNoi Egg Coffee (Dien Bien Phu)",
+              "The Hummingbird Café & Roastery",
+              "Winnie Coffee & Tea | QUÁN CAFE ĐẸP QUẬN 3 | QUÁN CAFE CHECK IN QUẬN 3",
+              "Barista Collective",
+              "The Coffee House - Cao Thắng",
+              "Cooku’s nest café",
+              "Tiệm cà phê Cư Xá 30"
+            ]
+          ],
+          "dup": false,
+          "chars": 171
+        }
+      ]
+    },
+    {
+      "id": "G3b",
+      "group": "food-correction",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 12625,
+          "tools": [
+            "search_places"
+          ],
+          "cards": [
+            [
+              "Pasteur Street Craft Beer",
+              "FunnyBone Bar & Coffe Quận 1",
+              "えびすEbisu District1( Udon & Sushi)",
+              "Hải Sản Hoàng Gia - 180 Trần Hưng Đạo Quận 1",
+              "Hàng Dương Quán Quận 1",
+              "Quán Ụt Ụt - Bến Thành",
+              "Ốc luộc HÀ NGUYÊN - CN Quận 1 | Ốc luộc mắm gừng Hà Nội chi nhánh Quận 1",
+              "Ghiền Mồi bén & Bia"
+            ],
+            [
+              "Pasteur Street Craft Beer",
+              "FunnyBone Bar & Coffe Quận 1",
+              "えびすEbisu District1( Udon & Sushi)",
+              "Hải Sản Hoàng Gia - 180 Trần Hưng Đạo Quận 1",
+              "Hàng Dương Quán Quận 1",
+              "Quán Ụt Ụt - Bến Thành",
+              "Ốc luộc HÀ NGUYÊN - CN Quận 1 | Ốc luộc mắm gừng Hà Nội chi nhánh Quận 1",
+              "Ghiền Mồi bén & Bia"
+            ]
+          ],
+          "dup": false,
+          "chars": 510
+        },
+        {
+          "status": 200,
+          "ms": 16717,
+          "tools": [
+            "search_places"
+          ],
+          "cards": [
+            [
+              "Bếp Mẹ Ỉn - Lê Thánh Tôn",
+              "Ben.la - Mâm cơm nhà quận 1",
+              "Hải Sản Hoàng Gia - 180 Trần Hưng Đạo Quận 1",
+              "Quán Bụi - Lê Thánh Tôn - Authentic Vietnamese Cuisine",
+              "Quán Bụi Central, Sài Gòn - Authentic Vietnamese Cuisine",
+              "Hàng Dương Quán Quận 1",
+              "Trần Ký Mì Gia | Tiệm Mì Quận 1 | Mì Người Hoa Quận 1",
+              "Cục Gạch Quán"
+            ],
+            [
+              "Bếp Mẹ Ỉn - Lê Thánh Tôn",
+              "Ben.la - Mâm cơm nhà quận 1",
+              "Hải Sản Hoàng Gia - 180 Trần Hưng Đạo Quận 1",
+              "Quán Bụi - Lê Thánh Tôn - Authentic Vietnamese Cuisine",
+              "Quán Bụi Central, Sài Gòn - Authentic Vietnamese Cuisine",
+              "Hàng Dương Quán Quận 1",
+              "Trần Ký Mì Gia | Tiệm Mì Quận 1 | Mì Người Hoa Quận 1",
+              "Cục Gạch Quán"
+            ]
+          ],
+          "dup": false,
+          "chars": 651
+        }
+      ]
+    },
+    {
+      "id": "G4a",
+      "group": "over-clarifying",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 39662,
+          "tools": [
+            "get_hotel_prices",
+            "search_places",
+            "search_places",
+            "get_weather",
+            "get_transport_options"
+          ],
+          "cards": [
+            [
+              "Quảng trường Lâm Viên",
+              "Khu du lịch Thác Datanla",
+              "Thung lũng Tình Yêu",
+              "Khu Du Lịch Cáp Treo Đà Lạt",
+              "Khu du lịch Fresh Garden Dalat",
+              "Đồi Mộng Mơ Đà Lạt",
+              "Đường Hầm Điêu Khắc",
+              "Vườn hoa Đà Lạt"
+            ],
+            [
+              "Quảng trường Lâm Viên",
+              "Khu du lịch Thác Datanla",
+              "Thung lũng Tình Yêu",
+              "Khu Du Lịch Cáp Treo Đà Lạt",
+              "Khu du lịch Fresh Garden Dalat",
+              "Đồi Mộng Mơ Đà Lạt",
+              "Đường Hầm Điêu Khắc",
+              "Vườn hoa Đà Lạt"
+            ]
+          ],
+          "dup": false,
+          "chars": 1135
+        }
+      ]
+    },
+    {
+      "id": "G5a",
+      "group": "used-purchase-risk",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 15174,
+          "tools": [],
+          "cards": [],
+          "dup": false,
+          "chars": 1955
+        }
+      ]
+    },
+    {
+      "id": "G5b",
+      "group": "used-purchase-risk",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 14050,
+          "tools": [],
+          "cards": [],
+          "dup": false,
+          "chars": 1597
+        }
+      ]
+    },
+    {
+      "id": "G5c",
+      "group": "used-purchase-risk",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 17028,
+          "tools": [],
+          "cards": [],
+          "dup": false,
+          "chars": 1891
+        }
+      ]
+    },
+    {
+      "id": "G5d",
+      "group": "used-purchase-risk",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 11529,
+          "tools": [],
+          "cards": [],
+          "dup": false,
+          "chars": 1317
+        }
+      ]
+    }
+  ]
+}

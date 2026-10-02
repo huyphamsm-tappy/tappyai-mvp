@@ -1,0 +1,66 @@
+{
+ "at": "2026-09-26T02:36:05.736Z",
+ "bucket": "tappyai-media-audit",
+ "auditRef": "zdaprdfgpbpnxyofagmc",
+ "account": {
+  "email": "f096-media-1790390165736@example.test",
+  "uid": "9268244d-fc53-4323-9422-c00913a05b18",
+  "groupId": "60996e6f-d94b-424b-9079-9ae1f77f63be"
+ },
+ "beforeDeletion": [
+  {
+   "key": "avatars/9268244d-fc53-4323-9422-c00913a05b18-proof.png",
+   "stored": true,
+   "publicHttp": 403
+  },
+  {
+   "key": "reviews/9268244d-fc53-4323-9422-c00913a05b18/proof.png",
+   "stored": true,
+   "publicHttp": 403
+  },
+  {
+   "key": "avatars/group-60996e6f-d94b-424b-9079-9ae1f77f63be-proof.png",
+   "stored": true,
+   "publicHttp": 403
+  }
+ ],
+ "jobQueued": {
+  "rows": 1,
+  "groupIdsMatch": true
+ },
+ "dbRowsAfterAccountDeletion": {
+  "authUser": 0,
+  "group": 0
+ },
+ "objectsStillInBucketBeforeWorker": 3,
+ "worker": {
+  "processed": 1,
+  "completed": 1,
+  "failed": 0,
+  "objectsDeleted": 3,
+  "tokensRevoked": 0
+ },
+ "afterDeletion": [
+  {
+   "key": "avatars/9268244d-fc53-4323-9422-c00913a05b18-proof.png",
+   "stored": false,
+   "publicHttp": 403
+  },
+  {
+   "key": "reviews/9268244d-fc53-4323-9422-c00913a05b18/proof.png",
+   "stored": false,
+   "publicHttp": 403
+  },
+  {
+   "key": "avatars/group-60996e6f-d94b-424b-9079-9ae1f77f63be-proof.png",
+   "stored": false,
+   "publicHttp": 403
+  }
+ ],
+ "jobAfter": {
+  "done_at": "2026-09-26T02:36:11.238+00:00",
+  "media_deleted": 3,
+  "last_error": null
+ },
+ "PASS": true
+}

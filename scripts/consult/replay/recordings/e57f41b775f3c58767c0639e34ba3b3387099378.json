@@ -1,0 +1,575 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "du lịch Đà Nẵng 3 ngày 2 đêm vé máy bay biển hải sản Da Nang",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@16.0544,108.2022,12z"
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:05:35.977Z",
+ "body": {
+  "searchParameters": {
+   "q": "du lịch Đà Nẵng 3 ngày 2 đêm vé máy bay biển hải sản Da Nang",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@16.0544,108.2022,12z",
+   "engine": "google"
+  },
+  "ll": "@16.0542643,108.2021956,12z",
+  "places": [
+   {
+    "position": 1,
+    "title": "My Khe Beach",
+    "address": "Nguyễn Văn Thoại, Sơn Trà, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0566455,
+    "longitude": 108.2476348,
+    "rating": 4.6,
+    "ratingCount": 12848,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch",
+     "Văn phòng công ty"
+    ],
+    "openingHours": {
+     "Thứ Tư": "Mở cửa cả ngày",
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày",
+     "Thứ Ba": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWn0Pv5ztcCC3zGRRN8L9TFB2Nw6fjFbLBH5LfS9KWVqNmKMd7kuQd2QY9YSW9l0k8MT9GIn2mLTY-p4CRrH0-VmvY3QQ8fm3vd0WSi3RQpXYhFcBVvBm-eRkz2-eiIypvAuSZA6fg",
+    "cid": "1775694965683700190",
+    "fid": "0x314217c69fbdb1e7:0x18a48929cb06c1de",
+    "placeId": "ChIJ57G9n8YXQjER3sEGyymJpBg"
+   },
+   {
+    "position": 2,
+    "title": "Công ty du lịch Đà Nẵng Best",
+    "address": "30 Yết Kiêu, P, Sơn Trà, Đà Nẵng 55000, Việt Nam",
+    "latitude": 16.104627999999998,
+    "longitude": 108.24672249999999,
+    "rating": 4.9,
+    "ratingCount": 421,
+    "type": "Đại lý du lịch",
+    "types": [
+     "Đại lý du lịch"
+    ],
+    "website": "https://danangbest.com/",
+    "phoneNumber": "+84 356 299 439",
+    "openingHours": {
+     "Thứ Tư": "Mở cửa cả ngày",
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày",
+     "Thứ Ba": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmlUDS3MAP-pASvcIQDWZ3QLgING8YjcL_2u63dYp2rM07bPN6xkONK5rA3FmJ8WcO8Rr3SLDB6TljV_xAV13uV6Brf8bMLsuNaV_Lmp3NRIWs-KFtMqq8ndFyEvK9oxpz2pBnh",
+    "cid": "382320965935545455",
+    "fid": "0x314219112b3f76cd:0x54e46e494c5bc6f",
+    "placeId": "ChIJzXY_KxEZQjERb7zFlORGTgU"
+   },
+   {
+    "position": 3,
+    "title": "Du Thuyền Sông Hàn Đà Nẵng (2Da Tickets)",
+    "address": "26 Bạch Đằng, Hải Châu, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.079141099999998,
+    "longitude": 108.2242785,
+    "rating": 4.3,
+    "ratingCount": 489,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch"
+    ],
+    "website": "https://duthuyensonghan.vn/",
+    "phoneNumber": "+84 796 768 636",
+    "openingHours": {
+     "Thứ Tư": "Mở cửa cả ngày",
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày",
+     "Thứ Ba": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkVIG9XkVguYLsMvKD-361rIwnSJiQbZk5D2jlXLy-nuyyiC8ZAqrJErxZITPsd6SvU_wpHPpv_bDkAIALUIZGlGJOZDPHF4UUs05ehWZb6Dpy8Fn2gkYaMDDdZUVG3Ikk43LxwtrzuQvoy",
+    "cid": "4330735287103870185",
+    "fid": "0x314219bbf6a1c67b:0x3c19dccc641354e9",
+    "placeId": "ChIJe8ah9rsZQjER6VQTZMzcGTw"
+   },
+   {
+    "position": 4,
+    "title": "Du Thuyền Sông Hàn Mỹ Xuân 02",
+    "address": "Đối diện 26, Bạch Đằng, Hải Châu, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0790336,
+    "longitude": 108.22429149999999,
+    "rating": 3.9,
+    "ratingCount": 134,
+    "type": "Đại lý du lịch bằng thuyền",
+    "types": [
+     "Đại lý du lịch bằng thuyền",
+     "Bến du thuyền"
+    ],
+    "website": "https://ticket-danangcruise.com.vn/",
+    "phoneNumber": "+84 938 485 438",
+    "openingHours": {
+     "Thứ Tư": "07:00–22:00",
+     "Thứ Năm": "07:00–22:00",
+     "Thứ Sáu": "07:00–22:00",
+     "Thứ Bảy": "07:00–22:00",
+     "Chủ Nhật": "07:00–22:00",
+     "Thứ Hai": "07:00–22:00",
+     "Thứ Ba": "07:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmfwDHjq-_dzvj64jP8My3WK9WZoULiOLm1iaEbfmHqqFC1oZKZzI2B4ySJccyyidjteKHq1qM3dCvxj15PiopjvreYIqkb-Hla87RynVy58cZEIyEqbSQ1nGc6och5NP3fuwmt",
+    "cid": "6490017298846673958",
+    "fid": "0x314219b1c5525cf3:0x5a112c5903e56c26",
+    "placeId": "ChIJ81xSxbEZQjERJmzlA1ksEVo"
+   },
+   {
+    "position": 5,
+    "title": "Công ty du lịch Đà Nẵng Xanh - Danang Green Travel",
+    "address": "376 Nguyễn Tri Phương, Hòa Cường, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.054710399999998,
+    "longitude": 108.20961609999999,
+    "rating": 4.9,
+    "ratingCount": 521,
+    "type": "Nhà điều hành du lịch",
+    "types": [
+     "Nhà điều hành du lịch"
+    ],
+    "website": "https://www.danangxanh.com/da-nang-xanh.html",
+    "phoneNumber": "+84 974 818 106",
+    "openingHours": {
+     "Thứ Tư": "07:30–11:30, 13:30–17:00",
+     "Thứ Năm": "07:30–11:30, 13:30–17:00",
+     "Thứ Sáu": "07:30–11:30, 13:30–17:00",
+     "Thứ Bảy": "07:30–09:00",
+     "Chủ Nhật": "Đóng cửa",
+     "Thứ Hai": "07:30–11:30, 13:30–17:00",
+     "Thứ Ba": "07:30–11:30, 13:30–17:00"
+    },
+    "bookingLinks": [
+     "https://www.danangxanh.com/tour-nuoc-ngoai.html"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlxW6g9Y_4b-PHy6T_y4w91XOlt7MlhxxK5ZEOgr6jOxniYwr86WHfKsGH6VVvf4D08UUUj5SsMsi9x2NYYuLjvYCabrgSD8k7V1zNTmYvNlF4KbJ0NzHJ3RYM66dTJyFzNP9f8",
+    "cid": "8288489961009559718",
+    "fid": "0x31423d5868e08cab:0x7306a1b48a5db8a6",
+    "placeId": "ChIJq4zgaFg9QjERprhdirShBnM"
+   },
+   {
+    "position": 6,
+    "title": "Công Ty cổ phần Dịch Vụ Du Lịch Đà Nẵng 24",
+    "address": "149 - 151 Đ. Cồn Dầu 14, Hòa Xuân, Đà Nẵng, Việt Nam",
+    "latitude": 16.018394699999998,
+    "longitude": 108.22670579999999,
+    "rating": 5,
+    "ratingCount": 3275,
+    "type": "Trung tâm thông tin du lịch",
+    "types": [
+     "Trung tâm thông tin du lịch"
+    ],
+    "website": "http://www.danang24.vn/",
+    "phoneNumber": "+84 789 419 439",
+    "openingHours": {
+     "Thứ Tư": "07:00–23:30",
+     "Thứ Năm": "07:00–22:30",
+     "Thứ Sáu": "07:00–22:30",
+     "Thứ Bảy": "07:00–22:30",
+     "Chủ Nhật": "07:00–22:30",
+     "Thứ Hai": "07:00–22:30",
+     "Thứ Ba": "07:00–22:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkLveD3VsXH7905Jewtwam-WrMJQA4vNIu2knOed0gasxub2AyjqSU2I1vf-8MX7Tz5YZ2Po78jcZ_li3z4jZ_o8H_f5RInhVlLW69pQiqsIf6xh0emp5B1uND9lBfj9Nq18cPz-vq_HSd1",
+    "cid": "7575826135807709075",
+    "fid": "0x31421919bf2ec595:0x6922bdbb68f04f93",
+    "placeId": "ChIJlcUuvxkZQjERk0_waLu9Imk"
+   },
+   {
+    "position": 7,
+    "title": "Bãi tắm Mân Thái",
+    "address": "Hoàng Sa, Sơn Trà, Đà Nẵng, Việt Nam",
+    "latitude": 16.089021199999998,
+    "longitude": 108.24959419999999,
+    "rating": 4.4,
+    "ratingCount": 665,
+    "type": "Bãi biển",
+    "types": [
+     "Bãi biển"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkvFd6HogKF9vbdwXc9WbanT25g6XsBBlpkeIrkqSERegf72QpllKQnkC9ttivnuuoZiGo_6U8Hctftv3J0CW6U2H7649K-N28OSI_FHOfV7temQN4Wa7eQtO8CqU__BfZ0GqQ",
+    "cid": "13625111672817819896",
+    "fid": "0x314217edf81d8baf:0xbd161ee0a355a0f8",
+    "placeId": "ChIJr4sd-O0XQjER-KBVo-AeFr0"
+   },
+   {
+    "position": 8,
+    "title": "CÔNG TY DU LỊCH ĐÀ NẴNG THIÊN NGỌC THẠCH",
+    "address": "52 Hói Kiểng 21, Ngũ Hành Sơn, Đà Nẵng 50003, Việt Nam",
+    "latitude": 16.0071108,
+    "longitude": 108.2425569,
+    "rating": 5,
+    "ratingCount": 1026,
+    "type": "Đại lý du lịch tham quan",
+    "types": [
+     "Đại lý du lịch tham quan",
+     "Đại lý du lịch"
+    ],
+    "website": "https://ngocthachtravel.vn/",
+    "phoneNumber": "+84 937 283 986",
+    "openingHours": {
+     "Thứ Tư": "Mở cửa cả ngày",
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày",
+     "Thứ Ba": "Mở cửa cả ngày"
+    },
+    "bookingLinks": [
+     "https://ngocthachtravel.vn/"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWn4BFbvF4zj45YNwaw43CjUuX_i71rHM2Kb7ufZSjTM2gQjBDreMnVXOCMlkINEXQB9nfXe0rg7DOOMybfcJrWaKBNVhYx7V7hVpT3Bloo0Ian-znhLkrowbx7nFMBpb0UZnl1TGuke9W0s",
+    "cid": "5616056922881901719",
+    "fid": "0x314217f3289d709b:0x4df03e0426bfc497",
+    "placeId": "ChIJm3CdKPMXQjERl8S_JgQ-8E0"
+   },
+   {
+    "position": 9,
+    "title": "Cảng hàng không quốc tế Đà Nẵng",
+    "address": "Nguyễn Văn Linh, Hải Châu, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0569804,
+    "longitude": 108.2025372,
+    "rating": 4.2,
+    "ratingCount": 14188,
+    "type": "Sân bay quốc tế",
+    "types": [
+     "Sân bay quốc tế"
+    ],
+    "website": "https://www.vietnamairport.vn/danangairport/",
+    "phoneNumber": "+84 236 3539 555",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmNOqbjvLQ0xvEWAk8wBt-dxjfP_P7kjaj1YwLvflQElAUoi4oJ4Ym9Cc7RjS2XGkscCaekyPW-jG-Rwww2gByW_qhqQ_f5KnMpgHSDAeDKM0-OfepUm4mgDGCOpmHxCuLGiOSB",
+    "cid": "15540026886627918988",
+    "fid": "0x314219bab9b63451:0xd7a9441e697a048c",
+    "placeId": "ChIJUTS2uboZQjERjAR6aR5Eqdc"
+   },
+   {
+    "position": 10,
+    "title": "Cảng Tiên Sa",
+    "address": "1 Yết Kiêu, Sơn Trà, Đà Nẵng, Việt Nam",
+    "latitude": 16.121721,
+    "longitude": 108.21939929999999,
+    "rating": 4.2,
+    "ratingCount": 771,
+    "type": "Dịch vụ vận tải biển",
+    "types": [
+     "Dịch vụ vận tải biển"
+    ],
+    "phoneNumber": "+84 236 3338 888",
+    "openingHours": {
+     "Thứ Tư": "Mở cửa cả ngày",
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày",
+     "Thứ Ba": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlSkql8hfDsYItzZZQ30Kbzi9nmlv-_L-gLAXTURb0C04tDSpbp-O8wZ397dLIKFfmUf4FZt3pS8pRqRwJxmSgsPOzkBnhVShnvLmT4eafbYzvtZaYk72A-qtWHoiw77Sm5exhx",
+    "cid": "2392540486723197355",
+    "fid": "0x314222a327df2dff:0x213402e57de059ab",
+    "placeId": "ChIJ_y3fJ6MiQjERq1ngfeUCNCE"
+   },
+   {
+    "position": 11,
+    "title": "Công Ty Lữ Hành Quốc Tế D BLUE Travel",
+    "address": "179 Nguyễn Sắc Kim, Hòa Xuân, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0034573,
+    "longitude": 108.22293719999999,
+    "rating": 4.9,
+    "ratingCount": 89,
+    "type": "Đại lý du lịch",
+    "types": [
+     "Đại lý du lịch",
+     "Trung tâm thông tin du lịch",
+     "Nhà điều hành du lịch"
+    ],
+    "website": "https://dbluetravel.com/",
+    "phoneNumber": "+84 979 399 729",
+    "openingHours": {
+     "Thứ Tư": "07:00–19:00",
+     "Thứ Năm": "07:00–19:00",
+     "Thứ Sáu": "07:00–19:00",
+     "Thứ Bảy": "07:00–19:00",
+     "Chủ Nhật": "08:00–12:00",
+     "Thứ Hai": "07:00–19:00",
+     "Thứ Ba": "07:00–19:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmEhN3FGIJ5b_d2aAgY_pr0uQ8Lr-HcD9_u6G8Vsbdb5CbzzgPpb21zI16Bxm5kJCTL_d2k93rUYwC4VG7sbEUXfKUpXijZcJlAU41MB3ZdYE9evfcvNkt3k48MTTzDnSpcQcUO",
+    "cid": "12459693297379589084",
+    "fid": "0x31421a11ef93d045:0xace9b90a28a03bdc",
+    "placeId": "ChIJRdCT7xEaQjER3DugKAq56aw"
+   },
+   {
+    "position": 12,
+    "title": "CÔNG TY CỔ PHẦN DANATRAVEL",
+    "address": "36 Đ. Nguyễn Thuật, An Khê, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0527732,
+    "longitude": 108.1767124,
+    "rating": 4.9,
+    "ratingCount": 36,
+    "type": "Đại lý du lịch",
+    "types": [
+     "Đại lý du lịch",
+     "Nhà tổ chức sự kiện",
+     "Nhà điều hành du lịch",
+     "Phòng visa và hộ chiếu"
+    ],
+    "website": "https://danatravel.vn/",
+    "phoneNumber": "+84 966 767 588",
+    "openingHours": {
+     "Thứ Tư": "Mở cửa cả ngày",
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày",
+     "Thứ Ba": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWm9NYYukwrShO4nh-EHxQpcbqQRnu75m0BQ5pRI54pwdWBrGGgOjWABmDJtrWygBar9dwZhjJ5bD5WJ9OSvqSwc6ZYq9IQfzDmmKdAab0OOZ4q8xFxBUE42Rew7rE3wHaRknis",
+    "cid": "17934943379583783019",
+    "fid": "0x31421911b8dee493:0xf8e5b7faf6d5d06b",
+    "placeId": "ChIJk-TeuBEZQjERa9DV9vq35fg"
+   },
+   {
+    "position": 13,
+    "title": "Ngũ Hành Sơn",
+    "address": "81 Huyền Trân Công Chúa, Hoà Hải, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0037104,
+    "longitude": 108.2631605,
+    "rating": 4.4,
+    "ratingCount": 42975,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch",
+     "Thắng cảnh"
+    ],
+    "website": "https://nguhanhson.org/",
+    "phoneNumber": "+84 236 3961 114",
+    "description": "Thắng cảnh Ngũ Hành Sơn có nhiều hang động và chùa chiền được xây cất công phu với cảnh sắc hữu tình.",
+    "openingHours": {
+     "Thứ Tư": "07:00–17:30",
+     "Thứ Năm": "07:00–17:30",
+     "Thứ Sáu": "07:00–17:30",
+     "Thứ Bảy": "07:00–17:30",
+     "Chủ Nhật": "07:00–17:30",
+     "Thứ Hai": "07:00–17:30",
+     "Thứ Ba": "07:00–17:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnF6Oy-cy2V2vPCRdLClvouw0slMs8cYgr8oN6sa5d9rD36RIeayQIuv7lDxOmUDPX1n5bMEAEL1e5vn5Ex2R-th1nfs_VhTg5XYZDIglZnnb5cc8WiWvKJSS8IX1tuVPAmxq0B",
+    "cid": "13577824764986909893",
+    "fid": "0x31420dd4e14b2edb:0xbc6e1faf738be4c5",
+    "placeId": "ChIJ2y5L4dQNQjERxeSLc68fbrw"
+   },
+   {
+    "position": 14,
+    "title": "Bãi biển Sơn Trà",
+    "address": "Bến Xe Bus, Sơn Trà, Đà Nẵng, Việt Nam",
+    "latitude": 16.0991295,
+    "longitude": 108.25506159999999,
+    "rating": 4.8,
+    "ratingCount": 439,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch"
+    ],
+    "website": "https://sontraseahotel.com/",
+    "phoneNumber": "+84 936 790 798",
+    "openingHours": {
+     "Thứ Tư": "Mở cửa cả ngày",
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày",
+     "Thứ Ba": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkjutkXX1SqbxGYmSkuFcHppIhKz1pegTrMVzCzXGIgZHv5BYLWCBNt6YJH4xuKB67G6pocCiMa5WzUIDlkGQrS8G1Y6GKglXzZd-nNoz8Y6aMQruLISJX7q1dBb4ax3CUuPSdC",
+    "cid": "4955672832474344518",
+    "fid": "0x31421705ce8b53ad:0x44c6162f52afec46",
+    "placeId": "ChIJrVOLzgUXQjERRuyvUi8WxkQ"
+   },
+   {
+    "position": 15,
+    "title": "Công ty du lịch Lữ Hành Việt Nam - CN Đà Nẵng",
+    "address": "Tòa nhà Danabook, 76 Bạch Đằng, Hải Châu, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0695239,
+    "longitude": 108.2249137,
+    "rating": 4.9,
+    "ratingCount": 54,
+    "type": "Nhà điều hành du lịch",
+    "types": [
+     "Nhà điều hành du lịch"
+    ],
+    "website": "https://luhanhvietnam.com.vn/",
+    "phoneNumber": "+84 938 241 828",
+    "openingHours": {
+     "Thứ Tư": "08:00–17:30",
+     "Thứ Năm": "08:00–17:30",
+     "Thứ Sáu": "08:00–17:30",
+     "Thứ Bảy": "08:00–11:30",
+     "Chủ Nhật": "Đóng cửa",
+     "Thứ Hai": "08:00–17:30",
+     "Thứ Ba": "08:00–17:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWk43FXhXdkdzNHPZdBCiCELHymlwDXS62_9ZAFK8UNZUNZXtHhNHCukV4lnKB7LUOqYgBLsATn6KdRQxez5SnseXolqO1wJ6wRRPoY07HC3LL-uc_PFqUqvyTKIp9Q2GO0cY9o",
+    "cid": "4528613579668001361",
+    "fid": "0x314219e84bdc426d:0x3ed8de0e9d1f1251",
+    "placeId": "ChIJbULcS-gZQjERURIfnQ7e2D4"
+   },
+   {
+    "position": 16,
+    "title": "CÔNG TY CỔ PHẦN DU LỊCH DANAGO",
+    "address": "41 Phan Triêm, Hòa Xuân, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0052396,
+    "longitude": 108.22112879999999,
+    "rating": 5,
+    "ratingCount": 882,
+    "type": "Đại lý du lịch",
+    "types": [
+     "Đại lý du lịch"
+    ],
+    "website": "https://dng.vn/",
+    "phoneNumber": "+84 833 888 404",
+    "openingHours": {
+     "Thứ Tư": "08:00–17:00",
+     "Thứ Năm": "08:00–17:00",
+     "Thứ Sáu": "08:00–17:00",
+     "Thứ Bảy": "08:00–11:30",
+     "Chủ Nhật": "Đóng cửa",
+     "Thứ Hai": "08:00–17:00",
+     "Thứ Ba": "08:00–17:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWl8_xAXxgr1DWjXXwV9D8OUzU07dw9wfJesdBlxpHO8ovUVORFux0rGGwAe4LqIh9O66UoAWAnJJC6btkJCX83jqQ33P7zw_4Qh7Seo2ojZNGkz-BWLDzTZTzGh-ljEsVWLRgWj4w",
+    "cid": "13186532456252322605",
+    "fid": "0x31421bdf63fdc329:0xb6fff9675a14332d",
+    "placeId": "ChIJKcP9Y98bQjERLTMUWmf5_7Y"
+   },
+   {
+    "position": 17,
+    "title": "Công ty TNHH MTV Tuấn Nguyễn Travel",
+    "address": "101 Nguyễn Chí Thanh, Hải Châu, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.074788899999998,
+    "longitude": 108.2207875,
+    "rating": 4.7,
+    "ratingCount": 218,
+    "type": "Đại lý du lịch tham quan",
+    "types": [
+     "Đại lý du lịch tham quan",
+     "Đại lý du lịch biển",
+     "Đại lý du lịch",
+     "Nhà điều hành du lịch"
+    ],
+    "website": "https://www.tuannguyentravel.com/",
+    "phoneNumber": "+84 1900 8648",
+    "openingHours": {
+     "Thứ Tư": "Mở cửa cả ngày",
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày",
+     "Thứ Ba": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkYvA5x6XvacjmA-dVBsxBxRkCnov8yw5BiWfgyg45cV5L9Pr0YQCzAMJr2sLlAAQUqj-Lo1wjUHzm76-aV4xSa4Nkz5W-ypc2iw77lfhDXUKdoCrc0S9lQZC3XxEqfBiPl7ofkXQ",
+    "cid": "15440975375258378463",
+    "fid": "0x314219b5b0bbf253:0xd6495d4b43d460df",
+    "placeId": "ChIJU_K7sLUZQjER32DUQ0tdSdY"
+   },
+   {
+    "position": 18,
+    "title": "TOUR DU LỊCH ĐÀ NẴNG 4 NGÀY 3 ĐÊM - CLOUDTOUR",
+    "address": "SỐ 271 Nguyễn Văn Linh, Thanh Khê, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.059642099999998,
+    "longitude": 108.21166649999999,
+    "rating": 5,
+    "ratingCount": 1,
+    "type": "Văn phòng công ty",
+    "types": [
+     "Văn phòng công ty"
+    ],
+    "website": "https://www.tourdanang.com.vn/tour-ha-noi-da-nang-4-ngay-3-dem.html",
+    "phoneNumber": "+84 236 3676 868",
+    "openingHours": {
+     "Thứ Tư": "01:00–23:30",
+     "Thứ Năm": "01:00–23:30",
+     "Thứ Sáu": "01:00–23:30",
+     "Thứ Bảy": "01:00–23:00",
+     "Chủ Nhật": "01:00–23:30",
+     "Thứ Hai": "01:00–23:30",
+     "Thứ Ba": "01:00–23:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnPrU5JYdMXZXmQc5CNKTcKNq3IsOt3sG9c7WjKdPkHTrqOU8TlyLwYMULJ4bpC2anfCMS0MZjnfTL_rCMs5lV2YaBxinSqI5Ir56jGshGQdemNDJgGDZWQcvOqWSg7avc_r1YY",
+    "cid": "8293126775377749577",
+    "fid": "0x3142174cbb0e348d:0x73171add03abe649",
+    "placeId": "ChIJjTQOu0wXQjERSearA90aF3M"
+   },
+   {
+    "position": 19,
+    "title": "Ba Na Hills",
+    "address": "Thôn An Sơn, Hòa Vang, Đà Nẵng, Việt Nam",
+    "latitude": 15.9951364,
+    "longitude": 107.9961392,
+    "rating": 4.4,
+    "ratingCount": 98959,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch",
+     "Thắng cảnh"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnq5Vy6ZpBzGDxn3b1ylSkwc_Fhc9r0Fu_zxxCSba7p8ugMRJhZybuaLzBenMmi4TQ2cLHZ1Dz4NKPx-wN5jHmDEoFXIPg-pGk_RZL09n5S23iwZr4pC0HugqYr_f0ZJfcH4uF4NpjhHbo",
+    "cid": "9546412119288544930",
+    "fid": "0x3141f7b5026661c9:0x847bab3e51ad7ea2",
+    "placeId": "ChIJyWFmArX3QTERon6tUT6re4Q"
+   },
+   {
+    "position": 20,
+    "title": "Bảo tàng 3D Art In Paradise",
+    "address": "Lô 10 Trần Nhân Tông, Sơn Trà, Đà Nẵng, Việt Nam",
+    "latitude": 16.0954282,
+    "longitude": 108.2431088,
+    "rating": 4.4,
+    "ratingCount": 3418,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch",
+     "Bảo tàng nghệ thuật"
+    ],
+    "website": "http://artinparadise.com.vn/",
+    "phoneNumber": "+84 911 641 100",
+    "description": "Bảo tàng tương tác cho du khách tạo dáng chụp ảnh vui nhộn trước những bức tranh 3D theo chủ đề.",
+    "openingHours": {
+     "Thứ Tư": "08:30–18:00",
+     "Thứ Năm": "08:30–18:00",
+     "Thứ Sáu": "08:30–18:00",
+     "Thứ Bảy": "08:30–18:00",
+     "Chủ Nhật": "08:30–18:00",
+     "Thứ Hai": "08:30–18:00",
+     "Thứ Ba": "08:30–18:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWm7JOyvacOYhibkowSw3SzzpcLALBOcqyHD0WC1C25vPJ91qD7_lakM_SyU5U9UcMTS36_c9OQNcdRUnscZ6o2dGtCXEDUSi3fzOovyuzn5boXCET0b3gPNKBh9KpVh-ABBIBkX",
+    "cid": "10503400368954609584",
+    "fid": "0x314217f750645271:0x91c392fc753f0fb0",
+    "placeId": "ChIJcVJkUPcXQjERsA8_dfySw5E"
+   }
+  ],
+  "credits": 3
+ }
+}

@@ -1,0 +1,84 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "gội đầu dưỡng sinh quan 3 site:klook.com/vi/activity",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:59:21.594Z",
+ "body": {
+  "searchParameters": {
+   "q": "gội đầu dưỡng sinh quan 3 site:klook.com/vi/activity",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Gội đầu dưỡng sinh kiểu Việt Hoa SPA",
+    "link": "https://www.klook.com/vi/activity/159097-flower-spa-vietnamese-hair-wash/",
+    "snippet": "Cung cấp dịch vụ chu đáo, lựa chọn kết hợp tinh dầu cao cấp theo thuộc tính cơ thể của bạn, sau đó sử dụng các kỹ thuật massage độc đáo để giúp bạn đạt được sự ...",
+    "rating": 5,
+    "ratingCount": 5,
+    "position": 1
+   },
+   {
+    "title": "Đại An, Đài Bắc: Gội đầu dưỡng sinh kiểu Việt 24H - Dômei",
+    "link": "https://www.klook.com/vi/activity/125966-domei-spa-in-taipei/",
+    "snippet": "Gội đầu kiểu Việt tại Dǒ Měi ‍♀️ Kỹ thuật viên ROSE phục vụ rất tốt, vượt xa mong đợi. Cô ấy gội đầu rất kỹ lưỡng và luôn chú ý xem khách hàng có cảm thấy ...",
+    "rating": 4.7,
+    "ratingCount": 14,
+    "position": 2
+   },
+   {
+    "title": "Đài Nam: Kim Phú Túc Dưỡng Sinh Hội Quán (Cần đặt ...",
+    "link": "https://www.klook.com/vi/activity/100142-jinfuzu-massage/",
+    "snippet": "Số 25, Đoạn 3, đường Hải An, quận Bắc, thành phố Đài Nam. Lựa chọn hàng đầu ... 默 越式頭療會館 - Gội đầu dưỡng sinh kiểu Việt, Spa da đầu. ☆ 4.9 (23).",
+    "position": 3
+   },
+   {
+    "title": "Trải nghiệm Shinrin Yoku Spa tại Quận 3, TP. Hồ Chí Minh",
+    "link": "https://www.klook.com/vi/activity/208415-shinrin-yoku-spa-experience-in-district-3-ho-chi-minh-city/",
+    "snippet": "Nhân viên thân thiện và nhẹ nhàng, dịch vụ chu đáo. Sau khi trị liệu, chúng tôi cảm thấy thư thái hơn rất nhiều, đặc biệt là gội đầu và massage siêu dễ chịu.",
+    "rating": 5,
+    "ratingCount": 32,
+    "position": 4
+   },
+   {
+    "title": "Quán Spa Massage & Gội Đầu Nhất Đầu Hùng · Chi nhánh ...",
+    "link": "https://www.klook.com/vi/activity/190734-yi-tou-xiong-massage-spa-futian-branch/",
+    "snippet": "Quán Spa Massage & Gội Đầu Nhất Đầu Hùng · Chi nhánh Futian · Trải nghiệm trị liệu đầu chuyên sâu · Ốc đảo giải tỏa căng thẳng đô thị · Không gian trang nhã và yên ...",
+    "rating": 4.1,
+    "ratingCount": 10,
+    "position": 5
+   },
+   {
+    "title": "Đài Bắc Zhongshan｜Trung tâm Dưỡng sinh Thân Thể Thâm Hòa",
+    "link": "https://www.klook.com/vi/activity/110386-shenhe-massage-in-taipei/",
+    "snippet": "Đài Bắc Zhongshan｜Trung tâm Dưỡng sinh Thân Thể Thâm Hòa · Massage chuyên nghiệp từ các kỹ thuật viên lành nghề, lựa chọn hàng đầu để thư giãn sau giờ làm việc ...",
+    "position": 6
+   },
+   {
+    "title": "Trải nghiệm Yubii Spa & Massage tại Hồ Chí Minh",
+    "link": "https://www.klook.com/vi/activity/143550-yubii-spa-massage-experience-in-ho-chi-minh/",
+    "snippet": "Các gói dịch vụ · Massage toàn thân bằng tinh dầu (60/75/90 phút) · Massage toàn thân đá nóng (60/75/90 phút) · Đặc trị da mặt (60/70 phút) · Gội đầu thư giãn Yubii ...",
+    "rating": 4.8,
+    "ratingCount": 32,
+    "position": 7
+   },
+   {
+    "title": "Liệu trình gội đầu dưỡng sinh truyền thống Hàn Quốc tại ...",
+    "link": "https://www.klook.com/vi/activity/2616-korean-traditional-hair-scalp-care-seoul/",
+    "snippet": "Tôi đánh giá cao rằng tất cả các sản phẩm đều dựa trên các thành phần tự nhiên và cách tiếp cận toàn diện đối với sức khỏe và mái tóc. Không gian thật đáng yêu.",
+    "rating": 4.8,
+    "ratingCount": 119,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

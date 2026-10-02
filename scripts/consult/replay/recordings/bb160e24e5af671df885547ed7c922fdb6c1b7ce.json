@@ -1,0 +1,30 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Seasons Hotel\" Bà Rịa Vũng Tàu site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T19:20:57.398Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Seasons Hotel\" Bà Rịa Vũng Tàu site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Các đánh giá Oceanami Long Hai - Managed by Villa Owner",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-hotel-detail-132130816/oceanami-long-hai-managed-by-villa-owner/review.html",
+    "snippet": "... Seasons Hotel GuangzhouLiuhejing HotelKhách sạn Tgt BeachJAMES JOYCE COFFETEL( Shanghai Global Harbor Huashida Hotel)Homestay Bingo Vĩnh HyKhách sạn London ...",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

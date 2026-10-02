@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Nhà Hàng 39 | Nhà Hàng Đặc Sản Quận 7\" OR \"Hải Sản Hoàng Gia CN Phạm Văn Nghị Quận 7\" OR \"ĐẢO HẢI SẢN\" quan 7 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T04:10:36.641Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Nhà Hàng 39 | Nhà Hàng Đặc Sản Quận 7\" OR \"Hải Sản Hoàng Gia CN Phạm Văn Nghị Quận 7\" OR \"ĐẢO HẢI SẢN\" quan 7 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Gỏi Sứa Sốt Thái Đảo Hải Sản – Sứa Giòn Ăn Lạnh Ngon",
+    "link": "https://www.tiktok.com/@qmthau/video/7397403035263126800",
+    "snippet": "Gỏi sứa sốt Thái Đảo Hải Sản là món hải sản ăn lạnh được nhiều người tìm kiếm khi muốn thưởng thức sứa giòn kết hợp vị chua ngọt cay của sốt ...",
+    "position": 1
+   },
+   {
+    "title": "Đảo hải sản Minh Vũ Quan Lạn - nhận ship mọi nơi",
+    "link": "https://www.tiktok.com/@daohaisan_minhvu_quanlan/video/7643710359655730453",
+    "snippet": "- Hải sản tươi sống: các món hải sản địa phương, được gắn tên chung “hải sản Quan Lạn” hay “đảo hải sản Quan Lạn”. ... 7-7Trả lời. 0.. Mình ...",
+    "position": 2
+   },
+   {
+    "title": "Ăn hủ tiếu hải sản kế bên quán Đảo ...",
+    "link": "https://www.tiktok.com/@huan0407k/video/7686828966572788993",
+    "snippet": "Ăn hủ tiếu hải sản kế bên quán Đảo hải sản #xuhuongtikok #freeview. Ăn hủ tiếu hải sản kế bên quán Đảo hải sản. @ TUYẾT ...",
+    "position": 3
+   },
+   {
+    "title": "ĐẢO HẢI SẢN (@daohaisanvn)",
+    "link": "https://www.tiktok.com/@daohaisanvn",
+    "snippet": "ĐẢO HẢI SẢN · @daohaisanvn · Hơn 300 hải sản tươi sống và Sashimi chuẩn gu. HOTLINE: 1900 0098 hoặc Za.lo @daohaisan.",
+    "position": 4
+   },
+   {
+    "title": "Cách làm hải sản sốt Thái tại Đảo Hải Sản",
+    "link": "https://www.tiktok.com/@daohaisanvn/video/7647814360336764168",
+    "snippet": "Video TikTok từ ĐẢO HẢI SẢN (@daohaisanvn): \"Công thức hải sản sốt Thái đậm vị, hướng dẫn đơn giản dành cho Team mê sốt Thái nhà Đảo.",
+    "position": 5
+   },
+   {
+    "title": "Phá đảo hải sản và đồ nướng cùng bộ đôi sốt chấm chinsu ...",
+    "link": "https://www.tiktok.com/@dianngonvoituinha/video/7665273284874734869",
+    "snippet": "Phá đảo hải sản và đồ nướng cùng bộ đôi sốt chấm chinsu Nội dung được tài trợ bởi CHIN-SU. Chỉ cần có em này là món ngon tăng hạng liền ...",
+    "position": 6
+   },
+   {
+    "title": "Ăn gì ở Đảo Quan Lạn - Hải Sản Tươi Ngon",
+    "link": "https://www.tiktok.com/@daohaisan_minhvu_quanlan/video/7630700746505243924",
+    "snippet": "Video TikTok từ Đảo Hải Sản Minh Vũ - Quan Lạn (@daohaisan_minhvu_quanlan): \"Khám phá ẩm thực Đảo Quan Lạn với các món hải sản tươi ngon.",
+    "position": 7
+   },
+   {
+    "title": "Đảo Hải Sản bắt tay cùng loạt siêu thị đình đám mang đến quà ...",
+    "link": "https://www.tiktok.com/@daohaisanvn/video/7638939246530710805",
+    "snippet": "Đảo Hải Sản bắt tay cùng loạt siêu thị đình đám mang đến quà cực khủng cho hè này! Dịp này Đảo sẽ cùng hợp tác với các chuỗi siêu thị KingFoodMart, Emart, ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

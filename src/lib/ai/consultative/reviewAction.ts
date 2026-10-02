@@ -105,10 +105,30 @@ export function reviewActionsForPlace(place: {
     })
   }
 
-  // 3) Generic YouTube search fallback — only when nothing attributed exists.
-  // A search URL is safe (public, non-fabricated) but never counts as evidence
-  // that a review video exists for this specific place.
-  if (out.length === 0 && name) {
+  /**
+   * 3) Generic YouTube search fallback — only when no REVIEW CONTENT exists.
+   *
+   * 🚨 THIS RUNG WAS UNREACHABLE FOR EVERY PLACE, and the measurement is blunt:
+   * across four live domains, 100% of `review_actions` were `google_maps` or
+   * `official_website` and 0 review buttons reached a card. Two rules combined to
+   * do it. Here, the fallback was gated on `out.length === 0` — but every OSM row
+   * carries a `maps_link`, so rung 2 had always pushed something. In actions.ts,
+   * those same two kinds are then skipped, because their URLs duplicate the Maps
+   * and Website buttons. So the ladder filled itself with entries that were
+   * guaranteed to be discarded, and the one rung that would have survived never
+   * fired.
+   *
+   * The gate now asks the question it always meant: is there any REVIEW CONTENT?
+   * A Maps place page and an official website are platform destinations already
+   * offered under their own labels — they are not somebody's review. When none of
+   * the attributed content rungs matched, offering a clearly-labelled public
+   * search is the honest remaining option, and it is what the product decided.
+   *
+   * Still never evidence: `attributed: false`, and the label says "find video
+   * reviews", never "the review is here".
+   */
+  const hasReviewContent = out.some(a => a.kind !== 'google_maps' && a.kind !== 'official_website')
+  if (!hasReviewContent && name) {
     const q = encodeURIComponent(`${name} review`)
     out.push({
       kind: 'youtube_search_fallback',

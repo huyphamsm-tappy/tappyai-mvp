@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "quán ăn vặt, cơm, bánh mì giá rẻ gần quận 7 Quận 7 gia menu thuc don",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:25:25.688Z",
+ "body": {
+  "searchParameters": {
+   "q": "quán ăn vặt, cơm, bánh mì giá rẻ gần quận 7 Quận 7 gia menu thuc don",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Ghé ngay 25 quán ăn ngon quận 7 'ngon-bổ-rẻ'",
+    "link": "https://www.bachhoaxanh.com/kinh-nghiem-hay/ke-ten-top-15-quan-an-ngon-quan-7-xem-ban-hieu-ro-sai-gon-ra-sao-1297633",
+    "snippet": "Menu: Bánh mì gà, xôi mặn. Món ngon nhất: Bánh mì gà (khoảng 20.000 đồng) Ưu điểm: Giá rẻ, chất lượng đồ ăn tốt đảm bảo vệ sinh. Nhược điểm: Xe đẩy vỉa hè nên ...",
+    "position": 1
+   },
+   {
+    "title": "Top 20 quán ăn Quận 7 ngon, đặc sản, đông khách",
+    "link": "https://zalopay.vn/quan-an-quan-7-5511",
+    "snippet": "Quán ngon đặc sản Quận 7 · 1. Hủ tiếu Nam Vang - Tài Anh · 2. Bò lá lốt Tân Quy · 3. Bò Tơ Quán Mộc · 4. Bánh canh cua Ngọc Trinh · 5. Bánh mì gà ...",
+    "date": "26 thg 5, 2024",
+    "position": 2
+   },
+   {
+    "title": "TRẢI NGHIỆM THIÊN ĐƯỜNG ĂN VẶT ...",
+    "link": "https://www.facebook.com/ansapsaigon/videos/tr%E1%BA%A3i-nghi%E1%BB%87m-thi%C3%AAn-%C4%91%C6%B0%E1%BB%9Dng-%C4%83n-v%E1%BA%B7t-%C4%91a-d%E1%BA%A1ng-c%C3%A1c-m%C3%B3n-m%C3%A0-c%E1%BB%B1c-k%E1%BB%B3-r%E1%BA%BB-%E1%BB%9F-khu-qu%E1%BA%ADn-7-b%C3%A1nh-fl/1535097181750005/",
+    "snippet": "TRẢI NGHIỆM THIÊN ĐƯỜNG ĂN VẶT ĐA DẠNG CÁC MÓN MÀ CỰC KỲ RẺ Ở KHU QUẬN 7 Bánh Flan dì Chi 35/8B Đ. Số 8, Tân Kiểng, Quận 7, ...",
+    "position": 3
+   },
+   {
+    "title": "Cho e hỏi quận 7 chỗ nào bán bánh mì nguyên cám, đồ ăn ...",
+    "link": "https://www.facebook.com/groups/choonlineq7/posts/2134208737157713/",
+    "snippet": "Tại Quận 7, bạn có thể mua bánh mì nguyên cám chất lượng, eat clean tại La Vita Bakery (42 đường 53, P. Tân Phong) – địa chỉ nổi tiếng ...",
+    "position": 4
+   },
+   {
+    "title": "TỔ HỢP ĂN VẶT NGON RẺ NHIỀU MÓN Ở QUẬN 7",
+    "link": "https://www.tiktok.com/@ansapsaigon/video/7205423414582988058",
+    "snippet": "12.5K Lượt thích,302 Bình luận.Video TikTok từ Ăn Sập Sài Gòn (@ansapsaigon): \"Khám phá thế giới ẩm thực tại phường Tân Quy Quận 7 Sài Gòn ...",
+    "position": 5
+   },
+   {
+    "title": "Thức ăn nhanh ngon tại Quận 7 - Thổ Địa Ăn Uống - MoMo",
+    "link": "https://www.momo.vn/page/thuc-an-nhanh-tai-quan-7-3-4-268",
+    "snippet": "El Barón Bistro And Drinks - Hưng Phước 4 · Gà rán & Khoai lang lắc - Mr.Thịnh - Đường số 17 · Bột Chiên & Ăn Vặt - Đường Số 17 · Lẩu Bò Giáo Sĩ - Trần Xuân Soạn.",
+    "rating": 4.5,
+    "ratingCount": 19,
+    "position": 6
+   },
+   {
+    "title": "Food Tour District 7 | Affordable Restaurants I Highly Regard",
+    "link": "https://www.youtube.com/watch?v=dlsKkss6cE8&vl=vi",
+    "snippet": "... quán ngon mà ở mỗi quán mình lại có một món tâm đắc riêng. Điển ... Mì Gia ở quận 7 ngon quá. 13:38 · Go to channel Say Cooking & Sharing ...",
+    "position": 7
+   },
+   {
+    "title": "Top các địa điểm ăn vặt Quận 7 bạn nên thử",
+    "link": "https://www.nhatot.com/kinh-nghiem/an-vat-quan-7.html",
+    "snippet": "Top 5 địa điểm ăn vặt Quận 7 · Tiệm Ăn Vặt Mùa Hè · Xiên Xèo – Thiên Đường Ăn Vặt · An Food Bò Né – Mì Cay – Ăn Vặt · Bánh Tráng Nướng Bé Lùn · Quán ...",
+    "date": "9 thg 7, 2025",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

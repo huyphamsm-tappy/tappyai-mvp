@@ -1,0 +1,298 @@
+{
+  "id": "S1",
+  "text": "Mua tai nghe bluetooth dưới 1 triệu, pin trâu",
+  "parent": null,
+  "status": 200,
+  "ms": 13873,
+  "evidenceId": "17b400b8-86c1-446d-b4a2-4f9fbe0754cd",
+  "toolCalls": [
+    {
+      "tool": "search_products",
+      "args": {
+        "query": "tai nghe bluetooth pin trâu dưới 1 triệu"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Tai Nghe Bluetooth M10 Phiên Bản Pro Nâng Cấp Pin Trâu, Nút Cảm Ứng Tự Động Kết Nối Chống Nước Chống Ồn , BẢO HÀNH 12T",
+      "rating": 4.7,
+      "count": 354,
+      "price": 29900
+    },
+    {
+      "name": "Tai nghe bluetooth bass mạnh pin trâu điều khiển cảm ứng YJ-77 Tai nghe treo tai truyền âm qua xương",
+      "rating": 5,
+      "count": 6,
+      "price": 87220
+    },
+    {
+      "name": "Tai nghe Bluetooth Lenovo TH66 Khử tiếng ồn thông minh Chất lượng âm thanh HIFI Chất lượng âm thanh HD Độ trễ thấp Tuổi thọ pin dài",
+      "rating": 4.8,
+      "count": 278,
+      "price": 329000
+    },
+    {
+      "name": "Tai nghe EDIFIER New Bluetooth WH700NB",
+      "rating": 4.8,
+      "count": 879,
+      "price": 749000
+    },
+    {
+      "name": "Tai nghe Bluetooth True Wireless Baseus Bass BS1 NC",
+      "rating": 4.7,
+      "count": 447,
+      "price": 689000
+    },
+    {
+      "name": "Tai nghe Bluetooth Chụp Tai Philips Tah3220 Đen",
+      "rating": 5,
+      "count": 3,
+      "price": 730000
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "[TAPPY_SHOPPING]{\"v\":1,\"entities\":[{\"key\":\"uncertain:0\",\"name\":\"Tai Nghe Bluetooth M10 Phiên Bản Pro Nâng Cấp Pin Trâu, Nút Cảm Ứng Tự Động Kết Nối Chống Nước Chống Ồn , BẢO HÀNH 12T\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":true,\"priceLow\":29900,\"priceHigh\":29900,\"image\":\"https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRU83_-4GLRU_OAB9o3Wx7G_brzYAwzHVLOyVf6f6RYEVQMZPPRpmZkY8rfoQsGif_JTjZKlUx6KnFWXpkeiR8X1jWp737eC7_hhIbXt8t_b4hEvfKWi7Ks\",\"offers\":[{\"seller\":\"Shopee\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth+pin+tr%C3%A2u+d%C6%B0%E1%BB%9Bi+1+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,catalogid:13063812762831630945,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":29900,\"currency\":\"VND\",\"condition\":null,\"rating\":4.7,\"ratingCount\":354}]},{\"key\":\"uncertain:1\",\"name\":\"Tai nghe bluetooth bass mạnh pin trâu điều khiển cảm ứng YJ-77 Tai nghe treo tai truyền âm qua xương\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":87220,\"priceHigh\":87220,\"image\":\"https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcT7Djn4Ogzxfv7VJBPQS_DU9g3G33_VbgbMHdyBoYY5WHBCoVsBsCV-9VejBL5vjR7_Kp3tJxGhZdYbH0sJyJQRe8bqsAC9o5G-zqresOoXRW0enjpixZ1z\",\"offers\":[{\"seller\":\"Shopee\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth+pin+tr%C3%A2u+d%C6%B0%E1%BB%9Bi+1+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,productid:12587355538111021045,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":87220,\"currency\":\"VND\",\"condition\":null,\"rating\":5,\"ratingCount\":6}]},{\"key\":\"uncertain:2\",\"name\":\"Tai nghe Bluetooth Lenovo TH66 Khử tiếng ồn thông minh Chất lượng âm thanh HIFI Chất lượng âm thanh HD Độ trễ thấp Tuổi thọ pin dài\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":329000,\"priceHigh\":329000,\"image\":\"https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTl9IsSQs8-xaTMPRGUBl8FO38frTz5w8uVlL_Sted7bYHWBRHFo2C1tiP0BlRtP0oL18j_DVzGa-i2XALkJUsr8u0_9FluiNHfXoUWCTg0woLRr748iEFI77F6\",\"offers\":[{\"seller\":\"Shopee\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth+pin+tr%C3%A2u+d%C6%B0%E1%BB%9Bi+1+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,productid:17423717221284606760,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":329000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.8,\"ratingCount\":278}]},{\"key\":\"uncertain:3\",\"name\":\"Tai nghe EDIFIER New Bluetooth WH700NB\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":749000,\"priceHigh\":749000,\"image\":\"https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRbrlJKESEkPPInCS6Z5Z8PCQZSSd3UqD2G6QSXC8ysHx1RsNlBgxTsFj1MKfMVIZlooQFMfbx1G1mTV1Pcr7EGQ1pYMIRIv5wyqHOJkHK1XMGo5pOiv9Mqeg\",\"offers\":[{\"seller\":\"Fptshop.com.vn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth+pin+tr%C3%A2u+d%C6%B0%E1%BB%9Bi+1+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,catalogid:13154710230765258952,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":749000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.8,\"ratingCount\":879}]},{\"key\":\"uncertain:4\",\"name\":\"Tai nghe Bluetooth True Wireless Baseus Bass BS1 NC\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":689000,\"priceHigh\":689000,\"image\":\"https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcS_bP8GneKgaENpFL9uLUu0ZSANb34x1FTbRUmGeX1uWvTzLCpOYq--hICP1Vj2VO8u3OfRm7SBs9FnCe43-5h6e9lE1w6Go1UzmmsyoNvJpI18ivqdrk9DBm8\",\"offers\":[{\"seller\":\"Fptshop.com.vn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth+pin+tr%C3%A2u+d%C6%B0%E1%BB%9Bi+1+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,catalogid:4943106745882779357,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":689000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.7,\"ratingCount\":447}]},{\"key\":\"uncertain:5\",\"name\":\"Tai nghe Bluetooth Chụp Tai Philips Tah3220 Đen\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":730000,\"priceHigh\":730000,\"image\":\"https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQ9OORb5D0vBC7HgkCggwjuwVPVnhrGTP9IvTzQbsN-yk8tRWUzPGoQ7mJJAn64wUco7SGZ3Tc3I99X3tqlCM7ush3cJnGgHkyYacDjwY5cokTVLJO4Bax3JA\",\"offers\":[{\"seller\":\"Thế Giới Di Động\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth+pin+tr%C3%A2u+d%C6%B0%E1%BB%9Bi+1+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,productid:8571891269664632424,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":730000,\"currency\":\"VND\",\"condition\":null,\"rating\":5,\"ratingCount\":3}]}],\"requested\":null,\"recommendation\":{\"entityKey\":\"uncertain:0\",\"seller\":\"Shopee\",\"reasons\":[{\"attribute\":\"rating\",\"evidence\":\"rated 4.7\",\"params\":{\"value\":4.7}},{\"attribute\":\"price\",\"evidence\":\"29900 VND\",\"params\":{\"priceVnd\":29900}},{\"attribute\":\"reviewCount\",\"evidence\":\"354 reviews\",\"params\":{\"count\":354}}],\"tradeOff\":{\"attribute\":\"rating\",\"evidence\":\"rated 5\",\"params\":{\"value\":5}},\"conditional\":true}}[/TAPPY_SHOPPING]\n\nMình chọn **Tai Nghe Bluetooth M10 Phiên Bản Pro Nâng Cấp Pin Trâu, Nút Cảm Ứng Tự Động Kết Nối Chống Nước Chống Ồn , BẢO HÀNH 12T** — 29.900₫, 4.7⭐ (354 đánh giá), tại Shopee — phù hợp nhất với yêu cầu của bạn trong các kết quả tìm được.\n\nĐây là lựa chọn rất tiết kiệm mà vẫn có đánh giá tốt.\n\n*Gợi ý dựa trên kết quả tìm kiếm thực, không phải quảng cáo trả tiền — bạn tự quyết định và mua.*\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛒 Xem trên Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=Tai+Nghe+Bluetooth+M10+Pin+Trau\",\"primary\":true},{\"label\":\"📦 Tìm trên Lazada\",\"type\":\"search\",\"url\":\"https://www.lazada.vn/catalog/?q=tai+nghe+bluetooth+pin+trau\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Tai nghe chụp tai hay true wireless?|Cần khử tiếng ồn không?|Muốn chất lượng âm thanh cao hơn?[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Mua tai nghe bluetooth dưới 1 triệu, pin trâu"
+    },
+    {
+      "role": "assistant",
+      "content": "[TAPPY_SHOPPING]{\"v\":1,\"entities\":[{\"key\":\"uncertain:0\",\"name\":\"Tai Nghe Bluetooth M10 Phiên Bản Pro Nâng Cấp Pin Trâu, Nút Cảm Ứng Tự Động Kết Nối Chống Nước Chống Ồn , BẢO HÀNH 12T\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":true,\"priceLow\":29900,\"priceHigh\":29900,\"image\":\"https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRU83_-4GLRU_OAB9o3Wx7G_brzYAwzHVLOyVf6f6RYEVQMZPPRpmZkY8rfoQsGif_JTjZKlUx6KnFWXpkeiR8X1jWp737eC7_hhIbXt8t_b4hEvfKWi7Ks\",\"offers\":[{\"seller\":\"Shopee\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth+pin+tr%C3%A2u+d%C6%B0%E1%BB%9Bi+1+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,catalogid:13063812762831630945,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":29900,\"currency\":\"VND\",\"condition\":null,\"rating\":4.7,\"ratingCount\":354}]},{\"key\":\"uncertain:1\",\"name\":\"Tai nghe bluetooth bass mạnh pin trâu điều khiển cảm ứng YJ-77 Tai nghe treo tai truyền âm qua xương\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":87220,\"priceHigh\":87220,\"image\":\"https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcT7Djn4Ogzxfv7VJBPQS_DU9g3G33_VbgbMHdyBoYY5WHBCoVsBsCV-9VejBL5vjR7_Kp3tJxGhZdYbH0sJyJQRe8bqsAC9o5G-zqresOoXRW0enjpixZ1z\",\"offers\":[{\"seller\":\"Shopee\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth+pin+tr%C3%A2u+d%C6%B0%E1%BB%9Bi+1+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,productid:12587355538111021045,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":87220,\"currency\":\"VND\",\"condition\":null,\"rating\":5,\"ratingCount\":6}]},{\"key\":\"uncertain:2\",\"name\":\"Tai nghe Bluetooth Lenovo TH66 Khử tiếng ồn thông minh Chất lượng âm thanh HIFI Chất lượng âm thanh HD Độ trễ thấp Tuổi thọ pin dài\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":329000,\"priceHigh\":329000,\"image\":\"https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTl9IsSQs8-xaTMPRGUBl8FO38frTz5w8uVlL_Sted7bYHWBRHFo2C1tiP0BlRtP0oL18j_DVzGa-i2XALkJUsr8u0_9FluiNHfXoUWCTg0woLRr748iEFI77F6\",\"offers\":[{\"seller\":\"Shopee\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth+pin+tr%C3%A2u+d%C6%B0%E1%BB%9Bi+1+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,productid:17423717221284606760,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":329000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.8,\"ratingCount\":278}]},{\"key\":\"uncertain:3\",\"name\":\"Tai nghe EDIFIER New Bluetooth WH700NB\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":749000,\"priceHigh\":749000,\"image\":\"https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRbrlJKESEkPPInCS6Z5Z8PCQZSSd3UqD2G6QSXC8ysHx1RsNlBgxTsFj1MKfMVIZlooQFMfbx1G1mTV1Pcr7EGQ1pYMIRIv5wyqHOJkHK1XMGo5pOiv9Mqeg\",\"offers\":[{\"seller\":\"Fptshop.com.vn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth+pin+tr%C3%A2u+d%C6%B0%E1%BB%9Bi+1+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,catalogid:13154710230765258952,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":749000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.8,\"ratingCount\":879}]},{\"key\":\"uncertain:4\",\"name\":\"Tai nghe Bluetooth True Wireless Baseus Bass BS1 NC\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":689000,\"priceHigh\":689000,\"image\":\"https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcS_bP8GneKgaENpFL9uLUu0ZSANb34x1FTbRUmGeX1uWvTzLCpOYq--hICP1Vj2VO8u3OfRm7SBs9FnCe43-5h6e9lE1w6Go1UzmmsyoNvJpI18ivqdrk9DBm8\",\"offers\":[{\"seller\":\"Fptshop.com.vn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth+pin+tr%C3%A2u+d%C6%B0%E1%BB%9Bi+1+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,catalogid:4943106745882779357,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":689000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.7,\"ratingCount\":447}]},{\"key\":\"uncertain:5\",\"name\":\"Tai nghe Bluetooth Chụp Tai Philips Tah3220 Đen\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":730000,\"priceHigh\":730000,\"image\":\"https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQ9OORb5D0vBC7HgkCggwjuwVPVnhrGTP9IvTzQbsN-yk8tRWUzPGoQ7mJJAn64wUco7SGZ3Tc3I99X3tqlCM7ush3cJnGgHkyYacDjwY5cokTVLJO4Bax3JA\",\"offers\":[{\"seller\":\"Thế Giới Di Động\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth+pin+tr%C3%A2u+d%C6%B0%E1%BB%9Bi+1+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,productid:8571891269664632424,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":730000,\"currency\":\"VND\",\"condition\":null,\"rating\":5,\"ratingCount\":3}]}],\"requested\":null,\"recommendation\":{\"entityKey\":\"uncertain:0\",\"seller\":\"Shopee\",\"reasons\":[{\"attribute\":\"rating\",\"evidence\":\"rated 4.7\",\"params\":{\"value\":4.7}},{\"attribute\":\"price\",\"evidence\":\"29900 VND\",\"params\":{\"priceVnd\":29900}},{\"attribute\":\"reviewCount\",\"evidence\":\"354 reviews\",\"params\":{\"count\":354}}],\"tradeOff\":{\"attribute\":\"rating\",\"evidence\":\"rated 5\",\"params\":{\"value\":5}},\"conditional\":true}}[/TAPPY_SHOPPING]\n\nMình chọn **Tai Nghe Bluetooth M10 Phiên Bản Pro Nâng Cấp Pin Trâu, Nút Cảm Ứng Tự Động Kết Nối Chống Nước Chống Ồn , BẢO HÀNH 12T** — 29.900₫, 4.7⭐ (354 đánh giá), tại Shopee — phù hợp nhất với yêu cầu của bạn trong các kết quả tìm được.\n\nĐây là lựa chọn rất tiết kiệm mà vẫn có đánh giá tốt.\n\n*Gợi ý dựa trên kết quả tìm kiếm thực, không phải quảng cáo trả tiền — bạn tự quyết định và mua.*\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛒 Xem trên Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=Tai+Nghe+Bluetooth+M10+Pin+Trau\",\"primary\":true},{\"label\":\"📦 Tìm trên Lazada\",\"type\":\"search\",\"url\":\"https://www.lazada.vn/catalog/?q=tai+nghe+bluetooth+pin+trau\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Tai nghe chụp tai hay true wireless?|Cần khử tiếng ồn không?|Muốn chất lượng âm thanh cao hơn?[/FOLLOWUPS]"
+    }
+  ],
+  "toolResults": [
+    {
+      "query": "tai nghe bluetooth pin trâu dưới 1 triệu",
+      "source": "Google Shopping (Serper)",
+      "search_results": [
+        {
+          "title": "Tai Nghe Bluetooth M10 Phiên Bản Pro Nâng Cấp Pin Trâu, Nút Cảm Ứng Tự Động Kết Nối Chống Nước Chống Ồn , BẢO HÀNH 12T",
+          "link": "https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth+pin+tr%C3%A2u+d%C6%B0%E1%BB%9Bi+1+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,catalogid:13063812762831630945,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "price": 29900,
+          "price_vnd": 29900,
+          "source": "Shopee",
+          "rating": 4.7,
+          "rating_count": 354,
+          "product_id": "13063812762831630945",
+          "has_purchase": true,
+          "has_photo": true
+        },
+        {
+          "title": "Tai nghe bluetooth bass mạnh pin trâu điều khiển cảm ứng YJ-77 Tai nghe treo tai truyền âm qua xương",
+          "link": "https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth+pin+tr%C3%A2u+d%C6%B0%E1%BB%9Bi+1+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,productid:12587355538111021045,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "price": 87220,
+          "price_vnd": 87220,
+          "source": "Shopee",
+          "rating": 5,
+          "rating_count": 6,
+          "product_id": "12587355538111021045",
+          "has_purchase": true,
+          "has_photo": true
+        },
+        {
+          "title": "Tai nghe Bluetooth Lenovo TH66 Khử tiếng ồn thông minh Chất lượng âm thanh HIFI Chất lượng âm thanh HD Độ trễ thấp Tuổi thọ pin dài",
+          "link": "https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth+pin+tr%C3%A2u+d%C6%B0%E1%BB%9Bi+1+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,productid:17423717221284606760,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "price": 329000,
+          "price_vnd": 329000,
+          "source": "Shopee",
+          "rating": 4.8,
+          "rating_count": 278,
+          "product_id": "17423717221284606760",
+          "has_purchase": true,
+          "has_photo": true
+        },
+        {
+          "title": "Tai nghe EDIFIER New Bluetooth WH700NB",
+          "link": "https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth+pin+tr%C3%A2u+d%C6%B0%E1%BB%9Bi+1+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,catalogid:13154710230765258952,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "price": 749000,
+          "price_vnd": 749000,
+          "source": "Fptshop.com.vn",
+          "rating": 4.8,
+          "rating_count": 879,
+          "product_id": "13154710230765258952",
+          "has_purchase": true,
+          "has_photo": true
+        },
+        {
+          "title": "Tai nghe Bluetooth True Wireless Baseus Bass BS1 NC",
+          "link": "https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth+pin+tr%C3%A2u+d%C6%B0%E1%BB%9Bi+1+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,catalogid:4943106745882779357,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "price": 689000,
+          "price_vnd": 689000,
+          "source": "Fptshop.com.vn",
+          "rating": 4.7,
+          "rating_count": 447,
+          "product_id": "4943106745882779357",
+          "has_purchase": true,
+          "has_photo": true
+        },
+        {
+          "title": "Tai nghe Bluetooth Chụp Tai Philips Tah3220 Đen",
+          "link": "https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth+pin+tr%C3%A2u+d%C6%B0%E1%BB%9Bi+1+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,productid:8571891269664632424,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "price": 730000,
+          "price_vnd": 730000,
+          "source": "Thế Giới Di Động",
+          "rating": 5,
+          "rating_count": 3,
+          "product_id": "8571891269664632424",
+          "has_purchase": true,
+          "has_photo": true
+        }
+      ],
+      "links": [
+        {
+          "name": "Shopee",
+          "url": "https://shopee.vn/search?keyword=tai%20nghe%20bluetooth%20pin%20tr%C3%A2u%20d%C6%B0%E1%BB%9Bi%201%20tri%E1%BB%87u"
+        },
+        {
+          "name": "Lazada",
+          "url": "https://www.lazada.vn/catalog/?q=tai%20nghe%20bluetooth%20pin%20tr%C3%A2u%20d%C6%B0%E1%BB%9Bi%201%20tri%E1%BB%87u"
+        }
+      ],
+      "note": "Gia tham khao tu ket qua tim kiem hien tai, co the da thay doi theo thoi gian va phien ban san pham - bam link de xem gia chinh xac va mua hang.",
+      "_LENH_BAT_BUOC": "⚠️ LENH BAT BUOC - DOC TRUOC KHI VIET PHAN HOI: Nguoi dung co budget dưới 1 triệu VND - THAP HON gia khach san cao cap. TUYET DOI KHONG duoc de cap bat ky thuong hieu nao sau day du chi la de so sanh hay goi y: Pullman, Marriott, Hilton, Sheraton, Intercontinental, Sofitel, Novotel, Melia, Hyatt, Wyndham, Movenpick, Radisson, Imperial, Renaissance, Lotte, JW Marriott, Grand Mercure. Chi de cap cac khach san co trong search_results (da duoc loc theo budget). Neu khong con search_results phu hop, bao user nang budget.",
+      "_tappy_total_found": 35,
+      "_tappy_ranking": {
+        "pick": "Tai Nghe Bluetooth M10 Phiên Bản Pro Nâng Cấp Pin Trâu, Nút Cảm Ứng Tự Động Kết Nối Chống Nước Chống Ồn , BẢO HÀNH 12T",
+        "decided_by": [
+          {
+            "attribute": "rating",
+            "evidence": "rated 4.7 - Tai nghe bluetooth bass mạnh pin trâu điều khiển cảm ứng YJ-77 Tai nghe treo tai truyền âm qua xương: rated 5 (KHONG duoc goi pick la \"nhat\" o rating)"
+          },
+          {
+            "attribute": "price",
+            "evidence": "29900 VND"
+          },
+          {
+            "attribute": "reviewCount",
+            "evidence": "354 reviews"
+          }
+        ],
+        "not_chosen": "Tai nghe bluetooth bass mạnh pin trâu điều khiển cảm ứng YJ-77 Tai nghe treo tai truyền âm qua xương",
+        "not_chosen_leads_on": {
+          "attribute": "rating",
+          "evidence": "rated 5"
+        },
+        "conditional": true
+      },
+      "_tappy_evidence": "\n\n===== BANG CHUNG QUYET DINH (DU LIEU THAT, DA CHOT) =====\nHe thong da chon tu du lieu that. Moi con so ben duoi da duoc chot.\n\nDA CHON: Tai Nghe Bluetooth M10 Phiên Bản Pro Nâng Cấp Pin Trâu, Nút Cảm Ứng Tự Động Kết Nối Chống Nước Chống Ồn , BẢO HÀNH 12T\n  - noi ban: Shopee\n  - gia: 29900 VND\n  - danh gia san pham: 4.7   so luot: 354\n  - RAM: KHONG CO DU LIEU   dung luong: KHONG CO DU LIEU\n  - chip: KHONG CO DU LIEU\n  - tinh trang/nguon goc: KHONG CO DU LIEU\n  - bao hanh: KHONG CO DU LIEU\n\nPHUONG AN 2: Tai nghe bluetooth bass mạnh pin trâu điều khiển cảm ứng YJ-77 Tai nghe treo tai truyền âm qua xương\n  - noi ban: Shopee\n  - gia: 87220 VND\n  - danh gia san pham: 5   so luot: 6\n  - RAM: KHONG CO DU LIEU   dung luong: KHONG CO DU LIEU\n  - chip: KHONG CO DU LIEU\n  - tinh trang/nguon goc: KHONG CO DU LIEU\n  - bao hanh: KHONG CO DU LIEU\n  - hon o diem: rating — rated 5\n\nCAC LUA CHON KHAC (chenh lech gia so voi lua chon da chon, con so that):\n  - Tai nghe Bluetooth Lenovo TH66 Khử tiếng ồn thông minh Chất lượng âm thanh HIFI Chất lượng âm thanh HD Độ trễ thấp Tuổi thọ pin dài | Shopee | 329000 VND | chenh: 299100 VND\n  - Tai nghe EDIFIER New Bluetooth WH700NB | Fptshop.com.vn | 749000 VND | chenh: 719100 VND\n  - Tai nghe Bluetooth True Wireless Baseus Bass BS1 NC | Fptshop.com.vn | 689000 VND | chenh: 659100 VND\n  - Tai nghe Bluetooth Chụp Tai Philips Tah3220 Đen | Thế Giới Di Động | 730000 VND | chenh: 700100 VND\n\nLY DO DA CHON: rating — rated 4.7; price — 29900 VND; reviewCount — 354 reviews\nKHOANG CACH RAT NHO: dien dat thanh cau nghieng ve co dieu kien, khong khang dinh tuyet doi.\n\nTONG SO TIN DANG TIM DUOC: 35 (danh sach tren la phan da chon loc).\n\nUSER HOI CAU HINH: chip=KHONG CO DU LIEU, RAM=KHONG CO DU LIEU, dung luong=KHONG CO DU LIEU\nCHUA DU BANG CHUNG de khang dinh tin dang nay dung cau hinh user hoi. PHAI noi ro la tieu de khong ghi du, KHONG duoc coi nhu khop.\n\nCHI DUOC NOI NHUNG DIEU SAU (ngoai ra khong duoc khang dinh them thuoc tinh nao):\n  - ten tin dang: Tai Nghe Bluetooth M10 Phiên Bản Pro Nâng Cấp Pin Trâu, Nút Cảm Ứng Tự Động Kết Nối Chống Nước Chống Ồn , BẢO HÀNH 12T\n  - noi ban: Shopee\n  - gia: 29900 VND (con so chinh xac, KHONG lam tron sang \"khoang\")\n  - danh gia san pham: 4.7 (KHONG phai Google Maps)\n  - so luot danh gia: 354\n\nKHONG CO DU LIEU VE: RAM, dung luong, chip, tinh trang/nguon goc (chinh hang, like new, cu, sealed, refurb), bao hanh.\nLUAT CUNG:\n- Nhung muc ghi \"KHONG CO DU LIEU\" nghia la KHONG AI NOI — KHONG phai bang 0, KHONG phai la \"khong co\".\n  TUYET DOI KHONG doan, KHONG suy ra tu ten shop, ten mien, uy tin, gia, thuong hieu, hay tin dang khac.\n- Neu user hoi ve mot muc KHONG CO DU LIEU: noi thang la nguon hien tai khong ghi.\n- Gia phai doc dung con so tren, KHONG duoc noi \"khoang\", KHONG duoc lam tron.\n- Danh gia o tren la danh gia SAN PHAM. KHONG duoc goi no la Google Maps hay bat ky nguon nao khac.\n- Chenh lech gia phai dung dung con so \"chenh\" o tren, KHONG duoc uoc luong.\n- Neu khong co diem nao chung minh duoc phuong an 2 hon: noi thang la khong co danh doi nao duoc chung minh,\n  TUYET DOI KHONG bia ra mot diem tru.\n==========================================",
+      "_tappy_synthesis": {
+        "ban_hoi": null,
+        "nhom_san_pham": [
+          {
+            "name": "Tai Nghe Bluetooth M10 Phiên Bản Pro Nâng Cấp Pin Trâu, Nút Cảm Ứng Tự Động Kết Nối Chống Nước Chống Ồn , BẢO HÀNH 12T",
+            "config": "",
+            "offerCount": 1,
+            "priceLow": 29900,
+            "priceHigh": 29900,
+            "sellers": [
+              "Shopee"
+            ],
+            "recommended": true,
+            "matchesRequest": "chua_ro"
+          },
+          {
+            "name": "Tai nghe bluetooth bass mạnh pin trâu điều khiển cảm ứng YJ-77 Tai nghe treo tai truyền âm qua xương",
+            "config": "",
+            "offerCount": 1,
+            "priceLow": 87220,
+            "priceHigh": 87220,
+            "sellers": [
+              "Shopee"
+            ],
+            "recommended": false,
+            "matchesRequest": "chua_ro"
+          },
+          {
+            "name": "Tai nghe Bluetooth Lenovo TH66 Khử tiếng ồn thông minh Chất lượng âm thanh HIFI Chất lượng âm thanh HD Độ trễ thấp Tuổi thọ pin dài",
+            "config": "",
+            "offerCount": 1,
+            "priceLow": 329000,
+            "priceHigh": 329000,
+            "sellers": [
+              "Shopee"
+            ],
+            "recommended": false,
+            "matchesRequest": "chua_ro"
+          },
+          {
+            "name": "Tai nghe EDIFIER New Bluetooth WH700NB",
+            "config": "",
+            "offerCount": 1,
+            "priceLow": 749000,
+            "priceHigh": 749000,
+            "sellers": [
+              "Fptshop.com.vn"
+            ],
+            "recommended": false,
+            "matchesRequest": "chua_ro"
+          },
+          {
+            "name": "Tai nghe Bluetooth True Wireless Baseus Bass BS1 NC",
+            "config": "",
+            "offerCount": 1,
+            "priceLow": 689000,
+            "priceHigh": 689000,
+            "sellers": [
+              "Fptshop.com.vn"
+            ],
+            "recommended": false,
+            "matchesRequest": "chua_ro"
+          },
+          {
+            "name": "Tai nghe Bluetooth Chụp Tai Philips Tah3220 Đen",
+            "config": "",
+            "offerCount": 1,
+            "priceLow": 730000,
+            "priceHigh": 730000,
+            "sellers": [
+              "Thế Giới Di Động"
+            ],
+            "recommended": false,
+            "matchesRequest": "chua_ro"
+          }
+        ],
+        "de_xuat": {
+          "noi_ban": "Shopee",
+          "ly_do": [
+            {
+              "attribute": "rating",
+              "evidence": "rated 4.7",
+              "params": {
+                "value": 4.7
+              }
+            },
+            {
+              "attribute": "price",
+              "evidence": "29900 VND",
+              "params": {
+                "priceVnd": 29900
+              }
+            },
+            {
+              "attribute": "reviewCount",
+              "evidence": "354 reviews",
+              "params": {
+                "count": 354
+              }
+            }
+          ],
+          "danh_doi": {
+            "attribute": "rating",
+            "evidence": "rated 5",
+            "params": {
+              "value": 5
+            }
+          },
+          "nghieng_ve": true
+        }
+      }
+    }
+  ],
+  "frames8Raw": []
+}

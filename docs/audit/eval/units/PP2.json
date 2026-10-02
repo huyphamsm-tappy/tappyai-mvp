@@ -1,0 +1,28 @@
+{
+  "id": "PP2",
+  "text": "mua tinh dầu massage body chính hãng online",
+  "vertical": "spa",
+  "unit": "PRODUCT",
+  "parent": null,
+  "surface": "web",
+  "status": 200,
+  "ttfb": 490,
+  "ms": 491,
+  "evidenceId": "ce095808-32c1-449f-924c-4ab381e22846",
+  "toolCalls": [],
+  "toolResults": [],
+  "frames8": [],
+  "prose": "Để chọn đúng chỗ, mình cần biết thêm:\n• Tầm giá? (dưới 300k / 300–500k / trên 500k)\n• Mấy người? (1–2 người / 3–5 người / nhóm đông)\nBạn trả lời phần nào cũng được, phần còn lại mình tự giả sử và nói rõ.\n\n[FOLLOWUPS]dưới 300k|300–500k|trên 500k[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "mua tinh dầu massage body chính hãng online"
+    },
+    {
+      "role": "assistant",
+      "content": "Để chọn đúng chỗ, mình cần biết thêm:\n• Tầm giá? (dưới 300k / 300–500k / trên 500k)\n• Mấy người? (1–2 người / 3–5 người / nhóm đông)\nBạn trả lời phần nào cũng được, phần còn lại mình tự giả sử và nói rõ.\n\n[FOLLOWUPS]dưới 300k|300–500k|trên 500k[/FOLLOWUPS]"
+    }
+  ],
+  "at": "2026-09-20T06:29:14.853Z"
+}

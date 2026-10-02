@@ -1,0 +1,77 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Ốp lưng UAG Pathfinder SE chính hãng với Magsafe cho iPhone\" OR \"[iPhone 17 Pro/17 Pro Max] Ốp lưng UAG Pathfinder\" OR \"Ốp lưng iPhone 17 Pro Max UAG chống sốc Scout With Magsafe\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T05:46:13.234Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Ốp lưng UAG Pathfinder SE chính hãng với Magsafe cho iPhone\" OR \"[iPhone 17 Pro/17 Pro Max] Ốp lưng UAG Pathfinder\" OR \"Ốp lưng iPhone 17 Pro Max UAG chống sốc Scout With Magsafe\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Scout With ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-17-pro-max-uag-scout-with-magsafe.html",
+    "snippet": "Phân loại ốp. Ốp trong. Dùng được cho. iPhone 17 Pro Max. Tính năng. Vỏ ngoài ứng cáp, chống trầy xước và giữ dáng bền bỉ",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 1
+   },
+   {
+    "title": "[iPhone 17 Pro/17 Pro Max] Ốp lưng UAG Pathfinder ...",
+    "link": "https://shopee.vn/-iPhone-17-Pro-17-Pro-Max-%E1%BB%90p-l%C6%B0ng-UAG-Pathfinder-Civilian-Monarch-Pro-Orange-phi%C3%AAn-b%E1%BA%A3n-cam-%C4%91%E1%BA%B7c-bi%E1%BB%87t-i.898301886.50000977503",
+    "snippet": "Mua [iPhone 17 Pro/17 Pro Max] Ốp lưng UAG Pathfinder/Civilian/Monarch Pro Orange phiên bản cam đặc biệt giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 5,
+    "ratingCount": 25,
+    "position": 2
+   },
+   {
+    "title": "Ốp lưng UAG Pathfinder SE chính hãng với Magsafe cho iPhone ...",
+    "link": "https://www.lazada.vn/products/op-lung-uag-pathfinder-se-chinh-hang-voi-magsafe-cho-iphone-17-pro-max-iphone-17-air-iphone-16-pro-max-iphone-15-14-13-12-pro-max-vo-dien-thoai-cap-bac-quan-su-go-ghe-chong-roi-dap-bao-ve-trong-suot-i13404795989.html?srsltid=AU7gw4XPF7zP4oQPXhpCSiJpHAqZ77rJOCJRbQx4AwQVB8HjGjsBEgCE",
+    "snippet": "Ốp lưng UAG Pathfinder SE chính hãng với Magsafe cho iPhone 17 Pro Max / iPhone 17 Air / iPhone 16 Pro Max / iPhone 15 14 13 12 Pro Max vỏ điện thoại cấp bậc ...",
+    "position": 3
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Scout With Magsafe",
+    "link": "https://timgiatot.com.vn/gia/254171-op-lung-iphone-17-pro-max-uag-chong-soc-scout-with-magsafe",
+    "snippet": "So sánh giá Ốp lưng iPhone 17 Pro Max UAG chống sốc Scout With Magsafe: giá từ 850.000 ₫ trên 10 nơi bán, cập nhật tháng 9/2026. Giá từ các sàn lớn.",
+    "position": 4
+   },
+   {
+    "title": "Mình cần tìm UAG cho 17pro 👍",
+    "link": "https://www.facebook.com/groups/337292695886986/posts/1048609658088616/",
+    "snippet": "[iPhone 17 Pro/17 Pro Max] Ốp lưng UAG Pathfinder/Civilian/Monarch Pro Orange phiên bản cam đặc biệt https://s.shopee. vn/9pdeviCFGg. s ...",
+    "position": 5
+   },
+   {
+    "title": "Tìm ốp 17prm cam",
+    "link": "https://www.facebook.com/groups/337292695886986/posts/1064317203184528/",
+    "snippet": "[iPhone 17 Pro/17 Pro Max] Ốp lưng UAG Pathfinder/Civilian/Monarch Pro Orange phiên bản cam đặc biệt https://s.shopee. vn/5VV8LnuFJt.",
+    "position": 6
+   },
+   {
+    "title": "Ốp lưng iPhone 14 Plus / 15 Plus UAG chống sốc Plyo Ice ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-14-plus-uag-plyo-ice-with-magsafe.html",
+    "snippet": "Mua ngay Ốp lưng iPhone 14 Plus Uag Chống Sốc Plyo With Magsafe Ice chính hãng - Giá rẻ, đảm bảo chất lượng, độ bền cao, hỗ trợ giao hàng tận nơi toàn quốc.",
+    "position": 7
+   },
+   {
+    "title": "Ốp lưng UAG - Bảo vệ xứng tầm cho điện thoại của bạn",
+    "link": "https://minhtuanmobile.com/tin-tuc/op-lung-uag-bao-ve-xung-tam-cho-dien-thoai-cua-ban/",
+    "snippet": "Ốp lưng UAG mang đến khả năng bảo vệ chuẩn quân đội Mỹ, thiết kế mạnh mẽ, hỗ trợ MagSafe, phù hợp ai dùng điện thoại cao cấp cần độ bền và ...",
+    "date": "27 thg 1, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

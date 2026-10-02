@@ -1,0 +1,33 @@
+{
+  "id": "F6",
+  "text": "quán số 2 có đông không?",
+  "parent": "F1",
+  "status": 200,
+  "ms": 8396,
+  "evidenceId": "fd33dba1-3f7e-431c-bf31-f05a52ad3aa6",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Để chắc chắn, bạn có thể:\n- Gọi quán trực tiếp để hỏi tình trạng chỗ\n- Xem trên Google Maps → phần \"Thời gian bận\" để biết mức độ đông hiện tại\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Hải Sản Hoàng Gia\",\"type\":\"maps\",\"url\":\"https://www.google.com/maps/search/Hải+Sản+Hoàng+Gia+Quận+1\",\"primary\":true},{\"label\":\"📍 Xem trên Maps - Izakaya Choioinoodle\",\"type\":\"maps\",\"url\":\"https://www.google.com/maps/search/Izakaya+Choioinoodle+Quận+1\",\"primary\":false}]}[/CTA_BUTTONS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Tìm quán ăn tối ngon gần Quận 1 cho 2 người"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm quán ăn tối ngon gần Quận 1 cho bạn nhé! 🍽️\n\nMình chọn **Izakaya Choioinoodle** cho bạn! 🍜 Quán này có rating **4.8⭐ (201 đánh giá Google Maps)** — chuyên mì ramen Nhật ngon, phù hợp cho bữa tối 2 người. Mở đến 22:00 nên bạn có thời gian thoải mái.\n\nNếu muốn thử hải sản, **Hải Sản Hoàng Gia** cũng rất tốt với 4.7⭐ (981 đánh giá) và mở đến nửa đêm.\n\nBạn muốn đặt bàn hay gọi món online?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Maps - Izakaya Choioinoodle\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=6525976663471549326\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Hải Sản Hoàng Gia|Quán Bụi|Nhà hàng khác[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "quán số 2 có đông không?"
+    },
+    {
+      "role": "assistant",
+      "content": "Để chắc chắn, bạn có thể:\n- Gọi quán trực tiếp để hỏi tình trạng chỗ\n- Xem trên Google Maps → phần \"Thời gian bận\" để biết mức độ đông hiện tại\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Hải Sản Hoàng Gia\",\"type\":\"maps\",\"url\":\"https://www.google.com/maps/search/Hải+Sản+Hoàng+Gia+Quận+1\",\"primary\":true},{\"label\":\"📍 Xem trên Maps - Izakaya Choioinoodle\",\"type\":\"maps\",\"url\":\"https://www.google.com/maps/search/Izakaya+Choioinoodle+Quận+1\",\"primary\":false}]}[/CTA_BUTTONS]"
+    }
+  ]
+}

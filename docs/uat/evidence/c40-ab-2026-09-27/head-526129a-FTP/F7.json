@@ -1,0 +1,181 @@
+{
+  "id": "F7",
+  "text": "ăn gì ngon giờ",
+  "parent": null,
+  "status": 200,
+  "ms": 9064,
+  "evidenceId": "767859b6-e41e-46be-9521-2b6d58db9c7b",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "quán ăn sáng ngon",
+        "type": "restaurant"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Bếp Quà Sáng – Xôi, Bún, Phở Hà Nội",
+      "rating": 4.9,
+      "count": 152,
+      "price": "1-100.000 ₫",
+      "hours": "06:00–00:00",
+      "distance_km": 3.9,
+      "address": "35 Hoàng Diệu, Phú Nhuận, Hồ Chí Minh 72252, Việt Nam"
+    },
+    {
+      "name": "Quán ăn sáng chị Hoà & Hồng",
+      "rating": 4.7,
+      "count": 20,
+      "price": "1-100.000 ₫",
+      "hours": "06:00–15:00",
+      "distance_km": 2.1,
+      "address": "48/1 Trần Đình Xu, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Bún Riêu Yến",
+      "rating": 4.4,
+      "count": 1211,
+      "price": "1-100.000 ₫",
+      "hours": "06:00–18:00",
+      "distance_km": 4.3,
+      "address": "1348 Trường Sa, Tân Sơn Hòa, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Quán ăn Cô Ba",
+      "rating": 4.6,
+      "count": 42,
+      "price": "1-100.000 ₫",
+      "hours": "06:00–17:00",
+      "distance_km": 1.5,
+      "address": "63 Hoàng Diệu, Xóm Chiếu, Hồ Chí Minh 72806, Việt Nam"
+    },
+    {
+      "name": "Quán ăn sáng Chị Út - 7 ngày 7 món 🏳️‍🌈",
+      "rating": 4.7,
+      "count": 3,
+      "hours": "06:00–10:00",
+      "distance_km": 3.2,
+      "address": "341/24 Xô Viết Nghệ Tĩnh, Bình Thạnh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Quán ăn sáng Quang",
+      "rating": 4.4,
+      "count": 5,
+      "price": "1-100.000 ₫",
+      "hours": "06:00–10:00",
+      "distance_km": 5.2,
+      "address": "94 Đ. Ưu Long, Phú Định, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Quán ăn Sáng Hạnh",
+      "rating": 4.8,
+      "count": 5,
+      "price": "1-100.000 ₫",
+      "hours": "06:00–12:00",
+      "distance_km": 4.2,
+      "address": "8 Đường B, Bình Khánh, An Khánh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Quán ăn sáng Nhung Ngô",
+      "rating": 5,
+      "count": 10,
+      "hours": "06:00–12:30",
+      "distance_km": 3,
+      "address": "602/37/10 Điện Biên Phủ, Thạnh Mỹ Tây, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "ĐIỂM TÂM - Ăn Sáng - Chân Gà xã tắc - Úc Vân",
+      "rating": 4.8,
+      "count": 10,
+      "hours": "06:30–11:00",
+      "distance_km": 2.1,
+      "address": "11 Số 34, Khánh Hội, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Quán cơm bà Năm",
+      "rating": 4.4,
+      "count": 147,
+      "price": "1-100.000 ₫",
+      "hours": "06:00–12:00",
+      "distance_km": 4.3,
+      "address": "34 Tân Canh, Tân Sơn Hòa, Hồ Chí Minh, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình giả sử bạn muốn ăn sáng gần vị trí hiện tại (Quận 1) 😋\n\nMình chọn **Bếp Quà Sáng** cho bạn — quán có **4.9⭐ (152 đánh giá)** với xôi, bún, phở Hà Nội ngon, mở từ 6h sáng, cách bạn khoảng 3.9km.\n\nNếu muốn gần hơn, **Quán ăn Cô Ba** (1.5km, 4.6⭐) cũng ngon và mở sáng sớm.\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Maps - Bếp Quà Sáng\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=14051362995194974537\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Bún riêu ngon ở đâu|Quán ăn sáng gần Quận 1|Cơm tấm nào ngon[/FOLLOWUPS]\n\nBạn muốn tầm giá khoảng bao nhiêu (dưới 100k/người / 100–200k/người / trên 200k/người)?",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "ăn gì ngon giờ"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn muốn ăn sáng gần vị trí hiện tại (Quận 1) 😋\n\nMình chọn **Bếp Quà Sáng** cho bạn — quán có **4.9⭐ (152 đánh giá)** với xôi, bún, phở Hà Nội ngon, mở từ 6h sáng, cách bạn khoảng 3.9km.\n\nNếu muốn gần hơn, **Quán ăn Cô Ba** (1.5km, 4.6⭐) cũng ngon và mở sáng sớm.\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Maps - Bếp Quà Sáng\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=14051362995194974537\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Bún riêu ngon ở đâu|Quán ăn sáng gần Quận 1|Cơm tấm nào ngon[/FOLLOWUPS]\n\nBạn muốn tầm giá khoảng bao nhiêu (dưới 100k/người / 100–200k/người / trên 200k/người)?"
+    }
+  ]
+}

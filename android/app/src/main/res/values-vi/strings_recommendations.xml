@@ -1,6 +1,6 @@
 <resources>
     <string name="recommendations_title">✨ Gợi ý cho bạn</string>
-    <string name="recommendations_subtitle_personalized">Cá nhân hóa theo sở thích của bạn</string>
+    <string name="recommendations_subtitle_personalized">Địa điểm hợp gu, cá nhân hóa</string>
     <string name="recommendations_subtitle_popular">Địa điểm nổi bật gần đây</string>
     <string name="recommendations_ask_tappy">Hỏi Tappy về chỗ này</string>
     <string name="recommendations_place_fallback">Địa điểm</string>
@@ -11,4 +11,17 @@
     <string name="recommendations_error_generic">Không tải được gợi ý, thử lại nhé.</string>
     <string name="recommendations_ask_prompt">Kể mình nghe về %1$s</string>
     <string name="recommendations_ask_prompt_fallback">địa điểm này</string>
+    <string name="recommendations_header_title">Gợi ý cho bạn</string>
+    <string name="recommendations_hero_lead">Khám phá những địa điểm nổi bật</string>
+    <string name="recommendations_hero_accent">gần bạn</string>
+    <string name="recommendations_hero_subtitle">Kết nối với các quán ăn, địa điểm thú vị và cộng đồng xung quanh.</string>
+    <string name="recommendations_highlight_discover">Khám phá địa điểm mới</string>
+    <string name="recommendations_highlight_community">Kết nối cộng đồng</string>
+    <string name="recommendations_highlight_life">Trải nghiệm cuộc sống xung quanh</string>
+    <string name="recommendations_mascot_bubble">Cùng khám phá thế giới quanh bạn!</string>
+    <string name="recommendations_see_more">Xem thêm</string>
+    <string name="recommendations_recently_active">Hoạt động gần đây</string>
+    <string name="recommendations_review_count">%1$d đánh giá</string>
+    <string name="recommendations_footer_line">Thế giới xung quanh bạn luôn có những câu chuyện thú vị</string>
+    <string name="recommendations_footer_cta">Hãy bắt đầu khám phá ngay hôm nay!</string>
 </resources>

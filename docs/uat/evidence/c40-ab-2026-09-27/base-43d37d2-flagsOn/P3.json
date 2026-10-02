@@ -1,0 +1,33 @@
+{
+  "id": "P3",
+  "text": "chỗ đó có đặt trước được không?",
+  "parent": "P2",
+  "status": 200,
+  "ms": 3515,
+  "evidenceId": "89dbc3b2-a032-4b44-8346-736a8aa15ca8",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình chưa có thông tin chi tiết về cách đặt trước tại **Hyan Spa**. Cách tốt nhất là bạn:\n\n• **Gọi trực tiếp** để hỏi giá massage chân và đặt lịch\n• **Xem trên Google Maps** — thường có số điện thoại và có thể nhắn tin qua Maps\n• **Kiểm tra Facebook/Website** của spa nếu có\n\nBạn muốn mình tìm thông tin liên hệ cụ thể của Hyan Spa không?\n\n[FOLLOWUPS]Gọi Hyan Spa để hỏi giá|Tìm spa khác có đặt online|Xem review Hyan Spa[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "spa massage chan gan q1 duoi 300k"
+    },
+    {
+      "role": "assistant",
+      "content": "Để gợi ý đúng ý, mình cần tìm ngay các địa điểm phù hợp.\n\nMình chọn **Hyan Spa** cho bạn — cách vị trí bạn chỉ 0.9km, đạt 5⭐ (103 đánh giá Google Maps), mở đến 21:00 hôm nay.\n\nNếu muốn lựa chọn khác: **Qispa Head & Massage** (1km, 4.8⭐, 74 đánh giá) cũng gần và mở muộn đến 23:30, hoặc **LV Spa** (0.7km, 4.6⭐) nếu ưu tiên gần nhất.\n\nBạn có thể gọi trước để hỏi giá massage chân cụ thể nhé!\n\nKết quả chưa có mức giá, nên mình chưa khẳng định được có vừa ngân sách của bạn không.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Hyan Spa\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=4888533510458212203\",\"primary\":true},{\"label\":\"🌐 Website - Hyan Spa\",\"type\":\"website\",\"url\":\"https://hyanspa.com/\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Gọi trước để hỏi giá|Spa khác gần Quận 1|Massage body thay vì chân[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "chỗ đó có đặt trước được không?"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình chưa có thông tin chi tiết về cách đặt trước tại **Hyan Spa**. Cách tốt nhất là bạn:\n\n• **Gọi trực tiếp** để hỏi giá massage chân và đặt lịch\n• **Xem trên Google Maps** — thường có số điện thoại và có thể nhắn tin qua Maps\n• **Kiểm tra Facebook/Website** của spa nếu có\n\nBạn muốn mình tìm thông tin liên hệ cụ thể của Hyan Spa không?\n\n[FOLLOWUPS]Gọi Hyan Spa để hỏi giá|Tìm spa khác có đặt online|Xem review Hyan Spa[/FOLLOWUPS]"
+    }
+  ]
+}

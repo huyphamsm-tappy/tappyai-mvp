@@ -1,0 +1,33 @@
+{
+  "id": "F5",
+  "text": "quán này mở mấy giờ?",
+  "parent": "F4",
+  "status": 200,
+  "ms": 737,
+  "evidenceId": "14af04d3-9be6-450f-89a2-3cb02be9195f",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "**Tám Riêu - Phan Xích Long** mở cửa 10:30–21:30.\n\n(Theo thông tin mình tìm được ở lượt trước — nên gọi xác nhận trước khi đi nhé.)",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Cả nhà 6 người có con nít ăn trưa cuối tuần, cần chỗ đậu xe ô tô, Phú Nhuận"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình gợi ý **Tám Riêu - Phan Xích Long** (235 Phan Xích Long, cách bạn ~2.9km) — **4.7⭐ (2.114 đánh giá Google Maps)**, mở 10:30–21:30, phù hợp bữa trưa gia đình 6 người. Quán có không gian rộng, menu đa dạng, được nhiều gia đình yêu thích.\n\nMình chưa thấy bằng chứng về chỗ đậu xe, phù hợp trẻ em ở các quán này — nên gọi hỏi trước khi đi.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Tám Riêu\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=5129199686849166520\",\"primary\":true},{\"label\":\"🛵 GrabFood - Tám Riêu\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/vi/restaurants?search=Tám+Riêu+Phan+Xích+Long\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Gọi quán hỏi chỗ đậu xe|Quán nào gần nhất từ vị trí bạn|Có quán nào có khu vui chơi cho bé[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "quán này mở mấy giờ?"
+    },
+    {
+      "role": "assistant",
+      "content": "**Tám Riêu - Phan Xích Long** mở cửa 10:30–21:30.\n\n(Theo thông tin mình tìm được ở lượt trước — nên gọi xác nhận trước khi đi nhé.)"
+    }
+  ]
+}

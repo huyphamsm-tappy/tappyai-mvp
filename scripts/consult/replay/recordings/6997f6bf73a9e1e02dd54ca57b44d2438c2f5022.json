@@ -1,0 +1,36 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"DLG Hotel\" Đà Nẵng site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:23:24.664Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"DLG Hotel\" Đà Nẵng site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Khách sạn DLG - Giá cả và Ưu đãi 2026, Đà Nẵng",
+    "link": "https://vn.trip.com/hotels/da-nang-hotel-detail-18479148/dlg-hotel-danang/",
+    "snippet": "Khách sạn có vị trí thuận tiện, cơ sở vật chất đầy đủ, sạch sẽ, cùng với sự phục vụ thân thiện và chu đáo của nhân viên. Chúng tôi mong muốn được chọn DLG Hotel ...",
+    "position": 1
+   },
+   {
+    "title": "Các đánh giá Khách sạn DLG",
+    "link": "https://vn.trip.com/hotels/da-nang-hotel-detail-18479148/dlg-hotel-danang/review.html",
+    "snippet": "Khách sạn có vị trí thuận tiện, cơ sở vật chất đầy đủ, sạch sẽ, cùng với sự phục vụ thân thiện và chu đáo của nhân viên. Chúng tôi mong muốn được chọn DLG Hotel ...",
+    "position": 2
+   }
+  ],
+  "credits": 1
+ }
+}

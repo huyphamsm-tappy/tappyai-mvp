@@ -1,0 +1,33 @@
+{
+  "id": "P3",
+  "text": "chỗ đó có đặt trước được không?",
+  "parent": "P2",
+  "status": 200,
+  "ms": 6489,
+  "evidenceId": "0004c676-452d-4f04-a9ea-956cb4c0a2ce",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình chưa xác nhận được thông tin đặt trước cụ thể cho **Massage Hạ Spa Quận 1**. Cách an toàn nhất là bạn gọi trực tiếp hoặc nhắn qua Google Maps để hỏi về tình trạng chỗ trống và đặt trước.\n\nHoặc bạn có thể vào **GrabSpa** (nếu chỗ này có trên nền tảng) để xem lịch trống — nhanh hơn gọi điện.\n\nBạn muốn mình tìm thêm spa khác có hỗ trợ đặt trước rõ ràng không?\n\n[FOLLOWUPS]Gọi Hạ Spa trực tiếp|Tìm spa khác có đặt online|Xem review trên Google Maps[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "spa massage chan gan q1 duoi 300k"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm được 10 spa massage chân ở Quận 1, nhưng chưa xác nhận được giá cụ thể của các chỗ này. Tuy nhiên, dựa trên đánh giá và số lượt review, **MASSAGE HẠ SPA QUẬN 1** là lựa chọn mình nghiêng về nhất — có **4.9⭐ từ 3.550 đánh giá Google Maps**, đông khách nhất trong danh sách.\n\nChỗ này mở 09:30–22:30, gần bạn ở Quận 1.\n\nNgoài ra còn **Vĩnh Khang Spa** (4.9⭐, 821 review) cũng đáng thử nếu Hạ Spa hết chỗ.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website - MASSAGE HẠ SPA\",\"type\":\"website\",\"url\":\"https://haspamassage.vn/\",\"primary\":true},{\"label\":\"📍 Google Maps - MASSAGE HẠ SPA\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=5564503278764968347\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Gọi hỏi giá massage chân|Xem spa khác ở Quận 1|Tìm spa gần nhất[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "chỗ đó có đặt trước được không?"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình chưa xác nhận được thông tin đặt trước cụ thể cho **Massage Hạ Spa Quận 1**. Cách an toàn nhất là bạn gọi trực tiếp hoặc nhắn qua Google Maps để hỏi về tình trạng chỗ trống và đặt trước.\n\nHoặc bạn có thể vào **GrabSpa** (nếu chỗ này có trên nền tảng) để xem lịch trống — nhanh hơn gọi điện.\n\nBạn muốn mình tìm thêm spa khác có hỗ trợ đặt trước rõ ràng không?\n\n[FOLLOWUPS]Gọi Hạ Spa trực tiếp|Tìm spa khác có đặt online|Xem review trên Google Maps[/FOLLOWUPS]"
+    }
+  ]
+}

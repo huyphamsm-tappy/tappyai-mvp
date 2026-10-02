@@ -6,6 +6,9 @@
 /** The only prefixes any producer is allowed to write under. */
 export const ALLOWED_MEDIA_PREFIXES = [
   'avatars',
+  // Profile cover images — same public bucket and the same server-only writer
+  // (POST /api/profile) as avatars; a prefix of its own so the two never collide.
+  'covers',
   'reviews',
   'videos',
   'thumbnails',
@@ -78,6 +81,41 @@ export function randomMediaSuffix(length = 24): string {
   let out = ''
   for (const b of bytes) out += alphabet[b % alphabet.length]
   return out
+}
+
+/**
+ * F-096 · the per-user prefixes account deletion may list and delete, and nothing wider.
+ *
+ * Every user upload is keyed by the uploader's id (measured 2026-09-25 on every writer):
+ *   avatars/<uid>-…  covers/<uid>-…                       (POST /api/profile)
+ *   reviews/<uid>/…                                        (POST /api/reviews/upload)
+ *   videos/<uid>/…  thumbnails/<uid>/…  music/<uid>/…     (uploadPolicy: `${prefix}/${ownerId}/…`)
+ *   avatars/group-<groupId>-…                              (POST /api/group/[id]/avatar)
+ * `deals/<uid>/…` is excluded on purpose: deal artwork belongs to the deal, not to the admin who
+ * uploaded it.
+ */
+const UUID_RE_SRC = '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
+const OWNER_PREFIX_RE = new RegExp(
+  `^(?:(?:avatars|covers)/${UUID_RE_SRC}-|(?:reviews|videos|thumbnails|music)/${UUID_RE_SRC}/|avatars/group-${UUID_RE_SRC}-)$`,
+)
+
+/** Throws unless `prefix` names exactly ONE owner — never '', never a bare top-level prefix. */
+export function assertOwnerScopedPrefix(prefix: string): string {
+  if (typeof prefix !== 'string' || !OWNER_PREFIX_RE.test(prefix)) {
+    throw new InvalidMediaKeyError('not an owner-scoped prefix')
+  }
+  return prefix
+}
+
+/** The prefixes holding a deleted user's uploads, and the avatars of the groups they created. */
+export function accountMediaPrefixes(userId: string, groupIds: readonly string[] = []): string[] {
+  const out = [
+    `avatars/${userId}-`, `covers/${userId}-`,
+    `reviews/${userId}/`, `videos/${userId}/`, `thumbnails/${userId}/`, `music/${userId}/`,
+    ...groupIds.map(g => `avatars/group-${g}-`),
+  ]
+  // Every prefix is re-validated: a malformed id must fail here, not widen a listing.
+  return out.map(assertOwnerScopedPrefix)
 }
 
 /** True when the value is already an absolute http(s) URL rather than a key. */

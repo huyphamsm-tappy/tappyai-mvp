@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Acer Swift Lite 14 AI SFL14-51M-78XZ\" (site:dienmayxanh.com OR site:cellphones.com.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:54:45.831Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Acer Swift Lite 14 AI SFL14-51M-78XZ\" (site:dienmayxanh.com OR site:cellphones.com.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Laptop Acer Swift Lite 14 AI SFL14-51M-78XZ",
+    "link": "https://cellphones.com.vn/laptop-acer-swift-lite-14-ai-sfl14-51m-78xz.html",
+    "snippet": "Đặc điểm nổi bật ... Laptop Acer Swift Lite 14 AI SFL14-51M-78XZ trang bị CPU Intel Core Ultra 7 processor 155U với 12 lõi, RAM DDR5 16GB và SSD PCIe NVMe dung ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 1
+   },
+   {
+    "title": "Laptop Acer Swift Lite 14 AI SFL14-51M-78XZ - Cũ Đẹp",
+    "link": "https://cellphones.com.vn/laptop-acer-swift-lite-14-ai-sfl14-51m-78xz-cu-dep.html",
+    "snippet": "Mua ngay Laptop Acer Swift Lite 14 AI SFL14-51M-78XZ cũ giá rẻ - Nguồn gốc rõ ràng, bảo hành 6-12 tháng, đổi mới 30 ngày, luôn xuất bán đầy đủ VAT.",
+    "position": 2
+   },
+   {
+    "title": "Laptop Acer Swift Lite 14 AI SFL14-51M-78XZ - Đã Kích Hoạt",
+    "link": "https://cellphones.com.vn/laptop-acer-swift-lite-14-ai-sfl14-51m-78xz-cu-da-kich-hoat.html",
+    "snippet": "Mua ngay Laptop Acer Swift Lite 14 AI SFL14-51M-78XZ cũ giá rẻ - Nguồn gốc rõ ràng, bảo hành 6-12 tháng, đổi mới 30 ngày, luôn xuất bán đầy đủ VAT.",
+    "position": 3
+   },
+   {
+    "title": "Laptop Acer Swift Lite 14 AI SFL14-51M-78XZ - Cũ Trầy ...",
+    "link": "https://cellphones.com.vn/laptop-acer-swift-lite-14-ai-sfl14-51m-78xz-cu-tray-xuoc.html",
+    "snippet": "Mua ngay Laptop Acer Swift Lite 14 AI SFL14-51M-78XZ cũ giá rẻ - Nguồn gốc rõ ràng, bảo hành 6-12 tháng, đổi mới 30 ngày, luôn xuất bán đầy đủ VAT.",
+    "position": 4
+   },
+   {
+    "title": "Acer Swift Air 16 ra mắt: Laptop 16 inch nhẹ chỉ 990g",
+    "link": "https://cellphones.com.vn/sforum/acer-swift-air-16-ra-mat",
+    "snippet": "Acer Swift Air 16 ra mắt: Laptop 16 inch nhẹ kỷ lục chỉ 990g, vỏ hợp kim Magie · Trả góp 0% · Laptop Acer Swift Lite 14 AI SFL14-51M-78XZ · 22.990.000đ.",
+    "position": 5
+   },
+   {
+    "title": "Top 4 Laptop màn hình lớn dưới 20 Triệu",
+    "link": "https://cellphones.com.vn/sforum/top-4-chiec-laptop-duoi-20-trieu-man-hinh-lon",
+    "snippet": "Acer Swift Lite 14 AI SFL14-51M-78XZ; 5. Tóm lại. ASUS Vivobook 15 OLED ... Acer Swift Lite 14 AI SFL14-51M-78XZ. Acer Swift Lite 14 là sự lựa chọn lý ...",
+    "position": 6
+   },
+   {
+    "title": "Top 4 laptop Ultrabook đáng mua nhất 2026 giá chỉ 18 triệu!",
+    "link": "https://cellphones.com.vn/sforum/top-4-laptop-ultrabook-18-trieu-mong-nhe-hieu-nang-cao",
+    "snippet": "Laptop Acer Swift Lite 14 AI SFL14-51M-78XZ. 22.990.000đ. HSSV chỉ còn 21.990.000đSmember giảm ...",
+    "date": "11 thg 11, 2025",
+    "position": 7
+   },
+   {
+    "title": "Laptop Acer Aspire Lite 16 AL16-51P-72S2 NX.KX0SV.002",
+    "link": "https://cellphones.com.vn/laptop-acer-aspire-lite-16-al16-51p-72s2-nxkx0sv002-cu-xuoc-can.html",
+    "snippet": "... acer-swift-lite-14-ai-sfl14-51m-78xz-cu-tray-xuoc.html · https://cellphones.com.vn/laptop-lg-gram-2023-14zd90r-g-ax52a5-cu-tray-xuoc.html. Dạ em gửi mình link ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

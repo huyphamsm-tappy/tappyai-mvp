@@ -3,6 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 import { AI } from '@/lib/ai/llm'
 import { fenceUntrusted } from '@/lib/ai/security/fence'
 import { sanitizeMemoryPatch } from './memoryContract'
+import { buildConsultativeMemoryBlock } from '@/lib/ai/consultative/memoryBlock'
 
 export interface UserMemory {
   location_base: string | null   // residence / usual area — where the user lives or usually is
@@ -119,7 +120,18 @@ export function countMemoryFacts(memory: UserMemory): number {
   return count
 }
 
-export function buildMemoryBlock(memory: UserMemory, forcedTool?: string | null): string {
+export function buildMemoryBlock(
+  memory: UserMemory,
+  forcedTool?: string | null,
+  opts: {
+    /** Consultative V1: the capped block whose instruction is "use it to choose, never to ask"
+     *  (`consultative/memoryBlock.ts`). Off, this legacy block renders byte-identically. */
+    consultative?: boolean
+    /** Consultative V1: the turn's decision-frame domains (memoryBlock.ts). */
+    domains?: readonly string[]
+  } = {},
+): string {
+  if (opts.consultative) return buildConsultativeMemoryBlock(memory, forcedTool, { domains: opts.domains })
   const infoOnly = forcedTool === 'get_weather' || forcedTool === 'get_gold_price'
   const locationAndHistory = forcedTool === 'get_news'
 
@@ -209,13 +221,26 @@ QUAN TRONG: day chi la NGU CANH. Tin nhan hien tai cua user moi la yeu cau that.
 ==================================`
 }
 
+/** Provider usage of the LAST extraction call in this process — cost measurement only. */
+export interface MemoryExtractionUsage { promptTokens: number; completionTokens: number; ms: number }
+let lastUsage: MemoryExtractionUsage | null = null
+export function lastMemoryExtractionUsage(): MemoryExtractionUsage | null { return lastUsage }
+
 export async function extractMemoryFromConversation(
   messages: Array<{ role: string; content: string }>,
-  existingMemory: UserMemory | null
+  existingMemory: UserMemory | null,
+  opts: {
+    /**
+     * Consultative V1: extract from the user's LATEST message only. Every earlier user turn was
+     * already extracted on its own turn (its result is in `existingMemory`), so re-reading the
+     * whole thread each turn re-bills the same text and re-emits old one-off subjects as "new".
+     */
+    lastUserOnly?: boolean
+  } = {},
 ): Promise<Partial<UserMemory>> {
   try {
-    const userTexts = messages
-      .filter(m => m.role === 'user')
+    const userMsgs = messages.filter(m => m.role === 'user')
+    const userTexts = (opts.lastUserOnly ? userMsgs.slice(-1) : userMsgs)
       .map(m => (typeof m.content === 'string' ? m.content : JSON.stringify(m.content)))
       .join('\n')
 
@@ -234,7 +259,8 @@ export async function extractMemoryFromConversation(
         })
       : '{}'
 
-    const { text: rawText } = await AI.generate({
+    const t0 = Date.now()
+    const { text: rawText, usage } = await AI.generate({
       role: 'fast',
       maxTokens: 500,
       prompt: `Phan tich cuoc hoi thoai va trich xuat thong tin ve user. Tra ve JSON ngan gon.
@@ -273,6 +299,7 @@ Quy tac:
 - Neu khong co thong tin gi moi, tra ve {}
 - Chi tra ve JSON, khong giai thich.`,
     })
+    lastUsage = { promptTokens: usage?.promptTokens ?? 0, completionTokens: usage?.completionTokens ?? 0, ms: Date.now() - t0 }
 
     const text = rawText.trim()
     const jsonMatch = text.match(/\{[\s\S]*\}/)

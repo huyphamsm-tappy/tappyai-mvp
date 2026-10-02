@@ -1,0 +1,9 @@
+M fresh token → /api/profile: 200
+signOut global error: none
+M token after global signOut → /api/profile: 401 (401 = revoked server-side; 200 = stateless JWT still accepted)
+refresh with revoked refresh_token: REFUSED Invalid Refresh Token: Refresh Token Not Found
+tampered signature → /api/profile: 401
+login existing/wrong-pw: {"ms":144,"msg":"Invalid login credentials","status":400}
+login nonexistent    : {"ms":142,"msg":"Invalid login credentials","status":400}
+signUp existing email: OK user.identities=0 (Supabase returns an obfuscated fake user when enumeration protection is on)
+done

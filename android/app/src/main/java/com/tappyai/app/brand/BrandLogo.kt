@@ -3,7 +3,6 @@ package com.tappyai.app.brand
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -81,10 +80,15 @@ internal fun assetUrl(logo: String): String =
  * The tile the mark was designed for. `DARK` exists for lockups that are white by brand standard
  * (TikTok Shop): the tile goes dark so the mark stays legible. The mark itself is never recoloured,
  * which is why this changes the background and nothing else.
+ *
+ * `LIGHT` is a LIGHT tile in both appearances — the web's `BrandLogo` (`TILE_CLASSES.light`:
+ * gray-50→gray-100, and white→gray-200 in dark mode) never lets a light-background mark sit on a
+ * dark tile. `surfaceBright` did exactly that in the dark scheme, and Shopee's orange lockup on a
+ * near-black square is not the mark the brand approved; the same fixed light tile as the web now.
  */
 @Composable
 private fun tileColor(background: BrandBackground): Color = when (background) {
-    BrandBackground.LIGHT -> MaterialTheme.colorScheme.surfaceBright
+    BrandBackground.LIGHT -> Color(0xFFF3F4F6)
     BrandBackground.DARK -> Color(0xFF111111)
 }
 

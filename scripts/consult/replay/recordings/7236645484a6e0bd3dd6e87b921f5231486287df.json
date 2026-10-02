@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Seahorse\" Đà Nẵng site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:41:29.842Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Seahorse\" Đà Nẵng site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "searchInformation": {
+   "didYouMean": "\"Seashore\" Đà Nẵng site:vn.trip.com/hotels"
+  },
+  "organic": [
+   {
+    "title": "Seahorse Natalie Da Nang Hotel By Sujet of Haviland",
+    "link": "https://vn.trip.com/hotels/da-nang-hotel-detail-56856508/seahorse-natalie-da-nang-hotel-by-sujet-of-haviland/",
+    "snippet": "Seahorse Natalie Da Nang Hotel By Sujet of Haviland. 29 Yên Bái, Hòa Cường, Hải Châu, Đà NẵngXem Bản Đồ. 9,3/10Tuyệt Vời. 251 đánh giá. Dịch vụ xuất sắc.",
+    "position": 1
+   },
+   {
+    "title": "Seahorse Han Market Da Nang Hostel By Sujet of Haviland",
+    "link": "https://vn.trip.com/hotels/da-nang-hotel-detail-41589562/seahorse-han-market-da-nang-hostel-by-sujet-of-haviland/",
+    "snippet": "Seahorse Han Market Da Nang Hostel By Sujet of Haviland · Vị trí lý tưởng · Chỗ đậu xe miễn phí · Có dịch vụ đón tại sân bay.",
+    "position": 2
+   },
+   {
+    "title": "Căn hộ Seahorse Han Market Đà Nẵng của Haviland",
+    "link": "https://vn.trip.com/hotels/da-nang-hotel-detail-41589562/seahorse-han-market-da-nang-apartment-by-haviland/photo.html",
+    "snippet": "Khám phá 146 ảnh của Căn hộ Seahorse Han Market Đà Nẵng của Haviland, bao gồm phòng ốc, tiện nghi, cơ sở vật chất và khu vực xung quanh.",
+    "position": 3
+   },
+   {
+    "title": "Seahorse Signature Da Nang Hotel By Sujet of Haviland",
+    "link": "https://vn.trip.com/hotels/da-nang-hotel-detail-109104604/seahorse-signature-da-nang-hotel-by-sujet-of-haviland/review.html",
+    "snippet": "Khám phá đánh giá Seahorse Signature Da Nang Hotel By Sujet of Haviland thực tế từ khách du lịch. Với 364 đánh giá đã được xác thực và xếp hạng 9.4/10, ...",
+    "position": 4
+   },
+   {
+    "title": "Seahorse Signature Danang Hotel by Haviland",
+    "link": "https://vn.trip.com/hotels/da-nang-hotel-detail-109104604/seahorse-signature-danang-hotel-haviland/photo.html",
+    "snippet": "Khám phá 231 ảnh của Seahorse Signature Danang Hotel by Haviland, bao gồm phòng ốc, tiện nghi, cơ sở vật chất và khu vực xung quanh.",
+    "position": 5
+   },
+   {
+    "title": "Seahorse Signature Da Nang Hotel By Sujet of Haviland",
+    "link": "https://vn.trip.com/hotels/da-nang-hotel-detail-109104604/seahorse-signature-da-nang-hotel-by-sujet-of-haviland/",
+    "snippet": "Sân bay gần nhất là Cảng hàng không quốc tế Đà Nẵng, cách đó cách khách sạn khoảng 27 phút khi đi bộ (1,9km). Chính sách hủy phòng tại Seahorse Signature Da ...",
+    "position": 6
+   },
+   {
+    "title": "Căn hộ Seahorse Han Market Đà Nẵng của Haviland",
+    "link": "https://vn.trip.com/hotels/da-nang-hotel-detail-41589562/seahorse-han-market-da-nang-apartment-by-haviland/review.html",
+    "snippet": "Khám phá đánh giá Căn hộ Seahorse Han Market Đà Nẵng của Haviland thực tế từ khách du lịch. Với 76 đánh giá đã được xác thực và xếp hạng 8.9/10, ...",
+    "position": 7
+   },
+   {
+    "title": "Khách sạn giá rẻ tốt nhất tại Đà Nẵng dành cho du ...",
+    "link": "https://vn.trip.com/hotels/hostels/city/vn/da-nang.html",
+    "snippet": "Tiện nghi nổi bật: Dịch vụ giặt là (tại chỗ nghỉ), Nơi để hành lý. 1 đêm. từ 96.708₫. Seahorse Han Market Da Nang Hostel By Sujet of Haviland - Nhà nghỉ.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

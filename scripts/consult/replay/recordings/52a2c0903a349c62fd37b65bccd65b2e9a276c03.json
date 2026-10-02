@@ -1,0 +1,80 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "karaoke quận 1 Quận 1 Ho Chi Minh site:klook.com/vi/activity",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:17:46.026Z",
+ "body": {
+  "searchParameters": {
+   "q": "karaoke quận 1 Quận 1 Ho Chi Minh site:klook.com/vi/activity",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Golden Lotus Healing World & Jjimjilbang Spa tại Hồ Chí ...",
+    "link": "https://www.klook.com/vi/activity/153878-golden-lotus-healing-world-jjimjilbang-spa-in-ho-chi-minh/",
+    "snippet": "Có nhiều tiện ích trò chơi khác nhau, bao gồm karaoke miễn phí — hãy tận hưởng thời gian của bạn! ... Trải nghiệm Ha Spa & Massage tại Quận 1, Hồ Chí Minh. ☆ 4.4 ...",
+    "rating": 4.6,
+    "ratingCount": 41,
+    "position": 1
+   },
+   {
+    "title": "Trải nghiệm KARAOKE tuyệt vời nhất ở Kyoto",
+    "link": "https://www.klook.com/vi/activity/166239-best-karaoke-experience-in-kyoto/",
+    "snippet": "Một trải nghiệm karaoke thú vị, nơi mọi người đều có thể hát như một ngôi sao! · Karaoke miễn phí, tuyển chọn bài hát khổng lồ, hệ thống âm thanh chất lượng cao ...",
+    "position": 2
+   },
+   {
+    "title": "Vé trải nghiệm Karaoke tại Mash Sapporo Broad",
+    "link": "https://www.klook.com/vi/activity/99233-japanese-karaoke-and-culture-experience-at-mash-sapporo-broad/",
+    "snippet": "・Thỏa sức ca hát karaoke trong phòng rộng rãi! (Hỗ trợ tiếng Anh, tiếng Trung, tiếng Hàn) ・Uống thỏa thích các loại đồ uống trong 120 phút, với nhiều lựa ...",
+    "position": 3
+   },
+   {
+    "title": "Ăn Tối Trên Tàu Bến Nghé Tại Thành Phố Hồ Chí Minh",
+    "link": "https://www.klook.com/vi/activity/56135-ben-nghe-cruise-ho-chi-minh-city/",
+    "snippet": "Tận hưởng buổi tối tuyệt vời bên cạnh gia đình và bạn bè khi đi du thuyền Bến Nghé tại thành phố Hồ Chí Minh. Đặt ngay trên Klook để có những trải nghiệm ...",
+    "position": 4
+   },
+   {
+    "title": "Akihabara, Shibuya, Karaoke & Ánh Đèn Thành Phố - Tokyo",
+    "link": "https://www.klook.com/vi/activity/140853-tokyo-night-tour-akihabara-shibuya-karaoke-city-lights/",
+    "snippet": "Xin lưu ý tùy chọn cao cấp bao gồm đồ ăn nhẹ và quầy bar mở khi đến karaoke. Tour này chỉ dành cho người trên 18 tuổi. Vui lòng tập trung tại điểm hẹn, ...",
+    "position": 5
+   },
+   {
+    "title": "[Tuyến 2] 2N1Đ Vịnh Hạ Long trên Tàu Hera Grand Luxury",
+    "link": "https://www.klook.com/vi/activity/69831-hera-grand-luxury-cruise-ha-long-bay-tour/",
+    "snippet": "Hành trình tổng thể rất tốt, nhưng dịch vụ đón khách hơi khó hiểu, không ai gọi điện hay nhắn tin cho chúng tôi biết thời gian đón chúng tôi. Chúng tôi đợi ở ...",
+    "rating": 4.6,
+    "ratingCount": 53,
+    "position": 6
+   },
+   {
+    "title": "Khám Phá Vịnh Lan Hạ & Cát Bà bằng Du Thuyền Sunlight ...",
+    "link": "https://www.klook.com/vi/activity/29032-3d2n-hanoi-halong-bay-cruise-caves-visit/",
+    "snippet": "Vịnh Lan Hạ có cảnh quan tuyệt đẹp, tráng lệ. Hướng dẫn viên Hải và nhóm phục vụ rất tốt về các hoạt động (chèo thuyền kayak, trò chơi, karaoke, xe đạp tại Làng ...",
+    "rating": 4.5,
+    "ratingCount": 99,
+    "position": 7
+   },
+   {
+    "title": "Tour Tham Quan Thành Phố và Ngoại Ô Hội An",
+    "link": "https://www.klook.com/vi/activity/11830-hoi-an-city-and-countryside-tour-hoi-an/",
+    "snippet": "Khám phá các điểm tham quan và hoạt động nổi tiếng tại Thành phố và vùng ngoại ô Hội An trong gói tour cả ngày, tour buổi sáng, tour buổi chiều hoặc tour ...",
+    "rating": 4.6,
+    "ratingCount": 221,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,30 @@
+{
+  "id": "D1",
+  "group": "district-stated-vs-gps",
+  "criteria": [
+    "Every card's ADDRESS is in Quận 3 (explicit 'Quận 3' or a Quận 3 ward: Bàn Cờ, Xuân Hòa, Nhiêu Lộc, Võ Thị Sáu), or the card is explicitly marked as outside Quận 3",
+    "The prose never claims a venue outside Quận 3 is in Quận 3",
+    "If nothing in Quận 3 is found, it says so honestly and labels the alternatives as outside Quận 3 with their real district",
+    "The stated Quận 3 beats the user's GPS (Quận 1): results are not simply the places nearest the user"
+  ],
+  "turns": [
+    {
+      "user": "Quán phở ngon ở Quận 3",
+      "status": 200,
+      "elapsedMs": 762,
+      "usage": {
+        "promptTokens": 0,
+        "completionTokens": 0
+      },
+      "textFrames": 1,
+      "tools": [],
+      "toolResults": [],
+      "annotations": [],
+      "cardItems": [],
+      "duplicate": null,
+      "text": "Để chọn đúng chỗ, mình cần biết thêm:\n• Tầm giá? (dưới 100k/người / 100–200k/người / trên 200k/người)\n• Mấy người? (1–2 người / 3–5 người / nhóm đông)\nBạn trả lời phần nào cũng được, phần còn lại mình tự giả sử và nói rõ.\n\n[FOLLOWUPS]dưới 100k/người|100–200k/người|trên 200k/người[/FOLLOWUPS]",
+      "visible": "Để chọn đúng chỗ, mình cần biết thêm:\n• Tầm giá? (dưới 100k/người / 100–200k/người / trên 200k/người)\n• Mấy người? (1–2 người / 3–5 người / nhóm đông)\nBạn trả lời phần nào cũng được, phần còn lại mình tự giả sử và nói rõ.",
+      "preGuard": null
+    }
+  ]
+}

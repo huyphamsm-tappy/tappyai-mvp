@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Cat Tien Eco Lodge",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T03:12:53.508Z",
+ "body": {
+  "searchParameters": {
+   "q": "Cat Tien Eco Lodge",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Cat Tien Eco Lodge | Biên Hòa",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=122102897318835527",
+    "imageWidth": 2048,
+    "imageHeight": 1152,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSfpZKImkCujhnSphqdODps-1OMwbsla8Uu4XTxVm_7Eg&s",
+    "thumbnailWidth": 299,
+    "thumbnailHeight": 168,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/p/Cat-Tien-Eco-Lodge-61575065811460/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D122102897318835527&tbnid=jg1CZr8MPrlM3M&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Fp%2FCat-Tien-Eco-Lodge-61575065811460%2F&docid=RmQIG0pxsiK3LM&w=2048&h=1152",
+    "position": 1
+   },
+   {
+    "title": "Alagon Ecolodge Nam Cat Tien, Tân Phú (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/868151601.jpg?k=a83f67d9c25fed41061b0df9c0a13105401e37f6a94b40566b279d3eb03daa04&o=",
+    "imageWidth": 1024,
+    "imageHeight": 576,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCUhZGx-H7Hb7NnhfG5DOgTZ9mSiP1xIvfBdVFnWprGg&s=10",
+    "thumbnailWidth": 738,
+    "thumbnailHeight": 414,
+    "source": "www.booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/alagon-ecolodge-nam-cat-tien.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F868151601.jpg%3Fk%3Da83f67d9c25fed41061b0df9c0a13105401e37f6a94b40566b279d3eb03daa04%26o%3D&tbnid=Ewnnij9XziYE8M&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Falagon-ecolodge-nam-cat-tien.vi.html&docid=I3UcdjmoCgUNrM&w=1024&h=576",
+    "position": 2
+   },
+   {
+    "title": "Sunny Eco Lodge, Cát Tiên (cập nhật giá năm 2027)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/647691091.jpg?k=59c92ce88e668a4372ab80ad8df79b46f9c61efa5f081299ab54943ce9db7d89&o=",
+    "imageWidth": 1024,
+    "imageHeight": 578,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTiLXD3I4jT9nfiABuUc90IjZXpjnegVfDeoVQDqUNB_g&s=10",
+    "thumbnailWidth": 736,
+    "thumbnailHeight": 416,
+    "source": "www.booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/sunny-eco-lodge-huyen-tan-phu.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F647691091.jpg%3Fk%3D59c92ce88e668a4372ab80ad8df79b46f9c61efa5f081299ab54943ce9db7d89%26o%3D&tbnid=8L-im9yyjUgC3M&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fsunny-eco-lodge-huyen-tan-phu.vi.html&docid=fh7RdYjKQHhm2M&w=1024&h=578",
+    "position": 3
+   },
+   {
+    "title": "Thuy Tien Ecolodge, Nam Cát Tiên, Nam Cát Tiên",
+    "imageUrl": "https://q-xx.bstatic.com/xdata/images/hotel/max500/463000481.jpg?k=403e0467a5c88c493dff9006a7738c2ad603330e35117ebdb4e8bdfcc162c732&o=",
+    "imageWidth": 500,
+    "imageHeight": 375,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6NNAOaMRgwc--qJTp4DjY-ViCw4NL7fjY6V05a07UdQ&s=10",
+    "thumbnailWidth": 499,
+    "thumbnailHeight": 375,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/thuy-tien-eco-lodge/hotel/nam-cat-tien-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fq-xx.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax500%2F463000481.jpg%3Fk%3D403e0467a5c88c493dff9006a7738c2ad603330e35117ebdb4e8bdfcc162c732%26o%3D&tbnid=WXedMLzidQ8MqM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fthuy-tien-eco-lodge%2Fhotel%2Fnam-cat-tien-vn.html&docid=0qWimf47JHurfM&w=500&h=375",
+    "position": 4
+   },
+   {
+    "title": "Alagon Ecolodge Nam Cat Tien | Vietnexa Global",
+    "imageUrl": "https://cdn.vietnexa.com/2026/04/Alago-Nam-Cat_Tien-7.jpg",
+    "imageWidth": 1280,
+    "imageHeight": 853,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSif3_-Ti6JlKp9A__paGcMjzESa1IdHU3Ie7LL7zXdOg&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "VIETNEXA Global",
+    "domain": "vietnexa.vn",
+    "link": "https://vietnexa.vn/hotels/alagon-ecolodge-nam-cat-tien/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.vietnexa.com%2F2026%2F04%2FAlago-Nam-Cat_Tien-7.jpg&tbnid=9DPVzs7ZiiNkBM&imgrefurl=https%3A%2F%2Fvietnexa.vn%2Fhotels%2Falagon-ecolodge-nam-cat-tien%2F&docid=YrcJH5Y2w2g_9M&w=1280&h=853",
+    "position": 5
+   },
+   {
+    "title": "Ngọc Tiên Farmer Eco Lodge, Cát Tiên (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/450235698.jpg?k=8e46236a8b56a89bae9136e0c0715685839314ac1a6dc88387350b75c793ca5f&o=",
+    "imageWidth": 1024,
+    "imageHeight": 768,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBQu5Hpx8rISMzZFZCNgwLBv59lqek5yuaaB6pj79ZCQ&s=10",
+    "thumbnailWidth": 638,
+    "thumbnailHeight": 480,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/nam-cat-tien-long-house.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F450235698.jpg%3Fk%3D8e46236a8b56a89bae9136e0c0715685839314ac1a6dc88387350b75c793ca5f%26o%3D&tbnid=UU2jw7pyR1IOrM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fnam-cat-tien-long-house.vi.html&docid=Ib4lyPWBzE08uM&w=1024&h=768",
+    "position": 6
+   },
+   {
+    "title": "Cat Tien Eco Lodge | Biên Hòa",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=1040344658011170&get_thumbnail=1",
+    "imageWidth": 1080,
+    "imageHeight": 1920,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSl0qCbqGV_3NXI_dfaI45q58dbjJlu6ql_BW9BWx0Gtw&s",
+    "thumbnailWidth": 168,
+    "thumbnailHeight": 300,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/p/Cat-Tien-Eco-Lodge-61575065811460/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D1040344658011170%26get_thumbnail%3D1&tbnid=BO2Df89q2oWTfM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Fp%2FCat-Tien-Eco-Lodge-61575065811460%2F&docid=RmQIG0pxsiK3LM&w=1080&h=1920",
+    "position": 7
+   },
+   {
+    "title": "Bìa Rừng Ecolodge, Nam Cát Tiên, Nam Cát Tiên",
+    "imageUrl": "https://q-xx.bstatic.com/xdata/images/hotel/max500/554271253.jpg?k=1d85f999b71e5e7089ee619a1b3379ca9281784d5d86b78b29e284f5eceddab9&o=",
+    "imageWidth": 500,
+    "imageHeight": 375,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTUVKNgoCGcvy2ZWyNPG2yL9rM2Uf2ZkUFY8uiZmwkE9Q&s=10",
+    "thumbnailWidth": 499,
+    "thumbnailHeight": 375,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/forestside-homestay/hotel/nam-cat-tien-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fq-xx.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax500%2F554271253.jpg%3Fk%3D1d85f999b71e5e7089ee619a1b3379ca9281784d5d86b78b29e284f5eceddab9%26o%3D&tbnid=Dhg0uYDnA2O4JM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fforestside-homestay%2Fhotel%2Fnam-cat-tien-vn.html&docid=Uox6MQuEAM0i9M&w=500&h=375",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

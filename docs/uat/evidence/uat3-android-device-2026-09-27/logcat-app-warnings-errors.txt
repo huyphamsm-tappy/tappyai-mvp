@@ -1,0 +1,19 @@
+09-27 15:11:00.952 16803 16803 E USNET   : USNET: appName: com.tappyai.app.debug
+09-27 15:11:02.949 16803 16975 W System  : ClassLoader referenced unknown path: 
+09-27 15:11:03.078 16803 16988 W FeatureFlagsImplExport: java.lang.NoClassDefFoundError: Class not found using the boot class loader; no stack trace available
+09-27 15:11:03.093 16803 16996 E ppyai.app.debu: No package ID 6b found for ID 0x6b0b0013.
+09-27 15:11:03.599 16803 16803 W System.err: SLF4J(W): No SLF4J providers were found.
+09-27 15:11:03.599 16803 16803 W System.err: SLF4J(W): Defaulting to no-operation (NOP) logger implementation
+09-27 15:11:03.599 16803 16803 W System.err: SLF4J(W): See https://www.slf4j.org/codes.html#noProviders for further details.
+09-27 15:11:07.667 16803 17191 W AuthRepository: refreshSession failed: No refresh token found in current session
+09-27 15:11:07.678 16803 17044 E NotificationSubscription: FCM token registration failed: HTTP 401 Unauthorized
+09-27 15:35:28.958 16803 16827 W ppyai.app.debu: Cleared Reference was only reachable from finalizer (only reported once)
+09-27 15:35:55.895  8976  8976 E USNET   : USNET: appName: com.tappyai.app.debug
+09-27 15:35:56.898  8976  9051 W System  : ClassLoader referenced unknown path: 
+09-27 15:35:57.051  8976  8976 W System.err: SLF4J(W): No SLF4J providers were found.
+09-27 15:35:57.051  8976  8976 W System.err: SLF4J(W): Defaulting to no-operation (NOP) logger implementation
+09-27 15:35:57.051  8976  8976 W System.err: SLF4J(W): See https://www.slf4j.org/codes.html#noProviders for further details.
+09-27 15:35:57.345  8976  9114 W FeatureFlagsImplExport: java.lang.NoClassDefFoundError: Class not found using the boot class loader; no stack trace available
+09-27 15:35:57.932  8976  9255 E ppyai.app.debu: No package ID 6b found for ID 0x6b0b0013.
+09-27 15:36:07.869  8976  9305 E NotificationSubscription: FCM token registration failed: HTTP 400 Bad Request
+09-27 15:37:34.663  8976  8995 W ppyai.app.debu: Cleared Reference was only reachable from finalizer (only reported once)

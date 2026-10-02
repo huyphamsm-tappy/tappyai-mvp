@@ -1,0 +1,24 @@
+{
+  "id": "G5a",
+  "group": "used-purchase-risk",
+  "criteria": [
+    "Leads with iCloud Activation Lock / Find My, MDM, stolen-device (IMEI/blacklist) and deposit scams; then condition checks",
+    "No unsupported numeric thresholds",
+    "Points to 'Cảnh báo lừa đảo' for the online-deposit/stranger-seller vector"
+  ],
+  "turns": [
+    {
+      "user": "mua iPhone 13 cũ thì cần check gì",
+      "status": 200,
+      "elapsedMs": 13522,
+      "textFrames": 390,
+      "tools": [],
+      "toolResults": [],
+      "annotations": [],
+      "cardItems": [],
+      "duplicate": null,
+      "text": "Mua iPhone 13 cũ là quyết định lớn, nên cần kiểm tra kỹ trước khi chuyển tiền. Dưới đây là những điểm quan trọng:\n\n**🚨 TRƯỚC TIÊN — RỦI RO GIAO DỊCH:**\n- **Gặp trực tiếp** để kiểm tra máy, KHÔNG chuyển tiền trước\n- **Kiểm tra tài khoản Apple**: máy có bị khóa iCloud không (đây là rủi ro lớn nhất — nếu bị khóa, bạn không dùng được)\n- **Kiểm tra tình trạng**: máy có bị báo mất/trộm không (dùng [iCloud.com](https://icloud.com) hoặc hỏi người bán cung cấp IMEI để tra cứu)\n- **Giữ bằng chứng**: chụp ảnh máy, lấy số IMEI, lưu tin nhắn giao dịch\n\n**📱 KIỂM TRA TÌNH TRẠNG VẬT LÝ:**\n- **Màn hình**: có vết nứt, chấm đen, hay bị sáng không đều không\n- **Pin**: mở Settings > Battery > Battery Health — nếu dưới 80% thì pin đã chai khá nhiều\n- **Nút bấm & loa**: test nút Home, âm lượng, loa có bị méo không\n- **Camera**: chụp thử, quay video, có bị mờ hay lỗi không\n- **Vỏ máy**: xước, móp, hay bị oxy hóa không\n- **Cảm biến**: test Face ID, cảm biến ánh sáng, gia tốc kế\n\n**💰 KIỂM TRA GIÁ & NGUỒN GỐC:**\n- **Giá hợp lý**: iPhone 13 cũ thường 8-12 triệu tùy tình trạng — nếu quá rẻ (dưới 7 triệu) là dấu hiệu cần nghi\n- **Nguồn gốc**: hỏi rõ máy từ đâu (cá nhân, cửa hàng, hay nhập khẩu), có giấy tờ không\n- **Bảo hành**: máy cũ thường không có bảo hành, hỏi rõ chính sách đổi trả nếu có vấn đề\n\n**⚠️ TRƯỚC KHI CHUYỂN TIỀN:**\nDán tin nhắn, link hoặc mã QR của người bán vào **Cảnh báo lừa đảo** trong TappyAI để kiểm tra nhé.\n\nBạn đang tìm mua ở đâu — Facebook Marketplace, cửa hàng, hay nền tảng khác? Mình có thể giúp bạn tìm những nơi uy tín 👍\n\n[FOLLOWUPS]tìm iPhone 13 cũ uy tín|check máy cũ trước khi mua|giá iPhone 13 cũ hiện nay[/FOLLOWUPS]\n\nCác con số phần trăm / mốc nêu trên là kinh nghiệm chung, không phải số liệu từ nguồn đã tìm — dùng làm gợi ý, không phải ngưỡng cứng.",
+      "visible": "Mua iPhone 13 cũ là quyết định lớn, nên cần kiểm tra kỹ trước khi chuyển tiền. Dưới đây là những điểm quan trọng:\n\n**🚨 TRƯỚC TIÊN — RỦI RO GIAO DỊCH:**\n- **Gặp trực tiếp** để kiểm tra máy, KHÔNG chuyển tiền trước\n- **Kiểm tra tài khoản Apple**: máy có bị khóa iCloud không (đây là rủi ro lớn nhất — nếu bị khóa, bạn không dùng được)\n- **Kiểm tra tình trạng**: máy có bị báo mất/trộm không (dùng [iCloud.com](https://icloud.com) hoặc hỏi người bán cung cấp IMEI để tra cứu)\n- **Giữ bằng chứng**: chụp ảnh máy, lấy số IMEI, lưu tin nhắn giao dịch\n\n**📱 KIỂM TRA TÌNH TRẠNG VẬT LÝ:**\n- **Màn hình**: có vết nứt, chấm đen, hay bị sáng không đều không\n- **Pin**: mở Settings > Battery > Battery Health — nếu dưới 80% thì pin đã chai khá nhiều\n- **Nút bấm & loa**: test nút Home, âm lượng, loa có bị méo không\n- **Camera**: chụp thử, quay video, có bị mờ hay lỗi không\n- **Vỏ máy**: xước, móp, hay bị oxy hóa không\n- **Cảm biến**: test Face ID, cảm biến ánh sáng, gia tốc kế\n\n**💰 KIỂM TRA GIÁ & NGUỒN GỐC:**\n- **Giá hợp lý**: iPhone 13 cũ thường 8-12 triệu tùy tình trạng — nếu quá rẻ (dưới 7 triệu) là dấu hiệu cần nghi\n- **Nguồn gốc**: hỏi rõ máy từ đâu (cá nhân, cửa hàng, hay nhập khẩu), có giấy tờ không\n- **Bảo hành**: máy cũ thường không có bảo hành, hỏi rõ chính sách đổi trả nếu có vấn đề\n\n**⚠️ TRƯỚC KHI CHUYỂN TIỀN:**\nDán tin nhắn, link hoặc mã QR của người bán vào **Cảnh báo lừa đảo** trong TappyAI để kiểm tra nhé.\n\nBạn đang tìm mua ở đâu — Facebook Marketplace, cửa hàng, hay nền tảng khác? Mình có thể giúp bạn tìm những nơi uy tín 👍\n\nCác con số phần trăm / mốc nêu trên là kinh nghiệm chung, không phải số liệu từ nguồn đã tìm — dùng làm gợi ý, không phải ngưỡng cứng."
+    }
+  ]
+}

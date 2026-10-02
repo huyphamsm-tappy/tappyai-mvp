@@ -1,0 +1,2487 @@
+[
+ {
+  "branch": "arcade-v2/android",
+  "findings": [
+   {
+    "commit": "4bce517",
+    "subject": "feat(android/auth): login layout closer to web parity — WIP, not PASS (P1-5)",
+    "ageDays": 57,
+    "files": [
+     {
+      "path": "android/features/auth/src/main/java/com/tappyai/features/auth/ui/login/LoginScreen.kt",
+      "addedLines": 16,
+      "presentOnShip": 0.44,
+      "fileOnShip": true
+     }
+    ]
+   },
+   {
+    "commit": "cd4cb31",
+    "subject": "build(android/auth): OTP input validation + R8 consumer rules",
+    "ageDays": 57,
+    "files": [
+     {
+      "path": "android/features/auth/consumer-rules.pro",
+      "addedLines": 11,
+      "presentOnShip": 0.18,
+      "fileOnShip": true
+     },
+     {
+      "path": "android/features/auth/src/main/java/com/tappyai/features/auth/ui/otp/EmailOtpVerificationViewModel.kt",
+      "addedLines": 6,
+      "presentOnShip": 0.17,
+      "fileOnShip": true
+     }
+    ]
+   },
+   {
+    "commit": "5e13751",
+    "subject": "feat(android/auth): Zalo login (Custom Tab) + fragment-token session import",
+    "ageDays": 59,
+    "files": [
+     {
+      "path": "android/features/auth/build.gradle.kts",
+      "addedLines": 2,
+      "presentOnShip": 0.5,
+      "fileOnShip": true
+     },
+     {
+      "path": "android/features/auth/src/main/res/values-vi/strings.xml",
+      "addedLines": 3,
+      "presentOnShip": 0.33,
+      "fileOnShip": true
+     },
+     {
+      "path": "android/features/auth/src/main/res/values/strings.xml",
+      "addedLines": 3,
+      "presentOnShip": 0.33,
+      "fileOnShip": true
+     }
+    ]
+   }
+  ],
+  "allowedBy": null
+ },
+ {
+  "branch": "backup/ios-windows-sprint-pre-rebase",
+  "findings": [
+   {
+    "commit": "e0b88ec",
+    "subject": "feat(android/auth): login layout closer to web parity — WIP, not PASS (P1-5)",
+    "ageDays": 57,
+    "files": [
+     {
+      "path": "android/features/auth/src/main/java/com/tappyai/features/auth/ui/login/LoginScreen.kt",
+      "addedLines": 16,
+      "presentOnShip": 0.44,
+      "fileOnShip": true
+     }
+    ]
+   },
+   {
+    "commit": "cd4cb31",
+    "subject": "build(android/auth): OTP input validation + R8 consumer rules",
+    "ageDays": 57,
+    "files": [
+     {
+      "path": "android/features/auth/consumer-rules.pro",
+      "addedLines": 11,
+      "presentOnShip": 0.18,
+      "fileOnShip": true
+     },
+     {
+      "path": "android/features/auth/src/main/java/com/tappyai/features/auth/ui/otp/EmailOtpVerificationViewModel.kt",
+      "addedLines": 6,
+      "presentOnShip": 0.17,
+      "fileOnShip": true
+     }
+    ]
+   },
+   {
+    "commit": "5e13751",
+    "subject": "feat(android/auth): Zalo login (Custom Tab) + fragment-token session import",
+    "ageDays": 59,
+    "files": [
+     {
+      "path": "android/features/auth/build.gradle.kts",
+      "addedLines": 2,
+      "presentOnShip": 0.5,
+      "fileOnShip": true
+     },
+     {
+      "path": "android/features/auth/src/main/res/values-vi/strings.xml",
+      "addedLines": 3,
+      "presentOnShip": 0.33,
+      "fileOnShip": true
+     },
+     {
+      "path": "android/features/auth/src/main/res/values/strings.xml",
+      "addedLines": 3,
+      "presentOnShip": 0.33,
+      "fileOnShip": true
+     }
+    ]
+   }
+  ],
+  "allowedBy": null
+ },
+ {
+  "branch": "backup/pre-scrub-v1",
+  "findings": [
+   {
+    "commit": "4bce517",
+    "subject": "feat(android/auth): login layout closer to web parity — WIP, not PASS (P1-5)",
+    "ageDays": 57,
+    "files": [
+     {
+      "path": "android/features/auth/src/main/java/com/tappyai/features/auth/ui/login/LoginScreen.kt",
+      "addedLines": 16,
+      "presentOnShip": 0.44,
+      "fileOnShip": true
+     }
+    ]
+   },
+   {
+    "commit": "cd4cb31",
+    "subject": "build(android/auth): OTP input validation + R8 consumer rules",
+    "ageDays": 57,
+    "files": [
+     {
+      "path": "android/features/auth/consumer-rules.pro",
+      "addedLines": 11,
+      "presentOnShip": 0.18,
+      "fileOnShip": true
+     },
+     {
+      "path": "android/features/auth/src/main/java/com/tappyai/features/auth/ui/otp/EmailOtpVerificationViewModel.kt",
+      "addedLines": 6,
+      "presentOnShip": 0.17,
+      "fileOnShip": true
+     }
+    ]
+   },
+   {
+    "commit": "5e13751",
+    "subject": "feat(android/auth): Zalo login (Custom Tab) + fragment-token session import",
+    "ageDays": 59,
+    "files": [
+     {
+      "path": "android/features/auth/build.gradle.kts",
+      "addedLines": 2,
+      "presentOnShip": 0.5,
+      "fileOnShip": true
+     },
+     {
+      "path": "android/features/auth/src/main/res/values-vi/strings.xml",
+      "addedLines": 3,
+      "presentOnShip": 0.33,
+      "fileOnShip": true
+     },
+     {
+      "path": "android/features/auth/src/main/res/values/strings.xml",
+      "addedLines": 3,
+      "presentOnShip": 0.33,
+      "fileOnShip": true
+     }
+    ]
+   }
+  ],
+  "allowedBy": null
+ },
+ {
+  "branch": "feat/anonymous-chat-android",
+  "findings": [
+   {
+    "commit": "e0b88ec",
+    "subject": "feat(android/auth): login layout closer to web parity — WIP, not PASS (P1-5)",
+    "ageDays": 57,
+    "files": [
+     {
+      "path": "android/features/auth/src/main/java/com/tappyai/features/auth/ui/login/LoginScreen.kt",
+      "addedLines": 16,
+      "presentOnShip": 0.44,
+      "fileOnShip": true
+     }
+    ]
+   },
+   {
+    "commit": "cd4cb31",
+    "subject": "build(android/auth): OTP input validation + R8 consumer rules",
+    "ageDays": 57,
+    "files": [
+     {
+      "path": "android/features/auth/consumer-rules.pro",
+      "addedLines": 11,
+      "presentOnShip": 0.18,
+      "fileOnShip": true
+     },
+     {
+      "path": "android/features/auth/src/main/java/com/tappyai/features/auth/ui/otp/EmailOtpVerificationViewModel.kt",
+      "addedLines": 6,
+      "presentOnShip": 0.17,
+      "fileOnShip": true
+     }
+    ]
+   },
+   {
+    "commit": "5e13751",
+    "subject": "feat(android/auth): Zalo login (Custom Tab) + fragment-token session import",
+    "ageDays": 59,
+    "files": [
+     {
+      "path": "android/features/auth/build.gradle.kts",
+      "addedLines": 2,
+      "presentOnShip": 0.5,
+      "fileOnShip": true
+     },
+     {
+      "path": "android/features/auth/src/main/res/values-vi/strings.xml",
+      "addedLines": 3,
+      "presentOnShip": 0.33,
+      "fileOnShip": true
+     },
+     {
+      "path": "android/features/auth/src/main/res/values/strings.xml",
+      "addedLines": 3,
+      "presentOnShip": 0.33,
+      "fileOnShip": true
+     }
+    ]
+   }
+  ],
+  "allowedBy": null
+ },
+ {
+  "branch": "feat/backoffice-phase0",
+  "findings": [
+   {
+    "commit": "e0b88ec",
+    "subject": "feat(android/auth): login layout closer to web parity — WIP, not PASS (P1-5)",
+    "ageDays": 57,
+    "files": [
+     {
+      "path": "android/features/auth/src/main/java/com/tappyai/features/auth/ui/login/LoginScreen.kt",
+      "addedLines": 16,
+      "presentOnShip": 0.44,
+      "fileOnShip": true
+     }
+    ]
+   },
+   {
+    "commit": "cd4cb31",
+    "subject": "build(android/auth): OTP input validation + R8 consumer rules",
+    "ageDays": 57,
+    "files": [
+     {
+      "path": "android/features/auth/consumer-rules.pro",
+      "addedLines": 11,
+      "presentOnShip": 0.18,
+      "fileOnShip": true
+     },
+     {
+      "path": "android/features/auth/src/main/java/com/tappyai/features/auth/ui/otp/EmailOtpVerificationViewModel.kt",
+      "addedLines": 6,
+      "presentOnShip": 0.17,
+      "fileOnShip": true
+     }
+    ]
+   },
+   {
+    "commit": "5e13751",
+    "subject": "feat(android/auth): Zalo login (Custom Tab) + fragment-token session import",
+    "ageDays": 59,
+    "files": [
+     {
+      "path": "android/features/auth/build.gradle.kts",
+      "addedLines": 2,
+      "presentOnShip": 0.5,
+      "fileOnShip": true
+     },
+     {
+      "path": "android/features/auth/src/main/res/values-vi/strings.xml",
+      "addedLines": 3,
+      "presentOnShip": 0.33,
+      "fileOnShip": true
+     },
+     {
+      "path": "android/features/auth/src/main/res/values/strings.xml",
+      "addedLines": 3,
+      "presentOnShip": 0.33,
+      "fileOnShip": true
+     }
+    ]
+   }
+  ],
+  "allowedBy": null
+ },
+ {
+  "branch": "feat/backoffice-phase0-clean",
+  "findings": [
+   {
+    "commit": "f661081",
+    "subject": "feat(android/auth): login layout closer to web parity — WIP, not PASS (P1-5)",
+    "ageDays": 57,
+    "files": [
+     {
+      "path": "android/features/auth/src/main/java/com/tappyai/features/auth/ui/login/LoginScreen.kt",
+      "addedLines": 16,
+      "presentOnShip": 0.44,
+      "fileOnShip": true
+     }
+    ]
+   },
+   {
+    "commit": "cd4cb31",
+    "subject": "build(android/auth): OTP input validation + R8 consumer rules",
+    "ageDays": 57,
+    "files": [
+     {
+      "path": "android/features/auth/consumer-rules.pro",
+      "addedLines": 11,
+      "presentOnShip": 0.18,
+      "fileOnShip": true
+     },
+     {
+      "path": "android/features/auth/src/main/java/com/tappyai/features/auth/ui/otp/EmailOtpVerificationViewModel.kt",
+      "addedLines": 6,
+      "presentOnShip": 0.17,
+      "fileOnShip": true
+     }
+    ]
+   },
+   {
+    "commit": "5e13751",
+    "subject": "feat(android/auth): Zalo login (Custom Tab) + fragment-token session import",
+    "ageDays": 59,
+    "files": [
+     {
+      "path": "android/features/auth/build.gradle.kts",
+      "addedLines": 2,
+      "presentOnShip": 0.5,
+      "fileOnShip": true
+     },
+     {
+      "path": "android/features/auth/src/main/res/values-vi/strings.xml",
+      "addedLines": 3,
+      "presentOnShip": 0.33,
+      "fileOnShip": true
+     },
+     {
+      "path": "android/features/auth/src/main/res/values/strings.xml",
+      "addedLines": 3,
+      "presentOnShip": 0.33,
+      "fileOnShip": true
+     }
+    ]
+   }
+  ],
+  "allowedBy": null
+ },
+ {
+  "branch": "feat/ccp-mvp",
+  "findings": [
+   {
+    "commit": "56a5726",
+    "subject": "feat(ccp): Commerce Capability Platform — Phases 0–5 (isolated, flags off)",
+    "ageDays": 11,
+    "files": [
+     {
+      "path": "src/lib/ccp/adapters/index.ts",
+      "addedLines": 19,
+      "presentOnShip": 0.58,
+      "fileOnShip": true
+     },
+     {
+      "path": "src/lib/ccp/adapters/pasgo.ts",
+      "addedLines": 56,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     }
+    ]
+   },
+   {
+    "commit": "254c28b",
+    "subject": "feat(phase6): Discovery/Monetization, Contact Sync and the shared governance",
+    "ageDays": 19,
+    "files": [
+     {
+      "path": "scripts/architecture/check.mjs",
+      "addedLines": 61,
+      "presentOnShip": 0.07,
+      "fileOnShip": true
+     },
+     {
+      "path": "src/lib/ads/trustBoundaryArchitecture.test.ts",
+      "addedLines": 160,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "supabase/migrations/20260903_phase6_contact_sync.sql",
+      "addedLines": 149,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "supabase/migrations/20260903_phase6_governed_events.sql",
+      "addedLines": 87,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "supabase/migrations/20260903_phase6_sponsored_discovery.sql",
+      "addedLines": 195,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "supabase/tests/phase6_trust_boundary.test.ts",
+      "addedLines": 361,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     }
+    ]
+   },
+   {
+    "commit": "abd11b6",
+    "subject": "feat(ai): checkpoint consultative grounding work",
+    "ageDays": 37,
+    "files": [
+     {
+      "path": "src/lib/ai/mediaPolicy.test.ts",
+      "addedLines": 240,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "src/lib/ai/mediaPolicy.ts",
+      "addedLines": 62,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     }
+    ]
+   }
+  ],
+  "allowedBy": null
+ },
+ {
+  "branch": "feat/consultative-d1-d2-r1-r2-d3",
+  "findings": [
+   {
+    "commit": "254c28b",
+    "subject": "feat(phase6): Discovery/Monetization, Contact Sync and the shared governance",
+    "ageDays": 19,
+    "files": [
+     {
+      "path": "scripts/architecture/check.mjs",
+      "addedLines": 61,
+      "presentOnShip": 0.07,
+      "fileOnShip": true
+     },
+     {
+      "path": "src/lib/ads/trustBoundaryArchitecture.test.ts",
+      "addedLines": 160,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "supabase/migrations/20260903_phase6_contact_sync.sql",
+      "addedLines": 149,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "supabase/migrations/20260903_phase6_governed_events.sql",
+      "addedLines": 87,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "supabase/migrations/20260903_phase6_sponsored_discovery.sql",
+      "addedLines": 195,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "supabase/tests/phase6_trust_boundary.test.ts",
+      "addedLines": 361,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     }
+    ]
+   },
+   {
+    "commit": "abd11b6",
+    "subject": "feat(ai): checkpoint consultative grounding work",
+    "ageDays": 37,
+    "files": [
+     {
+      "path": "src/lib/ai/mediaPolicy.test.ts",
+      "addedLines": 240,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "src/lib/ai/mediaPolicy.ts",
+      "addedLines": 62,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     }
+    ]
+   }
+  ],
+  "allowedBy": null
+ },
+ {
+  "branch": "feat/consultative-d3",
+  "findings": [
+   {
+    "commit": "8feaed6",
+    "subject": "fix(ai): ground candidate identity on the consultative presentation turn",
+    "ageDays": 36,
+    "files": [
+     {
+      "path": "src/lib/ai/mediaPolicy.test.ts",
+      "addedLines": 21,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     }
+    ]
+   },
+   {
+    "commit": "abd11b6",
+    "subject": "feat(ai): checkpoint consultative grounding work",
+    "ageDays": 37,
+    "files": [
+     {
+      "path": "src/lib/ai/mediaPolicy.test.ts",
+      "addedLines": 240,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "src/lib/ai/mediaPolicy.ts",
+      "addedLines": 62,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     }
+    ]
+   }
+  ],
+  "allowedBy": null
+ },
+ {
+  "branch": "feat/consultative-v2-ranking",
+  "findings": [
+   {
+    "commit": "207658b",
+    "subject": "feat(ai): finalize consultative v2",
+    "ageDays": 38,
+    "files": [
+     {
+      "path": "src/lib/ai/streamEnrichment.ts",
+      "addedLines": 27,
+      "presentOnShip": 0.41,
+      "fileOnShip": true
+     }
+    ]
+   }
+  ],
+  "allowedBy": null
+ },
+ {
+  "branch": "feat/tappy-business-p0",
+  "findings": [
+   {
+    "commit": "23f5e30",
+    "subject": "checkpoint(business): P0-P5 recovery point — the whole capability, in one commit",
+    "ageDays": 16,
+    "files": [
+     {
+      "path": "scripts/architecture/businessDataBoundary.test.ts",
+      "addedLines": 135,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "scripts/architecture/check.mjs",
+      "addedLines": 51,
+      "presentOnShip": 0.02,
+      "fileOnShip": true
+     },
+     {
+      "path": "src/lib/auth/anonymousWriteBoundary.test.ts",
+      "addedLines": 13,
+      "presentOnShip": 0,
+      "fileOnShip": true
+     },
+     {
+      "path": "src/lib/business/routeGuard.ts",
+      "addedLines": 34,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "src/lib/media/uploadPolicy.ts",
+      "addedLines": 5,
+      "presentOnShip": 0,
+      "fileOnShip": true
+     },
+     {
+      "path": "src/lib/security/turnstile.test.ts",
+      "addedLines": 64,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "src/lib/security/turnstile.ts",
+      "addedLines": 52,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "supabase/migrations/20260908_tappy_business_p0.sql",
+      "addedLines": 411,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "supabase/migrations/20260909_tappy_business_p2_order_invariants.sql",
+      "addedLines": 254,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "supabase/migrations/20260910_tappy_business_p3_order_transitions.sql",
+      "addedLines": 110,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "supabase/migrations/20260911_tappy_business_p4_order_immutability.sql",
+      "addedLines": 79,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "supabase/tests/tappy_business_p0_boundary.test.ts",
+      "addedLines": 482,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "supabase/tests/tappy_business_p2_order_invariants.test.ts",
+      "addedLines": 455,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "supabase/tests/tappy_business_p3_order_transitions.test.ts",
+      "addedLines": 495,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "supabase/tests/tappy_business_p4_lifecycle.test.ts",
+      "addedLines": 351,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     }
+    ]
+   }
+  ],
+  "allowedBy": null
+ },
+ {
+  "branch": "feat/v3-ai-consultative",
+  "findings": [
+   {
+    "commit": "ff55c27",
+    "subject": "perf(v3): optimize AI cost",
+    "ageDays": 22,
+    "files": [
+     {
+      "path": "src/lib/ai/llm/providers/cacheBoundary.test.ts",
+      "addedLines": 51,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     }
+    ]
+   }
+  ],
+  "allowedBy": null
+ },
+ {
+  "branch": "feat/v3-qr-profile",
+  "findings": [
+   {
+    "commit": "254c28b",
+    "subject": "feat(phase6): Discovery/Monetization, Contact Sync and the shared governance",
+    "ageDays": 19,
+    "files": [
+     {
+      "path": "scripts/architecture/check.mjs",
+      "addedLines": 61,
+      "presentOnShip": 0.07,
+      "fileOnShip": true
+     },
+     {
+      "path": "src/lib/ads/trustBoundaryArchitecture.test.ts",
+      "addedLines": 160,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "supabase/migrations/20260903_phase6_contact_sync.sql",
+      "addedLines": 149,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "supabase/migrations/20260903_phase6_governed_events.sql",
+      "addedLines": 87,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "supabase/migrations/20260903_phase6_sponsored_discovery.sql",
+      "addedLines": 195,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "supabase/tests/phase6_trust_boundary.test.ts",
+      "addedLines": 361,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     }
+    ]
+   },
+   {
+    "commit": "abd11b6",
+    "subject": "feat(ai): checkpoint consultative grounding work",
+    "ageDays": 37,
+    "files": [
+     {
+      "path": "src/lib/ai/mediaPolicy.test.ts",
+      "addedLines": 240,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "src/lib/ai/mediaPolicy.ts",
+      "addedLines": 62,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     }
+    ]
+   }
+  ],
+  "allowedBy": null
+ },
+ {
+  "branch": "feat/v3-scam-shield-ui",
+  "findings": [
+   {
+    "commit": "254c28b",
+    "subject": "feat(phase6): Discovery/Monetization, Contact Sync and the shared governance",
+    "ageDays": 19,
+    "files": [
+     {
+      "path": "scripts/architecture/check.mjs",
+      "addedLines": 61,
+      "presentOnShip": 0.07,
+      "fileOnShip": true
+     },
+     {
+      "path": "src/lib/ads/trustBoundaryArchitecture.test.ts",
+      "addedLines": 160,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "supabase/migrations/20260903_phase6_contact_sync.sql",
+      "addedLines": 149,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "supabase/migrations/20260903_phase6_governed_events.sql",
+      "addedLines": 87,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "supabase/migrations/20260903_phase6_sponsored_discovery.sql",
+      "addedLines": 195,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "supabase/tests/phase6_trust_boundary.test.ts",
+      "addedLines": 361,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     }
+    ]
+   },
+   {
+    "commit": "abd11b6",
+    "subject": "feat(ai): checkpoint consultative grounding work",
+    "ageDays": 37,
+    "files": [
+     {
+      "path": "src/lib/ai/mediaPolicy.test.ts",
+      "addedLines": 240,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "src/lib/ai/mediaPolicy.ts",
+      "addedLines": 62,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     }
+    ]
+   }
+  ],
+  "allowedBy": null
+ },
+ {
+  "branch": "fix/android-games-parity",
+  "findings": [
+   {
+    "commit": "4bce517",
+    "subject": "feat(android/auth): login layout closer to web parity — WIP, not PASS (P1-5)",
+    "ageDays": 57,
+    "files": [
+     {
+      "path": "android/features/auth/src/main/java/com/tappyai/features/auth/ui/login/LoginScreen.kt",
+      "addedLines": 16,
+      "presentOnShip": 0.44,
+      "fileOnShip": true
+     }
+    ]
+   },
+   {
+    "commit": "cd4cb31",
+    "subject": "build(android/auth): OTP input validation + R8 consumer rules",
+    "ageDays": 57,
+    "files": [
+     {
+      "path": "android/features/auth/consumer-rules.pro",
+      "addedLines": 11,
+      "presentOnShip": 0.18,
+      "fileOnShip": true
+     },
+     {
+      "path": "android/features/auth/src/main/java/com/tappyai/features/auth/ui/otp/EmailOtpVerificationViewModel.kt",
+      "addedLines": 6,
+      "presentOnShip": 0.17,
+      "fileOnShip": true
+     }
+    ]
+   },
+   {
+    "commit": "5e13751",
+    "subject": "feat(android/auth): Zalo login (Custom Tab) + fragment-token session import",
+    "ageDays": 59,
+    "files": [
+     {
+      "path": "android/features/auth/build.gradle.kts",
+      "addedLines": 2,
+      "presentOnShip": 0.5,
+      "fileOnShip": true
+     },
+     {
+      "path": "android/features/auth/src/main/res/values-vi/strings.xml",
+      "addedLines": 3,
+      "presentOnShip": 0.33,
+      "fileOnShip": true
+     },
+     {
+      "path": "android/features/auth/src/main/res/values/strings.xml",
+      "addedLines": 3,
+      "presentOnShip": 0.33,
+      "fileOnShip": true
+     }
+    ]
+   }
+  ],
+  "allowedBy": null
+ },
+ {
+  "branch": "fix/android-plan-item-name-wrap",
+  "findings": [
+   {
+    "commit": "e0b88ec",
+    "subject": "feat(android/auth): login layout closer to web parity — WIP, not PASS (P1-5)",
+    "ageDays": 57,
+    "files": [
+     {
+      "path": "android/features/auth/src/main/java/com/tappyai/features/auth/ui/login/LoginScreen.kt",
+      "addedLines": 16,
+      "presentOnShip": 0.44,
+      "fileOnShip": true
+     }
+    ]
+   },
+   {
+    "commit": "cd4cb31",
+    "subject": "build(android/auth): OTP input validation + R8 consumer rules",
+    "ageDays": 57,
+    "files": [
+     {
+      "path": "android/features/auth/consumer-rules.pro",
+      "addedLines": 11,
+      "presentOnShip": 0.18,
+      "fileOnShip": true
+     },
+     {
+      "path": "android/features/auth/src/main/java/com/tappyai/features/auth/ui/otp/EmailOtpVerificationViewModel.kt",
+      "addedLines": 6,
+      "presentOnShip": 0.17,
+      "fileOnShip": true
+     }
+    ]
+   },
+   {
+    "commit": "5e13751",
+    "subject": "feat(android/auth): Zalo login (Custom Tab) + fragment-token session import",
+    "ageDays": 59,
+    "files": [
+     {
+      "path": "android/features/auth/build.gradle.kts",
+      "addedLines": 2,
+      "presentOnShip": 0.5,
+      "fileOnShip": true
+     },
+     {
+      "path": "android/features/auth/src/main/res/values-vi/strings.xml",
+      "addedLines": 3,
+      "presentOnShip": 0.33,
+      "fileOnShip": true
+     },
+     {
+      "path": "android/features/auth/src/main/res/values/strings.xml",
+      "addedLines": 3,
+      "presentOnShip": 0.33,
+      "fileOnShip": true
+     }
+    ]
+   }
+  ],
+  "allowedBy": null
+ },
+ {
+  "branch": "fix/android-release-config",
+  "findings": [
+   {
+    "commit": "e0b88ec",
+    "subject": "feat(android/auth): login layout closer to web parity — WIP, not PASS (P1-5)",
+    "ageDays": 57,
+    "files": [
+     {
+      "path": "android/features/auth/src/main/java/com/tappyai/features/auth/ui/login/LoginScreen.kt",
+      "addedLines": 16,
+      "presentOnShip": 0.44,
+      "fileOnShip": true
+     }
+    ]
+   },
+   {
+    "commit": "cd4cb31",
+    "subject": "build(android/auth): OTP input validation + R8 consumer rules",
+    "ageDays": 57,
+    "files": [
+     {
+      "path": "android/features/auth/consumer-rules.pro",
+      "addedLines": 11,
+      "presentOnShip": 0.18,
+      "fileOnShip": true
+     },
+     {
+      "path": "android/features/auth/src/main/java/com/tappyai/features/auth/ui/otp/EmailOtpVerificationViewModel.kt",
+      "addedLines": 6,
+      "presentOnShip": 0.17,
+      "fileOnShip": true
+     }
+    ]
+   },
+   {
+    "commit": "5e13751",
+    "subject": "feat(android/auth): Zalo login (Custom Tab) + fragment-token session import",
+    "ageDays": 59,
+    "files": [
+     {
+      "path": "android/features/auth/build.gradle.kts",
+      "addedLines": 2,
+      "presentOnShip": 0.5,
+      "fileOnShip": true
+     },
+     {
+      "path": "android/features/auth/src/main/res/values-vi/strings.xml",
+      "addedLines": 3,
+      "presentOnShip": 0.33,
+      "fileOnShip": true
+     },
+     {
+      "path": "android/features/auth/src/main/res/values/strings.xml",
+      "addedLines": 3,
+      "presentOnShip": 0.33,
+      "fileOnShip": true
+     }
+    ]
+   }
+  ],
+  "allowedBy": null
+ },
+ {
+  "branch": "fix/controller-origin-gate",
+  "findings": [
+   {
+    "commit": "f83d3c0",
+    "subject": "fix(controller): stop offering actions the origin guard will refuse",
+    "ageDays": 25,
+    "files": [
+     {
+      "path": "src/app/admin/analytics/auth/page.tsx",
+      "addedLines": 6,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     }
+    ]
+   }
+  ],
+  "allowedBy": null
+ },
+ {
+  "branch": "fix/v2-fix-phase",
+  "findings": [
+   {
+    "commit": "e568393",
+    "subject": "fix(v2): close release-readiness findings B07–B17, C01–C53 and U01–U15",
+    "ageDays": 34,
+    "files": [
+     {
+      "path": "src/app/api/subscription/anonQuotaAuthority.test.ts",
+      "addedLines": 179,
+      "presentOnShip": 0.27,
+      "fileOnShip": true
+     },
+     {
+      "path": "src/app/api/subscription/route.ts",
+      "addedLines": 72,
+      "presentOnShip": 0.11,
+      "fileOnShip": true
+     },
+     {
+      "path": "src/app/subscription/SubscriptionView.tsx",
+      "addedLines": 135,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "src/app/subscription/page.tsx",
+      "addedLines": 9,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     }
+    ]
+   }
+  ],
+  "allowedBy": null
+ },
+ {
+  "branch": "integration/scam-shield-v3",
+  "findings": [
+   {
+    "commit": "254c28b",
+    "subject": "feat(phase6): Discovery/Monetization, Contact Sync and the shared governance",
+    "ageDays": 19,
+    "files": [
+     {
+      "path": "scripts/architecture/check.mjs",
+      "addedLines": 61,
+      "presentOnShip": 0.07,
+      "fileOnShip": true
+     },
+     {
+      "path": "src/lib/ads/trustBoundaryArchitecture.test.ts",
+      "addedLines": 160,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "supabase/migrations/20260903_phase6_contact_sync.sql",
+      "addedLines": 149,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "supabase/migrations/20260903_phase6_governed_events.sql",
+      "addedLines": 87,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "supabase/migrations/20260903_phase6_sponsored_discovery.sql",
+      "addedLines": 195,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "supabase/tests/phase6_trust_boundary.test.ts",
+      "addedLines": 361,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     }
+    ]
+   },
+   {
+    "commit": "abd11b6",
+    "subject": "feat(ai): checkpoint consultative grounding work",
+    "ageDays": 37,
+    "files": [
+     {
+      "path": "src/lib/ai/mediaPolicy.test.ts",
+      "addedLines": 240,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "src/lib/ai/mediaPolicy.ts",
+      "addedLines": 62,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     }
+    ]
+   }
+  ],
+  "allowedBy": null
+ },
+ {
+  "branch": "integration/v3-foundation",
+  "findings": [
+   {
+    "commit": "2caff4b",
+    "subject": "refactor(security): /api/chat no longer performs a privileged operation",
+    "ageDays": 21,
+    "files": [
+     {
+      "path": "scripts/architecture/check.mjs",
+      "addedLines": 7,
+      "presentOnShip": 0.29,
+      "fileOnShip": true
+     }
+    ]
+   },
+   {
+    "commit": "66e4c46",
+    "subject": "fix(v3): close the three egress channels a compromised model could still use",
+    "ageDays": 21,
+    "files": [
+     {
+      "path": "src/lib/ai/streamEnrichment.ts",
+      "addedLines": 211,
+      "presentOnShip": 0.38,
+      "fileOnShip": true
+     }
+    ]
+   },
+   {
+    "commit": "44d8f32",
+    "subject": "test(v3): lock the one invariant Phase 1 satisfies by construction",
+    "ageDays": 21,
+    "files": [
+     {
+      "path": "src/lib/ai/security/needBriefBoundary.test.ts",
+      "addedLines": 79,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     }
+    ]
+   },
+   {
+    "commit": "a711181",
+    "subject": "fix(v3): close the security findings Phase 0 deferred",
+    "ageDays": 22,
+    "files": [
+     {
+      "path": "src/lib/ai/security/fence.ts",
+      "addedLines": 1,
+      "presentOnShip": 0,
+      "fileOnShip": true
+     },
+     {
+      "path": "src/lib/ai/security/fenceBoundary.test.ts",
+      "addedLines": 4,
+      "presentOnShip": 0.25,
+      "fileOnShip": true
+     },
+     {
+      "path": "src/lib/ai/streamEnrichment.ts",
+      "addedLines": 92,
+      "presentOnShip": 0.28,
+      "fileOnShip": true
+     }
+    ]
+   },
+   {
+    "commit": "ff55c27",
+    "subject": "perf(v3): optimize AI cost",
+    "ageDays": 22,
+    "files": [
+     {
+      "path": "src/lib/ai/llm/providers/cacheBoundary.test.ts",
+      "addedLines": 51,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     }
+    ]
+   }
+  ],
+  "allowedBy": null
+ },
+ {
+  "branch": "phase9-shopping-marker",
+  "findings": [
+   {
+    "commit": "efb5713",
+    "subject": "fix(consultative): fold the shopping marker INTO finalText, before the grounding detector",
+    "ageDays": 31,
+    "files": [
+     {
+      "path": "src/lib/ai/streamEnrichment.ts",
+      "addedLines": 12,
+      "presentOnShip": 0.17,
+      "fileOnShip": true
+     }
+    ]
+   },
+   {
+    "commit": "95c88af",
+    "subject": "fix(consultative): deliver the shopping decision via a persistent text marker (Phase 9)",
+    "ageDays": 31,
+    "files": [
+     {
+      "path": "src/lib/ai/streamEnrichment.ts",
+      "addedLines": 8,
+      "presentOnShip": 0,
+      "fileOnShip": true
+     }
+    ]
+   }
+  ],
+  "allowedBy": null
+ },
+ {
+  "branch": "release/android-games-hidden",
+  "findings": [
+   {
+    "commit": "4bce517",
+    "subject": "feat(android/auth): login layout closer to web parity — WIP, not PASS (P1-5)",
+    "ageDays": 57,
+    "files": [
+     {
+      "path": "android/features/auth/src/main/java/com/tappyai/features/auth/ui/login/LoginScreen.kt",
+      "addedLines": 16,
+      "presentOnShip": 0.44,
+      "fileOnShip": true
+     }
+    ]
+   },
+   {
+    "commit": "cd4cb31",
+    "subject": "build(android/auth): OTP input validation + R8 consumer rules",
+    "ageDays": 57,
+    "files": [
+     {
+      "path": "android/features/auth/consumer-rules.pro",
+      "addedLines": 11,
+      "presentOnShip": 0.18,
+      "fileOnShip": true
+     },
+     {
+      "path": "android/features/auth/src/main/java/com/tappyai/features/auth/ui/otp/EmailOtpVerificationViewModel.kt",
+      "addedLines": 6,
+      "presentOnShip": 0.17,
+      "fileOnShip": true
+     }
+    ]
+   },
+   {
+    "commit": "5e13751",
+    "subject": "feat(android/auth): Zalo login (Custom Tab) + fragment-token session import",
+    "ageDays": 59,
+    "files": [
+     {
+      "path": "android/features/auth/build.gradle.kts",
+      "addedLines": 2,
+      "presentOnShip": 0.5,
+      "fileOnShip": true
+     },
+     {
+      "path": "android/features/auth/src/main/res/values-vi/strings.xml",
+      "addedLines": 3,
+      "presentOnShip": 0.33,
+      "fileOnShip": true
+     },
+     {
+      "path": "android/features/auth/src/main/res/values/strings.xml",
+      "addedLines": 3,
+      "presentOnShip": 0.33,
+      "fileOnShip": true
+     }
+    ]
+   }
+  ],
+  "allowedBy": null
+ },
+ {
+  "branch": "release/android-games-hidden-clean",
+  "findings": [
+   {
+    "commit": "f661081",
+    "subject": "feat(android/auth): login layout closer to web parity — WIP, not PASS (P1-5)",
+    "ageDays": 57,
+    "files": [
+     {
+      "path": "android/features/auth/src/main/java/com/tappyai/features/auth/ui/login/LoginScreen.kt",
+      "addedLines": 16,
+      "presentOnShip": 0.44,
+      "fileOnShip": true
+     }
+    ]
+   },
+   {
+    "commit": "cd4cb31",
+    "subject": "build(android/auth): OTP input validation + R8 consumer rules",
+    "ageDays": 57,
+    "files": [
+     {
+      "path": "android/features/auth/consumer-rules.pro",
+      "addedLines": 11,
+      "presentOnShip": 0.18,
+      "fileOnShip": true
+     },
+     {
+      "path": "android/features/auth/src/main/java/com/tappyai/features/auth/ui/otp/EmailOtpVerificationViewModel.kt",
+      "addedLines": 6,
+      "presentOnShip": 0.17,
+      "fileOnShip": true
+     }
+    ]
+   },
+   {
+    "commit": "5e13751",
+    "subject": "feat(android/auth): Zalo login (Custom Tab) + fragment-token session import",
+    "ageDays": 59,
+    "files": [
+     {
+      "path": "android/features/auth/build.gradle.kts",
+      "addedLines": 2,
+      "presentOnShip": 0.5,
+      "fileOnShip": true
+     },
+     {
+      "path": "android/features/auth/src/main/res/values-vi/strings.xml",
+      "addedLines": 3,
+      "presentOnShip": 0.33,
+      "fileOnShip": true
+     },
+     {
+      "path": "android/features/auth/src/main/res/values/strings.xml",
+      "addedLines": 3,
+      "presentOnShip": 0.33,
+      "fileOnShip": true
+     }
+    ]
+   }
+  ],
+  "allowedBy": null
+ },
+ {
+  "branch": "security/v3-phase3",
+  "findings": [
+   {
+    "commit": "a711181",
+    "subject": "fix(v3): close the security findings Phase 0 deferred",
+    "ageDays": 22,
+    "files": [
+     {
+      "path": "src/lib/ai/security/fence.ts",
+      "addedLines": 1,
+      "presentOnShip": 0,
+      "fileOnShip": true
+     },
+     {
+      "path": "src/lib/ai/security/fenceBoundary.test.ts",
+      "addedLines": 4,
+      "presentOnShip": 0.25,
+      "fileOnShip": true
+     },
+     {
+      "path": "src/lib/ai/streamEnrichment.ts",
+      "addedLines": 92,
+      "presentOnShip": 0.28,
+      "fileOnShip": true
+     }
+    ]
+   }
+  ],
+  "allowedBy": null
+ },
+ {
+  "branch": "tmp/i18n-sprint-base",
+  "findings": [
+   {
+    "commit": "e0b88ec",
+    "subject": "feat(android/auth): login layout closer to web parity — WIP, not PASS (P1-5)",
+    "ageDays": 57,
+    "files": [
+     {
+      "path": "android/features/auth/src/main/java/com/tappyai/features/auth/ui/login/LoginScreen.kt",
+      "addedLines": 16,
+      "presentOnShip": 0.44,
+      "fileOnShip": true
+     }
+    ]
+   },
+   {
+    "commit": "cd4cb31",
+    "subject": "build(android/auth): OTP input validation + R8 consumer rules",
+    "ageDays": 57,
+    "files": [
+     {
+      "path": "android/features/auth/consumer-rules.pro",
+      "addedLines": 11,
+      "presentOnShip": 0.18,
+      "fileOnShip": true
+     },
+     {
+      "path": "android/features/auth/src/main/java/com/tappyai/features/auth/ui/otp/EmailOtpVerificationViewModel.kt",
+      "addedLines": 6,
+      "presentOnShip": 0.17,
+      "fileOnShip": true
+     }
+    ]
+   },
+   {
+    "commit": "5e13751",
+    "subject": "feat(android/auth): Zalo login (Custom Tab) + fragment-token session import",
+    "ageDays": 59,
+    "files": [
+     {
+      "path": "android/features/auth/build.gradle.kts",
+      "addedLines": 2,
+      "presentOnShip": 0.5,
+      "fileOnShip": true
+     },
+     {
+      "path": "android/features/auth/src/main/res/values-vi/strings.xml",
+      "addedLines": 3,
+      "presentOnShip": 0.33,
+      "fileOnShip": true
+     },
+     {
+      "path": "android/features/auth/src/main/res/values/strings.xml",
+      "addedLines": 3,
+      "presentOnShip": 0.33,
+      "fileOnShip": true
+     }
+    ]
+   }
+  ],
+  "allowedBy": null
+ },
+ {
+  "branch": "uat/android-release-fixes",
+  "findings": [
+   {
+    "commit": "e0b88ec",
+    "subject": "feat(android/auth): login layout closer to web parity — WIP, not PASS (P1-5)",
+    "ageDays": 57,
+    "files": [
+     {
+      "path": "android/features/auth/src/main/java/com/tappyai/features/auth/ui/login/LoginScreen.kt",
+      "addedLines": 16,
+      "presentOnShip": 0.44,
+      "fileOnShip": true
+     }
+    ]
+   },
+   {
+    "commit": "cd4cb31",
+    "subject": "build(android/auth): OTP input validation + R8 consumer rules",
+    "ageDays": 57,
+    "files": [
+     {
+      "path": "android/features/auth/consumer-rules.pro",
+      "addedLines": 11,
+      "presentOnShip": 0.18,
+      "fileOnShip": true
+     },
+     {
+      "path": "android/features/auth/src/main/java/com/tappyai/features/auth/ui/otp/EmailOtpVerificationViewModel.kt",
+      "addedLines": 6,
+      "presentOnShip": 0.17,
+      "fileOnShip": true
+     }
+    ]
+   },
+   {
+    "commit": "5e13751",
+    "subject": "feat(android/auth): Zalo login (Custom Tab) + fragment-token session import",
+    "ageDays": 59,
+    "files": [
+     {
+      "path": "android/features/auth/build.gradle.kts",
+      "addedLines": 2,
+      "presentOnShip": 0.5,
+      "fileOnShip": true
+     },
+     {
+      "path": "android/features/auth/src/main/res/values-vi/strings.xml",
+      "addedLines": 3,
+      "presentOnShip": 0.33,
+      "fileOnShip": true
+     },
+     {
+      "path": "android/features/auth/src/main/res/values/strings.xml",
+      "addedLines": 3,
+      "presentOnShip": 0.33,
+      "fileOnShip": true
+     }
+    ]
+   }
+  ],
+  "allowedBy": null
+ },
+ {
+  "branch": "wip/main-repo-2026-09-17",
+  "findings": [
+   {
+    "commit": "beba191",
+    "subject": "wip(main-repo): snapshot of uncommitted work on feat/consultative-d1-d2-r1-r2-d3 at 77b0bb7",
+    "ageDays": 7,
+    "files": [
+     {
+      "path": "src/app/api/subscription/anonQuotaAuthority.test.ts",
+      "addedLines": 179,
+      "presentOnShip": 0.27,
+      "fileOnShip": true
+     },
+     {
+      "path": "src/app/subscription/SubscriptionView.tsx",
+      "addedLines": 135,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     }
+    ]
+   },
+   {
+    "commit": "254c28b",
+    "subject": "feat(phase6): Discovery/Monetization, Contact Sync and the shared governance",
+    "ageDays": 19,
+    "files": [
+     {
+      "path": "scripts/architecture/check.mjs",
+      "addedLines": 61,
+      "presentOnShip": 0.07,
+      "fileOnShip": true
+     },
+     {
+      "path": "src/lib/ads/trustBoundaryArchitecture.test.ts",
+      "addedLines": 160,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "supabase/migrations/20260903_phase6_contact_sync.sql",
+      "addedLines": 149,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "supabase/migrations/20260903_phase6_governed_events.sql",
+      "addedLines": 87,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "supabase/migrations/20260903_phase6_sponsored_discovery.sql",
+      "addedLines": 195,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "supabase/tests/phase6_trust_boundary.test.ts",
+      "addedLines": 361,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     }
+    ]
+   },
+   {
+    "commit": "abd11b6",
+    "subject": "feat(ai): checkpoint consultative grounding work",
+    "ageDays": 37,
+    "files": [
+     {
+      "path": "src/lib/ai/mediaPolicy.test.ts",
+      "addedLines": 240,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "src/lib/ai/mediaPolicy.ts",
+      "addedLines": 62,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     }
+    ]
+   }
+  ],
+  "allowedBy": null
+ },
+ {
+  "branch": "wip/tappy-business-p0-2026-09-17",
+  "findings": [
+   {
+    "commit": "23f5e30",
+    "subject": "checkpoint(business): P0-P5 recovery point — the whole capability, in one commit",
+    "ageDays": 16,
+    "files": [
+     {
+      "path": "scripts/architecture/businessDataBoundary.test.ts",
+      "addedLines": 135,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "scripts/architecture/check.mjs",
+      "addedLines": 51,
+      "presentOnShip": 0.02,
+      "fileOnShip": true
+     },
+     {
+      "path": "src/lib/auth/anonymousWriteBoundary.test.ts",
+      "addedLines": 13,
+      "presentOnShip": 0,
+      "fileOnShip": true
+     },
+     {
+      "path": "src/lib/business/routeGuard.ts",
+      "addedLines": 34,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "src/lib/media/uploadPolicy.ts",
+      "addedLines": 5,
+      "presentOnShip": 0,
+      "fileOnShip": true
+     },
+     {
+      "path": "src/lib/security/turnstile.test.ts",
+      "addedLines": 64,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "src/lib/security/turnstile.ts",
+      "addedLines": 52,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "supabase/migrations/20260908_tappy_business_p0.sql",
+      "addedLines": 411,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "supabase/migrations/20260909_tappy_business_p2_order_invariants.sql",
+      "addedLines": 254,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "supabase/migrations/20260910_tappy_business_p3_order_transitions.sql",
+      "addedLines": 110,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "supabase/migrations/20260911_tappy_business_p4_order_immutability.sql",
+      "addedLines": 79,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "supabase/tests/tappy_business_p0_boundary.test.ts",
+      "addedLines": 482,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "supabase/tests/tappy_business_p2_order_invariants.test.ts",
+      "addedLines": 455,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "supabase/tests/tappy_business_p3_order_transitions.test.ts",
+      "addedLines": 495,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "supabase/tests/tappy_business_p4_lifecycle.test.ts",
+      "addedLines": 351,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     }
+    ]
+   }
+  ],
+  "allowedBy": null
+ },
+ {
+  "branch": "wip/tappyai-controller-v2-2026-09-17",
+  "findings": [
+   {
+    "commit": "782ce59",
+    "subject": "wip(tappyai-controller-v2): snapshot of uncommitted work on feat/controller-v2-foundation-integration at 3a15fc4",
+    "ageDays": 7,
+    "files": [
+     {
+      "path": "src/lib/controller/auth/__tests__/corporateChain.test.ts",
+      "addedLines": 202,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "src/lib/controller/auth/__tests__/ownerIdentityMigration.test.ts",
+      "addedLines": 183,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "supabase/migrations/20260808_controller_org_foundation.sql",
+      "addedLines": 109,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "supabase/migrations/20260808_controller_org_foundation_rollback.sql",
+      "addedLines": 11,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "supabase/tests/controller_org_foundation.test.ts",
+      "addedLines": 257,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     }
+    ]
+   }
+  ],
+  "allowedBy": null
+ },
+ {
+  "branch": "wip/tappyai-ios-sprint-2026-09-17",
+  "findings": [
+   {
+    "commit": "e0b88ec",
+    "subject": "feat(android/auth): login layout closer to web parity — WIP, not PASS (P1-5)",
+    "ageDays": 57,
+    "files": [
+     {
+      "path": "android/features/auth/src/main/java/com/tappyai/features/auth/ui/login/LoginScreen.kt",
+      "addedLines": 16,
+      "presentOnShip": 0.44,
+      "fileOnShip": true
+     }
+    ]
+   },
+   {
+    "commit": "cd4cb31",
+    "subject": "build(android/auth): OTP input validation + R8 consumer rules",
+    "ageDays": 57,
+    "files": [
+     {
+      "path": "android/features/auth/consumer-rules.pro",
+      "addedLines": 11,
+      "presentOnShip": 0.18,
+      "fileOnShip": true
+     },
+     {
+      "path": "android/features/auth/src/main/java/com/tappyai/features/auth/ui/otp/EmailOtpVerificationViewModel.kt",
+      "addedLines": 6,
+      "presentOnShip": 0.17,
+      "fileOnShip": true
+     }
+    ]
+   },
+   {
+    "commit": "5e13751",
+    "subject": "feat(android/auth): Zalo login (Custom Tab) + fragment-token session import",
+    "ageDays": 59,
+    "files": [
+     {
+      "path": "android/features/auth/build.gradle.kts",
+      "addedLines": 2,
+      "presentOnShip": 0.5,
+      "fileOnShip": true
+     },
+     {
+      "path": "android/features/auth/src/main/res/values-vi/strings.xml",
+      "addedLines": 3,
+      "presentOnShip": 0.33,
+      "fileOnShip": true
+     },
+     {
+      "path": "android/features/auth/src/main/res/values/strings.xml",
+      "addedLines": 3,
+      "presentOnShip": 0.33,
+      "fileOnShip": true
+     }
+    ]
+   }
+  ],
+  "allowedBy": null
+ },
+ {
+  "branch": "wip/tappyai-memberapi-2026-09-17",
+  "findings": [
+   {
+    "commit": "67dab52",
+    "subject": "wip(tappyai-memberapi): snapshot of uncommitted work on docs/controller-v2-phase2-m08-migration-artifact at d8412a8",
+    "ageDays": 7,
+    "files": [
+     {
+      "path": "forensic/policy-snapshot-2026-08-16-1604/SNAPSHOT.sha256",
+      "addedLines": 21,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "forensic/policy-snapshot-2026-08-16-1604/files/scripts/policy/generate-registry.mjs",
+      "addedLines": 324,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "forensic/policy-snapshot-2026-08-16-1604/files/src/lib/policy/__tests__/governanceInvariants.test.ts",
+      "addedLines": 243,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "forensic/policy-snapshot-2026-08-16-1604/files/src/lib/policy/__tests__/policyEngine.test.ts",
+      "addedLines": 268,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "forensic/policy-snapshot-2026-08-16-1604/files/src/lib/policy/__tests__/registryProvider.test.ts",
+      "addedLines": 303,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "forensic/policy-snapshot-2026-08-16-1604/files/src/lib/policy/__tests__/uatMatrix.test.ts",
+      "addedLines": 153,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "forensic/policy-snapshot-2026-08-16-1604/files/src/lib/policy/__uat__/matrix.ts",
+      "addedLines": 447,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "forensic/policy-snapshot-2026-08-16-1604/files/src/lib/policy/engine/evaluator.ts",
+      "addedLines": 304,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "forensic/policy-snapshot-2026-08-16-1604/files/src/lib/policy/engine/expression.ts",
+      "addedLines": 161,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "forensic/policy-snapshot-2026-08-16-1604/files/src/lib/policy/infra/obligations.ts",
+      "addedLines": 145,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "forensic/policy-snapshot-2026-08-16-1604/files/src/lib/policy/legal/protectedTargets.ts",
+      "addedLines": 79,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "forensic/policy-snapshot-2026-08-16-1604/files/src/lib/policy/provider.ts",
+      "addedLines": 145,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "forensic/policy-snapshot-2026-08-16-1604/files/src/lib/policy/source/registry.ts",
+      "addedLines": 369,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "forensic/policy-snapshot-2026-08-16-1604/files/src/lib/policy/source/sourceSnapshot.ts",
+      "addedLines": 123,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "forensic/policy-snapshot-2026-08-16-1604/files/src/lib/policy/types.ts",
+      "addedLines": 351,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     }
+    ]
+   }
+  ],
+  "allowedBy": null
+ },
+ {
+  "branch": "wip/wtandroid-2026-09-17",
+  "findings": [
+   {
+    "commit": "f2998b1",
+    "subject": "wip(wtandroid): snapshot of uncommitted work on fix/android-scan-gallery-decode at e621f7f",
+    "ageDays": 7,
+    "files": [
+     {
+      "path": "android/app/src/main/java/com/tappyai/app/profile/CopyrightPolicyScreen.kt",
+      "addedLines": 48,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "src/app/admin/analytics/auth/page.tsx",
+      "addedLines": 8,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "src/app/api/subscription/anonQuotaAuthority.test.ts",
+      "addedLines": 179,
+      "presentOnShip": 0.27,
+      "fileOnShip": true
+     },
+     {
+      "path": "src/app/api/subscription/route.ts",
+      "addedLines": 95,
+      "presentOnShip": 0.33,
+      "fileOnShip": true
+     },
+     {
+      "path": "src/app/subscription/SubscriptionView.tsx",
+      "addedLines": 135,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "src/app/subscription/page.tsx",
+      "addedLines": 35,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "src/lib/security/urlGuard.ts",
+      "addedLines": 35,
+      "presentOnShip": 0.51,
+      "fileOnShip": true
+     },
+     {
+      "path": "supabase/migrations/add_user_language_preference.sql",
+      "addedLines": 7,
+      "presentOnShip": 0.57,
+      "fileOnShip": true
+     }
+    ]
+   }
+  ],
+  "allowedBy": null
+ },
+ {
+  "branch": "origin/feat/anonymous-chat-android",
+  "findings": [
+   {
+    "commit": "e0b88ec",
+    "subject": "feat(android/auth): login layout closer to web parity — WIP, not PASS (P1-5)",
+    "ageDays": 57,
+    "files": [
+     {
+      "path": "android/features/auth/src/main/java/com/tappyai/features/auth/ui/login/LoginScreen.kt",
+      "addedLines": 16,
+      "presentOnShip": 0.44,
+      "fileOnShip": true
+     }
+    ]
+   },
+   {
+    "commit": "cd4cb31",
+    "subject": "build(android/auth): OTP input validation + R8 consumer rules",
+    "ageDays": 57,
+    "files": [
+     {
+      "path": "android/features/auth/consumer-rules.pro",
+      "addedLines": 11,
+      "presentOnShip": 0.18,
+      "fileOnShip": true
+     },
+     {
+      "path": "android/features/auth/src/main/java/com/tappyai/features/auth/ui/otp/EmailOtpVerificationViewModel.kt",
+      "addedLines": 6,
+      "presentOnShip": 0.17,
+      "fileOnShip": true
+     }
+    ]
+   },
+   {
+    "commit": "5e13751",
+    "subject": "feat(android/auth): Zalo login (Custom Tab) + fragment-token session import",
+    "ageDays": 59,
+    "files": [
+     {
+      "path": "android/features/auth/build.gradle.kts",
+      "addedLines": 2,
+      "presentOnShip": 0.5,
+      "fileOnShip": true
+     },
+     {
+      "path": "android/features/auth/src/main/res/values-vi/strings.xml",
+      "addedLines": 3,
+      "presentOnShip": 0.33,
+      "fileOnShip": true
+     },
+     {
+      "path": "android/features/auth/src/main/res/values/strings.xml",
+      "addedLines": 3,
+      "presentOnShip": 0.33,
+      "fileOnShip": true
+     }
+    ]
+   }
+  ],
+  "allowedBy": null
+ },
+ {
+  "branch": "origin/feat/backoffice-phase0",
+  "findings": [
+   {
+    "commit": "e0b88ec",
+    "subject": "feat(android/auth): login layout closer to web parity — WIP, not PASS (P1-5)",
+    "ageDays": 57,
+    "files": [
+     {
+      "path": "android/features/auth/src/main/java/com/tappyai/features/auth/ui/login/LoginScreen.kt",
+      "addedLines": 16,
+      "presentOnShip": 0.44,
+      "fileOnShip": true
+     }
+    ]
+   },
+   {
+    "commit": "cd4cb31",
+    "subject": "build(android/auth): OTP input validation + R8 consumer rules",
+    "ageDays": 57,
+    "files": [
+     {
+      "path": "android/features/auth/consumer-rules.pro",
+      "addedLines": 11,
+      "presentOnShip": 0.18,
+      "fileOnShip": true
+     },
+     {
+      "path": "android/features/auth/src/main/java/com/tappyai/features/auth/ui/otp/EmailOtpVerificationViewModel.kt",
+      "addedLines": 6,
+      "presentOnShip": 0.17,
+      "fileOnShip": true
+     }
+    ]
+   },
+   {
+    "commit": "5e13751",
+    "subject": "feat(android/auth): Zalo login (Custom Tab) + fragment-token session import",
+    "ageDays": 59,
+    "files": [
+     {
+      "path": "android/features/auth/build.gradle.kts",
+      "addedLines": 2,
+      "presentOnShip": 0.5,
+      "fileOnShip": true
+     },
+     {
+      "path": "android/features/auth/src/main/res/values-vi/strings.xml",
+      "addedLines": 3,
+      "presentOnShip": 0.33,
+      "fileOnShip": true
+     },
+     {
+      "path": "android/features/auth/src/main/res/values/strings.xml",
+      "addedLines": 3,
+      "presentOnShip": 0.33,
+      "fileOnShip": true
+     }
+    ]
+   }
+  ],
+  "allowedBy": null
+ },
+ {
+  "branch": "origin/feat/consultative-d3",
+  "findings": [
+   {
+    "commit": "8feaed6",
+    "subject": "fix(ai): ground candidate identity on the consultative presentation turn",
+    "ageDays": 36,
+    "files": [
+     {
+      "path": "src/lib/ai/mediaPolicy.test.ts",
+      "addedLines": 21,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     }
+    ]
+   },
+   {
+    "commit": "abd11b6",
+    "subject": "feat(ai): checkpoint consultative grounding work",
+    "ageDays": 37,
+    "files": [
+     {
+      "path": "src/lib/ai/mediaPolicy.test.ts",
+      "addedLines": 240,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "src/lib/ai/mediaPolicy.ts",
+      "addedLines": 62,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     }
+    ]
+   }
+  ],
+  "allowedBy": null
+ },
+ {
+  "branch": "origin/fix/android-plan-item-name-wrap",
+  "findings": [
+   {
+    "commit": "e0b88ec",
+    "subject": "feat(android/auth): login layout closer to web parity — WIP, not PASS (P1-5)",
+    "ageDays": 57,
+    "files": [
+     {
+      "path": "android/features/auth/src/main/java/com/tappyai/features/auth/ui/login/LoginScreen.kt",
+      "addedLines": 16,
+      "presentOnShip": 0.44,
+      "fileOnShip": true
+     }
+    ]
+   },
+   {
+    "commit": "cd4cb31",
+    "subject": "build(android/auth): OTP input validation + R8 consumer rules",
+    "ageDays": 57,
+    "files": [
+     {
+      "path": "android/features/auth/consumer-rules.pro",
+      "addedLines": 11,
+      "presentOnShip": 0.18,
+      "fileOnShip": true
+     },
+     {
+      "path": "android/features/auth/src/main/java/com/tappyai/features/auth/ui/otp/EmailOtpVerificationViewModel.kt",
+      "addedLines": 6,
+      "presentOnShip": 0.17,
+      "fileOnShip": true
+     }
+    ]
+   },
+   {
+    "commit": "5e13751",
+    "subject": "feat(android/auth): Zalo login (Custom Tab) + fragment-token session import",
+    "ageDays": 59,
+    "files": [
+     {
+      "path": "android/features/auth/build.gradle.kts",
+      "addedLines": 2,
+      "presentOnShip": 0.5,
+      "fileOnShip": true
+     },
+     {
+      "path": "android/features/auth/src/main/res/values-vi/strings.xml",
+      "addedLines": 3,
+      "presentOnShip": 0.33,
+      "fileOnShip": true
+     },
+     {
+      "path": "android/features/auth/src/main/res/values/strings.xml",
+      "addedLines": 3,
+      "presentOnShip": 0.33,
+      "fileOnShip": true
+     }
+    ]
+   }
+  ],
+  "allowedBy": null
+ },
+ {
+  "branch": "origin/fix/android-release-config",
+  "findings": [
+   {
+    "commit": "e0b88ec",
+    "subject": "feat(android/auth): login layout closer to web parity — WIP, not PASS (P1-5)",
+    "ageDays": 57,
+    "files": [
+     {
+      "path": "android/features/auth/src/main/java/com/tappyai/features/auth/ui/login/LoginScreen.kt",
+      "addedLines": 16,
+      "presentOnShip": 0.44,
+      "fileOnShip": true
+     }
+    ]
+   },
+   {
+    "commit": "cd4cb31",
+    "subject": "build(android/auth): OTP input validation + R8 consumer rules",
+    "ageDays": 57,
+    "files": [
+     {
+      "path": "android/features/auth/consumer-rules.pro",
+      "addedLines": 11,
+      "presentOnShip": 0.18,
+      "fileOnShip": true
+     },
+     {
+      "path": "android/features/auth/src/main/java/com/tappyai/features/auth/ui/otp/EmailOtpVerificationViewModel.kt",
+      "addedLines": 6,
+      "presentOnShip": 0.17,
+      "fileOnShip": true
+     }
+    ]
+   },
+   {
+    "commit": "5e13751",
+    "subject": "feat(android/auth): Zalo login (Custom Tab) + fragment-token session import",
+    "ageDays": 59,
+    "files": [
+     {
+      "path": "android/features/auth/build.gradle.kts",
+      "addedLines": 2,
+      "presentOnShip": 0.5,
+      "fileOnShip": true
+     },
+     {
+      "path": "android/features/auth/src/main/res/values-vi/strings.xml",
+      "addedLines": 3,
+      "presentOnShip": 0.33,
+      "fileOnShip": true
+     },
+     {
+      "path": "android/features/auth/src/main/res/values/strings.xml",
+      "addedLines": 3,
+      "presentOnShip": 0.33,
+      "fileOnShip": true
+     }
+    ]
+   }
+  ],
+  "allowedBy": null
+ },
+ {
+  "branch": "origin/fix/controller-origin-gate",
+  "findings": [
+   {
+    "commit": "f83d3c0",
+    "subject": "fix(controller): stop offering actions the origin guard will refuse",
+    "ageDays": 25,
+    "files": [
+     {
+      "path": "src/app/admin/analytics/auth/page.tsx",
+      "addedLines": 6,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     }
+    ]
+   }
+  ],
+  "allowedBy": null
+ },
+ {
+  "branch": "origin/fix/login-return-to",
+  "findings": [
+   {
+    "commit": "2fa8bb2",
+    "subject": "fix(auth): one canonical returnTo parameter for post-login redirects",
+    "ageDays": 46,
+    "files": [
+     {
+      "path": "src/lib/auth/returnTo.test.ts",
+      "addedLines": 71,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "src/lib/auth/returnTo.ts",
+      "addedLines": 54,
+      "presentOnShip": 0.04,
+      "fileOnShip": true
+     }
+    ]
+   }
+  ],
+  "allowedBy": null
+ },
+ {
+  "branch": "origin/fix/v2-fix-phase",
+  "findings": [
+   {
+    "commit": "e568393",
+    "subject": "fix(v2): close release-readiness findings B07–B17, C01–C53 and U01–U15",
+    "ageDays": 34,
+    "files": [
+     {
+      "path": "src/app/api/subscription/anonQuotaAuthority.test.ts",
+      "addedLines": 179,
+      "presentOnShip": 0.27,
+      "fileOnShip": true
+     },
+     {
+      "path": "src/app/api/subscription/route.ts",
+      "addedLines": 72,
+      "presentOnShip": 0.11,
+      "fileOnShip": true
+     },
+     {
+      "path": "src/app/subscription/SubscriptionView.tsx",
+      "addedLines": 135,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "src/app/subscription/page.tsx",
+      "addedLines": 9,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     }
+    ]
+   }
+  ],
+  "allowedBy": null
+ },
+ {
+  "branch": "origin/phase9-shopping-marker",
+  "findings": [
+   {
+    "commit": "efb5713",
+    "subject": "fix(consultative): fold the shopping marker INTO finalText, before the grounding detector",
+    "ageDays": 31,
+    "files": [
+     {
+      "path": "src/lib/ai/streamEnrichment.ts",
+      "addedLines": 12,
+      "presentOnShip": 0.17,
+      "fileOnShip": true
+     }
+    ]
+   },
+   {
+    "commit": "95c88af",
+    "subject": "fix(consultative): deliver the shopping decision via a persistent text marker (Phase 9)",
+    "ageDays": 31,
+    "files": [
+     {
+      "path": "src/lib/ai/streamEnrichment.ts",
+      "addedLines": 8,
+      "presentOnShip": 0,
+      "fileOnShip": true
+     }
+    ]
+   }
+  ],
+  "allowedBy": null
+ },
+ {
+  "branch": "origin/release/android-games-hidden-clean",
+  "findings": [
+   {
+    "commit": "f661081",
+    "subject": "feat(android/auth): login layout closer to web parity — WIP, not PASS (P1-5)",
+    "ageDays": 57,
+    "files": [
+     {
+      "path": "android/features/auth/src/main/java/com/tappyai/features/auth/ui/login/LoginScreen.kt",
+      "addedLines": 16,
+      "presentOnShip": 0.44,
+      "fileOnShip": true
+     }
+    ]
+   },
+   {
+    "commit": "cd4cb31",
+    "subject": "build(android/auth): OTP input validation + R8 consumer rules",
+    "ageDays": 57,
+    "files": [
+     {
+      "path": "android/features/auth/consumer-rules.pro",
+      "addedLines": 11,
+      "presentOnShip": 0.18,
+      "fileOnShip": true
+     },
+     {
+      "path": "android/features/auth/src/main/java/com/tappyai/features/auth/ui/otp/EmailOtpVerificationViewModel.kt",
+      "addedLines": 6,
+      "presentOnShip": 0.17,
+      "fileOnShip": true
+     }
+    ]
+   },
+   {
+    "commit": "5e13751",
+    "subject": "feat(android/auth): Zalo login (Custom Tab) + fragment-token session import",
+    "ageDays": 59,
+    "files": [
+     {
+      "path": "android/features/auth/build.gradle.kts",
+      "addedLines": 2,
+      "presentOnShip": 0.5,
+      "fileOnShip": true
+     },
+     {
+      "path": "android/features/auth/src/main/res/values-vi/strings.xml",
+      "addedLines": 3,
+      "presentOnShip": 0.33,
+      "fileOnShip": true
+     },
+     {
+      "path": "android/features/auth/src/main/res/values/strings.xml",
+      "addedLines": 3,
+      "presentOnShip": 0.33,
+      "fileOnShip": true
+     }
+    ]
+   }
+  ],
+  "allowedBy": null
+ }
+]

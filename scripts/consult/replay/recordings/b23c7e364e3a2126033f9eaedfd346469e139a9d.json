@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Bánh cuốn nóng Thành Công\" OR \"Bánh cuốn Gạo\" OR \"Bánh Cuốn Nóng Cao Bằng\" quan 7 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:25:04.478Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Bánh cuốn nóng Thành Công\" OR \"Bánh cuốn Gạo\" OR \"Bánh Cuốn Nóng Cao Bằng\" quan 7 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Hủ tiếu mực, bánh cuốn gạo 100k có gì đặc biệt? Lại nằm ...",
+    "link": "https://www.tiktok.com/@livinpmh/video/7655150282925411600",
+    "snippet": "Hủ tiếu mực, bánh cuốn gạo 100k có gì đặc biệt? Lại nằm ngay nội khu Phú Mỹ Hưng, bạn đã thử chưa? #livinpmh #phumyhung #quan7 #hutieumuc # ...",
+    "position": 1
+   },
+   {
+    "title": "Bánh Cuốn Mẫu Điền Quận 7: Tươi Ngon Chuẩn Vị Bắc",
+    "link": "https://www.tiktok.com/@banh.md/video/7673753269663026452",
+    "snippet": "Video TikTok từ Bánh Đặc Sản Vùng Miền tại SG (@banh.md): \"Thưởng thức Bánh Cuốn Mẫu Điền chuẩn vị Bắc tại Quận 7, TP. Hồ ... bánh cuốn gạo, gia ...",
+    "position": 2
+   },
+   {
+    "title": "Bánh cuốn Mão Điền ship tận nơi SG",
+    "link": "https://www.tiktok.com/@banh.md/video/7687651437614107924",
+    "snippet": "Nội dung liên quan tới Bánh cuốn Mão Điền tại Quận 7, TP.HCM ... bánh cuốn gạo, gia long. âm thanh gốc - Bánh Đặc Sản Vùng Miền tại SG ...",
+    "position": 3
+   },
+   {
+    "title": "SHARK TANK CUNG TRĂNG: KHI DÀN KHÁCH MỜI ...",
+    "link": "https://www.tiktok.com/@livinpmh/video/7686112686756728065",
+    "snippet": "- Bánh cuốn gạo 100k: dùng bột gạo để làm bánh mỏng, nhân có thể gồm thịt băm, mộc nhĩ hoặc ăn chay. Giá 100k có thể áp dụng cho suất đặc biệt ...",
+    "position": 4
+   },
+   {
+    "title": "Bánh cuốn Mão Điền tại Q7 #banhcuonmaodien ...",
+    "link": "https://www.tiktok.com/@banh.md/video/7688377779292802325",
+    "snippet": "Nội dung liên quan tới Bánh cuốn Mão Điền tại Quận 7, TP.HCM ... bánh cuốn gạo, gia long. âm thanh gốc - Bánh Đặc Sản Vùng Miền tại SG ...",
+    "position": 5
+   },
+   {
+    "title": "Trả lời @chanchan_0209 Bánh Cuốn, Bánh Ướt DŨNG ...",
+    "link": "https://www.tiktok.com/@thaisoctrang83/video/7376133791678582032",
+    "snippet": "Thực đơn tại quán khá đa dạng với bánh cuốn, bánh ướt, bánh cuốn trứng và bánh cuốn gạo lứt. Nếu phân vân không biết chọn món nào, quán còn ...",
+    "position": 6
+   },
+   {
+    "title": "Cách Làm Bánh Cuốn Trứng Bằng Chảo Chống Dính Tại ...",
+    "link": "https://www.tiktok.com/@commotminh68/video/7508978409805040914",
+    "snippet": "... bánh cuốn nóng cao bằng đà nẵng, bánh cuốn trứng giò mukbang, bánh ... bánh cuốn quận 7, bánh cuốn trứng lòng đào quận 7, bánh cuốn hà ...",
+    "position": 7
+   },
+   {
+    "title": "Cách làm bánh cuốn gạo lứt ức gà từ ...",
+    "link": "https://www.tiktok.com/@keobongcolen/video/7623680186445270292",
+    "snippet": "Cách làm bánh cuốn gạo lứt ức gà từ bánh tráng. Các bà chưa thử thì thử ngay nhé. Rắc là ngon Nếu cùng 1 xuất như này làm theo kiểu truyền ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

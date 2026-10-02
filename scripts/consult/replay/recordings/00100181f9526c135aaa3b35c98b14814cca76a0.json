@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Ẩm Thực Mr Ốc Ngon\" OR \"Quán nhậu Tới Bến\" OR \"Quán Ăn Gia Đình Thúy Kiều\" Thủ Đức site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:29:20.762Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Ẩm Thực Mr Ốc Ngon\" OR \"Quán nhậu Tới Bến\" OR \"Quán Ăn Gia Đình Thúy Kiều\" Thủ Đức site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Ẩm Thực Mr Ốc Ngon (@amthucmrocngon)",
+    "link": "https://www.tiktok.com/@amthucmrocngon",
+    "snippet": "Ẩm Thực Mr Ốc Ngon · @amthucmrocngon · 267F -Tô Ngọc Vân -Linh Đông -Thủ Đức 0️⃣9️⃣0️⃣9️⃣.7️⃣5️⃣.5️⃣5️⃣.7️⃣5️⃣.",
+    "position": 1
+   },
+   {
+    "title": "Mr Ốc Ngon Mở Cửa: Món Ngon Hấp Dẫn Đợi Bạn",
+    "link": "https://www.tiktok.com/@amthucmrocngon/video/7681944871057345799",
+    "snippet": "Khám phá hương vị tuyệt vời tại Mr Ốc Ngon! Quán mở cửa đón khách. @Ẩm Thực Mr Ốc Ngon.",
+    "position": 2
+   },
+   {
+    "title": "Top các quán nhậu ở Thủ Đức không thể bỏ lỡ! TOP1",
+    "link": "https://www.tiktok.com/@amthucmrocngon/video/7495722368963284232",
+    "snippet": "Top các quán nhậu ở Thủ Đức không thể bỏ lỡ! TOP1: Ẩm Thực Mr Ốc Ngon #nhau #thuduc #quannhausaigon #xuhuong @Tô Thanh Long.",
+    "position": 3
+   },
+   {
+    "title": "Khám Phá Hào Biển Tại Mr Ốc Ngon Ở Thủ Đức",
+    "link": "https://www.tiktok.com/@amthucmrocngon/photo/7635669999272824072",
+    "snippet": "TikTok video from Ẩm Thực Mr Ốc Ngon (@amthucmrocngon): “Đến Mr Ốc Ngon ở Thủ Đức để thưởng thức hào biển tươi ngon với hương vị đích thực.",
+    "position": 4
+   },
+   {
+    "title": "New Look New Vibeee: Quán Nhà Ú Saigon Thủ Đức ăn gì ...",
+    "link": "https://www.tiktok.com/@amthucmrocngon/video/7674151035107085575",
+    "snippet": "32 Lượt thích,Video TikTok từ Ẩm Thực Mr Ốc Ngon (@amthucmrocngon): \"Khám phá không gian New Look New Vibeee tại Quán Nhà Ú Saigon Thủ Đức, ...",
+    "position": 5
+   },
+   {
+    "title": "Dô cái nào Team ACE Thủ Đức Ơiii 🍻#amthucmrocngon ...",
+    "link": "https://www.tiktok.com/@amthucmrocngon/video/7521038126865747207",
+    "snippet": "23 Lượt thích,Video TikTok từ Ẩm Thực Mr Ốc Ngon (@amthucmrocngon): \"Dô cái nào Team ACE Thủ Đức Ơiii #amthucmrocngon #quannhausaigon #ănngon #nhau ...",
+    "position": 6
+   },
+   {
+    "title": "Người đẹp mồi bia cũng đã sẵn sàng... đợi tối mời chàng ...",
+    "link": "https://www.tiktok.com/@amthucmrocngon/video/7681495671756557575",
+    "snippet": "23 Lượt thích,Video TikTok từ Ẩm Thực Mr Ốc Ngon (@amthucmrocngon): \"Người đẹp mồi bia cũng đã sẵn sàng... đợi tối mời chàng ghé chill ...",
+    "position": 7
+   },
+   {
+    "title": "Mr Ốc Ngon: Món Ngon Lên Mồi Hấp Dẫn",
+    "link": "https://www.tiktok.com/@amthucmrocngon/video/7643370347378642184",
+    "snippet": "Khám phá ẩm thực Mr Ốc Ngon với những món ăn lên mồi hấp dẫn. @Ẩm Thực Mr Ốc Ngon · âm thanh gốc - Ẩm Thực Mr Ốc Ngon · Ẩm Thực Mr Ốc Ngon.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

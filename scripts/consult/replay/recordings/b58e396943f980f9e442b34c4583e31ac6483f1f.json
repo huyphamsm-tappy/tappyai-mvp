@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"NALOD ĐÀ NẴNG\" OR \"Nhu Minh Plaza Danang Hotel\" Đà Nẵng site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:53:19.709Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"NALOD ĐÀ NẴNG\" OR \"Nhu Minh Plaza Danang Hotel\" Đà Nẵng site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Khách sạn Nalod Đà Nẵng: Trải nghiệm biển tuyệt vời",
+    "link": "https://www.tiktok.com/@reviewkhachsandanang43rv/video/7623019870178921748",
+    "snippet": "Khách sạn Nalod Đà Nẵng: Trải nghiệm biển tuyệt vời. Khám phá Nalod Hotel Đà Nẵng, nơi có view biển đẹp và dịch vụ tuyệt vời chỉ từ 800xu/người/ ...",
+    "position": 1
+   },
+   {
+    "title": "Chiếc khách sạn 5 sao Nalod Đà Nẵng đã làm mình thổn ...",
+    "link": "https://www.tiktok.com/@lymedanang/video/7358430293503544577",
+    "snippet": "149 Lượt thích,30 Bình luận.Video TikTok từ Lý Mê Đà Nẵng (@lymedanang): \"Chiếc khách sạn 5 sao Nalod Đà Nẵng đã làm mình thổn thức?",
+    "position": 2
+   },
+   {
+    "title": "Khách sạn Nalod Đà Nẵng: Biển Mỹ Khê, 4 sao, 14xx",
+    "link": "https://www.tiktok.com/@0917221890_phanvananh/photo/7622182029328698644",
+    "snippet": "Khách sạn Nalod Đà Nẵng: Biển Mỹ Khê, 4 sao, 14xx. Trải nghiệm khách sạn Nalod Đà Nẵng 4 sao, sát biển Mỹ Khê. Ngắm bình minh siêu chill chỉ từ ...",
+    "position": 3
+   },
+   {
+    "title": "Review khách sạn The Nalod Đà Nẵng: view biển sịn sò, ...",
+    "link": "https://www.tiktok.com/@wikidulich.com/video/7687839199134878983",
+    "snippet": "Review khách sạn The Nalod Đà Nẵng: view biển sịn sò, giá hợp lý, buffet sáng đa dạng. Tuy nhiên, vẫn có những điểm chưa thực sự hoàn hảo, ...",
+    "position": 4
+   },
+   {
+    "title": "Khách sạn Nalod Đà Nẵng: Trải nghiệm biển Phạm Văn Đồng ...",
+    "link": "https://www.tiktok.com/@khachsandanang.tiktok/video/7667385071321599240",
+    "snippet": "Khách sạn Nalod Đà Nẵng: Trải nghiệm biển Phạm Văn Đồng hè 2026. Nalod Hotel, tọa lạc tại vị trí đắc địa ngay trung tâm biển Phạm Văn Đồng, là một lựa chọn ...",
+    "position": 5
+   },
+   {
+    "title": "Khách Sạn Nalod Đà Nẵng",
+    "link": "https://www.tiktok.com/discover/kh%C3%A1ch-s%E1%BA%A1n-nalod-%C4%91%C3%A0-n%E1%BA%B5ng",
+    "snippet": "Khách sạn Nalod Đà Nẵng: Trải nghiệm biển Phạm Văn Đồng hè 2026. Khám phá Khách sạn Nalod, tọa lạc ngay trung tâm biển Phạm Văn Đồng, Đà Nẵng.",
+    "date": "31 thg 8, 2026",
+    "position": 6
+   },
+   {
+    "title": "📍Awaken Đà Nẵng và Nalod Đà Nẵng hotel - khách sạn 5 ...",
+    "link": "https://www.tiktok.com/@vietnam.happy.tri/video/7677777360850046229",
+    "snippet": "Awaken Đà Nẵng và Nalod Đà Nẵng hotel - khách sạn 5 sao, sát biển giá chỉ hơn 1tr/p/d - bên Yến đang thanh lý giúp khách #awaken #nalod ...",
+    "position": 7
+   },
+   {
+    "title": "Khách sạn The Nalod Đà Nẵng tuyệt vời bên bãi biển",
+    "link": "https://www.tiktok.com/@booking.khch.sn/photo/7561700968434339090",
+    "snippet": "... Đà Nẵng với tiện nghi miễn phí hấp dẫn. Đặt ngay để không bỏ lỡ! #nalodhotel #khachsandanang. Keywords: khách sạn Đà Nẵng,The Nalod Đà Nẵng ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

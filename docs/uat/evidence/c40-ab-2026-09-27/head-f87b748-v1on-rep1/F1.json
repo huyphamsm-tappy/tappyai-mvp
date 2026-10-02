@@ -1,0 +1,163 @@
+{
+  "id": "F1",
+  "text": "Tìm quán ăn tối ngon gần Quận 1 cho 2 người",
+  "parent": null,
+  "status": 200,
+  "ms": 15356,
+  "evidenceId": "dd77fd4d-aaea-494b-93d9-c64759e0c4cd",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "quán ăn tối ngon Quận 1",
+        "location": "Quận 1, TP.HCM",
+        "type": "restaurant"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Hàng Dương Quán Quận 1",
+      "rating": 4.5,
+      "count": 723,
+      "hours": "09:00–23:30",
+      "address": "32-34 Ngô Đức Kế, Phường, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "NHÀ HÀNG NGON",
+      "rating": 4,
+      "count": 11428,
+      "price": "200-600 N ₫",
+      "hours": "07:30–22:30",
+      "address": "160 Pasteur, Quận 1, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Quán ăn ngon Sài Gòn",
+      "rating": 4.1,
+      "count": 1156,
+      "price": "100-400 N ₫",
+      "hours": "08:00–22:30",
+      "address": "138 Nam Kỳ Khởi Nghĩa, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Quán Bụi Central, Sài Gòn - Authentic Vietnamese Cuisine",
+      "rating": 4.5,
+      "count": 901,
+      "price": "200-800 N ₫",
+      "hours": "07:00–23:00",
+      "address": "1B Ngô Văn Năm, Quận 1, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Ann Quán",
+      "rating": 4.2,
+      "count": 1279,
+      "price": "100-500 N ₫",
+      "hours": "07:00–01:00",
+      "address": "66 Ngô Đức Kế, Phường, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Quán nhậu quận 1 - HẢI SẢN QUÝ DẬU",
+      "rating": 4.7,
+      "count": 280,
+      "price": "100-300 N ₫",
+      "hours": "15:00–02:00",
+      "address": "147 Hoàng Sa, Tân Định, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Hải Sản Hoàng Gia - 180 Trần Hưng Đạo Quận 1",
+      "rating": 4.7,
+      "count": 982,
+      "hours": "08:00–00:00",
+      "address": "180 Trần Hưng Đạo, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Sài Gòn Xưa và Nay",
+      "rating": 4,
+      "count": 1274,
+      "price": "100-600 N ₫",
+      "hours": "11:00–01:00",
+      "address": "37 Nguyễn Trung Trực, Bến Thành, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Quán Bụi - Lê Thánh Tôn - Authentic Vietnamese Cuisine",
+      "rating": 4.5,
+      "count": 1209,
+      "price": "200-600 N ₫",
+      "hours": "07:00–23:00",
+      "address": "222 - 224 Lê Thánh Tôn, Bến Thành, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "CƠM TẤM NGON 3 MIỀN QUẬN 1",
+      "rating": 4.5,
+      "count": 131,
+      "price": "1-100.000 ₫",
+      "hours": "08:00–22:00",
+      "address": "106Bis Nguyễn Văn Cừ, Cầu Ông Lãnh, Hồ Chí Minh 700000, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình giả sử bạn muốn ăn tối hôm nay ở quanh Quận 1 với tầm giá phổ thông. Để gợi ý đúng ý bạn, mình sẽ tìm ngay các quán ăn tối ngon gần vị trí của bạn.\n\nMình chọn **Hải Sản Hoàng Gia** cho bạn — quán này có **4.7⭐ (982 đánh giá Google Maps)**, đang mở cửa lúc này (08:00–00:00), và chuyên hải sản tươi ngon, rất phù hợp cho bữa tối 2 người. Quán nằm ở 180 Trần Hưng Đạo, Quận 1, gần vị trí của bạn.\n\nNếu thích không khí truyền thống, **Quán Bụi Central** có **4.5⭐ (901 đánh giá)** với đa dạng món Việt, mở đến 23:00.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Hải Sản Hoàng Gia\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=8690476982161666487\",\"primary\":true}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Quán nào khác gần đây?|Ăn hải sản hay thử cơm tấm?|Có quán nào mở muộn không?[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Tìm quán ăn tối ngon gần Quận 1 cho 2 người"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn muốn ăn tối hôm nay ở quanh Quận 1 với tầm giá phổ thông. Để gợi ý đúng ý bạn, mình sẽ tìm ngay các quán ăn tối ngon gần vị trí của bạn.\n\nMình chọn **Hải Sản Hoàng Gia** cho bạn — quán này có **4.7⭐ (982 đánh giá Google Maps)**, đang mở cửa lúc này (08:00–00:00), và chuyên hải sản tươi ngon, rất phù hợp cho bữa tối 2 người. Quán nằm ở 180 Trần Hưng Đạo, Quận 1, gần vị trí của bạn.\n\nNếu thích không khí truyền thống, **Quán Bụi Central** có **4.5⭐ (901 đánh giá)** với đa dạng món Việt, mở đến 23:00.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Hải Sản Hoàng Gia\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=8690476982161666487\",\"primary\":true}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Quán nào khác gần đây?|Ăn hải sản hay thử cơm tấm?|Có quán nào mở muộn không?[/FOLLOWUPS]"
+    }
+  ]
+}

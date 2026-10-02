@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import * as musicService from '../services/musicService'
+import * as musicService from '../services/musicClient'
 import type { MusicTrack } from '../types/track'
 
 interface UseMusicTrackResult {

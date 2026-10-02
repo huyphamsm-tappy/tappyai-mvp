@@ -1,0 +1,104 @@
+{
+  "id": "P3",
+  "text": "chỗ đó có đặt trước được không?",
+  "parent": "P2",
+  "status": 200,
+  "ms": 15961,
+  "evidenceId": "5a204692-1375-4c3e-9fb9-5c4515edd0c7",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "Hạ Spa 49 Phạm Viết Chánh Quận 1",
+        "location": "Quận 1, TP.HCM",
+        "type": "spa"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "MASSAGE HẠ SPA QUẬN 1",
+      "rating": 4.9,
+      "count": 3549,
+      "hours": "09:30–22:30",
+      "address": "49 Phạm Viết Chánh, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Trải nghiệm Ha Spa & Massage tại Quận 1, Hồ Chí Minh",
+      "address": "Quận 1, TP.HCM"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "shown",
+          "pickUnmatched"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình tìm thông tin đặt trước cho **Hạ Spa** ngay.\n\n**Hạ Spa** có website riêng **haspamassage.vn** — bạn có thể vào đó để xem giá dịch vụ massage chân cụ thể và đặt trước qua website hoặc gọi **0945 705 000** để xác nhận.\n\nSpa này mở 09:30–22:30 hàng ngày, nên bạn có thể liên hệ để đặt lịch trước khi đi. Với **4.9⭐ từ 3.549 đánh giá**, chất lượng dịch vụ được khách hàng đánh giá rất cao.\n\nBạn muốn mình tìm thêm các chỗ khác ở Quận 1 để so sánh, hay sẽ thử Hạ Spa trước?\n\nKết quả chưa có mức giá, nên mình chưa khẳng định được có vừa ngân sách của bạn không.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website - Hạ Spa\",\"type\":\"website\",\"url\":\"https://haspamassage.vn/\",\"primary\":true},{\"label\":\"📍 Google Maps - Hạ Spa\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=5564503278764968347\",\"primary\":false}]}[/CTA_BUTTONS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "spa massage chan gan q1 duoi 300k"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm được 10 spa massage chân ở Quận 1, nhưng chưa xác nhận được giá cụ thể của các chỗ này để đối chiếu với ngân sách 300k. Để giúp bạn chọn đúng, mình cần gọi lại với cách tìm khác để lấy thông tin giá rõ ràng.\n\nTrong khi đó, dựa trên đánh giá Google Maps, **Hạ Spa** (49 Phạm Viết Chánh) nổi bật nhất với **4.9⭐ từ 3.549 đánh giá** — đây là dấu hiệu mạnh mẽ về chất lượng. Spa này mở 09:30–22:30 và có website riêng để bạn kiểm tra giá dịch vụ massage chân.\n\nBạn đi 1–2 người hay nhóm đông hơn?\n\nKết quả chưa có mức giá, nên mình chưa khẳng định được có vừa ngân sách của bạn không.\n\n[FOLLOWUPS]1–2 người|3–5 người|nhóm đông[/FOLLOWUPS]\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website - Hạ Spa\",\"type\":\"website\",\"url\":\"https://haspamassage.vn/\",\"primary\":true},{\"label\":\"📍 Google Maps - Hạ Spa\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=5564503278764968347\",\"primary\":false}]}[/CTA_BUTTONS]\n\nBạn đi mấy người (1–2 người / 3–5 người / nhóm đông)?"
+    },
+    {
+      "role": "user",
+      "content": "chỗ đó có đặt trước được không?"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm thông tin đặt trước cho **Hạ Spa** ngay.\n\n**Hạ Spa** có website riêng **haspamassage.vn** — bạn có thể vào đó để xem giá dịch vụ massage chân cụ thể và đặt trước qua website hoặc gọi **0945 705 000** để xác nhận.\n\nSpa này mở 09:30–22:30 hàng ngày, nên bạn có thể liên hệ để đặt lịch trước khi đi. Với **4.9⭐ từ 3.549 đánh giá**, chất lượng dịch vụ được khách hàng đánh giá rất cao.\n\nBạn muốn mình tìm thêm các chỗ khác ở Quận 1 để so sánh, hay sẽ thử Hạ Spa trước?\n\nKết quả chưa có mức giá, nên mình chưa khẳng định được có vừa ngân sách của bạn không.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website - Hạ Spa\",\"type\":\"website\",\"url\":\"https://haspamassage.vn/\",\"primary\":true},{\"label\":\"📍 Google Maps - Hạ Spa\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=5564503278764968347\",\"primary\":false}]}[/CTA_BUTTONS]"
+    }
+  ]
+}

@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "đồ ăn giao tận nơi dưới 100k Quận 7 gia menu thuc don",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T05:59:02.213Z",
+ "body": {
+  "searchParameters": {
+   "q": "đồ ăn giao tận nơi dưới 100k Quận 7 gia menu thuc don",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tiệc tại nhà 1-2 bàn ở đâu nhận Với FLYFOOD: 1 MÓN ...",
+    "link": "https://www.facebook.com/flyfood.vn/posts/ti%E1%BB%87c-t%E1%BA%A1i-nh%C3%A0-1-2-b%C3%A0n-%E1%BB%9F-%C4%91%C3%A2u-nh%E1%BA%ADnv%E1%BB%9Bi-flyfood1-m%C3%B3n-c%C5%A9ng-giao1-b%C3%A0n-c%C5%A9ng-nh%E1%BA%ADn-v%E1%BB%9Bi-th%E1%BB%B1/1040944794794573/",
+    "snippet": "Tiệc tại nhà 1-2 bàn ở đâu nhận Với FLYFOOD: 1 MÓN CŨNG GIAO 1 BÀN CŨNG NHẬN - Với thực đơn 100 Món Ngon Thực đơn từ #1.999k/bàn Với ...",
+    "position": 1
+   },
+   {
+    "title": "Đặt đồ ăn Online cùng GrabFood",
+    "link": "https://www.grab.com/vn/food/",
+    "snippet": "Bật app Grab, chọn “Giao thức ăn\" ở thanh trên cùng của ứng dụng. Đặt ngay · Điền địa chỉ giao thức ăn của bạn. · Lựa chọn nhà hàng yêu thích. · Lựa chọn món ăn từ ...",
+    "position": 2
+   },
+   {
+    "title": "Top 20 quán ăn Quận 7 ngon, đặc sản, đông khách",
+    "link": "https://zalopay.vn/quan-an-quan-7-5511",
+    "snippet": "Khám phá top 20 quán ăn Quận 7 với ẩm thực đa dạng từ Á sang Âu, từ bình dân đến cao cấp: Hủ tiếu Tài Anh, Bò lá lốt Tân Quy, San Fu Lou, ...",
+    "date": "26 thg 5, 2024",
+    "position": 3
+   },
+   {
+    "title": "beFood - Vạn món ngon, beFood đây, đặt món ngay",
+    "link": "https://food.be.com.vn/",
+    "snippet": "Đặt đồ ăn online giao tận nơi từ hàng ngàn quán ngon gần bạn trên beFood. Cam kết giao nhanh không ghép đơn, xem menu đầy đủ, giá tốt cùng hàng ngàn ưu đãi ...",
+    "position": 4
+   },
+   {
+    "title": "cần tìm đồ ăn giao liền quận 7",
+    "link": "https://www.facebook.com/groups/1312167629130067/posts/3000327983647348/",
+    "snippet": "LẨU GÀ TIỀM THUỐC BẮC ❌Zá: #180K/ 1 lẩu (Nguyên con gà khoảng 1,2kg) Nước dùng tiềm cùng thuốc bắc thơm ngon, ngọt thanh tự nhiên. Gà mềm ngọt, ...",
+    "date": "23 thg 7, 2026",
+    "position": 5
+   },
+   {
+    "title": "Gợi ý 7 thực đơn cho người bận rộn dưới 100k đơn giản ...",
+    "link": "https://www.dienmayxanh.com/vao-bep/goi-y-7-thuc-don-cho-nguoi-ban-ron-duoi-100k-don-gian-de-lam-11218?srsltid=AU7gw4VMmO6RGC28s14WHt607zhUWzivux1By-QFsg3KhHQZ1nrqv3to",
+    "snippet": "Cánh giữa gà 400gr: 40.000 đồng · Me: 5.000 đồng · Đậu que 500gr: 17.000 đồng · Bí đỏ 400gr: 8.000 đồng · Đậu phộng: 5.000 đồng · Tỏi, ớt: 5.000 đồng.",
+    "date": "1 thg 7, 2021",
+    "position": 6
+   },
+   {
+    "title": "Đặt món ăn giao tận nhà",
+    "link": "https://naifood.com/dat-mon-an-giao-tan-nha/",
+    "snippet": "Dịch vụ đặt món ăn giao tận nhà của Naifood được tạo ra dành cho những ai muốn có một bữa ăn ngon, gọn gàng và đủ “khí chất” của một bữa tiệc mà ...",
+    "date": "30 thg 1, 2026",
+    "position": 7
+   },
+   {
+    "title": "Bùng \"plan\" diet với MÓN SANG GIÁ RẺ - QUẬN 7 giảm tới 50 ...",
+    "link": "https://www.facebook.com/shopeefoodvn/videos/m%C3%B3n-sang-gi%C3%A1-r%E1%BA%BB-qu%E1%BA%ADn-7-gi%E1%BA%A3m-t%E1%BB%9Bi-50/481340972691684/",
+    "snippet": "Bùng \"plan\" diet với MÓN SANG GIÁ RẺ - QUẬN 7 giảm tới 50% Link đặt NOW: https://app.now.vn/huTLJ1H9NU (*Chương trình km note riêng từng ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -74,6 +75,9 @@ fun AccountEditScreen(
                 is AccountEvent.AvatarUploadFailed -> {
                     Toast.makeText(context, event.message, Toast.LENGTH_LONG).show()
                 }
+                is AccountEvent.CoverFailed -> {
+                    Toast.makeText(context, event.message, Toast.LENGTH_LONG).show()
+                }
             }
         }
     }
@@ -81,6 +85,9 @@ fun AccountEditScreen(
     val pickAvatar = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
     ) { uri -> uri?.let(viewModel::onAvatarPicked) }
+    val pickCover = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickVisualMedia(),
+    ) { uri -> uri?.let(viewModel::onCoverPicked) }
 
     Scaffold(
         topBar = { TappyAppBar(title = stringResource(R.string.account_edit_profile), onBackClick = onBack) },
@@ -156,6 +163,14 @@ fun AccountEditScreen(
                     }
                 }
 
+                // Cover — the web's /profile/edit "Ảnh bìa" section: preview (21:9), Thay / Gỡ.
+                CoverSection(
+                    coverUrl = viewModel.profile?.coverUrl,
+                    busy = viewModel.isUploadingCover,
+                    onChange = { pickCover.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)) },
+                    onRemove = viewModel::onRemoveCover,
+                )
+
                 // Email — read-only with badge
                 Column(verticalArrangement = Arrangement.spacedBy(TappySpacing.xs)) {
                     TappyTextField(
@@ -220,6 +235,44 @@ fun AccountEditScreen(
                 )
 
                 Spacer(modifier = Modifier.height(TappySpacing.xl))
+            }
+        }
+    }
+}
+
+/** The web's cover card: title + hint, a 21:9 preview (or "Chưa có ảnh bìa"), Thay ảnh bìa / Gỡ ảnh bìa. */
+@Composable
+private fun CoverSection(coverUrl: String?, busy: Boolean, onChange: () -> Unit, onRemove: () -> Unit) {
+    Column(verticalArrangement = Arrangement.spacedBy(TappySpacing.sm), modifier = Modifier.fillMaxWidth()) {
+        Text(
+            text = stringResource(R.string.account_cover_title).uppercase(),
+            style = MaterialTheme.typography.labelMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        Text(
+            text = stringResource(R.string.account_cover_hint),
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .aspectRatio(21f / 9f)
+                .clip(MaterialTheme.shapes.medium)
+                .background(MaterialTheme.colorScheme.surfaceVariant),
+            contentAlignment = Alignment.Center,
+        ) {
+            if (coverUrl != null) {
+                com.tappyai.core.designsystem.component.TappyImage(url = coverUrl, contentDescription = stringResource(R.string.account_cover_title), modifier = Modifier.fillMaxSize())
+            } else {
+                Text(stringResource(R.string.account_cover_none), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            }
+            if (busy) CircularProgressIndicator(modifier = Modifier.size(28.dp), strokeWidth = 2.dp)
+        }
+        Row(horizontalArrangement = Arrangement.spacedBy(TappySpacing.sm)) {
+            TappyButton(text = stringResource(R.string.account_cover_change), onClick = onChange, enabled = !busy, variant = com.tappyai.core.designsystem.component.TappyButtonVariant.Secondary)
+            if (coverUrl != null) {
+                TappyButton(text = stringResource(R.string.account_cover_remove), onClick = onRemove, enabled = !busy, variant = com.tappyai.core.designsystem.component.TappyButtonVariant.Ghost)
             }
         }
     }

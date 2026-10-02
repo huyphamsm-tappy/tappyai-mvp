@@ -1,0 +1,97 @@
+{
+ "at": "2026-09-26T03:01:49.885Z",
+ "bucket": "tappyai-media-audit",
+ "layer": "uploadMedia → createUploadSessionResponse → PUT → completeUploadResponse → GCS",
+ "ownerId": "67d92353-ee06-4ab5-a9e0-583ebf80e4d4",
+ "results": [
+  {
+   "file": "android.mp4",
+   "path": "composer video input (accept=video/mp4)",
+   "key": "videos/67d92353-ee06-4ab5-a9e0-583ebf80e4d4/hcatB0M4ck4lzfNwgRRa7NUF.mp4",
+   "byteIdentical": true,
+   "metadataBefore": {
+    "mvhd creation time": "2026-09-26T02:30:00.000Z",
+    "udta ©xyz (location)": "+10.7725+106.6980/",
+    "com.android.version": "14",
+    "com.android.manufacturer": "SyntheticMaker",
+    "com.android.model": "SYN-PHONE-A1"
+   },
+   "metadataAfterUploadAndDownload": {
+    "mvhd creation time": "2026-09-26T02:30:00.000Z",
+    "udta ©xyz (location)": "+10.7725+106.6980/",
+    "com.android.version": "14",
+    "com.android.manufacturer": "SyntheticMaker",
+    "com.android.model": "SYN-PHONE-A1"
+   },
+   "storedObject": {
+    "contentType": "video/mp4",
+    "size": "503",
+    "cacheControl": "public, max-age=86400, immutable"
+   }
+  },
+  {
+   "file": "iphone.mov",
+   "path": "composer video input (accept=video/quicktime)",
+   "key": "videos/67d92353-ee06-4ab5-a9e0-583ebf80e4d4/3GAiqUHPH91xoEZkH8q0EfYU.mov",
+   "byteIdentical": true,
+   "metadataBefore": {
+    "mvhd creation time": "2026-09-26T02:30:00.000Z",
+    "com.apple.quicktime.location.ISO6709": "+10.7725+106.6980/",
+    "com.apple.quicktime.make": "Apple",
+    "com.apple.quicktime.model": "iPhone SYN",
+    "com.apple.quicktime.software": "17.6",
+    "com.apple.quicktime.creationdate": "2026-09-26T09:30:00+0700"
+   },
+   "metadataAfterUploadAndDownload": {
+    "mvhd creation time": "2026-09-26T02:30:00.000Z",
+    "com.apple.quicktime.location.ISO6709": "+10.7725+106.6980/",
+    "com.apple.quicktime.make": "Apple",
+    "com.apple.quicktime.model": "iPhone SYN",
+    "com.apple.quicktime.software": "17.6",
+    "com.apple.quicktime.creationdate": "2026-09-26T09:30:00+0700"
+   },
+   "storedObject": {
+    "contentType": "video/quicktime",
+    "size": "639",
+    "cacheControl": "public, max-age=86400, immutable"
+   }
+  },
+  {
+   "file": "photo.jpg",
+   "path": "kind 'video' also accepts images at the API (not offered by the web composer's video input)",
+   "key": "videos/67d92353-ee06-4ab5-a9e0-583ebf80e4d4/Sz8DqR49ocyeg0wk03YBvav8.jpg",
+   "byteIdentical": true,
+   "metadataBefore": {
+    "Make": "SyntheticMaker",
+    "Model": "SYN-PHONE-A1",
+    "Software": "SynOS 14",
+    "Artist": "Synthetic Author",
+    "DateTimeOriginal": "2026:09:26 09:30:00",
+    "BodySerialNumber": "SYN0000SERIAL",
+    "LensModel": "SYN back camera 6mm f/1.8",
+    "GPS": {
+     "lat": 10.7725,
+     "lon": 106.698
+    }
+   },
+   "metadataAfterUploadAndDownload": {
+    "Make": "SyntheticMaker",
+    "Model": "SYN-PHONE-A1",
+    "Software": "SynOS 14",
+    "Artist": "Synthetic Author",
+    "DateTimeOriginal": "2026:09:26 09:30:00",
+    "BodySerialNumber": "SYN0000SERIAL",
+    "LensModel": "SYN back camera 6mm f/1.8",
+    "GPS": {
+     "lat": 10.7725,
+     "lon": 106.698
+    }
+   },
+   "storedObject": {
+    "contentType": "image/jpeg",
+    "size": "774",
+    "cacheControl": "public, max-age=86400, immutable"
+   }
+  }
+ ]
+}

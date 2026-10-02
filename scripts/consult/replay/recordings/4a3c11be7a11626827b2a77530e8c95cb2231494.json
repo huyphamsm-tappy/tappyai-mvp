@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Golden Lotus Healing World & Jjimjilbang Spa tại Hồ Chí ...",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:17:53.276Z",
+ "body": {
+  "searchParameters": {
+   "q": "Golden Lotus Healing World & Jjimjilbang Spa tại Hồ Chí ...",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Đi Spa Quận 2 xả Stress giá ưu đãi ở Golden Lotus Healing World - Golden  Lotus Healing World",
+    "imageUrl": "https://goldenlotusspa.vn/wp-content/uploads/2025/07/goldenlotusspa-vn-47.jpg",
+    "imageWidth": 1500,
+    "imageHeight": 1500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-5lNlfe8pBMNn0yVYAcd1Gvl0q_ol8kxZ-OOOAz8tHQ&s=10",
+    "thumbnailWidth": 554,
+    "thumbnailHeight": 554,
+    "source": "Golden Lotus Healing World",
+    "domain": "goldenlotus.world",
+    "link": "https://goldenlotus.world/di-spa-quan-3-xa-stress-chi-110k-o-golden-lotus-healing-spa-world.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fgoldenlotusspa.vn%2Fwp-content%2Fuploads%2F2025%2F07%2Fgoldenlotusspa-vn-47.jpg&tbnid=Yh2MzOQYeslxAM&imgrefurl=https%3A%2F%2Fgoldenlotus.world%2Fdi-spa-quan-3-xa-stress-chi-110k-o-golden-lotus-healing-spa-world.html&docid=Y1aPdrsuDIhahM&w=1500&h=1500",
+    "position": 1
+   },
+   {
+    "title": "Golden Lotus Healing World & Jjimjilbang Spa tại Hồ Chí Minh - Klook",
+    "imageUrl": "https://res.klook.com/images/w_1200,h_630,c_fill,q_65/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/huf9zbfojjumxrtz7yef/GoldenLotusHealingWorldJjimjilbangSpat%E1%BA%A1iH%E1%BB%93Ch%C3%ADMinh-Klook.jpg",
+    "imageWidth": 1200,
+    "imageHeight": 630,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRW0U7XjtxQg4YKJ_ninAuYDeTNDcfrxnJXve2DG7X3AA&s=10",
+    "thumbnailWidth": 617,
+    "thumbnailHeight": 324,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/153878-golden-lotus-healing-world-jjimjilbang-spa-in-ho-chi-minh/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Fw_1200%2Ch_630%2Cc_fill%2Cq_65%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fhuf9zbfojjumxrtz7yef%2FGoldenLotusHealingWorldJjimjilbangSpat%25E1%25BA%25A1iH%25E1%25BB%2593Ch%25C3%25ADMinh-Klook.jpg&tbnid=9OxseOpCFrBlZM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F153878-golden-lotus-healing-world-jjimjilbang-spa-in-ho-chi-minh%2F&docid=D0dQbz5f-OeYkM&w=1200&h=630",
+    "position": 2
+   },
+   {
+    "title": "BÃO GIÁ 70K CÙNG TẬN HƯỞNG SPA ĐỈNH CAO - Golden Lotus Healing World %",
+    "imageUrl": "https://goldenlotus.world/wp-content/uploads/2025/03/goldenlotusspa-vn-17.jpg",
+    "imageWidth": 1200,
+    "imageHeight": 1200,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQnuuOaDSwAQk-0FKc7qGJmI-Ji4jRtPjhd9UrRNQQeXg&s=10",
+    "thumbnailWidth": 554,
+    "thumbnailHeight": 554,
+    "source": "Golden Lotus Healing World",
+    "domain": "goldenlotus.world",
+    "link": "https://goldenlotus.world/bao-gia-70k-tan-huong-spa-dinh-cao-5200m2.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fgoldenlotus.world%2Fwp-content%2Fuploads%2F2025%2F03%2Fgoldenlotusspa-vn-17.jpg&tbnid=nOemw-LyLQj03M&imgrefurl=https%3A%2F%2Fgoldenlotus.world%2Fbao-gia-70k-tan-huong-spa-dinh-cao-5200m2.html&docid=4OGgeAj86j-jWM&w=1200&h=1200",
+    "position": 3
+   },
+   {
+    "title": "Golden Lotus Healing World & Jjimjilbang Spa tại Hồ Chí Minh - Klook",
+    "imageUrl": "https://res.klook.com/image/upload/w_750,h_469,c_fill,q_85/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/d9gacdfbsrwmlb9uedug.jpg",
+    "imageWidth": 750,
+    "imageHeight": 469,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGiaKVCSkKI-xV47dd6goEZDzByJfaCbs71tHGUwX_oQ&s=10",
+    "thumbnailWidth": 565,
+    "thumbnailHeight": 353,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/153878-golden-lotus-healing-world-jjimjilbang-spa-in-ho-chi-minh/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimage%2Fupload%2Fw_750%2Ch_469%2Cc_fill%2Cq_85%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fd9gacdfbsrwmlb9uedug.jpg&tbnid=LRltEi1oMjReVM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F153878-golden-lotus-healing-world-jjimjilbang-spa-in-ho-chi-minh%2F&docid=D0dQbz5f-OeYkM&w=750&h=469",
+    "position": 4
+   },
+   {
+    "title": "Chi nhánh - Golden Lotus Healing World",
+    "imageUrl": "https://goldenlotusspa.vn/wp-content/uploads/2022/12/spa-jjb-q7-uu-dai19982351575_n-682x1024.jpg",
+    "imageWidth": 682,
+    "imageHeight": 1024,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCoZCNhF4hwJhuwz4IIQMC7eU82lSd2G4OcWnUNJPJGw&s=10",
+    "thumbnailWidth": 451,
+    "thumbnailHeight": 679,
+    "source": "Golden Lotus Healing World",
+    "domain": "goldenlotus.world",
+    "link": "https://goldenlotus.world/chi-nhanh",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fgoldenlotusspa.vn%2Fwp-content%2Fuploads%2F2022%2F12%2Fspa-jjb-q7-uu-dai19982351575_n-682x1024.jpg&tbnid=FiYRaXK0j0j7sM&imgrefurl=https%3A%2F%2Fgoldenlotus.world%2Fchi-nhanh&docid=qF2qsBw_qV22jM&w=682&h=1024",
+    "position": 5
+   },
+   {
+    "title": "Golden Lotus Healing World (Thành phố Hồ Chí Minh, Việt Nam) - Đánh giá -  Tripadvisor",
+    "imageUrl": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/32/03/d1/b0/golden-lotus-healing.jpg?w=1200&h=1200&s=1",
+    "imageWidth": 1200,
+    "imageHeight": 1125,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQopTv39sJlexbQY5mh3yT5ad0i5U2tr68Ccno05g5nAQ&s=10",
+    "thumbnailWidth": 571,
+    "thumbnailHeight": 536,
+    "source": "Tripadvisor",
+    "domain": "www.tripadvisor.com.vn",
+    "link": "https://www.tripadvisor.com.vn/Attraction_Review-g293925-d11746398-Reviews-or40-Golden_Lotus_Healing_World-Ho_Chi_Minh_City.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdynamic-media-cdn.tripadvisor.com%2Fmedia%2Fphoto-o%2F32%2F03%2Fd1%2Fb0%2Fgolden-lotus-healing.jpg%3Fw%3D1200%26h%3D1200%26s%3D1&tbnid=I0ZZCH_CZd5hUM&imgrefurl=https%3A%2F%2Fwww.tripadvisor.com.vn%2FAttraction_Review-g293925-d11746398-Reviews-or40-Golden_Lotus_Healing_World-Ho_Chi_Minh_City.html&docid=F4m0hjezYmr31M&w=1200&h=1125",
+    "position": 6
+   },
+   {
+    "title": "Golden Lotus Healing World & Jjimjilbang Spa tại Hồ Chí Minh - Klook",
+    "imageUrl": "https://res.klook.com/image/upload/w_750,h_469,c_fill,q_85/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/bs5jcrbb1oocrzif9nvz.jpg",
+    "imageWidth": 750,
+    "imageHeight": 469,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVYWN4YAjHlqV5IsyTDqnlPobpfoH-U4lWB4H0p_pqlg&s=10",
+    "thumbnailWidth": 565,
+    "thumbnailHeight": 353,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/153878-golden-lotus-healing-world-jjimjilbang-spa-in-ho-chi-minh/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimage%2Fupload%2Fw_750%2Ch_469%2Cc_fill%2Cq_85%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fbs5jcrbb1oocrzif9nvz.jpg&tbnid=A1sM-oEDUsjdaM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F153878-golden-lotus-healing-world-jjimjilbang-spa-in-ho-chi-minh%2F&docid=D0dQbz5f-OeYkM&w=750&h=469",
+    "position": 7
+   },
+   {
+    "title": "Golden Lotus Healing Spa World | Ho Chi Minh City",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=487474640052476",
+    "imageWidth": 1365,
+    "imageHeight": 2048,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSInptI5CgmmwNP5gK5YPbank8b8Qq5zNuI9it_9Qs-Ow&s=10",
+    "thumbnailWidth": 365,
+    "thumbnailHeight": 547,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/Goldenlotusq3/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D487474640052476&tbnid=FLNlncFXxxR2bM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2FGoldenlotusq3%2F&docid=swzFBHoYERUcBM&w=1365&h=2048",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,25 @@
+#!/bin/sh
+# merge-guard — installed by `npm run merge:install-hook` (scripts/merge-guard/install-hook.mjs).
+# tappyai-merge-guard-hook
+#
+# Runs only while a MERGE is being committed (MERGE_HEAD present). commit-msg, not pre-merge-commit:
+# git skips pre-merge-commit for a merge that stopped on conflicts and was finished with
+# `git commit` — which is exactly the merge where a resolver drops cleanly-merged code (a6ca9f0,
+# 1e7b77e). Both `git merge` and `git commit` run commit-msg, and it sees the FINAL message, so a
+#   Merge-Drop: <path> — <reason>
+# trailer waives a deliberate drop.
+[ -f "$(git rev-parse --git-path MERGE_HEAD)" ] || exit 0
+
+script="$(git rev-parse --show-toplevel)/scripts/merge-guard/merge-guard.mjs"
+if [ ! -f "$script" ]; then
+  # A branch older than the guard: run the shipping branch's copy instead of skipping.
+  tmp="$(mktemp -d)"
+  for f in merge-guard.mjs lib.mjs; do
+    if ! git show "rc/web-uat:scripts/merge-guard/$f" > "$tmp/$f" 2>/dev/null; then
+      echo "merge-guard: NOT RUN — no scripts/merge-guard in this checkout and rc/web-uat is unreadable" >&2
+      exit 0
+    fi
+  done
+  script="$tmp/merge-guard.mjs"
+fi
+exec node "$script" --staged --message "$1"

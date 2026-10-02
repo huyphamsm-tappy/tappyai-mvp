@@ -1,0 +1,25 @@
+{
+  "id": "S6",
+  "text": "mua gì bây giờ",
+  "parent": null,
+  "status": 200,
+  "ms": 5059,
+  "evidenceId": "1cf86237-12bc-473c-92b0-b01ea5910bb6",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình hiểu bạn đang tìm gì đó để mua nhưng chưa biết chính xác là cái gì 😊\n\nBạn có thể cho mình biết:\n- **Loại sản phẩm** nào bạn cần? (ví dụ: điện thoại, laptop, quần áo, đồ gia dụng...)\n- **Mục đích** là gì? (dùng cá nhân, làm quà, thay thế cái cũ...)\n- **Ngân sách** khoảng bao nhiêu?\n\nMình sẽ giúp bạn tìm những lựa chọn tốt nhất trên các sàn TMĐT! 🛍️\n\n[FOLLOWUPS]Tìm điện thoại|Tìm laptop|Tìm đồ gia dụng[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "mua gì bây giờ"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình hiểu bạn đang tìm gì đó để mua nhưng chưa biết chính xác là cái gì 😊\n\nBạn có thể cho mình biết:\n- **Loại sản phẩm** nào bạn cần? (ví dụ: điện thoại, laptop, quần áo, đồ gia dụng...)\n- **Mục đích** là gì? (dùng cá nhân, làm quà, thay thế cái cũ...)\n- **Ngân sách** khoảng bao nhiêu?\n\nMình sẽ giúp bạn tìm những lựa chọn tốt nhất trên các sàn TMĐT! 🛍️\n\n[FOLLOWUPS]Tìm điện thoại|Tìm laptop|Tìm đồ gia dụng[/FOLLOWUPS]"
+    }
+  ]
+}

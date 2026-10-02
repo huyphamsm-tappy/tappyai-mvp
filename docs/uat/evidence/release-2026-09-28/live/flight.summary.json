@@ -1,0 +1,20 @@
+{
+  "caseId": "flight",
+  "base": "https://uat.tappyai.com",
+  "at": "2026-09-28T06:12:59.589Z",
+  "guest": "anonymous session (token not stored)",
+  "turns": [
+    {
+      "user": "vé máy bay Sài Gòn đi Hà Nội",
+      "status": 200,
+      "ms": 7177,
+      "literalDoubleStar": 0,
+      "unbalancedBoldLines": [],
+      "proseTail": "/go.isclix.com/deep_link/6277265300509373567/6654251588167732819?url=https%3A%2F%2Fwww.traveloka.com%2Fvi-VN%2Fflight%2Ffullsearch%3Fap%3DSGN.HAN%26dt%3D05-10-2026.null%26ps%3D1.0.0%26sc%3DECONOMY&utm_source=tappyai&utm_medium=ccp&sub1=73fedae174f40cffe170a538)\n\nBạn chọn ngày bay, rồi so sánh giá giữa các hãng (Vietnam Airlines, Vietjet, Bamboo Airways) để tìm vé rẻ nhất nhé. Ngày nào bạn muốn đi?",
+      "placeActions": [],
+      "shopping": null,
+      "plan": null,
+      "cta": "{\"buttons\":[{\"label\":\"✈️ Tìm trên Trip.com\",\"type\":\"website\",\"url\":\"https://go.isclix.com/deep_link/6277265300509373567/6455552313033835511?url=https%3A%2F%2Fvn.trip.com%2Fflights%2Fshowfarefirst%3Fdcity%3Dsgn%26acity%3Dhan%26ddate%3D2026-10-05%26flighttype%3Dow%26class%3Dy%26quantity%3D1%26locale%3Dvi-VN%26curr%3DVND&utm_source=tappyai&utm_medium=ccp&sub1=73fedae174f40cffe170a538\",\"primary\":true},{\"label\":\"✈️ Tìm trên Traveloka\",\"type\":\"website\",\"url\":\"https://go.isclix.com/deep_link/6277265300509373567/6654251588167732819?url=https%3A%2F%2Fwww.traveloka.com%2Fvi-VN%2Fflight%2Ffullsearch%3Fap%3DSGN.HAN%26dt%3D05-10-2026.null%26ps%3D1.0.0%26sc%3DECONOMY&utm_source=tappyai&utm_medium=ccp&sub1=73fedae174f40cffe170a538\",\"primary\":false}]}\""
+    }
+  ]
+}

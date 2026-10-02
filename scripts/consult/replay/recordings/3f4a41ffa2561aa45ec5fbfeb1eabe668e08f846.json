@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Nara Spa | Massage & Hair Spa Quận 3\" OR \"森嶼SPA - SPA Thái Lan chính thống/MASSAGE tinh dầu\" OR \"KOKORO Spa & Aesthetic tại Quận 3\" quan 3 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T02:39:53.594Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Nara Spa | Massage & Hair Spa Quận 3\" OR \"森嶼SPA - SPA Thái Lan chính thống/MASSAGE tinh dầu\" OR \"KOKORO Spa & Aesthetic tại Quận 3\" quan 3 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

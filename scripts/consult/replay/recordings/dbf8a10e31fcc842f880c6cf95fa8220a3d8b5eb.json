@@ -1,0 +1,393 @@
+{
+ "url": "https://google.serper.dev/shopping",
+ "request": {
+  "q": "điện thoại",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 20
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:54:27.462Z",
+ "body": {
+  "searchParameters": {
+   "q": "điện thoại",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "shopping",
+   "num": 40,
+   "page": 1,
+   "engine": "google"
+  },
+  "shopping": [
+   {
+    "title": "Điện thoại Apple iPhone 17 Pro Max 256GB",
+    "source": "apple8",
+    "link": "https://www.google.com/search?ibp=oshop&q=%C4%91i%E1%BB%87n+tho%E1%BA%A1i&prds=localAnnotatedOfferId:1,catalogid:4674702155008051256,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "34.800.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTv0H7Wq8r2UwephOD5cgPbqgbugyVSjtjmWqgAoxJ-9fzK7D4wiVlhCDf177aMs_DBhnu6Y4EHlhZUIE1MmiejXqFTK0h8y7XkhR8S-BwM",
+    "productId": "4674702155008051256",
+    "position": 1
+   },
+   {
+    "title": "Samsung Galaxy A57 5G 8GB 128GB",
+    "source": "shopee.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=%C4%91i%E1%BB%87n+tho%E1%BA%A1i&prds=localAnnotatedOfferId:1,catalogid:18157020801484526896,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "10.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSpMxiz6b-RqmM6CCbvjJKLS8oqcoAh4xfJYtCP607U-SSGhqMjQQj8ySJAzFf3YL1Wj5Yw5YkzeNStROnXlwmiLSbWhDMTXYHArjB2BcRS8fcLHQ2XYgsBQQ",
+    "productId": "18157020801484526896",
+    "position": 2
+   },
+   {
+    "title": "Điện Thoại Mobell M139 4G",
+    "source": "Điện Máy Chợ Lớn",
+    "price": "250.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQEJjRXaivPfJEXgKh2Y1Qr8YxjUuJxPqOYyeyhe9v_0dj5VOyZ50FQXCyfLtxUQGyDUidFd9JnkgUaxwZgICZ7HtegSPZPo0J8k7MI_ohJk3mnU6rYsHMmhw",
+    "productId": "12562485188367359086",
+    "position": 3
+   },
+   {
+    "title": "Điện thoại iPhone 17 256GB Xanh Lam Khói",
+    "source": "Thế Giới Di Động",
+    "price": "26.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTvrzcxOGoldj1eLo2j8A7geQ0YdMO75jvk4-F2opnMxxBOqqrqfuHxXyvt944qo6qYxKAqyuoTo74zhAbJCEB5V2_2XmF3llu1eb0_Cr-wN6JUC1mPBHik",
+    "productId": "16605709988750377999",
+    "position": 4
+   },
+   {
+    "title": "Vertu Quantum Amber Brown Alli – Điện thoại gập siêu sang giới hạn tại Center Luxury",
+    "source": "Center Luxury",
+    "price": "200.000.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSRCU7vMJrcMw3iBjOwQP8oZJbSLCuh0VtX8XJPwIlBF0WuonnBO89MCiqZtaupH35CzjekCQ3hBbeRERQNBpiwyH8Ba6s-w6BU0Th2R7erF9RhgkTO6MvRZw",
+    "productId": "275471199355979319",
+    "position": 5
+   },
+   {
+    "title": "điện thoại nokia hmd 105 4g ta-1651 ds vn",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=%C4%91i%E1%BB%87n+tho%E1%BA%A1i&prds=localAnnotatedOfferId:1,catalogid:3992635863181247167,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "849.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTYzfL_1pEmLIDiBCqk3Gw_adDGKlDHg1Uv_WwSCXWFn9ZLgww4aiKdzUCDiNd30KL577QKBugKE_Q1vDYHRjgAnmFdYU0IxwtGrfUB7ZOG5sZjA1FGAW3U",
+    "rating": 4.6,
+    "ratingCount": 101,
+    "productId": "3992635863181247167",
+    "position": 6
+   },
+   {
+    "title": "Xiaomi Redmi 15C 8GB 256GB",
+    "source": "Fptshop.com.vn",
+    "price": "4.890.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSd4x5nfxITOgrtJLuknEK_Obyt5qNK7TfRgU5GRBI_bCKt5YqxI2k-FU1DIZk7ilOSF_ic56q2ZYQ_LRlb8KgEsQDCKzYIl4sBxnub5ITgckey11xsavAh",
+    "rating": 4.2,
+    "ratingCount": 343,
+    "productId": "8586069588840085576",
+    "position": 7
+   },
+   {
+    "title": "Apple iPhone 16",
+    "source": "CellphoneS",
+    "link": "https://www.google.com/search?ibp=oshop&q=%C4%91i%E1%BB%87n+tho%E1%BA%A1i&prds=localAnnotatedOfferId:1,catalogid:17721941235343592313,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "22.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQSvhmlNlSmFemqZOT0k_ZmgqXP2J7aQwq-lA3ZQ6vFOFhnsttweH3kFMw_5jsq_m5RHJBiUJsIMsTQQhZ9Ii05t9ciBHECeXrkfOwIXhbrXG1ARS93FfCh",
+    "productId": "17721941235343592313",
+    "position": 8
+   },
+   {
+    "title": "Điện Thoại 4G FORME N53 2 sim 2 sóng Mới Fullbox Bảo hành 12 tháng",
+    "source": "Shopee",
+    "price": "319.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcT7ZqHoxks2Hs4GjJw2EKoSzU9YapyNssn9bEK4yq1uNG4OQZ_sVV1LQh_E65B4aGZ8muLHSnB9fWMFBSATV8oQi81HgoAVeZRHaa6ME_Ja69aI0mYPwZZasQ",
+    "rating": 4.7,
+    "ratingCount": 45,
+    "productId": "1423924610941720941",
+    "position": 9
+   },
+   {
+    "title": "Điện thoại Masstel S7 4GB+128GB màu xanh (Blue)",
+    "source": "MediaMart",
+    "price": "2.190.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSfetvj6A-2jRt_6JE7TmkfTpHdwfyMUk53BlXEctxG7mV1YpLxwR_qrypsztMPGb4BPT-y7KMuP0aTAbxJylAtCPDq7VynjqECp1ztiodrEWLNsRcHp4MT",
+    "productId": "12695648361689267549",
+    "position": 10
+   },
+   {
+    "title": "Điện thoại Samsung Galaxy A57 5G 8GB/128GB Xanh dương nhạt",
+    "source": "Thế Giới Di Động",
+    "price": "10.800.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcS34Xk-AVFgem3XNH941pLWPUtMbhPcJLZZfjih8THNBnOgqhKICJFROZYLx5N1wc_6SCB8F2ya9Ez-ic4UBUAgCrgpl-Pw93XOAjPhed_gbcmhdvL1Wyf0",
+    "productId": "18292206693974111827",
+    "position": 11
+   },
+   {
+    "title": "Honor X9c Smart 5G (12GB - 256GB) - Chính Hãng",
+    "source": "Viettablet",
+    "price": "6.599.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcT4EQH2JT9O07d7CLuFF37g1V_i94XxF6S94Z5n69v1h6gPDeIraYiSwWeiEqwVJVgGl0Q8T_9BsJFfCqjCoGNzNu0soyEq6oQ09NCq12hgDBKUyrBW9qIiNw",
+    "rating": 4.9,
+    "ratingCount": 12,
+    "productId": "13760546086178039753",
+    "position": 12
+   },
+   {
+    "title": "Điện thoại mini siêu nhỏ, 2 sim 2 sóng siêu nhỏ, đổi giọng nói, kết nối bluetooth, nghe nhạc,có thẻ nhớ, BH 12 tháng",
+    "source": "Shopee",
+    "price": "98.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSGlVkNrUpsgO_tIIKNIOxKsm9mKkDMsFlB4Oepn5WyfTP8qEga5Oex-E09fqJjteRPbPSE6DDC_GFP6APbjGm8AhWTNDiAQh7yAc5mMyYd2LseGd21j8jrzw",
+    "rating": 5,
+    "ratingCount": 54,
+    "productId": "17931641997044252132",
+    "position": 13
+   },
+   {
+    "title": "Điện thoại Itel P55 Plus NFC 8GB 256GB",
+    "source": "CellphoneS",
+    "link": "https://www.google.com/search?ibp=oshop&q=%C4%91i%E1%BB%87n+tho%E1%BA%A1i&prds=localAnnotatedOfferId:1,catalogid:2315920582850926206,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "3.590.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTyF0soj341za3INmqmIfW1j1JmffvOTeT6Vcfm0MXPj_wLVM4eBeyPCLZmNQXSbWtySGT0zBqCiS2rPkhD8GsEQQ4W9oHYEckNQivJYGFU9tw1L98Bk6QY",
+    "rating": 4.7,
+    "ratingCount": 210,
+    "productId": "2315920582850926206",
+    "position": 14
+   },
+   {
+    "title": "Apple iPhone 17",
+    "source": "apple8",
+    "link": "https://www.google.com/search?ibp=oshop&q=%C4%91i%E1%BB%87n+tho%E1%BA%A1i&prds=localAnnotatedOfferId:1,catalogid:11631593456633067243,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "26.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcR-GCyYCKmKZcASlRG1hsr2ekbrxIrlLRX7jahk9iS25W-WzoYMvKwyYmoihTXSTv-euIZlZKYJdqhB1_i5dP2njfP9REUEk-rHIKc7ulnT",
+    "productId": "11631593456633067243",
+    "position": 15
+   },
+   {
+    "title": "Điện thoại Oppo K13 Turbo Pro 12GB/256GB Mới Fullbox",
+    "source": "shopee.vn",
+    "price": "10.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSdPTQmCpPNj8p5MXDooamxvaY004O3Y_LEwnhjYj5tFaRNIbei5TISVOOJaDwuYHyEMvv1vrpxzysfxhGKYmHEiAcgt-UrdY485UWA939NrLrlhYZOxgg",
+    "rating": 4.9,
+    "ratingCount": 218,
+    "productId": "4795703140197579410",
+    "position": 16
+   },
+   {
+    "title": "Điện thoại di động ZTE A35 (4GB + 64GB) Xanh",
+    "source": "MediaMart",
+    "price": "1.690.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQmwmuDC4n795loz2IX-nSdXD5rEEo_muwO-jAlGr6EMK3ZSljUStILSXfpyuz4b5oFeeI8QGPhbeDCdI5jf3Fj24qpeWVakVy-4vH2gzTOYHgpkN2ltZD_1g",
+    "productId": "2939750216144540359",
+    "position": 17
+   },
+   {
+    "title": "Điện thoại iPhone 16 128GB Hồng",
+    "source": "Thế Giới Di Động",
+    "price": "22.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSQVhl8xk5fT408rJIli-koRhSy-qeOcS_8UE_aj1-9w5SyBQHIOMeG6Ui6vjKjVq3L0L1Jo_L_2TBgxySUtif392Kj63xg8vXHFGunxeM4tqwxtApUe3B6",
+    "productId": "382929880260067145",
+    "position": 18
+   },
+   {
+    "title": "Điện thoại Samsung Galaxy A05 64GB chính hãng, trả góp 0%",
+    "source": "dienthoaivui.com.vn",
+    "price": "1 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSlYUfHZdJlb_S_YezTzcIyEFG_kkIw-5RA-c-T1RJrWBoGtDcnOBPH5IC5eThtju8O6Z_g_l9SoJXc0DdOHR8YdymbwnL-ifAyz34mXD-XY2O68UGu5csKLQ",
+    "productId": "15912395207563275221",
+    "position": 19
+   },
+   {
+    "title": "Điện thoại 4G FORME D888 New 4G - Hàng chính hãng",
+    "source": "Shopee",
+    "price": "449.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRYx0XJxKu7X3BaesGNEpHjelHr7wLYocbHnrzdfyLqO5Gswo_Mwp58qt161S0ysorLHLMaav_tt9Lg2jT9QxXfiQe4KehHim2cYtHHwJk",
+    "productId": "10347229371969409267",
+    "position": 20
+   },
+   {
+    "title": "iPhone 16 128GB",
+    "source": "Fptshop.com.vn",
+    "price": "22.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTh6O7OtFz0Ld6BaX_50MiI3RqyngoDhzrbldteyDtvD6mKdC3IULQgfAFvAa2Lne9vC5FB_E0wjklJj1kCylFoTUVHLkNPAdeKYosT4nht0cWdwdeRGoUI",
+    "productId": "878364545138111272",
+    "position": 21
+   },
+   {
+    "title": "iPhone 17 256GB Mist Blue",
+    "source": "Điện Máy Chợ Lớn",
+    "price": "26.790.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRVGSK9_Qyt-oHNtEyO7ZBwLtD54P_V3pfR4wvekvC_rzekaVU2V6Sy0hMM_gVZ-m57ER5eLoFshssORqi19wD-4t6LCFmCG6kxMSsFJmQGTqUJFfvewhldcg",
+    "rating": 4.8,
+    "ratingCount": 390,
+    "productId": "7661761033934391838",
+    "position": 22
+   },
+   {
+    "title": "NKTEL Điện Thoại 4G -Loa Lớn - Pin Trâu 12800mAh + Đèn Pin ĐĂNG KÍ VOLTE TRƯỚC KHI LẮP SIM",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=%C4%91i%E1%BB%87n+tho%E1%BA%A1i&prds=localAnnotatedOfferId:1,catalogid:2077386520808888944,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "379.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQUco9KPOpRMFoSHJ8K0n1ycPlQotWxUMirgFPWH85dkQkjHgTQQxZF5mC6kQbxttSRojFmISL9ycuMQ_dxlISOBWG94NV2Jngj5EqyaSsFjaAygkmEQQ898w",
+    "rating": 4.7,
+    "ratingCount": 282,
+    "productId": "2077386520808888944",
+    "position": 23
+   },
+   {
+    "title": "iPhone 15 128GB (Chính Hãng VN/A) - Mới Nguyên Seal",
+    "source": "Thế Giới Di Động",
+    "link": "https://www.google.com/search?ibp=oshop&q=%C4%91i%E1%BB%87n+tho%E1%BA%A1i&prds=localAnnotatedOfferId:1,catalogid:12219672785809002089,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "19.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQ8e74UHk3PgymTePj6NVQHK17IkBi7R2CYGwwz-8k4otioGuBv5_DUOKqcwmW-cVE1J8uRulrA3h-baQ7c4EW7jPCM4KlFGPEqUbM9s78s3XIKRgxh7-Hu1g",
+    "productId": "12219672785809002089",
+    "position": 24
+   },
+   {
+    "title": "Điện thoại IP Wifi cầm tay Yealink W73H",
+    "source": "Công Ty TNHH Công Nghệ DanaSmart",
+    "price": "1 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQ8IzjQMs3wIw2Sj4B7wWSXEqrc38EHArhjRBTAYP_UtSYXnrL1btbvG8nLr47ih6mWf0Kfdd_CFX0vuq_ub7NBdyR_O-zCZfDP1wrrdKwA2UYzMRsshPq23Q",
+    "rating": 4.7,
+    "ratingCount": 31,
+    "productId": "14103960600449414395",
+    "position": 25
+   },
+   {
+    "title": "Điện thoại 1 sim giá rẻ",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=%C4%91i%E1%BB%87n+tho%E1%BA%A1i&prds=localAnnotatedOfferId:1,catalogid:17900735325349995271,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "159.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSrmmP8_31KQtqPMsbjaJs5cNW37SBBUb_O4v_-7ipJIMEDzZQ5sIFb0QI818BlSErq6B0kIeE_1_wPq3ETGUx7cfHXRg8hLTb_1DvS8Sc",
+    "productId": "17900735325349995271",
+    "position": 26
+   },
+   {
+    "title": "Samsung Galaxy A27 5G",
+    "source": "CellphoneS",
+    "link": "https://www.google.com/search?ibp=oshop&q=%C4%91i%E1%BB%87n+tho%E1%BA%A1i&prds=localAnnotatedOfferId:1,catalogid:17207818168318876136,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "7.800.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQtff8kQLY8Zak67MHoPK0_3EVP3oiWOvmYUjKKPlTQCNswxdON-dLiOh17m66tFoWSe_6m9l-BtGxQmhTQU936ezfLqdSXFgOBkk0ShERuRHbNFxPsJOPg",
+    "productId": "17207818168318876136",
+    "position": 27
+   },
+   {
+    "title": "Samsung Galaxy S26 Ultra 5G",
+    "source": "Thế Giới Di Động",
+    "link": "https://www.google.com/search?ibp=oshop&q=%C4%91i%E1%BB%87n+tho%E1%BA%A1i&prds=localAnnotatedOfferId:1,catalogid:18310862069546634715,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "30.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSdtoLRnAob9bz0ogm9Ez5HUSwlmxloDaBghvMNymI8VsAuYvlg_ZY0FKx8B5zydxItcZVsdKyIsMw6_t2rvX7fQXa5_rThR2STv4UIwqGggyUgor7YZuVp5A",
+    "productId": "18310862069546634715",
+    "position": 28
+   },
+   {
+    "title": "iPhone 17 256GB White",
+    "source": "Điện Máy Chợ Lớn",
+    "price": "26.790.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRJ8VfNHnomFmeH3sTthte4CFnMCBbzczVXzpAoIPHH776x8LaRzd2JD54Vj7ZvVNER-1DDxI5sMZTc1gE5POTG-7sL3EvvQKnZ7KwHyOVBNjcAEKStQQYNPg",
+    "productId": "10033195103702114530",
+    "position": 29
+   },
+   {
+    "title": "Điện thoại mini 2 sim 2 sóng ĐỘC LẠ ECOKING,tích hợp tất cả chức năng của chiếc smatrphone,bluetooth đồng bộ danh bạ",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=%C4%91i%E1%BB%87n+tho%E1%BA%A1i&prds=localAnnotatedOfferId:1,catalogid:7815418124918185935,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "200.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSjoFzg3swILPF6u3cn5Qkox1soQp5PTzvLI21QAHqsf05tYqRjEQ59siQftIUrUbURLSJoFxLQFHceUcitXES4dpme3i0AvsfEjWmNCls",
+    "rating": 4.7,
+    "ratingCount": 21,
+    "productId": "7815418124918185935",
+    "position": 30
+   },
+   {
+    "title": "iPhone 16 Plus 128GB",
+    "source": "Fptshop.com.vn",
+    "price": "24.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQfvPHftoY6JVoUrhPqfo56yhwdc_EjxoYLI1WvfQRFD8aEfd7r7ycnC52oJ8LR9HAoG-g9HcFhsM_zvtf8S2fTBXH74Y5Sz1IrqXu7ncFEGtuY262irT9Y",
+    "productId": "6196387543194071792",
+    "position": 31
+   },
+   {
+    "title": "Điện thoại iPhone 17 512GB Đen",
+    "source": "Thế Giới Di Động",
+    "price": "35.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRnM_UtiSfO8zT6aB_s-50fiYD3X49loyk-jZzHtHbnOctMiGiBaC240OiLpckVBF9lkgPnO1ZRc4RJXpfRdF93SpxYAgkFWloeoL37qObxbfXwJpSEoNNSEg",
+    "productId": "8392861800767950994",
+    "position": 32
+   },
+   {
+    "title": "OPPO Reno15 5G 12GB 256GB",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=%C4%91i%E1%BB%87n+tho%E1%BA%A1i&prds=localAnnotatedOfferId:1,catalogid:1667528590150905903,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "16.395.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQc3BCnE4ec17bsbBM1aSZ6NGSYLHv5GYPyVb1P93Sa_vU5EFUCdhJO4KUCKrjxzutiWpXW2OEFzrQBnRYaJV9Bb4q--n4FXMfzfqCNMP3xPtJVjg5vBBMV",
+    "rating": 4.8,
+    "ratingCount": 128,
+    "productId": "1667528590150905903",
+    "position": 33
+   },
+   {
+    "title": "INOI A54 4GB/256GB",
+    "source": "Hoàng Hà Mobile",
+    "price": "2.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRm-OQwfSYEJKrCwTrFjP-HSYtV-QrWj86v14ME5Sl1azzmAY_5f9kDk7ks7b2ieAsbqO5NEsHaZ4IoOqF-3r4JTYYQeKfk0wN2tZXrejsYIxlQ3DTwHRAG",
+    "rating": 4.7,
+    "ratingCount": 13,
+    "productId": "10363318776320128768",
+    "position": 34
+   },
+   {
+    "title": "REDMI 17 6 GB+256 GB Tím Liên Hoa",
+    "source": "Phong Vũ",
+    "link": "https://www.google.com/search?ibp=oshop&q=%C4%91i%E1%BB%87n+tho%E1%BA%A1i&prds=localAnnotatedOfferId:1,catalogid:878286370500869149,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "7.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcR8T6nAcdp0hViBDWLUhoXqCsUQfePzcvJefxGsbQFbn2HRhO6KcFU9aNU5kWqOd_ARL7qZTCQVmLAQv847mgDVozDw6cIjnR8K-3jH7deaxDZ2NaK1Kn38",
+    "rating": 4.2,
+    "ratingCount": 11,
+    "productId": "878286370500869149",
+    "position": 35
+   },
+   {
+    "title": "Điện thoại 4G Forme A7 4G Chính Hãng có 3G 4G đầy đủ - Sim mobi gắn vô là sử dụng được nh",
+    "source": "Shopee",
+    "price": "449.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRAPbHJ8b6xir2KrbjXv8yHiFZMzbJBfMhBipzQ7E3Yt5-GuKdohvg1AspY73MRiz8mL760js6vvjB-IY7k7bvSfGLc2VslZvA7uiiL1xM",
+    "rating": 5,
+    "ratingCount": 11,
+    "productId": "3826575943991762405",
+    "position": 36
+   },
+   {
+    "title": "Điện thoại Vivo X300 Ultra 16GB/512GB Xanh lá",
+    "source": "Thế Giới Di Động",
+    "price": "40.840.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcStCOS9wPkbZqa9ah3TdYLvTvFfVxKY1bt1tLXanqABvzKtDmsBbKyBNSiZAz4SWyUVTpFGmbISC_Ye4sStcXlsIc654A3_IRi__w--Eu2YLOf2YeW_j1FANg",
+    "rating": 4.9,
+    "ratingCount": 47,
+    "productId": "15792898626815557330",
+    "position": 37
+   },
+   {
+    "title": "iPhone 17 256GB Lavender",
+    "source": "Điện Máy Chợ Lớn",
+    "price": "26.790.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSWm1J538qEgkFzGY52L_brB80esgR6hlctCVVHIoZEj-RNVb71MTksPT5XjpckcRsXQZ0lxGkI8N0grNO6pFL5ctqN5HumMxmbTQUZF6xBZ4AcZW_LS2Axig",
+    "productId": "2723708110920897090",
+    "position": 38
+   },
+   {
+    "title": "Vertu Ayxta Black điểm vàng",
+    "source": "Kỳ Lân Luxury",
+    "price": "78.000.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRr6U5EqWPtxyr4KgFSDuM_EgPXHABJBeJkfFh3PuzaVCE18FWROdtsLLrgb-n1bRHZ_s4n_GfsMBdRQvNLQ_0l8IOmgMN-An-iLC_R5V-H6nA4Wqt7IkluCw",
+    "productId": "4623305408812392019",
+    "position": 39
+   },
+   {
+    "title": "Điện Thoại 4G INOI 244 Plus – Xài SIM Mobi OK | Pin Trâu | Loa To | BH 12 Tháng",
+    "source": "Shopee",
+    "price": "418.520 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcT9052JUgH_cWfxSLvwuiwmpNrQCGWOfREl-A7QZRfql-maPG2n59nbNnvXJTCXS0mBHTKBMP2MedG9anks8deWeBeOfUZiSt4B6l0SBIfwDykLG6YnSp00",
+    "rating": 4.9,
+    "ratingCount": 19,
+    "productId": "17888871232265424018",
+    "position": 40
+   }
+  ],
+  "credits": 2
+ }
+}

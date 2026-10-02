@@ -1,0 +1,25 @@
+{
+  "id": "T1",
+  "text": "Đi Đà Nẵng 3 ngày 2 đêm cho 2 người, ngân sách 6 triệu",
+  "parent": null,
+  "status": 200,
+  "ms": 6906,
+  "evidenceId": "f2f80d3d-db84-4ccc-a3ec-59593e83d631",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình giả sử bạn muốn đi vào cuối tuần tới (21-23/9) và thích lãng mạn, yên tĩnh như sở thích trước đây. Để lập kế hoạch chi tiết, mình cần biết:\n\n**Bạn muốn ưu tiên hoạt động gì nhất?** Ví dụ: tắm biển + thắng cảnh, ăn hải sản + quán bar, hay spa + dạo phố?\n\nCòn nếu bạn muốn mình lập luôn kế hoạch tổng hợp (khách sạn + ăn sáng/trưa/tối + tham quan + giải trí), mình sẽ bắt đầu ngay — chỉ cần xác nhận:",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Đi Đà Nẵng 3 ngày 2 đêm cho 2 người, ngân sách 6 triệu"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn muốn đi vào cuối tuần tới (21-23/9) và thích lãng mạn, yên tĩnh như sở thích trước đây. Để lập kế hoạch chi tiết, mình cần biết:\n\n**Bạn muốn ưu tiên hoạt động gì nhất?** Ví dụ: tắm biển + thắng cảnh, ăn hải sản + quán bar, hay spa + dạo phố?\n\nCòn nếu bạn muốn mình lập luôn kế hoạch tổng hợp (khách sạn + ăn sáng/trưa/tối + tham quan + giải trí), mình sẽ bắt đầu ngay — chỉ cần xác nhận:"
+    }
+  ]
+}

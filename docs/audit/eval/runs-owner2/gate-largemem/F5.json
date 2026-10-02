@@ -1,0 +1,35 @@
+{
+  "id": "F5",
+  "text": "quán này mở mấy giờ?",
+  "parent": "F4",
+  "status": 200,
+  "ms": 484,
+  "evidenceId": "c2006ea8-0624-483c-9b71-6f9400b69f6f",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "**Tám Riêu - Phan Xích Long** mở cửa 10:30–21:30.\n\n(Theo thông tin mình tìm được ở lượt trước — nên gọi xác nhận trước khi đi nhé.)",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Cả nhà 6 người có con nít ăn trưa cuối tuần, cần chỗ đậu xe ô tô, Phú Nhuận"
+    },
+    {
+      "role": "assistant",
+      "content": "Để gợi ý đúng ý bạn, mình sẽ tìm ngay 🔍\n\nMình chọn **Tám Riêu - Phan Xích Long** cho bữa trưa gia đình hôm nay 👨‍👩‍👧‍👦 Quán có **4.8⭐ (2.106 đánh giá Google Maps)**, cách bạn khoảng 2.9km, mở cửa từ 10:30–21:30 nên hoàn toàn phù hợp. Quán có website riêng để bạn xem thêm menu trước khi đi.\n\nMình chưa thấy bằng chứng về chỗ đậu xe, phù hợp trẻ em ở các quán này — nên gọi hỏi trước khi đi.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🍜 GrabFood - Tám Riêu\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/vi/restaurants?search=T%C3%A1m+Ri%C3%AAu+Ph%C3%BA+Nhu%E1%BA%ADn\",\"primary\":true},{\"label\":\"📍 Maps - Tám Riêu\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=5129199686849166520\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Gọi trước để đặt bàn|Xem menu Tám Riêu|Tìm quán khác gần Phú Nhuận[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "quán này mở mấy giờ?"
+    },
+    {
+      "role": "assistant",
+      "content": "**Tám Riêu - Phan Xích Long** mở cửa 10:30–21:30.\n\n(Theo thông tin mình tìm được ở lượt trước — nên gọi xác nhận trước khi đi nhé.)"
+    }
+  ],
+  "toolResults": [],
+  "frames8Raw": []
+}

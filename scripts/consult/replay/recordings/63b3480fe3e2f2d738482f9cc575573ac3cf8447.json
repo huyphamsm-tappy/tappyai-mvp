@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Dell XPS 15 9510 – Core i7, Màn 4K site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:46:13.216Z",
+ "body": {
+  "searchParameters": {
+   "q": "Dell XPS 15 9510 – Core i7, Màn 4K site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Laptop DELL XPS 9510 Core i7-11800H l RAM 16G l SSD ...",
+    "link": "https://www.lazada.vn/products/laptop-dell-xps-9510-core-i7-11800h-l-ram-16g-l-ssd-512g-l-rtx-3050ti-4g-l-man-15-uhd-4k-i2680624227.html?srsltid=AU7gw4WxXiDDo6RYPtZlb6Ad82ZVWJFyudVjpjWp1uPS2kp0Hz6lA5Co",
+    "snippet": "Laptop DELL XPS 9510 Core i7-11800H l RAM 16G l SSD 512G l RTX 3050Ti 4G l Màn 15' UHD 4K · RAM Laptop DDR4 Crucial 16GB Bus 3200 Mhz New 100%. · Tai Nghe ...",
+    "position": 1
+   },
+   {
+    "title": "Laptop Dell XPS 9510 - Core i7-11800H RAM 16G SSD ...",
+    "link": "https://www.lazada.vn/products/laptop-dell-xps-9510-core-i7-11800h-ram-16g-ssd-512g-vga-rtx-3050ti-man-156-inch-fhd-ips-bao-hanh-3-den-12-thang-i2436376612.html?srsltid=AU7gw4WzQO5CW3QQEC0Q59R6lhBWxrGhEWBjbkXR00YSRWAY8NlRPmna",
+    "snippet": "Laptop Dell XPS 9510 - Core i7-11800H RAM 16G SSD 512G VGA RTX 3050Ti Màn 15,6 Inch FHD IPS ( Bảo Hành 3 đến 12 Tháng ). Tuỳ chọn sản phẩm.",
+    "position": 2
+   },
+   {
+    "title": "Laptop Dell XPS 9520 - Core i7-12700H RAM 16G SSD ...",
+    "link": "https://www.lazada.vn/products/laptop-dell-xps-9520-core-i7-12700h-ram-16g-ssd-512g-rtx-3050ti-man-156-inch-fhd-ips-bao-hanh-3-den-12-thang-i2842306475.html?srsltid=AU7gw4UMjh-Cj7a01PjJhfpV16X5EPlT-KBIh-u5WDBBRr-D7Jx1uBTo",
+    "snippet": "Ở phiên bản màn hình 4K(tùy cấu hình) cho độ sáng 500 nits và bao phủ 100% Adobe RGB, 94% DCI-P3 cùng với công nghệ HDR với Dolby Vision giúp cho các điểm nổi ...",
+    "position": 3
+   },
+   {
+    "title": "Laptop Dell XPS 9510, i7 11800H, 16G, 512G, RTX 3050Ti ...",
+    "link": "https://www.lazada.vn/products/laptop-dell-xps-9510-i7-11800h-16g-512g-rtx-3050ti-156in-4k-oled-i1598720475.html?srsltid=AU7gw4XCvGipm9wbsoWi7-MmVRbnC-CBlglBpaHXoZF11mib-tQxMbkT",
+    "snippet": "Laptop Dell XPS 9510, i7 11800H, 16G, 512G, RTX 3050Ti, 15.6in, 4K, OLED · Model : , dòng dell cao cấp, thiết kế vỏ nhôm nguyên khối, màn hình viền mỏng thế hệ ...",
+    "position": 4
+   },
+   {
+    "title": "HP Spectre x360 16 i7 màn 4k Oled Cảm ứng gập 360 độ",
+    "link": "https://www.lazada.vn/products/hp-spectre-x360-16-i7-man-4k-oled-cam-ung-gap-360-do-i2494358129.html?srsltid=AU7gw4U0LPaDdM0QV_L_VE6DN-mbFf5MnKQvNyxpow2NBMzlKVnAtkEX",
+    "snippet": "Mô tả sản phẩm · Bộ xử lýIntel Core i7 - 1260P thế hệ 12 · Bộ nhớ DDR4 16GB 3200MHz · Ổ cứng SSD M2 1TB NVMe Gen 4 · 2 card: Intel Iris Xe Graphics + VGA Intel Arc ...",
+    "position": 5
+   },
+   {
+    "title": "Dell Inspiron 7620 2 in 1 i7 1260P VGA màn hình 16 Inch 4k cảm ...",
+    "link": "https://www.lazada.vn/products/dell-inspiron-7620-2-in-1-i7-1260p-vga-man-hinh-16-inch-4k-cam-ung-gap-360-do-i2427029628.html?srsltid=AU7gw4U1uBq1smc3DDEXoJVpvIfSXrF0hLRHunxFAuxDJt-2efpWWqRd",
+    "snippet": "Mô tả sản phẩm · Bộ xử lý Intel Core i7 - 1260P thế hệ 12 · Bộ nhớ DDR4 16G bus 3200 · Ổ cứng SSD M2 512GB Gen 4 NVMe · 2 card: Intel UHD Graphics + VGA NVIDA ...",
+    "position": 6
+   },
+   {
+    "title": "Dell XPS 9510 i9 11900H VGA RTX 3050 32G 1TB 15.6- ...",
+    "link": "https://h5.lazada.vn/products/dell-xps-9510-i9-11900h-vga-rtx-3050-32g-1tb-156-inch-qhd-oled-cam-ung-i3207006298-s15327227873.html",
+    "snippet": "- Màn hình QHD+: 400Nits sáng rực rỡ, sắc nét, chuẩn màu cao (100% AdobeRGB), rất lý tưởng cho đồ họa, chỉnh sửa ảnh/video. - Hiệu ...",
+    "position": 7
+   },
+   {
+    "title": "Dell Precision 5760 i7-11850H l RAM 32GB l SSD 512GB ...",
+    "link": "https://www.lazada.vn/products/dell-precision-5760-i7-11850h-l-ram-32gb-l-ssd-512gb-l-rtx-a3000-6g-l-17-4k-uhd-i2680511892.html?srsltid=AU7gw4V9s4cmxfMQjTulLDajvsQYMM2HNKK-XJgSIJOsWKIWS6aLFBtE",
+    "snippet": "Vỏ mặt D Dell XPS 15 9500, Dell XPS 9510 (99%). 600.000 ₫. Đặc điểm nổi bật. Kích thước màn hình laptop: > 15 Inches; Loại laptop: Gaming, Khác, Ultrabook; Nhà ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,27 @@
+{
+  "id": "S4",
+  "text": "Robot hút bụi cho nhà có chó, tầm 5-7 triệu",
+  "parent": null,
+  "status": 200,
+  "ms": 5497,
+  "evidenceId": "6807a35c-5a18-43e1-83e8-61f90d623753",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình giả sử bạn cần robot hút bụi chuyên dụng cho nhà có chó, với ngân sách 5-7 triệu VND. Để gợi ý đúng ý bạn, mình cần biết thêm:\n\n**Ưu tiên chính của bạn là gì?**\n\nMình sẽ tìm ngay khi bạn cho biết ưu tiên, để chọn đúng model phù hợp nhất cho tình huống nhà có chó của bạn 🐕",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Robot hút bụi cho nhà có chó, tầm 5-7 triệu"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn cần robot hút bụi chuyên dụng cho nhà có chó, với ngân sách 5-7 triệu VND. Để gợi ý đúng ý bạn, mình cần biết thêm:\n\n**Ưu tiên chính của bạn là gì?**\n\nMình sẽ tìm ngay khi bạn cho biết ưu tiên, để chọn đúng model phù hợp nhất cho tình huống nhà có chó của bạn 🐕"
+    }
+  ],
+  "toolResults": [],
+  "frames8Raw": []
+}

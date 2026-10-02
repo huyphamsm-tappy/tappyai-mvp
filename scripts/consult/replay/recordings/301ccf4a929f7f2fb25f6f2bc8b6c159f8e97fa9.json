@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Michi Sushi\" OR \"Haru Sushi Quận 1\" OR \"MAGURO Studio\" quan 1 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:00:17.744Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Michi Sushi\" OR \"Haru Sushi Quận 1\" OR \"MAGURO Studio\" quan 1 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Michi Sushi (@michi_sushi_42nguyenhue)",
+    "link": "https://www.tiktok.com/@michi_sushi_42nguyenhue",
+    "snippet": "Michi Sushi Chung cư 42 Nguyễn huệ-lầu 7, Bến Nghé, Q.1 Đặt món tại đây · Đã follow · Tài khoản được đề xuất · Tận hưởng trải nghiệm đầy đủ trong ứng dụng.",
+    "position": 1
+   },
+   {
+    "title": "Haru Sushi Quận 1 (@harusushinguyenthaihoc)",
+    "link": "https://www.tiktok.com/@harusushinguyenthaihoc",
+    "snippet": "Haru Sushi Quận 1 (@harusushinguyenthaihoc) trên TikTok |6090 Lượt thích.91 Follower.HARU SUSHI - 93 NGUYỄN THÁI HỌC, PHƯỜNG CẦU ÔNG LÃNH, QUẬN 1.",
+    "position": 2
+   },
+   {
+    "title": "Khám Phá Sushi Ngon Tại Haru Sushi Quận 1",
+    "link": "https://www.tiktok.com/@winter290796/photo/7658315768630709524",
+    "snippet": "Đánh giá: 4.5/5⭐️ Đc: 93 Nguyễn Thái Học, Cầu Ông Lãnh, Hồ Chí Minh #shushi #shushiharu #hcm #quan1. Khám Phá Sushi Ngon Tại Haru Sushi Quận 1.",
+    "position": 3
+   },
+   {
+    "title": "MAGURO Studio (@maguro_studio)",
+    "link": "https://www.tiktok.com/@maguro_studio",
+    "snippet": "Lấy cảm hứng từ tôm hùm trong Set Niji Omakase! Truyền thống nhưng không kém phần dí dỏm để Trung Thu này đáng nhớ hơn tại MAGURO Studio. See You Tonight!",
+    "position": 4
+   },
+   {
+    "title": "Michi Sushi Nguyễn Huệ",
+    "link": "https://www.tiktok.com/discover/michi-sushi-nguy%E1%BB%85n-hu%E1%BB%87",
+    "snippet": "Khám phá các video liên quan đến Michi Sushi Nguyễn Huệ trên TikTok. ... Quận 1 (lầu 7) OPEN: 10:00 AM - 22:00 PM (from Monday to Sunday)",
+    "date": "14 thg 9, 2026",
+    "position": 5
+   },
+   {
+    "title": "MAGURO Studio - 𝗡𝗶𝗴𝗶𝗿𝗶 𝗶𝗻 𝗺𝗼𝘁𝗶𝗼𝗻",
+    "link": "https://www.tiktok.com/@maguro_studio/video/7512026869865188616",
+    "snippet": "... MAGURO Studio 0907 521 017 19 Dong Du, Ben Nghe, District 1, HCMC\".Bossa No Se - redd.",
+    "position": 6
+   },
+   {
+    "title": "Khám Phá Chất Lượng Cá Ngừ Tại Maguro Studio",
+    "link": "https://www.tiktok.com/@cafehoppersg/photo/7543494116638870792?image_index=13",
+    "snippet": "Maguro Studio 19 Đông Du, phường Bến Nghé, quận 1, TpHCM 11 am - 2 pm | 6 pm - 10 pm ( Sunday Off) Maguro nằm ngay tại trung tâm quận ...",
+    "position": 7
+   },
+   {
+    "title": "Trải nghiệm sushi tại Maguro Studio",
+    "link": "https://www.tiktok.com/@hoangkimthanh.swanclinic/video/7271825819863977222",
+    "snippet": "Trải nghiệm sushi tại Maguro Studio. Ăn sushi hay 20 triệu? Tui chọn sushi! Nghiện sushi từ những lần đầu thấy \"nhầy và tanh\" Phải ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

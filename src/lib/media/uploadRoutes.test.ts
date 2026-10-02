@@ -65,7 +65,6 @@ vi.mock('@/lib/media/uploadRoute', async (orig) => {
 })
 
 import { POST as videoPost } from '@/app/api/upload/video/route'
-import { POST as audioPost } from '@/app/api/upload/audio/route'
 import { POST as dealsPost } from '@/app/api/admin/deals/upload/route'
 import { AdminError } from '@/lib/admin/rbac'
 
@@ -86,9 +85,10 @@ const sessionBody = (kind: string) => ({
 })
 const legacyBody = { type: 'blob.generate-client-token', payload: { pathname: 'videos/anything.mp4' } }
 
+// /api/upload/audio was retired with music reuse (F-024) — it now answers 410, so it is no longer
+// one of the shared upload endpoints exercised here.
 const ENDPOINTS = [
   { name: 'video', route: videoPost as Route, path: '/api/upload/video', kind: 'video', kinds: ['video', 'videoThumbnail'] },
-  { name: 'audio', route: audioPost as Route, path: '/api/upload/audio', kind: 'audio', kinds: ['audio', 'audioCover'] },
   { name: 'deals', route: dealsPost as Route, path: '/api/admin/deals/upload', kind: 'dealLogo', kinds: ['dealLogo', 'dealBanner'] },
 ] as const
 
@@ -119,7 +119,6 @@ describe('authorization comes before anything is minted', () => {
   // A / B
   it.each([
     ['video', videoPost as Route, '/api/upload/video', 'video'],
-    ['audio', audioPost as Route, '/api/upload/audio', 'audio'],
   ])('%s: 401 when unauthenticated', async (_n, route, path, kind) => {
     h.user = null
     const res = await route(post(path, sessionBody(kind)))

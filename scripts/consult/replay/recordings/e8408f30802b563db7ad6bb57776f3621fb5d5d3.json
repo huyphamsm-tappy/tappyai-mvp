@@ -1,0 +1,204 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "khách sạn Núi khác ngoài núi Bà Đen, gần Sài Gòn",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.7769,106.7009,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T05:13:39.779Z",
+ "body": {
+  "searchParameters": {
+   "q": "khách sạn Núi khác ngoài núi Bà Đen, gần Sài Gòn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.7769,106.7009,14z",
+   "engine": "google"
+  },
+  "ll": "@10.7768941,106.7008997,14z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Wink Saigon Centre, part of Unscripted by Hyatt",
+    "address": "75 Nguyễn Bỉnh Khiêm, Ward, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7912511,
+    "longitude": 106.70048419999999,
+    "rating": 4.3,
+    "ratingCount": 1270,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://www.hyatt.com/unscripted-by-hyatt/en-US/vn100-wink-saigon-centre?src=corp_lclb_google_seo_vn100&utm_source=google&utm_medium=organic&utm_campaign=lmr",
+    "phoneNumber": "+84 28 3826 9999",
+    "description": "Những phòng nghỉ trang nhã trong một khách sạn thời thượng với sảnh chờ theo phong cách công nghiệp, cùng với đồ ăn đường phố mang đi tiện lợi.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLeimszdyKFmEQWbVgsl5xoJAUtB0zzdJR2WwsRryAaA3N8e9EMG7qEfKQcuCRecKyb0HIZ9_AZ3Vd4ju54gUTdr8pB6QM4mKlNPJPv4nyXYQoY5-sSefeX8BeP-HXWUWNT_n6HY",
+    "cid": "7042863198907953822",
+    "fid": "0x3175299befc9c843:0x61bd46c3c494729e",
+    "placeId": "ChIJQ8jJ75spdTERnnKUxMNGvWE"
+   },
+   {
+    "position": 2,
+    "title": "Express by M Village Hồ Biểu Chánh, a brand of Modern Village Lifestyle",
+    "address": "7 Đ. Hồ Biểu Chánh, Phú Nhuận, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7936094,
+    "longitude": 106.6769078,
+    "rating": 4.8,
+    "ratingCount": 362,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://modernvillagelifestyle.vn/vi/chi-nhanh/express-by-m-village-ho-bieu-chanh/?brand=express",
+    "phoneNumber": "+84 1900 3311",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLfSI74E2rf2ZViJ1RIccajV9--Qb-2rWyR4-M2GOFde9tqaIYiJDYR3mmRumUyp77DcJYaHyeE8Rko9V3Wd6E1RJTjPnqVGIfdeqLzX-qSPsaNzRytX0rz_q5uIZr7j-87v3XXMN6br9fNO",
+    "cid": "11239714783838556472",
+    "fid": "0x317528d58dff0d45:0x9bfb7d0b9b675138",
+    "placeId": "ChIJRQ3_jdUodTEROFFnmwt9-5s"
+   },
+   {
+    "position": 3,
+    "title": "Khách sạn Mai Tuấn Huy",
+    "address": "279 3 Tháng 2, Vườn Lài, Hồ Chí Minh 72500, Việt Nam",
+    "latitude": 10.770249399999999,
+    "longitude": 106.6721182,
+    "rating": 4.8,
+    "ratingCount": 308,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "phoneNumber": "+84 903 144 926",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPNoxzfPW-nusL3OiZ7o9iGkQEmFBJFuN1yD1iEAEHjUbOtKYc_VJtXspIE6nx_n5ZF61iyJul7aONbIP7wyc0YD2ULzUKsUQhb3LvzSPdtJ_rZEnNsqjtY0Er__b1Zg6vH1AgB",
+    "cid": "8720009995447656178",
+    "fid": "0x31752feb66ffa27b:0x7903b2e3e8835ef2",
+    "placeId": "ChIJe6L_ZusvdTER8l6D6OOyA3k"
+   },
+   {
+    "position": 4,
+    "title": "SoLex Hotel",
+    "address": "31 Đ. Núi Thành, Tân Bình, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.8011714,
+    "longitude": 106.6425507,
+    "rating": 4.2,
+    "ratingCount": 269,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "phoneNumber": "+84 28 3842 9888",
+    "description": "Khách sạn bình dị có bữa sáng, phòng ở đơn giản, Wi-Fi, TV thông minh và máy điều hoà.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLeBssVyqnC84CiW65Aycg8giHLRMSTgEiqow25o3u3LOtRKx7oKLBsHlZA5rjubauwrX7PCzPjrCoiXecVF0F17BVW5I6B6FDAVOpLJgqxgB8a2D70vVLueK7rRfCQEZ9N9bhrN",
+    "cid": "14654847396498416102",
+    "fid": "0x3175294fb7d52599:0xcb607a0ff9d8a1e6",
+    "placeId": "ChIJmSXVt08pdTER5qHY-Q96YMs"
+   },
+   {
+    "position": 5,
+    "title": "Bliss Homestay Quận 10",
+    "address": "25a 3 Tháng 2, Vườn Lài, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7750772,
+    "longitude": 106.6799978,
+    "rating": 4.9,
+    "ratingCount": 432,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn",
+     "Dịch vụ hẹn hò"
+    ],
+    "website": "http://m.me/108379195530721",
+    "phoneNumber": "+84 28 8891 1098",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLeNLYwNJ5k-WZAuFl9DUtd5Y1yf3LuD-iWkBHIwuIH199RCF51Ouk7Bqgq1RiTEmsAXQb-2JJ6Oa1eaCcg7RQsUUEdMEtTHIoCPRYhGs-khOvaiuB6jh7fxP9I-3Ak6ihD6A7JCRRAdjKPB",
+    "cid": "9218002822789821591",
+    "fid": "0x31752f000b1f175b:0x7fececba6eef7497",
+    "placeId": "ChIJWxcfCwAvdTERl3Tvbrrs7H8"
+   },
+   {
+    "position": 6,
+    "title": "Nhật Minh Anh Hotel",
+    "address": "58 Đ. Nguyễn Bá Tuyển, Bảy Hiền, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.798803999999999,
+    "longitude": 106.6478822,
+    "rating": 4,
+    "ratingCount": 152,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://nhatminhanh.vn-hotels.com/",
+    "phoneNumber": "+84 28 6293 8938",
+    "description": "Khách sạn bình dị có phòng ở thoải mái, Wi-Fi, dịch vụ ăn uống tại phòng và chỗ đỗ xe.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLdzoVi6wPhQBQuqM43GMH0hnGGrLsv0iVbh6GSdu-GYPXuCWK4TWAcQBO_3w5xaKpiaqcO7e4IiQ4pmLYS577UWRpjUq5EMmWK5wMWZdt3FFHujumWadVS95yCREIw2YsVQpGYI",
+    "cid": "4781204951146112537",
+    "fid": "0x3175294946d6a3a1:0x425a409237672619",
+    "placeId": "ChIJoaPWRkkpdTERGSZnN5JAWkI"
+   },
+   {
+    "position": 7,
+    "title": "Chudu24",
+    "address": "60 Đường Nguyễn Đình Chiểu, Tân Định, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7888814,
+    "longitude": 106.6997294,
+    "rating": 4.3,
+    "ratingCount": 173,
+    "type": "Đại lý du lịch",
+    "types": [
+     "Đại lý du lịch",
+     "Đại lý vé máy bay",
+     "Khách sạn"
+    ],
+    "website": "https://www.chudu24.com/",
+    "phoneNumber": "+84 28 3925 1055",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLetbTj3vZDhUYkpl70urfbHSTX6RHnDbvMcq7ue4CTcM_iUyQX6YjifGTdV3PKvS8-bIYNzq_Ap9O6NyWzX4FV-Wm-TgxXUjHTyqEUgmNnKZwQjlMtVO9b-SS7tBb2frn-6SByGDQ",
+    "cid": "1204467411554506238",
+    "fid": "0x31752f3cf2cef5b3:0x10b720bab13d95fe",
+    "placeId": "ChIJs_XO8jwvdTER_pU9sbogtxA"
+   },
+   {
+    "position": 8,
+    "title": "Minh Hoàng Hotel",
+    "address": "74 Bình Giã, Tân Bình, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.8008173,
+    "longitude": 106.6447865,
+    "rating": 4.2,
+    "ratingCount": 140,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "http://khachsanminhhoang.com/",
+    "phoneNumber": "+84 989 073 037",
+    "description": "Khách sạn đơn giản có phòng ở thoải mái, Wi-Fi, TV và chỗ đỗ xe.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLf1E5NvQtZV-YlESZ3EP1N52hTldO_-CGDHYP6Ocm4QA53XFokawAvOOvGrx_F1lzNL_msIBKnvsu3BNP-QIdj0t0JkP99UCsSIw8FJUfM8huzFdlxbB3AE4ttbNzzNYfWfrZnO",
+    "cid": "11230849749833602461",
+    "fid": "0x3175299528e391f9:0x9bdbfe58089dd59d",
+    "placeId": "ChIJ-ZHjKJUpdTERndWdCFj-25s"
+   },
+   {
+    "position": 9,
+    "title": "Minh Chau hotel",
+    "address": "119 Hoà Hưng, Hòa Hưng, Hồ Chí Minh 123456, Việt Nam",
+    "latitude": 10.778554999999999,
+    "longitude": 106.6728842,
+    "rating": 3.9,
+    "ratingCount": 469,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://minhchau-hotel.com/",
+    "phoneNumber": "+84 909 929 973",
+    "description": "Khách sạn ấm cúng, nhà hàng thoáng mát tầng thượng cùng phòng ở, phòng studio và phòng suite bài trí đơn giản.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-proxy/AIM7gW0d1DeHsRFjn-G9iDzqzMVM8ba052Hz01Not3xWm9kBhn1PyTSpma-WVRdtwwWSdb2ZoCODvCCAG5md7M_nZ0oTeagw2_1gEbcUijHxOXS8nVv-OguvTgvpUm2pNpDsdxOyv7KgHaWchDAjyDNnVMsFZV8SbecDvH6QZ4J2KmviF9NzSgwkCCsc",
+    "cid": "15822662061933071366",
+    "fid": "0x31752ed821e19629:0xdb95635032920c06",
+    "placeId": "ChIJKZbhIdgudTERBgySMlBjlds"
+   }
+  ],
+  "credits": 3
+ }
+}

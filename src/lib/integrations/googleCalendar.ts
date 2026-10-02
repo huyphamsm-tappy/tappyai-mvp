@@ -106,3 +106,56 @@ export function formatEventsForPrompt(events: CalendarEvent[]): string {
   // like any other external data. The header stays outside (FENCE-02).
   return `\n===== LỊCH TUẦN NÀY =====\n${fenceUntrusted('calendar_events', lines.join('\n'))}\n========================`
 }
+
+// ── C-1: disconnecting must actually disconnect ──────────────────────────────
+//
+// "Disconnect" used to mean `DELETE FROM user_integrations`. That removes OUR
+// copy of the credential; it does nothing to Google's grant. Two consequences,
+// and the second is the one that matters:
+//
+//  1. The user is told they revoked access and they did not. A Google refresh
+//     token stays valid until it is revoked or goes six months unused, so the
+//     grant outlives the disconnect indefinitely.
+//
+//  2. 🚨 Every database copy taken BEFORE the disconnect still holds a LIVE
+//     credential. Deleting our row cannot reach into a backup, a replica, or a
+//     leaked dump — but revoking at Google invalidates the token everywhere at
+//     once, including in copies we do not control. That is the only action
+//     available to us that shrinks the blast radius of a leak that has already
+//     happened.
+//
+// Revoking the REFRESH token is deliberate: Google treats it as the grant, so
+// this invalidates the issued access tokens with it. When only an access token
+// was ever stored (no offline grant), that is revoked instead.
+
+const GOOGLE_REVOKE_ENDPOINT = 'https://oauth2.googleapis.com/revoke'
+
+/**
+ * Best-effort revocation at Google. Never throws.
+ *
+ * The caller deletes the row regardless of the outcome: disconnecting is the
+ * user's instruction, and a provider outage must not leave them unable to carry
+ * it out. Returning the outcome rather than swallowing it lets the caller say
+ * something truthful if it ever needs to.
+ */
+export async function revokeGoogleToken(
+  token: string | null | undefined,
+  fetchImpl: typeof fetch = fetch,
+): Promise<boolean> {
+  if (typeof token !== 'string' || token.length === 0) return false
+  try {
+    // A constant endpoint, so there is no user-controlled destination here and
+    // nothing for safeFetch to pin.
+    const res = await fetchImpl(GOOGLE_REVOKE_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({ token }),
+    })
+    // 200 = revoked. 400 = already invalid/unknown, which is the same end state.
+    return res.ok || res.status === 400
+  } catch {
+    // The token stays live at Google and our row still goes. Logged by the
+    // caller, never with the token in it.
+    return false
+  }
+}

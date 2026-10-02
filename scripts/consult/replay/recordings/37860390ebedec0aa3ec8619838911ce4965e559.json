@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Karaoke MEI\" OR \"BB Restaurant | Nhà Hàng Quận 1 | Đặt tiệc Quận 1\" OR \"Bếp Mẹ Ỉn\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:14:35.906Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Karaoke MEI\" OR \"BB Restaurant | Nhà Hàng Quận 1 | Đặt tiệc Quận 1\" OR \"Bếp Mẹ Ỉn\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Karaoke MEI",
+    "link": "https://www.tiktok.com/@mei.karaoke",
+    "snippet": "Karaoke MEI (@mei.karaoke) trên TikTok |714.1K Lượt thích.5903 Follower.Follow, đặt trước - Giảm 30% giá giờ 159-161-163 Hàm Nghi, Bến Thành, ...",
+    "position": 1
+   },
+   {
+    "title": "Mei.karaoke",
+    "link": "https://www.tiktok.com/@karaoke.mei",
+    "snippet": "Mei.karaoke (@karaoke.mei) trên TikTok |42 Lượt thích.Xem video mới nhất từ Mei.karaoke (@karaoke.mei) ... @karaoke.mei. 0Đã follow. 9Follower. 42Lượt thích.",
+    "position": 2
+   },
+   {
+    "title": "Review phòng VIP tại Mei Karaoke",
+    "link": "https://www.tiktok.com/@mei.karaoke/video/7622514706225319188",
+    "snippet": "24 Lượt thích,Video TikTok từ Karaoke MEI (@mei.karaoke): \"Khám phá trải nghiệm phòng VIP tuyệt vời tại Mei Karaoke!",
+    "position": 3
+   },
+   {
+    "title": "karaokemei #karaoke #fyp",
+    "link": "https://www.tiktok.com/@mei.karaoke/video/7689052000020860180",
+    "snippet": "Chúng ta tự hào về các chiến binh đã thi đấu hết mình, mang vinh quang về cho Tổ quốc. Việt Nam ơi, thật tuyệt vời! âm thanh gốc - Karaoke MEI.",
+    "position": 4
+   },
+   {
+    "title": "Trải Nghiệm Karaoke Đỉnh Cao Tại Mei",
+    "link": "https://www.tiktok.com/@karaoke.mei/video/7550284454636342546",
+    "snippet": "Video TikTok từ Mei.karaoke (@karaoke.mei): \"Khám phá không gian giải trí đỉnh cao tại Mei với âm nhạc tinh tế. Đừng bỏ lỡ trải nghiệm ...",
+    "position": 5
+   },
+   {
+    "title": "Ai để ý sẽ không thấy #bar #club #j4f #karaoke #karaokemei",
+    "link": "https://www.tiktok.com/@mei.karaoke/video/7673877556805864724",
+    "snippet": "Cùng hòa mình vào không khí sôi động tại Karaoke Mei, nơi hội tụ niềm đam mê bóng đá và âm nhạc. ... Karaoke Mei hứa hẹn sẽ mang đến một ...",
+    "position": 6
+   },
+   {
+    "title": "Khó Nha Bro: Trải Nghiệm Karaoke Đầy Thú Vị",
+    "link": "https://www.tiktok.com/@mei.karaoke/video/7577767144100875538",
+    "snippet": "66K Lượt thích,1432 Bình luận.Video TikTok từ Karaoke MEI (@mei.karaoke): \"Khám phá những điều thú vị khi karaoke tại Quận 1!",
+    "position": 7
+   },
+   {
+    "title": "Karaoke Mei - Niệm Xíu Đếm Lại Là Đủ",
+    "link": "https://www.tiktok.com/@mei.karaoke/video/7667915150678068501",
+    "snippet": "Karaoke Mei mang đến không gian giải trí âm nhạc sôi động. Bài hát \"Niệm Xíu Đếm Lại Là Đủ\" vang lên, tạo nên bầu không khí đầy cảm xúc.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

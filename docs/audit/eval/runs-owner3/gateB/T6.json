@@ -1,0 +1,1473 @@
+{
+  "id": "T6",
+  "text": "Hội An có gì hay, đi 1 ngày",
+  "parent": null,
+  "status": 200,
+  "ms": 19255,
+  "evidenceId": "60062313-badb-433f-8361-80160c4f04e8",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "quán ăn ngon Hội An",
+        "location": "Hội An",
+        "type": "restaurant"
+      }
+    },
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "điểm tham quan Hội An",
+        "location": "Hội An",
+        "type": "attraction"
+      }
+    },
+    {
+      "tool": "get_weather",
+      "args": {
+        "location": "Hội An"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "MẸT Hội An - Vietnamese cuisine & Vegetarian options 7",
+      "rating": 4.9,
+      "count": 14145,
+      "hours": "10:00–22:30",
+      "address": "49 Nguyễn Thái Học, Old Town, Hội An, Đà Nẵng, Việt Nam"
+    },
+    {
+      "name": "ĐẶC SẢN HỘI AN , QUẢNG NAM :Bánh xèo....",
+      "rating": 5,
+      "count": 552,
+      "hours": "10:00–22:00",
+      "address": "12 18 Tháng 8, Hội An, Đà Nẵng 51000, Việt Nam"
+    },
+    {
+      "name": "Quán ăn Cô Hoa",
+      "rating": 5,
+      "count": 229,
+      "hours": "06:00–22:00",
+      "address": "27 Nguyễn Tri Phương, Hội An, Đà Nẵng, Việt Nam"
+    },
+    {
+      "name": "Ngon Phố Hội",
+      "rating": 4.8,
+      "count": 1544,
+      "hours": "10:30–22:00",
+      "address": "21 La Hối, Phường, Hội An, Đà Nẵng 51309, Việt Nam"
+    },
+    {
+      "name": "Nhà Hàng - Bar Vina Ngon",
+      "rating": 4.9,
+      "count": 303,
+      "hours": "09:00–22:00",
+      "address": "To 5 thôn Thanh Đông, Hội An Đông, Đà Nẵng, Việt Nam"
+    },
+    {
+      "name": "Quán Cao lầu Bá Lễ",
+      "rating": 4.7,
+      "count": 2750,
+      "hours": "08:30–21:30",
+      "address": "49/3 Trần Hưng Đạo, Hội An, Đà Nẵng 56000, Việt Nam"
+    },
+    {
+      "name": "Quán Cao Lầu Thanh",
+      "rating": 4.6,
+      "count": 2555,
+      "hours": "07:00–19:00",
+      "address": "26 Thái Phiên, Hội An, Đà Nẵng, Việt Nam"
+    },
+    {
+      "name": "Hoi An Old Town Table - Cơm Nhà Hội An",
+      "rating": 4.7,
+      "count": 49,
+      "hours": "10:30–21:00",
+      "address": "56 phan bội châu - Hội An ward Da Nang city, Hội An, Quảng Nam, Việt Nam"
+    },
+    {
+      "name": "Bánh Mì Phượng",
+      "rating": 4.3,
+      "count": 16682,
+      "hours": "06:30–21:00",
+      "address": "2b Phan Châu Trinh, Hội An, Đà Nẵng 560000, Việt Nam"
+    },
+    {
+      "name": "Quán Ăn Ngon",
+      "rating": 4.8,
+      "count": 4,
+      "address": "54 Nguyễn Thái Học, Old Town, Hội An, Đà Nẵng, Việt Nam"
+    },
+    {
+      "name": "Hoi An Coconut Village - Coconut Basket Boat Tour",
+      "rating": 4.8,
+      "count": 3828,
+      "hours": "08:00–18:00",
+      "address": "39 Cửa Đại, Hội An Đông, Đà Nẵng 513000, Việt Nam"
+    },
+    {
+      "name": "Đảo Ký ức Hội An",
+      "rating": 4.7,
+      "count": 5230,
+      "hours": "16:00–22:00",
+      "address": "Cồn Hến, rẽ trái, 200 Nguyễn Tri Phương, Hội An, Đà Nẵng, Việt Nam"
+    },
+    {
+      "name": "Phố Cổ Hội An",
+      "rating": 4.8,
+      "count": 638,
+      "hours": "Mở cửa cả ngày",
+      "address": "Hội An, Đà Nẵng, Việt Nam"
+    },
+    {
+      "name": "Bay Mau Coconut Forest Tour",
+      "rating": 4.7,
+      "count": 1956,
+      "hours": "09:00–17:00",
+      "address": "Võ Chí Công, Hội An Đông, Đà Nẵng 51300, Việt Nam"
+    },
+    {
+      "name": "KÝ ỨC HỘI AN",
+      "rating": 4.6,
+      "count": 5239,
+      "hours": "16:00–22:00",
+      "address": "200 Nguyễn Tri Phương, Phường, Hội An, Đà Nẵng 51000, Việt Nam"
+    },
+    {
+      "name": "Phố cổ hội an",
+      "rating": 4.7,
+      "count": 65,
+      "address": "V8GG+7MR, An Hội, Hội An, Đà Nẵng, Việt Nam"
+    },
+    {
+      "name": "Làng lụa Hội An",
+      "rating": 4.3,
+      "count": 3270,
+      "hours": "08:00–16:00",
+      "address": "28 Nguyễn Tất Thành, Hội An Tây, Đà Nẵng, Việt Nam"
+    },
+    {
+      "name": "Nhà cổ Quân Thắng",
+      "rating": 4.3,
+      "count": 401,
+      "hours": "09:00–19:00",
+      "address": "77 Trần Phú, Old Town, Hội An, Đà Nẵng 560000, Việt Nam"
+    },
+    {
+      "name": "Nhà cổ Tấn Ký",
+      "rating": 4.2,
+      "count": 1523,
+      "hours": "08:30–17:45",
+      "address": "101 Nguyễn Thái Học, Old Town, Hội An, Đà Nẵng, Việt Nam"
+    },
+    {
+      "name": "Nhà cổ Phùng Hưng",
+      "rating": 3.7,
+      "count": 614,
+      "hours": "08:00–18:00",
+      "address": "4 Nguyễn Thị Minh Khai, Hội An, Đà Nẵng, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "MẸT Hội An - Vietnamese cuisine & Vegetarian options 7",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 14145,
+        "open_now": true,
+        "opening_hours": "10:00–22:30",
+        "attributes": [
+          "có món chay (\"MẸT Hội An - Vietnamese cuisine & Vegetarian options 7\")"
+        ]
+      }
+    },
+    {
+      "name": "ĐẶC SẢN HỘI AN , QUẢNG NAM :Bánh xèo....",
+      "role": null,
+      "evidence": {
+        "rating": 5,
+        "reviews": 552,
+        "open_now": true,
+        "opening_hours": "10:00–22:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Quán ăn Cô Hoa",
+      "role": null,
+      "evidence": {
+        "rating": 5,
+        "reviews": 229,
+        "open_now": true,
+        "opening_hours": "06:00–22:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Ngon Phố Hội",
+      "role": null,
+      "evidence": {
+        "rating": 4.8,
+        "reviews": 1544,
+        "open_now": true,
+        "opening_hours": "10:30–22:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Nhà Hàng - Bar Vina Ngon",
+      "role": null,
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 303,
+        "open_now": true,
+        "opening_hours": "09:00–22:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Hoi An Coconut Village - Coconut Basket Boat Tour",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 4.8,
+        "reviews": 3828,
+        "open_now": true,
+        "opening_hours": "08:00–18:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Đảo Ký ức Hội An",
+      "role": null,
+      "evidence": {
+        "rating": 4.7,
+        "reviews": 5230,
+        "open_now": false,
+        "opening_hours": "16:00–22:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Phố Cổ Hội An",
+      "role": null,
+      "evidence": {
+        "rating": 4.8,
+        "reviews": 638,
+        "open_now": true,
+        "opening_hours": "Mở cửa cả ngày",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Bay Mau Coconut Forest Tour",
+      "role": null,
+      "evidence": {
+        "rating": 4.7,
+        "reviews": 1956,
+        "open_now": true,
+        "opening_hours": "09:00–17:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "KÝ ỨC HỘI AN",
+      "role": null,
+      "evidence": {
+        "rating": 4.6,
+        "reviews": 5239,
+        "open_now": false,
+        "opening_hours": "16:00–22:00",
+        "attributes": []
+      }
+    }
+  ],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình giả sử bạn muốn khám phá Hội An trong 1 ngày từ Sài Gòn, với bữa trưa/chiều ở đó. Để gợi ý tốt nhất, mình cần tìm những quán ăn ngon và điểm tham quan chính.\n\nNhững lựa chọn mình xác minh được cho yêu cầu này nằm ở thẻ bên dưới.[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem MẸT Hội An trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=8609020210729391502\",\"primary\":true},{\"label\":\"🍜 Tìm trên GrabFood\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/vi/restaurants?search=MẸT+Hội+An\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]tour thuyền dừa giá bao nhiêu|nhà cổ Hội An vé vào bao nhiêu|khách sạn Hội An gần biển[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Hội An có gì hay, đi 1 ngày"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn muốn khám phá Hội An trong 1 ngày từ Sài Gòn, với bữa trưa/chiều ở đó. Để gợi ý tốt nhất, mình cần tìm những quán ăn ngon và điểm tham quan chính.\n\nNhững lựa chọn mình xác minh được cho yêu cầu này nằm ở thẻ bên dưới.[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem MẸT Hội An trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=8609020210729391502\",\"primary\":true},{\"label\":\"🍜 Tìm trên GrabFood\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/vi/restaurants?search=MẸT+Hội+An\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]tour thuyền dừa giá bao nhiêu|nhà cổ Hội An vé vào bao nhiêu|khách sạn Hội An gần biển[/FOLLOWUPS]"
+    }
+  ],
+  "toolResults": [
+    {
+      "location": "Hoi An",
+      "country": "Vietnam",
+      "temp_C": "28",
+      "feels_like_C": "32",
+      "condition": "Patchy rain nearby",
+      "humidity_percent": "79",
+      "wind_kmph": "15",
+      "today_max_C": "28",
+      "today_min_C": "25",
+      "chance_of_rain_percent": "20",
+      "source": "wttr.in"
+    },
+    {
+      "source": "Serper Maps",
+      "count": 20,
+      "location": "Hội An",
+      "results": [
+        {
+          "name": "MẸT Hội An - Vietnamese cuisine & Vegetarian options 7",
+          "place_id": "ChIJgxsiJQAPQjERjhWv5ERieXc",
+          "address": "49 Nguyễn Thái Học, Old Town, Hội An, Đà Nẵng, Việt Nam",
+          "phone": "+84 862 187 549",
+          "google_rating": "4.9⭐ (14.145 đánh giá Google Maps)",
+          "rating_value": 4.9,
+          "rating_count": 14145,
+          "open_now": true,
+          "opening_hours": "10:00–22:30",
+          "place_types": [
+            "Nhà hàng Việt Nam",
+            "Nhà hàng",
+            "Nhà hàng món chay"
+          ],
+          "maps_link": "https://maps.google.com/?cid=8609020210729391502",
+          "booking_links": [
+            "https://metvietnameserestaurant.com/"
+          ],
+          "website_uri": "https://metvietnameserestaurant.com/",
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=8609020210729391502",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "ĐẶC SẢN HỘI AN , QUẢNG NAM :Bánh xèo....",
+          "place_id": "ChIJnbRKDQAPQjER77aqHpSIH8s",
+          "address": "12 18 Tháng 8, Hội An, Đà Nẵng 51000, Việt Nam",
+          "phone": "+84 896 468 599",
+          "google_rating": "5⭐ (552 đánh giá Google Maps)",
+          "rating_value": 5,
+          "rating_count": 552,
+          "open_now": true,
+          "opening_hours": "10:00–22:00",
+          "place_types": [
+            "Nhà hàng"
+          ],
+          "maps_link": "https://maps.google.com/?cid=14636567483728443119",
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=14636567483728443119",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Quán ăn Cô Hoa",
+          "place_id": "ChIJn5WTXbINQjERHfi-rRIcktg",
+          "address": "27 Nguyễn Tri Phương, Hội An, Đà Nẵng, Việt Nam",
+          "phone": "+84 703 913 163",
+          "google_rating": "5⭐ (229 đánh giá Google Maps)",
+          "rating_value": 5,
+          "rating_count": 229,
+          "open_now": true,
+          "opening_hours": "06:00–22:00",
+          "place_types": [
+            "Nhà hàng"
+          ],
+          "maps_link": "https://maps.google.com/?cid=15605566525342152733",
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=15605566525342152733",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Ngon Phố Hội",
+          "place_id": "ChIJJVMiN4kPQjERb1SUzml2DDw",
+          "address": "21 La Hối, Phường, Hội An, Đà Nẵng 51309, Việt Nam",
+          "phone": "+84 707 528 593",
+          "google_rating": "4.8⭐ (1.544 đánh giá Google Maps)",
+          "rating_value": 4.8,
+          "rating_count": 1544,
+          "open_now": true,
+          "opening_hours": "10:30–22:00",
+          "place_types": [
+            "Nhà hàng Việt Nam",
+            "Nhà hàng"
+          ],
+          "maps_link": "https://maps.google.com/?cid=4326963538805675119",
+          "booking_links": [
+            "https://book.chope.co/booking?source=google_dining&rid=ngonphohoi2606vn&rwg_token=AE37R_jthAWSbPekw5soJUauhZfFcbF3Q229o6uiYoAguOd4pYtZQQmBZjbleNVLB1KwIRPZcJWWfIO613pUJXsfHo0rx8t0FV1ET-oDXufYEXUus-j-81s%3D",
+            "https://www.google.com/maps/reserve/v/dine/c/D5rOrTZpIAY?source=pa&opi=79508299"
+          ],
+          "website_uri": "https://ngonphohoi.com/",
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=4326963538805675119",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Nhà Hàng - Bar Vina Ngon",
+          "place_id": "ChIJeWsnp9ENQjERZpG3zrI946g",
+          "address": "To 5 thôn Thanh Đông, Hội An Đông, Đà Nẵng, Việt Nam",
+          "phone": "+84 905 925 579",
+          "google_rating": "4.9⭐ (303 đánh giá Google Maps)",
+          "rating_value": 4.9,
+          "rating_count": 303,
+          "open_now": true,
+          "opening_hours": "09:00–22:00",
+          "place_types": [
+            "Nhà hàng",
+            "Quán bar",
+            "Nhà hàng chuyên phục vụ bữa nửa buổi"
+          ],
+          "maps_link": "https://maps.google.com/?cid=12169638456266821990",
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=12169638456266821990",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Quán Cao lầu Bá Lễ",
+          "place_id": "ChIJ5U9i63EPQjERDeFIbcFEa5w",
+          "address": "49/3 Trần Hưng Đạo, Hội An, Đà Nẵng 56000, Việt Nam",
+          "phone": "+84 937 691 891",
+          "google_rating": "4.7⭐ (2.750 đánh giá Google Maps)",
+          "rating_value": 4.7,
+          "rating_count": 2750,
+          "open_now": true,
+          "opening_hours": "08:30–21:30",
+          "place_types": [
+            "Nhà hàng Việt Nam"
+          ],
+          "maps_link": "https://maps.google.com/?cid=11271178089977667853",
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=11271178089977667853",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Quán Cao Lầu Thanh",
+          "place_id": "ChIJVfRmEnkOQjER78PSHGeyTW0",
+          "address": "26 Thái Phiên, Hội An, Đà Nẵng, Việt Nam",
+          "phone": "+84 235 2211 909",
+          "google_rating": "4.6⭐ (2.555 đánh giá Google Maps)",
+          "rating_value": 4.6,
+          "rating_count": 2555,
+          "open_now": true,
+          "opening_hours": "07:00–19:00",
+          "place_types": [
+            "Nhà hàng"
+          ],
+          "maps_link": "https://maps.google.com/?cid=7876147479275815919",
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=7876147479275815919",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Hoi An Old Town Table - Cơm Nhà Hội An",
+          "place_id": "ChIJDUnQdC8NQjERG3odl8BjQ4U",
+          "address": "56 phan bội châu - Hội An ward Da Nang city, Hội An, Quảng Nam, Việt Nam",
+          "phone": "+84 985 689 863",
+          "google_rating": "4.7⭐ (49 đánh giá Google Maps)",
+          "rating_value": 4.7,
+          "rating_count": 49,
+          "open_now": true,
+          "opening_hours": "10:30–21:00",
+          "place_types": [
+            "Nhà hàng"
+          ],
+          "maps_link": "https://maps.google.com/?cid=9602628509304191515",
+          "booking_links": [
+            "https://www.google.com/maps/reserve/v/dine/c/r3OoyYR3xuM?source=pa&opi=79508299"
+          ],
+          "website_uri": "http://www.hoianoldtowntable.com/",
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=9602628509304191515",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Bánh Mì Phượng",
+          "place_id": "ChIJdbnbh9UNQjER12kILnndFNI",
+          "address": "2b Phan Châu Trinh, Hội An, Đà Nẵng 560000, Việt Nam",
+          "phone": "+84 905 743 773",
+          "google_rating": "4.3⭐ (16.682 đánh giá Google Maps)",
+          "rating_value": 4.3,
+          "rating_count": 16682,
+          "open_now": true,
+          "opening_hours": "06:30–21:00",
+          "place_types": [
+            "Cửa hàng sandwich",
+            "Tiệm bánh",
+            "Nhà hàng ăn nhanh"
+          ],
+          "maps_link": "https://maps.google.com/?cid=15137967760032164311",
+          "website_uri": "https://tiembanhmiphuong.blogspot.com/",
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=15137967760032164311",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Quán Ăn Ngon",
+          "place_id": "ChIJpTeg-H4OQjERXwBDvh2Jzh4",
+          "address": "54 Nguyễn Thái Học, Old Town, Hội An, Đà Nẵng, Việt Nam",
+          "google_rating": "4.8⭐ (4 đánh giá Google Maps)",
+          "rating_value": 4.8,
+          "rating_count": 4,
+          "place_types": [
+            "Nhà hàng"
+          ],
+          "maps_link": "https://maps.google.com/?cid=2219862427179352159",
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=2219862427179352159",
+              "attributed": true
+            }
+          ]
+        }
+      ],
+      "_tappy_place_domain": "food",
+      "place_search_status": "has_results",
+      "_tappy_shortlist": [
+        {
+          "rank": 0,
+          "id": "ChIJgxsiJQAPQjERjhWv5ERieXc",
+          "name": "MẸT Hội An - Vietnamese cuisine & Vegetarian options 7",
+          "role": "best_overall",
+          "evidence": {
+            "rating": 4.9,
+            "reviews": 14145,
+            "open_now": true,
+            "opening_hours": "10:00–22:30",
+            "attributes": [
+              "có món chay (\"MẸT Hội An - Vietnamese cuisine & Vegetarian options 7\")"
+            ]
+          },
+          "why": [
+            "rated 4.9",
+            "14145 reviews"
+          ],
+          "missing": [
+            "distance"
+          ]
+        },
+        {
+          "rank": 1,
+          "id": "ChIJnbRKDQAPQjER77aqHpSIH8s",
+          "name": "ĐẶC SẢN HỘI AN , QUẢNG NAM :Bánh xèo....",
+          "role": null,
+          "evidence": {
+            "rating": 5,
+            "reviews": 552,
+            "open_now": true,
+            "opening_hours": "10:00–22:00",
+            "attributes": []
+          },
+          "why": [
+            "rated 5",
+            "552 reviews"
+          ],
+          "missing": [
+            "distance"
+          ]
+        },
+        {
+          "rank": 2,
+          "id": "ChIJn5WTXbINQjERHfi-rRIcktg",
+          "name": "Quán ăn Cô Hoa",
+          "role": null,
+          "evidence": {
+            "rating": 5,
+            "reviews": 229,
+            "open_now": true,
+            "opening_hours": "06:00–22:00",
+            "attributes": []
+          },
+          "why": [
+            "rated 5",
+            "229 reviews"
+          ],
+          "missing": [
+            "distance"
+          ]
+        },
+        {
+          "rank": 3,
+          "id": "ChIJJVMiN4kPQjERb1SUzml2DDw",
+          "name": "Ngon Phố Hội",
+          "role": null,
+          "evidence": {
+            "rating": 4.8,
+            "reviews": 1544,
+            "open_now": true,
+            "opening_hours": "10:30–22:00",
+            "attributes": []
+          },
+          "why": [
+            "rated 4.8",
+            "1544 reviews"
+          ],
+          "missing": [
+            "distance"
+          ]
+        },
+        {
+          "rank": 4,
+          "id": "ChIJeWsnp9ENQjERZpG3zrI946g",
+          "name": "Nhà Hàng - Bar Vina Ngon",
+          "role": null,
+          "evidence": {
+            "rating": 4.9,
+            "reviews": 303,
+            "open_now": true,
+            "opening_hours": "09:00–22:00",
+            "attributes": []
+          },
+          "why": [
+            "rated 4.9",
+            "303 reviews"
+          ],
+          "missing": [
+            "distance"
+          ]
+        }
+      ],
+      "_tappy_evidence_gap": {
+        "qualified": 10,
+        "total": 10,
+        "needed": [
+          "rating",
+          "reviewCount",
+          "distance"
+        ],
+        "action": "recommend"
+      },
+      "results_note": "Day la TOAN BO 10 ket qua, rut gon (chi cac truong de chon); the (card) cua user hien anh/dia chi/SDT/nut hanh dong."
+    },
+    {
+      "source": "Serper Maps",
+      "count": 20,
+      "location": "Hội An",
+      "results": [
+        {
+          "name": "Hoi An Coconut Village - Coconut Basket Boat Tour",
+          "place_id": "ChIJX6QgMAAPQjERA74cFJ4-B4c",
+          "address": "39 Cửa Đại, Hội An Đông, Đà Nẵng 513000, Việt Nam",
+          "phone": "+84 905 162 358",
+          "google_rating": "4.8⭐ (3.828 đánh giá Google Maps)",
+          "rating_value": 4.8,
+          "rating_count": 3828,
+          "open_now": true,
+          "opening_hours": "08:00–18:00",
+          "place_types": [
+            "Đại lý du lịch bằng thuyền",
+            "Điểm thu hút khách du lịch"
+          ],
+          "maps_link": "https://maps.google.com/?cid=9729814368620428803",
+          "booking_links": [
+            "https://wa.me/+84782329836"
+          ],
+          "website_uri": "https://coconutboattourhoian.com/en/coconut-boat-tour"
+        },
+        {
+          "name": "Đảo Ký ức Hội An",
+          "place_id": "ChIJly5aDdMNQjERiCUtZVu1Brc",
+          "address": "Cồn Hến, rẽ trái, 200 Nguyễn Tri Phương, Hội An, Đà Nẵng, Việt Nam",
+          "phone": "+84 904 636 600",
+          "google_rating": "4.7⭐ (5.230 đánh giá Google Maps)",
+          "rating_value": 4.7,
+          "rating_count": 5230,
+          "open_now": false,
+          "opening_hours": "16:00–22:00",
+          "place_types": [
+            "Công viên giải trí"
+          ],
+          "maps_link": "https://maps.google.com/?cid=13188427962945185160",
+          "website_uri": "http://hoianmemoriesland.com/"
+        },
+        {
+          "name": "Phố Cổ Hội An",
+          "place_id": "ChIJE3yuYgAPQjERnAMwgxxwoN4",
+          "address": "Hội An, Đà Nẵng, Việt Nam",
+          "phone": "+84 347 544 312",
+          "google_rating": "4.8⭐ (638 đánh giá Google Maps)",
+          "rating_value": 4.8,
+          "rating_count": 638,
+          "open_now": true,
+          "opening_hours": "Mở cửa cả ngày",
+          "place_types": [
+            "Điểm mốc lịch sử"
+          ],
+          "maps_link": "https://maps.google.com/?cid=16041945140456063900"
+        },
+        {
+          "name": "Bay Mau Coconut Forest Tour",
+          "place_id": "ChIJTZ_704kPQjERxRB1WMMkmsk",
+          "address": "Võ Chí Công, Hội An Đông, Đà Nẵng 51300, Việt Nam",
+          "phone": "+84 898 239 383",
+          "google_rating": "4.7⭐ (1.956 đánh giá Google Maps)",
+          "rating_value": 4.7,
+          "rating_count": 1956,
+          "open_now": true,
+          "opening_hours": "09:00–17:00",
+          "place_types": [
+            "Điểm thu hút khách du lịch",
+            "Đại lý du lịch bằng thuyền"
+          ],
+          "maps_link": "https://maps.google.com/?cid=14526963969458245829",
+          "website_uri": "https://coconutboattourhoian.com/en/coconut-boat-tour"
+        },
+        {
+          "name": "KÝ ỨC HỘI AN",
+          "place_id": "ChIJs4gh-bgNQjERU2kpobcUj7I",
+          "address": "200 Nguyễn Tri Phương, Phường, Hội An, Đà Nẵng 51000, Việt Nam",
+          "google_rating": "4.6⭐ (5.239 đánh giá Google Maps)",
+          "rating_value": 4.6,
+          "rating_count": 5239,
+          "open_now": false,
+          "opening_hours": "16:00–22:00",
+          "place_types": [
+            "Điểm thu hút khách du lịch"
+          ],
+          "maps_link": "https://maps.google.com/?cid=12866525439336212819",
+          "booking_links": [
+            "https://kyuchoian.com/"
+          ],
+          "website_uri": "https://expresstickets.shop/ve/ky-uc-hoi-an"
+        },
+        {
+          "name": "Phố cổ hội an",
+          "place_id": "ChIJ9f0tfQAPQjERi7LoFdwdBBQ",
+          "address": "V8GG+7MR, An Hội, Hội An, Đà Nẵng, Việt Nam",
+          "google_rating": "4.7⭐ (65 đánh giá Google Maps)",
+          "rating_value": 4.7,
+          "rating_count": 65,
+          "place_types": [
+            "Khu vực đi bộ"
+          ],
+          "maps_link": "https://maps.google.com/?cid=1442310611762983563"
+        },
+        {
+          "name": "Làng lụa Hội An",
+          "place_id": "ChIJWRDF7W8OQjERx3nwjhecy9M",
+          "address": "28 Nguyễn Tất Thành, Hội An Tây, Đà Nẵng, Việt Nam",
+          "phone": "+84 235 3921 144",
+          "google_rating": "4.3⭐ (3.270 đánh giá Google Maps)",
+          "rating_value": 4.3,
+          "rating_count": 3270,
+          "open_now": true,
+          "opening_hours": "08:00–16:00",
+          "place_types": [
+            "Điểm thu hút khách du lịch"
+          ],
+          "maps_link": "https://maps.google.com/?cid=15261463387271363015",
+          "website_uri": "http://www.hoiansilkvillage.com/"
+        },
+        {
+          "name": "Nhà cổ Quân Thắng",
+          "place_id": "ChIJV548934OQjERd9UtcLGPE_U",
+          "address": "77 Trần Phú, Old Town, Hội An, Đà Nẵng 560000, Việt Nam",
+          "google_rating": "4.3⭐ (401 đánh giá Google Maps)",
+          "rating_value": 4.3,
+          "rating_count": 401,
+          "open_now": true,
+          "opening_hours": "09:00–19:00",
+          "place_types": [
+            "Điểm thu hút khách du lịch"
+          ],
+          "maps_link": "https://maps.google.com/?cid=17659616556103882103",
+          "website_uri": "https://vietnamnet.vn/chiem-nguong-nha-go-lim-tinh-xao-cua-dai-gia-giau-co-bac-nhat-hoi-an-xua-2391568.html?fbclid=IwdGRleANBpDJleHRuA2FlbQIxMQABHuEiN92Y0GNg9t4PKqbZ3tm9LxydsV52nRX6OzwCj4chshcRq0XKuEmK7nrg_aem_m6cW01Lj4kAw2ZGW274SIg"
+        },
+        {
+          "name": "Nhà cổ Tấn Ký",
+          "place_id": "ChIJtW4sYX4OQjERmx0edOBzGio",
+          "address": "101 Nguyễn Thái Học, Old Town, Hội An, Đà Nẵng, Việt Nam",
+          "phone": "+84 235 3861 474",
+          "google_rating": "4.2⭐ (1.523 đánh giá Google Maps)",
+          "rating_value": 4.2,
+          "rating_count": 1523,
+          "open_now": true,
+          "opening_hours": "08:30–17:45",
+          "place_types": [
+            "Điểm thu hút khách du lịch",
+            "Tòa nhà di sản"
+          ],
+          "maps_link": "https://maps.google.com/?cid=3033864706845449627",
+          "website_uri": "http://www.hoianworldheritage.org.vn/en/news/Monument/Old-House-of-Tan-Ky-11.hwh"
+        },
+        {
+          "name": "Nhà cổ Phùng Hưng",
+          "place_id": "ChIJNRaQNHwOQjERPtxochz_LJE",
+          "address": "4 Nguyễn Thị Minh Khai, Hội An, Đà Nẵng, Việt Nam",
+          "google_rating": "3.7⭐ (614 đánh giá Google Maps)",
+          "rating_value": 3.7,
+          "rating_count": 614,
+          "open_now": true,
+          "opening_hours": "08:00–18:00",
+          "place_types": [
+            "Điểm thu hút khách du lịch",
+            "Điểm mốc lịch sử"
+          ],
+          "maps_link": "https://maps.google.com/?cid=10461016532118461502"
+        }
+      ],
+      "_tappy_place_domain": "place",
+      "place_search_status": "has_results",
+      "_tappy_shortlist": [
+        {
+          "rank": 0,
+          "id": "ChIJX6QgMAAPQjERA74cFJ4-B4c",
+          "name": "Hoi An Coconut Village - Coconut Basket Boat Tour",
+          "role": "best_overall",
+          "evidence": {
+            "rating": 4.8,
+            "reviews": 3828,
+            "open_now": true,
+            "opening_hours": "08:00–18:00",
+            "attributes": []
+          },
+          "why": [
+            "rated 4.8",
+            "3828 reviews"
+          ],
+          "missing": [
+            "distance"
+          ]
+        },
+        {
+          "rank": 1,
+          "id": "ChIJly5aDdMNQjERiCUtZVu1Brc",
+          "name": "Đảo Ký ức Hội An",
+          "role": null,
+          "evidence": {
+            "rating": 4.7,
+            "reviews": 5230,
+            "open_now": false,
+            "opening_hours": "16:00–22:00",
+            "attributes": []
+          },
+          "why": [
+            "rated 4.7",
+            "5230 reviews"
+          ],
+          "missing": [
+            "distance"
+          ]
+        },
+        {
+          "rank": 2,
+          "id": "ChIJE3yuYgAPQjERnAMwgxxwoN4",
+          "name": "Phố Cổ Hội An",
+          "role": null,
+          "evidence": {
+            "rating": 4.8,
+            "reviews": 638,
+            "open_now": true,
+            "opening_hours": "Mở cửa cả ngày",
+            "attributes": []
+          },
+          "why": [
+            "rated 4.8",
+            "638 reviews"
+          ],
+          "missing": [
+            "distance"
+          ]
+        },
+        {
+          "rank": 3,
+          "id": "ChIJTZ_704kPQjERxRB1WMMkmsk",
+          "name": "Bay Mau Coconut Forest Tour",
+          "role": null,
+          "evidence": {
+            "rating": 4.7,
+            "reviews": 1956,
+            "open_now": true,
+            "opening_hours": "09:00–17:00",
+            "attributes": []
+          },
+          "why": [
+            "rated 4.7",
+            "1956 reviews"
+          ],
+          "missing": [
+            "distance"
+          ]
+        },
+        {
+          "rank": 4,
+          "id": "ChIJs4gh-bgNQjERU2kpobcUj7I",
+          "name": "KÝ ỨC HỘI AN",
+          "role": null,
+          "evidence": {
+            "rating": 4.6,
+            "reviews": 5239,
+            "open_now": false,
+            "opening_hours": "16:00–22:00",
+            "attributes": []
+          },
+          "why": [
+            "rated 4.6",
+            "5239 reviews"
+          ],
+          "missing": [
+            "distance"
+          ]
+        }
+      ],
+      "_tappy_evidence_gap": {
+        "qualified": 10,
+        "total": 10,
+        "needed": [
+          "rating",
+          "reviewCount",
+          "distance"
+        ],
+        "action": "recommend"
+      },
+      "results_note": "Day la TOAN BO 10 ket qua, rut gon (chi cac truong de chon); the (card) cua user hien anh/dia chi/SDT/nut hanh dong."
+    }
+  ],
+  "frames8Raw": [
+    [
+      {
+        "kind": "tappy.places.v1",
+        "v": 1,
+        "domain": "food",
+        "ranked": true,
+        "items": [
+          {
+            "id": "place:osm:15.87649,108.32932",
+            "domain": "food",
+            "kind": "place",
+            "name": "MẸT Hội An - Vietnamese cuisine & Vegetarian options 7",
+            "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmN-ZP9iHPRneWA3rwiaLt4dYT5ce4jcPvmDQUcKgNbJYoTCMEE2xol_IU_xNjOg7UMuVusyKyBfeUZpEfGVx8Zwosi8xnEaSBIdEOIkaXa_BTFhAnPDGrKua_hKvcQ9rVI9mIOV",
+            "address": "49 Nguyễn Thái Học, Old Town, Hội An, Đà Nẵng, Việt Nam",
+            "rating": 4.9,
+            "ratingCount": 14145,
+            "openingHours": "10:00–22:30",
+            "openNow": true,
+            "phone": "+84 862 187 549",
+            "openingHoursWeek": {
+              "Thứ Bảy": "10:00–22:30",
+              "Chủ Nhật": "10:00–22:30",
+              "Thứ Hai": "10:00–22:30",
+              "Thứ Ba": "10:00–22:30",
+              "Thứ Tư": "10:00–22:30",
+              "Thứ Năm": "10:00–22:30",
+              "Thứ Sáu": "10:00–22:30"
+            },
+            "categories": [
+              "Nhà hàng Việt Nam",
+              "Nhà hàng",
+              "Nhà hàng món chay"
+            ],
+            "rank": 0,
+            "shortlistPosition": 1,
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=M%E1%BA%B8T%20H%E1%BB%99i%20An%20-%20Vietnamese%20cuisine%20%26%20Vegetarian%20options%207%20H%E1%BB%99i%20An",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=8609020210729391502",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=M%E1%BA%B8T%20H%E1%BB%99i%20An%20-%20Vietnamese%20cuisine%20%26%20Vegetarian%20options%207%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://metvietnameserestaurant.com/",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84862187549",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:15.87859,108.32072",
+            "domain": "food",
+            "kind": "place",
+            "name": "ĐẶC SẢN HỘI AN , QUẢNG NAM :Bánh xèo....",
+            "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmMJMUZj5csCxC9D9bU8BB7O_eUtZWCrk4ujDDC00zs52-Z6SzhV0ezsJvAgBh7H-2lc6DsqPQEDspqSStUckrRr0rFnPcWEBdR-FuRh5VajwpPzEIoys4sRALkPwJYSUNEhmPHPTE5YTQI",
+            "address": "12 18 Tháng 8, Hội An, Đà Nẵng 51000, Việt Nam",
+            "rating": 5,
+            "ratingCount": 552,
+            "openingHours": "10:00–22:00",
+            "openNow": true,
+            "phone": "+84 896 468 599",
+            "openingHoursWeek": {
+              "Thứ Bảy": "10:00–22:00",
+              "Chủ Nhật": "10:00–22:00",
+              "Thứ Hai": "10:00–22:00",
+              "Thứ Ba": "10:00–22:00",
+              "Thứ Tư": "10:00–22:00",
+              "Thứ Năm": "10:00–22:00",
+              "Thứ Sáu": "10:00–22:00"
+            },
+            "categories": [
+              "Nhà hàng"
+            ],
+            "rank": 1,
+            "shortlistPosition": 2,
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=%C4%90%E1%BA%B6C%20S%E1%BA%A2N%20H%E1%BB%98I%20AN%20%2C%20QU%E1%BA%A2NG%20NAM%20%3AB%C3%A1nh%20x%C3%A8o....%20H%E1%BB%99i%20An",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=14636567483728443119",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=%C4%90%E1%BA%B6C%20S%E1%BA%A2N%20H%E1%BB%98I%20AN%20%2C%20QU%E1%BA%A2NG%20NAM%20%3AB%C3%A1nh%20x%C3%A8o....%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84896468599",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:15.87320,108.33297",
+            "domain": "food",
+            "kind": "place",
+            "name": "Quán ăn Cô Hoa",
+            "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmM_vY8I7r_GLChg1p3WJEftNuu-W_Bnt-62hIyMFy9WqWjjwSqrWUFbFghEE32xRAVi95T4TnBjTGFCNXR71Svb8b08hv3QyJJtxglnutx1vV96KrqEuqh_IwKEnSWnbEi_XLgnstout38",
+            "address": "27 Nguyễn Tri Phương, Hội An, Đà Nẵng, Việt Nam",
+            "rating": 5,
+            "ratingCount": 229,
+            "openingHours": "06:00–22:00",
+            "openNow": true,
+            "phone": "+84 703 913 163",
+            "openingHoursWeek": {
+              "Thứ Bảy": "06:00–22:00",
+              "Chủ Nhật": "06:00–22:00",
+              "Thứ Hai": "06:00–22:00",
+              "Thứ Ba": "06:00–22:00",
+              "Thứ Tư": "06:00–22:00",
+              "Thứ Năm": "06:00–22:00",
+              "Thứ Sáu": "06:00–22:00"
+            },
+            "categories": [
+              "Nhà hàng"
+            ],
+            "rank": 2,
+            "shortlistPosition": 3,
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=Qua%CC%81n%20%C4%83n%20C%C3%B4%20Hoa%20H%E1%BB%99i%20An",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=15605566525342152733",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Qua%CC%81n%20%C4%83n%20C%C3%B4%20Hoa%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84703913163",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:15.87562,108.32355",
+            "domain": "food",
+            "kind": "place",
+            "name": "Ngon Phố Hội",
+            "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmPpiw7-0xh5dY6Gp8ziLhnYUnCgEwTFlgPcmzmCTYfPMZa07uAJW2J9bLhQHEHMji_EQJ_FN2K2roLfp9SqTCEK_t9xypeXrAgkP2GDs-qgKAzJossZaIxwLloM5ZNAnEgdsoY",
+            "address": "21 La Hối, Phường, Hội An, Đà Nẵng 51309, Việt Nam",
+            "rating": 4.8,
+            "ratingCount": 1544,
+            "openingHours": "10:30–22:00",
+            "openNow": true,
+            "phone": "+84 707 528 593",
+            "openingHoursWeek": {
+              "Thứ Bảy": "10:30–22:00",
+              "Chủ Nhật": "10:30–22:00",
+              "Thứ Hai": "10:30–22:00",
+              "Thứ Ba": "10:30–22:00",
+              "Thứ Tư": "10:30–22:00",
+              "Thứ Năm": "10:30–22:00",
+              "Thứ Sáu": "10:30–22:00"
+            },
+            "categories": [
+              "Nhà hàng Việt Nam",
+              "Nhà hàng"
+            ],
+            "rank": 3,
+            "shortlistPosition": 4,
+            "actions": [
+              {
+                "kind": "review",
+                "urlKind": "direct",
+                "url": "https://www.tiktok.com/@dicungyang/video/7554369984437226770",
+                "labelKey": "v3.action.reviewOn",
+                "platform": "TikTok",
+                "attributed": true
+              },
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=Ngon%20Ph%E1%BB%91%20H%E1%BB%99i%20H%E1%BB%99i%20An",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=4326963538805675119",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://ngonphohoi.com/",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84707528593",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Ngon%20Ph%E1%BB%91%20H%E1%BB%99i%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:15.88491,108.35287",
+            "domain": "food",
+            "kind": "place",
+            "name": "Nhà Hàng - Bar Vina Ngon",
+            "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmNVrICuTBsmljPDLeQk4QwiESC4Nxg1-SC3oyXoMOxpJ04FqxzEQv8fBrPhV2n_Q-Rg-JCR1KCaJYwmzm2eCgScC48mBr0aB0N7xH-BXAmjHq6ZC6PCRb7M2Fm6PwQ2asbbBvx9Uw",
+            "address": "To 5 thôn Thanh Đông, Hội An Đông, Đà Nẵng, Việt Nam",
+            "rating": 4.9,
+            "ratingCount": 303,
+            "openingHours": "09:00–22:00",
+            "openNow": true,
+            "phone": "+84 905 925 579",
+            "openingHoursWeek": {
+              "Thứ Bảy": "09:00–22:00",
+              "Chủ Nhật": "09:00–22:00",
+              "Thứ Hai": "09:00–22:00",
+              "Thứ Ba": "09:00–22:00",
+              "Thứ Tư": "09:00–22:00",
+              "Thứ Năm": "09:00–22:00",
+              "Thứ Sáu": "09:00–22:00"
+            },
+            "categories": [
+              "Nhà hàng",
+              "Quán bar",
+              "Nhà hàng chuyên phục vụ bữa nửa buổi"
+            ],
+            "rank": 4,
+            "shortlistPosition": 5,
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=Nh%C3%A0%20H%C3%A0ng%20-%20Bar%20Vina%20Ngon%20H%E1%BB%99i%20An",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=12169638456266821990",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Nh%C3%A0%20H%C3%A0ng%20-%20Bar%20Vina%20Ngon%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84905925579",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:15.87948,108.32941",
+            "domain": "food",
+            "kind": "place",
+            "name": "Quán Cao lầu Bá Lễ",
+            "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmM_dyjfEwQlTlRF0KS9GJrJZEQ7oCI55tbg_cSRHCBFgYU6EMq-V7YtjnrRS9UHaj5hTPEPRv0wjVFE1flAlZNuSis1VNoulRlinyx5EXloOQckVWSxa0wdjOVIJhlsS4M5qZhN",
+            "address": "49/3 Trần Hưng Đạo, Hội An, Đà Nẵng 56000, Việt Nam",
+            "rating": 4.7,
+            "ratingCount": 2750,
+            "openingHours": "08:30–21:30",
+            "openNow": true,
+            "phone": "+84 937 691 891",
+            "openingHoursWeek": {
+              "Thứ Bảy": "08:30–21:30",
+              "Chủ Nhật": "08:30–21:30",
+              "Thứ Hai": "11:00–21:30",
+              "Thứ Ba": "11:00–21:30",
+              "Thứ Tư": "11:00–21:30",
+              "Thứ Năm": "11:00–21:30",
+              "Thứ Sáu": "11:00–21:30"
+            },
+            "categories": [
+              "Nhà hàng Việt Nam"
+            ],
+            "rank": 5,
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=Qu%C3%A1n%20Cao%20l%E1%BA%A7u%20B%C3%A1%20L%E1%BB%85%20H%E1%BB%99i%20An",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=11271178089977667853",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20Cao%20l%E1%BA%A7u%20B%C3%A1%20L%E1%BB%85%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84937691891",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:15.88169,108.32851",
+            "domain": "food",
+            "kind": "place",
+            "name": "Quán Cao Lầu Thanh",
+            "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmMDM20uf-2spkytNG8AWYuIcBrm-bJRlbM0sZ7KBAJ7WnkaIb0QwuiCFPVLVgDDpbiBmrNyeOk7UOD-joIx3jmkYr7oxPycORNym1HNRM0VBji0IKpphDhYo43WBT1yAuURaSI",
+            "address": "26 Thái Phiên, Hội An, Đà Nẵng, Việt Nam",
+            "rating": 4.6,
+            "ratingCount": 2555,
+            "openingHours": "07:00–19:00",
+            "openNow": true,
+            "phone": "+84 235 2211 909",
+            "openingHoursWeek": {
+              "Thứ Bảy": "07:00–19:00",
+              "Chủ Nhật": "07:00–19:00",
+              "Thứ Hai": "07:00–19:00",
+              "Thứ Ba": "07:00–19:00",
+              "Thứ Tư": "07:00–19:00",
+              "Thứ Năm": "07:00–19:00",
+              "Thứ Sáu": "07:00–14:30"
+            },
+            "categories": [
+              "Nhà hàng"
+            ],
+            "rank": 6,
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=Qu%C3%A1n%20Cao%20L%E1%BA%A7u%20Thanh%20H%E1%BB%99i%20An",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=7876147479275815919",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20Cao%20L%E1%BA%A7u%20Thanh%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+842352211909",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:15.87687,108.33344",
+            "domain": "food",
+            "kind": "place",
+            "name": "Hoi An Old Town Table - Cơm Nhà Hội An",
+            "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmMFq9HbdGl9Elud37BJTPIpjmlXEGHahuVS48VTnPTY1xTL8v7tMQpjjuZTb6EiYvOHqzDoea5jPZOhshez__6TvRA55Sx8cZAU0F7lopA2QWdBcj-ijEViHGKEDYSUAflOCCWYpbmfbDMA",
+            "address": "56 phan bội châu - Hội An ward Da Nang city, Hội An, Quảng Nam, Việt Nam",
+            "rating": 4.7,
+            "ratingCount": 49,
+            "openingHours": "10:30–21:00",
+            "openNow": true,
+            "phone": "+84 985 689 863",
+            "openingHoursWeek": {
+              "Thứ Bảy": "10:30–21:00",
+              "Chủ Nhật": "10:30–21:00",
+              "Thứ Hai": "10:30–21:00",
+              "Thứ Ba": "10:30–21:00",
+              "Thứ Tư": "10:30–21:00",
+              "Thứ Năm": "10:30–21:00",
+              "Thứ Sáu": "10:30–21:00"
+            },
+            "categories": [
+              "Nhà hàng"
+            ],
+            "rank": 7,
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=Hoi%20An%20Old%20Town%20Table%20-%20C%C6%A1m%20Nh%C3%A0%20H%E1%BB%99i%20An%20H%E1%BB%99i%20An",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=9602628509304191515",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Hoi%20An%20Old%20Town%20Table%20-%20C%C6%A1m%20Nh%C3%A0%20H%E1%BB%99i%20An%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84985689863",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          }
+        ],
+        "mapsSearchUrl": "https://maps.google.com/maps?q=qu%C3%A1n%20%C4%83n%20ngon%20H%E1%BB%99i%20An%20H%E1%BB%99i%20An",
+        "picked": [
+          "place:osm:15.87562,108.32355",
+          "place:osm:15.87948,108.32941"
+        ],
+        "shown": 3
+      }
+    ]
+  ]
+}

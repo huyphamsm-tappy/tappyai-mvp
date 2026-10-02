@@ -1,0 +1,42 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "quà tặng nam, quà sinh nhật cho nam ý nghĩa - set quà tặng bạn trai gấu bông, nước hoa, ví, đồng hồ site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:35:55.635Z",
+ "body": {
+  "searchParameters": {
+   "q": "quà tặng nam, quà sinh nhật cho nam ý nghĩa - set quà tặng bạn trai gấu bông, nước hoa, ví, đồng hồ site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Set Quà Tặng Hộp Gấu Dâu Ôm Hoa Sang Trọng Siêu To ...",
+    "link": "https://www.lazada.vn/products/set-qua-tang-hop-gau-dau-om-hoa-sang-trong-sieu-to-lam-qua-tang-sinh-nhat-qua-tang-83-valentine-2010-qua-tang-y-nghia-i2192942788.html?srsltid=AU7gw4U7dUtvsav20xBoNLq4TUxkVIOvDraYShA66kzKCRCee_ru8s8D",
+    "snippet": "Set quà tặng gấu bông ôm sang trọng, hộp hoa gấu bông hình dâu siêu to - lựa chọn hoàn hảo cho sinh nhật 8/3, Valentine và 20/10.",
+    "position": 1
+   },
+   {
+    "title": "Quả Cầu Pha Lê Phát Sáng 3D - Trang Trí Phòng Ngủ ...",
+    "link": "https://www.lazada.vn/products/qua-cau-pha-le-phat-sang-3d-trang-tri-phong-ngu-qua-tang-sinh-nhat-giang-sinh-i3321472560.html?srsltid=AU7gw4X8mybXI56mZ8-SEksRUoGBgUJzaXecCmSl8glQWItcsFqdH4qA",
+    "snippet": "- Dạng hình: Tuần lộc, cá voi, người tuyết, hệ mặt trời, cá heo, kỳ lân, dải Ngân hà, nai sừng tấm, Cỏ bốn lá, ông già Noel, Cây Giáng sinh, đám mây tình yêu, ...",
+    "position": 2
+   },
+   {
+    "title": "[SẴN] TRANH TÔ MÀU GẤU TRÚC, TRANH CANVAS TÔ ...",
+    "link": "https://www.lazada.vn/products/san-tranh-to-mau-gau-truc-tranh-canvas-to-mau-theo-so-son-acrylic-panda-number-coloring-i2365965200.html?srsltid=AU7gw4WgHFnLw4vzTrvUaOtWkM0YVCQB6sHvEyTRz2iw78N8wLZosxLo",
+    "snippet": "- Tô màu theo số một bộ môn lành mạnh với mọi lứa tuổi, giải trí, thư giãn. Tranh tô theo số còn là một món quà vô cùng ý nghĩa, đẹp đẽ do chính tay mình làm ra ...",
+    "position": 3
+   }
+  ],
+  "credits": 1
+ }
+}

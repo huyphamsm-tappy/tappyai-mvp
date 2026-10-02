@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"NEKO - Sushi & Izakaya\" OR \"Sushi World\" OR \"Chiyoda Sushi Bến Thành\" quan 1 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T19:16:54.863Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"NEKO - Sushi & Izakaya\" OR \"Sushi World\" OR \"Chiyoda Sushi Bến Thành\" quan 1 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "NEKO Sushi & Izakaya",
+    "link": "https://www.tiktok.com/@neko.sushi.izakaya",
+    "snippet": "NEKO - Sushi & Izakaya 15 Dinh Cong Trang, Tan Dinh Ward, District 1, HCMC · Neko có thực sự \"chuẩn Nhật\"? · Thưởng thức set 10 món cá hồi tại NEKO mà chưa đến ...",
+    "position": 1
+   },
+   {
+    "title": "Cùng @ddhang_2005 khám phá NEKO Sushi & Izakaya",
+    "link": "https://www.tiktok.com/@neko.sushi.izakaya/video/7527549108895190289",
+    "snippet": "Cùng @ddhang_2005 khám phá NEKO Sushi & Izakaya - có gì độc đáo ở một nhà hàng Nhật nằm giữa lòng Quận 1? ✨ #NEKO #sushi #izakaya ...",
+    "position": 2
+   },
+   {
+    "title": "Shirogumo Set: Buổi Hẹn Hò Đặc Biệt Dành Cho Các Cặp Đôi",
+    "link": "https://www.tiktok.com/@neko.sushi.izakaya/video/7532096605185395975",
+    "snippet": "Khám phá Shirogumo Set tuyệt vời cho buổi hẹn hò lãng mạn tại nhà hàng Nhật. @NEKO Sushi & Izakaya ...",
+    "position": 3
+   },
+   {
+    "title": "Sushi World Trần Quang Khải: Trải Nghiệm Nhật Bản Chuẩn",
+    "link": "https://www.tiktok.com/@sushiworld.official/video/7529715940821421319",
+    "snippet": "Nếu bạn đang tìm kiếm một không gian ấm cúng để thưởng thức món Nhật chính hiệu, Sushi World Trần Quang Khải chính là lựa chọn hoàn hảo.",
+    "position": 4
+   },
+   {
+    "title": "Sushi World (@sushiworld.official)",
+    "link": "https://www.tiktok.com/@sushiworld.official",
+    "snippet": "Sushi World (@sushiworld.official) trên TikTok |4917 Lượt thích.1230 Follower. Chuyên phục vụ các món ăn nổi tiếng của Nhật: Sushi, Sashimi, BBQ,…",
+    "position": 5
+   },
+   {
+    "title": "Review Chiyoda Sushi Bến Thành: Menu Sashimi & ...",
+    "link": "https://www.tiktok.com/@anchoidieunghe/video/7280497441852476674",
+    "snippet": "18.5K Lượt thích,113 Bình luận.Video TikTok từ Ăn Chơi Điệu Nghệ ✨ (@anchoidieunghe): \"Bài review Chiyoda Sushi Bến Thành với trải nghiệm ...",
+    "position": 6
+   },
+   {
+    "title": "Những Quán Sushi Ngon Ở Sài Gòn",
+    "link": "https://www.tiktok.com/@saigonmap/video/7428073742812581138",
+    "snippet": "... quân quận 11,súhi mr tom gò vấp,sushi garden,kohaku udon phú nhuận,mayonaka sushi,sushi ở cao lãnh,sushi trưng bày,sushi world quận 1 ...",
+    "position": 7
+   },
+   {
+    "title": "Quán Nhật ngon mà tui với bạn tui u mê 🤤 ...",
+    "link": "https://www.tiktok.com/@duocroidithoi.sg/video/7665747152794094868",
+    "snippet": "Lời khuyên: - Nếu thèm đồ sống và sashimi tươi, ghé quán này ở Quận 1. ... Nhà hàng Sushi World chính là lựa chọn hoàn hảo. Thực đơn đa ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

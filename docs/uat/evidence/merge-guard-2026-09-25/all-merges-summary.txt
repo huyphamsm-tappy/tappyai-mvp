@@ -1,0 +1,14 @@
+exit=1 protected=0 • 3cbb10e merge: integrate rc/web-uat into uat/unified (security hotfix + G1 gro: ✖ 10 finding(s)
+exit=1 protected=0 • d917c44 Merge feat/g1-growth (47f2d5e, 8a01877) into rc/web-uat — G1 Growth on: ✖ 6 finding(s)
+exit=1 protected=0 • d303a91 Merge wip/v3-phase4-design-2026-09-17 (home hero greeting engine, musi: ✖ 1 finding(s)
+exit=1 protected=8 • 1e7b77e Merge wip/cool-vaughan-b3c7ff-2026-09-17 (consultative decision core, : ✖ 31 finding(s)
+exit=1 protected=3 • a6ca9f0 Merge wip/tappyai-v3-canonical-2026-09-17 (uncommitted canonical work): ✖ 15 finding(s)
+exit=1 protected=0 • 2dba2e3 Merge integration/v3-canonical (Android V3 explore/home/tools/profile,: ✖ 10 finding(s)
+exit=1 protected=1 • 28e1d7d Merge feat/affiliate-cross-platform (CCP + Android/iOS Place Card) int: ✖ 13 finding(s)
+exit=0 protected=0 • 89e65f7 Merge origin/main (842379b, incl. age gate #251) into V3 + G1/G2/G3: ✓ clean
+exit=0 protected=0 • 764effd merge(affiliate): integrate origin/main into CCP canonical (cross-plat: ✓ clean
+exit=0 protected=0 • 842379b Merge pull request #251 from huyphamsm-tappy/feat/v3-user-data-foundat: ✓ clean
+exit=1 protected=2 • 997f55c merge: integrate V3 Phase4 design: ✖ 10 finding(s)
+exit=0 protected=0 • 6c6450f Merge pull request #250 from huyphamsm-tappy/feat/v3-user-data-foundat: ✓ clean
+exit=0 protected=0 • 328954a Merge pull request #249 from huyphamsm-tappy/feat/v3-user-data-foundat: ✓ clean
+exit=0 protected=0 • b85ddd9 Merge pull request #248 from huyphamsm-tappy/fix/bug-011-destination-s: ✓ clean

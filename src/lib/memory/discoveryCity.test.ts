@@ -131,7 +131,7 @@ describe('weekly recap can use discovery_city for discovery framing (Scenario 7)
 })
 
 describe('profile shows destination distinctly from residence (Scenario 8)', () => {
-  const page = src('src/app/profile/tappy-knows/page.tsx')
+  const page = src('src/app/(app)/profile/tappy-knows/page.tsx')
   it('renders a destination card keyed to discovery_city with its own label', () => {
     expect(page).toContain('memory.card.destination')
     expect(page).toMatch(/memory\.discovery_city &&/)

@@ -1,0 +1,66 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Khách sạn LOTTE\" Gần Sài Gòn site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:38:18.578Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Khách sạn LOTTE\" Gần Sài Gòn site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Khách sạn Lotte Saigon - Giá cả và Ưu đãi 2026, TP. Hồ ...",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-hotel-detail-19551830/lotte-legend-hotel-saigon/",
+    "snippet": "Khách sạn Lotte Saigon ; Điểm tham quan: Phố Nhật Sài Gòn. 710m ; Điểm tham quan: Chợ Bến Thành. 1,6km ; Điểm tham quan: Nhà hát Thành phố Hồ Chí Minh. 780m.",
+    "position": 1
+   },
+   {
+    "title": "Khách sạn Lotte tại TP. Hồ Chí Minh",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-lotte-hotel/hotels-c301b917/",
+    "snippet": "Đặt khách sạn Lotte tại TP. Hồ Chí Minh với giá từ 461.255₫ trên Trip.com. So sánh 1 chỗ nghỉ dựa trên vị trí, phòng ốc và đánh giá của khách.",
+    "position": 2
+   },
+   {
+    "title": "Khoa Sư Phạm Mầm Non - Khách sạn tại TP. Hồ Chí Minh",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-xi-gong-da-xue-you-er-jiao-yu-xue-yuan/hotels-c301m10845065/",
+    "snippet": "Khách sạn Lotte Saigon Các khách sạn gần Trường Đại Học Sài Gòn - Khoa Sư. Khách sạn Lotte Saigon. Lê Thánh Tôn, TP. Hồ Chí Minh | Cách Trường Đại Học Sài Gòn ...",
+    "position": 3
+   },
+   {
+    "title": "Tìm Khách Sạn 5 Sao Tại TP. Hồ Chí Minh",
+    "link": "https://vn.trip.com/hotels/star5/city/vn/ho-chi-minh-city.html",
+    "snippet": "Khách sạn Lotte Saigon - 5 Sao. 9,5. Đáng Kinh Ngạc. 144 đánh giá. 99+. Khách sạn ... Rất thuận tiện với rất nhiều nhà hàng và cửa hàng tại Trung tâm Sài Gòn.",
+    "position": 4
+   },
+   {
+    "title": "Lotte Hotel Hanoi Đánh giá của khách",
+    "link": "https://vn.trip.com/hotels/hanoi-hotel-detail-96297576/lotte-hotel-hanoi/review.html",
+    "snippet": "Kỳ nghỉ của chúng tôi tại Khách sạn Lotte Hà Nội thật sự tuyệt vời từ đầu đến cuối và xứng đáng nhận điểm 6/5. Chúng tôi ở phòng King Deluxe, rộng rãi, ...",
+    "position": 5
+   },
+   {
+    "title": "Các khách sạn ở gần Landmark 81 Sky View Observatory ...",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-landmark-81-skyview/hotels-c301m24786931/",
+    "snippet": "... Khách sạn Lotte Saigon (từ 3.387.833₫) là những khách sạn sang trọng với giá ... Các khách sạn gần Nhà thờ Đức Bà Sài GònCác khách sạn gần Trung tâm ...",
+    "position": 6
+   },
+   {
+    "title": "Busan Gwangalli City Đánh giá của khách",
+    "link": "https://vn.trip.com/hotels/busan-hotel-detail-58613189/busan-gwanganlee-city/review.html",
+    "snippet": "... khách sạn LOTTE CITY HOTEL GIMPO AIRPORTĐánh giá zhijian, zhijian đánh giá của khách, zhijian đánh giá từ khách du lịch, đánh giá khách sạn zhijianĐánh giá ...",
+    "position": 7
+   }
+  ],
+  "credits": 1
+ }
+}

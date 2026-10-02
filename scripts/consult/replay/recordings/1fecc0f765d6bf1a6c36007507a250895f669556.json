@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Ốp lưng iPhone 17 Pro site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:02:46.178Z",
+ "body": {
+  "searchParameters": {
+   "q": "Ốp lưng iPhone 17 Pro site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Ốp Lưng Bao Phủ Toàn Bộ Đẹp Cho iPhone 17 Pro Max",
+    "link": "https://www.lazada.vn/products/op-lung-bao-phu-toan-bo-dep-cho-iphone-17-pro-max-i13420798972.html?srsltid=AU7gw4W31hspx_OqK55JTtLzGYjj0wLM8VZ7fJ2Os7nLAOxBJALAQ0LU",
+    "snippet": "Ốp Lưng Bao Phủ Toàn Bộ Đẹp Cho iPhone 17 Pro Max ; Vỏ Bảng Chống Nóng Hình Thú Nhỏ Dễ Thương. 207.000 ₫ ; Ốp Lưng Điện Thoại Redmi Chất Liệu Mềm. 139.000 ₫ ; Ốp ...",
+    "position": 1
+   },
+   {
+    "title": "Ốp Lưng Siêu Mỏng Chống Vàng Ẩn Toàn Bộ iPhone 17 ...",
+    "link": "https://www.lazada.vn/products/op-lung-sieu-mong-chong-vang-an-toan-bo-iphone-17-pro-max-i13420470315.html?srsltid=AU7gw4W7JJadWm-teCDGO8T8g11dZyFS19SjWuAFEQOISh_0fJlTy8ub",
+    "snippet": "LazMall Ốp Lưng Siêu Mỏng Chống Vàng Ẩn Toàn Bộ iPhone 17 Pro Max · 100% chính hãng · 30 ngày miễn phí trả hàng · Không áp dụng chính sách bảo hành.",
+    "rating": 4.3,
+    "ratingCount": 4,
+    "position": 2
+   },
+   {
+    "title": "Urban Ốp Lưng iPhone 17 pro Max Ốp Lưng Điện Thoại Di ...",
+    "link": "https://www.lazada.vn/products/urban-op-lung-iphone-17-pro-max-op-lung-dien-thoai-di-dong-thoi-trang-op-lung-thoi-trang-chau-au-va-han-quoc-op-lung-hinh-tai-meo-3d-i3253090251.html?srsltid=AU7gw4Uaqy5Noj-NLDQ365Lmi-vW6DdwISCsli9i3xB7ndAxFB5EkOFI",
+    "snippet": "Urban Ốp Lưng iPhone 17 pro Max Ốp Lưng Điện Thoại Di Động Thời Trang Ốp Lưng Thời Trang Châu Âu Và Hàn Quốc Ốp Lưng Hình Tai Mèo 3D.",
+    "rating": 5,
+    "ratingCount": 2,
+    "position": 3
+   },
+   {
+    "title": "Ốp Lưng iPhone 17 Pro Max Chất Liệu Kevlar Màu Xanh ...",
+    "link": "https://www.lazada.vn/products/lazendi-op-lung-iphone-17-pro-max-chat-lieu-kevlar-mau-xanh-co-tinh-nang-hap-thu-tu-i3300159260-s16043239461.html?from_gmc=1&fl_tag=1&srsltid=AU7gw4WI3B54wM6Zc59m8zSOS8EM9R0zd-CxVoqDd6082t02BDqLht7b",
+    "snippet": "LazMall LAZENDI | Ốp Lưng iPhone 17 Pro Max Chất Liệu Kevlar Màu Xanh Có Tính Năng Hấp thụ Từ · LAZENDI | Ốp Lưng Chống Sốc Bằng Sợi Carbon Nhám Có Từ Tính ...",
+    "position": 4
+   },
+   {
+    "title": "X-IT | Ốp Lưng iPhone 17 Pro Max Chống Sốc Toàn Bộ ...",
+    "link": "https://www.lazada.vn/products/x-it-op-lung-iphone-17-pro-max-chong-soc-toan-bo-ong-kinh-mat-ngoai-mo-i13375592621.html?srsltid=AU7gw4XVsXq2cQkZpcAwKaIFACqBv0DkAXlUUBxJUWgolNx0qAWN6Lbi",
+    "snippet": "Khuyến mãi giảm 617.000 ₫. 554.000 ₫1.171.000 ₫-53%. LazMall X-IT | Ốp Lưng iPhone 17 Pro Max Chống Sốc Toàn Bộ Ống Kính Mặt Ngoài Mờ. Variations.",
+    "position": 5
+   },
+   {
+    "title": "Ốp Lưng iPhone 17 pro Max Trong Suốt Màu Cam Dày Chống ...",
+    "link": "https://h5.lazada.vn/products/op-lung-iphone-17-pro-max-trong-suot-mau-cam-day-chong-roi-hap-thu-tu-tinh-chat-luong-cao-ben-chong-soc-cho-apple-17-pro-max-i3313089033.html",
+    "snippet": "151.000 ₫195.000 ₫-23%. Ốp Lưng iPhone 17 pro Max Trong Suốt Màu Cam Dày Chống Rơi, Hấp Thụ Từ Tính, Chất Lượng Cao, Bền, Chống Sốc Cho Apple 17 pro Max. (1).",
+    "position": 6
+   },
+   {
+    "title": "Ốp Lưng Điện Thoại iPhone 17 Pro Max/Air Bumper ...",
+    "link": "https://h5.lazada.vn/products/op-lung-dien-thoai-iphone-17-pro-maxair-bumper-chong-van-tay-sac-khong-day-tu-tinh-magsafe-chat-lieu-soi-carbon-mau-tron-cao-cap-i13385022837.html",
+    "snippet": "242.000 ₫314.000 ₫-23%. Ốp Lưng Điện Thoại iPhone 17 Pro Max/Air Bumper Chống Vân Tay, Sạc Không Dây Từ Tính Magsafe, Chất Liệu Sợi Carbon Màu Trơn Cao Cấp.",
+    "position": 7
+   },
+   {
+    "title": "Ốp Lưng Điện Thoại Full-Coverage Cho iPhone 17 Pro ...",
+    "link": "https://h5.lazada.vn/products/op-lung-dien-thoai-full-coverage-cho-iphone-17-pro-max-voi-nut-camera-sac-tu-sieu-manh-mat-nham-mem-mai-va-vien-silicone-chong-soc-i13436105505-s117219123673.html",
+    "snippet": "LazMall Ốp Lưng Điện Thoại Full-Coverage Cho iPhone 17 Pro Max với Nút Camera, Sạc Từ Siêu Mạnh, Mặt Nhám Mềm Mại và Viền Silicone Chống Sốc · 100% chính hãng.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

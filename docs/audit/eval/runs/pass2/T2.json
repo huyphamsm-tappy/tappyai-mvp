@@ -1,0 +1,44 @@
+{
+  "id": "T2",
+  "text": "khach san da nang gan bien duoi 1tr/dem",
+  "parent": null,
+  "status": 200,
+  "ms": 16398,
+  "evidenceId": "bf130941-bc4d-475d-ac1e-7cb910ee3c52",
+  "toolCalls": [
+    {
+      "tool": "get_hotel_prices",
+      "args": {
+        "location": "Đà Nẵng"
+      }
+    }
+  ],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items"
+        ]
+      }
+    ]
+  ],
+  "prose": "Gia tham khảo trên Booking/Agoda có thể khác theo loại phòng & ngày cụ thể — bạn nên kiểm tra trực tiếp để xác nhận giá chính xác. Bạn có định check-in ngày nào không? 🏖️\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🏨 Booking.com - M Hotel Da Nang\",\"type\":\"booking\",\"url\":\"https://www.booking.com/searchresults.vi.html?ss=M+Hotel+Da+Nang\",\"primary\":true},{\"label\":\"🏨 Booking.com - Santa Luxury Hotel\",\"type\":\"booking\",\"url\":\"https://www.booking.com/searchresults.vi.html?ss=Santa+Luxury+Hotel\",\"primary\":false}]}[/CTA_BUTTONS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "khach san da nang gan bien duoi 1tr/dem"
+    },
+    {
+      "role": "assistant",
+      "content": "Gia tham khảo trên Booking/Agoda có thể khác theo loại phòng & ngày cụ thể — bạn nên kiểm tra trực tiếp để xác nhận giá chính xác. Bạn có định check-in ngày nào không? 🏖️\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🏨 Booking.com - M Hotel Da Nang\",\"type\":\"booking\",\"url\":\"https://www.booking.com/searchresults.vi.html?ss=M+Hotel+Da+Nang\",\"primary\":true},{\"label\":\"🏨 Booking.com - Santa Luxury Hotel\",\"type\":\"booking\",\"url\":\"https://www.booking.com/searchresults.vi.html?ss=Santa+Luxury+Hotel\",\"primary\":false}]}[/CTA_BUTTONS]"
+    }
+  ]
+}

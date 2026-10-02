@@ -1,0 +1,321 @@
+{
+  "id": "T3",
+  "text": "Cái thứ hai có bao gồm ăn sáng không?",
+  "parent": "T2",
+  "status": 200,
+  "ms": 11738,
+  "evidenceId": "9a525f03-f1a0-4116-a0ca-545b2a1970d7",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "Seahorse hotel Da Nang",
+        "location": "Da Nang",
+        "type": "hotel"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Seahorse Signature Da Nang Hotel By Sujet of Haviland",
+      "rating": 4.8,
+      "count": 1682,
+      "address": "05 Huỳnh Thúc Kháng, Hải Châu, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "Seahorse",
+      "rating": 4.8,
+      "count": 1835,
+      "address": "29 Yên Bái, Hải Châu, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "Seahorse Han Market by Haviland",
+      "rating": 4.6,
+      "count": 657,
+      "address": "07 Nguyễn Thái Học, Hải Châu, Đà Nẵng 550000, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "shown",
+          "pickUnmatched"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình tìm thêm thông tin chi tiết về **Seahorse** để xem có bao gồm ăn sáng không.\n\nMình tìm được **Seahorse** (29 Yên Bái) — 4.8⭐ với 1.835 đánh giá. Tuy nhiên, kết quả tìm kiếm chưa hiển thị thông tin cụ thể về ăn sáng. \n\nBạn có thể kiểm tra trực tiếp trên [website Seahorse](https://havilandhouse.com/seahorse-tropical-da-nang-hotel-by-haviland) hoặc [Booking.com](https://www.booking.com/searchresults.vi.html?ss=Seahorse+Da+Nang) — khi chọn phòng, sẽ thấy rõ \"Bao gồm ăn sáng\" hay \"Không bao gồm\" ở mục chi tiết giá.\n\nKết quả chưa có mức giá, nên mình chưa khẳng định được có vừa ngân sách của bạn không.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🏨 Booking.com - Seahorse\",\"type\":\"booking\",\"url\":\"https://www.booking.com/searchresults.vi.html?ss=Seahorse+Da+Nang\",\"primary\":true},{\"label\":\"📍 Google Maps - Seahorse\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=5003120577334345181\",\"primary\":false}]}[/CTA_BUTTONS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "khach san da nang gan bien duoi 1tr/dem"
+    },
+    {
+      "role": "assistant",
+      "content": "**Bạn sẽ ở bao nhiêu đêm?** (1 đêm hay nhiều hơn?)\n\nMình vừa tìm được 10 khách sạn gần biển Đà Nẵng, nhưng hiện chưa có thông tin giá cụ thể trong kết quả tìm kiếm.\n[Booking.com](https://www.booking.com/searchresults.vi.html?ss=%C4%90%C3%A0%20N%E1%BA%B5ng&checkin=2026-09-26&checkout=2026-09-27)Agoda\n- **M Hotel Da Nang** (4.8⭐, 2.824 đánh giá) - Võ Nguyên Giáp\n- **Seahorse** (4.8⭐, 1.835 đánh giá) - Yên Bái\n- **NALOD Đà Nẵng** (4.7⭐, 4.421 đánh giá) - Võ Nguyên Giáp\n\n[FOLLOWUPS]Khách sạn 3 sao Đà Nẵng|Homestay gần biển Đà Nẵng|Giá phòng cuối tuần Đà Nẵng[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "Cái thứ hai có bao gồm ăn sáng không?"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm thêm thông tin chi tiết về **Seahorse** để xem có bao gồm ăn sáng không.\n\nMình tìm được **Seahorse** (29 Yên Bái) — 4.8⭐ với 1.835 đánh giá. Tuy nhiên, kết quả tìm kiếm chưa hiển thị thông tin cụ thể về ăn sáng. \n\nBạn có thể kiểm tra trực tiếp trên [website Seahorse](https://havilandhouse.com/seahorse-tropical-da-nang-hotel-by-haviland) hoặc [Booking.com](https://www.booking.com/searchresults.vi.html?ss=Seahorse+Da+Nang) — khi chọn phòng, sẽ thấy rõ \"Bao gồm ăn sáng\" hay \"Không bao gồm\" ở mục chi tiết giá.\n\nKết quả chưa có mức giá, nên mình chưa khẳng định được có vừa ngân sách của bạn không.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🏨 Booking.com - Seahorse\",\"type\":\"booking\",\"url\":\"https://www.booking.com/searchresults.vi.html?ss=Seahorse+Da+Nang\",\"primary\":true},{\"label\":\"📍 Google Maps - Seahorse\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=5003120577334345181\",\"primary\":false}]}[/CTA_BUTTONS]"
+    }
+  ],
+  "toolResults": [
+    {
+      "source": "Serper Maps",
+      "count": 3,
+      "location": "Da Nang",
+      "results": [
+        {
+          "name": "Seahorse Signature Da Nang Hotel By Sujet of Haviland",
+          "place_id": "ChIJK0fgJY8ZQjERzIKMb1RxwBk",
+          "address": "05 Huỳnh Thúc Kháng, Hải Châu, Đà Nẵng 550000, Việt Nam",
+          "phone": "+84 236 3532 399",
+          "google_rating": "4.8⭐ (1.682 đánh giá Google Maps)",
+          "rating_value": 4.8,
+          "rating_count": 1682,
+          "place_types": [
+            "Khách sạn"
+          ],
+          "maps_link": "https://maps.google.com/?cid=1855607653939315404",
+          "website_uri": "https://havilandhouse.com/seahorse-signature-danang-hotel-by-haviland"
+        },
+        {
+          "name": "Seahorse",
+          "place_id": "ChIJEa410zMYQjER3f11TKinbkU",
+          "address": "29 Yên Bái, Hải Châu, Đà Nẵng 550000, Việt Nam",
+          "phone": "+84 236 3589 888",
+          "google_rating": "4.8⭐ (1.835 đánh giá Google Maps)",
+          "rating_value": 4.8,
+          "rating_count": 1835,
+          "place_types": [
+            "Khách sạn",
+            "Khách sạn nghỉ dưỡng",
+            "Căn hộ được phục vụ"
+          ],
+          "maps_link": "https://maps.google.com/?cid=5003120577334345181",
+          "website_uri": "https://havilandhouse.com/seahorse-tropical-da-nang-hotel-by-haviland"
+        },
+        {
+          "name": "Seahorse Han Market by Haviland",
+          "place_id": "ChIJg0PrKMAZQjERCijIIr85b-k",
+          "address": "07 Nguyễn Thái Học, Hải Châu, Đà Nẵng 550000, Việt Nam",
+          "phone": "+84 848 287 609",
+          "google_rating": "4.6⭐ (657 đánh giá Google Maps)",
+          "rating_value": 4.6,
+          "rating_count": 657,
+          "place_types": [
+            "Khách sạn",
+            "Căn hộ nghỉ dưỡng cho thuê",
+            "Nhà trọ",
+            "Khách sạn nghỉ dưỡng"
+          ],
+          "maps_link": "https://maps.google.com/?cid=16820726626337171466",
+          "website_uri": "https://havilandhouse.com/seahorse-han-market-da-nang-hostel-by-haviland"
+        }
+      ],
+      "_tappy_place_domain": "place",
+      "place_search_status": "has_results",
+      "_tappy_evidence_gap": {
+        "qualified": 0,
+        "total": 3,
+        "needed": [
+          "price",
+          "distance"
+        ],
+        "action": "search_again"
+      },
+      "travel_editorial": [
+        {
+          "source": "VnExpress",
+          "article_id": "5119711",
+          "title": "11 'điểm du lịch đẹp nhất Việt Nam' trên tạp chí Anh",
+          "url": "https://vnexpress.net/11-diem-du-lich-dep-nhat-viet-nam-tren-tap-chi-anh-5119711.html",
+          "publishedAt": "2026-09-13T12:04:12+07:00",
+          "modifiedAt": "2026-09-14T11:28:05+07:00",
+          "section": "Điểm đến",
+          "summary": "Các điểm đến quen thuộc như Huế, Hà Nội, Đà Nẵng được giới thiệu trong danh sách 11 điểm đẹp và đáng khám phá nhất Việt Nam năm 2026, theo tờ The Times.",
+          "extract": "Các điểm đến quen thuộc như Huế, Hà Nội, Đà Nẵng được giới thiệu trong danh sách 11 điểm đẹp và đáng khám phá nhất Việt Nam năm 2026, theo tờ The Times. Thánh địa Mỹ Sơn, Đà Nẵng được giới thiệu là điểm đến mang vẻ đẹp cổ kính, với quần thể đền tháp Chăm Pa cổ kính được xây dựng từ thế kỷ IV đến thế kỷ XIII. Du khách nên tham quan di tích vào buổi sáng sớm để tránh thời tiết nắng nóng và lượng khách đông; kết hợp tìm hiểu lịch sử kiến trúc Chăm Pa. Ảnh: heritagewanderlust Thánh địa Mỹ Sơn, Đà Nẵng được giới thiệu là điểm đến mang vẻ đẹp cổ kính, với quần thể đền tháp Chăm Pa cổ kính được xây dựng từ thế kỷ IV đến thế kỷ XIII. Du khách nên tham quan di tích vào buổi sáng sớm để tránh thời tiết nắng nóng và lượng khách đông; kết hợp tìm hiểu lịch sử kiến trúc Chăm Pa. Ảnh: heritagewanderlust Địa điểm khác ở Đà Nẵng có tên trong danh sách là bán đảo Sơn Trà. Khu vực này được xem là bức tường xanh chắn gió cho thành phố Đà Nẵng và là nơi sinh sống của loài vượn chà vá chân nâu (ảnh). Địa điểm khác ở Đà Nẵng có tên trong danh sách là bán đảo Sơn Trà. Khu vực này được xem là bức tường xanh chắn gió cho thành phố Đà Nẵng và là nơi sinh sống của loài vượn chà vá chân nâu (ảnh).",
+          "freshness": "stable",
+          "provenance": "REVIEW_SUPPORTED",
+          "dated": "09/2026"
+        }
+      ],
+      "results_note": "Day la TOAN BO 3 ket qua theo thu tu nha cung cap, KHONG phai thu tu uu tien — ban tu chon cho dung tinh huong (rut gon: chi cac truong de chon); the (card) cua user hien anh/dia chi/SDT/nut hanh dong.",
+      "_tappy_budget_evidence": false
+    }
+  ],
+  "frames8Raw": [
+    [
+      {
+        "kind": "tappy.places.v1",
+        "v": 1,
+        "domain": "food",
+        "ranked": true,
+        "items": [
+          {
+            "id": "place:osm:16.06910,108.22291",
+            "domain": "food",
+            "kind": "place",
+            "name": "Seahorse",
+            "image": "https://lh3.googleusercontent.com/gps-proxy/ALd4DhEYUOVdbzdV9Go63gDyUmwZMQlBap5ukWxnzJyCkYn2PIZSmOZ1BG-kg5SfLuJ6JO_UegJZGrF7AkYVf2OV4SUYnTAiSsxvktybK4HKsuMFOxxf2ugBbnf6DnPU0_K6yO--UVVYWyOED1aCdaTfhCLDki5ocBocBzum68PBMwwQmoQzxz__a795cQ",
+            "address": "29 Yên Bái, Hải Châu, Đà Nẵng 550000, Việt Nam",
+            "rating": 4.8,
+            "ratingCount": 1835,
+            "phone": "+84 236 3589 888",
+            "categories": [
+              "Khách sạn",
+              "Khách sạn nghỉ dưỡng",
+              "Căn hộ được phục vụ"
+            ],
+            "rank": 1,
+            "recommended": true,
+            "reasons": [
+              {
+                "attribute": "rating",
+                "evidence": "rated 4.8"
+              },
+              {
+                "attribute": "reviewCount",
+                "evidence": "1835 reviews"
+              }
+            ],
+            "actions": [
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=5003120577334345181",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://havilandhouse.com/seahorse-tropical-da-nang-hotel-by-haviland",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Seahorse%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+842363589888",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:16.06165,108.21853",
+            "domain": "food",
+            "kind": "place",
+            "name": "Seahorse Signature Da Nang Hotel By Sujet of Haviland",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWn9ErYpE3j8WiqoKjHeINirs9-agyio6bZQNUfVV_VGuoBXk4sy-IaM4kwHT0av7NDU85EqxPxSyGCSCVcXTkvCUZEXTcyAhN6vc2NTTnuNkxl3iM5GVF36Ww4W3iZ8uT_VK_Z2",
+            "address": "05 Huỳnh Thúc Kháng, Hải Châu, Đà Nẵng 550000, Việt Nam",
+            "rating": 4.8,
+            "ratingCount": 1682,
+            "phone": "+84 236 3532 399",
+            "categories": [
+              "Khách sạn"
+            ],
+            "rank": 0,
+            "actions": [
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=1855607653939315404",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://havilandhouse.com/seahorse-signature-danang-hotel-by-haviland",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Seahorse%20Signature%20Da%20Nang%20Hotel%20By%20Sujet%20of%20Haviland%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+842363532399",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:16.06780,108.22454",
+            "domain": "food",
+            "kind": "place",
+            "name": "Seahorse Han Market by Haviland",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmRoDVoQudY7D5fV75fr1eq-ADxlkTkmDlsCz8rEpgVcbbmpfbm8tdIXglBjCFQf31KZt2Wfja4RFfdatvMZg2JgJgK79EbU2H6_fANZv7DfYRFYHjFujGVhIoblUHW0M5qX3ti",
+            "address": "07 Nguyễn Thái Học, Hải Châu, Đà Nẵng 550000, Việt Nam",
+            "rating": 4.6,
+            "ratingCount": 657,
+            "phone": "+84 848 287 609",
+            "categories": [
+              "Khách sạn",
+              "Căn hộ nghỉ dưỡng cho thuê",
+              "Nhà trọ",
+              "Khách sạn nghỉ dưỡng"
+            ],
+            "rank": 2,
+            "actions": [
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=16820726626337171466",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://havilandhouse.com/seahorse-han-market-da-nang-hostel-by-haviland",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Seahorse%20Han%20Market%20by%20Haviland%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84848287609",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          }
+        ],
+        "mapsSearchUrl": "https://maps.google.com/maps?q=Seahorse%20hotel%20Da%20Nang%20Da%20Nang",
+        "shown": 3,
+        "pickUnmatched": true
+      }
+    ]
+  ]
+}

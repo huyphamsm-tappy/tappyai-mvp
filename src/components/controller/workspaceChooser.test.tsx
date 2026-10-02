@@ -1,6 +1,7 @@
 // @vitest-environment jsdom
-import { describe, it, expect, vi, afterEach } from 'vitest'
+import { describe, it, expect, vi, afterEach, beforeEach } from 'vitest'
 import { render, screen, cleanup } from '@testing-library/react'
+import { setLocale } from '@/lib/i18n/useTranslation'
 // RED: neither module exists yet. D14 authorizes both.
 import { WorkspaceChooser } from './WorkspaceChooser'
 import { ControllerLoginCard } from './ControllerLoginCard'
@@ -19,6 +20,9 @@ import { ControllerLoginCard } from './ControllerLoginCard'
 // the interactive contract explicitly rather than trusting the file name.
 
 vi.mock('next/navigation', () => ({ usePathname: () => '/admin', useRouter: () => ({ replace: vi.fn(), push: vi.fn() }) }))
+// One assertion below reads English copy, so the locale is stated — the product default is
+// Vietnamese.
+beforeEach(() => setLocale('en'))
 afterEach(cleanup)
 
 const dept = (id: string, nameKey: string, moduleCount = 0) => ({ id, nameKey, moduleCount })

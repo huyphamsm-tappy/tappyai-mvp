@@ -1,0 +1,9 @@
+PRE-FLIGHT CHECK 2: target zdaprdfgpbpnxyofagmc = AUDIT (non-prod). Applying 20260925c + 20260925d, each in one transaction.
+BEFORE: {"fk":["notifications.actor_id=n","shared_results.owner_id=n"],"trg":[],"chainProblems":0,"auditRows":28}
+  NOTICE: F-096: notifications.actor_id now ON DELETE CASCADE
+  NOTICE: F-096: shared_results.owner_id now ON DELETE CASCADE
+  NOTICE: trigger "trg_enqueue_account_deletion" for relation "auth.users" does not exist, skipping
+APPLIED 20260925c_account_deletion_f096.sql
+  NOTICE: trigger "aaa_audit_log_pii" for relation "public.audit_log" does not exist, skipping
+APPLIED 20260925d_audit_log_pii_retention.sql
+AFTER : {"fk":["shared_results.owner_id=c","notifications.actor_id=c"],"trg":["aaa_audit_log_pii","trg_enqueue_account_deletion"],"chainProblems":0,"auditRows":28}

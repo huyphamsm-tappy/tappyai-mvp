@@ -1,0 +1,24 @@
+{
+  "id": "G5b",
+  "group": "used-purchase-risk",
+  "criteria": [
+    "Leads with ownership: cà vẹt/registration matches seller and frame/engine numbers, stolen vehicle, sang tên procedure, deposit scams; then mechanical checks",
+    "No invented numbers",
+    "Scam-vector pointer to 'Cảnh báo lừa đảo' where relevant"
+  ],
+  "turns": [
+    {
+      "user": "mua xe máy cũ Honda Wave cần kiểm tra gì",
+      "status": 200,
+      "elapsedMs": 14467,
+      "textFrames": 430,
+      "tools": [],
+      "toolResults": [],
+      "annotations": [],
+      "cardItems": [],
+      "duplicate": null,
+      "text": "Mua xe máy cũ là quyết định lớn, nên cần kiểm tra kỹ để tránh mất tiền. Dưới đây là những điểm quan trọng bạn nên check trước khi mua **Honda Wave cũ**:\n\n**🚨 Rủi ro trước tiên:**\n- **Giấy tờ không chính chủ** → không sang tên được, mất xe sau này\n- **Xe bị khoá từ xa** → chủ cũ còn nợ trả góp, không thể sử dụng\n- **Xe bị thế chấp** → chủ nợ có quyền lấy lại\n- **Gặp người lạ, cọc tiền trước** → dấu hiệu lừa đảo điển hình\n\n**Trước khi chuyển tiền, dán tin nhắn, link hoặc mã QR của người bán vào **Cảnh báo lừa đảo** trong TappyAI để kiểm tra nhé.**\n\n---\n\n**✅ Kiểm tra giấy tờ (BẮT BUỘC):**\n- Giấy đăng ký xe (chính chủ, còn hạn)\n- Giấy chứng thực quyền sử dụng đất (nếu có)\n- Hóa đơn mua bán hoặc biên bản bàn giao\n- Kiểm tra tên chủ xe trên giấy tờ có khớp với người bán không\n\n**🔧 Kiểm tra tình trạng xe (GẶP TRỰC TIẾP):**\n- **Khung gầm & thân xe:** có bị va chạm, rỉ sét, sơn lại không\n- **Động cơ:** khởi động có khó không, tiếng gầm có bất thường không, xả khí có mùi lạ không\n- **Lốp & phanh:** độ mòn lốp, phanh có còn hiệu lực không\n- **Dầu nhớt & chất lỏng:** màu sắc, mùi có bình thường không\n- **Đèn & điện:** đèn pha, đèn phanh, còi có hoạt động không\n- **Số km chạy:** kiểm tra đồng hồ công tơ mét (có thể bị chỉnh lại)\n\n**💡 Mẹo an toàn:**\n- Gặp trực tiếp ở nơi công cộng, đem theo người thân\n- Nên đưa xe đi kiểm tra tại tiệm sửa chữa uy tín (tốn 200-300k nhưng đáng)\n- Chỉ mua khi đã xem xe trực tiếp và thoát hết tài khoản của người bán\n- Giữ lại hóa đơn, biên bản bàn giao làm bằng chứng\n\nBạn có muốn tìm xe máy cũ Honda Wave ở khu vực nào không? Mình có thể giúp bạn tìm các nơi bán uy tín.",
+      "visible": "Mua xe máy cũ là quyết định lớn, nên cần kiểm tra kỹ để tránh mất tiền. Dưới đây là những điểm quan trọng bạn nên check trước khi mua **Honda Wave cũ**:\n\n**🚨 Rủi ro trước tiên:**\n- **Giấy tờ không chính chủ** → không sang tên được, mất xe sau này\n- **Xe bị khoá từ xa** → chủ cũ còn nợ trả góp, không thể sử dụng\n- **Xe bị thế chấp** → chủ nợ có quyền lấy lại\n- **Gặp người lạ, cọc tiền trước** → dấu hiệu lừa đảo điển hình\n\n**Trước khi chuyển tiền, dán tin nhắn, link hoặc mã QR của người bán vào **Cảnh báo lừa đảo** trong TappyAI để kiểm tra nhé.**\n\n---\n\n**✅ Kiểm tra giấy tờ (BẮT BUỘC):**\n- Giấy đăng ký xe (chính chủ, còn hạn)\n- Giấy chứng thực quyền sử dụng đất (nếu có)\n- Hóa đơn mua bán hoặc biên bản bàn giao\n- Kiểm tra tên chủ xe trên giấy tờ có khớp với người bán không\n\n**🔧 Kiểm tra tình trạng xe (GẶP TRỰC TIẾP):**\n- **Khung gầm & thân xe:** có bị va chạm, rỉ sét, sơn lại không\n- **Động cơ:** khởi động có khó không, tiếng gầm có bất thường không, xả khí có mùi lạ không\n- **Lốp & phanh:** độ mòn lốp, phanh có còn hiệu lực không\n- **Dầu nhớt & chất lỏng:** màu sắc, mùi có bình thường không\n- **Đèn & điện:** đèn pha, đèn phanh, còi có hoạt động không\n- **Số km chạy:** kiểm tra đồng hồ công tơ mét (có thể bị chỉnh lại)\n\n**💡 Mẹo an toàn:**\n- Gặp trực tiếp ở nơi công cộng, đem theo người thân\n- Nên đưa xe đi kiểm tra tại tiệm sửa chữa uy tín (tốn 200-300k nhưng đáng)\n- Chỉ mua khi đã xem xe trực tiếp và thoát hết tài khoản của người bán\n- Giữ lại hóa đơn, biên bản bàn giao làm bằng chứng\n\nBạn có muốn tìm xe máy cũ Honda Wave ở khu vực nào không? Mình có thể giúp bạn tìm các nơi bán uy tín."
+    }
+  ]
+}

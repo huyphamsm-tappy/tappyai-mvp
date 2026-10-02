@@ -1,0 +1,944 @@
+{
+  "id": "E3",
+  "text": "quán bar nào chill có nhạc sống Quận 1",
+  "parent": null,
+  "status": 200,
+  "ms": 15817,
+  "evidenceId": "ce0601f1-2cb6-43d3-abc3-63f4c62db7e4",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "bar nhạc sống Quận 1",
+        "location": "Quận 1, TP.HCM",
+        "type": "bar"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Dollhouse bar HCMC",
+      "rating": 5,
+      "count": 1383,
+      "hours": "19:00–03:00",
+      "distance_km": 0.5,
+      "address": "8a/11d1 Thái Văn Lung, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Loop 1 - Cocktail Bar & Kitchen",
+      "rating": 4.8,
+      "count": 2476,
+      "hours": "17:00–01:00",
+      "distance_km": 0.3,
+      "address": "39 Lý Tự Trọng, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "BB Restaurant | Nhà Hàng Quận 1 | Đặt tiệc Quận 1",
+      "rating": 4.8,
+      "count": 94,
+      "hours": "14:00–03:00",
+      "distance_km": 0.9,
+      "address": "127 Nguyễn Thái Bình, Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Acoustic Bar",
+      "rating": 4.5,
+      "count": 3204,
+      "hours": "19:00–00:00",
+      "distance_km": 1.3,
+      "address": "Ngô Thời Nhiệm/6E Võ Thị Sáu, Xuân Hòa, Hồ Chí Minh 72407, Việt Nam"
+    },
+    {
+      "name": "Chill Skybar & Dining",
+      "rating": 4.4,
+      "count": 5912,
+      "hours": "17:30–01:30",
+      "distance_km": 1,
+      "address": "AB Tower, 76A Lê Lai, Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "Dollhouse bar HCMC",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 5,
+        "reviews": 1383,
+        "distance_km": 0.5,
+        "open_now": false,
+        "opening_hours": "19:00–03:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Loop 1 - Cocktail Bar & Kitchen",
+      "role": null,
+      "evidence": {
+        "rating": 4.8,
+        "reviews": 2476,
+        "distance_km": 0.3,
+        "open_now": false,
+        "opening_hours": "17:00–01:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "BB Restaurant | Nhà Hàng Quận 1 | Đặt tiệc Quận 1",
+      "role": null,
+      "evidence": {
+        "rating": 4.8,
+        "reviews": 94,
+        "distance_km": 0.9,
+        "open_now": false,
+        "opening_hours": "14:00–03:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Acoustic Bar",
+      "role": null,
+      "evidence": {
+        "rating": 4.5,
+        "reviews": 3204,
+        "distance_km": 1.3,
+        "open_now": false,
+        "opening_hours": "19:00–00:00",
+        "attributes": [
+          "có nhạc sống (\"Acoustic Bar\")"
+        ]
+      }
+    },
+    {
+      "name": "Chill Skybar & Dining",
+      "role": null,
+      "evidence": {
+        "rating": 4.4,
+        "reviews": 5912,
+        "distance_km": 1,
+        "open_now": false,
+        "opening_hours": "17:30–01:30",
+        "attributes": []
+      }
+    }
+  ],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình giả sử bạn muốn đi chơi hôm nay ở Quận 1 với không khí sôi động, nhạc sống. Để tìm quán bar phù hợp, mình sẽ tìm ngay.\n\nMình chọn **Dollhouse bar HCMC** cho bạn — quán này có rating 5⭐ từ 1.383 đánh giá, cách bạn chỉ 0.5km, mở từ 19:00 đến 03:00 nên hoàn hảo cho buổi tối. Không khí chill, đồ uống chất lượng cao 👍\n\nNếu muốn quán gần hơn, **Loop 1 - Cocktail Bar & Kitchen** chỉ cách 0.3km với 4.8⭐ (2.476 đánh giá), mở từ 17:00.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website — Dollhouse bar HCMC\",\"type\":\"website\",\"url\":\"http://www.dollhousebar.com/\",\"primary\":true},{\"label\":\"📍 Google Maps — Dollhouse bar HCMC\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=12322941922998073283\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Quán nào có view đẹp?|Chỗ nào có DJ?|Quán nào mở khuya nhất?[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "quán bar nào chill có nhạc sống Quận 1"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn muốn đi chơi hôm nay ở Quận 1 với không khí sôi động, nhạc sống. Để tìm quán bar phù hợp, mình sẽ tìm ngay.\n\nMình chọn **Dollhouse bar HCMC** cho bạn — quán này có rating 5⭐ từ 1.383 đánh giá, cách bạn chỉ 0.5km, mở từ 19:00 đến 03:00 nên hoàn hảo cho buổi tối. Không khí chill, đồ uống chất lượng cao 👍\n\nNếu muốn quán gần hơn, **Loop 1 - Cocktail Bar & Kitchen** chỉ cách 0.3km với 4.8⭐ (2.476 đánh giá), mở từ 17:00.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website — Dollhouse bar HCMC\",\"type\":\"website\",\"url\":\"http://www.dollhousebar.com/\",\"primary\":true},{\"label\":\"📍 Google Maps — Dollhouse bar HCMC\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=12322941922998073283\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Quán nào có view đẹp?|Chỗ nào có DJ?|Quán nào mở khuya nhất?[/FOLLOWUPS]"
+    }
+  ],
+  "toolResults": [
+    {
+      "source": "Serper Maps",
+      "count": 20,
+      "location": "Quận 1, TP.HCM",
+      "results": [
+        {
+          "name": "Dollhouse bar HCMC",
+          "address": "8a/11d1 Thái Văn Lung, Sài Gòn, Hồ Chí Minh, Việt Nam",
+          "phone": "+84 762 903 161",
+          "website_uri": "http://www.dollhousebar.com/",
+          "place_id": "ChIJDfijGesvdTERw7cRpGPiA6s",
+          "rating_value": 5,
+          "google_rating": "5⭐ (1.383 đánh giá Google Maps)",
+          "rating_count": 1383,
+          "place_types": [
+            "Quán bar"
+          ],
+          "maps_link": "https://maps.google.com/?cid=12322941922998073283",
+          "opening_hours": "19:00–03:00",
+          "open_now": false,
+          "distance_km": 0.5,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "label": "📍 Google Maps — Dollhouse bar HCMC",
+              "url": "https://maps.google.com/?cid=12322941922998073283",
+              "attributed": true
+            },
+            {
+              "kind": "official_website",
+              "label": "🌐 Website — Dollhouse bar HCMC",
+              "url": "http://www.dollhousebar.com/",
+              "attributed": true
+            },
+            {
+              "kind": "youtube_search_fallback",
+              "label": "🔎 Tìm video review trên YouTube",
+              "url": "https://www.youtube.com/results?search_query=Dollhouse%20bar%20HCMC%20review",
+              "attributed": false
+            }
+          ],
+          "has_maps": true,
+          "has_website": true,
+          "has_photo": true,
+          "has_hours": true,
+          "has_phone": true,
+          "has_reviews": "search"
+        },
+        {
+          "name": "Loop 1 - Cocktail Bar & Kitchen",
+          "address": "39 Lý Tự Trọng, Sài Gòn, Hồ Chí Minh, Việt Nam",
+          "phone": "+84 919 115 910",
+          "website_uri": "https://www.facebook.com/loop1cocktailnkitchen1/",
+          "place_id": "ChIJPQgd7EcvdTERlSRcqHIHHIg",
+          "rating_value": 4.8,
+          "google_rating": "4.8⭐ (2.476 đánh giá Google Maps)",
+          "rating_count": 2476,
+          "place_types": [
+            "Quán bar cocktail"
+          ],
+          "maps_link": "https://maps.google.com/?cid=9807722277538374805",
+          "opening_hours": "17:00–01:00",
+          "open_now": false,
+          "distance_km": 0.3,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "label": "📍 Google Maps — Loop 1 - Cocktail Bar & Kitchen",
+              "url": "https://maps.google.com/?cid=9807722277538374805",
+              "attributed": true
+            },
+            {
+              "kind": "official_website",
+              "label": "🌐 Website — Loop 1 - Cocktail Bar & Kitchen",
+              "url": "https://www.facebook.com/loop1cocktailnkitchen1/",
+              "attributed": true
+            },
+            {
+              "kind": "youtube_search_fallback",
+              "label": "🔎 Tìm video review trên YouTube",
+              "url": "https://www.youtube.com/results?search_query=Loop%201%20-%20Cocktail%20Bar%20%26%20Kitchen%20review",
+              "attributed": false
+            }
+          ],
+          "has_maps": true,
+          "has_website": true,
+          "has_photo": true,
+          "has_hours": true,
+          "has_phone": true,
+          "has_reviews": "search"
+        },
+        {
+          "name": "BB Restaurant | Nhà Hàng Quận 1 | Đặt tiệc Quận 1",
+          "address": "127 Nguyễn Thái Bình, Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+          "phone": "+84 931 785 555",
+          "website_uri": "http://127bbrestaurant.com/",
+          "place_id": "ChIJPZxk9QYvdTER572kEFw_gh4",
+          "rating_value": 4.8,
+          "google_rating": "4.8⭐ (94 đánh giá Google Maps)",
+          "rating_count": 94,
+          "place_types": [
+            "Nhà hàng",
+            "Quán bar karaoke"
+          ],
+          "maps_link": "https://maps.google.com/?cid=2198389232758996455",
+          "opening_hours": "14:00–03:00",
+          "open_now": false,
+          "distance_km": 0.9,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "label": "📍 Google Maps — BB Restaurant | Nhà Hàng Quận 1 | Đặt tiệc Quận 1",
+              "url": "https://maps.google.com/?cid=2198389232758996455",
+              "attributed": true
+            },
+            {
+              "kind": "official_website",
+              "label": "🌐 Website — BB Restaurant | Nhà Hàng Quận 1 | Đặt tiệc Quận 1",
+              "url": "http://127bbrestaurant.com/",
+              "attributed": true
+            },
+            {
+              "kind": "youtube_search_fallback",
+              "label": "🔎 Tìm video review trên YouTube",
+              "url": "https://www.youtube.com/results?search_query=BB%20Restaurant%20%7C%20Nh%C3%A0%20H%C3%A0ng%20Qu%E1%BA%ADn%201%20%7C%20%C4%90%E1%BA%B7t%20ti%E1%BB%87c%20Qu%E1%BA%ADn%201%20review",
+              "attributed": false
+            }
+          ],
+          "has_maps": true,
+          "has_website": true,
+          "has_photo": true,
+          "has_hours": true,
+          "has_phone": true,
+          "has_reviews": "search"
+        },
+        {
+          "name": "Acoustic Bar",
+          "address": "Ngô Thời Nhiệm/6E Võ Thị Sáu, Xuân Hòa, Hồ Chí Minh 72407, Việt Nam",
+          "phone": "+84 816 777 773",
+          "website_uri": "http://facebook.com/acousticbarngothoinhiem",
+          "place_id": "ChIJjUR5AzAvdTERdF8TduasR3w",
+          "rating_value": 4.5,
+          "google_rating": "4.5⭐ (3.204 đánh giá Google Maps)",
+          "rating_count": 3204,
+          "place_types": [
+            "Quán bar ca nhạc trực tiếp",
+            "Quán bar"
+          ],
+          "maps_link": "https://maps.google.com/?cid=8955316489872957300",
+          "opening_hours": "19:00–00:00",
+          "open_now": false,
+          "distance_km": 1.3,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "label": "📍 Google Maps — Acoustic Bar",
+              "url": "https://maps.google.com/?cid=8955316489872957300",
+              "attributed": true
+            },
+            {
+              "kind": "official_website",
+              "label": "🌐 Website — Acoustic Bar",
+              "url": "http://facebook.com/acousticbarngothoinhiem",
+              "attributed": true
+            },
+            {
+              "kind": "youtube_search_fallback",
+              "label": "🔎 Tìm video review trên YouTube",
+              "url": "https://www.youtube.com/results?search_query=Acoustic%20Bar%20review",
+              "attributed": false
+            }
+          ],
+          "has_maps": true,
+          "has_website": true,
+          "has_photo": true,
+          "has_hours": true,
+          "has_phone": true,
+          "has_reviews": "search"
+        },
+        {
+          "name": "Chill Skybar & Dining",
+          "address": "AB Tower, 76A Lê Lai, Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+          "phone": "+84 938 822 838",
+          "website_uri": "http://www.chillsaigon.com/",
+          "place_id": "ChIJMRRuhj4vdTER1M4F3fECIGI",
+          "rating_value": 4.4,
+          "google_rating": "4.4⭐ (5.912 đánh giá Google Maps)",
+          "rating_count": 5912,
+          "place_types": [
+            "Quán bar cocktail",
+            "Bữa tối",
+            "Nhà hàng hỗn hợp",
+            "Hộp đêm"
+          ],
+          "maps_link": "https://maps.google.com/?cid=7070654652790197972",
+          "booking_links": [
+            "http://chillsaigon.com/book-a-table/"
+          ],
+          "opening_hours": "17:30–01:30",
+          "open_now": false,
+          "distance_km": 1,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "label": "📍 Google Maps — Chill Skybar & Dining",
+              "url": "https://maps.google.com/?cid=7070654652790197972",
+              "attributed": true
+            },
+            {
+              "kind": "official_website",
+              "label": "🌐 Website — Chill Skybar & Dining",
+              "url": "http://www.chillsaigon.com/",
+              "attributed": true
+            },
+            {
+              "kind": "youtube_search_fallback",
+              "label": "🔎 Tìm video review trên YouTube",
+              "url": "https://www.youtube.com/results?search_query=Chill%20Skybar%20%26%20Dining%20review",
+              "attributed": false
+            }
+          ],
+          "has_maps": true,
+          "has_website": true,
+          "has_photo": true,
+          "has_hours": true,
+          "has_phone": true,
+          "has_reviews": "search"
+        }
+      ],
+      "google_maps_search": "https://maps.google.com/maps?q=bar%20nh%E1%BA%A1c%20s%E1%BB%91ng%20Qu%E1%BA%ADn%201%20Qu%E1%BA%ADn%201%2C%20TP.HCM",
+      "_tappy_place_domain": "entertainment",
+      "place_search_status": "has_results",
+      "_tappy_shortlist": [
+        {
+          "rank": 0,
+          "id": "ChIJDfijGesvdTERw7cRpGPiA6s",
+          "name": "Dollhouse bar HCMC",
+          "role": "best_overall",
+          "evidence": {
+            "rating": 5,
+            "reviews": 1383,
+            "distance_km": 0.5,
+            "open_now": false,
+            "opening_hours": "19:00–03:00",
+            "attributes": []
+          },
+          "why": [
+            "rated 5",
+            "0.5km away",
+            "1383 reviews"
+          ],
+          "missing": []
+        },
+        {
+          "rank": 1,
+          "id": "ChIJPQgd7EcvdTERlSRcqHIHHIg",
+          "name": "Loop 1 - Cocktail Bar & Kitchen",
+          "role": null,
+          "evidence": {
+            "rating": 4.8,
+            "reviews": 2476,
+            "distance_km": 0.3,
+            "open_now": false,
+            "opening_hours": "17:00–01:00",
+            "attributes": []
+          },
+          "why": [
+            "rated 4.8",
+            "0.3km away",
+            "2476 reviews"
+          ],
+          "missing": []
+        },
+        {
+          "rank": 2,
+          "id": "ChIJPZxk9QYvdTER572kEFw_gh4",
+          "name": "BB Restaurant | Nhà Hàng Quận 1 | Đặt tiệc Quận 1",
+          "role": null,
+          "evidence": {
+            "rating": 4.8,
+            "reviews": 94,
+            "distance_km": 0.9,
+            "open_now": false,
+            "opening_hours": "14:00–03:00",
+            "attributes": []
+          },
+          "why": [
+            "rated 4.8",
+            "0.9km away",
+            "94 reviews"
+          ],
+          "missing": []
+        },
+        {
+          "rank": 3,
+          "id": "ChIJjUR5AzAvdTERdF8TduasR3w",
+          "name": "Acoustic Bar",
+          "role": null,
+          "evidence": {
+            "rating": 4.5,
+            "reviews": 3204,
+            "distance_km": 1.3,
+            "open_now": false,
+            "opening_hours": "19:00–00:00",
+            "attributes": [
+              "có nhạc sống (\"Acoustic Bar\")"
+            ]
+          },
+          "why": [
+            "rated 4.5",
+            "1.3km away",
+            "3204 reviews"
+          ],
+          "missing": []
+        },
+        {
+          "rank": 4,
+          "id": "ChIJMRRuhj4vdTER1M4F3fECIGI",
+          "name": "Chill Skybar & Dining",
+          "role": null,
+          "evidence": {
+            "rating": 4.4,
+            "reviews": 5912,
+            "distance_km": 1,
+            "open_now": false,
+            "opening_hours": "17:30–01:30",
+            "attributes": []
+          },
+          "why": [
+            "rated 4.4",
+            "1km away",
+            "5912 reviews"
+          ],
+          "missing": []
+        }
+      ],
+      "_tappy_evidence_gap": {
+        "qualified": 10,
+        "total": 10,
+        "needed": [
+          "distance"
+        ],
+        "action": "recommend"
+      },
+      "results_note": "Hien thi 5/10 ket qua tot nhat theo engine; cac ket qua khac da co tren the (card) cua user."
+    }
+  ],
+  "frames8Raw": [
+    [
+      {
+        "kind": "tappy.places.v1",
+        "v": 1,
+        "domain": "entertainment",
+        "ranked": true,
+        "items": [
+          {
+            "id": "place:osm:10.77939,106.70464",
+            "domain": "entertainment",
+            "kind": "place",
+            "name": "Dollhouse bar HCMC",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnba2qnmxxR3sT8yw54G9Or7BtUcw7U33rjTLUqDB2DMML5WvJSYgDq32ghxokEpUsF3GOQEmDiRK9dBGDz1M_VdRuyCVUsmBbknGzX0BB6queMQyEey7RaC6N24M3dCj12V-GX",
+            "address": "8a/11d1 Thái Văn Lung, Sài Gòn, Hồ Chí Minh, Việt Nam",
+            "rating": 5,
+            "ratingCount": 1383,
+            "openingHours": "19:00–03:00",
+            "openNow": false,
+            "phone": "+84 762 903 161",
+            "openingHoursWeek": {
+              "Thứ Bảy": "19:00–03:00",
+              "Chủ Nhật": "19:00–02:00",
+              "Thứ Hai": "19:00–02:00",
+              "Thứ Ba": "19:00–02:00",
+              "Thứ Tư": "19:00–02:00",
+              "Thứ Năm": "19:00–02:00",
+              "Thứ Sáu": "19:00–03:00"
+            },
+            "distanceKm": 0.5,
+            "categories": [
+              "Quán bar"
+            ],
+            "rank": 0,
+            "shortlistPosition": 1,
+            "actions": [
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=12322941922998073283",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Dollhouse%20bar%20HCMC%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84762903161",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.77924,106.70231",
+            "domain": "entertainment",
+            "kind": "place",
+            "name": "Loop 1 - Cocktail Bar & Kitchen",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkomMniwq7tUedQN38s_DLZJ9rQea8zQJUXLm7IoQhWWIbpPilAxhk_kt8iXZQFp4K9JC2tqnLtMvjOIPJd-Xi_eq_7v8qT1l43PT3QrThOrT2hz7yD_02vjZrWwP1yafBKCth0",
+            "address": "39 Lý Tự Trọng, Sài Gòn, Hồ Chí Minh, Việt Nam",
+            "rating": 4.8,
+            "ratingCount": 2476,
+            "openingHours": "17:00–01:00",
+            "openNow": false,
+            "phone": "+84 919 115 910",
+            "openingHoursWeek": {
+              "Thứ Bảy": "17:00–01:00",
+              "Chủ Nhật": "17:00–01:00",
+              "Thứ Hai": "17:00–01:00",
+              "Thứ Ba": "17:00–01:00",
+              "Thứ Tư": "17:00–01:00",
+              "Thứ Năm": "17:00–01:00",
+              "Thứ Sáu": "17:00–01:00"
+            },
+            "distanceKm": 0.3,
+            "categories": [
+              "Quán bar cocktail"
+            ],
+            "rank": 1,
+            "shortlistPosition": 2,
+            "actions": [
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://www.facebook.com/loop1cocktailnkitchen1/",
+                "labelKey": "v3.action.website",
+                "platform": "Official Website"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=9807722277538374805",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Loop%201%20-%20Cocktail%20Bar%20%26%20Kitchen%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84919115910",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.76858,106.69922",
+            "domain": "entertainment",
+            "kind": "place",
+            "name": "BB Restaurant | Nhà Hàng Quận 1 | Đặt tiệc Quận 1",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmOOcMApBzPFBKr7OUWXgrN1WCXlfz7QBq3UTuEBsPoXgCWwpFxuK9W9ubXrYXJW2sf32RGJRVIjx5O9VkNwmmHkHYgMkbdagnIL30D2_QPkNMP8Fb_TBC6b4ePdozqKFRzop-W",
+            "address": "127 Nguyễn Thái Bình, Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+            "rating": 4.8,
+            "ratingCount": 94,
+            "openingHours": "14:00–03:00",
+            "openNow": false,
+            "phone": "+84 931 785 555",
+            "openingHoursWeek": {
+              "Thứ Bảy": "14:00–03:00",
+              "Chủ Nhật": "14:00–03:00",
+              "Thứ Hai": "14:00–03:00",
+              "Thứ Ba": "14:00–03:00",
+              "Thứ Tư": "14:00–03:00",
+              "Thứ Năm": "14:00–03:00",
+              "Thứ Sáu": "14:00–03:00"
+            },
+            "distanceKm": 0.9,
+            "categories": [
+              "Nhà hàng",
+              "Quán bar karaoke"
+            ],
+            "rank": 2,
+            "shortlistPosition": 3,
+            "actions": [
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=2198389232758996455",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=BB%20Restaurant%20%7C%20Nh%C3%A0%20H%C3%A0ng%20Qu%E1%BA%ADn%201%20%7C%20%C4%90%E1%BA%B7t%20ti%E1%BB%87c%20Qu%E1%BA%ADn%201%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84931785555",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.78119,106.68992",
+            "domain": "entertainment",
+            "kind": "place",
+            "name": "Acoustic Bar",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmP39N5LkmRN3towxSzfe3vYnkG7AXd8JWF2oEekuZ-PYRL2590hIrwwXCeLDS-_lyVuY-gC-zqyxtrJ8CHFBvyIpUzb_7tq0OpGYPlc2BNVywpa908eeYJBfXn710uCnztL_5uLg",
+            "address": "Ngô Thời Nhiệm/6E Võ Thị Sáu, Xuân Hòa, Hồ Chí Minh 72407, Việt Nam",
+            "rating": 4.5,
+            "ratingCount": 3204,
+            "openingHours": "19:00–00:00",
+            "openNow": false,
+            "phone": "+84 816 777 773",
+            "openingHoursWeek": {
+              "Thứ Bảy": "19:00–00:00",
+              "Chủ Nhật": "19:00–00:00",
+              "Thứ Hai": "19:00–00:00",
+              "Thứ Ba": "19:00–00:00",
+              "Thứ Tư": "19:00–00:00",
+              "Thứ Năm": "19:00–00:00",
+              "Thứ Sáu": "19:00–00:00"
+            },
+            "distanceKm": 1.3,
+            "categories": [
+              "Quán bar ca nhạc trực tiếp",
+              "Quán bar"
+            ],
+            "rank": 3,
+            "shortlistPosition": 4,
+            "actions": [
+              {
+                "kind": "review",
+                "urlKind": "direct",
+                "url": "https://www.tiktok.com/@acousticbarlullaby/video/7603682111651925256",
+                "labelKey": "v3.action.reviewOn",
+                "platform": "TikTok",
+                "attributed": true
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=8955316489872957300",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84816777773",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Acoustic%20Bar%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.77056,106.69438",
+            "domain": "entertainment",
+            "kind": "place",
+            "name": "Chill Skybar & Dining",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkIK8Gc3FHOMQ1Z6WxypzD7lCR464g3wzzqmnmqRdraq74CV2izpAawVXKWINBt852Nf15UBLsRFpydUVUwVarMhe3g6FYgXRc_aQXAz6VVE3fhnUi4pcb7bHzEGjK5KGTZ46J3",
+            "address": "AB Tower, 76A Lê Lai, Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+            "rating": 4.4,
+            "ratingCount": 5912,
+            "openingHours": "17:30–01:30",
+            "openNow": false,
+            "phone": "+84 938 822 838",
+            "openingHoursWeek": {
+              "Thứ Bảy": "17:30–01:30",
+              "Chủ Nhật": "17:30–01:30",
+              "Thứ Hai": "17:30–01:30",
+              "Thứ Ba": "17:30–01:30",
+              "Thứ Tư": "17:30–01:30",
+              "Thứ Năm": "17:30–01:30",
+              "Thứ Sáu": "17:30–01:30"
+            },
+            "distanceKm": 1,
+            "categories": [
+              "Quán bar cocktail",
+              "Bữa tối",
+              "Nhà hàng hỗn hợp",
+              "Hộp đêm"
+            ],
+            "rank": 4,
+            "shortlistPosition": 5,
+            "actions": [
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=7070654652790197972",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Chill%20Skybar%20%26%20Dining%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84938822838",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.76976,106.69265",
+            "domain": "entertainment",
+            "kind": "place",
+            "name": "Empire Club Quận 1",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmqE8OMayVLZ9kgafewPGcSM3uuwj73kwIryc4JbsWYAqoFt_o3AZ4YMCC4dVuk3rFehomjhlz-taLzq6qUO_za-qludWAetsoGqfBzjt5ofEQmh9T8qpaAvn8lVrsZHv1t7QK2ARkHrLOs",
+            "address": "Nguyễn Văn Tráng/2 Phạm Ngũ Lão, Bến Thành, Hồ Chí Minh 70000, Việt Nam",
+            "rating": 4.7,
+            "ratingCount": 49,
+            "openingHours": "21:00–03:00",
+            "openNow": false,
+            "phone": "+84 933 219 179",
+            "openingHoursWeek": {
+              "Thứ Bảy": "21:00–03:00",
+              "Chủ Nhật": "21:00–03:00",
+              "Thứ Hai": "21:00–03:00",
+              "Thứ Ba": "21:00–03:00",
+              "Thứ Tư": "21:00–03:00",
+              "Thứ Năm": "21:00–03:00",
+              "Thứ Sáu": "21:00–03:00"
+            },
+            "distanceKm": 1.2,
+            "categories": [
+              "Quán bar karaoke"
+            ],
+            "rank": 5,
+            "actions": [
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://empireclubq1.com/",
+                "labelKey": "v3.action.website",
+                "platform": "Official Website"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=2030262381015675924",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Empire%20Club%20Qu%E1%BA%ADn%201%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84933219179",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.76996,106.69252",
+            "domain": "entertainment",
+            "kind": "place",
+            "name": "Empire Club",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlvMXyGggfeDWg4Rr-3QTxMv58aumU6lahMFq7tD3wneHimkfibZMRq-iatP3Udv3g5MNmWAHIjPOvWrnHaSnp8eKO_oTm-UPx3_AnP4OI1SJpJ8TYoLkYe9-HOTjPfqXyrnLkN",
+            "address": "8 Nguyễn Văn Tráng, Bến Thành, Hồ Chí Minh, Việt Nam",
+            "rating": 4.4,
+            "ratingCount": 500,
+            "openingHours": "21:00–03:00",
+            "openNow": false,
+            "phone": "+84 939 100 888",
+            "openingHoursWeek": {
+              "Thứ Bảy": "21:00–03:00",
+              "Chủ Nhật": "21:00–03:00",
+              "Thứ Hai": "21:00–03:00",
+              "Thứ Ba": "21:00–03:00",
+              "Thứ Tư": "21:00–03:00",
+              "Thứ Năm": "21:00–03:00",
+              "Thứ Sáu": "21:00–03:00"
+            },
+            "distanceKm": 1.2,
+            "categories": [
+              "Quán bar"
+            ],
+            "rank": 6,
+            "actions": [
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=16565339001622882616",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Empire%20Club%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84939100888",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.78229,106.70474",
+            "domain": "entertainment",
+            "kind": "place",
+            "name": "Carmen Bar",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkdA48riDDqMx4PmO0zjijC_wUpDZdVthTiBkxyyULQW3Sr4Ymhs_sLpPXJRF-5SANObzpaQYdmbfxzn1TlCZ0InrJ257QU6ZaLHe4bMYePbzIZXVtrL_2g3W6D2Sy2TL_CK9U",
+            "address": "8 Lý Tự Trọng, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+            "rating": 4.3,
+            "ratingCount": 1067,
+            "openingHours": "19:00–01:00",
+            "openNow": false,
+            "phone": "+84 903 618 577",
+            "openingHoursWeek": {
+              "Thứ Bảy": "19:00–01:00",
+              "Chủ Nhật": "19:00–01:00",
+              "Thứ Hai": "19:00–01:00",
+              "Thứ Ba": "19:00–01:00",
+              "Thứ Tư": "19:00–01:00",
+              "Thứ Năm": "19:00–01:00",
+              "Thứ Sáu": "19:00–01:00"
+            },
+            "distanceKm": 0.7,
+            "categories": [
+              "Quán bar"
+            ],
+            "rank": 7,
+            "actions": [
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=1361001600621143086",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Carmen%20Bar%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84903618577",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          }
+        ],
+        "mapsSearchUrl": "https://maps.google.com/maps?q=bar%20nh%E1%BA%A1c%20s%E1%BB%91ng%20Qu%E1%BA%ADn%201%20Qu%E1%BA%ADn%201%2C%20TP.HCM"
+      }
+    ]
+  ]
+}

@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Microsoft Surface Laptop Go site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:20:07.139Z",
+ "body": {
+  "searchParameters": {
+   "q": "Microsoft Surface Laptop Go site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Microsoft Surface Laptop Go 2 Full Cảm Ứng | i5 11Th | Ram 8GB",
+    "link": "https://www.lazada.vn/products/microsoft-surface-laptop-go-2-full-cam-ung-i5-11th-ram-8gb-ssd-128-gb256gb-sieu-nhe-11kg-moi-99-may-zin-i3290986252.html?srsltid=AU7gw4VJ5EHvURJ79WHiJDNrbwbvG_2wVwjIPUkgGcQP9vv3j1kf-HO4",
+    "snippet": "Surface Laptop Go 2 là mẫu laptop văn phòng – học tập nhẹ nhất của Microsoft, chỉ 1.1kg nhưng hiệu năng cực mượt. Thiết kế nhôm cao cấp, màn hình cảm ứng 12.4 ...",
+    "position": 1
+   },
+   {
+    "title": "[HCM]Dán màn hình cường lực Microsoft Surface Laptop ...",
+    "link": "https://www.lazada.vn/products/hcmdan-man-hinh-cuong-luc-microsoft-surface-laptop-go-124-9h-i1114574432.html?srsltid=AU7gw4WKcmnVFP0F8Qm7I7Gxa825aiTG_CJdE377VpAUU9N2fDoQRSzB",
+    "snippet": "Dán màn hình cường lực Microsoft Surface Laptop Go 12.4\" 9H chất liệu cao cấp, gia công bằng máy CNC công nghệ hiện đại để cho ra đời sản phẩm dán cường lực có ...",
+    "position": 2
+   },
+   {
+    "title": "Microsoft Surface Laptop Go 1 Cảm Ứng | i5-1035G1",
+    "link": "https://www.lazada.vn/products/microsoft-surface-laptop-go-1-cam-ung-i5-1035g1-ram-8gb-ssd-256gb-man-124-sieu-nhe-11kg-ngoai-hinh-9397-i3290995156.html?srsltid=AU7gw4XsN4eLE3nCCTfS1rrW-FDxZ3sL6Ibt4LwSUJP-ZRCBo-H7dwDb",
+    "snippet": "Surface Laptop Go 1 là dòng laptop văn phòng – học tập siêu nhẹ của Microsoft, chỉ 1.1kg, cảm ứng tiện lợi, thiết kế trẻ trung, pin tốt và cấu hình đủ mạnh cho ...",
+    "position": 3
+   },
+   {
+    "title": "Microsoft Surface Laptop Go 12.4'' Core I5 Gen 10 8G ...",
+    "link": "https://h5.lazada.vn/products/microsoft-surface-laptop-go-124-core-i5-gen-10-8g16gb-ssd-128gb-256gb-nhap-khau-my-man-cam-ung-i2020590572.html",
+    "snippet": "Microsoft Surface Laptop Go 12.4'' Core I5 Gen 10 8G,16GB SSD 128GB -256GB Nhập khẩu Mỹ .Màn cảm ứng ; Loại RAM LPDDR4x ; Ổ cứng SSD: 128GB -256GB ; Kích thước màn ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 4
+   },
+   {
+    "title": "Ốp Bảo Vệ Máy Tính Xách Tay Microsoft Surface Laptop Go 1/2/ ...",
+    "link": "https://www.lazada.vn/products/p-bo-v-my-tnh-xch-tay-microsoft-surface-laptop-go-123--surface-laptop-13-2025-v-trn-v-di-cht-liu-nha-dng-c-cho-c-nam-v-n-i13437555106.html?srsltid=AU7gw4VF_l6mHjsKoHUt53_Z6qgPqbUujuIReifUFlFaBvT4TYfKRp-Q",
+    "snippet": "Được chế tạo từ nhựa chắc chắn, chiếc ốp này mang đến sự bảo vệ chắc chắn cho Máy tính xách tay Surface của bạn chống lại sự hao mòn hàng ngày. Thiết kế Unisex.",
+    "position": 5
+   },
+   {
+    "title": "Microsoft Surface Laptop Go 1 Full Cảm Ứng I Ram 8 GB Hiệu ...",
+    "link": "https://h5.lazada.vn/products/microsoft-surface-laptop-go-1-full-cam-ung-i-ram-8-gb-hieu-nang-cao-l-chip-i5-10th-l-ssd-128gb-l-moi-95-nguyen-ban-i3290953557-s15971703995.html",
+    "snippet": "Surface Laptop Go 1 là dòng laptop siêu nhẹ ~1.1kg của Microsoft, thiết kế gọn gàng, trẻ trung. Phiên bản Core i5 Gen 10 + SSD 128GB đáp ứng mượt các tác vụ văn ...",
+    "position": 6
+   },
+   {
+    "title": "Bảo vệ bàn phím cho Microsoft Surface Pro 13 12 10 4 5 6 7 8 9 ...",
+    "link": "https://www.lazada.vn/products/bao-ve-ban-phim-cho-microsoft-surface-pro-13-12-10-4-5-6-7-8-9-x-laptop-go-2-3-book-135-surface-laptop-8-138-inch-surface-laptop-7-15-inch-surfacelaptop-studio-laptop8-laptopgo-surfacego-silicon-mem-vo-boc-ban-phim-da-i13429629679-s117210734462.html?srsltid=AU7gw4VLrL87zitHFQSCKhYEi5PIO_wsavjZE2sop8ShdsSR9KX1NCK8",
+    "snippet": "Không thấm nước, chống bụi, giảm gõ noice. Đóng gói: 1 vỏ bọc bàn phím/1 túi nhựa OPP.",
+    "position": 7
+   },
+   {
+    "title": "Miếng dán PPF Hydorgen Microsoft Surface Laptop Go ...",
+    "link": "https://h5.lazada.vn/products/mieng-dan-ppf-hydorgen-microsoft-surface-laptop-go-trong-nham-cao-cap-i1633646168.html",
+    "snippet": "Miếng dán PPF Hydorgen Laptop microsoft surface go trong, nhám cao cấp · Giúp bảo vệ bề mặt thiết bị như màn hình, mặt lưng không bị trầy xướt trong quá trình ...",
+    "rating": 5,
+    "ratingCount": 3,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

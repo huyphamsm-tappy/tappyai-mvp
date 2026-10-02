@@ -1,0 +1,127 @@
+{
+  "id": "E8",
+  "text": "Chỗ chơi cho trẻ em 5 tuổi cuối tuần ở Sài Gòn",
+  "parent": null,
+  "status": 200,
+  "ms": 14247,
+  "evidenceId": "1c29d868-c035-41a7-a12c-a3bcc76b46f2",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "chỗ chơi cho trẻ em 5 tuổi Sài Gòn",
+        "location": "Quận 1, TP.HCM",
+        "type": "attraction"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Tinker Box",
+      "rating": 4.4,
+      "count": 170,
+      "hours": "08:30–21:00",
+      "distance_km": 1.3,
+      "address": "10/2 Nguyễn Thị Minh Khai, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Khu Vui Chơi Trẻ Em",
+      "rating": 4,
+      "count": 7,
+      "hours": "10:30–22:30",
+      "distance_km": 2.2,
+      "address": "3-3C 3 Tháng 2, Vườn Lài, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Sân Khấu Thế Giới Trẻ",
+      "rating": 4.4,
+      "count": 913,
+      "distance_km": 1.8,
+      "address": "125 Đ. Cống Quỳnh, Cầu Ông Lãnh, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Lilliput Diamond - Nhà hàng và Khu vui chơi cho bé",
+      "rating": 4.7,
+      "count": 601,
+      "hours": "09:00–21:00",
+      "distance_km": 0.6,
+      "address": "Diamond Plaza, 34 Lê Duẩn, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Thiên Đường Giải Trí Thỏ Trắng",
+      "rating": 4.3,
+      "count": 8514,
+      "hours": "08:00–22:00",
+      "distance_km": 3.9,
+      "address": "875 Cách Mạng Tháng Tám, Cư xá Bắc Hải, Hòa Hưng, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Kidbay Cafe & Playground",
+      "rating": 4.1,
+      "count": 14,
+      "distance_km": 1.4,
+      "address": "24 Nguyễn Thái Học, Bến Thành, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Thảo Cầm Viên Sài Gòn",
+      "rating": 4.3,
+      "count": 36881,
+      "hours": "07:00–18:30",
+      "distance_km": 1.2,
+      "address": "2 Nguyễn Bỉnh Khiêm, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Cà phê trứng 3T - Garden Saigon",
+      "rating": 4.4,
+      "count": 845,
+      "hours": "07:00–23:00",
+      "distance_km": 2.3,
+      "address": "5 Trần Khánh Dư, Tân Định, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "NOWZONE Fashion Mall",
+      "rating": 4.2,
+      "count": 6817,
+      "distance_km": 2.5,
+      "address": "235 Nguyễn Văn Cừ, Cầu Ông Lãnh, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Siêu Thị Mẹ Bầu & Em Bé Con Cưng",
+      "rating": 3.6,
+      "count": 276,
+      "hours": "08:00–22:30",
+      "distance_km": 1.1,
+      "address": "Nguyễn Trãi, Bến Thành, Hồ Chí Minh, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình giả sử bạn muốn tìm chỗ vui chơi gần Quận 1 (nơi bạn đang ở) vào cuối tuần này. Để gợi ý đúng ý, mình sẽ tìm ngay các địa điểm phù hợp cho trẻ 5 tuổi.\n\n**Lilliput Diamond** là lựa chọn mình nghiêng về nhất cho bạn — chỉ cách bạn 0.6km, mở cửa lúc 9h sáng, có 4.7⭐ (601 đánh giá) với khu vui chơi riêng cho bé kết hợp quán cà phê, rất tiện cho gia đình 👍\n\nNgoài ra, **Tinker Box** (1.3km, 4.4⭐) là sân chơi trong nhà với nhiều hoạt động sáng tạo, hoặc **Thiên Đường Giải Trí Thỏ Trắng** (3.9km, 4.3⭐ từ 8.514 đánh giá) nếu bạn muốn công viên giải trí lớn hơn với nhiều trò chơi đa dạng.\n\nMình gợi ý **Lilliput Diamond** vì gần nhất, đánh giá cao, và vừa có chỗ chơi vừa có quán cà phê để bạn thư giãn — hoàn hảo cho bữa cuối tuần cùng gia đình 😊\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Lilliput Diamond\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=13549900989377012556\",\"primary\":true},{\"label\":\"🌐 Website - Lilliput Diamond\",\"type\":\"website\",\"url\":\"https://www.24h.com.vn/tin-tuc-am-thuc/lilliput-kids-cafe-khi-tre-em-cung-coquan-cafe-rieng-c677a1432181.html\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Thỏ Trắng có gì hay không|Tinker Box chơi được gì|Mở cửa mấy giờ cuối tuần|[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Chỗ chơi cho trẻ em 5 tuổi cuối tuần ở Sài Gòn"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn muốn tìm chỗ vui chơi gần Quận 1 (nơi bạn đang ở) vào cuối tuần này. Để gợi ý đúng ý, mình sẽ tìm ngay các địa điểm phù hợp cho trẻ 5 tuổi.\n\n**Lilliput Diamond** là lựa chọn mình nghiêng về nhất cho bạn — chỉ cách bạn 0.6km, mở cửa lúc 9h sáng, có 4.7⭐ (601 đánh giá) với khu vui chơi riêng cho bé kết hợp quán cà phê, rất tiện cho gia đình 👍\n\nNgoài ra, **Tinker Box** (1.3km, 4.4⭐) là sân chơi trong nhà với nhiều hoạt động sáng tạo, hoặc **Thiên Đường Giải Trí Thỏ Trắng** (3.9km, 4.3⭐ từ 8.514 đánh giá) nếu bạn muốn công viên giải trí lớn hơn với nhiều trò chơi đa dạng.\n\nMình gợi ý **Lilliput Diamond** vì gần nhất, đánh giá cao, và vừa có chỗ chơi vừa có quán cà phê để bạn thư giãn — hoàn hảo cho bữa cuối tuần cùng gia đình 😊\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Lilliput Diamond\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=13549900989377012556\",\"primary\":true},{\"label\":\"🌐 Website - Lilliput Diamond\",\"type\":\"website\",\"url\":\"https://www.24h.com.vn/tin-tuc-am-thuc/lilliput-kids-cafe-khi-tre-em-cung-coquan-cafe-rieng-c677a1432181.html\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Thỏ Trắng có gì hay không|Tinker Box chơi được gì|Mở cửa mấy giờ cuối tuần|[/FOLLOWUPS]"
+    }
+  ]
+}

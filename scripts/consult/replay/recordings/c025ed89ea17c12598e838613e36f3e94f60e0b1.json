@@ -1,0 +1,86 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "massage quan 3 site:klook.com/vi/activity",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:30:23.462Z",
+ "body": {
+  "searchParameters": {
+   "q": "massage quan 3 site:klook.com/vi/activity",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Trải nghiệm Yubii Spa & Massage tại Hồ Chí Minh",
+    "link": "https://www.klook.com/vi/activity/143550-yubii-spa-massage-experience-in-ho-chi-minh/",
+    "snippet": "Chúng tôi có hai địa điểm. Một chi nhánh nằm dọc theo đường Lam Sơn, gần Sân bay Tân Sơn Nhất và chi nhánh mới còn lại của chúng tôi nằm ở Quận 3.",
+    "rating": 4.8,
+    "ratingCount": 32,
+    "position": 1
+   },
+   {
+    "title": "KOKORO Spa & Aesthetic tại Quận 3, Hồ Chí Minh",
+    "link": "https://www.klook.com/vi/activity/147260-kokoro-spa-aesthetic-in-district-3-ho-chi-minh/",
+    "snippet": "Kokoro Spa & Aesthetic, tọa lạc tại trung tâm Quận 3, là một lựa chọn tuyệt vời để chăm sóc sức khỏe và thư giãn theo phong cách Nhật Bản. Kokoro Spa & ...",
+    "position": 2
+   },
+   {
+    "title": "Shinrin Spa: Gội Đầu & Massage tại Quận 1, TP. Hồ Chí Minh",
+    "link": "https://www.klook.com/vi/activity/151252-shinrin-spa-massage-experience-in-district-1-ho-chi-minh/",
+    "snippet": "Trải nghiệm Shinrin Yoku Spa tại Quận 3, TP. Hồ Chí Minh. ☆ 5.0 (32). ₫ 79,500. Giảm 40. Sale · Yubii Spa & Massage tại Quận 3, Hồ Chí Minh. ☆ 4.8 (34).",
+    "rating": 4.8,
+    "ratingCount": 470,
+    "position": 3
+   },
+   {
+    "title": "Massage chân & bấm huyệt toàn thân tại Taipei Zhu Yue ...",
+    "link": "https://www.klook.com/vi/activity/66796-zhu-yue-fang-spa-massage-taipei/",
+    "snippet": "Zhuyuefang Healing Manor cung cấp các dịch vụ mát-xa kiểu Trung Quốc như shiatsu toàn thân, mát-xa chân, mát-xa tinh dầu, v.v. Trải nghiệm bồn ngâm chân ...",
+    "rating": 4.6,
+    "ratingCount": 25,
+    "position": 4
+   },
+   {
+    "title": "Đài Trung: Trải nghiệm massage tại Hội quán Dưỡng sinh ...",
+    "link": "https://www.klook.com/vi/activity/114501-enjoy-body-massage-in-taichung/",
+    "snippet": "Gần ga tàu Fengyuan, chỉ cần đi bộ 3 phút là đến · Dịch vụ massage chuyên nghiệp, cung cấp trà dưỡng sinh · Môi trường massage ấm cúng, giản dị, khiến khách hàng ...",
+    "rating": 4.5,
+    "ratingCount": 2,
+    "position": 5
+   },
+   {
+    "title": "An Mien Herbal Hairwash & Massage Quận 1, Hồ Chí Minh",
+    "link": "https://www.klook.com/vi/activity/146006-133564-an-mien-herbal-hairwash-massage-experience-in-district-1/",
+    "snippet": "An Mien Herbal Hairwash & Massage Quận 1, Hồ Chí Minh · Đây là chi nhánh thứ hai trên Klook, tọa lạc tại 15/3 Nguyễn Thị Minh Khai, Quận 1. · Chúng tôi có 3 cửa ...",
+    "rating": 3.8,
+    "ratingCount": 5,
+    "position": 6
+   },
+   {
+    "title": "Trải nghiệm Ha Spa & Massage tại Hồ Chí Minh",
+    "link": "https://www.klook.com/vi/activity/43345-ha-spa-massage-ho-chi-minh/",
+    "snippet": "Gội Đầu Thảo Dược, Massage và Chăm Sóc Da Mặt tại Chi Tu Spa ở Thành phố Hồ Chí Minh. ☆ 4.8 (61). ₫ 244,000 · Yubii Spa & Massage tại Quận 3, Hồ Chí Minh.",
+    "rating": 4.5,
+    "ratingCount": 109,
+    "position": 7
+   },
+   {
+    "title": "Trải nghiệm Phú Quốc Day Spa & Massage",
+    "link": "https://www.klook.com/vi/activity/126310-phu-quoc-day-spa-massage-experience/",
+    "snippet": "Phú Quốc Day Spa & Massage: Thư giãn tối ưu cho cả người dân địa phương và du khách. Vị trí trung tâm, gần sân bay và khách sạn, dễ dàng tiếp cận.",
+    "rating": 4.7,
+    "ratingCount": 38,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

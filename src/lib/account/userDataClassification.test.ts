@@ -176,6 +176,14 @@ describe('the analytics boundary — the KEY check the value check cannot do', (
     }
   })
 
+  // A5 (PRIVACY-REVIEW-G1): free-text search/question text is content, never analytics.
+  it('forbids the free-text `query` key and strips it at any depth', () => {
+    expect(ANALYTICS_FORBIDDEN_KEYS).toContain('query')
+    const { value, removed } = stripForbiddenKeys({ query: 'phở gà nguyễn du', query_len_bucket: '11-30', nested: { query: 'x' } }, ANALYTICS_FORBIDDEN_KEYS)
+    expect(removed).toEqual(['query'])
+    expect(value).toEqual({ query_len_bucket: '11-30', nested: {} })
+  })
+
   it('strips a forbidden key at any depth and reports what it removed', () => {
     const { value, removed } = stripForbiddenKeys({
       place: 'Cafe',

@@ -4,11 +4,13 @@ import type { LucideIcon } from 'lucide-react'
 import { BadgePercent, Languages, MessageSquare, Music2, PlayCircle, ScanLine } from 'lucide-react'
 import LandingSection from './LandingSection'
 import LandingIconCard from './LandingIconCard'
+import { SHOW_MUSIC } from '@/lib/config/product'
 
 const FEATURES: Array<{ icon: LucideIcon; key: string; accent?: 'accent' }> = [
   { icon: MessageSquare, key: 'chat' },
   { icon: PlayCircle, key: 'reviews' },
-  { icon: Music2, key: 'sounds' },
+  // Music is hidden in this release (SHOW_MUSIC): no landing card may promise it.
+  ...(SHOW_MUSIC ? [{ icon: Music2, key: 'sounds' }] : []),
   { icon: BadgePercent, key: 'deals', accent: 'accent' },
   { icon: ScanLine, key: 'tools' },
   { icon: Languages, key: 'bilingual' },

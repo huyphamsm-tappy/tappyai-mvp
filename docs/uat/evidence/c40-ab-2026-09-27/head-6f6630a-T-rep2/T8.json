@@ -1,0 +1,25 @@
+{
+  "id": "T8",
+  "text": "Resort Phú Quốc cho kỷ niệm 1 năm, sang chút",
+  "parent": null,
+  "status": 200,
+  "ms": 6240,
+  "evidenceId": "c2fea80d-8888-411b-9b93-cd196490b1df",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình giả sử bạn đi cuối tuần tới (check-in 3/10, check-out 4/10) và tìm resort sang trọng ở Phú Quốc cho dịp kỷ niệm. Để gợi ý đúng ý, mình cần biết: **bạn đi mấy người và có nhu cầu gì đặc biệt** (gần biển, có bể bơi, spa, nhà hàng riêng...)?\n\nĐể mình tìm ngay, bạn có thể nói thêm hoặc mình sẽ tìm những resort cao cấp phổ biến nhất ở đó. Chờ mình một chút! 🏝️\n\n[FOLLOWUPS]Resort gần biển|Resort có spa|Resort view đẹp[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Resort Phú Quốc cho kỷ niệm 1 năm, sang chút"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn đi cuối tuần tới (check-in 3/10, check-out 4/10) và tìm resort sang trọng ở Phú Quốc cho dịp kỷ niệm. Để gợi ý đúng ý, mình cần biết: **bạn đi mấy người và có nhu cầu gì đặc biệt** (gần biển, có bể bơi, spa, nhà hàng riêng...)?\n\nĐể mình tìm ngay, bạn có thể nói thêm hoặc mình sẽ tìm những resort cao cấp phổ biến nhất ở đó. Chờ mình một chút! 🏝️\n\n[FOLLOWUPS]Resort gần biển|Resort có spa|Resort view đẹp[/FOLLOWUPS]"
+    }
+  ]
+}

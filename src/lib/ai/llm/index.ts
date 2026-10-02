@@ -6,10 +6,11 @@
 
 export { AI } from './ai'
 export { getProvider } from './registry'
-export type { AIProvider } from './provider'
+export type { AIProvider, CallCost } from './provider'
 export type {
   ProviderId,
   ModelRole,
+  ReasoningEffort,
   AIGenerateOptions,
   AIStreamOptions,
   AIVisionOptions,

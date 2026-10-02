@@ -1,0 +1,18 @@
+{
+ "label": "after-fk-mia",
+ "email": "<redacted — see label>",
+ "at": "2026-09-25T05:39:10.962Z",
+ "columnsScanned": 497,
+ "before": {
+  "public.conversations.user_id": 5,
+  "public.decision_evidence.owner_id": 3,
+  "public.profiles.id": 1,
+  "public.user_demographics.user_id": 1,
+  "public.user_events.user_id": 316,
+  "public.user_memory.user_id": 1
+ },
+ "deleteError": null,
+ "after": {},
+ "survivors": {},
+ "rolledBack": true
+}

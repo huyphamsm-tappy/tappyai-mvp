@@ -1,0 +1,27 @@
+{
+  "id": "S6",
+  "text": "mua gì bây giờ",
+  "parent": null,
+  "status": 200,
+  "ms": 2608,
+  "evidenceId": "c978ef4f-f9fb-4083-96c6-640d2e81c3c6",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình cần biết bạn muốn mua **cái gì** cụ thể để gợi ý cho bạn nhé — là laptop, robot hút bụi, máy lọc không khí, nồi chiên không dầu, hay thứ khác?",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "mua gì bây giờ"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình cần biết bạn muốn mua **cái gì** cụ thể để gợi ý cho bạn nhé — là laptop, robot hút bụi, máy lọc không khí, nồi chiên không dầu, hay thứ khác?"
+    }
+  ],
+  "toolResults": [],
+  "frames8Raw": []
+}

@@ -1,0 +1,54 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Cơm bắc Huy Lùn (site:food.grab.com/vn OR site:shopeefood.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:45:41.128Z",
+ "body": {
+  "searchParameters": {
+   "q": "Cơm bắc Huy Lùn (site:food.grab.com/vn OR site:shopeefood.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cơm Tấm Hải Lùn - Thịt Sườn Ướp",
+    "link": "https://shopeefood.vn/ho-chi-minh/com-tam-hai-lun-thit-suon-uop",
+    "snippet": "1A Thích Quảng Đức, P. 3, Phú Nhuận, TP. HCM. Đã đóng. Quán được gắn nhãn Yêu thích là Quán Yêu Thích, gồm những quán đạt chất lượng dịch vụ vượt trội và ...",
+    "position": 1
+   },
+   {
+    "title": "Chú Lùn - Cơm Văn Phòng & Cơm Tấm - Chợ Bình Triệu",
+    "link": "https://shopeefood.vn/ho-chi-minh/chu-lun-com-van-phong-com-tam-cho-binh-trieu",
+    "snippet": "67 Đường Số 6 (Chợ Bình Triệu Đi Thẳng Vào), Khu Phố 41, P. Hiệp Bình, Thành Phố Thủ Đức, TP. HCM. Đã đóng. Quán được gắn nhãn Yêu thích là Quán Yêu Thích, ...",
+    "position": 2
+   },
+   {
+    "title": "Út Lùn - Cơm Tấm & Cơm Văn Phòng - Đường 38",
+    "link": "https://shopeefood.vn/ho-chi-minh/ut-lun-com-tam-com-van-phong-duong-38",
+    "snippet": "23/3 Đường 38, P. Bình Trưng Tây, Thành Phố Thủ Đức, TP. HCM. Đã đóng. Quán được gắn nhãn Yêu thích là Quán Yêu Thích, gồm những quán đạt chất lượng dịch vụ ...",
+    "position": 3
+   },
+   {
+    "title": "Hải Lùn - Cơm Tấm - Thích Quảng Đức",
+    "link": "https://shopeefood.vn/ho-chi-minh/hai-lun-com-tam-thich-quang-duc.2b7afu",
+    "snippet": "1A Thích Quảng Đức, P.3, Phú Nhuận, TP. HCM. Đã đóng. Quán được gắn nhãn Yêu thích là Quán Yêu Thích, gồm những quán đạt chất lượng dịch vụ vượt trội và ...",
+    "position": 4
+   },
+   {
+    "title": "Hiệu Lùn - Phở Bò - 278 Lạc Long Quân",
+    "link": "https://shopeefood.vn/ha-noi/hieu-lun-pho-bo-278-lac-long-quan.uczdcd",
+    "snippet": "278 Lạc Long Quân, P. Bưởi, Tây Hồ, Hà Nội. Đã đóng. Quán được gắn nhãn Yêu thích là Quán Yêu Thích, gồm những quán đạt chất lượng dịch vụ vượt trội và được ...",
+    "position": 5
+   }
+  ],
+  "credits": 1
+ }
+}

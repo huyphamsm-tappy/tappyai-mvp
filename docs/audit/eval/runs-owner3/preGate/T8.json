@@ -1,0 +1,641 @@
+{
+  "id": "T8",
+  "text": "Resort Phú Quốc cho kỷ niệm 1 năm, sang chút",
+  "parent": null,
+  "status": 200,
+  "ms": 22978,
+  "evidenceId": "3e0c5011-ca70-44c3-a9fc-b16e324940ad",
+  "toolCalls": [
+    {
+      "tool": "get_hotel_prices",
+      "args": {
+        "location": "Phú Quốc",
+        "checkIn": "2026-09-26",
+        "checkOut": "2026-09-27"
+      }
+    }
+  ],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": [
+    "upscale"
+  ],
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Để gợi ý đúng ý, mình sẽ tìm ngay các lựa chọn tốt nhất cho dịp kỷ niệm này.\n\nMình chọn [Ocean Bay Resort & Spa Phu Quoc](https://oceanbayphuquoc.com/) cho dịp kỷ niệm này — **4.7⭐ (3.176 đánh giá Google Maps)** với hơn 3.000 lượt đánh giá là bằng chứng mạnh về chất lượng. Resort có spa tích hợp, phù hợp để tạo không khí lãng mạn cho kỷ niệm 1 năm.\n\nNgoài ra, **Thiên Thanh Phú Quốc Resort** cũng xứng đáng cân nhắc — cùng rating 4.7⭐ nhưng gần trung tâm Dương Đông hơn, tiện di chuyển ăn uống.\n\nGia tham khảo có thể khác theo loại phòng & ngày cụ thể — bạn xem giá chính xác trên [Booking.com](https://www.booking.com/searchresults.vi.html?ss=Ph%C3%BA%20Qu%E1%BB%91c&checkin=2026-09-26&checkout=2026-09-27)Agoda\n\nMình chưa thấy bằng chứng về mức sang trọng ở các quán này — nên gọi hỏi trước khi đi.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🏨 Booking.com - Ocean Bay Resort & Spa\",\"type\":\"booking\",\"url\":\"https://www.booking.com/searchresults.vi.html?ss=Ocean+Bay+Resort+Phu+Quoc\",\"primary\":true},{\"label\":\"🏨 Booking.com - Thiên Thanh Resort\",\"type\":\"booking\",\"url\":\"https://www.booking.com/searchresults.vi.html?ss=Thien+Thanh+Phu+Quoc+Resort\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Phòng nào hợp lý cho 2 người?|Có gói kỷ niệm đặc biệt không?|Ăn gì ngon ở Phú Quốc?[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Resort Phú Quốc cho kỷ niệm 1 năm, sang chút"
+    },
+    {
+      "role": "assistant",
+      "content": "Để gợi ý đúng ý, mình sẽ tìm ngay các lựa chọn tốt nhất cho dịp kỷ niệm này.\n\nMình chọn [Ocean Bay Resort & Spa Phu Quoc](https://oceanbayphuquoc.com/) cho dịp kỷ niệm này — **4.7⭐ (3.176 đánh giá Google Maps)** với hơn 3.000 lượt đánh giá là bằng chứng mạnh về chất lượng. Resort có spa tích hợp, phù hợp để tạo không khí lãng mạn cho kỷ niệm 1 năm.\n\nNgoài ra, **Thiên Thanh Phú Quốc Resort** cũng xứng đáng cân nhắc — cùng rating 4.7⭐ nhưng gần trung tâm Dương Đông hơn, tiện di chuyển ăn uống.\n\nGia tham khảo có thể khác theo loại phòng & ngày cụ thể — bạn xem giá chính xác trên [Booking.com](https://www.booking.com/searchresults.vi.html?ss=Ph%C3%BA%20Qu%E1%BB%91c&checkin=2026-09-26&checkout=2026-09-27)Agoda\n\nMình chưa thấy bằng chứng về mức sang trọng ở các quán này — nên gọi hỏi trước khi đi.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🏨 Booking.com - Ocean Bay Resort & Spa\",\"type\":\"booking\",\"url\":\"https://www.booking.com/searchresults.vi.html?ss=Ocean+Bay+Resort+Phu+Quoc\",\"primary\":true},{\"label\":\"🏨 Booking.com - Thiên Thanh Resort\",\"type\":\"booking\",\"url\":\"https://www.booking.com/searchresults.vi.html?ss=Thien+Thanh+Phu+Quoc+Resort\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Phòng nào hợp lý cho 2 người?|Có gói kỷ niệm đặc biệt không?|Ăn gì ngon ở Phú Quốc?[/FOLLOWUPS]"
+    }
+  ],
+  "toolResults": [
+    {
+      "location": "Phú Quốc",
+      "source": "Serper Maps",
+      "hotel_list": [
+        {
+          "name": "Tahiti Beach Hotel Phú Quốc",
+          "place_id": "ChIJ9T54ktqNpzERu6dsX5pZXx4",
+          "address": "92A Đường Trần Hưng Đạo, Khu phố 7, Phú Quốc, An Giang, Việt Nam",
+          "phone": "+84 982 595 819",
+          "google_rating": "4.3⭐ (657 đánh giá Google Maps)",
+          "rating_value": 4.3,
+          "rating_count": 657,
+          "place_types": [
+            "Khách sạn"
+          ],
+          "maps_link": "https://maps.google.com/?cid=2188566463486142395",
+          "website_uri": "https://tahitiphuquoc.com/en"
+        },
+        {
+          "name": "Tahiti Resort Phú Quốc",
+          "place_id": "ChIJvwhDHaaNpzERENdVmu6mI64",
+          "address": "90 Đường Trần Hưng Đạo, Khu phố 7, Phú Quốc, An Giang 92000, Việt Nam",
+          "phone": "+84 963 070 880",
+          "google_rating": "4.3⭐ (219 đánh giá Google Maps)",
+          "rating_value": 4.3,
+          "rating_count": 219,
+          "place_types": [
+            "Khách sạn nghỉ dưỡng"
+          ],
+          "maps_link": "https://maps.google.com/?cid=12548056530506077968",
+          "website_uri": "https://tahitiphuquoc.com/"
+        },
+        {
+          "name": "Maison Hotel Phú Quốc",
+          "place_id": "ChIJtQaCsb6NpzER9Bqq6Sp2QR4",
+          "address": "Hẻm 63/04 Đường Trần Hưng Đạo, Khu phố 7, Phú Quốc, An Giang 920000, Việt Nam",
+          "phone": "+84 297 2222 222",
+          "google_rating": "4⭐ (220 đánh giá Google Maps)",
+          "rating_value": 4,
+          "rating_count": 220,
+          "place_types": [
+            "Khách sạn"
+          ],
+          "maps_link": "https://maps.google.com/?cid=2180153621304974068"
+        },
+        {
+          "name": "Ocean Bay Resort & Spa Phu Quoc",
+          "place_id": "ChIJI6oge0mLpzERKUoKtQLR-oc",
+          "address": "Đường Dinh Bà, Ông Lang, Phú Quốc, An Giang 92507, Việt Nam",
+          "phone": "+84 297 3909 979",
+          "google_rating": "4.7⭐ (3.176 đánh giá Google Maps)",
+          "rating_value": 4.7,
+          "rating_count": 3176,
+          "place_types": [
+            "Khách sạn nghỉ dưỡng",
+            "Nhà hàng",
+            "Spa"
+          ],
+          "maps_link": "https://maps.google.com/?cid=9798373748855425577",
+          "website_uri": "https://oceanbayphuquoc.com/"
+        },
+        {
+          "name": "The Shells Resort and Spa Phú Quốc",
+          "place_id": "ChIJRfXOk22LpzERDfJI-de_4Y8",
+          "address": "KP9, Khu 7, Phú Quốc, An Giang, Việt Nam",
+          "phone": "+84 297 3718 888",
+          "google_rating": "4.1⭐ (2.403 đánh giá Google Maps)",
+          "rating_value": 4.1,
+          "rating_count": 2403,
+          "place_types": [
+            "Khách sạn nghỉ dưỡng",
+            "Khách sạn",
+            "Nhà hàng",
+            "Spa"
+          ],
+          "maps_link": "https://maps.google.com/?cid=10367778751504773645",
+          "website_uri": "http://www.shellsresort.com/"
+        },
+        {
+          "name": "Thiên Thanh Phú Quốc Resort",
+          "place_id": "ChIJtaIao12MpzERk5njv9Aavcg",
+          "address": "78 Đường Trần Hưng Đạo, Khu phố 07, Phú Quốc, An Giang 920000, Việt Nam",
+          "phone": "+84 297 3983 111",
+          "google_rating": "4.7⭐ (1.758 đánh giá Google Maps)",
+          "rating_value": 4.7,
+          "rating_count": 1758,
+          "place_types": [
+            "Khách sạn nghỉ dưỡng",
+            "Khách sạn"
+          ],
+          "maps_link": "https://maps.google.com/?cid=14464747062058785171",
+          "website_uri": "https://thienthanhphuquocresort.com.vn/"
+        },
+        {
+          "name": "Sea Star resort Phu Quoc",
+          "place_id": "ChIJW5euSk2NpzERq4c7oeVAaQ8",
+          "address": "98/2 Đường Trần Hưng Đạo, Phường 7, Phú Quốc, An Giang 700000, Việt Nam",
+          "phone": "+84 297 3982 161",
+          "google_rating": "4.3⭐ (1.024 đánh giá Google Maps)",
+          "rating_value": 4.3,
+          "rating_count": 1024,
+          "place_types": [
+            "Khách sạn nghỉ dưỡng"
+          ],
+          "maps_link": "https://maps.google.com/?cid=1110490138120259499",
+          "website_uri": "http://www.seastarresort.com/"
+        },
+        {
+          "name": "Rocks Beach Boutique Bungalows",
+          "place_id": "ChIJnY45OsuIpzER2baRZvVrCqg",
+          "address": "group 5, Cây Sao, Phú Quốc, An Giang 920000, Việt Nam",
+          "phone": "+84 363 525 359",
+          "google_rating": "4.2⭐ (536 đánh giá Google Maps)",
+          "rating_value": 4.2,
+          "rating_count": 536,
+          "place_types": [
+            "Khách sạn"
+          ],
+          "maps_link": "https://maps.google.com/?cid=12108609249870984921"
+        },
+        {
+          "name": "Saigon Phu Quoc Resort & Spa",
+          "place_id": "ChIJ7ZdqvmGMpzERyUn5myFDkRQ",
+          "address": "62 Đường Trần Hưng Đạo Khu phố 7, Duong Dong, Phú Quốc, An Giang 922200, Việt Nam",
+          "phone": "+84 297 3846 999",
+          "google_rating": "4.2⭐ (1.689 đánh giá Google Maps)",
+          "rating_value": 4.2,
+          "rating_count": 1689,
+          "place_types": [
+            "Khách sạn",
+            "Spa mát xa",
+            "Khách sạn nghỉ dưỡng",
+            "Trung tâm thông tin du lịch",
+            "Nhà hàng Việt Nam"
+          ],
+          "maps_link": "https://maps.google.com/?cid=1482039564011391433",
+          "website_uri": "https://saigonphuquocresort.vn/"
+        },
+        {
+          "name": "Venus Hotel & Spa Phú Quốc",
+          "place_id": "ChIJqYt45vmNpzERqQ1SDWXz4u4",
+          "address": "60A Đường Trần Hưng Đạo, Khu 1, Phú Quốc, An Giang 920000, Việt Nam",
+          "phone": "+84 799 663 699",
+          "google_rating": "3.9⭐ (142 đánh giá Google Maps)",
+          "rating_value": 3.9,
+          "rating_count": 142,
+          "place_types": [
+            "Khách sạn"
+          ],
+          "maps_link": "https://maps.google.com/?cid=17213588341104184745"
+        }
+      ],
+      "booking_link": "https://www.booking.com/searchresults.vi.html?ss=Ph%C3%BA%20Qu%E1%BB%91c&checkin=2026-09-26&checkout=2026-09-27",
+      "agoda_link": "https://www.agoda.com/vi-vn/",
+      "note": "Gia trong search_results la tham khao tu ket qua tim kiem hien tai, co the khong dung loai phong/ngay user hoi va da thay doi - bam booking_link de xem gia chinh xac realtime theo ngay cu the.",
+      "_tappy_evidence_gap": {
+        "qualified": 20,
+        "total": 20,
+        "needed": [
+          "rating",
+          "reviewCount",
+          "distance"
+        ],
+        "action": "recommend"
+      },
+      "results_note": "Hien thi 10/20 ket qua theo thu tu nha cung cap, KHONG phai thu tu uu tien (rut gon: chi cac truong de chon); the (card) cua user co day du.",
+      "_tappy_hard_gaps": [
+        "upscale"
+      ],
+      "_tappy_evidence_note": "KHONG quan nao trong ket qua co bang chung ve: mức sang trọng. Noi ro trong MOT cau \"minh chua xac nhan duoc X, nen goi hoi truoc\"; KHONG khang dinh co."
+    }
+  ],
+  "frames8Raw": [
+    [
+      {
+        "kind": "tappy.places.v1",
+        "v": 1,
+        "domain": "travel",
+        "ranked": true,
+        "items": [
+          {
+            "id": "stay:10.22794,103.95369",
+            "domain": "travel",
+            "kind": "stay",
+            "name": "The Poplar Resort",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlozninQZspa6n51xi5jH2YFSiPu1PjuhfhStpb_2prXKdzOAi1oe4bInEVuyIrxsac9Rn-GCVeWBYVj0pobNdiCsXGt9TnPUtEe2GY45YToOZgLnrnwU8rZpkbS45pXa31gY3k",
+            "address": "6XH3+5F3, Khu 6, Phú Quốc, An Giang 91000, Việt Nam",
+            "rating": 4.9,
+            "ratingCount": 320,
+            "phone": "+84 373 238 584",
+            "categories": [
+              "Khách sạn"
+            ],
+            "rank": 11,
+            "shortlistPosition": 1,
+            "actions": [
+              {
+                "kind": "booking",
+                "urlKind": "search",
+                "url": "https://www.booking.com/searchresults.vi.html?ss=Ph%C3%BA%20Qu%E1%BB%91c&checkin=2026-09-26&checkout=2026-09-27",
+                "labelKey": "v3.action.bookingSearch",
+                "platform": "Booking.com"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=5913138990079404431",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://www.booking.com/hotel/vn/the-poplar-phu-quoc.vi.html?aid=2311236&label=vi-vn-booking-desktop-ztDRHDT0cyr%2Allk1cdAHaQS652796014482%3Apl%3Ata%3Ap1%3Ap2%3Aac%3Aap%3Aneg%3Afi%3Atikwd-65526620%3Alp1028581%3Ali%3Adec%3Adm&sid=0f18af08350896bcd677e2f07fa76bd8&all_sr_blocks=1021982502_374693386_2_0_0;checkin=2023-06-15;checkout=2023-06-16;dest_id=-3726177;dest_type=city;dist=0;group_adults=2;group_children=0;hapos=1;highlighted_blocks=1021982502_374693386_2_0_0;hpos=1;matching_block_id=1021982502_374693386_2_0_0;no_rooms=1;req_adults=2;req_children=0;room1=A%2CA;sb_price_type=total;sr_order=popularity;sr_pri_blocks=1021982502_374693386_2_0_0__56000000;srepoch=1686819477;srpvid=4d413f09f95f005b;type=total;ucfs=1&#hotelTmpl",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=The%20Poplar%20Resort%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84373238584",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "stay:10.20254,103.96314",
+            "domain": "travel",
+            "kind": "stay",
+            "name": "Tahiti Beach Hotel Phú Quốc",
+            "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJ73olhk7KSvTl-KzvANH0HSXVpQwH0dC9GkPBybPqJA&s=10",
+            "address": "92A Đường Trần Hưng Đạo, Khu phố 7, Phú Quốc, An Giang, Việt Nam",
+            "rating": 4.3,
+            "ratingCount": 657,
+            "phone": "+84 982 595 819",
+            "categories": [
+              "Khách sạn"
+            ],
+            "rank": 0,
+            "actions": [
+              {
+                "kind": "review",
+                "urlKind": "direct",
+                "url": "https://www.tiktok.com/@traveloka.vn/video/7209269011421351194",
+                "labelKey": "v3.action.reviewOn",
+                "platform": "TikTok",
+                "attributed": true
+              },
+              {
+                "kind": "booking",
+                "urlKind": "search",
+                "url": "https://www.booking.com/searchresults.vi.html?ss=Ph%C3%BA%20Qu%E1%BB%91c&checkin=2026-09-26&checkout=2026-09-27",
+                "labelKey": "v3.action.bookingSearch",
+                "platform": "Booking.com"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=2188566463486142395",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://tahitiphuquoc.com/en",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84982595819",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Tahiti%20Beach%20Hotel%20Ph%C3%BA%20Qu%E1%BB%91c%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "stay:10.21103,103.96217",
+            "domain": "travel",
+            "kind": "stay",
+            "name": "Maison Hotel Phú Quốc",
+            "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDShnP3MhX0XVFdbCM-6Dsj7TVdvisQ1iAcW8Mcne01A&s=10",
+            "address": "Hẻm 63/04 Đường Trần Hưng Đạo, Khu phố 7, Phú Quốc, An Giang 920000, Việt Nam",
+            "rating": 4,
+            "ratingCount": 220,
+            "phone": "+84 297 2222 222",
+            "categories": [
+              "Khách sạn"
+            ],
+            "rank": 1,
+            "actions": [
+              {
+                "kind": "booking",
+                "urlKind": "search",
+                "url": "https://www.booking.com/searchresults.vi.html?ss=Ph%C3%BA%20Qu%E1%BB%91c&checkin=2026-09-26&checkout=2026-09-27",
+                "labelKey": "v3.action.bookingSearch",
+                "platform": "Booking.com"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=2180153621304974068",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Maison%20Hotel%20Ph%C3%BA%20Qu%E1%BB%91c%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+842972222222",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "stay:10.25271,103.94208",
+            "domain": "travel",
+            "kind": "stay",
+            "name": "Ocean Bay Resort & Spa Phu Quoc",
+            "image": "https://oceanbayphuquoc.com/wp-content/uploads/2024/03/z5241935750791_c68ef3065b0172da33bc96a547a11735-1-1200x800.jpg",
+            "address": "Đường Dinh Bà, Ông Lang, Phú Quốc, An Giang 92507, Việt Nam",
+            "rating": 4.7,
+            "ratingCount": 3176,
+            "phone": "+84 297 3909 979",
+            "categories": [
+              "Khách sạn nghỉ dưỡng",
+              "Nhà hàng",
+              "Spa"
+            ],
+            "rank": 2,
+            "shortlistPosition": 2,
+            "actions": [
+              {
+                "kind": "booking",
+                "urlKind": "search",
+                "url": "https://www.booking.com/searchresults.vi.html?ss=Ph%C3%BA%20Qu%E1%BB%91c&checkin=2026-09-26&checkout=2026-09-27",
+                "labelKey": "v3.action.bookingSearch",
+                "platform": "Booking.com"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=9798373748855425577",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://oceanbayphuquoc.com/",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Ocean%20Bay%20Resort%20%26%20Spa%20Phu%20Quoc%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+842973909979",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "stay:10.24358,103.94900",
+            "domain": "travel",
+            "kind": "stay",
+            "name": "The Shells Resort and Spa Phú Quốc",
+            "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRuEoOI8NpMs11CfgXi_cKlR6tvjO-dvw4HSoKTueqoWg&s=10",
+            "address": "KP9, Khu 7, Phú Quốc, An Giang, Việt Nam",
+            "rating": 4.1,
+            "ratingCount": 2403,
+            "phone": "+84 297 3718 888",
+            "categories": [
+              "Khách sạn nghỉ dưỡng",
+              "Khách sạn",
+              "Nhà hàng",
+              "Spa"
+            ],
+            "rank": 3,
+            "actions": [
+              {
+                "kind": "booking",
+                "urlKind": "search",
+                "url": "https://www.booking.com/searchresults.vi.html?ss=Ph%C3%BA%20Qu%E1%BB%91c&checkin=2026-09-26&checkout=2026-09-27",
+                "labelKey": "v3.action.bookingSearch",
+                "platform": "Booking.com"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=10367778751504773645",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=The%20Shells%20Resort%20and%20Spa%20Ph%C3%BA%20Qu%E1%BB%91c%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+842973718888",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "stay:10.20562,103.96285",
+            "domain": "travel",
+            "kind": "stay",
+            "name": "Thiên Thanh Phú Quốc Resort",
+            "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvoal8hXhVJTsJtf6tZ0qQz5yGh9Sji9750SkozBZSTg&s=10",
+            "address": "78 Đường Trần Hưng Đạo, Khu phố 07, Phú Quốc, An Giang 920000, Việt Nam",
+            "rating": 4.7,
+            "ratingCount": 1758,
+            "phone": "+84 297 3983 111",
+            "categories": [
+              "Khách sạn nghỉ dưỡng",
+              "Khách sạn"
+            ],
+            "rank": 4,
+            "shortlistPosition": 3,
+            "actions": [
+              {
+                "kind": "review",
+                "urlKind": "direct",
+                "url": "https://www.tiktok.com/@thienthanhphuquocresort/video/7636343520843926802",
+                "labelKey": "v3.action.reviewOn",
+                "platform": "TikTok",
+                "attributed": true
+              },
+              {
+                "kind": "booking",
+                "urlKind": "search",
+                "url": "https://www.booking.com/searchresults.vi.html?ss=Ph%C3%BA%20Qu%E1%BB%91c&checkin=2026-09-26&checkout=2026-09-27",
+                "labelKey": "v3.action.bookingSearch",
+                "platform": "Booking.com"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=14464747062058785171",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://thienthanhphuquocresort.com.vn/",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+842973983111",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Thi%C3%AAn%20Thanh%20Ph%C3%BA%20Qu%E1%BB%91c%20Resort%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "stay:10.20119,103.96279",
+            "domain": "travel",
+            "kind": "stay",
+            "name": "Sea Star resort Phu Quoc",
+            "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR7AX91ds-TAyibJpLkWn0_ylH9pvuz9OnLi9oB1U5ujw&s=10",
+            "address": "98/2 Đường Trần Hưng Đạo, Phường 7, Phú Quốc, An Giang 700000, Việt Nam",
+            "rating": 4.3,
+            "ratingCount": 1024,
+            "phone": "+84 297 3982 161",
+            "categories": [
+              "Khách sạn nghỉ dưỡng"
+            ],
+            "rank": 5,
+            "actions": [
+              {
+                "kind": "booking",
+                "urlKind": "search",
+                "url": "https://www.booking.com/searchresults.vi.html?ss=Ph%C3%BA%20Qu%E1%BB%91c&checkin=2026-09-26&checkout=2026-09-27",
+                "labelKey": "v3.action.bookingSearch",
+                "platform": "Booking.com"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=1110490138120259499",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Sea%20Star%20resort%20Phu%20Quoc%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+842973982161",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "stay:10.22120,104.07282",
+            "domain": "travel",
+            "kind": "stay",
+            "name": "Rocks Beach Boutique Bungalows",
+            "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTChSbsEjeLF3zj8toDxIWK_NfL3xGRqMfwXFbbW9TLIw&s=10",
+            "address": "group 5, Cây Sao, Phú Quốc, An Giang 920000, Việt Nam",
+            "rating": 4.2,
+            "ratingCount": 536,
+            "phone": "+84 363 525 359",
+            "categories": [
+              "Khách sạn"
+            ],
+            "rank": 6,
+            "actions": [
+              {
+                "kind": "booking",
+                "urlKind": "search",
+                "url": "https://www.booking.com/searchresults.vi.html?ss=Ph%C3%BA%20Qu%E1%BB%91c&checkin=2026-09-26&checkout=2026-09-27",
+                "labelKey": "v3.action.bookingSearch",
+                "platform": "Booking.com"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=12108609249870984921",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Rocks%20Beach%20Boutique%20Bungalows%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84363525359",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          }
+        ],
+        "picked": [
+          "stay:10.25271,103.94208",
+          "stay:10.20562,103.96285"
+        ],
+        "shown": 3
+      }
+    ]
+  ]
+}

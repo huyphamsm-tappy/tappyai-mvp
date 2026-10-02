@@ -1,0 +1,25 @@
+{
+  "id": "E7",
+  "text": "Xem phim gì hay tối nay",
+  "parent": null,
+  "status": 200,
+  "ms": 5815,
+  "evidenceId": "a50ed8e1-819a-4eb3-8cc1-41eda8049188",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Tối nay bạn muốn xem phim gì à? Mình gợi ý vài bộ hay để bạn chọn nhé 🎬\n\n**Nếu muốn thư giãn, cười tươi**: *Gia đình Addams: Ngày hội quái vật* — phim hài gia đình vui nhộn, không cần suy nghĩ nhiều, hoàn hảo sau một ngày làm việc.\n\n**Nếu thích drama nhẹ nhàng**: *Chuyện tình của chúng ta* — phim tình cảm Việt ấm áp, phù hợp để thư giãn buổi tối.\n\n**Nếu muốn hành động sôi động**: *Deadpool & Wolverine* — phim siêu anh hùng hài hước, kịch tính, rất cuốn.\n",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Xem phim gì hay tối nay"
+    },
+    {
+      "role": "assistant",
+      "content": "Tối nay bạn muốn xem phim gì à? Mình gợi ý vài bộ hay để bạn chọn nhé 🎬\n\n**Nếu muốn thư giãn, cười tươi**: *Gia đình Addams: Ngày hội quái vật* — phim hài gia đình vui nhộn, không cần suy nghĩ nhiều, hoàn hảo sau một ngày làm việc.\n\n**Nếu thích drama nhẹ nhàng**: *Chuyện tình của chúng ta* — phim tình cảm Việt ấm áp, phù hợp để thư giãn buổi tối.\n\n**Nếu muốn hành động sôi động**: *Deadpool & Wolverine* — phim siêu anh hùng hài hước, kịch tính, rất cuốn.\n"
+    }
+  ]
+}

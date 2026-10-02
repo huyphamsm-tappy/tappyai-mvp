@@ -62,7 +62,6 @@ vi.mock('@/lib/supabase/client', () => ({
     },
   }),
 }))
-vi.mock('./SoundSheet', () => ({ default: () => null }))
 vi.mock('./LikeListSheet', () => ({ default: () => null }))
 vi.mock('./ProfileTab', () => ({ ProfileTab: () => null }))
 // Fully stubbed — importActual would pull in VideoPlayer and the music module, which build a

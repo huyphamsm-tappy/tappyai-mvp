@@ -1,0 +1,3667 @@
+{
+  "id": "T1",
+  "group": "travel-multiturn",
+  "criteria": [
+    "Turn 2: understands 'mai đi mốt về' = 2 days / 1 night and explicitly corrects the earlier 3-day plan",
+    "Hotel and places appear as structured cards (annotation items) with names — never a bare image",
+    "At most ONE clarifying question before a first useful plan is given",
+    "No delivery apps (GrabFood/BeFood) for a trip in another city",
+    "Budget split consistent with 2 people, 1 night, 20 triệu",
+    "Reply text appears exactly once (T5)"
+  ],
+  "turns": [
+    {
+      "user": "Mình muốn đi Đà Nẵng 3 ngày, 2 người, thích tham quan và ăn hải sản",
+      "status": 200,
+      "elapsedMs": 41089,
+      "textFrames": 5,
+      "tools": [
+        {
+          "name": "search_places",
+          "args": {
+            "query": "điểm tham quan Đà Nẵng",
+            "location": "Đà Nẵng",
+            "type": "attraction"
+          }
+        },
+        {
+          "name": "search_places",
+          "args": {
+            "query": "nhà hàng hải sản Đà Nẵng",
+            "location": "Đà Nẵng",
+            "type": "restaurant"
+          }
+        },
+        {
+          "name": "get_weather",
+          "args": {
+            "location": "Đà Nẵng"
+          }
+        },
+        {
+          "name": "get_flight_prices",
+          "args": {
+            "origin": "TP HCM",
+            "destination": "Đà Nẵng"
+          }
+        }
+      ],
+      "toolResults": [
+        null,
+        null,
+        null,
+        null
+      ],
+      "annotations": [
+        {
+          "type": "tappy.progress.v1",
+          "stage": "found"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "Hải Sản Ku Tom Đà Nẵng",
+              "address": "283 Hồ Nghinh, An Hải, Đà Nẵng 550000, Việt Nam",
+              "rating": 4.9,
+              "ratingCount": 3469,
+              "price": null,
+              "categories": [
+                "Nhà hàng hải sản"
+              ],
+              "hours": "10:00–02:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Buffet Hải Sản Đà Nẵng Mr Mộc",
+              "address": "78 Võ Nguyên Giáp, Sơn Trà, Đà Nẵng 550000, Việt Nam",
+              "rating": 4.9,
+              "ratingCount": 2964,
+              "price": null,
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "09:00–22:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Mộc quán Seafood Đà Nẵng",
+              "address": "26 Tô Hiến Thành, An Hải, Đà Nẵng 550000, Việt Nam",
+              "rating": 4.8,
+              "ratingCount": 30110,
+              "price": null,
+              "categories": [
+                "Nhà hàng hải sản",
+                "Nhà hàng"
+              ],
+              "hours": "10:30–22:30",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Thèm Hải Sản",
+              "address": "39 Trần Bạch Đằng, An Hải, Đà Nẵng 550000, Việt Nam",
+              "rating": 4.8,
+              "ratingCount": 11087,
+              "price": null,
+              "categories": [
+                "Nhà hàng hải sản"
+              ],
+              "hours": "11:00–00:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Nhà Hàng Hải Sản - Ơ Kìa",
+              "address": "7 Trần Phú, Hải Châu, Đà Nẵng 550000, Việt Nam",
+              "rating": 4.8,
+              "ratingCount": 3184,
+              "price": null,
+              "categories": [
+                "Nhà hàng hải sản",
+                "Nhà hàng"
+              ],
+              "hours": "06:00–23:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "ĐÀ THÀNH QUÁN",
+              "address": "122 Nguyễn Văn Thoại, Ngũ Hành Sơn, Đà Nẵng 55000, Việt Nam",
+              "rating": 4.8,
+              "ratingCount": 2846,
+              "price": null,
+              "categories": [
+                "Nhà hàng hải sản"
+              ],
+              "hours": "10:00–02:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Hải Sản Đà Nẵng Bé Biển",
+              "address": "202 Võ Nguyên Giáp, An Hải, Đà Nẵng 550000, Việt Nam",
+              "rating": 4.7,
+              "ratingCount": 5352,
+              "price": null,
+              "categories": [
+                "Nhà hàng hải sản",
+                "Nhà cung cấp thực phẩm và đồ uống cho dịch vụ ăn uống",
+                "Nơi tổ chức sự kiện"
+              ],
+              "hours": "07:30–02:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Quán Hải Sản Thời Cổ Đà Nẵng - Seafood Restaurant",
+              "address": "354/1 Võ Nguyên Giáp, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+              "rating": 4.7,
+              "ratingCount": 3853,
+              "price": null,
+              "categories": [
+                "Nhà hàng hải sản",
+                "Nhà hàng",
+                "Chợ hải sản",
+                "Nhà hàng Việt Nam"
+              ],
+              "hours": "10:00–23:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            }
+          ],
+          "raw": {
+            "kind": "tappy.places.v1",
+            "v": 1,
+            "domain": "food",
+            "ranked": false,
+            "items": [
+              {
+                "id": "place:osm:16.06572,108.24337",
+                "domain": "food",
+                "kind": "place",
+                "name": "Hải Sản Ku Tom Đà Nẵng",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmMo2g02e2zALj7tN_64dFsOdysXFLInMzvsSfVlp0U3VhJChQGpB4Um9A0-iVfDj6pV5fpF8hDTpYE_f0e9spj9vc7V9JDLHcYhNTUrpkbucPX085aggHrmxHcULwF4vL3bK-j0EQbjukPS",
+                "address": "283 Hồ Nghinh, An Hải, Đà Nẵng 550000, Việt Nam",
+                "rating": 4.9,
+                "ratingCount": 3469,
+                "openingHours": "10:00–02:00",
+                "openNow": true,
+                "phone": "+84 389 828 888",
+                "openingHoursWeek": {
+                  "Thứ Năm": "10:00–02:00",
+                  "Thứ Sáu": "10:00–02:00",
+                  "Thứ Bảy": "10:00–02:00",
+                  "Chủ Nhật": "10:00–02:00",
+                  "Thứ Hai": "10:00–02:00",
+                  "Thứ Ba": "10:00–02:00",
+                  "Thứ Tư": "10:00–02:00"
+                },
+                "categories": [
+                  "Nhà hàng hải sản"
+                ],
+                "rank": 0,
+                "shortlistPosition": 1,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=11082184094803346066",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=H%E1%BA%A3i%20S%E1%BA%A3n%20Ku%20Tom%20%C4%90%C3%A0%20N%E1%BA%B5ng%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://haisankutomdanang.com/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84389828888",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:16.08235,108.24742",
+                "domain": "food",
+                "kind": "place",
+                "name": "Buffet Hải Sản Đà Nẵng Mr Mộc",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmNd79wzUl51ulLJ9zXio4_DORRmtFg4Ylhv2L_sEs93LbtdtzvRapGd1LSo996QwzAmX4cYiJMtrBnZrndTnQK47N_dYam5GdKIIIMv8QP2BUKpMTDd7rlQQi8Lsv8eFKJiealVNCU8eq6g",
+                "address": "78 Võ Nguyên Giáp, Sơn Trà, Đà Nẵng 550000, Việt Nam",
+                "rating": 4.9,
+                "ratingCount": 2964,
+                "openingHours": "09:00–22:00",
+                "openNow": false,
+                "phone": "+84 905 993 874",
+                "openingHoursWeek": {
+                  "Thứ Sáu": "09:00–22:00",
+                  "Thứ Bảy": "09:00–22:00",
+                  "Chủ Nhật": "09:00–22:00",
+                  "Thứ Hai": "09:00–22:00",
+                  "Thứ Ba": "09:00–22:00",
+                  "Thứ Tư": "09:00–22:00",
+                  "Thứ Năm": "09:00–22:00"
+                },
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 1,
+                "shortlistPosition": 2,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=16318222310272472768",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Buffet%20H%E1%BA%A3i%20S%E1%BA%A3n%20%C4%90%C3%A0%20N%E1%BA%B5ng%20Mr%20M%E1%BB%99c%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84905993874",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:16.06403,108.24156",
+                "domain": "food",
+                "kind": "place",
+                "name": "Mộc quán Seafood Đà Nẵng",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmO8CSuCqdLKcQlA7veEBupJylsqNBOsgvKM9lwqArbsbXuIfJJq6Dl_bOm9zT7fSxenFKXUwwSm01kaggWer0EoJWd_StnTidOWPu6GStTqtuu42OZUBgiIzV3PYLzz-cmTO8I",
+                "address": "26 Tô Hiến Thành, An Hải, Đà Nẵng 550000, Việt Nam",
+                "rating": 4.8,
+                "ratingCount": 30110,
+                "openingHours": "10:30–22:30",
+                "openNow": false,
+                "phone": "+84 905 665 058",
+                "openingHoursWeek": {
+                  "Thứ Sáu": "10:30–22:30",
+                  "Thứ Bảy": "10:30–22:30",
+                  "Chủ Nhật": "10:30–22:30",
+                  "Thứ Hai": "10:30–22:30",
+                  "Thứ Ba": "10:30–22:30",
+                  "Thứ Tư": "10:30–22:30",
+                  "Thứ Năm": "10:30–22:30"
+                },
+                "categories": [
+                  "Nhà hàng hải sản",
+                  "Nhà hàng"
+                ],
+                "rank": 2,
+                "shortlistPosition": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=2059427300039139311",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=M%E1%BB%99c%20qu%C3%A1n%20Seafood%20%C4%90%C3%A0%20N%E1%BA%B5ng%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://mocseafood.com/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84905665058",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:16.05708,108.24546",
+                "domain": "food",
+                "kind": "place",
+                "name": "Thèm Hải Sản",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmOR1BTl_6NpbwE4iluEtS0C5cpxT9kKkR0Ztlin6GTEeeqW9QLamsyQXQHcrLNt1g9ATlEsA1L5zeSKieTBIMhOpRs0V8PWFsjzV4u4D7jIsaSK6FZwLVXatxpBZnRrsGBsumP5wSuINhjE",
+                "address": "39 Trần Bạch Đằng, An Hải, Đà Nẵng 550000, Việt Nam",
+                "rating": 4.8,
+                "ratingCount": 11087,
+                "openingHours": "11:00–00:00",
+                "openNow": false,
+                "phone": "+84 946 495 571",
+                "openingHoursWeek": {
+                  "Thứ Sáu": "11:00–00:00",
+                  "Thứ Bảy": "11:00–00:00",
+                  "Chủ Nhật": "11:00–00:00",
+                  "Thứ Hai": "11:00–00:00",
+                  "Thứ Ba": "11:00–00:00",
+                  "Thứ Tư": "11:00–00:00",
+                  "Thứ Năm": "11:00–00:00"
+                },
+                "categories": [
+                  "Nhà hàng hải sản"
+                ],
+                "rank": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=14378541914985934539",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Th%C3%A8m%20H%E1%BA%A3i%20S%E1%BA%A3n%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://themhaisandn.com/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84946495571",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:16.08011,108.22310",
+                "domain": "food",
+                "kind": "place",
+                "name": "Nhà Hàng Hải Sản - Ơ Kìa",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmOvKSdFUBXZTpNpgsX0L2DWJnbrkTjODa0z53uaGLYsuxaTY8lfTDko35Xmo11QscpcSFUSL0WyicYNV6AXoJTuhrq-fegzfwa-r_r645mukV23lS2T1HGgwzY_F1doDyHJ_mLeP1eJfxot",
+                "address": "7 Trần Phú, Hải Châu, Đà Nẵng 550000, Việt Nam",
+                "rating": 4.8,
+                "ratingCount": 3184,
+                "openingHours": "06:00–23:00",
+                "openNow": false,
+                "phone": "+84 906 430 707",
+                "openingHoursWeek": {
+                  "Thứ Sáu": "06:00–23:00",
+                  "Thứ Bảy": "06:00–23:00",
+                  "Chủ Nhật": "06:00–23:00",
+                  "Thứ Hai": "06:00–23:00",
+                  "Thứ Ba": "06:00–23:00",
+                  "Thứ Tư": "06:00–23:00",
+                  "Thứ Năm": "06:00–23:00"
+                },
+                "categories": [
+                  "Nhà hàng hải sản",
+                  "Nhà hàng"
+                ],
+                "rank": 4,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=8430235641332136898",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Nh%C3%A0%20H%C3%A0ng%20H%E1%BA%A3i%20S%E1%BA%A3n%20-%20%C6%A0%20K%C3%ACa%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.nhahangokia.com/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84906430707",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:16.05543,108.24402",
+                "domain": "food",
+                "kind": "place",
+                "name": "ĐÀ THÀNH QUÁN",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmN30yucMbI9zoeMKbIQozouq0C-U0UQuYHAMYj9U78TgEEkn57bHEZ3oJ2-4ehQcRva8uhlwBesvzfLBB8cEMfUjw1I65ZUG5k8-N2yeFw7HKxKCRVllEdUyTvyScv_6ZhYIpOt",
+                "address": "122 Nguyễn Văn Thoại, Ngũ Hành Sơn, Đà Nẵng 55000, Việt Nam",
+                "rating": 4.8,
+                "ratingCount": 2846,
+                "openingHours": "10:00–02:00",
+                "openNow": true,
+                "phone": "+84 935 208 213",
+                "openingHoursWeek": {
+                  "Thứ Năm": "10:00–02:00",
+                  "Thứ Sáu": "10:00–02:00",
+                  "Thứ Bảy": "10:00–02:00",
+                  "Chủ Nhật": "10:00–02:00",
+                  "Thứ Hai": "10:00–02:00",
+                  "Thứ Ba": "10:00–02:00",
+                  "Thứ Tư": "10:00–02:00"
+                },
+                "categories": [
+                  "Nhà hàng hải sản"
+                ],
+                "rank": 5,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=9128692524504562285",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=%C4%90%C3%80%20TH%C3%80NH%20QU%C3%81N%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84935208213",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:16.06853,108.24498",
+                "domain": "food",
+                "kind": "place",
+                "name": "Hải Sản Đà Nẵng Bé Biển",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmMa0VDhVvGnVt39kD0XQ5Rr8s2hQEQbkDFpS3CTIZd8GNefp4e3Br80LT5c7DAj8IlYFQU0b3WUxZxHHBjbBJFZ3LSwFXI79Qq8ubGRowEaksY-3BSEvxvIgBSgIJdF1cXGMIAOgw",
+                "address": "202 Võ Nguyên Giáp, An Hải, Đà Nẵng 550000, Việt Nam",
+                "rating": 4.7,
+                "ratingCount": 5352,
+                "openingHours": "07:30–02:00",
+                "openNow": true,
+                "phone": "+84 905 775 142",
+                "openingHoursWeek": {
+                  "Thứ Năm": "07:30–02:00",
+                  "Thứ Sáu": "07:30–02:00",
+                  "Thứ Bảy": "07:30–02:00",
+                  "Chủ Nhật": "07:30–02:00",
+                  "Thứ Hai": "07:30–02:00",
+                  "Thứ Ba": "07:30–02:00",
+                  "Thứ Tư": "07:30–02:00"
+                },
+                "categories": [
+                  "Nhà hàng hải sản",
+                  "Nhà cung cấp thực phẩm và đồ uống cho dịch vụ ăn uống",
+                  "Nơi tổ chức sự kiện"
+                ],
+                "rank": 6,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=13916594470133077361",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=H%E1%BA%A3i%20S%E1%BA%A3n%20%C4%90%C3%A0%20N%E1%BA%B5ng%20B%C3%A9%20Bi%E1%BB%83n%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://haisanbebien.com/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84905775142",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:16.04386,108.24731",
+                "domain": "food",
+                "kind": "place",
+                "name": "Quán Hải Sản Thời Cổ Đà Nẵng - Seafood Restaurant",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmMMDpk67w7brFcmiWoQrrQ2QZCXf4L5NxoYbNMJNnlxxkf3l0fUVo47IrY2Sj0PbTzOzhRLPdU1-84MxzqFTtdsebLgIdtMohTNaSIOYbSPsuc3ZJPMD4IK1TwihOUEZpjlepy9Yqo2BH5D",
+                "address": "354/1 Võ Nguyên Giáp, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+                "rating": 4.7,
+                "ratingCount": 3853,
+                "openingHours": "10:00–23:00",
+                "openNow": false,
+                "phone": "+84 905 749 079",
+                "openingHoursWeek": {
+                  "Thứ Sáu": "10:00–23:00",
+                  "Thứ Bảy": "10:00–23:00",
+                  "Chủ Nhật": "10:00–23:00",
+                  "Thứ Hai": "10:00–23:00",
+                  "Thứ Ba": "10:00–23:00",
+                  "Thứ Tư": "10:00–23:00",
+                  "Thứ Năm": "10:00–23:00"
+                },
+                "categories": [
+                  "Nhà hàng hải sản",
+                  "Nhà hàng",
+                  "Chợ hải sản",
+                  "Nhà hàng Việt Nam"
+                ],
+                "rank": 7,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=4416459426147437129",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20H%E1%BA%A3i%20S%E1%BA%A3n%20Th%E1%BB%9Di%20C%E1%BB%95%20%C4%90%C3%A0%20N%E1%BA%B5ng%20-%20Seafood%20Restaurant%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.facebook.com/haisanthoico?mibextid=ZbWKwL",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84905749079",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              }
+            ],
+            "mapsSearchUrl": "https://maps.google.com/maps?q=nh%C3%A0%20h%C3%A0ng%20h%E1%BA%A3i%20s%E1%BA%A3n%20%C4%90%C3%A0%20N%E1%BA%B5ng%20%C4%90%C3%A0%20N%E1%BA%B5ng",
+            "shown": 3,
+            "preliminary": true
+          },
+          "preliminary": true,
+          "domain": "food"
+        },
+        {
+          "type": "tappy.progress.v1",
+          "stage": "finishing"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "Nhà Hàng Hải Sản - Ơ Kìa",
+              "address": "7 Trần Phú, Hải Châu, Đà Nẵng 550000, Việt Nam",
+              "rating": 4.8,
+              "ratingCount": 3184,
+              "price": null,
+              "categories": [
+                "Nhà hàng hải sản",
+                "Nhà hàng"
+              ],
+              "hours": "06:00–23:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": true,
+              "reasons": [
+                "rated 4.8",
+                "3184 reviews"
+              ]
+            },
+            {
+              "name": "Hải Sản Ku Tom Đà Nẵng",
+              "address": "283 Hồ Nghinh, An Hải, Đà Nẵng 550000, Việt Nam",
+              "rating": 4.9,
+              "ratingCount": 3469,
+              "price": null,
+              "categories": [
+                "Nhà hàng hải sản"
+              ],
+              "hours": "10:00–02:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Buffet Hải Sản Đà Nẵng Mr Mộc",
+              "address": "78 Võ Nguyên Giáp, Sơn Trà, Đà Nẵng 550000, Việt Nam",
+              "rating": 4.9,
+              "ratingCount": 2964,
+              "price": null,
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "09:00–22:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Mộc quán Seafood Đà Nẵng",
+              "address": "26 Tô Hiến Thành, An Hải, Đà Nẵng 550000, Việt Nam",
+              "rating": 4.8,
+              "ratingCount": 30110,
+              "price": null,
+              "categories": [
+                "Nhà hàng hải sản",
+                "Nhà hàng"
+              ],
+              "hours": "10:30–22:30",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Thèm Hải Sản",
+              "address": "39 Trần Bạch Đằng, An Hải, Đà Nẵng 550000, Việt Nam",
+              "rating": 4.8,
+              "ratingCount": 11087,
+              "price": null,
+              "categories": [
+                "Nhà hàng hải sản"
+              ],
+              "hours": "11:00–00:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "ĐÀ THÀNH QUÁN",
+              "address": "122 Nguyễn Văn Thoại, Ngũ Hành Sơn, Đà Nẵng 55000, Việt Nam",
+              "rating": 4.8,
+              "ratingCount": 2846,
+              "price": null,
+              "categories": [
+                "Nhà hàng hải sản"
+              ],
+              "hours": "10:00–02:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Hải Sản Đà Nẵng Bé Biển",
+              "address": "202 Võ Nguyên Giáp, An Hải, Đà Nẵng 550000, Việt Nam",
+              "rating": 4.7,
+              "ratingCount": 5352,
+              "price": null,
+              "categories": [
+                "Nhà hàng hải sản",
+                "Nhà cung cấp thực phẩm và đồ uống cho dịch vụ ăn uống",
+                "Nơi tổ chức sự kiện"
+              ],
+              "hours": "07:30–02:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Quán Hải Sản Thời Cổ Đà Nẵng - Seafood Restaurant",
+              "address": "354/1 Võ Nguyên Giáp, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+              "rating": 4.7,
+              "ratingCount": 3853,
+              "price": null,
+              "categories": [
+                "Nhà hàng hải sản",
+                "Nhà hàng",
+                "Chợ hải sản",
+                "Nhà hàng Việt Nam"
+              ],
+              "hours": "10:00–23:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            }
+          ],
+          "raw": {
+            "kind": "tappy.places.v1",
+            "v": 1,
+            "domain": "food",
+            "ranked": true,
+            "items": [
+              {
+                "id": "place:osm:16.08011,108.22310",
+                "domain": "food",
+                "kind": "place",
+                "name": "Nhà Hàng Hải Sản - Ơ Kìa",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmOvKSdFUBXZTpNpgsX0L2DWJnbrkTjODa0z53uaGLYsuxaTY8lfTDko35Xmo11QscpcSFUSL0WyicYNV6AXoJTuhrq-fegzfwa-r_r645mukV23lS2T1HGgwzY_F1doDyHJ_mLeP1eJfxot",
+                "address": "7 Trần Phú, Hải Châu, Đà Nẵng 550000, Việt Nam",
+                "rating": 4.8,
+                "ratingCount": 3184,
+                "openingHours": "06:00–23:00",
+                "openNow": false,
+                "phone": "+84 906 430 707",
+                "openingHoursWeek": {
+                  "Thứ Sáu": "06:00–23:00",
+                  "Thứ Bảy": "06:00–23:00",
+                  "Chủ Nhật": "06:00–23:00",
+                  "Thứ Hai": "06:00–23:00",
+                  "Thứ Ba": "06:00–23:00",
+                  "Thứ Tư": "06:00–23:00",
+                  "Thứ Năm": "06:00–23:00"
+                },
+                "categories": [
+                  "Nhà hàng hải sản",
+                  "Nhà hàng"
+                ],
+                "rank": 4,
+                "recommended": true,
+                "reasons": [
+                  {
+                    "attribute": "rating",
+                    "evidence": "rated 4.8",
+                    "params": {
+                      "value": 4.8
+                    }
+                  },
+                  {
+                    "attribute": "reviewCount",
+                    "evidence": "3184 reviews",
+                    "params": {
+                      "count": 3184
+                    }
+                  }
+                ],
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=8430235641332136898",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Nh%C3%A0%20H%C3%A0ng%20H%E1%BA%A3i%20S%E1%BA%A3n%20-%20%C6%A0%20K%C3%ACa%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.nhahangokia.com/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84906430707",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:16.06572,108.24337",
+                "domain": "food",
+                "kind": "place",
+                "name": "Hải Sản Ku Tom Đà Nẵng",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmMo2g02e2zALj7tN_64dFsOdysXFLInMzvsSfVlp0U3VhJChQGpB4Um9A0-iVfDj6pV5fpF8hDTpYE_f0e9spj9vc7V9JDLHcYhNTUrpkbucPX085aggHrmxHcULwF4vL3bK-j0EQbjukPS",
+                "address": "283 Hồ Nghinh, An Hải, Đà Nẵng 550000, Việt Nam",
+                "rating": 4.9,
+                "ratingCount": 3469,
+                "openingHours": "10:00–02:00",
+                "openNow": true,
+                "phone": "+84 389 828 888",
+                "openingHoursWeek": {
+                  "Thứ Năm": "10:00–02:00",
+                  "Thứ Sáu": "10:00–02:00",
+                  "Thứ Bảy": "10:00–02:00",
+                  "Chủ Nhật": "10:00–02:00",
+                  "Thứ Hai": "10:00–02:00",
+                  "Thứ Ba": "10:00–02:00",
+                  "Thứ Tư": "10:00–02:00"
+                },
+                "categories": [
+                  "Nhà hàng hải sản"
+                ],
+                "rank": 0,
+                "shortlistPosition": 1,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=11082184094803346066",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=H%E1%BA%A3i%20S%E1%BA%A3n%20Ku%20Tom%20%C4%90%C3%A0%20N%E1%BA%B5ng%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://haisankutomdanang.com/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84389828888",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:16.08235,108.24742",
+                "domain": "food",
+                "kind": "place",
+                "name": "Buffet Hải Sản Đà Nẵng Mr Mộc",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmNd79wzUl51ulLJ9zXio4_DORRmtFg4Ylhv2L_sEs93LbtdtzvRapGd1LSo996QwzAmX4cYiJMtrBnZrndTnQK47N_dYam5GdKIIIMv8QP2BUKpMTDd7rlQQi8Lsv8eFKJiealVNCU8eq6g",
+                "address": "78 Võ Nguyên Giáp, Sơn Trà, Đà Nẵng 550000, Việt Nam",
+                "rating": 4.9,
+                "ratingCount": 2964,
+                "openingHours": "09:00–22:00",
+                "openNow": false,
+                "phone": "+84 905 993 874",
+                "openingHoursWeek": {
+                  "Thứ Sáu": "09:00–22:00",
+                  "Thứ Bảy": "09:00–22:00",
+                  "Chủ Nhật": "09:00–22:00",
+                  "Thứ Hai": "09:00–22:00",
+                  "Thứ Ba": "09:00–22:00",
+                  "Thứ Tư": "09:00–22:00",
+                  "Thứ Năm": "09:00–22:00"
+                },
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 1,
+                "shortlistPosition": 2,
+                "actions": [
+                  {
+                    "kind": "review",
+                    "urlKind": "direct",
+                    "url": "https://www.tiktok.com/@mrmocdanang/video/7687595635490442516",
+                    "labelKey": "v3.action.reviewOn",
+                    "platform": "TikTok",
+                    "attributed": true
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=16318222310272472768",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84905993874",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Buffet%20H%E1%BA%A3i%20S%E1%BA%A3n%20%C4%90%C3%A0%20N%E1%BA%B5ng%20Mr%20M%E1%BB%99c%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:16.06403,108.24156",
+                "domain": "food",
+                "kind": "place",
+                "name": "Mộc quán Seafood Đà Nẵng",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmO8CSuCqdLKcQlA7veEBupJylsqNBOsgvKM9lwqArbsbXuIfJJq6Dl_bOm9zT7fSxenFKXUwwSm01kaggWer0EoJWd_StnTidOWPu6GStTqtuu42OZUBgiIzV3PYLzz-cmTO8I",
+                "address": "26 Tô Hiến Thành, An Hải, Đà Nẵng 550000, Việt Nam",
+                "rating": 4.8,
+                "ratingCount": 30110,
+                "openingHours": "10:30–22:30",
+                "openNow": false,
+                "phone": "+84 905 665 058",
+                "openingHoursWeek": {
+                  "Thứ Sáu": "10:30–22:30",
+                  "Thứ Bảy": "10:30–22:30",
+                  "Chủ Nhật": "10:30–22:30",
+                  "Thứ Hai": "10:30–22:30",
+                  "Thứ Ba": "10:30–22:30",
+                  "Thứ Tư": "10:30–22:30",
+                  "Thứ Năm": "10:30–22:30"
+                },
+                "categories": [
+                  "Nhà hàng hải sản",
+                  "Nhà hàng"
+                ],
+                "rank": 2,
+                "shortlistPosition": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=2059427300039139311",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=M%E1%BB%99c%20qu%C3%A1n%20Seafood%20%C4%90%C3%A0%20N%E1%BA%B5ng%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://mocseafood.com/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84905665058",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:16.05708,108.24546",
+                "domain": "food",
+                "kind": "place",
+                "name": "Thèm Hải Sản",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmOR1BTl_6NpbwE4iluEtS0C5cpxT9kKkR0Ztlin6GTEeeqW9QLamsyQXQHcrLNt1g9ATlEsA1L5zeSKieTBIMhOpRs0V8PWFsjzV4u4D7jIsaSK6FZwLVXatxpBZnRrsGBsumP5wSuINhjE",
+                "address": "39 Trần Bạch Đằng, An Hải, Đà Nẵng 550000, Việt Nam",
+                "rating": 4.8,
+                "ratingCount": 11087,
+                "openingHours": "11:00–00:00",
+                "openNow": false,
+                "phone": "+84 946 495 571",
+                "openingHoursWeek": {
+                  "Thứ Sáu": "11:00–00:00",
+                  "Thứ Bảy": "11:00–00:00",
+                  "Chủ Nhật": "11:00–00:00",
+                  "Thứ Hai": "11:00–00:00",
+                  "Thứ Ba": "11:00–00:00",
+                  "Thứ Tư": "11:00–00:00",
+                  "Thứ Năm": "11:00–00:00"
+                },
+                "categories": [
+                  "Nhà hàng hải sản"
+                ],
+                "rank": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=14378541914985934539",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Th%C3%A8m%20H%E1%BA%A3i%20S%E1%BA%A3n%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://themhaisandn.com/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84946495571",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:16.05543,108.24402",
+                "domain": "food",
+                "kind": "place",
+                "name": "ĐÀ THÀNH QUÁN",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmN30yucMbI9zoeMKbIQozouq0C-U0UQuYHAMYj9U78TgEEkn57bHEZ3oJ2-4ehQcRva8uhlwBesvzfLBB8cEMfUjw1I65ZUG5k8-N2yeFw7HKxKCRVllEdUyTvyScv_6ZhYIpOt",
+                "address": "122 Nguyễn Văn Thoại, Ngũ Hành Sơn, Đà Nẵng 55000, Việt Nam",
+                "rating": 4.8,
+                "ratingCount": 2846,
+                "openingHours": "10:00–02:00",
+                "openNow": true,
+                "phone": "+84 935 208 213",
+                "openingHoursWeek": {
+                  "Thứ Năm": "10:00–02:00",
+                  "Thứ Sáu": "10:00–02:00",
+                  "Thứ Bảy": "10:00–02:00",
+                  "Chủ Nhật": "10:00–02:00",
+                  "Thứ Hai": "10:00–02:00",
+                  "Thứ Ba": "10:00–02:00",
+                  "Thứ Tư": "10:00–02:00"
+                },
+                "categories": [
+                  "Nhà hàng hải sản"
+                ],
+                "rank": 5,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=9128692524504562285",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=%C4%90%C3%80%20TH%C3%80NH%20QU%C3%81N%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84935208213",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:16.06853,108.24498",
+                "domain": "food",
+                "kind": "place",
+                "name": "Hải Sản Đà Nẵng Bé Biển",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmMa0VDhVvGnVt39kD0XQ5Rr8s2hQEQbkDFpS3CTIZd8GNefp4e3Br80LT5c7DAj8IlYFQU0b3WUxZxHHBjbBJFZ3LSwFXI79Qq8ubGRowEaksY-3BSEvxvIgBSgIJdF1cXGMIAOgw",
+                "address": "202 Võ Nguyên Giáp, An Hải, Đà Nẵng 550000, Việt Nam",
+                "rating": 4.7,
+                "ratingCount": 5352,
+                "openingHours": "07:30–02:00",
+                "openNow": true,
+                "phone": "+84 905 775 142",
+                "openingHoursWeek": {
+                  "Thứ Năm": "07:30–02:00",
+                  "Thứ Sáu": "07:30–02:00",
+                  "Thứ Bảy": "07:30–02:00",
+                  "Chủ Nhật": "07:30–02:00",
+                  "Thứ Hai": "07:30–02:00",
+                  "Thứ Ba": "07:30–02:00",
+                  "Thứ Tư": "07:30–02:00"
+                },
+                "categories": [
+                  "Nhà hàng hải sản",
+                  "Nhà cung cấp thực phẩm và đồ uống cho dịch vụ ăn uống",
+                  "Nơi tổ chức sự kiện"
+                ],
+                "rank": 6,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=13916594470133077361",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=H%E1%BA%A3i%20S%E1%BA%A3n%20%C4%90%C3%A0%20N%E1%BA%B5ng%20B%C3%A9%20Bi%E1%BB%83n%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://haisanbebien.com/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84905775142",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:16.04386,108.24731",
+                "domain": "food",
+                "kind": "place",
+                "name": "Quán Hải Sản Thời Cổ Đà Nẵng - Seafood Restaurant",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmMMDpk67w7brFcmiWoQrrQ2QZCXf4L5NxoYbNMJNnlxxkf3l0fUVo47IrY2Sj0PbTzOzhRLPdU1-84MxzqFTtdsebLgIdtMohTNaSIOYbSPsuc3ZJPMD4IK1TwihOUEZpjlepy9Yqo2BH5D",
+                "address": "354/1 Võ Nguyên Giáp, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+                "rating": 4.7,
+                "ratingCount": 3853,
+                "openingHours": "10:00–23:00",
+                "openNow": false,
+                "phone": "+84 905 749 079",
+                "openingHoursWeek": {
+                  "Thứ Sáu": "10:00–23:00",
+                  "Thứ Bảy": "10:00–23:00",
+                  "Chủ Nhật": "10:00–23:00",
+                  "Thứ Hai": "10:00–23:00",
+                  "Thứ Ba": "10:00–23:00",
+                  "Thứ Tư": "10:00–23:00",
+                  "Thứ Năm": "10:00–23:00"
+                },
+                "categories": [
+                  "Nhà hàng hải sản",
+                  "Nhà hàng",
+                  "Chợ hải sản",
+                  "Nhà hàng Việt Nam"
+                ],
+                "rank": 7,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=4416459426147437129",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20H%E1%BA%A3i%20S%E1%BA%A3n%20Th%E1%BB%9Di%20C%E1%BB%95%20%C4%90%C3%A0%20N%E1%BA%B5ng%20-%20Seafood%20Restaurant%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.facebook.com/haisanthoico?mibextid=ZbWKwL",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84905749079",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              }
+            ],
+            "mapsSearchUrl": "https://maps.google.com/maps?q=nh%C3%A0%20h%C3%A0ng%20h%E1%BA%A3i%20s%E1%BA%A3n%20%C4%90%C3%A0%20N%E1%BA%B5ng%20%C4%90%C3%A0%20N%E1%BA%B5ng",
+            "picked": [
+              "place:osm:16.08011,108.22310",
+              "place:osm:16.05708,108.24546",
+              "place:osm:16.08235,108.24742"
+            ],
+            "shown": 3
+          },
+          "picked": [
+            "place:osm:16.08011,108.22310",
+            "place:osm:16.05708,108.24546",
+            "place:osm:16.08235,108.24742"
+          ],
+          "domain": "food"
+        }
+      ],
+      "cardItems": [
+        [
+          "Hải Sản Ku Tom Đà Nẵng",
+          "Buffet Hải Sản Đà Nẵng Mr Mộc",
+          "Mộc quán Seafood Đà Nẵng",
+          "Thèm Hải Sản",
+          "Nhà Hàng Hải Sản - Ơ Kìa",
+          "ĐÀ THÀNH QUÁN",
+          "Hải Sản Đà Nẵng Bé Biển",
+          "Quán Hải Sản Thời Cổ Đà Nẵng - Seafood Restaurant"
+        ],
+        [
+          "Nhà Hàng Hải Sản - Ơ Kìa",
+          "Hải Sản Ku Tom Đà Nẵng",
+          "Buffet Hải Sản Đà Nẵng Mr Mộc",
+          "Mộc quán Seafood Đà Nẵng",
+          "Thèm Hải Sản",
+          "ĐÀ THÀNH QUÁN",
+          "Hải Sản Đà Nẵng Bé Biển",
+          "Quán Hải Sản Thời Cổ Đà Nẵng - Seafood Restaurant"
+        ]
+      ],
+      "duplicate": null,
+      "text": "Mình sẽ lập kế hoạch 3 ngày 2 đêm ở Đà Nẵng cho 2 người, tập trung vào tham quan và ăn hải sản. Mình tính đi máy bay từ TP.HCM, nếu muốn đi xe khách thì bảo mình nhé.\n\nĐể gợi ý chính xác, mình cần tìm các điểm tham quan, nhà hàng hải sản, và thời tiết. Mình đang tìm kiếm...\n\nTuyệt vời! Mình đã tìm được các điểm tham quan đẹp và nhà hàng hải sản ngon ở Đà Nẵng. Thời tiết hôm nay có mưa nhẹ (61% khả năng mưa), nên mình sẽ xếp các hoạt động ngoài trời vào buổi sáng khi mưa ít hơn. Dưới đây là kế hoạch 3 ngày 2 đêm cho 2 người:\n\n[TAPPY_PLAN]\n{\"type\":\"trip\",\"title\":\"3 ngày 2 đêm Đà Nẵng - Tham quan & Ăn hải sản\",\"people\":2,\"budget_total\":\"Chưa xác định (phụ thuộc vé máy bay)\",\"days\":[{\"label\":\"Ngày 1 - Chiều tối (Đến Đà Nẵng)\",\"items\":[{\"time\":\"18:00\",\"emoji\":\"✈️\",\"category\":\"transport\",\"name\":\"Chuyến bay TP.HCM → Đà Nẵng\",\"description\":\"Máy bay từ Sài Gòn đến Đà Nẵng (~1h30 bay)\",\"price\":\"Chưa có giá\",\"address\":\"Sân bay Tân Sơn Nhất → Sân bay Đà Nẵng\",\"maps_link\":\"\",\"booking_link\":\"\"},{\"time\":\"20:00\",\"emoji\":\"🍽️\",\"category\":\"food\",\"name\":\"Hải Sản Ku Tom Đà Nẵng\",\"description\":\"Nhà hàng hải sản 4.9⭐ (3.469 đánh giá), mở 10:00–02:00, chuyên các món hải sản tươi sống\",\"price\":\"Chưa có giá\",\"address\":\"283 Hồ Nghinh, An Hải, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=11082184094803346066\",\"booking_link\":\"https://www.google.com/maps/reserve/v/dine/c/R7d9uO8ZbxM?source=pa&opi=79508299\"}]},{\"label\":\"Ngày 2 - Tham quan & Ăn hải sản\",\"items\":[{\"time\":\"08:00\",\"emoji\":\"🏔️\",\"category\":\"entertainment\",\"name\":\"Cầu Vàng\",\"description\":\"Điểm tham quan nổi tiếng 4.6⭐ (14.837 đánh giá), mở 08:00–19:00, kiến trúc độc đáo giữa núi rừng\",\"price\":\"Chưa có giá\",\"address\":\"Hòa Vang, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=7167034678468850957\",\"booking_link\":\"\"},{\"time\":\"12:00\",\"emoji\":\"🍽️\",\"category\":\"food\",\"name\":\"Mộc quán Seafood Đà Nẵng\",\"description\":\"Nhà hàng hải sản 4.8⭐ (30.110 đánh giá), mở 10:30–22:30, đông khách, hải sản tươi ngon\",\"price\":\"Chưa có giá\",\"address\":\"26 Tô Hiến Thành, An Hải, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=2059427300039139311\",\"booking_link\":\"\"},{\"time\":\"15:00\",\"emoji\":\"🏞️\",\"category\":\"entertainment\",\"name\":\"Ngũ Hành Sơn\",\"description\":\"Thắng cảnh 4.4⭐ (42.884 đánh giá), mở 07:00–17:30, núi đá đẹp với hang động và tượng Phật\",\"price\":\"Chưa có giá\",\"address\":\"81 Huyền Trân Công Chúa, Hoà Hải, Ngũ Hành Sơn, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=13577824764986909893\",\"booking_link\":\"\"},{\"time\":\"19:00\",\"emoji\":\"🍽️\",\"category\":\"food\",\"name\":\"Thèm Hải Sản\",\"description\":\"Nhà hàng hải sản 4.8⭐ (11.087 đánh giá), mở 11:00–00:00, không gian yên tĩnh, hải sản chất lượng\",\"price\":\"Chưa có giá\",\"address\":\"39 Trần Bạch Đằng, An Hải, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=14378541914985934539\",\"booking_link\":\"\"}]},{\"label\":\"Ngày 3 - Sáng & Chiều (Trước khi về)\",\"items\":[{\"time\":\"07:30\",\"emoji\":\"🏔️\",\"category\":\"entertainment\",\"name\":\"Đỉnh Bàn Cờ\",\"description\":\"Điểm tham quan 4.6⭐ (4.471 đánh giá), mở 07:30–17:30, view biển Đà Nẵng tuyệt đẹp\",\"price\":\"Chưa có giá\",\"address\":\"Bàn cờ, Sơn Trà, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=7629724912977954540\",\"booking_link\":\"\"},{\"time\":\"10:00\",\"emoji\":\"🍽️\",\"category\":\"food\",\"name\":\"Buffet Hải Sản Đà Nẵng Mr Mộc\",\"description\":\"Buffet hải sản 4.9⭐ (2.964 đánh giá), mở 09:00–22:00, ăn thoải mái các loại hải sản\",\"price\":\"Chưa có giá\",\"address\":\"78 Võ Nguyên Giáp, Sơn Trà, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=16318222310272472768\",\"booking_link\":\"\"},{\"time\":\"13:00\",\"emoji\":\"🚶\",\"category\":\"entertainment\",\"name\":\"Cầu Rồng\",\"description\":\"Biểu tượng Đà Nẵng 4.5⭐ (9.517 đánh giá), mở cả ngày, cầu độc đáo với tượng rồng phun nước\",\"price\":\"Chưa có giá\",\"address\":\"An Hải, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=329807663884316974\",\"booking_link\":\"\"},{\"time\":\"16:00\",\"emoji\":\"✈️\",\"category\":\"transport\",\"name\":\"Chuyến bay Đà Nẵng → TP.HCM\",\"description\":\"Máy bay về Sài Gòn (~1h30 bay)\",\"price\":\"Chưa có giá\",\"address\":\"Sân bay Đà Nẵng → Sân bay Tân Sơn Nhất\",\"maps_link\":\"\",\"booking_link\":\"\"}]}],\"cost_breakdown\":{\"Vé máy bay (2 người)\":\"Chưa có giá\",\"Nhà hàng hải sản (3 bữa)\":\"Chưa có giá\",\"Tham quan (Cầu Vàng, Ngũ Hành Sơn, Đỉnh Bàn Cờ, Cầu Rồng)\":\"Chưa có giá\",\"Khách sạn (2 đêm)\":\"Chưa có giá\"},\"share_text\":\"3 ngày 2 đêm Đà Nẵng - Tham quan Cầu Vàng, Ngũ Hành Sơn, ăn hải sản ngon tại Ku Tom & Mộc quán 🦐🌊 #TappyAI\"}\n[/TAPPY_PLAN]\n\nMình chọn các điểm tham quan nổi tiếng nhất (Cầu Vàng, Ngũ Hành Sơn, Đỉnh Bàn Cờ. Thời tiết có mưa nhẹ nên mình xếp tham quan ngoài trời vào sáng sớm, chiều có mưa thì ở lại quán ăn lâu hơn 😊\n\nĐể hoàn thiện kế hoạch, bạn cần:\n- **Chọn ngày đi** để mình tìm giá vé máy bay chính xác\n- **Chọn khách sạn** (mình có thể tìm giúp)\n- **Xác nhận ngân sách tổng** để điều chỉnh\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"✈️ Tìm vé máy bay\",\"type\":\"website\",\"url\":\"https://vn.trip.com/flights/showfarefirst?dcity=sgn&acity=dad&ddate=2026-10-02&flighttype=ow&class=y&quantity=1&locale=vi-VN&curr=VND\",\"primary\":true}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Chọn ngày đi cụ thể|Tìm khách sạn gần biển|Thêm hoạt động ban đêm[/FOLLOWUPS]",
+      "visible": "Mình sẽ lập kế hoạch 3 ngày 2 đêm ở Đà Nẵng cho 2 người, tập trung vào tham quan và ăn hải sản. Mình tính đi máy bay từ TP.HCM, nếu muốn đi xe khách thì bảo mình nhé.\n\nĐể gợi ý chính xác, mình cần tìm các điểm tham quan, nhà hàng hải sản, và thời tiết. Mình đang tìm kiếm...\n\nTuyệt vời! Mình đã tìm được các điểm tham quan đẹp và nhà hàng hải sản ngon ở Đà Nẵng. Thời tiết hôm nay có mưa nhẹ (61% khả năng mưa), nên mình sẽ xếp các hoạt động ngoài trời vào buổi sáng khi mưa ít hơn. Dưới đây là kế hoạch 3 ngày 2 đêm cho 2 người:\n\nMình chọn các điểm tham quan nổi tiếng nhất (Cầu Vàng, Ngũ Hành Sơn, Đỉnh Bàn Cờ. Thời tiết có mưa nhẹ nên mình xếp tham quan ngoài trời vào sáng sớm, chiều có mưa thì ở lại quán ăn lâu hơn 😊\n\nĐể hoàn thiện kế hoạch, bạn cần:\n- **Chọn ngày đi** để mình tìm giá vé máy bay chính xác\n- **Chọn khách sạn** (mình có thể tìm giúp)\n- **Xác nhận ngân sách tổng** để điều chỉnh"
+    },
+    {
+      "user": "mai đi mốt về, budget 20 triệu",
+      "status": 200,
+      "elapsedMs": 46850,
+      "textFrames": 1,
+      "tools": [
+        {
+          "name": "get_flight_prices",
+          "args": {
+            "origin": "TP HCM",
+            "destination": "Đà Nẵng",
+            "departDate": "2026-09-26",
+            "returnDate": "2026-09-27",
+            "passengers": 2
+          }
+        },
+        {
+          "name": "search_places",
+          "args": {
+            "query": "tham quan Đà Nẵng",
+            "location": "Đà Nẵng",
+            "type": "attraction"
+          }
+        },
+        {
+          "name": "search_places",
+          "args": {
+            "query": "nhà hàng hải sản Đà Nẵng",
+            "location": "Đà Nẵng",
+            "type": "restaurant"
+          }
+        },
+        {
+          "name": "get_hotel_prices",
+          "args": {
+            "location": "Đà Nẵng",
+            "checkIn": "2026-09-26",
+            "checkOut": "2026-09-27"
+          }
+        },
+        {
+          "name": "get_weather",
+          "args": {
+            "location": "Đà Nẵng"
+          }
+        }
+      ],
+      "toolResults": [
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "annotations": [
+        {
+          "type": "tappy.progress.v1",
+          "stage": "found"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "Hải Sản Ku Tom Đà Nẵng",
+              "address": "283 Hồ Nghinh, An Hải, Đà Nẵng 550000, Việt Nam",
+              "rating": 4.9,
+              "ratingCount": 3469,
+              "price": null,
+              "categories": [
+                "Nhà hàng hải sản"
+              ],
+              "hours": "10:00–02:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Buffet Hải Sản Đà Nẵng Mr Mộc",
+              "address": "78 Võ Nguyên Giáp, Sơn Trà, Đà Nẵng 550000, Việt Nam",
+              "rating": 4.9,
+              "ratingCount": 2964,
+              "price": null,
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "09:00–22:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Mộc quán Seafood Đà Nẵng",
+              "address": "26 Tô Hiến Thành, An Hải, Đà Nẵng 550000, Việt Nam",
+              "rating": 4.8,
+              "ratingCount": 30110,
+              "price": null,
+              "categories": [
+                "Nhà hàng hải sản",
+                "Nhà hàng"
+              ],
+              "hours": "10:30–22:30",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Thèm Hải Sản",
+              "address": "39 Trần Bạch Đằng, An Hải, Đà Nẵng 550000, Việt Nam",
+              "rating": 4.8,
+              "ratingCount": 11087,
+              "price": null,
+              "categories": [
+                "Nhà hàng hải sản"
+              ],
+              "hours": "11:00–00:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Nhà Hàng Hải Sản - Ơ Kìa",
+              "address": "7 Trần Phú, Hải Châu, Đà Nẵng 550000, Việt Nam",
+              "rating": 4.8,
+              "ratingCount": 3184,
+              "price": null,
+              "categories": [
+                "Nhà hàng hải sản",
+                "Nhà hàng"
+              ],
+              "hours": "06:00–23:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "ĐÀ THÀNH QUÁN",
+              "address": "122 Nguyễn Văn Thoại, Ngũ Hành Sơn, Đà Nẵng 55000, Việt Nam",
+              "rating": 4.8,
+              "ratingCount": 2846,
+              "price": null,
+              "categories": [
+                "Nhà hàng hải sản"
+              ],
+              "hours": "10:00–02:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Hải Sản Đà Nẵng Bé Biển",
+              "address": "202 Võ Nguyên Giáp, An Hải, Đà Nẵng 550000, Việt Nam",
+              "rating": 4.7,
+              "ratingCount": 5352,
+              "price": null,
+              "categories": [
+                "Nhà hàng hải sản",
+                "Nhà cung cấp thực phẩm và đồ uống cho dịch vụ ăn uống",
+                "Nơi tổ chức sự kiện"
+              ],
+              "hours": "07:30–02:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Quán Hải Sản Thời Cổ Đà Nẵng - Seafood Restaurant",
+              "address": "354/1 Võ Nguyên Giáp, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+              "rating": 4.7,
+              "ratingCount": 3853,
+              "price": null,
+              "categories": [
+                "Nhà hàng hải sản",
+                "Nhà hàng",
+                "Chợ hải sản",
+                "Nhà hàng Việt Nam"
+              ],
+              "hours": "10:00–23:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            }
+          ],
+          "raw": {
+            "kind": "tappy.places.v1",
+            "v": 1,
+            "domain": "food",
+            "ranked": false,
+            "items": [
+              {
+                "id": "place:osm:16.06572,108.24337",
+                "domain": "food",
+                "kind": "place",
+                "name": "Hải Sản Ku Tom Đà Nẵng",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmMo2g02e2zALj7tN_64dFsOdysXFLInMzvsSfVlp0U3VhJChQGpB4Um9A0-iVfDj6pV5fpF8hDTpYE_f0e9spj9vc7V9JDLHcYhNTUrpkbucPX085aggHrmxHcULwF4vL3bK-j0EQbjukPS",
+                "address": "283 Hồ Nghinh, An Hải, Đà Nẵng 550000, Việt Nam",
+                "rating": 4.9,
+                "ratingCount": 3469,
+                "openingHours": "10:00–02:00",
+                "openNow": true,
+                "phone": "+84 389 828 888",
+                "openingHoursWeek": {
+                  "Thứ Năm": "10:00–02:00",
+                  "Thứ Sáu": "10:00–02:00",
+                  "Thứ Bảy": "10:00–02:00",
+                  "Chủ Nhật": "10:00–02:00",
+                  "Thứ Hai": "10:00–02:00",
+                  "Thứ Ba": "10:00–02:00",
+                  "Thứ Tư": "10:00–02:00"
+                },
+                "categories": [
+                  "Nhà hàng hải sản"
+                ],
+                "rank": 0,
+                "shortlistPosition": 1,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=11082184094803346066",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=H%E1%BA%A3i%20S%E1%BA%A3n%20Ku%20Tom%20%C4%90%C3%A0%20N%E1%BA%B5ng%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://haisankutomdanang.com/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84389828888",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:16.08235,108.24742",
+                "domain": "food",
+                "kind": "place",
+                "name": "Buffet Hải Sản Đà Nẵng Mr Mộc",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmNd79wzUl51ulLJ9zXio4_DORRmtFg4Ylhv2L_sEs93LbtdtzvRapGd1LSo996QwzAmX4cYiJMtrBnZrndTnQK47N_dYam5GdKIIIMv8QP2BUKpMTDd7rlQQi8Lsv8eFKJiealVNCU8eq6g",
+                "address": "78 Võ Nguyên Giáp, Sơn Trà, Đà Nẵng 550000, Việt Nam",
+                "rating": 4.9,
+                "ratingCount": 2964,
+                "openingHours": "09:00–22:00",
+                "openNow": false,
+                "phone": "+84 905 993 874",
+                "openingHoursWeek": {
+                  "Thứ Sáu": "09:00–22:00",
+                  "Thứ Bảy": "09:00–22:00",
+                  "Chủ Nhật": "09:00–22:00",
+                  "Thứ Hai": "09:00–22:00",
+                  "Thứ Ba": "09:00–22:00",
+                  "Thứ Tư": "09:00–22:00",
+                  "Thứ Năm": "09:00–22:00"
+                },
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 1,
+                "shortlistPosition": 2,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=16318222310272472768",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Buffet%20H%E1%BA%A3i%20S%E1%BA%A3n%20%C4%90%C3%A0%20N%E1%BA%B5ng%20Mr%20M%E1%BB%99c%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84905993874",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:16.06403,108.24156",
+                "domain": "food",
+                "kind": "place",
+                "name": "Mộc quán Seafood Đà Nẵng",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmO8CSuCqdLKcQlA7veEBupJylsqNBOsgvKM9lwqArbsbXuIfJJq6Dl_bOm9zT7fSxenFKXUwwSm01kaggWer0EoJWd_StnTidOWPu6GStTqtuu42OZUBgiIzV3PYLzz-cmTO8I",
+                "address": "26 Tô Hiến Thành, An Hải, Đà Nẵng 550000, Việt Nam",
+                "rating": 4.8,
+                "ratingCount": 30110,
+                "openingHours": "10:30–22:30",
+                "openNow": false,
+                "phone": "+84 905 665 058",
+                "openingHoursWeek": {
+                  "Thứ Sáu": "10:30–22:30",
+                  "Thứ Bảy": "10:30–22:30",
+                  "Chủ Nhật": "10:30–22:30",
+                  "Thứ Hai": "10:30–22:30",
+                  "Thứ Ba": "10:30–22:30",
+                  "Thứ Tư": "10:30–22:30",
+                  "Thứ Năm": "10:30–22:30"
+                },
+                "categories": [
+                  "Nhà hàng hải sản",
+                  "Nhà hàng"
+                ],
+                "rank": 2,
+                "shortlistPosition": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=2059427300039139311",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=M%E1%BB%99c%20qu%C3%A1n%20Seafood%20%C4%90%C3%A0%20N%E1%BA%B5ng%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://mocseafood.com/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84905665058",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:16.05708,108.24546",
+                "domain": "food",
+                "kind": "place",
+                "name": "Thèm Hải Sản",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmOR1BTl_6NpbwE4iluEtS0C5cpxT9kKkR0Ztlin6GTEeeqW9QLamsyQXQHcrLNt1g9ATlEsA1L5zeSKieTBIMhOpRs0V8PWFsjzV4u4D7jIsaSK6FZwLVXatxpBZnRrsGBsumP5wSuINhjE",
+                "address": "39 Trần Bạch Đằng, An Hải, Đà Nẵng 550000, Việt Nam",
+                "rating": 4.8,
+                "ratingCount": 11087,
+                "openingHours": "11:00–00:00",
+                "openNow": false,
+                "phone": "+84 946 495 571",
+                "openingHoursWeek": {
+                  "Thứ Sáu": "11:00–00:00",
+                  "Thứ Bảy": "11:00–00:00",
+                  "Chủ Nhật": "11:00–00:00",
+                  "Thứ Hai": "11:00–00:00",
+                  "Thứ Ba": "11:00–00:00",
+                  "Thứ Tư": "11:00–00:00",
+                  "Thứ Năm": "11:00–00:00"
+                },
+                "categories": [
+                  "Nhà hàng hải sản"
+                ],
+                "rank": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=14378541914985934539",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Th%C3%A8m%20H%E1%BA%A3i%20S%E1%BA%A3n%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://themhaisandn.com/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84946495571",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:16.08011,108.22310",
+                "domain": "food",
+                "kind": "place",
+                "name": "Nhà Hàng Hải Sản - Ơ Kìa",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmOvKSdFUBXZTpNpgsX0L2DWJnbrkTjODa0z53uaGLYsuxaTY8lfTDko35Xmo11QscpcSFUSL0WyicYNV6AXoJTuhrq-fegzfwa-r_r645mukV23lS2T1HGgwzY_F1doDyHJ_mLeP1eJfxot",
+                "address": "7 Trần Phú, Hải Châu, Đà Nẵng 550000, Việt Nam",
+                "rating": 4.8,
+                "ratingCount": 3184,
+                "openingHours": "06:00–23:00",
+                "openNow": false,
+                "phone": "+84 906 430 707",
+                "openingHoursWeek": {
+                  "Thứ Sáu": "06:00–23:00",
+                  "Thứ Bảy": "06:00–23:00",
+                  "Chủ Nhật": "06:00–23:00",
+                  "Thứ Hai": "06:00–23:00",
+                  "Thứ Ba": "06:00–23:00",
+                  "Thứ Tư": "06:00–23:00",
+                  "Thứ Năm": "06:00–23:00"
+                },
+                "categories": [
+                  "Nhà hàng hải sản",
+                  "Nhà hàng"
+                ],
+                "rank": 4,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=8430235641332136898",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Nh%C3%A0%20H%C3%A0ng%20H%E1%BA%A3i%20S%E1%BA%A3n%20-%20%C6%A0%20K%C3%ACa%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.nhahangokia.com/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84906430707",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:16.05543,108.24402",
+                "domain": "food",
+                "kind": "place",
+                "name": "ĐÀ THÀNH QUÁN",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmN30yucMbI9zoeMKbIQozouq0C-U0UQuYHAMYj9U78TgEEkn57bHEZ3oJ2-4ehQcRva8uhlwBesvzfLBB8cEMfUjw1I65ZUG5k8-N2yeFw7HKxKCRVllEdUyTvyScv_6ZhYIpOt",
+                "address": "122 Nguyễn Văn Thoại, Ngũ Hành Sơn, Đà Nẵng 55000, Việt Nam",
+                "rating": 4.8,
+                "ratingCount": 2846,
+                "openingHours": "10:00–02:00",
+                "openNow": true,
+                "phone": "+84 935 208 213",
+                "openingHoursWeek": {
+                  "Thứ Năm": "10:00–02:00",
+                  "Thứ Sáu": "10:00–02:00",
+                  "Thứ Bảy": "10:00–02:00",
+                  "Chủ Nhật": "10:00–02:00",
+                  "Thứ Hai": "10:00–02:00",
+                  "Thứ Ba": "10:00–02:00",
+                  "Thứ Tư": "10:00–02:00"
+                },
+                "categories": [
+                  "Nhà hàng hải sản"
+                ],
+                "rank": 5,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=9128692524504562285",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=%C4%90%C3%80%20TH%C3%80NH%20QU%C3%81N%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84935208213",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:16.06853,108.24498",
+                "domain": "food",
+                "kind": "place",
+                "name": "Hải Sản Đà Nẵng Bé Biển",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmMa0VDhVvGnVt39kD0XQ5Rr8s2hQEQbkDFpS3CTIZd8GNefp4e3Br80LT5c7DAj8IlYFQU0b3WUxZxHHBjbBJFZ3LSwFXI79Qq8ubGRowEaksY-3BSEvxvIgBSgIJdF1cXGMIAOgw",
+                "address": "202 Võ Nguyên Giáp, An Hải, Đà Nẵng 550000, Việt Nam",
+                "rating": 4.7,
+                "ratingCount": 5352,
+                "openingHours": "07:30–02:00",
+                "openNow": true,
+                "phone": "+84 905 775 142",
+                "openingHoursWeek": {
+                  "Thứ Năm": "07:30–02:00",
+                  "Thứ Sáu": "07:30–02:00",
+                  "Thứ Bảy": "07:30–02:00",
+                  "Chủ Nhật": "07:30–02:00",
+                  "Thứ Hai": "07:30–02:00",
+                  "Thứ Ba": "07:30–02:00",
+                  "Thứ Tư": "07:30–02:00"
+                },
+                "categories": [
+                  "Nhà hàng hải sản",
+                  "Nhà cung cấp thực phẩm và đồ uống cho dịch vụ ăn uống",
+                  "Nơi tổ chức sự kiện"
+                ],
+                "rank": 6,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=13916594470133077361",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=H%E1%BA%A3i%20S%E1%BA%A3n%20%C4%90%C3%A0%20N%E1%BA%B5ng%20B%C3%A9%20Bi%E1%BB%83n%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://haisanbebien.com/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84905775142",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:16.04386,108.24731",
+                "domain": "food",
+                "kind": "place",
+                "name": "Quán Hải Sản Thời Cổ Đà Nẵng - Seafood Restaurant",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmMMDpk67w7brFcmiWoQrrQ2QZCXf4L5NxoYbNMJNnlxxkf3l0fUVo47IrY2Sj0PbTzOzhRLPdU1-84MxzqFTtdsebLgIdtMohTNaSIOYbSPsuc3ZJPMD4IK1TwihOUEZpjlepy9Yqo2BH5D",
+                "address": "354/1 Võ Nguyên Giáp, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+                "rating": 4.7,
+                "ratingCount": 3853,
+                "openingHours": "10:00–23:00",
+                "openNow": false,
+                "phone": "+84 905 749 079",
+                "openingHoursWeek": {
+                  "Thứ Sáu": "10:00–23:00",
+                  "Thứ Bảy": "10:00–23:00",
+                  "Chủ Nhật": "10:00–23:00",
+                  "Thứ Hai": "10:00–23:00",
+                  "Thứ Ba": "10:00–23:00",
+                  "Thứ Tư": "10:00–23:00",
+                  "Thứ Năm": "10:00–23:00"
+                },
+                "categories": [
+                  "Nhà hàng hải sản",
+                  "Nhà hàng",
+                  "Chợ hải sản",
+                  "Nhà hàng Việt Nam"
+                ],
+                "rank": 7,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=4416459426147437129",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20H%E1%BA%A3i%20S%E1%BA%A3n%20Th%E1%BB%9Di%20C%E1%BB%95%20%C4%90%C3%A0%20N%E1%BA%B5ng%20-%20Seafood%20Restaurant%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.facebook.com/haisanthoico?mibextid=ZbWKwL",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84905749079",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              }
+            ],
+            "mapsSearchUrl": "https://maps.google.com/maps?q=nh%C3%A0%20h%C3%A0ng%20h%E1%BA%A3i%20s%E1%BA%A3n%20%C4%90%C3%A0%20N%E1%BA%B5ng%20%C4%90%C3%A0%20N%E1%BA%B5ng",
+            "shown": 3,
+            "preliminary": true
+          },
+          "preliminary": true,
+          "domain": "food"
+        },
+        {
+          "type": "tappy.progress.v1",
+          "stage": "finishing"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "Hải Sản Ku Tom Đà Nẵng",
+              "address": "283 Hồ Nghinh, An Hải, Đà Nẵng 550000, Việt Nam",
+              "rating": 4.9,
+              "ratingCount": 3469,
+              "price": null,
+              "categories": [
+                "Nhà hàng hải sản"
+              ],
+              "hours": "10:00–02:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": true,
+              "reasons": [
+                "rated 4.9",
+                "3469 reviews"
+              ]
+            },
+            {
+              "name": "Buffet Hải Sản Đà Nẵng Mr Mộc",
+              "address": "78 Võ Nguyên Giáp, Sơn Trà, Đà Nẵng 550000, Việt Nam",
+              "rating": 4.9,
+              "ratingCount": 2964,
+              "price": null,
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "09:00–22:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Mộc quán Seafood Đà Nẵng",
+              "address": "26 Tô Hiến Thành, An Hải, Đà Nẵng 550000, Việt Nam",
+              "rating": 4.8,
+              "ratingCount": 30110,
+              "price": null,
+              "categories": [
+                "Nhà hàng hải sản",
+                "Nhà hàng"
+              ],
+              "hours": "10:30–22:30",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Thèm Hải Sản",
+              "address": "39 Trần Bạch Đằng, An Hải, Đà Nẵng 550000, Việt Nam",
+              "rating": 4.8,
+              "ratingCount": 11087,
+              "price": null,
+              "categories": [
+                "Nhà hàng hải sản"
+              ],
+              "hours": "11:00–00:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Nhà Hàng Hải Sản - Ơ Kìa",
+              "address": "7 Trần Phú, Hải Châu, Đà Nẵng 550000, Việt Nam",
+              "rating": 4.8,
+              "ratingCount": 3184,
+              "price": null,
+              "categories": [
+                "Nhà hàng hải sản",
+                "Nhà hàng"
+              ],
+              "hours": "06:00–23:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "ĐÀ THÀNH QUÁN",
+              "address": "122 Nguyễn Văn Thoại, Ngũ Hành Sơn, Đà Nẵng 55000, Việt Nam",
+              "rating": 4.8,
+              "ratingCount": 2846,
+              "price": null,
+              "categories": [
+                "Nhà hàng hải sản"
+              ],
+              "hours": "10:00–02:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Hải Sản Đà Nẵng Bé Biển",
+              "address": "202 Võ Nguyên Giáp, An Hải, Đà Nẵng 550000, Việt Nam",
+              "rating": 4.7,
+              "ratingCount": 5352,
+              "price": null,
+              "categories": [
+                "Nhà hàng hải sản",
+                "Nhà cung cấp thực phẩm và đồ uống cho dịch vụ ăn uống",
+                "Nơi tổ chức sự kiện"
+              ],
+              "hours": "07:30–02:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Quán Hải Sản Thời Cổ Đà Nẵng - Seafood Restaurant",
+              "address": "354/1 Võ Nguyên Giáp, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+              "rating": 4.7,
+              "ratingCount": 3853,
+              "price": null,
+              "categories": [
+                "Nhà hàng hải sản",
+                "Nhà hàng",
+                "Chợ hải sản",
+                "Nhà hàng Việt Nam"
+              ],
+              "hours": "10:00–23:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            }
+          ],
+          "raw": {
+            "kind": "tappy.places.v1",
+            "v": 1,
+            "domain": "food",
+            "ranked": true,
+            "items": [
+              {
+                "id": "place:osm:16.06572,108.24337",
+                "domain": "food",
+                "kind": "place",
+                "name": "Hải Sản Ku Tom Đà Nẵng",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmMo2g02e2zALj7tN_64dFsOdysXFLInMzvsSfVlp0U3VhJChQGpB4Um9A0-iVfDj6pV5fpF8hDTpYE_f0e9spj9vc7V9JDLHcYhNTUrpkbucPX085aggHrmxHcULwF4vL3bK-j0EQbjukPS",
+                "address": "283 Hồ Nghinh, An Hải, Đà Nẵng 550000, Việt Nam",
+                "rating": 4.9,
+                "ratingCount": 3469,
+                "openingHours": "10:00–02:00",
+                "openNow": true,
+                "phone": "+84 389 828 888",
+                "openingHoursWeek": {
+                  "Thứ Năm": "10:00–02:00",
+                  "Thứ Sáu": "10:00–02:00",
+                  "Thứ Bảy": "10:00–02:00",
+                  "Chủ Nhật": "10:00–02:00",
+                  "Thứ Hai": "10:00–02:00",
+                  "Thứ Ba": "10:00–02:00",
+                  "Thứ Tư": "10:00–02:00"
+                },
+                "categories": [
+                  "Nhà hàng hải sản"
+                ],
+                "rank": 0,
+                "shortlistPosition": 1,
+                "recommended": true,
+                "reasons": [
+                  {
+                    "attribute": "rating",
+                    "evidence": "rated 4.9",
+                    "params": {
+                      "value": 4.9
+                    }
+                  },
+                  {
+                    "attribute": "reviewCount",
+                    "evidence": "3469 reviews",
+                    "params": {
+                      "count": 3469
+                    }
+                  }
+                ],
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=11082184094803346066",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=H%E1%BA%A3i%20S%E1%BA%A3n%20Ku%20Tom%20%C4%90%C3%A0%20N%E1%BA%B5ng%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://haisankutomdanang.com/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84389828888",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:16.08235,108.24742",
+                "domain": "food",
+                "kind": "place",
+                "name": "Buffet Hải Sản Đà Nẵng Mr Mộc",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmNd79wzUl51ulLJ9zXio4_DORRmtFg4Ylhv2L_sEs93LbtdtzvRapGd1LSo996QwzAmX4cYiJMtrBnZrndTnQK47N_dYam5GdKIIIMv8QP2BUKpMTDd7rlQQi8Lsv8eFKJiealVNCU8eq6g",
+                "address": "78 Võ Nguyên Giáp, Sơn Trà, Đà Nẵng 550000, Việt Nam",
+                "rating": 4.9,
+                "ratingCount": 2964,
+                "openingHours": "09:00–22:00",
+                "openNow": false,
+                "phone": "+84 905 993 874",
+                "openingHoursWeek": {
+                  "Thứ Sáu": "09:00–22:00",
+                  "Thứ Bảy": "09:00–22:00",
+                  "Chủ Nhật": "09:00–22:00",
+                  "Thứ Hai": "09:00–22:00",
+                  "Thứ Ba": "09:00–22:00",
+                  "Thứ Tư": "09:00–22:00",
+                  "Thứ Năm": "09:00–22:00"
+                },
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 1,
+                "shortlistPosition": 2,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=16318222310272472768",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Buffet%20H%E1%BA%A3i%20S%E1%BA%A3n%20%C4%90%C3%A0%20N%E1%BA%B5ng%20Mr%20M%E1%BB%99c%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84905993874",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:16.06403,108.24156",
+                "domain": "food",
+                "kind": "place",
+                "name": "Mộc quán Seafood Đà Nẵng",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmO8CSuCqdLKcQlA7veEBupJylsqNBOsgvKM9lwqArbsbXuIfJJq6Dl_bOm9zT7fSxenFKXUwwSm01kaggWer0EoJWd_StnTidOWPu6GStTqtuu42OZUBgiIzV3PYLzz-cmTO8I",
+                "address": "26 Tô Hiến Thành, An Hải, Đà Nẵng 550000, Việt Nam",
+                "rating": 4.8,
+                "ratingCount": 30110,
+                "openingHours": "10:30–22:30",
+                "openNow": false,
+                "phone": "+84 905 665 058",
+                "openingHoursWeek": {
+                  "Thứ Sáu": "10:30–22:30",
+                  "Thứ Bảy": "10:30–22:30",
+                  "Chủ Nhật": "10:30–22:30",
+                  "Thứ Hai": "10:30–22:30",
+                  "Thứ Ba": "10:30–22:30",
+                  "Thứ Tư": "10:30–22:30",
+                  "Thứ Năm": "10:30–22:30"
+                },
+                "categories": [
+                  "Nhà hàng hải sản",
+                  "Nhà hàng"
+                ],
+                "rank": 2,
+                "shortlistPosition": 3,
+                "actions": [
+                  {
+                    "kind": "review",
+                    "urlKind": "direct",
+                    "url": "https://www.tiktok.com/@stephany1_/video/7682925350069800205",
+                    "labelKey": "v3.action.reviewOn",
+                    "platform": "TikTok",
+                    "attributed": true
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=2059427300039139311",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://mocseafood.com/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84905665058",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=M%E1%BB%99c%20qu%C3%A1n%20Seafood%20%C4%90%C3%A0%20N%E1%BA%B5ng%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:16.05708,108.24546",
+                "domain": "food",
+                "kind": "place",
+                "name": "Thèm Hải Sản",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmOR1BTl_6NpbwE4iluEtS0C5cpxT9kKkR0Ztlin6GTEeeqW9QLamsyQXQHcrLNt1g9ATlEsA1L5zeSKieTBIMhOpRs0V8PWFsjzV4u4D7jIsaSK6FZwLVXatxpBZnRrsGBsumP5wSuINhjE",
+                "address": "39 Trần Bạch Đằng, An Hải, Đà Nẵng 550000, Việt Nam",
+                "rating": 4.8,
+                "ratingCount": 11087,
+                "openingHours": "11:00–00:00",
+                "openNow": false,
+                "phone": "+84 946 495 571",
+                "openingHoursWeek": {
+                  "Thứ Sáu": "11:00–00:00",
+                  "Thứ Bảy": "11:00–00:00",
+                  "Chủ Nhật": "11:00–00:00",
+                  "Thứ Hai": "11:00–00:00",
+                  "Thứ Ba": "11:00–00:00",
+                  "Thứ Tư": "11:00–00:00",
+                  "Thứ Năm": "11:00–00:00"
+                },
+                "categories": [
+                  "Nhà hàng hải sản"
+                ],
+                "rank": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=14378541914985934539",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Th%C3%A8m%20H%E1%BA%A3i%20S%E1%BA%A3n%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://themhaisandn.com/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84946495571",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:16.08011,108.22310",
+                "domain": "food",
+                "kind": "place",
+                "name": "Nhà Hàng Hải Sản - Ơ Kìa",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmOvKSdFUBXZTpNpgsX0L2DWJnbrkTjODa0z53uaGLYsuxaTY8lfTDko35Xmo11QscpcSFUSL0WyicYNV6AXoJTuhrq-fegzfwa-r_r645mukV23lS2T1HGgwzY_F1doDyHJ_mLeP1eJfxot",
+                "address": "7 Trần Phú, Hải Châu, Đà Nẵng 550000, Việt Nam",
+                "rating": 4.8,
+                "ratingCount": 3184,
+                "openingHours": "06:00–23:00",
+                "openNow": false,
+                "phone": "+84 906 430 707",
+                "openingHoursWeek": {
+                  "Thứ Sáu": "06:00–23:00",
+                  "Thứ Bảy": "06:00–23:00",
+                  "Chủ Nhật": "06:00–23:00",
+                  "Thứ Hai": "06:00–23:00",
+                  "Thứ Ba": "06:00–23:00",
+                  "Thứ Tư": "06:00–23:00",
+                  "Thứ Năm": "06:00–23:00"
+                },
+                "categories": [
+                  "Nhà hàng hải sản",
+                  "Nhà hàng"
+                ],
+                "rank": 4,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=8430235641332136898",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Nh%C3%A0%20H%C3%A0ng%20H%E1%BA%A3i%20S%E1%BA%A3n%20-%20%C6%A0%20K%C3%ACa%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.nhahangokia.com/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84906430707",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:16.05543,108.24402",
+                "domain": "food",
+                "kind": "place",
+                "name": "ĐÀ THÀNH QUÁN",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmN30yucMbI9zoeMKbIQozouq0C-U0UQuYHAMYj9U78TgEEkn57bHEZ3oJ2-4ehQcRva8uhlwBesvzfLBB8cEMfUjw1I65ZUG5k8-N2yeFw7HKxKCRVllEdUyTvyScv_6ZhYIpOt",
+                "address": "122 Nguyễn Văn Thoại, Ngũ Hành Sơn, Đà Nẵng 55000, Việt Nam",
+                "rating": 4.8,
+                "ratingCount": 2846,
+                "openingHours": "10:00–02:00",
+                "openNow": true,
+                "phone": "+84 935 208 213",
+                "openingHoursWeek": {
+                  "Thứ Năm": "10:00–02:00",
+                  "Thứ Sáu": "10:00–02:00",
+                  "Thứ Bảy": "10:00–02:00",
+                  "Chủ Nhật": "10:00–02:00",
+                  "Thứ Hai": "10:00–02:00",
+                  "Thứ Ba": "10:00–02:00",
+                  "Thứ Tư": "10:00–02:00"
+                },
+                "categories": [
+                  "Nhà hàng hải sản"
+                ],
+                "rank": 5,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=9128692524504562285",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=%C4%90%C3%80%20TH%C3%80NH%20QU%C3%81N%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84935208213",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:16.06853,108.24498",
+                "domain": "food",
+                "kind": "place",
+                "name": "Hải Sản Đà Nẵng Bé Biển",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmMa0VDhVvGnVt39kD0XQ5Rr8s2hQEQbkDFpS3CTIZd8GNefp4e3Br80LT5c7DAj8IlYFQU0b3WUxZxHHBjbBJFZ3LSwFXI79Qq8ubGRowEaksY-3BSEvxvIgBSgIJdF1cXGMIAOgw",
+                "address": "202 Võ Nguyên Giáp, An Hải, Đà Nẵng 550000, Việt Nam",
+                "rating": 4.7,
+                "ratingCount": 5352,
+                "openingHours": "07:30–02:00",
+                "openNow": true,
+                "phone": "+84 905 775 142",
+                "openingHoursWeek": {
+                  "Thứ Năm": "07:30–02:00",
+                  "Thứ Sáu": "07:30–02:00",
+                  "Thứ Bảy": "07:30–02:00",
+                  "Chủ Nhật": "07:30–02:00",
+                  "Thứ Hai": "07:30–02:00",
+                  "Thứ Ba": "07:30–02:00",
+                  "Thứ Tư": "07:30–02:00"
+                },
+                "categories": [
+                  "Nhà hàng hải sản",
+                  "Nhà cung cấp thực phẩm và đồ uống cho dịch vụ ăn uống",
+                  "Nơi tổ chức sự kiện"
+                ],
+                "rank": 6,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=13916594470133077361",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=H%E1%BA%A3i%20S%E1%BA%A3n%20%C4%90%C3%A0%20N%E1%BA%B5ng%20B%C3%A9%20Bi%E1%BB%83n%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://haisanbebien.com/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84905775142",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:16.04386,108.24731",
+                "domain": "food",
+                "kind": "place",
+                "name": "Quán Hải Sản Thời Cổ Đà Nẵng - Seafood Restaurant",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmMMDpk67w7brFcmiWoQrrQ2QZCXf4L5NxoYbNMJNnlxxkf3l0fUVo47IrY2Sj0PbTzOzhRLPdU1-84MxzqFTtdsebLgIdtMohTNaSIOYbSPsuc3ZJPMD4IK1TwihOUEZpjlepy9Yqo2BH5D",
+                "address": "354/1 Võ Nguyên Giáp, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+                "rating": 4.7,
+                "ratingCount": 3853,
+                "openingHours": "10:00–23:00",
+                "openNow": false,
+                "phone": "+84 905 749 079",
+                "openingHoursWeek": {
+                  "Thứ Sáu": "10:00–23:00",
+                  "Thứ Bảy": "10:00–23:00",
+                  "Chủ Nhật": "10:00–23:00",
+                  "Thứ Hai": "10:00–23:00",
+                  "Thứ Ba": "10:00–23:00",
+                  "Thứ Tư": "10:00–23:00",
+                  "Thứ Năm": "10:00–23:00"
+                },
+                "categories": [
+                  "Nhà hàng hải sản",
+                  "Nhà hàng",
+                  "Chợ hải sản",
+                  "Nhà hàng Việt Nam"
+                ],
+                "rank": 7,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=4416459426147437129",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20H%E1%BA%A3i%20S%E1%BA%A3n%20Th%E1%BB%9Di%20C%E1%BB%95%20%C4%90%C3%A0%20N%E1%BA%B5ng%20-%20Seafood%20Restaurant%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.facebook.com/haisanthoico?mibextid=ZbWKwL",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84905749079",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              }
+            ],
+            "mapsSearchUrl": "https://maps.google.com/maps?q=nh%C3%A0%20h%C3%A0ng%20h%E1%BA%A3i%20s%E1%BA%A3n%20%C4%90%C3%A0%20N%E1%BA%B5ng%20%C4%90%C3%A0%20N%E1%BA%B5ng",
+            "picked": [
+              "place:osm:16.06572,108.24337",
+              "place:osm:16.08011,108.22310",
+              "place:osm:16.06403,108.24156"
+            ],
+            "shown": 3
+          },
+          "picked": [
+            "place:osm:16.06572,108.24337",
+            "place:osm:16.08011,108.22310",
+            "place:osm:16.06403,108.24156"
+          ],
+          "domain": "food"
+        }
+      ],
+      "cardItems": [
+        [
+          "Hải Sản Ku Tom Đà Nẵng",
+          "Buffet Hải Sản Đà Nẵng Mr Mộc",
+          "Mộc quán Seafood Đà Nẵng",
+          "Thèm Hải Sản",
+          "Nhà Hàng Hải Sản - Ơ Kìa",
+          "ĐÀ THÀNH QUÁN",
+          "Hải Sản Đà Nẵng Bé Biển",
+          "Quán Hải Sản Thời Cổ Đà Nẵng - Seafood Restaurant"
+        ],
+        [
+          "Hải Sản Ku Tom Đà Nẵng",
+          "Buffet Hải Sản Đà Nẵng Mr Mộc",
+          "Mộc quán Seafood Đà Nẵng",
+          "Thèm Hải Sản",
+          "Nhà Hàng Hải Sản - Ơ Kìa",
+          "ĐÀ THÀNH QUÁN",
+          "Hải Sản Đà Nẵng Bé Biển",
+          "Quán Hải Sản Thời Cổ Đà Nẵng - Seafood Restaurant"
+        ]
+      ],
+      "duplicate": null,
+      "text": "OK, 2 ngày 1 đêm, 20 triệu cho 2 người. Mình sẽ lập kế hoạch ngay với các điểm tham quan, ăn hải sản, và khách sạn phù hợp.\n\nTuyệt vời! Mình đã có đủ thông tin. Thời tiết Đà Nẵng hôm nay 26°C, có mưa nhẹ (61% khả năng mưa), nên mình sẽ xếp tham quan ngoài trời vào sáng sớm, chiều ở lại quán ăn hải sản lâu hơn 😊\n\nDưới đây là kế hoạch 2 ngày 1 đêm cho 2 người, tổng ngân sách 20 triệu:\n\n[TAPPY_PLAN]\n{\"type\":\"trip\",\"title\":\"Đà Nẵng 2 ngày 1 đêm - Tham quan & Ăn hải sản\",\"people\":2,\"budget_total\":\"20.000.000 VND\",\"days\":[{\"label\":\"Ngày 1 (26/9)\",\"items\":[{\"time\":\"06:00\",\"emoji\":\"✈️\",\"category\":\"transport\",\"name\":\"Chuyến bay TP.HCM → Đà Nẵng\",\"description\":\"Đi máy bay sáng sớm, khoảng 1h30 bay, đến Đà Nẵng ~8h sáng\",\"price\":\"chưa có giá\",\"address\":\"Sân bay Tân Sơn Nhất → Sân bay Đà Nẵng\",\"maps_link\":\"\",\"booking_link\":\"https://vn.trip.com/flights/showfarefirst?dcity=sgn&acity=dad&ddate=2026-09-26&rdate=2026-09-27&flighttype=rt&class=y&quantity=2&locale=vi-VN&curr=VND\",\"place_id\":\"\"},{\"time\":\"09:00\",\"emoji\":\"🏔️\",\"category\":\"entertainment\",\"name\":\"Đỉnh Bàn Cờ\",\"description\":\"Tham quan đỉnh núi với view toàn cảnh Đà Nẵng, 4.6⭐ (4.471 đánh giá). Mở cửa 7:30-17:30\",\"price\":\"chưa có giá\",\"address\":\"Bàn cờ, Sơn Trà, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=7629724912977954540\",\"booking_link\":\"\",\"place_id\":\"ChIJBQHuNG49QjER7Mb_Y2I64mk\"},{\"time\":\"12:00\",\"emoji\":\"🍤\",\"category\":\"food\",\"name\":\"Hải Sản Ku Tom Đà Nẵng\",\"description\":\"Nhà hàng hải sản 4.9⭐ (3.469 đánh giá), mở 10:00-02:00. Chuyên các món tôm, cua, cá tươi sống\",\"price\":\"chưa có giá\",\"address\":\"283 Hồ Nghinh, An Hải, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=11082184094803346066\",\"booking_link\":\"https://www.google.com/maps/reserve/v/dine/c/R7d9uO8ZbxM?source=pa&opi=79508299\",\"place_id\":\"ChIJy0rCqNkXQjERksI84rfTy5k\"},{\"time\":\"15:00\",\"emoji\":\"🏛️\",\"category\":\"entertainment\",\"name\":\"Ngũ Hành Sơn\",\"description\":\"Thắng cảnh nổi tiếng với 5 ngọn núi, hang động, chùa. 4.4⭐ (42.884 đánh giá). Mở 7:00-17:30\",\"price\":\"chưa có giá\",\"address\":\"81 Huyền Trân Công Chúa, Hoà Hải, Ngũ Hành Sơn, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=13577824764986909893\",\"booking_link\":\"\",\"place_id\":\"ChIJ2y5L4dQNQjERxeSLc68fbrw\"},{\"time\":\"19:00\",\"emoji\":\"🏨\",\"category\":\"hotel\",\"name\":\"Yarra Ocean Suites Danang\",\"description\":\"Khách sạn 4.8⭐ (3.175 đánh giá), view biển, gần các điểm tham quan\",\"price\":\"chưa có giá\",\"address\":\"304 Võ Nguyên Giáp, Ngũ Hành Sơn, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=10987928834308435674\",\"booking_link\":\"\",\"place_id\":\"ChIJy4eJozgXQjER2u456g73fJg\"}]},{\"label\":\"Ngày 2 (27/9)\",\"items\":[{\"time\":\"08:00\",\"emoji\":\"☕\",\"category\":\"food\",\"name\":\"Cà phê sáng tại khách sạn\",\"description\":\"Ăn sáng tại khách sạn trước khi tham quan\",\"price\":\"chưa có giá\",\"address\":\"Yarra Ocean Suites Danang\",\"maps_link\":\"\",\"booking_link\":\"\",\"place_id\":\"\"},{\"time\":\"09:30\",\"emoji\":\"🌉\",\"category\":\"entertainment\",\"name\":\"Cầu Rồng\",\"description\":\"Biểu tượng Đà Nẵng, mở cửa cả ngày, 4.5⭐ (9.517 đánh giá). Đẹp nhất vào buổi sáng\",\"price\":\"chưa có giá\",\"address\":\"Cầu Rồng, An Hải, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=329807663884316974\",\"booking_link\":\"\",\"place_id\":\"ChIJL1GKWJYZQjERLrEGqlK2kwQ\"},{\"time\":\"12:00\",\"emoji\":\"🍤\",\"category\":\"food\",\"name\":\"Mộc quán Seafood Đà Nẵng\",\"description\":\"Nhà hàng hải sân 4.8⭐ (30.110 đánh giá), mở 10:30-22:30. Đặc biệt là các món cua, tôm\",\"price\":\"chưa có giá\",\"address\":\"26 Tô Hiến Thành, An Hải, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=2059427300039139311\",\"booking_link\":\"\",\"place_id\":\"ChIJx6-KGnIXQjER7x-T0zeOlBw\"},{\"time\":\"15:00\",\"emoji\":\"✈️\",\"category\":\"transport\",\"name\":\"Chuyến bay Đà Nẵng → TP.HCM\",\"description\":\"Bay về TP.HCM chiều, khoảng 1h30 bay\",\"price\":\"chưa có giá\",\"address\":\"Sân bay Đà Nẵng → Sân bay Tân Sơn Nhất\",\"maps_link\":\"\",\"booking_link\":\"https://vn.trip.com/flights/showfarefirst?dcity=sgn&acity=dad&ddate=2026-09-26&rdate=2026-09-27&flighttype=rt&class=y&quantity=2&locale=vi-VND&curr=VND\",\"place_id\":\"\"}]}],\"cost_breakdown\":{\"Vé máy bay khứ hồi (2 người)\":\"chưa có giá\",\"Khách sạn 1 đêm\":\"chưa có giá\",\"Ăn hải sản (2 bữa)\":\"chưa có giá\",\"Tham quan (Đỉnh Bàn Cờ, Ngũ Hành Sơn)\":\"chưa có giá\"},\"share_text\":\"2 ngày 1 đêm Đà Nẵng: tham quan Đỉnh Bàn Cờ, Ngũ Hành Sơn, Cầu Rồng & ăn hải sản tươi sống 🍤 #TappyAI\"}\n[/TAPPY_PLAN]\n\nMình chọn các điểm tham quan nổi tiếng nhất (Đỉnh Bàn Cờ, Ngũ Hành Sơn, Cầu Rồng) và 2 nhà hàng hải sản top rating để đảm bảo chất lượng. Thời tiết có mưa nhẹ nên mình xếp tham quan ngoài trời vào sáng sớm khi mưa ít hơn.\n\n**Lưu ý:** Hiện chưa xác nhận được giá cụ thể cho vé máy bay, khách sạn và các hoạt động. Tổng ngân sách 20 triệu là mục tiêu, nhưng cần kiểm tra giá thực tế để điều chỉnh.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"✈️ Tìm vé máy bay\",\"type\":\"website\",\"url\":\"https://vn.trip.com/flights/showfarefirst?dcity=sgn&acity=dad&ddate=2026-09-26&rdate=2026-09-27&flighttype=rt&class=y&quantity=2&locale=vi-VN&curr=VND\",\"primary\":true}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Muốn thêm hoạt động gì nữa không?|Cần giúp đặt khách sạn hay vé máy bay?|Có thích ăn buffet hải sản thay vì à la carte?[/FOLLOWUPS]",
+      "visible": "OK, 2 ngày 1 đêm, 20 triệu cho 2 người. Mình sẽ lập kế hoạch ngay với các điểm tham quan, ăn hải sản, và khách sạn phù hợp.\n\nTuyệt vời! Mình đã có đủ thông tin. Thời tiết Đà Nẵng hôm nay 26°C, có mưa nhẹ (61% khả năng mưa), nên mình sẽ xếp tham quan ngoài trời vào sáng sớm, chiều ở lại quán ăn hải sản lâu hơn 😊\n\nDưới đây là kế hoạch 2 ngày 1 đêm cho 2 người, tổng ngân sách 20 triệu:\n\nMình chọn các điểm tham quan nổi tiếng nhất (Đỉnh Bàn Cờ, Ngũ Hành Sơn, Cầu Rồng) và 2 nhà hàng hải sản top rating để đảm bảo chất lượng. Thời tiết có mưa nhẹ nên mình xếp tham quan ngoài trời vào sáng sớm khi mưa ít hơn.\n\n**Lưu ý:** Hiện chưa xác nhận được giá cụ thể cho vé máy bay, khách sạn và các hoạt động. Tổng ngân sách 20 triệu là mục tiêu, nhưng cần kiểm tra giá thực tế để điều chỉnh."
+    },
+    {
+      "user": "gần biển",
+      "status": 200,
+      "elapsedMs": 45727,
+      "textFrames": 3,
+      "tools": [
+        {
+          "name": "search_places",
+          "args": {
+            "query": "điểm tham quan gần biển Đà Nẵng",
+            "location": "Đà Nẵng",
+            "type": "attraction"
+          }
+        },
+        {
+          "name": "search_places",
+          "args": {
+            "query": "nhà hàng hải sản gần biển Đà Nẵng",
+            "location": "Đà Nẵng",
+            "type": "restaurant"
+          }
+        },
+        {
+          "name": "get_hotel_prices",
+          "args": {
+            "location": "Đà Nẵng",
+            "checkIn": "2026-09-26",
+            "checkOut": "2026-09-27"
+          }
+        },
+        {
+          "name": "get_flight_prices",
+          "args": {
+            "origin": "TP HCM",
+            "destination": "Đà Nẵng",
+            "departDate": "2026-09-26",
+            "returnDate": "2026-09-27",
+            "passengers": 2
+          }
+        }
+      ],
+      "toolResults": [
+        null,
+        null,
+        null,
+        null
+      ],
+      "annotations": [
+        {
+          "type": "tappy.progress.v1",
+          "stage": "found"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "Yarra Ocean Suites Danang",
+              "address": "304 Võ Nguyên Giáp, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+              "rating": 4.8,
+              "ratingCount": 3175,
+              "price": null,
+              "categories": [
+                "Khách sạn",
+                "Khách sạn nghỉ dưỡng"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "M Hotel Da Nang",
+              "address": "286 Võ Nguyên Giáp, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+              "rating": 4.8,
+              "ratingCount": 2839,
+              "price": null,
+              "categories": [
+                "Khách sạn"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Seahorse",
+              "address": "29 Yên Bái, Hải Châu, Đà Nẵng 550000, Việt Nam",
+              "rating": 4.8,
+              "ratingCount": 1840,
+              "price": null,
+              "categories": [
+                "Khách sạn",
+                "Khách sạn nghỉ dưỡng",
+                "Căn hộ được phục vụ"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Seahorse Signature Da Nang Hotel By Sujet of Haviland",
+              "address": "05 Huỳnh Thúc Kháng, Hải Châu, Đà Nẵng 550000, Việt Nam",
+              "rating": 4.8,
+              "ratingCount": 1690,
+              "price": null,
+              "categories": [
+                "Khách sạn"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "NALOD ĐÀ NẴNG - KHÁCH SẠN & TRUNG TÂM HỘI NGHỊ",
+              "address": "192 Võ Nguyên Giáp, An Hải, Đà Nẵng 550000, Việt Nam",
+              "rating": 4.7,
+              "ratingCount": 4437,
+              "price": null,
+              "categories": [
+                "Khách sạn nghỉ dưỡng",
+                "Quán cà phê",
+                "Trung tâm hội thảo",
+                "Spa sức khỏe",
+                "Sân pickleball",
+                "Nhà hàng"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Sala Danang Beach Hotel",
+              "address": "36-38 Lâm Hoành, An Hải, Đà Nẵng 550000, Việt Nam",
+              "rating": 4.7,
+              "ratingCount": 3807,
+              "price": null,
+              "categories": [
+                "Khách sạn"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Nhu Minh Plaza Danang Hotel",
+              "address": "41 Phạm Văn Đồng, An Hải, Đà Nẵng 550000, Việt Nam",
+              "rating": 4.7,
+              "ratingCount": 2722,
+              "price": null,
+              "categories": [
+                "Khách sạn"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Khách sạn Novotel Đà Nẵng",
+              "address": "36 Bạch Đằng, Street, Hải Châu, Đà Nẵng 550000, Việt Nam",
+              "rating": 4.6,
+              "ratingCount": 8699,
+              "price": null,
+              "categories": [
+                "Khách sạn"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            }
+          ],
+          "raw": {
+            "kind": "tappy.places.v1",
+            "v": 1,
+            "domain": "travel",
+            "ranked": false,
+            "items": [
+              {
+                "id": "stay:16.04889,108.24880",
+                "domain": "travel",
+                "kind": "stay",
+                "name": "Yarra Ocean Suites Danang",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlPnNn9HCs-uIFTelZ_2M2JyNZF9sVRMPc_hX9lmNrq2mbCzlxjy3yn1jMjLrL5AAmC8lk889mjlZVF0h0C84DBJ3nF81XoKfEZdtPiCFhBrBKb2xDkBJSpj4aeg9O45KVQidKR",
+                "address": "304 Võ Nguyên Giáp, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+                "rating": 4.8,
+                "ratingCount": 3175,
+                "phone": "+84 236 6269 888",
+                "categories": [
+                  "Khách sạn",
+                  "Khách sạn nghỉ dưỡng"
+                ],
+                "rank": 0,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=10987928834308435674",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://yarraoceansuitesdanang.com/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Yarra%20Ocean%20Suites%20Danang%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842366269888",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "stay:16.05165,108.24803",
+                "domain": "travel",
+                "kind": "stay",
+                "name": "M Hotel Da Nang",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWk7tJiKpzPjci3bS9EEIVt3lt5x77oEJj0zWgROp2h5wkkh1scd0jooMorPBo-KTZW_jJmOrEAvXg7h4B7X0X90KWABMmqPOXms_PtXVwYWCgVC2MNoHvbfvHar6qoqkn4HSZDW8DwJdoI",
+                "address": "286 Võ Nguyên Giáp, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+                "rating": 4.8,
+                "ratingCount": 2839,
+                "phone": "+84 236 3816 868",
+                "categories": [
+                  "Khách sạn"
+                ],
+                "rank": 1,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=7069989189938949055",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://mhotel.vn/property/m-hotel-da-nang/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=M%20Hotel%20Da%20Nang%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842363816868",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "stay:16.06910,108.22291",
+                "domain": "travel",
+                "kind": "stay",
+                "name": "Seahorse",
+                "image": "https://lh3.googleusercontent.com/gps-proxy/ALd4DhF_vQKMRrHBkJtsSAtjNSdEYf5dCmVmPQR6zMZoeKa1FovqjQMQ7XwsiOb1rXNUKw3dBZQIZ_qssCz0Zf1Uzkvyrs2CbKR-3OJFY1tdBExxiY0pvjvsxFKxrbMFFCEhFCWVRPuGep2B9b3o1JH_GvOb9XjpYzG_yS3IFVFr2pQqgMZ7tTUp0tVUPQ",
+                "address": "29 Yên Bái, Hải Châu, Đà Nẵng 550000, Việt Nam",
+                "rating": 4.8,
+                "ratingCount": 1840,
+                "phone": "+84 236 3589 888",
+                "categories": [
+                  "Khách sạn",
+                  "Khách sạn nghỉ dưỡng",
+                  "Căn hộ được phục vụ"
+                ],
+                "rank": 2,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=5003120577334345181",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://havilandhouse.com/seahorse-tropical-da-nang-hotel-by-haviland",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Seahorse%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842363589888",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "stay:16.06165,108.21853",
+                "domain": "travel",
+                "kind": "stay",
+                "name": "Seahorse Signature Da Nang Hotel By Sujet of Haviland",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWn2wEMMbXrf0Lfqw8EOHCtnE_KWb0PGbv3P_zEIP-hpTBsVQLQYBW2FlnlCPK1U1hSUK--MJmsuPq4SbQhfycXPYH0EPUiyKp6MGBNe3A_k2gp731sULwXkh5BjjG9pVwpIloO0",
+                "address": "05 Huỳnh Thúc Kháng, Hải Châu, Đà Nẵng 550000, Việt Nam",
+                "rating": 4.8,
+                "ratingCount": 1690,
+                "phone": "+84 236 3532 399",
+                "categories": [
+                  "Khách sạn"
+                ],
+                "rank": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=1855607653939315404",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://havilandhouse.com/seahorse-signature-danang-hotel-by-haviland",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Seahorse%20Signature%20Da%20Nang%20Hotel%20By%20Sujet%20of%20Haviland%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842363532399",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "stay:16.07210,108.24466",
+                "domain": "travel",
+                "kind": "stay",
+                "name": "NALOD ĐÀ NẴNG - KHÁCH SẠN & TRUNG TÂM HỘI NGHỊ",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWk4qKJ3SzjemISsjG6AZA6P9ffem9TcFDQLuiePGxtaRbL6P9v3ew2goKynx9zq4PEF9sfmujNeYIt9DNM1J3jANSzSNe8Ve6lvFK3mepbPKIyKgopJLqzcQVbqeUDxMGy6kxaGZ_Sz_-c",
+                "address": "192 Võ Nguyên Giáp, An Hải, Đà Nẵng 550000, Việt Nam",
+                "rating": 4.7,
+                "ratingCount": 4437,
+                "phone": "+84 236 3913 999",
+                "categories": [
+                  "Khách sạn nghỉ dưỡng",
+                  "Quán cà phê",
+                  "Trung tâm hội thảo",
+                  "Spa sức khỏe",
+                  "Sân pickleball",
+                  "Nhà hàng"
+                ],
+                "rank": 4,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=7164152589315885317",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://nalod.com.vn/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=NALOD%20%C4%90%C3%80%20N%E1%BA%B4NG%20-%20KH%C3%81CH%20S%E1%BA%A0N%20%26%20TRUNG%20T%C3%82M%20H%E1%BB%98I%20NGH%E1%BB%8A%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842363913999",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "stay:16.06222,108.24518",
+                "domain": "travel",
+                "kind": "stay",
+                "name": "Sala Danang Beach Hotel",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWk8wTjJVqyUzHC391sC4gEfk1beXlc5Apds0SRCYgYs9XyggjzYYbk-Z19Ug49YcLjj2CceG8EMT4aYd-Bwugw7NqNOh-V81ypyelmMUkY8QBycuIwR0zTOOnH4tsMgMXnHfB8tfQ",
+                "address": "36-38 Lâm Hoành, An Hải, Đà Nẵng 550000, Việt Nam",
+                "rating": 4.7,
+                "ratingCount": 3807,
+                "phone": "+84 236 3658 555",
+                "categories": [
+                  "Khách sạn"
+                ],
+                "rank": 5,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=2515068952480721832",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://salahotelgroup.com/en/saladanangbeachhotel/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Sala%20Danang%20Beach%20Hotel%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842363658555",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "stay:16.06984,108.23865",
+                "domain": "travel",
+                "kind": "stay",
+                "name": "Nhu Minh Plaza Danang Hotel",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnv0kCLrIP1w2Mh9aTfMJv3GCIJD5oVaas11_xg7S89_C2y5p9Hy7OeByvCfwb5fbS83XHXajh1Ux4C-QnuBdn8lD09a-70s12PLFAzt4U_UPDgDVTaJHDlUZbMpPATPqa-NvPS",
+                "address": "41 Phạm Văn Đồng, An Hải, Đà Nẵng 550000, Việt Nam",
+                "rating": 4.7,
+                "ratingCount": 2722,
+                "phone": "+84 236 3555 666",
+                "categories": [
+                  "Khách sạn"
+                ],
+                "rank": 6,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=10395435559786506187",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Nhu%20Minh%20Plaza%20Danang%20Hotel%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842363555666",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "stay:16.07741,108.22363",
+                "domain": "travel",
+                "kind": "stay",
+                "name": "Khách sạn Novotel Đà Nẵng",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWm2z9hFktctIwWx7i5GkUnMghAe7lL4cfYnm9NmaJ__k-lpSgpGbZbbxxdJkKw09eykkR7hXMBwm7K0oQI-I76NdIhY5uDzcU2LqkOvkm6b025ufvaSObpPhCXdKRDmMbpIHTExOD19c5rT",
+                "address": "36 Bạch Đằng, Street, Hải Châu, Đà Nẵng 550000, Việt Nam",
+                "rating": 4.6,
+                "ratingCount": 8699,
+                "phone": "+84 236 3929 999",
+                "categories": [
+                  "Khách sạn"
+                ],
+                "rank": 7,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=15361143490531047477",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://all.accor.com/lien_externe.svlt?goto=fiche_hotel&code_hotel=8287&merchantid=seo-maps-VN-8287&sourceid=aw-cen&utm_medium=seo%20maps&utm_source=google%20Maps&utm_campaign=seo%20maps",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Kh%C3%A1ch%20s%E1%BA%A1n%20Novotel%20%C4%90%C3%A0%20N%E1%BA%B5ng%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842363929999",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              }
+            ],
+            "shown": 3,
+            "preliminary": true
+          },
+          "preliminary": true,
+          "domain": "travel"
+        },
+        {
+          "type": "tappy.progress.v1",
+          "stage": "finishing"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "Yarra Ocean Suites Danang",
+              "address": "304 Võ Nguyên Giáp, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+              "rating": 4.8,
+              "ratingCount": 3175,
+              "price": null,
+              "categories": [
+                "Khách sạn",
+                "Khách sạn nghỉ dưỡng"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": null,
+              "recommended": true,
+              "reasons": [
+                "rated 4.8",
+                "3175 reviews"
+              ]
+            },
+            {
+              "name": "M Hotel Da Nang",
+              "address": "286 Võ Nguyên Giáp, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+              "rating": 4.8,
+              "ratingCount": 2839,
+              "price": null,
+              "categories": [
+                "Khách sạn"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Seahorse",
+              "address": "29 Yên Bái, Hải Châu, Đà Nẵng 550000, Việt Nam",
+              "rating": 4.8,
+              "ratingCount": 1840,
+              "price": null,
+              "categories": [
+                "Khách sạn",
+                "Khách sạn nghỉ dưỡng",
+                "Căn hộ được phục vụ"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Seahorse Signature Da Nang Hotel By Sujet of Haviland",
+              "address": "05 Huỳnh Thúc Kháng, Hải Châu, Đà Nẵng 550000, Việt Nam",
+              "rating": 4.8,
+              "ratingCount": 1690,
+              "price": null,
+              "categories": [
+                "Khách sạn"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "NALOD ĐÀ NẴNG - KHÁCH SẠN & TRUNG TÂM HỘI NGHỊ",
+              "address": "192 Võ Nguyên Giáp, An Hải, Đà Nẵng 550000, Việt Nam",
+              "rating": 4.7,
+              "ratingCount": 4437,
+              "price": null,
+              "categories": [
+                "Khách sạn nghỉ dưỡng",
+                "Quán cà phê",
+                "Trung tâm hội thảo",
+                "Spa sức khỏe",
+                "Sân pickleball",
+                "Nhà hàng"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Sala Danang Beach Hotel",
+              "address": "36-38 Lâm Hoành, An Hải, Đà Nẵng 550000, Việt Nam",
+              "rating": 4.7,
+              "ratingCount": 3807,
+              "price": null,
+              "categories": [
+                "Khách sạn"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Nhu Minh Plaza Danang Hotel",
+              "address": "41 Phạm Văn Đồng, An Hải, Đà Nẵng 550000, Việt Nam",
+              "rating": 4.7,
+              "ratingCount": 2722,
+              "price": null,
+              "categories": [
+                "Khách sạn"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Khách sạn Novotel Đà Nẵng",
+              "address": "36 Bạch Đằng, Street, Hải Châu, Đà Nẵng 550000, Việt Nam",
+              "rating": 4.6,
+              "ratingCount": 8699,
+              "price": null,
+              "categories": [
+                "Khách sạn"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            }
+          ],
+          "raw": {
+            "kind": "tappy.places.v1",
+            "v": 1,
+            "domain": "travel",
+            "ranked": true,
+            "items": [
+              {
+                "id": "stay:16.04889,108.24880",
+                "domain": "travel",
+                "kind": "stay",
+                "name": "Yarra Ocean Suites Danang",
+                "image": "https://yarraoceansuitesdanang.com/wp-content/uploads/sites/159/2026/04/outsitenhe-e1775120186593.png",
+                "address": "304 Võ Nguyên Giáp, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+                "rating": 4.8,
+                "ratingCount": 3175,
+                "phone": "+84 236 6269 888",
+                "categories": [
+                  "Khách sạn",
+                  "Khách sạn nghỉ dưỡng"
+                ],
+                "rank": 0,
+                "recommended": true,
+                "reasons": [
+                  {
+                    "attribute": "rating",
+                    "evidence": "rated 4.8",
+                    "params": {
+                      "value": 4.8
+                    }
+                  },
+                  {
+                    "attribute": "reviewCount",
+                    "evidence": "3175 reviews",
+                    "params": {
+                      "count": 3175
+                    }
+                  }
+                ],
+                "actions": [
+                  {
+                    "kind": "review",
+                    "urlKind": "direct",
+                    "url": "https://www.tiktok.com/@mochibumm/video/7656047436506402068",
+                    "labelKey": "v3.action.reviewOn",
+                    "platform": "TikTok",
+                    "attributed": true
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=10987928834308435674",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://yarraoceansuitesdanang.com/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842366269888",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Yarra%20Ocean%20Suites%20Danang%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "stay:16.05165,108.24803",
+                "domain": "travel",
+                "kind": "stay",
+                "name": "M Hotel Da Nang",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWk7tJiKpzPjci3bS9EEIVt3lt5x77oEJj0zWgROp2h5wkkh1scd0jooMorPBo-KTZW_jJmOrEAvXg7h4B7X0X90KWABMmqPOXms_PtXVwYWCgVC2MNoHvbfvHar6qoqkn4HSZDW8DwJdoI",
+                "address": "286 Võ Nguyên Giáp, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+                "rating": 4.8,
+                "ratingCount": 2839,
+                "phone": "+84 236 3816 868",
+                "categories": [
+                  "Khách sạn"
+                ],
+                "rank": 1,
+                "actions": [
+                  {
+                    "kind": "review",
+                    "urlKind": "direct",
+                    "url": "https://www.tiktok.com/@callumhirst_/video/7547007596809424150",
+                    "labelKey": "v3.action.reviewOn",
+                    "platform": "TikTok",
+                    "attributed": true
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=7069989189938949055",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://mhotel.vn/property/m-hotel-da-nang/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842363816868",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=M%20Hotel%20Da%20Nang%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "stay:16.06910,108.22291",
+                "domain": "travel",
+                "kind": "stay",
+                "name": "Seahorse",
+                "image": "https://lh3.googleusercontent.com/gps-proxy/ALd4DhF_vQKMRrHBkJtsSAtjNSdEYf5dCmVmPQR6zMZoeKa1FovqjQMQ7XwsiOb1rXNUKw3dBZQIZ_qssCz0Zf1Uzkvyrs2CbKR-3OJFY1tdBExxiY0pvjvsxFKxrbMFFCEhFCWVRPuGep2B9b3o1JH_GvOb9XjpYzG_yS3IFVFr2pQqgMZ7tTUp0tVUPQ",
+                "address": "29 Yên Bái, Hải Châu, Đà Nẵng 550000, Việt Nam",
+                "rating": 4.8,
+                "ratingCount": 1840,
+                "phone": "+84 236 3589 888",
+                "categories": [
+                  "Khách sạn",
+                  "Khách sạn nghỉ dưỡng",
+                  "Căn hộ được phục vụ"
+                ],
+                "rank": 2,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=5003120577334345181",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://havilandhouse.com/seahorse-tropical-da-nang-hotel-by-haviland",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Seahorse%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842363589888",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "stay:16.06165,108.21853",
+                "domain": "travel",
+                "kind": "stay",
+                "name": "Seahorse Signature Da Nang Hotel By Sujet of Haviland",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWn2wEMMbXrf0Lfqw8EOHCtnE_KWb0PGbv3P_zEIP-hpTBsVQLQYBW2FlnlCPK1U1hSUK--MJmsuPq4SbQhfycXPYH0EPUiyKp6MGBNe3A_k2gp731sULwXkh5BjjG9pVwpIloO0",
+                "address": "05 Huỳnh Thúc Kháng, Hải Châu, Đà Nẵng 550000, Việt Nam",
+                "rating": 4.8,
+                "ratingCount": 1690,
+                "phone": "+84 236 3532 399",
+                "categories": [
+                  "Khách sạn"
+                ],
+                "rank": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=1855607653939315404",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://havilandhouse.com/seahorse-signature-danang-hotel-by-haviland",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Seahorse%20Signature%20Da%20Nang%20Hotel%20By%20Sujet%20of%20Haviland%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842363532399",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "stay:16.07210,108.24466",
+                "domain": "travel",
+                "kind": "stay",
+                "name": "NALOD ĐÀ NẴNG - KHÁCH SẠN & TRUNG TÂM HỘI NGHỊ",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWk4qKJ3SzjemISsjG6AZA6P9ffem9TcFDQLuiePGxtaRbL6P9v3ew2goKynx9zq4PEF9sfmujNeYIt9DNM1J3jANSzSNe8Ve6lvFK3mepbPKIyKgopJLqzcQVbqeUDxMGy6kxaGZ_Sz_-c",
+                "address": "192 Võ Nguyên Giáp, An Hải, Đà Nẵng 550000, Việt Nam",
+                "rating": 4.7,
+                "ratingCount": 4437,
+                "phone": "+84 236 3913 999",
+                "categories": [
+                  "Khách sạn nghỉ dưỡng",
+                  "Quán cà phê",
+                  "Trung tâm hội thảo",
+                  "Spa sức khỏe",
+                  "Sân pickleball",
+                  "Nhà hàng"
+                ],
+                "rank": 4,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=7164152589315885317",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://nalod.com.vn/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=NALOD%20%C4%90%C3%80%20N%E1%BA%B4NG%20-%20KH%C3%81CH%20S%E1%BA%A0N%20%26%20TRUNG%20T%C3%82M%20H%E1%BB%98I%20NGH%E1%BB%8A%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842363913999",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "stay:16.06222,108.24518",
+                "domain": "travel",
+                "kind": "stay",
+                "name": "Sala Danang Beach Hotel",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWk8wTjJVqyUzHC391sC4gEfk1beXlc5Apds0SRCYgYs9XyggjzYYbk-Z19Ug49YcLjj2CceG8EMT4aYd-Bwugw7NqNOh-V81ypyelmMUkY8QBycuIwR0zTOOnH4tsMgMXnHfB8tfQ",
+                "address": "36-38 Lâm Hoành, An Hải, Đà Nẵng 550000, Việt Nam",
+                "rating": 4.7,
+                "ratingCount": 3807,
+                "phone": "+84 236 3658 555",
+                "categories": [
+                  "Khách sạn"
+                ],
+                "rank": 5,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=2515068952480721832",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://salahotelgroup.com/en/saladanangbeachhotel/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Sala%20Danang%20Beach%20Hotel%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842363658555",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "stay:16.06984,108.23865",
+                "domain": "travel",
+                "kind": "stay",
+                "name": "Nhu Minh Plaza Danang Hotel",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnv0kCLrIP1w2Mh9aTfMJv3GCIJD5oVaas11_xg7S89_C2y5p9Hy7OeByvCfwb5fbS83XHXajh1Ux4C-QnuBdn8lD09a-70s12PLFAzt4U_UPDgDVTaJHDlUZbMpPATPqa-NvPS",
+                "address": "41 Phạm Văn Đồng, An Hải, Đà Nẵng 550000, Việt Nam",
+                "rating": 4.7,
+                "ratingCount": 2722,
+                "phone": "+84 236 3555 666",
+                "categories": [
+                  "Khách sạn"
+                ],
+                "rank": 6,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=10395435559786506187",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Nhu%20Minh%20Plaza%20Danang%20Hotel%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842363555666",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "stay:16.07741,108.22363",
+                "domain": "travel",
+                "kind": "stay",
+                "name": "Khách sạn Novotel Đà Nẵng",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWm2z9hFktctIwWx7i5GkUnMghAe7lL4cfYnm9NmaJ__k-lpSgpGbZbbxxdJkKw09eykkR7hXMBwm7K0oQI-I76NdIhY5uDzcU2LqkOvkm6b025ufvaSObpPhCXdKRDmMbpIHTExOD19c5rT",
+                "address": "36 Bạch Đằng, Street, Hải Châu, Đà Nẵng 550000, Việt Nam",
+                "rating": 4.6,
+                "ratingCount": 8699,
+                "phone": "+84 236 3929 999",
+                "categories": [
+                  "Khách sạn"
+                ],
+                "rank": 7,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=15361143490531047477",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://all.accor.com/lien_externe.svlt?goto=fiche_hotel&code_hotel=8287&merchantid=seo-maps-VN-8287&sourceid=aw-cen&utm_medium=seo%20maps&utm_source=google%20Maps&utm_campaign=seo%20maps",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Kh%C3%A1ch%20s%E1%BA%A1n%20Novotel%20%C4%90%C3%A0%20N%E1%BA%B5ng%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842363929999",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              }
+            ],
+            "mapsSearchUrl": "https://maps.google.com/maps?q=%C4%91i%E1%BB%83m%20tham%20quan%20g%E1%BA%A7n%20bi%E1%BB%83n%20%C4%90%C3%A0%20N%E1%BA%B5ng%20%C4%90%C3%A0%20N%E1%BA%B5ng",
+            "picked": [
+              "stay:16.04889,108.24880"
+            ],
+            "shown": 3
+          },
+          "picked": [
+            "stay:16.04889,108.24880"
+          ],
+          "domain": "travel"
+        }
+      ],
+      "cardItems": [
+        [
+          "Yarra Ocean Suites Danang",
+          "M Hotel Da Nang",
+          "Seahorse",
+          "Seahorse Signature Da Nang Hotel By Sujet of Haviland",
+          "NALOD ĐÀ NẴNG - KHÁCH SẠN & TRUNG TÂM HỘI NGHỊ",
+          "Sala Danang Beach Hotel",
+          "Nhu Minh Plaza Danang Hotel",
+          "Khách sạn Novotel Đà Nẵng"
+        ],
+        [
+          "Yarra Ocean Suites Danang",
+          "M Hotel Da Nang",
+          "Seahorse",
+          "Seahorse Signature Da Nang Hotel By Sujet of Haviland",
+          "NALOD ĐÀ NẴNG - KHÁCH SẠN & TRUNG TÂM HỘI NGHỊ",
+          "Sala Danang Beach Hotel",
+          "Nhu Minh Plaza Danang Hotel",
+          "Khách sạn Novotel Đà Nẵng"
+        ]
+      ],
+      "duplicate": {
+        "len": 147,
+        "at": [
+          0,
+          197
+        ],
+        "sample": "OK, mình điều chỉnh kế hoạch để ưu tiên các điểm gần biển và quán hải sản view b"
+      },
+      "text": "OK, mình điều chỉnh kế hoạch để ưu tiên các điểm gần biển và quán hải sản view biển. Gọi tool để tìm các điểm tham quan ven biển, nhà hàng hải sản gần biển, và khách sạn ven biển phù hợp ngân sách.OK, mình điều chỉnh kế hoạch để ưu tiên các điểm gần biển và quán hải sản view biển. Gọi tool để tìm các điểm tham quan ven biển, nhà hàng hải sản gần biển.\n\nTuyệt vời! Mình đã tìm được các điểm tham quan gần biển, nhà hàng hải sản top rating, và khách sạn ven biển. Dưới đây là kế hoạch 2 ngày 1 đêm cho 2 người:\n\n[TAPPY_PLAN]\n{\"type\":\"trip\",\"title\":\"Đà Nẵng 2 ngày 1 đêm - Tham quan biển & ăn hải sản\",\"people\":2,\"budget_total\":\"chưa có giá\",\"days\":[{\"label\":\"Ngày 1 - Sáng/Chiều\",\"items\":[{\"time\":\"06:00\",\"emoji\":\"✈️\",\"category\":\"transport\",\"name\":\"Chuyến bay TP.HCM → Đà Nẵng\",\"description\":\"Máy bay sáng sớm, khoảng 1 giờ bay. Giá tham khảo: ~1.5-2 triệu/người (tổng 3-4 triệu cho 2 người)\",\"price\":\"chưa có giá\",\"address\":\"Sân bay Tân Sơn Nhất → Sân bay Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?q=Da+Nang+Airport\",\"booking_link\":\"https://vn.trip.com/flights/showfarefirst?dcity=sgn&acity=dad&ddate=2026-09-26&rdate=2026-09-27&flighttype=rt&class=y&quantity=2&locale=vi-VN&curr=VND\",\"place_id\":\"\"},{\"time\":\"09:00\",\"emoji\":\"🏨\",\"category\":\"hotel\",\"name\":\"Yarra Ocean Suites Danang\",\"description\":\"Khách sạn 4.8⭐ (3.175 đánh giá) ven biển, view đẹp, check-in sớm. Giá tham khảo: ~1.2-1.5 triệu/đêm\",\"price\":\"chưa có giá\",\"address\":\"304 Võ Nguyên Giáp, Ngũ Hành Sơn, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=10987928834308435674\",\"booking_link\":\"https://yarraoceansuitesdanang.com/\",\"place_id\":\"ChIJy4eJozgXQjER2u456g73fJg\"},{\"time\":\"11:00\",\"emoji\":\"🏖️\",\"category\":\"entertainment\",\"name\":\"Bãi biển Sơn Trà\",\"description\":\"Bãi biển yên tĩnh 4.8⭐ (437 đánh giá), mở cả ngày, gần khách sạn. Tắm biển, thư giãn\",\"price\":\"Miễn phí\",\"address\":\"Bến Xe Bus, Sơn Trà, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=4955672832474344518\",\"booking_link\":\"\",\"place_id\":\"ChIJrVOLzgUXQjERRuyvUi8WxkQ\"},{\"time\":\"14:00\",\"emoji\":\"🍤\",\"category\":\"food\",\"name\":\"Buffet Hải Sản Đà Nẵng Mr Mộc\",\"description\":\"Buffet hải sản 4.9⭐ (2.964 đánh giá), giá 300-400k/người. Mở 09:00-22:00\",\"price\":\"chưa có giá\",\"address\":\"78 Võ Nguyên Giáp, Sơn Trà, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=16318222310272472768\",\"booking_link\":\"https://maps.google.com/?cid=16318222310272472768\",\"place_id\":\"ChIJW6WmIUoXQjERwBalybv4deI\"},{\"time\":\"16:00\",\"emoji\":\"🏔️\",\"category\":\"entertainment\",\"name\":\"Cầu Vàng\",\"description\":\"Điểm tham quan 4.6⭐ (14.837 đánh giá), mở 08:00-19:00. Cây cầu vàng nổi tiếng, view tuyệt đẹp. Vé: ~150k/người\",\"price\":\"chưa có giá\",\"address\":\"Hòa Vang, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=7167034678468850957\",\"booking_link\":\"\",\"place_id\":\"ChIJj9PFGT33QTERDbUKRxFsdmM\"}]},{\"label\":\"Ngày 2 - Sáng/Chiều\",\"items\":[{\"time\":\"07:00\",\"emoji\":\"🌅\",\"category\":\"entertainment\",\"name\":\"Đỉnh Bàn Cờ\",\"description\":\"Điểm tham quan 4.6⭐ (4.471 đánh giá), mở 07:30-17:30. Ngắm bình minh, view biển Sơn Trà. Vé: ~100k/người\",\"price\":\"chưa có giá\",\"address\":\"Bàn cờ, Sơn Trà, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=7629724912977954540\",\"booking_link\":\"\",\"place_id\":\"ChIJBQHuNG49QjER7Mb_Y2I64mk\"},{\"time\":\"09:00\",\"emoji\":\"☕\",\"category\":\"food\",\"name\":\"Cà phê sáng ven biển\",\"description\":\"Quán cà phê nhỏ gần bãi biển, thưởng thức cà phê Đà Nẵng. Giá: ~100k/người\",\"price\":\"chưa có giá\",\"address\":\"Khu vực Ngũ Hành Sơn\",\"maps_link\":\"https://maps.google.com/?q=cafe+ven+bien+Da+Nang\",\"booking_link\":\"\",\"place_id\":\"\"},{\"time\":\"11:00\",\"emoji\":\"🏞️\",\"category\":\"entertainment\",\"name\":\"Cầu Rồng\",\"description\":\"Cầu nổi tiếng 4.5⭐ (9.517 đánh giá), mở cả ngày. Chụp ảnh, ngắm sông Hàn. Miễn phí\",\"price\":\"Miễn phí\",\"address\":\"An Hải, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=329807663884316974\",\"booking_link\":\"\",\"place_id\":\"ChIJL1GKWJYZQjERLrEGqlK2kwQ\"},{\"time\":\"13:00\",\"emoji\":\"🍤\",\"category\":\"food\",\"name\":\"Bé Ni 2 - Nhà hàng hải sản\",\"description\":\"Nhà hàng hải sản 4.8⭐ (14.339 đánh giá), mở cả ngày. Ăn trưa cuối cùng trước về. Giá: ~400-600k/người\",\"price\":\"chưa có giá\",\"address\":\"228 Võ Nguyên Giáp, An Hải, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=1280184014731027025\",\"booking_link\":\"https://www.google.com/maps/reserve/v/dine/c/tvAKb7qbg3E?source=pa&opi=79508299\",\"place_id\":\"ChIJySI1VxkXQjERUSItJZQgxBE\"},{\"time\":\"15:00\",\"emoji\":\"✈️\",\"category\":\"transport\",\"name\":\"Chuyến bay Đà Nẵng → TP.HCM\",\"description\":\"Máy bay chiều, khoảng 1 giờ bay. Giá tham khảo: ~1.5-2 triệu/người (tổng 3-4 triệu cho 2 người)\",\"price\":\"chưa có giá\",\"address\":\"Sân bay Đà Nẵng → Sân bay Tân Sơn Nhất\",\"maps_link\":\"https://maps.google.com/?q=Da+Nang+Airport\",\"booking_link\":\"https://vn.trip.com/flights/showfarefirst?dcity=sgn&acity=dad&ddate=2026-09-26&rdate=2026-09-27&flighttype=rt&class=y&quantity=2&locale=vi-VN&curr=VND\",\"place_id\":\"\"}]}],\"cost_breakdown\":{\"Vé máy bay (2 người)\":\"chưa có giá\",\"Khách sạn (1 đêm)\":\"chưa có giá\",\"Ăn hải sản (2 bữa)\":\"chưa có giá\",\"Tham quan (Cầu Vàng, Đỉnh Bàn Cờ)\":\"chưa có giá\",\"Cà phê & ăn nhẹ\":\"chưa có giá\"},\"share_text\":\"2 ngày 1 đêm Đà Nẵng: tắm biển Sơn Trà, ăn hải sản 4.8-4.9⭐, ngắm Cầu Vàng & Cầu Rồng 🌊✨ #TappyAI\"}\n[/TAPPY_PLAN]\n\nMình chọn các điểm gần biển nhất: **Bãi biển Sơn Trà** (4.8⭐) yên tĩnh, **Cầu Vàng** (4.6⭐) view tuyệt đẹp, **Đỉnh Bàn Cờ** (4.6⭐) ngắm bình minh, và **Cầu Rồng** (4.5⭐) nổi tiếng.\n\n**Tổng ước tính, mua sắm, hoặc nâng cấp khách sạn). Giá vé máy bay chưa xác nhận chính xác — bạn có thể kiểm tra trên Trip.com hoặc Traveloka để điều chỉnh. Nếu muốn khách sạn sang hơn hoặc ăn thêm các quán hải sản khác, mình có thể điều chỉnh kế hoạch nhé! 🌊\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"✈️ Tìm vé máy bay - Trip.com\",\"type\":\"website\",\"url\":\"https://vn.trip.com/flights/showfarefirst?dcity=sgn&acity=dad&ddate=2026-09-26&rdate=2026-09-27&flighttype=rt&class=y&quantity=2&locale=vi-VN&curr=VND\",\"primary\":true},{\"label\":\"🏨 Đặt khách sạn - Yarra Ocean Suites\",\"type\":\"website\",\"url\":\"https://yarraoceansuitesdanang.com/\",\"primary\":false},{\"label\":\"🍤 Buffet hải sản Mr Mộc\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=16318222310272472768\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Muốn thêm hoạt động gì khác?|Nâng cấp khách sạn hay ăn sang hơn?|Cần gợi ý quán ăn khác?[/FOLLOWUPS]",
+      "visible": "OK, mình điều chỉnh kế hoạch để ưu tiên các điểm gần biển và quán hải sản view biển. Gọi tool để tìm các điểm tham quan ven biển, nhà hàng hải sản gần biển, và khách sạn ven biển phù hợp ngân sách.OK, mình điều chỉnh kế hoạch để ưu tiên các điểm gần biển và quán hải sản view biển. Gọi tool để tìm các điểm tham quan ven biển, nhà hàng hải sản gần biển.\n\nTuyệt vời! Mình đã tìm được các điểm tham quan gần biển, nhà hàng hải sản top rating, và khách sạn ven biển. Dưới đây là kế hoạch 2 ngày 1 đêm cho 2 người:\n\nMình chọn các điểm gần biển nhất: **Bãi biển Sơn Trà** (4.8⭐) yên tĩnh, **Cầu Vàng** (4.6⭐) view tuyệt đẹp, **Đỉnh Bàn Cờ** (4.6⭐) ngắm bình minh, và **Cầu Rồng** (4.5⭐) nổi tiếng.\n\n**Tổng ước tính, mua sắm, hoặc nâng cấp khách sạn). Giá vé máy bay chưa xác nhận chính xác — bạn có thể kiểm tra trên Trip.com hoặc Traveloka để điều chỉnh. Nếu muốn khách sạn sang hơn hoặc ăn thêm các quán hải sản khác, mình có thể điều chỉnh kế hoạch nhé! 🌊"
+    }
+  ]
+}

@@ -1,0 +1,79 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "quán ăn ngon giao tận nơi quan 7 gia menu thuc don",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:51:55.997Z",
+ "body": {
+  "searchParameters": {
+   "q": "quán ăn ngon giao tận nơi quan 7 gia menu thuc don",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Top 20+ Quán Ăn Ngon Nhất Quận 7 TpHCM | Đặt bàn & ...",
+    "link": "https://pasgo.vn/kham-pha/can-tho/gioi-thieu-10-quan-an-ngon-noi-tieng-hut-khach-nhat-o-quan-7-240",
+    "snippet": "1. Quán Cơm Niêu Cuội - Quán Cơm Ngon Q7, nhiều combo cho ăn trưa văn phòng và ăn gia đình · 2. Dìn Ký Cù Lao Xanh - Trải nghiệm khó quên - Đi ...",
+    "date": "21 thg 7, 2026",
+    "rating": 5,
+    "ratingCount": 177,
+    "position": 1
+   },
+   {
+    "title": "Top 20 quán ăn Quận 7 ngon, đặc sản, đông khách",
+    "link": "https://zalopay.vn/quan-an-quan-7-5511",
+    "snippet": "Khám phá top 20 quán ăn Quận 7 với ẩm thực đa dạng từ Á sang Âu, từ bình dân đến cao cấp: Hủ tiếu Tài Anh, Bò lá lốt Tân Quy, San Fu Lou, ...",
+    "date": "26 thg 5, 2024",
+    "position": 2
+   },
+   {
+    "title": "Họp mặt ẩm thực 3 miền đặc trưng hương vị Bắc ngay Quận 7",
+    "link": "https://www.facebook.com/DiaDiemAnUong/videos/h%E1%BB%8Dp-m%E1%BA%B7t-%E1%BA%A9m-th%E1%BB%B1c-3-mi%E1%BB%81n-%C4%91%E1%BA%B7c-tr%C6%B0ng-h%C6%B0%C6%A1ng-v%E1%BB%8B-b%E1%BA%AFc-ngay-qu%E1%BA%ADn-7/623632607120095/",
+    "snippet": "Ngoài ra, nhà hàng còn có các buổi cơm trưa văn phòng ngon bổ rẻ: Canh cua rau đay, Thịt luộc cà pháo mắm tôm, Cá kho tộ,.. chuẩn vị cơm nhà .",
+    "position": 3
+   },
+   {
+    "title": "Ghé ngay 25 quán ăn ngon quận 7 'ngon-bổ-rẻ'",
+    "link": "https://www.bachhoaxanh.com/kinh-nghiem-hay/ke-ten-top-15-quan-an-ngon-quan-7-xem-ban-hieu-ro-sai-gon-ra-sao-1297633",
+    "snippet": "Tổng hợp 25 nhà hàng, quán ăn ngon Quận 7 thành phố Hồ Chí Minh cực nổi tiếng nhất định phải ghé khi tới Quận 7. Thực đơn hấp dẫn, giá cả hợp lý. Xem nhanh.",
+    "position": 4
+   },
+   {
+    "title": "Riviu các quán ăn ở Q.7 ngon,sạch sẽ,bình dân không ...",
+    "link": "https://www.facebook.com/groups/335285967030769/posts/1708686429690709/",
+    "snippet": "Món ăn đa dạng và phong phú như: bê thui nóng,gà ta,sò ốc,tôm cua,mực,cá đồng các loại.v..v.. Đặc biệt món ăn ngon mà giá rất cạnh tranh ở q7.",
+    "position": 5
+   },
+   {
+    "title": "Danh sách các quán ăn ngon Quận 7 đáp ứng mọi tiêu ...",
+    "link": "https://vietmy.net.vn/viet-nam-dat-nuoc-con-nguoi/danh-sach-cac-quan-an-ngon-quan-7-dap-ung-moi-tieu-chi-ngon-bo-re-497117.html",
+    "snippet": "Boomerang Bistro Saigon là một quán ăn ngon Quận 7 nằm tại vị trí đắc địa của Phú Mỹ Hưng với không gian thoáng mát, sạch sẽ và rộng rãi. Nhà ...",
+    "date": "7 thg 8, 2024",
+    "position": 6
+   },
+   {
+    "title": "Khám Phá các Quán Ăn Ngon Quận 7 Ẩm Thực Đồng Quê",
+    "link": "https://tranganquan.com/quan-an-ngon-quan-7/",
+    "snippet": "Khám Phá các Quán Ăn Ngon Quận 7 Ẩm Thực Đồng Quê · 1. Tràng An Quán – Ẩm Thực Đồng Quê · 2. Bò Lá Lốt 2 Thanh – Món Nướng Độc Đáo · 3. Phan Rang Quán – Hồn Việt ...",
+    "position": 7
+   },
+   {
+    "title": "Thức ăn nhanh ngon tại Quận 7 - Thổ Địa Ăn Uống - MoMo",
+    "link": "https://www.momo.vn/page/thuc-an-nhanh-tai-quan-7-3-4-268",
+    "snippet": "Cơm gà · El Barón Bistro And Drinks - Hưng Phước 4 · Gà rán & Khoai lang lắc - Mr.Thịnh - Đường số 17 · Bột Chiên & Ăn Vặt - Đường Số 17 · Lẩu Bò Giáo Sĩ - Trần ...",
+    "rating": 4.5,
+    "ratingCount": 19,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

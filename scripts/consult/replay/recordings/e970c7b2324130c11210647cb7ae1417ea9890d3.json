@@ -1,0 +1,54 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "núi Bà Đen Tây Ninh Tây Ninh",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.7769,106.7009,12z"
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T04:14:38.442Z",
+ "body": {
+  "searchParameters": {
+   "q": "núi Bà Đen Tây Ninh Tây Ninh",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.7769,106.7009,12z",
+   "engine": "google"
+  },
+  "ll": "@10.8649438,106.6110454,18.0536z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Cho Thuê Xe 7 Chỗ Sài Gòn đi Núi Bà Đen Tây Ninh",
+    "address": "89/3 Đ. Nguyễn Ảnh Thủ, Trung Chánh, Bà Điểm, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.864943799999999,
+    "longitude": 106.6136203,
+    "rating": 5,
+    "ratingCount": 1,
+    "type": "Dịch vụ vận tải",
+    "types": [
+     "Dịch vụ vận tải"
+    ],
+    "phoneNumber": "+84 336 508 939",
+    "openingHours": {
+     "Thứ Ba": "Mở cửa cả ngày",
+     "Thứ Tư": "Mở cửa cả ngày",
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmqLofGMrDdbMK1i1cX9WraxWZdTC1shOjfGgIi3r0K3LuwjntiVvhUXyMNjf6RhV0A44f5Z5WjaPz6_I9eZuiW6xAN76m_8TATUWNu7a_xuMOD3a0fCCp0_OMOMFzILNh8Bw1RlTylo_ou",
+    "cid": "12440656698093901019",
+    "fid": "0x31752967906d31bf:0xaca6175a7e7894db",
+    "placeId": "ChIJvzFtkGcpdTER25R4floXpqw"
+   }
+  ],
+  "credits": 3
+ }
+}

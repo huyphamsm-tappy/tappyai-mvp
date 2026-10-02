@@ -1,0 +1,84 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "UAG Monarch Pro Case iPhone 17 site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T19:18:37.375Z",
+ "body": {
+  "searchParameters": {
+   "q": "UAG Monarch Pro Case iPhone 17 site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Ốp lưng UAG Monarch Pro w Magsafe cho iPhone 17 ...",
+    "link": "https://shopee.vn/%E1%BB%90p-l%C6%B0ng-UAG-Monarch-Pro-w-Magsafe-cho-iPhone-17-Pro-6.3-inch--i.241319331.41468510915",
+    "snippet": "Mua Ốp lưng UAG Monarch Pro w Magsafe cho iPhone 17 Pro [6.3 inch] giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn lại ...",
+    "position": 1
+   },
+   {
+    "title": "[iPhone 17 Pro Max] UAG Chính Hãng",
+    "link": "https://shopee.vn/-iPhone-17-Pro-Max-UAG-Ch%C3%ADnh-H%C3%A3ng-Monarch-Pro-Pathfinder-Plasma-Ch%E1%BB%91ng-S%E1%BB%91c-Chu%E1%BA%A9n-Qu%C3%A2n-%C4%90%E1%BB%99i-S%E1%BA%A1c-Magnet-i.898301886.41068409513",
+    "snippet": "Mua [iPhone 17 Pro Max] UAG Chính Hãng - Monarch Pro, Pathfinder, Plasma - Chống Sốc Chuẩn Quân Đội, Sạc Magnet giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 4.9,
+    "ratingCount": 44,
+    "position": 2
+   },
+   {
+    "title": "[iPhone 17/16/15 Series] Ốp lưng chống sốc UAG Monarch ...",
+    "link": "https://shopee.vn/-iPhone-17-16-15-Series-%E1%BB%90p-l%C6%B0ng-ch%E1%BB%91ng-s%E1%BB%91c-UAG-Monarch-Pro-Kevlar-s%E1%BA%A1c-kh%C3%B4ng-d%C3%A2y-ch%E1%BB%91ng-va-%C4%91%E1%BA%ADp-7.6m-i.206824363.42704766457",
+    "snippet": "Mua [iPhone 17/16/15 Series] Ốp lưng chống sốc UAG Monarch Pro Kevlar sạc không dây, chống va đập 7.6m giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 5,
+    "ratingCount": 7,
+    "position": 3
+   },
+   {
+    "title": "[iPhone 17 Series] Ốp lưng chống sốc UAG Monarch Pro ...",
+    "link": "https://shopee.vn/-iPhone-17-Series-%E1%BB%90p-l%C6%B0ng-ch%E1%BB%91ng-s%E1%BB%91c-UAG-Monarch-Pro-h%E1%BB%97-tr%E1%BB%A3-s%E1%BA%A1c-kh%C3%B4ng-d%C3%A2y-ch%E1%BB%91ng-va-%C4%91%E1%BA%ADp-%C4%91%E1%BA%BFn-7.6-m%C3%A9t-i.206824363.43014956251",
+    "snippet": "Mua [iPhone 17 Series] Ốp lưng chống sốc UAG Monarch Pro hỗ trợ sạc không dây chống va đập đến 7.6 mét giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 5,
+    "ratingCount": 3,
+    "position": 4
+   },
+   {
+    "title": "Ốp điện thoại màu đen bằng sợi Carbon UAG Monarch Pro ...",
+    "link": "https://shopee.vn/UAG-Monarch-Pro-Carbon-Fiber-Black-Case-cho-iphone-17-Pro-Max-%E1%BB%90p-%C4%91i%E1%BB%87n-tho%E1%BA%A1i-ch%E1%BB%91ng-s%E1%BB%91c-h%E1%BA%A1ng-n%E1%BA%B7ng-ch%E1%BA%AFc-ch%E1%BA%AFn-t%E1%BB%AB-t%C3%ADnh-i.1135944486.40228852602",
+    "snippet": "Ốp điện thoại màu đen bằng sợi Carbon UAG Monarch Pro cho iphone 18 Pro Max / 17 Pro Max / 17 Pro / 18 Pro Ốp điện thoại chống sốc hạng nặng chắc chắn từ tính.",
+    "rating": 5,
+    "ratingCount": 3,
+    "position": 5
+   },
+   {
+    "title": "Ốp Lưng iPhone 17 Pro Max Hãng UAG Monarch Pro",
+    "link": "https://shopee.vn/%E1%BB%90p-L%C6%B0ng-iPhone-17-Pro-Max-H%C3%A3ng-UAG-Monarch-Pro-Ch%E1%BB%91ng-B%E1%BA%A9n-Ch%E1%BB%91ng-S%E1%BB%91c-Masafe-B%E1%BA%A3o-V%E1%BB%87-Camera-Cao-C%E1%BA%A5p-Ch%C3%ADnh-H%C3%A3ng-i.337310229.46953894828?extraParams=%7B%22display_model_id%22%3A380368776304%2C%22model_selection_logic%22%3A3%7D",
+    "snippet": "Ốp Lưng iPhone 17 Pro Max Hãng UAG Monarch Pro - Chống Bẩn, Chống Sốc, Masafe, Bảo Vệ Camera, Cao Cấp - Chính Hãng. outline grey truck icon. Không hỗ trợ.",
+    "rating": 5,
+    "ratingCount": 63,
+    "position": 6
+   },
+   {
+    "title": "UAG Monarch Pro với Magsafe Ốp điện thoại cho iPhone ...",
+    "link": "https://shopee.vn/UAG-Monarch-Pro-v%E1%BB%9Bi-Magsafe-%E1%BB%90p-%C4%91i%E1%BB%87n-tho%E1%BA%A1i-cho-iPhone-17-16-15-14-13-pro-max-PLUS-Impact-Pathfinder-%E1%BB%90p-%C4%91i%E1%BB%87n-tho%E1%BA%A1i-i.800221276.57611906261",
+    "snippet": "UAG Monarch Pro với Magsafe Ốp điện thoại cho iPhone 17 16 15 14 13 pro max PLUS Impact Pathfinder Ốp điện thoại ... Tặng Voucher 15.000₫ nếu đơn giao sau thời ...",
+    "position": 7
+   },
+   {
+    "title": "[UAG Monarch Pro] Ốp lưng dành cho iPhone 17/16/15 ...",
+    "link": "https://shopee.vn/-UAG-Monarch-Pro-%E1%BB%90p-l%C6%B0ng-d%C3%A0nh-cho-iPhone-17-16-15-Series-s%E1%BA%A1c-kh%C3%B4ng-d%C3%A2y-%E2%80%93-Chu%E1%BA%A9n-Qu%C3%A2n-%C4%90%E1%BB%99i-5-L%E1%BB%9Bp-B%E1%BA%A3o-V%E1%BB%87-i.898301886.40861266481",
+    "snippet": "Mua [UAG Monarch Pro] Ốp lưng dành cho iPhone 17/16/15 Series sạc không dây – Chuẩn Quân Đội, 5 Lớp Bảo Vệ giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 5,
+    "ratingCount": 5,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

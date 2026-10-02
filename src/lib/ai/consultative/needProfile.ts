@@ -1,5 +1,9 @@
 import { extractBudget, type Budget } from '../budget'
-import { normalizeVN } from '../intent'
+import { normalizeVN, namedVenueIn } from '../intent'
+import { statedDistrict } from '../districts'
+import { maskStreetNames } from '../streetNames'
+import { foldForLexicon } from '../foldSense'
+import { PRODUCT_TYPES, PRODUCT_TYPE_QUERY_VI } from './shoppingConstraints'
 
 // ── The structured need (Phase 2 §3) ────────────────────────────────────────
 //
@@ -76,21 +80,47 @@ const W_PREFERENCE = 0.25
 /** Subject nouns that NAME the thing being chosen, and the domain each implies. */
 const SUBJECTS: ReadonlyArray<[RegExp, string, NeedProfile['domain']]> = [
   [/\b(macbook|laptop|may tinh xach tay|notebook)\b/, 'laptop', 'shopping'],
-  [/\b(dien thoai|smartphone|iphone|galaxy|phone)\b/, 'phone', 'shopping'],
+  // "Galaxy" is a phone unless it is the cinema chain ("rạp Galaxy", "Galaxy Cinema") — Phase D.
+  [/\b(dien thoai|smartphone|iphone|(?<!rap )galaxy(?! cine)|phone)\b/, 'phone', 'shopping'],
   [/\b(tai nghe|headphone|headphones|earbuds|airpods)\b/, 'headphones', 'shopping'],
-  [/\b(may anh|camera body|dslr|mirrorless)\b/, 'camera', 'shopping'],
+  // UAT3: unaccented "may anh oi" is "mấy anh ơi" (you guys), not "máy ảnh".
+  [/\b(may anh(?! (?:oi|nhe|a|ay|co|lam|noi|di|em|chi|biet)\b)|camera body|dslr|mirrorless)\b/, 'camera', 'shopping'],
   [/\b(tivi|tv|television)\b/, 'tv', 'shopping'],
+  // B2 (2026-09-20, measured S7 live: "Máy lọc không khí phòng ngủ 20m2" resolved to domain null,
+  // so the whole consultative stack — situation, gate, smart model, backstop — stood down on a
+  // shopping turn). Every product family the shopping validator knows names the shopping domain.
+  ...PRODUCT_TYPES.filter(([type]) => !['laptop', 'phone', 'headphones', 'camera', 'tv'].includes(type)).map(([type, re]): [RegExp, string, NeedProfile['domain']] => [re, PRODUCT_TYPE_QUERY_VI[type] ?? type, 'shopping']),
   [/\b(khach san|hotel|resort|homestay|nha nghi)\b/, 'hotel', 'hotel'],
   [/\b(nha hang|quan an|restaurant|quan nhau)\b/, 'restaurant', 'places'],
   [/\b(cafe|ca phe|coffee)\b/, 'cafe', 'places'],
   [/\bspa\b|\bmassage\b/, 'spa', 'places'],
-  [/\b(rap phim|rap chieu|cinema|karaoke|\bbar\b|\bgym\b)\b/, 'entertainment', 'places'],
+  // Phase D (2026-09-20, measured live run 19): "rạp CGV Vincom Đồng Khởi" named no venue noun
+  // this row knew ("rap cgv" is neither "rap phim" nor "rap chieu"), so the domain stayed null and
+  // the whole consultative stack stood down on a cinema turn. Cinema chains, water parks,
+  // aquariums and play venues are VENUES: they resolve to a venue card like a café does.
+  [/\b(rap phim|rap chieu|rap (?:cgv|lotte|galaxy|bhd|cinestar|mega)|cgv|lotte cinema|galaxy cinema|bhd star|cinestar|chieu phim|cinema|(?<!loa |dan |micro |mic |may |bo )karaoke|cong vien nuoc|water ?park|thuy cung|aquarium|khu vui choi|bowling|bida|billiards?|escape room|san truot bang|truot bang|ice rink|nha hat|\bbar\b|\bgym\b)\b/, 'entertainment', 'places'],
   [/\b(xe khach|tau hoa|tau lua|ve xe|\btaxi\b)\b/, 'transport', 'transport'],
 ]
 
 /** Weaker domain hints — set the domain but never the subject, and never reset. */
 const DOMAIN_HINTS: ReadonlyArray<[RegExp, NeedProfile['domain']]> = [
+  // UAT 2026-09-28: "mua đồ ăn vặt" was read as a food OUTING (the "đồ ăn" hint below fires first) and
+  // asked "dưới 100k/người". Buying PACKAGED food — snacks, dried food — or any food "online" / on a
+  // marketplace ("trên sàn") is a product purchase. "ăn vặt ở đâu" / "quán ăn vặt" (no buy verb) stay
+  // places. No provider is named here (architectureLock).
+  [/\b(?:mua|dat mua|dat hang|order)\b(?:\s+\S+){0,3}?\s+(?:do an vat|an vat|do an kho|do kho|banh keo|snack)\b|\b(?:mua|dat mua|dat hang|order)\b.*\b(?:online|tren san|san thuong mai dien tu|san tmdt)\b/, 'shopping'],
   [/\ban gi\b|\bdo an\b|\ban ngon\b|\bmon an\b/, 'places'],
+  // 🚨 MULTI-ACTIVITY OUTINGS — measured gap, 2026-09-14. "ăn chơi nhảy múa
+  // tối nay" names no venue noun the SUBJECTS lexicon knows, so an evening
+  // plan resolved to `domain: null` and lost the ranking-instruction block on
+  // exactly the turn that runs the most place searches. Nightlife and outing
+  // words are place-seeking by definition; a false positive still lands on
+  // `places`, which is where every one of them belongs.
+  [/\ban choi\b|\bnhay mua_?\b|\bnightlife\b|\bnight out\b|\bclub\b|\bpub\b|\bvui choi\b|\bdi choi\b|\bhen ho\b|\bdate night\b/, 'places'],
+  // B2: a buy verb names the shopping domain even when the product noun is unknown to the lexicon.
+  // AFTER the outing hint, and never the "mua" of "nhảy múa" (dancing).
+  // UAT3: unaccented "troi mua" / "mua he" are rain and season, not the buy verb (see decisionFrame).
+  [/(?<!nhay |troi |con |cuoi |dau |vao |giua )\b(mua|dat mua|shopping|san pham|nen mua)\b(?! (?:he|dong|thu|xuan|mua|le hoi|cao diem|thap diem|roi|to|phun|bao|ret|lan)\b)/, 'shopping'],
   // 🚨 DISH NAMES — measured gap, 2026-08-27. `SUBJECTS` covers the venue nouns
   // ("quan an", "nha hang", "cafe") but NOT the dish, and the most common
   // Vietnamese food query names the DISH, not the venue: "tìm quán hủ tiếu Phú
@@ -115,7 +145,8 @@ const DOMAIN_HINTS: ReadonlyArray<[RegExp, NeedProfile['domain']]> = [
   // phố Huế" resolves to shopping before this line is reached), and DOMAIN_HINTS
   // only fires when no domain is set at all. A genuine "phố cổ Hà Nội" false
   // positive resolves to `places`, which is the correct domain for it anyway.
-  [/\b(hu tieu|pho|bun bo|bun cha|bun rieu|bun dau|bun thit nuong|com tam|com ga|com nieu|banh mi|banh xeo|banh cuon|banh canh|mi quang|hai san|chao long|goi cuon|ga ran|tra sua|nem nuong|bo kho|ca kho|thit nuong|lau nuong|do nuong)\b/, 'places'],
+  // UAT3: "thành phố", "phố cổ", "phố đi bộ" typed without diacritics are streets, not phở.
+  [/\b(hu tieu|(?<!thanh |duong |khu |via |dao |ngo |tuyen )pho(?! (?:co|di bo|hang|xa|tay|nui|thi|bien|cang)\b)|bun bo|bun cha|bun rieu|bun dau|bun thit nuong|com tam|com ga|com nieu|banh mi|banh xeo|banh cuon|banh canh|mi quang|hai san|chao long|goi cuon|ga ran|tra sua|nem nuong|bo kho|ca kho|thit nuong|lau nuong|do nuong)\b/, 'places'],
 ]
 
 /**
@@ -148,7 +179,10 @@ const ATTRIBUTES: ReadonlyArray<[RegExp, string, boolean]> = [
   // phrase set a storage priority the user never expressed.
   [/dung luong(?! pin)|\bstorage\b|\bssd\b|bo nho/, 'storage', false],
   [/man hinh|\bscreen\b|\bdisplay\b|\boled\b/, 'screen', false],
-  [/danh gia cao|nhieu review|duoc danh gia (tot|cao)|highly rated|well reviewed|\brating\b/, 'rating', true],
+  // "ngon" / "chất lượng" / "tốt nhất" name the same axis the rating scores — the
+  // measured 2026-09-15 lunch request ("ăn gì cho ngon") stated its one criterion
+  // and the ranker heard nothing.
+  [/danh gia cao|nhieu review|duoc danh gia (tot|cao)|highly rated|well reviewed|\brating\b|\bngon\b|ngon nhat|chat luong|\btot nhat\b|\bdelicious\b|\btasty\b/, 'rating', true],
   [/\bgan\b|\bnear\b|\bclose to\b|gan day|gan toi|khoang cach|\bdistance\b/, 'distance', true],
   // Transport pickup speed. Phrases are deliberately specific ("toi nhanh", not
   // bare "nhanh") so a laptop "xu ly nhanh" query still resolves to performance.
@@ -157,6 +191,9 @@ const ATTRIBUTES: ReadonlyArray<[RegExp, string, boolean]> = [
   [/gan bien|\bbeach\b|view bien|beachfront/, 'beach', true],
   [/trung tam|\bcentral\b|\bdowntown\b|city cent(er|re)/, 'central', true],
   [/\bwifi\b|\bwi-fi\b/, 'wifi', true],
+  // Time-bound: "trưa nay", "tối nay", "đang mở", "bây giờ" make being open a
+  // stated criterion, scored only when the row says whether it is open.
+  [/dang mo|con mo|\bmo cua\b|open now|\bbay gio\b|\bright now\b|trua nay|toi nay|sang nay|chieu nay|\btonight\b/, 'openNow', true],
   [/ngoai troi|\boutdoor\b|san vuon/, 'outdoor', true],
 ]
 
@@ -468,9 +505,18 @@ export function deriveNeedProfile(
     // ── Subject and reset ───────────────────────────────────────────────────
     let matchedSubject: string | null = null
     let matchedDomain: NeedProfile['domain'] = null
+    // UAT3: subject nouns read sense-preserving folding — "mấy anh" is not "máy ảnh".
+    const tSense = foldForLexicon(String(raw ?? ''))
     for (const [re, subject, domain] of SUBJECTS) {
-      if (re.test(t)) { matchedSubject = subject; matchedDomain = domain; break }
+      if (re.test(tSense)) { matchedSubject = subject; matchedDomain = domain; break }
     }
+    // E3 (2026-09-20, measured SK1 "CellphoneS Nguyễn Trãi Quận 5 mở cửa mấy giờ?"): a venue the user
+    // NAMED is a place whatever its kind — no lexicon row knows a store chain, but the name is there.
+    if (!matchedDomain && namedVenueIn(String(raw ?? '')) !== null) { matchedSubject = 'venue'; matchedDomain = 'places' }
+    // E3 (measured PP2 "mua tinh dầu massage body chính hãng online"): a message that OPENS with a buy
+    // verb is a purchase whatever venue noun follows ("massage" named the spa subject) — the product
+    // itself is the unknown-type noun the shopping validator reads.
+    if (matchedDomain === 'places' && /^(?:mua|dat mua|can mua|muon mua|order|dat hang)\s/.test(t)) { matchedSubject = null; matchedDomain = 'shopping' }
 
     if (matchedDomain && p.domain && matchedDomain !== p.domain) {
       // A genuine task switch. Everything task-scoped goes; GPS is not
@@ -482,7 +528,7 @@ export function deriveNeedProfile(
       p.domain = matchedDomain
       p.changedAtTurn.subject = turn
     } else if (!p.domain) {
-      for (const [re, domain] of DOMAIN_HINTS) if (re.test(t)) { p.domain = domain; break }
+      for (const [re, domain] of DOMAIN_HINTS) if (re.test(tSense)) { p.domain = domain; break }
     }
 
     // ── Budget ─────────────────────────────────────────────────────────────
@@ -494,13 +540,26 @@ export function deriveNeedProfile(
     }
 
     // ── Location ───────────────────────────────────────────────────────────
+    let placedThisTurn = false
+    // A city is a WORD of the text with street / dish names masked (UAT 29/09: "Nguyễn Huệ" ⊃ "hue" → Huế).
+    const tCity = maskStreetNames(t)
     for (const place of PLACES) {
-      if (t.includes(place)) { p.location.text = place; p.changedAtTurn.location = turn; break }
+      if (new RegExp(`\\b${place}\\b`).test(tCity)) { p.location.text = place; p.changedAtTurn.location = turn; placedThisTurn = true; break }
     }
     const district = t.match(/\bquan\s+(\d{1,2})\b/)
     if (district && !p.location.text) {
       p.location.text = `quan ${district[1]}`
       p.changedAtTurn.location = turn
+      placedThisTurn = true
+    }
+    // UAT4 A/B (27 Sep 2026): "q1", "Gò Vấp", "Bình Thạnh", "Phú Nhuận" left the location EMPTY
+    // (only a spelled-out "quận N" and the city list were read), so the search centred on the GPS
+    // and the reply argued with the user ("Bạn vừa nói Gò Vấp, nhưng vị trí hiện tại…"). The
+    // district table the route already trusts (districts.ts) names it; a district named in a later
+    // turn replaces the earlier one.
+    if (!placedThisTurn && !district) {
+      const named = statedDistrict(raw)
+      if (named) { p.location.text = named.label; p.changedAtTurn.location = turn }
     }
 
     // ── Use cases ──────────────────────────────────────────────────────────

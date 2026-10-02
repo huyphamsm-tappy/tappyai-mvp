@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Tiệm Gội Về Nhà\" OR \"Gội Đầu Dưỡng Sinh Quận 3 HẺM SPA\" OR \"Gội đầu dưỡng sinh kiểu Việt Hoa SPA\" quan 3 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:29:15.097Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Tiệm Gội Về Nhà\" OR \"Gội Đầu Dưỡng Sinh Quận 3 HẺM SPA\" OR \"Gội đầu dưỡng sinh kiểu Việt Hoa SPA\" quan 3 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

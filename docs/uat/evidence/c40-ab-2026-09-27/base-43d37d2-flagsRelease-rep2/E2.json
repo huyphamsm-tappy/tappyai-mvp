@@ -1,0 +1,148 @@
+{
+  "id": "E2",
+  "text": "rap phim nao gan q1",
+  "parent": null,
+  "status": 200,
+  "ms": 9536,
+  "evidenceId": "244f4bfe-5607-4e30-a679-c8a276c51c75",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "rạp phim",
+        "location": "Quận 1, TP.HCM",
+        "type": "cinema"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "CGV Liberty Citypoint",
+      "rating": 4.4,
+      "count": 1751,
+      "distance_km": 0.2,
+      "address": "Khách sạn Liberty Citypoint, Pasteur, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "CGV Vincom Center Đồng Khởi",
+      "rating": 4.3,
+      "count": 4507,
+      "distance_km": 0.2,
+      "address": "72 Lê Thánh Tôn, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Galaxy Cinema Nguyễn Du",
+      "rating": 4.3,
+      "count": 9380,
+      "distance_km": 0.9,
+      "address": "116 Nguyễn Du, Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "DCINE Bến Thành",
+      "rating": 4.3,
+      "count": 1260,
+      "distance_km": 0.8,
+      "address": "6 Mạc Đĩnh Chi, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Mega GS Cinemas - Cao Thắng",
+      "rating": 4.3,
+      "count": 3436,
+      "distance_km": 2.2,
+      "address": "19 Cao Thắng, Bàn Cờ, Hồ Chí Minh 72418, Việt Nam"
+    },
+    {
+      "name": "Cinestar Quốc Thanh",
+      "rating": 4.2,
+      "count": 6034,
+      "distance_km": 2.1,
+      "address": "271 Nguyễn Trãi, Cầu Ông Lãnh, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Beta Cinemas Trần Quang Khải",
+      "rating": 4.1,
+      "count": 1326,
+      "distance_km": 1.9,
+      "address": "62 Trần Quang Khải, Tân Định, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Mega GS Cinemas Lý Chính Thắng",
+      "rating": 4,
+      "count": 2591,
+      "distance_km": 2.1,
+      "address": "212 Lý Chính Thắng, Nhiêu Lộc, Hồ Chí Minh 72414, Việt Nam"
+    },
+    {
+      "name": "Rạp Đống Đa",
+      "rating": 4.1,
+      "count": 1710,
+      "distance_km": 3.9,
+      "address": "890 Trần Hưng Đạo, An Đông, Hồ Chí Minh 70010, Việt Nam"
+    },
+    {
+      "name": "BHD Star Cineplex Thảo Điền",
+      "rating": 4.3,
+      "count": 2403,
+      "distance_km": 5.2,
+      "address": "TTTM Vincom Mega Mall, 159 Võ Nguyên Giáp, An Khánh, Hồ Chí Minh, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "CGV Liberty Citypoint",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 4.4,
+        "reviews": 1751,
+        "distance_km": 0.2
+      }
+    },
+    {
+      "name": "CGV Vincom Center Đồng Khởi",
+      "role": null,
+      "evidence": {
+        "rating": 4.3,
+        "reviews": 4507,
+        "distance_km": 0.2
+      }
+    },
+    {
+      "name": "Galaxy Cinema Nguyễn Du",
+      "role": null,
+      "evidence": {
+        "rating": 4.3,
+        "reviews": 9380,
+        "distance_km": 0.9
+      }
+    }
+  ],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình tìm các rạp phim gần vị trí của bạn ở Quận 1 nhé.\n\nMình chọn **CGV Liberty Citypoint** cho bạn — cách vị trí của bạn chỉ 0.2km, gần nhất trong khu vực, và có đánh giá 4.4⭐ từ 1.751 khách.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=8041718674423256569\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Phim gì đang chiếu?|Rạp nào có ghế VIP?|Giá vé bao nhiêu?[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "rap phim nao gan q1"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm các rạp phim gần vị trí của bạn ở Quận 1 nhé.\n\nMình chọn **CGV Liberty Citypoint** cho bạn — cách vị trí của bạn chỉ 0.2km, gần nhất trong khu vực, và có đánh giá 4.4⭐ từ 1.751 khách.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=8041718674423256569\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Phim gì đang chiếu?|Rạp nào có ghế VIP?|Giá vé bao nhiêu?[/FOLLOWUPS]"
+    }
+  ]
+}

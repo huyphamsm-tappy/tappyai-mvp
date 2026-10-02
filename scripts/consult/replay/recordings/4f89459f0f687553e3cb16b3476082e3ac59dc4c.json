@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "điểm tham quan Tây Ninh Tây Ninh",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.7769,106.7009,12z"
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T02:27:35.598Z",
+ "body": {
+  "searchParameters": {
+   "q": "điểm tham quan Tây Ninh Tây Ninh",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.7769,106.7009,12z",
+   "engine": "google"
+  },
+  "ll": "@10.6836772,106.4631994,14.0536z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Khu vui chơi Tom&Jini Eco Retreat",
+    "address": "Eco Bazaar, Eco Retreat, Bến Lức, Tây Ninh, Việt Nam",
+    "latitude": 10.666240799999999,
+    "longitude": 106.5079437,
+    "rating": 4.8,
+    "ratingCount": 34,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch"
+    ],
+    "website": "https://www.facebook.com/profile.php?id=61574319628776",
+    "phoneNumber": "+84 918 512 772",
+    "openingHours": {
+     "Thứ Ba": "16:00–21:30",
+     "Thứ Tư": "16:00–21:30",
+     "Thứ Năm": "16:00–21:30",
+     "Thứ Sáu": "16:00–21:30",
+     "Thứ Bảy": "08:00–22:00",
+     "Chủ Nhật": "08:00–22:00",
+     "Thứ Hai": "16:00–21:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9SIQa64QaWRwAlgBoJyylYpXNbJ4mshXikAipYuGnVsmEipbDhbyr4KgX0yP0imVepKII9QMWAE9HFzVCzKLOienkj99F68C0BQCN8nGkqMGgB8nOXPCDLLS4dHdRryTNz9b2i_wYGeTtiL",
+    "cid": "2619770150927291756",
+    "fid": "0x310acd004c8ba031:0x245b4b127731556c",
+    "placeId": "ChIJMaCLTADNCjERbFUxdxJLWyQ"
+   },
+   {
+    "position": 2,
+    "title": "Du Lịch Sinh Thái MiLanFarm",
+    "address": "Đường Bờ Tây, Tân Bửu, Lương Hòa, Tây Ninh, Việt Nam",
+    "latitude": 10.6889325,
+    "longitude": 106.52232269999999,
+    "rating": 4.7,
+    "ratingCount": 231,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch",
+     "Khu cắm trại",
+     "Trang trại cho trẻ em",
+     "Tham quan trang trại hộ gia đình",
+     "Cư trú ở trang trại",
+     "Nhà nghỉ dưỡng",
+     "Lưu trú nhà dân",
+     "Khách sạn nghỉ dưỡng",
+     "Nhà hàng",
+     "Công viên giải trí"
+    ],
+    "website": "https://khusinhthaimilanfarm.com/",
+    "phoneNumber": "+84 853 377 379",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9S5tCeuTzrLru7n_U0Fje5bgWYlSji3THvtuzv4bRzkZKdEBbLCyDy_plHph4974YQ6kaeDC568mebGUuF6ZsgFvIUlmCcm-Uxtu_crXitKxuoWnUSPEJWg0iuCbfeFXuQtCzQ",
+    "cid": "12433701414188529678",
+    "fid": "0x310acdc47736e4fb:0xac8d618f43fab80e",
+    "placeId": "ChIJ--Q2d8TNCjERDrj6Q49hjaw"
+   },
+   {
+    "position": 3,
+    "title": "Khu DTLS Rừng Tràm Bà Vụ",
+    "address": "PF2P+CHX, Bến Lức, Tây Ninh 850000, Việt Nam",
+    "latitude": 10.701118899999999,
+    "longitude": 106.48647849999999,
+    "rating": 4.6,
+    "ratingCount": 21,
+    "type": "Điểm mốc lịch sử",
+    "types": [
+     "Điểm mốc lịch sử"
+    ],
+    "openingHours": {
+     "Thứ Ba": "07:00–19:00",
+     "Thứ Tư": "07:00–19:00",
+     "Thứ Năm": "07:00–19:00",
+     "Thứ Sáu": "07:00–19:00",
+     "Thứ Bảy": "07:00–19:00",
+     "Chủ Nhật": "07:00–19:00",
+     "Thứ Hai": "07:00–19:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9SofosImVGpnyfLIPCalYFRYqnFcTpF6sE3D_S6cgT1MKO_RiMdTyWOM_lvm1kfZ_5cAjLBGPKARbTLxoW5IYEyCaezxeGZfaUG0FNhkl4_TcownJsKaTNdVvrVmibrHEe880V6b1sWmBXb",
+    "cid": "10658398754091181757",
+    "fid": "0x310acda657504be9:0x93ea3d323c1226bd",
+    "placeId": "ChIJ6UtQV6bNCjERvSYSPDI96pM"
+   },
+   {
+    "position": 4,
+    "title": "Nhà tưởng niệm AHLLVT Võ Thị Thắng",
+    "address": "143A Âp 5, Tân Bửu, Lương Hòa, Tây Ninh, Việt Nam",
+    "latitude": 10.691628,
+    "longitude": 106.5222187,
+    "rating": 5,
+    "ratingCount": 41,
+    "type": "Công viên lưu niệm",
+    "types": [
+     "Công viên lưu niệm"
+    ],
+    "phoneNumber": "+84 903 610 633",
+    "openingHours": {
+     "Thứ Ba": "08:00–16:30",
+     "Thứ Tư": "08:00–16:30",
+     "Thứ Năm": "08:00–16:30",
+     "Thứ Sáu": "08:00–16:30",
+     "Thứ Bảy": "Đóng cửa",
+     "Chủ Nhật": "Đóng cửa",
+     "Thứ Hai": "08:00–16:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9QeGlAh_KAc4J6zU0gghnKC8l49iPK5Ge-RXwWaDPEg-X0UB0oY6adsBn_U75Qv0XnC6-4tRaqTNqiojS73hzaTkPM1mpMU8tvBeFJbnKNFU0WxH-bJtPd6adKKVYbg_pks9HLhvVD03Pi-",
+    "cid": "17314541308735531769",
+    "fid": "0x310acde43ff0990f:0xf0499b957c022af9",
+    "placeId": "ChIJD5nwP-TNCjER-SoCfJWbSfA"
+   }
+  ],
+  "credits": 3
+ }
+}

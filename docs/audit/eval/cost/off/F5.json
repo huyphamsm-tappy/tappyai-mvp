@@ -1,0 +1,33 @@
+{
+  "id": "F5",
+  "text": "quán này mở mấy giờ?",
+  "parent": "F4",
+  "status": 200,
+  "ms": 4924,
+  "evidenceId": "c38a32dc-da34-4bab-a78b-13d18a777cf6",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "**Tám Riêu - Phan Xích Long** mở cửa **10:30–21:30** hàng ngày, nên bạn có thể đến ăn trưa cuối tuần mà không lo đóng cửa 👍\n\nNếu bạn muốn đặt bàn trước hoặc kiểm tra thêm chi tiết, có thể gọi trực tiếp quán hoặc xem trên Google Maps để chắc chắn nhất.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Tám Riêu\",\"type\":\"maps\",\"url\":\"https://www.google.com/maps/search/Tám+Riêu+Phan+Xích+Long+Phú+Nhuận\",\"primary\":true}]}[/CTA_BUTTONS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Cả nhà 6 người có con nít ăn trưa cuối tuần, cần chỗ đậu xe ô tô, Phú Nhuận"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm giúp bạn những quán ăn trưa ở Phú Nhuận phù hợp cho gia đình 6 người có con nhỏ, có chỗ đậu xe 🚗\n\nMình chọn **Tám Riêu - Phan Xích Long** cho bữa trưa gia đình bạn 👍 Quán có **4.8⭐ (2.106 đánh giá Google Maps)**, cách bạn ~2.9km, mở cửa 10:30–21:30 hàng ngày. Đây là nhà hàng riêu cua nổi tiếng, không gian rộng rãi phù hợp cho 6 người, có chỗ đậu xe ô tô. Giá khoảng 100-200k/người, vừa phải cho bữa trưa cuối tuần.\n\nNgoài ra, **CƠM KHAY GỖ** (4.8⭐, 932 đánh giá) cũng là lựa chọn tốt — quán cơm gia đình với menu đa dạng, giá rẻ (dưới 100k/người), phù hợp nếu bạn muốn ăn cơm bình dân.\n\n*TappyAI dựa trên đánh giá thực từ Google Maps để gợi ý — bạn tự quyết định chọn quán nào nhé!*\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🍜 GrabFood - Tám Riêu\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/vi/restaurants?search=T%C3%A1m+Ri%C3%AAu+Ph%C3%BA+Nhu%E1%BA%ADn\",\"primary\":true},{\"label\":\"📍 Maps - Tám Riêu\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=5129199686849166520\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Quán khác ở Phú Nhuận|Ăn hải sản hay cơm?|Quán có khu vui chơi cho trẻ?[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "quán này mở mấy giờ?"
+    },
+    {
+      "role": "assistant",
+      "content": "**Tám Riêu - Phan Xích Long** mở cửa **10:30–21:30** hàng ngày, nên bạn có thể đến ăn trưa cuối tuần mà không lo đóng cửa 👍\n\nNếu bạn muốn đặt bàn trước hoặc kiểm tra thêm chi tiết, có thể gọi trực tiếp quán hoặc xem trên Google Maps để chắc chắn nhất.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Tám Riêu\",\"type\":\"maps\",\"url\":\"https://www.google.com/maps/search/Tám+Riêu+Phan+Xích+Long+Phú+Nhuận\",\"primary\":true}]}[/CTA_BUTTONS]"
+    }
+  ]
+}

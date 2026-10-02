@@ -1,0 +1,176 @@
+{
+  "id": "P3",
+  "text": "chỗ đó có đặt trước được không?",
+  "parent": "P2",
+  "status": 200,
+  "ms": 10778,
+  "evidenceId": "487cef51-73b9-4f60-893b-259e6fe307a9",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "Hyan Spa",
+        "location": "Quận 1, TP.HCM",
+        "type": "spa"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Hyan Spa | Foot Spa | Body Massage | Hair Spa Quận 1",
+      "rating": 5,
+      "count": 101,
+      "hours": "10:00–21:00",
+      "distance_km": 0.9,
+      "address": "17C Nguyễn Thị Minh Khai, Cầu Ông Lãnh, Hồ Chí Minh 70000, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình tìm thông tin đặt trước cho **Hyan Spa** ngay.\n\nBạn có thể **gọi trực tiếp** Hyan Spa qua số **0932 665 046** để đặt trước dịch vụ massage chân. Hoặc vào website **hyanspa.com** để xem thêm thông tin chi tiết về dịch vụ và giá cả.\n\nSpa này mở đến 21:00 hôm nay, nên bạn còn thời gian để gọi đặt trước nếu muốn 👍\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Google Maps - Hyan Spa\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=4888533510458212203\",\"primary\":true},{\"label\":\"🌐 Website - Hyan Spa\",\"type\":\"website\",\"url\":\"https://hyanspa.com/\",\"primary\":false}]}[/CTA_BUTTONS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "spa massage chan gan q1 duoi 300k"
+    },
+    {
+      "role": "assistant",
+      "content": "Để gợi ý đúng ý, mình cần tìm ngay.\n\nMình chọn **Hyan Spa** cho bạn — cách vị trí bạn chỉ 0.9km, mở đến 21:00 hôm nay, và có 5⭐ từ 101 đánh giá Google Maps.\n\nNếu muốn lựa chọn khác, **Relax Spa** (1.2km) cũng rất tốt — 4.8⭐ từ 532 đánh giá, mở đến 22:00, chuyên foot massage và body massage. Hoặc **Vĩnh Khang Spa** (2km) nếu bạn không vội — 4.9⭐ từ 820 đánh giá, uy tín lâu năm.\n\nMình chưa có giá cụ thể trên hệ thống, nhưng bạn có thể gọi hoặc vào website để kiểm tra giá massage chân dưới 300k nhé.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem Hyan Spa trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=4888533510458212203\",\"primary\":true},{\"label\":\"🌐 Website Hyan Spa\",\"type\":\"website\",\"url\":\"https://hyanspa.com/\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Relax Spa gần hơn không|Vĩnh Khang Spa uy tín hơn|Spa nào rẻ nhất|[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "chỗ đó có đặt trước được không?"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm thông tin đặt trước cho **Hyan Spa** ngay.\n\nBạn có thể **gọi trực tiếp** Hyan Spa qua số **0932 665 046** để đặt trước dịch vụ massage chân. Hoặc vào website **hyanspa.com** để xem thêm thông tin chi tiết về dịch vụ và giá cả.\n\nSpa này mở đến 21:00 hôm nay, nên bạn còn thời gian để gọi đặt trước nếu muốn 👍\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Google Maps - Hyan Spa\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=4888533510458212203\",\"primary\":true},{\"label\":\"🌐 Website - Hyan Spa\",\"type\":\"website\",\"url\":\"https://hyanspa.com/\",\"primary\":false}]}[/CTA_BUTTONS]"
+    }
+  ],
+  "toolResults": [
+    {
+      "source": "Serper Maps",
+      "count": 1,
+      "location": "Quận 1, TP.HCM",
+      "results": [
+        {
+          "name": "Hyan Spa | Foot Spa | Body Massage | Hair Spa Quận 1",
+          "place_id": "ChIJtZLG52UvdTERa390w1OP10M",
+          "address": "17C Nguyễn Thị Minh Khai, Cầu Ông Lãnh, Hồ Chí Minh 70000, Việt Nam",
+          "phone": "+84 932 665 046",
+          "google_rating": "5⭐ (101 đánh giá Google Maps)",
+          "rating_value": 5,
+          "rating_count": 101,
+          "distance_km": 0.9,
+          "open_now": true,
+          "opening_hours": "10:00–21:00",
+          "place_types": [
+            "Spa"
+          ],
+          "maps_link": "https://maps.google.com/?cid=4888533510458212203",
+          "website_uri": "https://hyanspa.com/",
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=4888533510458212203",
+              "attributed": true
+            }
+          ]
+        }
+      ],
+      "_tappy_place_domain": "spa",
+      "place_search_status": "has_results",
+      "results_note": "Day la TOAN BO 1 ket qua theo thu tu nha cung cap, KHONG phai thu tu uu tien — ban tu chon cho dung tinh huong (rut gon: chi cac truong de chon); the (card) cua user hien anh/dia chi/SDT/nut hanh dong."
+    }
+  ],
+  "frames8Raw": [
+    [
+      {
+        "kind": "tappy.places.v1",
+        "v": 1,
+        "domain": "spa",
+        "ranked": false,
+        "items": [
+          {
+            "id": "place:osm:10.78526,106.70049",
+            "domain": "spa",
+            "kind": "place",
+            "name": "Hyan Spa | Foot Spa | Body Massage | Hair Spa Quận 1",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkjXT-2DmfmUeJUQe5jKxFeUgPrPGETXTlvUP-LjgRrRyzcvOCn_CLbEg7__YWPsyDfRU3haVdN8p1vCF_j_py40Cp0rJbmz54aDmPv79AmmyZqQVIUuUkbAokk8AWKvZb4HM_memHORAXu",
+            "address": "17C Nguyễn Thị Minh Khai, Cầu Ông Lãnh, Hồ Chí Minh 70000, Việt Nam",
+            "rating": 5,
+            "ratingCount": 101,
+            "openingHours": "10:00–21:00",
+            "openNow": true,
+            "phone": "+84 932 665 046",
+            "openingHoursWeek": {
+              "Thứ Bảy": "10:00–21:00",
+              "Chủ Nhật": "10:00–21:00",
+              "Thứ Hai": "10:00–21:00",
+              "Thứ Ba": "10:00–21:00",
+              "Thứ Tư": "10:00–21:00",
+              "Thứ Năm": "10:00–21:00",
+              "Thứ Sáu": "10:00–21:00"
+            },
+            "distanceKm": 0.9,
+            "categories": [
+              "Spa"
+            ],
+            "rank": 0,
+            "actions": [
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://hyanspa.com/",
+                "labelKey": "v3.action.website",
+                "platform": "Official Website"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=4888533510458212203",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84932665046",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Hyan%20Spa%20%7C%20Foot%20Spa%20%7C%20Body%20Massage%20%7C%20Hair%20Spa%20Qu%E1%BA%ADn%201%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          }
+        ],
+        "mapsSearchUrl": "https://maps.google.com/maps?q=Hyan%20Spa%20Qu%E1%BA%ADn%201%2C%20TP.HCM",
+        "picked": [
+          "place:osm:10.78526,106.70049"
+        ],
+        "shown": 1
+      }
+    ]
+  ]
+}

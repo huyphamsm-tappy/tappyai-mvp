@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "quà tặng nam cao cấp sang trọng phụ kiện (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T00:48:23.172Z",
+ "body": {
+  "searchParameters": {
+   "q": "quà tặng nam cao cấp sang trọng phụ kiện (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Quà Tặng Việt Nam/ Gifts Decor, Cửa hàng trực tuyến",
+    "link": "https://shopee.vn/quatangvietnam",
+    "snippet": "Ví Lỗ Thủ Công Macrame – Ví Cầm Tay Đan Tay Nghệ Thuật, Phụ Kiện · Hộp Đựng Khăn Giấy Ăn Chất Mây, Khảm Trai Cao Cấp/ Quà tặng Nhà · Quạt Vải Trang Trí Nhiều Màu ...",
+    "position": 1
+   },
+   {
+    "title": "Ví Da Nam PD Cao Cấp Kèm Phụ Kiện Làm Quà tặng ...",
+    "link": "https://shopee.vn/V%C3%AD-Da-Nam-PD-Cao-C%E1%BA%A5p-K%C3%A8m-Ph%E1%BB%A5-Ki%E1%BB%87n-L%C3%A0m-Qu%C3%A0-t%E1%BA%B7ng-Sang-Tr%E1%BB%8Dng-i.11538376.20465799253",
+    "snippet": "Ví Da Nam PD Cao Cấp Kèm Phụ Kiện Làm Quà tặng Sang Trọng giá tốt. Mua hàng qua mạng uy tín, tiện lợi. 159.400₫-189.400₫ 199.000₫ -20% Ví Da Nam PD Cao Cấp Kèm ...",
+    "position": 2
+   },
+   {
+    "title": "Hộp Đựng Quà Tặng Kèm Phụ Kiện Dây Da Sang Trọng ...",
+    "link": "https://shopee.vn/H%E1%BB%99p-%C4%90%E1%BB%B1ng-Qu%C3%A0-T%E1%BA%B7ng-K%C3%A8m-Ph%E1%BB%A5-Ki%E1%BB%87n-D%C3%A2y-Da-Sang-Tr%E1%BB%8Dng-Cao-C%E1%BA%A5p-i.312275473.20574831581",
+    "snippet": "Mua Hộp Đựng Quà Tặng Kèm Phụ Kiện Dây Da Sang Trọng Cao Cấp giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, 7.750₫ 15.500₫ -50%",
+    "rating": 5,
+    "ratingCount": 8,
+    "position": 3
+   },
+   {
+    "title": "Top 10+ món quà tặng doanh nghiệp cao cấp, ý nghĩa",
+    "link": "https://cellphones.com.vn/sforum/qua-tang-doanh-nghiep",
+    "snippet": "Điện thoại thông minh · Laptop · Phụ kiện điện tử · Tivi · Bút ký cao cấp · Bình giữ nhiệt, bộ ly sứ/thủy tinh · Đồ dùng phong thủy · Sổ da cao cấp.",
+    "date": "3 thg 6, 2025",
+    "position": 4
+   },
+   {
+    "title": "Tổng Kho Sỉ Hồ Chí Minh@, Cửa hàng trực tuyến",
+    "link": "https://shopee.vn/pnpdesignco",
+    "snippet": "Quà Cao Cấp Phụ Kiện Quai Xách. Cửa Tủ Sang Trọng 19.000₫ rating-star 4.9. Quà tặng- MÃ C (hộp nam châm cao cấp,",
+    "position": 5
+   },
+   {
+    "title": "60 Món quà sinh nhật cho nam ý nghĩa, thiết thực, được ... - Tiki",
+    "link": "https://tiki.vn/blog/qua-sinh-nhat-cho-nam/",
+    "snippet": "Dụng cụ chơi thể thao. Một quả bóng, vợt tennis, cầu lông, gậy golf... Ví da sang trọng và cao cấp tặng chàng dịp sinh nhật. Bạn có thể tặng cho ...",
+    "date": "29 thg 10, 2023",
+    "position": 6
+   },
+   {
+    "title": "SuzaGift - Quà Tặng Ý Nghĩa, Cửa hàng trực tuyến",
+    "link": "https://shopee.vn/suzagift",
+    "snippet": "Set quà tặng tinh dầu thơm,nến và phụ kiện decor sang trọng làm quà TOP 1 Set quà tặng tinh dầu thơm,nến và tặng bạn gái, sinh nhật,",
+    "position": 7
+   },
+   {
+    "title": "20+ bộ quà Tết đẹp ý nghĩa và ấn tượng nhất",
+    "link": "https://cellphones.com.vn/sforum/bo-qua-tang-tet",
+    "snippet": "Bộ quà mang phong cách hiện đại thường được thiết kế sang trọng với các sản phẩm cao cấp như rượu vang, chocolate, hay hạt dinh dưỡng.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

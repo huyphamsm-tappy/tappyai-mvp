@@ -1,0 +1,82 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "khách sạn Núi gần TP.HCM",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.7769,106.7009,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:55:57.988Z",
+ "body": {
+  "searchParameters": {
+   "q": "khách sạn Núi gần TP.HCM",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.7769,106.7009,14z",
+   "engine": "google"
+  },
+  "ll": "@10.8003446,106.6394771,18.0536z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Khách Sạn Núi Thành",
+    "address": "3 Đ. Núi Thành, Tân Bình, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.8006593,
+    "longitude": 106.64184089999999,
+    "rating": 3.8,
+    "ratingCount": 172,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "phoneNumber": "+84 28 3810 9668",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPJ0OHjltjPj0TxlN4j04t_s2CACRpkiyiqv2TTjgr209p3vaDEz4nQIR2JYv-FGnAZFMxLhObTWkAxdBSLkXvED8fV59LF-mBEx5bcL1f68P56LQobL7NA6KwP9YSNcMFuzDu9",
+    "cid": "6802183382160932336",
+    "fid": "0x3175294fccf4b3bb:0x5e6635bf1ec47df0",
+    "placeId": "ChIJu7P0zE8pdTER8H3EHr81Zl4"
+   },
+   {
+    "position": 2,
+    "title": "Khách Sạn Song Nhật",
+    "address": "20/19 Đ. Núi Thành, Tân Bình, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.80003,
+    "longitude": 106.6422632,
+    "rating": 4.2,
+    "ratingCount": 130,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "http://www.songnhathotel.vn/",
+    "phoneNumber": "+84 28 3813 0213",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-proxy/AIM7gW3DYk037xkNAuRVqgKPLkS81ODrf3-ytUpwHlNaLq0P1hh-mfTCCqTKNzvzl2psFMjbtFeaQVPyIFSBpFBx2q1lhKs1zUxslgbm5tiZC7kEem9qkLGng2uQQITgPmR_u-8Rfvow4XDe-T4XHYaphTsB0W50tgdC17MdJasqBF4vMqo9NN5eCrc",
+    "cid": "11491950763438782845",
+    "fid": "0x3175294fcbdb7ceb:0x9f7b9c55170c397d",
+    "placeId": "ChIJ63zby08pdTERfTkMF1Wce58"
+   },
+   {
+    "position": 3,
+    "title": "Khách Sạn Minh Châu",
+    "address": "5 Đ. Núi Thành, Tân Bình, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.800395199999999,
+    "longitude": 106.642136,
+    "rating": 3.7,
+    "ratingCount": 93,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "phoneNumber": "+84 28 3810 2519",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPxZzLkJaW9acaXE5IMM603XN0HO8nULk4yJS4H3jJlPfI1X7O012DctA8ulNxt_sqdyZJyqSxLMtTsgQXx813f1GwRVH5p8fd_XBIC6hyxdCRJYQqqOvExWtjArVB9uX_dOvvJPQ",
+    "cid": "11779170905630780850",
+    "fid": "0x3175294e34edc41f:0xa3780587aabd2db2",
+    "placeId": "ChIJH8TtNE4pdTERsi29qocFeKM"
+   }
+  ],
+  "credits": 3
+ }
+}

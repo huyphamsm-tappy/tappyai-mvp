@@ -3,12 +3,14 @@ package com.tappyai.app.navigation
 import android.content.Intent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.tappyai.app.BuildConfig
 import com.tappyai.app.R
 import com.tappyai.core.common.StringProvider
 import com.tappyai.core.deeplink.DeepLinkParser
 import com.tappyai.core.navigation.TappyRoute
 import com.tappyai.core.network.NetworkResult
 import com.tappyai.app.onboarding.data.OnboardingRepository
+import com.tappyai.app.notifications.data.PushRegistration
 import com.tappyai.features.auth.data.AuthRepository
 import com.tappyai.features.auth.data.AuthSessionState
 import com.tappyai.features.auth.navigation.AuthRoute
@@ -19,6 +21,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -40,11 +43,21 @@ class AppNavHostViewModel @Inject constructor(
     private val authRepository: AuthRepository,
     private val onboardingRepository: OnboardingRepository,
     private val groupDeepLinkParser: GroupDeepLinkParser,
+    private val webLinkDeepLinkParser: WebLinkDeepLinkParser,
+    private val pendingShellDestination: PendingShellDestination,
     private val authDeepLinkParser: DeepLinkParser,
     private val stringProvider: StringProvider,
+    private val pushRegistration: PushRegistration,
 ) : ViewModel() {
     val sessionState: StateFlow<AuthSessionState> = authRepository.sessionState
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), AuthSessionState.Loading)
+
+    init {
+        // UAT3: register this device for push each time an ACCOUNT session starts (see PushRegistration).
+        viewModelScope.launch {
+            authRepository.sessionState.distinctUntilChanged().collect { if (it == AuthSessionState.Authenticated) pushRegistration.onSignedIn() }
+        }
+    }
 
     /**
      * Whether a just-logged-in user should see onboarding first. Delegates to the repository
@@ -87,20 +100,80 @@ class AppNavHostViewModel @Inject constructor(
      * [AppRoute.GroupDetail] and is published on [deepLinkTarget] for [AppNavHost] to navigate to.
      * Unrecognized links are ignored.
      */
+    /**
+     * G1-F — an inbound system share (or a Process-Text selection, G1 completion). Parsed by the pure [IncomingShareParser] into the
+     * existing chat-with-prefill destination and handed to the shell exactly the way a
+     * notification's chat link is ([PendingShellDestination] + [AppRoute.HomeShell]), so the
+     * cold-start and authenticated-gating behaviour is the one already proven for deep links.
+     * An unrecognised share is ignored and the app opens normally.
+     */
+    fun handleIncomingShare(intent: Intent) {
+        val route = runCatching {
+            IncomingShareParser.parse(
+                action = intent.action,
+                type = intent.type,
+                // ACTION_SEND carries EXTRA_TEXT; ACTION_PROCESS_TEXT carries the selection in
+                // EXTRA_PROCESS_TEXT (a CharSequence). Either is one plain string to the parser.
+                text = intent.getStringExtra(Intent.EXTRA_TEXT)
+                    ?: intent.getCharSequenceExtra(Intent.EXTRA_PROCESS_TEXT)?.toString(),
+                subject = intent.getStringExtra(Intent.EXTRA_SUBJECT),
+            )
+        }.getOrNull() ?: return
+        pendingShellDestination.set(route)
+        _deepLinkTarget.value = AppRoute.HomeShell
+    }
+
     fun handleDeepLink(intent: Intent) {
         val uri = intent.data ?: return
         if (uri.host == "auth-callback") {
+            // 🔒 A callback for a sign-in this app did not start (no / wrong / expired state) is
+            // refused up front: no callback screen, no navigation, the current session untouched —
+            // only the friendly message. handleOAuthRedirectIntent checks again (and consumes).
+            if (!authRepository.isCallbackForThisApp(uri.toString())) {
+                viewModelScope.launch { _authError.send(stringProvider.get(R.string.auth_callback_refused)) }
+                return
+            }
             viewModelScope.launch {
                 (authDeepLinkParser.parse(uri.toString()) as? AuthRoute.AuthCallback)?.let {
                     navigator.navigateTo(it)
                 }
                 val result = authRepository.handleOAuthRedirectIntent(intent)
                 if (result is NetworkResult.Error) {
-                    _authError.send(stringProvider.get(R.string.chat_toast_signin_failed))
+                    // A refused callback (not started here / wrong or expired state) gets its own
+                    // friendly line; the session is untouched either way.
+                    val refused = (result.error as? com.tappyai.core.network.NetworkError.Unknown)?.throwable is
+                        com.tappyai.features.auth.data.AuthCallbackRejectedException
+                    _authError.send(stringProvider.get(if (refused) R.string.auth_callback_refused else R.string.chat_toast_signin_failed))
                 }
             }
         } else {
-            groupDeepLinkParser.parse(uri.toString())?.let { _deepLinkTarget.value = it }
+            // P4-14. The chain, not a single parser: a notification carries the WEB entity URL
+            // (`emitNotification` puts `entityUrl` in `data.url`), while a shared link uses the
+            // custom `tappyai://` scheme. Both are external entry points and both should resolve
+            // through the same list — which is exactly what `TappyNotificationRouting` already
+            // does on its side. Before this, an https notification link matched nothing and a tap
+            // simply opened the app wherever it was.
+            //
+            // Order is not significant: the two parsers accept disjoint schemes. A parser that
+            // throws on a malformed link is contained, because a bad link in a payload the app did
+            // not write must not become a crash on tap.
+            val link = uri.toString()
+            val appRoute = listOf(groupDeepLinkParser, webLinkDeepLinkParser)
+                .firstNotNullOfOrNull { parser -> runCatching { parser.parse(link) }.getOrNull() }
+
+            if (appRoute != null) {
+                _deepLinkTarget.value = appRoute
+            } else {
+                // No app-wide route matched. The link may still name a destination INSIDE the
+                // post-auth shell, whose vocabulary is deliberately private to it. Navigate to the
+                // shell — a route that already exists — and hand the nested destination across for
+                // the shell to consume itself, rather than promoting its tabs into the global
+                // vocabulary for the sake of one entry point.
+                ShellDeepLink.destinationFor(link, BuildConfig.WEB_APP_URL)?.let { shellRoute ->
+                    pendingShellDestination.set(shellRoute)
+                    _deepLinkTarget.value = AppRoute.HomeShell
+                }
+            }
         }
     }
 }

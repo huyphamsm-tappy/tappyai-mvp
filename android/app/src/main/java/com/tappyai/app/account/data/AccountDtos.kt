@@ -16,6 +16,7 @@ data class ProfileDto(
     val email: String = "",
     val bio: String = "",
     val language: String? = null,
+    @SerialName("cover_url") val coverUrl: String? = null,
 )
 
 /** PATCH body — only the fields the Edit screen exposes; language is a separate partial update
@@ -34,6 +35,15 @@ data class UpdateLanguageRequestDto(val language: String)
 @Serializable
 data class OkResponseDto(val ok: Boolean = false)
 
+/** Response of `POST /api/profile` with a `cover` part — the new public cover URL. */
+@Serializable
+data class CoverUploadResponseDto(@SerialName("cover_url") val coverUrl: String = "")
+
+/** `PATCH /api/profile {cover_url: null}` — the web's "Gỡ ảnh bìa" (the cover can only be CLEARED by PATCH). */
+@Serializable
+@OptIn(kotlinx.serialization.ExperimentalSerializationApi::class)
+data class ClearCoverRequestDto(@kotlinx.serialization.EncodeDefault @SerialName("cover_url") val coverUrl: String? = null)
+
 /** Response of `POST /api/profile` (multipart avatar upload) — the new public URL of the image. */
 @Serializable
 data class AvatarUploadResponseDto(@SerialName("avatar_url") val avatarUrl: String = "")
@@ -46,4 +56,5 @@ fun ProfileDto.toDomain(): AccountProfile = AccountProfile(
     joinDate = "",
     avatarUrl = avatarUrl.ifBlank { null },
     language = language,
+    coverUrl = coverUrl?.ifBlank { null },
 )

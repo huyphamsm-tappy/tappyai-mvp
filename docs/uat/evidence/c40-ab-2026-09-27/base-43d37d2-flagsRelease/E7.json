@@ -1,0 +1,25 @@
+{
+  "id": "E7",
+  "text": "Xem phim gì hay tối nay",
+  "parent": null,
+  "status": 200,
+  "ms": 6511,
+  "evidenceId": "9233c7c5-585a-42ef-8b2d-9ef45e0932ca",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Tối nay bạn muốn xem phim gì à? Mình gợi ý 3 bộ phim hay cho bạn:\n\n**1. Deadpool & Wolverine** — Nếu thích hành động sôi động, hài hước và những pha hành động cực kỳ, đây là lựa chọn tuyệt vời. Phim vừa hài vừa kịch tính, rất phù hợp để giải tỏa sau một ngày làm việc.\n\n**2. Twisters** — Nếu muốn xem phim thảm họa với những cảnh quay ấn tượng, phim này có cốt truyện hấp dẫn và những hiệu ứng hình ảnh tuyệt đẹp.\n\n**3. Wicked** — Nếu bạn thích nhạc kịch, phim này là một bộ phim âm nhạc hoành tráng với câu chuyện cảm động và những bài hát hay.\n\nBạn thích thể loại nào nhất — hành động, tình cảm, hay nhạc kịch? 🎬",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Xem phim gì hay tối nay"
+    },
+    {
+      "role": "assistant",
+      "content": "Tối nay bạn muốn xem phim gì à? Mình gợi ý 3 bộ phim hay cho bạn:\n\n**1. Deadpool & Wolverine** — Nếu thích hành động sôi động, hài hước và những pha hành động cực kỳ, đây là lựa chọn tuyệt vời. Phim vừa hài vừa kịch tính, rất phù hợp để giải tỏa sau một ngày làm việc.\n\n**2. Twisters** — Nếu muốn xem phim thảm họa với những cảnh quay ấn tượng, phim này có cốt truyện hấp dẫn và những hiệu ứng hình ảnh tuyệt đẹp.\n\n**3. Wicked** — Nếu bạn thích nhạc kịch, phim này là một bộ phim âm nhạc hoành tráng với câu chuyện cảm động và những bài hát hay.\n\nBạn thích thể loại nào nhất — hành động, tình cảm, hay nhạc kịch? 🎬"
+    }
+  ]
+}

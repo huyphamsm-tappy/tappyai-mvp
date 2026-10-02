@@ -1,0 +1,76 @@
+
+ RUN  v4.1.9 D:/Claude/Projects/TappyAI/tappyai-mvp/.claude/worktrees/g1-place-guard
+
+stdout | src/lib/ai/planPriceGuard.test.ts > budget is not a cost — derived lines are the server's, never the model's > H — the exact UAT scenario through the real stream filter: parseable, budget kept, no fabricated cost
+{"type":"tappyai_guard","guard":"place_claim","v2":true,"sentences_in":11,"sentences_removed":0,"chars_in":517,"chars_removed":0,"chars_kept":517,"reasons":{"quality":0,"popularity":0,"ordering":0,"ticket":0,"ticket_availability":0,"score":0,"review_count":0,"phone":0,"distance":0,"orphan":0,"cascade":0},"unattributable_claims":0,"attribution":{"L1":0,"L2":0,"L2p":0,"L3":0,"L4":0,"L5":0,"anaphora":0,"multi":0},"pick_attributable":null}
+
+ ❯ |app| src/lib/ai/planPriceGuard.test.ts (30 tests | 3 failed | 27 skipped) 86ms
+     × F — prose: the budget echoed as a cost is redacted, the budget named as a budget survives 10ms
+     × F2 — G2 path: the budget echoed as a cost is redacted and counted; the budget as a budget survives 2ms
+     × H — the exact UAT scenario through the real stream filter: parseable, budget kept, no fabricated cost 74ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |app| src/lib/ai/planPriceGuard.test.ts > budget is not a cost — derived lines are the server's, never the model's > F — prose: the budget echoed as a cost is redacted, the budget named as a budget survives
+AssertionError: expected 'Tổng ước tính 3.000.000 VND cho cả tố…' not to contain 'Tổng ước tính 3.000.000'
+
+- Expected
++ Received
+
+- Tổng ước tính 3.000.000
++ Tổng ước tính 3.000.000 VND cho cả tối. Với ngân sách 3 triệu cho 2 người, bạn hoàn toàn thoải mái.
++
++ Chi phí khoảng 3 triệu. Budget: 3,000,000 VND is plenty. Remaining: 3,000,000 VND.
+
+ ❯ src/lib/ai/planPriceGuard.test.ts:307:26
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  |app| src/lib/ai/planPriceGuard.test.ts > budget is not a cost — derived lines are the server's, never the model's > F2 — G2 path: the budget echoed as a cost is redacted and counted; the budget as a budget survives
+AssertionError: expected 'Tổng ước tính 3.000.000 VND cho cả tố…' not to contain 'Tổng ước tính 3.000.000'
+
+Expected: "Tổng ước tính 3.000.000"
+Received: "Tổng ước tính 3.000.000 VND cho cả tối. Với ngân sách 3 triệu cho 2 người, bạn hoàn toàn thoải mái."
+
+ ❯ src/lib/ai/planPriceGuard.test.ts:319:26
+    317|     const text = 'Tổng ước tính 3.000.000 VND cho cả tối. Với ngân sác…
+    318|     const out = snippetGuard(text, [], USER_3M, undefined, { v2: true,…
+    319|     expect(out.text).not.toContain('Tổng ước tính 3.000.000')
+       |                          ^
+    320|     expect(out.text).toContain('Với ngân sách 3 triệu cho 2 người')
+    321|     expect(out.stats?.user_echo_as_cost).toBe(1)
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  |app| src/lib/ai/planPriceGuard.test.ts > budget is not a cost — derived lines are the server's, never the model's > H — the exact UAT scenario through the real stream filter: parseable, budget kept, no fabricated cost
+AssertionError: expected 'Tôi sẽ tìm.\n\nKế hoạch tối nay đây.\…' not to contain 'Tổng ước tính 3.000.000'
+
+- Expected
++ Received
+
+- Tổng ước tính 3.000.000
++ Tôi sẽ tìm.
++
++ Kế hoạch tối nay đây.
++
++
++
++ Tổng ước tính 3.000.000 VND cho cả tối. Với ngân sách 3 triệu, hai bạn thoải mái.
+
+ ❯ src/lib/ai/planPriceGuard.test.ts:356:23
+    354|     expect(p.cost_breakdown).toEqual({ 'Ăn tối (2 người)': 'chưa có gi…
+    355|     const prose = text.replace(/\[TAPPY_PLAN\][\s\S]*?\[\/TAPPY_PLAN\]…
+    356|     expect(prose).not.toContain('Tổng ước tính 3.000.000')
+       |                       ^
+    357|     expect(prose).toContain('Với ngân sách 3 triệu')
+    358|   })
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 27 skipped (30)
+   Start at  07:48:43
+   Duration  1.21s (transform 587ms, setup 20ms, import 727ms, tests 86ms, environment 0ms)
+

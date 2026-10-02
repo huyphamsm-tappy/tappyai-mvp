@@ -1,5 +1,6 @@
 import java.io.ByteArrayOutputStream
 import java.util.Base64
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.android.application)
@@ -55,6 +56,35 @@ fun gitSha(): String = try {
 /** Reads a Gradle property, treating blank as absent so `-PFoo=` cannot slip an empty value through. */
 fun releaseProp(name: String, default: String): String =
     (project.findProperty(name) as String?)?.takeIf { it.isNotBlank() } ?: default
+
+// ---------------------------------------------------------------------------
+// UAT build type — https://uat.tappyai.com + the AUDIT Supabase project.
+//
+// Everything it needs is read from android/local.properties (gitignored), and ONLY when a uat task
+// was actually requested — so debug/staging/release never even load the secret, and their
+// BuildConfig.VERCEL_BYPASS_SECRET is the empty string (guarded by ReleaseCarriesNoUatSecretTest):
+//   TAPPYAI_UAT_VERCEL_BYPASS_FILE=D:/TappyAI-backups/vercel-bypass.txt  (read at build time)
+//   TAPPYAI_UAT_SUPABASE_URL=https://<audit ref>.supabase.co
+//   TAPPYAI_UAT_SUPABASE_ANON_KEY=<audit anon key>
+// ---------------------------------------------------------------------------
+val uatRequested = gradle.startParameter.taskNames.any { Regex("Uat(?![a-z])").containsMatchIn(it) }
+val localProps = Properties()
+rootProject.file("local.properties").takeIf { it.exists() }?.inputStream()?.use { localProps.load(it) }
+fun uatProp(name: String): String {
+    if (!uatRequested) return ""
+    val value = localProps.getProperty(name)?.trim().orEmpty()
+    if (value.isEmpty()) throw GradleException("uat build: $name is missing from android/local.properties")
+    return value
+}
+val uatBypassSecret: String = if (!uatRequested) "" else {
+    val f = file(uatProp("TAPPYAI_UAT_VERCEL_BYPASS_FILE"))
+    if (!f.exists()) throw GradleException("uat build: the bypass file named by TAPPYAI_UAT_VERCEL_BYPASS_FILE does not exist")
+    f.readText().trim().also {
+        if (!Regex("^[A-Za-z0-9]{16,64}$").matches(it)) throw GradleException("uat build: the bypass file does not hold a bypass secret")
+    }
+}
+val uatSupabaseUrl = uatProp("TAPPYAI_UAT_SUPABASE_URL")
+val uatSupabaseAnonKey = uatProp("TAPPYAI_UAT_SUPABASE_ANON_KEY")
 
 val supabaseUrl = releaseProp("TAPPYAI_SUPABASE_URL", "https://your-project.supabase.co")
 val supabaseAnonKey = releaseProp("TAPPYAI_SUPABASE_ANON_KEY", "REPLACE_WITH_SUPABASE_ANON_KEY")
@@ -219,8 +249,9 @@ android {
         // `versionCode=7 versionName=0.1.2` were compared during that UAT: `aapt2 dump strings`
         // found Scam Shield in one and not the other. Nothing on a device, in a bug report or in
         // Play could have told them apart, and Play rejects a reused versionCode outright.
-        versionCode = 8
-        versionName = "0.1.3"
+        // 2026-09-28 public launch: 10 (skips 9 so no earlier upload can collide), 1.0.0.
+        versionCode = 10
+        versionName = "1.0.0"
 
         vectorDrawables {
             useSupportLibrary = true
@@ -259,6 +290,18 @@ android {
         // Defaults to production; override with `-PTAPPYAI_WEB_APP_URL=https://...` (no trailing
         // slash). Applies to all variants.
         buildConfigField("String", "WEB_APP_URL", "\"$webAppUrl\"")
+        // Empty everywhere; only the `uat` build type below fills it.
+        buildConfigField("String", "VERCEL_BYPASS_SECRET", "\"\"")
+        // Google Play badge on the TappyAI QR card (owner SL2, web storeListing.ts): the public listing of
+        // com.tappyai.app answered 404 on 29/09 → the badge shows on debug/uat builds only; a release shows it
+        // once `-PTAPPYAI_PLAY_LISTING_LIVE=true` is set after the public Play page loads.
+        buildConfigField("boolean", "PLAY_LISTING_LIVE", (project.findProperty("TAPPYAI_PLAY_LISTING_LIVE")?.toString() == "true").toString())
+
+        // App Links (prepared, off by default) — see the PublicLinkActivity alias in the manifest.
+        // `-PTAPPYAI_APP_LINKS_ENABLED=true` turns the alias on; the host is derived from the same
+        // WEB_APP_URL the app uses for share links so the claim can never name another origin.
+        resValue("bool", "tappy_app_links_enabled", (project.findProperty("TAPPYAI_APP_LINKS_ENABLED")?.toString() == "true").toString())
+        manifestPlaceholders["tappyPublicHost"] = Regex("^https?://([^/:]+)").find(webAppUrl)?.groupValues?.get(1) ?: "www.tappyai.com"
     }
 
     // Release signing (Production Readiness Sprint) — no signingConfigs block existed at all
@@ -328,6 +371,23 @@ android {
                 "\"${project.findProperty("TAPPYAI_API_BASE_URL_STAGING") ?: "https://staging.tappyai.example.com/"}\""
             )
         }
+        // Owner UAT build: the real UAT web backend and its AUDIT database, never production.
+        // Shares the `.staging` application id because app/google-services.json only declares
+        // com.tappyai.app / .debug / .staging — a new id would fail processUatGoogleServices.
+        // So a uat install replaces a staging install on the same device (and vice versa).
+        create("uat") {
+            initWith(getByName("debug"))
+            applicationIdSuffix = ".staging"
+            versionNameSuffix = "-uat"
+            isMinifyEnabled = false
+            isDebuggable = true
+            matchingFallbacks += listOf("debug")
+            buildConfigField("String", "API_BASE_URL", "\"https://uat.tappyai.com/\"")
+            buildConfigField("String", "WEB_APP_URL", "\"https://uat.tappyai.com\"")
+            buildConfigField("String", "SUPABASE_URL", "\"$uatSupabaseUrl\"")
+            buildConfigField("String", "SUPABASE_ANON_KEY", "\"$uatSupabaseAnonKey\"")
+            buildConfigField("String", "VERCEL_BYPASS_SECRET", "\"$uatBypassSecret\"")
+        }
         release {
             isMinifyEnabled = true
             isShrinkResources = true
@@ -380,6 +440,9 @@ dependencies {
     // only applied the kotlin-serialization compiler plugin, never the runtime library the
     // annotation itself comes from — "Unresolved reference 'serialization'".
     implementation(libs.kotlinx.serialization.json)
+    // App Links (prepared): the session-bound Custom Tab that shows a public result page in-app.
+    // Same library/version features/auth already uses for the Zalo sign-in tab — no new dependency.
+    implementation(libs.androidx.browser)
     // Firebase Cloud Messaging — transport only. The BOM decides the messaging version; nothing
     // else from Firebase is pulled in (no Analytics, no Crashlytics).
     implementation(platform(libs.firebase.bom))

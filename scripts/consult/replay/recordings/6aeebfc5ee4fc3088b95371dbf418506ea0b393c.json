@@ -1,0 +1,30 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Hải Sản Hoàng Gia CN Phạm Văn Nghị Quận 7\" OR \"Nhà Hàng 39 | Nhà Hàng Đặc Sản Quận 7\" quan 7 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T04:22:26.014Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Hải Sản Hoàng Gia CN Phạm Văn Nghị Quận 7\" OR \"Nhà Hàng 39 | Nhà Hàng Đặc Sản Quận 7\" quan 7 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Khám Phá Nơi Đến Đặc Biệt",
+    "link": "https://www.tiktok.com/@tralam9494/photo/7654838344714571026",
+    "snippet": "Hải Sản Hoàng Gia CN Phạm Văn Nghị Quận 7 · author · 167 · 1 ... Tam quan lệch lạc, ngũ quan méo mó nó là vậy đó #Me3con · âm thanh gốc - deo tin vao tinh yeu. 29 ...",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

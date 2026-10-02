@@ -1,0 +1,33 @@
+{
+  "id": "E2b",
+  "text": "dưới 200k/người",
+  "parent": "E2",
+  "status": 200,
+  "ms": 6723,
+  "evidenceId": "66502ddf-e4d6-480b-bfa5-558f563166c4",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình hiểu rồi — bạn muốn tìm rạp phim với giá vé dưới 200k/người ở Quận 1.\n\nBạn muốn xem phim gì hoặc chọn suất chiếu nào không?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps\",\"type\":\"maps\",\"url\":\"https://www.google.com/maps/search/CGV+Liberty+Citypoint+Q1\",\"primary\":false}]}[/CTA_BUTTONS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "rap phim nao gan q1"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm các rạp phim gần vị trí của bạn ở Quận 1 nhé.\n\nMình chọn **CGV Liberty Citypoint** cho bạn — cách vị trí của bạn chỉ 0.2km, gần nhất trong khu vực, và có đánh giá 4.4⭐ từ 1.751 khách.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=8041718674423256569\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Phim gì đang chiếu?|Rạp nào có ghế VIP?|Giá vé bao nhiêu?[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "dưới 200k/người"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình hiểu rồi — bạn muốn tìm rạp phim với giá vé dưới 200k/người ở Quận 1.\n\nBạn muốn xem phim gì hoặc chọn suất chiếu nào không?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps\",\"type\":\"maps\",\"url\":\"https://www.google.com/maps/search/CGV+Liberty+Citypoint+Q1\",\"primary\":false}]}[/CTA_BUTTONS]"
+    }
+  ]
+}

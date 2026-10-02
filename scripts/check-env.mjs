@@ -37,7 +37,9 @@ export const REQUIRED_ENV = [
   'NEXT_PUBLIC_SUPABASE_URL',
   'NEXT_PUBLIC_SUPABASE_ANON_KEY',
   'SUPABASE_SERVICE_ROLE_KEY',
-  'ANTHROPIC_API_KEY',
+  // Owner 30/09: GPT-6 Luna serves every AI call (the Anthropic account has no credit) — the AI key is OpenAI's.
+  // Still five variables; ANTHROPIC_API_KEY is optional (only LLM_PROVIDER=claude / HAIKU_FALLBACK=1 read it).
+  'OPENAI_API_KEY',
   'NEXT_PUBLIC_SITE_URL',
 ]
 
@@ -78,6 +80,16 @@ export const CAPABILITY_ENV = [
     mode: 'present',
     vars: ['UPSTASH_REDIS_REST_URL', 'UPSTASH_REDIS_REST_TOKEN'],
     whenOff: 'every check recomputes from providers — correct, but slower and more costly',
+  },
+  {
+    // GA4 is the interim production measurement layer. The tag loads only when the
+    // measurement id is present, and the id is scoped to Production in Vercel on purpose, so a
+    // preview build reporting this as inactive is correct. A PRODUCTION build reporting it
+    // inactive means the variable was lost and no traffic is being measured — worth one line.
+    capability: 'Google Analytics 4 (web)',
+    mode: 'present',
+    vars: ['NEXT_PUBLIC_GA_MEASUREMENT_ID'],
+    whenOff: 'gtag.js is not loaded and no page_view / product event reaches GA4',
   },
 ]
 

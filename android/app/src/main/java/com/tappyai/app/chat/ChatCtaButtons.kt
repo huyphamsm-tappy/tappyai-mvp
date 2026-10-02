@@ -61,6 +61,24 @@ fun ChatCtaButtons(
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
+
+    // ── The action boundary (DD-006) ────────────────────────────────────────
+    //
+    // `internal_booking` is the one CTA where Tappy acts on the user's behalf rather than handing
+    // them off to somebody else's site, so it is the one that must not happen on a single implicit
+    // tap. Holding the pending button in state means [openCta] cannot run until the user confirms;
+    // dismissing the sheet — by swipe, scrim tap or back — clears it, so an abandoned prompt FAILS
+    // CLOSED. Mirrors the web ConfirmationPrompt exactly, in a native sheet.
+    //
+    // Deliberately NOT every CTA: maps, call, search and external booking hand off to a destination
+    // the user can see and back out of, and confirming all of them would be the confirmation
+    // fatigue the UX spec rejects — which destroys the signal for the action that needs it.
+    var pendingBooking by remember { mutableStateOf<CtaButton?>(null) }
+
+    fun activate(button: CtaButton) {
+        if (button.ctaType == CtaType.InternalBooking) pendingBooking = button else openCta(context, button)
+    }
+
     FlowRow(
         modifier = modifier
             .fillMaxWidth()
@@ -72,13 +90,29 @@ fun ChatCtaButtons(
             val place = if (button.ctaType == CtaType.InternalBooking) parsePlaceFromUrl(button.url) else null
             if (place != null && place.placeId.isNotBlank()) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    CtaChip(button = button, onClick = { openCta(context, button) })
+                    CtaChip(button = button, onClick = { activate(button) })
                     FavoriteToggle(place = place, onSave = onSaveFavorite, onRemove = onRemoveFavorite)
                 }
             } else {
-                CtaChip(button = button, onClick = { openCta(context, button) })
+                CtaChip(button = button, onClick = { activate(button) })
             }
         }
+    }
+
+    pendingBooking?.let { button ->
+        val place = parsePlaceFromUrl(button.url)
+        val placeName = place.name.ifBlank { stringResource(R.string.confirm_this_place) }
+        ConfirmationSheet(
+            consequence = stringResource(R.string.confirm_booking_consequence, placeName),
+            changes = listOfNotNull(place.address.takeIf { it.isNotBlank() }),
+            confirmLabel = stringResource(R.string.confirm_booking_confirm),
+            onConfirm = {
+                // The original navigation, unchanged — it just runs from the confirmed path now.
+                openCta(context, button)
+                pendingBooking = null
+            },
+            onCancel = { pendingBooking = null },
+        )
     }
 }
 

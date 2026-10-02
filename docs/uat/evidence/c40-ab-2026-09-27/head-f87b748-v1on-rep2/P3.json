@@ -1,0 +1,100 @@
+{
+  "id": "P3",
+  "text": "chỗ đó có đặt trước được không?",
+  "parent": "P2",
+  "status": 200,
+  "ms": 16418,
+  "evidenceId": "8efa4d46-0006-47a2-a2ba-a4c928064051",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "Hyan Spa Quận 1",
+        "location": "Quận 1, TP.HCM",
+        "type": "spa"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Hyan Spa | Foot Spa | Body Massage | Hair Spa Quận 1",
+      "rating": 5,
+      "count": 103,
+      "hours": "10:00–21:00",
+      "address": "17C Nguyễn Thị Minh Khai, Cầu Ông Lãnh, Hồ Chí Minh 70000, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình tìm thông tin đặt trước cho **Hyan Spa** ngay.\n\n**Hyan Spa** có website riêng (hyanspa.com) nên bạn có thể **gọi trực tiếp qua số điện thoại +84 932 665 046** hoặc vào website để đặt trước dịch vụ.\n\n Bạn nên **gọi hoặc vào website để hỏi giá trước khi đặt** nhé 👍\n\nKết quả chưa có mức giá, nên mình chưa khẳng định được có vừa ngân sách của bạn không.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website - Hyan Spa\",\"type\":\"website\",\"url\":\"https://hyanspa.com/\",\"primary\":true},{\"label\":\"📍 Google Maps - Hyan Spa\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=4888533510458212203\",\"primary\":false}]}[/CTA_BUTTONS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "spa massage chan gan q1 duoi 300k"
+    },
+    {
+      "role": "assistant",
+      "content": "Để gợi ý đúng ý, mình cần biết: **bạn muốn massage chân thôi hay kèm toàn bộ cơ thể?** Hay bạn chỉ cần dịch vụ chân (foot massage)?\n\nMình tìm được 10 spa massage chân ở Quận 1, nhưng **chưa xác nhận được giá cụ thể** của các chỗ này để đối chiếu với ngân sách 300k của bạn.\n\n**Mình gợi ý 2 spa nổi bật:**\n\n1. **Hyan Spa** (5⭐ 103 đánh giá) — Nguyễn Thị Minh Khai, cách bạn ~0.8km, mở 10:00–21:00.\n\nKết quả chưa có mức giá, nên mình chưa khẳng định được có vừa ngân sách của bạn không.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Hyan Spa trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=4888533510458212203\",\"primary\":true},{\"label\":\"🌐 CHARM SPA Garden\",\"type\":\"website\",\"url\":\"https://charmspa.com.vn/\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Hyan Spa có giá bao nhiêu|CHARM SPA Garden có dịch vụ gì|Spa nào mở sớm nhất[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "chỗ đó có đặt trước được không?"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm thông tin đặt trước cho **Hyan Spa** ngay.\n\n**Hyan Spa** có website riêng (hyanspa.com) nên bạn có thể **gọi trực tiếp qua số điện thoại +84 932 665 046** hoặc vào website để đặt trước dịch vụ.\n\n Bạn nên **gọi hoặc vào website để hỏi giá trước khi đặt** nhé 👍\n\nKết quả chưa có mức giá, nên mình chưa khẳng định được có vừa ngân sách của bạn không.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website - Hyan Spa\",\"type\":\"website\",\"url\":\"https://hyanspa.com/\",\"primary\":true},{\"label\":\"📍 Google Maps - Hyan Spa\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=4888533510458212203\",\"primary\":false}]}[/CTA_BUTTONS]"
+    }
+  ]
+}

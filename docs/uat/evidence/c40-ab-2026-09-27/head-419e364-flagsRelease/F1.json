@@ -1,0 +1,193 @@
+{
+  "id": "F1",
+  "text": "Tìm quán ăn tối ngon gần Quận 1 cho 2 người",
+  "parent": null,
+  "status": 200,
+  "ms": 16563,
+  "evidenceId": "b7bcbc60-f98c-4531-9f65-cf0af1c8064b",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "quán ăn tối ngon Quận 1",
+        "location": "Quận 1, TP.HCM",
+        "type": "restaurant"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Izakaya Choioinoodle | Nhà Hàng Nhật Quận 1 | Mì Ramen Ngon Trần Hưng Đạo",
+      "rating": 4.8,
+      "count": 201,
+      "price": "100-200 N ₫",
+      "hours": "11:00–22:00",
+      "address": "25 Trần Hưng Đạo, Bến Thành, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Hải Sản Hoàng Gia - 180 Trần Hưng Đạo Quận 1",
+      "rating": 4.7,
+      "count": 981,
+      "hours": "08:00–00:00",
+      "address": "180 Trần Hưng Đạo, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Quán Bụi - Lê Thánh Tôn - Authentic Vietnamese Cuisine",
+      "rating": 4.5,
+      "count": 1210,
+      "price": "200-600 N ₫",
+      "hours": "07:00–23:00",
+      "address": "222 - 224 Lê Thánh Tôn, Bến Thành, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Quán Bụi Central, Sài Gòn - Authentic Vietnamese Cuisine",
+      "rating": 4.5,
+      "count": 901,
+      "price": "200-800 N ₫",
+      "hours": "07:00–23:00",
+      "address": "1B Ngô Văn Năm, Quận 1, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Hàng Dương Quán Quận 1",
+      "rating": 4.5,
+      "count": 723,
+      "hours": "09:00–23:30",
+      "address": "32-34 Ngô Đức Kế, Phường, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "CƠM TẤM NGON 3 MIỀN QUẬN 1",
+      "rating": 4.5,
+      "count": 131,
+      "price": "1-100.000 ₫",
+      "hours": "08:00–22:00",
+      "address": "106Bis Nguyễn Văn Cừ, Cầu Ông Lãnh, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "NAO - Ăn uống ngay nào",
+      "rating": 4.4,
+      "count": 133,
+      "price": "1-100.000 ₫",
+      "hours": "12:00–22:30",
+      "address": "TK43/2 Trần Hưng Đạo, Quận 1, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Nhà hàng hải sản & lẩu Yeebo (Quận 1) - Yeebo Seafood and Hotpot Restaurant (District 1)",
+      "rating": 4.2,
+      "count": 657,
+      "hours": "09:00–14:00, 17:00–22:00",
+      "address": "Không nằm trong Lim Tower, 1 Lê Thánh Tôn, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Quán ăn ngon Sài Gòn",
+      "rating": 4.1,
+      "count": 1156,
+      "price": "100-400 N ₫",
+      "hours": "08:00–22:30",
+      "address": "138 Nam Kỳ Khởi Nghĩa, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "NHÀ HÀNG NGON",
+      "rating": 4,
+      "count": 11428,
+      "price": "200-600 N ₫",
+      "hours": "07:30–22:30",
+      "address": "160 Pasteur, Quận 1, Hồ Chí Minh, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "Izakaya Choioinoodle | Nhà Hàng Nhật Quận 1 | Mì Ramen Ngon Trần Hưng Đạo",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 4.8,
+        "reviews": 201,
+        "open_now": true,
+        "opening_hours": "11:00–22:00"
+      }
+    },
+    {
+      "name": "Hải Sản Hoàng Gia - 180 Trần Hưng Đạo Quận 1",
+      "role": null,
+      "evidence": {
+        "rating": 4.7,
+        "reviews": 981,
+        "open_now": true,
+        "opening_hours": "08:00–00:00"
+      }
+    },
+    {
+      "name": "Quán Bụi - Lê Thánh Tôn - Authentic Vietnamese Cuisine",
+      "role": null,
+      "evidence": {
+        "rating": 4.5,
+        "reviews": 1210,
+        "open_now": true,
+        "opening_hours": "07:00–23:00"
+      }
+    }
+  ],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình tìm quán ăn tối ngon gần Quận 1 cho bạn nhé! 🍽️\n\nMình chọn **Izakaya Choioinoodle** cho bạn! Vừa vặn cho bữa tối 2 người ở Quận 1.\n\nNếu bạn muốn thử hải sản, **Hải Sản Hoàng Gia** cũng tuyệt vời với 4.7⭐ (981 đánh giá) — mở đến nửa đêm, rất phù hợp cho bữa tối.\n\n 😊\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Maps - Izakaya Choioinoodle\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=6525976663471549326\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Hải sản Hoàng Gia|Quán Bụi ăn Việt|Xem thêm quán khác[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Tìm quán ăn tối ngon gần Quận 1 cho 2 người"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm quán ăn tối ngon gần Quận 1 cho bạn nhé! 🍽️\n\nMình chọn **Izakaya Choioinoodle** cho bạn! Vừa vặn cho bữa tối 2 người ở Quận 1.\n\nNếu bạn muốn thử hải sản, **Hải Sản Hoàng Gia** cũng tuyệt vời với 4.7⭐ (981 đánh giá) — mở đến nửa đêm, rất phù hợp cho bữa tối.\n\n 😊\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Maps - Izakaya Choioinoodle\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=6525976663471549326\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Hải sản Hoàng Gia|Quán Bụi ăn Việt|Xem thêm quán khác[/FOLLOWUPS]"
+    }
+  ]
+}

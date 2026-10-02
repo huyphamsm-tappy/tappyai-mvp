@@ -1,0 +1,81 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "quà tặng Sếp nam, 40 tuổi, thích cà phê (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:09:06.448Z",
+ "body": {
+  "searchParameters": {
+   "q": "quà tặng Sếp nam, 40 tuổi, thích cà phê (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "30+ quà sinh nhật cho nam theo độ tuổi ý nghĩa, thiết thực ...",
+    "link": "https://cellphones.com.vn/sforum/qua-sinh-nhat-cho-nam",
+    "snippet": "Nếu người được bạn tặng quà có sở thích chơi thể thao thì bạn có thể cân nhắc tặng một số món như giày chạy bộ, quần áo thể thao, túi đựng đồ, ...",
+    "date": "30 thg 4, 2023",
+    "rating": 1,
+    "ratingCount": 1,
+    "position": 1
+   },
+   {
+    "title": "Top 16+ [Quà 20/10 cho sếp nữ] 4 \"mẹo\" chọn quà khéo léo",
+    "link": "https://cellphones.com.vn/qua-20-10/cho-sep-nu",
+    "snippet": "Quà 20/10 cho Sếp Nữ 40 - 50 tuổi ; Danh sách quà tặng. Ngân sách dự kiến ; Máy massage cổ, vai, gáy, lưng, chân…. 1.300.000 đồng - 4.000.000 đồng ; Đồng hồ đeo ...",
+    "position": 2
+   },
+   {
+    "title": "Đồ biếu tết - Giá Tốt, Sale Tháng 09, Freeship 0Đ",
+    "link": "https://shopee.vn/list/%C4%91%E1%BB%93%20bi%E1%BA%BFu%20t%E1%BA%BFt",
+    "snippet": "... 50g – Sâm Khô 6 Năm Tuổi, Hộp Quà Biếu Cao Cấp Dành Tặng Bố Mẹ Sếp, Biếu Tết. 384.000₫. 389.000₫. -1%. voucher-icon. Mua để nhận quà. rating-star 4.7 Đánh giá ...",
+    "position": 3
+   },
+   {
+    "title": "Đi ăn tất niên mua quà gì? Gợi ý các món quà tinh tế, dễ ...",
+    "link": "https://cellphones.com.vn/sforum/di-an-tat-nien-mua-qua-gi",
+    "snippet": "Bạn có thể chọn giỏ quà trái cây nhập khẩu, bánh kẹo cao cấp hoặc kết hợp cả hai để tăng giá trị. Đây là món quà dễ sử dụng, không kén người nhận và đặc biệt ...",
+    "rating": 3,
+    "ratingCount": 1,
+    "position": 4
+   },
+   {
+    "title": "Top 10 Quà Tết thiết thực đáng mua nhất 2026",
+    "link": "https://cellphones.com.vn/sforum/qua-tet-thiet-thuc",
+    "snippet": "Tặng rượu cao cấp cho sếp nam. Rượu cao cấp thể hiện sự trân trọng và đẳng cấp của người tặng, đặc biệt phù hợp để làm quà Tết ...",
+    "position": 5
+   },
+   {
+    "title": "25+ món quà khai trương đẹp, mang lại may mắn và tài lộc",
+    "link": "https://cellphones.com.vn/sforum/qua-khai-truong",
+    "snippet": "1. Tượng Thần Tài · 2. Sản phẩm công nghệ · 3. Đồng hồ treo tường · 4. Hoa tươi - quà tặng khai trương điển hình · 5. Tranh treo · 6. Tượng linh vật · 7. Mèo thần tài ...",
+    "position": 6
+   },
+   {
+    "title": "Top 50+ Quà tặng cho nam 2026 ý nghĩa theo từng độ tuổi",
+    "link": "https://cellphones.com.vn/sforum/qua-tang-cho-nam",
+    "snippet": "Hãy ưu tiên những món đồ thiết thực như một cuốn sách hay, một túi cà phê ngon hoặc phụ kiện nhỏ tiện dụng. Làm sao để biết món quà có phù hợp ...",
+    "date": "5 thg 4, 2026",
+    "rating": 1,
+    "ratingCount": 1,
+    "position": 7
+   },
+   {
+    "title": "15+ món quà Tết tặng đối tác trang trọng, phù hợp nhiều ...",
+    "link": "https://shopee.vn/blog/qua-tet-tang-doi-tac/",
+    "snippet": "Các sản phẩm bổ dưỡng cho sức khỏe như Saffron, đông trùng hạ thảo, nhân sâm, tổ yến,… sẽ là món quà sức khỏe ý nghĩa trao gửi đến đối tác của ...",
+    "date": "21 thg 1, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

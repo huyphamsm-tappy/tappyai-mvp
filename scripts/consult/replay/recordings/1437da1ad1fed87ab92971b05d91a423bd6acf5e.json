@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Iris Nailbar SGN\" OR \"Tiệm Nail Quận 10\" OR \"The Nail\" quan 10 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T02:31:29.052Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Iris Nailbar SGN\" OR \"Tiệm Nail Quận 10\" OR \"The Nail\" quan 10 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Nails xinh tại Iris Nailbar SGN 💅📸",
+    "link": "https://www.tiktok.com/@irisnailbarsgn/photo/7681231691645668628",
+    "snippet": "Hoà Hưng (Quận 10), Tp.HCM Hotline: 033 7979 106 ... Keywords: Iris Nailbar SGN,Nails Quận 10,Nối mi thiết kế,Đào tạo học ...",
+    "position": 1
+   },
+   {
+    "title": "Review tiệm nail quận 10: làm móng đẹp, có quà khai trương",
+    "link": "https://www.tiktok.com/@nghihaydii/video/7642696834481179924",
+    "snippet": "review tiệm nails quận 10, tiệm nail quận 10 đánh giá, làm nail ... thẻ nail quận 10, workshop làm túi thơm miễn phí. Đây là bản tóm tắt ...",
+    "position": 2
+   },
+   {
+    "title": "Vlog Bé Thảo: Bí Mật Tiệm Nail Quận 10",
+    "link": "https://www.tiktok.com/@thaothichlamnail94/video/7657838476699716871",
+    "snippet": "Vlog của bé Thảo #nailquận10 #tiệmnailquận10 #làmmóngquận10 #tiệmlàmmóngquận10. Vlog Bé Thảo: Bí Mật Tiệm Nail Quận 10. Chào mừng bạn đến với ...",
+    "position": 3
+   },
+   {
+    "title": "Tiệm nail gội đầu ở quận 10 giá mềm chỉ 75K sơn gel mà ...",
+    "link": "https://www.tiktok.com/@thudidaurua/video/7534663646899719431",
+    "snippet": "Tiệm nail gội đầu ở quận 10 giá mềm chỉ 75K sơn gel mà sử dụng ... ✨ Iris Nailbar SGN ✨. 206 · recommend-cover. Tiệm neo thư giãn. 2677.",
+    "position": 4
+   },
+   {
+    "title": "Tiệm Nail Quận 10 - Mở Cửa Hàng Ngày",
+    "link": "https://www.tiktok.com/@meinail98/video/7657058810376326420",
+    "snippet": "Video TikTok từ Tiệm Nail Quận 10 (@meinail98): \"Khám phá tiệm nail tại Quận 10, mở cửa hàng ngày từ 9 giờ sáng đến 8 giờ tối.",
+    "position": 5
+   },
+   {
+    "title": "Tiệm Nail Quận 10: Hoàn thành 50% thi công sửa chữa",
+    "link": "https://www.tiktok.com/@1997.beauty/photo/7631422475410099464",
+    "snippet": "Xem tiến độ sửa chữa tiệm nail Quận 10, hoàn thành 50% với nhiều cải thiện đáng kể. Vlog làm nail thú vị. Keywords: tiệm nail quận 10,sửa chữa ...",
+    "position": 6
+   },
+   {
+    "title": "Nay kiêng làm móng hẻ bà — trend Namiinailstu tiệm nail ...",
+    "link": "https://www.tiktok.com/@namii.nailstu/video/7678629235606572306",
+    "snippet": "Kết thúc Video ngắn này truyền tải thông điệp rõ ràng: một buổi sáng may mắn tại tiệm nail Quận 10 khiến chủ tiệm quyết định nghỉ sớm. Người xem ...",
+    "position": 7
+   },
+   {
+    "title": "ManisbyDuk - French Nails - Tiệm Nail Quận 10",
+    "link": "https://www.tiktok.com/@manisbyduk/photo/7598766630910332180?lang=ro-RO",
+    "snippet": "French Nails - Tiệm Nail Quận 10. French nails với thiết kế tinh tế, làm trực tiếp tại ManisbyDuk. Đặt lịch tại 324 Hoà Hưng, Quận 10.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

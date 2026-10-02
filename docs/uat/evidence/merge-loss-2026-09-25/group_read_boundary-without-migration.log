@@ -1,0 +1,135 @@
+
+ RUN  v4.1.9 D:/Claude/Projects/TappyAI/tappyai-mvp/.claude/worktrees/g1-place-guard
+
+ ❯ |db| supabase/tests/group_read_boundary.test.ts (11 tests | 5 failed) 2897ms
+     × 🚨 anon reads NO member rows — the bulk PostgREST path is closed 20ms
+     × 🚨 anon reads NO group rows 11ms
+     × 🚨 anon cannot read dietary_restrictions even when it names the group's id 10ms
+     × 🚨 an authenticated OUTSIDER reads nothing — an account is not a relationship 10ms
+     × a member sees ONLY their own group, not every group 11ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |db| supabase/tests/group_read_boundary.test.ts > S-1 · the open internet cannot enumerate group membership > 🚨 anon reads NO member rows — the bulk PostgREST path is closed
+AssertionError: expected [ { name: 'Linh', …(2) } ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   {
++     "area": "Binh Thanh",
++     "dietary_restrictions": "di ung hai san",
++     "name": "Linh",
++   },
++ ]
+
+ ❯ supabase/tests/group_read_boundary.test.ts:132:53
+    130| describe('S-1 · the open internet cannot enumerate group membership', …
+    131|   it('🚨 anon reads NO member rows — the bulk PostgREST path is closed…
+    132|     expect(await readAs('anon', null, ALL_MEMBERS)).toEqual([])
+       |                                                     ^
+    133|   })
+    134|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  |db| supabase/tests/group_read_boundary.test.ts > S-1 · the open internet cannot enumerate group membership > 🚨 anon reads NO group rows
+AssertionError: expected [ { …(3) } ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   {
++     "id": "b8d9ab75-db5c-4a5d-b8a3-c5a2830ce478",
++     "name": "Bua toi thu 6",
++     "suggestion": null,
++   },
++ ]
+
+ ❯ supabase/tests/group_read_boundary.test.ts:136:52
+    134|
+    135|   it('🚨 anon reads NO group rows', async () => {
+    136|     expect(await readAs('anon', null, ALL_GROUPS)).toEqual([])
+       |                                                    ^
+    137|   })
+    138|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+ FAIL  |db| supabase/tests/group_read_boundary.test.ts > S-1 · the open internet cannot enumerate group membership > 🚨 anon cannot read dietary_restrictions even when it names the group's id
+AssertionError: expected [ Array(1) ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   {
++     "dietary_restrictions": "di ung hai san",
++   },
++ ]
+
+ ❯ supabase/tests/group_read_boundary.test.ts:143:18
+    141|     const rows = await readAs('anon', null,
+    142|       `SELECT dietary_restrictions FROM public.group_members WHERE gro…
+    143|     expect(rows).toEqual([])
+       |                  ^
+    144|   })
+    145|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
+ FAIL  |db| supabase/tests/group_read_boundary.test.ts > S-1 · the open internet cannot enumerate group membership > 🚨 an authenticated OUTSIDER reads nothing — an account is not a relationship
+AssertionError: expected [ { name: 'Linh', …(2) } ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   {
++     "area": "Binh Thanh",
++     "dietary_restrictions": "di ung hai san",
++     "name": "Linh",
++   },
++ ]
+
+ ❯ supabase/tests/group_read_boundary.test.ts:147:66
+    145|
+    146|   it('🚨 an authenticated OUTSIDER reads nothing — an account is not a…
+    147|     expect(await readAs('authenticated', OUTSIDER, ALL_MEMBERS)).toEqu…
+       |                                                                  ^
+    148|     expect(await readAs('authenticated', OUTSIDER, ALL_GROUPS)).toEqua…
+    149|   })
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/5]⎯
+
+ FAIL  |db| supabase/tests/group_read_boundary.test.ts > S-1 · the people the feature is for still see it > a member sees ONLY their own group, not every group
+AssertionError: expected [ { …(3) }, { …(3) } ] to have a length of 1 but got 2
+
+- Expected
++ Received
+
+- 1
++ 2
+
+ ❯ supabase/tests/group_read_boundary.test.ts:179:63
+    177|       [other.rows[0].id, OUTSIDER])
+    178|
+    179|     expect(await readAs('authenticated', MEMBER, ALL_GROUPS)).toHaveLe…
+       |                                                               ^
+    180|     expect(await readAs('authenticated', MEMBER, ALL_MEMBERS)).toHaveL…
+    181|   })
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/5]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  5 failed | 6 passed (11)
+   Start at  06:27:17
+   Duration  3.23s (transform 26ms, setup 0ms, import 71ms, tests 2.90s, environment 0ms)
+

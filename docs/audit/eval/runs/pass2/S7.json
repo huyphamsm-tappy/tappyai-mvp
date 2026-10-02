@@ -1,0 +1,61 @@
+{
+  "id": "S7",
+  "text": "Máy lọc không khí cho phòng ngủ 20m2",
+  "parent": null,
+  "status": 200,
+  "ms": 17145,
+  "evidenceId": "f2cf5e75-c952-4aac-939e-e2adf1be03f9",
+  "toolCalls": [
+    {
+      "tool": "search_products",
+      "args": {
+        "query": "máy lọc không khí phòng ngủ 20m2"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Máy lạnh Casper Inverter 1.5 HP QC-12IU36A",
+      "rating": 4.6,
+      "count": 485,
+      "price": 6990000
+    },
+    {
+      "name": "Máy lọc không khí Daikin",
+      "rating": 4.6,
+      "count": 8,
+      "price": 8090000
+    },
+    {
+      "name": "Máy lọc không khí",
+      "price": 25992
+    },
+    {
+      "name": "Máy lọc không khí phòng ngủ",
+      "price": 250000
+    },
+    {
+      "name": "Máy lọc không khí UV, Khử trùng diệt khuẩn, Ánh sáng cực tím",
+      "price": 1025625
+    },
+    {
+      "name": "Michelin Máy Lọc Không Khí Và Khử Mùi Xe Hơi ML19",
+      "price": 1500000
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình sẽ tìm máy lọc không khí phù hợp cho phòng ngủ 20m2 của bạn nhé.[TAPPY_SHOPPING]{\"v\":1,\"entities\":[{\"key\":\"uncertain:0\",\"name\":\"Máy lạnh Casper Inverter 1.5 HP QC-12IU36A\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":6990000,\"priceHigh\":6990000,\"image\":null,\"offers\":[{\"seller\":\"Trung Thảo | Điện máy - Điện lạnh\",\"url\":\"https://www.google.com/search?ibp=oshop&q=m%C3%A1y+l%E1%BB%8Dc+kh%C3%B4ng+kh%C3%AD+ph%C3%B2ng+ng%E1%BB%A7+20m2&prds=localAnnotatedOfferId:1,productid:12795210469741806101,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":6990000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.6,\"ratingCount\":485}]},{\"key\":\"uncertain:1\",\"name\":\"Máy lọc không khí Daikin\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":8090000,\"priceHigh\":8090000,\"image\":null,\"offers\":[{\"seller\":\"Điện máy XANH\",\"url\":\"https://www.google.com/search?ibp=oshop&q=m%C3%A1y+l%E1%BB%8Dc+kh%C3%B4ng+kh%C3%AD+ph%C3%B2ng+ng%E1%BB%A7+20m2&prds=localAnnotatedOfferId:1,productid:1865374539352311057,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":8090000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.6,\"ratingCount\":8}]},{\"key\":\"uncertain:2\",\"name\":\"Máy lọc không khí\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":25992,\"priceHigh\":25992,\"image\":null,\"offers\":[{\"seller\":\"Dou Yee Biomed\",\"url\":\"https://www.google.com/search?ibp=oshop&q=m%C3%A1y+l%E1%BB%8Dc+kh%C3%B4ng+kh%C3%AD+ph%C3%B2ng+ng%E1%BB%A7+20m2&prds=localAnnotatedOfferId:1,productid:10054354944690567302,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":25992,\"currency\":\"VND\",\"condition\":null,\"rating\":null,\"ratingCount\":null}]},{\"key\":\"uncertain:3\",\"name\":\"Máy lọc không khí phòng ngủ\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":250000,\"priceHigh\":250000,\"image\":null,\"offers\":[{\"seller\":\"Huy Phú\",\"url\":\"https://www.google.com/search?ibp=oshop&q=m%C3%A1y+l%E1%BB%8Dc+kh%C3%B4ng+kh%C3%AD+ph%C3%B2ng+ng%E1%BB%A7+20m2&prds=localAnnotatedOfferId:1,productid:15872431945751840302,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":250000,\"currency\":\"VND\",\"condition\":null,\"rating\":null,\"ratingCount\":null}]},{\"key\":\"uncertain:4\",\"name\":\"Máy lọc không khí UV, Khử trùng diệt khuẩn, Ánh sáng cực tím\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":1025625,\"priceHigh\":1025625,\"image\":null,\"offers\":[{\"seller\":\"Raptor Supplies VN\",\"url\":\"https://www.google.com/search?ibp=oshop&q=m%C3%A1y+l%E1%BB%8Dc+kh%C3%B4ng+kh%C3%AD+ph%C3%B2ng+ng%E1%BB%A7+20m2&prds=localAnnotatedOfferId:1,productid:13357461644661876054,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":1025625,\"currency\":\"VND\",\"condition\":null,\"rating\":null,\"ratingCount\":null}]},{\"key\":\"uncertain:5\",\"name\":\"Michelin Máy Lọc Không Khí Và Khử Mùi Xe Hơi ML19\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":1500000,\"priceHigh\":1500000,\"image\":null,\"offers\":[{\"seller\":\"Trung Tín Auto\",\"url\":\"https://www.google.com/search?ibp=oshop&q=m%C3%A1y+l%E1%BB%8Dc+kh%C3%B4ng+kh%C3%AD+ph%C3%B2ng+ng%E1%BB%A7+20m2&prds=localAnnotatedOfferId:1,catalogid:11373717955494685866,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":1500000,\"currency\":\"VND\",\"condition\":null,\"rating\":null,\"ratingCount\":null}]}],\"requested\":null,\"recommendation\":null}[/TAPPY_SHOPPING]\n\nMình tìm thấy vài lựa chọn máy lọc không khí, nhưng kết quả hơi lẫn lộn với máy lạnh và các sản phẩm khác. Để gợi ý đúng ý bạn, mình cần hỏi rõ hơn: **bạn đang tìm máy lọc không khí (loại có bộ lọc HEPA để làm sạch bụi, khí thải) hay máy tạo ẩm/khí hóa phòng ngủ?** Nếu là máy lọc không khí thực sự, bạn có ưu tiên gì không — tiêu âm, hay chỉ cần lọc bụi mịn thôi? 🤔\n\n[FOLLOWUPS]máy lọc không khí HEPA|máy tạo ẩm phòng ngủ|máy lọc không khí thông minh[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Máy lọc không khí cho phòng ngủ 20m2"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình sẽ tìm máy lọc không khí phù hợp cho phòng ngủ 20m2 của bạn nhé.[TAPPY_SHOPPING]{\"v\":1,\"entities\":[{\"key\":\"uncertain:0\",\"name\":\"Máy lạnh Casper Inverter 1.5 HP QC-12IU36A\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":6990000,\"priceHigh\":6990000,\"image\":null,\"offers\":[{\"seller\":\"Trung Thảo | Điện máy - Điện lạnh\",\"url\":\"https://www.google.com/search?ibp=oshop&q=m%C3%A1y+l%E1%BB%8Dc+kh%C3%B4ng+kh%C3%AD+ph%C3%B2ng+ng%E1%BB%A7+20m2&prds=localAnnotatedOfferId:1,productid:12795210469741806101,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":6990000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.6,\"ratingCount\":485}]},{\"key\":\"uncertain:1\",\"name\":\"Máy lọc không khí Daikin\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":8090000,\"priceHigh\":8090000,\"image\":null,\"offers\":[{\"seller\":\"Điện máy XANH\",\"url\":\"https://www.google.com/search?ibp=oshop&q=m%C3%A1y+l%E1%BB%8Dc+kh%C3%B4ng+kh%C3%AD+ph%C3%B2ng+ng%E1%BB%A7+20m2&prds=localAnnotatedOfferId:1,productid:1865374539352311057,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":8090000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.6,\"ratingCount\":8}]},{\"key\":\"uncertain:2\",\"name\":\"Máy lọc không khí\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":25992,\"priceHigh\":25992,\"image\":null,\"offers\":[{\"seller\":\"Dou Yee Biomed\",\"url\":\"https://www.google.com/search?ibp=oshop&q=m%C3%A1y+l%E1%BB%8Dc+kh%C3%B4ng+kh%C3%AD+ph%C3%B2ng+ng%E1%BB%A7+20m2&prds=localAnnotatedOfferId:1,productid:10054354944690567302,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":25992,\"currency\":\"VND\",\"condition\":null,\"rating\":null,\"ratingCount\":null}]},{\"key\":\"uncertain:3\",\"name\":\"Máy lọc không khí phòng ngủ\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":250000,\"priceHigh\":250000,\"image\":null,\"offers\":[{\"seller\":\"Huy Phú\",\"url\":\"https://www.google.com/search?ibp=oshop&q=m%C3%A1y+l%E1%BB%8Dc+kh%C3%B4ng+kh%C3%AD+ph%C3%B2ng+ng%E1%BB%A7+20m2&prds=localAnnotatedOfferId:1,productid:15872431945751840302,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":250000,\"currency\":\"VND\",\"condition\":null,\"rating\":null,\"ratingCount\":null}]},{\"key\":\"uncertain:4\",\"name\":\"Máy lọc không khí UV, Khử trùng diệt khuẩn, Ánh sáng cực tím\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":1025625,\"priceHigh\":1025625,\"image\":null,\"offers\":[{\"seller\":\"Raptor Supplies VN\",\"url\":\"https://www.google.com/search?ibp=oshop&q=m%C3%A1y+l%E1%BB%8Dc+kh%C3%B4ng+kh%C3%AD+ph%C3%B2ng+ng%E1%BB%A7+20m2&prds=localAnnotatedOfferId:1,productid:13357461644661876054,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":1025625,\"currency\":\"VND\",\"condition\":null,\"rating\":null,\"ratingCount\":null}]},{\"key\":\"uncertain:5\",\"name\":\"Michelin Máy Lọc Không Khí Và Khử Mùi Xe Hơi ML19\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":1500000,\"priceHigh\":1500000,\"image\":null,\"offers\":[{\"seller\":\"Trung Tín Auto\",\"url\":\"https://www.google.com/search?ibp=oshop&q=m%C3%A1y+l%E1%BB%8Dc+kh%C3%B4ng+kh%C3%AD+ph%C3%B2ng+ng%E1%BB%A7+20m2&prds=localAnnotatedOfferId:1,catalogid:11373717955494685866,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":1500000,\"currency\":\"VND\",\"condition\":null,\"rating\":null,\"ratingCount\":null}]}],\"requested\":null,\"recommendation\":null}[/TAPPY_SHOPPING]\n\nMình tìm thấy vài lựa chọn máy lọc không khí, nhưng kết quả hơi lẫn lộn với máy lạnh và các sản phẩm khác. Để gợi ý đúng ý bạn, mình cần hỏi rõ hơn: **bạn đang tìm máy lọc không khí (loại có bộ lọc HEPA để làm sạch bụi, khí thải) hay máy tạo ẩm/khí hóa phòng ngủ?** Nếu là máy lọc không khí thực sự, bạn có ưu tiên gì không — tiêu âm, hay chỉ cần lọc bụi mịn thôi? 🤔\n\n[FOLLOWUPS]máy lọc không khí HEPA|máy tạo ẩm phòng ngủ|máy lọc không khí thông minh[/FOLLOWUPS]"
+    }
+  ]
+}

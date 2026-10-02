@@ -1,0 +1,62 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "UAG Pathfinder Case with MagSafe for iPhone 18 Pro Max/17 Pro Max site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T19:18:37.377Z",
+ "body": {
+  "searchParameters": {
+   "q": "UAG Pathfinder Case with MagSafe for iPhone 18 Pro Max/17 Pro Max site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Ốp lưng Casetify kiểu rippling với MagSafe dành cho ...",
+    "link": "https://shop.tiktok.com/vn/pdp/op-lung-ripple-chinh-hang-tuong-thich-iphone-17-series-hon-nua/1732512893168878985",
+    "snippet": "Ốp lưng Casetify kiểu rippling với MagSafe dành cho iPhone 17 Pro Max / iPhone 17 Pro / iPhone 17 Air / iPhone 17 / 16 Pro Max/15 Pro Max/14 Plus, ...",
+    "rating": 4.6,
+    "ratingCount": 213,
+    "position": 1
+   },
+   {
+    "title": "Ốp lưng SPIGEN cho iPhone 17 Pro Series [Ultra Hybrid T ...",
+    "link": "https://shop.tiktok.com/vn/pdp/op-lung-spigen-cho-iphone-17-pro-series-bao-ve-nut-camera/1733508083146392955",
+    "snippet": "Ốp lưng SPIGEN cho iPhone 17 Pro Series [Ultra Hybrid T MagFit] bảo vệ nút điều khiển camera, ốp hai lớp với nam châm tích hợp giúp gắn chặt hơn vào MagSafe ...",
+    "position": 2
+   },
+   {
+    "title": "Ốp Lưng Ripple, Casetify Chính Hãng, Có MagSafe, ...",
+    "link": "https://shop.tiktok.com/vn/pdp/op-lung-ripple-casetify-chinh-hang-co-magsafe-tuong-thich-iphone-17-pro-max-bao-ve-chong-bui-ban-pho/1732825333446706569",
+    "snippet": "Ốp Lưng Ripple, Casetify Chính Hãng, Có MagSafe, Tương Thích Với iPhone 17 Pro Max, iPhone 17 Pro, 17 Air, 17 / 16 Pro Max, 16 Plus, 15Pro Max, 15 plus, 14 Plus ...",
+    "rating": 4.8,
+    "ratingCount": 32,
+    "position": 3
+   },
+   {
+    "title": "Ốp lưng Casetify kiểu rippled với MagSafe dành cho ...",
+    "link": "https://shop.tiktok.com/vn/pdp/op-lung-ripple-chinh-hang-casetify-cho-iphone-16-15-series/1731088752789129609",
+    "snippet": "Ốp lưng Casetify kiểu rippling với MagSafe dành cho iPhone 17 Pro Max / iPhone 17 Pro / iPhone ...",
+    "rating": 4.6,
+    "ratingCount": 357,
+    "position": 4
+   },
+   {
+    "title": "Ốp Bảo Vệ, UAG, Dành Cho Samsung Galaxy S23 Ultra / ...",
+    "link": "https://shop.tiktok.com/vn/pdp/op-bao-ve-uag-cho-samsung-galaxy-s23-ultra-s23-plus-chong-soc/1731244634055542139",
+    "snippet": "Ốp lưng UAG cho ... MagSafe / hỗ trợ iPhone 17 Pro Max / iPhone 17 Pro. 5. 15 sold. ₫153.868.",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 5
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Golden Sun Hotel\" OR \"Colline Dalat\" OR \"Khách Sạn Dalat Palace\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T19:09:09.820Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Golden Sun Hotel\" OR \"Colline Dalat\" OR \"Khách Sạn Dalat Palace\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Đây là Renzo trước trận bóng của Colline Dalat… ảnh kiểu",
+    "link": "https://www.tiktok.com/@collinedalat/video/7688616351832771847",
+    "snippet": "12.9K Lượt thích,35 Bình luận.Video TikTok từ Colline Dalat (@collinedalat): \"Đây là Renzo trước trận bóng của Colline Dalat… ảnh kiểu: ...",
+    "position": 1
+   },
+   {
+    "title": "Anh phải nhường em: Colline ngoại truyện outing hố hố",
+    "link": "https://www.tiktok.com/@collinedalat/video/7688731128596909313",
+    "snippet": "8346 Lượt thích,Video TikTok từ Colline Dalat (@collinedalat): \"Video Colline ngoại truyện outing hố hố với caption “Anh phải nhường em…",
+    "position": 2
+   },
+   {
+    "title": "🌕 𝗖𝗢𝗟𝗟𝗜𝗡𝗘 𝗠𝗢𝗢𝗡𝗟𝗜𝗚𝗛𝗧 𝗖𝗔𝗥𝗢𝗨𝗦𝗘𝗟 | MỘT GÓC ...",
+    "link": "https://www.tiktok.com/@collinedalat/video/7689317138854612231",
+    "snippet": "The Colline Dalat offers a versatile accommodation solution with its Connecting Room, expertly linking a Superior Room and a Studio Room. This ...",
+    "position": 3
+   },
+   {
+    "title": "Cô/ chú có hóng ba mẹ con chơi team building hông ...",
+    "link": "https://www.tiktok.com/@collinedalat/video/7688264812526177543",
+    "snippet": "4469 Lượt thích,21 Bình luận.Video TikTok từ Colline Dalat (@collinedalat): \"Cô/ chú có hóng ba mẹ con chơi team building hông ạ!",
+    "position": 4
+   },
+   {
+    "title": "Chị dâu đi với Colline kiểu:… #CollineDalat ...",
+    "link": "https://www.tiktok.com/@collinedalat/video/7689667959370894598",
+    "snippet": "The Colline Dalat offers a versatile accommodation solution with its Connecting Room, expertly linking a Superior Room and a Studio Room. This ...",
+    "position": 5
+   },
+   {
+    "title": "🧹 𝗛𝗢𝗨𝗦𝗘𝗞𝗘𝗘𝗣𝗜𝗡𝗚 𝗪𝗘𝗘𝗞 𝟮𝟬𝟮𝟲 | TÔN VINH ĐỘI NGŨ ...",
+    "link": "https://www.tiktok.com/@collinedalat/video/7686320494571687186",
+    "snippet": "Hưởng ứng International Housekeeping Appreciation Week 2026, Colline Dalat gửi lời cảm ơn đến các Anh/Chị trong bộ phận Buồng phòng – những ...",
+    "position": 6
+   },
+   {
+    "title": "𝗧𝗢𝗚𝗘𝗧𝗛𝗘𝗥, 𝗜𝗦 𝗔 𝗕𝗘𝗔𝗨𝗧𝗜𝗙𝗨𝗟 𝗣𝗟𝗔𝗖𝗘 𝗧𝗢 𝗕𝗘 |...",
+    "link": "https://www.tiktok.com/@collinedalat/video/7654796069175315720",
+    "snippet": "42 Lượt thích,Video TikTok từ Colline Dalat (@collinedalat): \" TOGETHER, IS A BEAUTIFUL PLACE TO BE | HỒNG ÂN ...",
+    "position": 7
+   },
+   {
+    "title": "01 NGÀY NỮA – CÙNG ĐẾM NGƯỢC ĐẾN CỘT MỐC 7...",
+    "link": "https://www.tiktok.com/@collinedalat/video/7686668428651793672",
+    "snippet": "“WOW” 7 YEARS | 01 NGÀY NỮA – CÙNG ĐẾM NGƯỢC ĐẾN CỘT MỐC 7 NĂM Chỉ còn 01 ngày nữa, Colline Dalat sẽ chính thức bước sang tuổi thứ ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

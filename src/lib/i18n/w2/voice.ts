@@ -38,6 +38,18 @@ export const vi: Record<string, string> = {
   'voice.voiceUnavailable': 'Giọng đọc của Tappy hiện chưa sẵn sàng. Bạn vẫn đọc được nội dung bên trên.',
   // Khác với voiceUnavailable: đây là lỗi tạm thời, thử lại được.
   'voice.readAloudFailed': 'Chưa đọc được câu trả lời. Bạn thử lại giúp mình nhé.',
+
+  // Voice screen (owner 01/10, mockup 03 «Voice / Chat Input Active»)
+  'voice.overlay.title': 'Tôi đang lắng nghe...',
+  'voice.overlay.titlePaused': 'Đã dừng nghe',
+  'voice.overlay.subtitle': 'Hãy nói điều bạn cần, TappyAI luôn sẵn sàng hỗ trợ bạn!',
+  'voice.overlay.subtitlePaused': 'Bấm micro để nói tiếp, hoặc Gửi nếu đã đủ.',
+  'voice.overlay.example': 'Tìm cho tôi một quán cafe yên tĩnh có view đẹp ở Đà Lạt cuối tuần này',
+  'voice.overlay.reason': 'Tappy chỉ bật micro khi bạn bấm. Trình duyệt chuyển giọng nói thành chữ; Tappy chỉ nhận phần chữ.',
+  'voice.overlay.timeout': 'Mình tắt micro vì lâu quá chưa nghe thấy gì.',
+  'voice.cancel': 'Hủy',
+  'voice.send': 'Gửi',
+  'voice.resume': 'Nói tiếp',
 }
 
 export const en: Record<string, string> = {
@@ -68,4 +80,16 @@ export const en: Record<string, string> = {
   'voice.voiceUnavailable': "Tappy's read-aloud voice is unavailable right now. You can still read the text above.",
   // Unlike voiceUnavailable, this one is temporary and worth retrying.
   'voice.readAloudFailed': "Couldn't read that answer aloud. Please try again.",
+
+  // Voice screen (owner 01/10, mockup 03 «Voice / Chat Input Active»)
+  'voice.overlay.title': "I'm listening...",
+  'voice.overlay.titlePaused': 'Stopped listening',
+  'voice.overlay.subtitle': 'Say what you need — TappyAI is ready to help!',
+  'voice.overlay.subtitlePaused': 'Tap the mic to keep talking, or Send if that is enough.',
+  'voice.overlay.example': 'Find me a quiet cafe with a nice view in Da Lat this weekend',
+  'voice.overlay.reason': 'Tappy only turns the microphone on when you tap it. Your browser turns speech into text; Tappy only receives the text.',
+  'voice.overlay.timeout': 'I turned the microphone off because I had not heard anything for a while.',
+  'voice.cancel': 'Cancel',
+  'voice.send': 'Send',
+  'voice.resume': 'Keep talking',
 }

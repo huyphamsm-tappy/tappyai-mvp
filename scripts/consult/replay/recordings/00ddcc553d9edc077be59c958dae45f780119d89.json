@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "quà tặng thích cà phê (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T02:34:00.588Z",
+ "body": {
+  "searchParameters": {
+   "q": "quà tặng thích cà phê (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Quà tặng sinh nhật vui nhộn Tin nhắn ẩn Cốc cà phê gốm 11oz ...",
+    "link": "https://shopee.vn/Qu%C3%A0-t%E1%BA%B7ng-sinh-nh%E1%BA%ADt-vui-nh%E1%BB%99n-Tin-nh%E1%BA%AFn-%E1%BA%A9n-C%E1%BB%91c-c%C3%A0-ph%C3%AA-g%E1%BB%91m-11oz-Qu%C3%A0-t%E1%BA%B7ng-voi-tr%E1%BA%AFng-cho-ng%C6%B0%E1%BB%9Di-l%E1%BB%9Bn-Qu%C3%A0-t%E1%BA%B7ng-Gag-cho-%C4%91%E1%BB%93ng-nghi%E1%BB%87p-Qu%C3%A0-t%E1%BA%B7ng-Gi%C3%A1ng-sinh-cho-nam-gi%E1%BB%9Bi-nh%E1%BB%AFng-ng%C6%B0%E1%BB%9Di-y%C3%AAu-th%C3%ADch-c%C3%A0-ph%C3%AA-%28%C4%90en%29-i.1732803714.51610267278",
+    "snippet": "Quà tặng sinh nhật vui nhộn Tin nhắn ẩn Cốc cà phê gốm 11oz, Quà tặng voi trắng cho người lớn, Quà tặng Gag cho đồng nghiệp, Quà tặng Giáng sinh cho nam giới ...",
+    "position": 1
+   },
+   {
+    "title": "Quà cho nam 19/11 - Giá Tốt, Sale Tháng 09, Ship 0 Đồng ...",
+    "link": "https://shopee.vn/list/qu%C3%A0/cho%20nam/19%2011",
+    "snippet": "Bó hoa giấy nhún bánh kẹo quà tặng dịp lễ, sinh nhật kỷ niệm, bó bánh kẹo dễ thương ngon. Quà tặng bạn nam 19/11. 64.350₫. 71.500₫.",
+    "position": 2
+   },
+   {
+    "title": "Cốc cà phê xe tải thủ công, Cốc cà phê hình bán rơ-moóc 11 ...",
+    "link": "https://shopee.vn/C%E1%BB%91c-c%C3%A0-ph%C3%AA-xe-t%E1%BA%A3i-th%E1%BB%A7-c%C3%B4ng-C%E1%BB%91c-c%C3%A0-ph%C3%AA-h%C3%ACnh-b%C3%A1n-r%C6%A1-mo%C3%B3c-11-Ounce-M%C3%B3n-qu%C3%A0-%C4%91%E1%BB%99c-%C4%91%C3%A1o-d%C3%A0nh-cho-nh%E1%BB%AFng-ng%C6%B0%E1%BB%9Di-y%C3%AAu-th%C3%ADch-c%C3%A0-ph%C3%AA-v%C3%A0-xe-t%E1%BA%A3i-Qu%C3%A0-t%E1%BA%B7ng-t%C3%A0i-x%E1%BA%BF-xe-t%E1%BA%A3i-cho-nam-gi%E1%BB%9Bi-l%C3%A1i-xe-(Xanh-d%C6%B0%C6%A1ng)-i.1904089564.50765299572",
+    "snippet": "Mua Cốc cà phê xe tải thủ công, Cốc cà phê hình bán rơ-moóc 11 Ounce, Món quà độc đáo dành cho những người yêu thích cà phê và xe tải, Quà tặng tài xế xe tải",
+    "position": 3
+   },
+   {
+    "title": "Bộ hộp quà cốc cà phê kèm thìa thích hợp tặng sinh nhật ...",
+    "link": "https://shopee.vn/B%E1%BB%99-h%E1%BB%99p-qu%C3%A0-c%E1%BB%91c-c%C3%A0-ph%C3%AA-k%C3%A8m-th%C3%ACa-th%C3%ADch-h%E1%BB%A3p-t%E1%BA%B7ng-sinh-nh%E1%BA%ADt-%C4%91%C3%A1m-c%C6%B0%E1%BB%9Bi-l%E1%BB%85-t%E1%BB%91t-nghi%E1%BB%87p-Ng%C3%A0y-c%E1%BB%A7a-M%E1%BA%B9-i.1631233448.47358887204",
+    "snippet": "Mua Bộ hộp quà cốc cà phê kèm thìa thích hợp tặng sinh nhật, đám cưới, lễ tốt nghiệp, Ngày của Mẹ giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 4
+   },
+   {
+    "title": "12oz Gốm Cà Phê Sinh Nhật Vui Vẻ Quà Tặng Thích Hợp ...",
+    "link": "https://shopee.vn/12oz-G%E1%BB%91m-C%C3%A0-Ph%C3%AA-Sinh-Nh%E1%BA%ADt-Vui-V%E1%BA%BB-Qu%C3%A0-T%E1%BA%B7ng-Th%C3%ADch-H%E1%BB%A3p-Cho-N%E1%BB%AF-Nam-%C3%94ng-Ch%E1%BB%A7-%C4%90%E1%BB%93ng-Nghi%E1%BB%87p-B%E1%BA%A1n-B%C3%A8-Nh%C3%A2n-Vi%C3%AAn-H%C6%B0u-Tr%C3%AD-Qu%C3%A0-T%E1%BA%B7ng-Gi%C3%A1ng-Sinh-%C4%90%E1%BB%93-U%E1%BB%91ng-Th%E1%BB%9Di-Trang-i.1862610009.53562483937",
+    "snippet": "12oz Gốm Cà Phê Sinh Nhật Vui Vẻ Quà Tặng Thích Hợp Cho Nữ, Nam, Ông Chủ, Đồng Nghiệp, Bạn Bè, Nhân Viên Hưu Trí Quà Tặng Giáng Sinh Đồ Uống Thời Trang.",
+    "position": 5
+   },
+   {
+    "title": "Tổng hợp quà 1/6 cho người yêu theo từng tính cách và sở ...",
+    "link": "https://cellphones.com.vn/sforum/qua-1-6-cho-nguoi-yeu",
+    "snippet": "Ngân sách thấp: Đồ handmade, một bó hoa nhỏ hoặc một buổi tối tự nấu ăn. ; Ngân sách tầm trung: Nước hoa, quần áo, phụ kiện thời trang. ; Ngân ...",
+    "date": "29 thg 5, 2026",
+    "position": 6
+   },
+   {
+    "title": "cà phê đặc sản + phin + nón lá mini | quà tặng khách nước ...",
+    "link": "https://tiki.vn/set-qua-tang-ca-phe-non-la-in-logo-theo-yeu-cau-ca-phe-dac-san-phin-non-la-mini-qua-tang-khach-nuoc-ngoai-doanh-nghiep-p279382527.html",
+    "snippet": "SET QUÀ TẶNG CÀ PHÊ NÓN LÁ IN LOGO THEO YÊU CẦU | CÀ PHÊ ĐẶC SẢN + PHIN + NÓN LÁ MINI | QUÀ TẶNG KHÁCH NƯỚC NGOÀI & DOANH NGHIỆP. 6.000.000.",
+    "position": 7
+   },
+   {
+    "title": "41+ Món Quà Sinh Nhật Cho Bạn Thân Ý Nghĩa, Độc Đáo - Tiki",
+    "link": "https://tiki.vn/blog/qua-sinh-nhat-cho-ban-than/",
+    "snippet": "Khám phá những món quà sinh nhật cho bạn thân vừa ý nghĩa, vừa độc đáo như ví tiền, đồng hồ, quần áo, túi xách, nước hoa, mỹ phẩm,...",
+    "date": "23 thg 2, 2023",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

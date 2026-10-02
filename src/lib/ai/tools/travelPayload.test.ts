@@ -30,33 +30,33 @@ describe('the hotel tool payload carries no debug field', () => {
 })
 
 describe('the consultative fields the user acts on are still emitted', () => {
-  // PHASE 1C: an optimization that silently drops a booking link is a regression, not a saving.
-  for (const field of ['location', 'hotel_list', 'booking_link', 'agoda_link', 'note', 'search_url', 'search_results']) {
+  // PHASE 1C: an optimization that silently drops a hotel row is a regression, not a saving.
+  for (const field of ['location', 'hotel_list', 'note', 'search_results']) {
     it(`still emits ${field}`, () => {
       expect(source).toContain(`${field}:`)
     })
   }
 
-  it('every branch of getHotelPrices still hands back the booking links', () => {
-    // Scoped to getHotelPrices, because `booking_link:` appears six times across travel.ts in
-    // flight and transport paths this change does not touch — a whole-file count would assert
-    // nothing about the branches that matter.
-    //
-    // getHotelPrices has THREE exits, not two: prices found, no prices, and fetch failed. The
-    // last is exactly when a traveller most needs the link, so it is included rather than
-    // treated as an error case that can return nothing useful.
+  // A3.3 (owner, 2026-09-20): the Booking.com results page, Agoda's front door and `search_url`
+  // are SEARCH / HOMEPAGE depth — never emitted. A hotel's link is its own OTA page (a row) or a
+  // Commerce Link with the stay applied. Superseded here: PHASE 1C's "every branch hands back the
+  // booking links".
+  const hotelBody = () => {
     const start = source.indexOf('export async function getHotelPrices')
     expect(start, 'getHotelPrices not found').toBeGreaterThan(-1)
     const next = source.indexOf('\nexport async function', start + 1)
-    const body = source.slice(start, next === -1 ? undefined : next)
+    return source.slice(start, next === -1 ? undefined : next)
+  }
+  for (const field of ['booking_link', 'agoda_link', 'search_url']) {
+    it(`no longer emits ${field} from getHotelPrices`, () => {
+      expect(hotelBody()).not.toContain(`${field}:`)
+    })
+  }
 
+  it('every branch of getHotelPrices is honest: three exits, none with a results page or a front door', () => {
+    const body = hotelBody()
     const branches = [...body.matchAll(/result = \{/g)].length
     expect(branches, 'getHotelPrices should have three result branches').toBe(3)
-
-    // Each of the three assigns both links; counting occurrences inside the function body is
-    // enough and does not depend on brace-matching a formatting style.
-    expect((body.match(/booking_link:/g) ?? []).length).toBe(3)
-    expect((body.match(/agoda_link:/g) ?? []).length).toBe(3)
     expect(body).not.toContain('_debug_budget')
   })
 })

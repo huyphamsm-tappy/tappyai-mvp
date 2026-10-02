@@ -1,0 +1,30 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Melissa - Vung Tau | Khách Sạn Bãi Sau\" Bà Rịa Vũng Tàu site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T19:20:57.745Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Melissa - Vung Tau | Khách Sạn Bãi Sau\" Bà Rịa Vũng Tàu site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Melissa - Vung Tau | Khách Sạn Bãi Sau Vũng Tàu",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-hotel-detail-105061137/melissa-hotel/",
+    "snippet": "Giờ nhận phòng tại Melissa - Vung Tau | Khách Sạn Bãi Sau Vũng Tàu bắt đầu từ 14:00, và giờ trả phòng là 12:00. Melissa - Vung Tau | Khách Sạn Bãi Sau Vũng Tàu ...",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

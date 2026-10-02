@@ -1,0 +1,25 @@
+{
+  "id": "S6",
+  "text": "mua gì bây giờ",
+  "parent": null,
+  "status": 200,
+  "ms": 4844,
+  "evidenceId": "c3362cab-e8d7-4c5b-8a38-fc66cc10f55c",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình hiểu bạn đang muốn mua cái gì đó nhưng chưa biết chọn gì. Để gợi ý đúng ý bạn, mình cần hỏi một chút:\n\n**Bạn đang muốn mua loại sản phẩm nào?** Ví dụ: quà tặng cho bạn gái, đồ dùng nhà cửa, công nghệ, thời trang, hay cái gì khác?\n\nHoặc nếu bạn đã có ý tưởng rồi, cứ nói tên sản phẩm ra là mình giúp bạn tìm giá tốt nhất! 😊",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "mua gì bây giờ"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình hiểu bạn đang muốn mua cái gì đó nhưng chưa biết chọn gì. Để gợi ý đúng ý bạn, mình cần hỏi một chút:\n\n**Bạn đang muốn mua loại sản phẩm nào?** Ví dụ: quà tặng cho bạn gái, đồ dùng nhà cửa, công nghệ, thời trang, hay cái gì khác?\n\nHoặc nếu bạn đã có ý tưởng rồi, cứ nói tên sản phẩm ra là mình giúp bạn tìm giá tốt nhất! 😊"
+    }
+  ]
+}

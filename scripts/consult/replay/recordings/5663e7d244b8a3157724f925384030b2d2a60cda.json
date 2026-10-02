@@ -1,0 +1,80 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Dell Inspiron 15 3520\" site:cellphones.com.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:46:12.892Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Dell Inspiron 15 3520\" site:cellphones.com.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Laptop Dell Inspiron 3520 | Cấu hình mạnh, giảm đến 1 triệu",
+    "link": "https://cellphones.com.vn/laptop/dell/inspiron/3520.html",
+    "snippet": "Laptop Dell Inspiron 15 3520 6R6NK - Nhập khẩu chính hãng. 11.990.000đ. 9.990.000đ ; Laptop Dell Inspiron 15 3520 71045026. 15.490.000đ. 13.490.000đ ; Laptop Dell ...",
+    "position": 1
+   },
+   {
+    "title": "Laptop Dell Inspiron 15 3520 25P2312 | Giá rẻ, trả góp 0%",
+    "link": "https://cellphones.com.vn/laptop-dell-inspiron-15-3520-25p2312.html",
+    "snippet": "Laptop Dell Inspiron 15 3520 có kích thước 35.85 x 23.49 x 1.75 cm với trọng lượng 1.7kg cùng màu bạc trang nhã. Laptop được trang bị RAM 16GB và SSD 512GB nâng ...",
+    "rating": 5,
+    "ratingCount": 2,
+    "position": 2
+   },
+   {
+    "title": "Laptop Dell Inspiron 15 3520 JYM17 | Giá rẻ, trả góp 0%",
+    "link": "https://cellphones.com.vn/laptop-dell-inspiron-15-3520-jym17.html",
+    "snippet": "Laptop Dell Inspiron 15 3520 JYM17 gọn nhẹ với kích thước 358.5 x 235.56 x 22.47 mm, trọng lượng máy 1.66kg cùng chất liệu carbon có độ bền bỉ cao. Sản phẩm sở ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 3
+   },
+   {
+    "title": "Đánh giá Dell Inspiron 15 3520: Chị em kế toán hẳn rất \" ...",
+    "link": "https://cellphones.com.vn/sforum/danh-gia-dell-inspiron-15-3520",
+    "snippet": "Dell Inspiron 15 3520 sở hữu cụm màn hình có 4 cạnh viền khá mỏng, kích thước 15.6 inch hài hòa, rộng rãi dễ nhìn. Cụm bàn phím full size đầy đủ, có bộ phím số ...",
+    "position": 4
+   },
+   {
+    "title": "Laptop Dell Inspiron 15 3520-5810BLK 102F0",
+    "link": "https://cellphones.com.vn/laptop-dell-inspiron-15-3520-5810blk-102f0.html",
+    "snippet": "Đặc điểm nổi bật ... Laptop Dell Inspiron 15 3520-5810BLK 102F0 trang bị con chip Core i5-1155G7 thế hệ 11 với hiệu năng ấn tượng, 8GB RAM nâng cấp tối đa đến ...",
+    "rating": 5,
+    "ratingCount": 3,
+    "position": 5
+   },
+   {
+    "title": "Laptop Dell Inspiron 15 3520 6R6NK | Giá rẻ, trả góp 0%",
+    "link": "https://cellphones.com.vn/laptop-dell-inspiron-15-3520-6r6nk-16gb.html",
+    "snippet": "Laptop Dell Inspiron 15 3520 6R6NK 16GB với trang bị cấu hình tốt kết hợp cùng con chip Intel Core i5 1235U phù hợp cho các tác vụ văn phòng, học tập. CPU Intel ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 6
+   },
+   {
+    "title": "So sánh Laptop Dell Inspiron 15 3520 71003262 và ...",
+    "link": "https://cellphones.com.vn/so-sanh/laptop-dell-inspiron-15-3520-71003262-vs-laptop-lenovo-ideapad-gaming-3-15iah7-82s9006yvn",
+    "snippet": "So sánh chi tiết về giá, cấu hình, ưu nhược điểm giữa: Laptop Dell Inspiron 15 3520 71003262 và Laptop Lenovo Ideapad Gaming 3 15IAH7 82S9006YVN.",
+    "position": 7
+   },
+   {
+    "title": "Laptop Dell Inspiron 15 3520-5124BLK GJ8W7",
+    "link": "https://cellphones.com.vn/laptop-dell-inspiron-15-3520-5124blk-gj8w7.html",
+    "snippet": "Laptop Dell Inspiron 15 3520-5124BLK GJ8W7 - Nhập khẩu chính hãng ; HSSV, Giáo viên đến 649.500đ ; Smember Giảm thêm đến 130.000đ ; Trả góp 0% ; Đặc điểm nổi bật.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

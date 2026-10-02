@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Hotel\" gần Sài Gòn site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:06:40.904Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Hotel\" gần Sài Gòn site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Khách sạn Sài Gòn - Giá cả và Ưu đãi 2026, TP. Hồ Chí Minh",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-hotel-detail-713703/saigon-hotel-ho-chi-minh/",
+    "snippet": "Khách sạn Sài Gòn(Saigon Hotel Dong Du).",
+    "position": 1
+   },
+   {
+    "title": "Khách sạn giá rẻ gần GA SÀI GÒN - CỔNG CHÍNH, TP. Hồ ...",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-saigon-train-station/hotels-c301r4328735/",
+    "snippet": "Amory Royal Hotel. 9,1 · 40 đánh giá ; Cactusland Boutique Hotel. 8,0 · 72 đánh giá ; Lunaria Hotel - Khách Sạn Ánh Trăng. 7,6 · 145 đánh giá ; S79 Son Mi Hotel. 9,6 ...",
+    "position": 2
+   },
+   {
+    "title": "Khách sạn nghỉ dưỡng Sài Gòn - Ba Bể (Sai Gon",
+    "link": "https://vn.trip.com/hotels/ba-be-hotel-detail-45743673/a-member-of-saigontourist-group/",
+    "snippet": "... Sài Gòn - Ba Bể (Sai Gon - Ba Be resort)An Thảo Ba Bể HotelHoang Hop Homestay - HostelBa Be Jungle HousesNHÀ NGHỈ THƯ NHẠCNhà Nghỉ Sơn Lâm Ba Bể PanoramaNhà ...",
+    "position": 3
+   },
+   {
+    "title": "Các khách sạn ở gần Cao Đẳng Sài Gòn, TP. Hồ Chí Minh",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-truong-cao-dang-nghe-sai-gon/hotels-c301m11072529/",
+    "snippet": "Các khách sạn nổi tiếng ở gần Cao Đẳng Sài Gòn · Atana Saigon Boutique Hotel II · Khách Sạn Lá Đường Số 21 · Cera Hotel · S79 Hotel T68 · Secret Garden Hotel Gò Vấp.",
+    "position": 4
+   },
+   {
+    "title": "Khách sạn Sài Gòn - Đông Hà - Giá cả và Ưu đãi 2026, ...",
+    "link": "https://vn.trip.com/hotels/nam-dong-ha-hotel-detail-3794922/sai-gon-dong-ha-hotel-a-member-of-saigontourist-group/",
+    "snippet": "Khách sạn Sài Gòn - Đông Hà(Sai Gon Dong Ha Hotel - a Member. Phòng Junior Suite. 1 Giường king. Có cửa sổ; Không hút thuốc; 30m². Hiển thị giá. 12 Khách sạn ...",
+    "position": 5
+   },
+   {
+    "title": "Các khách sạn nổi tiếng ở gần Đại Học RMIT Nam Sài Gòn",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-rmit-university-vietnam/hotels-c301m9564853/",
+    "snippet": "Park Hyatt Saigon · An Lâm Retreats Saigon River · The Reverie Saigon Residential Suites · Sedona Suites Ho Chi Minh City · Mia SaiGon Luxury Boutique Hotel.",
+    "position": 6
+   },
+   {
+    "title": "Khách sạn Đại Nam Sài Gòn - Trung Tâm Hội Nghị - Hội thảo",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-hotel-detail-49351474/aha-dai-nam-sai-gon-hotel/",
+    "snippet": "Khách sạn Đại Nam Sài Gòn - Trung Tâm Hội Nghị - Hội thảo. Dai Nam Sai Gon Hotel. 5 / 11 Đ. Nguyễn Siêu, Bến Nghé, Sài Gòn, TP. Hồ Chí MinhXem Bản Đồ. 8,3/10 ...",
+    "position": 7
+   },
+   {
+    "title": "Khách Sạn Sài Gòn Đà Lạt - Giá cả và Ưu đãi 2026, Đà Lạt",
+    "link": "https://vn.trip.com/hotels/dalat-hotel-detail-713589/saigon-dalat-hotel/",
+    "snippet": "Khách Sạn Sài Gòn Đà Lạt. Saigon Dalat Hotel. 180 Ba Tháng Hai, Xuân Hương - Đà Lạt, Đà ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

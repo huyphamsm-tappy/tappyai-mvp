@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Cà phê Chồn nguyên chất 100% Hương Mai Cafe",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:16:04.005Z",
+ "body": {
+  "searchParameters": {
+   "q": "Cà phê Chồn nguyên chất 100% Hương Mai Cafe",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Cà Phê Chồn Nguyên Chất 100% Hương Mai Cafe Weasel Coffee Gift Box (Intense  Aroma) Hương Thơm Đậm Đà - Thích Hợp Làm Quà",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/vn-11134207-7ra0g-m6i46dc46cfb0e",
+    "imageWidth": 1024,
+    "imageHeight": 1024,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQgTPeDabcUjykqX0dBe0ob3ghOhq08TNM-kIBFttlnzQ&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/C%C3%A0-Ph%C3%AA-Ch%E1%BB%93n-Nguy%C3%AAn-Ch%E1%BA%A5t-100-H%C6%B0%C6%A1ng-Mai-Cafe-Weasel-Coffee-Gift-Box-(Intense-Aroma)-H%C6%B0%C6%A1ng-Th%C6%A1m-%C4%90%E1%BA%ADm-%C4%90%C3%A0-Th%C3%ADch-H%E1%BB%A3p-L%C3%A0m-Qu%C3%A0-i.965909723.29476927543",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fvn-11134207-7ra0g-m6i46dc46cfb0e&tbnid=NmIbUzTj8D7o7M&imgrefurl=https%3A%2F%2Fshopee.vn%2FC%25C3%25A0-Ph%25C3%25AA-Ch%25E1%25BB%2593n-Nguy%25C3%25AAn-Ch%25E1%25BA%25A5t-100-H%25C6%25B0%25C6%25A1ng-Mai-Cafe-Weasel-Coffee-Gift-Box-(Intense-Aroma)-H%25C6%25B0%25C6%25A1ng-Th%25C6%25A1m-%25C4%2590%25E1%25BA%25ADm-%25C4%2590%25C3%25A0-Th%25C3%25ADch-H%25E1%25BB%25A3p-L%25C3%25A0m-Qu%25C3%25A0-i.965909723.29476927543&docid=GkxWvMBQkHYd1M&w=1024&h=1024",
+    "position": 1
+   },
+   {
+    "title": "Cà phê chồn Hương Mai Cafe Weasel Legend Coffee 100% hạt Arabica nguyê –  Tạp Hóa Tân Bình",
+    "imageUrl": "https://www.thtbstore.com/cdn/shop/files/e9a55e6eb83d06aa2f33c48361146a43_800x.webp?v=1738922299",
+    "imageWidth": 800,
+    "imageHeight": 800,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMrOmdhTnRNbQnBHyYw3kbps3Px3Msk72YyUodQ57wRg&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Tạp Hóa Tân Bình",
+    "domain": "www.thtbstore.com",
+    "link": "https://www.thtbstore.com/products/ca-phe-ch%E1%BB%93n-h%C6%B0%C6%A1ng-mai-cafe-weasel-legend-coffee-100-h%E1%BA%A1t-arabica-nguyen-ch%E1%BA%A5t-250gr",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.thtbstore.com%2Fcdn%2Fshop%2Ffiles%2Fe9a55e6eb83d06aa2f33c48361146a43_800x.webp%3Fv%3D1738922299&tbnid=3IVZ26qSaSRH6M&imgrefurl=https%3A%2F%2Fwww.thtbstore.com%2Fproducts%2Fca-phe-ch%25E1%25BB%2593n-h%25C6%25B0%25C6%25A1ng-mai-cafe-weasel-legend-coffee-100-h%25E1%25BA%25A1t-arabica-nguyen-ch%25E1%25BA%25A5t-250gr&docid=Ytm0MP9TkGW43M&w=800&h=800",
+    "position": 2
+   },
+   {
+    "title": "Cà phê chồn Hương Mai Cafe Weasel Legend Coffee 100% hạt Arabica nguyê –  Tạp Hóa Tân Bình",
+    "imageUrl": "https://www.thtbstore.com/cdn/shop/files/vn-11134207-7r98o-lvmw9alqeihp0f_1000x.webp?v=1738922316",
+    "imageWidth": 1000,
+    "imageHeight": 1000,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQv4Q6d2gvcHkOl_4Gbt5qZU9kXhczkeqMnlDmxrWweGA&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Tạp Hóa Tân Bình",
+    "domain": "www.thtbstore.com",
+    "link": "https://www.thtbstore.com/products/ca-phe-ch%E1%BB%93n-h%C6%B0%C6%A1ng-mai-cafe-weasel-legend-coffee-100-h%E1%BA%A1t-arabica-nguyen-ch%E1%BA%A5t-250gr",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.thtbstore.com%2Fcdn%2Fshop%2Ffiles%2Fvn-11134207-7r98o-lvmw9alqeihp0f_1000x.webp%3Fv%3D1738922316&tbnid=PNeIlYZIhue17M&imgrefurl=https%3A%2F%2Fwww.thtbstore.com%2Fproducts%2Fca-phe-ch%25E1%25BB%2593n-h%25C6%25B0%25C6%25A1ng-mai-cafe-weasel-legend-coffee-100-h%25E1%25BA%25A1t-arabica-nguyen-ch%25E1%25BA%25A5t-250gr&docid=Ytm0MP9TkGW43M&w=1000&h=1000",
+    "position": 3
+   },
+   {
+    "title": "Cà phê chồn Hương Mai Cafe Weasel Legend Coffee 100% hạt Arabica nguyê –  Tạp Hóa Tân Bình",
+    "imageUrl": "https://www.thtbstore.com/cdn/shop/files/vn-11134207-7r98o-lxxg3q8blwbfa7_800x.webp?v=1738922323",
+    "imageWidth": 800,
+    "imageHeight": 800,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4okq_pmaC9AYVL4kj8pGY5h45o_N91VSSyZla4wvP5w&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Tạp Hóa Tân Bình",
+    "domain": "www.thtbstore.com",
+    "link": "https://www.thtbstore.com/products/ca-phe-ch%E1%BB%93n-h%C6%B0%C6%A1ng-mai-cafe-weasel-legend-coffee-100-h%E1%BA%A1t-arabica-nguyen-ch%E1%BA%A5t-250gr",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.thtbstore.com%2Fcdn%2Fshop%2Ffiles%2Fvn-11134207-7r98o-lxxg3q8blwbfa7_800x.webp%3Fv%3D1738922323&tbnid=vczz0BiEqCH_uM&imgrefurl=https%3A%2F%2Fwww.thtbstore.com%2Fproducts%2Fca-phe-ch%25E1%25BB%2593n-h%25C6%25B0%25C6%25A1ng-mai-cafe-weasel-legend-coffee-100-h%25E1%25BA%25A1t-arabica-nguyen-ch%25E1%25BA%25A5t-250gr&docid=Ytm0MP9TkGW43M&w=800&h=800",
+    "position": 4
+   },
+   {
+    "title": "Cà phê chồn cao cấp Heritages Coffee Kraft Bag Hương Mai Cafe 100% hạt  Robusta nguyên chất 125gr",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-lzeaf1s3pt411a",
+    "imageWidth": 1024,
+    "imageHeight": 1024,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4lHZjD4ImlJAD877tmtC3NSfAB3gaZW9LCfmy2FqKpA&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/C%C3%A0-ph%C3%AA-ch%E1%BB%93n-cao-c%E1%BA%A5p-Heritages-Coffee-Kraft-Bag-H%C6%B0%C6%A1ng-Mai-Cafe-100-h%E1%BA%A1t-Robusta-nguy%C3%AAn-ch%E1%BA%A5t-125gr-i.312500391.3257651170",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fvn-11134207-7r98o-lzeaf1s3pt411a&tbnid=UuHEpQDg3YRKIM&imgrefurl=https%3A%2F%2Fshopee.vn%2FC%25C3%25A0-ph%25C3%25AA-ch%25E1%25BB%2593n-cao-c%25E1%25BA%25A5p-Heritages-Coffee-Kraft-Bag-H%25C6%25B0%25C6%25A1ng-Mai-Cafe-100-h%25E1%25BA%25A1t-Robusta-nguy%25C3%25AAn-ch%25E1%25BA%25A5t-125gr-i.312500391.3257651170&docid=uqyqIVShYQokJM&w=1024&h=1024",
+    "position": 5
+   },
+   {
+    "title": "Cà phê chồn Hương Mai Cafe Weasel Legend Coffee 100% hạt Arabica nguyên  chất 250gr",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-lxxg3q6nhbdlf2",
+    "imageWidth": 1024,
+    "imageHeight": 1024,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShfE7je3aC8gH5HrDpl532NfFh-fM2-pFwSsBXPUGt4Q&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/C%C3%A0-ph%C3%AA-ch%E1%BB%93n-H%C6%B0%C6%A1ng-Mai-Cafe-Weasel-Legend-Coffee-100-h%E1%BA%A1t-Arabica-nguy%C3%AAn-ch%E1%BA%A5t-250gr-i.312500391.4653888446",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fvn-11134207-7r98o-lxxg3q6nhbdlf2&tbnid=XiUn7d13Ki2PkM&imgrefurl=https%3A%2F%2Fshopee.vn%2FC%25C3%25A0-ph%25C3%25AA-ch%25E1%25BB%2593n-H%25C6%25B0%25C6%25A1ng-Mai-Cafe-Weasel-Legend-Coffee-100-h%25E1%25BA%25A1t-Arabica-nguy%25C3%25AAn-ch%25E1%25BA%25A5t-250gr-i.312500391.4653888446&docid=uMDZYWCWZRVlIM&w=1024&h=1024",
+    "position": 6
+   },
+   {
+    "title": "Cà phê chồn Hương Mai Cafe Weasel Coffee Gift Box hương thơm đậm đà 25 –  Tạp Hóa Tân Bình",
+    "imageUrl": "https://www.thtbstore.com/cdn/shop/files/sg-11134201-22100-i08i3luprsiv69_800x.webp?v=1738922490",
+    "imageWidth": 800,
+    "imageHeight": 800,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRPoGtJ2cqc2WBqfYTyTtYF-d6EwwmBI5Q9KIELFpalww&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Tạp Hóa Tân Bình",
+    "domain": "www.thtbstore.com",
+    "link": "https://www.thtbstore.com/products/ca-phe-ch%E1%BB%93n-h%C6%B0%C6%A1ng-mai-cafe-weasel-coffee-gift-box-h%C6%B0%C6%A1ng-th%C6%A1m-d%E1%BA%ADm-da-250gr",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.thtbstore.com%2Fcdn%2Fshop%2Ffiles%2Fsg-11134201-22100-i08i3luprsiv69_800x.webp%3Fv%3D1738922490&tbnid=Lmp897Aw44kAJM&imgrefurl=https%3A%2F%2Fwww.thtbstore.com%2Fproducts%2Fca-phe-ch%25E1%25BB%2593n-h%25C6%25B0%25C6%25A1ng-mai-cafe-weasel-coffee-gift-box-h%25C6%25B0%25C6%25A1ng-th%25C6%25A1m-d%25E1%25BA%25ADm-da-250gr&docid=bx3GX2gJyP0ItM&w=800&h=800",
+    "position": 7
+   },
+   {
+    "title": "Cà Phê Chồn Arabica Nguyên Chất 100% Thượng Hạng Hương Mai Cafe Premium  Weasel Legend Coffee",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/vn-11134207-7ra0g-m66fd568aoqgb5",
+    "imageWidth": 1024,
+    "imageHeight": 1024,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTzIIIZEwpImLMM-P_AsgGbBGXf9rOmYCprTJw-G6R2sg&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/C%C3%A0-Ph%C3%AA-Ch%E1%BB%93n-Arabica-Nguy%C3%AAn-Ch%E1%BA%A5t-100-Th%C6%B0%E1%BB%A3ng-H%E1%BA%A1ng-H%C6%B0%C6%A1ng-Mai-Cafe-Premium-Weasel-Legend-Coffee-i.965909723.29825934356",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fvn-11134207-7ra0g-m66fd568aoqgb5&tbnid=vXbaL3ZHXMFM3M&imgrefurl=https%3A%2F%2Fshopee.vn%2FC%25C3%25A0-Ph%25C3%25AA-Ch%25E1%25BB%2593n-Arabica-Nguy%25C3%25AAn-Ch%25E1%25BA%25A5t-100-Th%25C6%25B0%25E1%25BB%25A3ng-H%25E1%25BA%25A1ng-H%25C6%25B0%25C6%25A1ng-Mai-Cafe-Premium-Weasel-Legend-Coffee-i.965909723.29825934356&docid=NqAGPt3FgOZsvM&w=1024&h=1024",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -27,3 +27,38 @@ export type ResolveInput = z.infer<typeof ResolveSchema>
 
 const UUID = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/
 export const isUuid = (v: string): boolean => UUID.test(v)
+
+// ── Moderation standards (owner 01/10) ──────────────────────────────────────────────────────────────────────────────────
+// The desk's decision. `hold` hides a reported POST while it waits for the decision (no strike, no ledger row); every other
+// outcome except `no_violation` needs the rule group the content breaks. The numbers are the ladder in communityRules.ts.
+import { RULE_GROUP_IDS, FEATURES, LADDER } from '@/lib/safety/communityRules'
+
+export const DecideSchema = z
+  .object({
+    outcome: z.enum(['no_violation', 'hold', 'warning', 'remove_post', 'remove_comment', 'restrict', 'ban']),
+    rule_group: z.enum(RULE_GROUP_IDS).optional(),
+    severity: z.number().int().min(1).max(3).optional(),
+    feature: z.enum(FEATURES).optional(),
+    restrict_days: z.number().int().min(1).max(LADDER.restrictDaysMax).optional(),
+    reason: z.string().trim().min(10, 'reason is required').max(1000, 'reason is too long'),
+    notes: z.string().trim().max(2000).optional(),
+  })
+  .strict()
+export type DecideInput = z.infer<typeof DecideSchema>
+
+export const DeskQuerySchema = z.object({ view: z.enum(['queue', 'appeals', 'stats']).default('queue') }).strict()
+
+export const AppealResolveSchema = z
+  .object({
+    result: z.enum(['upheld', 'reversed']),
+    note: z.string().trim().min(10, 'a note is required').max(1000),
+  })
+  .strict()
+
+/** An appeal received by email, recorded by the reviewer (a locked account cannot sign in to appeal in the app). */
+export const AppealCreateSchema = z
+  .object({
+    decision_id: z.string().regex(UUID),
+    message: z.string().trim().min(10).max(1000),
+  })
+  .strict()

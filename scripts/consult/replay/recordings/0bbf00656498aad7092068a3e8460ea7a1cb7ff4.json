@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Massage relax quận 10\" OR \"Quán Spa Massage & Gội Đầu Nhất Đầu Hùng · Chi nhánh ...\" OR \"Massage Truyền Thống Mạc Thụy ở Quận 10\" quan 10 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:45:28.626Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Massage relax quận 10\" OR \"Quán Spa Massage & Gội Đầu Nhất Đầu Hùng · Chi nhánh ...\" OR \"Massage Truyền Thống Mạc Thụy ở Quận 10\" quan 10 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

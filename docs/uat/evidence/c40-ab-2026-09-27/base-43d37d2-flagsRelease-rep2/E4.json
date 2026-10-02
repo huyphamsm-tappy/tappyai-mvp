@@ -1,0 +1,33 @@
+{
+  "id": "E4",
+  "text": "chỗ đó có giữ xe không?",
+  "parent": "E3",
+  "status": 200,
+  "ms": 5921,
+  "evidenceId": "f69278ff-d26e-414d-ac24-a6880e4f1f13",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình không có thông tin chi tiết về dịch vụ giữ xe tại Dollhouse bar HCMC trong dữ liệu hiện tại. \n\nĐể chắc chắn, bạn có thể:\n- Gọi trực tiếp quán để hỏi về dịch vụ giữ xe\n- Xem thêm trên Google Maps hoặc fanpage Facebook của quán — thường sẽ có bình luận từ khách về tiện ích này\n\nVì Dollhouse nằm ở Quận 1 (trung tâm), hầu hết các quán bar ở đây đều có hỗ trợ giữ xe hoặc gợi ý nơi gửi gần đó, nên bạn yên tâm nhé 👍\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Dollhouse bar HCMC\",\"type\":\"maps\",\"url\":\"https://www.google.com/maps/search/Dollhouse+bar+HCMC+Quan+1\"}]}[/CTA_BUTTONS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "quán bar nào chill có nhạc sống Quận 1"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm các quán bar chill có nhạc sống ở Quận 1 cho bạn nhé.\n\nMình chọn **Dollhouse bar HCMC** cho bạn — quán này có rating 5⭐ từ 1.394 đánh giá Google Maps, cách bạn chỉ 0.5km, mở từ 19:00 đến 02:00. Không gian chill, phù hợp với vibe bạn tìm, và là lựa chọn được yêu thích nhất ở khu vực này.\n\nNếu muốn gần hơn, **Dot Bar** (0.3km) và 4.8⭐) với không khí bar cocktail chất lượng.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Dollhouse bar HCMC\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=12322941922998073283\",\"primary\":true},{\"label\":\"🌐 Website - Dollhouse bar HCMC\",\"type\":\"website\",\"url\":\"http://www.dollhousebar.com/\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Dot Bar gần hơn|Loop 1 Cocktail Bar|Chill Skybar & Dining[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "chỗ đó có giữ xe không?"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình không có thông tin chi tiết về dịch vụ giữ xe tại Dollhouse bar HCMC trong dữ liệu hiện tại. \n\nĐể chắc chắn, bạn có thể:\n- Gọi trực tiếp quán để hỏi về dịch vụ giữ xe\n- Xem thêm trên Google Maps hoặc fanpage Facebook của quán — thường sẽ có bình luận từ khách về tiện ích này\n\nVì Dollhouse nằm ở Quận 1 (trung tâm), hầu hết các quán bar ở đây đều có hỗ trợ giữ xe hoặc gợi ý nơi gửi gần đó, nên bạn yên tâm nhé 👍\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Dollhouse bar HCMC\",\"type\":\"maps\",\"url\":\"https://www.google.com/maps/search/Dollhouse+bar+HCMC+Quan+1\"}]}[/CTA_BUTTONS]"
+    }
+  ]
+}

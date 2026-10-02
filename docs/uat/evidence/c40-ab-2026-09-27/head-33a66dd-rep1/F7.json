@@ -1,0 +1,180 @@
+{
+  "id": "F7",
+  "text": "ăn gì ngon giờ",
+  "parent": null,
+  "status": 200,
+  "ms": 12861,
+  "evidenceId": "e19fde09-aa7d-477d-aa71-f66ddb55ea65",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "quán ăn khuya",
+        "type": "restaurant"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Quán Ăn Hùng Xíu",
+      "rating": 4.1,
+      "count": 76,
+      "price": "200-300 N ₫",
+      "hours": "17:00–04:00",
+      "distance_km": 1.2,
+      "address": "15 Nguyễn Văn Tráng, Bến Thành, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "A Xỉu - Quán Ăn Ngon",
+      "rating": 4.7,
+      "count": 246,
+      "price": "1-100.000 ₫",
+      "hours": "17:00–22:00",
+      "distance_km": 1.6,
+      "address": "26 Đề Thám, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Cơm Tấm Đêm",
+      "rating": 4.8,
+      "count": 15,
+      "price": "1-100.000 ₫",
+      "hours": "15:00–23:30",
+      "distance_km": 4.5,
+      "address": "75A Phạm Văn Hai, Tân Sơn Hòa, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "3 XỊ - QUÁN NHẬU ĐÊM Q4",
+      "rating": 4.7,
+      "count": 22,
+      "price": "100-200 N ₫",
+      "hours": "18:00–03:00",
+      "distance_km": 1.8,
+      "address": "K44 Hoàng Diệu, Quận 4, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Cơm tấm đêm Út Nam",
+      "rating": 4.7,
+      "count": 9,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 7.3,
+      "address": "251 Đồng Văn Cống, Cát Lái, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Bia Khô Ngã 6",
+      "rating": 4.1,
+      "count": 142,
+      "price": "300-400 N ₫",
+      "distance_km": 4,
+      "address": "178 Nguyễn Tri Phương, An Đông, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Bún Thái A Tùng - Tô Hiến Thành",
+      "rating": 4.9,
+      "count": 1919,
+      "price": "1-100.000 ₫",
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 3.5,
+      "address": "130 Tô Hiến Thành, Hòa Hưng, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Khu Ăn Uống",
+      "rating": 4.1,
+      "count": 11,
+      "distance_km": 6.2,
+      "address": "19 Lạc Long Quân, Hòa Bình, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "PHỞ HÀ",
+      "rating": 4,
+      "count": 1050,
+      "price": "1-100.000 ₫",
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 0.7,
+      "address": "19 Đ. Hải Triều, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Nom Saigon - K Music Live | Quán Nhậu Đêm Quận 2",
+      "rating": 5,
+      "count": 25,
+      "price": "200-300 N ₫",
+      "hours": "18:00–03:00",
+      "distance_km": 4.3,
+      "address": "02 Song Hành, Khu đô thị An Phú, An Khánh, Hồ Chí Minh 71113, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình giả sử bạn muốn ăn gì đó ngon gần đây, hôm nay. Mình chọn **Quán Ăn Hùng Xíu** cho bạn — **4.1⭐ (76 đánh giá Google Maps)**, mở đến 4 sáng, cách bạn chỉ 1.2km ở Bến Thành. Quán nhỏ, bình dân, mở cửa lúc này nên ăn được ngay 👍\n\nNếu muốn cơm tấm ngon hơn, **Bún Thái A Tùng** (3.5km) có **4.9⭐ từ 1.919 đánh giá** — mở cả ngày, rất được yêu thích.\n\nTầm giá bạn muốn bao nhiêu? 🍜\n\n[FOLLOWUPS]dưới 100k/người|100–200k/người|trên 200k/người[/FOLLOWUPS]\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Maps - Quán Ăn Hùng Xíu\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=9628037356867564204\",\"primary\":false}]}[/CTA_BUTTONS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "ăn gì ngon giờ"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn muốn ăn gì đó ngon gần đây, hôm nay. Mình chọn **Quán Ăn Hùng Xíu** cho bạn — **4.1⭐ (76 đánh giá Google Maps)**, mở đến 4 sáng, cách bạn chỉ 1.2km ở Bến Thành. Quán nhỏ, bình dân, mở cửa lúc này nên ăn được ngay 👍\n\nNếu muốn cơm tấm ngon hơn, **Bún Thái A Tùng** (3.5km) có **4.9⭐ từ 1.919 đánh giá** — mở cả ngày, rất được yêu thích.\n\nTầm giá bạn muốn bao nhiêu? 🍜\n\n[FOLLOWUPS]dưới 100k/người|100–200k/người|trên 200k/người[/FOLLOWUPS]\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Maps - Quán Ăn Hùng Xíu\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=9628037356867564204\",\"primary\":false}]}[/CTA_BUTTONS]"
+    }
+  ]
+}

@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Ốp lưng iPhone 17 Pro Max site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:02:30.627Z",
+ "body": {
+  "searchParameters": {
+   "q": "Ốp lưng iPhone 17 Pro Max site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "17 pro max iphone ốp lưng",
+    "link": "https://shop.tiktok.com/vn/k/17-pro-max-iphone-op-lung",
+    "snippet": "Vỏ Bảo Vệ KT Trong Suốt Mềm Mại Với Cửa Sổ Lớn, Bám Dính Tức. Vỏ Bảo Vệ KT Trong Suốt Mềm Mại Với ...",
+    "position": 1
+   },
+   {
+    "title": "case iphone 17 pro max မှန်",
+    "link": "https://shop.tiktok.com/vn/k/case-iphone-17-pro-max-mhn",
+    "snippet": "Ốp bảo vệ trong suốt mềm mại dành cho iPhone 17 Pro Max, với thiết kế hiện đại, sáng tạo và cửa sổ lớn, tương thích với các mẫu 16/15/13/14/12. Flash sale.",
+    "position": 2
+   },
+   {
+    "title": "iphone 17 pro max case casetify ring stand",
+    "link": "https://shop.tiktok.com/vn/k/iphone-17-pro-max-case-casetify-ring-stand",
+    "snippet": "Ốp lưng Casetify kiểu rippling với MagSafe dành cho iPhone 17 Pro Max / iPhone 17 ...",
+    "position": 3
+   },
+   {
+    "title": "iphone 17 pro max cosmic orange case and magnetic strap",
+    "link": "https://shop.tiktok.com/vn/k/iphone-17-pro-max-cosmic-orange-case-and-magnetic-strap",
+    "snippet": "Ốp lưng chống trượt, họa tiết chấm bi, từ tính, cảm giác như da, dành cho iPhone 17 Pro Max/16/15/14/13/12/11, vỏ bảo vệ chống sốc cao cấp. Flash sale.",
+    "position": 4
+   },
+   {
+    "title": "adaptor iphone 17 pro max cover",
+    "link": "https://shop.tiktok.com/vn/k/adaptor-iphone-17-pro-max-cover",
+    "snippet": "Ốp silicon nhám lưng dành cho iPhone 17 Pro max , 16 Pro max , 15 Pro max /14/13/12/11 Pro/Plus/Promax có màng bảo vệ camera - Clover case phone phụ kiện.",
+    "position": 5
+   },
+   {
+    "title": "17 pro max iphone case for 16 promax",
+    "link": "https://shop.tiktok.com/vn/k/17-pro-max-iphone-case-for-16-promax",
+    "snippet": "Khám phá 17 pro max iphone case for 16 promax mới nhất tại TikTok Shop và tận hưởng freeship! Mua sắm những bộ sưu tập độc quyền và khám phá sản phẩm thịnh ...",
+    "position": 6
+   },
+   {
+    "title": "iphone 17 pro max orange and tech woven case green",
+    "link": "https://shop.tiktok.com/vn/k/iphone-17-pro-max-orange-and-tech-woven-case-green",
+    "snippet": "Ốp Lưng Mutural TechWoven Cho iPhone 17 Pro Max – MagSafe Hít Mạnh, Thiết Kế Vân Sợi Vải, Chống Sốc, Viền Camera Bảo Vệ| PKS OFFICIAL STORE.",
+    "position": 7
+   },
+   {
+    "title": "case iphone 17 pro max hi shield",
+    "link": "https://shop.tiktok.com/vn/k/case-iphone-17-pro-max-hi-shield",
+    "snippet": "Khám phá case iphone 17 pro max hi shield mới nhất tại TikTok Shop và tận hưởng freeship! Mua sắm những bộ sưu tập độc quyền và khám phá sản phẩm thịnh hành ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

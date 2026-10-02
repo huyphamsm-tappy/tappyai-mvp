@@ -211,11 +211,27 @@ describe('retrieved content cannot acquire authority', () => {
     // about. Measured on production for "bún bò huế phú nhuận": 8 places, 6 videos, none of the six
     // titles naming any of the eight — under the old `i === 0` attribution the card that showed
     // "Review TikTok" was showing a video about a different restaurant.
+    //
+    // The FIFTH (Final local live UAT, 14 Sep 2026) is the "🔗 Liên kết chính thức" line the server
+    // appends when NONE of the Commerce Capability Platform's validated handoffs (a dated fare
+    // list, a coach route, an event or film page) made it into the prose — the model was measured
+    // writing "đã tìm được link Traveloka" with no link. It passes the same reading: the URL's
+    // origin is the CCP resolver (adapter grammar → host allow-list → `checkCommerceUrl`), never
+    // the model or a retrieval snippet; only URLs the tool result itself carried (`_tappy_commerce`
+    // marks them) are eligible; and the line goes through `sanitizeUrlForMarkdown` and
+    // `escapeMarkdownLabel` like every other site.
+    //
+    // The SIXTH (A3, 2026-10-02) is the «only another phone model was found» block: the reply says so and lists one search link per marketplace
+    // for the right keyword. Re-read against the same rule: the HOST and the search grammar come from the CCP registry (`buildShoppingLinks` →
+    // `marketplaceSearchTemplates`, Shopee and Lazada), never from the model or a snippet; the only free text is the product keyword, which
+    // `encodeURIComponent` confines to the query value; and the line goes through `sanitizeUrlForMarkdown` and `escapeMarkdownLabel`.
     const sites = PROD.flatMap(f =>
       f.body.split(/\r?\n/)
         .map((text, i) => ({ file: f.path, line: i + 1, text }))
         .filter(l => AI_LAYER(l.file) && !isCommentOnly(l.text) && /\]\(\$\{/.test(l.text)))
     expect(sites.map(s => s.file)).toEqual([
+      'lib/ai/streamEnrichment.ts',
+      'lib/ai/streamEnrichment.ts',
       'lib/ai/streamEnrichment.ts',
       'lib/ai/streamEnrichment.ts',
       'lib/ai/streamEnrichment.ts',

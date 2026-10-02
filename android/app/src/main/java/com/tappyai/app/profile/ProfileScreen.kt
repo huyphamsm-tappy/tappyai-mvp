@@ -1,38 +1,45 @@
 package com.tappyai.app.profile
 
 import androidx.annotation.StringRes
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Login
 import androidx.compose.material.icons.automirrored.filled.Message
-import androidx.compose.material.icons.filled.BookmarkBorder
+import androidx.compose.material.icons.automirrored.filled.TrendingUp
+import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.filled.Cable
 import androidx.compose.material.icons.filled.CalendarMonth
-import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.ChevronRight
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Group
+import androidx.compose.material.icons.filled.Lightbulb
+import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Psychology
 import androidx.compose.material.icons.filled.QrCode2
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.filled.StarBorder
-import androidx.compose.material.icons.automirrored.filled.TrendingDown
+import androidx.compose.material.icons.filled.Shield
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.WorkspacePremium
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -42,35 +49,61 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.tappyai.app.R
 import com.tappyai.app.account.AccountProfile
+import com.tappyai.app.home.HomeV3
+import com.tappyai.app.home.V3HomeTheme
 import com.tappyai.core.designsystem.component.TappyAvatar
 import com.tappyai.core.designsystem.component.TappyAvatarSize
-import com.tappyai.core.designsystem.component.TappyCard
 import com.tappyai.core.designsystem.component.TappyComingSoonSheet
-import com.tappyai.core.designsystem.component.TappyMenuRow
 import com.tappyai.core.designsystem.theme.TappyContainers
-import com.tappyai.core.designsystem.theme.TappyShapes
 import com.tappyai.core.designsystem.theme.TappySpacing
+
+// ── Tôi — the V3 profile landing (2026-09-14) ─────────────────────────────────────────────────
+//
+// The same surface, the same twelve ways out of it, in the V3 dress the rest of the app now
+// wears (Home, Explore, Smart Tools): the V3 palette that follows the system appearance, a real
+// header with the official mascot, the account state as a hero card, sign-in as a secondary
+// card for guests, the Account rows in one grouped card with a coloured icon tile each, a
+// privacy card, and the Settings entry — over the SAME ViewModel, routes and callbacks as before.
+//
+// 🚨 NOTHING ROUTES ANYWHERE NEW. Every row calls the callback the tab already passed; the one
+// added card, "Quyền riêng tư & Bảo mật", opens the web `/privacy` page (`openPrivacyPolicy`) — the
+// same page Settings' "Chính sách bảo mật" opens.
+// No field is shown that `GET /api/profile` does not return (name, email, avatar); a guest sees
+// the same placeholder identity as before, never an invented one.
 
 // Matching key kept separate from the localized display title (which changes with the app
 // language) — see ChatCategory.kt for the same icon+labelRes enum shape this mirrors.
-private enum class ProfileMenuItem(val icon: ImageVector, @StringRes val titleRes: Int) {
-    Account(Icons.Filled.Person, R.string.profile_menu_account),
-    ChatHistory(Icons.AutoMirrored.Filled.Message, R.string.profile_menu_chat_history),
-    Bookings(Icons.Filled.CalendarMonth, R.string.profile_menu_bookings),
-    Preferences(Icons.Filled.FavoriteBorder, R.string.profile_menu_preferences),
-    Saved(Icons.Filled.BookmarkBorder, R.string.profile_menu_saved),
-    PriceTracking(Icons.AutoMirrored.Filled.TrendingDown, R.string.profile_menu_price_tracking),
-    TappyKnows(Icons.Filled.Psychology, R.string.profile_menu_tappy_knows),
-    AppConnections(Icons.Filled.Cable, R.string.profile_menu_app_connections),
-    MyReviews(Icons.Filled.StarBorder, R.string.profile_menu_my_reviews),
-    GroupDining(Icons.Filled.Group, R.string.profile_menu_group_dining),
-    UpgradeToPro(Icons.Filled.WorkspacePremium, R.string.profile_menu_upgrade_to_pro),
+internal enum class ProfileMenuItem(
+    val icon: ImageVector,
+    @StringRes val titleRes: Int,
+    @StringRes val subtitleRes: Int,
+    /** The icon tile's colour — contextual, one per destination, as the V3 reference. */
+    val tint: Color,
+) {
+    Account(Icons.Filled.Person, R.string.profile_menu_account, R.string.profile_menu_account_desc, Color(0xFF14B58A)),
+    ChatHistory(Icons.AutoMirrored.Filled.Message, R.string.profile_menu_chat_history, R.string.profile_menu_chat_history_desc, Color(0xFF3B82F6)),
+    Bookings(Icons.Filled.CalendarMonth, R.string.profile_menu_bookings, R.string.profile_menu_bookings_desc, Color(0xFFF97316)),
+    Preferences(Icons.Filled.Favorite, R.string.profile_menu_preferences, R.string.profile_menu_preferences_desc, Color(0xFFEF4462)),
+    Saved(Icons.Filled.Bookmark, R.string.profile_menu_saved, R.string.profile_menu_saved_desc, Color(0xFF7C5CFF)),
+    PriceTracking(Icons.AutoMirrored.Filled.TrendingUp, R.string.profile_menu_price_tracking, R.string.profile_menu_price_tracking_desc, Color(0xFF0E9F6E)),
+    /** The web's `accountRows()` entry for `/planner` (`v3.nav.planner` / `v3.planner.subtitle`). */
+    Planner(Icons.Filled.CalendarMonth, R.string.planner_nav_title, R.string.planner_subtitle, Color(0xFF8B5CF6)),
+    TappyKnows(Icons.Filled.Lightbulb, R.string.profile_menu_tappy_knows, R.string.profile_menu_tappy_knows_desc, Color(0xFFD9A50B)),
+    AppConnections(Icons.Filled.Cable, R.string.profile_menu_app_connections, R.string.profile_menu_app_connections_desc, Color(0xFF06B6D4)),
+    GroupDining(Icons.Filled.Group, R.string.profile_menu_group_dining, R.string.profile_menu_group_dining_desc, Color(0xFFEC4899)),
+    UpgradeToPro(Icons.Filled.WorkspacePremium, R.string.profile_menu_upgrade_to_pro, R.string.profile_menu_upgrade_to_pro, Color(0xFFF59E0B)),
 }
 
 @Composable
@@ -81,30 +114,41 @@ private fun ProfileMenuItem.title(): String = stringResource(titleRes)
 // Flip to true together with the web flag when Pro launches; MembershipScreen stays intact.
 private const val SHOW_PRO_UPGRADE = false
 
-// Order + labels + icons mirror the web `ProfileView` "Account" section exactly.
-private val ACCOUNT_ITEMS = buildList {
+// App Connections entry point hidden app-wide (owner decision 2026-07-17) — the web's
+// `SHOW_APP_CONNECTIONS`. Flip both together.
+private const val SHOW_APP_CONNECTIONS = false
+
+/**
+ * The web `accountRows()` (src/app/(app)/profile/ProfileRows.tsx), row for row and in order — also
+ * the D:/redesign "Tài khoản & Cài đặt" mockup. Parity 2026-09-28 removed the three rows neither
+ * has: Social (web reaches /social from the desktop sidebar only; here it stays one tap away via
+ * the Following card), My reviews (web removed it as a second name for Explore) and App
+ * connections (gated off on web).
+ */
+internal fun accountMenuItems(): List<ProfileMenuItem> = buildList {
     add(ProfileMenuItem.Account)
     add(ProfileMenuItem.ChatHistory)
     add(ProfileMenuItem.Bookings)
     add(ProfileMenuItem.Preferences)
     add(ProfileMenuItem.Saved)
     add(ProfileMenuItem.PriceTracking)
+    add(ProfileMenuItem.Planner)
     add(ProfileMenuItem.TappyKnows)
-    add(ProfileMenuItem.AppConnections)
-    add(ProfileMenuItem.MyReviews)
+    if (SHOW_APP_CONNECTIONS) add(ProfileMenuItem.AppConnections)
     add(ProfileMenuItem.GroupDining)
     if (SHOW_PRO_UPGRADE) add(ProfileMenuItem.UpgradeToPro)
 }
 
+private val CardShape = RoundedCornerShape(20.dp)
+private val TileShape = RoundedCornerShape(12.dp)
+
 /**
- * Profile landing — matches the web `ProfileView` section order: profile header card → "Account"
- * menu section (10 rows; +1 "Upgrade to Pro" row gated OFF by [SHOW_PRO_UPGRADE], web parity) →
- * "Settings" entry. UI-only foundation: **no auth/session, so no fake
- * user** — the header shows a placeholder identity ("Your profile" / "Sign in to personalize")
- * and the conversation-count pill is hidden entirely (no data). "Settings" navigates for real; the
- * QR button opens the real [QrProfileSheet] (the shell only reaches this screen when
- * authenticated, so the signed-in user's id is available); every other row still opens a
- * [TappyComingSoonSheet].
+ * Profile landing — matches the web `ProfileView` section order: profile hero → sign-in card
+ * (guests only) → "Account" menu section (10 rows; +1 "Upgrade to Pro" row gated OFF by
+ * [SHOW_PRO_UPGRADE], web parity) → privacy card → "Settings" entry. **No fake user**: the hero
+ * shows the signed-in profile's name, email and avatar, or the placeholder identity ("Your
+ * profile" / "Sign in to personalize"). The QR button opens the real [QrProfileSheet] when a user
+ * id exists; every row drills into its real screen through the callback the tab passes.
  */
 @Composable
 fun ProfileScreen(
@@ -122,85 +166,131 @@ fun ProfileScreen(
     onOpenPriceTracking: () -> Unit,
     onOpenAccount: () -> Unit,
     onOpenAppConnections: () -> Unit,
+    /** The privacy card → the web `/privacy` page, the one policy Data safety declares against. */
+    onOpenPrivacy: () -> Unit = {},
+    /** AI Planner (web `/planner`) and Following / Followers (web `/social`). */
+    onOpenPlanner: () -> Unit = {},
+    onOpenSocial: () -> Unit = {},
+    /** The hero's "Chỉnh sửa hồ sơ" — the existing Account edit screen (web `/profile/edit`). */
+    onEditProfile: () -> Unit = onOpenAccount,
+    /** A tile in a collection → that clip in the collection's own pager / detail; a Following row → that creator. */
+    onOpenReview: (ProfileContentTab, String) -> Unit = { _, _ -> },
+    onOpenCreator: (String) -> Unit = {},
+    /** "Đăng bài mới" → the review composer this graph already hosts. */
+    onCompose: () -> Unit = onOpenMyReviews,
     viewModel: ProfileViewModel = hiltViewModel(),
+    contentViewModel: ProfileHubContentViewModel = hiltViewModel(),
 ) {
     var comingSoonFeature by remember { mutableStateOf<String?>(null) }
     var showQrSheet by remember { mutableStateOf(false) }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState()),
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
+    V3HomeTheme {
         Column(
             modifier = Modifier
-                .widthIn(max = TappyContainers.content)
-                .fillMaxWidth()
-                .padding(TappySpacing.xl),
-            verticalArrangement = Arrangement.spacedBy(TappySpacing.xl),
+                .fillMaxSize()
+                .background(HomeV3.Background)
+                .verticalScroll(rememberScrollState()),
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            val qrFeatureName = stringResource(R.string.profile_qr_feature_name)
-            ProfileHeaderCard(
-                profile = viewModel.profile,
-                onShowQr = {
-                    if (viewModel.userId != null) showQrSheet = true else comingSoonFeature = qrFeatureName
-                },
-            )
+            Column(
+                modifier = Modifier
+                    .widthIn(max = TappyContainers.content)
+                    .fillMaxWidth()
+                    .padding(horizontal = TappySpacing.xl)
+                    .padding(top = TappySpacing.md, bottom = TappySpacing.xxl),
+                verticalArrangement = Arrangement.spacedBy(TappySpacing.xl),
+            ) {
+                ProfileV3Header()
 
-            // Guests get a sign-in affordance right under the header — the most discoverable
-            // point on the surface they already visit to see "who am I". Settings carries the
-            // same action, but two taps deeper. Authenticated users never see this card, so
-            // their Profile is byte-identical to before.
-            if (viewModel.isAnonymous) {
-                TappyCard(contentPadding = PaddingValues(0.dp)) {
-                    TappyMenuRow(
-                        icon = Icons.AutoMirrored.Filled.Login,
-                        title = stringResource(R.string.settings_sign_in),
-                        subtitle = stringResource(R.string.profile_sign_in_desc),
-                        onClick = onSignIn,
+                val qrFeatureName = stringResource(R.string.profile_qr_feature_name)
+                val onShowQr = { if (viewModel.userId != null) showQrSheet = true else comingSoonFeature = qrFeatureName }
+                if (viewModel.isAnonymous) {
+                    // Guests: the account card and, right under it, the sign-in affordance — the
+                    // web's `GuestProfileView`, which renders no content tabs and no stats.
+                    GuestCard(onSignIn = onSignIn)
+                } else {
+                    // Signed in: the web `/profile` hero, content tabs and side panels.
+                    ProfileHeroV3(
+                        profile = viewModel.profile,
+                        stats = contentViewModel.stats,
+                        likes = contentViewModel.likes,
+                        isPremium = contentViewModel.isPremium,
+                        onEditProfile = onEditProfile,
+                        onShowQr = onShowQr,
+                    )
+                    ProfileContentV3(
+                        tab = contentViewModel.tab,
+                        onSelectTab = contentViewModel::selectTab,
+                        posts = contentViewModel.posts,
+                        liked = contentViewModel.liked,
+                        saved = contentViewModel.saved,
+                        hidden = contentViewModel.hidden,
+                        shared = contentViewModel.shared,
+                        places = contentViewModel.places,
+                        loading = contentViewModel.tabLoading,
+                        failed = contentViewModel.tabFailed,
+                        restricted = contentViewModel.restricted,
+                        onCompose = onCompose,
+                        onOpenReview = onOpenReview,
                     )
                 }
-            }
 
-            Column(verticalArrangement = Arrangement.spacedBy(TappySpacing.sm)) {
-                MenuSectionHeader(stringResource(R.string.profile_section_account))
-                TappyCard(contentPadding = PaddingValues(0.dp)) {
-                    ACCOUNT_ITEMS.forEachIndexed { index, item ->
-                        if (index > 0) HorizontalDivider()
-                        TappyMenuRow(
-                            icon = item.icon,
-                            title = item.title(),
-                            // Every item currently drills into a real screen; matched by the
-                            // stable enum key (not the localized title) so this keeps working
-                            // once the app language changes.
-                            onClick = when (item) {
-                                ProfileMenuItem.UpgradeToPro -> onOpenMembership
-                                ProfileMenuItem.TappyKnows -> onOpenTappyKnows
-                                ProfileMenuItem.ChatHistory -> onOpenChatHistory
-                                ProfileMenuItem.Saved -> onOpenSaved
-                                ProfileMenuItem.Bookings -> onOpenBookings
-                                ProfileMenuItem.Preferences -> onOpenPreferences
-                                ProfileMenuItem.MyReviews -> onOpenMyReviews
-                                ProfileMenuItem.PriceTracking -> onOpenPriceTracking
-                                ProfileMenuItem.GroupDining -> onOpenGroupDining
-                                ProfileMenuItem.Account -> onOpenAccount
-                                ProfileMenuItem.AppConnections -> onOpenAppConnections
-                            },
+                Column(verticalArrangement = Arrangement.spacedBy(TappySpacing.md)) {
+                    MenuSectionHeader(stringResource(R.string.profile_section_account))
+                    ProfileGroupCard {
+                        val locked = viewModel.isAnonymous
+                        accountMenuItems().forEachIndexed { index, item ->
+                            if (index > 0) HorizontalDivider(color = HomeV3.Outline, modifier = Modifier.padding(start = 72.dp))
+                            ProfileV3Row(
+                                item = item,
+                                locked = locked,
+                                // Every item drills into a real screen; matched by the stable enum
+                                // key (not the localized title) so this keeps working once the app
+                                // language changes.
+                                onClick = if (locked) onSignIn else when (item) {
+                                    ProfileMenuItem.UpgradeToPro -> onOpenMembership
+                                    ProfileMenuItem.TappyKnows -> onOpenTappyKnows
+                                    ProfileMenuItem.ChatHistory -> onOpenChatHistory
+                                    ProfileMenuItem.Saved -> onOpenSaved
+                                    ProfileMenuItem.Bookings -> onOpenBookings
+                                    ProfileMenuItem.Preferences -> onOpenPreferences
+                                    ProfileMenuItem.PriceTracking -> onOpenPriceTracking
+                                    ProfileMenuItem.GroupDining -> onOpenGroupDining
+                                    ProfileMenuItem.Account -> onOpenAccount
+                                    ProfileMenuItem.AppConnections -> onOpenAppConnections
+                                    ProfileMenuItem.Planner -> onOpenPlanner
+                                },
+                            )
+                        }
+                    }
+                }
+
+                Column(verticalArrangement = Arrangement.spacedBy(TappySpacing.md)) {
+                    MenuSectionHeader(stringResource(R.string.profile_section_settings))
+                    ProfileGroupCard {
+                        ProfileV3Row(
+                            icon = Icons.Filled.Settings,
+                            tint = HomeV3.OnSurfaceVariant,
+                            title = stringResource(R.string.profile_settings_row_title),
+                            subtitle = stringResource(if (viewModel.isAnonymous) R.string.profile_guest_locked else R.string.profile_settings_subtitle),
+                            locked = viewModel.isAnonymous,
+                            onClick = if (viewModel.isAnonymous) onSignIn else onOpenSettings,
                         )
                     }
                 }
-            }
 
-            Column(verticalArrangement = Arrangement.spacedBy(TappySpacing.sm)) {
-                MenuSectionHeader(stringResource(R.string.profile_section_settings))
-                TappyCard(contentPadding = PaddingValues(0.dp)) {
-                    TappyMenuRow(
-                        icon = Icons.Filled.Settings,
-                        title = stringResource(R.string.profile_settings_row_title),
-                        subtitle = stringResource(R.string.profile_settings_subtitle),
-                        onClick = onOpenSettings,
+                if (!viewModel.isAnonymous) {
+                    ProfileInfoCard(profile = viewModel.profile, onEdit = onEditProfile)
+                    ProfileStatsCard(
+                        posts = contentViewModel.posts?.size,
+                        videos = contentViewModel.videoCount,
+                        likes = contentViewModel.likes,
+                        savedPosts = contentViewModel.saved?.size,
+                        savedPlaces = contentViewModel.places?.size,
+                        conversations = contentViewModel.conversationCount,
                     )
+                    ProfileFollowingCard(following = contentViewModel.following, onOpenPerson = onOpenCreator, onSeeAll = onOpenSocial)
+                    ProfileQrCard(onShowQr = onShowQr)
                 }
             }
         }
@@ -216,63 +306,239 @@ fun ProfileScreen(
 
     val userId = viewModel.userId
     if (showQrSheet && userId != null) {
-        QrProfileSheet(userId = userId, name = null, onDismiss = { showQrSheet = false })
+        // The name as stored (web: `userInfo.full_name`), or the sheet's default.
+        QrProfileSheet(userId = userId, name = viewModel.profile?.fullName, onDismiss = { showQrSheet = false })
     }
 }
 
+/**
+ * "Tôi" + the blurb, with the official mascot on the right — the waving pose (`tappy_wave`,
+ * the pose library's "default AI avatar / overview" pose, the one Home's hero also uses), the
+ * closest official pose to "your profile"; no pose is drawn or generated for this screen.
+ */
 @Composable
-private fun ProfileHeaderCard(profile: AccountProfile?, onShowQr: () -> Unit) {
-    TappyCard(modifier = Modifier.fillMaxWidth()) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(TappySpacing.lg),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            if (profile != null) {
-                // Signed-in user: real avatar (image or name-initials), matching the web header.
-                TappyAvatar(
-                    name = profile.fullName,
-                    imageUrl = profile.avatarUrl,
-                    size = TappyAvatarSize.HeaderUser,
-                )
-            } else {
-                // Not yet loaded / session missing — neutral person icon, no fabricated identity.
-                Box(
-                    modifier = Modifier
-                        .size(64.dp)
-                        .clip(TappyShapes.card)
-                        .background(MaterialTheme.colorScheme.primaryContainer),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    Icon(
-                        imageVector = Icons.Filled.Person,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                        modifier = Modifier.size(32.dp),
-                    )
-                }
+private fun ProfileV3Header() {
+    Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+        Column(modifier = Modifier.weight(1f).padding(end = TappySpacing.lg)) {
+            Text(
+                text = stringResource(R.string.home_tab_profile),
+                color = HomeV3.OnSurface,
+                fontSize = 32.sp,
+                lineHeight = 36.sp,
+                fontWeight = FontWeight.Bold,
+            )
+            Text(
+                text = stringResource(R.string.profile_v3_subtitle),
+                color = HomeV3.OnSurfaceVariant,
+                fontSize = 14.sp,
+                lineHeight = 19.sp,
+                modifier = Modifier.padding(top = TappySpacing.sm),
+            )
+        }
+        Image(
+            painter = painterResource(R.drawable.tappy_wave),
+            contentDescription = null,
+            modifier = Modifier.size(116.dp).offset(x = 8.dp),
+        )
+    }
+}
+
+/**
+ * The guest's profile, as the web `GuestProfileView` renders it: the mascot, "Bạn đang dùng thử",
+ * what a guest can already use, and one full-width "Đăng nhập để lưu lại" button. (Before
+ * 2026-09-28 Android showed a placeholder identity card with a QR button plus a separate sign-in
+ * card — two cards and a QR action the web guest view does not have.)
+ */
+@Composable
+private fun GuestCard(onSignIn: () -> Unit) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(CardShape)
+            .background(HomeV3.Surface)
+            .border(1.dp, HomeV3.Outline, CardShape)
+            .padding(TappySpacing.xl),
+        verticalArrangement = Arrangement.spacedBy(TappySpacing.lg),
+    ) {
+        Row(horizontalArrangement = Arrangement.spacedBy(TappySpacing.lg), verticalAlignment = Alignment.CenterVertically) {
+            Box(
+                modifier = Modifier
+                    .size(64.dp)
+                    .clip(RoundedCornerShape(18.dp))
+                    .background(Brush.linearGradient(listOf(Color(0x4D8B5CF6), Color(0x423391FF)))),
+                contentAlignment = Alignment.Center,
+            ) {
+                Image(painter = painterResource(R.drawable.tappy_wave), contentDescription = null, modifier = Modifier.size(52.dp))
             }
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = profile?.fullName?.takeIf { it.isNotBlank() }
-                        ?: stringResource(R.string.profile_header_title),
-                    style = MaterialTheme.typography.titleLarge,
+                    text = stringResource(R.string.profile_guest_title),
+                    color = HomeV3.OnSurface,
+                    fontSize = 18.sp,
+                    lineHeight = 22.sp,
+                    fontWeight = FontWeight.Bold,
                 )
                 Text(
-                    text = profile?.email?.takeIf { it.isNotBlank() }
-                        ?: stringResource(R.string.profile_header_subtitle),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-                // Conversation-count pill intentionally hidden until real data exists.
-            }
-            IconButton(onClick = onShowQr) {
-                Icon(
-                    imageVector = Icons.Filled.QrCode2,
-                    contentDescription = stringResource(R.string.profile_qr_button_content_description),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    text = stringResource(R.string.profile_guest_subtitle),
+                    color = HomeV3.OnSurfaceVariant,
+                    fontSize = 13.sp,
+                    lineHeight = 18.sp,
+                    modifier = Modifier.padding(top = 4.dp),
                 )
             }
         }
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(14.dp))
+                .background(Color(0xFF0A6CE6))
+                .clickable(onClick = onSignIn)
+                .padding(vertical = 14.dp),
+            contentAlignment = Alignment.Center,
+        ) {
+            Text(
+                text = stringResource(R.string.profile_guest_sign_in),
+                color = Color.White,
+                fontSize = 15.sp,
+                fontWeight = FontWeight.SemiBold,
+            )
+        }
+    }
+}
+
+/**
+ * The guest's way in — a purple V3 card, the existing sign-in copy and action. Shared with the
+ * V3 Settings screen (its own existing copy, `settings_sign_in_desc`): one card, two surfaces.
+ */
+@Composable
+internal fun SignInCard(onClick: () -> Unit, subtitle: String = stringResource(R.string.profile_sign_in_desc)) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(CardShape)
+            .background(Brush.linearGradient(listOf(Color(0xFF6B47E6), Color(0xFF2A1A66))))
+            .border(1.dp, Color.White.copy(alpha = 0.12f), CardShape)
+            .clickable(onClick = onClick)
+            .padding(TappySpacing.xl),
+        horizontalArrangement = Arrangement.spacedBy(TappySpacing.lg),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Box(
+            modifier = Modifier
+                .size(56.dp)
+                .clip(RoundedCornerShape(16.dp))
+                .background(Color.White.copy(alpha = 0.16f)),
+            contentAlignment = Alignment.Center,
+        ) {
+            Icon(Icons.AutoMirrored.Filled.Login, contentDescription = null, tint = Color.White, modifier = Modifier.size(28.dp))
+        }
+        Column(modifier = Modifier.weight(1f)) {
+            Text(
+                text = stringResource(R.string.settings_sign_in),
+                color = Color.White,
+                fontSize = 18.sp,
+                lineHeight = 22.sp,
+                fontWeight = FontWeight.Bold,
+            )
+            Text(
+                text = subtitle,
+                color = Color.White.copy(alpha = 0.82f),
+                fontSize = 13.sp,
+                lineHeight = 17.sp,
+                modifier = Modifier.padding(top = 2.dp),
+            )
+        }
+        ChevronDisc()
+    }
+}
+
+/** The grouped container the Account rows and the Settings row sit in: rounded, bordered, flat.
+ *  Shared with the V3 Settings screen's groups. */
+@Composable
+internal fun ProfileGroupCard(content: @Composable () -> Unit) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(CardShape)
+            .background(HomeV3.Surface)
+            .border(1.dp, HomeV3.Outline, CardShape),
+    ) { content() }
+}
+
+@Composable
+private fun ProfileV3Row(item: ProfileMenuItem, locked: Boolean, onClick: () -> Unit) {
+    ProfileV3Row(
+        icon = item.icon,
+        tint = item.tint,
+        title = item.title(),
+        // Guest: the web's locked row — "Cần đăng nhập" and a padlock, and the tap goes to sign-in.
+        subtitle = stringResource(if (locked) R.string.profile_guest_locked else item.subtitleRes),
+        locked = locked,
+        onClick = onClick,
+    )
+}
+
+/** One row: a coloured icon tile, title, one-line blurb, chevron. The whole row is the target. */
+@Composable
+private fun ProfileV3Row(icon: ImageVector, tint: Color, title: String, subtitle: String, locked: Boolean = false, onClick: () -> Unit) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClickLabel = title, onClick = onClick)
+            .padding(horizontal = TappySpacing.xl, vertical = TappySpacing.lg),
+        horizontalArrangement = Arrangement.spacedBy(TappySpacing.lg),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Box(
+            modifier = Modifier
+                .size(44.dp)
+                .clip(TileShape)
+                .background(tint.copy(alpha = 0.16f))
+                .border(1.dp, tint.copy(alpha = 0.28f), TileShape),
+            contentAlignment = Alignment.Center,
+        ) {
+            // D:/redesign "Tài khoản & Cài đặt": the icon in its colour on a dim tile of that colour.
+            Icon(imageVector = icon, contentDescription = null, tint = tint, modifier = Modifier.size(22.dp))
+        }
+        Column(modifier = Modifier.weight(1f)) {
+            Text(
+                text = title,
+                color = HomeV3.OnSurface,
+                fontSize = 16.sp,
+                lineHeight = 20.sp,
+                fontWeight = FontWeight.SemiBold,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+            Text(
+                text = subtitle,
+                color = HomeV3.OnSurfaceVariant,
+                fontSize = 13.sp,
+                lineHeight = 17.sp,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.padding(top = 1.dp),
+            )
+        }
+        Icon(
+            imageVector = if (locked) Icons.Filled.Lock else Icons.Filled.ChevronRight,
+            contentDescription = null,
+            tint = HomeV3.OnSurfaceVariant,
+            modifier = Modifier.size(if (locked) 18.dp else 22.dp),
+        )
+    }
+}
+
+/** The chevron in a translucent disc — the hero cards' way in, as on the V3 tool cards. */
+@Composable
+private fun ChevronDisc() {
+    Box(
+        modifier = Modifier
+            .size(36.dp)
+            .clip(CircleShape)
+            .background(Color.White.copy(alpha = 0.14f)),
+        contentAlignment = Alignment.Center,
+    ) {
+        Icon(Icons.Filled.ChevronRight, contentDescription = null, tint = Color.White, modifier = Modifier.size(20.dp))
     }
 }

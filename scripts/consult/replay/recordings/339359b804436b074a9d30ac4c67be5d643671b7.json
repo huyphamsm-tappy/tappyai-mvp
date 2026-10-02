@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"M Hotel\" Đà Nẵng site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:27:10.582Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"M Hotel\" Đà Nẵng site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "M Hotel Danang - Giá cả và Ưu đãi 2026, Đà Nẵng",
+    "link": "https://vn.trip.com/hotels/da-nang-hotel-detail-117011133/m-hotel-danang/",
+    "snippet": "Khách sạn M Hotel Danang rất tuyệt vời, hồ bơi vô cực trên tầng thượng trông như nối liền với biển. Mini bar miễn phí: quán bar trên bãi biển đối diện có DJ ...",
+    "position": 1
+   },
+   {
+    "title": "M Hotel Danang Đánh giá của khách",
+    "link": "https://vn.trip.com/hotels/da-nang-hotel-detail-117011133/m-hotel-danang/review.html",
+    "snippet": "Khách sạn M Hotel Danang rất tuyệt vời, hồ bơi vô cực trên tầng thượng trông như nối liền với biển. Mini bar miễn phí: quán bar trên bãi biển đối diện có DJ ...",
+    "position": 2
+   },
+   {
+    "title": "M Hotel Singapore City Centre - Giá cả và Ưu đãi 2026 ...",
+    "link": "https://vn.trip.com/hotels/singapore-hotel-detail-890394/m-hotel-singapore/",
+    "snippet": "Khách sạn M Hotel nằm trên đường Anson thuộc khu trung tâm thương mại (CBD) của Singapore, được bao quanh bởi những tòa nhà chọc trời hùng vĩ, ...",
+    "position": 3
+   },
+   {
+    "title": "M Hotel - Giá cả và Ưu đãi 2026, Trịnh Châu",
+    "link": "https://vn.trip.com/hotels/zhengzhou-hotel-detail-3664584/m-hotel/",
+    "snippet": "M Hotel Pressure-Free Sleep Garden View Villas. Pressure-Free Sleep Garden View Villas. 1 Giường queen. Có cửa sổ; Không hút thuốc; 75m²; Tầng: 6. Hiển thị giá.",
+    "position": 4
+   },
+   {
+    "title": "M Hotel Phu Quoc - Giá cả và Ưu đãi 2026, Đảo Phú Quốc",
+    "link": "https://vn.trip.com/hotels/phu-quoc-island-hotel-detail-57084129/m-hotel-phu-quoc/",
+    "snippet": "Giờ nhận phòng tại M Hotel Phu Quoc bắt đầu từ 14:00, và giờ trả phòng là 12:00. M Hotel Phu Quoc có hồ bơi không? Có, M Hotel Phu Quoc có hồ bơi cho khách.",
+    "position": 5
+   },
+   {
+    "title": "M Hotel Saigon - Giá cả và Ưu đãi 2026, TP. Hồ Chí Minh",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-hotel-detail-26583292/m-hotel-saigon/",
+    "snippet": "Giờ nhận phòng tại M Hotel Saigon bắt đầu từ 14:00, và giờ trả phòng là 12:00. M Hotel Saigon có hồ bơi không? Không, ...",
+    "position": 6
+   },
+   {
+    "title": "Các đánh giá M Hotel - Khách sạn",
+    "link": "https://vn.trip.com/hotels/kaohsiung-hotel-detail-4814269/m-hotel/review.html",
+    "snippet": "Khám phá đánh giá M Hotel thực tế từ khách du lịch. Với 300 đánh giá đã được xác thực và xếp hạng 9.1/10, bạn có thể đặt phòng với sự an tâm tuyệt đối.",
+    "position": 7
+   },
+   {
+    "title": "WARIDA M Hotel（Foshan Creative Industry Park ...",
+    "link": "https://vn.trip.com/hotels/foshan-hotel-detail-112222391/warida-m-hotel/",
+    "snippet": "Giờ nhận phòng tại WARIDA M Hotel（Foshan Creative Industry Park Wangfujing Store） bắt đầu từ 14:00, và giờ trả phòng là 12:00. WARIDA M Hotel（Foshan ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

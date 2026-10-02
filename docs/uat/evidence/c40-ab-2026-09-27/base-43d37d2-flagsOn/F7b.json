@@ -1,0 +1,147 @@
+{
+  "id": "F7b",
+  "text": "dưới 100k/người",
+  "parent": "F7",
+  "status": 200,
+  "ms": 15172,
+  "evidenceId": "dc6adf95-0bbd-4670-8a2f-027532596205",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "quán ăn tối ngon dưới 100k",
+        "location": "Quận 1, TP.HCM",
+        "type": "restaurant"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Hàng Dương Quán Quận 1",
+      "rating": 4.5,
+      "count": 723,
+      "hours": "09:00–23:30",
+      "distance_km": 0.6,
+      "address": "32-34 Ngô Đức Kế, Phường, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "NHÀ HÀNG NGON",
+      "rating": 4,
+      "count": 11428,
+      "price": "200-600 N ₫",
+      "hours": "07:30–22:30",
+      "distance_km": 0.1,
+      "address": "160 Pasteur, Quận 1, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Quán ăn ngon Sài Gòn",
+      "rating": 4.1,
+      "count": 1156,
+      "price": "100-400 N ₫",
+      "hours": "08:00–22:30",
+      "distance_km": 0.4,
+      "address": "138 Nam Kỳ Khởi Nghĩa, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Béo Ơi Quán - Món ngon Hà Nội",
+      "rating": 4.5,
+      "count": 1026,
+      "price": "100-200 N ₫",
+      "hours": "10:30–22:00",
+      "distance_km": 0.9,
+      "address": "Hẻm 15M kế bên, 15/20, hẻm phía bên tay trái!, Nguyễn Thị Minh Khai/số 17A quán cuối, Sài Gòn, Hồ Chí Minh 00084, Việt Nam"
+    },
+    {
+      "name": "Ốc Đào",
+      "rating": 4.2,
+      "count": 2472,
+      "price": "100-500 N ₫",
+      "hours": "11:00–22:15",
+      "distance_km": 2.2,
+      "address": "212B/D48 Nguyễn Trãi, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Quán Bụi Original, Sài Gòn - Authentic Vietnamese Cuisine",
+      "rating": 4.3,
+      "count": 4232,
+      "price": "200-600 N ₫",
+      "hours": "07:00–23:00",
+      "distance_km": 0.7,
+      "address": "19 Ngô Văn Năm, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Ann Quán",
+      "rating": 4.2,
+      "count": 1279,
+      "price": "100-500 N ₫",
+      "hours": "07:00–01:00",
+      "distance_km": 0.6,
+      "address": "66 Ngô Đức Kế, Phường, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Nori - Modern Izakaya",
+      "rating": 4.8,
+      "count": 2321,
+      "price": "100-600 N ₫",
+      "hours": "18:00–01:00",
+      "distance_km": 0.5,
+      "address": "114 - 114A Lý Tự Trọng, Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "A Mà Kitchen Cống Quỳnh",
+      "rating": 4.6,
+      "count": 1573,
+      "price": "200-700 N ₫",
+      "hours": "10:30–22:15",
+      "distance_km": 1.8,
+      "address": "189 Cống Quỳnh, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "RIKYU",
+      "rating": 4.9,
+      "count": 423,
+      "price": "200-600 N ₫",
+      "hours": "11:00–14:00, 17:00–22:00",
+      "distance_km": 0.7,
+      "address": "15A/12B Lê Thánh Tôn, Sài Gòn, Hồ Chí Minh 26740, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình giả sử bạn đi 1–2 người, ăn tối gần vị trí hiện tại (Quận 1).\n\nMình chọn **Nori - Modern Izakaya** cho bạn 👌\n\n**4.8⭐ (2.321 đánh giá Google Maps)**\n\nCách bạn ~0.5km, mở từ 18:00 tối nay. Mức giá 100–600k/người nên bạn có thể ăn ngon trong ngân sách dưới 100k nếu chọn các món vừa phải (ramen, donburi, appetizer).\n\n**Thay thế:** Nếu muốn ăn Việt, **Hàng Dương Quán** (4.5⭐, 723 đánh giá, cách 0.6km) cũng tốt và gần như nhau.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🍽️ Xem trên Maps - Nori\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=3421613120693832923\",\"primary\":true},{\"label\":\"📍 Xem trên Maps - Hàng Dương Quán\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=6865477283024017585\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Nori có gì ngon nhất|Quán khác gần đây|Ăn gì rẻ hơn[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "ăn gì ngon giờ"
+    },
+    {
+      "role": "assistant",
+      "content": "Để chọn đúng chỗ, mình cần biết thêm:\n• Tầm giá? (dưới 100k/người / 100–200k/người / trên 200k/người)\n• Mấy người? (1–2 người / 3–5 người / nhóm đông)\nBạn trả lời phần nào cũng được, phần còn lại mình tự giả sử và nói rõ.\n\n[FOLLOWUPS]dưới 100k/người|100–200k/người|trên 200k/người[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "dưới 100k/người"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn đi 1–2 người, ăn tối gần vị trí hiện tại (Quận 1).\n\nMình chọn **Nori - Modern Izakaya** cho bạn 👌\n\n**4.8⭐ (2.321 đánh giá Google Maps)**\n\nCách bạn ~0.5km, mở từ 18:00 tối nay. Mức giá 100–600k/người nên bạn có thể ăn ngon trong ngân sách dưới 100k nếu chọn các món vừa phải (ramen, donburi, appetizer).\n\n**Thay thế:** Nếu muốn ăn Việt, **Hàng Dương Quán** (4.5⭐, 723 đánh giá, cách 0.6km) cũng tốt và gần như nhau.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🍽️ Xem trên Maps - Nori\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=3421613120693832923\",\"primary\":true},{\"label\":\"📍 Xem trên Maps - Hàng Dương Quán\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=6865477283024017585\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Nori có gì ngon nhất|Quán khác gần đây|Ăn gì rẻ hơn[/FOLLOWUPS]"
+    }
+  ]
+}

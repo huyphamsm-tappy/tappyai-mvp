@@ -1,0 +1,84 @@
+{
+  "label": "uat4-p1-golden-71df07a-T2-rep2",
+  "base": "http://localhost:3007",
+  "calls": 2,
+  "at": "2026-09-28T01:41:59.142Z",
+  "cases": [
+    {
+      "id": "T2",
+      "group": "entertainment-imax",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 18158,
+          "usage": {
+            "promptTokens": 2850,
+            "completionTokens": 441
+          },
+          "tools": [
+            "search_places"
+          ],
+          "cards": [
+            [
+              "Cinestar Satra Quận 6",
+              "CGV Giga Mall Thủ Đức",
+              "CGV Vincom Center Đồng Khởi",
+              "CGV Vincom Thủ Đức",
+              "CGV Sư Vạn Hạnh",
+              "CGV Vincom Plaza Phan Văn Trị",
+              "Galaxy Cinema Trung Chánh",
+              "Mega GS Cinemas Lý Chính Thắng"
+            ],
+            [
+              "CGV Vincom Center Đồng Khởi",
+              "Cinestar Satra Quận 6",
+              "CGV Giga Mall Thủ Đức",
+              "CGV Vincom Thủ Đức",
+              "CGV Sư Vạn Hạnh",
+              "CGV Vincom Plaza Phan Văn Trị",
+              "Galaxy Cinema Trung Chánh",
+              "Mega GS Cinemas Lý Chính Thắng"
+            ]
+          ],
+          "dup": false,
+          "chars": 596
+        },
+        {
+          "status": 200,
+          "ms": 15370,
+          "usage": {
+            "promptTokens": 2864,
+            "completionTokens": 642
+          },
+          "tools": [
+            "search_places"
+          ],
+          "cards": [
+            [
+              "CGV Vincom Center Đồng Khởi",
+              "CGV Liberty Citypoint",
+              "CGV Vincom Plaza Phan Văn Trị",
+              "Cinestar Quốc Thanh",
+              "CGV Saigonres Nguyễn Xí",
+              "Galaxy Cinema Nguyễn Du",
+              "LOTTE Cinema Gò Vấp",
+              "BHD Star Cineplex Thảo Điền"
+            ],
+            [
+              "CGV Liberty Citypoint",
+              "CGV Vincom Center Đồng Khởi",
+              "CGV Vincom Plaza Phan Văn Trị",
+              "Cinestar Quốc Thanh",
+              "CGV Saigonres Nguyễn Xí",
+              "Galaxy Cinema Nguyễn Du",
+              "LOTTE Cinema Gò Vấp",
+              "BHD Star Cineplex Thảo Điền"
+            ]
+          ],
+          "dup": false,
+          "chars": 546
+        }
+      ]
+    }
+  ]
+}

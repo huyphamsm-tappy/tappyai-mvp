@@ -1,0 +1,596 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "quán ăn trưa ngon Da Lat",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@11.9404,108.4583,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T03:32:43.548Z",
+ "body": {
+  "searchParameters": {
+   "q": "quán ăn trưa ngon Da Lat",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@11.9404,108.4583,14z",
+   "engine": "google"
+  },
+  "ll": "@11.9403935,108.4582997,14z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Tiệm Cơm Gánh ( Tiệm Cơm Trưa Đà Lạt )",
+    "address": "175 Ba Tháng Hai, Xuân Hương - Đà Lạt, Lâm Đồng, Việt Nam",
+    "latitude": 11.9393029,
+    "longitude": 108.4302824,
+    "rating": 4.5,
+    "ratingCount": 380,
+    "type": "Nhà hàng cơm",
+    "types": [
+     "Nhà hàng cơm"
+    ],
+    "website": "https://www.facebook.com/tiemcomganhdalat.92/",
+    "phoneNumber": "+84 948 527 268",
+    "openingHours": {
+     "Thứ Ba": "10:30–15:00",
+     "Thứ Tư": "10:30–15:00",
+     "Thứ Năm": "10:30–15:00",
+     "Thứ Sáu": "10:30–15:00",
+     "Thứ Bảy": "10:30–15:00",
+     "Chủ Nhật": "10:30–15:00",
+     "Thứ Hai": "10:30–15:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmTW1HKXXrfC-i7yvCTCLDKuni2OKDNMeqYUG2VEOWP5c9jQqdq0qHK6zdzdhi_z3a8SjQ2FjiZtIK89GdJ2noUkQ5eHmfFLvBv562IJF0Me7cfBRBgQXHfrltqd34mJdLo-Y24",
+    "cid": "7741112794941942159",
+    "fid": "0x317113bcd042234b:0x6b6df512a4bee98f",
+    "placeId": "ChIJSyNC0LwTcTERj-m-pBL1bWs"
+   },
+   {
+    "position": 2,
+    "title": "Tiệm cơm ÚT HIỀN",
+    "address": "1/7, Đ. Trần Quý Cáp, Lâm Viên - Đà Lạt, Lâm Đồng 66000, Việt Nam",
+    "latitude": 11.9488301,
+    "longitude": 108.46559789999999,
+    "rating": 4.6,
+    "ratingCount": 869,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "phoneNumber": "+84 263 3791 111",
+    "openingHours": {
+     "Thứ Ba": "10:00–20:00",
+     "Thứ Tư": "10:00–20:00",
+     "Thứ Năm": "10:00–20:00",
+     "Thứ Sáu": "10:00–20:00",
+     "Thứ Bảy": "10:00–20:00",
+     "Chủ Nhật": "10:00–20:00",
+     "Thứ Hai": "10:00–20:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmjkMi1X-iE5-tvde_yE27lstGMWg4qepBMzKBDGA7dfSLrQVwtrZgx27vqwBwo4zgNzhaLzevQEmFKGzF7E0GEo7co5eNdMWbVa0hJgT8HyTiaTrhmuL3RB_Vc_1XmDjc78_Jx",
+    "cid": "14572274408263181429",
+    "fid": "0x3171131a90423119:0xca3b1e5dfa0ae475",
+    "placeId": "ChIJGTFCkBoTcTERdeQK-l0eO8o"
+   },
+   {
+    "position": 3,
+    "title": "Tiệm Ăn Rơm",
+    "address": "83 Trạng Trình, Lâm Viên - Đà Lạt, Lâm Đồng, Việt Nam",
+    "latitude": 11.9518563,
+    "longitude": 108.4586755,
+    "rating": 4.8,
+    "ratingCount": 737,
+    "type": "Quán ăn nhỏ",
+    "types": [
+     "Quán ăn nhỏ"
+    ],
+    "website": "https://www.facebook.com/profile.php?id=100093259692828&mibextid=LQQJ4d",
+    "phoneNumber": "+84 902 355 436",
+    "openingHours": {
+     "Thứ Ba": "10:30–21:00",
+     "Thứ Tư": "10:30–21:00",
+     "Thứ Năm": "10:30–21:00",
+     "Thứ Sáu": "10:30–21:00",
+     "Thứ Bảy": "10:30–21:00",
+     "Chủ Nhật": "10:30–21:00",
+     "Thứ Hai": "10:30–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkqgTWSZNoZM_ewUeHK0b2HYrxiIsSQLus3KXuDFqk_cew3Wmx1AXNQ-nNMhq5oTJ5yuMlSnjgJGx0BIVUe24NzYMdQqqbmwKDrzW2fGS0v6k6Pq8tOZg2r7R1lMcLTVsvB6LmSN3GOquXD",
+    "cid": "10459854442374027958",
+    "fid": "0x31711318a8b35efb:0x9128de3257fedab6",
+    "placeId": "ChIJ-16zqBgTcTERttr-VzLeKJE"
+   },
+   {
+    "position": 4,
+    "title": "Quán cơm Linh Đà Lạt - Sương Nguyệt Anh",
+    "address": "23 D. Sương Nguyệt Anh, Lâm Viên - Đà Lạt, Lâm Đồng 66100, Việt Nam",
+    "latitude": 11.9501636,
+    "longitude": 108.45525029999999,
+    "rating": 4.8,
+    "ratingCount": 1516,
+    "type": "Nhà hàng cơm",
+    "types": [
+     "Nhà hàng cơm",
+     "Quán ăn nhỏ",
+     "Nhà hàng",
+     "Nhà hàng Việt Nam"
+    ],
+    "website": "https://quancomlinhdalat.com/",
+    "phoneNumber": "+84 943 858 234",
+    "openingHours": {
+     "Thứ Ba": "10:30–15:00, 17:00–19:30",
+     "Thứ Tư": "10:30–15:00, 17:00–19:30",
+     "Thứ Năm": "10:30–15:00, 17:00–19:30",
+     "Thứ Sáu": "10:30–15:00, 17:00–19:30",
+     "Thứ Bảy": "10:30–15:00, 17:00–19:30",
+     "Chủ Nhật": "10:30–15:00, 17:00–19:30",
+     "Thứ Hai": "10:30–15:00, 17:00–19:30"
+    },
+    "bookingLinks": [
+     "https://www.facebook.com/quancomlinh.dalat"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnKTVX_XqBzRpDnOMbPKNxaraZZFscppYOKJQEtIVpJT4rbl6lDS_e_FfsumR5aRqtudgwTdPS1ZUYSFjB0tHYgAcc3QAsqMOXBjC8mMGiknoN3vYPGJAG7wBoLkkLLXSiy6K_6GuheQX_W",
+    "cid": "1726489612638132032",
+    "fid": "0x31711371899d6f89:0x17f5b927c5b29740",
+    "placeId": "ChIJiW-diXETcTERQJeyxSe59Rc"
+   },
+   {
+    "position": 5,
+    "title": "Tiệm cơm Hồi Đó",
+    "address": "5 Lý Nam Đế, Lâm Viên - Đà Lạt, Lâm Đồng, Việt Nam",
+    "latitude": 11.9581647,
+    "longitude": 108.4390875,
+    "rating": 4.7,
+    "ratingCount": 842,
+    "type": "Nhà hàng cơm",
+    "types": [
+     "Nhà hàng cơm",
+     "Nhà hàng Việt Nam"
+    ],
+    "website": "https://www.facebook.com/tiemcomhoido/",
+    "phoneNumber": "+84 929 394 939",
+    "openingHours": {
+     "Thứ Ba": "10:00–16:00",
+     "Thứ Tư": "10:00–16:00",
+     "Thứ Năm": "10:00–16:00",
+     "Thứ Sáu": "10:00–16:00",
+     "Thứ Bảy": "10:00–16:00",
+     "Chủ Nhật": "10:00–16:00",
+     "Thứ Hai": "10:00–16:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmpzSLHDdZFnAoX_88fRZUFOu-mO3a3GO9wPzBdKJv0nf0t_EAYav53hZvfKdUmtRY-NgfOLyhTUBJePw_VaBGAe7DZBrYKCetpbedoievScfLHf1XNekAwCxlRHArZhly3rN5OA7j2XBY",
+    "cid": "9107393337130452812",
+    "fid": "0x3171135c331733cf:0x7e63f5fcb16b874c",
+    "placeId": "ChIJzzMXM1wTcTERTIdrsfz1Y34"
+   },
+   {
+    "position": 6,
+    "title": "Cơm tiệm A Vũ",
+    "address": "20 Huyền Trân Công Chúa, Xuân Hương - Đà Lạt, Lâm Đồng, Việt Nam",
+    "latitude": 11.937618299999999,
+    "longitude": 108.42399329999999,
+    "rating": 4.2,
+    "ratingCount": 754,
+    "type": "Quán ăn nhỏ",
+    "types": [
+     "Quán ăn nhỏ"
+    ],
+    "phoneNumber": "+84 797 378 378",
+    "openingHours": {
+     "Thứ Ba": "10:30–19:00",
+     "Thứ Tư": "10:30–19:00",
+     "Thứ Năm": "10:30–19:00",
+     "Thứ Sáu": "10:30–19:00",
+     "Thứ Bảy": "10:30–19:00",
+     "Chủ Nhật": "10:30–19:00",
+     "Thứ Hai": "10:30–19:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmOvRZoHmiuEuRLIvublD_ljVwfV-b-ZlsUSFdWr4LOR-30dGWPjPg_K9cHy1nnIUumVdTXvjDZss4F1gObbUjn8RgMiCqTDXW_adqgiyiMiUT1kanXeqv5WFwXYpFM32Ye6eWC",
+    "cid": "18315047569758766945",
+    "fid": "0x31711397df67c507:0xfe2c1eba37da4761",
+    "placeId": "ChIJB8Vn35cTcTERYUfaN7oeLP4"
+   },
+   {
+    "position": 7,
+    "title": "Tiệm Cơm Hồi Nớ",
+    "address": "4 Trần Hưng Đạo, Xuân Hương - Đà Lạt, Lâm Đồng, Việt Nam",
+    "latitude": 11.9373916,
+    "longitude": 108.4473933,
+    "rating": 4.5,
+    "ratingCount": 2648,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "website": "https://www.facebook.com/TiemComHoiNo?mibextid=ZbWKwL",
+    "phoneNumber": "+84 979 189 199",
+    "openingHours": {
+     "Thứ Ba": "09:30–16:00",
+     "Thứ Tư": "09:30–16:00",
+     "Thứ Năm": "09:30–16:00",
+     "Thứ Sáu": "09:30–16:00",
+     "Thứ Bảy": "09:30–16:00",
+     "Chủ Nhật": "09:30–16:00",
+     "Thứ Hai": "09:30–16:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkf1Rq9jEtYu1PjYqWJH07v44ApIQsw1LJFrh4xhgtpTXvU4cJFpGrrBstxW2FbO9HqmxfC0xK1LoUJSESf0dNs6JNL_y7E7Jxno-jdSOa2hsclpnltrLNBEn0A52Fi8OGQTeokKg",
+    "cid": "10114570282334858058",
+    "fid": "0x317113e1bb8cf417:0x8c5e2c151e4aab4a",
+    "placeId": "ChIJF_SMu-ETcTERSqtKHhUsXow"
+   },
+   {
+    "position": 8,
+    "title": "Quán cơm ngon đà lạt",
+    "address": "42 Đường Phan Như Thạch, Xuân Hương - Đà Lạt, Lâm Đồng 66100, Việt Nam",
+    "latitude": 11.9412146,
+    "longitude": 108.43369,
+    "rating": 4,
+    "ratingCount": 109,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "website": "https://shopeefood.vn/lam-dong/quan-com-ngon-phan-dinh-phung?smtt=0.0.9%20https://bit.ly/COMNGONHAIBATRUNG",
+    "phoneNumber": "+84 978 969 413",
+    "openingHours": {
+     "Thứ Ba": "09:00–19:00",
+     "Thứ Tư": "09:00–19:00",
+     "Thứ Năm": "09:00–19:00",
+     "Thứ Sáu": "09:00–19:00",
+     "Thứ Bảy": "09:00–19:00",
+     "Chủ Nhật": "09:00–19:00",
+     "Thứ Hai": "09:00–19:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkXqut9SbqZl7_4BOF6c37TLcTS8ljIDhU-3BrJDxOVUNyQgOPinxRKJMk9X6dvRKEGb7hYsTx4k4NjlT36GJtNa6NG1HAa21M9K2ybX-e3e-ZOhmZMgSQMpUd1g45V8k4NX3SaSinswL3l",
+    "cid": "9779578224353452222",
+    "fid": "0x31711321f9793f0b:0x87b80a94a3bba0be",
+    "placeId": "ChIJCz95-SETcTERvqC7o5QKuIc"
+   },
+   {
+    "position": 9,
+    "title": "Quán cơm Linh Đà Lạt",
+    "address": "11/1 Đ. Hùng Vương, Xuân Hương - Đà Lạt, Lâm Đồng 66100, Việt Nam",
+    "latitude": 11.9414663,
+    "longitude": 108.46168999999999,
+    "rating": 4.6,
+    "ratingCount": 1576,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng",
+     "Quán ăn nhỏ",
+     "Nhà hàng cơm",
+     "Nhà hàng Việt Nam"
+    ],
+    "website": "https://quancomlinhdalat.com/",
+    "phoneNumber": "+84 963 822 234",
+    "openingHours": {
+     "Thứ Ba": "10:30–15:00, 17:00–19:30",
+     "Thứ Tư": "10:30–15:00, 17:00–19:30",
+     "Thứ Năm": "10:30–15:00, 17:00–19:30",
+     "Thứ Sáu": "10:30–15:00, 17:00–19:30",
+     "Thứ Bảy": "10:30–15:00, 17:00–19:30",
+     "Chủ Nhật": "10:30–15:00, 17:00–19:30",
+     "Thứ Hai": "10:30–15:00, 17:00–19:30"
+    },
+    "bookingLinks": [
+     "https://www.facebook.com/quancomlinh.dalat"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkXJc1xYpP31niO-AvBo-MrK0F2IEBH27zJkHWO-x2tuoCTyn4FjTsdrLsn7-Zj3sGkqCl_mbJlf6Tt0047tk-vVsnT891N6zcUioA-qmW_T1529aHv5O6CO6u5puBjQk3VG0-U",
+    "cid": "14295723504869134471",
+    "fid": "0x317113587ac079e7:0xc6649cc922ed5087",
+    "placeId": "ChIJ53nAelgTcTERh1DtIsmcZMY"
+   },
+   {
+    "position": 10,
+    "title": "Quán cơm Ngày 3 - ATISO Đà Lạt",
+    "address": "32 Đ. Nguyễn Đình Chiểu, Thành phố Đà Lạt, Lâm Đồng, Việt Nam",
+    "latitude": 11.9506318,
+    "longitude": 108.458839,
+    "rating": 4.2,
+    "ratingCount": 542,
+    "type": "Quán ăn nhỏ",
+    "types": [
+     "Quán ăn nhỏ"
+    ],
+    "phoneNumber": "+84 982 620 688",
+    "openingHours": {
+     "Thứ Ba": "09:00–20:00",
+     "Thứ Tư": "09:00–15:00",
+     "Thứ Năm": "09:00–20:00",
+     "Thứ Sáu": "09:00–20:00",
+     "Thứ Bảy": "09:00–20:00",
+     "Chủ Nhật": "09:00–20:00",
+     "Thứ Hai": "09:00–20:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlLFhobEAO4PL8pmlRhc6x_VWnRSGKJ8f3ZnK-g0FZcqXbSWojge14npXSRupWKVqOf4izy1rzRryfIp-3fmdMuo38gJrogJSooozfR0oc4cMAd0JlEQP9-Xyk28wLvAdKK8mzg0Mm15wU",
+    "cid": "9575036151228659214",
+    "fid": "0x3171131749843727:0x84e15ca61981f60e",
+    "placeId": "ChIJJzeESRcTcTERDvaBGaZc4YQ"
+   },
+   {
+    "position": 11,
+    "title": "Quán Hồi Xưa",
+    "address": "2 Đường Hà Huy Tập, Thành phố Đà Lạt, Lâm Đồng, Việt Nam",
+    "latitude": 11.9363285,
+    "longitude": 108.4408766,
+    "rating": 4.5,
+    "ratingCount": 842,
+    "type": "Nhà hàng cơm",
+    "types": [
+     "Nhà hàng cơm"
+    ],
+    "website": "http://fb.me/hoixuaquan",
+    "phoneNumber": "+84 911 220 485",
+    "openingHours": {
+     "Thứ Ba": "10:30–20:00",
+     "Thứ Tư": "10:30–20:00",
+     "Thứ Năm": "10:30–20:00",
+     "Thứ Sáu": "10:30–20:00",
+     "Thứ Bảy": "10:30–20:00",
+     "Chủ Nhật": "10:30–20:00",
+     "Thứ Hai": "10:30–20:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWm4ijndFl00O5JcSlujIrA-lt0F4Ay-1qvVtVsLsHgk69ggHkN6VkvgEKCZVRyhNjeShHzfgvdsliQsBl1KeH7OPk_2YDdA5w9eLVNzUljhaes3F-agNNttLK3S62UCKqshSRg",
+    "cid": "8001612019414957327",
+    "fid": "0x31711329e795f98f:0x6f0b6fbcbfb97d0f",
+    "placeId": "ChIJj_mV5ykTcTERD325v7xvC28"
+   },
+   {
+    "position": 12,
+    "title": "Nhà hàng MÓN NGON ĐÀ LẠT",
+    "address": "Quảng trường Lâm Viên, Xuân Hương - Đà Lạt, Lâm Đồng, Việt Nam",
+    "latitude": 11.9388116,
+    "longitude": 108.44540409999999,
+    "rating": 4.1,
+    "ratingCount": 392,
+    "type": "Nhà hàng gia đình",
+    "types": [
+     "Nhà hàng gia đình"
+    ],
+    "website": "https://www.facebook.com/monngondalat.com.vn",
+    "phoneNumber": "+84 263 3969 999",
+    "openingHours": {
+     "Thứ Ba": "07:00–22:00",
+     "Thứ Tư": "07:00–22:00",
+     "Thứ Năm": "07:00–22:00",
+     "Thứ Sáu": "07:00–22:00",
+     "Thứ Bảy": "07:00–22:00",
+     "Chủ Nhật": "07:00–22:00",
+     "Thứ Hai": "07:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnyXXlFsnP6YKApL0ZnBCT7u1YBciqSRT1phab8GDCUK-jdCJzmALD3Yj1suRwwgKUczt7UBhD6YkHwT3P2AV5Km_hUofXeYiQBTlzUwL-E85LPWXMY7e4KCXQoeLHjD7EYRM21w2jz8zI2",
+    "cid": "13570623481360592123",
+    "fid": "0x317113b0fb6cf135:0xbc548a27f312acfb",
+    "placeId": "ChIJNfFs-7ATcTER-6wS8yeKVLw"
+   },
+   {
+    "position": 13,
+    "title": "Cơm Đà Lạt",
+    "address": "141 Đường Bùi Thị Xuân, Xuân Hương - Đà Lạt, Lâm Đồng, Việt Nam",
+    "latitude": 11.9480849,
+    "longitude": 108.4394724,
+    "rating": 4.7,
+    "ratingCount": 391,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "website": "http://comngondalat.com/",
+    "phoneNumber": "+84 938 047 595",
+    "openingHours": {
+     "Thứ Ba": "09:00–21:00",
+     "Thứ Tư": "09:00–21:00",
+     "Thứ Năm": "09:00–21:00",
+     "Thứ Sáu": "09:00–21:00",
+     "Thứ Bảy": "09:00–21:00",
+     "Chủ Nhật": "09:00–21:00",
+     "Thứ Hai": "09:00–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnm3-tKNZ98iQCJyAYn6Er2Gpouv9r24k1HAGjQoGQ2hoBqUuQFWfpcZjzko4A2ZI6W7-omZJM6bUm5sLkjmFFg-jfgXcJPVZBIw-YS5CoN7M91eL1v1vttwlUf0nadQhMColk",
+    "cid": "9746762249532755143",
+    "fid": "0x31711327e12bc353:0x874374a019964cc7",
+    "placeId": "ChIJU8Mr4ScTcTERx0yWGaB0Q4c"
+   },
+   {
+    "position": 14,
+    "title": "QUÁN ĂN LONG PHÁT: CƠM TRƯA 35k CƠM CHIÊN PHỞ XÀO MÌ XÀO",
+    "address": "25 Đ. Mai Hắc Đế, Cam Ly - Đà Lạt, Lâm Đồng 670000, Việt Nam",
+    "latitude": 11.947100899999999,
+    "longitude": 108.4295492,
+    "rating": 4.8,
+    "ratingCount": 289,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "phoneNumber": "+84 355 005 225",
+    "openingHours": {
+     "Thứ Ba": "10:00–21:00",
+     "Thứ Tư": "10:00–21:00",
+     "Thứ Năm": "10:00–21:00",
+     "Thứ Sáu": "10:00–21:00",
+     "Thứ Bảy": "10:00–21:00",
+     "Chủ Nhật": "10:00–21:00",
+     "Thứ Hai": "10:00–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWl_EJZ5OhgkQN7rdX7z7ysi7GYgm-zjP8FS3U2VCuD4OUtuPt4V1Uor5LsjdWtfXF_9hrsxiE89mB1Y2i1uNkKK2nAsgo7oJnD_x1b9pJE3iIFAGKGzFabsGk1eLjg1q03OZiQ",
+    "cid": "6931303842147374483",
+    "fid": "0x317113b82c17a02d:0x6030f01eed7e9593",
+    "placeId": "ChIJLaAXLLgTcTERk5V-7R7wMGA"
+   },
+   {
+    "position": 15,
+    "title": "Cơm tấm bì tươi Đà Lạt - Ngon",
+    "address": "11A Đ. Trần Nhật Duật, Cam Ly - Đà Lạt, Lâm Đồng 660000, Việt Nam",
+    "latitude": 11.9434785,
+    "longitude": 108.42873759999999,
+    "rating": 4.6,
+    "ratingCount": 25,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "website": "https://comtamdalat.com/",
+    "phoneNumber": "+84 937 822 246",
+    "openingHours": {
+     "Thứ Ba": "10:00–19:00",
+     "Thứ Tư": "10:00–19:00",
+     "Thứ Năm": "10:00–19:00",
+     "Thứ Sáu": "10:00–19:00",
+     "Thứ Bảy": "10:00–19:00",
+     "Chủ Nhật": "10:00–19:00",
+     "Thứ Hai": "10:00–19:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkcaDPOj5G_ZE_uAqxFUYvukwPrihq31pDa6yh5Kz-Mpnfm72scNtEQ14qS_xvRV3NgeH0vZjLzv5iu07djxL_o1KyIrhE_elWsevdJG4tAyrS9rQNYkPB-Nz7D4efADdWQsBIX3OIHO9A",
+    "cid": "6215895482254879083",
+    "fid": "0x317113f60756026d:0x56434c0204c1e96b",
+    "placeId": "ChIJbQJWB_YTcTERa-nBBAJMQ1Y"
+   },
+   {
+    "position": 16,
+    "title": "Cơm Lá Chuối",
+    "address": "23/2 Đ. Trần Phú, Xuân Hương - Đà Lạt, Lâm Đồng 670000, Việt Nam",
+    "latitude": 11.936123799999999,
+    "longitude": 108.43505189999999,
+    "rating": 4.1,
+    "ratingCount": 914,
+    "type": "Nhà hàng Việt Nam",
+    "types": [
+     "Nhà hàng Việt Nam"
+    ],
+    "website": "https://shorten.asia/93zaq648",
+    "phoneNumber": "+84 263 6511 500",
+    "openingHours": {
+     "Thứ Ba": "10:30–20:00",
+     "Thứ Tư": "10:30–20:00",
+     "Thứ Năm": "10:30–20:00",
+     "Thứ Sáu": "10:30–20:00",
+     "Thứ Bảy": "10:30–20:00",
+     "Chủ Nhật": "10:30–20:00",
+     "Thứ Hai": "10:30–20:00"
+    },
+    "bookingLinks": [
+     "https://www.facebook.com/ComBoKeQuan/"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWme4UGggYxTHNyOariZtSgU0mHU6GyTjvX_szfQv36_FfCU8WgGvRawO3BlQx-TvRdJqjERr7aA3wQLMZSJ-DewbP3m__HM19CWTFaeDlc8dqQfGWiyMbv5hS7J5P2nM-eYH1c",
+    "cid": "860580889334578658",
+    "fid": "0x317113512221b53f:0xbf165c26146fde2",
+    "placeId": "ChIJP7UhIlETcTER4v1GYcJl8Qs"
+   },
+   {
+    "position": 17,
+    "title": "Cơm Niêu Ba Mẹ Con",
+    "address": "1C Hoàng Hoa Thám, Xuân Hương - Đà Lạt, Lâm Đồng 66000, Việt Nam",
+    "latitude": 11.9404097,
+    "longitude": 108.463241,
+    "rating": 4.7,
+    "ratingCount": 5837,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "phoneNumber": "+84 784 842 988",
+    "openingHours": {
+     "Thứ Ba": "10:30–20:30",
+     "Thứ Tư": "10:30–20:30",
+     "Thứ Năm": "10:30–20:30",
+     "Thứ Sáu": "10:30–20:30",
+     "Thứ Bảy": "10:30–20:30",
+     "Chủ Nhật": "10:30–20:30",
+     "Thứ Hai": "10:30–20:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnj-Or6a0jBJxfEeKs2h_xvHbMq0YnkaKTTG5BpZxkKGRr69FbG_CTeMsvCjPDvezPM2cze9FyjXrcO9BDuUMNB_ns6rsp9BHNtcS3sL6XWS4vbVbqrv8N5zmVAqYwk8j5U_nRze_VhgvUC",
+    "cid": "265214587116564155",
+    "fid": "0x31711356b6cc555d:0x3ae3b430655aebb",
+    "placeId": "ChIJXVXMtlYTcTERu65VBkM7rgM"
+   },
+   {
+    "position": 18,
+    "title": "Cơm Niêu Vĩnh Ký",
+    "address": "3G Nam Kỳ Khởi Nghĩa, Xuân Hương - Đà Lạt, Lâm Đồng 670000, Việt Nam",
+    "latitude": 11.9417747,
+    "longitude": 108.4358745,
+    "rating": 4.7,
+    "ratingCount": 965,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "website": "https://www.facebook.com/share/1BGg3UcHvU/?mibextid=wwXIfr",
+    "phoneNumber": "+84 961 049 968",
+    "openingHours": {
+     "Thứ Ba": "08:30–22:00",
+     "Thứ Tư": "08:30–22:00",
+     "Thứ Năm": "08:30–22:00",
+     "Thứ Sáu": "08:30–22:00",
+     "Thứ Bảy": "08:30–22:00",
+     "Chủ Nhật": "08:30–22:00",
+     "Thứ Hai": "08:30–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmFm0GRE_WR3qlzVfJoPbZ67Y-8K2csg74tWOqnsdBpeMlHQTRm0hNlNsN2YPHO-deEubJflLsywHGQSQeHd82qXjrglRD3Cb2H1P_xxj22vwGFVw9vvoA7kA9-GHxWtzRVeRt1oDikhQTa",
+    "cid": "16999052158862354614",
+    "fid": "0x317113c4c397c1fb:0xebe8c3dfa753e8b6",
+    "placeId": "ChIJ-8GXw8QTcTERtuhTp9_D6Os"
+   },
+   {
+    "position": 19,
+    "title": "Hương Quán Đà Lạt",
+    "address": "47B Trần Bình Trọng, Cam Ly - Đà Lạt, Lâm Đồng 67000, Việt Nam",
+    "latitude": 11.942986,
+    "longitude": 108.42576869999999,
+    "rating": 4.1,
+    "ratingCount": 1257,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "phoneNumber": "+84 896 133 299",
+    "openingHours": {
+     "Thứ Ba": "09:00–22:00",
+     "Thứ Tư": "09:00–22:00",
+     "Thứ Năm": "09:00–22:00",
+     "Thứ Sáu": "09:00–22:00",
+     "Thứ Bảy": "09:00–22:00",
+     "Chủ Nhật": "09:00–22:00",
+     "Thứ Hai": "09:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlx1qVNdkMTFYd5KATYY3zaAqtnLqnvYXR4WeLO1uYxx8e5E5pviiELFtfMSaDbwyftV8ToW-_ToM7wgjmlrJB255-BSZLys0PXZqlAeaPBkdYJhIsKG2u46HF_1u5HM-ZRLLGgL5ur_UQ",
+    "cid": "13228429912362154322",
+    "fid": "0x31716d39b6cfbfb7:0xb794d2eb067f7952",
+    "placeId": "ChIJt7_PtjltcTERUnl_BuvSlLc"
+   },
+   {
+    "position": 20,
+    "title": "Cơm Niêu Đèn Lồng Đà Lạt",
+    "address": "79 Đường Bùi Thị Xuân, Xuân Hương - Đà Lạt, Lâm Đồng 670000, Việt Nam",
+    "latitude": 11.9459203,
+    "longitude": 108.43925089999999,
+    "rating": 4,
+    "ratingCount": 421,
+    "type": "Nhà hàng gia đình",
+    "types": [
+     "Nhà hàng gia đình"
+    ],
+    "phoneNumber": "+84 944 511 119",
+    "openingHours": {
+     "Thứ Ba": "09:00–21:00",
+     "Thứ Tư": "09:00–21:00",
+     "Thứ Năm": "09:00–21:00",
+     "Thứ Sáu": "09:00–21:00",
+     "Thứ Bảy": "09:00–21:00",
+     "Chủ Nhật": "09:00–21:00",
+     "Thứ Hai": "09:00–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkhPRQfIaAnoWce3TCo_uybBkGJaE82LCTrduIlm2fX_TojDF8AYa0O8qCXKUXn99mcJTJcRsEmNgu4en254BdnYwACiol00US3IpJXJbrOrzN5ue0j02TyL19OYz0cCf_VTNYj",
+    "cid": "12113521890969294306",
+    "fid": "0x3171131bed2513b3:0xa81bdffaca2495e2",
+    "placeId": "ChIJsxMl7RsTcTER4pUkyvrfG6g"
+   }
+  ],
+  "credits": 3
+ }
+}

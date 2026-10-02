@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"UAG Monarch Pro Case iPhone 17\" (site:dienmayxanh.com OR site:cellphones.com.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T19:18:37.267Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"UAG Monarch Pro Case iPhone 17\" (site:dienmayxanh.com OR site:cellphones.com.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

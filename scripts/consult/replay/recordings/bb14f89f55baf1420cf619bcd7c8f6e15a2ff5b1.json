@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Dell 15 DC15250 Core i5-1334U site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:54:28.575Z",
+ "body": {
+  "searchParameters": {
+   "q": "Dell 15 DC15250 Core i5-1334U site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Laptop Dell 15 DC15250 - 71092479 (i5-1334U/ 16GB/ 512GB",
+    "link": "https://www.lazada.vn/products/laptop-dell-15-dc15250-71092479-i5-1334u-16gb-512gb-windows-11-home-office-microsoft-bao-hanh-12-thang-i13372652041.html?srsltid=AU7gw4UHT09uOPlF9JGIro9MAagyePv0sxdh95ZxhFLAMpGq1yOp1qpJ",
+    "snippet": "Mô tả sản phẩm. CPU: Intel Core i5-1334U (1.3 GHz - 4.6GHz/ 12MB/ 10 nhân, 12 luồng) RAM: 1 x 16GB 4400MHz DDR5 (Hỗ trợ tối đa 32GB)",
+    "position": 1
+   },
+   {
+    "title": "Laptop Dell 15 DC15250 I5-1334U 8GB SSD 512GB 15.6 FHD ...",
+    "link": "https://www.lazada.vn/products/pdp-i13431218953.html?srsltid=AU7gw4X37bpMUDqyKmbsV0HUaoENwhdTu640LPCjUtgMk-ZsnmESaPWw",
+    "snippet": "THÔNG SỐ KỸ THUẬT- CPU: Intel Core i5-1334U (10 nhân/12 luồng, up to 4.6GHz, 12MB Smart Cache)- GPU: Intel UHD Graphics- RAM: 8GB DDR4 - Lưu trữ: SSD 512GB ...",
+    "position": 2
+   },
+   {
+    "title": "Máy tính xách tay Dell 15 DC15250 (i5-1334U, 16GB, 512GB ...",
+    "link": "https://www.lazada.vn/products/pdp-i2476320950.html?srsltid=AU7gw4W9H-VhOrSqnk64Yg6NKm0Gxh6VeGhIwE_sBCYPckADXiFjLKgD",
+    "snippet": "Intel® Raptor Lake Core™ i5 _ 1334U Processor (12M Cache, Up to 4.60 GHz, 10 Cores 12 Threads). Memory. 16GB DDr5 Bus 4400Mhz (2 Slot, 16GB x 01, Max 64GB Ram).",
+    "position": 3
+   },
+   {
+    "title": "Laptop Dell 15 DC15250-DC5I7952W1 (i7-1355U/ 16GB/ 512GB",
+    "link": "https://h5.lazada.vn/products/laptop-dell-15-dc15250-dc5i7952w1-i7-1355u-16gb-512gb-win-11-home-sl-office-microsoft-bao-hanh-12-thang-i13373262600-s116942126937.html",
+    "snippet": "Mô tả sản phẩm. CPU: Intel® Core™ i7-1355U (1.7 GHz - 5.0 GHz/ 12MB/ 10 nhân, 12 luồng). RAM: 1 x 16GB 4400MHz DDR5 (Hỗ trợ tối đa 16GB).",
+    "position": 4
+   },
+   {
+    "title": "Laptop Dell 15 DC15255 - X9YM41 (Ryzen 7 7730U/ ...",
+    "link": "https://www.lazada.vn/products/laptop-dell-15-dc15255-x9ym41-ryzen-7-7730u-radeon-graphics-16gb-1tb-windows-11-office-bao-hanh-12-thang-i3207433959-s15330913306.html?from_gmc=1&fl_tag=1&srsltid=AU7gw4WUco8MKLEnCCOBcB6i_cozG3Rd1NzVxDwGUH7DoDF_TN1BIoYb",
+    "snippet": "1. Hiệu năng mạnh mẽ từ AMD Ryzen 7 7730U · 2. Thiết kế thanh lịch và di động · 3. Màn hình 120Hz Full HD cho trải nghiệm mượt mà · 4. Bàn phím tiện dụng và đầy đủ ...",
+    "position": 5
+   },
+   {
+    "title": "MÁY TÍNH XÁCH TAY(NB) LENOVO ThinkPad E14 Gen 7 Core ...",
+    "link": "https://h5.lazada.vn/products/may-tinh-xach-taynb-lenovo-thinkpad-e14-gen-7-core-7-240h16gd5512gss-d140wuxgafpirwlbt3c48noosledkb2yden21t90021va-i2306107810-s11207416540.html",
+    "snippet": "Máy tính xách tay Dell 15 DC15250 (i5-1334U, 16GB, 512GB SSD. 23.450.000 ₫. Ưu ... Intel® Core 7 240H, 10C (6P + 4E) / 16T, P-core 2.5 / 5.2GHz, E-core 1.8 / 4.0 ...",
+    "position": 6
+   },
+   {
+    "title": "MÁY TÍNH XÁCH TAY(NB) LENOVO V15 G5 IRL i5-13420H/ ...",
+    "link": "https://h5.lazada.vn/products/may-tinh-xach-taynb-lenovo-v15-g5-irl-i5-13420h16gd5512gssd156fhdwlbt3c47noos2yxam83hf00bsva-i2474475618-s12117442011.html",
+    "snippet": "Máy tính xách tay Dell 15 DC15250 (i5-1334U, 16GB, 512GB SSD. 23.450.000 ₫ · Máy tính xách tay Lenovo ThinkPad E16 Gen 3 Intel: 16 WUXGA_60Hz, CORE_U7_255H,.",
+    "position": 7
+   },
+   {
+    "title": "SSD 256GB NVMe PCIe Lexar NM620 M.2 2280 Hàng ...",
+    "link": "https://www.lazada.vn/products/ssd-256gb-nvme-pcie-lexar-nm620-m2-2280-hang-chinh-hang-i2080456531.html?srsltid=AU7gw4W2y9xgs13V2YkVOvPOaCWb7QwZNf0uqcCXX3S0AmL0N8hea5lu",
+    "snippet": "SSD 256GB NVMe PCIe Lexar NM620 M.2 2280 chính hãng, nhanh chóng và hiệu suất cao đặc biệt phù hợp cho hệ thống Dell. Thiết kế nhỏ gọn, tương thích tốt với ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

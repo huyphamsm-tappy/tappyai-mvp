@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"SPA AN YÊN\" OR \"Massage Tân Thủ Đô Hai\" OR \"Phiếu massage｜Ga tàu điện ngầm Nanjing Fuxing\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:30:42.117Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"SPA AN YÊN\" OR \"Massage Tân Thủ Đô Hai\" OR \"Phiếu massage｜Ga tàu điện ngầm Nanjing Fuxing\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "My Anh Beauty Spa: An Yên Giữa Cuộc Sống",
+    "link": "https://www.tiktok.com/@daotaonghespa.hcm/video/7631463840366234900",
+    "snippet": "My Anh Beauty Spa: An Yên Giữa Cuộc Sống. Nếu cuộc sống cả đời không rực rỡ, bạn có thể đến My Anh Beauty Spa để tận hưởng những phút giây an ...",
+    "position": 1
+   },
+   {
+    "title": "Trải nghiệm thư giãn tại Spa An Yên Hà Nội",
+    "link": "https://www.tiktok.com/@dicungpii/photo/7488942001480617222?image_index=8",
+    "snippet": "Trải nghiệm thư giãn tại Spa An Yên Hà Nội. Khám phá dịch vụ spa chất lượng tại An Yên, địa chỉ lý tưởng để thư giãn và làm đẹp. #spa ...",
+    "position": 2
+   },
+   {
+    "title": "Spa An Yên Holistic Healing Spa: Không gian chữa lành từ ...",
+    "link": "https://www.tiktok.com/@nhatkyhanhtrinhanyen/photo/7510785607908592903",
+    "snippet": "Spa An Yên Holistic Healing Spa: Không gian chữa lành từ trái tim. An Yên Holistic Healing Spa là không gian chữa lành được xây dựng bằng tâm ...",
+    "position": 3
+   },
+   {
+    "title": "Sau 1 tuần thực hiện KHỬ TUYẾN MỒ HÔI NÁCH 🏓 ...",
+    "link": "https://www.tiktok.com/@hongha.anyenbeauty/video/7663389773620448533",
+    "snippet": "Video TikTok từ Cái tiệm spa An Yên (@hongha.anyenbeauty): \"Sau 1 tuần thực hiện KHỬ TUYẾN MỒ HÔI NÁCH #khumohoinach #mohoinach #spa #bienhoa\".âm thanh ...",
+    "position": 4
+   },
+   {
+    "title": "THƯ GIÃN ĐÚNG NGHĨA VÀ \"SẠC\" LẠI NĂNG LƯỢNG",
+    "link": "https://www.tiktok.com/@hongha.anyenbeauty/video/7585500425596439828",
+    "snippet": "200 Lượt thích,Video TikTok từ Cái tiệm spa An Yên (@hongha.anyenbeauty): \"THƯ GIÃN ĐÚNG NGHĨA VÀ \"SẠC\" LẠI NĂNG LƯỢNG ...",
+    "position": 5
+   },
+   {
+    "title": "Thông Báo Lịch Nghỉ Tết Xuân Bính Ngọ 2026 Tại Spa An ...",
+    "link": "https://www.tiktok.com/@loanmy71/photo/7606582002355064084?lang=ko-KR",
+    "snippet": "Chúng tôi sẽ nghỉ từ 14/2. Đừng bỏ lỡ! #Tết2026 #SpaAnYên. Keywords: lịch nghỉ Tết 2026,Spa An Yên,thời gian nghỉ Tết,thông báo lịch nghỉ,dịp ...",
+    "position": 6
+   },
+   {
+    "title": "#CapCut Thế giới nhỏ của mẹ đi ngắm thế giới to 🥰",
+    "link": "https://www.tiktok.com/@hongha.anyenbeauty/video/7685689418669362453",
+    "snippet": "35 Lượt thích,Video TikTok từ Cái tiệm spa An Yên (@hongha.anyenbeauty): \"#CapCut Thế giới nhỏ của mẹ đi ngắm thế giới to \".âm thanh gốc ...",
+    "position": 7
+   },
+   {
+    "title": "Massage chân An Yên ở Đà Lạt: trải nghiệm spa, vườn ...",
+    "link": "https://www.tiktok.com/@cobidimassage/video/7663816756250840341",
+    "snippet": "... spa An Yên Đà Lạt. Đây là bản tóm tắt nội dung do AI tạo và không nhằm mục đích cung cấp ngữ cảnh thực tế. Nếu bạn cho rằng tóm tắt có thể có ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

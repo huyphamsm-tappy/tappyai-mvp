@@ -1,0 +1,219 @@
+{
+  "label": "prelaunch-after-B4",
+  "base": "http://localhost:3007",
+  "calls": 7,
+  "at": "2026-09-24T17:25:51.986Z",
+  "cases": [
+    {
+      "id": "T1",
+      "group": "travel-multiturn",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 41089,
+          "tools": [
+            "search_places",
+            "search_places",
+            "get_weather",
+            "get_flight_prices"
+          ],
+          "cards": [
+            [
+              "Hải Sản Ku Tom Đà Nẵng",
+              "Buffet Hải Sản Đà Nẵng Mr Mộc",
+              "Mộc quán Seafood Đà Nẵng",
+              "Thèm Hải Sản",
+              "Nhà Hàng Hải Sản - Ơ Kìa",
+              "ĐÀ THÀNH QUÁN",
+              "Hải Sản Đà Nẵng Bé Biển",
+              "Quán Hải Sản Thời Cổ Đà Nẵng - Seafood Restaurant"
+            ],
+            [
+              "Nhà Hàng Hải Sản - Ơ Kìa",
+              "Hải Sản Ku Tom Đà Nẵng",
+              "Buffet Hải Sản Đà Nẵng Mr Mộc",
+              "Mộc quán Seafood Đà Nẵng",
+              "Thèm Hải Sản",
+              "ĐÀ THÀNH QUÁN",
+              "Hải Sản Đà Nẵng Bé Biển",
+              "Quán Hải Sản Thời Cổ Đà Nẵng - Seafood Restaurant"
+            ]
+          ],
+          "dup": false,
+          "chars": 901
+        },
+        {
+          "status": 200,
+          "ms": 46850,
+          "tools": [
+            "get_flight_prices",
+            "search_places",
+            "search_places",
+            "get_hotel_prices",
+            "get_weather"
+          ],
+          "cards": [
+            [
+              "Hải Sản Ku Tom Đà Nẵng",
+              "Buffet Hải Sản Đà Nẵng Mr Mộc",
+              "Mộc quán Seafood Đà Nẵng",
+              "Thèm Hải Sản",
+              "Nhà Hàng Hải Sản - Ơ Kìa",
+              "ĐÀ THÀNH QUÁN",
+              "Hải Sản Đà Nẵng Bé Biển",
+              "Quán Hải Sản Thời Cổ Đà Nẵng - Seafood Restaurant"
+            ],
+            [
+              "Hải Sản Ku Tom Đà Nẵng",
+              "Buffet Hải Sản Đà Nẵng Mr Mộc",
+              "Mộc quán Seafood Đà Nẵng",
+              "Thèm Hải Sản",
+              "Nhà Hàng Hải Sản - Ơ Kìa",
+              "ĐÀ THÀNH QUÁN",
+              "Hải Sản Đà Nẵng Bé Biển",
+              "Quán Hải Sản Thời Cổ Đà Nẵng - Seafood Restaurant"
+            ]
+          ],
+          "dup": false,
+          "chars": 783
+        },
+        {
+          "status": 200,
+          "ms": 45727,
+          "tools": [
+            "search_places",
+            "search_places",
+            "get_hotel_prices",
+            "get_flight_prices"
+          ],
+          "cards": [
+            [
+              "Yarra Ocean Suites Danang",
+              "M Hotel Da Nang",
+              "Seahorse",
+              "Seahorse Signature Da Nang Hotel By Sujet of Haviland",
+              "NALOD ĐÀ NẴNG - KHÁCH SẠN & TRUNG TÂM HỘI NGHỊ",
+              "Sala Danang Beach Hotel",
+              "Nhu Minh Plaza Danang Hotel",
+              "Khách sạn Novotel Đà Nẵng"
+            ],
+            [
+              "Yarra Ocean Suites Danang",
+              "M Hotel Da Nang",
+              "Seahorse",
+              "Seahorse Signature Da Nang Hotel By Sujet of Haviland",
+              "NALOD ĐÀ NẴNG - KHÁCH SẠN & TRUNG TÂM HỘI NGHỊ",
+              "Sala Danang Beach Hotel",
+              "Nhu Minh Plaza Danang Hotel",
+              "Khách sạn Novotel Đà Nẵng"
+            ]
+          ],
+          "dup": true,
+          "chars": 954
+        }
+      ]
+    },
+    {
+      "id": "G4a",
+      "group": "over-clarifying",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 45773,
+          "tools": [
+            "get_hotel_prices",
+            "search_places",
+            "search_places",
+            "get_weather",
+            "get_transport_options"
+          ],
+          "cards": [
+            [
+              "Tiệm ăn Đà Lạt Phố - Restaurant",
+              "Nhà Hàng Hải Sản Đại Dương - Đà Lạt",
+              "LẨU GHẸ KIM CHI SINCE 2016 - KHÔNG CÓ CHI NHÁNH TẠI ĐÀ LẠT.",
+              "Nhà hàng Bích Câu 3 - Đà Lạt",
+              "Hải Sản Anh Đức",
+              "Hải sản Bé Tân - Chi nhánh Đà Lạt",
+              "Nhà Hàng Hải Sản ĐÀ LẠT GOLF",
+              "Hải sản tươi sống Mỹ Yến dalat"
+            ],
+            [
+              "Nhà hàng Bích Câu 3 - Đà Lạt",
+              "Tiệm ăn Đà Lạt Phố - Restaurant",
+              "Nhà Hàng Hải Sản Đại Dương - Đà Lạt",
+              "LẨU GHẸ KIM CHI SINCE 2016 - KHÔNG CÓ CHI NHÁNH TẠI ĐÀ LẠT.",
+              "Hải Sản Anh Đức",
+              "Hải sản Bé Tân - Chi nhánh Đà Lạt",
+              "Nhà Hàng Hải Sản ĐÀ LẠT GOLF",
+              "Hải sản tươi sống Mỹ Yến dalat"
+            ]
+          ],
+          "dup": false,
+          "chars": 1081
+        }
+      ]
+    },
+    {
+      "id": "B4",
+      "group": "budget-subject-reset-plan",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 14109,
+          "tools": [
+            "search_products"
+          ],
+          "cards": [],
+          "dup": false,
+          "chars": 445
+        },
+        {
+          "status": 200,
+          "ms": 13667,
+          "tools": [
+            "search_products"
+          ],
+          "cards": [],
+          "dup": false,
+          "chars": 745
+        },
+        {
+          "status": 200,
+          "ms": 31097,
+          "tools": [
+            "get_hotel_prices",
+            "search_places",
+            "search_places",
+            "search_places",
+            "get_weather"
+          ],
+          "cards": [
+            [
+              "QUÁN ỐC HẢI SẢN SƯƠNG",
+              "Nhà hàng hải sản La Sirena",
+              "BOHO Restaurant",
+              "Nhà hàng Gành Hào 1",
+              "Hải Sản Bờ Biển",
+              "NaKa buffet Hải sản",
+              "Nhà Hàng Gành Hào 2",
+              "Ốc Biển Tự Nhiên"
+            ],
+            [
+              "QUÁN ỐC HẢI SẢN SƯƠNG",
+              "Nhà hàng hải sản La Sirena",
+              "BOHO Restaurant",
+              "Nhà hàng Gành Hào 1",
+              "Hải Sản Bờ Biển",
+              "NaKa buffet Hải sản",
+              "Nhà Hàng Gành Hào 2",
+              "Ốc Biển Tự Nhiên"
+            ]
+          ],
+          "dup": false,
+          "chars": 817
+        }
+      ]
+    }
+  ]
+}

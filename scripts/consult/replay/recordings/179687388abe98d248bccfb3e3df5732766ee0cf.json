@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Gội đầu dưỡng sinh kiểu Việt Hoa SPA",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T19:23:06.773Z",
+ "body": {
+  "searchParameters": {
+   "q": "Gội đầu dưỡng sinh kiểu Việt Hoa SPA",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Gội đầu dưỡng sinh kiểu Việt Hoa SPA - Klook",
+    "imageUrl": "https://res.klook.com/images/fl_lossy.progressive,q_65/c_fill,w_1295,h_1726/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/ok1nhduvmu8w9xnmo9fj/HoaSpa-Tr%E1%BA%A3inghi%E1%BB%87mg%E1%BB%99i%C4%91%E1%BA%A7uki%E1%BB%83uVi%E1%BB%87t(Gat%C3%A0u%C4%91i%E1%BB%87nng%E1%BA%A7mZhongxiaoDunhua).jpg",
+    "imageWidth": 1295,
+    "imageHeight": 1726,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRPubCZgylYPk58Md-9mjl4TQTWX1ChNg8vd9mz4JTV0w&s",
+    "thumbnailWidth": 194,
+    "thumbnailHeight": 259,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/159097-flower-spa-vietnamese-hair-wash/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Ffl_lossy.progressive%2Cq_65%2Fc_fill%2Cw_1295%2Ch_1726%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fok1nhduvmu8w9xnmo9fj%2FHoaSpa-Tr%25E1%25BA%25A3inghi%25E1%25BB%2587mg%25E1%25BB%2599i%25C4%2591%25E1%25BA%25A7uki%25E1%25BB%2583uVi%25E1%25BB%2587t(Gat%25C3%25A0u%25C4%2591i%25E1%25BB%2587nng%25E1%25BA%25A7mZhongxiaoDunhua).jpg&tbnid=8g7v7GttEw5kgM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F159097-flower-spa-vietnamese-hair-wash%2F&docid=Ak0_980FD6r-FM&w=1295&h=1726",
+    "position": 1
+   },
+   {
+    "title": "Gội đầu dưỡng sinh kiểu Việt Hoa SPA - Klook",
+    "imageUrl": "https://res.klook.com/image/upload/w_750,h_469,c_fill,q_85/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/gen5umqoe3es3bbkja8d.jpg",
+    "imageWidth": 750,
+    "imageHeight": 469,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSobjrLkTNB8Se1ZN7gq_2IkohxKuQ7EyfBl2z_7fIa0w&s",
+    "thumbnailWidth": 284,
+    "thumbnailHeight": 177,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/159097-flower-spa-vietnamese-hair-wash/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimage%2Fupload%2Fw_750%2Ch_469%2Cc_fill%2Cq_85%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fgen5umqoe3es3bbkja8d.jpg&tbnid=U4tTNTIL2UPq9M&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F159097-flower-spa-vietnamese-hair-wash%2F&docid=Ak0_980FD6r-FM&w=750&h=469",
+    "position": 2
+   },
+   {
+    "title": "Gội đầu dưỡng sinh kiểu Việt Hoa SPA - Klook",
+    "imageUrl": "https://res.klook.com/images/fl_lossy.progressive,q_65/c_fill,w_1295,h_971/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/ctn2c57yvkhx9hxzbo1u/HoaSpa-Tr%E1%BA%A3inghi%E1%BB%87mg%E1%BB%99i%C4%91%E1%BA%A7uki%E1%BB%83uVi%E1%BB%87t(Gat%C3%A0u%C4%91i%E1%BB%87nng%E1%BA%A7mZhongxiaoDunhua).jpg",
+    "imageWidth": 1295,
+    "imageHeight": 971,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQxcD7AkpzG5-dZKjhIaX5Q3v9kyMbrLC0Z_ueKE77zA&s",
+    "thumbnailWidth": 259,
+    "thumbnailHeight": 194,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/159097-flower-spa-vietnamese-hair-wash/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Ffl_lossy.progressive%2Cq_65%2Fc_fill%2Cw_1295%2Ch_971%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fctn2c57yvkhx9hxzbo1u%2FHoaSpa-Tr%25E1%25BA%25A3inghi%25E1%25BB%2587mg%25E1%25BB%2599i%25C4%2591%25E1%25BA%25A7uki%25E1%25BB%2583uVi%25E1%25BB%2587t(Gat%25C3%25A0u%25C4%2591i%25E1%25BB%2587nng%25E1%25BA%25A7mZhongxiaoDunhua).jpg&tbnid=Atb5ohZ6sJVcmM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F159097-flower-spa-vietnamese-hair-wash%2F&docid=Ak0_980FD6r-FM&w=1295&h=971",
+    "position": 3
+   },
+   {
+    "title": "Gội đầu dưỡng sinh kiểu Việt Hoa SPA - Klook",
+    "imageUrl": "https://res.klook.com/image/upload/w_750,h_469,c_fill,q_85/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/g2ld6pmtdzt63gfm9ktr.jpg",
+    "imageWidth": 750,
+    "imageHeight": 469,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQh7twAb42r5IQi7CLwckKbxxMJ94fJ0P_m2C9SDic_UA&s",
+    "thumbnailWidth": 284,
+    "thumbnailHeight": 177,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/159097-flower-spa-vietnamese-hair-wash/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimage%2Fupload%2Fw_750%2Ch_469%2Cc_fill%2Cq_85%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fg2ld6pmtdzt63gfm9ktr.jpg&tbnid=yPsXq9PGtqC7NM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F159097-flower-spa-vietnamese-hair-wash%2F&docid=Ak0_980FD6r-FM&w=750&h=469",
+    "position": 4
+   },
+   {
+    "title": "Gội đầu dưỡng sinh kiểu Việt Hoa SPA - Klook",
+    "imageUrl": "https://res.klook.com/image/upload/w_750,h_469,c_fill,q_85/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/sht7tdrrp3vbznyuvcgv.jpg",
+    "imageWidth": 750,
+    "imageHeight": 469,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgV--KjDB_U8rO2jgdvcBSQL9hAY6n41oVs02_MfUOZg&s",
+    "thumbnailWidth": 284,
+    "thumbnailHeight": 177,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/159097-flower-spa-vietnamese-hair-wash/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimage%2Fupload%2Fw_750%2Ch_469%2Cc_fill%2Cq_85%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fsht7tdrrp3vbznyuvcgv.jpg&tbnid=3dom_O4ftaOhmM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F159097-flower-spa-vietnamese-hair-wash%2F&docid=Ak0_980FD6r-FM&w=750&h=469",
+    "position": 5
+   },
+   {
+    "title": "Top 10+ Spa gội đầu dưỡng sinh tốt nhất tại Tp HCM – KHOẺ & ĐẸP CLINIC",
+    "imageUrl": "http://file.hstatic.net/200000827051/article/hinh-anh-goi-dau-duong-sinh_12_dfcf2e76c4e04536ba3a6d88c335f964.jpg",
+    "imageWidth": 1200,
+    "imageHeight": 693,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSR_6tvSYQYT2V5Prm-BqNx3fl1whtfwDK0ntcqc0X2ag&s=10",
+    "thumbnailWidth": 588,
+    "thumbnailHeight": 340,
+    "source": "KHOẺ & ĐẸP CLINIC",
+    "domain": "khoedepclinic.com",
+    "link": "https://khoedepclinic.com/blogs/lam-dep/spa-goi-dau?srsltid=AU7gw4U5YdC5gfa3eMRPUn8WEnDTQj-62qMqEBCoYA4BkuXHWmz_eWZI",
+    "googleUrl": "https://www.google.com/imgres?imgurl=http%3A%2F%2Ffile.hstatic.net%2F200000827051%2Farticle%2Fhinh-anh-goi-dau-duong-sinh_12_dfcf2e76c4e04536ba3a6d88c335f964.jpg&tbnid=PFyYqxruUn7tZM&imgrefurl=https%3A%2F%2Fkhoedepclinic.com%2Fblogs%2Flam-dep%2Fspa-goi-dau%3Fsrsltid%3DAU7gw4U5YdC5gfa3eMRPUn8WEnDTQj-62qMqEBCoYA4BkuXHWmz_eWZI&docid=Th9SyUg30D2F3M&w=1200&h=693",
+    "position": 6
+   },
+   {
+    "title": "TOP 11+ địa chỉ spa gội đầu dưỡng sinh thảo dược tốt nhất TPHCM | TIKI",
+    "imageUrl": "https://tiki.vn/blog/wp-content/uploads/2023/09/goi-dau-duong-sinh-thumbnail.jpg",
+    "imageWidth": 1600,
+    "imageHeight": 1067,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRcc8i68Q7F3oJttUPPbpCKpD-3kEVUBCPvAiamY0mzkA&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Tiki",
+    "domain": "tiki.vn",
+    "link": "https://tiki.vn/blog/goi-dau-duong-sinh/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Ftiki.vn%2Fblog%2Fwp-content%2Fuploads%2F2023%2F09%2Fgoi-dau-duong-sinh-thumbnail.jpg&tbnid=O7wiL4gwW-HLQM&imgrefurl=https%3A%2F%2Ftiki.vn%2Fblog%2Fgoi-dau-duong-sinh%2F&docid=hVG60B9Qp2yGvM&w=1600&h=1067",
+    "position": 7
+   },
+   {
+    "title": "12 Bước Gội Đầu Dưỡng Sinh Đạt Hiệu Quả Chuẩn Spa",
+    "imageUrl": "https://thaomocanan.vn/wp-content/uploads/2021/04/goi-dau-duong-sinh-chuan.png",
+    "imageWidth": 2048,
+    "imageHeight": 1367,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTIEAUR7o9YpEdRLVaMiPJYP84Uc1oo6Mzens-oAwUhwA&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Thảo Mộc An An",
+    "domain": "thaomocanan.vn",
+    "link": "https://thaomocanan.vn/goi-dau-duong-sinh/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fthaomocanan.vn%2Fwp-content%2Fuploads%2F2021%2F04%2Fgoi-dau-duong-sinh-chuan.png&tbnid=JWaTK-Qx972kwM&imgrefurl=https%3A%2F%2Fthaomocanan.vn%2Fgoi-dau-duong-sinh%2F&docid=JlqPeeO0QyEItM&w=2048&h=1367",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

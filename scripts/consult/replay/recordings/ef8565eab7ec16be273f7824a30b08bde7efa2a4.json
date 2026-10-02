@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Izakaya Unatoto Việt Nam\" OR \"FEN Izakaya\" OR \"La Phong Sushi House\" quan 1 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T04:10:03.237Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Izakaya Unatoto Việt Nam\" OR \"FEN Izakaya\" OR \"La Phong Sushi House\" quan 1 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tình cờ biết đến Fen Izakaya ở 240 Lý Tự Trọng Q1. Quán ...",
+    "link": "https://www.tiktok.com/@ghithichnhau/video/7674929044164480276",
+    "snippet": "Tình cờ biết đến Fen Izakaya ở 240 Lý Tự Trọng Q1. Quán nhậu kiểu Nhật... không ồn ào như mô hình trẻ trung... nhưng cũng không củ kỹ với ...",
+    "position": 1
+   },
+   {
+    "title": "Trải Nghiệm Izakaya Thú Vị Tại Fen",
+    "link": "https://www.tiktok.com/@vuvicungyuhi/video/7529149203030052103",
+    "snippet": "Keywords: trải nghiệm izakaya thú vị, ẩm thực Nhật tại Fen Izakaya, quán ăn chill ở quận 1, món ăn ngon tại izakaya, địa điểm ăn uống cho ...",
+    "position": 2
+   },
+   {
+    "title": "Trải nghiệm izakaya phong cách Nhật Bản và đường phố ...",
+    "link": "https://www.tiktok.com/@longnhongsaigon/video/7666774273159122194",
+    "snippet": "Giới thiệu nhanh Lần đầu trải nghiệm mô hình Fen Izakaya — một izakaya pha trộn yếu tố Nhật Bản và hương vị, không khí đường phố Hà Nội.",
+    "position": 3
+   },
+   {
+    "title": "Ố là la fen izakaya quá đỉnh #fenizakaya ...",
+    "link": "https://www.tiktok.com/@thanhtruong2708/video/7594112668080835860",
+    "snippet": "2596 Lượt thích,45 Bình luận.Video TikTok từ ANH MẮT HÍ (@thanhtruong2708): \"Ố là la fen izakaya quá đỉnh #fenizakaya #izakaya #japanfood ...",
+    "position": 4
+   },
+   {
+    "title": "Quán nhậu Vibe Izakaya vừa chill vừa hạt dẻ nằm ngay ...",
+    "link": "https://www.tiktok.com/@vivuu.cunghang/video/7587268721752706324",
+    "snippet": "Quán nhậu Vibe Izakaya vừa chill vừa hạt dẻ nằm ngay Quận 1 chỉ có thể là Fen Izakaya nha mấy ní #fenizakaya #izakaya #japanfood. Quán ...",
+    "position": 5
+   },
+   {
+    "title": "Cuối tuần nhậu tại Fen Izakaya, ẩm thực Nhật Bản tuyệt vời",
+    "link": "https://www.tiktok.com/@danquynh.daily/video/7594126946137672978",
+    "snippet": "Khám phá ẩm thực Nhật Bản tại Fen Izakaya trong cuối tuần! Ngon miệng với. @Đan Quỳnh Daily.",
+    "position": 6
+   },
+   {
+    "title": "Afterwork. Hoàn thành công việc sau một ngày dài, tìm ...",
+    "link": "https://www.tiktok.com/@mayu.0320/video/7683063696460958984",
+    "snippet": "Afterwork. Hoàn thành công việc sau một ngày dài, tìm một chỗ chill chill Tình cờ biết đến @FEN IZAKAYA ở 240 Lý Tự Trọng Q1. Quán nằm ngay ...",
+    "position": 7
+   },
+   {
+    "title": "Khám Phá Quán Izakaya Độc Đáo Tại Quận 1",
+    "link": "https://www.tiktok.com/@kilalareview/video/7476468975564623122",
+    "snippet": "... Quán Izakaya Độc Đáo Tại Quận 1 ... Fen Izakaya. Ghé ngay để thưởng thức! #quananngon #fenizakaya #izakaya. Keywords: quán izakaya ngon ở quận 1 ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

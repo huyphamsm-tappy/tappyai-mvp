@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Massage Big Bang | Massage Quận 5 | Massage Thư GIãn Gần Đây\" site:klook.com/vi/activity",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:30:34.379Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Massage Big Bang | Massage Quận 5 | Massage Thư GIãn Gần Đây\" site:klook.com/vi/activity",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

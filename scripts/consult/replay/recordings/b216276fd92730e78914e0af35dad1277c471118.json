@@ -1,0 +1,30 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Minasi HanoiOI LakeSide Hotel\" Núi Ba Vì, Hà Nội site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T03:12:42.756Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Minasi HanoiOI LakeSide Hotel\" Núi Ba Vì, Hà Nội site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tìm Khách Sạn 4 Sao Tại Hà Nội",
+    "link": "https://vn.trip.com/hotels/star4/city/vn/hanoi.html",
+    "snippet": "Minasi HanoiOi Lakeside Hotel ở Quận Hoàn Kiếm, Hà Nội, cách Hồ Hoàn Kiếm 4 phút đi bộ và Nhà thờ Lớn Hà Nội 9 phút đi bộ. Khách sạn này cách Nhà hát Lớn Hà Nội ...",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "quà tặng (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:11:46.836Z",
+ "body": {
+  "searchParameters": {
+   "q": "quà tặng (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Quà tặng - Giá Tốt, Miễn Phí Vận Chuyển, Đủ Loại",
+    "link": "https://shopee.vn/list/qu%C3%A0%20t%E1%BA%B7ng",
+    "snippet": "Set Quà Tặng Dễ Thương – Cốc Sứ, Khăn Tắm, Băng Đô Tai Thỏ, Gấu Bông, Quạt Mini – Quà Sinh Nhật, Giáng Sinh, Kỷ Niệm.",
+    "position": 1
+   },
+   {
+    "title": "Quà sinh nhật ý nghĩa, đa dạng, giao nhanh",
+    "link": "https://shopee.vn/list/qu%C3%A0%20sinh%20nh%E1%BA%ADt",
+    "snippet": "Set Quà Tặng Dễ Thương – Cốc Sứ, Khăn Tắm, Băng Đô Tai Thỏ, Gấu Bông, Quạt Mini – Quà Sinh Nhật, Giáng Sinh, Kỷ Niệm.",
+    "position": 2
+   },
+   {
+    "title": "[50+ Quà 20/10] 4 tiêu chí chọn quà & 5 nhóm quà nổi bật",
+    "link": "https://cellphones.com.vn/qua-20-10",
+    "snippet": "Smartphone flagship · Đồng hồ thông minh cao cấp · Laptop/Tablet phục vụ công việc & giải trí · Tai nghe true wireless cao cấp · Bộ quà combo công nghệ sang trọng.",
+    "position": 3
+   },
+   {
+    "title": "Top 50+ Quà tặng cho nam 2026 ý nghĩa theo từng độ tuổi",
+    "link": "https://cellphones.com.vn/sforum/qua-tang-cho-nam",
+    "snippet": "Top món quà tặng cho nam công nghệ từ CellphoneS · Smartphone cao cấp · Đồng hồ thông minh · Tai nghe Bluetooth · Loa Bluetooth mini · Laptop ...",
+    "date": "5 thg 4, 2026",
+    "rating": 1,
+    "ratingCount": 1,
+    "position": 4
+   },
+   {
+    "title": "10+ món quà tặng cô giáo chủ nhiệm ý nghĩa và tinh tế nhất",
+    "link": "https://shopee.vn/blog/qua-tang-co-giao-chu-nhiem/",
+    "snippet": "10+ quà tặng cô giáo chủ nhiệm ý nghĩa · Sổ, bút, văn phòng phẩm · Túi xách lớn · Bình, ly giữ nhiệt · Hộp quà trà khô · Cài áo · Đồng hồ đeo ...",
+    "date": "6 thg 11, 2025",
+    "position": 5
+   },
+   {
+    "title": "Ý nghĩa tặng quà ngày Quốc tế Đàn ông 19/11",
+    "link": "https://cellphones.com.vn/sforum/qua-tang-19-11-ngay-quoc-te-dan-ong",
+    "snippet": "Top 20 món quà 19/11 tặng ngày Quốc tế Đàn ông 2026 · Quần áo - quà tặng 19/11 thiết thực · Máy cạo râu hiện đại · Đồng hồ thời thượng · Đồ gia dụng cho nam ...",
+    "position": 6
+   },
+   {
+    "title": "50+ [Quà 20/10 cho nhân viên nữ] Trân trọng từng cống hiến",
+    "link": "https://cellphones.com.vn/qua-20-10/cho-nhan-vien-nu",
+    "snippet": "Gợi ý quà 20 10 cho Nhân Viên trên 700k ; Quà tặng. Chi phí tham khảo ; Pin sạc dự phòng Anker 10.000mAh. 700.000 - 1.000.000 VNĐ ; Chuột không dây Logitech. 1.200 ...",
+    "position": 7
+   },
+   {
+    "title": "Quà Tặng Cô Giáo Chính Hãng, Giá Tốt, Đảm Bảo",
+    "link": "https://shopee.vn/list/qu%C3%A0%20t%E1%BA%B7ng%20c%C3%B4%20gi%C3%A1o",
+    "snippet": "Một bó hoa tươi kèm với thiệp là món quà vô cùng ý nghĩa. Bạn có thể tặng kèm một tấm thiệp với những lời chúc chân thành trên đó để tặng cô giáo yêu thương của ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

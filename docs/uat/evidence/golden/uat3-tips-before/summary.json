@@ -1,0 +1,261 @@
+{
+  "label": "uat3-tips-before",
+  "base": "http://localhost:3007",
+  "calls": 6,
+  "at": "2026-09-27T10:08:59.225Z",
+  "cases": [
+    {
+      "id": "T1",
+      "group": "travel-multiturn",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 45803,
+          "usage": {
+            "promptTokens": 11468,
+            "completionTokens": 3638
+          },
+          "tools": [
+            "search_places",
+            "search_places",
+            "get_weather",
+            "get_flight_prices"
+          ],
+          "cards": [
+            [
+              "Cầu Vàng",
+              "Đỉnh Bàn Cờ",
+              "Cầu Rồng",
+              "Ba Na Hills",
+              "Ngũ Hành Sơn",
+              "Ghềnh Bàng",
+              "Nhà Vọng Cảnh",
+              "Công viên Suối khoáng nóng Núi Thần Tài Đà Nẵng"
+            ],
+            [
+              "Ngũ Hành Sơn",
+              "Cầu Vàng",
+              "Đỉnh Bàn Cờ",
+              "Cầu Rồng",
+              "Ba Na Hills",
+              "Ghềnh Bàng",
+              "Nhà Vọng Cảnh",
+              "Công viên Suối khoáng nóng Núi Thần Tài Đà Nẵng"
+            ]
+          ],
+          "dup": false,
+          "chars": 1014
+        },
+        {
+          "status": 200,
+          "ms": 40448,
+          "usage": {
+            "promptTokens": 15752,
+            "completionTokens": 3359
+          },
+          "tools": [
+            "get_flight_prices",
+            "search_places",
+            "search_places",
+            "get_hotel_prices",
+            "get_weather"
+          ],
+          "cards": [
+            [
+              "Hải Sản Ku Tom Đà Nẵng",
+              "Buffet Hải Sản Đà Nẵng Mr Mộc",
+              "Mộc quán Seafood Đà Nẵng",
+              "Thèm Hải Sản",
+              "Nhà Hàng Hải Sản - Ơ Kìa",
+              "Hải sản My Hanh Seafood",
+              "Hải Sản Đà Nẵng Bé Biển",
+              "Quán Hải Sản Thời Cổ Đà Nẵng - Seafood Restaurant"
+            ],
+            [
+              "Nhà Hàng Hải Sản - Ơ Kìa",
+              "Hải Sản Ku Tom Đà Nẵng",
+              "Buffet Hải Sản Đà Nẵng Mr Mộc",
+              "Mộc quán Seafood Đà Nẵng",
+              "Thèm Hải Sản",
+              "Hải sản My Hanh Seafood",
+              "Hải Sản Đà Nẵng Bé Biển",
+              "Quán Hải Sản Thời Cổ Đà Nẵng - Seafood Restaurant"
+            ]
+          ],
+          "dup": false,
+          "chars": 976
+        },
+        {
+          "status": 200,
+          "ms": 37803,
+          "usage": {
+            "promptTokens": 15972,
+            "completionTokens": 3432
+          },
+          "tools": [
+            "search_places",
+            "search_places",
+            "get_hotel_prices",
+            "get_flight_prices",
+            "get_weather"
+          ],
+          "cards": [
+            [
+              "Cầu Vàng",
+              "Bãi biển Sơn Trà",
+              "Đỉnh Bàn Cờ",
+              "Cầu Rồng",
+              "Ba Na Hills",
+              "Ngũ Hành Sơn",
+              "Nhà Vọng Cảnh",
+              "Công viên Suối khoáng nóng Núi Thần Tài Đà Nẵng"
+            ],
+            [
+              "Ngũ Hành Sơn",
+              "Cầu Vàng",
+              "Bãi biển Sơn Trà",
+              "Đỉnh Bàn Cờ",
+              "Cầu Rồng",
+              "Ba Na Hills",
+              "Nhà Vọng Cảnh",
+              "Công viên Suối khoáng nóng Núi Thần Tài Đà Nẵng"
+            ]
+          ],
+          "dup": false,
+          "chars": 967
+        }
+      ]
+    },
+    {
+      "id": "G1a",
+      "group": "travel-single",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 39699,
+          "usage": {
+            "promptTokens": 8362,
+            "completionTokens": 2954
+          },
+          "tools": [
+            "search_places",
+            "get_weather",
+            "get_hotel_prices",
+            "get_transport_options"
+          ],
+          "cards": [
+            [
+              "Nhà hàng hải sản La Sirena",
+              "BOHO Restaurant",
+              "Nhà hàng Gành Hào 1",
+              "Ốc Tự Nhiên Vũng Tàu - Ốc Tự Nhiên 2",
+              "Hải Sản Bờ Biển",
+              "NaKa buffet Hải sản",
+              "Nhà Hàng Gành Hào 2",
+              "Nhà Hàng Vạn Chài | Nhà Hàng Vũng Tàu"
+            ],
+            [
+              "Nhà hàng hải sản La Sirena",
+              "BOHO Restaurant",
+              "Nhà hàng Gành Hào 1",
+              "Ốc Tự Nhiên Vũng Tàu - Ốc Tự Nhiên 2",
+              "Hải Sản Bờ Biển",
+              "NaKa buffet Hải sản",
+              "Nhà Hàng Gành Hào 2",
+              "Nhà Hàng Vạn Chài | Nhà Hàng Vũng Tàu"
+            ]
+          ],
+          "dup": false,
+          "chars": 728
+        }
+      ]
+    },
+    {
+      "id": "G4a",
+      "group": "over-clarifying",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 39418,
+          "usage": {
+            "promptTokens": 12106,
+            "completionTokens": 3315
+          },
+          "tools": [
+            "get_hotel_prices",
+            "search_places",
+            "search_places",
+            "get_weather",
+            "get_transport_options"
+          ],
+          "cards": [
+            [
+              "Làng Nấm Đà Lạt",
+              "Quảng trường Lâm Viên",
+              "KDL Sinh Thái Cao Nguyên Hoa Đà Lạt",
+              "Khu du lịch Thác Datanla",
+              "Thung lũng Tình Yêu",
+              "Làng hoa Vạn Thành - Khu du lịch VẠN HOA ĐÀ LẠT",
+              "Khu du lịch Fresh Garden Dalat",
+              "Đồi Mộng Mơ Đà Lạt"
+            ],
+            [
+              "Làng Nấm Đà Lạt",
+              "Quảng trường Lâm Viên",
+              "KDL Sinh Thái Cao Nguyên Hoa Đà Lạt",
+              "Khu du lịch Thác Datanla",
+              "Thung lũng Tình Yêu",
+              "Làng hoa Vạn Thành - Khu du lịch VẠN HOA ĐÀ LẠT",
+              "Khu du lịch Fresh Garden Dalat",
+              "Đồi Mộng Mơ Đà Lạt"
+            ]
+          ],
+          "dup": false,
+          "chars": 1025
+        }
+      ]
+    },
+    {
+      "id": "L1",
+      "group": "travel-local-tips",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 14986,
+          "usage": {
+            "promptTokens": 4467,
+            "completionTokens": 693
+          },
+          "tools": [
+            "search_places",
+            "get_weather"
+          ],
+          "cards": [
+            [
+              "Nhà Hàng Cá Khói",
+              "Hải Sản Tươi Sống Mr Mộc",
+              "Đặc Sản Quy Nhơn: Làm Quà",
+              "Hải sản Tươi sống Ông Minh",
+              "Đặc Sản Bình Định Quy Nhơn Ông Bảy",
+              "Nẫu Cuốn - Quán Ăn Ngon Quy Nhơn",
+              "Cửa Hàng Đặc Sản Thanh Vân",
+              "Hải Sản Quy Nhơn - 48 Xuân Diệu - Lộc Biển"
+            ],
+            [
+              "Đặc Sản Quy Nhơn: Làm Quà",
+              "Nhà Hàng Cá Khói",
+              "Hải Sản Tươi Sống Mr Mộc",
+              "Hải sản Tươi sống Ông Minh",
+              "Đặc Sản Bình Định Quy Nhơn Ông Bảy",
+              "Nẫu Cuốn - Quán Ăn Ngon Quy Nhơn",
+              "Cửa Hàng Đặc Sản Thanh Vân",
+              "Hải Sản Quy Nhơn - 48 Xuân Diệu - Lộc Biển"
+            ]
+          ],
+          "dup": false,
+          "chars": 971
+        }
+      ]
+    }
+  ]
+}

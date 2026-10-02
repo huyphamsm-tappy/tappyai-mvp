@@ -1,0 +1,21 @@
+PRE-FLIGHT CHECK 2: target zdaprdfgpbpnxyofagmc = AUDIT (non-prod).
+bucket created uat-seed-media public=false
+bucket state {"id":"uat-seed-media","public":false}
+image reviews/pho-bo.jpg {"bytes":20935,"signedGet":200,"contentType":"image/jpeg","publicGet":400}
+image reviews/banh-mi.jpg {"bytes":21465,"signedGet":200,"contentType":"image/jpeg","publicGet":400}
+image reviews/ca-phe-muoi.jpg {"bytes":23475,"signedGet":200,"contentType":"image/jpeg","publicGet":400}
+image reviews/bun-cha.jpg {"bytes":21513,"signedGet":200,"contentType":"image/jpeg","publicGet":400}
+image reviews/cho-dem.jpg {"bytes":25514,"signedGet":200,"contentType":"image/jpeg","publicGet":400}
+image reviews/spa-thu-gian.jpg {"bytes":17642,"signedGet":200,"contentType":"image/jpeg","publicGet":400}
+image reviews/rap-phim.jpg {"bytes":25052,"signedGet":200,"contentType":"image/jpeg","publicGet":400}
+image reviews/tai-nghe.jpg {"bytes":22323,"signedGet":200,"contentType":"image/jpeg","publicGet":400}
+inserted review 6821a7aa-a939-499f-accf-a6b4a1878806 community_uat_seed_pho-bo by manual.uat.user@tappyai.com
+inserted review 4a9b4600-7442-44ea-a48b-c89a8e8572bf community_uat_seed_banh-mi by manual.uat.pro@tappyai.com
+inserted review a958b85a-69e6-44a5-8975-4e9839d6c29b community_uat_seed_ca-phe-muoi by manual.uat.admin@tappyai.com
+inserted review 4ee0c3b0-315b-43bf-b0f6-cb0014ab8849 community_uat_seed_bun-cha by manual.uat.user@tappyai.com
+inserted review 8cb86fea-645f-410c-b34a-e666899855b5 community_uat_seed_cho-dem by manual.uat.pro@tappyai.com
+inserted review 23e3dead-2208-4592-865d-413735ccf244 community_uat_seed_spa-thu-gian by manual.uat.admin@tappyai.com
+inserted review 7d766b04-200f-4aaf-af60-9300ed699c56 community_uat_seed_rap-phim by manual.uat.user@tappyai.com
+inserted review 872ef650-5a05-4e66-b2c2-3305e920d938 community_uat_seed_tai-nghe by manual.uat.pro@tappyai.com
+published reviews now [{"content_type":"photo","n":9},{"content_type":"video","n":4}]
+signed URLs expire in 180 days (2027-03-25); re-run after that to re-sign (delete the seed rows first).

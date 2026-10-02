@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Time House\" OR \"Phê La\" OR \"Rong Chơi Coffee Van Garden\" quan 3 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:26:42.296Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Time House\" OR \"Phê La\" OR \"Rong Chơi Coffee Van Garden\" quan 3 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Chi nhánh Phê La cực chill ngay tại Quận 3 ...",
+    "link": "https://www.tiktok.com/@saigondidautaaa/video/7330201421733776647",
+    "snippet": "Quán Cà Phê Ở Sea 3 Ở Đâu. Chi nhánh Phê La cực chill ngay tại Quận 3 #saigondidauta #diadiemsongao #phela.",
+    "position": 1
+   },
+   {
+    "title": "Phê La Hồ Con Rùa trở lại rồi Đồng Chill ơiiii #PhêLa",
+    "link": "https://www.tiktok.com/@phela_xinchaoo/video/7512493303921691912",
+    "snippet": "**Vị trí dễ tìm** Chi nhánh mới của Phê La nằm tại số 42 đường Trần Cao Vân, phường Võ Thị Sáu, Quận 3. Bạn có thể dễ dàng nhận ra cửa hàng mới ...",
+    "position": 2
+   },
+   {
+    "title": "Phê La: Quán Cà Phê Đẹp Ở Quận 3",
+    "link": "https://www.tiktok.com/@quiz_didaukhum/video/7154908789995556122",
+    "snippet": "Phê La: Quán Cà Phê Đẹp Ở Quận 3. Khám phá quán cà phê Phê La với không gian ngập tràn nắng tại Quận 3. Tìm hiểu view đẹp và những trải nghiệm ...",
+    "position": 3
+   },
+   {
+    "title": "PHÊ LA: The Hot New Chill Café in Saigon",
+    "link": "https://www.tiktok.com/@vivucungdung/video/7644528934310153480",
+    "snippet": "PHÊ LA has officially landed at Vincom 3/2, making waves in the café scene for those looking to chill. This trendy spot is designed for ...",
+    "position": 4
+   },
+   {
+    "title": "Phê La hướng dẫn Đồng Chill trải nghiệm “Máy gọi món tự ...",
+    "link": "https://www.tiktok.com/@phela_xinchaoo/video/7509150236988787976",
+    "snippet": "Phê La hướng dẫn Đồng Chill trải nghiệm “Máy gọi món tự động” nha #PheLa · Quán Cà Phê Xem Đá Banh Quận 1 · Cà Phê Võng Quận 1 · Quán Cà Phê ...",
+    "position": 5
+   },
+   {
+    "title": "Chi nhánh Phê La mới toanh tại Hồ Con Rùa Quận 3 ...",
+    "link": "https://www.tiktok.com/@saigonbeoreview/video/7215572400639905050",
+    "snippet": "1581 Lượt thích,Video TikTok từ Sài Gòn Béo ☕️ (@saigonbeoreview): \"Chi nhánh Phê La mới toanh tại Hồ Con Rùa Quận 3 ...",
+    "position": 6
+   },
+   {
+    "title": "Tạm gác âu lo lại mình cùng đi Phê La chi nhánh mới ...",
+    "link": "https://www.tiktok.com/@lee.haydi/video/7157261988249308443",
+    "snippet": "Điểm nổi bật của Phê La là tiện lợi cho người đi xe máy. Quán có chỗ gửi xe ngay trước cửa, phù hợp với những ai đang dạo phố Quận 1 hoặc muốn ...",
+    "position": 7
+   },
+   {
+    "title": "Concept Đám Cưới Tại Phê La Cà Phê: Ý Tưởng Độc Đáo ...",
+    "link": "https://www.tiktok.com/@baro.phe/video/7557249820193262856",
+    "snippet": "Nhiều chi nhánh của Phê La tại Sài Gòn và các tỉnh thành như Phú Yên đã lên concept đám cưới cực kỳ vui nhộn, thu hút sự chú ý của nhiều cặp đôi ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

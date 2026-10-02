@@ -1,0 +1,81 @@
+{
+  "id": "S5",
+  "text": "quà sinh nhật cho bạn gái tầm 1tr",
+  "parent": null,
+  "status": 200,
+  "ms": 14097,
+  "evidenceId": "fcbd9047-07f2-421d-9163-d2716a92e4f5",
+  "toolCalls": [
+    {
+      "tool": "search_products",
+      "args": {
+        "query": "quà sinh nhật bạn gái 1 triệu đồng"
+      }
+    },
+    {
+      "tool": "search_products",
+      "args": {
+        "query": "mỹ phẩm quà tặng nữ giá 800k-1.2 triệu"
+      }
+    },
+    {
+      "tool": "search_products",
+      "args": {
+        "query": "túi xách nữ hàng hiệu giá 1 triệu"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "sinh nhật bạn thân ở Thanh Oai Hà Nội",
+      "price": 486000
+    },
+    {
+      "name": "【Hỏa tốc】Bánh sinh nhật ruy băng kiểu bánh ballet thích hợp tặng bạn 16CM",
+      "price": 530000
+    },
+    {
+      "name": "Mách Bạn Quà Tặng Cho Bạn Trai Thích",
+      "price": 799000
+    },
+    {
+      "name": "Set Quà Tặng Chăm Sóc Sức Khoẻ Thể Chất",
+      "price": 441000
+    },
+    {
+      "name": "Set Quà Tặng 20/11 - Set 35 -Default Title",
+      "price": 489000
+    },
+    {
+      "name": "Quà Tặng 8/3 Cho Người Yêu",
+      "price": 499000
+    },
+    {
+      "name": "Gợi Ý Quà Quốc Tế Phụ Nữ Cho Nàng",
+      "price": 540000
+    },
+    {
+      "name": "Quà Quốc Tế Phụ Nữ Cho Nàng Thích",
+      "price": 540000
+    },
+    {
+      "name": "Set Quà Tặng 20/11 - Set 7",
+      "price": 639000
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình sẽ tìm quà sinh nhật cho bạn gái trong tầm 1 triệu đồng nhé! 🎁[TAPPY_SHOPPING]{\"v\":1,\"entities\":[{\"key\":\"uncertain:0\",\"name\":\"sinh nhật bạn thân ở Thanh Oai Hà Nội\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":true,\"priceLow\":486000,\"priceHigh\":486000,\"image\":\"https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRil3f-zrsI0xsHq9RLtCutJbqc-augSinrwRaXeZMDYd3lR9LWSqtT3kEfl37QWQsaECFyTa1NH4vCecY3ni-fmS1ZCBWxA3PmJdsI0qRE\",\"offers\":[{\"seller\":\"Hoa tươi Nét Việt\",\"url\":\"https://www.google.com/search?ibp=oshop&q=qu%C3%A0+sinh+nh%E1%BA%ADt+b%E1%BA%A1n+g%C3%A1i+1+tri%E1%BB%87u+%C4%91%E1%BB%93ng&prds=localAnnotatedOfferId:1,productid:6638360717818328238,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":486000,\"currency\":\"VND\",\"condition\":null,\"rating\":null,\"ratingCount\":null}]},{\"key\":\"uncertain:1\",\"name\":\"【Hỏa tốc】Bánh sinh nhật ruy băng kiểu bánh ballet thích hợp tặng bạn 16CM\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":530000,\"priceHigh\":530000,\"image\":\"https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSdQgnK-KXAkt8LHtJ8tu2Ag1hoUZCKH8vqtrKk20GYhVI5symvl8CZyUf68xR2tLUN8N0Jsbpu5eRRSWL861pyK7bTdBygEXfPwpU2GDA\",\"offers\":[{\"seller\":\"WinkCake\",\"url\":\"https://www.google.com/search?ibp=oshop&q=qu%C3%A0+sinh+nh%E1%BA%ADt+b%E1%BA%A1n+g%C3%A1i+1+tri%E1%BB%87u+%C4%91%E1%BB%93ng&prds=localAnnotatedOfferId:1,productid:5774796773418092659,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":530000,\"currency\":\"VND\",\"condition\":null,\"rating\":null,\"ratingCount\":null}]},{\"key\":\"uncertain:2\",\"name\":\"Mách Bạn Quà Tặng Cho Bạn Trai Thích\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":799000,\"priceHigh\":799000,\"image\":\"https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQrkKmfJbl8Yg8l_SkP6UQrKHRPWktS2hiJvJuvhmphmZV889cHAmKKzSh06VADzaOm10pEbyB_sSnp53L-Y6FNe4xI6Lk4XPWahyZlbRHC0V7G6R95G4JcAA\",\"offers\":[{\"seller\":\"Thegioisonmoi.com\",\"url\":\"https://www.google.com/search?ibp=oshop&q=qu%C3%A0+sinh+nh%E1%BA%ADt+b%E1%BA%A1n+g%C3%A1i+1+tri%E1%BB%87u+%C4%91%E1%BB%93ng&prds=localAnnotatedOfferId:1,productid:4634400565084516637,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":799000,\"currency\":\"VND\",\"condition\":null,\"rating\":null,\"ratingCount\":null}]}],\"requested\":null,\"recommendation\":{\"entityKey\":\"uncertain:0\",\"seller\":\"Hoa tươi Nét Việt\",\"reasons\":[{\"attribute\":\"price\",\"evidence\":\"486000 VND\",\"params\":{\"priceVnd\":486000}}],\"tradeOff\":null,\"conditional\":false}}[/TAPPY_SHOPPING]\n\nMình tìm được vài ý hay cho bạn! 💝\n\n Giá rẻ mà vẫn có chất lượng.\n\nNgoài ra, bạn cũng có thể tìm **túi xách nữ, phụ kiện, hoặc đồng hồ** trong tầm giá này trên Shopee/Lazada — những món quà vừa ý nghĩa vừa thực dụng. \n\nBạn gái thích loại quà nào hơn — mỹ phẩm, phụ kiện, hay cái gì khác? 😊\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛒 Tìm trên Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=qu%C3%A0%20sinh%20nh%E1%BA%ADt%20b%E1%BA%A1n%20g%C3%A1i%201%20tri%E1%BB%87u%20%C4%91%E1%BB%93ng\",\"primary\":true},{\"label\":\"📦 Tìm trên Lazada\",\"type\":\"search\",\"url\":\"https://www.lazada.vn/catalog/?q=qu%C3%A0%20sinh%20nh%E1%BA%ADt%20b%E1%BA%A1n%20g%C3%A1i%201%20tri%E1%BB%87u%20%C4%91%E1%BB%93ng\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Túi xách nữ|Phụ kiện thời trang|Đồng hồ nữ[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "quà sinh nhật cho bạn gái tầm 1tr"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình sẽ tìm quà sinh nhật cho bạn gái trong tầm 1 triệu đồng nhé! 🎁[TAPPY_SHOPPING]{\"v\":1,\"entities\":[{\"key\":\"uncertain:0\",\"name\":\"sinh nhật bạn thân ở Thanh Oai Hà Nội\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":true,\"priceLow\":486000,\"priceHigh\":486000,\"image\":\"https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRil3f-zrsI0xsHq9RLtCutJbqc-augSinrwRaXeZMDYd3lR9LWSqtT3kEfl37QWQsaECFyTa1NH4vCecY3ni-fmS1ZCBWxA3PmJdsI0qRE\",\"offers\":[{\"seller\":\"Hoa tươi Nét Việt\",\"url\":\"https://www.google.com/search?ibp=oshop&q=qu%C3%A0+sinh+nh%E1%BA%ADt+b%E1%BA%A1n+g%C3%A1i+1+tri%E1%BB%87u+%C4%91%E1%BB%93ng&prds=localAnnotatedOfferId:1,productid:6638360717818328238,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":486000,\"currency\":\"VND\",\"condition\":null,\"rating\":null,\"ratingCount\":null}]},{\"key\":\"uncertain:1\",\"name\":\"【Hỏa tốc】Bánh sinh nhật ruy băng kiểu bánh ballet thích hợp tặng bạn 16CM\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":530000,\"priceHigh\":530000,\"image\":\"https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSdQgnK-KXAkt8LHtJ8tu2Ag1hoUZCKH8vqtrKk20GYhVI5symvl8CZyUf68xR2tLUN8N0Jsbpu5eRRSWL861pyK7bTdBygEXfPwpU2GDA\",\"offers\":[{\"seller\":\"WinkCake\",\"url\":\"https://www.google.com/search?ibp=oshop&q=qu%C3%A0+sinh+nh%E1%BA%ADt+b%E1%BA%A1n+g%C3%A1i+1+tri%E1%BB%87u+%C4%91%E1%BB%93ng&prds=localAnnotatedOfferId:1,productid:5774796773418092659,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":530000,\"currency\":\"VND\",\"condition\":null,\"rating\":null,\"ratingCount\":null}]},{\"key\":\"uncertain:2\",\"name\":\"Mách Bạn Quà Tặng Cho Bạn Trai Thích\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":799000,\"priceHigh\":799000,\"image\":\"https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQrkKmfJbl8Yg8l_SkP6UQrKHRPWktS2hiJvJuvhmphmZV889cHAmKKzSh06VADzaOm10pEbyB_sSnp53L-Y6FNe4xI6Lk4XPWahyZlbRHC0V7G6R95G4JcAA\",\"offers\":[{\"seller\":\"Thegioisonmoi.com\",\"url\":\"https://www.google.com/search?ibp=oshop&q=qu%C3%A0+sinh+nh%E1%BA%ADt+b%E1%BA%A1n+g%C3%A1i+1+tri%E1%BB%87u+%C4%91%E1%BB%93ng&prds=localAnnotatedOfferId:1,productid:4634400565084516637,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":799000,\"currency\":\"VND\",\"condition\":null,\"rating\":null,\"ratingCount\":null}]}],\"requested\":null,\"recommendation\":{\"entityKey\":\"uncertain:0\",\"seller\":\"Hoa tươi Nét Việt\",\"reasons\":[{\"attribute\":\"price\",\"evidence\":\"486000 VND\",\"params\":{\"priceVnd\":486000}}],\"tradeOff\":null,\"conditional\":false}}[/TAPPY_SHOPPING]\n\nMình tìm được vài ý hay cho bạn! 💝\n\n Giá rẻ mà vẫn có chất lượng.\n\nNgoài ra, bạn cũng có thể tìm **túi xách nữ, phụ kiện, hoặc đồng hồ** trong tầm giá này trên Shopee/Lazada — những món quà vừa ý nghĩa vừa thực dụng. \n\nBạn gái thích loại quà nào hơn — mỹ phẩm, phụ kiện, hay cái gì khác? 😊\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛒 Tìm trên Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=qu%C3%A0%20sinh%20nh%E1%BA%ADt%20b%E1%BA%A1n%20g%C3%A1i%201%20tri%E1%BB%87u%20%C4%91%E1%BB%93ng\",\"primary\":true},{\"label\":\"📦 Tìm trên Lazada\",\"type\":\"search\",\"url\":\"https://www.lazada.vn/catalog/?q=qu%C3%A0%20sinh%20nh%E1%BA%ADt%20b%E1%BA%A1n%20g%C3%A1i%201%20tri%E1%BB%87u%20%C4%91%E1%BB%93ng\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Túi xách nữ|Phụ kiện thời trang|Đồng hồ nữ[/FOLLOWUPS]"
+    }
+  ]
+}

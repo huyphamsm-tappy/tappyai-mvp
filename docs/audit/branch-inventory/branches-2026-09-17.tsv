@@ -1,0 +1,664 @@
+ref	worktree	date	ahead_v3	behind_v3	ahead_main	behind_main	WEB_f8dca88	APC_60df033	CCPc_66efcd7	AFF_764effd	REV_2ee2baf	BOOK_f8dca88	CCP_e2c37c9	G1_c07e98b	G2_f25f542	G3_7796ac5	M_89e65f7	M_2e3ec8a	M_968472e	MAIN_842379b	subject
+arcade-v2/android	-	2026-08-02 19:22	114	625	114	563	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(arcade-v2): Android inline SuperTux runtime
+arcade-v2/web	-	2026-08-02 19:20	8	452	8	390	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(arcade-v2): SuperTux single-threaded runtime integration
+audit/anon-eligibility	-	2026-08-31 17:34	0	99	0	37	0	0	0	0	1	0	0	0	0	0	0	0	0	0	feat(controller): C-14 — two-step broadcast confirmation UI (#223)
+audit/c14-discovery	-	2026-08-31 17:01	0	100	0	38	0	0	0	0	1	0	0	0	0	0	0	0	0	0	feat(notifications): delete the legacy broadcast route (contract 14.2 step 8) (#
+audit/db-access-docs	-	2026-09-01 10:03	0	97	0	35	0	0	0	0	1	0	0	0	0	0	0	0	0	0	fix(notifications): refuse anonymous sessions at POST /subscribe (#225)
+audit/final	-	2026-08-22 18:35	0	163	0	101	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): BL-002 accepted — G1 is closed on production (#156)
+audit/k3-baseline	-	2026-08-23 10:14	0	160	0	98	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): K-1 shipped and verified on production 0ae343b (#159)
+audit/marketing-discovery	-	2026-09-01 11:18	0	94	0	32	0	0	0	0	1	0	0	0	0	0	0	0	0	0	docs(v2.2): anonymous eligibility is MEASURED ZERO — V2.2-1 closed (#228)
+audit/v22-readonly	-	2026-08-23 17:18	0	153	0	91	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): close V2 and record Home UAT (#166)
+backup/ios-windows-sprint-pre-rebase	-	2026-08-06 14:45	145	625	145	563	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(ios): close the Windows sprint with a completion report and Mac checklist
+backup/pre-scrub-v1	-	2026-08-04 13:03	121	625	121	563	0	0	0	0	0	0	0	0	0	0	0	0	0	0	chore(android): finalize Android V1 release assets
+bl002/audit	-	2026-08-22 17:07	0	164	0	102	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): K-2 migration applied to production, and the runbook (#155)
+blob-cleanup	-	2026-08-13 14:14	3	306	3	244	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(deps): declare jose explicitly — it was only reaching us through @vercel/b
+chore/android-target-sdk-36	C:/Users/Admin/Claude/Projects/TappyAI/tappyai-langfix-vi	2026-08-19 10:58	1	228	1	166	0	0	0	0	0	0	0	0	0	0	0	0	0	0	chore(android): target API 36 for the Play policy deadline
+chore/controller-v2-phase6-legacy-removal	-	2026-08-19 12:57	2	224	2	162	0	0	0	0	0	0	0	0	0	0	0	0	0	0	Merge remote-tracking branch 'origin/main' into chore/controller-v2-phase6-legac
+chore/landing-remove-copyright	-	2026-07-25 15:15	0	565	0	503	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(login): use the approved Tappy mascot (wave) as the header brand mark
+chore/publication-boundary-migrations-in-git	-	2026-08-18 15:03	2	230	2	168	0	0	0	0	0	0	0	0	0	0	0	0	0	0	chore(safety): write the EXECUTE grant the way ADR-019 requires
+chore/remove-temp-diag	C:/wta5	2026-08-28 12:30	2	115	2	53	0	0	0	0	1	0	0	0	0	0	0	0	0	0	fix(test): the absence guard was matching its own text
+ci/regression-gate	-	2026-08-10 14:35	0	347	0	285	0	0	0	0	0	0	0	0	0	0	0	0	0	0	ci(controller): add regression and static quality gates
+ci/supertux-wasm	-	2026-08-02 19:20	8	452	8	390	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(arcade-v2): SuperTux single-threaded runtime integration
+claude/admiring-euler-fd4c48	C:/Users/Admin/Claude/Projects/TappyAI/tappyai-mvp/.claude/worktrees/cool-vaughan-b3c7ff	2026-09-15 11:19	5	2	78	13	1	0	0	0	1	1	0	0	0	0	0	0	0	0	feat(ai): consultative decision core — goal-aware evidence, shortlist threshol
+claude/cool-vaughan-b3c7ff	-	2026-07-18 13:13	0	628	0	566	0	0	0	0	0	0	0	0	0	0	0	0	0	0	Merge feat/backoffice-phase0 into main
+claude/determined-knuth-609039	-	2026-09-11 16:58	13	75	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	1	Merge pull request #251 from huyphamsm-tappy/feat/v3-user-data-foundation
+claude/ecstatic-mclaren-c5aa0e	C:/Users/Admin/Claude/Projects/TappyAI/tappyai-mvp/.claude/worktrees/adoring-stonebraker-13f20e	2026-08-12 10:12	1	345	1	283	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(android): prevent Deals duplicate lazy keys
+claude/ecstatic-turing-0cf4b7	-	2026-09-09 15:20	7	75	0	6	0	0	0	0	1	0	0	0	0	0	0	0	0	0	Merge pull request #250 from huyphamsm-tappy/feat/v3-user-data-foundation
+claude/eloquent-bardeen-42212c	-	2026-09-05 10:10	2	75	0	11	0	0	0	0	1	0	0	0	0	0	0	0	0	0	Merge pull request #248 from huyphamsm-tappy/fix/bug-011-destination-scope
+claude/eloquent-diffie-cb87f5	-	2026-07-29 10:39	0	521	0	459	0	0	0	0	0	0	0	0	0	0	0	0	0	0	refactor(design-system): introduce semantic color layer for WCAG AA
+claude/exciting-hertz-2b213e	C:/Users/Admin/Claude/Projects/TappyAI/tappyai-mvp/.claude/worktrees/modest-roentgen-d36e92	2026-09-04 08:58	1	75	1	13	0	0	0	0	1	0	0	0	0	0	0	0	0	0	refactor(reviews): one share-only place rule, for the three surfaces that disagr
+claude/gifted-shannon-a63c5a	-	2026-08-24 08:41	0	148	0	86	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(consultative): answer the question that was asked, and only claim what was s
+claude/keen-goodall-04a982	-	2026-08-15 16:33	1	260	1	198	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(ios): drop the TikTok Shop link iOS built on its own
+claude/lucid-albattani-08512a	-	2026-07-30 14:18	1	488	1	426	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(ui): localize TripPlanCard labels and enrichment trailing-block for EN
+claude/modest-roentgen-d36e92	-	2026-08-19 13:03	0	223	0	161	0	0	0	0	0	0	0	0	0	0	0	0	0	0	chore(controller-v2): phase 6 — retire the pre-RBAC ADMIN_IDS authorization ga
+claude/nifty-sammet-44374f	-	2026-07-30 14:13	0	485	0	423	0	0	0	0	0	0	0	0	0	0	0	0	0	0	Merge branch 'main' into claude/nifty-sammet-44374f
+claude/optimistic-lovelace-c2c517	-	2026-08-15 16:33	1	260	1	198	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(ios): drop the TikTok Shop link iOS built on its own
+claude/zealous-merkle-4c7b3d	-	2026-08-01 11:15	0	452	0	390	0	0	0	0	0	0	0	0	0	0	0	0	0	0	Merge origin/main into fix/landing-hero-logo-founder-bio for Landing release
+crossdomain-place-flood	-	2026-08-25 10:59	2	139	2	77	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(entertainment): route "recommend a movie" to film knowledge, not the cinema
+debug/vi-tool-provider-request	-	2026-08-15 13:31	1	272	1	210	0	0	0	0	0	0	0	0	0	0	0	0	0	0	debug: temporary metadata-only language diagnostic (Preview only, do not merge)
+design/v3-phase4	C:/Users/Admin/Claude/Projects/TappyAI/tappyai-mvp/.claude/worktrees/v3-phase4-design	2026-09-15 14:03	0	0	75	13	1	0	0	0	1	1	0	0	0	0	0	0	0	0	fix(ai): correct anonymous quota config naming
+diag/media-identity-source	-	2026-08-13 08:47	0	334	0	272	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(media): say WHERE the deployment identity was missing, not just that it was
+diag/web-client-error-capture	-	2026-08-28 09:03	1	121	1	59	0	0	0	0	1	0	0	0	0	0	0	0	0	0	diag(web): TEMPORARY client-error capture for the Zalo/Chat/Home P0
+docs/anon-eligibility-measured-zero	-	2026-09-01 11:10	2	95	2	33	0	0	0	0	1	0	0	0	0	0	0	0	0	0	chore: merge main (#227) — keep this branch additive
+docs/b8-applied	-	2026-08-21 08:16	1	190	1	128	0	0	0	0	0	0	0	0	0	0	0	0	0	0	Documentation only.
+docs/ban-revocation-status	-	2026-08-21 09:20	1	186	1	124	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): ban revokes sessions, and class 1 is empty again
+docs/bl002-accepted	-	2026-08-22 18:29	1	164	1	102	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): BL-002 accepted — G1 is closed on production
+docs/c10-accepted	-	2026-08-13 11:52	0	320	0	258	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller): C10 ACCEPTED — S4 closed on production evidence
+docs/c10-contract	-	2026-08-13 10:22	0	326	0	264	0	0	0	0	0	0	0	0	0	0	0	0	0	0	Merge pull request #44 from huyphamsm-tappy/fix/media-server-completion
+docs/c11-session-security-contract	-	2026-08-15 10:17	13	297	13	235	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): C8 and C11 verified in production — Controller V2 closeou
+docs/c11-surface-status	-	2026-08-21 08:57	1	188	1	126	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): C11 session surface, and the burn-down re-measured
+docs/controller-v2-alert-well-status	-	2026-08-19 14:41	1	216	1	154	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): record the Alert Well as complete
+docs/controller-v2-b5-status	-	2026-08-19 14:17	1	218	1	156	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): record B5 Denial UX as complete and production-verified
+docs/controller-v2-closeout	-	2026-08-15 10:27	1	296	1	234	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): C8, C11 and C9b ACCEPTED — Controller V2 closeout
+docs/controller-v2-closure-index	-	2026-08-23 11:50	1	158	1	96	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): add the closure index so a dated 🔴 is never re-opened as
+docs/controller-v2-command-palette-status	-	2026-08-19 15:52	1	212	1	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): record the Command Palette, and the act/search contract gap
+docs/controller-v2-context-bar-status	-	2026-08-19 15:02	1	214	1	152	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): record the Context Bar, and the date-range contract gap
+docs/controller-v2-foundation-closure	-	2026-08-04 12:32	0	435	0	373	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): normalize project status across all Foundation documents
+docs/controller-v2-k2-applied	-	2026-08-22 17:01	1	165	1	103	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): K-2 migration applied to production, and the runbook
+docs/controller-v2-layout-presets-blocked	-	2026-08-19 16:00	1	211	1	149	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): Layout Presets are BLOCKED — dependency and contract audi
+docs/controller-v2-m01-applied	-	2026-08-20 13:27	1	195	1	133	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): Module 01 daily_snapshots applied to production, merged and
+docs/controller-v2-m04-status	-	2026-08-20 13:58	2	193	2	131	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): re-measure the burn-down at 81bfa06
+docs/controller-v2-owner-uat-closure	-	2026-08-22 15:06	1	167	1	105	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): record the Owner UAT that class D was waiting for
+docs/controller-v2-phase0-reconciliation	-	2026-08-19 12:02	1	227	1	165	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): phase 0 — recover the original architecture, record Decis
+docs/controller-v2-phase2-m08-migration-artifact	C:/Users/Admin/Claude/Projects/TappyAI/tappyai-memberapi	2026-08-19 18:14	1	204	1	142	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): Module 08 enforcement is ordered behind the migration — a
+docs/controller-v2-phase5-event-bus-audit	-	2026-08-19 12:44	1	225	1	163	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): phase 5 — event bus verified, first flow blocked on busin
+docs/controller-v2-phase8-authority-resolved	-	2026-08-19 16:54	1	207	1	145	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): document authority RESOLVED — correcting the previous ent
+docs/controller-v2-phase8-founder-status	-	2026-08-19 16:31	1	209	1	147	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): record Phase 8 start — Founder Hub id, and what it does n
+docs/controller-v2-phase8-module-authority-audit	-	2026-08-19 16:38	1	208	1	146	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): Phase 8 has no authorized implementation unit — 20-module
+docs/controller-v2-phase8-module-ordering	-	2026-08-19 17:22	1	206	1	144	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): the architecture DOES define module ordering — Module 14 
+docs/controller-v2-phase8-schema-authority-closed	-	2026-08-19 18:02	1	205	1	143	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): the bo-23/bo-10 schema conflict does not exist — correcti
+docs/controller-v2-post-foundation-status	-	2026-08-19 11:25	1	228	1	166	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): reconcile post-foundation production status
+docs/controller-v2-shell-ux-deferral	-	2026-08-23 11:43	1	159	1	97	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): close the DoD — D8/D9 defer Density and dark mode, and co
+docs/controller-v2-sot-reconciliation-m08	-	2026-08-20 11:00	1	200	1	138	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): reconcile the single source of truth with three merged, pro
+docs/controller-v2-status-closeout	-	2026-08-22 16:19	1	166	1	104	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): close out STATUS against production 6d9aecc
+docs/controller-v2-status-corrections	-	2026-08-13 16:48	1	302	1	240	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): correct two stale component statuses
+docs/controller-v2-status-sync	C:/wtdocs	2026-08-30 13:46	2	109	2	47	0	0	0	0	1	0	0	0	0	0	0	0	0	0	docs(controller-v2): record Owner decisions of 2026-08-30 — C7 UAT, and V2.2
+docs/controller-v21-uat	-	2026-08-23 17:14	1	154	1	92	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): close V2 and record Home UAT
+docs/correct-m30-export-target	-	2026-09-01 13:03	2	89	2	27	0	0	0	0	1	0	0	0	0	0	0	0	0	0	Merge remote-tracking branch 'origin/main' into docs/correct-m30-export-target
+docs/f10-activation-analysis	-	2026-08-10 08:39	0	354	0	292	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): F-10 activation analysis and corrected order
+docs/f10-flag-forensic	-	2026-08-10 09:03	0	352	0	290	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): feature-flag forensic for CONTROLLER_ORG_MEMBERSHIP_ENABLED
+docs/f10-uat-closeout	-	2026-08-10 12:44	0	350	0	288	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller): close F-10 after production Head UAT
+docs/feature-usage-guidance	-	2026-08-15 13:41	0	270	0	208	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(mobile): add bilingual TappyAI feature usage guidance
+docs/k1-released	-	2026-08-23 10:08	1	161	1	99	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): K-1 shipped and verified on production 0ae343b
+docs/m04-retention-applied	-	2026-08-20 14:59	1	191	1	129	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): cohort_metrics applied to production
+docs/marketing-phase2-contract	-	2026-09-01 11:50	2	93	2	31	0	0	0	0	1	0	0	0	0	0	0	0	0	0	Merge remote-tracking branch 'origin/main' into docs/marketing-phase2-contract
+docs/marketing-phase2-progress	C:/wtrecord	2026-09-02 11:18	3	75	3	13	0	0	0	0	1	0	0	0	0	0	0	0	0	0	Merge remote-tracking branch 'origin/main' into docs/marketing-phase2-progress
+docs/module09-applied	-	2026-08-21 11:15	1	181	1	119	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): Module 09 applied to production, backlog re-measured
+docs/module09-decision	-	2026-08-21 10:26	1	183	1	121	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): correct Module 09 — class 2 to class 3, with the reason
+docs/phase-c-broadcast-contract	C:/wtphasec	2026-08-31 11:16	5	106	5	44	0	0	0	0	1	0	0	0	0	0	0	0	0	0	docs(v2.2): the contract now says what actually shipped — and what did not
+docs/policy-architecture-contract	-	2026-08-15 10:38	1	295	1	233	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(policy): Policy Architecture — CONTRACT DRAFT, not ratified
+docs/policy-trust-safety-map	-	2026-08-17 14:37	0	247	0	185	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(safety): activate safety publication gate with explicit hate non-blocking r
+docs/production-read-only-access	-	2026-09-01 10:42	1	97	1	35	0	0	0	0	1	0	0	0	0	0	0	0	0	0	docs(runbooks): the production read-only DB channel, and that it is currently do
+docs/reconcile-marketing-contract-status	-	2026-09-01 12:06	1	92	1	30	0	0	0	0	1	0	0	0	0	0	0	0	0	0	docs(v2.2-2): STATUS/ROADMAP said no Marketing contract exists — it does
+docs/release-closure	-	2026-08-21 11:34	1	179	1	117	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): ENGINEERING COMPLETE — Owner UAT / Owner decisions only
+docs/roadmap-m30-export-target	-	2026-09-01 13:08	1	88	1	26	0	0	0	0	1	0	0	0	0	0	0	0	0	0	docs(v2.2-2): ROADMAP explained M-30 with the bulk export, not the portability o
+docs/status-production-revision	C:/wtstatus	2026-08-31 12:06	5	105	5	43	0	0	0	0	1	0	0	0	0	0	0	0	0	0	chore: merge main (#216) — keep this branch additive
+docs/user-notes-applied	-	2026-08-21 10:22	1	184	1	122	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): user_notes applied to production, backlog re-measured
+docs/v3-nav-reconciliation	-	2026-09-06 15:22	1	38	38	13	0	0	0	0	1	0	0	0	0	0	0	0	0	0	docs(v3): DD-016 — the Android V3 bar outranks DD-003 and OD-4
+entertainment-movie-intent	-	2026-08-25 11:00	1	138	1	76	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(entertainment): route "recommend a movie" to film knowledge, not the cinema
+feat/account-settings-i18n	C:/Users/Admin/Claude/Projects/TappyAI/tappyai-i18n-recover	2026-08-06 08:56	0	427	0	365	0	0	0	0	0	0	0	0	0	0	0	0	0	0	Merge pull request #7 from huyphamsm-tappy/fix/legal-back-navigation
+feat/affiliate-cross-platform	D:/Claude/Projects/TappyAI/.worktrees/affiliate-xplat	2026-09-17 15:27	41	34	69	0	1	1	1	1	1	1	1	0	0	0	0	0	0	1	fix(affiliate): reconcile two merge-artifact test contracts
+feat/android-anonymous-chat-on-main	C:/Users/Admin/Claude/Projects/TappyAI/tappyai-android-integration	2026-08-09 18:20	0	358	0	296	0	0	0	0	0	0	0	0	0	0	0	0	0	0	chore(release): versionCode 4 - Games hidden supersedes the vc3 artifact
+feat/android-appconnections-status	-	2026-07-18 17:12	0	627	0	565	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(android/appconnections): show real connection status from /api/integrations
+feat/android-chat-suggested-prompts	-	2026-07-18 16:27	0	627	0	565	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(android/chat): dynamic suggested prompts on the general welcome
+feat/android-membership-status	-	2026-07-18 16:11	0	627	0	565	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(android/membership): wire real subscription status (Pro/Free + quota)
+feat/android-reviews-comment-posting	-	2026-07-18 15:25	0	627	0	565	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(android/reviews): comment posting on the detail screen
+feat/android-reviews-feed-tabs	-	2026-07-18 15:44	0	627	0	565	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(android/reviews): feed tabs — For You / Following / Latest
+feat/android-reviews-follow	-	2026-07-18 15:33	0	627	0	565	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(android/reviews): follow / unfollow on author profiles
+feat/android-reviews-link-sharing	-	2026-07-18 15:10	0	627	0	565	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(android/reviews): wire link sharing (YouTube/TikTok/Facebook) in composer
+feat/android-reviews-photo-upload	-	2026-07-18 14:45	0	627	0	565	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(android/reviews): wire real photo upload in the composer
+feat/android-reviews-video-playback	-	2026-07-18 15:58	0	627	0	565	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(android/reviews): video playback + watch analytics in the feed
+feat/android-split-bill	-	2026-07-18 16:55	1	628	1	566	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(android/split-bill): port the Web /split-bill calculator (was missing)
+feat/anonymous-chat-android	C:/Users/Admin/Claude/Projects/TappyAI/tappyai-anon-android	2026-08-09 10:47	136	625	136	563	0	0	0	0	0	0	0	0	0	0	0	0	0	0	chore(release): bump versionCode to 2 for Anonymous Chat V1
+feat/anonymous-chat-backend	C:/Users/Admin/Claude/Projects/TappyAI/tappyai-anon-chat	2026-08-08 16:43	1	379	1	317	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(auth): Anonymous Chat V1 backend — quota ACL, claim RPC, profile guard
+feat/backoffice-phase0	C:/Users/Admin/Claude/Projects/TappyAI/tappyai-ios-sprint	2026-08-23 13:12	159	625	159	563	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(ios): correct the localization figures and record what is deliberately defe
+feat/backoffice-phase0-clean	-	2026-08-01 14:51	113	625	113	563	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(android/reviews): notification -> review detail no longer dead-ends
+feat/ban-revokes-sessions	-	2026-08-21 09:14	1	187	1	125	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(controller-v2): a ban now ends the banned user's sessions
+feat/c10-distributed-rate-limit	-	2026-08-13 11:39	0	322	0	260	0	0	0	0	0	0	0	0	0	0	0	0	0	0	Merge remote-tracking branch 'origin/main' into feat/c10-distributed-rate-limit
+feat/c11-session-surface	-	2026-08-21 08:51	1	189	1	127	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(controller-v2): C11 session surface — see and end a user's sessions
+feat/c14-broadcast-ui	-	2026-08-31 17:26	1	100	1	38	0	0	0	0	1	0	0	0	0	0	0	0	0	0	feat(controller): C-14 — two-step broadcast confirmation UI
+feat/c6-plugin-registry-lifecycle	-	2026-08-13 12:32	0	314	0	252	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(controller): C6 — complete the plugin registry lifecycle
+feat/c8-event-bus	-	2026-08-13 15:19	1	305	1	243	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(controller): C8 Event Bus — transactional outbox, mechanism only
+feat/c9b-typed-config	-	2026-08-13 13:20	0	307	0	245	0	0	0	0	0	0	0	0	0	0	0	0	0	0	Merge remote-tracking branch 'origin/main' into feat/c9b-typed-config
+feat/ccp-canonical	D:/Claude/Projects/TappyAI/.worktrees/ccp-canonical	2026-09-17 09:31	28	34	67	11	1	1	1	0	1	1	1	0	0	0	0	0	0	0	fix(ccp): multilingual false-limitation guard (M2 + English)
+feat/ccp-mvp	D:/Claude/Projects/TappyAI/.worktrees/ccp-mvp	2026-09-13 13:44	30	357	30	295	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(ccp): Commerce Capability Platform — Phases 0–5 (isolated, flags off)
+feat/chat-stage-telemetry	C:/Users/Admin/Claude/Projects/TappyAI/tappyai-telemetry	2026-08-07 11:41	2	399	2	337	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(planner): keep the item price badge to the amount alone
+feat/consultative-d1-d2-r1-r2-d3	D:/Claude/Projects/TappyAI/tappyai-mvp	2026-09-11 10:04	29	357	29	295	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(android): Deals V3 pass, chat structured cards, and their tests
+feat/consultative-d3	C:/Users/Admin/Claude/Projects/TappyAI/tappyai-d3	2026-08-19 13:22	16	357	16	295	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(ai): ground candidate identity on the consultative presentation turn
+feat/consultative-decision-experience	C:/Users/Admin/Claude/Projects/TappyAI/tappyai-v2fix	2026-08-23 18:34	7	151	7	89	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(consultative): make a shopping result a decision, not a dump
+feat/consultative-decision-quality	C:/wtdq	2026-08-24 08:08	1	149	1	87	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(consultative): answer the question that was asked, and only claim what was s
+feat/consultative-evidence-contract	-	2026-08-27 18:41	0	123	0	61	0	0	0	0	1	0	0	0	0	0	0	0	0	0	feat(consultative): A5 evidence boundary — food/spa snippet prices can't becom
+feat/consultative-evidence-contract-a51	-	2026-08-27 19:20	1	122	1	60	0	0	0	0	1	0	0	0	0	0	0	0	0	0	fix(consultative): A5 price boundary skipped no-retrieval turns (P0)
+feat/consultative-evidence-provenance	-	2026-08-27 18:04	1	124	1	62	0	0	0	0	1	0	0	0	0	0	0	0	0	0	feat(consultative): A5 evidence boundary — food/spa snippet prices can't becom
+feat/consultative-v2-ranking	C:/Users/Admin/Claude/Projects/TappyAI/tappyai-consultative	2026-08-17 14:36	14	357	14	295	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(ai): finalize consultative v2
+feat/consultative-v2-web	-	2026-08-17 15:18	0	238	0	176	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(ai): a removed clause must not leave its dash pointing at nothing
+feat/controller-home-design	-	2026-08-23 16:54	1	155	1	93	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(controller): V2.1 Home design pass — hierarchy, honest affordances, theme
+feat/controller-membership-api	-	2026-08-09 16:30	0	368	0	306	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(controller): membership API entry point (flag-gated, inert until activation
+feat/controller-password-auth	-	2026-08-21 16:17	1	172	1	110	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(controller-v2): the Controller signs in with email and password, not a one-
+feat/controller-v2-architecture-guard-rules	-	2026-08-19 13:28	1	221	1	159	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(controller-v2): enforce the §1 architecture rules in the Architecture Guar
+feat/controller-v2-b14-module-data-ownership	-	2026-08-20 11:15	1	199	1	137	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(controller-v2): B14 — absence of `manifest.data` means a module owns no t
+feat/controller-v2-b5-alert-well	-	2026-08-19 14:36	1	217	1	155	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(controller-v2): B5 — the Alert Well shows what needs attention now
+feat/controller-v2-b5-command-palette	-	2026-08-19 15:47	1	213	1	151	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(controller-v2): B5 — the Command Palette, navigate only
+feat/controller-v2-b5-context-bar	-	2026-08-19 14:55	1	215	1	153	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(controller-v2): B5 — the Context Bar, minus the undefined date range
+feat/controller-v2-b5-denial-ux	-	2026-08-19 14:11	1	219	1	157	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(controller-v2): B5 — a refusal from the Controller now explains itself
+feat/controller-v2-b8-break-glass	-	2026-08-20 12:15	2	197	2	135	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(controller-v2): B8 — break-glass Owner recovery, a database operation the
+feat/controller-v2-component3-rbac	-	2026-08-06 10:34	0	416	0	354	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): re-baseline the PR package onto 0654f45
+feat/controller-v2-component4-audited-pdp	-	2026-08-07 10:18	0	405	0	343	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(controller-v2): PR-freeze review — unreachable branch, false doc claim
+feat/controller-v2-component5-capability-registry	-	2026-08-07 10:48	1	402	1	340	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): freeze Component 5 as ADR-018, re-prioritise the roadmap
+feat/controller-v2-component7-audit-chain	-	2026-08-07 13:22	0	391	0	329	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(controller-v2): Component 7 — PR freeze review, three defects and doc drif
+feat/controller-v2-component9a-admin-client	-	2026-08-07 11:12	0	400	0	338	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): BL-9A-01 — the service-role client outside src/
+feat/controller-v2-f08	C:/Users/Admin/Claude/Projects/TappyAI/tappyai-f08	2026-08-09 14:11	0	376	0	314	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(controller): Enterprise Command Center Home (FOUNDATION-08) on /admin
+feat/controller-v2-final-closure	-	2026-08-22 15:55	4	167	4	105	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(controller-v2): D6 — the department membership surface F-10 never got
+feat/controller-v2-foundation	-	2026-08-04 11:35	0	438	0	376	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(controller-v2): repair bootstrap seed + prove it against a real PostgreSQL
+feat/controller-v2-foundation-integration	C:/Users/Admin/Claude/Projects/TappyAI/tappyai-controller-v2	2026-08-08 14:51	0	385	0	323	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(controller): implement Controller V2 foundation and registry-driven admin
+feat/controller-v2-k1-capability-binding	-	2026-08-23 09:49	2	162	2	100	0	0	0	0	0	0	0	0	0	0	0	0	0	0	Merge remote-tracking branch 'origin/main' into feat/controller-v2-k1-capability
+feat/controller-v2-k3-event-sink	C:/Users/Admin/Claude/Projects/TappyAI/tappyai-m08	2026-08-23 10:54	1	160	1	98	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(controller): give the Event Bus a real production sink (K-3)
+feat/controller-v2-login	-	2026-08-21 15:39	3	174	3	112	0	0	0	0	0	0	0	0	0	0	0	0	0	0	Merge remote-tracking branch 'origin/main' into feat/controller-v2-login
+feat/controller-v2-m01-daily-snapshots	-	2026-08-20 12:48	2	196	2	134	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): Module 01 rollback script + STATUS/taxonomy
+feat/controller-v2-m04-user-analytics	-	2026-08-20 13:47	1	194	1	132	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(controller-v2): Module 04 User Analytics — growth, engagement, subscripti
+feat/controller-v2-m08-account-status	-	2026-08-19 19:56	1	203	1	141	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(controller-v2): M08 account status isolated from profiles (ADR-022)
+feat/controller-v2-m08-admin-users-surface	-	2026-08-20 11:45	1	198	1	136	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(controller-v2): Module 08 becomes a real Controller module — tappy.hub.us
+feat/controller-v2-option-b	C:/Users/Admin/Claude/Projects/TappyAI/tappyai-optionb	2026-08-09 13:12	0	378	0	316	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(controller): trusted @tappyai.com corporate identity boundary (Option B, F-
+feat/controller-v2-phase4-capability-binding	-	2026-08-19 12:20	1	226	1	164	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(controller-v2): phase 4 — capability binding, hub scope, config provider
+feat/controller-v2-phase7-hub-shell	-	2026-08-19 13:14	1	223	1	161	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(controller-v2): phase 7 — the shell renders hubs, not a flat list
+feat/controller-v2-phase8-founder-hub	-	2026-08-19 16:26	1	210	1	148	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(controller-v2): phase 8 — the Founder Hub gets its architected id
+feat/controller-v2-public-home	-	2026-08-21 13:49	1	177	1	115	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(controller-v2): public home at /controller — the Owner-approved front doo
+feat/controller-v2-remove-dept-switcher	-	2026-08-21 15:27	1	177	1	115	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(controller-v2): remove the department switcher — it offered a choice that 
+feat/controller-v2-signout	-	2026-08-21 15:13	1	177	1	115	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(controller-v2): the Controller can sign out
+feat/controller-v2.1-dark-theme	-	2026-08-23 16:33	1	156	1	94	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(controller): V2.1 — fixed dark Controller theme and derived department co
+feat/controller-v22-entry	-	2026-08-23 18:08	1	152	1	90	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(controller): V2.2 — Controller login hierarchy and department entry flow
+feat/controller-v23-login	C:/Users/Admin/Claude/Projects/TappyAI/.worktrees/ctrl-v2-final	2026-08-23 18:54	1	150	1	88	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(controller): V2.3 — Controller login visual redesign
+feat/controller-v24-login	C:/wtctrl24	2026-08-29 17:52	1	112	1	50	0	0	0	0	1	0	0	0	0	0	0	0	0	0	feat(controller): add admin notifications foundation and targeted send flow
+feat/deals-brand-logos	-	2026-07-31 09:33	0	477	0	415	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(brand-registry): reframe as a shared platform capability
+feat/deals-i18n	C:/Users/Admin/Claude/Projects/TappyAI/tappyai-deals-i18n	2026-08-01 09:56	0	462	0	400	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(web/deals): localize DealNotifyButton (was hardcoded Vietnamese)
+feat/decision-evidence-state	-	2026-08-24 11:05	5	147	5	85	0	0	0	0	0	0	0	0	0	0	0	0	0	0	test(consultative): repoint M21 — its anchor was the string the precedence fix
+feat/delete-account-page	-	2026-08-06 10:08	0	424	0	362	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(legal): publish /delete-account for the Google Play listing
+feat/delete-legacy-broadcast-route	-	2026-08-31 16:35	1	101	1	39	0	0	0	0	1	0	0	0	0	0	0	0	0	0	feat(notifications): delete the legacy broadcast route (contract 14.2 step 8)
+feat/evidence-provenance-contract	-	2026-08-27 18:49	1	123	1	61	0	0	0	0	1	0	0	0	0	0	0	0	0	0	feat(consultative): A5.1 evidence-provenance boundary — dynamic values reach t
+feat/g1-growth	D:/Claude/Projects/TappyAI/.worktrees/g1-growth	2026-09-13 15:51	13	34	52	11	1	1	0	0	1	1	0	0	0	0	0	0	0	0	feat(android): finalize v3 explore and creator experience
+feat/gcp-observability	C:/wtobs	2026-08-23 17:53	2	153	2	91	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(observability): measure TTS character volume, without touching AI Consultat
+feat/gcs-media-bridge	-	2026-08-11 13:07	0	340	0	278	0	0	0	0	0	0	0	0	0	0	0	0	0	0	build: stop the ESLint config cascade at the project root
+feat/link-video-pipeline-v1	-	2026-07-26 09:19	0	552	0	490	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(reviews): unify link-video pipeline (V1: upload + YouTube + TikTok)
+feat/m04-retention-cohort-metrics	-	2026-08-20 14:28	1	192	1	130	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(controller-v2): M04 retention — cohort_metrics, D1/D7/D30
+feat/m08-admin-users-api	-	2026-08-20 10:40	2	201	2	139	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(controller-v2): M08 — apply Owner Decision A (ADR-023) on the admin read 
+feat/m08-consumer-enforcement	-	2026-08-19 20:47	2	202	2	140	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(test): M08 enforcement suite must load on Node 20, as CI runs it
+feat/m08-user-notes	-	2026-08-21 09:44	1	185	1	123	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(controller-v2): M08 internal admin notes — READY FOR MIGRATION AUTHORIZAT
+feat/marketing-activation	-	2026-09-01 14:52	1	81	1	19	0	0	0	0	1	0	0	0	0	0	0	0	0	0	feat(marketing): Phase D -- an activation path that refuses to activate
+feat/marketing-audience	-	2026-09-01 14:14	1	84	1	22	0	0	0	0	1	0	0	0	0	0	0	0	0	0	feat(marketing): Phase B -- the audience is what survives governance
+feat/marketing-campaigns	-	2026-09-01 14:26	2	82	2	20	0	0	0	0	1	0	0	0	0	0	0	0	0	0	Merge remote-tracking branch 'origin/main' into feat/marketing-campaigns
+feat/marketing-consent-api	-	2026-09-01 13:58	2	85	2	23	0	0	0	0	1	0	0	0	0	0	0	0	0	0	fix(marketing): every error this route returns now carries a message
+feat/marketing-governance-foundation	-	2026-09-01 13:39	1	86	1	24	0	0	0	0	1	0	0	0	0	0	0	0	0	0	feat(marketing): Phase A -- the governance foundation, before anything can send
+feat/marketing-retention	-	2026-09-01 15:05	1	80	1	18	0	0	0	0	1	0	0	0	0	0	0	0	0	0	feat(marketing): Phase E -- retention pruning, in the only order that works
+feat/media-wif-check	-	2026-08-12 15:03	0	338	0	276	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(media): answer "can this deployment reach GCS?" before the switch
+feat/module09-moderation	-	2026-08-21 10:56	1	182	1	120	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(controller-v2): Module 09 Content Moderation — READY FOR MIGRATION AUTHOR
+feat/notif-unification-impl	C:/Users/Admin/Claude/Projects/TappyAI/tappyai-notif	2026-07-26 13:01	0	548	0	486	0	0	0	0	0	0	0	0	0	0	0	0	0	0	Merge remote-tracking branch 'origin/main' into feat/notif-unification-impl
+feat/notification-unification	-	2026-07-26 08:58	0	552	0	490	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs+db(notifications): ADR-014 + Phase 0 migration (notifications table)
+feat/phase-c-broadcast	C:/wtbroadcast	2026-08-30 16:37	1	107	1	45	0	0	0	0	1	0	0	0	0	0	0	0	0	0	feat(controller): Phase C — a governed, chunked, resumable broadcast
+feat/plan-brochure-flight-links	-	2026-07-25 12:04	0	572	0	510	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(chat): accumulate places across all searches for plan photos
+feat/privacy-policy-play	-	2026-08-04 15:54	0	432	0	370	0	0	0	0	0	0	0	0	0	0	0	0	0	0	refactor(legal): single-source the public support address
+feat/remove-tiktok-v1	-	2026-07-26 11:03	0	551	0	489	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(web): remove TikTok from V1 video pipeline
+feat/retire-legacy-broadcast-410	-	2026-08-31 13:42	4	103	4	41	0	0	0	0	1	0	0	0	0	0	0	0	0	0	chore: merge main (#219 squash) — keep this branch additive
+feat/settings-delete-account-link	C:/Users/Admin/Claude/Projects/TappyAI/tappyai-settings-delete	2026-08-06 11:44	0	417	0	355	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(settings): expose Request Account Deletion on the web
+feat/shopping-early-frame	-	2026-08-25 15:26	2	134	2	72	0	0	0	0	0	0	0	0	0	0	0	0	0	0	test: re-anchor two invariant guards the delivery split moved
+feat/tappy-business-p0	D:/Claude/Projects/TappyAI/.worktrees/tappy-business-p0	2026-09-09 08:35	3	75	1	11	0	0	0	0	1	0	0	0	0	0	0	0	0	0	checkpoint(business): P0-P5 recovery point — the whole capability, in one comm
+feat/tappyai-v2	-	2026-08-15 10:52	2	278	2	216	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(ai): reconcile C3-B.10.2 evidence
+feat/tiktok-consultative-review-links	-	2026-08-16 09:11	1	253	1	191	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(chat): TikTok review links, but only ones the backend validated
+feat/v3-ai-consultative	C:/Users/Admin/Claude/Projects/TappyAI/.worktrees/v3-phase1-ai-consultative	2026-09-03 12:42	2	74	3	13	0	0	0	0	1	0	0	0	0	0	0	0	0	0	perf(v3): optimize AI cost
+feat/v3-qr-profile	C:/Users/Admin/Claude/Projects/TappyAI/tappyai-mvp/.claude/worktrees/eloquent-diffie-cb87f5	2026-09-06 16:55	25	357	25	295	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(qr-profile): V3 modal UI
+feat/v3-scam-shield-ui	-	2026-09-06 16:04	20	357	20	295	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(scam-shield): V3 safety UI
+feat/v3-user-data-foundation	D:/Claude/Projects/TappyAI/.worktrees/v3-user-data-foundation	2026-09-11 12:49	12	75	0	1	0	0	0	0	1	0	0	0	0	0	0	0	0	0	feat(v3): separate discovery city from residence
+feature/notification-mvp	-	2026-07-16 13:23	10	642	10	580	0	0	0	0	0	0	0	0	0	0	0	0	0	0	refactor(notifications): enum type, extension fields, drop milestone merge, fast
+fix/a5-food-price-no-retrieval	-	2026-08-27 19:20	1	122	1	60	0	0	0	0	1	0	0	0	0	0	0	0	0	0	fix(consultative): A5 price boundary skipped no-retrieval turns (P0)
+fix/ai-language-consistency	-	2026-07-30 13:46	0	488	0	426	0	0	0	0	0	0	0	0	0	0	0	0	0	0	chore: empty commit to get a fresh Preview deployment URL for QA (2/2)
+fix/android-account-deletion-entry	-	2026-08-15 18:17	1	255	1	193	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(android): ship the account-deletion route /delete-account promises
+fix/android-games-parity	-	2026-08-02 19:22	114	625	114	563	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(arcade-v2): Android inline SuperTux runtime
+fix/android-plan-item-name-wrap	C:/Users/Admin/Claude/Projects/TappyAI/tappyai-release	2026-08-07 11:11	128	625	128	563	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(android): stop a long price pill squeezing the plan item name
+fix/android-release-config	-	2026-08-06 11:06	127	625	127	563	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(android): default release endpoints to production, fail on placeholders
+fix/android-scan-gallery-decode	C:/wtandroid	2026-08-25 13:56	9	163	9	101	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(android): gallery scan failed on every image — decode null-guard was on th
+fix/bug-011-destination-scope	C:/Users/Admin/Claude/Projects/TappyAI/.worktrees/bug011-location-scope	2026-09-05 09:18	1	75	0	12	0	0	0	0	1	0	0	0	0	0	0	0	0	0	fix(ai): scope place search to destination
+fix/c3b10-2-money-guard	C:/Users/Admin/Claude/Projects/TappyAI/.worktrees/c3b10-2-verify	2026-08-15 11:16	0	274	0	212	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(ai): reconcile C3-B.10.2 evidence
+fix/canonical-video-viewer	C:/wtvid	2026-09-01 12:45	1	90	1	28	0	0	0	0	1	0	0	0	0	0	0	0	0	0	fix(reviews): one canonical presentation for a video post, on every entry point
+fix/chat-image-layout	-	2026-07-25 11:16	0	575	0	513	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(chat): keep each place's images/links grouped under that place
+fix/chat-latency-release-pre-tool-sentence	-	2026-08-28 09:56	1	119	1	57	0	0	0	0	1	0	0	0	0	0	0	0	0	0	fix(chat): release the opening sentence when the tool call proves it complete
+fix/chat-route-mojibake	-	2026-08-13 19:55	1	298	1	236	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(chat): repair double-encoded Vietnamese in the chat route
+fix/chat-streaming-latency-after-a5	-	2026-08-28 09:38	1	120	1	58	0	0	0	0	1	0	0	0	0	0	0	0	0	0	fix(chat): stop holding a places reply back for 13s to guard a price it never me
+fix/chrome-shortcut-brand-icon	-	2026-08-29 15:47	1	114	1	52	0	0	0	0	1	0	0	0	0	0	0	0	0	0	fix(web): show the official TappyAI otter icon for the Chrome shortcut / favicon
+fix/consultative-condition-provenance-claims	-	2026-08-24 09:13	1	148	1	86	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(consultative): a condition belongs only to the listing that states it
+fix/consultative-quality-round1	C:/Users/Admin/Claude/Projects/TappyAI/tappyai-consult	2026-08-27 10:37	2	130	2	68	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(consultative): stop apologizing about missing review links, pivot to Google 
+fix/consultative-round2	-	2026-08-27 11:14	1	129	1	67	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(consultative): Phase A core — generalized shortlist, relaxation, review a
+fix/consultative-round2-finalize	C:/Users/Admin/Claude/Projects/TappyAI/tappyai-r2	2026-08-27 12:15	6	127	6	65	0	0	0	0	1	0	0	0	0	0	0	0	0	0	Merge remote-tracking branch 'origin/main' into fix/consultative-round2-finalize
+fix/consultative-round2-wiring	-	2026-08-27 12:10	3	128	3	66	0	0	0	0	0	0	0	0	0	0	0	0	0	0	Merge remote-tracking branch 'origin/main' into fix/consultative-round2-wiring
+fix/controller-analytics-view-payload-binding	-	2026-08-22 10:50	1	169	1	107	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(controller-v2): bind analytics payloads to the view that asked for them
+fix/controller-home-login-destination	-	2026-08-21 15:52	1	173	1	111	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(controller-v2): the Controller front door was sending people to the CONSUMER
+fix/controller-origin-gate	C:/wtorigin	2026-08-30 14:53	3	108	3	46	0	0	0	0	1	0	0	0	0	0	0	0	0	0	Merge remote-tracking branch 'origin/main' into fix/controller-origin-gate
+fix/controller-shell-terminology	C:/Users/Admin/Claude/Projects/TappyAI/tappyai-label	2026-08-09 15:54	0	370	0	308	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(controller): stop the Controller shell calling itself "Back Office"
+fix/controller-suspend-fixture-expiry	C:/Users/Admin/Claude/Projects/TappyAI/.worktrees/ctrlfixture	2026-08-22 10:05	1	171	1	109	0	0	0	0	0	0	0	0	0	0	0	0	0	0	test(controller): the suspend fixture expired, so the test did
+fix/controller-v2-audit1-deals-upload	-	2026-08-19 13:51	2	220	2	158	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(test): the architecture-guard test must not mutate the real src/ tree
+fix/controller-v2-f04-grant-model-source-sync	-	2026-08-07 18:36	0	389	0	327	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(controller-v2): F-04 — align the audit-chain migration with Supabase's rea
+fix/deals-android-parity	-	2026-08-22 16:02	1	167	1	105	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(android): Deals rendered seven grey rows because the DTO named fields the fe
+fix/delete-account-accuracy	-	2026-08-06 10:31	0	422	0	360	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(legal): describe the account-deletion flow the app actually ships
+fix/deleted-review-404	C:/wt404	2026-09-01 11:40	1	94	1	32	0	0	0	0	1	0	0	0	0	0	0	0	0	0	fix(reviews): a deleted review returns a real 404, not a 200 with "not found" in
+fix/enrichment-name-matching	-	2026-07-25 17:01	0	553	0	491	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(chat): tiered place-name matching so enrichment stays per-place
+fix/explore-deleted-clip-visibility	-	2026-08-15 17:34	1	258	1	196	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(explore): stop serving slides with nothing on them
+fix/f01-reconciled	-	2026-08-22 15:19	1	167	1	105	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(ai): F01 — validate WHERE the weather answer came from, not just the count
+fix/f01-weather-country	-	2026-08-22 14:10	2	168	2	106	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(weather): prevent ambiguous Vietnam city resolution
+fix/f01-weather-location-identity	-	2026-08-22 14:37	2	168	2	106	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(ai): F01 follow-up — validate WHERE the answer came from, not just the cou
+fix/f03-anonymous-price-watch	-	2026-08-22 14:03	1	168	1	106	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(api): F03 — an anonymous visitor may not create recurring paid work
+fix/g1-place-guard-attribution	-	2026-09-17 21:14	11	0	86	13	1	0	0	0	1	1	0	1	1	1	0	0	0	0	test(parity): read sources CRLF-safe — the only red test on a Windows checkout
+fix/ios-music-library-entry	C:/wtmusic	2026-08-27 20:39	2	121	2	59	0	0	0	0	1	0	0	0	0	0	0	0	0	0	Merge origin/main into fix/ios-music-library-entry
+fix/ios-platform-links-tiktok-parity	-	2026-08-15 16:33	1	260	1	198	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(ios): drop the TikTok Shop link iOS built on its own
+fix/landing-hero-logo-founder-bio	-	2026-08-01 11:15	0	452	0	390	0	0	0	0	0	0	0	0	0	0	0	0	0	0	Merge origin/main into fix/landing-hero-logo-founder-bio for Landing release
+fix/language-persistence	-	2026-07-25 15:33	0	564	0	502	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(i18n): always persist locale so the language picker doesn't reappear
+fix/legacy-410-recorder-await	-	2026-08-31 14:19	1	102	1	40	0	0	0	0	1	0	0	0	0	0	0	0	0	0	fix(audit): await the retirement recorder so cold-start hits are not lost
+fix/legal-back-navigation	C:/Users/Admin/Claude/Projects/TappyAI/tappyai-privacy-play	2026-08-06 08:54	0	428	0	366	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(legal): Back returns to the referring screen, not Home
+fix/legal-single-source	-	2026-08-04 17:35	0	430	0	368	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(legal): one i18n-driven implementation per legal document
+fix/like-list-count-click	C:/wtlike	2026-08-31 17:56	3	99	3	37	0	0	0	0	1	0	0	0	0	0	0	0	0	0	fix(reviews): give the split like heart its own accessible name
+fix/login-email-entry	-	2026-08-09 18:58	0	366	0	304	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(login): expose the existing email sign-in via /login?email=1
+fix/login-return-and-touch-target	C:/wtux	2026-09-01 14:22	7	83	7	21	0	0	0	0	1	0	0	0	0	0	0	0	0	0	Merge origin/main into fix/login-return-and-touch-target
+fix/login-return-to-param	C:/Users/Admin/Claude/Projects/TappyAI/tappyai-loginfix	2026-08-09 14:56	0	374	0	312	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(auth): login ignored the Controller's return destination (redirect vs return
+fix/media-credential-stage-diagnostic	-	2026-08-18 11:00	1	232	1	170	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(media): an STS refusal must say what Google actually said
+fix/media-deployment-identity	-	2026-08-12 15:29	0	336	0	274	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(media): read the deployment identity where production actually puts it
+fix/media-server-completion	-	2026-08-13 10:18	0	327	0	265	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(media): let the server confirm what the browser is not allowed to see
+fix/money-guard-dong-bypass	-	2026-08-28 10:51	1	118	1	56	0	0	0	0	1	0	0	0	0	0	0	0	0	0	fix(ai): the money guard was blind to the word "đồng"
+fix/music-cover-jamendo	-	2026-07-25 12:23	0	571	0	509	0	0	0	0	0	0	0	0	0	0	0	0	0	0	@ fix(music): whitelist Jamendo cover host so library thumbnails load
+fix/music-track-lookup-list	-	2026-08-18 14:30	1	231	1	169	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(music): a hidden track must read as no rows, not as an error
+fix/native-composer-link-provider-parity	-	2026-08-15 17:08	1	259	1	197	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(mobile): let the backend decide which link providers a composer offers
+fix/nav-comment-accuracy	-	2026-08-10 14:35	0	347	0	285	0	0	0	0	0	0	0	0	0	0	0	0	0	0	ci(controller): add regression and static quality gates
+fix/notification-clip-context	C:/wtclip	2026-09-01 12:15	2	91	2	29	0	0	0	0	1	0	0	0	0	0	0	0	0	0	Merge remote-tracking branch 'origin/main' into fix/notification-clip-context
+fix/notification-otter-logo	-	2026-08-06 11:26	0	419	0	357	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(notifications): use the otter mascot, not the retired logo
+fix/og-share-card-otter-logo	C:/wtperf	2026-08-29 16:39	1	113	1	51	0	0	0	0	1	0	0	0	0	0	0	0	0	0	fix(share): use official TappyAI otter artwork for the OG/Twitter share card
+fix/optimistic-state-rollback	C:/wtfix	2026-09-01 10:56	2	96	2	34	0	0	0	0	1	0	0	0	0	0	0	0	0	0	Merge remote-tracking branch 'origin/main' into fix/optimistic-state-rollback
+fix/pg06-07-deterministic-snapshot-probe	-	2026-08-19 13:22	1	223	1	161	0	0	0	0	0	0	0	0	0	0	0	0	0	0	test(audit-chain): make PG-06/PG-07 deterministic with an advisory-lock rendezvo
+fix/phase0-production-hardening	C:/Users/Admin/Claude/Projects/TappyAI/.worktrees/phase0-hardening	2026-09-02 17:29	0	74	1	13	0	0	0	0	1	0	0	0	0	0	0	0	0	0	fix(v3): harden production AI and client protocol
+fix/place-website-ssrf	-	2026-09-01 15:50	2	77	2	15	0	0	0	0	1	0	0	0	0	0	0	0	0	0	fix(ai): the place-website fetch could be aimed at our own network
+fix/places-marker-contract	D:/Claude/Projects/TappyAI/tappyai-places-contract	2026-09-11 10:07	10	34	49	11	1	1	0	0	1	1	0	0	0	0	0	0	0	0	feat(ios): Place Card on the shared marker contract; fixtures 13→21; sentinel 
+fix/platform-owner-revoke-public	C:/Users/Admin/Claude/Projects/TappyAI/tappyai-secfix	2026-08-08 10:40	0	385	0	323	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(security): add rollback for platform owner revoke hotfix
+fix/pre-uat-f1-f2	-	2026-08-21 12:11	1	178	1	116	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(controller-v2): pre-UAT F-1 and F-2 — parse nothing before the caller is k
+fix/privacy-single-source	-	2026-08-04 17:14	1	431	1	369	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(legal): make /privacy the only Privacy Policy, 308 the old route
+fix/profile-avatar-zalo	-	2026-08-28 12:03	2	117	2	55	0	0	0	0	1	0	0	0	0	0	0	0	0	0	fix(profile): assert the image allowlist without a Next internal
+fix/profile-feed-keeps-unrenderable	-	2026-08-15 17:52	1	256	1	194	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(explore): don't strand a post its author can no longer reach
+fix/profile-grid-filler	-	2026-07-25 14:12	0	568	0	506	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(reviews): filler must match the page bg (bg-black), not the tile colour
+fix/push-credential-ownership	C:/wtpush	2026-08-30 11:07	2	111	2	49	0	0	0	0	1	0	0	0	0	0	0	0	0	0	docs(notifications): correct a false security claim in the ownership migration
+fix/push-identity-reconcile	C:/wtpush2	2026-08-30 12:17	5	110	5	48	0	0	0	0	1	0	0	0	0	0	0	0	0	0	Merge remote-tracking branch 'origin/main' into fix/push-identity-reconcile
+fix/qr-ssrf-guard	-	2026-09-01 13:30	1	87	1	25	0	0	0	0	1	0	0	0	0	0	0	0	0	0	fix(scam-shield): a QR code could make the server call an internal address
+fix/refuse-anonymous-push-subscribe	-	2026-08-31 18:01	2	98	2	36	0	0	0	0	1	0	0	0	0	0	0	0	0	0	chore: merge main (#224) — keep this branch additive
+fix/release-closure-class-a	-	2026-08-21 11:28	1	180	1	118	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(controller-v2): release-blocker audit — a missing i18n key, an invented pe
+fix/restore-anonymous-claim-route	-	2026-08-09 14:56	0	374	0	312	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(auth): Anonymous Chat V1 backend — quota ACL, claim RPC, profile guard
+fix/scam-shield-i18n	-	2026-08-06 09:42	0	426	0	364	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(scam-shield): SSRF bypass, i18n keys, dead code cleanup
+fix/scam-shield-inconclusive	C:/Users/Admin/Claude/Projects/TappyAI/tappyai-scamfix	2026-08-19 12:46	1	225	1	163	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(scam-shield): stop calling a link safe when nothing could be checked
+fix/shopping-marker-product-identity	D:/Claude/Projects/TappyAI/tappyai-shopping-contract	2026-09-05 10:10	2	75	0	11	0	0	0	0	1	0	0	0	0	0	0	0	0	0	Merge pull request #248 from huyphamsm-tappy/fix/bug-011-destination-scope
+fix/spec-guard-lone-connector	C:/Users/Admin/Claude/Projects/TappyAI/tappyai-web-release	2026-08-17 15:41	0	234	0	172	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(ai): drop a connector left with nothing to introduce
+fix/spec-guard-unit-no-space	-	2026-08-17 15:34	0	236	0	174	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(ai): "0.98kg" asserts weight just as "0.98 kg" does
+fix/ssrf-dns-pinning	-	2026-09-01 15:21	9	78	9	16	0	0	0	0	1	0	0	0	0	0	0	0	0	0	Merge origin/main into fix/ssrf-dns-pinning
+fix/streaming-markdown-image-flash	-	2026-08-15 15:29	0	261	0	199	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(chat): never stop the typewriter inside a markdown token
+fix/supertux-preload-removal	C:/Users/Admin/Claude/Projects/TappyAI/tappyai-supertux	2026-08-07 09:56	0	407	0	345	0	0	0	0	0	0	0	0	0	0	0	0	0	0	perf(game): stop preloading SuperTux assets on the hub page
+fix/thumbnail-self-healing	-	2026-08-25 12:42	1	137	1	75	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(media): self-heal thumbnails on transient failure/stall instead of a permane
+fix/travel-dynamic-fact-guard	-	2026-08-27 16:24	1	126	1	64	0	0	0	0	1	0	0	0	0	0	0	0	0	0	fix(travel): fail-closed guard for dynamic travel facts (P0 — flight/hotel pri
+fix/tts-language-voice	-	2026-07-25 12:47	0	570	0	508	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(tts): match voice to reply language; never read Vietnamese with an English v
+fix/v2-cleanup-profile-sync-explore-audio	-	2026-08-28 12:20	2	116	2	54	0	0	0	0	1	0	0	0	0	0	0	0	0	0	fix(explore): the first tap unlocked the sound and then killed it
+fix/v2-fix-phase	-	2026-08-22 10:11	41	170	41	108	0	0	0	0	0	0	0	0	0	0	0	0	0	0	Merge remote-tracking branch 'origin/main' into fix/v2-fix-phase
+fix/vi-response-language	-	2026-08-15 12:35	0	275	0	213	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(ai): name Vietnamese in the prompt so Vietnamese turns answer in Vietnamese
+fix/vi-tool-path-lang-2	-	2026-08-18 15:17	0	228	0	166	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(reviews): restore owner visibility for under-review posts (#91)
+fix/vi-tool-path-language	-	2026-08-15 13:00	0	273	0	211	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(ai): stop the language override teaching itself in English
+fix/vietnamese-detection-ratio	-	2026-07-30 15:28	0	482	0	420	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(ai): stop one Vietnamese proper noun from flipping an English reply to Vietn
+fix/vietnamese-short-query-language	-	2026-08-15 14:50	0	263	0	201	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(ai): detect short Vietnamese search queries as Vietnamese
+fix/web-cta-marker-leak	C:/wtcta	2026-08-27 17:38	2	125	2	63	0	0	0	0	1	0	0	0	0	0	0	0	0	0	Merge origin/main (1b0632b) into fix/web-cta-marker-leak
+fix/web-owner-profile-held-visibility	-	2026-08-18 15:15	1	229	1	167	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(reviews): restore owner visibility for under-review posts
+fix/web-production-stabilization	C:/Users/Admin/Claude/Projects/TappyAI/tappyai-stabilization	2026-07-23 12:24	35	601	35	539	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(email): introduce provider-based email architecture with Brevo SMTP
+fix/wif-check-token-reader	-	2026-08-13 09:23	0	330	0	268	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(media): give the health check the same token reader as the provider
+fix/wif-health-presence-test	-	2026-08-13 09:04	0	332	0	270	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(media): stop reporting a present identity as a missing one
+fix/youtube-poster-hqdefault	-	2026-08-15 17:36	1	258	1	196	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(mobile): build YouTube posters the web resolver's way
+guard/ai-image-url-ssrf	C:/wtssrf	2026-09-01 16:40	4	76	4	14	0	0	0	0	1	0	0	0	0	0	0	0	0	0	wip: deterministic harness
+integration/android-parity	-	2026-07-21 14:35	0	605	0	543	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(web): comment replies/reactions + reviews parity + ProfileTab extraction
+integration/scam-shield-v3	-	2026-09-06 16:36	23	357	23	295	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(scam-shield): V3 safety UI
+integration/v3-canonical	D:/Claude/Projects/TappyAI/tappyai-v3-canonical	2026-09-17 20:14	20	34	59	11	1	1	0	0	1	1	0	0	0	0	0	0	0	0	feat(web): complete personal collections parity
+integration/v3-foundation	C:/Users/Admin/Claude/Projects/TappyAI/.worktrees/v3-integration	2026-09-03 15:01	10	74	11	13	0	0	0	0	1	0	0	0	0	0	0	0	0	0	refactor(security): /api/chat no longer performs a privileged operation
+ios/marker-leak-parity	C:/wtios	2026-08-27 20:41	9	121	9	59	0	0	0	0	1	0	0	0	0	0	0	0	0	0	Merge updated #183 (now current with origin/main) into the marker-leak branch
+ios/shopping-decision-evidence-parity	-	2026-08-27 20:40	6	121	6	59	0	0	0	0	1	0	0	0	0	0	0	0	0	0	Merge updated base (origin/main) into the shopping-parity branch
+main	C:/Users/Admin/Claude/Projects/TappyAI/tappyai-v2-recon	2026-08-27 09:31	0	130	0	68	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(ai): Food identity flow + contextual follow-up card duplication (#191)
+merge/main-into-v3	D:/Claude/Projects/TappyAI/tappyai-mvp/.claude/worktrees/g1-place-guard	2026-09-17 22:14	28	0	90	0	1	0	0	0	1	1	0	1	1	1	1	1	1	1	feat(auth): D1 revised — guests keep the 5-question trial behind an 18+ self-d
+perf-audit	-	2026-08-28 09:06	0	120	0	58	0	0	0	0	1	0	0	0	0	0	0	0	0	0	diag(web): TEMPORARY client-error capture for the Zalo/Chat/Home P0 (#202)
+perf/chat-cost-phase-b	-	2026-08-12 10:36	12	357	12	295	0	0	0	0	0	0	0	0	0	0	0	0	0	0	chore(android): update target api to 36
+perf/chat-model-timing	-	2026-08-25 14:46	1	135	1	73	0	0	0	0	0	0	0	0	0	0	0	0	0	0	obs(chat): split the turn into pre-model, TTFT and generation
+perf/chat-pre-model-parallel	-	2026-08-25 13:56	1	136	1	74	0	0	0	0	0	0	0	0	0	0	0	0	0	0	perf(chat): run the four post-gate reads in parallel
+perf/chat-prose-budget	-	2026-08-25 13:48	3	136	3	74	0	0	0	0	0	0	0	0	0	0	0	0	0	0	test(chat): destructure SystemPrompt instead of casting it
+perf/drop-debug-budget-field	-	2026-08-15 13:40	0	271	0	209	0	0	0	0	0	0	0	0	0	0	0	0	0	0	perf(ai): drop the debug field from the hotel tool payload
+perf/phase0-instrumentation	-	2026-08-25 15:32	1	134	1	72	0	0	0	0	0	0	0	0	0	0	0	0	0	0	obs(chat): Phase-0 — per-tool, per-step and client-emit timing on the one usag
+perf/phase1-early-shopping-frame	-	2026-08-25 15:39	0	132	0	70	0	0	0	0	0	0	0	0	0	0	0	0	0	0	obs(chat): Phase-0 — per-tool, per-step and client-emit timing on the one usag
+perf/phase2-photo-instrumentation	-	2026-08-25 16:16	1	132	1	70	0	0	0	0	0	0	0	0	0	0	0	0	0	0	obs(photos): time each step of the photo fallback chain
+perf/phase2-photo-overlap	-	2026-08-25 15:39	0	132	0	70	0	0	0	0	0	0	0	0	0	0	0	0	0	0	obs(chat): Phase-0 — per-tool, per-step and client-emit timing on the one usag
+phase1-blob	-	2026-08-13 11:58	0	320	0	258	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(media): stop pointing clients at the suspended Blob store
+phase1-ios	-	2026-08-13 11:28	0	325	0	263	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(ios): speak the shared media protocol instead of Vercel Blob's
+phase1-photos	-	2026-08-13 12:10	0	316	0	254	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(media): filter Blob URLs out of the photos array too
+phase1-shopping-search-quality	-	2026-08-24 13:52	2	146	2	84	0	0	0	0	0	0	0	0	0	0	0	0	0	0	test(shopping): kill the 5 surviving mutants
+phase2-evidence-normalization	-	2026-08-24 14:15	2	145	2	83	0	0	0	0	0	0	0	0	0	0	0	0	0	0	test(consultative): kill M06/M07 with minimal-pair fixtures
+phase3-entity-offer-model	-	2026-08-24 14:32	3	144	3	82	0	0	0	0	0	0	0	0	0	0	0	0	0	0	test(consultative): kill M02/M04/M07 (entityKey distinctness + url dedup)
+phase4-synthesis-decision	-	2026-08-24 14:52	3	143	3	81	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(consultative): exclude UNKNOWN from the sellers list (it is a string)
+phase9-decision-polish	-	2026-08-25 09:45	1	140	1	78	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(consultative): give the decision card its own image + drop the redundant me
+phase9-shopping-marker	-	2026-08-25 09:29	3	141	3	79	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(consultative): keep the TikTok-fold anchor; fold the marker into finalText's
+phase9-ui-synthesis	-	2026-08-24 15:48	2	142	2	80	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(consultative): localize the shopping decision card + keep guard tests honest
+platform/hardening-phase0	-	2026-08-08 11:27	0	386	0	324	0	0	0	0	0	0	0	0	0	0	0	0	0	0	refactor(platform): deduplicate PH-0 ownership after hotfix
+polish/landing-branding	-	2026-07-29 14:38	0	497	0	435	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(branding): Brand Identity v1.0 + logo migration plan
+preview/auth-provider-contract	-	2026-07-25 10:26	1	576	1	514	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(auth): config-driven provider contract — product.ts as single source
+preview/bugfix-video-counters	-	2026-07-04 20:05	0	776	0	714	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(security/api): OAuth callback auth-gate, Stripe webhook integrity, save erro
+preview/chat-layout-grouping	-	2026-07-24 14:31	0	579	0	517	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(chat): position-aware place enrichment — group photos with their place
+preview/deals-catalog	-	2026-07-24 10:40	0	588	0	526	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(deals): simplify partner catalog to 7 official-landing partners (Bug #14)
+preview/deals-promo-polish	-	2026-07-24 12:51	0	583	0	521	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(deals): promo polish — discount badge, countdown, voucher copy (metadata.
+preview/deals-v1	-	2026-07-24 11:35	0	585	0	523	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(deals): V1 polish — partner_type free string + reserved metadata JSONB
+preview/exchange-rate-precision	-	2026-07-24 13:34	0	581	0	519	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(currency): Bug #15 exchange-rate precision + missing-currency guard
+preview/truncation-fix	-	2026-07-25 09:20	0	576	0	514	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(chat): prevent finishReason:length truncation — raise cap + let enrichment
+probe/cron-capacity	-	2026-08-13 13:58	1	306	1	244	0	0	0	0	0	0	0	0	0	0	0	0	0	0	chore(probe): add an 8th cron entry to test Vercel Hobby capacity
+rca-main	-	2026-08-27 19:24	0	121	0	59	0	0	0	0	1	0	0	0	0	0	0	0	0	0	fix(consultative): A5 price boundary skipped no-retrieval turns (P0) (#200)
+rca/place-id-flow	C:/Users/Admin/Claude/Projects/TappyAI/tappyai-mvp/.claude/worktrees/gcs-media-bridge	2026-08-25 16:21	0	131	0	69	0	0	0	0	0	0	0	0	0	0	0	0	0	0	obs(photos): time each step of the photo fallback chain (#190)
+redeploy-7e	-	2026-08-13 09:42	0	328	0	266	0	0	0	0	0	0	0	0	0	0	0	0	0	0	chore(deploy): 7E — redeploy production to pick up MEDIA_PROVIDER=gcs
+release/android-games-hidden	-	2026-08-02 19:24	116	625	116	563	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(release/android): hide Games — parked for Tappy Arcade V2
+release/android-games-hidden-clean	C:/Users/Admin/Claude/Projects/TappyAI/tappyai-games-repro	2026-08-03 09:47	114	625	114	563	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(release/android): hide Games — parked for Tappy Arcade V2
+release/android-vc7	C:/Users/Admin/Claude/Projects/TappyAI/tappyai-release-vc7	2026-08-19 12:55	7	228	7	166	0	0	0	0	0	0	0	0	0	0	0	0	0	0	chore(android): versionCode 7 — 6 is already published on the Alpha track
+release/games-hidden	-	2026-08-02 19:21	1	452	1	390	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(release): hide Games — parked for Tappy Arcade V2
+release/scam-shield	-	2026-08-03 19:02	0	451	0	389	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(scam-shield): add URL/QR risk checker with provider-based architecture
+release/v2-android-rc	-	2026-08-23 08:51	8	163	8	101	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(android): Deals showed a partner initial where the web shows the official lo
+release/v2-ios-rc	C:/Users/Admin/Claude/Projects/TappyAI/tappyai-ios-rc	2026-08-27 09:58	7	130	7	68	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(ios): Deals refetches on language change instead of freezing the fetched-in 
+release/v2-rc	C:/Users/Admin/Claude/Projects/TappyAI/tappyai-rc	2026-08-19 16:13	24	211	24	149	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(android/deals): send the app language, so English users stop getting Vietnam
+release/vc6	-	2026-08-15 19:02	1	254	1	192	0	0	0	0	0	0	0	0	0	0	0	0	0	0	chore(android): versionCode 6 for the account-deletion release
+release/web-rc-2026-07	-	2026-07-29 11:57	0	513	0	451	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(design-system,web): release polish — fixed-dark semantic tokens + copyrigh
+safety/explore-moderation-audit	C:/Users/Admin/Claude/Projects/TappyAI/tappyai-safety	2026-08-19 14:56	11	222	11	160	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(policy): the author is told at posting time, not only in their profile
+security/next-14.2.35	C:/Users/Admin/Claude/Projects/TappyAI/tappyai-sec-next	2026-08-03 19:27	0	450	0	388	0	0	0	0	0	0	0	0	0	0	0	0	0	0	security(deps): upgrade Next.js 14.2.5 -> 14.2.35 (CVE-2025-29927)
+security/v3-phase3	C:/Users/Admin/Claude/Projects/TappyAI/.worktrees/v3-phase3-security	2026-09-03 12:50	1	74	2	13	0	0	0	0	1	0	0	0	0	0	0	0	0	0	fix(v3): close the security findings Phase 0 deferred
+share-menu	-	2026-08-13 12:56	0	310	0	248	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(share): TappyAI owns the share menu, not the OS
+share-preview	-	2026-08-13 12:34	0	314	0	252	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(share): give a pasted TappyAI link a real preview
+share-ui	-	2026-08-13 13:33	1	309	1	247	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(share): wire the share sheet into the real Android and iOS review screens
+test/c8-runtime-sql	-	2026-08-13 16:43	1	303	1	241	0	0	0	0	0	0	0	0	0	0	0	0	0	0	test(controller): C8 — execute the outbox migration against a real PostgreSQL
+tmp/i18n-sprint-base	-	2026-08-06 09:37	126	625	126	563	0	0	0	0	0	0	0	0	0	0	0	0	0	0	tmp: i18n sprint at stash base
+uat/android-release-fixes	C:/Users/Admin/Claude/Projects/TappyAI/tappyai-android-uat	2026-08-08 12:41	132	625	132	563	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(chat): stop BODY-level http logging from buffering the reply stream
+v2-closeout	-	2026-08-15 17:38	0	256	0	194	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(mobile): build YouTube posters the web resolver's way (#77)
+v2/android-rc-build	C:/Users/Admin/Claude/Projects/TappyAI/tappyai-android-rc	2026-08-27 16:42	13	163	13	101	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(android): the CTA block leaked its raw JSON when anything followed it
+verify/c3-merged	-	2026-08-06 13:57	0	408	0	346	0	0	0	0	0	0	0	0	0	0	0	0	0	0	Merge pull request #12 from huyphamsm-tappy/feat/controller-v2-component3-rbac
+verify/c4-merged	-	2026-08-07 10:27	0	402	0	340	0	0	0	0	0	0	0	0	0	0	0	0	0	0	Merge pull request #14 from huyphamsm-tappy/feat/controller-v2-component4-audite
+verify/c9a-merged	-	2026-08-07 11:16	0	399	0	337	0	0	0	0	0	0	0	0	0	0	0	0	0	0	Merge pull request #16 from huyphamsm-tappy/feat/controller-v2-component9a-admin
+video-5min	-	2026-08-13 14:56	1	305	1	243	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(video): raise the clip limit from 60 seconds to 5 minutes
+origin	-	2026-09-11 16:58	13	75	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	1	Merge pull request #251 from huyphamsm-tappy/feat/v3-user-data-foundation
+origin/backup/ccp-canonical-2026-09-17	-	2026-09-17 09:31	28	34	67	11	1	1	1	0	1	1	1	0	0	0	0	0	0	0	fix(ccp): multilingual false-limitation guard (M2 + English)
+origin/blob-cleanup	-	2026-08-13 14:14	3	306	3	244	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(deps): declare jose explicitly — it was only reaching us through @vercel/b
+origin/chore/android-target-sdk-36	-	2026-08-19 10:58	1	228	1	166	0	0	0	0	0	0	0	0	0	0	0	0	0	0	chore(android): target API 36 for the Play policy deadline
+origin/chore/controller-v2-phase6-legacy-removal	-	2026-08-19 12:57	2	224	2	162	0	0	0	0	0	0	0	0	0	0	0	0	0	0	Merge remote-tracking branch 'origin/main' into chore/controller-v2-phase6-legac
+origin/chore/publication-boundary-migrations-in-git	-	2026-08-18 15:03	2	230	2	168	0	0	0	0	0	0	0	0	0	0	0	0	0	0	chore(safety): write the EXECUTE grant the way ADR-019 requires
+origin/chore/remove-temp-diag	-	2026-08-28 12:30	2	115	2	53	0	0	0	0	1	0	0	0	0	0	0	0	0	0	fix(test): the absence guard was matching its own text
+origin/ci/regression-gate	-	2026-08-10 14:35	0	347	0	285	0	0	0	0	0	0	0	0	0	0	0	0	0	0	ci(controller): add regression and static quality gates
+origin/ci/supertux-wasm	-	2026-08-02 12:32	7	452	7	390	0	0	0	0	0	0	0	0	0	0	0	0	0	0	ci(supertux-wasm): apply a minimal patch enabling mobile controls on web
+origin/claude/lucid-albattani-08512a	-	2026-07-30 14:18	1	488	1	426	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(ui): localize TripPlanCard labels and enrichment trailing-block for EN
+origin/claude/user-memory-auth-fk-f1z5nf	-	2026-09-11 13:32	15	75	2	0	0	0	0	0	1	0	0	0	0	0	0	0	0	1	docs(v3): record Phase 6 architecture-hardening backlog
+origin/crossdomain-place-flood	-	2026-08-25 10:16	1	139	1	77	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(consultative): one representative photo per place — kill the cross-domain 
+origin/debug/vi-tool-provider-request	-	2026-08-15 13:31	1	272	1	210	0	0	0	0	0	0	0	0	0	0	0	0	0	0	debug: temporary metadata-only language diagnostic (Preview only, do not merge)
+origin/diag/media-identity-source	-	2026-08-13 08:47	0	334	0	272	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(media): say WHERE the deployment identity was missing, not just that it was
+origin/diag/web-client-error-capture	-	2026-08-28 09:03	1	121	1	59	0	0	0	0	1	0	0	0	0	0	0	0	0	0	diag(web): TEMPORARY client-error capture for the Zalo/Chat/Home P0
+origin/docs/anon-eligibility-measured-zero	-	2026-09-01 11:10	2	95	2	33	0	0	0	0	1	0	0	0	0	0	0	0	0	0	chore: merge main (#227) — keep this branch additive
+origin/docs/b8-applied	-	2026-08-21 08:16	1	190	1	128	0	0	0	0	0	0	0	0	0	0	0	0	0	0	Documentation only.
+origin/docs/ban-revocation-status	-	2026-08-21 09:20	1	186	1	124	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): ban revokes sessions, and class 1 is empty again
+origin/docs/bl002-accepted	-	2026-08-22 18:29	1	164	1	102	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): BL-002 accepted — G1 is closed on production
+origin/docs/c10-accepted	-	2026-08-13 11:52	0	320	0	258	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller): C10 ACCEPTED — S4 closed on production evidence
+origin/docs/c11-session-security-contract	-	2026-08-15 10:17	13	297	13	235	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): C8 and C11 verified in production — Controller V2 closeou
+origin/docs/c11-surface-status	-	2026-08-21 08:57	1	188	1	126	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): C11 session surface, and the burn-down re-measured
+origin/docs/controller-v2-alert-well-status	-	2026-08-19 14:41	1	216	1	154	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): record the Alert Well as complete
+origin/docs/controller-v2-b5-status	-	2026-08-19 14:17	1	218	1	156	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): record B5 Denial UX as complete and production-verified
+origin/docs/controller-v2-closeout	-	2026-08-15 10:27	1	296	1	234	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): C8, C11 and C9b ACCEPTED — Controller V2 closeout
+origin/docs/controller-v2-closure-index	-	2026-08-23 11:50	1	158	1	96	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): add the closure index so a dated 🔴 is never re-opened as
+origin/docs/controller-v2-command-palette-status	-	2026-08-19 15:52	1	212	1	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): record the Command Palette, and the act/search contract gap
+origin/docs/controller-v2-context-bar-status	-	2026-08-19 15:02	1	214	1	152	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): record the Context Bar, and the date-range contract gap
+origin/docs/controller-v2-foundation-closure	-	2026-08-04 12:32	0	435	0	373	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): normalize project status across all Foundation documents
+origin/docs/controller-v2-k2-applied	-	2026-08-22 17:01	1	165	1	103	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): K-2 migration applied to production, and the runbook
+origin/docs/controller-v2-layout-presets-blocked	-	2026-08-19 16:00	1	211	1	149	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): Layout Presets are BLOCKED — dependency and contract audi
+origin/docs/controller-v2-m01-applied	-	2026-08-20 13:27	1	195	1	133	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): Module 01 daily_snapshots applied to production, merged and
+origin/docs/controller-v2-m04-status	-	2026-08-20 13:58	2	193	2	131	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): re-measure the burn-down at 81bfa06
+origin/docs/controller-v2-phase0-reconciliation	-	2026-08-19 12:02	1	227	1	165	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): phase 0 — recover the original architecture, record Decis
+origin/docs/controller-v2-phase2-m08-migration-artifact	-	2026-08-19 18:14	1	204	1	142	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): Module 08 enforcement is ordered behind the migration — a
+origin/docs/controller-v2-phase5-event-bus-audit	-	2026-08-19 12:44	1	225	1	163	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): phase 5 — event bus verified, first flow blocked on busin
+origin/docs/controller-v2-phase8-authority-resolved	-	2026-08-19 16:54	1	207	1	145	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): document authority RESOLVED — correcting the previous ent
+origin/docs/controller-v2-phase8-founder-status	-	2026-08-19 16:31	1	209	1	147	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): record Phase 8 start — Founder Hub id, and what it does n
+origin/docs/controller-v2-phase8-module-authority-audit	-	2026-08-19 16:38	1	208	1	146	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): Phase 8 has no authorized implementation unit — 20-module
+origin/docs/controller-v2-phase8-module-ordering	-	2026-08-19 17:22	1	206	1	144	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): the architecture DOES define module ordering — Module 14 
+origin/docs/controller-v2-phase8-schema-authority-closed	-	2026-08-19 18:02	1	205	1	143	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): the bo-23/bo-10 schema conflict does not exist — correcti
+origin/docs/controller-v2-post-foundation-status	-	2026-08-19 11:25	1	228	1	166	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): reconcile post-foundation production status
+origin/docs/controller-v2-shell-ux-deferral	-	2026-08-23 11:43	1	159	1	97	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): close the DoD — D8/D9 defer Density and dark mode, and co
+origin/docs/controller-v2-sot-reconciliation-m08	-	2026-08-20 11:00	1	200	1	138	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): reconcile the single source of truth with three merged, pro
+origin/docs/controller-v2-status-closeout	-	2026-08-22 16:19	1	166	1	104	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): close out STATUS against production 6d9aecc
+origin/docs/controller-v2-status-corrections	-	2026-08-13 16:48	1	302	1	240	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): correct two stale component statuses
+origin/docs/controller-v2-status-sync	-	2026-08-30 13:46	2	109	2	47	0	0	0	0	1	0	0	0	0	0	0	0	0	0	docs(controller-v2): record Owner decisions of 2026-08-30 — C7 UAT, and V2.2
+origin/docs/controller-v21-uat	-	2026-08-23 17:14	1	154	1	92	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): close V2 and record Home UAT
+origin/docs/correct-m30-export-target	-	2026-09-01 13:03	2	89	2	27	0	0	0	0	1	0	0	0	0	0	0	0	0	0	Merge remote-tracking branch 'origin/main' into docs/correct-m30-export-target
+origin/docs/f10-activation-analysis	-	2026-08-10 08:39	0	354	0	292	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): F-10 activation analysis and corrected order
+origin/docs/f10-flag-forensic	-	2026-08-10 09:03	0	352	0	290	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): feature-flag forensic for CONTROLLER_ORG_MEMBERSHIP_ENABLED
+origin/docs/f10-uat-closeout	-	2026-08-10 12:44	0	350	0	288	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller): close F-10 after production Head UAT
+origin/docs/feature-usage-guidance	-	2026-08-15 13:41	0	270	0	208	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(mobile): add bilingual TappyAI feature usage guidance
+origin/docs/k1-released	-	2026-08-23 10:08	1	161	1	99	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): K-1 shipped and verified on production 0ae343b
+origin/docs/m04-retention-applied	-	2026-08-20 14:59	1	191	1	129	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): cohort_metrics applied to production
+origin/docs/marketing-phase2-contract	-	2026-09-01 11:50	2	93	2	31	0	0	0	0	1	0	0	0	0	0	0	0	0	0	Merge remote-tracking branch 'origin/main' into docs/marketing-phase2-contract
+origin/docs/marketing-phase2-progress	-	2026-09-01 15:11	1	79	1	17	0	0	0	0	1	0	0	0	0	0	0	0	0	0	docs(v2.2-2): Marketing is built and still cannot send -- record both halves
+origin/docs/module09-applied	-	2026-08-21 11:15	1	181	1	119	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): Module 09 applied to production, backlog re-measured
+origin/docs/module09-decision	-	2026-08-21 10:26	1	183	1	121	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): correct Module 09 — class 2 to class 3, with the reason
+origin/docs/phase-c-broadcast-contract	-	2026-08-31 11:16	5	106	5	44	0	0	0	0	1	0	0	0	0	0	0	0	0	0	docs(v2.2): the contract now says what actually shipped — and what did not
+origin/docs/policy-trust-safety-map	-	2026-08-17 14:37	0	247	0	185	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(safety): activate safety publication gate with explicit hate non-blocking r
+origin/docs/production-read-only-access	-	2026-09-01 10:42	1	97	1	35	0	0	0	0	1	0	0	0	0	0	0	0	0	0	docs(runbooks): the production read-only DB channel, and that it is currently do
+origin/docs/reconcile-marketing-contract-status	-	2026-09-01 12:06	1	92	1	30	0	0	0	0	1	0	0	0	0	0	0	0	0	0	docs(v2.2-2): STATUS/ROADMAP said no Marketing contract exists — it does
+origin/docs/release-closure	-	2026-08-21 11:34	1	179	1	117	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): ENGINEERING COMPLETE — Owner UAT / Owner decisions only
+origin/docs/roadmap-m30-export-target	-	2026-09-01 13:08	1	88	1	26	0	0	0	0	1	0	0	0	0	0	0	0	0	0	docs(v2.2-2): ROADMAP explained M-30 with the bulk export, not the portability o
+origin/docs/status-production-revision	-	2026-08-31 12:06	5	105	5	43	0	0	0	0	1	0	0	0	0	0	0	0	0	0	chore: merge main (#216) — keep this branch additive
+origin/docs/user-notes-applied	-	2026-08-21 10:22	1	184	1	122	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): user_notes applied to production, backlog re-measured
+origin/entertainment-movie-intent	-	2026-08-25 11:00	1	138	1	76	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(entertainment): route "recommend a movie" to film knowledge, not the cinema
+origin/feat/affiliate-cross-platform	-	2026-09-17 15:27	41	34	69	0	1	1	1	1	1	1	1	0	0	0	0	0	0	1	fix(affiliate): reconcile two merge-artifact test contracts
+origin/feat/android-anonymous-chat-on-main	-	2026-08-09 18:20	0	358	0	296	0	0	0	0	0	0	0	0	0	0	0	0	0	0	chore(release): versionCode 4 - Games hidden supersedes the vc3 artifact
+origin/feat/anonymous-chat-android	-	2026-08-09 10:47	136	625	136	563	0	0	0	0	0	0	0	0	0	0	0	0	0	0	chore(release): bump versionCode to 2 for Anonymous Chat V1
+origin/feat/backoffice-phase0	-	2026-08-06 11:06	127	625	127	563	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(android): default release endpoints to production, fail on placeholders
+origin/feat/ban-revokes-sessions	-	2026-08-21 09:14	1	187	1	125	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(controller-v2): a ban now ends the banned user's sessions
+origin/feat/c10-distributed-rate-limit	-	2026-08-13 11:39	0	322	0	260	0	0	0	0	0	0	0	0	0	0	0	0	0	0	Merge remote-tracking branch 'origin/main' into feat/c10-distributed-rate-limit
+origin/feat/c11-session-surface	-	2026-08-21 08:51	1	189	1	127	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(controller-v2): C11 session surface — see and end a user's sessions
+origin/feat/c14-broadcast-ui	-	2026-08-31 17:26	1	100	1	38	0	0	0	0	1	0	0	0	0	0	0	0	0	0	feat(controller): C-14 — two-step broadcast confirmation UI
+origin/feat/c6-plugin-registry-lifecycle	-	2026-08-13 12:32	0	314	0	252	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(controller): C6 — complete the plugin registry lifecycle
+origin/feat/c8-event-bus	-	2026-08-13 15:19	1	305	1	243	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(controller): C8 Event Bus — transactional outbox, mechanism only
+origin/feat/c9b-typed-config	-	2026-08-13 13:20	0	307	0	245	0	0	0	0	0	0	0	0	0	0	0	0	0	0	Merge remote-tracking branch 'origin/main' into feat/c9b-typed-config
+origin/feat/ccp-canonical	-	2026-09-17 09:31	28	34	67	11	1	1	1	0	1	1	1	0	0	0	0	0	0	0	fix(ccp): multilingual false-limitation guard (M2 + English)
+origin/feat/consultative-d3	-	2026-08-19 13:22	16	357	16	295	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(ai): ground candidate identity on the consultative presentation turn
+origin/feat/consultative-decision-experience	-	2026-08-23 18:34	7	151	7	89	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(consultative): make a shopping result a decision, not a dump
+origin/feat/consultative-decision-quality	-	2026-08-24 08:08	1	149	1	87	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(consultative): answer the question that was asked, and only claim what was s
+origin/feat/consultative-evidence-provenance	-	2026-08-27 18:04	1	124	1	62	0	0	0	0	1	0	0	0	0	0	0	0	0	0	feat(consultative): A5 evidence boundary — food/spa snippet prices can't becom
+origin/feat/consultative-v2-web	-	2026-08-17 15:18	0	238	0	176	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(ai): a removed clause must not leave its dash pointing at nothing
+origin/feat/controller-home-design	-	2026-08-23 16:54	1	155	1	93	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(controller): V2.1 Home design pass — hierarchy, honest affordances, theme
+origin/feat/controller-membership-api	-	2026-08-09 16:30	0	368	0	306	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(controller): membership API entry point (flag-gated, inert until activation
+origin/feat/controller-password-auth	-	2026-08-21 16:17	1	172	1	110	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(controller-v2): the Controller signs in with email and password, not a one-
+origin/feat/controller-v2-architecture-guard-rules	-	2026-08-19 13:28	1	221	1	159	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(controller-v2): enforce the §1 architecture rules in the Architecture Guar
+origin/feat/controller-v2-b14-module-data-ownership	-	2026-08-20 11:15	1	199	1	137	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(controller-v2): B14 — absence of `manifest.data` means a module owns no t
+origin/feat/controller-v2-b5-alert-well	-	2026-08-19 14:36	1	217	1	155	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(controller-v2): B5 — the Alert Well shows what needs attention now
+origin/feat/controller-v2-b5-command-palette	-	2026-08-19 15:47	1	213	1	151	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(controller-v2): B5 — the Command Palette, navigate only
+origin/feat/controller-v2-b5-context-bar	-	2026-08-19 14:55	1	215	1	153	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(controller-v2): B5 — the Context Bar, minus the undefined date range
+origin/feat/controller-v2-b5-denial-ux	-	2026-08-19 14:11	1	219	1	157	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(controller-v2): B5 — a refusal from the Controller now explains itself
+origin/feat/controller-v2-b8-break-glass	-	2026-08-20 12:15	2	197	2	135	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(controller-v2): B8 — break-glass Owner recovery, a database operation the
+origin/feat/controller-v2-component3-rbac	-	2026-08-06 10:34	0	416	0	354	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): re-baseline the PR package onto 0654f45
+origin/feat/controller-v2-component4-audited-pdp	-	2026-08-07 10:18	0	405	0	343	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(controller-v2): PR-freeze review — unreachable branch, false doc claim
+origin/feat/controller-v2-component7-audit-chain	-	2026-08-07 13:22	0	391	0	329	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(controller-v2): Component 7 — PR freeze review, three defects and doc drif
+origin/feat/controller-v2-component9a-admin-client	-	2026-08-07 11:12	0	400	0	338	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): BL-9A-01 — the service-role client outside src/
+origin/feat/controller-v2-f08	-	2026-08-09 14:11	0	376	0	314	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(controller): Enterprise Command Center Home (FOUNDATION-08) on /admin
+origin/feat/controller-v2-final-closure	-	2026-08-22 15:55	4	167	4	105	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(controller-v2): D6 — the department membership surface F-10 never got
+origin/feat/controller-v2-foundation	-	2026-08-04 11:35	0	438	0	376	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(controller-v2): repair bootstrap seed + prove it against a real PostgreSQL
+origin/feat/controller-v2-foundation-integration	-	2026-08-08 14:51	0	385	0	323	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(controller): implement Controller V2 foundation and registry-driven admin
+origin/feat/controller-v2-k1-capability-binding	-	2026-08-23 09:49	2	162	2	100	0	0	0	0	0	0	0	0	0	0	0	0	0	0	Merge remote-tracking branch 'origin/main' into feat/controller-v2-k1-capability
+origin/feat/controller-v2-k3-event-sink	-	2026-08-23 10:54	1	160	1	98	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(controller): give the Event Bus a real production sink (K-3)
+origin/feat/controller-v2-login	-	2026-08-21 15:39	3	174	3	112	0	0	0	0	0	0	0	0	0	0	0	0	0	0	Merge remote-tracking branch 'origin/main' into feat/controller-v2-login
+origin/feat/controller-v2-m01-daily-snapshots	-	2026-08-20 12:48	2	196	2	134	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(controller-v2): Module 01 rollback script + STATUS/taxonomy
+origin/feat/controller-v2-m04-user-analytics	-	2026-08-20 13:47	1	194	1	132	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(controller-v2): Module 04 User Analytics — growth, engagement, subscripti
+origin/feat/controller-v2-m08-account-status	-	2026-08-19 19:56	1	203	1	141	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(controller-v2): M08 account status isolated from profiles (ADR-022)
+origin/feat/controller-v2-m08-admin-users-surface	-	2026-08-20 11:45	1	198	1	136	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(controller-v2): Module 08 becomes a real Controller module — tappy.hub.us
+origin/feat/controller-v2-option-b	-	2026-08-09 13:12	0	378	0	316	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(controller): trusted @tappyai.com corporate identity boundary (Option B, F-
+origin/feat/controller-v2-phase4-capability-binding	-	2026-08-19 12:20	1	226	1	164	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(controller-v2): phase 4 — capability binding, hub scope, config provider
+origin/feat/controller-v2-phase7-hub-shell	-	2026-08-19 13:14	1	223	1	161	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(controller-v2): phase 7 — the shell renders hubs, not a flat list
+origin/feat/controller-v2-phase8-founder-hub	-	2026-08-19 16:26	1	210	1	148	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(controller-v2): phase 8 — the Founder Hub gets its architected id
+origin/feat/controller-v2-public-home	-	2026-08-21 13:49	1	177	1	115	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(controller-v2): public home at /controller — the Owner-approved front doo
+origin/feat/controller-v2-remove-dept-switcher	-	2026-08-21 15:27	1	177	1	115	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(controller-v2): remove the department switcher — it offered a choice that 
+origin/feat/controller-v2-signout	-	2026-08-21 15:13	1	177	1	115	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(controller-v2): the Controller can sign out
+origin/feat/controller-v2.1-dark-theme	-	2026-08-23 16:33	1	156	1	94	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(controller): V2.1 — fixed dark Controller theme and derived department co
+origin/feat/controller-v22-entry	-	2026-08-23 18:08	1	152	1	90	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(controller): V2.2 — Controller login hierarchy and department entry flow
+origin/feat/controller-v23-login	-	2026-08-23 18:54	1	150	1	88	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(controller): V2.3 — Controller login visual redesign
+origin/feat/controller-v24-login	-	2026-08-29 17:52	1	112	1	50	0	0	0	0	1	0	0	0	0	0	0	0	0	0	feat(controller): add admin notifications foundation and targeted send flow
+origin/feat/deals-brand-logos	-	2026-07-31 09:33	0	477	0	415	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(brand-registry): reframe as a shared platform capability
+origin/feat/deals-i18n	-	2026-08-01 09:56	0	462	0	400	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(web/deals): localize DealNotifyButton (was hardcoded Vietnamese)
+origin/feat/decision-evidence-state	-	2026-08-24 11:05	5	147	5	85	0	0	0	0	0	0	0	0	0	0	0	0	0	0	test(consultative): repoint M21 — its anchor was the string the precedence fix
+origin/feat/delete-account-page	-	2026-08-06 10:08	0	424	0	362	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(legal): publish /delete-account for the Google Play listing
+origin/feat/delete-legacy-broadcast-route	-	2026-08-31 16:35	1	101	1	39	0	0	0	0	1	0	0	0	0	0	0	0	0	0	feat(notifications): delete the legacy broadcast route (contract 14.2 step 8)
+origin/feat/evidence-provenance-contract	-	2026-08-27 18:49	1	123	1	61	0	0	0	0	1	0	0	0	0	0	0	0	0	0	feat(consultative): A5.1 evidence-provenance boundary — dynamic values reach t
+origin/feat/gcp-observability	-	2026-08-23 17:53	2	153	2	91	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(observability): measure TTS character volume, without touching AI Consultat
+origin/feat/gcs-media-bridge	-	2026-08-11 13:07	0	340	0	278	0	0	0	0	0	0	0	0	0	0	0	0	0	0	build: stop the ESLint config cascade at the project root
+origin/feat/m04-retention-cohort-metrics	-	2026-08-20 14:28	1	192	1	130	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(controller-v2): M04 retention — cohort_metrics, D1/D7/D30
+origin/feat/m08-admin-users-api	-	2026-08-20 10:40	2	201	2	139	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(controller-v2): M08 — apply Owner Decision A (ADR-023) on the admin read 
+origin/feat/m08-consumer-enforcement	-	2026-08-19 20:47	2	202	2	140	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(test): M08 enforcement suite must load on Node 20, as CI runs it
+origin/feat/m08-user-notes	-	2026-08-21 09:44	1	185	1	123	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(controller-v2): M08 internal admin notes — READY FOR MIGRATION AUTHORIZAT
+origin/feat/marketing-activation	-	2026-09-01 14:52	1	81	1	19	0	0	0	0	1	0	0	0	0	0	0	0	0	0	feat(marketing): Phase D -- an activation path that refuses to activate
+origin/feat/marketing-audience	-	2026-09-01 14:14	1	84	1	22	0	0	0	0	1	0	0	0	0	0	0	0	0	0	feat(marketing): Phase B -- the audience is what survives governance
+origin/feat/marketing-campaigns	-	2026-09-01 14:26	2	82	2	20	0	0	0	0	1	0	0	0	0	0	0	0	0	0	Merge remote-tracking branch 'origin/main' into feat/marketing-campaigns
+origin/feat/marketing-consent-api	-	2026-09-01 13:58	2	85	2	23	0	0	0	0	1	0	0	0	0	0	0	0	0	0	fix(marketing): every error this route returns now carries a message
+origin/feat/marketing-governance-foundation	-	2026-09-01 13:39	1	86	1	24	0	0	0	0	1	0	0	0	0	0	0	0	0	0	feat(marketing): Phase A -- the governance foundation, before anything can send
+origin/feat/marketing-retention	-	2026-09-01 15:05	1	80	1	18	0	0	0	0	1	0	0	0	0	0	0	0	0	0	feat(marketing): Phase E -- retention pruning, in the only order that works
+origin/feat/media-wif-check	-	2026-08-12 15:03	0	338	0	276	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(media): answer "can this deployment reach GCS?" before the switch
+origin/feat/module09-moderation	-	2026-08-21 10:56	1	182	1	120	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(controller-v2): Module 09 Content Moderation — READY FOR MIGRATION AUTHOR
+origin/feat/notif-unification-impl	-	2026-07-26 13:01	0	548	0	486	0	0	0	0	0	0	0	0	0	0	0	0	0	0	Merge remote-tracking branch 'origin/main' into feat/notif-unification-impl
+origin/feat/notification-unification	-	2026-07-26 08:58	0	552	0	490	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs+db(notifications): ADR-014 + Phase 0 migration (notifications table)
+origin/feat/phase-c-broadcast	-	2026-08-30 16:37	1	107	1	45	0	0	0	0	1	0	0	0	0	0	0	0	0	0	feat(controller): Phase C — a governed, chunked, resumable broadcast
+origin/feat/plan-brochure-flight-links	-	2026-07-25 12:04	0	572	0	510	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(chat): accumulate places across all searches for plan photos
+origin/feat/privacy-policy-play	-	2026-08-04 15:54	0	432	0	370	0	0	0	0	0	0	0	0	0	0	0	0	0	0	refactor(legal): single-source the public support address
+origin/feat/retire-legacy-broadcast-410	-	2026-08-31 13:42	4	103	4	41	0	0	0	0	1	0	0	0	0	0	0	0	0	0	chore: merge main (#219 squash) — keep this branch additive
+origin/feat/settings-delete-account-link	-	2026-08-06 11:44	0	417	0	355	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(settings): expose Request Account Deletion on the web
+origin/feat/shopping-early-frame	-	2026-08-25 15:26	2	134	2	72	0	0	0	0	0	0	0	0	0	0	0	0	0	0	test: re-anchor two invariant guards the delivery split moved
+origin/feat/tappyai-v2	-	2026-08-15 09:42	0	278	0	216	0	0	0	0	0	0	0	0	0	0	0	0	0	0	Merge remote-tracking branch 'origin/main' into feat/tappyai-v2
+origin/feat/tiktok-consultative-review-links	-	2026-08-16 09:11	1	253	1	191	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(chat): TikTok review links, but only ones the backend validated
+origin/feat/v3-user-data-foundation	-	2026-09-11 12:49	12	75	0	1	0	0	0	0	1	0	0	0	0	0	0	0	0	0	feat(v3): separate discovery city from residence
+origin/feature/notification-mvp	-	2026-07-16 13:23	10	642	10	580	0	0	0	0	0	0	0	0	0	0	0	0	0	0	refactor(notifications): enum type, extension fields, drop milestone merge, fast
+origin/fix/a5-food-price-no-retrieval	-	2026-08-27 19:20	1	122	1	60	0	0	0	0	1	0	0	0	0	0	0	0	0	0	fix(consultative): A5 price boundary skipped no-retrieval turns (P0)
+origin/fix/ai-language-consistency	-	2026-07-30 13:46	0	488	0	426	0	0	0	0	0	0	0	0	0	0	0	0	0	0	chore: empty commit to get a fresh Preview deployment URL for QA (2/2)
+origin/fix/android-account-deletion-entry	-	2026-08-15 18:17	1	255	1	193	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(android): ship the account-deletion route /delete-account promises
+origin/fix/android-plan-item-name-wrap	-	2026-08-07 11:11	128	625	128	563	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(android): stop a long price pill squeezing the plan item name
+origin/fix/android-release-config	-	2026-08-06 11:06	127	625	127	563	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(android): default release endpoints to production, fail on placeholders
+origin/fix/android-scan-gallery-decode	-	2026-08-25 13:56	9	163	9	101	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(android): gallery scan failed on every image — decode null-guard was on th
+origin/fix/bug-011-destination-scope	-	2026-09-05 09:18	1	75	0	12	0	0	0	0	1	0	0	0	0	0	0	0	0	0	fix(ai): scope place search to destination
+origin/fix/c3b10-2-money-guard	-	2026-08-15 11:16	0	274	0	212	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(ai): reconcile C3-B.10.2 evidence
+origin/fix/canonical-video-viewer	-	2026-09-01 12:45	1	90	1	28	0	0	0	0	1	0	0	0	0	0	0	0	0	0	fix(reviews): one canonical presentation for a video post, on every entry point
+origin/fix/chat-image-layout	-	2026-07-25 11:16	0	575	0	513	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(chat): keep each place's images/links grouped under that place
+origin/fix/chat-latency-release-pre-tool-sentence	-	2026-08-28 09:56	1	119	1	57	0	0	0	0	1	0	0	0	0	0	0	0	0	0	fix(chat): release the opening sentence when the tool call proves it complete
+origin/fix/chat-route-mojibake	-	2026-08-13 19:55	1	298	1	236	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(chat): repair double-encoded Vietnamese in the chat route
+origin/fix/chat-streaming-latency-after-a5	-	2026-08-28 09:38	1	120	1	58	0	0	0	0	1	0	0	0	0	0	0	0	0	0	fix(chat): stop holding a places reply back for 13s to guard a price it never me
+origin/fix/chrome-shortcut-brand-icon	-	2026-08-29 15:47	1	114	1	52	0	0	0	0	1	0	0	0	0	0	0	0	0	0	fix(web): show the official TappyAI otter icon for the Chrome shortcut / favicon
+origin/fix/consultative-condition-provenance-claims	-	2026-08-24 09:13	1	148	1	86	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(consultative): a condition belongs only to the listing that states it
+origin/fix/consultative-quality-round1	-	2026-08-27 10:37	2	130	2	68	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(consultative): stop apologizing about missing review links, pivot to Google 
+origin/fix/consultative-round2	-	2026-08-27 11:14	1	129	1	67	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(consultative): Phase A core — generalized shortlist, relaxation, review a
+origin/fix/consultative-round2-finalize	-	2026-08-27 12:15	6	127	6	65	0	0	0	0	1	0	0	0	0	0	0	0	0	0	Merge remote-tracking branch 'origin/main' into fix/consultative-round2-finalize
+origin/fix/consultative-round2-wiring	-	2026-08-27 12:10	3	128	3	66	0	0	0	0	0	0	0	0	0	0	0	0	0	0	Merge remote-tracking branch 'origin/main' into fix/consultative-round2-wiring
+origin/fix/controller-analytics-view-payload-binding	-	2026-08-22 10:50	1	169	1	107	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(controller-v2): bind analytics payloads to the view that asked for them
+origin/fix/controller-home-login-destination	-	2026-08-21 15:52	1	173	1	111	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(controller-v2): the Controller front door was sending people to the CONSUMER
+origin/fix/controller-origin-gate	-	2026-08-30 14:53	3	108	3	46	0	0	0	0	1	0	0	0	0	0	0	0	0	0	Merge remote-tracking branch 'origin/main' into fix/controller-origin-gate
+origin/fix/controller-shell-terminology	-	2026-08-09 15:54	0	370	0	308	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(controller): stop the Controller shell calling itself "Back Office"
+origin/fix/controller-suspend-fixture-expiry	-	2026-08-22 10:05	1	171	1	109	0	0	0	0	0	0	0	0	0	0	0	0	0	0	test(controller): the suspend fixture expired, so the test did
+origin/fix/controller-v2-audit1-deals-upload	-	2026-08-19 13:51	2	220	2	158	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(test): the architecture-guard test must not mutate the real src/ tree
+origin/fix/controller-v2-f04-grant-model-source-sync	-	2026-08-07 18:36	0	389	0	327	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(controller-v2): F-04 — align the audit-chain migration with Supabase's rea
+origin/fix/delete-account-accuracy	-	2026-08-06 10:31	0	422	0	360	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(legal): describe the account-deletion flow the app actually ships
+origin/fix/deleted-review-404	-	2026-09-01 11:40	1	94	1	32	0	0	0	0	1	0	0	0	0	0	0	0	0	0	fix(reviews): a deleted review returns a real 404, not a 200 with "not found" in
+origin/fix/explore-deleted-clip-visibility	-	2026-08-15 17:34	1	258	1	196	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(explore): stop serving slides with nothing on them
+origin/fix/f01-weather-country	-	2026-08-22 14:10	2	168	2	106	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(weather): prevent ambiguous Vietnam city resolution
+origin/fix/ios-music-library-entry	-	2026-08-27 20:39	2	121	2	59	0	0	0	0	1	0	0	0	0	0	0	0	0	0	Merge origin/main into fix/ios-music-library-entry
+origin/fix/ios-platform-links-tiktok-parity	-	2026-08-15 16:33	1	260	1	198	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(ios): drop the TikTok Shop link iOS built on its own
+origin/fix/landing-hero-logo-founder-bio	-	2026-08-01 11:15	0	452	0	390	0	0	0	0	0	0	0	0	0	0	0	0	0	0	Merge origin/main into fix/landing-hero-logo-founder-bio for Landing release
+origin/fix/legacy-410-recorder-await	-	2026-08-31 14:19	1	102	1	40	0	0	0	0	1	0	0	0	0	0	0	0	0	0	fix(audit): await the retirement recorder so cold-start hits are not lost
+origin/fix/legal-back-navigation	-	2026-08-06 08:54	0	428	0	366	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(legal): Back returns to the referring screen, not Home
+origin/fix/legal-single-source	-	2026-08-04 17:35	0	430	0	368	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(legal): one i18n-driven implementation per legal document
+origin/fix/like-list-count-click	-	2026-08-31 17:56	3	99	3	37	0	0	0	0	1	0	0	0	0	0	0	0	0	0	fix(reviews): give the split like heart its own accessible name
+origin/fix/login-email-entry	-	2026-08-09 18:58	0	366	0	304	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(login): expose the existing email sign-in via /login?email=1
+origin/fix/login-return-to	-	2026-08-09 15:43	1	375	1	313	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(auth): one canonical returnTo parameter for post-login redirects
+origin/fix/login-return-to-param	-	2026-08-09 14:56	0	374	0	312	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(auth): login ignored the Controller's return destination (redirect vs return
+origin/fix/media-credential-stage-diagnostic	-	2026-08-18 11:00	1	232	1	170	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(media): an STS refusal must say what Google actually said
+origin/fix/media-deployment-identity	-	2026-08-12 15:29	0	336	0	274	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(media): read the deployment identity where production actually puts it
+origin/fix/media-server-completion	-	2026-08-13 10:18	0	327	0	265	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(media): let the server confirm what the browser is not allowed to see
+origin/fix/money-guard-dong-bypass	-	2026-08-28 10:51	1	118	1	56	0	0	0	0	1	0	0	0	0	0	0	0	0	0	fix(ai): the money guard was blind to the word "đồng"
+origin/fix/music-track-lookup-list	-	2026-08-18 14:30	1	231	1	169	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(music): a hidden track must read as no rows, not as an error
+origin/fix/native-composer-link-provider-parity	-	2026-08-15 17:08	1	259	1	197	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(mobile): let the backend decide which link providers a composer offers
+origin/fix/nav-comment-accuracy	-	2026-08-10 13:07	0	348	0	286	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(controller): correct department navigation boundary comment
+origin/fix/notification-clip-context	-	2026-09-01 12:15	2	91	2	29	0	0	0	0	1	0	0	0	0	0	0	0	0	0	Merge remote-tracking branch 'origin/main' into fix/notification-clip-context
+origin/fix/notification-otter-logo	-	2026-08-06 11:26	0	419	0	357	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(notifications): use the otter mascot, not the retired logo
+origin/fix/og-share-card-otter-logo	-	2026-08-29 16:39	1	113	1	51	0	0	0	0	1	0	0	0	0	0	0	0	0	0	fix(share): use official TappyAI otter artwork for the OG/Twitter share card
+origin/fix/optimistic-state-rollback	-	2026-09-01 10:56	2	96	2	34	0	0	0	0	1	0	0	0	0	0	0	0	0	0	Merge remote-tracking branch 'origin/main' into fix/optimistic-state-rollback
+origin/fix/pg06-07-deterministic-snapshot-probe	-	2026-08-19 13:22	1	223	1	161	0	0	0	0	0	0	0	0	0	0	0	0	0	0	test(audit-chain): make PG-06/PG-07 deterministic with an advisory-lock rendezvo
+origin/fix/platform-owner-revoke-public	-	2026-08-08 10:40	0	385	0	323	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(security): add rollback for platform owner revoke hotfix
+origin/fix/pre-uat-f1-f2	-	2026-08-21 12:11	1	178	1	116	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(controller-v2): pre-UAT F-1 and F-2 — parse nothing before the caller is k
+origin/fix/privacy-single-source	-	2026-08-04 17:14	1	431	1	369	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(legal): make /privacy the only Privacy Policy, 308 the old route
+origin/fix/profile-avatar-zalo	-	2026-08-28 12:03	2	117	2	55	0	0	0	0	1	0	0	0	0	0	0	0	0	0	fix(profile): assert the image allowlist without a Next internal
+origin/fix/profile-feed-keeps-unrenderable	-	2026-08-15 17:52	1	256	1	194	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(explore): don't strand a post its author can no longer reach
+origin/fix/profile-grid-filler	-	2026-07-25 14:12	0	568	0	506	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(reviews): filler must match the page bg (bg-black), not the tile colour
+origin/fix/push-credential-ownership	-	2026-08-30 11:07	2	111	2	49	0	0	0	0	1	0	0	0	0	0	0	0	0	0	docs(notifications): correct a false security claim in the ownership migration
+origin/fix/push-identity-reconcile	-	2026-08-30 12:17	5	110	5	48	0	0	0	0	1	0	0	0	0	0	0	0	0	0	Merge remote-tracking branch 'origin/main' into fix/push-identity-reconcile
+origin/fix/qr-ssrf-guard	-	2026-09-01 13:30	1	87	1	25	0	0	0	0	1	0	0	0	0	0	0	0	0	0	fix(scam-shield): a QR code could make the server call an internal address
+origin/fix/refuse-anonymous-push-subscribe	-	2026-08-31 18:01	2	98	2	36	0	0	0	0	1	0	0	0	0	0	0	0	0	0	chore: merge main (#224) — keep this branch additive
+origin/fix/release-closure-class-a	-	2026-08-21 11:28	1	180	1	118	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(controller-v2): release-blocker audit — a missing i18n key, an invented pe
+origin/fix/restore-anonymous-claim-route	-	2026-08-09 14:56	0	374	0	312	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(auth): Anonymous Chat V1 backend — quota ACL, claim RPC, profile guard
+origin/fix/scam-shield-i18n	-	2026-08-06 09:42	0	426	0	364	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(scam-shield): SSRF bypass, i18n keys, dead code cleanup
+origin/fix/scam-shield-inconclusive	-	2026-08-19 12:46	1	225	1	163	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(scam-shield): stop calling a link safe when nothing could be checked
+origin/fix/spec-guard-lone-connector	-	2026-08-17 15:41	0	234	0	172	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(ai): drop a connector left with nothing to introduce
+origin/fix/spec-guard-unit-no-space	-	2026-08-17 15:34	0	236	0	174	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(ai): "0.98kg" asserts weight just as "0.98 kg" does
+origin/fix/streaming-markdown-image-flash	-	2026-08-15 15:29	0	261	0	199	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(chat): never stop the typewriter inside a markdown token
+origin/fix/supertux-preload-removal	-	2026-08-07 09:56	0	407	0	345	0	0	0	0	0	0	0	0	0	0	0	0	0	0	perf(game): stop preloading SuperTux assets on the hub page
+origin/fix/thumbnail-self-healing	-	2026-08-25 12:42	1	137	1	75	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(media): self-heal thumbnails on transient failure/stall instead of a permane
+origin/fix/travel-dynamic-fact-guard	-	2026-08-27 16:24	1	126	1	64	0	0	0	0	1	0	0	0	0	0	0	0	0	0	fix(travel): fail-closed guard for dynamic travel facts (P0 — flight/hotel pri
+origin/fix/tts-language-voice	-	2026-07-25 12:47	0	570	0	508	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(tts): match voice to reply language; never read Vietnamese with an English v
+origin/fix/v2-cleanup-profile-sync-explore-audio	-	2026-08-28 12:20	2	116	2	54	0	0	0	0	1	0	0	0	0	0	0	0	0	0	fix(explore): the first tap unlocked the sound and then killed it
+origin/fix/v2-fix-phase	-	2026-08-22 10:11	41	170	41	108	0	0	0	0	0	0	0	0	0	0	0	0	0	0	Merge remote-tracking branch 'origin/main' into fix/v2-fix-phase
+origin/fix/vi-response-language	-	2026-08-15 12:35	0	275	0	213	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(ai): name Vietnamese in the prompt so Vietnamese turns answer in Vietnamese
+origin/fix/vi-tool-path-language	-	2026-08-15 13:00	0	273	0	211	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(ai): stop the language override teaching itself in English
+origin/fix/vietnamese-detection-ratio	-	2026-07-30 15:28	0	482	0	420	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(ai): stop one Vietnamese proper noun from flipping an English reply to Vietn
+origin/fix/vietnamese-short-query-language	-	2026-08-15 14:50	0	263	0	201	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(ai): detect short Vietnamese search queries as Vietnamese
+origin/fix/web-cta-marker-leak	-	2026-08-27 17:38	2	125	2	63	0	0	0	0	1	0	0	0	0	0	0	0	0	0	Merge origin/main (1b0632b) into fix/web-cta-marker-leak
+origin/fix/web-owner-profile-held-visibility	-	2026-08-18 15:15	1	229	1	167	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(reviews): restore owner visibility for under-review posts
+origin/fix/web-production-stabilization	-	2026-07-23 12:24	35	601	35	539	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(email): introduce provider-based email architecture with Brevo SMTP
+origin/fix/wif-check-token-reader	-	2026-08-13 09:23	0	330	0	268	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(media): give the health check the same token reader as the provider
+origin/fix/wif-health-presence-test	-	2026-08-13 09:04	0	332	0	270	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(media): stop reporting a present identity as a missing one
+origin/fix/youtube-poster-hqdefault	-	2026-08-15 17:36	1	258	1	196	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(mobile): build YouTube posters the web resolver's way
+origin/integration/android-parity	-	2026-07-21 14:35	0	605	0	543	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(web): comment replies/reactions + reviews parity + ProfileTab extraction
+origin/ios/marker-leak-parity	-	2026-08-27 20:41	9	121	9	59	0	0	0	0	1	0	0	0	0	0	0	0	0	0	Merge updated #183 (now current with origin/main) into the marker-leak branch
+origin/ios/shopping-decision-evidence-parity	-	2026-08-27 20:40	6	121	6	59	0	0	0	0	1	0	0	0	0	0	0	0	0	0	Merge updated base (origin/main) into the shopping-parity branch
+origin/main	-	2026-09-11 16:58	13	75	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	1	Merge pull request #251 from huyphamsm-tappy/feat/v3-user-data-foundation
+origin/perf/chat-cost-phase-b	-	2026-08-10 13:38	10	357	10	295	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(chat): C2.1 — the refinement turn was asking instead of answering
+origin/perf/chat-model-timing	-	2026-08-25 14:46	1	135	1	73	0	0	0	0	0	0	0	0	0	0	0	0	0	0	obs(chat): split the turn into pre-model, TTFT and generation
+origin/perf/chat-pre-model-parallel	-	2026-08-25 13:56	1	136	1	74	0	0	0	0	0	0	0	0	0	0	0	0	0	0	perf(chat): run the four post-gate reads in parallel
+origin/perf/chat-prose-budget	-	2026-08-25 13:48	3	136	3	74	0	0	0	0	0	0	0	0	0	0	0	0	0	0	test(chat): destructure SystemPrompt instead of casting it
+origin/perf/drop-debug-budget-field	-	2026-08-15 13:40	0	271	0	209	0	0	0	0	0	0	0	0	0	0	0	0	0	0	perf(ai): drop the debug field from the hotel tool payload
+origin/perf/phase0-instrumentation	-	2026-08-25 15:32	1	134	1	72	0	0	0	0	0	0	0	0	0	0	0	0	0	0	obs(chat): Phase-0 — per-tool, per-step and client-emit timing on the one usag
+origin/perf/phase2-photo-instrumentation	-	2026-08-25 16:16	1	132	1	70	0	0	0	0	0	0	0	0	0	0	0	0	0	0	obs(photos): time each step of the photo fallback chain
+origin/phase1-blob	-	2026-08-13 11:58	0	320	0	258	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(media): stop pointing clients at the suspended Blob store
+origin/phase1-ios	-	2026-08-13 11:28	0	325	0	263	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(ios): speak the shared media protocol instead of Vercel Blob's
+origin/phase1-photos	-	2026-08-13 12:10	0	316	0	254	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(media): filter Blob URLs out of the photos array too
+origin/phase1-shopping-search-quality	-	2026-08-24 13:52	2	146	2	84	0	0	0	0	0	0	0	0	0	0	0	0	0	0	test(shopping): kill the 5 surviving mutants
+origin/phase2-evidence-normalization	-	2026-08-24 14:15	2	145	2	83	0	0	0	0	0	0	0	0	0	0	0	0	0	0	test(consultative): kill M06/M07 with minimal-pair fixtures
+origin/phase3-entity-offer-model	-	2026-08-24 14:32	3	144	3	82	0	0	0	0	0	0	0	0	0	0	0	0	0	0	test(consultative): kill M02/M04/M07 (entityKey distinctness + url dedup)
+origin/phase4-synthesis-decision	-	2026-08-24 14:52	3	143	3	81	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(consultative): exclude UNKNOWN from the sellers list (it is a string)
+origin/phase9-decision-polish	-	2026-08-25 09:45	1	140	1	78	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(consultative): give the decision card its own image + drop the redundant me
+origin/phase9-shopping-marker	-	2026-08-25 09:29	3	141	3	79	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(consultative): keep the TikTok-fold anchor; fold the marker into finalText's
+origin/phase9-ui-synthesis	-	2026-08-24 15:48	2	142	2	80	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(consultative): localize the shopping decision card + keep guard tests honest
+origin/platform/hardening-phase0	-	2026-08-08 11:27	0	386	0	324	0	0	0	0	0	0	0	0	0	0	0	0	0	0	refactor(platform): deduplicate PH-0 ownership after hotfix
+origin/polish/landing-branding	-	2026-07-29 14:21	0	498	0	436	0	0	0	0	0	0	0	0	0	0	0	0	0	0	perf(web/landing): optimize branding assets (no visual change)
+origin/preview/auth-provider-contract	-	2026-07-25 10:26	1	576	1	514	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(auth): config-driven provider contract — product.ts as single source
+origin/preview/bugfix-video-counters	-	2026-07-04 19:54	0	777	0	715	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(video): thumbnail stage can never freeze the upload UI
+origin/preview/chat-layout-grouping	-	2026-07-24 14:31	0	579	0	517	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(chat): position-aware place enrichment — group photos with their place
+origin/preview/deals-catalog	-	2026-07-24 10:40	0	588	0	526	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(deals): simplify partner catalog to 7 official-landing partners (Bug #14)
+origin/preview/deals-promo-polish	-	2026-07-24 12:51	0	583	0	521	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(deals): promo polish — discount badge, countdown, voucher copy (metadata.
+origin/preview/deals-v1	-	2026-07-24 11:35	0	585	0	523	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(deals): V1 polish — partner_type free string + reserved metadata JSONB
+origin/preview/exchange-rate-precision	-	2026-07-24 13:34	0	581	0	519	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(currency): Bug #15 exchange-rate precision + missing-currency guard
+origin/preview/truncation-fix	-	2026-07-25 09:20	0	576	0	514	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(chat): prevent finishReason:length truncation — raise cap + let enrichment
+origin/probe/cron-capacity	-	2026-08-13 13:58	1	306	1	244	0	0	0	0	0	0	0	0	0	0	0	0	0	0	chore(probe): add an 8th cron entry to test Vercel Hobby capacity
+origin/release/android-games-hidden-clean	-	2026-08-03 09:47	114	625	114	563	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(release/android): hide Games — parked for Tappy Arcade V2
+origin/release/android-vc7	-	2026-08-19 12:55	7	228	7	166	0	0	0	0	0	0	0	0	0	0	0	0	0	0	chore(android): versionCode 7 — 6 is already published on the Alpha track
+origin/release/games-hidden	-	2026-08-02 19:21	1	452	1	390	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(release): hide Games — parked for Tappy Arcade V2
+origin/release/scam-shield	-	2026-08-03 19:02	0	451	0	389	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(scam-shield): add URL/QR risk checker with provider-based architecture
+origin/release/v2-android-rc	-	2026-08-25 14:08	9	163	9	101	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(android): gallery scan failed on every image — decode null-guard was on th
+origin/release/v2-rc	-	2026-08-19 16:13	24	211	24	149	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(android/deals): send the app language, so English users stop getting Vietnam
+origin/release/vc6	-	2026-08-15 19:02	1	254	1	192	0	0	0	0	0	0	0	0	0	0	0	0	0	0	chore(android): versionCode 6 for the account-deletion release
+origin/release/web-rc-2026-07	-	2026-07-29 11:57	0	513	0	451	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(design-system,web): release polish — fixed-dark semantic tokens + copyrigh
+origin/safety/explore-moderation-audit	-	2026-08-19 14:56	11	222	11	160	0	0	0	0	0	0	0	0	0	0	0	0	0	0	docs(policy): the author is told at posting time, not only in their profile
+origin/security/next-14.2.35	-	2026-08-03 19:27	0	450	0	388	0	0	0	0	0	0	0	0	0	0	0	0	0	0	security(deps): upgrade Next.js 14.2.5 -> 14.2.35 (CVE-2025-29927)
+origin/share-menu	-	2026-08-13 12:56	0	310	0	248	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(share): TappyAI owns the share menu, not the OS
+origin/share-preview	-	2026-08-13 12:34	0	314	0	252	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(share): give a pasted TappyAI link a real preview
+origin/share-ui	-	2026-08-13 13:33	1	309	1	247	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(share): wire the share sheet into the real Android and iOS review screens
+origin/test/c8-runtime-sql	-	2026-08-13 16:43	1	303	1	241	0	0	0	0	0	0	0	0	0	0	0	0	0	0	test(controller): C8 — execute the outbox migration against a real PostgreSQL
+origin/v2/android-rc-build	-	2026-08-27 16:42	13	163	13	101	0	0	0	0	0	0	0	0	0	0	0	0	0	0	fix(android): the CTA block leaked its raw JSON when anything followed it
+origin/video-5min	-	2026-08-13 14:56	1	305	1	243	0	0	0	0	0	0	0	0	0	0	0	0	0	0	feat(video): raise the clip limit from 60 seconds to 5 minutes

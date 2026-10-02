@@ -1,0 +1,138 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "SUNRISE HOTEL TÂY NINH",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:54:41.612Z",
+ "body": {
+  "searchParameters": {
+   "q": "SUNRISE HOTEL TÂY NINH",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Sunrise Hotel, Tây Ninh (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/95138867.jpg?k=a56bca3478eab25798d347208bfad3de5e612fe8b5944e7fda53cfba813f4a26&o=",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2197LED52ztuniBDcGRVnuyCDLxZvnLpotyQCMZcudg&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/sunrise-trang-bang.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F95138867.jpg%3Fk%3Da56bca3478eab25798d347208bfad3de5e612fe8b5944e7fda53cfba813f4a26%26o%3D&tbnid=LSrSjyCDHNbC8M&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fsunrise-trang-bang.vi.html&docid=Tko2UQjWeucLKM&w=1024&h=683",
+    "position": 1
+   },
+   {
+    "title": "SUNRISE Hotel Tây Ninh",
+    "imageUrl": "https://dulich.tayninh.gov.vn/uploads/images/Kh%C3%A1ch%20s%E1%BA%A1n//sun-rise-20240105075448-p6t47.jpg",
+    "imageWidth": 825,
+    "imageHeight": 550,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAdMGiOicaUqBr322vUM5OThUb_TWO5tCx74CbUatsnw&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "Cổng du lịch tỉnh Tây Ninh",
+    "domain": "dulich.tayninh.gov.vn",
+    "link": "https://dulich.tayninh.gov.vn/tin-tuc/sunrise-hotel-tay-ninh-1305",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdulich.tayninh.gov.vn%2Fuploads%2Fimages%2FKh%25C3%25A1ch%2520s%25E1%25BA%25A1n%2F%2Fsun-rise-20240105075448-p6t47.jpg&tbnid=ruoloD9e5sNT1M&imgrefurl=https%3A%2F%2Fdulich.tayninh.gov.vn%2Ftin-tuc%2Fsunrise-hotel-tay-ninh-1305&docid=P9e1s4m7dih09M&w=825&h=550",
+    "position": 2
+   },
+   {
+    "title": "Sunrise Hotel, Trung tâm thành phố Tây Ninh, Tây Ninh",
+    "imageUrl": "https://q-xx.bstatic.com/xdata/images/hotel/max500/282997139.jpg?k=90a9a5fb74e0a21a12e5e39e44ba21c5b0646e356a5158b0fd171c2d07c1796e&o=",
+    "imageWidth": 500,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQMh4t2ZxcRVxX9NsZW5lAs3oizzntlZW6xdKew69X9Hg&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/sunrise-hotel-tay-ninh/hotel/tay-ninh-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fq-xx.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax500%2F282997139.jpg%3Fk%3D90a9a5fb74e0a21a12e5e39e44ba21c5b0646e356a5158b0fd171c2d07c1796e%26o%3D&tbnid=U9NsbXB2LUZjjM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fsunrise-hotel-tay-ninh%2Fhotel%2Ftay-ninh-vn.html&docid=9LvSIIxeF5S8UM&w=500&h=500",
+    "position": 3
+   },
+   {
+    "title": "Trang chủ - Sunrise Hotel",
+    "imageUrl": "https://sunrisehotel.com.vn/wp-content/uploads/2018/04/Deluxe-1-750x660.png",
+    "imageWidth": 750,
+    "imageHeight": 660,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKPR4AzXSWnwUemYkzvyLia_XrToqelGHf8TLmFHmFaQ&s=10",
+    "thumbnailWidth": 477,
+    "thumbnailHeight": 419,
+    "source": "Sunrise Hotel",
+    "domain": "sunrisehotel.com.vn",
+    "link": "https://sunrisehotel.com.vn/vi/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fsunrisehotel.com.vn%2Fwp-content%2Fuploads%2F2018%2F04%2FDeluxe-1-750x660.png&tbnid=vhISlskyZ-4DWM&imgrefurl=https%3A%2F%2Fsunrisehotel.com.vn%2Fvi%2F&docid=h3OOC5dOQ4fcsM&w=750&h=660",
+    "position": 4
+   },
+   {
+    "title": "Đặt Sunrise Hotel Tây Ninh Tây Ninh giá tốt nhất - BestPrice",
+    "imageUrl": "https://owa.bestprice.vn/images/hotels/uploads/sunrise-hotel-tay-ninh-5f697aa3eb375.jpg",
+    "imageWidth": 1967,
+    "imageHeight": 1475,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNlbJF7zL0eJ8e3v0EGZAkUodoLbTxo91nSxu6FBXi_g&s=10",
+    "thumbnailWidth": 640,
+    "thumbnailHeight": 479,
+    "source": "BestPrice",
+    "domain": "www.bestprice.vn",
+    "link": "https://www.bestprice.vn/khach-san/sunrise-hotel-tay-ninh-1606.html?srsltid=AU7gw4X_Ti3fkOJX4L8LrTqxCPiyuIZOZ5sSjXDjb7fFOOcG2r6kq5Mj",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fowa.bestprice.vn%2Fimages%2Fhotels%2Fuploads%2Fsunrise-hotel-tay-ninh-5f697aa3eb375.jpg&tbnid=H2GfTvjYUPIpBM&imgrefurl=https%3A%2F%2Fwww.bestprice.vn%2Fkhach-san%2Fsunrise-hotel-tay-ninh-1606.html%3Fsrsltid%3DAU7gw4X_Ti3fkOJX4L8LrTqxCPiyuIZOZ5sSjXDjb7fFOOcG2r6kq5Mj&docid=omysURX1B4kdQM&w=1967&h=1475",
+    "position": 5
+   },
+   {
+    "title": "Sunrise Hotel, Tây Ninh (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/506179043.jpg?k=fb0ff26af6b49d37bc847a3bc75fee9ec4beecd05d1400188d249792577dc19e&o=",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ58lKCKPsWQIFcNmqfmNt81_zwvEppICJTdBxX7LibQw&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/sunrise-trang-bang.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F506179043.jpg%3Fk%3Dfb0ff26af6b49d37bc847a3bc75fee9ec4beecd05d1400188d249792577dc19e%26o%3D&tbnid=UuN368JuL3bJEM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fsunrise-trang-bang.vi.html&docid=Tko2UQjWeucLKM&w=1024&h=683",
+    "position": 6
+   },
+   {
+    "title": "WELCOME BACK TO #SunriseHotelTayNinh! 🎉 Trân trọng thông báo: Khách sạn Sunrise  Tây Ninh chính thức hoạt động trở lại kể từ ngày 28/05/2020. 💖 Cảm ơn quý  khách đã tin cậy",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=2994910243910076",
+    "imageWidth": 2045,
+    "imageHeight": 2048,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQyj3pKNDsKYvu0rP_RIf6NUuobg7PnUntMAy_W9RT4cA&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/SunriseHotelTN/posts/welcome-back-to-sunrisehoteltayninh-tr%C3%A2n-tr%E1%BB%8Dng-th%C3%B4ng-b%C3%A1o-kh%C3%A1ch-s%E1%BA%A1n-sunrise-t%C3%A2y-n/2994910673910033/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D2994910243910076&tbnid=oT2KdTf5R35azM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2FSunriseHotelTN%2Fposts%2Fwelcome-back-to-sunrisehoteltayninh-tr%25C3%25A2n-tr%25E1%25BB%258Dng-th%25C3%25B4ng-b%25C3%25A1o-kh%25C3%25A1ch-s%25E1%25BA%25A1n-sunrise-t%25C3%25A2y-n%2F2994910673910033%2F&docid=kncFdadSImUTNM&w=2045&h=2048",
+    "copyright": "Copyright mafphotography, All Rights Reserved",
+    "creator": "Mario Facchini - mafphotography",
+    "position": 7
+   },
+   {
+    "title": "Tiếng Việt) “MỘT ĐIỂM ĐẾN, MUÔN TRẢI NGHIỆM” KHÁM PHÁ TÂY NINH CÙNG SUNRISE  HOTEL - Sunrise Hotel",
+    "imageUrl": "https://sunrisehotel.com.vn/wp-content/uploads/2019/10/avatar_hotel_sunrise.jpg",
+    "imageWidth": 1701,
+    "imageHeight": 1087,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPpu4uBvHpVWSMD1W_bj1WXswP6HzdBsG8k4fBJf1GoA&s=10",
+    "thumbnailWidth": 559,
+    "thumbnailHeight": 357,
+    "source": "Sunrise Hotel",
+    "domain": "sunrisehotel.com.vn",
+    "link": "https://sunrisehotel.com.vn/tieng-viet-mot-diem-den-muon-trai-nghiem-kham-pha-tay-ninh-cung-sunrise-hotel/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fsunrisehotel.com.vn%2Fwp-content%2Fuploads%2F2019%2F10%2Favatar_hotel_sunrise.jpg&tbnid=9kCm5s_6QELeHM&imgrefurl=https%3A%2F%2Fsunrisehotel.com.vn%2Ftieng-viet-mot-diem-den-muon-trai-nghiem-kham-pha-tay-ninh-cung-sunrise-hotel%2F&docid=mNK-SCxpGJATYM&w=1701&h=1087",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

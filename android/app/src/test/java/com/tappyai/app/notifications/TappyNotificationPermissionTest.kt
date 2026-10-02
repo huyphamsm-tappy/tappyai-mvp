@@ -109,18 +109,26 @@ class TappyNotificationPermissionTest {
 
     @Test
     fun `a denial is reflected honestly and does not crash`() {
-        // Showing the switch ON after a denial promises notifications that can never arrive.
+        // 2026-09-17: the switch is the person's PREFERENCE (ON by default); a denial is shown as
+        // its own status line ("the device blocks delivery") rather than rewriting that
+        // preference — so nothing pretends notifications arrive, and nothing pretends the
+        // person turned them off.
         val src = notificationsScreen.readText()
-        assertTrue(src.contains("viewModel.setPushEnabled(granted)"))
+        val callback = src.substringAfter("ActivityResultContracts.RequestPermission(),").substringBefore("\n    }")
+        assertTrue(callback.contains("osGranted = granted"))
+        assertTrue("a denial never flips the preference", !callback.contains("setPushEnabled"))
+        assertTrue(src.contains("osBlocked = pushEnabled && !osGranted") && src.contains("R.string.notif_os_blocked"))
         assertTrue("opening settings must not be able to crash", src.contains("runCatching"))
     }
 
     @Test
     fun `turning push off never asks for or revokes permission`() {
         val src = notificationsScreen.readText()
-        val offBranch = src.substringAfter("if (!wanted) {").substringBefore("} else when")
-        assertTrue(offBranch.contains("setPushEnabled(false)"))
-        assertTrue("must not request on the off path", !offBranch.contains("launch"))
+        val onToggle = src.substringAfter("onToggle = { wanted ->").substringBefore("\n                },")
+        assertTrue(onToggle.contains("viewModel.setPushEnabled(wanted)"))
+        // The OS is asked only on the way ON, and only when it has not already allowed delivery.
+        assertTrue(onToggle.contains("if (wanted && !osGranted) askOs()"))
+        assertTrue("must not request on the off path", !onToggle.contains("launch") && !Regex("""if \(!wanted\)[^\n]*askOs""").containsMatchIn(onToggle))
     }
 
     // ---- the click path ------------------------------------------------------

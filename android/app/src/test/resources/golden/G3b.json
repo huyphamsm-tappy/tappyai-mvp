@@ -1,0 +1,14 @@
+{
+ "id": "G3b",
+ "group": "food-correction",
+ "turns": [
+  {
+   "user": "tìm quán nhậu ở Quận 1 tối nay",
+   "text": "Mình giả sử bạn muốn tìm quán nhậu vừa phải, gần vị trí bạn đang ở. Để gợi ý đúng ý, mình cần tìm ngay 🔍\n\nMình chọn **Pasteur Street Craft Beer** cho tối nay — quán này có **4.8⭐ (2.882 đánh giá)**, đang mở cửa lúc này (11:00–00:00), và nằm ở Bến Thành, Quận 1, gần vị trí bạn.\nHoặc nếu thích hải sản, **Hải Sản Quý Dậu** (4.7⭐, 280 đánh giá) ở Hoàng Sa cũng ngon, mở đến 02:00.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Pasteur Street\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=3123673193691217346\",\"primary\":true},{\"label\":\"🌐 Website - Pasteur Street\",\"type\":\"website\",\"url\":\"https://pasteurstreet.com/\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Layla - Eatery & Bar|Hải Sản Quý Dậu|Quán Bia Khô Mực[/FOLLOWUPS]"
+  },
+  {
+   "user": "thôi không nhậu nữa, quán ăn gia đình thôi, 100-150k/người",
+   "text": "Mình chọn **Quán ăn gia đình 79** cho bữa tối gia đình hôm nay — quán này có **4.4⭐ (517 đánh giá)**, đang mở cửa (16:00–00:00), ở Đề Thám, Quận 1, cách bạn khoảng 1.5km. Giá vừa phải, phù hợp với ngân sách 100–150k/người.\n\nNếu muốn chọn khác, **Ben.la - Mâm cơm nhà quận 1** cũng tốt (4.9⭐, 83 đánh giá), nhưng đóng cửa lúc 17:00 nên không kịp tối nay. Hoặc **Trần Ký Mì Gia** (4.6⭐, 145 đánh giá) ở Ký Con, mở đến 21:30, chuyên mì Trung Quốc, cũng trong tầm giá.\n\n*TappyAI dựa trên đánh giá thực tế & mục phù hợp để gợi ý — bạn tự quyết định\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Maps - Quán ăn gia đình 79\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=403634638146792061\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Quán ăn khác ở Quận 1|Quán ăn hải sản|Quán ăn Việt Nam[/FOLLOWUPS]"
+  }
+ ]
+}

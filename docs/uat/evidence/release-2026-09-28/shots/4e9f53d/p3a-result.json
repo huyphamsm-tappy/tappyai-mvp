@@ -1,0 +1,16 @@
+{
+  "uiError": [],
+  "calls": [
+    "200 POST uat.tappyai.com/api/reviews/upload",
+    "200 POST uat.tappyai.com/api/upload/video",
+    "200 PUT storage.googleapis.com/upload/storage/v1/b/tappyai-media-uat/o",
+    "200 POST uat.tappyai.com/api/upload/video",
+    "200 POST uat.tappyai.com/api/upload/video",
+    "200 PUT storage.googleapis.com/upload/storage/v1/b/tappyai-media-uat/o",
+    "200 POST uat.tappyai.com/api/upload/video"
+  ],
+  "photoImgs": [
+    "https://uat.tappyai.com/_next/image?url=https%3A%2F%2Fstorage.googleapis.com%2Ftappyai-media-uat%2Freviews%2F5c674157-7bfd-4eb5-b1b1-6c61d13b30ef%2F1790590444383-yQsGlaEOSOjcZKPi90S2QNlC.webp&w=3840&q=75"
+  ],
+  "errors": []
+}

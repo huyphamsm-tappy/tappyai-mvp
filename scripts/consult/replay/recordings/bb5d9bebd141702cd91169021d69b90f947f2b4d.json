@@ -1,0 +1,48 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Itel P55 Plus NFC 8GB 256GB site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:54:33.877Z",
+ "body": {
+  "searchParameters": {
+   "q": "Itel P55 Plus NFC 8GB 256GB site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "itel p55 5g malaysia",
+    "link": "https://shop.tiktok.com/vn/k/itel-p55-5g-malaysia",
+    "snippet": "[Tặng sạc dự phòng] Điện Thoại Thông Minh Itel P55+ NFC 8/256GB | 5000 mAH | Sạc Nhanh 45W | 6.6\" HD+ | BH 12 Tháng · [Tặng sạc dự phòng] Điện Thoại Thông Minh ...",
+    "position": 1
+   },
+   {
+    "title": "【UnboxDiaries Exclusive】itel P55 RAM 24GB(8+16GB) + ROM ...",
+    "link": "https://shop.tiktok.com/vn/pdp/itel-p55-24gb-ram-256gb-rom-90hz-display-50mp-dual-camera/1730782615559112090",
+    "snippet": "○Size:163.54x76.04x8.55mm○Weight:190g○CPU:T606 Octa Core○Memory:8gb(extend to 24gb)+256gb○Display:6.6\" Big Screen with Punch Hole / 1612*720 Pixels ...",
+    "position": 2
+   },
+   {
+    "title": "itel p55 5g di malaysia",
+    "link": "https://shop.tiktok.com/vn/k/itel-p55-5g-di-malaysia",
+    "snippet": "[Tặng tai nghe] Điện Thoại Thông Minh Itel P55+ NFC 8/256GB | 5000 mAH | Sạc Nhanh 45W | 6.6\" HD+ | BH 12 Tháng · [Tặng tai nghe] Điện Thoại Thông Minh Itel P55+ ...",
+    "position": 3
+   },
+   {
+    "title": "itel p55 5g battery",
+    "link": "https://shop.tiktok.com/vn/k/itel-p55-5g-battery",
+    "snippet": "itel p55 5g battery · [Tặng tai nghe] Điện Thoại Thông Minh Itel P55+ NFC 8/256GB | 5000 mAH | Sạc Nhanh 45W | 6.6\" HD+ | BH 12 Tháng · [Tặng tai nghe] Điện Thoại ...",
+    "position": 4
+   }
+  ],
+  "credits": 1
+ }
+}

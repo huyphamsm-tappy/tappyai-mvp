@@ -1,0 +1,36 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Laptop Acer Swift Lite 14 AI SFL14-51M-78XZ\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:54:51.569Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Laptop Acer Swift Lite 14 AI SFL14-51M-78XZ\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Acer Swift Lite 14 AI Laptop SFL14 Cấu hình mạnh mẽ",
+    "link": "https://www.tiktok.com/@fptshop199ns/video/7643984081293774100?lang=ar",
+    "snippet": "Laptop Acer Swift Lite 14 AI SFL14-51M-78XZ U7 sở hữu màu Bạc xinh đẹp cùng cấu hình mạnh mẽ. Thiết bị được trang bị ổ cứng SSD dung lượng ...",
+    "position": 1
+   },
+   {
+    "title": "FPT SHOP Nga Sơn (@fptshop199ns)",
+    "link": "https://www.tiktok.com/@fptshop199ns",
+    "snippet": "#capcut Laptop Acer Swift Lite 14 AI SFL14-51M-78XZ U7 Bạc. 145 · Trăm đau ngàn đau sao cứ tham lam hỡi người …#nhachaymoingay #tamtrang #. 822.4K.",
+    "position": 2
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,190 @@
+{
+  "id": "E4",
+  "text": "chỗ đó có giữ xe không?",
+  "parent": "E3",
+  "status": 200,
+  "ms": 9557,
+  "evidenceId": "2d48cb13-2119-46dd-91ba-d8f6088dcffe",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "Dollhouse bar HCMC parking chỗ đậu xe",
+        "location": "Quận 1, TP.HCM",
+        "type": "bar"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Dollhouse bar HCMC",
+      "rating": 5,
+      "count": 1383,
+      "hours": "19:00–03:00",
+      "distance_km": 0.5,
+      "address": "8a/11d1 Thái Văn Lung, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình tìm thông tin về chỗ đậu xe của Dollhouse bar HCMC cho bạn.\n\nQuán nằm trên Thái Văn Lung (khu vực trung tâm Quận 1) — bạn có thể gọi quán trực tiếp qua **+84 762 903 161** để hỏi về tình hình đậu xe gần đó, hoặc sử dụng dịch vụ Grab/Xanh SM để đi lại an toàn.\n\nBạn có thể xem thêm chi tiết trên [Google Maps](https://maps.google.com/?cid=12322941922998073283) hoặc [Website chính thức](http://www.dollhousebar.com/) để liên hệ quán.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Google Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=12322941922998073283\",\"primary\":true},{\"label\":\"🌐 Website Dollhouse\",\"type\":\"website\",\"url\":\"http://www.dollhousebar.com/\",\"primary\":false}]}[/CTA_BUTTONS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "quán bar nào chill có nhạc sống Quận 1"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn muốn đi hôm nay với 1-2 người, tìm quán bar sôi động có nhạc sống ở Quận 1. Để gợi ý chính xác, mình sẽ tìm ngay.\n\n**Dollhouse bar HCMC** là lựa chọn mình nghiêng về nhất — **5⭐ (1.383 đánh giá)**, cách bạn chỉ 0.5km, mở từ 19:00 đến 3:00 sáng. Quán nằm trên Thái Văn Lung, rất gần vị trí bạn đang ở.\n\nNếu muốn gần hơn, **Loop 1 - Cocktail Bar & Kitchen** chỉ 0.3km, **4.8⭐ (2.475 đánh giá)**, mở từ 17:00 đến 1:00 sáng, phù hợp nếu bạn muốn đi sớm hơn. Quán này tập trung vào cocktail chất lượng cao.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🍹 Website — Dollhouse bar HCMC\",\"type\":\"website\",\"url\":\"http://www.dollhousebar.com/\",\"primary\":true},{\"label\":\"📍 Maps — Dollhouse bar HCMC\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=12322941922998073283\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Dollhouse có nhạc sống hôm nay không?|Quán nào có DJ thay vì nhạc sống?|Có quán bar nào gần hơn mở bây giờ?[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "chỗ đó có giữ xe không?"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm thông tin về chỗ đậu xe của Dollhouse bar HCMC cho bạn.\n\nQuán nằm trên Thái Văn Lung (khu vực trung tâm Quận 1) — bạn có thể gọi quán trực tiếp qua **+84 762 903 161** để hỏi về tình hình đậu xe gần đó, hoặc sử dụng dịch vụ Grab/Xanh SM để đi lại an toàn.\n\nBạn có thể xem thêm chi tiết trên [Google Maps](https://maps.google.com/?cid=12322941922998073283) hoặc [Website chính thức](http://www.dollhousebar.com/) để liên hệ quán.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Google Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=12322941922998073283\",\"primary\":true},{\"label\":\"🌐 Website Dollhouse\",\"type\":\"website\",\"url\":\"http://www.dollhousebar.com/\",\"primary\":false}]}[/CTA_BUTTONS]"
+    }
+  ],
+  "toolResults": [
+    {
+      "source": "Serper Maps",
+      "count": 1,
+      "location": "Quận 1, TP.HCM",
+      "results": [
+        {
+          "name": "Dollhouse bar HCMC",
+          "address": "8a/11d1 Thái Văn Lung, Sài Gòn, Hồ Chí Minh, Việt Nam",
+          "phone": "+84 762 903 161",
+          "website_uri": "http://www.dollhousebar.com/",
+          "place_id": "ChIJDfijGesvdTERw7cRpGPiA6s",
+          "rating_value": 5,
+          "google_rating": "5⭐ (1.383 đánh giá Google Maps)",
+          "rating_count": 1383,
+          "place_types": [
+            "Quán bar"
+          ],
+          "maps_link": "https://maps.google.com/?cid=12322941922998073283",
+          "opening_hours": "19:00–03:00",
+          "open_now": false,
+          "distance_km": 0.5,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "label": "📍 Google Maps — Dollhouse bar HCMC",
+              "url": "https://maps.google.com/?cid=12322941922998073283",
+              "attributed": true
+            },
+            {
+              "kind": "official_website",
+              "label": "🌐 Website — Dollhouse bar HCMC",
+              "url": "http://www.dollhousebar.com/",
+              "attributed": true
+            },
+            {
+              "kind": "youtube_search_fallback",
+              "label": "🔎 Tìm video review trên YouTube",
+              "url": "https://www.youtube.com/results?search_query=Dollhouse%20bar%20HCMC%20review",
+              "attributed": false
+            }
+          ],
+          "has_maps": true,
+          "has_website": true,
+          "has_photo": true,
+          "has_hours": true,
+          "has_phone": true,
+          "has_reviews": "search"
+        }
+      ],
+      "google_maps_search": "https://maps.google.com/maps?q=Dollhouse%20bar%20HCMC%20parking%20ch%E1%BB%97%20%C4%91%E1%BA%ADu%20xe%20Qu%E1%BA%ADn%201%2C%20TP.HCM",
+      "_tappy_place_domain": "entertainment",
+      "place_search_status": "has_results"
+    }
+  ],
+  "frames8Raw": [
+    [
+      {
+        "kind": "tappy.places.v1",
+        "v": 1,
+        "domain": "entertainment",
+        "ranked": false,
+        "items": [
+          {
+            "id": "place:osm:10.77939,106.70464",
+            "domain": "entertainment",
+            "kind": "place",
+            "name": "Dollhouse bar HCMC",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWm0GQ2s59UFEnuyo6Duq88Bkh9M0gNVat_uSqzSE3J7pimCDqU0QpXupLnM_ND1jk0-oj_bdLub4o7CyxpyD7fIA_uO3KCz2RKo1KZGC3GQgTZInKD5Zx6PBx4Jx4waNovSWA_t",
+            "address": "8a/11d1 Thái Văn Lung, Sài Gòn, Hồ Chí Minh, Việt Nam",
+            "rating": 5,
+            "ratingCount": 1383,
+            "openingHours": "19:00–03:00",
+            "openNow": false,
+            "phone": "+84 762 903 161",
+            "openingHoursWeek": {
+              "Thứ Sáu": "19:00–03:00",
+              "Thứ Bảy": "19:00–03:00",
+              "Chủ Nhật": "19:00–02:00",
+              "Thứ Hai": "19:00–02:00",
+              "Thứ Ba": "19:00–02:00",
+              "Thứ Tư": "19:00–02:00",
+              "Thứ Năm": "19:00–02:00"
+            },
+            "distanceKm": 0.5,
+            "categories": [
+              "Quán bar"
+            ],
+            "rank": 0,
+            "actions": [
+              {
+                "kind": "review",
+                "urlKind": "direct",
+                "url": "https://www.tiktok.com/@da.dollhousebar/video/7635567935322328341",
+                "labelKey": "v3.action.reviewOn",
+                "platform": "TikTok",
+                "attributed": true
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=12322941922998073283",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84762903161",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Dollhouse%20bar%20HCMC%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          }
+        ],
+        "mapsSearchUrl": "https://maps.google.com/maps?q=Dollhouse%20bar%20HCMC%20parking%20ch%E1%BB%97%20%C4%91%E1%BA%ADu%20xe%20Qu%E1%BA%ADn%201%2C%20TP.HCM"
+      }
+    ]
+  ]
+}

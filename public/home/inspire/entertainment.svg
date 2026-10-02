@@ -1,0 +1,131 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 220" width="440" height="220" role="img" aria-hidden="true">
+  <defs>
+    <filter id="grain" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" seed="31" result="n"/>
+      <feColorMatrix in="n" type="saturate" values="0"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.06"/></feComponentTransfer>
+    </filter>
+    <filter id="soft" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="7"/>
+    </filter>
+    <filter id="softer" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="16"/>
+    </filter>
+    <filter id="haze" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="3"/>
+    </filter>
+    <filter id="bokeh" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="5.5"/>
+    </filter>
+
+    <linearGradient id="night" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0B0724"/><stop offset="55%" stop-color="#241246"/>
+      <stop offset="100%" stop-color="#45185A"/>
+    </linearGradient>
+    <linearGradient id="street" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2A1140"/><stop offset="100%" stop-color="#0A0518"/>
+    </linearGradient>
+    <radialGradient id="neonGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FF5FC4" stop-opacity=".8"/>
+      <stop offset="100%" stop-color="#FF5FC4" stop-opacity="0"/>
+    </radialGradient>
+
+    <radialGradient id="vig" cx="50%" cy="45%" r="72%">
+      <stop offset="55%" stop-color="#000" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000" stop-opacity=".42"/>
+    </radialGradient>
+    <clipPath id="frame"><rect width="440" height="220"/></clipPath>
+  </defs>
+  <g clip-path="url(#frame)">
+
+    <rect width="440" height="220" fill="url(#night)"/>
+    <!-- buildings, with lit windows at two depths -->
+    <g fill="#150A2E">
+      <rect x="0" y="46" width="76" height="130"/>
+      <rect x="86" y="24" width="58" height="152"/>
+      <rect x="356" y="38" width="84" height="138"/>
+    </g>
+    <g fill="#FFD98A" opacity=".55">
+      <rect x="12" y="60" width="8" height="10"/><rect x="30" y="60" width="8" height="10"/>
+      <rect x="12" y="82" width="8" height="10"/><rect x="48" y="82" width="8" height="10"/>
+      <rect x="30" y="104" width="8" height="10"/><rect x="12" y="126" width="8" height="10"/>
+      <rect x="98" y="42" width="7" height="9"/><rect x="118" y="42" width="7" height="9"/>
+      <rect x="98" y="66" width="7" height="9"/><rect x="126" y="88" width="7" height="9"/>
+      <rect x="370" y="56" width="8" height="10"/><rect x="392" y="56" width="8" height="10"/>
+      <rect x="414" y="78" width="8" height="10"/><rect x="370" y="100" width="8" height="10"/>
+    </g>
+    <g fill="#3AD8F0" opacity=".35">
+      <rect x="48" y="60" width="8" height="10"/><rect x="30" y="126" width="8" height="10"/>
+      <rect x="118" y="66" width="7" height="9"/><rect x="392" y="100" width="8" height="10"/>
+    </g>
+
+    <!-- neon sign on the right building -->
+    <g filter="url(#soft)"><ellipse cx="398" cy="128" rx="54" ry="34" fill="url(#neonGlow)"/></g>
+    <g stroke="#FF7AD0" stroke-width="4" fill="none" stroke-linecap="round">
+      <path d="M374 140 q24 -36 48 0"/>
+      <path d="M384 142 v-10"/><path d="M412 142 v-10"/>
+    </g>
+
+    <!-- strung bulbs across the street: a catenary, not a straight line -->
+    <path d="M-10 40 q120 60 224 30 q110 -30 236 22" stroke="#4A3A6E" stroke-width="1.6" fill="none"/>
+    <g>
+      <g filter="url(#bokeh)" opacity=".85">
+        <circle cx="44"  cy="62" r="9" fill="#FFD07A"/>
+        <circle cx="106" cy="76" r="9" fill="#FFC46A"/>
+        <circle cx="168" cy="80" r="9" fill="#FFD98E"/>
+        <circle cx="232" cy="70" r="9" fill="#FFCA76"/>
+        <circle cx="294" cy="58" r="9" fill="#FFD489"/>
+        <circle cx="356" cy="62" r="9" fill="#FFC163"/>
+        <circle cx="414" cy="76" r="9" fill="#FFD07A"/>
+      </g>
+      <g fill="#FFF0CE">
+        <circle cx="44"  cy="62" r="3.2"/><circle cx="106" cy="76" r="3.2"/>
+        <circle cx="168" cy="80" r="3.2"/><circle cx="232" cy="70" r="3.2"/>
+        <circle cx="294" cy="58" r="3.2"/><circle cx="356" cy="62" r="3.2"/>
+        <circle cx="414" cy="76" r="3.2"/>
+      </g>
+    </g>
+
+    <!-- out-of-focus lights nearer the camera -->
+    <g filter="url(#bokeh)" opacity=".5">
+      <circle cx="72"  cy="122" r="15" fill="#6BE3FF"/>
+      <circle cx="286" cy="112" r="19" fill="#FF8CD8"/>
+      <circle cx="196" cy="132" r="12" fill="#FFD27E"/>
+      <circle cx="344" cy="96"  r="11" fill="#B48CFF"/>
+    </g>
+
+    <!-- the street -->
+    <rect x="0" y="164" width="440" height="56" fill="url(#street)"/>
+    <!-- reflections: smeared vertically, which is what wet asphalt does -->
+    <g opacity=".4">
+      <rect x="40"  y="166" width="7" height="34" rx="3.5" fill="#FFD07A"/>
+      <rect x="164" y="166" width="7" height="30" rx="3.5" fill="#FFD98E"/>
+      <rect x="290" y="166" width="8" height="40" rx="4"   fill="#FF7AD0"/>
+      <rect x="394" y="166" width="9" height="36" rx="4.5" fill="#FF7AD0"/>
+      <rect x="228" y="166" width="6" height="26" rx="3"   fill="#6BE3FF"/>
+    </g>
+
+    <!-- two figures walking away, arm in arm: the nearest and darkest shapes in frame -->
+    <g fill="#080413">
+      <g transform="translate(176 0)">
+        <circle cx="0" cy="128" r="11"/>
+        <path d="M-14 140 q14 -8 28 0 l6 46 h-40 Z"/>
+        <path d="M-10 186 l3 30 h7 l1 -30 Z"/><path d="M8 186 l3 30 h7 l-1 -30 Z"/>
+      </g>
+      <g transform="translate(214 6)">
+        <circle cx="0" cy="128" r="10"/>
+        <path d="M-13 139 q13 -7 26 0 l5 44 h-36 Z"/>
+        <path d="M-9 183 l2 28 h7 l1 -28 Z"/><path d="M8 183 l2 28 h7 l-1 -28 Z"/>
+      </g>
+      <path d="M188 152 q14 -6 26 2" stroke="#080413" stroke-width="5" fill="none"/>
+    </g>
+    <!-- rim light on both figures from the neon behind them -->
+    <g stroke="#FF8CD8" stroke-width="1.6" fill="none" opacity=".55">
+      <path d="M198 130 q6 4 4 14 l4 40"/>
+      <path d="M236 132 q5 4 3 12 l4 38"/>
+    </g>
+
+    <rect width="440" height="220" fill="url(#vig)"/>
+    <rect width="440" height="220" filter="url(#grain)" opacity=".5"/>
+  </g>
+</svg>

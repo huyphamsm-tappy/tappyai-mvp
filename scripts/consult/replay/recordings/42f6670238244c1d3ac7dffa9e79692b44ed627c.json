@@ -1,0 +1,83 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "hộp quà tặng cà phê cao cấp premium gift box (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:12:00.085Z",
+ "body": {
+  "searchParameters": {
+   "q": "hộp quà tặng cà phê cao cấp premium gift box (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Hộp quà tặng cao cấp Hạt A Cafe Premium Gift Box Coffee ...",
+    "link": "https://shopee.vn/H%E1%BB%99p-qu%C3%A0-t%E1%BA%B7ng-cao-c%E1%BA%A5p-H%E1%BA%A1t-A-Cafe-Premium-Gift-Box-Coffee-3-lo%E1%BA%A1i-c%C3%A0-ph%C3%AA-h%C3%B2a-tan-288g-16-stick-i.312500391.7074996441",
+    "snippet": "Mua Hộp quà tặng cao cấp Hạt A Cafe Premium Gift Box Coffee 3 loại cà phê hòa tan 288g - 16 stick giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 4.9,
+    "ratingCount": 131,
+    "position": 1
+   },
+   {
+    "title": "Premium Gift Box Coffee-288g (16 gói gồm 3 loại cà phê ...",
+    "link": "https://www.lazada.vn/products/hop-qua-tang-cao-cap-premium-gift-box-coffee-288g-16-goi-gom-3-loai-ca-phe-hoa-tan-thom-ngon-vi-tu-nhien-i1069432070.html?srsltid=AU7gw4U2SZVFsFL45PFkEthYCe8fHtARMkMZ3fnriVdZZCL59pqJ5mYX",
+    "snippet": "1/8. 172.000 ₫. LazMall Hộp quà tặng cao cấp - Premium Gift Box Coffee-288g (16 gói gồm 3 loại cà phê hòa tan thơm ngon, vị tự nhiên). 4.9(31).",
+    "date": "23 thg 2, 2022",
+    "rating": 4.9,
+    "ratingCount": 31,
+    "position": 2
+   },
+   {
+    "title": "set quà tặng cà phê - Giá Tốt, Sale Tháng 09, Freeship 0Đ",
+    "link": "https://shopee.vn/list/set%20qu%C3%A0%20t%E1%BA%B7ng/c%C3%A0%20ph%C3%AA",
+    "snippet": "Hộp Mix 3 Vị 18 Gói Cà phê Hòa Tan Cộng Cà Phê Vị Bạc Xỉu,Cốt Dừa, Cà Phê Sữa Đậm Vị Hỗ Trợ Tỉnh Táo. 100.940₫. 113.000₫. -11%. Rẻ Vô Địch. rating-star 4.9.",
+    "position": 3
+   },
+   {
+    "title": "Mua Hộp Quà Cà Phê Giá Tốt, Giao Nhanh",
+    "link": "https://www.lazada.vn/tag/hop-qua-ca-phe/?srsltid=AU7gw4UYPUNcl6Mo7BmiSUWMfKJuNa0XfMjAyFBlA-FRKtI2Nn1va2KS",
+    "snippet": "Hộp Quà Tết Cao Cấp, Set Quà Tặng Cà phê Đặc sản- Comnbo Cafe nguyên chất, hòa tan kèm phin, ly từ Message Coffee. ₫540,000. Voucher save 17%. 5.0·5 sold.",
+    "rating": 4.8,
+    "ratingCount": 134,
+    "position": 4
+   },
+   {
+    "title": "Hương mai cafe - Giá Tốt, Sale Tháng 09, Freeship 0Đ",
+    "link": "https://shopee.vn/list/h%C6%B0%C6%A1ng%20mai%20cafe",
+    "snippet": "Cà phê hòa tan Cappuccino Hạt A Cafe 4in1 vị sữa dừa tự nhiên 216gr/ · Snack Que Nhân Kem Akiko Oishi Đủ Vị Gói 140g · [GÓI LẺ] Cà phê hòa tan Hạt A Cafe các vị ...",
+    "position": 5
+   },
+   {
+    "title": "Mua Trung Nguyên Legend - Hộp Quà Tặng Cà Phê Sáng Tạo 8",
+    "link": "https://tiki.vn/trung-nguyen-legend-hop-qua-tang-ca-phe-sang-tao-8-bo-qua-tang-giau-co-p207854178.html",
+    "snippet": "HỘP QUÀ TẶNG CÀ PHÊ SÁNG TẠO 8 – BỘ QUÀ TẶNG GIÀU CÓ. BỘ SẢN PHẨM BAO GỒM: 01 hộp Cà phê Rang xay Sáng tạo 8 - 500gr 01 phin cà phê phin nhôm hoa văn trống ...",
+    "rating": 4.7,
+    "ratingCount": 16,
+    "position": 6
+   },
+   {
+    "title": "Gift box cho nam - Giá Tốt, Sale Tháng 09, Ship 0 Đồng",
+    "link": "https://shopee.vn/list/gift%20box/cho%20nam",
+    "snippet": "Shopee cung cấp đầy đủ các sản phẩm gift box cho nam chính hãng với nhiều mức giá ưu đãi vô cùng hấp dẫn. Bạn có thể thỏa thích tham khảo sản phẩm chính hãng từ ...",
+    "position": 7
+   },
+   {
+    "title": "Cà Phê Chồn Nguyên Chất 100% Hương Mai Cafe ...",
+    "link": "https://www.lazada.vn/products/ca-phe-chon-nguyen-chat-100-huong-mai-cafe-weasel-coffee-gift-box-intense-aroma-huong-thom-dam-da-thich-hop-lam-qua-bieu-tang-gom-01-goi-ca-phe-dang-bot-250g-01-phin-inox-cao-cap-i588422088.html?srsltid=AU7gw4V_H4IQQ5u9DPKwBVK0TqF4XVFJstlLVzYdnCuNGkQ-MRU0VL4_",
+    "snippet": "Hộp quà tặng cao cấp - Premium Gift Box Coffee-288g (16 gói gồm. 172.000 ₫. Cà Phê Chồn Hương Mai Cafe Weasel Coffee - Cà Phê Pha Phin Không Pha Trộn. 283.000 ...",
+    "rating": 4.8,
+    "ratingCount": 137,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

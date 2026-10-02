@@ -1,0 +1,22 @@
+status 200
+places 20 credits 3 with priceLevel 0
+  NHÀ HÀNG NGON                                 | - | 4 11405
+  Quán ăn ngon Sài Gòn                          | - | 4.1 1152
+  Hàng Dương Quán Quận 1                        | - | 4.5 717
+  Ann Quán                                      | - | 4.2 1279
+  Sài Gòn Xưa và Nay                            | - | 4 1274
+  Quán nhậu quận 1 - HẢI SẢN QUÝ DẬU            | - | 4.7 278
+  Quán Bụi Original, Sài Gòn - Authentic Vietna | - | 4.3 4220
+  Nhà hàng chay Phương Mai                      | - | 4.9 3386
+  Hải Sản Hoàng Gia - 180 Trần Hưng Đạo Quận 1  | - | 4.7 961
+  Vua Chả Cá - Số 42-44-46 Trần Hưng Đạo, Q.1,  | - | 4.9 4618
+  PHỞ HÀ                                        | - | 4 1045
+  Ốc Đào                                        | - | 4.2 2459
+  Quán Nem                                      | - | 4.2 6152
+  Tiệm mì Choi oi                               | - | 4.4 657
+  Nhà hàng hải sản & lẩu Yeebo (Quận 1) - Yeebo | - | 4.2 657
+  San Fu Lou Restaurant AB Tower                | - | 4.3 2369
+  RIKYU                                         | - | 4.9 424
+  Quán Vỹ Dạ                                    | - | 3.9 799
+  Pachi Pachi Nướng Lẩu Nhật Bản                | - | 4.1 792
+  Nhà hàng Dìn Ký Nguyễn Trãi                   | - | 3.9 2427

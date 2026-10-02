@@ -1,0 +1,24 @@
+{
+  "id": "G5b",
+  "group": "used-purchase-risk",
+  "criteria": [
+    "Leads with ownership: cà vẹt/registration matches seller and frame/engine numbers, stolen vehicle, sang tên procedure, deposit scams; then mechanical checks",
+    "No invented numbers",
+    "Scam-vector pointer to 'Cảnh báo lừa đảo' where relevant"
+  ],
+  "turns": [
+    {
+      "user": "mua xe máy cũ Honda Wave cần kiểm tra gì",
+      "status": 200,
+      "elapsedMs": 8703,
+      "textFrames": 149,
+      "tools": [],
+      "toolResults": [],
+      "annotations": [],
+      "cardItems": [],
+      "duplicate": null,
+      "text": "Mình hiểu bạn đang muốn mua xe máy cũ Honda Wave và cần biết những điểm cần kiểm tra. Tuy nhiên, đây là câu hỏi về **kiến thức kỹ thuật/cách chọn mua** — ngoài phạm vi mà TappyAI hỗ trợ.\n\nTappyAI chuyên giúp bạn:\n- 🍽️ **Ăn uống**: tìm quán ăn, nhà hàng, cafe\n- 🛍️ **Mua sắm**: tìm sản phẩm, so giá trên các sàn TMĐT\n- ✈️ **Du lịch**: gợi ý điểm đến, khách sạn, vé máy bay\n- 💆 **Spa & làm đẹp**: tìm dịch vụ chăm sóc\n- 🎬 **Giải trí**: rạp phim, karaoke, bar, công viên\n\nNếu bạn cần **mua Honda Wave cũ** (tìm nơi bán, so giá trên các sàn TMĐT), mình có thể giúp! Bạn muốn tìm xe ở đâu không — Shopee, Facebook Marketplace, hay các trang khác?",
+      "visible": "Mình hiểu bạn đang muốn mua xe máy cũ Honda Wave và cần biết những điểm cần kiểm tra. Tuy nhiên, đây là câu hỏi về **kiến thức kỹ thuật/cách chọn mua** — ngoài phạm vi mà TappyAI hỗ trợ.\n\nTappyAI chuyên giúp bạn:\n- 🍽️ **Ăn uống**: tìm quán ăn, nhà hàng, cafe\n- 🛍️ **Mua sắm**: tìm sản phẩm, so giá trên các sàn TMĐT\n- ✈️ **Du lịch**: gợi ý điểm đến, khách sạn, vé máy bay\n- 💆 **Spa & làm đẹp**: tìm dịch vụ chăm sóc\n- 🎬 **Giải trí**: rạp phim, karaoke, bar, công viên\n\nNếu bạn cần **mua Honda Wave cũ** (tìm nơi bán, so giá trên các sàn TMĐT), mình có thể giúp! Bạn muốn tìm xe ở đâu không — Shopee, Facebook Marketplace, hay các trang khác?"
+    }
+  ]
+}

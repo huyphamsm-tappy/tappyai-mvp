@@ -1,0 +1,132 @@
+{
+  "id": "P4",
+  "text": "Đi spa với mẹ cuối tuần, chỗ nào yên tĩnh sạch sẽ Quận 7",
+  "parent": null,
+  "status": 200,
+  "ms": 13525,
+  "evidenceId": "ad472127-2573-4e4d-9f37-cc5df058dd96",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "spa massage yên tĩnh Quận 7",
+        "location": "Quận 7, TP.HCM",
+        "type": "spa"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Ôliu Spa | Gội đầu dưỡng sinh thảo mộc, massage thư giãn, và nối mi Quận 7",
+      "rating": 5,
+      "count": 337,
+      "hours": "09:00–22:00",
+      "distance_km": 4.6,
+      "address": "156 Bùi Văn Ba, Tân Thuận, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Chloe Beauty Spa Quận 7",
+      "rating": 5,
+      "count": 206,
+      "hours": "09:30–19:30",
+      "distance_km": 4.2,
+      "address": "17/5 Tân Thuận Tây, Quận 7, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Yose Boutique - Cơ sở quận 7",
+      "rating": 5,
+      "count": 33,
+      "hours": "Đóng cửa",
+      "distance_km": 3.7,
+      "address": "111 Đ. 14A, Tân Thuận, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "HANNIE SPA",
+      "rating": 4.9,
+      "count": 434,
+      "hours": "09:30–20:30",
+      "distance_km": 3.5,
+      "address": "43A Đ. Lâm Văn Bền, Tân Thuận, Hồ Chí Minh 72910, Việt Nam"
+    },
+    {
+      "name": "[TheAnnam] Massage Ân Nam - Gội Đầu Dưỡng Sinh Quận 1",
+      "rating": 4.9,
+      "count": 231,
+      "hours": "10:00–22:00",
+      "distance_km": 1.5,
+      "address": "145bis Lê Thị Riêng, Bến Thành, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "SIAM Beauty & Spa",
+      "rating": 4.9,
+      "count": 156,
+      "hours": "09:00–21:00",
+      "distance_km": 2.9,
+      "address": "465 Trần Xuân Soạn, Tân Hưng, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Zen Spa - Body & Foot Massage - 胡志明按摩",
+      "rating": 4.5,
+      "count": 241,
+      "hours": "10:00–23:00",
+      "distance_km": 4,
+      "address": "930 Trần Hưng Đạo, An Đông, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Mộc Hạ Beauty Spa",
+      "rating": 5,
+      "count": 20,
+      "hours": "09:30–20:00",
+      "distance_km": 3,
+      "address": "675/54 Trần Xuân Soạn, Tân Hưng, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Mộc An Nail & Spa",
+      "rating": 5,
+      "count": 109,
+      "hours": "09:00–20:00",
+      "distance_km": 3.4,
+      "address": "60/56 Lâm Văn Bền, Quận 7, Hồ Chí Minh 756000, Việt Nam"
+    },
+    {
+      "name": "Massage Golden",
+      "rating": 4.5,
+      "count": 86,
+      "hours": "09:00–00:00",
+      "distance_km": 0.4,
+      "address": "25 Lê Thánh Tôn, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": [
+    "quiet"
+  ],
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Để gợi ý đúng ý, mình sẽ tìm ngay các spa gần vị trí bạn.\n\nMình chọn **Ôliu Spa** cho bạn — spa này có 5⭐ từ 337 đánh giá Google Maps, chuyên gội đầu dưỡng sinh và massage thư giãn. Nằm ở Quận 7, mở từ 9h–22h nên cuối tuần bạn có thể đi vào lúc nào cũng được. Cách vị trí bạn khoảng 4.6km, khá gần để di chuyển.\n\nNgoài ra, **HANNIE SPA** (4.9⭐, 434 đánh giá) cũng là lựa chọn tốt — dịch vụ đa dạng từ massage, chăm sóc da đến làm mi, cách bạn 3.5km. Tuy nhiên hiện đang đóng cửa, sẽ mở lại từ 9h30 sáng mai.\n\nMình chưa thấy bằng chứng về yên tĩnh ở các quán này — nên gọi hỏi trước khi đi.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website - Ôliu Spa\",\"type\":\"website\",\"url\":\"https://www.google.com/maps/search/Ôliu+Spa+Quận+7\"},{\"label\":\"📍 Google Maps - Ôliu Spa\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=13656189070118713609\"}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Gọi đặt chỗ trước không|Có dịch vụ gì khác ở Quận 7|Spa nào gần nhất|[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Đi spa với mẹ cuối tuần, chỗ nào yên tĩnh sạch sẽ Quận 7"
+    },
+    {
+      "role": "assistant",
+      "content": "Để gợi ý đúng ý, mình sẽ tìm ngay các spa gần vị trí bạn.\n\nMình chọn **Ôliu Spa** cho bạn — spa này có 5⭐ từ 337 đánh giá Google Maps, chuyên gội đầu dưỡng sinh và massage thư giãn. Nằm ở Quận 7, mở từ 9h–22h nên cuối tuần bạn có thể đi vào lúc nào cũng được. Cách vị trí bạn khoảng 4.6km, khá gần để di chuyển.\n\nNgoài ra, **HANNIE SPA** (4.9⭐, 434 đánh giá) cũng là lựa chọn tốt — dịch vụ đa dạng từ massage, chăm sóc da đến làm mi, cách bạn 3.5km. Tuy nhiên hiện đang đóng cửa, sẽ mở lại từ 9h30 sáng mai.\n\nMình chưa thấy bằng chứng về yên tĩnh ở các quán này — nên gọi hỏi trước khi đi.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website - Ôliu Spa\",\"type\":\"website\",\"url\":\"https://www.google.com/maps/search/Ôliu+Spa+Quận+7\"},{\"label\":\"📍 Google Maps - Ôliu Spa\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=13656189070118713609\"}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Gọi đặt chỗ trước không|Có dịch vụ gì khác ở Quận 7|Spa nào gần nhất|[/FOLLOWUPS]"
+    }
+  ]
+}

@@ -3,10 +3,11 @@
     <string name="auth_subtitle">Đăng nhập để tiếp tục</string>
     <string name="auth_continue_with_google">Tiếp tục với Google</string>
     <string name="auth_continue_with_zalo">Tiếp tục với Zalo</string>
+    <string name="auth_debug_guest">Dùng thử không đăng nhập (bản debug)</string>
     <string name="auth_continue_with_facebook">Tiếp tục với Facebook</string>
     <string name="auth_or_divider">hoặc</string>
     <string name="auth_email_label">Email</string>
-    <string name="auth_email_placeholder">you@example.com</string>
+    <string name="auth_email_placeholder">ban@email.com</string>
     <string name="auth_send_code">Gửi mã</string>
 
     <string name="auth_otp_title">Kiểm tra email của bạn</string>
@@ -35,7 +36,7 @@
     <string name="auth_feature_1_title">Trợ lý AI tất-cả-trong-một</string>
     <string name="auth_feature_1_desc">Chat, tìm kiếm, lên kế hoạch — xong hết trong một nơi.</string>
     <string name="auth_feature_2_title">Khám phá mọi thứ</string>
-    <string name="auth_feature_2_desc">Du lịch, ẩm thực, review, âm nhạc — tất cả được kết nối.</string>
+    <string name="auth_feature_2_desc">Du lịch, ẩm thực, review, mua sắm — tất cả được kết nối.</string>
     <string name="auth_feature_3_title">Bảo mật &amp; Riêng tư</string>
     <string name="auth_feature_3_desc">Dữ liệu thuộc về bạn. Chúng tôi bảo vệ quyền riêng tư của bạn.</string>
     <string name="auth_feature_4_title">Luôn bên bạn</string>
@@ -48,4 +49,10 @@
     <string name="auth_and">và</string>
     <string name="auth_privacy">Chính sách bảo mật</string>
     <string name="auth_footer_rights">© 2026 TappyAI. Bảo lưu mọi quyền.</string>
+    <string name="auth_password_label">Mật khẩu</string>
+    <string name="auth_password_placeholder">Tối thiểu 6 ký tự</string>
+    <string name="auth_password_submit">Đăng nhập</string>
+    <string name="auth_create_account">Tạo tài khoản</string>
+    <string name="auth_continue_guest">Tiếp tục với tư cách Khách</string>
+    <string name="auth_signin_failed">Email hoặc mật khẩu không đúng.</string>
 </resources>

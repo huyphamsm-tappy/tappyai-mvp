@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Hải Sản Hoàng Gia CN Phạm Văn Nghị (site:food.grab.com/vn OR site:shopeefood.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:51:57.260Z",
+ "body": {
+  "searchParameters": {
+   "q": "Hải Sản Hoàng Gia CN Phạm Văn Nghị (site:food.grab.com/vn OR site:shopeefood.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Vinamilk - Giấc Mơ Sữa Việt | Mua online tại ShopeeFood.vn",
+    "link": "https://shopeefood.vn/thuong-hieu/6126",
+    "snippet": "43/11 Đường Nguyễn Văn Tỏ, Khu Phố Long Điềm, P. Long Bình Tân, Tp. Biên Hòa, Đồng Nai. Tối thiểu 20k Giá 0. Giảm món. Đã đóng. Hẹn giao vào 25/09 ...",
+    "position": 1
+   },
+   {
+    "title": "Vô vàn ưu đãi, hàng vạn món ngon | GrabFood VN",
+    "link": "https://food.grab.com/vn/vi/",
+    "snippet": "GrabFood - Dịch vụ giao đồ ăn trực tuyến giúp bạn thỏa mãn cơn thèm ăn với hàng vạn quán ăn.",
+    "position": 2
+   },
+   {
+    "title": "Phê La | Mua online tại ShopeeFood.vn",
+    "link": "https://shopeefood.vn/thuong-hieu/phe-la",
+    "snippet": "Tối thiểu 20k Giá 0. Giảm món. Mã giảm 11%. Yêu thích. Phê La - Trà & Cà Phê Đặc Sản - Kỳ Đồng, Hải Phòng. 1 Kỳ Đồng, P. Hoàng Văn Thụ, Quận Hồng Bàng, Hải ...",
+    "position": 3
+   },
+   {
+    "title": "An Thư - Bún & Miến Xào Hải Sản",
+    "link": "https://shopeefood.vn/ha-noi/an-thu-bun-mien-xao-hai-san",
+    "snippet": "20 Ngõ 21 Phạm Ngọc Thạch, Khu Tập Thể Kim Liên, P. Kim Liên, Đống Đa, Hà Nội. Đã đóng. Quán được gắn nhãn Yêu thích là Quán Yêu Thích, gồm những quán đạt ...",
+    "position": 4
+   },
+   {
+    "title": "[HN] BẢN ĐỒ MÔ TẢ KHU VỰC HUB",
+    "link": "https://driver.shopeefood.vn/tin-tuc/hn-ban-do-mo-ta-khu-vuc-hub/",
+    "snippet": "Phạm vi: Từ Láng Hạ - Lê Văn Lương vòng về Hoàng Minh Giám kéo dài lên Phạm Văn Bạch vòng qua Trương Công Giai kéo dài đến Hồ Thành Công. · Các ...",
+    "date": "8 thg 3, 2023",
+    "position": 5
+   },
+   {
+    "title": "Co.op Food | Mua online tại ShopeeFood.vn",
+    "link": "https://shopeefood.vn/thuong-hieu/co-op-food",
+    "snippet": "Tìm Co.op Food gần bạn nhất từ danh sách 245 địa điểm trên toàn quốc. Đặt mua online tại ShopeeFood.vn và nhận hàng ngay tại nhà!",
+    "position": 6
+   },
+   {
+    "title": "Chính sách thu nhập theo điểm ngày và cấp độ",
+    "link": "https://help.cs.shopeefood.vn/104/article/71455-Ch%C3%ADnh-s%C3%A1ch-thu-nh%E1%BA%ADp-theo-%C4%91i%E1%BB%83m-ng%C3%A0y-v%C3%A0-c%E1%BA%A5p-%C4%91%E1%BB%99",
+    "snippet": "Lưu ý thông báo đơn hàng mới tại tính năng TỰ ĐỘNG NHẬN ĐƠN để kịp thời thao tác, tránh trường hợp bị tính đơn từ chối khi không nhấn \"Đồng ý\" trong vòng 60s.",
+    "position": 7
+   },
+   {
+    "title": "Trà Sữa MayCha - Nguyễn Văn Nghi ⭐ 4.6",
+    "link": "https://food.grab.com/vn/vi/restaurant/tr%C3%A0-s%E1%BB%AFa-maycha-nguy%E1%BB%85n-v%C4%83n-nghi-delivery/5-CYUUNZAFAB5XGT",
+    "snippet": "Vị trà lài thanh mát, hòa quyện cùng vị ngọt của mật ong, cộng hưởng với hương thơm tươi mát, hài hòa từ những lát chanh được giã bằng tay. 32.000.",
+    "rating": 4.6,
+    "ratingCount": 5520,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

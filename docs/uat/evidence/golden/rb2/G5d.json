@@ -1,0 +1,23 @@
+{
+  "id": "G5d",
+  "group": "used-purchase-risk",
+  "criteria": [
+    "Leads with payment/fraud: never transfer before seeing goods, COD/meet in person, seller-profile checks, fake payment screenshots; points to 'Cảnh báo lừa đảo'",
+    "No invented statistics"
+  ],
+  "turns": [
+    {
+      "user": "mua đồ cũ trên group Facebook thì lưu ý gì",
+      "status": 200,
+      "elapsedMs": 12572,
+      "textFrames": 379,
+      "tools": [],
+      "toolResults": [],
+      "annotations": [],
+      "cardItems": [],
+      "duplicate": null,
+      "text": "Mua đồ cũ trên group Facebook là rủi ro cao — tiền có thể mất, hàng cũng có thể không được như mong. Mình sẽ giúp bạn tránh những cạm bẫy chính:\n\n**Rủi ro trước tiên:**\n• **Lừa đảo tiền**: cọc trước rồi người bán biến mất, hoặc link thanh toán giả\n• **Hàng không như quảng cáo**: máy bị khóa, bị cấm, nợ trả góp, hoặc tình trạng thực tế tệ hơn nhiều\n• **Gặp người lạ**: không biết lịch sử, uy tín thực của họ\n\n**Cách kiểm tra an toàn:**\n1. **Trước khi chuyển tiền, dán tin nhắn, link hoặc mã QR của người bán vào Cảnh báo lừa đảo trong TappyAI để kiểm tra nhé.**\n2. Xem lịch sử bài viết & bình luận của người bán — có bao lâu, bao nhiêu giao dịch thành công\n3. Yêu cầu ảnh/video thực tế (không phải ảnh quảng cáo), xem chi tiết máy: pin, màn hình, vết xước\n4. **Gặp trực tiếp** để kiểm tra kỹ trước khi trả tiền — không bao giờ chuyển tiền trước\n5. Nếu mua máy có giấy tờ (IMEI, hóa đơn): kiểm tra xem có khóa iCloud, khóa mạng, nợ không\n\n**Dấu hiệu cảnh báo lừa đảo:**\n- Giá rẻ bất thường so với thị trường (chênh >30%)\n- Người bán vội vàng, không cho xem máy trực tiếp\n- Yêu cầu chuyển tiền qua link lạ, QR code, hoặc tài khoản cá nhân\n- Tài khoản mới, ít bài viết, ít bình luận\n\n**Chốt lại:** Chỉ mua khi xem máy trực tiếp, kiểm tra xong mới trả tiền, và ghi lại thông tin người bán (tên, số điện thoại, ảnh chứng miệng). Nếu có vấn đề sau, bạn có bằng chứng để báo cáo.\n\nBạn đang định mua cái gì cụ thể không? Mình có thể giúp bạn biết cần check những gì trước khi mua 👍\n\n[FOLLOWUPS]Mua iPhone cũ cần check gì|Mua xe máy cũ cần check gì|Mua laptop cũ cần check gì[/FOLLOWUPS]\n\nCác con số phần trăm / mốc nêu trên là kinh nghiệm chung, không phải số liệu từ nguồn đã tìm — dùng làm gợi ý, không phải ngưỡng cứng.",
+      "visible": "Mua đồ cũ trên group Facebook là rủi ro cao — tiền có thể mất, hàng cũng có thể không được như mong. Mình sẽ giúp bạn tránh những cạm bẫy chính:\n\n**Rủi ro trước tiên:**\n• **Lừa đảo tiền**: cọc trước rồi người bán biến mất, hoặc link thanh toán giả\n• **Hàng không như quảng cáo**: máy bị khóa, bị cấm, nợ trả góp, hoặc tình trạng thực tế tệ hơn nhiều\n• **Gặp người lạ**: không biết lịch sử, uy tín thực của họ\n\n**Cách kiểm tra an toàn:**\n1. **Trước khi chuyển tiền, dán tin nhắn, link hoặc mã QR của người bán vào Cảnh báo lừa đảo trong TappyAI để kiểm tra nhé.**\n2. Xem lịch sử bài viết & bình luận của người bán — có bao lâu, bao nhiêu giao dịch thành công\n3. Yêu cầu ảnh/video thực tế (không phải ảnh quảng cáo), xem chi tiết máy: pin, màn hình, vết xước\n4. **Gặp trực tiếp** để kiểm tra kỹ trước khi trả tiền — không bao giờ chuyển tiền trước\n5. Nếu mua máy có giấy tờ (IMEI, hóa đơn): kiểm tra xem có khóa iCloud, khóa mạng, nợ không\n\n**Dấu hiệu cảnh báo lừa đảo:**\n- Giá rẻ bất thường so với thị trường (chênh >30%)\n- Người bán vội vàng, không cho xem máy trực tiếp\n- Yêu cầu chuyển tiền qua link lạ, QR code, hoặc tài khoản cá nhân\n- Tài khoản mới, ít bài viết, ít bình luận\n\n**Chốt lại:** Chỉ mua khi xem máy trực tiếp, kiểm tra xong mới trả tiền, và ghi lại thông tin người bán (tên, số điện thoại, ảnh chứng miệng). Nếu có vấn đề sau, bạn có bằng chứng để báo cáo.\n\nBạn đang định mua cái gì cụ thể không? Mình có thể giúp bạn biết cần check những gì trước khi mua 👍\n\nCác con số phần trăm / mốc nêu trên là kinh nghiệm chung, không phải số liệu từ nguồn đã tìm — dùng làm gợi ý, không phải ngưỡng cứng."
+    }
+  ]
+}

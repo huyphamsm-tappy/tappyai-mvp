@@ -1,0 +1,33 @@
+{
+  "id": "F5",
+  "text": "quán này mở mấy giờ?",
+  "parent": "F4",
+  "status": 200,
+  "ms": 6853,
+  "evidenceId": "e3a08a8b-105d-4340-8a9d-7fce916af743",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "**San Fu Lou Restaurant Phan Xích Long** mở từ **7h sáng đến 22h tối** 🕐\n\nVậy bạn hoàn toàn có thể đến ăn trưa cuối tuần mà không lo giờ đóng cửa. Quán này cũng khá đông vào giờ cao điểm trưa, nên nếu muốn chắc chắn có bàn cho 6 người, bạn có thể gọi trước để đặt chỗ nhé!\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Maps - San Fu Lou Restaurant\",\"type\":\"maps\",\"url\":\"https://www.google.com/maps/search/San+Fu+Lou+Restaurant+Phan+Xich+Long+Ho+Chi+Minh\",\"primary\":true},{\"label\":\"🛵 GrabFood - San Fu Lou\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/vi/restaurants?search=San+Fu+Lou+Phu+Nhuan\",\"primary\":false}]}[/CTA_BUTTONS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Cả nhà 6 người có con nít ăn trưa cuối tuần, cần chỗ đậu xe ô tô, Phú Nhuận"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm những quán ăn trưa ở Phú Nhuận phù hợp cho gia đình 6 người với con nhỏ, có chỗ đậu xe ô tô nhé.\n\nMình gợi ý **San Fu Lou Restaurant Phan Xích Long** — nhà hàng Quảng Đông với **4.6⭐ (4.006 đánh giá Google Maps)**, cách bạn 2.8km, mở từ 7h-22h. Quán rộng rãi, phục vụ gia đình tốt, có chỗ đậu xe ô tô, và menu đa dạng phù hợp cho cả trẻ em 👍\n\nNgoài ra còn **Nhà Hàng Maison Mận-Đỏ** (4.6⭐, 2.2km, gần hơn) nếu bạn thích ẩm thực Pháp-Việt, hoặc **Quán Ăn Gia Đình Ngọc Hương** (4.5⭐, hải sản tươi sống, mở từ 15h).\n\nBạn muốn đặt bàn trước không?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - San Fu Lou\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=5744447946455467984\",\"primary\":true},{\"label\":\"🍽️ Đặt bàn - San Fu Lou\",\"type\":\"website\",\"url\":\"https://www.d1-concepts.com/dat-ban\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Đặt bàn trước không|Thích ăn gì cụ thể|Quán khác ở Phú Nhuận[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "quán này mở mấy giờ?"
+    },
+    {
+      "role": "assistant",
+      "content": "**San Fu Lou Restaurant Phan Xích Long** mở từ **7h sáng đến 22h tối** 🕐\n\nVậy bạn hoàn toàn có thể đến ăn trưa cuối tuần mà không lo giờ đóng cửa. Quán này cũng khá đông vào giờ cao điểm trưa, nên nếu muốn chắc chắn có bàn cho 6 người, bạn có thể gọi trước để đặt chỗ nhé!\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Maps - San Fu Lou Restaurant\",\"type\":\"maps\",\"url\":\"https://www.google.com/maps/search/San+Fu+Lou+Restaurant+Phan+Xich+Long+Ho+Chi+Minh\",\"primary\":true},{\"label\":\"🛵 GrabFood - San Fu Lou\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/vi/restaurants?search=San+Fu+Lou+Phu+Nhuan\",\"primary\":false}]}[/CTA_BUTTONS]"
+    }
+  ]
+}

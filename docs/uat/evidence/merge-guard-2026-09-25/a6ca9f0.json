@@ -1,0 +1,164 @@
+[
+ {
+  "label": "a6ca9f0 Merge wip/tappyai-v3-canonical-2026-09-17 (uncommitted canonical work)",
+  "base": "c1e1227",
+  "findings": [
+   {
+    "rule": "R1",
+    "path": "android/app/src/main/java/com/tappyai/app/chat/ChatScreen.kt",
+    "protected": false,
+    "detail": "13 line(s) git merged cleanly were dropped",
+    "lines": [
+     "message.plan?.let { plan -> TripPlanCard(plan, planJson = message.planJson) }",
+     "placesView = message.placesView,",
+     "plan = message.plan,"
+    ]
+   },
+   {
+    "rule": "R1",
+    "path": "android/app/src/main/java/com/tappyai/app/chat/PlaceCard.kt",
+    "protected": false,
+    "detail": "8 line(s) git merged cleanly were dropped",
+    "lines": [
+     "import android.content.Context",
+     "/** Web parity: the map button leads, ordering follows, anything else is a secondary button. */",
+     "val orders = usable.filter { it !== maps && (it.kind == \"order\" || it.kind == \"delivery\") }"
+    ]
+   },
+   {
+    "rule": "R1",
+    "path": "android/app/src/main/java/com/tappyai/app/chat/PlacesLiveView.kt",
+    "protected": false,
+    "detail": "3 line(s) git merged cleanly were dropped",
+    "lines": [
+     "* The RESOLVED label key (`v3.action.purchaseLoginOn`, `v3.action.viewOn`, …), decided by the",
+     "* server's one label resolver. This client renders it from its own dictionary",
+     "* ([placeActionLabel]) and never re-derives the decision."
+    ]
+   },
+   {
+    "rule": "R1",
+    "path": "android/app/src/main/java/com/tappyai/app/chat/ShoppingDecisionCard.kt",
+    "protected": false,
+    "detail": "144 line(s) git merged cleanly were dropped",
+    "lines": [
+     "import androidx.compose.material.icons.Icons",
+     "import androidx.compose.material.icons.filled.Star",
+     "import androidx.compose.material3.Icon"
+    ]
+   },
+   {
+    "rule": "R1",
+    "path": "android/app/src/main/java/com/tappyai/app/chat/ShoppingDecisionView.kt",
+    "protected": false,
+    "detail": "41 line(s) git merged cleanly were dropped",
+    "lines": [
+     "import kotlinx.serialization.json.JsonElement",
+     "import kotlinx.serialization.json.JsonNull",
+     "import kotlinx.serialization.json.JsonPrimitive"
+    ]
+   },
+   {
+    "rule": "R1",
+    "path": "android/app/src/test/java/com/tappyai/app/chat/PlaceDecisionSectionTest.kt",
+    "protected": false,
+    "detail": "2 line(s) git merged cleanly were dropped",
+    "lines": [
+     "// The card draws from the facts and only from the facts.",
+     "assertTrue(src.contains(\"private fun PlaceCard(facts: PlaceCardFacts)\"))"
+    ]
+   },
+   {
+    "rule": "R1",
+    "path": "android/app/src/test/java/com/tappyai/app/chat/ShoppingDecisionParseTest.kt",
+    "protected": false,
+    "detail": "14 line(s) git merged cleanly were dropped",
+    "lines": [
+     "// Web `formatVndShort`: one ROUNDED decimal of a million, comma for Vietnamese.",
+     "val vi = java.util.Locale(\"vi\", \"VN\")",
+     "assertEquals(\"19 triệu – 20,5 triệu\", priceRangeText(18_990_000.0, 20_490_000.0, \"chưa rõ\", vi))"
+    ]
+   },
+   {
+    "rule": "R2",
+    "path": "android/app/src/test/java/com/tappyai/app/chat/ShoppingParityTest.kt",
+    "protected": false,
+    "detail": "file added by parent 2 is deleted in the result",
+    "lines": []
+   },
+   {
+    "rule": "R1",
+    "path": "src/components/share/ShareMenu.tsx",
+    "protected": false,
+    "detail": "5 line(s) git merged cleanly were dropped",
+    "lines": [
+     "* Fires once per share that actually COMPLETED, with the target that completed it — the",
+     "* clipboard write resolved, `navigator.share()` resolved (not rejected/cancelled), or the",
+     "* hand-off window really opened. Never on open, never on a blocked popup or a failed copy."
+    ]
+   },
+   {
+    "rule": "R3",
+    "path": "src/lib/ai/quota/__tests__/aiQuestionQuota.test.ts",
+    "protected": true,
+    "detail": "13 line(s) of one side's change lost in a protected-path conflict",
+    "lines": [
+     "import { ANON_DAILY_LIMIT, FREE_DAILY_LIMIT } from '@/lib/config/product'",
+     "// Anonymous: 5 per VN day, keyed by the verified identity. Registered: 15 per VN day. One pool for every",
+     "describe('anonymous — five per VN day, keyed by the verified identity (canonical convention)', () => {"
+    ]
+   },
+   {
+    "rule": "R3",
+    "path": "src/lib/ai/quota/aiQuestionQuota.ts",
+    "protected": true,
+    "detail": "16 line(s) of one side's change lost in a protected-path conflict",
+    "lines": [
+     "import { ANON_DAILY_LIMIT, FREE_DAILY_LIMIT, vnToday } from '@/lib/config/product'",
+     "// THE CONTRACT (canonical, 2026-09-17)",
+     "//   ANONYMOUS   ANON_DAILY_LIMIT (5) questions per VN calendar day — the same allowance and the"
+    ]
+   },
+   {
+    "rule": "R1",
+    "path": "src/lib/ai/tools/serperCallBudget.test.ts",
+    "protected": false,
+    "detail": "1 line(s) git merged cleanly were dropped",
+    "lines": [
+     "expect(r.links).toHaveLength(3)"
+    ]
+   },
+   {
+    "rule": "R3",
+    "path": "src/lib/auth/anonymousWriteBoundary.test.ts",
+    "protected": true,
+    "detail": "6 line(s) of one side's change lost in a protected-path conflict",
+    "lines": [
+     "// Analyze Message. Anonymous use is a product feature: metered per verified identity (or per IP",
+     "// for an identity-less guest) through the shared AI question quota — ANON_DAILY_LIMIT per VN",
+     "// day on this branch, the same allowance chat gives a visitor — plus a per-IP burst cap; the"
+    ]
+   },
+   {
+    "rule": "R1",
+    "path": "src/lib/recommendation/crossPlatformCommerceContract.test.ts",
+    "protected": false,
+    "detail": "1 line(s) git merged cleanly were dropped",
+    "lines": [
+     "expect(card).toContain('openPlaceAction(context, action, commerce)')"
+    ]
+   },
+   {
+    "rule": "R1",
+    "path": "src/lib/structuredContent/crossPlatformParity.test.ts",
+    "protected": false,
+    "detail": "2 line(s) git merged cleanly were dropped",
+    "lines": [
+     "expect(src, 'PlaceCards must be guarded by `message.shopping == null` on a shopping turn')",
+     ".toMatch(/message\\.shopping == null[\\s\\S]{0,700}PlaceCards\\(/)"
+    ]
+   }
+  ],
+  "waived": []
+ }
+]

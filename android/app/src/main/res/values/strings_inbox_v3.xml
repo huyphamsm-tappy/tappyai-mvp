@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The Inbox (web /profile/notifications, `v3.inbox.*` in src/lib/i18n/v3/web.ts), 2026-09-17. -->
+<resources>
+    <string name="inbox_v3_title">Inbox</string>
+    <string name="inbox_v3_subtitle">Your notifications and activity</string>
+    <string name="inbox_v3_unread">%1$d unread</string>
+    <string name="inbox_v3_mark_all_read">Mark all read</string>
+    <string name="inbox_v3_settings">Notification settings</string>
+    <string name="inbox_v3_cat_all">All</string>
+    <string name="inbox_v3_cat_social">Social</string>
+    <string name="inbox_v3_cat_deal">Offers</string>
+    <string name="inbox_v3_cat_explore">Explore</string>
+    <string name="inbox_v3_cat_system">System</string>
+    <string name="inbox_v3_empty_all">No notifications yet.</string>
+    <string name="inbox_v3_empty_filtered">Nothing in this category.</string>
+    <string name="inbox_v3_count_more">+%1$d</string>
+    <string name="inbox_v3_sign_in">Sign in to see your notifications</string>
+    <string name="inbox_v3_messages">Messages</string>
+    <string name="inbox_v3_announcements">Announcements</string>
+    <string name="msg_v3_new">New message</string>
+    <string name="msg_v3_search">Search messages, names or groups...</string>
+    <string name="msg_v3_empty">No conversations yet</string>
+    <string name="msg_v3_empty_hint">Connect with friends and start a conversation today.</string>
+    <string name="msg_v3_no_messages">No messages yet. Say hello!</string>
+    <string name="msg_v3_composer">Type a message...</string>
+    <string name="msg_v3_send">Send</string>
+    <string name="msg_v3_back">Back</string>
+    <string name="msg_v3_unknown_user">User</string>
+    <string name="msg_v3_unnamed_group">Group</string>
+    <string name="msg_v3_group_members">%1$d members</string>
+    <string name="msg_v3_find_people">Search for people...</string>
+    <string name="msg_v3_search_hint">Type at least 2 characters to search.</string>
+    <string name="msg_v3_no_results">No users found.</string>
+    <string name="msg_v3_start_chat">Start chat</string>
+    <string name="msg_v3_start_chat_n">Start chat (%1$d)</string>
+    <string name="msg_v3_group_name">Group name (optional)</string>
+    <string name="msg_v3_error">Could not load messages. Please try again.</string>
+    <string name="msg_v3_send_error">Could not send the message.</string>
+    <string name="msg_v3_close">Close</string>
+    <string name="msg_v3_load_older">Older messages</string>
+</resources>

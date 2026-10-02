@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Quà Tặng 3\" (site:dienmayxanh.com OR site:cellphones.com.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:54:02.341Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Quà Tặng 3\" (site:dienmayxanh.com OR site:cellphones.com.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Gợi ý 12 món quà tặng sự kiện, hội nghị cho khách hàng ...",
+    "link": "https://www.dienmayxanh.com/kinh-nghiem-hay/goi-y-xx-qua-tang-su-kien-hoi-nghi-cho-khach-han-1393472?srsltid=AU7gw4X3ghsh1UXViPSfgROxacxyN7mUP481B6nnNbYtCyD1eVG1YjIn",
+    "snippet": "Một số sự kiện nên chuẩn bị quà tặng3. Gợi ý một số quà tặng sự kiện - Hội nghị phù hợp. Sổ tay thiết kế đặc biệt. Bộ ấm trà, gốm sứ sang ...",
+    "date": "28 thg 10, 2021",
+    "position": 1
+   },
+   {
+    "title": "9đánh giá Bếp từ đôi lắp âm Nagakawa NK2C08MS",
+    "link": "https://www.dienmayxanh.com/bep-tu/nagakawa-nk2c08ms/danh-gia?srsltid=AU7gw4WDrqZODbodrJbtKTSNWrJPmAsYiHQVVly6HvnECn7xyzUIByUY",
+    "snippet": "Quá tệ Lúc lắp đặt chỉ lắp phần điện phần âm bếp thì đẩy qa bên hãng đt bên hãng thì đẩy qua lại bện Điện máy xanh Phần quà tặng 3 nồi inox thì ko đi cùng ...",
+    "position": 2
+   },
+   {
+    "title": "Cách nhận khuyến mãi ứng dụng MyTV trên tivi Samsung ...",
+    "link": "https://www.dienmayxanh.com/kinh-nghiem-hay/huong-dan-nhan-khuyen-mai-ung-dung-mytv-1107506?srsltid=AU7gw4Ua5nboFMIdkXiWEnoqH5LUhDb-SU021C_qd4sFmus6TwwREceP",
+    "snippet": "Hướng dẫn cách đăng ký tài khoản để nhận quà tặng3. Cách kiểm tra thời gian khuyến mãi trên ứng dụng MyTV. ↑. Bạn vui lòng chờ trong giây lát ...",
+    "date": "2 thg 3, 2020",
+    "position": 3
+   },
+   {
+    "title": "Sony tặng 3 game miễn phí cho người chơi PlayStation Plus",
+    "link": "https://cellphones.com.vn/sforum/sony-tang-3-game-mien-phi-cho-nguoi-choi-playstation-plus",
+    "snippet": "... quà tặng 3 game miễn phí cực kỳ hấp dẫn. Cùng điểm qua ba cái tên đang cực hot mà mình đã nhắc ở trên nhé. Mục lục. Ẩn. 1. Deep Rock Galactic ...",
+    "date": "2 thg 1, 2022",
+    "position": 4
+   },
+   {
+    "title": "Vì sao máy lọc nước lại đắt đỏ? Các loại ...",
+    "link": "https://www.dienmayxanh.com/kinh-nghiem-hay/vi-sao-may-loc-nuoc-mac-994953?srsltid=AU7gw4WsqYqS6hbxNzAsixn7BbrHNf3D0F-HvOtUXpkFeS_SIrPw9pd6",
+    "snippet": ">>> Máy lọc nước RO Kangaroo VTU KG08 với giá chỉ 3.990.000 đồng cùng quà tặng 3 lõi lọc số 1, 2, 3. Số lượng có hạn từ 25/12/2017 - 4/1 ...",
+    "date": "21 thg 6, 2017",
+    "position": 5
+   },
+   {
+    "title": "Sale lễ rộn ràng - Sắm bếp xịn sang | Tin khuyến mãi",
+    "link": "https://www.dienmayxanh.com/khuyen-mai/thang-hang-bep-moi-1580028?srsltid=AU7gw4V2ECCV1nFnh7TqiNrWuhl_WbdVTg3Gw8ZtQ6aAFRHmqsPOJs5r",
+    "snippet": "Mua máy rửa chén LG, lò vi sóng LG nhận ngay bộ quà tặng 3 món cao cấp và thẻ quà Urbox 500.000 đồng (khi mua combo) – nâng tầm tiện nghi, tiết kiệm chi tiêu!",
+    "position": 6
+   },
+   {
+    "title": "Bếp từ đôi lắp âm Nagakawa NK2C08MS",
+    "link": "https://www.dienmayxanh.com/bep-tu/nagakawa-nk2c08ms?srsltid=AU7gw4X06HTlAWCco_RXn090osaI8JBoT6oYwnrmXoEIyPnBtqXjJHnP",
+    "snippet": "Quá tệ Lúc lắp đặt chỉ lắp phần điện phần âm bếp thì đẩy qa bên hãng đt bên hãng thì đẩy qua lại bện Điện máy xanh Phần quà tặng 3 nồi inox thì ko đi cùng ...",
+    "rating": 4.7,
+    "ratingCount": 58,
+    "position": 7
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,1063 @@
+{
+  "id": "F4",
+  "text": "Cả nhà 6 người có con nít ăn trưa cuối tuần, cần chỗ đậu xe ô tô, Phú Nhuận",
+  "parent": null,
+  "status": 200,
+  "ms": 20437,
+  "evidenceId": "5a567b48-45f9-4395-8735-fc97071a2c64",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "quán ăn trưa ngon Phú Nhuận có chỗ đậu xe gia đình con nít",
+        "location": "Phú Nhuận, TP.HCM",
+        "type": "restaurant"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Hoài Niệm Quán - Bún Đậu Mắm Tôm Hà Nội",
+      "rating": 4.8,
+      "count": 1667,
+      "hours": "10:30–21:30",
+      "distance_km": 2.8,
+      "address": "316 Phan Xích Long, Cầu Kiệu, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "King BBQ Phan Xích Long",
+      "rating": 4.6,
+      "count": 2623,
+      "hours": "10:00–22:00",
+      "distance_km": 2.9,
+      "address": "205 Phan Xích Long, Cầu Kiệu, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Cơm niêu Thiên Lý",
+      "rating": 4.7,
+      "count": 854,
+      "hours": "10:00–14:30, 16:00–21:00",
+      "distance_km": 3.4,
+      "address": "48-50 Phan Đăng Lưu, Đức Nhuận, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Quán Ăn Huế 3 Mẹt: Bánh Bèo Nậm Lọc, Cơm Bún Hến, Hến Xúc Bánh Đa, Nem Chả Huế",
+      "rating": 4.7,
+      "count": 389,
+      "hours": "08:30–20:30",
+      "distance_km": 2.9,
+      "address": "1B Hoa Cau, Cầu Kiệu, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Quán Ăn Gia Đình Ngọc Hương",
+      "rating": 4.5,
+      "count": 100,
+      "hours": "15:00–05:00",
+      "distance_km": 2.4,
+      "address": "592 Trường Sa, Quận Phú Nhuận, Hồ Chí Minh 70000, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "Hoài Niệm Quán - Bún Đậu Mắm Tôm Hà Nội",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 4.8,
+        "reviews": 1667,
+        "distance_km": 2.8,
+        "open_now": true,
+        "opening_hours": "10:30–21:30",
+        "attributes": []
+      }
+    },
+    {
+      "name": "King BBQ Phan Xích Long",
+      "role": null,
+      "evidence": {
+        "rating": 4.6,
+        "reviews": 2623,
+        "distance_km": 2.9,
+        "open_now": true,
+        "opening_hours": "10:00–22:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Cơm niêu Thiên Lý",
+      "role": null,
+      "evidence": {
+        "rating": 4.7,
+        "reviews": 854,
+        "distance_km": 3.4,
+        "open_now": true,
+        "opening_hours": "10:00–14:30, 16:00–21:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Quán Ăn Huế 3 Mẹt: Bánh Bèo Nậm Lọc, Cơm Bún Hến, Hến Xúc Bánh Đa, Nem Chả Huế",
+      "role": null,
+      "evidence": {
+        "rating": 4.7,
+        "reviews": 389,
+        "distance_km": 2.9,
+        "open_now": true,
+        "opening_hours": "08:30–20:30",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Quán Ăn Gia Đình Ngọc Hương",
+      "role": null,
+      "evidence": {
+        "rating": 4.5,
+        "reviews": 100,
+        "distance_km": 2.4,
+        "open_now": false,
+        "opening_hours": "15:00–05:00",
+        "attributes": [
+          "hợp gia đình (\"Quán Ăn Gia Đình Ngọc Hương\")"
+        ]
+      }
+    }
+  ],
+  "hardGaps": [
+    "parking",
+    "kids"
+  ],
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình chọn **Hoài Niệm Quán - Bún Đậu Mắm Tôm Hà Nội** cho bữa trưa gia đình hôm nay. Quán có **4.8⭐ (1.667 đánh giá Google Maps)**, cách bạn khoảng 2.8km, mở cửa từ 10:30–21:30 nên hoàn toàn phù hợp. Bún đậu mắm tôm là món ăn dân dã, ngon miệng, rất hợp cho cả gia đình 6 người.\n\nMình chưa thấy bằng chứng về chỗ đậu xe, phù hợp trẻ em ở các quán này — nên gọi hỏi trước khi đi.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🍽️ Xem trên Google Maps — Hoài Niệm Quán\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=10886696256767899571\",\"primary\":true},{\"label\":\"🔎 Tìm video review trên YouTube\",\"type\":\"website\",\"url\":\"https://www.youtube.com/results?search_query=Ho%C3%A0i%20Ni%E1%BB%87m%20Qu%C3%A1n%20-%20B%C3%BAn%20%C4%90%E1%BA%ADu%20M%E1%BA%AFm%20T%C3%B4m%20H%C3%A0%20N%E1%BB%99i%20review\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Gọi quán xác nhận chỗ đậu xe|Xem King BBQ nếu muốn ăn nướng|Đặt bàn trước để chắc chắn[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Cả nhà 6 người có con nít ăn trưa cuối tuần, cần chỗ đậu xe ô tô, Phú Nhuận"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình chọn **Hoài Niệm Quán - Bún Đậu Mắm Tôm Hà Nội** cho bữa trưa gia đình hôm nay. Quán có **4.8⭐ (1.667 đánh giá Google Maps)**, cách bạn khoảng 2.8km, mở cửa từ 10:30–21:30 nên hoàn toàn phù hợp. Bún đậu mắm tôm là món ăn dân dã, ngon miệng, rất hợp cho cả gia đình 6 người.\n\nMình chưa thấy bằng chứng về chỗ đậu xe, phù hợp trẻ em ở các quán này — nên gọi hỏi trước khi đi.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🍽️ Xem trên Google Maps — Hoài Niệm Quán\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=10886696256767899571\",\"primary\":true},{\"label\":\"🔎 Tìm video review trên YouTube\",\"type\":\"website\",\"url\":\"https://www.youtube.com/results?search_query=Ho%C3%A0i%20Ni%E1%BB%87m%20Qu%C3%A1n%20-%20B%C3%BAn%20%C4%90%E1%BA%ADu%20M%E1%BA%AFm%20T%C3%B4m%20H%C3%A0%20N%E1%BB%99i%20review\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Gọi quán xác nhận chỗ đậu xe|Xem King BBQ nếu muốn ăn nướng|Đặt bàn trước để chắc chắn[/FOLLOWUPS]"
+    }
+  ],
+  "toolResults": [
+    {
+      "source": "Serper Maps",
+      "count": 20,
+      "location": "Phú Nhuận, TP.HCM",
+      "results": [
+        {
+          "name": "Hoài Niệm Quán - Bún Đậu Mắm Tôm Hà Nội",
+          "address": "316 Phan Xích Long, Cầu Kiệu, Hồ Chí Minh 700000, Việt Nam",
+          "place_id": "ChIJo2aszPopdTERs7c5upBQFZc",
+          "rating_value": 4.8,
+          "google_rating": "4.8⭐ (1.667 đánh giá Google Maps)",
+          "rating_count": 1667,
+          "place_types": [
+            "Nhà hàng Việt Nam"
+          ],
+          "maps_link": "https://maps.google.com/?cid=10886696256767899571",
+          "opening_hours": "10:30–21:30",
+          "open_now": true,
+          "distance_km": 2.8,
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "label": "📍 Google Maps — Hoài Niệm Quán - Bún Đậu Mắm Tôm Hà Nội",
+              "url": "https://maps.google.com/?cid=10886696256767899571",
+              "attributed": true
+            },
+            {
+              "kind": "youtube_search_fallback",
+              "label": "🔎 Tìm video review trên YouTube",
+              "url": "https://www.youtube.com/results?search_query=Ho%C3%A0i%20Ni%E1%BB%87m%20Qu%C3%A1n%20-%20B%C3%BAn%20%C4%90%E1%BA%ADu%20M%E1%BA%AFm%20T%C3%B4m%20H%C3%A0%20N%E1%BB%99i%20review",
+              "attributed": false
+            }
+          ],
+          "has_order": true,
+          "has_delivery": true,
+          "has_maps": true,
+          "has_photo": true,
+          "has_hours": true,
+          "has_reviews": "search"
+        },
+        {
+          "name": "King BBQ Phan Xích Long",
+          "address": "205 Phan Xích Long, Cầu Kiệu, Hồ Chí Minh, Việt Nam",
+          "phone": "+84 28 3517 0199",
+          "website_uri": "https://kingbbq.vn/",
+          "place_id": "ChIJ_3lMQdAodTERNMFuONVSmWw",
+          "rating_value": 4.6,
+          "google_rating": "4.6⭐ (2.623 đánh giá Google Maps)",
+          "rating_count": 2623,
+          "place_types": [
+            "Nhà hàng"
+          ],
+          "maps_link": "https://maps.google.com/?cid=7825376903261241652",
+          "opening_hours": "10:00–22:00",
+          "open_now": true,
+          "distance_km": 2.9,
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "label": "📍 Google Maps — King BBQ Phan Xích Long",
+              "url": "https://maps.google.com/?cid=7825376903261241652",
+              "attributed": true
+            },
+            {
+              "kind": "official_website",
+              "label": "🌐 Website — King BBQ Phan Xích Long",
+              "url": "https://kingbbq.vn/",
+              "attributed": true
+            },
+            {
+              "kind": "youtube_search_fallback",
+              "label": "🔎 Tìm video review trên YouTube",
+              "url": "https://www.youtube.com/results?search_query=King%20BBQ%20Phan%20X%C3%ADch%20Long%20review",
+              "attributed": false
+            }
+          ],
+          "has_order": true,
+          "has_delivery": true,
+          "has_maps": true,
+          "has_website": true,
+          "has_photo": true,
+          "has_hours": true,
+          "has_phone": true,
+          "has_reviews": "search"
+        },
+        {
+          "name": "Cơm niêu Thiên Lý",
+          "address": "48-50 Phan Đăng Lưu, Đức Nhuận, Hồ Chí Minh 70000, Việt Nam",
+          "phone": "+84 978 785 500",
+          "website_uri": "https://comnieuthienly.com/",
+          "place_id": "ChIJa2fuLuEpdTERBLuWfsyDZWA",
+          "rating_value": 4.7,
+          "google_rating": "4.7⭐ (854 đánh giá Google Maps)",
+          "rating_count": 854,
+          "place_types": [
+            "Nhà hàng"
+          ],
+          "maps_link": "https://maps.google.com/?cid=6946102914609232644",
+          "opening_hours": "10:00–14:30, 16:00–21:00",
+          "open_now": true,
+          "distance_km": 3.4,
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "label": "📍 Google Maps — Cơm niêu Thiên Lý",
+              "url": "https://maps.google.com/?cid=6946102914609232644",
+              "attributed": true
+            },
+            {
+              "kind": "official_website",
+              "label": "🌐 Website — Cơm niêu Thiên Lý",
+              "url": "https://comnieuthienly.com/",
+              "attributed": true
+            },
+            {
+              "kind": "youtube_search_fallback",
+              "label": "🔎 Tìm video review trên YouTube",
+              "url": "https://www.youtube.com/results?search_query=C%C6%A1m%20ni%C3%AAu%20Thi%C3%AAn%20L%C3%BD%20review",
+              "attributed": false
+            }
+          ],
+          "has_order": true,
+          "has_delivery": true,
+          "has_maps": true,
+          "has_website": true,
+          "has_photo": true,
+          "has_hours": true,
+          "has_phone": true,
+          "has_reviews": "search"
+        },
+        {
+          "name": "Quán Ăn Huế 3 Mẹt: Bánh Bèo Nậm Lọc, Cơm Bún Hến, Hến Xúc Bánh Đa, Nem Chả Huế",
+          "address": "1B Hoa Cau, Cầu Kiệu, Hồ Chí Minh 700000, Việt Nam",
+          "phone": "+84 394 930 868",
+          "website_uri": "https://www.facebook.com/banhbeo3met",
+          "place_id": "ChIJIZftixApdTERNo4P2dGmBTk",
+          "rating_value": 4.7,
+          "google_rating": "4.7⭐ (389 đánh giá Google Maps)",
+          "rating_count": 389,
+          "place_types": [
+            "Quán ăn nhỏ",
+            "Nhà hàng"
+          ],
+          "maps_link": "https://maps.google.com/?cid=4108873655265496630",
+          "booking_links": [
+            "https://3met.page.link/order"
+          ],
+          "opening_hours": "08:30–20:30",
+          "open_now": true,
+          "distance_km": 2.9,
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "label": "📍 Google Maps — Quán Ăn Huế 3 Mẹt: Bánh Bèo Nậm Lọc, Cơm Bún Hến, Hến Xúc Bánh Đa, Nem Chả Huế",
+              "url": "https://maps.google.com/?cid=4108873655265496630",
+              "attributed": true
+            },
+            {
+              "kind": "official_website",
+              "label": "🌐 Website — Quán Ăn Huế 3 Mẹt: Bánh Bèo Nậm Lọc, Cơm Bún Hến, Hến Xúc Bánh Đa, Nem Chả Huế",
+              "url": "https://www.facebook.com/banhbeo3met",
+              "attributed": true
+            },
+            {
+              "kind": "youtube_search_fallback",
+              "label": "🔎 Tìm video review trên YouTube",
+              "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20%C4%82n%20Hu%E1%BA%BF%203%20M%E1%BA%B9t%3A%20B%C3%A1nh%20B%C3%A8o%20N%E1%BA%ADm%20L%E1%BB%8Dc%2C%20C%C6%A1m%20B%C3%BAn%20H%E1%BA%BFn%2C%20H%E1%BA%BFn%20X%C3%BAc%20B%C3%A1nh%20%C4%90a%2C%20Nem%20Ch%E1%BA%A3%20Hu%E1%BA%BF%20review",
+              "attributed": false
+            }
+          ],
+          "has_order": true,
+          "has_delivery": true,
+          "has_maps": true,
+          "has_website": true,
+          "has_photo": true,
+          "has_hours": true,
+          "has_phone": true,
+          "has_reviews": "search"
+        },
+        {
+          "name": "Quán Ăn Gia Đình Ngọc Hương",
+          "address": "592 Trường Sa, Quận Phú Nhuận, Hồ Chí Minh 70000, Việt Nam",
+          "phone": "+84 773 354 223",
+          "website_uri": "https://ngochuongsg.vn/",
+          "place_id": "ChIJD4p2kNMpdTERs0QF8Q3aboA",
+          "rating_value": 4.5,
+          "google_rating": "4.5⭐ (100 đánh giá Google Maps)",
+          "rating_count": 100,
+          "place_types": [
+            "Nhà hàng hải sản"
+          ],
+          "maps_link": "https://maps.google.com/?cid=9254574037706032307",
+          "opening_hours": "15:00–05:00",
+          "open_now": false,
+          "distance_km": 2.4,
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "label": "📍 Google Maps — Quán Ăn Gia Đình Ngọc Hương",
+              "url": "https://maps.google.com/?cid=9254574037706032307",
+              "attributed": true
+            },
+            {
+              "kind": "official_website",
+              "label": "🌐 Website — Quán Ăn Gia Đình Ngọc Hương",
+              "url": "https://ngochuongsg.vn/",
+              "attributed": true
+            },
+            {
+              "kind": "youtube_search_fallback",
+              "label": "🔎 Tìm video review trên YouTube",
+              "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20%C4%82n%20Gia%20%C4%90%C3%ACnh%20Ng%E1%BB%8Dc%20H%C6%B0%C6%A1ng%20review",
+              "attributed": false
+            }
+          ],
+          "has_order": true,
+          "has_delivery": true,
+          "has_maps": true,
+          "has_website": true,
+          "has_photo": true,
+          "has_hours": true,
+          "has_phone": true,
+          "has_reviews": "search"
+        }
+      ],
+      "google_maps_search": "https://maps.google.com/maps?q=qu%C3%A1n%20%C4%83n%20tr%C6%B0a%20ngon%20Ph%C3%BA%20Nhu%E1%BA%ADn%20c%C3%B3%20ch%E1%BB%97%20%C4%91%E1%BA%ADu%20xe%20gia%20%C4%91%C3%ACnh%20con%20n%C3%ADt%20Ph%C3%BA%20Nhu%E1%BA%ADn%2C%20TP.HCM",
+      "_tappy_place_domain": "food",
+      "place_search_status": "has_results",
+      "price_search_results": [
+        {
+          "title": "YouTube",
+          "link": "https://www.youtube.com/watch?v=zC8aPukJ_vM",
+          "snippet": "Share your videos with friends, family, and the world.",
+          "evidence_scope": "area"
+        },
+        {
+          "title": "Khám phá 27 quán ăn quận Phú Nhuận ngon quên lối về",
+          "link": "https://www.bachhoaxanh.com/kinh-nghiem-hay/chua-an-sach-bach-nhung-quan-ngon-o-phu-nhuan-thi-qua-la-phi-doi-1301500",
+          "snippet": "Địa chỉ:174/2 Đặng Văn Ngữ, phường 14, quận Phú Nhuận, TP. HCM. Giá thành: Khoảng 12.000 - 80.000 đồng. Giờ mở cửa: 10h00 - 21h00 từ thứ 2 đến chủ nhật.",
+          "evidence_scope": "area"
+        },
+        {
+          "title": "Gia đình mình (10ng) tìm quán ăn gia đình khu vực Phú Nhuận hoặc ...",
+          "link": "https://www.facebook.com/groups/SaigonReviews/posts/2141028623496943/",
+          "snippet": "Quán ăn gia đình khu vực Phú Nhuận - Tân Bình • Quá Ngon, 306-308 Lê Văn Sỹ: ẩm thực 3 miền • Quán Ruốc, 298/3 Nguyễn Trọng Tuyển: ẩm thực ...",
+          "evidence_scope": "area"
+        },
+        {
+          "title": "Khám phá 10 quán ăn ngon Phú Nhuận “đỉnh của chóp”, review tốt",
+          "link": "https://zalopay.vn/quan-an-ngon-phu-nhuan-6080",
+          "snippet": "10 quán ăn ngon Phú Nhuận “đỉnh của chóp”: 1. Cô Quyên Xứ Quảng, 2. Mộc Vị Quán, 3. Mười Khó, 4. Lẩu Bò 150, 5. Quán Ba Tròn, 6.",
+          "evidence_scope": "area"
+        },
+        {
+          "title": "Dạo này Phúc thích chia sẻ về những quán cơm gia đình, mỗi quán ...",
+          "link": "https://www.facebook.com/hoangphucreview/videos/d%E1%BA%A1o-n%C3%A0y-ph%C3%BAc-th%C3%ADch-chia-s%E1%BA%BB-v%E1%BB%81-nh%E1%BB%AFng-qu%C3%A1n-c%C6%A1m-gia-%C4%91%C3%ACnh-m%E1%BB%97i-qu%C3%A1n-s%E1%BA%BD-l%C3%A0-1-kh%E1%BA%A9u-v%E1%BB%8B-1/1485057193367306/",
+          "snippet": "... Phú, kiếm 1 quán ăn trưa có chỗ đậu xe hơi ... Ngoài ra thì quán còn có menu ăn sáng. Như là cơm chiên, mì xào ...",
+          "evidence_scope": "area"
+        },
+        {
+          "title": "Quán ăn vặt nổi tiếng bên Phú Nhuận siêu thích hợp cho ai ... - TikTok",
+          "link": "https://www.tiktok.com/@nhandian/video/7355870589556378881",
+          "snippet": "5940 Lượt thích,178 Bình luận.Video TikTok từ NHÂN ĐI ĂN (@nhandian): \"Quán ăn vặt nổi tiếng bên Phú Nhuận siêu thích hợp cho ai hay nói ...",
+          "evidence_scope": "area"
+        }
+      ],
+      "price_note": "Gia tham khao tu ket qua tim kiem hien tai (menu/dich vu/ve...), co the khac theo chi nhanh, thoi diem va da thay doi theo thoi gian.",
+      "price_evidence": {
+        "evidence_type": "REVIEW_SUPPORTED",
+        "source_type": "search_snippet",
+        "evidence_scope": "area"
+      },
+      "_tappy_shortlist": [
+        {
+          "rank": 0,
+          "id": "ChIJo2aszPopdTERs7c5upBQFZc",
+          "name": "Hoài Niệm Quán - Bún Đậu Mắm Tôm Hà Nội",
+          "role": "best_overall",
+          "evidence": {
+            "rating": 4.8,
+            "reviews": 1667,
+            "distance_km": 2.8,
+            "open_now": true,
+            "opening_hours": "10:30–21:30",
+            "attributes": []
+          },
+          "why": [
+            "rated 4.8",
+            "2.8km away",
+            "1667 reviews"
+          ],
+          "missing": []
+        },
+        {
+          "rank": 1,
+          "id": "ChIJ_3lMQdAodTERNMFuONVSmWw",
+          "name": "King BBQ Phan Xích Long",
+          "role": null,
+          "evidence": {
+            "rating": 4.6,
+            "reviews": 2623,
+            "distance_km": 2.9,
+            "open_now": true,
+            "opening_hours": "10:00–22:00",
+            "attributes": []
+          },
+          "why": [
+            "rated 4.6",
+            "2.9km away",
+            "2623 reviews"
+          ],
+          "missing": []
+        },
+        {
+          "rank": 2,
+          "id": "ChIJa2fuLuEpdTERBLuWfsyDZWA",
+          "name": "Cơm niêu Thiên Lý",
+          "role": null,
+          "evidence": {
+            "rating": 4.7,
+            "reviews": 854,
+            "distance_km": 3.4,
+            "open_now": true,
+            "opening_hours": "10:00–14:30, 16:00–21:00",
+            "attributes": []
+          },
+          "why": [
+            "rated 4.7",
+            "3.4km away",
+            "854 reviews"
+          ],
+          "missing": []
+        },
+        {
+          "rank": 3,
+          "id": "ChIJIZftixApdTERNo4P2dGmBTk",
+          "name": "Quán Ăn Huế 3 Mẹt: Bánh Bèo Nậm Lọc, Cơm Bún Hến, Hến Xúc Bánh Đa, Nem Chả Huế",
+          "role": null,
+          "evidence": {
+            "rating": 4.7,
+            "reviews": 389,
+            "distance_km": 2.9,
+            "open_now": true,
+            "opening_hours": "08:30–20:30",
+            "attributes": []
+          },
+          "why": [
+            "rated 4.7",
+            "2.9km away",
+            "389 reviews"
+          ],
+          "missing": []
+        },
+        {
+          "rank": 4,
+          "id": "ChIJD4p2kNMpdTERs0QF8Q3aboA",
+          "name": "Quán Ăn Gia Đình Ngọc Hương",
+          "role": null,
+          "evidence": {
+            "rating": 4.5,
+            "reviews": 100,
+            "distance_km": 2.4,
+            "open_now": false,
+            "opening_hours": "15:00–05:00",
+            "attributes": [
+              "hợp gia đình (\"Quán Ăn Gia Đình Ngọc Hương\")"
+            ]
+          },
+          "why": [
+            "rated 4.5",
+            "2.4km away",
+            "100 reviews"
+          ],
+          "missing": []
+        }
+      ],
+      "_tappy_hard_gaps": [
+        "parking",
+        "kids"
+      ],
+      "_tappy_evidence_note": "KHONG quan nao trong ket qua co bang chung ve: chỗ đậu xe, phù hợp trẻ em. Noi ro trong MOT cau \"minh chua xac nhan duoc X, nen goi hoi truoc\"; KHONG khang dinh co.",
+      "_tappy_evidence_gap": {
+        "qualified": 10,
+        "total": 10,
+        "needed": [
+          "rating",
+          "reviewCount",
+          "distance"
+        ],
+        "action": "recommend"
+      },
+      "results_note": "Hien thi 5/10 ket qua tot nhat theo engine; cac ket qua khac da co tren the (card) cua user."
+    }
+  ],
+  "frames8Raw": [
+    [
+      {
+        "kind": "tappy.places.v1",
+        "v": 1,
+        "domain": "food",
+        "ranked": true,
+        "items": [
+          {
+            "id": "place:osm:10.79864,106.68805",
+            "domain": "food",
+            "kind": "place",
+            "name": "Hoài Niệm Quán - Bún Đậu Mắm Tôm Hà Nội",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlKr-GIMKcnep7ddnr-hfDb1wjciKS6cFxFuW98AGtEknJmiIhPTX5EbX_0-kRBhMAVhbcnDj4KwIkb7XPH2YW7TD5igjDwitNANxUFAO8NPM5FtG7ih0m2l3iXlChiNMSfP6SY8TTiB8By",
+            "address": "316 Phan Xích Long, Cầu Kiệu, Hồ Chí Minh 700000, Việt Nam",
+            "rating": 4.8,
+            "ratingCount": 1667,
+            "openingHours": "10:30–21:30",
+            "openNow": true,
+            "openingHoursWeek": {
+              "Thứ Bảy": "10:30–21:30",
+              "Chủ Nhật": "10:30–21:30",
+              "Thứ Hai": "10:30–21:30",
+              "Thứ Ba": "10:30–21:30",
+              "Thứ Tư": "10:30–21:30",
+              "Thứ Năm": "10:30–21:30",
+              "Thứ Sáu": "10:30–21:30"
+            },
+            "distanceKm": 2.8,
+            "categories": [
+              "Nhà hàng Việt Nam"
+            ],
+            "rank": 0,
+            "shortlistPosition": 1,
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=Ho%C3%A0i%20Ni%E1%BB%87m%20Qu%C3%A1n%20-%20B%C3%BAn%20%C4%90%E1%BA%ADu%20M%E1%BA%AFm%20T%C3%B4m%20H%C3%A0%20N%E1%BB%99i%20Ph%C3%BA%20Nhu%E1%BA%ADn%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=10886696256767899571",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Ho%C3%A0i%20Ni%E1%BB%87m%20Qu%C3%A1n%20-%20B%C3%BAn%20%C4%90%E1%BA%ADu%20M%E1%BA%AFm%20T%C3%B4m%20H%C3%A0%20N%E1%BB%99i%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.79866,106.68706",
+            "domain": "food",
+            "kind": "place",
+            "name": "King BBQ Phan Xích Long",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmXa68ouMXZoomJxvbbHEkvLPWPn0WatvsjxftrQk3INEMvRBqK_vl0MPtCGT1MSv5rT--ee_9pfEd37OsPnSYKo27mdVBScCodMIsoWeRCvyzK-xwL1omn6-X2aybSYucibypNIA",
+            "address": "205 Phan Xích Long, Cầu Kiệu, Hồ Chí Minh, Việt Nam",
+            "rating": 4.6,
+            "ratingCount": 2623,
+            "openingHours": "10:00–22:00",
+            "openNow": true,
+            "phone": "+84 28 3517 0199",
+            "openingHoursWeek": {
+              "Thứ Bảy": "10:00–22:00",
+              "Chủ Nhật": "10:00–22:00",
+              "Thứ Hai": "10:00–22:00",
+              "Thứ Ba": "10:00–22:00",
+              "Thứ Tư": "10:00–22:00",
+              "Thứ Năm": "10:00–22:00",
+              "Thứ Sáu": "10:00–22:00"
+            },
+            "distanceKm": 2.9,
+            "categories": [
+              "Nhà hàng"
+            ],
+            "rank": 1,
+            "shortlistPosition": 2,
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=King%20BBQ%20Phan%20X%C3%ADch%20Long%20Ph%C3%BA%20Nhu%E1%BA%ADn%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=7825376903261241652",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=King%20BBQ%20Phan%20X%C3%ADch%20Long%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://kingbbq.vn/",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+842835170199",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.80415,106.68677",
+            "domain": "food",
+            "kind": "place",
+            "name": "Cơm niêu Thiên Lý",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkE-0hdw5-PB_yqk18gNyhbforhhpTSlVlFyoKpDqo00vqRVT6YNiq5G40CltfMtdPfHjy79vJdxQsqrf771H-odDLuulvflQCf4qxGrAfQrHDYGtkcttrz0rgA2kt591CpjkEYiNP5jCt9",
+            "address": "48-50 Phan Đăng Lưu, Đức Nhuận, Hồ Chí Minh 70000, Việt Nam",
+            "rating": 4.7,
+            "ratingCount": 854,
+            "openingHours": "10:00–14:30, 16:00–21:00",
+            "openNow": true,
+            "phone": "+84 978 785 500",
+            "openingHoursWeek": {
+              "Thứ Bảy": "10:00–14:30, 16:00–21:00",
+              "Chủ Nhật": "10:00–14:30, 16:00–21:00",
+              "Thứ Hai": "10:00–14:30, 16:00–21:00",
+              "Thứ Ba": "10:00–14:30, 16:00–21:00",
+              "Thứ Tư": "10:00–14:30, 16:00–21:00",
+              "Thứ Năm": "10:00–14:30, 16:00–21:00",
+              "Thứ Sáu": "10:00–14:30, 16:00–21:00"
+            },
+            "distanceKm": 3.4,
+            "categories": [
+              "Nhà hàng"
+            ],
+            "rank": 2,
+            "shortlistPosition": 3,
+            "actions": [
+              {
+                "kind": "review",
+                "urlKind": "direct",
+                "url": "https://www.tiktok.com/@1phut_saigon/video/7660122839827221778",
+                "labelKey": "v3.action.reviewOn",
+                "platform": "TikTok",
+                "attributed": true
+              },
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=C%C6%A1m%20ni%C3%AAu%20Thi%C3%AAn%20L%C3%BD%20Ph%C3%BA%20Nhu%E1%BA%ADn%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=6946102914609232644",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://comnieuthienly.com/",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84978785500",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=C%C6%A1m%20ni%C3%AAu%20Thi%C3%AAn%20L%C3%BD%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.79963,106.68766",
+            "domain": "food",
+            "kind": "place",
+            "name": "Quán Ăn Huế 3 Mẹt: Bánh Bèo Nậm Lọc, Cơm Bún Hến, Hến Xúc Bánh Đa, Nem Chả Huế",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWl-qs0jjWITwHtmAP4oDG222gLNrFocqWfoSbTJg7LfeFrj9Flmjitng4_9eOe0nI4NCBStJg5vT5kW1q-Cls0GzmuozY8M44-VannyWMmtRadv0riHeFlFmd0MyTHbJSx5ldPXNSq0UWD6",
+            "address": "1B Hoa Cau, Cầu Kiệu, Hồ Chí Minh 700000, Việt Nam",
+            "rating": 4.7,
+            "ratingCount": 389,
+            "openingHours": "08:30–20:30",
+            "openNow": true,
+            "phone": "+84 394 930 868",
+            "openingHoursWeek": {
+              "Thứ Bảy": "08:30–20:30",
+              "Chủ Nhật": "08:30–20:30",
+              "Thứ Hai": "08:30–20:30",
+              "Thứ Ba": "08:30–20:30",
+              "Thứ Tư": "08:30–20:30",
+              "Thứ Năm": "08:30–20:30",
+              "Thứ Sáu": "08:30–20:30"
+            },
+            "distanceKm": 2.9,
+            "categories": [
+              "Quán ăn nhỏ",
+              "Nhà hàng"
+            ],
+            "rank": 3,
+            "shortlistPosition": 4,
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=Qu%C3%A1n%20%C4%82n%20Hu%E1%BA%BF%203%20M%E1%BA%B9t%3A%20B%C3%A1nh%20B%C3%A8o%20N%E1%BA%ADm%20L%E1%BB%8Dc%2C%20C%C6%A1m%20B%C3%BAn%20H%E1%BA%BFn%2C%20H%E1%BA%BFn%20X%C3%BAc%20B%C3%A1nh%20%C4%90a%2C%20Nem%20Ch%E1%BA%A3%20Hu%E1%BA%BF%20Ph%C3%BA%20Nhu%E1%BA%ADn%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=4108873655265496630",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20%C4%82n%20Hu%E1%BA%BF%203%20M%E1%BA%B9t%3A%20B%C3%A1nh%20B%C3%A8o%20N%E1%BA%ADm%20L%E1%BB%8Dc%2C%20C%C6%A1m%20B%C3%BAn%20H%E1%BA%BFn%2C%20H%E1%BA%BFn%20X%C3%BAc%20B%C3%A1nh%20%C4%90a%2C%20Nem%20Ch%E1%BA%A3%20Hu%E1%BA%BF%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://www.facebook.com/banhbeo3met",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84394930868",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.79274,106.68545",
+            "domain": "food",
+            "kind": "place",
+            "name": "Quán Ăn Gia Đình Ngọc Hương",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlt-PBv-v2WkdMNwCOIHXq6D-2KJj6oHP-ZkQI1mqiCthj6GQVU6sxCBG0_Nsuwyu8-P9dxiUmO2q23edr-AT85rI7g4sr9ElnAr2_EyUqKx8WfO-mrv-IEqrBWp19gRi-BGkYJ",
+            "address": "592 Trường Sa, Quận Phú Nhuận, Hồ Chí Minh 70000, Việt Nam",
+            "rating": 4.5,
+            "ratingCount": 100,
+            "openingHours": "15:00–05:00",
+            "openNow": false,
+            "phone": "+84 773 354 223",
+            "openingHoursWeek": {
+              "Thứ Bảy": "15:00–05:00",
+              "Chủ Nhật": "15:00–05:00",
+              "Thứ Hai": "15:00–05:00",
+              "Thứ Ba": "15:00–05:00",
+              "Thứ Tư": "15:00–05:00",
+              "Thứ Năm": "15:00–05:00",
+              "Thứ Sáu": "15:00–05:00"
+            },
+            "distanceKm": 2.4,
+            "categories": [
+              "Nhà hàng hải sản"
+            ],
+            "rank": 4,
+            "shortlistPosition": 5,
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=Qu%C3%A1n%20%C4%82n%20Gia%20%C4%90%C3%ACnh%20Ng%E1%BB%8Dc%20H%C6%B0%C6%A1ng%20Ph%C3%BA%20Nhu%E1%BA%ADn%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=9254574037706032307",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20%C4%82n%20Gia%20%C4%90%C3%ACnh%20Ng%E1%BB%8Dc%20H%C6%B0%C6%A1ng%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://ngochuongsg.vn/",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84773354223",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.79819,106.68820",
+            "domain": "food",
+            "kind": "place",
+            "name": "Bonchon Vietnam - Phan Xích Long",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWl3axEBVzmnfIbWsBn303eQ-8mr9Ik_FAmSE89bgECEevfEVPeEFxWOUIZqChxFZJjZeh9VUiWBZ0Wq2oE6gNb4uIPkClC5KZRpJFveokaVsNX1gUDko-0BaEQvoo1v-vzLRL9W",
+            "address": "175 Phan Xích Long, Cầu Kiệu, Hồ Chí Minh 700000, Việt Nam",
+            "rating": 4.2,
+            "ratingCount": 589,
+            "openingHours": "10:00–22:00",
+            "openNow": true,
+            "phone": "+84 859 849 466",
+            "openingHoursWeek": {
+              "Thứ Bảy": "10:00–22:00",
+              "Chủ Nhật": "10:00–22:00",
+              "Thứ Hai": "10:00–22:00",
+              "Thứ Ba": "10:00–22:00",
+              "Thứ Tư": "10:00–22:00",
+              "Thứ Năm": "10:00–22:00",
+              "Thứ Sáu": "10:00–22:00"
+            },
+            "distanceKm": 2.7,
+            "categories": [
+              "Nhà hàng"
+            ],
+            "rank": 5,
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=Bonchon%20Vietnam%20-%20Phan%20X%C3%ADch%20Long%20Ph%C3%BA%20Nhu%E1%BA%ADn%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=11535521552553586182",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Bonchon%20Vietnam%20-%20Phan%20X%C3%ADch%20Long%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84859849466",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.79768,106.68928",
+            "domain": "food",
+            "kind": "place",
+            "name": "Kichi Kichi Phan Xích Long",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlz5EYg0QbLTUyXXOC4T1d8DjNREDjcMRZhQNVIoluKRDqAi16HrfoeoY4w-k75TLI-H97h9YEGutk4YA5xJGQCq3MbgJK7o-V_e-sH4IHv2j2GFfL_DsdyVBWXwDaktil4rlHwwQ",
+            "address": "145 Phan Xích Long, Cầu Kiệu, Hồ Chí Minh 100000, Việt Nam",
+            "rating": 4,
+            "ratingCount": 1739,
+            "openingHours": "11:00–22:00",
+            "openNow": true,
+            "phone": "+84 28 7300 0214",
+            "openingHoursWeek": {
+              "Thứ Bảy": "11:00–22:00",
+              "Chủ Nhật": "11:00–22:00",
+              "Thứ Hai": "11:00–22:00",
+              "Thứ Ba": "11:00–22:00",
+              "Thứ Tư": "11:00–22:00",
+              "Thứ Năm": "11:00–22:00",
+              "Thứ Sáu": "11:00–22:00"
+            },
+            "distanceKm": 2.6,
+            "categories": [
+              "Nhà hàng món lẩu"
+            ],
+            "rank": 6,
+            "actions": [
+              {
+                "kind": "review",
+                "urlKind": "direct",
+                "url": "https://www.tiktok.com/@91.studio/video/7676417904619408661",
+                "labelKey": "v3.action.reviewOn",
+                "platform": "TikTok",
+                "attributed": true
+              },
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=Kichi%20Kichi%20Phan%20X%C3%ADch%20Long%20Ph%C3%BA%20Nhu%E1%BA%ADn%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=11815069971341767088",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+842873000214",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Kichi%20Kichi%20Phan%20X%C3%ADch%20Long%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.80528,106.66524",
+            "domain": "food",
+            "kind": "place",
+            "name": "Quán Cua Hoa",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlvv-NJBQHbEpk-Y1TxbPsGNICdkZmQOzIbLKSywHbeb8ZWMmX0T9jsz4WupPXkxl88BjiM_iKy1L7uaJanphi-lV3hJRV8OwnoDEoxNdJ6ZKVNW-9yK0In_3PBuuj2cntp9-0y",
+            "address": "1 Huỳnh Lan Khanh, Tân Sơn Hòa, Hồ Chí Minh, Việt Nam",
+            "rating": 4.3,
+            "ratingCount": 499,
+            "openingHours": "11:00–21:00",
+            "openNow": true,
+            "phone": "+84 988 575 534",
+            "openingHoursWeek": {
+              "Thứ Bảy": "11:00–21:00",
+              "Chủ Nhật": "11:00–21:00",
+              "Thứ Hai": "11:00–21:00",
+              "Thứ Ba": "11:00–21:00",
+              "Thứ Tư": "11:00–21:00",
+              "Thứ Năm": "11:00–21:00",
+              "Thứ Sáu": "11:00–21:00"
+            },
+            "distanceKm": 5,
+            "categories": [
+              "Nhà hàng hải sản",
+              "Nhà hàng gia đình"
+            ],
+            "rank": 7,
+            "actions": [
+              {
+                "kind": "review",
+                "urlKind": "direct",
+                "url": "https://www.tiktok.com/@nhanquancuahoalu/video/7664054985574976775",
+                "labelKey": "v3.action.reviewOn",
+                "platform": "TikTok",
+                "attributed": true
+              },
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=Qu%C3%A1n%20Cua%20Hoa%20Ph%C3%BA%20Nhu%E1%BA%ADn%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=17311559786226803215",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84988575534",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20Cua%20Hoa%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          }
+        ],
+        "mapsSearchUrl": "https://maps.google.com/maps?q=qu%C3%A1n%20%C4%83n%20tr%C6%B0a%20ngon%20Ph%C3%BA%20Nhu%E1%BA%ADn%20c%C3%B3%20ch%E1%BB%97%20%C4%91%E1%BA%ADu%20xe%20gia%20%C4%91%C3%ACnh%20con%20n%C3%ADt%20Ph%C3%BA%20Nhu%E1%BA%ADn%2C%20TP.HCM"
+      }
+    ]
+  ]
+}

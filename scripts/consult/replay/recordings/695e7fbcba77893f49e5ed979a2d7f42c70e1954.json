@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Hộp quà tặng kèm sổ da Parker site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T19:19:14.413Z",
+ "body": {
+  "searchParameters": {
+   "q": "Hộp quà tặng kèm sổ da Parker site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Hộp quà tặng kèm sổ da Parker",
+    "link": "https://shopee.vn/H%E1%BB%99p-qu%C3%A0-t%E1%BA%B7ng-k%C3%A8m-s%E1%BB%95-da-Parker-i.515561835.45360235963",
+    "snippet": "Hộp quà tặng kèm sổ da Parker. 1/1. 695.200₫. final price indicator. Giá Sau Voucher. Hộp quà tặng kèm sổ da Parker.",
+    "position": 1
+   },
+   {
+    "title": "Bút ký cao cấp khắc tên - Giá Tốt, Sale Tháng 09, Freeship ...",
+    "link": "https://shopee.vn/list/b%C3%BAt%20k%C3%BD/cao%20c%E1%BA%A5p/kh%E1%BA%AFc%20t%C3%AAn",
+    "snippet": "Bút ký cao cấp doanh nhân khắc tên Enus VB106B quà tặng ý nghĩa sang trọng tặng kèm hộp làm quà tặng189.000₫ · 9. Set quà tặng bút ký và sổ da khắc tên theo ...",
+    "position": 2
+   },
+   {
+    "title": "Bút kí tên - Giá Tốt, Sale Tháng 08, Freeship 0Đ",
+    "link": "https://shopee.vn/list/b%C3%BAt%20k%C3%AD%20t%C3%AAn",
+    "snippet": "Bộ quà tặng cao cấp bình giữ nhiệt và bút kí - có khắc tên, bộ quà tặng sếp, quà nhân viên, quà sự kiện công ty. 376.000₫. rating-star 4.8.",
+    "position": 3
+   },
+   {
+    "title": "Shop bút ký khắc tên, Cửa hàng trực tuyến",
+    "link": "https://shopee.vn/huyenthanhh03",
+    "snippet": "Túi đựng bút ký, túi vải nhung màu đen dày hai mặt, túi đựng bút dây rút, hộp đựng bút, hộp đựng bút ký quà tặng. 12.000₫. rating-star 5.0. 300 đã bán.",
+    "position": 4
+   },
+   {
+    "title": "Set Sổ Bút Khắc Tên Theo Yêu Cầu Fullboxx Sổ Tay Da ...",
+    "link": "https://shopee.vn/Set-S%E1%BB%95-B%C3%BAt-Kh%E1%BA%AFc-T%C3%AAn-Theo-Y%C3%AAu-C%E1%BA%A7u-Fullboxx-S%E1%BB%95-Tay-Da-C%E1%BB%A9ng-Kh%E1%BB%95-A5-H%E1%BB%99p-Qu%C3%A0-T%E1%BA%B7ng-Doanh-Nghi%E1%BB%87p-Sang-Tr%E1%BB%8Dng-i.1127275885.26411815934",
+    "snippet": "Mua Set Sổ Bút Khắc Tên Theo Yêu Cầu Fullboxx Sổ Tay Da Cứng Khổ A5 Hộp Quà Tặng Doanh Nghiệp Sang Trọng giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 5
+   },
+   {
+    "title": "gifts_online, Cửa hàng trực tuyến",
+    "link": "https://shopee.vn/gifts_online91",
+    "snippet": "[Tặng Hộp] Bút Ký - Khắc Tên, Chữ, Logo theo yêu cầu - Quà tặng sinh nhật, thầy cô, Quà tốt nghiệp, Khai trương... 89.000₫. rating-star 5.0. 2k+ đã bán.",
+    "position": 6
+   },
+   {
+    "title": "bút yêu giá tốt Tháng 8, 2026 | Mua ngay",
+    "link": "https://shopee.vn/search?keyword=b%C3%BAt%20y%C3%AAu",
+    "snippet": "Bộ Quà Tặng Sổ Da Gáy Còng 160 Trang, Bút Ký Khắc Tên Riêng Theo Yêu Cầu Hộp ... quà tặng thầy cô, bạn bè, đồng nghiệp, đối tác Kèm Hộp. 145.000 ...",
+    "position": 7
+   },
+   {
+    "title": "Set Sổ Tay Da Khắc Laser Logo – Quà Tặng Doanh ...",
+    "link": "https://shopee.vn/Set-S%E1%BB%95-Tay-Da-Kh%E1%BA%AFc-Laser-Logo-%E2%80%93-Qu%C3%A0-T%E1%BA%B7ng-Doanh-Nghi%E1%BB%87p-Cao-C%E1%BA%A5p-K%C3%A8m-H%E1%BB%99p-T%C3%BAi-Gi%E1%BA%A5y-%E2%80%93-Giao-H%E1%BB%8Fa-T%E1%BB%91c-i.30019198.24975738888",
+    "snippet": "Mua Set Sổ Tay Da Khắc Laser Logo – Quà Tặng Doanh Nghiệp Cao Cấp Kèm Hộp & Túi Giấy – Giao Hỏa Tốc giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

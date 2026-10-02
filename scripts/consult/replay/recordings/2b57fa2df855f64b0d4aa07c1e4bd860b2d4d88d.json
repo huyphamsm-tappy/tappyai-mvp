@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Rose Spa 224 Lý Tự Trọng\" OR \"Gạo Spa\" OR \"Massage Golden\" quan 1 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T05:16:42.978Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Rose Spa 224 Lý Tự Trọng\" OR \"Gạo Spa\" OR \"Massage Golden\" quan 1 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Gạo Spa gội đầu siêu rẻ chỉ 29k #goidauthaoduoc ...",
+    "link": "https://www.tiktok.com/@02baoanh/video/7502039618146094343",
+    "snippet": "Review Lúa Mạch Spa Ở Vĩnh Long · Spa Vuốt Lướt Phú Nhuận. Gạo Spa gội đầu siêu rẻ chỉ 29k #goidauthaoduoc #goidaulongxuyen #gaospalongxuyen # ...",
+    "position": 1
+   },
+   {
+    "title": "Mầm Gạo Spa (@mamgaospa)",
+    "link": "https://www.tiktok.com/@mamgaospa",
+    "snippet": "Experience a rejuvenating head wash at Mầm Gạo Spa, where relaxation meets natural care! · Khám phá siêu phẩm nâng cơ với đá sapphire giúp trẻ hóa làn da trong ...",
+    "position": 2
+   },
+   {
+    "title": "Tắm trắng thiên nhiên Bạch Quý Phi 😚 lâu lâu Mầm sale 1 ...",
+    "link": "https://www.tiktok.com/@mamgaospa/video/7676316350926589204",
+    "snippet": "226 Lượt thích,Video TikTok từ Mầm Gạo Spa (@mamgaospa): \"Tắm trắng thiên nhiên Bạch Quý Phi lâu lâu Mầm sale 1 lần chỉ còn 589k/lần (khi ...",
+    "position": 3
+   },
+   {
+    "title": "Gạo Spa Wellness",
+    "link": "https://www.tiktok.com/discover/g%E1%BA%A1o-spa-wellness",
+    "snippet": "Gạo Spa Wellness · Khám phá Gạo Spa & Wellness, nơi thư giãn và chăm sóc sắc đẹp tuyệt vời. Ưu đãi triệt lông cho học sinh sinh viên, trải nghiệm ngay hôm nay!",
+    "position": 4
+   },
+   {
+    "title": "Video của Mầm Gạo Spa (@mamgaospa) với bản nhạc Lucky ...",
+    "link": "https://www.tiktok.com/@mamgaospa/video/7638237376237653268",
+    "snippet": "Cùng Mầm phục hồi làn da với trẻ hóa căng có sinh học Collagen da cá #collagen #facialcare #facialmask ------------------------------ Mầm Gạo Spa - 100% ...",
+    "position": 5
+   },
+   {
+    "title": "Review Massage Golden",
+    "link": "https://www.tiktok.com/discover/review-massage-golden",
+    "snippet": "Experiencing Thai Massage at Golden Spa in Las Vegas. Discover my unique journey at the Thai Massage Golden Spa in Las Vegas. A must-try ...",
+    "position": 6
+   },
+   {
+    "title": "Nhà Gạo Spa",
+    "link": "https://www.tiktok.com/discover/nh%C3%A0-g%E1%BA%A1o-spa",
+    "snippet": "Mầm Gạo Spa - 100% Thiên Nhiên - No Tip - “Yêu Thương Bản Thân Từ Những Điều Bình Dị!” Mầm Phú Nhuận: 69 Hoa Lan, phường Cầu Kiệu | ...",
+    "date": "14 thg 9, 2026",
+    "position": 7
+   },
+   {
+    "title": "Vừa làm việc vừa chill cùng Mầm nha 🥰 ------------------------- ...",
+    "link": "https://www.tiktok.com/@mamgaospa/video/7658684442285722900",
+    "snippet": "Video TikTok từ Mầm Gạo Spa (@mamgaospa): \"Vừa làm việc vừa chill cùng Mầm nha ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

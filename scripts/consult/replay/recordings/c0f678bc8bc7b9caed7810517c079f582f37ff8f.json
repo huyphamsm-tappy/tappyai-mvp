@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"HUSH SAIGON LOUNGE\" OR \"Loop 1 - Cocktail Bar & Kitchen\" OR \"Lost - Drink & Chill\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T02:29:19.753Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"HUSH SAIGON LOUNGE\" OR \"Loop 1 - Cocktail Bar & Kitchen\" OR \"Lost - Drink & Chill\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "LOOP 1 Cocktail bar & Kitchen, Quận 1, TP.HCM",
+    "link": "https://www.tiktok.com/@chummanhreview/photo/7667133578517597448",
+    "snippet": "Quán LOOP 1 Cocktail bar & Kitchen ở Quận 1, TP.HCM là địa điểm thích hợp để hội họp bạn bè và thưởng thức cocktail. Keywords: LOOP 1 Cocktail ...",
+    "position": 1
+   },
+   {
+    "title": "Loop 1 Cocktail Bar & Kitchen: Hẹn Hò Bí Mật Ở Quận ...",
+    "link": "https://www.tiktok.com/@cnntpt/video/7305331803621969160",
+    "snippet": "Loop 1 Cocktail Bar & Kitchen: Hẹn Hò Bí Mật Ở Quận 1 Sài Gòn. Khám phá quán bar ẩn tại lòng Sài Gòn với không gian lãng mạn, thực đơn đa ...",
+    "position": 2
+   },
+   {
+    "title": "Loop 1 Cocktail & Kitchen - Địa Điểm Hẹn Hò Chill Sài Gòn",
+    "link": "https://www.tiktok.com/@mutchut/video/7304498694764678401",
+    "snippet": "... thể có lỗi, vui lòng báo cáo tại: Phản hồi và trợ giúp - TikTok · เสียงต้นฉบับ - PoetLyrics · LOOP 1 - Cocktail Bar & Kitchen · author. 69K.",
+    "position": 3
+   },
+   {
+    "title": "LOOP 1 - Cocktail & Kitchen (@loop1cocktailbar)",
+    "link": "https://www.tiktok.com/@loop1cocktailbar",
+    "snippet": "... xh #. 2564 · LOOP 1 - Cocktail Bar & Kitchen Một quán hidden bar huyền bí ma mị. 78.5K · Địa điểm hẹn hò nhất định phải đi 1 lần✨ #fyp #saigon #. 4369.",
+    "position": 4
+   },
+   {
+    "title": "Cocktail Bar & Kitchen Một quán hidden bar huyền bí ma mị c...",
+    "link": "https://www.tiktok.com/@ca_phe_hong/photo/7351986700500864263?image_index=5",
+    "snippet": "LOOP 1 - Cocktail Bar & Kitchen Một quán hidden bar huyền bí ma mị cho mí bà đây Quán được decor theo style Trung Đông í với tone màu cam đất là chủ ...",
+    "position": 5
+   },
+   {
+    "title": "LOST - Drink & Chill Open Late Night",
+    "link": "https://www.tiktok.com/@bitchytamdiary/photo/7680570190815300884",
+    "snippet": "LOST - Drink & Chill Open Late Night. LOST bar is open until 3 AM for late-night chill sessions with good food and reasonable prices. Highly ...",
+    "position": 6
+   },
+   {
+    "title": "+1 nơi lý tưởng để hẹn hò🍸 #loop1 #henho #saigon ...",
+    "link": "https://www.tiktok.com/@bacxiuneee_/video/7642949965567855892",
+    "snippet": "... lý tưởng để hẹn hò #loop1 #henho #saigon #. @Bạc Xỉu Đi Chơi · âm thanh gốc - Bạc Xỉu Đi Chơi · LOOP 1 - Cocktail Bar & Kitchen · author · 65K.",
+    "position": 7
+   },
+   {
+    "title": "Discover Hidden Bar in Ho Chi Minh City",
+    "link": "https://www.tiktok.com/@ffonnds/video/7562849409013124370",
+    "snippet": "... charming Egyptian-style Hidden Bar in Ho Chi Minh City. Perfect for. @fonfon is fonfon · original sound · LOOP 1 - Cocktail Bar & Kitchen.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

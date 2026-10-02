@@ -1,0 +1,5 @@
+{
+ "note": "Android thread, turn 7 (quan an ngon gan day, no GPS): the stored assistant text holds two slightly different versions of the same clarify reply back to back. Direct /api/chat replays (single turn and with the same 12-message history) did NOT reproduce it.",
+ "user": "quan an ngon gan day",
+ "assistant": "Mình cần biết bạn đang ở khu vực nào để tìm quán ăn ngon gần đó nhé! 📍 \n\nBạn có thể cho mình biết:\n- Bạn đang ở **Quận 1, Quận 3, Quận 5, Quận Phú Nhuận hay Quận Bình Thạnh** không?\n- Hay bạn đang ở một khu vực khác?\n\nMình sẽ tìm những quán ăn ngon gần vị trí của bạn ngay!Mình cần biết bạn đang ở khu vực nào để tìm quán ăn ngon gần đó nhé! 📍\n\nBạn có thể cho mình biết:\n- Bạn đang ở **Quận 1, Quận 3, Quận 5, Quận Phú Nhuận hay Quận Bình Thạnh** không?\n\nMình sẽ tìm những quán ăn ngon gần vị trí của bạn ngay! 😊"
+}

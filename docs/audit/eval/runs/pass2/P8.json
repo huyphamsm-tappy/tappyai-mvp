@@ -1,0 +1,191 @@
+{
+  "id": "P8",
+  "text": "Spa nào mở khuya sau 22h ở Quận 3",
+  "parent": null,
+  "status": 200,
+  "ms": 15625,
+  "evidenceId": "d4117dcb-5b77-4f26-9988-115b2405f424",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "spa mở khuya sau 22h Quận 3",
+        "location": "Quận 3, TP.HCM",
+        "type": "spa"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Massage Trị Liệu Lụa Spa Quận 3",
+      "rating": 4.8,
+      "count": 586,
+      "hours": "09:00–19:00",
+      "distance_km": 1.1,
+      "address": "179A Hai Bà Trưng, Xuân Hòa, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Mela Spa - Massage gội đầu dưỡng sinh Quận 3",
+      "rating": 5,
+      "count": 244,
+      "hours": "09:00–21:00",
+      "distance_km": 2.6,
+      "address": "224 Đ. Nguyễn Thiện Thuật, Bàn Cờ, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Tỉnh Thức Spa - Spa Quận 3 - Body Massage | Facial Care",
+      "rating": 4.9,
+      "count": 845,
+      "hours": "10:00–20:30",
+      "distance_km": 2.8,
+      "address": "118/54 Trần Quang Diệu, Nhiêu Lộc, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "MỘC NẮNG SPA - Chi Nhánh 1",
+      "rating": 4.9,
+      "count": 1455,
+      "hours": "09:30–20:30",
+      "distance_km": 3.3,
+      "address": "483/2 Đ. Lê Văn Sỹ, Nhiêu Lộc, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Win Win Spa | Dưỡng Sinh Đông Y Quận 3 | Massage Body Quận 3",
+      "rating": 4.8,
+      "count": 667,
+      "hours": "09:00–21:00",
+      "distance_km": 2.1,
+      "address": "222 Lý Chính Thắng, Nhiêu Lộc, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Queen Spa Quận 3",
+      "rating": 4.9,
+      "count": 182,
+      "hours": "09:00–19:30",
+      "distance_km": 2.4,
+      "address": "12 Đ. Nguyễn Thiện Thuật, Bàn Cờ, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "AN MIÊN SPA - GỘI ĐẦU THẢO DƯỢC & MASSAGE QUẬN 3",
+      "rating": 4.8,
+      "count": 489,
+      "hours": "09:00–22:00",
+      "distance_km": 2.1,
+      "address": "274/1 Nam Kỳ Khởi Nghĩa, Xuân Hòa, Hồ Chí Minh 72120, Việt Nam"
+    },
+    {
+      "name": "Vuông Tròn Spa",
+      "rating": 4.9,
+      "count": 179,
+      "hours": "09:00–19:30",
+      "distance_km": 2.8,
+      "address": "331/26 Đ. Lê Văn Sỹ, Nhiêu Lộc, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "YUBII SPA Quận 3 - Massage và Gội đầu dưỡng sinh",
+      "rating": 4.8,
+      "count": 151,
+      "hours": "10:30–21:30",
+      "distance_km": 2.1,
+      "address": "06 Đ. Kỳ Đồng, Nhiêu Lộc, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Lam Spa Quận 3",
+      "rating": 4.6,
+      "count": 100,
+      "hours": "09:00–21:00",
+      "distance_km": 2,
+      "address": "406 Võ Văn Tần, Bàn Cờ, Hồ Chí Minh 700000, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "Massage Trị Liệu Lụa Spa Quận 3",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 4.8,
+        "reviews": 586,
+        "distance_km": 1.1,
+        "open_now": true,
+        "opening_hours": "09:00–19:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Mela Spa - Massage gội đầu dưỡng sinh Quận 3",
+      "role": null,
+      "evidence": {
+        "rating": 5,
+        "reviews": 244,
+        "distance_km": 2.6,
+        "open_now": true,
+        "opening_hours": "09:00–21:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Tỉnh Thức Spa - Spa Quận 3 - Body Massage | Facial Care",
+      "role": null,
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 845,
+        "distance_km": 2.8,
+        "open_now": true,
+        "opening_hours": "10:00–20:30",
+        "attributes": []
+      }
+    },
+    {
+      "name": "MỘC NẮNG SPA - Chi Nhánh 1",
+      "role": null,
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 1455,
+        "distance_km": 3.3,
+        "open_now": true,
+        "opening_hours": "09:30–20:30",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Win Win Spa | Dưỡng Sinh Đông Y Quận 3 | Massage Body Quận 3",
+      "role": null,
+      "evidence": {
+        "rating": 4.8,
+        "reviews": 667,
+        "distance_km": 2.1,
+        "open_now": true,
+        "opening_hours": "09:00–21:00",
+        "attributes": []
+      }
+    }
+  ],
+  "hardGaps": [
+    "late_open"
+  ],
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình tìm được spa ở Quận 3, nhưng thực tế không có spa nào mở sau 22h.\nNgoài ra, **YUBII SPA** mở đến 21:30 (gần nhất ~2.1km) và **Win Win Spa** mở đến 21:00 (cách ~2.1km) cũng là lựa chọn tốt nếu bạn có thể đến trước 21:30.\n\nBạn muốn đặt lịch ở AN MIÊN SPA hay thử một spa khác mở sớm hơn?\n\nMình chưa thấy bằng chứng về giờ mở khuya ở các quán này — nên gọi hỏi trước khi đi.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website — AN MIÊN SPA\",\"type\":\"website\",\"url\":\"https://anmienspa.vn/\",\"primary\":true},{\"label\":\"📍 Google Maps — AN MIÊN SPA\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=3705289139708686899\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]AN MIÊN SPA có gội đầu dưỡng sinh không|Spa nào mở 24h ở Sài Gòn|Đặt lịch AN MIÊN SPA[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Spa nào mở khuya sau 22h ở Quận 3"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm được spa ở Quận 3, nhưng thực tế không có spa nào mở sau 22h.\nNgoài ra, **YUBII SPA** mở đến 21:30 (gần nhất ~2.1km) và **Win Win Spa** mở đến 21:00 (cách ~2.1km) cũng là lựa chọn tốt nếu bạn có thể đến trước 21:30.\n\nBạn muốn đặt lịch ở AN MIÊN SPA hay thử một spa khác mở sớm hơn?\n\nMình chưa thấy bằng chứng về giờ mở khuya ở các quán này — nên gọi hỏi trước khi đi.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website — AN MIÊN SPA\",\"type\":\"website\",\"url\":\"https://anmienspa.vn/\",\"primary\":true},{\"label\":\"📍 Google Maps — AN MIÊN SPA\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=3705289139708686899\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]AN MIÊN SPA có gội đầu dưỡng sinh không|Spa nào mở 24h ở Sài Gòn|Đặt lịch AN MIÊN SPA[/FOLLOWUPS]"
+    }
+  ]
+}

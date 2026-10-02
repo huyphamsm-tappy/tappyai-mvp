@@ -205,7 +205,7 @@ const read = (path: string) => readFileSync(path, 'utf8')
 
 describe('no client reports a held post as posted', () => {
   it('web: the composer renders the server outcome instead of success', () => {
-    const source = read('src/app/reviews/new/page.tsx')
+    const source = read('src/app/(app)/reviews/new/page.tsx')
     expect(source).toMatch(/data\.moderation\?\.state === 'RESTRICTED'/)
     // And it returns before the success path — otherwise both would run.
     expect(source).toMatch(/data\.moderation\?\.state === 'RESTRICTED'\)\s*\{[\s\S]{0,120}return/)

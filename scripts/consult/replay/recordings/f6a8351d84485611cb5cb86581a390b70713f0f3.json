@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "RUBY HOTEL TÂY NINH",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T05:20:09.403Z",
+ "body": {
+  "searchParameters": {
+   "q": "RUBY HOTEL TÂY NINH",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "RUBY HOTEL, Tây Ninh (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/474848696.jpg?k=2079a31a6c792638674a5715ba854daf1d41271959f0996757e505900de0efbb&o=",
+    "imageWidth": 576,
+    "imageHeight": 768,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQyhbXqkuudG7jc5jcDw-J7mlKMNCyIEGfeH_-tJhRc5Q&s=10",
+    "thumbnailWidth": 480,
+    "thumbnailHeight": 640,
+    "source": "www.booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/ruby-tay-ninh.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F474848696.jpg%3Fk%3D2079a31a6c792638674a5715ba854daf1d41271959f0996757e505900de0efbb%26o%3D&tbnid=qBxfmFfZx15mAM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fruby-tay-ninh.vi.html&docid=Q_Q8j8oH_INI_M&w=576&h=768",
+    "position": 1
+   },
+   {
+    "title": "Khách sạn Ruby (Ruby Hotel) Tây Ninh, Việt Nam: Agoda.com có giá rẻ nhất",
+    "imageUrl": "https://q-xx.bstatic.com/xdata/images/hotel/max500/743639561.jpg?k=227b6d914103565f2352303b2025b08fc0fc508f92a6454bf8f1a5d31ad9f8c8&o=",
+    "imageWidth": 375,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTkAzuqZUli0nS8KdHj9F92xqJFg_edvARJH-Nwq15Kpg&s=10",
+    "thumbnailWidth": 375,
+    "thumbnailHeight": 500,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/ruby-hotel/hotel/tay-ninh-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fq-xx.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax500%2F743639561.jpg%3Fk%3D227b6d914103565f2352303b2025b08fc0fc508f92a6454bf8f1a5d31ad9f8c8%26o%3D&tbnid=gvotyLv2PnsrvM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fruby-hotel%2Fhotel%2Ftay-ninh-vn.html&docid=OyflaLrtJFxB_M&w=375&h=500",
+    "position": 2
+   },
+   {
+    "title": "Khách sạn Khách sạn Ruby, Tây Ninh - Skyscanner",
+    "imageUrl": "https://content.skyscnr.com/available/1195519134/1195519134_WxH.jpg",
+    "imageWidth": 480,
+    "imageHeight": 640,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSkHnxdqsbpUFYCLcM8o8r3sqv-Tm9AA0OEdrT9KznM0w&s=10",
+    "thumbnailWidth": 387,
+    "thumbnailHeight": 516,
+    "source": "Skyscanner",
+    "domain": "www.skyscanner.com.vn",
+    "link": "https://www.skyscanner.com.vn/khach-san/viet-nam/tay-ninh-hotels/khach-san-ruby/ht-216211992",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcontent.skyscnr.com%2Favailable%2F1195519134%2F1195519134_WxH.jpg&tbnid=dShngwO-28bL0M&imgrefurl=https%3A%2F%2Fwww.skyscanner.com.vn%2Fkhach-san%2Fviet-nam%2Ftay-ninh-hotels%2Fkhach-san-ruby%2Fht-216211992&docid=5EJJ6Tx_9klmnM&w=480&h=640",
+    "position": 3
+   },
+   {
+    "title": "RUBY Hotel (@rubyhotel.2023) • Facebook",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=803726136043482",
+    "imageWidth": 1536,
+    "imageHeight": 2048,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSeOgaxiMHmCCLWMkL0dO9GxUFWtGKw9cbScQCo1uU5Wg&s=10",
+    "thumbnailWidth": 387,
+    "thumbnailHeight": 516,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/rubyhotel.2023/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D803726136043482&tbnid=kxcyseh1Z1oviM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Frubyhotel.2023%2F&docid=ZgKNjaXTsy78cM&w=1536&h=2048",
+    "position": 4
+   },
+   {
+    "title": "RUBY HOTEL, Tây Ninh (updated prices 2026)",
+    "imageUrl": "https://q-xx.bstatic.com/xdata/images/hotel/608x352/474848696.webp?k=2079a31a6c792638674a5715ba854daf1d41271959f0996757e505900de0efbb&o=",
+    "imageWidth": 608,
+    "imageHeight": 352,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpv9PHB1_ZAvclXX8AnCEGb6jWF7hbo-M9OytUhwf_kA&s=10",
+    "thumbnailWidth": 588,
+    "thumbnailHeight": 340,
+    "source": "www.booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/ruby-tay-ninh.en-gb.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fq-xx.bstatic.com%2Fxdata%2Fimages%2Fhotel%2F608x352%2F474848696.webp%3Fk%3D2079a31a6c792638674a5715ba854daf1d41271959f0996757e505900de0efbb%26o%3D&tbnid=21B_MUYLEerygM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fruby-tay-ninh.en-gb.html&docid=V5myo-dvxg7FWM&w=608&h=352",
+    "position": 5
+   },
+   {
+    "title": "🏡 Phòng Đôi - 2 Giường - 𝟒 Người 👥👥, ✔️ Không gian rộng rãi, ✔️ Đầy đủ  tiện nghi, ✔️ Phù hợp gia đình & nhóm bạn, Liên hệ Ruby giữ phòng cho bạn  nha! ******************* 𝐑𝐔𝐁𝐘 𝐇𝐎𝐓𝐄𝐋 , ☎️Hotline/ Zalo: ...",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=2016091355994991&get_thumbnail=1",
+    "imageWidth": 1080,
+    "imageHeight": 1920,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmdhx9s-s-e7gZZKfDY1RlCE0VHvFMBIMr1wuLgip6Mw&s=10",
+    "thumbnailWidth": 335,
+    "thumbnailHeight": 597,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/rubyhotel.2023/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D2016091355994991%26get_thumbnail%3D1&tbnid=fMMW3fZNwXpcKM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Frubyhotel.2023%2F&docid=ZgKNjaXTsy78cM&w=1080&h=1920",
+    "position": 6
+   },
+   {
+    "title": "RUBY HOTEL, Tây Ninh (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/868597028.jpg?k=f6b5747da3afd5334e7668e2b707dcca6e75e81a412dfcca7108f4089edc2bca&o=",
+    "imageWidth": 576,
+    "imageHeight": 768,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRuv12cP5H0aKN2MBhzbbYZt9F2A1uqQX56WdmAOIxMSw&s=10",
+    "thumbnailWidth": 480,
+    "thumbnailHeight": 640,
+    "source": "www.booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/ruby-tay-ninh.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F868597028.jpg%3Fk%3Df6b5747da3afd5334e7668e2b707dcca6e75e81a412dfcca7108f4089edc2bca%26o%3D&tbnid=5OjFIxSGZQtRRM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fruby-tay-ninh.vi.html&docid=Q_Q8j8oH_INI_M&w=576&h=768",
+    "position": 7
+   },
+   {
+    "title": "Khách sạn Ruby (Ruby Hotel) Tây Ninh, Việt Nam: Agoda.com có giá rẻ nhất",
+    "imageUrl": "https://q-xx.bstatic.com/xdata/images/hotel/max500/868596924.jpg?k=ffda6aad45ea68137c1b92682a3ab8276e0a09443bccc0067e9c60b841cd3273&o=",
+    "imageWidth": 375,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHgC-tZpUEA26qg09bXD2VDq9tad4GTHOPuYxMTKtdKg&s=10",
+    "thumbnailWidth": 375,
+    "thumbnailHeight": 500,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/ruby-hotel/hotel/tay-ninh-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fq-xx.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax500%2F868596924.jpg%3Fk%3Dffda6aad45ea68137c1b92682a3ab8276e0a09443bccc0067e9c60b841cd3273%26o%3D&tbnid=URqnKjFgf_e5pM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fruby-hotel%2Fhotel%2Ftay-ninh-vn.html&docid=OyflaLrtJFxB_M&w=375&h=500",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

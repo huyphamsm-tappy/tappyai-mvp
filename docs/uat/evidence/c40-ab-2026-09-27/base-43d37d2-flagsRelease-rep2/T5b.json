@@ -1,0 +1,168 @@
+{
+  "id": "T5b",
+  "text": "3–5 người",
+  "parent": "T5",
+  "status": 200,
+  "ms": 11762,
+  "evidenceId": "a49cbeb5-7b24-410c-a52e-0871647eca9d",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "địa điểm giải trí nhóm 3-5 người Quận 1",
+        "location": "Quận 1, TP.HCM",
+        "type": "attraction"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "DIY HOUSE | Workshop 187/3 Hai Bà Trưng",
+      "rating": 4.9,
+      "count": 845,
+      "hours": "10:00–19:00",
+      "distance_km": 1.2,
+      "address": "187/3 Hai Bà Trưng, Xuân Hòa, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Dinh độc lập",
+      "rating": 4.9,
+      "count": 58,
+      "distance_km": 0.6,
+      "address": "135 Nam Kỳ Khởi Nghĩa, Bến Thành, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Dinh Độc Lập",
+      "rating": 4.5,
+      "count": 48592,
+      "hours": "07:00–18:00",
+      "distance_km": 0.6,
+      "address": "Bến Thành, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Công Viên Bờ Sông Sài Gòn Tp Thủ Đức",
+      "rating": 4.6,
+      "count": 634,
+      "hours": "06:00–22:00",
+      "distance_km": 1.1,
+      "address": "QPC5+MWF, An Khánh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Công viên 23 tháng 9",
+      "rating": 4.4,
+      "count": 10480,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 1.3,
+      "address": "Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Nhà Văn hoá Thanh niên TP. Hồ Chí Minh",
+      "rating": 4.4,
+      "count": 1716,
+      "hours": "07:00–22:00",
+      "distance_km": 0.7,
+      "address": "21 Phạm Ngọc Thạch, Xuân Hòa, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Thảo Cầm Viên Sài Gòn",
+      "rating": 4.3,
+      "count": 36881,
+      "hours": "07:00–18:30",
+      "distance_km": 1.2,
+      "address": "2 Nguyễn Bỉnh Khiêm, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Funnyland Takashimaya",
+      "rating": 4.5,
+      "count": 24,
+      "hours": "10:00–22:00",
+      "distance_km": 0.4,
+      "address": "TTTM Takashimaya, 92 - 94 Nam Kỳ Khởi Nghĩa, P, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Chợ Bến Thành",
+      "rating": 4,
+      "count": 87029,
+      "distance_km": 0.6,
+      "address": "Bến Thành, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Công viên Văn hoá Lê Thị Riêng",
+      "rating": 4.5,
+      "count": 384,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 4.1,
+      "address": "875 Cách Mạng Tháng Tám, Cư xá Bắc Hải, Hòa Hưng, Hồ Chí Minh 700000, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "DIY HOUSE | Workshop 187/3 Hai Bà Trưng",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 845,
+        "distance_km": 1.2,
+        "open_now": false,
+        "opening_hours": "10:00–19:00"
+      }
+    },
+    {
+      "name": "Dinh độc lập",
+      "role": null,
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 58,
+        "distance_km": 0.6
+      }
+    },
+    {
+      "name": "Dinh Độc Lập",
+      "role": null,
+      "evidence": {
+        "rating": 4.5,
+        "reviews": 48592,
+        "distance_km": 0.6,
+        "open_now": false,
+        "opening_hours": "07:00–18:00"
+      }
+    }
+  ],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Cảm ơn bạn! Mình đang tìm những địa điểm giải trí phù hợp cho nhóm 3–5 người ở Quận 1 nhé. 🎯\n\nMình chọn **DIY HOUSE | Workshop** cho nhóm bạn! 🎨\n\nĐây là workshop sáng tạo tuyệt vời cho nhóm 3–5 người — các bạn có thể làm đồ thủ công, vẽ tranh, hay tham gia các hoạt động nhóm vui vẻ. Đánh giá rất cao và có nhiều người yêu thích.\n\nNếu muốn chọn khác, **Dinh Độc Lập** (0.6km, 4.9⭐) cũng hay — gần hơn, có thể tham quan lịch sử rồi dạo chơi quanh khu vực. Hoặc **Công viên 23 tháng 9** (1.3km, 4.4⭐) nếu thích không gian xanh, mở cả ngày, thoải mái cho nhóm.\n\nBạn thích hoạt động sáng tạo hay tham quan lịch sử hơn? 😊\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - DIY HOUSE\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=10406187424153546016\",\"primary\":true},{\"label\":\"🌐 Website - DIY HOUSE\",\"type\":\"website\",\"url\":\"https://www.funnyland.vn/\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Công viên 23 tháng 9|Dinh Độc Lập|Thảo Cầm Viên Sài Gòn[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "đi chơi ở đâu"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình sẽ tìm những địa điểm giải trí hay ở gần bạn nhé! 🎉\n\nMình chọn **Nhà hát Thành phố Hồ Chí Minh** cho bạn!\n\nNếu muốn chọn lựa khác, **Công viên Tao Đàn** (1km, 4.5⭐) cũng rất hay — rộng rãi, mở đến 22:00, lý tưởng để dạo bộ thư giãn. Hoặc **Công viên bờ sông** (0.6km, 4.4⭐) nếu thích không khí yên tĩnh gần nước.\n\nBạn muốn xem show hay chỉ dạo chơi thôi? 😊\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🎭 Xem chi tiết - Nhà hát\",\"type\":\"website\",\"url\":\"https://ticket-stations.com/a-o-show\",\"primary\":true},{\"label\":\"📍 Xem trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=6193911520574615099\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Xem show nào hay|Công viên nào gần nhất|Quán ăn gần đó|Karaoke hay bar|Mua sắm ở đâu[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "3–5 người"
+    },
+    {
+      "role": "assistant",
+      "content": "Cảm ơn bạn! Mình đang tìm những địa điểm giải trí phù hợp cho nhóm 3–5 người ở Quận 1 nhé. 🎯\n\nMình chọn **DIY HOUSE | Workshop** cho nhóm bạn! 🎨\n\nĐây là workshop sáng tạo tuyệt vời cho nhóm 3–5 người — các bạn có thể làm đồ thủ công, vẽ tranh, hay tham gia các hoạt động nhóm vui vẻ. Đánh giá rất cao và có nhiều người yêu thích.\n\nNếu muốn chọn khác, **Dinh Độc Lập** (0.6km, 4.9⭐) cũng hay — gần hơn, có thể tham quan lịch sử rồi dạo chơi quanh khu vực. Hoặc **Công viên 23 tháng 9** (1.3km, 4.4⭐) nếu thích không gian xanh, mở cả ngày, thoải mái cho nhóm.\n\nBạn thích hoạt động sáng tạo hay tham quan lịch sử hơn? 😊\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - DIY HOUSE\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=10406187424153546016\",\"primary\":true},{\"label\":\"🌐 Website - DIY HOUSE\",\"type\":\"website\",\"url\":\"https://www.funnyland.vn/\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Công viên 23 tháng 9|Dinh Độc Lập|Thảo Cầm Viên Sài Gòn[/FOLLOWUPS]"
+    }
+  ]
+}

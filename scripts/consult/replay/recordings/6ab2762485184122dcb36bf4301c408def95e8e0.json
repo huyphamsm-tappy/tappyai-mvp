@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Aniki Nhà Hàng Nhật Quận 1\" OR \"Haru Sushi Quận 1\" OR \"Izakaya Choioinoodle | Nhà Hàng Nhật Quận 1 | Mì Ramen Ngon Trần Hưng Đạo\" quan 1 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:38:11.712Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Aniki Nhà Hàng Nhật Quận 1\" OR \"Haru Sushi Quận 1\" OR \"Izakaya Choioinoodle | Nhà Hàng Nhật Quận 1 | Mì Ramen Ngon Trần Hưng Đạo\" quan 1 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Haru Sushi Quận 1 (@harusushinguyenthaihoc)",
+    "link": "https://www.tiktok.com/@harusushinguyenthaihoc",
+    "snippet": "Haru Sushi Quận 1 (@harusushinguyenthaihoc) trên TikTok |6090 Lượt thích.91 Follower.HARU SUSHI - 93 NGUYỄN THÁI HỌC, PHƯỜNG CẦU ÔNG LÃNH, QUẬN 1.",
+    "position": 1
+   },
+   {
+    "title": "Review Ẩm Thực Nhật Bản Aniki — Nhà hàng Nhật quận 1",
+    "link": "https://www.tiktok.com/@aniki_restaurant/video/7638582596653698325",
+    "snippet": "... Aniki, nhà hàng Nhật quận 1, ẩm thực Nhật giản đơn, trải nghiệm nhà hàng Aniki, món Nhật cân bằng hương vị, Aniki restaurant review, review ...",
+    "position": 2
+   },
+   {
+    "title": "Khám Phá Sushi Ngon Tại Haru Sushi Quận 1",
+    "link": "https://www.tiktok.com/@winter290796/photo/7658315768630709524",
+    "snippet": "Đánh giá: 4.5/5⭐️ Đc: 93 Nguyễn Thái Học, Cầu Ông Lãnh, Hồ Chí Minh #shushi #shushiharu #hcm #quan1. Khám Phá Sushi Ngon Tại Haru Sushi Quận 1.",
+    "position": 3
+   },
+   {
+    "title": "Sushi Haru Quận 1",
+    "link": "https://www.tiktok.com/discover/sushi-haru-qu%E1%BA%ADn-1",
+    "snippet": "Khám phá tiệm sushi giá ổn áp tại Sài Gòn, thưởng thức món ăn hấp dẫn. Đừng bỏ lỡ! 31 Likes, 1 Comments. TikTok video from Haru Sushi Quận 1 (@ ...",
+    "date": "7 ngày trước",
+    "position": 4
+   },
+   {
+    "title": "Tình đầu ngây thơ ăn quán này cái dính luôn tới giờ ...",
+    "link": "https://www.tiktok.com/@aniki_restaurant/video/7674152592989015317",
+    "snippet": "Aniki Nhà Hàng Nhật Quận 1 · author. 15 · 3 ... Xem thêm câu trả lời khác (1). Các video hàng đầu trong ngày hôm nay. @Video của aniki_restaurant.",
+    "position": 5
+   },
+   {
+    "title": "Discover Authentic Japanese Cuisine at Aniki Restaurant",
+    "link": "https://www.tiktok.com/@aniki_restaurant/video/7636674767533264148",
+    "snippet": "Located in Quan 1, Aniki Restaurant is a testament to the beauty and subtlety of Japanese ... Aniki Nhà Hàng Nhật Quận 1 · author · 330 · 11.",
+    "position": 6
+   },
+   {
+    "title": "Khách order 1 set sashimi nhưng nhân viên mang 2 ...",
+    "link": "https://www.tiktok.com/@aniki_restaurant/video/7660485664391122196",
+    "snippet": "- Địa điểm: Quận 1, ghi rõ trong mô tả; thông tin này quan trọng để người xem biết bối cảnh địa phương. ... Aniki Nhà Hàng Nhật Quận 1 · author.",
+    "position": 7
+   },
+   {
+    "title": "Tặng ngay một Roll Nhật khi đến quán ăn nha. Để tri ân ...",
+    "link": "https://www.tiktok.com/@toilanguoisaigonofficial/video/7679313247631084820",
+    "snippet": "... quán ăn nha. Để tri ân cho những bạn follow kênh đó nhe #tahugr #japanesefood # ... Aniki Nhà Hàng Nhật Quận 1 · author · 1155 · 8.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The 18+ gate — the web's `age.*` copy (src/lib/i18n/w6/age.ts), D:/redesign Sep 10 11_46. -->
+<resources>
+    <string name="age_brand_tagline">Better experiences, together.</string>
+    <string name="age_ask_title_lead">Confirm you are</string>
+    <string name="age_ask_title_accent">18 or over</string>
+    <string name="age_ask_desc">TappyAI provides services and content for people aged 18 and over. Please tell us your date of birth so we can confirm you are old enough to use it.</string>
+    <string name="age_field_day">Day</string>
+    <string name="age_field_month">Month</string>
+    <string name="age_field_year">Year</string>
+    <string name="age_submit">Continue</string>
+    <string name="age_submitting">Saving...</string>
+    <string name="age_error_invalid">That date of birth isn\'t valid. Please check it.</string>
+    <string name="age_error_failed">Couldn\'t save. Please try again.</string>
+    <string name="age_privacy_title">Your date of birth is kept private</string>
+    <string name="age_privacy">We use this only to confirm you are 18 or over, and we never show your date of birth on your profile.</string>
+    <string name="age_blocked_title">TappyAI is for people aged 18 and over</string>
+    <string name="age_blocked_desc">Based on the date of birth you gave, you\'re not yet 18, so you can\'t use TappyAI.</string>
+    <string name="age_trust_privacy_title">Safe &amp; private</string>
+    <string name="age_trust_privacy_desc">Your information is always protected.</string>
+    <string name="age_trust_age_only_title">Age confirmation only</string>
+    <string name="age_trust_age_only_desc">We use your date of birth only to confirm you are 18 or over.</string>
+    <string name="age_trust_better_title">A better experience</string>
+    <string name="age_trust_better_desc">Building a healthy, positive community together.</string>
+    <string name="age_footer_tagline">TappyAI — better experiences, together.</string>
+    <string name="age_open_cta">Confirm your age</string>
+    <string name="age_intro_eyebrow">THE TAPPYAI COMMUNITY</string>
+    <string name="age_intro_title_lead">Better experiences,</string>
+    <string name="age_intro_title_accent">together</string>
+    <string name="age_intro_desc">TappyAI is a platform for people aged 18 and over — a place to explore, chat, shop and share the things you enjoy.</string>
+    <string name="age_feature_discover_title">Explore</string>
+    <string name="age_feature_discover_desc">Suggestions that suit you</string>
+    <string name="age_feature_shop_title">Shop</string>
+    <string name="age_feature_shop_desc">Genuine products you can trust</string>
+    <string name="age_feature_together_title">Together</string>
+    <string name="age_feature_together_desc">Building a positive community</string>
+</resources>

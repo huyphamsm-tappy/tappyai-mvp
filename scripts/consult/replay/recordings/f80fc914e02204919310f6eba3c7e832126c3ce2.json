@@ -1,0 +1,614 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "cafe sáng Đà Nẵng Da Nang",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@16.0544,108.2022,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T19:07:11.169Z",
+ "body": {
+  "searchParameters": {
+   "q": "cafe sáng Đà Nẵng Da Nang",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@16.0544,108.2022,14z",
+   "engine": "google"
+  },
+  "ll": "@16.0543915,108.2021997,14z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Quán cà phê Sáu Trên Sáu",
+    "address": "64 Bà Huyện Thanh Quan, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0432336,
+    "longitude": 108.2442276,
+    "rating": 4.7,
+    "ratingCount": 2779,
+    "priceLevel": "100-200 N ₫",
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng",
+     "Khu vực phục vụ bia",
+     "Quán ăn nhỏ",
+     "Nhà hàng chuyên phục vụ bữa sáng",
+     "Nhà hàng chuyên phục vụ bữa nửa buổi",
+     "Quán bar cocktail",
+     "Quán cà phê",
+     "Bữa tối",
+     "Nhà hàng phục vụ bữa trưa"
+    ],
+    "website": "https://www.facebook.com/sixonsixcafe/menu/?id=100063485023387&sk=menu",
+    "phoneNumber": "+84 946 114 967",
+    "openingHours": {
+     "Thứ Ba": "07:30–21:00",
+     "Thứ Tư": "07:30–21:00",
+     "Thứ Năm": "07:30–21:00",
+     "Thứ Sáu": "07:30–21:00",
+     "Thứ Bảy": "07:30–21:00",
+     "Chủ Nhật": "07:30–21:00",
+     "Thứ Hai": "07:30–21:00"
+    },
+    "bookingLinks": [
+     "https://www.facebook.com/sixonsixcafe"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPVO4nfug7fpMBEzFhYSJIAlGpwPAqUqlFC7XKipzkmH1cWsVD4AFSm8e4s3O5sFtQ9QpwH2u8Jb0IRDRmgVBqrzT9nNZdoBNpZoWV5vqtT4rnjL8rEVJxNoz4ak0z6LdOhwzwm",
+    "cid": "980192203355970925",
+    "fid": "0x31421766e7e7a589:0xd9a579d9ca3dd6d",
+    "placeId": "ChIJiaXn52YXQjERbd2jnJ1Xmg0"
+   },
+   {
+    "position": 2,
+    "title": "Cà phê Sáng (Sang coffee)",
+    "address": "Đối diện 14, Lê Mạnh Trinh, An Hải, Đà Nẵng, Việt Nam",
+    "latitude": 16.0766714,
+    "longitude": 108.2436273,
+    "rating": 5,
+    "ratingCount": 40,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPr3Mp-11ak0j7UGSRxe-4BzoCHF5KlpPqxP3Px9k3Dp-uWOXWJ1RgKMwCgFSEZyDX7myhrnVli8awR75A3VUziRoI0dF9j94wS8-FBRsNWivReCvPy5i1sG_P5IUxHaBsGy_lV",
+    "cid": "4132583283781812119",
+    "fid": "0x314217673aa0f567:0x3959e299ea883f97",
+    "placeId": "ChIJZ_WgOmcXQjERlz-I6pniWTk"
+   },
+   {
+    "position": 3,
+    "title": "BonPas Bakery & Cafe - Ngô Gia Tự",
+    "address": "21 Ng. Gia Tự, Hải Châu, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.070455499999998,
+    "longitude": 108.21718779999999,
+    "rating": 4.3,
+    "ratingCount": 848,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê",
+     "Tiệm bánh",
+     "Nhà hàng chuyên phục vụ bữa sáng"
+    ],
+    "website": "http://bonpasbakery.com/",
+    "phoneNumber": "+84 236 3888 348",
+    "openingHours": {
+     "Thứ Ba": "05:30–22:00",
+     "Thứ Tư": "05:30–22:00",
+     "Thứ Năm": "05:30–22:00",
+     "Thứ Sáu": "05:30–22:00",
+     "Thứ Bảy": "05:30–22:00",
+     "Chủ Nhật": "05:30–22:00",
+     "Thứ Hai": "05:30–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNIXeAj96mRe13FOgZ89AC6PrCCDEh45TGkw3ORFhb2kgFfiB8YQQ3QZyP-_udLyawFCbpiuBs-p06Cc4surergQfvra1ElyhLHP5xGbf6UgR_9647xPBy3Cpe03mBlm_zhWHjK",
+    "cid": "8085824637573191171",
+    "fid": "0x3142183670481a17:0x70369eaad6a6d603",
+    "placeId": "ChIJFxpIcDYYQjERA9am1qqeNnA"
+   },
+   {
+    "position": 4,
+    "title": "Nia Coffee",
+    "address": "14 Phan Thành Tài, Hòa Cường, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0530744,
+    "longitude": 108.2215045,
+    "rating": 4.3,
+    "ratingCount": 2458,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê"
+    ],
+    "phoneNumber": "+84 903 515 415",
+    "openingHours": {
+     "Thứ Ba": "07:00–22:00",
+     "Thứ Tư": "07:00–22:00",
+     "Thứ Năm": "07:00–22:00",
+     "Thứ Sáu": "07:00–22:00",
+     "Thứ Bảy": "07:00–22:00",
+     "Chủ Nhật": "07:00–22:00",
+     "Thứ Hai": "07:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNTWX3IP_Vrxv6SPz5k-FSgsbuThgUqWBZfFYKGOpiH8NLQTXOAnQkLfOQkY1lwVFbc47P2xoqga5yDeX2W2iyh9-6LsHTMfqndQHbNXTfoxkc8aIL_DkwW2r61R4wdY-AS7pmeDQ",
+    "cid": "8041145209910725328",
+    "fid": "0x314219cf43f4d151:0x6f97e2f6f0100ad0",
+    "placeId": "ChIJUdH0Q88ZQjER0AoQ8Pbil28"
+   },
+   {
+    "position": 5,
+    "title": "Passion Café",
+    "address": "19 An Thượng 5, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0486935,
+    "longitude": 108.24550029999999,
+    "rating": 4.9,
+    "ratingCount": 1610,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê"
+    ],
+    "website": "https://www.facebook.com/Passion-Caf%C3%A9-28-Ho%C3%A0i-Thanh-104574644245862/?eid=ARAOpECXCthgms_CdkHWSM1qw4bB7x13Bvf14LOcmbc_Rpo5xpmCqf-Tb5oVCPNtKFqjJluZSLzUFdsZ",
+    "phoneNumber": "+84 824 946 789",
+    "openingHours": {
+     "Thứ Ba": "07:00–22:00",
+     "Thứ Tư": "07:00–22:00",
+     "Thứ Năm": "07:00–22:00",
+     "Thứ Sáu": "07:00–22:00",
+     "Thứ Bảy": "08:00–22:00",
+     "Chủ Nhật": "08:00–22:00",
+     "Thứ Hai": "07:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNZAsAMTlqkjkt9eXzZ4_rD2cAwVUPp_1A0Aq493H01FO3ioK2UbSM23ssVEnG8v18nrwZ7wuvLYsIj_MleR4U9OUIRXxm9X2zjXTv7zbPx3TAJAk_YbOwn7FUC699SX8wZ5niOzRVIbLLa",
+    "cid": "17152414079744100584",
+    "fid": "0x314219dc4ed9303b:0xee099dba678e48e8",
+    "placeId": "ChIJOzDZTtwZQjER6EiOZ7qdCe4"
+   },
+   {
+    "position": 6,
+    "title": "Ý Là Cafe Roastery",
+    "address": "71 Trần Văn Thành, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0381327,
+    "longitude": 108.24878059999999,
+    "rating": 4.9,
+    "ratingCount": 179,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê",
+     "Cơ sở rang cà phê",
+     "Cửa hàng cà phê"
+    ],
+    "website": "https://www.facebook.com/Ylacafe",
+    "phoneNumber": "+84 933 381 408",
+    "openingHours": {
+     "Thứ Ba": "07:30–19:00",
+     "Thứ Tư": "07:30–19:00",
+     "Thứ Năm": "07:30–19:00",
+     "Thứ Sáu": "07:30–19:00",
+     "Thứ Bảy": "07:30–19:00",
+     "Chủ Nhật": "07:30–19:00",
+     "Thứ Hai": "07:30–19:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmO4mvct9gM-IHEmLAcrzRHhxjQho3KJ5nD4devXw1tg-5D7aRdjeclnYoG_LjICoid4lT-q1xy89rIQUV8sb9AnYsqhrDI3IfOMl4A00G8TPg5XXWg6a5qfRVlIA_ZAmEugajKy",
+    "cid": "4288771283892845925",
+    "fid": "0x314219206f23a3bf:0x3b84c6c283543d65",
+    "placeId": "ChIJv6MjbyAZQjERZT1Ug8LGhDs"
+   },
+   {
+    "position": 7,
+    "title": "Thập Niên 90",
+    "address": "26J9+R48, Xô Viết Nghệ Tĩnh, Hòa Cường, Đà Nẵng, Việt Nam",
+    "latitude": 16.0320331,
+    "longitude": 108.21782929999999,
+    "rating": 4.3,
+    "ratingCount": 51,
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê"
+    ],
+    "phoneNumber": "+84 975 555 559",
+    "openingHours": {
+     "Thứ Ba": "Mở cửa cả ngày",
+     "Thứ Tư": "Mở cửa cả ngày",
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMMzTl1OU2uH6NAMRZu7nWDnRV9tSaxAP5uFcT1dVZhnz8gkVgN6rTRFzlDUEMr_DWSyGtuepTCiX53JWVqOD_uVnMIcclfS_Qoh4iA-VYhkA_-G_37s88zYfItvdVBte0wSBOY",
+    "cid": "10941777678714170257",
+    "fid": "0x314219263855b5cb:0x97d900d3a70e6b91",
+    "placeId": "ChIJy7VVOCYZQjERkWsOp9MA2Zc"
+   },
+   {
+    "position": 8,
+    "title": "Angel Coffee - 87 Quang Trung",
+    "address": "87 Quang Trung, Hải Châu, Đà Nẵng 55000, Việt Nam",
+    "latitude": 16.074274499999998,
+    "longitude": 108.21822549999999,
+    "rating": 4.6,
+    "ratingCount": 335,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê"
+    ],
+    "phoneNumber": "+84 906 911 366",
+    "openingHours": {
+     "Thứ Ba": "05:30–22:30",
+     "Thứ Tư": "05:30–22:30",
+     "Thứ Năm": "05:30–22:30",
+     "Thứ Sáu": "05:30–22:30",
+     "Thứ Bảy": "05:30–22:30",
+     "Chủ Nhật": "05:30–22:30",
+     "Thứ Hai": "05:30–22:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmM6NbsrF8zgf0BUzKALicngARj_eM2O6w7GnEj0xOgqNkrYWG-fC3cq6NjSm4vd_Z53k0zFsH30KR_Xowbig6fHCiOsrrXSWFaXcuYlpwzG9ukAEpeGmPbg8rUoA8up2VJmHpQvUHJj0CI",
+    "cid": "6132324553303412467",
+    "fid": "0x3142190e90542ea9:0x551a64b0d70e4ef3",
+    "placeId": "ChIJqS5UkA4ZQjER804O17BkGlU"
+   },
+   {
+    "position": 9,
+    "title": "Wind Garden Coffee",
+    "address": "72 Lê Mạnh Trinh, An Hải, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.074512,
+    "longitude": 108.2434614,
+    "rating": 4.4,
+    "ratingCount": 1602,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê"
+    ],
+    "website": "https://www.facebook.com/windgardencoffee?mibextid=ZbWKwL",
+    "openingHours": {
+     "Thứ Ba": "07:00–22:00",
+     "Thứ Tư": "07:00–22:00",
+     "Thứ Năm": "07:00–22:00",
+     "Thứ Sáu": "07:00–22:00",
+     "Thứ Bảy": "07:00–22:00",
+     "Chủ Nhật": "07:00–22:00",
+     "Thứ Hai": "07:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmM7mdbXrsuHNem6C6j3fQ2ycWeq289vZ_tv1ZgO0O7HLLAk0J3MiwM3PsAB293D1YndBvuxffn_DO6x6nX-jWh9UFt5FWmscmwryVtK2eHNsnRVXX8ksMN6FdmYrYPcb4h3X31I",
+    "cid": "4780704260537003650",
+    "fid": "0x31421788b5ae9f13:0x4258793219812e82",
+    "placeId": "ChIJE5-utYgXQjERgi6BGTJ5WEI"
+   },
+   {
+    "position": 10,
+    "title": "Àla Cafe Roaster",
+    "address": "113/27 Nguyễn Chí Thanh, Hải Châu, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0736498,
+    "longitude": 108.221785,
+    "rating": 4.6,
+    "ratingCount": 817,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê",
+     "Cơ sở rang cà phê",
+     "Cửa tiệm bán lẻ trực tiếp"
+    ],
+    "website": "https://www.facebook.com/alacafe.official",
+    "openingHours": {
+     "Thứ Ba": "08:00–17:00",
+     "Thứ Tư": "08:00–17:00",
+     "Thứ Năm": "08:00–17:00",
+     "Thứ Sáu": "00:30–17:00",
+     "Thứ Bảy": "00:30–17:00",
+     "Chủ Nhật": "08:00–17:00",
+     "Thứ Hai": "08:00–17:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOC2P2jP6D5ldk9w3kjro-cV1sr8h9P6a2UtiR_iPTr3SA0uQ2Eo-JS4biK1dF0KVdAs2vhe2U1WcHyOZMbCU-g5adWWdFi7zTzIjO0m1wYA_z8arNuQQEFBFBBq2R4acIyYtA",
+    "cid": "7246238805278867126",
+    "fid": "0x314219f116c68ce9:0x648fcfcd1a4c3eb6",
+    "placeId": "ChIJ6YzGFvEZQjERtj5MGs3Pj2Q"
+   },
+   {
+    "position": 11,
+    "title": "Danasol - Eatery & Cafe & Workspace",
+    "address": "117 Đặng Vũ Hỷ, An Hải, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0577653,
+    "longitude": 108.2404426,
+    "rating": null,
+    "ratingCount": null,
+    "priceLevel": "100-200 N ₫",
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê",
+     "Nhà hàng chuyên phục vụ bữa sáng",
+     "Nhà hàng chuyên phục vụ bữa nửa buổi",
+     "Không gian làm việc chia sẻ",
+     "Nhà hàng phục vụ bữa trưa",
+     "Nhà hàng",
+     "Nhà hàng Phương Tây"
+    ],
+    "website": "https://danasol-dn.com/",
+    "phoneNumber": "+84 862 792 407",
+    "openingHours": {
+     "Thứ Ba": "08:00–21:00",
+     "Thứ Tư": "08:00–21:00",
+     "Thứ Năm": "08:00–21:00",
+     "Thứ Sáu": "08:00–21:00",
+     "Thứ Bảy": "08:00–21:00",
+     "Chủ Nhật": "08:00–21:00",
+     "Thứ Hai": "08:00–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLeJsIiQrbMWqVWUoaJJ4A3AF77mbjUhbdCb0vPVEX-FtuEIpuIdMc3o5Vz08k30a5TJk7JYq45qsVBTdnfmHmYaoLIhXB1ve3X5FNIzpZaPcYc6-GgFNNlKEwkq5m4no6smS2N3fQ5u0moU",
+    "cid": "6997162495823260107",
+    "fid": "0x31421745bd1b7715:0x611aea37a73b29cb",
+    "placeId": "ChIJFXcbvUUXQjERyyk7pzfqGmE"
+   },
+   {
+    "position": 12,
+    "title": "Arte Cafe",
+    "address": "219 Nguyễn Chí Thanh, Hải Châu, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0672596,
+    "longitude": 108.2210477,
+    "rating": 4.9,
+    "ratingCount": 445,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê"
+    ],
+    "phoneNumber": "+84 763 324 421",
+    "openingHours": {
+     "Thứ Ba": "07:00–22:30",
+     "Thứ Tư": "07:00–22:30",
+     "Thứ Năm": "07:00–22:30",
+     "Thứ Sáu": "07:00–22:30",
+     "Thứ Bảy": "07:00–22:30",
+     "Chủ Nhật": "07:00–22:30",
+     "Thứ Hai": "07:00–22:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNZELew48CT3vHchLVCj753YOcRuEUxnznv1QT3bA25KGpApjgmqufDpaMTA-X-XrsZfETV2JhOzH-iNYRUQJw23yOqkYFuaajUMXFLpOGUwHY-QBDh5iczwQQ0-F-POaNqjlo",
+    "cid": "6166183380351202450",
+    "fid": "0x31421941546cfa49:0x5592af1d55c03492",
+    "placeId": "ChIJSfpsVEEZQjERkjTAVR2vklU"
+   },
+   {
+    "position": 13,
+    "title": "Ngã Coffee & Desserts",
+    "address": "2 Đặng Thùy Trâm, Hải Châu, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0523825,
+    "longitude": 108.2062471,
+    "rating": 4.7,
+    "ratingCount": 270,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê"
+    ],
+    "website": "https://m.facebook.com/hemxeohouse2018/",
+    "phoneNumber": "+84 934 877 432",
+    "openingHours": {
+     "Thứ Ba": "07:30–23:00",
+     "Thứ Tư": "07:30–23:00",
+     "Thứ Năm": "07:30–23:00",
+     "Thứ Sáu": "07:30–23:00",
+     "Thứ Bảy": "07:30–23:00",
+     "Chủ Nhật": "07:30–23:00",
+     "Thứ Hai": "07:30–23:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPjtKo8_mYY2XE5IwnE52Z6A4WgJXP5-V72-3BVx_uDKQOn5mt04xO9AAs_YBStVAZkPLX0FQ4Yrk9S0uh5iXwQrA3jsS-1ocGzMZmLURXUplDHBMGzu9SSAFVhGJ-YEtIsyxA",
+    "cid": "6776277798219027746",
+    "fid": "0x314219b9f2efd265:0x5e0a2cc156361522",
+    "placeId": "ChIJZdLv8rkZQjERIhU2VsEsCl4"
+   },
+   {
+    "position": 14,
+    "title": "NAM house Cafe (Egg Coffee)",
+    "address": "15/1 Lê Hồng Phong, Hải Châu, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0633271,
+    "longitude": 108.2222391,
+    "rating": null,
+    "ratingCount": null,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê"
+    ],
+    "website": "https://m.facebook.com/NAMhouseCoffee/",
+    "phoneNumber": "+84 787 786 869",
+    "openingHours": {
+     "Thứ Ba": "06:00–23:00",
+     "Thứ Tư": "06:00–23:00",
+     "Thứ Năm": "06:00–23:00",
+     "Thứ Sáu": "06:00–23:00",
+     "Thứ Bảy": "06:00–23:00",
+     "Chủ Nhật": "06:00–23:00",
+     "Thứ Hai": "06:00–23:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLdYDg-BrY7VLb32TcRP-ESQmJWCnZYVKQRFvuuYsFxVbWB7NREJfjMNEKG_Rj2MoSoJMX0n4NBIkyVE2J64kd4eRwubJ5sYCr5XSkWPa_NeEGnqPqcgyYZ4_Np75LTmvt_z1XP9GxUAu2PI",
+    "cid": "3320438159532806828",
+    "fid": "0x314219ccc550a84d:0x2e1490e9e59ad2ac",
+    "placeId": "ChIJTahQxcwZQjERrNKa5emQFC4"
+   },
+   {
+    "position": 15,
+    "title": "H Coffee",
+    "address": "89 Hoàng Kế Viêm, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0492429,
+    "longitude": 108.2446288,
+    "rating": 4.6,
+    "ratingCount": 931,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê",
+     "Nhà hàng chuyên phục vụ bữa sáng",
+     "Cơ sở rang cà phê",
+     "Cửa hàng cà phê",
+     "Không gian làm việc chia sẻ",
+     "Nhà hàng ăn nhanh"
+    ],
+    "website": "https://ndangtung.wixsite.com/h-coffee-vietnam",
+    "phoneNumber": "+84 979 195 968",
+    "openingHours": {
+     "Thứ Ba": "07:00–22:00",
+     "Thứ Tư": "07:00–22:00",
+     "Thứ Năm": "07:00–22:00",
+     "Thứ Sáu": "07:00–22:00",
+     "Thứ Bảy": "07:00–22:00",
+     "Chủ Nhật": "07:00–22:00",
+     "Thứ Hai": "07:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPqxjuGL-872FzgIialA9-DPaYKvq76WW9_uHPl65asPevNhALJjAKltWy3j_uHoMDihev77RwS15JMrelgD785xyN49hqVfkHWV4VCq0rLVpJu9p7F6oWbdp-UDJzJUIwyeqLQ",
+    "cid": "10734591918265397765",
+    "fid": "0x3142177b13e18547:0x94f8ee79b0fcf205",
+    "placeId": "ChIJR4XhE3sXQjERBfL8sHnu-JQ"
+   },
+   {
+    "position": 16,
+    "title": "Ibasho Coffee",
+    "address": "124 Yên Khê 1, Thanh Khê, Đà Nẵng, Việt Nam",
+    "latitude": 16.072602,
+    "longitude": 108.1798707,
+    "rating": 4.2,
+    "ratingCount": 185,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê"
+    ],
+    "website": "https://m.facebook.com/ibashocoffeeandhomestay/",
+    "phoneNumber": "+84 917 949 575",
+    "openingHours": {
+     "Thứ Ba": "07:00–22:00",
+     "Thứ Tư": "07:00–22:00",
+     "Thứ Năm": "07:00–22:00",
+     "Thứ Sáu": "07:00–22:00",
+     "Thứ Bảy": "07:00–22:00",
+     "Chủ Nhật": "07:00–22:00",
+     "Thứ Hai": "07:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNmx0NRXZ--oR0pA4W0NxbsXawfZ9Tn7InuY-_YY_cuHldCIrsdF238eSuUd3dKtIK7JBK_H28LXTtUmvmvGcRtTtEOUaSuwgkGyh5MKvcz1go6nOM8JqKRIGHo4hfw9OsjycIR",
+    "cid": "8212736898844346821",
+    "fid": "0x31421949baf9e1a1:0x71f980b2515c49c5",
+    "placeId": "ChIJoeH5ukkZQjERxUlcUbKA-XE"
+   },
+   {
+    "position": 17,
+    "title": "Đà Phin Cafe",
+    "address": "41 Đỗ Quang, Thanh Khê, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0610192,
+    "longitude": 108.21196669999999,
+    "rating": 4.6,
+    "ratingCount": 39,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê"
+    ],
+    "phoneNumber": "+84 898 194 589",
+    "openingHours": {
+     "Thứ Ba": "06:30–22:00",
+     "Thứ Tư": "06:30–22:00",
+     "Thứ Năm": "06:30–22:00",
+     "Thứ Sáu": "06:30–22:00",
+     "Thứ Bảy": "06:30–22:00",
+     "Chủ Nhật": "06:30–22:00",
+     "Thứ Hai": "06:30–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLdFWamShymxWLHyKI987yf_YQ97M_fK6oe7x44G7wbhE7pSON23Oa62r55A66c2Gtyxd8gbLDqAZag7L2PHSxDxO1CKCzXGGml1_qxnXCwi0jKFY0J1dEE4AoPJbiXRuqyvVtGR",
+    "cid": "13145509813325069318",
+    "fid": "0x3142196172d376f1:0xb66e3b86fea6fc06",
+    "placeId": "ChIJ8XbTcmEZQjERBvym_oY7brY"
+   },
+   {
+    "position": 18,
+    "title": "Khâu.cà phê",
+    "address": "75/18 Lê Hồng Phong, Hải Châu, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0634429,
+    "longitude": 108.2187969,
+    "rating": 4.4,
+    "ratingCount": 271,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê"
+    ],
+    "phoneNumber": "+84 906 430 620",
+    "openingHours": {
+     "Thứ Ba": "06:30–23:00",
+     "Thứ Tư": "06:30–23:00",
+     "Thứ Năm": "06:30–23:00",
+     "Thứ Sáu": "06:30–23:00",
+     "Thứ Bảy": "06:30–23:00",
+     "Chủ Nhật": "06:30–23:00",
+     "Thứ Hai": "06:30–23:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLe4ao9euIxvDUWJvs3_WskzQ5_VWfeEWtK5F16KHpkjx1yAwh5Um2XsMkpjhsDarYhYkNNnnwsrERmUXfG2LbsIACXqe0SX19qXMFmIA4Mq79SgYmMDVa1r7JMaQ4k4yXamt8Sf",
+    "cid": "11011103936230940806",
+    "fid": "0x31421964275a06fb:0x98cf4cb0cff36086",
+    "placeId": "ChIJ-wZaJ2QZQjERhmDzz7BMz5g"
+   },
+   {
+    "position": 19,
+    "title": "NORMAD Coffee & Eatery - Phạm Văn Đồng",
+    "address": "106 Phạm Văn Đồng, An Hải, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0711437,
+    "longitude": 108.2362378,
+    "rating": 4.5,
+    "ratingCount": 2763,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê"
+    ],
+    "website": "http://normad.com.vn/",
+    "phoneNumber": "+84 784 888 828",
+    "openingHours": {
+     "Thứ Ba": "08:00–00:00",
+     "Thứ Tư": "08:00–00:00",
+     "Thứ Năm": "08:00–00:00",
+     "Thứ Sáu": "08:00–00:00",
+     "Thứ Bảy": "08:00–00:00",
+     "Chủ Nhật": "08:00–00:00",
+     "Thứ Hai": "08:00–00:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLeftsaPshMWa3Avyn0MFT3hXTX2eGrGdNFC7L32RU3Np25AyS34GY6IOis-_iAJ9Y6evrEK7gbgseLJYkqpVgGbq9qSd6dPl7Mib7kkCcOwTSOUZtuaH1gtCqkVZBvOXTbof7k",
+    "cid": "662700567897450272",
+    "fid": "0x31421978ac2e2107:0x93262a7c5fa2720",
+    "placeId": "ChIJByEurHgZQjERICf6xadiMgk"
+   },
+   {
+    "position": 20,
+    "title": "DUNE 45 (1)",
+    "address": "24 Tân An 1, Hòa Cường, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0378532,
+    "longitude": 108.2110476,
+    "rating": 4.6,
+    "ratingCount": 312,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê"
+    ],
+    "phoneNumber": "+84 931 969 522",
+    "openingHours": {
+     "Thứ Ba": "07:00–22:30",
+     "Thứ Tư": "07:00–22:30",
+     "Thứ Năm": "07:00–22:30",
+     "Thứ Sáu": "07:00–22:30",
+     "Thứ Bảy": "07:00–22:30",
+     "Chủ Nhật": "07:00–22:30",
+     "Thứ Hai": "07:00–22:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmP22iUxeUo7XVVDbW_DeNJon8F9078-nAkhKiXOpxm3rlToiz7YvjCofRzFxQyyPz-pOfHD_5ANgUkoQ85sdFseXtRye3EFn_T9NxG3uvN9a6SU9WR4ySrGIyH4nZSd1iiApCcVyF844yA",
+    "cid": "14418146779468541839",
+    "fid": "0x314219b69f4168ab:0xc8178c1af5aa2f8f",
+    "placeId": "ChIJq2hBn7YZQjERjy-q9RqMF8g"
+   }
+  ],
+  "credits": 3
+ }
+}

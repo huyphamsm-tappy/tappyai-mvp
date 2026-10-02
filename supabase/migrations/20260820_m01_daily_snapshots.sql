@@ -5,6 +5,8 @@
 --       own change with its own preflight, verification and rollback window
 --       (ADR-017 pattern). Owner authorized THIS migration on 2026-08-20; that
 --       authorization covers `daily_snapshots` and nothing else.
+-- ✅ STATUS: LIVE. `daily_snapshots` is present in the 2026-09-17 prod schema
+--    snapshot (confirmed 2026-09-21) — this migration is applied, do not re-run.
 --
 -- CONTRACT
 --   04_Database_Architecture.md §7    the table, grain VN day x platform,

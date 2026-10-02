@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Iris Nailbar SGN\" OR \"The Nail\" OR \"Tiệm Nail Con Mèo\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:00:41.196Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Iris Nailbar SGN\" OR \"The Nail\" OR \"Tiệm Nail Con Mèo\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "My client @chloe never got the answer… 👀 Can you solve ...",
+    "link": "https://www.tiktok.com/@the_nail_mannn/video/7668228174114852117",
+    "snippet": "20 Likes, TikTok video from The Nail Mannn (@the_nail_mannn): “My client @chloe never got the answer… Can you solve it before she does?",
+    "position": 1
+   },
+   {
+    "title": "Nails xinh tại Iris Nailbar SGN 💅📸",
+    "link": "https://www.tiktok.com/@irisnailbarsgn/photo/7681231691645668628",
+    "snippet": "Khởi đầu tháng mới với bộ nail xinh tại Iris Nailbar SGN. Dịch vụ làm đẹp, nối mi và đào tạo học viên. Đặt lịch ngay! Keywords: Iris Nailbar SGN ...",
+    "position": 2
+   },
+   {
+    "title": "Being a girl is so fun 🥹the yap sessions at the nail ...",
+    "link": "https://www.tiktok.com/@resego_maetso/video/7686783221362625810",
+    "snippet": "Being a girl is so fun the yap sessions at the nail ... The appointment and service: Laura was the nail technician — she was awesome.",
+    "position": 3
+   },
+   {
+    "title": "Tiệm Nail Con Mèo: Khách Hàng Bất Ngờ Với Mẫu Nail Mới",
+    "link": "https://www.tiktok.com/@conmeo.nailstudio/video/7676033310056828167",
+    "snippet": "Tiệm Nail Con Mèo: Khách Hàng Bất Ngờ Với Mẫu Nail Mới. Dạo gần đây, gu làm nail của khách hàng tại tiệm chúng tôi thật sự khiến chúng tôi \"bất ...",
+    "position": 4
+   },
+   {
+    "title": "Masaje y Drenaje Linfático en The Nail Bar Panamá",
+    "link": "https://www.tiktok.com/@mehr.eliezer/video/7680746302279486728",
+    "snippet": "Este vlogcito pre-viaje muestra una visita a The Nail Bar en Obarrio, Panamá. Se realizó un masaje y un drenaje linfático.",
+    "position": 5
+   },
+   {
+    "title": "Spend some hours at the nail salon with us🖤 #fyp #nailday ...",
+    "link": "https://www.tiktok.com/@itsmamacookie/video/7564529616988179742",
+    "snippet": "100.5K Likes, 285 Comments. TikTok video from MamaCookie (@itsmamacookie): “Spend some hours at the nail salon with us #fyp #nailday ...",
+    "position": 6
+   },
+   {
+    "title": "5 Perfect Petal Brush - The Nail Remedy Signature ...",
+    "link": "https://shop.tiktok.com/us/pdp/petal-brush-by-the-nail-remedy-signature-for-nail-art-precision/1729937052311326808",
+    "snippet": "Built with durable, high-quality bristles, our signature brush glides smoothly over the nail, ensuring a flawless application every time. Elevate your art with ...",
+    "position": 7
+   },
+   {
+    "title": "Classy Wild Side Nails by Mia | The Nail Lab Fresno",
+    "link": "https://www.tiktok.com/@topdodo/video/7682525242840943902",
+    "snippet": "The Nail Lab, located at 2089 W Shaw Ave, Fresno, CA 93711, is your destination for all things glamorous. Mia's work exemplifies the salon's ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -242,9 +242,31 @@ export function derivePick(result: RankedResult, need: NeedProfile, signals?: Pi
  * the product contract does not ask for them.
  */
 export function buildPickPayload(pick: Pick): Record<string, unknown> {
+  /**
+   * 🚨 THE CORRECTION HAS TO SIT WHERE THE CLAIM IS MADE.
+   *
+   * `not_chosen_leads_on` already disclosed that the runner-up beats the pick on
+   * some attribute, and the rulebook already forbids calling the pick "nhat" on
+   * it. Measured anyway, twice, on "Lam dep cham soc da gan day": pick 0.5km,
+   * runner-up 0.3km, reply "gan nhat chi 0.5km" - and then named the 0.3km venue
+   * in the very next clause. The disclosure sat three lines from the number
+   * being read, and lost.
+   *
+   * So the same fact is stated ON the reason it contradicts. Nothing new is
+   * asserted: both halves are values the engine already computed, and the
+   * attributes must MATCH for the note to appear - a runner-up that leads on
+   * price says nothing about distance.
+   */
+  const beatenOn = pick.runnerUp?.leadsOn
+  const evidenceFor = (key: string, detail: string): string =>
+    beatenOn && beatenOn.key === key && pick.runnerUp
+      ? detail + ' - ' + pick.runnerUp.candidate.name + ': ' + beatenOn.detail
+        + ' (KHONG duoc goi pick la "nhat" o ' + key + ')'
+      : detail
   return {
     pick: pick.candidate.name,
-    decided_by: pick.reasons.filter(r => r.contribution > 0).slice(0, 3).map(r => ({ attribute: r.key, evidence: r.detail })),
+    decided_by: pick.reasons.filter(r => r.contribution > 0).slice(0, 3)
+      .map(r => ({ attribute: r.key, evidence: evidenceFor(r.key, r.detail) })),
     ...(pick.runnerUp ? {
       not_chosen: pick.runnerUp.candidate.name,
       ...(pick.runnerUp.leadsOn ? { not_chosen_leads_on: { attribute: pick.runnerUp.leadsOn.key, evidence: pick.runnerUp.leadsOn.detail } } : {}),
@@ -271,7 +293,7 @@ export function buildRankingInstructionBlock(): string {
 Neu ket qua tool co truong \`_tappy_ranking\`, nghia la HE THONG da loc va xep hang cac lua chon THAT theo dung dieu user da noi, va DA CHON. Danh sach ket qua da duoc sap xep theo thu tu do.
 - \`pick\` la lua chon duoc chon. \`decided_by\` la cac ly do that (thuoc tinh + bang chung) dan toi lua chon do.
 - \`not_chosen\` la phuong an dung nhi; \`not_chosen_leads_on\` la diem ma no thuc su hon — dung dung cai do de noi DANH DOI, khong bia diem tru khac.
-- \`conditional: true\` nghia la khoang cach rat nho: dien dat thanh cau NGHIENG VE co dieu kien, KHONG khang dinh tuyet doi.
+- KHONG duoc noi pick la "NHAT" (gan nhat, re nhat, tot nhat...) o dung cai thuoc tinh ma \`not_chosen_leads_on\` dang noi phuong an khac hon. Vi du: pick 0.5km, \`not_chosen_leads_on\` = distance 0.3km => KHONG duoc viet "gan nhat"; phai viet la gan, roi noi ro cai kia gan hon.- \`conditional: true\` nghia la khoang cach rat nho: dien dat thanh cau NGHIENG VE co dieu kien, KHONG khang dinh tuyet doi.
 - \`unverified\` la nhung dieu du lieu KHONG xac nhan duoc: noi ro la chua chac, TUYET DOI KHONG khang dinh la co.
 LUAT:
 - Viec cua ban la GIAI THICH lua chon nay, KHONG phai chon lai. KHONG doi sang ten khac.

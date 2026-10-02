@@ -1,0 +1,1053 @@
+{
+  "id": "F4",
+  "text": "Cả nhà 6 người có con nít ăn trưa cuối tuần, cần chỗ đậu xe ô tô, Phú Nhuận",
+  "parent": null,
+  "status": 200,
+  "ms": 20905,
+  "evidenceId": "0227f1cc-fdeb-41c6-87c4-5df8a5bbb190",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "quán ăn gia đình Phú Nhuận có chỗ đậu xe",
+        "location": "Phú Nhuận, TP.HCM",
+        "type": "restaurant"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Tám Riêu - Phan Xích Long",
+      "rating": 4.8,
+      "count": 2106,
+      "hours": "10:30–21:30",
+      "distance_km": 2.9,
+      "address": "235 Phan Xích Long, Cầu Kiệu, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Ốc Hân - Quán Ốc Ngon Phú Nhuận",
+      "rating": 4.6,
+      "count": 238,
+      "hours": "11:00–23:00",
+      "distance_km": 2.8,
+      "address": "9 Hoa Sứ, Cầu Kiệu, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Quán Ăn Gia Đình Ngọc Hương",
+      "rating": 4.5,
+      "count": 100,
+      "hours": "15:00–05:00",
+      "distance_km": 2.4,
+      "address": "592 Trường Sa, Quận Phú Nhuận, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Bún Đậu Hà Nội Phố - Phú Nhuận",
+      "rating": 4.3,
+      "count": 284,
+      "hours": "00:00–21:30",
+      "distance_km": 2.6,
+      "address": "79 Hoa Lan, Cầu Kiệu, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Cơm Tấm Hẻm 33",
+      "rating": 4.3,
+      "count": 572,
+      "hours": "06:30–11:00, 17:30–21:30",
+      "distance_km": 3.1,
+      "address": "33/16 Đ. Nguyễn Đình Chính, Cầu Kiệu, Hồ Chí Minh, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "Tám Riêu - Phan Xích Long",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 4.8,
+        "reviews": 2106,
+        "distance_km": 2.9,
+        "open_now": true,
+        "opening_hours": "10:30–21:30",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Ốc Hân - Quán Ốc Ngon Phú Nhuận",
+      "role": null,
+      "evidence": {
+        "rating": 4.6,
+        "reviews": 238,
+        "distance_km": 2.8,
+        "open_now": true,
+        "opening_hours": "11:00–23:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Quán Ăn Gia Đình Ngọc Hương",
+      "role": null,
+      "evidence": {
+        "rating": 4.5,
+        "reviews": 100,
+        "distance_km": 2.4,
+        "open_now": false,
+        "opening_hours": "15:00–05:00",
+        "attributes": [
+          "hợp gia đình (\"Quán Ăn Gia Đình Ngọc Hương\")"
+        ]
+      }
+    },
+    {
+      "name": "Bún Đậu Hà Nội Phố - Phú Nhuận",
+      "role": null,
+      "evidence": {
+        "rating": 4.3,
+        "reviews": 284,
+        "distance_km": 2.6,
+        "open_now": true,
+        "opening_hours": "00:00–21:30",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Cơm Tấm Hẻm 33",
+      "role": null,
+      "evidence": {
+        "rating": 4.3,
+        "reviews": 572,
+        "distance_km": 3.1,
+        "open_now": false,
+        "opening_hours": "06:30–11:00, 17:30–21:30",
+        "attributes": []
+      }
+    }
+  ],
+  "hardGaps": [
+    "parking",
+    "kids"
+  ],
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl"
+        ]
+      }
+    ]
+  ],
+  "prose": "Để gợi ý chính xác, mình sẽ tìm kiếm ngay.\n\nMình chọn **Tám Riêu - Phan Xích Long** cho bữa trưa gia đình hôm nay 👍 Quán có **4.8⭐ (2.106 đánh giá Google Maps)**, cách bạn khoảng 2.9km, mở cửa từ 10:30–21:30 nên hoàn toàn phù hợp. Đây là quán riêu nổi tiếng với hương vị đậm đà, không gian rộng rãi thoải mái cho 6 người, và có website riêng để bạn xem menu trước.\n\nMình chưa thấy bằng chứng về chỗ đậu xe, phù hợp trẻ em ở các quán này — nên gọi hỏi trước khi đi.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website - Tám Riêu\",\"type\":\"website\",\"url\":\"http://www.amthuctamrieu.com/\",\"primary\":true},{\"label\":\"📍 Google Maps - Tám Riêu\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=5129199686849166520\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Gọi quán xác nhận chỗ đậu xe|Xem menu Tám Riêu|Tìm quán khác gần hơn[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Cả nhà 6 người có con nít ăn trưa cuối tuần, cần chỗ đậu xe ô tô, Phú Nhuận"
+    },
+    {
+      "role": "assistant",
+      "content": "Để gợi ý chính xác, mình sẽ tìm kiếm ngay.\n\nMình chọn **Tám Riêu - Phan Xích Long** cho bữa trưa gia đình hôm nay 👍 Quán có **4.8⭐ (2.106 đánh giá Google Maps)**, cách bạn khoảng 2.9km, mở cửa từ 10:30–21:30 nên hoàn toàn phù hợp. Đây là quán riêu nổi tiếng với hương vị đậm đà, không gian rộng rãi thoải mái cho 6 người, và có website riêng để bạn xem menu trước.\n\nMình chưa thấy bằng chứng về chỗ đậu xe, phù hợp trẻ em ở các quán này — nên gọi hỏi trước khi đi.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website - Tám Riêu\",\"type\":\"website\",\"url\":\"http://www.amthuctamrieu.com/\",\"primary\":true},{\"label\":\"📍 Google Maps - Tám Riêu\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=5129199686849166520\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Gọi quán xác nhận chỗ đậu xe|Xem menu Tám Riêu|Tìm quán khác gần hơn[/FOLLOWUPS]"
+    }
+  ],
+  "toolResults": [
+    {
+      "source": "Serper Maps",
+      "count": 20,
+      "location": "Phú Nhuận, TP.HCM",
+      "results": [
+        {
+          "name": "Tám Riêu - Phan Xích Long",
+          "address": "235 Phan Xích Long, Cầu Kiệu, Hồ Chí Minh 700000, Việt Nam",
+          "phone": "+84 334 626 060",
+          "website_uri": "http://www.amthuctamrieu.com/",
+          "place_id": "ChIJ6a85G0QpdTERuHywhPCTLkc",
+          "rating_value": 4.8,
+          "google_rating": "4.8⭐ (2.106 đánh giá Google Maps)",
+          "rating_count": 2106,
+          "place_types": [
+            "Nhà hàng"
+          ],
+          "maps_link": "https://maps.google.com/?cid=5129199686849166520",
+          "opening_hours": "10:30–21:30",
+          "open_now": true,
+          "distance_km": 2.9,
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "label": "📍 Google Maps — Tám Riêu - Phan Xích Long",
+              "url": "https://maps.google.com/?cid=5129199686849166520",
+              "attributed": true
+            },
+            {
+              "kind": "official_website",
+              "label": "🌐 Website — Tám Riêu - Phan Xích Long",
+              "url": "http://www.amthuctamrieu.com/",
+              "attributed": true
+            },
+            {
+              "kind": "youtube_search_fallback",
+              "label": "🔎 Tìm video review trên YouTube",
+              "url": "https://www.youtube.com/results?search_query=T%C3%A1m%20Ri%C3%AAu%20-%20Phan%20X%C3%ADch%20Long%20review",
+              "attributed": false
+            }
+          ],
+          "has_order": true,
+          "has_delivery": true,
+          "has_maps": true,
+          "has_website": true,
+          "has_photo": true,
+          "has_hours": true,
+          "has_phone": true,
+          "has_reviews": "search"
+        },
+        {
+          "name": "Ốc Hân - Quán Ốc Ngon Phú Nhuận",
+          "address": "9 Hoa Sứ, Cầu Kiệu, Hồ Chí Minh 70000, Việt Nam",
+          "phone": "+84 932 217 828",
+          "place_id": "ChIJDauWNNkpdTER3DqOPFCeQVE",
+          "rating_value": 4.6,
+          "google_rating": "4.6⭐ (238 đánh giá Google Maps)",
+          "rating_count": 238,
+          "place_types": [
+            "Nhà hàng hải sản"
+          ],
+          "maps_link": "https://maps.google.com/?cid=5855135058008881884",
+          "opening_hours": "11:00–23:00",
+          "open_now": true,
+          "distance_km": 2.8,
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "label": "📍 Google Maps — Ốc Hân - Quán Ốc Ngon Phú Nhuận",
+              "url": "https://maps.google.com/?cid=5855135058008881884",
+              "attributed": true
+            },
+            {
+              "kind": "youtube_search_fallback",
+              "label": "🔎 Tìm video review trên YouTube",
+              "url": "https://www.youtube.com/results?search_query=%E1%BB%90c%20H%C3%A2n%20-%20Qu%C3%A1n%20%E1%BB%90c%20Ngon%20Ph%C3%BA%20Nhu%E1%BA%ADn%20review",
+              "attributed": false
+            }
+          ],
+          "has_order": true,
+          "has_delivery": true,
+          "has_maps": true,
+          "has_photo": true,
+          "has_hours": true,
+          "has_phone": true,
+          "has_reviews": "search"
+        },
+        {
+          "name": "Quán Ăn Gia Đình Ngọc Hương",
+          "address": "592 Trường Sa, Quận Phú Nhuận, Hồ Chí Minh 70000, Việt Nam",
+          "phone": "+84 773 354 223",
+          "website_uri": "https://ngochuongsg.vn/",
+          "place_id": "ChIJD4p2kNMpdTERs0QF8Q3aboA",
+          "rating_value": 4.5,
+          "google_rating": "4.5⭐ (100 đánh giá Google Maps)",
+          "rating_count": 100,
+          "place_types": [
+            "Nhà hàng hải sản"
+          ],
+          "maps_link": "https://maps.google.com/?cid=9254574037706032307",
+          "opening_hours": "15:00–05:00",
+          "open_now": false,
+          "distance_km": 2.4,
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "label": "📍 Google Maps — Quán Ăn Gia Đình Ngọc Hương",
+              "url": "https://maps.google.com/?cid=9254574037706032307",
+              "attributed": true
+            },
+            {
+              "kind": "official_website",
+              "label": "🌐 Website — Quán Ăn Gia Đình Ngọc Hương",
+              "url": "https://ngochuongsg.vn/",
+              "attributed": true
+            },
+            {
+              "kind": "youtube_search_fallback",
+              "label": "🔎 Tìm video review trên YouTube",
+              "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20%C4%82n%20Gia%20%C4%90%C3%ACnh%20Ng%E1%BB%8Dc%20H%C6%B0%C6%A1ng%20review",
+              "attributed": false
+            }
+          ],
+          "has_order": true,
+          "has_delivery": true,
+          "has_maps": true,
+          "has_website": true,
+          "has_photo": true,
+          "has_hours": true,
+          "has_phone": true,
+          "has_reviews": "search"
+        },
+        {
+          "name": "Bún Đậu Hà Nội Phố - Phú Nhuận",
+          "address": "79 Hoa Lan, Cầu Kiệu, Hồ Chí Minh 70000, Việt Nam",
+          "phone": "+84 913 002 753",
+          "website_uri": "https://www.foody.vn/ho-chi-minh/bun-dau-ha-noi-pho",
+          "place_id": "ChIJuweaZ84odTERvd-v4RuWngI",
+          "rating_value": 4.3,
+          "google_rating": "4.3⭐ (284 đánh giá Google Maps)",
+          "rating_count": 284,
+          "place_types": [
+            "Nhà hàng"
+          ],
+          "maps_link": "https://maps.google.com/?cid=188753280890822589",
+          "booking_links": [
+            "https://shopeefood.vn/ho-chi-minh/bun-dau-ha-noi-pho"
+          ],
+          "opening_hours": "00:00–21:30",
+          "open_now": true,
+          "distance_km": 2.6,
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "label": "📍 Google Maps — Bún Đậu Hà Nội Phố - Phú Nhuận",
+              "url": "https://maps.google.com/?cid=188753280890822589",
+              "attributed": true
+            },
+            {
+              "kind": "official_website",
+              "label": "🌐 Website — Bún Đậu Hà Nội Phố - Phú Nhuận",
+              "url": "https://www.foody.vn/ho-chi-minh/bun-dau-ha-noi-pho",
+              "attributed": true
+            },
+            {
+              "kind": "youtube_search_fallback",
+              "label": "🔎 Tìm video review trên YouTube",
+              "url": "https://www.youtube.com/results?search_query=B%C3%BAn%20%C4%90%E1%BA%ADu%20H%C3%A0%20N%E1%BB%99i%20Ph%E1%BB%91%20-%20Ph%C3%BA%20Nhu%E1%BA%ADn%20review",
+              "attributed": false
+            }
+          ],
+          "has_order": true,
+          "has_delivery": true,
+          "has_maps": true,
+          "has_website": true,
+          "has_photo": true,
+          "has_hours": true,
+          "has_phone": true,
+          "has_reviews": "search"
+        },
+        {
+          "name": "Cơm Tấm Hẻm 33",
+          "address": "33/16 Đ. Nguyễn Đình Chính, Cầu Kiệu, Hồ Chí Minh, Việt Nam",
+          "phone": "+84 933 616 230",
+          "place_id": "ChIJu6dThdYodTERPWbff_EopDI",
+          "rating_value": 4.3,
+          "google_rating": "4.3⭐ (572 đánh giá Google Maps)",
+          "rating_count": 572,
+          "place_types": [
+            "Quán ăn nhỏ"
+          ],
+          "maps_link": "https://maps.google.com/?cid=3649086615774520893",
+          "opening_hours": "06:30–11:00, 17:30–21:30",
+          "open_now": false,
+          "distance_km": 3.1,
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "label": "📍 Google Maps — Cơm Tấm Hẻm 33",
+              "url": "https://maps.google.com/?cid=3649086615774520893",
+              "attributed": true
+            },
+            {
+              "kind": "youtube_search_fallback",
+              "label": "🔎 Tìm video review trên YouTube",
+              "url": "https://www.youtube.com/results?search_query=C%C6%A1m%20T%E1%BA%A5m%20H%E1%BA%BBm%2033%20review",
+              "attributed": false
+            }
+          ],
+          "has_order": true,
+          "has_delivery": true,
+          "has_maps": true,
+          "has_photo": true,
+          "has_hours": true,
+          "has_phone": true,
+          "has_reviews": "search"
+        }
+      ],
+      "google_maps_search": "https://maps.google.com/maps?q=qu%C3%A1n%20%C4%83n%20gia%20%C4%91%C3%ACnh%20Ph%C3%BA%20Nhu%E1%BA%ADn%20c%C3%B3%20ch%E1%BB%97%20%C4%91%E1%BA%ADu%20xe%20Ph%C3%BA%20Nhu%E1%BA%ADn%2C%20TP.HCM",
+      "_tappy_place_domain": "food",
+      "place_search_status": "has_results",
+      "price_search_results": [
+        {
+          "title": "TOP các quán ăn ngon Phú Nhuận được review tốt - PasGo.vn",
+          "link": "https://pasgo.vn/kham-pha/ha-noi/top-10-quan-an-ngon-hut-khach-nhat-o-quan-phu-nhuan-337",
+          "snippet": "1. Hoàng Ty - Hương vị Nam Bộ đầy thương nhớ · 2. Buffet Sao Bắc Đẩu - Tân Sơn Nhất Hotel · 3. Lẩu Hongkong Hotpot - Tân Sơn Nhất · 4. Tám Riêu - ...",
+          "evidence_scope": "area"
+        },
+        {
+          "title": "Khám phá 27 quán ăn quận Phú Nhuận ngon quên lối về",
+          "link": "https://www.bachhoaxanh.com/kinh-nghiem-hay/chua-an-sach-bach-nhung-quan-ngon-o-phu-nhuan-thi-qua-la-phi-doi-1301500",
+          "snippet": "Cơm tấm Ba Ghiền nằm tại số 84 Đặng Văn Ngữ với món cơm tấm với nhiều món ăn kèm thơm ngon, mới lạ. Đồ ăn được tẩm ướp vừa miệng, không gian quán rộng rãi và ...",
+          "evidence_scope": "area"
+        },
+        {
+          "title": "Gia đình mình (10ng) tìm quán ăn gia đình khu vực Phú Nhuận hoặc ...",
+          "link": "https://www.facebook.com/groups/SaigonReviews/posts/2141028623496943/",
+          "snippet": "Quán ăn gia đình khu vực Phú Nhuận - Tân Bình • Quá Ngon, 306-308 Lê Văn Sỹ: ẩm thực 3 miền • Quán Ruốc, 298/3 Nguyễn Trọng Tuyển: ẩm thực ...",
+          "evidence_scope": "area"
+        },
+        {
+          "title": "YouTube",
+          "link": "https://www.youtube.com/watch?v=zC8aPukJ_vM",
+          "snippet": "Share your videos with friends, family, and the world.",
+          "evidence_scope": "area"
+        },
+        {
+          "title": "Khám phá 10 quán ăn ngon Phú Nhuận “đỉnh của chóp”, review tốt",
+          "link": "https://zalopay.vn/quan-an-ngon-phu-nhuan-6080",
+          "snippet": "10 quán ăn ngon Phú Nhuận “đỉnh của chóp”: 1. Cô Quyên Xứ Quảng, 2. Mộc Vị Quán, 3. Mười Khó, 4. Lẩu Bò 150, 5. Quán Ba Tròn, 6.",
+          "evidence_scope": "area"
+        },
+        {
+          "title": "Tung Hoành 10 Nhà Hàng Quận Phú Nhuận Ngon Bổ Rẻ - Sao Nam",
+          "link": "https://thietbisaonam.com/tin-san-pham/tham-khao-10-nha-hang-quan-phu-nhuan-phu-hop-to-chuc-tiec.html",
+          "snippet": "Tano Sushi được thành lập năm 2014, là quán ăn gia đình quận Phú Nhuận, chuyên các món ăn Nhật Bản nổi tiếng bậc nhất ở TP HCM với hương vị hiện ...",
+          "evidence_scope": "area"
+        }
+      ],
+      "price_note": "Gia tham khao tu ket qua tim kiem hien tai (menu/dich vu/ve...), co the khac theo chi nhanh, thoi diem va da thay doi theo thoi gian.",
+      "price_evidence": {
+        "evidence_type": "REVIEW_SUPPORTED",
+        "source_type": "search_snippet",
+        "evidence_scope": "area"
+      },
+      "order_search_results": [
+        {
+          "title": "Vô vàn ưu đãi, hàng vạn món ngon | GrabFood VN",
+          "link": "https://food.grab.com/vn/vi//",
+          "snippet": "Chúng tôi đã sắp xếp tất cả các món ăn, nhà hàng và thực phẩm yêu thích của bạn một cách hợp lý để giúp bạn tìm được đồ ăn dễ dàng và nhanh chóng nhất có thể.",
+          "evidence_scope": "area"
+        },
+        {
+          "title": "Order Đồ ăn in TP. HCM & Delivery Service - ShopeeFood",
+          "link": "https://shopeefood.vn/%7Bcity%7D/food",
+          "snippet": "Quán Ăn Tisu - Nui & Mì Xào Bò - Shop Online · Cháo Trẻ Em BiBo · Cơm Tấm Chị Huệ - Bông Sao · Phở 193 - Nguyễn Phúc Nguyên · Rana Food & Drinks - HT17 · Minh Tiến - ...",
+          "evidence_scope": "area"
+        }
+      ],
+      "_tappy_shortlist": [
+        {
+          "rank": 0,
+          "id": "ChIJ6a85G0QpdTERuHywhPCTLkc",
+          "name": "Tám Riêu - Phan Xích Long",
+          "role": "best_overall",
+          "evidence": {
+            "rating": 4.8,
+            "reviews": 2106,
+            "distance_km": 2.9,
+            "open_now": true,
+            "opening_hours": "10:30–21:30",
+            "attributes": []
+          },
+          "why": [
+            "rated 4.8",
+            "2.9km away",
+            "2106 reviews"
+          ],
+          "missing": []
+        },
+        {
+          "rank": 1,
+          "id": "ChIJDauWNNkpdTER3DqOPFCeQVE",
+          "name": "Ốc Hân - Quán Ốc Ngon Phú Nhuận",
+          "role": null,
+          "evidence": {
+            "rating": 4.6,
+            "reviews": 238,
+            "distance_km": 2.8,
+            "open_now": true,
+            "opening_hours": "11:00–23:00",
+            "attributes": []
+          },
+          "why": [
+            "rated 4.6",
+            "2.8km away",
+            "238 reviews"
+          ],
+          "missing": []
+        },
+        {
+          "rank": 2,
+          "id": "ChIJD4p2kNMpdTERs0QF8Q3aboA",
+          "name": "Quán Ăn Gia Đình Ngọc Hương",
+          "role": null,
+          "evidence": {
+            "rating": 4.5,
+            "reviews": 100,
+            "distance_km": 2.4,
+            "open_now": false,
+            "opening_hours": "15:00–05:00",
+            "attributes": [
+              "hợp gia đình (\"Quán Ăn Gia Đình Ngọc Hương\")"
+            ]
+          },
+          "why": [
+            "rated 4.5",
+            "2.4km away",
+            "100 reviews"
+          ],
+          "missing": []
+        },
+        {
+          "rank": 3,
+          "id": "ChIJuweaZ84odTERvd-v4RuWngI",
+          "name": "Bún Đậu Hà Nội Phố - Phú Nhuận",
+          "role": null,
+          "evidence": {
+            "rating": 4.3,
+            "reviews": 284,
+            "distance_km": 2.6,
+            "open_now": true,
+            "opening_hours": "00:00–21:30",
+            "attributes": []
+          },
+          "why": [
+            "rated 4.3",
+            "2.6km away",
+            "284 reviews"
+          ],
+          "missing": []
+        },
+        {
+          "rank": 4,
+          "id": "ChIJu6dThdYodTERPWbff_EopDI",
+          "name": "Cơm Tấm Hẻm 33",
+          "role": null,
+          "evidence": {
+            "rating": 4.3,
+            "reviews": 572,
+            "distance_km": 3.1,
+            "open_now": false,
+            "opening_hours": "06:30–11:00, 17:30–21:30",
+            "attributes": []
+          },
+          "why": [
+            "rated 4.3",
+            "3.1km away",
+            "572 reviews"
+          ],
+          "missing": []
+        }
+      ],
+      "_tappy_hard_gaps": [
+        "parking",
+        "kids"
+      ],
+      "_tappy_evidence_gap": {
+        "qualified": 10,
+        "total": 10,
+        "needed": [
+          "rating",
+          "reviewCount",
+          "distance"
+        ],
+        "action": "recommend"
+      },
+      "results_note": "Hien thi 5/10 ket qua tot nhat theo engine; cac ket qua khac da co tren the (card) cua user."
+    }
+  ],
+  "frames8Raw": [
+    [
+      {
+        "kind": "tappy.places.v1",
+        "v": 1,
+        "domain": "food",
+        "ranked": true,
+        "items": [
+          {
+            "id": "place:osm:10.79908,106.68614",
+            "domain": "food",
+            "kind": "place",
+            "name": "Tám Riêu - Phan Xích Long",
+            "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmN4Tk054qGnauQo2xJOnpVt3mCirVw_t3Tre7noT8-gb4_qhCJgPbWTmAC-rEvehTIijXAnckvYWYW0tmKex6nqu_v6hPSqrGsvLGS4PNX23MKxeUpTbyjVIyoyln34tVwxCW1y0Q",
+            "address": "235 Phan Xích Long, Cầu Kiệu, Hồ Chí Minh 700000, Việt Nam",
+            "rating": 4.8,
+            "ratingCount": 2106,
+            "openingHours": "10:30–21:30",
+            "openNow": true,
+            "phone": "+84 334 626 060",
+            "openingHoursWeek": {
+              "Thứ Sáu": "10:30–21:30",
+              "Thứ Bảy": "10:30–21:30",
+              "Chủ Nhật": "10:30–21:30",
+              "Thứ Hai": "10:30–21:30",
+              "Thứ Ba": "10:30–21:30",
+              "Thứ Tư": "10:30–21:30",
+              "Thứ Năm": "10:30–21:30"
+            },
+            "distanceKm": 2.9,
+            "categories": [
+              "Nhà hàng"
+            ],
+            "rank": 0,
+            "shortlistPosition": 1,
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=T%C3%A1m%20Ri%C3%AAu%20-%20Phan%20X%C3%ADch%20Long%20Ph%C3%BA%20Nhu%E1%BA%ADn%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=5129199686849166520",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=T%C3%A1m%20Ri%C3%AAu%20-%20Phan%20X%C3%ADch%20Long%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84334626060",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.79893,106.68879",
+            "domain": "food",
+            "kind": "place",
+            "name": "Ốc Hân - Quán Ốc Ngon Phú Nhuận",
+            "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmOWHGoBRk-TlynrJoMnw8gvtFPro0XP5fVJLI7rYwX9bflTBWkQarVj2kWcokMy9aDCCVUR2lhIIVObQ4P5dTplkCZe2ex7-JnWyesyRFKpHo3LMgh8C6iA_ifcsbeX1k3IxpqVsQ",
+            "address": "9 Hoa Sứ, Cầu Kiệu, Hồ Chí Minh 70000, Việt Nam",
+            "rating": 4.6,
+            "ratingCount": 238,
+            "openingHours": "11:00–23:00",
+            "openNow": true,
+            "phone": "+84 932 217 828",
+            "openingHoursWeek": {
+              "Thứ Sáu": "11:00–23:00",
+              "Thứ Bảy": "11:00–23:00",
+              "Chủ Nhật": "11:00–23:00",
+              "Thứ Hai": "11:00–23:00",
+              "Thứ Ba": "11:00–23:00",
+              "Thứ Tư": "11:00–23:00",
+              "Thứ Năm": "11:00–23:00"
+            },
+            "distanceKm": 2.8,
+            "categories": [
+              "Nhà hàng hải sản"
+            ],
+            "rank": 1,
+            "shortlistPosition": 2,
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=%E1%BB%90c%20H%C3%A2n%20-%20Qu%C3%A1n%20%E1%BB%90c%20Ngon%20Ph%C3%BA%20Nhu%E1%BA%ADn%20Ph%C3%BA%20Nhu%E1%BA%ADn%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=5855135058008881884",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=%E1%BB%90c%20H%C3%A2n%20-%20Qu%C3%A1n%20%E1%BB%90c%20Ngon%20Ph%C3%BA%20Nhu%E1%BA%ADn%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84932217828",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.79274,106.68545",
+            "domain": "food",
+            "kind": "place",
+            "name": "Quán Ăn Gia Đình Ngọc Hương",
+            "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmNFTwCv0uwl6EnAP7Bk3rtYRsghMLuJ5S15RRzTxg_V8r3GLgZaRdda1ku_zaA2i-HuoI8eiFLwlCasZqIO9nhF4_haQCoh3vTUjFxHcPolmZ4AUUfHPSYNS6qO3lCnFu1xkjMT",
+            "address": "592 Trường Sa, Quận Phú Nhuận, Hồ Chí Minh 70000, Việt Nam",
+            "rating": 4.5,
+            "ratingCount": 100,
+            "openingHours": "15:00–05:00",
+            "openNow": false,
+            "phone": "+84 773 354 223",
+            "openingHoursWeek": {
+              "Thứ Sáu": "15:00–05:00",
+              "Thứ Bảy": "15:00–05:00",
+              "Chủ Nhật": "15:00–05:00",
+              "Thứ Hai": "15:00–05:00",
+              "Thứ Ba": "15:00–05:00",
+              "Thứ Tư": "15:00–05:00",
+              "Thứ Năm": "15:00–05:00"
+            },
+            "distanceKm": 2.4,
+            "categories": [
+              "Nhà hàng hải sản"
+            ],
+            "rank": 2,
+            "shortlistPosition": 3,
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=Qu%C3%A1n%20%C4%82n%20Gia%20%C4%90%C3%ACnh%20Ng%E1%BB%8Dc%20H%C6%B0%C6%A1ng%20Ph%C3%BA%20Nhu%E1%BA%ADn%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=9254574037706032307",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20%C4%82n%20Gia%20%C4%90%C3%ACnh%20Ng%E1%BB%8Dc%20H%C6%B0%C6%A1ng%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://ngochuongsg.vn/",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84773354223",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.79712,106.68969",
+            "domain": "food",
+            "kind": "place",
+            "name": "Bún Đậu Hà Nội Phố - Phú Nhuận",
+            "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmN9lKQosX8EAcE_42mYyYjt2UdRp8jrKHIjsldIguqxCTYz6ZpNUSLN8FuwgFxN8grOF7U5VIFmmm3aQ8N8OtkmchYKsDfL9yx576XcGXRZTgPFf92lJJJQAUrulAk8SVD8vTuGDw",
+            "address": "79 Hoa Lan, Cầu Kiệu, Hồ Chí Minh 70000, Việt Nam",
+            "rating": 4.3,
+            "ratingCount": 284,
+            "openingHours": "00:00–21:30",
+            "openNow": true,
+            "phone": "+84 913 002 753",
+            "openingHoursWeek": {
+              "Thứ Sáu": "00:00–21:30",
+              "Thứ Bảy": "09:00–22:00",
+              "Chủ Nhật": "09:00–22:00",
+              "Thứ Hai": "09:00–22:00",
+              "Thứ Ba": "09:00–22:00",
+              "Thứ Tư": "09:00–22:00",
+              "Thứ Năm": "09:00–22:00"
+            },
+            "distanceKm": 2.6,
+            "categories": [
+              "Nhà hàng"
+            ],
+            "rank": 3,
+            "shortlistPosition": 4,
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=B%C3%BAn%20%C4%90%E1%BA%ADu%20H%C3%A0%20N%E1%BB%99i%20Ph%E1%BB%91%20-%20Ph%C3%BA%20Nhu%E1%BA%ADn%20Ph%C3%BA%20Nhu%E1%BA%ADn%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=188753280890822589",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=B%C3%BAn%20%C4%90%E1%BA%ADu%20H%C3%A0%20N%E1%BB%99i%20Ph%E1%BB%91%20-%20Ph%C3%BA%20Nhu%E1%BA%ADn%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://www.foody.vn/ho-chi-minh/bun-dau-ha-noi-pho",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84913002753",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.79636,106.67996",
+            "domain": "food",
+            "kind": "place",
+            "name": "Cơm Tấm Hẻm 33",
+            "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmP5ZphkMAytSQ1gt7h4DZEoMm2qkT3pe6grYldZtT08zHRtidYhYl_4LuAP3gcr_OpDmxy8PfhcHiS0YFYDubrSxPR_jCzUwDByXULp1S1TSvGdcQLZwq5o4Y2XmPaCfXh_U8pV_IBvexjV",
+            "address": "33/16 Đ. Nguyễn Đình Chính, Cầu Kiệu, Hồ Chí Minh, Việt Nam",
+            "rating": 4.3,
+            "ratingCount": 572,
+            "openingHours": "06:30–11:00, 17:30–21:30",
+            "openNow": false,
+            "phone": "+84 933 616 230",
+            "openingHoursWeek": {
+              "Thứ Sáu": "06:30–11:00, 17:30–21:30",
+              "Thứ Bảy": "06:30–11:00, 17:30–21:30",
+              "Chủ Nhật": "06:30–11:00, 17:30–21:30",
+              "Thứ Hai": "Đóng cửa",
+              "Thứ Ba": "06:30–11:00, 17:30–21:30",
+              "Thứ Tư": "06:30–11:00, 17:30–21:30",
+              "Thứ Năm": "06:30–11:00, 17:30–21:30"
+            },
+            "distanceKm": 3.1,
+            "categories": [
+              "Quán ăn nhỏ"
+            ],
+            "rank": 4,
+            "shortlistPosition": 5,
+            "actions": [
+              {
+                "kind": "review",
+                "urlKind": "direct",
+                "url": "https://www.tiktok.com/@baogia2k3ha/video/7507650615456140562",
+                "labelKey": "v3.action.reviewOn",
+                "platform": "TikTok",
+                "attributed": true
+              },
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=C%C6%A1m%20T%E1%BA%A5m%20H%E1%BA%BBm%2033%20Ph%C3%BA%20Nhu%E1%BA%ADn%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=3649086615774520893",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84933616230",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=C%C6%A1m%20T%E1%BA%A5m%20H%E1%BA%BBm%2033%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.80147,106.67927",
+            "domain": "food",
+            "kind": "place",
+            "name": "Quán Ăn Dìn Chón Mì Gia",
+            "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmOcQp5a1Y0KOHmxeqtTkJN0mj41Lq4VZgeTmA6quI7CQrLmlvoCQWJKhaeZQLgCRQRLDupJWkT5T1YPUkYdYAeK75ZUiuLO7N58uZ73IZzEbE719jxDHhJhq6ToIfW1q-8j_28s",
+            "address": "447 Nguyễn Kiệm, Đức Nhuận, Hồ Chí Minh, Việt Nam",
+            "rating": 4.3,
+            "ratingCount": 422,
+            "openingHours": "15:30–21:30",
+            "openNow": false,
+            "phone": "+84 939 174 884",
+            "openingHoursWeek": {
+              "Thứ Sáu": "15:30–21:30",
+              "Thứ Bảy": "15:30–21:30",
+              "Chủ Nhật": "15:30–21:30",
+              "Thứ Hai": "15:30–21:30",
+              "Thứ Ba": "15:30–21:30",
+              "Thứ Tư": "15:30–21:30",
+              "Thứ Năm": "15:30–21:30"
+            },
+            "distanceKm": 3.6,
+            "categories": [
+              "Quán mì"
+            ],
+            "rank": 5,
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=Qu%C3%A1n%20%C4%82n%20D%C3%ACn%20Ch%C3%B3n%20M%C3%AC%20Gia%20Ph%C3%BA%20Nhu%E1%BA%ADn%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=3482059048545589742",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20%C4%82n%20D%C3%ACn%20Ch%C3%B3n%20M%C3%AC%20Gia%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://www.foody.vn/ho-chi-minh/din-chon-mi-gia",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84939174884",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.79364,106.68454",
+            "domain": "food",
+            "kind": "place",
+            "name": "Quán Ăn Phong Ký",
+            "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmNgvwVUbZ7-_VXo7MrLlEaBcm3_KDcJUH_yIh0lc0n68JEK2dlnsnLvQD6vOCAZznoJe1Zilg60T2kiRm2u4ddGCzDFXIo1tBXGoiJIOYwhWyn-gVspEGbgyWSvzIwBw6TNTyOR",
+            "address": "63 Đ. Phan Đình Phùng, Phú Nhuận, Hồ Chí Minh, Việt Nam",
+            "rating": 4.2,
+            "ratingCount": 173,
+            "openingHours": "11:00–23:00",
+            "openNow": true,
+            "phone": "+84 937 123 771",
+            "openingHoursWeek": {
+              "Thứ Sáu": "11:00–23:00",
+              "Thứ Bảy": "11:00–23:00",
+              "Chủ Nhật": "11:00–23:00",
+              "Thứ Hai": "11:00–23:00",
+              "Thứ Ba": "11:00–23:00",
+              "Thứ Tư": "11:00–23:00",
+              "Thứ Năm": "11:00–23:00"
+            },
+            "distanceKm": 2.6,
+            "categories": [
+              "Nhà hàng châu Á"
+            ],
+            "rank": 6,
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=Qu%C3%A1n%20%C4%82n%20Phong%20K%C3%BD%20Ph%C3%BA%20Nhu%E1%BA%ADn%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=11390786490801201459",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20%C4%82n%20Phong%20K%C3%BD%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84937123771",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.80528,106.66524",
+            "domain": "food",
+            "kind": "place",
+            "name": "Quán Cua Hoa",
+            "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmMGLfkd9gnJW5HpGcXmpT37LeQiLq4puAMTBG8JgVVFqtNr5OgBsd3ehO2caDDFQzCElO6ZFm1rYWGVD5FpUaNUoVQYvOWuO4ABi20rajilvPFqXQjlYpo-4_m8L4G8E-okyb9e",
+            "address": "1 Huỳnh Lan Khanh, Tân Sơn Hòa, Hồ Chí Minh, Việt Nam",
+            "rating": 4.3,
+            "ratingCount": 499,
+            "openingHours": "11:00–21:00",
+            "openNow": true,
+            "phone": "+84 988 575 534",
+            "openingHoursWeek": {
+              "Thứ Sáu": "11:00–21:00",
+              "Thứ Bảy": "11:00–21:00",
+              "Chủ Nhật": "11:00–21:00",
+              "Thứ Hai": "11:00–21:00",
+              "Thứ Ba": "11:00–21:00",
+              "Thứ Tư": "11:00–21:00",
+              "Thứ Năm": "11:00–21:00"
+            },
+            "distanceKm": 5,
+            "categories": [
+              "Nhà hàng hải sản",
+              "Nhà hàng gia đình"
+            ],
+            "rank": 7,
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=Qu%C3%A1n%20Cua%20Hoa%20Ph%C3%BA%20Nhu%E1%BA%ADn%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=17311559786226803215",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20Cua%20Hoa%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84988575534",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          }
+        ],
+        "mapsSearchUrl": "https://maps.google.com/maps?q=qu%C3%A1n%20%C4%83n%20gia%20%C4%91%C3%ACnh%20Ph%C3%BA%20Nhu%E1%BA%ADn%20c%C3%B3%20ch%E1%BB%97%20%C4%91%E1%BA%ADu%20xe%20Ph%C3%BA%20Nhu%E1%BA%ADn%2C%20TP.HCM"
+      }
+    ]
+  ]
+}

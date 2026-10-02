@@ -1,0 +1,25 @@
+{
+  "id": "S6",
+  "text": "mua gì bây giờ",
+  "parent": null,
+  "status": 200,
+  "ms": 2969,
+  "evidenceId": "3af27060-e309-42c9-89db-1c50c1e93c10",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Bạn muốn mua cái gì vậy? 😊 Mình có thể giúp bạn tìm sản phẩm, so sánh giá trên các sàn TMĐT, hoặc gợi ý mua sắm theo nhu cầu của bạn.\n\nBạn cần tìm gì cụ thể không?",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "mua gì bây giờ"
+    },
+    {
+      "role": "assistant",
+      "content": "Bạn muốn mua cái gì vậy? 😊 Mình có thể giúp bạn tìm sản phẩm, so sánh giá trên các sàn TMĐT, hoặc gợi ý mua sắm theo nhu cầu của bạn.\n\nBạn cần tìm gì cụ thể không?"
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+ "url": "https://google.serper.dev/shopping",
+ "request": {
+  "q": "Nam, 40 tuổi, thích cà phê quà tặng",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 20
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:35:52.087Z",
+ "body": {
+  "searchParameters": {
+   "q": "Nam, 40 tuổi, thích cà phê quà tặng",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "shopping",
+   "num": 40,
+   "page": 1,
+   "engine": "google"
+  },
+  "shopping": [
+   {
+    "title": "quà tặng nam, quà sinh nhật cho nam ý nghĩa - set quà tặng bạn trai gấu bông, nước hoa, ví, đồng hồ",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=Nam%2C+40+tu%E1%BB%95i%2C+th%C3%ADch+c%C3%A0+ph%C3%AA+qu%C3%A0+t%E1%BA%B7ng&prds=localAnnotatedOfferId:1,catalogid:18157175072214626669,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "125.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRt9dJ5Oihnqh-Y8knePmfsSMH_lMVsJ3Or0_D7QXfM8XxY_9SV6O2lCbLpy1rb5Eio65alEdX9NvE2FsIMqpgNpXEkNO59TQus63k1-Gk",
+    "rating": 4.7,
+    "ratingCount": 14,
+    "productId": "18157175072214626669",
+    "position": 1
+   },
+   {
+    "title": "Quà tặng lãng mạn cho Bạn trai, Chồng & Nam giới dịp Valentine, Sinh nhật, Kỷ niệm – Ý tưởng độc đáo cho cặp đôi",
+    "source": "shopee.vn",
+    "price": "911.246 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcR7e76NnS4sO9rv6F7YPQ3UM-xFLT0kDP2Pwzn099UHxdGbIUd1cxsJeuxt2D9EMUuGOUK0ydX3SpLMBxnK_4auii8aAcKbHc9Zdj6c4IDBdm8RTLMXMgzJvQ",
+    "productId": "13610572348290505920",
+    "position": 2
+   },
+   {
+    "title": "Hộp Quà Cà Phê Vàng Đặc Sản 04 Món",
+    "source": "allwin.vn",
+    "price": "599.400 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRbb78HdAYQhIyDjhvmu0X82Nh5EzSWNWbhIKgdZ1uSCJbstQP4mvvcs2sWP47NVq00bbQVthYwVHeppV5jRBlSLMw5Z1BNiw",
+    "productId": "122648460694519043",
+    "position": 3
+   }
+  ],
+  "credits": 2
+ }
+}

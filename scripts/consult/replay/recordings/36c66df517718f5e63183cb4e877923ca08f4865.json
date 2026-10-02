@@ -1,0 +1,585 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "quán ăn khuya Thủ Đức",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.8494,106.7537,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:15:24.814Z",
+ "body": {
+  "searchParameters": {
+   "q": "quán ăn khuya Thủ Đức",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.8494,106.7537,14z",
+   "engine": "google"
+  },
+  "ll": "@10.8493941,106.7536997,14z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Quán Ăn Trường Ký",
+    "address": "15 Đường Công Lý, Thủ Đức, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.8458512,
+    "longitude": 106.76689569999999,
+    "rating": 4.5,
+    "ratingCount": 52,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "phoneNumber": "+84 909 698 818",
+    "openingHours": {
+     "Thứ Ba": "09:30–14:30, 16:30–21:00",
+     "Thứ Tư": "09:30–14:30, 16:30–21:00",
+     "Thứ Năm": "09:30–14:30, 16:30–21:00",
+     "Thứ Sáu": "09:30–14:30, 16:30–21:00",
+     "Thứ Bảy": "09:30–14:30, 16:30–21:00",
+     "Chủ Nhật": "09:30–14:30, 16:30–21:00",
+     "Thứ Hai": "09:30–14:30, 16:30–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9T4r3TvRa7uNmJFFk-nuQkDRNzf7Yetw54qVaMGzID0rjEYtMt37sG61gIdu6p2nHL2jm-krFyB4wJ_JPV-7QtpF0b2xkvaj3UOsLbWTCrljyKIY0TwURNnbTNbJZwCXa7MbXIX",
+    "cid": "6002054899533263174",
+    "fid": "0x317527a12e62dffd:0x534b95218112b146",
+    "placeId": "ChIJ_d9iLqEndTERRrESgSGVS1M"
+   },
+   {
+    "position": 2,
+    "title": "Khu ăn vặt đường số 10",
+    "address": "RPHJ+5HR, Đ. số 10, Hiệp Bình, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.827985799999999,
+    "longitude": 106.73138209999999,
+    "rating": 4.4,
+    "ratingCount": 228,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "openingHours": {
+     "Thứ Ba": "16:00–23:00",
+     "Thứ Tư": "16:00–23:00",
+     "Thứ Năm": "16:00–23:00",
+     "Thứ Sáu": "16:00–23:00",
+     "Thứ Bảy": "16:00–23:00",
+     "Chủ Nhật": "16:00–23:00",
+     "Thứ Hai": "16:00–23:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9QsNgzGafN-e-BfbWegsqNzjoX2ulBIxmDM0oXbcsQHFoKU1daJz2wIf90a5CT9qtvn_vm_VWum9FkRWE-C2mAExCDspjiqSl0Hj-UEaqbgAWSBVJyuKP2CwIjd9o8XPdKDpaXo",
+    "cid": "5597130449357320497",
+    "fid": "0x31752763c2958ab1:0x4dad007d23773131",
+    "placeId": "ChIJsYqVwmMndTERMTF3I30ArU0"
+   },
+   {
+    "position": 3,
+    "title": "Phá lấu Linh Đông",
+    "address": "269 Đ. Linh Đông, Hiệp Bình, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.855594799999999,
+    "longitude": 106.74936729999999,
+    "rating": 4.5,
+    "ratingCount": 215,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Quán ăn nhỏ",
+    "types": [
+     "Quán ăn nhỏ"
+    ],
+    "phoneNumber": "+84 922 017 281",
+    "openingHours": {
+     "Thứ Ba": "09:00–21:00",
+     "Thứ Tư": "09:00–21:00",
+     "Thứ Năm": "09:00–21:00",
+     "Thứ Sáu": "09:00–21:00",
+     "Thứ Bảy": "09:00–21:00",
+     "Chủ Nhật": "09:00–21:00",
+     "Thứ Hai": "09:00–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9SYsovL6kOD9RlhPhfBjmVEKuhKOxv7iYkzf-fMnevBBUK0hLD2ZTASPSOuB1rI9zCSmqBX1XLGXMRjzR3FtA3Ruqzud9aMDxHfKRK4J2gbLy8FbIUCApBEJP2cWAarTC-kVnBeOw",
+    "cid": "16716258432909572169",
+    "fid": "0x31752794f3d981fb:0xe7fc147a6b33f849",
+    "placeId": "ChIJ-4HZ85QndTERSfgza3oU_Oc"
+   },
+   {
+    "position": 4,
+    "title": "Ẩm Thực Mr Ốc Ngon",
+    "address": "267F Đ. Tô Ngọc Vân, Hiệp Bình, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.8575882,
+    "longitude": 106.7489509,
+    "rating": 4.5,
+    "ratingCount": 1173,
+    "priceLevel": "100-600 N ₫",
+    "type": "Nhà hàng hải sản",
+    "types": [
+     "Nhà hàng hải sản"
+    ],
+    "website": "https://diadiemanuong.com/tp-ho-chi-minh/am-thuc-oc-ngon",
+    "phoneNumber": "+84 909 755 575",
+    "openingHours": {
+     "Thứ Hai": "15:00–01:30",
+     "Thứ Ba": "15:00–01:30",
+     "Thứ Tư": "15:00–01:30",
+     "Thứ Năm": "15:00–01:30",
+     "Thứ Sáu": "15:00–01:30",
+     "Thứ Bảy": "15:00–01:30",
+     "Chủ Nhật": "15:00–00:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9SOVF7XYpzrYc-zORSGx4TlI7Mu624FqTAB9Fqv1b60phRUybWYELBpr9_HNGdImeuuYs4tSI1hr70FnVKz2imX3HvajZQ5rCrzHe5rBvbL5tk5-upo1fKVUjdcy6vo5t_JWK767efT9CBy",
+    "cid": "18160573980402364069",
+    "fid": "0x317527937d0eaaab:0xfc0751d0fb15aea5",
+    "placeId": "ChIJq6oOfZMndTERpa4V-9BRB_w"
+   },
+   {
+    "position": 5,
+    "title": "Ẩm thực vườn quê",
+    "address": "82 Đ. Hiệp Bình, Hiệp Bình, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.8455801,
+    "longitude": 106.7252187,
+    "rating": 4.1,
+    "ratingCount": 233,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "phoneNumber": "+84 707 407 075",
+    "openingHours": {
+     "Thứ Ba": "10:00–22:00",
+     "Thứ Tư": "10:00–22:00",
+     "Thứ Năm": "10:00–22:00",
+     "Thứ Sáu": "10:00–22:00",
+     "Thứ Bảy": "10:00–22:00",
+     "Chủ Nhật": "10:00–22:00",
+     "Thứ Hai": "10:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9QQMtCjKNZco5c8E5TbUWgwfdz3zv128IbO_Lz9T9hZlN4w66MUCWDl0sF8FJaQMsuzdp3LE7rcp4N12-YW6WVEzFU3Usoe9k1p76zpe0FpKaoltUvhzQGj5UyG25aK5t1L3EIraw",
+    "cid": "10190638749789803923",
+    "fid": "0x3175275517131683:0x8d6c6bf35b8d5593",
+    "placeId": "ChIJgxYTF1UndTERk1WNW_NrbI0"
+   },
+   {
+    "position": 6,
+    "title": "Quán nhậu Tới Bến - Thủ Đức",
+    "address": "7 Số 8, Thủ Đức, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.845924799999999,
+    "longitude": 106.7606284,
+    "rating": 4.5,
+    "ratingCount": 153,
+    "priceLevel": "200-300 N ₫",
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "phoneNumber": "+84 931 457 939",
+    "openingHours": {
+     "Thứ Hai": "10:00–03:00",
+     "Thứ Ba": "10:00–03:00",
+     "Thứ Tư": "10:00–03:00",
+     "Thứ Năm": "10:00–03:00",
+     "Thứ Sáu": "10:00–03:00",
+     "Thứ Bảy": "10:00–03:00",
+     "Chủ Nhật": "10:00–03:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9RFkVaxAXyGD-IuHEyv5JAIBt0kURZFqfPj115ixGgD8MdZFYc_ZT9u8Af-mLTRHAMdBWYsOfa7qEmP6y7GGjZWZRLg_sdy1yLhx-29Jf2nHzI4PKu4llXf3llSa4KPAJWFGj_rZvP4RBF8",
+    "cid": "3216396898319899752",
+    "fid": "0x317527b388699eef:0x2ca2eff015069c68",
+    "placeId": "ChIJ755piLMndTERaJwGFfDvoiw"
+   },
+   {
+    "position": 7,
+    "title": "Hủ Tiếu Mai (Since 1986)",
+    "address": "47/1 Đ. Võ Văn Ngân, Thủ Đức, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.8512892,
+    "longitude": 106.7564232,
+    "rating": 4.2,
+    "ratingCount": 39,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "openingHours": {
+     "Thứ Ba": "12:00–00:00",
+     "Thứ Tư": "12:00–00:00",
+     "Thứ Năm": "12:00–00:00",
+     "Thứ Sáu": "12:00–00:00",
+     "Thứ Bảy": "12:00–00:00",
+     "Chủ Nhật": "07:00–00:00",
+     "Thứ Hai": "12:00–00:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9TpqH74eiTHPEOHbKZH-6gPNsgyfGjSDbxNk-16lY30bTGjlmxoOaEgxH0mmItz6aew6Cq1OOz8ZdF2xx7rSYDiG_oB2TBMUJ4TEudyNikzCA-aJZz5jTuyPIp2in8E8btE-G4P",
+    "cid": "12643532583102942793",
+    "fid": "0x317527bd62b09907:0xaf76d9e561ed8e49",
+    "placeId": "ChIJB5mwYr0ndTERSY7tYeXZdq8"
+   },
+   {
+    "position": 8,
+    "title": "Cơm Niêu Đồng Tre",
+    "address": "24 Thống Nhất, Thủ Đức, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.844200899999999,
+    "longitude": 106.7692301,
+    "rating": 3.8,
+    "ratingCount": 102,
+    "priceLevel": "100-200 N ₫",
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "website": "https://www.facebook.com/profile.php?id=100076149379525&mibextid=LQQJ4d",
+    "phoneNumber": "+84 909 142 640",
+    "openingHours": {
+     "Thứ Ba": "09:00–21:30",
+     "Thứ Tư": "09:00–21:30",
+     "Thứ Năm": "09:00–21:30",
+     "Thứ Sáu": "09:00–21:30",
+     "Thứ Bảy": "09:00–21:30",
+     "Chủ Nhật": "09:00–21:30",
+     "Thứ Hai": "09:00–21:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9RBzRKIijVxM5noKzSoHyjm1C8ducFqybd7n8GQZpUKGxDMynEGSXoqRd64-pgoL0wdIFZdCDVQdNt8mdiJ2tJrPHo00yNckY9rKAgSxu2dUs-PDWZVihkx5MV4nae-c-Wsfuys9g",
+    "cid": "1410819525080800387",
+    "fid": "0x317527a710be6949:0x13943ce21aa05c83",
+    "placeId": "ChIJSWm-EKcndTERg1ygGuI8lBM"
+   },
+   {
+    "position": 9,
+    "title": "Quán ăn Hà vịt",
+    "address": "10 Khổng Tử, Thủ Đức, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.844364599999999,
+    "longitude": 106.7682894,
+    "rating": 4.2,
+    "ratingCount": 503,
+    "priceLevel": "100-200 N ₫",
+    "type": "Quán ăn nhỏ",
+    "types": [
+     "Quán ăn nhỏ"
+    ],
+    "website": "https://quanhavit.com/",
+    "phoneNumber": "+84 937 197 951",
+    "openingHours": {
+     "Thứ Ba": "11:00–23:00",
+     "Thứ Tư": "11:00–23:00",
+     "Thứ Năm": "11:00–23:00",
+     "Thứ Sáu": "11:00–23:00",
+     "Thứ Bảy": "11:00–23:00",
+     "Chủ Nhật": "11:00–23:00",
+     "Thứ Hai": "11:00–23:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9QOHG-KqdSQkiUX1MZES7FzrUbSEpvoY7AU78NEA8cJWJ_l11P-O7LNfTOaFa7Gsd072XJnmgCADi5IvqaSPPhQ9gLBsSLb_HydqQ1K7TfJiLw03ZEcaaBlE5GQWUqsosMQ39dR",
+    "cid": "7233503976557756389",
+    "fid": "0x31752741f30ceedb:0x6462918abc19bfe5",
+    "placeId": "ChIJ2-4M80EndTER5b8ZvIqRYmQ"
+   },
+   {
+    "position": 10,
+    "title": "Quán Ăn Gia Đình Thúy Kiều",
+    "address": "83 Đ. số 10, Hiệp Bình, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.8282407,
+    "longitude": 106.73161239999999,
+    "rating": 4.4,
+    "ratingCount": 181,
+    "priceLevel": "100-200 N ₫",
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "website": "https://quannhauthuduc.com/",
+    "phoneNumber": "+84 972 802 958",
+    "openingHours": {
+     "Thứ Ba": "15:00–00:00",
+     "Thứ Tư": "15:00–00:00",
+     "Thứ Năm": "15:00–00:00",
+     "Thứ Sáu": "15:00–00:00",
+     "Thứ Bảy": "15:00–00:00",
+     "Chủ Nhật": "15:00–00:00",
+     "Thứ Hai": "15:00–00:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9SPY1XfprWPBdcMl9v8Y1YXiOTlQgMsb3r2ZgMUXThLVpxnidDe1Gkyl-HenkVdlwSK0v1PWzz8XGs-hS_aSOPmakNHpwKlYEkAaZBGsVEOXedGaA8iNYhVCRTlxa-7LPkX0eDjEw",
+    "cid": "7980636561180245338",
+    "fid": "0x317527a4f14c0747:0x6ec0eaab4ea4bd5a",
+    "placeId": "ChIJRwdM8aQndTERWr2kTqvqwG4"
+   },
+   {
+    "position": 11,
+    "title": "Nhà Hàng Ẩm Thực Thuỷ Trúc | Nhà hàng ngon KDC Vạn Phúc | Nhà hàng Thủ Đức",
+    "address": "68 Đinh Thị Thi, Hiệp Bình, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.8447122,
+    "longitude": 106.7149417,
+    "rating": 3.8,
+    "ratingCount": 143,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "website": "http://nhahangthuytruc.com/",
+    "phoneNumber": "+84 774 773 838",
+    "openingHours": {
+     "Thứ Ba": "09:30–23:30",
+     "Thứ Tư": "09:30–23:30",
+     "Thứ Năm": "09:30–23:30",
+     "Thứ Sáu": "09:30–23:30",
+     "Thứ Bảy": "09:30–23:30",
+     "Chủ Nhật": "09:30–23:30",
+     "Thứ Hai": "09:30–23:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9RpT3DN325W5AXAbbOBxsJk8nyX0OX6dov5BDfhDcEdzZdklVy8gqzpXc71FCKySkJii8rcozWW7HKhFBIJQw93veaMClGxGbH6Bv_w8YMb-HDvVrF6lmVozHzsZ3o_-MNPQxI",
+    "cid": "14162736704338577455",
+    "fid": "0x317529b2feae7563:0xc48c25fec57cc82f",
+    "placeId": "ChIJY3Wu_rIpdTERL8h8xf4ljMQ"
+   },
+   {
+    "position": 12,
+    "title": "Quán Ốc Sam",
+    "address": "203 Đ. Hoàng Diệu 2, Linh Xuân, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.8541905,
+    "longitude": 106.77029429999999,
+    "rating": 4,
+    "ratingCount": 1499,
+    "priceLevel": "100-500 N ₫",
+    "type": "Nhà hàng hải sản",
+    "types": [
+     "Nhà hàng hải sản"
+    ],
+    "phoneNumber": "+84 767 099 299",
+    "openingHours": {
+     "Thứ Hai": "10:00–02:00",
+     "Thứ Ba": "10:00–02:00",
+     "Thứ Tư": "10:00–02:00",
+     "Thứ Năm": "10:00–02:00",
+     "Thứ Sáu": "10:00–02:00",
+     "Thứ Bảy": "10:00–02:00",
+     "Chủ Nhật": "10:00–02:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9Q3NeJm1EvL1A6NdxtFmfFIBBMBjgcHiPB5dBNKWYoTA2OddW71wHlrQDp0VnDEffb8PBmVrxDHSZ92jhqmqejOuvhI3YDEQYwuzeYl5IgQ2fSLHdVjkmFWCp4EHVwLN_j-Bg4",
+    "cid": "2779803379328950015",
+    "fid": "0x3175279e2640db09:0x2693d8720a551eff",
+    "placeId": "ChIJCdtAJp4ndTER_x5VCnLYkyY"
+   },
+   {
+    "position": 13,
+    "title": "Dê thật hoàng diệu 2",
+    "address": "127 Đ. Hoàng Diệu 2, khu phố 6, Linh Xuân, Hồ Chí Minh 00700, Việt Nam",
+    "latitude": 10.8557045,
+    "longitude": 106.76679399999999,
+    "rating": 4.1,
+    "ratingCount": 1187,
+    "priceLevel": "100-500 N ₫",
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "phoneNumber": "+84 902 724 545",
+    "openingHours": {
+     "Thứ Ba": "09:00–23:00",
+     "Thứ Tư": "09:00–23:00",
+     "Thứ Năm": "09:00–23:00",
+     "Thứ Sáu": "09:00–23:00",
+     "Thứ Bảy": "09:00–23:00",
+     "Chủ Nhật": "09:00–23:00",
+     "Thứ Hai": "09:00–23:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9TPpUjC2YRUkPm-SDIKCMCLTeNqphSO_QiIstBxIDepKdZved4mO1xsC9f9CpNCyZftUsNtGXKZaY2fb4yyRX00bC3A5_S8R2sl_PZBWBTFvNjj07yOP_A4itT89IDRMGM1sMvMcaVt80C2",
+    "cid": "2795123616598522479",
+    "fid": "0x3175279e9a34d7b3:0x26ca461ebea8fa6f",
+    "placeId": "ChIJs9c0mp4ndTERb_qovh5GyiY"
+   },
+   {
+    "position": 14,
+    "title": "Tiệm Lẩu Nhà An 69k",
+    "address": "82 Đ. Hoàng Diệu 2, Thủ Đức, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.8566295,
+    "longitude": 106.76498,
+    "rating": 4.5,
+    "ratingCount": 605,
+    "priceLevel": "100-200 N ₫",
+    "type": "Quán ăn nhỏ",
+    "types": [
+     "Quán ăn nhỏ"
+    ],
+    "phoneNumber": "+84 773 099 979",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9TtA3KsvlzDpp4dNA5FsFdkSbCBB05RHWB5M9wF7BJyt97wHQDZcz4KbJrgO_dNQCyGd6xsPHRsSYRPxjsH42bL2a3I-bSXQ9rMSx6wGiNXNTwgwiZzJT0v_wIgh29LIkGDWEDJyQ",
+    "cid": "16296678251949584840",
+    "fid": "0x3175270016b635c5:0xe2296e86d249f1c8",
+    "placeId": "ChIJxTW2FgAndTERyPFJ0oZuKeI"
+   },
+   {
+    "position": 15,
+    "title": "Đa ẩm thực quán - Món ăn tiện lợi trưa, chiều, tối, khuya",
+    "address": "Đ. Số 9, Thủ Đức, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.845965399999999,
+    "longitude": 106.7575353,
+    "rating": 5,
+    "ratingCount": 1,
+    "type": "Nhà hàng gia đình",
+    "types": [
+     "Nhà hàng gia đình"
+    ],
+    "phoneNumber": "+84 385 067 672",
+    "openingHours": {
+     "Thứ Ba": "10:00–00:00",
+     "Thứ Tư": "10:00–00:00",
+     "Thứ Năm": "10:00–00:00",
+     "Thứ Sáu": "10:00–00:00",
+     "Thứ Bảy": "10:00–00:00",
+     "Chủ Nhật": "10:00–00:00",
+     "Thứ Hai": "10:00–00:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9QgVj4jSIN6uQvxU3hbwt9rTWRdTZh8aQGjk_Rwdipn73_5qzw6u58HxXBzC0uP5GaXbspsDEozCOmfRmBjLcqXWVkh0xhEILW5bdqrRCPzDx8V-cirB0B97Dfose6SmLRkg_-UWK5B2AV1",
+    "cid": "18328230866333731492",
+    "fid": "0x31752700530032b9:0xfe5af4dda52c0aa4",
+    "placeId": "ChIJuTIAUwAndTERpAospd30Wv4"
+   },
+   {
+    "position": 16,
+    "title": "2 Đô Quán",
+    "address": "80 Đ. Số 23, Khu phố 4, Hiệp Bình, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.826514099999999,
+    "longitude": 106.7284122,
+    "rating": 4,
+    "ratingCount": 338,
+    "priceLevel": "100-200 N ₫",
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng",
+     "Gian hàng rong"
+    ],
+    "phoneNumber": "+84 867 557 877",
+    "openingHours": {
+     "Thứ Hai": "14:00–02:00",
+     "Thứ Ba": "14:00–02:00",
+     "Thứ Tư": "14:00–02:00",
+     "Thứ Năm": "14:00–02:00",
+     "Thứ Sáu": "14:00–02:00",
+     "Thứ Bảy": "14:00–02:00",
+     "Chủ Nhật": "14:00–02:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9Q5NcQUZUS17Q1N5__5AwR6h44eXmGW-MDoZiBLWo2wkkEjJMkixrWdLxPAJ022ahh01oswUbP-97BfOIudRAE2CrHTHKw7KUux4jJondMPAnH-UBblX7UkC7gQfhO3-K7-D5QW6g",
+    "cid": "12516447867826926931",
+    "fid": "0x3175262b6a3bfd4f:0xadb35b055384f553",
+    "placeId": "ChIJT_07aismdTERU_WEUwVbs60"
+   },
+   {
+    "position": 17,
+    "title": "Happy Thai Thủ Đức-Món Thái Ngon Tuyệt",
+    "address": "20 Đoàn Kết, Thủ Đức, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.8472378,
+    "longitude": 106.7685329,
+    "rating": 4.8,
+    "ratingCount": 2861,
+    "priceLevel": "200-300 N ₫",
+    "type": "Nhà hàng Thái Lan",
+    "types": [
+     "Nhà hàng Thái Lan"
+    ],
+    "website": "https://happythai.vn/",
+    "phoneNumber": "+84 908 894 554",
+    "openingHours": {
+     "Thứ Ba": "10:30–22:00",
+     "Thứ Tư": "10:30–22:00",
+     "Thứ Năm": "10:30–22:00",
+     "Thứ Sáu": "10:30–22:00",
+     "Thứ Bảy": "10:30–22:00",
+     "Chủ Nhật": "10:30–22:00",
+     "Thứ Hai": "10:30–22:00"
+    },
+    "bookingLinks": [
+     "https://booking.ipos.vn/public/booking/b4da873b-cc05-403b-90a2-d436b2ef4c81?source=IFRAME"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9QvyY4Weof3YkQvPLliDU6K68S3TSGqg-vKuLREdqMz6ICjbUqfE1vwVhJRRP2FZNhSHl6xH4mKm1ZKo1PlSGczUIEGwaO4lVO2TU7Y_w16khMI_GiMw6yuWrut_HdV16aQUNOpjZs05ieC",
+    "cid": "5639915676323265408",
+    "fid": "0x3175275599f8a249:0x4e45016d1267bb80",
+    "placeId": "ChIJSaL4mVUndTERgLtnEm0BRU4"
+   },
+   {
+    "position": 18,
+    "title": "Ốc Điền - Đường 17, Linh Chiểu",
+    "address": "98b Đường số 17, Thủ Đức, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.8566086,
+    "longitude": 106.7630913,
+    "rating": 4.8,
+    "ratingCount": 45,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Nhà hàng hải sản",
+    "types": [
+     "Nhà hàng hải sản"
+    ],
+    "openingHours": {
+     "Thứ Ba": "00:00–01:00, 16:00–23:59",
+     "Thứ Tư": "00:00–01:00, 16:00–23:59",
+     "Thứ Năm": "00:00–01:00, 16:00–23:59",
+     "Thứ Sáu": "00:00–01:00, 16:00–23:59",
+     "Thứ Bảy": "00:00–01:00, 16:00–23:59",
+     "Chủ Nhật": "00:00–01:00, 16:00–23:59",
+     "Thứ Hai": "16:00–23:59"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9SA4lD248g_1LuU2aa8zu04jA8J3vxpGVce4JB9uCoiC0FA4t2RMfql1z6HAnOaUolQYECqn21Y7q0JTBsHoiUFVADk4F9_Pk-YJHNkQKyrphBQJzxVCJTRE0g4iNP8QXMqcCENsFP-6yIP",
+    "cid": "10942682241552552737",
+    "fid": "0x317527004276eaf1:0x97dc378599b71321",
+    "placeId": "ChIJ8ep2QgAndTERIRO3mYU33Jc"
+   },
+   {
+    "position": 19,
+    "title": "Tiệm Nướng Tàu Lửa",
+    "address": "28 Đ. Linh Đông, Hiệp Bình, Hồ Chí Minh 71301, Việt Nam",
+    "latitude": 10.8447137,
+    "longitude": 106.74569679999999,
+    "rating": 4.4,
+    "ratingCount": 120,
+    "priceLevel": "100-200 N ₫",
+    "type": "Quán bia sân vườn",
+    "types": [
+     "Quán bia sân vườn"
+    ],
+    "website": "http://tiemnuongtaulua.com/",
+    "phoneNumber": "+84 784 334 732",
+    "openingHours": {
+     "Thứ Ba": "15:00–00:00",
+     "Thứ Tư": "15:00–00:00",
+     "Thứ Năm": "15:00–00:00",
+     "Thứ Sáu": "15:00–00:00",
+     "Thứ Bảy": "15:00–00:00",
+     "Chủ Nhật": "15:00–00:00",
+     "Thứ Hai": "15:00–00:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9T-xB-lxMB2seCFOTMJajQwzuPo7kAuLwpaStatBE6rz5pBSeuKdbLsexNU4rMm038dhvrFqUETzgmm75JRNyiSWW5YoUY-C68PJzS8KscqA7dzgS2SCajSlIIet6s1MldBmsPotMardTzD",
+    "cid": "1199901826350932354",
+    "fid": "0x31752783490477f7:0x10a6e85a8cfd6182",
+    "placeId": "ChIJ93cESYMndTERgmH9jFrophA"
+   },
+   {
+    "position": 20,
+    "title": "QUÁN NHẬU ĐÊM GÓC PHỐ",
+    "address": "71 Tân Lập, Đông Hòa, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.8780184,
+    "longitude": 106.81006409999999,
+    "rating": 4.8,
+    "ratingCount": 33,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Nhà hàng gia đình",
+    "types": [
+     "Nhà hàng gia đình"
+    ],
+    "website": "https://www.facebook.com/profile.php?id=61576840839189",
+    "phoneNumber": "+84 972 088 075",
+    "openingHours": {
+     "Thứ Ba": "15:00–00:00",
+     "Thứ Tư": "15:00–00:00",
+     "Thứ Năm": "15:00–00:00",
+     "Thứ Sáu": "15:00–00:00",
+     "Thứ Bảy": "15:00–00:00",
+     "Chủ Nhật": "15:00–01:00",
+     "Thứ Hai": "15:00–00:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9Q0iEr-5De1u-jrGKuFDgwNNnC_E4otDHfADV7nAEcpG6VW0YpkCtFm5-PbKNcEx8npoe8wAm3CEzgF3vrbVTI6FyORe9ConxUZMzVJpj-xgddxCqzCYo7UpaVj5UPjM7zVh0mW3gGhxPGe",
+    "cid": "10800665786896074301",
+    "fid": "0x3174d9004d6db47b:0x95e3ac4f0da7c63d",
+    "placeId": "ChIJe7RtTQDZdDERPcanDU-s45U"
+   }
+  ],
+  "credits": 3
+ }
+}

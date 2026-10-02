@@ -1,0 +1,33 @@
+{
+  "id": "T5b",
+  "text": "3–5 người",
+  "parent": "T5",
+  "status": 200,
+  "ms": 4705,
+  "evidenceId": "cf965a8e-70cd-4b32-91e6-b6716bd08684",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Cảm ơn bạn! Mình thấy bạn đang ở **Quận 1, TP.HCM**. Với nhóm 3–5 người, mình sẽ tìm những chỗ vui chơi phù hợp.\n\n**Bạn muốn chơi gì cụ thể?** Chọn một trong những loại này để mình gợi ý:\n\n- 🎬 **Rạp phim** – xem phim cùng nhau\n- 🎤 **Karaoke** – hát hò, vui vẻ\n- 🍽️ **Quán ăn/cafe** – ăn uống, trò chuyện\n- 🎮 **Game, bowling, billiard** – chơi game, thể thao\n- 🏊 **Công viên, khu vui chơi** – hoạt động ngoài trời\n- 🍺 **Bar, lounge** – thư giãn buổi tối\n\nHay bạn chưa biết chơi gì, muốn mình gợi ý luôn?",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "đi chơi ở đâu"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình hiểu bạn muốn tìm chỗ chơi gần đây! 🎉 Để gợi ý đúng ý bạn, mình cần biết thêm một chút:\n\n**Bạn thích loại gì?**\n- 🍽️ Quán ăn/cafe\n- 🎬 Rạp phim, karaoke, bar\n- 🏊 Công viên, bể bơi, khu vui chơi\n- 💆 Spa, massage\n- 🛍️ Mua sắm\n\nHay bạn muốn đi với ai (bạn bè, gia đình, người yêu) để mình gợi ý phù hợp hơn?\n\n"
+    },
+    {
+      "role": "user",
+      "content": "3–5 người"
+    },
+    {
+      "role": "assistant",
+      "content": "Cảm ơn bạn! Mình thấy bạn đang ở **Quận 1, TP.HCM**. Với nhóm 3–5 người, mình sẽ tìm những chỗ vui chơi phù hợp.\n\n**Bạn muốn chơi gì cụ thể?** Chọn một trong những loại này để mình gợi ý:\n\n- 🎬 **Rạp phim** – xem phim cùng nhau\n- 🎤 **Karaoke** – hát hò, vui vẻ\n- 🍽️ **Quán ăn/cafe** – ăn uống, trò chuyện\n- 🎮 **Game, bowling, billiard** – chơi game, thể thao\n- 🏊 **Công viên, khu vui chơi** – hoạt động ngoài trời\n- 🍺 **Bar, lounge** – thư giãn buổi tối\n\nHay bạn chưa biết chơi gì, muốn mình gợi ý luôn?"
+    }
+  ]
+}

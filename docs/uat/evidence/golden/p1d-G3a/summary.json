@@ -1,0 +1,49 @@
+{
+  "label": "p1d-G3a",
+  "base": "http://localhost:3007",
+  "calls": 1,
+  "at": "2026-09-27T15:02:52.078Z",
+  "cases": [
+    {
+      "id": "G3a",
+      "group": "food-hours-budget",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 15131,
+          "usage": {
+            "promptTokens": 3568,
+            "completionTokens": 620
+          },
+          "tools": [
+            "search_places"
+          ],
+          "cards": [
+            [
+              "OZ Coffee House 2",
+              "ViDa Cafe | CÀ PHÊ NGON QUẬN 3 | CÀ PHÊ SÀI GÒN QUẬN 3",
+              "Barista Collective",
+              "The Hummingbird Café & Roastery",
+              "Winnie Coffee & Tea | QUÁN CAFE ĐẸP QUẬN 3 | QUÁN CAFE CHECK IN QUẬN 3",
+              "The Coffee House - Cao Thắng",
+              "Tiệm cà phê Cư Xá 30",
+              "Phê La - Trương Định"
+            ],
+            [
+              "OZ Coffee House 2",
+              "ViDa Cafe | CÀ PHÊ NGON QUẬN 3 | CÀ PHÊ SÀI GÒN QUẬN 3",
+              "Barista Collective",
+              "The Hummingbird Café & Roastery",
+              "Winnie Coffee & Tea | QUÁN CAFE ĐẸP QUẬN 3 | QUÁN CAFE CHECK IN QUẬN 3",
+              "The Coffee House - Cao Thắng",
+              "Tiệm cà phê Cư Xá 30",
+              "Phê La - Trương Định"
+            ]
+          ],
+          "dup": false,
+          "chars": 530
+        }
+      ]
+    }
+  ]
+}

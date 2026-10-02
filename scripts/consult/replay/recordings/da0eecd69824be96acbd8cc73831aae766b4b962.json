@@ -1,0 +1,387 @@
+{
+ "url": "https://google.serper.dev/shopping",
+ "request": {
+  "q": "quà tặng nam cao cấp sang trọng phụ kiện",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 20
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T00:48:21.116Z",
+ "body": {
+  "searchParameters": {
+   "q": "quà tặng nam cao cấp sang trọng phụ kiện",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "shopping",
+   "num": 40,
+   "page": 1,
+   "engine": "google"
+  },
+  "shopping": [
+   {
+    "title": "Set quà tặng phụ kiện thời trang cho nam 5 món cao cấp và sang trọng",
+    "source": "Thomas Nguyen",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+t%E1%BA%B7ng+nam+cao+c%E1%BA%A5p+sang+tr%E1%BB%8Dng+ph%E1%BB%A5+ki%E1%BB%87n&prds=localAnnotatedOfferId:1,catalogid:6300901360403482303,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "1.438.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSiniixpk6UZ6QVsY8sJKbK_L5rSbqqZttz1oOZuq_v3zW7EuhAPZr0sKNMb8VMiQycjTtHRVIWZl5HHiAX_3faRsno5oNYgVY1erkXMQVKSRV6pFlaZBmR65g",
+    "rating": 5,
+    "ratingCount": 1,
+    "productId": "6300901360403482303",
+    "position": 1
+   },
+   {
+    "title": "Set Quà Tặng Hương Thanh Cao Cấp, Sang Trọng",
+    "source": "happynuts.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+t%E1%BA%B7ng+nam+cao+c%E1%BA%A5p+sang+tr%E1%BB%8Dng+ph%E1%BB%A5+ki%E1%BB%87n&prds=localAnnotatedOfferId:1,productid:15009060374398308489,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "719.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQF1241k8zL7LwQoGTIuAJ3VdhoKw2JhKBAoOG-32UJ0d4sL_i-T2CZfPbUOiflhiuGtuqNuBuxx9tMK9AYNMP5Ys1-YcN8-JyO57QB2TmGJJRYNLdNISR3-g",
+    "productId": "15009060374398308489",
+    "position": 2
+   },
+   {
+    "title": "Quà tặng tân gia sang trọng",
+    "source": "Tuấn Store",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+t%E1%BA%B7ng+nam+cao+c%E1%BA%A5p+sang+tr%E1%BB%8Dng+ph%E1%BB%A5+ki%E1%BB%87n&prds=localAnnotatedOfferId:1,catalogid:2535590662465790057,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "980.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRe276k5zHdtKeM8ZFcj_-UJlQuKY2fsFABpmUbAqWplqqLHhJ-QoEO1cY8a7Xj2RqZJZ1h1wApB39LTP72iuh0qpk6VBO0wgK-FT9FLOE",
+    "productId": "2535590662465790057",
+    "position": 3
+   },
+   {
+    "title": "Quà tặng sếp nam sang trọng quả cầu đỏ để bàn làm việc 23cm",
+    "source": "Decora.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+t%E1%BA%B7ng+nam+cao+c%E1%BA%A5p+sang+tr%E1%BB%8Dng+ph%E1%BB%A5+ki%E1%BB%87n&prds=localAnnotatedOfferId:1,productid:4168259395091180108,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "7.150.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQa8GOQprXxmfCAYy9VpOOs0oqOEnynoqvYOn1HrkO8I69XAS_TP0jCXPxAKWTELrglcl7PyHMHeG7QIAZvRmxehRUY6ANbDls51ZmH5vw",
+    "productId": "4168259395091180108",
+    "position": 4
+   },
+   {
+    "title": "Set quà tặng 2 cà vạt kèm phụ kiện vest sang trọng, lịch sự (DS-1 DS-2)",
+    "source": "Cà vạt Hàn Quốc",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+t%E1%BA%B7ng+nam+cao+c%E1%BA%A5p+sang+tr%E1%BB%8Dng+ph%E1%BB%A5+ki%E1%BB%87n&prds=localAnnotatedOfferId:1,productid:15398127451531602862,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "1.400.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSv-zWxMq28-wUK4GBn2Tz863BWmRj1RcLueki7ZVyXA4BMVZsW0A8XYnI7vv1vsNOUHiyL7Cp9CXM3ItXcAC9khrZrEwh_ibKLEzZCc_w4odXaq9g2o_bZ5tU",
+    "productId": "15398127451531602862",
+    "position": 5
+   },
+   {
+    "title": "Set 3 quà tặng satin - GIFT_SET001",
+    "source": "iBasic",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+t%E1%BA%B7ng+nam+cao+c%E1%BA%A5p+sang+tr%E1%BB%8Dng+ph%E1%BB%A5+ki%E1%BB%87n&prds=localAnnotatedOfferId:1,productid:13438005956529809919,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "99.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSIPoFn65w4PJbrM1fseswwssAlJON3FObNh8ZdAnIq-ev9ojqYIy9KhB52tEmVxD0Lapvcx9a4xJYQeMIKHwwJ_nvYaRGYAlmAGtQwWYLVgAtOf9xbHCXC",
+    "productId": "13438005956529809919",
+    "position": 6
+   },
+   {
+    "title": "Quà tặng nhân viên 026",
+    "source": "C.Ty Quà Tặng 102",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+t%E1%BA%B7ng+nam+cao+c%E1%BA%A5p+sang+tr%E1%BB%8Dng+ph%E1%BB%A5+ki%E1%BB%87n&prds=localAnnotatedOfferId:1,productid:5566717318727434453,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "150.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSVKCe7Ze_GmIJGh2DGdEkTFm2AqMFJdgZkwNijkYStPLEmeopwjHHGj4u8DJL3Vh7HjFAMVWkGHk9GuJO9mfb6n0l-LGkx",
+    "productId": "5566717318727434453",
+    "position": 7
+   },
+   {
+    "title": "Set Quà Tặng Trân Quý Cao Cấp",
+    "source": "happynuts.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+t%E1%BA%B7ng+nam+cao+c%E1%BA%A5p+sang+tr%E1%BB%8Dng+ph%E1%BB%A5+ki%E1%BB%87n&prds=localAnnotatedOfferId:1,productid:14578833696091936131,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "549.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRl3jTfQNQ28X81ZiNFzod4reAutWwrvO7kFFdJt9BTHVWQ5wWplJc0aQ7OoWDQETw3njDHFjS-OIZ3-kNq7lIdrIq2rTnHHEzjmwf9INBJqLgaiDioCHRxKg",
+    "productId": "14578833696091936131",
+    "position": 8
+   },
+   {
+    "title": "Quà tặng 20/10 cho đối tác nam, sếp nam, đồng nghiệp nam, người yêu nam ,bạn bè, anh trai hoặc người thân quà tặng Set cà vạt nam 4 món cao cấp làm",
+    "source": "AGANA",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+t%E1%BA%B7ng+nam+cao+c%E1%BA%A5p+sang+tr%E1%BB%8Dng+ph%E1%BB%A5+ki%E1%BB%87n&prds=localAnnotatedOfferId:1,productid:3101665047406711629,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "475.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSi2tTT6rVxij9UeqvmKJMCdfMMsbCD7vZwIMf28F2oS9w-10ESc567_aBzyT-Bcwho-Ts-mPUAgp3Rx_2uS-1v2yTjQW9Hi8FlZ8Zwd0N3HOJ-ni7uSTagxQ",
+    "productId": "3101665047406711629",
+    "position": 9
+   },
+   {
+    "title": "Bộ quà tặng phong cách Á Đông sang trọng, độc đáo 2026",
+    "source": "Thành Phát Gift & Decor",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+t%E1%BA%B7ng+nam+cao+c%E1%BA%A5p+sang+tr%E1%BB%8Dng+ph%E1%BB%A5+ki%E1%BB%87n&prds=localAnnotatedOfferId:1,productid:7069679031532310830,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "685.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSASk46xhr90g6Jz4S-b9AFmc58EVBxmoq51ybBAkoGhN7-4eOtq3tKxXVVpguwQOHtbHvUnTWrvYwolFeLXHUOMt8Zgs5G_ajxtZAtP9xuMDHQs-9JxDoR",
+    "productId": "7069679031532310830",
+    "position": 10
+   },
+   {
+    "title": "Set quà tặng 4 cà vạt kèm phụ kiện vest cao cấp (CVL-64 CVL-67 ES-32 ES-33)",
+    "source": "Cà vạt Hàn Quốc",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+t%E1%BA%B7ng+nam+cao+c%E1%BA%A5p+sang+tr%E1%BB%8Dng+ph%E1%BB%A5+ki%E1%BB%87n&prds=localAnnotatedOfferId:1,productid:1937365525647627648,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "1.680.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcT32jaJX5RHYyMoquHJStWQwwenBS6LPF201KEcw1kogCdKX4myTJnE9sY9MdhRoHL9jVofNiakEXZXXKYtOwBvR6WXetDTivGu6hT-5W_W",
+    "productId": "1937365525647627648",
+    "position": 11
+   },
+   {
+    "title": "Bộ combo quà tặng-Model: RD-KT.01",
+    "source": "rangdong.com.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+t%E1%BA%B7ng+nam+cao+c%E1%BA%A5p+sang+tr%E1%BB%8Dng+ph%E1%BB%A5+ki%E1%BB%87n&prds=localAnnotatedOfferId:1,productid:14720461151840722927,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "428.400 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSn-L_cs3_NRBdPx4oitkWxshlkYJ08cKTu1AuATR6ZI9KjYTpr3csvYRTPubRRA35WT8Ql7U72OmERu_X8QnB-Zz4s8F-E_3qMj51hAv3z4uRLW0-uHpnl",
+    "productId": "14720461151840722927",
+    "position": 12
+   },
+   {
+    "title": "Set Quà Tặng Sang Trọng Cho Bạn Gái",
+    "source": "Thegioisonmoi.com",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+t%E1%BA%B7ng+nam+cao+c%E1%BA%A5p+sang+tr%E1%BB%8Dng+ph%E1%BB%A5+ki%E1%BB%87n&prds=localAnnotatedOfferId:1,productid:5916801345557389521,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "3.778.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQAJagau_-8-cBjVSILHVak_FSiiD8lgbqojsZ2WBtX2hf_TNbHYOsZ5m0I6dt1MstwHe2r_ALdv8BvUxIjO7CLOQ315dweS_v8VyBWaspsjyNKiN_fouEL",
+    "productId": "5916801345557389521",
+    "position": 13
+   },
+   {
+    "title": "Giftbox set quà tặng tự nhiên tặng hội nghị hội thảo tổng kết quà tặng cám ơn cho đối tác",
+    "source": "Hapaku",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+t%E1%BA%B7ng+nam+cao+c%E1%BA%A5p+sang+tr%E1%BB%8Dng+ph%E1%BB%A5+ki%E1%BB%87n&prds=localAnnotatedOfferId:1,catalogid:7221437869222408439,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "590.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTrgd_3ntqsR3atyCzxeILwI__82sbQ-pStXtysZx1z4O8F_BczFbEvD5Y05xa0tlAAJ0e6P7t2uvcH5qfJjsGq1h34MSeLguJNAXIIZU_7-nDjN2vQ-jqRcw",
+    "productId": "7221437869222408439",
+    "position": 14
+   },
+   {
+    "title": "Quà tặng nhà mới ý nghĩa",
+    "source": "Tuấn Store",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+t%E1%BA%B7ng+nam+cao+c%E1%BA%A5p+sang+tr%E1%BB%8Dng+ph%E1%BB%A5+ki%E1%BB%87n&prds=localAnnotatedOfferId:1,catalogid:410794407559456700,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "1.080.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQ98igdaMka_p-mDQ1uQuGD-G9NP6Cpa5mM3_ZpeDMrpJsXMMk8ew3n8RQDyZNd4qumpFUekp9JtuLOD-jIAfkD3qq0lX7b0ghvXeJAhnrL",
+    "productId": "410794407559456700",
+    "position": 15
+   },
+   {
+    "title": "Bộ quà tặng phong thủy thời trang cao cấp cho người mệnh Kim và thủy",
+    "source": "Thomas Nguyen",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+t%E1%BA%B7ng+nam+cao+c%E1%BA%A5p+sang+tr%E1%BB%8Dng+ph%E1%BB%A5+ki%E1%BB%87n&prds=localAnnotatedOfferId:1,catalogid:13699358177507284468,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "3.314.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSQOQepPCubDb_h4wbe123bUm94FFuhRyY-HHb0I6gfgimTpw3pBS4YcwUoH7bsKMfIbsVGTvCZkkaqAnLMqRN5pAAQhbkM_DOw_n28ZMkqF5PBG6W3MrGoVg",
+    "productId": "13699358177507284468",
+    "position": 16
+   },
+   {
+    "title": "Set Quà Tặng Nữ Thư Giãn \"Relaxing Time\", Hộp Quà Sang Trọng",
+    "source": "Chus.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+t%E1%BA%B7ng+nam+cao+c%E1%BA%A5p+sang+tr%E1%BB%8Dng+ph%E1%BB%A5+ki%E1%BB%87n&prds=localAnnotatedOfferId:1,productid:8682176828268647032,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "396.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSsODtJu2Fv5PlBBWvpHmC4Qc-b0vZcOnuPZn_iEjAMPS8XytIOIdeXZogycgfkOEu3PMn5AEIk7Dwxm7MiZl7dDbjeamgGpcSTHhXO0VI",
+    "productId": "8682176828268647032",
+    "position": 17
+   },
+   {
+    "title": "Bộ Quà Tặng 16 Món Galaxy",
+    "source": "bepxinh.net",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+t%E1%BA%B7ng+nam+cao+c%E1%BA%A5p+sang+tr%E1%BB%8Dng+ph%E1%BB%A5+ki%E1%BB%87n&prds=localAnnotatedOfferId:1,catalogid:9551127068499678205,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "1.180.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRdLug4-ai9t8h17B6PitpB0NTTEtoFhS2u40tXRKmttE2xGC5IO5dyDVsG4OESNgXjJg-BRyIVlu-YQbAc3835PAvVjdWnKi3TNeuH8JRmWDsFNUi9iSEaeg",
+    "productId": "9551127068499678205",
+    "position": 18
+   },
+   {
+    "title": "Bộ quà tặng Bộ Công thương sang trọng, giá rẻ 2026",
+    "source": "Thành Phát Gift & Decor",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+t%E1%BA%B7ng+nam+cao+c%E1%BA%A5p+sang+tr%E1%BB%8Dng+ph%E1%BB%A5+ki%E1%BB%87n&prds=localAnnotatedOfferId:1,productid:10161868034610205619,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "320.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTcPpKclNk4_HxufQlQRIBvb08mPsZdEL1qa-hnoaxAoRCg3YZcer2E1wk8Cn4lHzQG1xfHz_TYRdLjWAsg_ngX1WTxEy1fgi6X-xA6OUI",
+    "productId": "10161868034610205619",
+    "position": 19
+   },
+   {
+    "title": "Quà Tặng Farewell Quà Sinh Nhật Quà Tặng Sếp Khung Ảnh Đẹp",
+    "source": "Quà tặng Sumoo",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+t%E1%BA%B7ng+nam+cao+c%E1%BA%A5p+sang+tr%E1%BB%8Dng+ph%E1%BB%A5+ki%E1%BB%87n&prds=localAnnotatedOfferId:1,catalogid:17158027477690182056,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "820.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRKLl_twI0M2xz8y955RlYT_K85wK86jv2dUg90B917XFtVKYIKktkLvPJFilrRF4tDLQ6iG_E4K8tdejPNx_yvgP8x5cIrjDVNRIPfLUgbu_lWKRDocDWx",
+    "productId": "17158027477690182056",
+    "position": 20
+   },
+   {
+    "title": "Set quà tặng 4 cà vạt kèm phụ kiện vest cao cấp (CVL-75 ES-38 ES-3 ES-24)",
+    "source": "Cà vạt Hàn Quốc",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+t%E1%BA%B7ng+nam+cao+c%E1%BA%A5p+sang+tr%E1%BB%8Dng+ph%E1%BB%A5+ki%E1%BB%87n&prds=localAnnotatedOfferId:1,productid:6342871051195595295,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "1.800.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTiyGmXL4hU7Qf4gzximljeMXbwtf9aFq6W4nUC7QtAp0yl0_0jxJXFuIASU95DAfYuXXH7vuHEp0YBtfgrMcD5mkTN2286agsiM9px19JaQDv6bhwRUjGW-lI",
+    "productId": "6342871051195595295",
+    "position": 21
+   },
+   {
+    "title": "Quà tặng 20/11 cho đối tác nam, sếp nam, đồng nghiệp nam, người yêu nam ,bạn bè, anh trai hoặc người thân quà tặng Cà vạt nam chống nhăn dễ thắt thời",
+    "source": "AGANA",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+t%E1%BA%B7ng+nam+cao+c%E1%BA%A5p+sang+tr%E1%BB%8Dng+ph%E1%BB%A5+ki%E1%BB%87n&prds=localAnnotatedOfferId:1,productid:10845944043233637141,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "265.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSYixRc1z101kP4QkRshYzL-NxJ5pJi5tdr3w1r9lmAnsHsCrUeScE0HxviZGPV9aCojyvfMdeZyAFyGm23uWnLj31BMzmnwl5mBG-LtZhRNgcVO2LNkgNO5A",
+    "productId": "10845944043233637141",
+    "position": 22
+   },
+   {
+    "title": "Quà tặng tân gia nhà sếp thêm phần sang trọng với tháp đá tự nhiên",
+    "source": "Decora.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+t%E1%BA%B7ng+nam+cao+c%E1%BA%A5p+sang+tr%E1%BB%8Dng+ph%E1%BB%A5+ki%E1%BB%87n&prds=localAnnotatedOfferId:1,productid:1425194993347867212,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "8.800.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSLlJ_xJDgPz9wTrlFA0vgkz_fUbv40sy-MVa1BXL4yVek2yXq0g06s-E3CX4-6tycVBFO8YuBwxrBb9koOS9St0d6uhwVJAPKTC2tZwMo",
+    "productId": "1425194993347867212",
+    "position": 23
+   },
+   {
+    "title": "Bộ Quà Tặng Bạn Trai Cực Đỉnh",
+    "source": "Thegioisonmoi.com",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+t%E1%BA%B7ng+nam+cao+c%E1%BA%A5p+sang+tr%E1%BB%8Dng+ph%E1%BB%A5+ki%E1%BB%87n&prds=localAnnotatedOfferId:1,productid:16607383639513715133,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "1.999.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTF7M-fmGU0Gumgc7xAmNXa8pX87tQS5sx-BtvvZ5aNJTrJINZq01ymrzZI0nXLVJBT8oE6c6TbHUCYl9n0YuoqDLOhaZyxKz3G35eJv6DpJGgTyVr7RoW15A",
+    "productId": "16607383639513715133",
+    "position": 24
+   },
+   {
+    "title": "Set quà: Bản lĩnh - Quà tặng sếp nam, đối tác, người nước ngoài",
+    "source": "Bá Minh Silk",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+t%E1%BA%B7ng+nam+cao+c%E1%BA%A5p+sang+tr%E1%BB%8Dng+ph%E1%BB%A5+ki%E1%BB%87n&prds=localAnnotatedOfferId:1,productid:11400752411938702912,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "2.640.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTE509vnUmzIPbPLBflIZPdxlEv5JF9_dSrRjOtym8lLhwpfQa2Bq1O2obcHGAGXwJa-XLwc8smkcWUXVv95izlbap6GRYU8vVHkIO38jKLU-O72IWw5gf25Q",
+    "productId": "11400752411938702912",
+    "position": 25
+   },
+   {
+    "title": "Bộ quà tặng sang trọng, gợi cảm dành cho giai đoạn tự tin Bath & Body Works",
+    "source": "Chiaki.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+t%E1%BA%B7ng+nam+cao+c%E1%BA%A5p+sang+tr%E1%BB%8Dng+ph%E1%BB%A5+ki%E1%BB%87n&prds=localAnnotatedOfferId:1,productid:297481131400172598,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "1.198.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRbC-wBxT3n4GxGJRZE3D_wF2-pJ29_rkEbOm1_M1GY24gPD1gxXhXz_91KWfqAUSiXEZKnDjVq9U2-53Fe4mljTZr-i5QvQdbNHtZMVdBM_FhbrEah7Wn7qQ",
+    "productId": "297481131400172598",
+    "position": 26
+   },
+   {
+    "title": "Quà Tặng Cho Doanh Nhân Ống Đựng Bút Quà Tặng Cao Cấp Cho Doanh Nhân QDN 89",
+    "source": "quatanghoanggia.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+t%E1%BA%B7ng+nam+cao+c%E1%BA%A5p+sang+tr%E1%BB%8Dng+ph%E1%BB%A5+ki%E1%BB%87n&prds=localAnnotatedOfferId:1,productid:13446852928444875810,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "1.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcT8TWazopjsS0QDm5JFp2GEWNX4DUSAeRzfl_56PGguXNHWXtZ3aT6TuCx-wXIbYGSqOfiWJvt7WeiIEB-1L9IaR-QH8Oprb6Re3fLkIGqD",
+    "productId": "13446852928444875810",
+    "position": 27
+   },
+   {
+    "title": "Bộ Quà Tặng Platium - Chạm Bản Sắc Mở Tinh Hoa",
+    "source": "Thiên Mộc Hương Agarwood Jewerly",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+t%E1%BA%B7ng+nam+cao+c%E1%BA%A5p+sang+tr%E1%BB%8Dng+ph%E1%BB%A5+ki%E1%BB%87n&prds=localAnnotatedOfferId:1,productid:10269831369717539191,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "5.000.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcR9LS1sf8W22jWQSFUKL_6z45Mq33D-zYtrvwnW_8a1O1TLTxMh-eTlqG4vh5-2ZZ3OHqudetxT0aLtKvzZ9ydFkneWKdP1",
+    "productId": "10269831369717539191",
+    "position": 28
+   },
+   {
+    "title": "Set quà tặng 4 cà vạt kèm phụ kiện vest cao cấp (CVL-56 KL-8 KL-14 CBL-21)",
+    "source": "Cà vạt Hàn Quốc",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+t%E1%BA%B7ng+nam+cao+c%E1%BA%A5p+sang+tr%E1%BB%8Dng+ph%E1%BB%A5+ki%E1%BB%87n&prds=localAnnotatedOfferId:1,productid:14458189787385226779,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "1.570.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcScBTYbBkXwol6r3KNJGSBSewN4wDqYXiSWJxapKgVIsMo2dE0WdDBbRzTyUzTw4bx1YGp2T3Pho-8gljMdqEfaWJhWkX56YUJCPy3GzGJh-49Vd93iwo4dUHAX",
+    "productId": "14458189787385226779",
+    "position": 29
+   },
+   {
+    "title": "Quà tặng Sếp Năm Nhâm Dần 2022 Hổ Tài Lộc Dát Vàng 9999 | Quà Tặng Đại Việt",
+    "source": "Qùa Tặng Đại Việt",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+t%E1%BA%B7ng+nam+cao+c%E1%BA%A5p+sang+tr%E1%BB%8Dng+ph%E1%BB%A5+ki%E1%BB%87n&prds=localAnnotatedOfferId:1,productid:16421098336370149653,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "14.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcR0ypA3PVX5r6vty_3hKXiqzUoyEb3GZxLOzhlXVwwIIuX2Uv_wQyKow8dvePEIYuCmwHI_4j0B0ApTyCdhZr4faM09Pna-oDvdQvN4UeEi",
+    "productId": "16421098336370149653",
+    "position": 30
+   },
+   {
+    "title": "Set Quà Tặng Thể Thao GS16 Cho Nữ – Nhẹ Nhàng & Năng Động - CÔNG TY CỔ PHẦN QUÀ TẶNG VUÔNG TRÒN",
+    "source": "Vuông Tròn Gift",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+t%E1%BA%B7ng+nam+cao+c%E1%BA%A5p+sang+tr%E1%BB%8Dng+ph%E1%BB%A5+ki%E1%BB%87n&prds=localAnnotatedOfferId:1,productid:13237222599830051633,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "225.800 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQ9WCOUGvIBxcukjM0e1JkMh7LELGs4_c-_BDCLJfJBEwkb3L91OifFGmJ53uLlmFuHpfjlr9XoB28v6xZloTetbktpgZkx2nZdUHEmnsDE",
+    "productId": "13237222599830051633",
+    "position": 31
+   },
+   {
+    "title": "Hộp Quà Tặng Tỏa Hương Thương Hiệu, Quà Tặng Khách Hàng Nữ Sang Trọng",
+    "source": "Chus.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+t%E1%BA%B7ng+nam+cao+c%E1%BA%A5p+sang+tr%E1%BB%8Dng+ph%E1%BB%A5+ki%E1%BB%87n&prds=localAnnotatedOfferId:1,productid:17520693859863008602,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "350.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSllB5Wi4q2ZwNBDf0KsUZ_yS8ekDs_bvQtGDH7xflo8xBfKvVpt3N-6oypYIDpRF6JwgBTEQrnBnJzMBOSYGOUTRijPtH1NGTyS_LE8bMz",
+    "productId": "17520693859863008602",
+    "position": 32
+   },
+   {
+    "title": "Set Quà Tặng Vạn Sự Hanh Thông",
+    "source": "Sâm Thịnh Phát",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+t%E1%BA%B7ng+nam+cao+c%E1%BA%A5p+sang+tr%E1%BB%8Dng+ph%E1%BB%A5+ki%E1%BB%87n&prds=localAnnotatedOfferId:1,productid:9621926390633864817,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "2.220.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcR2w7A8eeV8h2ulSIGWKJ6j5DNta73yLhERa2MJAR-AZbNBsED6RiL3q5Y-miid97opMG9TwOkYCFRkYSz5BLNW3oc6BMwaJe7ZgbPYAG5a",
+    "productId": "9621926390633864817",
+    "position": 33
+   },
+   {
+    "title": "Set quà tặng 4 cà vạt kèm phụ kiện vest cao cấp (CVL-30 CVL-65 CS-96 CS-92)",
+    "source": "Cà vạt Hàn Quốc",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+t%E1%BA%B7ng+nam+cao+c%E1%BA%A5p+sang+tr%E1%BB%8Dng+ph%E1%BB%A5+ki%E1%BB%87n&prds=localAnnotatedOfferId:1,productid:17784501734675862937,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "1.600.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcS5mxssIlekRm91waNYVWAg50O0Dr6zoCD6oMk3FANH8xma6uys5jXp-BVzktdH53JqzwSlTjDhDfa2hvuOPhsGQ90T-vAeBe8xCua6SVuuCRULQolxli3PahU",
+    "productId": "17784501734675862937",
+    "position": 34
+   },
+   {
+    "title": "Bộ Quà Tặng True Blue Spa Gift Set",
+    "source": "Bath & Body Works VN",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+t%E1%BA%B7ng+nam+cao+c%E1%BA%A5p+sang+tr%E1%BB%8Dng+ph%E1%BB%A5+ki%E1%BB%87n&prds=localAnnotatedOfferId:1,productid:15827148169777371050,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "530.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTosRJ-eTm3lBKbZDl8cBe-1AuyvXRB7sM0jcp7neSgO3OaBdiC0scurZYf3cle66jFhZ-6oxUICs9kLooXQ2r_t0IOQ2sRBZG_u15B1IhSpSSAWxN8cLtb",
+    "productId": "15827148169777371050",
+    "position": 35
+   },
+   {
+    "title": "Quà tặng 20/10 cho sếp nữ, vợ, cô giáo, giáo viên nữ, mẹ và bạn gái, người yêu nữ quà tặng khăn quàng choàng cổ lụa cao cấp cho nữ văn phòng công sở",
+    "source": "AGANA",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+t%E1%BA%B7ng+nam+cao+c%E1%BA%A5p+sang+tr%E1%BB%8Dng+ph%E1%BB%A5+ki%E1%BB%87n&prds=localAnnotatedOfferId:1,productid:12545422979150994964,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "495.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQWlHcdmiCs2tTb4qJMID3Z25-SZ7bANo3fgRC8BjK-ti2GSLY3Lc-bskI6kXMQyFcPaXr4yfFdrY08wgF2A5xR8N9siHe0wK9wGFowcOy5gzqBW-wpmsdHnLc",
+    "productId": "12545422979150994964",
+    "position": 36
+   },
+   {
+    "title": "Set quà tặng golf cao cấp CG006A",
+    "source": "Clickgolf",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+t%E1%BA%B7ng+nam+cao+c%E1%BA%A5p+sang+tr%E1%BB%8Dng+ph%E1%BB%A5+ki%E1%BB%87n&prds=localAnnotatedOfferId:1,productid:2532747639125295108,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "1.700.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQQQKaDsM1uAVOk01653ynP04hD--4jo-KS-4FUzC_0NAnCmkE-ufjqJWzdwLshASz0IXXaFoqlDj5V1EFLMfX6gWo0cLgIVyJbBmZTqiKU",
+    "productId": "2532747639125295108",
+    "position": 37
+   },
+   {
+    "title": "Bộ quà tặng phong thủy thời trang cao cấp cho người mệnh thủy",
+    "source": "Thomas Nguyen",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+t%E1%BA%B7ng+nam+cao+c%E1%BA%A5p+sang+tr%E1%BB%8Dng+ph%E1%BB%A5+ki%E1%BB%87n&prds=localAnnotatedOfferId:1,catalogid:1053900763757994511,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "3.314.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQxZ_Bxbz_TEzjK7gU6_S5GU2zopWNsdF5-SrGIDW8GqFcX5WrVaiHMS0srhSqakzfzY2Re6Baisp9-ufcMhLuF_sKneWe-7fyJ7XyMNvU",
+    "productId": "1053900763757994511",
+    "position": 38
+   },
+   {
+    "title": "Giftbox Set quà tặng tự nhiên tặng hội thảo hội nghị",
+    "source": "Hapaku",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+t%E1%BA%B7ng+nam+cao+c%E1%BA%A5p+sang+tr%E1%BB%8Dng+ph%E1%BB%A5+ki%E1%BB%87n&prds=localAnnotatedOfferId:1,catalogid:906708026816972235,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "735.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcREM8axqbBCik5DUB5Jo1v82sQGDAWBhaUmvAH-tKPLLDedWNybys0KaKTjOXhjr7XTIH4Yy8kjQi5MPiUX2HWAgBHqKgmgJMhtY7o5liBBg3naquEZy2fb",
+    "productId": "906708026816972235",
+    "position": 39
+   },
+   {
+    "title": "[Gift] Hộp quà tặng độc quyền Sony",
+    "source": "zshop.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+t%E1%BA%B7ng+nam+cao+c%E1%BA%A5p+sang+tr%E1%BB%8Dng+ph%E1%BB%A5+ki%E1%BB%87n&prds=localAnnotatedOfferId:1,productid:2526821915881684412,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "2.000.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcT0P0keWCgJt30k-BMKrI5aLjm0gPVC_xGAfb_ALCNHZRBeF4fzvIoYDiZonjKIZFRbTxNRoZ4YYzGYjFljrKldzOxU0Bbh",
+    "productId": "2526821915881684412",
+    "position": 40
+   }
+  ],
+  "credits": 2
+ }
+}

@@ -216,7 +216,7 @@ describe('§1.4 — no consumer-app import inside the Controller', () => {
 describe('§1.5 — no permission string literal outside a manifest', () => {
   it('rejects a raw literal passed to a page guard', () => {
     const { code, output } = withFixture(
-      'src/app/admin/__arch_fixture__.ts',
+      'src/app/(app)/admin/__arch_fixture__.ts',
       "export const x = () => requirePagePermission('audit.log.read')\n"
     )
 
@@ -235,7 +235,7 @@ describe('§1.5 — no permission string literal outside a manifest', () => {
 
   it('accepts the registry constant, which is the sanctioned form', () => {
     const { code } = withFixture(
-      'src/app/admin/__arch_fixture__.ts',
+      'src/app/(app)/admin/__arch_fixture__.ts',
       "import { PERMISSIONS } from '@/lib/admin/permissions/registry'\nexport const x = () => requirePagePermission(PERMISSIONS.AUDIT_LOG_READ)\n"
     )
 
@@ -247,7 +247,7 @@ describe('§1.5 — no permission string literal outside a manifest', () => {
     // id. A rule matching the shape alone would condemn every nav label in the
     // product, then be loosened until it caught nothing.
     const { code } = withFixture(
-      'src/app/admin/__arch_fixture__.ts',
+      'src/app/(app)/admin/__arch_fixture__.ts',
       "export const label = t('admin.nav.dashboard')\n"
     )
 

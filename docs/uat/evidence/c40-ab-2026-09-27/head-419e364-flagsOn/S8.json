@@ -1,0 +1,80 @@
+{
+  "id": "S8",
+  "text": "Nồi chiên không dầu 5L loại nào tốt",
+  "parent": null,
+  "status": 200,
+  "ms": 15796,
+  "evidenceId": "d0d5a581-fac8-4088-9805-7ef07ddedda0",
+  "toolCalls": [
+    {
+      "tool": "search_products",
+      "args": {
+        "query": "Nồi chiên không dầu 5L loại nào tốt"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "KhánhVyHome - Nồi chiên không dầu Fujihome A5 5 Lít -Default Title",
+      "rating": 4.9,
+      "count": 832,
+      "price": 980000
+    },
+    {
+      "name": "Nồi chiên không dầu Rapido 5 lít raf5.0m",
+      "rating": 5,
+      "count": 26,
+      "price": 899000
+    },
+    {
+      "name": "Nồi chiên không dầu 5L Sunhouse SHD4021",
+      "rating": 4.8,
+      "count": 88,
+      "price": 1000000
+    },
+    {
+      "name": "Nồi chiên không dầu 5 Lít A4 Fujihome",
+      "rating": 5,
+      "count": 5,
+      "price": 1300000
+    },
+    {
+      "name": "Nồi chiên không dầu Sharp KF-AF50EV-ST 5.0 lít",
+      "rating": 4.9,
+      "count": 144,
+      "price": 2060000
+    },
+    {
+      "name": "NỒI CHIÊN KHÔNG DẦU CỦA TẬP ĐOÀN LOTTE 5.5L",
+      "rating": 5,
+      "count": 178,
+      "price": 2700000
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ]
+  ],
+  "prose": "[TAPPY_SHOPPING]{\"v\":1,\"entities\":[{\"key\":\"uncertain:0\",\"name\":\"KhánhVyHome - Nồi chiên không dầu Fujihome A5 5 Lít -Default Title\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":980000,\"priceHigh\":980000,\"image\":\"https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQP08YEtxGtfdYaIKh5hR9YV4vSQfBbBsPR42kdoGUZ0IFwBxKnXcRmTmY6CefB0rhuHgs_ui7_CBjtTp_-0_pdIUip5YSa1FOusoMIunEurwoePKCt4wFI\",\"offers\":[{\"seller\":\"Khánh Vy Home\",\"url\":\"https://www.google.com/search?ibp=oshop&q=N%E1%BB%93i+chi%C3%AAn+kh%C3%B4ng+d%E1%BA%A7u+5L+lo%E1%BA%A1i+n%C3%A0o+t%E1%BB%91t&prds=localAnnotatedOfferId:1,productid:16670702389821122040,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":980000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.9,\"ratingCount\":832}]},{\"key\":\"uncertain:1\",\"name\":\"Nồi chiên không dầu Rapido 5 lít raf5.0m\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":899000,\"priceHigh\":899000,\"image\":\"https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTS-wi-jgym1bMUlWK5Sy4Os_yN9xixUGZOXJ67IwUuNAlyiuT1GLrVdHXMJFL8niU5u85cgRQ8D5FzeCqpZhgMZ2u0nwu3CE1b8jmkAjslFyfVkwBgApkjoQ\",\"offers\":[{\"seller\":\"KingShop.vn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=N%E1%BB%93i+chi%C3%AAn+kh%C3%B4ng+d%E1%BA%A7u+5L+lo%E1%BA%A1i+n%C3%A0o+t%E1%BB%91t&prds=localAnnotatedOfferId:1,catalogid:15912103101641178285,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":899000,\"currency\":\"VND\",\"condition\":null,\"rating\":5,\"ratingCount\":26}],\"commerce\":{\"linkId\":\"30ce6e1d7c7fef7ae7b1a80f\",\"requestId\":\"bdb64743-86f4-45da-b99a-146fc8191000\",\"providerId\":\"lazada\",\"merchantName\":\"Lazada\",\"url\":\"https://www.lazada.vn/products/noi-chien-khong-dau-5-lit-rapido-raf50m-thuong-hieu-duc-thiet-ke-hien-dai-sang-trong-bao-hanh-12-thang-i349206069.html\",\"depth\":3,\"guestDepth\":3,\"authRequiredAt\":\"before_checkout\",\"loginRequired\":true,\"freshnessType\":\"static\",\"expiresAt\":null,\"tracked\":false,\"capability\":\"product_purchase\",\"primary\":true,\"kind\":\"DETAIL_HANDOFF\",\"handoff\":\"merchant_login\",\"authenticatedDepth\":5,\"labelKey\":\"v3.action.purchaseLoginOn\"},\"commerceLinks\":[{\"linkId\":\"30ce6e1d7c7fef7ae7b1a80f\",\"requestId\":\"bdb64743-86f4-45da-b99a-146fc8191000\",\"providerId\":\"lazada\",\"merchantName\":\"Lazada\",\"url\":\"https://www.lazada.vn/products/noi-chien-khong-dau-5-lit-rapido-raf50m-thuong-hieu-duc-thiet-ke-hien-dai-sang-trong-bao-hanh-12-thang-i349206069.html\",\"depth\":3,\"guestDepth\":3,\"authRequiredAt\":\"before_checkout\",\"loginRequired\":true,\"freshnessType\":\"static\",\"expiresAt\":null,\"tracked\":false,\"capability\":\"product_purchase\",\"primary\":true,\"kind\":\"DETAIL_HANDOFF\",\"handoff\":\"merchant_login\",\"authenticatedDepth\":5,\"labelKey\":\"v3.action.purchaseLoginOn\"}]},{\"key\":\"uncertain:2\",\"name\":\"Nồi chiên không dầu 5L Sunhouse SHD4021\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":1000000,\"priceHigh\":1000000,\"image\":\"https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQL90h-yt9_5E4dFVP2ijisZvozeGfp434Z-PTm4R0Ub5YOoBaONnK8ADWf3CvHrgnO_3yZoWG02sBbj2fdUhmWIuVcgoS6qxV0huYkknaUehLHM8kkuMroHg\",\"offers\":[{\"seller\":\"hibo.vn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=N%E1%BB%93i+chi%C3%AAn+kh%C3%B4ng+d%E1%BA%A7u+5L+lo%E1%BA%A1i+n%C3%A0o+t%E1%BB%91t&prds=localAnnotatedOfferId:1,productid:7699430611054845026,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":1000000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.8,\"ratingCount\":88}]},{\"key\":\"uncertain:3\",\"name\":\"Nồi chiên không dầu 5 Lít A4 Fujihome\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":1300000,\"priceHigh\":1300000,\"image\":\"https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSvM7ZHB4IVyw_Aj1mY3ILqWyJ-vpIXWABhzOt9DtiQ7zYz_C_zKmmFRtkPS3Xl4Xrb1olF3VzFmMFiYKqTrU8s_EMa5ZTF3uVlMa5l4XTuWcgSixap8qQo\",\"offers\":[{\"seller\":\"Điện Máy Tiên Phong\",\"url\":\"https://www.google.com/search?ibp=oshop&q=N%E1%BB%93i+chi%C3%AAn+kh%C3%B4ng+d%E1%BA%A7u+5L+lo%E1%BA%A1i+n%C3%A0o+t%E1%BB%91t&prds=localAnnotatedOfferId:1,productid:12139585937596319374,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":1300000,\"currency\":\"VND\",\"condition\":null,\"rating\":5,\"ratingCount\":5}]},{\"key\":\"uncertain:4\",\"name\":\"Nồi chiên không dầu Sharp KF-AF50EV-ST 5.0 lít\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":2060000,\"priceHigh\":2060000,\"image\":\"https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSu09l_2MwMA9AAJApv6MyIE4fX1FweACkXPOfX8sYK_dOS-vTer0Ni6EgrsFf6YEErqCN3B00rFPsshJvtO5crb0oGsJXoiaTw8jr8X24fWLmBeYT_i-I\",\"offers\":[{\"seller\":\"Website SHARP chính thức tại Việt Nam!\",\"url\":\"https://www.google.com/search?ibp=oshop&q=N%E1%BB%93i+chi%C3%AAn+kh%C3%B4ng+d%E1%BA%A7u+5L+lo%E1%BA%A1i+n%C3%A0o+t%E1%BB%91t&prds=localAnnotatedOfferId:1,productid:6393820895729300795,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":2060000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.9,\"ratingCount\":144}]},{\"key\":\"uncertain:5\",\"name\":\"NỒI CHIÊN KHÔNG DẦU CỦA TẬP ĐOÀN LOTTE 5.5L\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":2700000,\"priceHigh\":2700000,\"image\":\"https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRiLShzhenmsi3Fmkke-msKcykP80n_74tA3G7Fn-5NP2jp2QfPJ47RYnQmRgBw4O4vvsX4uVTvmBe4hacMwNizLhy6vL48SzA5V-MhrcGyFKZUe07UzTkp4Eg1\",\"offers\":[{\"seller\":\"Chiaki.vn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=N%E1%BB%93i+chi%C3%AAn+kh%C3%B4ng+d%E1%BA%A7u+5L+lo%E1%BA%A1i+n%C3%A0o+t%E1%BB%91t&prds=localAnnotatedOfferId:1,productid:14063337475733405746,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":2700000,\"currency\":\"VND\",\"condition\":null,\"rating\":5,\"ratingCount\":178}]}],\"requested\":null,\"recommendation\":null}[/TAPPY_SHOPPING]\n\nMình gợi ý **Nồi chiên không dầu Rapido 5 lít** — giá tốt nhất trong danh sách, đánh giá 5⭐ từ 26 khách hàng, và có thể đặt trực tiếp. Nếu muốn thương hiệu lâu đời hơn, **Fujihome A5 5 Lít** cũng rất được ưa chuộng với 4.9⭐ từ 832 đánh giá — chứng tỏ chất lượng ổn định.\n\nNếu bạn ưu tiên thương hiệu nổi tiếng, **Sharp KF-AF50EV-ST** có 4.9⭐ từ 144 đánh giá, nhưng giá cao hơn đôi chút. Nếu muốn dung tích lớn hơn một chút, **Nồi Lotte 5.5L** cũng là lựa chọn cao cấp.\n\nMình nghiêng về **Rapido** vì giá rẻ nhất mà đánh giá cao, hoặc **Fujihome A5** nếu bạn muốn thương hiệu được nhiều người tin dùng. Bạn ưu tiên giá hay chất lượng hơn? 😊\n\n\n[FOLLOWUPS]Rapido 5L giá bao nhiêu|Fujihome A5 có tốt không|Nồi chiên nào bền nhất[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Nồi chiên không dầu 5L loại nào tốt"
+    },
+    {
+      "role": "assistant",
+      "content": "[TAPPY_SHOPPING]{\"v\":1,\"entities\":[{\"key\":\"uncertain:0\",\"name\":\"KhánhVyHome - Nồi chiên không dầu Fujihome A5 5 Lít -Default Title\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":980000,\"priceHigh\":980000,\"image\":\"https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQP08YEtxGtfdYaIKh5hR9YV4vSQfBbBsPR42kdoGUZ0IFwBxKnXcRmTmY6CefB0rhuHgs_ui7_CBjtTp_-0_pdIUip5YSa1FOusoMIunEurwoePKCt4wFI\",\"offers\":[{\"seller\":\"Khánh Vy Home\",\"url\":\"https://www.google.com/search?ibp=oshop&q=N%E1%BB%93i+chi%C3%AAn+kh%C3%B4ng+d%E1%BA%A7u+5L+lo%E1%BA%A1i+n%C3%A0o+t%E1%BB%91t&prds=localAnnotatedOfferId:1,productid:16670702389821122040,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":980000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.9,\"ratingCount\":832}]},{\"key\":\"uncertain:1\",\"name\":\"Nồi chiên không dầu Rapido 5 lít raf5.0m\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":899000,\"priceHigh\":899000,\"image\":\"https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTS-wi-jgym1bMUlWK5Sy4Os_yN9xixUGZOXJ67IwUuNAlyiuT1GLrVdHXMJFL8niU5u85cgRQ8D5FzeCqpZhgMZ2u0nwu3CE1b8jmkAjslFyfVkwBgApkjoQ\",\"offers\":[{\"seller\":\"KingShop.vn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=N%E1%BB%93i+chi%C3%AAn+kh%C3%B4ng+d%E1%BA%A7u+5L+lo%E1%BA%A1i+n%C3%A0o+t%E1%BB%91t&prds=localAnnotatedOfferId:1,catalogid:15912103101641178285,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":899000,\"currency\":\"VND\",\"condition\":null,\"rating\":5,\"ratingCount\":26}],\"commerce\":{\"linkId\":\"30ce6e1d7c7fef7ae7b1a80f\",\"requestId\":\"bdb64743-86f4-45da-b99a-146fc8191000\",\"providerId\":\"lazada\",\"merchantName\":\"Lazada\",\"url\":\"https://www.lazada.vn/products/noi-chien-khong-dau-5-lit-rapido-raf50m-thuong-hieu-duc-thiet-ke-hien-dai-sang-trong-bao-hanh-12-thang-i349206069.html\",\"depth\":3,\"guestDepth\":3,\"authRequiredAt\":\"before_checkout\",\"loginRequired\":true,\"freshnessType\":\"static\",\"expiresAt\":null,\"tracked\":false,\"capability\":\"product_purchase\",\"primary\":true,\"kind\":\"DETAIL_HANDOFF\",\"handoff\":\"merchant_login\",\"authenticatedDepth\":5,\"labelKey\":\"v3.action.purchaseLoginOn\"},\"commerceLinks\":[{\"linkId\":\"30ce6e1d7c7fef7ae7b1a80f\",\"requestId\":\"bdb64743-86f4-45da-b99a-146fc8191000\",\"providerId\":\"lazada\",\"merchantName\":\"Lazada\",\"url\":\"https://www.lazada.vn/products/noi-chien-khong-dau-5-lit-rapido-raf50m-thuong-hieu-duc-thiet-ke-hien-dai-sang-trong-bao-hanh-12-thang-i349206069.html\",\"depth\":3,\"guestDepth\":3,\"authRequiredAt\":\"before_checkout\",\"loginRequired\":true,\"freshnessType\":\"static\",\"expiresAt\":null,\"tracked\":false,\"capability\":\"product_purchase\",\"primary\":true,\"kind\":\"DETAIL_HANDOFF\",\"handoff\":\"merchant_login\",\"authenticatedDepth\":5,\"labelKey\":\"v3.action.purchaseLoginOn\"}]},{\"key\":\"uncertain:2\",\"name\":\"Nồi chiên không dầu 5L Sunhouse SHD4021\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":1000000,\"priceHigh\":1000000,\"image\":\"https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQL90h-yt9_5E4dFVP2ijisZvozeGfp434Z-PTm4R0Ub5YOoBaONnK8ADWf3CvHrgnO_3yZoWG02sBbj2fdUhmWIuVcgoS6qxV0huYkknaUehLHM8kkuMroHg\",\"offers\":[{\"seller\":\"hibo.vn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=N%E1%BB%93i+chi%C3%AAn+kh%C3%B4ng+d%E1%BA%A7u+5L+lo%E1%BA%A1i+n%C3%A0o+t%E1%BB%91t&prds=localAnnotatedOfferId:1,productid:7699430611054845026,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":1000000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.8,\"ratingCount\":88}]},{\"key\":\"uncertain:3\",\"name\":\"Nồi chiên không dầu 5 Lít A4 Fujihome\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":1300000,\"priceHigh\":1300000,\"image\":\"https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSvM7ZHB4IVyw_Aj1mY3ILqWyJ-vpIXWABhzOt9DtiQ7zYz_C_zKmmFRtkPS3Xl4Xrb1olF3VzFmMFiYKqTrU8s_EMa5ZTF3uVlMa5l4XTuWcgSixap8qQo\",\"offers\":[{\"seller\":\"Điện Máy Tiên Phong\",\"url\":\"https://www.google.com/search?ibp=oshop&q=N%E1%BB%93i+chi%C3%AAn+kh%C3%B4ng+d%E1%BA%A7u+5L+lo%E1%BA%A1i+n%C3%A0o+t%E1%BB%91t&prds=localAnnotatedOfferId:1,productid:12139585937596319374,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":1300000,\"currency\":\"VND\",\"condition\":null,\"rating\":5,\"ratingCount\":5}]},{\"key\":\"uncertain:4\",\"name\":\"Nồi chiên không dầu Sharp KF-AF50EV-ST 5.0 lít\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":2060000,\"priceHigh\":2060000,\"image\":\"https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSu09l_2MwMA9AAJApv6MyIE4fX1FweACkXPOfX8sYK_dOS-vTer0Ni6EgrsFf6YEErqCN3B00rFPsshJvtO5crb0oGsJXoiaTw8jr8X24fWLmBeYT_i-I\",\"offers\":[{\"seller\":\"Website SHARP chính thức tại Việt Nam!\",\"url\":\"https://www.google.com/search?ibp=oshop&q=N%E1%BB%93i+chi%C3%AAn+kh%C3%B4ng+d%E1%BA%A7u+5L+lo%E1%BA%A1i+n%C3%A0o+t%E1%BB%91t&prds=localAnnotatedOfferId:1,productid:6393820895729300795,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":2060000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.9,\"ratingCount\":144}]},{\"key\":\"uncertain:5\",\"name\":\"NỒI CHIÊN KHÔNG DẦU CỦA TẬP ĐOÀN LOTTE 5.5L\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":2700000,\"priceHigh\":2700000,\"image\":\"https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRiLShzhenmsi3Fmkke-msKcykP80n_74tA3G7Fn-5NP2jp2QfPJ47RYnQmRgBw4O4vvsX4uVTvmBe4hacMwNizLhy6vL48SzA5V-MhrcGyFKZUe07UzTkp4Eg1\",\"offers\":[{\"seller\":\"Chiaki.vn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=N%E1%BB%93i+chi%C3%AAn+kh%C3%B4ng+d%E1%BA%A7u+5L+lo%E1%BA%A1i+n%C3%A0o+t%E1%BB%91t&prds=localAnnotatedOfferId:1,productid:14063337475733405746,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":2700000,\"currency\":\"VND\",\"condition\":null,\"rating\":5,\"ratingCount\":178}]}],\"requested\":null,\"recommendation\":null}[/TAPPY_SHOPPING]\n\nMình gợi ý **Nồi chiên không dầu Rapido 5 lít** — giá tốt nhất trong danh sách, đánh giá 5⭐ từ 26 khách hàng, và có thể đặt trực tiếp. Nếu muốn thương hiệu lâu đời hơn, **Fujihome A5 5 Lít** cũng rất được ưa chuộng với 4.9⭐ từ 832 đánh giá — chứng tỏ chất lượng ổn định.\n\nNếu bạn ưu tiên thương hiệu nổi tiếng, **Sharp KF-AF50EV-ST** có 4.9⭐ từ 144 đánh giá, nhưng giá cao hơn đôi chút. Nếu muốn dung tích lớn hơn một chút, **Nồi Lotte 5.5L** cũng là lựa chọn cao cấp.\n\nMình nghiêng về **Rapido** vì giá rẻ nhất mà đánh giá cao, hoặc **Fujihome A5** nếu bạn muốn thương hiệu được nhiều người tin dùng. Bạn ưu tiên giá hay chất lượng hơn? 😊\n\n\n[FOLLOWUPS]Rapido 5L giá bao nhiêu|Fujihome A5 có tốt không|Nồi chiên nào bền nhất[/FOLLOWUPS]"
+    }
+  ]
+}

@@ -2,7 +2,7 @@
 
 import { useChat } from 'ai/react'
 import type { Message } from 'ai'
-import { useEffect, useRef, useState, useCallback } from 'react'
+import { useEffect, useMemo, useRef, useState, useCallback } from 'react'
 import { flushSync } from 'react-dom'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
@@ -11,17 +11,52 @@ import posthog from 'posthog-js'
 import { useServerTTS } from '@/hooks/useServerTTS'
 import MessageActionBar from '@/components/chat/MessageActionBar'
 import { cn, CATEGORIES, type CategoryId } from '@/lib/utils'
+import { inlineLinkTap } from '@/lib/recommendation/handoff'
+
+// A tap on a link inside the rendered reply text: a tracked affiliate link reports GA4
+// `affiliate_click` (src/lib/recommendation/handoff.ts); every other link is untouched.
+function onMessageLinkClick(e: React.MouseEvent<HTMLDivElement>) {
+  const a = (e.target as HTMLElement | null)?.closest?.('a')
+  if (a instanceof HTMLAnchorElement) inlineLinkTap(a.href)
+}
 import { getDynamicPrompts } from '@/lib/suggestedPrompts'
-import TripPlanCard, { type TappyPlan } from '@/components/TripPlanCard'
+import TripPlanCard from '@/components/TripPlanCard'
+import { parsePlan } from '@/lib/structuredContent/parsePlan'
+import { parseCTA } from '@/lib/structuredContent/parseCta'
+import { parseFollowups } from '@/lib/structuredContent/parseFollowups'
+import { parseAsk } from '@/lib/structuredContent/parseAsk'
+import AskCard from '@/components/chat/AskCard'
+import VoiceOverlay from '@/components/chat/VoiceOverlay'
+import { classifyOutboundAction, emitQuery, emitResultAction, hostOf } from '@/lib/analytics/g1Events'
 import ShoppingDecision from '@/components/chat/ShoppingDecision'
+import ComparisonBlock from '@/components/chat/structured/ComparisonBlock'
+import ConfirmationPrompt from '@/components/chat/structured/ConfirmationPrompt'
+import { comparisonFromSynthesis } from '@/lib/structuredContent/comparisonFromSynthesis'
+import { useOnlineStatus } from '@/hooks/useOnlineStatus'
 import { parseShoppingMarker } from '@/lib/ai/consultative/synthesisView'
-import { useTranslation } from '@/lib/i18n/useTranslation'
-import { isAgeGateMessage, redirectToAgeCheck } from '@/lib/account/ageGateClient'
+import { parsePlacesMarker } from '@/lib/recommendation/marker'
+import { readPlacesLiveView } from '@/lib/recommendation/liveView'
+import { readProgress } from '@/lib/recommendation/progressAnnotation'
+import { rememberPlacesView, recallPlacesView } from '@/lib/recommendation/liveViewCache'
+import PlaceDecision from '@/components/chat/PlaceDecision'
+import { useTranslation, getStoredLocale } from '@/lib/i18n/useTranslation'
+import { validateModelCtaButtons } from '@/lib/recommendation/ctaValidation'
+import { requestedProviderOf } from '@/lib/ai/tools/commerceIntent'
 import { inputLocaleFor } from '@/lib/voice/config'
+import { readMicEnabled } from '@/lib/voice/micSetting'
 import { TappyMascot } from '@/components/TappyMascot'
 import { getTappyPose } from '@/lib/TappyMascotState'
 import { track } from '@/lib/tracking/tracker'
 import { ensureAnonymousSession } from '@/lib/auth/ensureAnonymousSession'
+import { attachSavedContext, type SavedMessage } from '@/lib/chat/savedContext'
+import { withCompactedHistory } from '@/lib/chat/requestHistory'
+import { withCutWatch } from '@/lib/chat/streamCut'
+import { stripRemainingFooter } from '@/lib/chat/footerLine'
+import MessageBoundary, { Deferred } from '@/components/chat/MessageBoundary'
+import { useStickToBottom } from '@/components/chat/useStickToBottom'
+import { balanceBoldPerLine } from '@/lib/chat/markdownNormalize'
+import { cleanRepeats } from '@/lib/chat/replyRepeat'
+import { isAgeGateMessage, redirectToAgeCheck } from '@/lib/account/ageGateClient'
 
 // Mood chips — labels and the message each sends are dictionary keys so both
 // localize; the analytics id stays stable across languages.
@@ -62,138 +97,74 @@ const QUICK_PROMPTS_EN: Record<string, string[]> = {
   general: ['🌙 Tonight: a nice spa + dinner for 2, budget 800k', 'Đà Nẵng itinerary, 3 days, 2 people, 5M budget', "What's good to eat nearby today?"],
 }
 
-interface CTAButton {
-  label: string
-  type: 'maps' | 'call' | 'zalo' | 'website' | 'booking' | 'search' | 'internal_booking'
-  url: string
-  primary: boolean
-}
+type CTAButton = import('@/lib/structuredContent/parseCta').CTAButton
+
+/**
+ * Where the opening question came from, when it did not come from the keyboard.
+ *
+ * Today one kind: Explore's "Ask Tappy about this place" names the review it sits on. It is a
+ * REFERENCE — the route reads the place name/address/caption from the `reviews` row itself,
+ * under the caller's RLS — so nothing here can dictate a venue fact. Sent with every request of
+ * this thread (follow-ups are about the same clip); absent from every thread that did not
+ * start on the button, so ordinary chat payloads are byte-identical to before.
+ */
+export type ChatContext = { kind: 'explore_clip'; reviewId: string }
 
 interface ChatInterfaceProps {
   initialMessage?: string
   initialCategory?: string
+  initialContext?: ChatContext
   conversationId?: string
   savedMessages?: Array<{ role: 'user' | 'assistant'; content: string }>
-  onSave?: (messages: Array<{ role: string; content: string }>, title: string) => void | Promise<void>
+  onSave?: (messages: SavedMessage[], title: string) => void | Promise<void>
 }
 
-const CTA_MARKER = '[CTA_BUTTONS]'
+// 🔑 THE CTA PARSER MOVED, THE EXPORT DID NOT. `parseCTA` now lives in
+// `@/lib/structuredContent/parseCta` so the G1 shared-result sanitizer can read the same
+// persisted buttons on the server (precedent: `parsePlan`). Re-exported here so the render
+// path and the existing tests are unchanged. One wire format, one reader.
+export { parseCTA }
 
 /**
- * Locates the `{…}` payload that follows `marker`, by matching braces.
+ * The same parse, with every model-authored button checked against its own URL.
  *
- * Brace matching rather than a regex because the block's POSITION is not fixed. The bare form
- * used to be anchored to end-of-content (`\[CTA_BUTTONS\](\{[\s\S]*\})\s*$`), which is how the
- * raw block reached users: the model emits `[FOLLOWUPS]` after the CTA block, and followups are
- * parsed after this step, so something still trailed the block, the anchor failed, and nothing
- * was stripped — leaving the JSON orphaned in the visible text once the followups line went.
+ * 🚨 `parseCTA` RETURNS THE MODEL'S BUTTONS VERBATIM — label, type and url — so
+ * a purchase promise pointing at an aggregator homepage reached the user on a
+ * turn that had just reported finding no events (measured 2026-09-09). The card
+ * layer never had that problem: `actionLabel` renders a search URL as a SEARCH
+ * label. A model-authored button simply never went through it.
  *
- * The obvious loosening (dropping the `$`) is worse, not better: `\{[\s\S]*\}` runs greedily to
- * the LAST brace in the message and swallows trailing prose. Braces inside JSON strings are
- * skipped, and `\"` is honoured, so a `}` in a label or URL cannot end the scan early.
+ * 🔑 THE URL DECIDES THE KIND, THE LABEL DOES NOT. The rule, the measured
+ * examples and the tests live in `lib/recommendation/ctaValidation` — kept out
+ * of this file because the B07 ratchet scans `src/components` for Vietnamese
+ * text and a quoted example in a COMMENT is enough to trip it.
+ *
+ * Kept as a separate export so `parseCTA`'s own tests still assert the raw parse.
  */
-function findMarkerJson(content: string, marker: string): { start: number; end: number; json: string } | null {
-  const start = content.toLowerCase().indexOf(marker.toLowerCase())
-  if (start < 0) return null
-
-  let open = start + marker.length
-  while (open < content.length && /\s/.test(content[open])) open++
-  if (content[open] !== '{') return null
-
-  let depth = 0
-  let inString = false
-  let escaped = false
-  for (let i = open; i < content.length; i++) {
-    const c = content[i]
-    if (escaped) { escaped = false; continue }
-    if (inString) {
-      if (c === '\\') escaped = true
-      else if (c === '"') inString = false
-      continue
-    }
-    if (c === '"') inString = true
-    else if (c === '{') depth++
-    else if (c === '}' && --depth === 0) return { start, end: i + 1, json: content.slice(open, i + 1) }
-  }
-  return null // payload still arriving — braces do not balance yet
+export function parseCTAValidated(
+  content: string,
+  t: (key: string, vars?: Record<string, string>) => string,
+  /** The user turn(s) this reply answers — a NAMED registry merchant keeps other merchants' buttons out. */
+  userTurns?: readonly string[],
+): { text: string; buttons: CTAButton[] } {
+  const { text, buttons } = parseCTA(content)
+  return { text, buttons: validateModelCtaButtons(buttons, t, userTurns ? requestedProviderOf(userTurns) : null) as CTAButton[] }
 }
 
-export function parseCTA(content: string): { text: string; buttons: CTAButton[] } {
-  const withTag = /\[CTA_BUTTONS\]([\s\S]*?)\[\/CTA_BUTTONS\]/i
+// ── [TAPPY_PLAN] ────────────────────────────────────────────────────────────
+//
+// 🔑 THE PARSER MOVED, THE EXPORT DID NOT. `parsePlan` now lives in
+// `@/lib/structuredContent/parsePlan` so the Planner (`/planner`) can read the same
+// persisted marker from a SERVER component without importing this 'use client' module.
+// It is re-exported here because four test files and the render path below import it
+// from this path, and there is no reason to churn them for a file move.
+//
+// 🚨 DO NOT re-implement it here or anywhere else. One wire format, one reader.
+export { parsePlan }
 
-  let text = content
-  let payload: string | null = null
-
-  const tagged = text.match(withTag)
-  if (tagged) {
-    payload = tagged[1]
-    text = text.replace(withTag, '')
-  } else {
-    const span = findMarkerJson(text, CTA_MARKER)
-    if (span) {
-      payload = span.json
-      text = text.slice(0, span.start) + text.slice(span.end)
-    }
-  }
-
-  // Any further block is stripped without rendering: only the first has ever produced buttons,
-  // and a leftover second block would otherwise show as raw JSON.
-  for (let span = findMarkerJson(text, CTA_MARKER); span; span = findMarkerJson(text, CTA_MARKER)) {
-    text = text.slice(0, span.start) + text.slice(span.end)
-  }
-  // A marker whose payload has not finished arriving; then orphan tags; then the marker itself
-  // still being typed out character by character (`…[CTA_BU`), so none of it flickers mid-stream.
-  text = text
-    .replace(/\[CTA_BUTTONS\][\s\S]*$/i, '')
-    .replace(/\[\/?CTA_BUTTONS\]/gi, '')
-    .replace(/\[C(?:T(?:A(?:_(?:B(?:U(?:T(?:T(?:O(?:N(?:S)?)?)?)?)?)?)?)?)?)?$/i, '')
-
-  if (text === content) return { text: content, buttons: [] }
-  text = text.trimEnd()
-  if (payload === null) return { text, buttons: [] }
-
-  try {
-    const parsed = JSON.parse(payload.trim())
-    const buttons: CTAButton[] = Array.isArray(parsed.buttons) ? parsed.buttons : []
-    return { text, buttons }
-  } catch {
-    return { text, buttons: [] }
-  }
-}
-
-export function parsePlan(content: string): { text: string; plan: TappyPlan | null } {
-  const planMatch = content.match(/\[TAPPY_PLAN\]([\s\S]*?)\[\/TAPPY_PLAN\]/i)
-  if (!planMatch) return { text: content, plan: null }
-  const text = content.replace(/\[TAPPY_PLAN\][\s\S]*?\[\/TAPPY_PLAN\]/i, '').trimEnd()
-  try {
-    const plan = JSON.parse(planMatch[1].trim()) as TappyPlan
-    if (!plan.days || !Array.isArray(plan.days)) return { text: content, plan: null }
-    return { text, plan }
-  } catch {
-    return { text: content, plan: null }
-  }
-}
-
-// Optional follow-up suggestions the model may emit at the very end.
-// Rendered as tappable chips (only on the latest reply) — a helpful next step,
-// never a push. MFS 2.7.
-export function parseFollowups(content: string): { text: string; followups: string[] } {
-  // The model is meant to emit a single-line [FOLLOWUPS]a|b|c[/FOLLOWUPS] block,
-  // but it sometimes omits/malforms the closing tag (and stream enrichment appends
-  // an image block after it). Bound extraction to the followups LINE so a missing
-  // close tag can never leak the raw marker or swallow trailing content.
-  const m = content.match(/\[FOLLOWUPS\]([^\n]*?)(?:\[\/FOLLOWUPS\]|\n|$)/i)
-  let followups: string[] = []
-  let text = content
-  if (m) {
-    followups = m[1].split('|').map(s => s.trim()).filter(Boolean).slice(0, 3)
-    text = content.replace(/\[FOLLOWUPS\][^\n]*?(?:\[\/FOLLOWUPS\]|\n|$)/i, '')
-  }
-  // Safety net: strip any stray/orphan markers so implementation details are
-  // never visible to the user, even on malformed output.
-  text = text.replace(/\[\/?FOLLOWUPS\]/gi, '').trimEnd()
-  return { text, followups }
-}
+// 🔑 `parseFollowups` moved to `@/lib/structuredContent/parseFollowups` (same reason as
+// `parseCTA` above). Re-exported; not re-implemented.
+export { parseFollowups }
 
 function parsePlaceFromUrl(url: string) {
   try {
@@ -218,6 +189,18 @@ function detectFirstPlaceName(text: string, buttons: CTAButton[]): string {
   const boldMatch = text.match(/\*\*([^*]{3,40})\*\*/)
   if (boldMatch) return boldMatch[1]
   return ''
+}
+
+/**
+ * Does this reply carry a place worth saving? A rendered place card, a maps / booking /
+ * internal-booking button, or — with no card — a bold name that reads like a venue (it is
+ * followed by a rating, an address or hours in the same paragraph). A bold phrase alone is
+ * not a place: "**cần check kỹ**" in a shopping checklist was offering "Lưu địa điểm".
+ */
+function replyHasSavablePlace(text: string, buttons: CTAButton[], placeView: { items?: unknown[] } | null | undefined): boolean {
+  if (placeView && Array.isArray(placeView.items) && placeView.items.length > 0) return true
+  if (buttons.some(b => b.type === 'maps' || b.type === 'booking' || b.type === 'internal_booking')) return true
+  return /\*\*[^*\n]{3,60}\*\*[^\n]{0,80}(?:⭐|★|đánh giá|reviews?|\d+\s*(?:đường|street|quận|q\.|phường|district)|\bmở\b|\bopen\b|\d{1,2}[:h]\d{2})/i.test(text)
 }
 
 function SavePlaceButton({ text, buttons }: { text: string; buttons: CTAButton[] }) {
@@ -485,11 +468,68 @@ function escapeHtml(s: string): string {
 
 // Exported for test only — this is the single transform standing between untrusted LLM/tool
 // output and dangerouslySetInnerHTML, and it had no coverage at all.
+const IMAGE_HOSTS = /(^|\.)(googleusercontent\.com|gstatic\.com|ggpht\.com|fbcdn\.net|cdninstagram\.com|tiktokcdn\.com|ytimg\.com)$/i
+/** Does this URL point at an image (a photo CDN, or an image file)? */
+export function isImageUrl(url: string): boolean {
+  try {
+    const u = new URL(url.replace(/&amp;/g, '&'))
+    if (/\.(jpe?g|png|webp|gif|avif)$/i.test(u.pathname)) return true
+    // encrypted-tbn*.gstatic.com thumbnails and lh*.googleusercontent.com photos — never a page.
+    return IMAGE_HOSTS.test(u.hostname) && !/\/maps\b|\/search\b/.test(u.pathname)
+  } catch { return false }
+}
+const looksLikeUrl = (s: string) => /^\s*(https?:\/\/|www\.)/i.test(s)
+const LINK_LABELS: Array<[RegExp, string]> = [
+  [/(^|\.)(google\.[a-z.]+|goo\.gl|maps\.app\.goo\.gl)$/, 'Google Maps'],
+  [/(^|\.)(facebook\.com|fb\.com|fb\.me)$/, 'Facebook'],
+  [/(^|\.)(instagram\.com)$/, 'Instagram'],
+  [/(^|\.)(tiktok\.com)$/, 'TikTok'],
+  [/(^|\.)(youtube\.com|youtu\.be)$/, 'YouTube'],
+  [/(^|\.)(shopeefood\.vn)$/, 'ShopeeFood'],
+  [/(^|\.)(food\.grab\.com|grab\.com)$/, 'GrabFood'],
+  [/(^|\.)(shopee\.vn)$/, 'Shopee'],
+  [/(^|\.)(lazada\.vn)$/, 'Lazada'],
+  [/(^|\.)(tiki\.vn)$/, 'Tiki'],
+  [/(^|\.)(booking\.com)$/, 'Booking.com'],
+  [/(^|\.)(traveloka\.com)$/, 'Traveloka'],
+  [/(^|\.)(trip\.com)$/, 'Trip.com'],
+  [/(^|\.)(agoda\.com)$/, 'Agoda'],
+  [/(^|\.)(ticketbox\.vn)$/, 'Ticketbox'],
+  [/(^|\.)(go\.isclix\.com)$/, 'Mở trang'],
+]
+/** A readable label for a link target: the platform's name, else the site's short host — never the URL. */
+export function linkLabelFor(url: string): string {
+  try {
+    const host = new URL(url.replace(/&amp;/g, '&')).hostname.toLowerCase().replace(/^www\./, '')
+    if (/(^|\.)google\.[a-z.]+$/.test(host) && !/\/maps|maps\.|goo\.gl/.test(url)) return 'Google'
+    for (const [re, label] of LINK_LABELS) if (re.test(host)) return label
+    return host.length > 28 ? `${host.slice(0, 26)}…` : host
+  } catch { return 'Link' }
+}
+/** One link, one chip: never glued to its neighbour, never a raw URL. */
+function linkChip(url: string, label: string): string {
+  return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center align-middle mx-0.5 my-0.5 px-2.5 py-0.5 rounded-full border border-primary-500/40 bg-primary-500/10 text-primary-600 dark:text-primary-300 text-[13px] font-medium no-underline hover:bg-primary-500/20 max-w-full truncate">${label}</a>`
+}
+
 export function formatMessage(content: string) {
   // Images first — render before link processing to avoid conflicts. Group any run of
   // consecutive image lines (a place's photo gallery) into one horizontally-scrollable
   // strip instead of stacking them vertically, so 3 photos swipe left/right like a carousel.
-  const withImages = escapeHtml(content).replace(
+  // Bold is balanced per line FIRST: a matched pair renders bold, an unmatched `**` (model slip,
+  // guard cut, a pair split by a line break) is dropped — never painted, never an empty <em>.
+  // UAT 2026-09-28 (owner P1c/P1d): the answer showed raw googleusercontent / facebook URLs, links
+  // glued together ("Official WebsiteGoogle Maps"), a broken "Ảnh địa điểm" photo link and big blank
+  // gaps. Normalised here, for every vertical: blank-line runs a guard left behind collapse to one
+  // paragraph break; a link whose target IS an image renders as the image; every other link is a
+  // separate chip with a readable label — a URL is never printed as text.
+  const normalized = balanceBoldPerLine(content)
+    .replace(/[ \t]+\n/g, '\n')
+    .replace(/\n{3,}/g, '\n\n')
+    // [Ảnh địa điểm](https://…googleusercontent…) — a photo, written as a link.
+    .replace(/(^|[^!])\[([^\]\n]*)\]\((https?:\/\/[^\s)]+)\)/g, (m, pre: string, label: string, url: string) => isImageUrl(url) ? `${pre}![${label}](${url})` : m)
+    // A bare image URL on its own is a photo too.
+    .replace(/(^|\s)(https?:\/\/[^\s<)\]]+)/g, (m, pre: string, url: string) => isImageUrl(url) ? `${pre}![](${url})` : m)
+  const withImages = escapeHtml(normalized).replace(
     /(?:!\[[^\]]*\]\(https?:\/\/[^\s)]+\)[ \t]*\n?)+/g,
     (block) => {
       const imgs = [...block.matchAll(/!\[([^\]]*)\]\((https?:\/\/[^\s)]+)\)/g)]
@@ -501,8 +541,9 @@ export function formatMessage(content: string) {
     }
   )
   return withImages
-    .replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer" class="text-primary-600 dark:text-primary-400 underline font-medium break-all">$1</a>')
-    .replace(/(^|[^"'>])(https?:\/\/[^\s<]+)/g, '$1<a href="$2" target="_blank" rel="noopener noreferrer" class="text-primary-600 dark:text-primary-400 underline break-all">$2</a>')
+    .replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, (_m, label: string, url: string) => linkChip(url, looksLikeUrl(label) ? linkLabelFor(url) : label))
+    // A bare URL is never printed: it becomes a chip named for where it goes ("Facebook", "Google Maps").
+    .replace(/(^|[^"'>=])(https?:\/\/[^\s<]+)/g, (_m, pre: string, url: string) => `${pre}${linkChip(url, linkLabelFor(url))}`)
     .replace(/^### (.+)$\n?/gm, '<div class="font-semibold mt-3 mb-1">$1</div>')
     .replace(/^## (.+)$\n?/gm, '<div class="font-semibold text-base mt-3 mb-1">$1</div>')
     .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
@@ -637,13 +678,18 @@ function TappyAvatar({ category, active, searching, error: isError, listening }:
 export default function ChatInterface({
   initialMessage,
   initialCategory = 'general',
+  initialContext,
   conversationId,
   savedMessages,
   onSave,
 }: ChatInterfaceProps) {
   const router = useRouter()
   const { t, locale } = useTranslation()
-  const bottomRef = useRef<HTMLDivElement>(null)
+  // A1 (2026-10-02): the thread stays pinned to its end while it grows (see useStickToBottom).
+  const { scrollRef, contentRef, pin } = useStickToBottom<HTMLDivElement, HTMLDivElement>()
+  // A reply stream that closed without its finish frame (streamCut.ts): the UI offers «answer again».
+  const [streamCut, setStreamCut] = useState(false)
+  const cutAwareFetch = useMemo(() => withCutWatch(withCompactedHistory, () => setStreamCut(true)), [])
   const inputRef = useRef<HTMLTextAreaElement>(null)
   // Tracks the in-flight save so internal_booking clicks can await it before
   // navigating — prevents the race where the user clicks before router.replace
@@ -666,6 +712,22 @@ export default function ChatInterface({
   const [voiceError, setVoiceError] = useState<string | null>(null)
   // After dictation ends, auto-send with a short grace window the user can cancel.
   const [pendingSend, setPendingSend] = useState(false)
+  // P4-15 — used only to disable the send control and say why. Never to decide that a
+  // request failed: the normal error path already preserves the user's message.
+  const isOnline = useOnlineStatus()
+  // ── The action boundary (DD-006) ──────────────────────────────────────────
+  //
+  // `internal_booking` is the one CTA where Tappy acts on the user's behalf rather than handing
+  // them off to somebody else's site, so it is the one that must not happen on a single implicit
+  // tap. Holding the pending action in state means the navigation below cannot run until the user
+  // explicitly confirms; navigating away or cancelling simply drops it, so an abandoned prompt
+  // FAILS CLOSED.
+  //
+  // Deliberately NOT every CTA. Maps, search, call and external booking links hand off to a
+  // destination the user can see and back out of, and confirming all of them would be exactly the
+  // confirmation fatigue the UX spec rejects — which destroys the signal for the action that
+  // genuinely needs it.
+  const [pendingBooking, setPendingBooking] = useState<{ url: string; name: string; address: string } | null>(null)
   const [showEmojiPanel, setShowEmojiPanel] = useState(false)
   const [userPreferences, setUserPreferences] = useState<string[]>([])
   const [showOnboarding, setShowOnboarding] = useState(false)
@@ -681,13 +743,16 @@ export default function ChatInterface({
   const voiceSpokeRef = useRef(false)
 
   interface UserLocation { lat: number; lng: number; address: string; ts?: number }
-  const [userLocation, setUserLocation] = useState<UserLocation | null>(() => {
-    if (typeof window === 'undefined') return null
+  // A1 (2026-10-02): NOT read from localStorage during render. The server renders no location chip, so a client whose first render had one
+  // failed hydration on every reload of /chat/<id> (React #418/#423 on UAT: the server HTML is thrown away and the page re-rendered from scratch).
+  // The stored location is applied right after mount instead; nothing sends before then.
+  const [userLocation, setUserLocation] = useState<UserLocation | null>(null)
+  useEffect(() => {
     try {
       const s = localStorage.getItem('tappy_location')
-      return s ? (JSON.parse(s) as UserLocation) : null
-    } catch { return null }
-  })
+      if (s) setUserLocation(JSON.parse(s) as UserLocation)
+    } catch { /* storage unavailable / corrupt */ }
+  }, [])
 
   // User-chosen response style (Personalization — MFS 2.6). Set on /profile/tappy-knows,
   // stored in localStorage, sent with each chat request. Empty = adaptive default.
@@ -747,31 +812,105 @@ export default function ChatInterface({
     })
   }, [consultKey])
 
+  // R14 / Q7 (owner 29/09): ONE mechanism for web and Android — `chatSessionId`, a UUID made when a chat
+  // opens and sent on every turn; the server keeps the consultation state under (owner, id). It replaces
+  // the decisionEvidenceId key above in the request (the server still honours that key from older tabs).
+  // The remount after the first reply (/chat → /chat/{id}) is the SAME chat, so it adopts the pending id;
+  // reopening a chat from history reuses the id stored for its row. A chat from before this has none →
+  // a new id, and the server rebuilds from the history.
+  const [chatSessionId] = useState<string>(() => {
+    const fresh = () => (typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : `${Date.now().toString(16).padStart(8, '0').slice(-8)}-0000-4000-8000-${Math.random().toString(16).slice(2, 14).padEnd(12, '0')}`)
+    if (typeof window === 'undefined') return fresh()
+    try {
+      const slot = conversationId ? `tappy_chat_session:${conversationId}` : null
+      const own = slot ? localStorage.getItem(slot) : null
+      if (own) return own
+      const pending = isContinuation ? sessionStorage.getItem('tappy_chat_session:pending') : null
+      const id = pending ?? fresh()
+      if (slot) { localStorage.setItem(slot, id); sessionStorage.removeItem('tappy_chat_session:pending') }
+      else sessionStorage.setItem('tappy_chat_session:pending', id)
+      return id
+    } catch { return fresh() }
+  })
+
   // A signed-out visitor has no identity, and the server (correctly) refuses to
   // scope evidence to nobody — so without this, grounded follow-ups would be off
   // for most web users. Mint on mount rather than on first send: the session has
   // to exist BEFORE the first request, and awaiting it inside submit would put a
   // network round-trip in front of the user's first message.
   // Fail-open by design; see ensureAnonymousSession.
+  // Guards chat_opened against React StrictMode's double effect invocation in dev
+  // (same mount, so the ref persists and the second run is skipped). A genuinely
+  // new chat open is a new mount with a fresh ref, so it fires again as intended.
+  const chatOpenedFiredRef = useRef(false)
   useEffect(() => {
     void ensureAnonymousSession()
+    // chat_opened (RUNBOOK §3.19). Fires exactly once per genuinely fresh main-chat
+    // open. The component also remounts once after the first reply (router.replace
+    // /chat → /chat/{id}); that remount is a CONTINUATION (conversationId is now
+    // set), so it is excluded here and the event does not double-fire per session.
+    if (!isContinuation && !chatOpenedFiredRef.current) {
+      chatOpenedFiredRef.current = true
+      track('chat_opened')
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  // G1: the per-turn result id (see onResponse/onFinish). Map keyed by the
+  // assistant message id, so the action bar and the CTA clicks under a turn
+  // can name the result they act on.
+  const pendingResultIdRef = useRef<string | null>(null)
+  const resultIdsRef = useRef<Map<string, string>>(new Map())
   const { messages, input, handleInputChange, handleSubmit, isLoading, setInput, append, reload, stop, error, setMessages } = useChat({
     api: '/api/chat',
+    /**
+     * Which surface is asking.
+     *
+     * 🚨 THE PROMPT IS SHARED WITH ANDROID AND iOS, AND THEY HAVE NO CARD. Web
+     * renders the place decision as structured UI, so its reply should spend prose
+     * on interpretation instead of re-listing the rating and the opening hours the
+     * card already shows. Telling the model that unconditionally would strip those
+     * facts from the native clients, where the prose is the only place they appear.
+     * The header is how the route tells the two apart; a client that sends nothing
+     * keeps exactly today's behaviour.
+     */
+    headers: { 'x-tappy-surface': 'web' },
+    // UAT3 P0: the request's history is compacted (older assistant turns lose their machine
+    // blocks; over budget, the oldest turns go) so a long thread never hits the server's input
+    // budget and 413s on every turn. Only the request body changes — see lib/chat/requestHistory.
+    // Done in `fetch` rather than experimental_prepareRequestBody, which would drop `body` below.
+    fetch: cutAwareFetch,
     body: {
       ...(userLocation ? { userLocation: { lat: userLocation.lat, lng: userLocation.lng, address: userLocation.address } } : {}),
       ...(userPreferences.length > 0 ? { userPreferences } : {}),
       ...((responseStyle.tone || responseStyle.length) ? { responseStyle } : {}),
-      ...(evidenceKey ? { decisionEvidenceId: evidenceKey } : {}),
+      chatSessionId,
+      ...(initialContext ? { context: initialContext } : {}),
     },
     onResponse: (response) => {
       // Latest key wins — see the note on setEvidenceKey.
       const eid = response.headers.get('X-Decision-Evidence-Id')
       if (eid) setEvidenceKey(eid)
+      // G1 canonical `query` — one per accepted request, with a fresh result id
+      // that the finished assistant turn adopts below so `result_action` can
+      // point back at it. Not tied to any UI entry point: every path that sends
+      // a message (form, Enter, chips, follow-ups, initial prompt) lands here.
+      const rid = (typeof crypto !== 'undefined' && crypto.randomUUID) ? crypto.randomUUID() : String(Date.now())
+      pendingResultIdRef.current = rid
+      emitQuery({ domain: category, result_id: rid })
     },
     initialMessages: savedMessages?.map((m, i) => ({ id: String(i), role: m.role, content: m.content })),
-    onFinish: async (message) => {
+    onFinish: async (finished) => {
+      // UAT3: one reply, not two. A reply that streamed the same answer twice (lib/chat/replyRepeat)
+      // is collapsed to its last version — on screen and in what is saved. The server guard
+      // (stepRepeatGuard) catches the multi-step shape; this catches a repeat inside one step.
+      const collapsed = typeof finished.content === 'string' ? cleanRepeats(finished.content) : finished.content
+      const message = collapsed === finished.content ? finished : { ...finished, content: collapsed }
+      if (message !== finished) setMessages(prev => prev.map(m => (m.id === finished.id ? message : m)))
+      if (pendingResultIdRef.current) {
+        resultIdsRef.current.set(message.id, pendingResultIdRef.current)
+        pendingResultIdRef.current = null
+      }
       // Latest committed messages (includes the user's turn) + the authoritative
       // final assistant message, deduped by id — never the stale `messages` closure.
       const all = [...messagesRef.current.filter(m => m.id !== message.id), message]
@@ -781,7 +920,10 @@ export default function ChatInterface({
       track('chat_response_received', { feature: category })
       if (onSave) {
         savePendingRef.current = true
-        const p = Promise.resolve(onSave(all.map(m => ({ role: m.role, content: m.content })), all[0]?.content?.slice(0, 50) || 'Chat'))
+        // The clip reference rides on the first saved message so `/chat/<id>` can hand it back
+        // as `initialContext` — see `lib/chat/savedContext.ts`. Threads without one save exactly
+        // the `{ role, content }` list they always did.
+        const p = Promise.resolve(onSave(attachSavedContext(all, initialContext), all[0]?.content?.slice(0, 50) || 'Chat'))
         savePromiseRef.current = p
         // try/finally so a rejected save can't leave savePendingRef stuck true
         // (which would strand the CTA-click await path).
@@ -844,12 +986,16 @@ export default function ChatInterface({
     return running?.toolName ?? null
   })()
   const toolHint = activeTool ? TOOL_HINTS[activeTool] : undefined
+  // A1(b): the pipeline's own word on what it is doing ("Đã có 10 chỗ phù hợp — đang chọn…",
+  // "Đang kiểm tra thông tin và lấy ảnh…") — an `8:` annotation on the streaming message. When
+  // present it beats both the tool hint and the rotating generic one, because it is true.
+  const progress = isLoading && lastMsg?.role === 'assistant' ? readProgress(lastMsg.annotations as unknown[] | undefined) : null
   // Target visible text of the last assistant reply (same parse chain as the
   // render below), fed through the smoothing hook so the streaming message types
   // out fluidly instead of jumping in bursts. Called unconditionally at the top
   // level (hooks rule); only the last streaming message uses the smoothed value.
   const lastAssistantRaw = lastMsg && lastMsg.role === 'assistant' && typeof lastMsg.content === 'string'
-    ? parseFollowups(parseCTA(parsePlan(lastMsg.content).text).text).text
+    ? parsePlacesMarker(parseShoppingMarker(parseFollowups(parseCTA(parsePlan(lastMsg.content).text).text).text).text).text
     : ''
   const smoothedLastText = useSmoothText(lastAssistantRaw, isLoading && lastMsg?.role === 'assistant')
 
@@ -863,8 +1009,51 @@ export default function ChatInterface({
     setPendingSend(false)
   }, [])
 
-  // Voice input (Web Speech API). Dictation fills the input box, then auto-sends
-  // after a short grace window the user can cancel (to review/edit first).
+  // Voice input (Web Speech API) — the voice SCREEN (owner 01/10, mockup 03). Recognition fills `voiceText`, NEVER the input box,
+  // and nothing is sent until the user taps «Gửi». The mic is a privacy surface: it opens only on a tap, and EVERY way out
+  // (Hủy, Gửi, back/route change, tab or app in the background, an error, 60 s without a result, unmount) detaches the
+  // handlers and aborts the session, so the browser's mic indicator goes away (iPhone Safari kept the orange dot after the
+  // user had stopped talking — owner 01/10, h).
+  const VOICE_IDLE_MS = 60_000 // no recognised text for this long → the mic is switched off and the screen closes
+  const [voiceOpen, setVoiceOpen] = useState(false)
+  const [voiceText, setVoiceText] = useState('')
+  const voiceIdleRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const voiceBaseTextRef = useRef('')
+  const [voiceFirstUse, setVoiceFirstUse] = useState(false)
+  const [micAllowed, setMicAllowed] = useState(true)
+  useEffect(() => { setMicAllowed(readMicEnabled()) }, [])
+  useEffect(() => {
+    if (!voiceOpen) return
+    try { if (!localStorage.getItem('tappy_mic_asked')) { setVoiceFirstUse(true); localStorage.setItem('tappy_mic_asked', '1') } } catch { /* storage blocked */ }
+  }, [voiceOpen])
+
+  const releaseRecognition = useCallback(() => {
+    if (voiceIdleRef.current) { clearTimeout(voiceIdleRef.current); voiceIdleRef.current = null }
+    const r = recognitionRef.current
+    recognitionRef.current = null
+    if (r) {
+      r.onstart = null; r.onend = null; r.onerror = null; r.onresult = null
+      try { r.abort() } catch { /* already stopped */ }
+    }
+    setIsListening(false)
+  }, [])
+
+  const closeVoice = useCallback(() => {
+    releaseRecognition()
+    setVoiceOpen(false)
+    setVoiceText('')
+    voiceBaseTextRef.current = ''
+    setVoiceError(null)
+  }, [releaseRecognition])
+
+  const armVoiceIdle = useCallback(() => {
+    if (voiceIdleRef.current) clearTimeout(voiceIdleRef.current)
+    voiceIdleRef.current = setTimeout(() => {
+      releaseRecognition()
+      setVoiceError(t('voice.overlay.timeout'))
+    }, VOICE_IDLE_MS)
+  }, [releaseRecognition, t])
+
   const startVoice = useCallback(() => {
     const SpeechRecognitionCtor = window.SpeechRecognition || window.webkitSpeechRecognition
     if (!SpeechRecognitionCtor) {
@@ -880,35 +1069,25 @@ export default function ChatInterface({
     }
     setVoiceError(null)
     cancelAutoSend()
+    releaseRecognition()
     voiceSpokeRef.current = false
     posthog.capture('mic_used')
     const recognition = new SpeechRecognitionCtor()
     recognition.lang = inputLocale
-    recognition.interimResults = true // live transcript into the input as you speak
+    recognition.interimResults = true // the recognised text appears live on the voice screen
     recognition.continuous = false
     recognition.maxAlternatives = 1
     recognitionRef.current = recognition
-    // Preserve anything already typed; dictation appends after it.
-    voiceBaseRef.current = input ? input.replace(/\s+$/, '') + ' ' : ''
+    // Resuming after a pause keeps what was already recognised.
+    voiceBaseTextRef.current = voiceText ? voiceText.replace(/\s+$/, '') + ' ' : ''
+    setVoiceOpen(true)
 
     recognition.onstart = () => { setIsListening(true); setVoiceError(null) }
     recognition.onend = () => {
-      setIsListening(false)
-      // Auto-send with a 2s grace window (user's chosen behavior): only if real
-      // speech was captured. The status line lets them tap to cancel and edit.
-      if (voiceSpokeRef.current) {
-        setPendingSend(true)
-        autoSendTimerRef.current = setTimeout(() => {
-          autoSendTimerRef.current = null
-          setPendingSend(false)
-          const form = document.getElementById('chat-form') as HTMLFormElement | null
-          form?.requestSubmit()
-        }, 2000)
-      }
+      // The session is over: drop it completely so the browser can release the microphone.
+      if (recognitionRef.current === recognition) releaseRecognition()
     }
     recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
-      setIsListening(false)
-      cancelAutoSend()
       switch (event.error) {
         case 'not-allowed':
         case 'service-not-allowed':
@@ -921,35 +1100,63 @@ export default function ChatInterface({
           setVoiceError(t('voice.audioCapture'))
           break
         case 'aborted':
-          break // user/unmount stopped — no message needed
+          break // we stopped it — no message needed
         default:
           setVoiceError(t('voice.recognitionError'))
       }
+      if (recognitionRef.current === recognition) releaseRecognition()
     }
     recognition.onresult = (event: SpeechRecognitionEvent) => {
       let transcript = ''
       for (let i = 0; i < event.results.length; i++) transcript += event.results[i][0].transcript
       if (transcript.trim()) voiceSpokeRef.current = true
-      // Fill the input live; onend then queues the auto-send (cancellable).
-      setInput(voiceBaseRef.current + transcript)
+      setVoiceText(voiceBaseTextRef.current + transcript)
+      armVoiceIdle()
     }
-    // Optimistic instant feedback: the button reacts the moment it's tapped,
-    // before the permission prompt / onstart resolves (onstart confirms it,
-    // onerror/onend reset it). Guarantees the user always sees an on/off change.
+    // Optimistic instant feedback before the permission prompt resolves (onstart confirms; onerror/onend reset).
     setIsListening(true)
+    armVoiceIdle()
     try {
       recognition.start()
     } catch {
       // start() throws if called while already running or blocked — never fail silently.
-      setIsListening(false)
+      releaseRecognition()
       setVoiceError(t('voice.startFailed'))
     }
-  }, [input, setInput, cancelAutoSend, t, locale])
+  }, [cancelAutoSend, releaseRecognition, armVoiceIdle, t, locale, voiceText])
 
-  const stopVoice = useCallback(() => {
-    recognitionRef.current?.stop() // lets the final result land, then onend fires
-    setIsListening(false)
-  }, [])
+  // The centre button: stop listening (the text stays) — and while stopped, listen again.
+  const toggleVoice = useCallback(() => {
+    if (recognitionRef.current) {
+      const r = recognitionRef.current
+      try { r.stop() } catch { /* already stopped */ }
+      // stop() lets the last result land; if the engine never reports the end (seen on iOS), abort it ourselves.
+      setTimeout(() => { if (recognitionRef.current === r) releaseRecognition() }, 1500)
+      setIsListening(false)
+    } else {
+      startVoice()
+    }
+  }, [releaseRecognition, startVoice])
+
+  const sendVoice = useCallback(() => {
+    const text = voiceText.trim()
+    if (!text) return
+    closeVoice()
+    append({ role: 'user', content: text })
+  }, [voiceText, closeVoice, append])
+
+  // Kept for the composer button's pressed state.
+  const stopVoice = useCallback(() => { closeVoice() }, [closeVoice])
+
+  // The mic must not stay on behind the user's back: background tab / app switch / navigation away.
+  useEffect(() => {
+    if (!voiceOpen) return
+    const hide = () => { if (document.visibilityState === 'hidden') closeVoice() }
+    const leave = () => closeVoice()
+    document.addEventListener('visibilitychange', hide)
+    window.addEventListener('pagehide', leave)
+    return () => { document.removeEventListener('visibilitychange', hide); window.removeEventListener('pagehide', leave) }
+  }, [voiceOpen, closeVoice])
 
   // Kill any live/dangling recognition on unmount so it can't fire callbacks
   // (or keep the mic open) after the component is gone.
@@ -961,6 +1168,7 @@ export default function ChatInterface({
         try { r.abort() } catch { /* already stopped */ }
         recognitionRef.current = null
       }
+      if (voiceIdleRef.current) clearTimeout(voiceIdleRef.current)
       if (autoSendTimerRef.current) clearTimeout(autoSendTimerRef.current)
     }
   }, [])
@@ -1031,6 +1239,20 @@ export default function ChatInterface({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tts.failed, tts.failedMessage])
 
+  // The first-run «Tappy muốn hiểu bạn hơn» modal must never stack over the language picker or cover a quick-ask card
+  // (owner 2026-10-01 item 2). It waits: language chosen, no ask card on screen, no reply streaming — then it shows once.
+  const [langChosen, setLangChosen] = useState(true)
+  useEffect(() => {
+    if (!showOnboarding) return
+    const check = () => setLangChosen(getStoredLocale() !== null)
+    check()
+    const id = setInterval(check, 400)
+    return () => clearInterval(id)
+  }, [showOnboarding])
+  const lastTurnMsg = messages[messages.length - 1]
+  const askOnScreen = !!lastTurnMsg && lastTurnMsg.role === 'assistant' && typeof lastTurnMsg.content === 'string' && parseAsk(lastTurnMsg.content).questions.length > 0
+  const onboardingReady = showOnboarding && langChosen && !askOnScreen && !isLoading
+
   useEffect(() => {
     fetch('/api/memory')
       .then(r => r.json())
@@ -1080,6 +1302,28 @@ export default function ChatInterface({
   }, [])
 
   // Save the current (anonymous) transcript so it survives the /login round-trip.
+  /**
+   * Performs the booking navigation the user just confirmed (DD-006).
+   *
+   * This is the ORIGINAL `internal_booking` handler, moved behind the confirmation rather than
+   * rewritten: it still waits for any in-flight place save so the booking page opens with the saved
+   * record present, then refreshes and navigates. Nothing about the action changed — only that the
+   * user now has to say yes first.
+   */
+  const runPendingBooking = async () => {
+    const target = pendingBooking
+    if (!target) return
+    if (savePendingRef.current || savePromiseRef.current) {
+      const deadline = Date.now() + 2000
+      while (savePendingRef.current && !savePromiseRef.current && Date.now() < deadline) {
+        await new Promise(r => setTimeout(r, 20))
+      }
+      if (savePromiseRef.current) await savePromiseRef.current
+    }
+    router.refresh()
+    router.push(target.url)
+  }
+
   const stashPendingChat = () => {
     try {
       const msgs = messagesRef.current
@@ -1087,9 +1331,12 @@ export default function ChatInterface({
     } catch { /* storage unavailable — nothing to restore */ }
   }
 
+  // A message the user just sent always brings the view to the end; the growth of the thread afterwards is followed by
+  // useStickToBottom's observer (not by a one-off smooth scroll aimed before the content had finished growing).
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }, [messages])
+    if (messages[messages.length - 1]?.role === 'user') pin()
+  }, [messages, pin])
+  useEffect(() => { if (isLoading) setStreamCut(false) }, [isLoading])
 
   // Auto-focus input on mount and when conversationId changes
   useEffect(() => {
@@ -1195,8 +1442,11 @@ export default function ChatInterface({
   }, [category, locale])
 
   return (
-    <div className="flex flex-col h-full">
-      {showOnboarding && (
+    <div className="relative flex flex-col h-full">
+      {voiceOpen && (
+        <VoiceOverlay listening={isListening} text={voiceText} error={voiceError} firstUse={voiceFirstUse} onToggle={toggleVoice} onCancel={closeVoice} onSend={sendVoice} />
+      )}
+      {onboardingReady && (
         <OnboardingModal
           onClose={(prefs) => {
             setShowOnboarding(false)
@@ -1204,8 +1454,8 @@ export default function ChatInterface({
           }}
         />
       )}
-      <div className="flex-1 overflow-y-auto">
-        <div className="max-w-container-content mx-auto w-full px-4 py-5">
+      <div ref={scrollRef} style={{ overflowAnchor: "none" }} className="flex-1 overflow-y-auto">
+        <div ref={contentRef} className="max-w-container-content mx-auto w-full px-4 py-5">
           {messages.length === 0 && (
             <div className="flex flex-col items-center justify-center min-h-[60vh] gap-6 animate-fade-in">
               <div className="text-center">
@@ -1270,34 +1520,150 @@ export default function ChatInterface({
                 setZoomedImage((target as HTMLImageElement).src)
               }
             }}
+            // G1 `result_action`: one delegated listener covers the CTA row, the
+            // decision cards' offer/maps/review links and any link in the prose.
+            // Classification is by CTA type (data attribute) then by host; a
+            // click that G1 does not count returns null and emits nothing.
+            onClickCapture={(e) => {
+              const a = (e.target as HTMLElement).closest?.('a[href]') as HTMLAnchorElement | null
+              if (!a) return
+              const href = a.getAttribute('href') ?? ''
+              const action = classifyOutboundAction(a.dataset.ctaType, href)
+              if (!action) return
+              const msgId = (a.closest('[data-msg-id]') as HTMLElement | null)?.dataset.msgId
+              emitResultAction({ action_type: action, result_id: msgId ? resultIdsRef.current.get(msgId) : undefined, target_host: hostOf(href) })
+            }}
           >
             {messages.map((msg, msgIdx) => {
               if (msg.role === 'assistant') {
+                // A1 (2026-10-02): every assistant message renders inside its OWN error boundary, parsing included
+                // (Deferred runs the callback inside the boundary), so one broken message can never blank the chat frame.
+                return (
+                  <MessageBoundary
+                    key={msg.id}
+                    resetKey={typeof msg.content === 'string' ? msg.content.length : 0}
+                    rawText={typeof msg.content === 'string' ? msg.content : ''}
+                    labels={{ title: t('chat.messageBroken'), retry: t('chat.messageRetry'), copy: t('chat.messageCopy'), copied: t('chat.messageCopied') }}
+                    onError={(e) => { console.error('chat message render failed:', e); try { posthog.capture('chat_message_render_failed', { message: String(e?.message).slice(0, 120) }) } catch { /* analytics only */ } }}
+                  >
+                    <Deferred render={() => {
                 const { text: textAfterPlan, plan } = parsePlan(msg.content)
-                const { text: textAfterCta, buttons } = parseCTA(textAfterPlan)
+                // Validated, not raw: a model-authored purchase promise backed by a
+                // homepage or a search page is downgraded to the honest search label.
+                const { text: textAfterCta, buttons: modelButtons } = parseCTAValidated(textAfterPlan, t, messages.slice(0, msgIdx).filter(m => m.role === 'user').slice(-3).map(m => m.content))
                 const { text: textAfterFollowups, followups } = parseFollowups(textAfterCta)
                 // Phase 9 — the shopping DECISION arrives as a persistent text
                 // marker (like [TAPPY_PLAN]), so it survives reload. Parse it out
                 // of the message content; the card renders from the parsed view.
-                const { text, view: shopView } = parseShoppingMarker(textAfterFollowups)
+                const { text: textAfterShopping, view: shopView } = parseShoppingMarker(textAfterFollowups)
+                // The unified recommendation block. Parsed and STRIPPED here so a
+                // marker can never reach the reader as raw JSON; nothing renders
+                // from it yet — the card layer is a separate, later task. Strip
+                // is unconditional and independent of decode (fixture rule 1).
+                const { text: textAfterPlaces } = parsePlacesMarker(textAfterShopping)
+                // Consult ASK turn (owner 2026-09-29): questions with their own chips; stripped always.
+                const { text, questions: askQuestions } = parseAsk(textAfterPlaces)
+                /**
+                 * The place decision, from this message's ANNOTATIONS.
+                 *
+                 * 🚨 NOT FROM THE TEXT, DELIBERATELY. The durable marker above is
+                 * still gated off for Android/iOS and for Google Places storage terms
+                 * (see `EMIT_PLACES_ANNOTATION`), so the card is fed by a frame that
+                 * never enters the message body and is never saved. The consequence is
+                 * visible and intended: a reloaded conversation shows the prose without
+                 * the card, because nothing about the place was stored.
+                 */
+                const annotated = readPlacesLiveView(msg.annotations as unknown[] | undefined)
+                /**
+                 * 🚨 THE SAVE NAVIGATES AWAY, AND THE ANNOTATION DOES NOT SURVIVE IT.
+                 * A completed turn is persisted and `router.replace`d to `/chat/<id>`,
+                 * where ChatInterface remounts from `savedMessages` - `{role, content}`
+                 * only. Measured on localhost: the card rendered, then vanished about a
+                 * second later. The in-memory hand-off keeps it for the session without
+                 * writing anything anywhere; see `liveViewCache`.
+                 */
+                // Only the decision is remembered — a preliminary frame under an empty body must not be recalled for a later turn.
+                if (annotated && !annotated.preliminary) rememberPlacesView(msg.content, annotated)
+                const placeView = annotated ?? recallPlacesView(msg.content)
+                /**
+                 * 🚨 THE SAME BUTTON TWICE IS STILL DUPLICATION. The model authors its
+                 * own `[CTA_BUTTONS]` for clients that have no card, and it writes the ones
+                 * the card already owns: a "see all of these on the map" button sat directly under
+                 * a card block whose last row is exactly that link. With a card rendering, a
+                 * model button survives only when the card does not already offer that
+                 * destination - matched on URL, so a genuinely different action is kept.
+                 */
+                const cardUrls = placeView
+                  ? new Set([
+                    ...placeView.items.flatMap(i => i.actions.map(a => a.url)),
+                    ...(placeView.mapsSearchUrl ? [placeView.mapsSearchUrl] : []),
+                  ].map(u => u.split('?')[0]))
+                  : null
+                const buttons = cardUrls
+                  ? modelButtons.filter(b => !cardUrls.has((b.url || '').split('?')[0]))
+                  : modelButtons
                 const isLastMessage = msgIdx === messages.length - 1
                 // Display body: while streaming use the smoothed text. Always strip
                 // the marker from what's shown; when this is a shopping decision,
                 // also strip the injected product-image flood (keeping the first as
                 // the hero) so the decision replaces the raw grid.
-                const rawBody = isLoading && isLastMessage ? parseShoppingMarker(smoothedLastText).text : text
-                const { text: bodyText, firstImage: heroImage } = shopView
+                const rawBody = isLoading && isLastMessage ? parsePlacesMarker(parseShoppingMarker(smoothedLastText).text).text : text
+                const { text: bodyTextRaw, firstImage: heroImage } = shopView
                   ? stripProductImages(rawBody)
                   : { text: rawBody, firstImage: null }
+                // A3: «Còn N lựa chọn nữa» is shown only under a place card (the cards behind «Xem thêm N chỗ»). No card (a reloaded thread, whose card
+                // annotation is not stored) or a shopping decision (every product is already a card): the line would offer options that are not there.
+                const bodyText = placeView && !shopView ? bodyTextRaw : stripRemainingFooter(bodyTextRaw)
                 return (
-                  <div key={msg.id} className="animate-slide-up flex gap-3">
+                  <div key={msg.id} data-msg-id={msg.id} className="animate-slide-up flex gap-3">
                     <TappyAvatar category={category} active={isLoading && isLastMessage} searching={!!(isLoading && isLastMessage && activeTool)} />
                     <div className="flex-1 min-w-0">
                       <div className="text-base leading-[1.6] text-gray-800 dark:text-gray-100 pt-0.5">
-                        <div className={cn('message-content whitespace-pre-wrap', isLoading && isLastMessage && 'streaming-cursor')} dangerouslySetInnerHTML={{ __html: formatMessage(bodyText) }} />
+                        <div className={cn('message-content whitespace-pre-wrap', isLoading && isLastMessage && 'streaming-cursor')} onClick={onMessageLinkClick} dangerouslySetInnerHTML={{ __html: formatMessage(bodyText) }} />
                       </div>
-                      {plan && <TripPlanCard plan={plan} />}
-                      {shopView && <ShoppingDecision view={shopView} heroImage={heroImage} />}
+                      {plan && <TripPlanCard plan={plan} placePhotos={placeView?.items} />}
+                      {shopView && (
+                        <ShoppingDecision
+                          view={shopView}
+                          heroImage={heroImage}
+                          /**
+                           * Price watch, from the product that is already on screen.
+                           *
+                           * It prefills the SAME phrasing the composer chip prefills, so the
+                           * request goes through the shipped `save_price_watch` tool - the one
+                           * with the permission, argument and audit steps in
+                           * `runAiWriteAction`. No second write path, and the user still sends
+                           * the message: nothing is saved by pressing a button on a card.
+                           */
+                          onPriceWatch={(name) => {
+                            posthog.capture('chat_message_sent', { input_method: 'price_watch_card' })
+                            setInput(t('chat.chipPriceWatchPrefill') + name)
+                          }}
+                        />
+                      )}
+                      {/* One card per turn. While the reply is still arriving the card renders
+                          only from a frame the SERVER sent for this turn (A1(a): the engine's
+                          preliminary set at the tool result, then the decision after the prose —
+                          the reader takes the last), never from the recall cache. Shopping
+                          owns its own decision surface, so the two are mutually
+                          exclusive by construction (the projection returns null for a
+                          product). */}
+                      {placeView && !shopView && (!(isLoading && isLastMessage) || !!annotated) && <PlaceDecision view={placeView} />}
+                      {/* Comparison (DD-005). Derived from the SAME payload the decision above
+                          renders — no extra request, nothing inferred. Offered only once the reply
+                          is complete, like every other structured action, and only when there are
+                          at least two options to compare. */}
+                      {shopView && !(isLoading && isLastMessage) && (() => {
+                        const cmp = comparisonFromSynthesis(shopView, t, locale)
+                        return cmp ? (
+                          <ComparisonBlock
+                            entities={cmp.entities}
+                            attributes={cmp.attributes}
+                            recommendedKey={cmp.recommendedKey}
+                            reason={cmp.reason}
+                          />
+                        ) : null
+                      })()}
                       {/* Action bar (copy/share/like/dislike/TTS/regenerate) — only
                           once the reply is done, fading in for a polished finish. */}
                       {!(isLoading && isLastMessage) && (
@@ -1319,10 +1685,30 @@ export default function ChatInterface({
                             onTTSSpeedChange={tts.changeSpeed}
                             onTTSStop={tts.stop}
                             onRegenerate={isLastMessage ? reload : undefined}
+                            // The recommendation itself — card and/or plan — is what Share
+                            // shares. The subject is the user's own question for this turn,
+                            // so the brochure header reads "TappyAI gợi ý: <what they asked>".
+                            share={{
+                              placeView,
+                              plan,
+                              subject: (() => {
+                                const prev = messages[msgIdx - 1]
+                                return prev && prev.role === 'user' && typeof prev.content === 'string'
+                                  ? prev.content.trim().slice(0, 80)
+                                  : undefined
+                              })(),
+                            }}
+                            resultId={resultIdsRef.current.get(msg.id)}
+                            domain={category}
                           />
                         </div>
                       )}
-                      <SavePlaceButton text={text} buttons={buttons} />
+                      {/* A1: the bubble now exists from the first progress frame, so this is gated
+                          like the action bar — it used to be hidden only because the bubble was. */}
+                      {/* Phase 7 small item: only a reply that actually carries a place (a card, a
+                          maps/booking button, or a place-shaped bold name) offers to save one —
+                          it used to sit under a shopping checklist and under "hello". */}
+                      {!(isLoading && isLastMessage) && replyHasSavablePlace(text, buttons, placeView) && <SavePlaceButton text={text} buttons={buttons} />}
                       {buttons.length > 0 && (
                         <div className="flex flex-wrap gap-2 mt-3 animate-fade-in">
                           {buttons.map((btn, i) => {
@@ -1331,21 +1717,21 @@ export default function ChatInterface({
                               <div key={i} className="inline-flex items-center gap-1">
                                 <a
                                   href={btn.url}
+                                  data-cta-type={btn.type}
                                   target={btn.type === 'internal_booking' ? undefined : '_blank'}
                                   rel={btn.type === 'internal_booking' ? undefined : 'noopener noreferrer'}
-                                  onClick={async (e) => {
+                                  onClick={(e) => {
                                     logCTAClick(btn)
                                     if (btn.type === 'internal_booking') {
+                                      // Ask before acting (DD-006). The navigation itself is
+                                      // unchanged — it now runs from `runPendingBooking` only
+                                      // after an explicit confirm.
                                       e.preventDefault()
-                                      if (savePendingRef.current || savePromiseRef.current) {
-                                        const deadline = Date.now() + 2000
-                                        while (savePendingRef.current && !savePromiseRef.current && Date.now() < deadline) {
-                                          await new Promise(r => setTimeout(r, 20))
-                                        }
-                                        if (savePromiseRef.current) await savePromiseRef.current
-                                      }
-                                      router.refresh()
-                                      router.push(btn.url)
+                                      setPendingBooking({
+                                        url: btn.url,
+                                        name: place?.name || detectFirstPlaceName(text, buttons),
+                                        address: place?.address || '',
+                                      })
                                     }
                                   }}
                                   className={cn(
@@ -1370,14 +1756,27 @@ export default function ChatInterface({
                           })}
                         </div>
                       )}
-                      {/* Optional follow-up suggestions — only on the latest reply, never a push (MFS 2.7) */}
+                      {/* Optional follow-up suggestions — only on the latest reply, never a push (MFS 2.7).
+                          The heading is the approved composition's "a few more ideas": the same
+                          model-authored chips, now introduced so they read as offered refinements
+                          rather than as loose buttons under the answer. Shown only alongside a
+                          decision, because that is the turn where refining means something. */}
+                      {askQuestions.length > 0 && isLastMessage && !isLoading && (
+                        <AskCard questions={askQuestions} lang={locale} onSend={answer => append({ role: 'user', content: answer })} />
+                      )}
                       {followups.length > 0 && isLastMessage && !isLoading && (
-                        <div className="flex flex-wrap gap-2 mt-3">
+                        <div className="mt-3">
+                          {placeView && (
+                            <p className="mb-1.5 text-xs font-medium text-gray-600 dark:text-gray-400">
+                              {t('placeDecision.moreIdeas')}
+                            </p>
+                          )}
+                        <div className="flex flex-wrap gap-2">
                           {followups.map((f, i) => (
                             <button
                               key={i}
                               type="button"
-                              onClick={() => { posthog.capture('followup_clicked'); append({ role: 'user', content: f }) }}
+                              onClick={() => { posthog.capture('followup_clicked'); emitResultAction({ action_type: 'follow_up_query', result_id: resultIdsRef.current.get(msg.id) }); append({ role: 'user', content: f }) }}
                               style={{ animationDelay: `${i * 70}ms` }}
                               className="animate-pop-in inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-700 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
                             >
@@ -1385,9 +1784,13 @@ export default function ChatInterface({
                             </button>
                           ))}
                         </div>
+                        </div>
                       )}
                     </div>
                   </div>
+                )
+                    }} />
+                  </MessageBoundary>
                 )
               }
               const msgAttachments = (msg as any).experimental_attachments as Array<{ url: string; name?: string; contentType?: string }> | undefined
@@ -1405,13 +1808,25 @@ export default function ChatInterface({
                     ))}
                     {(typeof msg.content === 'string' ? msg.content : '').trim() && (
                       <div className="bg-interactive text-white rounded-2xl rounded-br-md px-4 py-2.5 text-base leading-[1.6]">
-                        <div className="message-content whitespace-pre-wrap" dangerouslySetInnerHTML={{ __html: formatMessage(typeof msg.content === 'string' ? msg.content : '') }} />
+                        <div className="message-content whitespace-pre-wrap" onClick={onMessageLinkClick} dangerouslySetInnerHTML={{ __html: formatMessage(typeof msg.content === 'string' ? msg.content : '') }} />
                       </div>
                     )}
                   </div>
                 </div>
               )
             })}
+            {/* The action boundary, made visible (DD-006). Rendered in the thread rather than as a
+                floating dialog so the user can still read the recommendation they are acting on.
+                Cancel — and navigating away — simply drop the pending action. */}
+            {pendingBooking && (
+              <ConfirmationPrompt
+                consequence={t('confirm.bookingConsequence', { place: pendingBooking.name || t('confirm.thisPlace') })}
+                changes={[pendingBooking.address].filter(Boolean)}
+                confirmLabel={t('confirm.bookingConfirm')}
+                onConfirm={runPendingBooking}
+                onCancel={() => setPendingBooking(null)}
+              />
+            )}
             {waitingForReply && (
               <div className="flex gap-3 animate-fade-in">
                 <TappyAvatar category={category} active searching={!!activeTool} />
@@ -1421,9 +1836,25 @@ export default function ChatInterface({
                     <span className="typing-dot text-gray-400" />
                     <span className="typing-dot text-gray-400" />
                   </div>
-                  <span key={toolHint ? activeTool : thinkHintIdx} className="text-xs text-gray-400 dark:text-gray-500 animate-fade-in">
-                    {toolHint ? toolHint[locale === 'en' ? 1 : 0] : THINK_HINTS[thinkHintIdx % THINK_HINTS.length]}
+                  <span key={progress ? `p:${progress.stage}` : toolHint ? activeTool : thinkHintIdx} className="text-xs text-gray-400 dark:text-gray-500 animate-fade-in" data-testid="turn-progress" data-stage={progress?.stage}>
+                    {progress ? progress.text : toolHint ? toolHint[locale === 'en' ? 1 : 0] : THINK_HINTS[thinkHintIdx % THINK_HINTS.length]}
                   </span>
+                </div>
+              </div>
+            )}
+            {/* A reply whose stream closed without its finish frame is half an answer: say so and offer to answer again. */}
+            {streamCut && !error && !isLoading && (
+              <div role="status" data-testid="stream-cut" className="flex gap-3 animate-fade-in">
+                <TappyAvatar category={category} error />
+                <div className="flex-1 min-w-0 rounded-2xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/40 px-4 py-3 text-sm text-amber-800 dark:text-amber-200">
+                  <p className="leading-relaxed">{t('chat.streamCut')}</p>
+                  <button
+                    type="button"
+                    onClick={() => { setStreamCut(false); reload() }}
+                    className="mt-2 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-xs font-medium transition-colors"
+                  >
+                    <RotateCcw size={13} /> {t('chat.streamCutRetry')}
+                  </button>
                 </div>
               </div>
             )}
@@ -1433,7 +1864,8 @@ export default function ChatInterface({
                 <TappyAvatar category={category} error />
                 <div className="flex-1 min-w-0">
                   {isAgeGateMessage(error.message) ? (
-                    // ── V3 User Data Foundation: the 18+ gate ────────────────
+                    // ── V3 User Data Foundation: the 18+ gate (main #251, re-applied by hand
+                    // in the origin/main → V3 merge; V3 had rewritten this file) ──────────
                     //
                     // 🚨 THIS BRANCH IS WHAT THE EXISTING USER BASE ACTUALLY HITS.
                     //    The auth-callback redirect to /age-check only fires on a
@@ -1479,7 +1911,7 @@ export default function ChatInterface({
                     // Anonymous visitor used up their free questions → prompt login.
                     // Message text comes from the server (backend owns quota copy).
                     <div className="rounded-2xl bg-primary-50 dark:bg-primary-950/30 border border-primary-100 dark:border-primary-900/40 px-4 py-3 text-sm text-primary-800 dark:text-primary-200">
-                      <p className="leading-relaxed font-medium">{serverErrorMessage(error.message) ?? 'Bạn đã dùng hết số câu hỏi miễn phí hôm nay.'}</p>
+                      <p className="leading-relaxed font-medium">{serverErrorMessage(error.message) ?? 'Bạn đã dùng hết số câu hỏi AI dùng thử.'}</p>
                       <p className="leading-relaxed mt-1 text-primary-600 dark:text-primary-400">Đăng nhập để tiếp tục trò chuyện với Tappy và mở khoá mọi tính năng!</p>
                       <button
                         type="button"
@@ -1514,7 +1946,6 @@ export default function ChatInterface({
               </div>
             )}
           </div>
-          <div ref={bottomRef} />
         </div>
       </div>
       <div className="flex-shrink-0 px-4 pb-4 pt-2 border-t border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-950">
@@ -1567,6 +1998,46 @@ export default function ChatInterface({
           onChange={handleImageSelect}
         />
         <form id="chat-form" onSubmit={handleFormSubmit} className="max-w-container-content mx-auto w-full flex flex-col gap-2">
+          {/* P4-15 — offline. The thread stays readable and whatever the user typed stays in the
+              box; only sending is withheld, with a plain reason. No stack trace, no status code,
+              and no auto-retry — the moment the connection returns the send button re-enables and
+              the draft is still there. */}
+          {!isOnline && (
+            <div
+              role="status"
+              aria-live="polite"
+              data-testid="offline-notice"
+              className="self-start rounded-xl bg-gray-100 px-3 py-1.5 text-xs text-gray-600 dark:bg-gray-800 dark:text-gray-300"
+            >
+              {t('offline.composer')}
+            </div>
+          )}
+          {/* ── Device context, visible and revocable (DD-011) ──────────────────
+              The user's location was already being attached to every request, and the user could
+              not see that anywhere. Silent context is a trust problem twice over: the person
+              cannot tell why an answer came out the way it did, and cannot correct it without
+              guessing. So the chip states what Tappy is using, and the × removes it from every
+              subsequent request.
+              This asks for nothing and grants nothing — the permission model is untouched; it only
+              makes an existing input legible and refusable. */}
+          {userLocation && (
+            <div className="inline-flex items-center gap-1.5 self-start rounded-full border border-gray-200 bg-gray-50 px-3 py-1 text-xs text-gray-600 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300">
+              <span aria-hidden="true">📍</span>
+              <span data-testid="location-context">{userLocation.address || t('context.nearYou')}</span>
+              <button
+                type="button"
+                onClick={() => {
+                  setUserLocation(null)
+                  try { localStorage.removeItem('tappy_location') } catch { /* private mode */ }
+                }}
+                aria-label={t('context.removeLocation')}
+                data-testid="location-context-remove"
+                className="ml-0.5 inline-flex h-6 w-6 items-center justify-center rounded-full hover:bg-gray-200 dark:hover:bg-gray-700"
+              >
+                <X size={11} />
+              </button>
+            </div>
+          )}
           {/* Image preview */}
           {imagePreviewUrl && (
             <div className="relative inline-flex self-start ml-1">
@@ -1586,12 +2057,6 @@ export default function ChatInterface({
             </div>
           )}
           {/* Voice status — user always knows the state (listening / auto-sending / error) */}
-          {isListening && (
-            <div role="status" aria-live="polite" className="flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs self-start max-w-full bg-orange-50 dark:bg-orange-900/20 text-[#FF9500]">
-              <span className="w-2 h-2 rounded-full bg-[#FF9500] animate-pulse flex-shrink-0" />
-              <span>Đang nghe… nói xong Tappy tự gửi (bạn có 2 giây để sửa trước).</span>
-            </div>
-          )}
           {!isListening && pendingSend && (
             <button
               type="button"
@@ -1602,7 +2067,7 @@ export default function ChatInterface({
               <span>Đang gửi trong giây lát… chạm để sửa trước khi gửi.</span>
             </button>
           )}
-          {!isListening && !pendingSend && voiceError && (
+          {!voiceOpen && !isListening && !pendingSend && voiceError && (
             <div role="status" aria-live="polite" className="flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs self-start max-w-full bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400">
               <span>{voiceError}</span>
             </div>
@@ -1659,8 +2124,8 @@ export default function ChatInterface({
               </div>
             )}
           </div>
-          {/* Nút microphone màu cam #FF9500 */}
-          <button
+          {/* Nút microphone màu cam #FF9500 — hidden when the user switched the microphone off in Settings */}
+          {micAllowed && <button
             type="button"
             onClick={isListening ? stopVoice : startVoice}
             disabled={isLoading}
@@ -1678,13 +2143,13 @@ export default function ChatInterface({
                tap to stop"). Previously used MicOff (a slashed mic), which reads as
                "mic disabled" and confused users about the on/off state. */}
             <Mic size={18} className={isListening ? 'text-white' : 'text-[#FF9500]'} />
-          </button>
+          </button>}
           {isLoading ? (
             <button type="button" onClick={() => stop()} aria-label="Dừng trả lời" className="w-11 h-11 rounded-2xl bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 flex items-center justify-center transition-all flex-shrink-0">
               <Square size={15} className="text-gray-700 dark:text-gray-200 fill-current" />
             </button>
           ) : (
-            <button type="submit" disabled={!input.trim() && !imageFile} aria-label={t('chat.send')} className="w-11 h-11 rounded-2xl bg-interactive hover:bg-interactive-hover disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center transition-all flex-shrink-0">
+            <button type="submit" disabled={(!input.trim() && !imageFile) || !isOnline} aria-label={t('chat.send')} className="w-11 h-11 rounded-2xl bg-interactive hover:bg-interactive-hover disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center transition-all flex-shrink-0">
               <Send size={18} className="text-white" />
             </button>
           )}

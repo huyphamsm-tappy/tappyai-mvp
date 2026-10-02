@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Bánh Mì Pate Hải Phòng Quận 7\" OR \"Bánh Bao Thuý Đỗ\" OR \"Bánh Mì Anh Trai\" quan 7 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:52:19.913Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Bánh Mì Pate Hải Phòng Quận 7\" OR \"Bánh Bao Thuý Đỗ\" OR \"Bánh Mì Anh Trai\" quan 7 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Bánh bao Thuý Đỗ Quận 7 có bán bánh chay thật không?",
+    "link": "https://www.tiktok.com/@banhbaothuydo/video/7668283160207166736",
+    "snippet": "Lead Nhiều người đặt câu hỏi: tiệm Bánh bao Thuý Đỗ ở Quận 7 có thật sự bán bánh chay không? Trên mạng xuất hiện tin ghi rằng tiệm có đăng ...",
+    "position": 1
+   },
+   {
+    "title": "Bánh mì Anh Trai quận 7: review bơ cốm & bơ gấc siêu béo",
+    "link": "https://www.tiktok.com/@_iamlyna_/video/7683474675170594056",
+    "snippet": "Lead Bánh mì Anh Trai (quận 7) nổi tiếng vì hai loại bơ đặc trưng: bơ cốm và bơ gấc siêu béo thơm. Video/clip gợi ý dành cho người ghiền ...",
+    "position": 2
+   },
+   {
+    "title": "Top 3 loại bánh mì được khách tin tưởng tại Bánh mì Anh ...",
+    "link": "https://www.tiktok.com/@banhmianhtrai/video/7636654273832471815",
+    "snippet": "Lead Bánh mì Anh Trai Q7 nổi tiếng với những ổ bánh mì được khách địa phương tin tưởng. Video nhấn vào “Top 3 Bánh mì hộp” — ba loại bán ...",
+    "position": 3
+   },
+   {
+    "title": "Lý do khu vui chơi Quận 7 không có nhà bóng",
+    "link": "https://www.tiktok.com/@banhbaothuydo/video/7682006131379555585",
+    "snippet": "- Những gợi ý hữu ích: trò vận động nhỏ, khu chơi tương tác, góc sáng tạo làm bánh bao (liên quan ... Bánh Bao Thuý Đỗ - Quận 7 · author. 1210.",
+    "position": 4
+   },
+   {
+    "title": "Bánh mì Anh Trai Q7: Menu & Khai Trương 179 Lâm Văn ...",
+    "link": "https://www.tiktok.com/@banhmianhtrai/video/7639723048723139858",
+    "snippet": "Bánh mì Anh Trai Q7: Menu & Khai Trương 179 Lâm Văn Bền. Tiệm Bánh mì Anh Trai Q7 đã chính thức mở bán thử nghiệm, mang đến một trải nghiệm ẩm ...",
+    "position": 5
+   },
+   {
+    "title": "Bánh bao Thuý Đỗ Q7: Top câu hỏi thường gặp về ...",
+    "link": "https://www.tiktok.com/@bbtd.174lamvanbenq7/video/7680897598508649735",
+    "snippet": "Những câu hỏi phổ biến và trả lời 1. Tiệm Bánh Bao Thuý Đỗ ở đâu? - Khách tìm địa chỉ Tiệm Bánh Bao Thuý Đỗ Q7 để mua trực tiếp hoặc lấy hàng ...",
+    "position": 6
+   },
+   {
+    "title": "Top 5 Loại Bánh Mì Ngon Tại Quận 7 – Anh Trai Quán",
+    "link": "https://www.tiktok.com/@banhmianhtrai/photo/7666744162762444040?image_index=2&lang=es",
+    "snippet": "28 me gusta,Vídeo de TikTok de Bánh mì ANH TRAI (@banhmianhtrai): «Review top 5 món bánh mì được yêu thích tại Anh Trai Quán, Quận 7.",
+    "position": 7
+   },
+   {
+    "title": "Bánh mì ngon Quận 7: 3 món đơn giản",
+    "link": "https://www.tiktok.com/@banhmianhtrai/video/7628903385009261831",
+    "snippet": "Khám phá 3 món bánh mì ngon tuyệt tại Quận 7, dễ làm tại nhà. @Bánh mì ANH TRAI.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

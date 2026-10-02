@@ -1,0 +1,27 @@
+merge-guard commit-msg hook — local install + proof, 2026-09-25
+Installed: npm run merge:install-hook → D:\Claude\Projects\TappyAI\tappyai-mvp\.git\hooks\commit-msg
+(common git dir → every worktree of this clone; core.hooksPath unset; no prior commit-msg hook)
+
+Why commit-msg and not pre-merge-commit: git skips pre-merge-commit when a merge stops on conflicts
+and is finished with `git commit` — the exact path of a6ca9f0 / 1e7b77e. commit-msg runs for both
+`git merge` and `git commit`, and sees the final message (so a Merge-Drop trailer is honoured).
+
+Proof in a throw-away detached worktree (removed afterwards), synthetic file hooktest.txt:
+=== 1. conflicted merge, resolver keeps ours wholesale (drops side1's clean L15) → expect BLOCK
+merge-guard — a merge may not silently drop what one side brought in (docs/uat/MERGE-LOSS-AUDIT.md §4)
+• staged merge of b3d6776 into HEAD: ✖ 1 finding(s)
+    R1  hooktest.txt — 1 line(s) git merged cleanly were dropped
+        − side1 L15 (clean change)
+✖ 1 unwaived finding(s). Restore the dropped change, or state it in the merge message: "Merge-Drop: <path> — <reason>".
+commit exit=1
+merge still in progress (blocked)
+=== 2. same merge, waiver trailer in the message → expect PASS
+• staged merge of b3d6776 into HEAD: ✓ clean, 1 waived
+    (waived) R1  hooktest.txt — Merge-Drop: hooktest.txt — hook test, deliberate
+commit exit=0
+6ca395a parents=a337698 b3d6776 Merge side1
+=== 3. clean automatic merge (git merge --no-ff) → hook runs, expect PASS
+• staged merge of a8b00c8 into HEAD: ✓ clean
+merge exit=0
+8ff9b98 parents=b3d6776 a8b00c8 Merge side4
+=== 4. ordinary (non-merge) commits: hook exits silently (no MERGE_HEAD) — every hooktest: commit above.

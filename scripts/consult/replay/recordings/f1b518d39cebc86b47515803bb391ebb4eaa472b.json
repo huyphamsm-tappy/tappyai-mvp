@@ -1,0 +1,82 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Itel P55 Plus NFC 8GB 256GB site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:54:34.510Z",
+ "body": {
+  "searchParameters": {
+   "q": "Itel P55 Plus NFC 8GB 256GB site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Điện thoại Itel P55 Plus NFC 8GB 256GB",
+    "link": "https://shopee.vn/%C4%90i%E1%BB%87n-tho%E1%BA%A1i-Itel-P55-Plus-NFC-8GB-256GB-i.1431261217.56713678328",
+    "snippet": "Mua Điện thoại Itel P55 Plus NFC 8GB 256GB giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn lại tiền Giao Hàng Miễn ...",
+    "rating": 5,
+    "ratingCount": 40,
+    "position": 1
+   },
+   {
+    "title": "Itel p55 plus - Giá Tốt, Sale Tháng 09, Freeship 0Đ",
+    "link": "https://shopee.vn/list/%C4%91i%E1%BB%87n%20tho%E1%BA%A1i/itel/p55%20plus",
+    "snippet": "Điện thoại Itel P55 Plus NFC 8GB 256GB3.090.000₫ · 2. Điện thoại Itel P55 Plus NFC 8GB 256GB3.090.000₫ · 3. Lưng Itel P55 Plus Zin Bóc Máy70.000₫ · 4. Dành Cho ...",
+    "position": 2
+   },
+   {
+    "title": "[MỚI VỀ]Điện Thoại Thông Minh Itel P55+ 16GB(8+8)/256GB",
+    "link": "https://shopee.vn/-M%E1%BB%9AI-V%E1%BB%80-%C4%90i%E1%BB%87n-Tho%E1%BA%A1i-Th%C3%B4ng-Minh-Itel-P55-16GB(8-8)-256GB-H%E1%BB%97-Tr%E1%BB%A3-NFC-5000-mAH-S%E1%BA%A1c-Nhanh-45W-HD-90Hz-i.252710995.28081708124",
+    "snippet": "[MỚI VỀ]Điện Thoại Thông Minh Itel P55+ 16GB(8+8)/256GB | Hỗ Trợ NFC | 5000 mAH | Sạc Nhanh 45W | HD+ 90Hz. outline grey truck icon. Không hỗ trợ.",
+    "rating": 4.7,
+    "ratingCount": 24,
+    "position": 3
+   },
+   {
+    "title": "Điện Thoại Thông Minh Itel P55+ 16GB(8+8)/256GB",
+    "link": "https://shopee.vn/%C4%90i%E1%BB%87n-Tho%E1%BA%A1i-Th%C3%B4ng-Minh-Itel-P55-16GB(8-8)-256GB-H%E1%BB%97-Tr%E1%BB%A3-NFC-S%E1%BA%A1c-Nhanh-45W-HD-90Hz-H%C3%A0ng-ch%C3%ADnh-h%C3%A3ng-i.191065034.28881849320",
+    "snippet": "Mua Điện Thoại Thông Minh Itel P55+ 16GB(8+8)/256GB | Hỗ Trợ NFC |Sạc Nhanh 45W| HD+ 90Hz-Hàng chính hãng giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 4.8,
+    "ratingCount": 223,
+    "position": 4
+   },
+   {
+    "title": "Điện Thoại Thông Minh Itel P55+ 16GB(8+8)/256GB",
+    "link": "https://shopee.vn/%C4%90i%E1%BB%87n-Tho%E1%BA%A1i-Th%C3%B4ng-Minh-Itel-P55-16GB(8-8)-256GB-H%E1%BB%97-Tr%E1%BB%A3-NFC-5000-mAH-S%E1%BA%A1c-Nhanh-45W-HD-90Hz-i.403571751.28681715719",
+    "snippet": "Mua Điện Thoại Thông Minh Itel P55+ 16GB(8+8)/256GB | Hỗ Trợ NFC | 5000 mAH | Sạc Nhanh 45W | HD+ 90Hz giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 4.9,
+    "ratingCount": 88,
+    "position": 5
+   },
+   {
+    "title": "Miếng dán cường lực Itel P55/ P55 Plus full màn hình",
+    "link": "https://shopee.vn/Mi%E1%BA%BFng-d%C3%A1n-c%C6%B0%E1%BB%9Dng-l%E1%BB%B1c-Itel-P55-P55-Plus-full-m%C3%A0n-h%C3%ACnh-i.24633868.26721807713",
+    "snippet": "Miếng dán cường lực Itel P55/ P55 Plus full màn hình. outline grey truck icon. Không hỗ trợ. service entrance icon. Trả hàng miễn phí 15 ngày • Bảo hiểm rơi vỡ ...",
+    "position": 6
+   },
+   {
+    "title": "dien thoai itel giá tốt Tháng 6, 2026 | Mua ngay",
+    "link": "https://shopee.vn/search?keyword=dien%20thoai%20itel",
+    "snippet": "[Tặng tai nghe] Điện Thoại Itel P55+ 8GB/256GB | NFC | 5000. custom-overlay ... flag-label Ốp điện thoại Cho Itel P55 Plus P55 + PL63LN P663L Gấu Trúc ...",
+    "rating": 4.8,
+    "ratingCount": 906,
+    "position": 7
+   },
+   {
+    "title": "Mua và Bán Trên Ứng Dụng Di Động Hoặc Website",
+    "link": "https://shopee.vn/search?promotionId=997100683300864&signature=a78253010d8f55175acb5b124032a6a93ca306b054f9dff562095322c6342b6d&voucherCode=MIMA499K&ref=sansandeals",
+    "snippet": "Điện Thoại Thông Minh Itel P55+ 16GB(8+8)/256GB | Hỗ · Điện thoại Xiaomi Redmi Note 15 6GB/128GB | Pin lớn 6000mAh | Màn hình.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

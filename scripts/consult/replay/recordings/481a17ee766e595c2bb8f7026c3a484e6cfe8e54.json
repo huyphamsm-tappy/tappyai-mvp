@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Cửu Vân Quán\" OR \"Quán Nhậu Bờ Kè\" OR \"Rảnh Là Nhậu\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:26:05.801Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Cửu Vân Quán\" OR \"Quán Nhậu Bờ Kè\" OR \"Rảnh Là Nhậu\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Quán Nhậu Bờ Kè Mở Cửa Đến 5h Sáng",
+    "link": "https://www.tiktok.com/@cambone_2010/video/7540944048161377556",
+    "snippet": "Quán Nhậu Bờ Kè Mở Cửa Đến 5h Sáng. Khám phá quán nhậu bờ kè, nơi mở cửa đến 5h sáng cho những cú đêm, phục vụ món ngon và đồ uống hấp dẫn.",
+    "position": 1
+   },
+   {
+    "title": "Quán nhậu Bờ Kè Chụt 29/38 Vĩnh Nguyên cũ Nha Trang ...",
+    "link": "https://www.tiktok.com/@thanh.van1612/video/7664847876006219029",
+    "snippet": "Quán Nhậu Ven Biển Phú Yên. Quán nhậu Bờ Kè Chụt 29/38 Vĩnh Nguyên cũ Nha Trang #0397386068 sdt.",
+    "position": 2
+   },
+   {
+    "title": "Út Mai Quán - Quán nhậu bờ kè Trường Sa rất cảm ...",
+    "link": "https://www.tiktok.com/@quannhauutmai/video/7496500196008922375",
+    "snippet": "Út Mai Quán - Quán nhậu bờ kè Trường Sa rất cảm ơn Quý Khách đã yêu thương và ủng hộ ; âm thanh gốc - Trường du lịch. 9987 · 5676 ...",
+    "position": 3
+   },
+   {
+    "title": "Quán Nhậu Bờ Kè: Ẩm Thực Chất Lượng Tại Huế",
+    "link": "https://www.tiktok.com/@huy8chin/video/7393359171581676807",
+    "snippet": "Quán Nhậu Bờ Kè: Ẩm Thực Chất Lượng Tại Huế. Khám phá quán nhậu Bờ Kè với view đẹp và món ăn ngon tại Huế. Đến ngay để thưởng thức ẩm thực ...",
+    "position": 4
+   },
+   {
+    "title": "Nghe nói Cần Thơ sắp có chỗ để vừa ăn ngon ...",
+    "link": "https://www.tiktok.com/@trai.nghiem.cung.an/video/7679430237171551509",
+    "snippet": "... vừa ăn ngon, vừa có cảnh chill. @Trải Nghiệm Cùng An · âm thanh gốc - Trải Nghiệm Cùng An · Ẩm thực - Quán nhậu Bờ Kè AP89 · author. 146 · 77.",
+    "position": 5
+   },
+   {
+    "title": "Review Quán Nhậu Bờ Kè Sài Gòn",
+    "link": "https://www.tiktok.com/discover/review-qu%C3%A1n-nh%E1%BA%ADu-b%E1%BB%9D-k%C3%A8-s%C3%A0i-g%C3%B2n",
+    "snippet": "Khám phá quán nhậu Bờ Kè Sài Gòn với món ăn đặc sắc và không gian lý tưởng để tổ chức sinh nhật cùng bạn bè. Đến ngay để không bỏ lỡ!",
+    "position": 6
+   },
+   {
+    "title": "Sang quán nhậu bờ kè Trường Sa - Phú Nhuận Combo ...",
+    "link": "https://www.tiktok.com/@nhathue.bighome/video/7662973665192971538",
+    "snippet": "Sang quán nhậu bờ kè Trường Sa - Phú Nhuận Combo ngang 10m + vỉa hè 5m siêu thoáng, view đẹp #chothuenha #phunhuan #kinhdoanh #nhahang #vip.",
+    "position": 7
+   },
+   {
+    "title": "Món Súp Cua Ngon Tại Quán Nhậu Bờ Kè Hoàng Sa",
+    "link": "https://www.tiktok.com/@lankhapsaigon/video/7439726069256637703",
+    "snippet": "Món Súp Cua Ngon Tại Quán Nhậu Bờ Kè Hoàng Sa. Khám phá quán súp cua thơm ngon chỉ 15xu ở Bờ Kè Hoàng Sa. Không thể bỏ lỡ! #supcua #quan1 ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

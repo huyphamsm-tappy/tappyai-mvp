@@ -1,0 +1,19 @@
+     × no budget in "iPhone 15 Pro Max cũ pin 98-99%" 9ms
+     × no budget in "pin 98-99 %" 1ms
+     × no budget in "máy còn 98-99 phần trăm pin" 1ms
+     × no budget in "quán cho gia đình 5-6 người" 1ms
+     × no budget in "có bé dưới 5 tuổi" 1ms
+     × no budget in "khoảng 2 km quanh đây" 1ms
+     × no budget in "vali 20-25kg" 3ms
+     × no budget in "xe đời từ 2020 đến 2023" 1ms
+     × no budget in "tầm 7-9h tối" 1ms
+     × no budget in "chụp ảnh 48-50 MP" 1ms
+     × no budget in "điện thoại 8-12 GB RAM" 0ms
+     × no budget in "màn hình khoảng 6 inch" 1ms
+     × no budget in "mở cửa từ 7 đến 22 giờ" 0ms
+     × no budget in "nhà 3-4 phòng ngủ" 0ms
+     × "iPhone cũ pin 98-99% giá dưới 15 triệu" is still money 3ms
+     × a plan envelope is not read from a percentage or a head count either 1ms
+⎯⎯⎯⎯⎯⎯ Failed Tests 16 ⎯⎯⎯⎯⎯⎯⎯
+ Test Files  1 failed (1)
+      Tests  16 failed | 10 passed (26)

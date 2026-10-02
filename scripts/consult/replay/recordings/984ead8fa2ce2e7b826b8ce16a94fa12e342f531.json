@@ -1,0 +1,82 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "gội đầu dưỡng sinh gần hơn site:klook.com/vi/activity",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:59:48.267Z",
+ "body": {
+  "searchParameters": {
+   "q": "gội đầu dưỡng sinh gần hơn site:klook.com/vi/activity",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Gội Đầu Dưỡng Sinh & Cắt Tóc Chuẩn K-Beauty Gần Sân Bay ...",
+    "link": "https://www.klook.com/vi/activity/231513-k-beauty-head-spa-hair-cut-near-gimhae-airport/",
+    "snippet": "Gội Đầu Dưỡng Sinh & Cắt Tóc Chuẩn K-Beauty Gần Sân Bay Gimhae · Phục hồi da đầu bằng cách lưu thông nước ấm và làm sạch sâu · Nhận dịch vụ tạo kiểu tóc 1:1 ...",
+    "position": 1
+   },
+   {
+    "title": "Đại An, Đài Bắc: Gội đầu dưỡng sinh kiểu Việt 24H - Dômei",
+    "link": "https://www.klook.com/vi/activity/125966-domei-spa-in-taipei/",
+    "snippet": "Trải nghiệm gội đầu kiểu Việt tại Dômei, quận Da'an, Đài Bắc (gần ga tàu điện ngầm Zhongxiao Dunhua) · Nằm ở khu vực phía Đông của thành phố Đài Bắc, được Google ...",
+    "rating": 4.7,
+    "ratingCount": 14,
+    "position": 2
+   },
+   {
+    "title": "Hoa Mạch Gội Đầu Dưỡng Sinh Kiểu Việt - Cao Hùng",
+    "link": "https://www.klook.com/vi/activity/136396-hoamai-vietnamese-hair-shampoo/",
+    "snippet": "Các gói dịch vụ · Gội đầu dưỡng sinh cơ bản Việt Nam 80 phút · Gội đầu kiểu Việt chính thống 120 phút · Gội đầu dưỡng sinh kiểu Việt 40 phút.",
+    "rating": 4.8,
+    "ratingCount": 18,
+    "position": 3
+   },
+   {
+    "title": "Các Liệu Trình Gội Đầu Dưỡng Sinh [YAYOI〜BRAINS GRANDE]",
+    "link": "https://www.klook.com/vi/activity/227075-yayoi-brains-grande-head-spa-courses/",
+    "snippet": "Ngay trước Ga Katsura là YAYOI ~BRAINS GRANDE, một salon lâu đời đã giành chiến thắng trong các cuộc thi chăm sóc da đầu cấp quốc gia. Salon có các phòng bán ...",
+    "position": 4
+   },
+   {
+    "title": "Gội đầu dưỡng sinh Việt Nam tại 520 SPA Beauty",
+    "link": "https://www.klook.com/vi/activity/162023-520-spa/",
+    "snippet": "Gội đầu dưỡng sinh Việt Nam tại 520 SPA Beauty · Kỹ thuật viên tại cửa hàng có kỹ thuật tinh tế, liệu pháp massage vừa phải, êm dịu và hiệu quả. · Không gian ...",
+    "rating": 4.2,
+    "ratingCount": 27,
+    "position": 5
+   },
+   {
+    "title": "Ngọc Hạnh Gội Đầu Dưỡng Sinh Kiểu Việt",
+    "link": "https://www.klook.com/vi/activity/158714-yuxing-vietnamese-hair-wash-vietnamese-hair-wash-service/",
+    "snippet": "Ngọc Hạnh Gội Đầu Dưỡng Sinh Kiểu Việt. Quán được đánh giá 5 sao trên Google, nằm gần ga tàu điện ngầm Long Sơn Tự và khu phố Hoa Tây, giao thông thuận tiện ...",
+    "rating": 4.6,
+    "ratingCount": 16,
+    "position": 6
+   },
+   {
+    "title": "Gội đầu dưỡng sinh chuẩn Việt - Tím Mỹ Nhân",
+    "link": "https://www.klook.com/vi/activity/139630-purple-beauty-vietnamese-hair-shampoo-in-yilan/",
+    "snippet": "Rất thoải mái, quá trình rất tận tâm, sau khi đắp dưa chuột mặt tôi trắng hẳn ra. Ngoại trừ việc phải tìm lối vào một chút, nhìn chung rất dễ chịu. Giá trị tốt.",
+    "rating": 4.9,
+    "ratingCount": 15,
+    "position": 7
+   },
+   {
+    "title": "Quán massage chân dưỡng sinh",
+    "link": "https://www.klook.com/vi/activity/197060-zuqi-massage/",
+    "snippet": "Gội đầu dưỡng sinh kiểu Việt Kim Hà - Trải nghiệm gội đầu & massage kiểu Việt. ☆ 4.7 (27). ₫ 491,222 · Vé vào cửa nhà hát bay i-Ride KAOHSIUNG Cao Hùng. ☆ 4.7 ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,34 @@
+# zalo-verify -- public HTTPS front for the loopback-only Node service.
+# Caddy obtains and renews the Let's Encrypt certificate by itself (needs 80 + 443 open and the
+# A record zalo-verify.tappyai.com -> this VPS, DNS only / grey cloud).
+#
+# No `log` directive on purpose: Caddy writes no access log, so no request (and no token in a
+# body) is ever written to disk here. The Node service logs outcomes only.
+
+{
+	servers {
+		# TCP only (h1 + h2): the firewall opens 443/tcp, not 443/udp, so no HTTP/3.
+		protocols h1 h2
+	}
+}
+
+{$ZALO_VERIFY_DOMAIN:zalo-verify.tappyai.com} {
+	request_body {
+		max_size 8KB
+	}
+
+	header {
+		Strict-Transport-Security "max-age=31536000"
+		X-Content-Type-Options nosniff
+		-Server
+	}
+
+	@api path /verify /healthz
+	handle @api {
+		reverse_proxy 127.0.0.1:8787
+	}
+
+	handle {
+		respond "not found" 404
+	}
+}

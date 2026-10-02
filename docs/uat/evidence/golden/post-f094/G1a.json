@@ -1,0 +1,758 @@
+{
+  "id": "G1a",
+  "group": "travel-single",
+  "criteria": [
+    "First reply gives a usable plan (stay + eat) from what is known, states assumptions, asks at most ONE question",
+    "Hotel/places render as cards with names",
+    "No delivery apps for another city",
+    "Reply appears once"
+  ],
+  "turns": [
+    {
+      "user": "Cuối tuần này đi Vũng Tàu 2 người, budget 5 triệu, thích hải sản",
+      "status": 200,
+      "elapsedMs": 40769,
+      "textFrames": 3,
+      "tools": [
+        {
+          "name": "search_places",
+          "args": {
+            "query": "quán hải sản Vũng Tàu rẻ tiền",
+            "location": "Vũng Tàu",
+            "type": "restaurant"
+          }
+        },
+        {
+          "name": "get_hotel_prices",
+          "args": {
+            "location": "Vũng Tàu",
+            "checkIn": "2026-09-26",
+            "checkOut": "2026-09-27"
+          }
+        },
+        {
+          "name": "get_weather",
+          "args": {
+            "location": "Vũng Tàu"
+          }
+        },
+        {
+          "name": "get_transport_options",
+          "args": {
+            "origin": "TP HCM",
+            "destination": "Vũng Tàu",
+            "mode": "intercity",
+            "date": "2026-09-26"
+          }
+        }
+      ],
+      "toolResults": [
+        null,
+        null,
+        null,
+        null
+      ],
+      "annotations": [
+        {
+          "type": "tappy.progress.v1",
+          "stage": "found"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "Fusion Suites Vũng Tàu",
+              "address": "2 Trương Công Định, Phường, Vũng Tàu, Hồ Chí Minh 78000, Việt Nam",
+              "rating": 4.8,
+              "ratingCount": 4812,
+              "price": null,
+              "categories": [
+                "Khách sạn",
+                "Quán bar",
+                "Quán cà phê",
+                "Nhà hàng"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Victory Hotel Vung Tau",
+              "address": "83QR+4C, 149 Thùy Vân, Vũng Tàu, Hồ Chí Minh 78000, Việt Nam",
+              "rating": 4.8,
+              "ratingCount": 2562,
+              "price": null,
+              "categories": [
+                "Khách sạn"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Aloha Hotel Vũng Tàu",
+              "address": "12 La Văn Cầu, Vũng Tàu, Hồ Chí Minh, Việt Nam",
+              "rating": 4.8,
+              "ratingCount": 681,
+              "price": null,
+              "categories": [
+                "Khách sạn"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Vias Hotel Vung Tau",
+              "address": "179 Thùy Vân, Tam Thắng, Hồ Chí Minh 790000, Việt Nam",
+              "rating": 4.6,
+              "ratingCount": 1529,
+              "price": null,
+              "categories": [
+                "Khách sạn nghỉ dưỡng"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Melissa - Vung Tau | Khách Sạn Bãi Sau Vũng Tàu",
+              "address": "23D Thùy Vân, Vũng Tàu, Hồ Chí Minh 790000, Việt Nam",
+              "rating": 4.6,
+              "ratingCount": 365,
+              "price": null,
+              "categories": [
+                "Khách sạn",
+                "Khách sạn lưu trú dài hạn",
+                "Khách sạn tình yêu",
+                "Khách sạn nghỉ dưỡng"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            }
+          ],
+          "raw": {
+            "kind": "tappy.places.v1",
+            "v": 1,
+            "domain": "travel",
+            "ranked": false,
+            "items": [
+              {
+                "id": "stay:10.34162,107.07586",
+                "domain": "travel",
+                "kind": "stay",
+                "name": "Fusion Suites Vũng Tàu",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmM3JVNmocLDCf-MXBkStKFtLkNXOfuMx8EoMWPB7r5K5ID7g7Kg55J3Jla42jDTtK0bjQCcQJfCfGiZEk9yVQgGrv6doXN05cfxlbXjA4kZ86CnbKOWhxmMUoUCm6ZXm4TYNJ2Hp-scWSRE",
+                "address": "2 Trương Công Định, Phường, Vũng Tàu, Hồ Chí Minh 78000, Việt Nam",
+                "rating": 4.8,
+                "ratingCount": 4812,
+                "phone": "+84 254 6257 272",
+                "categories": [
+                  "Khách sạn",
+                  "Quán bar",
+                  "Quán cà phê",
+                  "Nhà hàng"
+                ],
+                "rank": 0,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=11541417421017603290",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://fusion-suites.com/vungtau/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Fusion%20Suites%20V%C5%A9ng%20T%C3%A0u%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842546257272",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "stay:10.33857,107.09125",
+                "domain": "travel",
+                "kind": "stay",
+                "name": "Victory Hotel Vung Tau",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmP-Y4J_RGDz4F7dgyuTYoep1tWj14-waJvIe3ZSQ8CSMGQkiWYcesDIIiKI3fKuBQFM6fshsGVFlwzevq_Zo_LkGnLLXHjMpNdmJg2pvL-MS7mLp8NWzTEhWeer_YmYz8pSl1aypg4GTug",
+                "address": "83QR+4C, 149 Thùy Vân, Vũng Tàu, Hồ Chí Minh 78000, Việt Nam",
+                "rating": 4.8,
+                "ratingCount": 2562,
+                "phone": "+84 254 6556 888",
+                "categories": [
+                  "Khách sạn"
+                ],
+                "rank": 1,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=16927681765482019855",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://victoryvungtau.com/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Victory%20Hotel%20Vung%20Tau%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842546556888",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "stay:10.33805,107.09039",
+                "domain": "travel",
+                "kind": "stay",
+                "name": "Aloha Hotel Vũng Tàu",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmMXxZcbHiCzcCjTeaNhewtFaFMUBhnRZrcfv75l2rNc-7bsUow4Z_Xzo92R-xCbi1GIeZ6cyGQ1_2zqQpRyiPkArQ_sXn5-FBP7Ns_taPagAFwKwWG9tdRLORLD9KBY8gGPeKFM",
+                "address": "12 La Văn Cầu, Vũng Tàu, Hồ Chí Minh, Việt Nam",
+                "rating": 4.8,
+                "ratingCount": 681,
+                "phone": "+84 792 280 695",
+                "categories": [
+                  "Khách sạn"
+                ],
+                "rank": 2,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=3451061210137607478",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.facebook.com/alohahotelvt/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Aloha%20Hotel%20V%C5%A9ng%20T%C3%A0u%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84792280695",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "stay:10.35241,107.10142",
+                "domain": "travel",
+                "kind": "stay",
+                "name": "Vias Hotel Vung Tau",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmP9qbZLpQcCT_o6Xc58HpoMxD2PF31eS523nCJuXn-zUIn_kBmh3fPX7GtdYPzM9OBnCkN_3iCdR_VMlZGJQDWbM999mdntQh6WXyX5bYnrU6_ZR3uVsK-y39wRyqaJEWHxLUzUZA",
+                "address": "179 Thùy Vân, Tam Thắng, Hồ Chí Minh 790000, Việt Nam",
+                "rating": 4.6,
+                "ratingCount": 1529,
+                "phone": "+84 254 3541 111",
+                "categories": [
+                  "Khách sạn nghỉ dưỡng"
+                ],
+                "rank": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=14863993309474711187",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://viashotels.com/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Vias%20Hotel%20Vung%20Tau%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842543541111",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "stay:10.33055,107.08737",
+                "domain": "travel",
+                "kind": "stay",
+                "name": "Melissa - Vung Tau | Khách Sạn Bãi Sau Vũng Tàu",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmMo88rRbLevXDvCgcUGGtpPVIDgWGSILOPqa_y7MJAFcSd4lf9dtu6kX-BCb3JJiZo61-LkBiTTlPmvikjjUaNq7ARIzx1xgtBijHhuhgdEHHwudU9mXlctIxxDGvAfJXpyDsyS",
+                "address": "23D Thùy Vân, Vũng Tàu, Hồ Chí Minh 790000, Việt Nam",
+                "rating": 4.6,
+                "ratingCount": 365,
+                "phone": "+84 968 900 893",
+                "categories": [
+                  "Khách sạn",
+                  "Khách sạn lưu trú dài hạn",
+                  "Khách sạn tình yêu",
+                  "Khách sạn nghỉ dưỡng"
+                ],
+                "rank": 4,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=6995876162440303960",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Melissa%20-%20Vung%20Tau%20%7C%20Kh%C3%A1ch%20S%E1%BA%A1n%20B%C3%A3i%20Sau%20V%C5%A9ng%20T%C3%A0u%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84968900893",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              }
+            ],
+            "shown": 3,
+            "preliminary": true
+          },
+          "preliminary": true,
+          "domain": "travel"
+        },
+        {
+          "type": "tappy.progress.v1",
+          "stage": "finishing"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "Melissa - Vung Tau | Khách Sạn Bãi Sau Vũng Tàu",
+              "address": "23D Thùy Vân, Vũng Tàu, Hồ Chí Minh 790000, Việt Nam",
+              "rating": 4.6,
+              "ratingCount": 365,
+              "price": null,
+              "categories": [
+                "Khách sạn",
+                "Khách sạn lưu trú dài hạn",
+                "Khách sạn tình yêu",
+                "Khách sạn nghỉ dưỡng"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": null,
+              "recommended": true,
+              "reasons": [
+                "rated 4.6",
+                "365 reviews"
+              ]
+            },
+            {
+              "name": "Fusion Suites Vũng Tàu",
+              "address": "2 Trương Công Định, Phường, Vũng Tàu, Hồ Chí Minh 78000, Việt Nam",
+              "rating": 4.8,
+              "ratingCount": 4812,
+              "price": null,
+              "categories": [
+                "Khách sạn",
+                "Quán bar",
+                "Quán cà phê",
+                "Nhà hàng"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Victory Hotel Vung Tau",
+              "address": "83QR+4C, 149 Thùy Vân, Vũng Tàu, Hồ Chí Minh 78000, Việt Nam",
+              "rating": 4.8,
+              "ratingCount": 2562,
+              "price": null,
+              "categories": [
+                "Khách sạn"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Aloha Hotel Vũng Tàu",
+              "address": "12 La Văn Cầu, Vũng Tàu, Hồ Chí Minh, Việt Nam",
+              "rating": 4.8,
+              "ratingCount": 681,
+              "price": null,
+              "categories": [
+                "Khách sạn"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Vias Hotel Vung Tau",
+              "address": "179 Thùy Vân, Tam Thắng, Hồ Chí Minh 790000, Việt Nam",
+              "rating": 4.6,
+              "ratingCount": 1529,
+              "price": null,
+              "categories": [
+                "Khách sạn nghỉ dưỡng"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            }
+          ],
+          "raw": {
+            "kind": "tappy.places.v1",
+            "v": 1,
+            "domain": "travel",
+            "ranked": true,
+            "items": [
+              {
+                "id": "stay:10.33055,107.08737",
+                "domain": "travel",
+                "kind": "stay",
+                "name": "Melissa - Vung Tau | Khách Sạn Bãi Sau Vũng Tàu",
+                "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQod4JX80qfpSjNiWNfEb9zEMlcJzveqleNVsAJZ2McWg&s=10",
+                "address": "23D Thùy Vân, Vũng Tàu, Hồ Chí Minh 790000, Việt Nam",
+                "rating": 4.6,
+                "ratingCount": 365,
+                "phone": "+84 968 900 893",
+                "categories": [
+                  "Khách sạn",
+                  "Khách sạn lưu trú dài hạn",
+                  "Khách sạn tình yêu",
+                  "Khách sạn nghỉ dưỡng"
+                ],
+                "rank": 4,
+                "recommended": true,
+                "reasons": [
+                  {
+                    "attribute": "rating",
+                    "evidence": "rated 4.6",
+                    "params": {
+                      "value": 4.6
+                    }
+                  },
+                  {
+                    "attribute": "reviewCount",
+                    "evidence": "365 reviews",
+                    "params": {
+                      "count": 365
+                    }
+                  }
+                ],
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=6995876162440303960",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Melissa%20-%20Vung%20Tau%20%7C%20Kh%C3%A1ch%20S%E1%BA%A1n%20B%C3%A3i%20Sau%20V%C5%A9ng%20T%C3%A0u%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84968900893",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "stay:10.34162,107.07586",
+                "domain": "travel",
+                "kind": "stay",
+                "name": "Fusion Suites Vũng Tàu",
+                "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQXaBrwpCSUcQbjUVTHmV5BNlFNs-kFoi13C1CzIPnYnA&s=10",
+                "address": "2 Trương Công Định, Phường, Vũng Tàu, Hồ Chí Minh 78000, Việt Nam",
+                "rating": 4.8,
+                "ratingCount": 4812,
+                "phone": "+84 254 6257 272",
+                "categories": [
+                  "Khách sạn",
+                  "Quán bar",
+                  "Quán cà phê",
+                  "Nhà hàng"
+                ],
+                "rank": 0,
+                "actions": [
+                  {
+                    "kind": "review",
+                    "urlKind": "direct",
+                    "url": "https://www.tiktok.com/@anhdadenbooking.com/video/7535685115742145793",
+                    "labelKey": "v3.action.reviewOn",
+                    "platform": "TikTok",
+                    "attributed": true
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=11541417421017603290",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://fusion-suites.com/vungtau/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842546257272",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Fusion%20Suites%20V%C5%A9ng%20T%C3%A0u%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "stay:10.33857,107.09125",
+                "domain": "travel",
+                "kind": "stay",
+                "name": "Victory Hotel Vung Tau",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmP-Y4J_RGDz4F7dgyuTYoep1tWj14-waJvIe3ZSQ8CSMGQkiWYcesDIIiKI3fKuBQFM6fshsGVFlwzevq_Zo_LkGnLLXHjMpNdmJg2pvL-MS7mLp8NWzTEhWeer_YmYz8pSl1aypg4GTug",
+                "address": "83QR+4C, 149 Thùy Vân, Vũng Tàu, Hồ Chí Minh 78000, Việt Nam",
+                "rating": 4.8,
+                "ratingCount": 2562,
+                "phone": "+84 254 6556 888",
+                "categories": [
+                  "Khách sạn"
+                ],
+                "rank": 1,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=16927681765482019855",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://victoryvungtau.com/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Victory%20Hotel%20Vung%20Tau%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842546556888",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "stay:10.33805,107.09039",
+                "domain": "travel",
+                "kind": "stay",
+                "name": "Aloha Hotel Vũng Tàu",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmMXxZcbHiCzcCjTeaNhewtFaFMUBhnRZrcfv75l2rNc-7bsUow4Z_Xzo92R-xCbi1GIeZ6cyGQ1_2zqQpRyiPkArQ_sXn5-FBP7Ns_taPagAFwKwWG9tdRLORLD9KBY8gGPeKFM",
+                "address": "12 La Văn Cầu, Vũng Tàu, Hồ Chí Minh, Việt Nam",
+                "rating": 4.8,
+                "ratingCount": 681,
+                "phone": "+84 792 280 695",
+                "categories": [
+                  "Khách sạn"
+                ],
+                "rank": 2,
+                "actions": [
+                  {
+                    "kind": "review",
+                    "urlKind": "direct",
+                    "url": "https://www.tiktok.com/@tranminhdangofficial/video/7664753250570128660",
+                    "labelKey": "v3.action.reviewOn",
+                    "platform": "TikTok",
+                    "attributed": true
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=3451061210137607478",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.facebook.com/alohahotelvt/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84792280695",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Aloha%20Hotel%20V%C5%A9ng%20T%C3%A0u%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "stay:10.35241,107.10142",
+                "domain": "travel",
+                "kind": "stay",
+                "name": "Vias Hotel Vung Tau",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmP9qbZLpQcCT_o6Xc58HpoMxD2PF31eS523nCJuXn-zUIn_kBmh3fPX7GtdYPzM9OBnCkN_3iCdR_VMlZGJQDWbM999mdntQh6WXyX5bYnrU6_ZR3uVsK-y39wRyqaJEWHxLUzUZA",
+                "address": "179 Thùy Vân, Tam Thắng, Hồ Chí Minh 790000, Việt Nam",
+                "rating": 4.6,
+                "ratingCount": 1529,
+                "phone": "+84 254 3541 111",
+                "categories": [
+                  "Khách sạn nghỉ dưỡng"
+                ],
+                "rank": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=14863993309474711187",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://viashotels.com/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Vias%20Hotel%20Vung%20Tau%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842543541111",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              }
+            ],
+            "mapsSearchUrl": "https://maps.google.com/maps?q=qu%C3%A1n%20h%E1%BA%A3i%20s%E1%BA%A3n%20V%C5%A9ng%20T%C3%A0u%20r%E1%BA%BB%20ti%E1%BB%81n%20V%C5%A9ng%20T%C3%A0u",
+            "picked": [
+              "stay:10.33055,107.08737",
+              "stay:10.34162,107.07586",
+              "stay:10.33805,107.09039"
+            ],
+            "shown": 3
+          },
+          "picked": [
+            "stay:10.33055,107.08737",
+            "stay:10.34162,107.07586",
+            "stay:10.33805,107.09039"
+          ],
+          "domain": "travel"
+        }
+      ],
+      "cardItems": [
+        [
+          "Fusion Suites Vũng Tàu",
+          "Victory Hotel Vung Tau",
+          "Aloha Hotel Vũng Tàu",
+          "Vias Hotel Vung Tau",
+          "Melissa - Vung Tau | Khách Sạn Bãi Sau Vũng Tàu"
+        ],
+        [
+          "Melissa - Vung Tau | Khách Sạn Bãi Sau Vũng Tàu",
+          "Fusion Suites Vũng Tàu",
+          "Victory Hotel Vung Tau",
+          "Aloha Hotel Vũng Tàu",
+          "Vias Hotel Vung Tau"
+        ]
+      ],
+      "duplicate": null,
+      "text": "Mình sẽ lập kế hoạch cho chuyến Vũng Tàu cuối tuần này cho 2 người. Mình tính 2 ngày 1 đêm (thứ 7 - chủ nhật), đi xe khách từ TP HCM, và tìm quán hải sản ngon rẻ cho bạn nhé.\n\nTuyệt vời! Mình đã tìm được những quán hải sản ngon rẻ ở Vũng Tàu cho chuyến đi cuối tuần này. Thời tiết có mưa nhẹ (51% khả năng mưa), nên mình gợi ý ưu tiên quán trong nhà. Dưới đây là kế hoạch 2 ngày 1 đêm cho 2 người:\n\n[TAPPY_PLAN]\n{\"type\":\"trip\",\"title\":\"Vũng Tàu 2 ngày 1 đêm - Hải sản ngon rẻ & biển xanh\",\"people\":2,\"budget_total\":\"5.000.000 VND\",\"days\":[{\"label\":\"Ngày 1 (Thứ 7)\",\"items\":[{\"time\":\"07:00\",\"emoji\":\"🚌\",\"category\":\"transport\",\"name\":\"Xe Phương Trang TP HCM → Vũng Tàu\",\"description\":\"Xe khách Phương Trang, giá từ 140.000-185.000đ/người, chạy dày đặc hàng ngày\",\"price\":\"chưa có giá\",\"address\":\"Điểm khởi hành: TP HCM\",\"maps_link\":\"\",\"booking_link\":\"https://futabus.vn/\"},{\"time\":\"09:30\",\"emoji\":\"🍜\",\"category\":\"food\",\"name\":\"Nhà hàng hải sản La Sirena\",\"description\":\"**4.6⭐ (1.656 đánh giá Google Maps)** - Hải sản tươi, ốc, cua, tôm. Mở 10:30-14:00, 17:00-22:30\",\"price\":\"Chưa có giá cụ thể\",\"address\":\"159 Thùy Vân, Vũng Tàu\",\"maps_link\":\"https://maps.google.com/?cid=15039716562630094517\",\"booking_link\":\"https://www.foody.vn/vung-tau/la-sirena-bar-grill\"},{\"time\":\"14:00\",\"emoji\":\"🏨\",\"category\":\"hotel\",\"name\":\"Fusion Suites Vũng Tàu\",\"description\":\"**4.8⭐ (4.812 đánh giá Google Maps)** - Khách sạn 4 sao, view biển, có hồ bơi, nhà hàng\",\"price\":\"Chưa có giá (cần kiểm tra Booking)\",\"address\":\"2 Trương Công Định, Vũng Tàu\",\"maps_link\":\"https://maps.google.com/?cid=11541417421017603290\",\"booking_link\":\"https://fusion-suites.com/vungtau/\"},{\"time\":\"17:00\",\"emoji\":\"🍽️\",\"category\":\"food\",\"name\":\"Ốc Tự Nhiên Vũng Tàu - Ốc Tự Nhiên 2\",\"description\":\"**4.3⭐ (6.890 đánh giá Google Maps)** - Ốc tươi, hải sản giá rẻ 100-300k/đĩa. Mở 10:00-22:30\",\"price\":\"chưa có giá\",\"address\":\"34 Trần Phú, Vũng Tàu\",\"maps_link\":\"https://maps.google.com/?cid=13541304505137005941\",\"booking_link\":\"https://www.facebook.com/octunhien\"}]},{\"label\":\"Ngày 2 (Chủ nhật)\",\"items\":[{\"time\":\"08:00\",\"emoji\":\"🍜\",\"category\":\"food\",\"name\":\"Chợ Hải Sản 197\",\"description\":\"**3.8⭐ (184 đánh giá Google Maps)** - Chợ hải sản tươi sống, giá 1-500k. Mở cả ngày\",\"price\":\"chưa có giá\",\"address\":\"197 Hoàng Hoa Thám, Vũng Tàu\",\"maps_link\":\"https://maps.google.com/?cid=16286191208256685299\",\"booking_link\":\"\"},{\"time\":\"11:00\",\"emoji\":\"🏖️\",\"category\":\"entertainment\",\"name\":\"Bãi Sau Vũng Tàu\",\"description\":\"Bãi biển đẹp, nước xanh, thích hợp tắm biển và chụp ảnh\",\"price\":\"Miễn phí\",\"address\":\"Bãi Sau, Vũng Tàu\",\"maps_link\":\"https://www.google.com/maps/search/Bãi+Sau+Vũng+Tàu\"},{\"time\":\"13:00\",\"emoji\":\"🚌\",\"category\":\"transport\",\"name\":\"Xe Phương Trang Vũng Tàu → TP HCM\",\"description\":\"Xe khách Phương Trang, giá từ 140.000-185.000đ/người\",\"price\":\"chưa có giá\",\"address\":\"Điểm khởi hành: Vũng Tàu\",\"maps_link\":\"\",\"booking_link\":\"https://futabus.vn/\"}]}],\"cost_breakdown\":{\"Xe khách (2 chiều)\":\"chưa có giá\",\"Ăn sáng Ngày 1 (La Sirena)\":\"Chưa có giá\",\"Khách sạn 1 đêm\":\"Chưa có giá\",\"Ăn tối Ngày 1 (Ốc Tự Nhiên)\":\"chưa có giá\",\"Ăn sáng Ngày 2 (Chợ Hải Sản)\":\"chưa có giá\",\"Bãi biển\":\"Miễn phí\"},\"share_text\":\"Vũng Tàu 2 ngày 1 đêm - Hải sản tươi, biển xanh, giá rẻ! 🦐🌊 #TappyAI\"}\n[/TAPPY_PLAN]\n\nMình chọn **Nhà hàng hải sản La Sirena** cho bữa sáng Ngày 1 vì có rating 4.6⭐ từ 1.656 đánh giá - đó là bằng chứng mạnh mẽ về chất lượng. Sáng Ngày 2, **Chợ Hải Sản 197** cho phép bạn chọn hải sản tươi sống với giá bình dân.\n\nVề khách sạn, **Fusion Suites** có rating 4.8⭐ cao nhất, nhưng mình cần bạn kiểm tra giá trên Booking.com vì chưa xác nhận được giá chính xác cho ngày 26-27/9. Nếu vượt quá ngan sách, có thể chọn **Aloha Hotel** hoặc **Vias Hotel** (cũng 4.6-4.8⭐, giá có thể rẻ hơn).\n\nThời tiết có mưa nhẹ (51% khả năng), nên mang ô và chọn quán trong nhà. Nhiệt độ 27-29°C, thoải mái để tắm biển!\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"Tìm vé trên Futabus\",\"type\":\"search\",\"url\":\"https://futabus.vn/\",\"primary\":true},{\"label\":\"🍜 Xem La Sirena trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=15039716562630094517\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Muốn thêm hoạt động gì (Cột Cờ, Lâu Đài Tình Yêu)?|Cần gợi ý quán ăn khác?|Muốn đi máy bay thay vì xe khách?[/FOLLOWUPS]",
+      "visible": "Mình sẽ lập kế hoạch cho chuyến Vũng Tàu cuối tuần này cho 2 người. Mình tính 2 ngày 1 đêm (thứ 7 - chủ nhật), đi xe khách từ TP HCM, và tìm quán hải sản ngon rẻ cho bạn nhé.\n\nTuyệt vời! Mình đã tìm được những quán hải sản ngon rẻ ở Vũng Tàu cho chuyến đi cuối tuần này. Thời tiết có mưa nhẹ (51% khả năng mưa), nên mình gợi ý ưu tiên quán trong nhà. Dưới đây là kế hoạch 2 ngày 1 đêm cho 2 người:\n\nMình chọn **Nhà hàng hải sản La Sirena** cho bữa sáng Ngày 1 vì có rating 4.6⭐ từ 1.656 đánh giá - đó là bằng chứng mạnh mẽ về chất lượng. Sáng Ngày 2, **Chợ Hải Sản 197** cho phép bạn chọn hải sản tươi sống với giá bình dân.\n\nVề khách sạn, **Fusion Suites** có rating 4.8⭐ cao nhất, nhưng mình cần bạn kiểm tra giá trên Booking.com vì chưa xác nhận được giá chính xác cho ngày 26-27/9. Nếu vượt quá ngan sách, có thể chọn **Aloha Hotel** hoặc **Vias Hotel** (cũng 4.6-4.8⭐, giá có thể rẻ hơn).\n\nThời tiết có mưa nhẹ (51% khả năng), nên mang ô và chọn quán trong nhà. Nhiệt độ 27-29°C, thoải mái để tắm biển!",
+      "preGuard": "Mình sẽ lập kế hoạch cho chuyến Vũng Tàu cuối tuần này cho 2 người. Mình tính 2 ngày 1 đêm (thứ 7 - chủ nhật), đi xe khách từ TP HCM, và tìm quán hải sản ngon rẻ cho bạn nhé.Tuyệt vời! Mình đã tìm được những quán hải sản ngon rẻ ở Vũng Tàu cho chuyến đi cuối tuần này. Thời tiết có mưa nhẹ (51% khả năng mưa), nên mình gợi ý ưu tiên quán trong nhà. Dưới đây là kế hoạch 2 ngày 1 đêm cho 2 người:\n\n[TAPPY_PLAN]\n{\"type\":\"trip\",\"title\":\"Vũng Tàu 2 ngày 1 đêm - Hải sản ngon rẻ & biển xanh\",\"people\":2,\"budget_total\":\"5.000.000 VND\",\"days\":[{\"label\":\"Ngày 1 (Thứ 7)\",\"items\":[{\"time\":\"07:00\",\"emoji\":\"🚌\",\"category\":\"transport\",\"name\":\"Xe Phương Trang TP HCM → Vũng Tàu\",\"description\":\"Xe khách Phương Trang, giá từ 140.000-185.000đ/người, chạy dày đặc hàng ngày\",\"price\":\"280.000 VND (2 người)\",\"address\":\"Điểm khởi hành: TP HCM\",\"maps_link\":\"\",\"booking_link\":\"https://futabus.vn/\"},{\"time\":\"09:30\",\"emoji\":\"🍜\",\"category\":\"food\",\"name\":\"Nhà hàng hải sản La Sirena\",\"description\":\"**4.6⭐ (1.656 đánh giá Google Maps)** - Hải sản tươi, ốc, cua, tôm. Mở 10:30-14:00, 17:00-22:30\",\"price\":\"Chưa có giá cụ thể\",\"address\":\"159 Thùy Vân, Vũng Tàu\",\"maps_link\":\"https://maps.google.com/?cid=15039716562630094517\",\"booking_link\":\"https://www.foody.vn/vung-tau/la-sirena-bar-grill\"},{\"time\":\"14:00\",\"emoji\":\"🏨\",\"category\":\"hotel\",\"name\":\"Fusion Suites Vũng Tàu\",\"description\":\"**4.8⭐ (4.812 đánh giá Google Maps)** - Khách sạn 4 sao, view biển, có hồ bơi, nhà hàng\",\"price\":\"Chưa có giá (cần kiểm tra Booking)\",\"address\":\"2 Trương Công Định, Vũng Tàu\",\"maps_link\":\"https://maps.google.com/?cid=11541417421017603290\",\"booking_link\":\"https://fusion-suites.com/vungtau/\"},{\"time\":\"17:00\",\"emoji\":\"🍽️\",\"category\":\"food\",\"name\":\"Ốc Tự Nhiên Vũng Tàu - Ốc Tự Nhiên 2\",\"description\":\"**4.3⭐ (6.890 đánh giá Google Maps)** - Ốc tươi, hải sản giá rẻ 100-300k/đĩa. Mở 10:00-22:30\",\"price\":\"200.000-300.000 VND (2 người)\",\"address\":\"34 Trần Phú, Vũng Tàu\",\"maps_link\":\"https://maps.google.com/?cid=13541304505137005941\",\"booking_link\":\"https://www.facebook.com/octunhien\"}]},{\"label\":\"Ngày 2 (Chủ nhật)\",\"items\":[{\"time\":\"08:00\",\"emoji\":\"🍜\",\"category\":\"food\",\"name\":\"Chợ Hải Sản 197\",\"description\":\"**3.8⭐ (184 đánh giá Google Maps)** - Chợ hải sản tươi sống, giá 1-500k. Mở cả ngày\",\"price\":\"300.000-400.000 VND (2 người)\",\"address\":\"197 Hoàng Hoa Thám, Vũng Tàu\",\"maps_link\":\"https://maps.google.com/?cid=16286191208256685299\",\"booking_link\":\"\"},{\"time\":\"11:00\",\"emoji\":\"🏖️\",\"category\":\"entertainment\",\"name\":\"Bãi Sau Vũng Tàu\",\"description\":\"Bãi biển đẹp, nước xanh, thích hợp tắm biển và chụp ảnh\",\"price\":\"Miễn phí\",\"address\":\"Bãi Sau, Vũng Tàu\",\"maps_link\":\"https://www.google.com/maps/search/Bãi+Sau+Vũng+Tàu\"},{\"time\":\"13:00\",\"emoji\":\"🚌\",\"category\":\"transport\",\"name\":\"Xe Phương Trang Vũng Tàu → TP HCM\",\"description\":\"Xe khách Phương Trang, giá từ 140.000-185.000đ/người\",\"price\":\"280.000 VND (2 người)\",\"address\":\"Điểm khởi hành: Vũng Tàu\",\"maps_link\":\"\",\"booking_link\":\"https://futabus.vn/\"}]}],\"cost_breakdown\":{\"Xe khách (2 chiều)\":\"560.000 VND\",\"Ăn sáng Ngày 1 (La Sirena)\":\"Chưa có giá\",\"Khách sạn 1 đêm\":\"Chưa có giá\",\"Ăn tối Ngày 1 (Ốc Tự Nhiên)\":\"250.000 VND\",\"Ăn sáng Ngày 2 (Chợ Hải Sản)\":\"350.000 VND\",\"Bãi biển\":\"Miễn phí\"},\"share_text\":\"Vũng Tàu 2 ngày 1 đêm - Hải sản tươi, biển xanh, giá rẻ! 🦐🌊 #TappyAI\"}\n[/TAPPY_PLAN]\n\nMình chọn **Nhà hàng hải sản La Sirena** cho bữa sáng Ngày 1 vì có rating 4.6⭐ từ 1.656 đánh giá - đó là bằng chứng mạnh mẽ về chất lượng. Tối hôm đó, **Ốc Tự Nhiên** là lựa chọn tuyệt vời với ốc tươi giá 100-300k/đĩa, rất phù hợp ngan sách. Sáng Ngày 2, **Chợ Hải Sản 197** cho phép bạn chọn hải sản tươi sống với giá bình dân.\n\nVề khách sạn, **Fusion Suites** có rating 4.8⭐ cao nhất, nhưng mình cần bạn kiểm tra giá trên Booking.com vì chưa xác nhận được giá chính xác cho ngày 26-27/9. Nếu vượt quá ngan sách, có thể chọn **Aloha Hotel** hoặc **Vias Hotel** (cũng 4.6-4.8⭐, giá có thể rẻ hơn).\n\n**Tổng ước tính hiện tại:** ~1.160.000 VND (xe + ăn), còn lại ~3.840.000 VND cho khách sạn 1 đêm cho 2 người - đủ để chọn khách sạn tốt 👍\n\nThời tiết có mưa nhẹ (51% khả năng), nên mang ô và chọn quán trong nhà. Nhiệt độ 27-29°C, thoải mái để tắm biển!\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🚌 Đặt vé Phương Trang\",\"type\":\"website\",\"url\":\"https://futabus.vn/\",\"primary\":true},{\"label\":\"🏨 Booking.com - Fusion Suites\",\"type\":\"booking\",\"url\":\"https://www.booking.com/searchresults.vi.html?ss=Fusion+Suites+Vung+Tau\",\"primary\":true},{\"label\":\"🍜 Xem La Sirena trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=15039716562630094517\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Muốn thêm hoạt động gì (Cột Cờ, Lâu Đài Tình Yêu)?|Cần gợi ý quán ăn khác?|Muốn đi máy bay thay vì xe khách?[/FOLLOWUPS]"
+    }
+  ]
+}

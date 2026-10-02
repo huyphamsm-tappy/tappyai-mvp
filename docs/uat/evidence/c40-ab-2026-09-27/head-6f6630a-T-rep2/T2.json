@@ -1,0 +1,82 @@
+{
+  "id": "T2",
+  "text": "khach san da nang gan bien duoi 1tr/dem",
+  "parent": null,
+  "status": 200,
+  "ms": 20152,
+  "evidenceId": "61081d4f-0bc5-4c28-9ae4-56b2761026d0",
+  "toolCalls": [
+    {
+      "tool": "get_hotel_prices",
+      "args": {
+        "location": "Da Nang",
+        "checkIn": "2026-10-03",
+        "checkOut": "2026-10-04"
+      }
+    }
+  ],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình chọn **M Hotel Da Nang** — 4.8⭐ (2.860 đánh giá Google Maps).\n\nMình giả sử bạn muốn ở 1 đêm cuối tuần tới (check-in 3/10, check-out 4/10) gần biển Đà Nẵng. Để tìm khách sạn phù hợp, mình cần gọi công cụ ngay.\n\nMình thấy kết quả tìm được 10 khách sạn gần biển Đà Nẵng, nhưng chưa có thông tin giá cụ thể để so sánh với ngân sách 1 triệu của bạn. Để xem giá chính xác theo ngày bạn muốn, bạn có thể kiểm tra trực tiếp trên các nền tảng đặt phòng:\n\n\n[FOLLOWUPS]Khách sạn nào gần biển nhất?|Có khách sạn nào dưới 800k không?|Muốn ở nhiều đêm hơn[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "khach san da nang gan bien duoi 1tr/dem"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình chọn **M Hotel Da Nang** — 4.8⭐ (2.860 đánh giá Google Maps).\n\nMình giả sử bạn muốn ở 1 đêm cuối tuần tới (check-in 3/10, check-out 4/10) gần biển Đà Nẵng. Để tìm khách sạn phù hợp, mình cần gọi công cụ ngay.\n\nMình thấy kết quả tìm được 10 khách sạn gần biển Đà Nẵng, nhưng chưa có thông tin giá cụ thể để so sánh với ngân sách 1 triệu của bạn. Để xem giá chính xác theo ngày bạn muốn, bạn có thể kiểm tra trực tiếp trên các nền tảng đặt phòng:\n\n\n[FOLLOWUPS]Khách sạn nào gần biển nhất?|Có khách sạn nào dưới 800k không?|Muốn ở nhiều đêm hơn[/FOLLOWUPS]"
+    }
+  ]
+}

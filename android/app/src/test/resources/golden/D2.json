@@ -1,0 +1,10 @@
+{
+ "id": "D2",
+ "group": "district-named",
+ "turns": [
+  {
+   "user": "Quán cà phê yên tĩnh để làm việc ở Bình Thạnh",
+   "text": "Mình chọn **PỜ CAFÉ - BÌNH THẠNH** — 4.8⭐ (822 đánh giá Google Maps); giờ mở cửa theo Google Maps: 07:00–22:00.\n\nĐể gợi ý chính xác nhất, mình sẽ tìm kiếm ngay.\n\nĐể gợi ý chính xác nhất, mình sẽ tìm lại với từ khóa cụ thể hơn.\n\nQuán cách bạn khoảng 2-3km, có thể đi Grab trong vòng 10 phút.\n\nNgoài ra, **Welike Bình Thạnh** cũng là lựa chọn tốt với đánh giá 5⭐ (26 đánh giá), mở cửa cả ngày, gần hơn một chút. 📞\n\nMình chưa thấy bằng chứng về yên tĩnh ở các quán này — nên gọi hỏi trước khi đi.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"☕ Xem Bamos Coffee trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=11556591421643182041\",\"primary\":true},{\"label\":\"☕ Xem Welike Bình Thạnh trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=12766041338488201350\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Bamos Coffee có wifi không?|Quán nào gần nhất từ vị trí mình?|Có quán cà phê nào có view đẹp không?[/FOLLOWUPS]"
+  }
+ ]
+}

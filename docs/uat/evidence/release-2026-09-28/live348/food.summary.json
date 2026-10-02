@@ -1,0 +1,99 @@
+{
+  "caseId": "food",
+  "base": "https://uat.tappyai.com",
+  "at": "2026-09-28T06:28:43.967Z",
+  "guest": "anonymous session (token not stored)",
+  "turns": [
+    {
+      "user": "quán phở ngon quận 1",
+      "status": 200,
+      "ms": 10974,
+      "literalDoubleStar": 12,
+      "unbalancedBoldLines": [],
+      "proseTail": "n chuyên phục vụ phở bò, nước dùng được khen ngon, mở từ sáng đến tối.\n\nNếu muốn thử khác, **Quán Phở Con Bò Vàng** cũng có **4.9⭐ (459 đánh giá)** nhưng đóng cửa lúc 20:00, hoặc **Phở Ông Cát Gia Truyền** với **4.6⭐ (618 đánh giá)** — quán lâu đời từ 1988, nước dùng truyền thống.\n\nCả ba quán đều ở Quận 1.\n\n\n\n\n\nBạn muốn tầm giá khoảng bao nhiêu (dưới 100k/người / 100–200k/người / trên 200k/người)?",
+      "placeActions": [
+        {
+          "name": "Phở Nhất Vị - Nguyễn Thị Minh Khai",
+          "actions": [
+            "review:v3.action.reviewOn:https://www.tiktok.com/@phonhatvi.vn/video/7676279262017555733",
+            "delivery:v3.action.orderSearch:https://food.grab.com/vn/vi/restaurants?search=Ph%E1%BB%9F%20Nh%E1%BA%A5t%20V%E1%BB%8B%20-",
+            "maps:v3.action.maps:https://maps.google.com/?cid=6767320232680193506",
+            "website:v3.action.website:https://phonhatvi.vn/",
+            "call:v3.action.call:tel:+84862600339",
+            "review:v3.action.reviewSearch:https://www.youtube.com/results?search_query=Ph%E1%BB%9F%20Nh%E1%BA%A5t%20V%E1%BB%8B%20-%2"
+          ]
+        },
+        {
+          "name": "Phở Dịu - Phở Bò & Phở Dê | Phở Ngon Quận 1 | Phở Ngon Phường Tân Định",
+          "actions": [
+            "delivery:v3.action.orderSearch:https://food.grab.com/vn/vi/restaurants?search=Ph%E1%BB%9F%20D%E1%BB%8Bu%20-%20Ph%E1%BB%9F",
+            "maps:v3.action.maps:https://maps.google.com/?cid=3365100258503458345",
+            "review:v3.action.reviewSearch:https://www.youtube.com/results?search_query=Ph%E1%BB%9F%20D%E1%BB%8Bu%20-%20Ph%E1%BB%9F%2",
+            "website:v3.action.website:https://www.facebook.com/PHOBOPHODEQUAN1?locale=vi_VN",
+            "call:v3.action.call:tel:+84923433366"
+          ]
+        },
+        {
+          "name": "Phở Hùng",
+          "actions": [
+            "delivery:v3.action.orderSearch:https://food.grab.com/vn/vi/restaurants?search=Ph%E1%BB%9F%20H%C3%B9ng%20quan%201",
+            "maps:v3.action.maps:https://maps.google.com/?cid=15913313759659625096",
+            "review:v3.action.reviewSearch:https://www.youtube.com/results?search_query=Ph%E1%BB%9F%20H%C3%B9ng%20review",
+            "website:v3.action.website:https://www.phohung.vn/",
+            "call:v3.action.call:tel:+842838385089"
+          ]
+        },
+        {
+          "name": "Phở Ông Cát Gia Truyền Since 1988",
+          "actions": [
+            "delivery:v3.action.orderSearch:https://food.grab.com/vn/vi/restaurants?search=Ph%E1%BB%9F%20%C3%94ng%20C%C3%A1t%20Gia%20T",
+            "maps:v3.action.maps:https://maps.google.com/?cid=10025373026819297839",
+            "review:v3.action.reviewSearch:https://www.youtube.com/results?search_query=Ph%E1%BB%9F%20%C3%94ng%20C%C3%A1t%20Gia%20Tru",
+            "call:v3.action.call:tel:+84843444546"
+          ]
+        },
+        {
+          "name": "Phở Phú Vương",
+          "actions": [
+            "delivery:v3.action.orderSearch:https://food.grab.com/vn/vi/restaurants?search=Ph%E1%BB%9F%20Ph%C3%BA%20V%C6%B0%C6%A1ng%20",
+            "maps:v3.action.maps:https://maps.google.com/?cid=908976305858328863",
+            "review:v3.action.reviewSearch:https://www.youtube.com/results?search_query=Ph%E1%BB%9F%20Ph%C3%BA%20V%C6%B0%C6%A1ng%20re",
+            "website:v3.action.website:https://www.now.vn/ho-chi-minh/phu-vuong-quan-pho",
+            "call:v3.action.call:tel:+84931959696"
+          ]
+        },
+        {
+          "name": "Quán Phở Con Bò Vàng",
+          "actions": [
+            "delivery:v3.action.orderSearch:https://food.grab.com/vn/vi/restaurants?search=Qu%C3%A1n%20Ph%E1%BB%9F%20Con%20B%C3%B2%20V",
+            "maps:v3.action.maps:https://maps.google.com/?cid=18406884854982885045",
+            "review:v3.action.reviewSearch:https://www.youtube.com/results?search_query=Qu%C3%A1n%20Ph%E1%BB%9F%20Con%20B%C3%B2%20V%C",
+            "call:v3.action.call:tel:+84906185768"
+          ]
+        },
+        {
+          "name": "Phở Việt Nam",
+          "actions": [
+            "delivery:v3.action.orderSearch:https://food.grab.com/vn/vi/restaurants?search=Ph%E1%BB%9F%20Vi%E1%BB%87t%20Nam%20quan%201",
+            "maps:v3.action.maps:https://maps.google.com/?cid=12075454229031395530",
+            "review:v3.action.reviewSearch:https://www.youtube.com/results?search_query=Ph%E1%BB%9F%20Vi%E1%BB%87t%20Nam%20review",
+            "website:v3.action.website:https://www.phovietnam.vn/"
+          ]
+        },
+        {
+          "name": "Phở Cao Vân",
+          "actions": [
+            "delivery:v3.action.orderSearch:https://food.grab.com/vn/vi/restaurants?search=Ph%E1%BB%9F%20Cao%20V%C3%A2n%20quan%201",
+            "maps:v3.action.maps:https://maps.google.com/?cid=6398210000077558661",
+            "review:v3.action.reviewSearch:https://www.youtube.com/results?search_query=Ph%E1%BB%9F%20Cao%20V%C3%A2n%20review",
+            "website:v3.action.website:https://www.foody.vn/ho-chi-minh/pho-cao-van",
+            "call:v3.action.call:tel:+842838220509"
+          ]
+        }
+      ],
+      "shopping": null,
+      "plan": null,
+      "cta": "{\"buttons\":[{\"label\":\"📍 Maps - Phở Nhất Vị\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=6767320232680193506\",\"primary\":false}]}"
+    }
+  ]
+}

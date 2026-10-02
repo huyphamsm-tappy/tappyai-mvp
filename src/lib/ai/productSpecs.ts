@@ -34,7 +34,8 @@ export function parseVndPrice(raw: unknown): number | null {
  * lone "512GB". Both figures must be present for this to fire.
  */
 const PAIR_RE = /\b(\d{1,3})\s*gb?\s*(?:[/|,]\s*|\s+)(\d{3,4})\s*(gb?|tb)\b/i
-const RAM_LABELLED_RE = /\b(?:ram|memory)\s*[:\-]?\s*(\d{1,3})\s*gb\b|\b(\d{1,3})\s*gb\s*(?:ram|memory)\b/i
+// "4 GB DDR4-SDRAM" / "16GB LPDDR5" is RAM too (replay SHOP-3 t5 30/09: a 4 GB laptop was read as RAM-unknown).
+const RAM_LABELLED_RE = /\b(?:ram|memory)\s*[:\-]?\s*(\d{1,3})\s*gb\b|\b(\d{1,3})\s*gb\s*(?:ram|memory|(?:lp)?ddr\d\w*|sdram)\b/i
 const STORAGE_LABELLED_RE = /\b(?:ssd|storage|o cung|ổ cứng|rom)\s*[:\-]?\s*(\d{3,4})\s*gb\b|\b(\d{3,4})\s*gb\s*(?:ssd|storage|o cung|ổ cứng)\b|\b(\d)\s*tb\b/i
 
 /**

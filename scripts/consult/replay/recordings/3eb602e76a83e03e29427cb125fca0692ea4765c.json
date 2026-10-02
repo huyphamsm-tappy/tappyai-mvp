@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Rong Chơi Coffee Van Garden\" OR \"Thương Rooftop\" OR \"Quán cà phê đợi một người\" quan 3 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T19:10:13.079Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Rong Chơi Coffee Van Garden\" OR \"Thương Rooftop\" OR \"Quán cà phê đợi một người\" quan 3 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Quán Cà Phê Đợi Một Người Quận 3 – Góc Nhỏ Ấm Cúng ...",
+    "link": "https://www.tiktok.com/@duydayvlog/video/7367281162647096592",
+    "snippet": "Quán cà phê Đợi Một Người tại 136/5 Trần Quang Diệu, Phường 15, Quận 3, TP.HCM là một góc nhỏ mang cảm giác ấm cúng và yên bình giữa lòng ...",
+    "position": 1
+   },
+   {
+    "title": "Quán cà phê đợi một người với không gian nhỏ xinh ...",
+    "link": "https://www.tiktok.com/@huongnoilamphim/video/7369082606933085460",
+    "snippet": "Quán cà phê đợi một người với không gian nhỏ xinh ấm cúng dành cho hệ lowkey thích đọc sách hay đi trốn ở Sài Gòn. #quancaphedoimotnguoi # ...",
+    "position": 2
+   },
+   {
+    "title": "Quán Cà Phê Đợi Một Người Ở Quận 3",
+    "link": "https://www.tiktok.com/@chamdidau/video/7362067427053587730",
+    "snippet": "Quán Cà Phê Đợi Một Người Ở Quận 3: Một Điểm Hẹn Xinh Xắn. Khám phá ... Keywords: quán cà phê đợi một người, quán cafe quận 3, đường đi quán ...",
+    "position": 3
+   },
+   {
+    "title": "quán cà phê đợi một người (@quancaphedoimotnguoi)",
+    "link": "https://www.tiktok.com/@quancaphedoimotnguoi",
+    "snippet": "quán cà phê đợi một người · @quancaphedoimotnguoi · Nếu bạn cần một nơi để ngồi yên - thì đây. Một chiếc quán không lớn, không vội, không ồn. ⏰10:00 - 22:00 (mỗi ...",
+    "position": 4
+   },
+   {
+    "title": "Quán Cà Phê Đợi Một Người",
+    "link": "https://www.tiktok.com/discover/qu%C3%A1n-c%C3%A0-ph%C3%AA-%C4%91%E1%BB%A3i-m%E1%BB%99t-ng%C6%B0%E1%BB%9Di",
+    "snippet": "Quán cà phê Đợi một người tại 136/5 Trần Quang Diệu, Q3, TP.HCM mang một không gian nhỏ xinh và cực ấm cúng, phù hợp cho \"Ai đó\" thích ...",
+    "date": "24 thg 8, 2026",
+    "position": 5
+   },
+   {
+    "title": "Khám Phá Quán Cà Phê Đợi Một Người Tại Sài Gòn",
+    "link": "https://www.tiktok.com/@rongchoi.laca/video/7387409146896780545",
+    "snippet": "Khám Phá Quán Cà Phê Đợi Một Người Tại Sài Gòn. Tìm hiểu về quán cà phê Đợi Một Người với không gian yên tĩnh và menu hấp dẫn. Chọn nơi thư giãn ...",
+    "position": 6
+   },
+   {
+    "title": "Đi quán cà phê \"Đợi một người\" bất ổn quá 🙃 #cafe ...",
+    "link": "https://www.tiktok.com/@paryle_96/video/7671557547643407623",
+    "snippet": "Đi quán cà phê \"Đợi một người\" bất ổn quá #cafe #caf imotnguoi #paryle ; Mưa SG. Em đây. 8- ; Hưng Thanh Lê . đánh giá quán 1 sao liền. 8-10 ...",
+    "position": 7
+   },
+   {
+    "title": "Lịch Chiếu Phim Sân Thượng Tại Quán Cà Phê Đợi Một ...",
+    "link": "https://www.tiktok.com/@quancaphedoimotnguoi/photo/7520685792713329938",
+    "snippet": "Keywords: lịch chiếu phim sân thượng,quán cà phê đợi một người,phim vào thứ 6 hàng tuần,chill coffee cùng bạn,trải nghiệm phim ngoài trời ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,25 @@
+{
+  "id": "E7",
+  "text": "Xem phim gì hay tối nay",
+  "parent": null,
+  "status": 200,
+  "ms": 6062,
+  "evidenceId": "053f6b3a-5e2c-4ed7-bcdb-7c1d1c84df6e",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Tối nay bạn muốn xem phim gì à? Mình gợi ý vài bộ hay cho bạn nhé 🎬\n\n**Nếu muốn thư giãn, cười tươi**: *Deadpool & Wolverine* — hành động hài hước, sôi động, vừa cười vừa kịch tính. Phù hợp để giải tỏa sau một ngày làm việc.\n\n**Nếu muốn xem drama tâm lý**: *Queer* — phim tâm lý sâu sắc, nhân vật phức tạp, phù hợp nếu bạn thích những câu chuyện có chiều sâu và cảm xúc.\n\n**Nếu muốn nhẹ nhàng, lãng mạn**: *Wicked* — âm nhạc hay, câu chuyện cổ tích được kể lại, tươi sáng và dễ chịu, tốt cho tâm trạng buổi tối.\n",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Xem phim gì hay tối nay"
+    },
+    {
+      "role": "assistant",
+      "content": "Tối nay bạn muốn xem phim gì à? Mình gợi ý vài bộ hay cho bạn nhé 🎬\n\n**Nếu muốn thư giãn, cười tươi**: *Deadpool & Wolverine* — hành động hài hước, sôi động, vừa cười vừa kịch tính. Phù hợp để giải tỏa sau một ngày làm việc.\n\n**Nếu muốn xem drama tâm lý**: *Queer* — phim tâm lý sâu sắc, nhân vật phức tạp, phù hợp nếu bạn thích những câu chuyện có chiều sâu và cảm xúc.\n\n**Nếu muốn nhẹ nhàng, lãng mạn**: *Wicked* — âm nhạc hay, câu chuyện cổ tích được kể lại, tươi sáng và dễ chịu, tốt cho tâm trạng buổi tối.\n"
+    }
+  ]
+}

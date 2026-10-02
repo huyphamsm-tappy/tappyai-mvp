@@ -1,0 +1,36 @@
+diff --git a/src/lib/ai/streamEnrichment.ts b/src/lib/ai/streamEnrichment.ts
+index 9239a2c..3968d84 100644
+--- a/src/lib/ai/streamEnrichment.ts
++++ b/src/lib/ai/streamEnrichment.ts
+@@ -1361,6 +1361,31 @@ export function applyPlaceEnrichmentStreamFilter(
+     const fallback = bodyLetters < 40 ? fallbackSentence() : null
+     if (fallback) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'place_claim_fallback', v2: guardV2, body_letters: bodyLetters, emitted: true }))
+     const groundedProse = fallback ? `${gated.text.trimEnd()}\n\n${fallback}` : gated.text
++    // AUDIT-ONLY PRE-GUARD CAPTURE (never committed; audit worktree only). Dumps every
++    // input of the place-claim guard so the old/new guard can be replayed offline.
++    if (process.env.AUDIT_CAPTURE_PREGUARD_DIR) {
++      try {
++        const modName = 'node:fs'
++        const fsMod = await import(/* webpackIgnore: true */ modName) as typeof import('node:fs')
++        const dir = process.env.AUDIT_CAPTURE_PREGUARD_DIR
++        fsMod.mkdirSync(dir, { recursive: true })
++        const m2o = (m: Map<string, unknown> | undefined) => m ? Object.fromEntries(m.entries()) : {}
++        fsMod.appendFileSync(`${dir}/preguard-v3.jsonl`, JSON.stringify({
++          ts: Date.now(), userText, lang, placeIntent, travelIntent, ticketIntent, hadPlaceSearch, placeSearchStatus,
++          guardV2, pickName, scope: placeClaimScope, flushedText,
++          placesFull: places, places: places.map(p => p.name || ''), heldCandidates: (seed?.heldCandidates ?? []).map(c => c.name),
++          evidence: {
++            ratings: placeRatings, distancesKm: placeDistancesKm, texts: placeTexts,
++            entityTexts: m2o(placeEntityTexts as Map<string, unknown>), placeNames: snippetPlaceNames,
++            orderablePlaces: [...orderablePlaces], ratingsByEntity: m2o(ratingsByEntity), reviewCountsByEntity: m2o(reviewCountsByEntity),
++            phonesByEntity: m2o(phonesByEntity), ticketablePlaces: [...ticketablePlaces], hoursByEntity: m2o(hoursByEntity),
++          },
++          stages: { mainText, enriched, moneyGuarded: guarded.text, specGuarded, travelGuarded, snippetGuarded: foodGuarded, placeGuarded, scaffoldStripped, gated: gated.text, fallback, groundedProse },
++          stats: placeGuardResult?.stats ?? null,
++        }) + '\n')
++        console.log(JSON.stringify({ type: 'audit_capture', ok: true, chars: mainText.length }))
++      } catch (e) { console.log(JSON.stringify({ type: 'audit_capture', ok: false, error: String(e).slice(0, 160) })) }
++    }
+     /**
+      * The batch-level TikTok link, appended once at the very end of the reply.
+      *

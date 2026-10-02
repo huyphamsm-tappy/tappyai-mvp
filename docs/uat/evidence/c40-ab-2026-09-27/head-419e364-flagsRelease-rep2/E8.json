@@ -1,0 +1,203 @@
+{
+  "id": "E8",
+  "text": "Chỗ chơi cho trẻ em 5 tuổi cuối tuần ở Sài Gòn",
+  "parent": null,
+  "status": 200,
+  "ms": 14565,
+  "evidenceId": "588ac3e8-1c7c-41a3-96b5-38f9fe9e892b",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "chỗ chơi trẻ em 5 tuổi Sài Gòn",
+        "location": "TP HCM",
+        "type": "attraction"
+      }
+    },
+    {
+      "tool": "get_weather",
+      "args": {
+        "location": "TP HCM"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Tinker Box",
+      "rating": 4.4,
+      "count": 170,
+      "hours": "08:30–21:00",
+      "distance_km": 1.3,
+      "address": "10/2 Nguyễn Thị Minh Khai, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Vietopia",
+      "rating": 4.2,
+      "count": 3283,
+      "hours": "09:00–17:00",
+      "distance_km": 4,
+      "address": "98 Nguyễn Thị Thập, Khu đô thị Him Lam, Tân Hưng, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Khu vui choi trẻ em",
+      "rating": 5,
+      "count": 7,
+      "hours": "16:00–22:00",
+      "distance_km": 8.2,
+      "address": "67/1 Đ. Số 5, Gò Vấp, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Khu Vui chơi Trẻ em - Công viên Gia Định",
+      "rating": 4.3,
+      "count": 461,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 4.9,
+      "address": "RM6F+WCM, Đ. Đặng Văn Sâm, Đức Nhuận, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "DONNA Kidsplay Cafe | Khu vui chơi quanh đây | Khu vui chơi trẻ em quận 8 | Quán cafe có khu vui chơi cho bé",
+      "rating": 4.5,
+      "count": 195,
+      "hours": "08:30–21:30",
+      "distance_km": 6.5,
+      "address": "908 Tạ Quang Bửu, Bình Đông, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Khu vui chơi trẻ em",
+      "rating": 4.4,
+      "count": 7,
+      "distance_km": 3.8,
+      "address": "RP65+23H, Đ. Số 4, Bình Thạnh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "khu vui chơi trẻ em",
+      "rating": 5,
+      "count": 1,
+      "hours": "17:00–23:00",
+      "distance_km": 8.6,
+      "address": "1589 Huỳnh Tấn Phát, Phú Thuận, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Happy Kids - Khu vui chơi trẻ em Quận 8",
+      "rating": 4.6,
+      "count": 37,
+      "hours": "08:30–21:30",
+      "distance_km": 7.9,
+      "address": "2225 Phạm Thế Hiển, Bình Đông, Hồ Chí Minh 100000, Việt Nam"
+    },
+    {
+      "name": "Tầng 5, Giga Mall, 240-242 Phạm Văn Đồng, Thủ Đức",
+      "rating": 4.3,
+      "count": 40,
+      "hours": "09:00–21:30",
+      "distance_km": 6,
+      "address": "Tầng 5, Giga Mall, 242 Đ. Phạm Văn Đồng, Hiệp Bình, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Khu vui chơi trẻ em",
+      "rating": 4.7,
+      "count": 3,
+      "distance_km": 9,
+      "address": "Quang Trung/5 Hẻm 102, Khu Phố 4, Thông Tây Hội, Hồ Chí Minh, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "Tinker Box",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 4.4,
+        "reviews": 170,
+        "distance_km": 1.3,
+        "open_now": false,
+        "opening_hours": "08:30–21:00"
+      }
+    },
+    {
+      "name": "Vietopia",
+      "role": null,
+      "evidence": {
+        "rating": 4.2,
+        "reviews": 3283,
+        "distance_km": 4,
+        "open_now": false,
+        "opening_hours": "09:00–17:00"
+      }
+    },
+    {
+      "name": "Khu vui choi trẻ em",
+      "role": null,
+      "evidence": {
+        "rating": 5,
+        "reviews": 7,
+        "distance_km": 8.2,
+        "open_now": true,
+        "opening_hours": "16:00–22:00"
+      }
+    }
+  ],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình tìm các chỗ chơi vui vẻ cho bé 5 tuổi ở Sài Gòn nhé! 🎉\n\nMình gợi ý 3 chỗ chơi tuyệt vời cho bé 5 tuổi cuối tuần:\n\n**Tinker Box** — **4.4⭐ (170 đánh giá Google Maps)** — cách bạn 1.3km, mở 08:30–21:00. Sân chơi trong nhà với nhiều trò chơi sáng tạo, lý tưởng cho bé tuổi này. Gần nhất từ vị trí bạn đang ở! 🎨\n\n**Vietopia** — **4.2⭐ (3.283 đánh giá Google Maps)** — công viên giải trí lớn với nhiều hoạt động ngoài trời, mở 09:00–17:00. Có chương trình dành riêng cho trẻ em, rất phù hợp cho ngày cuối tuần.\n\n**Happy Kids (Quận 8)** — **4.6⭐ (37 đánh giá Google Maps)** — trung tâm vui chơi chuyên dành cho trẻ em, mở 08:30–21:30. Có cả dịch vụ tiệc sinh nhật nếu bạn muốn tổ chức.\n\nThời tiết hôm nay ở Sài Gòn: 26°C, trời nhiều mây, độ ẩm cao (89%), khả năng mưa thấp (19%). Nên chọn chỗ trong nhà như **Tinker Box** hoặc **Happy Kids** để thoải mái chơi mà không lo nắng nóng! ☀️\n\n[FOLLOWUPS]Vietopia có gì vui cho bé 5 tuổi?|Giá vé vào Tinker Box bao nhiêu?|Có chỗ chơi ngoài trời gần Quận 1 không?[/FOLLOWUPS]\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem Tinker Box trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=16050434947903633244\",\"primary\":true},{\"label\":\"🌐 Website Vietopia\",\"type\":\"website\",\"url\":\"https://vietopia.com.vn/\",\"primary\":false}]}[/CTA_BUTTONS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Chỗ chơi cho trẻ em 5 tuổi cuối tuần ở Sài Gòn"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm các chỗ chơi vui vẻ cho bé 5 tuổi ở Sài Gòn nhé! 🎉\n\nMình gợi ý 3 chỗ chơi tuyệt vời cho bé 5 tuổi cuối tuần:\n\n**Tinker Box** — **4.4⭐ (170 đánh giá Google Maps)** — cách bạn 1.3km, mở 08:30–21:00. Sân chơi trong nhà với nhiều trò chơi sáng tạo, lý tưởng cho bé tuổi này. Gần nhất từ vị trí bạn đang ở! 🎨\n\n**Vietopia** — **4.2⭐ (3.283 đánh giá Google Maps)** — công viên giải trí lớn với nhiều hoạt động ngoài trời, mở 09:00–17:00. Có chương trình dành riêng cho trẻ em, rất phù hợp cho ngày cuối tuần.\n\n**Happy Kids (Quận 8)** — **4.6⭐ (37 đánh giá Google Maps)** — trung tâm vui chơi chuyên dành cho trẻ em, mở 08:30–21:30. Có cả dịch vụ tiệc sinh nhật nếu bạn muốn tổ chức.\n\nThời tiết hôm nay ở Sài Gòn: 26°C, trời nhiều mây, độ ẩm cao (89%), khả năng mưa thấp (19%). Nên chọn chỗ trong nhà như **Tinker Box** hoặc **Happy Kids** để thoải mái chơi mà không lo nắng nóng! ☀️\n\n[FOLLOWUPS]Vietopia có gì vui cho bé 5 tuổi?|Giá vé vào Tinker Box bao nhiêu?|Có chỗ chơi ngoài trời gần Quận 1 không?[/FOLLOWUPS]\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem Tinker Box trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=16050434947903633244\",\"primary\":true},{\"label\":\"🌐 Website Vietopia\",\"type\":\"website\",\"url\":\"https://vietopia.com.vn/\",\"primary\":false}]}[/CTA_BUTTONS]"
+    }
+  ]
+}

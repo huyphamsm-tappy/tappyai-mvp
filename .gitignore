@@ -61,3 +61,22 @@ android/gradle.properties
 
 # U03 — vitest JSON report consumed by scripts/requiredSuites.mjs (regenerated every run)
 vitest-report.json
+extensions/browser/dist/
+
+# Scratch files from local replay / UAT log / measurement runs (01/10: `git add -A` committed a UAT log dump and replay outputs).
+# Anything dot-prefixed at the repo root is local scratch unless it is on the allow list in scripts/repoHygiene.test.ts.
+/.d7*
+/.uatlogs*
+/.full*.log
+/.fulltest*
+/.numstat*
+/.ev.py
+/.show.py
+/.edit*.py
+/.r26*
+/.voiceblock*
+/*.jsonl
+/*.out
+
+# UAT run captures carry device location and other personal data: never tracked (a private bucket holds them)
+/docs/audit/uat/

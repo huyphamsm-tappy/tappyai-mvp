@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Gội Đầu Dưỡng Sinh Quận 3 HẺM SPA\" OR \"Gội đầu dưỡng sinh kiểu Việt Hoa SPA\" OR \"Đại An\" quan 3 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T19:23:10.649Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Gội Đầu Dưỡng Sinh Quận 3 HẺM SPA\" OR \"Gội đầu dưỡng sinh kiểu Việt Hoa SPA\" OR \"Đại An\" quan 3 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "🍛 ĐẠI AN QUÁN – CƠM TẤM & CƠM PHẦN HÔM NAY 🍛 ...",
+    "link": "https://www.tiktok.com/@i.an.qun/video/7652954913953025300",
+    "snippet": "🍛 ĐẠI AN QUÁN – CƠM TẤM & CƠM PHẦN HÔM NAY 🍛 📍 Đường DL14, Mỹ Phước 3 ✓ Nhận đặt cơm tấm – cơm phần ✓ Có nhận ship đến các công ty, xí nghiệp khu vực Mỹ ...",
+    "position": 1
+   },
+   {
+    "title": "Hồ câu Đại An: Kinh nghiệm quấn Ổ",
+    "link": "https://www.tiktok.com/@linh79fishing/video/7539412017308896520",
+    "snippet": "Hồ câu Đại An: Kinh nghiệm quấn Ổ. Khám phá những thông tin bổ ích để quấn ổ tại Hồ câu Đại An. Tìm hiểu ngay để có trải nghiệm câu cá thú vị ...",
+    "position": 2
+   },
+   {
+    "title": "Demo hồ câu Đại An 8/9 | Câu cá trắm đen (con thứ 3)",
+    "link": "https://www.tiktok.com/@nguyenhaidang0406/video/7683855175416565012",
+    "snippet": "- Mồi và trang bị: video cho thấy các loại mồi thường dùng cho trắm đen và trang bị cần câu, máy, dây phù hợp cho hồ Đại An. - Giá trị học được: ...",
+    "position": 3
+   },
+   {
+    "title": "Nhà cổ Đại An, lần đầu trãi nghiệm tham quan! ...",
+    "link": "https://www.tiktok.com/@baomakeup/video/7650350304801688850",
+    "snippet": "2188 Lượt thích,94 Bình luận.Video TikTok từ Bảo Menn (@baomakeup): \"Nhà cổ Đại An, lần đầu trãi nghiệm tham quan!",
+    "position": 4
+   },
+   {
+    "title": "Câu Cá Tràm Đen Hồ Đại An: 3 Khuyên Câu",
+    "link": "https://www.tiktok.com/@ducluongfishing/video/7661315328676269319",
+    "snippet": "Video này hướng dẫn kỹ thuật câu cá tràm đen tại Hồ câu Đại An, tập trung vào việc sử dụng 3 khuyên câu để tăng hiệu quả săn mồi.",
+    "position": 5
+   },
+   {
+    "title": "MC Đại An tại Gu Bia Garden Quy Nhơn 28/3",
+    "link": "https://www.tiktok.com/@quan.gu77/video/7621466933304872213",
+    "snippet": "MC Đại An sẽ có mặt tại Gu Bia Garden Quy Nhơn vào ngày 28/. @Gu Quán Quy Nhơn.",
+    "position": 6
+   },
+   {
+    "title": "Đại An Trầm Hương Store",
+    "link": "https://www.tiktok.com/@daian.store",
+    "snippet": "Đại An Trầm Hương Store (@daian.store) trên TikTok |69.4K Lượt thích.16.1K Follower.Đại An Store - Chuyên Phân Phối Sản phẩm Phong Thuỷ.",
+    "position": 7
+   },
+   {
+    "title": "Khám Phá Quê An ở Bến Tre",
+    "link": "https://www.tiktok.com/@dai.an.louis.a/video/7464154976227527944",
+    "snippet": "Tìm hiểu về quê hương Bến Tre và những nét đẹp văn hóa nơi đây. @Đại An (Louis A).",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

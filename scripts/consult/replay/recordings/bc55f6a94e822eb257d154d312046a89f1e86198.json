@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Fusion Suites\" Vũng Tàu site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:54:33.012Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Fusion Suites\" Vũng Tàu site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Fusion Suites Vũng Tàu - Xem 140 Ảnh & Đánh giá",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-hotel-detail-56443834/fusion-suites-vung-tau/photo.html",
+    "snippet": "Fusion Suites Vũng Tàu nằm n*** Bãi Trước, cạnh chợ Xóm lưới dân phượt thủ Vũng tàu không ai không biết, nên không khí sôi động cả ngày lẫn đêm.",
+    "position": 1
+   },
+   {
+    "title": "Fusion Suites Vũng Tàu - Giá cả và Ưu đãi 2026, TP. Hồ ...",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-hotel-detail-56443834/fusion-suites-vung-tau/",
+    "snippet": "Fusion Suites Vũng Tàu · 38m² | Tầng: 8-18 · Có cửa sổ · Không hút thuốc · Wi-Fi miễn phí.",
+    "position": 2
+   },
+   {
+    "title": "10 khách sạn được đề xuất gần Hồ Mây Park Vũng Tàu ...",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-ho-may-culture-ecotourism-park/hotels-c301m16653481/",
+    "snippet": "Fusion Suites Vũng Tàu Các khách sạn gần Hồ Mây Park Vũng Tàu. Fusion Suites ... Nằm ở thành phố Vũng Tàu, cách Bãi trước 200m, Fusion Suites Vũng Tàu ...",
+    "position": 3
+   },
+   {
+    "title": "Fusion Suites Saigon - Giá cả và Ưu đãi 2026, TP. Hồ Chí ...",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-hotel-detail-5483003/fusion-suites-saigon/",
+    "snippet": "Thứ nhất, phòng không được hoàn tiền nhiều sau khi đặt, nhưng nhìn chung dịch vụ khá ổn. Tóm lại là khá tốt. Fusion Suites Saigon Đánh Giá.",
+    "position": 4
+   },
+   {
+    "title": "Top khách sạn tốt nhất tại Gò Công Đông, Việt Nam",
+    "link": "https://vn.trip.com/hotels/go-cong-dong-hotels-list-455465/",
+    "snippet": "Fusion Suites Vũng Tàu. 9,5 (225 đánh giá). Fusion Suites Vũng Tàu. 02 Trương Công Định, Phường Vũng Tàu, TP. Hồ Chí Minh. \"Khách sạn khá tốt; các ...",
+    "position": 5
+   },
+   {
+    "title": "Tìm Khách Sạn 4 Sao Tại TP. Hồ Chí Minh",
+    "link": "https://vn.trip.com/hotels/star4/city/vn/ho-chi-minh-city.html",
+    "snippet": "Nằm ở thành phố Vũng Tàu, cách Bãi trước 200m, Fusion Suites Vũng Tàu cung cấp chỗ nghỉ với nhà hàng tầng cao, BAR sân thượng, chỗ đậu xe riêng miễn phí, trung ...",
+    "position": 6
+   },
+   {
+    "title": "Candlewood Suites RICHMOND AIRPORT by IHG",
+    "link": "https://vn.trip.com/hotels/sandston-hotel-detail-2173663/candlewood-suites-richmond-airport-by-ihg/review.html",
+    "snippet": "... Fusion Suites Vũng TàuECHARM Hotel (Guangzhou Tiyuxi Road Subway Station Flagship Store Zhujiang New town)Hoàng Huy Commerce Võ Nguyên Giáp Mopius ...",
+    "position": 7
+   },
+   {
+    "title": "Hà Linh Hotel Vũng Tàu Đánh giá của khách",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-hotel-detail-128684883/ha-linh-hotel-vung-tau/review.html",
+    "snippet": "... Fusion Suites Vũng Tàu. Đề xuất cho bạn. Đánh giá Toan Thang Hotel, Toan Thang Hotel đánh giá của khách, Toan Thang Hotel đánh giá từ khách du lịch, đánh giá ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

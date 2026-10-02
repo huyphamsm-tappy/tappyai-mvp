@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Aniki Nhà Hàng Nhật Quận 1\" OR \"Michi Sushi\" OR \"Izakaya Choioinoodle | Nhà Hàng Nhật Quận 1 | Mì Ramen Ngon Trần Hưng Đạo\" quan 1 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:51:37.294Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Aniki Nhà Hàng Nhật Quận 1\" OR \"Michi Sushi\" OR \"Izakaya Choioinoodle | Nhà Hàng Nhật Quận 1 | Mì Ramen Ngon Trần Hưng Đạo\" quan 1 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Michi Sushi (@michi_sushi_42nguyenhue)",
+    "link": "https://www.tiktok.com/@michi_sushi_42nguyenhue",
+    "snippet": "Michi Sushi Chung cư 42 Nguyễn huệ-lầu 7, Bến Nghé, Q.1 Đặt món tại đây · Đã follow · Tài khoản được đề xuất · Tận hưởng trải nghiệm đầy đủ trong ứng dụng.",
+    "position": 1
+   },
+   {
+    "title": "Review Ẩm Thực Nhật Bản Aniki — Nhà hàng Nhật quận 1",
+    "link": "https://www.tiktok.com/@aniki_restaurant/video/7638582596653698325",
+    "snippet": "... Aniki, nhà hàng Nhật quận 1, ẩm thực Nhật giản đơn, trải nghiệm nhà hàng Aniki, món Nhật cân bằng hương vị, Aniki restaurant review, review ...",
+    "position": 2
+   },
+   {
+    "title": "Discover Authentic Japanese Cuisine at Aniki Restaurant",
+    "link": "https://www.tiktok.com/@aniki_restaurant/video/7636674767533264148",
+    "snippet": "Located in Quan 1, Aniki Restaurant is a testament to the beauty and subtlety of Japanese ... Aniki Nhà Hàng Nhật Quận 1 · author · 330 · 11.",
+    "position": 3
+   },
+   {
+    "title": "Tình đầu ngây thơ ăn quán này cái dính luôn tới giờ ...",
+    "link": "https://www.tiktok.com/@aniki_restaurant/video/7674152592989015317",
+    "snippet": "Aniki Nhà Hàng Nhật Quận 1 · author. 15 · 3 ... Xem thêm câu trả lời khác (1). Các video hàng đầu trong ngày hôm nay. @Video của aniki_restaurant.",
+    "position": 4
+   },
+   {
+    "title": "Khách order 1 set sashimi nhưng nhân viên mang 2 ...",
+    "link": "https://www.tiktok.com/@aniki_restaurant/video/7660485664391122196",
+    "snippet": "- Địa điểm: Quận 1, ghi rõ trong mô tả; thông tin này quan trọng để người xem biết bối cảnh địa phương. ... Aniki Nhà Hàng Nhật Quận 1 · author.",
+    "position": 5
+   },
+   {
+    "title": "Sơn Tùng M-TP Đếm Ngược Đón 2025 Tại Phố Đi Bộ",
+    "link": "https://www.tiktok.com/@michi_sushi_42nguyenhue/video/7449321349237017863",
+    "snippet": "5031 Lượt thích,255 Bình luận.Video TikTok từ Michi Sushi (@michi_sushi_42nguyenhue): \"Tham gia cùng Sơn Tùng M-TP đếm ngược đón năm mới ...",
+    "position": 6
+   },
+   {
+    "title": "Ca sĩ Thanh Duy #thanhduy #oxfam #bridgefest ...",
+    "link": "https://www.tiktok.com/@michi_sushi_42nguyenhue/video/7310602035236195586",
+    "snippet": "... MICHI SUSHI - MÓN NHẬT - GIÁ VIỆT ADDRESS: 42/73, đường Nguyễn Huệ, phường Bến Nghé, Quận 1 (lầu 7) OPEN: 10:00 AM - 22:00 PM (from Monday to Sunday) ...",
+    "position": 7
+   },
+   {
+    "title": "Ăn Sushi Trên Thuyền Khổng Lồ Tại Quận 1",
+    "link": "https://www.tiktok.com/@thon_foodie/video/7211907584675040538",
+    "snippet": "Michi Sushi Nguyễn Huệ · Sushi Hạ Long · Sushi Bà Rịa · Hagi Sushi Nguyễn Chánh Menu · Sushi Triệu Việt Vương · Sushi Haru Quận 1 · Sushi Almere ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -3,8 +3,36 @@ import { publishableFilter } from '@/lib/safety/gate/publicationAccess'
 import { NextRequest, NextResponse } from 'next/server'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
+import { userBlocksEnabled, blockedPeers } from '@/lib/safety/userBlocks'
 
 export const runtime = 'edge'
+
+// The columns every caller may see. `profiles` is public-read, and these are the
+// social-identity fields — never `language`, `onboarded` or anything else the row
+// carries for the owner's own use.
+const PUBLIC_COLUMNS = 'id, full_name, avatar_url, follower_count, following_count'
+// Public presentation fields added by `20260915_profile_public_presentation.sql`.
+// 🔑 Schema bridge: until that migration is applied the columns do not exist and
+// PostgREST answers 42703 (undefined column). The read then falls back to the
+// column set above, so the profile keeps working in either order of deploy and
+// migration; the absence of `bio` / `cover_url` in the response is how the
+// client knows the fields are not available yet. Remove once applied.
+const PRESENTATION_COLUMNS = ', bio, cover_url'
+const UNDEFINED_COLUMN = '42703'
+
+type PublicProfileRow = {
+  id: string; full_name: string | null; avatar_url: string | null
+  follower_count: number | null; following_count: number | null
+  bio?: string | null; cover_url?: string | null
+}
+
+async function readPublicProfile(supabase: Awaited<ReturnType<typeof getRequestUser>>['supabase'], id: string): Promise<PublicProfileRow | null> {
+  // profiles table has public SELECT policy so regular client works
+  const first = await supabase.from('profiles').select(PUBLIC_COLUMNS + PRESENTATION_COLUMNS).eq('id', id).single()
+  if (first.error?.code !== UNDEFINED_COLUMN) return first.error ? null : (first.data as unknown as PublicProfileRow | null)
+  const second = await supabase.from('profiles').select(PUBLIC_COLUMNS).eq('id', id).single()
+  return second.error ? null : (second.data as unknown as PublicProfileRow | null)
+}
 
 // GET /api/users/[id] → public profile info + follow status
 export async function GET(
@@ -13,14 +41,17 @@ export async function GET(
 ) {
   const { user, supabase } = await getRequestUser(req)
 
-  // profiles table has public SELECT policy so regular client works
-  const { data: profile, error } = await supabase
-    .from('profiles')
-    .select('id, full_name, avatar_url, follower_count, following_count')
-    .eq('id', params.id)
-    .single()
+  const profile = await readPublicProfile(supabase, params.id)
 
-  if (error || !profile) {
+  // A blocked account (either direction) is "not found" — the same answer as an account that does not exist.
+  if (profile && user && user.id !== params.id && userBlocksEnabled()) {
+    const { createAdminClient } = await import('@/lib/supabase/admin')
+    if ((await blockedPeers(createAdminClient(), user.id, [params.id])).has(params.id)) {
+      return NextResponse.json({ error: 'user_not_found', message: serverMessage('social.userNotFound', requestLocale(req)) }, { status: 404 })
+    }
+  }
+
+  if (!profile) {
     return NextResponse.json({ error: 'user_not_found', message: serverMessage('social.userNotFound', requestLocale(req)) }, { status: 404 })
   }
 

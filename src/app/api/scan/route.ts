@@ -1,6 +1,7 @@
 import { AI } from '@/lib/ai/llm'
 import { NextRequest, NextResponse } from 'next/server'
-import { dailyRateLimit, clientIp } from '@/lib/security/rateLimit'
+import { clientIp } from '@/lib/security/rateLimit'
+import { publicDailyRateLimit } from '@/lib/security/publicRateLimit'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
 
@@ -9,7 +10,9 @@ import { serverMessage } from '@/lib/i18n/serverMessages'
 const DAILY_SCAN_LIMIT = 20
 
 export async function POST(req: NextRequest) {
-  if (!dailyRateLimit(`scan:${clientIp(req)}`, DAILY_SCAN_LIMIT).ok) {
+  // P1-5: shared across instances when a store is configured (production is), in-process
+  // otherwise. Unauthenticated VISION calls are the most expensive per-request path in the app.
+  if (!(await publicDailyRateLimit(`scan:${clientIp(req)}`, DAILY_SCAN_LIMIT)).ok) {
     return NextResponse.json({ error: 'rate_limit', message: serverMessage('rate.scanLimit', requestLocale(req), { n: DAILY_SCAN_LIMIT }) }, { status: 429 })
   }
 

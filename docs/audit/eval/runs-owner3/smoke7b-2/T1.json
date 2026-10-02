@@ -1,0 +1,27 @@
+{
+  "id": "T1",
+  "text": "Đi Đà Nẵng 3 ngày 2 đêm cho 2 người, ngân sách 6 triệu",
+  "parent": null,
+  "status": 200,
+  "ms": 5511,
+  "evidenceId": "710ed901-25bf-475d-a08c-2d2bd00e5e19",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình giả sử bạn muốn đi cuối tuần tới (26-28/9) và cần lên kế hoạch hoàn chỉnh với ăn, ở, chơi. Để gợi ý đúng ý, mình cần biết:\n\n**Bạn muốn tập trung vào hoạt động nào nhất?** Ví dụ: tắm biển & thắng cảnh, ăn uống & quán bar, spa & thư giãn, hay cân bằng cả ba?\n\nTrong lúc đó, mình sẽ tìm khách sạn, nhà hàng, và điểm tham quan phù hợp với ngân sách 6 triệu cho 3 ngày 2 đêm.",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Đi Đà Nẵng 3 ngày 2 đêm cho 2 người, ngân sách 6 triệu"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn muốn đi cuối tuần tới (26-28/9) và cần lên kế hoạch hoàn chỉnh với ăn, ở, chơi. Để gợi ý đúng ý, mình cần biết:\n\n**Bạn muốn tập trung vào hoạt động nào nhất?** Ví dụ: tắm biển & thắng cảnh, ăn uống & quán bar, spa & thư giãn, hay cân bằng cả ba?\n\nTrong lúc đó, mình sẽ tìm khách sạn, nhà hàng, và điểm tham quan phù hợp với ngân sách 6 triệu cho 3 ngày 2 đêm."
+    }
+  ],
+  "toolResults": [],
+  "frames8Raw": []
+}

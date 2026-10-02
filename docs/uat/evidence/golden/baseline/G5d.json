@@ -1,0 +1,23 @@
+{
+  "id": "G5d",
+  "group": "used-purchase-risk",
+  "criteria": [
+    "Leads with payment/fraud: never transfer before seeing goods, COD/meet in person, seller-profile checks, fake payment screenshots; points to 'Cảnh báo lừa đảo'",
+    "No invented statistics"
+  ],
+  "turns": [
+    {
+      "user": "mua đồ cũ trên group Facebook thì lưu ý gì",
+      "status": 200,
+      "elapsedMs": 12498,
+      "textFrames": 311,
+      "tools": [],
+      "toolResults": [],
+      "annotations": [],
+      "cardItems": [],
+      "duplicate": null,
+      "text": "Mua đồ cũ trên group Facebook cần chú ý những điểm này để tránh rủi ro:\n\n**Về người bán:**\n• Kiểm tra profile: xem lịch sử hoạt động, số bạn bè, bình luận từ người khác để đánh giá uy tín\n• Yêu cầu xác minh danh tính nếu giao dịch lớn\n• Ưu tiên những người bán có nhiều đánh giá tích cực từ cộng đồng\n\n**Về sản phẩm:**\n• Xem kỹ tất cả ảnh, video từ nhiều góc độ — hỏi thêm ảnh nếu cần\n• Hỏi rõ tình trạng: có lỗi gì không, bao lâu rồi, lý do bán\n• Với điện tử (xe máy, điện thoại, laptop): yêu cầu video test chức năng trực tiếp\n• Kiểm tra số seri, IMEI, giấy tờ (nếu có) trước khi giao dịch\n\n**Về thanh toán & giao dịch:**\n• KHÔNG chuyển tiền trước khi nhận hàng hoặc xác minh được\n• Gặp mặt tại nơi công cộng, đông người (không nhà riêng)\n• Mang theo người thân hoặc bạn bè khi gặp\n• Kiểm tra kỹ hàng tại chỗ trước khi thanh toán\n• Giữ lại chat, ảnh, video làm bằng chứng\n\n**Đặc biệt với xe máy cũ:**\n• Kiểm tra giấy tờ (giấy đăng ký, bảo hiểm), số khung, số máy\n• Test lái thử, kiểm tra phanh, vô lăng, động cơ\n• Hỏi lịch sử bảo dưỡng, có tai nạn không\n• Nên mang theo người hiểu biết hoặc thợ máy đáng tin\n\n**Cảnh báo đỏ:**\n• Giá quá rẻ so với thị trường\n• Người bán tránh gặp mặt, chỉ muốn chuyển khoản\n• Không có ảnh rõ ràng hoặc ảnh lấy từ internet\n• Tài khoản mới, không có lịch sử\n\nChúc bạn mua được hàng tốt! 👍",
+      "visible": "Mua đồ cũ trên group Facebook cần chú ý những điểm này để tránh rủi ro:\n\n**Về người bán:**\n• Kiểm tra profile: xem lịch sử hoạt động, số bạn bè, bình luận từ người khác để đánh giá uy tín\n• Yêu cầu xác minh danh tính nếu giao dịch lớn\n• Ưu tiên những người bán có nhiều đánh giá tích cực từ cộng đồng\n\n**Về sản phẩm:**\n• Xem kỹ tất cả ảnh, video từ nhiều góc độ — hỏi thêm ảnh nếu cần\n• Hỏi rõ tình trạng: có lỗi gì không, bao lâu rồi, lý do bán\n• Với điện tử (xe máy, điện thoại, laptop): yêu cầu video test chức năng trực tiếp\n• Kiểm tra số seri, IMEI, giấy tờ (nếu có) trước khi giao dịch\n\n**Về thanh toán & giao dịch:**\n• KHÔNG chuyển tiền trước khi nhận hàng hoặc xác minh được\n• Gặp mặt tại nơi công cộng, đông người (không nhà riêng)\n• Mang theo người thân hoặc bạn bè khi gặp\n• Kiểm tra kỹ hàng tại chỗ trước khi thanh toán\n• Giữ lại chat, ảnh, video làm bằng chứng\n\n**Đặc biệt với xe máy cũ:**\n• Kiểm tra giấy tờ (giấy đăng ký, bảo hiểm), số khung, số máy\n• Test lái thử, kiểm tra phanh, vô lăng, động cơ\n• Hỏi lịch sử bảo dưỡng, có tai nạn không\n• Nên mang theo người hiểu biết hoặc thợ máy đáng tin\n\n**Cảnh báo đỏ:**\n• Giá quá rẻ so với thị trường\n• Người bán tránh gặp mặt, chỉ muốn chuyển khoản\n• Không có ảnh rõ ràng hoặc ảnh lấy từ internet\n• Tài khoản mới, không có lịch sử\n\nChúc bạn mua được hàng tốt! 👍"
+    }
+  ]
+}

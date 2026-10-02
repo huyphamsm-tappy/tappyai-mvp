@@ -1,0 +1,122 @@
+{
+  "id": "S2",
+  "text": "mua laptop van phong duoi 15tr",
+  "parent": null,
+  "status": 200,
+  "ms": 27329,
+  "evidenceId": "bc2b82e8-b954-4bb1-ba1a-345a1eb36133",
+  "toolCalls": [
+    {
+      "tool": "search_products",
+      "args": {
+        "query": "mua laptop văn phòng dưới 15 triệu"
+      }
+    },
+    {
+      "tool": "search_products",
+      "args": {
+        "query": "laptop Dell Vostro Lenovo ThinkPad ASUS VivoBook dưới 15 triệu"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Ba lô Topo Light pack laptop 15\" light pack Stone blue/elmwood (31349)",
+      "rating": 4.7,
+      "count": 373,
+      "price": 1690000
+    },
+    {
+      "name": "Laptop Dell Inspiron 15 3520 i5U085 - TNEW computer-Chuyên Cung Cấp PC Laptop Cao Cấp",
+      "rating": 5,
+      "count": 1,
+      "price": 14500000
+    },
+    {
+      "name": "Máy tính xách tay DELL Vostro 3520-5M2TT2 i5-1235U/ 8GB/ 512GB SSD/15.6FHD WIN11/OFFICE H21",
+      "rating": 5,
+      "count": 1,
+      "price": 14990000
+    },
+    {
+      "name": "Laptop Dell Vostro 3520 i3-1215U|15.6 inch FHD|8GB|SSD 512GB|Black",
+      "rating": 4.2,
+      "count": 143,
+      "price": 8790000
+    },
+    {
+      "name": "Laptop Dell Vostro 3520 (I3-1215U/ Intel Iris Xe/ Ram 8GB/ SSD 512GB/ 15.6\" FHD)",
+      "rating": 4.2,
+      "count": 143,
+      "price": 8999000
+    },
+    {
+      "name": "Laptop Lenovo V15 G4 IRU i5-13420H/16GD4/512GSSD/15.6FHD/Wifi6",
+      "rating": 4.5,
+      "count": 241,
+      "price": 14400000
+    },
+    {
+      "name": "Dell Vostro 15 3530 | Intel Core i5-1334U 16GB 512GB| 15.6",
+      "rating": 4.6,
+      "count": 117,
+      "price": 1890000
+    },
+    {
+      "name": "Laptop Asus Vivobook Go 15 E1504GA-BQ1141W",
+      "rating": 4.7,
+      "count": 22,
+      "price": 9399000
+    },
+    {
+      "name": "[Mới Full VAT] Dell Vostro 3530",
+      "rating": 4.6,
+      "count": 117,
+      "price": 9890000
+    },
+    {
+      "name": "Dell Vostro 3530 - i3 1305U/8GB RAM/512GB SSD/15.6 inch FHD/Ubuntu/Đen",
+      "rating": 4.6,
+      "count": 117,
+      "price": 10049000
+    },
+    {
+      "name": "Dell Vostro 15 3530 - Core i5-1334U, RAM 8GB, SSD 512GB, FHD, KB, Dos, Black",
+      "rating": 4.6,
+      "count": 117,
+      "price": 12090000
+    },
+    {
+      "name": "Laptop DELL VOSTRO 3530 V5I3465W1 (I3-1305U, 15.6 INCH FHD, 8GB RAM, 512GB SSD, 3 CELL 41WHR, WIN 11, OFFICE H&S 2021, GRAY)",
+      "rating": 4.6,
+      "count": 117,
+      "price": 12700000
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ]
+  ],
+  "prose": "[TAPPY_SHOPPING]{\"v\":1,\"entities\":[{\"key\":\"uncertain:0\",\"name\":\"Ba lô Topo Light pack laptop 15\\\" light pack Stone blue/elmwood (31349)\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":true,\"priceLow\":1690000,\"priceHigh\":1690000,\"image\":\"https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRcKLn0NqsywA9MmYW4G3BtVhQgBUBlgfrpJx1DyYfuzTHZWCT48Fbs-Et0GLBExtDgHSUGtLDoa592mM_h4po0v5XdvrJAWZKIjZBS8d-TPffMJU_JyKirhw\",\"offers\":[{\"seller\":\"Phong Vũ\",\"url\":\"https://www.google.com/search?ibp=oshop&q=mua+laptop+v%C4%83n+ph%C3%B2ng+d%C6%B0%E1%BB%9Bi+15+tri%E1%BB%87u+*&prds=localAnnotatedOfferId:1,productid:16878082181724182338,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":1690000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.7,\"ratingCount\":373}]},{\"key\":\"uncertain:1\",\"name\":\"Laptop Dell Inspiron 15 3520 i5U085 - TNEW computer-Chuyên Cung Cấp PC Laptop Cao Cấp\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":14500000,\"priceHigh\":14500000,\"image\":\"https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcS-SMnVJalIAcwQwcOOLNL7t7HoKRJeHnmlX2zNBc8u0X34nKRzV-UuAULwplEZxMsmLX85OENiALm97dRYss0Oo2xQwPrXP3eaRbinrs2Z_EC3iKES4fMC\",\"offers\":[{\"seller\":\"Máy Tính TNEW\",\"url\":\"https://www.google.com/search?ibp=oshop&q=mua+laptop+v%C4%83n+ph%C3%B2ng+d%C6%B0%E1%BB%9Bi+15+tri%E1%BB%87u+*&prds=localAnnotatedOfferId:1,productid:10006970255113335652,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":14500000,\"currency\":\"VND\",\"condition\":null,\"rating\":5,\"ratingCount\":1}]},{\"key\":\"uncertain:2\",\"name\":\"Máy tính xách tay DELL Vostro 3520-5M2TT2 i5-1235U/ 8GB/ 512GB SSD/15.6FHD WIN11/OFFICE H21\",\"config\":\"8GB · 512GB\",\"specs\":[{\"key\":\"ram\",\"value\":8},{\"key\":\"storage\",\"value\":512}],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":14990000,\"priceHigh\":14990000,\"image\":\"https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQMKPnckciKGg8s8FCHKTlWoTkR1OWHsHiU2BQWwlOcYQfEQEqV_jxsoPigGLDQPXAmZ3xOqGqDTURHK79pWBaOBoyp7Q8LNZ6hGPuf9P56D4rMvqhExiNf\",\"offers\":[{\"seller\":\"itsystems.vn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=mua+laptop+v%C4%83n+ph%C3%B2ng+d%C6%B0%E1%BB%9Bi+15+tri%E1%BB%87u+*&prds=localAnnotatedOfferId:1,productid:15489222585333435134,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":14990000,\"currency\":\"VND\",\"condition\":null,\"rating\":5,\"ratingCount\":1}]},{\"key\":\"uncertain:3\",\"name\":\"Laptop Dell Vostro 3520 i3-1215U|15.6 inch FHD|8GB|SSD 512GB|Black\",\"config\":\"512GB · 15 inch\",\"specs\":[{\"key\":\"storage\",\"value\":512},{\"key\":\"size\",\"value\":\"15 inch\"}],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":8790000,\"priceHigh\":8790000,\"image\":\"https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSad3KyrwBRGJKwkSnqpVl7qbfKvTWRWSg65mdMse2ZcKezU7iBtgwV4bnKQj9zt8sFMS1t0NL8K9GMlBJOljaW36lOp2U-Wb-dEtOfobWkotR2L6_A4XvMPw\",\"offers\":[{\"seller\":\"vitinhhoanglong.com\",\"url\":\"https://www.google.com/search?ibp=oshop&q=mua+laptop+v%C4%83n+ph%C3%B2ng+d%C6%B0%E1%BB%9Bi+15+tri%E1%BB%87u+*&prds=localAnnotatedOfferId:1,productid:389249002655143658,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":8790000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.2,\"ratingCount\":143}]},{\"key\":\"uncertain:4\",\"name\":\"Laptop Dell Vostro 3520 (I3-1215U/ Intel Iris Xe/ Ram 8GB/ SSD 512GB/ 15.6\\\" FHD)\",\"config\":\"8GB · 512GB\",\"specs\":[{\"key\":\"ram\",\"value\":8},{\"key\":\"storage\",\"value\":512}],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":8999000,\"priceHigh\":8999000,\"image\":\"https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTVFtOZxZ_JMTy-kiwsLcW-MvxHaDcvCtYX2AbfunLH1Mfh-4O6mZCyJCjAduyxMYJxwp9PEvFJKrAbCJ0Lhei6sBM2BWaj7ZSiaiKMbYqi0LW0lhLG5zZGsA\",\"offers\":[{\"seller\":\"VinhPiCi\",\"url\":\"https://www.google.com/search?ibp=oshop&q=mua+laptop+v%C4%83n+ph%C3%B2ng+d%C6%B0%E1%BB%9Bi+15+tri%E1%BB%87u+*&prds=localAnnotatedOfferId:1,productid:14603609893570508215,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":8999000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.2,\"ratingCount\":143}]},{\"key\":\"uncertain:5\",\"name\":\"Laptop Lenovo V15 G4 IRU i5-13420H/16GD4/512GSSD/15.6FHD/Wifi6\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":14400000,\"priceHigh\":14400000,\"image\":\"https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTQ89es64Og38qrJds40A5X0vujusuqzlb0RTl8EQNqwQX52HqG6WrXtTPAuC8PBMpmTZMUq41u_Z8r_9m77tAwmdxrPGiQmJMhWm2NrvPPjR-fe1QC2MY9\",\"offers\":[{\"seller\":\"Máy Tính Hưng Yên\",\"url\":\"https://www.google.com/search?ibp=oshop&q=mua+laptop+v%C4%83n+ph%C3%B2ng+d%C6%B0%E1%BB%9Bi+15+tri%E1%BB%87u+*&prds=localAnnotatedOfferId:1,productid:9676893059196756165,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":14400000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.5,\"ratingCount\":241}]}],\"requested\":null,\"recommendation\":{\"entityKey\":\"uncertain:0\",\"seller\":\"Phong Vũ\",\"reasons\":[{\"attribute\":\"rating\",\"evidence\":\"rated 4.7\",\"params\":{\"value\":4.7}},{\"attribute\":\"price\",\"evidence\":\"1690000 VND\",\"params\":{\"priceVnd\":1690000}},{\"attribute\":\"reviewCount\",\"evidence\":\"373 reviews\",\"params\":{\"count\":373}}],\"tradeOff\":{\"attribute\":\"rating\",\"evidence\":\"rated 5\",\"params\":{\"value\":5}},\"conditional\":false}}[/TAPPY_SHOPPING]\n\nMình thấy kết quả tìm kiếm có chứa ba lô laptop, không phải laptop thực. Hãy để mình tìm lại với từ khóa cụ thể hơn nhé.\n\nMình chọn **Dell Vostro 15 3530** (16GB/512GB) từ **Xlap Việt Nam**, đánh giá 4.6⭐ từ 117 lượt. Cấu hình này khá tốt cho văn phòng với RAM 16GB và SSD 512GB\n\nNgoài ra, **Asus Vivobook Go 15** (Hacom.vn, 4.7⭐) cũng là lựa chọn tốt nếu bạn muốn tiết kiệm hơn, mặc dù tư liệu cấu hình chưa rõ ràng. Nếu muốn chip i3 đơn giản hơn, **Dell Vostro 3530 i3** (lapvip.com.vn, 8GB/512GB) cũng đủ dùng.\n\nTrước khi mua, bạn nên kiểm tra tình trạng (chính hãng hay like-new), bảo hành bao lâu, và xem kỹ cấu hình chi tiết trên trang bán hàng nhé.\n\n\n[FOLLOWUPS]Cấu hình nào phù hợp nhất?|Có nên mua Dell hay Asus?|Kiểm tra gì trước khi mua?[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "mua laptop van phong duoi 15tr"
+    },
+    {
+      "role": "assistant",
+      "content": "[TAPPY_SHOPPING]{\"v\":1,\"entities\":[{\"key\":\"uncertain:0\",\"name\":\"Ba lô Topo Light pack laptop 15\\\" light pack Stone blue/elmwood (31349)\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":true,\"priceLow\":1690000,\"priceHigh\":1690000,\"image\":\"https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRcKLn0NqsywA9MmYW4G3BtVhQgBUBlgfrpJx1DyYfuzTHZWCT48Fbs-Et0GLBExtDgHSUGtLDoa592mM_h4po0v5XdvrJAWZKIjZBS8d-TPffMJU_JyKirhw\",\"offers\":[{\"seller\":\"Phong Vũ\",\"url\":\"https://www.google.com/search?ibp=oshop&q=mua+laptop+v%C4%83n+ph%C3%B2ng+d%C6%B0%E1%BB%9Bi+15+tri%E1%BB%87u+*&prds=localAnnotatedOfferId:1,productid:16878082181724182338,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":1690000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.7,\"ratingCount\":373}]},{\"key\":\"uncertain:1\",\"name\":\"Laptop Dell Inspiron 15 3520 i5U085 - TNEW computer-Chuyên Cung Cấp PC Laptop Cao Cấp\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":14500000,\"priceHigh\":14500000,\"image\":\"https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcS-SMnVJalIAcwQwcOOLNL7t7HoKRJeHnmlX2zNBc8u0X34nKRzV-UuAULwplEZxMsmLX85OENiALm97dRYss0Oo2xQwPrXP3eaRbinrs2Z_EC3iKES4fMC\",\"offers\":[{\"seller\":\"Máy Tính TNEW\",\"url\":\"https://www.google.com/search?ibp=oshop&q=mua+laptop+v%C4%83n+ph%C3%B2ng+d%C6%B0%E1%BB%9Bi+15+tri%E1%BB%87u+*&prds=localAnnotatedOfferId:1,productid:10006970255113335652,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":14500000,\"currency\":\"VND\",\"condition\":null,\"rating\":5,\"ratingCount\":1}]},{\"key\":\"uncertain:2\",\"name\":\"Máy tính xách tay DELL Vostro 3520-5M2TT2 i5-1235U/ 8GB/ 512GB SSD/15.6FHD WIN11/OFFICE H21\",\"config\":\"8GB · 512GB\",\"specs\":[{\"key\":\"ram\",\"value\":8},{\"key\":\"storage\",\"value\":512}],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":14990000,\"priceHigh\":14990000,\"image\":\"https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQMKPnckciKGg8s8FCHKTlWoTkR1OWHsHiU2BQWwlOcYQfEQEqV_jxsoPigGLDQPXAmZ3xOqGqDTURHK79pWBaOBoyp7Q8LNZ6hGPuf9P56D4rMvqhExiNf\",\"offers\":[{\"seller\":\"itsystems.vn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=mua+laptop+v%C4%83n+ph%C3%B2ng+d%C6%B0%E1%BB%9Bi+15+tri%E1%BB%87u+*&prds=localAnnotatedOfferId:1,productid:15489222585333435134,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":14990000,\"currency\":\"VND\",\"condition\":null,\"rating\":5,\"ratingCount\":1}]},{\"key\":\"uncertain:3\",\"name\":\"Laptop Dell Vostro 3520 i3-1215U|15.6 inch FHD|8GB|SSD 512GB|Black\",\"config\":\"512GB · 15 inch\",\"specs\":[{\"key\":\"storage\",\"value\":512},{\"key\":\"size\",\"value\":\"15 inch\"}],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":8790000,\"priceHigh\":8790000,\"image\":\"https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSad3KyrwBRGJKwkSnqpVl7qbfKvTWRWSg65mdMse2ZcKezU7iBtgwV4bnKQj9zt8sFMS1t0NL8K9GMlBJOljaW36lOp2U-Wb-dEtOfobWkotR2L6_A4XvMPw\",\"offers\":[{\"seller\":\"vitinhhoanglong.com\",\"url\":\"https://www.google.com/search?ibp=oshop&q=mua+laptop+v%C4%83n+ph%C3%B2ng+d%C6%B0%E1%BB%9Bi+15+tri%E1%BB%87u+*&prds=localAnnotatedOfferId:1,productid:389249002655143658,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":8790000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.2,\"ratingCount\":143}]},{\"key\":\"uncertain:4\",\"name\":\"Laptop Dell Vostro 3520 (I3-1215U/ Intel Iris Xe/ Ram 8GB/ SSD 512GB/ 15.6\\\" FHD)\",\"config\":\"8GB · 512GB\",\"specs\":[{\"key\":\"ram\",\"value\":8},{\"key\":\"storage\",\"value\":512}],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":8999000,\"priceHigh\":8999000,\"image\":\"https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTVFtOZxZ_JMTy-kiwsLcW-MvxHaDcvCtYX2AbfunLH1Mfh-4O6mZCyJCjAduyxMYJxwp9PEvFJKrAbCJ0Lhei6sBM2BWaj7ZSiaiKMbYqi0LW0lhLG5zZGsA\",\"offers\":[{\"seller\":\"VinhPiCi\",\"url\":\"https://www.google.com/search?ibp=oshop&q=mua+laptop+v%C4%83n+ph%C3%B2ng+d%C6%B0%E1%BB%9Bi+15+tri%E1%BB%87u+*&prds=localAnnotatedOfferId:1,productid:14603609893570508215,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":8999000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.2,\"ratingCount\":143}]},{\"key\":\"uncertain:5\",\"name\":\"Laptop Lenovo V15 G4 IRU i5-13420H/16GD4/512GSSD/15.6FHD/Wifi6\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":14400000,\"priceHigh\":14400000,\"image\":\"https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTQ89es64Og38qrJds40A5X0vujusuqzlb0RTl8EQNqwQX52HqG6WrXtTPAuC8PBMpmTZMUq41u_Z8r_9m77tAwmdxrPGiQmJMhWm2NrvPPjR-fe1QC2MY9\",\"offers\":[{\"seller\":\"Máy Tính Hưng Yên\",\"url\":\"https://www.google.com/search?ibp=oshop&q=mua+laptop+v%C4%83n+ph%C3%B2ng+d%C6%B0%E1%BB%9Bi+15+tri%E1%BB%87u+*&prds=localAnnotatedOfferId:1,productid:9676893059196756165,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":14400000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.5,\"ratingCount\":241}]}],\"requested\":null,\"recommendation\":{\"entityKey\":\"uncertain:0\",\"seller\":\"Phong Vũ\",\"reasons\":[{\"attribute\":\"rating\",\"evidence\":\"rated 4.7\",\"params\":{\"value\":4.7}},{\"attribute\":\"price\",\"evidence\":\"1690000 VND\",\"params\":{\"priceVnd\":1690000}},{\"attribute\":\"reviewCount\",\"evidence\":\"373 reviews\",\"params\":{\"count\":373}}],\"tradeOff\":{\"attribute\":\"rating\",\"evidence\":\"rated 5\",\"params\":{\"value\":5}},\"conditional\":false}}[/TAPPY_SHOPPING]\n\nMình thấy kết quả tìm kiếm có chứa ba lô laptop, không phải laptop thực. Hãy để mình tìm lại với từ khóa cụ thể hơn nhé.\n\nMình chọn **Dell Vostro 15 3530** (16GB/512GB) từ **Xlap Việt Nam**, đánh giá 4.6⭐ từ 117 lượt. Cấu hình này khá tốt cho văn phòng với RAM 16GB và SSD 512GB\n\nNgoài ra, **Asus Vivobook Go 15** (Hacom.vn, 4.7⭐) cũng là lựa chọn tốt nếu bạn muốn tiết kiệm hơn, mặc dù tư liệu cấu hình chưa rõ ràng. Nếu muốn chip i3 đơn giản hơn, **Dell Vostro 3530 i3** (lapvip.com.vn, 8GB/512GB) cũng đủ dùng.\n\nTrước khi mua, bạn nên kiểm tra tình trạng (chính hãng hay like-new), bảo hành bao lâu, và xem kỹ cấu hình chi tiết trên trang bán hàng nhé.\n\n\n[FOLLOWUPS]Cấu hình nào phù hợp nhất?|Có nên mua Dell hay Asus?|Kiểm tra gì trước khi mua?[/FOLLOWUPS]"
+    }
+  ]
+}

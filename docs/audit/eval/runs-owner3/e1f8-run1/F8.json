@@ -1,0 +1,954 @@
+{
+  "id": "F8",
+  "text": "Sinh nhật sếp, tiếp khách 8 người, phòng riêng, tầm 500k/người, Quận 1",
+  "parent": null,
+  "status": 200,
+  "ms": 17889,
+  "evidenceId": "a6226101-d7ca-4772-9313-51f000a735e9",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "nhà hàng phòng riêng sinh nhật 8 người Quận 1",
+        "location": "Quận 1, TP.HCM",
+        "type": "restaurant"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "The Lủi - Quán Nhậu Chill Quận 1 Sài Gòn",
+      "rating": 4.9,
+      "count": 497,
+      "price": "200-300 N ₫",
+      "hours": "17:00–23:30",
+      "distance_km": 2.1,
+      "address": "177 Nguyễn Cư Trinh, Cầu Ông Lãnh, Hồ Chí Minh 71000, Việt Nam"
+    },
+    {
+      "name": "Asanoha - Modern Japanese Hotpot",
+      "rating": 4.7,
+      "count": 659,
+      "price": "200-300 N ₫",
+      "hours": "10:30–22:00",
+      "distance_km": 0.4,
+      "address": "Saigon Centre, 65 Lê Lợi, Sài Gòn, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Izakaya Choioinoodle | Nhà Hàng Nhật Quận 1 | Mì Ramen Ngon Trần Hưng Đạo",
+      "rating": 4.8,
+      "count": 201,
+      "price": "100-200 N ₫",
+      "hours": "11:00–22:00",
+      "distance_km": 0.9,
+      "address": "25 Trần Hưng Đạo, Bến Thành, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Hải Sản Hoàng Gia - 180 Trần Hưng Đạo Quận 1",
+      "rating": 4.7,
+      "count": 964,
+      "price": "Trên 1 Tr ₫",
+      "hours": "08:00–00:00",
+      "distance_km": 1.9,
+      "address": "180 Trần Hưng Đạo, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Nhà Hàng Tửu Lầu 13",
+      "rating": 4.7,
+      "count": 278,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 1.7,
+      "address": "6 Nam Quốc Cang, P, Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình giả sử tối nay hoặc sớm nhất, để tìm quán phù hợp cho bạn ngay.\n\nMình chọn **Asanoha - Modern Japanese Hotpot** 🍲 — cách bạn chỉ 0.4km, đang mở cửa, có 4.7⭐ (659 đánh giá). Hotpot Nhật vừa phù hợp tiệp khách, vừa vui vẻ cho sinh nhật. Gia tính khoảng 200-300k/người nên vừa khít ngân sách.\n\nNếu muốn quán nhậu chill hơn, **The Lủi** (4.9⭐, 497 đánh giá) cũng gần, nhưng giá thấp hơn nên có thể ít sang trọng. Asanoha phù hợp hơn cho dịp sinh nhật sếp.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📞 Gọi Asanoha\",\"type\":\"website\",\"url\":\"tel:+84283535866\",\"primary\":true},{\"label\":\"🌐 Đặt bàn Asanoha\",\"type\":\"website\",\"url\":\"https://asanoha.com.vn/reservation/\",\"primary\":true},{\"label\":\"📍 Xem trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=5907777177836505796\",\"primary\":false}]}[/CTA_BUTTONS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Sinh nhật sếp, tiếp khách 8 người, phòng riêng, tầm 500k/người, Quận 1"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử tối nay hoặc sớm nhất, để tìm quán phù hợp cho bạn ngay.\n\nMình chọn **Asanoha - Modern Japanese Hotpot** 🍲 — cách bạn chỉ 0.4km, đang mở cửa, có 4.7⭐ (659 đánh giá). Hotpot Nhật vừa phù hợp tiệp khách, vừa vui vẻ cho sinh nhật. Gia tính khoảng 200-300k/người nên vừa khít ngân sách.\n\nNếu muốn quán nhậu chill hơn, **The Lủi** (4.9⭐, 497 đánh giá) cũng gần, nhưng giá thấp hơn nên có thể ít sang trọng. Asanoha phù hợp hơn cho dịp sinh nhật sếp.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📞 Gọi Asanoha\",\"type\":\"website\",\"url\":\"tel:+84283535866\",\"primary\":true},{\"label\":\"🌐 Đặt bàn Asanoha\",\"type\":\"website\",\"url\":\"https://asanoha.com.vn/reservation/\",\"primary\":true},{\"label\":\"📍 Xem trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=5907777177836505796\",\"primary\":false}]}[/CTA_BUTTONS]"
+    }
+  ],
+  "toolResults": [
+    {
+      "source": "Serper Maps",
+      "count": 20,
+      "location": "Quận 1, TP.HCM",
+      "results": [
+        {
+          "name": "The Lủi - Quán Nhậu Chill Quận 1 Sài Gòn",
+          "address": "177 Nguyễn Cư Trinh, Cầu Ông Lãnh, Hồ Chí Minh 71000, Việt Nam",
+          "phone": "+84 933 544 639",
+          "place_id": "ChIJ_4Ld_NMvdTERxUfObG8s97o",
+          "rating_value": 4.9,
+          "google_rating": "4.9⭐ (497 đánh giá Google Maps)",
+          "rating_count": 497,
+          "price_range_text": "200-300 N ₫",
+          "place_types": [
+            "Quán bia"
+          ],
+          "maps_link": "https://maps.google.com/?cid=13472285667380578245",
+          "opening_hours": "17:00–23:30",
+          "open_now": false,
+          "distance_km": 2.1,
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "label": "📍 Google Maps — The Lủi - Quán Nhậu Chill Quận 1 Sài Gòn",
+              "url": "https://maps.google.com/?cid=13472285667380578245",
+              "attributed": true
+            },
+            {
+              "kind": "youtube_search_fallback",
+              "label": "🔎 Tìm video review trên YouTube",
+              "url": "https://www.youtube.com/results?search_query=The%20L%E1%BB%A7i%20-%20Qu%C3%A1n%20Nh%E1%BA%ADu%20Chill%20Qu%E1%BA%ADn%201%20S%C3%A0i%20G%C3%B2n%20review",
+              "attributed": false
+            }
+          ],
+          "has_order": true,
+          "has_delivery": true,
+          "has_maps": true,
+          "has_photo": true,
+          "has_hours": true,
+          "has_phone": true,
+          "has_reviews": "search"
+        },
+        {
+          "name": "Asanoha - Modern Japanese Hotpot",
+          "address": "Saigon Centre, 65 Lê Lợi, Sài Gòn, Hồ Chí Minh 70000, Việt Nam",
+          "phone": "+84 28 3535 6866",
+          "website_uri": "https://asanoha.com.vn/reservation/",
+          "place_id": "ChIJ8TLZJ7UvdTERxMoa4Qqk_FE",
+          "rating_value": 4.7,
+          "google_rating": "4.7⭐ (659 đánh giá Google Maps)",
+          "rating_count": 659,
+          "price_range_text": "200-300 N ₫",
+          "place_types": [
+            "Nhà hàng"
+          ],
+          "maps_link": "https://maps.google.com/?cid=5907777177836505796",
+          "booking_links": [
+            "https://asanoha.com.vn/reservation/"
+          ],
+          "opening_hours": "10:30–22:00",
+          "open_now": true,
+          "distance_km": 0.4,
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "label": "📍 Google Maps — Asanoha - Modern Japanese Hotpot",
+              "url": "https://maps.google.com/?cid=5907777177836505796",
+              "attributed": true
+            },
+            {
+              "kind": "official_website",
+              "label": "🌐 Website — Asanoha - Modern Japanese Hotpot",
+              "url": "https://asanoha.com.vn/reservation/",
+              "attributed": true
+            },
+            {
+              "kind": "youtube_search_fallback",
+              "label": "🔎 Tìm video review trên YouTube",
+              "url": "https://www.youtube.com/results?search_query=Asanoha%20-%20Modern%20Japanese%20Hotpot%20review",
+              "attributed": false
+            }
+          ],
+          "has_order": true,
+          "has_delivery": true,
+          "has_maps": true,
+          "has_website": true,
+          "has_photo": true,
+          "has_hours": true,
+          "has_phone": true,
+          "has_reviews": "search"
+        },
+        {
+          "name": "Izakaya Choioinoodle | Nhà Hàng Nhật Quận 1 | Mì Ramen Ngon Trần Hưng Đạo",
+          "address": "25 Trần Hưng Đạo, Bến Thành, Hồ Chí Minh, Việt Nam",
+          "phone": "+84 906 633 656",
+          "website_uri": "https://choioinoodle.com/",
+          "place_id": "ChIJpylJYwAvdTERjuu1BjPtkFo",
+          "rating_value": 4.8,
+          "google_rating": "4.8⭐ (201 đánh giá Google Maps)",
+          "rating_count": 201,
+          "price_range_text": "100-200 N ₫",
+          "place_types": [
+            "Nhà hàng Nhật Bản"
+          ],
+          "maps_link": "https://maps.google.com/?cid=6525976663471549326",
+          "opening_hours": "11:00–22:00",
+          "open_now": false,
+          "distance_km": 0.9,
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "label": "📍 Google Maps — Izakaya Choioinoodle | Nhà Hàng Nhật Quận 1 | Mì Ramen Ngon Trần Hưng Đạo",
+              "url": "https://maps.google.com/?cid=6525976663471549326",
+              "attributed": true
+            },
+            {
+              "kind": "official_website",
+              "label": "🌐 Website — Izakaya Choioinoodle | Nhà Hàng Nhật Quận 1 | Mì Ramen Ngon Trần Hưng Đạo",
+              "url": "https://choioinoodle.com/",
+              "attributed": true
+            },
+            {
+              "kind": "youtube_search_fallback",
+              "label": "🔎 Tìm video review trên YouTube",
+              "url": "https://www.youtube.com/results?search_query=Izakaya%20Choioinoodle%20%7C%20Nh%C3%A0%20H%C3%A0ng%20Nh%E1%BA%ADt%20Qu%E1%BA%ADn%201%20%7C%20M%C3%AC%20Ramen%20Ngon%20Tr%E1%BA%A7n%20H%C6%B0ng%20%C4%90%E1%BA%A1o%20review",
+              "attributed": false
+            }
+          ],
+          "has_order": true,
+          "has_delivery": true,
+          "has_maps": true,
+          "has_website": true,
+          "has_photo": true,
+          "has_hours": true,
+          "has_phone": true,
+          "has_reviews": "search"
+        },
+        {
+          "name": "Hải Sản Hoàng Gia - 180 Trần Hưng Đạo Quận 1",
+          "address": "180 Trần Hưng Đạo, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+          "phone": "+84 1900 0303",
+          "website_uri": "https://haisanhoanggia.com/",
+          "place_id": "ChIJUYzahRQvdTERt3F0asXGmng",
+          "rating_value": 4.7,
+          "google_rating": "4.7⭐ (964 đánh giá Google Maps)",
+          "rating_count": 964,
+          "price_range_text": "Trên 1 Tr ₫",
+          "place_types": [
+            "Nhà hàng",
+            "Nhà hàng hải sản"
+          ],
+          "maps_link": "https://maps.google.com/?cid=8690476982161666487",
+          "booking_links": [
+            "https://s.ldplink.me/qPMj7",
+            "https://www.google.com/maps/reserve/v/dine/c/vG3sFEFo0Xw?source=pa&opi=79508299"
+          ],
+          "opening_hours": "08:00–00:00",
+          "open_now": true,
+          "distance_km": 1.9,
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "label": "📍 Google Maps — Hải Sản Hoàng Gia - 180 Trần Hưng Đạo Quận 1",
+              "url": "https://maps.google.com/?cid=8690476982161666487",
+              "attributed": true
+            },
+            {
+              "kind": "official_website",
+              "label": "🌐 Website — Hải Sản Hoàng Gia - 180 Trần Hưng Đạo Quận 1",
+              "url": "https://haisanhoanggia.com/",
+              "attributed": true
+            },
+            {
+              "kind": "youtube_search_fallback",
+              "label": "🔎 Tìm video review trên YouTube",
+              "url": "https://www.youtube.com/results?search_query=H%E1%BA%A3i%20S%E1%BA%A3n%20Ho%C3%A0ng%20Gia%20-%20180%20Tr%E1%BA%A7n%20H%C6%B0ng%20%C4%90%E1%BA%A1o%20Qu%E1%BA%ADn%201%20review",
+              "attributed": false
+            }
+          ],
+          "has_order": true,
+          "has_delivery": true,
+          "has_maps": true,
+          "has_website": true,
+          "has_photo": true,
+          "has_hours": true,
+          "has_phone": true,
+          "has_reviews": "search"
+        },
+        {
+          "name": "Nhà Hàng Tửu Lầu 13",
+          "address": "6 Nam Quốc Cang, P, Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+          "phone": "+84 902 505 761",
+          "website_uri": "https://nhahangtuulau13.vn/",
+          "place_id": "ChIJ3_xI77svdTERrPJFs1Vv21I",
+          "rating_value": 4.7,
+          "google_rating": "4.7⭐ (278 đánh giá Google Maps)",
+          "rating_count": 278,
+          "place_types": [
+            "Nhà hàng"
+          ],
+          "maps_link": "https://maps.google.com/?cid=5970488144880333484",
+          "opening_hours": "Mở cửa cả ngày",
+          "open_now": true,
+          "distance_km": 1.7,
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "label": "📍 Google Maps — Nhà Hàng Tửu Lầu 13",
+              "url": "https://maps.google.com/?cid=5970488144880333484",
+              "attributed": true
+            },
+            {
+              "kind": "official_website",
+              "label": "🌐 Website — Nhà Hàng Tửu Lầu 13",
+              "url": "https://nhahangtuulau13.vn/",
+              "attributed": true
+            },
+            {
+              "kind": "youtube_search_fallback",
+              "label": "🔎 Tìm video review trên YouTube",
+              "url": "https://www.youtube.com/results?search_query=Nh%C3%A0%20H%C3%A0ng%20T%E1%BB%ADu%20L%E1%BA%A7u%2013%20review",
+              "attributed": false
+            }
+          ],
+          "has_order": true,
+          "has_delivery": true,
+          "has_maps": true,
+          "has_website": true,
+          "has_photo": true,
+          "has_hours": true,
+          "has_phone": true,
+          "has_reviews": "search"
+        }
+      ],
+      "google_maps_search": "https://maps.google.com/maps?q=nh%C3%A0%20h%C3%A0ng%20ph%C3%B2ng%20ri%C3%AAng%20sinh%20nh%E1%BA%ADt%208%20ng%C6%B0%E1%BB%9Di%20Qu%E1%BA%ADn%201%20Qu%E1%BA%ADn%201%2C%20TP.HCM",
+      "_tappy_place_domain": "food",
+      "place_search_status": "has_results",
+      "order_search_results": [
+        {
+          "title": "Vô vàn ưu đãi, hàng vạn món ngon | GrabFood VN",
+          "link": "https://food.grab.com/vn/vi//",
+          "snippet": "Chúng tôi đã sắp xếp tất cả các món ăn, nhà hàng và thực phẩm yêu thích của bạn một cách hợp lý để giúp bạn tìm được đồ ăn dễ dàng và nhanh chóng nhất có thể.",
+          "evidence_scope": "area"
+        },
+        {
+          "title": "hoạt động giao hàng theo khu vực (HUB) - ShopeeFood Driver",
+          "link": "https://driver.shopeefood.vn/tin-tuc/cung-shopeefood-trai-nghiem-hoat-dong-giao-hang-theo-khu-vuc-hub/",
+          "snippet": "ức | [HN, TP HCM] Foody Tòa nhà Jabes 1, 244 Cống Quỳnh, Phường Phạm Ngũ Lão, Quận 1, Thành phố Hồ Chí",
+          "evidence_scope": "area"
+        },
+        {
+          "title": "Đơn hàng ShopeeFood được tính phí như thế nào?",
+          "link": "https://help.cs.shopeefood.vn/105/article/71079-%C4%90%C6%A1n-h%C3%A0ng-ShopeeFood-%C4%91%C6%B0%E1%BB%A3c-t%C3%ADnh-ph%C3%AD-nh%C6%B0-th%E1%BA%BF-n%C3%A0o",
+          "snippet": "Phí đơn hàng nhỏ: 3.000đ/đơn hàng (ngoại trừ đơn hàng giao bởi Quán), áp dụng với đơn hàng chưa đạt giá trị tối thiểu 50.000đ.",
+          "evidence_scope": "area"
+        },
+        {
+          "title": "Trung tâm hỗ trợ - Quản lý chất lượng dịch vụ - ShopeeFood Driver",
+          "link": "https://driver.shopeefood.vn/trung-tam-ho-tro/qun-ly-cht-lng-dch-v/",
+          "snippet": "Địa chỉ: 244 Cống Quỳnh, Phường Phạm Ngũ Lão, Quận 1, TP HCM. E-mail: cskh@support.shopeefood.vn. Quận 1, TP HCM. E-mail:",
+          "evidence_scope": "area"
+        },
+        {
+          "title": "Vô vàn ưu đãi, hàng vạn món ngon | GrabFood VN",
+          "link": "https://food.grab.com/vn/vi/",
+          "snippet": "GrabFood - Dịch vụ giao đồ ăn trực tuyến giúp bạn thỏa mãn cơn thèm ăn với hàng vạn quán ăn.",
+          "evidence_scope": "area"
+        }
+      ],
+      "_LENH_BAT_BUOC": "⚠️ LENH BAT BUOC - DOC TRUOC KHI VIET PHAN HOI: Nguoi dung co budget 400k-600k VND - THAP HON gia khach san cao cap. TUYET DOI KHONG duoc de cap bat ky thuong hieu nao sau day du chi la de so sanh hay goi y: Pullman, Marriott, Hilton, Sheraton, Intercontinental, Sofitel, Novotel, Melia, Hyatt, Wyndham, Movenpick, Radisson, Imperial, Renaissance, Lotte, JW Marriott, Grand Mercure. Chi de cap cac khach san co trong search_results (da duoc loc theo budget). Neu khong con search_results phu hop, bao user nang budget.",
+      "_tappy_evidence_gap": {
+        "qualified": 0,
+        "total": 10,
+        "needed": [
+          "price"
+        ],
+        "action": "search_again"
+      },
+      "_tappy_ranking": {
+        "pick": "The Lủi - Quán Nhậu Chill Quận 1 Sài Gòn",
+        "decided_by": [
+          {
+            "attribute": "rating",
+            "evidence": "rated 4.9"
+          },
+          {
+            "attribute": "distance",
+            "evidence": "2.1km away - Asanoha - Modern Japanese Hotpot: 0.4km away (KHONG duoc goi pick la \"nhat\" o distance)"
+          },
+          {
+            "attribute": "reviewCount",
+            "evidence": "497 reviews"
+          }
+        ],
+        "not_chosen": "Asanoha - Modern Japanese Hotpot",
+        "not_chosen_leads_on": {
+          "attribute": "distance",
+          "evidence": "0.4km away"
+        },
+        "conditional": true
+      },
+      "results_note": "Hien thi 5/10 ket qua tot nhat theo engine; cac ket qua khac da co tren the (card) cua user."
+    }
+  ],
+  "frames8Raw": [
+    [
+      {
+        "kind": "tappy.places.v1",
+        "v": 1,
+        "domain": "food",
+        "ranked": true,
+        "items": [
+          {
+            "id": "place:osm:10.76295,106.68807",
+            "domain": "food",
+            "kind": "place",
+            "name": "The Lủi - Quán Nhậu Chill Quận 1 Sài Gòn",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlqfCSzMJZ4v9zz1-aiUiLbERIPVW0iLXOfpCEHn04rX6sXP6kKQKN4b5DGeGJ3xHXIjoirerio13uLFGDXUW56dThuyEuoAQLllyDGDs1t0lSBXSgO2mzuYHM5OG05wNHfTUiMQx0nV0U",
+            "address": "177 Nguyễn Cư Trinh, Cầu Ông Lãnh, Hồ Chí Minh 71000, Việt Nam",
+            "rating": 4.9,
+            "ratingCount": 497,
+            "openingHours": "17:00–23:30",
+            "openNow": false,
+            "phone": "+84 933 544 639",
+            "priceRangeText": "200-300 N ₫",
+            "openingHoursWeek": {
+              "Thứ Bảy": "17:00–23:30",
+              "Chủ Nhật": "17:00–23:30",
+              "Thứ Hai": "17:00–23:30",
+              "Thứ Ba": "17:00–23:30",
+              "Thứ Tư": "17:00–23:30",
+              "Thứ Năm": "17:00–23:30",
+              "Thứ Sáu": "17:00–23:30"
+            },
+            "distanceKm": 2.1,
+            "categories": [
+              "Quán bia"
+            ],
+            "rank": 0,
+            "recommended": true,
+            "reasons": [
+              {
+                "attribute": "rating",
+                "evidence": "rated 4.9"
+              },
+              {
+                "attribute": "distance",
+                "evidence": "2.1km away"
+              },
+              {
+                "attribute": "reviewCount",
+                "evidence": "497 reviews"
+              }
+            ],
+            "tradeOff": {
+              "attribute": "distance",
+              "evidence": "0.4km away"
+            },
+            "actions": [
+              {
+                "kind": "review",
+                "urlKind": "direct",
+                "url": "https://www.tiktok.com/@thelui.official/video/7673490895496432916",
+                "labelKey": "v3.action.reviewOn",
+                "platform": "TikTok",
+                "attributed": true
+              },
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=The%20L%E1%BB%A7i%20-%20Qu%C3%A1n%20Nh%E1%BA%ADu%20Chill%20Qu%E1%BA%ADn%201%20S%C3%A0i%20G%C3%B2n%20Qu%E1%BA%ADn%201%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=13472285667380578245",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84933544639",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=The%20L%E1%BB%A7i%20-%20Qu%C3%A1n%20Nh%E1%BA%ADu%20Chill%20Qu%E1%BA%ADn%201%20S%C3%A0i%20G%C3%B2n%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.77319,106.70092",
+            "domain": "food",
+            "kind": "place",
+            "name": "Asanoha - Modern Japanese Hotpot",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnxbC7aQH5q5eRuspMa4Cp9CrQvQc-DIk2kPabF236Dn8jjFjA7opCjXOjy2tE_PjmBvqIKBGZN7p10XAnNL2Fzat4csdFVkVrw55carAYfM_0jj7MNHOQsN11aOuexmK_9zboJTg",
+            "address": "Saigon Centre, 65 Lê Lợi, Sài Gòn, Hồ Chí Minh 70000, Việt Nam",
+            "rating": 4.7,
+            "ratingCount": 659,
+            "openingHours": "10:30–22:00",
+            "openNow": true,
+            "phone": "+84 28 3535 6866",
+            "priceRangeText": "200-300 N ₫",
+            "openingHoursWeek": {
+              "Thứ Bảy": "10:30–22:00",
+              "Chủ Nhật": "10:30–22:00",
+              "Thứ Hai": "10:30–22:00",
+              "Thứ Ba": "10:30–22:00",
+              "Thứ Tư": "10:30–22:00",
+              "Thứ Năm": "10:30–22:00",
+              "Thứ Sáu": "10:30–22:00"
+            },
+            "distanceKm": 0.4,
+            "categories": [
+              "Nhà hàng"
+            ],
+            "rank": 1,
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=Asanoha%20-%20Modern%20Japanese%20Hotpot%20Qu%E1%BA%ADn%201%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=5907777177836505796",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Asanoha%20-%20Modern%20Japanese%20Hotpot%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://asanoha.com.vn/reservation/",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+842835356866",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.76964,106.69719",
+            "domain": "food",
+            "kind": "place",
+            "name": "Izakaya Choioinoodle | Nhà Hàng Nhật Quận 1 | Mì Ramen Ngon Trần Hưng Đạo",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWltQndPqPi4dXvGUgVeWy0kvsXV6_qHoZtphuiDkdkQUTSz3CeZMEsAwr0XZxEfcQM3Eu0cDzJmiuZByz2sPrC2zE-uwn56un8zsNDyQM8j0PUFWOgU7BtIpn112CS3ItZR_C4E0i_E4f0",
+            "address": "25 Trần Hưng Đạo, Bến Thành, Hồ Chí Minh, Việt Nam",
+            "rating": 4.8,
+            "ratingCount": 201,
+            "openingHours": "11:00–22:00",
+            "openNow": false,
+            "phone": "+84 906 633 656",
+            "priceRangeText": "100-200 N ₫",
+            "openingHoursWeek": {
+              "Thứ Bảy": "11:00–22:00",
+              "Chủ Nhật": "11:00–22:00",
+              "Thứ Hai": "11:00–22:00",
+              "Thứ Ba": "11:00–22:00",
+              "Thứ Tư": "10:00–22:00",
+              "Thứ Năm": "10:00–22:00",
+              "Thứ Sáu": "11:00–22:00"
+            },
+            "distanceKm": 0.9,
+            "categories": [
+              "Nhà hàng Nhật Bản"
+            ],
+            "rank": 2,
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=Izakaya%20Choioinoodle%20%7C%20Nh%C3%A0%20H%C3%A0ng%20Nh%E1%BA%ADt%20Qu%E1%BA%ADn%201%20%7C%20M%C3%AC%20Ramen%20Ngon%20Tr%E1%BA%A7n%20H%C6%B0ng%20%C4%90%E1%BA%A1o%20Qu%E1%BA%ADn%201%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=6525976663471549326",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Izakaya%20Choioinoodle%20%7C%20Nh%C3%A0%20H%C3%A0ng%20Nh%E1%BA%ADt%20Qu%E1%BA%ADn%201%20%7C%20M%C3%AC%20Ramen%20Ngon%20Tr%E1%BA%A7n%20H%C6%B0ng%20%C4%90%E1%BA%A1o%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://choioinoodle.com/",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84906633656",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.76306,106.69074",
+            "domain": "food",
+            "kind": "place",
+            "name": "Hải Sản Hoàng Gia - 180 Trần Hưng Đạo Quận 1",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkv05lopbEAqxHVp1nLBw5izW0CzdMrTwDMyFLbuAEnBP3KDP242ii1p-J7il6X3eUT3vcqAX9g2dx4vhCQTop4NOHgE0ohy57klP9Q74GYllSYkusW05LVxDvwMh8o9Mkt2EBPv-im_cD_",
+            "address": "180 Trần Hưng Đạo, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+            "rating": 4.7,
+            "ratingCount": 964,
+            "openingHours": "08:00–00:00",
+            "openNow": true,
+            "phone": "+84 1900 0303",
+            "priceRangeText": "Trên 1 Tr ₫",
+            "openingHoursWeek": {
+              "Thứ Bảy": "08:00–00:00",
+              "Chủ Nhật": "08:00–00:00",
+              "Thứ Hai": "08:00–00:00",
+              "Thứ Ba": "08:00–00:00",
+              "Thứ Tư": "08:00–00:00",
+              "Thứ Năm": "08:00–00:00",
+              "Thứ Sáu": "08:00–00:00"
+            },
+            "distanceKm": 1.9,
+            "categories": [
+              "Nhà hàng",
+              "Nhà hàng hải sản"
+            ],
+            "rank": 3,
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=H%E1%BA%A3i%20S%E1%BA%A3n%20Ho%C3%A0ng%20Gia%20-%20180%20Tr%E1%BA%A7n%20H%C6%B0ng%20%C4%90%E1%BA%A1o%20Qu%E1%BA%ADn%201%20Qu%E1%BA%ADn%201%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=8690476982161666487",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=H%E1%BA%A3i%20S%E1%BA%A3n%20Ho%C3%A0ng%20Gia%20-%20180%20Tr%E1%BA%A7n%20H%C6%B0ng%20%C4%90%E1%BA%A1o%20Qu%E1%BA%ADn%201%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://haisanhoanggia.com/",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+8419000303",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.76780,106.68800",
+            "domain": "food",
+            "kind": "place",
+            "name": "Nhà Hàng Tửu Lầu 13",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmiSbe72CuuoOKQQZC2dUxDcgxMbUDUckzwkXbPttq4QYCrBuXJTVM7TgKAx9EpUV_nDsUOInHF3uP5c3gWFc3sgbzMhNSHR6Hho2n32q_y75C7ILR9mcDlZfImsK99ivpIrA2iI1ZACIDo",
+            "address": "6 Nam Quốc Cang, P, Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+            "rating": 4.7,
+            "ratingCount": 278,
+            "openingHours": "Mở cửa cả ngày",
+            "openNow": true,
+            "phone": "+84 902 505 761",
+            "openingHoursWeek": {
+              "Thứ Bảy": "Mở cửa cả ngày",
+              "Chủ Nhật": "Mở cửa cả ngày",
+              "Thứ Hai": "Mở cửa cả ngày",
+              "Thứ Ba": "Mở cửa cả ngày",
+              "Thứ Tư": "Mở cửa cả ngày",
+              "Thứ Năm": "Mở cửa cả ngày",
+              "Thứ Sáu": "Mở cửa cả ngày"
+            },
+            "distanceKm": 1.7,
+            "categories": [
+              "Nhà hàng"
+            ],
+            "rank": 4,
+            "actions": [
+              {
+                "kind": "review",
+                "urlKind": "direct",
+                "url": "https://www.tiktok.com/@nhahangtuulau13/video/7611527438962658581",
+                "labelKey": "v3.action.reviewOn",
+                "platform": "TikTok",
+                "attributed": true
+              },
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=Nh%C3%A0%20H%C3%A0ng%20T%E1%BB%ADu%20L%E1%BA%A7u%2013%20Qu%E1%BA%ADn%201%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=5970488144880333484",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://nhahangtuulau13.vn/",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84902505761",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Nh%C3%A0%20H%C3%A0ng%20T%E1%BB%ADu%20L%E1%BA%A7u%2013%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.77353,106.70534",
+            "domain": "food",
+            "kind": "place",
+            "name": "Hàng Dương Quán Quận 1",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlvHOKHtzjtm6GnNoy-UlckOp_qU2BZVAyFblxuQ6HgJ5WLLRnHUbSwEYb-qqIhxEt1aWvNOOG_xkEDv9_i51wLYBLmaXyKP2NRmFLteV06fC8PXCKhclxGCsLxGV1vg4jmWqFa",
+            "address": "32-34 Ngô Đức Kế, Phường, Sài Gòn, Hồ Chí Minh, Việt Nam",
+            "rating": 4.5,
+            "ratingCount": 717,
+            "openingHours": "09:00–23:30",
+            "openNow": true,
+            "phone": "+84 968 817 788",
+            "openingHoursWeek": {
+              "Thứ Bảy": "09:00–23:30",
+              "Chủ Nhật": "09:00–23:30",
+              "Thứ Hai": "09:00–23:30",
+              "Thứ Ba": "09:00–23:30",
+              "Thứ Tư": "09:00–23:30",
+              "Thứ Năm": "09:00–23:30",
+              "Thứ Sáu": "09:00–23:30"
+            },
+            "distanceKm": 0.6,
+            "categories": [
+              "Nhà hàng"
+            ],
+            "rank": 5,
+            "actions": [
+              {
+                "kind": "review",
+                "urlKind": "direct",
+                "url": "https://www.tiktok.com/@nhahangtuulau13/video/7536833820251770119",
+                "labelKey": "v3.action.reviewOn",
+                "platform": "TikTok",
+                "attributed": true
+              },
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=H%C3%A0ng%20D%C6%B0%C6%A1ng%20Qu%C3%A1n%20Qu%E1%BA%ADn%201%20Qu%E1%BA%ADn%201%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=6865477283024017585",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84968817788",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=H%C3%A0ng%20D%C6%B0%C6%A1ng%20Qu%C3%A1n%20Qu%E1%BA%ADn%201%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.79358,106.69402",
+            "domain": "food",
+            "kind": "place",
+            "name": "Quán nhậu quận 1 - HẢI SẢN QUÝ DẬU",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkb-PY4y4qkHLHTeTb58DqZHuN2lKoilpMFqOFFKKlY_V8u9TF5W536a2iSnfchLhNEok_h809OYQ86d7a8QTISw0MfRl6G_KDyMyFCKiBYuL6aJj-ZWFBC6wnDi8AqkimJA5ey",
+            "address": "147 Hoàng Sa, Tân Định, Hồ Chí Minh, Việt Nam",
+            "rating": 4.7,
+            "ratingCount": 278,
+            "openingHours": "15:00–02:00",
+            "openNow": false,
+            "phone": "+84 833 233 963",
+            "priceRangeText": "100-200 N ₫",
+            "openingHoursWeek": {
+              "Thứ Bảy": "15:00–02:00",
+              "Chủ Nhật": "15:00–02:00",
+              "Thứ Hai": "15:00–02:00",
+              "Thứ Ba": "15:00–02:00",
+              "Thứ Tư": "15:00–02:00",
+              "Thứ Năm": "15:00–02:00",
+              "Thứ Sáu": "15:00–02:00"
+            },
+            "distanceKm": 2,
+            "categories": [
+              "Nhà hàng châu Á",
+              "Trang trại hải sản"
+            ],
+            "rank": 6,
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=Qu%C3%A1n%20nh%E1%BA%ADu%20qu%E1%BA%ADn%201%20-%20H%E1%BA%A2I%20S%E1%BA%A2N%20QU%C3%9D%20D%E1%BA%ACU%20Qu%E1%BA%ADn%201%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=8963047816332474488",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20nh%E1%BA%ADu%20qu%E1%BA%ADn%201%20-%20H%E1%BA%A2I%20S%E1%BA%A2N%20QU%C3%9D%20D%E1%BA%ACU%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://www.facebook.com/profile.php?id=61585781067778",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84833233963",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.79314,106.69019",
+            "domain": "food",
+            "kind": "place",
+            "name": "Nhà Hàng Maison Mận-Đỏ",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWm_dOaBBbqIB2mPDvoQpGDmKwQed5BpgjqsmQB4B90ZpDbAph8dwynmFhpi6eCOlANDTQXo1ctPcIMysLdEkfaq_c3uyJL6Ht_YhT5heUvsOHn0koPvgXaNWKjwCCYfIAOsR5o",
+            "address": "27J Đ. Trần Nhật Duật, Tân Định, Hồ Chí Minh 700000, Việt Nam",
+            "rating": 4.6,
+            "ratingCount": 620,
+            "openingHours": "14:00–22:00",
+            "openNow": false,
+            "phone": "+84 933 774 487",
+            "openingHoursWeek": {
+              "Thứ Bảy": "14:00–22:00",
+              "Chủ Nhật": "14:00–22:00",
+              "Thứ Hai": "14:00–22:00",
+              "Thứ Ba": "14:00–22:00",
+              "Thứ Tư": "14:00–22:00",
+              "Thứ Năm": "14:00–22:00",
+              "Thứ Sáu": "14:00–22:00"
+            },
+            "distanceKm": 2.2,
+            "categories": [
+              "Nhà hàng",
+              "Nhà hàng Pháp thượng hạng",
+              "Nhà hàng Việt Nam"
+            ],
+            "rank": 7,
+            "actions": [
+              {
+                "kind": "review",
+                "urlKind": "direct",
+                "url": "https://www.tiktok.com/@maisonmando/video/7230426110771612933",
+                "labelKey": "v3.action.reviewOn",
+                "platform": "TikTok",
+                "attributed": true
+              },
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=Nh%C3%A0%20H%C3%A0ng%20Maison%20M%E1%BA%ADn-%C4%90%E1%BB%8F%20Qu%E1%BA%ADn%201%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=6400778564842628826",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84933774487",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Nh%C3%A0%20H%C3%A0ng%20Maison%20M%E1%BA%ADn-%C4%90%E1%BB%8F%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          }
+        ],
+        "mapsSearchUrl": "https://maps.google.com/maps?q=nh%C3%A0%20h%C3%A0ng%20ph%C3%B2ng%20ri%C3%AAng%20sinh%20nh%E1%BA%ADt%208%20ng%C6%B0%E1%BB%9Di%20Qu%E1%BA%ADn%201%20Qu%E1%BA%ADn%201%2C%20TP.HCM"
+      }
+    ]
+  ]
+}

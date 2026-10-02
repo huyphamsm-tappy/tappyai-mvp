@@ -1,0 +1,13 @@
+{
+ "login": "submitted → /login",
+ "wrong": {
+  "submitDisabled": true
+ },
+ "right": {
+  "wasDisabled": false,
+  "path": "/profile/settings/delete-account",
+  "text": "Xóa tài khoản\nTài khoản của bạn đã được xóa\n\nDữ liệu của bạn đã được xóa khỏi cơ  ở dữ liệu; ảnh, video và âm thanh bạn đã tải lên được xóa khỏi kho lưu trữ tệp trong vòng 48 giờ  au đó.\n\nBạn đã được đăng xuất. Nếu có câu hỏi, hãy liên hệ  upport@tappyai.com.\n\nVề trang chủ\nTrang chủ\nChat\nKhám phá\nDe"
+ },
+ "http": [],
+ "errors": []
+}

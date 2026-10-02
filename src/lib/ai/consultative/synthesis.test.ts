@@ -114,7 +114,10 @@ describe('matchesRequest — a different config is flagged, not passed off', () 
     expect(m1pro16.matchesRequest).toBe('khac')
   })
   it('the M1 Pro no-capacity group is "khac" — its chip is known and differs, not a false match', () => {
-    const uncertain = groups.find(g => String(g.config).includes('RAM ?'))!
+    // Selected by what the listing DID state, not by a placeholder: this group's
+    // config is the chip alone, because it names no capacity. (It used to read
+    // "M1 Pro · RAM ? · storage ?" — a question mark presented as a spec.)
+    const uncertain = groups.find(g => String(g.config).includes('M1 Pro') && !String(g.config).includes('GB'))!
     expect(uncertain.matchesRequest).toBe('khac')
   })
   it('a matching chip with UNKNOWN capacity is "chua_ro", never a false "khop"', () => {

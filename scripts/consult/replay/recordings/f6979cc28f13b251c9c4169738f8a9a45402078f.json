@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Fusion Suites Vũng Tàu",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T03:00:59.733Z",
+ "body": {
+  "searchParameters": {
+   "q": "Fusion Suites Vũng Tàu",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Fusion Suites Vung Tau, Vũng Tàu (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/254541907.jpg?k=8436ac4608ec28447b9ad020603214091fb126f7ca1fb300b48dc202843e333f&o=",
+    "imageWidth": 512,
+    "imageHeight": 768,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQXaBrwpCSUcQbjUVTHmV5BNlFNs-kFoi13C1CzIPnYnA&s=10",
+    "thumbnailWidth": 452,
+    "thumbnailHeight": 678,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/fusion-suites-vung-tau.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F254541907.jpg%3Fk%3D8436ac4608ec28447b9ad020603214091fb126f7ca1fb300b48dc202843e333f%26o%3D&tbnid=HkhzpMNdi14k7M&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Ffusion-suites-vung-tau.vi.html&docid=xZwr549CEmByWM&w=512&h=768",
+    "position": 1
+   },
+   {
+    "title": "Trang chủ - fusion-suites-vungtau",
+    "imageUrl": "https://fusion-suites.com/vungtau/wp-content/uploads/2025/11/1-1.jpg",
+    "imageWidth": 1500,
+    "imageHeight": 1500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9yF8sRC8pNbRVmOgdGbDmlcBsftjiUHmkrZuSwiG9Kg&s=10",
+    "thumbnailWidth": 554,
+    "thumbnailHeight": 554,
+    "source": "Fusion Suites",
+    "domain": "fusion-suites.com",
+    "link": "https://fusion-suites.com/vungtau/vi/trang-chu/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Ffusion-suites.com%2Fvungtau%2Fwp-content%2Fuploads%2F2025%2F11%2F1-1.jpg&tbnid=0uxKZ3uMSNeq0M&imgrefurl=https%3A%2F%2Ffusion-suites.com%2Fvungtau%2Fvi%2Ftrang-chu%2F&docid=Dmf94KUqB_lQVM&w=1500&h=1500",
+    "position": 2
+   },
+   {
+    "title": "Fusion Suites Vũng Tàu, Phường 2, Vũng Tàu",
+    "imageUrl": "https://pix10.agoda.net/hotelImages/11534281/-1/dad641d5fac0c9421778b7370a1d226f.jpg?va=1&ca=11&ce=1&s=414x232",
+    "imageWidth": 414,
+    "imageHeight": 232,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4Sa8R-6y4bANM4YvVMEQ4Ng2LR5D8Uqd0Xr-BSTZB8w&s=10",
+    "thumbnailWidth": 414,
+    "thumbnailHeight": 232,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/fusion-suites-vung-tau/hotel/vung-tau-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F11534281%2F-1%2Fdad641d5fac0c9421778b7370a1d226f.jpg%3Fva%3D1%26ca%3D11%26ce%3D1%26s%3D414x232&tbnid=odm0SThAZVxJjM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Ffusion-suites-vung-tau%2Fhotel%2Fvung-tau-vn.html&docid=7tm_DOTgtWwBWM&w=414&h=232",
+    "position": 3
+   },
+   {
+    "title": "FUSION SUITES VUNG TAU (Vũng Tàu) - Đánh giá Khách sạn & So sánh giá -  Tripadvisor",
+    "imageUrl": "https://media-cdn.tripadvisor.com/media/photo-s/1b/58/89/2f/breeze-roof-top-sky-bar.jpg",
+    "imageWidth": 550,
+    "imageHeight": 367,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRkHUDydPAYO7Zm5H02YJMb0N-GpIPMXtf8LYGvzfrTKQ&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "Tripadvisor",
+    "domain": "www.tripadvisor.com.vn",
+    "link": "https://www.tripadvisor.com.vn/Hotel_Review-g303946-d19609103-Reviews-Fusion_Suites_Vung_Tau-Vung_Tau_Ba_Ria_Vung_Tau_Province.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fmedia-cdn.tripadvisor.com%2Fmedia%2Fphoto-s%2F1b%2F58%2F89%2F2f%2Fbreeze-roof-top-sky-bar.jpg&tbnid=ZgDyMZHuerF-bM&imgrefurl=https%3A%2F%2Fwww.tripadvisor.com.vn%2FHotel_Review-g303946-d19609103-Reviews-Fusion_Suites_Vung_Tau-Vung_Tau_Ba_Ria_Vung_Tau_Province.html&docid=RwZmdNo96YYTyM&w=550&h=367",
+    "position": 4
+   },
+   {
+    "title": "Home - fusion-suites-vungtau",
+    "imageUrl": "https://fusion-suites.com/vungtau/wp-content/uploads/2025/11/3.jpg",
+    "imageWidth": 1500,
+    "imageHeight": 1500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMCsck7agxKsB1YAXlCDzR8g4FkZo9AxgLm862VmANUQ&s=10",
+    "thumbnailWidth": 554,
+    "thumbnailHeight": 554,
+    "source": "Fusion Suites",
+    "domain": "fusion-suites.com",
+    "link": "https://fusion-suites.com/vungtau/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Ffusion-suites.com%2Fvungtau%2Fwp-content%2Fuploads%2F2025%2F11%2F3.jpg&tbnid=wzc3lSfSfdivqM&imgrefurl=https%3A%2F%2Ffusion-suites.com%2Fvungtau%2F&docid=EaTPfxZjN7v-AM&w=1500&h=1500",
+    "position": 5
+   },
+   {
+    "title": "Fusion Suites Vũng Tàu: Vị trí, kiến trúc, tiện ích, giá bán các hạng phòng  & kinh nghiệm đặt phòng",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/344218043.jpg?k=c68a9b228000c1b832cea89f8215b90205b7722e315635e25cec321dea1d2544&o=&hp=1",
+    "imageWidth": 1024,
+    "imageHeight": 575,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRcnc38g-O-dHbVdXSOAlsdNDrE0rKBJxKEXoTXHwoYgA&s=10",
+    "thumbnailWidth": 597,
+    "thumbnailHeight": 335,
+    "source": "Phê travel",
+    "domain": "phetravel.com",
+    "link": "https://phetravel.com/fusion-suites-vung-tau",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F344218043.jpg%3Fk%3Dc68a9b228000c1b832cea89f8215b90205b7722e315635e25cec321dea1d2544%26o%3D%26hp%3D1&tbnid=jdSOpudRe4aepM&imgrefurl=https%3A%2F%2Fphetravel.com%2Ffusion-suites-vung-tau&docid=pvkpfPTuergA0M&w=1024&h=575",
+    "position": 6
+   },
+   {
+    "title": "Khách sạn Fusion Suites Vũng Tàu (Fusion Suites Vung Tau) - Chudu24",
+    "imageUrl": "https://du-lich.chudu24.com/f/m/2008/10/khach-san-fusion-suites-vung-tau-8.jpg?w=800&h=532",
+    "imageWidth": 800,
+    "imageHeight": 532,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjfzlecEvBFrsMxp-_lblJFvwkN6IrpwsZO9fiqxA7Sg&s=10",
+    "thumbnailWidth": 549,
+    "thumbnailHeight": 364,
+    "source": "Đặt Phòng Khách Sạn - Chudu24",
+    "domain": "khachsan.chudu24.com",
+    "link": "https://khachsan.chudu24.com/ks.6361.khach-san-fusion-suites-vung-tau.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdu-lich.chudu24.com%2Ff%2Fm%2F2008%2F10%2Fkhach-san-fusion-suites-vung-tau-8.jpg%3Fw%3D800%26h%3D532&tbnid=5K__V8zpg3pVaM&imgrefurl=https%3A%2F%2Fkhachsan.chudu24.com%2Fks.6361.khach-san-fusion-suites-vung-tau.html&docid=S4xJHGWXsR_XGM&w=800&h=532",
+    "position": 7
+   },
+   {
+    "title": "Fusion Suites",
+    "imageUrl": "http://fusion-suites.com/wp-content/uploads/2025/02/cover-fusion-suites.jpg",
+    "imageWidth": 1920,
+    "imageHeight": 801,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTsABX5fHALuBnqq3zPlpAlhq_3FtZepPqNami1wqXsWQ&s=10",
+    "thumbnailWidth": 738,
+    "thumbnailHeight": 306,
+    "source": "fusion-suites.com",
+    "domain": "fusion-suites.com",
+    "link": "https://fusion-suites.com/vi/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=http%3A%2F%2Ffusion-suites.com%2Fwp-content%2Fuploads%2F2025%2F02%2Fcover-fusion-suites.jpg&tbnid=5uarUgLLwyyNUM&imgrefurl=https%3A%2F%2Ffusion-suites.com%2Fvi%2F&docid=XOgb9TDB_HyKoM&w=1920&h=801",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

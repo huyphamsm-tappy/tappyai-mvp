@@ -1,0 +1,30 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Phan Anh Hotel\" Bà Rịa Vũng Tàu site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T19:20:57.728Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Phan Anh Hotel\" Bà Rịa Vũng Tàu site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Khách sạn Phan Anh - Giá cả và Ưu đãi 2026, TP. Hồ Chí ...",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-hotel-detail-91839799/phan-anh-hotel/",
+    "snippet": "35m². Hiển thị giá. 1 Khách sạn Phan Anh(Phan Anh Hotel) Phòng Gia đình Sang trọng Không hút. Phòng Gia đình Sang trọng Không hút thuốc. 1 Giường đôi. Có cửa sổ ...",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

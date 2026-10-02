@@ -1,0 +1,366 @@
+[
+ {
+  "who": "A",
+  "method": "POST",
+  "path": "/api/onboarding",
+  "status": 200,
+  "resp": "{\"ok\":true}"
+ },
+ {
+  "who": "A",
+  "method": "POST",
+  "path": "/api/preferences",
+  "status": 400,
+  "resp": "{\"error\":\"invalid_input\",\"message\":\"Dữ liệu không hợp lệ\"}"
+ },
+ {
+  "who": "A",
+  "method": "PATCH",
+  "path": "/api/memory",
+  "status": 200,
+  "resp": "{\"ok\":true}"
+ },
+ {
+  "who": "A",
+  "method": "POST",
+  "path": "/api/conversations",
+  "status": 200,
+  "resp": "{\"id\":\"a285b548-d2f7-4c35-b5fe-121a349c7896\",\"user_id\":\"4d6429c1-8270-4fa6-b114-5a61238bc78a\",\"title\":\"uat2609_A_conv1\",\"category\":\"food\",\"messages\":[{\"role\":\"user\",\"content\":\"uat2609 A hello 1\"},{\"role\":\"assistant\",\"con"
+ },
+ {
+  "who": "A",
+  "method": "POST",
+  "path": "/api/conversations",
+  "status": 200,
+  "resp": "{\"id\":\"f53ddf68-5169-42ac-b511-5143df5feed9\",\"user_id\":\"4d6429c1-8270-4fa6-b114-5a61238bc78a\",\"title\":\"uat2609_A_conv2\",\"category\":\"food\",\"messages\":[{\"role\":\"user\",\"content\":\"uat2609 A hello 2\"},{\"role\":\"assistant\",\"con"
+ },
+ {
+  "who": "A",
+  "method": "POST",
+  "path": "/api/favorites",
+  "status": 200,
+  "resp": "{\"ok\":true}"
+ },
+ {
+  "who": "A",
+  "method": "POST",
+  "path": "/api/favorites",
+  "status": 200,
+  "resp": "{\"ok\":true}"
+ },
+ {
+  "who": "A",
+  "method": "POST",
+  "path": "/api/price-watch",
+  "status": 200,
+  "resp": "{\"id\":\"2e3168eb-ab81-4de5-a0de-ef0af34d5d9f\",\"ok\":true}"
+ },
+ {
+  "who": "A",
+  "method": "POST",
+  "path": "/api/price-watch",
+  "status": 200,
+  "resp": "{\"id\":\"49b23e09-f71d-4a6e-8cd0-f273c5fbd1dc\",\"ok\":true}"
+ },
+ {
+  "who": "A",
+  "method": "POST",
+  "path": "/api/reviews",
+  "status": 200,
+  "resp": "{\"ok\":true,\"is_verified\":false}"
+ },
+ {
+  "who": "A",
+  "method": "POST",
+  "path": "/api/reviews",
+  "status": 200,
+  "resp": "{\"ok\":true,\"is_verified\":false}"
+ },
+ {
+  "who": "A",
+  "method": "POST",
+  "path": "/api/bookings",
+  "status": 200,
+  "resp": "{\"ok\":true,\"bookingId\":\"d12e6927-1a63-47a2-846a-d8ce03b1b3e6\"}"
+ },
+ {
+  "who": "A",
+  "method": "POST",
+  "path": "/api/bookings",
+  "status": 200,
+  "resp": "{\"ok\":true,\"bookingId\":\"6122093e-4251-44e9-bd34-b6ce27fe8473\"}"
+ },
+ {
+  "who": "A",
+  "method": "POST",
+  "path": "/api/group",
+  "status": 200,
+  "resp": "{\"id\":\"6d3cdea1-8488-4235-bd46-93f77d838e06\",\"name\":\"uat2609_A_group1\"}"
+ },
+ {
+  "who": "A",
+  "method": "POST",
+  "path": "/api/group",
+  "status": 200,
+  "resp": "{\"id\":\"eb3ddac3-a0d1-41db-9575-6311a17a0171\",\"name\":\"uat2609_A_group2\"}"
+ },
+ {
+  "who": "A",
+  "method": "POST",
+  "path": "/api/plans/share",
+  "status": 200,
+  "resp": "{\"id\":\"uqq69BdO9Koe\",\"path\":\"/plan/uqq69BdO9Koe\",\"url\":\"http://localhost:3101/plan/uqq69BdO9Koe\",\"reused\":false}"
+ },
+ {
+  "who": "A",
+  "method": "POST",
+  "path": "/api/plans/share",
+  "status": 200,
+  "resp": "{\"id\":\"rQ6W7YkxR1Q3\",\"path\":\"/plan/rQ6W7YkxR1Q3\",\"url\":\"http://localhost:3101/plan/rQ6W7YkxR1Q3\",\"reused\":false}"
+ },
+ {
+  "who": "A",
+  "method": "POST",
+  "path": "/api/track",
+  "status": 200,
+  "resp": "{\"ok\":true}"
+ },
+ {
+  "who": "A",
+  "method": "POST",
+  "path": "/api/notifications/subscribe",
+  "status": 200,
+  "resp": "{\"ok\":true}"
+ },
+ {
+  "who": "A",
+  "method": "POST",
+  "path": "/api/notifications/subscribe",
+  "status": 200,
+  "resp": "{\"ok\":true}"
+ },
+ {
+  "who": "A",
+  "method": "POST",
+  "path": "/api/users/18bb5d88-1a3f-4e67-b370-6453e53222ab/follow",
+  "status": 200,
+  "resp": "{\"following\":true,\"follower_count\":1}"
+ },
+ {
+  "who": "B",
+  "method": "POST",
+  "path": "/api/onboarding",
+  "status": 200,
+  "resp": "{\"ok\":true}"
+ },
+ {
+  "who": "B",
+  "method": "POST",
+  "path": "/api/preferences",
+  "status": 400,
+  "resp": "{\"error\":\"invalid_input\",\"message\":\"Dữ liệu không hợp lệ\"}"
+ },
+ {
+  "who": "B",
+  "method": "PATCH",
+  "path": "/api/memory",
+  "status": 200,
+  "resp": "{\"ok\":true}"
+ },
+ {
+  "who": "B",
+  "method": "POST",
+  "path": "/api/conversations",
+  "status": 200,
+  "resp": "{\"id\":\"447fa0b0-7cc0-4e49-9543-b07de86cff61\",\"user_id\":\"18bb5d88-1a3f-4e67-b370-6453e53222ab\",\"title\":\"uat2609_B_conv1\",\"category\":\"food\",\"messages\":[{\"role\":\"user\",\"content\":\"uat2609 B hello 1\"},{\"role\":\"assistant\",\"con"
+ },
+ {
+  "who": "B",
+  "method": "POST",
+  "path": "/api/conversations",
+  "status": 200,
+  "resp": "{\"id\":\"60555a32-b1f8-4425-9095-a60d821e40aa\",\"user_id\":\"18bb5d88-1a3f-4e67-b370-6453e53222ab\",\"title\":\"uat2609_B_conv2\",\"category\":\"food\",\"messages\":[{\"role\":\"user\",\"content\":\"uat2609 B hello 2\"},{\"role\":\"assistant\",\"con"
+ },
+ {
+  "who": "B",
+  "method": "POST",
+  "path": "/api/favorites",
+  "status": 200,
+  "resp": "{\"ok\":true}"
+ },
+ {
+  "who": "B",
+  "method": "POST",
+  "path": "/api/favorites",
+  "status": 200,
+  "resp": "{\"ok\":true}"
+ },
+ {
+  "who": "B",
+  "method": "POST",
+  "path": "/api/price-watch",
+  "status": 200,
+  "resp": "{\"id\":\"85de45a1-b062-4776-bde6-baed3387a282\",\"ok\":true}"
+ },
+ {
+  "who": "B",
+  "method": "POST",
+  "path": "/api/price-watch",
+  "status": 200,
+  "resp": "{\"id\":\"97275574-c99e-439e-9c84-902696cffc5d\",\"ok\":true}"
+ },
+ {
+  "who": "B",
+  "method": "POST",
+  "path": "/api/reviews",
+  "status": 200,
+  "resp": "{\"ok\":true,\"is_verified\":false}"
+ },
+ {
+  "who": "B",
+  "method": "POST",
+  "path": "/api/reviews",
+  "status": 200,
+  "resp": "{\"ok\":true,\"is_verified\":false}"
+ },
+ {
+  "who": "B",
+  "method": "POST",
+  "path": "/api/bookings",
+  "status": 200,
+  "resp": "{\"ok\":true,\"bookingId\":\"f560c168-219c-4bc9-bc00-ed4b5a4ea3ed\"}"
+ },
+ {
+  "who": "B",
+  "method": "POST",
+  "path": "/api/bookings",
+  "status": 200,
+  "resp": "{\"ok\":true,\"bookingId\":\"45eb70d0-4f00-4010-9f6d-84365f8155e4\"}"
+ },
+ {
+  "who": "B",
+  "method": "POST",
+  "path": "/api/group",
+  "status": 200,
+  "resp": "{\"id\":\"72843ec3-7ab4-42a3-9821-aee41e4f6fe9\",\"name\":\"uat2609_B_group1\"}"
+ },
+ {
+  "who": "B",
+  "method": "POST",
+  "path": "/api/group",
+  "status": 200,
+  "resp": "{\"id\":\"0c06ec77-fe83-44d8-997c-ad54ea228645\",\"name\":\"uat2609_B_group2\"}"
+ },
+ {
+  "who": "B",
+  "method": "POST",
+  "path": "/api/plans/share",
+  "status": 200,
+  "resp": "{\"id\":\"hovkM05pMlOG\",\"path\":\"/plan/hovkM05pMlOG\",\"url\":\"http://localhost:3101/plan/hovkM05pMlOG\",\"reused\":false}"
+ },
+ {
+  "who": "B",
+  "method": "POST",
+  "path": "/api/plans/share",
+  "status": 200,
+  "resp": "{\"id\":\"WtLug17h737p\",\"path\":\"/plan/WtLug17h737p\",\"url\":\"http://localhost:3101/plan/WtLug17h737p\",\"reused\":false}"
+ },
+ {
+  "who": "B",
+  "method": "POST",
+  "path": "/api/track",
+  "status": 200,
+  "resp": "{\"ok\":true}"
+ },
+ {
+  "who": "B",
+  "method": "POST",
+  "path": "/api/notifications/subscribe",
+  "status": 200,
+  "resp": "{\"ok\":true}"
+ },
+ {
+  "who": "B",
+  "method": "POST",
+  "path": "/api/notifications/subscribe",
+  "status": 200,
+  "resp": "{\"ok\":true}"
+ },
+ {
+  "who": "B",
+  "method": "POST",
+  "path": "/api/users/4d6429c1-8270-4fa6-b114-5a61238bc78a/follow",
+  "status": 200,
+  "resp": "{\"following\":true,\"follower_count\":1}"
+ },
+ {
+  "who": "A",
+  "method": "POST",
+  "path": "/api/messaging/threads",
+  "status": 200,
+  "resp": "{\"threadId\":\"5489640c-dcb2-453f-9c0b-a423f7561ed7\"}"
+ },
+ {
+  "who": "A",
+  "method": "POST",
+  "path": "/api/messaging/threads/5489640c-dcb2-453f-9c0b-a423f7561ed7/messages",
+  "status": 200,
+  "resp": "{\"message\":{\"id\":\"1b652312-889d-418a-9a2f-9a930aa6281c\",\"threadId\":\"5489640c-dcb2-453f-9c0b-a423f7561ed7\",\"senderId\":\"4d6429c1-8270-4fa6-b114-5a61238bc78a\",\"body\":\"uat2609 msg A 1\",\"createdAt\":\"2026-09-20T11:57:42.182034"
+ },
+ {
+  "who": "A",
+  "method": "POST",
+  "path": "/api/messaging/threads/5489640c-dcb2-453f-9c0b-a423f7561ed7/messages",
+  "status": 200,
+  "resp": "{\"message\":{\"id\":\"635ea801-d2eb-4d33-9c9d-9db393a78748\",\"threadId\":\"5489640c-dcb2-453f-9c0b-a423f7561ed7\",\"senderId\":\"4d6429c1-8270-4fa6-b114-5a61238bc78a\",\"body\":\"uat2609 msg A 2\",\"createdAt\":\"2026-09-20T11:57:42.389831"
+ },
+ {
+  "who": "B",
+  "method": "POST",
+  "path": "/api/messaging/threads/5489640c-dcb2-453f-9c0b-a423f7561ed7/messages",
+  "status": 200,
+  "resp": "{\"message\":{\"id\":\"bff06f0c-5da1-4710-a28e-8978c22a1095\",\"threadId\":\"5489640c-dcb2-453f-9c0b-a423f7561ed7\",\"senderId\":\"18bb5d88-1a3f-4e67-b370-6453e53222ab\",\"body\":\"uat2609 msg B 1\",\"createdAt\":\"2026-09-20T11:57:42.600567"
+ },
+ {
+  "who": "B",
+  "method": "POST",
+  "path": "/api/messaging/threads/5489640c-dcb2-453f-9c0b-a423f7561ed7/messages",
+  "status": 200,
+  "resp": "{\"message\":{\"id\":\"998ef407-52cb-4e21-81eb-c1619361be8b\",\"threadId\":\"5489640c-dcb2-453f-9c0b-a423f7561ed7\",\"senderId\":\"18bb5d88-1a3f-4e67-b370-6453e53222ab\",\"body\":\"uat2609 msg B 2\",\"createdAt\":\"2026-09-20T11:57:42.807335"
+ },
+ {
+  "who": "B",
+  "method": "POST",
+  "path": "/api/messaging/threads/5489640c-dcb2-453f-9c0b-a423f7561ed7/read",
+  "status": 200,
+  "resp": "{\"ok\":true}"
+ },
+ {
+  "who": "A",
+  "method": "POST",
+  "path": "/api/message-feedback",
+  "status": 400,
+  "resp": "{\"error\":\"invalid_input\",\"message\":\"Dữ liệu không hợp lệ\"}"
+ },
+ {
+  "who": "A",
+  "method": "POST",
+  "path": "/api/message-feedback",
+  "status": 400,
+  "resp": "{\"error\":\"invalid_input\",\"message\":\"Dữ liệu không hợp lệ\"}"
+ },
+ {
+  "who": "B",
+  "method": "POST",
+  "path": "/api/message-feedback",
+  "status": 400,
+  "resp": "{\"error\":\"invalid_input\",\"message\":\"Dữ liệu không hợp lệ\"}"
+ },
+ {
+  "who": "B",
+  "method": "POST",
+  "path": "/api/message-feedback",
+  "status": 400,
+  "resp": "{\"error\":\"invalid_input\",\"message\":\"Dữ liệu không hợp lệ\"}"
+ }
+]

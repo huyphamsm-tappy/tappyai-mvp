@@ -1,0 +1,172 @@
+[
+ {
+  "provider_id": "agoda",
+  "active": true,
+  "deeplink_enabled": false,
+  "tier": 2,
+  "network": "",
+  "campaign_id": "",
+  "has_wrapper": false,
+  "note": "Tier 2"
+ },
+ {
+  "provider_id": "booking",
+  "active": true,
+  "deeplink_enabled": false,
+  "tier": 2,
+  "network": "",
+  "campaign_id": "",
+  "has_wrapper": false,
+  "note": "Tier 2"
+ },
+ {
+  "provider_id": "cellphones",
+  "active": true,
+  "deeplink_enabled": true,
+  "tier": 1,
+  "network": "accesstrade",
+  "campaign_id": "6259155740535091857",
+  "has_wrapper": false,
+  "note": "Tier 1"
+ },
+ {
+  "provider_id": "cgv",
+  "active": true,
+  "deeplink_enabled": false,
+  "tier": 2,
+  "network": "",
+  "campaign_id": "",
+  "has_wrapper": false,
+  "note": "Tier 2"
+ },
+ {
+  "provider_id": "dmx",
+  "active": false,
+  "deeplink_enabled": false,
+  "tier": 2,
+  "network": "accesstrade",
+  "campaign_id": "5751981382510607935",
+  "has_wrapper": false,
+  "note": "Owner decision 2026-09-20: disabled entirely"
+ },
+ {
+  "provider_id": "grabfood",
+  "active": true,
+  "deeplink_enabled": false,
+  "tier": 2,
+  "network": "",
+  "campaign_id": "",
+  "has_wrapper": false,
+  "note": "Tier 2 — card CTA only"
+ },
+ {
+  "provider_id": "klook",
+  "active": true,
+  "deeplink_enabled": true,
+  "tier": 1,
+  "network": "accesstrade",
+  "campaign_id": "4704521809526929067",
+  "has_wrapper": false,
+  "note": "Tier 1"
+ },
+ {
+  "provider_id": "lazada",
+  "active": true,
+  "deeplink_enabled": true,
+  "tier": 1,
+  "network": "accesstrade",
+  "campaign_id": "5087153089503673507",
+  "has_wrapper": false,
+  "note": "Tier 1 per owner 2026-09-20 (code said pending)"
+ },
+ {
+  "provider_id": "shopee",
+  "active": true,
+  "deeplink_enabled": false,
+  "tier": 2,
+  "network": "accesstrade",
+  "campaign_id": "4751584435713464237",
+  "has_wrapper": false,
+  "note": "Tier 2: approval pending — direct handoff"
+ },
+ {
+  "provider_id": "shopeefood",
+  "active": true,
+  "deeplink_enabled": false,
+  "tier": 2,
+  "network": "",
+  "campaign_id": "",
+  "has_wrapper": false,
+  "note": "Tier 2 — card CTA only"
+ },
+ {
+  "provider_id": "ticketbox",
+  "active": true,
+  "deeplink_enabled": false,
+  "tier": 2,
+  "network": "",
+  "campaign_id": "",
+  "has_wrapper": false,
+  "note": "Tier 2"
+ },
+ {
+  "provider_id": "tiktokshop",
+  "active": true,
+  "deeplink_enabled": true,
+  "tier": 1,
+  "network": "accesstrade",
+  "campaign_id": "6648523843406889655",
+  "has_wrapper": false,
+  "note": "Tier 1"
+ },
+ {
+  "provider_id": "traveloka",
+  "active": true,
+  "deeplink_enabled": true,
+  "tier": 1,
+  "network": "",
+  "campaign_id": "",
+  "has_wrapper": false,
+  "note": "Tier 1 per owner — NO campaign id / template on file: direct until filled"
+ },
+ {
+  "provider_id": "tripcom",
+  "active": true,
+  "deeplink_enabled": true,
+  "tier": 1,
+  "network": "accesstrade",
+  "campaign_id": "6455552313033835511",
+  "has_wrapper": false,
+  "note": "Tier 1"
+ },
+ {
+  "provider_id": "vexere",
+  "active": true,
+  "deeplink_enabled": true,
+  "tier": 1,
+  "network": "accesstrade",
+  "campaign_id": "5222734619328835827",
+  "has_wrapper": false,
+  "note": "Tier 1 per owner 2026-09-20 (code said pending)"
+ },
+ {
+  "provider_id": "vietjet",
+  "active": true,
+  "deeplink_enabled": false,
+  "tier": 2,
+  "network": "",
+  "campaign_id": "",
+  "has_wrapper": false,
+  "note": "Tier 2"
+ },
+ {
+  "provider_id": "vietnamairlines",
+  "active": true,
+  "deeplink_enabled": true,
+  "tier": 1,
+  "network": "",
+  "campaign_id": "",
+  "has_wrapper": false,
+  "note": "Tier 1 per owner — NO campaign id / template on file: direct until filled"
+ }
+]

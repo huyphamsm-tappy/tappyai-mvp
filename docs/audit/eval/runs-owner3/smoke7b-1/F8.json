@@ -1,0 +1,987 @@
+{
+  "id": "F8",
+  "text": "Sinh nhật sếp, tiếp khách 8 người, phòng riêng, tầm 500k/người, Quận 1",
+  "parent": null,
+  "status": 200,
+  "ms": 14934,
+  "evidenceId": "949aaf50-9d23-4070-8866-90069d744fff",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "nhà hàng phòng riêng sinh nhật tiếp khách Quận 1",
+        "location": "Quận 1, TP.HCM",
+        "type": "restaurant"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "HOMIDO",
+      "rating": 4.8,
+      "count": 733,
+      "hours": "11:00–15:00, 17:00–23:00",
+      "distance_km": 0.7,
+      "address": "12 Lê Thánh Tôn, Sài Gòn, Hồ Chí Minh 760000, Việt Nam"
+    },
+    {
+      "name": "Nhà Hàng Du Ký",
+      "rating": 4.7,
+      "count": 1116,
+      "hours": "06:30–00:00",
+      "distance_km": 1,
+      "address": "103A Phạm Ngũ Lão, Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Hải Sản Hoàng Gia - 180 Trần Hưng Đạo Quận 1",
+      "rating": 4.7,
+      "count": 964,
+      "price": "Trên 1 Tr ₫",
+      "hours": "08:00–00:00",
+      "distance_km": 1.9,
+      "address": "180 Trần Hưng Đạo, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "A Mà Kitchen Cống Quỳnh",
+      "rating": 4.6,
+      "count": 1565,
+      "price": "200-700 N ₫",
+      "hours": "10:30–22:15",
+      "distance_km": 1.8,
+      "address": "189 Cống Quỳnh, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Nhà Hàng Tửu Lầu 13",
+      "rating": 4.7,
+      "count": 278,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 1.7,
+      "address": "6 Nam Quốc Cang, P, Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Hàng Dương Quán Quận 1",
+      "rating": 4.5,
+      "count": 717,
+      "hours": "09:00–23:30",
+      "distance_km": 0.6,
+      "address": "32-34 Ngô Đức Kế, Phường, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Quán nhậu quận 1 - HẢI SẢN QUÝ DẬU",
+      "rating": 4.7,
+      "count": 278,
+      "price": "100-200 N ₫",
+      "hours": "15:00–02:00",
+      "distance_km": 2,
+      "address": "147 Hoàng Sa, Tân Định, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Nhà Hàng Maison Mận-Đỏ",
+      "rating": 4.6,
+      "count": 620,
+      "hours": "14:00–22:00",
+      "distance_km": 2.2,
+      "address": "27J Đ. Trần Nhật Duật, Tân Định, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Nhà hàng hải sản & lẩu Yeebo (Quận 1) - Yeebo Seafood and Hotpot Restaurant (District 1)",
+      "rating": 4.2,
+      "count": 657,
+      "hours": "09:00–14:00, 17:00–22:00",
+      "distance_km": 0.8,
+      "address": "Không nằm trong Lim Tower, 1 Lê Thánh Tôn, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Nhà Hàng Phố 79 (chi nhánh 1)",
+      "rating": 4.2,
+      "count": 632,
+      "price": "Trên 1 Tr ₫",
+      "hours": "09:00–23:30",
+      "distance_km": 1.5,
+      "address": "120 Sương Nguyệt Anh, Bến Thành, Hồ Chí Minh 70000, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": [
+    "private_room"
+  ],
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình giả sử bạn cần tìm hôm nay ở Quận 1. Để gợi ý đúng ý, mình sẽ tìm các nhà hàng có phòng riêng phù hợp ngân sách 500k/người cho 8 người.\n\nĐể gợi ý chính xác nhất cho tiệc sinh nhật sếp, mình cần gọi hỏi trực tiếp các nhà hàng về:\n- Có phòng riêng kín cho 8 người không\n\n**HOMIDO** (4.8⭐, 733 đánh giá, cách bạn 0.7km) — nhà hàng nướng Hàn Quốc, mở đến 23:00, rất gần vị trí bạn — là lựa chọn mình nghiêng về nhất vì đánh giá cao và tiện lợi.\n\nNgoài ra, **Nhà Hàng Du Ký** (4.7⭐, 1.116 đánh giá, hải sản) cũng là lựa chọn tốt nếu sếp thích hải sản — gọi **+84 906 888 826** để hỏi phòng riêng.\n\nMình chưa thấy bằng chứng về phòng riêng ở các quán này — nên gọi hỏi trước khi đi.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem HOMIDO trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=16157019404427509588\",\"primary\":true},{\"label\":\"📍 Xem Nhà Hàng Du Ký trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=13461028215528808963\",\"primary\":false}]}[/CTA_BUTTONS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Sinh nhật sếp, tiếp khách 8 người, phòng riêng, tầm 500k/người, Quận 1"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn cần tìm hôm nay ở Quận 1. Để gợi ý đúng ý, mình sẽ tìm các nhà hàng có phòng riêng phù hợp ngân sách 500k/người cho 8 người.\n\nĐể gợi ý chính xác nhất cho tiệc sinh nhật sếp, mình cần gọi hỏi trực tiếp các nhà hàng về:\n- Có phòng riêng kín cho 8 người không\n\n**HOMIDO** (4.8⭐, 733 đánh giá, cách bạn 0.7km) — nhà hàng nướng Hàn Quốc, mở đến 23:00, rất gần vị trí bạn — là lựa chọn mình nghiêng về nhất vì đánh giá cao và tiện lợi.\n\nNgoài ra, **Nhà Hàng Du Ký** (4.7⭐, 1.116 đánh giá, hải sản) cũng là lựa chọn tốt nếu sếp thích hải sản — gọi **+84 906 888 826** để hỏi phòng riêng.\n\nMình chưa thấy bằng chứng về phòng riêng ở các quán này — nên gọi hỏi trước khi đi.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem HOMIDO trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=16157019404427509588\",\"primary\":true},{\"label\":\"📍 Xem Nhà Hàng Du Ký trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=13461028215528808963\",\"primary\":false}]}[/CTA_BUTTONS]"
+    }
+  ],
+  "toolResults": [
+    {
+      "source": "Serper Maps",
+      "count": 20,
+      "location": "Quận 1, TP.HCM",
+      "results": [
+        {
+          "name": "HOMIDO",
+          "place_id": "ChIJRTY9kdUvdTERVL_-dYtDOeA",
+          "address": "12 Lê Thánh Tôn, Sài Gòn, Hồ Chí Minh 760000, Việt Nam",
+          "phone": "+84 815 233 266",
+          "google_rating": "4.8⭐ (733 đánh giá Google Maps)",
+          "rating_value": 4.8,
+          "rating_count": 733,
+          "distance_km": 0.7,
+          "open_now": true,
+          "opening_hours": "11:00–15:00, 17:00–23:00",
+          "place_types": [
+            "Nhà hàng món nướng Hàn Quốc",
+            "Nhà hàng"
+          ],
+          "maps_link": "https://maps.google.com/?cid=16157019404427509588",
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=16157019404427509588",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Nhà Hàng Du Ký",
+          "place_id": "ChIJNUZxdr8vdTERA-Iaqtctz7o",
+          "address": "103A Phạm Ngũ Lão, Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+          "phone": "+84 906 888 826",
+          "google_rating": "4.7⭐ (1.116 đánh giá Google Maps)",
+          "rating_value": 4.7,
+          "rating_count": 1116,
+          "distance_km": 1,
+          "open_now": true,
+          "opening_hours": "06:30–00:00",
+          "place_types": [
+            "Nhà hàng hải sản",
+            "Quán bia sân vườn"
+          ],
+          "maps_link": "https://maps.google.com/?cid=13461028215528808963",
+          "website_uri": "https://www.facebook.com/DuKyCongVien23.09",
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=13461028215528808963",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Hải Sản Hoàng Gia - 180 Trần Hưng Đạo Quận 1",
+          "place_id": "ChIJUYzahRQvdTERt3F0asXGmng",
+          "address": "180 Trần Hưng Đạo, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+          "phone": "+84 1900 0303",
+          "google_rating": "4.7⭐ (964 đánh giá Google Maps)",
+          "rating_value": 4.7,
+          "rating_count": 964,
+          "price_range_text": "Trên 1 Tr ₫",
+          "distance_km": 1.9,
+          "open_now": true,
+          "opening_hours": "08:00–00:00",
+          "place_types": [
+            "Nhà hàng",
+            "Nhà hàng hải sản"
+          ],
+          "maps_link": "https://maps.google.com/?cid=8690476982161666487",
+          "booking_links": [
+            "https://s.ldplink.me/qPMj7",
+            "https://www.google.com/maps/reserve/v/dine/c/vG3sFEFo0Xw?source=pa&opi=79508299"
+          ],
+          "website_uri": "https://haisanhoanggia.com/",
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=8690476982161666487",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "A Mà Kitchen Cống Quỳnh",
+          "place_id": "ChIJA6z0684vdTERNoJ26Aid-QA",
+          "address": "189 Cống Quỳnh, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+          "phone": "+84 327 378 800",
+          "google_rating": "4.6⭐ (1.565 đánh giá Google Maps)",
+          "rating_value": 4.6,
+          "rating_count": 1565,
+          "price_range_text": "200-700 N ₫",
+          "distance_km": 1.8,
+          "open_now": true,
+          "opening_hours": "10:30–22:15",
+          "place_types": [
+            "Nhà hàng"
+          ],
+          "maps_link": "https://maps.google.com/?cid=70259930786333238",
+          "booking_links": [
+            "https://m.me/116196114904560"
+          ],
+          "website_uri": "https://amakitchen.com/",
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=70259930786333238",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Nhà Hàng Tửu Lầu 13",
+          "place_id": "ChIJ3_xI77svdTERrPJFs1Vv21I",
+          "address": "6 Nam Quốc Cang, P, Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+          "phone": "+84 902 505 761",
+          "google_rating": "4.7⭐ (278 đánh giá Google Maps)",
+          "rating_value": 4.7,
+          "rating_count": 278,
+          "distance_km": 1.7,
+          "open_now": true,
+          "opening_hours": "Mở cửa cả ngày",
+          "place_types": [
+            "Nhà hàng"
+          ],
+          "maps_link": "https://maps.google.com/?cid=5970488144880333484",
+          "website_uri": "https://nhahangtuulau13.vn/",
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=5970488144880333484",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Hàng Dương Quán Quận 1",
+          "place_id": "ChIJ8bkqqCpTaDERsRgpzDYTR18",
+          "address": "32-34 Ngô Đức Kế, Phường, Sài Gòn, Hồ Chí Minh, Việt Nam",
+          "phone": "+84 968 817 788",
+          "google_rating": "4.5⭐ (717 đánh giá Google Maps)",
+          "rating_value": 4.5,
+          "rating_count": 717,
+          "distance_km": 0.6,
+          "open_now": true,
+          "opening_hours": "09:00–23:30",
+          "place_types": [
+            "Nhà hàng"
+          ],
+          "maps_link": "https://maps.google.com/?cid=6865477283024017585",
+          "booking_links": [
+            "https://hangduongquan.com/dat-ban.html"
+          ],
+          "website_uri": "http://hangduongquan.com/",
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=6865477283024017585",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Quán nhậu quận 1 - HẢI SẢN QUÝ DẬU",
+          "place_id": "ChIJhZ8nqJQpdTEReHhWLYAkY3w",
+          "address": "147 Hoàng Sa, Tân Định, Hồ Chí Minh, Việt Nam",
+          "phone": "+84 833 233 963",
+          "google_rating": "4.7⭐ (278 đánh giá Google Maps)",
+          "rating_value": 4.7,
+          "rating_count": 278,
+          "price_range_text": "100-200 N ₫",
+          "distance_km": 2,
+          "open_now": false,
+          "opening_hours": "15:00–02:00",
+          "place_types": [
+            "Nhà hàng châu Á",
+            "Trang trại hải sản"
+          ],
+          "maps_link": "https://maps.google.com/?cid=8963047816332474488",
+          "website_uri": "https://www.facebook.com/profile.php?id=61585781067778",
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=8963047816332474488",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Nhà Hàng Maison Mận-Đỏ",
+          "place_id": "ChIJzTe2yxUmdTER2iZhIzEi1Fg",
+          "address": "27J Đ. Trần Nhật Duật, Tân Định, Hồ Chí Minh 700000, Việt Nam",
+          "phone": "+84 933 774 487",
+          "google_rating": "4.6⭐ (620 đánh giá Google Maps)",
+          "rating_value": 4.6,
+          "rating_count": 620,
+          "distance_km": 2.2,
+          "open_now": false,
+          "opening_hours": "14:00–22:00",
+          "place_types": [
+            "Nhà hàng",
+            "Nhà hàng Pháp thượng hạng",
+            "Nhà hàng Việt Nam"
+          ],
+          "maps_link": "https://maps.google.com/?cid=6400778564842628826",
+          "booking_links": [
+            "https://maisonmando.com/lien-he",
+            "https://www.google.com/maps/reserve/v/dine/c/IhGMiC_RD1g?source=pa&opi=79508299"
+          ],
+          "website_uri": "http://maisonmando.com/",
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=6400778564842628826",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Nhà hàng hải sản & lẩu Yeebo (Quận 1) - Yeebo Seafood and Hotpot Restaurant (District 1)",
+          "place_id": "ChIJy9oay04vdTERjP6M2YXYOA0",
+          "address": "Không nằm trong Lim Tower, 1 Lê Thánh Tôn, Sài Gòn, Hồ Chí Minh, Việt Nam",
+          "phone": "+84 28 3824 6566",
+          "google_rating": "4.2⭐ (657 đánh giá Google Maps)",
+          "rating_value": 4.2,
+          "rating_count": 657,
+          "distance_km": 0.8,
+          "open_now": true,
+          "opening_hours": "09:00–14:00, 17:00–22:00",
+          "place_types": [
+            "Nhà hàng châu Á"
+          ],
+          "maps_link": "https://maps.google.com/?cid=952749390581005964",
+          "booking_links": [
+            "https://www.yeebo.com.vn/dat-ban/"
+          ],
+          "website_uri": "http://www.yeebo.com.vn/",
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=952749390581005964",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Nhà Hàng Phố 79 (chi nhánh 1)",
+          "place_id": "ChIJXwuAxTwvdTERXKMPKvqKUJM",
+          "address": "120 Sương Nguyệt Anh, Bến Thành, Hồ Chí Minh 70000, Việt Nam",
+          "phone": "+84 906 916 779",
+          "google_rating": "4.2⭐ (632 đánh giá Google Maps)",
+          "rating_value": 4.2,
+          "rating_count": 632,
+          "price_range_text": "Trên 1 Tr ₫",
+          "distance_km": 1.5,
+          "open_now": true,
+          "opening_hours": "09:00–23:30",
+          "place_types": [
+            "Nhà hàng"
+          ],
+          "maps_link": "https://maps.google.com/?cid=10615137128764384092",
+          "booking_links": [
+            "https://pho79.vn/"
+          ],
+          "website_uri": "http://www.pho79.vn/",
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=10615137128764384092",
+              "attributed": true
+            }
+          ]
+        }
+      ],
+      "_tappy_place_domain": "food",
+      "place_search_status": "has_results",
+      "_tappy_hard_gaps": [
+        "private_room"
+      ],
+      "_tappy_evidence_note": "KHONG quan nao trong ket qua co bang chung ve: phòng riêng. Noi ro trong MOT cau \"minh chua xac nhan duoc X, nen goi hoi truoc\"; KHONG khang dinh co.",
+      "_tappy_evidence_gap": {
+        "qualified": 0,
+        "total": 10,
+        "needed": [
+          "price"
+        ],
+        "action": "search_again"
+      },
+      "_tappy_ranking": {
+        "pick": "HOMIDO",
+        "decided_by": [
+          {
+            "attribute": "rating",
+            "evidence": "rated 4.8"
+          },
+          {
+            "attribute": "distance",
+            "evidence": "0.7km away"
+          },
+          {
+            "attribute": "reviewCount",
+            "evidence": "733 reviews - Nhà Hàng Du Ký: 1116 reviews (KHONG duoc goi pick la \"nhat\" o reviewCount)"
+          }
+        ],
+        "not_chosen": "Nhà Hàng Du Ký",
+        "not_chosen_leads_on": {
+          "attribute": "reviewCount",
+          "evidence": "1116 reviews"
+        },
+        "conditional": true
+      },
+      "results_note": "Day la TOAN BO 10 ket qua, rut gon (chi cac truong de chon); the (card) cua user hien anh/dia chi/SDT/nut hanh dong."
+    }
+  ],
+  "frames8Raw": [
+    [
+      {
+        "kind": "tappy.places.v1",
+        "v": 1,
+        "domain": "food",
+        "ranked": true,
+        "items": [
+          {
+            "id": "place:osm:10.78150,106.70533",
+            "domain": "food",
+            "kind": "place",
+            "name": "HOMIDO",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnN8gkma4cNSG345dJfgzsRRxPfdcvW-JwAz_VZmd9IxuLYEOqISB99pWODECtszhueB-kEzoYKb9qG9MWVLLpwX8VSfzWXMLqHKV8X2zlwFEZo0ueO5CRn6N0BatOxk6Y69EoS",
+            "address": "12 Lê Thánh Tôn, Sài Gòn, Hồ Chí Minh 760000, Việt Nam",
+            "rating": 4.8,
+            "ratingCount": 733,
+            "openingHours": "11:00–15:00, 17:00–23:00",
+            "openNow": true,
+            "phone": "+84 815 233 266",
+            "openingHoursWeek": {
+              "Thứ Bảy": "11:00–15:00, 17:00–23:00",
+              "Chủ Nhật": "11:00–15:00, 17:00–23:00",
+              "Thứ Hai": "11:00–15:00, 17:00–23:00",
+              "Thứ Ba": "11:00–15:00, 17:00–23:00",
+              "Thứ Tư": "11:00–15:00, 17:00–23:00",
+              "Thứ Năm": "11:00–15:00, 17:00–23:00",
+              "Thứ Sáu": "11:00–15:00, 17:00–23:00"
+            },
+            "distanceKm": 0.7,
+            "categories": [
+              "Nhà hàng món nướng Hàn Quốc",
+              "Nhà hàng"
+            ],
+            "rank": 0,
+            "recommended": true,
+            "reasons": [
+              {
+                "attribute": "rating",
+                "evidence": "rated 4.8"
+              },
+              {
+                "attribute": "distance",
+                "evidence": "0.7km away"
+              },
+              {
+                "attribute": "reviewCount",
+                "evidence": "733 reviews"
+              }
+            ],
+            "tradeOff": {
+              "attribute": "reviewCount",
+              "evidence": "1116 reviews"
+            },
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=HOMIDO%20Qu%E1%BA%ADn%201%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=16157019404427509588",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=HOMIDO%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84815233266",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.76962,106.69598",
+            "domain": "food",
+            "kind": "place",
+            "name": "Nhà Hàng Du Ký",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnEd5rw7CSZp5tNkQn6cWMzA6fc4d67DBRy06NnOFlTP9OkqByiJPyM1xspdW8XXJ19tNCL9Al8h6epcuqGWEWUGTDT2CM9_EzcLhEHKF_-z2QLi0UNLW7JjnKPRVcca68vlEjA",
+            "address": "103A Phạm Ngũ Lão, Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+            "rating": 4.7,
+            "ratingCount": 1116,
+            "openingHours": "06:30–00:00",
+            "openNow": true,
+            "phone": "+84 906 888 826",
+            "openingHoursWeek": {
+              "Thứ Bảy": "06:30–00:00",
+              "Chủ Nhật": "06:30–00:00",
+              "Thứ Hai": "06:30–00:00",
+              "Thứ Ba": "06:30–00:00",
+              "Thứ Tư": "06:30–00:00",
+              "Thứ Năm": "06:30–00:00",
+              "Thứ Sáu": "06:30–00:00"
+            },
+            "distanceKm": 1,
+            "categories": [
+              "Nhà hàng hải sản",
+              "Quán bia sân vườn"
+            ],
+            "rank": 1,
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=Nh%C3%A0%20H%C3%A0ng%20Du%20K%C3%BD%20Qu%E1%BA%ADn%201%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=13461028215528808963",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Nh%C3%A0%20H%C3%A0ng%20Du%20K%C3%BD%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://www.facebook.com/DuKyCongVien23.09",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84906888826",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.76306,106.69074",
+            "domain": "food",
+            "kind": "place",
+            "name": "Hải Sản Hoàng Gia - 180 Trần Hưng Đạo Quận 1",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkv05lopbEAqxHVp1nLBw5izW0CzdMrTwDMyFLbuAEnBP3KDP242ii1p-J7il6X3eUT3vcqAX9g2dx4vhCQTop4NOHgE0ohy57klP9Q74GYllSYkusW05LVxDvwMh8o9Mkt2EBPv-im_cD_",
+            "address": "180 Trần Hưng Đạo, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+            "rating": 4.7,
+            "ratingCount": 964,
+            "openingHours": "08:00–00:00",
+            "openNow": true,
+            "phone": "+84 1900 0303",
+            "priceRangeText": "Trên 1 Tr ₫",
+            "openingHoursWeek": {
+              "Thứ Bảy": "08:00–00:00",
+              "Chủ Nhật": "08:00–00:00",
+              "Thứ Hai": "08:00–00:00",
+              "Thứ Ba": "08:00–00:00",
+              "Thứ Tư": "08:00–00:00",
+              "Thứ Năm": "08:00–00:00",
+              "Thứ Sáu": "08:00–00:00"
+            },
+            "distanceKm": 1.9,
+            "categories": [
+              "Nhà hàng",
+              "Nhà hàng hải sản"
+            ],
+            "rank": 2,
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=H%E1%BA%A3i%20S%E1%BA%A3n%20Ho%C3%A0ng%20Gia%20-%20180%20Tr%E1%BA%A7n%20H%C6%B0ng%20%C4%90%E1%BA%A1o%20Qu%E1%BA%ADn%201%20Qu%E1%BA%ADn%201%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=8690476982161666487",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=H%E1%BA%A3i%20S%E1%BA%A3n%20Ho%C3%A0ng%20Gia%20-%20180%20Tr%E1%BA%A7n%20H%C6%B0ng%20%C4%90%E1%BA%A1o%20Qu%E1%BA%ADn%201%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://haisanhoanggia.com/",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+8419000303",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.76692,106.68754",
+            "domain": "food",
+            "kind": "place",
+            "name": "A Mà Kitchen Cống Quỳnh",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlg09Oi83bOVVr4AngiJ1hvZC4PZBUal2EXGsgNKmUTmebfjVsQtPXLHBG0Q6PkHWdC12PK2zQSYA5iKxryYn6F5q9QN7SuQeXtzcYiU1CWFVvFUdm8DCNxWwzuNl6MfLqiuFno-RCMFHus",
+            "address": "189 Cống Quỳnh, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+            "rating": 4.6,
+            "ratingCount": 1565,
+            "openingHours": "10:30–22:15",
+            "openNow": true,
+            "phone": "+84 327 378 800",
+            "priceRangeText": "200-700 N ₫",
+            "openingHoursWeek": {
+              "Thứ Bảy": "10:30–22:15",
+              "Chủ Nhật": "10:30–22:15",
+              "Thứ Hai": "10:30–22:15",
+              "Thứ Ba": "10:30–22:15",
+              "Thứ Tư": "10:30–22:15",
+              "Thứ Năm": "10:30–22:15",
+              "Thứ Sáu": "10:30–22:15"
+            },
+            "distanceKm": 1.8,
+            "categories": [
+              "Nhà hàng"
+            ],
+            "rank": 3,
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=A%20M%C3%A0%20Kitchen%20C%E1%BB%91ng%20Qu%E1%BB%B3nh%20Qu%E1%BA%ADn%201%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=70259930786333238",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=A%20M%C3%A0%20Kitchen%20C%E1%BB%91ng%20Qu%E1%BB%B3nh%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://amakitchen.com/",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84327378800",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.76780,106.68800",
+            "domain": "food",
+            "kind": "place",
+            "name": "Nhà Hàng Tửu Lầu 13",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlAmkm1tCUhAeYsX6IYJLCrTNm5rBrgrv0SMBEaZJ0VCrF5zCn-KTC4HIZhyteH4RG7h9Bk10uGIZTNIMQWpilL7EJTz30naHbLMUh-CdINrWuTedH_eug_5VSET0sGd-6OA1mRgUXTsifo",
+            "address": "6 Nam Quốc Cang, P, Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+            "rating": 4.7,
+            "ratingCount": 278,
+            "openingHours": "Mở cửa cả ngày",
+            "openNow": true,
+            "phone": "+84 902 505 761",
+            "openingHoursWeek": {
+              "Thứ Bảy": "Mở cửa cả ngày",
+              "Chủ Nhật": "Mở cửa cả ngày",
+              "Thứ Hai": "Mở cửa cả ngày",
+              "Thứ Ba": "Mở cửa cả ngày",
+              "Thứ Tư": "Mở cửa cả ngày",
+              "Thứ Năm": "Mở cửa cả ngày",
+              "Thứ Sáu": "Mở cửa cả ngày"
+            },
+            "distanceKm": 1.7,
+            "categories": [
+              "Nhà hàng"
+            ],
+            "rank": 4,
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=Nh%C3%A0%20H%C3%A0ng%20T%E1%BB%ADu%20L%E1%BA%A7u%2013%20Qu%E1%BA%ADn%201%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=5970488144880333484",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Nh%C3%A0%20H%C3%A0ng%20T%E1%BB%ADu%20L%E1%BA%A7u%2013%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://nhahangtuulau13.vn/",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84902505761",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.77353,106.70534",
+            "domain": "food",
+            "kind": "place",
+            "name": "Hàng Dương Quán Quận 1",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlvHOKHtzjtm6GnNoy-UlckOp_qU2BZVAyFblxuQ6HgJ5WLLRnHUbSwEYb-qqIhxEt1aWvNOOG_xkEDv9_i51wLYBLmaXyKP2NRmFLteV06fC8PXCKhclxGCsLxGV1vg4jmWqFa",
+            "address": "32-34 Ngô Đức Kế, Phường, Sài Gòn, Hồ Chí Minh, Việt Nam",
+            "rating": 4.5,
+            "ratingCount": 717,
+            "openingHours": "09:00–23:30",
+            "openNow": true,
+            "phone": "+84 968 817 788",
+            "openingHoursWeek": {
+              "Thứ Bảy": "09:00–23:30",
+              "Chủ Nhật": "09:00–23:30",
+              "Thứ Hai": "09:00–23:30",
+              "Thứ Ba": "09:00–23:30",
+              "Thứ Tư": "09:00–23:30",
+              "Thứ Năm": "09:00–23:30",
+              "Thứ Sáu": "09:00–23:30"
+            },
+            "distanceKm": 0.6,
+            "categories": [
+              "Nhà hàng"
+            ],
+            "rank": 5,
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=H%C3%A0ng%20D%C6%B0%C6%A1ng%20Qu%C3%A1n%20Qu%E1%BA%ADn%201%20Qu%E1%BA%ADn%201%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=6865477283024017585",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=H%C3%A0ng%20D%C6%B0%C6%A1ng%20Qu%C3%A1n%20Qu%E1%BA%ADn%201%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84968817788",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.79358,106.69402",
+            "domain": "food",
+            "kind": "place",
+            "name": "Quán nhậu quận 1 - HẢI SẢN QUÝ DẬU",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkb-PY4y4qkHLHTeTb58DqZHuN2lKoilpMFqOFFKKlY_V8u9TF5W536a2iSnfchLhNEok_h809OYQ86d7a8QTISw0MfRl6G_KDyMyFCKiBYuL6aJj-ZWFBC6wnDi8AqkimJA5ey",
+            "address": "147 Hoàng Sa, Tân Định, Hồ Chí Minh, Việt Nam",
+            "rating": 4.7,
+            "ratingCount": 278,
+            "openingHours": "15:00–02:00",
+            "openNow": false,
+            "phone": "+84 833 233 963",
+            "priceRangeText": "100-200 N ₫",
+            "openingHoursWeek": {
+              "Thứ Bảy": "15:00–02:00",
+              "Chủ Nhật": "15:00–02:00",
+              "Thứ Hai": "15:00–02:00",
+              "Thứ Ba": "15:00–02:00",
+              "Thứ Tư": "15:00–02:00",
+              "Thứ Năm": "15:00–02:00",
+              "Thứ Sáu": "15:00–02:00"
+            },
+            "distanceKm": 2,
+            "categories": [
+              "Nhà hàng châu Á",
+              "Trang trại hải sản"
+            ],
+            "rank": 6,
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=Qu%C3%A1n%20nh%E1%BA%ADu%20qu%E1%BA%ADn%201%20-%20H%E1%BA%A2I%20S%E1%BA%A2N%20QU%C3%9D%20D%E1%BA%ACU%20Qu%E1%BA%ADn%201%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=8963047816332474488",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20nh%E1%BA%ADu%20qu%E1%BA%ADn%201%20-%20H%E1%BA%A2I%20S%E1%BA%A2N%20QU%C3%9D%20D%E1%BA%ACU%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://www.facebook.com/profile.php?id=61585781067778",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84833233963",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.79314,106.69019",
+            "domain": "food",
+            "kind": "place",
+            "name": "Nhà Hàng Maison Mận-Đỏ",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWm_dOaBBbqIB2mPDvoQpGDmKwQed5BpgjqsmQB4B90ZpDbAph8dwynmFhpi6eCOlANDTQXo1ctPcIMysLdEkfaq_c3uyJL6Ht_YhT5heUvsOHn0koPvgXaNWKjwCCYfIAOsR5o",
+            "address": "27J Đ. Trần Nhật Duật, Tân Định, Hồ Chí Minh 700000, Việt Nam",
+            "rating": 4.6,
+            "ratingCount": 620,
+            "openingHours": "14:00–22:00",
+            "openNow": false,
+            "phone": "+84 933 774 487",
+            "openingHoursWeek": {
+              "Thứ Bảy": "14:00–22:00",
+              "Chủ Nhật": "14:00–22:00",
+              "Thứ Hai": "14:00–22:00",
+              "Thứ Ba": "14:00–22:00",
+              "Thứ Tư": "14:00–22:00",
+              "Thứ Năm": "14:00–22:00",
+              "Thứ Sáu": "14:00–22:00"
+            },
+            "distanceKm": 2.2,
+            "categories": [
+              "Nhà hàng",
+              "Nhà hàng Pháp thượng hạng",
+              "Nhà hàng Việt Nam"
+            ],
+            "rank": 7,
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=Nh%C3%A0%20H%C3%A0ng%20Maison%20M%E1%BA%ADn-%C4%90%E1%BB%8F%20Qu%E1%BA%ADn%201%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=6400778564842628826",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Nh%C3%A0%20H%C3%A0ng%20Maison%20M%E1%BA%ADn-%C4%90%E1%BB%8F%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84933774487",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          }
+        ],
+        "mapsSearchUrl": "https://maps.google.com/maps?q=nh%C3%A0%20h%C3%A0ng%20ph%C3%B2ng%20ri%C3%AAng%20sinh%20nh%E1%BA%ADt%20ti%E1%BA%BFp%20kh%C3%A1ch%20Qu%E1%BA%ADn%201%20Qu%E1%BA%ADn%201%2C%20TP.HCM",
+        "picked": [
+          "place:osm:10.78150,106.70533",
+          "place:osm:10.76962,106.69598",
+          "place:osm:10.76306,106.69074"
+        ],
+        "shown": 3
+      }
+    ]
+  ]
+}

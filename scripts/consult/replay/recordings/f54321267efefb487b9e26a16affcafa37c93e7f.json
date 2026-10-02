@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Vé massage tại Tân Bắc Đài Loan｜Trung tâm dưỡng sinh ...",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T19:23:02.170Z",
+ "body": {
+  "searchParameters": {
+   "q": "Vé massage tại Tân Bắc Đài Loan｜Trung tâm dưỡng sinh ...",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Đài Bắc｜Trung tâm Dưỡng sinh Cung Kỳ｜Vé massage Spa - Klook",
+    "imageUrl": "https://res.klook.com/images/fl_lossy.progressive,q_65/c_fill,w_768,h_1020/w_47,x_8,y_8,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/xlkzsjudp0a6d6lfcc4y/%C4%90%C3%A0iB%E1%BA%AFc%EF%BD%9CTrungt%C3%A2mD%C6%B0%E1%BB%A1ngsinhCungK%E1%BB%B3%EF%BD%9CV%C3%A9massageSpa.jpg",
+    "imageWidth": 768,
+    "imageHeight": 1020,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR78v6bHe7-ccNNe6ojuhsA1wNE-MSYfejP4EhvS4Tx5A&s=10",
+    "thumbnailWidth": 387,
+    "thumbnailHeight": 516,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/180044-spa/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Ffl_lossy.progressive%2Cq_65%2Fc_fill%2Cw_768%2Ch_1020%2Fw_47%2Cx_8%2Cy_8%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fxlkzsjudp0a6d6lfcc4y%2F%25C4%2590%25C3%25A0iB%25E1%25BA%25AFc%25EF%25BD%259CTrungt%25C3%25A2mD%25C6%25B0%25E1%25BB%25A1ngsinhCungK%25E1%25BB%25B3%25EF%25BD%259CV%25C3%25A9massageSpa.jpg&tbnid=6C85vDUA8dAUQM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F180044-spa%2F&docid=DUfwNH1RPHW9VM&w=768&h=1020",
+    "position": 1
+   },
+   {
+    "title": "Đài Bắc｜Trung tâm Dưỡng sinh Cung Kỳ｜Vé massage Spa - Klook",
+    "imageUrl": "https://res.klook.com/image/upload/c_crop,h_1562,w_2499,x_0,y_268,z_0.1/w_750,h_469,c_fill,q_85/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/rwpe4dn6mp7jso3ixhuf.jpg",
+    "imageWidth": 750,
+    "imageHeight": 469,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvyT6KvPm6W1Vy7gK1YCmmYbMWy7R_Dxg41yA9X6_sUA&s=10",
+    "thumbnailWidth": 565,
+    "thumbnailHeight": 353,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/180044-spa/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimage%2Fupload%2Fc_crop%2Ch_1562%2Cw_2499%2Cx_0%2Cy_268%2Cz_0.1%2Fw_750%2Ch_469%2Cc_fill%2Cq_85%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Frwpe4dn6mp7jso3ixhuf.jpg&tbnid=a897FmdPgz_1qM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F180044-spa%2F&docid=DUfwNH1RPHW9VM&w=750&h=469",
+    "position": 2
+   },
+   {
+    "title": "Đài Bắc｜Trung tâm Dưỡng sinh Cung Kỳ｜Vé massage Spa - Klook",
+    "imageUrl": "https://res.klook.com/images/w_1200,h_630,c_fill,q_65/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/xlkzsjudp0a6d6lfcc4y/%C4%90%C3%A0iB%E1%BA%AFc%EF%BD%9CTrungt%C3%A2mD%C6%B0%E1%BB%A1ngsinhCungK%E1%BB%B3%EF%BD%9CV%C3%A9massageSpa-Klook.jpg",
+    "imageWidth": 1200,
+    "imageHeight": 630,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCnCiz21DXGne9Z_mvY_vk-O0BypteyQhgrKBMs3qImg&s",
+    "thumbnailWidth": 310,
+    "thumbnailHeight": 163,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/180044-spa/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Fw_1200%2Ch_630%2Cc_fill%2Cq_65%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fxlkzsjudp0a6d6lfcc4y%2F%25C4%2590%25C3%25A0iB%25E1%25BA%25AFc%25EF%25BD%259CTrungt%25C3%25A2mD%25C6%25B0%25E1%25BB%25A1ngsinhCungK%25E1%25BB%25B3%25EF%25BD%259CV%25C3%25A9massageSpa-Klook.jpg&tbnid=GRxqrV38Wex2oM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F180044-spa%2F&docid=DUfwNH1RPHW9VM&w=1200&h=630",
+    "position": 3
+   },
+   {
+    "title": "Đài Bắc｜Trung tâm Dưỡng sinh Cung Kỳ｜Vé massage Spa - Klook",
+    "imageUrl": "https://res.klook.com/images/fl_lossy.progressive,q_65/c_crop,x_0,y_1668,h_834,w_2500/activities/pbwu6qxnk5utftsinnp0/%C4%90%C3%A0iB%E1%BA%AFc%EF%BD%9CTrungt%C3%A2mD%C6%B0%E1%BB%A1ngsinhCungK%E1%BB%B3%EF%BD%9CV%C3%A9massageSpa.jpg",
+    "imageWidth": 2500,
+    "imageHeight": 834,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmx0LX01z6Df_j4NmdSRe3ZpYRsc3jDQ39FAtHeRk_tQ&s=10",
+    "thumbnailWidth": 738,
+    "thumbnailHeight": 246,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/180044-spa/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Ffl_lossy.progressive%2Cq_65%2Fc_crop%2Cx_0%2Cy_1668%2Ch_834%2Cw_2500%2Factivities%2Fpbwu6qxnk5utftsinnp0%2F%25C4%2590%25C3%25A0iB%25E1%25BA%25AFc%25EF%25BD%259CTrungt%25C3%25A2mD%25C6%25B0%25E1%25BB%25A1ngsinhCungK%25E1%25BB%25B3%25EF%25BD%259CV%25C3%25A9massageSpa.jpg&tbnid=Zj5jyw8xdRJ-1M&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F180044-spa%2F&docid=DUfwNH1RPHW9VM&w=2500&h=834",
+    "position": 4
+   },
+   {
+    "title": "Vé massage tại Trung tâm Chăm sóc Sức khỏe và Dưỡng sinh Thăng Chi Đạo, Đài  Bắc - Klook",
+    "imageUrl": "https://res.klook.com/image/upload/w_750,h_469,c_fill,q_85/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/tvxm7hxesgugztlj4tar.jpg",
+    "imageWidth": 750,
+    "imageHeight": 469,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTK9Q5mXITBKYUXyKKTRALCSQljhdPeddRz-8389tB0vA&s=10",
+    "thumbnailWidth": 565,
+    "thumbnailHeight": 353,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/65520-sheng-zhi-dao-spa-massage-taipei/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimage%2Fupload%2Fw_750%2Ch_469%2Cc_fill%2Cq_85%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Ftvxm7hxesgugztlj4tar.jpg&tbnid=PkOdqFX1GjztIM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F65520-sheng-zhi-dao-spa-massage-taipei%2F&docid=yBCjrm42uKG8KM&w=750&h=469",
+    "position": 5
+   },
+   {
+    "title": "Đài Bắc｜Trung tâm Dưỡng sinh Cung Kỳ｜Vé massage Spa - Klook",
+    "imageUrl": "https://res.klook.com/images/fl_lossy.progressive,q_65/c_crop,x_0,y_1668,h_834,w_2500/activities/xdt5obyqoinqzqkrbjbk/%C4%90%C3%A0iB%E1%BA%AFc%EF%BD%9CTrungt%C3%A2mD%C6%B0%E1%BB%A1ngsinhCungK%E1%BB%B3%EF%BD%9CV%C3%A9massageSpa.jpg",
+    "imageWidth": 2500,
+    "imageHeight": 834,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSL5YcP_162fMm3NLECXTtlVzX5RyTgJAmIQ23-6ck4yw&s=10",
+    "thumbnailWidth": 738,
+    "thumbnailHeight": 246,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/180044-spa/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Ffl_lossy.progressive%2Cq_65%2Fc_crop%2Cx_0%2Cy_1668%2Ch_834%2Cw_2500%2Factivities%2Fxdt5obyqoinqzqkrbjbk%2F%25C4%2590%25C3%25A0iB%25E1%25BA%25AFc%25EF%25BD%259CTrungt%25C3%25A2mD%25C6%25B0%25E1%25BB%25A1ngsinhCungK%25E1%25BB%25B3%25EF%25BD%259CV%25C3%25A9massageSpa.jpg&tbnid=JFBm0ep_ydNgLM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F180044-spa%2F&docid=DUfwNH1RPHW9VM&w=2500&h=834",
+    "position": 6
+   },
+   {
+    "title": "Vé massage tại Trung tâm Chăm sóc Sức khỏe và Dưỡng sinh Thăng Chi Đạo, Đài  Bắc - Klook",
+    "imageUrl": "https://res.klook.com/image/upload/w_750,h_469,c_fill,q_85/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/tih1zusyzd63ofsqks8w.jpg",
+    "imageWidth": 750,
+    "imageHeight": 469,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFS54Fu8OnGAExBbsoSZRaHBNJoZqhkq-SwaD9xydMaQ&s",
+    "thumbnailWidth": 284,
+    "thumbnailHeight": 177,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/65520-sheng-zhi-dao-spa-massage-taipei/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimage%2Fupload%2Fw_750%2Ch_469%2Cc_fill%2Cq_85%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Ftih1zusyzd63ofsqks8w.jpg&tbnid=yEc2NBraI4XGLM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F65520-sheng-zhi-dao-spa-massage-taipei%2F&docid=yBCjrm42uKG8KM&w=750&h=469",
+    "position": 7
+   },
+   {
+    "title": "Đài Bắc｜Trung tâm Dưỡng sinh Cung Kỳ｜Vé massage Spa - Klook",
+    "imageUrl": "https://res.klook.com/images/fl_lossy.progressive,q_65/c_crop,x_0,y_2502,h_834,w_2500/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/pbwu6qxnk5utftsinnp0/%C4%90%C3%A0iB%E1%BA%AFc%EF%BD%9CTrungt%C3%A2mD%C6%B0%E1%BB%A1ngsinhCungK%E1%BB%B3%EF%BD%9CV%C3%A9massageSpa.jpg",
+    "imageWidth": 2500,
+    "imageHeight": 831,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2EX0qkpYRIZBhch0VdCnbSKr17kRfd_Iz-W-BxXbQTQ&s=10",
+    "thumbnailWidth": 738,
+    "thumbnailHeight": 246,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/180044-spa/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Ffl_lossy.progressive%2Cq_65%2Fc_crop%2Cx_0%2Cy_2502%2Ch_834%2Cw_2500%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fpbwu6qxnk5utftsinnp0%2F%25C4%2590%25C3%25A0iB%25E1%25BA%25AFc%25EF%25BD%259CTrungt%25C3%25A2mD%25C6%25B0%25E1%25BB%25A1ngsinhCungK%25E1%25BB%25B3%25EF%25BD%259CV%25C3%25A9massageSpa.jpg&tbnid=gg-Mv-daB0bvrM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F180044-spa%2F&docid=DUfwNH1RPHW9VM&w=2500&h=831",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Khách Sạn Parosand\" OR \"Meliá Vinpearl Danang Riverfront\" OR \"Hanami Hotel Danang\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T19:20:18.027Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Khách Sạn Parosand\" OR \"Meliá Vinpearl Danang Riverfront\" OR \"Hanami Hotel Danang\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Meliá Vinpearl Danang Riverfront, khách sạn 5* tầm nhìn ...",
+    "link": "https://www.tiktok.com/@travelwithxuan/video/7689523212379573524",
+    "snippet": "Meliá Vinpearl Danang Riverfront, khách sạn 5* tầm nhìn tuyệt đẹp ra sông Hàn #meliavinpearldanangriverfront #danangcity #travel ...",
+    "position": 1
+   },
+   {
+    "title": "Khách sạn Parosand Đà Nẵng gần My Khe",
+    "link": "https://www.tiktok.com/@vivudanang243/video/7684608514567720212",
+    "snippet": "Khách sạn Parosand Đà Nẵng gần My Khe: Review nhanh cho chuyến đi. Tổng quan nhanh Bạn đang tham khảo căn phòng tại Parosand Hotel để quyết ...",
+    "position": 2
+   },
+   {
+    "title": "Meliá Vinpearl Danang Riverfront",
+    "link": "https://www.tiktok.com/@hanhan134_/photo/7681229615368670484",
+    "snippet": "Meliá Vinpearl Danang Riverfront offers luxurious rooms with beautiful Han River views in a central location for exploring Da Nang. Keywords: ...",
+    "position": 3
+   },
+   {
+    "title": "Danang City, เวียดนาม Yummmyyy #Meliá Vinpearl ...",
+    "link": "https://www.tiktok.com/@delapoppy29_/video/7686409631001840917",
+    "snippet": "... Meliá Vinpearl Danang Riverfront #Đà Nẵng #: Việt Nam. Danang City, เวียดนาม Yummmyyy #Meliá Vinpearl Danang Riverfront #Đà Nẵng #: Việt. @De ...",
+    "position": 4
+   },
+   {
+    "title": "Meliá Vinpearl Danang Riverfront",
+    "link": "https://www.tiktok.com/@minsamxmin/video/7645596299781262613",
+    "snippet": "22 Lượt thích,Video TikTok từ Shop Thu Xmin-TP Phủ Lý (@minsamxmin): \"Meliá Vinpearl Danang Riverfront\".Gió Đêm Qua Đường x Empire Club - Empire Club.",
+    "position": 5
+   },
+   {
+    "title": "Khách sạn Parosand Đà Nẵng: Sang trọng và Tiện Lợi",
+    "link": "https://www.tiktok.com/@thoitietdanang.tiktok/video/7569812041976810759",
+    "snippet": "Khách sạn Parosand Đà Nẵng: Sang trọng và Tiện Lợi. Khám phá khách sạn 4 sao Parosand với view đẹp và phòng nghỉ sang trọng tại Đà Nẵng. Tận ...",
+    "position": 6
+   },
+   {
+    "title": "Cách ngắm sông Hàn đúng cách tại Meliá Vinpearl ...",
+    "link": "https://www.tiktok.com/@novago.travel0506/video/7614375793988275476",
+    "snippet": "Lead Khách chỉ cần khoảng 3–4 củ là có thể tận hưởng view sông Hàn đẹp từ Meliá Vinpearl Danang Riverfront. Bài viết tóm tắt cách chọn vị ...",
+    "position": 7
+   },
+   {
+    "title": "Tập 11: Meliá Vinpearl Danang Riverfront Giá 2 củ khoai ...",
+    "link": "https://www.tiktok.com/@giadinhtittho/video/7649757016503749908",
+    "snippet": "Tập 11: Meliá Vinpearl Danang Riverfront Giá 2 củ khoai/đêm, dịch vụ thì khỏi phải bàn rồi, sạch, xịn, thơm, view đẹp Mỗi thẻ phòng chỉ đi được ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

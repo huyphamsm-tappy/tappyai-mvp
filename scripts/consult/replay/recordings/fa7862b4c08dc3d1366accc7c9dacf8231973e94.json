@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "森嶼SPA - SPA Thái Lan chính thống/MASSAGE tinh dầu",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T00:44:44.175Z",
+ "body": {
+  "searchParameters": {
+   "q": "森嶼SPA - SPA Thái Lan chính thống/MASSAGE tinh dầu",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "森嶼SPA - SPA Thái Lan chính thống/MASSAGE tinh dầu",
+    "imageUrl": "https://res.klook.com/images/fl_lossy.progressive,q_65/c_fill,w_1200,h_630/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/iwfygts6grcvdcgcbexl/%E6%A3%AE%E5%B6%BCSPA-SPATh%C3%A1iLanch%C3%ADnhth%E1%BB%91ngMASSAGEtinhd%E1%BA%A7u-Klook.jpg",
+    "imageWidth": 1200,
+    "imageHeight": 630,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9r5WDjJKcGi3xTc9DEgzsCyLSKXpgWMAmOkbDJyYh3A&s",
+    "thumbnailWidth": 310,
+    "thumbnailHeight": 163,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/134349-senyu-spa-thai-spa-essential-oil-massage-optional-from-3-branches/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Ffl_lossy.progressive%2Cq_65%2Fc_fill%2Cw_1200%2Ch_630%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fiwfygts6grcvdcgcbexl%2F%25E6%25A3%25AE%25E5%25B6%25BCSPA-SPATh%25C3%25A1iLanch%25C3%25ADnhth%25E1%25BB%2591ngMASSAGEtinhd%25E1%25BA%25A7u-Klook.jpg&tbnid=TVDzIiszkFYEFM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F134349-senyu-spa-thai-spa-essential-oil-massage-optional-from-3-branches%2F&docid=vSy-NH0iAuZ93M&w=1200&h=630",
+    "position": 1
+   },
+   {
+    "title": "森嶼SPA - SPA Thái Lan chính thống/MASSAGE tinh dầu - Klook",
+    "imageUrl": "https://res.klook.com/image/upload/w_750,h_469,c_fill,q_85/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/glvhv4pbofubyslhgzt4.jpg",
+    "imageWidth": 750,
+    "imageHeight": 469,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhRq6Fp69nK6T00EPwGJc81XXiXfAV2YVuaxSKFd2MeQ&s",
+    "thumbnailWidth": 284,
+    "thumbnailHeight": 177,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/134349-senyu-spa-thai-spa-essential-oil-massage-optional-from-3-branches/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimage%2Fupload%2Fw_750%2Ch_469%2Cc_fill%2Cq_85%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fglvhv4pbofubyslhgzt4.jpg&tbnid=wDAODVNI6SJ1VM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F134349-senyu-spa-thai-spa-essential-oil-massage-optional-from-3-branches%2F&docid=vSy-NH0iAuZ93M&w=750&h=469",
+    "position": 2
+   },
+   {
+    "title": "森嶼SPA - SPA Thái Lan chính thống/MASSAGE tinh dầu - Klook",
+    "imageUrl": "https://res.klook.com/image/upload/w_750,h_469,c_fill,q_85/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/oxlmw2uudy1gca2dccq5.jpg",
+    "imageWidth": 750,
+    "imageHeight": 469,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnj6mCbws0qEsRMfhVpqtpSDsK-_p2JjEm1gEXLnD3gA&s",
+    "thumbnailWidth": 284,
+    "thumbnailHeight": 177,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/134349-senyu-spa-thai-spa-essential-oil-massage-optional-from-3-branches/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimage%2Fupload%2Fw_750%2Ch_469%2Cc_fill%2Cq_85%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Foxlmw2uudy1gca2dccq5.jpg&tbnid=lW30nqJNPin8lM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F134349-senyu-spa-thai-spa-essential-oil-massage-optional-from-3-branches%2F&docid=vSy-NH0iAuZ93M&w=750&h=469",
+    "position": 3
+   },
+   {
+    "title": "森嶼SPA - SPA Thái Lan chính thống/MASSAGE tinh dầu - Klook",
+    "imageUrl": "https://res.klook.com/image/upload/w_750,h_469,c_fill,q_85/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/u1dvnszirrcmwgnmbh8t.jpg",
+    "imageWidth": 750,
+    "imageHeight": 469,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQBB6LPRyHD13plbFl1VdKjhcsA-li8ph1Frb7Emyrmg&s",
+    "thumbnailWidth": 284,
+    "thumbnailHeight": 177,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/134349-senyu-spa-thai-spa-essential-oil-massage-optional-from-3-branches/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimage%2Fupload%2Fw_750%2Ch_469%2Cc_fill%2Cq_85%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fu1dvnszirrcmwgnmbh8t.jpg&tbnid=o44TvIi-qVOQ3M&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F134349-senyu-spa-thai-spa-essential-oil-massage-optional-from-3-branches%2F&docid=vSy-NH0iAuZ93M&w=750&h=469",
+    "position": 4
+   },
+   {
+    "title": "森嶼SPA - SPA Thái Lan chính thống/MASSAGE tinh dầu - Klook",
+    "imageUrl": "https://res.klook.com/image/upload/w_750,h_469,c_fill,q_85/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/q1d5ga8hyh4efhnnsrz4.jpg",
+    "imageWidth": 750,
+    "imageHeight": 469,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEtZCUCxybNffRFzC437eZQbJVmlVfCb8eFdvupTl1rg&s",
+    "thumbnailWidth": 284,
+    "thumbnailHeight": 177,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/134349-senyu-spa-thai-spa-essential-oil-massage-optional-from-3-branches/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimage%2Fupload%2Fw_750%2Ch_469%2Cc_fill%2Cq_85%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fq1d5ga8hyh4efhnnsrz4.jpg&tbnid=6u9g-EdH9qM68M&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F134349-senyu-spa-thai-spa-essential-oil-massage-optional-from-3-branches%2F&docid=vSy-NH0iAuZ93M&w=750&h=469",
+    "position": 5
+   },
+   {
+    "title": "森嶼SPA - SPA Thái Lan chính thống/MASSAGE tinh dầu - Klook",
+    "imageUrl": "https://res.klook.com/image/upload/w_750,h_469,c_fill,q_85/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/sb8grjvlyejfy2b3xgeh.jpg",
+    "imageWidth": 750,
+    "imageHeight": 469,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXj4WOQ7_L9O9Ywaj_58i7Wb2fMzOS-Unj9EF_pYFX_Q&s",
+    "thumbnailWidth": 284,
+    "thumbnailHeight": 177,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/134349-senyu-spa-thai-spa-essential-oil-massage-optional-from-3-branches/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimage%2Fupload%2Fw_750%2Ch_469%2Cc_fill%2Cq_85%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fsb8grjvlyejfy2b3xgeh.jpg&tbnid=PvzPdG0Mx4xaCM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F134349-senyu-spa-thai-spa-essential-oil-massage-optional-from-3-branches%2F&docid=vSy-NH0iAuZ93M&w=750&h=469",
+    "position": 6
+   },
+   {
+    "title": "9 Spa Ở Thái Lan Cho Trải Nghiệm \"Chill Đúng Điệu\" - Klook Blog",
+    "imageUrl": "https://res.klook.com/image/upload/q_85/c_fill,w_650,h_345/v1758793026/gwj6jqfmyavip1wlcgx4.jpg",
+    "imageWidth": 650,
+    "imageHeight": 345,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQF1yQP4GidvhpaMGdiffIFYckz8m8zCt4s-msXSX9zxA&s",
+    "thumbnailWidth": 308,
+    "thumbnailHeight": 163,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/blog/spa-thai-lan/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimage%2Fupload%2Fq_85%2Fc_fill%2Cw_650%2Ch_345%2Fv1758793026%2Fgwj6jqfmyavip1wlcgx4.jpg&tbnid=AUQhRDw8MWEsXM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Fblog%2Fspa-thai-lan%2F&docid=wsYRHBJJXemdeM&w=650&h=345",
+    "position": 7
+   },
+   {
+    "title": "COMBO ĐẶC BIỆT BODY DƯỠNG SINH MASSAGE TINH DẦU+ THÁI ĐI ĐÁ NÓNG+ NGÂM TẮM  LÁ GIAO ĐỎ+ XÔNG HƠI THẢO DƯỢC TẠI TRUST CLINIC SPA",
+    "imageUrl": "https://oms.hotdeal.vn/images/editors/sources/000355067987/355067-355067-body%20(1).jpg",
+    "imageWidth": 710,
+    "imageHeight": 502,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiSrp5SSAFY6TRM6GYWH9X9sBGr657dMqR6F49S4_Cew&s=10",
+    "thumbnailWidth": 531,
+    "thumbnailHeight": 376,
+    "source": "Hot Deal",
+    "domain": "www.hotdeal.vn",
+    "link": "https://www.hotdeal.vn/ho-chi-minh/massage-nu/combo-dac-biet-body-duong-sinh-massage-tinh-dau-thai-di-da-nong-ngam-tam-la-giao-do-xong-hoi-thao-duoc-tai-trust-clinic-spa-355067.html?srsltid=AU7gw4Ul_IBN9ou6mEp5jWlnZP_IgLZQ9m0MEJ3YJjpzhoi9b3nFsmCr",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Foms.hotdeal.vn%2Fimages%2Feditors%2Fsources%2F000355067987%2F355067-355067-body%2520(1).jpg&tbnid=CSKM5mGtr5pK8M&imgrefurl=https%3A%2F%2Fwww.hotdeal.vn%2Fho-chi-minh%2Fmassage-nu%2Fcombo-dac-biet-body-duong-sinh-massage-tinh-dau-thai-di-da-nong-ngam-tam-la-giao-do-xong-hoi-thao-duoc-tai-trust-clinic-spa-355067.html%3Fsrsltid%3DAU7gw4Ul_IBN9ou6mEp5jWlnZP_IgLZQ9m0MEJ3YJjpzhoi9b3nFsmCr&docid=wBHE1wi3SSlEWM&w=710&h=502",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

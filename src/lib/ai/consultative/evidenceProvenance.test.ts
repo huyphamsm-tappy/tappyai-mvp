@@ -84,7 +84,19 @@ describe('the policy block reaches the model (advisory layer)', () => {
 describe('food.ts grades its snippet prices (integration)', () => {
   const FOOD = readFileSync(join(__dirname, '..', 'tools', 'food.ts'), 'utf8').replace(/\/\/.*$/gm, '')
   it('attaches price_evidence with a snippet classification alongside price_search_results', () => {
-    expect(FOOD).toMatch(/price_search_results\s*=\s*priceResults/)
+    // The emitted rows are now the SCOPED ones (each snippet tagged with the
+    // place it named, or 'area'), not the raw provider list.
+    expect(FOOD).toMatch(/price_search_results\s*=\s*scoped/)
     expect(FOOD).toMatch(/price_evidence\s*=\s*\{[\s\S]*classifyEvidence\('search_snippet'\)/)
+  })
+
+  // 🚨 STRENGTHENED, BECAUSE A TEXT ASSERTION IS NOT A BEHAVIOUR TEST. This one
+  // only proves the source still SAYS the right thing; the behaviour that
+  // matters — an area price may not be attributed to a named restaurant — is
+  // held by `foodProseProvenance.test.ts`. Keeping both is deliberate: this
+  // catches the wiring being deleted, that one catches it being wrong.
+  it('scopes every price snippet to the place it named, or to the area', () => {
+    expect(FOOD).toMatch(/placeNamedBy\(r\.title,\s*r\.snippet,\s*tokens\)/)
+    expect(FOOD).toMatch(/evidence_scope:\s*about\s*\?\s*'entity'\s*:\s*'area'/)
   })
 })

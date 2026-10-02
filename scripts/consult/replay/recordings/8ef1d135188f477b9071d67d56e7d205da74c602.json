@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Premium Gift Box Coffee-288g (16 gói gồm 3 loại cà phê",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:12:01.577Z",
+ "body": {
+  "searchParameters": {
+   "q": "Premium Gift Box Coffee-288g (16 gói gồm 3 loại cà phê",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Hộp quà tặng cao cấp - Premium Gift Box Coffee-288g (16 gói gồm 3 loại cà  phê hòa tan thơm ngon, vị tự nhiên)",
+    "imageUrl": "https://vn-test-11.slatic.net/p/417ef9f96e2c408868ea6ce65832fb8b.jpg",
+    "imageWidth": 1024,
+    "imageHeight": 1024,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR01LK3O9BIAeLt1hQopvfkRubGUXmqWl1_L1uL8_PSIw&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Lazada",
+    "domain": "www.lazada.vn",
+    "link": "https://www.lazada.vn/products/hop-qua-tang-cao-cap-premium-gift-box-coffee-288g-16-goi-gom-3-loai-ca-phe-hoa-tan-thom-ngon-vi-tu-nhien-i1069432070.html?srsltid=AU7gw4XzPBw0kuLfNXVQiQrH5hLdOx8fEVzlAdmt4cZ-QMP6x4e8IHwS",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fvn-test-11.slatic.net%2Fp%2F417ef9f96e2c408868ea6ce65832fb8b.jpg&tbnid=DUn84UeiXSbqLM&imgrefurl=https%3A%2F%2Fwww.lazada.vn%2Fproducts%2Fhop-qua-tang-cao-cap-premium-gift-box-coffee-288g-16-goi-gom-3-loai-ca-phe-hoa-tan-thom-ngon-vi-tu-nhien-i1069432070.html%3Fsrsltid%3DAU7gw4XzPBw0kuLfNXVQiQrH5hLdOx8fEVzlAdmt4cZ-QMP6x4e8IHwS&docid=WJx5Vr5z0CVOnM&w=1024&h=1024",
+    "position": 1
+   },
+   {
+    "title": "Hộp quà tặng cao cấp - Premium Gift Box Coffee-288g (16 gói gồm 3 loại cà  phê hòa tan thơm ngon, vị tự nhiên) | Lazada Việt Nam",
+    "imageUrl": "https://img.lazcdn.com/g/p/51806983b36ccd4e0d7e829e97449f2c.png_960x960q80.png_.webp",
+    "imageWidth": 750,
+    "imageHeight": 484,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCBBIelgks7pC4MTUQpiqnVLx8i0ttTDNVXu4oA5DWSQ&s",
+    "thumbnailWidth": 280,
+    "thumbnailHeight": 180,
+    "source": "Lazada",
+    "domain": "www.lazada.vn",
+    "link": "https://www.lazada.vn/products/hop-qua-tang-cao-cap-premium-gift-box-coffee-288g-16-goi-gom-3-loai-ca-phe-hoa-tan-thom-ngon-vi-tu-nhien-i1069432070.html?srsltid=AU7gw4Vn4J8IiAoIF6M8LRNNiY3MXnRly4NNn3CZ7gLDjk_AUXJ5C5WQ",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimg.lazcdn.com%2Fg%2Fp%2F51806983b36ccd4e0d7e829e97449f2c.png_960x960q80.png_.webp&tbnid=rDt3IdiyR2xFxM&imgrefurl=https%3A%2F%2Fwww.lazada.vn%2Fproducts%2Fhop-qua-tang-cao-cap-premium-gift-box-coffee-288g-16-goi-gom-3-loai-ca-phe-hoa-tan-thom-ngon-vi-tu-nhien-i1069432070.html%3Fsrsltid%3DAU7gw4Vn4J8IiAoIF6M8LRNNiY3MXnRly4NNn3CZ7gLDjk_AUXJ5C5WQ&docid=WJx5Vr5z0CVOnM&w=750&h=484",
+    "position": 2
+   },
+   {
+    "title": "Hộp quà tặng cao cấp - Premium Gift Box Coffee-288g (16 gói gồm 3 loại cà  phê hòa tan thơm ngon, vị tự nhiên) | Lazada Việt Nam",
+    "imageUrl": "https://img.lazcdn.com/g/p/6cda4da5fea15cf2e1517977852a76bb.png_960x960q80.png_.webp",
+    "imageWidth": 750,
+    "imageHeight": 484,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDQWhCbcxxJegJArwtnAhCjC7v27vJeDnqfblx4-h_Eg&s",
+    "thumbnailWidth": 280,
+    "thumbnailHeight": 180,
+    "source": "Lazada",
+    "domain": "www.lazada.vn",
+    "link": "https://www.lazada.vn/products/hop-qua-tang-cao-cap-premium-gift-box-coffee-288g-16-goi-gom-3-loai-ca-phe-hoa-tan-thom-ngon-vi-tu-nhien-i1069432070.html?srsltid=AU7gw4UtaGPAeXmoF56zC3Ygl0dKNo_t3zMOZJOys_ZSWN8XBTWC6_B4",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimg.lazcdn.com%2Fg%2Fp%2F6cda4da5fea15cf2e1517977852a76bb.png_960x960q80.png_.webp&tbnid=iLuBAlBSqN7wNM&imgrefurl=https%3A%2F%2Fwww.lazada.vn%2Fproducts%2Fhop-qua-tang-cao-cap-premium-gift-box-coffee-288g-16-goi-gom-3-loai-ca-phe-hoa-tan-thom-ngon-vi-tu-nhien-i1069432070.html%3Fsrsltid%3DAU7gw4UtaGPAeXmoF56zC3Ygl0dKNo_t3zMOZJOys_ZSWN8XBTWC6_B4&docid=WJx5Vr5z0CVOnM&w=750&h=484",
+    "position": 3
+   },
+   {
+    "title": "Hộp quà tặng cao cấp - Premium Gift Box Coffee-288g (16 gói gồm 3 loại cà  phê hòa tan thơm ngon, vị tự nhiên)",
+    "imageUrl": "https://vn-test-11.slatic.net/p/ee27bc8b3053f9afd53cb2af7ebdf400.jpg",
+    "imageWidth": 5000,
+    "imageHeight": 3840,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRpAfp9W-UuK2-wqLwO7t1A-FBcBeF1DDlzX5vsAnSmFQ&s=10",
+    "thumbnailWidth": 510,
+    "thumbnailHeight": 392,
+    "source": "Lazada",
+    "domain": "www.lazada.vn",
+    "link": "https://www.lazada.vn/products/hop-qua-tang-cao-cap-premium-gift-box-coffee-288g-16-goi-gom-3-loai-ca-phe-hoa-tan-thom-ngon-vi-tu-nhien-i1069432070.html?srsltid=AU7gw4VAFAA0GDgModxL3Cab_ewjkEdieAD6LiqcgKoR2dqfzMYSop20",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fvn-test-11.slatic.net%2Fp%2Fee27bc8b3053f9afd53cb2af7ebdf400.jpg&tbnid=J_jN2_PxkwWL1M&imgrefurl=https%3A%2F%2Fwww.lazada.vn%2Fproducts%2Fhop-qua-tang-cao-cap-premium-gift-box-coffee-288g-16-goi-gom-3-loai-ca-phe-hoa-tan-thom-ngon-vi-tu-nhien-i1069432070.html%3Fsrsltid%3DAU7gw4VAFAA0GDgModxL3Cab_ewjkEdieAD6LiqcgKoR2dqfzMYSop20&docid=WJx5Vr5z0CVOnM&w=5000&h=3840",
+    "position": 4
+   },
+   {
+    "title": "Hộp quà tặng cao cấp - Premium Gift Box Coffee-288g (16 gói gồm 3 loại cà  phê hòa tan thơm ngon, vị tự nhiên) | Lazada Việt Nam",
+    "imageUrl": "https://img.lazcdn.com/g/p/82c6b93e910119609272b58d6076a40c.png_960x960q80.png_.webp",
+    "imageWidth": 750,
+    "imageHeight": 484,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSScReghmJmdIllcH5t2e0S-CkKvyUoW97wtGmE0RnPag&s",
+    "thumbnailWidth": 280,
+    "thumbnailHeight": 180,
+    "source": "Lazada",
+    "domain": "www.lazada.vn",
+    "link": "https://www.lazada.vn/products/hop-qua-tang-cao-cap-premium-gift-box-coffee-288g-16-goi-gom-3-loai-ca-phe-hoa-tan-thom-ngon-vi-tu-nhien-i1069432070.html?srsltid=AU7gw4UgdyK7U8zOCrTC_UAwrk-ZNZHm4szh8y0yGyRU1AuT0FOFM4YP",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimg.lazcdn.com%2Fg%2Fp%2F82c6b93e910119609272b58d6076a40c.png_960x960q80.png_.webp&tbnid=wgbimZCnv_8OxM&imgrefurl=https%3A%2F%2Fwww.lazada.vn%2Fproducts%2Fhop-qua-tang-cao-cap-premium-gift-box-coffee-288g-16-goi-gom-3-loai-ca-phe-hoa-tan-thom-ngon-vi-tu-nhien-i1069432070.html%3Fsrsltid%3DAU7gw4UgdyK7U8zOCrTC_UAwrk-ZNZHm4szh8y0yGyRU1AuT0FOFM4YP&docid=WJx5Vr5z0CVOnM&w=750&h=484",
+    "position": 5
+   },
+   {
+    "title": "Hộp quà tặng cao cấp - Premium Gift Box Coffee-288g (16 gói gồm 3 loại cà  phê hòa tan thơm ngon, vị tự nhiên)",
+    "imageUrl": "https://img.lazcdn.com/g/p/5af9e31ed2b4c24ebaa9b533467f9a0a.jpg_720x720q80.jpg",
+    "imageWidth": 720,
+    "imageHeight": 405,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQ3pHqTRutqL8ii1Z8Z6Aow0itx03kj0eLTKcgDbVFOg&s=10",
+    "thumbnailWidth": 597,
+    "thumbnailHeight": 335,
+    "source": "Lazada",
+    "domain": "www.lazada.vn",
+    "link": "https://www.lazada.vn/products/hop-qua-tang-cao-cap-premium-gift-box-coffee-288g-16-goi-gom-3-loai-ca-phe-hoa-tan-thom-ngon-vi-tu-nhien-i1069432070.html?srsltid=AU7gw4VMSyRLyvNbqQij2DyJVAQ9hXpE0dDi4YJXW_dTwSJoo5QblIBj",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimg.lazcdn.com%2Fg%2Fp%2F5af9e31ed2b4c24ebaa9b533467f9a0a.jpg_720x720q80.jpg&tbnid=l76Cejhom2C3zM&imgrefurl=https%3A%2F%2Fwww.lazada.vn%2Fproducts%2Fhop-qua-tang-cao-cap-premium-gift-box-coffee-288g-16-goi-gom-3-loai-ca-phe-hoa-tan-thom-ngon-vi-tu-nhien-i1069432070.html%3Fsrsltid%3DAU7gw4VMSyRLyvNbqQij2DyJVAQ9hXpE0dDi4YJXW_dTwSJoo5QblIBj&docid=WJx5Vr5z0CVOnM&w=720&h=405",
+    "position": 6
+   },
+   {
+    "title": "Hộp quà tặng cao cấp - Premium Gift Box Coffee-288g (16 gói gồm 3 loại cà  phê hòa tan thơm ngon, vị tự nhiên)",
+    "imageUrl": "https://vn-test-11.slatic.net/p/9454b3d0b130b09ce9cafd37809ac5b0.jpg",
+    "imageWidth": 4096,
+    "imageHeight": 2946,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGFk-W07Oj0Ejzb2DynjZDxCuo9fD5LlVFJL6zqc9fVg&s",
+    "thumbnailWidth": 265,
+    "thumbnailHeight": 190,
+    "source": "Lazada",
+    "domain": "www.lazada.vn",
+    "link": "https://www.lazada.vn/products/hop-qua-tang-cao-cap-premium-gift-box-coffee-288g-16-goi-gom-3-loai-ca-phe-hoa-tan-thom-ngon-vi-tu-nhien-i1069432070.html?srsltid=AU7gw4XDnr9Uih3NdgM1Sp4-YR4WtmdKxvbY-t18-gh_r8lkfuMOnfs_",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fvn-test-11.slatic.net%2Fp%2F9454b3d0b130b09ce9cafd37809ac5b0.jpg&tbnid=ylhZ0c1q64y0bM&imgrefurl=https%3A%2F%2Fwww.lazada.vn%2Fproducts%2Fhop-qua-tang-cao-cap-premium-gift-box-coffee-288g-16-goi-gom-3-loai-ca-phe-hoa-tan-thom-ngon-vi-tu-nhien-i1069432070.html%3Fsrsltid%3DAU7gw4XDnr9Uih3NdgM1Sp4-YR4WtmdKxvbY-t18-gh_r8lkfuMOnfs_&docid=WJx5Vr5z0CVOnM&w=4096&h=2946",
+    "position": 7
+   },
+   {
+    "title": "Hộp quà tặng cao cấp - Premium Gift Box Coffee-288g (16 gói gồm 3 loại cà  phê hòa tan thơm ngon, vị tự nhiên) | Lazada Việt Nam",
+    "imageUrl": "https://img.lazcdn.com/g/p/d8fb6091a5b78e7997b1102a070b9b1f.jpg_240x240q80.jpg_.webp",
+    "imageWidth": 240,
+    "imageHeight": 240,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxmQjjUniHKQK42wZtghgXyS-XoNhuj_amxCph-w4m7A&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Lazada",
+    "domain": "www.lazada.vn",
+    "link": "https://www.lazada.vn/products/hop-qua-tang-cao-cap-premium-gift-box-coffee-288g-16-goi-gom-3-loai-ca-phe-hoa-tan-thom-ngon-vi-tu-nhien-i1069432070.html?srsltid=AU7gw4UEdHwFrEpKT7VBNtDsD2BSkHUZf9cJWU9T2jfi-kgXbZan3BmI",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimg.lazcdn.com%2Fg%2Fp%2Fd8fb6091a5b78e7997b1102a070b9b1f.jpg_240x240q80.jpg_.webp&tbnid=S0Q_AANx00elcM&imgrefurl=https%3A%2F%2Fwww.lazada.vn%2Fproducts%2Fhop-qua-tang-cao-cap-premium-gift-box-coffee-288g-16-goi-gom-3-loai-ca-phe-hoa-tan-thom-ngon-vi-tu-nhien-i1069432070.html%3Fsrsltid%3DAU7gw4UEdHwFrEpKT7VBNtDsD2BSkHUZf9cJWU9T2jfi-kgXbZan3BmI&docid=WJx5Vr5z0CVOnM&w=240&h=240",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

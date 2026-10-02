@@ -1,0 +1,188 @@
+{
+  "id": "E1",
+  "text": "Tối nay đi chơi gì với hội bạn 5 người ở Quận 1",
+  "parent": null,
+  "status": 200,
+  "ms": 14717,
+  "evidenceId": "b75383d4-e01f-408d-9d1c-ce9d50201ad9",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "quán bar karaoke vui chơi buổi tối Quận 1",
+        "location": "Quận 1, TP.HCM",
+        "type": "bar"
+      }
+    },
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "quán cà phê vui chơi nhạc sống Quận 1",
+        "location": "Quận 1, TP.HCM",
+        "type": "cafe"
+      }
+    },
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "karaoke Quận 1",
+        "location": "Quận 1, TP.HCM",
+        "type": "bar"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Karaoke Avatar",
+      "rating": 4.9,
+      "count": 6411,
+      "hours": "12:00–05:00",
+      "address": "61-63-65 Phạm Viết Chánh, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Karaoke MEI",
+      "rating": 4.9,
+      "count": 1512,
+      "hours": "09:00–03:00",
+      "address": "159-161-163 Hàm Nghi, Quận 1, Hồ Chí Minh 710000, Việt Nam"
+    },
+    {
+      "name": "FunnyBone Bar & Coffe Quận 1",
+      "rating": 5,
+      "count": 202,
+      "hours": "07:00–00:00",
+      "address": "135/44 Trần Hưng Đạo, Cầu Ông Lãnh, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "The Lủi - Quán Nhậu Chill Quận 1 Sài Gòn",
+      "rating": 4.9,
+      "count": 513,
+      "hours": "17:00–23:30",
+      "address": "177 Nguyễn Cư Trinh, Cầu Ông Lãnh, Hồ Chí Minh 71000, Việt Nam"
+    },
+    {
+      "name": "BB Restaurant | Nhà Hàng Quận 1 | Đặt tiệc Quận 1",
+      "rating": 4.8,
+      "count": 94,
+      "hours": "14:00–03:00",
+      "address": "127 Nguyễn Thái Bình, Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Empire Club Quận 1",
+      "rating": 4.7,
+      "count": 49,
+      "hours": "21:00–03:00",
+      "address": "Nguyễn Văn Tráng/2 Phạm Ngũ Lão, Bến Thành, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Kingdom Karaoke",
+      "rating": 4.3,
+      "count": 2069,
+      "hours": "10:00–05:00",
+      "address": "67 Phạm Viết Chánh, Cầu Ông Lãnh, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Karaoke SAFARI",
+      "rating": 4.3,
+      "count": 453,
+      "hours": "11:00–04:00",
+      "address": "202 Nguyễn Trãi, Bến Thành, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Dubai business Club",
+      "rating": 4.4,
+      "count": 76,
+      "hours": "17:00–02:00",
+      "address": "16 Mạc Thị Bưởi, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Luxury Karaoke",
+      "rating": 4.3,
+      "count": 67,
+      "hours": "13:00–03:00",
+      "address": "103 Bùi Thị Xuân, Quận 1, Hồ Chí Minh 70000, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "Karaoke Avatar",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 6411,
+        "open_now": true,
+        "opening_hours": "12:00–05:00"
+      }
+    },
+    {
+      "name": "Karaoke MEI",
+      "role": null,
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 1512,
+        "open_now": true,
+        "opening_hours": "09:00–03:00"
+      }
+    },
+    {
+      "name": "FunnyBone Bar & Coffe Quận 1",
+      "role": null,
+      "evidence": {
+        "rating": 5,
+        "reviews": 202,
+        "open_now": true,
+        "opening_hours": "07:00–00:00"
+      }
+    }
+  ],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình tìm những địa điểm vui chơi gần bạn ở Quận 1 cho buổi tối nay nhé! 🎉\n\nMình gợi ý **Karaoke Avatar** cho bạn! 🎤 Quán này đang mở cửa lúc này (mở đến 5h sáng), có rating 4.9⭐ từ 6.411 đánh giá — là lựa chọn hàng đầu cho nhóm 5 người muốn hát karaoke vui vẻ tối nay.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Karaoke Avatar\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=15540783769004242466\",\"primary\":true},{\"label\":\"🌐 Website - Karaoke Avatar\",\"type\":\"website\",\"url\":\"https://karaokeavatar.com/\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Karaoke MEI gần đây không|Quán bar nhạc sống Quận 1|Quán ăn uống vui chơi khác[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Tối nay đi chơi gì với hội bạn 5 người ở Quận 1"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm những địa điểm vui chơi gần bạn ở Quận 1 cho buổi tối nay nhé! 🎉\n\nMình gợi ý **Karaoke Avatar** cho bạn! 🎤 Quán này đang mở cửa lúc này (mở đến 5h sáng), có rating 4.9⭐ từ 6.411 đánh giá — là lựa chọn hàng đầu cho nhóm 5 người muốn hát karaoke vui vẻ tối nay.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Karaoke Avatar\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=15540783769004242466\",\"primary\":true},{\"label\":\"🌐 Website - Karaoke Avatar\",\"type\":\"website\",\"url\":\"https://karaokeavatar.com/\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Karaoke MEI gần đây không|Quán bar nhạc sống Quận 1|Quán ăn uống vui chơi khác[/FOLLOWUPS]"
+    }
+  ]
+}

@@ -373,9 +373,10 @@ describe('C8 — drain route wiring: STRUCTURAL (not an executed request)', () =
     expect(ROUTE.length).toBeGreaterThan(1000)
   })
 
-  it('authenticates with CRON_SECRET exactly like the existing seven crons', () => {
-    expect(ROUTE).toContain('process.env.CRON_SECRET')
-    expect(ROUTE).toMatch(/authorization'\)\s*!==\s*`Bearer \$\{secret\}`/)
+  it('authenticates with CRON_SECRET exactly like the other crons', () => {
+    // security-audit L6 — every cron now goes through the constant-time helper.
+    expect(ROUTE).toContain("from '@/lib/security/cronAuth'")
+    expect(ROUTE).toMatch(/if \(!isAuthorizedCronRequest\(req\)\)/)
     expect(ROUTE).toMatch(/status:\s*401/)
   })
 
@@ -439,6 +440,26 @@ describe('C8 — the drain is wired as a daily cron', () => {
     // 8 -> 9 on 2026-09-01: `/api/cron/marketing-retention` (V2.2-2, contract
     // M-26/M-27) prunes marketing deliveries and campaigns past one year. It
     // deletes rows and cannot notify anybody.
-    expect(vercelJson.crons.length).toBe(9)
+    //
+    // 9 -> 10 on 2026-09-20: `/api/cron/feed-ingest` (B5) pulls the Accesstrade
+    // datafeed for the approved Tier-1 merchants once a day (02:30 VN). It writes
+    // `commerce_feed_items` / `commerce_feed_runs` only, and records
+    // `blocked_no_credentials` until the feed credentials exist.
+    //
+    // 10 -> 11 on 2026-09-25: `/api/cron/decision-evidence-sweep` (F-097, owner
+    // decision) deletes decision_evidence rows past their 2-hour TTL through the
+    // service_role-only decision_evidence_sweep(). It deletes expired rows only and
+    // cannot notify anybody; it answers 500 until migration 20260925b is applied.
+    //
+    // 11 -> 13 on 2026-09-25 (F-096, owner decisions):
+    //   `/api/cron/account-deletion-jobs` drains the queue a deleted account leaves —
+    //   revokes the Google Calendar grant, deletes the user's uploads from the bucket;
+    //   `/api/cron/audit-retention` sweeps audit IP/UA at 90 days and prunes the chain at
+    //   12 months behind a verified anchor. Neither can notify anybody; both answer 500
+    //   until migrations 20260925c / 20260925d are applied.
+    //
+    // 13 -> 14 on 2026-09-29 (R21, owner): `/api/cron/click-attributions-sweep` deletes ACCESSTRADE click joins
+    //   older than 12 months (bounded, service_role only) and logs the count; it notifies nobody.
+    expect(vercelJson.crons.length).toBe(14)
   })
 })

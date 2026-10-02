@@ -378,6 +378,35 @@ describe('D · grounding evidence reaches the model unchanged', () => {
       }],
     })
     const got = (model as { results: Array<Record<string, unknown>> }).results[0]
-    expect(Object.keys(got).sort()).toEqual(['address', 'cuisine', 'google_rating', 'name'])
+    // The property this test owns: every FACT the model reasons with survives
+    // the carve, and every enrichment value is gone.
+    expect(Object.keys(got)).toEqual(expect.arrayContaining(['address', 'cuisine', 'google_rating', 'name']))
+    for (const carved of ['photo_urls', 'photo_url', 'order_links', 'platform_links', 'tiktok_review_url', 'photo_names']) {
+      expect(got, `${carved} must not reach the model`).not.toHaveProperty(carved)
+    }
+  })
+
+  it('what the carve ADDS is capability booleans, and nothing that resembles a URL', () => {
+    // 🔄 THIS ASSERTION IS NEW, AND IT REPLACES AN EXACT-KEYS CHECK. Carving the
+    // links left the model unable to say whether a place can be ordered from,
+    // so it now receives a boolean in their place — the pattern already proven
+    // by `has_tiktok_review`. An exact-key equality would have forbidden that
+    // deliberate addition; what actually needs guarding is that the additions
+    // carry no link the model could copy.
+    const { model } = splitToolResult('search_places', {
+      results: [{
+        name: 'Quán A', google_rating: '4.5', address: 'Q1', cuisine: 'Việt',
+        photo_urls: ['https://c.example/1.jpg'], order_links: [linkOf('ShopeeFood', 'https://s.vn/x')],
+      }],
+    })
+    const got = (model as { results: Array<Record<string, unknown>> }).results[0]
+    const added = Object.keys(got).filter(k => !['address', 'cuisine', 'google_rating', 'name'].includes(k))
+    expect(added.every(k => k.startsWith('has_')), `unexpected additions: ${added.join(', ')}`).toBe(true)
+    for (const k of added) {
+      const v = got[k]
+      expect(typeof v === 'boolean' || v === 'verified' || v === 'search', `${k} must be a flag`).toBe(true)
+    }
+    expect(JSON.stringify(got)).not.toContain('http')
+    expect(JSON.stringify(got)).not.toContain('s.vn')
   })
 })

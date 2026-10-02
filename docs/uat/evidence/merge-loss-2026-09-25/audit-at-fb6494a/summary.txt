@@ -1,0 +1,14 @@
+3cbb10e  files=33  lost=319  missing_at_tip=217  clean_region_missing=73  merge: integrate rc/web-uat into uat/unified (security hotfix + G1 growth + cros
+d917c44  files=13  lost=80  missing_at_tip=70  clean_region_missing=18  Merge feat/g1-growth (47f2d5e, 8a01877) into rc/web-uat — G1 Growth on the WEB-U
+d303a91  files=7  lost=20  missing_at_tip=19  clean_region_missing=12  Merge wip/v3-phase4-design-2026-09-17 (home hero greeting engine, music genre sc
+1e7b77e  files=36  lost=2055  missing_at_tip=357  clean_region_missing=338  Merge wip/cool-vaughan-b3c7ff-2026-09-17 (consultative decision core, VnExpress 
+a6ca9f0  files=19  lost=494  missing_at_tip=414  clean_region_missing=301  Merge wip/tappyai-v3-canonical-2026-09-17 (uncommitted canonical work) into merg
+2dba2e3  files=16  lost=225  missing_at_tip=219  clean_region_missing=147  Merge integration/v3-canonical (Android V3 explore/home/tools/profile, collectio
+28e1d7d  files=34  lost=194  missing_at_tip=129  clean_region_missing=60  Merge feat/affiliate-cross-platform (CCP + Android/iOS Place Card) into merge/ma
+89e65f7  files=7  lost=64  missing_at_tip=60  clean_region_missing=0  Merge origin/main (842379b, incl. age gate #251) into V3 + G1/G2/G3
+764effd  files=3  lost=40  missing_at_tip=26  clean_region_missing=0  merge(affiliate): integrate origin/main into CCP canonical (cross-platform found
+842379b  files=0  lost=0  missing_at_tip=0  clean_region_missing=0  Merge pull request #251 from huyphamsm-tappy/feat/v3-user-data-foundation
+997f55c  files=12  lost=201  missing_at_tip=191  clean_region_missing=126  merge: integrate V3 Phase4 design
+6c6450f  files=0  lost=0  missing_at_tip=0  clean_region_missing=0  Merge pull request #250 from huyphamsm-tappy/feat/v3-user-data-foundation
+328954a  files=0  lost=0  missing_at_tip=0  clean_region_missing=0  Merge pull request #249 from huyphamsm-tappy/feat/v3-user-data-foundation
+b85ddd9  files=0  lost=0  missing_at_tip=0  clean_region_missing=0  Merge pull request #248 from huyphamsm-tappy/fix/bug-011-destination-scope

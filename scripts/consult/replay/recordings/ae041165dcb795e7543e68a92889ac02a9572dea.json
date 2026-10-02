@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Acer Aspire 16 AI A16-71M-59L5 (NX.J4YSV.001) (Ultra 5 125H/16GB RAM/512GB SSD/16 inch FHD+ /Win 11/Xám) site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:40:49.372Z",
+ "body": {
+  "searchParameters": {
+   "q": "Acer Aspire 16 AI A16-71M-59L5 (NX.J4YSV.001) (Ultra 5 125H/16GB RAM/512GB SSD/16 inch FHD+ /Win 11/Xám) site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

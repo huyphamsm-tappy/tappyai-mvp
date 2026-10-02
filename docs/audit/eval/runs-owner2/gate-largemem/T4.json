@@ -1,0 +1,27 @@
+{
+  "id": "T4",
+  "text": "Cuối tuần này gia đình 4 người đi đâu gần Sài Gòn?",
+  "parent": null,
+  "status": 200,
+  "ms": 4217,
+  "evidenceId": "e2b233d3-720b-4626-8e1d-61365565756f",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình giả sử bạn muốn tìm một địa điểm vui chơi/thư giãn gần Sài Gòn cho gia đình 4 người vào cuối tuần này. Để gợi ý đúng ý bạn, mình cần biết: **gia đình bạn thích hoạt động nào nhất — đi chơi công viên/khu vui chơi, ăn cơm gia đình, hay spa/thư giãn?** 🤔\n\n[FOLLOWUPS]công viên gần Sài Gòn|quán ăn gia đình|spa thư giãn[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Cuối tuần này gia đình 4 người đi đâu gần Sài Gòn?"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn muốn tìm một địa điểm vui chơi/thư giãn gần Sài Gòn cho gia đình 4 người vào cuối tuần này. Để gợi ý đúng ý bạn, mình cần biết: **gia đình bạn thích hoạt động nào nhất — đi chơi công viên/khu vui chơi, ăn cơm gia đình, hay spa/thư giãn?** 🤔\n\n[FOLLOWUPS]công viên gần Sài Gòn|quán ăn gia đình|spa thư giãn[/FOLLOWUPS]"
+    }
+  ],
+  "toolResults": [],
+  "frames8Raw": []
+}

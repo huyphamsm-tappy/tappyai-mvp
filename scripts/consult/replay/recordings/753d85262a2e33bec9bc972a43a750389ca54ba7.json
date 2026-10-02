@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Hải Sản Đà Nẵng Bé Biển\" OR \"Bé Ni 2\" OR \"Muối Biển Seafood Restaurant\" Đà Nẵng site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:35:57.733Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Hải Sản Đà Nẵng Bé Biển\" OR \"Bé Ni 2\" OR \"Muối Biển Seafood Restaurant\" Đà Nẵng site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Muối Biển Seafood Restaurant",
+    "link": "https://www.tiktok.com/@muoibien.seafood",
+    "snippet": "Muối Biển Seafood Restaurant (@muoibien.seafood) trên TikTok |506 Lượt thích.199 Follower.Nhà hàng hải sản Đà Nẵng Top top giải trí @Muối Biển thèm hải ...",
+    "position": 1
+   },
+   {
+    "title": "Trải Nghiệm Hải Sản Tại Hải Sản Bé Ni 2 Đà Nẵng",
+    "link": "https://www.tiktok.com/@nhungphancuocsong/video/7616929878658600206",
+    "snippet": "Tại Hải Sản Bé Ni 2, mọi món ăn đều được chuẩn bị từ nguyên liệu tươi sống, mang đến sự hấp dẫn đặc biệt cho thực khách. Các món hải sản ở đây ...",
+    "position": 2
+   },
+   {
+    "title": "Hải Sản Bé Ni 2 Đà Nẵng (@haisanbeni2)",
+    "link": "https://www.tiktok.com/@haisanbeni2",
+    "snippet": "Hải Sản Bé Ni 2 Đà Nẵng (@haisanbeni2) trên TikTok |374 Lượt thích.1309 Follower.liên hệ đặt bàn: 07.03.1O 6668.Xem video phổ biến của Hải Sản Bé Ni 2 Đà ...",
+    "position": 3
+   },
+   {
+    "title": "Bé Ni 2 Restaurant Review Da Nang Vietnam",
+    "link": "https://www.tiktok.com/@bongkarnthara/video/7654797491677924628",
+    "snippet": "Bé Ni 2 Restaurant in Da Nang, Vietnam, is a must-visit destination for seafood lovers, particularly those craving lobster.",
+    "position": 4
+   },
+   {
+    "title": "Muối Biển thèm hải sản 🦀🦞🥹 (@muoibienseafood)",
+    "link": "https://www.tiktok.com/@muoibienseafood",
+    "snippet": "Nhà hàng hải sản Đà Nẵng 51 Võ Nguyên Giáp, Ngũ Hành Sơn, Đà Nẵng ... Toro Pan Review Hải Sản Tươi Sống Tại Muối Biển Seafood Restaurant Đà Nẵng #muoibienseafood.",
+    "position": 5
+   },
+   {
+    "title": "Bé Ni 2 Da Nang: 24-Hour Fresh Seafood Spot in Da Nang",
+    "link": "https://www.tiktok.com/@deetravelstories/video/7673509805952191752",
+    "snippet": "Bé Ni 2 , Da Nang Vietnam A must try spot for fresh seafood when youre in Da Nang! Open 24 Hours! #danang #vietnam #vietnamtrip # ...",
+    "position": 6
+   },
+   {
+    "title": "Món Hải Sản Tươi Ngon ở Đà Nẵng",
+    "link": "https://www.tiktok.com/@flojomelbourne/video/7621062764437540114",
+    "snippet": "TikTok video from flojomelbourne (@flojomelbourne): “Khám phá bữa tối hải sản tại Hải Sản Bé Ni 2. Tươi ngon và giá cả phải chăng chỉ 500000 ...",
+    "position": 7
+   },
+   {
+    "title": "Seafood Feast at Bé Ni 2 in Da Nang",
+    "link": "https://www.tiktok.com/@wanderwithspoon/photo/7675476979763645726",
+    "snippet": "Fresh seafood feast at Bé Ni 2 in Da Nang! From choosing the seafood to picking how it's cooked, everything comes straight to the ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,30 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Victory Hotel\" Bà Rịa Vũng Tàu site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T19:20:58.349Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Victory Hotel\" Bà Rịa Vũng Tàu site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Con Son Victory Hotel Đánh giá của khách",
+    "link": "https://vn.trip.com/hotels/con-dao-island-hotel-detail-100633252/cn-sn-victory-hotel/review.html",
+    "snippet": "Các đánh giá Con Son Victory Hotel. 5 Đường Phạm Văn Đồng, Côn Đảo, Bà Rịa - Vũng Tàu, Côn Đảo, TP. Hồ Chí Minh. 8.8/10. Rất tốt. 11 đánh giá. Vệ sinh. 8.7.",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

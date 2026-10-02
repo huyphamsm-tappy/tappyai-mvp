@@ -1,0 +1,48 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Massage tận nơi Sài Gòn\" OR \"Gội Đầu & Massage tại Charm Garden Spa ở Quận 1\" OR \"Trải nghiệm La Spa & Massage Premium tại Quận 1\" quan 1 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T19:22:59.490Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Massage tận nơi Sài Gòn\" OR \"Gội Đầu & Massage tại Charm Garden Spa ở Quận 1\" OR \"Trải nghiệm La Spa & Massage Premium tại Quận 1\" quan 1 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Nhóm Massage Tận Nơi Sài Gòn",
+    "link": "https://www.tiktok.com/discover/nh%C3%B3m-massage-t%E1%BA%ADn-n%C6%A1i-s%C3%A0i-g%C3%B2n",
+    "snippet": "Nhóm Massage Tận Nơi Sài Gòn. Khám phá các video liên quan đến Nhóm Massage Tận Nơi Sài Gòn trên TikTok. Cập nhật lần cuối 2026-09-07. 11 Likes, 1 Comments.",
+    "position": 1
+   },
+   {
+    "title": "massageconcua",
+    "link": "https://www.tiktok.com/tag/massageconcua",
+    "snippet": "1 con cua dùng để mát xa ê cái này duyệt nha , nhào · Massage tận nơi sài gòn- hà nội Hotline(0705-255-266) · Anh chị cần massage mà ngại đi tiệm cứ nhấc ...",
+    "position": 2
+   },
+   {
+    "title": "Massage Tận Nơi Sài Gòm",
+    "link": "https://www.tiktok.com/discover/massage-t%E1%BA%ADn-n%C6%A1i-s%C3%A0i-g%C3%B2m",
+    "snippet": "... 1 | Massage Quận 1 · Ren Spa Quận 10 · Olenii Spa Quận 10 · Sen Boutique Spa Danang ... massage tận nơi Sài Gòn. 834 Likes, 81 Comments. TikTok video from App ...",
+    "position": 3
+   },
+   {
+    "title": "Bob jual kereta - original sound",
+    "link": "https://www.tiktok.com/music/original-sound-Bob-jual-kereta-7620114521826462485",
+    "snippet": "nhóm massage tận nơi sài gòn. |. #TeamAK. |. Overwatch Gameplay & Fun Moments. |. Гражданский брак: Ловушка или любовь? |. Peruanos fingiendo ser extranjeros: ¿ ...",
+    "position": 4
+   }
+  ],
+  "credits": 1
+ }
+}

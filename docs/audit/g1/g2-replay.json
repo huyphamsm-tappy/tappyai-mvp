@@ -1,0 +1,1318 @@
+[
+  {
+    "run": 1,
+    "i": 0,
+    "userText": "Tìm cho tôi một quán Nhật yên tĩnh ở Quận 1.",
+    "ran": true,
+    "bands": 9,
+    "snippet_prices": 0,
+    "claims_in_input": 1,
+    "fabricated_in_input": [],
+    "true_fact_sentences": 0,
+    "v1": {
+      "ratio": 0.764,
+      "fragments": [],
+      "fabricated_surviving": [],
+      "metre_removed": 0,
+      "true_fact_lost": []
+    },
+    "v2": {
+      "ratio": 1,
+      "fragments": [],
+      "fabricated_surviving": [],
+      "metre_removed": 0,
+      "true_fact_lost": [],
+      "stats": {
+        "claims": 1,
+        "user_echo": 0,
+        "supported_by_band": 1,
+        "supported_by_snippet": 0,
+        "unsupported": 0,
+        "clause_cut": 0,
+        "sentences_removed": 0,
+        "lowercase_m_skipped": 0,
+        "attributed": 1,
+        "multi": 0
+      }
+    },
+    "texts": {
+      "input": "\n\nMình chọn **Izakaya Kamura** cho bạn 👌 Đây là quán Nhật yên tĩnh với không gian izakaya truyền thống, có 4.9⭐ từ 3.961 đánh giá Google Maps — chứng tỏ chất lượng rất tốt. Quán nằm ở Thái Văn Lung (Quận 1), mở từ 11h-2h sáng, phục vụ sushi, tempura và các món Nhật khác với giá 200-600k/người.\n\nNgoài ra, **Nori - Modern Izakaya** (Lý Tự Trọng) cũng là lựa chọn tốt nếu bạn thích không gian hiện đại hơn — 4.8⭐, mở từ 18h-1h sáng.\n\nBạn muốn đặt bàn hay xem thêm thông tin chi tiết về quán nào?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem Izakaya Kamura trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=3700468258469518959\",\"primary\":true},{\"label\":\"🌐 Website Izakaya Kamura\",\"type\":\"website\",\"url\":\"https://izakayakamura.vn/\",\"primary\":false},{\"label\":\"📍 Xem Nori - Modern Izakaya trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=3421613120693832923\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Đặt bàn trước không|Giá cụ thể các món|Quán khác yên tĩnh hơn[/FOLLOWUPS]",
+      "v1": "Mình chọn **Izakaya Kamura** cho bạn 👌 Đây là quán Nhật yên tĩnh với không gian izakaya truyền thống, có 4.9⭐ từ 3.961 đánh giá Google Maps — chứng tỏ chất lượng rất tốt.\n\nNgoài ra, **Nori - Modern Izakaya** (Lý Tự Trọng) cũng là lựa chọn tốt nếu bạn thích không gian hiện đại hơn — 4.8⭐, mở từ 18h-1h sáng.\n\nBạn muốn đặt bàn hay xem thêm thông tin chi tiết về quán nào?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem Izakaya Kamura trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=3700468258469518959\",\"primary\":true},{\"label\":\"🌐 Website Izakaya Kamura\",\"type\":\"website\",\"url\":\"https://izakayakamura.vn/\",\"primary\":false},{\"label\":\"📍 Xem Nori - Modern Izakaya trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=3421613120693832923\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Đặt bàn trước không|Giá cụ thể các món|Quán khác yên tĩnh hơn[/FOLLOWUPS]",
+      "v2": "\n\nMình chọn **Izakaya Kamura** cho bạn 👌 Đây là quán Nhật yên tĩnh với không gian izakaya truyền thống, có 4.9⭐ từ 3.961 đánh giá Google Maps — chứng tỏ chất lượng rất tốt. Quán nằm ở Thái Văn Lung (Quận 1), mở từ 11h-2h sáng, phục vụ sushi, tempura và các món Nhật khác với giá 200-600k/người.\n\nNgoài ra, **Nori - Modern Izakaya** (Lý Tự Trọng) cũng là lựa chọn tốt nếu bạn thích không gian hiện đại hơn — 4.8⭐, mở từ 18h-1h sáng.\n\nBạn muốn đặt bàn hay xem thêm thông tin chi tiết về quán nào?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem Izakaya Kamura trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=3700468258469518959\",\"primary\":true},{\"label\":\"🌐 Website Izakaya Kamura\",\"type\":\"website\",\"url\":\"https://izakayakamura.vn/\",\"primary\":false},{\"label\":\"📍 Xem Nori - Modern Izakaya trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=3421613120693832923\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Đặt bàn trước không|Giá cụ thể các món|Quán khác yên tĩnh hơn[/FOLLOWUPS]",
+      "server_v1": "Mình chọn **Izakaya Kamura** cho bạn 👌 Đây là quán Nhật yên tĩnh với không gian izakaya truyền thống, có 4.9⭐ từ 3.961 đánh giá Google Maps — chứng tỏ chất lượng rất tốt.\n\nNgoài ra, **Nori - Modern Izakaya** (Lý Tự Trọng) cũng là lựa chọn tốt nếu bạn thích không gian hiện đại hơn — 4.8⭐, mở từ 18h-1h sáng.\n\nBạn muốn đặt bàn hay xem thêm thông tin chi tiết về quán nào?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem Izakaya Kamura trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=3700468258469518959\",\"primary\":true},{\"label\":\"🌐 Website Izakaya Kamura\",\"type\":\"website\",\"url\":\"https://izakayakamura.vn/\",\"primary\":false},{\"label\":\"📍 Xem Nori - Modern Izakaya trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=3421613120693832923\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Đặt bàn trước không|Giá cụ thể các món|Quán khác yên tĩnh hơn[/FOLLOWUPS]"
+    }
+  },
+  {
+    "run": 1,
+    "i": 1,
+    "userText": "Tìm cho tôi một quán Nhật ngon và yên tĩnh.",
+    "ran": true,
+    "bands": 0,
+    "snippet_prices": 0,
+    "claims_in_input": 0,
+    "fabricated_in_input": [],
+    "true_fact_sentences": 0,
+    "v1": {
+      "ratio": 1,
+      "fragments": [],
+      "fabricated_surviving": [],
+      "metre_removed": 0,
+      "true_fact_lost": []
+    },
+    "v2": {
+      "ratio": 1,
+      "fragments": [],
+      "fabricated_surviving": [],
+      "metre_removed": 0,
+      "true_fact_lost": [],
+      "stats": {
+        "claims": 0,
+        "user_echo": 0,
+        "supported_by_band": 0,
+        "supported_by_snippet": 0,
+        "unsupported": 0,
+        "clause_cut": 0,
+        "sentences_removed": 0,
+        "lowercase_m_skipped": 0,
+        "attributed": 0,
+        "multi": 0
+      }
+    },
+    "texts": {
+      "input": "\n\nMình chọn **Izakaya Unatoto Việt Nam** cho bạn! 🍱 Đây là quán Nhật chất lượng cao nhất ở Quận 1 với **4.9⭐ (7.102 đánh giá Google Maps)** — con số này chứng tỏ rất nhiều khách đã trải nghiệm và yêu thích. Quán nằm ở 56 Trương Định, Bến Thành, có không gian yên tĩnh, mở từ 11:00–23:00 hôm nay. Bạn có thể đặt bàn trực tiếp qua website của họ.\n\nNgoài ra, **Izakaya Kamura** (4.9⭐, 3.961 đánh giá) cũng là lựa chọn tuyệt vời nếu bạn muốn không khí izakaya truyền thống hơn, hay **KOHAKU RAMEN & UDON** (4.8⭐) nếu bạn thích mì ramen/udon.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🍽️ Đặt bàn - Izakaya Unatoto\",\"type\":\"website\",\"url\":\"https://unatotovietnam.com/datban\",\"primary\":true},{\"label\":\"📍 Xem trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=17225553360722390934\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Xem thêm quán Nhật khác|Quán Nhật có sushi tươi|Quán Nhật giá bình dân[/FOLLOWUPS]",
+      "v1": "\n\nMình chọn **Izakaya Unatoto Việt Nam** cho bạn! 🍱 Đây là quán Nhật chất lượng cao nhất ở Quận 1 với **4.9⭐ (7.102 đánh giá Google Maps)** — con số này chứng tỏ rất nhiều khách đã trải nghiệm và yêu thích. Quán nằm ở 56 Trương Định, Bến Thành, có không gian yên tĩnh, mở từ 11:00–23:00 hôm nay. Bạn có thể đặt bàn trực tiếp qua website của họ.\n\nNgoài ra, **Izakaya Kamura** (4.9⭐, 3.961 đánh giá) cũng là lựa chọn tuyệt vời nếu bạn muốn không khí izakaya truyền thống hơn, hay **KOHAKU RAMEN & UDON** (4.8⭐) nếu bạn thích mì ramen/udon.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🍽️ Đặt bàn - Izakaya Unatoto\",\"type\":\"website\",\"url\":\"https://unatotovietnam.com/datban\",\"primary\":true},{\"label\":\"📍 Xem trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=17225553360722390934\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Xem thêm quán Nhật khác|Quán Nhật có sushi tươi|Quán Nhật giá bình dân[/FOLLOWUPS]",
+      "v2": "\n\nMình chọn **Izakaya Unatoto Việt Nam** cho bạn! 🍱 Đây là quán Nhật chất lượng cao nhất ở Quận 1 với **4.9⭐ (7.102 đánh giá Google Maps)** — con số này chứng tỏ rất nhiều khách đã trải nghiệm và yêu thích. Quán nằm ở 56 Trương Định, Bến Thành, có không gian yên tĩnh, mở từ 11:00–23:00 hôm nay. Bạn có thể đặt bàn trực tiếp qua website của họ.\n\nNgoài ra, **Izakaya Kamura** (4.9⭐, 3.961 đánh giá) cũng là lựa chọn tuyệt vời nếu bạn muốn không khí izakaya truyền thống hơn, hay **KOHAKU RAMEN & UDON** (4.8⭐) nếu bạn thích mì ramen/udon.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🍽️ Đặt bàn - Izakaya Unatoto\",\"type\":\"website\",\"url\":\"https://unatotovietnam.com/datban\",\"primary\":true},{\"label\":\"📍 Xem trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=17225553360722390934\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Xem thêm quán Nhật khác|Quán Nhật có sushi tươi|Quán Nhật giá bình dân[/FOLLOWUPS]",
+      "server_v1": "\n\nMình chọn **Izakaya Unatoto Việt Nam** cho bạn! 🍱 Đây là quán Nhật chất lượng cao nhất ở Quận 1 với **4.9⭐ (7.102 đánh giá Google Maps)** — con số này chứng tỏ rất nhiều khách đã trải nghiệm và yêu thích. Quán nằm ở 56 Trương Định, Bến Thành, có không gian yên tĩnh, mở từ 11:00–23:00 hôm nay. Bạn có thể đặt bàn trực tiếp qua website của họ.\n\nNgoài ra, **Izakaya Kamura** (4.9⭐, 3.961 đánh giá) cũng là lựa chọn tuyệt vời nếu bạn muốn không khí izakaya truyền thống hơn, hay **KOHAKU RAMEN & UDON** (4.8⭐) nếu bạn thích mì ramen/udon.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🍽️ Đặt bàn - Izakaya Unatoto\",\"type\":\"website\",\"url\":\"https://unatotovietnam.com/datban\",\"primary\":true},{\"label\":\"📍 Xem trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=17225553360722390934\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Xem thêm quán Nhật khác|Quán Nhật có sushi tươi|Quán Nhật giá bình dân[/FOLLOWUPS]"
+    }
+  },
+  {
+    "run": 1,
+    "i": 2,
+    "userText": "Tìm quán ăn tối dưới 500k cho 2 người, yên tĩnh.",
+    "ran": true,
+    "bands": 10,
+    "snippet_prices": 0,
+    "claims_in_input": 4,
+    "fabricated_in_input": [],
+    "true_fact_sentences": 0,
+    "v1": {
+      "ratio": 0.456,
+      "fragments": [],
+      "fabricated_surviving": [],
+      "metre_removed": 0,
+      "true_fact_lost": []
+    },
+    "v2": {
+      "ratio": 1,
+      "fragments": [],
+      "fabricated_surviving": [],
+      "metre_removed": 0,
+      "true_fact_lost": [],
+      "stats": {
+        "claims": 4,
+        "user_echo": 1,
+        "supported_by_band": 3,
+        "supported_by_snippet": 0,
+        "unsupported": 0,
+        "clause_cut": 0,
+        "sentences_removed": 0,
+        "lowercase_m_skipped": 0,
+        "attributed": 1,
+        "multi": 2
+      }
+    },
+    "texts": {
+      "input": "Mình tìm quán ăn yên tĩnh cho 2 người với budget dưới 500k ở Quận 1 nhé.\n\nMình chọn **GÀ RÁN K- JEJU CHICKEN-Quận 1** cho bạn 👍 Quán này có **4.9⭐ (7.166 đánh giá Google Maps)** — số lượng đánh giá lớn là bằng chứng mạnh mẽ về chất lượng. Giá 100-200k/người rất hợp budget, không gian yên tĩnh, mở đến 3h sáng nên tối nay bạn có thể thoải mái ăn.\n\nNgoài ra còn **BÒ TƠ QUÁN MỘC** (4.9⭐, 200-400k/người) nếu bạn muốn thử thịt bò nướng, hoặc **QUÁN ĂN NGON - Nguyên Sinh Bistro** (4.8⭐, 200-300k/người) với không gian cổ kính yên tĩnh.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛵 ShopeeFood - GÀ RÁN K- JEJU CHICKEN\",\"type\":\"website\",\"url\":\"https://shopeefood.vn/tim-kiem?q=G%C3%80+R%C3%81N+K+JEJU+CHICKEN+Qu%E1%BA%ADn+1\",\"primary\":true},{\"label\":\"🛵 GrabFood - GÀ RÁN K- JEJU CHICKEN\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/en/s?searchKeyword=G%C3%80+R%C3%81N+K+JEJU+CHICKEN+Qu%E1%BA%ADn+1\",\"primary\":false},{\"label\":\"📍 Maps - GÀ RÁN K- JEJU CHICKEN\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=5896882158256817567\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Quán Nhật yên tĩnh Quận 1|Quán ăn cao cấp dưới 500k|Quán ăn tối muộn Quận 1[/FOLLOWUPS]",
+      "v1": "Mình tìm quán ăn yên tĩnh cho 2 người với budget dưới 500k ở Quận 1 nhé.\n\nMình chọn **GÀ RÁN K- JEJU CHICKEN-Quận 1** cho bạn 👍 Quán này có **4.9⭐ (7.166 đánh giá Google Maps)** — số lượng đánh giá lớn là bằng chứng mạnh mẽ về chất lượng.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛵 ShopeeFood - GÀ RÁN K- JEJU CHICKEN\",\"type\":\"website\",\"url\":\"https://shopeefood.vn/tim-kiem?q=G%C3%80+R%C3%81N+K+JEJU+CHICKEN+Qu%E1%BA%ADn+1\",\"primary\":true},{\"label\":\"🛵 GrabFood - GÀ RÁN K- JEJU CHICKEN\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/en/s?searchKeyword=G%C3%80+R%C3%81N+K+JEJU+CHICKEN+Qu%E1%BA%ADn+1\",\"primary\":false},{\"label\":\"📍 Maps - GÀ RÁN K- JEJU CHICKEN\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=5896882158256817567\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Quán Nhật yên tĩnh Quận 1|Quán ăn cao cấp dưới 500k|Quán ăn tối muộn Quận 1[/FOLLOWUPS]",
+      "v2": "Mình tìm quán ăn yên tĩnh cho 2 người với budget dưới 500k ở Quận 1 nhé.\n\nMình chọn **GÀ RÁN K- JEJU CHICKEN-Quận 1** cho bạn 👍 Quán này có **4.9⭐ (7.166 đánh giá Google Maps)** — số lượng đánh giá lớn là bằng chứng mạnh mẽ về chất lượng. Giá 100-200k/người rất hợp budget, không gian yên tĩnh, mở đến 3h sáng nên tối nay bạn có thể thoải mái ăn.\n\nNgoài ra còn **BÒ TƠ QUÁN MỘC** (4.9⭐, 200-400k/người) nếu bạn muốn thử thịt bò nướng, hoặc **QUÁN ĂN NGON - Nguyên Sinh Bistro** (4.8⭐, 200-300k/người) với không gian cổ kính yên tĩnh.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛵 ShopeeFood - GÀ RÁN K- JEJU CHICKEN\",\"type\":\"website\",\"url\":\"https://shopeefood.vn/tim-kiem?q=G%C3%80+R%C3%81N+K+JEJU+CHICKEN+Qu%E1%BA%ADn+1\",\"primary\":true},{\"label\":\"🛵 GrabFood - GÀ RÁN K- JEJU CHICKEN\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/en/s?searchKeyword=G%C3%80+R%C3%81N+K+JEJU+CHICKEN+Qu%E1%BA%ADn+1\",\"primary\":false},{\"label\":\"📍 Maps - GÀ RÁN K- JEJU CHICKEN\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=5896882158256817567\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Quán Nhật yên tĩnh Quận 1|Quán ăn cao cấp dưới 500k|Quán ăn tối muộn Quận 1[/FOLLOWUPS]",
+      "server_v1": "Mình tìm quán ăn yên tĩnh cho 2 người với budget dưới 500k ở Quận 1 nhé.\n\nMình chọn **GÀ RÁN K- JEJU CHICKEN-Quận 1** cho bạn 👍 Quán này có **4.9⭐ (7.166 đánh giá Google Maps)** — số lượng đánh giá lớn là bằng chứng mạnh mẽ về chất lượng.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛵 ShopeeFood - GÀ RÁN K- JEJU CHICKEN\",\"type\":\"website\",\"url\":\"https://shopeefood.vn/tim-kiem?q=G%C3%80+R%C3%81N+K+JEJU+CHICKEN+Qu%E1%BA%ADn+1\",\"primary\":true},{\"label\":\"🛵 GrabFood - GÀ RÁN K- JEJU CHICKEN\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/en/s?searchKeyword=G%C3%80+R%C3%81N+K+JEJU+CHICKEN+Qu%E1%BA%ADn+1\",\"primary\":false},{\"label\":\"📍 Maps - GÀ RÁN K- JEJU CHICKEN\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=5896882158256817567\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Quán Nhật yên tĩnh Quận 1|Quán ăn cao cấp dưới 500k|Quán ăn tối muộn Quận 1[/FOLLOWUPS]"
+    }
+  },
+  {
+    "run": 1,
+    "i": 3,
+    "userText": "Cho tôi 3 quán cafe đẹp ở Thảo Điền.",
+    "ran": true,
+    "bands": 9,
+    "snippet_prices": 0,
+    "claims_in_input": 1,
+    "fabricated_in_input": [],
+    "true_fact_sentences": 1,
+    "v1": {
+      "ratio": 0.716,
+      "fragments": [],
+      "fabricated_surviving": [],
+      "metre_removed": 0,
+      "true_fact_lost": [
+        "Mình chọn **Wego Coffee Thảo Điền** cho bạn — quán này có 4.8⭐ từ 337 đánh giá Google Maps, không gian yên tĩnh và giá phải chăng (dưới 100k)."
+      ]
+    },
+    "v2": {
+      "ratio": 1,
+      "fragments": [],
+      "fabricated_surviving": [],
+      "metre_removed": 0,
+      "true_fact_lost": [],
+      "stats": {
+        "claims": 1,
+        "user_echo": 0,
+        "supported_by_band": 1,
+        "supported_by_snippet": 0,
+        "unsupported": 0,
+        "clause_cut": 0,
+        "sentences_removed": 0,
+        "lowercase_m_skipped": 0,
+        "attributed": 1,
+        "multi": 0
+      }
+    },
+    "texts": {
+      "input": "Mình tìm các quán cafe đẹp ở Thảo Điền cho bạn nhé.\n\nMình chọn **Wego Coffee Thảo Điền** cho bạn — quán này có 4.8⭐ từ 337 đánh giá Google Maps, không gian yên tĩnh và giá phải chăng (dưới 100k). Mở từ 7h sáng, hoàn hảo cho cuối tuần với bạn 👌\n\nHai quán khác cũng rất đáng thử:\n- **Every Half Roastery Thảo Điền** (4.7⭐, 943 đánh giá) — quán specialty coffee chất lượng, mở đến 21:30\n- **SOO COFFEE** (4.7⭐, 556 đánh giá) — không gian hiện đại, mở muộn đến 23h\n\nBạn muốn biết thêm chi tiết về quán nào không?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"☕ Xem Wego Coffee trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=11990153719229629050\",\"primary\":true},{\"label\":\"☕ Xem Every Half Roastery trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=3305361010244550020\",\"primary\":false},{\"label\":\"☕ Xem SOO COFFEE trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=2075627989841548544\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Quán nào có wifi tốt?|Quán nào phù hợp để làm việc?|Có quán nào gần Quận 1 hơn không?[/FOLLOWUPS]",
+      "v1": "Mình tìm các quán cafe đẹp ở Thảo Điền cho bạn nhé.\n\n Mở từ 7h sáng, hoàn hảo cho cuối tuần với bạn 👌\n\nHai quán khác cũng rất đáng thử:\n- **Every Half Roastery Thảo Điền** (4.7⭐, 943 đánh giá) — quán specialty coffee chất lượng, mở đến 21:30\n- **SOO COFFEE** (4.7⭐, 556 đánh giá) — không gian hiện đại, mở muộn đến 23h\n\nBạn muốn biết thêm chi tiết về quán nào không?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"☕ Xem Wego Coffee trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=11990153719229629050\",\"primary\":true},{\"label\":\"☕ Xem Every Half Roastery trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=3305361010244550020\",\"primary\":false},{\"label\":\"☕ Xem SOO COFFEE trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=2075627989841548544\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Quán nào có wifi tốt?|Quán nào phù hợp để làm việc?|Có quán nào gần Quận 1 hơn không?[/FOLLOWUPS]",
+      "v2": "Mình tìm các quán cafe đẹp ở Thảo Điền cho bạn nhé.\n\nMình chọn **Wego Coffee Thảo Điền** cho bạn — quán này có 4.8⭐ từ 337 đánh giá Google Maps, không gian yên tĩnh và giá phải chăng (dưới 100k). Mở từ 7h sáng, hoàn hảo cho cuối tuần với bạn 👌\n\nHai quán khác cũng rất đáng thử:\n- **Every Half Roastery Thảo Điền** (4.7⭐, 943 đánh giá) — quán specialty coffee chất lượng, mở đến 21:30\n- **SOO COFFEE** (4.7⭐, 556 đánh giá) — không gian hiện đại, mở muộn đến 23h\n\nBạn muốn biết thêm chi tiết về quán nào không?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"☕ Xem Wego Coffee trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=11990153719229629050\",\"primary\":true},{\"label\":\"☕ Xem Every Half Roastery trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=3305361010244550020\",\"primary\":false},{\"label\":\"☕ Xem SOO COFFEE trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=2075627989841548544\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Quán nào có wifi tốt?|Quán nào phù hợp để làm việc?|Có quán nào gần Quận 1 hơn không?[/FOLLOWUPS]",
+      "server_v1": "Mình tìm các quán cafe đẹp ở Thảo Điền cho bạn nhé.\n\n Mở từ 7h sáng, hoàn hảo cho cuối tuần với bạn 👌\n\nHai quán khác cũng rất đáng thử:\n- **Every Half Roastery Thảo Điền** (4.7⭐, 943 đánh giá) — quán specialty coffee chất lượng, mở đến 21:30\n- **SOO COFFEE** (4.7⭐, 556 đánh giá) — không gian hiện đại, mở muộn đến 23h\n\nBạn muốn biết thêm chi tiết về quán nào không?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"☕ Xem Wego Coffee trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=11990153719229629050\",\"primary\":true},{\"label\":\"☕ Xem Every Half Roastery trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=3305361010244550020\",\"primary\":false},{\"label\":\"☕ Xem SOO COFFEE trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=2075627989841548544\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Quán nào có wifi tốt?|Quán nào phù hợp để làm việc?|Có quán nào gần Quận 1 hơn không?[/FOLLOWUPS]"
+    }
+  },
+  {
+    "run": 1,
+    "i": 4,
+    "userText": "So sánh 3 quán này.",
+    "ran": true,
+    "bands": 0,
+    "snippet_prices": 0,
+    "claims_in_input": 0,
+    "fabricated_in_input": [],
+    "true_fact_sentences": 0,
+    "v1": {
+      "ratio": 1,
+      "fragments": [],
+      "fabricated_surviving": [],
+      "metre_removed": 0,
+      "true_fact_lost": []
+    },
+    "v2": {
+      "ratio": 1,
+      "fragments": [],
+      "fabricated_surviving": [],
+      "metre_removed": 0,
+      "true_fact_lost": [],
+      "stats": {
+        "claims": 0,
+        "user_echo": 0,
+        "supported_by_band": 0,
+        "supported_by_snippet": 0,
+        "unsupported": 0,
+        "clause_cut": 0,
+        "sentences_removed": 0,
+        "lowercase_m_skipped": 0,
+        "attributed": 0,
+        "multi": 0
+      }
+    },
+    "texts": {
+      "input": "Mình so sánh 3 quán cafe này cho bạn:\n\n**Không gian & Vibe:**\n- **The Kafe** — yên tĩnh, phù hợp nhất với phong cách bạn thích, không gian xanh mát\n- **Every Half Roastery** — hiện đại, chuyên về specialty coffee, khí thế chuyên nghiệp hơn\n- **SOO COFFEE** — hiện đại, sôi động hơn, mở muộn nên tối đông khách\n\n**Chất lượng & Đánh giá:**\n- **Every Half Roastery** & **SOO COFFEE** cùng 4.7⭐ nhưng Every Half có 943 đánh giá (nhiều hơn, tin cậy hơn)\n- **The Kafe** cũng được đánh giá tốt, nhưng dữ liệu đánh giá chưa rõ\n\n**Giờ mở cửa:**\n- **The Kafe** — 7h-22h (cân bằng)\n- **Every Half Roastery** — 7h-21h30\n- **SOO COFFEE** — mở muộn nhất đến 23h (tốt nếu bạn thích cafe tối)\n\n**Mình nghiêng về The Kafe** vì nó vừa yên tĩnh (đúng phong cách bạn), vừa có không gian đẹp, phù hợp để ngồi lâu với bạn vào cuối tuần. Nếu bạn ưu tiên specialty coffee chất lượng cao thì Every Half Roastery là lựa chọn tốt hơn.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🗺️ Xem trên Maps - The Kafe\",\"type\":\"maps\",\"url\":\"https://www.google.com/maps/search/The+Kafe+Thao+Dien\",\"primary\":true},{\"label\":\"🗺️ Xem trên Maps - Every Half Roastery\",\"type\":\"maps\",\"url\":\"https://www.google.com/maps/search/Every+Half+Roastery+Thao+Dien\",\"primary\":false},{\"label\":\"🗺️ Xem trên Maps - SOO COFFEE\",\"type\":\"maps\",\"url\":\"https://www.google.com/maps/search/SOO+COFFEE+Thao+Dien\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]The Kafe có wifi không?|Quán nào gần nhất từ vị trí tôi?|Có quán cafe khác ở Thảo Điền không?[/FOLLOWUPS]",
+      "v1": "Mình so sánh 3 quán cafe này cho bạn:\n\n**Không gian & Vibe:**\n- **The Kafe** — yên tĩnh, phù hợp nhất với phong cách bạn thích, không gian xanh mát\n- **Every Half Roastery** — hiện đại, chuyên về specialty coffee, khí thế chuyên nghiệp hơn\n- **SOO COFFEE** — hiện đại, sôi động hơn, mở muộn nên tối đông khách\n\n**Chất lượng & Đánh giá:**\n- **Every Half Roastery** & **SOO COFFEE** cùng 4.7⭐ nhưng Every Half có 943 đánh giá (nhiều hơn, tin cậy hơn)\n- **The Kafe** cũng được đánh giá tốt, nhưng dữ liệu đánh giá chưa rõ\n\n**Giờ mở cửa:**\n- **The Kafe** — 7h-22h (cân bằng)\n- **Every Half Roastery** — 7h-21h30\n- **SOO COFFEE** — mở muộn nhất đến 23h (tốt nếu bạn thích cafe tối)\n\n**Mình nghiêng về The Kafe** vì nó vừa yên tĩnh (đúng phong cách bạn), vừa có không gian đẹp, phù hợp để ngồi lâu với bạn vào cuối tuần. Nếu bạn ưu tiên specialty coffee chất lượng cao thì Every Half Roastery là lựa chọn tốt hơn.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🗺️ Xem trên Maps - The Kafe\",\"type\":\"maps\",\"url\":\"https://www.google.com/maps/search/The+Kafe+Thao+Dien\",\"primary\":true},{\"label\":\"🗺️ Xem trên Maps - Every Half Roastery\",\"type\":\"maps\",\"url\":\"https://www.google.com/maps/search/Every+Half+Roastery+Thao+Dien\",\"primary\":false},{\"label\":\"🗺️ Xem trên Maps - SOO COFFEE\",\"type\":\"maps\",\"url\":\"https://www.google.com/maps/search/SOO+COFFEE+Thao+Dien\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]The Kafe có wifi không?|Quán nào gần nhất từ vị trí tôi?|Có quán cafe khác ở Thảo Điền không?[/FOLLOWUPS]",
+      "v2": "Mình so sánh 3 quán cafe này cho bạn:\n\n**Không gian & Vibe:**\n- **The Kafe** — yên tĩnh, phù hợp nhất với phong cách bạn thích, không gian xanh mát\n- **Every Half Roastery** — hiện đại, chuyên về specialty coffee, khí thế chuyên nghiệp hơn\n- **SOO COFFEE** — hiện đại, sôi động hơn, mở muộn nên tối đông khách\n\n**Chất lượng & Đánh giá:**\n- **Every Half Roastery** & **SOO COFFEE** cùng 4.7⭐ nhưng Every Half có 943 đánh giá (nhiều hơn, tin cậy hơn)\n- **The Kafe** cũng được đánh giá tốt, nhưng dữ liệu đánh giá chưa rõ\n\n**Giờ mở cửa:**\n- **The Kafe** — 7h-22h (cân bằng)\n- **Every Half Roastery** — 7h-21h30\n- **SOO COFFEE** — mở muộn nhất đến 23h (tốt nếu bạn thích cafe tối)\n\n**Mình nghiêng về The Kafe** vì nó vừa yên tĩnh (đúng phong cách bạn), vừa có không gian đẹp, phù hợp để ngồi lâu với bạn vào cuối tuần. Nếu bạn ưu tiên specialty coffee chất lượng cao thì Every Half Roastery là lựa chọn tốt hơn.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🗺️ Xem trên Maps - The Kafe\",\"type\":\"maps\",\"url\":\"https://www.google.com/maps/search/The+Kafe+Thao+Dien\",\"primary\":true},{\"label\":\"🗺️ Xem trên Maps - Every Half Roastery\",\"type\":\"maps\",\"url\":\"https://www.google.com/maps/search/Every+Half+Roastery+Thao+Dien\",\"primary\":false},{\"label\":\"🗺️ Xem trên Maps - SOO COFFEE\",\"type\":\"maps\",\"url\":\"https://www.google.com/maps/search/SOO+COFFEE+Thao+Dien\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]The Kafe có wifi không?|Quán nào gần nhất từ vị trí tôi?|Có quán cafe khác ở Thảo Điền không?[/FOLLOWUPS]",
+      "server_v1": "Mình so sánh 3 quán cafe này cho bạn:\n\n**Không gian & Vibe:**\n- **The Kafe** — yên tĩnh, phù hợp nhất với phong cách bạn thích, không gian xanh mát\n- **Every Half Roastery** — hiện đại, chuyên về specialty coffee, khí thế chuyên nghiệp hơn\n- **SOO COFFEE** — hiện đại, sôi động hơn, mở muộn nên tối đông khách\n\n**Chất lượng & Đánh giá:**\n- **Every Half Roastery** & **SOO COFFEE** cùng 4.7⭐ nhưng Every Half có 943 đánh giá (nhiều hơn, tin cậy hơn)\n- **The Kafe** cũng được đánh giá tốt, nhưng dữ liệu đánh giá chưa rõ\n\n**Giờ mở cửa:**\n- **The Kafe** — 7h-22h (cân bằng)\n- **Every Half Roastery** — 7h-21h30\n- **SOO COFFEE** — mở muộn nhất đến 23h (tốt nếu bạn thích cafe tối)\n\n**Mình nghiêng về The Kafe** vì nó vừa yên tĩnh (đúng phong cách bạn), vừa có không gian đẹp, phù hợp để ngồi lâu với bạn vào cuối tuần. Nếu bạn ưu tiên specialty coffee chất lượng cao thì Every Half Roastery là lựa chọn tốt hơn.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🗺️ Xem trên Maps - The Kafe\",\"type\":\"maps\",\"url\":\"https://www.google.com/maps/search/The+Kafe+Thao+Dien\",\"primary\":true},{\"label\":\"🗺️ Xem trên Maps - Every Half Roastery\",\"type\":\"maps\",\"url\":\"https://www.google.com/maps/search/Every+Half+Roastery+Thao+Dien\",\"primary\":false},{\"label\":\"🗺️ Xem trên Maps - SOO COFFEE\",\"type\":\"maps\",\"url\":\"https://www.google.com/maps/search/SOO+COFFEE+Thao+Dien\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]The Kafe có wifi không?|Quán nào gần nhất từ vị trí tôi?|Có quán cafe khác ở Thảo Điền không?[/FOLLOWUPS]"
+    }
+  },
+  {
+    "run": 1,
+    "i": 5,
+    "userText": "Cho tôi 5 quán cafe đẹp ở Thảo Điền.",
+    "ran": true,
+    "bands": 0,
+    "snippet_prices": 0,
+    "claims_in_input": 1,
+    "fabricated_in_input": [
+      "500k"
+    ],
+    "true_fact_sentences": 1,
+    "v1": {
+      "ratio": 0.659,
+      "fragments": [],
+      "fabricated_surviving": [],
+      "metre_removed": 0,
+      "true_fact_lost": [
+        "Ngoài ra, mình còn gợi ý thêm **Wego Coffee** (4.8⭐, 337 đánh giá) và **Every Half Roastery** (4.7⭐, 943 đánh giá) — cả hai đều có không gian thoải mái, cà phê chất lượng, và giá hợp lý dưới 500k."
+      ]
+    },
+    "v2": {
+      "ratio": 0.659,
+      "fragments": [],
+      "fabricated_surviving": [],
+      "metre_removed": 0,
+      "true_fact_lost": [
+        "Ngoài ra, mình còn gợi ý thêm **Wego Coffee** (4.8⭐, 337 đánh giá) và **Every Half Roastery** (4.7⭐, 943 đánh giá) — cả hai đều có không gian thoải mái, cà phê chất lượng, và giá hợp lý dưới 500k."
+      ],
+      "stats": {
+        "claims": 1,
+        "user_echo": 0,
+        "supported_by_band": 0,
+        "supported_by_snippet": 0,
+        "unsupported": 1,
+        "clause_cut": 0,
+        "sentences_removed": 1,
+        "lowercase_m_skipped": 0,
+        "attributed": 1,
+        "multi": 0
+      }
+    },
+    "texts": {
+      "input": "Mình sẽ tìm những quán cafe đẹp ở Thảo Điền cho bạn nhé.\n\nMình chọn **Dangdo Cafe Thảo Điền** cho bạn — quán này có 4.9⭐ từ 333 đánh giá Google Maps, không gian yên tĩnh và đẹp, mở từ 9h sáng đến 10h tối, rất phù hợp với phong cách của bạn 👍\n\nNgoài ra, mình còn gợi ý thêm **Wego Coffee** (4.8⭐, 337 đánh giá) và **Every Half Roastery** (4.7⭐, 943 đánh giá) — cả hai đều có không gian thoải mái, cà phê chất lượng, và giá hợp lý dưới 500k.\n\nBạn muốn biết thêm chi tiết về quán nào hoặc tìm cafe khác với phong cách khác không?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"☕ Xem Dangdo Cafe trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=4168420532603884259\",\"primary\":true},{\"label\":\"☕ Xem Wego Coffee trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=11990153719229629050\",\"primary\":false},{\"label\":\"☕ Xem Every Half Roastery trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=3305361010244550020\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Dangdo Cafe vs Wego Coffee|Cafe gần Thảo Điền có wifi|Cafe Thảo Điền buổi tối[/FOLLOWUPS]",
+      "v1": "Mình sẽ tìm những quán cafe đẹp ở Thảo Điền cho bạn nhé.\n\nMình chọn **Dangdo Cafe Thảo Điền** cho bạn — quán này có 4.9⭐ từ 333 đánh giá Google Maps, không gian yên tĩnh và đẹp, mở từ 9h sáng đến 10h tối, rất phù hợp với phong cách của bạn 👍\n\nBạn muốn biết thêm chi tiết về quán nào hoặc tìm cafe khác với phong cách khác không?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"☕ Xem Dangdo Cafe trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=4168420532603884259\",\"primary\":true},{\"label\":\"☕ Xem Wego Coffee trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=11990153719229629050\",\"primary\":false},{\"label\":\"☕ Xem Every Half Roastery trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=3305361010244550020\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Dangdo Cafe vs Wego Coffee|Cafe gần Thảo Điền có wifi|Cafe Thảo Điền buổi tối[/FOLLOWUPS]",
+      "v2": "Mình sẽ tìm những quán cafe đẹp ở Thảo Điền cho bạn nhé.\n\nMình chọn **Dangdo Cafe Thảo Điền** cho bạn — quán này có 4.9⭐ từ 333 đánh giá Google Maps, không gian yên tĩnh và đẹp, mở từ 9h sáng đến 10h tối, rất phù hợp với phong cách của bạn 👍\n\nBạn muốn biết thêm chi tiết về quán nào hoặc tìm cafe khác với phong cách khác không?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"☕ Xem Dangdo Cafe trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=4168420532603884259\",\"primary\":true},{\"label\":\"☕ Xem Wego Coffee trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=11990153719229629050\",\"primary\":false},{\"label\":\"☕ Xem Every Half Roastery trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=3305361010244550020\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Dangdo Cafe vs Wego Coffee|Cafe gần Thảo Điền có wifi|Cafe Thảo Điền buổi tối[/FOLLOWUPS]",
+      "server_v1": "Mình sẽ tìm những quán cafe đẹp ở Thảo Điền cho bạn nhé.\n\nMình chọn **Dangdo Cafe Thảo Điền** cho bạn — quán này có 4.9⭐ từ 333 đánh giá Google Maps, không gian yên tĩnh và đẹp, mở từ 9h sáng đến 10h tối, rất phù hợp với phong cách của bạn 👍\n\nBạn muốn biết thêm chi tiết về quán nào hoặc tìm cafe khác với phong cách khác không?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"☕ Xem Dangdo Cafe trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=4168420532603884259\",\"primary\":true},{\"label\":\"☕ Xem Wego Coffee trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=11990153719229629050\",\"primary\":false},{\"label\":\"☕ Xem Every Half Roastery trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=3305361010244550020\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Dangdo Cafe vs Wego Coffee|Cafe gần Thảo Điền có wifi|Cafe Thảo Điền buổi tối[/FOLLOWUPS]"
+    }
+  },
+  {
+    "run": 1,
+    "i": 6,
+    "userText": "Tìm nhà hàng tầm 300-500k/người ở Quận 1.",
+    "ran": true,
+    "bands": 0,
+    "snippet_prices": 0,
+    "claims_in_input": 2,
+    "fabricated_in_input": [],
+    "true_fact_sentences": 0,
+    "v1": {
+      "ratio": 1,
+      "fragments": [],
+      "fabricated_surviving": [],
+      "metre_removed": 0,
+      "true_fact_lost": []
+    },
+    "v2": {
+      "ratio": 1,
+      "fragments": [],
+      "fabricated_surviving": [],
+      "metre_removed": 0,
+      "true_fact_lost": [],
+      "stats": {
+        "claims": 2,
+        "user_echo": 2,
+        "supported_by_band": 0,
+        "supported_by_snippet": 0,
+        "unsupported": 0,
+        "clause_cut": 0,
+        "sentences_removed": 0,
+        "lowercase_m_skipped": 0,
+        "attributed": 0,
+        "multi": 0
+      }
+    },
+    "texts": {
+      "input": "Mình tìm nhà hàng ở Quận 1 trong tầm 300-500k/người cho bạn nhé 🍽️\n\nMình chọn **Truyền Thuyết ChamPong Quận 1** cho bạn 👍 Đây là nhà hàng Hàn Quốc với **4.9⭐ (4.325 đánh giá Google Maps)** — con số này đủ mạnh để mình tin tưởng. Quán chuyên cơm và hải sản Hàn, mở từ 10:40–22:00, nằm ở Trần Cao Vân, Quận 1. Giá tầm 300-500k/người là phù hợp với mức chi tiêu của bạn.\n\nHai lựa chọn khác cũng tốt: **BULMAKYEOLSAM** (4.8⭐, mở từ 15:00–03:00, lý tưởng nếu bạn muốn ăn tối muộn) và **Gogi House** (4.7⭐, chuyên nướng Hàn, mở 11:00–22:00).\n\nBạn muốn xem chi tiết hoặc đặt bàn ở quán nào không? 🍽️\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛵 ShopeeFood - Truyền Thuyết ChamPong\",\"type\":\"website\",\"url\":\"https://shopeefood.vn/tim-kiem?q=Truy%E1%BB%81n+Thuy%E1%BA%BFt+ChamPong+Qu%E1%BA%ADn+1\",\"primary\":true},{\"label\":\"🛵 GrabFood - Truyền Thuyết ChamPong\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/en/s?searchKeyword=Truy%E1%BB%81n+Thuy%E1%BA%BFt+ChamPong+Qu%E1%BA%ADn+1\",\"primary\":false},{\"label\":\"📍 Maps - Truyền Thuyết ChamPong\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=4604500883820478645\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Nhà hàng Nhật ở Quận 1|Quán ăn yên tĩnh Quận 1|Cafe đẹp Quận 1[/FOLLOWUPS]",
+      "v1": "Mình tìm nhà hàng ở Quận 1 trong tầm 300-500k/người cho bạn nhé 🍽️\n\nMình chọn **Truyền Thuyết ChamPong Quận 1** cho bạn 👍 Đây là nhà hàng Hàn Quốc với **4.9⭐ (4.325 đánh giá Google Maps)** — con số này đủ mạnh để mình tin tưởng. Quán chuyên cơm và hải sản Hàn, mở từ 10:40–22:00, nằm ở Trần Cao Vân, Quận 1. Giá tầm 300-500k/người là phù hợp với mức chi tiêu của bạn.\n\nHai lựa chọn khác cũng tốt: **BULMAKYEOLSAM** (4.8⭐, mở từ 15:00–03:00, lý tưởng nếu bạn muốn ăn tối muộn) và **Gogi House** (4.7⭐, chuyên nướng Hàn, mở 11:00–22:00).\n\nBạn muốn xem chi tiết hoặc đặt bàn ở quán nào không? 🍽️\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛵 ShopeeFood - Truyền Thuyết ChamPong\",\"type\":\"website\",\"url\":\"https://shopeefood.vn/tim-kiem?q=Truy%E1%BB%81n+Thuy%E1%BA%BFt+ChamPong+Qu%E1%BA%ADn+1\",\"primary\":true},{\"label\":\"🛵 GrabFood - Truyền Thuyết ChamPong\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/en/s?searchKeyword=Truy%E1%BB%81n+Thuy%E1%BA%BFt+ChamPong+Qu%E1%BA%ADn+1\",\"primary\":false},{\"label\":\"📍 Maps - Truyền Thuyết ChamPong\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=4604500883820478645\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Nhà hàng Nhật ở Quận 1|Quán ăn yên tĩnh Quận 1|Cafe đẹp Quận 1[/FOLLOWUPS]",
+      "v2": "Mình tìm nhà hàng ở Quận 1 trong tầm 300-500k/người cho bạn nhé 🍽️\n\nMình chọn **Truyền Thuyết ChamPong Quận 1** cho bạn 👍 Đây là nhà hàng Hàn Quốc với **4.9⭐ (4.325 đánh giá Google Maps)** — con số này đủ mạnh để mình tin tưởng. Quán chuyên cơm và hải sản Hàn, mở từ 10:40–22:00, nằm ở Trần Cao Vân, Quận 1. Giá tầm 300-500k/người là phù hợp với mức chi tiêu của bạn.\n\nHai lựa chọn khác cũng tốt: **BULMAKYEOLSAM** (4.8⭐, mở từ 15:00–03:00, lý tưởng nếu bạn muốn ăn tối muộn) và **Gogi House** (4.7⭐, chuyên nướng Hàn, mở 11:00–22:00).\n\nBạn muốn xem chi tiết hoặc đặt bàn ở quán nào không? 🍽️\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛵 ShopeeFood - Truyền Thuyết ChamPong\",\"type\":\"website\",\"url\":\"https://shopeefood.vn/tim-kiem?q=Truy%E1%BB%81n+Thuy%E1%BA%BFt+ChamPong+Qu%E1%BA%ADn+1\",\"primary\":true},{\"label\":\"🛵 GrabFood - Truyền Thuyết ChamPong\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/en/s?searchKeyword=Truy%E1%BB%81n+Thuy%E1%BA%BFt+ChamPong+Qu%E1%BA%ADn+1\",\"primary\":false},{\"label\":\"📍 Maps - Truyền Thuyết ChamPong\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=4604500883820478645\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Nhà hàng Nhật ở Quận 1|Quán ăn yên tĩnh Quận 1|Cafe đẹp Quận 1[/FOLLOWUPS]",
+      "server_v1": "Mình tìm nhà hàng ở Quận 1 trong tầm 300-500k/người cho bạn nhé 🍽️\n\nMình chọn **Truyền Thuyết ChamPong Quận 1** cho bạn 👍 Đây là nhà hàng Hàn Quốc với **4.9⭐ (4.325 đánh giá Google Maps)** — con số này đủ mạnh để mình tin tưởng. Quán chuyên cơm và hải sản Hàn, mở từ 10:40–22:00, nằm ở Trần Cao Vân, Quận 1. Giá tầm 300-500k/người là phù hợp với mức chi tiêu của bạn.\n\nHai lựa chọn khác cũng tốt: **BULMAKYEOLSAM** (4.8⭐, mở từ 15:00–03:00, lý tưởng nếu bạn muốn ăn tối muộn) và **Gogi House** (4.7⭐, chuyên nướng Hàn, mở 11:00–22:00).\n\nBạn muốn xem chi tiết hoặc đặt bàn ở quán nào không? 🍽️\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛵 ShopeeFood - Truyền Thuyết ChamPong\",\"type\":\"website\",\"url\":\"https://shopeefood.vn/tim-kiem?q=Truy%E1%BB%81n+Thuy%E1%BA%BFt+ChamPong+Qu%E1%BA%ADn+1\",\"primary\":true},{\"label\":\"🛵 GrabFood - Truyền Thuyết ChamPong\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/en/s?searchKeyword=Truy%E1%BB%81n+Thuy%E1%BA%BFt+ChamPong+Qu%E1%BA%ADn+1\",\"primary\":false},{\"label\":\"📍 Maps - Truyền Thuyết ChamPong\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=4604500883820478645\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Nhà hàng Nhật ở Quận 1|Quán ăn yên tĩnh Quận 1|Cafe đẹp Quận 1[/FOLLOWUPS]"
+    }
+  },
+  {
+    "run": 1,
+    "i": 7,
+    "userText": "Có chỗ nào rẻ hơn không?",
+    "ran": true,
+    "bands": 0,
+    "snippet_prices": 6,
+    "claims_in_input": 3,
+    "fabricated_in_input": [
+      "100-200k",
+      "150-250k"
+    ],
+    "true_fact_sentences": 1,
+    "v1": {
+      "ratio": 0.421,
+      "fragments": [],
+      "fabricated_surviving": [],
+      "metre_removed": 0,
+      "true_fact_lost": [
+        "Nếu bạn muốn ăn thường (không chay), **Chill Thái - Thai Food** cũng là lựa chọn tốt — 4.8⭐, mở 11:00–22:00, giá tầm 150-250k/người, có nhiều review (4.068 đánh giá)."
+      ]
+    },
+    "v2": {
+      "ratio": 0.919,
+      "fragments": [],
+      "fabricated_surviving": [],
+      "metre_removed": 0,
+      "true_fact_lost": [],
+      "stats": {
+        "claims": 3,
+        "user_echo": 0,
+        "supported_by_band": 0,
+        "supported_by_snippet": 1,
+        "unsupported": 2,
+        "clause_cut": 2,
+        "sentences_removed": 0,
+        "lowercase_m_skipped": 0,
+        "attributed": 2,
+        "multi": 0
+      }
+    },
+    "texts": {
+      "input": "Mình chọn **Nhà hàng chay Phương Mai** — quán ăn chay với giá rẻ hơn, khoảng 100-200k/người, mở từ 09:00–21:30 ở Võ Thị Sáu, Quận 1. Có 4.9⭐ từ 3.386 đánh giá Google Maps, nên chất lượng vẫn rất tốt 👍\n\nNếu bạn muốn ăn thường (không chay), **Chill Thái - Thai Food** cũng là lựa chọn tốt — 4.8⭐, mở 11:00–22:00, giá tầm 150-250k/người, có nhiều review (4.068 đánh giá).\n\nCả hai quán đều rẻ hơn tầm 300-500k mà bạn nói lúc đầu, và đánh giá cũng rất cao. Bạn muốn xem chi tiết quán nào không? 🍽️\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛵 ShopeeFood - Nhà hàng chay Phương Mai\",\"type\":\"website\",\"url\":\"https://shopeefood.vn/tim-kiem?q=Nh%C3%A0+h%C3%A0ng+chay+Ph%C6%B0%C6%A1ng+Mai+Qu%E1%BA%ADn+1\",\"primary\":true},{\"label\":\"🛵 GrabFood - Nhà hàng chay Phương Mai\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/en/s?searchKeyword=Nh%C3%A0+h%C3%A0ng+chay+Ph%C6%B0%C6%A1ng+Mai+Qu%E1%BA%ADn+1\",\"primary\":false},{\"label\":\"📍 Maps - Nhà hàng chay Phương Mai\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=6354591245376837820\",\"primary\":false}]}[/CTA_BUTTONS]",
+      "v1": "Có 4.9⭐ từ 3.386 đánh giá Google Maps, nên chất lượng vẫn rất tốt 👍\n\nCả hai quán đều rẻ hơn tầm 300-500k mà bạn nói lúc đầu, và đánh giá cũng rất cao. Bạn muốn xem chi tiết quán nào không? 🍽️\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛵 ShopeeFood - Nhà hàng chay Phương Mai\",\"type\":\"website\",\"url\":\"https://shopeefood.vn/tim-kiem?q=Nh%C3%A0+h%C3%A0ng+chay+Ph%C6%B0%C6%A1ng+Mai+Qu%E1%BA%ADn+1\",\"primary\":true},{\"label\":\"🛵 GrabFood - Nhà hàng chay Phương Mai\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/en/s?searchKeyword=Nh%C3%A0+h%C3%A0ng+chay+Ph%C6%B0%C6%A1ng+Mai+Qu%E1%BA%ADn+1\",\"primary\":false},{\"label\":\"📍 Maps - Nhà hàng chay Phương Mai\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=6354591245376837820\",\"primary\":false}]}[/CTA_BUTTONS]",
+      "v2": "Mình chọn **Nhà hàng chay Phương Mai** — quán ăn chay với giá rẻ hơn, mở từ 09:00–21:30 ở Võ Thị Sáu, Quận 1. Có 4.9⭐ từ 3.386 đánh giá Google Maps, nên chất lượng vẫn rất tốt 👍\n\nNếu bạn muốn ăn thường (không chay), **Chill Thái - Thai Food** cũng là lựa chọn tốt — 4.8⭐, mở 11:00–22:00, có nhiều review (4.068 đánh giá).\n\nCả hai quán đều rẻ hơn tầm 300-500k mà bạn nói lúc đầu, và đánh giá cũng rất cao. Bạn muốn xem chi tiết quán nào không? 🍽️\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛵 ShopeeFood - Nhà hàng chay Phương Mai\",\"type\":\"website\",\"url\":\"https://shopeefood.vn/tim-kiem?q=Nh%C3%A0+h%C3%A0ng+chay+Ph%C6%B0%C6%A1ng+Mai+Qu%E1%BA%ADn+1\",\"primary\":true},{\"label\":\"🛵 GrabFood - Nhà hàng chay Phương Mai\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/en/s?searchKeyword=Nh%C3%A0+h%C3%A0ng+chay+Ph%C6%B0%C6%A1ng+Mai+Qu%E1%BA%ADn+1\",\"primary\":false},{\"label\":\"📍 Maps - Nhà hàng chay Phương Mai\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=6354591245376837820\",\"primary\":false}]}[/CTA_BUTTONS]",
+      "server_v1": "Có 4.9⭐ từ 3.386 đánh giá Google Maps, nên chất lượng vẫn rất tốt 👍\n\nCả hai quán đều rẻ hơn tầm 300-500k mà bạn nói lúc đầu, và đánh giá cũng rất cao. Bạn muốn xem chi tiết quán nào không? 🍽️\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛵 ShopeeFood - Nhà hàng chay Phương Mai\",\"type\":\"website\",\"url\":\"https://shopeefood.vn/tim-kiem?q=Nh%C3%A0+h%C3%A0ng+chay+Ph%C6%B0%C6%A1ng+Mai+Qu%E1%BA%ADn+1\",\"primary\":true},{\"label\":\"🛵 GrabFood - Nhà hàng chay Phương Mai\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/en/s?searchKeyword=Nh%C3%A0+h%C3%A0ng+chay+Ph%C6%B0%C6%A1ng+Mai+Qu%E1%BA%ADn+1\",\"primary\":false},{\"label\":\"📍 Maps - Nhà hàng chay Phương Mai\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=6354591245376837820\",\"primary\":false}]}[/CTA_BUTTONS]"
+    }
+  },
+  {
+    "run": 1,
+    "i": 8,
+    "userText": "Tôi đang ở đây, tìm chỗ ăn gần tôi.",
+    "ran": true,
+    "bands": 0,
+    "snippet_prices": 0,
+    "claims_in_input": 0,
+    "fabricated_in_input": [],
+    "true_fact_sentences": 0,
+    "v1": {
+      "ratio": 1,
+      "fragments": [],
+      "fabricated_surviving": [],
+      "metre_removed": 0,
+      "true_fact_lost": []
+    },
+    "v2": {
+      "ratio": 1,
+      "fragments": [],
+      "fabricated_surviving": [],
+      "metre_removed": 0,
+      "true_fact_lost": [],
+      "stats": {
+        "claims": 0,
+        "user_echo": 0,
+        "supported_by_band": 0,
+        "supported_by_snippet": 0,
+        "unsupported": 0,
+        "clause_cut": 0,
+        "sentences_removed": 0,
+        "lowercase_m_skipped": 0,
+        "attributed": 0,
+        "multi": 0
+      }
+    },
+    "texts": {
+      "input": "\n\nMình chọn **Vua Chả Cá** cho bạn! 🐟 Quán cách bạn chỉ 1.4km, có **4.9⭐ (4.605 đánh giá Google Maps)** — chuyên chả cá Hà Nội ngon lắm. Mở cửa đến 22:30 hôm nay, có thể gọi online qua ShopeeFood hoặc GrabFood.\n\nNếu muốn gần hơn, **Cơm Ngon Hà Nội** chỉ 0.9km, cũng 4.9⭐ nhưng đóng cửa lúc 19:30 (hôm nay còn 2 tiếng).\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛵 ShopeeFood - Vua Chả Cá\",\"type\":\"website\",\"url\":\"https://shopeefood.vn/tim-kiem?q=Vua+Cha+Ca+Tran+Hung+Dao\",\"primary\":true},{\"label\":\"🛵 GrabFood - Vua Chả Cá\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/en/s?searchKeyword=Vua+Cha+Ca+Tran+Hung+Dao\",\"primary\":false},{\"label\":\"📍 Maps - Vua Chả Cá\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=11029104309258159791\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]chả cá khác ở Quận 1|quán ăn Nhật gần đây|cafe yên tĩnh[/FOLLOWUPS]",
+      "v1": "\n\nMình chọn **Vua Chả Cá** cho bạn! 🐟 Quán cách bạn chỉ 1.4km, có **4.9⭐ (4.605 đánh giá Google Maps)** — chuyên chả cá Hà Nội ngon lắm. Mở cửa đến 22:30 hôm nay, có thể gọi online qua ShopeeFood hoặc GrabFood.\n\nNếu muốn gần hơn, **Cơm Ngon Hà Nội** chỉ 0.9km, cũng 4.9⭐ nhưng đóng cửa lúc 19:30 (hôm nay còn 2 tiếng).\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛵 ShopeeFood - Vua Chả Cá\",\"type\":\"website\",\"url\":\"https://shopeefood.vn/tim-kiem?q=Vua+Cha+Ca+Tran+Hung+Dao\",\"primary\":true},{\"label\":\"🛵 GrabFood - Vua Chả Cá\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/en/s?searchKeyword=Vua+Cha+Ca+Tran+Hung+Dao\",\"primary\":false},{\"label\":\"📍 Maps - Vua Chả Cá\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=11029104309258159791\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]chả cá khác ở Quận 1|quán ăn Nhật gần đây|cafe yên tĩnh[/FOLLOWUPS]",
+      "v2": "\n\nMình chọn **Vua Chả Cá** cho bạn! 🐟 Quán cách bạn chỉ 1.4km, có **4.9⭐ (4.605 đánh giá Google Maps)** — chuyên chả cá Hà Nội ngon lắm. Mở cửa đến 22:30 hôm nay, có thể gọi online qua ShopeeFood hoặc GrabFood.\n\nNếu muốn gần hơn, **Cơm Ngon Hà Nội** chỉ 0.9km, cũng 4.9⭐ nhưng đóng cửa lúc 19:30 (hôm nay còn 2 tiếng).\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛵 ShopeeFood - Vua Chả Cá\",\"type\":\"website\",\"url\":\"https://shopeefood.vn/tim-kiem?q=Vua+Cha+Ca+Tran+Hung+Dao\",\"primary\":true},{\"label\":\"🛵 GrabFood - Vua Chả Cá\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/en/s?searchKeyword=Vua+Cha+Ca+Tran+Hung+Dao\",\"primary\":false},{\"label\":\"📍 Maps - Vua Chả Cá\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=11029104309258159791\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]chả cá khác ở Quận 1|quán ăn Nhật gần đây|cafe yên tĩnh[/FOLLOWUPS]",
+      "server_v1": "\n\nMình chọn **Vua Chả Cá** cho bạn! 🐟 Quán cách bạn chỉ 1.4km, có **4.9⭐ (4.605 đánh giá Google Maps)** — chuyên chả cá Hà Nội ngon lắm. Mở cửa đến 22:30 hôm nay, có thể gọi online qua ShopeeFood hoặc GrabFood.\n\nNếu muốn gần hơn, **Cơm Ngon Hà Nội** chỉ 0.9km, cũng 4.9⭐ nhưng đóng cửa lúc 19:30 (hôm nay còn 2 tiếng).\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛵 ShopeeFood - Vua Chả Cá\",\"type\":\"website\",\"url\":\"https://shopeefood.vn/tim-kiem?q=Vua+Cha+Ca+Tran+Hung+Dao\",\"primary\":true},{\"label\":\"🛵 GrabFood - Vua Chả Cá\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/en/s?searchKeyword=Vua+Cha+Ca+Tran+Hung+Dao\",\"primary\":false},{\"label\":\"📍 Maps - Vua Chả Cá\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=11029104309258159791\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]chả cá khác ở Quận 1|quán ăn Nhật gần đây|cafe yên tĩnh[/FOLLOWUPS]"
+    }
+  },
+  {
+    "run": 1,
+    "i": 9,
+    "userText": "Tìm giúp tôi một quán cafe gần Landmark 81.",
+    "ran": true,
+    "bands": 9,
+    "snippet_prices": 0,
+    "claims_in_input": 1,
+    "fabricated_in_input": [],
+    "true_fact_sentences": 0,
+    "v1": {
+      "ratio": 0.898,
+      "fragments": [],
+      "fabricated_surviving": [],
+      "metre_removed": 0,
+      "true_fact_lost": []
+    },
+    "v2": {
+      "ratio": 1,
+      "fragments": [],
+      "fabricated_surviving": [],
+      "metre_removed": 0,
+      "true_fact_lost": [],
+      "stats": {
+        "claims": 1,
+        "user_echo": 0,
+        "supported_by_band": 1,
+        "supported_by_snippet": 0,
+        "unsupported": 0,
+        "clause_cut": 0,
+        "sentences_removed": 0,
+        "lowercase_m_skipped": 0,
+        "attributed": 1,
+        "multi": 0
+      }
+    },
+    "texts": {
+      "input": "Mình sẽ tìm các quán cafe gần Landmark 81 cho bạn.\n\nMình chọn **RuNam Vincom Landmark 81** cho bạn 👍 Quán này nằm ngay trong Landmark 81 nên cực tiện, có 4.6⭐ từ 699 đánh giá Google Maps. Mặc dù MOON COFFEE AND APARTMENT có rating cao hơn một chút (4.7⭐), nhưng RuNam vượt trội hơn về số lượng đánh giá (699 vs 57) — điều này cho thấy quán được nhiều khách tin tưởng hơn. Giá khoảng 100-700k, mở từ 7h-22h, hoàn hảo để bạn uống cà phê yên tĩnh.\n\nNgoài ra, bạn còn có **MOON COFFEE AND APARTMENT** (4.7⭐, gần Landmark 81) hoặc **U Café** (4.4⭐, cũng trong khu Vinhomes) nếu muốn thử chỗ khác.\n\nBạn muốn xem thêm thông tin hoặc đặt bàn không?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"☕ Xem RuNam Vincom Landmark 81\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=10355679640479782947\",\"primary\":true},{\"label\":\"📍 Tất cả quán cafe gần đây\",\"type\":\"website\",\"url\":\"https://maps.google.com/maps?q=cafe%20g%E1%BA%A7n%20Landmark%2081%20Qu%E1%BA%ADn%201%20Ho%20Chi%20Minh\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Quán nào khác gần Landmark 81|Cafe yên tĩnh ở Quận 1|Cafe có wifi tốt[/FOLLOWUPS]",
+      "v1": "Mình sẽ tìm các quán cafe gần Landmark 81 cho bạn.\n\nMình chọn **RuNam Vincom Landmark 81** cho bạn 👍 Quán này nằm ngay trong Landmark 81 nên cực tiện, có 4.6⭐ từ 699 đánh giá Google Maps. Mặc dù MOON COFFEE AND APARTMENT có rating cao hơn một chút (4.7⭐), nhưng RuNam vượt trội hơn về số lượng đánh giá (699 vs 57) — điều này cho thấy quán được nhiều khách tin tưởng hơn.\n\nNgoài ra, bạn còn có **MOON COFFEE AND APARTMENT** (4.7⭐, gần Landmark 81) hoặc **U Café** (4.4⭐, cũng trong khu Vinhomes) nếu muốn thử chỗ khác.\n\nBạn muốn xem thêm thông tin hoặc đặt bàn không?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"☕ Xem RuNam Vincom Landmark 81\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=10355679640479782947\",\"primary\":true},{\"label\":\"📍 Tất cả quán cafe gần đây\",\"type\":\"website\",\"url\":\"https://maps.google.com/maps?q=cafe%20g%E1%BA%A7n%20Landmark%2081%20Qu%E1%BA%ADn%201%20Ho%20Chi%20Minh\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Quán nào khác gần Landmark 81|Cafe yên tĩnh ở Quận 1|Cafe có wifi tốt[/FOLLOWUPS]",
+      "v2": "Mình sẽ tìm các quán cafe gần Landmark 81 cho bạn.\n\nMình chọn **RuNam Vincom Landmark 81** cho bạn 👍 Quán này nằm ngay trong Landmark 81 nên cực tiện, có 4.6⭐ từ 699 đánh giá Google Maps. Mặc dù MOON COFFEE AND APARTMENT có rating cao hơn một chút (4.7⭐), nhưng RuNam vượt trội hơn về số lượng đánh giá (699 vs 57) — điều này cho thấy quán được nhiều khách tin tưởng hơn. Giá khoảng 100-700k, mở từ 7h-22h, hoàn hảo để bạn uống cà phê yên tĩnh.\n\nNgoài ra, bạn còn có **MOON COFFEE AND APARTMENT** (4.7⭐, gần Landmark 81) hoặc **U Café** (4.4⭐, cũng trong khu Vinhomes) nếu muốn thử chỗ khác.\n\nBạn muốn xem thêm thông tin hoặc đặt bàn không?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"☕ Xem RuNam Vincom Landmark 81\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=10355679640479782947\",\"primary\":true},{\"label\":\"📍 Tất cả quán cafe gần đây\",\"type\":\"website\",\"url\":\"https://maps.google.com/maps?q=cafe%20g%E1%BA%A7n%20Landmark%2081%20Qu%E1%BA%ADn%201%20Ho%20Chi%20Minh\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Quán nào khác gần Landmark 81|Cafe yên tĩnh ở Quận 1|Cafe có wifi tốt[/FOLLOWUPS]",
+      "server_v1": "Mình sẽ tìm các quán cafe gần Landmark 81 cho bạn.\n\nMình chọn **RuNam Vincom Landmark 81** cho bạn 👍 Quán này nằm ngay trong Landmark 81 nên cực tiện, có 4.6⭐ từ 699 đánh giá Google Maps. Mặc dù MOON COFFEE AND APARTMENT có rating cao hơn một chút (4.7⭐), nhưng RuNam vượt trội hơn về số lượng đánh giá (699 vs 57) — điều này cho thấy quán được nhiều khách tin tưởng hơn.\n\nNgoài ra, bạn còn có **MOON COFFEE AND APARTMENT** (4.7⭐, gần Landmark 81) hoặc **U Café** (4.4⭐, cũng trong khu Vinhomes) nếu muốn thử chỗ khác.\n\nBạn muốn xem thêm thông tin hoặc đặt bàn không?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"☕ Xem RuNam Vincom Landmark 81\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=10355679640479782947\",\"primary\":true},{\"label\":\"📍 Tất cả quán cafe gần đây\",\"type\":\"website\",\"url\":\"https://maps.google.com/maps?q=cafe%20g%E1%BA%A7n%20Landmark%2081%20Qu%E1%BA%ADn%201%20Ho%20Chi%20Minh\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Quán nào khác gần Landmark 81|Cafe yên tĩnh ở Quận 1|Cafe có wifi tốt[/FOLLOWUPS]"
+    }
+  },
+  {
+    "run": 1,
+    "i": 10,
+    "userText": "Find me a quiet Japanese restaurant nearby.",
+    "ran": true,
+    "bands": 0,
+    "snippet_prices": 0,
+    "claims_in_input": 0,
+    "fabricated_in_input": [],
+    "true_fact_sentences": 0,
+    "v1": {
+      "ratio": 1,
+      "fragments": [],
+      "fabricated_surviving": [],
+      "metre_removed": 0,
+      "true_fact_lost": []
+    },
+    "v2": {
+      "ratio": 1,
+      "fragments": [],
+      "fabricated_surviving": [],
+      "metre_removed": 0,
+      "true_fact_lost": [],
+      "stats": {
+        "claims": 0,
+        "user_echo": 0,
+        "supported_by_band": 0,
+        "supported_by_snippet": 0,
+        "unsupported": 0,
+        "clause_cut": 0,
+        "sentences_removed": 0,
+        "lowercase_m_skipped": 0,
+        "attributed": 0,
+        "multi": 0
+      }
+    },
+    "texts": {
+      "input": "I'll search for quiet Japanese restaurants near your current location in District 1, Ho Chi Minh City.\n\nI'd recommend **Izakaya Kamura** — it's just 0.6km away and has a calm, intimate izakaya vibe perfect for a quiet meal. With **4.9⭐ (3,961 Google Maps reviews)**, it's highly rated for authentic Japanese cuisine. They're open now until 2 AM, so you can head over anytime. \n\nIf you prefer something even closer, **ME-TETSU IZAKAYA** is just 0.5km away with 4.8⭐ (2,125 reviews) and also offers a relaxed atmosphere. Both are great for two people on a weekend evening! 🍣\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🍽️ ShopeeFood - Izakaya Kamura\",\"type\":\"website\",\"url\":\"https://shopeefood.vn/tim-kiem?q=Izakaya+Kamura+Ho+Chi+Minh\",\"primary\":true},{\"label\":\"🍽️ GrabFood - Izakaya Kamura\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/en/s?searchKeyword=Izakaya+Kamura+Ho+Chi+Minh\",\"primary\":false},{\"label\":\"📍 Maps - Izakaya Kamura\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=3700468258469518959\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]ME-TETSU IZAKAYA gần hơn|Sushi Wagao nếu muốn sushi|Xem thêm quán Nhật khác[/FOLLOWUPS]",
+      "v1": "I'll search for quiet Japanese restaurants near your current location in District 1, Ho Chi Minh City.\n\nI'd recommend **Izakaya Kamura** — it's just 0.6km away and has a calm, intimate izakaya vibe perfect for a quiet meal. With **4.9⭐ (3,961 Google Maps reviews)**, it's highly rated for authentic Japanese cuisine. They're open now until 2 AM, so you can head over anytime. \n\nIf you prefer something even closer, **ME-TETSU IZAKAYA** is just 0.5km away with 4.8⭐ (2,125 reviews) and also offers a relaxed atmosphere. Both are great for two people on a weekend evening! 🍣\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🍽️ ShopeeFood - Izakaya Kamura\",\"type\":\"website\",\"url\":\"https://shopeefood.vn/tim-kiem?q=Izakaya+Kamura+Ho+Chi+Minh\",\"primary\":true},{\"label\":\"🍽️ GrabFood - Izakaya Kamura\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/en/s?searchKeyword=Izakaya+Kamura+Ho+Chi+Minh\",\"primary\":false},{\"label\":\"📍 Maps - Izakaya Kamura\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=3700468258469518959\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]ME-TETSU IZAKAYA gần hơn|Sushi Wagao nếu muốn sushi|Xem thêm quán Nhật khác[/FOLLOWUPS]",
+      "v2": "I'll search for quiet Japanese restaurants near your current location in District 1, Ho Chi Minh City.\n\nI'd recommend **Izakaya Kamura** — it's just 0.6km away and has a calm, intimate izakaya vibe perfect for a quiet meal. With **4.9⭐ (3,961 Google Maps reviews)**, it's highly rated for authentic Japanese cuisine. They're open now until 2 AM, so you can head over anytime. \n\nIf you prefer something even closer, **ME-TETSU IZAKAYA** is just 0.5km away with 4.8⭐ (2,125 reviews) and also offers a relaxed atmosphere. Both are great for two people on a weekend evening! 🍣\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🍽️ ShopeeFood - Izakaya Kamura\",\"type\":\"website\",\"url\":\"https://shopeefood.vn/tim-kiem?q=Izakaya+Kamura+Ho+Chi+Minh\",\"primary\":true},{\"label\":\"🍽️ GrabFood - Izakaya Kamura\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/en/s?searchKeyword=Izakaya+Kamura+Ho+Chi+Minh\",\"primary\":false},{\"label\":\"📍 Maps - Izakaya Kamura\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=3700468258469518959\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]ME-TETSU IZAKAYA gần hơn|Sushi Wagao nếu muốn sushi|Xem thêm quán Nhật khác[/FOLLOWUPS]",
+      "server_v1": "I'll search for quiet Japanese restaurants near your current location in District 1, Ho Chi Minh City.\n\nI'd recommend **Izakaya Kamura** — it's just 0.6km away and has a calm, intimate izakaya vibe perfect for a quiet meal. With **4.9⭐ (3,961 Google Maps reviews)**, it's highly rated for authentic Japanese cuisine. They're open now until 2 AM, so you can head over anytime. \n\nIf you prefer something even closer, **ME-TETSU IZAKAYA** is just 0.5km away with 4.8⭐ (2,125 reviews) and also offers a relaxed atmosphere. Both are great for two people on a weekend evening! 🍣\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🍽️ ShopeeFood - Izakaya Kamura\",\"type\":\"website\",\"url\":\"https://shopeefood.vn/tim-kiem?q=Izakaya+Kamura+Ho+Chi+Minh\",\"primary\":true},{\"label\":\"🍽️ GrabFood - Izakaya Kamura\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/en/s?searchKeyword=Izakaya+Kamura+Ho+Chi+Minh\",\"primary\":false},{\"label\":\"📍 Maps - Izakaya Kamura\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=3700468258469518959\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]ME-TETSU IZAKAYA gần hơn|Sushi Wagao nếu muốn sushi|Xem thêm quán Nhật khác[/FOLLOWUPS]"
+    }
+  },
+  {
+    "run": 1,
+    "i": 11,
+    "userText": "Find giúp tôi một quán cafe chill gần đây.",
+    "ran": true,
+    "bands": 0,
+    "snippet_prices": 0,
+    "claims_in_input": 0,
+    "fabricated_in_input": [],
+    "true_fact_sentences": 0,
+    "v1": {
+      "ratio": 1,
+      "fragments": [],
+      "fabricated_surviving": [],
+      "metre_removed": 0,
+      "true_fact_lost": []
+    },
+    "v2": {
+      "ratio": 1,
+      "fragments": [],
+      "fabricated_surviving": [],
+      "metre_removed": 0,
+      "true_fact_lost": [],
+      "stats": {
+        "claims": 0,
+        "user_echo": 0,
+        "supported_by_band": 0,
+        "supported_by_snippet": 0,
+        "unsupported": 0,
+        "clause_cut": 0,
+        "sentences_removed": 0,
+        "lowercase_m_skipped": 0,
+        "attributed": 0,
+        "multi": 0
+      }
+    },
+    "texts": {
+      "input": "Mình sẽ tìm những quán cafe yên tĩnh gần vị trí của bạn ở Quận 1 ngay.\n\nMình chọn **Hoff Coffee Brewers by BeanHop** cho bạn 👌 Quán này cách bạn chỉ 0.1km, rất gần Landmark 81, và có rating 4.8⭐ từ 358 đánh giá. Không gian yên tĩnh, phù hợp để chill với bạn bè vào cuối tuần.\n\nNgoài ra, **Soo Kafe Bến Thành** (0.6km) cũng là lựa chọn tốt nếu bạn muốn không gian rộng hơn — quán này có 2.019 đánh giá Google Maps, chứng tỏ rất được yêu thích.\n\nBạn muốn mình tìm thêm quán cafe nào khác, hay bạn muốn biết thêm chi tiết về Hoff Coffee?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"☕ Xem Hoff Coffee trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=2382170101620030993\",\"primary\":true},{\"label\":\"☕ Xem Soo Kafe trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=16210604624372407733\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]cafe khác gần Landmark 81|quán cafe có wifi|cafe view đẹp[/FOLLOWUPS]",
+      "v1": "Mình sẽ tìm những quán cafe yên tĩnh gần vị trí của bạn ở Quận 1 ngay.\n\nMình chọn **Hoff Coffee Brewers by BeanHop** cho bạn 👌 Quán này cách bạn chỉ 0.1km, rất gần Landmark 81, và có rating 4.8⭐ từ 358 đánh giá. Không gian yên tĩnh, phù hợp để chill với bạn bè vào cuối tuần.\n\nNgoài ra, **Soo Kafe Bến Thành** (0.6km) cũng là lựa chọn tốt nếu bạn muốn không gian rộng hơn — quán này có 2.019 đánh giá Google Maps, chứng tỏ rất được yêu thích.\n\nBạn muốn mình tìm thêm quán cafe nào khác, hay bạn muốn biết thêm chi tiết về Hoff Coffee?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"☕ Xem Hoff Coffee trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=2382170101620030993\",\"primary\":true},{\"label\":\"☕ Xem Soo Kafe trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=16210604624372407733\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]cafe khác gần Landmark 81|quán cafe có wifi|cafe view đẹp[/FOLLOWUPS]",
+      "v2": "Mình sẽ tìm những quán cafe yên tĩnh gần vị trí của bạn ở Quận 1 ngay.\n\nMình chọn **Hoff Coffee Brewers by BeanHop** cho bạn 👌 Quán này cách bạn chỉ 0.1km, rất gần Landmark 81, và có rating 4.8⭐ từ 358 đánh giá. Không gian yên tĩnh, phù hợp để chill với bạn bè vào cuối tuần.\n\nNgoài ra, **Soo Kafe Bến Thành** (0.6km) cũng là lựa chọn tốt nếu bạn muốn không gian rộng hơn — quán này có 2.019 đánh giá Google Maps, chứng tỏ rất được yêu thích.\n\nBạn muốn mình tìm thêm quán cafe nào khác, hay bạn muốn biết thêm chi tiết về Hoff Coffee?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"☕ Xem Hoff Coffee trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=2382170101620030993\",\"primary\":true},{\"label\":\"☕ Xem Soo Kafe trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=16210604624372407733\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]cafe khác gần Landmark 81|quán cafe có wifi|cafe view đẹp[/FOLLOWUPS]",
+      "server_v1": "Mình sẽ tìm những quán cafe yên tĩnh gần vị trí của bạn ở Quận 1 ngay.\n\nMình chọn **Hoff Coffee Brewers by BeanHop** cho bạn 👌 Quán này cách bạn chỉ 0.1km, rất gần Landmark 81, và có rating 4.8⭐ từ 358 đánh giá. Không gian yên tĩnh, phù hợp để chill với bạn bè vào cuối tuần.\n\nNgoài ra, **Soo Kafe Bến Thành** (0.6km) cũng là lựa chọn tốt nếu bạn muốn không gian rộng hơn — quán này có 2.019 đánh giá Google Maps, chứng tỏ rất được yêu thích.\n\nBạn muốn mình tìm thêm quán cafe nào khác, hay bạn muốn biết thêm chi tiết về Hoff Coffee?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"☕ Xem Hoff Coffee trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=2382170101620030993\",\"primary\":true},{\"label\":\"☕ Xem Soo Kafe trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=16210604624372407733\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]cafe khác gần Landmark 81|quán cafe có wifi|cafe view đẹp[/FOLLOWUPS]"
+    }
+  },
+  {
+    "run": 1,
+    "i": 12,
+    "userText": "Tìm cho tôi một chiếc tai nghe tốt dưới 2 triệu.",
+    "ran": true,
+    "bands": 0,
+    "snippet_prices": 0,
+    "claims_in_input": 0,
+    "fabricated_in_input": [],
+    "true_fact_sentences": 0,
+    "v1": {
+      "ratio": 1,
+      "fragments": [],
+      "fabricated_surviving": [],
+      "metre_removed": 0,
+      "true_fact_lost": []
+    },
+    "v2": {
+      "ratio": 1,
+      "fragments": [],
+      "fabricated_surviving": [],
+      "metre_removed": 0,
+      "true_fact_lost": [],
+      "stats": {
+        "claims": 0,
+        "user_echo": 0,
+        "supported_by_band": 0,
+        "supported_by_snippet": 0,
+        "unsupported": 0,
+        "clause_cut": 0,
+        "sentences_removed": 0,
+        "lowercase_m_skipped": 0,
+        "attributed": 0,
+        "multi": 0
+      }
+    },
+    "texts": {
+      "input": "Gợi ý: Tôi chưa có thông tin chi tiết về loại kết nối (có dây/không dây), bạn nên kiểm tra kỹ thông số trên trang bán hàng trước khi mua để chắc chắn nó phù hợp với nhu cầu của bạn.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛒 Tìm trên Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=tai+nghe+ASUS+ROG+Cetra+II+Core\",\"primary\":true},{\"label\":\"📦 Tìm trên Lazada\",\"type\":\"search\",\"url\":\"https://www.lazada.vn/catalog/?q=tai+nghe+ASUS+ROG+Cetra+II+Core\",\"primary\":false},{\"label\":\"🛍️ Tìm trên Tiki\",\"type\":\"search\",\"url\":\"https://tiki.vn/search?q=tai+nghe+ASUS+ROG+Cetra+II+Core\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]tai nghe gaming|tai nghe chống ồn|tai nghe không dây[/FOLLOWUPS]",
+      "v1": "Gợi ý: Tôi chưa có thông tin chi tiết về loại kết nối (có dây/không dây), bạn nên kiểm tra kỹ thông số trên trang bán hàng trước khi mua để chắc chắn nó phù hợp với nhu cầu của bạn.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛒 Tìm trên Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=tai+nghe+ASUS+ROG+Cetra+II+Core\",\"primary\":true},{\"label\":\"📦 Tìm trên Lazada\",\"type\":\"search\",\"url\":\"https://www.lazada.vn/catalog/?q=tai+nghe+ASUS+ROG+Cetra+II+Core\",\"primary\":false},{\"label\":\"🛍️ Tìm trên Tiki\",\"type\":\"search\",\"url\":\"https://tiki.vn/search?q=tai+nghe+ASUS+ROG+Cetra+II+Core\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]tai nghe gaming|tai nghe chống ồn|tai nghe không dây[/FOLLOWUPS]",
+      "v2": "Gợi ý: Tôi chưa có thông tin chi tiết về loại kết nối (có dây/không dây), bạn nên kiểm tra kỹ thông số trên trang bán hàng trước khi mua để chắc chắn nó phù hợp với nhu cầu của bạn.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛒 Tìm trên Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=tai+nghe+ASUS+ROG+Cetra+II+Core\",\"primary\":true},{\"label\":\"📦 Tìm trên Lazada\",\"type\":\"search\",\"url\":\"https://www.lazada.vn/catalog/?q=tai+nghe+ASUS+ROG+Cetra+II+Core\",\"primary\":false},{\"label\":\"🛍️ Tìm trên Tiki\",\"type\":\"search\",\"url\":\"https://tiki.vn/search?q=tai+nghe+ASUS+ROG+Cetra+II+Core\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]tai nghe gaming|tai nghe chống ồn|tai nghe không dây[/FOLLOWUPS]",
+      "server_v1": "Gợi ý: Tôi chưa có thông tin chi tiết về loại kết nối (có dây/không dây), bạn nên kiểm tra kỹ thông số trên trang bán hàng trước khi mua để chắc chắn nó phù hợp với nhu cầu của bạn.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛒 Tìm trên Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=tai+nghe+ASUS+ROG+Cetra+II+Core\",\"primary\":true},{\"label\":\"📦 Tìm trên Lazada\",\"type\":\"search\",\"url\":\"https://www.lazada.vn/catalog/?q=tai+nghe+ASUS+ROG+Cetra+II+Core\",\"primary\":false},{\"label\":\"🛍️ Tìm trên Tiki\",\"type\":\"search\",\"url\":\"https://tiki.vn/search?q=tai+nghe+ASUS+ROG+Cetra+II+Core\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]tai nghe gaming|tai nghe chống ồn|tai nghe không dây[/FOLLOWUPS]"
+    }
+  },
+  {
+    "run": 1,
+    "i": 13,
+    "userText": "Tối nay ở TP.HCM có gì vui?",
+    "ran": true,
+    "bands": 0,
+    "snippet_prices": 0,
+    "claims_in_input": 0,
+    "fabricated_in_input": [],
+    "true_fact_sentences": 0,
+    "v1": {
+      "ratio": 1,
+      "fragments": [],
+      "fabricated_surviving": [],
+      "metre_removed": 0,
+      "true_fact_lost": []
+    },
+    "v2": {
+      "ratio": 1,
+      "fragments": [],
+      "fabricated_surviving": [],
+      "metre_removed": 0,
+      "true_fact_lost": [],
+      "stats": {
+        "claims": 0,
+        "user_echo": 0,
+        "supported_by_band": 0,
+        "supported_by_snippet": 0,
+        "unsupported": 0,
+        "clause_cut": 0,
+        "sentences_removed": 0,
+        "lowercase_m_skipped": 0,
+        "attributed": 0,
+        "multi": 0
+      }
+    },
+    "texts": {
+      "input": "\n\nTối nay ở TP.HCM có khá nhiều lựa chọn vui nhộn! Mình gợi ý 3 địa điểm hay nhất:\n\n**Karaoke Avatar** — **4.9⭐ (6.369 đánh giá Google Maps)** là lựa chọn mình nghiêng về nhất. Quán mở từ 12h đến 5h sáng hôm sau, âm thanh tốt, phòng sạch sẽ, giá hợp lý. Nếu bạn muốn hát hết mình với bạn bè thì đây là chọn lựa tuyệt vời 🎤\n\nNgoài ra còn có **Galaxy Cinema Nguyễn Du** (4.3⭐, 9.369 đánh giá) nếu muốn xem phim, hoặc **Thương Rooftop** (4.9⭐, 3.869 đánh giá) — quán cafe rooftop vừa chill vừa có view đẹp, mở từ 16h30 đến 00h30.\n\nBạn muốn hát karaoke, xem phim, hay ngồi cafe chill?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🎤 Karaoke Avatar\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=15540783769004242466\",\"primary\":true},{\"label\":\"🎬 Galaxy Cinema\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=7959510044504727677\",\"primary\":false},{\"label\":\"☕ Thương Rooftop\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=1607776340620736460\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]karaoke ở Quận 1|xem phim chiều tối|cafe view đẹp[/FOLLOWUPS]",
+      "v1": "\n\nTối nay ở TP.HCM có khá nhiều lựa chọn vui nhộn! Mình gợi ý 3 địa điểm hay nhất:\n\n**Karaoke Avatar** — **4.9⭐ (6.369 đánh giá Google Maps)** là lựa chọn mình nghiêng về nhất. Quán mở từ 12h đến 5h sáng hôm sau, âm thanh tốt, phòng sạch sẽ, giá hợp lý. Nếu bạn muốn hát hết mình với bạn bè thì đây là chọn lựa tuyệt vời 🎤\n\nNgoài ra còn có **Galaxy Cinema Nguyễn Du** (4.3⭐, 9.369 đánh giá) nếu muốn xem phim, hoặc **Thương Rooftop** (4.9⭐, 3.869 đánh giá) — quán cafe rooftop vừa chill vừa có view đẹp, mở từ 16h30 đến 00h30.\n\nBạn muốn hát karaoke, xem phim, hay ngồi cafe chill?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🎤 Karaoke Avatar\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=15540783769004242466\",\"primary\":true},{\"label\":\"🎬 Galaxy Cinema\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=7959510044504727677\",\"primary\":false},{\"label\":\"☕ Thương Rooftop\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=1607776340620736460\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]karaoke ở Quận 1|xem phim chiều tối|cafe view đẹp[/FOLLOWUPS]",
+      "v2": "\n\nTối nay ở TP.HCM có khá nhiều lựa chọn vui nhộn! Mình gợi ý 3 địa điểm hay nhất:\n\n**Karaoke Avatar** — **4.9⭐ (6.369 đánh giá Google Maps)** là lựa chọn mình nghiêng về nhất. Quán mở từ 12h đến 5h sáng hôm sau, âm thanh tốt, phòng sạch sẽ, giá hợp lý. Nếu bạn muốn hát hết mình với bạn bè thì đây là chọn lựa tuyệt vời 🎤\n\nNgoài ra còn có **Galaxy Cinema Nguyễn Du** (4.3⭐, 9.369 đánh giá) nếu muốn xem phim, hoặc **Thương Rooftop** (4.9⭐, 3.869 đánh giá) — quán cafe rooftop vừa chill vừa có view đẹp, mở từ 16h30 đến 00h30.\n\nBạn muốn hát karaoke, xem phim, hay ngồi cafe chill?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🎤 Karaoke Avatar\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=15540783769004242466\",\"primary\":true},{\"label\":\"🎬 Galaxy Cinema\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=7959510044504727677\",\"primary\":false},{\"label\":\"☕ Thương Rooftop\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=1607776340620736460\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]karaoke ở Quận 1|xem phim chiều tối|cafe view đẹp[/FOLLOWUPS]",
+      "server_v1": "\n\nTối nay ở TP.HCM có khá nhiều lựa chọn vui nhộn! Mình gợi ý 3 địa điểm hay nhất:\n\n**Karaoke Avatar** — **4.9⭐ (6.369 đánh giá Google Maps)** là lựa chọn mình nghiêng về nhất. Quán mở từ 12h đến 5h sáng hôm sau, âm thanh tốt, phòng sạch sẽ, giá hợp lý. Nếu bạn muốn hát hết mình với bạn bè thì đây là chọn lựa tuyệt vời 🎤\n\nNgoài ra còn có **Galaxy Cinema Nguyễn Du** (4.3⭐, 9.369 đánh giá) nếu muốn xem phim, hoặc **Thương Rooftop** (4.9⭐, 3.869 đánh giá) — quán cafe rooftop vừa chill vừa có view đẹp, mở từ 16h30 đến 00h30.\n\nBạn muốn hát karaoke, xem phim, hay ngồi cafe chill?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🎤 Karaoke Avatar\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=15540783769004242466\",\"primary\":true},{\"label\":\"🎬 Galaxy Cinema\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=7959510044504727677\",\"primary\":false},{\"label\":\"☕ Thương Rooftop\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=1607776340620736460\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]karaoke ở Quận 1|xem phim chiều tối|cafe view đẹp[/FOLLOWUPS]"
+    }
+  },
+  {
+    "run": 1,
+    "i": 14,
+    "userText": "Tìm cho tôi một spa thư giãn, sạch sẽ, giá hợp lý.",
+    "ran": true,
+    "bands": 0,
+    "snippet_prices": 8,
+    "claims_in_input": 1,
+    "fabricated_in_input": [
+      "370.000–600.000đ"
+    ],
+    "true_fact_sentences": 0,
+    "v1": {
+      "ratio": 0.798,
+      "fragments": [],
+      "fabricated_surviving": [],
+      "metre_removed": 0,
+      "true_fact_lost": []
+    },
+    "v2": {
+      "ratio": 0.798,
+      "fragments": [],
+      "fabricated_surviving": [],
+      "metre_removed": 0,
+      "true_fact_lost": [],
+      "stats": {
+        "claims": 1,
+        "user_echo": 0,
+        "supported_by_band": 0,
+        "supported_by_snippet": 0,
+        "unsupported": 1,
+        "clause_cut": 0,
+        "sentences_removed": 1,
+        "lowercase_m_skipped": 0,
+        "attributed": 1,
+        "multi": 0
+      }
+    },
+    "texts": {
+      "input": "Mình sẽ tìm spa thư giãn ở TP.HCM cho bạn nhé 🧖‍♀️\n\nMình chọn **MASSAGE HẠ SPA QUẬN 1** cho bạn 👌 Spa này có 4.9⭐ từ 3.516 đánh giá Google Maps — con số này đủ mạnh để mình tin tưởng chất lượng. Không gian sạch sẽ, dịch vụ chuyên nghiệp, và giá massage body khoảng 370.000–600.000đ, khá hợp lý với nhu cầu của bạn.\n\nSpa mở từ 9:30–22:30 hàng ngày, nên tối nay bạn hoàn toàn có thể ghé. Địa chỉ: **49 Phạm Viết Chánh, Quận 1** — khá gần trung tâm, tiện cho 2 người đi cùng.\n\nNgoài ra, **AN's spa** (Quận 1) cũng là lựa chọn tốt nếu bạn muốn giờ mở cửa lâu hơn (10:00–23:30) và có thêm dịch vụ chăm sóc da, làm nail.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website — MASSAGE HẠ SPA QUẬN 1\",\"type\":\"website\",\"url\":\"https://haspamassage.vn/\",\"primary\":true},{\"label\":\"📍 Google Maps — MASSAGE HẠ SPA QUẬN 1\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=5564503278764968347\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Giá dịch vụ cụ thể|Spa khác ở Quận 3|Gội đầu thư giãn[/FOLLOWUPS]",
+      "v1": "Mình sẽ tìm spa thư giãn ở TP.HCM cho bạn nhé 🧖‍♀️\n\nMình chọn **MASSAGE HẠ SPA QUẬN 1** cho bạn 👌 Spa này có 4.9⭐ từ 3.516 đánh giá Google Maps — con số này đủ mạnh để mình tin tưởng chất lượng.\n\nSpa mở từ 9:30–22:30 hàng ngày, nên tối nay bạn hoàn toàn có thể ghé. Địa chỉ: **49 Phạm Viết Chánh, Quận 1** — khá gần trung tâm, tiện cho 2 người đi cùng.\n\nNgoài ra, **AN's spa** (Quận 1) cũng là lựa chọn tốt nếu bạn muốn giờ mở cửa lâu hơn (10:00–23:30) và có thêm dịch vụ chăm sóc da, làm nail.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website — MASSAGE HẠ SPA QUẬN 1\",\"type\":\"website\",\"url\":\"https://haspamassage.vn/\",\"primary\":true},{\"label\":\"📍 Google Maps — MASSAGE HẠ SPA QUẬN 1\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=5564503278764968347\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Giá dịch vụ cụ thể|Spa khác ở Quận 3|Gội đầu thư giãn[/FOLLOWUPS]",
+      "v2": "Mình sẽ tìm spa thư giãn ở TP.HCM cho bạn nhé 🧖‍♀️\n\nMình chọn **MASSAGE HẠ SPA QUẬN 1** cho bạn 👌 Spa này có 4.9⭐ từ 3.516 đánh giá Google Maps — con số này đủ mạnh để mình tin tưởng chất lượng.\n\nSpa mở từ 9:30–22:30 hàng ngày, nên tối nay bạn hoàn toàn có thể ghé. Địa chỉ: **49 Phạm Viết Chánh, Quận 1** — khá gần trung tâm, tiện cho 2 người đi cùng.\n\nNgoài ra, **AN's spa** (Quận 1) cũng là lựa chọn tốt nếu bạn muốn giờ mở cửa lâu hơn (10:00–23:30) và có thêm dịch vụ chăm sóc da, làm nail.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website — MASSAGE HẠ SPA QUẬN 1\",\"type\":\"website\",\"url\":\"https://haspamassage.vn/\",\"primary\":true},{\"label\":\"📍 Google Maps — MASSAGE HẠ SPA QUẬN 1\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=5564503278764968347\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Giá dịch vụ cụ thể|Spa khác ở Quận 3|Gội đầu thư giãn[/FOLLOWUPS]",
+      "server_v1": "Mình sẽ tìm spa thư giãn ở TP.HCM cho bạn nhé 🧖‍♀️\n\nMình chọn **MASSAGE HẠ SPA QUẬN 1** cho bạn 👌 Spa này có 4.9⭐ từ 3.516 đánh giá Google Maps — con số này đủ mạnh để mình tin tưởng chất lượng.\n\nSpa mở từ 9:30–22:30 hàng ngày, nên tối nay bạn hoàn toàn có thể ghé. Địa chỉ: **49 Phạm Viết Chánh, Quận 1** — khá gần trung tâm, tiện cho 2 người đi cùng.\n\nNgoài ra, **AN's spa** (Quận 1) cũng là lựa chọn tốt nếu bạn muốn giờ mở cửa lâu hơn (10:00–23:30) và có thêm dịch vụ chăm sóc da, làm nail.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website — MASSAGE HẠ SPA QUẬN 1\",\"type\":\"website\",\"url\":\"https://haspamassage.vn/\",\"primary\":true},{\"label\":\"📍 Google Maps — MASSAGE HẠ SPA QUẬN 1\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=5564503278764968347\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Giá dịch vụ cụ thể|Spa khác ở Quận 3|Gội đầu thư giãn[/FOLLOWUPS]"
+    }
+  },
+  {
+    "run": 2,
+    "i": 0,
+    "userText": "Tìm cho tôi một quán Nhật yên tĩnh ở Quận 1.",
+    "ran": true,
+    "bands": 8,
+    "snippet_prices": 0,
+    "claims_in_input": 1,
+    "fabricated_in_input": [],
+    "true_fact_sentences": 0,
+    "v1": {
+      "ratio": 0.889,
+      "fragments": [],
+      "fabricated_surviving": [],
+      "metre_removed": 0,
+      "true_fact_lost": []
+    },
+    "v2": {
+      "ratio": 1,
+      "fragments": [],
+      "fabricated_surviving": [],
+      "metre_removed": 0,
+      "true_fact_lost": [],
+      "stats": {
+        "claims": 1,
+        "user_echo": 0,
+        "supported_by_band": 1,
+        "supported_by_snippet": 0,
+        "unsupported": 0,
+        "clause_cut": 0,
+        "sentences_removed": 0,
+        "lowercase_m_skipped": 0,
+        "attributed": 1,
+        "multi": 0
+      }
+    },
+    "texts": {
+      "input": "\n\nMình chọn **Izakaya Kamura** — quán này là lựa chọn tốt nhất cho bạn 👌\n\n**4.9⭐ (3.961 đánh giá Google Maps)**\n\nĐịa chỉ: 8A/A14 Thái Văn Lung, Bến Thành, Quận 1\n\nQuán có không gian yên tĩnh, chuyên phục vụ sushi và tempura kiểu Nhật chuẩn. Mở cửa từ 11:00 tối nay còn mở đến 02:00, giá khoảng 200-600k/người. Bạn có thể đặt bàn trước qua website hoặc gọi +84 28 3535 7098 để chắc chắn có chỗ.\n\nNgoài ra, **Mayonaka Sushi** (4.9⭐, 1.885 đánh giá) cũng là lựa chọn tốt nếu bạn muốn không gian nhỏ gọn hơn, mở 17:00-00:00 tối nay.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website — Izakaya Kamura\",\"type\":\"website\",\"url\":\"https://izakayakamura.vn/\",\"primary\":true},{\"label\":\"📍 Google Maps — Izakaya Kamura\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=3700468258469518959\",\"primary\":false},{\"label\":\"🛵 ShopeeFood — Izakaya Kamura\",\"type\":\"website\",\"url\":\"https://shopeefood.vn/tim-kiem?q=Izakaya+Kamura+Quan+1\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Đặt bàn trước không|Quán khác yên tĩnh hơn|Quán Nhật rẻ hơn[/FOLLOWUPS]",
+      "v1": "Mình chọn **Izakaya Kamura** — quán này là lựa chọn tốt nhất cho bạn 👌\n\n**4.9⭐ (3.961 đánh giá Google Maps)**\n\nĐịa chỉ: 8A/A14 Thái Văn Lung, Bến Thành, Quận 1\n\nQuán có không gian yên tĩnh, chuyên phục vụ sushi và tempura kiểu Nhật chuẩn. Bạn có thể đặt bàn trước qua website hoặc gọi +84 28 3535 7098 để chắc chắn có chỗ.\n\nNgoài ra, **Mayonaka Sushi** (4.9⭐, 1.885 đánh giá) cũng là lựa chọn tốt nếu bạn muốn không gian nhỏ gọn hơn, mở 17:00-00:00 tối nay.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website — Izakaya Kamura\",\"type\":\"website\",\"url\":\"https://izakayakamura.vn/\",\"primary\":true},{\"label\":\"📍 Google Maps — Izakaya Kamura\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=3700468258469518959\",\"primary\":false},{\"label\":\"🛵 ShopeeFood — Izakaya Kamura\",\"type\":\"website\",\"url\":\"https://shopeefood.vn/tim-kiem?q=Izakaya+Kamura+Quan+1\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Đặt bàn trước không|Quán khác yên tĩnh hơn|Quán Nhật rẻ hơn[/FOLLOWUPS]",
+      "v2": "\n\nMình chọn **Izakaya Kamura** — quán này là lựa chọn tốt nhất cho bạn 👌\n\n**4.9⭐ (3.961 đánh giá Google Maps)**\n\nĐịa chỉ: 8A/A14 Thái Văn Lung, Bến Thành, Quận 1\n\nQuán có không gian yên tĩnh, chuyên phục vụ sushi và tempura kiểu Nhật chuẩn. Mở cửa từ 11:00 tối nay còn mở đến 02:00, giá khoảng 200-600k/người. Bạn có thể đặt bàn trước qua website hoặc gọi +84 28 3535 7098 để chắc chắn có chỗ.\n\nNgoài ra, **Mayonaka Sushi** (4.9⭐, 1.885 đánh giá) cũng là lựa chọn tốt nếu bạn muốn không gian nhỏ gọn hơn, mở 17:00-00:00 tối nay.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website — Izakaya Kamura\",\"type\":\"website\",\"url\":\"https://izakayakamura.vn/\",\"primary\":true},{\"label\":\"📍 Google Maps — Izakaya Kamura\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=3700468258469518959\",\"primary\":false},{\"label\":\"🛵 ShopeeFood — Izakaya Kamura\",\"type\":\"website\",\"url\":\"https://shopeefood.vn/tim-kiem?q=Izakaya+Kamura+Quan+1\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Đặt bàn trước không|Quán khác yên tĩnh hơn|Quán Nhật rẻ hơn[/FOLLOWUPS]",
+      "server_v1": "Mình chọn **Izakaya Kamura** — quán này là lựa chọn tốt nhất cho bạn 👌\n\n**4.9⭐ (3.961 đánh giá Google Maps)**\n\nĐịa chỉ: 8A/A14 Thái Văn Lung, Bến Thành, Quận 1\n\nQuán có không gian yên tĩnh, chuyên phục vụ sushi và tempura kiểu Nhật chuẩn. Bạn có thể đặt bàn trước qua website hoặc gọi +84 28 3535 7098 để chắc chắn có chỗ.\n\nNgoài ra, **Mayonaka Sushi** (4.9⭐, 1.885 đánh giá) cũng là lựa chọn tốt nếu bạn muốn không gian nhỏ gọn hơn, mở 17:00-00:00 tối nay.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website — Izakaya Kamura\",\"type\":\"website\",\"url\":\"https://izakayakamura.vn/\",\"primary\":true},{\"label\":\"📍 Google Maps — Izakaya Kamura\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=3700468258469518959\",\"primary\":false},{\"label\":\"🛵 ShopeeFood — Izakaya Kamura\",\"type\":\"website\",\"url\":\"https://shopeefood.vn/tim-kiem?q=Izakaya+Kamura+Quan+1\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Đặt bàn trước không|Quán khác yên tĩnh hơn|Quán Nhật rẻ hơn[/FOLLOWUPS]"
+    }
+  },
+  {
+    "run": 2,
+    "i": 1,
+    "userText": "Tìm cho tôi một quán Nhật ngon và yên tĩnh.",
+    "ran": true,
+    "bands": 10,
+    "snippet_prices": 0,
+    "claims_in_input": 2,
+    "fabricated_in_input": [],
+    "true_fact_sentences": 2,
+    "v1": {
+      "ratio": 0.358,
+      "fragments": [],
+      "fabricated_surviving": [],
+      "metre_removed": 0,
+      "true_fact_lost": [
+        "🍱 Quán có 4.9⭐ (7.102 đánh giá Google Maps) — đây là lựa chọn tuyệt vời nhất với không gian yên tĩnh, ẩm thực Nhật chất lượng cao, và giá hợp lý (200-600k).",
+        "Hai lựa chọn khác cũng rất tốt: **Izakaya Kamura** (4.9⭐, 3.961 đánh giá) nếu bạn muốn không khí izakaya truyền thống, hoặc **KOHAKU RAMEN & UDON** (4.8⭐) nếu thích mì ramen/udon với giá mềm hơn (100-200k)."
+      ]
+    },
+    "v2": {
+      "ratio": 1,
+      "fragments": [],
+      "fabricated_surviving": [],
+      "metre_removed": 0,
+      "true_fact_lost": [],
+      "stats": {
+        "claims": 2,
+        "user_echo": 0,
+        "supported_by_band": 2,
+        "supported_by_snippet": 0,
+        "unsupported": 0,
+        "clause_cut": 0,
+        "sentences_removed": 0,
+        "lowercase_m_skipped": 0,
+        "attributed": 1,
+        "multi": 1
+      }
+    },
+    "texts": {
+      "input": "\n\nMình chọn **Izakaya Unatoto Việt Nam** cho bạn! 🍱 Quán có 4.9⭐ (7.102 đánh giá Google Maps) — đây là lựa chọn tuyệt vời nhất với không gian yên tĩnh, ẩm thực Nhật chất lượng cao, và giá hợp lý (200-600k). Quán mở từ 11h-23h, nên tối nay bạn hoàn toàn có thể ghé.\n\nHai lựa chọn khác cũng rất tốt: **Izakaya Kamura** (4.9⭐, 3.961 đánh giá) nếu bạn muốn không khí izakaya truyền thống, hoặc **KOHAKU RAMEN & UDON** (4.8⭐) nếu thích mì ramen/udon với giá mềm hơn (100-200k).\n\nBạn muốn mình giúp đặt bàn hay tìm thêm thông tin chi tiết về quán nào?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛵 ShopeeFood - Izakaya Unatoto Việt Nam\",\"type\":\"website\",\"url\":\"https://shopeefood.vn/tim-kiem?q=Izakaya+Unatoto+Viet+Nam+Ho+Chi+Minh\",\"primary\":true},{\"label\":\"🛵 GrabFood - Izakaya Unatoto Việt Nam\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/en/s?searchKeyword=Izakaya+Unatoto+Viet+Nam+Ho+Chi+Minh\",\"primary\":false},{\"label\":\"📍 Maps - Izakaya Unatoto Việt Nam\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=17225553360722390934\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Đặt bàn tối nay|Xem menu chi tiết|Tìm quán khác[/FOLLOWUPS]",
+      "v1": "Mình chọn **Izakaya Unatoto Việt Nam** cho bạn! Quán mở từ 11h-23h, nên tối nay bạn hoàn toàn có thể ghé.\n\nBạn muốn mình giúp đặt bàn hay tìm thêm thông tin chi tiết về quán nào?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛵 ShopeeFood - Izakaya Unatoto Việt Nam\",\"type\":\"website\",\"url\":\"https://shopeefood.vn/tim-kiem?q=Izakaya+Unatoto+Viet+Nam+Ho+Chi+Minh\",\"primary\":true},{\"label\":\"🛵 GrabFood - Izakaya Unatoto Việt Nam\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/en/s?searchKeyword=Izakaya+Unatoto+Viet+Nam+Ho+Chi+Minh\",\"primary\":false},{\"label\":\"📍 Maps - Izakaya Unatoto Việt Nam\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=17225553360722390934\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Đặt bàn tối nay|Xem menu chi tiết|Tìm quán khác[/FOLLOWUPS]",
+      "v2": "\n\nMình chọn **Izakaya Unatoto Việt Nam** cho bạn! 🍱 Quán có 4.9⭐ (7.102 đánh giá Google Maps) — đây là lựa chọn tuyệt vời nhất với không gian yên tĩnh, ẩm thực Nhật chất lượng cao, và giá hợp lý (200-600k). Quán mở từ 11h-23h, nên tối nay bạn hoàn toàn có thể ghé.\n\nHai lựa chọn khác cũng rất tốt: **Izakaya Kamura** (4.9⭐, 3.961 đánh giá) nếu bạn muốn không khí izakaya truyền thống, hoặc **KOHAKU RAMEN & UDON** (4.8⭐) nếu thích mì ramen/udon với giá mềm hơn (100-200k).\n\nBạn muốn mình giúp đặt bàn hay tìm thêm thông tin chi tiết về quán nào?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛵 ShopeeFood - Izakaya Unatoto Việt Nam\",\"type\":\"website\",\"url\":\"https://shopeefood.vn/tim-kiem?q=Izakaya+Unatoto+Viet+Nam+Ho+Chi+Minh\",\"primary\":true},{\"label\":\"🛵 GrabFood - Izakaya Unatoto Việt Nam\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/en/s?searchKeyword=Izakaya+Unatoto+Viet+Nam+Ho+Chi+Minh\",\"primary\":false},{\"label\":\"📍 Maps - Izakaya Unatoto Việt Nam\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=17225553360722390934\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Đặt bàn tối nay|Xem menu chi tiết|Tìm quán khác[/FOLLOWUPS]",
+      "server_v1": "Mình chọn **Izakaya Unatoto Việt Nam** cho bạn! Quán mở từ 11h-23h, nên tối nay bạn hoàn toàn có thể ghé.\n\nBạn muốn mình giúp đặt bàn hay tìm thêm thông tin chi tiết về quán nào?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛵 ShopeeFood - Izakaya Unatoto Việt Nam\",\"type\":\"website\",\"url\":\"https://shopeefood.vn/tim-kiem?q=Izakaya+Unatoto+Viet+Nam+Ho+Chi+Minh\",\"primary\":true},{\"label\":\"🛵 GrabFood - Izakaya Unatoto Việt Nam\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/en/s?searchKeyword=Izakaya+Unatoto+Viet+Nam+Ho+Chi+Minh\",\"primary\":false},{\"label\":\"📍 Maps - Izakaya Unatoto Việt Nam\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=17225553360722390934\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Đặt bàn tối nay|Xem menu chi tiết|Tìm quán khác[/FOLLOWUPS]"
+    }
+  },
+  {
+    "run": 2,
+    "i": 2,
+    "userText": "Tìm quán ăn tối dưới 500k cho 2 người, yên tĩnh.",
+    "ran": true,
+    "bands": 0,
+    "snippet_prices": 0,
+    "claims_in_input": 2,
+    "fabricated_in_input": [],
+    "true_fact_sentences": 0,
+    "v1": {
+      "ratio": 1,
+      "fragments": [],
+      "fabricated_surviving": [],
+      "metre_removed": 0,
+      "true_fact_lost": []
+    },
+    "v2": {
+      "ratio": 1,
+      "fragments": [],
+      "fabricated_surviving": [],
+      "metre_removed": 0,
+      "true_fact_lost": [],
+      "stats": {
+        "claims": 2,
+        "user_echo": 2,
+        "supported_by_band": 0,
+        "supported_by_snippet": 0,
+        "unsupported": 0,
+        "clause_cut": 0,
+        "sentences_removed": 0,
+        "lowercase_m_skipped": 0,
+        "attributed": 0,
+        "multi": 0
+      }
+    },
+    "texts": {
+      "input": "Mình tìm quán ăn tối yên tĩnh cho 2 người trong Quận 1 với budget dưới 500k nhé.\n\nMình chọn **Nhà hàng chay Phương Mai** cho bạn 👍 Quán có **4.9⭐ (3.386 đánh giá Google Maps)** — rất cao, và không gian yên tĩnh phù hợp với nhu cầu của bạn. Đặc biệt, đây là nhà hàng chay nên rất sạch sẽ, phục vụ tối đến 21:30. Mức giá ăn chay thường vừa phải, phù hợp budget dưới 500k cho 2 người.\n\nNếu muốn thử buffet Hàn Quốc, **NAMSAN TOPOKKI BUFFET** (4.8⭐) cũng là lựa chọn tốt với không gian ấm cúng. Hoặc nếu bạn thích ẩm thực Nhật, **Ebisu District1** (4.7⭐) chuyên mì udon & sushi, cũng yên tĩnh và phù hợp cho 2 người.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛵 ShopeeFood - Nhà hàng chay Phương Mai\",\"type\":\"website\",\"url\":\"https://shopeefood.vn/tim-kiem?q=Nh%C3%A0+h%C3%A0ng+chay+Ph%C6%B0%C6%A1ng+Mai+Qu%E1%BA%ADn+1\",\"primary\":true},{\"label\":\"🛵 GrabFood - Nhà hàng chay Phương Mai\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/en/s?searchKeyword=Nh%C3%A0+h%C3%A0ng+chay+Ph%C6%B0%C6%A1ng+Mai+Qu%E1%BA%ADn+1\",\"primary\":false},{\"label\":\"📍 Maps - Nhà hàng chay Phương Mai\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=6354591245376837820\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Buffet Hàn Quốc giá bao nhiêu?|Quán nào gần nhất từ vị trí mình?|Có cần đặt bàn trước không?[/FOLLOWUPS]",
+      "v1": "Mình tìm quán ăn tối yên tĩnh cho 2 người trong Quận 1 với budget dưới 500k nhé.\n\nMình chọn **Nhà hàng chay Phương Mai** cho bạn 👍 Quán có **4.9⭐ (3.386 đánh giá Google Maps)** — rất cao, và không gian yên tĩnh phù hợp với nhu cầu của bạn. Đặc biệt, đây là nhà hàng chay nên rất sạch sẽ, phục vụ tối đến 21:30. Mức giá ăn chay thường vừa phải, phù hợp budget dưới 500k cho 2 người.\n\nNếu muốn thử buffet Hàn Quốc, **NAMSAN TOPOKKI BUFFET** (4.8⭐) cũng là lựa chọn tốt với không gian ấm cúng. Hoặc nếu bạn thích ẩm thực Nhật, **Ebisu District1** (4.7⭐) chuyên mì udon & sushi, cũng yên tĩnh và phù hợp cho 2 người.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛵 ShopeeFood - Nhà hàng chay Phương Mai\",\"type\":\"website\",\"url\":\"https://shopeefood.vn/tim-kiem?q=Nh%C3%A0+h%C3%A0ng+chay+Ph%C6%B0%C6%A1ng+Mai+Qu%E1%BA%ADn+1\",\"primary\":true},{\"label\":\"🛵 GrabFood - Nhà hàng chay Phương Mai\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/en/s?searchKeyword=Nh%C3%A0+h%C3%A0ng+chay+Ph%C6%B0%C6%A1ng+Mai+Qu%E1%BA%ADn+1\",\"primary\":false},{\"label\":\"📍 Maps - Nhà hàng chay Phương Mai\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=6354591245376837820\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Buffet Hàn Quốc giá bao nhiêu?|Quán nào gần nhất từ vị trí mình?|Có cần đặt bàn trước không?[/FOLLOWUPS]",
+      "v2": "Mình tìm quán ăn tối yên tĩnh cho 2 người trong Quận 1 với budget dưới 500k nhé.\n\nMình chọn **Nhà hàng chay Phương Mai** cho bạn 👍 Quán có **4.9⭐ (3.386 đánh giá Google Maps)** — rất cao, và không gian yên tĩnh phù hợp với nhu cầu của bạn. Đặc biệt, đây là nhà hàng chay nên rất sạch sẽ, phục vụ tối đến 21:30. Mức giá ăn chay thường vừa phải, phù hợp budget dưới 500k cho 2 người.\n\nNếu muốn thử buffet Hàn Quốc, **NAMSAN TOPOKKI BUFFET** (4.8⭐) cũng là lựa chọn tốt với không gian ấm cúng. Hoặc nếu bạn thích ẩm thực Nhật, **Ebisu District1** (4.7⭐) chuyên mì udon & sushi, cũng yên tĩnh và phù hợp cho 2 người.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛵 ShopeeFood - Nhà hàng chay Phương Mai\",\"type\":\"website\",\"url\":\"https://shopeefood.vn/tim-kiem?q=Nh%C3%A0+h%C3%A0ng+chay+Ph%C6%B0%C6%A1ng+Mai+Qu%E1%BA%ADn+1\",\"primary\":true},{\"label\":\"🛵 GrabFood - Nhà hàng chay Phương Mai\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/en/s?searchKeyword=Nh%C3%A0+h%C3%A0ng+chay+Ph%C6%B0%C6%A1ng+Mai+Qu%E1%BA%ADn+1\",\"primary\":false},{\"label\":\"📍 Maps - Nhà hàng chay Phương Mai\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=6354591245376837820\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Buffet Hàn Quốc giá bao nhiêu?|Quán nào gần nhất từ vị trí mình?|Có cần đặt bàn trước không?[/FOLLOWUPS]",
+      "server_v1": "Mình tìm quán ăn tối yên tĩnh cho 2 người trong Quận 1 với budget dưới 500k nhé.\n\nMình chọn **Nhà hàng chay Phương Mai** cho bạn 👍 Quán có **4.9⭐ (3.386 đánh giá Google Maps)** — rất cao, và không gian yên tĩnh phù hợp với nhu cầu của bạn. Đặc biệt, đây là nhà hàng chay nên rất sạch sẽ, phục vụ tối đến 21:30. Mức giá ăn chay thường vừa phải, phù hợp budget dưới 500k cho 2 người.\n\nNếu muốn thử buffet Hàn Quốc, **NAMSAN TOPOKKI BUFFET** (4.8⭐) cũng là lựa chọn tốt với không gian ấm cúng. Hoặc nếu bạn thích ẩm thực Nhật, **Ebisu District1** (4.7⭐) chuyên mì udon & sushi, cũng yên tĩnh và phù hợp cho 2 người.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛵 ShopeeFood - Nhà hàng chay Phương Mai\",\"type\":\"website\",\"url\":\"https://shopeefood.vn/tim-kiem?q=Nh%C3%A0+h%C3%A0ng+chay+Ph%C6%B0%C6%A1ng+Mai+Qu%E1%BA%ADn+1\",\"primary\":true},{\"label\":\"🛵 GrabFood - Nhà hàng chay Phương Mai\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/en/s?searchKeyword=Nh%C3%A0+h%C3%A0ng+chay+Ph%C6%B0%C6%A1ng+Mai+Qu%E1%BA%ADn+1\",\"primary\":false},{\"label\":\"📍 Maps - Nhà hàng chay Phương Mai\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=6354591245376837820\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Buffet Hàn Quốc giá bao nhiêu?|Quán nào gần nhất từ vị trí mình?|Có cần đặt bàn trước không?[/FOLLOWUPS]"
+    }
+  },
+  {
+    "run": 2,
+    "i": 3,
+    "userText": "Cho tôi 3 quán cafe đẹp ở Thảo Điền.",
+    "ran": true,
+    "bands": 9,
+    "snippet_prices": 0,
+    "claims_in_input": 2,
+    "fabricated_in_input": [],
+    "true_fact_sentences": 2,
+    "v1": {
+      "ratio": 0.445,
+      "fragments": [
+        "Ngoài ra, mình còn gợi ý thêm **Every Half Roastery Thảo Điền** (4.7⭐, 943 đánh giá) — quán này lớn hơn, mở đến 21h30 nên thoải mái hơn khi muốn ở lâu."
+      ],
+      "fabricated_surviving": [],
+      "metre_removed": 0,
+      "true_fact_lost": [
+        "Mình chọn **Wego Coffee Thảo Điền** làm quán cafe đẹp nhất ở khu vực này 👍 Với 4.8⭐ từ 337 đánh giá Google Maps, quán có không gian yên tĩnh phù hợp với phong cách của bạn, mở từ 7h-20h, giá cà phê dưới 100k rất hợp túi.",
+        "Hoặc **SOO COFFEE** (4.7⭐, 556 đánh giá) nếu bạn thích không gian hiện đại, mở đến 23h với giá khoảng 100-200k."
+      ]
+    },
+    "v2": {
+      "ratio": 1,
+      "fragments": [],
+      "fabricated_surviving": [],
+      "metre_removed": 0,
+      "true_fact_lost": [],
+      "stats": {
+        "claims": 2,
+        "user_echo": 0,
+        "supported_by_band": 2,
+        "supported_by_snippet": 0,
+        "unsupported": 0,
+        "clause_cut": 0,
+        "sentences_removed": 0,
+        "lowercase_m_skipped": 0,
+        "attributed": 2,
+        "multi": 0
+      }
+    },
+    "texts": {
+      "input": "Mình tìm các quán cafe đẹp ở Thảo Điền cho bạn nhé.\n\nMình chọn **Wego Coffee Thảo Điền** làm quán cafe đẹp nhất ở khu vực này 👍 Với 4.8⭐ từ 337 đánh giá Google Maps, quán có không gian yên tĩnh phù hợp với phong cách của bạn, mở từ 7h-20h, giá cà phê dưới 100k rất hợp túi.\n\nNgoài ra, mình còn gợi ý thêm **Every Half Roastery Thảo Điền** (4.7⭐, 943 đánh giá) — quán này lớn hơn, mở đến 21h30 nên thoải mái hơn khi muốn ở lâu. Hoặc **SOO COFFEE** (4.7⭐, 556 đánh giá) nếu bạn thích không gian hiện đại, mở đến 23h với giá khoảng 100-200k.\n\nBạn muốn biết thêm chi tiết về quán nào không?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"☕ Xem Wego Coffee trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=11990153719229629050\",\"primary\":true},{\"label\":\"☕ Xem Every Half Roastery trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=3305361010244550020\",\"primary\":false},{\"label\":\"☕ Xem SOO COFFEE trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=2075627989841548544\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Wego Coffee có wifi không|Every Half Roastery có chỗ ngồi ngoài trời|Quán nào gần nhất từ Quận 1[/FOLLOWUPS]",
+      "v1": "Mình tìm các quán cafe đẹp ở Thảo Điền cho bạn nhé.\n\nNgoài ra, mình còn gợi ý thêm **Every Half Roastery Thảo Điền** (4.7⭐, 943 đánh giá) — quán này lớn hơn, mở đến 21h30 nên thoải mái hơn khi muốn ở lâu.\n\nBạn muốn biết thêm chi tiết về quán nào không?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"☕ Xem Wego Coffee trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=11990153719229629050\",\"primary\":true},{\"label\":\"☕ Xem Every Half Roastery trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=3305361010244550020\",\"primary\":false},{\"label\":\"☕ Xem SOO COFFEE trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=2075627989841548544\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Wego Coffee có wifi không|Every Half Roastery có chỗ ngồi ngoài trời|Quán nào gần nhất từ Quận 1[/FOLLOWUPS]",
+      "v2": "Mình tìm các quán cafe đẹp ở Thảo Điền cho bạn nhé.\n\nMình chọn **Wego Coffee Thảo Điền** làm quán cafe đẹp nhất ở khu vực này 👍 Với 4.8⭐ từ 337 đánh giá Google Maps, quán có không gian yên tĩnh phù hợp với phong cách của bạn, mở từ 7h-20h, giá cà phê dưới 100k rất hợp túi.\n\nNgoài ra, mình còn gợi ý thêm **Every Half Roastery Thảo Điền** (4.7⭐, 943 đánh giá) — quán này lớn hơn, mở đến 21h30 nên thoải mái hơn khi muốn ở lâu. Hoặc **SOO COFFEE** (4.7⭐, 556 đánh giá) nếu bạn thích không gian hiện đại, mở đến 23h với giá khoảng 100-200k.\n\nBạn muốn biết thêm chi tiết về quán nào không?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"☕ Xem Wego Coffee trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=11990153719229629050\",\"primary\":true},{\"label\":\"☕ Xem Every Half Roastery trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=3305361010244550020\",\"primary\":false},{\"label\":\"☕ Xem SOO COFFEE trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=2075627989841548544\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Wego Coffee có wifi không|Every Half Roastery có chỗ ngồi ngoài trời|Quán nào gần nhất từ Quận 1[/FOLLOWUPS]",
+      "server_v1": "Mình tìm các quán cafe đẹp ở Thảo Điền cho bạn nhé.\n\nNgoài ra, mình còn gợi ý thêm **Every Half Roastery Thảo Điền** (4.7⭐, 943 đánh giá) — quán này lớn hơn, mở đến 21h30 nên thoải mái hơn khi muốn ở lâu.\n\nBạn muốn biết thêm chi tiết về quán nào không?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"☕ Xem Wego Coffee trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=11990153719229629050\",\"primary\":true},{\"label\":\"☕ Xem Every Half Roastery trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=3305361010244550020\",\"primary\":false},{\"label\":\"☕ Xem SOO COFFEE trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=2075627989841548544\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Wego Coffee có wifi không|Every Half Roastery có chỗ ngồi ngoài trời|Quán nào gần nhất từ Quận 1[/FOLLOWUPS]"
+    }
+  },
+  {
+    "run": 2,
+    "i": 4,
+    "userText": "So sánh 3 quán này.",
+    "ran": true,
+    "bands": 0,
+    "snippet_prices": 0,
+    "claims_in_input": 0,
+    "fabricated_in_input": [],
+    "true_fact_sentences": 0,
+    "v1": {
+      "ratio": 1,
+      "fragments": [],
+      "fabricated_surviving": [],
+      "metre_removed": 0,
+      "true_fact_lost": []
+    },
+    "v2": {
+      "ratio": 1,
+      "fragments": [],
+      "fabricated_surviving": [],
+      "metre_removed": 0,
+      "true_fact_lost": [],
+      "stats": {
+        "claims": 0,
+        "user_echo": 0,
+        "supported_by_band": 0,
+        "supported_by_snippet": 0,
+        "unsupported": 0,
+        "clause_cut": 0,
+        "sentences_removed": 0,
+        "lowercase_m_skipped": 0,
+        "attributed": 0,
+        "multi": 0
+      }
+    },
+    "texts": {
+      "input": "Mình chưa có đủ thông tin chi tiết từ kết quả tìm kiếm để so sánh cụ thể 3 quán cafe ở Thảo Điền. Để giúp bạn so sánh tốt hơn, mình cần biết bạn ưu tiên điều gì nhất:\n\n- **Vibe/không gian**: Bạn thích yên tĩnh hay sôi động, có wifi để làm việc không?\n- **Giá cả**: Budget bạn khoảng bao nhiêu cho một ly cafe?\n- **Thời gian**: Bạn thường đi vào lúc nào, cần quán mở sớm hay muộn?\n\nMình sẽ tìm kiếm chi tiết hơn và so sánh rõ ràng cho bạn! 😊",
+      "v1": "Mình chưa có đủ thông tin chi tiết từ kết quả tìm kiếm để so sánh cụ thể 3 quán cafe ở Thảo Điền. Để giúp bạn so sánh tốt hơn, mình cần biết bạn ưu tiên điều gì nhất:\n\n- **Vibe/không gian**: Bạn thích yên tĩnh hay sôi động, có wifi để làm việc không?\n- **Giá cả**: Budget bạn khoảng bao nhiêu cho một ly cafe?\n- **Thời gian**: Bạn thường đi vào lúc nào, cần quán mở sớm hay muộn?\n\nMình sẽ tìm kiếm chi tiết hơn và so sánh rõ ràng cho bạn! 😊",
+      "v2": "Mình chưa có đủ thông tin chi tiết từ kết quả tìm kiếm để so sánh cụ thể 3 quán cafe ở Thảo Điền. Để giúp bạn so sánh tốt hơn, mình cần biết bạn ưu tiên điều gì nhất:\n\n- **Vibe/không gian**: Bạn thích yên tĩnh hay sôi động, có wifi để làm việc không?\n- **Giá cả**: Budget bạn khoảng bao nhiêu cho một ly cafe?\n- **Thời gian**: Bạn thường đi vào lúc nào, cần quán mở sớm hay muộn?\n\nMình sẽ tìm kiếm chi tiết hơn và so sánh rõ ràng cho bạn! 😊",
+      "server_v1": "Mình chưa có đủ thông tin chi tiết từ kết quả tìm kiếm để so sánh cụ thể 3 quán cafe ở Thảo Điền. Để giúp bạn so sánh tốt hơn, mình cần biết bạn ưu tiên điều gì nhất:\n\n- **Vibe/không gian**: Bạn thích yên tĩnh hay sôi động, có wifi để làm việc không?\n- **Giá cả**: Budget bạn khoảng bao nhiêu cho một ly cafe?\n- **Thời gian**: Bạn thường đi vào lúc nào, cần quán mở sớm hay muộn?\n\nMình sẽ tìm kiếm chi tiết hơn và so sánh rõ ràng cho bạn! 😊"
+    }
+  },
+  {
+    "run": 2,
+    "i": 5,
+    "userText": "Cho tôi 5 quán cafe đẹp ở Thảo Điền.",
+    "ran": true,
+    "bands": 0,
+    "snippet_prices": 0,
+    "claims_in_input": 0,
+    "fabricated_in_input": [],
+    "true_fact_sentences": 0,
+    "v1": {
+      "ratio": 1,
+      "fragments": [],
+      "fabricated_surviving": [],
+      "metre_removed": 0,
+      "true_fact_lost": []
+    },
+    "v2": {
+      "ratio": 1,
+      "fragments": [],
+      "fabricated_surviving": [],
+      "metre_removed": 0,
+      "true_fact_lost": [],
+      "stats": {
+        "claims": 0,
+        "user_echo": 0,
+        "supported_by_band": 0,
+        "supported_by_snippet": 0,
+        "unsupported": 0,
+        "clause_cut": 0,
+        "sentences_removed": 0,
+        "lowercase_m_skipped": 0,
+        "attributed": 0,
+        "multi": 0
+      }
+    },
+    "texts": {
+      "input": "Mình sẽ tìm những quán cafe đẹp ở Thảo Điền cho bạn.\n\nMình chọn **Dangdo Cafe Thảo Điền** cho bạn — quán này có 4.9⭐ từ 333 đánh giá Google Maps, không gian yên tĩnh và đẹp, mở từ 9h sáng đến 10h tối, rất phù hợp với phong cách của bạn 👍\n\nNgoài ra, bạn cũng có thể thử **Wego Coffee** (4.8⭐, 337 đánh giá) hay **Every Half Roastery** (4.7⭐, 943 đánh giá) — cả hai đều có không gian thoải mái và được nhiều người yêu thích.\n\nBạn muốn biết thêm chi tiết về quán nào hoặc tìm cafe ở khu vực khác?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"☕ Xem Dangdo Cafe trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=4168420532603884259\",\"primary\":true},{\"label\":\"☕ Xem Wego Coffee trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=11990153719229629050\",\"primary\":false},{\"label\":\"☕ Xem Every Half Roastery trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=3305361010244550020\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Cafe nào có wifi tốt?|Quán nào gần nhất từ nhà bạn?|Cafe nào mở sớm nhất?[/FOLLOWUPS]",
+      "v1": "Mình sẽ tìm những quán cafe đẹp ở Thảo Điền cho bạn.\n\nMình chọn **Dangdo Cafe Thảo Điền** cho bạn — quán này có 4.9⭐ từ 333 đánh giá Google Maps, không gian yên tĩnh và đẹp, mở từ 9h sáng đến 10h tối, rất phù hợp với phong cách của bạn 👍\n\nNgoài ra, bạn cũng có thể thử **Wego Coffee** (4.8⭐, 337 đánh giá) hay **Every Half Roastery** (4.7⭐, 943 đánh giá) — cả hai đều có không gian thoải mái và được nhiều người yêu thích.\n\nBạn muốn biết thêm chi tiết về quán nào hoặc tìm cafe ở khu vực khác?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"☕ Xem Dangdo Cafe trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=4168420532603884259\",\"primary\":true},{\"label\":\"☕ Xem Wego Coffee trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=11990153719229629050\",\"primary\":false},{\"label\":\"☕ Xem Every Half Roastery trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=3305361010244550020\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Cafe nào có wifi tốt?|Quán nào gần nhất từ nhà bạn?|Cafe nào mở sớm nhất?[/FOLLOWUPS]",
+      "v2": "Mình sẽ tìm những quán cafe đẹp ở Thảo Điền cho bạn.\n\nMình chọn **Dangdo Cafe Thảo Điền** cho bạn — quán này có 4.9⭐ từ 333 đánh giá Google Maps, không gian yên tĩnh và đẹp, mở từ 9h sáng đến 10h tối, rất phù hợp với phong cách của bạn 👍\n\nNgoài ra, bạn cũng có thể thử **Wego Coffee** (4.8⭐, 337 đánh giá) hay **Every Half Roastery** (4.7⭐, 943 đánh giá) — cả hai đều có không gian thoải mái và được nhiều người yêu thích.\n\nBạn muốn biết thêm chi tiết về quán nào hoặc tìm cafe ở khu vực khác?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"☕ Xem Dangdo Cafe trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=4168420532603884259\",\"primary\":true},{\"label\":\"☕ Xem Wego Coffee trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=11990153719229629050\",\"primary\":false},{\"label\":\"☕ Xem Every Half Roastery trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=3305361010244550020\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Cafe nào có wifi tốt?|Quán nào gần nhất từ nhà bạn?|Cafe nào mở sớm nhất?[/FOLLOWUPS]",
+      "server_v1": "Mình sẽ tìm những quán cafe đẹp ở Thảo Điền cho bạn.\n\nMình chọn **Dangdo Cafe Thảo Điền** cho bạn — quán này có 4.9⭐ từ 333 đánh giá Google Maps, không gian yên tĩnh và đẹp, mở từ 9h sáng đến 10h tối, rất phù hợp với phong cách của bạn 👍\n\nNgoài ra, bạn cũng có thể thử **Wego Coffee** (4.8⭐, 337 đánh giá) hay **Every Half Roastery** (4.7⭐, 943 đánh giá) — cả hai đều có không gian thoải mái và được nhiều người yêu thích.\n\nBạn muốn biết thêm chi tiết về quán nào hoặc tìm cafe ở khu vực khác?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"☕ Xem Dangdo Cafe trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=4168420532603884259\",\"primary\":true},{\"label\":\"☕ Xem Wego Coffee trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=11990153719229629050\",\"primary\":false},{\"label\":\"☕ Xem Every Half Roastery trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=3305361010244550020\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Cafe nào có wifi tốt?|Quán nào gần nhất từ nhà bạn?|Cafe nào mở sớm nhất?[/FOLLOWUPS]"
+    }
+  },
+  {
+    "run": 2,
+    "i": 6,
+    "userText": "Tìm nhà hàng tầm 300-500k/người ở Quận 1.",
+    "ran": true,
+    "bands": 0,
+    "snippet_prices": 0,
+    "claims_in_input": 1,
+    "fabricated_in_input": [],
+    "true_fact_sentences": 0,
+    "v1": {
+      "ratio": 1,
+      "fragments": [],
+      "fabricated_surviving": [],
+      "metre_removed": 0,
+      "true_fact_lost": []
+    },
+    "v2": {
+      "ratio": 1,
+      "fragments": [],
+      "fabricated_surviving": [],
+      "metre_removed": 0,
+      "true_fact_lost": [],
+      "stats": {
+        "claims": 1,
+        "user_echo": 1,
+        "supported_by_band": 0,
+        "supported_by_snippet": 0,
+        "unsupported": 0,
+        "clause_cut": 0,
+        "sentences_removed": 0,
+        "lowercase_m_skipped": 0,
+        "attributed": 0,
+        "multi": 0
+      }
+    },
+    "texts": {
+      "input": "Mình sẽ tìm nhà hàng phù hợp với ngân sách của bạn ở Quận 1 nhé.\n\nMình chọn **Truyền Thuyết ChamPong Quận 1** cho bạn 👍 Quán này có **4.9⭐ (4.325 đánh giá Google Maps)** — con số này đủ mạnh để mình tin tưởng. Đó là nhà hàng Hàn Quốc chuyên lẩu cay, mở từ 10:40 đến 22:00, nằm ở 20 Trần Cao Vân, Quận 1. Giá cơm/lẩu thường vừa vặn với ngân sách 300-500k/người.\n\nNgoài ra còn **BULMAKYEOLSAM** (4.8⭐, mở từ 15:00 đến 3 sáng) và **Gogi House** (4.7⭐, 11:00-22:00) cũng là những lựa chọn Hàn Quốc chất lượng tương tự nếu bạn muốn thử.\n\nBạn có muốn xem thêm quán ăn Việt hay loại ẩm thực khác không? 🍜\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛵 ShopeeFood - Truyền Thuyết ChamPong\",\"type\":\"website\",\"url\":\"https://shopeefood.vn/tim-kiem?q=Truy%E1%BB%81n+Thuy%E1%BA%BFt+ChamPong+Qu%E1%BA%ADn+1\",\"primary\":true},{\"label\":\"🛵 GrabFood - Truyền Thuyết ChamPong\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/en/s?searchKeyword=Truy%E1%BB%81n+Thuy%E1%BA%BFt+ChamPong+Qu%E1%BA%ADn+1\",\"primary\":false},{\"label\":\"📍 Maps - Truyền Thuyết ChamPong\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=4604500883820478645\",\"primary\":false}]}[/CTA_BUTTONS]",
+      "v1": "Mình sẽ tìm nhà hàng phù hợp với ngân sách của bạn ở Quận 1 nhé.\n\nMình chọn **Truyền Thuyết ChamPong Quận 1** cho bạn 👍 Quán này có **4.9⭐ (4.325 đánh giá Google Maps)** — con số này đủ mạnh để mình tin tưởng. Đó là nhà hàng Hàn Quốc chuyên lẩu cay, mở từ 10:40 đến 22:00, nằm ở 20 Trần Cao Vân, Quận 1. Giá cơm/lẩu thường vừa vặn với ngân sách 300-500k/người.\n\nNgoài ra còn **BULMAKYEOLSAM** (4.8⭐, mở từ 15:00 đến 3 sáng) và **Gogi House** (4.7⭐, 11:00-22:00) cũng là những lựa chọn Hàn Quốc chất lượng tương tự nếu bạn muốn thử.\n\nBạn có muốn xem thêm quán ăn Việt hay loại ẩm thực khác không? 🍜\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛵 ShopeeFood - Truyền Thuyết ChamPong\",\"type\":\"website\",\"url\":\"https://shopeefood.vn/tim-kiem?q=Truy%E1%BB%81n+Thuy%E1%BA%BFt+ChamPong+Qu%E1%BA%ADn+1\",\"primary\":true},{\"label\":\"🛵 GrabFood - Truyền Thuyết ChamPong\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/en/s?searchKeyword=Truy%E1%BB%81n+Thuy%E1%BA%BFt+ChamPong+Qu%E1%BA%ADn+1\",\"primary\":false},{\"label\":\"📍 Maps - Truyền Thuyết ChamPong\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=4604500883820478645\",\"primary\":false}]}[/CTA_BUTTONS]",
+      "v2": "Mình sẽ tìm nhà hàng phù hợp với ngân sách của bạn ở Quận 1 nhé.\n\nMình chọn **Truyền Thuyết ChamPong Quận 1** cho bạn 👍 Quán này có **4.9⭐ (4.325 đánh giá Google Maps)** — con số này đủ mạnh để mình tin tưởng. Đó là nhà hàng Hàn Quốc chuyên lẩu cay, mở từ 10:40 đến 22:00, nằm ở 20 Trần Cao Vân, Quận 1. Giá cơm/lẩu thường vừa vặn với ngân sách 300-500k/người.\n\nNgoài ra còn **BULMAKYEOLSAM** (4.8⭐, mở từ 15:00 đến 3 sáng) và **Gogi House** (4.7⭐, 11:00-22:00) cũng là những lựa chọn Hàn Quốc chất lượng tương tự nếu bạn muốn thử.\n\nBạn có muốn xem thêm quán ăn Việt hay loại ẩm thực khác không? 🍜\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛵 ShopeeFood - Truyền Thuyết ChamPong\",\"type\":\"website\",\"url\":\"https://shopeefood.vn/tim-kiem?q=Truy%E1%BB%81n+Thuy%E1%BA%BFt+ChamPong+Qu%E1%BA%ADn+1\",\"primary\":true},{\"label\":\"🛵 GrabFood - Truyền Thuyết ChamPong\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/en/s?searchKeyword=Truy%E1%BB%81n+Thuy%E1%BA%BFt+ChamPong+Qu%E1%BA%ADn+1\",\"primary\":false},{\"label\":\"📍 Maps - Truyền Thuyết ChamPong\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=4604500883820478645\",\"primary\":false}]}[/CTA_BUTTONS]",
+      "server_v1": "Mình sẽ tìm nhà hàng phù hợp với ngân sách của bạn ở Quận 1 nhé.\n\nMình chọn **Truyền Thuyết ChamPong Quận 1** cho bạn 👍 Quán này có **4.9⭐ (4.325 đánh giá Google Maps)** — con số này đủ mạnh để mình tin tưởng. Đó là nhà hàng Hàn Quốc chuyên lẩu cay, mở từ 10:40 đến 22:00, nằm ở 20 Trần Cao Vân, Quận 1. Giá cơm/lẩu thường vừa vặn với ngân sách 300-500k/người.\n\nNgoài ra còn **BULMAKYEOLSAM** (4.8⭐, mở từ 15:00 đến 3 sáng) và **Gogi House** (4.7⭐, 11:00-22:00) cũng là những lựa chọn Hàn Quốc chất lượng tương tự nếu bạn muốn thử.\n\nBạn có muốn xem thêm quán ăn Việt hay loại ẩm thực khác không? 🍜\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛵 ShopeeFood - Truyền Thuyết ChamPong\",\"type\":\"website\",\"url\":\"https://shopeefood.vn/tim-kiem?q=Truy%E1%BB%81n+Thuy%E1%BA%BFt+ChamPong+Qu%E1%BA%ADn+1\",\"primary\":true},{\"label\":\"🛵 GrabFood - Truyền Thuyết ChamPong\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/en/s?searchKeyword=Truy%E1%BB%81n+Thuy%E1%BA%BFt+ChamPong+Qu%E1%BA%ADn+1\",\"primary\":false},{\"label\":\"📍 Maps - Truyền Thuyết ChamPong\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=4604500883820478645\",\"primary\":false}]}[/CTA_BUTTONS]"
+    }
+  },
+  {
+    "run": 2,
+    "i": 7,
+    "userText": "Có chỗ nào rẻ hơn không?",
+    "ran": true,
+    "bands": 9,
+    "snippet_prices": 2,
+    "claims_in_input": 2,
+    "fabricated_in_input": [],
+    "true_fact_sentences": 2,
+    "v1": {
+      "ratio": 0.467,
+      "fragments": [],
+      "fabricated_surviving": [],
+      "metre_removed": 0,
+      "true_fact_lost": [
+        "Mình tìm được **Nhà hàng chay Phương Mai** — **4.9⭐ (3.386 đánh giá Google Maps)** — chỉ **100-200k/người**, rẻ hơn nhiều so với ngân sách bạn.",
+        "Ngoài ra còn **Quán nhậu quận 1 - HẢI SẢN QUÝ DẬU** (4.7⭐, 200-300k/người, hải sản tươi sống) nếu bạn muốn ăn hải sản mà vẫn tiết kiệm."
+      ]
+    },
+    "v2": {
+      "ratio": 1,
+      "fragments": [],
+      "fabricated_surviving": [],
+      "metre_removed": 0,
+      "true_fact_lost": [],
+      "stats": {
+        "claims": 2,
+        "user_echo": 0,
+        "supported_by_band": 2,
+        "supported_by_snippet": 0,
+        "unsupported": 0,
+        "clause_cut": 0,
+        "sentences_removed": 0,
+        "lowercase_m_skipped": 0,
+        "attributed": 2,
+        "multi": 0
+      }
+    },
+    "texts": {
+      "input": "Có chứ! Mình tìm được **Nhà hàng chay Phương Mai** — **4.9⭐ (3.386 đánh giá Google Maps)** — chỉ **100-200k/người**, rẻ hơn nhiều so với ngân sách bạn. Quán chuyên ẩm thực chay, mở từ 09:00 đến 21:30, nằm ở 82/86F Võ Thị Sáu, Quận 1. Với 3.386 đánh giá, đây là lựa chọn rất đáng tin cậy 👍\n\nNgoài ra còn **Quán nhậu quận 1 - HẢI SẢN QUÝ DẬU** (4.7⭐, 200-300k/người, hải sản tươi sống) nếu bạn muốn ăn hải sản mà vẫn tiết kiệm.\n\nBạn có muốn xem thêm quán ăn Nhật rẻ hơn không, hay đã hài lòng với những gợi ý này? 🍱\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛵 ShopeeFood - Nhà hàng chay Phương Mai\",\"type\":\"website\",\"url\":\"https://shopeefood.vn/tim-kiem?q=Nh%C3%A0+h%C3%A0ng+chay+Ph%C6%B0%C6%A1ng+Mai+Qu%E1%BA%ADn+1\",\"primary\":true},{\"label\":\"🛵 GrabFood - Nhà hàng chay Phương Mai\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/en/s?searchKeyword=Nh%C3%A0+h%C3%A0ng+chay+Ph%C6%B0%C6%A1ng+Mai+Qu%E1%BA%ADn+1\",\"primary\":false},{\"label\":\"📍 Maps - Nhà hàng chay Phương Mai\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=6354591245376837820\",\"primary\":false}]}[/CTA_BUTTONS]",
+      "v1": "Có chứ! Quán chuyên ẩm thực chay, mở từ 09:00 đến 21:30, nằm ở 82/86F Võ Thị Sáu, Quận 1. Với 3.386 đánh giá, đây là lựa chọn rất đáng tin cậy 👍\n\nBạn có muốn xem thêm quán ăn Nhật rẻ hơn không, hay đã hài lòng với những gợi ý này? 🍱\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛵 ShopeeFood - Nhà hàng chay Phương Mai\",\"type\":\"website\",\"url\":\"https://shopeefood.vn/tim-kiem?q=Nh%C3%A0+h%C3%A0ng+chay+Ph%C6%B0%C6%A1ng+Mai+Qu%E1%BA%ADn+1\",\"primary\":true},{\"label\":\"🛵 GrabFood - Nhà hàng chay Phương Mai\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/en/s?searchKeyword=Nh%C3%A0+h%C3%A0ng+chay+Ph%C6%B0%C6%A1ng+Mai+Qu%E1%BA%ADn+1\",\"primary\":false},{\"label\":\"📍 Maps - Nhà hàng chay Phương Mai\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=6354591245376837820\",\"primary\":false}]}[/CTA_BUTTONS]",
+      "v2": "Có chứ! Mình tìm được **Nhà hàng chay Phương Mai** — **4.9⭐ (3.386 đánh giá Google Maps)** — chỉ **100-200k/người**, rẻ hơn nhiều so với ngân sách bạn. Quán chuyên ẩm thực chay, mở từ 09:00 đến 21:30, nằm ở 82/86F Võ Thị Sáu, Quận 1. Với 3.386 đánh giá, đây là lựa chọn rất đáng tin cậy 👍\n\nNgoài ra còn **Quán nhậu quận 1 - HẢI SẢN QUÝ DẬU** (4.7⭐, 200-300k/người, hải sản tươi sống) nếu bạn muốn ăn hải sản mà vẫn tiết kiệm.\n\nBạn có muốn xem thêm quán ăn Nhật rẻ hơn không, hay đã hài lòng với những gợi ý này? 🍱\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛵 ShopeeFood - Nhà hàng chay Phương Mai\",\"type\":\"website\",\"url\":\"https://shopeefood.vn/tim-kiem?q=Nh%C3%A0+h%C3%A0ng+chay+Ph%C6%B0%C6%A1ng+Mai+Qu%E1%BA%ADn+1\",\"primary\":true},{\"label\":\"🛵 GrabFood - Nhà hàng chay Phương Mai\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/en/s?searchKeyword=Nh%C3%A0+h%C3%A0ng+chay+Ph%C6%B0%C6%A1ng+Mai+Qu%E1%BA%ADn+1\",\"primary\":false},{\"label\":\"📍 Maps - Nhà hàng chay Phương Mai\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=6354591245376837820\",\"primary\":false}]}[/CTA_BUTTONS]",
+      "server_v1": "Có chứ! Quán chuyên ẩm thực chay, mở từ 09:00 đến 21:30, nằm ở 82/86F Võ Thị Sáu, Quận 1. Với 3.386 đánh giá, đây là lựa chọn rất đáng tin cậy 👍\n\nBạn có muốn xem thêm quán ăn Nhật rẻ hơn không, hay đã hài lòng với những gợi ý này? 🍱\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛵 ShopeeFood - Nhà hàng chay Phương Mai\",\"type\":\"website\",\"url\":\"https://shopeefood.vn/tim-kiem?q=Nh%C3%A0+h%C3%A0ng+chay+Ph%C6%B0%C6%A1ng+Mai+Qu%E1%BA%ADn+1\",\"primary\":true},{\"label\":\"🛵 GrabFood - Nhà hàng chay Phương Mai\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/en/s?searchKeyword=Nh%C3%A0+h%C3%A0ng+chay+Ph%C6%B0%C6%A1ng+Mai+Qu%E1%BA%ADn+1\",\"primary\":false},{\"label\":\"📍 Maps - Nhà hàng chay Phương Mai\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=6354591245376837820\",\"primary\":false}]}[/CTA_BUTTONS]"
+    }
+  },
+  {
+    "run": 2,
+    "i": 8,
+    "userText": "Tôi đang ở đây, tìm chỗ ăn gần tôi.",
+    "ran": true,
+    "bands": 9,
+    "snippet_prices": 0,
+    "claims_in_input": 1,
+    "fabricated_in_input": [],
+    "true_fact_sentences": 0,
+    "v1": {
+      "ratio": 0.885,
+      "fragments": [],
+      "fabricated_surviving": [],
+      "metre_removed": 0,
+      "true_fact_lost": []
+    },
+    "v2": {
+      "ratio": 1,
+      "fragments": [],
+      "fabricated_surviving": [],
+      "metre_removed": 0,
+      "true_fact_lost": [],
+      "stats": {
+        "claims": 1,
+        "user_echo": 0,
+        "supported_by_band": 1,
+        "supported_by_snippet": 0,
+        "unsupported": 0,
+        "clause_cut": 0,
+        "sentences_removed": 0,
+        "lowercase_m_skipped": 0,
+        "attributed": 1,
+        "multi": 0
+      }
+    },
+    "texts": {
+      "input": "\n\nMình chọn **Vua Chả Cá** cho bạn! 🐟 Quán này cách bạn chỉ ~1.4km, có **4.9⭐ (4.605 đánh giá Google Maps)** — đó là bằng chứng mạnh mẽ về chất lượng. Chuyên chả cá Hà Nội ngon, giá hợp lý (100-300k), mở cửa đến 22:30 hôm nay. Bạn có thể đặt online qua ShopeeFood hoặc GrabFood, hoặc ghé trực tiếp.\n\nNgoài ra còn có **Béo Ơi Quán** (gần nhất, chỉ 0.9km, 4.6⭐) nếu muốn ăn món Hà Nội, hoặc **Nhà hàng chay Phương Mai** (1.7km, 4.9⭐) nếu bạn ưa thích đồ chay.\n\n*Gợi ý dựa trên kết quả tìm kiếm thực tế, TappyAI dẫn bạn đến nền tảng chính thức để đặt — quyền quyết định là của bạn.*\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛵 ShopeeFood - Vua Chả Cá\",\"type\":\"website\",\"url\":\"https://shopeefood.vn/tim-kiem?q=Vua+Cha+Ca+Quan+1\",\"primary\":true},{\"label\":\"🛵 GrabFood - Vua Chả Cá\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/en/s?searchKeyword=Vua+Cha+Ca+Quan+1\",\"primary\":false},{\"label\":\"📍 Maps - Vua Chả Cá\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=11029104309258159791\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Quán nào khác gần đây|Cafe yên tĩnh ở Quận 1|Nhà hàng Nhật ở Quận 1[/FOLLOWUPS]",
+      "v1": "Mình chọn **Vua Chả Cá** cho bạn! 🐟 Quán này cách bạn chỉ ~1.4km, có **4.9⭐ (4.605 đánh giá Google Maps)** — đó là bằng chứng mạnh mẽ về chất lượng. Bạn có thể đặt online qua ShopeeFood hoặc GrabFood, hoặc ghé trực tiếp.\n\nNgoài ra còn có **Béo Ơi Quán** (gần nhất, chỉ 0.9km, 4.6⭐) nếu muốn ăn món Hà Nội, hoặc **Nhà hàng chay Phương Mai** (1.7km, 4.9⭐) nếu bạn ưa thích đồ chay.\n\n*Gợi ý dựa trên kết quả tìm kiếm thực tế, TappyAI dẫn bạn đến nền tảng chính thức để đặt — quyền quyết định là của bạn.*\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛵 ShopeeFood - Vua Chả Cá\",\"type\":\"website\",\"url\":\"https://shopeefood.vn/tim-kiem?q=Vua+Cha+Ca+Quan+1\",\"primary\":true},{\"label\":\"🛵 GrabFood - Vua Chả Cá\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/en/s?searchKeyword=Vua+Cha+Ca+Quan+1\",\"primary\":false},{\"label\":\"📍 Maps - Vua Chả Cá\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=11029104309258159791\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Quán nào khác gần đây|Cafe yên tĩnh ở Quận 1|Nhà hàng Nhật ở Quận 1[/FOLLOWUPS]",
+      "v2": "\n\nMình chọn **Vua Chả Cá** cho bạn! 🐟 Quán này cách bạn chỉ ~1.4km, có **4.9⭐ (4.605 đánh giá Google Maps)** — đó là bằng chứng mạnh mẽ về chất lượng. Chuyên chả cá Hà Nội ngon, giá hợp lý (100-300k), mở cửa đến 22:30 hôm nay. Bạn có thể đặt online qua ShopeeFood hoặc GrabFood, hoặc ghé trực tiếp.\n\nNgoài ra còn có **Béo Ơi Quán** (gần nhất, chỉ 0.9km, 4.6⭐) nếu muốn ăn món Hà Nội, hoặc **Nhà hàng chay Phương Mai** (1.7km, 4.9⭐) nếu bạn ưa thích đồ chay.\n\n*Gợi ý dựa trên kết quả tìm kiếm thực tế, TappyAI dẫn bạn đến nền tảng chính thức để đặt — quyền quyết định là của bạn.*\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛵 ShopeeFood - Vua Chả Cá\",\"type\":\"website\",\"url\":\"https://shopeefood.vn/tim-kiem?q=Vua+Cha+Ca+Quan+1\",\"primary\":true},{\"label\":\"🛵 GrabFood - Vua Chả Cá\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/en/s?searchKeyword=Vua+Cha+Ca+Quan+1\",\"primary\":false},{\"label\":\"📍 Maps - Vua Chả Cá\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=11029104309258159791\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Quán nào khác gần đây|Cafe yên tĩnh ở Quận 1|Nhà hàng Nhật ở Quận 1[/FOLLOWUPS]",
+      "server_v1": "Mình chọn **Vua Chả Cá** cho bạn! 🐟 Quán này cách bạn chỉ ~1.4km, có **4.9⭐ (4.605 đánh giá Google Maps)** — đó là bằng chứng mạnh mẽ về chất lượng. Bạn có thể đặt online qua ShopeeFood hoặc GrabFood, hoặc ghé trực tiếp.\n\nNgoài ra còn có **Béo Ơi Quán** (gần nhất, chỉ 0.9km, 4.6⭐) nếu muốn ăn món Hà Nội, hoặc **Nhà hàng chay Phương Mai** (1.7km, 4.9⭐) nếu bạn ưa thích đồ chay.\n\n*Gợi ý dựa trên kết quả tìm kiếm thực tế, TappyAI dẫn bạn đến nền tảng chính thức để đặt — quyền quyết định là của bạn.*\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛵 ShopeeFood - Vua Chả Cá\",\"type\":\"website\",\"url\":\"https://shopeefood.vn/tim-kiem?q=Vua+Cha+Ca+Quan+1\",\"primary\":true},{\"label\":\"🛵 GrabFood - Vua Chả Cá\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/en/s?searchKeyword=Vua+Cha+Ca+Quan+1\",\"primary\":false},{\"label\":\"📍 Maps - Vua Chả Cá\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=11029104309258159791\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Quán nào khác gần đây|Cafe yên tĩnh ở Quận 1|Nhà hàng Nhật ở Quận 1[/FOLLOWUPS]"
+    }
+  },
+  {
+    "run": 2,
+    "i": 9,
+    "userText": "Tìm giúp tôi một quán cafe gần Landmark 81.",
+    "ran": true,
+    "bands": 9,
+    "snippet_prices": 0,
+    "claims_in_input": 1,
+    "fabricated_in_input": [],
+    "true_fact_sentences": 0,
+    "v1": {
+      "ratio": 0.877,
+      "fragments": [],
+      "fabricated_surviving": [],
+      "metre_removed": 0,
+      "true_fact_lost": []
+    },
+    "v2": {
+      "ratio": 1,
+      "fragments": [],
+      "fabricated_surviving": [],
+      "metre_removed": 0,
+      "true_fact_lost": [],
+      "stats": {
+        "claims": 1,
+        "user_echo": 0,
+        "supported_by_band": 1,
+        "supported_by_snippet": 0,
+        "unsupported": 0,
+        "clause_cut": 0,
+        "sentences_removed": 0,
+        "lowercase_m_skipped": 0,
+        "attributed": 1,
+        "multi": 0
+      }
+    },
+    "texts": {
+      "input": "Mình sẽ tìm các quán cafe gần Landmark 81 cho bạn.\n\nMình chọn **RuNam Vincom Landmark 81** cho bạn 👍 Quán này nằm ngay trong Landmark 81 nên cực tiện, có 4.6⭐ từ 699 đánh giá Google Maps, và mở từ 7h sáng đến 10h tối. Giá cà phê khoảng 100-700k nên phù hợp với budget của bạn. Không gian yên tĩnh, thích hợp để ngồi làm việc hoặc thư giãn.\n\nNếu muốn thử quán khác, **MOON COFFEE AND APARTMENT** gần đó cũng hay — rating cao hơn (4.7⭐) nhưng ít review hơn, mở 7h-21h.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"☕ Xem chi tiết — RuNam Vincom Landmark 81\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=10355679640479782947\",\"primary\":true},{\"label\":\"🌐 Website — RuNam Vincom Landmark 81\",\"type\":\"website\",\"url\":\"https://caferunam.com/\",\"primary\":false},{\"label\":\"☕ Xem chi tiết — MOON COFFEE AND APARTMENT\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=12683902472903598882\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]RuNam có menu gì đặc biệt không|Quán nào có wifi tốt để làm việc|Tìm quán cafe khác ở Thảo Điền[/FOLLOWUPS]",
+      "v1": "Mình sẽ tìm các quán cafe gần Landmark 81 cho bạn.\n\nMình chọn **RuNam Vincom Landmark 81** cho bạn 👍 Quán này nằm ngay trong Landmark 81 nên cực tiện, có 4.6⭐ từ 699 đánh giá Google Maps, và mở từ 7h sáng đến 10h tối. Không gian yên tĩnh, thích hợp để ngồi làm việc hoặc thư giãn.\n\nNếu muốn thử quán khác, **MOON COFFEE AND APARTMENT** gần đó cũng hay — rating cao hơn (4.7⭐) nhưng ít review hơn, mở 7h-21h.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"☕ Xem chi tiết — RuNam Vincom Landmark 81\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=10355679640479782947\",\"primary\":true},{\"label\":\"🌐 Website — RuNam Vincom Landmark 81\",\"type\":\"website\",\"url\":\"https://caferunam.com/\",\"primary\":false},{\"label\":\"☕ Xem chi tiết — MOON COFFEE AND APARTMENT\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=12683902472903598882\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]RuNam có menu gì đặc biệt không|Quán nào có wifi tốt để làm việc|Tìm quán cafe khác ở Thảo Điền[/FOLLOWUPS]",
+      "v2": "Mình sẽ tìm các quán cafe gần Landmark 81 cho bạn.\n\nMình chọn **RuNam Vincom Landmark 81** cho bạn 👍 Quán này nằm ngay trong Landmark 81 nên cực tiện, có 4.6⭐ từ 699 đánh giá Google Maps, và mở từ 7h sáng đến 10h tối. Giá cà phê khoảng 100-700k nên phù hợp với budget của bạn. Không gian yên tĩnh, thích hợp để ngồi làm việc hoặc thư giãn.\n\nNếu muốn thử quán khác, **MOON COFFEE AND APARTMENT** gần đó cũng hay — rating cao hơn (4.7⭐) nhưng ít review hơn, mở 7h-21h.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"☕ Xem chi tiết — RuNam Vincom Landmark 81\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=10355679640479782947\",\"primary\":true},{\"label\":\"🌐 Website — RuNam Vincom Landmark 81\",\"type\":\"website\",\"url\":\"https://caferunam.com/\",\"primary\":false},{\"label\":\"☕ Xem chi tiết — MOON COFFEE AND APARTMENT\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=12683902472903598882\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]RuNam có menu gì đặc biệt không|Quán nào có wifi tốt để làm việc|Tìm quán cafe khác ở Thảo Điền[/FOLLOWUPS]",
+      "server_v1": "Mình sẽ tìm các quán cafe gần Landmark 81 cho bạn.\n\nMình chọn **RuNam Vincom Landmark 81** cho bạn 👍 Quán này nằm ngay trong Landmark 81 nên cực tiện, có 4.6⭐ từ 699 đánh giá Google Maps, và mở từ 7h sáng đến 10h tối. Không gian yên tĩnh, thích hợp để ngồi làm việc hoặc thư giãn.\n\nNếu muốn thử quán khác, **MOON COFFEE AND APARTMENT** gần đó cũng hay — rating cao hơn (4.7⭐) nhưng ít review hơn, mở 7h-21h.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"☕ Xem chi tiết — RuNam Vincom Landmark 81\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=10355679640479782947\",\"primary\":true},{\"label\":\"🌐 Website — RuNam Vincom Landmark 81\",\"type\":\"website\",\"url\":\"https://caferunam.com/\",\"primary\":false},{\"label\":\"☕ Xem chi tiết — MOON COFFEE AND APARTMENT\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=12683902472903598882\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]RuNam có menu gì đặc biệt không|Quán nào có wifi tốt để làm việc|Tìm quán cafe khác ở Thảo Điền[/FOLLOWUPS]"
+    }
+  },
+  {
+    "run": 2,
+    "i": 10,
+    "userText": "Find me a quiet Japanese restaurant nearby.",
+    "ran": true,
+    "bands": 0,
+    "snippet_prices": 0,
+    "claims_in_input": 0,
+    "fabricated_in_input": [],
+    "true_fact_sentences": 0,
+    "v1": {
+      "ratio": 1,
+      "fragments": [],
+      "fabricated_surviving": [],
+      "metre_removed": 0,
+      "true_fact_lost": []
+    },
+    "v2": {
+      "ratio": 1,
+      "fragments": [],
+      "fabricated_surviving": [],
+      "metre_removed": 0,
+      "true_fact_lost": [],
+      "stats": {
+        "claims": 0,
+        "user_echo": 0,
+        "supported_by_band": 0,
+        "supported_by_snippet": 0,
+        "unsupported": 0,
+        "clause_cut": 0,
+        "sentences_removed": 0,
+        "lowercase_m_skipped": 0,
+        "attributed": 0,
+        "multi": 0
+      }
+    },
+    "texts": {
+      "input": "I'll search for quiet Japanese restaurants near your current location in District 1, Ho Chi Minh City.\n\nI'd lean toward **Izakaya Unatoto Việt Nam** — it's got a solid 4.9⭐ (7,102 Google Maps reviews) and sits just 0.7km away. The intimate izakaya vibe is perfect for a quiet meal, and it's open until 11 PM. \n\n**Sushi Taka Omakase** is even closer at 0.6km if you want an ultra-intimate omakase experience, though it's pricier. Both are great for peaceful dining with your travel companion.\n\nWhich appeals to you more — the traditional izakaya atmosphere or the omakase counter experience?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🍽️ Reserve at Izakaya Unatoto\",\"type\":\"website\",\"url\":\"https://unatotovietnam.com/datban\",\"primary\":true},{\"label\":\"📍 View on Maps — Izakaya Unatoto\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=17225553360722390934\",\"primary\":false},{\"label\":\"🍽️ Reserve at Sushi Taka Omakase\",\"type\":\"website\",\"url\":\"https://book.chope.co/booking?source=google_dining&rid=takasushitvl2601vn&rwg_token=AE37R_gH5NLfLBFGOJT4lDTKMZYZQ05wDzd6ExtI9k4OjFc7lcgT_LKZT14T_Ju1RdmGoPUC_UjYO_RxBt1l84N0odojLn3AYKQll9Yg1crSVLGvMzUOfQo%3D\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]omakase vs izakaya|check menu prices|book for 2 people[/FOLLOWUPS]",
+      "v1": "I'll search for quiet Japanese restaurants near your current location in District 1, Ho Chi Minh City.\n\nI'd lean toward **Izakaya Unatoto Việt Nam** — it's got a solid 4.9⭐ (7,102 Google Maps reviews) and sits just 0.7km away. The intimate izakaya vibe is perfect for a quiet meal, and it's open until 11 PM. \n\n**Sushi Taka Omakase** is even closer at 0.6km if you want an ultra-intimate omakase experience, though it's pricier. Both are great for peaceful dining with your travel companion.\n\nWhich appeals to you more — the traditional izakaya atmosphere or the omakase counter experience?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🍽️ Reserve at Izakaya Unatoto\",\"type\":\"website\",\"url\":\"https://unatotovietnam.com/datban\",\"primary\":true},{\"label\":\"📍 View on Maps — Izakaya Unatoto\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=17225553360722390934\",\"primary\":false},{\"label\":\"🍽️ Reserve at Sushi Taka Omakase\",\"type\":\"website\",\"url\":\"https://book.chope.co/booking?source=google_dining&rid=takasushitvl2601vn&rwg_token=AE37R_gH5NLfLBFGOJT4lDTKMZYZQ05wDzd6ExtI9k4OjFc7lcgT_LKZT14T_Ju1RdmGoPUC_UjYO_RxBt1l84N0odojLn3AYKQll9Yg1crSVLGvMzUOfQo%3D\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]omakase vs izakaya|check menu prices|book for 2 people[/FOLLOWUPS]",
+      "v2": "I'll search for quiet Japanese restaurants near your current location in District 1, Ho Chi Minh City.\n\nI'd lean toward **Izakaya Unatoto Việt Nam** — it's got a solid 4.9⭐ (7,102 Google Maps reviews) and sits just 0.7km away. The intimate izakaya vibe is perfect for a quiet meal, and it's open until 11 PM. \n\n**Sushi Taka Omakase** is even closer at 0.6km if you want an ultra-intimate omakase experience, though it's pricier. Both are great for peaceful dining with your travel companion.\n\nWhich appeals to you more — the traditional izakaya atmosphere or the omakase counter experience?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🍽️ Reserve at Izakaya Unatoto\",\"type\":\"website\",\"url\":\"https://unatotovietnam.com/datban\",\"primary\":true},{\"label\":\"📍 View on Maps — Izakaya Unatoto\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=17225553360722390934\",\"primary\":false},{\"label\":\"🍽️ Reserve at Sushi Taka Omakase\",\"type\":\"website\",\"url\":\"https://book.chope.co/booking?source=google_dining&rid=takasushitvl2601vn&rwg_token=AE37R_gH5NLfLBFGOJT4lDTKMZYZQ05wDzd6ExtI9k4OjFc7lcgT_LKZT14T_Ju1RdmGoPUC_UjYO_RxBt1l84N0odojLn3AYKQll9Yg1crSVLGvMzUOfQo%3D\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]omakase vs izakaya|check menu prices|book for 2 people[/FOLLOWUPS]",
+      "server_v1": "I'll search for quiet Japanese restaurants near your current location in District 1, Ho Chi Minh City.\n\nI'd lean toward **Izakaya Unatoto Việt Nam** — it's got a solid 4.9⭐ (7,102 Google Maps reviews) and sits just 0.7km away. The intimate izakaya vibe is perfect for a quiet meal, and it's open until 11 PM. \n\n**Sushi Taka Omakase** is even closer at 0.6km if you want an ultra-intimate omakase experience, though it's pricier. Both are great for peaceful dining with your travel companion.\n\nWhich appeals to you more — the traditional izakaya atmosphere or the omakase counter experience?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🍽️ Reserve at Izakaya Unatoto\",\"type\":\"website\",\"url\":\"https://unatotovietnam.com/datban\",\"primary\":true},{\"label\":\"📍 View on Maps — Izakaya Unatoto\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=17225553360722390934\",\"primary\":false},{\"label\":\"🍽️ Reserve at Sushi Taka Omakase\",\"type\":\"website\",\"url\":\"https://book.chope.co/booking?source=google_dining&rid=takasushitvl2601vn&rwg_token=AE37R_gH5NLfLBFGOJT4lDTKMZYZQ05wDzd6ExtI9k4OjFc7lcgT_LKZT14T_Ju1RdmGoPUC_UjYO_RxBt1l84N0odojLn3AYKQll9Yg1crSVLGvMzUOfQo%3D\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]omakase vs izakaya|check menu prices|book for 2 people[/FOLLOWUPS]"
+    }
+  },
+  {
+    "run": 2,
+    "i": 11,
+    "userText": "Find giúp tôi một quán cafe chill gần đây.",
+    "ran": true,
+    "bands": 0,
+    "snippet_prices": 0,
+    "claims_in_input": 0,
+    "fabricated_in_input": [],
+    "true_fact_sentences": 0,
+    "v1": {
+      "ratio": 1,
+      "fragments": [],
+      "fabricated_surviving": [],
+      "metre_removed": 0,
+      "true_fact_lost": []
+    },
+    "v2": {
+      "ratio": 1,
+      "fragments": [],
+      "fabricated_surviving": [],
+      "metre_removed": 0,
+      "true_fact_lost": [],
+      "stats": {
+        "claims": 0,
+        "user_echo": 0,
+        "supported_by_band": 0,
+        "supported_by_snippet": 0,
+        "unsupported": 0,
+        "clause_cut": 0,
+        "sentences_removed": 0,
+        "lowercase_m_skipped": 2,
+        "attributed": 0,
+        "multi": 0
+      }
+    },
+    "texts": {
+      "input": "Mình sẽ tìm những quán cafe yên tĩnh gần vị trí của bạn ở Quận 1 nhé.\n\nMình chọn **Hoff Coffee Brewers by BeanHop** cho bạn 👌 Quán này cách bạn chỉ 100m, mở cửa đến 21:00 hôm nay, và có **4.8⭐ (358 đánh giá Google Maps)** — vừa gần vừa yên tĩnh, hoàn hảo để chill. \n\n**BẢN Cà Phê** cách 300m cũng là lựa chọn tốt nếu bạn muốn không gian rộng hơn (606 đánh giá, 4.7⭐, mở đến 22:00).\n\nBạn muốn mình tìm thêm quán khác hay đã hợp ý rồi? 😊\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"☕ Xem chi tiết — Hoff Coffee\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=2382170101620030993\",\"primary\":true},{\"label\":\"☕ Xem chi tiết — BẢN Cà Phê\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=455297107363496728\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]quán cafe gần Landmark 81|cafe có wifi để làm việc|quán cafe view đẹp[/FOLLOWUPS]",
+      "v1": "Mình sẽ tìm những quán cafe yên tĩnh gần vị trí của bạn ở Quận 1 nhé.\n\nMình chọn **Hoff Coffee Brewers by BeanHop** cho bạn 👌 Quán này cách bạn chỉ 100m, mở cửa đến 21:00 hôm nay, và có **4.8⭐ (358 đánh giá Google Maps)** — vừa gần vừa yên tĩnh, hoàn hảo để chill. \n\n**BẢN Cà Phê** cách 300m cũng là lựa chọn tốt nếu bạn muốn không gian rộng hơn (606 đánh giá, 4.7⭐, mở đến 22:00).\n\nBạn muốn mình tìm thêm quán khác hay đã hợp ý rồi? 😊\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"☕ Xem chi tiết — Hoff Coffee\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=2382170101620030993\",\"primary\":true},{\"label\":\"☕ Xem chi tiết — BẢN Cà Phê\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=455297107363496728\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]quán cafe gần Landmark 81|cafe có wifi để làm việc|quán cafe view đẹp[/FOLLOWUPS]",
+      "v2": "Mình sẽ tìm những quán cafe yên tĩnh gần vị trí của bạn ở Quận 1 nhé.\n\nMình chọn **Hoff Coffee Brewers by BeanHop** cho bạn 👌 Quán này cách bạn chỉ 100m, mở cửa đến 21:00 hôm nay, và có **4.8⭐ (358 đánh giá Google Maps)** — vừa gần vừa yên tĩnh, hoàn hảo để chill. \n\n**BẢN Cà Phê** cách 300m cũng là lựa chọn tốt nếu bạn muốn không gian rộng hơn (606 đánh giá, 4.7⭐, mở đến 22:00).\n\nBạn muốn mình tìm thêm quán khác hay đã hợp ý rồi? 😊\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"☕ Xem chi tiết — Hoff Coffee\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=2382170101620030993\",\"primary\":true},{\"label\":\"☕ Xem chi tiết — BẢN Cà Phê\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=455297107363496728\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]quán cafe gần Landmark 81|cafe có wifi để làm việc|quán cafe view đẹp[/FOLLOWUPS]",
+      "server_v1": "Mình sẽ tìm những quán cafe yên tĩnh gần vị trí của bạn ở Quận 1 nhé.\n\n \n\nBạn muốn mình tìm thêm quán khác hay đã hợp ý rồi? 😊\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"☕ Xem chi tiết — Hoff Coffee\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=2382170101620030993\",\"primary\":true},{\"label\":\"☕ Xem chi tiết — BẢN Cà Phê\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=455297107363496728\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]quán cafe gần Landmark 81|cafe có wifi để làm việc|quán cafe view đẹp[/FOLLOWUPS]"
+    }
+  },
+  {
+    "run": 2,
+    "i": 12,
+    "userText": "Tìm cho tôi một chiếc tai nghe tốt dưới 2 triệu.",
+    "ran": true,
+    "bands": 0,
+    "snippet_prices": 0,
+    "claims_in_input": 0,
+    "fabricated_in_input": [],
+    "true_fact_sentences": 0,
+    "v1": {
+      "ratio": 1,
+      "fragments": [],
+      "fabricated_surviving": [],
+      "metre_removed": 0,
+      "true_fact_lost": []
+    },
+    "v2": {
+      "ratio": 1,
+      "fragments": [],
+      "fabricated_surviving": [],
+      "metre_removed": 0,
+      "true_fact_lost": [],
+      "stats": {
+        "claims": 0,
+        "user_echo": 0,
+        "supported_by_band": 0,
+        "supported_by_snippet": 0,
+        "unsupported": 0,
+        "clause_cut": 0,
+        "sentences_removed": 0,
+        "lowercase_m_skipped": 0,
+        "attributed": 0,
+        "multi": 0
+      }
+    },
+    "texts": {
+      "input": "Mình nghiêng về **Tai nghe ASUS ROG Cetra II Core** từ CellphoneS. Nó có đánh giá 4.8⭐ từ 632 lượt đánh giá — con số này khá đáng tin cậy. \n\nBạn có ưu tiên gì cụ thể không — như tai nghe không dây hay có dây, chụp tai hay nhét tai? 🎧\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛒 Tìm trên Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=tai+nghe+t%E1%BB%91t+d%C6%B0%E1%BB%9Bi+2+tri%E1%BB%87u\",\"primary\":true},{\"label\":\"📦 Tìm trên Lazada\",\"type\":\"search\",\"url\":\"https://www.lazada.vn/catalog/?q=tai+nghe+t%E1%BB%91t+d%C6%B0%E1%BB%9Bi+2+tri%E1%BB%87u\",\"primary\":false},{\"label\":\"🛍️ Tìm trên Tiki\",\"type\":\"search\",\"url\":\"https://tiki.vn/search?q=tai+nghe+t%E1%BB%91t+d%C6%B0%E1%BB%9Bi+2+tri%E1%BB%87u\",\"primary\":false}],\"note\":\"Gợi ý dựa trên kết quả tìm kiếm thực, không phải quảng cáo trả tiền. TappyAI dẫn bạn đến sàn để tự so sánh & mua — quyền quyết định là của bạn.\"}[/CTA_BUTTONS]\n\n[FOLLOWUPS]tai nghe không dây hay có dây|tai nghe chụp tai hay nhét tai|dùng để chơi game hay nghe nhạc[/FOLLOWUPS]",
+      "v1": "Mình nghiêng về **Tai nghe ASUS ROG Cetra II Core** từ CellphoneS. Nó có đánh giá 4.8⭐ từ 632 lượt đánh giá — con số này khá đáng tin cậy. \n\nBạn có ưu tiên gì cụ thể không — như tai nghe không dây hay có dây, chụp tai hay nhét tai? 🎧\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛒 Tìm trên Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=tai+nghe+t%E1%BB%91t+d%C6%B0%E1%BB%9Bi+2+tri%E1%BB%87u\",\"primary\":true},{\"label\":\"📦 Tìm trên Lazada\",\"type\":\"search\",\"url\":\"https://www.lazada.vn/catalog/?q=tai+nghe+t%E1%BB%91t+d%C6%B0%E1%BB%9Bi+2+tri%E1%BB%87u\",\"primary\":false},{\"label\":\"🛍️ Tìm trên Tiki\",\"type\":\"search\",\"url\":\"https://tiki.vn/search?q=tai+nghe+t%E1%BB%91t+d%C6%B0%E1%BB%9Bi+2+tri%E1%BB%87u\",\"primary\":false}],\"note\":\"Gợi ý dựa trên kết quả tìm kiếm thực, không phải quảng cáo trả tiền. TappyAI dẫn bạn đến sàn để tự so sánh & mua — quyền quyết định là của bạn.\"}[/CTA_BUTTONS]\n\n[FOLLOWUPS]tai nghe không dây hay có dây|tai nghe chụp tai hay nhét tai|dùng để chơi game hay nghe nhạc[/FOLLOWUPS]",
+      "v2": "Mình nghiêng về **Tai nghe ASUS ROG Cetra II Core** từ CellphoneS. Nó có đánh giá 4.8⭐ từ 632 lượt đánh giá — con số này khá đáng tin cậy. \n\nBạn có ưu tiên gì cụ thể không — như tai nghe không dây hay có dây, chụp tai hay nhét tai? 🎧\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛒 Tìm trên Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=tai+nghe+t%E1%BB%91t+d%C6%B0%E1%BB%9Bi+2+tri%E1%BB%87u\",\"primary\":true},{\"label\":\"📦 Tìm trên Lazada\",\"type\":\"search\",\"url\":\"https://www.lazada.vn/catalog/?q=tai+nghe+t%E1%BB%91t+d%C6%B0%E1%BB%9Bi+2+tri%E1%BB%87u\",\"primary\":false},{\"label\":\"🛍️ Tìm trên Tiki\",\"type\":\"search\",\"url\":\"https://tiki.vn/search?q=tai+nghe+t%E1%BB%91t+d%C6%B0%E1%BB%9Bi+2+tri%E1%BB%87u\",\"primary\":false}],\"note\":\"Gợi ý dựa trên kết quả tìm kiếm thực, không phải quảng cáo trả tiền. TappyAI dẫn bạn đến sàn để tự so sánh & mua — quyền quyết định là của bạn.\"}[/CTA_BUTTONS]\n\n[FOLLOWUPS]tai nghe không dây hay có dây|tai nghe chụp tai hay nhét tai|dùng để chơi game hay nghe nhạc[/FOLLOWUPS]",
+      "server_v1": "Mình nghiêng về **Tai nghe ASUS ROG Cetra II Core** từ CellphoneS. Nó có đánh giá 4.8⭐ từ 632 lượt đánh giá — con số này khá đáng tin cậy. \n\nBạn có ưu tiên gì cụ thể không — như tai nghe không dây hay có dây, chụp tai hay nhét tai? 🎧\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛒 Tìm trên Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=tai+nghe+t%E1%BB%91t+d%C6%B0%E1%BB%9Bi+2+tri%E1%BB%87u\",\"primary\":true},{\"label\":\"📦 Tìm trên Lazada\",\"type\":\"search\",\"url\":\"https://www.lazada.vn/catalog/?q=tai+nghe+t%E1%BB%91t+d%C6%B0%E1%BB%9Bi+2+tri%E1%BB%87u\",\"primary\":false},{\"label\":\"🛍️ Tìm trên Tiki\",\"type\":\"search\",\"url\":\"https://tiki.vn/search?q=tai+nghe+t%E1%BB%91t+d%C6%B0%E1%BB%9Bi+2+tri%E1%BB%87u\",\"primary\":false}],\"note\":\"Gợi ý dựa trên kết quả tìm kiếm thực, không phải quảng cáo trả tiền. TappyAI dẫn bạn đến sàn để tự so sánh & mua — quyền quyết định là của bạn.\"}[/CTA_BUTTONS]\n\n[FOLLOWUPS]tai nghe không dây hay có dây|tai nghe chụp tai hay nhét tai|dùng để chơi game hay nghe nhạc[/FOLLOWUPS]"
+    }
+  },
+  {
+    "run": 2,
+    "i": 13,
+    "userText": "Tối nay ở TP.HCM có gì vui?",
+    "ran": true,
+    "bands": 0,
+    "snippet_prices": 1,
+    "claims_in_input": 0,
+    "fabricated_in_input": [],
+    "true_fact_sentences": 0,
+    "v1": {
+      "ratio": 1,
+      "fragments": [],
+      "fabricated_surviving": [],
+      "metre_removed": 0,
+      "true_fact_lost": []
+    },
+    "v2": {
+      "ratio": 1,
+      "fragments": [],
+      "fabricated_surviving": [],
+      "metre_removed": 0,
+      "true_fact_lost": [],
+      "stats": {
+        "claims": 0,
+        "user_echo": 0,
+        "supported_by_band": 0,
+        "supported_by_snippet": 0,
+        "unsupported": 0,
+        "clause_cut": 0,
+        "sentences_removed": 0,
+        "lowercase_m_skipped": 0,
+        "attributed": 0,
+        "multi": 0
+      }
+    },
+    "texts": {
+      "input": "\n\nTối nay TP.HCM có khá nhiều chỗ vui nhộn! Thời tiết hiện tại là 29°C, có mưa nhẹ, nên bạn nên mang theo ô nếu đi ngoài trời.\n\nMình gợi ý **Inside Xcape Room** — một trung tâm trò chơi truy tìm lối thoát cực hay với **4.9⭐ (2.181 đánh giá Google Maps)**. Nó mở đến 23:00 tối nay, hoàn hảo cho 2 người muốn trải nghiệm gì đó vui vẻ và yên tĩnh. Ngoài ra còn có **Nhà hát Thành phố Hồ Chí Minh** nếu bạn thích xem show, hoặc **Công Viên Bờ Sông Sài Gòn** để dạo bộ nhẹ nhàng (mở đến 22:00).\n\nBạn muốn chơi gì cụ thể — trò chơi, xem show, hay dạo bộ?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🎮 Xem chi tiết — Inside Xcape Room\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=6487649280394032945\",\"primary\":true},{\"label\":\"🎭 Nhà hát Thành phố\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=6193911520574615099\",\"primary\":false},{\"label\":\"🌳 Công viên Bờ Sông\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=14403115314444078259\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]trò chơi escape room|xem show nhạc|dạo bộ công viên[/FOLLOWUPS]",
+      "v1": "\n\nTối nay TP.HCM có khá nhiều chỗ vui nhộn! Thời tiết hiện tại là 29°C, có mưa nhẹ, nên bạn nên mang theo ô nếu đi ngoài trời.\n\nMình gợi ý **Inside Xcape Room** — một trung tâm trò chơi truy tìm lối thoát cực hay với **4.9⭐ (2.181 đánh giá Google Maps)**. Nó mở đến 23:00 tối nay, hoàn hảo cho 2 người muốn trải nghiệm gì đó vui vẻ và yên tĩnh. Ngoài ra còn có **Nhà hát Thành phố Hồ Chí Minh** nếu bạn thích xem show, hoặc **Công Viên Bờ Sông Sài Gòn** để dạo bộ nhẹ nhàng (mở đến 22:00).\n\nBạn muốn chơi gì cụ thể — trò chơi, xem show, hay dạo bộ?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🎮 Xem chi tiết — Inside Xcape Room\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=6487649280394032945\",\"primary\":true},{\"label\":\"🎭 Nhà hát Thành phố\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=6193911520574615099\",\"primary\":false},{\"label\":\"🌳 Công viên Bờ Sông\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=14403115314444078259\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]trò chơi escape room|xem show nhạc|dạo bộ công viên[/FOLLOWUPS]",
+      "v2": "\n\nTối nay TP.HCM có khá nhiều chỗ vui nhộn! Thời tiết hiện tại là 29°C, có mưa nhẹ, nên bạn nên mang theo ô nếu đi ngoài trời.\n\nMình gợi ý **Inside Xcape Room** — một trung tâm trò chơi truy tìm lối thoát cực hay với **4.9⭐ (2.181 đánh giá Google Maps)**. Nó mở đến 23:00 tối nay, hoàn hảo cho 2 người muốn trải nghiệm gì đó vui vẻ và yên tĩnh. Ngoài ra còn có **Nhà hát Thành phố Hồ Chí Minh** nếu bạn thích xem show, hoặc **Công Viên Bờ Sông Sài Gòn** để dạo bộ nhẹ nhàng (mở đến 22:00).\n\nBạn muốn chơi gì cụ thể — trò chơi, xem show, hay dạo bộ?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🎮 Xem chi tiết — Inside Xcape Room\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=6487649280394032945\",\"primary\":true},{\"label\":\"🎭 Nhà hát Thành phố\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=6193911520574615099\",\"primary\":false},{\"label\":\"🌳 Công viên Bờ Sông\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=14403115314444078259\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]trò chơi escape room|xem show nhạc|dạo bộ công viên[/FOLLOWUPS]",
+      "server_v1": "\n\nTối nay TP.HCM có khá nhiều chỗ vui nhộn! Thời tiết hiện tại là 29°C, có mưa nhẹ, nên bạn nên mang theo ô nếu đi ngoài trời.\n\nMình gợi ý **Inside Xcape Room** — một trung tâm trò chơi truy tìm lối thoát cực hay với **4.9⭐ (2.181 đánh giá Google Maps)**. Nó mở đến 23:00 tối nay, hoàn hảo cho 2 người muốn trải nghiệm gì đó vui vẻ và yên tĩnh. Ngoài ra còn có **Nhà hát Thành phố Hồ Chí Minh** nếu bạn thích xem show, hoặc **Công Viên Bờ Sông Sài Gòn** để dạo bộ nhẹ nhàng (mở đến 22:00).\n\nBạn muốn chơi gì cụ thể — trò chơi, xem show, hay dạo bộ?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🎮 Xem chi tiết — Inside Xcape Room\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=6487649280394032945\",\"primary\":true},{\"label\":\"🎭 Nhà hát Thành phố\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=6193911520574615099\",\"primary\":false},{\"label\":\"🌳 Công viên Bờ Sông\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=14403115314444078259\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]trò chơi escape room|xem show nhạc|dạo bộ công viên[/FOLLOWUPS]"
+    }
+  },
+  {
+    "run": 2,
+    "i": 14,
+    "userText": "Tìm cho tôi một spa thư giãn, sạch sẽ, giá hợp lý.",
+    "ran": true,
+    "bands": 0,
+    "snippet_prices": 10,
+    "claims_in_input": 1,
+    "fabricated_in_input": [],
+    "true_fact_sentences": 0,
+    "v1": {
+      "ratio": 1,
+      "fragments": [],
+      "fabricated_surviving": [],
+      "metre_removed": 0,
+      "true_fact_lost": []
+    },
+    "v2": {
+      "ratio": 1,
+      "fragments": [],
+      "fabricated_surviving": [],
+      "metre_removed": 0,
+      "true_fact_lost": [],
+      "stats": {
+        "claims": 1,
+        "user_echo": 0,
+        "supported_by_band": 0,
+        "supported_by_snippet": 1,
+        "unsupported": 0,
+        "clause_cut": 0,
+        "sentences_removed": 0,
+        "lowercase_m_skipped": 0,
+        "attributed": 1,
+        "multi": 0
+      }
+    },
+    "texts": {
+      "input": "Mình cần biết bạn muốn tìm spa ở đâu để gợi ý chính xác nhất. Bạn đang ở TP.HCM hay muốn tìm ở khu vực khác?\n\nMình chọn **Sunyata Retreat Hill Spa** cho bạn 👌 Spa này có 4.9⭐ từ 3.571 đánh giá Google Maps — con số này đủ lớn để chứng minh chất lượng thực sự. Nằm ở Bùi Viện (Bến Thành), không gian yên tĩnh, được khách khen sạch sẽ và dịch vụ thư giãn tốt. Mở từ 10:00 đến 01:00 nên bạn có thể ghé vào tối nay.\n\nGiá dịch vụ spa ở TP.HCM thường khoảng 300.000-500.000đ cho massage thư giãn 60 phút, nằm trong ngân sách bạn thường dùng. Bạn có thể gọi trực tiếp **(+84 917 757 509)** để hỏi giá chi tiết và đặt chỗ.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website — Sunyata Retreat Hill Spa\",\"type\":\"website\",\"url\":\"https://www.facebook.com/SunyataSpa\",\"primary\":true},{\"label\":\"📍 Google Maps — Sunyata Retreat Hill Spa\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=15695213086533120568\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Xem spa khác ở TP.HCM|Tìm spa ở quận khác|Gợi ý hoạt động tối nay[/FOLLOWUPS]",
+      "v1": "Mình cần biết bạn muốn tìm spa ở đâu để gợi ý chính xác nhất. Bạn đang ở TP.HCM hay muốn tìm ở khu vực khác?\n\nMình chọn **Sunyata Retreat Hill Spa** cho bạn 👌 Spa này có 4.9⭐ từ 3.571 đánh giá Google Maps — con số này đủ lớn để chứng minh chất lượng thực sự. Nằm ở Bùi Viện (Bến Thành), không gian yên tĩnh, được khách khen sạch sẽ và dịch vụ thư giãn tốt. Mở từ 10:00 đến 01:00 nên bạn có thể ghé vào tối nay.\n\nGiá dịch vụ spa ở TP.HCM thường khoảng 300.000-500.000đ cho massage thư giãn 60 phút, nằm trong ngân sách bạn thường dùng. Bạn có thể gọi trực tiếp **(+84 917 757 509)** để hỏi giá chi tiết và đặt chỗ.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website — Sunyata Retreat Hill Spa\",\"type\":\"website\",\"url\":\"https://www.facebook.com/SunyataSpa\",\"primary\":true},{\"label\":\"📍 Google Maps — Sunyata Retreat Hill Spa\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=15695213086533120568\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Xem spa khác ở TP.HCM|Tìm spa ở quận khác|Gợi ý hoạt động tối nay[/FOLLOWUPS]",
+      "v2": "Mình cần biết bạn muốn tìm spa ở đâu để gợi ý chính xác nhất. Bạn đang ở TP.HCM hay muốn tìm ở khu vực khác?\n\nMình chọn **Sunyata Retreat Hill Spa** cho bạn 👌 Spa này có 4.9⭐ từ 3.571 đánh giá Google Maps — con số này đủ lớn để chứng minh chất lượng thực sự. Nằm ở Bùi Viện (Bến Thành), không gian yên tĩnh, được khách khen sạch sẽ và dịch vụ thư giãn tốt. Mở từ 10:00 đến 01:00 nên bạn có thể ghé vào tối nay.\n\nGiá dịch vụ spa ở TP.HCM thường khoảng 300.000-500.000đ cho massage thư giãn 60 phút, nằm trong ngân sách bạn thường dùng. Bạn có thể gọi trực tiếp **(+84 917 757 509)** để hỏi giá chi tiết và đặt chỗ.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website — Sunyata Retreat Hill Spa\",\"type\":\"website\",\"url\":\"https://www.facebook.com/SunyataSpa\",\"primary\":true},{\"label\":\"📍 Google Maps — Sunyata Retreat Hill Spa\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=15695213086533120568\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Xem spa khác ở TP.HCM|Tìm spa ở quận khác|Gợi ý hoạt động tối nay[/FOLLOWUPS]",
+      "server_v1": "Mình cần biết bạn muốn tìm spa ở đâu để gợi ý chính xác nhất. Bạn đang ở TP.HCM hay muốn tìm ở khu vực khác?\n\nMình chọn **Sunyata Retreat Hill Spa** cho bạn 👌 Spa này có 4.9⭐ từ 3.571 đánh giá Google Maps — con số này đủ lớn để chứng minh chất lượng thực sự. Nằm ở Bùi Viện (Bến Thành), không gian yên tĩnh, được khách khen sạch sẽ và dịch vụ thư giãn tốt. Mở từ 10:00 đến 01:00 nên bạn có thể ghé vào tối nay.\n\nGiá dịch vụ spa ở TP.HCM thường khoảng 300.000-500.000đ cho massage thư giãn 60 phút, nằm trong ngân sách bạn thường dùng. Bạn có thể gọi trực tiếp **(+84 917 757 509)** để hỏi giá chi tiết và đặt chỗ.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website — Sunyata Retreat Hill Spa\",\"type\":\"website\",\"url\":\"https://www.facebook.com/SunyataSpa\",\"primary\":true},{\"label\":\"📍 Google Maps — Sunyata Retreat Hill Spa\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=15695213086533120568\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Xem spa khác ở TP.HCM|Tìm spa ở quận khác|Gợi ý hoạt động tối nay[/FOLLOWUPS]"
+    }
+  }
+]

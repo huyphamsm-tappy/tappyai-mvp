@@ -1,0 +1,209 @@
+{
+  "id": "F7b",
+  "text": "dưới 100k/người",
+  "parent": "F7",
+  "status": 200,
+  "ms": 16155,
+  "evidenceId": "a7a8b064-a7ae-4dec-b587-fc0f90ca7b39",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "quán ăn bình dân dưới 100k Quận 1",
+        "location": "Quận 1, TP.HCM",
+        "type": "restaurant"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "CoCo Ichibanya Vietnam - Bến Thành",
+      "rating": 4.8,
+      "count": 905,
+      "price": "100-200 N ₫",
+      "hours": "10:00–21:30",
+      "distance_km": 0.8,
+      "address": "256 Lê Thánh Tôn, Bến Thành, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Clover Korean House Food",
+      "rating": 4.6,
+      "count": 1844,
+      "price": "100-200 N ₫",
+      "hours": "08:00–23:30",
+      "distance_km": 1.7,
+      "address": "4C Võ Thị Sáu, Tân Định, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Peofood - Xôi Bắc chuẩn vị",
+      "rating": 4.5,
+      "count": 336,
+      "price": "1-100.000 ₫",
+      "hours": "06:00–13:00, 17:00–21:00",
+      "distance_km": 1,
+      "address": "180 Ký Con, Bến Thành, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Bánh Ướt Ban Mê Giang Vương - Tôn Thất Tùng",
+      "rating": 4.4,
+      "count": 604,
+      "price": "100-200 N ₫",
+      "hours": "09:00–21:30",
+      "distance_km": 1.5,
+      "address": "10 Tôn Thất Tùng, Quận 1, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Ann Quán",
+      "rating": 4.2,
+      "count": 1279,
+      "price": "100-500 N ₫",
+      "hours": "07:00–01:00",
+      "distance_km": 0.6,
+      "address": "66 Ngô Đức Kế, Phường, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "A Tùng Bánh mì bò nướng bơ Campuchia",
+      "rating": 4.2,
+      "count": 3695,
+      "price": "1-100.000 ₫",
+      "hours": "15:30–22:30",
+      "distance_km": 1.8,
+      "address": "171 Đ. Cống Quỳnh, Cầu Ông Lãnh, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Ốc Đào",
+      "rating": 4.2,
+      "count": 2473,
+      "price": "100-500 N ₫",
+      "hours": "11:00–22:15",
+      "distance_km": 2.2,
+      "address": "212B/D48 Nguyễn Trãi, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Quán ăn ngon Sài Gòn",
+      "rating": 4.1,
+      "count": 1156,
+      "price": "100-400 N ₫",
+      "hours": "08:00–22:30",
+      "distance_km": 0.4,
+      "address": "138 Nam Kỳ Khởi Nghĩa, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Sài Gòn Xưa và Nay",
+      "rating": 4,
+      "count": 1274,
+      "price": "100-600 N ₫",
+      "hours": "11:00–01:00",
+      "distance_km": 0.4,
+      "address": "37 Nguyễn Trung Trực, Bến Thành, Hồ Chí Minh, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "CoCo Ichibanya Vietnam - Bến Thành",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 4.8,
+        "reviews": 905,
+        "distance_km": 0.8,
+        "open_now": true,
+        "opening_hours": "10:00–21:30"
+      }
+    },
+    {
+      "name": "Clover Korean House Food",
+      "role": null,
+      "evidence": {
+        "rating": 4.6,
+        "reviews": 1844,
+        "distance_km": 1.7,
+        "open_now": true,
+        "opening_hours": "08:00–23:30"
+      }
+    },
+    {
+      "name": "Peofood - Xôi Bắc chuẩn vị",
+      "role": null,
+      "evidence": {
+        "rating": 4.5,
+        "reviews": 336,
+        "distance_km": 1,
+        "price_up_to_vnd": 100000,
+        "open_now": false,
+        "opening_hours": "06:00–13:00, 17:00–21:00"
+      }
+    }
+  ],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình tìm lại với ngân sách dưới 100k/người nhé! 🔍\n\nMình chọn **CoCo Ichibanya Vietnam - Bến Thành** cho bạn!\n\nNếu muốn thử khác, **Peofood - Xôi Bắc chuẩn vị** cách 1km, 4.5⭐ với 336 đánh giá, xôi ngon dưới 100k/người, nhưng đang đóng cửa (mở lại 17:00).\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Maps - CoCo Ichibanya\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=16155838983936357617\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Thử cơm cà ri Nhật|Quán ăn Hàn Quốc gần đây|Bánh mì bò nướng[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "ăn gì ngon giờ"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình sẽ tìm những quán ăn ngon gần bạn cho bữa tối này nhé! 🍽️\n\nMình chọn **Hải Sản Hoàng Gia** cho bạn! 🦐 Quán có rating 4.7⭐ từ 981 đánh giá, chuyên hải sản tươi ngon, cách bạn khoảng 1.9km, mở đến nửa đêm nên hoàn hảo cho bữa tối. Nếu muốn gần hơn, **Quán Bụi** ở Lê Thánh Tôn chỉ 0.7km, cũng 4.5⭐ với 1.210 đánh giá, phục vụ đa dạng từ phở đến nướng.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Maps - Hải Sản Hoàng Gia\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=8690476982161666487\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Hải sản nào ngon nhất|Quán Bụi gần hơn|Tìm quán khác[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "dưới 100k/người"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm lại với ngân sách dưới 100k/người nhé! 🔍\n\nMình chọn **CoCo Ichibanya Vietnam - Bến Thành** cho bạn!\n\nNếu muốn thử khác, **Peofood - Xôi Bắc chuẩn vị** cách 1km, 4.5⭐ với 336 đánh giá, xôi ngon dưới 100k/người, nhưng đang đóng cửa (mở lại 17:00).\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Maps - CoCo Ichibanya\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=16155838983936357617\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Thử cơm cà ri Nhật|Quán ăn Hàn Quốc gần đây|Bánh mì bò nướng[/FOLLOWUPS]"
+    }
+  ]
+}

@@ -1,0 +1,84 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Son Lụa Diễm Quận 10 site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:27:08.081Z",
+ "body": {
+  "searchParameters": {
+   "q": "Son Lụa Diễm Quận 10 site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Combo Son Lụa Diễm Son Dưỡng Nhiên Chứa Maxilip ...",
+    "link": "https://www.lazada.vn/products/combo-son-lua-diem-son-duong-nhien-chua-maxilip-cho-moi-cang-mong-giup-duong-am-ngua-nep-nhan-moi-co-mem-i2751134234.html?srsltid=AU7gw4X9-Kp4RD77qSDCzlTwOJvb7aSK03JNbq3Iebzt7wAfg2Klnd7Z",
+    "snippet": "Cây son được thiết kế thỏi nam châm kết cấu chắc tay, tiện dụng cùng với bảng 08 màu đa dạng và chất son mịn mượt như lụa, Cỏ Mềm tự tin rằng son Lụa DIỄM sẽ ...",
+    "rating": 5,
+    "ratingCount": 23,
+    "position": 1
+   },
+   {
+    "title": "Combo Trang Điểm Tự Nhiên Son Lụa Diễm Mọng Mướt ...",
+    "link": "https://www.lazada.vn/products/combo-trang-diem-tu-nhien-son-lua-diem-mong-muot-kem-trang-diem-thuy-tinh-da-nang-co-mem-i2928314983.html?srsltid=AU7gw4VQ8aYONwF2SFVcRIESKgDLTVEp0vwdLP1J_AHoCXYr6lpMdTZv",
+    "snippet": "Cây son được thiết kế thỏi nam châm kết cấu chắc tay, tiện dụng cùng với bảng 08 màu đa dạng và chất son mịn mượt như lụa, Cỏ Mềm tự tin rằng son Lụa DIỄM sẽ ...",
+    "rating": 5,
+    "ratingCount": 4,
+    "position": 2
+   },
+   {
+    "title": "Combo Môi Xinh (Son Lụa + Son Dưỡng) Cỏ Mềm",
+    "link": "https://www.lazada.vn/products/bo-cham-soc-moi-xinh-combo-moi-xinh-son-lua-son-duong-co-mem-i886450449.html?srsltid=AU7gw4Uosa3B6iLVfyEpIz_u4FKyP2fjzeUwVWCHUtSiXAs2Z_GkU3sR",
+    "snippet": "Son Lụa DIỄM - Mềm mịn tuyệt đối với dầu Squalane cao cấp từ trái Oliu. Son Lụa DIỄM Cỏ Mềm thoả mãn 3 tiêu chí quan trọng nhất của 1 thỏi son bạn cần: - ...",
+    "rating": 4.9,
+    "ratingCount": 368,
+    "position": 3
+   },
+   {
+    "title": "[TRỢ GIÁ 10%] Son Dưỡng Môi Son Dưỡng Gạo Lành ...",
+    "link": "https://h5.lazada.vn/products/tro-gia-10-son-duong-moi-son-duong-gao-lanh-nhu-com-duong-am-mem-moi-giam-tham-moi-co-mem-homelab-i886444498.html",
+    "snippet": "Son dưỡng môi gạo giảm thâm, dưỡng ẩm cho môi khô ráp. Sản phẩm an toàn, giàu vitamin E và glycerin, phù hợp cho cả bà bầu, giúp làm mềm, dưỡng ẩm môi hiệu ...",
+    "rating": 5,
+    "ratingCount": 1494,
+    "position": 4
+   },
+   {
+    "title": "Son Môi Lụa Không Chì Thiên Nhiên Cỏ Mềm An Toàn ...",
+    "link": "https://www.lazada.vn/products/son-moi-lua-khong-chi-thien-nhien-co-mem-an-toan-cho-me-bau-i2369465297.html?srsltid=AU7gw4WsHjGS2-YaGP1ovWczF77XkAf7vRSYqMn_1gyDjs5uQQyGR5dd",
+    "snippet": "Son môi lụa không chì thiên nhiên Cỏ Mềm, an toàn cho mẹ bầu và mẹ sau sinh. Tông hồng baby nhẹ nhàng, màu đỏ trầm quyến rũ, cam hồng đất tươi tắn, ...",
+    "position": 5
+   },
+   {
+    "title": "Son dưỡng môi Nhiên Cỏ Mềm chứa Maxilip giúp ...",
+    "link": "https://www.lazada.vn/products/son-duong-moi-nhien-co-mem-chua-maxilip-giup-duong-am-giam-nep-nhan-va-ngua-lao-hoa-moi-3g-i2420624014.html?srsltid=AU7gw4XmYgm0O6CS4mofmR0M8_BD5YqoT3i5rNFHpBA8W5qTYj6mp-6L",
+    "snippet": "Son dưỡng môi Nhiên Cỏ Mềm chứa Maxilip giúp dưỡng ẩm giảm nếp nhăn và ngừa lão hoá môi 3g. 4.9(476). Voucher. Giảm ₫10K. Giảm ₫20K. more. Tuỳ chọn sản phẩm.",
+    "rating": 4.9,
+    "ratingCount": 476,
+    "position": 6
+   },
+   {
+    "title": "Combo Son Kem Nhung Và Son Dưỡng Không Silicone ...",
+    "link": "https://www.lazada.vn/products/combo-son-kem-nhung-va-son-duong-khong-silicone-mem-muot-co-mem-i1560542203.html?srsltid=AU7gw4WzkD4CZSIbIYFWuOfmhoViwbTl0lgSniTzn7SmJk61qDTQLfDp",
+    "snippet": "Son Môi Lụa Diễm Mềm Mịn Mướt Môi An Toàn Từ Thiên Nhiên Cỏ Mềm 4g. 219.000 ₫. Son Lụa Cỏ Mềm Son Thiên Nhiên An Toàn Cho Môi Nhạy Cảm Và Cho Cả. 219.000 ₫. Ưu ...",
+    "rating": 4.9,
+    "ratingCount": 182,
+    "position": 7
+   },
+   {
+    "title": "Sơn sắt thép, sơn dầu Bạch Tuyết màu xám nhạt 121 lon 3kg",
+    "link": "https://www.lazada.vn/products/son-sat-thep-son-dau-bach-tuyet-mau-xam-nhat-121-lon-3kg-i13358001404.html?srsltid=AU7gw4XPcdXp87wN3npSMwFmyq5CpmcH_F-1ZAxrBHfGZnUzJhxfmguk",
+    "snippet": "Mô tả sản phẩm. SƠN DẦU BẠCH TUYẾT MÀU XÁM NHẠT 121 3KG. Sơn Alkyd Bạch Tuyết dùng để phủ lớp bảo vệ trang trí trên các bề mặt gỗ, sắt thép, các lớp sơn ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

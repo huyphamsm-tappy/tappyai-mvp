@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Maison Camellia Hotel ở TN",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:54:42.957Z",
+ "body": {
+  "searchParameters": {
+   "q": "Maison Camellia Hotel ở TN",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "MAISON CAMELLIA Hotel, Tây Ninh (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/607565122.jpg?k=258eb4c756bf8ab4caf00a859130fc07cfd8fa3029d9fac03960a1c02bbc1ede&o=",
+    "imageWidth": 576,
+    "imageHeight": 768,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTzvyI0Qd2zrmm53hkvFzlskdLFxL1rW_loCYPIbP4Bng&s=10",
+    "thumbnailWidth": 480,
+    "thumbnailHeight": 640,
+    "source": "www.booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/maison-camellia-tay-ninh.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F607565122.jpg%3Fk%3D258eb4c756bf8ab4caf00a859130fc07cfd8fa3029d9fac03960a1c02bbc1ede%26o%3D&tbnid=t0jn2Pyf6y9GIM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fmaison-camellia-tay-ninh.vi.html&docid=wnjmnLObNl6gIM&w=576&h=768",
+    "position": 1
+   },
+   {
+    "title": "MAISON CAMELLIA Hotel, Tây Ninh (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/620771913.jpg?k=2c1e2b0b90e94b09fda66d6c0fb3648a8780477a9900563e6f3950c3ba4cccb9&o=",
+    "imageWidth": 1024,
+    "imageHeight": 768,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7pWonu4Exulf7tAXDnDm2QlGRXCQD8VV1wOtNQHFTJA&s=10",
+    "thumbnailWidth": 638,
+    "thumbnailHeight": 480,
+    "source": "www.booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/maison-camellia-tay-ninh.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F620771913.jpg%3Fk%3D2c1e2b0b90e94b09fda66d6c0fb3648a8780477a9900563e6f3950c3ba4cccb9%26o%3D&tbnid=XenWrL0J5uzRoM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fmaison-camellia-tay-ninh.vi.html&docid=wnjmnLObNl6gIM&w=1024&h=768",
+    "position": 2
+   },
+   {
+    "title": "Đặt Khách sạn Maison Camellia Tây Ninh - Giá tốt nhất | iVIVU",
+    "imageUrl": "https://cdn1.ivivu.com/newcdn/fowardimage?url=https://pix8.agoda.net/hotelImages/62426069/0/6ef755d4a892f6789f2ce2cdefee332f.jpg?ce=0&s=312x",
+    "imageWidth": 720,
+    "imageHeight": 1280,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRp-z-M1xT1BH458L3xGNLTxd8bq1Sm95synTlIfqiFDg&s=10",
+    "thumbnailWidth": 335,
+    "thumbnailHeight": 597,
+    "source": "iVIVU.com",
+    "domain": "www.ivivu.com",
+    "link": "https://www.ivivu.com/khach-san-tay-ninh/maison-camellia-hotel-tay-ninh",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn1.ivivu.com%2Fnewcdn%2Ffowardimage%3Furl%3Dhttps%3A%2F%2Fpix8.agoda.net%2FhotelImages%2F62426069%2F0%2F6ef755d4a892f6789f2ce2cdefee332f.jpg%3Fce%3D0%26s%3D312x&tbnid=AwftRXhHH9OI1M&imgrefurl=https%3A%2F%2Fwww.ivivu.com%2Fkhach-san-tay-ninh%2Fmaison-camellia-hotel-tay-ninh&docid=6mNY9_wj0QyeuM&w=720&h=1280",
+    "position": 3
+   },
+   {
+    "title": "Dự án Khách sạn MAISON CAMELLIA - Tây Ninh",
+    "imageUrl": "https://nguyenkhang.com.vn/upload/news/80-1747232166.jpg",
+    "imageWidth": 2560,
+    "imageHeight": 2560,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGRzmfmkzMUgYFyPGGmKommVJuuh3n8OXo-T6sIXMSPg&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Nguyên Khang",
+    "domain": "nguyenkhang.com.vn",
+    "link": "https://nguyenkhang.com.vn/du-an-khach-san-maison-camellia-tay-ninh",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fnguyenkhang.com.vn%2Fupload%2Fnews%2F80-1747232166.jpg&tbnid=lxtu73BXrSgliM&imgrefurl=https%3A%2F%2Fnguyenkhang.com.vn%2Fdu-an-khach-san-maison-camellia-tay-ninh&docid=NWepCjsZBHuiDM&w=2560&h=2560",
+    "position": 4
+   },
+   {
+    "title": "Maison Camellia Hotel Tây Ninh | Gần Núi Bà Đen",
+    "imageUrl": "https://maisontayninh.com/wp-content/uploads/2026/05/DSC04648-2.jpg",
+    "imageWidth": 900,
+    "imageHeight": 636,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRK547VYwTIXP9H22GnRuh91P4OxsepOexqF5qV3sXZ4A&s=10",
+    "thumbnailWidth": 657,
+    "thumbnailHeight": 465,
+    "source": "maisontayninh.com",
+    "domain": "maisontayninh.com",
+    "link": "https://maisontayninh.com/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fmaisontayninh.com%2Fwp-content%2Fuploads%2F2026%2F05%2FDSC04648-2.jpg&tbnid=_ix6e0r3fjSxlM&imgrefurl=https%3A%2F%2Fmaisontayninh.com%2F&docid=etX66MPNLxtt6M&w=900&h=636",
+    "position": 5
+   },
+   {
+    "title": "MAISON CAMELLIA Hotel, Tây Ninh (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max300/620771458.jpg?k=2f2bd150e348b6179c41ed1e2807b9ca161358f41e9a1e94cb58a2bc39a7881b&o=",
+    "imageWidth": 300,
+    "imageHeight": 225,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvPaPEA0z9E7Pq8ku6BGdDHjEjMwL7qiGDsLMa0USvBA&s=10",
+    "thumbnailWidth": 299,
+    "thumbnailHeight": 225,
+    "source": "www.booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/maison-camellia-tay-ninh.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax300%2F620771458.jpg%3Fk%3D2f2bd150e348b6179c41ed1e2807b9ca161358f41e9a1e94cb58a2bc39a7881b%26o%3D&tbnid=LIjSERlRU8G1CM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fmaison-camellia-tay-ninh.vi.html&docid=wnjmnLObNl6gIM&w=300&h=225",
+    "position": 6
+   },
+   {
+    "title": "Đặt Khách sạn Maison Camellia Tây Ninh - Giá tốt nhất | iVIVU",
+    "imageUrl": "https://cdn1.ivivu.com/newcdn/fowardimage?url=https://pix8.agoda.net/hotelImages/62426069/0/22b7ff6a78712228921ab39c1dad3911.jpg?ce=0&s=312x",
+    "imageWidth": 720,
+    "imageHeight": 1280,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9LPv5xFx5HJsoLUHLZB-JkyzlxwEAWxNtbzCjdXh1zQ&s=10",
+    "thumbnailWidth": 335,
+    "thumbnailHeight": 597,
+    "source": "iVIVU.com",
+    "domain": "www.ivivu.com",
+    "link": "https://www.ivivu.com/khach-san-tay-ninh/maison-camellia-hotel-tay-ninh",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn1.ivivu.com%2Fnewcdn%2Ffowardimage%3Furl%3Dhttps%3A%2F%2Fpix8.agoda.net%2FhotelImages%2F62426069%2F0%2F22b7ff6a78712228921ab39c1dad3911.jpg%3Fce%3D0%26s%3D312x&tbnid=Z9jbr6QzEfgIvM&imgrefurl=https%3A%2F%2Fwww.ivivu.com%2Fkhach-san-tay-ninh%2Fmaison-camellia-hotel-tay-ninh&docid=6mNY9_wj0QyeuM&w=720&h=1280",
+    "position": 7
+   },
+   {
+    "title": "MAISON CAMELLIA Hotel, Tây Ninh (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/639360399.jpg?k=932e28c61f48351597b60239dde71b924f1d5e75bcc30f4382a23748d78c75d1&o=",
+    "imageWidth": 1024,
+    "imageHeight": 768,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQumoymtUV1T8o_lgwuZA7Ei6fTVAZbTur0V5f-WvRLA&s=10",
+    "thumbnailWidth": 638,
+    "thumbnailHeight": 480,
+    "source": "www.booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/maison-camellia-tay-ninh.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F639360399.jpg%3Fk%3D932e28c61f48351597b60239dde71b924f1d5e75bcc30f4382a23748d78c75d1%26o%3D&tbnid=xG9IDyb1AayqOM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fmaison-camellia-tay-ninh.vi.html&docid=wnjmnLObNl6gIM&w=1024&h=768",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

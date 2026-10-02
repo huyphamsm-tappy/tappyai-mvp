@@ -1,0 +1,981 @@
+{
+  "id": "F8",
+  "text": "Sinh nhật sếp, tiếp khách 8 người, phòng riêng, tầm 500k/người, Quận 1",
+  "parent": null,
+  "status": 200,
+  "ms": 9083,
+  "evidenceId": "f0740f3b-8d14-4a58-be8d-17997bb2cf64",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "nhà hàng phòng riêng 8 người sinh nhật Quận 1",
+        "location": "Quận 1, TP.HCM",
+        "type": "restaurant"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "The Lủi - Quán Nhậu Chill Quận 1 Sài Gòn",
+      "rating": 4.9,
+      "count": 497,
+      "price": "200-300 N ₫",
+      "hours": "17:00–23:30",
+      "distance_km": 2.1,
+      "address": "177 Nguyễn Cư Trinh, Cầu Ông Lãnh, Hồ Chí Minh 71000, Việt Nam"
+    },
+    {
+      "name": "Hàng Dương Quán Quận 1",
+      "rating": 4.5,
+      "count": 717,
+      "hours": "09:00–23:30",
+      "distance_km": 0.6,
+      "address": "32-34 Ngô Đức Kế, Phường, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Izakaya Choioinoodle | Nhà Hàng Nhật Quận 1 | Mì Ramen Ngon Trần Hưng Đạo",
+      "rating": 4.8,
+      "count": 201,
+      "price": "100-200 N ₫",
+      "hours": "11:00–22:00",
+      "distance_km": 0.9,
+      "address": "25 Trần Hưng Đạo, Bến Thành, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Haru Sushi Quận 1",
+      "rating": 4.5,
+      "count": 539,
+      "price": "200-700 N ₫",
+      "hours": "10:30–13:30, 16:00–21:30",
+      "distance_km": 1.2,
+      "address": "93 Nguyễn Thái Học, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "𝐒𝐮𝐬𝐡𝐢 𝐎𝐬𝐚𝐤𝐚 𝟖𝟖 𝐏𝐫𝐞𝐦𝐢𝐮𝐦",
+      "rating": 4.7,
+      "count": 692,
+      "price": "100-700 N ₫",
+      "hours": "11:00–21:30",
+      "distance_km": 0.7,
+      "address": "3a Ngô Văn Năm, Sài Gòn, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Quán nhậu quận 1 - HẢI SẢN QUÝ DẬU",
+      "rating": 4.7,
+      "count": 278,
+      "price": "100-200 N ₫",
+      "hours": "15:00–02:00",
+      "distance_km": 2,
+      "address": "147 Hoàng Sa, Tân Định, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "La Phong Sushi House",
+      "rating": 4.5,
+      "count": 451,
+      "price": "300-800 N ₫",
+      "hours": "11:30–22:00",
+      "distance_km": 0.9,
+      "address": "9 Trần Cao Vân, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "SORAE - MODERN JAPANESE RESTAURANT",
+      "rating": 4.5,
+      "count": 1368,
+      "price": "Trên 1 Tr ₫",
+      "hours": "11:00–14:00, 17:00–23:00",
+      "distance_km": 0.7,
+      "address": "Tòa nhà tài chính Bitexco, 36 Hồ Tùng Mậu, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Matsuri Japanese Restaurant - Nguyễn Huệ",
+      "rating": 4.8,
+      "count": 1405,
+      "price": "200-600 N ₫",
+      "hours": "11:00–22:00",
+      "distance_km": 0.8,
+      "address": "3 Nguyễn Huệ, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Nhà Hàng Maison Mận-Đỏ",
+      "rating": 4.6,
+      "count": 620,
+      "hours": "14:00–22:00",
+      "distance_km": 2.2,
+      "address": "27J Đ. Trần Nhật Duật, Tân Định, Hồ Chí Minh 700000, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": [
+    "private_room"
+  ],
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình giả sử bạn cần tìm quán ăn hôm nay ở Quận 1 cho 8 người, phòng riêng, sinh nhật sếp. Để gợi ý đúng ý, mình sẽ tìm ngay các quán phù hợp.\n\nTuy nhiên, dựa trên đánh giá và vị trí gần bạn, mình gợi ý **Matsuri Japanese Restaurant** (4.8⭐, 1.405 đánh giá) — quán sushi cao cấp ở Nguyễn Huệ, cách bạn ~0.8km, mở 11:00–22:00. Giá khoảng 200-600k/người phù hợp ngân sách 500k/người, và có website để bạn liên hệ đặt phòng riêng cho 8 người.\n\nNgoài ra, **Hàng Dương Quán** (4.5⭐, 717 đánh giá, cách 0.6km) cũng là lựa chọn tốt, gần nhất từ vị trí bạn.\n\nBạn có muốn mình tìm thêm quán khác hoặc cần số điện thoại để gọi xác nhận phòng riêng?\n\nMình chưa thấy bằng chứng về phòng riêng ở các quán này — nên gọi hỏi trước khi đi.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"Tìm phòng trên Matsurirestaurant\",\"type\":\"search\",\"url\":\"https://matsurirestaurant.com.vn/\",\"primary\":true},{\"label\":\"📍 Xem trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=10213303710468026843\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Gọi xác nhận phòng riêng|Tìm quán khác gần Quận 1|Cần gợi ý menu sinh nhật[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Sinh nhật sếp, tiếp khách 8 người, phòng riêng, tầm 500k/người, Quận 1"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn cần tìm quán ăn hôm nay ở Quận 1 cho 8 người, phòng riêng, sinh nhật sếp. Để gợi ý đúng ý, mình sẽ tìm ngay các quán phù hợp.\n\nTuy nhiên, dựa trên đánh giá và vị trí gần bạn, mình gợi ý **Matsuri Japanese Restaurant** (4.8⭐, 1.405 đánh giá) — quán sushi cao cấp ở Nguyễn Huệ, cách bạn ~0.8km, mở 11:00–22:00. Giá khoảng 200-600k/người phù hợp ngân sách 500k/người, và có website để bạn liên hệ đặt phòng riêng cho 8 người.\n\nNgoài ra, **Hàng Dương Quán** (4.5⭐, 717 đánh giá, cách 0.6km) cũng là lựa chọn tốt, gần nhất từ vị trí bạn.\n\nBạn có muốn mình tìm thêm quán khác hoặc cần số điện thoại để gọi xác nhận phòng riêng?\n\nMình chưa thấy bằng chứng về phòng riêng ở các quán này — nên gọi hỏi trước khi đi.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"Tìm phòng trên Matsurirestaurant\",\"type\":\"search\",\"url\":\"https://matsurirestaurant.com.vn/\",\"primary\":true},{\"label\":\"📍 Xem trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=10213303710468026843\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Gọi xác nhận phòng riêng|Tìm quán khác gần Quận 1|Cần gợi ý menu sinh nhật[/FOLLOWUPS]"
+    }
+  ],
+  "toolResults": [
+    {
+      "source": "Serper Maps",
+      "count": 20,
+      "location": "Quận 1, TP.HCM",
+      "results": [
+        {
+          "name": "The Lủi - Quán Nhậu Chill Quận 1 Sài Gòn",
+          "place_id": "ChIJ_4Ld_NMvdTERxUfObG8s97o",
+          "address": "177 Nguyễn Cư Trinh, Cầu Ông Lãnh, Hồ Chí Minh 71000, Việt Nam",
+          "phone": "+84 933 544 639",
+          "google_rating": "4.9⭐ (497 đánh giá Google Maps)",
+          "rating_value": 4.9,
+          "rating_count": 497,
+          "price_range_text": "200-300 N ₫",
+          "distance_km": 2.1,
+          "open_now": true,
+          "opening_hours": "17:00–23:30",
+          "place_types": [
+            "Quán bia"
+          ],
+          "maps_link": "https://maps.google.com/?cid=13472285667380578245",
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=13472285667380578245",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Hàng Dương Quán Quận 1",
+          "place_id": "ChIJ8bkqqCpTaDERsRgpzDYTR18",
+          "address": "32-34 Ngô Đức Kế, Phường, Sài Gòn, Hồ Chí Minh, Việt Nam",
+          "phone": "+84 968 817 788",
+          "google_rating": "4.5⭐ (717 đánh giá Google Maps)",
+          "rating_value": 4.5,
+          "rating_count": 717,
+          "distance_km": 0.6,
+          "open_now": true,
+          "opening_hours": "09:00–23:30",
+          "place_types": [
+            "Nhà hàng"
+          ],
+          "maps_link": "https://maps.google.com/?cid=6865477283024017585",
+          "booking_links": [
+            "https://hangduongquan.com/dat-ban.html"
+          ],
+          "website_uri": "http://hangduongquan.com/",
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=6865477283024017585",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Izakaya Choioinoodle | Nhà Hàng Nhật Quận 1 | Mì Ramen Ngon Trần Hưng Đạo",
+          "place_id": "ChIJpylJYwAvdTERjuu1BjPtkFo",
+          "address": "25 Trần Hưng Đạo, Bến Thành, Hồ Chí Minh, Việt Nam",
+          "phone": "+84 906 633 656",
+          "google_rating": "4.8⭐ (201 đánh giá Google Maps)",
+          "rating_value": 4.8,
+          "rating_count": 201,
+          "price_range_text": "100-200 N ₫",
+          "distance_km": 0.9,
+          "open_now": true,
+          "opening_hours": "11:00–22:00",
+          "place_types": [
+            "Nhà hàng Nhật Bản"
+          ],
+          "maps_link": "https://maps.google.com/?cid=6525976663471549326",
+          "website_uri": "https://choioinoodle.com/",
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=6525976663471549326",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Haru Sushi Quận 1",
+          "place_id": "ChIJn3D_U8AvdTERk201g-xXhi0",
+          "address": "93 Nguyễn Thái Học, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+          "phone": "+84 1900 555506",
+          "google_rating": "4.5⭐ (539 đánh giá Google Maps)",
+          "rating_value": 4.5,
+          "rating_count": 539,
+          "price_range_text": "200-700 N ₫",
+          "distance_km": 1.2,
+          "open_now": true,
+          "opening_hours": "10:30–13:30, 16:00–21:30",
+          "place_types": [
+            "Nhà hàng Nhật Bản",
+            "Nhà hàng sushi"
+          ],
+          "maps_link": "https://maps.google.com/?cid=3280406051911200147",
+          "website_uri": "https://harusushi.com.vn/",
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=3280406051911200147",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "𝐒𝐮𝐬𝐡𝐢 𝐎𝐬𝐚𝐤𝐚 𝟖𝟖 𝐏𝐫𝐞𝐦𝐢𝐮𝐦",
+          "place_id": "ChIJE96NN_UvdTERGWnKElLYk-Y",
+          "address": "3a Ngô Văn Năm, Sài Gòn, Hồ Chí Minh 70000, Việt Nam",
+          "phone": "+84 708 336 630",
+          "google_rating": "4.7⭐ (692 đánh giá Google Maps)",
+          "rating_value": 4.7,
+          "rating_count": 692,
+          "price_range_text": "100-700 N ₫",
+          "distance_km": 0.7,
+          "open_now": true,
+          "opening_hours": "11:00–21:30",
+          "place_types": [
+            "Nhà hàng"
+          ],
+          "maps_link": "https://maps.google.com/?cid=16614861297314064665",
+          "website_uri": "https://www.facebook.com/SushiOsaka88/?ref=bookmarks",
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=16614861297314064665",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Quán nhậu quận 1 - HẢI SẢN QUÝ DẬU",
+          "place_id": "ChIJhZ8nqJQpdTEReHhWLYAkY3w",
+          "address": "147 Hoàng Sa, Tân Định, Hồ Chí Minh, Việt Nam",
+          "phone": "+84 833 233 963",
+          "google_rating": "4.7⭐ (278 đánh giá Google Maps)",
+          "rating_value": 4.7,
+          "rating_count": 278,
+          "price_range_text": "100-200 N ₫",
+          "distance_km": 2,
+          "open_now": true,
+          "opening_hours": "15:00–02:00",
+          "place_types": [
+            "Nhà hàng châu Á",
+            "Trang trại hải sản"
+          ],
+          "maps_link": "https://maps.google.com/?cid=8963047816332474488",
+          "website_uri": "https://www.facebook.com/profile.php?id=61585781067778",
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=8963047816332474488",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "La Phong Sushi House",
+          "place_id": "ChIJsQzjxDUvdTERyGXtE-plMlk",
+          "address": "9 Trần Cao Vân, Sài Gòn, Hồ Chí Minh, Việt Nam",
+          "phone": "+84 28 3824 7882",
+          "google_rating": "4.5⭐ (451 đánh giá Google Maps)",
+          "rating_value": 4.5,
+          "rating_count": 451,
+          "price_range_text": "300-800 N ₫",
+          "distance_km": 0.9,
+          "open_now": true,
+          "opening_hours": "11:30–22:00",
+          "place_types": [
+            "Nhà hàng sushi"
+          ],
+          "maps_link": "https://maps.google.com/?cid=6427311674242196936",
+          "website_uri": "https://laphongsushihouse.com/",
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=6427311674242196936",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "SORAE - MODERN JAPANESE RESTAURANT",
+          "place_id": "ChIJpXvdfT4vdTERAhMXaZYqP3M",
+          "address": "Tòa nhà tài chính Bitexco, 36 Hồ Tùng Mậu, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+          "phone": "+84 28 3827 2372",
+          "google_rating": "4.5⭐ (1.368 đánh giá Google Maps)",
+          "rating_value": 4.5,
+          "rating_count": 1368,
+          "price_range_text": "Trên 1 Tr ₫",
+          "distance_km": 0.7,
+          "open_now": true,
+          "opening_hours": "11:00–14:00, 17:00–23:00",
+          "place_types": [
+            "Nhà hàng Nhật Bản"
+          ],
+          "maps_link": "https://maps.google.com/?cid=8304403063391064834",
+          "booking_links": [
+            "https://www.d1-concepts.com/dat-ban"
+          ],
+          "website_uri": "http://www.soraesushi.com/",
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=8304403063391064834",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Matsuri Japanese Restaurant - Nguyễn Huệ",
+          "place_id": "ChIJ66-d5TYvdTER2zGgvZzxvI0",
+          "address": "3 Nguyễn Huệ, Sài Gòn, Hồ Chí Minh, Việt Nam",
+          "phone": "+84 968 708 812",
+          "google_rating": "4.8⭐ (1.405 đánh giá Google Maps)",
+          "rating_value": 4.8,
+          "rating_count": 1405,
+          "price_range_text": "200-600 N ₫",
+          "distance_km": 0.8,
+          "open_now": true,
+          "opening_hours": "11:00–22:00",
+          "place_types": [
+            "Nhà hàng",
+            "Nhà hàng Nhật Bản",
+            "Nhà hàng sushi"
+          ],
+          "maps_link": "https://maps.google.com/?cid=10213303710468026843",
+          "booking_links": [
+            "https://matsurirestaurant.com.vn/"
+          ],
+          "website_uri": "https://matsurirestaurant.com.vn/",
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=10213303710468026843",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Nhà Hàng Maison Mận-Đỏ",
+          "place_id": "ChIJzTe2yxUmdTER2iZhIzEi1Fg",
+          "address": "27J Đ. Trần Nhật Duật, Tân Định, Hồ Chí Minh 700000, Việt Nam",
+          "phone": "+84 933 774 487",
+          "google_rating": "4.6⭐ (620 đánh giá Google Maps)",
+          "rating_value": 4.6,
+          "rating_count": 620,
+          "distance_km": 2.2,
+          "open_now": true,
+          "opening_hours": "14:00–22:00",
+          "place_types": [
+            "Nhà hàng",
+            "Nhà hàng Pháp thượng hạng",
+            "Nhà hàng Việt Nam"
+          ],
+          "maps_link": "https://maps.google.com/?cid=6400778564842628826",
+          "booking_links": [
+            "https://maisonmando.com/lien-he",
+            "https://www.google.com/maps/reserve/v/dine/c/IhGMiC_RD1g?source=pa&opi=79508299"
+          ],
+          "website_uri": "http://maisonmando.com/",
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=6400778564842628826",
+              "attributed": true
+            }
+          ]
+        }
+      ],
+      "_tappy_place_domain": "food",
+      "place_search_status": "has_results",
+      "_tappy_hard_gaps": [
+        "private_room"
+      ],
+      "_tappy_evidence_note": "KHONG quan nao trong ket qua co bang chung ve: phòng riêng. Noi ro trong MOT cau \"minh chua xac nhan duoc X, nen goi hoi truoc\"; KHONG khang dinh co.",
+      "_tappy_evidence_gap": {
+        "qualified": 0,
+        "total": 10,
+        "needed": [
+          "price"
+        ],
+        "action": "search_again"
+      },
+      "results_note": "Day la TOAN BO 10 ket qua theo thu tu nha cung cap, KHONG phai thu tu uu tien — ban tu chon cho dung tinh huong (rut gon: chi cac truong de chon); the (card) cua user hien anh/dia chi/SDT/nut hanh dong."
+    }
+  ],
+  "frames8Raw": [
+    [
+      {
+        "kind": "tappy.places.v1",
+        "v": 1,
+        "domain": "food",
+        "ranked": true,
+        "items": [
+          {
+            "id": "place:osm:10.77165,106.70588",
+            "domain": "food",
+            "kind": "place",
+            "name": "Matsuri Japanese Restaurant - Nguyễn Huệ",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWl-EcvQJYZM3GrNQIa3QShHFBQm3r_mAQ1qkrF7CwwGsdGPkxkRxop-_g8wCJwhES0fmigqtVtzz0w4otPiaw2xnGxPDDlauNQWOp8SJbIIGaHIjs6qxB9eSbgkLbgY_VR4k3a7risgpMry",
+            "address": "3 Nguyễn Huệ, Sài Gòn, Hồ Chí Minh, Việt Nam",
+            "rating": 4.8,
+            "ratingCount": 1405,
+            "openingHours": "11:00–22:00",
+            "openNow": true,
+            "phone": "+84 968 708 812",
+            "priceRangeText": "200-600 N ₫",
+            "openingHoursWeek": {
+              "Thứ Bảy": "11:00–22:00",
+              "Chủ Nhật": "11:00–22:00",
+              "Thứ Hai": "11:00–22:00",
+              "Thứ Ba": "11:00–22:00",
+              "Thứ Tư": "11:00–22:00",
+              "Thứ Năm": "11:00–22:00",
+              "Thứ Sáu": "11:00–22:00"
+            },
+            "distanceKm": 0.8,
+            "categories": [
+              "Nhà hàng",
+              "Nhà hàng Nhật Bản",
+              "Nhà hàng sushi"
+            ],
+            "rank": 8,
+            "recommended": true,
+            "reasons": [
+              {
+                "attribute": "rating",
+                "evidence": "rated 4.8"
+              },
+              {
+                "attribute": "distance",
+                "evidence": "0.8km away"
+              },
+              {
+                "attribute": "reviewCount",
+                "evidence": "1405 reviews"
+              }
+            ],
+            "tradeOff": {
+              "attribute": "rating",
+              "evidence": "rated 4.9"
+            },
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=Matsuri%20Japanese%20Restaurant%20-%20Nguy%E1%BB%85n%20Hu%E1%BB%87%20Qu%E1%BA%ADn%201%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=10213303710468026843",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Matsuri%20Japanese%20Restaurant%20-%20Nguy%E1%BB%85n%20Hu%E1%BB%87%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://matsurirestaurant.com.vn/",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84968708812",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.76295,106.68807",
+            "domain": "food",
+            "kind": "place",
+            "name": "The Lủi - Quán Nhậu Chill Quận 1 Sài Gòn",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlqfCSzMJZ4v9zz1-aiUiLbERIPVW0iLXOfpCEHn04rX6sXP6kKQKN4b5DGeGJ3xHXIjoirerio13uLFGDXUW56dThuyEuoAQLllyDGDs1t0lSBXSgO2mzuYHM5OG05wNHfTUiMQx0nV0U",
+            "address": "177 Nguyễn Cư Trinh, Cầu Ông Lãnh, Hồ Chí Minh 71000, Việt Nam",
+            "rating": 4.9,
+            "ratingCount": 497,
+            "openingHours": "17:00–23:30",
+            "openNow": true,
+            "phone": "+84 933 544 639",
+            "priceRangeText": "200-300 N ₫",
+            "openingHoursWeek": {
+              "Thứ Bảy": "17:00–23:30",
+              "Chủ Nhật": "17:00–23:30",
+              "Thứ Hai": "17:00–23:30",
+              "Thứ Ba": "17:00–23:30",
+              "Thứ Tư": "17:00–23:30",
+              "Thứ Năm": "17:00–23:30",
+              "Thứ Sáu": "17:00–23:30"
+            },
+            "distanceKm": 2.1,
+            "categories": [
+              "Quán bia"
+            ],
+            "rank": 0,
+            "actions": [
+              {
+                "kind": "review",
+                "urlKind": "direct",
+                "url": "https://www.tiktok.com/@thelui.official/video/7637875950545407252",
+                "labelKey": "v3.action.reviewOn",
+                "platform": "TikTok",
+                "attributed": true
+              },
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=The%20L%E1%BB%A7i%20-%20Qu%C3%A1n%20Nh%E1%BA%ADu%20Chill%20Qu%E1%BA%ADn%201%20S%C3%A0i%20G%C3%B2n%20Qu%E1%BA%ADn%201%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=13472285667380578245",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84933544639",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=The%20L%E1%BB%A7i%20-%20Qu%C3%A1n%20Nh%E1%BA%ADu%20Chill%20Qu%E1%BA%ADn%201%20S%C3%A0i%20G%C3%B2n%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.77353,106.70534",
+            "domain": "food",
+            "kind": "place",
+            "name": "Hàng Dương Quán Quận 1",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlvHOKHtzjtm6GnNoy-UlckOp_qU2BZVAyFblxuQ6HgJ5WLLRnHUbSwEYb-qqIhxEt1aWvNOOG_xkEDv9_i51wLYBLmaXyKP2NRmFLteV06fC8PXCKhclxGCsLxGV1vg4jmWqFa",
+            "address": "32-34 Ngô Đức Kế, Phường, Sài Gòn, Hồ Chí Minh, Việt Nam",
+            "rating": 4.5,
+            "ratingCount": 717,
+            "openingHours": "09:00–23:30",
+            "openNow": true,
+            "phone": "+84 968 817 788",
+            "openingHoursWeek": {
+              "Thứ Bảy": "09:00–23:30",
+              "Chủ Nhật": "09:00–23:30",
+              "Thứ Hai": "09:00–23:30",
+              "Thứ Ba": "09:00–23:30",
+              "Thứ Tư": "09:00–23:30",
+              "Thứ Năm": "09:00–23:30",
+              "Thứ Sáu": "09:00–23:30"
+            },
+            "distanceKm": 0.6,
+            "categories": [
+              "Nhà hàng"
+            ],
+            "rank": 1,
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=H%C3%A0ng%20D%C6%B0%C6%A1ng%20Qu%C3%A1n%20Qu%E1%BA%ADn%201%20Qu%E1%BA%ADn%201%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=6865477283024017585",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=H%C3%A0ng%20D%C6%B0%C6%A1ng%20Qu%C3%A1n%20Qu%E1%BA%ADn%201%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84968817788",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.76964,106.69719",
+            "domain": "food",
+            "kind": "place",
+            "name": "Izakaya Choioinoodle | Nhà Hàng Nhật Quận 1 | Mì Ramen Ngon Trần Hưng Đạo",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWltQndPqPi4dXvGUgVeWy0kvsXV6_qHoZtphuiDkdkQUTSz3CeZMEsAwr0XZxEfcQM3Eu0cDzJmiuZByz2sPrC2zE-uwn56un8zsNDyQM8j0PUFWOgU7BtIpn112CS3ItZR_C4E0i_E4f0",
+            "address": "25 Trần Hưng Đạo, Bến Thành, Hồ Chí Minh, Việt Nam",
+            "rating": 4.8,
+            "ratingCount": 201,
+            "openingHours": "11:00–22:00",
+            "openNow": true,
+            "phone": "+84 906 633 656",
+            "priceRangeText": "100-200 N ₫",
+            "openingHoursWeek": {
+              "Thứ Bảy": "11:00–22:00",
+              "Chủ Nhật": "11:00–22:00",
+              "Thứ Hai": "11:00–22:00",
+              "Thứ Ba": "11:00–22:00",
+              "Thứ Tư": "10:00–22:00",
+              "Thứ Năm": "10:00–22:00",
+              "Thứ Sáu": "11:00–22:00"
+            },
+            "distanceKm": 0.9,
+            "categories": [
+              "Nhà hàng Nhật Bản"
+            ],
+            "rank": 2,
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=Izakaya%20Choioinoodle%20%7C%20Nh%C3%A0%20H%C3%A0ng%20Nh%E1%BA%ADt%20Qu%E1%BA%ADn%201%20%7C%20M%C3%AC%20Ramen%20Ngon%20Tr%E1%BA%A7n%20H%C6%B0ng%20%C4%90%E1%BA%A1o%20Qu%E1%BA%ADn%201%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=6525976663471549326",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Izakaya%20Choioinoodle%20%7C%20Nh%C3%A0%20H%C3%A0ng%20Nh%E1%BA%ADt%20Qu%E1%BA%ADn%201%20%7C%20M%C3%AC%20Ramen%20Ngon%20Tr%E1%BA%A7n%20H%C6%B0ng%20%C4%90%E1%BA%A1o%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://choioinoodle.com/",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84906633656",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.76715,106.69566",
+            "domain": "food",
+            "kind": "place",
+            "name": "Haru Sushi Quận 1",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnfjqcm83JJ1M9Sc_ojt5o0fjfj5hTEiblBGM1O1UY0fNw_He5jFrsuPoXMqRo5AEyvIUzZ6-10webpB4s-qEOM6YbZiEjiyTgHn3z2YfEqvlqiB0Vp-kgylZ_G0eMD_erR5To",
+            "address": "93 Nguyễn Thái Học, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+            "rating": 4.5,
+            "ratingCount": 539,
+            "openingHours": "10:30–13:30, 16:00–21:30",
+            "openNow": true,
+            "phone": "+84 1900 555506",
+            "priceRangeText": "200-700 N ₫",
+            "openingHoursWeek": {
+              "Thứ Bảy": "10:30–13:30, 16:00–21:30",
+              "Chủ Nhật": "10:30–13:30, 16:00–21:30",
+              "Thứ Hai": "10:30–13:30, 16:00–21:30",
+              "Thứ Ba": "10:30–13:00, 16:00–21:30",
+              "Thứ Tư": "10:30–13:30, 16:00–21:30",
+              "Thứ Năm": "10:30–13:30, 16:00–21:30",
+              "Thứ Sáu": "10:30–13:30, 16:00–21:30"
+            },
+            "distanceKm": 1.2,
+            "categories": [
+              "Nhà hàng Nhật Bản",
+              "Nhà hàng sushi"
+            ],
+            "rank": 3,
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=Haru%20Sushi%20Qu%E1%BA%ADn%201%20Qu%E1%BA%ADn%201%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=3280406051911200147",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Haru%20Sushi%20Qu%E1%BA%ADn%201%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://harusushi.com.vn/",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+841900555506",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.78094,106.70634",
+            "domain": "food",
+            "kind": "place",
+            "name": "𝐒𝐮𝐬𝐡𝐢 𝐎𝐬𝐚𝐤𝐚 𝟖𝟖 𝐏𝐫𝐞𝐦𝐢𝐮𝐦",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnZAgbLpxzzhiyS9Mj2Y_jsFWtvPcrtZTDhZDXfLVwPNN5Cx1SOO5Shz09ZxXEpF-4g1cztEtjlBNwO0LcVJpVYQpgrEcE7E8JFDAWu3Yi2okKnApNKe3KSD6mgTODqt6SnJFAwOw",
+            "address": "3a Ngô Văn Năm, Sài Gòn, Hồ Chí Minh 70000, Việt Nam",
+            "rating": 4.7,
+            "ratingCount": 692,
+            "openingHours": "11:00–21:30",
+            "openNow": true,
+            "phone": "+84 708 336 630",
+            "priceRangeText": "100-700 N ₫",
+            "openingHoursWeek": {
+              "Thứ Bảy": "11:00–21:30",
+              "Chủ Nhật": "Đóng cửa",
+              "Thứ Hai": "11:00–21:30",
+              "Thứ Ba": "11:00–21:30",
+              "Thứ Tư": "11:00–21:30",
+              "Thứ Năm": "11:00–21:30",
+              "Thứ Sáu": "11:00–21:30"
+            },
+            "distanceKm": 0.7,
+            "categories": [
+              "Nhà hàng"
+            ],
+            "rank": 4,
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=%F0%9D%90%92%F0%9D%90%AE%F0%9D%90%AC%F0%9D%90%A1%F0%9D%90%A2%20%F0%9D%90%8E%F0%9D%90%AC%F0%9D%90%9A%F0%9D%90%A4%F0%9D%90%9A%20%F0%9D%9F%96%F0%9D%9F%96%20%F0%9D%90%8F%F0%9D%90%AB%F0%9D%90%9E%F0%9D%90%A6%F0%9D%90%A2%F0%9D%90%AE%F0%9D%90%A6%20Qu%E1%BA%ADn%201%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=16614861297314064665",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=%F0%9D%90%92%F0%9D%90%AE%F0%9D%90%AC%F0%9D%90%A1%F0%9D%90%A2%20%F0%9D%90%8E%F0%9D%90%AC%F0%9D%90%9A%F0%9D%90%A4%F0%9D%90%9A%20%F0%9D%9F%96%F0%9D%9F%96%20%F0%9D%90%8F%F0%9D%90%AB%F0%9D%90%9E%F0%9D%90%A6%F0%9D%90%A2%F0%9D%90%AE%F0%9D%90%A6%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://www.facebook.com/SushiOsaka88/?ref=bookmarks",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84708336630",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.79358,106.69402",
+            "domain": "food",
+            "kind": "place",
+            "name": "Quán nhậu quận 1 - HẢI SẢN QUÝ DẬU",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWl-rrexmbobNfmg9LQS5ShNfBGyq6qlK4TYYZ_r19_JpQVTwyqnH_3Sz6-S0AANWmIah9mrPCI0W957ZxEsxkp0lfYsZJCR-S4I0uUdaWF9KIF-Gez3nj60GW-5WEexum93A0E2NN5k-yQ4",
+            "address": "147 Hoàng Sa, Tân Định, Hồ Chí Minh, Việt Nam",
+            "rating": 4.7,
+            "ratingCount": 278,
+            "openingHours": "15:00–02:00",
+            "openNow": true,
+            "phone": "+84 833 233 963",
+            "priceRangeText": "100-200 N ₫",
+            "openingHoursWeek": {
+              "Thứ Bảy": "15:00–02:00",
+              "Chủ Nhật": "15:00–02:00",
+              "Thứ Hai": "15:00–02:00",
+              "Thứ Ba": "15:00–02:00",
+              "Thứ Tư": "15:00–02:00",
+              "Thứ Năm": "15:00–02:00",
+              "Thứ Sáu": "15:00–02:00"
+            },
+            "distanceKm": 2,
+            "categories": [
+              "Nhà hàng châu Á",
+              "Trang trại hải sản"
+            ],
+            "rank": 5,
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=Qu%C3%A1n%20nh%E1%BA%ADu%20qu%E1%BA%ADn%201%20-%20H%E1%BA%A2I%20S%E1%BA%A2N%20QU%C3%9D%20D%E1%BA%ACU%20Qu%E1%BA%ADn%201%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=8963047816332474488",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20nh%E1%BA%ADu%20qu%E1%BA%ADn%201%20-%20H%E1%BA%A2I%20S%E1%BA%A2N%20QU%C3%9D%20D%E1%BA%ACU%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://www.facebook.com/profile.php?id=61585781067778",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84833233963",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.78480,106.69818",
+            "domain": "food",
+            "kind": "place",
+            "name": "La Phong Sushi House",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmVGghAv4wPQvHarCKJbnn27txh89d6BYpAa34g4gyFJ_FpzswOzf9_qeY-jC_-A5uzZ6PkszhmqvMe-0S9YmY9BS4cqGA61_tTOcUyem2XcuiGOKBJwAV_WZizIatNYCpN5H7wMf4ZEx1O",
+            "address": "9 Trần Cao Vân, Sài Gòn, Hồ Chí Minh, Việt Nam",
+            "rating": 4.5,
+            "ratingCount": 451,
+            "openingHours": "11:30–22:00",
+            "openNow": true,
+            "phone": "+84 28 3824 7882",
+            "priceRangeText": "300-800 N ₫",
+            "openingHoursWeek": {
+              "Thứ Bảy": "11:30–22:00",
+              "Chủ Nhật": "11:30–22:00",
+              "Thứ Hai": "11:30–22:00",
+              "Thứ Ba": "11:30–22:00",
+              "Thứ Tư": "11:30–22:00",
+              "Thứ Năm": "11:30–22:00",
+              "Thứ Sáu": "11:30–22:00"
+            },
+            "distanceKm": 0.9,
+            "categories": [
+              "Nhà hàng sushi"
+            ],
+            "rank": 6,
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=La%20Phong%20Sushi%20House%20Qu%E1%BA%ADn%201%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=6427311674242196936",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=La%20Phong%20Sushi%20House%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://laphongsushihouse.com/",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+842838247882",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          }
+        ],
+        "mapsSearchUrl": "https://maps.google.com/maps?q=nh%C3%A0%20h%C3%A0ng%20ph%C3%B2ng%20ri%C3%AAng%208%20ng%C6%B0%E1%BB%9Di%20sinh%20nh%E1%BA%ADt%20Qu%E1%BA%ADn%201%20Qu%E1%BA%ADn%201%2C%20TP.HCM",
+        "picked": [
+          "place:osm:10.76295,106.68807",
+          "place:osm:10.77353,106.70534",
+          "place:osm:10.76964,106.69719"
+        ],
+        "shown": 3
+      }
+    ]
+  ]
+}

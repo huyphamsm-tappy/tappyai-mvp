@@ -1,0 +1,145 @@
+{
+  "caseId": "tonight",
+  "base": "https://uat.tappyai.com",
+  "at": "2026-09-28T06:12:59.555Z",
+  "guest": "anonymous session (token not stored)",
+  "turns": [
+    {
+      "user": "lập cho mình kế hoạch ăn chơi tối nay ở quận 1, 2 người 5 triệu",
+      "status": 200,
+      "ms": 24214,
+      "literalDoubleStar": 4,
+      "unbalancedBoldLines": [],
+      "proseTail": "nhiều quán ăn ngon ở quận 1. Mình sẽ lập kế hoạch tối nay cho 2 người với ngân sách 5 triệu VND nhé.\n\n\n\nMình chọn **Quán Bụi - Lê Thánh Tôn** cho bữa tối chính vì nó có rating 4.5⭐ từ 1.209 đánh giá, mở đến 23:00, và là nhà hàng Việt Nam authentic rất nổi tiếng. Sau đó, nếu bạn muốn tiếp tục, **Hải Sản Hoàng Gia** là lựa chọn tuyệt vời để uống nước/ăn thêm với không khí sang trọng, mở đến nửa đêm.",
+      "placeActions": [
+        {
+          "name": "Quán Bụi - Lê Thánh Tôn - Authentic Vietnamese Cuisine",
+          "actions": [
+            "reservation:v3.action.reservation:https://quan-bui.com/eforms/reservation-form/6/",
+            "maps:v3.action.maps:https://maps.google.com/?cid=6387801295899804773",
+            "review:v3.action.reviewSearch:https://www.youtube.com/results?search_query=Qu%C3%A1n%20B%E1%BB%A5i%20-%20L%C3%AA%20Th%C3",
+            "website:v3.action.website:https://www.quan-bui.com/",
+            "call:v3.action.call:tel:+842866868478",
+            "reservation:v3.action.reservation:https://book.chope.co/booking?source=google_dining&rid=quanbuibenthanh2607vn&rwg_token=AE3"
+          ]
+        },
+        {
+          "name": "Hàng Dương Quán Quận 1",
+          "actions": [
+            "reservation:v3.action.reservation:https://hangduongquan.com/dat-ban.html",
+            "maps:v3.action.maps:https://maps.google.com/?cid=6865477283024017585",
+            "review:v3.action.reviewSearch:https://www.youtube.com/results?search_query=H%C3%A0ng%20D%C6%B0%C6%A1ng%20Qu%C3%A1n%20Qu%",
+            "call:v3.action.call:tel:+84968817788"
+          ]
+        },
+        {
+          "name": "NHÀ HÀNG NGON",
+          "actions": [
+            "delivery:v3.action.orderSearch:https://food.grab.com/vn/vi/restaurants?search=NH%C3%80%20H%C3%80NG%20NGON%20Qu%E1%BA%ADn%",
+            "maps:v3.action.maps:https://maps.google.com/?cid=13622103453648835628",
+            "review:v3.action.reviewSearch:https://www.youtube.com/results?search_query=NH%C3%80%20H%C3%80NG%20NGON%20review",
+            "website:v3.action.website:https://nhahangngon.com.vn/",
+            "call:v3.action.call:tel:+842838277131"
+          ]
+        },
+        {
+          "name": "Quán ăn ngon Sài Gòn",
+          "actions": [
+            "delivery:v3.action.orderSearch:https://food.grab.com/vn/vi/restaurants?search=Qu%C3%A1n%20%C4%83n%20ngon%20S%C3%A0i%20G%C",
+            "maps:v3.action.maps:https://maps.google.com/?cid=229433844224448966",
+            "review:v3.action.reviewSearch:https://www.youtube.com/results?search_query=Qu%C3%A1n%20%C4%83n%20ngon%20S%C3%A0i%20G%C3%",
+            "website:v3.action.website:https://quanngonsaigon.com.vn/",
+            "call:v3.action.call:tel:+842838257179"
+          ]
+        },
+        {
+          "name": "Quán Bụi Central, Sài Gòn - Authentic Vietnamese Cuisine",
+          "actions": [
+            "reservation:v3.action.reservation:https://quan-bui.com/eforms/reservation-form/6/",
+            "maps:v3.action.maps:https://maps.google.com/?cid=8054492323917688722",
+            "review:v3.action.reviewSearch:https://www.youtube.com/results?search_query=Qu%C3%A1n%20B%E1%BB%A5i%20Central%2C%20S%C3%A",
+            "call:v3.action.call:tel:+842862711214",
+            "reservation:v3.action.reservation:https://book.chope.co/booking?source=google_dining&rid=quanbuicentral2607vn&rwg_token=AE37",
+            "reservation:v3.action.reservation:https://www.google.com/maps/reserve/v/dine/c/tcZme1qWhpQ?source=pa&opi=79508299"
+          ]
+        },
+        {
+          "name": "CƠM TẤM NGON 3 MIỀN QUẬN 1",
+          "actions": [
+            "review:v3.action.reviewOn:https://www.tiktok.com/@hungbabyngo/video/7620320791820913928",
+            "delivery:v3.action.orderSearch:https://food.grab.com/vn/vi/restaurants?search=C%C6%A0M%20T%E1%BA%A4M%20NGON%203%20MI%E1%B",
+            "maps:v3.action.maps:https://maps.google.com/?cid=8018916196736651206",
+            "review:v3.action.reviewSearch:https://www.youtube.com/results?search_query=C%C6%A0M%20T%E1%BA%A4M%20NGON%203%20MI%E1%BB%"
+          ]
+        },
+        {
+          "name": "Izakaya Choioinoodle | Nhà Hàng Nhật Quận 1 | Mì Ramen Ngon Trần Hưng Đạo",
+          "actions": [
+            "delivery:v3.action.orderSearch:https://food.grab.com/vn/vi/restaurants?search=Izakaya%20Choioinoodle%20%7C%20Nh%C3%A0%20H",
+            "maps:v3.action.maps:https://maps.google.com/?cid=6525976663471549326",
+            "review:v3.action.reviewSearch:https://www.youtube.com/results?search_query=Izakaya%20Choioinoodle%20%7C%20Nh%C3%A0%20H%C",
+            "website:v3.action.website:https://choioinoodle.com/",
+            "call:v3.action.call:tel:+84906633656"
+          ]
+        },
+        {
+          "name": "Hải Sản Hoàng Gia - 180 Trần Hưng Đạo Quận 1",
+          "actions": [
+            "review:v3.action.reviewOn:https://www.tiktok.com/@haisanhoanggia/video/7687560050482760980",
+            "reservation:v3.action.reservation:https://s.ldplink.me/qPMj7",
+            "maps:v3.action.maps:https://maps.google.com/?cid=8690476982161666487",
+            "website:v3.action.website:https://haisanhoanggia.com/",
+            "call:v3.action.call:tel:+8419000303",
+            "reservation:v3.action.reservation:https://www.google.com/maps/reserve/v/dine/c/vG3sFEFo0Xw?source=pa&opi=79508299"
+          ]
+        }
+      ],
+      "shopping": null,
+      "plan": {
+        "type": "evening",
+        "title": "Tối ăn chơi quận 1 - 2 người",
+        "people": [
+          2
+        ],
+        "budget_total": "5.000.000 VND",
+        "days": [
+          {
+            "label": "Tối nay",
+            "items": [
+              {
+                "time": "19:00",
+                "emoji": "🍽️",
+                "category": "food",
+                "name": "Quán Bụi - Lê Thánh Tôn",
+                "description": "Nhà hàng Việt Nam authentic với 4.5⭐ (1.209 đánh giá), mở đến 23:00, cách bạn khoảng 1-2km",
+                "price": "chưa có giá",
+                "address": "222 - 224 Lê Thánh Tôn, Bến Thành, Quận 1",
+                "maps_link": "https://maps.google.com/?cid=6387801295899804773",
+                "booking_link": "https://quan-bui.com/eforms/reservation-form/6/",
+                "place_id": "ChIJYdRYiicvdTERZUTjQW8Hplg"
+              },
+              {
+                "time": "21:00",
+                "emoji": "🍺",
+                "category": "entertainment",
+                "name": "Hải Sản Hoàng Gia",
+                "description": "Nhà hàng hải sản cao cấp với 4.7⭐ (982 đánh giá), mở đến 00:00, phù hợp cho bữa tối thêm phần sang trọng",
+                "price": "chưa có giá",
+                "address": "180 Trần Hưng Đạo, Cầu Ông Lãnh, Quận 1",
+                "maps_link": "https://maps.google.com/?cid=8690476982161666487",
+                "booking_link": "https://s.ldplink.me/qPMj7",
+                "place_id": "ChIJUYzahRQvdTERt3F0asXGmng"
+              }
+            ]
+          }
+        ],
+        "cost_breakdown": {
+          "Bữa tối tại Quán Bụi": "chưa có giá",
+          "Bữa tối/nước uống tại Hải Sản Hoàng Gia": "chưa có giá"
+        },
+        "share_text": "Tối nay ăn chơi quận 1 cùng người yêu 🍽️ Quán Bụi + Hải Sản Hoàng Gia - ngon, sang trọng, đáng giá! #TappyAI"
+      },
+      "cta": "{\"buttons\":[{\"label\":\"📍 Xem Quán Bụi trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=6387801295899804773\",\"primary\":true},{\"label\":\"📍 Xem Hải Sản Hoàng Gia trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=8690476982161666487\",\"primary\":false},{\"label\":\"🌐 Đặt bàn Quán Bụi\",\"type\":\"website\",\"url\":\"https://quan-bui.com/eforms/reservation-form/6/\",\"primary\":false}]}"
+    }
+  ]
+}

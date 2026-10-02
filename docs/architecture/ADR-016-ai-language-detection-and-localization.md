@@ -1,6 +1,6 @@
 # ADR-016 — AI Response-Language Detection & Localization
 
-**Status:** Accepted — Owner-approved in production · **Date:** 2026-07-31 · **Scope:** Web backend (authoritative), Android, iOS (inheriting clients)
+**Status:** Accepted — Owner-approved in production · **Amended in part by `ADR-027` (2026-09-09):** §2 limitation 1, the §3 flow and §9's accepted cost. The detection algorithm in §2 and the localization rules in §3–§4 are unchanged and still bind. · **Date:** 2026-07-31 · **Scope:** Web backend (authoritative), Android, iOS (inheriting clients)
 **Origin incidents:** 2026-07-29 (`f68836d`) and 2026-07-30/31 (`33eb188`) — both Owner-reported in production, both false-PASSed by prior AI verification before being fixed.
 **Companion docs:** `AI_PLATFORM.md` §8 · `docs/Localization_Architecture.md` (2026-07-31 addendum) · `docs/ios/14_BACKEND_CLIENT_BOUNDARY.md` §2 · `docs/ios/04_API_CONTRACT.md` §2.1 · `android/docs/adr/0004-ai-language-consistency.md` · Engineering Constitution Amendment 002 (Article VII).
 
@@ -41,7 +41,7 @@ The Incident-1 fix over-corrected: it flagged `vi` on the **presence of a single
 A single Unicode character can only ever prove *which alphabet* produced it — never *which language the author is writing*. For Latin-script languages (English and Vietnamese share the alphabet), language identity lives in the **distribution** of features across the sentence: how many words carry Vietnamese tone marks, whether they are vocabulary or capitalized names, whether Vietnamese grammar words are present. Any future change to detection MUST preserve this whole-sentence property; a reviewer seeing a `return 'vi'` reachable from a single character match should reject the change on sight.
 
 ### Known limitations (accepted, documented)
-1. **Fully-undiacritized Vietnamese** ("cho toi xem menu") carries zero signal and reads as `en`. Accepted: the input is genuinely ambiguous; the user can add diacritics or say "trả lời bằng tiếng Việt".
+1. **Fully-undiacritized Vietnamese** ("cho toi xem menu") carries zero signal and reads as `en`. ~~Accepted: the input is genuinely ambiguous; the user can add diacritics or say "trả lời bằng tiếng Việt".~~ **AMENDED by ADR-027 (2026-09-09):** no longer accepted. Typing Vietnamese without diacritics is ordinary typing, and this answered Vietnamese users in English in production. `detectLang` still reads such text as `en` — that part is unchanged and correct, because the text really is ambiguous — but `/api/chat` now consults the CLIENT's locale before falling back to it. See ADR-027 §2.
 2. **Other accented Latin languages** (a fully French/Spanish sentence) can exceed the ratio and read as `vi`. Out of scope for a Vietnam-first product whose supported set is `vi/en/ja/ko/zh/ar/th`; the explicit override covers it.
 3. **Boundary sentences** near the 0.4 ratio can flip on small wording changes. The regression suite (§6) pins the canonical cases on both sides.
 4. Detection is **stateless per message** — by spec, not limitation: a user switching languages mid-conversation gets each reply in that message's language.
@@ -56,9 +56,11 @@ A single Unicode character can only ever prove *which alphabet* produced it — 
 ### Architecture flow
 
 ```
-User message (latest turn only)
+User message (latest turn only)                    ← chain amended by ADR-027 §2
    └─ /api/chat (single entry point — src/app/api/chat/route.ts)
         ├─ detectExplicitLangRequest(lastText)   ← explicit request wins
+        ├─ detectLangConfident(lastText)         ← ADR-027: what the text SETTLES, else null
+        ├─ requestLocale(req)                    ← ADR-027: ?lang= / Accept-Language
         ├─ detectLang(lastText)                  ← whole-sentence heuristic (§2)
         └─ lang ─┬─ promptBuilder.buildSystem(...lang) / buildSystemSimple / buildPlanningBlock
                  ├─ every tool execute(): searchPlaces/getNews/searchProducts/webSearch/
@@ -149,6 +151,6 @@ Recorded so the failure mode is structurally recognizable (feeds Engineering Con
 
 **Positive** — one deterministic function, one localization module, one regression suite; all three clients inherit fixes with zero client edits; the two known failure directions are pinned by permanent tests; mobile teams have an explicit "do not build this" boundary.
 
-**Accepted costs** — undiacritized Vietnamese reads as English (§2 limitation 1); the function-word list needs curation discipline (its exclusion rule is documented in code and here); threshold tuning requires an ADR + suite update, not a quick edit.
+**Accepted costs** — ~~undiacritized Vietnamese reads as English (§2 limitation 1)~~ *(withdrawn by ADR-027; the cost turned out to be a production defect, not an acceptable edge)*; the function-word list needs curation discipline (its exclusion rule is documented in code and here); threshold tuning requires an ADR + suite update, not a quick edit.
 
 **Compliance signals** — any PR touching `detectLang`/`detectExplicitLangRequest`/`messages.ts`/prompt-builder language blocks must: keep the whole-sentence property (§2), keep every §6 row green, add new incident cases to §6 rather than replacing rows, and update this ADR if the strategy changes. Any client PR implementing language detection or response translation is rejected on sight per §5.

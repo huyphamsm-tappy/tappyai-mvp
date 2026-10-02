@@ -21,4 +21,8 @@ interface AccountRepository {
     /** Uploads a new avatar image via multipart POST. [mimeType] must be a real image type
      *  (server re-validates by sniffing bytes regardless). Returns the new avatar URL on success. */
     suspend fun uploadAvatar(bytes: ByteArray, mimeType: String): NetworkResult<String>
+    /** Uploads a new profile cover (multipart `cover`). Returns the new cover URL. */
+    suspend fun uploadCover(bytes: ByteArray, mimeType: String): NetworkResult<String>
+    /** Removes the profile cover. */
+    suspend fun clearCover(): NetworkResult<Unit>
 }

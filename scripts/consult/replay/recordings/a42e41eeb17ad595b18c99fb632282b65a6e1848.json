@@ -1,0 +1,80 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Cội Việt Nam\" OR \"Gội đầu dưỡng sinh\" OR \"Muội - Gội Đầu Dưỡng Sinh\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:00:04.026Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Cội Việt Nam\" OR \"Gội đầu dưỡng sinh\" OR \"Muội - Gội Đầu Dưỡng Sinh\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Gội đầu dưỡng sinh Cô Ba — Hướng dẫn & trải nghiệm ASMR",
+    "link": "https://www.tiktok.com/@duongsinhcoba/video/7656759430905728264",
+    "snippet": "Gội đầu dưỡng sinh Cô Ba — Hướng dẫn ngắn và trải nghiệm Lead Gội đầu dưỡng sinh Cô Ba là phương pháp chăm sóc tóc và da đầu kết hợp kỹ ...",
+    "date": "29 thg 6, 2026",
+    "position": 1
+   },
+   {
+    "title": "Review Gội Đầu Dưỡng Sinh Huyền Trang 199k: Có Gì Đặc Biệt?",
+    "link": "https://www.tiktok.com/@chagn.94/video/7590327070513761557",
+    "snippet": "708 Lượt thích,Video TikTok từ ChangHouse.94 (@chagn.94): \"Review gội đầu dưỡng sinh Huyền Trang gói 199k. Trải nghiệm 75 phút massage cổ ...",
+    "date": "1 thg 1, 2026",
+    "position": 2
+   },
+   {
+    "title": "Tân Bình mum nào tìm gội & massage đâu he @Muội - TikTok",
+    "link": "https://www.tiktok.com/@embetit_/video/7673086557938666770",
+    "snippet": "6542 Lượt thích,48 Bình luận.Video TikTok từ Tít Ơi ꕤ (@embetit_): \"Tân Bình mum nào tìm gội & massage đâu he @Muội - Gội Đầu Dưỡng Sinh ...",
+    "date": "12 thg 8, 2026",
+    "position": 3
+   },
+   {
+    "title": "Cách Gội Đầu Dưỡng Sinh Để Khách Luôn Quay Lại | TikTok",
+    "link": "https://www.tiktok.com/@linhbeautybn/video/7502295105827605767",
+    "snippet": "10.9K Lượt thích,184 Bình luận.Video TikTok từ Gội đầu dưỡng sinh Bắc Ninh (@linhbeautybn): \"Khám phá 4 kỹ thuật gội đầu giúp salon của bạn ...",
+    "date": "8 thg 5, 2025",
+    "position": 4
+   },
+   {
+    "title": "MẤY MÁ ĐI GỘI ĐẦU DƯỠNG SINH KIỂU … | Cre: toanchodien23",
+    "link": "https://www.tiktok.com/@longchunchun/video/7199204063496490266",
+    "snippet": "359.8K Lượt thích,7864 Bình luận.Video TikTok từ Long Chun (@longchunchun): \"MẤY MÁ ĐI GỘI ĐẦU DƯỠNG SINH KIỂU … | Cre: toanchodien23\".",
+    "date": "12 thg 2, 2023",
+    "position": 5
+   },
+   {
+    "title": "Gội đầu dưỡng sinh ở @Cái Tiệm Gội Vui Vẻ mê lắm luôn nè #tiem ...",
+    "link": "https://www.tiktok.com/@hachireview74/video/7286691773580201224",
+    "snippet": "1658 Lượt thích,38 Bình luận.Video TikTok từ Góc nhỏ của Chii ☘️ (@hachireview74): \"Gội đầu dưỡng sinh ở @Cái Tiệm Gội Vui Vẻ mê lắm ...",
+    "date": "5 thg 10, 2023",
+    "position": 6
+   },
+   {
+    "title": "Gội đầu dưỡng sinh kiểu Cô Tấm trong chuyện Tấm Cám thời 4.0 ...",
+    "link": "https://www.tiktok.com/@thudidaurua/video/7386883529147157761",
+    "snippet": "1894 Lượt thích,52 Bình luận.Video TikTok từ Thư Thư nè (@thudidaurua): \"Gội đầu dưỡng sinh kiểu Cô Tấm trong chuyện Tấm Cám thời 4.0 ...",
+    "date": "1 thg 7, 2024",
+    "position": 7
+   },
+   {
+    "title": "Gội đầu dưỡng sinh: Trải nghiệm thú vị tại Đà Nẵng - TikTok",
+    "link": "https://www.tiktok.com/@khanhdanang/video/7395063801516756242",
+    "snippet": "Gội đầu dưỡng sinh trong hẻm ngay trung tâm thành phố #khanhdanang #reviewdanang #goidauduongsinh. Gội đầu dưỡng sinh: Trải nghiệm thú vị tại Đà ...",
+    "date": "23 thg 7, 2024",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,36 @@
+{
+  "id": "M4b",
+  "text": "rạp đó có suất sau 21h không, vé bao nhiêu?",
+  "vertical": "entertainment",
+  "unit": "SCHEDULE_TICKET",
+  "parent": "M4a",
+  "surface": "web",
+  "status": 200,
+  "ttfb": 541,
+  "ms": 541,
+  "evidenceId": "0dcacff9-8e26-4b9e-b4db-c91f8ffbda6a",
+  "toolCalls": [],
+  "toolResults": [],
+  "frames8": [],
+  "prose": "Để chọn đúng chỗ, mình cần biết thêm:\n• Tầm giá? (dưới 100k/người / 100–200k/người / trên 200k/người)\n• Mấy người? (1–2 người / 3–5 người / nhóm đông)\nBạn trả lời phần nào cũng được, phần còn lại mình tự giả sử và nói rõ.\n\n[FOLLOWUPS]dưới 100k/người|100–200k/người|trên 200k/người[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "rạp CGV Vincom Đồng Khởi tối nay chiếu gì?"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm được **CGV Vincom Center Đồng Khởi** gần bạn lắm (chỉ 0.2km) 🎬. Tuy nhiên, TappyAI hiện chưa có dữ liệu về lịch chiếu cụ thể.\n\n- Truy cập trực tiếp trang CGV: [cgv.vn](https://www.cgv.vn/default/cinox/site/cgv-vincom-dong-khoi)\n\nRạp có đánh giá **4.3⭐ (4.500 đánh giá)** trên Google Maps, khá tốt! 👍\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🎬 CGV - Đặt vé\",\"type\":\"website\",\"url\":\"https://www.cgv.vn/default/cinox/site/cgv-vincom-dong-khoi\",\"primary\":true},{\"label\":\"📍 Google Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=11214787039782498171\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Xem phim gì hôm nay?|Quán ăn gần rạp|Quán karaoke gần đây[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "rạp đó có suất sau 21h không, vé bao nhiêu?"
+    },
+    {
+      "role": "assistant",
+      "content": "Để chọn đúng chỗ, mình cần biết thêm:\n• Tầm giá? (dưới 100k/người / 100–200k/người / trên 200k/người)\n• Mấy người? (1–2 người / 3–5 người / nhóm đông)\nBạn trả lời phần nào cũng được, phần còn lại mình tự giả sử và nói rõ.\n\n[FOLLOWUPS]dưới 100k/người|100–200k/người|trên 200k/người[/FOLLOWUPS]"
+    }
+  ],
+  "at": "2026-09-20T06:31:16.151Z"
+}

@@ -1,0 +1,859 @@
+{
+  "id": "T4",
+  "text": "Cuối tuần này gia đình 4 người đi đâu gần Sài Gòn?",
+  "parent": null,
+  "status": 200,
+  "ms": 14742,
+  "evidenceId": "bdf98457-743b-435b-8c70-6673cf5fc916",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "địa điểm vui chơi giải trí gia đình gần Sài Gòn",
+        "location": "Sài Gòn",
+        "type": "attraction"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Đường sách Thành phố Hồ Chí Minh",
+      "rating": 4.6,
+      "count": 12775,
+      "hours": "08:00–21:00",
+      "distance_km": 0.5,
+      "address": "2 Đ. Nguyễn Văn Bình, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Công Viên Bờ Sông Sài Gòn Tp Thủ Đức",
+      "rating": 4.6,
+      "count": 629,
+      "hours": "06:00–22:00",
+      "distance_km": 1.1,
+      "address": "QPC5+MWF, An Khánh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Saigon Sniper – CLB Bắn Súng Thể Thao | Sports Shooting Range in Saigon",
+      "rating": 4.6,
+      "count": 660,
+      "hours": "08:00–22:00",
+      "distance_km": 1.3,
+      "address": "25 Nguyễn Bỉnh Khiêm, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Công viên bờ sông sài gòn",
+      "rating": 4.6,
+      "count": 80,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 1.1,
+      "address": "25/3A Lương Định Của, An Khánh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Thảo Cầm Viên Sài Gòn",
+      "rating": 4.3,
+      "count": 36809,
+      "hours": "07:00–18:30",
+      "distance_km": 1.2,
+      "address": "2 Nguyễn Bỉnh Khiêm, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "Đường sách Thành phố Hồ Chí Minh",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 4.6,
+        "reviews": 12775,
+        "distance_km": 0.5,
+        "open_now": true,
+        "opening_hours": "08:00–21:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Công Viên Bờ Sông Sài Gòn Tp Thủ Đức",
+      "role": null,
+      "evidence": {
+        "rating": 4.6,
+        "reviews": 629,
+        "distance_km": 1.1,
+        "open_now": true,
+        "opening_hours": "06:00–22:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Saigon Sniper – CLB Bắn Súng Thể Thao | Sports Shooting Range in Saigon",
+      "role": null,
+      "evidence": {
+        "rating": 4.6,
+        "reviews": 660,
+        "distance_km": 1.3,
+        "open_now": true,
+        "opening_hours": "08:00–22:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Công viên bờ sông sài gòn",
+      "role": null,
+      "evidence": {
+        "rating": 4.6,
+        "reviews": 80,
+        "distance_km": 1.1,
+        "open_now": true,
+        "opening_hours": "Mở cửa cả ngày",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Thảo Cầm Viên Sài Gòn",
+      "role": null,
+      "evidence": {
+        "rating": 4.3,
+        "reviews": 36809,
+        "distance_km": 1.2,
+        "open_now": true,
+        "opening_hours": "07:00–18:30",
+        "attributes": []
+      }
+    }
+  ],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình giả sử bạn muốn tìm một địa điểm vui chơi gần Sài Gòn cho gia đình 4 người vào cuối tuần này. Để gợi ý đúng ý bạn, mình sẽ tìm ngay các điểm vui chơi phổ biến quanh khu vực.\n\nMình chọn **Đường sách Thành phố Hồ Chí Minh** cho gia đình bạn — nó cách vị trí bạn chỉ 0,5km, có **4.6⭐ từ 12.775 đánh giá Google Maps**, và mở cửa đến 21:00 nên rất tiện cho cuối tuần.\nNgoài ra, **Công Viên Bờ Sông Sài Gòn** (1,1km) cũng là lựa chọn tuyệt vời nếu bạn muốn hoạt động ngoài trời — công viên mở cả ngày, có không gian rộng để trẻ em chơi đùa.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Đường sách\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=18199100751481245008\",\"primary\":true},{\"label\":\"🌐 Website - Đường sách\",\"type\":\"website\",\"url\":\"https://duongsachtphcm.com/\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]ăn gì ngon gần đó|công viên nào khác lớn hơn|có chỗ nào vui chơi cho trẻ em[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Cuối tuần này gia đình 4 người đi đâu gần Sài Gòn?"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn muốn tìm một địa điểm vui chơi gần Sài Gòn cho gia đình 4 người vào cuối tuần này. Để gợi ý đúng ý bạn, mình sẽ tìm ngay các điểm vui chơi phổ biến quanh khu vực.\n\nMình chọn **Đường sách Thành phố Hồ Chí Minh** cho gia đình bạn — nó cách vị trí bạn chỉ 0,5km, có **4.6⭐ từ 12.775 đánh giá Google Maps**, và mở cửa đến 21:00 nên rất tiện cho cuối tuần.\nNgoài ra, **Công Viên Bờ Sông Sài Gòn** (1,1km) cũng là lựa chọn tuyệt vời nếu bạn muốn hoạt động ngoài trời — công viên mở cả ngày, có không gian rộng để trẻ em chơi đùa.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Đường sách\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=18199100751481245008\",\"primary\":true},{\"label\":\"🌐 Website - Đường sách\",\"type\":\"website\",\"url\":\"https://duongsachtphcm.com/\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]ăn gì ngon gần đó|công viên nào khác lớn hơn|có chỗ nào vui chơi cho trẻ em[/FOLLOWUPS]"
+    }
+  ],
+  "toolResults": [
+    {
+      "source": "Serper Maps",
+      "count": 20,
+      "location": "Sài Gòn",
+      "results": [
+        {
+          "name": "Đường sách Thành phố Hồ Chí Minh",
+          "address": "2 Đ. Nguyễn Văn Bình, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+          "website_uri": "https://duongsachtphcm.com/",
+          "place_id": "ChIJS8Yv1zcvdTERUI2V47UxkPw",
+          "rating_value": 4.6,
+          "google_rating": "4.6⭐ (12.775 đánh giá Google Maps)",
+          "rating_count": 12775,
+          "place_types": [
+            "Điểm thu hút khách du lịch",
+            "Hiệu sách"
+          ],
+          "maps_link": "https://maps.google.com/?cid=18199100751481245008",
+          "opening_hours": "08:00–21:00",
+          "open_now": true,
+          "distance_km": 0.5,
+          "has_maps": true,
+          "has_website": true,
+          "has_photo": true,
+          "has_hours": true,
+          "has_reviews": "search"
+        },
+        {
+          "name": "Công Viên Bờ Sông Sài Gòn Tp Thủ Đức",
+          "address": "QPC5+MWF, An Khánh, Hồ Chí Minh, Việt Nam",
+          "place_id": "ChIJnQZkPAAvdTERs4xtSBEl4sc",
+          "rating_value": 4.6,
+          "google_rating": "4.6⭐ (629 đánh giá Google Maps)",
+          "rating_count": 629,
+          "place_types": [
+            "Công viên"
+          ],
+          "maps_link": "https://maps.google.com/?cid=14403115314444078259",
+          "opening_hours": "06:00–22:00",
+          "open_now": true,
+          "distance_km": 1.1,
+          "has_maps": true,
+          "has_photo": true,
+          "has_hours": true,
+          "has_reviews": "search"
+        },
+        {
+          "name": "Saigon Sniper – CLB Bắn Súng Thể Thao | Sports Shooting Range in Saigon",
+          "address": "25 Nguyễn Bỉnh Khiêm, Sài Gòn, Hồ Chí Minh, Việt Nam",
+          "phone": "+84 967 106 974",
+          "website_uri": "https://saigonsniper.com.vn/?utm_source=gbp",
+          "place_id": "ChIJe1fVPksvdTERE_M1FaDvr0s",
+          "rating_value": 4.6,
+          "google_rating": "4.6⭐ (660 đánh giá Google Maps)",
+          "rating_count": 660,
+          "place_types": [
+            "Trường dạy bắn súng"
+          ],
+          "maps_link": "https://maps.google.com/?cid=5453841144598622995",
+          "booking_links": [
+            "https://saigonsniper.com.vn/dat-lich-ngay/"
+          ],
+          "opening_hours": "08:00–22:00",
+          "open_now": true,
+          "distance_km": 1.3,
+          "has_maps": true,
+          "has_website": true,
+          "has_photo": true,
+          "has_hours": true,
+          "has_phone": true,
+          "has_reviews": "search"
+        },
+        {
+          "name": "Công viên bờ sông sài gòn",
+          "address": "25/3A Lương Định Của, An Khánh, Hồ Chí Minh, Việt Nam",
+          "place_id": "ChIJX8F4cQAvdTER1xCE8PzsZFk",
+          "rating_value": 4.6,
+          "google_rating": "4.6⭐ (80 đánh giá Google Maps)",
+          "rating_count": 80,
+          "place_types": [
+            "Điểm thu hút khách du lịch"
+          ],
+          "maps_link": "https://maps.google.com/?cid=6441533938157752535",
+          "opening_hours": "Mở cửa cả ngày",
+          "open_now": true,
+          "distance_km": 1.1,
+          "has_maps": true,
+          "has_photo": true,
+          "has_hours": true,
+          "has_reviews": "search"
+        },
+        {
+          "name": "Thảo Cầm Viên Sài Gòn",
+          "address": "2 Nguyễn Bỉnh Khiêm, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+          "phone": "+84 28 3829 1425",
+          "website_uri": "https://s.shopee.vn/8V7uC7gWA0",
+          "place_id": "ChIJx7wwM0svdTERjuH2a9dkuU0",
+          "rating_value": 4.3,
+          "google_rating": "4.3⭐ (36.809 đánh giá Google Maps)",
+          "rating_count": 36809,
+          "place_types": [
+            "Điểm thu hút khách du lịch",
+            "Vườn bách thú"
+          ],
+          "maps_link": "https://maps.google.com/?cid=5600618488004010382",
+          "opening_hours": "07:00–18:30",
+          "open_now": true,
+          "distance_km": 1.2,
+          "has_maps": true,
+          "has_website": true,
+          "has_photo": true,
+          "has_hours": true,
+          "has_phone": true,
+          "has_reviews": "search"
+        }
+      ],
+      "google_maps_search": "https://maps.google.com/maps?q=%C4%91%E1%BB%8Ba%20%C4%91i%E1%BB%83m%20vui%20ch%C6%A1i%20gi%E1%BA%A3i%20tr%C3%AD%20gia%20%C4%91%C3%ACnh%20g%E1%BA%A7n%20S%C3%A0i%20G%C3%B2n%20S%C3%A0i%20G%C3%B2n",
+      "_tappy_place_domain": "place",
+      "place_search_status": "has_results",
+      "_tappy_shortlist": [
+        {
+          "rank": 0,
+          "id": "ChIJS8Yv1zcvdTERUI2V47UxkPw",
+          "name": "Đường sách Thành phố Hồ Chí Minh",
+          "role": "best_overall",
+          "evidence": {
+            "rating": 4.6,
+            "reviews": 12775,
+            "distance_km": 0.5,
+            "open_now": true,
+            "opening_hours": "08:00–21:00",
+            "attributes": []
+          },
+          "why": [
+            "0.5km away",
+            "rated 4.6",
+            "12775 reviews"
+          ],
+          "missing": []
+        },
+        {
+          "rank": 1,
+          "id": "ChIJnQZkPAAvdTERs4xtSBEl4sc",
+          "name": "Công Viên Bờ Sông Sài Gòn Tp Thủ Đức",
+          "role": null,
+          "evidence": {
+            "rating": 4.6,
+            "reviews": 629,
+            "distance_km": 1.1,
+            "open_now": true,
+            "opening_hours": "06:00–22:00",
+            "attributes": []
+          },
+          "why": [
+            "1.1km away",
+            "rated 4.6",
+            "629 reviews"
+          ],
+          "missing": []
+        },
+        {
+          "rank": 2,
+          "id": "ChIJe1fVPksvdTERE_M1FaDvr0s",
+          "name": "Saigon Sniper – CLB Bắn Súng Thể Thao | Sports Shooting Range in Saigon",
+          "role": null,
+          "evidence": {
+            "rating": 4.6,
+            "reviews": 660,
+            "distance_km": 1.3,
+            "open_now": true,
+            "opening_hours": "08:00–22:00",
+            "attributes": []
+          },
+          "why": [
+            "1.3km away",
+            "rated 4.6",
+            "660 reviews"
+          ],
+          "missing": []
+        },
+        {
+          "rank": 3,
+          "id": "ChIJX8F4cQAvdTER1xCE8PzsZFk",
+          "name": "Công viên bờ sông sài gòn",
+          "role": null,
+          "evidence": {
+            "rating": 4.6,
+            "reviews": 80,
+            "distance_km": 1.1,
+            "open_now": true,
+            "opening_hours": "Mở cửa cả ngày",
+            "attributes": []
+          },
+          "why": [
+            "1.1km away",
+            "rated 4.6",
+            "80 reviews"
+          ],
+          "missing": []
+        },
+        {
+          "rank": 4,
+          "id": "ChIJx7wwM0svdTERjuH2a9dkuU0",
+          "name": "Thảo Cầm Viên Sài Gòn",
+          "role": null,
+          "evidence": {
+            "rating": 4.3,
+            "reviews": 36809,
+            "distance_km": 1.2,
+            "open_now": true,
+            "opening_hours": "07:00–18:30",
+            "attributes": []
+          },
+          "why": [
+            "1.2km away",
+            "rated 4.3",
+            "36809 reviews"
+          ],
+          "missing": []
+        }
+      ],
+      "_tappy_evidence_gap": {
+        "qualified": 10,
+        "total": 10,
+        "needed": [],
+        "action": "recommend"
+      },
+      "_tappy_ranking": {
+        "pick": "Đường sách Thành phố Hồ Chí Minh",
+        "decided_by": [
+          {
+            "attribute": "distance",
+            "evidence": "0.5km away"
+          },
+          {
+            "attribute": "rating",
+            "evidence": "rated 4.6"
+          },
+          {
+            "attribute": "reviewCount",
+            "evidence": "12775 reviews"
+          }
+        ],
+        "not_chosen": "Công Viên Bờ Sông Sài Gòn Tp Thủ Đức"
+      },
+      "results_note": "Hien thi 5/10 ket qua tot nhat theo engine; cac ket qua khac da co tren the (card) cua user."
+    }
+  ],
+  "frames8Raw": [
+    [
+      {
+        "kind": "tappy.places.v1",
+        "v": 1,
+        "domain": "food",
+        "ranked": true,
+        "items": [
+          {
+            "id": "place:osm:10.78096,106.70007",
+            "domain": "food",
+            "kind": "place",
+            "name": "Đường sách Thành phố Hồ Chí Minh",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWk9hAo06sMgwNhVa_mvvq6mMZ6IxGtM5MuD65X-m9RFbP_LyioWAbs2bPHmfdc0NNyCUCuEgzjd0zskKcyeuC4_uHunLWhzQ2A4HpfHCdKCUJHYwsQRfZEX_LCJ3R0sf2f4J8Hq",
+            "address": "2 Đ. Nguyễn Văn Bình, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+            "rating": 4.6,
+            "ratingCount": 12775,
+            "openingHours": "08:00–21:00",
+            "openNow": true,
+            "openingHoursWeek": {
+              "Thứ Bảy": "08:00–21:00",
+              "Chủ Nhật": "08:00–21:00",
+              "Thứ Hai": "08:00–21:00",
+              "Thứ Ba": "08:00–21:00",
+              "Thứ Tư": "08:00–21:00",
+              "Thứ Năm": "08:00–21:00",
+              "Thứ Sáu": "08:00–21:00"
+            },
+            "distanceKm": 0.5,
+            "categories": [
+              "Điểm thu hút khách du lịch",
+              "Hiệu sách"
+            ],
+            "rank": 0,
+            "shortlistPosition": 1,
+            "recommended": true,
+            "reasons": [
+              {
+                "attribute": "distance",
+                "evidence": "0.5km away"
+              },
+              {
+                "attribute": "rating",
+                "evidence": "rated 4.6"
+              },
+              {
+                "attribute": "reviewCount",
+                "evidence": "12775 reviews"
+              }
+            ],
+            "actions": [
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=18199100751481245008",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://duongsachtphcm.com/",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=%C4%90%C6%B0%E1%BB%9Dng%20s%C3%A1ch%20Th%C3%A0nh%20ph%E1%BB%91%20H%E1%BB%93%20Ch%C3%AD%20Minh%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.77169,106.70980",
+            "domain": "food",
+            "kind": "place",
+            "name": "Công Viên Bờ Sông Sài Gòn Tp Thủ Đức",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlTyTrrNxWejJ91APkU8JGl4Ahele0PBFWQs1HzzvIHD-secQE40L8orB-PJ-npebl3fj9AfE2_uidSABA3-FYFLZ6A9Ok73Mw-u29QoGuVtRFj7Wn_8ne1L4gly5MnIVM5EQB7q9OIS7xC",
+            "address": "QPC5+MWF, An Khánh, Hồ Chí Minh, Việt Nam",
+            "rating": 4.6,
+            "ratingCount": 629,
+            "openingHours": "06:00–22:00",
+            "openNow": true,
+            "openingHoursWeek": {
+              "Thứ Bảy": "06:00–22:00",
+              "Chủ Nhật": "06:00–22:00",
+              "Thứ Hai": "06:00–22:00",
+              "Thứ Ba": "06:00–22:00",
+              "Thứ Tư": "06:00–22:00",
+              "Thứ Năm": "06:00–22:00",
+              "Thứ Sáu": "06:00–22:00"
+            },
+            "distanceKm": 1.1,
+            "categories": [
+              "Công viên"
+            ],
+            "rank": 1,
+            "shortlistPosition": 2,
+            "actions": [
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=14403115314444078259",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=C%C3%B4ng%20Vi%C3%AAn%20B%E1%BB%9D%20S%C3%B4ng%20S%C3%A0i%20G%C3%B2n%20Tp%20Th%E1%BB%A7%20%C4%90%E1%BB%A9c%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.78825,106.70374",
+            "domain": "food",
+            "kind": "place",
+            "name": "Saigon Sniper – CLB Bắn Súng Thể Thao | Sports Shooting Range in Saigon",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlUunGj3K1uGkNExytk5yGLnRe7Pavmv25fQu2Cn89YjyqlKVK8dJJwH5Q3uaSYePLH7U-O3bsk1zFam8oAIm7XZtc6BkLSUOoHSZesb3IaApp-uve79Gaakz_MwVo69aXx5g",
+            "address": "25 Nguyễn Bỉnh Khiêm, Sài Gòn, Hồ Chí Minh, Việt Nam",
+            "rating": 4.6,
+            "ratingCount": 660,
+            "openingHours": "08:00–22:00",
+            "openNow": true,
+            "phone": "+84 967 106 974",
+            "openingHoursWeek": {
+              "Thứ Bảy": "08:00–22:00",
+              "Chủ Nhật": "08:00–22:00",
+              "Thứ Hai": "08:00–22:00",
+              "Thứ Ba": "08:00–22:00",
+              "Thứ Tư": "08:00–22:00",
+              "Thứ Năm": "08:00–22:00",
+              "Thứ Sáu": "08:00–22:00"
+            },
+            "distanceKm": 1.3,
+            "categories": [
+              "Trường dạy bắn súng"
+            ],
+            "rank": 2,
+            "shortlistPosition": 3,
+            "actions": [
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=5453841144598622995",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://saigonsniper.com.vn/?utm_source=gbp",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Saigon%20Sniper%20%E2%80%93%20CLB%20B%E1%BA%AFn%20S%C3%BAng%20Th%E1%BB%83%20Thao%20%7C%20Sports%20Shooting%20Range%20in%20Saigon%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84967106974",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.77759,106.71062",
+            "domain": "food",
+            "kind": "place",
+            "name": "Công viên bờ sông sài gòn",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlh9TtBkeEn-jVLT2UvSwtTWpMN83VM36cWKUgig5Tv1Z_Pb3pB1o9eBZL5ISTY0kfb0peThlHoPvZJs9_svIz3lYzKiYmoUEyUqead7GDnfhHgoAK6ZN25AAhx_nmh29l_9uxcG1f04n9U",
+            "address": "25/3A Lương Định Của, An Khánh, Hồ Chí Minh, Việt Nam",
+            "rating": 4.6,
+            "ratingCount": 80,
+            "openingHours": "Mở cửa cả ngày",
+            "openNow": true,
+            "openingHoursWeek": {
+              "Thứ Bảy": "Mở cửa cả ngày",
+              "Chủ Nhật": "Mở cửa cả ngày",
+              "Thứ Hai": "Mở cửa cả ngày",
+              "Thứ Ba": "Mở cửa cả ngày",
+              "Thứ Tư": "Mở cửa cả ngày",
+              "Thứ Năm": "Mở cửa cả ngày",
+              "Thứ Sáu": "Mở cửa cả ngày"
+            },
+            "distanceKm": 1.1,
+            "categories": [
+              "Điểm thu hút khách du lịch"
+            ],
+            "rank": 3,
+            "shortlistPosition": 4,
+            "actions": [
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=6441533938157752535",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=C%C3%B4ng%20vi%C3%AAn%20b%E1%BB%9D%20s%C3%B4ng%20s%C3%A0i%20g%C3%B2n%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.78733,106.70506",
+            "domain": "food",
+            "kind": "place",
+            "name": "Thảo Cầm Viên Sài Gòn",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkdB6JXA66tPsweA9UnT4TGaKgaKScpI6conEzUNzlw2FUc1MjO-jVKy213mwN5ggdzCT6-PhsSSZBqsm1Jk5GYpUXMPNi5Uop0GyL6oVTfEvrx8T0QskZ7Wv_taTwR8in4AuM",
+            "address": "2 Nguyễn Bỉnh Khiêm, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+            "rating": 4.3,
+            "ratingCount": 36809,
+            "openingHours": "07:00–18:30",
+            "openNow": true,
+            "phone": "+84 28 3829 1425",
+            "openingHoursWeek": {
+              "Thứ Bảy": "07:00–18:30",
+              "Chủ Nhật": "07:00–18:30",
+              "Thứ Hai": "07:00–18:30",
+              "Thứ Ba": "07:00–18:30",
+              "Thứ Tư": "07:00–18:30",
+              "Thứ Năm": "07:00–18:30",
+              "Thứ Sáu": "07:00–18:30"
+            },
+            "distanceKm": 1.2,
+            "categories": [
+              "Điểm thu hút khách du lịch",
+              "Vườn bách thú"
+            ],
+            "rank": 4,
+            "shortlistPosition": 5,
+            "actions": [
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=5600618488004010382",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "direct",
+                "url": "https://www.tiktok.com/@vnexpress.official/video/7601055977122663701",
+                "labelKey": "v3.action.reviewOn",
+                "platform": "TikTok",
+                "attributed": true
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://s.shopee.vn/8V7uC7gWA0",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+842838291425",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Th%E1%BA%A3o%20C%E1%BA%A7m%20Vi%C3%AAn%20S%C3%A0i%20G%C3%B2n%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.79872,106.71656",
+            "domain": "food",
+            "kind": "place",
+            "name": "Khu du lịch Văn Thánh",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWljDnc53KH2q96tGC0dUXdRBIScZeNs3T08D3jcnqD1fXJsmypuw0bZ3GW9eHSgXQDfSuMELuXei5kZYIrn7gyQXvdbjeTWIpsj0qHGvGP-ClbehID-1lQigy2es416pvelnIVUyA",
+            "address": "48/10 Điện Biên Phủ, Thạnh Mỹ Tây, Hồ Chí Minh, Việt Nam",
+            "rating": 4.3,
+            "ratingCount": 5244,
+            "openingHours": "07:00–21:00",
+            "openNow": true,
+            "phone": "+84 901 889 705",
+            "openingHoursWeek": {
+              "Thứ Bảy": "07:00–21:00",
+              "Chủ Nhật": "07:00–21:00",
+              "Thứ Hai": "07:00–21:00",
+              "Thứ Ba": "07:00–21:00",
+              "Thứ Tư": "07:00–21:00",
+              "Thứ Năm": "07:00–21:00",
+              "Thứ Sáu": "07:00–21:00"
+            },
+            "distanceKm": 3,
+            "categories": [
+              "Điểm thu hút khách du lịch"
+            ],
+            "rank": 5,
+            "actions": [
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=11384850416856558268",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://www.facebook.com/dulichvanthanh/",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Khu%20du%20l%E1%BB%8Bch%20V%C4%83n%20Th%C3%A1nh%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84901889705",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.78550,106.66605",
+            "domain": "food",
+            "kind": "place",
+            "name": "Thiên Đường Giải Trí Thỏ Trắng",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkoT3Zzf9wXaLRAo5eXJz98QC8PbUidRB4YtEe5LpVvVbqNIhbPn1BnWt3d0WApXUtUvQZGL3mNgSX1o8UMp69gbVnB__pBZ_sTM_fdDdX78GA-8_nTyGFoxmm-z1mZFOUSaMo7",
+            "address": "875 Cách Mạng Tháng Tám, Cư xá Bắc Hải, Hòa Hưng, Hồ Chí Minh, Việt Nam",
+            "rating": 4.3,
+            "ratingCount": 8509,
+            "openingHours": "08:00–22:00",
+            "openNow": true,
+            "phone": "+84 28 3977 1975",
+            "openingHoursWeek": {
+              "Thứ Bảy": "08:00–22:00",
+              "Chủ Nhật": "08:00–22:00",
+              "Thứ Hai": "14:00–22:00",
+              "Thứ Ba": "14:00–22:00",
+              "Thứ Tư": "14:00–22:00",
+              "Thứ Năm": "14:00–22:00",
+              "Thứ Sáu": "14:00–22:00"
+            },
+            "distanceKm": 3.9,
+            "categories": [
+              "Công viên giải trí",
+              "Công viên giải trí",
+              "Công viên",
+              "Điểm thu hút khách du lịch"
+            ],
+            "rank": 6,
+            "actions": [
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=3921190383296923444",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://www.facebook.com/GiaiTriThoTrang/?locale=vi_VN",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Thi%C3%AAn%20%C4%90%C6%B0%E1%BB%9Dng%20Gi%E1%BA%A3i%20Tr%C3%AD%20Th%E1%BB%8F%20Tr%E1%BA%AFng%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+842839771975",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.78482,106.66497",
+            "domain": "food",
+            "kind": "place",
+            "name": "Jump Arena Lê Thị Riêng",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlgOCopHfgjeL5rRCRYllfopMDwKZTs386WPbXTopjRO4YUvDywoeHp0j6DGlkKqra6ylRr7n7_kiPfwd0L8-QL5BabOSqFaRSzaiAVIYFqiZoMiprMFfxSvYnEe3gFGwbQbLkK",
+            "address": "875 Cách Mạng Tháng Tám, Cư xá Bắc Hải, Hòa Hưng, Hồ Chí Minh 700000, Việt Nam",
+            "rating": 4.5,
+            "ratingCount": 609,
+            "openingHours": "09:00–22:00",
+            "openNow": true,
+            "phone": "+84 1900 636808",
+            "openingHoursWeek": {
+              "Thứ Bảy": "09:00–22:00",
+              "Chủ Nhật": "09:00–22:00",
+              "Thứ Hai": "14:00–22:00",
+              "Thứ Ba": "14:00–22:00",
+              "Thứ Tư": "14:00–22:00",
+              "Thứ Năm": "14:00–22:00",
+              "Thứ Sáu": "14:00–22:00"
+            },
+            "distanceKm": 4,
+            "categories": [
+              "Sân chơi trong nhà"
+            ],
+            "rank": 7,
+            "actions": [
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=14834958953235325693",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "direct",
+                "url": "https://www.tiktok.com/@jumparenaofficial/video/7668209794905427208",
+                "labelKey": "v3.action.reviewOn",
+                "platform": "TikTok",
+                "attributed": true
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://jumparena.vn/",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+841900636808",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Jump%20Arena%20L%C3%AA%20Th%E1%BB%8B%20Ri%C3%AAng%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          }
+        ],
+        "mapsSearchUrl": "https://maps.google.com/maps?q=%C4%91%E1%BB%8Ba%20%C4%91i%E1%BB%83m%20vui%20ch%C6%A1i%20gi%E1%BA%A3i%20tr%C3%AD%20gia%20%C4%91%C3%ACnh%20g%E1%BA%A7n%20S%C3%A0i%20G%C3%B2n%20S%C3%A0i%20G%C3%B2n"
+      }
+    ]
+  ]
+}

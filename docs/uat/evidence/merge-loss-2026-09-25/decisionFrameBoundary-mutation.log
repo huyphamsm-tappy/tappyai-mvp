@@ -1,0 +1,73 @@
+
+ RUN  v4.1.9 D:/Claude/Projects/TappyAI/tappyai-mvp/.claude/worktrees/g1-place-guard
+
+ ❯ |app| src/lib/ai/security/decisionFrameBoundary.test.ts (6 tests | 2 failed) 58ms
+     × across a multi-turn thread as well 8ms
+     × still prints the closed-vocabulary facts it exists to carry (a vacuous pass would hide a regression) 2ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |app| src/lib/ai/security/decisionFrameBoundary.test.ts > decision frame block: the user selects constants, never prints text > across a multi-turn thread as well
+AssertionError: expected '\n\n===== khung quyet dinh (he thong …' not to contain 'zxqpayload'
+
+- Expected
++ Received
+
+- zxqpayload
++
++
++ ===== khung quyet dinh (he thong suy ra tu hoi thoai — dung de tu van, khong doc lai cho user) =====
++ muc tieu: goi y de user chon · linh vuc: an uong
++ tinh huong: bua trua · ngay bay gio · 4 nguoi · khu vuc: quan zxqpayload · ngan sach: toi da 200.000 vnd
++ tieu chi (uu tien theo thu tu): gia/ngan sach > dang mo cua luc nay (opening_hours/open_now) [suy ra] > gan/tien duong (distance_km) [suy ra]
++ du de goi y: khong hoi truoc, tim va goi y ngay. cau hoi (neu co) chi o cuoi, chi mot, va chi khi cau tra loi thay doi khuyen nghi.
++ tim kiem: dat query theo muc tieu (vd "bua trua nha hang/quan an quan zxqpayload"), khong chep nguyen cau cua user. chon 'type' dung linh vuc.
++ bang chung can de quyet dinh: price, openinghours, distance. ung vien khong co bang chung nay chi la ket qua tim kiem, khong phai goi y — khong mo ta, khong khen.
++ sau khi tim: so sanh ung vien theo tieu chi tren bang so lieu that; neu du bang chung thi chon mot va noi vi sao no hop tinh huong nay; neu chi mot ung vien du bang chung thi goi y mot; neu khong ung vien nao du thi lam theo _tappy_evidence_gap.
++ =====
+
+ ❯ src/lib/ai/security/decisionFrameBoundary.test.ts:49:23
+     47|   it('across a multi-turn thread as well', () => {
+     48|     const block = blockFor(ATTACK).toLowerCase()
+     49|     expect(block).not.toContain(MARK.toLowerCase())
+       |                       ^
+     50|   })
+     51|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  |app| src/lib/ai/security/decisionFrameBoundary.test.ts > decision frame block: the user selects constants, never prints text > still prints the closed-vocabulary facts it exists to carry (a vacuous pass would hide a regression)
+AssertionError: expected '\n\n===== KHUNG QUYET DINH (he thong …' to match /quan 3/
+
+- Expected:
+/quan 3/
+
++ Received:
+"
+
+===== KHUNG QUYET DINH (he thong suy ra tu hoi thoai — dung de TU VAN, khong doc lai cho user) =====
+MUC TIEU: GOI Y de user chon · linh vuc: an uong
+TINH HUONG: bua trua · 4 nguoi · khu vuc: quan an · ngan sach: toi da 200.000 VND
+TIEU CHI (uu tien theo thu tu): gia/ngan sach > gan/tien duong (distance_km) [suy ra]
+DU DE GOI Y: KHONG hoi truoc, tim va goi y ngay. Cau hoi (neu co) chi o CUOI, chi MOT, va chi khi cau tra loi thay doi khuyen nghi.
+TIM KIEM: dat query theo MUC TIEU (vd \"bua trua nha hang/quan an quan an\"), KHONG chep nguyen cau cua user. Chon 'type' dung linh vuc.
+BANG CHUNG CAN DE QUYET DINH: price, distance. Ung vien khong co bang chung nay chi la KET QUA TIM KIEM, KHONG PHAI goi y — khong mo ta, khong khen.
+SAU KHI TIM: so sanh ung vien theo TIEU CHI tren bang so lieu that; neu du bang chung thi CHON MOT va noi vi sao no hop tinh huong nay; neu chi mot ung vien du bang chung thi goi y mot; neu khong ung vien nao du thi lam theo _tappy_evidence_gap.
+====="
+
+ ❯ src/lib/ai/security/decisionFrameBoundary.test.ts:54:19
+     52|   it('still prints the closed-vocabulary facts it exists to carry (a v…
+     53|     const block = blockFor(['tim quan an o quan 3 cho 4 nguoi duoi 200…
+     54|     expect(block).toMatch(/quan 3/)
+       |                   ^
+     55|     expect(block).toMatch(/4 nguoi/)
+     56|   })
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 4 passed (6)
+   Start at  06:55:46
+   Duration  679ms (transform 117ms, setup 27ms, import 127ms, tests 58ms, environment 0ms)
+

@@ -1,0 +1,25 @@
+{
+  "id": "S5",
+  "text": "quà sinh nhật cho bạn gái tầm 1tr",
+  "parent": null,
+  "status": 200,
+  "ms": 5416,
+  "evidenceId": "76eadbcb-d800-4155-9a5d-3e60ad01cb88",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình giúp bạn tìm quà sinh nhật cho bạn gái trong tầm 1 triệu đồng nhé! 🎁\n\nĐể gợi ý đúng ý bạn, mình cần biết thêm một chút:\n- **Bạn gái thích loại quà gì?** (ví dụ: đồ dùng cá nhân, trang sức, công nghệ, làm đẹp, thời trang, hay cái gì khác?)\n\nSau khi bạn cho mình biết, mình sẽ tìm những lựa chọn tốt nhất trên Shopee, Lazada, TikTok Shop để bạn so sánh và chọn! 💝",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "quà sinh nhật cho bạn gái tầm 1tr"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giúp bạn tìm quà sinh nhật cho bạn gái trong tầm 1 triệu đồng nhé! 🎁\n\nĐể gợi ý đúng ý bạn, mình cần biết thêm một chút:\n- **Bạn gái thích loại quà gì?** (ví dụ: đồ dùng cá nhân, trang sức, công nghệ, làm đẹp, thời trang, hay cái gì khác?)\n\nSau khi bạn cho mình biết, mình sẽ tìm những lựa chọn tốt nhất trên Shopee, Lazada, TikTok Shop để bạn so sánh và chọn! 💝"
+    }
+  ]
+}

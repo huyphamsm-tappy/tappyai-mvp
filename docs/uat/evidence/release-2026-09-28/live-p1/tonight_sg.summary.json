@@ -1,0 +1,121 @@
+{
+  "caseId": "tonight_sg",
+  "base": "https://uat.tappyai.com",
+  "at": "2026-09-28T07:32:40.236Z",
+  "guest": "anonymous session (token not stored)",
+  "turns": [
+    {
+      "user": "tối nay có chỗ nào đi chơi ở sài gòn ko",
+      "status": 200,
+      "ms": 22082,
+      "literalDoubleStar": 8,
+      "unbalancedBoldLines": [],
+      "proseTail": " rất nhiều trò chơi, khu vui chơi cho mọi lứa tuổi, vừa vui vừa không quá nóng vì có nhiều khu trong nhà và mái che.\n\nNếu muốn chỗ yên tĩnh hơn, **Công viên Bờ Sông Sài Gòn** cũng hay — **4.6⭐ (633 đánh giá)**, mở đến 22:00, view sông đẹp, thích hợp để dạo bộ, ngồi thư giãn tối nay.\n\n\n\n\n\n\n\nBạn cho mình biết xuất phát từ đâu và muốn bay hay đi xe/tàu nhé — mình sẽ tìm vé và phòng đúng ngày cho bạn.",
+      "placeActions": [
+        {
+          "name": "Thiên Đường Giải Trí Thỏ Trắng",
+          "actions": [
+            "maps:v3.action.maps:https://maps.google.com/?cid=3921190383296923444",
+            "website:v3.action.website:https://www.facebook.com/GiaiTriThoTrang/?locale=vi_VN",
+            "review:v3.action.reviewSearch:https://www.youtube.com/results?search_query=Thi%C3%AAn%20%C4%90%C6%B0%E1%BB%9Dng%20Gi%E1%",
+            "call:v3.action.call:tel:+842839771975"
+          ]
+        },
+        {
+          "name": "Khu Vui chơi Trẻ em - Công viên Gia Định",
+          "actions": [
+            "maps:v3.action.maps:https://maps.google.com/?cid=1055760044812414598",
+            "review:v3.action.reviewSearch:https://www.youtube.com/results?search_query=Khu%20Vui%20ch%C6%A1i%20Tr%E1%BA%BB%20em%20-%"
+          ]
+        },
+        {
+          "name": "Vietopia",
+          "actions": [
+            "maps:v3.action.maps:https://maps.google.com/?cid=16351191221892170681",
+            "website:v3.action.website:https://vietopia.com.vn/",
+            "review:v3.action.reviewSearch:https://www.youtube.com/results?search_query=Vietopia%20review"
+          ]
+        },
+        {
+          "name": "Khu công viên giải trí D-Joy",
+          "actions": [
+            "maps:v3.action.maps:https://maps.google.com/?cid=9372760170466884556",
+            "review:v3.action.reviewSearch:https://www.youtube.com/results?search_query=Khu%20c%C3%B4ng%20vi%C3%AAn%20gi%E1%BA%A3i%20",
+            "call:v3.action.call:tel:+84766011411"
+          ]
+        },
+        {
+          "name": "Công viên Grand Park",
+          "actions": [
+            "review:v3.action.reviewOn:https://www.tiktok.com/@lacasaigon.vn/video/7530147643381599502",
+            "maps:v3.action.maps:https://maps.google.com/?cid=6971132105514942057",
+            "website:v3.action.website:https://vinwonders.com/vi/",
+            "call:v3.action.call:tel:+84844268068",
+            "review:v3.action.reviewSearch:https://www.youtube.com/results?search_query=C%C3%B4ng%20vi%C3%AAn%20Grand%20Park%20review"
+          ]
+        },
+        {
+          "name": "Vườn thú Đầm Sen",
+          "actions": [
+            "maps:v3.action.maps:https://maps.google.com/?cid=9425873494310243504",
+            "review:v3.action.reviewSearch:https://www.youtube.com/results?search_query=V%C6%B0%E1%BB%9Dn%20th%C3%BA%20%C4%90%E1%BA%A"
+          ]
+        },
+        {
+          "name": "Công Viên Nước Đầm Sen",
+          "actions": [
+            "maps:v3.action.maps:https://maps.google.com/?cid=15688581395936079051",
+            "website:v3.action.website:https://damsenwaterpark.com.vn/",
+            "review:v3.action.reviewSearch:https://www.youtube.com/results?search_query=C%C3%B4ng%20Vi%C3%AAn%20N%C6%B0%E1%BB%9Bc%20%",
+            "call:v3.action.call:tel:+842838588418"
+          ]
+        },
+        {
+          "name": "FANPEKKA",
+          "actions": [
+            "maps:v3.action.maps:https://maps.google.com/?cid=18124769532935275837",
+            "review:v3.action.reviewSearch:https://www.youtube.com/results?search_query=FANPEKKA%20review",
+            "call:v3.action.call:tel:+84906660851"
+          ]
+        }
+      ],
+      "shopping": null,
+      "plan": {
+        "type": "trip",
+        "title": "Tối nay vui chơi ở Sài Gòn",
+        "people": 1,
+        "budget_total": "chưa có giá",
+        "days": [
+          {
+            "label": "Tối nay",
+            "items": [
+              {
+                "time": "19:00",
+                "emoji": "🎡",
+                "category": "entertainment",
+                "name": "Thiên Đường Giải Trí Thỏ Trắng",
+                "description": "Công viên giải trí lớn với nhiều trò chơi, 4.3⭐ (8.514 đánh giá), mở đến 22:00",
+                "price": "chưa có giá",
+                "address": "875 Cách Mạng Tháng Tám, Cư xá Bắc Hải, Hòa Hưng, Hồ Chí Minh",
+                "maps_link": "https://maps.google.com/?cid=3921190383296923444",
+                "place_id": "ChIJ9YE09dEudTERNEcX1eDdajY"
+              }
+            ]
+          }
+        ],
+        "cost_breakdown": {
+          "Vui chơi giải trí": "chưa có giá"
+        },
+        "local_tips": [
+          {
+            "text": "Công viên có nhiều khu trong nhà và mái che, thích hợp cho tối nay vì có khả năng mưa nhẹ",
+            "basis": "tool",
+            "place": "Thiên Đường Giải Trí Thỏ Trắng"
+          }
+        ],
+        "share_text": "Tối nay đi chơi Thỏ Trắng, vui cả ngày! 🎡 #TappyAI"
+      },
+      "cta": "{\"buttons\":[{\"label\":\"📍 Thỏ Trắng - Google Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=3921190383296923444\",\"primary\":true},{\"label\":\"📍 Bờ Sông Sài Gòn - Google Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=14403115314444078259\",\"primary\":false},{\"label\":\"📍 Grand Park - Google Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=6971132105514942057\",\"primary\":false}]}"
+    }
+  ]
+}

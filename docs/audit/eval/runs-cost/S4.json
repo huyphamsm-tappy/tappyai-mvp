@@ -1,0 +1,67 @@
+{
+  "id": "S4",
+  "text": "Robot hút bụi cho nhà có chó, tầm 5-7 triệu",
+  "parent": null,
+  "status": 200,
+  "ms": 14150,
+  "evidenceId": "d68cf96d-3193-4c86-b157-370a68748660",
+  "toolCalls": [
+    {
+      "tool": "search_products",
+      "args": {
+        "query": "robot hút bụi nhà có chó 5 triệu 7 triệu"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Robot hút bụi lau nhà Liectroux B6009",
+      "rating": 5,
+      "count": 1,
+      "price": 3690000
+    },
+    {
+      "name": "Robot hút bụi lau nhà Roborock Q7 Pro Max",
+      "rating": 4.7,
+      "count": 52,
+      "price": 4390000
+    },
+    {
+      "name": "Robot Hút Bụi BlueStone RVB-9731",
+      "rating": 5,
+      "count": 2,
+      "price": 5800000
+    },
+    {
+      "name": "Ecovacs Deebot 710",
+      "rating": 4.6,
+      "count": 45,
+      "price": 5900000
+    },
+    {
+      "name": "Robot hút bụi lau nhà Ecovacs Deebot Mini",
+      "rating": 3.9,
+      "count": 43,
+      "price": 5990000
+    },
+    {
+      "name": "Robot hút bụi Takdir V3-1s VC",
+      "price": 1490000
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "[TAPPY_SHOPPING]{\"v\":1,\"entities\":[{\"key\":\"uncertain:0\",\"name\":\"Robot hút bụi lau nhà Liectroux B6009\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":true,\"priceLow\":3690000,\"priceHigh\":3690000,\"image\":\"https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRWLHvmOGFxMI8m6K3fkg-7-_f77iCEAK8nfWzEHkUKqWnc3-PTRuBJflMkbTdRkfwjLnwE7ku9cYnLVrwpPkA7ZDilUVRSeki2vyxJfSbaA1Bg3MSJQOMy\",\"offers\":[{\"seller\":\"Digihouse.vn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=robot+h%C3%BAt+b%E1%BB%A5i+nh%C3%A0+c%C3%B3+ch%C3%B3+5+tri%E1%BB%87u+7+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,catalogid:3745708885929108437,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":3690000,\"currency\":\"VND\",\"condition\":null,\"rating\":5,\"ratingCount\":1}]},{\"key\":\"uncertain:1\",\"name\":\"Robot hút bụi lau nhà Roborock Q7 Pro Max\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":4390000,\"priceHigh\":4390000,\"image\":\"https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRBd-Cz6kOIQKqKPMIYLKdzx3rlCR1vcM35Nlb5gZX3BaFwglG7HVRcm0fz8gCGxXxP8SPm-g8FhB8xelrCkKr-DIQqKDlwvuaeHqD1y-xdO9VoYZW3T1so\",\"offers\":[{\"seller\":\"Bestmua\",\"url\":\"https://www.google.com/search?ibp=oshop&q=robot+h%C3%BAt+b%E1%BB%A5i+nh%C3%A0+c%C3%B3+ch%C3%B3+5+tri%E1%BB%87u+7+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,catalogid:9430940422767565225,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":4390000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.7,\"ratingCount\":52}]},{\"key\":\"uncertain:2\",\"name\":\"Robot Hút Bụi BlueStone RVB-9731\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":5800000,\"priceHigh\":5800000,\"image\":\"https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQq6BWaU1Ppk4SdQFgxWUR0YvPiUXcfSpHjNkkI52xxA7MVjGZURdoNwTxKGVR4YBnnjAHSR4ySlshrkbzMlZtu8Z0pmLaijzPHd135OHvCp-afxQ8lNsC0bA\",\"offers\":[{\"seller\":\"VietMart thegioidodung.vn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=robot+h%C3%BAt+b%E1%BB%A5i+nh%C3%A0+c%C3%B3+ch%C3%B3+5+tri%E1%BB%87u+7+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,catalogid:1063786216252243540,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":5800000,\"currency\":\"VND\",\"condition\":null,\"rating\":5,\"ratingCount\":2}]},{\"key\":\"uncertain:3\",\"name\":\"Ecovacs Deebot 710\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":5900000,\"priceHigh\":5900000,\"image\":\"https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRR_RrLYBJWAzjqOQF-Bj1UeL2h4PdvdigzfvYsEeO1b6ZU0Nwojy4zdkA31ISzp9XGfVI-1tMGV082IRdeq-kjn6oxFrHIJ2Yk69aN9ba1PfzPWGPz2odg\",\"offers\":[{\"seller\":\"boba.vn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=robot+h%C3%BAt+b%E1%BB%A5i+nh%C3%A0+c%C3%B3+ch%C3%B3+5+tri%E1%BB%87u+7+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,catalogid:11472631826129357976,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":5900000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.6,\"ratingCount\":45}]},{\"key\":\"uncertain:4\",\"name\":\"Robot hút bụi lau nhà Ecovacs Deebot Mini\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":5990000,\"priceHigh\":5990000,\"image\":\"https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcREuOegmLyZPOhPuYaE_6xRvxWYBWkdnX5ZgJUH9PbLP5bdlHeLrMOA4R1SLvIYNsv6bALZzYhjMx8nwT8c4BfodU91HvMV3SljF_hIXPOSx7ZPi7Elg6VCZA\",\"offers\":[{\"seller\":\"Fptshop.com.vn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=robot+h%C3%BAt+b%E1%BB%A5i+nh%C3%A0+c%C3%B3+ch%C3%B3+5+tri%E1%BB%87u+7+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,productid:901415600240969525,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":5990000,\"currency\":\"VND\",\"condition\":null,\"rating\":3.9,\"ratingCount\":43}]},{\"key\":\"uncertain:5\",\"name\":\"Robot hút bụi Takdir V3-1s VC\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":1490000,\"priceHigh\":1490000,\"image\":\"https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTkVuctpo3l7SX9GWo_F2W81UoJTr-yO0jJmkyW4-GU0vEyA5OJaEj_myB8CMU1F6EeRdJPFMbijRKdVuiismNi5RQn1Wljr-uzHWSwnduK5XpsRMBc8n50\",\"offers\":[{\"seller\":\"Fptshop.com.vn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=robot+h%C3%BAt+b%E1%BB%A5i+nh%C3%A0+c%C3%B3+ch%C3%B3+5+tri%E1%BB%87u+7+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,productid:15736379873697475960,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":1490000,\"currency\":\"VND\",\"condition\":null,\"rating\":null,\"ratingCount\":null}]}],\"requested\":null,\"recommendation\":{\"entityKey\":\"uncertain:0\",\"seller\":\"Digihouse.vn\",\"reasons\":[{\"attribute\":\"rating\",\"evidence\":\"rated 5\",\"params\":{\"value\":5}},{\"attribute\":\"price\",\"evidence\":\"3690000 VND\",\"params\":{\"priceVnd\":3690000}}],\"tradeOff\":{\"attribute\":\"reviewCount\",\"evidence\":\"52 reviews\",\"params\":{\"count\":52}},\"conditional\":false}}[/TAPPY_SHOPPING]\n\nPhù hợp với lông chó rơi.\n\nBạn đang tìm robot có khả năng hút bụi mạnh hay cân bằng giữa hút và lau?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛒 Tìm trên Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=robot+h%C3%BAt+b%E1%BB%A5i+nh%C3%A0+c%C3%B3+ch%C3%B3+5+tri%E1%BB%87u+7+tri%E1%BB%87u\",\"primary\":true},{\"label\":\"📦 Tìm trên Lazada\",\"type\":\"search\",\"url\":\"https://www.lazada.vn/catalog/?q=robot+h%C3%BAt+b%E1%BB%A5i+nh%C3%A0+c%C3%B3+ch%C3%B3+5+tri%E1%BB%87u+7+tri%E1%BB%87u\",\"primary\":false}]}[/CTA_BUTTONS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Robot hút bụi cho nhà có chó, tầm 5-7 triệu"
+    },
+    {
+      "role": "assistant",
+      "content": "[TAPPY_SHOPPING]{\"v\":1,\"entities\":[{\"key\":\"uncertain:0\",\"name\":\"Robot hút bụi lau nhà Liectroux B6009\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":true,\"priceLow\":3690000,\"priceHigh\":3690000,\"image\":\"https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRWLHvmOGFxMI8m6K3fkg-7-_f77iCEAK8nfWzEHkUKqWnc3-PTRuBJflMkbTdRkfwjLnwE7ku9cYnLVrwpPkA7ZDilUVRSeki2vyxJfSbaA1Bg3MSJQOMy\",\"offers\":[{\"seller\":\"Digihouse.vn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=robot+h%C3%BAt+b%E1%BB%A5i+nh%C3%A0+c%C3%B3+ch%C3%B3+5+tri%E1%BB%87u+7+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,catalogid:3745708885929108437,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":3690000,\"currency\":\"VND\",\"condition\":null,\"rating\":5,\"ratingCount\":1}]},{\"key\":\"uncertain:1\",\"name\":\"Robot hút bụi lau nhà Roborock Q7 Pro Max\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":4390000,\"priceHigh\":4390000,\"image\":\"https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRBd-Cz6kOIQKqKPMIYLKdzx3rlCR1vcM35Nlb5gZX3BaFwglG7HVRcm0fz8gCGxXxP8SPm-g8FhB8xelrCkKr-DIQqKDlwvuaeHqD1y-xdO9VoYZW3T1so\",\"offers\":[{\"seller\":\"Bestmua\",\"url\":\"https://www.google.com/search?ibp=oshop&q=robot+h%C3%BAt+b%E1%BB%A5i+nh%C3%A0+c%C3%B3+ch%C3%B3+5+tri%E1%BB%87u+7+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,catalogid:9430940422767565225,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":4390000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.7,\"ratingCount\":52}]},{\"key\":\"uncertain:2\",\"name\":\"Robot Hút Bụi BlueStone RVB-9731\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":5800000,\"priceHigh\":5800000,\"image\":\"https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQq6BWaU1Ppk4SdQFgxWUR0YvPiUXcfSpHjNkkI52xxA7MVjGZURdoNwTxKGVR4YBnnjAHSR4ySlshrkbzMlZtu8Z0pmLaijzPHd135OHvCp-afxQ8lNsC0bA\",\"offers\":[{\"seller\":\"VietMart thegioidodung.vn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=robot+h%C3%BAt+b%E1%BB%A5i+nh%C3%A0+c%C3%B3+ch%C3%B3+5+tri%E1%BB%87u+7+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,catalogid:1063786216252243540,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":5800000,\"currency\":\"VND\",\"condition\":null,\"rating\":5,\"ratingCount\":2}]},{\"key\":\"uncertain:3\",\"name\":\"Ecovacs Deebot 710\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":5900000,\"priceHigh\":5900000,\"image\":\"https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRR_RrLYBJWAzjqOQF-Bj1UeL2h4PdvdigzfvYsEeO1b6ZU0Nwojy4zdkA31ISzp9XGfVI-1tMGV082IRdeq-kjn6oxFrHIJ2Yk69aN9ba1PfzPWGPz2odg\",\"offers\":[{\"seller\":\"boba.vn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=robot+h%C3%BAt+b%E1%BB%A5i+nh%C3%A0+c%C3%B3+ch%C3%B3+5+tri%E1%BB%87u+7+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,catalogid:11472631826129357976,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":5900000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.6,\"ratingCount\":45}]},{\"key\":\"uncertain:4\",\"name\":\"Robot hút bụi lau nhà Ecovacs Deebot Mini\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":5990000,\"priceHigh\":5990000,\"image\":\"https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcREuOegmLyZPOhPuYaE_6xRvxWYBWkdnX5ZgJUH9PbLP5bdlHeLrMOA4R1SLvIYNsv6bALZzYhjMx8nwT8c4BfodU91HvMV3SljF_hIXPOSx7ZPi7Elg6VCZA\",\"offers\":[{\"seller\":\"Fptshop.com.vn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=robot+h%C3%BAt+b%E1%BB%A5i+nh%C3%A0+c%C3%B3+ch%C3%B3+5+tri%E1%BB%87u+7+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,productid:901415600240969525,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":5990000,\"currency\":\"VND\",\"condition\":null,\"rating\":3.9,\"ratingCount\":43}]},{\"key\":\"uncertain:5\",\"name\":\"Robot hút bụi Takdir V3-1s VC\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":1490000,\"priceHigh\":1490000,\"image\":\"https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTkVuctpo3l7SX9GWo_F2W81UoJTr-yO0jJmkyW4-GU0vEyA5OJaEj_myB8CMU1F6EeRdJPFMbijRKdVuiismNi5RQn1Wljr-uzHWSwnduK5XpsRMBc8n50\",\"offers\":[{\"seller\":\"Fptshop.com.vn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=robot+h%C3%BAt+b%E1%BB%A5i+nh%C3%A0+c%C3%B3+ch%C3%B3+5+tri%E1%BB%87u+7+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,productid:15736379873697475960,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":1490000,\"currency\":\"VND\",\"condition\":null,\"rating\":null,\"ratingCount\":null}]}],\"requested\":null,\"recommendation\":{\"entityKey\":\"uncertain:0\",\"seller\":\"Digihouse.vn\",\"reasons\":[{\"attribute\":\"rating\",\"evidence\":\"rated 5\",\"params\":{\"value\":5}},{\"attribute\":\"price\",\"evidence\":\"3690000 VND\",\"params\":{\"priceVnd\":3690000}}],\"tradeOff\":{\"attribute\":\"reviewCount\",\"evidence\":\"52 reviews\",\"params\":{\"count\":52}},\"conditional\":false}}[/TAPPY_SHOPPING]\n\nPhù hợp với lông chó rơi.\n\nBạn đang tìm robot có khả năng hút bụi mạnh hay cân bằng giữa hút và lau?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛒 Tìm trên Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=robot+h%C3%BAt+b%E1%BB%A5i+nh%C3%A0+c%C3%B3+ch%C3%B3+5+tri%E1%BB%87u+7+tri%E1%BB%87u\",\"primary\":true},{\"label\":\"📦 Tìm trên Lazada\",\"type\":\"search\",\"url\":\"https://www.lazada.vn/catalog/?q=robot+h%C3%BAt+b%E1%BB%A5i+nh%C3%A0+c%C3%B3+ch%C3%B3+5+tri%E1%BB%87u+7+tri%E1%BB%87u\",\"primary\":false}]}[/CTA_BUTTONS]"
+    }
+  ]
+}

@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Massage Truyền Thống Mạc Thụy ở Quận 10, Hồ Chí Minh",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:45:26.621Z",
+ "body": {
+  "searchParameters": {
+   "q": "Massage Truyền Thống Mạc Thụy ở Quận 10, Hồ Chí Minh",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Massage Truyền Thống Mạc Thụy ở Quận 10, Hồ Chí Minh",
+    "imageUrl": "https://res.klook.com/image/upload/w_750,h_469,c_fill,q_85/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/e0jakbwkjn0cijqs2xig.jpg",
+    "imageWidth": 750,
+    "imageHeight": 469,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYY-OUWxnxX8P_CNUQhlvUgL1vrYsz0PNIACmvqTmZRg&s=10",
+    "thumbnailWidth": 565,
+    "thumbnailHeight": 353,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/150402-mac-thuy-vietnamese-traditional-massage-in-district-10-ho-chi-minh/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimage%2Fupload%2Fw_750%2Ch_469%2Cc_fill%2Cq_85%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fe0jakbwkjn0cijqs2xig.jpg&tbnid=PYMvVpUuoyUl3M&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F150402-mac-thuy-vietnamese-traditional-massage-in-district-10-ho-chi-minh%2F&docid=X-b2Ms_8BLFjmM&w=750&h=469",
+    "position": 1
+   },
+   {
+    "title": "Massage Truyền Thống Mạc Thụy ở Quận 10, Hồ Chí Minh - Klook",
+    "imageUrl": "https://res.klook.com/images/w_1200,h_630,c_fill,q_65/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/vxk6cw5d8u6qje5zfm35/MassageTruy%E1%BB%81nTh%E1%BB%91ngM%E1%BA%A1cTh%E1%BB%A5y%E1%BB%9FQu%E1%BA%ADn10,H%E1%BB%93Ch%C3%ADMinh-Klook.jpg",
+    "imageWidth": 1200,
+    "imageHeight": 630,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRD_vT8J4W51VzIlXJ6LxvpniDHSN0eivntjihguLInfA&s=10",
+    "thumbnailWidth": 617,
+    "thumbnailHeight": 324,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/150402-mac-thuy-vietnamese-traditional-massage-in-district-10-ho-chi-minh/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Fw_1200%2Ch_630%2Cc_fill%2Cq_65%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fvxk6cw5d8u6qje5zfm35%2FMassageTruy%25E1%25BB%2581nTh%25E1%25BB%2591ngM%25E1%25BA%25A1cTh%25E1%25BB%25A5y%25E1%25BB%259FQu%25E1%25BA%25ADn10%2CH%25E1%25BB%2593Ch%25C3%25ADMinh-Klook.jpg&tbnid=xQXN1RF473j30M&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F150402-mac-thuy-vietnamese-traditional-massage-in-district-10-ho-chi-minh%2F&docid=X-b2Ms_8BLFjmM&w=1200&h=630",
+    "position": 2
+   },
+   {
+    "title": "Massage Truyền Thống Mạc Thụy ở Quận 10, Hồ Chí Minh - Klook",
+    "imageUrl": "https://res.klook.com/images/w_1200,h_630,c_fill,q_65/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/ulenrxanypwn0vsof6qb/MassageTruy%E1%BB%81nTh%E1%BB%91ngM%E1%BA%A1cTh%E1%BB%A5y%E1%BB%9FQu%E1%BA%ADn10,H%E1%BB%93Ch%C3%ADMinh-Klook.jpg",
+    "imageWidth": 1200,
+    "imageHeight": 630,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7kLD6T5oq1l_22VTE4yZGuVSv5mTeW5Wj-bx5rWwTcQ&s=10",
+    "thumbnailWidth": 617,
+    "thumbnailHeight": 324,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/150402-mac-thuy-vietnamese-traditional-massage-in-district-10-ho-chi-minh/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Fw_1200%2Ch_630%2Cc_fill%2Cq_65%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fulenrxanypwn0vsof6qb%2FMassageTruy%25E1%25BB%2581nTh%25E1%25BB%2591ngM%25E1%25BA%25A1cTh%25E1%25BB%25A5y%25E1%25BB%259FQu%25E1%25BA%25ADn10%2CH%25E1%25BB%2593Ch%25C3%25ADMinh-Klook.jpg&tbnid=uJZe8u8hgROJVM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F150402-mac-thuy-vietnamese-traditional-massage-in-district-10-ho-chi-minh%2F&docid=X-b2Ms_8BLFjmM&w=1200&h=630",
+    "position": 3
+   },
+   {
+    "title": "Massage Truyền Thống Mạc Thụy ở Quận 10, Hồ Chí Minh - Klook",
+    "imageUrl": "https://res.klook.com/image/upload/w_750,h_469,c_fill,q_85/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/siscztchs6eeeiqp2b5y.jpg",
+    "imageWidth": 750,
+    "imageHeight": 469,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR2jUAGsDHDtsAkme3HzLGxjNVYHNebXjO5_Us-iQ1Xog&s=10",
+    "thumbnailWidth": 565,
+    "thumbnailHeight": 353,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/150402-mac-thuy-vietnamese-traditional-massage-in-district-10-ho-chi-minh/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimage%2Fupload%2Fw_750%2Ch_469%2Cc_fill%2Cq_85%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fsiscztchs6eeeiqp2b5y.jpg&tbnid=LF9VEEW6F_gqDM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F150402-mac-thuy-vietnamese-traditional-massage-in-district-10-ho-chi-minh%2F&docid=X-b2Ms_8BLFjmM&w=750&h=469",
+    "position": 4
+   },
+   {
+    "title": "Massage Truyền Thống Mạc Thụy ở Quận 10, Hồ Chí Minh - Klook",
+    "imageUrl": "https://res.klook.com/images/w_1200,h_630,c_fill,q_65/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/hflicdrk1acig9ghq0sf/MassageTruy%E1%BB%81nTh%E1%BB%91ngM%E1%BA%A1cTh%E1%BB%A5y%E1%BB%9FQu%E1%BA%ADn10,H%E1%BB%93Ch%C3%ADMinh-Klook.jpg",
+    "imageWidth": 1200,
+    "imageHeight": 630,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQzhSTstLSbMGieI18wR-5xw9AcbazCyYir9-9g3b2RA&s=10",
+    "thumbnailWidth": 617,
+    "thumbnailHeight": 324,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/150402-mac-thuy-vietnamese-traditional-massage-in-district-10-ho-chi-minh/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Fw_1200%2Ch_630%2Cc_fill%2Cq_65%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fhflicdrk1acig9ghq0sf%2FMassageTruy%25E1%25BB%2581nTh%25E1%25BB%2591ngM%25E1%25BA%25A1cTh%25E1%25BB%25A5y%25E1%25BB%259FQu%25E1%25BA%25ADn10%2CH%25E1%25BB%2593Ch%25C3%25ADMinh-Klook.jpg&tbnid=0RdLttGuR3ENfM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F150402-mac-thuy-vietnamese-traditional-massage-in-district-10-ho-chi-minh%2F&docid=X-b2Ms_8BLFjmM&w=1200&h=630",
+    "position": 5
+   },
+   {
+    "title": "Massage Truyền Thống Mạc Thụy ở Quận 10, Hồ Chí Minh - Klook",
+    "imageUrl": "https://res.klook.com/images/w_1200,h_630,c_fill,q_65/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/qbykld7ibkrwarx5cjce/MassageTruy%E1%BB%81nTh%E1%BB%91ngM%E1%BA%A1cTh%E1%BB%A5y%E1%BB%9FQu%E1%BA%ADn10,H%E1%BB%93Ch%C3%ADMinh-Klook.jpg",
+    "imageWidth": 1200,
+    "imageHeight": 630,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCKTQsJxBXUbvRbvZ1aCSly1yvAVFh1snjOqB_xmi6xA&s=10",
+    "thumbnailWidth": 617,
+    "thumbnailHeight": 324,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/150402-mac-thuy-vietnamese-traditional-massage-in-district-10-ho-chi-minh/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Fw_1200%2Ch_630%2Cc_fill%2Cq_65%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fqbykld7ibkrwarx5cjce%2FMassageTruy%25E1%25BB%2581nTh%25E1%25BB%2591ngM%25E1%25BA%25A1cTh%25E1%25BB%25A5y%25E1%25BB%259FQu%25E1%25BA%25ADn10%2CH%25E1%25BB%2593Ch%25C3%25ADMinh-Klook.jpg&tbnid=s9ciq4Az4RDxXM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F150402-mac-thuy-vietnamese-traditional-massage-in-district-10-ho-chi-minh%2F&docid=X-b2Ms_8BLFjmM&w=1200&h=630",
+    "position": 6
+   },
+   {
+    "title": "Massage Truyền Thống Mạc Thụy ở Quận 10, Hồ Chí Minh - Klook",
+    "imageUrl": "https://res.klook.com/images/w_1200,h_630,c_fill,q_65/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/rmew4butrdoojepfi7xk/MassageTruy%E1%BB%81nTh%E1%BB%91ngM%E1%BA%A1cTh%E1%BB%A5y%E1%BB%9FQu%E1%BA%ADn10,H%E1%BB%93Ch%C3%ADMinh-Klook.jpg",
+    "imageWidth": 1200,
+    "imageHeight": 630,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSf_wbZsWnQwWRHpWxwMXufTt3hM3E8SmaRyllE5321yg&s=10",
+    "thumbnailWidth": 617,
+    "thumbnailHeight": 324,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/150402-mac-thuy-vietnamese-traditional-massage-in-district-10-ho-chi-minh/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Fw_1200%2Ch_630%2Cc_fill%2Cq_65%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Frmew4butrdoojepfi7xk%2FMassageTruy%25E1%25BB%2581nTh%25E1%25BB%2591ngM%25E1%25BA%25A1cTh%25E1%25BB%25A5y%25E1%25BB%259FQu%25E1%25BA%25ADn10%2CH%25E1%25BB%2593Ch%25C3%25ADMinh-Klook.jpg&tbnid=VUqfSCc0PW7RWM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F150402-mac-thuy-vietnamese-traditional-massage-in-district-10-ho-chi-minh%2F&docid=X-b2Ms_8BLFjmM&w=1200&h=630",
+    "position": 7
+   },
+   {
+    "title": "Massage Truyền Thống Mạc Thụy ở Quận 10, Hồ Chí Minh - Klook",
+    "imageUrl": "https://res.klook.com/image/upload/w_750,h_469,c_fill,q_85/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/tces1ktlly7msrhkjjhe.jpg",
+    "imageWidth": 750,
+    "imageHeight": 469,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSjG8qpXc9B8y0eE0fS0FY-DynwV_3wlQiZbfUIp039-A&s=10",
+    "thumbnailWidth": 565,
+    "thumbnailHeight": 353,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/150402-mac-thuy-vietnamese-traditional-massage-in-district-10-ho-chi-minh/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimage%2Fupload%2Fw_750%2Ch_469%2Cc_fill%2Cq_85%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Ftces1ktlly7msrhkjjhe.jpg&tbnid=bVmA7zinSECcUM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F150402-mac-thuy-vietnamese-traditional-massage-in-district-10-ho-chi-minh%2F&docid=X-b2Ms_8BLFjmM&w=750&h=469",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -12,7 +12,7 @@
 // contracts below pin the native clients to the same numbers.
 
 import { describe, it, expect } from 'vitest'
-import { readFileSync } from 'node:fs'
+import { existsSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import {
   MAX_VIDEO_DURATION_SEC,
@@ -113,26 +113,43 @@ describe('iOS pins the same two numbers', () => {
   })
 })
 
-describe('Android has no video upload path to keep in sync', () => {
-  // Android plays review videos but cannot create one: every media picker it has is ImageOnly, and
-  // nothing calls /api/upload/video. So there is no 60-second limit there to raise — and this guard
-  // is what makes that a checked fact rather than a claim. If someone adds a video picker later,
-  // this fails and they have to wire the shared limit at the same time.
+describe('Android posts video through the shared duration limit (ANDROID-REQUESTS R8)', () => {
+  // Android gained a video composer (28/09, three-step /api/upload/video). This guard used to assert
+  // that Android had NO video path; it now pins that path to the same numbers as the web and iOS.
+  // Before the Android video commit lands the path is absent and only the "no stray video path"
+  // check runs; the moment any Android source uploads video, every sync check below applies.
   const androidSources = () => {
     const { globSync } = require('tinyglobby') as typeof import('tinyglobby')
     return globSync(['android/app/src/main/**/*.kt'], { cwd: root })
   }
+  const VM = 'android/app/src/main/java/com/tappyai/app/reviews/ui/ReviewComposerViewModel.kt'
+  const UPLOADER = 'android/app/src/main/java/com/tappyai/app/reviews/data/VideoUploader.kt'
+  const CLIP = 'android/app/src/main/java/com/tappyai/app/reviews/data/ClipMetadata.kt'
+  const uploadsVideo = (f: string) => /PickVisualMedia\.(VideoOnly|ImageAndVideo)|upload\/video|media\.create-upload-session/.test(read(f))
 
   it('finds Android sources, so the guard is not vacuous', () => {
     expect(androidSources().length).toBeGreaterThan(50)
   })
 
-  it('picks images only, and never uploads video', () => {
-    const offenders = androidSources().filter((f) => {
-      const src = read(f)
-      return /PickVisualMedia\.(VideoOnly|ImageAndVideo)/.test(src) || /upload\/video/.test(src)
-    })
+  it('picks and uploads video only in the composer (picker in ReviewsScreens) + VideoUploader', () => {
+    const offenders = androidSources().filter(uploadsVideo).filter(f => !/reviews\/(ui\/(ReviewComposer(ViewModel|Screen)|ReviewsScreens)|data\/VideoUploader)\.kt$/.test(f))
     expect(offenders).toEqual([])
+  })
+
+  it('when the video path exists: accepts up to 305 s, the shared ceiling', () => {
+    if (!androidSources().some(uploadsVideo)) return
+    expect(read(VM)).toMatch(/MAX_VIDEO_DURATION_ACCEPT_SEC\s*=\s*305\b/)
+    expect(read(VM)).toMatch(/durationSec\s*>\s*MAX_VIDEO_DURATION_ACCEPT_SEC/)
+    expect(read(VM)).not.toMatch(/MAX_VIDEO_DURATION_ACCEPT_SEC\s*=\s*62\b/)
+  })
+
+  it('when the video path exists: uses the same three-step upload as web, with clip metadata neutralised (F-099)', () => {
+    if (!androidSources().some(uploadsVideo)) return
+    const up = read(UPLOADER)
+    expect(up).toContain('media.create-upload-session')
+    expect(up).toContain('media.complete-upload')
+    expect(up).toContain('/api/upload/video')
+    expect(existsSync(join(root, CLIP))).toBe(true)
   })
 })
 

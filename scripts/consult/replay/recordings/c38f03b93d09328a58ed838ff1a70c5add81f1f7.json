@@ -1,0 +1,77 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "laptop mới dell (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T04:01:51.036Z",
+ "body": {
+  "searchParameters": {
+   "q": "laptop mới dell (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Laptop Dell | Máy tính Dell (core i5 - i7) giá rẻ, giảm 6Tr",
+    "link": "https://cellphones.com.vn/laptop/dell.html",
+    "snippet": "Laptop Dell core i5 mới giá bao nhiêu tiền? ; Laptop Dell 15 DC15250 1XVHG V2. Giá từ 19.990.000 đồng ; Laptop Dell Inspiron 15 3530 J9XFD. Giá từ 17.490.000 đồng.",
+    "position": 1
+   },
+   {
+    "title": "Laptop Dell nào tốt nhất: Hướng dẫn chọn mua chi tiết",
+    "link": "https://cellphones.com.vn/sforum/mua-laptop-dell-dong-nao-tot-nhat",
+    "snippet": "Các dòng laptop Dell hiện nay · Dell XPS · Dell Inspiron · Dell Vostro · Dell Latitude · Dell Gaming G-series · Dell Alienware · Dell Precision · Dell Chromebook.",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 2
+   },
+   {
+    "title": "Laptop Dell cũ | Máy tính xách tay Dell cũ cấu hình cao",
+    "link": "https://cellphones.com.vn/hang-cu/laptop/dell.html",
+    "snippet": "Laptop Dell cũ giá rẻ, cấu hình cao, bảo hành uy tín, trả góp 0%, giao hàng tận nơi toàn quốc. Mua ngay máy tính laptop Dell cũ chất lượng!",
+    "position": 3
+   },
+   {
+    "title": "Laptop | Máy tính xách tay giá rẻ, trả góp 0%, giảm 15 triệu",
+    "link": "https://cellphones.com.vn/laptop.html",
+    "snippet": "Laptop, máy tính xách tay giá rẻ, trả góp 0%, đổi điểm giảm thêm tới 10%. Mua online laptop giảm thêm đến 5 triệu, giao hàng miễn phí tận nhà.",
+    "position": 4
+   },
+   {
+    "title": "Hướng dẫn cách sử dụng laptop Dell cho người mới bắt đầu",
+    "link": "https://cellphones.com.vn/sforum/cach-su-dung-laptop-dell-cho-nguoi-moi-bat-dau",
+    "snippet": "Cách sử dụng touchpad trên laptop Dell · Chạm một lần để chọn, nhấn đúp để mở. · Vuốt hai ngón tay để cuộn trang. · Dùng hai ngón tay để phóng to/thu nhỏ (zoom ...",
+    "rating": 1,
+    "ratingCount": 1,
+    "position": 5
+   },
+   {
+    "title": "Laptop Dell Vostro (i5 - i7 - i3) | Giá rẻ, trả góp 0%",
+    "link": "https://cellphones.com.vn/laptop/dell/vostro.html",
+    "snippet": "Laptop Dell Vostro 15 còn được trang bị đa dạng các dòng chip như Intel Core i3, Intel Core i5, Intel Core i7,...để phù hợp với nhiều đối tượng và mục đích sử ...",
+    "position": 6
+   },
+   {
+    "title": "Dell làm mới dòng PC thương mại: Thanh lịch hơn",
+    "link": "https://cellphones.com.vn/sforum/dell-lam-moi-dong-pc-thuong-mai",
+    "snippet": "Dòng máy tính để bàn Dell Pro bổ sung thêm Dell Pro 5 Micro mới. Sản phẩm mang đến hiệu năng mạnh mẽ chuẩn desktop trong một thiết kế siêu nhỏ ...",
+    "date": "26 thg 3, 2026",
+    "position": 7
+   },
+   {
+    "title": "TOP 8 mẫu laptop Dell mỏng nhẹ đáng mua nhất",
+    "link": "https://cellphones.com.vn/sforum/laptop-dell-mong-nhe",
+    "snippet": "Top các mẫu laptop Dell mỏng nhẹ đáng mua nhất · Dell Inspiron 15 3530 · Dell Vostro 3400 · Dell Inspiron 14 5415 · Dell Vostro 3510 · Dell Inspiron 15 3520 6HD73.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,88 @@
+{
+  "id": "S6b",
+  "text": "tai nghe bluetooth",
+  "parent": "S6",
+  "status": 200,
+  "ms": 17564,
+  "evidenceId": "49fd2aac-c2ea-4c71-8e30-ddfd3a6605d1",
+  "toolCalls": [
+    {
+      "tool": "search_products",
+      "args": {
+        "query": "tai nghe bluetooth"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Tai nghe Bluetooth Chụp Tai Havit H612BT Pro Tím",
+      "rating": 5,
+      "count": 67,
+      "price": 450000
+    },
+    {
+      "name": "Tai Nghe Bluetooth Soundcore R50i NC",
+      "rating": 4.9,
+      "count": 133,
+      "price": 450000
+    },
+    {
+      "name": "Tai nghe Bluetooth chụp Tai Baseus Bass BH1 NC",
+      "rating": 4.7,
+      "count": 962,
+      "price": 730000
+    },
+    {
+      "name": "Tai nghe Bluetooth thể thao Anker Soundcore V40i",
+      "rating": 4.7,
+      "count": 321,
+      "price": 990000
+    },
+    {
+      "name": "AUKEY EP-M2 Tai Nghe Bluetooth 5.3,Thiết kế Trong suốt",
+      "rating": 4.4,
+      "count": 120,
+      "price": 390000
+    },
+    {
+      "name": "Tai nghe Bluetooth Sennheiser HD 250BT",
+      "rating": 4.3,
+      "count": 194,
+      "price": 990000
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ]
+  ],
+  "prose": "[TAPPY_SHOPPING]{\"v\":1,\"entities\":[{\"key\":\"uncertain:0\",\"name\":\"Tai nghe Bluetooth Chụp Tai Havit H612BT Pro Tím\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":true,\"priceLow\":450000,\"priceHigh\":450000,\"image\":\"https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQAUVBEr5IeEgaPcdgAzNX5QXvjC_WsM6p_CfGkMWclzCM2RCalN6KwWJmNnqageY28osc2Ojhja6y3uQcUUHN72UmVFvEKABCWjbJvuod1QXdOMbaI_qirzA\",\"offers\":[{\"seller\":\"Thế Giới Di Động\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth&prds=localAnnotatedOfferId:1,productid:2547657138638920620,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":450000,\"currency\":\"VND\",\"condition\":null,\"rating\":5,\"ratingCount\":67}],\"commerce\":{\"linkId\":\"5691f2fd40b57c4c0ae03cd6\",\"requestId\":\"b861ac34-15dd-4e2c-9e51-0c9905812013\",\"providerId\":\"cellphones\",\"merchantName\":\"CellphoneS\",\"url\":\"https://cellphones.com.vn/tai-nghe-bluetooth-chup-tai-havit-h612bt-pro-anc.html\",\"depth\":3,\"guestDepth\":4,\"authRequiredAt\":\"before_checkout\",\"loginRequired\":true,\"freshnessType\":\"near_realtime\",\"expiresAt\":null,\"tracked\":false,\"capability\":\"product_purchase\",\"primary\":true,\"kind\":\"DETAIL_HANDOFF\",\"handoff\":\"merchant_login\",\"authenticatedDepth\":5,\"labelKey\":\"v3.action.purchaseLoginOn\"},\"commerceLinks\":[{\"linkId\":\"5691f2fd40b57c4c0ae03cd6\",\"requestId\":\"b861ac34-15dd-4e2c-9e51-0c9905812013\",\"providerId\":\"cellphones\",\"merchantName\":\"CellphoneS\",\"url\":\"https://cellphones.com.vn/tai-nghe-bluetooth-chup-tai-havit-h612bt-pro-anc.html\",\"depth\":3,\"guestDepth\":4,\"authRequiredAt\":\"before_checkout\",\"loginRequired\":true,\"freshnessType\":\"near_realtime\",\"expiresAt\":null,\"tracked\":false,\"capability\":\"product_purchase\",\"primary\":true,\"kind\":\"DETAIL_HANDOFF\",\"handoff\":\"merchant_login\",\"authenticatedDepth\":5,\"labelKey\":\"v3.action.purchaseLoginOn\"},{\"linkId\":\"8124c6483ba8c67513e410d0\",\"requestId\":\"b861ac34-15dd-4e2c-9e51-0c9905812013\",\"providerId\":\"shopee\",\"merchantName\":\"Shopee\",\"url\":\"https://shopee.vn/Tai-nghe-ch%E1%BB%A5p-tai-Bluetooth-Havit-LIFE-02H-H612BT-Pro-H%C3%A0ng-ch%C3%ADnh-h%C3%A3ng-i.331695868.40713882376\",\"depth\":3,\"guestDepth\":2,\"authRequiredAt\":\"before_selection\",\"loginRequired\":true,\"freshnessType\":\"static\",\"expiresAt\":null,\"tracked\":false,\"capability\":\"product_purchase\",\"primary\":true,\"kind\":\"DETAIL_HANDOFF\",\"handoff\":\"merchant_login\",\"authenticatedDepth\":5,\"labelKey\":\"v3.action.purchaseLoginOn\"}]},{\"key\":\"uncertain:1\",\"name\":\"Tai Nghe Bluetooth Soundcore R50i NC\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":450000,\"priceHigh\":450000,\"image\":\"https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSVsuH-gsQ9Kc2vvnEk6rcbGQ0LJ9Ebt4gzhUx7XGLYgC27Ym6_epnbvmtkZX4EUZ_l51qmjClJvCajCzVnEv-51sYhuTSNdUevW5yW0hOnSmB5f-VYRuel\",\"offers\":[{\"seller\":\"anker.vn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth&prds=localAnnotatedOfferId:1,catalogid:2213404791100174742,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":450000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.9,\"ratingCount\":133}]},{\"key\":\"uncertain:2\",\"name\":\"Tai nghe Bluetooth chụp Tai Baseus Bass BH1 NC\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":730000,\"priceHigh\":730000,\"image\":\"https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRGxKfdRL0NN-gDV8rSqA4NIAaKwD1E6jjoEZYh_F0gafX_v8Z7p0AaSh5SLlg9nJLoEbNwDkfrBsaosA2ZOK031HKdYcq3RT06fLmXueOtJgHsogCgwn_d\",\"offers\":[{\"seller\":\"CellphoneS\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth&prds=localAnnotatedOfferId:1,catalogid:8158148483166526636,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":730000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.7,\"ratingCount\":962}]},{\"key\":\"uncertain:3\",\"name\":\"Tai nghe Bluetooth thể thao Anker Soundcore V40i\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":990000,\"priceHigh\":990000,\"image\":\"https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTUpkDlnzSFhnBjhuCNnh8Au7snH2yqbkH5QWbwBcXKds-VrUDa4nBSB19LcGwTqwd1Qjpj__LJ37ggSWKCLgD-TuIHtd9rq6lopKV4VY9q6_hGP9xTPvZyow\",\"offers\":[{\"seller\":\"CellphoneS\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth&prds=localAnnotatedOfferId:1,catalogid:3035039747973889472,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":990000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.7,\"ratingCount\":321}]},{\"key\":\"uncertain:4\",\"name\":\"AUKEY EP-M2 Tai Nghe Bluetooth 5.3,Thiết kế Trong suốt\",\"config\":\"M2\",\"specs\":[{\"key\":\"chip\",\"value\":\"M2\"}],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":390000,\"priceHigh\":390000,\"image\":\"https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQsHMeR7iTS7JRWjA2CAx0wqEAQ8T4YVfs1Z2UFnpkd4O4o3LMHd0dOrYCX5XV0Xo-MmZUP2B3SUrM_dBP_28uBLn7nqcrGGYMVNCu2VW-QxCX544iTWJu2gA\",\"offers\":[{\"seller\":\"Aukey.com.vn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth&prds=localAnnotatedOfferId:1,productid:10394774150851299873,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":390000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.4,\"ratingCount\":120}]},{\"key\":\"uncertain:5\",\"name\":\"Tai nghe Bluetooth Sennheiser HD 250BT\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":990000,\"priceHigh\":990000,\"image\":\"https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcT-0nGaESRgH_G3L6CRiPLqisHeLeIhgiujlolKpF5a7AK_m5r8jKxW-r7ZgNjOkDJqWHpJ7IMvKd4oDn_6NkvHCyWYuWLZTsLaNwditCE\",\"offers\":[{\"seller\":\"Nguyễn Kim\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth&prds=localAnnotatedOfferId:1,catalogid:2793462633602330463,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":990000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.3,\"ratingCount\":194}]}],\"requested\":null,\"recommendation\":{\"entityKey\":\"uncertain:0\",\"seller\":\"Thế Giới Di Động\",\"reasons\":[{\"attribute\":\"rating\",\"evidence\":\"rated 5\",\"params\":{\"value\":5}},{\"attribute\":\"price\",\"evidence\":\"450000 VND\",\"params\":{\"priceVnd\":450000}},{\"attribute\":\"reviewCount\",\"evidence\":\"67 reviews\",\"params\":{\"count\":67}}],\"tradeOff\":{\"attribute\":\"reviewCount\",\"evidence\":\"133 reviews\",\"params\":{\"count\":133}},\"conditional\":true}}[/TAPPY_SHOPPING]\n\nMình tìm tai nghe Bluetooth cho bạn ngay.\n\nMình nghiêng về **Tai nghe Bluetooth Chụp Tai Havit H612BT Pro Tím** — được đánh giá 5⭐ từ 67 người dùng, giá 450.000 VND tại Thế Giới Di Động. Đây là lựa chọn tốt nhất hiện tại với chất lượng cao và giá phổ thông.\n\nNgoài ra, **Tai Nghe Bluetooth Soundcore R50i NC** cũng giá tương tự (450.000 VND) nhưng có 133 đánh giá — nếu bạn muốn chọn dựa trên số lượng review thì đây là lựa chọn thay thế tốt.\n\nNếu muốn tiết kiệm hơn, **AUKEY EP-M2** chỉ 390.000 VND, thiết kế trong suốt khá độc đáo.\n\n*Gợi ý được dựa trên đánh giá thực tế từ người dùng, không phải quảng cáo — bạn tự quyết định và mua.*\n\n\n[FOLLOWUPS]Tai nghe chụp hay nhét tai?|Pin bao lâu?|Có chống ồn không?[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "mua gì bây giờ"
+    },
+    {
+      "role": "assistant",
+      "content": "Để chọn đúng, mình cần biết:\n• Bạn muốn mua món gì?\nBạn trả lời phần nào cũng được, phần còn lại mình tự giả sử và nói rõ."
+    },
+    {
+      "role": "user",
+      "content": "tai nghe bluetooth"
+    },
+    {
+      "role": "assistant",
+      "content": "[TAPPY_SHOPPING]{\"v\":1,\"entities\":[{\"key\":\"uncertain:0\",\"name\":\"Tai nghe Bluetooth Chụp Tai Havit H612BT Pro Tím\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":true,\"priceLow\":450000,\"priceHigh\":450000,\"image\":\"https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQAUVBEr5IeEgaPcdgAzNX5QXvjC_WsM6p_CfGkMWclzCM2RCalN6KwWJmNnqageY28osc2Ojhja6y3uQcUUHN72UmVFvEKABCWjbJvuod1QXdOMbaI_qirzA\",\"offers\":[{\"seller\":\"Thế Giới Di Động\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth&prds=localAnnotatedOfferId:1,productid:2547657138638920620,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":450000,\"currency\":\"VND\",\"condition\":null,\"rating\":5,\"ratingCount\":67}],\"commerce\":{\"linkId\":\"5691f2fd40b57c4c0ae03cd6\",\"requestId\":\"b861ac34-15dd-4e2c-9e51-0c9905812013\",\"providerId\":\"cellphones\",\"merchantName\":\"CellphoneS\",\"url\":\"https://cellphones.com.vn/tai-nghe-bluetooth-chup-tai-havit-h612bt-pro-anc.html\",\"depth\":3,\"guestDepth\":4,\"authRequiredAt\":\"before_checkout\",\"loginRequired\":true,\"freshnessType\":\"near_realtime\",\"expiresAt\":null,\"tracked\":false,\"capability\":\"product_purchase\",\"primary\":true,\"kind\":\"DETAIL_HANDOFF\",\"handoff\":\"merchant_login\",\"authenticatedDepth\":5,\"labelKey\":\"v3.action.purchaseLoginOn\"},\"commerceLinks\":[{\"linkId\":\"5691f2fd40b57c4c0ae03cd6\",\"requestId\":\"b861ac34-15dd-4e2c-9e51-0c9905812013\",\"providerId\":\"cellphones\",\"merchantName\":\"CellphoneS\",\"url\":\"https://cellphones.com.vn/tai-nghe-bluetooth-chup-tai-havit-h612bt-pro-anc.html\",\"depth\":3,\"guestDepth\":4,\"authRequiredAt\":\"before_checkout\",\"loginRequired\":true,\"freshnessType\":\"near_realtime\",\"expiresAt\":null,\"tracked\":false,\"capability\":\"product_purchase\",\"primary\":true,\"kind\":\"DETAIL_HANDOFF\",\"handoff\":\"merchant_login\",\"authenticatedDepth\":5,\"labelKey\":\"v3.action.purchaseLoginOn\"},{\"linkId\":\"8124c6483ba8c67513e410d0\",\"requestId\":\"b861ac34-15dd-4e2c-9e51-0c9905812013\",\"providerId\":\"shopee\",\"merchantName\":\"Shopee\",\"url\":\"https://shopee.vn/Tai-nghe-ch%E1%BB%A5p-tai-Bluetooth-Havit-LIFE-02H-H612BT-Pro-H%C3%A0ng-ch%C3%ADnh-h%C3%A3ng-i.331695868.40713882376\",\"depth\":3,\"guestDepth\":2,\"authRequiredAt\":\"before_selection\",\"loginRequired\":true,\"freshnessType\":\"static\",\"expiresAt\":null,\"tracked\":false,\"capability\":\"product_purchase\",\"primary\":true,\"kind\":\"DETAIL_HANDOFF\",\"handoff\":\"merchant_login\",\"authenticatedDepth\":5,\"labelKey\":\"v3.action.purchaseLoginOn\"}]},{\"key\":\"uncertain:1\",\"name\":\"Tai Nghe Bluetooth Soundcore R50i NC\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":450000,\"priceHigh\":450000,\"image\":\"https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSVsuH-gsQ9Kc2vvnEk6rcbGQ0LJ9Ebt4gzhUx7XGLYgC27Ym6_epnbvmtkZX4EUZ_l51qmjClJvCajCzVnEv-51sYhuTSNdUevW5yW0hOnSmB5f-VYRuel\",\"offers\":[{\"seller\":\"anker.vn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth&prds=localAnnotatedOfferId:1,catalogid:2213404791100174742,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":450000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.9,\"ratingCount\":133}]},{\"key\":\"uncertain:2\",\"name\":\"Tai nghe Bluetooth chụp Tai Baseus Bass BH1 NC\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":730000,\"priceHigh\":730000,\"image\":\"https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRGxKfdRL0NN-gDV8rSqA4NIAaKwD1E6jjoEZYh_F0gafX_v8Z7p0AaSh5SLlg9nJLoEbNwDkfrBsaosA2ZOK031HKdYcq3RT06fLmXueOtJgHsogCgwn_d\",\"offers\":[{\"seller\":\"CellphoneS\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth&prds=localAnnotatedOfferId:1,catalogid:8158148483166526636,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":730000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.7,\"ratingCount\":962}]},{\"key\":\"uncertain:3\",\"name\":\"Tai nghe Bluetooth thể thao Anker Soundcore V40i\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":990000,\"priceHigh\":990000,\"image\":\"https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTUpkDlnzSFhnBjhuCNnh8Au7snH2yqbkH5QWbwBcXKds-VrUDa4nBSB19LcGwTqwd1Qjpj__LJ37ggSWKCLgD-TuIHtd9rq6lopKV4VY9q6_hGP9xTPvZyow\",\"offers\":[{\"seller\":\"CellphoneS\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth&prds=localAnnotatedOfferId:1,catalogid:3035039747973889472,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":990000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.7,\"ratingCount\":321}]},{\"key\":\"uncertain:4\",\"name\":\"AUKEY EP-M2 Tai Nghe Bluetooth 5.3,Thiết kế Trong suốt\",\"config\":\"M2\",\"specs\":[{\"key\":\"chip\",\"value\":\"M2\"}],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":390000,\"priceHigh\":390000,\"image\":\"https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQsHMeR7iTS7JRWjA2CAx0wqEAQ8T4YVfs1Z2UFnpkd4O4o3LMHd0dOrYCX5XV0Xo-MmZUP2B3SUrM_dBP_28uBLn7nqcrGGYMVNCu2VW-QxCX544iTWJu2gA\",\"offers\":[{\"seller\":\"Aukey.com.vn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth&prds=localAnnotatedOfferId:1,productid:10394774150851299873,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":390000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.4,\"ratingCount\":120}]},{\"key\":\"uncertain:5\",\"name\":\"Tai nghe Bluetooth Sennheiser HD 250BT\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":990000,\"priceHigh\":990000,\"image\":\"https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcT-0nGaESRgH_G3L6CRiPLqisHeLeIhgiujlolKpF5a7AK_m5r8jKxW-r7ZgNjOkDJqWHpJ7IMvKd4oDn_6NkvHCyWYuWLZTsLaNwditCE\",\"offers\":[{\"seller\":\"Nguyễn Kim\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth&prds=localAnnotatedOfferId:1,catalogid:2793462633602330463,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":990000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.3,\"ratingCount\":194}]}],\"requested\":null,\"recommendation\":{\"entityKey\":\"uncertain:0\",\"seller\":\"Thế Giới Di Động\",\"reasons\":[{\"attribute\":\"rating\",\"evidence\":\"rated 5\",\"params\":{\"value\":5}},{\"attribute\":\"price\",\"evidence\":\"450000 VND\",\"params\":{\"priceVnd\":450000}},{\"attribute\":\"reviewCount\",\"evidence\":\"67 reviews\",\"params\":{\"count\":67}}],\"tradeOff\":{\"attribute\":\"reviewCount\",\"evidence\":\"133 reviews\",\"params\":{\"count\":133}},\"conditional\":true}}[/TAPPY_SHOPPING]\n\nMình tìm tai nghe Bluetooth cho bạn ngay.\n\nMình nghiêng về **Tai nghe Bluetooth Chụp Tai Havit H612BT Pro Tím** — được đánh giá 5⭐ từ 67 người dùng, giá 450.000 VND tại Thế Giới Di Động. Đây là lựa chọn tốt nhất hiện tại với chất lượng cao và giá phổ thông.\n\nNgoài ra, **Tai Nghe Bluetooth Soundcore R50i NC** cũng giá tương tự (450.000 VND) nhưng có 133 đánh giá — nếu bạn muốn chọn dựa trên số lượng review thì đây là lựa chọn thay thế tốt.\n\nNếu muốn tiết kiệm hơn, **AUKEY EP-M2** chỉ 390.000 VND, thiết kế trong suốt khá độc đáo.\n\n*Gợi ý được dựa trên đánh giá thực tế từ người dùng, không phải quảng cáo — bạn tự quyết định và mua.*\n\n\n[FOLLOWUPS]Tai nghe chụp hay nhét tai?|Pin bao lâu?|Có chống ồn không?[/FOLLOWUPS]"
+    }
+  ]
+}

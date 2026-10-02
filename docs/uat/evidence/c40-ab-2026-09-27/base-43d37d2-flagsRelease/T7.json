@@ -1,0 +1,34 @@
+{
+  "id": "T7",
+  "text": "Vé máy bay Sài Gòn Hà Nội tuần sau rẻ nhất",
+  "parent": null,
+  "status": 200,
+  "ms": 8698,
+  "evidenceId": "5e01a997-5bb7-498f-9d70-ac08e76b77ab",
+  "toolCalls": [
+    {
+      "tool": "get_flight_prices",
+      "args": {
+        "origin": "TP HCM",
+        "destination": "Ha Noi",
+        "departDate": "2026-10-04"
+      }
+    }
+  ],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình tìm giúp bạn vé máy bay từ Sài Gòn đến Hà Nội tuần sau với giá rẻ nhất nhé.\n\nMình chưa có kết quả giá vé trực tuyến cho ngày 4/10, nhưng bạn có thể kiểm tra giá rẻ nhất qua các nền tảng đáng tin cậy:\n\n• [Trip.com](https://vn.trip.com/flights/showfarefirst?dcity=sgn&acity=han&ddate=2026-10-04&flighttype=ow&class=y&quantity=1&locale=vi-VN&curr=VND) — thường có giá cạnh tranh\n• [Traveloka](https://www.traveloka.com/vi-VN/flight/fullsearch?ap=SGN.HAN&dt=04-10-2026.null&ps=1.0.0&sc=ECONOMY) — dễ so sánh nhiều chuyến\n• [Google Flights](https://www.google.com/travel/flights?q=Flights%20from%20SGN%20to%20HAN%20on%202026-10-04) — xem xu hướng giá\n\nMẹo: Vé thường rẻ hơn vào **thứ 3-4** và các chuyến **sáng sớm hoặc chiều tối**. Bạn muốn bay ngày cụ thể nào trong tuần sau không?\n\n[FOLLOWUPS]Kiểm tra giá ngày khác|Tìm vé khứ hồi|So sánh hãng bay[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Vé máy bay Sài Gòn Hà Nội tuần sau rẻ nhất"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm giúp bạn vé máy bay từ Sài Gòn đến Hà Nội tuần sau với giá rẻ nhất nhé.\n\nMình chưa có kết quả giá vé trực tuyến cho ngày 4/10, nhưng bạn có thể kiểm tra giá rẻ nhất qua các nền tảng đáng tin cậy:\n\n• [Trip.com](https://vn.trip.com/flights/showfarefirst?dcity=sgn&acity=han&ddate=2026-10-04&flighttype=ow&class=y&quantity=1&locale=vi-VN&curr=VND) — thường có giá cạnh tranh\n• [Traveloka](https://www.traveloka.com/vi-VN/flight/fullsearch?ap=SGN.HAN&dt=04-10-2026.null&ps=1.0.0&sc=ECONOMY) — dễ so sánh nhiều chuyến\n• [Google Flights](https://www.google.com/travel/flights?q=Flights%20from%20SGN%20to%20HAN%20on%202026-10-04) — xem xu hướng giá\n\nMẹo: Vé thường rẻ hơn vào **thứ 3-4** và các chuyến **sáng sớm hoặc chiều tối**. Bạn muốn bay ngày cụ thể nào trong tuần sau không?\n\n[FOLLOWUPS]Kiểm tra giá ngày khác|Tìm vé khứ hồi|So sánh hãng bay[/FOLLOWUPS]"
+    }
+  ]
+}

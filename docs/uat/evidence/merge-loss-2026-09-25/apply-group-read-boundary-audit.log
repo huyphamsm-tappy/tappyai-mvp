@@ -1,0 +1,5 @@
+PRE-FLIGHT CHECK 2: the running app (.env.local of g1-place-guard) points at zdaprdfgpbpnxyofagmc = AUDIT (non-prod). Applying 20260904_group_read_boundary.sql in one transaction.
+BEFORE: ["group_members.Anyone can read group members {public} SELECT","group_members.group_members_delete_self {authenticated} DELETE","group_members.group_members_insert_self {authenticated} INSERT","groups.Anyone can read groups {public} SELECT","groups.Creators manage own groups {public} ALL"]
+APPLIED
+AFTER : ["group_members.group_members_delete_self {authenticated} DELETE","group_members.group_members_insert_self {authenticated} INSERT","group_members.group_members_select_participant {authenticated} SELECT","groups.Creators manage own groups {public} ALL","groups.groups_select_participant {authenticated} SELECT"]
+fn grants: [{"grantee":"authenticated","privilege_type":"EXECUTE"},{"grantee":"postgres","privilege_type":"EXECUTE"},{"grantee":"service_role","privilege_type":"EXECUTE"}]

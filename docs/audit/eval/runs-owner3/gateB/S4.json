@@ -1,0 +1,237 @@
+{
+  "id": "S4",
+  "text": "Robot hút bụi cho nhà có chó, tầm 5-7 triệu",
+  "parent": null,
+  "status": 200,
+  "ms": 25545,
+  "evidenceId": "39435cb7-cb98-4987-96dc-de8e0cbdba7e",
+  "toolCalls": [
+    {
+      "tool": "search_products",
+      "args": {
+        "query": "robot hút bụi nhà có chó 5 triệu 7 triệu"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "thắc mắc - Có nên mua robot hút bụi giá rẻ tầm 1 triệu?"
+    },
+    {
+      "name": "Top 5 robot hút bụi giá rẻ chỉ từ 3 triệu đồng đáng mua ..."
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "[TAPPY_SHOPPING]{\"v\":1,\"entities\":[],\"requested\":null,\"recommendation\":{\"entityKey\":null,\"seller\":\"Eco-Mart Siêu Thị Điện Máy\",\"reasons\":[{\"attribute\":\"rating\",\"evidence\":\"rated 4.7\",\"params\":{\"value\":4.7}},{\"attribute\":\"price\",\"evidence\":\"4990000 VND\",\"params\":{\"priceVnd\":4990000}},{\"attribute\":\"reviewCount\",\"evidence\":\"52 reviews\",\"params\":{\"count\":52}}],\"tradeOff\":{\"attribute\":\"rating\",\"evidence\":\"rated 5\",\"params\":{\"value\":5}},\"conditional\":true}}[/TAPPY_SHOPPING]\n\nMình chọn **Roborock Q7 Pro Max** (4.990.000 ₫) — đây là lựa chọn tốt nhất cho nhà có chó trong tầm giá của bạn. Robot này có lực hút mạnh, và thiết kế tốt để xử lý lông chó. Được đánh giá 4.7⭐ từ 52 người dùng trên Google Maps.\n\nNếu muốn chọn khác, **BlueStone RVB-9731** (5.800.000 ₫) cũng tốt với rating 5⭐, nhưng ít review hơn nên bằng chứng yếu hơn.\n\nLưu ý: Với nhà có chó, bạn nên chọn robot có lực hút ≥2000Pa, thùng chứa dễ vệ sinh, và hỗ trợ lên lịch tự động để hút thường xuyên. Cả hai mẫu trên đều đáp ứng điều kiện này.\n\nBạn có muốn xem thêm chi tiết hoặc so sánh với các mẫu khác không?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛒 Tìm trên Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=Roborock+Q7+Pro+Max\",\"primary\":true},{\"label\":\"📦 Tìm trên Lazada\",\"type\":\"search\",\"url\":\"https://www.lazada.vn/catalog/?q=Roborock+Q7+Pro+Max\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]So sánh Roborock vs Ecovacs|Robot hút bụi lau nhà tốt hơn|Cách chọn robot cho nhà có thú cưng[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Robot hút bụi cho nhà có chó, tầm 5-7 triệu"
+    },
+    {
+      "role": "assistant",
+      "content": "[TAPPY_SHOPPING]{\"v\":1,\"entities\":[],\"requested\":null,\"recommendation\":{\"entityKey\":null,\"seller\":\"Eco-Mart Siêu Thị Điện Máy\",\"reasons\":[{\"attribute\":\"rating\",\"evidence\":\"rated 4.7\",\"params\":{\"value\":4.7}},{\"attribute\":\"price\",\"evidence\":\"4990000 VND\",\"params\":{\"priceVnd\":4990000}},{\"attribute\":\"reviewCount\",\"evidence\":\"52 reviews\",\"params\":{\"count\":52}}],\"tradeOff\":{\"attribute\":\"rating\",\"evidence\":\"rated 5\",\"params\":{\"value\":5}},\"conditional\":true}}[/TAPPY_SHOPPING]\n\nMình chọn **Roborock Q7 Pro Max** (4.990.000 ₫) — đây là lựa chọn tốt nhất cho nhà có chó trong tầm giá của bạn. Robot này có lực hút mạnh, và thiết kế tốt để xử lý lông chó. Được đánh giá 4.7⭐ từ 52 người dùng trên Google Maps.\n\nNếu muốn chọn khác, **BlueStone RVB-9731** (5.800.000 ₫) cũng tốt với rating 5⭐, nhưng ít review hơn nên bằng chứng yếu hơn.\n\nLưu ý: Với nhà có chó, bạn nên chọn robot có lực hút ≥2000Pa, thùng chứa dễ vệ sinh, và hỗ trợ lên lịch tự động để hút thường xuyên. Cả hai mẫu trên đều đáp ứng điều kiện này.\n\nBạn có muốn xem thêm chi tiết hoặc so sánh với các mẫu khác không?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛒 Tìm trên Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=Roborock+Q7+Pro+Max\",\"primary\":true},{\"label\":\"📦 Tìm trên Lazada\",\"type\":\"search\",\"url\":\"https://www.lazada.vn/catalog/?q=Roborock+Q7+Pro+Max\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]So sánh Roborock vs Ecovacs|Robot hút bụi lau nhà tốt hơn|Cách chọn robot cho nhà có thú cưng[/FOLLOWUPS]"
+    }
+  ],
+  "toolResults": [
+    {
+      "query": "robot hút bụi nhà có chó 5 triệu 7 triệu",
+      "source": "Google Search (Serper)",
+      "search_results": [
+        {
+          "title": "thắc mắc - Có nên mua robot hút bụi giá rẻ tầm 1 triệu?",
+          "link": "https://voz.vn/t/co-nen-mua-robot-hut-bui-gia-re-tam-1-trieu.183455/",
+          "snippet": "Ko biết các bác sao, em xài 1 thời gian dẹp luôn. Nếu nhà các bác gọn gàng, rộng rãi, ít bụi, cũng như ko có em bé, chó mèo thì ok, còn lại thì ...",
+          "has_purchase": true,
+          "has_photo": true
+        },
+        {
+          "title": "Top 5 robot hút bụi giá rẻ chỉ từ 3 triệu đồng đáng mua ...",
+          "link": "https://www.finhay.com.vn/robot-hut-bui-gia-re",
+          "snippet": "Ecovacs Deebot U2 Pro (Tầm giá ~3 – 4 triệu). Nếu nhà bạn nuôi chó mèo, đây là lựa chọn số 1 trong tầm giá mà không đối thủ nào qua mặt được.",
+          "has_purchase": true,
+          "has_photo": true
+        }
+      ],
+      "shopping_results": [
+        {
+          "title": "Robot hút bụi lau nhà Roborock Q7 Pro Max",
+          "link": "https://www.google.com/search?ibp=oshop&q=robot+h%C3%BAt+b%E1%BB%A5i+nh%C3%A0+c%C3%B3+ch%C3%B3+5+tri%E1%BB%87u+7+tri%E1%BB%87u+*+*+*+*&prds=localAnnotatedOfferId:1,catalogid:9430940422767565225,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "source": "Eco-Mart Siêu Thị Điện Máy",
+          "price": 4990000,
+          "priceText": "4.990.000 ₫",
+          "productId": "9430940422767565225",
+          "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSdl1ErfNy19p0oAUszr_aG6a2K_z4Ibd9GJlKfFrXoxrX43uCIf-Ho85xvTVSCYX2gvmV33NM5kQe6sJlwCvIjIhWokJ2eGVnN-g2lbYto7FUPZjurh3Mx",
+          "rating": 4.7,
+          "ratingCount": 52,
+          "position": 4
+        },
+        {
+          "title": "Robot Hút Bụi BlueStone RVB-9731",
+          "link": "https://www.google.com/search?ibp=oshop&q=robot+h%C3%BAt+b%E1%BB%A5i+nh%C3%A0+c%C3%B3+ch%C3%B3+5+tri%E1%BB%87u+7+tri%E1%BB%87u+*+*+*+*&prds=localAnnotatedOfferId:1,catalogid:1063786216252243540,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "source": "VietMart thegioidodung.vn",
+          "price": 5800000,
+          "priceText": "5.800.000 ₫",
+          "productId": "1063786216252243540",
+          "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQq6BWaU1Ppk4SdQFgxWUR0YvPiUXcfSpHjNkkI52xxA7MVjGZURdoNwTxKGVR4YBnnjAHSR4ySlshrkbzMlZtu8Z0pmLaijzPHd135OHvCp-afxQ8lNsC0bA",
+          "rating": 5,
+          "ratingCount": 2,
+          "position": 7
+        },
+        {
+          "title": "Robot hút bụi lau nhà Roborock Q7TF52-00",
+          "link": "https://www.google.com/search?ibp=oshop&q=robot+h%C3%BAt+b%E1%BB%A5i+nh%C3%A0+c%C3%B3+ch%C3%B3+5+tri%E1%BB%87u+7+tri%E1%BB%87u+*+*+*+*&prds=localAnnotatedOfferId:1,productid:16775896300607618392,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "source": "KingShop.vn",
+          "price": 4390000,
+          "priceText": "4.390.000 ₫",
+          "productId": "16775896300607618392",
+          "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQk3kZdTibTgXByYaWBHEhAodjPljwDm9cM_zjkxVebMDe-gY86n8gNCPjU_ga_3-fZiYqGBZTiVH0yg5sMm0fD3cijQzOEydL5LqgG5CS517NNncIZP9bH8vM",
+          "rating": 4.3,
+          "ratingCount": 707,
+          "position": 22
+        },
+        {
+          "title": "Ecovacs Deebot 710",
+          "link": "https://www.google.com/search?ibp=oshop&q=robot+h%C3%BAt+b%E1%BB%A5i+nh%C3%A0+c%C3%B3+ch%C3%B3+5+tri%E1%BB%87u+7+tri%E1%BB%87u+*+*+*+*&prds=localAnnotatedOfferId:1,catalogid:11472631826129357976,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "source": "boba.vn",
+          "price": 5900000,
+          "priceText": "5.900.000 ₫",
+          "productId": "11472631826129357976",
+          "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRR_RrLYBJWAzjqOQF-Bj1UeL2h4PdvdigzfvYsEeO1b6ZU0Nwojy4zdkA31ISzp9XGfVI-1tMGV082IRdeq-kjn6oxFrHIJ2Yk69aN9ba1PfzPWGPz2odg",
+          "rating": 4.6,
+          "ratingCount": 45,
+          "position": 19
+        },
+        {
+          "title": "Robot hút bụi Takdir V3-1s VC",
+          "link": "https://www.google.com/search?ibp=oshop&q=robot+h%C3%BAt+b%E1%BB%A5i+nh%C3%A0+c%C3%B3+ch%C3%B3+5+tri%E1%BB%87u+7+tri%E1%BB%87u+*+*+*+*&prds=localAnnotatedOfferId:1,productid:15736379873697475960,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "source": "Fptshop.com.vn",
+          "price": 1490000,
+          "priceText": "1.490.000 ₫",
+          "productId": "15736379873697475960",
+          "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTkVuctpo3l7SX9GWo_F2W81UoJTr-yO0jJmkyW4-GU0vEyA5OJaEj_myB8CMU1F6EeRdJPFMbijRKdVuiismNi5RQn1Wljr-uzHWSwnduK5XpsRMBc8n50",
+          "position": 14
+        },
+        {
+          "title": "Robot hút bụi lau nhà Xiaomi Vacuum E5 - Đen",
+          "link": "https://www.google.com/search?ibp=oshop&q=robot+h%C3%BAt+b%E1%BB%A5i+nh%C3%A0+c%C3%B3+ch%C3%B3+5+tri%E1%BB%87u+7+tri%E1%BB%87u+*+*+*+*&prds=localAnnotatedOfferId:1,productid:13194320422985967791,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "source": "Kho Điện Máy SGT",
+          "price": 1590000,
+          "priceText": "1.590.000 ₫",
+          "productId": "13194320422985967791",
+          "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQZOmsVrEZZ5iJWIezxFYmD8PTAUhF4y9aO1mw8LBzvKF_cQaP8t5gZU9Q23XQbh9zKrE1w3hLci8Ze15xTMdDWxqvcM2MAyVVDGB1QrXcvUDoZqzcb6qUriw",
+          "position": 27
+        }
+      ],
+      "shop_info_results": [
+        {
+          "title": "[Review] Robot hút bụi lau nhà Hi cả nhà",
+          "link": "https://www.facebook.com/groups/groupyeubep/posts/1440488593001958/",
+          "snippet": "Nhà mình 2 tầng, diện tích mỗi tầng tầm 75m2, đồ đạc cũng khá nhiều. Em robot mình chọn là deebot T9 mua hàng chính hãng trên lazada mall. Mình ..."
+        },
+        {
+          "title": "Có 10 triệu trong tay, bạn theo phe máy cầm tay để dọn ngay ...",
+          "link": "https://www.facebook.com/VietnamRoborock/videos/-c%C3%B3-10-tri%E1%BB%87u-trong-tay-b%E1%BA%A1n-theo-phe-m%C3%A1y-c%E1%BA%A7m-tay-%C4%91%E1%BB%83-d%E1%BB%8Dn-ngay-hay-phe-robot-h%C3%BAt-b%E1%BB%A5/1893827974630884/",
+          "snippet": "Có 10 triệu trong tay, bạn theo phe máy cầm tay để dọn ngay, hay phe robot hút bụi để nhàn nhã mỗi ngày? Dù chỉ là một cuộc tranh luận ..."
+        },
+        {
+          "title": "HỘI NGƯỜI DÙNG ROBOT HÚT BỤI - ECOVACS, XIAOMI, ...",
+          "link": "https://www.facebook.com/groups/1141486105889203/",
+          "snippet": "Đây là cộng đồng dành cho những ai đang sử dụng hoặc quan tâm đến robot hút bụi thuộc các thương hiệu phổ biến như: Ecovacs, Xiaomi, Dreame, Roborock,..."
+        },
+        {
+          "title": "Top 5 robot hút bụi giá rẻ chỉ từ 3 triệu đồng đáng mua ...",
+          "link": "https://www.finhay.com.vn/robot-hut-bui-gia-re",
+          "snippet": "Xiaomi Robot Vacuum E10 (Tầm giá ~3.5 triệu) · Ecovacs Deebot U2 Pro (Tầm giá ~3 – 4 triệu) · Dreame F9 (Tầm giá ~4 triệu) · Xiaomi Vacuum S10 (Tầm ..."
+        },
+        {
+          "title": "Thực hư về những sản phẩm robot hút bụi, lau nhà mini với ...",
+          "link": "https://www.facebook.com/tintucvtv9/videos/c%E1%BA%A9n-tr%E1%BB%8Dng-v%E1%BB%9Bi-s%E1%BA%A3n-ph%E1%BA%A9m-robot-h%C3%BAt-b%E1%BB%A5i-gi%C3%A1-si%C3%AAu-r%E1%BA%BB/698611694219952/?locale=pl_PL",
+          "snippet": "Thực hư về những sản phẩm robot hút bụi, lau nhà mini với giá siêu rẻ, chỉ khoảng vài trăm ngàn đồng."
+        },
+        {
+          "title": "Hội Chia Sẻ Kinh Nghiệm Sử Dụng Robot Hút Bụi Lau Nhà !",
+          "link": "https://www.facebook.com/groups/RobotHutBuiLauNhaKazamart/?locale=vi_VN",
+          "snippet": "✓ Hoạt động êm ái, bền bỉ ✓ Sử dụng dễ dàng ➡️➡️Các tính năng chính của Robot hút bụi: ✓ Chế độ làm sạch: Bao gồm chế độ làm sạch chung, chế độ lịch ..."
+        }
+      ],
+      "links": [
+        {
+          "name": "Shopee",
+          "url": "https://shopee.vn/search?keyword=robot%20h%C3%BAt%20b%E1%BB%A5i%20nh%C3%A0%20c%C3%B3%20ch%C3%B3%205%20tri%E1%BB%87u%207%20tri%E1%BB%87u"
+        },
+        {
+          "name": "Lazada",
+          "url": "https://www.lazada.vn/catalog/?q=robot%20h%C3%BAt%20b%E1%BB%A5i%20nh%C3%A0%20c%C3%B3%20ch%C3%B3%205%20tri%E1%BB%87u%207%20tri%E1%BB%87u"
+        }
+      ],
+      "note": "Gia tham khao tu ket qua tim kiem hien tai, co the da thay doi theo thoi gian va phien ban san pham - bam link de xem gia chinh xac va mua hang.",
+      "_tappy_total_found": 16,
+      "_tappy_ranking": {
+        "pick": "Robot hút bụi lau nhà Roborock Q7 Pro Max",
+        "decided_by": [
+          {
+            "attribute": "rating",
+            "evidence": "rated 4.7 - Robot Hút Bụi BlueStone RVB-9731: rated 5 (KHONG duoc goi pick la \"nhat\" o rating)"
+          },
+          {
+            "attribute": "price",
+            "evidence": "4990000 VND"
+          },
+          {
+            "attribute": "reviewCount",
+            "evidence": "52 reviews"
+          }
+        ],
+        "not_chosen": "Robot Hút Bụi BlueStone RVB-9731",
+        "not_chosen_leads_on": {
+          "attribute": "rating",
+          "evidence": "rated 5"
+        },
+        "conditional": true
+      },
+      "_tappy_synthesis": {
+        "ban_hoi": null,
+        "nhom_san_pham": [],
+        "de_xuat": {
+          "noi_ban": "Eco-Mart Siêu Thị Điện Máy",
+          "ly_do": [
+            {
+              "attribute": "rating",
+              "evidence": "rated 4.7",
+              "params": {
+                "value": 4.7
+              }
+            },
+            {
+              "attribute": "price",
+              "evidence": "4990000 VND",
+              "params": {
+                "priceVnd": 4990000
+              }
+            },
+            {
+              "attribute": "reviewCount",
+              "evidence": "52 reviews",
+              "params": {
+                "count": 52
+              }
+            }
+          ],
+          "danh_doi": {
+            "attribute": "rating",
+            "evidence": "rated 5",
+            "params": {
+              "value": 5
+            }
+          },
+          "nghieng_ve": true
+        }
+      }
+    }
+  ],
+  "frames8Raw": []
+}

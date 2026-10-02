@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Grand\" Da Nang site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T19:20:06.815Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Grand\" Da Nang site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Sheraton Grand Danang Beach Resort & SPA",
+    "link": "https://vn.trip.com/hotels/da-nang-hotel-detail-15691333/sheraton-grand-danang-beach-resort-spa/",
+    "snippet": "Có, Sheraton Grand Danang Beach Resort & SPA phục vụ bữa sáng được đánh giá cao. Các lựa chọn bữa sáng: Kiểu Âu, Trung Hoa, Nhật Bản, Châu Mỹ, Châu Á, Kiểu lục ...",
+    "position": 1
+   },
+   {
+    "title": "Khách sạn Mường Thanh Grand Đà Nẵng - Giá cả và Ưu ...",
+    "link": "https://vn.trip.com/hotels/da-nang-hotel-detail-1470374/muong-thanh-grand-da-nang-hotel/",
+    "snippet": "Khách sạn Mường Thanh Grand Đà Nẵng · Bữa sáng đa dạng · Vị trí lý tưởng · Chỗ đậu xe miễn phí · Có dịch vụ đón tại sân bay.",
+    "position": 2
+   },
+   {
+    "title": "Các đánh giá Khách sạn Mường Thanh Grand Đà Nẵng",
+    "link": "https://vn.trip.com/hotels/da-nang-hotel-detail-1470374/muong-thanh-grand-da-nang-hotel/review.html",
+    "snippet": "Khám phá đánh giá Khách sạn Mường Thanh Grand Đà Nẵng thực tế từ khách du lịch. Với 178 đánh giá đã được xác thực và xếp hạng 7.4/10, bạn có thể đặt phòng ...",
+    "position": 3
+   },
+   {
+    "title": "Menora Grand Da Nang - Xem 166 Ảnh & Đánh giá",
+    "link": "https://vn.trip.com/hotels/da-nang-hotel-detail-91239077/menora-grand-da-nang/photo.html",
+    "snippet": "Khám phá 166 ảnh của Menora Grand Da Nang, bao gồm phòng ốc, tiện nghi, cơ sở vật chất và khu vực xung quanh. Sử dụng hình ảnh khách sạn thực tế để hiểu rõ ...",
+    "position": 4
+   },
+   {
+    "title": "Grand Citiview Da Nang Hotel - Giá cả và Ưu đãi 2026, Đà ...",
+    "link": "https://vn.trip.com/hotels/da-nang-hotel-detail-26439376/grand-cititel-danang-hotel/",
+    "snippet": "Grand Citiview Da Nang Hotel · Có dịch vụ đón tại sân bay · Phong cảnh tuyệt vời · Vị trí lý tưởng · Bữa sáng ngon miệng.",
+    "position": 5
+   },
+   {
+    "title": "Khách Sạn Cordial Grand - Giá cả và Ưu đãi 2026, Đà Nẵng",
+    "link": "https://vn.trip.com/hotels/da-nang-hotel-detail-96260410/cordial-grand-hotel-da-nang-beach/",
+    "snippet": "Khách Sạn Cordial Grand · Có dịch vụ đón tại sân bay · Vị trí lý tưởng · Nhiều hoạt động · Chỗ đậu xe miễn phí.",
+    "position": 6
+   },
+   {
+    "title": "Sheraton Grand Danang Beach Resort & SPA - Khách sạn",
+    "link": "https://vn.trip.com/hotels/da-nang-hotel-detail-15691333/sheraton-grand-danang-beach-resort-spa/photo.html",
+    "snippet": "Khám phá 202 ảnh của Sheraton Grand Danang Beach Resort & SPA, bao gồm phòng ốc, tiện nghi, cơ sở vật chất và khu vực xung quanh. Sử dụng hình ảnh khách sạn ...",
+    "position": 7
+   },
+   {
+    "title": "Các đánh giá Khách sạn Golden Lotus Grand",
+    "link": "https://vn.trip.com/hotels/da-nang-hotel-detail-98394089/golden-lotus-grand-da-nang-panoramic-rooftop-bar-daily-afternoon-tea/review.html",
+    "snippet": "Khám phá đánh giá Khách sạn Golden Lotus Grand - Panoramic Rooftop Bar & Daily Afternoon Tea thực tế từ khách du lịch. Với 73 đánh giá đã được xác thực và ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

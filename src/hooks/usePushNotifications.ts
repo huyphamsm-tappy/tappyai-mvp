@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback, useRef } from 'react'
 import { playTappyChime } from '@/lib/notifications/chime'
 import { createClient } from '@/lib/supabase/client'
 import { reconcilePushIdentity } from '@/lib/notifications/pushIdentity'
+import { readNotificationPreference } from '@/lib/notifications/preference'
 
 function urlBase64ToUint8Array(base64String: string): Uint8Array {
   const padding = '='.repeat((4 - (base64String.length % 4)) % 4)
@@ -84,7 +85,8 @@ export function usePushNotifications() {
     const handler = (event: MessageEvent) => {
       // The message is a trigger, not data: it says an identity notification arrived and carries
       // nothing from it. playTappyChime takes no arguments, so there is nothing to pass anyway.
-      if (event.data?.type === 'TAPPY_IDENTITY') playTappyChime()
+      // Silent while Tappy notifications are switched off (`lib/notifications/preference.ts`).
+      if (event.data?.type === 'TAPPY_IDENTITY' && readNotificationPreference()) playTappyChime()
     }
     navigator.serviceWorker.addEventListener('message', handler)
     return () => navigator.serviceWorker.removeEventListener('message', handler)

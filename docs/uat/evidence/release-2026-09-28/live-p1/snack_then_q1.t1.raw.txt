@@ -1,0 +1,2 @@
+0:"Để chọn đúng, mình cần biết:\n• Bạn muốn mua món gì?\nBạn trả lời phần nào cũng được, phần còn lại mình tự giả sử và nói rõ."
+d:{"finishReason":"stop","usage":{"promptTokens":0,"completionTokens":0}}

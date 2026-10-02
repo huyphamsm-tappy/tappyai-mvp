@@ -1,0 +1,170 @@
+{
+  "id": "F3",
+  "text": "Đi date với gấu tối nay, chỗ nào lãng mạn yên tĩnh ở Quận 3?",
+  "parent": null,
+  "status": 200,
+  "ms": 12638,
+  "evidenceId": "64b2de55-c176-4105-acfc-782462e0a2d3",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "quán ăn lãng mạn yên tĩnh Quận 3",
+        "location": "Quận 3, TP HCM",
+        "type": "restaurant"
+      }
+    },
+    {
+      "tool": "get_weather",
+      "args": {
+        "location": "TP HCM"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Padme Chay",
+      "rating": 4.9,
+      "count": 1644,
+      "hours": "10:00–22:00",
+      "distance_km": 2.3,
+      "address": "290/28 Nam Kỳ Khởi Nghĩa, Quận 3, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Hoa Túc Saigon",
+      "rating": 4.8,
+      "count": 483,
+      "hours": "11:00–22:00",
+      "distance_km": 1.2,
+      "address": "29 Ngô Thời Nhiệm, Xuân Hòa, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Trạm Hầm Quận 3",
+      "rating": 4.9,
+      "count": 1687,
+      "hours": "17:00–23:00",
+      "distance_km": 3.8,
+      "address": "540/17 Cách Mạng Tháng Tám, Nhiêu Lộc, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "casa FONTANA",
+      "rating": 4.9,
+      "count": 53,
+      "hours": "11:00–22:00",
+      "distance_km": 2.1,
+      "address": "280 Nam Kỳ Khởi Nghĩa, Ward 8, Quận 3, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Quán ăn ngon Sài Gòn",
+      "rating": 4.1,
+      "count": 1156,
+      "hours": "08:00–22:30",
+      "distance_km": 0.4,
+      "address": "138 Nam Kỳ Khởi Nghĩa, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Nhà Hàng Lúa Về | Nhà Hàng Hải Sản Ngon Quận 3 |Quán Nhậu Ngon Trường Sa",
+      "rating": 4.5,
+      "count": 35,
+      "hours": "10:00–02:00",
+      "distance_km": 2.3,
+      "address": "812 Trường Sa, Nhiêu Lộc, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Ẩm Thực Quê Nhà Quận 3",
+      "rating": 4,
+      "count": 2441,
+      "hours": "09:00–23:00",
+      "distance_km": 1.1,
+      "address": "28 Phạm Ngọc Thạch, Xuân Hòa, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Quán Ăn Mây Bốn Phương",
+      "rating": 4.1,
+      "count": 435,
+      "hours": "11:00–14:00, 16:00–22:00",
+      "distance_km": 2,
+      "address": "132/6 Vườn Chuối, 6 Đ. Vườn Chuối, Bàn Cờ, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Tiệm cơm, cafe Hoa Giấy",
+      "rating": 4,
+      "count": 547,
+      "hours": "07:00–22:00",
+      "distance_km": 1.9,
+      "address": "19 Huỳnh Tịnh Của, Xuân Hòa, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Nhà Hàng 939 Hòn Chồng",
+      "rating": 4,
+      "count": 1625,
+      "hours": "09:00–23:30",
+      "distance_km": 3,
+      "address": "927 Hoàng Sa, Nhiêu Lộc, Hồ Chí Minh, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "Padme Chay",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 1644,
+        "distance_km": 2.3,
+        "open_now": true,
+        "opening_hours": "10:00–22:00"
+      }
+    },
+    {
+      "name": "Hoa Túc Saigon",
+      "role": null,
+      "evidence": {
+        "rating": 4.8,
+        "reviews": 483,
+        "distance_km": 1.2,
+        "open_now": true,
+        "opening_hours": "11:00–22:00"
+      }
+    },
+    {
+      "name": "Trạm Hầm Quận 3",
+      "role": null,
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 1687,
+        "distance_km": 3.8,
+        "open_now": true,
+        "opening_hours": "17:00–23:00"
+      }
+    }
+  ],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình sẽ tìm những quán ăn lãng mạn yên tĩnh ở Quận 3 cho bạn nhé! 🌙\n\nMình chọn **Padme Chay** cho bạn! 🌿 Quán có không khí yên tĩnh, lãng mạn với rating **4.9⭐ (1.644 đánh giá Google Maps)**, cách bạn khoảng 2.3km, mở cửa đến 22:00 hôm nay. Đây là nhà hàng chay với menu tinh tế, phù hợp cho một buổi tối lãng mạn.\n\nNgoài ra, **Hoa Túc Saigon** cũng là lựa chọn tuyệt vời — gần hơn (1.2km), rating 4.8⭐, không khí ấm cúng, mở đến 22:00.\n\n**Lưu ý thời tiết:** Hôm nay có mưa nhẹ, nên mang theo ô hoặc chọn quán có không gian trong nhà yên tĩnh. 🌧️\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem Padme Chay trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=2542551492682746290\",\"primary\":true},{\"label\":\"📍 Xem Hoa Túc Saigon trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=15232113852516085210\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Đặt bàn trước không?|Thích ăn gì?|Cần gợi ý quán khác?[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Đi date với gấu tối nay, chỗ nào lãng mạn yên tĩnh ở Quận 3?"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình sẽ tìm những quán ăn lãng mạn yên tĩnh ở Quận 3 cho bạn nhé! 🌙\n\nMình chọn **Padme Chay** cho bạn! 🌿 Quán có không khí yên tĩnh, lãng mạn với rating **4.9⭐ (1.644 đánh giá Google Maps)**, cách bạn khoảng 2.3km, mở cửa đến 22:00 hôm nay. Đây là nhà hàng chay với menu tinh tế, phù hợp cho một buổi tối lãng mạn.\n\nNgoài ra, **Hoa Túc Saigon** cũng là lựa chọn tuyệt vời — gần hơn (1.2km), rating 4.8⭐, không khí ấm cúng, mở đến 22:00.\n\n**Lưu ý thời tiết:** Hôm nay có mưa nhẹ, nên mang theo ô hoặc chọn quán có không gian trong nhà yên tĩnh. 🌧️\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem Padme Chay trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=2542551492682746290\",\"primary\":true},{\"label\":\"📍 Xem Hoa Túc Saigon trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=15232113852516085210\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Đặt bàn trước không?|Thích ăn gì?|Cần gợi ý quán khác?[/FOLLOWUPS]"
+    }
+  ]
+}

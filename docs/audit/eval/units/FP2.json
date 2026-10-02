@@ -1,0 +1,28 @@
+{
+  "id": "FP2",
+  "text": "đặt mua đặc sản khô bò Đà Lạt online loại ngon",
+  "vertical": "food",
+  "unit": "PRODUCT",
+  "parent": null,
+  "surface": "web",
+  "status": 200,
+  "ttfb": 290,
+  "ms": 291,
+  "evidenceId": "fbb9b2d1-ee16-4819-9450-f192e1989cee",
+  "toolCalls": [],
+  "toolResults": [],
+  "frames8": [],
+  "prose": "Để chọn đúng, mình cần biết:\n• Bạn muốn mua món gì?\nBạn trả lời phần nào cũng được, phần còn lại mình tự giả sử và nói rõ.",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "đặt mua đặc sản khô bò Đà Lạt online loại ngon"
+    },
+    {
+      "role": "assistant",
+      "content": "Để chọn đúng, mình cần biết:\n• Bạn muốn mua món gì?\nBạn trả lời phần nào cũng được, phần còn lại mình tự giả sử và nói rõ."
+    }
+  ],
+  "at": "2026-09-20T06:25:33.055Z"
+}

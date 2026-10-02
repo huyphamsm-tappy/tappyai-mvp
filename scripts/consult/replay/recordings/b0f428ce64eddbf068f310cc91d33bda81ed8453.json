@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Khách sạn Mường Thanh Luxury Đà Nẵng\" OR \"Nhu Minh Plaza Danang Hotel\" OR \"Hanami Hotel Danang\" Đà Nẵng site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T00:41:37.602Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Khách sạn Mường Thanh Luxury Đà Nẵng\" OR \"Nhu Minh Plaza Danang Hotel\" OR \"Hanami Hotel Danang\" Đà Nẵng site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Khách sạn Mường Thanh Luxury Đà Nẵng: Đáng giá không?",
+    "link": "https://www.tiktok.com/@wikidulich.com/video/7527881669731159314",
+    "snippet": "Khách sạn Mường Thanh Luxury Đà Nẵng: Đáng giá không? Khách sạn Mường Thanh Luxury Đà Nẵng có đầy đủ tiện nghi, vị trí sát biển, nhưng có thật ...",
+    "position": 1
+   },
+   {
+    "title": "Khám Phá Khách Sạn Mường Thanh Luxury Đà Nẵng",
+    "link": "https://www.tiktok.com/@muongthanhhospitality/video/7268295488397511941",
+    "snippet": "Video TikTok từ Mường Thanh Hospitality (@muongthanhhospitality): \"Khách sạn Mường Thanh Luxury Đà Nẵng có những góc check-in tuyệt đẹp.",
+    "position": 2
+   },
+   {
+    "title": "Chiếc clip review chất lượng về khách sạn @Mường ...",
+    "link": "https://www.tiktok.com/@muongthanhhospitality/video/7269409491844631813",
+    "snippet": "hạng phòng Cao nhất của khách sạn Mường Thanh Luxury. Đà Nẵng căn này siêu rộng. nằm ở tầng 37 và xung quanh toàn là kính. nhìn Ra biển hết luôn ...",
+    "position": 3
+   },
+   {
+    "title": "Nhu Minh Plaza Danang hotel (@nmpdananghotel)",
+    "link": "https://www.tiktok.com/@nmpdananghotel",
+    "snippet": "Nhu Minh Plaza Danang hotel · @nmpdananghotel · Phòng khách sạn biển - sảnh sự kiện 4 ⭐️ 0947.04.00.11 41 Phạm Văn Đồng, Tp Đà Nẵng.",
+    "position": 4
+   },
+   {
+    "title": "Khách Sạn Mường Thanh Luxury Đà Nẵng",
+    "link": "https://www.tiktok.com/@maitructhanh1/video/7391360870858722578",
+    "snippet": "Khám phá trải nghiệm tuyệt vời tại Khách Sạn Mường Thanh Luxury Đà Nẵng và đánh giá chân thực về dịch vụ, phòng làm việc, hồ bơi và nhân viên. # ...",
+    "position": 5
+   },
+   {
+    "title": "[Room tour] Superior Twin - khách sạn gần biển Mỹ Khê ...",
+    "link": "https://www.tiktok.com/@nmpdananghotel/video/7433283679100751112",
+    "snippet": "Video TikTok từ Nhu Minh Plaza Danang hotel (@nmpdananghotel): \"[Room tour] Superior Twin - khách sạn gần biển Mỹ Khê Đà Nẵng. #xuhuong2023 ...",
+    "position": 6
+   },
+   {
+    "title": "Sáng nay thức dậy tại Khách Sạn Mường Thanh Luxury Đà Nẵng",
+    "link": "https://www.tiktok.com/@nguyetbanhbeo98_nick_phu/video/7670015364952001810",
+    "snippet": "Sáng nay thức dậy tại Khách Sạn Mường Thanh Luxury Đà Nẵng ; Đà Lạt ReView Travel. 920 ; 42 DALAT HOTEL - APARTMENT. 89 ; HAI MƯƠI HOTEL CẦU GIẤY. 9116 ; Queen ...",
+    "position": 7
+   },
+   {
+    "title": "Lịch lễ hội pháo hoa quốc tế Đà Nẵng 2026 từ 30/5-11/7 ...",
+    "link": "https://www.tiktok.com/@nmpdananghotel/video/7638463919052377365",
+    "snippet": "35 Lượt thích,Video TikTok từ Nhu Minh Plaza Danang hotel (@nmpdananghotel): \"Lịch lễ hội pháo hoa quốc tế Đà Nẵng 2026 từ 30/5-11/7/2026.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

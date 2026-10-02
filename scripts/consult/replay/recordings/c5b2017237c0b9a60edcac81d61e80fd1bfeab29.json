@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Quán Hải Sản Thời Cổ Đà Nẵng\" OR \"Hải Sản Đà Nẵng Bé Biển\" OR \"Buffet Hải Sản Đà Nẵng Mr Mộc\" Đà Nẵng site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T05:14:56.940Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Quán Hải Sản Thời Cổ Đà Nẵng\" OR \"Hải Sản Đà Nẵng Bé Biển\" OR \"Buffet Hải Sản Đà Nẵng Mr Mộc\" Đà Nẵng site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Đi ăn buffet có ai muốn bưng hết tất cả về bàn luôn hongg ...",
+    "link": "https://www.tiktok.com/@mrmocdanang/video/7687595635490442516",
+    "snippet": "âm thanh gốc - Buffet Hải Sản Đà Nẵng Mr Mộc ... Người khách bị dị ứng tôm và ghẹ vẫn có trải nghiệm buffet thoải mái tại quầy line Mộc (Mr Mộc Đà ...",
+    "position": 1
+   },
+   {
+    "title": "Khoan khoan khoan 🤗 ở Mộc ngoài quầy line nóng ra thì ...",
+    "link": "https://www.tiktok.com/@mrmocdanang/video/7689458916182265108",
+    "snippet": "746 Lượt thích,22 Bình luận.Video TikTok từ Buffet Hải Sản Đà Nẵng Mr Mộc (@mrmocdanang): \"Khoan khoan khoan ở Mộc ngoài quầy line nóng ...",
+    "position": 2
+   },
+   {
+    "title": "Đi ăn buffet có tệp đính kèm 3 tủi bên Mộc có luôn sẵn ghế ...",
+    "link": "https://www.tiktok.com/@mrmocdanang/video/7684593698629356820",
+    "snippet": "26 Lượt thích,Video TikTok từ Buffet Hải Sản Đà Nẵng Mr Mộc (@mrmocdanang): \"Đi ăn buffet có tệp đính kèm 3 tủi bên Mộc có luôn sẵn ghế ...",
+    "position": 3
+   },
+   {
+    "title": "Sơn Trà thì ăn buffet hải sản ở đâu cho đáng xiền taaa ...",
+    "link": "https://www.tiktok.com/@mrmocdanang/video/7686110760237550869",
+    "snippet": "407 Lượt thích,25 Bình luận.Video TikTok từ Buffet Hải Sản Đà Nẵng Mr Mộc (@mrmocdanang): \"Sơn Trà thì ăn buffet hải sản ở đâu cho đáng xiền ...",
+    "position": 4
+   },
+   {
+    "title": "Buffet Hải Sản Đà Nẵng Mr Mộc (@mrmocdanang)",
+    "link": "https://www.tiktok.com/@mrmocdanang",
+    "snippet": "Buffet Hải Sản Đà Nẵng Mr Mộc · @mrmocdanang · KÊNH TIKTOK CHÍNH THỨC CỦA BUFFET HẢI SẢN MR MỘC ĐÀ NẴNG Liên hệ : 0905.993.874.",
+    "position": 5
+   },
+   {
+    "title": "Buffet hải sản Mr Mộc Đà Nẵng: Hồ tôm ghẹ tươi thoải thích",
+    "link": "https://www.tiktok.com/@mrmocdanang/video/7663477253161995541",
+    "snippet": "233 Lượt thích,Video TikTok từ Buffet Hải Sản Đà Nẵng Mr Mộc (@mrmocdanang): \"Khám phá buffet hải sản Mr Mộc Đà Nẵng với hồ tôm, ghẹ tươi rói và nhiều lựa ...",
+    "position": 6
+   },
+   {
+    "title": "Nếu bàn đi 2 người mà chỉ gọi 1 vé buffet thì có được k ...",
+    "link": "https://www.tiktok.com/@mrmocdanang/video/7686876082787601684",
+    "snippet": "âm thanh gốc - Buffet Hải Sản Đà Nẵng Mr Mộc. 5026Thích. 94Bình luận. 1271Lượt chia sẻ. mrmocdanang. Buffet Hải Sản Đà Nẵng Mr Mộc. Ở Mộc ăn ...",
+    "position": 7
+   },
+   {
+    "title": "Tệp đính kèm đi cùng ba mẹ thì Mộc có hẳn luôn ghế để ...",
+    "link": "https://www.tiktok.com/@mrmocdanang/video/7683887373637242133",
+    "snippet": "31 Lượt thích,Video TikTok từ Buffet Hải Sản Đà Nẵng Mr Mộc (@mrmocdanang): \"Tệp đính kèm đi cùng ba mẹ thì Mộc có hẳn luôn ghế để ba mẹ ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,80 @@
+{
+  "id": "S4",
+  "text": "Robot hút bụi cho nhà có chó, tầm 5-7 triệu",
+  "parent": null,
+  "status": 200,
+  "ms": 22688,
+  "evidenceId": "2aa1f6fb-1a8e-4a6b-98f6-87a523af90f3",
+  "toolCalls": [
+    {
+      "tool": "search_products",
+      "args": {
+        "query": "robot hút bụi nhà có chó 5 triệu 7 triệu"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Robot hút bụi lau nhà Liectroux B6009",
+      "rating": 5,
+      "count": 1,
+      "price": 3690000
+    },
+    {
+      "name": "Robot hút bụi lau nhà Liectroux ZK901",
+      "rating": 4.9,
+      "count": 9,
+      "price": 5000000
+    },
+    {
+      "name": "Robot hút bụi lau nhà Roborock Q7 TF+ Q7TFP52-00 Đen",
+      "rating": 4.3,
+      "count": 758,
+      "price": 5490000
+    },
+    {
+      "name": "Robot Hút Bụi Lau Kính Mova N1 EU - Màu Đen",
+      "rating": 4.6,
+      "count": 59,
+      "price": 6990000
+    },
+    {
+      "name": "KhánhVyHome - Robot Hút Bụi Ecovacs Y1 PRO -Default Title",
+      "rating": 4.4,
+      "count": 33,
+      "price": 5900000
+    },
+    {
+      "name": "Robot hút bụi Neato D4 Connected - BH 12 Tháng",
+      "rating": 3.8,
+      "count": 6,
+      "price": 6900000
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình tìm robot hút bụi phù hợp với nhu cầu nhà có chó trong tầm giá 5-7 triệu cho bạn nhé.[TAPPY_SHOPPING]{\"v\":1,\"entities\":[{\"key\":\"uncertain:0\",\"name\":\"Robot hút bụi lau nhà Liectroux B6009\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":true,\"priceLow\":3690000,\"priceHigh\":3690000,\"image\":null,\"offers\":[{\"seller\":\"Digihouse.vn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=robot+h%C3%BAt+b%E1%BB%A5i+nh%C3%A0+c%C3%B3+ch%C3%B3+5+tri%E1%BB%87u+7+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,catalogid:3745708885929108437,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":3690000,\"currency\":\"VND\",\"condition\":null,\"rating\":5,\"ratingCount\":1}]},{\"key\":\"uncertain:1\",\"name\":\"Robot hút bụi lau nhà Liectroux ZK901\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":5000000,\"priceHigh\":5000000,\"image\":null,\"offers\":[{\"seller\":\"Gia Dụng Nhà Việt\",\"url\":\"https://www.google.com/search?ibp=oshop&q=robot+h%C3%BAt+b%E1%BB%A5i+nh%C3%A0+c%C3%B3+ch%C3%B3+5+tri%E1%BB%87u+7+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,productid:17451332462184015708,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":5000000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.9,\"ratingCount\":9}],\"commerce\":{\"linkId\":\"ce752132a7387afa84dc2136\",\"requestId\":\"6af029eb-b407-4891-a9d7-c2e9cef6a527\",\"providerId\":\"shopee\",\"merchantName\":\"Shopee\",\"url\":\"https://shopee.vn/-H%C3%A0ng-%C4%90%E1%BB%A9c-Robot-H%C3%BAt-B%E1%BB%A5i-Lau-Nh%C3%A0-Liectroux-ZK901-H%C3%A0ng-m%E1%BB%9Bi-100-Dung-L%C6%B0%E1%BB%A3ng-Pin-Kh%E1%BB%A7ng-B%E1%BA%A3o-H%C3%A0nh-PH%E1%BB%A4-KI%E1%BB%86N-CH%C3%8DNH-H%C3%83NG-i.43772334.8377445439\",\"depth\":3,\"guestDepth\":2,\"authRequiredAt\":\"before_selection\",\"loginRequired\":true,\"freshnessType\":\"static\",\"expiresAt\":null,\"tracked\":false,\"capability\":\"product_purchase\",\"primary\":true,\"kind\":\"DETAIL_HANDOFF\",\"handoff\":\"merchant_login\",\"authenticatedDepth\":5,\"labelKey\":\"v3.action.purchaseLoginOn\"},\"commerceLinks\":[{\"linkId\":\"ce752132a7387afa84dc2136\",\"requestId\":\"6af029eb-b407-4891-a9d7-c2e9cef6a527\",\"providerId\":\"shopee\",\"merchantName\":\"Shopee\",\"url\":\"https://shopee.vn/-H%C3%A0ng-%C4%90%E1%BB%A9c-Robot-H%C3%BAt-B%E1%BB%A5i-Lau-Nh%C3%A0-Liectroux-ZK901-H%C3%A0ng-m%E1%BB%9Bi-100-Dung-L%C6%B0%E1%BB%A3ng-Pin-Kh%E1%BB%A7ng-B%E1%BA%A3o-H%C3%A0nh-PH%E1%BB%A4-KI%E1%BB%86N-CH%C3%8DNH-H%C3%83NG-i.43772334.8377445439\",\"depth\":3,\"guestDepth\":2,\"authRequiredAt\":\"before_selection\",\"loginRequired\":true,\"freshnessType\":\"static\",\"expiresAt\":null,\"tracked\":false,\"capability\":\"product_purchase\",\"primary\":true,\"kind\":\"DETAIL_HANDOFF\",\"handoff\":\"merchant_login\",\"authenticatedDepth\":5,\"labelKey\":\"v3.action.purchaseLoginOn\"}]},{\"key\":\"uncertain:2\",\"name\":\"Robot hút bụi lau nhà Roborock Q7 TF+ Q7TFP52-00 Đen\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":5490000,\"priceHigh\":5490000,\"image\":null,\"offers\":[{\"seller\":\"KingHome.vn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=robot+h%C3%BAt+b%E1%BB%A5i+nh%C3%A0+c%C3%B3+ch%C3%B3+5+tri%E1%BB%87u+7+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,productid:11159731111633504064,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":5490000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.3,\"ratingCount\":758}]},{\"key\":\"uncertain:3\",\"name\":\"Robot Hút Bụi Lau Kính Mova N1 EU - Màu Đen\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":6990000,\"priceHigh\":6990000,\"image\":\"https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQfu-a2g1iEQYQZxSjcjIf7IwL9NgnfFeZNShXRgZKDenqjWtdJv2nkAHWXt4CeiWSVN9l9DMFKpFGi-f4sBOLs4VVP3Lf7c5Z0HbOb9gy9SeJ7NW1NAb666w\",\"offers\":[{\"seller\":\"Điện Máy Chợ Lớn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=robot+h%C3%BAt+b%E1%BB%A5i+nh%C3%A0+c%C3%B3+ch%C3%B3+5+tri%E1%BB%87u+7+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,productid:17794711987099573332,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":6990000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.6,\"ratingCount\":59}]},{\"key\":\"uncertain:4\",\"name\":\"KhánhVyHome - Robot Hút Bụi Ecovacs Y1 PRO -Default Title\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":5900000,\"priceHigh\":5900000,\"image\":null,\"offers\":[{\"seller\":\"Khánh Vy Home\",\"url\":\"https://www.google.com/search?ibp=oshop&q=robot+h%C3%BAt+b%E1%BB%A5i+nh%C3%A0+c%C3%B3+ch%C3%B3+5+tri%E1%BB%87u+7+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,productid:15861108303411901665,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":5900000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.4,\"ratingCount\":33}]},{\"key\":\"uncertain:5\",\"name\":\"Robot hút bụi Neato D4 Connected - BH 12 Tháng\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":6900000,\"priceHigh\":6900000,\"image\":null,\"offers\":[{\"seller\":\"Công ty Cổ Phần Robotics Việt nam\",\"url\":\"https://www.google.com/search?ibp=oshop&q=robot+h%C3%BAt+b%E1%BB%A5i+nh%C3%A0+c%C3%B3+ch%C3%B3+5+tri%E1%BB%87u+7+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,productid:15641302173857044686,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":6900000,\"currency\":\"VND\",\"condition\":null,\"rating\":3.8,\"ratingCount\":6}]}],\"requested\":null,\"recommendation\":{\"entityKey\":\"uncertain:0\",\"seller\":\"Digihouse.vn\",\"reasons\":[{\"attribute\":\"rating\",\"evidence\":\"rated 5\",\"params\":{\"value\":5}},{\"attribute\":\"price\",\"evidence\":\"3690000 VND\",\"params\":{\"priceVnd\":3690000}}],\"tradeOff\":{\"attribute\":\"reviewCount\",\"evidence\":\"9 reviews\",\"params\":{\"count\":9}},\"conditional\":false}}[/TAPPY_SHOPPING]\n\nMình chọn **Robot hút bụi lau nhà Liectroux B6009** và có đánh giá 5⭐. Đây là lựa chọn tốt nhất để tiết kiệm trong tầm giá của bạn.\n\nNếu muốn có thêm đánh giá từ nhiều người dùng — nhiều hơn\n\nCác lựa chọn khác trong tầm giá:\n- **Roborock Q7 TF+** — 4.3⭐ từ 758 đánh giá, thương hiệu nổi tiếng\n- **Ecovacs Y1 PRO** — 4.4⭐ từ 33 đánh giá\n\nVới nhà có chó, bạn nên chú ý: lực hút mạnh để xử lý lông chó, bình chứa bụi dung tích lớn, và tần suất vệ sinh bộ lọc thường xuyên. Tuy nhiên, trang sản phẩm hiện chưa ghi rõ các thông số này — bạn nên kiểm tra chi tiết trên trang bán hàng trước khi mua.\n\n*Gợi ý dựa trên kết quả tìm kiếm thực, TappyAI dẫn bạn đến nền tảng chính thức để so sánh & mua — quyền quyết định là của bạn.*\n\n\n[FOLLOWUPS]Liectroux B6009 có lực hút mạnh không?|Nên chọn Roborock hay Liectroux?|Robot nào tốt nhất cho lông chó?[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Robot hút bụi cho nhà có chó, tầm 5-7 triệu"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm robot hút bụi phù hợp với nhu cầu nhà có chó trong tầm giá 5-7 triệu cho bạn nhé.[TAPPY_SHOPPING]{\"v\":1,\"entities\":[{\"key\":\"uncertain:0\",\"name\":\"Robot hút bụi lau nhà Liectroux B6009\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":true,\"priceLow\":3690000,\"priceHigh\":3690000,\"image\":null,\"offers\":[{\"seller\":\"Digihouse.vn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=robot+h%C3%BAt+b%E1%BB%A5i+nh%C3%A0+c%C3%B3+ch%C3%B3+5+tri%E1%BB%87u+7+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,catalogid:3745708885929108437,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":3690000,\"currency\":\"VND\",\"condition\":null,\"rating\":5,\"ratingCount\":1}]},{\"key\":\"uncertain:1\",\"name\":\"Robot hút bụi lau nhà Liectroux ZK901\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":5000000,\"priceHigh\":5000000,\"image\":null,\"offers\":[{\"seller\":\"Gia Dụng Nhà Việt\",\"url\":\"https://www.google.com/search?ibp=oshop&q=robot+h%C3%BAt+b%E1%BB%A5i+nh%C3%A0+c%C3%B3+ch%C3%B3+5+tri%E1%BB%87u+7+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,productid:17451332462184015708,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":5000000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.9,\"ratingCount\":9}],\"commerce\":{\"linkId\":\"ce752132a7387afa84dc2136\",\"requestId\":\"6af029eb-b407-4891-a9d7-c2e9cef6a527\",\"providerId\":\"shopee\",\"merchantName\":\"Shopee\",\"url\":\"https://shopee.vn/-H%C3%A0ng-%C4%90%E1%BB%A9c-Robot-H%C3%BAt-B%E1%BB%A5i-Lau-Nh%C3%A0-Liectroux-ZK901-H%C3%A0ng-m%E1%BB%9Bi-100-Dung-L%C6%B0%E1%BB%A3ng-Pin-Kh%E1%BB%A7ng-B%E1%BA%A3o-H%C3%A0nh-PH%E1%BB%A4-KI%E1%BB%86N-CH%C3%8DNH-H%C3%83NG-i.43772334.8377445439\",\"depth\":3,\"guestDepth\":2,\"authRequiredAt\":\"before_selection\",\"loginRequired\":true,\"freshnessType\":\"static\",\"expiresAt\":null,\"tracked\":false,\"capability\":\"product_purchase\",\"primary\":true,\"kind\":\"DETAIL_HANDOFF\",\"handoff\":\"merchant_login\",\"authenticatedDepth\":5,\"labelKey\":\"v3.action.purchaseLoginOn\"},\"commerceLinks\":[{\"linkId\":\"ce752132a7387afa84dc2136\",\"requestId\":\"6af029eb-b407-4891-a9d7-c2e9cef6a527\",\"providerId\":\"shopee\",\"merchantName\":\"Shopee\",\"url\":\"https://shopee.vn/-H%C3%A0ng-%C4%90%E1%BB%A9c-Robot-H%C3%BAt-B%E1%BB%A5i-Lau-Nh%C3%A0-Liectroux-ZK901-H%C3%A0ng-m%E1%BB%9Bi-100-Dung-L%C6%B0%E1%BB%A3ng-Pin-Kh%E1%BB%A7ng-B%E1%BA%A3o-H%C3%A0nh-PH%E1%BB%A4-KI%E1%BB%86N-CH%C3%8DNH-H%C3%83NG-i.43772334.8377445439\",\"depth\":3,\"guestDepth\":2,\"authRequiredAt\":\"before_selection\",\"loginRequired\":true,\"freshnessType\":\"static\",\"expiresAt\":null,\"tracked\":false,\"capability\":\"product_purchase\",\"primary\":true,\"kind\":\"DETAIL_HANDOFF\",\"handoff\":\"merchant_login\",\"authenticatedDepth\":5,\"labelKey\":\"v3.action.purchaseLoginOn\"}]},{\"key\":\"uncertain:2\",\"name\":\"Robot hút bụi lau nhà Roborock Q7 TF+ Q7TFP52-00 Đen\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":5490000,\"priceHigh\":5490000,\"image\":null,\"offers\":[{\"seller\":\"KingHome.vn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=robot+h%C3%BAt+b%E1%BB%A5i+nh%C3%A0+c%C3%B3+ch%C3%B3+5+tri%E1%BB%87u+7+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,productid:11159731111633504064,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":5490000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.3,\"ratingCount\":758}]},{\"key\":\"uncertain:3\",\"name\":\"Robot Hút Bụi Lau Kính Mova N1 EU - Màu Đen\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":6990000,\"priceHigh\":6990000,\"image\":\"https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQfu-a2g1iEQYQZxSjcjIf7IwL9NgnfFeZNShXRgZKDenqjWtdJv2nkAHWXt4CeiWSVN9l9DMFKpFGi-f4sBOLs4VVP3Lf7c5Z0HbOb9gy9SeJ7NW1NAb666w\",\"offers\":[{\"seller\":\"Điện Máy Chợ Lớn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=robot+h%C3%BAt+b%E1%BB%A5i+nh%C3%A0+c%C3%B3+ch%C3%B3+5+tri%E1%BB%87u+7+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,productid:17794711987099573332,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":6990000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.6,\"ratingCount\":59}]},{\"key\":\"uncertain:4\",\"name\":\"KhánhVyHome - Robot Hút Bụi Ecovacs Y1 PRO -Default Title\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":5900000,\"priceHigh\":5900000,\"image\":null,\"offers\":[{\"seller\":\"Khánh Vy Home\",\"url\":\"https://www.google.com/search?ibp=oshop&q=robot+h%C3%BAt+b%E1%BB%A5i+nh%C3%A0+c%C3%B3+ch%C3%B3+5+tri%E1%BB%87u+7+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,productid:15861108303411901665,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":5900000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.4,\"ratingCount\":33}]},{\"key\":\"uncertain:5\",\"name\":\"Robot hút bụi Neato D4 Connected - BH 12 Tháng\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":6900000,\"priceHigh\":6900000,\"image\":null,\"offers\":[{\"seller\":\"Công ty Cổ Phần Robotics Việt nam\",\"url\":\"https://www.google.com/search?ibp=oshop&q=robot+h%C3%BAt+b%E1%BB%A5i+nh%C3%A0+c%C3%B3+ch%C3%B3+5+tri%E1%BB%87u+7+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,productid:15641302173857044686,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":6900000,\"currency\":\"VND\",\"condition\":null,\"rating\":3.8,\"ratingCount\":6}]}],\"requested\":null,\"recommendation\":{\"entityKey\":\"uncertain:0\",\"seller\":\"Digihouse.vn\",\"reasons\":[{\"attribute\":\"rating\",\"evidence\":\"rated 5\",\"params\":{\"value\":5}},{\"attribute\":\"price\",\"evidence\":\"3690000 VND\",\"params\":{\"priceVnd\":3690000}}],\"tradeOff\":{\"attribute\":\"reviewCount\",\"evidence\":\"9 reviews\",\"params\":{\"count\":9}},\"conditional\":false}}[/TAPPY_SHOPPING]\n\nMình chọn **Robot hút bụi lau nhà Liectroux B6009** và có đánh giá 5⭐. Đây là lựa chọn tốt nhất để tiết kiệm trong tầm giá của bạn.\n\nNếu muốn có thêm đánh giá từ nhiều người dùng — nhiều hơn\n\nCác lựa chọn khác trong tầm giá:\n- **Roborock Q7 TF+** — 4.3⭐ từ 758 đánh giá, thương hiệu nổi tiếng\n- **Ecovacs Y1 PRO** — 4.4⭐ từ 33 đánh giá\n\nVới nhà có chó, bạn nên chú ý: lực hút mạnh để xử lý lông chó, bình chứa bụi dung tích lớn, và tần suất vệ sinh bộ lọc thường xuyên. Tuy nhiên, trang sản phẩm hiện chưa ghi rõ các thông số này — bạn nên kiểm tra chi tiết trên trang bán hàng trước khi mua.\n\n*Gợi ý dựa trên kết quả tìm kiếm thực, TappyAI dẫn bạn đến nền tảng chính thức để so sánh & mua — quyền quyết định là của bạn.*\n\n\n[FOLLOWUPS]Liectroux B6009 có lực hút mạnh không?|Nên chọn Roborock hay Liectroux?|Robot nào tốt nhất cho lông chó?[/FOLLOWUPS]"
+    }
+  ]
+}

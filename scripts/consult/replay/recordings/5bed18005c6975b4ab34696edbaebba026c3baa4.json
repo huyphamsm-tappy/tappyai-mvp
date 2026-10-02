@@ -1,0 +1,60 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Le House\" Đà Lạt site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:12:30.257Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Le House\" Đà Lạt site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "le house Đánh giá của khách",
+    "link": "https://vn.trip.com/hotels/dalat-hotel-detail-116492174/le-house-dalat/review.html",
+    "snippet": "Khám phá đánh giá le house thực tế từ khách du lịch. Với 52 đánh giá đã được xác thực và xếp hạng 9.6/10, bạn có thể đặt phòng với sự an tâm tuyệt đối.",
+    "position": 1
+   },
+   {
+    "title": "le house - Giá cả và Ưu đãi 2026, Đà Lạt",
+    "link": "https://vn.trip.com/hotels/dalat-hotel-detail-116492174/le-house-dalat/",
+    "snippet": "Giờ nhận phòng tại le house bắt đầu từ 14:00, và giờ trả phòng là 12:00. le house có hồ bơi không? Không, le house ...",
+    "position": 2
+   },
+   {
+    "title": "Le House Hotel( Khách sạn và căn hộ)",
+    "link": "https://vn.trip.com/hotels/da-nang-hotel-detail-46629896/oyo-320-le-house-hotel-and-studio/",
+    "snippet": "Giờ nhận phòng tại Le House Hotel( Khách sạn và căn hộ) bắt đầu từ 14:00, và giờ trả phòng là 12:00. Có được mang theo thú cưng tại Le House Hotel( Khách sạn và ...",
+    "position": 3
+   },
+   {
+    "title": "Khách sạn Le House Boutique - Giá cả và Ưu đãi 2026, Đà ...",
+    "link": "https://vn.trip.com/hotels/da-nang-hotel-detail-2848061/le-house-boutique-hotel/",
+    "snippet": "Giờ nhận phòng tại Khách sạn Le House Boutique bắt đầu từ 14:00, và giờ trả phòng là 12:00. Khách sạn Le House Boutique có hồ bơi không? Không, Khách sạn Le ...",
+    "position": 4
+   },
+   {
+    "title": "Các khách sạn ở gần Nhà thờ Mai Anh, Đà Lạt",
+    "link": "https://vn.trip.com/hotels/dalat-domaine-de-marie-church/hotels-c5204m6788590/",
+    "snippet": "le house. Trung tâm Đà Lạt, Đà Lạt | Cách Nhà thờ Mai Anh 0.39KM. 9,6/10. Đáng Kinh Ngạc 53 đánh giá. Tọa lạc tại trung tâm Cam Ly - Đà Lạt, Le House Đà Lạt ...",
+    "position": 5
+   },
+   {
+    "title": "Tìm Khách Sạn 4 Sao Tại Đà Lạt",
+    "link": "https://vn.trip.com/hotels/star4/city/vn/dalat.html",
+    "snippet": "Khách có thể dùng bữa tại nhà hàng của Le House Đà Lạt . Khách có thể dùng bữa sáng đặc sản địa phương miễn phí hàng ngày từ 7:00 đến 10:30. Có nhiều dịch vụ, ...",
+    "position": 6
+   }
+  ],
+  "credits": 1
+ }
+}

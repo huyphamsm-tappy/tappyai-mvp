@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "quà tặng áp dụng riêng khách mua hoa tại Shop mình site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:55:19.379Z",
+ "body": {
+  "searchParameters": {
+   "q": "quà tặng áp dụng riêng khách mua hoa tại Shop mình site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "[20 BÔNG TẶNG BÌNH] Hoa Tulip giả làm bó hoa, trang trí nhà ...",
+    "link": "https://shop.tiktok.com/vn/pdp/hoa-tulip-gia-bo-hoa-trang-tri-nha-cua-vat-lieu-ben-dep-de-ve-sinh/1731171758540425075",
+    "snippet": "Tên sản phẩm: Hoa Tulip giảẢNH THẬT SHOP TỤ CHỤPMàu sắc: đa dạngChiều rộng: Bông hoa nở vừa, cân đốiChiều dài: 35cm, phù hợp cắm bình thủy tinhChất liệu: ...",
+    "position": 1
+   },
+   {
+    "title": "Hoa Kẽm Nhung 12 Ống Gài Tiền May Mắn – Quà Tặng Sinh ...",
+    "link": "https://shop.tiktok.com/vn/pdp/1734443484911732527",
+    "snippet": "Hoa kẽm nhung rất xinh, màu sắc tươi và được làm khá tỉ mỉ. Cánh hoa mềm, thân chắc chắn, nhìn rất dễ thương. Shop gói hàng cẩn thận, có nơ nên nhìn rất đẹp ...",
+    "position": 2
+   },
+   {
+    "title": "(Không kèm bình) cành sen 3 hoa,3 lá - hoa sen thái dài",
+    "link": "https://shop.tiktok.com/vn/pdp/hoa-sen-thai-dep-hoa-lua-cao-cap-decor-khong-kem-binh/1729661297506028176?source=anchor",
+    "snippet": "Lúa tài lộc(có bình) tặng đèn .28 nhánh lúa +1 bình túi tiền chất liệu nhựa cứng , cắm sẵn , cao 38 cm , ngang 35 cm , trang trí ban thờ thần tài, decor theo sở ...",
+    "position": 3
+   },
+   {
+    "title": "Bánh thùng - TikTok Shop Vietnam",
+    "link": "https://shop.tiktok.com/vn/k/banh-thung",
+    "snippet": "Bộ quà tặng · Khoai tây giòn & thức ăn nhanh có nhân · Sô-cô-la & đồ ăn nhẹ có sô-cô-la · Thực phẩm đóng hộp, lọ & đóng gói · Thanh bánh · TikTok Shop · Mua sắm ...",
+    "position": 4
+   },
+   {
+    "title": "Khay đựng trái cây đỏ mừng tân gia – Hộp kẹo Tết có nắp ...",
+    "link": "https://shop.tiktok.com/vn/pdp/1733962124966265941",
+    "snippet": "Mua Khay đựng trái cây đỏ mừng tân gia – Hộp kẹo Tết có nắp đậy kín, chia ngăn đựng hạt hạt dưa, dùng được trên bàn trà phòng khách tại nhà ...",
+    "date": "23 thg 2, 2026",
+    "position": 5
+   },
+   {
+    "title": "ซองใส่ทะเบียนสมรสสวยๆ",
+    "link": "https://shop.tiktok.com/vn/k/song-ais-thaebiynsmrs-swy",
+    "snippet": "Ngôi nhà đựng phong bì có hoa. 1 sold · 750.000 ; Lì xì quạt 10 ngăn Quạt Xoè Gấp Gọn 10 Nan và 6 Nan Quà Tặng Bất Ngờ · 131 sold · 39.900 ; Hộp nộp tài, hộp lì xì ...",
+    "position": 6
+   },
+   {
+    "title": "TikTok Shop Vietnam",
+    "link": "https://shop.tiktok.com/vn/pdp/1730179047822887853",
+    "snippet": "Hoa Tây Tử Quà Tặng Không Được Bán Florasis | Free Gift. 1. 66733 sold. ₫1.455.000. ₫1.500.000 ...",
+    "position": 7
+   },
+   {
+    "title": "TikTok Shop Vietnam",
+    "link": "https://shop.tiktok.com/vn/pdp/1730312972812585716",
+    "snippet": "Thẻ luyện nghe – câu chuyện tăng cường khả năng tập trung cho trẻ em, đồ dùng học tập giáo dục sớm cho học sinh tiểu học và trẻ mầm non.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

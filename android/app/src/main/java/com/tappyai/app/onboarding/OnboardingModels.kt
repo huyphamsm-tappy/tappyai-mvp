@@ -33,3 +33,15 @@ fun interestLabelResFor(id: String): Int? = when (id) {
     "hotel" -> R.string.onboarding_interest_hotel
     else -> null
 }
+
+/** The one-line tile description (web `onboarding.interest.<id>.desc`); unknown id → none. */
+@StringRes
+fun interestDescResFor(id: String): Int? = when (id) {
+    "food" -> R.string.onboarding_interest_food_desc
+    "spa" -> R.string.onboarding_interest_spa_desc
+    "travel" -> R.string.onboarding_interest_travel_desc
+    "shopping" -> R.string.onboarding_interest_shopping_desc
+    "entertainment" -> R.string.onboarding_interest_entertainment_desc
+    "hotel" -> R.string.onboarding_interest_hotel_desc
+    else -> null
+}

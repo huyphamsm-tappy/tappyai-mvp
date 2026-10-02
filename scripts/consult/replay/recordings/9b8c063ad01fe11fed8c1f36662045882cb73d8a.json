@@ -1,0 +1,56 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Hộp Quà Tặng Cà Phê kèm Phin + Hạt Điều, Mật Hoa Rừng CT Bee - Quà tặng khách hàng, đối tác cao cấp site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:12:03.579Z",
+ "body": {
+  "searchParameters": {
+   "q": "Hộp Quà Tặng Cà Phê kèm Phin + Hạt Điều, Mật Hoa Rừng CT Bee - Quà tặng khách hàng, đối tác cao cấp site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "SET QUÀ TẶNG CÀ PHÊ KÈM Mật Ong Rừng Tự Nhiên [ ĐẶC ...",
+    "link": "https://h5.lazada.vn/products/pdp-i2414831985.html",
+    "snippet": "SET QUÀ TẶNG CÀ PHÊ VÀ MẬT ONG HOA RỪNG CTG341 [Hộp kraft]. Thành phần set quà bao gồm: + 500Gr cà phê rang xay Arabica Gia Lai. + 300ml mật ong hoa rừng tự ...",
+    "position": 1
+   },
+   {
+    "title": "Set Quà Cà Phê Đặc Sản Việt Kèm Phin CTG360",
+    "link": "https://www.lazada.vn/products/set-qua-ca-phe-dac-san-viet-kem-phin-ctg360-hop-go-thong-cao-cap-i3257221328.html?srsltid=AU7gw4X8iCL17K5msbdtEICgLETcr6vwbTojb35HSnHip9EOYi0m6nxO",
+    "snippet": "ĐIỂM NỔI BẬT · Hộp gỗ thông cao cấp: Mộc mạc – sang trọng – bền bỉ, có thể tái sử dụng. · Cà phê rang xay chất lượng: Hương thơm mạnh, vị đậm đà, hậu vị sâu.",
+    "position": 2
+   },
+   {
+    "title": "Set Quà Tặng Tết 2026 Trà Ô Long & Mật Ong CTG366",
+    "link": "https://www.lazada.vn/products/set-qua-tang-tet-2026-tra-o-long-mat-ong-ctg366-i3257190619.html?srsltid=AU7gw4VQJcYBleYlaQz2w0oOu3cxXf51tFC9aZr5HdZ1q_KDozoNrzrM",
+    "snippet": "2 Mật ong hoa rừng tự nhiên CT Bee hũ 20ml. 1 Trà ô long 100Gr. Hộp đỏ nắp nam châm kích thước 26x19cm.",
+    "position": 3
+   },
+   {
+    "title": "Set quà tặng cà phê hộp gỗ cao cấp CTG339 làm ...",
+    "link": "https://www.lazada.vn/products/set-qua-tang-ca-phe-hop-go-cao-cap-ctg339-lam-qua-tang-doi-tac-khach-hang-qua-tang-cho-nguoi-nuoc-ngoai-i2414916708.html?srsltid=AU7gw4XQQ0okBtGY86_CUKHDAq5HE_RTphGK9zQoiM4ihdgDsVq80dhn",
+    "snippet": "+ 300ml mật ong hoa rừng tự nhiên không qua chế biến CT Bee Farm. + 2 hộp ngũ cốc hạt Granola các loại hạt & yến mạch hũ 200ml. + CT Bee tặng kèm túi xách miễn ...",
+    "rating": 5,
+    "ratingCount": 2,
+    "position": 4
+   },
+   {
+    "title": "SET QUÀ TẶNG CÀ PHÊ KÈM Mật Ong Rừng Tự Nhiên ...",
+    "link": "https://www.lazada.vn/products/set-qua-tang-ca-phe-kem-mat-ong-rung-tu-nhien-dac-san-tay-nguyen-ctg341-i2414831985.html?srsltid=AU7gw4Vt4qPTuU4VzR5esaMm7XRv2ho076pGfgHOClYdU1fqL-OZK3ZY",
+    "snippet": "SET QUÀ TẶNG CÀ PHÊ VÀ MẬT ONG HOA RỪNG CTG341 [Hộp kraft]. Thành phần set quà bao gồm: + 500Gr cà phê rang xay Arabica Gia Lai. + 300ml mật ong hoa rừng tự ...",
+    "position": 5
+   }
+  ],
+  "credits": 1
+ }
+}
