@@ -9,7 +9,8 @@
 
 export const GOOGLE_PLAY_URL = 'https://play.google.com/store/apps/details?id=com.tappyai.app'
 
-export function playBadgeEnabled(env: Record<string, string | undefined> = { NEXT_PUBLIC_PLAY_LISTING_LIVE: process.env.NEXT_PUBLIC_PLAY_LISTING_LIVE, NEXT_PUBLIC_VERCEL_ENV: process.env.NEXT_PUBLIC_VERCEL_ENV }): boolean {
-  if (env.NEXT_PUBLIC_PLAY_LISTING_LIVE === '1') return true
-  return env.NEXT_PUBLIC_VERCEL_ENV !== 'production'
+// Owner (02/10): Android is not public and iOS is not available, so store badges are HIDDEN everywhere
+// (including UAT/preview) until NEXT_PUBLIC_PLAY_LISTING_LIVE=1 is set after the public page loads.
+export function playBadgeEnabled(env: Record<string, string | undefined> = { NEXT_PUBLIC_PLAY_LISTING_LIVE: process.env.NEXT_PUBLIC_PLAY_LISTING_LIVE }): boolean {
+  return env.NEXT_PUBLIC_PLAY_LISTING_LIVE === '1'
 }

@@ -49,6 +49,7 @@
 // The neutral glyphs are reserved for the ACTIONS (Email, Inbox, Save, Copy,
 // Other apps), so a real mark can never be mistaken for a generic one.
 
+import { playBadgeEnabled } from '@/lib/share/storeListing'
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { Copy, Check, Share2, X, Mail, Inbox, Download, Link2, ChevronRight } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
@@ -335,13 +336,13 @@ export default function ShareMenu({
         features: [t('v3.qr.card.feat1'), t('v3.qr.card.feat2'), t('v3.qr.card.feat3'), t('v3.qr.card.feat4')],
         website: cardWebsite(),
         // The TappyAI QR card (profile / post) carries the Google Play badge (owner SL2, 29/09).
-        googlePlay: {
+        ...(playBadgeEnabled() ? { googlePlay: {
           badgeTop: t('v3.qr.card.playBadgeTop'),
           titlePre: t('v3.qr.card.getAppPre'),
           titlePost: t('v3.qr.card.getAppPost'),
           sub: t('v3.qr.card.getAppSub'),
           orWebsite: t('v3.qr.card.orWebsite'),
-        },
+        } } : {}),
       },
     })
   }
