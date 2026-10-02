@@ -81,6 +81,9 @@ class ReviewDetailViewModel @Inject constructor(
     suspend fun reportComment(commentId: String, reason: ReportReason): ReportOutcome =
         safety.report(ReportTarget.Comment, commentId, reason)
 
+    /** Blocks the author of the review being shown. True when the block took effect on the server; never called unless the server supports blocking. */
+    suspend fun blockAuthor(userId: String): Boolean = safety.block(userId)
+
     /** Reports the review being shown (production route). */
     suspend fun reportReview(reviewId: String, reason: ReportReason): ReportOutcome = safety.reportReview(reviewId, reason)
 

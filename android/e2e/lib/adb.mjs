@@ -54,7 +54,7 @@ export const find = (q, nodes = dump()) => nodes.find((n) => matches(n, q) && n.
 export const texts = (nodes = dump()) => nodes.map((n) => n.text || n.desc).filter(Boolean)
 export const visible = (q) => !!find(q)
 /** Portrait grid tiles (profile / collection grids): clickable, ~1/3 of the width, taller than wide. */
-export const tiles = (nodes = dump()) => nodes.filter((n) => n.clickable && n.x2 - n.x1 > 250 && n.x2 - n.x1 < 420 && n.y2 - n.y1 > 400 && n.y1 > 300)
+export const tiles = (nodes = dump()) => { const k = screen()[0] / 1080; return nodes.filter((n) => n.clickable && n.x2 - n.x1 > 250 * k && n.x2 - n.x1 < 420 * k && n.y2 - n.y1 > 400 * k && n.y1 > 300 * k) }
 
 export async function waitFor(q, { timeout = 20000, interval = 800 } = {}) {
   const end = Date.now() + timeout

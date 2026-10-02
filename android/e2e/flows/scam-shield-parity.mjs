@@ -25,9 +25,19 @@ async function up(a, q, max = 8) {
 
 // Scrolls up until [re] is on screen; false if it never appears.
 async function seen(a, re, max = 7) {
+  const [w, h] = a.screen()
+  const x = String(Math.round(w / 2))
+  const drag = (from, to) => a.sh('input', 'swipe', x, String(Math.round(h * from)), x, String(Math.round(h * to)), '350')
   for (let i = 0; i < max; i++) {
     if (a.find(re)) return true
-    a.swipe('up'); await a.sleep(800)
+    // A SHORT drag (a quarter of the screen): a long one can jump straight over a one-line heading on a small phone.
+    drag(0.68, 0.42); await a.sleep(800)
+  }
+  if (a.find(re)) return true
+  // Not below: it is above the starting point — come back up with short downward drags from mid-screen (never from the top edge).
+  for (let i = 0; i < max * 2; i++) {
+    drag(0.42, 0.68); await a.sleep(800)
+    if (a.find(re)) return true
   }
   return !!a.find(re)
 }
@@ -81,7 +91,7 @@ async function scanQr(a, name, shot) {
   await a.tap(zone, { after: 2500 })
   await pickNewestPhoto(a)
   await a.sleep(7000)
-  await seen(a, /Mã QR này là|Có dấu hiệu lừa đảo quen thuộc|Có một số dấu hiệu đáng ngờ|Chưa nhận ra dấu hiệu|Không đọc được/, 4)
+  await seen(a, /Mã QR này không chứa|Có dấu hiệu lừa đảo quen thuộc|Có một số dấu hiệu đáng ngờ|Chưa nhận ra dấu hiệu|Không đọc được/, 4)
   shot(name.replace('.png', ''))
 }
 
@@ -107,11 +117,13 @@ export async function android({ a, shot, check, seeded }) {
   await up(a, 'Phân tích tin nhắn')
   check('ô tin nhắn không còn chữ «lượt hỏi AI» / ảnh chụp màn hình (AI đã tắt)', !a.visible(/lượt hỏi AI/) && !a.visible('Tải ảnh chụp màn hình'))
 
+  const part = process.env.SCAM_PART || 'all'
+  if (part !== '2') {
   // 1) tin bình thường → chưa nhận ra dấu hiệu quen thuộc (KHÔNG phải an toàn)
   await runMessage(a, 'Chiều nay đi ăn phở nha, 6h gặp ở quán cũ.')
   check('tin bình thường → «Chưa nhận ra dấu hiệu quen thuộc»', await seen(a, /Chưa nhận ra dấu hiệu quen thuộc/))
   check('…kèm «KHÔNG có nghĩa là an toàn»', await seen(a, /KHÔNG có nghĩa là an toàn/, 2))
-  check('…kèm «TappyAI không thay thế cơ quan chức năng» và 113', (await seen(a, /không thay thế cơ quan chức năng/, 3)) && a.visible(/113/))
+  check('…kèm «TappyAI không thay thế cơ quan chức năng» (không dòng 113: web chỉ in khi có tình huống khớp)', (await seen(a, /không thay thế cơ quan chức năng/, 3)) && !a.visible(/gọi 113/))
   check('…không «An toàn», không điểm, không «Độ tin cậy», không hộp hỏi AI', !a.dump().some((n) => FORBIDDEN.test((n.text || n.desc || '').trim())))
   shot('normal-message')
 
@@ -119,41 +131,43 @@ export async function android({ a, shot, check, seeded }) {
   await runMessage(a, 'Thông báo phạt nguội: xe của bạn vi phạm giao thông, vui lòng nộp phạt trong 24 giờ để tránh bị xử lý.')
   check('tin phạt nguội → «Có dấu hiệu lừa đảo quen thuộc»', await seen(a, /Có dấu hiệu lừa đảo quen thuộc/))
   shot('scam-message-known-top')
-  check('…kèm tên tình huống «Giống thủ đoạn»', await seen(a, /Giống thủ đoạn/, 2))
+  check('…kèm «Tình huống tương ứng» + «Kịch bản số 22 trong danh sách của Bộ Công an»', (await seen(a, /Tình huống tương ứng/, 2)) && (await seen(a, /Kịch bản số 22 trong danh sách của Bộ Công an/, 2)))
   check('…kèm khối nguồn chính thức (Bộ Công an)', await seen(a, /Nguồn: Bộ Công an|Thông tin từ nguồn chính thức/, 5))
-  check('…kèm 113 và «không thay thế cơ quan chức năng» và nút chia sẻ', (await seen(a, /113/, 8)) && (await seen(a, /không thay thế cơ quan chức năng/, 3)) && (await seen(a, /Chia sẻ kết quả/, 3)))
+  check('…kèm dòng 113 của web và «không thay thế cơ quan chức năng» và nút chia sẻ', (await seen(a, /Báo ngay cho Công an nơi gần nhất hoặc gọi 113/, 8)) && (await seen(a, /không thay thế cơ quan chức năng/, 3)) && (await seen(a, /Chia sẻ kết quả/, 3)))
   check('…không «An toàn», không điểm, không «Độ tin cậy»', !a.dump().some((n) => FORBIDDEN.test((n.text || n.desc || '').trim())))
   shot('scam-message-known')
 
   // 3) tin Trung thu → có một số dấu hiệu đáng ngờ
   await runMessage(a, 'Bưu phẩm Trung thu của bạn đã đến, quét mã QR đính kèm để nhận')
-  check('tin Trung thu → «Có một số dấu hiệu đáng ngờ»', await seen(a, /Có một số dấu hiệu đáng ngờ/))
+  check('tin Trung thu → «Có dấu hiệu lừa đảo quen thuộc» (web: khớp mạnh kịch bản 19)', await seen(a, /Có dấu hiệu lừa đảo quen thuộc/))
   shot('trung-thu-top')
-  check('…kèm tình huống «Có phần giống thủ đoạn»', await seen(a, /Có phần giống thủ đoạn/, 2))
+  check('…kèm «Kịch bản số 19 trong danh sách của Bộ Công an»', await seen(a, /Kịch bản số 19 trong danh sách của Bộ Công an/, 2))
   shot('trung-thu-message')
 
   // 4) tin có link giả → chỉ link đi kiểm tra; không kết luận về tổ chức, nói «đặc điểm thường gặp ở link giả mạo»
   await runMessage(a, 'Vui lòng xác minh tài khoản tại https://vietcombank-xacthuc-taikhoan.top/login')
-  check('tin có link giả → thẻ kết quả link «Có dấu hiệu lừa đảo quen thuộc» hoặc «đáng ngờ»', await seen(a, /Có dấu hiệu lừa đảo quen thuộc|Có một số dấu hiệu đáng ngờ/))
-  check('…nói «đặc điểm thường gặp ở link giả mạo»', await seen(a, /đặc điểm thường gặp ở link giả mạo/, 2))
-  check('…kèm lý do cụ thể', await seen(a, /Lý do cụ thể/, 3))
+  check('tin có link giả → thẻ link «Đường link có đặc điểm thường gặp ở link giả mạo» (hoặc «có một số điểm đáng ngờ»)', await seen(a, /Đường link có đặc điểm thường gặp ở link giả mạo|Đường link có một số điểm đáng ngờ/))
+  check('…kèm câu «không phải kết luận về một tổ chức hay tên miền cụ thể»', await seen(a, /không phải kết luận về một tổ chức hay tên miền cụ thể/, 3))
+  check('…kèm lý do cụ thể BẰNG TIẾNG VIỆT (không còn câu tiếng Anh của engine)', (await seen(a, /Lý do cụ thể/, 3)) && !a.dump().some((n) => /Domain has no|Could not verify SSL|This domain uses the name/.test(n.text || '')))
   check('…không điểm, không «Độ tin cậy», không «Nguy cơ cao»', !a.dump().some((n) => FORBIDDEN.test((n.text || n.desc || '').trim()) || /^Nguy cơ cao$|^Rất nguy hiểm$/.test((n.text || '').trim())))
   shot('link-in-message')
+  }
+  if (part === '1') return
 
   // 5) QR link giả (mã dựng ra) → chỉ link giải mã đi kiểm tra
   await reopen(a)
   await scanQr(a, 'qr-link-danger.png', shot)
-  check('QR link giả → «Có dấu hiệu lừa đảo quen thuộc» hoặc «đáng ngờ»', await seen(a, /Có dấu hiệu lừa đảo quen thuộc|Có một số dấu hiệu đáng ngờ/, 3))
+  check('QR link giả → thẻ link «Đường link có đặc điểm thường gặp ở link giả mạo»', await seen(a, /Đường link có đặc điểm thường gặp ở link giả mạo|Đường link có một số điểm đáng ngờ/, 3))
   shot('qr-link-top')
   check('…không điểm, không «Độ tin cậy», không «An toàn»', !a.dump().some((n) => FORBIDDEN.test((n.text || n.desc || '').trim())))
 
   // 6) QR chữ / thanh toán / Wi-Fi → nêu loại, không hành động, không gửi ảnh
   await reopen(a)
   await scanQr(a, 'qr-text.png', shot)
-  check('QR chữ → nêu loại «Mã QR này là»', await seen(a, /Mã QR này là/, 1))
+  check('QR chữ → «Mã QR này không chứa đường link web» + «Loại mã: văn bản»', (await seen(a, /Mã QR này không chứa đường link web/, 1)) && a.visible(/Loại mã: văn bản/))
   await reopen(a)
   await scanQr(a, 'qr-payment.png', shot)
-  check('QR thanh toán → nêu loại thanh toán', a.visible(/thanh toán/i))
+  check('QR thanh toán → «Loại mã: thanh toán»', a.visible(/Loại mã: thanh toán/))
   await reopen(a)
   await scanQr(a, 'qr-wifi.png', shot)
   check('QR Wi-Fi → hiện tên mạng, KHÔNG hiện mật khẩu', (await seen(a, /Cafe Mo/, 3)) && !a.visible(/matkhau/))

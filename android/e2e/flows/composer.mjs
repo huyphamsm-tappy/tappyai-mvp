@@ -37,7 +37,8 @@ async function pickNewest(a, kind = 'Photo') {
 async function openComposer(a) {
   await a.tap('Khám phá', { after: 4000 })
   // The "+" in Explore's header — the only square button left of search there.
-  const plus = a.dump().filter((n) => n.clickable && n.y1 < 400 && n.x2 - n.x1 < 160 && n.x2 - n.x1 > 80).sort((x, y) => x.x1 - y.x1)[0]
+  const k = a.screen()[0] / 1080
+  const plus = a.dump().filter((n) => n.clickable && n.y1 < 400 * k && n.x2 - n.x1 < 160 * k && n.x2 - n.x1 > 80 * k).sort((x, y) => x.x1 - y.x1)[0]
   await a.tap(plus, { after: 3000 })
   if (!a.visible('Bài viết mới')) throw new Error('composer did not open')
 }

@@ -81,6 +81,7 @@ import com.tappyai.app.notifications.InboxBadgeViewModel
 import com.tappyai.app.notifications.UnreadBadge
 import com.tappyai.app.R
 import com.tappyai.app.safety.SafetyViewModel
+import com.tappyai.app.safety.ui.BlockConfirmDialog
 import com.tappyai.app.safety.ui.ReportDialog
 import com.tappyai.app.safety.ui.UgcTermsDialog
 import com.tappyai.app.explore.ExploreV3
@@ -567,6 +568,22 @@ internal fun ReviewDetailScreen(
     val safetyFlags by viewModel.safetyFlags.collectAsStateWithLifecycle()
     var reportPostFor by remember { mutableStateOf<String?>(null) }
     var reportCommentFor by remember { mutableStateOf<String?>(null) }
+    // Block the author (only while the server says it supports blocking — `/api/config` → p8.userBlocks), as on the feed pager's menu.
+    var blockFor by remember { mutableStateOf<Review?>(null) }
+    val blockScope = rememberCoroutineScope()
+    blockFor?.let { r ->
+        BlockConfirmDialog(
+            name = r.profiles?.fullName,
+            onConfirm = {
+                blockFor = null
+                blockScope.launch {
+                    val ok = viewModel.blockAuthor(r.userId)
+                    Toast.makeText(context, context.getString(if (ok) R.string.safety_block_done else R.string.safety_block_failed), Toast.LENGTH_SHORT).show()
+                }
+            },
+            onDismiss = { blockFor = null },
+        )
+    }
     reportPostFor?.let { id ->
         ReportDialog(
             title = stringResource(R.string.safety_report_post_title),
@@ -652,6 +669,7 @@ internal fun ReviewDetailScreen(
                             onDelete = {},
                             onHide = {},
                             onReport = if (review.userId == uiState.currentUserId) null else ({ reportPostFor = review.id }),
+                            onBlockAuthor = if (review.userId != uiState.currentUserId && uiState.currentUserId != null && safetyFlags.userBlocks) ({ blockFor = review }) else null,
                         )
                     }
                 }
