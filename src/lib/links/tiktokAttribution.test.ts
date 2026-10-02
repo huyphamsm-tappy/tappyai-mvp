@@ -242,7 +242,9 @@ describe('the rendered wording matches what the evidence supports', () => {
     // rather than one literal byte string, which is what a renamed term would silently break.
     const composed = filter.match(/const finalText = `([^`]*)`/)?.[1]
     expect(composed).toMatch(/^\$\{ctaOwnedProse\}/)
-    expect(filter).toMatch(/const ctaOwnedProse = .*\bprose\b/)
+    // chat1 (02/10) split it: `ctaOwnedProseBase` is the CTA-stripped `prose`; `ctaOwnedProse` adds the appendix after it.
+    expect(filter).toMatch(/const ctaOwnedProseBase = .*\bprose\b/)
+    expect(filter).toMatch(/const ctaOwnedProse = [\s\S]{0,200}ctaOwnedProseBase/)
   })
 
   it('re-validates the URL at the render boundary', () => {

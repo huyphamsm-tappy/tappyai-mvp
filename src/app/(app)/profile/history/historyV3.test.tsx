@@ -234,7 +234,7 @@ describe('link-check history is the device store, and says so', () => {
     localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify([entry({ level: 'HIGH', url: 'https://vcb-secure-login.net/' })]))
     renderHistory()
     expect(screen.getByText('https://vcb-secure-login.net/')).toBeTruthy()
-    expect(screen.getByText(/nguy cơ cao|high risk/i)).toBeTruthy()
+    expect(screen.getByText(/đặc điểm link giả mạo|fake-link traits|dấu hiệu lừa đảo quen thuộc|familiar scam signs/i)).toBeTruthy()
   })
 
   it('states that the list is device-local rather than implying it syncs', () => {
