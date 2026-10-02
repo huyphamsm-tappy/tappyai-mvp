@@ -104,15 +104,16 @@ describe('checkUrl integration', () => {
     vi.clearAllMocks()
   })
 
-  it('returns SAFE for a clean URL', async () => {
+  it('a clean URL is reported INCONCLUSIVE / unrecognized, never SAFE (02/10)', async () => {
     const result = await checkUrl('https://example.com')
     expect(result.inputType).toBe('url')
     expect(result.url).toBe('https://example.com/')
-    expect(result.risk.level).toBe('SAFE')
+    expect(result.risk.level).toBe('INCONCLUSIVE')
+    expect(result.verdict).toBe('unrecognized')
     expect(result.risk.score).toBe(0)
     expect(result.risk.confidence).toBe(100)
     expect(result.evidence.items.length).toBeGreaterThan(0)
-    expect(result.actions[0].action).toBe('LIKELY_SAFE')
+    expect(result.actions[0].action).toBe('INCONCLUSIVE')
     expect(result.checkedAt).toBeGreaterThan(0)
   })
 

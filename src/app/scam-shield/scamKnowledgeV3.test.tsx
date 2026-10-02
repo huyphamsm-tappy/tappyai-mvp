@@ -63,9 +63,10 @@ describe('the three primary actions', () => {
     fireEvent.click(screen.getByRole('tab', { name: 'Phân tích tin nhắn' }))
     const form = document.querySelector('[data-scam-message-form]') as HTMLElement
     expect(within(form).getByRole('heading', { level: 3 }).textContent).toBe('Phân tích tin nhắn')
-    expect(form.textContent).toContain('Dán tin nhắn hoặc mô tả tình huống đáng ngờ. AI sẽ phân tích nội dung và các dấu hiệu lừa đảo.')
-    // The hint says the question comes from the SHARED pool — not a Scam Alerts allowance.
-    expect(form.textContent).toMatch(/lượt hỏi AI chung của Tappy/)
+    expect(form.textContent).toContain('Dán tin nhắn hoặc mô tả ngắn tình huống đáng ngờ. TappyAI đối chiếu với các tình huống lừa đảo đã được Bộ Công an cảnh báo.')
+    // 02/10: no AI is used, so there is no AI allowance line either.
+    expect(form.textContent).toMatch(/không dùng AI, không lưu nội dung tin nhắn/)
+    expect(form.textContent).not.toMatch(/lượt hỏi AI/)
     const textarea = within(form).getByRole('textbox', { name: 'Phân tích tin nhắn' }) as HTMLTextAreaElement
     expect(textarea.placeholder).toMatch(/^Ví dụ: Một người tự xưng là nhân viên ngân hàng/)
     fireEvent.change(textarea, { target: { value: 'Một người tự xưng là công an gọi tôi' } })

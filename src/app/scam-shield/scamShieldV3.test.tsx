@@ -107,7 +107,13 @@ describe('the check is the same request it always was', () => {
     const [url, init] = fetchMock.mock.calls[0]
     expect(url).toBe('/api/scam-shield/check')
     expect(JSON.parse((init as RequestInit).body as string)).toEqual({ url: 'https://vietcombank.com.vn/' })
-    await waitFor(() => expect(screen.getAllByText(/^(an toàn|safe)$/i).length).toBeGreaterThan(0))
+    // 02/10: the old payload says SAFE; the card shows the "unrecognised" state, never "An toàn" / a score.
+    await waitFor(() => expect(document.querySelector('[data-scam-link-result="unrecognized"]')).not.toBeNull())
+    const card = document.querySelector('[data-scam-link-result]') as HTMLElement
+    expect(card.textContent).toMatch(/chưa nhận ra dấu hiệu quen thuộc|no familiar signs recognised/i)
+    expect(card.textContent).not.toMatch(/score|độ tin cậy|high confidence/i)
+    expect(card.textContent).not.toMatch(/^(an toàn|safe)$/im)
+    expect(card.textContent).toMatch(/TappyAI không thay thế cơ quan chức năng|does not replace the authorities/i)
   })
 
   it('Enter submits; an empty input does not', async () => {
@@ -133,16 +139,22 @@ describe('the check is the same request it always was', () => {
   })
 
   it.each([
-    ['SAFE', /^(an toàn|safe)$/i],
-    ['MEDIUM', /use caution|cần cẩn thận/i],
-    ['CRITICAL', /very dangerous|rất nguy hiểm/i],
-    ['INCONCLUSIVE', /could not be checked|chưa kết luận được/i],
-  ])('renders the engine level %s with its own wording — six levels, not three', async (level, re) => {
+    ['SAFE', 'unrecognized', /chưa nhận ra dấu hiệu quen thuộc|no familiar signs recognised/i],
+    ['LOW', 'unrecognized', /chưa nhận ra dấu hiệu quen thuộc|no familiar signs recognised/i],
+    ['MEDIUM', 'suspicious', /đường link có một số điểm đáng ngờ|this link has some suspicious traits/i],
+    ['HIGH', 'familiar', /đường link có đặc điểm thường gặp ở link giả mạo|common in fake links/i],
+    ['CRITICAL', 'familiar', /đường link có đặc điểm thường gặp ở link giả mạo|common in fake links/i],
+    ['INCONCLUSIVE', 'unrecognized', /chưa nhận ra dấu hiệu quen thuộc|no familiar signs recognised/i],
+  ])('02/10: engine level %s is shown as the three-state verdict %s — never a safety word or a number', async (level, verdict, re) => {
     vi.stubGlobal('fetch', okFetch(RESULT(level)))
     render(<ScamShieldView />)
     fireEvent.change(input(), { target: { value: 'https://example.com' } })
     fireEvent.click(checkButton())
-    await waitFor(() => expect(screen.getAllByText(re).length).toBeGreaterThan(0))
+    await waitFor(() => expect(document.querySelector(`[data-scam-link-result="${verdict}"]`)).not.toBeNull())
+    const card = document.querySelector('[data-scam-link-result]') as HTMLElement
+    expect(card.textContent).toMatch(re)
+    expect(card.textContent).not.toMatch(/score|độ tin cậy|high confidence|nguy cơ thấp|low risk/i)
+    expect(card.textContent).not.toMatch(/^(an toàn|safe)$/im)
   })
 
   it('maps the existing error codes to the existing messages, as a live alert', async () => {
@@ -280,43 +292,40 @@ describe('the message tab — Analyze Message', () => {
       expect(el).not.toBeNull()
       return el as HTMLElement
     })
-    expect(card.getAttribute('data-scam-message-result')).toBe('HIGH')
+    expect(card.getAttribute('data-scam-message-result')).toBe('familiar')
     expect(card.textContent).toContain('Likely Telegram account takeover phishing.')
     expect(card.textContent).toMatch(/Do NOT enter any OTP|KHÔNG nhập mã OTP/)
     expect(card.textContent).toMatch(/Open the official app yourself|Mở ứng dụng chính thức/)
     expect(card.textContent).toContain('42777qz.hanveko.cfd')
-    expect(card.querySelector('[data-scam-ai-note]')?.getAttribute('data-scam-ai-note')).toBe('used')
+    // 02/10: no AI line, no AI counter, no score, no confidence badge.
+    expect(card.querySelector('[data-scam-ai-note]')).toBeNull()
+    expect(card.textContent).not.toMatch(/score|độ tin cậy|high confidence|AI (today|left)|AI hôm nay|lượt hỏi AI/i)
+    expect(card.textContent).toMatch(/TappyAI không thay thế cơ quan chức năng|does not replace the authorities/i)
     // A message verdict is not a link and never enters the link history.
     expect(localStorage.getItem(HISTORY_STORAGE_KEY)).toBeNull()
   })
 
-  it('the analyze button is disabled with nothing to analyze, and the screenshot input accepts only JPEG/PNG/WebP', () => {
+  it('the analyze button is disabled with nothing to analyze, and there is no screenshot picker while the AI switch is off', () => {
     render(<ScamShieldView />)
     fireEvent.click(messageTab())
     expect((analyzeButton() as HTMLButtonElement).disabled).toBe(true)
-    const file = document.querySelector('[data-scam-screenshot-input]') as HTMLInputElement
-    expect(file.getAttribute('accept')).toBe('image/jpeg,image/png,image/webp')
-    fireEvent.change(file, { target: { files: [new File(['x'], 'shot.png', { type: 'image/png' })] } })
-    expect(document.querySelector('[data-scam-screenshot-name]')?.textContent).toContain('shot.png')
+    // 02/10: reading a screenshot is an AI call; the picker is only rendered when NEXT_PUBLIC_SCAM_SHIELD_AI_ENABLED=true.
+    expect(document.querySelector('[data-scam-screenshot-input]')).toBeNull()
+    fireEvent.change(within(tool()).getByRole('textbox', { name: /analyze a message|phân tích tin nhắn/i }), { target: { value: 'hello' } })
     expect((analyzeButton() as HTMLButtonElement).disabled).toBe(false)
   })
 
-  it('says why AI was not used when the allowance is spent', async () => {
+  it('02/10: never shows the AI allowance — not the hint, not the counter — even if an old server still sends it', async () => {
     vi.stubGlobal('fetch', okFetch({ ...MESSAGE_RESULT, analysis: { tier: 2, aiStatus: 'quota_exhausted', provider: null, modelRole: null }, quota: { kind: 'anon', limit: 5, period: 'lifetime', used: 5, remaining: 0, exhausted: true, pro: false } }))
     render(<ScamShieldView />)
     fireEvent.click(messageTab())
+    expect(tool().textContent).not.toMatch(/lượt hỏi AI|AI questions|AI hôm nay|AI today/i)
     fireEvent.change(within(tool()).getByRole('textbox', { name: /analyze a message|phân tích tin nhắn/i }), { target: { value: 'hello' } })
     fireEvent.click(analyzeButton())
-    const note = await waitFor(() => {
-      const el = document.querySelector('[data-scam-ai-note]') as HTMLElement | null
-      expect(el).not.toBeNull()
-      return el as HTMLElement
-    })
-    expect(note.getAttribute('data-scam-ai-note')).toBe('quota_exhausted')
-    // The GLOBAL counter, not a Scam Alerts allowance: 5/5 spent, sign in for 15/day.
-    expect(note.textContent).toMatch(/5\/5/)
-    expect(note.querySelector('[data-scam-ai-counter]')?.textContent).toMatch(/AI (left|còn lại): 0\/5/)
-    expect(note.textContent).toMatch(/15/)
+    await waitFor(() => expect(document.querySelector('[data-scam-message-result]')).not.toBeNull())
+    expect(document.querySelector('[data-scam-ai-note]')).toBeNull()
+    expect(document.querySelector('[data-scam-ai-counter]')).toBeNull()
+    expect(document.body.textContent).not.toMatch(/AI (hôm nay|còn lại|today|left)|lượt hỏi AI/i)
   })
 
   it('surfaces a server error with a dictionary message', async () => {
@@ -337,7 +346,7 @@ describe('history section', () => {
     render(<ScamShieldView />)
     await waitFor(() => expect(document.querySelectorAll('[data-scam-history] li')).toHaveLength(1))
     expect(screen.getByText('vcb-secure-login.net')).toBeTruthy()
-    expect(screen.getByText(/high|nguy cơ cao|cao/i)).toBeTruthy()
+    expect(screen.getByText(/đặc điểm link giả mạo|fake-link traits/i)).toBeTruthy()
     // A row is a shortcut back to the engine, never a cached answer.
     fireEvent.click(screen.getByText('vcb-secure-login.net').closest('button')!)
     await waitFor(() => expect(fetchMock).toHaveBeenCalledWith('/api/scam-shield/check', expect.anything()))

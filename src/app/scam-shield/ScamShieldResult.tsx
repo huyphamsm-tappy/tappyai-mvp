@@ -2,6 +2,7 @@
 
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import type { CheckResult, RiskLevel, RecommendedAction, EvidenceItem, OfficialEntity } from '@/lib/scam-shield/types'
+import { linkVerdict, type Verdict } from '@/lib/scam-shield/verdict'
 import {
   ShieldCheck, ShieldAlert, ShieldX, ShieldQuestion, AlertTriangle,
   ExternalLink, Phone, Flag, Search, CircleCheck, CircleAlert,
@@ -73,22 +74,24 @@ const ACTION_ICONS: Record<string, typeof ShieldCheck> = {
   check: CircleCheck,
 }
 
-/** Exported: the message-analysis card (`ScamMessageResult`) renders the same badge, so the two
- *  verdict surfaces cannot disagree about what a confidence number means. */
-export function ConfidenceBadge({ confidence }: { confidence: number }) {
+/** The verdict of a link-shaped result (link tab, or a link read from a QR), from the server's `verdict`
+ *  when present and otherwise from the level — so a cached or older payload still gets the three states. */
+export function verdictOfLinkResult(result: Pick<CheckResult, 'verdict' | 'risk'>): Verdict {
+  return result.verdict ?? linkVerdict(result.risk.level)
+}
+
+/** Short badge text for a link verdict (history rows) — never a safety word, never a number. */
+export function linkBadgeKey(level: RiskLevel): string {
+  return `scamVerdict.link.short.${linkVerdict(level)}`
+}
+
+/** "TappyAI không thay thế cơ quan chức năng." — printed under EVERY verdict (message, link, QR). */
+export function VerdictDisclaimer() {
   const { t } = useTranslation()
-  const [key, tone] = confidence >= 80
-    ? ['scamShield.confidence.high', LEVEL_TONE.SAFE]
-    : confidence >= 50
-      ? ['scamShield.confidence.medium', LEVEL_TONE.MEDIUM]
-      : ['scamShield.confidence.low', LEVEL_TONE.INCONCLUSIVE]
   return (
-    <span
-      className="rounded-full px-2 py-0.5 text-[11px] font-medium"
-      style={{ background: tone.soft, color: tone.fg }}
-    >
-      {t(key as string)}
-    </span>
+    <p className="mt-4 text-[12px] font-semibold leading-snug" style={{ color: 'var(--v3-fg-muted)' }} data-scam-disclaimer>
+      {t('scamVerdict.disclaimer')}
+    </p>
   )
 }
 
@@ -109,10 +112,12 @@ function SeverityDot({ severity }: { severity: string }) {
   )
 }
 
-function EvidenceSection({ items }: { items: EvidenceItem[] }) {
+function EvidenceSection({ items }: { items: EvidenceItem[] }) {  // eslint-disable-line prefer-const
   const { t } = useTranslation()
   const [open, setOpen] = useState(false)
 
+  // 02/10: rows that read as reassurance ("certificate valid", "not on a blocklist") are not shown.
+  items = items.filter(i => i.severity !== 'safe')
   if (items.length === 0) return null
 
   return (
@@ -181,7 +186,7 @@ function ActionsSection({ actions, locale }: { actions: RecommendedAction[]; loc
 
 function OfficialSection({ entity }: { entity: OfficialEntity }) {
   const { t } = useTranslation()
-  const tone = LEVEL_TONE.SAFE
+  const tone = LEVEL_TONE.INCONCLUSIVE
 
   return (
     <div
@@ -215,16 +220,21 @@ function OfficialSection({ entity }: { entity: OfficialEntity }) {
 
 export default function ScamShieldResult({ result }: { result: CheckResult }) {
   const { t, locale } = useTranslation()
-  const tone = LEVEL_TONE[result.risk.level]
+  const verdict = verdictOfLinkResult(result)
+  // The card's colour follows the VERDICT (three states), not the engine's six levels.
+  const tone = LEVEL_TONE[verdict === 'familiar' ? 'HIGH' : verdict === 'suspicious' ? 'MEDIUM' : 'INCONCLUSIVE']
   const Icon = tone.icon
+  // Specific reasons: only what the engine actually found (warning / critical), never "all clear" rows.
+  const reasons = result.evidence.items.filter(i => i.severity === 'critical' || i.severity === 'warning').slice(0, 6)
 
   return (
     <section
       className="v3-panel overflow-hidden"
       // The verdict is the one place on this page where colour carries meaning rather than
-      // decoration, so the whole card takes the level's tint instead of a neutral panel.
+      // decoration, so the whole card takes the verdict's tint instead of a neutral panel.
       style={{ background: tone.soft, borderColor: tone.border }}
       aria-live="polite"
+      data-scam-link-result={verdict}
     >
       <div className="flex items-center gap-3.5 p-4 sm:p-5">
         <span
@@ -235,36 +245,39 @@ export default function ScamShieldResult({ result }: { result: CheckResult }) {
           <Icon size={26} strokeWidth={2.2} />
         </span>
         <div className="min-w-0 flex-1">
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="text-[17px] font-extrabold leading-tight" style={{ color: tone.fg }}>
-              {t(LEVEL_KEY[result.risk.level])}
-            </span>
-            <ConfidenceBadge confidence={result.risk.confidence} />
-          </div>
+          <span className="block text-[17px] font-extrabold leading-tight" style={{ color: tone.fg }}>
+            {t(`scamVerdict.link.${verdict}.title`)}
+          </span>
           <p className="mt-0.5 truncate text-[12px]" style={{ color: 'var(--v3-fg-muted)' }} title={result.url}>
             {result.url}
           </p>
         </div>
-        <div className="flex-shrink-0 text-right">
-          <div className="text-[24px] font-extrabold leading-none" style={{ color: tone.fg }}>
-            {result.risk.score}
-          </div>
-          <div
-            className="mt-1 text-[9.5px] font-semibold uppercase tracking-[0.11em]"
-            style={{ color: 'var(--v3-fg-muted)' }}
-          >
-            {/* Language-neutral; the same word in both dictionaries. */}
-            Score
-          </div>
-        </div>
       </div>
 
       <div className="px-4 pb-4 sm:px-5 sm:pb-5">
+        <p className="rounded-xl p-3.5 text-[13.5px] leading-relaxed" style={{ background: 'var(--v3-panel)', color: 'var(--v3-fg)' }}>
+          {t(`scamVerdict.link.${verdict}.body`)}
+        </p>
+        {reasons.length > 0 && (
+          <div className="mt-4" data-scam-reasons>
+            <p className="mb-2 text-[13px] font-semibold" style={{ color: 'var(--v3-fg-secondary)' }}>{t('scamVerdict.link.reasons')}</p>
+            <ul className="space-y-2">
+              {reasons.map((item, i) => (
+                <li key={i} className="flex items-start gap-2.5 rounded-lg p-2.5" style={{ background: 'var(--v3-panel-elevated)' }}>
+                  <SeverityDot severity={item.severity} />
+                  <span className="text-[12.5px] leading-snug" style={{ color: 'var(--v3-fg)' }}>{item.summary}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
         {result.officialMatch && <OfficialSection entity={result.officialMatch} />}
-        <ActionsSection actions={result.actions} locale={locale} />
+        {/* The INCONCLUSIVE action text IS the "unrecognised" body above, so it is not repeated. */}
+        <ActionsSection actions={verdict === 'unrecognized' ? result.actions.filter(a => a.action !== 'INCONCLUSIVE') : result.actions} locale={locale} />
         {/* G1 wedge: one tap turns the verdict into a public page the group can be warned with. */}
         <ScamShareButton result={result} />
         <EvidenceSection items={result.evidence.items} />
+        <VerdictDisclaimer />
       </div>
     </section>
   )

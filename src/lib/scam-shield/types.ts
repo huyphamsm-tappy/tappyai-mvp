@@ -122,4 +122,6 @@ export interface CheckResult {
   actions: RecommendedAction[]
   checkedAt: number
   cached: boolean
+  /** Added 02/10: the three-state public verdict (`familiar` | `suspicious` | `unrecognized`). Old clients ignore it. */
+  verdict?: 'familiar' | 'suspicious' | 'unrecognized'
 }

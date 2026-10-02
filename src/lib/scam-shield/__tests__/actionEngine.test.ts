@@ -48,16 +48,16 @@ describe('getRecommendedActions', () => {
     expect(actions.some(a => a.action === 'CHECK_OFFICIAL')).toBe(true)
   })
 
-  it('returns LIKELY_SAFE for LOW', () => {
+  it('never returns LIKELY_SAFE for LOW (02/10 — no "safe" wording anywhere)', () => {
     const actions = getRecommendedActions('LOW', emptyEvidence, null)
-    expect(actions[0].action).toBe('LIKELY_SAFE')
-    expect(actions).toHaveLength(1)
+    expect(actions[0].action).toBe('INCONCLUSIVE')
+    expect(actions.map(a => a.action)).not.toContain('LIKELY_SAFE')
   })
 
-  it('returns LIKELY_SAFE for SAFE', () => {
+  it('never returns LIKELY_SAFE for SAFE', () => {
     const actions = getRecommendedActions('SAFE', emptyEvidence, null)
-    expect(actions[0].action).toBe('LIKELY_SAFE')
-    expect(actions[0].icon).toBe('check')
+    expect(actions[0].action).toBe('INCONCLUSIVE')
+    expect(actions[0].icon).toBe('warning')
   })
 
   it('provides bilingual labels', () => {
@@ -97,8 +97,8 @@ describe('getRecommendedActions — reassurance requires evidence', () => {
   })
 
   /** The boundary is the UI's own low/medium confidence split, so badge and action agree. */
-  it('reassures at the confidence threshold but not below it', () => {
-    expect(getRecommendedActions('SAFE', emptyEvidence, null, 50)[0].action).toBe('LIKELY_SAFE')
+  it('does not reassure at any confidence (02/10)', () => {
+    expect(getRecommendedActions('SAFE', emptyEvidence, null, 50)[0].action).toBe('INCONCLUSIVE')
     expect(getRecommendedActions('SAFE', emptyEvidence, null, 49)[0].action).toBe('INCONCLUSIVE')
   })
 
@@ -114,8 +114,9 @@ describe('getRecommendedActions — reassurance requires evidence', () => {
   it('states the check did not complete, in both languages', () => {
     const [primary] = getRecommendedActions('SAFE', emptyEvidence, null, 0)
 
-    expect(primary.label_vi).toContain('chưa thể kết luận')
-    expect(primary.label_en).toContain('cannot be confirmed safe')
+    expect(primary.label_vi).toContain('Chưa nhận ra dấu hiệu quen thuộc')
+    expect(primary.label_vi).toContain('KHÔNG có nghĩa là an toàn')
+    expect(primary.label_en).toContain('does NOT mean it is safe')
     expect(primary.icon).not.toBe('check')
   })
 
@@ -127,7 +128,7 @@ describe('getRecommendedActions — reassurance requires evidence', () => {
   })
 
   /** Full evidence must still reassure — the guard above must not swallow the normal path. */
-  it('reassures normally when the evidence base completed', () => {
-    expect(getRecommendedActions('SAFE', emptyEvidence, null, 100)[0].action).toBe('LIKELY_SAFE')
+  it('still does not reassure when the evidence base completed (02/10)', () => {
+    expect(getRecommendedActions('SAFE', emptyEvidence, null, 100)[0].action).toBe('INCONCLUSIVE')
   })
 })

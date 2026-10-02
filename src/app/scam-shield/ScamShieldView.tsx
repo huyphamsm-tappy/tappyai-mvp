@@ -14,15 +14,16 @@ import {
 import V3Shell from '@/components/v3/V3Shell'
 import TappyPresence from '@/components/v3/TappyPresence'
 import { getAttribution, setSessionSource } from '@/lib/analytics/attribution'
-import ScamShieldResult, { LEVEL_TONE, LEVEL_KEY } from './ScamShieldResult'
+import ScamShieldResult, { LEVEL_TONE, linkBadgeKey, VerdictDisclaimer } from './ScamShieldResult'
 import { decodeQrFromFile } from '@/lib/scam-shield/qr/clientDecode'
 import { classifyQrPayload, type QrKind } from '@/lib/scam-shield/qr/payload'
 import ScamMessageResult, { type MessageAnalysisResponse } from './ScamMessageResult'
 import ScamKnowledgeSection from './ScamKnowledgeSection'
-import { ANON_LIFETIME_LIMIT, FREE_DAILY_LIMIT } from '@/lib/config/product'
-import { ensureAnonymousSession } from '@/lib/auth/ensureAnonymousSession'
 import { track } from '@/lib/tracking/tracker'
 import { MESSAGE_MAX_CHARS, SCREENSHOT_ALLOWED_MIME, SCREENSHOT_MAX_BYTES } from '@/lib/scam-shield/message/config'
+
+/** Reading a screenshot is a model call; it is offered only when the deployment turned the AI switch on (default OFF). */
+const SCREENSHOT_ENABLED = process.env.NEXT_PUBLIC_SCAM_SHIELD_AI_ENABLED === 'true'
 import { readScamShieldPrefill } from '@/lib/scam-shield/deepLink'
 
 /**
@@ -45,6 +46,7 @@ const ERROR_I18N: Record<string, string> = {
   too_large: 'scamShield.error.qrFailed',
   invalid_content_type: 'scamShield.error.qrFailed',
   invalid_image: 'v3.scam.msg.errImage',
+  screenshot_unavailable: 'v3.scam.msg.errScreenshotOff',
   analyze_failed: 'v3.scam.msg.errFailed',
   account_suspended: 'v3.scam.msg.errFailed',
   account_banned: 'v3.scam.msg.errFailed',
@@ -122,7 +124,7 @@ function LevelBadge({ level, size = 'md' }: { level: RiskLevel; size?: 'sm' | 'm
       style={{ background: tone.soft, color: tone.fg, border: `1px solid ${tone.border}` }}
     >
       <tone.icon size={size === 'sm' ? 13 : 15} aria-hidden="true" />
-      {t(LEVEL_KEY[level])}
+      {t(linkBadgeKey(level))}
     </span>
   )
 }
@@ -242,10 +244,6 @@ export default function ScamShieldView() {
     setError(null)
 
     try {
-      // Give a signed-out browser its anonymous identity BEFORE spending an AI question, so the
-      // shared quota is keyed by that verified identity rather than by IP. Same contract chat
-      // uses; fail-open like it (the server then meters the identity-less fallback).
-      await ensureAnonymousSession()
       const body: Record<string, string> = {}
       if (text) body.text = text
       if (url) body.url = url
@@ -503,7 +501,7 @@ export default function ScamShieldView() {
                     all go to the same analysis. */}
                 <div>
                   <h3 className="text-[16px] font-bold" style={{ color: 'var(--v3-fg)' }}>{t('v3.scam.msg.title')}</h3>
-                  <p className="mt-0.5 text-[13px] leading-snug" style={{ color: 'var(--v3-fg-muted)' }}>{t('v3.scam.msg.subtitle')}</p>
+                  <p className="mt-0.5 text-[13px] leading-snug" style={{ color: 'var(--v3-fg-muted)' }}>{t('scamVerdict.msg.subtitle')}</p>
                 </div>
                 <textarea
                   value={message}
@@ -531,6 +529,7 @@ export default function ScamShieldView() {
                   </div>
                   {/* The screenshot input is rendered ONLY on this tab, so the QR tab's file input
                       stays the single `input[type=file]` on its own tab. */}
+                  {SCREENSHOT_ENABLED && (
                   <input
                     ref={screenshotRef}
                     type="file"
@@ -543,7 +542,8 @@ export default function ScamShieldView() {
                       e.target.value = ''
                     }}
                   />
-                  {screenshot ? (
+                  )}
+                  {!SCREENSHOT_ENABLED ? null : screenshot ? (
                     <span className="v3-chip inline-flex min-h-[48px] max-w-full items-center gap-2 self-start sm:self-auto" data-scam-screenshot-name>
                       <ImagePlus size={16} aria-hidden="true" />
                       <span className="max-w-[180px] truncate">{screenshot.name}</span>
@@ -565,7 +565,7 @@ export default function ScamShieldView() {
                 </div>
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
                   <p className="min-w-0 flex-1 text-[12px] leading-snug" style={{ color: 'var(--v3-fg-muted)' }}>
-                    {t('v3.scam.msg.quotaHint', { a: String(ANON_LIFETIME_LIMIT), n: String(FREE_DAILY_LIMIT) })}
+                    {t('scamVerdict.msg.privacy')}
                   </p>
                   <button
                     type="button"
@@ -604,7 +604,9 @@ export default function ScamShieldView() {
               <p className="mt-1 text-[13.5px] leading-snug" style={{ color: 'var(--v3-fg-muted)' }}>{t('scamQr.warn.' + qrOther.kind)}</p>
               <p className="mt-3 text-[12px]" style={{ color: 'var(--v3-fg-muted)' }}>{t('scamQr.content')}</p>
               <p className="mt-0.5 break-all rounded-xl px-3 py-2 text-[13px]" style={{ color: 'var(--v3-fg)', background: 'rgba(127,127,127,.14)' }}>{qrOther.text}</p>
+              <p className="mt-3 text-[12.5px] leading-snug" style={{ color: 'var(--v3-fg-secondary)' }}>{t('scamVerdict.qr.noVerdict')}</p>
               <p className="mt-3 text-[12px]" style={{ color: 'var(--v3-fg-muted)' }}>{t('scamQr.privacy')}</p>
+              <VerdictDisclaimer />
             </div>
           )}
           {result && <ScamShieldResult result={result} />}

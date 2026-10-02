@@ -22,6 +22,12 @@ import {
 } from '@/modules/music'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { detectSource, placeholderFor, SUPPORTED_LINK_SOURCES, type LinkSource } from '@/lib/links/platforms'
+import { mergeHashtags, parseHashtags } from '@/lib/reviews/hashtags'
+
+// 02/10: pasting a YouTube link no longer asks a model for a description + hashtags (owner decision).
+// The title and cover still come from the allowed source (POST /api/links/resolve = oEmbed). The old
+// suggestion code is kept but unreachable unless this flag is set at build time (default OFF).
+const LINK_AI_SUGGEST_ENABLED = process.env.NEXT_PUBLIC_POST_LINK_AI_ENABLED === 'true'
 
 // Display label per provider. Only entries in SUPPORTED_LINK_SOURCES are rendered.
 const LINK_SOURCE_LABEL: Record<LinkSource, string> = { youtube: '▶ YouTube' }
@@ -337,6 +343,9 @@ export default function NewReviewPage() {
 
   /* ai suggestions */
   const [aiHashtags, setAiHashtags] = useState<string[]>([])
+  /** Hashtags the poster types themselves (02/10) - free text, normalised on submit. */
+  const [tagsText, setTagsText] = useState('')
+  const typedTags = parseHashtags(tagsText)
   /**
    * The AREA the existing content processor read off the caption/poster ("khu vuc neu ro").
    *
@@ -503,7 +512,7 @@ export default function NewReviewPage() {
         })
         if (aiRes.ok) {
           const ai = await aiRes.json()
-          if (Array.isArray(ai.hashtags) && ai.hashtags.length > 0) setAiHashtags(ai.hashtags)
+          if (Array.isArray(ai.hashtags) && ai.hashtags.length > 0) setAiHashtags(mergeHashtags(ai.hashtags.map(String)))
           if (!bodyNow.current.trim() && typeof ai.caption === 'string' && ai.caption) setBody(ai.caption)
           suggestArea(ai)
           vok('ai-process', tAi, { hashtags: Array.isArray(ai.hashtags) ? ai.hashtags.length : 0, area: typeof ai.location === 'string' && !!ai.location })
@@ -563,7 +572,7 @@ export default function NewReviewPage() {
       })
       if (aiRes.ok) {
         const ai = await aiRes.json()
-        if (Array.isArray(ai.hashtags) && ai.hashtags.length > 0) setAiHashtags(ai.hashtags)
+        if (Array.isArray(ai.hashtags) && ai.hashtags.length > 0) setAiHashtags(mergeHashtags(ai.hashtags.map(String)))
         if (!bodyNow.current.trim() && typeof ai.caption === 'string' && ai.caption) setBody(ai.caption)
         suggestArea(ai)
       }
@@ -613,7 +622,7 @@ export default function NewReviewPage() {
       const thumb = data?.thumbnail || placeholderFor(detected)
       const title = data?.title || ''
       setUrlMeta({ thumbnail_url: thumb, title })
-      triggerUrlAI(thumb, title)
+      if (LINK_AI_SUGGEST_ENABLED) triggerUrlAI(thumb, title)
     } catch {
       setUrlMeta({ thumbnail_url: placeholderFor(detected), title: '' })
     } finally {
@@ -622,6 +631,7 @@ export default function NewReviewPage() {
   }
 
   /* ─── Submit ─── */
+  const allTags = mergeHashtags(typedTags, aiHashtags)
   const isUploading = uploadStep === 'thumb' || uploadStep === 'video' || uploadStep === 'ai'
 
   /** A drop is the same action as picking from the file dialog, routed by the ACTIVE mode. */
@@ -685,7 +695,7 @@ export default function NewReviewPage() {
         payload.thumbnail = thumbnail || placeholderFor('upload')
         payload.source_type = 'upload'
         payload.duration = videoDuration // for the auto-registered original sound
-        if (aiHashtags.length > 0) payload.hashtags = aiHashtags
+        if (allTags.length > 0) payload.hashtags = allTags
       } else {
         payload.content_type = 'video'
         payload.media_url = source_url
@@ -694,7 +704,7 @@ export default function NewReviewPage() {
         // Backend resolver guarantees a non-empty thumbnail; the fallback here is
         // pure defense so a link post can never be stored with an empty poster.
         payload.thumbnail = urlMeta?.thumbnail_url || placeholderFor(source_type)
-        if (aiHashtags.length > 0) payload.hashtags = aiHashtags
+        if (allTags.length > 0) payload.hashtags = allTags
       }
 
       const tSubmit = vstart('submit-review', { content_type: payload.content_type, hasMedia: !!payload.media_url })
@@ -1124,14 +1134,26 @@ export default function NewReviewPage() {
           <p className="v3-post-counter mt-1 text-right">{body.length}/{BODY_MAX}</p>
         </section>
 
-        {/* AI hashtag chips */}
-        {aiHashtags.length > 0 && (
-          <div className="mt-3 flex flex-wrap gap-1.5">
-            {aiHashtags.map(tag => (
-              <span key={tag} className="v3-post-tag">#{tag}</span>
-            ))}
-          </div>
-        )}
+        {/* Hashtags the poster types (02/10). One "#" is added when a tag is shown; any "#" typed is stripped. */}
+        <div className="mt-3" data-post-hashtags>
+          <input
+            type="text"
+            value={tagsText}
+            onChange={e => setTagsText(e.target.value.slice(0, 200))}
+            placeholder={t('reviewNew.hashtagsPlaceholder')}
+            aria-label={t('reviewNew.hashtagsLabel')}
+            className="v3-post-body w-full"
+            autoCapitalize="none"
+            autoCorrect="off"
+          />
+          {allTags.length > 0 && (
+            <div className="mt-2 flex flex-wrap gap-1.5">
+              {allTags.map(tag => (
+                <span key={tag} className="v3-post-tag">#{tag}</span>
+              ))}
+            </div>
+          )}
+        </div>
 
         {/* -- Quick actions -- place . rating . music. The only place they appear. */}
         <div className="mt-4 flex flex-wrap gap-2.5 sm:gap-3" data-post-actions>
