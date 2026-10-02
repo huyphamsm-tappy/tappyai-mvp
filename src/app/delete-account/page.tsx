@@ -70,7 +70,6 @@ const DELETE_ACCOUNT: LegalDoc = {
       blocks: [
         { kind: 'p', key: 'legal.delete.s2.p1' },
         { kind: 'p', key: 'legal.delete.s2.p2' },
-        { kind: 'p', key: 'legal.delete.s2.p3' },
       ],
     },
     {

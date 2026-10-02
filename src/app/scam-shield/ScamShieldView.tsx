@@ -15,6 +15,8 @@ import V3Shell from '@/components/v3/V3Shell'
 import TappyPresence from '@/components/v3/TappyPresence'
 import { getAttribution, setSessionSource } from '@/lib/analytics/attribution'
 import ScamShieldResult, { LEVEL_TONE, LEVEL_KEY } from './ScamShieldResult'
+import { decodeQrFromFile } from '@/lib/scam-shield/qr/clientDecode'
+import { classifyQrPayload, type QrKind } from '@/lib/scam-shield/qr/payload'
 import ScamMessageResult, { type MessageAnalysisResponse } from './ScamMessageResult'
 import ScamKnowledgeSection from './ScamKnowledgeSection'
 import { ANON_LIFETIME_LIMIT, FREE_DAILY_LIMIT } from '@/lib/config/product'
@@ -137,6 +139,8 @@ export default function ScamShieldView() {
   const [history, setHistory] = useState<ScamCheckHistoryEntry[]>([])
   const [expanded, setExpanded] = useState(false)
   const fileRef = useRef<HTMLInputElement>(null)
+  // A QR code that is not a web link: what it is + a warning. Nothing is opened, paid or joined from here.
+  const [qrOther, setQrOther] = useState<{ kind: QrKind; text: string } | null>(null)
 
   // Analyze Message state. Its result is a different shape from `CheckResult` and is NOT written
   // to the device history — that list is a list of links, and a message is not a link.
@@ -172,7 +176,7 @@ export default function ScamShieldView() {
     setHistory(recordCheck(checked))
   }, [])
 
-  async function handleUrlCheck(raw?: string) {
+  async function handleUrlCheck(raw?: string, source: 'url' | 'qr' = 'url') {
     const target = (raw ?? url).trim()
     if (!target || loading) return
     setLoading(true)
@@ -195,7 +199,7 @@ export default function ScamShieldView() {
       setResult(checked)
       remember(checked)
       // scam_check — verdict enum only, never the URL or any number in it.
-      track('scam_check', { check_type: 'url', risk_level: checked.risk.level })
+      track('scam_check', { check_type: source, risk_level: checked.risk.level })
     } catch {
       setError(t('scamShield.error.invalidUrl'))
     } finally {
@@ -203,26 +207,25 @@ export default function ScamShieldView() {
     }
   }
 
+  // QR: the picture is decoded HERE, in the browser (it is never uploaded). A web link goes on to the same link check as the URL tab; any
+  // other kind of code is shown with what it is and a warning, and nothing is opened, paid or joined.
   async function handleQrUpload(file: File) {
     setLoading(true)
     setResult(null)
     setError(null)
-
+    setQrOther(null)
     try {
-      const formData = new FormData()
-      formData.append('image', file)
-      const res = await fetch('/api/scam-shield/qr', { method: 'POST', body: formData })
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({} as Record<string, string>))
-        const key = ERROR_I18N[data.error as string]
-        setError(key ? t(key) : t('scamShield.error.qrFailed'))
+      const decoded = await decodeQrFromFile(file)
+      if (!decoded.ok) { setError(t('scamShield.error.qrDecode')); return }
+      const payload = classifyQrPayload(decoded.text)
+      if (payload.kind !== 'url' || !payload.url) {
+        setQrOther({ kind: payload.kind, text: decoded.text.slice(0, 500) })
+        // scam_check — the kind only, never the decoded contents.
+        track('scam_check', { check_type: 'qr', risk_level: 'non_url_' + payload.kind })
         return
       }
-      const checked: CheckResult = await res.json()
-      setResult(checked)
-      remember(checked)
-      // scam_check — verdict enum only, never the decoded QR contents.
-      track('scam_check', { check_type: 'qr', risk_level: checked.risk.level })
+      setLoading(false)
+      await handleUrlCheck(payload.url, 'qr')
     } catch {
       setError(t('scamShield.error.qrDecode'))
     } finally {
@@ -594,6 +597,16 @@ export default function ScamShieldView() {
           </section>
 
           {/* ── Verdict ── */}
+          {tab === 'qr' && qrOther && (
+            <div role="status" className="v3-scam-card mt-4 rounded-2xl p-4" data-qr-other={qrOther.kind}>
+              <h3 className="text-[16px] font-bold" style={{ color: 'var(--v3-fg)' }}>{t('scamQr.title')}</h3>
+              <p className="mt-1 text-[14px] font-semibold" style={{ color: 'var(--v3-fg)' }}>{t('scamQr.kind.' + qrOther.kind)}</p>
+              <p className="mt-1 text-[13.5px] leading-snug" style={{ color: 'var(--v3-fg-muted)' }}>{t('scamQr.warn.' + qrOther.kind)}</p>
+              <p className="mt-3 text-[12px]" style={{ color: 'var(--v3-fg-muted)' }}>{t('scamQr.content')}</p>
+              <p className="mt-0.5 break-all rounded-xl px-3 py-2 text-[13px]" style={{ color: 'var(--v3-fg)', background: 'rgba(127,127,127,.14)' }}>{qrOther.text}</p>
+              <p className="mt-3 text-[12px]" style={{ color: 'var(--v3-fg-muted)' }}>{t('scamQr.privacy')}</p>
+            </div>
+          )}
           {result && <ScamShieldResult result={result} />}
           {messageResult && <ScamMessageResult result={messageResult} />}
 

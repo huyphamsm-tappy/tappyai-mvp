@@ -20,6 +20,8 @@ export type LegalBlock =
   // plus the website: the copyright policy has to publish its own agent address, and a notice
   // sent to support instead of the agent is a notice that arrives in the wrong queue.
   | { kind: 'email'; labelKey: string; address: string }
+  // A link to another page of this site (a label above it, the visible text, and an internal path).
+  | { kind: 'link'; key: string; labelKey: string; href: string }
 
 export interface LegalSection {
   id: string

@@ -49,7 +49,7 @@ const PRIVACY: LegalDoc = {
       headingKey: 'legal.privacy.s1.heading',
       blocks: [
         { kind: 'lead', key: 'legal.privacy.s1.lead' },
-        { kind: 'bullets', keys: bullets('legal.privacy.s1.b', 10) },
+        { kind: 'bullets', keys: bullets('legal.privacy.s1.b', 13) },
         { kind: 'note', key: 'legal.privacy.s1.note' },
       ],
     },
@@ -58,7 +58,7 @@ const PRIVACY: LegalDoc = {
       headingKey: 'legal.privacy.s2.heading',
       blocks: [
         { kind: 'lead', key: 'legal.privacy.s2.lead' },
-        { kind: 'bullets', keys: bullets('legal.privacy.s2.b', 7) },
+        { kind: 'bullets', keys: bullets('legal.privacy.s2.b', 8) },
         { kind: 'note', key: 'legal.privacy.s2.note' },
       ],
     },
@@ -71,6 +71,7 @@ const PRIVACY: LegalDoc = {
         { kind: 'p', key: 'legal.privacy.s3.p1' },
         { kind: 'p', key: 'legal.privacy.s3.p2' },
         { kind: 'p', key: 'legal.privacy.s3.p3' },
+        { kind: 'p', key: 'legal.privacy.s3.p4' },
       ],
     },
     {
@@ -79,6 +80,8 @@ const PRIVACY: LegalDoc = {
       blocks: [
         { kind: 'p', key: 'legal.privacy.s4.p1' },
         { kind: 'p', key: 'legal.privacy.s4.p2' },
+        { kind: 'p', key: 'legal.privacy.s4.p3' },
+        { kind: 'p', key: 'legal.privacy.s4.p4' },
       ],
     },
     {
@@ -86,7 +89,16 @@ const PRIVACY: LegalDoc = {
       headingKey: 'legal.privacy.s5.heading',
       blocks: [
         { kind: 'lead', key: 'legal.privacy.s5.lead' },
-        { kind: 'bullets', keys: bullets('legal.privacy.s5.b', 3) },
+        { kind: 'bullets', keys: bullets('legal.privacy.s5.b', 4) },
+      ],
+    },
+    {
+      id: 'reports-blocking-and-moderation',
+      headingKey: 'legal.privacy.s8.heading',
+      blocks: [
+        { kind: 'p', key: 'legal.privacy.s8.p1' },
+        { kind: 'p', key: 'legal.privacy.s8.p2' },
+        { kind: 'p', key: 'legal.privacy.s8.p3' },
       ],
     },
     {

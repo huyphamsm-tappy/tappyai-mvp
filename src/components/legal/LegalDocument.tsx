@@ -94,6 +94,21 @@ export default function LegalDocument({ doc }: { doc: LegalDoc }) {
             </div>
           </dl>
         )
+      case 'link':
+        return (
+          <dl key={i} className="space-y-4">
+            <div>
+              <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                {t(block.labelKey)}
+              </dt>
+              <dd className="text-fluid-body">
+                <a href={block.href} className={linkClass}>
+                  {t(block.key)}
+                </a>
+              </dd>
+            </div>
+          </dl>
+        )
       case 'contact':
         return (
           <dl key={i} className="space-y-4">

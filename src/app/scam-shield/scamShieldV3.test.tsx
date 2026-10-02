@@ -10,6 +10,8 @@ vi.mock('next/navigation', () => ({
 }))
 // The view mints an anonymous identity before spending a shared AI question; not under test here.
 vi.mock('@/lib/auth/ensureAnonymousSession', () => ({ ensureAnonymousSession: async () => true }))
+const decodeMock = vi.hoisted(() => vi.fn())
+vi.mock('@/lib/scam-shield/qr/clientDecode', () => ({ decodeQrFromFile: decodeMock }))
 vi.mock('@/components/NotificationProvider', () => ({
   useNotifications: () => ({ notifications: [], unreadCount: 0, loading: false, refetch: vi.fn(), markAllRead: vi.fn() }),
 }))
@@ -111,7 +113,7 @@ describe('the check is the same request it always was', () => {
   it('Enter submits; an empty input does not', async () => {
     render(<ScamShieldView />)
     fireEvent.keyDown(input(), { key: 'Enter' })
-    expect(fetchMock).not.toHaveBeenCalled()
+    expect(fetchMock.mock.calls.filter(c => String(c[0]).includes('/api/scam-shield'))).toEqual([])
     expect((checkButton() as HTMLButtonElement).disabled).toBe(true)
     fireEvent.change(input(), { target: { value: 'https://example.com' } })
     fireEvent.keyDown(input(), { key: 'Enter' })
@@ -164,27 +166,61 @@ describe('the check is the same request it always was', () => {
   })
 })
 
-describe('the QR tab is the same upload it always was', () => {
-  it('switches tabs, exposes the hidden image input with camera capture, and posts to /api/scam-shield/qr', async () => {
+describe('the QR tab — decoded ON THE DEVICE (owner 02/10)', () => {
+  const pick = () => {
+    fireEvent.click(screen.getByRole('tab', { name: /scan qr|quét mã qr/i }))
+    const file = document.querySelector('input[type="file"]') as HTMLInputElement
+    fireEvent.change(file, { target: { files: [new File(['x'], 'qr.png', { type: 'image/png' })] } })
+    return file
+  }
+
+  it('switches tabs and exposes the hidden image input with camera capture', () => {
     render(<ScamShieldView />)
     fireEvent.click(screen.getByRole('tab', { name: /scan qr|quét mã qr/i }))
     expect(screen.getByRole('tab', { name: /scan qr|quét mã qr/i }).getAttribute('aria-selected')).toBe('true')
     const file = document.querySelector('input[type="file"]') as HTMLInputElement
     expect(file.getAttribute('accept')).toBe('image/*')
     expect(file.getAttribute('capture')).toBe('environment')
-    fireEvent.change(file, { target: { files: [new File(['x'], 'qr.png', { type: 'image/png' })] } })
-    await waitFor(() => expect(fetchMock).toHaveBeenCalled())
-    expect(fetchMock.mock.calls[0][0]).toBe('/api/scam-shield/qr')
-    expect((fetchMock.mock.calls[0][1] as RequestInit).body).toBeInstanceOf(FormData)
   })
 
-  it('surfaces a QR decode failure with the existing message', async () => {
-    vi.stubGlobal('fetch', vi.fn(async () => ({ ok: false, status: 422, json: async () => ({ error: 'qr_no_url' }) })))
+  it('a web link inside the code goes to the SAME link check as the URL tab — as JSON {url}, never as an image', async () => {
+    decodeMock.mockResolvedValueOnce({ ok: true, text: 'https://vcb-secure-login.net/otp' })
     render(<ScamShieldView />)
-    fireEvent.click(screen.getByRole('tab', { name: /scan qr|quét mã qr/i }))
-    const file = document.querySelector('input[type="file"]') as HTMLInputElement
-    fireEvent.change(file, { target: { files: [new File(['x'], 'qr.png', { type: 'image/png' })] } })
-    expect((await screen.findByRole('alert')).textContent).toMatch(/qr|url|liên kết/i)
+    pick()
+    await waitFor(() => expect(fetchMock).toHaveBeenCalled())
+    expect(fetchMock.mock.calls[0][0]).toBe('/api/scam-shield/check')
+    const init = fetchMock.mock.calls[0][1] as RequestInit
+    expect(JSON.parse(String(init.body))).toEqual({ url: 'https://vcb-secure-login.net/otp' })
+    expect(init.body).not.toBeInstanceOf(FormData)
+    expect(fetchMock.mock.calls.some(c => String(c[0]).includes('/qr'))).toBe(false)
+  })
+
+  it('a code that is NOT a web link is named with a warning, nothing is sent, nothing is opened', async () => {
+    decodeMock.mockResolvedValueOnce({ ok: true, text: 'WIFI:T:WPA;S:Cafe;P:secret;;' })
+    render(<ScamShieldView />)
+    pick()
+    const card = await waitFor(() => { const el = document.querySelector('[data-qr-other="wifi"]'); expect(el).not.toBeNull(); return el as HTMLElement })
+    expect(card.textContent).toMatch(/wi-fi/i)
+    expect(card.textContent).toMatch(/không tự|never/i)
+    expect(fetchMock.mock.calls.filter(c => String(c[0]).includes('/api/scam-shield'))).toEqual([])
+    expect(card.querySelector('a')).toBeNull()
+  })
+
+  it('a payment code is a warning, not an action', async () => {
+    decodeMock.mockResolvedValueOnce({ ok: true, text: '00020101021238570010A000000727' })
+    render(<ScamShieldView />)
+    pick()
+    const card = await waitFor(() => { const el = document.querySelector('[data-qr-other="payment"]'); expect(el).not.toBeNull(); return el as HTMLElement })
+    expect(card.textContent).toMatch(/thanh toán|pay/i)
+    expect(fetchMock.mock.calls.filter(c => String(c[0]).includes('/api/scam-shield'))).toEqual([])
+  })
+
+  it('an unreadable picture surfaces the existing message and sends nothing', async () => {
+    decodeMock.mockResolvedValueOnce({ ok: false, reason: 'no_qr' })
+    render(<ScamShieldView />)
+    pick()
+    expect((await screen.findByRole('alert')).textContent).toMatch(/qr/i)
+    expect(fetchMock.mock.calls.filter(c => String(c[0]).includes('/api/scam-shield'))).toEqual([])
   })
 
   it('offers exactly three tabs — URL, QR, message — and nothing the engine does not do', () => {
@@ -319,9 +355,10 @@ describe('history section', () => {
 describe('boundaries the skin did not cross', () => {
   const src = readFileSync('src/app/scam-shield/ScamShieldView.tsx', 'utf8')
 
-  it('still talks only to the three Scam Shield endpoints', () => {
+  it('still talks only to the Scam Shield endpoints it needs (analyze, check)', () => {
     const endpoints = [...src.matchAll(/fetch\('([^']+)'/g)].map(m => m[1]).sort()
-    expect(endpoints).toEqual(['/api/scam-shield/analyze', '/api/scam-shield/check', '/api/scam-shield/qr'])
+    // the QR image is decoded on the device: the view no longer calls /api/scam-shield/qr (the route stays for older clients)
+    expect(endpoints).toEqual(['/api/scam-shield/analyze', '/api/scam-shield/check'])
   })
 
   it('imports nothing from the engine but its types, the history store, the message-analysis bounds and the deep-link parser', () => {
@@ -330,7 +367,7 @@ describe('boundaries the skin did not cross', () => {
     // `deepLink` is the pure `?url=` prefill parser (G1 completion — browser extension entry): it
     // PREFILLS the input and never checks. Still no engine code.
     const imports = [...src.matchAll(/from '@\/lib\/scam-shield\/([^']+)'/g)].map(m => m[1]).sort()
-    expect(imports).toEqual(['deepLink', 'history', 'message/config', 'types'])
+    expect(imports).toEqual(['deepLink', 'history', 'message/config', 'qr/clientDecode', 'qr/payload', 'types'])
   })
 
   it('holds no hardcoded Vietnamese UI text', () => {
