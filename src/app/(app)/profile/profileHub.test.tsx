@@ -274,14 +274,14 @@ describe('content comes from the gated endpoints, and only from them', () => {
   it('offers the five content states, then places', () => {
     const { container } = renderHub()
     const tabs = [...container.querySelectorAll('[data-profile-content] .v3-chip')].map((c) => c.textContent)
-    expect(tabs).toEqual(['Published', 'Shared', 'Saved', 'Restricted', 'Hidden', 'Places'])
+    expect(tabs).toEqual(['Published', 'Shared', 'Saved', 'In review / Restricted', 'Hidden', 'Places'])
   })
 
   it('the Vietnamese labels are the owner\'s wording', () => {
     setLocale('vi')
     const { container } = renderHub()
     const tabs = [...container.querySelectorAll('[data-profile-content] .v3-chip')].map((c) => c.textContent)
-    expect(tabs).toEqual(['Đã đăng', 'Đã chia sẻ', 'Đã lưu', 'Bị hạn chế', 'Đã ẩn', 'Địa điểm'])
+    expect(tabs).toEqual(['Đã đăng', 'Đã chia sẻ', 'Đã lưu', 'Chờ duyệt / Bị hạn chế', 'Đã ẩn', 'Địa điểm'])
   })
 })
 
