@@ -4,7 +4,7 @@
 // page.tsx: the profile-grid delete-reflow regression test imports ProfileTab, and
 // Next.js forbids extra named exports from a page file.
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useMemo } from 'react'
 import Link from 'next/link'
 import Image from '@/components/media/SafeImage'
 import {
@@ -15,6 +15,7 @@ import { trailingFillerCount } from '@/lib/ui/gridFill'
 import { getUserPreferences } from '@/lib/userMemory'
 import type { UserPreferences } from '@/lib/userMemory'
 import LikeListSheet from './LikeListSheet'
+import SharedClipViewer, { isStageClip, useIsDesktopViewer } from './SharedClipViewer'
 import LinkPoster from '@/components/LinkPoster'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { Post, CommentDrawer, ShareModal, isShareOnlyName, type Review } from './feedShared'
@@ -37,7 +38,24 @@ import { loginPathFor, currentDestination } from '@/lib/auth/returnTo'
 // Exported so the Inbox can reuse it: a notification about a CLIP has to land in the clip
 // experience, not on the article-style detail page. It needs nothing from the profile grid —
 // `posts` may be a single review fetched by id — so there is no second viewer to build.
-export function ClipViewer({ posts, startIndex, me, onClose, onDelete }: { posts: Review[]; startIndex: number; me: string | null; onClose: () => void; onDelete?: (id: string) => void }) {
+export function ClipViewer(props: { posts: Review[]; startIndex: number; me: string | null; onClose: () => void; onDelete?: (id: string) => void }) {
+  // B3 (2026-10-02): ONE viewer for the whole app. Tablets/desktops get the Khám phá stage (the
+  // shared `ClipStage`); phones keep the full-screen vertical pager below, which is Khám phá's own
+  // phone feed (`Post`). A list whose opened row is not a playable clip (a photo post) also keeps
+  // the pager, since the stage is a video surface.
+  const isDesktop = useIsDesktopViewer()
+  const { posts, startIndex } = props
+  const clips = useMemo(() => posts.filter(isStageClip), [posts])
+  const opened = posts[startIndex]
+  const stageStart = opened ? clips.findIndex(c => c.id === opened.id) : -1
+  if (isDesktop === null) return <div className="fixed inset-0 z-50 bg-black" aria-busy="true" />
+  if (isDesktop && stageStart >= 0) {
+    return <SharedClipViewer posts={clips} startIndex={stageStart} me={props.me} onClose={props.onClose} onDelete={props.onDelete} />
+  }
+  return <PhoneClipViewer {...props} />
+}
+
+function PhoneClipViewer({ posts, startIndex, me, onClose, onDelete }: { posts: Review[]; startIndex: number; me: string | null; onClose: () => void; onDelete?: (id: string) => void }) {
   const [items, setItems] = useState<Review[]>(posts)
   const [activeIndex, setActiveIndex] = useState(startIndex)
   const [commentOf, setCommentOf] = useState<Review | null>(null)
