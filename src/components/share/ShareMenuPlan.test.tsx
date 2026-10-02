@@ -286,10 +286,12 @@ describe('what leaves, once the plan has its link', () => {
     try {
       // Desktop (jsdom's UA): no standalone Zalo web URL exists.
       await act(async () => { fireEvent.click(screen.getByTestId('share-target-zalo')) })
-      expect(open).not.toHaveBeenCalled()
+      // Nearest official destination: Zalo Web, after copying the plan url; the toast says both.
+      expect(open).toHaveBeenCalledTimes(1)
+      expect(open.mock.calls[0][0]).toBe('https://chat.zalo.me/')
       expect(assign).not.toHaveBeenCalled()
       expect(writeText).toHaveBeenCalledWith(PLAN_URL)
-      expect(status()).toBe('share.zaloHint')
+      expect(status()).toBe('share.zaloCopiedOpened')
       // Android browser: the SDK's SEND intent carrying the plan url.
       vi.spyOn(navigator, 'userAgent', 'get').mockReturnValue('Mozilla/5.0 (Linux; Android 14) Mobile Chrome/128')
       await act(async () => { fireEvent.click(screen.getByTestId('share-target-zalo')) })
@@ -306,8 +308,8 @@ describe('what leaves, once the plan has its link', () => {
   })
 
   it('🚨 Zalo on a desktop is LABELLED as copy-link (no app, no working web widget) — it never claims to share; on a phone it is labelled Zalo', async () => {
-    expect(screen.getByTestId('share-target-zalo').textContent).toBe('share.zalo (share.copylink)') // the tile keeps Zalo's name (UAT 2026-09-28)
-    expect(screen.getByTestId('share-target-zalo').title).toBe('share.zalo (share.copylink)')
+    expect(screen.getByTestId('share-target-zalo').textContent).toBe('share.zaloCopyOpen') // names Zalo and says what it does (owner 2026-10-02)
+    expect(screen.getByTestId('share-target-zalo').title).toBe('share.zaloCopyOpen')
     cleanup()
     vi.spyOn(navigator, 'userAgent', 'get').mockReturnValue('Mozilla/5.0 (Linux; Android 14) Mobile Chrome/128')
     try {
@@ -322,7 +324,7 @@ describe('what leaves, once the plan has its link', () => {
   it('🚨 Facebook and Zalo can never receive the brand root, a chat url or /reviews for a published plan', async () => {
     await act(async () => { fireEvent.click(screen.getByTestId('share-target-facebook')) })
     await act(async () => { fireEvent.click(screen.getByTestId('share-target-zalo')) })
-    const carried = [...open.mock.calls.map(c => decodeURIComponent(String(c[0]))), ...writeText.mock.calls.map(c => String(c[0]))]
+    const carried = [...open.mock.calls.map(c => decodeURIComponent(String(c[0]))).filter(c => c !== 'https://chat.zalo.me/'), ...writeText.mock.calls.map(c => String(c[0]))]
     expect(carried.length).toBeGreaterThan(0)
     for (const c of carried) {
       expect(c).toContain(PLAN_URL)

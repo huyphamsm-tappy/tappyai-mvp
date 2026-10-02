@@ -287,8 +287,10 @@ export function buildTextShareUrl(id: ShareTargetId, subject: string, text: stri
     // When the text IS the link (a review), it goes once, as the url.
     case 'telegram': {
       const link = (url ?? '').trim() || clipped
-      const withText = clipped !== link
-      return `https://t.me/share/url?url=${encodeURIComponent(link)}${withText ? `&text=${enc}` : ''}`
+      // The message already ends with the link: Telegram prints url + text, so send it only once.
+      const textOnly = link && clipped.endsWith(link) ? clipped.slice(0, clipped.length - link.length).trim() : clipped
+      const withText = textOnly !== '' && textOnly !== link
+      return `https://t.me/share/url?url=${encodeURIComponent(link)}${withText ? `&text=${encodeURIComponent(textOnly)}` : ''}`
     }
     default:
       return null

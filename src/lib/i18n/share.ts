@@ -28,7 +28,9 @@ export const vi = {
   // TikTok has no web link handoff, so the honest instruction is to paste it.
   'share.tiktokHint': 'Đã sao chép — dán vào TikTok để chia sẻ',
   // Zalo has no standalone web share URL on desktop (its SDK draws an in-page widget); paste the link.
-  'share.zaloHint': 'Đã sao chép liên kết — mở Zalo và dán để chia sẻ',
+  'share.zaloHint': 'Đã sao chép nội dung — mở Zalo và dán (Ctrl+V) để gửi',
+  'share.zaloCopyOpen': 'Sao chép rồi mở Zalo',
+  'share.zaloCopiedOpened': 'Đã sao chép — đã mở Zalo, dán (Ctrl+V) vào cuộc trò chuyện để gửi',
   'share.copiedLink': 'Đã sao chép liên kết',
   'share.close': 'Đóng',
 
@@ -144,7 +146,9 @@ export const en = {
   'share.unavailable': 'Sharing is unavailable',
   'share.copyFailed': 'Unable to copy link',
   'share.tiktokHint': 'Copied — paste it into TikTok to share',
-  'share.zaloHint': 'Link copied — open Zalo and paste to share',
+  'share.zaloHint': 'Copied — open Zalo and paste (Ctrl+V) to send',
+  'share.zaloCopyOpen': 'Copy, then open Zalo',
+  'share.zaloCopiedOpened': 'Copied — Zalo opened, paste (Ctrl+V) into a chat to send',
   'share.copiedLink': 'Link copied',
   'share.close': 'Close',
 

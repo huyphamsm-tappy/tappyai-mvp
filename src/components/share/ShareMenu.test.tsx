@@ -87,7 +87,7 @@ describe('ShareMenu — targets', () => {
     expect(screen.getByTestId('share-target-facebook').textContent).toContain('share.copyAndOpen:{"app":"share.facebook"}')
     // Desktop Zalo cannot open anything (no app; the official web widget's host does not resolve),
     // so the tile says exactly what it does: copy the content. Never "copy & open Zalo".
-    expect(screen.getByTestId('share-target-zalo').textContent).toBe('share.zalo (share.copycontent)') // the tile keeps Zalo's name (UAT 2026-09-28)
+    expect(screen.getByTestId('share-target-zalo').textContent).toBe('share.zaloCopyOpen') // says what it does and names Zalo (owner 2026-10-02)
     // Text handoffs carry the brochure themselves — plain app names.
     expect(screen.getByTestId('share-target-viber').textContent).toContain('share.viber')
     expect(screen.getByTestId('share-target-line').textContent).toContain('share.line')
@@ -216,7 +216,9 @@ describe('ShareMenu — what each target really does', () => {
     const u = new URL(open.mock.calls[0][0] as string)
     expect(u.origin + u.pathname).toBe('https://t.me/share/url')
     expect(u.searchParams.get('url')).toBe(artifact.url)
-    expect(u.searchParams.get('text')).toBe(inboxBody(artifact))
+    // the message already ends with the link, which Telegram prints from `url`: sent once
+    expect(u.searchParams.get('text')).toBe(inboxBody(artifact).replace(artifact.url, '').trim())
+    expect(inboxBody(artifact).split(String.fromCharCode(10)).length).toBeLessThanOrEqual(3)
   })
 
   it('Telegram for a review link: the canonical link as the url, the same caption the other text handoffs carry', async () => {
@@ -245,12 +247,13 @@ describe('ShareMenu — what each target really does', () => {
   })
 
 
-  it('Copy puts the FULL brochure (header … footer) on the clipboard', async () => {
+  it('Copy puts title + summary + the short link on the clipboard (no per-place links)', async () => {
     render(<ShareMenu artifact={artifact} open onClose={() => {}} />)
     fireEvent.click(screen.getByTestId('share-target-copy'))
     await waitFor(() => expect(status()).toBe('share.copiedContent'))
     expect(writeText).toHaveBeenCalledWith(artifact.text)
-    expect(writeText.mock.calls[0][0]).toContain('Gợi ý bởi TappyAI · www.tappyai.com')
+    expect(writeText.mock.calls[0][0]).not.toMatch(/\/go\/|isclix|maps\.google/)
+    expect(String(writeText.mock.calls[0][0]).endsWith('https://www.tappyai.com')).toBe(true)
   })
 
   it('Facebook/Messenger: copies the brochure, opens the sharer with the BRAND url only, says copied & opened', async () => {
@@ -339,14 +342,14 @@ describe('ShareMenu — Tappy Inbox (the existing web Messenger)', () => {
     expect(Object.keys(body)).toEqual(['body'])
     expect(body.body.length).toBeLessThanOrEqual(INBOX_MAX_BODY)
     expect(body.body).toBe(inboxBody(artifact))
-    expect(body.body.endsWith('Gợi ý bởi TappyAI · www.tappyai.com')).toBe(true)
+    expect(body.body.endsWith('https://www.tappyai.com')).toBe(true)
   })
 
   // chat_messages.body has a CHECK ≤ 4000; a brochure that overflows must be
   // compacted BEFORE the POST, never sent raw to fail (or be cut) server-side.
-  it('an overflowing brochure is compacted to ≤4000 before it is posted', async () => {
+  it('a huge recommendation still posts only the three-line message', async () => {
     const big = buildPlacesArtifact({ ...view, items: Array.from({ length: 6 }, () => view.items).flat() }, 'x', 'vi', env)
-    expect(big.text.length).toBeGreaterThan(INBOX_MAX_BODY)
+    expect(big.text.length).toBeLessThan(400)
     fetchMock.mockResolvedValue({ ok: true, status: 201, json: async () => ({ data: { id: 'm1' } }) })
     render(<ShareMenu artifact={big} open onClose={() => {}} />)
     fireEvent.click(screen.getByTestId('share-target-inbox'))
@@ -354,7 +357,7 @@ describe('ShareMenu — Tappy Inbox (the existing web Messenger)', () => {
     await waitFor(() => expect(status()).toBe('share.inboxSent'))
     const body = JSON.parse(String((fetchMock.mock.calls[0] as [string, RequestInit])[1].body)) as { body: string }
     expect(body.body.length).toBeLessThanOrEqual(INBOX_MAX_BODY)
-    expect(body.body.endsWith('Gợi ý bởi TappyAI · www.tappyai.com')).toBe(true)
+    expect(body.body.endsWith('https://www.tappyai.com')).toBe(true)
   })
 
   it('an anonymous user is told to sign in (401/403) — no "sent"', async () => {
