@@ -88,6 +88,16 @@ internal fun toneFor(level: RiskLevel): LevelTone {
     }
 }
 
+/** The tone of a three-state kind (the server's own `verdict` can differ from the level mapping on a newer server). */
+@Composable
+internal fun toneFor(kind: VerdictKind): LevelTone = toneFor(
+    when (kind) {
+        VerdictKind.Familiar -> RiskLevel.HIGH
+        VerdictKind.Suspicious -> RiskLevel.MEDIUM
+        VerdictKind.Unrecognized -> RiskLevel.INCONCLUSIVE
+    },
+)
+
 /** `--ss-high`: light `#B4400C`, dark `#FB923C`; the soft/border base is orange-500. */
 internal val SsHighLight = Color(0xFFB4400C)
 internal val SsHighDark = Color(0xFFFB923C)
@@ -107,13 +117,21 @@ internal fun LevelBadge(level: RiskLevel, small: Boolean = false) {
         horizontalArrangement = Arrangement.spacedBy(6.dp),
     ) {
         Icon(tone.icon, contentDescription = null, tint = tone.fg, modifier = Modifier.size(if (small) 13.dp else 15.dp))
-        Text(text = stringResource(tone.labelRes), color = tone.fg, fontSize = if (small) 11.sp else 12.5.sp, fontWeight = FontWeight.SemiBold, maxLines = 1)
+        val label = if (small) {
+            // The history list: the web's short badges (`scamVerdict.link.short.*`).
+            when (VerdictKind.fromRisk(level)) {
+                VerdictKind.Familiar -> R.string.scam_verdict_link_short_familiar
+                VerdictKind.Suspicious -> R.string.scam_verdict_link_short_suspicious
+                VerdictKind.Unrecognized -> R.string.scam_verdict_link_short_unrecognized
+            }
+        } else tone.labelRes
+        Text(text = stringResource(label), color = tone.fg, fontSize = if (small) 11.sp else 12.5.sp, fontWeight = FontWeight.SemiBold, maxLines = 1)
     }
 }
 
 /** The shared card head: glyph tile, level word + confidence, a sub-line, the score. */
 @Composable
-private fun VerdictHead(tone: LevelTone, subline: String?, sublineBold: Boolean) {
+private fun VerdictHead(tone: LevelTone, title: String, subline: String?, sublineBold: Boolean) {
     Row(
         modifier = Modifier.fillMaxWidth().padding(16.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -123,7 +141,7 @@ private fun VerdictHead(tone: LevelTone, subline: String?, sublineBold: Boolean)
             Icon(tone.icon, contentDescription = null, tint = tone.fg, modifier = Modifier.size(26.dp))
         }
         Column(modifier = Modifier.weight(1f)) {
-            Text(text = stringResource(tone.labelRes), color = tone.fg, fontSize = 17.sp, lineHeight = 21.sp, fontWeight = FontWeight.ExtraBold)
+            Text(text = title, color = tone.fg, fontSize = 17.sp, lineHeight = 21.sp, fontWeight = FontWeight.ExtraBold)
             if (subline != null) {
                 Text(
                     text = subline,
@@ -142,25 +160,29 @@ private fun VerdictHead(tone: LevelTone, subline: String?, sublineBold: Boolean)
 /** `ScamShieldResult`: the URL verdict; the whole card takes the level's tint. */
 @Composable
 internal fun VerdictCard(result: ScamCheckResult) {
-    val tone = toneFor(result.level)
+    val kind = VerdictKind.forLink(result)
+    val tone = toneFor(kind)
+    val titleRes = when (kind) {
+        VerdictKind.Familiar -> R.string.scam_verdict_link_familiar_title
+        VerdictKind.Suspicious -> R.string.scam_verdict_link_suspicious_title
+        VerdictKind.Unrecognized -> R.string.scam_verdict_link_unrecognized_title
+    }
+    val bodyRes = when (kind) {
+        VerdictKind.Familiar -> R.string.scam_verdict_link_familiar_body
+        VerdictKind.Suspicious -> R.string.scam_verdict_link_suspicious_body
+        VerdictKind.Unrecognized -> R.string.scam_verdict_unrecognized_body
+    }
     Column(modifier = Modifier.fillMaxWidth().clip(V3PanelShape).background(tone.soft).border(1.dp, tone.border, V3PanelShape)) {
-        VerdictHead(tone = tone, subline = result.url, sublineBold = false)
+        VerdictHead(tone = tone, title = stringResource(titleRes), subline = result.url, sublineBold = false)
         Column(modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
-            // Never "this link is a scam" and never "safe": either the link has traits commonly seen in fake links, or nothing familiar
-            // was recognised — which is said to mean NOTHING about safety.
-            Text(
-                text = stringResource(if (VerdictKind.fromRisk(result.level) == VerdictKind.Unrecognized) R.string.scam_verdict_unrecognized_body else R.string.scam_verdict_link_traits),
-                color = HomeV3.OnSurface,
-                fontSize = 13.5.sp,
-                lineHeight = 19.sp,
-                fontWeight = FontWeight.SemiBold,
-            )
+            // Never "this link is a scam" and never "safe": the wording is the web's (`scamVerdict.link.*`).
+            Text(text = stringResource(bodyRes), color = HomeV3.OnSurface, fontSize = 13.5.sp, lineHeight = 19.sp, fontWeight = FontWeight.SemiBold)
             val reasons = result.evidence.filter { it.severity == SignalSeverity.WARNING || it.severity == SignalSeverity.CRITICAL }.take(4)
             if (reasons.isNotEmpty()) ReasonsSection(reasons)
             result.officialMatch?.let { OfficialSection(it) }
             if (result.actions.isNotEmpty()) ActionsSection(result.actions)
             if (result.evidence.isNotEmpty()) EvidenceSection(result.evidence)
-            EmergencyAndDisclaimer()
+            DisclaimerLine()
         }
     }
 }
@@ -424,7 +446,7 @@ internal fun MessageResultCard(result: MessageAnalysis) {
     val dangerous = result.level == RiskLevel.MEDIUM || result.level == RiskLevel.HIGH || result.level == RiskLevel.CRITICAL
     val typeLabel = result.scamType?.let { scamTypeRes(it) }?.let { stringResource(it) }
     Column(modifier = Modifier.fillMaxWidth().clip(V3PanelShape).background(tone.soft).border(1.dp, tone.border, V3PanelShape)) {
-        VerdictHead(tone = tone, subline = typeLabel, sublineBold = true)
+        VerdictHead(tone = tone, title = stringResource(tone.labelRes), subline = typeLabel, sublineBold = true)
 
         Column(modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp)) {
             // The plain-language summary — the model's, or the server's deterministic fallback.

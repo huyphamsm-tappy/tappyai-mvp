@@ -99,7 +99,24 @@ class QrCodesTest {
         assertEquals(QrKind.Sms, kind("smsto:0900000000:xin chao"))
         assertEquals(QrKind.Email, kind("mailto:a@example.com"))
         assertEquals(QrKind.Location, kind("geo:10.77,106.69"))
-        assertEquals(QrKind.Calendar, kind("BEGIN:VEVENT\nSUMMARY:x\nEND:VEVENT"))
+        // The web's classifier has no calendar kind: any other scheme-looking text is an "app link" (never opened).
+        assertEquals(QrKind.UnsafeLink, kind("BEGIN:VEVENT\nSUMMARY:x\nEND:VEVENT"))
+        assertEquals(QrKind.Contact, kind("BIZCARD:N:A;;"))
+        assertEquals(QrKind.Sms, kind("mms:0900000000"))
+        assertEquals(QrKind.Email, kind("MATMSG:TO:a@example.com;SUB:x;BODY:y;;"))
+    }
+
+    @Test fun `payment schemes of the web list are payments`() {
+        listOf("momo://pay?x=1", "zalopay:abc", "vnpay:xyz", "vietqr:abc", "viettelpay:1", "shopeepay:1", "upi:pay", "paypal:me", "alipay:1", "alipays:1", "weixin:1", "ethereum:0x1")
+            .forEach { assertEquals(it, QrKind.Payment, (QrCodes.classify(it) as QrPayload.Other).kind) }
+    }
+
+    @Test fun `a bare domain is a link with https, text with spaces is not`() {
+        assertEquals(QrPayload.Link("https://nop-phat.vn"), QrCodes.classify("nop-phat.vn"))
+        assertEquals(QrPayload.Link("https://shop.example.com/a?b=1"), QrCodes.classify("shop.example.com/a?b=1"))
+        assertEquals(QrKind.Text, (QrCodes.classify("xin chào nop-phat.vn") as QrPayload.Other).kind)
+        assertEquals(QrKind.Text, (QrCodes.classify("https://not a url") as QrPayload.Other).kind)
+        assertEquals(QrKind.Text, (QrCodes.classify("   ") as QrPayload.Other).kind)
     }
 
     @Test fun `plain text is text, and an app or data scheme is flagged as unsafe`() {
@@ -109,9 +126,10 @@ class QrCodesTest {
         assertEquals(QrKind.UnsafeLink, (QrCodes.classify("data:text/html;base64,PGgxPmhpPC9oMT4=") as QrPayload.Other).kind)
     }
 
-    @Test fun `a long payload is previewed shortened`() {
-        val p = QrCodes.classify("x".repeat(500)) as QrPayload.Other
-        assertTrue(p.preview.length <= 161)
+    @Test fun `a long payload is previewed cut at 500 characters (web contract)`() {
+        val p = QrCodes.classify("x".repeat(800)) as QrPayload.Other
+        assertTrue(p.preview.length <= 501)
+        assertTrue(p.preview.length > 400)
     }
 
     // ── fixtures for the emulator run (only when asked) ──

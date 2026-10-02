@@ -96,7 +96,7 @@ class RealScamShieldRepository @Inject constructor(
     }
 }
 
-private fun ScamCheckResponseDto.toDomain(preferVietnameseLabels: Boolean) = ScamCheckResult(
+internal fun ScamCheckResponseDto.toDomain(preferVietnameseLabels: Boolean) = ScamCheckResult(
     url = url,
     level = RiskLevel.fromWire(risk.level),
     score = risk.score,
@@ -105,8 +105,11 @@ private fun ScamCheckResponseDto.toDomain(preferVietnameseLabels: Boolean) = Sca
         EvidenceItem(
             source = it.source,
             severity = SignalSeverity.fromWire(it.severity),
-            summary = it.summary,
+            // 02/10: the engine now ships the finding in Vietnamese and English (`reason_vi` / `reason_en`); pick the user's language,
+            // fall back to the other, then to the old English technical line (an older server).
+            summary = (if (preferVietnameseLabels) it.reasonVi.ifBlank { it.reasonEn } else it.reasonEn.ifBlank { it.reasonVi }).ifBlank { it.summary },
             detail = it.detail,
+            reasonCode = it.reasonCode,
         )
     },
     officialMatch = officialMatch?.let { OfficialEntity(brand = it.brand, website = it.website, hotline = it.hotline) },
@@ -117,6 +120,7 @@ private fun ScamCheckResponseDto.toDomain(preferVietnameseLabels: Boolean) = Sca
         label.takeIf { l -> l.isNotBlank() }?.let { l -> RecommendedAction(isPrimary = it.priority == "primary", icon = it.icon, label = l) }
     },
     cached = cached,
+    verdict = verdict,
 )
 
 /**

@@ -23,9 +23,9 @@ import javax.inject.Singleton
  *  - `POST api/reviews/{id}/report` — LIVE on production (F-031, `content_reports`). Reports a post
  *    or a clip. Body `{reason}`; answers `{ok, reported, alreadyReported?}`; 400 invalid_reason ·
  *    401 · 403 anonymous · 404 no such review · 500.
- *  - Everything else is PHASE 8, behind server flags that are OFF on production today:
- *    `POST api/reports` (`p8_reports_v2`), `POST|DELETE api/users/{id}/block`, `GET api/users/blocks`
- *    (`p8_user_blocks`). While a flag is off the route answers 404. The app therefore asks
+ *  - Everything else is behind server flags (`GET api/config` → `p8`): `POST api/comments/{id}/report` and
+ *    `POST api/users/{id}/report` (`reports`), `POST|DELETE api/users/{id}/block`, `GET api/users/blocks` (`userBlocks`). While a
+ *    flag is off the route answers 404. There is NO `POST api/reports` in the web contract. The app therefore asks
  *    `GET api/config` → `p8` first ([SafetyFlags]) and never calls these routes unless the server
  *    has said it has them — the same switch iOS reads.
  */
@@ -36,8 +36,12 @@ interface SafetyApi {
     @POST("api/reviews/{id}/report")
     suspend fun reportReview(@Path("id") reviewId: String, @Body body: ReviewReportBodyDto): Response<ReportAckDto>
 
-    @POST("api/reports")
-    suspend fun report(@Body body: ReportBodyDto): Response<ReportAckDto>
+    /** Web contract (docs/uat/ANDROID-REQUESTS.md §4, origin/rc/web-uat): comments and users have their OWN report routes — there is NO `POST /api/reports`. */
+    @POST("api/comments/{id}/report")
+    suspend fun reportComment(@Path("id") commentId: String, @Body body: ReportBodyDto): Response<ReportAckDto>
+
+    @POST("api/users/{id}/report")
+    suspend fun reportUser(@Path("id") userId: String, @Body body: ReportBodyDto): Response<ReportAckDto>
 
     @POST("api/users/{id}/block")
     suspend fun block(@Path("id") userId: String): Response<ReportAckDto>
@@ -65,10 +69,9 @@ data class ReviewReportBodyDto(val reason: String)
 
 @Serializable
 data class ReportBodyDto(
-    @SerialName("target_type") val targetType: String,
-    @SerialName("target_id") val targetId: String,
     val reason: String,
-    val details: String? = null,
+    /** Optional free text, cut to 300 characters by the server (`details` is read as the same field). */
+    val note: String? = null,
 )
 
 @Serializable

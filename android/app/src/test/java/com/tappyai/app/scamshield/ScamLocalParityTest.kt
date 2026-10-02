@@ -117,7 +117,7 @@ class ScamLocalParityTest {
         assertTrue(vi.contains(">Chưa nhận ra dấu hiệu quen thuộc<"))
         assertTrue(vi.contains("Điều này KHÔNG có nghĩa là an toàn: đừng chuyển tiền, đừng đọc mã OTP, đừng bấm link lạ; hãy xác minh qua kênh chính thức."))
         assertTrue(vi.contains("TappyAI không thay thế cơ quan chức năng"))
-        assertTrue(vi.contains("Đường link có đặc điểm thường gặp ở link giả mạo."))
+        assertTrue(vi.contains("Đường link có đặc điểm thường gặp ở link giả mạo<"))
         assertTrue(vi.contains("113"))
         val en = src("app/src/main/res/values/strings_scam_local.xml")
         assertTrue(en.contains("does NOT mean it is safe") && en.contains("does not replace the authorities") && en.contains("113"))
@@ -129,16 +129,22 @@ class ScamLocalParityTest {
         }
     }
 
-    @Test fun `the fixed emergency line and the disclaimer are on every local card and on the link card`() {
-        assertEquals(3, Regex("""EmergencyAndDisclaimer\(modifier = Modifier\.padding""").findAll(local).count())
-        assertTrue(result.substringAfter("internal fun VerdictCard").substringBefore("internal fun ReasonsSection").contains("EmergencyAndDisclaimer()"))
+    @Test fun `the disclaimer is on every card, the 113 line only with a matching scenario`() {
+        assertEquals(3, Regex("""DisclaimerLine\(modifier = Modifier\.padding""").findAll(local).count())
+        assertTrue(result.substringAfter("internal fun VerdictCard").substringBefore("internal fun ReasonsSection").contains("DisclaimerLine()"))
+        // The 113 line is the web's: only with a matching scenario (`scamVerdict.scenario.report`).
+        assertEquals(1, Regex("""ReportLine\(modifier = """).findAll(local).count())
+        assertTrue(local.substringAfter("internal fun KnownScenarioCard").substringBefore("internal fun NoMatchCard").contains("ReportLine("))
     }
 
     @Test fun `the message tab has no AI wording left in the visible strings`() {
         val vi = src("app/src/main/res/values-vi/strings_scam_local.xml")
-        val shown = vi.substringAfter("scam_msg_subtitle_local").substringBefore("</string>") + vi.substringAfter("scam_msg_local_hint").substringBefore("</string>")
-        assertFalse("no AI quota wording", shown.contains("lượt") || Regex("""\bAI\b""").containsMatchIn(shown))
-        assertTrue(screen.contains("if (ScamShieldFlags.MESSAGE_AI) R.string.scam_v3_msg_subtitle else R.string.scam_msg_subtitle_local"))
+        val subtitle = vi.substringAfter("scam_verdict_msg_subtitle").substringBefore("</string>")
+        val privacy = vi.substringAfter("scam_verdict_msg_privacy").substringBefore("</string>")
+        assertFalse("no AI quota wording", (subtitle + privacy).contains("lượt"))
+        assertFalse("the subtitle does not mention AI", Regex("""\bAI\b""").containsMatchIn(subtitle))
+        assertTrue("the web's own privacy line: no AI, nothing stored", privacy.contains("không dùng AI, không lưu nội dung tin nhắn"))
+        assertTrue(screen.contains("if (ScamShieldFlags.MESSAGE_AI) R.string.scam_v3_msg_subtitle else R.string.scam_verdict_msg_subtitle"))
     }
 
     @Test fun `vi and en carry the same scam-local keys`() {

@@ -72,7 +72,7 @@ class ScamShieldV3Test {
         val form = s.substringAfter("ScamShieldTab.Message ->").substringBefore("(viewModel.state as? ScamShieldUiState.Failed)")
         assertTrue("the message form: title, subtitle, 5-row text, link, screenshot, quota hint, CTA",
             form.contains("R.string.scam_v3_msg_title") && form.contains("R.string.scam_v3_msg_subtitle") && form.contains("minLines = 5") && form.contains("R.string.scam_v3_msg_urlPlaceholder") &&
-                form.contains("R.string.scam_v3_msg_upload") && form.contains("R.string.scam_v3_msg_removeScreenshot") && form.contains("R.string.scam_msg_local_hint, ScamShieldViewModel.ANON_LIFETIME_LIMIT.toString(), ScamShieldViewModel.FREE_DAILY_LIMIT.toString()") &&
+                form.contains("R.string.scam_v3_msg_upload") && form.contains("R.string.scam_v3_msg_removeScreenshot") && form.contains("R.string.scam_verdict_msg_privacy, ScamShieldViewModel.ANON_LIFETIME_LIMIT.toString(), ScamShieldViewModel.FREE_DAILY_LIMIT.toString()") &&
                 form.contains("R.string.scam_v3_msg_analyzing else R.string.scam_v3_msg_cta") && form.contains("enabled = viewModel.canAnalyze && !checking") && form.contains("onClick = viewModel::analyzeMessage"))
         assertTrue("switching tabs clears the verdict, as the web's switchTab does", vm.contains("fun selectTab(next: ScamShieldTab)") && vm.substringAfter("fun selectTab").substringBefore("}").contains("state = ScamShieldUiState.Idle"))
         assertTrue("the web's bounds: 4000 chars, 5 MB, JPEG/PNG/WebP", vm.contains("const val MESSAGE_MAX_CHARS = 4_000") && vm.contains("const val SCREENSHOT_MAX_BYTES = 5 * 1024 * 1024") && vm.contains("listOf(\"image/jpeg\", \"image/png\", \"image/webp\")"))

@@ -38,21 +38,19 @@ fun ReportReason.reviewWire(): String = when (this) {
 }
 
 /**
- * The wire value `POST /api/reports` accepts (phase8: spam · harassment · hate · sexual · violence ·
- * self_harm · scam · misinformation · impersonation · other). Copyright has no value there, so it
- * goes as `other` with [reportDetails] naming it.
+ * The wire value the comment / user report routes accept (web contract §4: spam · harassment · inappropriate · copyright ·
+ * misinformation · violence · other, plus the native scam · sensitive · hate · sexual · self_harm · impersonation).
  */
 fun ReportReason.reportsWire(): String = when (this) {
     ReportReason.Spam -> "spam"
     ReportReason.Harassment -> "harassment"
     ReportReason.Sensitive -> "sexual"
     ReportReason.Scam -> "scam"
-    ReportReason.Copyright, ReportReason.Other -> "other"
+    ReportReason.Copyright -> "copyright"
+    ReportReason.Other -> "other"
 }
 
-fun ReportReason.reportDetails(): String? = if (this == ReportReason.Copyright) "copyright" else null
-
-/** What a report is about, on `POST /api/reports`. */
+/** What a report is about: a post/clip (own route), a comment or a user (own routes, one each). */
 enum class ReportTarget(val wire: String) { Review("review"), Comment("comment"), User("user") }
 
 /** The result of one report call, as far as the screen needs to tell the person. */

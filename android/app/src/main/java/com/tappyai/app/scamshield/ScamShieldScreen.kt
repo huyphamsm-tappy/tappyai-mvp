@@ -209,7 +209,7 @@ fun ScamShieldScreen(
                         ScamShieldTab.Message -> Column(modifier = Modifier.padding(top = 16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                             Column {
                                 Text(text = stringResource(R.string.scam_v3_msg_title), color = HomeV3.OnSurface, fontSize = 16.sp, fontWeight = FontWeight.Bold)
-                                Text(text = stringResource(if (ScamShieldFlags.MESSAGE_AI) R.string.scam_v3_msg_subtitle else R.string.scam_msg_subtitle_local), color = HomeV3.OnSurfaceVariant, fontSize = 13.sp, lineHeight = 17.sp, modifier = Modifier.padding(top = 2.dp))
+                                Text(text = stringResource(if (ScamShieldFlags.MESSAGE_AI) R.string.scam_v3_msg_subtitle else R.string.scam_verdict_msg_subtitle), color = HomeV3.OnSurfaceVariant, fontSize = 13.sp, lineHeight = 17.sp, modifier = Modifier.padding(top = 2.dp))
                             }
                             ToolTextField(
                                 value = viewModel.message,
@@ -263,7 +263,7 @@ fun ScamShieldScreen(
                                 }
                             }
                             Text(
-                                text = stringResource(if (ScamShieldFlags.MESSAGE_AI) R.string.scam_v3_msg_quotaHint else R.string.scam_msg_local_hint, ScamShieldViewModel.ANON_LIFETIME_LIMIT.toString(), ScamShieldViewModel.FREE_DAILY_LIMIT.toString()),
+                                text = stringResource(if (ScamShieldFlags.MESSAGE_AI) R.string.scam_v3_msg_quotaHint else R.string.scam_verdict_msg_privacy, ScamShieldViewModel.ANON_LIFETIME_LIMIT.toString(), ScamShieldViewModel.FREE_DAILY_LIMIT.toString()),
                                 color = HomeV3.OnSurfaceVariant,
                                 fontSize = 12.sp,
                                 lineHeight = 16.sp,

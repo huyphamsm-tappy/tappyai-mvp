@@ -23,6 +23,17 @@ internal enum class VerdictKind {
             RiskLevel.SAFE, RiskLevel.LOW, RiskLevel.INCONCLUSIVE, RiskLevel.UNKNOWN -> Unrecognized
         }
 
+        /** The server's `verdict` string, or null when absent / not one of the three (an older server). */
+        fun fromWire(value: String?): VerdictKind? = when (value?.trim()?.lowercase()) {
+            "familiar" -> Familiar
+            "suspicious" -> Suspicious
+            "unrecognized" -> Unrecognized
+            else -> null
+        }
+
+        /** A link/QR result: the server's own verdict when it sent one, else the same mapping the web applies to `risk.level`. */
+        fun forLink(result: ScamCheckResult): VerdictKind = fromWire(result.verdict) ?: fromRisk(result.level)
+
         fun fromScenario(confidence: ScenarioConfidence): VerdictKind = when (confidence) {
             ScenarioConfidence.High -> Familiar
             ScenarioConfidence.Possible -> Suspicious

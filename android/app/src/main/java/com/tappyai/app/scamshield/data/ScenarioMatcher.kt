@@ -6,89 +6,92 @@ import java.text.Normalizer
  * Scam Shield · DETERMINISTIC match of a pasted message against the 25 official scenarios (Bộ Công an 2026) — ON THE DEVICE.
  * No network, no model, no token, nothing stored or sent: the message never leaves the phone for this step.
  *
- * A 1:1 port of the web's Phase 8 `lib/scam-shield/knowledge/match.ts` (`matchScenario`) so the three platforms read the SAME
- * cue table the SAME way. Each scenario carries hand-written cue phrases (TappyAI's, derived from the official titles and
- * TappyAI's guidance — never presented as official text). Matching is accent-insensitive (Vietnamese is often typed without
- * diacritics) and phrase-based on word boundaries built from spaces, never `\b` (which does not work after a Vietnamese vowel).
+ * A 1:1 port of the web's FINAL `lib/scam-shield/knowledge/match.ts` (`origin/rc/web-uat`, commit 65685a7, evidence matrix in
+ * docs/android/RELEASE-INPUT-CHECK-2026-10-02.md): the same weighted, diacritic-free phrase table, the same word-boundary rule,
+ * the same "a phrase wholly inside a longer matched phrase counts once" rule, the same thresholds. If the web table changes, this
+ * file must be regenerated from it — never edited by hand.
  *
- *   strong cue = 2 points, weak cue = 1 point.
- *   score >= 4  -> [ScenarioConfidence.High]     a known scenario: the app may answer on its own, without asking a server
- *   score 2..3  -> [ScenarioConfidence.Possible] show it as related, keep the normal (server) path
- *   score < 2   -> no match
+ *   score >= [STRONG_AT] -> [ScenarioConfidence.High]     "familiar scam signs"
+ *   score >= [WEAK_AT]   -> [ScenarioConfidence.Possible] "some suspicious signs"
+ *   below                -> no match: nothing is claimed
  */
 enum class ScenarioConfidence { High, Possible }
 
 data class ScenarioMatch(
-    val scenarioId: String,
-    val score: Int,
+    /** The scenario's official number in the Bộ Công an list (1..25). */
+    val officialNumber: Int,
+    val score: Double,
     val confidence: ScenarioConfidence,
-    /** The cues that matched (folded phrases) — never the user's own text. */
-    val cues: List<String>,
+    /** The phrases that fired (diacritic-free) — for tests; never shown and never the user's own text. */
+    val phrases: List<String>,
 )
 
 object ScenarioMatcher {
+    const val STRONG_AT = 6.0
+    const val WEAK_AT = 4.0
 
-    /** Lower-case, strip diacritics (đ -> d), collapse everything that is not a letter or digit to one space, padded with spaces. */
-    fun fold(text: String): String {
-        val noMarks = Normalizer.normalize(text, Normalizer.Form.NFD).replace(MARKS, "")
-        val folded = noMarks.replace('đ', 'd').replace('Đ', 'd').lowercase().replace(NON_ALNUM, " ").trim()
-        return " $folded "
-    }
+    /** `normalizeVN`: NFD, drop combining marks, đ -> d. */
+    private fun normalizeVn(s: String): String =
+        Normalizer.normalize(s, Normalizer.Form.NFD).replace(MARKS, "").replace('đ', 'd').replace('Đ', 'D')
 
-    private val MARKS = Regex("[\\u0300-\\u036f]")
-    private val NON_ALNUM = Regex("[^a-z0-9]+")
+    private val MARKS = Regex("""[\u0300-\u036f]""")
+    private val SPACES = Regex("""\s+""")
 
-    private class Cues(val strong: List<String>, val weak: List<String>)
-
-    // Cue phrases are written WITHOUT diacritics (they are matched against `fold(text)`). Copied from the web's match.ts.
-    private val CUES: Map<String, Cues> = linkedMapOf(
-        "bca-2026-01" to Cues(listOf("deepfake", "goi video nho chuyen tien", "video call vay tien"), listOf("nguoi than", "goi video", "chuyen gap")),
-        "bca-2026-02" to Cues(listOf("gia giong", "deepvoice", "giong noi ai"), listOf("nguoi quen", "chuyen gap", "vay tien")),
-        "bca-2026-03" to Cues(listOf("cong an", "vien kiem sat", "toa an", "lenh bat", "dieu tra rua tien"), listOf("ho so vu an", "phong toa tai khoan", "chuyen tien de xac minh", "giu bi mat")),
-        "bca-2026-04" to Cues(listOf("nhan vien ngan hang", "nang han muc", "the tin dung", "ma otp"), listOf("ngan hang", "xac thuc tai khoan", "cap nhat thong tin", "otp")),
-        "bca-2026-05" to Cues(listOf("brandname", "tai khoan cua quy khach bi khoa"), listOf("tin nhan", "quy khach", "truy cap duong link")),
-        "bca-2026-06" to Cues(listOf("bam vao link", "nhan vao duong link", "truy cap link"), listOf("link", "duong dan", "dang nhap")),
-        "bca-2026-07" to Cues(listOf("bill chuyen khoan gia", "anh chuyen khoan", "bien lai gia"), listOf("da chuyen khoan", "kiem tra lai", "chuyen nham")),
-        "bca-2026-08" to Cues(listOf("chiem tai khoan facebook", "hack facebook", "hack zalo", "muon tai khoan"), listOf("facebook", "zalo", "ma xac minh", "binh chon")),
-        "bca-2026-09" to Cues(listOf("cuoc goi im lang"), listOf("goi nho", "khong ai tra loi")),
-        "bca-2026-10" to Cues(listOf("con bi tai nan", "con dang cap cuu", "giao vien chu nhiem"), listOf("nha truong", "giao vien", "cap cuu", "chuyen tien vien phi")),
-        "bca-2026-11" to Cues(listOf("bac si benh vien", "nguoi nha dang cap cuu", "vien phi gap"), listOf("benh vien", "y te", "cap cuu")),
-        "bca-2026-12" to Cues(listOf("khoa sim", "chuan hoa thong tin thue bao", "sim chinh chu"), listOf("nha mang", "thue bao", "sim")),
-        "bca-2026-13" to Cues(listOf("hoan tien", "hoan phi"), listOf("don hang loi", "hoan tra", "chiet khau")),
-        "bca-2026-14" to Cues(listOf("cong tac vien", "lam nhiem vu", "chot don ao"), listOf("viec nhe luong cao", "hoa hong", "nap tien lam nhiem vu")),
-        "bca-2026-15" to Cues(listOf("loi nhuan cao", "dau tu sinh loi", "cam ket loi nhuan"), listOf("dau tu", "lai suat", "tien ao", "chung khoan")),
-        "bca-2026-16" to Cues(listOf("nhom dau tu", "chuyen gia chung khoan", "san dau tu"), listOf("nhom zalo", "nhom telegram", "dau tu")),
-        "bca-2026-17" to Cues(listOf("cat dien", "tien dien", "tien nuoc", "cat mang"), listOf("dien luc", "evn", "cap nuoc", "vien thong", "no cuoc")),
-        "bca-2026-18" to Cues(listOf("bao hiem xa hoi", "bhxh", "tro cap that nghiep"), listOf("bao hiem", "huong che do", "cap nhat vneid")),
-        "bca-2026-19" to Cues(listOf("ma qr", "quet qr"), listOf("qr", "thanh toan", "dan de")),
-        "bca-2026-20" to Cues(listOf("cai ung dung", "cai app", "dieu khien tu xa", "teamviewer", "anydesk", "ultraviewer"), listOf("tai ung dung", "file apk", "ung dung")),
-        "bca-2026-21" to Cues(listOf("dat coc truoc", "chuyen coc"), listOf("mua ban", "hang gia re", "ship cod", "giao hang")),
-        "bca-2026-22" to Cues(listOf("phat nguoi", "vi pham giao thong", "nop phat"), listOf("csgt", "bien ban", "phat")),
-        "bca-2026-23" to Cues(listOf("trung thuong", "nhan giai", "qua tri an"), listOf("phi nhan thuong", "nop phi", "may man")),
-        "bca-2026-24" to Cues(listOf("gui qua tu nuoc ngoai", "phi hai quan", "ban trai nuoc ngoai"), listOf("yeu", "ket ban", "qua tang", "hai quan")),
-        "bca-2026-25" to Cues(listOf("tuyen dung", "phi ho so", "phi dong phuc"), listOf("viec lam", "phong van", "nop phi")),
+    /** Phrases are written WITHOUT diacritics (matching runs on the stripped text). Generated from the web table. */
+    private val PHRASES: Map<Int, List<Pair<String, Double>>> = mapOf(
+        1 to listOf("deepfake" to 6.0, "gia nguoi than" to 6.0, "gia mao nguoi than" to 6.0, "cuoc goi video" to 3.0, "goi video" to 3.0, "hinh anh gia" to 4.0, "nguoi than" to 1.5, "chuyen khoan gap" to 3.0, "can tien gap" to 3.0, "hinh mo" to 1.5, "ket thuc dot ngot" to 2.0),
+        2 to listOf("deepvoice" to 6.0, "deep voice" to 6.0, "lam gia giong" to 6.0, "gia giong" to 5.0, "giong noi gia" to 6.0, "giong nguoi quen" to 5.0, "giong noi" to 2.0, "vay tien" to 2.0, "so la" to 1.5, "giu bi mat" to 2.0, "khong the goi lai" to 2.0),
+        3 to listOf("gia danh cong an" to 6.0, "mao danh co quan to tung" to 6.0, "co quan to tung" to 5.0, "lien quan vu an" to 5.0, "tai khoan tam giu" to 6.0, "chuyen tien de xac minh" to 6.0, "lenh bat" to 5.0, "rua tien" to 4.0, "vien kiem sat" to 3.0, "vu an" to 3.0, "cong an" to 2.0, "toa an" to 2.0, "giay trieu tap" to 2.0, "giu bi mat" to 2.0),
+        4 to listOf("gia nhan vien ngan hang" to 6.0, "nhan vien ngan hang" to 5.0, "khoa tai khoan" to 4.0, "nang han muc" to 4.0, "giao dich la" to 4.0, "link dang nhap" to 3.0, "mat khau" to 2.0, "ma otp" to 2.0, "ngan hang" to 1.5, "dang nhap" to 1.5, "mo khoa" to 2.0, "otp" to 1.5),
+        5 to listOf("tin nhan brandname" to 6.0, "brandname" to 6.0, "sms gia" to 4.0, "tin nhan gia" to 4.0, "dang nhap bat thuong" to 5.0, "tai khoan bi khoa" to 4.0, "nhan tien hoan" to 3.0, "ten hien thi" to 2.0),
+        6 to listOf("duong link gia" to 6.0, "link gia" to 6.0, "lien ket gia" to 6.0, "dang nhap qua link" to 5.0, "xac minh qua link" to 5.0, "duong link la" to 5.0, "ten mien la" to 5.0, "link la" to 4.0, "link xac minh" to 4.0, "link rut gon" to 3.0, "bam vao link" to 3.0, "bam link" to 3.0, "link" to 1.0),
+        7 to listOf("chuyen khoan gia" to 6.0, "bien lai gia" to 6.0, "hoan tien thua" to 6.0, "anh chuyen khoan" to 5.0, "ngan hang dang xu ly" to 5.0, "chua nhan duoc tien" to 4.0, "tien thua" to 4.0, "bang chung giao dich" to 4.0, "bien lai" to 3.0, "da chuyen khoan" to 3.0, "nguoi mua" to 1.5),
+        8 to listOf("chiem doat tai khoan" to 6.0, "facebook bi hack" to 6.0, "hack tai khoan" to 6.0, "ban be nhan vay tien" to 6.0, "nhan vay tien" to 5.0, "nhan tin muon tien" to 5.0, "vay tien gap" to 4.0, "bi hack" to 4.0, "binh chon" to 4.0, "mat tai khoan" to 3.0, "tai khoan ban be" to 3.0, "tai khoan facebook" to 2.0, "xem anh" to 2.0, "zalo" to 1.0),
+        9 to listOf("goi dien im lang" to 6.0, "cuoc goi im lang" to 6.0, "thu thap giong" to 6.0, "mau giong noi" to 5.0, "im lang" to 2.0, "khong noi chuyen" to 2.0, "a lo" to 1.5, "so la goi" to 2.0, "nhieu cuoc goi" to 2.0),
+        10 to listOf("gia danh giao vien" to 6.0, "giao vien" to 2.0, "nha truong" to 2.0, "hoc sinh" to 2.0, "tai nan" to 3.0, "cap cuu" to 3.0, "vien phi" to 4.0, "con em" to 1.5, "con ban" to 1.5),
+        11 to listOf("mao danh nhan vien y te" to 6.0, "nhan vien y te" to 5.0, "bac si" to 2.0, "dieu duong" to 2.0, "nhap vien" to 3.0, "cap cuu" to 3.0, "vien phi" to 4.0, "tam ung" to 3.0, "nguoi than" to 1.5),
+        12 to listOf("khoa sim" to 6.0, "sim sap bi khoa" to 6.0, "chuan hoa sim" to 5.0, "chuan hoa thue bao" to 5.0, "xac thuc sim" to 5.0, "nang cap sim" to 5.0, "chuyen huong cuoc goi" to 4.0, "thue bao" to 2.0, "sim" to 1.5),
+        13 to listOf("chuong trinh hoan tien" to 6.0, "hoan hoc phi" to 5.0, "hoan thue" to 5.0, "nhan hoan tien" to 5.0, "nhan tien hoan" to 5.0, "hoan tien" to 4.0, "phi kich hoat" to 4.0),
+        14 to listOf("viec nhe luong cao" to 6.0, "tuyen cong tac vien" to 6.0, "dat don ao" to 6.0, "cong tac vien" to 4.0, "lam nhiem vu" to 4.0, "nang cap thanh vien" to 4.0, "rut duoc so du" to 4.0, "viec nhe" to 3.0, "nhiem vu" to 3.0, "hoa hong" to 3.0, "luong cao" to 2.0),
+        15 to listOf("cam ket loi nhuan" to 6.0, "loi nhuan co dinh" to 6.0, "loi nhuan cao" to 5.0, "khong rui ro" to 5.0, "loi nhuan hap dan" to 5.0, "nap tien vao san" to 5.0, "forex" to 4.0, "tien so" to 3.0, "tien ao" to 3.0, "crypto" to 3.0, "ngoai hoi" to 3.0, "san giao dich" to 3.0, "nang cap goi" to 3.0, "chung khoan" to 2.0, "dau tu" to 2.0, "chuyen gia" to 1.5),
+        16 to listOf("nhom dau tu" to 5.0, "thay doc lenh" to 6.0, "lenh vip" to 6.0, "nop thue de rut" to 6.0, "khoe lai" to 5.0, "doc lenh" to 5.0, "rut lai nho" to 5.0, "chan rut tien" to 5.0, "vao lenh" to 4.0, "phi bao hiem" to 4.0, "nhom chat" to 2.0),
+        17 to listOf("no cuoc" to 6.0, "cat dien" to 6.0, "cat nuoc" to 5.0, "cat mang" to 5.0, "nop cuoc" to 4.0, "tra cuu cuoc" to 4.0, "thanh toan cuoc" to 4.0, "dien luc" to 3.0, "cap nuoc" to 3.0, "tien dien" to 3.0, "hoa don dien" to 3.0, "vien thong" to 2.0),
+        18 to listOf("vssid" to 6.0, "dong bo cccd" to 6.0, "so bhxh" to 4.0, "bhxh" to 4.0, "bao hiem xa hoi" to 4.0, "cap nhat ho so" to 3.0, "tro cap" to 3.0, "anh cccd" to 3.0, "cccd" to 2.0, "ho so" to 1.0),
+        19 to listOf("ma qr gia" to 6.0, "qr gia" to 6.0, "ma qr la" to 6.0, "qr dan de" to 6.0, "qr lam gia" to 6.0, "qr la" to 5.0, "kem ma qr" to 5.0, "dinh kem ma qr" to 5.0, "gui kem ma qr" to 5.0, "quet qr" to 4.0, "ma qr" to 3.0, "quet ma" to 2.0, "buu pham" to 2.0, "buu kien" to 2.0, "kien hang" to 2.0, "qua trung thu" to 2.0, "qua tang" to 1.5, "qua tet" to 2.0, "in roi" to 2.0),
+        20 to listOf("dieu khien tu xa" to 6.0, "teamviewer" to 5.0, "anydesk" to 5.0, "ultraviewer" to 5.0, "quyen tro nang" to 5.0, "file apk" to 5.0, "apk" to 4.0, "chia se man hinh" to 4.0, "cai ung dung" to 3.0, "cai phan mem" to 3.0, "ho tro ky thuat" to 3.0, "ma id" to 2.0),
+        21 to listOf("khong cho kiem hang" to 6.0, "khong ship cod" to 6.0, "gia re bat thuong" to 5.0, "chi nhan coc" to 5.0, "dat coc" to 4.0, "coc truoc" to 4.0, "chuyen khoan truoc" to 4.0, "shop moi lap" to 4.0, "nguoi ban" to 2.0, "mua ban" to 1.5),
+        22 to listOf("phat nguoi" to 6.0, "nop phat truc tuyen" to 6.0, "tra cuu vi pham" to 5.0, "nop phat" to 4.0, "vi pham giao thong" to 4.0, "csgt" to 3.0, "canh sat giao thong" to 3.0, "thong bao phat" to 3.0),
+        23 to listOf("trung thuong" to 6.0, "trung giai" to 5.0, "nhan thuong" to 4.0, "phi van chuyen" to 4.0, "thue thu nhap" to 3.0, "tien thuong" to 3.0, "nhan qua" to 2.0, "qua tang" to 1.5),
+        24 to listOf("lua dao tinh cam" to 6.0, "phi hai quan" to 6.0, "qua bi giu o hai quan" to 6.0, "nhan hang ho" to 6.0, "chuyen hang ho" to 6.0, "quen qua mang" to 4.0, "tranh gap mat" to 4.0, "chua tung gap" to 4.0, "hai quan" to 3.0, "tinh cam" to 2.0, "nguoi yeu" to 2.0, "ket ban" to 1.5),
+        25 to listOf("phi ho so" to 6.0, "phi dao tao" to 6.0, "tien dong phuc" to 6.0, "dat coc thiet bi" to 6.0, "trung tuyen" to 5.0, "khong can phong van" to 5.0, "tuyen dung" to 3.0, "nha tuyen dung" to 3.0, "nhan viec" to 2.0, "phong van" to 1.0),
     )
 
-    /** Every cue-table id — each must name a real scenario in the bundled dataset (checked by a test). */
-    val cueScenarioIds: Set<String> get() = CUES.keys
+    private val COMPILED: Map<Int, List<Triple<String, Double, Regex>>> = PHRASES.mapValues { (_, list) ->
+        list.map { (p, w) -> Triple(p, w, Regex("(?<![a-z0-9])" + Regex.escape(p) + "(?![a-z0-9])")) }
+    }
 
-    /** The best scenario for [text], or null when nothing scores at least 2. Pure and synchronous. */
+    /** Official numbers that have a phrase list — a test compares it with the bundled dataset. */
+    val coveredScenarioNumbers: Set<Int> get() = PHRASES.keys
+
+    /** The best official scenario for a (possibly very short) text, or null when nothing is claimed. Pure and synchronous. */
     fun match(text: String): ScenarioMatch? {
         if (text.isBlank()) return null
-        val t = fold(text)
+        val t = normalizeVn(text.lowercase()).replace(SPACES, " ")
         var best: ScenarioMatch? = null
-        for ((id, cues) in CUES) {
-            val hit = ArrayList<String>()
-            var score = 0
-            for (c in cues.strong) if (t.contains(" $c ")) { score += 2; hit += c }
-            for (c in cues.weak) if (t.contains(" $c ")) { score += 1; hit += c }
-            if (score < 2) continue
+        for ((number, list) in COMPILED) {
+            val hit = list.filter { (_, _, re) -> re.containsMatchIn(t) }
+            // A phrase wholly contained in a longer phrase that also matched is the SAME evidence, counted once.
+            val kept = hit.filter { a -> hit.none { b -> b !== a && b.first.length > a.first.length && b.first.contains(a.first) } }
+            val score = kept.sumOf { it.second }
+            if (score <= 0.0) continue
             val current = best
+            // Ties keep the first scenario in table order, like the web's stable sort on the same order.
             if (current == null || score > current.score) {
-                best = ScenarioMatch(id, score, if (score >= 4) ScenarioConfidence.High else ScenarioConfidence.Possible, hit)
+                best = ScenarioMatch(number, score, if (score >= STRONG_AT) ScenarioConfidence.High else ScenarioConfidence.Possible, kept.map { it.first })
             }
         }
-        return best
+        val b = best ?: return null
+        return if (b.score < WEAK_AT) null else b
     }
 
     /** Whether [text] carries a link-like token: such a message goes to the link engine, so it is not answered from the cue table alone. */

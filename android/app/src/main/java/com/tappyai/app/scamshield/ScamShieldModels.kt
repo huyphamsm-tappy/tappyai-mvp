@@ -50,8 +50,10 @@ enum class SignalSeverity { SAFE, INFO, WARNING, CRITICAL, UNKNOWN;
 data class EvidenceItem(
     val source: String,
     val severity: SignalSeverity,
+    /** The sentence shown for this finding: the server's `reason_vi` / `reason_en` when present, else its English technical line. */
     val summary: String,
     val detail: String,
+    val reasonCode: String = "",
 )
 
 data class RecommendedAction(
@@ -94,6 +96,8 @@ data class ScamCheckResult(
     val officialMatch: OfficialEntity?,
     val actions: List<RecommendedAction>,
     val cached: Boolean,
+    /** The server's three-state verdict as sent (`familiar | suspicious | unrecognized`) or null. */
+    val verdict: String? = null,
 )
 
 /**

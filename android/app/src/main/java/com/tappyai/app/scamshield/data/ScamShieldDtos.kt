@@ -24,6 +24,8 @@ data class ScamCheckResponseDto(
     val officialMatch: OfficialEntityDto? = null,
     val actions: List<RecommendedActionDto> = emptyList(),
     val cached: Boolean = false,
+    /** The server's public three-state verdict (`familiar | suspicious | unrecognized`); absent on an older server. */
+    val verdict: String? = null,
 )
 
 @Serializable
@@ -48,6 +50,10 @@ data class EvidenceItemDto(
     val severity: String = "",
     val summary: String = "",
     val detail: String = "",
+    /** Stable `<source>.<finding>` code and the sentence in both languages (web `reasons.ts`); absent on an older server. */
+    val reasonCode: String = "",
+    @SerialName("reason_vi") val reasonVi: String = "",
+    @SerialName("reason_en") val reasonEn: String = "",
 )
 
 @Serializable

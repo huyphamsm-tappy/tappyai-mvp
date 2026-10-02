@@ -34,7 +34,8 @@ class SafetyRepositoryTest {
         val calls = mutableListOf<String>()
         override suspend fun config(): SafetyConfigDto { calls += "config"; return cfg() }
         override suspend fun reportReview(reviewId: String, body: ReviewReportBodyDto): Response<ReportAckDto> { calls += "reportReview:$reviewId:${body.reason}"; return onReviewReport(reviewId, body) }
-        override suspend fun report(body: ReportBodyDto): Response<ReportAckDto> { calls += "report:${body.targetType}:${body.reason}"; return onReport(body) }
+        override suspend fun reportComment(commentId: String, body: ReportBodyDto): Response<ReportAckDto> { calls += "report:comment:$commentId:${body.reason}"; return onReport(body) }
+        override suspend fun reportUser(userId: String, body: ReportBodyDto): Response<ReportAckDto> { calls += "report:user:$userId:${body.reason}"; return onReport(body) }
         override suspend fun block(userId: String): Response<ReportAckDto> { calls += "block:$userId"; return onBlock(userId) }
         override suspend fun unblock(userId: String): Response<ReportAckDto> { calls += "unblock:$userId"; return onUnblock(userId) }
         override suspend fun blocks(): BlocksDto { calls += "blocks"; return onBlocks() }
@@ -165,14 +166,15 @@ class SafetyRepositoryTest {
     }
 
     @Test
-    fun `with reports open a user report goes to api-reports with the mapped reason`() = runTest {
+    fun `with reports open a user report and a comment report go to their OWN routes with the mapped reason - there is no api-reports`() = runTest {
         val api = FakeApi().apply { cfg = { on } }
         val repo = SafetyRepository(api, MemPrefs(), Session())
         repo.refresh()
         assertEquals(ReportOutcome.Sent, repo.report(ReportTarget.User, "u1", ReportReason.Sensitive))
-        assertTrue(api.calls.contains("report:user:sexual"))
+        assertTrue(api.calls.contains("report:user:u1:sexual"))
         assertEquals(ReportOutcome.Sent, repo.report(ReportTarget.Comment, "c1", ReportReason.Copyright))
-        assertTrue("copyright has no value on /api/reports: it is filed as other (+details)", api.calls.contains("report:comment:other"))
+        assertTrue("copyright is a value of the web's comment route", api.calls.contains("report:comment:c1:copyright"))
+        assertTrue("never the removed merged route", api.calls.none { it == "report" || it.startsWith("report:review") })
     }
 
     @Test

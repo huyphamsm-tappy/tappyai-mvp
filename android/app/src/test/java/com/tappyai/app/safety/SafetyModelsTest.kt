@@ -14,7 +14,11 @@ class SafetyModelsTest {
     // Copied from the server routes (production `src/lib/reviews/reportReasons.ts`; phase8
     // `src/app/api/reports/route.ts`). If a server list changes, these fail and the mapping is revisited.
     private val reviewRouteReasons = setOf("spam", "harassment", "inappropriate", "copyright", "misinformation", "violence", "other")
-    private val reportsRouteReasons = setOf("spam", "harassment", "hate", "sexual", "violence", "self_harm", "scam", "misinformation", "impersonation", "other")
+    // Web contract §4 (docs/uat/ANDROID-REQUESTS.md @ origin/rc/web-uat): the comment/user routes accept these.
+    private val reportsRouteReasons = setOf(
+        "spam", "harassment", "inappropriate", "copyright", "misinformation", "violence", "other",
+        "scam", "sensitive", "hate", "sexual", "self_harm", "impersonation",
+    )
 
     @Test
     fun `the six reasons are exactly the ones asked for, in order`() {
@@ -32,8 +36,7 @@ class SafetyModelsTest {
     @Test
     fun `every reason maps to a value the phase 8 reports route accepts`() {
         ReportReason.values().forEach { assertTrue("${it.name} -> ${it.reportsWire()}", it.reportsWire() in reportsRouteReasons) }
-        assertEquals("copyright is named in details", "copyright", ReportReason.Copyright.reportDetails())
-        assertEquals(null, ReportReason.Spam.reportDetails())
+        assertEquals("copyright", ReportReason.Copyright.reportsWire())
     }
 
     @Test

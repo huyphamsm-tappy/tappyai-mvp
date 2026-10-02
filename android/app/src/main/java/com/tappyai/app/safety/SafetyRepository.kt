@@ -128,12 +128,17 @@ class SafetyRepository @Inject constructor(
         return outcome
     }
 
-    /** Reports a comment or a user — Phase 8 `POST /api/reports`, only when the server says it has it. */
+    /** Reports a comment (`POST /api/comments/{id}/report`) or a user (`POST /api/users/{id}/report`), only when the server says it has them. */
     suspend fun report(target: ReportTarget, targetId: String, reason: ReportReason): ReportOutcome {
         if (target == ReportTarget.Review) return reportReview(targetId, reason)
         if (!_flags.value.reports) return ReportOutcome.Failed
+        val body = ReportBodyDto(reason = reason.reportsWire())
         return call {
-            api.report(ReportBodyDto(target.wire, targetId, reason.reportsWire(), reason.reportDetails()))
+            when (target) {
+                ReportTarget.Comment -> api.reportComment(targetId, body)
+                ReportTarget.User -> api.reportUser(targetId, body)
+                ReportTarget.Review -> api.reportReview(targetId, ReviewReportBodyDto(reason.reviewWire()))
+            }
         }
     }
 

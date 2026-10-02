@@ -1,47 +1,73 @@
 <resources>
-    <!-- Scam Shield: results produced ON THE DEVICE (official-scenario match, non-link QR codes) -->
-    <string name="scam_known_title">Looks like: %1$s</string>
-    <string name="scam_known_badge">Matches a Ministry of Public Security warning · no AI · your message never leaves your phone</string>
-    <string name="scam_known_badge_partial">Partly resembles a Ministry of Public Security warning · no AI · the message never leaves your phone</string>
-    <string name="scam_known_share">A message I received looks like the scam “%1$s” from the Ministry of Public Security warnings. Check more at %2$s</string>
-    <string name="scam_not_state_agency">TappyAI does not replace the authorities. The original warning is the Ministry of Public Security\'s; the advice is TappyAI\'s.</string>
-    <string name="scam_emergency_113">If you suspect you are being scammed: stop any transfer and report to the nearest police or call 113.</string>
+    <!-- Scam Shield — results produced ON THE DEVICE. Wording COPIED from the web `src/lib/i18n/scamVerdict.ts` + `scamQr.ts`
+         (origin/rc/web-uat @ 56a26ae, docs/uat/SCAM-SHIELD-PARITY.md §8). Changed only when the web changes. -->
+
+    <!-- The three states for a MESSAGE — NEVER "Safe", no score, no "confidence" -->
+    <string name="scam_verdict_familiar">Familiar scam signs found</string>
+    <string name="scam_verdict_suspicious">Some suspicious signs found</string>
+    <string name="scam_verdict_unrecognized">No familiar signs recognised</string>
+    <string name="scam_verdict_familiar_body">This looks like a scam tactic the authorities have warned about. Do not do what it asks.</string>
+    <string name="scam_verdict_suspicious_body">Not enough to be certain, but stop and verify through an official channel before doing anything.</string>
+    <string name="scam_verdict_unrecognized_body">This does NOT mean it is safe: do not send money, do not read out any OTP code, do not tap unknown links; verify through an official channel.</string>
+
+    <!-- The three states for a LINK (and a link read from a QR) -->
+    <string name="scam_verdict_link_familiar_title">This link has traits that are common in fake links</string>
+    <string name="scam_verdict_link_suspicious_title">This link has some suspicious traits</string>
+    <string name="scam_verdict_link_unrecognized_title">No familiar signs recognised in this link</string>
+    <string name="scam_verdict_link_familiar_body">This describes the traits of the link, not a conclusion about any particular organisation or domain. Do not sign in or enter an OTP or card details on this page.</string>
+    <string name="scam_verdict_link_suspicious_body">Not enough to be certain. Do not enter personal details or an OTP; open the official website or app yourself.</string>
+    <string name="scam_verdict_reasons">Specific reasons</string>
+    <!-- Short labels in the on-device history list (links only) -->
+    <string name="scam_verdict_link_short_familiar">Fake-link traits</string>
+    <string name="scam_verdict_link_short_suspicious">Some suspicious traits</string>
+    <string name="scam_verdict_link_short_unrecognized">No signs recognised</string>
+
+    <!-- Always printed under a result -->
+    <string name="scam_verdict_disclaimer">TappyAI does not replace the authorities.</string>
+
+    <!-- The matched scenario -->
+    <string name="scam_verdict_scenario_heading">Matching scenario</string>
+    <string name="scam_verdict_scenario_number">Scenario #%1$d in the Ministry of Public Security list</string>
+    <string name="scam_verdict_scenario_report">Report to the nearest police station or call 113 if you suspect a scam.</string>
+
+    <!-- Message tab -->
+    <string name="scam_verdict_msg_subtitle">Paste a message or briefly describe a suspicious situation. TappyAI compares it with the scam scenarios the Ministry of Public Security has warned about.</string>
+    <string name="scam_verdict_msg_privacy">Matched against a built-in list of scenarios and rules: no AI is used and the message text is not stored.</string>
+
+    <!-- Sharing a result: plain text, NEVER the original message or the code content -->
+    <string name="scam_known_share">A message I received resembles the scam \"%1$s\" in the Ministry of Public Security warning. Check more at %2$s</string>
+    <string name="scam_verdict_share_unrecognized">I just checked a message with TappyAI: no familiar signs recognised (this does not mean it is safe). Check more at %1$s</string>
     <string name="scam_share_result">Share result</string>
 
-    <string name="scam_qr_notice_title">This QR code is: %1$s</string>
-    <string name="scam_qr_never_act">TappyAI never opens, pays or connects by itself. Only act if you are sure the code comes from a trusted source.</string>
-    <string name="scam_qr_privacy">The code is read on your phone. The picture is not uploaded; only a link inside the code (if any) is checked.</string>
-    <string name="scam_qr_preview">Content of the code</string>
-    <string name="scam_qr_preview_wifi">Wi-Fi network name (the password is not shown)</string>
-    <string name="scam_qr_share">I just scanned a QR code (%1$s) and checked it with TappyAI. Check more at %2$s</string>
-    <string name="scam_qr_kind_text">text (not a link)</string>
-    <string name="scam_qr_kind_wifi">a Wi-Fi connection</string>
-    <string name="scam_qr_kind_payment">a payment / transfer</string>
-    <string name="scam_qr_kind_contact">a contact</string>
-    <string name="scam_qr_kind_phone">a phone number</string>
-    <string name="scam_qr_kind_sms">an SMS</string>
-    <string name="scam_qr_kind_email">an email</string>
-    <string name="scam_qr_kind_location">a location</string>
-    <string name="scam_qr_kind_calendar">a calendar event</string>
-    <string name="scam_qr_kind_unsafe">a link that opens an app or runs data (not a web page)</string>
-    <string name="scam_qr_warn_payment">This is a payment code. Before paying, check the recipient name and the amount inside your own bank app. Do not scan codes sent by strangers or stuck over a real code.</string>
-    <string name="scam_qr_warn_wifi">This code joins a Wi-Fi network. An unknown network can watch what you do. Join only networks of places you trust.</string>
-    <string name="scam_qr_warn_unsafe">This code does not open a web page; it opens an app or runs data on your phone. That is very suspicious — do not open it.</string>
-    <string name="scam_qr_warn_contact">This code can call, text, write an email or add a contact. Read the content carefully before acting, especially if a stranger sent it.</string>
-    <string name="scam_qr_warn_text">This code holds text only, not a link, so there is nothing more to check. If the text tells you to transfer money, sign in or install an app, be careful.</string>
+    <!-- QR that is NOT a link -->
+    <string name="scam_qr_title">This QR code does not contain a web link</string>
+    <string name="scam_qr_kind_payment">Type: payment</string>
+    <string name="scam_qr_kind_wifi">Type: Wi-Fi</string>
+    <string name="scam_qr_kind_contact">Type: contact card</string>
+    <string name="scam_qr_kind_phone">Type: phone number</string>
+    <string name="scam_qr_kind_sms">Type: SMS message</string>
+    <string name="scam_qr_kind_email">Type: email</string>
+    <string name="scam_qr_kind_geo">Type: location</string>
+    <string name="scam_qr_kind_app_link">Type: app link</string>
+    <string name="scam_qr_kind_text">Type: text</string>
+    <string name="scam_qr_warn_payment">TappyAI never pays for you. Only pay when you personally know the recipient and the amount; do not scan payment codes sent by strangers.</string>
+    <string name="scam_qr_warn_wifi">TappyAI never joins a Wi-Fi network for you. An unknown code can lead you onto a fake network.</string>
+    <string name="scam_qr_warn_contact">TappyAI never saves anything to your contacts.</string>
+    <string name="scam_qr_warn_phone">TappyAI never places a call. Scammers often use unknown numbers — do not call back if you are not sure.</string>
+    <string name="scam_qr_warn_sms">TappyAI never sends a message.</string>
+    <string name="scam_qr_warn_email">TappyAI never sends an email.</string>
+    <string name="scam_qr_warn_geo">TappyAI never opens a map.</string>
+    <string name="scam_qr_warn_app_link">This link opens another app. TappyAI will not open it; open it only if you trust whoever sent it.</string>
+    <string name="scam_qr_warn_text">This content has not been checked. Do not follow instructions in it if you are not sure.</string>
+    <string name="scam_qr_content">What was read</string>
+    <string name="scam_qr_content_wifi">Wi-Fi network name (the password is not shown)</string>
+    <string name="scam_qr_privacy">The QR image is read on your device and is not uploaded to a server.</string>
+    <string name="scam_qr_no_verdict">TappyAI has not checked this content. Do not follow instructions in it if you are unsure; verify through an official channel.</string>
+    <string name="scam_qr_share">I just scanned a QR code and checked it with TappyAI (%1$s). Check more at %2$s</string>
+
+    <!-- Used only when the AI message-analysis flag is ON (currently OFF) -->
     <string name="scam_ai_consent_title">Send this message to the AI?</string>
     <string name="scam_ai_consent_body">This message does not clearly match a known scam. To analyse it further, its text (and screenshot, if any) is sent to the TappyAI server and its AI provider (OpenAI) only to produce this result. TappyAI does not store the message.</string>
     <string name="scam_ai_consent_accept">Send</string>
     <string name="scam_ai_consent_decline">Do not send</string>
-    <!-- 02/10 — the only three states (decision A7/A8): NEVER "Safe", no score, no "confidence" -->
-    <string name="scam_verdict_familiar">Familiar scam signs found</string>
-    <string name="scam_verdict_suspicious">Some suspicious signs found</string>
-    <string name="scam_verdict_unrecognized">No familiar signs recognised</string>
-    <string name="scam_verdict_unrecognized_body">This does NOT mean it is safe: do not send money, do not read out OTP codes, do not tap unfamiliar links; verify through an official channel.</string>
-    <string name="scam_verdict_link_traits">The link has traits commonly seen in fake links.</string>
-    <string name="scam_verdict_reasons">Specific reasons</string>
-    <string name="scam_verdict_possible_scenario">Partly resembles the scam: %1$s</string>
-    <string name="scam_verdict_share_unrecognized">I just checked a message with TappyAI: no familiar signs recognised (this does not mean it is safe). Check more at %1$s</string>
-    <string name="scam_msg_subtitle_local">Paste a suspicious message or describe the situation. TappyAI compares it on your phone with known scams; the message text is not sent anywhere.</string>
-    <string name="scam_msg_local_hint">If there is a link, only that link is sent to be checked. TappyAI does not store the message.</string>
 </resources>

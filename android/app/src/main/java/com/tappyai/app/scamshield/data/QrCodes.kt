@@ -27,7 +27,7 @@ sealed interface QrPayload {
     data class Other(val kind: QrKind, val preview: String) : QrPayload
 }
 
-enum class QrKind { Text, Wifi, Payment, Contact, Phone, Sms, Email, Location, Calendar, UnsafeLink }
+enum class QrKind { Text, Wifi, Payment, Contact, Phone, Sms, Email, Location, UnsafeLink }
 
 object QrCodes {
 
@@ -88,32 +88,45 @@ object QrCodes {
         return decode(w, h, pixels)
     }
 
-    private val HTTP = Regex("""(?i)^https?://\S+$""")
-    private val BARE_WWW = Regex("""(?i)^www\.\S+$""")
-    private val UNSAFE_SCHEME = Regex("""(?i)^(intent|javascript|data|file|content|market|android-app|vbscript|blob):""")
+    private val HTTP_PREFIX = Regex("""(?i)^https?://""")
+    private val PAYMENT_SCHEMES = Regex("""(?i)^(momo|zalopay|vnpay|vietqr|viettelpay|shopeepay|upi|bitcoin|ethereum|paypal|alipays?|weixin)\b""")
+    private val BARE_HOST = Regex("""(?i)^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,}(?:[/:?#]\S*)?$""")
+    private val ANY_SCHEME = Regex("""(?i)^[a-z][a-z0-9+.-]{1,30}:""")
 
-    /** What a decoded QR text is. Pure. A web link is checked; everything else is only named and warned about. */
+    /** `true` when [text] parses as an absolute http(s) URL with a host (the web's `new URL(text)` succeeding). */
+    private fun parsesAsUrl(text: String): Boolean =
+        runCatching { java.net.URI(text) }.getOrNull()?.let { it.scheme != null && !it.host.isNullOrBlank() } == true
+
+    /**
+     * What a decoded QR text is. Pure. A web link is checked; everything else is only named and warned about.
+     * A 1:1 port of the web's `classifyQrPayload` (`src/lib/scam-shield/qr/payload.ts`, origin/rc/web-uat) — same order, same patterns.
+     * The one deliberate difference: a Wi-Fi code's preview shows the network name only, never the password.
+     */
     fun classify(raw: String): QrPayload {
         val text = raw.trim()
-        return when {
-            HTTP.matches(text) -> QrPayload.Link(text)
-            BARE_WWW.matches(text) -> QrPayload.Link("https://$text")
-            UNSAFE_SCHEME.containsMatchIn(text) -> QrPayload.Other(QrKind.UnsafeLink, preview(text))
-            text.startsWith("WIFI:", ignoreCase = true) -> QrPayload.Other(QrKind.Wifi, previewWifi(text))
-            // EMVCo merchant QR (VietQR / Napas / most bank apps) starts with the payload format indicator "000201".
-            text.startsWith("000201") || text.contains("A000000727", ignoreCase = true) -> QrPayload.Other(QrKind.Payment, preview(text))
-            Regex("""(?i)^(bitcoin|ethereum|litecoin|upi|paypal|zalopay|momo):""").containsMatchIn(text) -> QrPayload.Other(QrKind.Payment, preview(text))
-            text.startsWith("BEGIN:VCARD", ignoreCase = true) || text.startsWith("MECARD:", ignoreCase = true) -> QrPayload.Other(QrKind.Contact, preview(text))
-            text.startsWith("tel:", ignoreCase = true) -> QrPayload.Other(QrKind.Phone, preview(text))
-            Regex("""(?i)^(sms|smsto|mms|mmsto):""").containsMatchIn(text) -> QrPayload.Other(QrKind.Sms, preview(text))
-            text.startsWith("mailto:", ignoreCase = true) || text.startsWith("MATMSG:", ignoreCase = true) -> QrPayload.Other(QrKind.Email, preview(text))
-            text.startsWith("geo:", ignoreCase = true) -> QrPayload.Other(QrKind.Location, preview(text))
-            text.startsWith("BEGIN:VEVENT", ignoreCase = true) -> QrPayload.Other(QrKind.Calendar, preview(text))
-            else -> QrPayload.Other(QrKind.Text, preview(text))
+        if (text.isEmpty()) return QrPayload.Other(QrKind.Text, "")
+        if (HTTP_PREFIX.containsMatchIn(text)) {
+            return if (parsesAsUrl(text)) QrPayload.Link(text) else QrPayload.Other(QrKind.Text, preview(text))
         }
+        // EMVCo merchant-presented payment QR (VietQR, bank apps): starts with the payload format indicator 000201 + two digits.
+        if (Regex("""^000201\d{2}""").containsMatchIn(text)) return QrPayload.Other(QrKind.Payment, preview(text))
+        if (text.startsWith("WIFI:", ignoreCase = true)) return QrPayload.Other(QrKind.Wifi, previewWifi(text))
+        if (Regex("(?i)^(BEGIN:VCARD|MECARD:|BIZCARD:)").containsMatchIn(text)) return QrPayload.Other(QrKind.Contact, preview(text))
+        if (text.startsWith("tel:", ignoreCase = true)) return QrPayload.Other(QrKind.Phone, preview(text))
+        if (Regex("(?i)^(smsto?|mms|mmsto):").containsMatchIn(text)) return QrPayload.Other(QrKind.Sms, preview(text))
+        if (Regex("(?i)^(mailto:|MATMSG:)").containsMatchIn(text)) return QrPayload.Other(QrKind.Email, preview(text))
+        if (text.startsWith("geo:", ignoreCase = true)) return QrPayload.Other(QrKind.Location, preview(text))
+        if (PAYMENT_SCHEMES.containsMatchIn(text)) return QrPayload.Other(QrKind.Payment, preview(text))
+        // Any other scheme (intent:, market:, javascript:, data:, a custom app link…): never opened from here.
+        if (ANY_SCHEME.containsMatchIn(text)) return QrPayload.Other(QrKind.UnsafeLink, preview(text))
+        if (BARE_HOST.matches(text)) {
+            val candidate = "https://$text"
+            if (parsesAsUrl(candidate)) return QrPayload.Link(candidate)
+        }
+        return QrPayload.Other(QrKind.Text, preview(text))
     }
 
-    private const val PREVIEW_MAX = 160
+    private const val PREVIEW_MAX = 500
 
     private fun preview(text: String): String = if (text.length <= PREVIEW_MAX) text else text.take(PREVIEW_MAX) + "…"
 

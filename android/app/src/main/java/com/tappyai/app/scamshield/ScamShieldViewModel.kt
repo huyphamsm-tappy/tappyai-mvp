@@ -207,7 +207,7 @@ class ScamShieldViewModel @Inject constructor(
         if (shot == null && messageUrl.isBlank() && !ScenarioMatcher.containsLink(message)) {
             val known = ScenarioMatcher.match(message)
             if (known != null && known.confidence == ScenarioConfidence.High) {
-                val scenario = knowledge.allScenarios().firstOrNull { it.id == known.scenarioId }
+                val scenario = knowledge.allScenarios().firstOrNull { it.officialNumber == known.officialNumber }
                 if (scenario != null) {
                     inFlight?.cancel(); inFlight = null
                     state = ScamShieldUiState.KnownScenario(scenario, known)
@@ -237,7 +237,7 @@ class ScamShieldViewModel @Inject constructor(
     private fun analyzeMessageOnDevice() {
         val text = message.trim()
         val match = if (text.isBlank()) null else ScenarioMatcher.match(text)
-        val scenario = match?.let { m -> knowledge.allScenarios().firstOrNull { it.id == m.scenarioId } }
+        val scenario = match?.let { m -> knowledge.allScenarios().firstOrNull { it.officialNumber == m.officialNumber } }
         if (match != null && scenario != null) {
             inFlight?.cancel(); inFlight = null
             state = ScamShieldUiState.KnownScenario(scenario, match)

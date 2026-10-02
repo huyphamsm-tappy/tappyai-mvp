@@ -11,43 +11,99 @@ import org.junit.Test
 import java.io.File
 
 /**
- * The on-device scenario match (`ScenarioMatcher`, a port of the web's Phase 8 `matchScenario`): sure matches are answered from the
- * bundled dataset without any request; ordinary messages are NEVER reported as a known scam.
+ * The on-device scenario match is a 1:1 port of the web's FINAL matcher (`knowledge/match.ts`, origin/rc/web-uat 65685a7).
+ * The FIXTURES below are the web's own `match.test.ts` fixtures, copied verbatim: same text -> same scenario number -> same strength.
  */
 class ScenarioMatcherTest {
 
-    private fun high(text: String) = ScenarioMatcher.match(text)?.takeIf { it.confidence == ScenarioConfidence.High }
+    private class Fx(val text: String, val scenario: Int, val note: String)
 
-    // ── known scams ──
+    private val fixtures = listOf(
+        Fx("Cuộc gọi video người thân hình mờ, giật rồi tắt đột ngột, nói cần tiền gấp", 1, "deepfake video"),
+        Fx("Giọng giống người quen nhưng gọi từ số lạ, nhờ chuyển tiền vay tạm", 2, "DeepVoice"),
+        Fx("Gọi điện im lặng, đầu dây không nói chuyện, chỉ hỏi \"A lô? Ai đấy?\"", 9, "silent call"),
+        Fx("Người lạ xưng công an báo liên quan vụ án rửa tiền, đòi chuyển vào tài khoản tạm giữ", 3, "judicial"),
+        Fx("Nhân viên ngân hàng báo giao dịch lạ và yêu cầu đọc mã OTP", 4, "bank staff"),
+        Fx("Tin nhắn Brandname giả báo đăng nhập bất thường kèm link", 5, "brandname"),
+        Fx("Báo SIM sắp bị khóa trong vài giờ nếu không chuẩn hóa thuê bao", 12, "SIM"),
+        Fx("Thông báo nợ cước điện, dọa cắt điện trong vài giờ nếu không nộp cước", 17, "utilities"),
+        Fx("Phạt nguội kèm link tra cứu, thúc nộp phạt ngay", 22, "phạt nguội"),
+        Fx("Việc nhẹ lương cao, làm nhiệm vụ đặt đơn ảo nhận hoa hồng", 14, "collaborator"),
+        Fx("Nhóm đầu tư có thầy đọc lệnh VIP, rút được lãi nhỏ rồi bị chặn rút tiền", 16, "investment group"),
+        Fx("Trúng thưởng chương trình bạn không tham gia, phải đóng phí vận chuyển", 23, "prize"),
+        Fx("Bưu phẩm Trung thu kèm mã QR", 19, "owner example"),
+        Fx("Quà Tết gửi kèm mã QR lạ", 19, "owner shape 2"),
+        Fx("Kiện hàng bạn chưa đặt kèm mã QR bắt quét", 19, "owner shape 3"),
+    )
 
-    @Test fun `a police impersonation message is a high match for scenario 03`() {
-        val m = high("Tôi là cán bộ công an, tài khoản của anh liên quan vụ án. Anh cần chuyển tiền để xác minh và giữ bí mật với mọi người.")
-        assertNotNull(m)
-        assertEquals("bca-2026-03", m!!.scenarioId)
+    @Test fun `the 15 web fixtures each give the same scenario and a strong match`() {
+        assertEquals(15, fixtures.size)
+        fixtures.forEach { f ->
+            val m = ScenarioMatcher.match(f.text)
+            assertNotNull("${f.note}: \"${f.text}\"", m)
+            assertEquals("${f.note} scenario", f.scenario, m!!.officialNumber)
+            assertEquals("${f.note} strength", ScenarioConfidence.High, m.confidence)
+            assertTrue("${f.note} score ${m.score}", m.score >= ScenarioMatcher.STRONG_AT)
+        }
     }
 
-    @Test fun `a traffic-fine message is a high match for scenario 22 - and typing without accents works`() {
-        assertEquals("bca-2026-22", high("Thông báo phạt nguội: xe của bạn vi phạm giao thông, vui lòng nộp phạt trong 24 giờ")?.scenarioId)
-        assertEquals("bca-2026-22", high("thong bao phat nguoi: xe cua ban vi pham giao thong, vui long nop phat")?.scenarioId)
+    @Test fun `works without diacritics and in any case`() {
+        assertEquals(19, ScenarioMatcher.match("BUU PHAM trung thu kem ma QR")?.officialNumber)
+        assertEquals(22, ScenarioMatcher.match("phat nguoi kem link")?.officialNumber)
     }
 
-    @Test fun `a prize message is a high match for scenario 23`() {
-        assertEquals("bca-2026-23", high("Chúc mừng bạn trúng thưởng! Nhận giải bằng cách nộp phí nhận thưởng 500.000đ")?.scenarioId)
-    }
-
-    @Test fun `a phone-sim lock message is a high match for scenario 12`() {
-        assertEquals("bca-2026-12", high("Nhà mạng thông báo: thuê bao của bạn sẽ bị khóa sim nếu không chuẩn hóa thông tin thuê bao trong hôm nay")?.scenarioId)
-    }
-
-    // ── a possible match keeps the normal path ──
-
-    @Test fun `a moon-festival parcel with a QR code is only a possible match - it is not answered on its own`() {
-        val m = ScenarioMatcher.match("Bưu phẩm Trung thu của bạn đã đến, quét mã QR đính kèm để nhận")
+    @Test fun `a bare 'kem ma QR' invoice is only a WEAK match - some suspicious signs, not familiar`() {
+        val m = ScenarioMatcher.match("Hóa đơn tiền điện tháng 9 kèm mã QR thanh toán")
         assertNotNull(m)
         assertEquals(ScenarioConfidence.Possible, m!!.confidence)
+        assertTrue(m.score >= ScenarioMatcher.WEAK_AT)
+        assertTrue(m.score < ScenarioMatcher.STRONG_AT)
+    }
+
+    @Test fun `a message with a link is matched on its text too - 'phat nguoi kem link' is familiar`() {
+        val m = ScenarioMatcher.match("Phạt nguội kèm link https://nop-phat-nguoi.example/tra-cuu")
+        assertEquals(22, m?.officialNumber)
+        assertEquals(ScenarioConfidence.High, m?.confidence)
+    }
+
+    @Test fun `a normal message claims nothing`() {
+        listOf(
+            "Mẹ ơi cuối tuần con về nhà ăn cơm",
+            "Họp lớp tối thứ sáu nhé, mọi người nhớ đến",
+            "Thông báo số dư tài khoản: +500,000 VND lúc 09:15",
+            "Shipper GHN đã giao hàng, bạn nhận được chưa?",
+            "Mã OTP của bạn là 482913, không chia sẻ cho ai",
+            "Chiều nay đi cà phê không?",
+            "",
+        ).forEach { assertNull("'$it' must claim nothing", ScenarioMatcher.match(it)) }
+    }
+
+    @Test fun `other everyday messages (ours) claim nothing either`() {
+        listOf(
+            "Đơn hàng #4821 đang được giao, shipper sẽ gọi bạn trước khi tới nhé.",
+            "Chiều nay đi ăn phở nha, 6h gặp ở quán cũ.",
+            "Cuộc họp lúc 3h, nhớ mang laptop.",
+            "Cảm ơn bạn đã chuyển khoản tiền cà phê hôm qua.",
+            "Anh ơi tối nay mấy giờ về, em nấu cơm.",
+        ).forEach { assertNull("'$it' must claim nothing", ScenarioMatcher.match(it)) }
+    }
+
+    @Test fun `blank input matches nothing`() {
+        assertNull(ScenarioMatcher.match("   \n "))
+    }
+
+    @Test fun `matching is on whole phrases, never inside a word`() {
+        assertNull(ScenarioMatcher.match("phathanh simple"))
     }
 
     // ── the link that goes to the link check (and nothing else) ──
+
+    @Test fun `containsLink spots links and bare domains`() {
+        assertTrue(ScenarioMatcher.containsLink("nộp phạt tại https://nop-phat.top/abc"))
+        assertTrue(ScenarioMatcher.containsLink("vào www.vietcombank-xacthuc.com để xác minh"))
+        assertTrue(ScenarioMatcher.containsLink("truy cập nop-phat.vn ngay"))
+        assertFalse(ScenarioMatcher.containsLink("Tôi là cán bộ công an, hãy chuyển tiền để xác minh"))
+    }
 
     @Test fun `firstLink returns the first link as an https URL, trimmed of punctuation`() {
         assertEquals("https://nop-phat.top/abc", ScenarioMatcher.firstLink("nộp phạt tại https://nop-phat.top/abc, nhanh lên"))
@@ -58,56 +114,13 @@ class ScenarioMatcherTest {
         assertNull(ScenarioMatcher.firstLink(""))
     }
 
-    @Test fun `the Trung thu parcel message is a partial match - some suspicious signs, not a sure scam`() {
-        val m = ScenarioMatcher.match("Bưu phẩm Trung thu của bạn đã đến, quét mã QR đính kèm để nhận")
-        assertNotNull(m)
-        assertEquals(ScenarioConfidence.Possible, m!!.confidence)
-    }
+    // ── the phrase table and the bundled dataset agree ──
 
-    // ── ordinary messages are not scams ──
-
-    @Test fun `ordinary messages never reach a high match`() {
-        val ordinary = listOf(
-            "Đơn hàng #4821 đang được giao, shipper sẽ gọi bạn trước khi tới nhé.",
-            "Số dư TK ...1234 +2.000.000đ lúc 10:15. Cảm ơn quý khách.",
-            "Chiều nay đi ăn phở nha, 6h gặp ở quán cũ.",
-            "Mẹ ơi con đang ở trường, chiều con về.",
-            "Cuộc họp lúc 3h, nhớ mang laptop.",
-            "Cảm ơn bạn đã chuyển khoản tiền cà phê hôm qua.",
-            "Vietcombank: giao dịch thành công -50.000 VND tại cửa hàng tiện lợi.",
-            "Hẹn mai 8h họp nhóm, mình đặt phòng rồi.",
-            "Anh ơi tối nay mấy giờ về, em nấu cơm.",
-            "Ship hàng giúp mình lên quận 3, mình trả tiền khi nhận hàng nha.",
-        )
-        ordinary.forEach { assertNull("'$it' must not be a high match", high(it)) }
-    }
-
-    @Test fun `an empty or blank message matches nothing`() {
-        assertNull(ScenarioMatcher.match(""))
-        assertNull(ScenarioMatcher.match("   \n "))
-    }
-
-    @Test fun `matching is on whole phrases, never inside a word`() {
-        // "phat" inside "phathanh" is not the cue «phat»; "sim" inside "simple" is not «sim».
-        assertNull(ScenarioMatcher.match("phathanh simple"))
-    }
-
-    // ── the link guard ──
-
-    @Test fun `a message that carries a link is not answered from the cue table alone`() {
-        assertTrue(ScenarioMatcher.containsLink("nộp phạt tại https://nop-phat.top/abc"))
-        assertTrue(ScenarioMatcher.containsLink("vào www.vietcombank-xacthuc.com để xác minh"))
-        assertTrue(ScenarioMatcher.containsLink("truy cập nop-phat.vn ngay"))
-        assertFalse(ScenarioMatcher.containsLink("Tôi là cán bộ công an, hãy chuyển tiền để xác minh"))
-    }
-
-    // ── the cue table and the bundled dataset agree ──
-
-    @Test fun `every cue-table id is a real scenario of the bundled dataset, and every scenario has cues`() {
+    @Test fun `every scenario number in the bundled dataset has a phrase list, and no other`() {
         val json = File(root(), "app/src/main/assets/scam_knowledge/bocongan2026.json").readText()
-        val ids = Regex(""""id"\s*:\s*"(bca-2026-\d\d)"""").findAll(json).map { it.groupValues[1] }.toSet()
-        assertEquals(25, ids.size)
-        assertEquals("the cue table covers exactly the 25 scenarios", ids, ScenarioMatcher.cueScenarioIds)
+        val numbers = Regex(""""officialNumber"\s*:\s*(\d+)""").findAll(json).map { it.groupValues[1].toInt() }.filter { it in 1..25 }.toSet()
+        assertEquals(25, numbers.size)
+        assertEquals(numbers, ScenarioMatcher.coveredScenarioNumbers)
     }
 
     @Test fun `the matcher is pure - no network, no storage`() {
@@ -115,6 +128,11 @@ class ScenarioMatcherTest {
         listOf("retrofit", "okhttp", "SharedPreferences", "DataStore", "Log.", "analytics", "java.io.File").forEach {
             assertFalse("ScenarioMatcher must not touch $it", src.contains(it, ignoreCase = true))
         }
+    }
+
+    @Test fun `the thresholds are the web's`() {
+        assertEquals(6.0, ScenarioMatcher.STRONG_AT, 0.0)
+        assertEquals(4.0, ScenarioMatcher.WEAK_AT, 0.0)
     }
 
     private fun root(): File = generateSequence(File(".").absoluteFile) { it.parentFile }
