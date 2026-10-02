@@ -21,7 +21,7 @@ import { guardPlanItems, type PlanPlace } from './planItemGuard'
 import { guardPlanTripFacts, guardUngivenTravelDate } from './planTripFactsGuard'
 import { repairPlanBlock } from './planJsonRepair'
 import { appendConsultPlanCost, appendPlanBudgetMath, partyCount, perPersonBudget } from './planBudgetMath'
-import { applyTripBudgetEstimate } from './tripBudgetEstimate'
+import { applyTripBudgetEstimate, dropEmptyModelBudget } from './tripBudgetEstimate'
 import { adviceEnabled } from './consultative/adviceBlock'
 import { ensureAdviceFloor } from './consultative/adviceFloor'
 import { consultRemainingLine, normalizePickSentence, shoppingMarkerNames, shoppingPickName } from './consultative/consultBrain'
@@ -2647,7 +2647,7 @@ export function applyPlaceEnrichmentStreamFilter(
       const consultPlan = collector?.consultTurn === 'plan'
       const shape = !hasVenues || consultPlan ? { text: atmosphere.text, stats: { sentences_in: 0, sentences_out: 0, listing_removed: 0, alternatives_removed: 0, capped: 0 } } : guardProseShape(atmosphere.text, {
         rendersCard: v1.rendersCard,
-        ...(collector?.consultTurn ? { maxAlternatives: 2, maxSentences: 9 } : {}),
+        ...(collector?.consultTurn ? { maxAlternatives: 2, maxSentences: adviceEnabled() ? 13 : 9 } : {}),
         venues: snippetPlaceNames.map(name => ({
           name,
           rating: ratingsByEntity.get(name)?.[0] ?? null,
@@ -2987,8 +2987,9 @@ export function applyPlaceEnrichmentStreamFilter(
       const planCost = planCostSubject(restored, collector?.consultPick ?? collector?.placesRecommendations?.[0]?.entity.identity.name ?? null, priceBandsByEntity, [...consultCandidates, ...latestPlaces.map(p => p.name ?? '')])
       // …and its cost section shows code-written arithmetic (the chosen row's band, else the user's own
       // per-person budget) when the model's own numbers did not survive the guards.
+      const restoredBudget = collector?.consultTurn === 'plan' && adviceEnabled() ? dropEmptyModelBudget(restored) : restored
       const headedCost = collector?.consultTurn === 'plan'
-        ? appendConsultPlanCost(restored, {
+        ? appendConsultPlanCost(restoredBudget, {
           people: partyCount(collector.consultKnown?.so_nguoi),
           band: planCost.band,
           // The history is trimmed to 3 turns, so the per-person budget stated earlier comes from the router's slot.

@@ -36,6 +36,10 @@ describe('promoteTripPlan', () => {
     const msgs = [opener, askCard, answer, { role: 'assistant', content: '**Mình chọn: X**' }, { role: 'user', content: 'cho mình khách sạn khác' }]
     expect(promoteTripPlan(pick({ diem_den: 'Đà Nẵng' }), msgs, ask).promoted).toBe(false)
   })
+  it('a typed answer that is a new lodging request is not the plan answer', () => {
+    const typed = { role: 'user', content: 'thôi tìm khách sạn Hà Nội giúp mình' }
+    expect(promoteTripPlan(pick({ diem_den: 'Hà Nội' }), [opener, askCard, typed], ask).promoted).toBe(false)
+  })
   it('only travel picks', () => {
     expect(promoteTripPlan({ ...pick({ diem_den: 'x' }), domains: ['food'] }, [opener], ask).promoted).toBe(false)
     expect(promoteTripPlan({ ...pick({ diem_den: 'x' }), turn: 'ask' }, [opener], ask).promoted).toBe(false)

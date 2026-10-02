@@ -93,28 +93,46 @@ describe('tripBudgetEstimate', () => {
     expect(total).toEqual([3_400_000, 8_400_000])
   })
   const plan = (extra: Record<string, unknown> = {}) => `Giả định.\n\n[TAPPY_PLAN]\n${JSON.stringify({ type: 'trip', people: [2], budget_total: 'Chưa thể ước tính', days: [{ label: 'Ngày 1', items: [] }, { label: 'Ngày 2', items: [] }, { label: 'Ngày 3', items: [] }], cost_breakdown: { 'Khách sạn': 'chưa có giá', 'Vé': '120.000đ (Google Maps)' }, ...extra })}\n[/TAPPY_PLAN]\n\n**Ngân sách**\n- Khách sạn: chưa có giá — hỏi quán.\n- Tổng: chưa tính được.\n\n**Việc cần làm trước khi đi**\nĐặt phòng.\n\n[FOLLOWUPS]a|b[/FOLLOWUPS]`
-  it('fills placeholders, keeps a sourced amount, labels everything as an estimate', () => {
-    const r = applyTripBudgetEstimate(plan(), { lang: 'vi' })
+  it('fills placeholders in the card, keeps a sourced amount, appends the estimate without touching earlier lines', () => {
+    const src = plan()
+    const r = applyTripBudgetEstimate(src, { lang: 'vi' })
     expect(r.added).toBe(true)
     const json = JSON.parse(r.text.split('[TAPPY_PLAN]')[1].split('[/TAPPY_PLAN]')[0])
     expect(json.cost_breakdown['Vé']).toBe('120.000đ (Google Maps)')
     expect(json.cost_breakdown['Lưu trú']).toContain('ước tính tham khảo')
     expect(json.cost_breakdown['Khách sạn']).toBeUndefined()
     expect(json.budget_total).toContain('chưa gồm vé đi/về')
-    expect(r.text).toContain('- Lưu trú: 1.000.000đ–2.400.000đ (ước tính tham khảo)')
-    expect(r.text).not.toContain('chưa có giá — hỏi quán')
-    expect(r.text).toContain('**Việc cần làm trước khi đi**')
+    expect(r.text).toContain('- Lưu trú: 1.000.000đ–2.400.000đ')
+    expect(r.text).toContain('**Ước tính ngân sách (ước tính tham khảo)**')
+    // append-only: everything after the plan block, up to the closing markers, is byte-identical
+    const tail = (t: string) => t.split('[/TAPPY_PLAN]')[1]
+    expect(tail(r.text).startsWith(tail(src).split('[FOLLOWUPS]')[0].replace(/s+$/, ''))).toBe(true)
     expect(r.text.endsWith('[/FOLLOWUPS]')).toBe(true)
   })
   it('keeps the user budget as the total when it is a number', () => {
     const r = applyTripBudgetEstimate(plan({ budget_total: '10.000.000 VND' }), { lang: 'vi' })
     expect(JSON.parse(r.text.split('[TAPPY_PLAN]')[1].split('[/TAPPY_PLAN]')[0]).budget_total).toBe('10.000.000 VND')
   })
-  it('adds a Ngân sách section when the model wrote none; ignores non-trip plans and broken JSON', () => {
-    const noSection = plan().replace(/\*\*Ngân sách\*\*[\s\S]*?(?=\*\*Việc cần)/, '')
-    expect(applyTripBudgetEstimate(noSection).text).toContain('**Ngân sách**')
+  it('ignores non-trip plans and broken JSON', () => {
     expect(applyTripBudgetEstimate(plan({ type: 'evening' })).added).toBe(false)
     expect(applyTripBudgetEstimate('[TAPPY_PLAN]\n{oops\n[/TAPPY_PLAN]').added).toBe(false)
     expect(applyTripBudgetEstimate('no plan here').added).toBe(false)
+  })
+})
+
+describe('dropEmptyModelBudget', () => {
+  const trip = '[TAPPY_PLAN]\n{"type":"trip","days":[{}]}\n[/TAPPY_PLAN]\n\n**Khi trời mưa**\nTrong nhà.\n\n**Ngân sách**\n- Khách sạn: chưa có giá — hỏi quán.\n- Tổng: chưa tính được.\n\n**Việc cần làm trước khi đi**\nĐặt phòng.'
+  it('drops a placeholder-only section, keeps the rest', async () => {
+    const { dropEmptyModelBudget } = await import('../tripBudgetEstimate')
+    const out = dropEmptyModelBudget(trip)
+    expect(out).not.toContain('**Ngân sách**')
+    expect(out).toContain('**Khi trời mưa**')
+    expect(out).toContain('**Việc cần làm trước khi đi**')
+  })
+  it('keeps a section with a sourced figure, and non-trip text', async () => {
+    const { dropEmptyModelBudget } = await import('../tripBudgetEstimate')
+    const sourced = trip.replace('- Tổng: chưa tính được.', '- Vé: 120.000đ (Google Maps)')
+    expect(dropEmptyModelBudget(sourced)).toBe(sourced)
+    expect(dropEmptyModelBudget('**Ngân sách**\n- chưa có giá')).toBe('**Ngân sách**\n- chưa có giá')
   })
 })

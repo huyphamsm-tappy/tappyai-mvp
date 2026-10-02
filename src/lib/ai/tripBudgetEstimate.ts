@@ -38,15 +38,13 @@ export function tripBudgetRows(people: number, days: number, lang = 'vi'): { row
   return { rows, total: [rows.reduce((s, r) => s + r.lo, 0), rows.reduce((s, r) => s + r.hi, 0)] }
 }
 
-const LABEL_VI = { stay: 'Lưu trú', food: 'Ăn uống', transport: 'Đi lại tại chỗ', tickets: 'Vé tham quan & trải nghiệm' }
-const LABEL_EN = { stay: 'Stay', food: 'Food', transport: 'Getting around', tickets: 'Tickets & activities' }
+const LABEL_VI = { stay: 'Lưu trú', food: 'Ăn uống', transport: 'Đi lại tại chỗ', tickets: 'Vé tham quan' }
+const LABEL_EN = { stay: 'Stay', food: 'Food', transport: 'Getting around', tickets: 'Sight tickets' }
 const TAG_VI = 'ước tính tham khảo'
 const TAG_EN = 'rough estimate'
 
 /** A line that only says a price is missing. */
 const PLACEHOLDER = /(?:chưa (?:có|thể|tính)|không (?:có|tính)|price not available|cannot be (?:estimated|calculated))/i
-const isHeading = (l: string) => /^\s*(?:#{1,4}\s+\S|\*\*[^*\n]{2,60}\*\*\s*:?\s*$)/.test(l)
-const headingText = (l: string) => l.trim().replace(/^#{1,4}\s*/, '').replace(/\*+/g, '').replace(/[:：]\s*$/, '').trim().toLowerCase()
 
 function planBlock(text: string): { start: number; end: number; plan: Record<string, unknown> } | null {
   const start = text.indexOf(OPEN), end = text.indexOf(CLOSE)
@@ -89,22 +87,37 @@ export function applyTripBudgetEstimate(text: string, o: { lang?: string; fallba
   if (typeof bt !== 'string' || !/\d/.test(bt) || PLACEHOLDER.test(bt)) blk.plan.budget_total = `${range(total[0], total[1])} (${tag}, ${noFare})`
   const withPlan = text.slice(0, blk.start) + OPEN + '\n' + JSON.stringify(blk.plan) + '\n' + text.slice(blk.end)
 
-  // 2. the text under "Ngân sách"
+  // 2. the text: APPEND-ONLY. The model's lines were already streamed to the client (progressive release), so nothing
+  // before the closing marker blocks is rewritten — rewriting a released "Ngân sách" section desynchronised the
+  // client's copy (measured in the web UI 02/10: characters of the budget rows went missing). The model is told to
+  // leave the budget section to the system; whatever it wrote stays as it is.
   const lines = withPlan.split('\n')
-  const at = lines.findIndex(l => isHeading(l) && ['ngân sách', 'budget'].includes(headingText(l)))
   const block = [
-    ...rows.map(r => `- ${label[r.key]}: ${range(r.lo, r.hi)} (${tag}) — ${r.formula}`),
+    lang === 'en' ? '**Estimated budget (rough estimate)**' : '**Ước tính ngân sách (ước tính tham khảo)**',
+    ...rows.map(r => `- ${label[r.key]}: ${range(r.lo, r.hi)}`),
+    lang === 'en' ? '- How: people × days × a per-person-per-day range; stay = rooms × nights × a room range.' : '- Cách tính: số người × số ngày × mức/người/ngày; lưu trú = số phòng × số đêm × giá phòng.',
     `- ${lang === 'en' ? 'Total' : 'Tổng'}: ${range(total[0], total[1])} (${tag}, ${noFare}). ${lang === 'en' ? 'Mid-range rule of thumb for Vietnam, not a quoted price — check real prices before booking.' : 'Mức phổ biến tầm trung, không phải giá tra cứu — kiểm tra giá thật trước khi đặt.'}`,
+    '',
   ]
-  if (at < 0) {
-    // No "Ngân sách" section from the model: put one before the closing marker blocks.
-    const m = lines.findIndex(l => /^\s*\[(?:FOLLOWUPS|CTA_BUTTONS)\]/.test(l))
-    const heading = lang === 'en' ? '**Budget**' : '**Ngân sách**'
-    const cut = m < 0 ? lines.length : m
-    return { text: [...lines.slice(0, cut), heading, ...block, '', ...lines.slice(cut)].join('\n').replace(/\n{3,}/g, '\n\n'), added: true }
-  }
+  const m = lines.findIndex(l => /^\s*\[(?:FOLLOWUPS|CTA_BUTTONS)\]/.test(l))
+  const cut = m < 0 ? lines.length : m
+  return { text: [...lines.slice(0, cut), ...(cut > 0 && lines[cut - 1].trim() ? [''] : []), ...block, ...lines.slice(cut)].join('\n').replace(/\n{3,}/g, '\n\n'), added: true }
+}
+
+/**
+ * A trip plan's own "Ngân sách" section (heading to the next heading / marker) is dropped when it carries no sourced
+ * amount — it only says "chưa có giá"; the estimate appended by `applyTripBudgetEstimate` replaces it. A section with a
+ * sourced figure (a digit outside a placeholder line) is kept.
+ */
+export function dropEmptyModelBudget(text: string): string {
+  if (!/"type"\s*:\s*"trip"/.test(text)) return text
+  const lines = text.split('\n')
+  const hd = (l: string) => /^\s*(?:#{1,4}\s+\S|\*\*[^*\n]{2,60}\*\*\s*:?\s*$)/.test(l)
+  const at = lines.findIndex(l => hd(l) && /^(?:ngân sách|budget)$/i.test(l.trim().replace(/^#{1,4}\s*/, '').replace(/\*+/g, '').replace(/[:：]\s*$/, '').trim()))
+  if (at < 0) return text
   let end = at + 1
-  while (end < lines.length && !isHeading(lines[end]) && !/^\s*\[(?:FOLLOWUPS|CTA_BUTTONS|TAPPY_)/.test(lines[end])) end++
-  const keep = lines.slice(at + 1, end).filter(l => l.trim() && !PLACEHOLDER.test(l) && !/^s*|/.test(l))
-  return { text: [...lines.slice(0, at + 1), ...block, ...keep, '', ...lines.slice(end)].join('\n').replace(/\n{3,}/g, '\n\n'), added: true }
+  while (end < lines.length && !hd(lines[end]) && !/^\s*\[(?:FOLLOWUPS|CTA_BUTTONS|TAPPY_)/.test(lines[end])) end++
+  const body = lines.slice(at + 1, end).filter(l => l.trim())
+  if (body.some(l => /\d/.test(l) && !PLACEHOLDER.test(l))) return text
+  return [...lines.slice(0, at), ...lines.slice(end)].join('\n').replace(/\n{3,}/g, '\n\n')
 }

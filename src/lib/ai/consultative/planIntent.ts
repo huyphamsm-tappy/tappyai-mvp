@@ -15,6 +15,8 @@ const PLAN_REQUEST = /\b(?:lap|len|xay dung|soan|thiet ke|tu van|giup)\s+(?:cho\
 /** The button / confirm texts are the PLAN turn already; a ticket-only request is not a trip plan. */
 const TICKET_ONLY = /\b(?:ve may bay|ve xe|ve tau|chuyen bay|dat ve|mua ve)\b/
 
+const NEW_REQUEST = /\b(?:khach san|homestay|resort|nha nghi|ve may bay|chuyen bay|dat ve)\b/
+
 export function asksForPlan(text: string): boolean {
   const f = fold(text)
   return PLAN_REQUEST.test(f) && !TICKET_ONLY.test(f)
@@ -54,6 +56,9 @@ export function promoteTripPlan(consult: ConsultDecision | null, messages: reado
   const k = consult.known
   // A plan needs a place or a kind of place; a flight-only thread keeps its fare flow.
   if (!k.diem_den && !k.phong_cach && !k.so_ngay) return { decision: consult, promoted: false }
-  if (!requestTexts(messages, isAskReply).some(asksForPlan)) return { decision: consult, promoted: false }
+  const texts = requestTexts(messages, isAskReply)
+  if (!texts.some(asksForPlan)) return { decision: consult, promoted: false }
+  // The answer to the ask card is a card option; a typed answer that is itself a lodging / fare request is a new request.
+  if (texts.length > 1 && !asksForPlan(texts[0]) && NEW_REQUEST.test(fold(texts[0]))) return { decision: consult, promoted: false }
   return { decision: { ...consult, turn: 'plan' }, promoted: true }
 }

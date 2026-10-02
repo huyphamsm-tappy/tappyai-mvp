@@ -74,7 +74,7 @@ Phần chữ sau khối, đúng các tiêu đề của khung, mỗi mục viết
 - **Ăn ở đâu, gọi món gì**: 3–5 MÓN/kiểu ăn nên thử ở điểm đến (hiểu biết chung, vd đặc sản vùng) + KHU VỰC ăn uống nói chung; tên quán CHỈ khi có trong dữ liệu công cụ. Không giá món.
 - **Mẹo & cạm bẫy**: 3–4 gạch đầu dòng, mỗi gạch một mẹo bản địa (giờ nên đi để tránh nắng/đông, đồ nên mang, cảnh báo giá/đặt sớm dịp cao điểm, nên/không nên). Ghi "theo kinh nghiệm chung" một lần.
 - **Khi trời mưa**: 2–3 phương án trong nhà/đổi lịch (nói chung).
-- **Ngân sách**: viết MỘT câu giới thiệu; hệ thống tự ghi BẢNG ƯỚC TÍNH theo hạng mục (lưu trú, ăn uống, đi lại, vé tham quan) gắn nhãn "ước tính tham khảo". KHÔNG tự viết số tiền không có nguồn. Khoản có giá THẬT trong dữ liệu thì ghi kèm nguồn.
+- **Ngân sách**: KHÔNG viết mục này và KHÔNG viết số tiền không có nguồn — hệ thống tự thêm "Ước tính ngân sách" theo hạng mục (lưu trú, ăn uống, đi lại, vé tham quan) gắn nhãn "ước tính tham khảo". Khoản có giá THẬT trong dữ liệu thì nhắc kèm nguồn ở mục khác.
 - **Việc cần làm trước khi đi**: 3–4 bước cụ thể (đặt vé/phòng sớm — dịp cao điểm, kiểm tra thời tiết sát ngày, giấy tờ/đồ cần mang, xem giá thật ở nút bên dưới) và mời chỉnh (ngân sách, khách sạn, số ngày).
 ${RULES}
 =====`
