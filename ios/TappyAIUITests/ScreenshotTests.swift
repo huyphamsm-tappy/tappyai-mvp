@@ -312,11 +312,13 @@ final class ScreenshotTests: XCTestCase {
                               "Bưu phẩm Trung thu của bạn đang bị giữ. Vui lòng quét mã QR để thanh toán phí 15.000đ và nhận hàng."])
         XCTAssertTrue(any(app, "scam-msg-matched").waitForExistence(timeout: 40), "the matched scenario card")
         XCTAssertTrue(any(app, "scam-msg-detail").exists)
+        app.swipeUp(); app.swipeUp()
         shot("86-scam-message-matched")
         app.terminate()
 
         app = scamLaunch(["-uitest-scam-message", "Đơn hàng DH12345 đã giao thành công. Cảm ơn bạn đã mua sắm."])
         XCTAssertTrue(any(app, "scam-msg-nosigns").waitForExistence(timeout: 40), "an ordinary message is not flagged")
+        app.swipeUp(); app.swipeUp()
         shot("87-scam-message-normal")
     }
 

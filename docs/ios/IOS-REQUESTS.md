@@ -38,6 +38,12 @@ Web là chuẩn (00_README §1); Android là bản tham chiếu đã chạy.
 | **I18** | **Hai bài kiểm web đỏ vì iOS (nhắc lại I12)** + thêm: quét chuỗi xoá tài khoản `accountDeletionParity` có thể đòi cả «Google Play» — nếu đỏ, sửa bài kiểm cho chấp nhận chữ theo nền tảng (iOS chỉ App Store). | `src/lib/legal/accountDeletionParity.test.ts` (nếu có), `crossPlatformParity` |
 | **I19** | **Scam Shield — phần web/Android có mà iOS chưa có (loại C).** | iOS (build 98) có: kiểm link, thư viện 25 tình huống Bộ Công an (dùng CHUNG `bocongan2026.json` của Android), khối gọi 113 cố định, nguồn + «Đọc cảnh báo gốc». **Chưa có:** kiểm tin nhắn (`/api/scam-shield/analyze` chỉ có trên Phase 7 — production trả 404), kiểm mã QR (cần camera/ảnh + `/api/scam-shield/qr`, đã có trên production), lịch sử kiểm tra cục bộ, chia sẻ kết quả. Bộ 89 tình huống Phase 8 **không** đưa vào. |
 
+### Bổ sung 02/10 (khối «Lá chắn lừa đảo đồng bộ») — I20
+
+| # | Yêu cầu | Chi tiết |
+|---|---|---|
+| **I20** | **Kiểm tin nhắn + quét QR trên iOS dùng hợp đồng HIỆN CÓ, không đổi server.** | Chi tiết ở `docs/ios/SCAM-SHIELD-PARITY.md`. (1) Tin nhắn: đọc **tại máy** bằng bảng luật `ScamMessageMatcher.rules` (từ khoá → `officialNumber` của 25 tình huống); chỉ khi người dùng bấm «Phân tích sâu hơn» và đã đồng ý chia sẻ dữ liệu với AI thì gọi `POST /api/scam-shield/analyze {text}` (route **chưa có trên production** — B; app báo «chưa có trên máy chủ hiện tại» và vẫn dùng kết quả tại máy). (2) QR: giải mã tại máy (Vision/CIDetector/AVFoundation); chỉ link giải mã đi tới `POST /api/scam-shield/check {url}`; iOS không gọi `/api/scam-shield/qr` (nhận ảnh). **Đề nghị web/Android:** thống nhất bảng luật khớp tại máy (hàm `matchScenario` chưa có trên rc/web-uat 0b6bba2) để ba nơi cho cùng kết quả với cùng tin mẫu. |
+
 ## 2. Yêu cầu của Apple — danh sách và đề xuất (CHƯA làm)
 
 | # | Yêu cầu (App Review) | Hiện trạng iOS | Đề xuất |
