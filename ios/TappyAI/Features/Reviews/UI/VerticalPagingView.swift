@@ -96,6 +96,21 @@ struct VerticalPagingView<Content: View>: UIViewControllerRepresentable {
 
 class IndexedHostingController<Content: View>: UIHostingController<Content> {
     var index: Int = 0
+
+    /// Root cause of the black band above the Explore picture (CI run 37000177700, `EXPLORE-DIAG` accessibility frames):
+    /// the page cell is the full screen height (CollectionView / Cell `{{0,0},{402,791}}`) but the SwiftUI page was laid out
+    /// INSIDE the hosting view's top safe-area inset — the picture sat at `y = 62` (= the status-bar inset) with height
+    /// 729 = 791 − 62, and `.ignoresSafeArea(edges: .top)` in `ReviewPostView` did not widen it. The feed hides the
+    /// status bar and draws edge to edge, so this controller cancels ONLY the top inset (the bottom inset, which keeps the
+    /// caption clear of the bottom bar, is untouched).
+    override func viewSafeAreaInsetsDidChange() {
+        super.viewSafeAreaInsetsDidChange()
+        let systemTop = view.safeAreaInsets.top - additionalSafeAreaInsets.top
+        let target = -systemTop
+        if abs(additionalSafeAreaInsets.top - target) > 0.5 {
+            additionalSafeAreaInsets.top = target
+        }
+    }
 }
 
 class PagingViewController<Content: View>: UIPageViewController {
