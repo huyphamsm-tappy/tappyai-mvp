@@ -1,5 +1,6 @@
 import { normalizeVN } from './intent'
 import { buildShoppingLinks, type PlatformLink } from '@/lib/platformLinks/shopping'
+import { safeInline } from './placeRelax'
 
 // ── «Only another phone model was found» (A3, owner 2026-10-02) ────────────────────────────────────────────────────────
 //
@@ -77,11 +78,12 @@ export interface WrongModelBlock { text: string; links: PlatformLink[]; keyword:
 export function wrongModelBlock(w: WrongModel, query: string, lang: string): WrongModelBlock {
   const keyword = rightKeyword(query, w.requested)
   const links = buildShoppingLinks(keyword)
+  const shownKeyword = safeInline(keyword)
   const asked = deviceLabel(w.requested)
   const got = w.found.slice(0, 3).map(deviceLabel).join(', ')
   const text = lang === 'en'
-    ? `I only found listings for ${got}, not for ${asked} — they are a different size and would not fit, so I am not showing them as results. Search for “${keyword}” yourself on:`
-    : `Mình chỉ thấy hàng cho ${got}, chưa thấy loại đúng cho ${asked} — khác kích thước nên không dùng được, mình không đưa chúng ra như kết quả. Bạn tìm từ khóa “${keyword}” trên:`
+    ? `I only found listings for ${got}, not for ${asked} — they are a different size and would not fit, so I am not showing them as results. Search for “${shownKeyword}” yourself on:`
+    : `Mình chỉ thấy hàng cho ${got}, chưa thấy loại đúng cho ${asked} — khác kích thước nên không dùng được, mình không đưa chúng ra như kết quả. Bạn tìm từ khóa “${shownKeyword}” trên:`
   return { text, links, keyword }
 }
 

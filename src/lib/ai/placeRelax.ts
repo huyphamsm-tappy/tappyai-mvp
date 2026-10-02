@@ -90,6 +90,14 @@ export function mapsSearchUrl(query: string, area?: string | null): string {
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q)}`
 }
 
+/**
+ * User/model-derived words that are placed INSIDE a code-built sentence (after every guard has run): no marker or markup characters,
+ * no line breaks, bounded length. A pasted "[CTA_BUTTONS]{...}" in a query must never survive as a second, fake button block.
+ */
+export function safeInline(raw: string, max = 80): string {
+  return String(raw ?? '').replace(/[\u0000-\u001f\u007f\[\]{}()<>`|]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, max)
+}
+
 export interface NoResultInput { query: string; area?: string | null; lang: string }
 
 /**
@@ -98,11 +106,12 @@ export interface NoResultInput { query: string; area?: string | null; lang: stri
  */
 export function noResultBlock(i: NoResultInput): string {
   const vi = i.lang !== 'en'
-  const where = i.area?.trim()
+  const where = i.area ? safeInline(i.area, 60) : ''
+  const query = safeInline(i.query)
   const sentence = vi
-    ? `Mình đã tìm "${i.query}"${where ? ` ở ${where}` : ''} nhưng chưa thấy kết quả đủ tin cậy để gợi ý. Bạn có thể xem nhanh trên Google Maps, hoặc thử một trong các hướng bên dưới.`
-    : `I searched for "${i.query}"${where ? ` in ${where}` : ''} but found nothing reliable enough to recommend. You can check Google Maps directly, or try one of the options below.`
-  const cta = { buttons: [{ label: vi ? 'Tìm trên Google Maps' : 'Search on Google Maps', type: 'maps', url: mapsSearchUrl(i.query, where), primary: true }] }
+    ? `Mình đã tìm "${query}"${where ? ` ở ${where}` : ''} nhưng chưa thấy kết quả đủ tin cậy để gợi ý. Bạn có thể xem nhanh trên Google Maps, hoặc thử một trong các hướng bên dưới.`
+    : `I searched for "${query}"${where ? ` in ${where}` : ''} but found nothing reliable enough to recommend. You can check Google Maps directly, or try one of the options below.`
+  const cta = { buttons: [{ label: vi ? 'Tìm trên Google Maps' : 'Search on Google Maps', type: 'maps', url: mapsSearchUrl(query, where), primary: true }] }
   const chips = vi ? ['Tìm trên cả TP.HCM', 'Đổi từ khóa khác', 'Gợi ý chỗ gần mình'] : ['Search the whole city', 'Try other keywords', 'Suggest places near me']
   return `\n\n${sentence}\n\n[CTA_BUTTONS]${JSON.stringify(cta)}[/CTA_BUTTONS]\n[FOLLOWUPS]${chips.join('|')}[/FOLLOWUPS]`
 }
