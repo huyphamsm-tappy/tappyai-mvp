@@ -197,8 +197,12 @@ fun ScamShieldScreen(
                                 onClick = viewModel::check,
                             )
                         }
-                        ScamShieldTab.Qr -> DropZone(busy = checking, label = stringResource(if (checking) R.string.scam_shield_checking else R.string.scam_shield_v3_qr_upload)) {
-                            pickQr.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                        ScamShieldTab.Qr -> Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                            DropZone(busy = checking, label = stringResource(if (checking) R.string.scam_shield_checking else R.string.scam_shield_v3_qr_upload)) {
+                                pickQr.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                            }
+                            // The picture is read on the phone (ZXing); only a link inside the code is ever sent for checking.
+                            Text(text = stringResource(R.string.scam_qr_privacy), color = HomeV3.OnSurfaceVariant, fontSize = 11.5.sp, lineHeight = 15.sp)
                         }
                         ScamShieldTab.Message -> Column(modifier = Modifier.padding(top = 16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                             Column {
@@ -276,6 +280,8 @@ fun ScamShieldScreen(
                 // ── 4. The verdict ──
                 (viewModel.state as? ScamShieldUiState.Result)?.let { VerdictCard(it.result) }
                 (viewModel.state as? ScamShieldUiState.MessageResult)?.let { MessageResultCard(it.result) }
+                (viewModel.state as? ScamShieldUiState.KnownScenario)?.let { KnownScenarioCard(it.scenario, viewModel) }
+                (viewModel.state as? ScamShieldUiState.QrNotice)?.let { QrNoticeCard(it.payload) }
 
                 // ── 5. Official anti-fraud knowledge ──
                 ScamKnowledgeSection(viewModel = viewModel)

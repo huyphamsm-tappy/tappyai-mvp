@@ -12,6 +12,11 @@ import com.tappyai.app.language.AppLanguageResolver
 import com.tappyai.app.scamshield.data.KnowledgeDataset
 import com.tappyai.app.scamshield.data.MessageAnalysisOutcome
 import com.tappyai.app.scamshield.data.OfficialGroup
+import com.tappyai.app.scamshield.data.QrCodes
+import com.tappyai.app.scamshield.data.QrPayload
+import com.tappyai.app.scamshield.data.ScenarioConfidence
+import com.tappyai.app.scamshield.data.ScenarioMatch
+import com.tappyai.app.scamshield.data.ScenarioMatcher
 import com.tappyai.app.scamshield.data.ScamCheckHistoryStore
 import com.tappyai.app.scamshield.data.ScamCheckOutcome
 import com.tappyai.app.scamshield.data.ScamKnowledgeRepository
@@ -32,8 +37,8 @@ enum class ScamShieldTab { Url, Qr, Message }
 /**
  * State for the Scam Shield screen — the web `/scam-shield` (`ScamShieldView.tsx`), 2026-09-17.
  *
- * The URL tab posts to `/api/scam-shield/check`; the QR tab hands a picked image to
- * `/api/scam-shield/qr`; the Message tab posts text / link / screenshot to
+ * The URL tab posts to `/api/scam-shield/check`; the QR tab decodes the picked image ON THE DEVICE and sends only the link it carries to the same
+ * check; the Message tab first matches the text against the 25 official scenarios on the device and, when that is not a sure match, posts text / link / screenshot to
  * `/api/scam-shield/analyze`. Every verdict is the engine's. The recent-checks list is the web's
  * device-local history (`ScamCheckHistoryStore`): written only from a returned URL verdict (a
  * message verdict is NOT a link and is never written), and a row re-runs the check rather than
@@ -144,17 +149,28 @@ class ScamShieldViewModel @Inject constructor(
         }
     }
 
-    /** The QR tab: the picked image's bytes (≤ 5 MB, the route's own cap) to the QR route. */
+    /**
+     * The QR tab: the picked picture is decoded HERE, on the phone (ZXing). The picture never leaves the device: only the LINK a code
+     * carries is sent to the link check (`/api/scam-shield/check`, the same engine as the URL tab). A code that carries anything else —
+     * text, Wi-Fi, a payment, a contact — is named and warned about ([ScamShieldUiState.QrNotice]) and never acted on.
+     */
     fun checkQrImage(uri: Uri) {
         if (state is ScamShieldUiState.Checking) return
         run {
-            val (bytes, mime) = readImage(uri)
+            val (bytes, _) = readImage(uri)
             when {
                 bytes == null -> ScamShieldUiState.Failed(ScamCheckFailure.Refused("no_image", null))
                 bytes.size > QR_MAX_BYTES -> ScamShieldUiState.Failed(ScamCheckFailure.Refused("too_large", null))
-                else -> when (val o = repository.checkQrImage(bytes, mime, preferVietnameseLabels = vietnamese())) {
-                    is ScamCheckOutcome.Verdict -> { recent = history.record(o.result); trackScamCheck("qr", o.result.level); ScamShieldUiState.Result(o.result) }
-                    is ScamCheckOutcome.Failed -> ScamShieldUiState.Failed(o.failure)
+                else -> {
+                    val decoded = withContext(Dispatchers.Default) { runCatching { QrCodes.decodeImage(bytes) }.getOrNull() }
+                    when (val payload = decoded?.let(QrCodes::classify)) {
+                        null -> ScamShieldUiState.Failed(ScamCheckFailure.Refused("qr_decode_failed", null))
+                        is QrPayload.Other -> ScamShieldUiState.QrNotice(payload)
+                        is QrPayload.Link -> when (val o = repository.check(payload.url, preferVietnameseLabels = vietnamese())) {
+                            is ScamCheckOutcome.Verdict -> { recent = history.record(o.result); trackScamCheck("qr", o.result.level); ScamShieldUiState.Result(o.result) }
+                            is ScamCheckOutcome.Failed -> ScamShieldUiState.Failed(o.failure)
+                        }
+                    }
                 }
             }
         }
@@ -179,6 +195,19 @@ class ScamShieldViewModel @Inject constructor(
     fun analyzeMessage() {
         if (!canAnalyze || state is ScamShieldUiState.Checking) return
         val shot = screenshot
+        // Static first: a text-only message (no link anywhere in it, no screenshot) that matches an official scenario with HIGH
+        // confidence is answered from the bundled dataset — no request, no model, no quota, and the text never leaves the phone.
+        if (shot == null && messageUrl.isBlank() && !ScenarioMatcher.containsLink(message)) {
+            val known = ScenarioMatcher.match(message)
+            if (known != null && known.confidence == ScenarioConfidence.High) {
+                val scenario = knowledge.allScenarios().firstOrNull { it.id == known.scenarioId }
+                if (scenario != null) {
+                    inFlight?.cancel(); inFlight = null
+                    state = ScamShieldUiState.KnownScenario(scenario, known)
+                    return
+                }
+            }
+        }
         run {
             when (val o = repository.analyzeMessage(message.trim(), messageUrl.trim(), shot?.bytes, shot?.mimeType, preferVietnameseLabels = vietnamese())) {
                 is MessageAnalysisOutcome.Verdict -> { trackScamCheck("message", o.result.level); ScamShieldUiState.MessageResult(o.result) }
@@ -243,5 +272,9 @@ sealed interface ScamShieldUiState {
     data object Checking : ScamShieldUiState
     data class Result(val result: ScamCheckResult) : ScamShieldUiState
     data class MessageResult(val result: MessageAnalysis) : ScamShieldUiState
+    /** A message that matches an official scenario with high confidence, answered ON THE DEVICE (no request, no AI). */
+    data class KnownScenario(val scenario: ScamScenario, val match: ScenarioMatch) : ScamShieldUiState
+    /** A QR code that is not a web link: named and warned about, never acted on. Nothing was sent anywhere. */
+    data class QrNotice(val payload: QrPayload.Other) : ScamShieldUiState
     data class Failed(val failure: ScamCheckFailure) : ScamShieldUiState
 }

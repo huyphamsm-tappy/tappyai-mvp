@@ -124,7 +124,7 @@ private fun SubHeading(text: String, color: Color) {
 
 /** `ScenarioDetail`: the official block, the TappyAI block, the source's prevention block. */
 @Composable
-private fun ScenarioDetail(scenario: ScamScenario, viewModel: ScamShieldViewModel) {
+internal fun ScenarioDetail(scenario: ScamScenario, viewModel: ScamShieldViewModel) {
     val dataset = viewModel.knowledgeDataset
     val group = viewModel.groupOf(scenario)
     val tone = categoryTone(scenario.category)

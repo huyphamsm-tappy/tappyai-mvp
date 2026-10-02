@@ -13,8 +13,9 @@ import javax.inject.Singleton
  * The app's ONE appearance rule — the Android twin of the web's `lib/theme/useThemeMode.ts`, with
  * the third state the product contract names explicitly (UAT 2026-09-17):
  *
- *   SYSTEM (default)  nothing chosen, or "Theo hệ thống" chosen — the OS decides, and keeps
- *                     deciding as the OS setting changes;
+ *   DARK (DEFAULT, 02/10)  nothing stored: the app opens DARK on every phone, as the web does (owner decision — the
+ *                     three platforms look alike on first launch; [DEFAULT_APPEARANCE]);
+ *   SYSTEM            "Theo hệ thống" chosen — the OS decides, and keeps deciding as the OS setting changes;
  *   LIGHT / DARK      an explicit choice, kept across restarts and across OS changes until the
  *                     person changes it again — from the Home top-bar toggle or from Settings.
  *
@@ -39,18 +40,21 @@ enum class AppearanceMode(val wire: String) {
     }
 }
 
+/** What the app does when the person has never chosen: DARK, like the web (02/10). A stored choice, including "Theo hệ thống", always wins. */
+val DEFAULT_APPEARANCE = AppearanceMode.Dark
+
 /** The three-way choice. */
 const val PREF_APPEARANCE_MODE = "appearance_mode"
 
 /** The pre-2026-09-17 boolean override (`true` = dark). Read for migration, never written again. */
 const val PREF_DARK_THEME = "dark_theme"
 
-/** Pure: the stored three-way mode wins; else the legacy boolean; else System. */
+/** Pure: the stored three-way mode wins; else the legacy boolean; else [DEFAULT_APPEARANCE] (Dark). */
 fun appearanceModeFrom(stored: String?, legacyDark: Boolean?): AppearanceMode =
     AppearanceMode.fromWire(stored) ?: when (legacyDark) {
         true -> AppearanceMode.Dark
         false -> AppearanceMode.Light
-        null -> AppearanceMode.System
+        null -> DEFAULT_APPEARANCE
     }
 
 /** Pure: what the theme draws for a mode, given what the OS says right now. */
@@ -77,9 +81,9 @@ class AppearanceStore @Inject constructor(private val preferences: PreferencesDa
     /**
      * Read once, synchronously, before the first frame — a few KB already on disk — so an explicit
      * choice is honoured from the first frame instead of flashing the system palette once. An
-     * unreadable store degrades to System.
+     * unreadable store degrades to [DEFAULT_APPEARANCE] (dark).
      */
-    fun initialMode(): AppearanceMode = runCatching { runBlocking { mode.first() } }.getOrDefault(AppearanceMode.System)
+    fun initialMode(): AppearanceMode = runCatching { runBlocking { mode.first() } }.getOrDefault(DEFAULT_APPEARANCE)
 
     /** The person's choice, as-is. Clears the legacy key so it can never shadow this one. */
     suspend fun set(mode: AppearanceMode) {

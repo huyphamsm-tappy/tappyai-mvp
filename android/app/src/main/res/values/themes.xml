@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Base application theme — content is rendered entirely in Compose (core:designsystem Theme.kt).
-         This XML theme only controls the pre-Compose window background/splash. -->
+         This XML theme only controls the pre-Compose window background/splash.
+         02/10: the app opens DARK by default (DEFAULT_APPEARANCE), so the window behind the first frame is the V3 dark background — a white
+         window would flash on every cold start. A person who chose Light sees dark for the first frame only. -->
     <style name="Theme.TappyAI" parent="Theme.AppCompat.DayNight.NoActionBar">
-        <item name="android:windowBackground">@android:color/white</item>
+        <item name="android:windowBackground">@color/tappy_window_dark</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
     </style>

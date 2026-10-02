@@ -16,9 +16,6 @@ import com.tappyai.app.scamshield.SignalSeverity
 import kotlinx.coroutines.CancellationException
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.MultipartBody
-import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.HttpException
 import java.io.IOException
 import java.net.SocketTimeoutException
@@ -47,12 +44,6 @@ class RealScamShieldRepository @Inject constructor(
     override suspend fun check(url: String, preferVietnameseLabels: Boolean): ScamCheckOutcome =
         attempt { api.check(ScamCheckRequestDto(url)).toDomain(preferVietnameseLabels) }
             .fold({ ScamCheckOutcome.Verdict(it) }, { ScamCheckOutcome.Failed(it) })
-
-    override suspend fun checkQrImage(bytes: ByteArray, mimeType: String, preferVietnameseLabels: Boolean): ScamCheckOutcome =
-        attempt {
-            val part = MultipartBody.Part.createFormData("image", "qr", bytes.toRequestBody(mimeType.toMediaType()))
-            api.checkQr(part).toDomain(preferVietnameseLabels)
-        }.fold({ ScamCheckOutcome.Verdict(it) }, { ScamCheckOutcome.Failed(it) })
 
     override suspend fun analyzeMessage(text: String?, url: String?, image: ByteArray?, mimeType: String?, preferVietnameseLabels: Boolean): MessageAnalysisOutcome {
         val body = MessageAnalysisRequestDto(

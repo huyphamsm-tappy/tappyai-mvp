@@ -147,13 +147,13 @@ class ScamShieldFailClosedTest {
     fun `the only network call is the backend check endpoint`() {
         val api = File(packageDir, "data/ScamShieldApi.kt").readText()
         assertTrue(api.contains("api/scam-shield/check"))
-        // 2026-09-17: three routes, all the backend engine's (the URL, the QR image the server
-        // decodes, the message the server analyzes) — still nothing that could fetch a blocklist
-        // to evaluate on-device.
-        assertEquals(3, Regex("""@(GET|POST|PUT|DELETE|PATCH)""").findAll(api).count())
-        assertTrue(api.contains("api/scam-shield/qr"))
+        // 02/10: TWO routes, both the backend engine's (the link, the message). A QR code is decoded ON THE DEVICE and only the
+        // LINK it carries goes to the link route — the picture is never uploaded, so the app has no QR route — and still nothing
+        // that could fetch a blocklist to evaluate on-device.
+        assertEquals(2, Regex("""@(GET|POST|PUT|DELETE|PATCH)""").findAll(api).count())
+        assertTrue("no QR upload route", !api.contains("@POST(\"api/scam-shield/qr\")") && !api.contains("Multipart"))
         assertTrue(api.contains("api/scam-shield/analyze"))
-        assertEquals(3, Regex("""@POST\("api/scam-shield/""").findAll(api).count())
+        assertEquals(2, Regex("""@POST\("api/scam-shield/""").findAll(api).count())
     }
 
     // ---------------------------------------------------------------- error mapping

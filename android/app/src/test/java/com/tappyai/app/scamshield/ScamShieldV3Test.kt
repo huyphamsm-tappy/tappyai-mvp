@@ -68,7 +68,7 @@ class ScamShieldV3Test {
         assertEquals("exactly three tab chips", 3, Regex("""TabChip\(stringResource\(R\.string\.\w+\), Icons\.\w+\.\w+, viewModel\.tab == ScamShieldTab\.""").findAll(s).count())
         assertTrue("tabs wrap, never scroll", s.substringAfter("ToolPanel {").substringBefore("when (viewModel.tab)").contains("FlowRow("))
         assertTrue("the URL form", s.contains("ScamShieldTab.Url ->") && s.contains("R.string.scam_shield_v3_url_placeholder") && s.contains("KeyboardType.Uri") && s.contains("onClick = viewModel::check"))
-        assertTrue("the QR drop zone", s.contains("ScamShieldTab.Qr -> DropZone(") && s.contains("ActivityResultContracts.PickVisualMedia()"))
+        assertTrue("the QR drop zone", s.contains("ScamShieldTab.Qr ->") && s.contains("DropZone(") && s.contains("ActivityResultContracts.PickVisualMedia()"))
         val form = s.substringAfter("ScamShieldTab.Message ->").substringBefore("(viewModel.state as? ScamShieldUiState.Failed)")
         assertTrue("the message form: title, subtitle, 5-row text, link, screenshot, quota hint, CTA",
             form.contains("R.string.scam_v3_msg_title") && form.contains("R.string.scam_v3_msg_subtitle") && form.contains("minLines = 5") && form.contains("R.string.scam_v3_msg_urlPlaceholder") &&
@@ -198,14 +198,15 @@ class ScamShieldV3Test {
     @Test
     fun `the engine stays on the server and the fail-closed rules hold - three routes, one attempt wrapper`() {
         assertTrue(vm.contains("repository.check(target, preferVietnameseLabels = vietnamese())"))
-        assertTrue(vm.contains("repository.checkQrImage(bytes, mime, preferVietnameseLabels = vietnamese())"))
+        assertTrue("a QR code is decoded on the device and only its LINK is checked", vm.contains("QrCodes.decodeImage(bytes)") && vm.contains("is QrPayload.Link -> when (val o = repository.check(payload.url, preferVietnameseLabels = vietnamese()))"))
+        assertTrue("the picture is never uploaded", !vm.contains("checkQrImage(bytes"))
         assertTrue(vm.contains("repository.analyzeMessage(message.trim(), messageUrl.trim(), shot?.bytes, shot?.mimeType, preferVietnameseLabels = vietnamese())"))
         assertTrue("only a Verdict reaches Result", vm.contains("is ScamCheckOutcome.Verdict -> {") && vm.contains("is ScamCheckOutcome.Failed -> ScamShieldUiState.Failed(o.failure)") && vm.contains("is MessageAnalysisOutcome.Failed -> ScamShieldUiState.Failed(o.failure)"))
         assertTrue("an older check is replaced, never raced", vm.contains("inFlight?.cancel()"))
         val api = src("app/src/main/java/com/tappyai/app/scamshield/data/ScamShieldApi.kt")
-        assertTrue(api.contains("@POST(\"api/scam-shield/check\")") && api.contains("@POST(\"api/scam-shield/qr\")") && api.contains("@POST(\"api/scam-shield/analyze\")"))
+        assertTrue(api.contains("@POST(\"api/scam-shield/check\")") && !api.contains("@POST(\"api/scam-shield/qr\")") && api.contains("@POST(\"api/scam-shield/analyze\")"))
         val repo = src("app/src/main/java/com/tappyai/app/scamshield/data/RealScamShieldRepository.kt")
-        assertTrue(repo.contains("MultipartBody.Part.createFormData(\"image\", \"qr\""))
+        assertTrue("no QR image upload any more", !repo.contains("createFormData"))
         assertTrue("the screenshot travels as the web's data URL", repo.contains("\"data:\${mimeType ?: \"image/jpeg\"};base64,\" + Base64.encodeToString(it, Base64.NO_WRAP)"))
         assertTrue("the server's localized refusal is preferred over the local fallback", result.contains("failure.serverMessage ?: stringResource(localFallbackFor(failure.code, forMessage))"))
         assertTrue("an unmapped message failure reads as 'could not analyze', never as a sentence about a link", result.contains("else -> if (forMessage) R.string.scam_v3_msg_errFailed else R.string.scam_shield_error_generic") && screen.contains("forMessage = viewModel.tab == ScamShieldTab.Message"))

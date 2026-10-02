@@ -1,0 +1,31 @@
+<resources>
+    <!-- Scam Shield: kết quả tạo NGAY TRÊN MÁY (khớp tình huống Bộ Công an, mã QR không phải link) -->
+    <string name="scam_known_title">Giống thủ đoạn: %1$s</string>
+    <string name="scam_known_badge">Khớp với cảnh báo của Bộ Công an · không dùng AI · tin nhắn không rời khỏi máy bạn</string>
+    <string name="scam_known_share">Tin nhắn tôi nhận được giống thủ đoạn lừa đảo «%1$s» trong cảnh báo của Bộ Công an. Kiểm tra thêm tại %2$s</string>
+    <string name="scam_not_state_agency">TappyAI không phải cơ quan nhà nước. Phần cảnh báo gốc là của Bộ Công an; phần lời khuyên là của TappyAI.</string>
+    <string name="scam_emergency_113">Nếu nghi ngờ mình đang bị lừa: dừng chuyển tiền, báo Công an nơi gần nhất hoặc gọi 113.</string>
+    <string name="scam_share_result">Chia sẻ kết quả</string>
+
+    <string name="scam_qr_notice_title">Mã QR này là: %1$s</string>
+    <string name="scam_qr_never_act">TappyAI không tự mở, không tự thanh toán, không tự kết nối. Chỉ làm khi bạn chắc chắn mã đến từ nguồn đáng tin.</string>
+    <string name="scam_qr_privacy">Mã được đọc ngay trên máy bạn. Ảnh không được gửi đi; chỉ đường link trong mã (nếu có) mới được kiểm tra.</string>
+    <string name="scam_qr_preview">Nội dung trong mã</string>
+    <string name="scam_qr_preview_wifi">Tên mạng Wi-Fi (mật khẩu không hiển thị)</string>
+    <string name="scam_qr_share">Tôi vừa quét một mã QR (%1$s) và kiểm tra bằng TappyAI. Kiểm tra thêm tại %2$s</string>
+    <string name="scam_qr_kind_text">chữ (không phải đường link)</string>
+    <string name="scam_qr_kind_wifi">kết nối Wi-Fi</string>
+    <string name="scam_qr_kind_payment">thanh toán / chuyển tiền</string>
+    <string name="scam_qr_kind_contact">danh bạ</string>
+    <string name="scam_qr_kind_phone">số điện thoại</string>
+    <string name="scam_qr_kind_sms">tin nhắn SMS</string>
+    <string name="scam_qr_kind_email">email</string>
+    <string name="scam_qr_kind_location">vị trí</string>
+    <string name="scam_qr_kind_calendar">sự kiện lịch</string>
+    <string name="scam_qr_kind_unsafe">liên kết mở ứng dụng/dữ liệu (không phải trang web)</string>
+    <string name="scam_qr_warn_payment">Đây là mã thanh toán. Trước khi trả tiền, hãy kiểm tra tên người nhận và số tiền ngay trong app ngân hàng của bạn. Đừng quét mã do người lạ gửi hoặc dán đè lên mã thật.</string>
+    <string name="scam_qr_warn_wifi">Đây là mã nối Wi-Fi. Mạng lạ có thể theo dõi những gì bạn làm. Chỉ nối mạng của nơi bạn tin tưởng.</string>
+    <string name="scam_qr_warn_unsafe">Mã này không mở một trang web mà mở ứng dụng hoặc chạy dữ liệu trên máy. Đây là dấu hiệu rất đáng ngờ — đừng mở.</string>
+    <string name="scam_qr_warn_contact">Mã này có thể gọi điện, nhắn tin, soạn email hoặc thêm danh bạ. Hãy đọc kỹ nội dung trước khi làm theo, nhất là khi người lạ gửi.</string>
+    <string name="scam_qr_warn_text">Mã này chỉ chứa chữ, không phải đường link nên không có gì để kiểm tra thêm. Nếu nội dung bảo bạn chuyển tiền, đăng nhập hoặc cài ứng dụng, hãy cảnh giác.</string>
+</resources>

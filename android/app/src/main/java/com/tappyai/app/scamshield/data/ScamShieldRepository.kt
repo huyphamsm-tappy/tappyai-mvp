@@ -13,9 +13,6 @@ import com.tappyai.app.scamshield.ScamCheckResult
 interface ScamShieldRepository {
     suspend fun check(url: String, preferVietnameseLabels: Boolean): ScamCheckOutcome
 
-    /** The QR path: the image's bytes go to `/api/scam-shield/qr`; the verdict is the same shape. */
-    suspend fun checkQrImage(bytes: ByteArray, mimeType: String, preferVietnameseLabels: Boolean): ScamCheckOutcome
-
     /** Analyze Message: text and/or link and/or a screenshot to `/api/scam-shield/analyze`. */
     suspend fun analyzeMessage(text: String?, url: String?, image: ByteArray?, mimeType: String?, preferVietnameseLabels: Boolean): MessageAnalysisOutcome
 }

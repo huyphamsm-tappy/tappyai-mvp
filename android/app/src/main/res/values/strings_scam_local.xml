@@ -1,0 +1,31 @@
+<resources>
+    <!-- Scam Shield: results produced ON THE DEVICE (official-scenario match, non-link QR codes) -->
+    <string name="scam_known_title">Looks like: %1$s</string>
+    <string name="scam_known_badge">Matches a Ministry of Public Security warning · no AI · your message never leaves your phone</string>
+    <string name="scam_known_share">A message I received looks like the scam “%1$s” from the Ministry of Public Security warnings. Check more at %2$s</string>
+    <string name="scam_not_state_agency">TappyAI is not a state agency. The original warning is the Ministry of Public Security\'s; the advice is TappyAI\'s.</string>
+    <string name="scam_emergency_113">If you suspect you are being scammed: stop any transfer and report to the nearest police or call 113.</string>
+    <string name="scam_share_result">Share result</string>
+
+    <string name="scam_qr_notice_title">This QR code is: %1$s</string>
+    <string name="scam_qr_never_act">TappyAI never opens, pays or connects by itself. Only act if you are sure the code comes from a trusted source.</string>
+    <string name="scam_qr_privacy">The code is read on your phone. The picture is not uploaded; only a link inside the code (if any) is checked.</string>
+    <string name="scam_qr_preview">Content of the code</string>
+    <string name="scam_qr_preview_wifi">Wi-Fi network name (the password is not shown)</string>
+    <string name="scam_qr_share">I just scanned a QR code (%1$s) and checked it with TappyAI. Check more at %2$s</string>
+    <string name="scam_qr_kind_text">text (not a link)</string>
+    <string name="scam_qr_kind_wifi">a Wi-Fi connection</string>
+    <string name="scam_qr_kind_payment">a payment / transfer</string>
+    <string name="scam_qr_kind_contact">a contact</string>
+    <string name="scam_qr_kind_phone">a phone number</string>
+    <string name="scam_qr_kind_sms">an SMS</string>
+    <string name="scam_qr_kind_email">an email</string>
+    <string name="scam_qr_kind_location">a location</string>
+    <string name="scam_qr_kind_calendar">a calendar event</string>
+    <string name="scam_qr_kind_unsafe">a link that opens an app or runs data (not a web page)</string>
+    <string name="scam_qr_warn_payment">This is a payment code. Before paying, check the recipient name and the amount inside your own bank app. Do not scan codes sent by strangers or stuck over a real code.</string>
+    <string name="scam_qr_warn_wifi">This code joins a Wi-Fi network. An unknown network can watch what you do. Join only networks of places you trust.</string>
+    <string name="scam_qr_warn_unsafe">This code does not open a web page; it opens an app or runs data on your phone. That is very suspicious — do not open it.</string>
+    <string name="scam_qr_warn_contact">This code can call, text, write an email or add a contact. Read the content carefully before acting, especially if a stranger sent it.</string>
+    <string name="scam_qr_warn_text">This code holds text only, not a link, so there is nothing more to check. If the text tells you to transfer money, sign in or install an app, be careful.</string>
+</resources>
