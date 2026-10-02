@@ -35,7 +35,9 @@ struct ReviewsFeedView: View {
             } else if vm.reviews.isEmpty && !vm.isLoading {
                 emptyView
             } else if !vm.reviews.isEmpty {
-                feedContent
+                // The picture runs to the very top: the status bar is hidden here, so a safe-area inset would only
+                // leave a black band above the clip (seen at the top of the App Store picture).
+                feedContent.ignoresSafeArea(edges: .top)
             }
 
             feedTabs
