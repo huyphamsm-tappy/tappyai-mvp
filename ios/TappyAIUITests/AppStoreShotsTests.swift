@@ -30,7 +30,7 @@ final class AppStoreShotsTests: XCTestCase {
         app.terminate()
 
         // 3 — chat with the place cards (chips, paged cards, the four actions).
-        app = launch(route: "conv-old", signedIn: true)
+        app = launch(route: "conv-store", signedIn: true)
         XCTAssertTrue(app.staticTexts["Bún Bò Huế Đông Ba"].waitForExistence(timeout: 60), "place card in the chat")
         settle(); shot("03-chat-places")
         app.terminate()
@@ -54,7 +54,7 @@ final class AppStoreShotsTests: XCTestCase {
         app = launch(route: "scam", signedIn: true, extra: ["-uitest-scam-message",
                      "Bưu phẩm Trung thu của bạn đang bị giữ. Vui lòng quét mã QR để thanh toán phí 15.000đ và nhận hàng."])
         XCTAssertTrue(any(app, "scam-msg-matched").waitForExistence(timeout: 60), "scam message result")
-        app.swipeUp(); app.swipeUp()
+        app.swipeUp()   // once: the result's title stays in view
         settle(); shot("06-scam-message")
         app.terminate()
 

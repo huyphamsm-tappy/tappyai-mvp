@@ -26,6 +26,7 @@ Xcode Cloud (dịch vụ build của Apple) chỉ cho **tạo workflow lần đ�
 
 ## 4. Cấu hình Mac thuê (tối thiểu)
 
+- **Dữ kiện thật từ lần chạy thử 02/10:** máy macOS của GitHub dùng **Xcode 26.6**; script `ci_post_clone.sh` chạy **5 giây** (XcodeGen 2.46.0 có sẵn), `xcodebuild archive` xong sau **~5,6 phút**, in `ARCHIVE SUCCEEDED`, bundle `com.tappyai.ios`, phiên bản 1.0.0, build 1001, API production. Trên Xcode Cloud, chọn Xcode ở Environment (mục 9) **cùng đời với 26.x**; chưa kiểm Xcode Cloud đã có đời đó chưa — nếu chưa, chọn đời mới nhất có và báo em log nếu biên dịch đỏ.
 - macOS đủ mới để chạy **Xcode phiên bản mới nhất trên App Store** (dự án build bằng Xcode mới của GitHub `macos-latest`; **chưa kiểm** số phiên bản tối thiểu cụ thể — Apple đòi ít nhất Xcode 15 để dùng Xcode Cloud). Hỏi nhà cho thuê: «cài sẵn Xcode mới nhất, có Homebrew không?». 
 - Ổ trống ≥ 40 GB, mạng ổn định, màn hình đủ lớn, đăng nhập được Apple ID của anh.
 - Thuê **theo giờ**, tối thiểu 3 giờ (dư để lỡ bước). Không cần cắm iPhone, không cần giả lập.

@@ -170,6 +170,15 @@ OLD_CONVERSATIONS = [
          {"role": "user", "content": "Tối nay ăn gì ở Quận 1?"},
          {"role": "assistant", "content": "Mình gợi ý bún bò nhé.\n\n![Bún bò](http://127.0.0.1:3000/img/c.png)\n\nNguồn: https://example.vn/bun-bo\n\n[TAPPY_PLACES]" + _OLD_PLACES + "[/TAPPY_PLACES]"},
      ]},
+    # The App Store picture: the same place cards, but no raw link line and no inline picture (those are for the tests above).
+    {"id": "c-store", "title": "Tối nay ăn gì ở Quận 1", "category": "food", "updated_at": "2026-09-29T10:30:00.000Z",
+     "messages": [
+         {"role": "user", "content": "Tối nay ăn gì ở Quận 1?"},
+         {"role": "assistant", "content": "Mình gợi ý hai quán bún bò gần bạn, đều có đánh giá tốt:\n\n[TAPPY_PLACES]" + _OLD_PLACES.replace(
+             '{"id": "place:osm:10.78,106.69", "domain": "food", "kind": "place", "rank": 1, "name": "Quán Vỉa Hè", "actions": []}',
+             '{"id": "place:osm:10.78,106.69", "domain": "food", "kind": "place", "rank": 1, "name": "Bún Bò Gia Hân", "address": "36 Pasteur, Quận 1", "rating": 4.4, "ratingCount": 860, "image": "http://127.0.0.1:3000/img/b.png", "actions": []}'
+         ) + "[/TAPPY_PLACES]"},
+     ]},
     {"id": "c-ask", "title": "Hôm nay ăn gì nhỉ", "category": "food", "updated_at": "2026-09-29T09:00:00.000Z",
      "messages": [
          {"role": "user", "content": "Hôm nay ăn gì nhỉ?"},

@@ -133,10 +133,12 @@ enum UITestLaunch {
         case "safety-review":
             router.switchTo(.profile)
             router.push(ReviewsDestination.reviewDetail(id: "r-safety"), on: .profile)
-        case "chat-old", "conv-old", "conv-ask", "conv-plan":
-            // A saved chat from the fixture server (`history` mode): chat-old/conv-old = places, conv-ask, conv-plan.
+        case "chat-old", "conv-old", "conv-ask", "conv-plan", "conv-store":
+            // A saved chat from the fixture server (`history` mode): chat-old/conv-old = places, conv-ask, conv-plan,
+            // conv-store = the places chat as drawn for the App Store picture.
             router.switchTo(.home)
-            router.push(HomeDestination.conversation(id: route == "conv-ask" ? "c-ask" : route == "conv-plan" ? "c-plan" : "c-old"), on: .home)
+            let id = route == "conv-ask" ? "c-ask" : route == "conv-plan" ? "c-plan" : route == "conv-store" ? "c-store" : "c-old"
+            router.push(HomeDestination.conversation(id: id), on: .home)
         case "scam":
             router.switchTo(.home)
             router.push(HomeDestination.scamShield, on: .home)

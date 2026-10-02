@@ -347,3 +347,19 @@ Kiểm chỉ bằng đọc code, cấu hình build và một GET công khai tớ
   cuối; ảnh Android cuối nằm ngoài git (GCS). Ghi rõ trên từng ảnh ghép.
 - Hook `-uitest-route` chỉ có trong build DEBUG (`App/UITestLaunch.swift`), archive Release không chứa.
 - Chưa dịch: DM (tin nhắn riêng), Smart Tools hub, Games (Android có, iOS chưa từng có) — ngoài phạm vi prompt.
+
+## HÀNG CHỜ CỦA HUY — cập nhật 02/10/2026 (khối «hoàn thiện nộp App Store»)
+
+| # | Việc | Cần đăng nhập? | Các bước bấm |
+|---|---|---|---|
+| 1 | Đăng nhập lại App Store Connect trong Chrome để em ĐỌC (chỉ đọc) các mục ô bắt buộc/cảnh báo | Có (Apple ID + mã 2 lớp, anh tự nhập) | Chrome → appstoreconnect.apple.com → đăng nhập → để cửa sổ cỡ bình thường → báo «đọc lại» |
+| 2 | Duyệt chữ màn «Cho Tappy gửi tin nhắn tới AI?» (`ai.consent.*`) | Không | mở `ios/TappyAI/Resources/Localizable.xcstrings` hoặc ảnh `09-ai-consent` |
+| 3 | Duyệt từng ảnh App Store | Không | `D:\TappyAI-backups\appstore-screenshots\` (10 ảnh) |
+| 4 | Test một lượt trên iPhone sau khi cài build mới | Không (đăng nhập tài khoản test của anh) | `docs/ios/SCAM-SHIELD-PARITY.md` §5 + danh sách báo cáo |
+| 5 | Quyết: có cam kết «báo cáo xử lý trong 24 giờ» không (ghi vào ghi chú người duyệt) | Không | trả lời trong chat |
+| 6 | Tên + số điện thoại liên hệ cho App Review; email nhận thư Apple | Không | nói với em |
+| 7 | Tạo tài khoản demo trên production (SAU khi web release) | Có | `APPSTORE-SUBMISSION.md` §5.3 |
+| 8 | Khi web release xong: bật Apple provider ở Supabase; cờ `p8.*`, `accountSelfDelete` trên production | Có (Supabase/Vercel) | `IOS-REQUESTS.md` I7, I8, I10 |
+| 9 | Ngày thuê Mac: làm theo `docs/ios/MAC-DAY-CHECKLIST.md` | Có (Apple, GitHub) | tờ đó, từng bước |
+| 10 | Khoá repo — SAU khi Xcode Cloud xanh và build mới đã xong | Có (GitHub) | MAC-DAY-CHECKLIST mục 9 |
+| 11 | Bấm «Add for Review / Submit for Review» + chọn «Manually release» | Có | CHỈ sau smoke production; em KHÔNG bấm |
