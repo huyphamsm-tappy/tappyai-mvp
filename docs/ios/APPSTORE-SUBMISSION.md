@@ -9,10 +9,21 @@ bảng, chỗ nào khác nhau được nêu rõ), `docs/ios/IOS-REQUESTS.md` (vi
 
 ---
 
-## 0. Tóm tắt: nộp được chưa?
+## 0. KẾT LUẬN SẴN SÀNG NỘP (bản cuối 02/10/2026, build 100+; cập nhật sau mỗi lần CI)
 
-**Chưa.** Mã iOS đã có (hoặc đã có sau cờ) mọi thứ Apple thường đòi, nhưng 4 điều kiện nằm ngoài app và phải xong TRƯỚC khi bấm
-"Submit for Review", vì người duyệt chạy bản build **với server production**:
+**Phía app: SẴN SÀNG.** Phía server production: **CHƯA** (chờ web release). Bấm "Submit for Review" chỉ sau khi cả 3 cột dưới xong.
+
+| Thứ | Trạng thái | Ai làm |
+|---|---|---|
+| Bản build nộp | build 100 trên TestFlight (đủ chức năng đến ScamShield cũ); **build mới** (ScamShield tin nhắn + QR, giao diện tối mặc định, hàng Quy tắc cộng đồng/Liên hệ) sẽ là bản nộp — số build ghi ở báo cáo | iOS (đã chạy 1 lần TestFlight), Huy chọn đúng build trong ASC |
+| Chữ cửa hàng (§2), App Privacy (§4), xếp hạng tuổi (§5.4), ghi chú người duyệt (§5.1), quyền xin (§7) | **soạn xong, chờ Huy nói «điền»** | Huy |
+| Ảnh màn hình (§3) | CI chụp 10 ảnh tối (đường dẫn §3) | iOS chụp; Huy duyệt từng ảnh |
+| Đọc App Store Connect (ô bắt buộc thật, cảnh báo) | **CHƯA ĐỌC ĐƯỢC** (§1b) | Huy đăng nhập lại Chrome rồi báo |
+| Tài khoản demo | chỉ mô tả (§5.3) | Huy tạo sau release |
+| Server: xoá TK in-app, báo cáo/chặn (cờ `p8.*`), Sign in with Apple, Zalo `app_state`, `/privacy` `/terms` `/delete-account` `/community-guidelines`, route `analyze` | **chờ web release** (§0.1) | web + Huy |
+| Quy trình xử lý báo cáo trong 24 giờ (1.2) | chưa có người | Huy |
+
+### 0.1 Phụ thuộc web release — 4 điều kiện ngoài app (phải xong TRƯỚC "Submit"), vì người duyệt chạy bản build **với server production**:
 
 | # | Điều kiện | Điều luật | Ai làm | Ghi chú |
 |---|---|---|---|---|
@@ -83,7 +94,36 @@ Nội dung dưới đây lấy từ `PLAY-LISTING.md` §5 (đã được Huy duy
 
 ---
 
+## 1b. Đọc App Store Connect (app TappyAI, id 6816654420, bản 1.0) — 02/10/2026
+
+**CHƯA ĐỌC ĐƯỢC.** Lần thử 02/10: Chrome mở `appstoreconnect.apple.com/apps/6816654420/...` bị chuyển về **trang đăng nhập** (`authResult=FAILED`) — phiên Chrome này chưa đăng nhập Apple (hoặc phiên hết hạn); cửa sổ Chrome cũng báo chiều rộng 0 khi chụp màn hình. Em **không nhập mật khẩu/mã** (cấm). Việc của Huy: đăng nhập App Store Connect trong Chrome, để cửa sổ cỡ bình thường, rồi nói «đọc lại»; em chỉ MỞ và ĐỌC các mục: App Information, App Privacy, App Accessibility, Ratings and Reviews, Pricing and Availability, Subscriptions/IAP, Version 1.0, App Review → lập bảng ô bắt buộc/cảnh báo nguyên văn/kích thước ảnh/ô chọn build/kiểu phát hành.
+
+Bảng dưới là **dự kiến theo tài liệu Apple, CHƯA đối chiếu giao diện thật**:
+
+| Ô (ASC) | Giới hạn / yêu cầu | Chữ ở mục |
+|---|---|---|
+| Tên / Phụ đề | ≤ 30 / ≤ 30 | §1, §2 |
+| Danh mục chính/phụ, nội dung có bản quyền bên thứ ba (Content Rights) | chọn | §1; Content Rights: **CẦN HUY** (app hiển thị ảnh địa điểm từ nguồn công khai và ảnh người dùng — nên khai «Có quyền / đã được phép» chỉ khi Huy chắc) |
+| Mô tả / Từ khoá / Promotional / What's New | ≤ 4000 / ≤ 100 / ≤ 170 / ≤ 4000 | §2 |
+| Support URL / Marketing URL / Privacy Policy URL | URL hợp lệ (bắt buộc Support + Privacy) | §1 |
+| Bản quyền | chữ | §1 |
+| Ảnh màn hình iPhone | 6.9″ 1320×2868 (hoặc 1290×2796) **hoặc** 6.5″ 1284×2778 / 1242×2688; 1–10 ảnh | §3 |
+| Build | chọn một build đã xử lý xong trong TestFlight | số build ghi ở báo cáo |
+| Phát hành | **Manually release** (đề nghị) | §10 |
+| App Review: tên, điện thoại, email, ghi chú, tài khoản demo | tên + điện thoại + email bắt buộc | §5.1–5.3 |
+| Xếp hạng độ tuổi | bộ câu hỏi | §5.4 |
+| App Privacy | khai từng loại dữ liệu + URL chính sách | §4 |
+| Giá và quốc gia | Miễn phí; Việt Nam trước | §1 |
+| Mã hoá / xuất khẩu | `ITSAppUsesNonExemptEncryption = false` đã nằm trong Info.plist ⇒ không hỏi lại mỗi build; câu trả lời «chỉ dùng mã hoá chuẩn của hệ điều hành (HTTPS)» | §6 |
+| Accessibility | khai báo tính năng hỗ trợ tiếp cận: **tuỳ chọn** theo hiểu biết — CHƯA CHẮC mục này có bắt buộc ở tài khoản của Huy | ASC |
+
+---
+
 ## 3. Ảnh chụp màn hình
+
+**Bản cuối 02/10:** workflow `ios-appstore-shots` chụp **10 ảnh giao diện TỐI**, tiếng Việt, từ ứng dụng thật chạy với máy chủ giả (không có người thật), thanh trạng thái sạch 9:41, trên iPhone 16 Pro Max (1320 × 2868, khung 6.9″) nếu Xcode có, không thì cỡ 6.5″ được Apple nhận; kích thước thật in vào tóm tắt của run. Tên tệp: `01-chat-ask` (thẻ hỏi nhanh) · `02-chat-plan` (thẻ kế hoạch) · `03-chat-places` (thẻ địa điểm) · `04-home` · `05-explore` (feed clip, tranh vẽ giả) · `06-scam-message` (Lá chắn: tin nhắn «giống tình huống Mã QR giả») · `07-scam-qr` (mã QR chứa link bị chặn) · `08-profile` (Hồ sơ gọn) · `09-ai-consent` (màn đồng ý chia sẻ dữ liệu với AI) · `10-settings`. Thư mục Huy đọc được: **`D:\TappyAI-backups\appstore-screenshots\`**. Huy **duyệt từng ảnh** trước khi đăng.
+
+*(Bản kế hoạch cũ bên dưới giữ để tham khảo.)*
 
 Apple chỉ nhận ảnh đúng kích thước khung máy. App chỉ có iPhone, nên cần **bộ iPhone 6.9"** (1320 × 2868) — bộ 6.5" là tuỳ chọn.
 
@@ -107,6 +147,14 @@ Khai trong App Store Connect → App Privacy. **Lập từ mã iOS**, khớp `io
 không có tracking domain. Link affiliate (ACCESSTRADE) mở trang đối tác; theo quyết định Huy 29/09 (phương án C) **không chia sẻ dữ liệu
 người dùng** với đối tác — **CẦN HUY** xác nhận lại khi nộp, vì Apple coi "liên kết dữ liệu với dữ liệu của bên thứ ba cho mục đích quảng cáo"
 là tracking.
+
+**BẢN CUỐI 02/10 — những điều phải khớp với khai báo (đối chiếu mã):**
+- Nội dung chat, bản dịch, văn bản viết, **ảnh quét** (`/api/scan`) và (tuỳ chọn) vị trí gần đúng được gửi cho **OpenAI** qua máy chủ TappyAI → khai «Nội dung người dùng»/«Vị trí» và nêu OpenAI là bên xử lý; có màn đồng ý trước lần gửi đầu (5.1.2(i)).
+- **Nhận diện giọng nói**: âm thanh có thể được **Apple** xử lý (SFSpeechRecognizer, không bắt buộc trên máy); TappyAI chỉ nhận chữ, **không thu/lưu âm thanh** ⇒ không khai «Audio Data».
+- **Lá chắn lừa đảo**: tin nhắn dán vào được đọc tại máy, **không gửi, không lưu**; chỉ khi bấm «Phân tích sâu hơn» (sau đồng ý AI) văn bản đi tới `/api/scam-shield/analyze`, máy chủ không ghi nội dung. **Mã QR**: giải mã tại máy, ảnh không gửi/không lưu; chỉ link đã giải mã đi tới `/api/scam-shield/check`. Link được kiểm có thể được đối chiếu với Google Web Risk phía máy chủ.
+- **Theo dõi (ATT): Không.** Không IDFA, không SDK quảng cáo; `NSPrivacyTracking = false`. FirebaseMessaging chỉ để thông báo đẩy (không Analytics).
+- Bên xử lý: OpenAI (AI), Serper (tìm kiếm web), Supabase (CSDL/đăng nhập), Google Cloud (lưu tệp, log), Firebase (thông báo), Google Web Risk (kiểm link), OSM/Overpass (địa điểm).
+- `PrivacyInfo.xcprivacy` của build thật được test `PrivacyManifestTests` giữ khớp bảng dưới; CI in danh sách manifest của SDK trong archive.
 
 **Dữ liệu thu thập — tất cả "liên kết với danh tính người dùng" (Linked), không dùng để theo dõi**
 
@@ -163,15 +211,24 @@ AI chat, recommendations and posting need an age confirmation: the app shows an 
 
 Sign in: Sign in with Apple, Google, Zalo or email + password are offered. [DEMO ACCOUNT: see below]
 
+AI AND YOUR DATA (5.1.2(i)): the first time you send a chat message (or use Translate, Scan text or Write content, or "Analyse deeper" in Scam Shield) a sheet explains that the text you send goes to our AI provider (OpenAI) through our servers, why, and how it is handled, with a link to the Privacy Policy. "Agree" continues; "Not now" sends nothing. It can be withdrawn at any time: Profile → Settings → "Share data with AI". The app also blocks every AI request in code until you agree.
+
+USER-GENERATED CONTENT (1.2): posts, clips and comments are public to other users. On any post, clip, comment or profile tap the "..." button → "Report" (choose a reason) or "Block". Blocked accounts and their content disappear; the list is at Profile → Settings → "Blocked accounts". Community rules: Profile → Settings → "Community guidelines". Notices about your own content and how to appeal: Settings → "Moderation notices". Contact: Settings → "Contact support" (support@tappyai.com). Reports are reviewed within 24 hours. New posts pass an automatic safety check before they become public.
+
 Where to find what App Review usually checks:
-• Report / block (1.2): on any post, comment or profile tap the "..." button → "Report" (choose a reason) or "Block". Blocked accounts: Profile → Settings → "Blocked accounts".
-• Delete account (5.1.1(v)): Profile → Settings → Other → "Delete account" → type the word → confirm. The account is deleted immediately and you are signed out.
+• Delete account (5.1.1(v)): Profile → Settings → Other → "Delete account" → type the word → confirm. The account is deleted immediately and you are signed out. (Deleting the demo account is expected.)
+• Sign in with Apple is the first button on the sign-in screen.
 • Terms / Privacy / Copyright policy: Profile → Settings → Other.
-• Location is optional ("While Using the App" only) and is used to suggest nearby places. Push notifications are optional.
+• Scam Shield (Home → Scam Shield): check a link, check a pasted message (read ON the phone against the Ministry of Public Security's published scam scenarios; nothing is sent unless you tap "Analyse deeper" and have agreed to AI sharing), scan a QR code with the camera or from a photo (decoded ON the phone; only a decoded web link is sent to our link checker, never the picture; the app never opens, pays or joins anything from a code), and read the 25 scenarios. It is an information tool, not a government service, and says so.
+• Voice input in chat uses Apple's speech recognition (audio may be processed by Apple); TappyAI receives only text and keeps no audio.
+• Permissions are optional and asked only when used: Camera (post/scan/QR), Photos (choose pictures), Microphone and Speech Recognition (voice input), Location "While Using the App" (nearby places), Notifications.
+• The app is dark by default; Profile → Settings → Appearance has System / Light / Dark.
 
 The app has no in-app purchases and no subscriptions. Some shopping/booking links are partner affiliate links that open the partner's website; booking and payment happen there.
 AI answers can be wrong; the app says so and asks people to double-check opening hours and prices.
 ```
+
+**Trước khi dán, Huy kiểm 4 câu trong khối trên** (mỗi câu là một cam kết với Apple): (1) «Reports are reviewed within 24 hours» — chỉ giữ nếu có người trực `moderation_queue`; (2) «New posts pass an automatic safety check» — đúng theo cổng an toàn server (Phase 8), chỉ giữ khi production đã có; (3) các đường «Community guidelines / Moderation notices» chỉ hiện khi cờ `p8.*` bật — phải bật TRƯỚC khi nộp; (4) «Sign in with Apple is the first button» — chỉ đúng khi Apple provider đã bật ở production.
 
 ### 5.2 Liên hệ
 
@@ -246,7 +303,26 @@ AI answers can be wrong; the app says so and asks people to double-check opening
 - Có bật liên kết affiliate theo phương án C (không chia sẻ dữ liệu) như đã chọn 29/09 cho cả iOS.
 - Số điện thoại/email liên hệ cho người duyệt; có tạo tài khoản demo không.
 
-## 9. Đối chiếu App Review Guidelines hiện hành (đọc 01/10/2026 từ https://developer.apple.com/app-store/review/guidelines/)
+## 9a. ĐỐI CHIẾU BẢN CUỐI 02/10/2026 (đọc lại https://developer.apple.com/app-store/review/guidelines/ ngày 02/10, trích ngắn)
+
+| Điều | Apple nói (trích ngắn) | Trạng thái | Bằng chứng (file / ảnh) |
+|---|---|---|---|
+| **1.2** | UGC phải có «method for filtering objectionable material; mechanism to report … and timely responses; ability to block abusive users; published contact information» | **ĐÃ ĐỦ phía app, khi cờ server bật** · **THIẾU trên production hôm nay** (cờ `p8.*` tắt) · vận hành 24 giờ: **chưa có người** | báo cáo bài/clip/bình luận/người dùng theo 3 route cuối (`Safety/Data/SafetyService.swift`, test `SafetyTests`); chặn + danh sách (`BlockedAccountsView`, ảnh 40–41); liên hệ + Quy tắc cộng đồng + Thông báo kiểm duyệt (`SettingsView`, hàng `contact`/`guidelines`/`notices`); lọc: cổng an toàn server. **Chưa chạy thử trên UAT** (bản app trỏ UAT cần địa chỉ + khoá bypass UAT — không được đưa vào build; ghi «chưa kiểm») |
+| **4.8** | đăng nhập bên thứ ba phải kèm lựa chọn tương đương, «limiting data collection to name and email, allowing private email» | **ĐÃ ĐỦ phía app, CHƯA BẬT** (Apple provider ở Supabase chưa bật) | `AuthFlowView` (nút `auth-apple` ẩn tới khi bật), `AppleSignIn.swift` |
+| **5.1.1(v)** | «If your app supports account creation, you must offer account deletion within the app» | **ĐÃ ĐỦ phía app; cờ production TẮT** | `AccountDeletionView`, ảnh 44–46, 66; chữ chỉ «App Store» (2.3.10) |
+| **5.1.2(i)** | «clearly disclose where personal data will be shared with third parties, including with third-party AI, and obtain explicit permission before doing so» | **ĐÃ ĐỦ** (chờ Huy duyệt chữ) | `Core/Privacy/AIConsent*.swift`; chặn ở lớp mạng; `AIConsentTests`; ảnh 78–80, App Store 09 |
+| **3.1.1** | «To unlock features … you must use in-app purchase» (cấm khoá bằng mã QR…) | **ĐÃ ĐỦ**: không bán gì trong app; quét QR chỉ để kiểm an toàn, không mở khoá chức năng | `showProUpgrade` tắt |
+| **2.1(a)** | bản cuối, thử trên máy thật, «include demo account info and turn on backend services if login required» | **THIẾU (việc của Huy)**: tài khoản demo + bật backend production; chưa thử trên máy thật tất cả | §5.3 |
+| **5.1.1(i)** | «link privacy policy identifying collected data, collection methods, uses, and third-party sharing» | **CHƯA CHẮC**: link `/privacy` có (Cài đặt); chữ trang chờ web sửa (IOS-REQUESTS I17) | `PrivacyPolicyView`, Cài đặt |
+| **2.3.10** | không nhắc nền tảng khác trong app/metadata | **ĐÃ ĐỦ**: quét chuỗi 02/10, chỉ còn «App Store» | `Localizable.xcstrings` |
+| **2.5.14** | ghi âm/camera phải xin phép và «clear visual/audible indication» | **ĐÃ ĐỦ**: mic có màn «đang nghe» (ảnh 63–65), camera quét QR hiện hình xem trước; xin quyền có chữ giải thích vi/en | `VoiceListeningView`, `QRScannerView`, `InfoPlist.xcstrings` |
+| **1.1.6 / 1.4** | thông tin sai, gây hại | **ĐÃ ĐỦ ở mức đã làm**: «AI có thể sai»; Lá chắn nói «không phải bảo đảm an toàn», không bao giờ «an toàn» cho tin lạ; có khối gọi 113 | `ScamMessageView`, `ScamEmergencyCard` |
+| **2.5.2** | không tải mã làm đổi chức năng | **ĐÃ ĐỦ**: cờ server chỉ hiện/ẩn màn có sẵn; dữ liệu Bộ Công an nằm trong app | `bocongan2026.json` |
+| **4.2** | không chỉ là web bọc | **ĐÃ ĐỦ**: SwiftUI thuần | — |
+
+Nguồn: developer.apple.com/app-store/review/guidelines/ (đọc 02/10/2026). Bảng 01/10 bên dưới giữ để đối chiếu.
+
+## 9. Đối chiếu App Review Guidelines (bản 01/10/2026)
 
 Mỗi yêu cầu: **ĐÃ ĐỦ** (có file) / **THIẾU** / **CHƯA CHẮC**. Chỉ ghi, không sửa mã.
 
@@ -278,3 +354,28 @@ Mỗi yêu cầu: **ĐÃ ĐỦ** (có file) / **THIẾU** / **CHƯA CHẮC**. Ch
 5. Trang `/privacy` đã được Huy duyệt; trang hỗ trợ có thật.
 6. App Privacy, độ tuổi, mã hoá/xuất khẩu: **Huy xác nhận từng câu** rồi mới điền.
 7. Khoá repo SAU release (chuyển CI sang Xcode Cloud nếu cần).
+
+---
+
+## 11. Quyền xin và lý do (đúng chữ trong `InfoPlist.xcstrings`)
+
+| Quyền | Khi nào hỏi | Chữ người dùng thấy (vi) |
+|---|---|---|
+| Camera | chụp ảnh/quay clip khi đăng bài, quét chữ, **quét mã QR** (Lá chắn) | «TappyAI dùng camera để chụp ảnh, quay video cho bài đăng của bạn và quét thực đơn, hoá đơn, mã QR. Ảnh chỉ được dùng khi bạn đăng bài hoặc quét.» |
+| Thư viện ảnh (đọc) | khi bạn **chọn** ảnh/video để đăng, đặt ảnh đại diện, quét, hoặc chọn ảnh có mã QR | «TappyAI chỉ đọc ảnh và video bạn chọn … Không đọc phần còn lại của thư viện.» |
+| Thư viện ảnh (ghi) | lưu thẻ chia sẻ | «TappyAI lưu vào thư viện ảnh những thẻ chia sẻ và hình ảnh bạn chọn lưu về máy.» |
+| Micro | nhập giọng nói trong chat, ghi tiếng cho video đăng | «TappyAI dùng micro để nhập giọng nói khi trò chuyện và ghi âm thanh cho video bạn đăng.» |
+| Nhận diện giọng nói | lần đầu dùng giọng nói | (en) «… Your voice is transcribed by Apple speech recognition and is not stored by TappyAI.» |
+| Vị trí khi dùng app | tìm quanh đây | «… chỉ khi bạn cho phép, để tìm địa điểm quanh bạn. Không bao giờ dùng nền.» |
+| Thông báo | khi bật | tuỳ chọn; từ chối vẫn dùng được |
+
+Mọi quyền tuỳ chọn; từ chối không làm app sập (QR: từ chối camera ⇒ vẫn chọn ảnh có mã).
+
+## 12. Lịch đề nghị (nộp — phát hành — cập nhật)
+
+1. Web phát hành Phase 7 lên production (gồm báo cáo/chặn, xoá tài khoản kiểu mới, trang `/privacy` `/terms` `/delete-account` `/community-guidelines`).
+2. Huy bật Sign in with Apple ở Supabase production; web bật Zalo `app_state`; Huy tạo tài khoản demo (không trước).
+3. **Smoke production** (đăng nhập Google/email/Apple, chat khách, xoá tài khoản TEST, báo cáo/chặn, Lá chắn) rồi **nộp NGAY** — cờ `p8.*`, `accountSelfDelete`, `appleSignIn` phải đang BẬT khi người duyệt chạy.
+4. Chọn **Manually release** (tự quyết ngày lên kệ).
+5. Bản sửa lỗi nhỏ sau đó nộp thành **1.0.1** (tăng `MARKETING_VERSION`); cái nào đổi được qua máy chủ (cờ, chữ trả về, dữ liệu) **không cần nộp lại**.
+6. Xem `POST-SUBMIT-PLAN.md` cho giai đoạn chờ duyệt, trả lời Resolution Center, bị từ chối.
