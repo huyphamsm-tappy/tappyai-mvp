@@ -16,6 +16,7 @@ import { z } from 'zod'
 import type { CoreMessage } from 'ai'
 import { CONSULT_DOMAINS, enforceConsultRules, type BrainRun, type ConsultDecision, type ConsultDomain, type ConsultTurn } from './consultBrain'
 import { budgetOf, localAreaOf, partyOf, prep, timeOf, tripDatesOf } from './consultRouter'
+import { adviceEnabled } from './adviceBlock'
 
 /**
  * Owner 30/09 (URGENT, Anthropic out of credit): the Luna flags default ON with the default provider (GPT-6 Luna).
@@ -69,7 +70,7 @@ export function skipLunaIntent(
 export const LUNA_PLAN_RULE = [
   'LƯỢT NÀY LÀ KẾ HOẠCH CHI TIẾT.',
   '- Viết ĐỦ mọi mục của khung kế hoạch, đúng thứ tự và đúng tên tiêu đề in đậm của khung — kể cả khi người dùng hỏi một câu cụ thể ("gọi món gì", "kiểm tra gì", "chuẩn bị gì"): trả lời câu đó ở mục phù hợp.',
-  '- Mục không có dữ liệu: ghi "chưa có thông tin" ngay dưới tiêu đề — không bỏ mục, không để mục trống, không đoán, không lấy hiểu biết chung làm sự thật.',
+  '- Mục không có dữ liệu về NƠI CHỐN (giá, giờ mở cửa, địa chỉ, khuyến mãi, giờ bay): ghi "chưa có thông tin" — không đoán. Nhưng LỜI KHUYÊN CHUNG (món nên thử, giờ nên đi, đồ nên mang, cách di chuyển, cảnh báo) thì VIẾT từ hiểu biết chung, ghi "theo kinh nghiệm chung" — không để mục trống (02/10: người dùng xin kế hoạch, không phải danh sách "chưa có").',
   '- Dữ liệu tìm được có giờ mở cửa, khoảng giá, địa chỉ, số điện thoại của nơi nào thì GHI RA cho nơi đó — chỉ nói "chưa có" khi dữ liệu thật sự không có.',
   '- Giữ đủ mọi điều người dùng đã nói: số người, ngân sách, khu vực, ngày giờ, yêu cầu cụ thể (vd "gel + vẽ", "không đồ chiên", "phòng riêng"). Nơi người dùng đã bác hoặc nói "đi rồi" thì KHÔNG đưa lại.',
   '- Lịch nhiều bữa / nhiều chặng: mỗi bữa, mỗi chặng một nơi KHÁC nhau lấy từ dữ liệu (chỉ lặp lại khi dữ liệu có đúng một nơi — nói rõ vậy). Mỗi chặng người dùng nêu (ăn → chơi → uống) đều có một nơi hoặc ghi "chưa có thông tin" cho chặng đó.',
@@ -385,7 +386,10 @@ export function mergeIntentWithRules(luna: ConsultDecision, routed: { decision: 
   const area = luna.area ?? r.area
   const explicit = (t: ConsultTurn) => t === 'plan' || t === 'more' || t === 'compare' || t === 'reject'
   const askOrPick = (t: ConsultTurn) => t === 'ask' || t === 'pick'
-  if (luna.turn === r.turn || explicit(r.turn) || (askOrPick(luna.turn) && askOrPick(r.turn))) {
+  // 02/10 (A4): the intent model flipped "lập kế hoạch đi Đà Nẵng 3N2Đ" between ask / pick / plan run to run; a request the rules
+  // say still needs its ask stays an ask (the plan follows the answer — planIntent.ts), so the turn type is code's, not luck's.
+  const planBeforeAsk = adviceEnabled() && luna.turn === 'plan' && r.turn === 'ask'
+  if (luna.turn === r.turn || explicit(r.turn) || planBeforeAsk || (askOrPick(luna.turn) && askOrPick(r.turn))) {
     return { decision: { ...r, known: luna.known, ...(area ? { area } : {}), assumptions: r.assumptions.length ? r.assumptions : luna.assumptions }, mode: 'merged' }
   }
   return {

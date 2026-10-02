@@ -95,6 +95,8 @@ import { tripAskAfter, missingTripFacts } from '@/lib/ai/consultative/tripFacts'
 import { buildDomainFrame, frameDomainOf, frameLibrary, frameRef, PLAN_HEADINGS, FRAME_CORE } from '@/lib/ai/consultative/domainFrames'
 import { runConsultBrain, consultV2Enabled, wasAskReply, buildAskReply, placeTypeFor, latestShoppingPickPrice, shoppingMarkerRecords } from '@/lib/ai/consultative/consultBrain'
 import { routeConsult } from '@/lib/ai/consultative/consultRouter'
+import { promoteTripPlan } from '@/lib/ai/consultative/planIntent'
+import { adviceBlock, adviceEnabled } from '@/lib/ai/consultative/adviceBlock'
 import { rejectModifierOf, withoutQuotedNames, isFixedPhrase } from '@/lib/ai/consultative/consultRouter'
 import { consultLunaEnabled, consultLunaFastEnabled, skipLunaIntent, consultLunaPlanEnabled, LUNA_PLAN_RULE, isLunaAnswerTurn, runLunaIntent, mergeIntentWithRules, lunaTurnFacts, withoutReferenceTurns, LUNA_CORE, INTENT_SYSTEM } from '@/lib/ai/consultative/luna'
 import { lunaDataMessage, buildLeakDetector, sanitizeSearchQuery } from '@/lib/ai/consultative/lunaSafety'
@@ -401,7 +403,11 @@ export async function POST(req: Request) {
   const consultRun = lunaRun ?? (consultOn && routed?.confidence === 'unsure' && AI.isConfigured()
     ? await runConsultBrain(o => AI.generate(o), messages, { hasGps: !!userLocation, previousWasAsk: wasAskReply(priorAssistantText), deterministicDomain: lastUserMsg ? turnDomain(lastUserMsg, { hasGps: !!userLocation, lang }) : null })
     : null)
-  const consult = consultRun?.decision ?? lunaSkipDecision ?? (routed ? routed.decision : null)
+  // A4 (02/10): "lập kế hoạch …" is answered with the PLAN, not a hotel pick (planIntent.ts) — the ask card stays the first step.
+  const consultDecided = consultRun?.decision ?? lunaSkipDecision ?? (routed ? routed.decision : null)
+  const consultPlanPromoted = adviceEnabled() ? promoteTripPlan(consultDecided, messages, wasAskReply) : { decision: consultDecided, promoted: false }
+  const consult = consultPlanPromoted.decision
+  if (consultPlanPromoted.promoted) console.log(JSON.stringify({ type: 'tappyai_plan_promoted', domain: 'travel', from: 'pick' }))
   // Measurement only (CONSULT_DECISION_LOG=1, off by default — replay sets it): the full decision, to check intent reading.
   if (process.env.CONSULT_DECISION_LOG === '1' && consult) console.log(JSON.stringify({ type: 'tappyai_consult_decision', by: lunaRun ? `luna-${lunaRun.mode}` : consultRun ? 'brain' : lunaSkipped ? 'rules-fast' : 'rules', turn: consult.turn, domains: consult.domains, known: consult.known, area: consult.area ?? null }))
   console.log(JSON.stringify({ type: 'tappyai_consult', by: consultRun ? 'brain' : routed ? 'rules' : 'off', turn: consult?.turn ?? 'fallback', domains: consult?.domains ?? [], ms: consultRun?.ms ?? null, known: consult ? Object.keys(consult.known) : [], brain_in: consultRun?.usage.promptTokens ?? 0, brain_out: consultRun?.usage.completionTokens ?? 0 }))
@@ -1770,6 +1776,7 @@ export async function POST(req: Request) {
   // still belongs in the text: with a card, it is the same content twice.
   enrichment.setRendersDecisionCard(rendersDecisionCard)
   if (consult && consult.turn !== 'ask') enrichment.setConsultTurn(consult.turn, consult.refers, consult.known)
+  if (consult && consult.turn !== 'ask') enrichment.setConsultDomain(consult.domains[0] === 'travel' && (consultTravelCall?.name === 'get_flight_prices') ? 'flight' : consult.domains[0])
   if (lunaOn && earlyChatState?.shown?.length) enrichment.setConsultShown(earlyChatState.shown)
   // The plan's cost line prices the pick the conversation settled on (replay ENT-1/ENT-2/SPA-2 30/09: another venue's).
   if (consult?.turn === 'plan') enrichment.setConsultPick(latestConsultPick(null))
@@ -1935,6 +1942,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           ...(consultLibraryOn ? { library: frameLibrary(consultLibraryDomain) } : {}),
           ...(lunaAnswer && process.env.CONSULT_LUNA_PROMPT !== '0' ? { core: LUNA_CORE } : {}),
           extra: [lunaData ? '' : memoryBlock ?? '', prefBlock, planningIntent ? buildPlanningBlock(planningIntent, lang, planning ?? {}) : '', lunaPlan ? LUNA_PLAN_RULE : '', styleBlock, voiceLayerBlock(), lunaData ? '' : shareContextBlock],
+          tail: [adviceEnabled() ? adviceBlock({ turn: consult.turn, domain: consult.domains[0], flight: consultTravelCall?.name === 'get_flight_prices', days: Number(consult.known.so_ngay?.match(/\d+/)?.[0]) || null }) : ''],
         })
       })()
     : null

@@ -62,6 +62,8 @@ export function buildLeanConsultSystem(o: {
   consultBlock: string
   /** Request blocks that must survive (decision evidence, memory, prefs, planning block…). */
   extra?: string[]
+  /** Blocks placed AFTER the frame (the last thing the model reads before the reminder) — the advice layer (adviceBlock.ts). */
+  tail?: string[]
   /**
    * Cost §6: the area's static text (its tool rules + every frame of the area, `frameLibrary`) goes in the
    * CACHED segment, so it clears Anthropic's minimum cacheable prefix and a session's later turns read it
@@ -83,6 +85,7 @@ export function buildLeanConsultSystem(o: {
     o.library || o.core ? '' : tools,
     ...(o.extra ?? []).filter(Boolean),
     o.consultBlock,
+    ...(o.tail ?? []).filter(Boolean),
     `REMINDER: reply in ${o.langName} only.`,
   ].filter(Boolean).join('\n\n')
   if (o.core) return { shared: [o.core, tools, o.library ?? ''].filter(Boolean).join('\n\n'), dynamic }
