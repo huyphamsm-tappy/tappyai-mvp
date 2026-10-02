@@ -317,22 +317,18 @@ export default function ShareMenu({
   // artifact during render, so the object is new every time and an identity
   // dependency would publish on every render.
   const planKey = planSnapshot ? JSON.stringify(planSnapshot) : ''
-  const resultKey = publicSource && base.kind === 'places' ? `${publicSource.conversationId}#${publicSource.messageIndex}` : ''
+  // 🔑 NOTHING IS PUBLISHED WHEN THE MENU OPENS. The public /r/<slug> page is created only when the user
+  // picks a channel or the copy button (that click is the consent). The pick is parked in `resumeRef`,
+  // the page is created, and the same pick is replayed with the short link in place.
+  const resultKey = publicSource && base.kind === 'places' ? publicSource.conversationId + '#' + publicSource.messageIndex : ''
+  const resumeRef = useRef<ShareTargetId | null>(null)
+  const handleRef = useRef<(id: ShareTargetId) => Promise<void>>(async () => {})
   useEffect(() => {
-    if (!open || !resultKey || !publicSource) return
-    let cancelled = false
-    let p = mintedResults.get(resultKey)
-    if (!p) {
-      p = publishResult(publicSource, locale === 'en' ? 'en' : 'vi')
-      mintedResults.set(resultKey, p)
-      // A failure is not remembered: the next open may succeed (signed in, flag on).
-      void p.then(r => { if (r.state !== 'url') mintedResults.delete(resultKey) })
-    }
-    setResultLink({ state: 'pending' })
-    void p.then(r => { if (!cancelled) setResultLink(r) })
-    return () => { cancelled = true }
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- keyed on the turn, not the render
-  }, [open, resultKey])
+    if (resultLink.state !== 'url' || !resumeRef.current) return
+    const id = resumeRef.current
+    resumeRef.current = null
+    void handleRef.current(id)
+  }, [resultLink])
 
   useEffect(() => {
     if (!open || !planKey) return
@@ -346,7 +342,7 @@ export default function ShareMenu({
   if (!open) return null
 
   const planStrings = planBrochureStrings(locale === 'en' ? 'en' : 'vi')
-  const linkPending = planLink.state === 'pending' || resultLink.state === 'pending'
+  const linkPending = planLink.state === 'pending'
 
   const shareable = isShareableUrl(a.url)
   const hasContent = a.text.trim().length > 0
@@ -426,11 +422,27 @@ export default function ShareMenu({
     return makeCardFile()
   }
 
+  /** Channels that carry the message (and so the public link). Inbox/Save/TikTok do not publish anything. */
+  const PUBLIC_LINK_TARGETS = new Set<ShareTargetId>(['copy', 'native', 'email', 'line', 'whatsapp', 'telegram', 'viber', 'facebook', 'zalo', 'messenger'])
+
   async function handle(id: ShareTargetId) {
     if (busy || linkPending) return
     if (!hasContent) { setFeedback({ kind: 'error', text: t('share.nothingToShare') }); return }
     setBusy(id)
     try {
+      // First explicit share of this turn: create the public page now, then replay this pick with the link.
+      if (resultKey && publicSource && PUBLIC_LINK_TARGETS.has(id) && resultLink.state === 'idle') {
+        let p = mintedResults.get(resultKey)
+        if (!p) {
+          p = publishResult(publicSource, locale === 'en' ? 'en' : 'vi')
+          mintedResults.set(resultKey, p)
+          void p.then(r => { if (r.state !== 'url') mintedResults.delete(resultKey) })
+        }
+        const r = await p
+        if (r.state === 'url') { resumeRef.current = id; setResultLink(r); return }
+        // Guest, flag off or failure: carry on with the brand link (three lines, no tracking links).
+        setResultLink({ state: 'failed' })
+      }
       switch (id) {
         case 'copy': {
           // A published plan copies its canonical url and nothing around it — what
@@ -609,6 +621,8 @@ export default function ShareMenu({
     }
   }
 
+  handleRef.current = handle
+
   /** After NewMessageSheet made/reopened a thread, post the brochure into it. */
   async function sendToInbox(threadId: string) {
     setInboxOpen(false)
@@ -752,10 +766,12 @@ export default function ShareMenu({
           return (
             <button key={target.id} data-testid={`share-target-${target.id}`} onClick={() => handle(target.id)}
               disabled={!!busy || linkPending || needsLink(target.id)}
+              aria-busy={busy === target.id || undefined}
+              data-busy={busy === target.id ? 'true' : undefined}
               aria-disabled={needsLink(target.id) || undefined}
               data-needs-link={needsLink(target.id) ? 'true' : undefined}
               title={needsLink(target.id) ? planStrings.linkRequired : buttonLabel(target.id, target.kind)}
-              className="flex flex-col items-center gap-1.5 rounded-2xl border border-gray-200 px-1 py-3 transition hover:border-primary active:scale-95 disabled:opacity-60 dark:border-white/10 dark:bg-white/[0.03]">
+              className="flex flex-col items-center gap-1.5 rounded-2xl border border-gray-200 px-1 py-3 transition hover:border-primary active:scale-95 disabled:opacity-60 data-[busy=true]:animate-pulse dark:border-white/10 dark:bg-white/[0.03]">
               {mark
                 // eslint-disable-next-line @next/next/no-img-element -- local SVG, fixed box
                 ? <img src={mark.logo} alt="" width={40} height={40} draggable={false} decoding="async" className="h-10 w-10 select-none object-contain" data-share-brand={mark.id} />
@@ -824,10 +840,12 @@ export default function ShareMenu({
                 data-testid={`share-target-${target.id}`}
                 onClick={() => handle(target.id)}
                 disabled={!!busy || linkPending || needsLink(target.id)}
+              aria-busy={busy === target.id || undefined}
+              data-busy={busy === target.id ? 'true' : undefined}
                 aria-disabled={needsLink(target.id) || undefined}
                 data-needs-link={needsLink(target.id) ? 'true' : undefined}
                 title={needsLink(target.id) ? planStrings.linkRequired : buttonLabel(target.id, target.kind)}
-                className="flex flex-col items-center gap-1.5 py-2.5 px-1 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-primary active:scale-95 transition disabled:opacity-60"
+                className="flex flex-col items-center gap-1.5 py-2.5 px-1 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-primary active:scale-95 transition disabled:opacity-60 data-[busy=true]:animate-pulse data-[busy=true]:animate-pulse"
               >
                 {(() => {
                   const mark = shareBrandMark(target.id)

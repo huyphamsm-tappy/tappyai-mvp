@@ -82,3 +82,21 @@ describe('the public page title is the real question', () => {
     expect(deriveTitle('quán phở ngon ở Quận 1 TP.HCM. Gần chợ', 'x')).toBe('Quán phở ngon ở Quận 1 TP.HCM')
   })
 })
+
+import { tidySummary } from './shareMessage'
+describe('tidySummary never ends in a cut-off ellipsis', () => {
+  it('keeps short text whole', () => { expect(tidySummary('Ba quán đáng thử.')).toBe('Ba quán đáng thử.') })
+  it('cuts an ellipsised server excerpt back to a sentence end', () => {
+    const s = 'Mình hiểu bạn cần quán cà phê yên tĩnh. Mình chọn: Mew Roastery SG - Specialty Coffee. Mình nghiêng về quán này vì bạn cần chỗ ngồi làm việc, và quán có 287 đánh…'
+    const out = tidySummary(s)
+    expect(out.endsWith('…')).toBe(false)
+    expect(out.endsWith('.')).toBe(true)
+    expect(out.length).toBeLessThanOrEqual(160)
+  })
+  it('without a sentence end, cuts at a word and drops dangling punctuation', () => {
+    const out = tidySummary('từ '.repeat(120))
+    expect(out.length).toBeLessThanOrEqual(160)
+    expect(out).not.toMatch(/…|[,;:—-]$/)
+    expect(out.endsWith('từ')).toBe(true)
+  })
+})

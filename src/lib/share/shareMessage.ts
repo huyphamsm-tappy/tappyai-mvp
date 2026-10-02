@@ -30,6 +30,32 @@ export function clip(line: string, max: number): string {
   return `${(at > max * 0.6 ? cut.slice(0, at) : cut).trimEnd()}…`
 }
 
+/**
+ * A summary line that never ends in a cut-off "…": text that fits is kept whole; text that does not
+ * (or that already arrives ellipsised from a server excerpt) is cut back to the last sentence end,
+ * else the last clause break, else the last word, and loses its trailing punctuation fragment.
+ */
+export function tidySummary(input: string, max = SHARE_SUMMARY_MAX): string {
+  const flat = flatLine(input)
+  const hadEllipsis = /(…|\.\.\.)$/.test(flat)
+  const text = flat.replace(/(…|\.\.\.)$/, '').trimEnd()
+  if (!hadEllipsis && text.length <= max) return text
+  const window = text.slice(0, max)
+  const floor = Math.floor(max * 0.35)
+  let cut = -1
+  const sentence = /[.!?](?=\s|$)/g
+  for (let m = sentence.exec(window); m; m = sentence.exec(window)) if (m.index + 1 >= floor) cut = m.index + 1
+  // A text that was cut by the server may stop exactly at a sentence end: keep it whole.
+  if (cut < 0 && hadEllipsis && text.length <= max && /[.!?]$/.test(text)) cut = text.length
+  if (cut < 0) {
+    const clause = Math.max(window.lastIndexOf(', '), window.lastIndexOf('; '), window.lastIndexOf(': '), window.lastIndexOf(' — '), window.lastIndexOf(' - '))
+    cut = clause >= floor ? clause : window.lastIndexOf(' ')
+    if (text.length <= max && !hadEllipsis) cut = text.length
+  }
+  if (cut <= 0) cut = window.length
+  return window.slice(0, cut).replace(/[\s,;:—–-]+$/, '').trim()
+}
+
 export interface ShareMessageInput {
   title: string
   summary?: string
@@ -40,7 +66,7 @@ export interface ShareMessageInput {
 /** `title\nsummary\nurl` — three lines at most, the link always last and never cut. */
 export function buildShareMessage({ title, summary, url }: ShareMessageInput): string {
   const t = clip(flatLine(title), SHARE_TITLE_MAX)
-  let s = clip(flatLine(summary ?? ''), SHARE_SUMMARY_MAX)
+  let s = tidySummary(summary ?? '')
   if (s && s.toLowerCase() === t.toLowerCase()) s = ''
   return [t, s, url.trim()].filter(Boolean).join('\n')
 }
