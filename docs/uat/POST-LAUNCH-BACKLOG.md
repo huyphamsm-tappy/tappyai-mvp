@@ -146,3 +146,9 @@ Lượt kế hoạch lấy trước khách sạn + quán ăn + điểm tham quan
 - Chuyển `docs/audit` sang GCS
 - Scam Shield: khớp tình huống tĩnh (`matchScenario`) + 89 tình huống Phase 8; đồng bộ thư viện qua server; đồng ý trước khi gửi AI trên web
 - Chữ pháp lý: nhờ người am hiểu luật Việt Nam xem lại (docs/uat/LEGAL-TEXT-REVIEW-2026-10-02.md)
+
+## Ảnh thẻ hỏi / thẻ kế hoạch (02/10, Huy duyệt; nhánh `assets/ask-card-images`)
+- **Ảnh riêng cho 3 ô còn thiếu** (bowling, món Nhật/Hàn, âm nhạc) và **tách 3 ô mua sắm** (trung tâm / chợ / đồ công nghệ đang dùng chung ảnh trung tâm thương mại vì cùng khoá `diem-mua-sam`): cần ảnh riêng + sửa bảng gán ô trên CẢ 3 nền tảng (`askCardModel.ts`, Android `AskCardModel.kt`, iOS `AskCardModel.swift`) + build lại Android và iOS.
+- **Hero (16:9) để sau:** cần quyết (1) server chọn khoá hero thế nào (hiện không nơi nào ghi `hero_image`), (2) đổi tiền tố khoá `entertainment-`→`giai-tri-`, `shopping-`→`mua-sam-` (và thống nhất `-01` hay `-1`), (3) thẻ kế hoạch trong chat web vẽ hero (hiện chưa), (4) ảnh còn thiếu: giải trí 4, mua sắm 10, spa 7, ăn uống 5, du lịch 1 (và bản trùng giải trí số 0/2). Ảnh nguồn ở `D:\THIETKE PLAN`, bản đã xem: chưa đổi tên theo khoá.
+- **Android UAT không tải được ảnh từ uat.tappyai.com**: Coil dùng máy khách HTTP riêng, không có `DeploymentProtectionInterceptor` (chỉ máy khách API có); sửa = cho Coil dùng cùng máy khách (build lại UAT). iOS không có bypass. Bản release trỏ www.tappyai.com nên không bị.
+
