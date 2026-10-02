@@ -2,8 +2,8 @@
 <!-- Scam Shield (Cảnh báo lừa đảo) — generated 2026-09-17 from design/v3-phase4 src/lib/i18n/v3/web.ts (f6712b8):
      the hero, the three tabs, Analyze Message and the official anti-fraud knowledge (v3.scam.hero*/feat*/tab*/msg.*/kb.*). -->
 <resources>
-    <string name="scam_v3_heroEyebrow">Duyệt web an toàn hơn</string>
-    <string name="scam_v3_heroTitle1">Kiểm tra an toàn</string>
+    <string name="scam_v3_heroEyebrow">Duyệt web cẩn thận hơn</string>
+    <string name="scam_v3_heroTitle1">Kiểm tra kỹ</string>
     <string name="scam_v3_heroTitle2">trước khi truy cập</string>
     <string name="scam_v3_heroBody">Tappy giúp bạn phát hiện liên kết và website đáng ngờ, lừa đảo — kiểm tra trước, mở sau.</string>
     <string name="scam_v3_featDetect">Phát hiện lừa đảo</string>
@@ -105,5 +105,5 @@
     <string name="scam_v3_kb_cat_online_trading">Mua bán trực tuyến</string>
     <string name="scam_v3_kb_cat_data_theft">Đánh cắp dữ liệu</string>
     <!-- Empty on the web for vi (the note is shown to EN readers only); kept so every key has both languages. -->
-    <string name="scam_v3_kb_contentLanguage">Nội dung tình huống hiển thị bằng tiếng Việt, theo nguồn công bố.</string>
+    <string name="scam_v3_kb_contentLanguage"></string>
 </resources>

@@ -2,8 +2,8 @@
 <!-- Scam Shield (Cảnh báo lừa đảo) — generated 2026-09-17 from design/v3-phase4 src/lib/i18n/v3/web.ts (f6712b8):
      the hero, the three tabs, Analyze Message and the official anti-fraud knowledge (v3.scam.hero*/feat*/tab*/msg.*/kb.*). -->
 <resources>
-    <string name="scam_v3_heroEyebrow">Browse more safely</string>
-    <string name="scam_v3_heroTitle1">Check it is safe</string>
+    <string name="scam_v3_heroEyebrow">Browse more carefully</string>
+    <string name="scam_v3_heroTitle1">Check it first</string>
     <string name="scam_v3_heroTitle2">before you open it</string>
     <string name="scam_v3_heroBody">Tappy helps you spot suspicious and fraudulent links and websites — check first, open later.</string>
     <string name="scam_v3_featDetect">Scam detection</string>
