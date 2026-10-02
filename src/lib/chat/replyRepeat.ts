@@ -64,6 +64,15 @@ function segments(text: string): Array<{ block: boolean; text: string }> {
 
 /** Sentences with their trailing punctuation, emoji and whitespace kept attached. */
 function sentences(prose: string): string[] {
+  // A URL is ONE token: its dots and its «?» are not sentence ends. Split there and the tail of «…/catalog/?q=kính%20cường%20lực» becomes a
+  // «sentence» that the next link with the same keyword (Shopee, then Lazada) «repeats» — the second link was cut in the middle
+  // (A3, 2026-10-02: «- [Lazada](https://www.lazada.vn/catalog/?» followed by the buttons).
+  const urls: string[] = []
+  const masked = prose.replace(/https?:\/\/[^\s)\]]+/g, u => `\u0001${urls.push(u) - 1}\u0002`)
+  return splitSentences(masked).map(p => p.replace(/\u0001(\d+)\u0002/g, (_m, i: string) => urls[Number(i)]))
+}
+
+function splitSentences(prose: string): string[] {
   return prose.match(/[^.!?…\n]+(?:[.!?…]+|\n|$)(?:[\s\p{Extended_Pictographic}️‍]*)/gu) ?? [prose]
 }
 

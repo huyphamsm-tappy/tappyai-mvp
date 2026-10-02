@@ -51,6 +51,7 @@ import { ensureAnonymousSession } from '@/lib/auth/ensureAnonymousSession'
 import { attachSavedContext, type SavedMessage } from '@/lib/chat/savedContext'
 import { withCompactedHistory } from '@/lib/chat/requestHistory'
 import { withCutWatch } from '@/lib/chat/streamCut'
+import { stripRemainingFooter } from '@/lib/chat/footerLine'
 import MessageBoundary, { Deferred } from '@/components/chat/MessageBoundary'
 import { useStickToBottom } from '@/components/chat/useStickToBottom'
 import { balanceBoldPerLine } from '@/lib/chat/markdownNormalize'
@@ -1607,9 +1608,12 @@ export default function ChatInterface({
                 // also strip the injected product-image flood (keeping the first as
                 // the hero) so the decision replaces the raw grid.
                 const rawBody = isLoading && isLastMessage ? parsePlacesMarker(parseShoppingMarker(smoothedLastText).text).text : text
-                const { text: bodyText, firstImage: heroImage } = shopView
+                const { text: bodyTextRaw, firstImage: heroImage } = shopView
                   ? stripProductImages(rawBody)
                   : { text: rawBody, firstImage: null }
+                // A3: «Còn N lựa chọn nữa» is shown only under a place card (the cards behind «Xem thêm N chỗ»). No card (a reloaded thread, whose card
+                // annotation is not stored) or a shopping decision (every product is already a card): the line would offer options that are not there.
+                const bodyText = placeView && !shopView ? bodyTextRaw : stripRemainingFooter(bodyTextRaw)
                 return (
                   <div key={msg.id} data-msg-id={msg.id} className="animate-slide-up flex gap-3">
                     <TappyAvatar category={category} active={isLoading && isLastMessage} searching={!!(isLoading && isLastMessage && activeTool)} />

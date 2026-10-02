@@ -40,6 +40,7 @@ function altKept(alt: string): string {
 }
 
 const MD_IMAGE = /!\[([^\]]*)\]\(\s*<?(https?:\/\/[^\s)>]+|data:[^\s)>]+)>?(?:\s+"[^"]*")?\s*\)/g
+const IMAGE_LINE = /^[ \t]*!\[[^\]]*\]\(\s*<?(?:https?:\/\/[^\s)>]+|data:[^\s)>]+)>?(?:\s+"[^"]*")?\s*\)[ \t]*(?:\n|$)/gm
 const HTML_IMG = /<img\b[^>]*>/gi
 const MD_LINK = /(?<!!)\[([^\]]*)\]\(\s*<?(https?:\/\/[^\s)>]+)>?(?:\s+"[^"]*")?\s*\)/g
 const BARE_URL = /(\*\*|__)?(?<!\w)(https?:\/\/[^\s<>()\\[\]]+)/g
@@ -52,6 +53,8 @@ export function stripModelMedia(prose: string): string {
   let removed = false
   const mark = <T,>(v: T): T => { removed = true; return v }
   let t = prose
+    // an image that fills its whole line takes the line (and its caption) with it; inline, only a meaningful caption stays
+    .replace(IMAGE_LINE, () => mark(''))
     .replace(MD_IMAGE, (_w, alt: string) => mark(altKept(alt)))
     .replace(HTML_IMG, () => mark(''))
     .replace(MD_LINK, (whole, label: string, url: string) => (isPhotoAddress(url) ? mark(altKept(label)) : whole))

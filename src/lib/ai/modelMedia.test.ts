@@ -28,7 +28,9 @@ describe('stripModelMedia — captured shapes', () => {
     expect(out).not.toMatch(/\n{3,}/)
   })
   it('a generic alt («Ảnh địa điểm», empty) leaves nothing behind', () => {
-    expect(stripModelMedia(`A\n![Ảnh địa điểm](${LH3})\nB`)).toBe('A\n\nB'.replace('\n\n', '\n\n'))
+    expect(stripModelMedia(`A\n![Ảnh địa điểm](${LH3})\nB`)).toBe('A\nB')
+    expect(stripModelMedia(`A\n![Kính iPhone 15 Pro Max](${SHOP_TBN})\nB`)).toBe('A\nB') // a picture that fills its line takes its caption with it
+    expect(stripModelMedia(`Xem ![Colline Dalat](${TBN}) nhé`)).toBe('Xem Colline Dalat nhé') // inline, a real caption stays as text
     expect(stripModelMedia(`![](${SHOP_TBN})`)).toBe('')
   })
   it('the raw printed address (bare, in brackets, after bold) is removed whole; sentence punctuation survives', () => {
