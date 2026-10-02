@@ -52,3 +52,12 @@ Cờ BẬT (khi release): hàng đổi tên «Xóa tài khoản» → hộp «X�
 **15. Báo cáo bài đăng + quy tắc cộng đồng (mới, 01/10 tối)** — Khám phá (hoặc hồ sơ người khác → mở một bài; ở màn «Chi tiết» cuộn xuống để thấy nút «…») → «…» → «Báo cáo» → chọn lý do (Spam · Quấy rối hoặc bắt nạt · Nội dung nhạy cảm · Lừa đảo · Vi phạm bản quyền · Khác) → «Gửi báo cáo».
 Đạt = hiện «Đã gửi báo cáo. Cảm ơn bạn.», hộp đóng, bài vừa báo biến khỏi bảng tin/lưới của anh (kể cả sau khi mở lại app). Tắt mạng rồi gửi: hiện «Chưa gửi được báo cáo…», KHÔNG báo đã gửi, bài vẫn còn. Trong hộp có địa chỉ support@tappyai.com. Đăng bài đầu tiên (Khám phá → «+» → viết → «Đăng»): hiện «Quy tắc cộng đồng» có link «Đọc Điều khoản sử dụng»; «Đồng ý và đăng» mới đăng; lần sau không hỏi lại. **Không báo cáo bài thật của người khác** — dùng bài/tài khoản test. ☐ Đạt ☐ Không đạt: ______
 **Nút «Chặn người dùng» và «Tài khoản đã chặn» (Cài đặt) sẽ KHÔNG xuất hiện trên UAT/Play hôm nay** — chúng chỉ hiện khi server bật chặn người dùng (Phase 8: `P8_USER_BLOCKS` + migration `20260924_p8_user_blocks.sql`). Đó là đúng thiết kế, không phải lỗi. Ảnh giao diện chặn (dữ liệu giả, không gửi gì): `D:\TappyAI-backups\android-parity-evidence\ugc-2026-10-01\preview-*.png`.
+
+
+## Bổ sung 02/10 — Lá chắn lừa đảo (3 trạng thái, không AI)
+- [ ] Màn hình mặc định **Tối** khi cài mới (kể cả điện thoại đang để chế độ sáng); Cài đặt → Giao diện đổi được Hệ thống/Sáng/Tối.
+- [ ] Lá chắn → «Phân tích tin nhắn»: dán «Thông báo phạt nguội: xe của bạn vi phạm giao thông, vui lòng nộp phạt trong 24 giờ» → «Có dấu hiệu lừa đảo quen thuộc», kèm nguồn Bộ Công an, 113, «TappyAI không thay thế cơ quan chức năng». Không có hộp «gửi AI», không có «lượt hỏi AI».
+- [ ] Dán «Chiều nay đi ăn phở nha, 6h gặp ở quán cũ.» → «Chưa nhận ra dấu hiệu quen thuộc» + «KHÔNG có nghĩa là an toàn». Không có chữ «An toàn», không điểm.
+- [ ] Dán «Bưu phẩm Trung thu của bạn đã đến, quét mã QR đính kèm để nhận» → «Có một số dấu hiệu đáng ngờ».
+- [ ] Dán tin có link (vd. `https://vietcombank-xacthuc-taikhoan.top/login`) → thẻ link: «Đường link có đặc điểm thường gặp ở link giả mạo», lý do cụ thể, không điểm/«Độ tin cậy».
+- [ ] «Quét mã QR» (chọn ảnh): QR link → như trên; QR chữ / thanh toán / Wi-Fi → nêu loại, không tự mở, Wi-Fi không lộ mật khẩu. Huỷ chọn ảnh → không sập.

@@ -30,3 +30,17 @@ Mặc định: **Tối** (trước đây theo hệ thống). Công tắc Hệ th
 ## Kiểm chứng
 - Test đơn vị mới: `ScenarioMatcherTest`, `QrCodesTest`, `ScamLocalParityTest`; cập nhật `AppearanceDefaultTest`, `ScamShieldFailClosedTest`, `ScamShieldV3Test`. Debug/Release/UAT đều xanh.
 - E2E trên UAT: luồng `scam-shield-parity` (tin phạt nguội → «Giống thủ đoạn», 113, chia sẻ, không hỏi AI; tin bình thường → hỏi AI, «Không gửi» không gửi gì, «Đồng ý» → «An toàn», không gắn thủ đoạn; QR link `vietcombank-xacthuc-taikhoan.top` → «Nguy cơ cao 79» chỉ link đi kiểm tra; QR chữ; QR thanh toán; QR Wi-Fi chỉ hiện tên mạng; huỷ chọn ảnh không sập).
+
+## CẬP NHẬT 02/10 (chiều) — quyết định A7/A8 của Huy (cho khớp hợp đồng chữ cuối của phiên WEB; nếu khác thì theo web)
+
+**Ba trạng thái duy nhất** cho tin nhắn, link và QR — KHÔNG bao giờ «An toàn/Safe», không điểm số, không «Độ tin cậy»:
+| Trạng thái | Câu chữ (vi) | Khi nào |
+|---|---|---|
+| Quen thuộc | «Có dấu hiệu lừa đảo quen thuộc» | tin khớp chắc một tình huống (kèm tên tình huống, dấu hiệu theo bài, khối nguồn Bộ Công an); link/QR mức HIGH/CRITICAL (kèm «Đường link có đặc điểm thường gặp ở link giả mạo.» + lý do cụ thể, không kết luận về tổ chức/tên miền) |
+| Đáng ngờ | «Có một số dấu hiệu đáng ngờ» | tin khớp một phần («Có phần giống thủ đoạn: …»); link MEDIUM (kèm lý do) |
+| Chưa nhận ra | «Chưa nhận ra dấu hiệu quen thuộc» + «Điều này KHÔNG có nghĩa là an toàn: đừng chuyển tiền, đừng đọc mã OTP, đừng bấm link lạ; hãy xác minh qua kênh chính thức.» | tin không khớp và không có link; link SAFE/LOW/INCONCLUSIVE/UNKNOWN |
+Mọi thẻ kèm khối cố định: 113 + «TappyAI không thay thế cơ quan chức năng.»
+
+**AI phân tích tin nhắn: TẮT** (`ScamShieldFlags.MESSAGE_AI = false`, mã cũ giữ sau cờ). Tin nhắn: khớp tĩnh trên máy → nếu có link (ô link hoặc link trong tin) chỉ link đó đi `/api/scam-shield/check` → nếu không có gì: «Chưa nhận ra…». Không token, không hộp «đồng ý gửi AI», không chữ «lượt hỏi AI», không ô ảnh chụp màn hình. Bộ test khoá: `ScamLocalParityTest` (3 trạng thái, cờ AI, không điểm/độ tin cậy, câu chữ chính xác vi/en, thứ tự khớp → link → không khớp), `ScenarioMatcherTest` (+`firstLink`).
+
+**Còn lệch / chờ web:** (1) lý do kèm link do engine server trả, hiện bằng tiếng Anh («Domain has no A record…», «This domain uses the name "Vietcombank" but is not one of its official domains») — cần phiên WEB trả `summary` theo ngôn ngữ; (2) câu «đặc điểm thường gặp ở link giả mạo» và tên 3 trạng thái là bản của Android theo yêu cầu của Huy — đối chiếu với bản web cuối; (3) các khối «Biện pháp phòng tránh» của tình huống có biểu tượng dấu tích xanh cho lời khuyên «nên làm» (không phải kết luận an toàn).
