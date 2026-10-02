@@ -20,7 +20,7 @@ bảng, chỗ nào khác nhau được nêu rõ), `docs/ios/IOS-REQUESTS.md` (vi
 | Bản build nộp | build 100 trên TestFlight (đủ chức năng đến ScamShield cũ); **build mới** (ScamShield tin nhắn + QR, giao diện tối mặc định, hàng Quy tắc cộng đồng/Liên hệ) sẽ là bản nộp — số build ghi ở báo cáo | iOS (đã chạy 1 lần TestFlight), Huy chọn đúng build trong ASC |
 | Chữ cửa hàng (§2), App Privacy (§4), xếp hạng tuổi (§5.4), ghi chú người duyệt (§5.1), quyền xin (§7) | **soạn xong, chờ Huy nói «điền»** | Huy |
 | Ảnh màn hình (§3) | CI chụp 10 ảnh tối (đường dẫn §3) | iOS chụp; Huy duyệt từng ảnh |
-| Đọc App Store Connect (ô bắt buộc thật, cảnh báo) | **CHƯA ĐỌC ĐƯỢC** (§1b) | Huy đăng nhập lại Chrome rồi báo |
+| Đọc App Store Connect (ô bắt buộc thật) | **ĐÃ ĐỌC 02/10** (§1b); bản 1.0 chưa nộp gì, mục ảnh chỉ hiện khe 6.5″ | — |
 | Tài khoản demo | chỉ mô tả (§5.3) | Huy tạo sau release |
 | Server: xoá TK in-app, báo cáo/chặn (cờ `p8.*`), Sign in with Apple, Zalo `app_state`, `/privacy` `/terms` `/delete-account` `/community-guidelines`, route `analyze` | **chờ web release** (§0.1) | web + Huy |
 | Quy trình xử lý báo cáo trong 24 giờ (1.2) | chưa có người | Huy |
@@ -96,34 +96,53 @@ Nội dung dưới đây lấy từ `PLAY-LISTING.md` §5 (đã được Huy duy
 
 ---
 
-## 1b. Đọc App Store Connect (app TappyAI, id 6816654420, bản 1.0) — 02/10/2026
+## 1b. Đọc App Store Connect (app TappyAI, id 6816654420, bản 1.0) — ĐÃ ĐỌC 02/10/2026 (chỉ đọc, không bấm gì ngoài liên kết điều hướng)
 
-**CHƯA ĐỌC ĐƯỢC.** Lần thử 02/10: Chrome mở `appstoreconnect.apple.com/apps/6816654420/...` bị chuyển về **trang đăng nhập** (`authResult=FAILED`) — phiên Chrome này chưa đăng nhập Apple (hoặc phiên hết hạn); cửa sổ Chrome cũng báo chiều rộng 0 khi chụp màn hình. Em **không nhập mật khẩu/mã** (cấm). Việc của Huy: đăng nhập App Store Connect trong Chrome, để cửa sổ cỡ bình thường, rồi nói «đọc lại»; em chỉ MỞ và ĐỌC các mục: App Information, App Privacy, App Accessibility, Ratings and Reviews, Pricing and Availability, Subscriptions/IAP, Version 1.0, App Review → lập bảng ô bắt buộc/cảnh báo nguyên văn/kích thước ảnh/ô chọn build/kiểu phát hành.
+Trạng thái: **iOS App 1.0 — Prepare for Submission**. App Review: «Items you submit to App Review will appear here» ⇒ **chưa nộp gì**. Không có mua trong app / gói đăng ký được dựng.
 
-Bảng dưới là **dự kiến theo tài liệu Apple, CHƯA đối chiếu giao diện thật**:
+**Build trong TestFlight (Version 1.0.0):** 106 · 100 · 97 · 93 · 50, tất cả «**Ready to Submit**», hết hạn sau 90 ngày (build 50 còn 86 ngày), nhóm nội bộ «Team». **Build 106 đã xử lý xong, 0 lượt cài** (chưa ai cài). Chưa build nào được gắn vào trang phiên bản 1.0 (mục «Build» trống: «Add Build»).
 
-| Ô (ASC) | Giới hạn / yêu cầu | Chữ ở mục |
+**Ô bắt buộc / trạng thái THẬT trên giao diện** (✔ đã có, ✘ trống/chưa làm):
+
+| Mục | Ô | Trạng thái / giới hạn thấy trên màn hình |
 |---|---|---|
-| Tên / Phụ đề | ≤ 30 / ≤ 30 | §1, §2 |
-| Danh mục chính/phụ, nội dung có bản quyền bên thứ ba (Content Rights) | chọn | §1; Content Rights: **CẦN HUY** (app hiển thị ảnh địa điểm từ nguồn công khai và ảnh người dùng — nên khai «Có quyền / đã được phép» chỉ khi Huy chắc) |
-| Mô tả / Từ khoá / Promotional / What's New | ≤ 4000 / ≤ 100 / ≤ 170 / ≤ 4000 | §2 |
-| Support URL / Marketing URL / Privacy Policy URL | URL hợp lệ (bắt buộc Support + Privacy) | §1 |
-| Bản quyền | chữ | §1 |
-| Ảnh màn hình iPhone | 6.9″ 1320×2868 (hoặc 1290×2796) **hoặc** 6.5″ 1284×2778 / 1242×2688; 1–10 ảnh | §3 |
-| Build | chọn một build đã xử lý xong trong TestFlight | số build ghi ở báo cáo |
-| Phát hành | **Manually release** (đề nghị) | §10 |
-| App Review: tên, điện thoại, email, ghi chú, tài khoản demo | tên + điện thoại + email bắt buộc | §5.1–5.3 |
-| Xếp hạng độ tuổi | bộ câu hỏi | §5.4 |
-| App Privacy | khai từng loại dữ liệu + URL chính sách | §4 |
-| Giá và quốc gia | Miễn phí; Việt Nam trước | §1 |
-| Mã hoá / xuất khẩu | `ITSAppUsesNonExemptEncryption = false` đã nằm trong Info.plist ⇒ không hỏi lại mỗi build; câu trả lời «chỉ dùng mã hoá chuẩn của hệ điều hành (HTTPS)» | §6 |
-| Accessibility | khai báo tính năng hỗ trợ tiếp cận: **tuỳ chọn** theo hiểu biết — CHƯA CHẮC mục này có bắt buộc ở tài khoản của Huy | ASC |
+| Version 1.0 (Vietnamese) | Ảnh màn hình | ✘ «0 of 10 Screenshots, 0 of 3 App Previews». **Chỉ hiện khe «iPhone 6.5″ Display»: 1242×2688, 2688×1242, 1284×2778 hoặc 2778×1284.** KHÔNG liệt kê 6.9″ (1320×2868) ⇒ **bộ ảnh nộp phải là 6.5″** (CI đã đổi sang máy 6.5″). Có thẻ iPad/Apple Watch (không cần: app chỉ iPhone) |
+| | Promotional Text | ✘ ≤ 170 |
+| | Description | ✘ ≤ 4.000 |
+| | Keywords | ✘ ≤ 100 |
+| | Support URL, Marketing URL | ✘ |
+| | Version | ✘ (điền `1.0.0`: khớp `MARKETING_VERSION`) |
+| | Copyright | ✘ ≤ 200 |
+| | Build | ✘ «Add Build» (chọn build 106 hoặc build mới hơn đã duyệt) |
+| | Routing App Coverage / App Clip / iMessage App / Game Center | để trống (không dùng) |
+| App Review Information | Sign-in required (công tắc), Contact Information, Notes (≤ 4.000), Attachment (tuỳ chọn) | ✘ tất cả; tên + điện thoại + email người liên hệ là bắt buộc |
+| App Store Version Release | «Manually release this version» / «Automatically release…» / «…no earlier than» | ✘ chưa chọn — **chọn «Manually release»** |
+| App Information | Name (đếm ký tự còn lại 23 ⇒ đã có tên 7 ký tự), Subtitle (≤ 30) | Name: đã có (có vẻ «TappyAI»); Subtitle ✘ |
+| | Bundle ID `com.tappyai.ios`, SKU `tappyai-ios`, Apple ID 6816654420, ngôn ngữ chính Vietnamese | ✔ |
+| | Category (Primary + Secondary tuỳ chọn) | ✘ chưa chọn (đề nghị Food & Drink / Travel) |
+| | **Content Rights** | ✘ «Set Up Content Rights Information» — phải trả lời (app có hiển thị nội dung bên thứ ba: ảnh địa điểm, bài người dùng) |
+| | Age Ratings | ✘ (liên kết trong trang này; bộ câu hỏi chưa trả lời) |
+| | App Encryption Documentation | không đòi nếu `ITSAppUsesNonExemptEncryption=false` (đã có trong build) |
+| | **Digital Services Act** | ✘ «Set Up» — Apple đòi khai báo/xác minh thông tin tài khoản (nhà kinh doanh/trader) nếu bán ở EU; **nếu chỉ phát hành ở Việt Nam, CHƯA CHẮC có bắt buộc — Huy xem lại khi chọn quốc gia** |
+| | Vietnam Game License | không áp dụng (không phải game) |
+| App Privacy | Privacy Policy URL | ✘ «–» · User Privacy Choices URL (tuỳ chọn) «–» · «Get Started» (chưa khai gì) |
+| App Accessibility | Khai báo tính năng hỗ trợ tiếp cận | tuỳ chọn, ✘ «Get Started» (VoiceOver, Voice Control, Larger Text, Dark Interface, Differentiate Without Color Alone, Sufficient Contrast, Reduced Motion, Captions, Audio Descriptions) — **Dark Interface: app tối mặc định ⇒ có thể khai «có»**; các mục khác chưa kiểm trên thiết bị nên KHÔNG khai |
+| Pricing and Availability | Price Schedule | ✘ «Add Pricing» (chọn Free) |
+| | App Availability | ✘ «Set Up Availability» (chọn quốc gia; đề nghị Việt Nam trước) |
+| | Apple Silicon Mac / Apple Vision Pro | có hộp «Make this app available» cho Mac và Vision Pro — **quyết: nên TẮT** (app chỉ kiểm trên iPhone; chưa thử trên Mac/Vision Pro) |
+| | Phân phối | Public (mặc định) |
+| Ratings and Reviews | — | «This app hasn't received any reviews yet» (chỉ để xem) |
+| IAP / Subscriptions | — | không dựng (đúng: không bán gì) |
+
+**Cảnh báo nguyên văn:** trang phiên bản không hiện hộp cảnh báo đỏ; các nút «Save» và «Add for Review» có sẵn nhưng em **không bấm**. Việc bắt buộc còn lại do Apple chỉ ra khi bấm «Add for Review» (em không bấm) — sẽ thấy lúc đó.
+
+*(Ghi chú cũ về lần thử thất bại ngày 02/10 sáng — Chrome chưa đăng nhập — đã hết hiệu lực.)*
 
 ---
 
 ## 3. Ảnh chụp màn hình
 
-**Bản cuối 02/10:** workflow `ios-appstore-shots` chụp **10 ảnh giao diện TỐI**, tiếng Việt, từ ứng dụng thật chạy với máy chủ giả (không có người thật), thanh trạng thái sạch 9:41, trên iPhone 16 Pro Max (1320 × 2868, khung 6.9″) nếu Xcode có, không thì cỡ 6.5″ được Apple nhận; kích thước thật in vào tóm tắt của run. Tên tệp: `01-chat-ask` (thẻ hỏi nhanh) · `02-chat-plan` (thẻ kế hoạch) · `03-chat-places` (thẻ địa điểm) · `04-home` · `05-explore` (feed clip, tranh vẽ giả) · `06-scam-message` (Lá chắn: tin nhắn «giống tình huống Mã QR giả») · `07-scam-qr` (mã QR chứa link bị chặn) · `08-profile` (Hồ sơ gọn) · `09-ai-consent` (màn đồng ý chia sẻ dữ liệu với AI) · `10-settings`. Thư mục Huy đọc được: **`D:\TappyAI-backups\appstore-screenshots\`**. Huy **duyệt từng ảnh** trước khi đăng.
+**Bản cuối 02/10:** workflow `ios-appstore-shots` chụp **10 ảnh giao diện TỐI**, tiếng Việt, từ ứng dụng thật chạy với máy chủ giả (không có người thật), thanh trạng thái sạch 9:41, trên máy **6.5″ (1284 × 2778)** — vì App Store Connect của app này CHỈ hiện khe 6.5″ (§1b); máy 6.9″ (1320 × 2868) chỉ là phương án dự phòng; kích thước thật in vào tóm tắt của run. (Bộ 6.9″ chụp trước đó nằm ở `appstore-screenshotsun-*` — không dùng để nộp.) Tên tệp: `01-chat-ask` (thẻ hỏi nhanh) · `02-chat-plan` (thẻ kế hoạch) · `03-chat-places` (thẻ địa điểm) · `04-home` · `05-explore` (feed clip, tranh vẽ giả) · `06-scam-message` (Lá chắn: tin nhắn «giống tình huống Mã QR giả») · `07-scam-qr` (mã QR chứa link bị chặn) · `08-profile` (Hồ sơ gọn) · `09-ai-consent` (màn đồng ý chia sẻ dữ liệu với AI) · `10-settings`. Thư mục Huy đọc được: **`D:\TappyAI-backups\appstore-screenshots\`**. Huy **duyệt từng ảnh** trước khi đăng.
 
 *(Bản kế hoạch cũ bên dưới giữ để tham khảo.)*
 
