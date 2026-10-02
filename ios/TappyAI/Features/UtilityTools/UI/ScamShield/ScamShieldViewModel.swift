@@ -14,6 +14,102 @@ final class ScamShieldViewModel: AppObservableObject {
     /// Set instead of `result` whenever no verdict was obtained. Already localized.
     @AppPublished var failure: String?
 
+    // MARK: Message check (on-device first)
+
+    @AppPublished var messageText = ""
+    /// The on-device reading of `messageText`. Set by `checkMessage()`; nothing is sent anywhere to produce it.
+    @AppPublished var messageOutcome: ScamMessageOutcome?
+    /// The server (AI-assisted) analysis — only after the person asked for it and agreed to share data with AI.
+    @AppPublished var messageAnalysis: ScamMessageAnalysis?
+    @AppPublished var messageAnalyzing = false
+    /// Set when the deeper analysis could not be done (not signed in, server without it, quota, offline…). Localized.
+    @AppPublished var messageAnalysisFailure: String?
+
+    var canCheckMessage: Bool { !messageText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
+
+    /// Reads the pasted text against the bundled scenarios. Pure and offline: never a request, never stored.
+    func checkMessage() {
+        let text = messageText.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !text.isEmpty else { return }
+        messageAnalysis = nil
+        messageAnalysisFailure = nil
+        messageOutcome = ScamMessageMatcher.analyze(text)
+    }
+
+    /// «Phân tích sâu hơn»: the server analysis. 🚨 The consent sheet comes first (inside the service); a «Để sau» sends nothing.
+    func analyzeMessageDeeper() async {
+        let text = messageText.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !text.isEmpty, !messageAnalyzing else { return }
+        messageAnalyzing = true
+        messageAnalysisFailure = nil
+        defer { messageAnalyzing = false }
+        do {
+            let analysis = try await service.analyzeScamMessage(text: text)
+            if analysis.isUsable { messageAnalysis = analysis }
+            else { messageAnalysisFailure = NSLocalizedString("scam.msg.deeper.failed", comment: "") }
+        } catch let appError as AppError {
+            messageAnalysisFailure = Self.messageFailure(for: appError)
+        } catch {
+            messageAnalysisFailure = NSLocalizedString("scam.msg.deeper.failed", comment: "")
+        }
+    }
+
+    func clearMessage() {
+        messageText = ""
+        messageOutcome = nil
+        messageAnalysis = nil
+        messageAnalysisFailure = nil
+    }
+
+    static func messageFailure(for error: AppError) -> String {
+        switch error {
+        case .offline: return NSLocalizedString("scamShield.error.offline", comment: "")
+        case .validation: return NSLocalizedString("ai.consent.needed", comment: "")      // «Để sau»: nothing was sent
+        case .authentication(let reason):
+            switch reason {
+            case .anonLimitReached, .freeLimitReached: return NSLocalizedString("scam.msg.deeper.quota", comment: "")
+            default: return NSLocalizedString("scam.msg.deeper.failed", comment: "")
+            }
+        case .network(let status, let code):
+            if status == 429 || code == "rate_limit" { return NSLocalizedString("scamShield.error.rateLimit", comment: "") }
+            if status == 404 { return NSLocalizedString("scam.msg.deeper.unavailable", comment: "") }   // a server without it yet
+            return NSLocalizedString("scam.msg.deeper.failed", comment: "")
+        default: return NSLocalizedString("scam.msg.deeper.failed", comment: "")
+        }
+    }
+
+    // MARK: QR (decoded on the phone; only a LINK ever goes on, and only its text)
+
+    @AppPublished var qrPayload: QRPayload?
+    /// «Nothing found in this picture», shown plainly. Localized.
+    @AppPublished var qrMessage: String?
+    /// The link check was started FROM a QR code (so the result says where the link came from).
+    @AppPublished var linkFromQR = false
+
+    /// Takes whatever the camera or the picture decoded. A link starts the link check; any other kind is only named.
+    func handleQR(texts: [String]) async {
+        qrMessage = nil
+        guard let first = texts.first(where: { !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }) else {
+            qrPayload = nil
+            qrMessage = NSLocalizedString("scam.qr.none", comment: "")
+            return
+        }
+        let payload = QRPayload.classify(first)
+        qrPayload = payload
+        if case .link(let link) = payload {
+            url = link
+            linkFromQR = true
+            await check()
+        }
+    }
+
+    func clearQR() {
+        qrPayload = nil
+        qrMessage = nil
+        if linkFromQR { clear() }
+        linkFromQR = false
+    }
+
     private let service: UtilityToolsService
 
     init(service: UtilityToolsService) {

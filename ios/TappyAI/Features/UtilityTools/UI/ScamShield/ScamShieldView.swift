@@ -13,14 +13,15 @@ struct ScamShieldView: View {
     @AppStateObject private var vm: ScamShieldViewModel
     @State private var evidenceOpen = false
     @State private var section: Pane = .check
+    @State private var confirmOpenLink: URL?
     private let knowledge = ScamKnowledge.load()
 
-    private enum Pane { case check, library }
+    private enum Pane { case check, message, qr, library }
     /// The library is hidden when the bundled dataset is unreadable (never an empty tab).
     private var hasLibrary: Bool { !knowledge.scenarios.isEmpty }
 
     init(deps: AppDependencies) {
-        let service = UtilityToolsService(api: deps.api)
+        let service = UtilityToolsService(api: deps.api, consent: deps.aiConsent)
         _vm = AppStateObject(wrappedValue: ScamShieldViewModel(service: service))
     }
 
@@ -34,18 +35,27 @@ struct ScamShieldView: View {
                 // Fixed, whatever tab is open: where to call if the money has already gone.
                 ScamEmergencyCard()
 
-                if hasLibrary {
-                    Picker("", selection: $section) {
-                        Text("scam.tab.check").tag(Pane.check)
-                        Text("scam.tab.library").tag(Pane.library)
-                    }
-                    .pickerStyle(.segmented)
-                    .accessibilityIdentifier("scam-tabs")
+                Picker("", selection: $section) {
+                    Text("scam.pane.link").tag(Pane.check)
+                    Text("scam.pane.message").tag(Pane.message)
+                    Text("scam.pane.qr").tag(Pane.qr)
+                    if hasLibrary { Text("scam.pane.library").tag(Pane.library) }
                 }
+                .pickerStyle(.segmented)
+                .accessibilityIdentifier("scam-tabs")
 
-                if section == .library, hasLibrary {
+                switch section {
+                case .library where hasLibrary:
                     ScamLibraryView(knowledge: knowledge)
-                } else {
+                case .message:
+                    ScamMessageView(vm: vm, knowledge: knowledge) { link in
+                        vm.url = link
+                        section = .check
+                        Task { await vm.check() }
+                    }
+                case .qr:
+                    ScamQRView(vm: vm) { section = .check }
+                default:
                     checkContent
                 }
 
@@ -59,6 +69,36 @@ struct ScamShieldView: View {
         .background(TappyColor.background)
         .navigationTitle(NSLocalizedString("scamShield.title", comment: ""))
         .navigationBarTitleDisplayMode(.inline)
+        .confirmationDialog(Text("scam.link.confirm.title"), isPresented: Binding(
+            get: { confirmOpenLink != nil }, set: { if !$0 { confirmOpenLink = nil } }
+        ), titleVisibility: .visible) {
+            Button(role: .destructive) {
+                if let url = confirmOpenLink { UIApplication.shared.open(url) }
+                confirmOpenLink = nil
+            } label: { Text("scam.link.confirm.open") }
+            Button(role: .cancel) { confirmOpenLink = nil } label: { Text("scam.link.dontOpen") }
+        } message: {
+            Text("scam.link.confirm.body")
+        }
+        .task { await applyDebugFixture() }
+    }
+
+    /// CI fixture only (DEBUG): open a pane with a message / a QR code already in it.
+    @MainActor
+    private func applyDebugFixture() async {
+        #if DEBUG
+        switch UITestLaunch.scamPane {
+        case "message": section = .message
+        case "qr": section = .qr
+        default: break
+        }
+        if UITestLaunch.scamQR != nil { section = .qr }
+        if let text = UITestLaunch.scamMessage, vm.messageText.isEmpty {
+            section = .message
+            vm.messageText = text
+            vm.checkMessage()
+        }
+        #endif
     }
 
     /// The link check (the original screen).
@@ -80,13 +120,65 @@ struct ScamShieldView: View {
         .buttonStyle(.tappy(.primary))
         .disabled(!vm.canCheck)
 
+        if vm.linkFromQR, vm.result != nil || vm.loading {
+            Label { Text("scam.qr.linkNote") } icon: { Image(systemName: "qrcode") }
+                .font(TappyFont.caption).foregroundColor(TappyColor.textSecondary)
+        }
+
         if let result = vm.result {
             verdictCard(result)
+            linkActions(result)
         }
 
         if let failure = vm.failure {
             unresolvedCard(failure)
         }
+    }
+
+    /// «Đừng mở» / «Mở thận trọng». The app never opens a link by itself; opening asks once more, and for a
+    /// dangerous verdict the question says so.
+    private func linkActions(_ result: ScamCheckResult) -> some View {
+        VStack(alignment: .leading, spacing: Spacing.sm) {
+            HStack(spacing: Spacing.sm) {
+                Button { vm.clear() } label: {
+                    Text("scam.link.dontOpen").font(TappyFont.bodyEmphasis).foregroundStyle(.white)
+                        .frame(maxWidth: .infinity, minHeight: 46)
+                        .background(TappyColor.primary)
+                        .clipShape(RoundedRectangle(cornerRadius: Radius.lg, style: .continuous))
+                }
+                .buttonStyle(.plain)
+                .accessibilityIdentifier("scam-link-dontopen")
+                Button { confirmOpenLink = Self.openableURL(result.url) } label: {
+                    Text("scam.link.openCareful").font(TappyFont.bodyEmphasis)
+                        .foregroundStyle(ScamShieldLevelCopy.isDangerous(result.risk.level) ? TappyColor.danger : TappyColor.textPrimary)
+                        .frame(maxWidth: .infinity, minHeight: 46)
+                        .background(TappyColor.surface)
+                        .clipShape(RoundedRectangle(cornerRadius: Radius.lg, style: .continuous))
+                }
+                .buttonStyle(.plain)
+                .disabled(Self.openableURL(result.url) == nil)
+                .accessibilityIdentifier("scam-link-opencareful")
+            }
+            ShareLink(item: Self.shareText(result)) {
+                Label { Text("scam.share") } icon: { Image(systemName: "square.and.arrow.up") }.font(TappyFont.callout.weight(.semibold))
+            }
+            .accessibilityIdentifier("scam-link-share")
+        }
+    }
+
+    private static func openableURL(_ raw: String) -> URL? {
+        let s = raw.trimmingCharacters(in: .whitespacesAndNewlines)
+        let withScheme = s.lowercased().hasPrefix("http") ? s : "https://" + s
+        guard let url = URL(string: withScheme), let scheme = url.scheme?.lowercased(), ["http", "https"].contains(scheme) else { return nil }
+        return url
+    }
+
+    /// What is shared: the verdict and the link, in plain words. No evidence dump, no tokens.
+    private static func shareText(_ result: ScamCheckResult) -> String {
+        [NSLocalizedString("scam.share.header", comment: ""),
+         String(format: NSLocalizedString("scam.share.link", comment: ""), result.url,
+                NSLocalizedString(ScamShieldLevelCopy.levelKey(result.risk.level), comment: "")),
+         NSLocalizedString("scam.share.footer", comment: "")].joined(separator: "\n")
     }
 
     // MARK: - Verdict

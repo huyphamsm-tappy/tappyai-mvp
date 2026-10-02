@@ -9,7 +9,7 @@ final class AIConsentStore: @unchecked Sendable {
     static let shared = AIConsentStore()
 
     /// The routes that carry the person's content to the AI provider.
-    static let aiPaths = ["/api/chat", "/api/translate", "/api/scan", "/api/viet-content"]
+    static let aiPaths = ["/api/chat", "/api/translate", "/api/scan", "/api/viet-content", "/api/scam-shield/analyze"]
 
     private let defaults: UserDefaults
     private let key = "ai.consent.v1"

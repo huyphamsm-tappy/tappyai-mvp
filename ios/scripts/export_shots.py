@@ -30,7 +30,7 @@ def main(src, out):
                 continue
             # Only our own "NN-name" attachments; Xcode also attaches "UI Snapshot"/"Synthesized Event"
             # files (hierarchy dumps saved with a .png name) for failed steps.
-            if not re.match(r"^\d\d-", base):
+            if not re.match(r"^\d{2,3}-", base):
                 continue
             shutil.copyfile(os.path.join(src, att["exportedFileName"]), os.path.join(out, base + ".png"))
             n += 1

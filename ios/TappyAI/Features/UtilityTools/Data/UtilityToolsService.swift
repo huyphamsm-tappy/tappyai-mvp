@@ -98,6 +98,15 @@ final class UtilityToolsService: Sendable {
     /// 🚨 No local scoring: this sends the URL and returns whatever verdict the backend produced.
     /// The engine, the provider fan-out, the official-brand directory and the thresholds all stay
     /// on the server.
+    /// Scam Shield · message, SERVER half (AI-assisted). Asks for the person's AI consent first, then sends the pasted
+    /// text and NOTHING else. 🚨 Never called for a message the on-device matcher could already name.
+    func analyzeScamMessage(text: String) async throws -> ScamMessageAnalysis {
+        try await requireConsent()
+        let body = try JSONSerialization.data(withJSONObject: ["text": String(text.prefix(ScamMessageMatcher.maxChars * 2))])
+        let endpoint = Endpoint(path: "/api/scam-shield/analyze", method: .post, body: body, requiresAuth: true, timeout: 45)
+        return try await api.send(endpoint, as: ScamMessageAnalysis.self)
+    }
+
     func checkScamShield(url: String) async throws -> ScamCheckResult {
         let body = try JSONSerialization.data(withJSONObject: ["url": url])
         let endpoint = Endpoint(path: "/api/scam-shield/check", method: .post, body: body,

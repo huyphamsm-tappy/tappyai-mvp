@@ -376,6 +376,27 @@ class Handler(BaseHTTPRequestHandler):
         # ── In-app account deletion (`flags.accountSelfDelete` on): the server accepts the confirm word ──
         if path == "/api/account/delete":
             return self._send(200, {"ok": True})
+        if path == "/api/scam-shield/check":
+            try:
+                link = json.loads(raw or b"{}").get("url", "")
+            except Exception:
+                link = ""
+            return self._send(200, {"url": link, "cached": False,
+                                    "risk": {"score": 82, "confidence": 70, "level": "HIGH"},
+                                    "evidence": {"items": [{"source": "Danh sách chặn", "severity": "critical",
+                                                            "summary": "Có trong danh sách trang lừa đảo", "detail": ""}]},
+                                    "actions": [{"priority": "primary", "label_vi": "Đừng mở link này", "label_en": "Do not open this link"}]})
+        if path == "/api/scam-shield/analyze":
+            return self._send(200, {"inputType": "message",
+                                    "risk": {"level": "MEDIUM", "score": 48, "confidence": 60},
+                                    "signals": [{"type": "reward_bait", "severity": "medium", "source": "ai",
+                                                 "explanation": "Tin nhắn hứa quà để dụ bạn bấm vào."}],
+                                    "advice": {"doNot": [{"code": "NO_CLICK_LINK", "label_vi": "KHÔNG bấm vào liên kết trong tin nhắn",
+                                                          "label_en": "Do NOT open the link in the message"}],
+                                               "doNow": [{"code": "REPORT_SCAM", "label_vi": "Báo cáo và chặn người gửi",
+                                                          "label_en": "Report and block the sender"}]},
+                                    "reasoningSummary": "Tin nhắn có dấu hiệu dụ nhận quà.",
+                                    "analysis": {"tier": 1, "aiStatus": "used"}})
         if path == "/api/chat" and MODE.get("chat") == "auth":
             # No usable session: the «sign in to continue» card (not the 18+ gate).
             return self._send(401, {"error": "unauthorized"})

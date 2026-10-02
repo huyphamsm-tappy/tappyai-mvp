@@ -37,7 +37,11 @@
 
 	<!-- Launch + orientation -->
 	<key>UILaunchScreen</key>
-	<dict/>
+	<dict>
+		<!-- Dark by default (like the web): no white flash before the first dark screen. -->
+		<key>UIColorName</key>
+		<string>LaunchBackground</string>
+	</dict>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

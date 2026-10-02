@@ -301,6 +301,80 @@ final class ScreenshotTests: XCTestCase {
         shot("77-scam-scenario")
     }
 
+    // MARK: - Scam Shield: message check + QR (same on web, Android, iOS)
+
+    private func scamLaunch(_ extra: [String]) -> XCUIApplication {
+        launch(route: "scam", extra: ["-uitest-theme", "dark"] + extra)
+    }
+
+    func testScamMessageMatchedAndNormal() {
+        var app = scamLaunch(["-uitest-scam-message",
+                              "Bưu phẩm Trung thu của bạn đang bị giữ. Vui lòng quét mã QR để thanh toán phí 15.000đ và nhận hàng."])
+        XCTAssertTrue(any(app, "scam-msg-matched").waitForExistence(timeout: 40), "the matched scenario card")
+        XCTAssertTrue(any(app, "scam-msg-detail").exists)
+        shot("86-scam-message-matched")
+        app.terminate()
+
+        app = scamLaunch(["-uitest-scam-message", "Đơn hàng DH12345 đã giao thành công. Cảm ơn bạn đã mua sắm."])
+        XCTAssertTrue(any(app, "scam-msg-nosigns").waitForExistence(timeout: 40), "an ordinary message is not flagged")
+        shot("87-scam-message-normal")
+    }
+
+    func testScamMessageUnsureThenAIAnalysis() {
+        let app = scamLaunch(["-uitest-scam-message", "Bạn đã trúng thưởng một phần quà đặc biệt."])
+        XCTAssertTrue(any(app, "scam-msg-unsure").waitForExistence(timeout: 40))
+        shot("88-scam-message-unsure")
+        for _ in 0..<4 where !any(app, "scam-msg-deeper").isHittable { app.swipeUp() }
+        any(app, "scam-msg-deeper").tap()
+        XCTAssertTrue(any(app, "scam-msg-analysis").waitForExistence(timeout: 30), "the server analysis, after consent")
+        shot("89-scam-message-ai")
+    }
+
+    func testScamQRLinkAndWifiAndEmpty() {
+        var app = scamLaunch(["-uitest-scam-qr", "https://phat-nguoi-gov.xyz/nop"])
+        XCTAssertTrue(any(app, "scam-link-dontopen").waitForExistence(timeout: 40), "a QR link goes to the link check")
+        XCTAssertTrue(any(app, "scam-link-opencareful").exists)
+        shot("90-scam-qr-link")
+        app.terminate()
+
+        app = scamLaunch(["-uitest-scam-qr", "WIFI:T:WPA;S:Cafe;P:12345678;;"])
+        XCTAssertTrue(any(app, "scam-qr-result").waitForExistence(timeout: 40), "a Wi-Fi code is only named and warned about")
+        shot("91-scam-qr-wifi")
+        app.terminate()
+
+        app = scamLaunch(["-uitest-scam-pane", "qr"])
+        XCTAssertTrue(any(app, "scam-qr-photo").waitForExistence(timeout: 40))
+        shot("92-scam-qr-empty")
+    }
+
+    // MARK: - Light and dark, every main screen (dark is the default; both must read well)
+
+    func testThemeMatrixDarkAndLight() {
+        let screens: [(String, String, Bool)] = [
+            ("home", "home", false), ("chat", "chat", false), ("explore", "explore", false), ("deals", "deals", false),
+            ("hub", "hub-guest", false), ("hub", "hub-signed-in", true), ("settings", "settings", true), ("scam", "scam", false)
+        ]
+        var index = 100
+        for theme in ["dark", "light"] {
+            for (route, name, signedIn) in screens {
+                let app = launch(route: route, signedIn: signedIn, extra: ["-uitest-theme", theme])
+                sleep(6)
+                shot("\(index)-theme-\(name)-\(theme)")
+                app.terminate()
+                index += 1
+            }
+            // The login screen: from the guest hub.
+            let app = launch(route: "hub", extra: ["-uitest-theme", theme])
+            if any(app, "profile-guest-signin").waitForExistence(timeout: 30) {
+                any(app, "profile-guest-signin").tap()
+                _ = any(app, "auth-guest").waitForExistence(timeout: 30)
+                shot("\(index)-theme-login-\(theme)")
+            }
+            app.terminate()
+            index += 1
+        }
+    }
+
     // MARK: - Tools and the post composer (looked at, not only built)
 
     func testTranslateScanGroupAndComposerScreens() {

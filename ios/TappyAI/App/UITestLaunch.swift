@@ -64,6 +64,12 @@ enum UITestLaunch {
         return String(route.dropFirst(5))
     }
 
+    /// Scam Shield fixtures: `-uitest-scam-pane <check|message|qr>`, `-uitest-scam-message <text>`, `-uitest-scam-qr <payload>`.
+    /// The QR payload is drawn into a real QR picture on the phone and read back through the real decoder.
+    static var scamPane: String? { value("-uitest-scam-pane") }
+    static var scamMessage: String? { value("-uitest-scam-message") }
+    static var scamQR: String? { value("-uitest-scam-qr") }
+
     /// A `voice-<idle|text|error>` route shows the listening screen in that state (fixture recogniser, no microphone).
     static var voiceRoute: String? {
         guard let route = value("-uitest-route"), route.hasPrefix("voice-") else { return nil }
@@ -89,7 +95,11 @@ enum UITestLaunch {
         // The Android references are dark; a test asks for dark, every other test gets the system look
         // back (the mode is persisted, so an earlier test must not leak into the next one).
         if value("-uitest-route") != nil {
-            deps.theme.mode = value("-uitest-theme") == "dark" ? .dark : .system
+            switch value("-uitest-theme") {
+            case "dark": deps.theme.mode = .dark
+            case "light": deps.theme.mode = .light
+            default: deps.theme.mode = .system
+            }
         }
         // A signed-in look for the fixture server only: an unsigned token whose `sub` is the fixture
         // user. The fixture server does not verify it; a real backend would reject it.

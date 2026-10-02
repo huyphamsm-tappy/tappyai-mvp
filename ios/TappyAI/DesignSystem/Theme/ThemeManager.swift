@@ -14,6 +14,14 @@ enum ThemeMode: String, CaseIterable, Identifiable, Sendable {
         }
     }
     var titleKey: String { "theme.\(rawValue)" }
+
+    /// DARK until the person chooses otherwise — the same default as the web (`localStorage.theme !== 'light'`),
+    /// so a first launch looks like the web on the same phone. A stored choice (system / light / dark) always wins.
+    static let defaultMode: ThemeMode = .dark
+
+    static func resolve(stored: String?) -> ThemeMode {
+        stored.flatMap(ThemeMode.init(rawValue:)) ?? defaultMode
+    }
 }
 
 @MainActor
@@ -25,7 +33,7 @@ final class ThemeManager: AppObservableObject {
 
     init(store: UserDefaultsStore = UserDefaultsStore()) {
         self.store = store
-        self.mode = store.string(.theme).flatMap(ThemeMode.init(rawValue:)) ?? .system
+        self.mode = ThemeMode.resolve(stored: store.string(.theme))
     }
 
     /// Feed into `.preferredColorScheme(...)` at the App-Shell root.
