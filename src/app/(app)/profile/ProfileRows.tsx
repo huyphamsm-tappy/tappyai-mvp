@@ -80,6 +80,21 @@ export function accountRows(): ProfileRow[] {
   ]
 }
 
+/**
+ * The COMPACT account group shown on the /profile hub (owner 2026-10-02): one row, like Cài đặt.
+ * It opens /profile/account, which lists the other eight rows of `accountRows()` (same order,
+ * names, icons) via `accountMoreRows()` — so every function stays reachable, one tap deeper.
+ */
+export function accountHubRows(): ProfileRow[] {
+  const [first] = accountRows()
+  return [{ ...first, descKey: 'profile.account.compactDesc' }]
+}
+
+/** The rows the compact hub folds into the Account page: everything except "Tài khoản" itself. */
+export function accountMoreRows(): ProfileRow[] {
+  return accountRows().slice(1)
+}
+
 /** The settings group. */
 export function settingsRows(): ProfileRow[] {
   return [
@@ -245,7 +260,7 @@ export function AccountSettingsHub({
           icon={User}
           title={t('profile.accountSection')}
           subtitle={t('profile.hub.accountSubtitle')}
-          rows={accountRows()}
+          rows={accountHubRows()}
           locked={locked}
         />
         <HubGroup

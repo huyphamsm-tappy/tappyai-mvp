@@ -10,7 +10,7 @@ vi.mock('next/navigation', () => ({
 
 import ProfileView from './ProfileView'
 import GuestProfileView from './GuestProfileView'
-import { accountRows, settingsRows, signInHref } from './ProfileRows'
+import { accountRows, accountHubRows, accountMoreRows, settingsRows, signInHref } from './ProfileRows'
 
 // V3 Web redesign · §8. The guest Profile screen exists so a signed-out visitor sees "your
 // account, not set up yet" instead of a wall — which only works while it shows THE SAME ROWS IN
@@ -42,14 +42,14 @@ function rowHrefs(container: HTMLElement): string[] {
 }
 
 describe('guest and signed-in Profile show the same rows', () => {
-  it('renders every row from the shared inventory, in order', () => {
+  it('renders the compact hub rows from the shared inventory, in order', () => {
     const { container } = render(<ProfileView {...USER} />)
-    expect(rowHrefs(container)).toEqual([...accountRows(), ...settingsRows()].map(r => r.href))
+    expect(rowHrefs(container)).toEqual([...accountHubRows(), ...settingsRows()].map(r => r.href))
   })
 
   it('the guest screen mirrors it row for row, each locked behind sign-in', () => {
     const { container } = render(<GuestProfileView />)
-    const expected = [...accountRows(), ...settingsRows()].map(r => signInHref(r.href))
+    const expected = [...accountHubRows(), ...settingsRows()].map(r => signInHref(r.href))
     expect(rowHrefs(container)).toEqual(expected)
   })
 
@@ -63,6 +63,11 @@ describe('guest and signed-in Profile show the same rows', () => {
       expect(returnTo!.startsWith('/'), 'returnTo stays relative').toBe(true)
       expect(returnTo).not.toBe('/login')
     }
+  })
+
+  it('the compact hub + the Account page list together cover the whole inventory, in order', () => {
+    expect(accountHubRows()).toHaveLength(1)
+    expect([...accountHubRows(), ...accountMoreRows()].map(r => r.href)).toEqual(accountRows().map(r => r.href))
   })
 
   it('the inventory is non-trivial', () => {
