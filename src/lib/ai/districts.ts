@@ -86,7 +86,21 @@ export function statedDistrict(text: unknown): District | null {
   if (/\bthu duc\b/.test(t)) return HCM_THU_DUC
   for (const d of HCM) for (const a of d.aliases) if (new RegExp(`\\b${a}\\b`).test(t)) return pub(d)
   for (const d of HN) if (new RegExp(`\\b${fold(d.label)}\\b`).test(t)) return d
-  return null
+  return centralAreaDistrict(t)
+}
+
+/**
+ * chat2 A2 (2026-10-02): "Quận trung tâm" / "khu trung tâm" is an ask-card option, not a district —
+ * it resolved to NO area, so the search ran with no centre at all (Serper then answers from New
+ * York and the geography guard wipes every row). It means the city centre: Quận 1 in Ho Chi Minh
+ * City (the default city), Hoàn Kiếm when the text names Hà Nội. Folded text in. A bare "gần trung
+ * tâm" / "ở trung tâm" is NOT matched: only the explicit area phrases are.
+ */
+export function centralAreaDistrict(t: string): District | null {
+  if (!/\b(?:quan|khu|khu vuc|noi|vung)\s+trung tam\b|\btrung tam\s+(?:thanh pho|sai gon|tphcm|tp ?hcm|tp\.? ho chi minh|ha noi)\b|\b(?:downtown|city cent(?:er|re))\b/.test(t)) return null
+  if (/\bha noi\b|\bhanoi\b/.test(t)) return HN.find(d => d.key === 'hn:hoan-kiem') ?? null
+  const q1 = HCM.find(d => d.key === 'hcm:q1')
+  return q1 ? pub(q1) : null
 }
 
 /** Address components, folded, with a leading ward/district word removed ("P. Bến Thành" → "ben thanh"). */

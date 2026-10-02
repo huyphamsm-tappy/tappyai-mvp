@@ -22,8 +22,9 @@ import { normalizeVN, namedCinemaQuery, namedVenueIn } from '../intent'
 import { detectDish } from '../foodDish'
 import { CLARIFY_JOIN } from './actionability'
 import { deriveShoppingConstraints, namesUnknownProduct } from './shoppingConstraints'
+import { deriveLocalShopSearch } from './localShop'
 
-export type SearchNowType = 'restaurant' | 'cafe' | 'spa' | 'bar' | 'attraction' | 'cinema' | 'hotel' | 'product' | 'flight'
+export type SearchNowType = 'shop' | 'restaurant' | 'cafe' | 'spa' | 'bar' | 'attraction' | 'cinema' | 'hotel' | 'product' | 'flight'
 export interface SearchNow {
   query: string
   type: SearchNowType
@@ -104,9 +105,16 @@ export function deriveSearchNow(input: {
   afterClarify?: boolean
   /** Every user turn of the consultation, joined — the venue kind may have been stated turns ago. */
   consultationText?: string
+  /** chat2 A2: the previous assistant turn asked a question and showed no venue — the user's reply (or repeat) must be SEARCHED. */
+  askedBack?: boolean
 }): SearchNow | null {
   const { situation, frame } = input
-  if (!situation || !input.isFirstReply || input.movieRecommend) return null
+  if (!situation || input.movieRecommend) return null
+  // chat2 A2: a physical shop / repair-service request is a MAP search — on the first turn, after a clarify, and when
+  // the user repeats it after the assistant asked back (the loop). Never a question first.
+  const localShop = deriveLocalShopSearch(input.consultationText ?? input.text)
+  if (localShop && (input.isFirstReply || input.afterClarify || input.askedBack)) return { query: localShop.query, type: 'shop', exact: true }
+  if (!input.isFirstReply) return null
   if (frame.clarify) return null
   // An advice question ("mua xe máy cũ cần kiểm tra gì") names a product but asks what to watch for:
   // no product call (measured golden G5b/G5c: the directive made the model "pick" a spare part).
