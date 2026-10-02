@@ -49,6 +49,10 @@ describe('public page is created on the click, not on open', () => {
     await new Promise(r => setTimeout(r, 50))
     expect(sharedResultCalls()).toHaveLength(0)
   })
+  it('says BEFORE the click that a public page will be created (security review 02/10)', () => {
+    render(<ShareMenu artifact={artifact} open onClose={() => {}} publicSource={source()} />)
+    expect(screen.getByTestId('share-public-notice').textContent ?? '').toMatch(/share.publicNotice|trang công khai|public page/i)
+  })
 
   it('a channel click creates exactly one page and sends the short link; a second click reuses it', async () => {
     fetchMock.mockResolvedValue(published())

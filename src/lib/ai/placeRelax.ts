@@ -95,7 +95,7 @@ export function mapsSearchUrl(query: string, area?: string | null): string {
  * no line breaks, bounded length. A pasted "[CTA_BUTTONS]{...}" in a query must never survive as a second, fake button block.
  */
 export function safeInline(raw: string, max = 80): string {
-  return String(raw ?? '').replace(/[\u0000-\u001f\u007f\[\]{}()<>`|]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, max)
+  return String(raw ?? '').replace(/(?:https?:\/\/|www\.)\S*/gi, ' ').replace(/[\u0000-\u001f\u007f\[\]{}()<>`|]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, max)
 }
 
 export interface NoResultInput { query: string; area?: string | null; lang: string }

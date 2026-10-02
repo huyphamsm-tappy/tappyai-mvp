@@ -15,7 +15,7 @@ import { serverMessage } from '@/lib/i18n/serverMessages'
 
 // POST /api/shared-results — publish a frozen, sanitized public snapshot.
 //
-// Explicit only: reached from the share preview's Confirm. Owner-scoped
+// Explicit only: reached from the share preview's Confirm, or (02/10) from the user's click on a share channel in the menu, which says first that a public page is created. Owner-scoped
 // (the source message is read through RLS), sanitized server-side, capped per
 // identity and per IP. Returns the public URL. No LLM, one INSERT.
 //

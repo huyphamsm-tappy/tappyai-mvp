@@ -2066,6 +2066,9 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
    * collector, so one conversation can never spend another's allowance.
    */
   const placesBudget = createPlacesBudget(planningIntent ? PLACES_BUDGET_PLANNING : PLACES_BUDGET_DEFAULT)
+  // chat2 A2 + security review 02/10: the one extra "widen" retrieval after an empty search is paid from ITS OWN one-call allowance per request
+  // (not a fresh budget per tool step), and never runs when the turn's Places budget was already refused.
+  const widenBudget = createPlacesBudget(1)
 
   /**
    * NO-MODEL TURNS (cost optimization item 8, 2026-09-18). A pure greeting / thanks /
@@ -2286,8 +2289,9 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
             widen: placesOverride || clipContext ? undefined : async () => {
               const city = widenLocation(statedArea)
               if (!city) return null
+              if ((budgeted as { source?: string }).source === 'budget') return null
               // A deliberate second retrieval, only after an empty first one: its own one-call budget (the turn budget is spent by the empty search).
-              const wide = await searchPlaces(query, city, type, lang, userLocation, createPlacesBudget(PLACES_BUDGET_DEFAULT), { priceRetry: false })
+              const wide = await searchPlaces(query, city, type, lang, userLocation, widenBudget, { priceRetry: false })
               return guardPlaceGeography(wide, geoGuardArea(city, userLocation)).result
             },
           })

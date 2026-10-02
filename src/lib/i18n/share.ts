@@ -31,6 +31,7 @@ export const vi = {
   'share.zaloHint': 'Đã sao chép nội dung — mở Zalo và dán (Ctrl+V) để gửi',
   'share.zaloCopyOpen': 'Sao chép rồi mở Zalo',
   'share.zaloCopiedOpened': 'Đã sao chép — đã mở Zalo, dán (Ctrl+V) vào cuộc trò chuyện để gửi',
+  'share.publicNotice': 'Khi bạn chọn một cách chia sẻ bên dưới, Tappy tạo một trang công khai cho câu trả lời này; ai có link đều xem được.',
   'share.copiedLink': 'Đã sao chép liên kết',
   'share.close': 'Đóng',
 
@@ -149,6 +150,7 @@ export const en = {
   'share.zaloHint': 'Copied — open Zalo and paste (Ctrl+V) to send',
   'share.zaloCopyOpen': 'Copy, then open Zalo',
   'share.zaloCopiedOpened': 'Copied — Zalo opened, paste (Ctrl+V) into a chat to send',
+  'share.publicNotice': 'When you pick a way to share below, Tappy creates a public page for this answer; anyone with the link can view it.',
   'share.copiedLink': 'Link copied',
   'share.close': 'Close',
 

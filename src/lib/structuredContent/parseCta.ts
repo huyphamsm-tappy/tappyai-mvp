@@ -97,7 +97,7 @@ export function parseCTA(content: string): { text: string; buttons: CTAButton[] 
     const parsed = JSON.parse(payload.trim())
     // Defence in depth (security review 02/10): a button is a link to http(s), a phone/mail link (tel:, mailto:) or a same-site path — never javascript:/data:/other schemes.
     const buttons: CTAButton[] = (Array.isArray(parsed.buttons) ? parsed.buttons : []).filter(
-      (b: CTAButton) => b && typeof b.url === 'string' && /^(?:https?:\/\/|tel:|mailto:|\/(?![\/\\]))/i.test(b.url.trim()),
+      (b: CTAButton) => b && typeof b.url === 'string' && !/[\u0000-\u0020\u007f]/.test(b.url.trim()) && /^(?:https?:\/\/|tel:|mailto:|\/(?![\/\\]))/i.test(b.url.trim()),
     )
     return { text, buttons }
   } catch {

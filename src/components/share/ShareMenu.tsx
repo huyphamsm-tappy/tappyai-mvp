@@ -868,6 +868,9 @@ export default function ShareMenu({
             ))}
           </div>
 
+          {resultKey && (
+            <p data-testid="share-public-notice" className="px-1 text-xs leading-snug text-gray-500 dark:text-gray-400">{t('share.publicNotice')}</p>
+          )}
           <div className="flex flex-col gap-2">
             <button data-testid="share-target-inbox" onClick={() => handle('inbox')} disabled={!!busy || linkPending} className="flex items-center gap-3 w-full px-3 py-3 rounded-xl bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition text-left">
               <Inbox size={18} className="text-orange-500" />
