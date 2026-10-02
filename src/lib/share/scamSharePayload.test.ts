@@ -46,8 +46,11 @@ describe('scam share payload', () => {
   })
 
   it('carries the verdict, the source tally, and only critical/warning evidence summaries — never detail/raw', () => {
-    expect(payload.title).toBe('Kiểm tra lừa đảo: vietcombank-secure-login.xyz/verify — Rất nguy hiểm')
-    expect(payload.body).toContain('**Kết luận: Rất nguy hiểm** (điểm rủi ro 92/100, độ tin cậy 88%)')
+    expect(payload.title).toBe('Kiểm tra lừa đảo: vietcombank-secure-login.xyz/verify — Đường link có đặc điểm thường gặp ở link giả mạo')
+    expect(payload.body).toContain('**Đường link có đặc điểm thường gặp ở link giả mạo.**')
+    expect(payload.body).toContain('TappyAI không thay thế cơ quan chức năng.')
+    // 02/10: no score, no confidence figure, no "safe" claim in anything that is shared publicly.
+    expect(payload.body).not.toMatch(/điểm rủi ro|độ tin cậy|\d+\/100|an toàn/i)
     expect(payload.body).toContain('4/5 nguồn')
     expect(payload.body).toContain('Flagged as social engineering')
     expect(payload.body).toContain('Registered 3 days ago')
@@ -63,7 +66,7 @@ describe('scam share payload', () => {
 
   it('renders English when asked, and is deterministic', () => {
     const en = buildScamSharePayload(result, 'en', new Date('2026-09-18T00:00:00Z'))
-    expect(en.title).toBe('Scam check: vietcombank-secure-login.xyz/verify — Very dangerous')
+    expect(en.title).toBe('Scam check: vietcombank-secure-login.xyz/verify — This link has traits that are common in fake links')
     expect(en.suggestedQuestions[0]).toMatch(/signs of a scam/)
     expect(buildScamSharePayload(result, 'vi', new Date('2026-09-18T00:00:00Z'))).toEqual(payload)
   })
@@ -73,10 +76,11 @@ describe('scam share payload', () => {
     expect(scamShareSummary(result)).toEqual({ host: 'vietcombank-secure-login.xyz', level: 'CRITICAL' })
   })
 
-  it('handles a safe verdict without an official match', () => {
+  it('handles an unrecognised verdict (internal SAFE) without an official match', () => {
     const safe = buildScamSharePayload({ ...result, url: 'https://tiki.vn', risk: { score: 3, confidence: 95, level: 'SAFE' }, officialMatch: null, evidence: { items: [], summary: { criticalCount: 0, warningCount: 0, safeCount: 4, totalSources: 5, respondedSources: 4 } } }, 'vi')
     expect(validateSharedResultPayload(safe)).toBeNull()
-    expect(safe.title).toBe('Kiểm tra lừa đảo: tiki.vn — An toàn')
+    expect(safe.title).toBe('Kiểm tra lừa đảo: tiki.vn — Chưa nhận ra dấu hiệu quen thuộc ở đường link này')
+    expect(safe.body).not.toMatch(/An toàn/)
     expect(safe.buttons).toEqual([])
     expect(safe.body).not.toContain('## Bằng chứng')
   })

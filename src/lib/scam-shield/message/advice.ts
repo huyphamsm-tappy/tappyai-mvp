@@ -1,4 +1,5 @@
 import type { RiskLevel } from '../types'
+import type { ScenarioMatch } from '../knowledge/match'
 import type { AdviceItem, AttackGoal, MessageSignal, SignalType, UrlCheckSummary } from './types'
 
 // Scam Shield · message analysis — what the user should NOT do, and what to do NOW.
@@ -115,15 +116,17 @@ const DO_NOW: Record<string, AdviceItem> = {
     label_vi: 'Tự liên hệ tổ chức qua số điện thoại / website chính thức bạn tra cứu được',
     label_en: 'Contact the organisation yourself through a phone number / website you looked up',
   },
+  // 02/10: neither of these may read as reassurance. Same wording as the verdict card's
+  // "unrecognized" state (src/lib/i18n/scamVerdict.ts); the codes stay for the Android/iOS clients.
   STAY_ALERT: {
     code: 'STAY_ALERT',
-    label_vi: 'Không thấy dấu hiệu lừa đảo rõ ràng — vẫn cẩn thận nếu được yêu cầu cung cấp thông tin',
-    label_en: 'No clear scam signals — stay careful if you are asked for information',
+    label_vi: 'Chưa nhận ra dấu hiệu quen thuộc. Điều này KHÔNG có nghĩa là an toàn: hãy xác minh qua kênh chính thức trước khi làm theo',
+    label_en: 'No familiar signs recognised. This does NOT mean it is safe: verify through an official channel before acting on it',
   },
   COULD_NOT_CONCLUDE: {
     code: 'COULD_NOT_CONCLUDE',
-    label_vi: 'Chưa thể kết luận tin nhắn này an toàn — hãy tự xác minh trước khi làm theo',
-    label_en: 'This message cannot be confirmed safe — verify it yourself before acting on it',
+    label_vi: 'Chưa nhận ra dấu hiệu quen thuộc. Điều này KHÔNG có nghĩa là an toàn: hãy xác minh qua kênh chính thức trước khi làm theo',
+    label_en: 'No familiar signs recognised. This does NOT mean it is safe: verify through an official channel before acting on it',
   },
 }
 
@@ -149,6 +152,26 @@ export function buildAdvice(input: {
   signals: MessageSignal[]
   attackGoal: AttackGoal | null
   urlChecks: UrlCheckSummary[]
+  /** A matched official scenario: its own do / don't lists lead the advice (static, sourced text). */
+  scenario?: ScenarioMatch | null
+}): { doNot: AdviceItem[]; doNow: AdviceItem[] } {
+  const advice = buildBaseAdvice(input)
+  const sc = input.scenario
+  if (!sc) return advice
+  const lift = (prefix: string, list: string[]): AdviceItem[] => list.map((label, i) => ({ code: `${prefix}_${sc.scenario.officialNumber}_${i + 1}`, label_vi: label, label_en: label }))
+  return {
+    // What THIS message asks for leads (an OTP scam leads with OTP); the scenario's own list follows.
+    // The generic fallback ("do not reply") is dropped when the scenario brings specific lines.
+    doNot: [...advice.doNot.filter(i => i.code !== 'NO_REPLY'), ...lift('SCENARIO_NOT', sc.scenario.guidance.whatNotToDo)].slice(0, 6),
+    doNow: [...advice.doNow, ...lift('SCENARIO_DO', sc.scenario.guidance.whatToDo)].slice(0, 7),
+  }
+}
+
+function buildBaseAdvice(input: {
+  level: Level
+  signals: MessageSignal[]
+  attackGoal: AttackGoal | null
+  urlChecks: UrlCheckSummary[]
 }): { doNot: AdviceItem[]; doNow: AdviceItem[] } {
   const { level, signals, attackGoal, urlChecks } = input
   const types = new Set<SignalType>(signals.map(s => s.type))
@@ -161,13 +184,12 @@ export function buildAdvice(input: {
   const pushNot = (item: AdviceItem) => { if (!doNot.some(i => i.code === item.code)) doNot.push(item) }
   const pushNow = (item: AdviceItem) => { if (!doNow.some(i => i.code === item.code)) doNow.push(item) }
 
-  if (level === 'SAFE' || level === 'LOW') {
-    pushNow(DO_NOW.STAY_ALERT)
-    return { doNot, doNow }
-  }
-  if (level === 'INCONCLUSIVE') {
+  if (level === 'SAFE' || level === 'LOW' || level === 'INCONCLUSIVE') {
+    // The unrecognised state: the three things the owner's wording names, then "verify".
+    pushNot(DO_NOT.NO_TRANSFER)
+    pushNot(DO_NOT.NO_OTP)
+    pushNot(DO_NOT.NO_CLICK_LINK)
     pushNow(DO_NOW.COULD_NOT_CONCLUDE)
-    if (hasUrl) pushNot(DO_NOT.NO_CLICK_LINK)
     pushNow(DO_NOW.VERIFY_SENDER_INDEPENDENTLY)
     return { doNot, doNow }
   }

@@ -8,7 +8,7 @@ import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
 import { analyzeMessage } from '@/lib/scam-shield/message'
 import { aiQuotaIdentity, consumeAiQuestion, isProAccount, quotaFor, refundAiQuestion, type AiQuotaSpend } from '@/lib/ai/quota/aiQuestionQuota'
-import { MESSAGE_MAX_CHARS, SCREENSHOT_ALLOWED_MIME, SCREENSHOT_MAX_BYTES } from '@/lib/scam-shield/message/config'
+import { MESSAGE_MAX_CHARS, SCREENSHOT_ALLOWED_MIME, SCREENSHOT_MAX_BYTES, isScamShieldAiEnabled } from '@/lib/scam-shield/message/config'
 import { CHECK_RATE_LIMIT_WINDOW_MS } from '@/lib/scam-shield/config'
 
 // POST /api/scam-shield/analyze — Scam Shield · Analyze Message.
@@ -98,6 +98,11 @@ export async function POST(req: Request) {
   const parsed = bodySchema.safeParse(body)
   if (!parsed.success) {
     return NextResponse.json({ error: 'invalid_input', message: serverMessage('scam.analyzeEmpty', locale) }, { status: 400 })
+  }
+
+  // 02/10: reading a screenshot is a model (vision) call; with the AI switch off it is unavailable.
+  if (parsed.data.imageBase64 && !isScamShieldAiEnabled()) {
+    return NextResponse.json({ error: 'screenshot_unavailable', message: serverMessage('scam.screenshotUnavailable', locale) }, { status: 400 })
   }
 
   let image: { bytes: Uint8Array; mimeType: string } | undefined

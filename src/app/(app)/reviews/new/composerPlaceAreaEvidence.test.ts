@@ -29,7 +29,7 @@ describe('the processor area reaches the review row as place_address', () => {
     expect(calls, 'both AI branches must offer the area').toHaveLength(2)
     // Each call sits right after the hashtags/caption handling of its branch.
     for (const idx of [...SRC.matchAll(/^\s*suggestArea\(ai\)\s*$/gm)].map(m => m.index!)) {
-      expect(SRC.slice(Math.max(0, idx - 400), idx)).toContain('setAiHashtags(ai.hashtags)')
+      expect(SRC.slice(Math.max(0, idx - 400), idx)).toContain('setAiHashtags(mergeHashtags(ai.hashtags')
     }
   })
 

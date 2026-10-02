@@ -71,3 +71,16 @@ export const MAX_ENTITIES_PER_KIND = 10
 export const MAX_EXPLANATION_CHARS = 280
 export const MAX_SUMMARY_CHARS = 600
 export const MAX_ENTITY_CHARS = 80
+
+// ── AI switch (owner 02/10: "REMOVE AI ANALYSIS") ────────────────────────────
+
+/**
+ * Scam Shield used to call a model for every message that had prose (tier 1-2) and to read
+ * screenshots (OCR). That path is kept in the tree but SWITCHED OFF: nobody can reach it unless
+ * the deployment sets `SCAM_SHIELD_AI_ENABLED=true` (server) — default off, so a message check is
+ * static scenario matching + rules + the link engine, zero tokens, and spends no AI question.
+ * The web UI mirrors it with `NEXT_PUBLIC_SCAM_SHIELD_AI_ENABLED` (screenshot upload only).
+ */
+export function isScamShieldAiEnabled(): boolean {
+  return process.env.SCAM_SHIELD_AI_ENABLED === 'true'
+}

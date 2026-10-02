@@ -67,6 +67,8 @@ export const vi: Record<string, string> = {
 
   // Body
   'reviewNew.bodyPlaceholder': 'Chia sẻ trải nghiệm, cảm nhận của bạn...',
+  'reviewNew.hashtagsLabel': 'Hashtag',
+  'reviewNew.hashtagsPlaceholder': 'Hashtag (tùy chọn), ví dụ: #anngon #dalat',
 
   // Place
   'reviewNew.addPlace': 'Thêm địa điểm',
@@ -157,6 +159,8 @@ export const en: Record<string, string> = {
 
   // Body
   'reviewNew.bodyPlaceholder': 'Share your experience and thoughts...',
+  'reviewNew.hashtagsLabel': 'Hashtags',
+  'reviewNew.hashtagsPlaceholder': 'Hashtags (optional), e.g. #foodie #dalat',
 
   // Place
   'reviewNew.addPlace': 'Add location',

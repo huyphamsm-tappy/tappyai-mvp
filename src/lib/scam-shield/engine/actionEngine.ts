@@ -1,5 +1,4 @@
 import type { RiskLevel, EvidenceReport, OfficialEntity, RecommendedAction } from '../types'
-import { MIN_CONFIDENCE_FOR_SAFE } from '../config'
 
 /**
  * [confidence] is the share of the evidence base that actually completed, and it is only
@@ -54,8 +53,8 @@ export function getRecommendedActions(
       }
       actions.push({
         priority: 'secondary', action: 'REPORT',
-        label_vi: 'Báo cáo lừa đảo',
-        label_en: 'Report this scam',
+        label_vi: 'Nếu nghi ngờ bị lừa, báo cho cơ quan chức năng',
+        label_en: 'If you suspect a scam, report it to the authorities',
         icon: 'flag',
       })
       break
@@ -86,16 +85,14 @@ export function getRecommendedActions(
     case 'INCONCLUSIVE':
     case 'LOW':
     case 'SAFE':
-      // `INCONCLUSIVE` already IS this branch's conclusion — `levelFor` applied exactly the same
-      // rule upstream. The confidence check stays anyway, and stays first, because it also guards
-      // a caller that hands this function a level it derived itself; belt and braces on the one
-      // branch where being wrong means telling someone an unchecked link is fine.
-      if (level === 'INCONCLUSIVE' || confidence < MIN_CONFIDENCE_FOR_SAFE) {
+      // 02/10: there is no "looks safe" branch any more. Whatever the internal score, a person is
+      // only ever told that no familiar signs were recognised, and that this is NOT a clean bill.
+      {
         // Not a verdict — a statement that there is no verdict. It must not read as reassurance.
         actions.push({
           priority: 'primary', action: 'INCONCLUSIVE',
-          label_vi: 'Chưa kiểm tra được đầy đủ — chưa thể kết luận liên kết này an toàn',
-          label_en: 'The check could not complete — this link cannot be confirmed safe',
+          label_vi: 'Chưa nhận ra dấu hiệu quen thuộc. Điều này KHÔNG có nghĩa là an toàn: đừng chuyển tiền, đừng đọc mã OTP, đừng bấm link lạ; hãy xác minh qua kênh chính thức.',
+          label_en: 'No familiar signs recognised. This does NOT mean it is safe: do not send money, do not read out any OTP code, do not tap unknown links; verify through an official channel.',
           icon: 'warning',
         })
         actions.push({
@@ -114,13 +111,6 @@ export function getRecommendedActions(
         }
         break
       }
-      actions.push({
-        priority: 'primary', action: 'LIKELY_SAFE',
-        label_vi: 'Liên kết có vẻ an toàn',
-        label_en: 'This link appears safe',
-        icon: 'check',
-      })
-      break
   }
 
   return actions

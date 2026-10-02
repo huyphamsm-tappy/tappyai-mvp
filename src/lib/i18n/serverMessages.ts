@@ -281,6 +281,7 @@ const MESSAGES = {
   // Scam Shield · Analyze Message.
   'scam.analyzeEmpty': { vi: 'Hãy dán tin nhắn, thêm liên kết hoặc tải ảnh chụp màn hình.', en: 'Paste a message, add a link, or upload a screenshot.' },
   'scam.analyzeInvalidImage': { vi: 'Ảnh không hợp lệ hoặc quá lớn (tối đa 5 MB, JPEG/PNG/WebP).', en: 'The image is not valid or too large (max 5 MB, JPEG/PNG/WebP).' },
+  'scam.screenshotUnavailable': { vi: 'Hiện chưa đọc được ảnh chụp màn hình. Hãy dán nội dung tin nhắn vào ô chữ.', en: 'Screenshots cannot be read right now. Please paste the message text instead.' },
   'scam.analyzeFailed': { vi: 'Chưa phân tích được tin nhắn này. Vui lòng thử lại.', en: "Couldn't analyze this message. Please try again." },
 
 
