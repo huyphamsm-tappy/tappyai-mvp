@@ -41,6 +41,15 @@ jobs:
           xcodebuild -version
           swift --version
 
+      # Apple requires Xcode 26 or later for App Store / TestFlight uploads (since 2026-04-28:
+      # https://developer.apple.com/news/upcoming-requirements/). Not pinned to one version: the runner's
+      # default is used, and the build stops here if it ever falls below 26.
+      - name: Guard - Xcode 26 or later
+        run: |
+          major=$(xcodebuild -version | awk '/^Xcode/ {split($2,v,"."); print v[1]}')
+          echo "Xcode major version: ${major:-unknown}"
+          [ "${major:-0}" -ge 26 ] || { echo "::error::Xcode ${major:-unknown} on this runner; Apple requires Xcode 26 or later"; exit 1; }
+
       - name: Install XcodeGen
         run: brew install xcodegen
 
@@ -236,6 +245,8 @@ jobs:
         run: |
           xcodebuild -version
           echo "CFBundleVersion for this upload: $BUILD_NUMBER"
+          major=$(xcodebuild -version | awk '/^Xcode/ {split($2,v,"."); print v[1]}')
+          [ "${major:-0}" -ge 26 ] || { echo "::error::Xcode ${major:-unknown} on this runner; Apple requires Xcode 26 or later for uploads (https://developer.apple.com/news/upcoming-requirements/)"; exit 1; }
 
       - name: Install XcodeGen
         run: brew install xcodegen

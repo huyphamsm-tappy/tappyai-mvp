@@ -349,6 +349,22 @@ final class ScreenshotTests: XCTestCase {
         shot("92-scam-qr-empty")
     }
 
+    // MARK: - Diagnostic (02/10): where does the Explore picture start?
+
+    /// ONE-TIME diagnostic for the black band above the Explore picture. It changes nothing: it prints the accessibility
+    /// hierarchy with every element's frame (lines start with `EXPLORE-DIAG`), so the log shows which container starts
+    /// at the status-bar inset instead of at y = 0.
+    func testExploreLayoutDiagnostic() {
+        let app = launch(route: "explore", signedIn: true)
+        let row = app.descendants(matching: .any)
+            .matching(NSPredicate(format: "label CONTAINS 'Minh Anh' OR label CONTAINS 'Quốc Bảo'")).firstMatch
+        XCTAssertTrue(row.waitForExistence(timeout: 60), "a feed row")
+        Thread.sleep(forTimeInterval: 3)
+        print("EXPLORE-DIAG window=\(app.windows.firstMatch.frame) row=\(row.frame)")
+        for line in app.debugDescription.split(separator: "\n").prefix(500) { print("EXPLORE-DIAG \(line)") }
+        shot("98-explore-diag")
+    }
+
     // MARK: - Light and dark, every main screen (dark is the default; both must read well)
 
     func testThemeMatrixDarkAndLight() {

@@ -409,10 +409,16 @@ class Handler(BaseHTTPRequestHandler):
                 link = json.loads(raw or b"{}").get("url", "")
             except Exception:
                 link = ""
-            return self._send(200, {"url": link, "cached": False,
+            # The Phase 7 shape (WEB 65685a7 + 93948b2, SCAM-SHIELD-PARITY section 8): `verdict`, and per finding
+            # `reasonCode` / `reason_vi` / `reason_en` (the sentence is the table's `blocklist.BLOCKLISTED`). The score
+            # and confidence stay in the JSON on purpose: the app must NOT draw them.
+            return self._send(200, {"url": link, "cached": False, "verdict": "familiar",
                                     "risk": {"score": 82, "confidence": 70, "level": "HIGH"},
                                     "evidence": {"items": [{"source": "Danh sách chặn", "severity": "critical",
-                                                            "summary": "Có trong danh sách trang lừa đảo", "detail": ""}]},
+                                                            "summary": "Blocklisted", "detail": "",
+                                                            "reasonCode": "blocklist.BLOCKLISTED",
+                                                            "reason_vi": "Tên miền nằm trong danh sách trang web xấu của Việt Nam mà TappyAI đối chiếu.",
+                                                            "reason_en": "The domain appears on a Vietnamese bad-site list that TappyAI checks against."}]},
                                     "actions": [{"priority": "primary", "label_vi": "Đừng mở link này", "label_en": "Do not open this link"}]})
         if path == "/api/scam-shield/analyze":
             return self._send(200, {"inputType": "message",
