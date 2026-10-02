@@ -104,7 +104,11 @@ const hasNextStep = (text: string) => /(?<![\p{L}])(?:bước tiếp|tiếp theo
 const hasMissingNote = (text: string) => /(?<![\p{L}])(?:chưa có (?:thông tin|giá|dữ liệu)|chưa ghi|chưa cho biết|chưa rõ|xem (?:giá|ở|tại|trên)|gọi (?:hỏi|quán|nơi)|nút)(?![\p{L}])/iu.test(proseOf(text))
 const hasDayLines = (text: string) => /(?:^|\n)\s*(?:[-*•]\s*)?(?:\*\*)?Ngày 1\b/i.test(text)
 
-function dayLines(days: number, style: string | undefined, origin: string | undefined): string[] {
+import { safeInline } from '../placeRelax'
+
+function dayLines(days: number, style: string | undefined, originRaw: string | undefined): string[] {
+  // The origin is the user's own words (slot `xuat_phat`) placed into reply text AFTER the guards: no marker or markup characters (security review 02/10).
+  const origin = originRaw ? safeInline(originRaw, 40) : undefined
   const from = origin ? ` từ ${origin}` : ''
   const mid = style === 'núi' ? 'sáng sớm khám phá núi · chiều nghỉ ngơi hoặc dạo điểm gần · tối ăn đặc sản địa phương, nghỉ sớm'
     : style === 'biển' ? 'sáng tắm biển · chiều nghỉ, cà phê ven biển · tối ăn hải sản, dạo phố đêm'

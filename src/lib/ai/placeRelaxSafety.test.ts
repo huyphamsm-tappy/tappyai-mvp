@@ -28,3 +28,12 @@ describe('parseCTA keeps only http(s) and same-site buttons', () => {
     expect(buttons.map(b => b.url)).toEqual(['https://ok.example/a', '/places/1', 'HTTP://ok.example', 'tel:+84901234567'])
   })
 })
+
+describe('more bypass attempts (security review 02/10)', () => {
+  const wrap = (urls: string[]) => `x\n[CTA_BUTTONS]${JSON.stringify({ buttons: urls.map((url, i) => ({ label: 'b' + i, type: 'link', url })) })}[/CTA_BUTTONS]`
+  it('drops backslash-after-slash paths, control-character prefixes and non-string urls', () => {
+    const bs = String.fromCharCode(92)
+    const { buttons } = parseCTA(wrap(['/' + bs + 'evil.example', String.fromCharCode(1) + 'javascript:alert(1)', ' javascript:alert(1)', 'https://ok.example']))
+    expect(buttons.map(b => b.url)).toEqual(['https://ok.example'])
+  })
+})

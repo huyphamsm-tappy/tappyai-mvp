@@ -112,7 +112,10 @@ function SeverityDot({ severity }: { severity: string }) {
   )
 }
 
-function EvidenceSection({ items }: { items: EvidenceItem[] }) {  // eslint-disable-line prefer-const
+/** The reason in the reader's language; an old stored result (no reason fields) keeps the engine's line. */
+export const reasonText = (i: EvidenceItem, locale: string): string => (locale === 'en' ? i.reason_en : i.reason_vi) || i.summary
+
+function EvidenceSection({ items, locale }: { items: EvidenceItem[]; locale: string }) {  // eslint-disable-line prefer-const
   const { t } = useTranslation()
   const [open, setOpen] = useState(false)
 
@@ -142,7 +145,7 @@ function EvidenceSection({ items }: { items: EvidenceItem[] }) {  // eslint-disa
               <SeverityDot severity={item.severity} />
               <div className="min-w-0 flex-1">
                 <p className="text-[12px] font-semibold" style={{ color: 'var(--v3-fg)' }}>{item.source}</p>
-                <p className="mt-0.5 text-[12px] leading-snug" style={{ color: 'var(--v3-fg-muted)' }}>{item.summary}</p>
+                <p className="mt-0.5 text-[12px] leading-snug" style={{ color: 'var(--v3-fg-muted)' }}>{reasonText(item, locale)}</p>
               </div>
             </div>
           ))}
@@ -265,7 +268,7 @@ export default function ScamShieldResult({ result }: { result: CheckResult }) {
               {reasons.map((item, i) => (
                 <li key={i} className="flex items-start gap-2.5 rounded-lg p-2.5" style={{ background: 'var(--v3-panel-elevated)' }}>
                   <SeverityDot severity={item.severity} />
-                  <span className="text-[12.5px] leading-snug" style={{ color: 'var(--v3-fg)' }}>{item.summary}</span>
+                  <span className="text-[12.5px] leading-snug" style={{ color: 'var(--v3-fg)' }}>{reasonText(item, locale)}</span>
                 </li>
               ))}
             </ul>
@@ -276,7 +279,7 @@ export default function ScamShieldResult({ result }: { result: CheckResult }) {
         <ActionsSection actions={verdict === 'unrecognized' ? result.actions.filter(a => a.action !== 'INCONCLUSIVE') : result.actions} locale={locale} />
         {/* G1 wedge: one tap turns the verdict into a public page the group can be warned with. */}
         <ScamShareButton result={result} />
-        <EvidenceSection items={result.evidence.items} />
+        <EvidenceSection items={result.evidence.items} locale={locale} />
         <VerdictDisclaimer />
       </div>
     </section>

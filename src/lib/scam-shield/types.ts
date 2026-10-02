@@ -55,6 +55,11 @@ export interface EvidenceItem {
   summary: string
   detail: string
   dataPoints: Record<string, unknown>
+  /** Stable `<source>.<finding>` code of the reason (02/10). Additive: old app builds ignore it. */
+  reasonCode?: string
+  /** The reason as a sentence a person can read, in Vietnamese / English (see reasons.ts). `detail` stays the engine's English line. */
+  reason_vi?: string
+  reason_en?: string
 }
 
 export interface EvidenceReport {
