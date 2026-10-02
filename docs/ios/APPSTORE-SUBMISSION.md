@@ -187,6 +187,13 @@ Apple chỉ nhận ảnh đúng kích thước khung máy. App chỉ có iPhone,
 
 ---
 
+### 3.x Kết quả lượt chụp cuối (run 36989350379, b956288): 9/10 đạt; ảnh 05 Khám phá BỎ (dải đen ~141 px chưa hết) — nộp 9 ảnh. Chi tiết: README trong `D:\TappyAI-backupsppstore-screenshots\`.
+
+### 3.y Ảnh minh hoạ làm dữ liệu mẫu trong ảnh App Store (Huy quyết 02/10)
+
+Ảnh quán, clip và lưới bài trong ảnh chụp dùng ảnh minh hoạ (WebP vuông, không chữ, logo hay người) lấy từ `public/plan-images/v1/` của repo web, phục vụ bởi máy chủ giả của bài kiểm tra; **không nằm trong app** (IPA không đổi). Điều luật đã đọc 02/10 (trang tóm tắt guideline; nguyên văn từng mục **chưa kiểm lại**): 2.3.3 ảnh phải cho thấy app đang dùng; 2.3.1 phải phản ánh đúng trải nghiệm cốt lõi; 5.2.9 người nộp phải có quyền với mọi tư liệu trong ảnh và dùng thông tin tài khoản hư cấu thay dữ liệu người thật. Hệ quả: (a) ảnh minh hoạ là của TappyAI (cần Huy xác nhận quyền sử dụng — xem SOURCES-AND-CONTENT-RIGHTS §3 về ảnh do công cụ AI tạo); (b) trong app thật, thẻ địa điểm hiện ảnh từ nguồn dữ liệu, nên ảnh minh hoạ **chỉ là dữ liệu mẫu**, giao diện và chữ là thật. Đề xuất dòng ghi chú cho người duyệt (App Review Notes): «Screenshots use fictional sample data and illustrative images; all screens are the real app UI.»
+
+
 ## 4. App Privacy ("nhãn dinh dưỡng")
 
 Khai trong App Store Connect → App Privacy. **Lập từ mã iOS**, khớp `ios/TappyAI/Resources/PrivacyInfo.xcprivacy` (có test giữ hai bên
