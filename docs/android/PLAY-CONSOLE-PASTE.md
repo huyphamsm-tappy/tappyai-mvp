@@ -1,4 +1,4 @@
-# Play Console — nháp dán sẵn (soạn đêm 30/9→1/10, từ CODE tại rc/web-uat `848133c`, AAB vc10 = `68d6639`)
+# Play Console — nháp dán sẵn (soạn đêm 30/9→1/10; BẢN CHỐT 02/10 ở mục H — AAB cuối vc11 `597698b`, thay mọi [CẦN HUY…])
 
 Nguyên tắc: mỗi dòng có căn cứ file:dòng. Chỗ chưa chắc ghi **[CẦN HUY XÁC NHẬN]**. Không có bước nào ở đây đã được làm trên Play Console
 (cần đăng nhập — việc của Huy). Bản nháp Data safety gốc (29/09) nằm ở `docs/release/PLAY-LISTING.md` §1–§2; file này là bản
@@ -237,3 +237,36 @@ Quyền và lý do: vị trí (chỉ khi cho phép, tìm quanh đây), camera/�
 **Bước 3 — kiểm sau khi xong:** Firebase không cần sửa cho đăng nhập Google (fingerprint ở Firebase chỉ dành cho Firebase Auth/Dynamic Links, app này không dùng). Kiểm bằng bản cài từ Play (Internal/closed track): «Tiếp tục với Google» phải hiện bảng chọn tài khoản của hệ thống. **Chưa kiểm được vì chưa có bản Play thật.**
 
 **Giải thích chưa được:** SHA-256 `29:62:B4:…` ở mục Digital Asset Links trên trang App signing không khớp chứng chỉ nào em đọc được. Không ảnh hưởng đăng nhập Google; chỉ liên quan App Links.
+
+
+## H. CHỐT 02/10 — quyết định của Huy và bản AAB cuối (THAY mọi chỗ «[CẦN HUY XÁC NHẬN]/[CẦN HUY QUYẾT]» ở trên)
+
+**AAB cuối:** `D:\TappyAI-backups\TappyAI-release-vc11-597698b.aab`, SHA-256 `e635627f0505738485f50f75126f16cedcc536325aebf2ac2ecf735897412292`, versionCode 11 / versionName 1.0.0, ký bằng khoá tải lên (SHA-256 `02:5B:35:4D:1C:37:7B:DC:F3:D6:49:4A:71:8E:6B:2D:A4:56:2F:73:2B:CE:0A:42:11:9C:9B:09:37:74:5C:C7` phải bằng ô «Upload key certificate» của Play). Thay cho vc11 `684431f` và vc10 `891be6c` (vc11 chưa từng tải lên Play; mã cao nhất trên Play là 8). KHÔNG dựng lại trừ khi hợp đồng cờ của web đổi mã app hoặc có lỗi chặn release.
+
+**Quyết định của Huy (02/10):** giữ Firebase Analytics · OpenAI là **bên xử lý** (thay mặt TappyAI) · quốc gia **Việt Nam trước** · KHÔNG nâng `activity-compose`, KHÔNG tải ảnh máy ảo trước release.
+
+### H1. Data safety — khai lại (Play đang ghi «không thu thập, chưa mã hoá» là SAI)
+Câu chung: **Có thu thập · KHÔNG chia sẻ** (bên xử lý thay mặt TappyAI không tính là chia sẻ: OpenAI, Supabase, Google Cloud/Firebase, Vercel, Upstash, Brevo, Serper, Google Maps Platform, OpenStreetMap, wttr.in) · **Mã hoá khi truyền: Có** · **Người dùng yêu cầu xoá được: Có** (xoá NGAY trong app: Tôi → Cài đặt → Khác → «Xóa tài khoản», + `https://www.tappyai.com/delete-account`) · Dành cho trẻ em: Không (18+).
+
+| Loại dữ liệu (Play) | Thu | Mục đích | Bắt buộc | Ghi chú cho chính xác |
+|---|---|---|---|---|
+| Vị trí → Chính xác (và Gần đúng) | Có | Chức năng ứng dụng | Tuỳ chọn | Chỉ khi cho phép; gửi cùng yêu cầu chat để tìm quanh bạn; không chạy nền |
+| Thông tin cá nhân → Tên, Email, Mã người dùng | Có | Quản lý tài khoản; chức năng | Tuỳ chọn | Đăng nhập Google/Zalo/email |
+| Thông tin cá nhân → Thông tin khác (**ngày sinh**) | Có | Chức năng (xác nhận đủ 18 tuổi) | Bắt buộc để chat AI/đăng bài | |
+| Ảnh và video → Ảnh, Video | Có | Chức năng | Tuỳ chọn | Ảnh/clip bạn **đăng**; và **ảnh gửi cho trợ lý, Scan, Dịch — được gửi tới máy chủ TappyAI rồi tới OpenAI để xử lý** (không dùng để quảng cáo, không bán) |
+| Tin nhắn → Tin nhắn khác trong app | Có | Chức năng | Tuỳ chọn | Chat AI (nội dung gửi tới OpenAI), nhắn tin giữa người dùng |
+| Nội dung người dùng tạo khác | Có | Chức năng | Tuỳ chọn | Review, bình luận, bio, văn bản dịch, nội dung Viết content, tin kiểm tra lừa đảo |
+| Hoạt động trong app → Tương tác trong app, Lịch sử tìm kiếm trong app | Có | **Phân tích**; chức năng | Bắt buộc | **Firebase Analytics** (sự kiện đóng, không nội dung/PII, không Advertising ID) |
+| Mã thiết bị hoặc mã khác | Có | Chức năng (FCM); Phân tích | Bắt buộc | FCM token + app-instance id của Firebase |
+| Âm thanh → Ghi âm | Không | — | — | Nhập giọng nói dùng bộ nhận dạng của HỆ THỐNG; app chỉ nhận chữ |
+| Tài chính, Danh bạ, Sức khoẻ, Tệp, Crash/chẩn đoán, Advertising ID | Không | — | — | Không Play Billing, không Crashlytics; `AD_ID` bị gỡ |
+
+Mục «chia sẻ»: **không đánh dấu** cho bất kỳ loại nào (OpenAI là bên xử lý). Khai báo kèm: **nội dung người dùng tạo → có báo cáo và chặn người dùng** (bản này: báo cáo bài/clip có sẵn; chặn bật khi server bật — xem F1).
+
+### H2. Các mục còn lại (làm theo mục E; đây là giá trị cuối)
+- **Quốc gia:** chỉ **Việt Nam** (mở thêm sau).
+- **Nhóm tuổi:** bỏ «16–17», chỉ giữ «18 tuổi trở lên». **IARC:** khai có nội dung do người dùng tạo/tương tác.
+- **Ghi chú cho người xem xét:** mục D (đã khớp phương án (b)); câu về chặn người dùng chỉ dán khi server đã bật `P8_USER_BLOCKS`.
+- **Phát hành:** tạo bản Sản xuất → tải AAB `597698b` → từng phần 10–20% → Huy bấm gửi/phát hành (sau khi production có Phase 7).
+- **Google đăng nhập:** làm mục G (xoá client đang giữ cặp `com.tappyai.app` + SHA-1 `C2:0A:A1:…` ở dự án khác, tạo lại ở `aerobic-lock-498409-u7`).
+- **Quyền riêng tư (web):** `/privacy` còn 3 chỗ lệch (xoá tài khoản vẫn ghi «liên hệ hỗ trợ»; chưa nêu ảnh gửi tới OpenAI; nhắc Stripe) — đã ghi cho phiên web; Play đối chiếu Data safety với chính sách nên nên sửa TRƯỚC khi gửi.

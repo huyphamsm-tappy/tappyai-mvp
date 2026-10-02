@@ -364,3 +364,39 @@ Có thể câu trả lời đúng là không cần link (ví dụ gợi ý chỗ
 2. **Bài kiểm tương đương xoá tài khoản (`src/lib/legal/accountDeleteCopyParity.test.ts`)**: thêm hai cặp (chữ Android đã có sẵn và đúng bằng web, em đã so từng ký tự vi + en 01/10): `['accountDelete.warn.lead','account_delete_warn_lead']`, `['accountDelete.warn.plan','account_delete_warn_plan']`.
 3. **Chính sách quyền riêng tư (`legal.ts`) lệch với app (đọc 01/10 đêm):** (a) mục 5 «Quyền của bạn» vẫn ghi xoá tài khoản «bằng cách liên hệ đội ngũ hỗ trợ» — khi cờ BẬT, app xoá NGAY trong Cài đặt → Khác → «Xóa tài khoản»; (b) ảnh bạn gửi cho trợ lý (đính kèm trong chat, Scan, Dịch) được app mã hoá base64 gửi lên máy chủ và tới OpenAI — mục 3 chỉ nêu «tin nhắn bạn gõ, tuỳ chọn, bộ nhớ AI, vị trí», chưa nêu ảnh; (c) mục 3 nhắc Stripe «nếu đăng ký gói trả phí» — app Android không bán gói (không Play Billing/Stripe), chỉ đúng với web.
 4. **Chặn người dùng / báo cáo người dùng (Phase 8)**: app Android (`684431f`, vc11) đã sẵn sàng; chỉ hiện nút khi `GET /api/config` có `p8: {reports, userBlocks, commentModeration}` = true. Cần: bật `P8_USER_BLOCKS`, `P8_REPORTS_V2`, áp `20260924_p8_user_blocks.sql` + `20260924_p8_reports_sanctions_audit.sql` trên production, và `/api/config` trả khối `p8` (phase8 `src/lib/p8/clientFlags.ts`). Lý do «Lừa đảo» của app được gửi tới `POST /api/reviews/{id}/report` dưới dạng `misinformation` vì danh sách `reportReasons.ts` không có `scam` (nên thêm `scam` ở web, rồi báo Android đổi ánh xạ).
+
+
+### App Links — đặc tả cho SAU release (chốt 02/10; KHÔNG làm trong AAB `597698b`)
+
+**Mục tiêu:** bấm link `https://www.tappyai.com/plan/<id>`, `/r/<slug>`, … từ Zalo/Chrome/Messenger với bản cài từ Google Play thì **mở thẳng trong app** (không qua trình duyệt). Hiện tại KHÔNG làm được vì hai lý do độc lập: (a) web chưa công bố đúng `assetlinks.json`; (b) app chưa có bộ lọc cho các đường đó (xem dưới). Chưa có (a) thì (b) vô ích; có (a) mà chưa có (b) thì link vẫn mở trình duyệt. Link không xác minh được chỉ mở trình duyệt, không hỏng.
+
+#### A. Phiên WEB — tệp `/.well-known/assetlinks.json` (www.tappyai.com)
+Hiện (đọc 01/10): một mục duy nhất `com.tappyai.twa`, SHA-256 `19:3F:97:CF:83:36:96:F7:DA:70:E1:8E:69:31:D3:E4:81:12:E3:EA:BD:FB:B1:64:56:12:8B:44:31:2F:C3:A4` (một app TWA cũ; web tự quyết còn giữ không). **Cần thêm** một mục cho app thật:
+```json
+{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.tappyai.app",
+    "sha256_cert_fingerprints": [
+      "F9:30:19:21:FC:D0:51:14:62:8B:13:E4:E3:99:69:B8:66:45:91:00:18:EB:87:AF:DC:99:F7:F2:6E:F7:24:2D",
+      "0B:D1:D9:0C:9C:27:1B:45:A1:74:66:08:5B:50:DD:EB:17:40:F3:C6:D4:79:DE:75:3F:5E:1A:17:EE:D9:46:73",
+      "02:5B:35:4D:1C:37:7B:DC:F3:D6:49:4A:71:8E:6B:2D:A4:56:2F:73:2B:CE:0A:42:11:9C:9B:09:37:74:5C:C7"
+    ]
+  }
+}
+```
+- Hai SHA-256 đầu = chứng chỉ **khoá ký của Google Play** (cổ điển `F9:30:19:…:24:2D` và hậu lượng tử `0B:D1:D9:…:46:73`), chép tay từ Play Console → Test and release → App integrity → App signing (em đọc 01/10). **Huy xác nhận lại từ trang đó trước khi web ghi** — sai một ký tự là không xác minh được.
+- SHA-256 thứ ba = chứng chỉ **khoá tải lên** (`02:5B:35:4D:…:5C:C7`, khớp chữ ký AAB). KHÔNG cần cho bản cài từ Play (Play ký lại bằng khoá ký); chỉ cần nếu muốn link cũng xác minh trên bản cài thẳng từ tệp ký bằng khoá tải lên (kiểm thử nội bộ).
+- **Vì sao:** Android so chứng chỉ của APK ĐANG CÀI với danh sách này. Bản Play mang chữ ký của khoá ký Play, không phải khoá tải lên — thiếu hai SHA-256 đầu thì mọi bộ lọc đều "chưa xác minh".
+- Yêu cầu máy chủ: HTTP 200 trực tiếp (không chuyển hướng), `Content-Type: application/json`, không cần đăng nhập/cookie/bypass, đúng tại `https://www.tappyai.com/.well-known/assetlinks.json` (và nếu dùng apex `tappyai.com` thì cũng cần tệp tại đó). Giữ trang `/plan/<id>` và `/r/<slug>` công khai như hiện nay.
+- Kiểm sau khi ghi: `curl -s https://www.tappyai.com/.well-known/assetlinks.json | jq` thấy mục `com.tappyai.app`; Google "Digital Asset Links API" (`https://digitalassetlinks.googleapis.com/v1/statements:list?source.web.site=https://www.tappyai.com&relation=delegate_permission/common.handle_all_urls`) liệt kê `com.tappyai.app`.
+
+#### B. Phiên ANDROID — bản cập nhật sau release (làm SAU khi web xong mục A)
+Hiện trạng (đọc 02/10): `AndroidManifest.xml` có `<activity-alias android:name=".PublicLinkActivity" android:enabled="@bool/tappy_app_links_enabled">` với `autoVerify="true"`, `https`, host `${tappyPublicHost}` (= `www.tappyai.com`), `pathPrefix="/r/"`; bật bằng `-PTAPPYAI_APP_LINKS_ENABLED=true` (`build.gradle.kts` dòng `resValue("bool","tappy_app_links_enabled", …)`), TẮT mặc định. Không có bộ lọc cho `/plan/`, `/reviews/`, `/users/`, `/group/`. `ShellDeepLink.destinationFor` chỉ ánh xạ `/chat/<conversationId>`; `/reviews/<id>` và `/deals/<id>` cố ý "không ánh xạ" (đích cấp đối tượng nằm trong đồ thị lồng của từng tab).
+Cần làm:
+1. Thêm bộ lọc `autoVerify` (cùng alias hoặc alias mới) cho host `www.tappyai.com`, `https`, các tiền tố: **`/plan/`** (kế hoạch được chia sẻ — đường quan trọng nhất), **`/r/`** (kết quả công khai, đã có), **`/reviews/`** (bài/clip), **`/users/`** (hồ sơ), **`/group/`** (nhóm chia hoá đơn; hiện `tappyai://group` đã có). Mỗi tiền tố một `<data android:pathPrefix=…>` trong CÙNG một `intent-filter` có `autoVerify`.
+2. Màn nhận: `/plan/<id>` → mở trang kế hoạch (thẻ kế hoạch đọc từ `GET /api/plan/<id>` hoặc mở Custom Tab như `PublicLinkOpener` nếu chưa có màn riêng); `/reviews/<id>` → `ReviewDetail`; `/users/<id>` → `AuthorProfile`; mở rộng `ShellDeepLink` + `PendingShellDestination` cho các đích này (cần đưa đích cấp đối tượng ra khỏi đồ thị lồng).
+3. Bật `TAPPYAI_APP_LINKS_ENABLED=true` trong build phát hành; đổi mặc định hoặc truyền cờ trong `scripts/release/build-aab.sh`.
+4. Kiểm: `adb shell pm verify-app-links --re-verify com.tappyai.app` rồi `adb shell pm get-app-links com.tappyai.app` phải thấy `www.tappyai.com: verified` (hiện `1024` = chưa xác minh); `adb shell am start -a android.intent.action.VIEW -d https://www.tappyai.com/plan/<id>` mở app; từ Zalo/Chrome với bản cài từ Play (kênh thử nghiệm kín); kiểm trường hợp không xác minh → mở trình duyệt, không lỗi.
+5. Test đơn vị cho bảng ánh xạ đường → đích (mở rộng `ShellDeepLink` tests), e2e `nav-back` cho từng đích, kiểm Back từ link vào app.

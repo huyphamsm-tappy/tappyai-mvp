@@ -514,3 +514,39 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 }
+
+// ---------------------------------------------------------------------------------------------------------------
+// Production guard (02/10): a debug / staging / uat build must never talk to the PRODUCTION backend by accident.
+// On 02/10 a debug build whose local gradle.properties pointed TAPPYAI_API_BASE_URL_DEBUG at https://www.tappyai.com/
+// ran an automated UI exerciser and wrote to production (1 anonymous session, 2 view events). This check runs when the
+// task graph is built and REFUSES to run any debug / staging / uat task whose API base URL is the production host.
+// Release builds are never affected (they are meant to point at production). To override on purpose:
+//     -PTAPPYAI_ALLOW_PROD_FOR_NON_RELEASE=true
+// Changes no BuildConfig value and no release output.
+// ---------------------------------------------------------------------------------------------------------------
+run {
+    val prodHost = Regex("""^https?://(www\.)?tappyai\.com(:\d+)?(/|$)""", RegexOption.IGNORE_CASE)
+    val allowProd = project.findProperty("TAPPYAI_ALLOW_PROD_FOR_NON_RELEASE") == "true"
+    // The values the three non-release build types put into BuildConfig.API_BASE_URL (keep in sync with `buildTypes`).
+    val nonReleaseApiBase = mapOf(
+        "Debug" to (project.findProperty("TAPPYAI_API_BASE_URL_DEBUG")?.toString() ?: "http://10.0.2.2:3000/"),
+        "Staging" to (project.findProperty("TAPPYAI_API_BASE_URL_STAGING")?.toString() ?: "https://staging.tappyai.example.com/"),
+        "Uat" to "https://uat.tappyai.com/",
+    )
+    gradle.taskGraph.whenReady {
+        if (allowProd) return@whenReady
+        val taskNames = allTasks.filter { it.project == project }.map { it.name }
+        val offenders = nonReleaseApiBase.filter { (variant, url) ->
+            prodHost.containsMatchIn(url.trim()) &&
+                taskNames.any { it.contains(variant) && !it.contains("Release") }
+        }
+        if (offenders.isNotEmpty()) {
+            throw GradleException(
+                "Refusing to build/run a non-release variant against PRODUCTION: " +
+                    offenders.entries.joinToString { "${it.key} -> ${it.value}" } + ". " +
+                    "Point TAPPYAI_API_BASE_URL_DEBUG / _STAGING at a local or UAT backend (the 'uat' variant is fixed to https://uat.tappyai.com/). " +
+                    "To do it on purpose: -PTAPPYAI_ALLOW_PROD_FOR_NON_RELEASE=true",
+            )
+        }
+    }
+}
