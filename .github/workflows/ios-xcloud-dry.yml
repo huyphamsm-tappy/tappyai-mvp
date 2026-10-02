@@ -1,0 +1,87 @@
+name: ios-xcloud-dry-run
+
+# Proves, on a GitHub macOS runner, that the Xcode Cloud scripts (ios/ci_scripts/ci_post_clone.sh) really generate the
+# project and that the project ARCHIVES — so the Mac day does not discover a broken script. Nothing is signed or uploaded
+# (Xcode Cloud signs for itself). It uses the same repository secrets as the TestFlight job and removes them afterwards.
+#
+# Runs only when asked: a manual run, or a commit message containing [xcloud-dry]. A skipped job starts no runner.
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["ios/**"]
+    paths:
+      - "ios/ci_scripts/**"
+      - ".github/workflows/ios-xcloud-dry.yml"
+
+concurrency:
+  group: ios-xcloud-dry-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  dry:
+    name: Xcode Cloud scripts, dry run
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[xcloud-dry]')
+    runs-on: macos-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run ci_post_clone.sh the way Xcode Cloud does
+        env:
+          # The names Xcode Cloud sets itself:
+          CI_PRIMARY_REPOSITORY_PATH: ${{ github.workspace }}
+          CI_XCODEBUILD_ACTION: archive
+          CI_WORKFLOW: dry-run
+          CI_BUILD_NUMBER: "1"
+          CI_BRANCH: ${{ github.ref_name }}
+          # The workflow Environment Variables the person sets in Xcode Cloud (here: the repository secrets):
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+          TAPPY_API_BASE_URL: ${{ secrets.TAPPY_API_BASE_URL }}
+          GOOGLE_SERVICE_INFO_PLIST_BASE64: ${{ secrets.GOOGLE_SERVICE_INFO_PLIST_BASE64 }}
+        run: |
+          chmod +x ios/ci_scripts/*.sh
+          ./ios/ci_scripts/ci_post_clone.sh
+
+      - name: Archive (Release) with the command Xcode Cloud's Archive action runs
+        working-directory: ios
+        run: |
+          set -o pipefail
+          mkdir -p build
+          # Xcode Cloud signs with cloud-managed signing; here signing is switched off, so this proves the PROJECT builds
+          # for a device in Release with the generated settings, not the signature.
+          xcodebuild archive \
+            -project TappyAI.xcodeproj \
+            -scheme TappyAI \
+            -configuration Release \
+            -destination 'generic/platform=iOS' \
+            -archivePath build/TappyAI.xcarchive \
+            -skipPackagePluginValidation \
+            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" \
+            2>&1 | tee build/archive.log | tail -40
+
+      - name: Verify what the archive carries
+        working-directory: ios
+        run: |
+          app=build/TappyAI.xcarchive/Products/Applications/TappyAI.app
+          pb() { /usr/libexec/PlistBuddy -c "Print :$1" "$app/Info.plist" 2>/dev/null; }
+          echo "CFBundleIdentifier            $(pb CFBundleIdentifier)"
+          echo "CFBundleShortVersionString    $(pb CFBundleShortVersionString)"
+          echo "CFBundleVersion               $(pb CFBundleVersion)"
+          echo "ITSAppUsesNonExemptEncryption $(pb ITSAppUsesNonExemptEncryption)"
+          [ "$(pb CFBundleIdentifier)" = "com.tappyai.ios" ] || { echo "::error::bundle id"; exit 1; }
+          [ "$(pb CFBundleVersion)" = "1001" ] || { echo "::error::expected CFBundleVersion 1001 (offset 1000 + build 1)"; exit 1; }
+          [ "$(pb ITSAppUsesNonExemptEncryption)" = "false" ] || { echo "::error::encryption flag"; exit 1; }
+          case "$(pb TAPPY_API_BASE_URL)" in https://www.tappyai.com|https://tappyai.com) echo "API base                      production" ;; *) echo "::error::API base is not production"; exit 1 ;; esac
+          plutil -p "$app/Info.plist" | grep -qi bypass && { echo "::error::bypass value in Info.plist"; exit 1; }
+          echo "arch ok"
+
+      - name: Run ci_post_xcodebuild.sh (cleanup)
+        if: always()
+        env:
+          CI_PRIMARY_REPOSITORY_PATH: ${{ github.workspace }}
+        run: ./ios/ci_scripts/ci_post_xcodebuild.sh

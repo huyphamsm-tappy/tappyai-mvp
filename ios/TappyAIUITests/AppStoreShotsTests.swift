@@ -50,22 +50,41 @@ final class AppStoreShotsTests: XCTestCase {
         settle(); shot("05-explore")
         app.terminate()
 
-        // 6 — Scam Shield.
-        app = launch(route: "scam", signedIn: true)
-        XCTAssertTrue(app.navigationBars.firstMatch.waitForExistence(timeout: 60), "scam shield screen")
-        settle(); shot("06-scam-shield")
+        // 6 — Scam Shield: a pasted message read against the Ministry's 25 scenarios (on the phone).
+        app = launch(route: "scam", signedIn: true, extra: ["-uitest-scam-message",
+                     "Bưu phẩm Trung thu của bạn đang bị giữ. Vui lòng quét mã QR để thanh toán phí 15.000đ và nhận hàng."])
+        XCTAssertTrue(any(app, "scam-msg-matched").waitForExistence(timeout: 60), "scam message result")
+        app.swipeUp(); app.swipeUp()
+        settle(); shot("06-scam-message")
         app.terminate()
 
-        // 7 — «Tôi» (profile hub).
+        // 7 — Scam Shield: a QR code that holds a link, checked.
+        app = launch(route: "scam", signedIn: true, extra: ["-uitest-scam-qr", "https://phat-nguoi-gov.xyz/nop"])
+        XCTAssertTrue(any(app, "scam-link-dontopen").waitForExistence(timeout: 60), "qr link result")
+        settle(); shot("07-scam-qr")
+        app.terminate()
+
+        // 8 — «Tôi» (profile hub).
         app = launch(route: "hub", signedIn: true)
         XCTAssertTrue(any(app, "profile-tab-posts").waitForExistence(timeout: 60), "profile hub")
-        settle(); shot("07-profile")
+        settle(); shot("08-profile")
         app.terminate()
 
-        // 8 — Settings.
+        // 9 — the one-time «share data with AI» sheet, before the first message goes anywhere.
+        app = launch(route: "chat", signedIn: false, extra: ["-uitest-ai-consent-prompt"])
+        let input = any(app, "chat-input")
+        XCTAssertTrue(input.waitForExistence(timeout: 60), "chat input")
+        input.tap()
+        input.typeText("Quan an ngon quanh day")
+        any(app, "chat-send").tap()
+        XCTAssertTrue(any(app, "ai-consent-agree").waitForExistence(timeout: 30), "the AI consent sheet")
+        settle(); shot("09-ai-consent")
+        app.terminate()
+
+        // 10 — Settings.
         app = launch(route: "settings", signedIn: true)
         XCTAssertTrue(any(app, "settings-delete").waitForExistence(timeout: 60) || app.staticTexts["Cài đặt"].waitForExistence(timeout: 5), "settings")
-        settle(); shot("08-settings")
+        settle(); shot("10-settings")
     }
 
     // MARK: - helpers
@@ -90,11 +109,11 @@ final class AppStoreShotsTests: XCTestCase {
         app.descendants(matching: .any)[id].firstMatch
     }
 
-    private func launch(route: String, signedIn: Bool = false) -> XCUIApplication {
+    private func launch(route: String, signedIn: Bool = false, extra: [String] = []) -> XCUIApplication {
         let app = XCUIApplication()
         app.launchArguments = ["-uitest-route", route, "-uitest-lang", "vi", "-uitest-theme", "dark",
                                "-AppleLanguages", "(vi)", "-AppleLocale", "vi_VN", "-uitest-appstore"]
-            + (signedIn ? ["-uitest-signed-in"] : [])
+            + (signedIn ? ["-uitest-signed-in"] : []) + extra
         app.launch()
         return app
     }

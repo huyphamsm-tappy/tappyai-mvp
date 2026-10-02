@@ -213,6 +213,25 @@ struct ProfileSettingsView: View {
                 row(id: "copyright", icon: "c.circle.fill", accent: 0x7C5CFF, labelKey: "settings.copyright", desc: "settings.copyright.desc") {
                     if let url = URL(string: TappyShare.canonicalOrigin + "/copyright") { UIApplication.shared.open(url) }
                 }
+                // App Review 1.2 (user-generated content): the rules, the notices about the person's own content, and a
+                // way to reach us. The rules and notices are web pages (one text for all three clients) and appear while
+                // the server has reporting / blocking on; the contact row is always there.
+                if safety.flags.anyEnabled {
+                    divider
+                    row(id: "guidelines", icon: "checkmark.shield.fill", accent: 0x34D399, labelKey: "settings.guidelines", desc: "settings.guidelines.desc") {
+                        if let url = URL(string: TappyShare.canonicalOrigin + "/community-guidelines") { UIApplication.shared.open(url) }
+                    }
+                    if isSignedIn {
+                        divider
+                        row(id: "notices", icon: "bell.badge.fill", accent: 0xF59E0B, labelKey: "settings.notices", desc: "settings.notices.desc") {
+                            if let url = URL(string: TappyShare.canonicalOrigin + "/profile/notices") { UIApplication.shared.open(url) }
+                        }
+                    }
+                }
+                divider
+                row(id: "contact", icon: "envelope.fill", accent: 0x3391FF, labelKey: "settings.contact", desc: "settings.contact.desc") {
+                    if let url = URL(string: "mailto:\(SUPPORT_EMAIL)") { UIApplication.shared.open(url) }
+                }
                 divider
                 // ── Account deletion ── 🚨 REQUIRED BY APP STORE REVIEW GUIDELINE 5.1.1(v).
                 // Request-based by default, identical to Android and to the public /delete-account page
