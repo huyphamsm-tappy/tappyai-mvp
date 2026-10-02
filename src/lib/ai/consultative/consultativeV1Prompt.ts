@@ -90,7 +90,7 @@ export function buildConsultativeV1Block(input: ConsultativeV1PromptInput): stri
       : input.searchNow.type === 'hotel'
         ? `goi get_hotel_prices NGAY voi location theo yeu cau cua user${input.searchNow.query ? ` (vd "${input.searchNow.query}")` : ''}, checkIn "${nextWeekend.checkIn}", checkOut "${nextWeekend.checkOut}" (gia su cuoi tuan toi — noi ro la gia su, KHONG hoi ngay)`
         : input.searchNow.exact
-          ? `goi search_places({ query: "${input.searchNow.query}", type: "${input.searchNow.type}" }) quanh vi tri user`
+          ? `goi search_places({ query: "${input.searchNow.query}"${input.searchNow.type === 'shop' ? '' : `, type: "${input.searchNow.type}"`} }) quanh vi tri user`
           : `goi search_places NGAY voi query dat theo yeu cau cua user (vd "${input.searchNow.query}") va type phu hop`)
     : ''
   // The answer turn after a clarify (item 1): the user has just answered the ONE question allowed;

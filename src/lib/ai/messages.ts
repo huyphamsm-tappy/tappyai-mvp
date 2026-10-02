@@ -73,8 +73,8 @@ export const messages = {
      * this is what lets the reply be honest in the first place instead of merely censored.
      */
     noResultsInstruction: (lang: Lang) => isVi(lang)
-      ? 'KHONG tim thay dia diem nao cho yeu cau nay. TUYET DOI KHONG duoc neu ten bat ky dia diem, dia chi hay gia nao — khong co du lieu nao de dua vao. Hay noi thang la chua tim thay, va co the goi y mo rong khu vuc hoac doi tu khoa.'
-      : 'NO places were found for this request. Do NOT name any venue, address or price — there is no data behind them. Say plainly that nothing was found, and you may suggest widening the area or changing the keywords.',
+      ? 'KHONG tim thay dia diem nao cho yeu cau nay. TUYET DOI KHONG duoc neu ten bat ky dia diem, dia chi hay gia nao — khong co du lieu nao de dua vao. Hay noi thang la chua tim thay (he thong da thu bo loc gia va mo rong khu vuc roi). KHONG hoi nguoc lai dieu user vua noi; he thong tu them nut Google Maps.'
+      : 'NO places were found for this request. Do NOT name any venue, address or price — there is no data behind them. Say plainly that nothing was found (the system already relaxed the price filter and widened the area). Do NOT ask the user back what they just said; the system adds a Google Maps button.',
   },
   shopping: {
     priceDisclaimer: (lang: Lang) => isVi(lang)

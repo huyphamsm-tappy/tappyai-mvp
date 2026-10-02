@@ -115,6 +115,10 @@ import { readCappedBody, exceedsTextCeiling } from '@/lib/http/readCappedBody'
 import { stepRepeatGuard } from '@/lib/ai/stepRepeatGuard'
 import { planCompletionStream, toolResultDigest, completionInstruction } from '@/lib/ai/planCompletion'
 import { askAfterStream, endsWithQuestion } from '@/lib/ai/consultative/askAfter'
+import { deriveLocalShopSearch } from '@/lib/ai/consultative/localShop'
+import { assistantAskedBack, wantsWiderArea, refineAsk } from '@/lib/ai/consultative/echoQuestion'
+import { emptyResultStream } from '@/lib/ai/consultative/emptyResultStream'
+import { relaxEmptyPlaces, widenLocation } from '@/lib/ai/placeRelax'
 import { resolveReplyLanguage } from '@/lib/ai/replyLanguage'
 import type { CoreMessage } from 'ai'
 import { cannedChitchat, cannedCarriedFact, cannedDataStreamResponse } from '@/lib/ai/cannedReply'
@@ -327,7 +331,7 @@ export async function POST(req: Request) {
   const recentSubjectUserTexts = subjectUserTexts.slice(-3)
   // A district the USER named (never the model's own location string, which it fills from the GPS).
   // It centres the place search and constrains the rows by address (placeConstraintFilter.ts).
-  const statedArea = statedDistrict(lastText)
+  const statedArea = wantsWiderArea(lastText) ? null : statedDistrict(lastText)
     ?? subjectUserTexts.slice(0, -1).reverse().map(t => statedDistrict(t)).find(d => d !== null)
     ?? null
   // Phase 7 group 4 (golden T1/G4a): a plan is built across turns. The planning block used to be
@@ -402,7 +406,8 @@ export async function POST(req: Request) {
   const consultRun = lunaRun ?? (consultOn && routed?.confidence === 'unsure' && AI.isConfigured()
     ? await runConsultBrain(o => AI.generate(o), messages, { hasGps: !!userLocation, previousWasAsk: wasAskReply(priorAssistantText), deterministicDomain: lastUserMsg ? turnDomain(lastUserMsg, { hasGps: !!userLocation, lang }) : null })
     : null)
-  const consult = consultRun?.decision ?? lunaSkipDecision ?? (routed ? routed.decision : null)
+  // chat2 A2: the ask card never asks what the request already says (area, or the request itself) and never fires for a local shop/repair request.
+  const consult = refineAsk(consultRun?.decision ?? lunaSkipDecision ?? (routed ? routed.decision : null), subjectUserTexts, { localShop: !!deriveLocalShopSearch(subjectUserTexts.join(' ')) })
   // Measurement only (CONSULT_DECISION_LOG=1, off by default — replay sets it): the full decision, to check intent reading.
   if (process.env.CONSULT_DECISION_LOG === '1' && consult) console.log(JSON.stringify({ type: 'tappyai_consult_decision', by: lunaRun ? `luna-${lunaRun.mode}` : consultRun ? 'brain' : lunaSkipped ? 'rules-fast' : 'rules', turn: consult.turn, domains: consult.domains, known: consult.known, area: consult.area ?? null }))
   console.log(JSON.stringify({ type: 'tappyai_consult', by: consultRun ? 'brain' : routed ? 'rules' : 'off', turn: consult?.turn ?? 'fallback', domains: consult?.domains ?? [], ms: consultRun?.ms ?? null, known: consult ? Object.keys(consult.known) : [], brain_in: consultRun?.usage.promptTokens ?? 0, brain_out: consultRun?.usage.completionTokens ?? 0 }))
@@ -1206,7 +1211,10 @@ export async function POST(req: Request) {
     : null
   // A follow-up / comparison / non-trip plan works from what is already known: no "search now" order.
   const consultNoSearchNow = !!consult && (consult.turn === 'followup' || consult.turn === 'compare' || (consult.turn === 'plan' && consult.domains[0] !== 'travel'))
-  const searchNow = consultNoSearchNow ? null : consultSearch ?? (situation ? deriveSearchNow({ text: framingText, situation, frame: decisionFrame, need: needProfile, forcedTool, isFirstReply: isFirstReply || afterClarify || moreTurn, movieRecommend, afterClarify, consultationText: consultationUserTexts(framingMessages).join(' ') }) : null)
+  // chat2 A2 (loop guard): the assistant asked back, showed no venue, and the user answered or repeated — search now.
+  const askedBack = assistantAskedBack(lastAssistantText, priorVenuesIn(lastAssistantText).length > 0 || consultShownEver.length > 0)
+  const localShopAsked = !!deriveLocalShopSearch(consultationUserTexts(framingMessages).join(' '))
+  const searchNow = consultNoSearchNow ? null : (localShopAsked ? null : consultSearch) ?? (situation ? deriveSearchNow({ text: framingText, situation, frame: decisionFrame, need: needProfile, forcedTool, isFirstReply: isFirstReply || afterClarify || moreTurn, movieRecommend, afterClarify, askedBack, consultationText: consultationUserTexts(framingMessages).join(' ') }) : null)
   // Owner 2026-09-28 (c40 T7): a flight search runs without a date; the date is asked at the END.
   if (!consult && searchNow?.type === 'flight' && !SPECIFIC_DATE.test(normalizeVN(lastText.toLowerCase())) && !(lastAssistantText && endsWithQuestion(lastAssistantText))) {
     gateAskAfter = { q: lang === 'en' ? 'Which date?' : 'Ngày bay?', options: [] }
@@ -2113,6 +2121,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
 
   /** A1(d): the place search this turn ran — saved with the names shown, for a "gợi ý thêm" follow-up. */
   let lastPlaceSearch: PlaceSearchEvidence | null = null
+  // chat2 A2: set when a place search came back empty after every relaxation (placeRelax.ts) — the reply is then the honest block.
+  let emptyPlaceSearch: { query: string; area: string | null } | null = null
   // Owner 29/09 (design): "xem thêm" / "bác" continue from the candidates kept in the chat-session state —
   // 0 Serper. When set, search_places runs its whole pipeline (constraints, ranking, cards) on these stored
   // rows instead of calling the provider. The ranked rows of a real search are captured for the state.
@@ -2258,8 +2268,24 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           // "now") shape the ROWS here, before ranking, so the set the model reads and the card
           // the client renders are the same set. `applyBudgetFilter` above only ever touched web
           // snippets; the place rows were never constrained (`placeConstraintFilter.ts`).
-          const constraints = detectPlaceConstraints(lastText, budget ?? needProfile.budget, recentSubjectUserTexts.slice(0, -1))
-          const constrained = applyPlaceConstraints(budgeted, constraints, lang === 'en' ? 'en' : 'vi')
+          const constraints = { ...detectPlaceConstraints(lastText, budget ?? needProfile.budget, recentSubjectUserTexts.slice(0, -1)), ...(wantsWiderArea(lastText) ? { district: null } : {}) }
+          const constrained0 = applyPlaceConstraints(budgeted, constraints, lang === 'en' ? 'en' : 'vi')
+          // chat2 A2: price and distance are SOFT — when the hard filters leave nothing, drop the price ceiling, then widen the
+          // area (one more provider call), and say what was relaxed (placeRelax.ts). Still nothing → the honest no-result block.
+          const relax = await relaxEmptyPlaces({
+            budgeted, constrained: constrained0, constraints, lang,
+            applyConstraints: (res, cc) => applyPlaceConstraints(res, cc, lang === 'en' ? 'en' : 'vi'),
+            widen: placesOverride || clipContext ? undefined : async () => {
+              const city = widenLocation(statedArea)
+              if (!city) return null
+              // A deliberate second retrieval, only after an empty first one: its own one-call budget (the turn budget is spent by the empty search).
+              const wide = await searchPlaces(query, city, type, lang, userLocation, createPlacesBudget(PLACES_BUDGET_DEFAULT), { priceRetry: false })
+              return guardPlaceGeography(wide, geoGuardArea(city, userLocation)).result
+            },
+          })
+          if (relax.relaxed.length > 0 || relax.empty) console.log(JSON.stringify({ type: 'tappyai_place_relax', relaxed: relax.relaxed, empty: relax.empty, budget_max: constraints.budgetMax, district: constraints.district?.label ?? null, query }))
+          emptyPlaceSearch = relax.empty ? { query, area: statedArea?.label ?? location ?? null } : null
+          const constrained = relax.relaxed.length > 0 ? { ...constrained0, result: relax.result } : constrained0
           if (constrained.dropped.length > 0 || constrained.demotedClosed > 0 || constrained.priceUnknown > 0 || constraints.district) {
             console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'search_places', step: 'constraint_filter', budget_max: constraints.budgetMax, exclude: constraints.exclude, open_now: constraints.openNow, district: constraints.district?.label ?? null, dropped: constrained.dropped, demoted_closed: constrained.demotedClosed, price_unknown: constrained.priceUnknown, price_fits: constrained.priceFits }))
           }
@@ -3212,7 +3238,7 @@ ${completionInstruction(lang)}` },
   // end asking. It runs after every guard — measured on Android: the model asked about ticket prices
   // and the entertainment price guard (downstream) removed that sentence, leaving no question at all.
   const timedBody = finalResponse.body
-    ? turnCostStream(askAfterStream(finalResponse.body, gateAskAfter, lang).pipeThrough(stepRepeatGuard()), () => {
+    ? turnCostStream(emptyResultStream(askAfterStream(finalResponse.body, gateAskAfter, lang), { getEmpty: () => emptyPlaceSearch, bufferText: askedBack && presearchPlan === null, userTexts: subjectUserTexts, lang }).pipeThrough(stepRepeatGuard()), () => {
         // Owner Phần 6: one cost line per turn (brain call + answer model + Serper).
         const d = serperDelta(serperAtStart)
         const tokensIn = (usageAcct?.promptTokens ?? 0) + (usageAcct?.cacheReadTokens ?? 0) + (usageAcct?.cacheCreationTokens ?? 0) + (consultRun?.usage.promptTokens ?? 0)

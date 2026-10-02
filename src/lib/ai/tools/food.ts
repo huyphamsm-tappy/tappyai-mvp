@@ -482,6 +482,19 @@ function isDirectFoodOrderLink(link: string): boolean {
 // fallback rows and the Google rows stay shape-compatible.
 
 /**
+ * chat2 A2 (2026-10-02): a Serper /maps call with NO centre is answered from New York ('nhà hàng Việt' →
+ * 8 of 8 rows in NY, measured), and the geography guard then drops every row — the user gets
+ * "no results" for a venue search in their own city. With no GPS, no stated area and no city in the
+ * query or the location, the search is centred on Ho Chi Minh City (the default city); a city the
+ * text names keeps its own destination centre (resolved by the caller).
+ */
+function defaultCentre(query: string, location: string | undefined): { lat: number; lng: number; zoom: number } | null {
+  if (cityInText(query) || cityInText(location)) return null
+  console.log(JSON.stringify({ type: 'tappyai_places_debug', provider: 'serper_maps', step: 'default_centre', city: 'hcm' }))
+  return { lat: 10.7769, lng: 106.7009, zoom: 14 }
+}
+
+/**
  * Serper `/maps` — the PRIMARY structured place source for Vietnam.
  *
  * 🚨 WHY IT SITS ABOVE OSM AND BELOW GOOGLE. Google Places is the richest source
@@ -527,7 +540,7 @@ async function searchPlacesSerper(
       ? centreAt(destination.coords[0], destination.coords[1])
       : locationBias
         ? centreAt(locationBias.lat, locationBias.lng)
-        : null
+        : defaultCentre(query, location)
 
   // The place string is normalised (city alias → Maps name, no commas) so `/maps` answers with
   // `priceLevel` consistently — see serperLocation.ts for the measurement. Serper only.
