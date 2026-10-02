@@ -379,9 +379,9 @@ function ProfileContent() {
 
   return (
     <section className="v3-profile-card" data-profile-content aria-label={t('v3.profile.contentTitle')}>
-      {/* 🚨 B2 (2026-10-02): the six tabs used to sit in a horizontal scroller beside the Lưới /
-          Danh sách switch and "Đăng bài mới" — in the narrow content column only two tabs fit, the
-          rest were silently clipped (the owner could not find "Bị hạn chế"). The tabs now WRAP, so
+      {/* 🚨 B2 (2026-10-02): the six tabs used to sit in a horizontal scroller beside the grid /
+          list switch and the New post button — in the narrow content column only two tabs fit, the
+          rest were silently clipped (the owner could not find the Restricted tab). The tabs now WRAP, so
           every tab is visible with its full label, and the toolbar is a row of its own beneath. */}
       <div className="flex flex-col gap-3 border-b px-4 py-3 sm:px-5" style={{ borderColor: 'var(--v3-border)' }}>
         {/* 🔑 The tabs keep the shared `.v3-chip` class: it is the page's tab contract. */}
