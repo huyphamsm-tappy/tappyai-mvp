@@ -16,3 +16,6 @@
 ## Chưa kiểm / hạn chế
 - Web CHƯA có nút «Chặn» và «Báo cáo bình luận/người dùng» trong giao diện (mới có API + app Android/iOS đọc `p8.*`); trang `/admin/moderation` trên UAT chỉ vào được bằng tài khoản QA.
 - Android/iOS thật chưa thử với cờ bật.
+
+## CẬP NHẬT chiều 02/10 — SHA đóng băng mới: `9474f65774aea4b2d89a618b9a5ff492fcdc39e5`
+Chỉ chữ pháp lý (/privacy, /terms, /delete-account) + Scam Shield web giải mã QR ngay trong trình duyệt (ảnh không tải lên). Regression Gate (push + PR) xanh, Architecture Guard xanh, `/api/version` = SHA trên. Bằng chứng: `docs/uat/SCAM-SHIELD-PARITY.md` §4, `docs/uat/LEGAL-TEXT-REVIEW-2026-10-02.md`; ảnh ở `gs://tappyai-uat-evidence/evidence/9474f65/scam/`. Commit tài liệu sau SHA này KHÔNG đẩy lên rc/web-uat để giữ nguyên SHA đã kiểm; Part B dùng 9474f65.

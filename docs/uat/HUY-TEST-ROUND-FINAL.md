@@ -25,3 +25,7 @@ Tài khoản test, iPhone Safari, uat.tappyai.com. «Đạt» = thấy đúng nh
 | 20 | /privacy (vi + en) | ghi OpenAI (không Anthropic), có Upstash, Brevo, wttr.in, Overpass |
 | 21 | 7 chuỗi câu hỏi phần A của OWNER-TOMORROW-2026-09-30 | như hướng dẫn trong tệp đó |
 | 22 | Giọng văn (nếu cờ BẬT trên UAT) | câu trả lời chốt ít mở bằng «Mình hiểu bạn…», vẫn nêu giả định, không có «Chắc chắn rồi/tuyệt vời», đùa nhẹ không quá 1/3 số câu và KHÔNG đùa ở chuyện sức khoẻ/lừa đảo; xưng «mình/bạn» |
+| 23 | **Lá chắn lừa đảo — tin nhắn.** Vào /scam-shield → «Phân tích tin nhắn», dán: «Bưu điện: bưu phẩm Trung thu của bạn bị giữ do thiếu phí 18.000đ. Quét mã QR hoặc truy cập http://buudien-vn-trungthu.top/phi để nộp phí…» rồi một tin phạt nguội kèm link | cả hai ra «Rất nguy hiểm»/«Nguy cơ cao», có lời khuyên «Không làm / Nên làm». Tin bình thường («Chiều nay mình đón con rồi ghé mua rau nhé…») ra «An toàn», KHÔNG bị báo nhầm |
+| 24 | **Lá chắn lừa đảo — quét QR.** «Quét mã QR» → chọn ảnh chụp một mã QR chứa link lạ; rồi thử mã Wi-Fi hoặc mã thanh toán | link lạ ra kết quả như kiểm link (ảnh KHÔNG được tải lên máy chủ); mã Wi-Fi/thanh toán hiện «Mã QR này không chứa đường link web» + loại mã + «TappyAI không tự…» |
+| 25 | /privacy, /terms, /delete-account (đã đổi chữ 02/10) | chỉ đọc lại: /privacy có mục «6. Báo cáo, chặn và kiểm duyệt» và đoạn Scam Shield; /terms có link Quy tắc cộng đồng; không còn Stripe/gói trả phí; /delete-account nói xoá ngay trong app hoặc tại trang này |
+

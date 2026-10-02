@@ -48,4 +48,15 @@ Kiểm link/QR-link: không token. Tin nhắn có chữ: 1 câu hỏi AI/lần t
 - QR giải mã trong trình duyệt (mới: `qr/clientDecode.ts`, `qr/payload.ts`, `scamQr` i18n; giao diện mới hiện thẻ «Mã QR này không chứa đường link web»). Server KHÔNG đổi.
 - `/privacy`: thêm đoạn Scam Shield (link → dịch vụ kiểm tra; tin có chữ → OpenAI; QR đọc trên thiết bị, ảnh không tải lên; không lưu tin/ảnh/số của kẻ lừa đảo).
 
-## 4. Bằng chứng UAT (xem `docs/uat/DEBT-RESULTS-2026-10-01.md` cuối tệp và báo cáo của phiên) — điền sau khi chạy.
+## 4. Bằng chứng UAT — SHA 9474f65 (02/10), trình duyệt thật trên uat.tappyai.com, khách chưa đăng nhập, điện thoại 390 px
+Ảnh + results.json: `gs://tappyai-uat-evidence/evidence/9474f65/scam/` (riêng tư). 17/17 bước đạt; đã MỞ XEM các ảnh kết quả.
+| Kiểm | Kết quả |
+|---|---|
+| QR chứa link nguy hiểm (`vcb-secure-login.net`) | Trình duyệt giải mã tại chỗ; chỉ có MỘT yêu cầu `POST /api/scam-shield/check` dạng JSON chứa link; KHÔNG có `/qr`, KHÔNG có upload ảnh. Kết quả «Nguy cơ cao» 79 |
+| QR Wi-Fi, QR thanh toán | Hiện «Mã QR này không chứa đường link web», loại mã + «TappyAI không tự kết nối/thanh toán…»; 0 yêu cầu tới máy chủ |
+| Ảnh không có mã QR | Báo lỗi thân thiện, không sập, 0 yêu cầu |
+| Tin «Bưu phẩm Trung thu kèm mã QR + link» | «Rất nguy hiểm» 81, loại «Lừa đảo giao hàng» |
+| Tin «phạt nguội kèm link» | «Nguy cơ cao» 71, «Giả danh cơ quan nhà nước / công an» |
+| 3 tin bình thường (người nhà; thông báo số dư không link; shipper GHN) | cả ba «An toàn» (4) — không bị báo nhầm |
+| /privacy, /terms, /delete-account | hiện chữ mới; không còn Stripe; /terms có link bấm được tới /community-guidelines |
+Chưa kiểm: quét bằng camera (web chỉ chọn ảnh); QR in nhỏ/mờ ngoài đời thật; Android/iOS (phiên khác).

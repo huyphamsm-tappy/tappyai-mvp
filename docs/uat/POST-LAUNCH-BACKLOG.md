@@ -133,3 +133,16 @@ Lượt kế hoạch lấy trước khách sạn + quán ăn + điểm tham quan
 - **Gác lại từ khối A/B/C của 01/10 và lý do:** A5, A6 (cần native); tour/Klook, xe khách (chưa kiểm được cú pháp link); thẻ «ăn phở Bắc» vẫn tiêu đề trung tính (đổi thành «Hôm nay ăn gì nhỉ?» cần id báo mảng trong hợp đồng thẻ → đụng cả hai app).
 
 - **PL-COPY-PREMIUM (sau release, KHÔNG làm bây giờ)** — chữ «Premium», «không giới hạn», «Pro» mâu thuẫn khi bật gói trả phí mới (30 câu/ngày): `v3.premium.*` (khung thanh bên, hiện cho mọi người), `v3.top.plan`, `v3.profile.premium`, `v3.history.premiumTitle`, `profile.upgradePro`, `sub.*` cũ, iOS SubscriptionView, trang admin userAnalytics. Danh sách và chữ đề xuất: `docs/payments/COPY-CONFLICTS-FOR-WEB.md` trên nhánh `p8/subscriptions` (chỉ đọc). Riêng `publicResult.softGate` (sai ngay ở bản release) đã sửa 02/10.
+
+## Thêm 02/10 (Huy ghi nhận, KHÔNG làm trước release)
+- Cắt phút CI (Regression Gate chạy hai lần mỗi push)
+- App Links: `assetlinks.json`
+- Nút Chặn / Báo cáo trên web (hiện chỉ có API + app)
+- Lịch sử chat giữ ảnh và thẻ; tiêu đề chat
+- Tour sang Klook; link xe khách
+- Nén clip trước khi tải lên
+- FCM cho iOS
+- Email tóm tắt hàng chờ kiểm duyệt
+- Chuyển `docs/audit` sang GCS
+- Scam Shield: khớp tình huống tĩnh (`matchScenario`) + 89 tình huống Phase 8; đồng bộ thư viện qua server; đồng ý trước khi gửi AI trên web
+- Chữ pháp lý: nhờ người am hiểu luật Việt Nam xem lại (docs/uat/LEGAL-TEXT-REVIEW-2026-10-02.md)
