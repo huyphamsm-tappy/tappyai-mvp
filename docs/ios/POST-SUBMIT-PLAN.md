@@ -1,5 +1,7 @@
 # Sau khi bấm «Submit for Review» — kế hoạch (iOS, 02/10/2026)
 
+> **CHỜ Huy nói «OK release».** Đường release đang đóng băng (UAT web 9474f65 trượt). Tờ này chỉ để sẵn; chưa dùng.
+
 Chữ thường, cho người không phải dân dev. «Ước lượng» = em suy từ kinh nghiệm chung, chưa thấy số thật của tài khoản anh.
 
 ## 1. Các trạng thái anh sẽ thấy trong App Store Connect

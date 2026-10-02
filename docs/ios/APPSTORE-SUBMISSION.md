@@ -9,6 +9,8 @@ bảng, chỗ nào khác nhau được nêu rõ), `docs/ios/IOS-REQUESTS.md` (vi
 
 ---
 
+> **ĐÓNG BĂNG RELEASE (02/10/2026, lệnh của Huy):** chưa UAT thì chưa release. Không điền/gửi gì vào App Store Connect, không Add for Review/Submit, không build bản phát hành mới/TestFlight nếu Huy không yêu cầu. Mọi chữ «ngay sau web release / nộp ngay» trong tài liệu này đã đổi thành **«CHỜ Huy nói OK release»**. Build TestFlight đã có (xem báo cáo) chỉ được GIỮ.
+
 ## 0. KẾT LUẬN SẴN SÀNG NỘP (bản cuối 02/10/2026, build 100+; cập nhật sau mỗi lần CI)
 
 **Phía app: SẴN SÀNG.** Phía server production: **CHƯA** (chờ web release). Bấm "Submit for Review" chỉ sau khi cả 3 cột dưới xong.
@@ -375,7 +377,7 @@ Mọi quyền tuỳ chọn; từ chối không làm app sập (QR: từ chối c
 
 1. Web phát hành Phase 7 lên production (gồm báo cáo/chặn, xoá tài khoản kiểu mới, trang `/privacy` `/terms` `/delete-account` `/community-guidelines`).
 2. Huy bật Sign in with Apple ở Supabase production; web bật Zalo `app_state`; Huy tạo tài khoản demo (không trước).
-3. **Smoke production** (đăng nhập Google/email/Apple, chat khách, xoá tài khoản TEST, báo cáo/chặn, Lá chắn) rồi **nộp NGAY** — cờ `p8.*`, `accountSelfDelete`, `appleSignIn` phải đang BẬT khi người duyệt chạy.
+3. **Smoke production** (đăng nhập Google/email/Apple, chat khách, xoá tài khoản TEST, báo cáo/chặn, Lá chắn) — **CHỜ Huy nói «OK release» bằng chính lời của Huy** (đường release đang ĐÓNG BĂNG từ 02/10: UAT web 9474f65 trượt, chờ SHA mới). Chỉ khi có lệnh đó mới nộp; cờ `p8.*`, `accountSelfDelete`, `appleSignIn` phải đang BẬT khi người duyệt chạy.
 4. Chọn **Manually release** (tự quyết ngày lên kệ).
 5. Bản sửa lỗi nhỏ sau đó nộp thành **1.0.1** (tăng `MARKETING_VERSION`); cái nào đổi được qua máy chủ (cờ, chữ trả về, dữ liệu) **không cần nộp lại**.
 6. Xem `POST-SUBMIT-PLAN.md` cho giai đoạn chờ duyệt, trả lời Resolution Center, bị từ chối.
