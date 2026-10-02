@@ -9,6 +9,7 @@ import { parseShareRequest, resolveShareSource } from '@/lib/share/shareRequest'
 import { decideSharePolicy } from '@/lib/share/sharePolicy'
 import { createSharedResult, SharedResultError } from '@/lib/share/sharedResultStore'
 import { absoluteUrl } from '@/lib/share/openGraph'
+import { summarize } from '@/lib/share/sharedResultMetadata'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
 
@@ -73,6 +74,7 @@ export async function POST(req: NextRequest) {
       path,
       url: absoluteUrl(path),
       title: row.payload.title,
+      description: summarize(row.payload.body ?? ''),
       domain: row.domain,
       parent_id: row.parent_id ?? null,
       listed: !row.owner_is_anonymous,

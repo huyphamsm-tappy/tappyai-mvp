@@ -103,7 +103,8 @@ export function generalizeQuery(query: string): string {
 
 /** A headline from the (generalised) question: first clause, sentence case, capped. */
 export function deriveTitle(publicQuery: string, fallback: string): string {
-  const first = publicQuery.split(/[.!?\n]/)[0]?.trim() ?? ''
+  // A sentence ends at ". " / "!" / "?" / a line break - not at the dot inside "TP.HCM" or "3.5tr".
+  const first = publicQuery.split(/[.!?]+(?:\s|$)|\n/)[0]?.trim() ?? ''
   const base = first.length >= 8 ? first : publicQuery.trim()
   const capped = base.length > PUBLIC_PAYLOAD_LIMITS.title ? `${base.slice(0, PUBLIC_PAYLOAD_LIMITS.title - 1).trimEnd()}…` : base
   const titled = capped ? capped.charAt(0).toUpperCase() + capped.slice(1) : ''

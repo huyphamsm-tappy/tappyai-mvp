@@ -22,6 +22,7 @@ import {
   inboxBody,
   pickPlace,
   placeBlock,
+  placesBrochure,
   type SharedPlace,
 } from './shareArtifact'
 import { isShareableUrl } from './shareTargets'
@@ -126,8 +127,8 @@ describe('placeBlock — link labels', () => {
 })
 
 // ---------------------------------------------------------------- brochure
-describe('buildPlacesArtifact — the brochure', () => {
-  const a = buildPlacesArtifact(view, TITLE, 'vi', env)
+describe('placesBrochure — the long form (no longer what leaves; kept for the card preview)', () => {
+  const a = { ...buildPlacesArtifact(view, TITLE, 'vi', env), text: placesBrochure(TITLE, view.items.map(pickPlace), 'vi', 'https://www.tappyai.com') }
 
   it('opens with the TappyAI header and closes with the brand footer', () => {
     expect(a.subject).toBe(`TappyAI gợi ý: ${TITLE}`)
@@ -159,7 +160,7 @@ describe('buildPlacesArtifact — the brochure', () => {
   })
 
   it('is deterministic', () => {
-    expect(buildPlacesArtifact(view, TITLE, 'vi', env).text).toBe(a.text)
+    expect(placesBrochure(TITLE, view.items.map(pickPlace), 'vi', 'https://www.tappyai.com')).toBe(a.text)
   })
 
   it('every URL in the text is https and never a private TappyAI route', () => {
@@ -172,7 +173,7 @@ describe('buildPlacesArtifact — the brochure', () => {
   })
 
   it('speaks English when asked', () => {
-    const en = buildPlacesArtifact(view, 'beef', 'en', env)
+    const en = { text: placesBrochure('beef', view.items.map(pickPlace), 'en', 'https://www.tappyai.com') }
     expect(en.text.startsWith('TappyAI recommends: beef')).toBe(true)
     expect(en.text).toContain('Maps: https://')
     expect(en.text).toContain('(5,946 reviews)')
@@ -183,14 +184,15 @@ describe('buildPlacesArtifact — the brochure', () => {
 // ------------------------------------------------------------- compaction
 describe('inboxBody — Tappy Inbox ≤ 4000, URLs intact', () => {
   const big: PlacesLiveView = { ...view, items: Array.from({ length: 6 }, () => view.items).flat() }
-  const a = buildPlacesArtifact(big, TITLE, 'vi', env)
+  const a = { ...buildPlacesArtifact(big, TITLE, 'vi', env), text: placesBrochure(TITLE, big.items.map(pickPlace), 'vi', 'https://www.tappyai.com') }
+  const compact = () => compactBrochure(TITLE, big.items.map(pickPlace), 'vi', 'https://www.tappyai.com')
 
   it('the inflated brochure really overflows', () => {
     expect(a.text.length).toBeGreaterThan(INBOX_MAX_BODY)
   })
 
   it('fits, keeps header + footer, says how many were dropped', () => {
-    const body = inboxBody(a, 'vi')
+    const body = compact()
     expect(body.length).toBeLessThanOrEqual(INBOX_MAX_BODY)
     expect(body.startsWith(`TappyAI gợi ý: ${TITLE}`)).toBe(true)
     expect(body.endsWith('Gợi ý bởi TappyAI · www.tappyai.com')).toBe(true)
@@ -207,6 +209,7 @@ describe('inboxBody — Tappy Inbox ≤ 4000, URLs intact', () => {
   it('passes a short brochure through unchanged', () => {
     const small = buildPlacesArtifact({ ...view, items: view.items.slice(0, 2) }, TITLE, 'vi', env)
     expect(inboxBody(small, 'vi')).toBe(small.text)
+    expect(small.text.split('\n').length).toBeLessThanOrEqual(3)
   })
 
   it('holds the bound even for a single enormous place', () => {
@@ -219,20 +222,17 @@ describe('inboxBody — Tappy Inbox ≤ 4000, URLs intact', () => {
 
 // ------------------------------------------------------------------- prose
 describe('buildProseArtifact — a turn with no card and no plan', () => {
-  it('keeps safe links as "label: url", drops images and unsafe links, and carries the brand', () => {
+  it('is title + one summary line + the brand link: no link from the answer survives', () => {
     const a = buildProseArtifact(
       'máy bay đi Đà Nẵng',
       '**Gợi ý**: đặt qua [Traveloka](https://www.traveloka.com/vi-vn) · [Evil](javascript:alert(1)) ![ảnh](https://img.example/a.jpg)\n\nXem thêm https://www.vietnamairlines.com/ nhé http://insecure.example/x',
       env,
     )
     expect(a.subject).toBe('TappyAI: máy bay đi Đà Nẵng')
-    expect(a.text.startsWith('TappyAI\n\nGợi ý: đặt qua Traveloka: https://www.traveloka.com/vi-vn · Evil')).toBe(true)
-    expect(a.text).not.toContain('javascript:')
-    expect(a.text).not.toContain('img.example')
-    expect(a.text).not.toContain('**')
-    expect(a.text).toContain('https://www.vietnamairlines.com/')
-    expect(a.text).not.toContain('insecure.example')
-    expect(a.text.endsWith('— TappyAI · tappyai.com')).toBe(true)
+    const lines = a.text.split('\n')
+    expect(lines[0]).toBe('TappyAI: máy bay đi Đà Nẵng')
+    expect(lines[lines.length - 1]).toBe('https://www.tappyai.com')
+    expect(a.text).not.toMatch(/javascript:|img\.example|traveloka|vietnamairlines|insecure|\*\*/)
     expect(a.places).toEqual([])
   })
 })

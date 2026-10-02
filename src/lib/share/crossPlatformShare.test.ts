@@ -156,7 +156,7 @@ describe('every client shares a plan through the ONE published page', () => {
     const webMenu = readFileSync(join(root, 'src', 'components', 'share', 'ShareMenu.tsx'), 'utf8')
     const androidSheet = readFileSync(join(root, 'android', 'app', 'src', 'main', 'java', 'com', 'tappyai', 'app', 'share', 'TappyShareSheet.kt'), 'utf8')
     const iosSheet = readFileSync(join(root, 'ios', 'TappyAI', 'Core', 'Share', 'TappyShareSheet.swift'), 'utf8')
-    expect(webMenu).toContain('copyText(a.planLink ? a.url : a.text)')
+    expect(webMenu).toContain("const copyPayload = a.kind === 'plan' && a.planLink ? a.url : a.text")
     expect(androidSheet).toContain('if (a.isPlanLink) a.url else a.text')
     expect(iosSheet).toMatch(/isPlanLink \? a\.url : /)
   })

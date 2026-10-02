@@ -55,8 +55,9 @@ import { useTranslation } from '@/lib/i18n/useTranslation'
 import {
   WEB_SHARE_TARGETS, buildShareUrl, buildTextShareUrl, canHandoffToZalo, canOpenMessenger, isShareableUrl, zaloMobileHandoff, type ShareTargetId,
 } from '@/lib/share/shareTargets'
+import { buildShareMessage } from '@/lib/share/shareMessage'
 import { shareBrandMark } from '@/lib/share/shareBrands'
-import { inboxBody, planLinkArtifact, type ShareArtifact } from '@/lib/share/shareArtifact'
+import { inboxBody, planLinkArtifact, resultLinkArtifact, type ShareArtifact } from '@/lib/share/shareArtifact'
 import { renderShareCard, shareCardLayouts, type ShareCardLayout, type ShareSheetVariant } from '@/lib/share/shareCardFile'
 import type { SharePostCard } from '@/lib/share/contentCards'
 import { fetchVideoFile, runTikTokShare, tiktokCaption } from '@/lib/share/tiktokShare'
@@ -89,6 +90,27 @@ const CARD_LINE: Record<ShareSheetVariant, string> = {
  *               brochure still shares, and the menu says why there is no link.
  *  - `failed`   anything else: same fallback, no message beyond the brochure.
  */
+type ResultLink = { state: 'idle' | 'pending' | 'failed' } | { state: 'url'; url: string; title?: string; description?: string }
+
+/** One publish per turn per page view: reopening the menu must not mint a second page. */
+const mintedResults = new Map<string, Promise<ResultLink>>()
+
+async function publishResult(src: { conversationId: string; messageIndex: number }, locale: string): Promise<ResultLink> {
+  try {
+    const r = await fetch('/api/shared-results', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ conversationId: src.conversationId, messageIndex: src.messageIndex, locale }),
+    })
+    if (!r.ok) return { state: 'failed' }
+    const body = (await r.json()) as { url?: unknown; title?: unknown; description?: unknown }
+    if (typeof body.url !== 'string' || !isShareableUrl(body.url)) return { state: 'failed' }
+    return { state: 'url', url: body.url, title: typeof body.title === 'string' ? body.title : undefined, description: typeof body.description === 'string' ? body.description : undefined }
+  } catch {
+    return { state: 'failed' }
+  }
+}
+
 type PlanLink = { state: 'idle' | 'pending' | 'failed' } | { state: 'url'; url: string } | { state: 'signIn' }
 
 async function publishPlan(plan: unknown): Promise<PlanLink> {
@@ -120,6 +142,9 @@ function urlArtifact(url: string, title?: string): ShareArtifact {
  * 'noopener')` ALWAYS returns null (per spec), so the old check said "Không thể chia sẻ lúc này"
  * right after Facebook had opened (measured on uat @ 0ab1495). Open, then cut the opener link.
  */
+/** Zalo's own web client - the nearest official destination on a desktop (there is no web share url). */
+export const ZALO_WEB_URL = 'https://chat.zalo.me/'
+
 export function openShareWindow(url: string): boolean {
   const w = window.open(url, '_blank')
   if (!w) return false
@@ -135,6 +160,7 @@ export default function ShareMenu({
   onClose,
   onShared,
   onPublicLink,
+  publicSource,
   variant = 'default',
   profileName,
   post,
@@ -159,6 +185,14 @@ export default function ShareMenu({
    * never a replacement for the artifact share above it.
    */
   onPublicLink?: () => void
+  /**
+   * The persisted chat turn this share comes from. When given, the menu publishes it as a public
+   * result page (POST /api/shared-results, the same sanitized snapshot as the "public link" row)
+   * and every channel then carries ONE title line + ONE summary line + the short /r/<slug> link,
+   * whose Open Graph card is the preview. Without it (or when publishing is refused) the text is
+   * the same lines with the brand link - never the answer, never a tracking link.
+   */
+  publicSource?: { conversationId: string; messageIndex: number }
   /**
    * `profile`: the approved "Chia sẻ với mọi người" sheet for sharing a PROFILE link (UAT3,
    * 2026-09-27) — title + subtitle, the TappyAI card, a profile card with the link and a
@@ -209,12 +243,19 @@ export default function ShareMenu({
   const base: ShareArtifact = artifact ?? urlArtifact(url ?? '', title)
   // A plan whose link has been minted shares ITS OWN page — as a link; until
   // then, and for everything else, the artifact is used as built.
-  const a: ShareArtifact = planLink.state === 'url' ? planLinkArtifact(base, planLink.url) : base
+  const [resultLink, setResultLink] = useState<ResultLink>({ state: 'idle' })
+  const a: ShareArtifact = planLink.state === 'url'
+    ? planLinkArtifact(base, planLink.url)
+    : resultLink.state === 'url' && base.kind === 'places' ? resultLinkArtifact(base, resultLink) : base
+  /** What "copy" puts on the clipboard: a published PLAN copies its bare url; everything else the message. */
+  const copyPayload = a.kind === 'plan' && a.planLink ? a.url : a.text
   // A recommendation shares the BRAND url and needs the brochure copied
   // alongside a url handoff; a review, or a published plan, IS its url — the
   // dialog carries everything, nothing rides on the clipboard.
   const linkOnly = a.text.trim() === a.url.trim() || a.planLink === true
   const textIsMoreThanUrl = !linkOnly
+  /** The copy button copies a message (title + summary + link), not a bare link - and is labelled so. */
+  const copyIsMessage = a.text.trim() !== a.url.trim() && !(a.kind === 'plan' && a.planLink)
   // A plan that arrives ALREADY published (its own /plan page) is not minted again.
   const planSnapshot = base.kind === 'plan' && !base.planLink ? base.plan : undefined
   // A plan without a link has nothing honest to hand to a url-only platform:
@@ -244,7 +285,7 @@ export default function ShareMenu({
 
   useEffect(() => {
     if (!open) {
-      setFeedback(null); setInboxOpen(false); setBusy(null); setPlanLink({ state: 'idle' }); setAttempt(0)
+      setFeedback(null); setInboxOpen(false); setBusy(null); setPlanLink({ state: 'idle' }); setResultLink({ state: 'idle' }); setAttempt(0)
       setLayoutPick(null); setPreview(null); cardCache.current.clear()
       for (const u of objectUrls.current) { try { URL.revokeObjectURL(u) } catch { /* already gone */ } }
       objectUrls.current = []
@@ -276,6 +317,23 @@ export default function ShareMenu({
   // artifact during render, so the object is new every time and an identity
   // dependency would publish on every render.
   const planKey = planSnapshot ? JSON.stringify(planSnapshot) : ''
+  const resultKey = publicSource && base.kind === 'places' ? `${publicSource.conversationId}#${publicSource.messageIndex}` : ''
+  useEffect(() => {
+    if (!open || !resultKey || !publicSource) return
+    let cancelled = false
+    let p = mintedResults.get(resultKey)
+    if (!p) {
+      p = publishResult(publicSource, locale === 'en' ? 'en' : 'vi')
+      mintedResults.set(resultKey, p)
+      // A failure is not remembered: the next open may succeed (signed in, flag on).
+      void p.then(r => { if (r.state !== 'url') mintedResults.delete(resultKey) })
+    }
+    setResultLink({ state: 'pending' })
+    void p.then(r => { if (!cancelled) setResultLink(r) })
+    return () => { cancelled = true }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- keyed on the turn, not the render
+  }, [open, resultKey])
+
   useEffect(() => {
     if (!open || !planKey) return
     let cancelled = false
@@ -288,7 +346,7 @@ export default function ShareMenu({
   if (!open) return null
 
   const planStrings = planBrochureStrings(locale === 'en' ? 'en' : 'vi')
-  const linkPending = planLink.state === 'pending'
+  const linkPending = planLink.state === 'pending' || resultLink.state === 'pending'
 
   const shareable = isShareableUrl(a.url)
   const hasContent = a.text.trim().length > 0
@@ -316,7 +374,7 @@ export default function ShareMenu({
   }
   function renderCard(l: ShareCardLayout): Promise<File | null> {
     return renderShareCard({
-      artifact: { ...base, url: a.url },
+      artifact: { ...base, url: a.url, title: a.title, subject: a.subject },
       layout: l,
       displayName: variant === 'post' ? (profileName ?? a.subject) : profileName,
       post,
@@ -377,14 +435,14 @@ export default function ShareMenu({
         case 'copy': {
           // A published plan copies its canonical url and nothing around it — what
           // Android and iOS "Copy link" do — so a paste anywhere is the plan page.
-          const ok = await copyText(a.planLink ? a.url : a.text)
-          setFeedback({ kind: ok ? 'ok' : 'error', text: ok ? (a.planLink ? t('share.copiedLink') : textIsMoreThanUrl ? t('share.copiedContent') : t('share.copied')) : t('share.copyFailed') })
+          const ok = await copyText(copyPayload)
+          setFeedback({ kind: ok ? 'ok' : 'error', text: ok ? (a.kind === 'plan' && a.planLink ? t('share.copiedLink') : textIsMoreThanUrl || a.planLink ? t('share.copiedContent') : t('share.copied')) : t('share.copyFailed') })
           if (ok) onShared?.('copy')
           return
         }
         case 'native': {
           try {
-            const data: ShareData = a.planLink
+            const data: ShareData = a.kind === 'plan' && a.planLink
               ? { title: a.subject, text: a.subject, url: a.url }
               : { title: a.subject, text: a.text }
             if (!a.planLink && !textIsMoreThanUrl) data.url = a.url
@@ -406,7 +464,9 @@ export default function ShareMenu({
         case 'whatsapp':
         case 'telegram':
         case 'viber': {
-          const handoff = buildTextShareUrl(id, a.subject, inboxBody(a), a.url)
+          // A bare link (a review) still goes with its title: title line + link.
+          const body = a.text.trim() === a.url.trim() && a.title && a.title !== a.url ? buildShareMessage({ title: a.title, url: a.url }) : inboxBody(a)
+          const handoff = buildTextShareUrl(id, a.subject, body, a.url)
           if (!handoff) { setFeedback({ kind: 'error', text: t('share.unavailable') }); return }
           // Viber is a custom scheme: nothing tells the page whether the app
           // exists. Copy first so the user is never left with nothing.
@@ -465,7 +525,7 @@ export default function ShareMenu({
           setFeedback({ kind: 'ok', text: t('share.tiktokPreparing') })
           const file = await makeTikTokFile()
           if (!file) {
-            const ok = await copyText(a.planLink ? a.url : a.text)
+            const ok = await copyText(copyPayload)
             setFeedback({ kind: ok ? 'ok' : 'error', text: ok ? t('share.tiktokHint') : t('share.copyFailed') })
             if (ok) onShared?.(id)
             return
@@ -489,17 +549,33 @@ export default function ShareMenu({
           if (needsLink(id)) { setFeedback({ kind: 'error', text: planStrings.linkRequired }); return }
           if (!shareable) { setFeedback({ kind: 'error', text: t('share.unavailable') }); return }
           if (id === 'zalo') {
-            // Zalo's own SDK contract: a phone's browser hands the url to the app;
-            // a desktop has no share URL to open, so the link is copied and said so.
-            const mobile = zaloMobileHandoff(a.url, navigator.userAgent)
-            if (mobile) {
-              window.location.assign(mobile)
-              setFeedback({ kind: 'ok', text: t('share.opened', { app: appName(id) }) })
-              onShared?.(id)
-              return
+            // Zalo's official web SDK (sp.zalo.me/plugins/sdk.js) has exactly two entry points: an Android
+            // SEND intent and the iOS share-extension scheme - and NO desktop url (its web widget needs an
+            // OA id and button-share.zalo.me does not resolve). So:
+            //  - phone: the system share sheet (Web Share API) lists Zalo with the message; no sheet -> Zalo's own handoff;
+            //  - desktop: copy the message, open Zalo Web (chat.zalo.me), and the button says so.
+            if (canHandoffToZalo(navigator.userAgent)) {
+              if (canNativeShare) {
+                try {
+                  await navigator.share({ text: a.text })
+                  onShared?.(id)
+                  onClose()
+                } catch { /* cancelled: nothing to report */ }
+                return
+              }
+              const mobile = zaloMobileHandoff(a.url, navigator.userAgent)
+              if (mobile) {
+                await copyText(copyPayload)
+                window.location.assign(mobile)
+                setFeedback({ kind: 'ok', text: t('share.opened', { app: appName(id) }) })
+                onShared?.(id)
+                return
+              }
             }
-            const ok = await copyText(a.planLink ? a.url : a.text)
-            setFeedback({ kind: ok ? 'ok' : 'error', text: ok ? t('share.zaloHint') : t('share.copyFailed') })
+            // window.open first: the click's user activation is still fresh, a clipboard await would spend it.
+            const opened = openShareWindow(ZALO_WEB_URL)
+            const ok = await copyText(copyPayload)
+            setFeedback({ kind: ok ? 'ok' : 'error', text: ok ? (opened ? t('share.zaloCopiedOpened') : t('share.zaloHint')) : t('share.copyFailed') })
             if (ok) onShared?.(id)
             return
           }
@@ -560,7 +636,7 @@ export default function ShareMenu({
     // Desktop Zalo: no app to hand to and no working web widget, so the tile says
     // what it does — copy the link (or the content) — under Zalo's mark.
     // UAT 2026-09-28: the tile read "Sao chép liên kết" with no "Zalo", so the owner saw "no Zalo".
-    if (id === 'zalo' && !zaloApp) return `${appName(id)} (${(textIsMoreThanUrl ? t('share.copyContent') : t('share.copyLink')).toLowerCase()})`
+    if (id === 'zalo' && !zaloApp) return t('share.zaloCopyOpen')
     // TikTok takes a file: the tile says which one leaves.
     if (id === 'tiktok') return videoUrl ? t('share.tiktokVideo') : t('share.tiktokImage')
     return kind === 'url-handoff' && textIsMoreThanUrl ? t('share.copyAndOpen', { app: appName(id) }) : appName(id)
@@ -629,12 +705,12 @@ export default function ShareMenu({
           <div className="min-w-0 flex-1">
             <p className="truncate text-[16px] font-bold text-gray-900 dark:text-gray-50">{cardName ? `${cardName} · TappyAI` : 'TappyAI'}</p>
             <p className="text-[13px] text-gray-500 dark:text-gray-400">{t(CARD_LINE[variant])}</p>
-            <p className="truncate text-[13px] text-primary-600 dark:text-sky-300" data-share-profile-url>{a.url}</p>
+            <p className="break-all text-[13px] text-primary-600 dark:text-sky-300" data-share-profile-url>{a.url}</p>
           </div>
           <button data-testid="share-target-copy" onClick={() => handle('copy')} disabled={!!busy || linkPending}
             className="inline-flex items-center gap-2 rounded-full bg-primary-50 px-4 py-2.5 text-[14px] font-semibold text-primary-700 transition hover:bg-primary-100 dark:bg-white/10 dark:text-gray-50 dark:hover:bg-white/15">
             {copiedNow ? <Check size={16} className="text-green-500" /> : <Copy size={16} />}
-            {textIsMoreThanUrl ? t('share.copyContent') : t('share.profile.copyLink')}
+            {copyIsMessage ? t('share.copyContent') : t('share.profile.copyLink')}
           </button>
         </div>
         {/* Owner SL1 (29/09): the chat plan uses THIS sheet, so its link states live here too. */}
@@ -795,7 +871,7 @@ export default function ShareMenu({
               {feedback?.text === t('share.copiedContent') || feedback?.text === t('share.copied') || feedback?.text === t('share.copiedLink')
                 ? <Check size={18} className="text-green-500" />
                 : <Copy size={18} className="text-gray-500" />}
-              <span className="text-sm text-gray-800 dark:text-gray-100">{textIsMoreThanUrl ? t('share.copyContent') : t('share.copyLink')}</span>
+              <span className="text-sm text-gray-800 dark:text-gray-100">{copyIsMessage ? t('share.copyContent') : t('share.copyLink')}</span>
             </button>
             {canNativeShare && (
               <button data-testid="share-target-native" onClick={() => handle('native')} disabled={!!busy || linkPending} className="flex items-center gap-3 w-full px-3 py-3 rounded-xl bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition text-left">

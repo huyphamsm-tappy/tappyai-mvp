@@ -2,6 +2,7 @@ import type { LivePlace, PlacesLiveView } from '@/lib/recommendation/liveView'
 import type { TappyPlan } from '@/components/TripPlanCard'
 import { isSafeHttpsUrl } from '@/lib/security/urlGuard'
 import { BRAND, absoluteUrl } from './openGraph'
+import { buildShareMessage, summaryFromPlaces, summaryFromProse } from './shareMessage'
 import { toPlanShareSnapshot, type PlanShareSnapshot } from '@/lib/plans/share/planShare'
 
 // ── THE ONE CANONICAL TAPPYAI SHARE ARTIFACT ─────────────────────────────────
@@ -331,7 +332,11 @@ export function buildPlacesArtifact(
   const url = brandUrl(env)
   const places = view.items.map(pickPlace)
   const subject = `${L[lang].recommends}: ${title}`
-  return { kind: 'places', title, subject, text: placesBrochure(title, places, lang, url), url, places }
+  // Owner 2026-10-02: what leaves is title + one summary line + one short link, never the brochure
+  // (its per-place links are affiliate/tracking URLs). The share menu swaps the brand url for the
+  // public result page (`/r/<slug>`) when it can be published: see `resultLinkArtifact`.
+  const text = buildShareMessage({ title: subject, summary: summaryFromPlaces(places.map(p => p.name), lang), url })
+  return { kind: 'places', title, subject, text, url, places, lang }
 }
 
 /**
@@ -392,16 +397,31 @@ export function proseForShare(text: string): string {
 /** A turn with no card and no plan: the prose, under the TappyAI header. Strictly more than before. */
 export function buildProseArtifact(subject: string, text: string, env?: NodeJS.ProcessEnv): ShareArtifact {
   const url = brandUrl(env)
+  const full = proseForShare(text)
+  // Summary = the prose after its first line (the first line is usually what the title already says).
+  const summary = summaryFromProse(full.replace(/^[^\n]*\n+/, '') || full)
   return {
     kind: 'places', title: subject, subject: `TappyAI: ${subject}`,
-    text: `TappyAI\n\n${proseForShare(text)}\n\n— TappyAI · ${url.replace(/^https?:\/\/(www\.)?/, '')}`,
+    text: buildShareMessage({ title: `TappyAI: ${subject}`, summary, url }),
     url, places: [],
   }
 }
 
+/**
+ * The artifact once its public result page exists (`/r/<slug>`): title + one summary line + that
+ * short link. The page carries the full answer, the buttons (affiliate links included) and the
+ * Open Graph card every messaging app draws its preview from.
+ */
+export function resultLinkArtifact(a: ShareArtifact, link: { url: string; title?: string; description?: string }): ShareArtifact {
+  const { image: _image, ...rest } = a
+  const title = link.title?.trim() || a.subject
+  const text = buildShareMessage({ title, summary: link.description || summaryFromPlaces(a.places.map(p => p.name), a.lang ?? 'vi'), url: link.url })
+  return { ...rest, title, subject: title, url: link.url, text, planLink: true }
+}
+
 /** The Inbox-safe body for an artifact. Same content, bounded. */
 export function inboxBody(a: ShareArtifact, lang: ShareLang = 'vi'): string {
-  if (a.kind === 'places') return compactBrochure(a.title, a.places, lang, a.url)
+  // The short message (title + summary + link) is the inbox body too: no per-place tracking links.
   if (a.text.length <= INBOX_MAX_BODY) return a.text
   // A plan that overflows keeps its header and footer and as many whole lines as fit.
   const lines = a.text.split('\n')
