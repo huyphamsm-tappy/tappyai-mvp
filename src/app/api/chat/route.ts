@@ -36,6 +36,7 @@ import { shortlistShopping, shortlistCandidates } from '@/lib/ai/consultative/sh
 import { deriveDecisionFrame, qualifiesFor, missingFor, evidenceGap, evidenceSummary, buildDecisionFrameBlock } from '@/lib/ai/consultative/decisionFrame'
 import { voiceLayerBlock } from '@/lib/ai/consultative/styleLuna6'
 import { wantsFilmTitles, movieTitlesReply } from '@/lib/links/movieTitles'
+import { detectWrongModel, wrongModelBlock, deviceLabel } from '@/lib/ai/wrongModel'
 import { gatePlacesByActivity, agencyRowsToDrop } from '@/lib/ai/consultative/placeTypeGate'
 import { deriveShoppingConstraints, budgetFromHistory, validateShoppingCandidates, unmetConstraintPayload } from '@/lib/ai/consultative/shoppingConstraints'
 import { proposeRelaxation } from '@/lib/ai/consultative/relaxation'
@@ -2367,7 +2368,11 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           // grouping, and the model never sees it — see synthesisView.ts /
           // streamEnrichment. It adds only each offer's own link/price.
           const synthesisView = shoppingSynthesis ? buildSynthesisView(shoppingSynthesis) : null
-          if (synthesisView) enrichment.setShoppingMarker(renderShoppingMarker(synthesisView))
+          // A3 (2026-10-02): every listing names ANOTHER phone model than the one asked for -> no card, no picture; a code-built
+          // sentence + search links for the right keyword instead (wrongModel.ts).
+          const wrongModel = synthesisView ? detectWrongModel([...recentUserTexts, lastText], synthesisView.entities.map(e => e.name ?? '')) : null
+          if (wrongModel) { { const b = wrongModelBlock(wrongModel, query, lang); enrichment.setAppendix({ text: b.text, links: b.links }) }; console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'wrong_model_listing', requested: deviceLabel(wrongModel.requested), found: wrongModel.found.length })) }
+          else if (synthesisView) enrichment.setShoppingMarker(renderShoppingMarker(synthesisView))
           return forModel('search_products', {
             ...(result as Record<string, unknown>),
             ...(pick ? { _tappy_ranking: buildPickPayload(pick) } : {}),

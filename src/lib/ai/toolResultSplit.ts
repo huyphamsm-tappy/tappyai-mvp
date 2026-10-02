@@ -114,6 +114,12 @@ export interface EnrichmentCollector {
   shoppingMarker?: string
   setShoppingMarker(marker: string | undefined): void
   /**
+   * A code-built block of prose + links that rides with the reply (A3, 2026-10-02): e.g. «only another phone model was found» with
+   * search links for the right keyword. Inserted after the prose, before the structured markers. First one wins.
+   */
+  appendix?: { text: string; links: Array<{ name: string; url: string }> }
+  setAppendix(block: { text: string; links: Array<{ name: string; url: string }> } | undefined): void
+  /**
    * The turn's canonical recommendations, for the `[TAPPY_PLACES]` block.
    *
    * Held as STRUCTURE rather than a rendered string, unlike `shoppingMarker`:
@@ -460,6 +466,10 @@ export function createEnrichmentCollector(turnText = '', earlierUserTexts: reado
     setShoppingMarker(marker) {
       // First one wins, mirroring the TikTok URL: one shopping decision per turn.
       if (marker && !this.shoppingMarker) this.shoppingMarker = marker
+    },
+    appendix: undefined as { text: string; links: Array<{ name: string; url: string }> } | undefined,
+    setAppendix(block) {
+      if (block && !this.appendix) this.appendix = block
     },
     add(items) {
       for (const raw of items ?? []) {

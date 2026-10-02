@@ -742,13 +742,16 @@ export default function ChatInterface({
   const voiceSpokeRef = useRef(false)
 
   interface UserLocation { lat: number; lng: number; address: string; ts?: number }
-  const [userLocation, setUserLocation] = useState<UserLocation | null>(() => {
-    if (typeof window === 'undefined') return null
+  // A1 (2026-10-02): NOT read from localStorage during render. The server renders no location chip, so a client whose first render had one
+  // failed hydration on every reload of /chat/<id> (React #418/#423 on UAT: the server HTML is thrown away and the page re-rendered from scratch).
+  // The stored location is applied right after mount instead; nothing sends before then.
+  const [userLocation, setUserLocation] = useState<UserLocation | null>(null)
+  useEffect(() => {
     try {
       const s = localStorage.getItem('tappy_location')
-      return s ? (JSON.parse(s) as UserLocation) : null
-    } catch { return null }
-  })
+      if (s) setUserLocation(JSON.parse(s) as UserLocation)
+    } catch { /* storage unavailable / corrupt */ }
+  }, [])
 
   // User-chosen response style (Personalization — MFS 2.6). Set on /profile/tappy-knows,
   // stored in localStorage, sent with each chat request. Empty = adaptive default.

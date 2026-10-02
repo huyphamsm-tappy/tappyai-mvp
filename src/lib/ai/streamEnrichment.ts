@@ -21,7 +21,10 @@ import { guardPlanItems, type PlanPlace } from './planItemGuard'
 import { guardPlanTripFacts, guardUngivenTravelDate } from './planTripFactsGuard'
 import { repairPlanBlock } from './planJsonRepair'
 import { appendConsultPlanCost, appendPlanBudgetMath, partyCount, perPersonBudget } from './planBudgetMath'
-import { consultRemainingLine, normalizePickSentence, shoppingMarkerNames, shoppingPickName } from './consultative/consultBrain'
+import { stripModelMediaInProse, dropEmptyMediaBlocks } from './modelMedia'
+import { insertBeforeMarkers } from './wrongModel'
+import { footerRemaining, CARDS_SHOWN as CARD_FOLD_SHOWN } from './cardCounts'
+import { consultRemainingLineN, normalizePickSentence, shoppingMarkerNames, shoppingPickName } from './consultative/consultBrain'
 import { consultLunaEnabled, splitPickSentence } from './consultative/luna'
 import { LEAK_REPLACEMENT_EN, LEAK_REPLACEMENT_VI } from './consultative/lunaSafety'
 import { restorePlanHeadings, hideEmptyPlanSections, missingStagesLine } from './consultative/domainFrames'
@@ -41,7 +44,7 @@ import { buildPlacesLiveView, alignEmphasisToModelPick, placesRenderOrder } from
 import { buildProgressAnnotation } from '@/lib/recommendation/progressAnnotation'
 import { SHOPPING_GAP_WORDS } from '@/lib/ai/consultative/shoppingConstraints'
 /** Item 2: cards above the fold — the model's picks (pick + alternatives) filled from the engine. */
-const CARDS_SHOWN = 3
+const CARDS_SHOWN = CARD_FOLD_SHOWN
 import { renderCtaBlock, stripModelCta } from '@/lib/recommendation/cta'
 import { unlinkMislabelledMerchantLinks, validateModelCtaBlock, stripFalseDisconnectClaims, unemphasizeLinks, dropTruncatedTrailingBlock } from '@/lib/recommendation/ctaValidation'
 import { PROVIDER_REGISTRY } from '@/lib/ccp'
@@ -447,9 +450,10 @@ function stripUnvalidatedTikTokLinks(text: string, owned: Owned): string {
  * P3-F2 · Remove every markdown IMAGE whose URL the server did not source — reduced to its alt
  * text (visible, readable), exactly as `stripUnvalidatedTikTokLinks` keeps a link's label.
  */
-function stripUnownedImages(text: string, owned: Owned): string {
-  return text.replace(/!\[([^\]]*)\]\((https?:\/\/[^\s)]+)\)/g, (whole, alt: string, url: string) =>
-    isOwnedImageUrl(url, owned) ? whole : alt)
+function stripUnownedImages(text: string, _owned: Owned): string {
+  // A3 (owner 2026-10-02): NO picture written by the model survives — owned or not, handed over by a tool or not. Images appear
+  // inside cards only; a client without cards gets the venue photo injected AFTER this pass (injectPlaceEnrichment).
+  return stripModelMediaInProse(text, earliestMarker(text))
 }
 
 /** Every http(s) URL appearing in a string — used on raw tool-result frames. */
@@ -653,7 +657,7 @@ export function releasableLiveText(
     if (from !== -1) return releasableLiveText(text.slice(0, from), true, allowedUrls)
   }
   const stripped = stripUnownedLinks(
-    text.replace(/!\[([^\]]*)\]\((https?:\/\/[^\s)]+)\)/g, (_whole, alt: string) => alt),
+    stripModelMediaInProse(text, earliestMarker(text)),
     allowedUrls,
   )
   const proseEnd = earliestMarker(stripped)
@@ -2180,7 +2184,13 @@ export function applyPlaceEnrichmentStreamFilter(
      */
     const decisionCardRenders = !!placesView || !!collector?.shoppingMarker
     const cardOwnsEnrichment = decisionCardRenders && collector?.rendersDecisionCard === true
-    const enrichedProse = cardOwnsEnrichment ? mainText : injectPlaceEnrichment(places, mainText, lang, { placement: mediaPlacementV2Enabled() ? 'v2' : 'v1' })
+    const injectedProse = cardOwnsEnrichment ? mainText : injectPlaceEnrichment(places, mainText, lang, { placement: mediaPlacementV2Enabled() ? 'v2' : 'v1' })
+    // A3 (owner 2026-10-02): images appear ONLY inside cards. A web turn with no card at all (a wrong-model shopping result, a hotel
+    // listing the card could not carry) used to show one product thumbnail alone, injected into the prose. The order / review LINKS
+    // the injector wrote stay; the pictures go. Clients that do not render cards (Android, iOS) keep their injected photos.
+    const enrichedProse = collector?.rendersDecisionCard === true && !decisionCardRenders
+      ? dropEmptyMediaBlocks(stripModelMediaInProse(injectedProse, earliestMarker(injectedProse)))
+      : injectedProse
     /**
      * PLAN PRICE PROVENANCE. Every money guard below reads `proseOnly(text)`, so
      * the [TAPPY_PLAN] block — the one structured payload the client renders as
@@ -2577,7 +2587,7 @@ export function applyPlaceEnrichmentStreamFilter(
     const consultPatches: string[] = []
     if (unlabelled !== budgeted) consultPatches.push('reason_labels')
     if (pickNormalized !== unlabelled) consultPatches.push(/\*\*Mình chọn:/.test(unlabelled) ? 'pick_sentence_form' : 'pick_sentence_added')
-    const withRemaining = collector?.consultButtons?.length ? consultRemainingLine(pickNormalized, consultCandidates, lang) : pickNormalized
+    const withRemaining = consultRemainingLineN(pickNormalized, footerRemaining(placesView), lang, { add: !!collector?.consultButtons?.length })
     const placeGuarded = collector?.consultButtons?.length
       ? `${withRemaining.replace(/\[FOLLOWUPS\][^\n]*?(?:\[\/FOLLOWUPS\]|\n|$)/gi, '').trimEnd()}\n\n[FOLLOWUPS]${collector.consultButtons.join('|')}[/FOLLOWUPS]`
       : withRemaining
@@ -3008,7 +3018,7 @@ export function applyPlaceEnrichmentStreamFilter(
         return { text: body, filled: [...h.hidden, 'missing_stage'] }
       })()
       if (emptyFilled.filled.length) console.log(JSON.stringify({ type: 'tappyai_plan_empty_sections', hidden: emptyFilled.filled }))
-      const withLine = collector?.consultButtons?.length ? consultRemainingLine(emptyFilled.text, consultCandidates, lang) : emptyFilled.text
+      const withLine = consultRemainingLineN(emptyFilled.text, footerRemaining(placesView), lang, { add: !!collector?.consultButtons?.length })
       // Safety net (replay 29/09): the guards can leave a consult reply with NO words (a compare whose every
       // sentence lacked evidence) — the user then sees only buttons. One honest sentence is put back.
       const proseOnly = withLine.replace(/\[(FOLLOWUPS|CTA_BUTTONS|TAPPY_[A-Z_]+)\][\s\S]*?\[\/\1\]/g, '')
@@ -3141,7 +3151,13 @@ export function applyPlaceEnrichmentStreamFilter(
     // prose before anything is appended; without the flag, `prose` is untouched.
     // F-043 risk-first backstop (buffered path). The live path runs the same function on the
     // finish frame. Fixed text only; see `riskBackstop.ts`.
-    const ctaOwnedProse = riskBackstopped(serverCta ? stripModelCta(prose) : prose)
+    const ctaOwnedProseBase = riskBackstopped(serverCta ? stripModelCta(prose) : prose)
+    // A3 (2026-10-02): the code-built block of the «only another model found» turn (wrongModel.ts): its sentence, then one search link per marketplace
+    // (hosts and grammars from the CCP registry via buildShoppingLinks), each line through the sanitiser and the label escaper like every other site.
+    const appendixLines = collector?.appendix ? collector.appendix.links.map(l => `- [${escapeMarkdownLabel(l.name)}](${sanitizeUrlForMarkdown(l.url)})`) : []
+    const ctaOwnedProse = collector?.appendix
+      ? insertBeforeMarkers(ctaOwnedProseBase, [collector.appendix.text, appendixLines.join('\n')].filter(Boolean).join('\n\n'))
+      : ctaOwnedProseBase
     const ctaSuffix = serverCta ? `\n\n${serverCta}` : ''
     /**
      * Route / event / film handoffs the platform resolved (`_tappy_commerce`) reach the user through

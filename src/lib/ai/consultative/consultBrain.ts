@@ -230,6 +230,20 @@ export function placeTypeFor(domain: ConsultDomain | undefined): 'restaurant' | 
 }
 
 /**
+ * The same line with N given by the CARD SET (A3, owner 2026-10-02): `footerRemaining(placesView)` — hidden cards, 0 when no card
+ * is shown. The model's own count line in any wording is removed; the server's line is added only when n > 0. The line goes
+ * before the first structured block even when that block follows the prose on the same line.
+ */
+export function consultRemainingLineN(text: string, n: number, lang: string, opts: { add?: boolean } = {}): string {
+  const vi = /(?:Mình\s+)?[Cc]òn(?:\s+khoảng)?\s+\d+\s+lựa chọn[^\n]*/g, en = /I have \d+ more option[^\n]*/g
+  const stripped = text.replace(vi, '').replace(en, '').replace(/\n{3,}/g, '\n\n').trimEnd()
+  if (!(n > 0) || opts.add === false) return stripped
+  const line = remainingLine(n, lang) ?? (lang === 'en' ? `I have ${n} more option${n > 1 ? 's' : ''} — want to see more?` : `Mình còn ${n} lựa chọn nữa, muốn xem thêm không?`)
+  const m = /\[(?:CTA_BUTTONS|FOLLOWUPS|TAPPY_[A-Z_]+)\]/.exec(stripped)
+  return m ? `${stripped.slice(0, m.index).trimEnd()}\n\n${line}\n\n${stripped.slice(m.index)}` : `${stripped}\n\n${line}`
+}
+
+/**
  * "Mình còn N lựa chọn nữa, muốn xem thêm không?" — counted by code (owner §5.3): N = candidates the
  * search returned that this reply does not name. A model-written count is corrected; none → removed.
  */
