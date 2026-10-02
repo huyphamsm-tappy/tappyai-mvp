@@ -6,9 +6,10 @@ import org.junit.Test
 import java.io.File
 
 /**
- * The Scam Shield wording is COPIED from the web, word for word: `src/lib/i18n/scamVerdict.ts` and `scamQr.ts` at origin/rc/web-uat
- * @ 56a26aeb72d3ae1dacb484885df04e6976d5d84e (docs/uat/SCAM-SHIELD-PARITY.md section 8). This table was generated from those two files;
- * each row is (Android string name, Vietnamese, English). If the web changes a sentence, this test fails until the Android string follows.
+ * The Scam Shield wording is COPIED from the web, word for word: `src/lib/i18n/scamVerdict.ts`, `scamQr.ts`, `share.ts` and the
+ * `scamShield.error.*` lines of `dictionaries.ts` at origin/rc/web-uat @ 56a26aeb72d3ae1dacb484885df04e6976d5d84e (docs/uat/SCAM-SHIELD-PARITY.md
+ * section 8). This table was generated from those files; each row is (Android string name, Vietnamese, English). If the web changes a
+ * sentence, this test fails until the Android string follows.
  */
 class ScamWordingCopyTest {
 
@@ -32,6 +33,10 @@ class ScamWordingCopyTest {
         Triple("scam_verdict_scenario_heading", "Tình huống tương ứng", "Matching scenario"),
         Triple("scam_verdict_scenario_number", "Kịch bản số %1\$d trong danh sách của Bộ Công an", "Scenario #%1\$d in the Ministry of Public Security list"),
         Triple("scam_verdict_scenario_report", "Báo ngay cho Công an nơi gần nhất hoặc gọi 113 nếu nghi ngờ bị lừa.", "Report to the nearest police station or call 113 if you suspect a scam."),
+        Triple("scam_verdict_scenario_signs", "Dấu hiệu nhận biết (theo bài viết)", "Warning signs (from the article)"),
+        Triple("scam_verdict_scenario_source", "Thông tin từ nguồn chính thức", "Information from an official source"),
+        Triple("scam_verdict_scenario_source_open", "Xem bài viết gốc", "Open the original article"),
+        Triple("scam_verdict_scenario_guidance_note", "Phần dấu hiệu và lời khuyên do TappyAI biên soạn từ nguồn chính thức, không phải trích dẫn nguyên văn.", "The signs and advice were written by TappyAI from the official material, not quoted verbatim."),
         Triple("scam_verdict_msg_subtitle", "Dán tin nhắn hoặc mô tả ngắn tình huống đáng ngờ. TappyAI đối chiếu với các tình huống lừa đảo đã được Bộ Công an cảnh báo.", "Paste a message or briefly describe a suspicious situation. TappyAI compares it with the scam scenarios the Ministry of Public Security has warned about."),
         Triple("scam_verdict_msg_privacy", "Đối chiếu bằng danh sách tình huống và quy tắc có sẵn: không dùng AI, không lưu nội dung tin nhắn.", "Matched against a built-in list of scenarios and rules: no AI is used and the message text is not stored."),
         Triple("scam_qr_no_verdict", "TappyAI chưa kiểm tra nội dung này. Đừng làm theo hướng dẫn trong đó nếu bạn không chắc; hãy xác minh qua kênh chính thức.", "TappyAI has not checked this content. Do not follow instructions in it if you are unsure; verify through an official channel."),
@@ -56,16 +61,30 @@ class ScamWordingCopyTest {
         Triple("scam_qr_title", "Mã QR này không chứa đường link web", "This QR code does not contain a web link"),
         Triple("scam_qr_content", "Nội dung đọc được", "What was read"),
         Triple("scam_qr_privacy", "Ảnh QR được đọc ngay trên thiết bị của bạn và không được tải lên máy chủ.", "The QR image is read on your device and is not uploaded to a server."),
+        Triple("scam_share_button", "Cảnh báo cho mọi người", "Warn your group"),
+        Triple("scam_share_hint", "Tạo trang công khai với kết quả kiểm tra để gửi vào nhóm Zalo, Messenger…", "Creates a public page with this verdict to send into Zalo, Messenger…"),
+        Triple("scam_share_title", "Kiểm tra lừa đảo: %1\$s — TappyAI", "Scam check: %1\$s — TappyAI"),
+        Triple("scam_share_failed", "Không thể tạo liên kết lúc này", "Could not create the link right now"),
+        Triple("scam_shield_error_invalid_url", "URL không hợp lệ", "Invalid URL"),
+        Triple("scam_shield_error_private_url", "Không thể kiểm tra địa chỉ mạng nội bộ", "Cannot check internal network addresses"),
+        Triple("scam_shield_error_rate_limit", "Bạn đã kiểm tra quá nhiều lần. Thử lại sau.", "Too many checks. Try again later."),
+        Triple("scam_shield_error_daily_limit", "Đã hết lượt kiểm tra hôm nay. Quay lại ngày mai.", "Daily check limit reached. Come back tomorrow."),
+        Triple("scam_shield_error_generic", "Không thể kiểm tra URL", "Could not check this URL"),
+        Triple("scam_shield_error_qr_decode", "Không thể đọc mã QR", "Could not read QR code"),
+        Triple("scam_shield_error_qr_no_url", "Mã QR không chứa liên kết", "QR code does not contain a link"),
+        Triple("scam_shield_error_qr_failed", "Không thể kiểm tra mã QR", "Could not check QR code"),
     )
 
     private fun root(): File = generateSequence(File(".").absoluteFile) { it.parentFile }
         .first { File(it, "app/src/main/java/com/tappyai/app").isDirectory }
 
     private fun strings(dir: String): Map<String, String> {
-        val xml = File(root(), "app/src/main/res/$dir/strings_scam_local.xml").readText()
         val out = HashMap<String, String>()
-        for (m in Regex("""<string name="([a-z_0-9]+)">([^<]*)</string>""").findAll(xml)) {
-            out[m.groupValues[1]] = m.groupValues[2].replace("\\'", "'").replace("&amp;", "&")
+        for (f in listOf("strings_scam_local.xml", "strings_scam_shield.xml")) {
+            val xml = File(root(), "app/src/main/res/$dir/$f").readText()
+            for (m in Regex("""<string name="([a-z_0-9]+)"[^>]*>([^<]*)</string>""").findAll(xml)) {
+                out[m.groupValues[1]] = m.groupValues[2].replace("\\'", "'").replace("&amp;", "&")
+            }
         }
         return out
     }
@@ -73,7 +92,7 @@ class ScamWordingCopyTest {
     @Test fun `every sentence equals the web's, in Vietnamese and in English`() {
         val vi = strings("values-vi")
         val en = strings("values")
-        assertTrue(expected.size >= 40)
+        assertTrue(expected.size >= 55)
         expected.forEach { (name, wantVi, wantEn) ->
             assertEquals("vi $name", wantVi, vi[name])
             assertEquals("en $name", wantEn, en[name])

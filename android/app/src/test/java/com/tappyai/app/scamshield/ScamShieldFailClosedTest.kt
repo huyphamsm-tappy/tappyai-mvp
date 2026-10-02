@@ -108,7 +108,7 @@ class ScamShieldFailClosedTest {
         )
         assertTrue(
             "Only a backend verdict may render VerdictCard",
-            Regex("""as\? ScamShieldUiState\.Result\)\?\.let \{ VerdictCard\(it\.result\) \}""").containsMatchIn(screen),
+            Regex("""as\? ScamShieldUiState\.Result\)\?\.let \{ r ->\s+VerdictCard\(\s+result = r\.result,""").containsMatchIn(screen),
         )
         assertTrue(
             "Only a backend message verdict may render MessageResultCard",
@@ -147,13 +147,14 @@ class ScamShieldFailClosedTest {
     fun `the only network call is the backend check endpoint`() {
         val api = File(packageDir, "data/ScamShieldApi.kt").readText()
         assertTrue(api.contains("api/scam-shield/check"))
-        // 02/10: TWO routes, both the backend engine's (the link, the message). A QR code is decoded ON THE DEVICE and only the
-        // LINK it carries goes to the link route — the picture is never uploaded, so the app has no QR route — and still nothing
+        // 02/10: THREE routes, all the backend engine's (the link, the message, the share of a link verdict). A QR code is decoded ON THE DEVICE
+        // and only the LINK it carries goes to the link route — the picture is never uploaded, so the app has no QR route — and still nothing
         // that could fetch a blocklist to evaluate on-device.
-        assertEquals(2, Regex("""@(GET|POST|PUT|DELETE|PATCH)""").findAll(api).count())
+        assertEquals(3, Regex("""@(GET|POST|PUT|DELETE|PATCH)""").findAll(api).count())
         assertTrue("no QR upload route", !api.contains("@POST(\"api/scam-shield/qr\")") && !api.contains("Multipart"))
         assertTrue(api.contains("api/scam-shield/analyze"))
-        assertEquals(2, Regex("""@POST\("api/scam-shield/""").findAll(api).count())
+        assertEquals(3, Regex("""@POST\("api/scam-shield/""").findAll(api).count())
+        assertTrue(api.contains("api/scam-shield/share"))
     }
 
     // ---------------------------------------------------------------- error mapping

@@ -35,9 +35,6 @@
     <string name="scam_verdict_msg_privacy">Đối chiếu bằng danh sách tình huống và quy tắc có sẵn: không dùng AI, không lưu nội dung tin nhắn.</string>
 
     <!-- Chia sẻ kết quả: văn bản thường, KHÔNG kèm tin gốc hay nội dung mã -->
-    <string name="scam_known_share">Tin nhắn tôi nhận được giống thủ đoạn lừa đảo «%1$s» trong cảnh báo của Bộ Công an. Kiểm tra thêm tại %2$s</string>
-    <string name="scam_verdict_share_unrecognized">Tôi vừa kiểm tra một tin nhắn bằng TappyAI: chưa nhận ra dấu hiệu quen thuộc (điều này không có nghĩa là an toàn). Kiểm tra thêm tại %1$s</string>
-    <string name="scam_share_result">Chia sẻ kết quả</string>
 
     <!-- QR KHÔNG phải link -->
     <string name="scam_qr_title">Mã QR này không chứa đường link web</string>
@@ -60,14 +57,20 @@
     <string name="scam_qr_warn_app_link">Đây là liên kết mở một ứng dụng khác. TappyAI không tự mở nó; chỉ mở nếu bạn tin người gửi.</string>
     <string name="scam_qr_warn_text">Nội dung này chưa được kiểm tra. Đừng làm theo hướng dẫn trong đó nếu bạn không chắc.</string>
     <string name="scam_qr_content">Nội dung đọc được</string>
-    <string name="scam_qr_content_wifi">Tên mạng Wi-Fi (mật khẩu không hiển thị)</string>
     <string name="scam_qr_privacy">Ảnh QR được đọc ngay trên thiết bị của bạn và không được tải lên máy chủ.</string>
     <string name="scam_qr_no_verdict">TappyAI chưa kiểm tra nội dung này. Đừng làm theo hướng dẫn trong đó nếu bạn không chắc; hãy xác minh qua kênh chính thức.</string>
-    <string name="scam_qr_share">Tôi vừa quét một mã QR và kiểm tra bằng TappyAI (%1$s). Kiểm tra thêm tại %2$s</string>
 
     <!-- Chỉ dùng khi cờ AI phân tích tin nhắn BẬT (hiện TẮT) -->
-    <string name="scam_ai_consent_title">Gửi tin nhắn cho AI phân tích?</string>
-    <string name="scam_ai_consent_body">Tin nhắn này không khớp chắc với thủ đoạn nào đã biết. Để phân tích tiếp, nội dung (và ảnh nếu có) sẽ được gửi tới máy chủ TappyAI và nhà cung cấp AI (OpenAI) chỉ để trả kết quả này. TappyAI không lưu nội dung tin nhắn.</string>
-    <string name="scam_ai_consent_accept">Đồng ý gửi</string>
-    <string name="scam_ai_consent_decline">Không gửi</string>
+
+    <!-- Tình huống khớp (web `scamVerdict.scenario.*`) -->
+    <string name="scam_verdict_scenario_signs">Dấu hiệu nhận biết (theo bài viết)</string>
+    <string name="scam_verdict_scenario_source">Thông tin từ nguồn chính thức</string>
+    <string name="scam_verdict_scenario_source_open">Xem bài viết gốc</string>
+    <string name="scam_verdict_scenario_guidance_note">Phần dấu hiệu và lời khuyên do TappyAI biên soạn từ nguồn chính thức, không phải trích dẫn nguyên văn.</string>
+
+    <!-- Chia sẻ kết quả kiểm LINK (web `share.scam.*`, `share.publishFailed`) -->
+    <string name="scam_share_button">Cảnh báo cho mọi người</string>
+    <string name="scam_share_hint">Tạo trang công khai với kết quả kiểm tra để gửi vào nhóm Zalo, Messenger…</string>
+    <string name="scam_share_title">Kiểm tra lừa đảo: %1$s — TappyAI</string>
+    <string name="scam_share_failed">Không thể tạo liên kết lúc này</string>
 </resources>

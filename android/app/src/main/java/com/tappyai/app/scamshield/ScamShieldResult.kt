@@ -1,5 +1,8 @@
 package com.tappyai.app.scamshield
 
+import androidx.compose.material.icons.filled.Share
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material.icons.automirrored.filled.MenuBook
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -159,7 +162,7 @@ private fun VerdictHead(tone: LevelTone, title: String, subline: String?, sublin
 
 /** `ScamShieldResult`: the URL verdict; the whole card takes the level's tint. */
 @Composable
-internal fun VerdictCard(result: ScamCheckResult) {
+internal fun VerdictCard(result: ScamCheckResult, shareBusy: Boolean = false, shareError: String? = null, onShare: (() -> Unit)? = null) {
     val kind = VerdictKind.forLink(result)
     val tone = toneFor(kind)
     val titleRes = when (kind) {
@@ -177,12 +180,42 @@ internal fun VerdictCard(result: ScamCheckResult) {
         Column(modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
             // Never "this link is a scam" and never "safe": the wording is the web's (`scamVerdict.link.*`).
             Text(text = stringResource(bodyRes), color = HomeV3.OnSurface, fontSize = 13.5.sp, lineHeight = 19.sp, fontWeight = FontWeight.SemiBold)
-            val reasons = result.evidence.filter { it.severity == SignalSeverity.WARNING || it.severity == SignalSeverity.CRITICAL }.take(4)
+            val reasons = result.evidence.filter { it.severity == SignalSeverity.WARNING || it.severity == SignalSeverity.CRITICAL }.take(6)
             if (reasons.isNotEmpty()) ReasonsSection(reasons)
             result.officialMatch?.let { OfficialSection(it) }
-            if (result.actions.isNotEmpty()) ActionsSection(result.actions)
-            if (result.evidence.isNotEmpty()) EvidenceSection(result.evidence)
+            // The web shows the engine's INCONCLUSIVE action only as the body above ("not repeated").
+            val actions = if (kind == VerdictKind.Unrecognized) result.actions.filter { it.code != "INCONCLUSIVE" } else result.actions
+            if (actions.isNotEmpty()) ActionsSection(actions)
+            if (onShare != null) ShareLinkButton(busy = shareBusy, error = shareError, onClick = onShare)
+            // Rows that read as reassurance ("certificate valid", "not on a blocklist") are not shown (web `EvidenceSection`).
+            val details = result.evidence.filter { it.severity != SignalSeverity.SAFE }
+            if (details.isNotEmpty()) EvidenceSection(details)
             DisclaimerLine()
+        }
+    }
+}
+
+/** "Cảnh báo cho mọi người" (web `ScamShareButton`): publishes the link verdict as a public page and shares its URL; the hint says so. */
+@Composable
+private fun ShareLinkButton(busy: Boolean, error: String?, onClick: () -> Unit) {
+    Column {
+        Row(
+            modifier = Modifier
+                .heightIn(min = 44.dp)
+                .clip(RoundedCornerShape(12.dp))
+                .background(HomeV3.Purple)
+                .clickable(enabled = !busy, role = Role.Button, onClick = onClick)
+                .padding(horizontal = 16.dp, vertical = 10.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            if (busy) CircularProgressIndicator(modifier = Modifier.size(16.dp), strokeWidth = 2.dp, color = Color.White)
+            else Icon(Icons.Filled.Share, contentDescription = null, tint = Color.White, modifier = Modifier.size(16.dp))
+            Text(text = stringResource(R.string.scam_share_button), color = Color.White, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
+        }
+        Text(text = stringResource(R.string.scam_share_hint), color = HomeV3.OnSurfaceVariant, fontSize = 12.sp, lineHeight = 16.sp, modifier = Modifier.padding(top = 6.dp))
+        if (error != null) {
+            Text(text = error?.takeIf { it.isNotBlank() } ?: stringResource(R.string.scam_share_failed), color = V3Tone.Rose, fontSize = 12.sp, modifier = Modifier.padding(top = 4.dp))
         }
     }
 }
@@ -397,68 +430,98 @@ internal fun attackGoalRes(key: String): Int? = when (key) {
     else -> null
 }
 
-/** `AnalysisNote`: how the verdict was reached, plus the GLOBAL Tappy AI counter. */
+/**
+ * The matched official scenario (web `ScenarioCard`, familiar / suspicious states): which one, the article's signs, and the source block.
+ * Static, sourced text — a model never authored any of it. Ends with the web's rose line ("call 113").
+ */
 @Composable
-private fun AnalysisNote(result: MessageAnalysis) {
-    val q = result.quota
-    val period = if (q?.period == "lifetime") stringResource(R.string.scam_v3_msg_perLifetime) else stringResource(R.string.scam_v3_msg_perDay)
-    val n = q?.limit?.toString() ?: ""
-    val used = (q?.used ?: q?.limit)?.toString() ?: ""
-    val line = when (result.aiStatus) {
-        "used" -> stringResource(R.string.scam_v3_msg_aiUsed)
-        "not_needed" -> stringResource(R.string.scam_v3_msg_aiNotNeeded)
-        "quota_exhausted" -> stringResource(R.string.scam_v3_msg_aiQuota, used, n, period)
-        "unavailable" -> stringResource(R.string.scam_v3_msg_aiUnavailable)
-        else -> stringResource(R.string.scam_v3_msg_aiFailed)
-    }
-    val counter = when {
-        q == null -> null
-        q.pro -> stringResource(R.string.scam_v3_msg_aiPro)
-        q.period == "lifetime" -> stringResource(R.string.scam_v3_msg_aiLeft, (q.remaining ?: 0).toString(), q.limit.toString())
-        else -> stringResource(R.string.scam_v3_msg_aiToday, (q.used ?: q.limit).toString(), q.limit.toString())
-    }
-    Column(modifier = Modifier.padding(top = 16.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-        Row(verticalAlignment = Alignment.Top, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            Icon(Icons.Filled.AutoAwesome, contentDescription = null, tint = HomeV3.OnSurfaceVariant, modifier = Modifier.padding(top = 2.dp).size(13.dp))
-            Text(text = line, color = HomeV3.OnSurfaceVariant, fontSize = 12.sp, lineHeight = 16.sp)
+private fun ScenarioCard(scenario: MessageScenario) {
+    val uriHandler = LocalUriHandler.current
+    val shape = RoundedCornerShape(12.dp)
+    Column(modifier = Modifier.padding(top = 16.dp).fillMaxWidth().clip(shape).background(HomeV3.Surface).padding(14.dp)) {
+        SectionHeading(Icons.AutoMirrored.Filled.MenuBook, stringResource(R.string.scam_verdict_scenario_heading))
+        Text(text = scenario.title, color = HomeV3.OnSurface, fontSize = 14.5.sp, fontWeight = FontWeight.Bold)
+        Text(text = stringResource(R.string.scam_verdict_scenario_number, scenario.officialNumber), color = HomeV3.OnSurfaceVariant, fontSize = 12.sp, modifier = Modifier.padding(top = 2.dp))
+        if (scenario.summary.isNotBlank()) {
+            Text(text = scenario.summary, color = HomeV3.OnSurfaceVariant, fontSize = 13.sp, lineHeight = 18.sp, modifier = Modifier.padding(top = 8.dp))
         }
-        if (counter != null && q != null) {
-            val guestTail = if (q.exhausted && q.period == "lifetime") " · " + stringResource(R.string.scam_v3_msg_aiQuotaGuest, ScamShieldViewModel.FREE_DAILY_LIMIT.toString()) else ""
-            Text(
-                text = counter + guestTail,
-                color = if (q.exhausted) V3Tone.Rose else HomeV3.OnSurfaceVariant,
-                fontSize = 12.sp,
-                lineHeight = 16.sp,
-                fontWeight = FontWeight.SemiBold,
-                modifier = Modifier.padding(start = 21.dp),
-            )
+        if (scenario.warningSigns.isNotEmpty()) {
+            Column(modifier = Modifier.padding(top = 12.dp)) {
+                Text(text = stringResource(R.string.scam_verdict_scenario_signs), color = HomeV3.OnSurfaceVariant, fontSize = 12.5.sp, fontWeight = FontWeight.SemiBold)
+                Column(modifier = Modifier.padding(top = 4.dp, start = 8.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                    scenario.warningSigns.forEach { w ->
+                        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                            Text(text = "•", color = HomeV3.OnSurface, fontSize = 12.5.sp)
+                            Text(text = w, color = HomeV3.OnSurface, fontSize = 12.5.sp, lineHeight = 17.sp)
+                        }
+                    }
+                }
+            }
         }
+        Column(modifier = Modifier.padding(top = 12.dp).fillMaxWidth().clip(RoundedCornerShape(8.dp)).background(HomeV3.SurfaceVariant).padding(10.dp)) {
+            Text(text = stringResource(R.string.scam_verdict_scenario_source), color = HomeV3.OnSurfaceVariant, fontSize = 12.5.sp, fontWeight = FontWeight.SemiBold)
+            Text(text = "${scenario.sourceOrganization} — ${scenario.sourceTitle}", color = HomeV3.OnSurface, fontSize = 12.5.sp, modifier = Modifier.padding(top = 2.dp))
+            if (scenario.sourceUrl.isNotBlank()) {
+                Row(
+                    modifier = Modifier.padding(top = 4.dp).clickable(role = Role.Button) { runCatching { uriHandler.openUri(scenario.sourceUrl) } },
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                ) {
+                    Icon(Icons.AutoMirrored.Filled.OpenInNew, contentDescription = null, tint = HomeV3.Purple, modifier = Modifier.size(13.dp))
+                    Text(text = stringResource(R.string.scam_verdict_scenario_source_open), color = HomeV3.Purple, fontSize = 12.5.sp, fontWeight = FontWeight.SemiBold, textDecoration = TextDecoration.Underline)
+                }
+            }
+            Text(text = stringResource(R.string.scam_verdict_scenario_guidance_note), color = HomeV3.OnSurfaceVariant, fontSize = 11.5.sp, lineHeight = 15.sp, modifier = Modifier.padding(top = 6.dp))
+        }
+        Text(text = stringResource(R.string.scam_verdict_scenario_report), color = V3Tone.Rose, fontSize = 12.5.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.padding(top = 12.dp))
     }
 }
 
 /**
- * `ScamMessageResult`: verdict → why → what they want → what NOT to do → what to do now → the
- * links → the extracted text → how the analysis was reached. NOT written to the device history.
+ * `ScamMessageResult` (web `ScamMessageResult.tsx`): the three-state verdict, the matched scenario, the goal, the signals, what they want,
+ * what NOT to do, what to do now, the links, the extracted text, then "TappyAI does not replace the authorities". The verdict, scenario,
+ * signals and advice are the SERVER's. NOT written to the device history; no score, no confidence, no quota line.
  */
 @Composable
 internal fun MessageResultCard(result: MessageAnalysis) {
-    val tone = toneFor(result.level)
-    val dangerous = result.level == RiskLevel.MEDIUM || result.level == RiskLevel.HIGH || result.level == RiskLevel.CRITICAL
-    val typeLabel = result.scamType?.let { scamTypeRes(it) }?.let { stringResource(it) }
+    val kind = VerdictKind.fromWire(result.verdict) ?: VerdictKind.fromRisk(result.level)
+    val tone = toneFor(kind)
+    val dangerous = kind != VerdictKind.Unrecognized
+    val typeLabel = if (dangerous) result.scamType?.let { scamTypeRes(it) }?.let { stringResource(it) } else null
+    val titleRes = when (kind) {
+        VerdictKind.Familiar -> R.string.scam_verdict_familiar
+        VerdictKind.Suspicious -> R.string.scam_verdict_suspicious
+        VerdictKind.Unrecognized -> R.string.scam_verdict_unrecognized
+    }
+    val bodyRes = when (kind) {
+        VerdictKind.Familiar -> R.string.scam_verdict_familiar_body
+        VerdictKind.Suspicious -> R.string.scam_verdict_suspicious_body
+        VerdictKind.Unrecognized -> R.string.scam_verdict_unrecognized_body
+    }
     Column(modifier = Modifier.fillMaxWidth().clip(V3PanelShape).background(tone.soft).border(1.dp, tone.border, V3PanelShape)) {
-        VerdictHead(tone = tone, title = stringResource(tone.labelRes), subline = typeLabel, sublineBold = true)
+        VerdictHead(tone = tone, title = stringResource(titleRes), subline = typeLabel, sublineBold = true)
 
         Column(modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp)) {
-            // The plain-language summary — the model's, or the server's deterministic fallback.
-            if (result.reasoningSummary.isNotBlank()) {
+            Text(
+                text = stringResource(bodyRes),
+                color = HomeV3.OnSurface,
+                fontSize = 13.5.sp,
+                lineHeight = 20.sp,
+                modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(12.dp)).background(HomeV3.Surface).padding(14.dp),
+            )
+
+            // Only a model-written summary (the server's AI switch ON) is shown here; the static wording is the body above.
+            if (result.aiStatus == "used" && result.reasoningSummary.isNotBlank()) {
                 Text(
                     text = result.reasoningSummary,
                     color = HomeV3.OnSurface,
                     fontSize = 13.5.sp,
                     lineHeight = 20.sp,
-                    modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(12.dp)).background(HomeV3.Surface).padding(14.dp),
+                    modifier = Modifier.padding(top = 12.dp).fillMaxWidth().clip(RoundedCornerShape(12.dp)).background(HomeV3.Surface).padding(14.dp),
                 )
             }
+
+            result.scenario?.let { ScenarioCard(it) }
 
             result.attackGoal?.let { attackGoalRes(it) }?.let { goalRes ->
                 Column(modifier = Modifier.padding(top = 16.dp)) {
@@ -467,11 +530,13 @@ internal fun MessageResultCard(result: MessageAnalysis) {
                 }
             }
 
-            if (result.signals.isNotEmpty()) {
+            // The web hides the generic "other / rule" signal when a scenario matched.
+            val signals = result.signals.filterNot { result.scenario != null && it.type == "other" && it.source == "rule" }
+            if (signals.isNotEmpty()) {
                 Column(modifier = Modifier.padding(top = 16.dp)) {
-                    SectionHeading(Icons.Filled.Info, stringResource(R.string.scam_v3_msg_why))
+                    SectionHeading(Icons.Filled.Info, stringResource(R.string.scam_verdict_reasons))
                     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                        result.signals.forEach { s ->
+                        signals.forEach { s ->
                             Row(
                                 modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(8.dp)).background(HomeV3.SurfaceVariant).padding(10.dp),
                                 verticalAlignment = Alignment.Top,
@@ -567,7 +632,7 @@ internal fun MessageResultCard(result: MessageAnalysis) {
                 }
             }
 
-            AnalysisNote(result)
+            DisclaimerLine(modifier = Modifier.padding(top = 16.dp))
         }
     }
 }
@@ -584,13 +649,12 @@ internal fun MessageResultCard(result: MessageAnalysis) {
  */
 @Composable
 internal fun UnresolvedCard(failure: ScamCheckFailure, forMessage: Boolean = false) {
-    // The message tab's unmapped failures read as "could not analyze this message" — the web's
-    // `runMessage` catch-all — never as a sentence about a link.
+    // Web `ScamShieldView`: a refusal code maps to its dictionary line (`ERROR_KEYS`), anything else — a network failure, a body we could
+    // not read — is "checkFailed" (link / QR tabs) or "errFailed" (message tab). The server's own `message` is not shown.
     val message = when (failure) {
-        is ScamCheckFailure.Refused -> failure.serverMessage ?: stringResource(localFallbackFor(failure.code, forMessage))
-        ScamCheckFailure.Offline -> stringResource(R.string.scam_shield_error_offline)
-        ScamCheckFailure.Timeout -> stringResource(R.string.scam_shield_error_timeout)
-        ScamCheckFailure.Unknown -> stringResource(if (forMessage) R.string.scam_v3_msg_errFailed else R.string.scam_shield_error_generic)
+        is ScamCheckFailure.Refused -> stringResource(localFallbackFor(failure.code, forMessage))
+        ScamCheckFailure.Offline, ScamCheckFailure.Timeout, ScamCheckFailure.Unknown ->
+            stringResource(if (forMessage) R.string.scam_v3_msg_errFailed else R.string.scam_shield_error_generic)
     }
     val shape = RoundedCornerShape(12.dp)
     Text(

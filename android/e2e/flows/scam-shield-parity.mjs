@@ -146,9 +146,10 @@ export async function android({ a, shot, check, seeded }) {
 
   // 4) tin có link giả → chỉ link đi kiểm tra; không kết luận về tổ chức, nói «đặc điểm thường gặp ở link giả mạo»
   await runMessage(a, 'Vui lòng xác minh tài khoản tại https://vietcombank-xacthuc-taikhoan.top/login')
-  check('tin có link giả → thẻ link «Đường link có đặc điểm thường gặp ở link giả mạo» (hoặc «có một số điểm đáng ngờ»)', await seen(a, /Đường link có đặc điểm thường gặp ở link giả mạo|Đường link có một số điểm đáng ngờ/))
-  check('…kèm câu «không phải kết luận về một tổ chức hay tên miền cụ thể»', await seen(a, /không phải kết luận về một tổ chức hay tên miền cụ thể/, 3))
-  check('…kèm lý do cụ thể BẰNG TIẾNG VIỆT (không còn câu tiếng Anh của engine)', (await seen(a, /Lý do cụ thể/, 3)) && !a.dump().some((n) => /Domain has no|Could not verify SSL|This domain uses the name/.test(n.text || '')))
+  // Web `ScamMessageResult.tsx`: the message verdict (server), then «Liên kết trong tin nhắn» with the link's short badge.
+  check('tin có link giả → kết quả tin nhắn của server: «Có dấu hiệu lừa đảo quen thuộc» hoặc «đáng ngờ»', await seen(a, /Có dấu hiệu lừa đảo quen thuộc|Có một số dấu hiệu đáng ngờ/))
+  check('…kèm khối «Liên kết trong tin nhắn» với nhãn ngắn của web («Đặc điểm link giả mạo» / «Có điểm đáng ngờ»)', (await seen(a, /Liên kết trong tin nhắn/, 6)) && (await seen(a, /Đặc điểm link giả mạo|Có điểm đáng ngờ|Chưa nhận ra dấu hiệu$/, 3)))
+  check('…kèm «Không nên làm» / lời khuyên của server', await seen(a, /KHÔNG làm|Nên làm ngay/, 6))
   check('…không điểm, không «Độ tin cậy», không «Nguy cơ cao»', !a.dump().some((n) => FORBIDDEN.test((n.text || n.desc || '').trim()) || /^Nguy cơ cao$|^Rất nguy hiểm$/.test((n.text || '').trim())))
   shot('link-in-message')
   }
@@ -159,6 +160,7 @@ export async function android({ a, shot, check, seeded }) {
   await scanQr(a, 'qr-link-danger.png', shot)
   check('QR link giả → thẻ link «Đường link có đặc điểm thường gặp ở link giả mạo»', await seen(a, /Đường link có đặc điểm thường gặp ở link giả mạo|Đường link có một số điểm đáng ngờ/, 3))
   shot('qr-link-top')
+  check('thẻ link có nút «Cảnh báo cho mọi người» + dòng gợi ý của web (KHÔNG bấm: sẽ tạo trang công khai trên UAT)', (await seen(a, /Cảnh báo cho mọi người/, 8)) && a.visible(/Tạo trang công khai/))
   check('…không điểm, không «Độ tin cậy», không «An toàn»', !a.dump().some((n) => FORBIDDEN.test((n.text || n.desc || '').trim())))
 
   // 6) QR chữ / thanh toán / Wi-Fi → nêu loại, không hành động, không gửi ảnh
@@ -170,7 +172,7 @@ export async function android({ a, shot, check, seeded }) {
   check('QR thanh toán → «Loại mã: thanh toán»', a.visible(/Loại mã: thanh toán/))
   await reopen(a)
   await scanQr(a, 'qr-wifi.png', shot)
-  check('QR Wi-Fi → hiện tên mạng, KHÔNG hiện mật khẩu', (await seen(a, /Cafe Mo/, 3)) && !a.visible(/matkhau/))
+  check('QR Wi-Fi → hiện «Nội dung đọc được» đúng như web (văn bản đã giải mã, gồm cả mật khẩu của chính mã đó)', (await seen(a, /Cafe Mo/, 3)) && a.visible(/matkhau/))
 
   // 7) huỷ chọn ảnh → không sập
   await a.back(); await a.sleep(1200)

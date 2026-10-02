@@ -270,11 +270,15 @@ export class Recorder {
 
 // ── share targets (stand-in Zalo / TikTok / Messenger from android/e2e/share-stub) ──────────────
 const STUB_DIR = path.resolve(path.dirname(new URL(import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, '$1')), '../share-stub/build/outputs/apk')
+const STUB_PACKAGES = { zalo: 'com.zing.zalo', tiktok: 'com.zhiliaoapp.musically', messenger: 'com.facebook.orca' }
+/** The share stubs REUSE the real apps' package ids. Only ever on an emulator: on a phone with the real app they would overwrite or remove it. */
 export function installShareStubs() {
+  if (!SERIAL.startsWith('emulator')) throw new Error('BLOCKED — REAL ZALO PACKAGE CONFLICT: the share stubs use the real apps package ids; not installed on a real phone (manual share test)')
   for (const f of ['zalo', 'tiktok', 'messenger']) adb(['install', '-r', path.join(STUB_DIR, f, 'debug', `share-stub-${f}-debug.apk`)])
 }
 export function uninstallShareStubs() {
-  for (const p of ['com.zing.zalo', 'com.zhiliaoapp.musically', 'com.facebook.orca']) adb(['uninstall', p], { allowFail: true })
+  if (!SERIAL.startsWith('emulator')) return // never remove a real app from a real phone
+  for (const p of Object.values(STUB_PACKAGES)) adb(['uninstall', p], { allowFail: true })
 }
 export const clearLog = () => adb(['logcat', '-c'], { allowFail: true })
 /** The shares the stubs received since [clearLog], parsed. */

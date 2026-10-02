@@ -78,11 +78,11 @@ class QrCodesTest {
         assertEquals(QrPayload.Link("https://www.example.vn/x"), QrCodes.classify("www.example.vn/x"))
     }
 
-    @Test fun `a Wi-Fi code shows the network name and never the password`() {
+    @Test fun `a Wi-Fi code is named and its text is shown as read, like the web`() {
         val p = QrCodes.classify("WIFI:T:WPA;S:Cafe Mo;P:matkhau-bi-mat-123;;") as QrPayload.Other
         assertEquals(QrKind.Wifi, p.kind)
-        assertEquals("Cafe Mo", p.preview)
-        assertFalse(p.preview.contains("matkhau"))
+        // Web `ScamShieldView.tsx`: `setQrOther({ kind, text: decoded.text.slice(0, 500) })` — the decoded text, whole.
+        assertEquals("WIFI:T:WPA;S:Cafe Mo;P:matkhau-bi-mat-123;;", p.preview)
     }
 
     @Test fun `a bank payment code is a payment`() {

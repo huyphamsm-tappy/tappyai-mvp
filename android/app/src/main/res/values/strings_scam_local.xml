@@ -35,9 +35,6 @@
     <string name="scam_verdict_msg_privacy">Matched against a built-in list of scenarios and rules: no AI is used and the message text is not stored.</string>
 
     <!-- Sharing a result: plain text, NEVER the original message or the code content -->
-    <string name="scam_known_share">A message I received resembles the scam \"%1$s\" in the Ministry of Public Security warning. Check more at %2$s</string>
-    <string name="scam_verdict_share_unrecognized">I just checked a message with TappyAI: no familiar signs recognised (this does not mean it is safe). Check more at %1$s</string>
-    <string name="scam_share_result">Share result</string>
 
     <!-- QR that is NOT a link -->
     <string name="scam_qr_title">This QR code does not contain a web link</string>
@@ -60,14 +57,20 @@
     <string name="scam_qr_warn_app_link">This link opens another app. TappyAI will not open it; open it only if you trust whoever sent it.</string>
     <string name="scam_qr_warn_text">This content has not been checked. Do not follow instructions in it if you are not sure.</string>
     <string name="scam_qr_content">What was read</string>
-    <string name="scam_qr_content_wifi">Wi-Fi network name (the password is not shown)</string>
     <string name="scam_qr_privacy">The QR image is read on your device and is not uploaded to a server.</string>
     <string name="scam_qr_no_verdict">TappyAI has not checked this content. Do not follow instructions in it if you are unsure; verify through an official channel.</string>
-    <string name="scam_qr_share">I just scanned a QR code and checked it with TappyAI (%1$s). Check more at %2$s</string>
 
     <!-- Used only when the AI message-analysis flag is ON (currently OFF) -->
-    <string name="scam_ai_consent_title">Send this message to the AI?</string>
-    <string name="scam_ai_consent_body">This message does not clearly match a known scam. To analyse it further, its text (and screenshot, if any) is sent to the TappyAI server and its AI provider (OpenAI) only to produce this result. TappyAI does not store the message.</string>
-    <string name="scam_ai_consent_accept">Send</string>
-    <string name="scam_ai_consent_decline">Do not send</string>
+
+    <!-- The matched scenario (web `scamVerdict.scenario.*`) -->
+    <string name="scam_verdict_scenario_signs">Warning signs (from the article)</string>
+    <string name="scam_verdict_scenario_source">Information from an official source</string>
+    <string name="scam_verdict_scenario_source_open">Open the original article</string>
+    <string name="scam_verdict_scenario_guidance_note">The signs and advice were written by TappyAI from the official material, not quoted verbatim.</string>
+
+    <!-- Sharing a LINK verdict (web `share.scam.*`, `share.publishFailed`) -->
+    <string name="scam_share_button">Warn your group</string>
+    <string name="scam_share_hint">Creates a public page with this verdict to send into Zalo, Messenger…</string>
+    <string name="scam_share_title">Scam check: %1$s — TappyAI</string>
+    <string name="scam_share_failed">Could not create the link right now</string>
 </resources>

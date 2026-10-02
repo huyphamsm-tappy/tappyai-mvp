@@ -100,7 +100,7 @@ object QrCodes {
     /**
      * What a decoded QR text is. Pure. A web link is checked; everything else is only named and warned about.
      * A 1:1 port of the web's `classifyQrPayload` (`src/lib/scam-shield/qr/payload.ts`, origin/rc/web-uat) — same order, same patterns.
-     * The one deliberate difference: a Wi-Fi code's preview shows the network name only, never the password.
+     * Like the web, the preview is the decoded text as read (a Wi-Fi code included): the web shows it, and it is the reader's own scan.
      */
     fun classify(raw: String): QrPayload {
         val text = raw.trim()
@@ -110,7 +110,7 @@ object QrCodes {
         }
         // EMVCo merchant-presented payment QR (VietQR, bank apps): starts with the payload format indicator 000201 + two digits.
         if (Regex("""^000201\d{2}""").containsMatchIn(text)) return QrPayload.Other(QrKind.Payment, preview(text))
-        if (text.startsWith("WIFI:", ignoreCase = true)) return QrPayload.Other(QrKind.Wifi, previewWifi(text))
+        if (text.startsWith("WIFI:", ignoreCase = true)) return QrPayload.Other(QrKind.Wifi, preview(text))
         if (Regex("(?i)^(BEGIN:VCARD|MECARD:|BIZCARD:)").containsMatchIn(text)) return QrPayload.Other(QrKind.Contact, preview(text))
         if (text.startsWith("tel:", ignoreCase = true)) return QrPayload.Other(QrKind.Phone, preview(text))
         if (Regex("(?i)^(smsto?|mms|mmsto):").containsMatchIn(text)) return QrPayload.Other(QrKind.Sms, preview(text))
@@ -129,10 +129,4 @@ object QrCodes {
     private const val PREVIEW_MAX = 500
 
     private fun preview(text: String): String = if (text.length <= PREVIEW_MAX) text else text.take(PREVIEW_MAX) + "…"
-
-    /** A Wi-Fi code shows the network name only — never the password it carries. */
-    private fun previewWifi(text: String): String {
-        val ssid = Regex("""(?i)(?:^|;)S:((?:\\.|[^;\\])*)""").find(text.removePrefix("WIFI:"))?.groupValues?.get(1).orEmpty()
-        return ssid.replace(Regex("""\\(.)"""), "$1")
-    }
 }

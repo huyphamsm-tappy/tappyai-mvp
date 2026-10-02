@@ -58,6 +58,8 @@ data class EvidenceItemDto(
 
 @Serializable
 data class RecommendedActionDto(
+    /** The engine's action code (`INCONCLUSIVE`, `DO_NOT_OPEN`, …); the web hides `INCONCLUSIVE` under an "unrecognized" verdict. */
+    val action: String = "",
     val priority: String = "secondary",
     /** `stop | link | phone | flag | warning | search | check` — the glyph the web draws (`ACTION_ICONS`). */
     val icon: String = "",
@@ -77,4 +79,16 @@ data class OfficialEntityDto(
 data class ScamCheckErrorDto(
     val error: String = "",
     val message: String? = null,
+)
+
+/** Body of `POST /api/scam-shield/share` (web `ScamShareButton`): the checked URL and the reader's locale. */
+@Serializable
+data class ScamShareRequestDto(val url: String, val locale: String? = null)
+
+@Serializable
+data class ScamShareResponseDto(
+    val id: String = "",
+    val slug: String = "",
+    val url: String = "",
+    val host: String = "",
 )

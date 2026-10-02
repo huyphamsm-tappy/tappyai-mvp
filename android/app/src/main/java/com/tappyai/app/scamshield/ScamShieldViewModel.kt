@@ -14,13 +14,11 @@ import com.tappyai.app.scamshield.data.MessageAnalysisOutcome
 import com.tappyai.app.scamshield.data.OfficialGroup
 import com.tappyai.app.scamshield.data.QrCodes
 import com.tappyai.app.scamshield.data.QrPayload
-import com.tappyai.app.scamshield.data.ScenarioConfidence
-import com.tappyai.app.scamshield.data.ScenarioMatch
-import com.tappyai.app.scamshield.data.ScenarioMatcher
 import com.tappyai.app.scamshield.data.ScamCheckHistoryStore
 import com.tappyai.app.scamshield.data.ScamCheckOutcome
 import com.tappyai.app.scamshield.data.ScamKnowledgeRepository
 import com.tappyai.app.scamshield.data.ScamScenario
+import com.tappyai.app.scamshield.data.ScamShareOutcome
 import com.tappyai.app.scamshield.data.ScamShieldRepository
 import com.tappyai.core.analytics.AnalyticsProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -38,8 +36,7 @@ enum class ScamShieldTab { Url, Qr, Message }
  * State for the Scam Shield screen — the web `/scam-shield` (`ScamShieldView.tsx`), 2026-09-17.
  *
  * The URL tab posts to `/api/scam-shield/check`; the QR tab decodes the picked image ON THE DEVICE and sends only the link it carries to the same
- * check; the Message tab first matches the text against the 25 official scenarios on the device and, when that is not a sure match, posts text / link / screenshot to
- * `/api/scam-shield/analyze`. Every verdict is the engine's. The recent-checks list is the web's
+ * check; the Message tab posts the text / link to `/api/scam-shield/analyze` (the server's deterministic verdict, scenario and advice). Every verdict is the engine's. The recent-checks list is the web's
  * device-local history (`ScamCheckHistoryStore`): written only from a returned URL verdict (a
  * message verdict is NOT a link and is never written), and a row re-runs the check rather than
  * replaying the stored level. The knowledge library is the web's static dataset, filtered in
@@ -81,13 +78,6 @@ class ScamShieldViewModel @Inject constructor(
     /** The picked screenshot (bytes, MIME, display name), or null. */
     var screenshot by mutableStateOf<Screenshot?>(null)
         private set
-
-    /** The one-time "send this to the AI?" question; the answer lives in memory for this run only (never the message). */
-    var askAiConsent by mutableStateOf(false)
-        private set
-    private var aiConsented = false
-    fun confirmAiConsent() { aiConsented = true; askAiConsent = false; analyzeMessage() }
-    fun dismissAiConsent() { askAiConsent = false }
 
     // ── Knowledge library ──
     var knowledgeCategory by mutableStateOf<String?>(null)
@@ -196,30 +186,17 @@ class ScamShieldViewModel @Inject constructor(
         }
     }
 
-    val canAnalyze: Boolean get() = message.isNotBlank() || messageUrl.isNotBlank() || (ScamShieldFlags.MESSAGE_AI && screenshot != null)
+    val canAnalyze: Boolean get() = message.isNotBlank() || messageUrl.isNotBlank() || (ScamShieldFlags.MESSAGE_SCREENSHOT && screenshot != null)
 
-    /** Analyze Message: at least one of text / link / screenshot; the result is its own card, never a history row. */
+    /**
+     * Analyze Message — the web's `runMessage` (`ScamShieldView.tsx`): `POST /api/scam-shield/analyze` with the text and/or the link.
+     * The verdict (`familiar | suspicious | unrecognized`), the matched official scenario, the signals and the advice are the SERVER's —
+     * with the server's AI switch OFF (the default, web commit 65685a7) the answer is deterministic and costs no token. Nothing is
+     * matched or scored on the phone. The result is its own card, never a history row.
+     */
     fun analyzeMessage() {
         if (!canAnalyze || state is ScamShieldUiState.Checking) return
-        if (!ScamShieldFlags.MESSAGE_AI) { analyzeMessageOnDevice(); return }
-        val shot = screenshot
-        // (AI path, behind the OFF flag) Static first: a text-only message that matches an official scenario with HIGH confidence.
-        if (shot == null && messageUrl.isBlank() && !ScenarioMatcher.containsLink(message)) {
-            val known = ScenarioMatcher.match(message)
-            if (known != null && known.confidence == ScenarioConfidence.High) {
-                val scenario = knowledge.allScenarios().firstOrNull { it.officialNumber == known.officialNumber }
-                if (scenario != null) {
-                    inFlight?.cancel(); inFlight = null
-                    state = ScamShieldUiState.KnownScenario(scenario, known)
-                    return
-                }
-            }
-        }
-        // Anything that goes to the server's message analysis may reach the AI model: ask first, once. A bare link is only a link
-        // check (no model), so it is not asked.
-        val linkOnly = shot == null && messageUrl.isBlank() && message.isNotBlank() && message.trim().none { it.isWhitespace() } && ScenarioMatcher.containsLink(message)
-        val linkFieldOnly = shot == null && message.isBlank() && messageUrl.isNotBlank()
-        if (!aiConsented && !linkOnly && !linkFieldOnly) { askAiConsent = true; return }
+        val shot = if (ScamShieldFlags.MESSAGE_SCREENSHOT) screenshot else null
         run {
             when (val o = repository.analyzeMessage(message.trim(), messageUrl.trim(), shot?.bytes, shot?.mimeType, preferVietnameseLabels = vietnamese())) {
                 is MessageAnalysisOutcome.Verdict -> { trackScamCheck("message", o.result.level); ScamShieldUiState.MessageResult(o.result) }
@@ -228,32 +205,22 @@ class ScamShieldViewModel @Inject constructor(
         }
     }
 
-    /**
-     * The message check WITHOUT any AI (decision A8, 02/10): the text is matched against the 25 official scenarios on the phone
-     * (sure match → "familiar signs", partial → "some suspicious signs"); with no match and a link (the link field or a link in the text),
-     * ONLY that link goes to the link check; with neither, "no familiar signs recognised". No token, no quota, no consent dialog,
-     * nothing stored, no history row, no analytics event with the text.
-     */
-    private fun analyzeMessageOnDevice() {
-        val text = message.trim()
-        val match = if (text.isBlank()) null else ScenarioMatcher.match(text)
-        val scenario = match?.let { m -> knowledge.allScenarios().firstOrNull { it.officialNumber == m.officialNumber } }
-        if (match != null && scenario != null) {
-            inFlight?.cancel(); inFlight = null
-            state = ScamShieldUiState.KnownScenario(scenario, match)
-            return
-        }
-        val link = messageUrl.trim().ifBlank { ScenarioMatcher.firstLink(text) }
-        if (link.isNullOrBlank()) {
-            inFlight?.cancel(); inFlight = null
-            state = ScamShieldUiState.NoMatch
-            return
-        }
-        run {
-            when (val o = repository.check(link, preferVietnameseLabels = vietnamese())) {
-                is ScamCheckOutcome.Verdict -> ScamShieldUiState.Result(o.result)
-                is ScamCheckOutcome.Failed -> ScamShieldUiState.Failed(o.failure)
+    // ── Share a LINK verdict (web `ScamShareButton`): the server builds a public page from its own re-check; nothing typed here is published ──
+    var shareBusy by mutableStateOf(false)
+        private set
+    var shareError by mutableStateOf<String?>(null)
+        private set
+
+    /** Publishes the link verdict and hands `title + url` to [onReady]; on failure sets [shareError] (the server's message, else the web's generic line). */
+    fun shareLink(result: ScamCheckResult, onReady: (title: String, url: String) -> Unit) {
+        if (shareBusy) return
+        shareBusy = true; shareError = null
+        viewModelScope.launch {
+            when (val o = repository.shareLink(result.url, locale = if (vietnamese()) "vi" else "en")) {
+                is ScamShareOutcome.Created -> onReady(o.host, o.url)
+                is ScamShareOutcome.Failed -> shareError = o.message ?: ""
             }
+            shareBusy = false
         }
     }
 
@@ -313,20 +280,15 @@ sealed interface ScamShieldUiState {
     data object Checking : ScamShieldUiState
     data class Result(val result: ScamCheckResult) : ScamShieldUiState
     data class MessageResult(val result: MessageAnalysis) : ScamShieldUiState
-    /** A message that matches an official scenario with high confidence, answered ON THE DEVICE (no request, no AI). */
-    data class KnownScenario(val scenario: ScamScenario, val match: ScenarioMatch) : ScamShieldUiState
-    /** A pasted message with no link that matched no known scenario: "no familiar signs recognised" — NOT "safe". Nothing was sent anywhere. */
-    data object NoMatch : ScamShieldUiState
     /** A QR code that is not a web link: named and warned about, never acted on. Nothing was sent anywhere. */
     data class QrNotice(val payload: QrPayload.Other) : ScamShieldUiState
     data class Failed(val failure: ScamCheckFailure) : ScamShieldUiState
 }
 
 /**
- * Feature flags of Scam Shield. [MESSAGE_AI] = the AI message analysis (server `analyze`, shared AI quota, "send to AI?" consent,
- * screenshots). OFF by decision A8 (02/10): the message check is the on-device scenario match + the link check only. The old code
- * stays behind this flag so it can come back without a rewrite.
+ * Feature flags of Scam Shield. [MESSAGE_SCREENSHOT] = analysing a screenshot of a message (needs the server's AI; the web contract says apps
+ * send only `text` / `url` in v1). OFF: no screenshot picker is shown and no image is ever sent.
  */
 internal object ScamShieldFlags {
-    const val MESSAGE_AI: Boolean = false
+    const val MESSAGE_SCREENSHOT: Boolean = false
 }

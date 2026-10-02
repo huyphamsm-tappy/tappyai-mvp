@@ -65,6 +65,28 @@ data class QuotaDto(
     val pro: Boolean = false,
 )
 
+/** The matched official scenario block of a familiar / suspicious message verdict (web `verdict.ts` `ScenarioBlock`). Static, sourced text. */
+@Serializable
+data class ScenarioSourceDto(
+    val organization: String = "",
+    val title: String = "",
+    val url: String = "",
+    val publishedAt: String? = null,
+)
+
+@Serializable
+data class ScenarioBlockDto(
+    val id: String = "",
+    val officialNumber: Int = 0,
+    val title: String = "",
+    val summary: String = "",
+    val warningSigns: List<String> = emptyList(),
+    val source: ScenarioSourceDto = ScenarioSourceDto(),
+    val hotline: String = "",
+    /** `strong | weak`. */
+    val strength: String = "",
+)
+
 @Serializable
 data class MessageAnalysisResponseDto(
     val inputType: String = "message",
@@ -80,4 +102,7 @@ data class MessageAnalysisResponseDto(
     val extractedText: String? = null,
     val analyzedAt: Long = 0L,
     val quota: QuotaDto? = null,
+    /** The server's public three-state verdict (`familiar | suspicious | unrecognized`) and, with a match, its scenario block. */
+    val verdict: String? = null,
+    val scenario: ScenarioBlockDto? = null,
 )

@@ -25,4 +25,11 @@ interface ScamShieldApi {
      */
     @POST("api/scam-shield/analyze")
     suspend fun analyzeMessage(@Body body: MessageAnalysisRequestDto): MessageAnalysisResponseDto
+
+    /**
+     * `POST /api/scam-shield/share` — the web's `ScamShareButton`: the server re-runs the (cached, deterministic) link check and publishes a
+     * public page `/r/<slug>` from ITS result; nothing typed on the phone is published. 201 `{id, slug, path, url, host, …}`; 422 `not_shareable`.
+     */
+    @POST("api/scam-shield/share")
+    suspend fun share(@Body body: ScamShareRequestDto): ScamShareResponseDto
 }

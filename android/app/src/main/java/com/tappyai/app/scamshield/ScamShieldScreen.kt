@@ -123,6 +123,7 @@ fun ScamShieldScreen(
     viewModel: ScamShieldViewModel = hiltViewModel(),
 ) {
     val checking = viewModel.state is ScamShieldUiState.Checking
+    val context = androidx.compose.ui.platform.LocalContext.current
     val pickQr = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri -> if (uri != null) viewModel.checkQrImage(uri) }
     val pickScreenshot = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri -> if (uri != null) viewModel.pickScreenshot(uri) }
     val scroll = rememberScrollState()
@@ -209,7 +210,7 @@ fun ScamShieldScreen(
                         ScamShieldTab.Message -> Column(modifier = Modifier.padding(top = 16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                             Column {
                                 Text(text = stringResource(R.string.scam_v3_msg_title), color = HomeV3.OnSurface, fontSize = 16.sp, fontWeight = FontWeight.Bold)
-                                Text(text = stringResource(if (ScamShieldFlags.MESSAGE_AI) R.string.scam_v3_msg_subtitle else R.string.scam_verdict_msg_subtitle), color = HomeV3.OnSurfaceVariant, fontSize = 13.sp, lineHeight = 17.sp, modifier = Modifier.padding(top = 2.dp))
+                                Text(text = stringResource(if (ScamShieldFlags.MESSAGE_SCREENSHOT) R.string.scam_v3_msg_subtitle else R.string.scam_verdict_msg_subtitle), color = HomeV3.OnSurfaceVariant, fontSize = 13.sp, lineHeight = 17.sp, modifier = Modifier.padding(top = 2.dp))
                             }
                             ToolTextField(
                                 value = viewModel.message,
@@ -230,7 +231,7 @@ fun ScamShieldScreen(
                                 leadingIcon = { Icon(Icons.Filled.Link, contentDescription = null, tint = HomeV3.OnSurfaceVariant, modifier = Modifier.size(17.dp)) },
                                 textSize = 14.sp,
                             )
-                            if (ScamShieldFlags.MESSAGE_AI) {
+                            if (ScamShieldFlags.MESSAGE_SCREENSHOT) {
                                 val shot = viewModel.screenshot
                                 if (shot != null) {
                                     Row(
@@ -263,7 +264,7 @@ fun ScamShieldScreen(
                                 }
                             }
                             Text(
-                                text = stringResource(if (ScamShieldFlags.MESSAGE_AI) R.string.scam_v3_msg_quotaHint else R.string.scam_verdict_msg_privacy, ScamShieldViewModel.ANON_LIFETIME_LIMIT.toString(), ScamShieldViewModel.FREE_DAILY_LIMIT.toString()),
+                                text = stringResource(if (ScamShieldFlags.MESSAGE_SCREENSHOT) R.string.scam_v3_msg_quotaHint else R.string.scam_verdict_msg_privacy, ScamShieldViewModel.ANON_LIFETIME_LIMIT.toString(), ScamShieldViewModel.FREE_DAILY_LIMIT.toString()),
                                 color = HomeV3.OnSurfaceVariant,
                                 fontSize = 12.sp,
                                 lineHeight = 16.sp,
@@ -278,24 +279,20 @@ fun ScamShieldScreen(
                         }
                     }
 
-                    if (ScamShieldFlags.MESSAGE_AI && viewModel.askAiConsent) {
-                    AlertDialog(
-                        onDismissRequest = viewModel::dismissAiConsent,
-                        title = { Text(stringResource(R.string.scam_ai_consent_title)) },
-                        text = { Text(stringResource(R.string.scam_ai_consent_body)) },
-                        confirmButton = { TextButton(onClick = viewModel::confirmAiConsent) { Text(stringResource(R.string.scam_ai_consent_accept)) } },
-                        dismissButton = { TextButton(onClick = viewModel::dismissAiConsent) { Text(stringResource(R.string.scam_ai_consent_decline)) } },
-                    )
-                }
-                (viewModel.state as? ScamShieldUiState.Failed)?.let { failed -> UnresolvedCard(failed.failure, forMessage = viewModel.tab == ScamShieldTab.Message) }
+                    (viewModel.state as? ScamShieldUiState.Failed)?.let { failed -> UnresolvedCard(failed.failure, forMessage = viewModel.tab == ScamShieldTab.Message) }
                 }
 
                 // ── 4. The verdict ──
-                (viewModel.state as? ScamShieldUiState.Result)?.let { VerdictCard(it.result) }
+                (viewModel.state as? ScamShieldUiState.Result)?.let { r ->
+                    VerdictCard(
+                        result = r.result,
+                        shareBusy = viewModel.shareBusy,
+                        shareError = viewModel.shareError,
+                        onShare = { viewModel.shareLink(r.result) { host, url -> shareLinkVerdict(context, context.getString(R.string.scam_share_title, host), url) } },
+                    )
+                }
                 (viewModel.state as? ScamShieldUiState.MessageResult)?.let { MessageResultCard(it.result) }
-                (viewModel.state as? ScamShieldUiState.KnownScenario)?.let { KnownScenarioCard(it.scenario, it.match, viewModel) }
                 (viewModel.state as? ScamShieldUiState.QrNotice)?.let { QrNoticeCard(it.payload) }
-                if (viewModel.state is ScamShieldUiState.NoMatch) NoMatchCard()
 
                 // ── 5. Official anti-fraud knowledge ──
                 ScamKnowledgeSection(viewModel = viewModel)
@@ -529,3 +526,15 @@ private fun HistoryPanel(
 
 /** `https://vietcombank.com.vn/login` → `vietcombank.com.vn`. */
 internal fun displayHost(url: String): String = runCatching { java.net.URI(url).host }.getOrNull()?.takeIf { it.isNotBlank() } ?: url
+
+/** Hands the published page (`title` + its public URL) to the system share sheet — plain text, nothing typed on the phone is in it. */
+private fun shareLinkVerdict(context: android.content.Context, title: String, url: String) {
+    runCatching {
+        val send = android.content.Intent(android.content.Intent.ACTION_SEND).apply {
+            type = "text/plain"
+            putExtra(android.content.Intent.EXTRA_SUBJECT, title)
+            putExtra(android.content.Intent.EXTRA_TEXT, title + "\n" + url)
+        }
+        context.startActivity(android.content.Intent.createChooser(send, null).addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK))
+    }
+}

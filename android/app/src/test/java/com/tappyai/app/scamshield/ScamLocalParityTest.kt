@@ -1,6 +1,5 @@
 package com.tappyai.app.scamshield
 
-import com.tappyai.app.scamshield.data.ScenarioConfidence
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -8,10 +7,11 @@ import org.junit.Test
 import java.io.File
 
 /**
- * The three-platform rules for Scam Shield, pinned on the Android source (decisions A7/A8, 02/10):
- *  - a QR picture and a message never leave the phone; nothing about them is stored, logged or sent to analytics;
- *  - the message check has NO AI: the on-device scenario match, then (only if there is a link) the link check;
- *  - the UI says one of exactly three things — never "safe", never a score, never a confidence figure.
+ * The Scam Shield rules pinned on the Android source, against the web at origin/rc/web-uat @ 56a26aeb72d3ae1dacb484885df04e6976d5d84e:
+ *  - a QR picture never leaves the phone; only a decoded http(s) link goes on to the link check (web `ScamShieldView.tsx`, `payload.ts`);
+ *  - the message check is the web's: `POST /api/scam-shield/analyze` with the text / link, the server's verdict + scenario + advice;
+ *  - the UI says one of exactly three things — never "safe", never a score, never a confidence figure, never a quota line;
+ *  - the QR-other card has the web's elements in the web's order, and no share button (the web card has none).
  */
 class ScamLocalParityTest {
 
@@ -29,54 +29,28 @@ class ScamLocalParityTest {
         assertTrue(vm.contains("QrCodes.decodeImage(bytes)"))
         assertFalse("no QR upload", vm.contains("checkQrImage(bytes") || vm.contains("createFormData"))
         val qrBlock = vm.substringAfter("fun checkQrImage(uri: Uri)").substringBefore("/** The Message tab's screenshot")
-        // Only a LINK reaches the repository, and only through the link check.
-        assertEquals(1, Regex("""repository\.""").findAll(qrBlock).count())
+        assertEquals("only the link check is called", 1, Regex("""repository\.""").findAll(qrBlock).count())
         assertTrue(qrBlock.contains("is QrPayload.Link -> when (val o = repository.check(payload.url"))
-        // A code that is not a link is named, never acted on, never sent.
         assertTrue(qrBlock.contains("is QrPayload.Other -> ScamShieldUiState.QrNotice(payload)"))
+        assertFalse("a non-link code records nothing", qrBlock.substringAfter("is QrPayload.Other").substringBefore("is QrPayload.Link").contains("history.record"))
     }
 
-    // ── Message: no AI ──
+    // ── Message: the web's server-side check ──
 
-    @Test fun `the AI message analysis is OFF by flag and nothing in the visible flow reaches it`() {
-        assertTrue(vm.contains("internal object ScamShieldFlags") && vm.contains("const val MESSAGE_AI: Boolean = false"))
-        val entry = vm.substringAfter("fun analyzeMessage()").substringBefore("// (AI path")
-        assertTrue("the entry point branches on the flag first", entry.contains("if (!ScamShieldFlags.MESSAGE_AI) { analyzeMessageOnDevice(); return }"))
-        // The legacy server analysis exists once, after the flag guard.
-        assertEquals(1, Regex("""repository\.analyzeMessage\(""").findAll(vm).count())
-        // No consent question and no screenshot picker unless the flag is on.
-        assertTrue(screen.contains("if (ScamShieldFlags.MESSAGE_AI && viewModel.askAiConsent)"))
-        assertTrue(screen.contains("if (ScamShieldFlags.MESSAGE_AI) {") && screen.substringAfter("if (ScamShieldFlags.MESSAGE_AI) {").contains("pickScreenshot.launch"))
-        assertTrue(vm.contains("(ScamShieldFlags.MESSAGE_AI && screenshot != null)"))
+    @Test fun `the message check posts text and link to analyze and nothing is matched or scored on the phone`() {
+        val fn = vm.substringAfter("fun analyzeMessage()").substringBefore("// ── Share a LINK verdict")
+        assertTrue(fn.contains("repository.analyzeMessage(message.trim(), messageUrl.trim(), shot?.bytes, shot?.mimeType"))
+        assertTrue(fn.contains("ScamShieldUiState.MessageResult(o.result)"))
+        assertFalse("no local matching", vm.contains("ScenarioMatcher") || vm.contains("matchScenario"))
+        assertFalse("no consent dialog / AI switch in the app", vm.contains("askAiConsent") || vm.contains("aiConsented"))
+        assertFalse("a message verdict is not a link: no history row", fn.contains("history.record"))
     }
 
-    @Test fun `the on-device message check matches first, then checks only a link, then says nothing was recognised`() {
-        val fn = vm.substringAfter("private fun analyzeMessageOnDevice()").substringBefore("scam_check (RUNBOOK")
-        assertTrue(fn.contains("ScenarioMatcher.match(text)"))
-        assertTrue(fn.contains("state = ScamShieldUiState.KnownScenario(scenario, match)"))
-        assertTrue(fn.contains("ScenarioMatcher.firstLink(text)"))
-        assertTrue(fn.contains("state = ScamShieldUiState.NoMatch"))
-        // The ONLY request it can make is the link check, with the link — never the text.
-        assertEquals(1, Regex("""repository\.""").findAll(fn).count())
-        assertTrue(fn.contains("repository.check(link, preferVietnameseLabels = vietnamese())"))
-        assertFalse("the text never reaches the repository", fn.contains("repository.check(text") || fn.contains("analyzeMessage("))
-        // Nothing stored, nothing counted.
-        assertFalse(fn.contains("history.record") || fn.contains("trackScamCheck("))
-        // The order: scenario → link → no match.
-        assertTrue(fn.indexOf("ScenarioMatcher.match(text)") < fn.indexOf("ScenarioMatcher.firstLink(text)") && fn.indexOf("ScenarioMatcher.firstLink(text)") < fn.indexOf("ScamShieldUiState.NoMatch"))
-    }
-
-    @Test fun `the local results record nothing - no history row, no analytics event`() {
-        val qr = vm.substringAfter("is QrPayload.Other -> ScamShieldUiState.QrNotice(payload)").substringBefore("is QrPayload.Link")
-        assertFalse(qr.contains("history.record") || qr.contains("trackScamCheck"))
-    }
-
-    @Test fun `shared results are plain text with no message or code in them`() {
-        assertTrue(local.contains("R.string.scam_known_share, scenario.official.title"))
-        assertTrue(local.contains("R.string.scam_qr_share, stringResource(kindRes)"))
-        assertTrue(local.contains("R.string.scam_verdict_share_unrecognized, TappyShare.CANONICAL_ORIGIN"))
-        assertFalse(local.contains("payload.preview, TappyShare") || local.contains("viewModel.message"))
-        assertTrue(local.contains("Intent.ACTION_SEND") && local.contains("\"text/plain\""))
+    @Test fun `no screenshot is analysed and no image is ever sent while the flag is off`() {
+        assertTrue(vm.contains("const val MESSAGE_SCREENSHOT: Boolean = false"))
+        assertTrue(vm.contains("val shot = if (ScamShieldFlags.MESSAGE_SCREENSHOT) screenshot else null"))
+        assertTrue(screen.contains("if (ScamShieldFlags.MESSAGE_SCREENSHOT) {") && screen.substringAfter("if (ScamShieldFlags.MESSAGE_SCREENSHOT) {").contains("pickScreenshot.launch"))
+        assertTrue(vm.contains("(ScamShieldFlags.MESSAGE_SCREENSHOT && screenshot != null)"))
     }
 
     // ── three states, never "safe" ──
@@ -88,9 +62,9 @@ class ScamLocalParityTest {
         listOf(RiskLevel.SAFE, RiskLevel.LOW, RiskLevel.INCONCLUSIVE, RiskLevel.UNKNOWN).forEach {
             assertEquals("$it must not read as safe", VerdictKind.Unrecognized, VerdictKind.fromRisk(it))
         }
-        assertEquals(VerdictKind.Familiar, VerdictKind.fromScenario(ScenarioConfidence.High))
-        assertEquals(VerdictKind.Suspicious, VerdictKind.fromScenario(ScenarioConfidence.Possible))
         assertEquals(3, VerdictKind.entries.size)
+        assertEquals(VerdictKind.Suspicious, VerdictKind.fromWire(" Suspicious "))
+        assertEquals(null, VerdictKind.fromWire("safe"))
     }
 
     @Test fun `every level's label is one of the three verdict strings - none of the old six`() {
@@ -104,47 +78,90 @@ class ScamLocalParityTest {
         assertFalse("no green / shield-check anywhere in the level tones", block.contains("Emerald") || block.contains("GppGood"))
     }
 
-    @Test fun `no score and no confidence figure is drawn on any card`() {
+    @Test fun `no score, no confidence figure and no AI-quota line is drawn on any card`() {
         assertFalse(result.contains("result.score") || result.contains("result.confidence"))
         assertFalse(local.contains(".score") || local.contains(".confidence."))
-        assertFalse(result.contains("fun ConfidenceBadge"))
+        assertFalse(result.contains("fun ConfidenceBadge") || result.contains("fun AnalysisNote"))
+        assertFalse(result.contains("scam_v3_msg_aiQuota") || result.contains("scam_v3_msg_aiToday"))
     }
 
-    @Test fun `the three sentences and the fixed notes are exactly the decided wording, vi and en`() {
-        val vi = src("app/src/main/res/values-vi/strings_scam_local.xml")
-        assertTrue(vi.contains(">Có dấu hiệu lừa đảo quen thuộc<"))
-        assertTrue(vi.contains(">Có một số dấu hiệu đáng ngờ<"))
-        assertTrue(vi.contains(">Chưa nhận ra dấu hiệu quen thuộc<"))
-        assertTrue(vi.contains("Điều này KHÔNG có nghĩa là an toàn: đừng chuyển tiền, đừng đọc mã OTP, đừng bấm link lạ; hãy xác minh qua kênh chính thức."))
-        assertTrue(vi.contains("TappyAI không thay thế cơ quan chức năng"))
-        assertTrue(vi.contains("Đường link có đặc điểm thường gặp ở link giả mạo<"))
-        assertTrue(vi.contains("113"))
-        val en = src("app/src/main/res/values/strings_scam_local.xml")
-        assertTrue(en.contains("does NOT mean it is safe") && en.contains("does not replace the authorities") && en.contains("113"))
-        // The verdict labels never promise safety.
-        listOf(vi, en).forEach { xml ->
-            val labels = Regex("""<string name="scam_verdict_(?:familiar|suspicious|unrecognized)">([^<]*)<""").findAll(xml).map { it.groupValues[1] }.toList()
-            assertEquals(3, labels.size)
-            labels.forEach { assertFalse("verdict label $it must not say safe", it.contains("An toàn", ignoreCase = true) || it.contains("safe", ignoreCase = true)) }
-        }
+    // ── the cards follow the web's components ──
+
+    @Test fun `the message card has the web's sections in the web's order`() {
+        val card = result.substringAfter("internal fun MessageResultCard")
+        val order = listOf(
+            "bodyRes", "result.reasoningSummary", "result.scenario?.let { ScenarioCard(it) }", "scam_v3_msg_goal", "scam_verdict_reasons",
+            "scam_v3_msg_wants", "scam_v3_msg_doNot", "scam_v3_msg_doNow", "scam_v3_msg_links", "scam_v3_msg_extracted", "DisclaimerLine(",
+        ).map { it to card.indexOf(it) }
+        order.forEach { (k, at) -> assertTrue("$k on the message card", at >= 0) }
+        assertEquals("the web's order (ScamMessageResult.tsx)", order.map { it.first }, order.sortedBy { it.second }.map { it.first })
+        assertTrue("the model's summary only when the server says it used one", card.contains("""result.aiStatus == "used" && result.reasoningSummary.isNotBlank()"""))
+        assertTrue("the generic rule signal is hidden when a scenario matched", card.contains("""it.type == "other" && it.source == "rule""""))
     }
 
-    @Test fun `the disclaimer is on every card, the 113 line only with a matching scenario`() {
-        assertEquals(3, Regex("""DisclaimerLine\(modifier = Modifier\.padding""").findAll(local).count())
+    @Test fun `the scenario card has the web's elements and ends with the 113 line`() {
+        val card = result.substringAfter("private fun ScenarioCard").substringBefore("internal fun MessageResultCard")
+        val order = listOf(
+            "scam_verdict_scenario_heading", "scenario.title", "scam_verdict_scenario_number", "scenario.summary", "scam_verdict_scenario_signs",
+            "scam_verdict_scenario_source)", "scam_verdict_scenario_source_open", "scam_verdict_scenario_guidance_note", "scam_verdict_scenario_report",
+        ).map { it to card.indexOf(it) }
+        order.forEach { (k, at) -> assertTrue("$k on the scenario card", at >= 0) }
+        assertEquals(order.map { it.first }, order.sortedBy { it.second }.map { it.first })
+    }
+
+    @Test fun `the link card has the web's sections in the web's order`() {
+        val card = result.substringAfter("internal fun VerdictCard").substringBefore("internal fun ReasonsSection")
+        val order = listOf("bodyRes", "ReasonsSection(", "OfficialSection(", "ActionsSection(", "ShareLinkButton(", "EvidenceSection(", "DisclaimerLine()").map { it to card.indexOf(it) }
+        order.forEach { (k, at) -> assertTrue("$k on the link card", at >= 0) }
+        assertEquals("the web's order (ScamShieldResult.tsx)", order.map { it.first }, order.sortedBy { it.second }.map { it.first })
+        assertTrue("up to 6 reasons, like the web", card.contains(".take(6)"))
+        assertTrue("reassuring (safe) evidence rows are not shown", card.contains("it.severity != SignalSeverity.SAFE"))
+        assertTrue("the INCONCLUSIVE action is not repeated under 'unrecognized'", card.contains("""it.code != "INCONCLUSIVE""""))
+    }
+
+    @Test fun `the QR-other card has the web's elements in the web's order, shows the text as read, and has no share button`() {
+        val card = local.substringAfter("internal fun QrNoticeCard").substringBefore("internal fun DisclaimerLine")
+        val order = listOf("scam_qr_title", "stringResource(kindRes)", "qrWarningRes", "scam_qr_content", "payload.preview", "scam_qr_no_verdict", "scam_qr_privacy", "DisclaimerLine(").map { it to card.indexOf(it) }
+        order.forEach { (k, at) -> assertTrue("$k on the QR card", at >= 0) }
+        assertEquals("the web's order (ScamShieldView.tsx data-qr-other)", order.map { it.first }, order.sortedBy { it.second }.map { it.first })
+        assertFalse("the web card has no share button", card.contains("Share") || card.contains("share"))
+        val qr = src("app/src/main/java/com/tappyai/app/scamshield/data/QrCodes.kt")
+        assertTrue("a Wi-Fi code is shown as read, like the web", qr.contains("QrPayload.Other(QrKind.Wifi, preview(text))"))
+        assertFalse(qr.contains("previewWifi"))
+    }
+
+    @Test fun `the link verdict is shared the web's way - the server publishes a page and only its URL is shared`() {
+        val api = src("app/src/main/java/com/tappyai/app/scamshield/data/ScamShieldApi.kt")
+        assertTrue(api.contains("""@POST("api/scam-shield/share")"""))
+        assertTrue(vm.contains("repository.shareLink(result.url, locale = if (vietnamese()) \"vi\" else \"en\")"))
+        assertTrue(screen.contains("scam_share_title") && screen.contains("EXTRA_TEXT, title + "))
+        val dto = src("app/src/main/java/com/tappyai/app/scamshield/data/ScamShieldDtos.kt")
+        assertTrue("the body is exactly {url, locale}", dto.contains("data class ScamShareRequestDto(val url: String, val locale: String? = null)"))
+    }
+
+    @Test fun `errors follow the web - the code picks the dictionary line, the server message is not shown, a network failure is checkFailed`() {
+        val card = result.substringAfter("internal fun UnresolvedCard").substringBefore("val shape")
+        assertFalse(card.contains("serverMessage"))
+        assertTrue(card.contains("ScamCheckFailure.Offline, ScamCheckFailure.Timeout, ScamCheckFailure.Unknown"))
+    }
+
+    @Test fun `the fixed notes - disclaimer on every card, 113 only with a matching scenario`() {
         assertTrue(result.substringAfter("internal fun VerdictCard").substringBefore("internal fun ReasonsSection").contains("DisclaimerLine()"))
-        // The 113 line is the web's: only with a matching scenario (`scamVerdict.scenario.report`).
-        assertEquals(1, Regex("""ReportLine\(modifier = """).findAll(local).count())
-        assertTrue(local.substringAfter("internal fun KnownScenarioCard").substringBefore("internal fun NoMatchCard").contains("ReportLine("))
+        assertTrue(result.substringAfter("internal fun MessageResultCard").contains("DisclaimerLine(modifier"))
+        assertTrue(local.substringAfter("internal fun QrNoticeCard").contains("DisclaimerLine(modifier"))
+        // The 113 sentence lives in the scenario card only.
+        assertEquals(1, Regex("""scam_verdict_scenario_report""").findAll(result).count())
+        assertFalse(local.contains("scam_verdict_scenario_report"))
     }
 
-    @Test fun `the message tab has no AI wording left in the visible strings`() {
+    @Test fun `the message tab says what the web says and nothing about AI quota`() {
         val vi = src("app/src/main/res/values-vi/strings_scam_local.xml")
         val subtitle = vi.substringAfter("scam_verdict_msg_subtitle").substringBefore("</string>")
         val privacy = vi.substringAfter("scam_verdict_msg_privacy").substringBefore("</string>")
-        assertFalse("no AI quota wording", (subtitle + privacy).contains("lượt"))
-        assertFalse("the subtitle does not mention AI", Regex("""\bAI\b""").containsMatchIn(subtitle))
-        assertTrue("the web's own privacy line: no AI, nothing stored", privacy.contains("không dùng AI, không lưu nội dung tin nhắn"))
-        assertTrue(screen.contains("if (ScamShieldFlags.MESSAGE_AI) R.string.scam_v3_msg_subtitle else R.string.scam_verdict_msg_subtitle"))
+        assertFalse((subtitle + privacy).contains("lượt"))
+        assertFalse(Regex("""\bAI\b""").containsMatchIn(subtitle))
+        assertTrue("the web's own privacy line", privacy.contains("không dùng AI, không lưu nội dung tin nhắn"))
+        assertTrue(screen.contains("if (ScamShieldFlags.MESSAGE_SCREENSHOT) R.string.scam_v3_msg_subtitle else R.string.scam_verdict_msg_subtitle"))
     }
 
     @Test fun `vi and en carry the same scam-local keys`() {

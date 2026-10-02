@@ -4,6 +4,7 @@ import android.util.Base64
 import com.tappyai.app.scamshield.AdviceItem
 import com.tappyai.app.scamshield.EvidenceItem
 import com.tappyai.app.scamshield.MessageAnalysis
+import com.tappyai.app.scamshield.MessageScenario
 import com.tappyai.app.scamshield.MessageQuota
 import com.tappyai.app.scamshield.MessageSignal
 import com.tappyai.app.scamshield.MessageUrlCheck
@@ -57,7 +58,13 @@ class RealScamShieldRepository @Inject constructor(
             .fold({ MessageAnalysisOutcome.Verdict(it) }, { MessageAnalysisOutcome.Failed(it) })
     }
 
-    /** The one exception→failure mapping, shared by the three routes. */
+    override suspend fun shareLink(url: String, locale: String): ScamShareOutcome =
+        attempt { api.share(ScamShareRequestDto(url = url, locale = locale)) }.fold(
+            { r -> if (r.url.isNotBlank()) ScamShareOutcome.Created(url = r.url, host = r.host) else ScamShareOutcome.Failed(null) },
+            { f -> ScamShareOutcome.Failed((f as? ScamCheckFailure.Refused)?.serverMessage) },
+        )
+
+    /** The one exception→failure mapping, shared by the routes. */
     private suspend fun <T> attempt(call: suspend () -> T): Outcome<T> =
         try {
             Outcome.Ok(call())
@@ -117,7 +124,7 @@ internal fun ScamCheckResponseDto.toDomain(preferVietnameseLabels: Boolean) = Sc
         // The backend ships both languages for each action; pick the one the user reads, and fall
         // back to the other rather than rendering an empty button.
         val label = if (preferVietnameseLabels) it.labelVi.ifBlank { it.labelEn } else it.labelEn.ifBlank { it.labelVi }
-        label.takeIf { l -> l.isNotBlank() }?.let { l -> RecommendedAction(isPrimary = it.priority == "primary", icon = it.icon, label = l) }
+        label.takeIf { l -> l.isNotBlank() }?.let { l -> RecommendedAction(isPrimary = it.priority == "primary", icon = it.icon, label = l, code = it.action) }
     },
     cached = cached,
     verdict = verdict,
@@ -127,7 +134,7 @@ internal fun ScamCheckResponseDto.toDomain(preferVietnameseLabels: Boolean) = Sc
  * A 200 without a verdict is not a verdict: the web refuses a body with no `risk.level`,
  * `analysis` or `advice`; here the same three are required or the decode throws (→ Unknown).
  */
-private fun MessageAnalysisResponseDto.toDomain(preferVietnameseLabels: Boolean): MessageAnalysis {
+internal fun MessageAnalysisResponseDto.toDomain(preferVietnameseLabels: Boolean): MessageAnalysis {
     val level = RiskLevel.fromWire(risk.level)
     if (risk.level.isBlank() || analysis == null || advice == null) throw SerializationException("no verdict")
     fun AdviceItemDto.label() = if (preferVietnameseLabels) labelVi.ifBlank { labelEn } else labelEn.ifBlank { labelVi }
@@ -137,13 +144,20 @@ private fun MessageAnalysisResponseDto.toDomain(preferVietnameseLabels: Boolean)
         confidence = risk.confidence,
         scamType = scamType?.takeIf { it.isNotBlank() },
         attackGoal = attackGoal?.takeIf { it.isNotBlank() },
-        signals = signals.map { MessageSignal(type = it.type, severity = it.severity, explanation = it.explanation) },
+        signals = signals.map { MessageSignal(type = it.type, severity = it.severity, explanation = it.explanation, source = it.source) },
         requestedActions = requestedActions,
         urlChecks = urlChecks.map { MessageUrlCheck(url = it.url, checked = it.status == "checked", level = it.level?.let { l -> RiskLevel.fromWire(l) }) },
         doNot = advice.doNot.mapNotNull { a -> a.label().takeIf { it.isNotBlank() }?.let { AdviceItem(code = a.code, label = it) } },
         doNow = advice.doNow.mapNotNull { a -> a.label().takeIf { it.isNotBlank() }?.let { AdviceItem(code = a.code, label = it) } },
         reasoningSummary = reasoningSummary,
         aiStatus = analysis.aiStatus,
+        verdict = verdict,
+        scenario = scenario?.takeIf { it.officialNumber > 0 }?.let {
+            MessageScenario(
+                officialNumber = it.officialNumber, title = it.title, summary = it.summary, warningSigns = it.warningSigns,
+                sourceOrganization = it.source.organization, sourceTitle = it.source.title, sourceUrl = it.source.url,
+            )
+        },
         extractedText = extractedText?.takeIf { it.isNotBlank() },
         quota = quota?.let { MessageQuota(kind = it.kind, limit = it.limit, period = it.period, used = it.used, remaining = it.remaining, exhausted = it.exhausted, pro = it.pro) },
     )

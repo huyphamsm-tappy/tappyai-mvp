@@ -15,6 +15,15 @@ interface ScamShieldRepository {
 
     /** Analyze Message: text and/or link and/or a screenshot to `/api/scam-shield/analyze`. */
     suspend fun analyzeMessage(text: String?, url: String?, image: ByteArray?, mimeType: String?, preferVietnameseLabels: Boolean): MessageAnalysisOutcome
+
+    /** Publishes the link verdict as a public page (`POST /api/scam-shield/share`, web `ScamShareButton`). */
+    suspend fun shareLink(url: String, locale: String): ScamShareOutcome
+}
+
+/** A published share page, or why there is none ([Failed.message] = the server's own sentence when it sent one). */
+sealed interface ScamShareOutcome {
+    data class Created(val url: String, val host: String) : ScamShareOutcome
+    data class Failed(val message: String?) : ScamShareOutcome
 }
 
 /** A message verdict, or the reason there is none — never a safe answer by default. */

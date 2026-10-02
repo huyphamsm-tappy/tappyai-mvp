@@ -1,7 +1,5 @@
 package com.tappyai.app.scamshield
 
-import com.tappyai.app.scamshield.data.ScenarioConfidence
-
 /**
  * The ONLY three things Scam Shield ever says about a message, a link or a QR code (decision A7/A8, 02/10):
  *  - [Familiar]     "Có dấu hiệu lừa đảo quen thuộc"
@@ -33,10 +31,5 @@ internal enum class VerdictKind {
 
         /** A link/QR result: the server's own verdict when it sent one, else the same mapping the web applies to `risk.level`. */
         fun forLink(result: ScamCheckResult): VerdictKind = fromWire(result.verdict) ?: fromRisk(result.level)
-
-        fun fromScenario(confidence: ScenarioConfidence): VerdictKind = when (confidence) {
-            ScenarioConfidence.High -> Familiar
-            ScenarioConfidence.Possible -> Suspicious
-        }
     }
 }
