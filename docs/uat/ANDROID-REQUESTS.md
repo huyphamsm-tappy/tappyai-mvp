@@ -271,3 +271,7 @@ Giá phòng: chưa xác nhận…","price":…`). Phần đầu kế hoạch (ti
 - Vẫn chỉ chụp tài khoản test, không dữ liệu thật/cá nhân.
 - Repo chỉ giữ RELEASE-PROGRESS.md (web) / tài liệu Android với đường dẫn `gs://…` hoặc
   `gs://tappyai-uat-evidence/evidence/<SHA>/…`.
+
+## Từ phiên iOS 02/10 — ghi nguồn OpenStreetMap
+
+Android cũng hiển thị thẻ địa điểm có dữ liệu OSM (nguồn dự phòng) mà không có dòng «© OpenStreetMap contributors». Đề nghị thêm trong Cài đặt một dòng «Dữ liệu địa điểm: © OpenStreetMap contributors (ODbL)» là liên kết tới https://www.openstreetmap.org/copyright (cùng chuỗi với iOS). `MapCanvas.kt` hiện là khung giả; nếu sau này gắn bản đồ thật thì ghi nguồn phải nằm ở góc bản đồ. Chi tiết: `docs/ios/SOURCES-AND-CONTENT-RIGHTS.md`.

@@ -138,6 +138,8 @@ Trạng thái: **iOS App 1.0 — Prepare for Submission**. App Review: «Items y
 
 *(Ghi chú cũ về lần thử thất bại ngày 02/10 sáng — Chrome chưa đăng nhập — đã hết hiệu lực.)*
 
+> **02/10 — nguồn dữ liệu và Content Rights:** xem `docs/ios/SOURCES-AND-CONTENT-RIGHTS.md`. Một nghĩa vụ ghi nguồn đang THIẾU: OpenStreetMap (IOS-REQUESTS I21) — làm TRƯỚC khi nộp, cần build mới. Nhiều nguồn khác (Serper/ảnh, logo đối tác, Bộ Công an, VnExpress, YouTube/TikTok, ảnh AI) ghi «chưa kiểm»; Content Rights do Huy quyết.
+
 ### 1c. Ba mục ASC cần Huy QUYẾT (đề xuất 02/10 — em **chưa điền** gì)
 
 **(1) Content Rights** — câu Apple hỏi: «Does your app contain, show, or access third-party content?» và nhắc: «Apps that contain, show, or access third-party content must have all the necessary rights to that content or be otherwise permitted to use it under the laws of each App Store country or region in which they're available.» (developer.apple.com/help/app-store-connect/reference/app-information, đọc 02/10).
@@ -392,6 +394,8 @@ Mỗi yêu cầu: **ĐÃ ĐỦ** (có file) / **THIẾU** / **CHƯA CHẮC**. Ch
 **Đọc App Store Connect (mục 4a của lệnh): CHƯA LÀM** — Chrome của Huy đang không hiển thị trang (cửa sổ 0×0), nên em chưa đi qua được các mục cột trái để lấy danh sách ô bắt buộc/cảnh báo nguyên văn. Việc này nằm trong HÀNG CHỜ.
 
 ## 10. ĐIỀU KIỆN TRƯỚC KHI NỘP (gom lại)
+
+- [ ] **Ghi nguồn OpenStreetMap** (I21): dòng «© OpenStreetMap contributors» + liên kết trong app (build mới) và trên web — chưa làm.
 
 1. Web release Phase 7 xong; **cờ production**: `ACCOUNT_SELF_DELETE_ENABLED=true` (sau D1/D2/D4), cờ báo cáo/chặn Phase 8 + migration, nút Sign in with Apple hiện (provider Apple ở Supabase, thu hồi token khi xoá).
 2. **Màn đồng ý chia sẻ dữ liệu với AI bên thứ ba (5.1.2(i))** — ĐÃ CÓ từ build 98; **kiểm trên iPhone** (đồng ý, để sau, công tắc Cài đặt) và Huy duyệt chữ.

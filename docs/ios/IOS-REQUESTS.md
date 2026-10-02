@@ -109,3 +109,10 @@ Hai lỗi này có từ các commit iOS trước (không phải do một lần s
 ## PL-VOICE-NATIVE — màn Mic mới (web, mockup «03. Voice / Chat Input Active») — LÀM SAU RELEASE
 
 Chưa làm theo yêu cầu của Huy (01/10). Khi làm: màn nghe toàn màn hình theo mockup; không đổi khai báo quyền (iOS đã có nhập giọng nói: `SFSpeechRecognizer` + micro, `Info.plist` đã có hai mô tả). Trước đó nên sửa các lỗi dừng mic đã đọc được ở `VoiceInputManager.swift` (xem IOS-PROGRESS «Mic 01/10»). Cần từ phiên web: mockup xuất ảnh + đặc tả trạng thái (đang nghe / đang xử lý / lỗi / không có quyền).
+
+## I21 — Ghi nguồn OpenStreetMap (NGHĨA VỤ, làm TRƯỚC khi nộp) — 02/10
+
+Chi tiết và bảng nguồn: `docs/ios/SOURCES-AND-CONTENT-RIGHTS.md`. App hiển thị dữ liệu OSM (nguồn dự phòng của thẻ địa điểm) nhưng **không ở đâu có dòng «© OpenStreetMap contributors»**.
+- **iOS (cần build mới, ≈ nửa buổi):** Cài đặt → thêm dòng «Dữ liệu địa điểm: © OpenStreetMap contributors (ODbL)» là liên kết tới https://www.openstreetmap.org/copyright (chuỗi vi/en). Tuỳ chọn: chữ nhỏ «© OpenStreetMap» trên thẻ địa điểm khi `source` chứa OpenStreetMap.
+- **WEB (không cần build app):** (1) thêm đoạn «Dữ liệu bản đồ» cùng dòng và liên kết vào `/terms` hoặc `/privacy`; (2) xác nhận server luôn trả `source` cho dòng OSM; (3) kiểm lưu đệm và tốc độ gọi Nominatim phía server (giới hạn 1 yêu cầu/giây, bắt buộc User-Agent nhận diện); (4) xác nhận bản `/terms` mới (rc/web-uat 9474f65) có điều khoản cấp quyền cho ảnh/clip/bình luận của người dùng — bản trong nhánh iOS chỉ có cấp quyền cho âm thanh gốc; (5) cho biết bài VnExpress có được hiện tên nguồn cho người dùng không.
+- **Cần người am hiểu luật:** dùng Overpass trong thẻ có thành «cơ sở dữ liệu phái sinh» theo ODbL không; điều khoản ảnh/giá từ Serper; logo đối tác; công cụ AI đã tạo ảnh minh hoạ.
