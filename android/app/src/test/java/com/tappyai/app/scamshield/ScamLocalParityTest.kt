@@ -70,4 +70,11 @@ class ScamLocalParityTest {
     @Test fun `no camera permission was added - the picture comes from the system photo picker`() {
         assertFalse(src("app/src/main/AndroidManifest.xml").contains("android.permission.CAMERA"))
     }
+
+    @Test fun `the server message analysis (which may reach the AI) is asked about first, once, and the answer is not stored`() {
+        val block = vm.substringAfter("fun analyzeMessage()").substringBefore("run {")
+        assertTrue(block.contains("if (!aiConsented && !linkOnly && !linkFieldOnly) { askAiConsent = true; return }"))
+        assertTrue(vm.contains("private var aiConsented = false"))
+        assertFalse("consent is in memory only", vm.substringAfter("private var aiConsented").substringBefore("fun dismissAiConsent").contains("DataStore"))
+    }
 }

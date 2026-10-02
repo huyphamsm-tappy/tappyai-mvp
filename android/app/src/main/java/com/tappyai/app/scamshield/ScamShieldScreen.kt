@@ -46,9 +46,11 @@ import androidx.compose.material.icons.filled.Shield
 import androidx.compose.material.icons.filled.Upload
 import androidx.compose.material.icons.filled.Verified
 import androidx.compose.material.icons.outlined.Sms
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -274,7 +276,16 @@ fun ScamShieldScreen(
                         }
                     }
 
-                    (viewModel.state as? ScamShieldUiState.Failed)?.let { failed -> UnresolvedCard(failed.failure, forMessage = viewModel.tab == ScamShieldTab.Message) }
+                    if (viewModel.askAiConsent) {
+                    AlertDialog(
+                        onDismissRequest = viewModel::dismissAiConsent,
+                        title = { Text(stringResource(R.string.scam_ai_consent_title)) },
+                        text = { Text(stringResource(R.string.scam_ai_consent_body)) },
+                        confirmButton = { TextButton(onClick = viewModel::confirmAiConsent) { Text(stringResource(R.string.scam_ai_consent_accept)) } },
+                        dismissButton = { TextButton(onClick = viewModel::dismissAiConsent) { Text(stringResource(R.string.scam_ai_consent_decline)) } },
+                    )
+                }
+                (viewModel.state as? ScamShieldUiState.Failed)?.let { failed -> UnresolvedCard(failed.failure, forMessage = viewModel.tab == ScamShieldTab.Message) }
                 }
 
                 // ── 4. The verdict ──

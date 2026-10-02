@@ -400,3 +400,9 @@ Cần làm:
 3. Bật `TAPPYAI_APP_LINKS_ENABLED=true` trong build phát hành; đổi mặc định hoặc truyền cờ trong `scripts/release/build-aab.sh`.
 4. Kiểm: `adb shell pm verify-app-links --re-verify com.tappyai.app` rồi `adb shell pm get-app-links com.tappyai.app` phải thấy `www.tappyai.com: verified` (hiện `1024` = chưa xác minh); `adb shell am start -a android.intent.action.VIEW -d https://www.tappyai.com/plan/<id>` mở app; từ Zalo/Chrome với bản cài từ Play (kênh thử nghiệm kín); kiểm trường hợp không xác minh → mở trình duyệt, không lỗi.
 5. Test đơn vị cho bảng ánh xạ đường → đích (mở rộng `ShellDeepLink` tests), e2e `nav-back` cho từng đích, kiểm Back từ link vào app.
+
+### Lá chắn lừa đảo — Android đã đồng bộ hợp đồng (02/10, cho phiên WEB đọc)
+- **Tin nhắn:** Android khớp tĩnh trên máy bằng BẢN SAO bảng dấu hiệu 25 tình huống của `matchScenario` (Phase 8: mạnh +2, yếu +1, ≥4 = chắc, 2–3 = có thể). Chỉ trả lời tại chỗ khi **chắc** và tin KHÔNG chứa link/ảnh/ô link. Còn lại → `POST /api/scam-shield/analyze` sau khi người dùng đồng ý gửi AI.
+- **QR:** Android giải mã trên máy (ZXing) và chỉ gọi `POST /api/scam-shield/check` với link đã giải mã. **Không còn gọi `/api/scam-shield/qr`** — web có thể giữ route đó cho trình duyệt nhưng nên ghi nhận Android không dùng.
+- Nếu web đổi bảng dấu hiệu (id/cue), cần báo để Android cập nhật bản sao; chưa có đồng bộ qua server (đúng yêu cầu).
+- Chi tiết: `docs/android/SCAM-SHIELD-PARITY-ANDROID.md`.

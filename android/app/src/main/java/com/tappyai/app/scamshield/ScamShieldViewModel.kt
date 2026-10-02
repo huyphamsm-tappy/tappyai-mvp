@@ -82,6 +82,13 @@ class ScamShieldViewModel @Inject constructor(
     var screenshot by mutableStateOf<Screenshot?>(null)
         private set
 
+    /** The one-time "send this to the AI?" question; the answer lives in memory for this run only (never the message). */
+    var askAiConsent by mutableStateOf(false)
+        private set
+    private var aiConsented = false
+    fun confirmAiConsent() { aiConsented = true; askAiConsent = false; analyzeMessage() }
+    fun dismissAiConsent() { askAiConsent = false }
+
     // ── Knowledge library ──
     var knowledgeCategory by mutableStateOf<String?>(null)
         private set
@@ -208,6 +215,11 @@ class ScamShieldViewModel @Inject constructor(
                 }
             }
         }
+        // Anything that goes to the server's message analysis may reach the AI model: ask first, once. A bare link is only a link
+        // check (no model), so it is not asked.
+        val linkOnly = shot == null && messageUrl.isBlank() && message.isNotBlank() && message.trim().none { it.isWhitespace() } && ScenarioMatcher.containsLink(message)
+        val linkFieldOnly = shot == null && message.isBlank() && messageUrl.isNotBlank()
+        if (!aiConsented && !linkOnly && !linkFieldOnly) { askAiConsent = true; return }
         run {
             when (val o = repository.analyzeMessage(message.trim(), messageUrl.trim(), shot?.bytes, shot?.mimeType, preferVietnameseLabels = vietnamese())) {
                 is MessageAnalysisOutcome.Verdict -> { trackScamCheck("message", o.result.level); ScamShieldUiState.MessageResult(o.result) }

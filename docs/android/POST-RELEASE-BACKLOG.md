@@ -17,3 +17,6 @@ Không làm trong AAB `597698b`. Thứ tự gợi ý: trên xuống.
 | 11 | Biểu tượng ứng dụng đơn sắc (Android 13 «themed icon») | Lint `MonochromeLauncherIcon` |
 | 12 | Dọn cảnh báo lint: 148 tài nguyên không dùng, 84 `UseKtx`, 74 thư viện cũ, 38 `PluralsCandidate`, 70 dấu «…» | `ugc-2026-10-01/lint-results-release-after.txt` |
 | 13 | StrictMode ở bản debug/uat; thử hết phiên đăng nhập giữa chừng; chặn `ACTION_VIEW` với scheme lạ trong WebView trò chơi | Phần «chưa kiểm» của đợt 02/10 |
+| 14 | **Quét QR bằng camera trực tiếp** (hiện chỉ chọn ảnh từ thư viện) | Cần CameraX + quyền CAMERA có giải thích; giải mã vẫn trên máy (ZXing). Chưa làm để không thêm quyền trước release |
+| 15 | **Tin nhắn dạng giọng nói / loa đọc kết quả** của Lá chắn lừa đảo | Web Phase 8 (`p8_voice_input`); chưa có trên Android |
+| 16 | **Nút xoá nhanh dữ liệu đã nhập** trong ô tin nhắn Lá chắn sau khi có kết quả; thẻ kết quả dài → cân nhắc thu gọn | Phát hiện khi chạy e2e 02/10 (kết quả «Giống thủ đoạn» dài ~3 màn hình) |

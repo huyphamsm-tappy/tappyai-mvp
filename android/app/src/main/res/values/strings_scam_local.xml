@@ -28,4 +28,8 @@
     <string name="scam_qr_warn_unsafe">This code does not open a web page; it opens an app or runs data on your phone. That is very suspicious — do not open it.</string>
     <string name="scam_qr_warn_contact">This code can call, text, write an email or add a contact. Read the content carefully before acting, especially if a stranger sent it.</string>
     <string name="scam_qr_warn_text">This code holds text only, not a link, so there is nothing more to check. If the text tells you to transfer money, sign in or install an app, be careful.</string>
+    <string name="scam_ai_consent_title">Send this message to the AI?</string>
+    <string name="scam_ai_consent_body">This message does not clearly match a known scam. To analyse it further, its text (and screenshot, if any) is sent to the TappyAI server and its AI provider (OpenAI) only to produce this result. TappyAI does not store the message.</string>
+    <string name="scam_ai_consent_accept">Send</string>
+    <string name="scam_ai_consent_decline">Do not send</string>
 </resources>

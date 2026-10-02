@@ -28,4 +28,8 @@
     <string name="scam_qr_warn_unsafe">Mã này không mở một trang web mà mở ứng dụng hoặc chạy dữ liệu trên máy. Đây là dấu hiệu rất đáng ngờ — đừng mở.</string>
     <string name="scam_qr_warn_contact">Mã này có thể gọi điện, nhắn tin, soạn email hoặc thêm danh bạ. Hãy đọc kỹ nội dung trước khi làm theo, nhất là khi người lạ gửi.</string>
     <string name="scam_qr_warn_text">Mã này chỉ chứa chữ, không phải đường link nên không có gì để kiểm tra thêm. Nếu nội dung bảo bạn chuyển tiền, đăng nhập hoặc cài ứng dụng, hãy cảnh giác.</string>
+    <string name="scam_ai_consent_title">Gửi tin nhắn cho AI phân tích?</string>
+    <string name="scam_ai_consent_body">Tin nhắn này không khớp chắc với thủ đoạn nào đã biết. Để phân tích tiếp, nội dung (và ảnh nếu có) sẽ được gửi tới máy chủ TappyAI và nhà cung cấp AI (OpenAI) chỉ để trả kết quả này. TappyAI không lưu nội dung tin nhắn.</string>
+    <string name="scam_ai_consent_accept">Đồng ý gửi</string>
+    <string name="scam_ai_consent_decline">Không gửi</string>
 </resources>
