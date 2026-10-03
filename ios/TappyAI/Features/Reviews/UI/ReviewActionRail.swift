@@ -29,6 +29,7 @@ struct ReviewActionRail: View {
                 icon: "bubble.right",
                 label: formatCount(review.commentCount),
                 tint: TappyColor.feedTextPrimary,
+                id: "review-comments",
                 action: onComment
             )
 
@@ -57,7 +58,7 @@ struct ReviewActionRail: View {
     }
 
     @ViewBuilder
-    private func railButton(icon: String, label: String, tint: Color, action: @escaping () -> Void) -> some View {
+    private func railButton(icon: String, label: String, tint: Color, id: String? = nil, action: @escaping () -> Void) -> some View {
         Button(action: action) {
             VStack(spacing: 2) {
                 Image(systemName: icon)
@@ -72,6 +73,7 @@ struct ReviewActionRail: View {
         }
         .buttonStyle(.plain)
         .minimumTapTarget()
+        .accessibilityIdentifier(id ?? "review-rail-" + icon)
     }
 
     private func formatCount(_ n: Int) -> String {

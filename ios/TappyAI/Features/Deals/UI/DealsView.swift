@@ -98,10 +98,20 @@ struct DealsView: View {
                 Text("deals.hero.platforms").font(.system(size: 10.5, weight: .semibold)).foregroundStyle(Color(hex: 0x94A3B8))
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: Spacing.xs) {
+                        // Web: one logo per platform that really appears in the feed (official mark from the brand
+                        // registry, else the partner's initial), in a 40-pt tile, non-interactive.
                         ForEach(partners, id: \.self) { name in
-                            Text(name).font(.system(size: 11)).foregroundStyle(.white).lineLimit(1).fixedSize()
-                                .padding(.horizontal, Spacing.xs).padding(.vertical, 5)
-                                .background(RoundedRectangle(cornerRadius: 8).fill(Color.white.opacity(0.12)))
+                            Group {
+                                if let brand = BrandRegistry.resolve(name) {
+                                    BrandLogoView(brand: brand, size: 28)
+                                } else {
+                                    Text(String(name.prefix(1)).uppercased())
+                                        .font(.system(size: 12, weight: .bold)).foregroundStyle(Color(hex: 0xF59E0B))
+                                        .accessibilityLabel(Text(verbatim: name))
+                                }
+                            }
+                            .frame(width: 40, height: 40)
+                            .background(RoundedRectangle(cornerRadius: 12, style: .continuous).fill(Color.white.opacity(0.12)))
                         }
                     }
                 }
@@ -167,8 +177,18 @@ struct DealsView: View {
         .overlay(RoundedRectangle(cornerRadius: Radius.xl).stroke(TappyColor.border, lineWidth: 1))
     }
 
+    /// Web fallback order (`BRAND_ASSETS.md` §8): the registry's official logo → the deal's own `logoImage` → the initial.
     @ViewBuilder
     private func logo(_ deal: PartnerDeal) -> some View {
+        if let brand = BrandRegistry.resolve(deal.partnerName) {
+            BrandLogoView(brand: brand, size: 48, decorative: true)
+        } else {
+            plainLogo(deal)
+        }
+    }
+
+    @ViewBuilder
+    private func plainLogo(_ deal: PartnerDeal) -> some View {
         Group {
             if let url = deal.logoImage, let imageURL = URL(string: url) {
                 AsyncImage(url: imageURL) { phase in
@@ -221,9 +241,11 @@ struct DealsView: View {
         return palette[hash % palette.count]
     }
 
+    /// Opens exactly the deal's `officialUrl` (what the Web card links to), and only if it is an https URL with a host
+    /// (`DealLink`). A missing or unsafe URL opens nothing and counts no click.
     private func open(_ deal: PartnerDeal) {
+        guard let url = DealLink.url(from: deal.officialUrl) else { return }
         vm.openDeal(deal)
-        guard let url = URL(string: deal.officialUrl) else { return }
         UIApplication.shared.open(url)
     }
 }

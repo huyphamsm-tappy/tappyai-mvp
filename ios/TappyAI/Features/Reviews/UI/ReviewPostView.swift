@@ -313,6 +313,7 @@ struct ReviewPostView: View {
                         }
                         .buttonStyle(.plain)
                         .accessibilityLabel(Text("review.report.title"))
+                        .accessibilityIdentifier("review-safety")
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)

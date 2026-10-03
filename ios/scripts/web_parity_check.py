@@ -61,6 +61,24 @@ def web_strings():
     return tables
 
 
+def brand_assets():
+    """The logo files in the iOS catalog are byte-identical to the Web's `public/brands/` files (the Web registry's `logo`)."""
+    src = open("ios/TappyAI/Features/Deals/Model/BrandRegistry.swift", encoding="utf-8").read()
+    ids = re.findall(r'BrandDefinition\(id: "([a-z-]+)"', src)
+    diffs = 0
+    for bid in ids:
+        folder = "ios/TappyAI/Resources/Assets.xcassets/brand-%s.imageset" % bid
+        files = [f for f in os.listdir(folder) if f != "Contents.json"]
+        ours = open(os.path.join(folder, files[0]), "rb").read() if files else b""
+        ext = files[0].rsplit(".", 1)[-1] if files else "svg"
+        web = subprocess.run(["git", "show", "%s:public/brands/%s.%s" % (ref, bid, ext)], capture_output=True).stdout
+        if ours != web or not web:
+            diffs += 1
+            print("DIFF logo %s: iOS %d bytes, Web %d bytes" % (bid, len(ours), len(web)))
+    print("compared %d brand logos against %s, %d differences" % (len(ids), ref, diffs))
+    return diffs
+
+
 def main():
     tables = web_strings()
     with open("ios/TappyAI/Resources/Localizable.xcstrings", encoding="utf-8") as fh:
@@ -75,6 +93,7 @@ def main():
                 diffs += 1
                 print("DIFF %s [%s]\n  ios: %s\n  web: %s" % (ios_key, lang, ios, web))
     print("compared %d strings, %d differences" % (len(PAIRS) * 2, diffs))
+    diffs += brand_assets()
     sys.exit(1 if diffs else 0)
 
 

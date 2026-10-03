@@ -111,6 +111,33 @@ final class ReviewDetailViewModel: AppObservableObject {
         }
     }
 
+    // MARK: - Author and own-post actions (the same service calls the Explore feed makes, `ReviewsFeedViewModel`)
+
+    func toggleFollow(userId: String) {
+        Task {
+            do { _ = try await service.toggleFollow(userId: userId) } catch { log.error("follow failed: \(error)") }
+        }
+    }
+
+    /// Deletes the post; `onGone` runs once it is gone (the screen has nothing left to show).
+    func deleteReview(onGone: @escaping () -> Void) {
+        Task {
+            do {
+                try await service.deleteReview(reviewId: reviewId)
+                onGone()
+            } catch { log.error("delete review failed: \(error)") }
+        }
+    }
+
+    func hideReview(onGone: @escaping () -> Void) {
+        Task {
+            do {
+                try await service.hideReview(reviewId: reviewId, hidden: true)
+                onGone()
+            } catch { log.error("hide review failed: \(error)") }
+        }
+    }
+
     // MARK: - Comments
 
     func openComments() {
