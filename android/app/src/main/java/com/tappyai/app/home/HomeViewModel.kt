@@ -3,12 +3,8 @@ package com.tappyai.app.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tappyai.app.account.data.AccountRepository
-import com.tappyai.app.deals.Deal
-import com.tappyai.app.deals.data.DealsRepository
 import com.tappyai.app.history.Conversation
 import com.tappyai.app.history.data.ChatHistoryRepository
-import com.tappyai.app.recommendations.Recommendation
-import com.tappyai.app.recommendations.data.RecommendationsRepository
 import com.tappyai.app.reviews.data.Review
 import com.tappyai.app.reviews.data.ReviewContentType
 import com.tappyai.app.reviews.data.ReviewsRepository
@@ -36,12 +32,6 @@ import javax.inject.Inject
  *  - [userName] backs the V3 hero greeting. It reuses the SAME [AccountRepository] the Profile and
  *    Account screens read, so Home adds no endpoint and no second identity source; a signed-out
  *    or failed load simply leaves it null and the greeting falls back to the generic form.
- *  - [recommendationsState] backs the "Gợi ý dành cho bạn" rail off the existing
- *    [RecommendationsRepository]. The [Recommendation] model carries placeId, placeName and
- *    matchedSignals only — no photo, rating or review count — so the rail renders just those.
- *  - [dealsState] backs the "Ưu đãi hôm nay" rail off the SAME daily pool the Deals screen reads
- *    ([DealsRepository.getDeals]). No new endpoint or field: the rail renders only what [Deal]
- *    already carries — see the section composable.
  *  - [communityVideosState] backs the "Video gợi ý cho bạn" rail: the SAME feed Explore already
  *    reads ([ReviewsRepository.getFeed]), narrowed to items that actually carry playable media.
  *    No new endpoint, DTO or table — the rail is a second view of an existing collection.
@@ -57,9 +47,7 @@ class HomeViewModel @Inject constructor(
     // way the greeting and the strings around it are guaranteed to agree.
     private val chatHistoryRepository: ChatHistoryRepository,
     private val reviewsRepository: ReviewsRepository,
-    private val dealsRepository: DealsRepository,
     private val accountRepository: AccountRepository,
-    private val recommendationsRepository: RecommendationsRepository,
 ) : ViewModel() {
 
     /**
@@ -96,24 +84,14 @@ class HomeViewModel @Inject constructor(
     private val _communityVideosState = MutableStateFlow<UiState<List<Review>>>(UiState.Loading)
     val communityVideosState: StateFlow<UiState<List<Review>>> = _communityVideosState.asStateFlow()
 
-    private val _dealsState = MutableStateFlow<UiState<List<Deal>>>(UiState.Loading)
-    val dealsState: StateFlow<UiState<List<Deal>>> = _dealsState.asStateFlow()
-
     /** The signed-in user's display name, or null when unknown — never a placeholder. */
     private val _userName = MutableStateFlow<String?>(null)
     val userName: StateFlow<String?> = _userName.asStateFlow()
 
-    private val _recommendationsState =
-        MutableStateFlow<UiState<List<Recommendation>>>(UiState.Loading)
-    val recommendationsState: StateFlow<UiState<List<Recommendation>>> =
-        _recommendationsState.asStateFlow()
-
     init {
         loadRecent()
         loadCommunityVideos()
-        loadDeals()
         loadUserName()
-        loadRecommendations()
     }
 
     /**
@@ -127,21 +105,6 @@ class HomeViewModel @Inject constructor(
             val result = accountRepository.getProfile()
             _userName.value = (result as? NetworkResult.Success)
                 ?.data?.fullName?.trim()?.takeIf { it.isNotEmpty() }
-        }
-    }
-
-    /** Personalized place suggestions from the existing recommendations endpoint. */
-    fun loadRecommendations() {
-        _recommendationsState.value = UiState.Loading
-        viewModelScope.launch {
-            when (val result = recommendationsRepository.getRecommendations()) {
-                is NetworkResult.Success -> {
-                    val items = result.data.items.take(RECOMMENDATIONS_LIMIT)
-                    _recommendationsState.value =
-                        if (items.isEmpty()) UiState.Empty else UiState.Success(items)
-                }
-                is NetworkResult.Error -> _recommendationsState.value = UiState.Empty
-            }
         }
     }
 
@@ -171,26 +134,6 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    /**
-     * The top of the daily deal pool, for Home's rail.
-     *
-     * Reuses [DealsRepository] as-is; a failure resolves to [UiState.Empty] rather than an error,
-     * because a partner-offer rail is not worth turning the launchpad into an error screen.
-     */
-    fun loadDeals() {
-        _dealsState.value = UiState.Loading
-        viewModelScope.launch {
-            when (val result = dealsRepository.getDeals()) {
-                is NetworkResult.Success -> {
-                    val deals = result.data.take(DEALS_LIMIT)
-                    _dealsState.value =
-                        if (deals.isEmpty()) UiState.Empty else UiState.Success(deals)
-                }
-                is NetworkResult.Error -> _dealsState.value = UiState.Empty
-            }
-        }
-    }
-
     fun loadRecent() {
         _recentActivityState.value = UiState.Loading
         viewModelScope.launch {
@@ -209,8 +152,6 @@ class HomeViewModel @Inject constructor(
 
     private companion object {
         const val RECENT_LIMIT = 5
-        const val DEALS_LIMIT = 6
-        const val RECOMMENDATIONS_LIMIT = 8
         const val VIDEO_LIMIT = 8
         // Over-fetch a little: the page is mixed media, and only Video items survive the filter.
         const val VIDEO_FEED_PAGE = 20

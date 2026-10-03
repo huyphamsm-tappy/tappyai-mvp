@@ -54,7 +54,6 @@ fun HomeTabHost(
                 onOpenChatWithCategory = onOpenChatWithCategory,
                 onOpenChatWithPrefill = onOpenChatWithPrefill,
                 onOpenConversation = onOpenConversation,
-                onOpenRecommendations = { navController.navigate(RecommendationsRoute.Main) },
                 onOpenTranslate = { navController.navigate(TranslateRoute.Main) },
                 onOpenCurrency = { navController.navigate(CurrencyRoute.Main) },
                 onOpenDeals = { navController.navigate(DealsRoute.Main) },

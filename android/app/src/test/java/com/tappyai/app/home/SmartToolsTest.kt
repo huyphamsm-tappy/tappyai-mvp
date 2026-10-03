@@ -58,8 +58,9 @@ class SmartToolsTest {
         assertFalse("orphaned en string", en.contains("name=\"smart_tool_suggest"))
         assertFalse("Smart Tools no longer routes to Recommendations", host.contains("SmartToolId.Suggest"))
         assertFalse(home.contains("SmartToolId.Suggest"))
-        // The Recommendations screen is SHARED — Home's "Gợi ý cho bạn" still opens it — so it stays.
-        assertTrue(host.contains("onOpenRecommendations = { navController.navigate(RecommendationsRoute.Main) }"))
+        // 2026-10-03: Home's "Gợi ý nhanh" / "Gợi ý dành cho bạn" rails (the only callers of the Recommendations
+        // route) were removed, so Home passes no onOpenRecommendations any more. The destination itself stays registered.
+        assertFalse(host.contains("onOpenRecommendations"))
         assertTrue(host.contains("composable<RecommendationsRoute.Main>"))
         assertTrue(src("app/src/main/java/com/tappyai/app/recommendations/RecommendationsRoute.kt").contains("data object Main : RecommendationsRoute"))
         // Home keeps its own "Gợi ý cho bạn" section, untouched.
@@ -210,7 +211,7 @@ class SmartToolsTest {
         assertTrue(page.contains("onBack = { navController.popBackStack() }"))
         assertTrue("the landing's own callback", host.contains("onOpenSmartTools = { navController.navigate(HomeTabRoute.SmartTools) },"))
         assertTrue(src("app/src/main/java/com/tappyai/app/home/HomeTabRoute.kt").contains("data object SmartTools : HomeTabRoute"))
-        val section = home.substring(home.indexOf("private fun SmartToolsSection("), home.indexOf("private fun V3DealsSection("))
+        val section = home.substring(home.indexOf("private fun SmartToolsSection("), home.indexOf("private fun V3ScamShieldSection("))
         assertTrue("the section previews the registry's cards, compact", section.contains("SMART_TOOLS.filter { it.id in previewed }") && section.contains("variant = SmartToolCardVariant.Compact"))
         assertTrue("Xem tất cả → the page", section.contains("SectionLink(text = stringResource(R.string.smart_tools_see_all), onClick = onOpenSmartTools)"))
         assertEquals("the seven the section shows (music dropped with reuse)", 7, Regex("""SmartToolId\.\w+ -> onOpen(?!SmartTools)\w+\(\)""").findAll(section).count())

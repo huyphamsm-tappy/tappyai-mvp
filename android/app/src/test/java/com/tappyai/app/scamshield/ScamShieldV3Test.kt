@@ -272,15 +272,15 @@ class ScamShieldV3Test {
     // ── 6. Home: the section, immediately above Ưu đãi hôm nay, opening the same route ──
 
     @Test
-    fun `Home renders Cảnh báo lừa đảo as its own section IMMEDIATELY ABOVE Ưu đãi hôm nay, once, without moving anything else`() {
+    fun `Home renders Cảnh báo lừa đảo as its own section directly under the discovery banner, once, without moving anything else`() {
         val h = home
-        val column = h.substring(h.indexOf("V3RecommendationsSection("), h.indexOf("SmartToolsSection(\n"))
-        val order = listOf("V3RecommendationsSection(", "V3DiscoverBanner(", "V3ScamShieldSection(", "V3DealsSection(", "CommunityVideosSection(", "CategoryChipsSection(", "SuggestionsSection(", "RecentActivitySection(")
+        val column = h.substring(h.indexOf("V3DiscoverBanner("), h.indexOf("SmartToolsSection(\n"))
+        val order = listOf("V3DiscoverBanner(", "V3ScamShieldSection(", "CommunityVideosSection(", "CategoryChipsSection(", "SuggestionsSection(", "RecentActivitySection(")
             .map { it to column.indexOf(it) }
         order.forEach { (name, at) -> assertTrue("$name is on the Home column", at >= 0) }
         assertEquals("the column order", order.map { it.first }, order.sortedBy { it.second }.map { it.first })
         assertEquals("the scam section is rendered exactly once", 1, Regex("""V3ScamShieldSection\(onOpenScamShield""").findAll(column).count())
-        assertEquals("the deals section is rendered exactly once", 1, Regex("""V3DealsSection\(state = deals""").findAll(column).count())
+        assertEquals("the removed deals section is not rendered", 0, Regex("""V3DealsSection\(""").findAll(h).count())
         assertTrue("the section's title is the canonical name", h.contains("private fun V3ScamShieldSection(") && h.contains("stringResource(R.string.home_scam_shield_title)"))
         assertTrue("the same header rhythm as Ưu đãi hôm nay: 52dp tile, 21sp title, see-all", h.substring(h.indexOf("private fun V3ScamShieldSection(")).let { it.contains(".size(52.dp)") && it.contains("fontSize = 21.sp") && it.contains("V3SeeAll(") })
         assertTrue("the drawer still lists every tool (DD-002)", h.contains("SmartToolId.Safety -> onOpenScamShield()"))
