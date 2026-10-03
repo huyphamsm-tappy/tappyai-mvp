@@ -94,6 +94,7 @@ const CAROL_STAFF = 'cccccccc-cccc-4ccc-8ccc-cccccccccccc'
 const DAVE = '55555555-5555-4555-8555-555555555555'
 const ERIN = '66666666-6666-4666-8666-666666666666'
 const FRANK = '77777777-7777-4777-8777-777777777777'
+const HEIDI = '88888888-8888-4888-8888-888888888888'
 
 import { GET as catalog } from '@/app/api/payments/catalog/route'
 import { GET as me } from '@/app/api/payments/me/route'
@@ -110,13 +111,14 @@ const DAY = 86_400_000
 let t: P8Db
 
 beforeAll(async () => {
-  t = await startP8Db(54851, 'p8subroutes', [`INSERT INTO auth.users (id) VALUES ('${CAROL_STAFF}'), ('${DAVE}'), ('${ERIN}'), ('${FRANK}')`])
+  t = await startP8Db(54851, 'p8subroutes', [`INSERT INTO auth.users (id) VALUES ('${CAROL_STAFF}'), ('${DAVE}'), ('${ERIN}'), ('${FRANK}'), ('${HEIDI}')`])
   await loadProdSchema(t.db)
-  for (const id of [ALICE, BOB, CAROL, DAVE, ERIN, FRANK]) await t.db.query(`INSERT INTO public.profiles (id) VALUES ($1) ON CONFLICT DO NOTHING`, [id])
+  for (const id of [ALICE, BOB, CAROL, DAVE, ERIN, FRANK, HEIDI]) await t.db.query(`INSERT INTO public.profiles (id) VALUES ($1) ON CONFLICT DO NOTHING`, [id])
   await t.db.query(readRepo('supabase/migrations/20260924_p8_subscriptions_plan_model.sql'))
   await t.db.query(readRepo('supabase/migrations/20261011_p8_payments.sql'))
   await t.db.query(readRepo('supabase/migrations/20261015_p8_subscriptions.sql'))
   await t.db.query(readRepo('supabase/migrations/20261016_p7_pip_one_time.sql'))
+  await t.db.query(readRepo('supabase/migrations/20261017_p7_pip_trial_any_source.sql'))
   h.run = (role, sql, sub, params) => t.rows(role, sql, sub, params)
 }, 240_000)
 afterAll(async () => { await t?.stop() })
@@ -337,8 +339,8 @@ describe('Tappy Pip — one-time trial per account (owner decision, enforced in 
     expect((await deliver(n.headers, n.rawBody)).status).toBe(200)
     return { order, n }
   }
-  const pipGrants = async (user: string) =>
-    Number((await t.one<{ c: string }>(`SELECT count(*) AS c FROM public.entitlement_ledger WHERE user_id = $1 AND plan = 'pip' AND source = 'web_sepay'`, [user])).c)
+  const pipGrants = async (user: string, _any?: string) =>
+    Number((await t.one<{ c: string }>(`SELECT count(*) AS c FROM public.entitlement_ledger WHERE user_id = $1 AND plan = 'pip'${_any ? '' : ` AND source = 'web_sepay'`}`, [user])).c)
   type Me = { pipUsed: boolean; subscription: Record<string, unknown>; quota: Record<string, number> }
 
   it('first purchase allowed: $1 plan, 7 days, ACTIVE, 30 a day; the account is then marked as having used Pip', async () => {
@@ -429,13 +431,33 @@ describe('Tappy Pip — one-time trial per account (owner decision, enforced in 
     expect(r[0].r.status).toBe('pip_used')
     const dup = await t.exec('service_role', `INSERT INTO public.entitlement_ledger (user_id, external_ref, source, mode, plan, seconds) VALUES ('${FRANK}', 'dup:pip', 'web_sepay', 'stack', 'pip', 604800)`)
     expect(dup).toBe('23505')
+    const dupManual = await t.exec('service_role', `INSERT INTO public.entitlement_ledger (user_id, external_ref, source, mode, plan, seconds) VALUES ('${FRANK}', 'dup:pip:m', 'manual', 'stack', 'pip', 604800)`)
+    expect(dupManual).toBe('23505')
   })
 
-  it("a staff comp of Pip is not the account's purchase: it does not use up the trial", async () => {
+  it('a staff comp of Pip CONSUMES the trial: no Pip order afterwards, /me agrees, a second Pip grant is refused', async () => {
     await t.rows('service_role', `SELECT public.p8_apply_entitlement($1, 'pip', 'manual', 'grant:gift', 'stack', now(), 86400, NULL, NULL, NULL, 'comp')`, null, [ALICE])
-    await t.db.query(`DELETE FROM public.subscriptions WHERE user_id = $1`, [ALICE])
     h.user = { id: ALICE }
-    expect((await newOrder('pip')).status).toBe(201)
+    expect(((await myPlan()) as unknown as Me).pipUsed).toBe(true) // comp-only account: same answer as the DB rule
+    await t.db.query(`DELETE FROM public.subscriptions WHERE user_id = $1`, [ALICE])
+    expect(((await myPlan()) as unknown as Me).pipUsed).toBe(true) // even with no subscription row at all
+    const res = await newOrder('pip')
+    expect(res.status).toBe(409)
+    expect((await res.json()).error).toBe('pip_already_used')
+    // replay of the same comp is idempotent, a NEW Pip grant (any source) is refused by the database
+    const again = await t.rows<{ r: { status: string } }>('service_role', `SELECT public.p8_apply_entitlement($1, 'pip', 'manual', 'grant:gift', 'stack', now(), 86400, NULL, NULL, NULL, 'comp') AS r`, null, [ALICE])
+    expect(again[0].r.status).toBe('duplicate')
+    expect(await t.exec('service_role', `SELECT public.p8_apply_entitlement('${ALICE}', 'pip', 'manual', 'grant:gift2', 'stack', now(), 86400, NULL, NULL, NULL, 'second comp')`)).toBe('23505')
+    expect(await t.exec('service_role', `SELECT public.p8_apply_entitlement('${ALICE}', 'pip', 'google_play', 'gp:pip2', 'stack', now(), 604800, now() + interval '7 days')`)).toBe('23505')
+    expect(await pipGrants(ALICE, 'pip')).toBe(1)
+  })
+
+  it('every grant mechanism consumes it: a store Pip also blocks a web Pip', async () => {
+    await t.rows('service_role', `SELECT public.p8_apply_entitlement($1, 'pip', 'apple_iap', 'ap:pip1', 'stack', now(), 604800, now() + interval '7 days')`, null, [HEIDI])
+    await t.db.query(`DELETE FROM public.subscriptions WHERE user_id = $1`, [HEIDI])
+    h.user = { id: HEIDI }
+    expect((await newOrder('pip')).status).toBe(409)
+    expect(((await myPlan()) as unknown as Me).pipUsed).toBe(true)
   })
 
   it('the catalog marks Pip as a one-time trial and carries the $ list price', async () => {
@@ -513,15 +535,32 @@ describe('expiry cron + fake bank safety', () => {
   })
 })
 
-describe('20261016 Pip rule — rollback', () => {
-  it('drops the rule and the backstop, keeps every grant, and re-applies cleanly', async () => {
-    const grants = await t.one<{ n: string }>(`SELECT count(*) AS n FROM public.entitlement_ledger WHERE plan = 'pip'`)
+describe('20261017 / 20261016 Pip rule — rollback', () => {
+  const idx = async () => Number((await t.one<{ n: string }>(`SELECT count(*) AS n FROM pg_indexes WHERE indexname = 'entitlement_ledger_pip_once'`)).n)
+  const fn = async () => Number((await t.one<{ n: string }>(`SELECT count(*) AS n FROM pg_proc WHERE proname = 'p7_pip_used'`)).n)
+  const pipRows = async () => (await t.one<{ n: string }>(`SELECT count(*) AS n FROM public.entitlement_ledger WHERE plan = 'pip'`)).n
+  const used = async (u: string) => (await t.rows<{ r: boolean }>('service_role', `SELECT public.p7_pip_used($1) AS r`, null, [u]))[0].r
+
+  it('rolling back 20261017 restores the 20261016 rule (comp does not consume), and it re-applies cleanly', async () => {
+    const grants = await pipRows()
+    expect(await used(ALICE)).toBe(true) // manual comp consumes (20261017)
+    await t.db.query(readRepo('supabase/migrations/rollback/20261017_p7_pip_trial_any_source_rollback.sql'))
+    expect(await used(ALICE)).toBe(false) // 20261016 behaviour
+    expect(await pipRows()).toBe(grants)
+    await t.db.query(readRepo('supabase/migrations/20261017_p7_pip_trial_any_source.sql'))
+    expect(await used(ALICE)).toBe(true)
+  })
+
+  it('rolling back 20261016 drops the rule and the backstop, keeps every grant, and re-applies cleanly', async () => {
+    const grants = await pipRows()
     await t.db.query(readRepo('supabase/migrations/rollback/20261016_p7_pip_one_time_rollback.sql'))
-    expect((await t.one<{ n: string }>(`SELECT count(*) AS n FROM pg_proc WHERE proname = 'p7_pip_used'`)).n).toBe('0')
-    expect((await t.one<{ n: string }>(`SELECT count(*) AS n FROM pg_indexes WHERE indexname = 'entitlement_ledger_pip_once'`)).n).toBe('0')
-    expect((await t.one<{ n: string }>(`SELECT count(*) AS n FROM public.entitlement_ledger WHERE plan = 'pip'`)).n).toBe(grants.n)
+    expect(await fn()).toBe(0)
+    expect(await idx()).toBe(0)
+    expect(await pipRows()).toBe(grants)
     await t.db.query(readRepo('supabase/migrations/20261016_p7_pip_one_time.sql'))
+    await t.db.query(readRepo('supabase/migrations/20261017_p7_pip_trial_any_source.sql'))
     const r = await t.rows<{ r: { status: string } }>('service_role', `SELECT public.p8_payments_create_order($1,'pip',29000,7) AS r`, null, [FRANK])
     expect(r[0].r.status).toBe('pip_used')
+    expect(await used(ALICE)).toBe(true)
   })
 })

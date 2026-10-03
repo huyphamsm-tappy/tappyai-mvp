@@ -18,7 +18,7 @@ Guest ("Welcome Guest"): 5 AI questions for life. Free account: 15/day. The USD 
 - `p8_payments_create_order` answers `pip_used` → API 409 `pip_already_used` ("Bạn đã sử dụng gói Pip. Gói dùng thử này chỉ có thể mua một lần cho mỗi tài khoản.").
 - `p8_payments_apply_sepay`: a Pip payment for an account that already used Pip is not granted (`pip_used`, order kept as `mismatch` for a staff refund). A per-payer advisory lock (same one `create_order` takes, taken before the order row) makes two Pip orders paid back-to-back grant exactly one.
 - Unique backstop `entitlement_ledger_pip_once` (one web Pip grant per user).
-- A staff comp (`source = manual`) does not use up the trial.
+- ANY grant mechanism consumes the trial — `web_sepay`, `google_play`, `apple_iap` and `manual` (staff comp), owner decision (20261017): `p7_pip_used` has no source exception and `entitlement_ledger_pip_once` allows one Pip `stack` grant per user whatever the source; a second Pip grant is refused with 23505, a replay of the same `external_ref` is still `duplicate`. `/api/payments/me.pipUsed` calls the same DB function.
 - UI: "$1 · 7 ngày · Dùng thử 1 lần" + note; after use "Bạn đã sử dụng gói Pip" and Pip is no longer offered (`/api/payments/me` → `pipUsed`).
 
 ## Payment flow
@@ -30,4 +30,7 @@ Metered (spend from the pool): `/api/chat` (guest, anonymous, free, paid) and `/
 Not metered by this pool (own per-feature limits, unchanged from the release): `/api/translate`, `/api/scan`, `/api/viet-content`, `/api/group/[id]/suggest`, `/api/explore/process`, memory extraction, cron jobs.
 
 ## Not in scope
-Android/iOS/RevenueCat/Google Play/Apple verify paths, admin plan-grant route, Stripe (closed while the flag is ON).
+Android/iOS/RevenueCat/Google Play/Apple verify paths, admin plan-grant route.
+
+## Stripe — legacy / unsupported for the current P7 subscription flow
+`/api/stripe/checkout`, `/api/stripe/portal` (create a Stripe Pro checkout / billing portal; need `STRIPE_SECRET_KEY` at import) and `/api/webhooks/stripe` (writes `plan = 'pro'` rows) are the pre-P7 Pro path used only by the old `SubscriptionView`. They are not part of the SePay/VietQR flow and add no Stripe config requirement to it. With `SUBSCRIPTIONS_ENABLED=1` checkout and portal answer 404 (the five-plan page replaces the Stripe page); with it off they behave as in the release. The Stripe webhook is untouched and not flag-gated, and an existing paying `pro` row stays unmetered until its period ends (or `PRO_GRANDFATHER_CUTOFF`), then is a 30/day plan.

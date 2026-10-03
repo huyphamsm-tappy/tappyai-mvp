@@ -140,3 +140,4 @@ supabase/migrations/20261001e_banned_identity_hash.sql
 supabase/migrations/20261011_p8_payments.sql
 supabase/migrations/20261015_p8_subscriptions.sql
 supabase/migrations/20261016_p7_pip_one_time.sql
+supabase/migrations/20261017_p7_pip_trial_any_source.sql

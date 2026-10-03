@@ -6,6 +6,7 @@
 import type { SupabaseClient } from '@supabase/supabase-js'
 import { accountQuotaFor, aiQuotaIdentity, peekAiQuestionQuota } from '@/lib/ai/quota/aiQuestionQuota'
 import { getEntitlement } from '@/lib/plans/entitlement'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { mySubscription, type MySubscription, type SubscriptionRowForState } from './subscriptionState'
 
 export const MY_PLAN_COLUMNS = 'plan, status, current_period_end, cancel_at_period_end, source'
@@ -16,6 +17,16 @@ export interface MyPlan {
   /** Pip is a one-time trial: true once this account has bought it (the database enforces it; this only draws it). */
   pipUsed: boolean
   quota: { limit: number; used: number; remaining: number; period: 'day' | 'lifetime' }
+}
+
+/** THE Pip rule's own answer (p7_pip_used: any source, ledger + paid orders) — the same function create_order/apply_sepay use.
+ *  Falls back to what the caller's own rows show only if that read fails, and then errs towards "used" never "unused". */
+async function pipUsedFor(userId: string, own: boolean): Promise<boolean> {
+  try {
+    const { data, error } = await createAdminClient().rpc('p7_pip_used', { p_user: userId })
+    if (!error && typeof data === 'boolean') return data
+  } catch { /* fall through */ }
+  return own
 }
 
 export async function loadMyPlan(supabase: SupabaseClient, userId: string, ip: string): Promise<MyPlan> {
@@ -33,7 +44,7 @@ export async function loadMyPlan(supabase: SupabaseClient, userId: string, ip: s
   return {
     signedIn: true,
     subscription: mySubscription(row as SubscriptionRowForState | null, { pendingOrder: (pending?.length ?? 0) > 0 }),
-    pipUsed: (paidPip?.length ?? 0) > 0 || (row as SubscriptionRowForState | null)?.plan === 'pip',
+    pipUsed: await pipUsedFor(userId, (paidPip?.length ?? 0) > 0 || (row as SubscriptionRowForState | null)?.plan === 'pip'),
     quota: { limit: q.limit, used, remaining: Math.max(0, q.limit - used), period: q.period },
   }
 }

@@ -57,7 +57,7 @@ policy_of() {
     20260925b_decision_evidence_sweep.sql|20260925d_audit_log_pii_retention.sql|d3-one-off-sweep.sql|\
     20260929130000_commerce_click_attributions.sql|20260929140000_commerce_click_attributions_r21.sql|\
     20261001c_commerce_providers_cinemas.sql|\
-    20260924_p8_subscriptions_plan_model.sql|20261011_p8_payments.sql|20261015_p8_subscriptions.sql|20261016_p7_pip_one_time.sql)
+    20260924_p8_subscriptions_plan_model.sql|20261011_p8_payments.sql|20261015_p8_subscriptions.sql|20261016_p7_pip_one_time.sql|20261017_p7_pip_trial_any_source.sql)
       echo APPLY ;;
     *) echo UNLISTED ;;
   esac
