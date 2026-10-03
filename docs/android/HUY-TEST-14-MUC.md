@@ -1,6 +1,6 @@
 # Anh test máy thật — MỘT vòng, 15 mục (bản CUỐI, 01/10 tối)
 
-Máy R58RC0V30BH · APK UAT `TappyAI-UAT-1b12a7c.apk` (app «TappyAI UAT», nói chuyện với uat.tappyai.com). Dùng tài khoản test.
+Máy R58RC0V30BH · APK UAT `TappyAI-UAT-101a359.apk` (cùng mã nguồn app với AAB ứng viên `101a3597c40937c487a837f03ad1ac4d54dc4b4f`) (app «TappyAI UAT», nói chuyện với uat.tappyai.com). Dùng tài khoản test.
 Mỗi mục: làm → **đạt = thấy gì** → ghi Đạt / Không đạt (+1 dòng nếu không đạt).
 Bản Play (www.tappyai.com — production) KHÔNG nằm trong vòng này.
 
@@ -55,9 +55,10 @@ Cờ BẬT (khi release): hàng đổi tên «Xóa tài khoản» → hộp «X�
 
 
 ## Bổ sung 02/10 — Lá chắn lừa đảo (3 trạng thái, không AI)
+(Cập nhật 03/10: tin nhắn nay được kiểm qua server theo Web — `POST /api/scam-shield/analyze`, không AI, không lưu; kết quả các ví dụ dưới đây không đổi.)
 - [ ] Màn hình mặc định **Tối** khi cài mới (kể cả điện thoại đang để chế độ sáng); Cài đặt → Giao diện đổi được Hệ thống/Sáng/Tối.
 - [ ] Lá chắn → «Phân tích tin nhắn»: dán «Thông báo phạt nguội: xe của bạn vi phạm giao thông, vui lòng nộp phạt trong 24 giờ» → «Có dấu hiệu lừa đảo quen thuộc», kèm nguồn Bộ Công an, 113, «TappyAI không thay thế cơ quan chức năng». Không có hộp «gửi AI», không có «lượt hỏi AI».
 - [ ] Dán «Chiều nay đi ăn phở nha, 6h gặp ở quán cũ.» → «Chưa nhận ra dấu hiệu quen thuộc» + «KHÔNG có nghĩa là an toàn». Không có chữ «An toàn», không điểm.
 - [ ] Dán «Bưu phẩm Trung thu của bạn đã đến, quét mã QR đính kèm để nhận» → «Có một số dấu hiệu đáng ngờ».
 - [ ] Dán tin có link (vd. `https://vietcombank-xacthuc-taikhoan.top/login`) → thẻ link: «Đường link có đặc điểm thường gặp ở link giả mạo», lý do cụ thể, không điểm/«Độ tin cậy».
-- [ ] «Quét mã QR» (chọn ảnh): QR link → như trên; QR chữ / thanh toán / Wi-Fi → nêu loại, không tự mở, Wi-Fi không lộ mật khẩu. Huỷ chọn ảnh → không sập.
+- [ ] «Quét mã QR» (chọn ảnh): QR link → như trên; QR chữ / thanh toán / Wi-Fi → nêu loại, không tự mở, hiện «Nội dung đọc được» đúng như mã (Wi-Fi cũng hiện như đã đọc, theo Web), không có nút chia sẻ. Huỷ chọn ảnh → không sập.

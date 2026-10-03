@@ -1,4 +1,4 @@
-# Play Console — nháp dán sẵn (soạn đêm 30/9→1/10; BẢN CHỐT 02/10 ở mục H — AAB cuối vc11 `1b12a7c`, thay mọi [CẦN HUY…])
+# Play Console — nháp dán sẵn (soạn đêm 30/9→1/10; BẢN CHỐT 02/10 ở mục H — AAB cuối vc11 `101a359`, thay mọi [CẦN HUY…])
 
 Nguyên tắc: mỗi dòng có căn cứ file:dòng. Chỗ chưa chắc ghi **[CẦN HUY XÁC NHẬN]**. Không có bước nào ở đây đã được làm trên Play Console
 (cần đăng nhập — việc của Huy). Bản nháp Data safety gốc (29/09) nằm ở `docs/release/PLAY-LISTING.md` §1–§2; file này là bản
@@ -191,7 +191,7 @@ Chỉ làm SAU khi web báo "OK release" và smoke production xong (mục C).
 3. **Mức phân loại nội dung** → làm lại bảng câu hỏi IARC với «người dùng tương tác/UGC = Có» → Lưu. 🔐
 4. **Thông tin đăng nhập** → dán mục D → Lưu. 🔐
 5. **Chọn quốc gia và khu vực** cho kênh Sản xuất (Phát hành công khai → tab *Quốc gia/khu vực*): chọn quốc gia (Việt Nam trước; hiện 0/178). 🔐
-6. Tạo bản phát hành Sản xuất: Phát hành công khai → **Tạo bản phát hành mới** (nút hiện đang xám — có thể do chưa chọn quốc gia; xem lại sau bước 5) → tải `TappyAI-release-vc11-597698b.aab (SHA-256 e635627f…2292; thay cho vc11 684431f và vc10 891be6c — versionCode 11 cao hơn mọi bản đã tải, cao nhất trên Play là 8)` (đường dẫn trong báo cáo) → tên bản `1.0.0 (11)` → ghi chú vi/en → chọn phát hành **từng phần 10–20%** nếu giao diện cho chọn → **Xem trước và xác nhận**. 🔐
+6. Tạo bản phát hành Sản xuất: Phát hành công khai → **Tạo bản phát hành mới** (nút hiện đang xám — có thể do chưa chọn quốc gia; xem lại sau bước 5) → tải `TappyAI-release-vc11-101a359.aab (SHA-256 451b7035…59a2; thay cho vc11 597698b, 1b12a7c, 684431f và vc10 891be6c — versionCode 11 cao hơn mọi bản đã tải, cao nhất trên Play là 8)` (đường dẫn trong báo cáo) → tên bản `1.0.0 (11)` → ghi chú vi/en → chọn phát hành **từng phần 10–20%** nếu giao diện cho chọn → **Xem trước và xác nhận**. 🔐
 7. **Gửi để xem xét / Bắt đầu phát hành** — nút cuối (Trang tổng quan → «Gửi bản phát hành cho Google xem xét» / «Phát hành ứng dụng của bạn…»). 🔐 **Chỉ Huy bấm.**
 8. (Tên nút ở bước 7–8 là suy từ giao diện Play thường gặp; tôi chưa thấy vì chưa có bản phát hành — có thể khác chút.) Sau khi phát hành: tăng tỉ lệ ở Phát hành công khai → Quản lý bản phát hành → «Tăng tỷ lệ phát hành»; tạm dừng/gỡ: cùng trang → «Tạm dừng bản phát hành» (nếu có sự cố); theo dõi 24 giờ đầu ở **Theo dõi và cải thiện → Android vitals → Sự cố và lỗi ANR** (ngưỡng "hành vi xấu" của Google tôi chỉ nhớ gần đúng — crash ~1,09%, ANR ~0,47% — **chưa kiểm nguồn**).
 
@@ -243,7 +243,7 @@ Quyền và lý do: vị trí (chỉ khi cho phép, tìm quanh đây), camera/�
 
 > 🛑 **ĐÓNG BĂNG (02/10): CHƯA PHÁT HÀNH.** UAT web SHA 9474f65 trượt; chưa có lệnh release. Không tạo bản Sản xuất, không gửi xem xét, không chọn quốc gia/phát hành từng phần. Mọi bước dưới đây **CHỜ Huy tự nói «OK release»**. AAB chỉ được GIỮ, không tải lên.
 
-**AAB cuối (giữ, chưa tải lên):** `D:\TappyAI-backups\TappyAI-release-vc11-1b12a7c.aab`, SHA-256 `bd0f659b205b9bdda94a234b39409a71f7c59f18e09ae6f21b3a4113ddfb15c6`, versionCode 11 / versionName 1.0.0, commit `1b12a7c`, ký bằng khoá tải lên (SHA-256 `02:5B:35:4D:1C:37:7B:DC:F3:D6:49:4A:71:8E:6B:2D:A4:56:2F:73:2B:CE:0A:42:11:9C:9B:09:37:74:5C:C7`). Thay thế `597698b` (SHA-256 `e635627f…2292`) vì thêm Lá chắn lừa đảo đồng bộ (QR giải mã trên máy, khớp tình huống tĩnh, hỏi đồng ý AI) và chủ đề mặc định Tối; quyền không đổi (12 quyền, không thêm CAMERA); quét bí mật như cũ (0 chuỗi UAT/staging/secret).
+**AAB cuối (giữ, chưa tải lên):** `D:\TappyAI-backups\TappyAI-release-vc11-101a359.aab`, SHA-256 `451b703501d233082d54a31979ecf51b3934d2dc5a57e91a8aba329dccbf59a2`, versionCode 11 / versionName 1.0.0, commit `101a3597c40937c487a837f03ad1ac4d54dc4b4f`, ký bằng khoá tải lên (SHA-256 `02:5B:35:4D:1C:37:7B:DC:F3:D6:49:4A:71:8E:6B:2D:A4:56:2F:73:2B:CE:0A:42:11:9C:9B:09:37:74:5C:C7`). Thay thế `597698b` (SHA-256 `e635627f…2292`) và bản trung gian `1b12a7c` (SHA-256 `bd0f659b…15c6`, KHÔNG dùng nữa) vì thêm Lá chắn lừa đảo đồng bộ theo Web (tin nhắn kiểm qua server `/api/scam-shield/analyze`, không AI; link/QR; QR giải mã trên máy; báo cáo/chặn đúng route Web) và chủ đề mặc định Tối; quyền không đổi (12 quyền, không thêm CAMERA); quét bí mật như cũ (0 chuỗi UAT/staging/secret).
 
 **Quyết định của Huy (02/10):** giữ Firebase Analytics · OpenAI là **bên xử lý** (thay mặt TappyAI) · quốc gia **Việt Nam trước** · KHÔNG nâng `activity-compose`, KHÔNG tải ảnh máy ảo trước release.
 
@@ -269,6 +269,6 @@ Mục «chia sẻ»: **không đánh dấu** cho bất kỳ loại nào (OpenAI 
 - **Quốc gia:** chỉ **Việt Nam** (mở thêm sau).
 - **Nhóm tuổi:** bỏ «16–17», chỉ giữ «18 tuổi trở lên». **IARC:** khai có nội dung do người dùng tạo/tương tác.
 - **Ghi chú cho người xem xét:** mục D (đã khớp phương án (b)); câu về chặn người dùng chỉ dán khi server đã bật `P8_USER_BLOCKS`.
-- **Phát hành:** tạo bản Sản xuất → tải AAB `1b12a7c` (CHỜ Huy nói «OK release») → từng phần 10–20% → Huy bấm gửi/phát hành (sau khi production có Phase 7).
+- **Phát hành:** tạo bản Sản xuất → tải AAB `101a359` (CHỜ Huy nói «OK release») → từng phần 10–20% → Huy bấm gửi/phát hành (sau khi production có Phase 7).
 - **Google đăng nhập:** làm mục G (xoá client đang giữ cặp `com.tappyai.app` + SHA-1 `C2:0A:A1:…` ở dự án khác, tạo lại ở `aerobic-lock-498409-u7`).
 - **Quyền riêng tư (web):** `/privacy` còn 3 chỗ lệch (xoá tài khoản vẫn ghi «liên hệ hỗ trợ»; chưa nêu ảnh gửi tới OpenAI; nhắc Stripe) — đã ghi cho phiên web; Play đối chiếu Data safety với chính sách nên nên sửa TRƯỚC khi gửi.

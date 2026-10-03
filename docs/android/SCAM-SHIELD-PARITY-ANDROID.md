@@ -1,5 +1,7 @@
 # Lá chắn lừa đảo — Android đồng bộ 3 nền tảng (02/10/2026)
 
+> **CẬP NHẬT 03/10 — hành vi hiện hành (AAB `101a3597c40937c487a837f03ad1ac4d54dc4b4f`, vc11):** Android theo Web (nguồn chuẩn `56a26ae`). Tin nhắn KHÔNG còn khớp tĩnh trên máy: gửi `POST /api/scam-shield/analyze` (server, không AI, không lưu); `ScenarioMatcher` đã xoá (bản cũ còn trong git `812b61b`). Link/QR-có-link dùng `verdict`/`reason_vi` của server + nút «Cảnh báo cho mọi người»; QR không phải link giải mã trên máy, Wi-Fi hiện như đã đọc, không có nút chia sẻ. Các phần bên dưới là LỊCH SỬ 02/10 (bản `1b12a7c`/`597698b`); nguồn hiện hành: `WEB-PARITY-EVIDENCE-2026-10-02.md` và `FINAL-REPORT-2026-10-03.md`.
+
 Nhánh `android/parity-2026-09-28-step1`. Hợp đồng chung: kiểm tra link · phân tích tin nhắn · quét QR · thư viện 25 tình huống · khối khẩn cấp 113 · chia sẻ kết quả.
 
 ## Bước 0 — hiện trạng thực tế (đọc code, không đoán)
