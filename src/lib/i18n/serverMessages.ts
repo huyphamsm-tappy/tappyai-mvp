@@ -44,6 +44,11 @@ const MESSAGES = {
     vi: 'Hôm nay bạn đã dùng tới {n} lượt hỏi Tappy — mức trần để giữ dịch vụ ổn định cho mọi người. Hẹn gặp lại bạn vào ngày mai nhé!',
     en: "You've reached today's ceiling of {n} Tappy turns — a limit that keeps the service steady for everyone. See you again tomorrow!",
   },
+  // P7 closeout (02/10): a PAID plan that used its daily allowance — no upgrade nag, it resets at 00:00 Vietnam time.
+  'chat.planLimit': {
+    vi: 'Bạn đã dùng hết {n} câu hỏi AI hôm nay của gói {plan}. Lượt hỏi được làm mới lúc 00:00 (giờ Việt Nam).',
+    en: "You've used all {n} of today's AI questions on the {plan} plan. They refresh at 00:00 (Vietnam time).",
+  },
   'chat.tooLong': {
     vi: 'Tin nhắn quá dài. Vui lòng rút gọn.',
     en: 'That message is too long. Please shorten it.',
@@ -303,6 +308,32 @@ const MESSAGES = {
   'account.deleteFailed': { vi: 'Chưa xóa được tài khoản. Tài khoản của bạn vẫn còn nguyên — vui lòng thử lại.', en: 'Your account was not deleted and is unchanged. Please try again.' },
 
   'notif.markReadFailed': { vi: 'Không thể đánh dấu đã đọc.', en: "Couldn't mark these as read." },
+
+  // ── PAYMENTS (docs/phase8/PAYMENTS.md) ───────────────────────────────────────
+  'payments.invalidPlan': { vi: 'Gói bạn chọn không còn nữa. Vui lòng chọn lại.', en: 'That plan is no longer available. Please choose again.' },
+  'payments.tooManyPending': {
+    vi: 'Bạn đang có vài đơn chờ thanh toán. Hãy hoàn tất một đơn, hoặc đợi 15 phút rồi thử lại.',
+    en: 'You already have a few orders waiting for payment. Finish one, or try again in 15 minutes.',
+  },
+  'payments.slowDown': { vi: 'Bạn thao tác hơi nhanh. Đợi một chút rồi thử lại nhé.', en: 'That was a bit fast. Please wait a moment and try again.' },
+  'payments.unavailable': {
+    vi: 'Thanh toán đang tạm dừng. Vui lòng thử lại sau.',
+    en: 'Payments are paused right now. Please try again later.',
+  },
+  'payments.failed': { vi: 'Chưa tạo được đơn. Vui lòng thử lại.', en: "Couldn't create your order. Please try again." },
+  // SUBSCRIPTIONS (docs/payments/PLAN.md)
+  'payments.alreadyActive': {
+    vi: 'Bạn đang có gói còn hạn. Khi gói hết hạn, bạn có thể mua lại.',
+    en: 'You already have an active plan. You can buy again once it ends.',
+  },
+  'payments.pipUsed': {
+    vi: 'Bạn đã sử dụng gói Pip. Gói dùng thử này chỉ có thể mua một lần cho mỗi tài khoản.',
+    en: 'You have already used the Pip plan. This trial plan can only be bought once per account.',
+  },
+  'payments.manageInStore': {
+    vi: 'Gói này được quản lý trong cửa hàng ứng dụng nơi bạn đã mua.',
+    en: 'This plan is managed in the app store where you bought it.',
+  },
 } as const satisfies Record<string, Message>
 
 export type ServerMessageKey = keyof typeof MESSAGES

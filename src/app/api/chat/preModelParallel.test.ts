@@ -142,15 +142,17 @@ describe('isPro semantics for the quota are unchanged', () => {
     // The property is unchanged — Pro and canned spend nothing, and the spend happens only once
     // `isPro` is known — and both halves are asserted here.
     expect(CODE).toMatch(/if\s*\(\s*isPro \|\| quotaExempt\s*\)\s*\{[\s\S]{0,120}?quotaMetered = true/)
-    expect(CODE).toMatch(/\}\s*else\s*\{[\s\S]{0,200}?const spend = await consumeAiQuestion\(aiQuotaIdentity\(user, clientIp\(req\)\)\)/)
-    const spend = CODE.indexOf('const spend = await consumeAiQuestion(aiQuotaIdentity(user, clientIp(req)))', CODE.indexOf('isPro = new Date'))
-    expect(spend).toBeGreaterThan(CODE.indexOf('isPro = new Date(subData.current_period_end)'))
+    expect(CODE).toMatch(/\}\s*else\s*\{[\s\S]{0,200}?const spend = await consumeAiQuestion\(aiQuotaIdentity\(user, clientIp\(req\), quotaPlan\)\)/)
+    const spend = CODE.indexOf('const spend = await consumeAiQuestion(aiQuotaIdentity(user, clientIp(req), quotaPlan))')
+    expect(spend).toBeGreaterThan(CODE.indexOf('isPro = acct.exempt'))
     expect(batchBlock()).not.toContain('consumeAiQuestion')
   })
 
-  it('still derives isPro from an active subscription with a future period end', () => {
-    expect(CODE).toMatch(/subData\?\.status\s*===\s*'active'/)
-    expect(CODE).toMatch(/isPro\s*=\s*new Date\(subData\.current_period_end\)\s*>\s*new Date\(\)/)
+  it('derives the quota decision from THE entitlement rule (active + a future period end), not from a local re-implementation', () => {
+    expect(CODE).toMatch(/accountQuotaFor\(entitlementFromRow\(/)
+    expect(CODE).toMatch(/isPro\s*=\s*acct\.exempt/)
+    expect(CODE).toMatch(/quotaPlan\s*=\s*acct\.plan/)
+    expect(CODE).not.toMatch(/subData\?\.status\s*===\s*'active'/)
   })
 
   it('still answers 429 with free_limit_reached', () => {

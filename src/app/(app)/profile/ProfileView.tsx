@@ -13,6 +13,7 @@ import {
 } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { AccountSettingsHub } from './ProfileRows'
+import AccountPlanCard from '@/components/subscription/AccountPlanCard'
 import { postsInState } from './ownPostStates'
 
 // ── V3 Web · Profile / Me — the personal hub ────────────────────────────────
@@ -177,6 +178,7 @@ export default function ProfileView({
 
             {/* "Tài khoản & Cài đặt" — owner reference 2026-09-22. Cards sit side by side only at
                 2xl here, because the personal rail already takes 320px from `xl` up. */}
+            <AccountPlanCard />
             <AccountSettingsHub wideAt="2xl" />
           </div>
 

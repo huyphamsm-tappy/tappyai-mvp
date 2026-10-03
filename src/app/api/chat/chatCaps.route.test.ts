@@ -22,7 +22,7 @@ const h = vi.hoisted(() => {
     const b: any = {
       select: () => b, in: () => b, or: () => b, order: () => b, limit: () => b, gte: () => b, lt: () => b, not: () => b, is: () => b, eq: () => b,
       single: () => Promise.resolve(table === 'subscriptions' && state.pro ? { data: { status: 'active', current_period_end: new Date(Date.now() + 86_400_000).toISOString() }, error: null } : { data: null, error: null }),
-      maybeSingle: () => Promise.resolve({ data: null, error: null }),
+      maybeSingle: () => Promise.resolve(table === 'subscriptions' && state.pro ? { data: { plan: 'pro', status: 'active', current_period_end: new Date(Date.now() + 86_400_000).toISOString(), source: 'web' }, error: null } : { data: null, error: null }),
       insert: () => Promise.resolve({ data: null, error: null }),
       upsert: () => Promise.resolve({ data: null, error: null }),
       then: (r: any) => r({ data: [], error: null }),

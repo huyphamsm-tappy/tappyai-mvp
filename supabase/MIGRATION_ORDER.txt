@@ -118,6 +118,7 @@ supabase/migrations/20260921_user_events_ga4_event_types.sql
 supabase/migrations/20260921_user_events_shopping_search_event.sql
 supabase/migrations/20260922_groups_avatar_url.sql
 supabase/migrations/20260922_music_soundhelix_attribution.sql
+supabase/migrations/20260924_p8_subscriptions_plan_model.sql
 supabase/migrations/20260925_account_deletion_cascade_gaps.sql
 supabase/migrations/20260925b_decision_evidence_sweep.sql
 supabase/migrations/20260925c_account_deletion_f096.sql
@@ -136,3 +137,6 @@ supabase/migrations/20261001b_user_reports.sql
 supabase/migrations/20261001c_commerce_providers_cinemas.sql
 supabase/migrations/20261001d_moderation_standards.sql
 supabase/migrations/20261001e_banned_identity_hash.sql
+supabase/migrations/20261011_p8_payments.sql
+supabase/migrations/20261015_p8_subscriptions.sql
+supabase/migrations/20261016_p7_pip_one_time.sql

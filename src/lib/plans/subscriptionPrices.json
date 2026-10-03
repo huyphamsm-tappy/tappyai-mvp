@@ -1,0 +1,11 @@
+{
+  "_comment": "Tappy plan prices (docs/payments/PLAN.md). The ONE place prices live. USD is the LIST price shown as the plan label on web (\"$1 · 7 ngày\", owner P7 decision); VND is the amount actually charged by bank transfer (SePay/VietQR) and is shown at payment. fxVndPerUsd is the configured exchange rate (not a live rate). Status: APPROVED by Huy 2026-10-01 (Pip 29.000đ ≈ $1 kept; Pip is a one-time trial per account).",
+  "fxVndPerUsd": 26000,
+  "plans": {
+    "pip": { "usd": 1, "vnd": 29000 },
+    "momo": { "usd": 7, "vnd": 179000 },
+    "coco": { "usd": 19, "vnd": 489000 },
+    "milo": { "usd": 36, "vnd": 939000 },
+    "sunny": { "usd": 66, "vnd": 1719000 }
+  }
+}

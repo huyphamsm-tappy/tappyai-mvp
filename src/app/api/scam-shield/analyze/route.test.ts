@@ -34,7 +34,7 @@ vi.mock('@/lib/scam-shield/message', () => ({ analyzeMessage: h.analyze }))
 // lib/ai/quota/__tests__. `aiQuotaIdentity` and `quotaFor` are the real ones.
 vi.mock('@/lib/ai/quota/aiQuestionQuota', async (importOriginal) => {
   const actual = await importOriginal<typeof import('@/lib/ai/quota/aiQuestionQuota')>()
-  return { ...actual, consumeAiQuestion: h.consume, isProAccount: h.isPro }
+  return { ...actual, consumeAiQuestion: h.consume, resolveAccountQuota: h.isPro }
 })
 
 const { POST } = await import('./route')
@@ -65,7 +65,7 @@ beforeEach(() => {
   h.isPro.mockReset()
   h.burst.mockClear()
   h.logs.length = 0
-  h.isPro.mockImplementation(async () => h.state.pro)
+  h.isPro.mockImplementation(async () => ({ exempt: h.state.pro, plan: h.state.pro ? 'pro' : 'free' }))
   h.consume.mockImplementation(async (identity: { kind: string }) => {
     const lifetime = identity.kind !== 'user'
     const limit = lifetime ? 5 : 15

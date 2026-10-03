@@ -16,6 +16,7 @@ import { vi as guideVi, en as guideEn } from './guide'
 import { vi as discoveryVi, en as discoveryEn } from './discovery'
 import { vi as accountDeleteVi, en as accountDeleteEn } from './accountDelete'
 import { vi as noticesVi, en as noticesEn } from './moderationNotices'
+import { vi as payVi, en as payEn } from './payments'
 import { vi as scamQrVi, en as scamQrEn } from './scamQr'
 import { vi as scamVerdictVi, en as scamVerdictEn } from './scamVerdict'
 import { browserLocale, isAppSurface } from './appSurface'
@@ -24,8 +25,8 @@ import { browserLocale, isAppSurface } from './appSurface'
 // Namespaced keys make the merge collision-free.
 const full: Record<Locale, Record<string, string>> = {
   // w6 (age gate, main #251) before v3 so the V3 copy wins any duplicate key.
-  vi: { ...dictionaries.vi, ...w2vi, ...w3vi, ...w4vi, ...w5vi, ...w6vi, ...v3vi, ...adminVi, ...landingVi, ...legalVi, ...shareVi, ...publicResultVi, ...guideVi, ...discoveryVi, ...accountDeleteVi, ...noticesVi, ...scamQrVi, ...scamVerdictVi },
-  en: { ...dictionaries.en, ...w2en, ...w3en, ...w4en, ...w5en, ...w6en, ...v3en, ...adminEn, ...landingEn, ...legalEn, ...shareEn, ...publicResultEn, ...guideEn, ...discoveryEn, ...accountDeleteEn, ...noticesEn, ...scamQrEn, ...scamVerdictEn },
+  vi: { ...dictionaries.vi, ...w2vi, ...w3vi, ...w4vi, ...w5vi, ...w6vi, ...v3vi, ...adminVi, ...landingVi, ...legalVi, ...shareVi, ...publicResultVi, ...guideVi, ...discoveryVi, ...accountDeleteVi, ...noticesVi, ...scamQrVi, ...scamVerdictVi, ...payVi },
+  en: { ...dictionaries.en, ...w2en, ...w3en, ...w4en, ...w5en, ...w6en, ...v3en, ...adminEn, ...landingEn, ...legalEn, ...shareEn, ...publicResultEn, ...guideEn, ...discoveryEn, ...accountDeleteEn, ...noticesEn, ...scamQrEn, ...scamVerdictEn, ...payEn },
 }
 
 const STORAGE_KEY = 'tappy_lang'

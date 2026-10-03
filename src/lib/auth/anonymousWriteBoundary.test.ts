@@ -109,6 +109,9 @@ const EXEMPT: Record<string, string> = {
   'notifications/read': 'marks the caller’s own notifications read, self-scoped',
   'message-feedback': "feedback on the visitor's own chat message; not public content",
 
+  // ── Guarded one level down ──
+  'payments/orders': 'refuses anonymous callers inside requirePayer (lib/payments/authGuard.ts → refuseAnonymousSocialWrite; pinned by authGuard.test.ts) and is rate-limited 10 per 10 min per account',
+
   // ── Anonymous-capable tools. Each carries its own cost control. ──
   'scam-shield/check': 'anonymous checks are a product feature; capped at dailyLimitAnon per IP',
   'scam-shield/qr': 'same surface as scam-shield/check; rate-limited',
@@ -136,6 +139,7 @@ const EXEMPT: Record<string, string> = {
   'zalo/mini/verify': 'exchanges a Zalo token for a server-signed rate-limit cookie; no user content, rate-limited 20/min per IP',
 
   // ── Machine-to-machine. No end user is present at all. ──
+  'payments/sepay': 'bank webhook (SePay): authenticated by an HMAC-SHA256 signature over the raw body + timestamp, idempotent by transaction id; no end user is present',
   'iap/apple/notifications': 'Apple server-to-server notification',
   'iap/apple/verify': 'receipt verification for the calling account',
   'stripe/checkout': 'payment session for the calling account',

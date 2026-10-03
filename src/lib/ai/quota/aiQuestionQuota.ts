@@ -1,5 +1,8 @@
 import type { SupabaseClient, User } from '@supabase/supabase-js'
-import { ANON_LIFETIME_LIMIT, FREE_DAILY_LIMIT, vnToday } from '@/lib/config/product'
+import { ANON_LIFETIME_LIMIT, vnToday } from '@/lib/config/product'
+import { aiQuotaFor, isGrandfatheredPro, type PlanId } from '@/lib/plans/planConfig'
+import { getEntitlement, type Entitlement } from '@/lib/plans/entitlement'
+import { subscriptionsEnabled } from '@/lib/payments/flags'
 import {
   distributedCountInWindow, distributedRateLimit, distributedRateLimitRelease, isDistributedStoreConfigured,
 } from '@/lib/security/distributedRateLimit'
@@ -16,7 +19,10 @@ import {
 //   ANONYMOUS   ANON_LIFETIME_LIMIT (5) questions for the LIFETIME of the identity. One trial,
 //               once. Not per day, not per session, not again tomorrow.
 //   REGISTERED  FREE_DAILY_LIMIT (15) questions per VN calendar day. Resets at 00:00 VN.
-//   PRO         exempt — unchanged from before this module existed.
+//   PAID PLAN   (Pip / Momo / Coco / Milo / Sunny, SUBSCRIPTIONS_ENABLED) 30 questions per VN day — PLAN_CONFIG is the one table.
+//   LEGACY PRO  an active Stripe/Apple `pro` period stays exempt until it ends (isGrandfatheredPro); with SUBSCRIPTIONS_ENABLED OFF every
+//               active paid subscription is exempt exactly as in the release.
+// (P7 closeout 02/10: this is THE quota — plan-aware here; there is no second "v2" module.)
 //
 // ============================================================================
 // WHY THE SHARED STORE, AND WHY NOT THE OLD MECHANISMS
@@ -49,7 +55,7 @@ import {
 // cap: the counter lives on the server under the identity the server verified.
 
 export type AiQuotaIdentity =
-  | { kind: 'user'; id: string }
+  | { kind: 'user'; id: string; /** the account's metered plan; absent = free */ plan?: PlanId }
   | { kind: 'anon'; id: string }
   | { kind: 'guest'; id: string }
 
@@ -92,16 +98,16 @@ const ONE_DAY_MS = 24 * 60 * 60 * 1000
 /** "Lifetime" for a sliding window: long enough that no anonymous identity outlives it. */
 const LIFETIME_MS = 10 * 365 * ONE_DAY_MS
 
-export function aiQuotaIdentity(user: Pick<User, 'id' | 'is_anonymous'> | null, ip: string): AiQuotaIdentity {
+export function aiQuotaIdentity(user: Pick<User, 'id' | 'is_anonymous'> | null, ip: string, plan?: PlanId): AiQuotaIdentity {
   if (!user) return { kind: 'guest', id: ip }
   if (user.is_anonymous === true) return { kind: 'anon', id: user.id }
-  return { kind: 'user', id: user.id }
+  return plan && plan !== 'free' ? { kind: 'user', id: user.id, plan } : { kind: 'user', id: user.id }
 }
 
 /** The store key and window for an identity. The VN date is part of the daily key: the reset IS the key change. */
 function bucket(identity: AiQuotaIdentity): { key: string; windowMs: number; limit: number; period: AiQuotaPeriod } {
   if (identity.kind === 'user') {
-    return { key: `ai:q:u:${identity.id}:${vnToday()}`, windowMs: ONE_DAY_MS, limit: FREE_DAILY_LIMIT, period: 'day' }
+    return { key: `ai:q:u:${identity.id}:${vnToday()}`, windowMs: ONE_DAY_MS, limit: aiQuotaFor(identity.plan ?? 'free').limit, period: 'day' }
   }
   const prefix = identity.kind === 'anon' ? 'a' : 'g'
   return { key: `ai:q:${prefix}:${identity.id}`, windowMs: LIFETIME_MS, limit: ANON_LIFETIME_LIMIT, period: 'lifetime' }
@@ -220,24 +226,32 @@ export async function peekAiQuestionQuota(identity: AiQuotaIdentity): Promise<Ai
 }
 
 /**
- * Pro exemption — the same rule `/api/chat` and `/api/subscription` apply inline: an `active`
- * subscription whose period has not ended. Anonymous identities are never Pro. A read failure is
- * "not Pro": the free tier is the safe answer when the entitlement cannot be confirmed.
+ * What a signed-in account's entitlement means for the quota — the ONE rule every metered route uses.
+ *
+ *   not paid                      → metered as Free
+ *   SUBSCRIPTIONS_ENABLED off     → any active paid subscription is exempt (the release behaviour, unchanged)
+ *   a grandfathered legacy `pro`  → exempt until its paid period ends
+ *   a paid plan (Pip…Sunny)       → metered at that plan's limit (30/day)
+ *
+ * Decided by the server from the `subscriptions` row; the client names nothing. A read failure is "not paid"
+ * (getEntitlement): Free is the safe answer when the entitlement cannot be confirmed.
  */
-export async function isProAccount(
+export function accountQuotaFor(
+  ent: Entitlement,
+  now: Date = new Date(),
+  env: NodeJS.ProcessEnv = process.env,
+): { exempt: boolean; plan: PlanId } {
+  if (!ent.paid) return { exempt: false, plan: 'free' }
+  if (!subscriptionsEnabled(env)) return { exempt: true, plan: ent.plan }
+  if (isGrandfatheredPro(ent, now, env)) return { exempt: true, plan: ent.plan }
+  return { exempt: false, plan: ent.plan }
+}
+
+/** Reads the entitlement and decides (see `accountQuotaFor`). Anonymous / missing users are never exempt. */
+export async function resolveAccountQuota(
   supabase: SupabaseClient,
   user: Pick<User, 'id' | 'is_anonymous'> | null,
-): Promise<boolean> {
-  if (!user || user.is_anonymous === true) return false
-  try {
-    const { data } = await supabase
-      .from('subscriptions')
-      .select('status, current_period_end')
-      .eq('user_id', user.id)
-      .maybeSingle()
-    const row = data as { status?: string | null; current_period_end?: string | null } | null
-    return row?.status === 'active' && !!row?.current_period_end && new Date(row.current_period_end) > new Date()
-  } catch {
-    return false
-  }
+): Promise<{ exempt: boolean; plan: PlanId }> {
+  if (!user || user.is_anonymous === true) return { exempt: false, plan: 'free' }
+  return accountQuotaFor(await getEntitlement(supabase, user))
 }

@@ -1,6 +1,7 @@
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { NextResponse } from 'next/server'
-import { aiQuotaIdentity, peekAiQuestionQuota } from '@/lib/ai/quota/aiQuestionQuota'
+import { accountQuotaFor, aiQuotaIdentity, peekAiQuestionQuota } from '@/lib/ai/quota/aiQuestionQuota'
+import { entitlementFromRow, SUBSCRIPTION_COLUMNS, type SubscriptionRow } from '@/lib/plans/entitlement'
 import { clientIp } from '@/lib/security/rateLimit'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
@@ -15,13 +16,16 @@ export async function GET(req: Request) {
 
     const { data: sub } = await supabase
       .from('subscriptions')
-      .select('status, current_period_end')
+      .select(SUBSCRIPTION_COLUMNS)
       .eq('user_id', user.id)
-      .single()
+      .maybeSingle()
 
-    const isPro = sub?.status === 'active' && sub?.current_period_end
-      ? new Date(sub.current_period_end) > new Date()
-      : false
+    // THE entitlement rule (lib/plans/entitlement.ts) and THE quota decision (aiQuestionQuota.accountQuotaFor) — the same two the
+    // chat route and the Scam Shield route use, so this answer cannot drift from what is enforced.
+    const ent = user.is_anonymous === true ? entitlementFromRow(null) : entitlementFromRow(sub as SubscriptionRow | null)
+    const acct = accountQuotaFor(ent)
+    /** An active, unexpired PAID plan (any of them) — what iOS EntitlementService reads as "Pro features unlocked". */
+    const isPro = ent.paid
 
     /**
      * ONE AUTHORITY. The count and the limit come from `lib/ai/quota/aiQuestionQuota.ts` — the
@@ -38,13 +42,15 @@ export async function GET(req: Request) {
      * the paywall wants anyway; a guest wrongly told they have plenty is refused mid-sentence.
      */
     const isAnonymous = user.is_anonymous === true
-    const quota = await peekAiQuestionQuota(aiQuotaIdentity(user, clientIp(req)))
+    const quota = await peekAiQuestionQuota(aiQuotaIdentity(user, clientIp(req), acct.plan))
     const dailyLimit = quota.limit
-    const todayMessageCount = isPro ? 0 : (quota.used ?? quota.limit)
-    const remaining = isPro ? dailyLimit : Math.max(0, dailyLimit - todayMessageCount)
+    const todayMessageCount = acct.exempt ? 0 : (quota.used ?? quota.limit)
+    const remaining = acct.exempt ? dailyLimit : Math.max(0, dailyLimit - todayMessageCount)
 
     return NextResponse.json({
       isPro,
+      /** The entitled plan id ('pip' … 'sunny', legacy 'pro') or 'free' / 'guest'. Additive. */
+      plan: ent.plan,
       status: sub?.status ?? null,
       currentPeriodEnd: sub?.current_period_end ?? null,
       /** The limit that is actually enforced for THIS caller — the ONE shared AI pool. */

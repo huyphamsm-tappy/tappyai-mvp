@@ -8,6 +8,7 @@ import Header from '@/components/Header'
 import V3Shell from '@/components/v3/V3Shell'
 import PublicFooter from '@/components/discovery/PublicFooter'
 import TappyPresence from '@/components/v3/TappyPresence'
+import AiLeftToday from '@/components/subscription/AiLeftToday'
 import { heroGreeting, type HeroClock } from '@/lib/home/heroGreeting'
 import SmartToolCard from '@/components/v3/SmartToolCard'
 import { useTranslation } from '@/lib/i18n/useTranslation'
@@ -438,6 +439,8 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
             <p className="mt-3.5 max-w-[62ch] text-[15px] font-light leading-relaxed" style={{ color: 'var(--v3-fg-secondary)' }}>
               {t('v3.home.askSub')}
             </p>
+            {/* SUBSCRIPTIONS: "AI còn lại hôm nay x/y" — renders nothing unless SUBSCRIPTIONS_ENABLED, so Home is unchanged with the flag OFF. */}
+            <AiLeftToday className="mt-3" />
           </div>
 
           {/* 🚨 THE COMPOSER STOPS SHORT OF THE CANVAS EDGE, AS IT DOES IN THE MOCKUP.

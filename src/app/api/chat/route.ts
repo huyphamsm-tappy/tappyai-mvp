@@ -74,7 +74,9 @@ import { guardShareFollowUp } from '@/lib/share/followUpGuard'
 import { readZaloIdentity, zaloIdentitySecret } from '@/lib/zalo/identity'
 import { flushPending, recordEvent, type UsageEvent } from '@/lib/observability'
 import { FREE_DAILY_LIMIT, ANON_LIFETIME_LIMIT } from '@/lib/config/product'
-import { aiQuotaIdentity, consumeAiQuestion, refundAiQuestion, type AiQuotaRefund } from '@/lib/ai/quota/aiQuestionQuota'
+import { accountQuotaFor, aiQuotaIdentity, consumeAiQuestion, refundAiQuestion, type AiQuotaRefund } from '@/lib/ai/quota/aiQuestionQuota'
+import { entitlementFromRow, type SubscriptionRow } from '@/lib/plans/entitlement'
+import { PLAN_CONFIG, type PlanId } from '@/lib/plans/planConfig'
 import { createPlacesBudget, PLACES_BUDGET_DEFAULT, PLACES_BUDGET_PLANNING } from '@/lib/ai/tools/placesBudget'
 // Consultative V1 (flag CONSULTATIVE_V1, default OFF — see docs/audit/consultative-v1-design.md).
 import { consultativeV1Enabled, placeGuardAttributionV2Enabled, snippetPriceGuardV2Enabled, mediaPlacementV2Enabled } from '@/lib/config/product'
@@ -524,6 +526,8 @@ export async function POST(req: Request) {
   let commerceIdentityId: string | null = null
   let existingMemory: UserMemory | null = null
   let isPro = false
+  /** The metered plan of a signed-in account (Free unless an entitled paid plan) — decided from the subscriptions row below. */
+  let quotaPlan: PlanId = 'free'
   // ── The ONE AI question quota ─────────────────────────────────────────────
   //
   // Every model-invoking feature spends from `lib/ai/quota/aiQuestionQuota.ts`; this route is one
@@ -836,9 +840,9 @@ export async function POST(req: Request) {
         // Kiểm tra subscription từ DB
         supabase
           .from('subscriptions')
-          .select('status, current_period_end')
+          .select('plan, status, current_period_end, source')
           .eq('user_id', user.id)
-          .single(),
+          .maybeSingle(),
       ])
 
       existingMemory = chatContext.memory
@@ -878,10 +882,12 @@ export async function POST(req: Request) {
       // version did — calendar events extend the memory block, never replace it.
       if (calendarBlock) memoryBlock = (memoryBlock || '') + calendarBlock
 
-      const subData = subResult.data
-      if (subData?.status === 'active' && subData?.current_period_end) {
-        isPro = new Date(subData.current_period_end) > new Date()
-      }
+      // THE entitlement rule + THE quota decision (lib/plans/entitlement.ts, aiQuestionQuota.accountQuotaFor): a paid
+      // plan is metered at its own limit (30/day); only a legacy Pro period (or any active subscription while
+      // SUBSCRIPTIONS_ENABLED is off — the release behaviour) is exempt. Nothing here comes from the client.
+      const acct = accountQuotaFor(entitlementFromRow(subResult.data as SubscriptionRow | null))
+      isPro = acct.exempt
+      quotaPlan = acct.plan
 
       // One question from the shared daily pool. Same pool every AI feature draws on, so a
       // Cảnh báo lừa đảo analysis earlier today is already counted here.
@@ -904,13 +910,14 @@ export async function POST(req: Request) {
       if (isPro || quotaExempt) {
         quotaMetered = true
       } else {
-        const spend = await consumeAiQuestion(aiQuotaIdentity(user, clientIp(req)))
+        const spend = await consumeAiQuestion(aiQuotaIdentity(user, clientIp(req), quotaPlan))
         if (!spend.ok) {
+          // A PAID plan that spent its 30 is not told to upgrade: its own code and sentence.
+          const paid = quotaPlan !== 'free'
           return new Response(
-            JSON.stringify({
-              error: 'free_limit_reached',
-              message: serverMessage('chat.freeLimit', requestLocale(req), { n: FREE_DAILY_LIMIT }),
-            }),
+            JSON.stringify(paid
+              ? { error: 'plan_limit_reached', message: serverMessage('chat.planLimit', requestLocale(req), { n: PLAN_CONFIG[quotaPlan].aiQuota.limit, plan: PLAN_CONFIG[quotaPlan].label }) }
+              : { error: 'free_limit_reached', message: serverMessage('chat.freeLimit', requestLocale(req), { n: FREE_DAILY_LIMIT }) }),
             { status: 429, headers: { 'Content-Type': 'application/json' } }
           )
         }

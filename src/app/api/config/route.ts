@@ -1,3 +1,4 @@
+import { subscriptionsEnabled } from '@/lib/payments/flags'
 import { NextResponse } from 'next/server'
 import {
   FREE_DAILY_LIMIT,
@@ -49,6 +50,9 @@ export async function GET() {
       },
       flags: {
         showProUpgrade: SHOW_PRO_UPGRADE,
+        // SUBSCRIPTIONS_ENABLED: the five plans, the payment routes and the 30/day allowance. Web reads it through
+        // useSubscriptionsFlag; this route is static, so the value is the build's env (redeploy after flipping).
+        subscriptions: subscriptionsEnabled(),
         showAppConnections: SHOW_APP_CONNECTIONS,
         showScamShield: SHOW_SCAM_SHIELD,
         // Music is hidden on every platform while the catalogue licensing is undecided.

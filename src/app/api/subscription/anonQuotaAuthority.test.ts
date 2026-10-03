@@ -33,6 +33,7 @@ const h = vi.hoisted(() => {
       eq: () => b,
       gte: () => b,
       single: () => Promise.resolve({ data: state.sub, error: null }),
+      maybeSingle: () => Promise.resolve({ data: state.sub, error: null }),
       then: (resolve: (v: unknown) => unknown) => resolve({ data: [], count: 0, error: null }),
     }
     return b
