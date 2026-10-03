@@ -118,7 +118,7 @@ export async function android({ a, shot, check, seeded }) {
   check('ô tin nhắn không còn chữ «lượt hỏi AI» / ảnh chụp màn hình (AI đã tắt)', !a.visible(/lượt hỏi AI/) && !a.visible('Tải ảnh chụp màn hình'))
 
   const part = process.env.SCAM_PART || 'all'
-  if (part !== '2') {
+  if (part === '1' || part === 'all') {
   // 1) tin bình thường → chưa nhận ra dấu hiệu quen thuộc (KHÔNG phải an toàn)
   await runMessage(a, 'Chiều nay đi ăn phở nha, 6h gặp ở quán cũ.')
   check('tin bình thường → «Chưa nhận ra dấu hiệu quen thuộc»', await seen(a, /Chưa nhận ra dấu hiệu quen thuộc/))
@@ -133,7 +133,7 @@ export async function android({ a, shot, check, seeded }) {
   shot('scam-message-known-top')
   check('…kèm «Tình huống tương ứng» + «Kịch bản số 22 trong danh sách của Bộ Công an»', (await seen(a, /Tình huống tương ứng/, 2)) && (await seen(a, /Kịch bản số 22 trong danh sách của Bộ Công an/, 2)))
   check('…kèm khối nguồn chính thức (Bộ Công an)', await seen(a, /Nguồn: Bộ Công an|Thông tin từ nguồn chính thức/, 5))
-  check('…kèm dòng 113 của web và «không thay thế cơ quan chức năng» và nút chia sẻ', (await seen(a, /Báo ngay cho Công an nơi gần nhất hoặc gọi 113/, 8)) && (await seen(a, /không thay thế cơ quan chức năng/, 3)) && (await seen(a, /Chia sẻ kết quả/, 3)))
+  check('…kèm dòng 113 của web ở cuối thẻ tình huống và «không thay thế cơ quan chức năng» (thẻ tin nhắn của web KHÔNG có nút chia sẻ)', (await seen(a, /Báo ngay cho Công an nơi gần nhất hoặc gọi 113/, 8)) && (await seen(a, /không thay thế cơ quan chức năng/, 8)) && !a.visible(/Chia sẻ kết quả/))
   check('…không «An toàn», không điểm, không «Độ tin cậy»', !a.dump().some((n) => FORBIDDEN.test((n.text || n.desc || '').trim())))
   shot('scam-message-known')
 
@@ -154,6 +154,7 @@ export async function android({ a, shot, check, seeded }) {
   shot('link-in-message')
   }
   if (part === '1') return
+  if (part === '3') { await cancelPicker(a, shot, check); return }
 
   // 5) QR link giả (mã dựng ra) → chỉ link giải mã đi kiểm tra
   await reopen(a)
@@ -174,6 +175,11 @@ export async function android({ a, shot, check, seeded }) {
   await scanQr(a, 'qr-wifi.png', shot)
   check('QR Wi-Fi → hiện «Nội dung đọc được» đúng như web (văn bản đã giải mã, gồm cả mật khẩu của chính mã đó)', (await seen(a, /Cafe Mo/, 3)) && a.visible(/matkhau/))
 
+  if (part === '2') return
+  await cancelPicker(a, shot, check)
+}
+
+async function cancelPicker(a, shot, check) {
   // 7) huỷ chọn ảnh → không sập
   await a.back(); await a.sleep(1200)
   await a.tap('Trang chủ', { after: 2500 })

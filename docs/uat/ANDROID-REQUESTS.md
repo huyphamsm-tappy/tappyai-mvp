@@ -401,8 +401,9 @@ Cần làm:
 4. Kiểm: `adb shell pm verify-app-links --re-verify com.tappyai.app` rồi `adb shell pm get-app-links com.tappyai.app` phải thấy `www.tappyai.com: verified` (hiện `1024` = chưa xác minh); `adb shell am start -a android.intent.action.VIEW -d https://www.tappyai.com/plan/<id>` mở app; từ Zalo/Chrome với bản cài từ Play (kênh thử nghiệm kín); kiểm trường hợp không xác minh → mở trình duyệt, không lỗi.
 5. Test đơn vị cho bảng ánh xạ đường → đích (mở rộng `ShellDeepLink` tests), e2e `nav-back` cho từng đích, kiểm Back từ link vào app.
 
-### Lá chắn lừa đảo — Android đã đồng bộ hợp đồng (02/10, cho phiên WEB đọc)
-- **Tin nhắn:** Android khớp tĩnh trên máy bằng BẢN SAO bảng dấu hiệu 25 tình huống của `matchScenario` (Phase 8: mạnh +2, yếu +1, ≥4 = chắc, 2–3 = có thể). Chỉ trả lời tại chỗ khi **chắc** và tin KHÔNG chứa link/ảnh/ô link. Còn lại → `POST /api/scam-shield/analyze` sau khi người dùng đồng ý gửi AI.
-- **QR:** Android giải mã trên máy (ZXing) và chỉ gọi `POST /api/scam-shield/check` với link đã giải mã. **Không còn gọi `/api/scam-shield/qr`** — web có thể giữ route đó cho trình duyệt nhưng nên ghi nhận Android không dùng.
-- Nếu web đổi bảng dấu hiệu (id/cue), cần báo để Android cập nhật bản sao; chưa có đồng bộ qua server (đúng yêu cầu).
-- Chi tiết: `docs/android/SCAM-SHIELD-PARITY-ANDROID.md`.
+### Lá chắn lừa đảo — Android theo hợp đồng Web (03/10, ghi chú của phiên ANDROID; không đổi hợp đồng Web)
+- **Tin nhắn:** Android gọi `POST /api/scam-shield/analyze` chỉ với `text`/`url` (không ảnh) và hiển thị `verdict` + `scenario` + `signals` + `advice` + `urlChecks` theo `ScamMessageResult.tsx`. Android KHÔNG tự khớp/chấm điểm trên máy.
+- **Link / QR có link:** `POST /api/scam-shield/check` — đọc `verdict`, `reasonCode`, `reason_vi/reason_en`; nút «Cảnh báo cho mọi người» gọi `POST /api/scam-shield/share`.
+- **QR:** giải mã trên máy (ZXing), phân loại sao chép `payload.ts`; KHÔNG dùng `/api/scam-shield/qr`.
+- **Báo cáo/chặn:** `POST /api/comments/{id}/report`, `POST /api/users/{id}/report`, `POST/DELETE /api/users/{id}/block`, theo `GET /api/config → p8`. Không dùng `POST /api/reports`.
+- Chi tiết + bằng chứng: `docs/android/WEB-PARITY-EVIDENCE-2026-10-02.md`.

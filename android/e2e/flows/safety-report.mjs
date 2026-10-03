@@ -23,6 +23,8 @@ export async function android({ a, shot, check, seeded }) {
   const cfg = await config()
   const hasP8 = !!cfg.p8 && (cfg.p8.userBlocks || cfg.p8.reports)
   check(`UAT /api/config: khối p8 ${hasP8 ? 'CÓ' : 'chưa có'} (quyết định nút Chặn / Báo cáo người dùng)`, true, JSON.stringify(cfg.p8 ?? null))
+  // Deterministic start: the app's own local hide/block/report state from earlier runs would hide the very posts under test.
+  a.sh('pm', 'clear', a.PKG)
   try {
     await a.signIn(seeded.users.pro.email)
     await a.tap('Tôi', { after: 4000 })
@@ -31,6 +33,7 @@ export async function android({ a, shot, check, seeded }) {
     shot('profile')
     check('hồ sơ người khác mở được', a.visible('E2E Người khác'))
     check(`hồ sơ: menu «Thêm tùy chọn» (báo cáo/chặn người dùng) ${hasP8 ? 'hiện' : 'ẨN vì server chưa hỗ trợ'}`, a.visible('Thêm tùy chọn') === hasP8)
+    for (let i = 0; i < 15 && a.tiles().length === 0; i++) await a.sleep(2000) // cold start (data cleared): wait for the grid
     const tilesBefore = a.tiles().length
     check('hồ sơ có 3 bài công khai', tilesBefore === 3, `${tilesBefore} ô`)
 

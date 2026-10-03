@@ -4,6 +4,7 @@
 // Chỉ đụng hàng của hai tài khoản test (pro ↔ other) và xoá lại ngay sau khi kiểm.
 import { UAT_BASE, bypassSecret } from '../lib/env.mjs'
 import { rest } from '../lib/supabase.mjs'
+import { asUser } from '../lib/api.mjs'
 
 export const webAccount = 'e2e.android.pro@example.com'
 
@@ -21,8 +22,11 @@ export async function android({ a, shot, check, seeded }) {
   const blocks = () => rest.get(`user_blocks?select=blocker_id,blocked_id&blocker_id=eq.${me.id}&blocked_id=eq.${them.id}`)
   const reports = () => rest.get(`user_reports?select=target_type,target_id,reason&reporter_id=eq.${me.id}&target_id=eq.${them.id}`)
   // Start clean: nothing of this pair left from an earlier run.
+  await asUser(me.email).then((api) => api(`/api/users/${them.id}/block`, { method: 'DELETE' })).catch(() => {})
   await rest.del(`user_blocks?blocker_id=eq.${me.id}&blocked_id=eq.${them.id}`).catch(() => {})
   await rest.del(`user_reports?reporter_id=eq.${me.id}&target_id=eq.${them.id}`).catch(() => {})
+  // Deterministic start: the app's own local hide/block/report state from earlier runs would hide the very posts under test.
+  a.sh('pm', 'clear', a.PKG)
   try {
     await a.signIn(me.email)
     await a.tap('Tôi', { after: 4000 })
@@ -56,6 +60,9 @@ export async function android({ a, shot, check, seeded }) {
     check('server: đúng 1 hàng user_blocks (pro chặn other)', bl.length === 1, JSON.stringify(bl))
   } finally {
     // Leave no trace on the test accounts.
+    // Unblock through the SAME API the app used: it also clears the chat-side block that `GET /api/users/blocks` merges in (a REST delete of
+    // `user_blocks` alone left the pair blocked and hid the other account's posts from every later flow).
+    await asUser(me.email).then((api) => api(`/api/users/${them.id}/block`, { method: 'DELETE' })).catch(() => {})
     await rest.del(`user_blocks?blocker_id=eq.${me.id}&blocked_id=eq.${them.id}`).catch(() => {})
     await rest.del(`user_reports?reporter_id=eq.${me.id}&target_id=eq.${them.id}`).catch(() => {})
   }

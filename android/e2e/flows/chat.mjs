@@ -126,7 +126,10 @@ async function settle(a, shot, label) {
 
 export async function android({ a, shot, check, seeded }) {
   const email = seeded.users.pro.email
-  a.installShareStubs()
+  // The share stubs reuse the real apps' package ids: on a real phone they are NOT installed (BLOCKED — REAL ZALO PACKAGE CONFLICT) and the
+  // share part of a case is skipped; everything else in the chat flow still runs.
+  let shareBlocked = false
+  try { a.installShareStubs() } catch (e) { if (/REAL ZALO PACKAGE CONFLICT/.test(String(e.message))) shareBlocked = true; else throw e }
   // Chat asks for location on the first send (the reply is biased to where the phone is). Grant it
   // and put the emulator in District 1, Sài Gòn, like a user who tapped "While using the app".
   for (const p of ['ACCESS_FINE_LOCATION', 'ACCESS_COARSE_LOCATION']) a.sh('pm', 'grant', a.PKG, `android.permission.${p}`)
@@ -247,7 +250,7 @@ export async function android({ a, shot, check, seeded }) {
         await a.dismissForeign(); await a.launch()
       } else check(`${c.id}: bấm được nút «${label}»`, false)
     } else check(`${c.id}: có nút đặt/mua/xem trên màn hình`, buttons.length === 0 && !/\[TAPPY_PLAN\]/.test(raw), '(câu trả lời không có nút — xem ảnh)')
-    if (c.share) await sharePlan(a, shot, check, c.id)
+    if (c.share && !shareBlocked) await sharePlan(a, shot, check, c.id)
   }
 }
 

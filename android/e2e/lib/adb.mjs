@@ -187,7 +187,12 @@ export async function dismissForeign() {
   for (const p of ['com.google.android.providers.media.module', 'com.google.android.apps.maps', 'com.android.chrome']) sh('am', 'force-stop', p)
   sh('input', 'keyevent', '3'); await sleep(500)
 }
-export function install(apk) { adb(['install', '-r', apk]) }
+export function install(apk) {
+  // `adb install` fails now and then with an empty message while the phone is busy (screen dialog / package verifier): retry.
+  for (let i = 0; ; i++) {
+    try { adb(['install', '-r', apk]); return } catch (e) { if (i >= 3) throw e; Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 8000) }
+  }
+}
 
 /**
  * Signs the app in as a seeded AUDIT account without any UI typing (uat hook), then VERIFIES it:
