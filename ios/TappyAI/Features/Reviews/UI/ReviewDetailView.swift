@@ -129,31 +129,38 @@ struct ReviewDetailView: View {
 
     /// The Explore page for this one review: the same view and the same actions the feed wires
     /// (`ReviewsFeedView`), against this screen's own state.
+    ///
+    /// It is hosted the way Explore hosts it — `VerticalPagingView` with ONE page, the Web's `ClipViewer posts={[review]}` —
+    /// because that container is where the top safe-area inset is cancelled (`IndexedHostingController`, CI run
+    /// 37000177700 / 37126636976): drawn directly in this screen the picture still started 62 pt down (run 37126636976,
+    /// `60-review-detail`).
     private func post(_ review: Review) -> some View {
-        ReviewPostView(
-            review: review,
-            isActive: true,
-            isNeighbor: true,
-            isAuthenticated: vm.isAuthenticated,
-            isOwnPost: review.userId != nil && review.userId == vm.currentUserId,
-            videoPlayer: videoPlayer,
-            onLike: { vm.toggleLike() },
-            onDoubleTapLike: { if !review.likedByMe { vm.toggleLike() } },
-            onSave: { vm.toggleSave() },
-            onComment: { vm.openComments() },
-            onShare: { vm.showShare = true },
-            onFollow: { if let uid = review.userId { vm.toggleFollow(userId: uid) } },
-            onDelete: { vm.deleteReview { router.pop() } },
-            onHide: { vm.hideReview { router.pop() } },
-            onCreatorTap: {
-                if let uid = review.userId { router.push(ReviewsDestination.userProfile(id: uid)) }
-            },
-            // Report / block (App Store 1.2): signed-in, not your own post, and only while a server safety flag is on.
-            onSafety: safety.flags.anyEnabled ? {
-                safetyTarget = SafetyTarget(kind: .review, targetId: review.id, authorId: review.userId,
-                                            authorName: review.profiles?.fullName, summary: review.placeName ?? review.body)
-            } : nil
-        )
-        .ignoresSafeArea(edges: .top)
+        VerticalPagingView(pageCount: 1, currentPage: .constant(0), onPageChange: { _ in }, onNearEnd: {}) { _ in
+            ReviewPostView(
+                review: review,
+                isActive: true,
+                isNeighbor: true,
+                isAuthenticated: vm.isAuthenticated,
+                isOwnPost: review.userId != nil && review.userId == vm.currentUserId,
+                videoPlayer: videoPlayer,
+                onLike: { vm.toggleLike() },
+                onDoubleTapLike: { if !review.likedByMe { vm.toggleLike() } },
+                onSave: { vm.toggleSave() },
+                onComment: { vm.openComments() },
+                onShare: { vm.showShare = true },
+                onFollow: { if let uid = review.userId { vm.toggleFollow(userId: uid) } },
+                onDelete: { vm.deleteReview { router.pop() } },
+                onHide: { vm.hideReview { router.pop() } },
+                onCreatorTap: {
+                    if let uid = review.userId { router.push(ReviewsDestination.userProfile(id: uid)) }
+                },
+                // Report / block (App Store 1.2): signed-in, not your own post, and only while a server safety flag is on.
+                onSafety: safety.flags.anyEnabled ? {
+                    safetyTarget = SafetyTarget(kind: .review, targetId: review.id, authorId: review.userId,
+                                                authorName: review.profiles?.fullName, summary: review.placeName ?? review.body)
+                } : nil
+            )
+        }
+        .ignoresSafeArea()
     }
 }
