@@ -447,6 +447,22 @@ describe('Tappy Pip — one-time trial per account (owner decision, enforced in 
   })
 })
 
+describe('order amount = the FIXED VND catalog (never USD x a rate)', () => {
+  it.each([['pip', 29_000], ['momo', 179_000], ['coco', 489_000], ['milo', 939_000], ['sunny', 1_719_000]])('%s is charged exactly %i', async (plan, vnd) => {
+    await t.db.query(`DELETE FROM public.subscriptions WHERE user_id = $1`, [CAROL])
+    h.user = { id: CAROL }
+    await t.db.query(`DELETE FROM public.payment_orders WHERE user_id = $1 AND plan = 'pip'`, [CAROL])
+    const res = await newOrder(plan as string)
+    expect(res.status).toBe(201)
+    const { order } = await res.json()
+    expect(order.amountVnd).toBe(vnd)
+    expect(Number((await t.one<{ a: string }>(`SELECT amount_vnd AS a FROM public.payment_orders WHERE code = $1`, [order.code])).a)).toBe(vnd)
+    // one dong short is NOT paid; the full catalog amount is
+    expect((await bankPays(order.code, vnd - 1)).status).toBe(200)
+    expect((await myPlan()).subscription.state).not.toBe('ACTIVE')
+  })
+})
+
 describe('payment history', () => {
   it('lists only my paid / short web orders: date, plan, amount, status - nothing else', async () => {
     h.user = { id: BOB }

@@ -208,11 +208,11 @@ describe('Pip — one-time trial', () => {
     expect([...document.querySelectorAll('[data-plan]')].map((e) => e.getAttribute('data-plan'))).toEqual(['momo', 'coco', 'milo', 'sunny'])
   })
 
-  it('a guest is shown as "Khách" with 5 questions for life — never as the Free tier — and Free asks them to sign in', () => {
+  it('a guest is shown as "Welcome Guest" with 5 questions for life — never as the Free tier — and Free asks them to sign in', () => {
     const guest: MyPlanResponse = { signedIn: false, pipUsed: false, subscription: mySubscription(null), quota: { limit: 5, used: 0, remaining: 5, period: 'lifetime' } }
     render(<SubscriptionFlow catalog={catalog} initialMe={guest} />)
     const access = screen.getByTestId('sub-access').textContent!
-    expect(access).toMatch(/Khách/)
+    expect(access).toMatch(/Welcome Guest/)
     expect(access).toMatch(/5 câu hỏi AI trọn đời/)
     expect(access).not.toMatch(/Miễn phí|15 câu/)
     expect(screen.getByRole('link', { name: 'Đăng nhập miễn phí' }).getAttribute('href')).toBe('/login?returnTo=%2Fsubscription')

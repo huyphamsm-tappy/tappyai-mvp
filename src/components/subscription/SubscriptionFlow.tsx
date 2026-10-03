@@ -4,7 +4,7 @@
 // after Huy's mockups (web page + app screens 3–9). Written by the security session (p8/subscriptions).
 //
 //   home        hero (badge, title, 3 benefits) + "Gói hiện tại" when ACTIVE
-//               desktop: 7 columns — Khách, Miễn phí, Pip … Sunny (Sunny "Phổ biến nhất")
+//               desktop: 7 columns — Welcome Guest, Miễn phí, Pip … Sunny (Sunny "Phổ biến nhất")
 //               mobile:  "Quyền truy cập hiện tại" + the 5 plans as app-style list cards
 //               + 4 trust tiles
 //   detail      gradient hero card in the plan colour, 4 lines, "Chọn {plan}"; Sunny only: "Chỉ khoảng …/tháng"

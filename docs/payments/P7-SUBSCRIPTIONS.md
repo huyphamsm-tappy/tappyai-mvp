@@ -11,7 +11,7 @@ Branch `p7/web-subscription`. Web only. Master switch `SUBSCRIPTIONS_ENABLED` (d
 | Milo | $36 | 6 months (180 d) | 939.000đ | 30/day |
 | Sunny | $66 | 12 months (365 d) | 1.719.000đ | 30/day |
 
-Guest ("Khách"): 5 AI questions for life. Free account: 15/day. The USD price is the label shown on the plan; the VND amount (USD × 26.000 rounded, `src/lib/plans/subscriptionPrices.json`) is what the SePay order charges and what the payment screens show. **Assumption to confirm: the charge is in VND.**
+Guest ("Welcome Guest"): 5 AI questions for life. Free account: 15/day. The USD price is only the label. The VND amounts are FIXED catalog values (`src/lib/plans/subscriptionPrices.json`) — never computed from USD or an exchange rate — and are what the SePay order charges and the payment screens show.
 
 ## Pip is a one-time trial per account (enforced in the database)
 `supabase/migrations/20261016_p7_pip_one_time.sql`: `p7_pip_used(user)` is true when the ledger holds a purchased Pip grant or a Pip order was paid; it never looks at the current subscription row, so expiry / cancellation / deleted row do not reopen it.
