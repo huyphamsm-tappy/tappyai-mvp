@@ -67,8 +67,8 @@ struct DealsView: View {
         }
     }
 
-    /// "Hỏi Tappy trước khi mua" — its CTA opens the real Chat. The partner chips are the names the
-    /// feed really returned (no brand logos: the feed sends none).
+    /// "Hỏi Tappy trước khi mua" — its CTA opens the real Chat. The partner tiles are the platforms the
+    /// feed really returned, each with its official logo from `BrandRegistry` (the initial if it has none).
     private func askHero(partners: [String]) -> some View {
         VStack(alignment: .leading, spacing: Spacing.md) {
             HStack(spacing: Spacing.md) {

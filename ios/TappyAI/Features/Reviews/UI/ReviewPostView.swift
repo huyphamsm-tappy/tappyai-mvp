@@ -303,6 +303,8 @@ struct ReviewPostView: View {
                             }
                         }
                         .buttonStyle(.plain)
+                        .minimumTapTarget()
+                        .contentShape(Rectangle())
                     } else if canReport {
                         Button {
                             if let onSafety { onSafety() } else { showReportMenu = true }
@@ -312,6 +314,9 @@ struct ReviewPostView: View {
                                 .foregroundStyle(TappyColor.feedTextSecondary)
                         }
                         .buttonStyle(.plain)
+                        // The ⋯ glyph alone is 13 x 3 pt: the report / block entry (App Store 1.2) gets a real tap target.
+                        .minimumTapTarget()
+                        .contentShape(Rectangle())
                         .accessibilityLabel(Text("review.report.title"))
                         .accessibilityIdentifier("review-safety")
                     }

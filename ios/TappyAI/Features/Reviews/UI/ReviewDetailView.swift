@@ -65,13 +65,34 @@ struct ReviewDetailView: View {
                     post(review)
                 }
             }
+
+            // Back, in the row Explore keeps its feed tabs and «+» in (top of the screen, same inset).
+            VStack {
+                HStack {
+                    Button { router.pop() } label: {
+                        Image(systemName: "chevron.left")
+                            .font(.system(size: 17, weight: .semibold))
+                            .foregroundStyle(.white)
+                            .frame(width: 38, height: 38)
+                            .background(Color.black.opacity(0.35))
+                            .clipShape(Circle())
+                    }
+                    .buttonStyle(.plain)
+                    .minimumTapTarget()
+                    .contentShape(Rectangle())
+                    .accessibilityLabel(Text("common.back"))
+                    .accessibilityIdentifier("review-back")
+                    Spacer()
+                }
+                .padding(.top, Spacing.xxl - 4)
+                .padding(.leading, Spacing.md)
+                Spacer()
+            }
         }
-        // Same chrome as Explore: the picture runs to the very top under a transparent bar that keeps only the system
-        // back button, and the status bar is hidden.
-        .navigationTitle("")
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbarBackground(.hidden, for: .navigationBar)
-        .toolbarColorScheme(.dark, for: .navigationBar)
+        // Same chrome as Explore: no navigation bar and no status bar, so the picture runs to the very top
+        // (a transparent bar still reserves its height — the black band seen in CI run 37123663536).
+        .ignoresSafeArea(edges: .top)
+        .toolbar(.hidden, for: .navigationBar)
         .statusBarHidden(true)
         .sheet(item: $safetyTarget) { target in
             SafetySheet(target: target, safety: safety) { safetyTarget = nil }
