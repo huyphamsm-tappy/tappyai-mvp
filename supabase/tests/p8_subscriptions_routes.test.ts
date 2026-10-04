@@ -179,7 +179,7 @@ describe('the purchase flow (web): order → bank → verified webhook → ACTIV
   it('a free account: NONE, the live Free limit', async () => {
     const r = await myPlan()
     expect(r.subscription).toMatchObject({ state: 'NONE', canBuy: true })
-    expect(r.quota).toMatchObject({ limit: 15, period: 'day' }) // p8_free_daily_limit_v2 OFF → release 15
+    expect(r.quota).toMatchObject({ limit: 10, period: 'day' }) // Phase 7 canonical Free = 10/day
   })
 
   it('creating an order (server price) → PENDING; a client "success" changes nothing', async () => {
@@ -526,7 +526,7 @@ describe('expiry cron + fake bank safety', () => {
     const res = await expireCron(new Request('https://t.test/x', { headers: { authorization: 'Bearer cron-test' } }))
     expect((await res.json()).expired).toBeGreaterThanOrEqual(1)
     expect((await myPlan()).subscription).toMatchObject({ state: 'EXPIRED', canBuy: true })
-    expect((await myPlan()).quota.limit).toBe(15)
+    expect((await myPlan()).quota.limit).toBe(10)
   })
 
   it('the fake bank refuses to exist in production', () => {

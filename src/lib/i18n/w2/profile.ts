@@ -24,8 +24,8 @@ export const vi: Record<string, string> = {
   'profile.myReviews.desc': 'Xem và quản lý các đánh giá đã đăng',
   'profile.groupDining': 'Đi nhóm',
   'profile.groupDining.desc': 'Cả team đi ăn gì? Để Tappy gợi ý',
-  'profile.upgradePro': 'Nâng cấp Pro',
-  'profile.upgradePro.desc': 'Không giới hạn tin nhắn & tính năng',
+  'profile.upgradePro': 'Nâng cấp gói',
+  'profile.upgradePro.desc': '30 câu hỏi AI mỗi ngày với gói trả phí',
 
   'profile.settingsSection': 'Cài đặt',
   'profile.settings': 'Cài đặt',
@@ -72,8 +72,8 @@ export const en: Record<string, string> = {
   'profile.myReviews.desc': 'View and manage the reviews you posted',
   'profile.groupDining': 'Group dining',
   'profile.groupDining.desc': 'Where should the team eat? Let Tappy suggest',
-  'profile.upgradePro': 'Upgrade to Pro',
-  'profile.upgradePro.desc': 'Unlimited messages & features',
+  'profile.upgradePro': 'Upgrade your plan',
+  'profile.upgradePro.desc': '30 AI questions a day on a paid plan',
 
   'profile.settingsSection': 'Settings',
   'profile.settings': 'Settings',

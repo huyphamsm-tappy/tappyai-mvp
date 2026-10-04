@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-19T10:39:39.386Z",
+  "generatedAt": "2026-10-04T15:48:33.687Z",
   "note": "Pure-function reproduction of route.ts pre-model classification. No LLM/search. Setup queries use a placeholder assistant turn ONLY to set hasPriorAssistantTurn; nothing else is fabricated.",
   "rows": [
     {
@@ -921,7 +921,7 @@
       "explicitLang": null,
       "forcedTool": null,
       "locationIntent": "unknown",
-      "planningIntent": null,
+      "planningIntent": "trip",
       "movieRecommend": false,
       "travelIntent": false,
       "budget": null,
@@ -946,11 +946,11 @@
         "explicitChoiceRequest": true,
         "implicitPurchaseIntent": true
       },
-      "role": "smart",
+      "role": "planning",
       "modelId_default": "claude-haiku-4-5-20251001 (all roles; env override NO DATA)",
       "noToolTurn": false,
-      "maxTokens": 3072,
-      "maxSteps": 5,
+      "maxTokens": 4096,
+      "maxSteps": 8,
       "toolChoice": "auto (SDK default; route passes none)",
       "temperature": "unset (route passes none)",
       "isDecisionDomain": false,

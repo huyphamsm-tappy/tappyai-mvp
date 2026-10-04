@@ -163,10 +163,12 @@ describe('B — asking Tappy to choose activates the Pick', () => {
     expect(derivePick(r, NO_CRITERIA, { explicitChoiceRequest: true })).toBeNull()
   })
 
-  it('still null on an exact tie — nothing to lean on', () => {
+  it('an exact tie keeps rank[0] (the chain already ordered it, D6) and records the basis', () => {
     const reasons = [{ key: 'price', detail: '25.8tr', contribution: 1 }]
     const r = forged({ ranked: [entry(DECISIVE[0], 1, reasons), entry(DECISIVE[1], 1, reasons)] })
-    expect(derivePick(r, NO_CRITERIA, { explicitChoiceRequest: true })).toBeNull()
+    const p = derivePick(r, NO_CRITERIA, { explicitChoiceRequest: true })
+    expect(p?.reason).toBe('tie_rule')
+    expect(p?.candidate).toBe(DECISIVE[0])
   })
 
   it('is stated as a rule the model receives', () => {

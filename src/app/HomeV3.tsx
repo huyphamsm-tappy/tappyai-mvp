@@ -119,13 +119,16 @@ export interface HomeV3Props {
  *  pool below, and delete the `data-art-placeholder` attribute at the render site. Nothing else
  *  moves — not the card markup, not the data shape. `homeSuggestedArt.test.tsx` fails until the
  *  attribute is gone, which is the reminder. */
-const ART_POOL: readonly string[] = [
-  '/home/inspire/food.webp',
-  '/home/inspire/travel.webp',
-  '/home/inspire/shopping.webp',
-  '/home/inspire/spa.webp',
-  '/home/inspire/entertainment.webp',
-]
+/** Phase 7 closeout 8I: three photographs PER CATEGORY (the owner's package, D:/THIETKE PLAN/thumnail) — a repeated category now
+ *  takes another picture OF ITS OWN CATEGORY, so a card's art always matches its suggestion. */
+const CATEGORY_ART_VARIANTS: Record<string, readonly string[]> = {
+  food: ['/home/inspire/food.webp', '/home/inspire/food-2.webp', '/home/inspire/food-3.webp'],
+  travel: ['/home/inspire/travel.webp', '/home/inspire/travel-2.webp', '/home/inspire/travel-3.webp'],
+  shopping: ['/home/inspire/shopping.webp', '/home/inspire/shopping-2.webp', '/home/inspire/shopping-3.webp'],
+  spa: ['/home/inspire/spa.webp', '/home/inspire/spa-2.webp', '/home/inspire/spa-3.webp'],
+  entertainment: ['/home/inspire/entertainment.webp', '/home/inspire/entertainment-2.webp', '/home/inspire/entertainment-3.webp'],
+}
+const ART_POOL: readonly string[] = Object.values(CATEGORY_ART_VARIANTS).flat()
 
 /** 🚨 A HINT, NOT A MAPPING — and the distinction is the whole point of this file's last defect.
  *
@@ -189,10 +192,12 @@ export function assignCardArt(cards: readonly ArtAssignable[]): string[] {
 
   cards.forEach((card, i) => {
     if (out[i]) return
-    const preferred = CATEGORY_PREFERRED_ART[card.category]
-    if (preferred && !used.has(preferred)) {
-      out[i] = preferred
-      used.add(preferred)
+    // Phase 7 8I: the first free picture OF THE CARD'S OWN CATEGORY (its preferred scene first, then that category's variants).
+    const own = [CATEGORY_PREFERRED_ART[card.category], ...(CATEGORY_ART_VARIANTS[card.category] ?? [])].filter((x): x is string => !!x)
+    const pick = own.find(x => !used.has(x))
+    if (pick) {
+      out[i] = pick
+      used.add(pick)
     }
   })
 

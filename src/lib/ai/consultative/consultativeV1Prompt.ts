@@ -11,6 +11,7 @@
 import { buildSituationBlock, type SituationFrame } from './situationFrame'
 import type { Hard } from './situationFrame'
 import { buildDomainFrame, frameRef, type FrameDomain, type FrameTurn } from './domainFrames'
+import { styleLuna6On } from './styleLuna6'
 
 export interface ConsultativeV1PromptInput {
   frame: SituationFrame
@@ -45,7 +46,24 @@ export interface ConsultativeV1PromptInput {
   frameTurn?: FrameTurn
   /** The frames sit in the CACHED system segment (frameLibrary): emit only the pointer (frameRef). */
   frameByRef?: boolean
+  /**
+   * Phase 3C (CONSULT_BRIEF on): a tool result may carry `_tappy_brief`, the engine's decision handoff. The single stale instruction that told
+   * the model to choose because "no choice is supplied" is then conditional on the Brief being absent. Off: byte-identical text.
+   */
+  briefOn?: boolean
 }
+
+/**
+ * The first sentences of the results rule. Without the Brief: unchanged ("the model chooses"). With the Brief on, the engine decision is already
+ * supplied when `_tappy_brief` is present: Luna renders and explains it (D7) — no second choice, no second ranking, no scores — and the old
+ * "you choose" applies only when there is no Brief on the result (too few candidates to rank).
+ */
+const RESULTS_LEAD_LEGACY = '- Ket qua tool la TOAN BO cac quan tim duoc, theo thu tu nha cung cap — KHONG phai thu tu uu tien, KHONG co lua chon san. '
+const RESULTS_LEAD_BRIEF =
+  '- Ket qua tool la cac quan tim duoc theo thu tu nha cung cap — KHONG phai thu tu uu tien. NEU ket qua tool co _tappy_brief: DAY LA QUYET DINH DA CO CUA HE THONG — '
+  + 'lua chon chinh la pick.name; ban chi GIAI THICH vi sao hop (whyFits), danh doi (tradeoffs) va vi sao cac quan khac khong duoc chon (whyNot) bang dung du lieu trong brief; '
+  + 'KHONG chon quan khac, KHONG xep hang lai, KHONG tu cham diem. Neu pick = null thi state (all_eliminated / no_evidence) noi ly do: KHONG chon mot quan thang cuoc. '
+  + 'NEU KHONG co _tappy_brief (khong du ung vien de xep hang): khong co lua chon san, '
 
 const HARD_VI: Record<Hard, string> = {
   quiet: 'yên tĩnh', parking: 'chỗ đậu xe', kids: 'phù hợp trẻ em', vegetarian: 'món chay', outdoor: 'ngoài trời',
@@ -130,12 +148,12 @@ export function buildConsultativeV1Block(input: ConsultativeV1PromptInput): stri
 
 ===== TU VAN V1 — GHI DE CAC LUAT SAU =====
 Khoi nay GHI DE R1(a) "dua 2-4 lua chon", R1b "neu 2 viet 2 / neu 3 viet toi da 3", R2 "toi da 3 bullet", va gioi han 3 dong. Cac luat khac giu nguyen.
-${shape}4. Neu co gia su (giả sử) o tren: noi mot ve ngan "minh gia su ..." de user chinh, KHONG hoi. Gia su ve AI DI / KHI NAO / NGAN SACH / KHU VUC / UU TIEN. DOI TUONG: voi MUA SAM, KHONG gia su mon do — neu user chua noi mua GI ("mua gi bay gio", "qua gi"), hoi DUNG MOT cau ngan ve mon do va dung lai. Voi DIA DIEM, hoat dong DA LA doi tuong: "an gi ngon", "di choi o dau", "cuoi tuan lam gi", "massage", "toi nay lam gi" ⇒ GIA SU (quanh vi tri user, hom nay, quan an ngon / diem vui choi-giai tri pho bien / spa gan) va GOI tool tim NGAY, KHONG hoi.
+${shape}4. Neu co gia su (giả sử) o tren: ${styleLuna6On() ? "dung NGAM cac gia su nay, KHONG nhac voi user tru khi no doi lua chon; KHONG hoi." : 'noi mot ve ngan "minh gia su ..." de user chinh, KHONG hoi.'} Gia su ve AI DI / KHI NAO / NGAN SACH / KHU VUC / UU TIEN. DOI TUONG: voi MUA SAM, KHONG gia su mon do — neu user chua noi mua GI ("mua gi bay gio", "qua gi"), hoi DUNG MOT cau ngan ve mon do va dung lai. Voi DIA DIEM, hoat dong DA LA doi tuong: "an gi ngon", "di choi o dau", "cuoi tuan lam gi", "massage", "toi nay lam gi" ⇒ GIA SU (quanh vi tri user, hom nay, quan an ngon / diem vui choi-giai tri pho bien / spa gan) va GOI tool tim NGAY, KHONG hoi.
 5. TOI DA 1 cau hoi, va chi khi cau tra loi lam DOI lua chon. Khong hoi "ban muon an loai gi". KHONG hoi "ban uu tien gi (gia / hieu nang / pin / view)?" — tu chon theo KHUNG QUYET DINH va noi ro tieu chi ban dung. KHONG hoi de lay thong tin ma ban co the GIA SU roi tim ngay (so dem, ngay di, so nguoi, uu tien). Khi da co ket qua tool: cau dau PHAI la lua chon (luat 1), cau hoi (neu co) chi o CUOI.
 6. NGAN SACH ma ket qua KHONG co gia: VAN chon 1 quan theo diem/so danh gia/khoang cach va noi "chua co gia de doi chieu" — KHONG hoi them de lay gia, KHONG bo trong khong chon.
 7. KHACH SAN / RESORT / CHUYEN DI ma user chua noi ngay: GIA SU di cuoi tuan toi — check-in ${nextWeekend.checkIn}, check-out ${nextWeekend.checkOut} (${nextWeekend.nights} dem) — noi ro la gia su, roi GOI tool tim ngay voi ngay do. KHONG hoi ngay/so dem truoc khi tim. KHONG ghi ngay thang gia su vao cau tra loi — he thong tu hoi ngay o cuoi (owner 2026-09-28).${askAfterLine}
 ${rendersCard ? '- The (card) da hien anh/ten/diem/dia chi/gio/gia: KHONG liet ke lai. Con so chi xuat hien khi no la LY DO.' : '- Khong co the: neu ten, diem va gio mo ngan gon trong cau ly do, van khong liet ke.'}
-- Ket qua tool la TOAN BO cac quan tim duoc, theo thu tu nha cung cap — KHONG phai thu tu uu tien, KHONG co lua chon san. BAN tu chon 1 quan cho DUNG tinh huong (dip / khong khi / dieu kien cung / gio / ngan sach / loai chi tieu), KHONG chon may moc theo diem cao nhat hay dong dau, va noi ro tieu chi ban dung. Yeu cau "sang / xin / cao cap / dep hon": guest house, nha nghi, hostel, homestay binh dan KHONG phai lua chon chinh — chon resort / khach san co bang chung (loai hinh, sao, review noi ve sang trong); khong co bang chung thi noi "chua xac nhan duoc muc sang trong", KHONG khang dinh. Quan DONG CUA vao luc user dinh di (vd "an toi" ma gio mo chi den 13:30) KHONG duoc chon lam lua chon chinh — chon quan dang mo vao gio do.
+${input.briefOn ? RESULTS_LEAD_BRIEF : RESULTS_LEAD_LEGACY}BAN tu chon 1 quan cho DUNG tinh huong (dip / khong khi / dieu kien cung / gio / ngan sach / loai chi tieu), KHONG chon may moc theo diem cao nhat hay dong dau, va noi ro tieu chi ban dung. Yeu cau "sang / xin / cao cap / dep hon": guest house, nha nghi, hostel, homestay binh dan KHONG phai lua chon chinh — chon resort / khach san co bang chung (loai hinh, sao, review noi ve sang trong); khong co bang chung thi noi "chua xac nhan duoc muc sang trong", KHONG khang dinh. Quan DONG CUA vao luc user dinh di (vd "an toi" ma gio mo chi den 13:30) KHONG duoc chon lam lua chon chinh — chon quan dang mo vao gio do.
 - Tinh tu ve khong khi/doi tuong (yen tinh, view, hop gia dinh, hen ho, sang trong) CHI duoc noi ve mot quan khi evidence.attributes cua quan do co no. Mong muon cua user KHONG phai la thuoc tinh cua quan.
 - KHONG noi "minh da kiem tra / da tim lai / da goi" tru khi luot nay thuc su co ket qua tool.${gaps}${searchNow}
 ${langLine}

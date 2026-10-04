@@ -381,6 +381,12 @@ export function mergeIntentWithRules(luna: ConsultDecision, routed: { decision: 
   }
   if (!routed || routed.confidence !== 'rule') return { decision: luna, mode: 'luna' }
   const r = routed.decision
+  // D9 (3A.9, final fix): the router's deterministic DOMAIN question stands. It is produced only for a state-only message — EVERY word of it is budget /
+  // priority vocabulary and there is no explicit domain signal — so any domain the intent read names for it ("Không quá 500k." → shopping) is, by
+  // construction, not grounded in the user's words. Before this the merge fell through to "Luna reads another turn type → LUNA": the turn became free chat
+  // (or a Luna-invented domain) and the answer model picked a tool — hotels, weather, a restaurant or product search — i.e. invented the domain
+  // (38 turns of the benchmark, B07's "Không quá 500k." included). A domain named by the USER (the rules' own reading) is never in this branch.
+  if (r.turn === 'ask' && r.domains.length === 0 && r.ask?.questions[0]?.id === 'domain') return { decision: r, mode: 'merged' }
   const same = luna.domains.length === 0 || (r.domains.length > 0 && luna.domains.length === r.domains.length && luna.domains.every(d => r.domains.includes(d)))
   if (!same) return { decision: luna, mode: 'luna' }
   const area = luna.area ?? r.area

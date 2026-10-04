@@ -18,6 +18,15 @@ export function adviceEnabled(env: Record<string, string | undefined> = process.
   return !(v === '0' || v === 'off' || v === 'false')
 }
 
+/**
+ * AI-Hay pass (04/10): the mandatory "Mẹo + Bước tiếp" boilerplate belongs where a user acts on it — trips and fares. On a food / spa / entertainment / shopping pick it is
+ * filler (the trace of "trưa nay có món gì ngon" read like a call-centre script). The voice layer being OFF (STYLE_LUNA6=0) restores the old everywhere-advice.
+ */
+export function adviceApplies(domain: string | undefined, flight = false, env: Record<string, string | undefined> = process.env): boolean {
+  if (env.STYLE_LUNA6 === '0') return true
+  return domain === 'travel' && !flight // trips only; a fare pick gets its link and one honest line, not a tips script
+}
+
 const RULES = `- Lời khuyên CHUNG (khi nào nên đi, cách chọn, nên mang gì, nên so sánh gì, cẩn thận gì) viết từ hiểu biết chung của bạn, bám đúng điều người dùng đã nói (ngân sách, số người, ngày, khẩu vị); ghi "theo kinh nghiệm chung" MỘT lần cho cả phần mẹo.
 - SỰ THẬT về một nơi/một chuyến (giá, giờ mở cửa, địa chỉ, khuyến mãi, giờ bay, còn chỗ/còn vé, khoảng cách, thời gian di chuyển) CHỈ khi có trong dữ liệu công cụ. Không có thì viết "chưa có thông tin" + nơi xem (nút/link hệ thống gắn). Mẹo KHÔNG chứa con số giá/giờ/khoảng cách của một nơi cụ thể.
 - Không viết URL, không tên quán/khách sạn/sản phẩm ngoài dữ liệu công cụ.`

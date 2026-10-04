@@ -1,4 +1,5 @@
 import { getRequestUser } from '@/lib/auth/getRequestUser'
+import { isUploadServiceUnavailable } from '@/lib/media/uploadAvailability'
 import { NextRequest, NextResponse } from 'next/server'
 import { getMediaProvider, putMedia } from '@/lib/media'
 import { randomMediaSuffix } from '@/lib/media/key'
@@ -99,6 +100,12 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ url: blob.url })
   } catch (e) {
     console.error('Media upload error:', e)
+    // Phase 7 CP9: the same classification /api/profile and the group avatar use — a credential / storage outage (e.g. the WIF
+    // provider refusing a non-production deployment) is the SERVICE being unavailable (503), so the composer does not invite a
+    // futile retry; anything else stays the generic retryable failure (500).
+    if (isUploadServiceUnavailable(e)) {
+      return NextResponse.json({ error: 'upload_unavailable', message: serverMessage('media.uploadUnavailable', requestLocale(req)) }, { status: 503 })
+    }
     return NextResponse.json({ error: 'upload_failed', message: serverMessage('media.uploadFailed', requestLocale(req)) }, { status: 500 })
   }
 }

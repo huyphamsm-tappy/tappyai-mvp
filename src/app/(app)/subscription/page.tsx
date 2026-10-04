@@ -1,5 +1,4 @@
 import { createClient } from '@/lib/supabase/server'
-import { redirect } from 'next/navigation'
 import { aiQuotaIdentity, peekAiQuestionQuota } from '@/lib/ai/quota/aiQuestionQuota'
 import { headers } from 'next/headers'
 import { clientIp } from '@/lib/security/rateLimit'
@@ -8,10 +7,9 @@ import { loadMyPlan } from '@/lib/payments/myPlan'
 import { subscriptionCatalog } from '@/lib/payments/subscriptionCatalog'
 import { mySubscription } from '@/lib/payments/subscriptionState'
 import SubscriptionPlansView from './SubscriptionPlansView'
-import SubscriptionView from './SubscriptionView'
 
-// Session-bound data only. All presentation lives in SubscriptionView, which is a client component
-// because the locale a user chose is only knowable on the client — see the note there (B07).
+// Session-bound data only. Phase 7: the ONE canonical catalog is the only plan page — the legacy Pro view was removed.
+// With SUBSCRIPTIONS_ENABLED off the same five plans are shown with checkout not offered (no payment tables are read).
 export default async function SubscriptionPage() {
   const supabase = createClient()
   const { data: { user } } = await supabase.auth.getUser()
@@ -34,43 +32,12 @@ export default async function SubscriptionPage() {
     return <SubscriptionPlansView userInfo={userInfo} catalog={subscriptionCatalog()} me={me} />
   }
 
-  if (!user) redirect('/login')
-
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('*')
-    .eq('id', user.id)
-    .single()
-
-  const userInfo = profile || { full_name: user.user_metadata?.full_name, avatar_url: user.user_metadata?.avatar_url, email: user.email }
-
-  const { data: sub } = await supabase
-    .from('subscriptions')
-    .select('status, current_period_end')
-    .eq('user_id', user.id)
-    .single()
-
-  const isPro = sub?.status === 'active' && sub?.current_period_end
-    ? new Date(sub.current_period_end) > new Date()
-    : false
-
-  // Read from the ONE shared AI quota /api/chat and /api/scam-shield/analyze spend from — display
-  // can never drift from enforcement (this page once showed 10/day against an enforced 15). A
-  // store that cannot report the count is shown as the limit used, never as plenty left.
-  // The same derivation /api/chat enforces with (clientIp: platform-set headers first) — a page
-  // that keyed on the raw leftmost x-forwarded-for could show a different bucket than it spends.
+  // Payments not open yet: the same five plans, read-only. Quota from the ONE authority; no subscription tables touched.
   const ip = clientIp({ headers: headers() })
-  const quota = await peekAiQuestionQuota(aiQuotaIdentity(user, ip))
-  const todayMsgCount = isPro ? 0 : (quota.used ?? quota.limit)
-  const remaining = isPro ? quota.limit : Math.max(0, quota.limit - todayMsgCount)
-
-  return (
-    <SubscriptionView
-      userInfo={userInfo}
-      isPro={isPro}
-      periodEnd={sub?.current_period_end ?? null}
-      remaining={remaining}
-      freeDailyLimit={quota.limit}
-    />
-  )
+  const q = await peekAiQuestionQuota(aiQuotaIdentity(user && user.is_anonymous !== true ? user : null, ip))
+  const used = q.used ?? q.limit
+  const signedIn = !!user && user.is_anonymous !== true
+  const me = { signedIn, pipUsed: false, subscription: mySubscription(null), quota: { limit: q.limit, used, remaining: Math.max(0, q.limit - used), period: q.period } }
+  const userInfo = user ? { full_name: user.user_metadata?.full_name, avatar_url: user.user_metadata?.avatar_url, email: user.email } : {}
+  return <SubscriptionPlansView userInfo={userInfo} catalog={subscriptionCatalog()} me={me} paymentsOpen={false} />
 }

@@ -28,6 +28,7 @@ export const vi: Record<string, string> = {
   'reviewNew.addPhoto': 'Thêm ảnh',
   'reviewNew.maxPhotos': 'Tối đa {n} ảnh',
   'reviewNew.photoUploadError': 'Lỗi tải ảnh',
+  'reviewNew.photoTooLarge': 'Ảnh quá lớn. Vui lòng chọn ảnh dưới 4,5 MB.',
 
   // Video tab
   'reviewNew.selectVideo': 'Chọn video',
@@ -124,6 +125,7 @@ export const en: Record<string, string> = {
   'reviewNew.addPhoto': 'Add photos',
   'reviewNew.maxPhotos': 'Up to {n} photos',
   'reviewNew.photoUploadError': 'Failed to upload photo',
+  'reviewNew.photoTooLarge': 'The photo is too large. Please choose one under 4.5 MB.',
 
   // Video tab
   'reviewNew.selectVideo': 'Choose a video',

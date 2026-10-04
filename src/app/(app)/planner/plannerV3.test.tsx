@@ -147,10 +147,10 @@ describe('the plan card renders the plan the user received', () => {
     expect(screen.getByRole('link', { name: /Open in the conversation/ }).getAttribute('href')).toBe('/chat/c-dn')
   })
 
-  it('draws a glyph, not a picture, when no stop carries a real photo; a real photo when one does', () => {
+  it('Phase 7 8F: the reusable default thumbnail when no stop carries a real photo; the real photo when one does', () => {
     renderPlanner([row()])
-    expect(q('[data-planner-card] img')).toBeNull()
-    expect(q('[data-planner-card] .v3-planner-thumb-glyph')).toBeTruthy()
+    expect(q<HTMLImageElement>('[data-planner-card] img')!.getAttribute('src')).toBe('/planner/plan-default.webp')
+    expect(q('[data-plan-thumb="default"]')).toBeTruthy()
     cleanup()
     const withPhoto = plan()
     ;(withPhoto.days as { items: Record<string, unknown>[] }[])[0].items[0].photo_url = 'https://places.example/m-hotel.jpg'

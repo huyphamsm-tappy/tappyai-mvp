@@ -4,10 +4,10 @@
 // AI allowance is ONE global pool per identity (not per feature). The day is
 // the Vietnam calendar day (Asia/Ho_Chi_Minh, UTC+7, no DST) — see `vnToday()`.
 //
-// Changing a number here is the whole change: e.g. Free 10/day → 5/day is
-// `free.aiQuota.limit: 5`, no other file.
+// Changing a number here is the whole change. The one exception is Free, whose daily limit is
+// FREE_DAILY_LIMIT in lib/config/product.ts (shared with the anon/guest copy).
 //
-// P7 closeout (owner 02/10): Free keeps the approved release value FREE_DAILY_LIMIT (15/day), guest 5 for the lifetime, every paid plan 30/day.
+// P7 closeout (owner 02/10): Free = FREE_DAILY_LIMIT (10/day, Phase 7 canonical catalog 04/10), guest 5 for the lifetime, every paid plan 30/day.
 // A legacy `pro` row (Stripe/Apple) stays unmetered until its paid period ends (isGrandfatheredPro), then it is a 30/day plan like the others.
 
 import { FREE_DAILY_LIMIT } from '@/lib/config/product'

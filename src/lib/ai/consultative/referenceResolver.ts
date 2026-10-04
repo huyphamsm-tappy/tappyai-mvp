@@ -71,7 +71,7 @@ export function priorVenuesIn(assistantText: string): PriorVenue[] {
 }
 
 const ORDINALS: Array<[RegExp, number]> = [
-  [/\b(?:quan|cho|tiem|nha hang|cai|option|place|khach san|spa)?\s*(?:dau tien|thu nhat|so 1|1st|first|so mot)\b/, 1],
+  [/\b(?:quan|cho|tiem|nha hang|cai|option|place|khach san|spa)?\s*(?:dau tien|thu nhat|so 1|1st|first|so mot)\b|\b(?:quan|cho|tiem|nha hang) dau\b(?! tien)/, 1],
   [/\b(?:thu hai|so 2|2nd|second|thu 2)\b/, 2],
   [/\b(?:thu ba|so 3|3rd|third|thu 3)\b/, 3],
   [/\b(?:thu tu|so 4|4th|fourth|thu 4)\b/, 4],
@@ -267,4 +267,15 @@ export function renderReferencedBlock(venues: readonly PriorVenue[], refetched: 
       : `- Hệ thống đã tìm lại "${r.name}" theo tên nhưng KHÔNG có kết quả: nói rõ "mình không tìm thấy", KHÔNG nói "mình đã kiểm tra thấy…".`)
   }
   return `\n\n===== THAM CHIEU (V1) =====\n${lines.join('\n')}\nChỉ trả lời về đúng các quán này; không tự tìm quán mới trừ khi user yêu cầu.\n=====================================`
+}
+
+/**
+ * Release gate (UAT-60): "quán thứ hai" after a recommendation. The reply's prose names only the pick, so the other presented candidates are in no
+ * bold name the resolver above can see — they are in the stored result context. `orderedNames` is that context in the order the user saw the cards;
+ * only an ORDINAL reference is resolved (thứ nhất / thứ hai / thứ ba …), and only to a candidate that is actually there — never invented.
+ */
+export function ordinalVenuesFromContext(text: string, orderedNames: readonly string[]): string[] {
+  const prior: PriorVenue[] = orderedNames.filter(n => typeof n === 'string' && n.trim()).map((name, i) => ({ index: i + 1, name }))
+  return resolveReferences(text, prior).filter(r => r.kind === 'ordinal').flatMap(r => r.venues.map(v => v.name))
+    .filter((n, i, a) => a.indexOf(n) === i)
 }

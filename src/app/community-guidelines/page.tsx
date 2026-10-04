@@ -3,6 +3,8 @@ import LegalDocument from '@/components/legal/LegalDocument'
 import { bullets, type LegalDoc } from '@/components/legal/legalDoc'
 import { OG_IMAGE, SITE_URL } from '@/components/landing/config'
 import { RULE_GROUP_IDS } from '@/lib/safety/communityRules'
+import PublishedGuidelines from '@/components/legal/PublishedGuidelines'
+import { communityGuidelinesConfig, publishedGuidelines } from '@/lib/legal/communityGuidelinesConfig'
 
 /**
  * Community Guidelines (owner 01/10) — the written rules every moderation decision is made against. Public, no sign-in.
@@ -53,6 +55,15 @@ const DOC: LegalDoc = {
   ],
 }
 
+// Phase 7 CP6: the canonical published document once the three legal facts are configured (never a placeholder); until then the
+// current page stays. Read per request so the owner's env change takes effect on the next deploy without code changes.
+export const dynamic = 'force-dynamic'
+
 export default function CommunityGuidelinesPage() {
+  const facts = communityGuidelinesConfig()
+  if (facts) {
+    const doc = publishedGuidelines(facts)
+    return <PublishedGuidelines meta={doc.meta} sections={doc.sections} />
+  }
   return <LegalDocument doc={DOC} />
 }

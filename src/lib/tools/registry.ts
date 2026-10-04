@@ -67,11 +67,12 @@ export const TOOL_GROUPS = ['v3.tools.daily', 'v3.tools.discover', 'v3.tools.fun
  */
 const ALL: readonly SmartTool[] = [
   // ── Everyday — the five Home curates ──────────────────────────────────────
+  // Phase 7 closeout 8J: "Cảnh báo lừa đảo" comes before "Quét".
+  { id: 'safety', href: '/scam-shield', labelKey: 'v3.tool.safety', descKey: 'v3.tool.safetyDesc', icon: ShieldCheck, tone: 'var(--v3-emerald)', group: 'v3.tools.daily', home: true },
   { id: 'scan', href: '/scan', labelKey: 'v3.tool.scan', descKey: 'v3.tool.scanDesc', icon: ScanText, tone: 'var(--v3-accent)', group: 'v3.tools.daily', home: true },
   { id: 'translate', href: '/translate', labelKey: 'v3.tool.translate', descKey: 'v3.tool.translateDesc', icon: Languages, tone: 'var(--v3-accent)', group: 'v3.tools.daily', home: true },
   { id: 'currency', href: '/currency', labelKey: 'v3.tool.currency', descKey: 'v3.tool.currencyDesc', icon: ArrowLeftRight, tone: 'var(--v3-emerald)', group: 'v3.tools.daily', home: true },
   { id: 'split', href: '/split-bill', labelKey: 'v3.tool.split', descKey: 'v3.tool.splitDesc', icon: Calculator, tone: 'var(--v3-amber)', group: 'v3.tools.daily', home: true },
-  { id: 'safety', href: '/scam-shield', labelKey: 'v3.tool.safety', descKey: 'v3.tool.safetyDesc', icon: ShieldCheck, tone: 'var(--v3-emerald)', group: 'v3.tools.daily', home: true },
 
   // ── Discover ──────────────────────────────────────────────────────────────
   { id: 'suggest', href: '/recommendations', labelKey: 'v3.tool.suggest', descKey: 'v3.tool.suggestDesc', icon: Star, tone: 'var(--v3-amber)', group: 'v3.tools.discover', home: false },

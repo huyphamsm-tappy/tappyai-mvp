@@ -12,6 +12,8 @@
 // (docs/uat/SCAMSHIELD-WORDING-FOR-REVIEW.md prints them verbatim). The server reads the SAME
 // dictionary (see `lib/scam-shield/verdict.ts`) so web and API can never drift apart.
 
+import { SCAM_REPORT_HOTLINE } from '../scam-shield/hotline'
+
 export const vi: Record<string, string> = {
   // ── The three states, for a MESSAGE / described situation ──
   'scamVerdict.familiar.title': 'Có dấu hiệu lừa đảo quen thuộc',
@@ -41,7 +43,7 @@ export const vi: Record<string, string> = {
   'scamVerdict.scenario.source': 'Thông tin từ nguồn chính thức',
   'scamVerdict.scenario.sourceOpen': 'Xem bài viết gốc',
   'scamVerdict.scenario.guidanceNote': 'Phần dấu hiệu và lời khuyên do TappyAI biên soạn từ nguồn chính thức, không phải trích dẫn nguyên văn.',
-  'scamVerdict.scenario.report': 'Báo ngay cho Công an nơi gần nhất hoặc gọi 113 nếu nghi ngờ bị lừa.',
+  'scamVerdict.scenario.report': `Báo ngay cho Công an nơi gần nhất hoặc gọi ${SCAM_REPORT_HOTLINE.display} nếu nghi ngờ bị lừa.`,
   // ── Message tab copy (replaces the old "AI" copy) ──
   'scamVerdict.msg.subtitle': 'Dán tin nhắn hoặc mô tả ngắn tình huống đáng ngờ. TappyAI đối chiếu với các tình huống lừa đảo đã được Bộ Công an cảnh báo.',
   'scamVerdict.msg.privacy': 'Đối chiếu bằng danh sách tình huống và quy tắc có sẵn: không dùng AI, không lưu nội dung tin nhắn.',
@@ -74,7 +76,7 @@ export const en: Record<string, string> = {
   'scamVerdict.scenario.source': 'Information from an official source',
   'scamVerdict.scenario.sourceOpen': 'Open the original article',
   'scamVerdict.scenario.guidanceNote': 'The signs and advice were written by TappyAI from the official material, not quoted verbatim.',
-  'scamVerdict.scenario.report': 'Report to the nearest police station or call 113 if you suspect a scam.',
+  'scamVerdict.scenario.report': `Report to the nearest police station or call ${SCAM_REPORT_HOTLINE.display} if you suspect a scam.`,
   'scamVerdict.msg.subtitle': 'Paste a message or briefly describe a suspicious situation. TappyAI compares it with the scam scenarios the Ministry of Public Security has warned about.',
   'scamVerdict.msg.privacy': 'Matched against a built-in list of scenarios and rules: no AI is used and the message text is not stored.',
   'scamVerdict.msg.why': 'Specific reasons',

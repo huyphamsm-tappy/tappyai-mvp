@@ -617,6 +617,9 @@ export default function ShareMenu({
           return
         }
       }
+    } catch {
+      // Phase 7: a failed publish / clipboard / open never escapes as an unhandled rejection — the sheet says so and stays usable.
+      setFeedback({ kind: 'error', text: t('share.copyFailed') })
     } finally {
       setBusy(null)
     }

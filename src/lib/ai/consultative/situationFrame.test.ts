@@ -16,7 +16,7 @@ describe('deriveSituation — who / occasion / time / mood / hard, accented and 
     ['di date voi gau toi nay cho nao lang man yen tinh', { who: 'couple', occasion: 'date', mood: 'romantic', hard: ['quiet'] }],
     ['sinh nhật sếp, tiếp khách 8 người, cần phòng riêng', { who: 'colleagues', partySize: 8, occasion: 'birthday', hard: ['private_room'] }],
     ['ăn trưa nhanh gần công ty 1 mình', { who: 'solo', time: 'lunch', occasion: 'quick_bite' }],
-    ['cả nhà đi ăn cuối tuần có con nít, có chỗ đậu xe', { who: 'family', occasion: 'family_meal', time: 'weekend', hard: ['parking', 'kids'] }],
+    ['cả nhà đi ăn cuối tuần có con nít, có chỗ đậu xe', { who: 'family', occasion: 'family_meal', time: 'weekend', hard: ['parking'] }], // owner (3A, D8): "con nít" is household context, not a hard kids constraint
     ['hội bạn 6 đứa đi nhậu khuya', { who: 'friends', partySize: 6, time: 'late_night', occasion: 'hangout' }],
     ['quán chay bình dân gần đây', { hard: ['vegetarian'], mood: 'cheap_good' }],
     ['rooftop bar sôi động có nhạc sống', { hard: ['outdoor', 'live_music'], mood: 'lively' }],
@@ -24,7 +24,7 @@ describe('deriveSituation — who / occasion / time / mood / hard, accented and 
     ['kỷ niệm 1 năm với người yêu, sang trọng chút', { who: 'couple', occasion: 'celebration', mood: 'fancy' }],
     ['quán mở khuya có máy lạnh giao tận nơi', { hard: ['late_open', 'delivery', 'air_con'] }],
     ['dinner for 4 people tonight, quiet place with parking', { who: 'friends', partySize: 4, time: 'tonight', hard: ['quiet', 'parking'] }],
-    ['family lunch with kids this weekend', { who: 'family', time: 'lunch', hard: ['kids'] }],
+    ['family lunch with kids this weekend', { who: 'family', time: 'lunch', hard: [] }],
     ['romantic date night, fancy', { occasion: 'date', mood: 'romantic' }],
   ]
   it.each(cases)('"%s"', (text, expected) => {

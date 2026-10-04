@@ -179,6 +179,11 @@ export interface EnrichmentCollector {
   /** Consult V2 plan: the pick the conversation settled on (the plan's cost line is about it). */
   consultPick?: string | null
   setConsultPick(name: string | null): void
+  /** Phase 3C (CONSULT_BRIEF): the Brief travelled this turn, so the ENGINE Pick is authoritative for the card and the pick sentence (D7). */
+  consultBrief?: boolean
+  /** TAPPY_AGENT: the turn was decided by the bounded agent (no consult turn) — claim guards that used to key on a consult pick turn still run. */
+  agentMode?: boolean
+  setConsultBrief(on: boolean): void
   setConsultShown(names: string[]): void
   /** PHIÊN LUNA: the reply is checked for a prompt echo / secret shape before it leaves (lunaSafety.ts). */
   leakCheck?: (text: string) => { leak: boolean; reason: string | null }
@@ -226,7 +231,7 @@ export interface ConsultativeV1Context {
    * turn's only place evidence; the place-claim guard reads it instead of an
    * empty row set. Empty on a first turn.
    */
-  carried: Array<{ name: string; rating: number | null; reviewCount: number | null; distanceKm: number | null; hours?: string | null }>
+  carried: Array<{ name: string; rating: number | null; reviewCount: number | null; distanceKm: number | null; hours?: string | null; phone?: string | null; address?: string | null }>
   /** Stated hard constraints no candidate carried evidence for — set at tool time. */
   hardGaps: string[]
   /** ASSUME_PRESENT constraints (air_con…) some fetched text argues AGAINST — set at tool time. */
@@ -440,6 +445,8 @@ export function createEnrichmentCollector(turnText = '', earlierUserTexts: reado
     setConsultTurn(turn: string, refers?: string[], known?: Record<string, string>) { this.consultTurn = turn; this.consultRefers = refers; this.consultKnown = known },
     consultPick: null as string | null,
     setConsultPick(name: string | null) { this.consultPick = name },
+    consultBrief: undefined as boolean | undefined,
+    setConsultBrief(on: boolean) { this.consultBrief = on },
     clarificationPolicy: 'allow' as 'allow' | 'no_reflex',
     setClarificationPolicy(policy: 'allow' | 'no_reflex') { this.clarificationPolicy = policy },
     consultativeV1: undefined as ConsultativeV1Context | undefined,

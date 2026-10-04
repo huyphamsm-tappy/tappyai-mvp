@@ -15,6 +15,8 @@
 import { normalizeVN } from '../intent'
 import { maskStreetNames } from '../streetNames'
 import { SPECIFIC_DATE } from './searchNow'
+import { deriveNeedProfile } from './needProfile'
+import { hasExplicitPriorityState } from './decisionState'
 import { wasAskReply, type AskQuestion, type ConsultDecision, type ConsultDomain, type ConsultTurn } from './consultBrain'
 
 export type RouteConfidence = 'rule' | 'unsure'
@@ -524,7 +526,9 @@ function foodView(t: Txt, gps: boolean): SlotView {
   if (!mode) assumptions.push('Ăn tại quán')
   if (!area) assumptions.push(gps ? 'Gần vị trí của bạn' : 'Khu trung tâm')
   const what = dish ? `quán ${dish.place ? dish.label.replace(/^quán /, '') : dish.label}` : 'quán'
-  return { known, count, enough: count >= 3, missing, queryParts, area: area && area !== 'gần bạn' ? area : undefined, assumptions,
+  // AI-Hay pass: a place to look (GPS or a named area) plus any ONE criterion is enough to search — "trưa nay có món gì ngon", "100k quận 1", "quán bún bò ở quận 3".
+  const searchable = !!(area || gps) && !!(dish || budget || time || vibe)
+  return { known, count, enough: count >= 3 || searchable, missing, queryParts, area: area && area !== 'gần bạn' ? area : undefined, assumptions,
     lead: { vi: `Để chọn đúng ${what}${area && area !== 'gần bạn' ? ` ở ${area}` : ''} cho bạn:`, en: 'To pick the right place for you:' } }
 }
 
@@ -731,6 +735,20 @@ function spaView(t: Txt, gps: boolean): SlotView {
     lead: { vi: svcKnown ? `Để chọn đúng chỗ ${svc!.label} cho bạn:` : 'Để chọn đúng chỗ thư giãn cho bạn:', en: 'To pick the right place for you:' } }
 }
 
+/**
+ * AI-Hay pass: the intent model (not the rules) decided "ask" for a request the rules did not recognise ("trưa nay có món gì ngon", "100k quận 1"). The same sufficiency
+ * the rules use now decides it: a place to look (GPS / named area) + one criterion is enough, so the turn becomes a pick and the search runs. Null = keep the ask.
+ */
+export function searchableAsPick(d: ConsultDecision, userTexts: readonly string[], hasGps: boolean): ConsultDecision | null {
+  if (d.turn !== 'ask' || !d.ask || d.ask.questions[0]?.id === 'domain') return null
+  const domain = d.domains[0]
+  if (domain !== 'food' && domain !== 'entertainment' && domain !== 'spa') return null
+  const text = userTexts.slice(-4).join(' . ')
+  const view = slotView(domain, text, hasGps)
+  if (!view.enough) return null
+  return { ...d, turn: 'pick', ask: undefined, known: { ...d.known, ...view.known }, assumptions: view.assumptions, query: joinQuery(view.queryParts), ...(view.area ? { area: view.area } : {}) }
+}
+
 export function slotView(domain: ConsultDomain, text: string, gps: boolean): SlotView {
   const t = prep(text)
   switch (domain) {
@@ -820,8 +838,67 @@ function namesIn(t: Txt, names: string[]): string[] {
 
 // ── The router ─────────────────────────────────────────────────────────────────────────────────
 
+// ── Phase 3A / D9: a message that is ONLY decision state names no domain — ask which one, never guess ─────────
+// Contract: docs/audit/PHASE-3-IMPLEMENTATION-SPECIFICATION.md 3A.9 ("D9 rule text"). A message is *state-only* when it carries decision
+// state (budget, priority, dismissed priority, balance, mandatory / avoid wording) and EVERY word of it is state vocabulary. Anything that
+// carries a content word this vocabulary does not know is left to the existing path: the router invents nothing.
+const STATE_WORDS = new Set((
+  // budget
+  // "không quá 500k" (a hard-ceiling phrase `extractBudget` itself reads) was missing: `qua`
+  'ngan sach duoi tren khoang tam toi da qua thieu tang giam len xuong co the tong cong moi nguoi k tr m trieu nghin vnd dong ' +
+  // priority / importance / balance
+  'gia re tiet kiem quan trong uu tien can bang chat luong ngon tot nhat rat cung hon kha khong chang ko chua phai la va nhung muon minh toi em anh cho thi hay ' +
+  // mandatory / avoid wording and the registry constraint words
+  'bat buoc co mu cay chay an the thieu nhat dinh chap nhan neu wifi ' +
+  // english
+  'price budget cheap quality important matters matter balance balanced under around about and but not the is are must have need want prefer priority').split(' '))
+
+function stateOnlyNoDomain(t: Txt, userText: string): boolean {
+  const need = deriveNeedProfile([{ role: 'user', content: userText }])
+  const hasState = need.budget !== null || need.priorities.length > 0 || !!need.dismissed || !!need.tradeoff || !!need.constraints
+    || need.mustHave.length > 0 || need.avoid.length > 0
+  if (!hasState) return false
+  const words = t.f.replace(/[^a-z0-9 ]+/g, ' ').split(/\s+/).filter(Boolean)
+  return words.length > 0 && words.every(w => /^\d+(?:k|tr|m|trieu|nghin|ngan)?$/.test(w) || STATE_WORDS.has(w))
+}
+
+/**
+ * SUFFICIENCY (Phase 3A, owner confirmation): the clarification gate measures whether there is enough decision information to proceed, not only
+ * whether the old fixed slots are filled. An EXPLICIT user-stated priority is a valid decision criterion: "ưu tiên tiết kiệm", "ưu tiên chất
+ * lượng", "giá quan trọng", a comparative ("rẻ hơn"), or a balance statement ("cân bằng giá và chất lượng"). Not counted: a bare descriptive
+ * mention (weight 1), a damped comparative loser, a stored preference, and a DISMISSED priority ("giá không quan trọng" is not a positive
+ * criterion). The existing `enough` rule is untouched — this only adds a second way to be sufficient; the threshold is not lowered for anything else.
+ */
+export function hasExplicitPriority(userText: string): boolean {
+  const need = deriveNeedProfile([{ role: 'user', content: userText }])
+  return hasExplicitPriorityState(need)
+}
+
+/**
+ * Release-gate fix (UAT-29/61/62): a message that (re)states or dismisses a decision priority is a new decision, not a question about the shown picks.
+ * "Thôi giá không quan trọng, ưu tiên chất lượng." contains "không", which QUESTION_RE reads as a question, so it was routed as a follow-up with no
+ * re-ranking and the old priority stayed active.
+ */
+function changesPriority(userText: string): boolean {
+  const need = deriveNeedProfile([{ role: 'user', content: userText }])
+  return hasExplicitPriorityState(need) || (need.dismissed?.length ?? 0) > 0
+}
+
+function domainAsk(lang: string): NonNullable<ConsultDecision['ask']> {
+  const en = lang === 'en'
+  return {
+    lead: '',
+    questions: [en
+      ? { id: 'domain', q: 'What are you looking for?', options: ['Food', 'Shopping', 'Travel', 'Entertainment / Spa'] }
+      : { id: 'domain', q: 'B\u1ea1n \u0111ang mu\u1ed1n t\u00ecm g\u00ec?', options: ['\u0102n u\u1ed1ng', 'Mua s\u1eafm', 'Du l\u1ecbch', 'Gi\u1ea3i tr\u00ed / Spa'] }],
+  }
+}
+
 function toAsk(view: SlotView, lang: string, domains: ConsultDomain[]): ConsultDecision['ask'] | undefined {
   const en = lang === 'en'
+  // The router still ranks up to three open questions (its existing order, and the gate: a card needs two). Phase 3A / D2: the card that is
+  // finally SHOWN carries exactly one — the first of them — and `refineAsk` (echoQuestion.ts) is the single place that enforces it, whoever
+  // produced the card (router, intent call or brain).
   const qs: AskQuestion[] = view.missing.slice(0, 3).map(m => ({ id: m.id, q: en ? m.en : m.vi, options: (en ? m.oEn : m.o).slice(0, 4) }))
   if (qs.length < 2) return undefined
   let lead = en ? view.lead.en : view.lead.vi
@@ -918,7 +995,16 @@ function routeTurn(turns: Msg[], ui: number, thread: Thread, ctx: RouteCtx): Tur
     // A sentence that POINTS at something in this thread ("Cái thứ hai có bao gồm ăn sáng không?") is about it, never a new
     // request — UAT §10 T3 (30/09, level B): "ăn sáng" read as the food area and a hotel question got a restaurant.
     const fresh = cur.domains.length > 0 && !thread.domains.some(d => cur.domains.includes(d)) && cur.hits.some(h => h.w >= 3) && !(inThread && DEICTIC_RE.test(t.f))
-    if (fresh) return { result: pickFrom(cur.domains, userText, 'pick'), thread: { domains: cur.domains, start: ui } }
+    if (fresh) {
+      // D9: the answer to the domain question ("an uong") is read together with the state-only message it answered, so the
+      // budget / priority the user stated is not lost to the slot reader.
+      let askAt = -1
+      for (let i = ui - 1; i >= 0; i--) if (turns[i].role === 'assistant') { askAt = i; break }
+      let priorUser = ''
+      for (let i = askAt - 1; i >= 0; i--) if (turns[i].role === 'user') { priorUser = stripMarkers(textOf(turns[i].content)).trim(); break }
+      const carry = !inThread && priorUser !== '' && detectAreas(priorUser).domains.length === 0 && stateOnlyNoDomain(prep(priorUser), priorUser)
+      return { result: pickFrom(cur.domains, carry ? `${priorUser} . ${userText}` : userText, 'pick'), thread: { domains: cur.domains, start: ui } }
+    }
     if (!inThread) return keep({ turn: 'pick', domains: cur.domains }, 'unsure')
     return { result: pickFrom(thread.domains, threadText(thread.start), 'pick'), thread }
   }
@@ -940,6 +1026,10 @@ function routeTurn(turns: Msg[], ui: number, thread: Thread, ctx: RouteCtx): Tur
       const refers = refs.length >= 2 ? refs : refs.length === 1 ? [refs[0], ...names.filter(n => n !== refs[0]).slice(0, 1)] : pairRefs.length ? pairRefs : names.slice(0, 2)
       return keep({ domains, turn: 'compare', refers })
     }
+    // A restated / dismissed priority about no particular shown pick re-decides the same thread (the profile reads every user turn; the latest wins).
+    // "không cần rẻ" is a DISMISSAL (it trips NEGATIVE_RE through "không cần"); "không thích / không hợp" is a rejection of a pick and keeps the reject path.
+    const dismissalIdiom = negative && /(?:^|\s)(?:khong|ko|k) can\b/.test(t.f) && !/(?:^|\s)(?:khong|ko|k|hong) (?:thich|hop|ung|muon)\b/.test(t.f)
+    if (!refs.length && !deictic && (!negative || dismissalIdiom) && !newArea && changesPriority(userText)) return { result: pickFrom(domains, threadText(thread.start), 'reject', { reprioritize: true }), thread }
     if ((refs.length || deictic) && isQ && !negative) return keep({ domains, turn: 'followup', refers: refs.length ? refs : names.slice(0, 1) })
     if (negative) return { result: pickFrom(domains, threadText(thread.start), 'reject', { rejectReason: userText.slice(0, 160) }), thread }
     if (refs.length) return keep({ domains, turn: 'followup', refers: refs })
@@ -954,13 +1044,22 @@ function routeTurn(turns: Msg[], ui: number, thread: Thread, ctx: RouteCtx): Tur
   // 4. A new request.
   if (!cur.domains.length) {
     if (GREETING.test(fq) || OUT_OF_SCOPE.test(t.f)) return keep({ turn: 'chat' })
+    // D9: decision state with no domain — one deterministic question, no retrieval, nothing invented.
+    if (!inThread && !KNOWLEDGE.test(t.f) && stateOnlyNoDomain(t, userText)) return keep({ turn: 'ask', domains: [], known: {}, ask: domainAsk(lang) })
     return keep({ turn: 'chat' }, 'unsure')
   }
   const domains = cur.domains
   const conf: RouteConfidence = cur.conflict ? 'unsure' : 'rule'
   if (KNOWLEDGE.test(t.f)) return start({ domains, turn: 'chat', known: slotView(domains[0], userText, ctx.hasGps).known }, conf)
-  const view = slotView(domains[0], userText, ctx.hasGps)
-  const ask = view.enough ? undefined : toAsk(view, lang, domains)
+  // Final fix (benchmark H04): when the FIRST turn that names a domain follows earlier turns that stated slots ("Đi 4 người." / "Có 2 trẻ em." /
+  // then "Ngân sách khoảng 1 triệu, muốn món Việt."), sufficiency was measured on the last message alone and the router asked again for what the
+  // user had already said. Outside a thread no earlier turn named a domain, so every earlier user turn is plain state the user stated; their own words
+  // (never an assistant name) join the slot reader. Nothing is invented and the sufficiency rule itself is unchanged.
+  const priorState = !inThread ? turns.slice(0, ui).filter(m => m.role === 'user').map(m => unquote(stripMarkers(textOf(m.content))).trim()).filter(Boolean).slice(-4) : []
+  const stateText = [...priorState, userText].join(' . ')
+  const view = slotView(domains[0], stateText, ctx.hasGps)
+  // Owner (3A): a stated explicit priority is a valid decision criterion for sufficiency (see `hasExplicitPriority`).
+  const ask = view.enough || hasExplicitPriority(stateText) ? undefined : toAsk(view, lang, domains)
   if (!ask) return start({ domains, turn: 'pick', known: view.known, assumptions: view.assumptions, query: joinQuery(view.queryParts), ...(view.area ? { area: view.area } : {}) }, conf)
   return start({ domains, turn: 'ask', known: view.known, ask, ...(view.area ? { area: view.area } : {}) }, conf)
 }

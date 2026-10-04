@@ -36,7 +36,7 @@ Session không có kênh ghi vào prod (Vercel CLI bị policy chặn, Supabase 
 10. **Affiliate — còn thiếu (không có giá trị nào trên máy này; KHÔNG bịa):**
     - `ACCESSTRADE_PUBLISHER_ID` (Production + Preview) — publisher id Accesstrade của TappyAI; thiếu ⇒ mọi Tier 1 (Lazada, CellphoneS, Trip.com, Vexere, Klook, TikTok Shop) phát link DIRECT, không tracked, không lỗi.
     - `ACCESSTRADE_API_KEY` + `ACCESSTRADE_FEED_ENDPOINT` (mẫu `https://api.accesstrade.vn/v1/datafeeds?campaign={campaign}&format=csv`) — thiếu ⇒ cron `/api/cron/feed-ingest` ghi `blocked_no_credentials`, không có gì hỏng.
-    - `TRAVELPAYOUTS_TOKEN` — thiếu ⇒ máy bay không bao giờ có giá (trả lời trung thực + link route có ngày).
+    - (đã gỡ 04/10/2026) không còn biến môi trường cho giá vé máy bay — máy bay chỉ có link route có ngày, giá "chưa xác minh".
     - Traveloka + Vietnam Airlines (Tier 1 theo owner): KHÔNG phải env — là 2 row trong `commerce_providers`: `update public.commerce_providers set network='accesstrade', campaign_id='<id 10–25 chữ số>' where provider_id in ('traveloka','vietnamairlines');` hoặc `network='template', wrapper_template='https://…{url}…'`. Tới khi điền: app log ERROR `deeplink_enabled_without_wrapper` và phát link direct.
 
 ## C. Upstash KV (rate limit + trần Serper toàn cục)

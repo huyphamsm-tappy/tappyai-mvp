@@ -2,7 +2,7 @@ import { generateObject, generateText, streamText, type CoreMessage } from 'ai'
 import type { z } from 'zod'
 import { getProvider, modelForRole, roleServing } from './registry'
 import { repairToolCall } from './toolCallRepair'
-import type { AIGenerateOptions, AIStreamOptions, AIVisionOptions } from './types'
+import type { AIGenerateOptions, AIStepOptions, AIStreamOptions, AIVisionOptions } from './types'
 
 // ── AI capability layer ──────────────────────────────────────────────────────
 // The single entry point for every model call in the app (routes, libs, crons).
@@ -52,6 +52,23 @@ export const AI = {
       messages: buildMessages(opts),
       maxTokens: opts.maxTokens,
       temperature: opts.temperature,
+    })
+  },
+
+  /**
+   * ONE model step for the bounded agent loop (src/lib/ai/agent/loop.ts). Tools arrive WITHOUT execute: the SDK returns the model's tool calls
+   * (arguments validated against the schema, shape mistakes repaired) and runs nothing — the agent executes them under its budget.
+   */
+  step(opts: AIStepOptions) {
+    return generateText({
+      model: modelForRole(opts.role ?? 'consult'),
+      messages: buildMessages(opts),
+      maxTokens: opts.maxTokens,
+      maxSteps: 1,
+      tools: opts.tools,
+      abortSignal: opts.abortSignal,
+      ...(opts.parallelTools && opts.tools ? { providerOptions: { tappy: { parallelTools: true } } } : {}),
+      experimental_repairToolCall: repairToolCall as never,
     })
   },
 

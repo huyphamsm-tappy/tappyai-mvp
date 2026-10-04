@@ -2,7 +2,7 @@
   "_about": "Owner 2026-09-29 (Phần 8): 3 scenarios per area. Each walks HỎI → trả lời câu hỏi → hỏi thêm → 'A hay B' → xem thêm → bác → lên kế hoạch chi tiết. Placeholders are filled by the runner from the PREVIOUS reply: {pick} = the main pick's name, {alt} = the first alternative's name. 'expect' names the turn type the server must produce.",
   "scenarios": [
     { "id": "FOOD-1", "domain": "food", "turns": [
-      { "text": "tối nay ăn gì ngon quận 1", "expect": "ask" },
+      { "text": "mình đói quá, tìm chỗ ăn giúp", "expect": "ask" },
       { "text": "2 người, tầm 300k/người, món Nhật, ăn tại chỗ", "expect": "pick" },
       { "text": "{pick} có chỗ gửi xe không?", "expect": "followup" },
       { "text": "{pick} hay {alt} hơn?", "expect": "compare" },
@@ -18,7 +18,7 @@
       { "text": "không muốn đồ chiên", "expect": "reject" },
       { "text": "đặt món đó luôn, gọi món gì cho đủ no", "expect": "plan" } ] },
     { "id": "FOOD-3", "domain": "food", "turns": [
-      { "text": "quán nhậu cho 6 đứa bạn", "expect": "ask" },
+      { "text": "cả nhóm 6 đứa muốn đi ăn", "expect": "ask" },
       { "text": "bình thạnh, tầm 200k/người, tối thứ 7", "expect": "pick" },
       { "text": "{pick} có phòng riêng không", "expect": "followup" },
       { "text": "{pick} hay {alt}?", "expect": "compare" },

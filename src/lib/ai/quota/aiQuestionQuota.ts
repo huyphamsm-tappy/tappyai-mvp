@@ -18,7 +18,7 @@ import {
 // ============================================================================
 //   ANONYMOUS   ANON_LIFETIME_LIMIT (5) questions for the LIFETIME of the identity. One trial,
 //               once. Not per day, not per session, not again tomorrow.
-//   REGISTERED  FREE_DAILY_LIMIT (15) questions per VN calendar day. Resets at 00:00 VN.
+//   REGISTERED  FREE_DAILY_LIMIT (10) questions per VN calendar day. Resets at 00:00 VN.
 //   PAID PLAN   (Pip / Momo / Coco / Milo / Sunny, SUBSCRIPTIONS_ENABLED) 30 questions per VN day — PLAN_CONFIG is the one table.
 //   LEGACY PRO  an active Stripe/Apple `pro` period stays exempt until it ends (isGrandfatheredPro); with SUBSCRIPTIONS_ENABLED OFF every
 //               active paid subscription is exempt exactly as in the release.

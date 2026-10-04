@@ -4,7 +4,7 @@
 // model + Serper ≈ 4 credits): the only cap was 30 requests/min per IP, per instance, and a Pro
 // account had NO daily cap at all — 30 × 60 × 24 = 43,200 turns/day ≈ $1,500 of model and
 // ≈ 170k Serper credits, per instance, per account. Free accounts were bounded by the shared
-// 15/day question pool and anonymous by the 5-lifetime trial, so the gap was Pro and the
+// 10/day question pool and anonymous by the 5-lifetime trial, so the gap was Pro and the
 // per-instance nature of the IP cap.
 //
 // Every number here is an env override with a default, so the owner can move a cap without a

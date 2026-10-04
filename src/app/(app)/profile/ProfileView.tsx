@@ -4,7 +4,6 @@ import { useCallback, useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from '@/components/media/SafeImage'
 import UserAvatar from '@/components/UserAvatar'
-import QRProfileButton from '@/components/QRProfileButton'
 import V3Shell, { V3Footer } from '@/components/v3/V3Shell'
 import {
   Pencil, Play, Heart, MessageCircle, MapPin, Camera,
@@ -309,11 +308,11 @@ function HeroActions({ userId, displayName }: { userId: string; displayName: str
         <Pencil size={14} aria-hidden="true" />
         {t('v3.profile.editProfile')}
       </Link>
-      {/* The existing share affordance, reused verbatim: an on-device QR of /users/{id}
-          plus the Web Share / copy fallback it already implements. */}
-      <span className="v3-profile-btn inline-flex min-h-[44px] items-center justify-center rounded-xl px-1">
-        <QRProfileButton userId={userId} name={displayName} />
-      </span>
+      {/* Phase 7: every QR entry point opens the ONE canonical QR page (branded card, share, download). */}
+      <Link href="/profile/qr" aria-label={t('v3.nav.qr')} className="v3-profile-btn inline-flex min-h-[44px] items-center justify-center gap-2 rounded-xl px-4 text-[13px] font-semibold">
+        <QrCode size={14} aria-hidden="true" />
+        {t('v3.nav.qr')}
+      </Link>
     </>
   )
 }
@@ -792,9 +791,6 @@ function QRCard({ userId, displayName }: { userId: string; displayName: string }
     <RailCard id="qr" title={t('v3.profile.qrTitle')} icon={QrCode}>
       <p className="text-[12.5px]" style={{ color: 'var(--v3-fg-muted)' }}>{t('v3.profile.qrHint')}</p>
       <div className="mt-3 flex flex-wrap items-center gap-2">
-        <span className="v3-profile-btn inline-flex min-h-[44px] items-center justify-center rounded-xl px-1">
-          <QRProfileButton userId={userId} name={displayName} />
-        </span>
         <Link href="/profile/qr" className="v3-profile-btn inline-flex min-h-[44px] items-center gap-2 rounded-xl px-4 text-[13px] font-semibold">
           {t('v3.profile.qrOpen')}
           <ArrowRight size={14} aria-hidden="true" />

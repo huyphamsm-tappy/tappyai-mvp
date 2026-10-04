@@ -417,13 +417,15 @@ describe('the hero after the reskin', () => {
     expect(hero.textContent ?? '').not.toMatch(/thay ảnh bìa|change cover/i)
   })
 
-  it('renders the edit action and the existing QR/share button in each of the two breakpoint layers', () => {
+  it('renders the edit action and the canonical QR link in each of the two breakpoint layers (Phase 7: one QR implementation)', () => {
     const { container } = renderHub()
     const hero = container.querySelector('[data-profile-hero]') as HTMLElement
     // Two layers (>=sm row, <sm row) are authored; CSS shows one. Each layer holds exactly one edit link.
     const edits = [...hero.querySelectorAll('a[href="/profile/edit"]')].filter(a => (a.textContent ?? '').trim().length > 0)
     expect(edits).toHaveLength(2)
-    expect(within(hero).getAllByRole('button', { name: /mã qr trang cá nhân của tôi/i })).toHaveLength(2)
+    // Phase 7: no second QR renderer on this page — each layer links to the ONE canonical QR page.
+    expect([...hero.querySelectorAll('a[href="/profile/qr"]')]).toHaveLength(2)
+    expect(within(hero).queryAllByRole('button', { name: /mã qr trang cá nhân của tôi/i })).toHaveLength(0)
   })
 })
 
@@ -471,7 +473,7 @@ describe('the rail after the reskin', () => {
     expect(links).toContain('/users/u2')
     const qr = container.querySelector('[data-profile-qr]') as HTMLElement
     expect(within(qr).getByRole('link').getAttribute('href')).toBe('/profile/qr')
-    expect(within(qr).getByRole('button', { name: /mã qr trang cá nhân của tôi/i })).toBeTruthy()
+    expect(within(qr).queryByRole('button', { name: /mã qr trang cá nhân của tôi/i })).toBeNull()
   })
 
   it('draws no download control of its own — the download lives on /profile/qr', () => {

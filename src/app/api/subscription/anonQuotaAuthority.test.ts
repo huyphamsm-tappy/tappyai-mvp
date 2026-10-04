@@ -13,7 +13,7 @@ import { FREE_DAILY_LIMIT, ANON_LIFETIME_LIMIT } from '@/lib/config/product'
 // The contract it must report:
 //
 //   anonymous  → ANON_LIFETIME_LIMIT (5), period 'lifetime' — five, once
-//   registered → FREE_DAILY_LIMIT (15), period 'day'
+//   registered → FREE_DAILY_LIMIT (10), period 'day'
 //   Pro        → exempt; nothing used
 //
 // and, when the store cannot say how much was used, it reports the limit as USED (fail closed).
@@ -85,9 +85,9 @@ describe('the limit reported is the one enforced — from the ONE authority', ()
 
   it('a registered account gets the daily allowance, keyed by the account', async () => {
     h.state.user = { id: 'u1', is_anonymous: false }
-    h.state.peek = { limit: FREE_DAILY_LIMIT, period: 'day', used: 11, remaining: 4 }
+    h.state.peek = { limit: FREE_DAILY_LIMIT, period: 'day', used: 6, remaining: 4 }
     const { body } = await get()
-    expect(body).toMatchObject({ freeDailyLimit: FREE_DAILY_LIMIT, quotaPeriod: 'day', todayMessageCount: 11, remaining: 4, isAnonymous: false })
+    expect(body).toMatchObject({ freeDailyLimit: FREE_DAILY_LIMIT, quotaPeriod: 'day', todayMessageCount: 6, remaining: 4, isAnonymous: false })
     expect(h.state.peekCalls[0]).toEqual({ kind: 'user', id: 'u1' })
   })
 

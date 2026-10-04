@@ -19,6 +19,7 @@ import { decodeQrFromFile } from '@/lib/scam-shield/qr/clientDecode'
 import { classifyQrPayload, type QrKind } from '@/lib/scam-shield/qr/payload'
 import ScamMessageResult, { type MessageAnalysisResponse } from './ScamMessageResult'
 import ScamKnowledgeSection from './ScamKnowledgeSection'
+import ScamHelpCard from './ScamHelpCard'
 import { track } from '@/lib/tracking/tracker'
 import { MESSAGE_MAX_CHARS, SCREENSHOT_ALLOWED_MIME, SCREENSHOT_MAX_BYTES } from '@/lib/scam-shield/message/config'
 
@@ -395,6 +396,9 @@ export default function ScamShieldView() {
               ))}
             </ul>
           </section>
+
+          {/* ── Emergency card (help / call the police), before any tool ── */}
+          <ScamHelpCard />
 
           {/* ── The check itself ── */}
           <section className="v3-scam-tool p-4 sm:p-5" aria-label={t('v3.scam.title')} data-scam-tool>

@@ -141,12 +141,15 @@ describe('A2 — the ask card never asks what the request already says', () => {
   it('keeps the genuinely missing questions when two or more remain', () => {
     const d = refineAsk(ask([['Bạn muốn tìm quán ở đâu?', ['Quận 1', 'Quận 3']], ['Món gì?', ['Món Việt', 'Món Nhật']], ['Đi mấy người?', ['2', '4']]]), ['tìm quán ăn ở quận 1'], { localShop: false })
     expect(d?.turn).toBe('ask')
-    expect(d?.ask?.questions.map(q => q.q)).toEqual(['Món gì?', 'Đi mấy người?'])
+    // Phase 3A / D2: the card shown carries exactly ONE question — the first that survived (the second stays for a later turn).
+    expect(d?.ask?.questions.map(q => q.q)).toEqual(['Món gì?'])
   })
   it('asks the area when none was given (case b: "Tìm quán ngon…")', () => {
     const d = refineAsk(ask([['Bạn muốn tìm quán ở đâu?', ['Quận trung tâm', 'Gần mình']], ['Món gì?', ['Món Việt', 'Món Á']]]), ['Tìm quán ngon không cần hỏi cả group chat nữa'], { localShop: false })
     expect(d?.turn).toBe('ask')
-    expect(d?.ask?.questions).toHaveLength(2)
+    // Phase 3A / D2: one question per ask turn (the area question comes first and is the one shown).
+    expect(d?.ask?.questions).toHaveLength(1)
+    expect(d?.ask?.questions[0].q).toBe('Bạn muốn tìm quán ở đâu?')
   })
   it('non-ask decisions pass through', () => {
     const d: ConsultDecision = { domains: ['food'], turn: 'pick', known: {}, assumptions: [] }

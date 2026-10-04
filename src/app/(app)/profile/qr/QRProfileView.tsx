@@ -17,9 +17,9 @@ import { GOOGLE_PLAY_URL, playBadgeEnabled } from '@/lib/share/storeListing'
 // ── V3 Web · QR Profile ─────────────────────────────────────────────────────
 //
 // 🔑 THE QR SYSTEM ALREADY EXISTED AND IS REUSED WHOLE. `lib/qr/qrcode.ts` is a
-// dependency-free ISO/IEC 18004 encoder that `QRProfileButton` has shipped with
-// for as long as the profile has had a share icon. This page adds a surface and
-// a download; it adds no second encoder, no image service and no table.
+// dependency-free ISO/IEC 18004 encoder (the old `QRProfileButton` modal that
+// first shipped it was removed in Phase 7; this page is now the one QR surface).
+// It adds no second encoder, no image service and no table.
 //
 // 🚨 THE QR IS DELIBERATELY PLAIN. No logo in the middle, no gradient, no
 // rounded modules, no dark-mode inversion of the code itself. Every one of those
@@ -51,15 +51,11 @@ export default function QRProfileView({
 }) {
   const { t } = useTranslation()
   const router = useRouter()
-  const [origin, setOrigin] = useState('')
   const [shareOpen, setShareOpen] = useState(false)
   const [downloading, setDownloading] = useState(false)
   const [failed, setFailed] = useState(false)
   const svgRef = useRef<HTMLDivElement>(null)
 
-  // The origin is only knowable in the browser, and the QR must encode the URL a
-  // scanner will actually resolve — not a build-time guess.
-  useEffect(() => { setOrigin(window.location.origin) }, [])
 
   /**
    * 🚨 THE PUBLIC PROFILE URL, AND NOTHING ELSE.
@@ -69,7 +65,9 @@ export default function QRProfileView({
    * is a thing people photograph and forward, so whatever it carries is public
    * the moment it is printed.
    */
-  const profileUrl = origin ? `${origin}/users/${userId}` : ''
+  // Phase 7: the CANONICAL public URL (NEXT_PUBLIC_SITE_URL via absoluteUrl) — never window.location, which encoded
+  // localhost / preview hosts into codes people print and forward.
+  const profileUrl = userId ? absoluteUrl(`/users/${userId}`) : ''
 
   const svg = useMemo(() => {
     if (!profileUrl) return ''
@@ -138,7 +136,12 @@ export default function QRProfileView({
         titlePost: t('v3.qr.card.getAppPost'),
         sub: t('v3.qr.card.getAppSub'),
         orWebsite: t('v3.qr.card.orWebsite'),
-      } } : {}),
+      } } : { apps: {
+        title: t('v3.qr.card.appsTitle'),
+        android: t('v3.qr.card.androidSoon'),
+        ios: t('v3.qr.card.iosSoon'),
+        orWebsite: t('v3.qr.card.orWebsite'),
+      } }),
       qrPx: QR_PX * DOWNLOAD_SCALE,
       quietModules: QR_MARGIN,
     })
@@ -148,32 +151,41 @@ export default function QRProfileView({
   // only the fallback while it renders or if rendering fails.
   const [cardUrl, setCardUrl] = useState('')
   const cardBlob = useRef<Blob | null>(null)
+  // Phase 7: the shown object URL is revoked only when a NEWER card replaces it (or on unmount) — revoking it in the effect
+  // cleanup left the <img> on a dead blob whenever the effect re-ran (e.g. `t` settling after hydration) before the next render.
+  const shownUrl = useRef('')
   useEffect(() => {
     if (!profileUrl) return
     let cancelled = false
-    let url = ''
     void buildCard().then((png) => {
       if (cancelled || !png) return
       cardBlob.current = png
-      url = URL.createObjectURL(png)
-      setCardUrl(url)
+      const next = URL.createObjectURL(png)
+      const prev = shownUrl.current
+      shownUrl.current = next
+      setCardUrl(next)
+      if (prev) URL.revokeObjectURL(prev)
     }).catch(() => {})
-    return () => { cancelled = true; if (url) URL.revokeObjectURL(url) }
+    return () => { cancelled = true }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profileUrl, displayName, t])
+  useEffect(() => () => { if (shownUrl.current) URL.revokeObjectURL(shownUrl.current) }, [])
 
   async function download() {
     if (!profileUrl || downloading) return
     setDownloading(true)
     try {
       const png = cardBlob.current ?? await buildCard()
-      if (!png) return
+      // A failed render is shown, never swallowed (Phase 7: no silent failure, no unhandled rejection).
+      if (!png) { setFailed(true); return }
       const href = URL.createObjectURL(png)
       const a = document.createElement('a')
       a.href = href
       a.download = 'tappyai-qr.png'
       a.click()
       URL.revokeObjectURL(href)
+    } catch {
+      setFailed(true)
     } finally {
       setDownloading(false)
     }

@@ -20,7 +20,7 @@ Gõ đúng nguyên văn các câu dưới đây. Mỗi dòng ghi ✅ hoặc ❌;
 | 6 | 🟠 Giá / khoảng cách tự bịa | Web | `tim quan bun bo ngon o q1 duoi 80k` rồi `spa massage chan gan q1 duoi 300k` | Không khẳng định "giá dưới 80k" (chỉ "giá tham khảo tới 100k (chưa chắc dưới 80k)" hoặc "chưa có giá"). Spa không có "cách bạn X km" nếu thẻ không hiện khoảng cách | 3' |
 | 7 | 🟠 Ngôn ngữ theo hội thoại | Android (giao diện tiếng Anh) | `rap phim nao gan q7`, sau đó `ok con cai nao gan hon` | Cả hai câu trả lời **bằng tiếng Việt** | 2' |
 | 8 | 🟡 Nút đặt phòng | Android | `khach san o vung tau cuoi tuan nay cho 2 nguoi tam 1 trieu mot dem` | "Book on Trip.com" nằm **trên** "Open in Maps". Bấm vào thì mở trang Trip.com của đúng khách sạn đó | 2' |
-| 9 | 🟡 Vé máy bay thiếu ngày | Web | `Vé máy bay Sài Gòn Hà Nội tuần sau rẻ nhất` | Tìm trước và đưa link (chưa có giá thật vì thiếu `TRAVELPAYOUTS_TOKEN`), rồi hỏi ngày ở cuối | 1' |
+| 9 | 🟡 Vé máy bay thiếu ngày | Web | `Vé máy bay Sài Gòn Hà Nội tuần sau rẻ nhất` | Tìm trước và đưa link (giá vé "chưa xác minh" — không có nguồn giá vé), rồi hỏi ngày ở cuối | 1' |
 | 10 | 🟡 M4 sản phẩm | Web | `tiện mua máy sấy tóc Philips dưới 1 triệu` | Có thẻ sản phẩm. Không có câu "Bạn muốn mua món gì?" | 1' |
 
 **Quan sát trong suốt các bước trên:** không có câu trả lời nào bị lặp đoạn (P1-a), và thẻ kế hoạch hiện đủ (P1-f).

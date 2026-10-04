@@ -5,7 +5,7 @@ import {
 import { entitlementFromRow } from '@/lib/plans/entitlement'
 import { PAID_PLAN_IDS } from '@/lib/plans/planConfig'
 
-// P7 — ONE quota, plan-aware: guest 5 for life · free 15/day · every paid plan 30/day · daily reset at the
+// P7 — ONE quota, plan-aware: guest 5 for life · free 10/day · every paid plan 30/day · daily reset at the
 // Vietnam midnight · legacy Pro exempt only while SUBSCRIPTIONS_ENABLED is off (or inside the grandfather window).
 // No store is configured here, so this exercises the in-process path with the same semantics as the store.
 
@@ -34,12 +34,12 @@ describe('limits by identity', () => {
     expect((await consumeAiQuestion(id)).ok).toBe(false)
   })
 
-  it('a free account has 15 a day', async () => {
+  it('a free account has 10 a day', async () => {
     const id = aiQuotaIdentity(USER, IP)
-    expect(quotaFor(id)).toEqual({ limit: 15, period: 'day' })
+    expect(quotaFor(id)).toEqual({ limit: 10, period: 'day' })
     const r = await spendAll(id, 16)
-    expect(r.filter((x) => x.ok)).toHaveLength(15)
-    expect(r[15].ok).toBe(false)
+    expect(r.filter((x) => x.ok)).toHaveLength(10)
+    expect(r[10].ok).toBe(false)
   })
 
   it.each([...PAID_PLAN_IDS])('plan %s: 30 questions a day, the 31st is refused', async (plan) => {
@@ -88,13 +88,13 @@ describe('consumption is visible and refundable', () => {
   })
 
   it('two plans never share a bucket by accident: the same account moving from free to paid keeps its spent count', async () => {
-    await spendAll(aiQuotaIdentity(USER, IP), 15)
+    await spendAll(aiQuotaIdentity(USER, IP), 10)
     expect((await consumeAiQuestion(aiQuotaIdentity(USER, IP))).ok).toBe(false)
-    // paying mid-day lifts the limit to 30 on the SAME day bucket: 15 used, 15 left
+    // paying mid-day lifts the limit to 30 on the SAME day bucket: 10 used, 20 left
     const paid = await consumeAiQuestion(aiQuotaIdentity(USER, IP, 'pip'))
     expect(paid.ok).toBe(true)
-    expect(paid.used).toBe(16)
-    expect(paid.remaining).toBe(14)
+    expect(paid.used).toBe(11)
+    expect(paid.remaining).toBe(19)
   })
 })
 

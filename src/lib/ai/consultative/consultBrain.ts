@@ -44,6 +44,10 @@ export interface ConsultDecision {
   refers?: string[]
   /** For `reject`: what the user did not like, as a constraint for the next search. */
   rejectReason?: string
+  /** For `reject` only: the user re-stated / dismissed a decision PRIORITY — the same candidates are re-decided, nothing shown is excluded. */
+  reprioritize?: boolean
+  /** For `followup` / `compare`: `refers` was resolved from an ordinal ("quán thứ hai") against the cards the user was shown. */
+  ordinalRef?: boolean
 }
 
 /** The fixed part of the brain prompt — byte-identical on every call (prompt-cache friendly). */
@@ -137,7 +141,7 @@ export function parseConsultDecision(raw: string): ConsultDecision | null {
 
 /**
  * Code-enforced rules on top of the model's decision:
- *  - an ask needs ≥ 2 usable questions, else it becomes a pick (never an empty question);
+ *  - an ask needs ≥ 2 usable questions, else it becomes a pick (never an empty question); Phase 3A / D2: the card finally SHOWN carries exactly one (refineAsk);
  *  - never two asks in a row (the previous Tappy turn already asked → pick);
  *  - a request in one of the five areas is never "chat" when the deterministic reader also sees the
  *    area (the karaoke refusal must not come back through the brain).
@@ -293,6 +297,23 @@ export function normalizePickSentence(text: string, fallbackPick?: string | null
     return first ? `${first[0]} ${line}${text.slice(first[0].length)}` : `${line}\n\n${text}`
   }
   return text
+}
+
+/**
+ * PHASE 3C / D7 — the pick sentence names the ENGINE's Pick. When the reply's "**Mình chọn: X**" names a different venue, the name is
+ * rewritten to the engine's and the divergence is returned (so it is logged, never silent). The same pick sentence form, the same single
+ * bold, nothing else in the reply is touched; a reply without that form is untouched (the existing backstop supplies it from the engine pick).
+ */
+export function enforceEnginePickSentence(text: string, enginePick: string | null | undefined): { text: string; diverged: string | null } {
+  const engine = (enginePick ?? '').trim()
+  if (!engine) return { text, diverged: null }
+  const m = /\*\*Mình chọn:\s*([^*\n]+)\*\*/.exec(text)
+  if (!m) return { text, diverged: null }
+  const f = (s: string) => s.normalize('NFC').toLowerCase().replace(/\s+/g, ' ').trim()
+  const named = f(m[1]), eng = f(engine)
+  // The same venue written head-only ("Béo Ơi Quán" for "Béo Ơi Quán - Món ngon Hà Nội") is the same Pick.
+  if (named === eng || (named.length >= 4 && eng.includes(named)) || (eng.length >= 4 && named.includes(eng))) return { text, diverged: null }
+  return { text: text.replace(m[0], `**Mình chọn: ${engine}**`), diverged: m[1].trim() }
 }
 
 /** The shopping card's recommended product name, from its [TAPPY_SHOPPING] marker (or null). */

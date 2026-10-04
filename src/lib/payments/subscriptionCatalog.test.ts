@@ -15,8 +15,8 @@ describe('subscriptionCatalog', () => {
     }
   })
 
-  it('Free shows the value the backend enforces (15 a day); guest 5; every paid plan 30 a day', () => {
-    expect(subscriptionCatalog({ env: env() }).free.dailyAiQuestions).toBe(15)
+  it('Free shows the value the backend enforces (10 a day); guest 5; every paid plan 30 a day', () => {
+    expect(subscriptionCatalog({ env: env() }).free.dailyAiQuestions).toBe(10)
     for (const p of subscriptionCatalog({ env: env() }).plans) expect(p.dailyAiQuestions).toBe(30)
     expect(subscriptionCatalog({ env: env() }).guest.aiQuestions).toBe(5)
   })

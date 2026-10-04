@@ -1,5 +1,6 @@
 'use client'
 
+import AiDisclaimer from '@/components/AiDisclaimer'
 import { useChat } from 'ai/react'
 import type { Message } from 'ai'
 import { useEffect, useMemo, useRef, useState, useCallback } from 'react'
@@ -2155,6 +2156,7 @@ export default function ChatInterface({
           )}
           </div>
         </form>
+        <AiDisclaimer className="mt-1.5" />
       </div>
       {/* Image zoom lightbox — opens on click for any place photo or uploaded attachment */}
       {zoomedImage && (

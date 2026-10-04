@@ -1,8 +1,8 @@
 // GET /api/cron/subscriptions-expire — mark ended plans `expired` (docs/payments/PLAN.md).
 //
 // SUBSCRIPTIONS, written by the security session (p8/subscriptions). Double-gated: `CRON_SECRET`
-// (fails closed if unset, like every cron) AND SUBSCRIPTIONS_ENABLED. ⚠ NOT scheduled in vercel.json
-// — scheduling is Huy's decision (suggested: hourly). Access never depended on this job: the
+// (fails closed if unset, like every cron) AND SUBSCRIPTIONS_ENABLED. Phase 7: scheduled daily at 00:00 VN (17:00 UTC) in
+// vercel.json — within the current Vercel plan's daily-cron limit. Access never depended on this job: the
 // entitlement rule already treats a past `current_period_end` as not paid; this only makes the
 // stored status say so. Ledger-era rows only (legacy Stripe/Apple rows keep their own writers).
 

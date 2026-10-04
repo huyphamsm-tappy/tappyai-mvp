@@ -1,6 +1,6 @@
 import { SHOPPING_SHORTLIST, consultativeV1Enabled } from '@/lib/config/product'
 import type { Candidate } from './candidate'
-import type { RankedEntry } from './rank'
+import type { RankedEntry, RankedResult } from './rank'
 
 /**
  * Trim a ranked shopping result to the decision set the model should write about.
@@ -203,4 +203,18 @@ function assignRole(entry: RankedEntry, idx: number, all: readonly RankedEntry[]
   }
 
   return null
+}
+
+/**
+ * Final fix E — the engine Pick and the shortlist must draw from the SAME eligible set.
+ *
+ * The shortlist skips an entry that carries no evidence for the decision (`qualifiesFor`) or that a hard requirement excludes (`admitsForHard`: an
+ * upscale request never shortlists a guest house, `late_open` needs closing-time evidence), but the Pick used to be derived from the full ranking, so the
+ * engine could name a candidate the shortlist — and with it the Brief and the model's compact rows — had already left out. This restricts the ranking the
+ * Pick (and the Brief) are derived from to the entries the shortlist would admit. It adds no ranking layer and no threshold: the order is untouched, and
+ * when nothing is eligible, or everything is, the result is returned unchanged (so a request with no admitted row behaves exactly as before).
+ */
+export function restrictRankedTo(ranked: RankedResult, eligible: (entry: RankedEntry) => boolean): RankedResult {
+  const keep = ranked.ranked.filter(eligible)
+  return keep.length === 0 || keep.length === ranked.ranked.length ? ranked : { ...ranked, ranked: keep }
 }

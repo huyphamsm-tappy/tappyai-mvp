@@ -122,8 +122,10 @@ function PopularBadge({ className = '' }: { className?: string }) {
   )
 }
 
-export default function SubscriptionFlow({ catalog, initialMe, initial, initialHistory }: {
+export default function SubscriptionFlow({ catalog, initialMe, initial, initialHistory, paymentsOpen = true }: {
   catalog: SubscriptionCatalog
+  /** Phase 7: false while SUBSCRIPTIONS_ENABLED is off — the canonical plans stay visible, checkout is not offered. */
+  paymentsOpen?: boolean
   initialMe: MyPlanResponse
   /** Local preview only (src/app/dev/subscription-preview): open a given screen with fixtures. */
   initial?: { screen: Screen; planId?: string; order?: CreatedOrder; failure?: 'mismatch' | 'expired' }
@@ -156,6 +158,7 @@ export default function SubscriptionFlow({ catalog, initialMe, initial, initialH
 
   const pay = async () => {
     if (!plan) return
+    if (!paymentsOpen) { setError(t('sub.paymentsSoon')); return }
     if (!me.signedIn) { window.location.assign('/login?returnTo=%2Fsubscription'); return }
     setBusy(true)
     setError(null)
@@ -325,7 +328,8 @@ export default function SubscriptionFlow({ catalog, initialMe, initial, initialH
           </p>
         </div>
         {error && <p role="alert" className="text-sm text-red-600 dark:text-red-400 text-center">{error}</p>}
-        <button type="button" className={btnBlue} disabled={busy} onClick={pay}>
+        {!paymentsOpen && <p role="status" className="text-sm text-content-secondary text-center">{t('sub.paymentsSoon')}</p>}
+        <button type="button" className={btnBlue} disabled={busy || !paymentsOpen} onClick={pay}>
           {busy ? t('pay.creating') : me.signedIn ? t('sub.pay.button', { price }) : t('sub.pay.signIn')}
         </button>
         <p className="flex items-center justify-center gap-1.5 text-xs text-content-secondary"><Lock size={13} aria-hidden="true" /> {t('sub.pay.secure')}</p>

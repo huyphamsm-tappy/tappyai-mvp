@@ -1,11 +1,12 @@
 import { scrubUnsuppliedMarketplaces, stripBarePhotoUrls } from './marketplaceGuard'
-import { evidenceGapLine } from './consultative/styleLuna6'
+import { evidenceGapLine, styleLuna6On } from './consultative/styleLuna6'
 import { normalizeVN } from './intent'
 import { findPlaceOffset, proseHeaders, type Header } from './placeMatch'
 import type { EnrichmentCollector } from './toolResultSplit'
 import { extractMoneyClaims, guardMoneyClaimsInText, sentenceSpans, protectedSpans, type EvidenceRecord } from './moneyGuard'
 import { guardTravelClaimsInText, scheduleTimesIn } from './travelGuard'
 import { guardHoursClaimsInText } from './hoursGuard'
+import { verificationLead } from './verificationLead'
 import { guardFormatClaimsInText } from './formatClaimGuard'
 import { guardDistrictClaims } from './districtClaimGuard'
 import { statedDistrict } from './districts'
@@ -25,10 +26,11 @@ import { stripModelMediaInProse, dropEmptyMediaBlocks } from './modelMedia'
 import { insertBeforeMarkers } from './wrongModel'
 import { footerRemaining, CARDS_SHOWN as CARD_FOLD_SHOWN } from './cardCounts'
 import { applyTripBudgetEstimate, dropEmptyModelBudget } from './tripBudgetEstimate'
-import { adviceEnabled } from './consultative/adviceBlock'
+import { adviceEnabled, adviceApplies } from './consultative/adviceBlock'
 import { ensureAdviceFloor } from './consultative/adviceFloor'
-import { consultRemainingLineN, normalizePickSentence, shoppingMarkerNames, shoppingPickName } from './consultative/consultBrain'
+import { consultRemainingLineN, normalizePickSentence, enforceEnginePickSentence, shoppingMarkerNames, shoppingPickName } from './consultative/consultBrain'
 import { consultLunaEnabled, splitPickSentence } from './consultative/luna'
+import { dropUnsupportedProximityClaim, pickedNameIn } from './consultative/proximityClaim'
 import { LEAK_REPLACEMENT_EN, LEAK_REPLACEMENT_VI } from './consultative/lunaSafety'
 import { restorePlanHeadings, hideEmptyPlanSections, missingStagesLine } from './consultative/domainFrames'
 import { stripStepNarration } from './consultative/stepNarration'
@@ -43,7 +45,7 @@ import { applyRiskBackstop, isSecondHandPurchaseAdvice } from './riskBackstop'
 import { EMIT_TAPPY_PLACES, EMIT_PLACES_ANNOTATION, SERVER_AUTHORED_CTA, placeGuardAttributionV2Enabled, snippetPriceGuardV2Enabled, mediaPlacementV2Enabled } from '@/lib/config/product'
 import { bandFromRow, type PriceBand } from '@/lib/recommendation/priceBand'
 import { renderPlacesMarker } from '@/lib/recommendation/marker'
-import { buildPlacesLiveView, alignEmphasisToModelPick, placesRenderOrder } from '@/lib/recommendation/liveView'
+import { buildPlacesLiveView, alignEmphasisToModelPick, alignEmphasisToEnginePick, placesRenderOrder } from '@/lib/recommendation/liveView'
 import { buildProgressAnnotation } from '@/lib/recommendation/progressAnnotation'
 import { SHOPPING_GAP_WORDS } from '@/lib/ai/consultative/shoppingConstraints'
 /** Item 2: cards above the fold — the model's picks (pick + alternatives) filled from the engine. */
@@ -1105,11 +1107,18 @@ function cardFold(recs: Recommendation[], text: string): { named: Recommendation
  * thumbnail, whose photo is the one /images call on that turn that IS seen. Selecting by the prose
  * fold would have dropped that visible photo. `undefined` when no place card renders.
  */
-function renderedFoldNames(recs: readonly Recommendation[], text: string): string[] | undefined {
+export function renderedFoldNames(recs: readonly Recommendation[], text: string, enginePickAuthoritative = false): string[] | undefined {
   if (!EMIT_PLACES_ANNOTATION || recs.length === 0) return undefined
   const { named } = cardFold([...recs], text)
-  const aligned = alignEmphasisToModelPick(recs, named[0]?.entity.id ?? null).recs
-  const view = buildPlacesLiveView(aligned, { picked: named.slice(0, CARDS_SHOWN).map(r => r.entity.id), shown: CARDS_SHOWN })
+  // Phase 3C / D7 (CONSULT_BRIEF on): the photo fold is computed exactly as the card is built, i.e. with the ENGINE Pick as card #1 and the
+  // emphasis (alignEmphasisToEnginePick), so the photos fetched are the photos of the cards that render — never the venue the reply merely
+  // mentioned first.
+  const engine = enginePickAuthoritative ? recs.find(r => r.recommended) : undefined
+  const aligned = (enginePickAuthoritative ? alignEmphasisToEnginePick(recs, named[0]?.entity.id ?? null) : alignEmphasisToModelPick(recs, named[0]?.entity.id ?? null)).recs
+  const pickedIds = engine
+    ? [engine.entity.id, ...named.map(r => r.entity.id).filter(id => id !== engine.entity.id)]
+    : named.map(r => r.entity.id)
+  const view = buildPlacesLiveView(aligned, { picked: pickedIds.slice(0, CARDS_SHOWN), shown: CARDS_SHOWN })
   if (!view) return undefined
   const nameOf = new Map(recs.map(r => [r.entity.id, r.entity.identity.name]))
   return placesRenderOrder(view).visible.map(i => nameOf.get(i.id)).filter((n): n is string => !!n)
@@ -1313,6 +1322,8 @@ export interface TurnEvidence {
    * first-N was equally wrong in the other direction.
    */
   presentedNames?: string[]
+  /** OUTPUT — the place cards above the fold, in the order the user sees them ("quán thứ hai" counts these). */
+  cardOrder?: string[]
   /** OUTPUT — the reply text the user received (R14 consult state reads the stated pick). */
   replyText?: string
   /**
@@ -1597,6 +1608,10 @@ export function applyPlaceEnrichmentStreamFilter(
   /** Validated commerce links the system handed the model this turn (CCP route / event / film projections). */
   const systemLinkUrls = new Set<string>()
   const systemLinks: Array<{ name: string; url: string }> = []
+  /** A flight result this turn carried `fare_status: 'not_verified'` (no approved fare source — booking hand-off only). */
+  let flightFareUnverified = false
+  /** A film result this turn had no showtime / ticket-price source (get_movie_showtimes returns them as null). */
+  let movieFactsUnverified = false
   /**
    * Quality facts keyed by the venue they belong to.
    *
@@ -1628,6 +1643,8 @@ export function applyPlaceEnrichmentStreamFilter(
   const placeRatings: number[] = []
   const placeDistancesKm: number[] = []
   const placeTexts: string[] = []
+  /** Titles of a trusted now-showing listing retrieved this turn (searchIntel/filmSearch). */
+  const filmTitlesSeen: string[] = []
   /** True once a search_places (food/spa/places) tool result was seen this turn. */
   let hadPlaceSearch = false
   /** Consultative V1: any tool call at all this turn (a `9:` frame). */
@@ -1648,6 +1665,9 @@ export function applyPlaceEnrichmentStreamFilter(
   // Consultative V1: a decision turn buffers whether or not a tool runs, so the
   // search-claim guard can judge "mình đã kiểm tra" on a no-tool follow-up.
   if (collector?.consultativeV1) bufferMode = true
+  // TAPPY_AGENT (hardening C): every agent answer is held until the settle-path guards (evidence, price, place claims, leak check) have run on the
+  // COMPLETE text — nothing reaches the user before it is checked (the guards cannot retract text already sent).
+  if (collector?.agentMode) bufferMode = true
   /**
    * 🚨 A TICKET QUESTION MUST BE GUARDED EVEN WHEN NO PLACE TOOL RUNS.
    *
@@ -1748,6 +1768,8 @@ export function applyPlaceEnrichmentStreamFilter(
   let assistantSoFar = ''
   /** Candidate names this reply actually named — see TurnEvidence.presentedNames. */
   let presentedNames: string[] = []
+  /** The cards above the fold in render order (see TurnEvidence.cardOrder). */
+  let cardOrder: string[] = []
   /** R14: the reply text as sent (buffered turns) — the consult state records the stated pick from it. */
   let finalReplyText = ''
   /** Canonical ids of HELD candidates this reply named — see TurnEvidence.presentedIds. */
@@ -2004,7 +2026,7 @@ export function applyPlaceEnrichmentStreamFilter(
     if (resolvePhotos) {
       try {
         // The cards the client will actually render above the fold (see `renderedFoldNames`).
-        const cardNames = renderedFoldNames(collector?.placesRecommendations ?? [], mainText)
+        const cardNames = renderedFoldNames(collector?.placesRecommendations ?? [], mainText, collector?.consultBrief === true)
         const needed = selectPlacesNeedingEnrichment(places, mainText, { cardNames })
         if (needed.length > 0) {
           const photos = await resolvePhotos(needed)
@@ -2147,7 +2169,17 @@ export function applyPlaceEnrichmentStreamFilter(
     // B.2 (2026-09-19): "Vì sao" / `recommended` follow the MODEL's pick (card #1), never the
     // engine's — or nothing, when there is no model pick. Logged as `emphasis` below.
     const enginePickName = recsForCard.find(r => r.recommended)?.entity.identity.name ?? null
-    const aligned = alignEmphasisToModelPick(recsForCard, namedRecs[0]?.entity.id ?? null)
+    // Phase 3C / D7 (CONSULT_BRIEF on): the ENGINE Pick is authoritative — emphasis and card #1 follow it; a reply that named another venue
+    // first changes neither (logged as `engine_kept`).
+    const briefPickOn = collector?.consultBrief === true
+    const engineRecForCard = recsForCard.find(r => r.recommended)
+    const aligned: { recs: typeof recsForCard; outcome: string } = briefPickOn
+      ? alignEmphasisToEnginePick(recsForCard, namedRecs[0]?.entity.id ?? null)
+      : alignEmphasisToModelPick(recsForCard, namedRecs[0]?.entity.id ?? null)
+    if (briefPickOn && aligned.outcome === 'engine_kept') console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'engine_pick_authoritative', step: 'card_emphasis_kept', engine_pick: enginePickName, model_first: namedRecs[0]?.entity.identity.name ?? null }))
+    const cardPickedIds = briefPickOn && engineRecForCard
+      ? [engineRecForCard.entity.id, ...namedRecs.map(r => r.entity.id).filter(id => id !== engineRecForCard.entity.id)]
+      : namedRecs.map(r => r.entity.id)
     if (aligned.outcome === 'none' && enginePickName) console.error(JSON.stringify({ type: 'tappyai_cards_error', reason: 'emphasis_dropped_no_model_pick', engine_pick: enginePickName }))
     recsForCard = aligned.recs
     // Place names / reasons render as plain text on every client: no markdown in the annotation
@@ -2155,7 +2187,7 @@ export function applyPlaceEnrichmentStreamFilter(
     const placesView = plainTextDeep((EMIT_PLACES_ANNOTATION && recsForCard.length)
       ? buildPlacesLiveView(withResolvedPhotos(recsForCard, places), {
         mapsSearchUrl: collector?.placesMapsUrl,
-        picked: namedRecs.map(r => r.entity.id),
+        picked: cardPickedIds,
         shown: CARDS_SHOWN,
         pickUnmatched,
       })
@@ -2345,7 +2377,14 @@ export function applyPlaceEnrichmentStreamFilter(
     const snippetGuardResult = ((hadPlaceSearch || placeIntent) && !travelIntent && !shoppingTurn)
       ? guardSnippetPricesInText(ticketGuarded, snippetPrices, userText, placeScope(), { v2: snippetV2, priceBandsByEntity })
       : null
-    const foodGuarded = snippetGuardResult ? snippetGuardResult.text : ticketGuarded
+    const foodGuarded0 = snippetGuardResult ? snippetGuardResult.text : ticketGuarded
+    // Release gate (UAT-15): a comparative proximity claim about the pick must be backed by the rows' own distances (see proximityClaim.ts).
+    const proximityChecked = hadPlaceSearch && (['pick', 'more', 'reject'].includes(collector?.consultTurn ?? '') || collector?.agentMode === true)
+      ? dropUnsupportedProximityClaim(foodGuarded0, pickedNameIn(foodGuarded0, collector?.placesRecommendations?.find(r => r.recommended)?.entity.identity.name ?? null),
+        (collector?.placesRecommendations ?? []).map(r => ({ name: r.entity.identity.name, distanceKm: r.entity.location?.distanceKm ?? null })))
+      : null
+    if (proximityChecked?.removed) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'proximity_comparative', removed: proximityChecked.removed }))
+    const foodGuarded = proximityChecked?.removed ? proximityChecked.text : foodGuarded0
     // G2 telemetry: counts only — never text, never a venue name (same rule as the place guard line).
     if (snippetGuardResult?.stats) {
       console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'snippet_price', v2: snippetV2, band_rows: priceBandsByEntity.size, ...snippetGuardResult.stats }))
@@ -2389,6 +2428,7 @@ export function applyPlaceEnrichmentStreamFilter(
         if (c.rating !== null) { placeRatings.push(c.rating); ratingsByEntity.set(c.name, [...(ratingsByEntity.get(c.name) ?? []), c.rating]) }
         if (c.reviewCount !== null) reviewCountsByEntity.set(c.name, [...(reviewCountsByEntity.get(c.name) ?? []), c.reviewCount])
         if (c.distanceKm !== null) placeDistancesKm.push(c.distanceKm)
+        if (c.phone) phonesByEntity.set(c.name, [...(phonesByEntity.get(c.name) ?? []), c.phone])
       }
     }
     // UAT 2026-09-28: a venue the CARD offers an order / reservation button for may be said to take
@@ -2412,6 +2452,7 @@ export function applyPlaceEnrichmentStreamFilter(
       && (collector?.consultativeV1?.carried ?? []).some(c => !!c.name && (c.distanceKm !== null || !!c.hours))
     const placeGuardResult = (hadPlaceSearch || placeIntent || travelIntent || ticketIntent || carriedPlaceFollowUp)
       ? guardPlaceClaimsInText(foodGuarded, {
+        nowShowingListed: filmTitlesSeen.length > 0,
         ratings: placeRatings,
         distancesKm: placeDistancesKm,
         texts: placeTexts,
@@ -2584,13 +2625,17 @@ export function applyPlaceEnrichmentStreamFilter(
     const lunaDeclinable = consultLunaEnabled() && !lunaLeadsWith(cardPickFallback)
     const fallbackShown = lunaDeclinable || !!cardPickFallback && consultLunaEnabled() && collector?.consultTurn === 'reject'
       && (collector?.consultShown ?? []).some(n => { const a = foldName(n), b = foldName(cardPickFallback); return a.length >= 4 && (a.includes(b) || b.includes(a)) })
-    const pickNormalized = consultPickTurn ? normalizePickSentence(unlabelled, fallbackShown ? null : cardPickFallback) : unlabelled
+    const pickNormalized0 = consultPickTurn ? normalizePickSentence(unlabelled, fallbackShown ? null : cardPickFallback) : unlabelled
+    // Phase 3C / D7: with the Brief on, the pick sentence names the ENGINE Pick; a different name written by the model is rewritten and logged.
+    const enginePickEnforced = collector?.consultBrief === true && consultPickTurn && pickName ? enforceEnginePickSentence(pickNormalized0, pickName) : null
+    if (enginePickEnforced?.diverged) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'engine_pick_authoritative', step: 'pick_sentence_rewritten', engine_pick: pickName, model_pick: enginePickEnforced.diverged }))
+    const pickNormalized = enginePickEnforced ? enginePickEnforced.text : pickNormalized0
     // Owner 29/09 "hạn chế guard vá": every post-model text patch on a consult turn is COUNTED (logged once per
     // turn below), so a patch that fires often is replaced by a prompt/structure fix instead of piling up.
     const consultPatches: string[] = []
     if (unlabelled !== budgeted) consultPatches.push('reason_labels')
     if (pickNormalized !== unlabelled) consultPatches.push(/\*\*Mình chọn:/.test(unlabelled) ? 'pick_sentence_form' : 'pick_sentence_added')
-    const withRemaining = consultRemainingLineN(pickNormalized, footerRemaining(placesView), lang, { add: !!collector?.consultButtons?.length })
+    const withRemaining = consultRemainingLineN(pickNormalized, footerRemaining(placesView), lang, { add: !!collector?.consultButtons?.length && !styleLuna6On() })
     const placeGuarded = collector?.consultButtons?.length
       ? `${withRemaining.replace(/\[FOLLOWUPS\][^\n]*?(?:\[\/FOLLOWUPS\]|\n|$)/gi, '').trimEnd()}\n\n[FOLLOWUPS]${collector.consultButtons.join('|')}[/FOLLOWUPS]`
       : withRemaining
@@ -2881,7 +2926,9 @@ export function applyPlaceEnrichmentStreamFilter(
     }
     // c40 F8 (28 Sep 2026): the venue the MODEL chose (modelPick.ts), when the guards cut its sentence,
     // is the one every server-authored pick sentence names — never the engine's pick in its place.
-    const modelPickRow = modelPickName(mainText, places.map(p => p.name || '').filter(Boolean))
+    // Phase 3C / D7 (CONSULT_BRIEF on): the model's choice is not restored over the engine's — the engine Pick is the one every
+    // server-authored pick sentence names (`pickName` below).
+    const modelPickRow = collector?.consultBrief === true ? null : modelPickName(mainText, places.map(p => p.name || '').filter(Boolean))
     const pickForFallback = modelPickRow && fallbackSentence(modelPickRow) ? modelPickRow : pickName
     const g1bFallback = bodyLetters < 40 ? fallbackSentence(subjectOnly(pickForFallback)) : null
     if (g1bFallback) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'place_claim_fallback', v2: guardV2, body_letters: bodyLetters, emitted: true }))
@@ -2918,6 +2965,13 @@ export function applyPlaceEnrichmentStreamFilter(
         const restored = fallbackSentence(subjectOnly(modelPick))
         console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'consultative_v1_pick_backstop', step: restored ? 'model_pick_restored' : 'model_pick_no_evidence' }))
         if (restored) return { sentence: restored, kind: 'place' as const }
+      }
+      // Phase 3C / D7 (CONSULT_BRIEF on): the engine Pick must be STATED. If the guards (or the model) left it out of every pick sentence, its
+      // evidence-only sentence is put back — the same `fallbackSentence` the model-pick restore used, now naming the engine's Pick.
+      if (collector?.consultBrief === true && pickName && !pickStillStated(body, pickName)) {
+        const restoredEngine = fallbackSentence(subjectOnly(pickName))
+        console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'engine_pick_authoritative', step: restoredEngine ? 'engine_pick_restored' : 'engine_pick_no_evidence' }))
+        if (restoredEngine) return { sentence: restoredEngine, kind: 'place' as const }
       }
       const sentences = sentenceSpans(body).map(([a, b]) => body.slice(a, b)).filter(s => s.trim())
       const hasPickSentence = sentences.some(s => namesKnown(s) && !ALT.test(s) && !ALT_SENTENCE.test(s))
@@ -3025,9 +3079,9 @@ export function applyPlaceEnrichmentStreamFilter(
         return { text: body, filled: [...h.hidden, 'missing_stage'] }
       })()
       if (emptyFilled.filled.length) console.log(JSON.stringify({ type: 'tappyai_plan_empty_sections', hidden: emptyFilled.filled }))
-      const withLineBase = consultRemainingLineN(emptyFilled.text, footerRemaining(placesView), lang, { add: !!collector?.consultButtons?.length })
+      const withLineBase = consultRemainingLineN(emptyFilled.text, footerRemaining(placesView), lang, { add: !!collector?.consultButtons?.length && !styleLuna6On() })
       // A5 (02/10): a pick/more/reject that came back without tips / a next step gets the curated GENERAL ones (adviceFloor.ts).
-      const advised = adviceEnabled() && collector?.consultTurn ? ensureAdviceFloor(withLineBase, { domain: collector.consultDomain, turn: collector.consultTurn, known: collector.consultKnown, lang }) : { text: withLineBase, added: [] as string[] }
+      const advised = adviceEnabled() && collector?.consultTurn && adviceApplies(collector.consultDomain, collector.consultDomain === 'flight') ? ensureAdviceFloor(withLineBase, { domain: collector.consultDomain, turn: collector.consultTurn, known: collector.consultKnown, lang }) : { text: withLineBase, added: [] as string[] }
       if (advised.added.length) console.log(JSON.stringify({ type: 'tappyai_advice_floor', turn: collector?.consultTurn, domain: collector?.consultDomain, added: advised.added }))
       const withLine = advised.text
       // Safety net (replay 29/09): the guards can leave a consult reply with NO words (a compare whose every
@@ -3181,7 +3235,10 @@ export function applyPlaceEnrichmentStreamFilter(
     const systemLinksSuffix = systemLinks.length > 0 && missingSystemLinks.length === systemLinks.length
       ? `\n\n${lang === 'vi' ? '🔗 Liên kết chính thức:' : '🔗 Official links:'} ${missingSystemLinks.map(l => `[${escapeMarkdownLabel(l.name)}](${sanitizeUrlForMarkdown(l.url)})`).join(' · ')}`
       : ''
-    const finalText = `${ctaOwnedProse}${systemLinksSuffix}${markerSuffix}${placesSuffix}${ctaSuffix}`
+    // Phase 7 2B/2C: a flight / film fact no approved source returns is said to be unverified for exactly the dimension the user asked
+    // (fare, flight times, flight status, showtime, ticket price) — the system's sentence leads unless the reply already says it.
+    const fareLead = verificationLead({ flight: flightFareUnverified, movie: movieFactsUnverified, userText, prose: ctaOwnedProse, lang })
+    const finalText = `${fareLead}${ctaOwnedProse}${systemLinksSuffix}${markerSuffix}${placesSuffix}${ctaSuffix}`
     finalReplyText = finalText
     // Record which candidates this reply actually named — the only reliable
     // answer to "which ones did the user see?".
@@ -3195,6 +3252,7 @@ export function applyPlaceEnrichmentStreamFilter(
     // A candidate is presented only if its name appears in the text the user
     // actually read; being in the pool, or considered by ranking, is not enough.
     presentedIds = namedHeldIds(finalText)
+    cardOrder = renderedFoldNames(collector?.placesRecommendations ?? [], mainText, collector?.consultBrief === true) ?? []
     // The gate removed these, so the detector can no longer see them in
     // `finalText`. Both are kept: the gate's own record is what shipped, and the
     // detector still runs as defence in depth against a shape the gate missed.
@@ -3375,6 +3433,10 @@ export function applyPlaceEnrichmentStreamFilter(
               }
             }
             const toolName = res.toolCallId ? toolNameByCallId.get(res.toolCallId) : undefined
+            const filmList = (res.result as { _tappy_films?: { titles?: unknown } } | undefined)?._tappy_films?.titles
+            if (toolName === 'get_flight_prices' && (res.result as { fare_status?: unknown } | undefined)?.fare_status === 'not_verified') flightFareUnverified = true
+            if (toolName === 'get_movie_showtimes') { const m = (res.result as { _tappy_movie?: { showtimes?: unknown; ticketPrice?: unknown } } | undefined)?._tappy_movie; if (m && m.showtimes == null && m.ticketPrice == null) movieFactsUnverified = true }
+            if (Array.isArray(filmList)) for (const t of filmList) if (typeof t === 'string' && t) filmTitlesSeen.push(t)
             // CCP route / event / film projections (`_tappy_commerce` marks them): every URL the
             // platform validated for this turn, so the ticket guard can tell a system link from a claim.
             if (res.result && Array.isArray((res.result as { _tappy_commerce?: unknown })._tappy_commerce)) {
@@ -3675,7 +3737,7 @@ export function applyPlaceEnrichmentStreamFilter(
           // resolved it from the reconstructed text above, live turns resolve
           // it here from what was actually streamed.
           if (presentedIds.length === 0) presentedIds = namedHeldIds(liveText)
-          await onEvidence({ places: resolvePlaces(), productRecords, productQueries, presentedNames: [...new Set(presentedNames)], presentedIds: [...new Set(presentedIds)], ungroundedNames, replyText: finalReplyText || liveText })
+          await onEvidence({ places: resolvePlaces(), productRecords, productQueries, presentedNames: [...new Set(presentedNames)], cardOrder: [...cardOrder], presentedIds: [...new Set(presentedIds)], ungroundedNames, replyText: finalReplyText || liveText })
         } catch { /* state is best-effort; the reply already shipped */ }
       }
     },

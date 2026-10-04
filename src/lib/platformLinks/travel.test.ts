@@ -2,7 +2,7 @@
 import { describe, it, expect } from 'vitest'
 import { buildFlightLinks } from './travel'
 
-describe('buildFlightLinks — VN-recognizable flight links (replaces Aviasales)', () => {
+describe('buildFlightLinks — VN-recognizable flight links (approved OTAs only)', () => {
   it('returns Trip.com + Traveloka + Google Flights, route-specific, with a valid future date', () => {
     const links = buildFlightLinks('SGN', 'PQC', '2026-07-28')
     expect(links.map(l => l.name)).toEqual(['Trip.com', 'Traveloka', 'Google Flights'])
@@ -20,9 +20,8 @@ describe('buildFlightLinks — VN-recognizable flight links (replaces Aviasales)
     expect(google).toContain('google.com/travel/flights?q=')
     expect(decodeURIComponent(google)).toContain('Flights from SGN to PQC on 2026-07-28')
 
-    // Never the broken foreign link.
-    expect(traveloka).not.toContain('aviasales')
-    expect(google).not.toContain('aviasales')
+    // Only these hosts — no other flight provider.
+    expect(links.map(l => new URL(l.url).hostname)).toEqual(['vn.trip.com', 'www.traveloka.com', 'www.google.com'])
   })
 
   it('uppercases codes and falls back to the Traveloka landing (never an error page) when no date', () => {

@@ -24,13 +24,21 @@ const words = (s: string) => fold(s).replace(/[^\p{L}\p{N}]+/gu, ' ').trim().spl
 
 const SHINGLE = 10
 /** Server-written lines that also sit in prompts as templates — never evidence of a leak. */
-const TEMPLATE_WORDS = /\b(?:minh con \d+ lua chon|ban chon nhanh ben duoi)\b/
+const TEMPLATE_WORDS = /\b(?:minh con \d+ lua chon|ban chon nhanh ben duoi|khong phai quang cao tra tien)\b/
+/**
+ * Phase 3C (guard repair, owner D10): MACHINE-STRUCTURED prompt lines are formats to be filled, not instructions to be kept secret — the CTA
+ * block template (`[CTA_BUTTONS]{"type":"website","url":…}`), link templates and marker syntax. A reply that fills the template correctly
+ * repeated their words (D01-1 runs 2-3, H02: 8 of 84 pilot turns), and three 10-word windows replaced a correct recommendation with the
+ * refusal. Such lines no longer seed the detector; prose instructions still do, and `SECRET_SHAPE` is untouched, so a genuine paste of the
+ * prompt's prose is caught wherever it sits (inside a CTA block included).
+ */
+const STRUCTURED_LINE = /\[(?:CTA_BUTTONS|FOLLOWUPS|TAPPY_[A-Z_]+)\]|https?:\/\/|"(?:type|url|label|kind)"\s*:|không phải quảng cáo trả tiền|khong phai quang cao tra tien/i
 
 export function buildLeakDetector(secrets: readonly string[]): (reply: string) => { leak: boolean; reason: string | null } {
   const set = new Set<string>()
   for (const s of secrets) {
     // Example sentences in the frames are meant to be imitated (replay 30/09 SPA-2 t2: a normal reply matched the spa example).
-    const w = words(s.split('\n').filter(l => !/v[ií] d[uụ]\s*:|ví dụ|example/i.test(l)).join('\n'))
+    const w = words(s.split('\n').filter(l => !/v[ií] d[uụ]\s*:|ví dụ|example/i.test(l) && !STRUCTURED_LINE.test(l)).join('\n'))
     for (let i = 0; i + SHINGLE <= w.length; i++) {
       const sh = w.slice(i, i + SHINGLE).join(' ')
       if (!TEMPLATE_WORDS.test(sh)) set.add(sh)

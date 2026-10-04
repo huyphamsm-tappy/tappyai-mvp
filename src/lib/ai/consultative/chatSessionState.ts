@@ -28,6 +28,21 @@ export function readChatSessionId(body: unknown): string | null {
 }
 
 /** What the server remembers about one consultation. Everything is optional; old rows stay readable. */
+/**
+ * The flight the conversation is about (agent follow-ups reuse it instead of re-planning). No approved source returns fares,
+ * times or status, so `lastVerifiedAt` stays null; `sources` are the booking hand-offs already given (platform names).
+ */
+export interface FlightContext {
+  origin: string
+  destination: string
+  departDate?: string
+  returnDate?: string
+  passengers?: number
+  sources?: string[]
+  lastVerifiedAt?: string | null
+  at: string
+}
+
 export interface ChatSessionState {
   v: 1
   /** The consultation's area(s) and what the user has said (router slots), merged over the turns. */
@@ -37,14 +52,26 @@ export interface ChatSessionState {
   pick?: string | null
   /** Every venue / product name a reply presented (newest last, capped). */
   shown?: string[]
+  /** The place cards above the fold of the latest reply, in the order the user saw them (an ordinal follow-up counts these). */
+  cards?: string[]
   /** The decision-evidence row (last place search + shopping evidence) — what `decisionEvidenceId` carried. */
   evidence?: Record<string, unknown> | null
   /** The last real place search's RANKED candidates (compact rows) — "xem thêm" / "bác" continue from them. */
-  candidates?: { args: { query: string; type?: string; location?: string }; rows: Array<Record<string, unknown>> } | null
+  candidates?: { args: { query: string; type?: string; location?: string }; rows: Array<Record<string, unknown>>; /** When the rows were retrieved (freshness of carried evidence). */ at?: string } | null
   /** The last real hotel search (args + compact hotel rows) — a travel "xem thêm" / "bác" continues from them. */
   stay?: { args: { location: string; checkIn?: string; checkOut?: string }; rows: Array<Record<string, unknown>> } | null
   /** The last real product search (query + ranked rows, trimmed) — a shopping "xem thêm" / "bác" continues from them. */
   products?: { query: string; rows: Array<Record<string, unknown>> } | null
+  /** TAPPY_AGENT: a side-effecting action the agent requested, waiting for the user's confirmation on the next turn. */
+  pendingAction?: { id: string; tool: string; args: Record<string, unknown>; argsHash: string; summary: string; at: string; expiresAt: string } | null
+  /** TAPPY_AGENT: ids of confirmed actions already executed (idempotency across turns, newest last). */
+  executedActions?: string[]
+  /** TAPPY_AGENT follow-up context: the flight / film / trip plan this conversation is about (from executed tool calls). */
+  flight?: FlightContext | null
+  movie?: { title: string; date?: string; city?: string; at: string } | null
+  plan?: { destination: string; at: string } | null
+  /** TAPPY_AGENT: places the user turned down in this consultation (newest last). */
+  rejected?: string[]
   updatedAt?: string
 }
 
@@ -143,6 +170,11 @@ export function nextChatSessionState(prev: ChatSessionState | null, turn: {
   known?: Record<string, string>
   replyText?: string
   presentedNames?: readonly string[]
+  cardOrder?: readonly string[]
+  pendingAction?: ChatSessionState['pendingAction']
+  rejected?: readonly string[]
+  executedActions?: readonly string[]
+  agentState?: { flight?: ChatSessionState['flight']; movie?: ChatSessionState['movie']; plan?: ChatSessionState['plan'] }
   evidence?: Record<string, unknown> | null
   candidates?: ChatSessionState['candidates']
   stay?: ChatSessionState['stay']
@@ -157,6 +189,13 @@ export function nextChatSessionState(prev: ChatSessionState | null, turn: {
     known: { ...(prev?.known ?? {}), ...(turn.known ?? {}) },
     pick: pick ?? prev?.pick ?? null,
     shown: shown.slice(-24),
+    cards: turn.cardOrder?.length ? [...turn.cardOrder] : prev?.cards,
+    ...(turn.pendingAction !== undefined ? { pendingAction: turn.pendingAction } : prev?.pendingAction ? { pendingAction: prev.pendingAction } : {}),
+    ...(turn.agentState?.flight || prev?.flight ? { flight: turn.agentState?.flight ?? prev?.flight } : {}),
+    ...(turn.agentState?.movie || prev?.movie ? { movie: turn.agentState?.movie ?? prev?.movie } : {}),
+    ...(turn.agentState?.plan || prev?.plan ? { plan: turn.agentState?.plan ?? prev?.plan } : {}),
+    ...((turn.executedActions?.length || prev?.executedActions?.length) ? { executedActions: [...new Set([...(prev?.executedActions ?? []), ...(turn.executedActions ?? [])])].slice(-50) } : {}),
+    ...((turn.rejected?.length || prev?.rejected?.length) ? { rejected: [...new Set([...(prev?.rejected ?? []), ...(turn.rejected ?? [])])].slice(-12) } : {}),
     evidence: turn.evidence === undefined ? prev?.evidence ?? null : turn.evidence,
     candidates: turn.candidates === undefined ? prev?.candidates ?? null : turn.candidates,
     stay: turn.stay === undefined ? prev?.stay ?? null : turn.stay,

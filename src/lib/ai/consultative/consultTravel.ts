@@ -15,11 +15,36 @@ export interface TravelPreCall {
  * Saturday or Sunday "cuối tuần này" is today). Anything vaguer ("tuần sau", "tháng sau", "chưa chốt") gives undefined —
  * no date is guessed for those. Used for the fare link only (owner 30/09 R25: a dated Traveloka link, or the flight turn fails).
  */
+/**
+ * "thứ 3 tuần sau", "thứ hai tuần này", "chủ nhật tuần tới", "thứ 6" → YYYY-MM-DD. A Vietnamese week runs Monday → Sunday, so on a Sunday "tuần sau" is the
+ * week that starts tomorrow. "tuần này" never returns a day that has passed; a bare weekday is its next occurrence AFTER today. (AI-Hay pass: the model used to
+ * resolve this itself — Sunday 04/10 + "thứ 3 tuần sau" came out as 11/10, a Sunday.)
+ */
+const WEEKDAY = /\b(?:thu (hai|2|ba|3|tu|4|nam|5|sau|6|bay|7)|chu nhat|cn)\b/
+const WEEKDAY_NO: Record<string, number> = { hai: 1, '2': 1, ba: 2, '3': 2, tu: 3, '4': 3, nam: 4, '5': 4, sau: 5, '6': 5, bay: 6, '7': 6 }
+export function weekdayDateIso(f: string, today: string, dow: number): string | undefined {
+  const m = WEEKDAY.exec(f)
+  if (!m) return undefined
+  const target = m[1] ? WEEKDAY_NO[m[1]] : 0 // 0 = Sunday, 1 = Monday … 6 = Saturday (JS getUTCDay)
+  const sinceMonday = (dow + 6) % 7 // Monday = 0 … Sunday = 6
+  const targetFromMonday = (target + 6) % 7
+  const mondayThisWeek = addDays(today, -sinceMonday)
+  if (/\btuan (?:sau|toi)\b/.test(f)) return addDays(mondayThisWeek, 7 + targetFromMonday)
+  if (/\btuan (?:nay|do)\b/.test(f)) { const d = addDays(mondayThisWeek, targetFromMonday); return d >= today ? d : undefined }
+  const ahead = ((targetFromMonday - sinceMonday + 7) % 7) || 7
+  return addDays(today, ahead)
+}
+
+/** The user's own words name a weekday ("thứ 3 tuần sau", "chủ nhật") — resolved from the words, not from a slot that may have dropped "tuần sau". */
+export const hasWeekdayWord = (text: string | undefined): boolean => WEEKDAY.test((text ?? '').normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/gi, 'd').toLowerCase())
+
 export function relativeDateIso(text: string | undefined, now = new Date()): string | undefined {
   const f = (text ?? '').normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/gi, 'd').toLowerCase()
   const vn = new Date(now.getTime() + 7 * 3600_000)
   const today = `${vn.getUTCFullYear()}-${String(vn.getUTCMonth() + 1).padStart(2, '0')}-${String(vn.getUTCDate()).padStart(2, '0')}`
   const dow = vn.getUTCDay() // 0 Sunday … 6 Saturday
+  const weekday = weekdayDateIso(f, today, dow)
+  if (weekday) return weekday
   if (/\bcuoi tuan (?:sau|toi)\b/.test(f)) return addDays(today, (dow === 0 ? 6 : dow === 6 ? 7 : 6 - dow + 7))
   if (/\bcuoi tuan\b/.test(f)) return addDays(today, dow === 6 || dow === 0 ? 0 : 6 - dow)
   if (/\bngay kia\b|\bngay mot\b/.test(f)) return addDays(today, 2)
@@ -108,7 +133,7 @@ export function travelPreCall(known: Record<string, string>, text: string, now =
     // as the coming Saturday. Both are reported in `assumed` so the reply says them; a date is never guessed for "tuần sau".
     const from = origin || (/\b(?:tp\.? ?hcm|ho chi minh|sai gon)\b/i.test(dest.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/gi, 'd')) ? undefined : 'TP.HCM')
     if (from) {
-      const flightDate = date ?? relativeDateIso(`${known.ngay ?? ''} ${known.thoi_gian ?? ''}`, now)
+      const flightDate = date ?? (hasWeekdayWord(text) ? relativeDateIso(text, now) : undefined) ?? relativeDateIso(`${known.ngay ?? ''} ${known.thoi_gian ?? ''}`, now)
       const assumed = { ...(origin ? {} : { origin: from }), ...(date || !flightDate ? {} : { date: flightDate }) }
       // B (owner 01/10): the party the user named goes into the dated link («2 người» → quantity=2 / ps=2), not a silent 1 adult.
       const pax = /^\s*(\d{1,2})\s*(?:nguoi|người)/i.exec((known.so_nguoi ?? '').normalize('NFC'))?.[1]

@@ -194,8 +194,12 @@ export function ProfileTab({ userId, viewerId, showBackButton, onBack, variant =
   const [profile, setProfile] = useState<{
     full_name: string | null; avatar_url: string | null
     follower_count: number; following_count: number; review_count: number
+    /** Public cover image (profiles.cover_url, served by /api/users/[id]) — Phase 7 8B hero background. */
+    cover_url?: string | null
   } | null>(null)
   const [following, setFollowing] = useState(false)
+  const coverRaw = profile?.cover_url?.trim() ?? ''
+  const coverBg = /^(https:\/\/|\/)[^\s"'()<>]+$/.test(coverRaw) ? `"${coverRaw}"` : null
   const [followBusy, setFollowBusy] = useState(false)
   const [posts, setPosts] = useState<Review[]>([])
   const [loading, setLoading] = useState(true)
@@ -302,7 +306,10 @@ export function ProfileTab({ userId, viewerId, showBackButton, onBack, variant =
           is looking: /users/[id] is one page with one shape for everyone. The
           compact horizontal hero hands the viewport to the grid, because on a
           profile page the clips are the content. */}
-      <div style={{ background: 'linear-gradient(180deg, #1a0a2e 0%, #0d0618 60%, #000 100%)' }}
+      {/* Phase 7 8B: the hero shows the profile's own cover photo when it has one (dimmed for legibility); otherwise the gradient. */}
+      <div data-profile-hero-bg={coverBg ? 'cover' : 'gradient'} style={coverBg
+        ? { backgroundImage: `linear-gradient(180deg, rgba(13,6,24,0.45) 0%, rgba(13,6,24,0.75) 60%, #000 100%), url(${coverBg})`, backgroundSize: 'cover', backgroundPosition: 'center' }
+        : { background: 'linear-gradient(180deg, #1a0a2e 0%, #0d0618 60%, #000 100%)' }}
         className={`relative px-4 flex ${isPage ? 'flex-row items-center gap-4 pt-5 pb-3' : 'flex-col items-center pt-14 pb-4'}`}>
         {/* Back button — only when this profile is its own stacked route
             (/users/[id]), not when it's the bottom-nav "Hồ sơ" tab. Same visual

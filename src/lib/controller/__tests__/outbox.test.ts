@@ -460,6 +460,10 @@ describe('C8 — the drain is wired as a daily cron', () => {
     //
     // 13 -> 14 on 2026-09-29 (R21, owner): `/api/cron/click-attributions-sweep` deletes ACCESSTRADE click joins
     //   older than 12 months (bounded, service_role only) and logs the count; it notifies nobody.
-    expect(vercelJson.crons.length).toBe(14)
+    //
+    // 14 -> 15 on 2026-10-04 (Phase 7 closeout CP5): `/api/cron/subscriptions-expire` marks ended web plans `expired` once a day
+    //   (00:00 VN). Double-gated by CRON_SECRET and SUBSCRIPTIONS_ENABLED; access never depended on it (the entitlement rule already
+    //   treats a past current_period_end as unpaid); it notifies nobody.
+    expect(vercelJson.crons.length).toBe(15)
   })
 })

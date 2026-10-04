@@ -74,8 +74,8 @@ export function wantsWiderArea(text: string): boolean {
 // Measured 2026-10-02 (dev server, same prompt, run to run): "muốn tìm cửa hàng dán tại chỗ ở phú nhuận"
 // sometimes produced an ask card whose first question was "Bạn muốn dán gì và dán ở đâu?" — the area was
 // in the request. A question about the AREA when a district is already named, or a question that only
-// restates the request, is dropped; fewer than two questions left (the ask-card minimum) → no card, the
-// turn is a pick and the search runs.
+// restates the request, is dropped; no question left → no card, the turn is a pick and the search runs.
+// Phase 3A / D2: the card shows exactly one question.
 
 import { statedDistrict } from '../districts'
 import type { ConsultDecision } from './consultBrain'
@@ -102,7 +102,12 @@ export function refineAsk(d: ConsultDecision | null, userTexts: readonly string[
     if (isEchoQuestion(q.q, userTexts)) return false
     return true
   })
-  if (keep.length === d.ask.questions.length) return d
-  if (keep.length < 2) return { ...d, turn: 'pick', ask: undefined }
-  return { ...d, ask: { ...d.ask, questions: keep } }
+  // Phase 3A / D2: an ask turn carries exactly ONE question — whoever produced the card (router, intent call or brain), the first
+  // question that survived the filters is the only one shown; none left → the turn is a pick and the search runs.
+  // The gate is unchanged: a multi-question card that filtering reduced below two was not worth asking (the state was already sufficient).
+  const total = d.ask.questions.length
+  const one = keep.slice(0, 1)
+  if (one.length === 0 || (total >= 2 && keep.length < 2)) return { ...d, turn: 'pick', ask: undefined }
+  if (total === 1) return d
+  return { ...d, ask: { ...d.ask, questions: one } }
 }

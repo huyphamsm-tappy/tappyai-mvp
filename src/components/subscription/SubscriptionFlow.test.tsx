@@ -19,7 +19,7 @@ import SubscriptionFlow, { type MyPlanResponse } from './SubscriptionFlow'
 
 const catalog = subscriptionCatalog({ env: {} as NodeJS.ProcessEnv })
 const inDays = (d: number) => new Date(Date.now() + d * 86_400_000).toISOString()
-const quota = { limit: 15, used: 3, remaining: 12, period: 'day' as const }
+const quota = { limit: 10, used: 3, remaining: 7, period: 'day' as const }
 const free: MyPlanResponse = { signedIn: true, subscription: mySubscription(null), quota }
 const activeWeb = (endDays = 20): MyPlanResponse => ({
   signedIn: true, quota: { limit: 30, used: 2, remaining: 28, period: 'day' },
@@ -60,7 +60,7 @@ describe('plan list', () => {
     expect(badges.length).toBe(2)
     for (const b of badges) expect(b.closest('[data-plan],[data-plan-col]')?.getAttribute(b.closest('[data-plan]') ? 'data-plan' : 'data-plan-col')).toBe('sunny')
     expect(screen.queryByText(/Best|Winner|Tiết kiệm so với|Giá trị lâu dài/)).toBeNull()
-    expect(screen.getAllByText('15 câu hỏi AI mỗi ngày').length).toBeGreaterThan(0) // Free = live backend value
+    expect(screen.getAllByText('10 câu hỏi AI mỗi ngày').length).toBeGreaterThan(0) // Free = live backend value
     expect(screen.getAllByText('5 câu hỏi AI trọn đời').length).toBe(1)
     // USD list prices on the plans (owner P7 decision); the VND amount appears only at payment; no price per day, no %
     expect(document.body.textContent).toMatch(/\$1 \/ 7 ngày/)
@@ -214,7 +214,7 @@ describe('Pip — one-time trial', () => {
     const access = screen.getByTestId('sub-access').textContent!
     expect(access).toMatch(/Welcome Guest/)
     expect(access).toMatch(/5 câu hỏi AI trọn đời/)
-    expect(access).not.toMatch(/Miễn phí|15 câu/)
+    expect(access).not.toMatch(/Miễn phí|10 câu/)
     expect(screen.getByRole('link', { name: 'Đăng nhập miễn phí' }).getAttribute('href')).toBe('/login?returnTo=%2Fsubscription')
   })
 

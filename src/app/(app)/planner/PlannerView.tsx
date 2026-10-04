@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
 import type { ComponentProps } from 'react'
 import type Header from '@/components/Header'
@@ -14,6 +14,7 @@ import { TappyMascot } from '@/components/TappyMascot'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { formatRelativeTime } from '@/lib/utils'
 import { plannerFacets, type DerivedPlan, type PlanKind } from '@/lib/planner/derivePlans'
+import { PLAN_THUMB_PRESETS, readPlanThumb, resolvePlanThumb, writePlanThumb } from '@/lib/planner/planThumb'
 
 // ── V3 Web · AI Planner (My Plans) ──────────────────────────────────────────
 //
@@ -224,6 +225,11 @@ export default function PlannerView({
 function PlanCard({ plan, locale }: { plan: DerivedPlan; locale: 'vi' | 'en' }) {
   const { t } = useTranslation()
   const [open, setOpen] = useState(false)
+  // Phase 7 8F/8G: reusable default thumbnail + a user-chosen picture (kept on this device, presets only).
+  const [chosen, setChosen] = useState<string | null>(null)
+  const [picking, setPicking] = useState(false)
+  useEffect(() => { setChosen(readPlanThumb(plan.id)) }, [plan.id])
+  const thumb = resolvePlanThumb({ chosen, coverUrl: plan.coverUrl })
 
   return (
     <article className="v3-planner-card flex flex-col overflow-hidden" data-planner-card>
@@ -233,22 +239,25 @@ function PlanCard({ plan, locale }: { plan: DerivedPlan; locale: 'vi' | 'en' }) 
             `PlanItem.photo_url`, injected server-side from a matched place; there is no plan-level
             image in the contract and no placeholder pool standing in for one. A plan whose stops
             were never enriched gets the calendar mark — honest, and still composed. */}
-        <div className="v3-planner-thumb">
-          {plan.coverUrl ? (
-            // Place photos are arbitrary remote URLs from the enrichment step, not a configured
-            // next/image domain — the same reason `TripPlanCard` renders them with a plain <img>.
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={plan.coverUrl}
-              alt=""
-              loading="lazy"
-              onError={(e) => { e.currentTarget.style.visibility = 'hidden' }}
-            />
-          ) : (
-            <span aria-hidden="true" className="v3-planner-thumb-glyph">
-              <CalendarRange size={30} />
-            </span>
-          )}
+        <div className="v3-planner-thumb relative" data-plan-thumb={chosen ? 'chosen' : plan.coverUrl ? 'stop' : 'default'}>
+          {/* Place photos are arbitrary remote URLs from the enrichment step, not a configured next/image domain — the same reason
+              `TripPlanCard` renders them with a plain <img>. Without a stop photo: the reusable default thumbnail (Phase 7 8F). */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={thumb}
+            alt=""
+            loading="lazy"
+            onError={(e) => { if (!e.currentTarget.src.endsWith('/planner/plan-default.webp')) e.currentTarget.src = '/planner/plan-default.webp' }}
+          />
+          <button
+            type="button"
+            onClick={() => setPicking((v) => !v)}
+            aria-expanded={picking}
+            className="absolute bottom-1.5 right-1.5 rounded-full bg-black/55 px-2 py-0.5 text-[11px] font-semibold text-white"
+            data-plan-thumb-edit
+          >
+            {t('v3.planner.thumbEdit')}
+          </button>
         </div>
 
         <div className="min-w-0 flex-1">
@@ -286,6 +295,23 @@ function PlanCard({ plan, locale }: { plan: DerivedPlan; locale: 'vi' | 'en' }) 
           )}
         </div>
       </div>
+
+      {picking && (
+        <div className="flex flex-wrap gap-2 px-4 pb-3 sm:px-5" role="group" aria-label={t('v3.planner.thumbPick')} data-plan-thumb-picker>
+          {PLAN_THUMB_PRESETS.map((src) => (
+            <button
+              key={src}
+              type="button"
+              aria-pressed={thumb === src}
+              onClick={() => { writePlanThumb(plan.id, src); setChosen(src); setPicking(false) }}
+              className={`h-12 w-12 overflow-hidden rounded-lg ring-2 ${thumb === src ? 'ring-sky-500' : 'ring-transparent'}`}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={src} alt="" className="h-full w-full object-cover" />
+            </button>
+          ))}
+        </div>
+      )}
 
       {/* ── Footer: when the thread last moved, and the two ways on ─────────────────── */}
       <div className="v3-planner-card-foot flex flex-wrap items-center justify-between gap-x-3 gap-y-2 px-4 py-3 sm:px-5">

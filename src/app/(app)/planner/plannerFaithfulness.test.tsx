@@ -155,10 +155,11 @@ describe('the mockup fields that have no source are not rendered', () => {
     expect(screen.getByText(/^Updated /)).toBeTruthy()
   })
 
-  it('shows no cover image when no stop has a real photo', () => {
+  it('without a real stop photo it shows the ONE reusable default thumbnail — never destination-specific stand-in art', () => {
     const { container } = renderPlanner([row()])
     const card = container.querySelector('article')!
-    expect(card.querySelectorAll('img').length, 'no placeholder destination art').toBe(0)
+    const imgs = [...card.querySelectorAll('img')].map(i => i.getAttribute('src'))
+    expect(imgs, 'only the generic default (Phase 7 8F), no picture that claims a place').toEqual(['/planner/plan-default.webp'])
   })
 
   it('offers no Work or Personal filter — neither has a producer anywhere in the codebase', () => {

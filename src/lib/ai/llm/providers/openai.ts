@@ -108,7 +108,10 @@ function lunaModel(modelId: string, effort: ReasoningEffort, apiKey: string, str
   const oneTool = provider.chat(modelId, { structuredOutputs: structured, parallelToolCalls: false })
   const hasTools = (opts: { mode?: { type?: string; tools?: unknown[] } }) => opts.mode?.type === 'regular' && Array.isArray(opts.mode.tools) && opts.mode.tools.length > 0
   const inner = plain
-  const pick = (opts: { mode?: { type?: string; tools?: unknown[] } }) => (hasTools(opts) ? oneTool : plain)
+  // The bounded agent (src/lib/ai/agent) asks for parallel read-only calls: its final step never carries tools, so the old "ended on a tool call"
+  // failure that motivated one-tool-per-step cannot happen there. Every other caller keeps one call per step.
+  const parallelAsked = (opts: { providerMetadata?: Record<string, Record<string, unknown>> }) => opts.providerMetadata?.tappy?.parallelTools === true
+  const pick = (opts: { mode?: { type?: string; tools?: unknown[] }; providerMetadata?: Record<string, Record<string, unknown>> }) => (hasTools(opts) && !parallelAsked(opts) ? oneTool : plain)
   // The API refuses function tools with any effort but 'none' on /chat/completions (replay 30/09: every medium plan call
   // with tools fell back). A call that carries tools runs at 'none'; the effort actually sent is logged with the cost.
   const effortFor = (opts: { mode?: { type?: string; tools?: unknown[] } }): ReasoningEffort => effortForCall(effort, opts)

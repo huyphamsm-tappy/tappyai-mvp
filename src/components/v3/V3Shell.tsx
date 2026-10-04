@@ -1,5 +1,6 @@
 'use client'
 
+import AiDisclaimer from '@/components/AiDisclaimer'
 import type { ReactNode } from 'react'
 import Link from 'next/link'
 import Image from '@/components/media/SafeImage'
@@ -748,6 +749,15 @@ export function V3Footer() {
       <Link href="/reviews" className="ml-auto flex items-center gap-1 text-[11px]" style={{ color: 'var(--v3-accent)' }}>
         {t('v3.footer.platforms')} <ChevronRight size={12} aria-hidden="true" />
       </Link>
+      {/* Phase 7 CP7: legal links + the global AI disclaimer (UI contract) */}
+      <div className="flex w-full flex-wrap items-center justify-between gap-2 border-t pt-3 text-[11px]" style={{ borderColor: 'var(--v3-border)', color: 'var(--v3-fg-muted)' }}>
+        <nav className="flex flex-wrap gap-x-4 gap-y-1" aria-label={t('footer.about')}>
+          <Link href="/community-guidelines" className="hover:underline">{t('footer.guidelines')}</Link>
+          <Link href="/terms" className="hover:underline">{t('footer.terms')}</Link>
+          <Link href="/privacy" className="hover:underline">{t('footer.privacy')}</Link>
+        </nav>
+        <AiDisclaimer className="!text-left" />
+      </div>
     </footer>
   )
 }

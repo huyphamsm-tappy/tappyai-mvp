@@ -20,6 +20,7 @@ import { recordSerperCall, SERPER_CREDITS, type SerperEndpoint } from './serperM
 import { sanitizeSerperJson } from './serperUntrusted'
 import { incrDailyCounter } from '@/lib/security/kvCounter'
 import { vnToday } from '@/lib/config/product'
+import { admitWithinToolBudget } from './serperToolBudget'
 
 export const SERPER_CEILING_KEY = 'serper:credits'
 const DEFAULT_CEILING = 15_000
@@ -57,6 +58,11 @@ const alerted = { warn: '', ceiling: '', storeDown: '' }
 /** Admits or refuses one call against today's ceiling. Never throws. */
 export async function serperAdmit(endpoint: SerperEndpoint, env: NodeJS.ProcessEnv = process.env): Promise<boolean> {
   const credits = SERPER_CREDITS[endpoint]
+  // Bounded agent: the per-tool-invocation cap (serperToolBudget.ts) — inert outside an agent tool call.
+  if (!admitWithinToolBudget(credits)) {
+    console.log(JSON.stringify({ type: 'tappyai_serper_tool_budget', endpoint, refused: true }))
+    return false
+  }
   const { count, scope } = await incrDailyCounter(SERPER_CEILING_KEY, credits, env)
   // Store down ⇒ `count` is this instance's own day, so the ceiling it is held to is the
   // per-instance one; otherwise the shared count against the shared ceiling.

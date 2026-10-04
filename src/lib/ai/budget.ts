@@ -25,8 +25,12 @@ const LUXURY_BRANDS_FILTER = [
   'Imperial Hotel', 'imperial hotel',
 ]
 
-function parseMoneyAmount(numStr: string, unit: string): number | null {
-  const n = parseFloat(numStr.replace(/\./g, '').replace(/,/g, '.'))
+export function parseMoneyAmount(numStr: string, unit: string): number | null {
+  // 🚨 A single dot followed by one or two digits in front of a SCALE unit is a decimal point, not a thousands separator:
+  // "1.3 triệu" is 1,300,000 (it was read as 13,000,000 — benchmark B03 / B08 refinements, and "khoảng 1.5tr" became 15 triệu), "2.5k" is 2,500.
+  // Three digits after the dot ("1.300") stay a thousands group, and a comma is still the Vietnamese decimal mark.
+  const scale = /^(?:k|tr|tri.*|m|mil.*)$/.test((unit || '').toLowerCase().trim())
+  const n = parseFloat(scale && /^\d+\.\d{1,2}$/.test(numStr) ? numStr : numStr.replace(/\./g, '').replace(/,/g, '.'))
   if (isNaN(n) || n <= 0) return null
   const u = (unit || '').toLowerCase().trim()
   if (u === 'k') return n * 1000

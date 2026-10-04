@@ -241,7 +241,9 @@ describe('the rendered wording matches what the evidence supports', () => {
     // restatement of `prose`, not a different text — so both links of that chain are asserted
     // rather than one literal byte string, which is what a renamed term would silently break.
     const composed = filter.match(/const finalText = `([^`]*)`/)?.[1]
-    expect(composed).toMatch(/^\$\{ctaOwnedProse\}/)
+    // Final patch 04/10: an optional system sentence (`fareLead`, flight turns only) may precede it — the folded prose is still the first
+    // MODEL term, whole, so the link stays inside what the detector analyses.
+    expect(composed).toMatch(/^(?:\$\{fareLead\})?\$\{ctaOwnedProse\}/)
     // chat1 (02/10) split it: `ctaOwnedProseBase` is the CTA-stripped `prose`; `ctaOwnedProse` adds the appendix after it.
     expect(filter).toMatch(/const ctaOwnedProseBase = .*\bprose\b/)
     expect(filter).toMatch(/const ctaOwnedProse = [\s\S]{0,200}ctaOwnedProseBase/)

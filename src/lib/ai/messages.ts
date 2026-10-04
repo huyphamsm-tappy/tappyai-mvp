@@ -95,12 +95,10 @@ export const messages = {
   flights: {
     unknownAirport: (lang: Lang) => isVi(lang) ? 'Khong nhan dien duoc san bay tu ten dia diem' : "Couldn't recognize an airport from that place name",
     findOnPlatforms: (lang: Lang) => isVi(lang) ? 'Tim chuyen bay tren cac nen tang tren' : 'Find flights on the platforms above',
-    notConfigured: (lang: Lang) => isVi(lang) ? 'Chua cau hinh API gia ve may bay' : 'Flight price API is not configured',
-    source: () => 'Travelpayouts (Aviasales)',
-    cheapestNote: (lang: Lang) => isVi(lang)
-      ? 'Day la gia ve re gan nhat ma he thong tim duoc cho tuyen nay (khong chac dung ngay user hoi), gia co the da thay doi - bam link de xem gia chinh xac va dat ve theo ngay cu the.'
-      : "This is the cheapest fare the system found for this route (not necessarily the exact date asked) and prices may have changed — tap the link for the exact price and to book a specific date.",
-    fetchError: (lang: Lang) => isVi(lang) ? 'Khong lay duoc gia ve may bay luc nay' : "Couldn't fetch flight prices right now",
+    /** No approved source returns fares, times or status: the booking pages are where the user checks them. */
+    fareNotVerified: (lang: Lang) => isVi(lang)
+      ? 'Giá vé hiện chưa xác minh được từ nguồn dữ liệu đang có. Giờ bay và tình trạng chuyến cũng chưa xác minh. Hệ thống tự gắn các trang đặt vé (booking_links) bên dưới để người dùng xem giá theo ngày — chỉ nhắc "nút bên dưới", không tự viết link; KHÔNG nêu giá, giờ bay hay hãng bay cụ thể.'
+      : 'The fare could not be verified from the available data sources; flight times and status are not verified either. The system attaches the booking pages (booking_links) below — refer to "the buttons below", do not write links; do NOT state any fare, time or specific flight.',
   },
   hotels: {
     sourceSerperOsm: () => 'Google Search (Serper) + OpenStreetMap',

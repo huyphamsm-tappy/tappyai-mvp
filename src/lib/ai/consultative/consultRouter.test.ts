@@ -56,7 +56,8 @@ describe('routeConsult — everyday set (2): vague first turns ask 2–3 questio
       const vague = tot.n - tot.chat - tot.pick
       expect(tot.ask / vague).toBeGreaterThanOrEqual(0.9)
       // And the share of asks among all non-knowledge requests stays high.
-      expect(tot.ask / (tot.n - tot.chat)).toBeGreaterThanOrEqual(0.85)
+      // AI-Hay pass (04/10): a place to look (GPS/area) + one criterion now searches instead of asking, so the share of asks is lower by design (0.80 measured).
+      expect(tot.ask / (tot.n - tot.chat)).toBeGreaterThanOrEqual(0.75)
     })
   }
 })
@@ -169,7 +170,7 @@ describe('slot extraction', () => {
     expect(slotView('shopping', 'nuoc hoa nam tam 1 cu', true).known.tinh_trang).toBeUndefined()
   })
   it('never asks what the user said', () => {
-    const d = one('lẩu thái cho 4 người').decision
+    const d = one('lẩu thái cho 4 người', false).decision // no GPS and no area: still asks (with GPS it now searches)
     expect(d.turn).toBe('ask')
     expect(d.ask!.questions.map(q => q.id)).not.toContain('party')
     expect(d.ask!.questions.map(q => q.id)).not.toContain('style')
@@ -183,7 +184,7 @@ describe('slot extraction', () => {
     expect(d.area).toBe('quận 1')
   })
   it('English asks use English templates', () => {
-    const d = one('tối nay ăn gì', true, 'en').decision
+    const d = one('tối nay ăn gì', false, 'en').decision // no GPS and no area: still asks
     expect(d.ask!.questions[0].q).toBe('What kind of food?')
   })
   it('greetings and out-of-scope are chat with rule confidence; gibberish is unsure', () => {

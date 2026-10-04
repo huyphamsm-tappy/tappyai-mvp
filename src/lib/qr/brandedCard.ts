@@ -61,6 +61,22 @@ export interface BrandedQrOptions {
    * written here — the public listing did not answer on 29/09 (see RELEASE-PROGRESS Q-SL4).
    */
   googlePlay?: GooglePlayCopy
+  /**
+   * Phase 7: the app section when NO store listing is public yet — Android and iOS each with a truthful
+   * "coming soon" line. No badge, no store URL. Ignored when `googlePlay` is given (the listing is live).
+   */
+  apps?: AppsComingSoon
+}
+
+export interface AppsComingSoon {
+  /** The column title ("Tải ứng dụng TappyAI"). */
+  title: string
+  /** "Android · Sắp có trên Google Play" */
+  android: string
+  /** The iOS "coming soon" line (no badge, no store URL). */
+  ios: string
+  /** The website column's label beside it ("Hoặc truy cập website"). */
+  orWebsite: string
 }
 
 export interface GooglePlayCopy {
@@ -179,7 +195,9 @@ export async function renderBrandedQrCard(opts: BrandedQrOptions): Promise<Blob 
   const slogan = opts.slogan?.trim() ?? ''
   const features = (opts.features ?? []).map(f => f.trim()).filter(Boolean).slice(0, 4)
   const play = website ? opts.googlePlay : undefined
-  const panelH = play ? CARD.storePanelH : CARD.panelH
+  const apps = website && !play ? opts.apps : undefined
+  const twoCol = !!(play || apps)
+  const panelH = twoCol ? CARD.storePanelH : CARD.panelH
   const width = Math.max(CARD.width, qrSide + (CARD.pad + CARD.bracketGap) * 2)
 
   // ── Vertical plan (top to bottom) ──
@@ -318,9 +336,10 @@ export async function renderBrandedQrCard(opts: BrandedQrOptions): Promise<Blob 
     ctx.stroke()
     let colX = px
     let colW = pw
-    if (play) {
+    if (play || apps) {
       const leftW = Math.round(pw * 0.52)
-      drawGetAppColumn(ctx, play, px + 40, panelTop, leftW - 60, panelH)
+      if (play) drawGetAppColumn(ctx, play, px + 40, panelTop, leftW - 60, panelH)
+      else if (apps) drawAppsComingSoonColumn(ctx, apps, px + 40, panelTop, leftW - 60)
       ctx.strokeStyle = '#D8E4FA'
       ctx.lineWidth = 2
       ctx.beginPath(); ctx.moveTo(px + leftW, panelTop + 36); ctx.lineTo(px + leftW, panelTop + panelH - 36); ctx.stroke()
@@ -328,22 +347,22 @@ export async function renderBrandedQrCard(opts: BrandedQrOptions): Promise<Blob 
       colW = pw - leftW
     }
     const cx = colX + colW / 2
-    const label = (play ? play.orWebsite : opts.websiteLabel ?? '').trim()
+    const label = (play ? play.orWebsite : apps ? apps.orWebsite : opts.websiteLabel ?? '').trim()
     ctx.textAlign = 'center'
     ctx.textBaseline = 'middle'
     if (label) {
       ctx.fillStyle = CARD.ink
       ctx.font = `600 27px ${CARD.font}`
-      ctx.fillText(label, cx, play ? panelTop + 78 : panelTop + 46, colW - 40)
+      ctx.fillText(label, cx, twoCol ? panelTop + 78 : panelTop + 46, colW - 40)
     }
-    const sitePx = play ? 29 : CARD.websitePx
-    const inset = play ? 38 : 48
+    const sitePx = twoCol ? 29 : CARD.websitePx
+    const inset = twoCol ? 38 : 48
     ctx.font = `700 ${sitePx}px ${CARD.font}`
     const tw = ctx.measureText(website).width
     const pillW = Math.min(colW - 50, tw + inset * 2 + 60)
-    const pillH = play ? 72 : 78
+    const pillH = twoCol ? 72 : 78
     const pillX = Math.round(cx - pillW / 2)
-    const pillY = play ? panelTop + 124 : panelTop + 82
+    const pillY = twoCol ? panelTop + 124 : panelTop + 82
     ctx.fillStyle = CARD.sky
     roundedRect(ctx, pillX, pillY, pillW, pillH, pillH / 2)
     ctx.fill()
@@ -388,6 +407,30 @@ export async function renderBrandedQrCard(opts: BrandedQrOptions): Promise<Blob 
   }
 
   return new Promise((resolve) => canvas.toBlob((blob) => resolve(blob), 'image/png'))
+}
+
+/** No public listing yet: the title, then Android and iOS each on its own line with a phone glyph and a truthful "coming soon". */
+function drawAppsComingSoonColumn(ctx: CanvasRenderingContext2D, apps: AppsComingSoon, x: number, top: number, w: number) {
+  ctx.save()
+  ctx.textAlign = 'left'
+  ctx.textBaseline = 'middle'
+  ctx.font = `800 32px ${CARD.font}`
+  ctx.fillStyle = CARD.ink
+  ctx.fillText(apps.title, x, top + 56, w)
+  const rows = [apps.android, apps.ios]
+  rows.forEach((line, i) => {
+    const y = top + 122 + i * 62
+    // phone glyph
+    ctx.strokeStyle = CARD.blue
+    ctx.lineWidth = 3.5
+    roundedRect(ctx, x, y - 22, 26, 44, 6)
+    ctx.stroke()
+    ctx.beginPath(); ctx.arc(x + 13, y + 15, 2.5, 0, Math.PI * 2); ctx.fillStyle = CARD.blue; ctx.fill()
+    ctx.font = `600 25px ${CARD.font}`
+    ctx.fillStyle = CARD.muted
+    ctx.fillText(line, x + 44, y, w - 44)
+  })
+  ctx.restore()
 }
 
 /** "Tải TappyAI ngay", the line under it and the Google Play badge — the panel's left column. */

@@ -1,5 +1,6 @@
 'use client'
 
+import { SHOW_ASK_ABOUT_CLIP } from '@/lib/config/product'
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import Link from 'next/link'
 import Image from '@/components/media/SafeImage'
@@ -647,7 +648,7 @@ function StageCard({
                   </span>
                 </p>
               )}
-              {subject && (
+              {SHOW_ASK_ABOUT_CLIP && subject && (
                 <Link
                   href={`/chat?q=${encodeURIComponent(t('bridge.promptEntity', { subject }))}&ctx=${encodeURIComponent(r.id)}`}
                   onClick={e => {

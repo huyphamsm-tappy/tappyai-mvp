@@ -87,6 +87,8 @@ export interface PlaceClaimEvidence {
    * every Entertainment turn measured so far.
    */
   ticketablePlaces?: Set<string>
+  /** A trusted now-showing listing was retrieved this turn (searchIntel/filmSearch): "đang chiếu" about a LISTED film is supported. Seats and showtimes still never are. */
+  nowShowingListed?: boolean
   /**
    * URLs the SYSTEM handed the model this turn as validated commerce links (Final local live UAT,
    * 14 Sep 2026): the Commerce Capability Platform's flight / coach / event / film handoffs
@@ -303,6 +305,12 @@ const TICKET_SALE_VOCAB_RE = /(đặt vé|dat ve|mua vé|mua ve|bán vé|ban ve|
  * showtime claim even without "suất"/"chiếu lúc" — nothing this pipeline fetches can back it.
  */
 const SHOWTIME_STATED_RE = /(?:lịch chiếu|lich chieu|suất chiếu|suat chieu|showtimes?)[^.!?]*(?:\d{1,2}:[0-5]\d|\d{1,2}\s*h(?:[0-5]\d)?(?![\p{L}\p{N}]))/iu
+
+/** The only availability wording is "đang chiếu" / "now showing" — no seat, no clock time. */
+function onlyNowShowing(sentence: string): boolean {
+  const rest = sentence.replace(/(đang chiếu|dang chieu|now showing)/giu, ' ')
+  return !TICKET_AVAILABILITY_RE.test(rest) && !SHOWTIME_STATED_RE.test(rest)
+}
 
 /** Is this a claim about seats being available, or about a specific showtime? */
 export function isTicketAvailabilityClaim(sentence: string): boolean {
@@ -673,7 +681,7 @@ export function guardPlaceClaimsInText(
   }
   if (!text) return { text, redacted: 0, stats }
   const { ratings, distancesKm, texts, entityTexts, placeNames, orderablePlaces } = evidence
-  const { ratingsByEntity, reviewCountsByEntity, phonesByEntity, ticketablePlaces, systemLinkUrls } = evidence
+  const { ratingsByEntity, reviewCountsByEntity, phonesByEntity, ticketablePlaces, systemLinkUrls, nowShowingListed } = evidence
   const carriesSystemLink = (sentence: string): boolean => !!systemLinkUrls && systemLinkUrls.size > 0 && [...systemLinkUrls].some(u => sentence.includes(u))
   const retrievedNumbers = numbersIn(texts)
   const tokens = placeTokensFor(placeNames ?? [])
@@ -856,7 +864,7 @@ export function guardPlaceClaimsInText(
      * "đang chiếu suất 21h" cannot be supported however good the venue's URL is.
      * A ticket page would let the user CHECK; it does not tell us the answer.
      */
-    if (isTicketAvailabilityClaim(s)) violated.push(TICKET_AVAILABILITY_RE)
+    if (isTicketAvailabilityClaim(s) && !(nowShowingListed && onlyNowShowing(s))) violated.push(TICKET_AVAILABILITY_RE)
 
     /**
      * 🔑 KEEP THE INTRODUCTION, DROP THE CLAIM.

@@ -15,3 +15,7 @@ export const CINEMA_NOW_SHOWING_PAGES: ReadonlyArray<NowShowingPage> = [
   { name: 'BHD Star', url: 'https://www.bhdstar.vn/phim/' },
   { name: 'Beta Cinemas', url: 'https://www.betacinemas.vn/phim.htm' },
 ]
+
+// Hosts whose own snippets list what is on now (searchIntel/filmSearch.ts reads TITLES from them; no link is composed from this list).
+// Order = preference: the aggregator first, then the chains, then the news sites. Merchant hosts are spelled here, never in the AI layer.
+export const FILM_LISTING_HOSTS: ReadonlyArray<string> = ['moveek.com', 'momo.vn', 'cgv.vn', 'galaxycine.vn', 'lottecinemavn.com', 'bhdstar.vn', 'betacinemas.vn', 'vnexpress.net', 'tuoitre.vn', 'thanhnien.vn', 'dantri.com.vn']

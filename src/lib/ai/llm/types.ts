@@ -1,4 +1,4 @@
-import type { CoreMessage, streamText } from 'ai'
+import type { CoreMessage, streamText, generateText } from 'ai'
 
 // ── Provider-neutral types for the AI layer ──────────────────────────────────
 // Business code imports ONLY from '@/lib/ai/llm'. Nothing here (or anywhere
@@ -101,6 +101,17 @@ export interface AIStreamOptions extends AIGenerateOptions {
    * (client disconnect). Wire the route's `req.signal` here so a dropped
    * connection stops billing tokens instead of running to completion. */
   abortSignal?: AbortSignal
+}
+
+/**
+ * One model step of the bounded agent (src/lib/ai/agent): tools are declared as SCHEMAS (no execute) so the CALLER runs them under its own budget,
+ * timeout and dedupe. The forced final answer step is a step with NO tools.
+ */
+export interface AIStepOptions extends AIGenerateOptions {
+  tools?: Parameters<typeof generateText>[0]['tools']
+  abortSignal?: AbortSignal
+  /** Allow several read-only tool calls in one step (the loop runs them concurrently, each counted against the turn budget). */
+  parallelTools?: boolean
 }
 
 export interface AIVisionOptions {

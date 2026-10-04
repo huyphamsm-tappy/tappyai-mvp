@@ -398,8 +398,11 @@ export default function NewReviewPage() {
         // The upload route is age-gated too, so this can 403 exactly as the review
         // POST does. Same ONE shared handler; every other response is unchanged.
         const res = await apiFetch('/api/reviews/upload', { method: 'POST', body: fd })
-        const data = await res.json()
-        if (!res.ok) throw new Error(data.message || data.error || t('reviewNew.photoUploadError'))
+        // Phase 7 CP9: a platform 413 (file between the 4.5 MB request cap and 5 MB) or a 502 HTML page is not JSON — show the
+        // composer's own message, never a raw SyntaxError.
+        const data = await res.json().catch(() => ({} as { message?: string; error?: string; url?: string }))
+        if (!res.ok) throw new Error(data.message || (res.status === 413 ? t('reviewNew.photoTooLarge') : t('reviewNew.photoUploadError')))
+        if (!data.url) throw new Error(t('reviewNew.photoUploadError'))
         uploaded.push(data.url)
       }
       setPhotos(prev => [...prev, ...uploaded])

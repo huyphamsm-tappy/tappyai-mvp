@@ -187,7 +187,9 @@ describe('flag ON', () => {
     await post([{ role: 'user', content: 'Cả nhà 6 người có con nít ăn trưa cuối tuần, cần chỗ đậu xe ô tô, Phú Nhuận' }])
     const s = system()
     expect(s).toContain('===== TINH HUONG (V1) =====')
-    expect(s).toContain('Điều kiện cứng: có chỗ đậu xe, phù hợp trẻ em (user nói)')
+    // Owner (3A, D8): "con nít" is household context (who = family), not a hard condition; only the parking request is hard.
+    expect(s).toContain('Điều kiện cứng: có chỗ đậu xe (user nói)')
+    expect(s).not.toContain('phù hợp trẻ em')
   })
 
   it('a date question the decision frame reads as "inform / web_search" still carries the block — the situation decides', async () => {

@@ -119,7 +119,7 @@ export async function POST(req: Request) {
   // Scam Alerts allowance of its own. It is spent INSIDE the pipeline, at the moment a model is
   // about to be called, and at most once per request (OCR + analysis of a screenshot share the
   // one gate call): a bare link never reaches this closure, so a URL-only check costs nothing.
-  // Exempt accounts (a legacy Pro period) and metered plans (Free 15, paid 30) follow exactly the /api/chat rule —
+  // Exempt accounts (a legacy Pro period) and metered plans (Free 10, paid 30) follow exactly the /api/chat rule —
   // one decision, aiQuestionQuota.resolveAccountQuota.
   let identity = aiQuotaIdentity(user, ip)
   let quota: (AiQuotaSpend & { pro: boolean }) | null = null

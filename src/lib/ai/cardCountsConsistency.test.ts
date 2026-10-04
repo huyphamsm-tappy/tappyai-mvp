@@ -1,5 +1,5 @@
 // @vitest-environment node
-import { describe, it, expect, afterEach, vi } from 'vitest'
+import { describe, it, expect, afterEach, beforeEach, vi } from 'vitest'
 import { applyPlaceEnrichmentStreamFilter } from './streamEnrichment'
 import { createEnrichmentCollector } from './toolResultSplit'
 import { placeRecommendations } from '@/lib/recommendation/fromToolResult'
@@ -15,6 +15,8 @@ import { consultRemainingLineN } from './consultative/consultBrain'
 // nữa» (26 hotel rows − the names the reply bolds). Driven through the real stream filter, the same entry point the route uses.
 // ─────────────────────────────────────────────────────────────────────────────
 
+// AI-Hay pass (04/10): the voice layer is ON by default; the count-line tests assert the earlier wording, so they start from the explicit STYLE_LUNA6=0.
+beforeEach(() => { vi.stubEnv('STYLE_LUNA6', '0') })
 afterEach(() => { vi.unstubAllEnvs() })
 const line0 = (s: string) => '0:' + JSON.stringify(s)
 const END = 'd:{"finishReason":"stop"}'
@@ -79,11 +81,11 @@ describe('A3 — «Còn N lựa chọn nữa» = the cards behind «Xem thêm»,
     expect(placesRenderOrder(view!).hidden.length).toBe(5)
   })
 
-  it('the Luna-6 wording carries the same N', async () => {
+  it('with the voice layer ON the server writes no count line (the «Xem thêm» chip carries N) and never doubles the model\'s own', async () => {
     vi.stubEnv('STYLE_LUNA6', '1')
     const { text } = await turn(PROSE)
-    expect(text).toMatch(/Còn 5 lựa chọn nữa — bạn muốn xem thêm không\?/)
-    expect(remainingNumbers(text)).toEqual([5])
+    expect(text).not.toMatch(/lựa chọn nữa/)
+    expect(remainingNumbers(text)).toEqual([])
   })
 
   it('the line sits BEFORE the follow-up block even when the model wrote the block on the same line as its last sentence', async () => {

@@ -76,7 +76,8 @@ describe('deterministic (canned) turns are free — 0 quota, and never reach the
 
   it('an exempt turn returns the canned reply before the single AI.stream() call', () => {
     const cannedReturn = src.indexOf('cannedDataStreamResponse(canned,') // consult V2 wraps it with the turn-cost stream before returning
-    const modelCall = src.indexOf('result = AI.stream(')
+    // TAPPY_AGENT (04/10): the single model call site now chooses the bounded agent or AI.stream — the canned return must precede it.
+    const modelCall = src.indexOf('result = agentOn ? await agentTurn(')
     expect(cannedReturn).toBeGreaterThan(-1)
     expect(modelCall).toBeGreaterThan(-1)
     expect(cannedReturn).toBeLessThan(modelCall)

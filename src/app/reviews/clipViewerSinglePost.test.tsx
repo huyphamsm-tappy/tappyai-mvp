@@ -10,6 +10,8 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, fireEvent, cleanup } from '@testing-library/react'
 
+// Phase 7 8A hides the button by default (SHOW_ASK_ABOUT_CLIP=false); these tests exercise the capability itself, so it is on here.
+vi.mock('@/lib/config/product', async (orig) => ({ ...(await orig<typeof import('@/lib/config/product')>()), SHOW_ASK_ABOUT_CLIP: true }))
 vi.mock('@/components/media/SafeImage', () => ({ default: (p: any) => <img src={typeof p.src === 'string' ? p.src : ''} alt={p.alt || ''} /> }))
 vi.mock('next/image', () => ({ default: (p: any) => <img src={typeof p.src === 'string' ? p.src : ''} alt={p.alt || ''} /> }))
 vi.mock('next/link', () => ({ default: (p: any) => <a href={typeof p.href === 'string' ? p.href : '#'}>{p.children}</a> }))
