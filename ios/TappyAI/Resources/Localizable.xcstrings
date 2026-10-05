@@ -919,6 +919,9 @@
     "currency.ratesUpdated" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Rates updated %@ · Source: open.er-api.com"}}, "vi": {"stringUnit": {"state": "translated", "value": "Tỷ giá cập nhật %@ · Nguồn: open.er-api.com"}}}},
     "currency.rateStatusLive" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Rates refreshed hourly"}}, "vi": {"stringUnit": {"state": "translated", "value": "Tỷ giá cập nhật hàng giờ"}}}},
     "currency.rateStatusFallback" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Estimated rates"}}, "vi": {"stringUnit": {"state": "translated", "value": "Tỷ giá ước tính"}}}},
+    "voice.listening" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Listening…"}}, "vi": {"stringUnit": {"state": "translated", "value": "Đang nghe…"}}}},
+    "voice.micHint" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Tap to speak"}}, "vi": {"stringUnit": {"state": "translated", "value": "Bấm để nói"}}}},
+    "voice.stopListening" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Stop listening"}}, "vi": {"stringUnit": {"state": "translated", "value": "Dừng nghe"}}}},
     "feed.video.failed": {
       "localizations": {
         "en": { "stringUnit": { "state": "translated", "value": "This clip could not load." } },

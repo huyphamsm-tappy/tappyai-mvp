@@ -4,6 +4,7 @@ import SwiftUI
 struct TranslateView: View {
     @AppStateObject private var vm: TranslateViewModel
     @AppStateObject private var tts = TTSManager()
+    @AppStateObject private var voice = VoiceInputManager()
 
     init(deps: AppDependencies) {
         let service = UtilityToolsService(api: deps.api, consent: deps.aiConsent)
@@ -34,7 +35,8 @@ struct TranslateView: View {
             .padding(.vertical, Spacing.lg)
         }
         .background(TappyColor.background)
-        .onDisappear { tts.stop() }
+        .onAppear { voice.onTranscript = { vm.inputText = $0 } }
+        .onDisappear { tts.stop(); voice.cancelListening() }
         .navigationTitle(NSLocalizedString("translate.title", comment: ""))
         .navigationBarTitleDisplayMode(.inline)
     }
@@ -75,6 +77,19 @@ struct TranslateView: View {
                     .font(TappyFont.caption)
                     .foregroundStyle(vm.isOverLimit ? .red : TappyColor.textSecondary)
                 Spacer()
+                // Web `data-tr-voice`: dictate into the box (the app language is what you speak)
+                Button {
+                    if voice.isListening { voice.stopListening() } else { voice.startListening(existingText: vm.inputText) }
+                } label: {
+                    HStack(spacing: 4) {
+                        Image(systemName: voice.isListening ? "mic.fill" : "mic")
+                        Text(NSLocalizedString(voice.isListening ? "voice.stopListening" : "voice.micHint", comment: ""))
+                    }
+                    .font(.system(size: 12, weight: .medium))
+                    .foregroundStyle(voice.isListening ? Color.orange : TappyColor.primary)
+                }
+                .buttonStyle(.plain)
+                .accessibilityIdentifier("translate-voice")
                 if !vm.inputText.isEmpty {
                     Button(NSLocalizedString("common.clear", comment: "")) { vm.clear() }
                         .font(.system(size: 12, weight: .medium))

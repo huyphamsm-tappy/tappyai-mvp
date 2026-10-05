@@ -261,6 +261,7 @@ final class ScreenshotTests: XCTestCase {
     func testSmartToolsOpenWithTheWebLayout() {
         var app = launch(route: "translate", signedIn: true, extra: ["-uitest-theme", "dark"])
         XCTAssertTrue(any(app, "translate-hero").waitForExistence(timeout: 40), "translate hero")
+        XCTAssertTrue(any(app, "translate-voice").exists, "dictation button (Web data-tr-voice)")
         XCTAssertTrue(scrollTo(app, "translate-footer-tip"), "translate footer tip")
         shot("92-translate-web-layout")
         app.terminate()
