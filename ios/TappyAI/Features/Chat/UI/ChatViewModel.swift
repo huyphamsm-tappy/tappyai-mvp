@@ -629,8 +629,9 @@ final class ChatViewModel: AppObservableObject {
                     return
                 }
 
-                if self.messages[assistantIndex].content.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-                    self.messages.remove(at: assistantIndex)
+                if Self.streamProducedNothing(content: self.messages[assistantIndex].content,
+                                              hasPlaces: self.messages[assistantIndex].livePlaces != nil) {
+                    self.messages.remove(at: assistantIndex)   // nothing the person could read: no empty bubble next to the error
                 } else {
                     self.messages[assistantIndex].status = .failed
                 }
