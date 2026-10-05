@@ -18,8 +18,19 @@ struct ScanView: View {
                 ToolHeroCard(eyebrow: NSLocalizedString("scan.heroEyebrow", comment: ""),
                              title: [NSLocalizedString("scan.heroTitle1", comment: ""), NSLocalizedString("scan.heroTitle2", comment: "")],
                              subtitle: NSLocalizedString("scan.heroBody", comment: ""),
+                             chips: [NSLocalizedString("scan.capCapture", comment: ""), NSLocalizedString("scan.capLangs", comment: "")],
                              mascot: "TappySearching", identifier: "scan-hero")
-                imageSection
+                if vm.hasImage {
+                    imageSection     // «Ảnh đã chọn» card with the picture and «Bỏ ảnh này»
+                } else {
+                    // Web: two big action cards, camera first, then the library
+                    ToolActionCard(symbol: "camera.fill", tint: Color(hex: 0x007AFF),
+                                   title: NSLocalizedString("scan.cameraTitle", comment: ""), detail: NSLocalizedString("scan.cameraDesc", comment: ""),
+                                   cta: NSLocalizedString("scan.cameraCta", comment: ""), identifier: "scan-camera") { showCamera = true }
+                    ToolActionCard(symbol: "photo.on.rectangle", tint: Color(hex: 0xFF9500),
+                                   title: NSLocalizedString("scan.galleryTitle", comment: ""), detail: NSLocalizedString("scan.galleryDesc", comment: ""),
+                                   cta: NSLocalizedString("scan.galleryCta", comment: ""), identifier: "scan-gallery") { showPhotoPicker = true }
+                }
                 if vm.hasImage && !vm.hasResult && !vm.loading {
                     scanButton
                 }
@@ -28,6 +39,16 @@ struct ScanView: View {
                 }
                 if vm.hasResult {
                     resultSection
+                }
+                if !vm.hasImage && !vm.hasResult {
+                    ToolInfoCard(title: NSLocalizedString("scan.formatsTitle", comment: ""),
+                                 detail: NSLocalizedString("scan.formatsDesc", comment: ""), identifier: "scan-formats")
+                    ToolInfoCard(title: NSLocalizedString("scan.tipsTitle", comment: ""),
+                                 rows: [("sun.max", NSLocalizedString("scan.tipLightTitle", comment: ""), NSLocalizedString("scan.tipLightDesc", comment: "")),
+                                        ("viewfinder", NSLocalizedString("scan.tipAngleTitle", comment: ""), NSLocalizedString("scan.tipAngleDesc", comment: "")),
+                                        ("sparkle.magnifyingglass", NSLocalizedString("scan.tipSharpTitle", comment: ""), NSLocalizedString("scan.tipSharpDesc", comment: "")),
+                                        ("character.book.closed", NSLocalizedString("scan.tipLangTitle", comment: ""), NSLocalizedString("scan.tipLangDesc", comment: ""))],
+                                 note: String(format: NSLocalizedString("scan.tipLimit", comment: ""), 20), identifier: "scan-tips")
                 }
                 if let error = vm.error {
                     errorBanner(error)
@@ -82,6 +103,8 @@ struct ScanView: View {
     private var imageSection: some View {
         VStack(spacing: Spacing.md) {
             if let image = vm.selectedImage {
+                Text(NSLocalizedString("scan.previewLabel", comment: "")).font(TappyFont.caption.weight(.bold)).textCase(.uppercase)
+                    .foregroundStyle(TappyColor.textSecondary).frame(maxWidth: .infinity, alignment: .leading)
                 Image(uiImage: image)
                     .resizable()
                     .aspectRatio(contentMode: .fit)

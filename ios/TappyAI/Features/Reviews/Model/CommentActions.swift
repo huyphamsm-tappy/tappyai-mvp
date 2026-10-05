@@ -39,6 +39,32 @@ enum CommentActions {
         comment.myReaction == reaction.rawValue ? nil : reaction
     }
 
+    /// Web `startReply` / `send`: «replying to a reply attaches to the same top-level thread (its parent), not under the reply itself — so
+    /// threads never nest deeper than one level» (`parentId = replyTo.parent_comment_id ?? replyTo.id`).
+    static func parentId(forReplyingTo comment: ReviewComment) -> String { comment.parentCommentId ?? comment.id }
+
+    /// Web `del`: «a deleted parent cascades to its replies in the DB — mirror that locally».
+    static func removing(_ commentId: String, from comments: [ReviewComment]) -> [ReviewComment] {
+        comments.filter { $0.id != commentId && $0.parentCommentId != commentId }
+    }
+
+    /// Web `renderComment`: up to three distinct reaction emoji and the total, e.g. «👍❤️ 3»; nil when nobody reacted.
+    static func reactionSummary(_ comment: ReviewComment) -> String? {
+        let total = comment.reactions.values.reduce(0, +)
+        guard total > 0 else { return nil }
+        let order = CommentReaction.allCases.map(\.rawValue)
+        let shown = comment.reactions.filter { $0.value > 0 }.keys
+            .sorted { (order.firstIndex(of: $0) ?? 99) < (order.firstIndex(of: $1) ?? 99) }
+            .prefix(3).compactMap { CommentReaction(rawValue: $0)?.emoji }
+        return shown.joined() + " " + String(total)
+    }
+
+    /// Web `replyName`: the last word of the name, «Ẩn danh» when there is none (the Web string `reviews.anonymous`).
+    static func shortName(_ comment: ReviewComment, anonymous: String) -> String {
+        let last = comment.profiles?.fullName?.split(separator: " ").last.map(String.init) ?? ""
+        return last.isEmpty ? anonymous : last
+    }
+
     /// Top-level comments in order, each followed by its replies (one level, as the Web nests them). A reply whose parent is not in the
     /// list (deleted, hidden by a block) is shown at top level rather than lost.
     static func threaded(_ comments: [ReviewComment]) -> [(comment: ReviewComment, isReply: Bool)] {

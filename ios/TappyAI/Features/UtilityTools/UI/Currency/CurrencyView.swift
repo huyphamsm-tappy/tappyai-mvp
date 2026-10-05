@@ -184,7 +184,7 @@ struct CurrencyView: View {
                 HStack(spacing: Spacing.xxs) {
                     Image(systemName: "arrow.clockwise")
                         .font(.system(size: 10))
-                    Text("Cập nhật: \(date)")
+                    Text(String(format: NSLocalizedString("currency.ratesUpdated", comment: ""), date))
                 }
                 .font(TappyFont.caption)
                 .foregroundStyle(TappyColor.textSecondary)

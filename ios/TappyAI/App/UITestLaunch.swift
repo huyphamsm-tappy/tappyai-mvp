@@ -151,6 +151,15 @@ enum UITestLaunch {
         case "scan":
             router.switchTo(.home)
             router.push(HomeDestination.scan, on: .home)
+        case "currency":
+            router.switchTo(.home)
+            router.push(HomeDestination.currency, on: .home)
+        case "split":
+            router.switchTo(.home)
+            router.push(HomeDestination.splitBill, on: .home)
+        case "fortune":
+            router.switchTo(.home)
+            router.push(HomeDestination.fortune, on: .home)
         case "group":
             router.switchTo(.home)
             router.push(HomeDestination.groupDining, on: .home)

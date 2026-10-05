@@ -239,7 +239,7 @@ final class ReviewsFeedViewModel: AppObservableObject {
 
         Task {
             do {
-                let response = try await service.postComment(reviewId: reviewId, body: body, parentId: parent?.id)
+                let response = try await service.postComment(reviewId: reviewId, body: body, parentId: parent.map(CommentActions.parentId(forReplyingTo:)))
                 replyingTo = nil
                 comments.append(response.comment)
                 commentCount = response.count
@@ -274,7 +274,7 @@ final class ReviewsFeedViewModel: AppObservableObject {
         Task {
             do {
                 let response = try await service.deleteComment(reviewId: reviewId, commentId: commentId)
-                comments.removeAll { $0.id == commentId }
+                comments = CommentActions.removing(commentId, from: comments)
                 commentCount = response.count
                 if let idx = reviews.firstIndex(where: { $0.id == reviewId }) {
                     reviews[idx].commentCount = response.count

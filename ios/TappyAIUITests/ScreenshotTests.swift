@@ -257,6 +257,37 @@ final class ScreenshotTests: XCTestCase {
         shot("91-chat-failure")
     }
 
+    /// Smart Tools parity (UAT build 129): every tool page opens with the Web's hero; Scan has the Web's two action cards, formats and tips.
+    func testSmartToolsOpenWithTheWebLayout() {
+        var app = launch(route: "translate", signedIn: true, extra: ["-uitest-theme", "dark"])
+        XCTAssertTrue(any(app, "translate-hero").waitForExistence(timeout: 40), "translate hero")
+        XCTAssertTrue(scrollTo(app, "translate-footer-tip"), "translate footer tip")
+        shot("92-translate-web-layout")
+        app.terminate()
+
+        app = launch(route: "currency", signedIn: true, extra: ["-uitest-theme", "dark"])
+        XCTAssertTrue(any(app, "currency-hero").waitForExistence(timeout: 40), "currency hero")
+        shot("93-currency-web-layout")
+        app.terminate()
+
+        app = launch(route: "split", signedIn: true, extra: ["-uitest-theme", "dark"])
+        XCTAssertTrue(any(app, "splitbill-hero").waitForExistence(timeout: 40), "split bill hero")
+        shot("94-split-web-layout")
+        app.terminate()
+
+        app = launch(route: "scan", signedIn: true, extra: ["-uitest-theme", "dark"])
+        XCTAssertTrue(any(app, "scan-hero").waitForExistence(timeout: 40), "scan hero")
+        XCTAssertTrue(scrollTo(app, "scan-camera"), "camera action card")
+        XCTAssertTrue(scrollTo(app, "scan-gallery"), "gallery action card")
+        XCTAssertTrue(scrollTo(app, "scan-tips"), "tips card")
+        shot("95-scan-web-layout")
+        app.terminate()
+
+        app = launch(route: "fortune", signedIn: true, extra: ["-uitest-theme", "dark"])
+        XCTAssertTrue(scrollTo(app, "fortune-disclaimer"), "fortune disclaimer")
+        shot("96-fortune-web-layout")
+    }
+
     func testGuestProfileHasSignInCardAndNoSignOut() {
         let app = launch(route: "hub", extra: ["-uitest-theme", "dark"])
         XCTAssertTrue(any(app, "profile-guest-signin").waitForExistence(timeout: 30))

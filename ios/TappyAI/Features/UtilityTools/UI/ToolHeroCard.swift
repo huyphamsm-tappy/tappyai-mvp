@@ -53,3 +53,71 @@ struct ToolHeroCard: View {
         .accessibilityIdentifier(identifier)
     }
 }
+
+/// A big tappable card with an icon, a title, a line and a call to action (Web scan page: «Chụp ảnh tài liệu» / «Chọn ảnh từ thư viện»).
+struct ToolActionCard: View {
+    let symbol: String
+    let tint: Color
+    let title: String
+    let detail: String
+    let cta: String
+    let identifier: String
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            VStack(alignment: .leading, spacing: Spacing.xs) {
+                Image(systemName: symbol).font(.system(size: 26, weight: .semibold)).foregroundStyle(tint)
+                    .frame(width: 52, height: 52).background(tint.opacity(0.14)).clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                Text(title).font(.system(size: 18, weight: .heavy)).foregroundStyle(TappyColor.textPrimary).multilineTextAlignment(.leading)
+                Text(detail).font(TappyFont.callout).foregroundStyle(TappyColor.textSecondary).multilineTextAlignment(.leading)
+                HStack(spacing: 8) {
+                    Image(systemName: symbol)
+                    Text(cta).font(.system(size: 15, weight: .bold))
+                }
+                .foregroundStyle(.white).frame(maxWidth: .infinity).padding(.vertical, 12).background(tint)
+                .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous)).padding(.top, Spacing.xs)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(Spacing.md)
+            .background(TappyColor.cardBackground)
+            .clipShape(RoundedRectangle(cornerRadius: Radius.xl))
+            .overlay(RoundedRectangle(cornerRadius: Radius.xl).stroke(TappyColor.border, lineWidth: 1))
+        }
+        .buttonStyle(.plain)
+        .accessibilityIdentifier(identifier)
+    }
+}
+
+/// A titled card of short rows (Web `v3-scan-card`: «Định dạng hỗ trợ», «Mẹo để có kết quả tốt hơn»).
+struct ToolInfoCard: View {
+    let title: String
+    var detail: String? = nil
+    var rows: [(symbol: String, title: String, detail: String)] = []
+    var note: String? = nil
+    var identifier = "tool-info"
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: Spacing.sm) {
+            Text(title).font(.system(size: 16, weight: .bold)).foregroundStyle(TappyColor.textPrimary)
+            if let detail { Text(detail).font(TappyFont.callout).foregroundStyle(TappyColor.textSecondary) }
+            ForEach(Array(rows.enumerated()), id: \.offset) { _, row in
+                HStack(alignment: .top, spacing: Spacing.sm) {
+                    Image(systemName: row.symbol).font(.system(size: 18, weight: .semibold)).foregroundStyle(TappyColor.primary)
+                        .frame(width: 36, height: 36).background(TappyColor.primary.opacity(0.1)).clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(row.title).font(.system(size: 14.5, weight: .bold)).foregroundStyle(TappyColor.textPrimary)
+                        Text(row.detail).font(TappyFont.caption).foregroundStyle(TappyColor.textSecondary)
+                    }
+                }
+            }
+            if let note { Text(note).font(TappyFont.caption).foregroundStyle(TappyColor.textSecondary).padding(.top, Spacing.xxs) }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(Spacing.md)
+        .background(TappyColor.cardBackground)
+        .clipShape(RoundedRectangle(cornerRadius: Radius.xl))
+        .overlay(RoundedRectangle(cornerRadius: Radius.xl).stroke(TappyColor.border, lineWidth: 1))
+        .accessibilityIdentifier(identifier)
+    }
+}

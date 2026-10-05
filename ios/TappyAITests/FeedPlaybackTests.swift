@@ -88,6 +88,59 @@ final class FeedPlaybackTests: XCTestCase {
         XCTAssertFalse(p.isMuted)
     }
 
+    // MARK: - The sequences the UAT asked for
+
+    func testAThenBThenCLeavesOnlyCPlaying() {
+        let a = FeedVideoPlayer(), b = FeedVideoPlayer(), c = FeedVideoPlayer()
+        a.setActive(true); b.setActive(true); c.setActive(true)
+        XCTAssertEqual([a, b, c].map(\.isPlaying), [false, false, true])
+    }
+
+    func testBackToAStopsB() {
+        let a = FeedVideoPlayer(), b = FeedVideoPlayer()
+        a.setActive(true); b.setActive(true)
+        a.setActive(true)
+        XCTAssertEqual([a, b].map(\.isPlaying), [true, false])
+    }
+
+    func testExploreToHomeOrProfileStopsEverything() {
+        let a = FeedVideoPlayer(), b = FeedVideoPlayer()
+        a.setActive(true); b.setActive(true)
+        FeedVideoPlayer.pauseAll()        // the feed's onDisappear (another tab, or a pushed screen)
+        XCTAssertEqual([a, b].map(\.isPlaying), [false, false])
+        XCTAssertEqual(FeedVideoPlayer.playingCount, 0, "no player is producing sound or pictures")
+    }
+
+    func testBackgroundThenForegroundResumesOnlyTheClipOnScreen() {
+        let a = FeedVideoPlayer(), b = FeedVideoPlayer()
+        b.setActive(true)
+        FeedVideoPlayer.pauseAll()        // scenePhase != .active
+        XCTAssertEqual([a, b].map(\.isPlaying), [false, false])
+        b.setActive(true)                 // scenePhase == .active: the page on screen re-activates
+        XCTAssertEqual([a, b].map(\.isPlaying), [false, true])
+    }
+
+    func testSoundStaysUnlockedAcrossLeavingAndReturning() {
+        let a = FeedVideoPlayer()
+        a.setActive(true)
+        a.handleTap()
+        XCTAssertFalse(a.isMuted)
+        FeedVideoPlayer.pauseAll()
+        let again = FeedVideoPlayer()     // returning to a clip: a fresh page, same session
+        again.setActive(true)
+        XCTAssertFalse(again.isMuted, "the person already unlocked sound this session")
+        XCTAssertTrue(again.isPlaying)
+    }
+
+    func testASharedClipDetailPlayerNeverOverlapsTheFeed() {
+        let feed = FeedVideoPlayer(), detail = FeedVideoPlayer()
+        feed.setActive(true)
+        detail.setActive(true)            // a shared link opens the detail while the feed was playing
+        XCTAssertEqual([feed, detail].map(\.isPlaying), [false, true])
+        FeedVideoPlayer.pauseAll()        // leaving the detail
+        XCTAssertFalse(detail.isPlaying)
+    }
+
     // MARK: - A profile's clip viewer
 
     func testTheViewerOpensAtTheTappedClipAndKeepsTheWholeList() throws {

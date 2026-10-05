@@ -884,6 +884,41 @@
     "fortune.heroTitleLine1": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Wondering what today"}}, "vi": {"stringUnit": {"state": "translated", "value": "Tò mò vận may"}}}},
     "fortune.heroTitleLine2": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "has in store for you?"}}, "vi": {"stringUnit": {"state": "translated", "value": "hôm nay của bạn?"}}}},
     "fortune.heroDesc": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Tarot, Chinese zodiac horoscope and star signs — just for fun, entertainment only."}}, "vi": {"stringUnit": {"state": "translated", "value": "Tarot, tử vi 12 con giáp và cung hoàng đạo — chỉ mang tính giải trí, tham khảo cho vui."}}}},
+    "scan.cameraTitle" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Photograph a document"}}, "vi": {"stringUnit": {"state": "translated", "value": "Chụp ảnh tài liệu"}}}},
+    "scan.cameraDesc" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Use your device camera"}}, "vi": {"stringUnit": {"state": "translated", "value": "Dùng camera của thiết bị"}}}},
+    "scan.cameraCta" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Open camera"}}, "vi": {"stringUnit": {"state": "translated", "value": "Mở camera"}}}},
+    "scan.galleryTitle" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Pick from gallery"}}, "vi": {"stringUnit": {"state": "translated", "value": "Chọn ảnh từ thư viện"}}}},
+    "scan.galleryDesc" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Choose a photo already on your device"}}, "vi": {"stringUnit": {"state": "translated", "value": "Chọn ảnh có sẵn trong thiết bị"}}}},
+    "scan.galleryCta" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Choose image"}}, "vi": {"stringUnit": {"state": "translated", "value": "Chọn ảnh"}}}},
+    "scan.previewLabel" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Selected image"}}, "vi": {"stringUnit": {"state": "translated", "value": "Ảnh đã chọn"}}}},
+    "scan.clearImage" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Remove this image"}}, "vi": {"stringUnit": {"state": "translated", "value": "Bỏ ảnh này"}}}},
+    "scan.exportLabel" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Export content"}}, "vi": {"stringUnit": {"state": "translated", "value": "Xuất nội dung"}}}},
+    "scan.copy" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Copy"}}, "vi": {"stringUnit": {"state": "translated", "value": "Sao chép"}}}},
+    "scan.copied" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Copied!"}}, "vi": {"stringUnit": {"state": "translated", "value": "Đã chép!"}}}},
+    "scan.share" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Share"}}, "vi": {"stringUnit": {"state": "translated", "value": "Chia sẻ"}}}},
+    "scan.sharedDone" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Shared!"}}, "vi": {"stringUnit": {"state": "translated", "value": "Đã chia sẻ!"}}}},
+    "scan.formatsTitle" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Supported formats"}}, "vi": {"stringUnit": {"state": "translated", "value": "Định dạng hỗ trợ"}}}},
+    "scan.formatsDesc" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Sharp images give the best results"}}, "vi": {"stringUnit": {"state": "translated", "value": "Ảnh rõ nét cho kết quả tốt nhất"}}}},
+    "scan.tipsTitle" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Tips for better results"}}, "vi": {"stringUnit": {"state": "translated", "value": "Mẹo để có kết quả tốt hơn"}}}},
+    "scan.tipLightTitle" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Good lighting"}}, "vi": {"stringUnit": {"state": "translated", "value": "Đủ ánh sáng"}}}},
+    "scan.tipLightDesc" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Shoot somewhere bright and avoid shadows"}}, "vi": {"stringUnit": {"state": "translated", "value": "Chụp ở nơi đủ sáng, tránh bóng đổ"}}}},
+    "scan.tipAngleTitle" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Keep it straight"}}, "vi": {"stringUnit": {"state": "translated", "value": "Giữ thẳng góc"}}}},
+    "scan.tipAngleDesc" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Lay the document flat and shoot head-on"}}, "vi": {"stringUnit": {"state": "translated", "value": "Đặt tài liệu trên mặt phẳng, chụp thẳng góc"}}}},
+    "scan.tipSharpTitle" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Sharp and clear"}}, "vi": {"stringUnit": {"state": "translated", "value": "Nét và rõ ràng"}}}},
+    "scan.tipSharpDesc" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Make sure the text is crisp, not blurred"}}, "vi": {"stringUnit": {"state": "translated", "value": "Đảm bảo chữ rõ nét, không bị mờ"}}}},
+    "scan.tipLangTitle" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Vietnamese & English"}}, "vi": {"stringUnit": {"state": "translated", "value": "Tiếng Việt & tiếng Anh"}}}},
+    "scan.tipLangDesc" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Clear printed text in either language reads best"}}, "vi": {"stringUnit": {"state": "translated", "value": "Chữ in rõ ràng ở cả hai ngôn ngữ đọc tốt nhất"}}}},
+    "scan.tipLimit" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Limit of %lld scans per day"}}, "vi": {"stringUnit": {"state": "translated", "value": "Giới hạn %lld lần quét mỗi ngày"}}}},
+    "scan.capCapture" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Snap or upload a photo"}}, "vi": {"stringUnit": {"state": "translated", "value": "Chụp hoặc tải ảnh"}}}},
+    "scan.capLangs" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Vietnamese & English"}}, "vi": {"stringUnit": {"state": "translated", "value": "Tiếng Việt & tiếng Anh"}}}},
+    "translate.footerTip" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Free · Up to 30 translations/day · No account needed"}}, "vi": {"stringUnit": {"state": "translated", "value": "Miễn phí · Tối đa 30 lần/ngày · Không cần tài khoản"}}}},
+    "translate.sourceAuto" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Source language detected automatically"}}, "vi": {"stringUnit": {"state": "translated", "value": "Tự nhận diện ngôn ngữ gốc"}}}},
+    "translate.readAloud" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Read aloud"}}, "vi": {"stringUnit": {"state": "translated", "value": "Đọc to"}}}},
+    "translate.stopSpeaking" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Stop"}}, "vi": {"stringUnit": {"state": "translated", "value": "Dừng"}}}},
+    "translate.copied" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Copied!"}}, "vi": {"stringUnit": {"state": "translated", "value": "Đã chép!"}}}},
+    "currency.ratesUpdated" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Rates updated %@ · Source: open.er-api.com"}}, "vi": {"stringUnit": {"state": "translated", "value": "Tỷ giá cập nhật %@ · Nguồn: open.er-api.com"}}}},
+    "currency.rateStatusLive" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Rates refreshed hourly"}}, "vi": {"stringUnit": {"state": "translated", "value": "Tỷ giá cập nhật hàng giờ"}}}},
+    "currency.rateStatusFallback" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Estimated rates"}}, "vi": {"stringUnit": {"state": "translated", "value": "Tỷ giá ước tính"}}}},
     "feed.video.failed": {
       "localizations": {
         "en": { "stringUnit": { "state": "translated", "value": "This clip could not load." } },
@@ -4519,74 +4554,10 @@
         }
       }
     },
-    "currency.amountPlaceholder": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Enter an amount"
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nhập số tiền"
-          }
-        }
-      }
-    },
-    "currency.disclaimer": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Indicative rates — not for financial transactions"
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tỷ giá tham khảo, không dùng cho giao dịch tài chính"
-          }
-        }
-      }
-    },
-    "currency.enterAmountHint": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Enter an amount to convert"
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nhập số tiền để quy đổi"
-          }
-        }
-      }
-    },
-    "currency.fallbackRates": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "⚠️ Using fallback rates"
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "⚠️ Đang dùng tỷ giá dự phòng"
-          }
-        }
-      }
-    },
+    "currency.amountPlaceholder" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Enter an amount..."}}, "vi": {"stringUnit": {"state": "translated", "value": "Nhập số tiền..."}}}},
+    "currency.disclaimer" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Rates are for reference only, not for financial transactions."}}, "vi": {"stringUnit": {"state": "translated", "value": "Tỷ giá chỉ mang tính tham khảo, không dùng cho giao dịch tài chính."}}}},
+    "currency.enterAmountHint" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Enter an amount to see the result"}}, "vi": {"stringUnit": {"state": "translated", "value": "Nhập số tiền để xem kết quả"}}}},
+    "currency.fallbackRates" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Using estimated rates (could not reach the data source)"}}, "vi": {"stringUnit": {"state": "translated", "value": "Đang dùng tỷ giá ước tính (không kết nối được nguồn dữ liệu)"}}}},
     "currency.from": {
       "extractionState": "manual",
       "localizations": {
@@ -4604,23 +4575,7 @@
         }
       }
     },
-    "currency.loadingRates": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Loading rates…"
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Đang tải tỷ giá..."
-          }
-        }
-      }
-    },
+    "currency.loadingRates" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Loading exchange rates..."}}, "vi": {"stringUnit": {"state": "translated", "value": "Đang tải tỷ giá..."}}}},
     "currency.title": {
       "extractionState": "manual",
       "localizations": {
@@ -14973,23 +14928,7 @@
         }
       }
     },
-    "scan.heading": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Scan text"
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Scan văn bản"
-          }
-        }
-      }
-    },
+    "scan.heading" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Scan document"}}, "vi": {"stringUnit": {"state": "translated", "value": "Quét tài liệu"}}}},
     "scan.library": {
       "extractionState": "manual",
       "localizations": {
@@ -15024,57 +14963,9 @@
         }
       }
     },
-    "scan.recognizedText": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Recognised text"
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Văn bản nhận dạng"
-          }
-        }
-      }
-    },
-    "scan.recognizing": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Recognising text…"
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Đang nhận dạng văn bản..."
-          }
-        }
-      }
-    },
-    "scan.takePhoto": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Take a photo"
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Chụp ảnh"
-          }
-        }
-      }
-    },
+    "scan.recognizedText" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Extracted content"}}, "vi": {"stringUnit": {"state": "translated", "value": "Nội dung trích xuất"}}}},
+    "scan.recognizing" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Reading document..."}}, "vi": {"stringUnit": {"state": "translated", "value": "Đang đọc tài liệu..."}}}},
+    "scan.takePhoto" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Take photo"}}, "vi": {"stringUnit": {"state": "translated", "value": "Chụp ảnh"}}}},
     "scan.title": {
       "extractionState": "manual",
       "localizations": {
@@ -17060,40 +16951,8 @@
         }
       }
     },
-    "splitbill.amountPlaceholder": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Enter an amount (VND)"
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nhập số tiền (VND)"
-          }
-        }
-      }
-    },
-    "splitbill.disclaimer": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "A calculation aid — for reference only"
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Công cụ hỗ trợ tính toán, chỉ mang tính tham khảo"
-          }
-        }
-      }
-    },
+    "splitbill.amountPlaceholder" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Enter the total..."}}, "vi": {"stringUnit": {"state": "translated", "value": "Nhập tổng tiền..."}}}},
+    "splitbill.disclaimer" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Amounts are estimates — round them to make paying easier."}}, "vi": {"stringUnit": {"state": "translated", "value": "Số tiền chỉ mang tính tham khảo, làm tròn để dễ trả."}}}},
     "splitbill.enterPerPersonHint": {
       "extractionState": "manual",
       "localizations": {
@@ -17111,23 +16970,7 @@
         }
       }
     },
-    "splitbill.enterTotalHint": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Enter the bill total to calculate"
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nhập tổng hoá đơn để tính"
-          }
-        }
-      }
-    },
+    "splitbill.enterTotalHint" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Enter the bill total to calculate"}}, "vi": {"stringUnit": {"state": "translated", "value": "Nhập tổng tiền để tính"}}}},
     "splitbill.field.amount": {
       "extractionState": "manual",
       "localizations": {
@@ -17162,40 +17005,8 @@
         }
       }
     },
-    "splitbill.grandAfterTip": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Total (with tip)"
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tổng (sau tip)"
-          }
-        }
-      }
-    },
-    "splitbill.mode.custom": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Custom"
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tuỳ chỉnh"
-          }
-        }
-      }
-    },
+    "splitbill.grandAfterTip" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Total (after tip)"}}, "vi": {"stringUnit": {"state": "translated", "value": "Tổng (sau tip)"}}}},
+    "splitbill.mode.custom" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Split by item"}}, "vi": {"stringUnit": {"state": "translated", "value": "Chia theo món"}}}},
     "splitbill.mode.equal": {
       "extractionState": "manual",
       "localizations": {
@@ -17213,23 +17024,7 @@
         }
       }
     },
-    "splitbill.peopleCount": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "People"
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Số người"
-          }
-        }
-      }
-    },
+    "splitbill.peopleCount" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Number of people"}}, "vi": {"stringUnit": {"state": "translated", "value": "Số người"}}}},
     "splitbill.peopleUnit": {
       "extractionState": "manual",
       "localizations": {
@@ -17247,23 +17042,7 @@
         }
       }
     },
-    "splitbill.perPerson": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Each person pays"
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Mỗi người trả"
-          }
-        }
-      }
-    },
+    "splitbill.perPerson" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Each person pays"}}, "vi": {"stringUnit": {"state": "translated", "value": "Số tiền mỗi người phải trả"}}}},
     "splitbill.person1": {
       "extractionState": "manual",
       "localizations": {
@@ -17383,23 +17162,7 @@
         }
       }
     },
-    "splitbill.total": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bill total"
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tổng hoá đơn"
-          }
-        }
-      }
-    },
+    "splitbill.total" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Bill total (đ)"}}, "vi": {"stringUnit": {"state": "translated", "value": "Tổng tiền hóa đơn (đ)"}}}},
     "sub.alreadyPro": {
       "localizations": {
         "en": {
@@ -18248,23 +18011,7 @@
         }
       }
     },
-    "translate.action": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Translate"
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Dịch"
-          }
-        }
-      }
-    },
+    "translate.action" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Translate"}}, "vi": {"stringUnit": {"state": "translated", "value": "Dịch ngay"}}}},
     "translate.error.dailyLimit": {
       "extractionState": "manual",
       "localizations": {
@@ -18299,57 +18046,9 @@
         }
       }
     },
-    "translate.inputHeading": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Text to translate"
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nhập văn bản"
-          }
-        }
-      }
-    },
-    "translate.inputPlaceholder": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Type or paste the text to translate…"
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nhập hoặc dán văn bản cần dịch..."
-          }
-        }
-      }
-    },
-    "translate.result": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Result"
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Kết quả"
-          }
-        }
-      }
-    },
+    "translate.inputHeading" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Text to translate"}}, "vi": {"stringUnit": {"state": "translated", "value": "Văn bản cần dịch"}}}},
+    "translate.inputPlaceholder" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Type or paste text here..."}}, "vi": {"stringUnit": {"state": "translated", "value": "Nhập hoặc dán văn bản vào đây..."}}}},
+    "translate.result" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Result · %@"}}, "vi": {"stringUnit": {"state": "translated", "value": "Kết quả · %@"}}}},
     "translate.targetHeading": {
       "extractionState": "manual",
       "localizations": {
@@ -18384,23 +18083,7 @@
         }
       }
     },
-    "translate.translating": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Translating…"
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Đang dịch..."
-          }
-        }
-      }
-    },
+    "translate.translating" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Translating..."}}, "vi": {"stringUnit": {"state": "translated", "value": "Đang dịch..."}}}},
     "ugc.terms.agree": {
       "extractionState": "manual",
       "localizations": {

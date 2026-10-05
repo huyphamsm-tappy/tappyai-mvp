@@ -60,4 +60,31 @@ final class CommentActionsTests: XCTestCase {
     func testTheReactionKeysAreTheOnesTheServerAccepts() {
         XCTAssertEqual(Set(CommentReaction.allCases.map(\.rawValue)), ["like", "love", "haha", "wow", "sad", "angry"])
     }
+
+    // MARK: - The rest of the Web contract (feedShared.tsx / ReviewCommentButton.tsx)
+
+    func testReplyingToAReplyAttachesToTheTopLevelThread() {
+        let top = comment("a")
+        let reply = comment("a1", parent: "a")
+        XCTAssertEqual(CommentActions.parentId(forReplyingTo: top), "a")
+        XCTAssertEqual(CommentActions.parentId(forReplyingTo: reply), "a", "never nested deeper than one level")
+    }
+
+    func testDeletingAParentTakesItsRepliesWithIt() {
+        let list = [comment("a"), comment("a1", parent: "a"), comment("b"), comment("b1", parent: "b")]
+        XCTAssertEqual(CommentActions.removing("a", from: list).map(\.id), ["b", "b1"])
+        XCTAssertEqual(CommentActions.removing("a1", from: list).map(\.id), ["a", "b", "b1"], "a reply alone leaves its parent")
+    }
+
+    func testTheReactionSummaryIsUpToThreeEmojiAndTheTotal() {
+        XCTAssertNil(CommentActions.reactionSummary(comment("c")))
+        XCTAssertEqual(CommentActions.reactionSummary(comment("c", reactions: ["like": 2, "love": 1])), "👍❤️ 3")
+        XCTAssertEqual(CommentActions.reactionSummary(comment("c", reactions: ["like": 1, "love": 1, "haha": 1, "wow": 1])), "👍❤️😂 4")
+    }
+
+    func testTheReplyNameIsTheLastWordOfTheName() throws {
+        let named = try ResponseDecoder.json.decode(ReviewComment.self, from: Data(#"{"id":"c","body":"b","created_at":"x","user_id":"u","profiles":{"full_name":"Nguyễn Văn An"}}"#.utf8))
+        XCTAssertEqual(CommentActions.shortName(named, anonymous: "Ẩn danh"), "An")
+        XCTAssertEqual(CommentActions.shortName(comment("c"), anonymous: "Ẩn danh"), "Ẩn danh")
+    }
 }

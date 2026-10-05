@@ -1,7 +1,9 @@
+import AVFoundation
 import SwiftUI
 
 struct TranslateView: View {
     @AppStateObject private var vm: TranslateViewModel
+    @AppStateObject private var tts = TTSManager()
 
     init(deps: AppDependencies) {
         let service = UtilityToolsService(api: deps.api, consent: deps.aiConsent)
@@ -24,11 +26,15 @@ struct TranslateView: View {
                 if let error = vm.error {
                     errorBanner(error)
                 }
+                Text(NSLocalizedString("translate.footerTip", comment: ""))
+                    .font(TappyFont.caption).foregroundStyle(TappyColor.textSecondary).multilineTextAlignment(.center)
+                    .accessibilityIdentifier("translate-footer-tip")
             }
             .padding(.horizontal, Spacing.md)
             .padding(.vertical, Spacing.lg)
         }
         .background(TappyColor.background)
+        .onDisappear { tts.stop() }
         .navigationTitle(NSLocalizedString("translate.title", comment: ""))
         .navigationBarTitleDisplayMode(.inline)
     }
@@ -100,6 +106,9 @@ struct TranslateView: View {
             }
             .pickerStyle(.menu)
             .tint(TappyColor.textPrimary)
+
+            // Web `translate.sourceAuto`
+            Text(NSLocalizedString("translate.sourceAuto", comment: "")).font(TappyFont.caption).foregroundStyle(TappyColor.textSecondary)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(Spacing.lg)
@@ -144,7 +153,7 @@ struct TranslateView: View {
     private var resultSection: some View {
         VStack(alignment: .leading, spacing: Spacing.sm) {
             HStack {
-                Text(NSLocalizedString("translate.result", comment: ""))
+                Text(String(format: NSLocalizedString("translate.result", comment: ""), supportedLanguages.first { $0.code == vm.targetLang }?.name ?? vm.targetLang))
                     .font(.system(size: 13, weight: .semibold))
                     .foregroundStyle(TappyColor.textSecondary)
                 Spacer()
@@ -166,6 +175,19 @@ struct TranslateView: View {
                 .font(TappyFont.body)
                 .foregroundStyle(TappyColor.textPrimary)
                 .textSelection(.enabled)
+
+            // Web `translate.readAloud` / `stopSpeaking`
+            Button { toggleReadAloud() } label: {
+                HStack(spacing: 4) {
+                    Image(systemName: tts.speakingMsgId == Self.speechId ? "stop.fill" : "speaker.wave.2")
+                        .font(.system(size: 11))
+                    Text(NSLocalizedString(tts.speakingMsgId == Self.speechId ? "translate.stopSpeaking" : "translate.readAloud", comment: ""))
+                        .font(.system(size: 12, weight: .medium))
+                }
+                .foregroundStyle(TappyColor.primary)
+            }
+            .buttonStyle(.plain)
+            .accessibilityIdentifier("translate-read-aloud")
         }
         .padding(Spacing.lg)
         .background(TappyColor.cardBackground)
@@ -174,6 +196,19 @@ struct TranslateView: View {
             RoundedRectangle(cornerRadius: Radius.xl)
                 .stroke(TappyColor.border, lineWidth: 1)
         )
+    }
+
+    // MARK: - Read aloud
+
+    private static let speechId = "translate-result"
+
+    private func toggleReadAloud() {
+        if tts.speakingMsgId == Self.speechId { tts.stop(); return }
+        let code = vm.targetLang.lowercased()
+        let tag = VoiceLocale.tag(for: code)
+            ?? AVSpeechSynthesisVoice.speechVoices().first { $0.language.lowercased().hasPrefix(code) }?.language
+        guard let tag else { return }   // no voice for this language on the phone: nothing is read in the wrong one
+        tts.speak(msgId: Self.speechId, text: vm.translation, localeTag: tag)
     }
 
     // MARK: - Error

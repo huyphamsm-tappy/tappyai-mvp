@@ -8,6 +8,10 @@ struct FortuneHubView: View {
             VStack(spacing: Spacing.lg) {
                 heroBanner
                 featureList
+                // Web `fortune.disclaimer` (data-boi-disclaimer)
+                Text(NSLocalizedString("fortune.disclaimer", comment: ""))
+                    .font(TappyFont.caption).foregroundStyle(TappyColor.textSecondary).multilineTextAlignment(.center)
+                    .accessibilityIdentifier("fortune-disclaimer")
             }
             .padding(.horizontal, Spacing.md)
             .padding(.vertical, Spacing.lg)

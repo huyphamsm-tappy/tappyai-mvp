@@ -68,7 +68,8 @@ struct ReviewCommentSheet: View {
                 Divider()
                 if let replyingTo {
                     HStack {
-                        Text(String(format: NSLocalizedString("review.comments.replyingTo", comment: ""), replyingTo.displayName))
+                        Text(String(format: NSLocalizedString("review.comments.replyingTo", comment: ""),
+                                    CommentActions.shortName(replyingTo, anonymous: NSLocalizedString("search.user.unnamed", comment: ""))))
                             .font(TappyFont.caption).foregroundStyle(TappyColor.textSecondary).lineLimit(1)
                         Spacer()
                         Button { onReply(nil) } label: { Image(systemName: "xmark.circle.fill").foregroundStyle(TappyColor.textSecondary) }
@@ -175,13 +176,10 @@ struct ReviewCommentSheet: View {
                 .accessibilityLabel(Text("review.comments.react"))
                 .accessibilityIdentifier("comment-react-" + comment.id)
             }
-            // What was chosen, most popular first; the caller's own is marked.
-            ForEach(comment.reactions.sorted { $0.value != $1.value ? $0.value > $1.value : $0.key < $1.key }, id: \.key) { item in
-                if let reaction = CommentReaction(rawValue: item.key) {
-                    Text("\(reaction.emoji) \(item.value)")
-                        .font(TappyFont.caption)
-                        .foregroundStyle(comment.myReaction == item.key ? TappyColor.primary : TappyColor.textSecondary)
-                }
+            // Web: up to three emoji and the total.
+            if let summary = CommentActions.reactionSummary(comment) {
+                Text(summary).font(TappyFont.caption).foregroundStyle(TappyColor.textSecondary)
+                    .accessibilityIdentifier("comment-reactions-" + comment.id)
             }
             Spacer(minLength: 0)
         }
