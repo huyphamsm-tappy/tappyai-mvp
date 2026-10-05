@@ -46,11 +46,12 @@ final class ScamScenarioCardTests: XCTestCase {
         }
     }
 
-    func testABareQrInvoiceIsOnlyAWeakMatchSoItIsSuspiciousWithTheScenarioShown() {
-        let text = "Hóa đơn tiền điện tháng 9 kèm mã QR thanh toán"
+    func testAWeakMatchIsSuspiciousWithTheScenarioShown() {
+        // «hoàn tiền» alone scores 4 (weak) for scenario 13 and no request rule fires, so the verdict is «suspicious» with scenario 13 shown.
+        let text = "Có người gọi điện yêu cầu tôi cung cấp thông tin CCCD để xử lý vấn đề hoàn tiền"
         XCTAssertEqual(ScamScenarioMatcher.best(text)?.strength, .weak)
         guard case .unsure(_, _, let scenario) = ScamMessageMatcher.analyze(text) else { return XCTFail("weak match = suspicious") }
-        XCTAssertNotNil(scenario, "the matched scenario travels with the suspicious verdict")
+        XCTAssertEqual(scenario, 13, "the matched scenario travels with the suspicious verdict")
     }
 
     func testTheOwnersCccdRefundDescriptionShowsAScenario() {

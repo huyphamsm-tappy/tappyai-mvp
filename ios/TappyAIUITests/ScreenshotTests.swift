@@ -324,7 +324,7 @@ final class ScreenshotTests: XCTestCase {
 
     /// WEB 65685a7: no AI for the message check — the «suspicious» result has no «analyse deeper with AI» entry.
     func testScamMessageUnsureHasNoAIEntry() {
-        let app = scamLaunch(["-uitest-scam-message", "Hóa đơn tiền điện tháng 9 kèm mã QR thanh toán"])   // a WEAK scenario match (Web match.test.ts): suspicious
+        let app = scamLaunch(["-uitest-scam-message", "Có người gọi điện yêu cầu tôi cung cấp thông tin CCCD để xử lý vấn đề hoàn tiền"])   // a WEAK scenario match: suspicious, scenario shown
         XCTAssertTrue(any(app, "scam-msg-unsure").waitForExistence(timeout: 40))
         shot("88-scam-message-unsure")
         for _ in 0..<2 { app.swipeUp() }
