@@ -20,15 +20,17 @@ export async function android({ a, shot, check, seeded }) {
 
   const nested = [
     ['Tôi', 'Cài đặt', 'Cài đặt'],
-    ['Tôi', 'Đã lưu', 'Đã lưu'],
-    ['Tôi', 'Lịch sử chat', 'Lịch sử chat'],
+    // The hub keeps one «Tài khoản» row (web owner 02/10): these two rows are on the Account page (4th element = the page between).
+    ['Tôi', 'Đã lưu', 'Đã lưu', 'Tài khoản'],
+    ['Tôi', 'Lịch sử chat', 'Lịch sử chat', 'Tài khoản'],
     // 05/10: Home no longer has the «Gợi ý nhanh» pills («Viết caption bằng AI», «Gợi ý địa điểm du lịch» lived there — commit abe2f44);
     // the same destinations stay on Home as Smart Tools cards.
     ['Trang chủ', 'Viết', 'Viết'],
     ['Trang chủ', 'Tỷ giá', 'Tỷ giá'],
   ]
-  for (const [tab, row, label] of nested) {
+  for (const [tab, row, label, via] of nested) {
     await a.tap(tab, { after: 2500 })
+    if (via) { await a.tap(await a.scrollTo(via), { after: 3500 }) }
     const parent = a.texts().slice(0, 6).join('|')
     await a.scrollTo(row)
     await a.tap(row, { after: 3500 })
@@ -38,7 +40,12 @@ export async function android({ a, shot, check, seeded }) {
     // again (the parent's header may be scrolled away — the old top-of-screen check missed that).
     // No "Quay lại" = not still on the child page.
     const now = a.texts()
-    check(`Back từ "${label}" → về lại ${tab}`, inApp() && now.includes(row) && !now.includes('Quay lại'), `${parent.slice(0, 40)} → ${now.slice(0, 4).join('|')}`)
+    // Through the Account page the parent is that page (it has its own back arrow): one more Back lands on the tab.
+    if (via) {
+      check(`Back từ "${label}" → về lại trang ${via}`, inApp() && now.includes(row), `${parent.slice(0, 40)} → ${now.slice(0, 4).join('|')}`)
+      await a.back(); await a.sleep(1500)
+      check(`Back từ trang ${via} → về lại ${tab}`, inApp() && !a.texts().includes('Quay lại'))
+    } else check(`Back từ "${label}" → về lại ${tab}`, inApp() && now.includes(row) && !now.includes('Quay lại'), `${parent.slice(0, 40)} → ${now.slice(0, 4).join('|')}`)
   }
 
   // Explore → creator profile → Back; Explore → composer → Back.
