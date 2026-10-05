@@ -5,10 +5,10 @@
 | | |
 |---|---|
 | Web branch | `p7/web-subscription` |
-| Web commit | the commit that adds this file (`git log -1 --format=%H --diff-filter=A -- docs/ios/APPLE-SIGN-IN-HANDOFF.md`); a commit cannot contain its own hash. Its parent is the previous verified Web FINAL `a43948d41684386a46857077b02b6f413e025d1f` (remote-verified 2026-10-05 before this change). |
-| Remote SHA / CI run | reported with the push in the task report (not knowable before the commit exists) |
+| Web commit | capability change `bd8584a734c51acd3bd6cad90f52247585596039` (pushed; local == origin verified). This file was later corrected by a docs-only follow-up commit: `git log -1 --format=%H -- docs/ios/APPLE-SIGN-IN-HANDOFF.md` (a commit cannot contain its own hash). Previous Web FINAL: `a43948d41684386a46857077b02b6f413e025d1f`. |
+| Remote SHA / CI run | remote SHA: verified in the task report after each push. **Web CI run ID: not obtained** (the GitHub CLI lookup was denied by the session permission layer); read it from GitHub Actions for the commit above. iOS CI for `d300932`: run 37260197995 (as reported by the iOS release audit, not re-checked here). |
 | iOS reference | `ios/sync-2026-09-30` @ `d300932e604a07b6c014e4a21adc9257fb9da083` — not modified |
-| Apple policy | App Review Guideline 4.8 (Login Services): an app that uses a third-party / social login for the primary account must also offer an **equivalent login service** that (1) collects only name and email, (2) lets the user keep the email private, (3) does not collect app interactions for advertising without consent. The guideline does **not** name Sign in with Apple as the only way to comply (source: developer.apple.com/app-store/review/guidelines, read 2026-10-05). Sign in with Apple is used here because the iOS code already implements it. |
+| Apple policy | Apple Guideline 4.8 requires an equivalent login service when the covered third-party/social login pattern applies; Tappy is using Sign in with Apple as that equivalent option. In detail (App Review Guideline 4.8, Login Services): an app that uses a third-party / social login for the primary account must also offer an **equivalent login service** that (1) collects only name and email, (2) lets the user keep the email private, (3) does not collect app interactions for advertising without consent. The guideline does **not** name Sign in with Apple as the only way to comply (source: developer.apple.com/app-store/review/guidelines, read 2026-10-05). Sign in with Apple is used here because the iOS code already implements it. |
 
 ## 1. The `/api/config` contract
 
@@ -45,7 +45,7 @@ auth.providers    : [{id:"google",enabled:true},{id:"zalo",enabled:true},{id:"em
 
 ## 4. Remaining external dependency — SUPABASE CONFIGURATION REQUIRED
 
-1. **Supabase dashboard** (production project, then audit if wanted): *Authentication → Providers → Apple* → **Enable**, and under **Client IDs** add the iOS bundle id `com.tappyai.ios`. Per the current Supabase guide, native-only sign-in needs **no** Services ID, signing key or secret rotation (those are only for browser OAuth). Do not commit any key.
+1. **Supabase dashboard** (production project, then audit if wanted): *Authentication → Providers → Apple* → **Enable**, and under **Client IDs** add the iOS bundle id `com.tappyai.ios`. Per the current Supabase guide, native-only sign-in needs **no** Services ID, signing key or secret rotation (those are only for browser OAuth). Do not commit any key. The Supabase Swift reference (`auth-signinwithidtoken`) confirms the call shape iOS uses, `OpenIDConnectCredentials(provider: .apple, idToken:, nonce:)` with a required nonce; it lists no dashboard prerequisites, which come from the Apple guide above.
 2. **Apple Developer:** App ID `com.tappyai.ios` has the *Sign in with Apple* capability (the iOS docs record it as enabled since 28/09 and in the provisioning profile; not re-verified here).
 3. **Deploy:** this Web commit must be on production for `/api/config` to emit the field there (production currently serves an older build).
 4. **Then verify:** `GET /api/config` shows `flags.appleSignIn: true`, and one real sign-in on a TestFlight build with an authorized test Apple ID.

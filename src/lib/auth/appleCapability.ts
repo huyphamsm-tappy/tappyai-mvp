@@ -5,8 +5,9 @@
 // decides whether the Apple button may be shown is whether the Supabase project has the Apple provider ENABLED (dashboard:
 // Authentication > Providers > Apple, with the iOS bundle id under "Client IDs").
 //
-// The repository cannot know that from code or env, and a hand-set flag drifts (a button that fails is worse than no button, and
-// Apple rejects a Google/Zalo-only app under 4.8 only when the button is missing). Supabase publishes the non-secret provider state at
+// The repository cannot know that from code or env, and a hand-set flag drifts (a button that fails is worse than no button).
+// Policy context: Apple Guideline 4.8 requires an equivalent login service when the covered third-party/social login pattern applies;
+// Tappy is using Sign in with Apple as that equivalent option. Supabase publishes the non-secret provider state at
 // GET <project>/auth/v1/settings -> { external: { apple: boolean, google: boolean, ... } } (public, readable with the public anon key).
 // That is the capability source here, read through `appleProviderEnabled`.
 //
