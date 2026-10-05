@@ -131,7 +131,8 @@ final class AccountDeletionTests: XCTestCase {
         return AccountDeletionFlow(
             send: { word, code in
                 probe.sent.append((word, code))
-                if let next = remaining.isEmpty ? nil : remaining.removeFirst(), let error = next { throw error }
+                guard !remaining.isEmpty else { return }
+                if let error = remaining.removeFirst() { throw error }
             },
             reauthorize: {
                 probe.reauthorizations += 1
