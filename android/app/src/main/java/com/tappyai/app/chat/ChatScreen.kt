@@ -82,6 +82,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.booleanResource
 import androidx.compose.ui.res.painterResource
@@ -879,7 +880,7 @@ private fun ChatComposer(
                 .fillMaxWidth()
                 .padding(horizontal = TappySpacing.md, vertical = TappySpacing.sm),
             verticalAlignment = Alignment.Bottom,
-            horizontalArrangement = Arrangement.spacedBy(TappySpacing.xs),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             // Attach button hidden for MVP — AI Chat is text-only, matching the web
             // (ChatInterface: "Camera button hidden for MVP"). The staged-image plumbing
@@ -914,6 +915,7 @@ private fun ChatComposer(
                 singleLine = false,
                 maxLines = 6,
                 modifier = Modifier.weight(1f),
+                filled = true, // Web: `bg-gray-100 dark:bg-gray-800 rounded-2xl px-4 py-3` (no outline), focus ring primary-500/50
                 // Enter sends, exactly as the send arrow does and under the same gate — web
                 // parity (Enter sends, Shift+Enter breaks the line). While a reply is still
                 // arriving Enter does nothing, like the arrow that is a Stop button then.
@@ -921,12 +923,17 @@ private fun ChatComposer(
             )
             // Emoji toggle — sits between the input and the mic, mirroring the web control order
             // (textarea → emoji → mic → send). Tinted while the panel is open (web accent state).
-            IconButton(onClick = { showEmojiPanel = !showEmojiPanel }) {
+            val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
+            val buttonBg = if (isDark) WebGray800 else WebGray100
+            ComposerSquareButton(
+                onClick = { showEmojiPanel = !showEmojiPanel },
+                container = if (showEmojiPanel) (if (isDark) WebAccent900.copy(alpha = 0.30f) else WebAccent100) else buttonBg,
+            ) {
                 Icon(
                     imageVector = Icons.Filled.Mood,
                     contentDescription = stringResource(R.string.chat_action_emoji),
-                    tint = if (showEmojiPanel) MaterialTheme.colorScheme.primary
-                    else MaterialTheme.colorScheme.onSurfaceVariant,
+                    tint = if (showEmojiPanel) WebAccent500 else MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.size(20.dp),
                 )
             }
             // Mic: while listening, it pulses red so the user can clearly tell recording is active
@@ -937,31 +944,35 @@ private fun ChatComposer(
                 animationSpec = infiniteRepeatable(tween(600), RepeatMode.Reverse),
                 label = "mic-scale",
             )
-            IconButton(onClick = onVoice) {
+            // Web: `w-11 h-11 rounded-2xl`, gray-100/800 fill, the Mic icon #FF9500; listening = white mic on an orange fill.
+            ComposerSquareButton(onClick = onVoice, container = if (isListening) WebAccent500 else buttonBg) {
                 Icon(
                     imageVector = Icons.Filled.Mic,
                     contentDescription = stringResource(
                         if (isListening) R.string.chat_action_voice_stop else R.string.chat_action_voice_input,
                     ),
-                    tint = if (isListening) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = if (isListening) Modifier.scale(micPulse) else Modifier,
+                    tint = if (isListening) Color.White else WebAccent500,
+                    modifier = Modifier.size(18.dp).then(if (isListening) Modifier.scale(micPulse) else Modifier),
                 )
             }
             if (isResponding) {
-                IconButton(onClick = onStop) {
+                // Web: gray-200 / gray-700 fill, a 15px filled square in gray-700 / gray-200.
+                ComposerSquareButton(onClick = onStop, container = if (isDark) WebGray700 else WebGray200) {
                     Icon(
                         imageVector = Icons.Filled.Stop,
                         contentDescription = stringResource(R.string.chat_action_stop),
-                        tint = MaterialTheme.colorScheme.error,
+                        tint = if (isDark) WebGray200 else WebGray700,
+                        modifier = Modifier.size(15.dp),
                     )
                 }
             } else {
-                IconButton(onClick = onSend, enabled = canSend) {
+                // Web: `bg-interactive` (#0062CC), the Send icon white 18px, `disabled:opacity-40`.
+                ComposerSquareButton(onClick = onSend, enabled = canSend, container = WebInteractiveBlue) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.Send,
                         contentDescription = stringResource(R.string.chat_action_send),
-                        tint = if (canSend) MaterialTheme.colorScheme.primary
-                        else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
+                        tint = Color.White,
+                        modifier = Modifier.size(18.dp),
                     )
                 }
             }
@@ -970,17 +981,34 @@ private fun ChatComposer(
 }
 
 /**
- * The web action-chip palettes — tailwind LIGHT-mode values, verbatim: chip 1 primary-50/600/200
- * (tailwind.config.ts custom palette), chip 2 accent-50/600/200, chips 3–4 tailwind default
- * blue/green 50/600/200. The chat shell renders light on Android (only Reviews is dark), so the
- * dark variants are deliberately not ported.
+ * The web action-chip palettes, verbatim from `ChatInterface.tsx` @ Web final a43948d. Light: chip 1 primary-50/600/200
+ * (tailwind.config.ts custom palette), chip 2 accent-50/600/200, chips 3–4 tailwind default blue/green 50/600/200.
+ * Dark (`dark:bg-X-900/30 dark:text-X-400 dark:border-X-800`): the app is dark by default, and the light pastel chips on a dark
+ * chat were the one place the Android composer area did not look like the Web one (05/10 screenshot audit) — so the dark
+ * variants ARE ported now.
  */
 private data class ChipColors(val bg: Color, val fg: Color, val border: Color)
 
-private val ChipNearbyColors = ChipColors(Color(0xFFE5F1FF), Color(0xFF0062CC), Color(0xFF99C8FF))
-private val ChipTonightColors = ChipColors(Color(0xFFFFF4E5), Color(0xFFCC7700), Color(0xFFFFD399))
-private val ChipTripColors = ChipColors(Color(0xFFEFF6FF), Color(0xFF2563EB), Color(0xFFBFDBFE))
-private val ChipPriceColors = ChipColors(Color(0xFFF0FDF4), Color(0xFF16A34A), Color(0xFFBBF7D0))
+private data class ChipPalette(val light: ChipColors, val dark: ChipColors) {
+    fun forTheme(isDark: Boolean) = if (isDark) dark else light
+}
+
+private val ChipNearbyColors = ChipPalette(
+    light = ChipColors(Color(0xFFE5F1FF), Color(0xFF0062CC), Color(0xFF99C8FF)),
+    dark = ChipColors(Color(0xFF001833).copy(alpha = 0.30f), Color(0xFF3391FF), Color(0xFF003166)),
+)
+private val ChipTonightColors = ChipPalette(
+    light = ChipColors(Color(0xFFFFF4E5), Color(0xFFCC7700), Color(0xFFFFD399)),
+    dark = ChipColors(Color(0xFF331E00).copy(alpha = 0.30f), Color(0xFFFFA733), Color(0xFF663C00)),
+)
+private val ChipTripColors = ChipPalette(
+    light = ChipColors(Color(0xFFEFF6FF), Color(0xFF2563EB), Color(0xFFBFDBFE)),
+    dark = ChipColors(Color(0xFF1E3A8A).copy(alpha = 0.30f), Color(0xFF60A5FA), Color(0xFF1E40AF)),
+)
+private val ChipPriceColors = ChipPalette(
+    light = ChipColors(Color(0xFFF0FDF4), Color(0xFF16A34A), Color(0xFFBBF7D0)),
+    dark = ChipColors(Color(0xFF14532D).copy(alpha = 0.30f), Color(0xFF4ADE80), Color(0xFF166534)),
+)
 
 /**
  * The 4 static quick-prompt chips above the composer — a 1:1 port of the web's "Action chips" row
@@ -1013,7 +1041,9 @@ private fun ChatActionChips(
             .padding(horizontal = TappySpacing.md, vertical = TappySpacing.sm),
         horizontalArrangement = Arrangement.spacedBy(TappySpacing.md), // web gap-2 = 8px
     ) {
-        chips.forEach { (labelRes, colors, action) ->
+        val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
+        chips.forEach { (labelRes, palette, action) ->
+            val colors = palette.forTheme(isDark)
             val (text, sends) = action
             Box(
                 modifier = Modifier
@@ -1034,6 +1064,35 @@ private fun ChatActionChips(
             }
         }
     }
+}
+
+// Web composer tokens (tailwind.config.ts / globals.css @ a43948d): gray-100/200/700/800, accent-100/500/900, --interactive.
+private val WebGray100 = Color(0xFFF3F4F6)
+private val WebGray200 = Color(0xFFE5E7EB)
+private val WebGray700 = Color(0xFF374151)
+private val WebGray800 = Color(0xFF1F2937)
+private val WebAccent100 = Color(0xFFFFE9CC)
+private val WebAccent500 = Color(0xFFFF9500)
+private val WebAccent900 = Color(0xFF331E00)
+private val WebInteractiveBlue = Color(0xFF0062CC)
+
+/** Web composer button: `w-11 h-11 rounded-2xl` (44dp, 16dp corners) on a filled container; disabled = `opacity-40`. */
+@Composable
+private fun ComposerSquareButton(
+    onClick: () -> Unit,
+    container: Color,
+    enabled: Boolean = true,
+    content: @Composable () -> Unit,
+) {
+    Box(
+        modifier = Modifier
+            .size(44.dp)
+            .alpha(if (enabled) 1f else 0.4f)
+            .clip(RoundedCornerShape(16.dp))
+            .background(container)
+            .clickable(enabled = enabled, onClick = onClick),
+        contentAlignment = Alignment.Center,
+    ) { content() }
 }
 
 /**

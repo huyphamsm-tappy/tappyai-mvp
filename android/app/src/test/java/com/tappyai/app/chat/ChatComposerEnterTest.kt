@@ -51,7 +51,8 @@ class ChatComposerEnterTest {
     fun `the composer sends on Enter through the same gate as the arrow, and keeps composing`() {
         val screen = File(findSrc("app/src/main/java/com/tappyai/app/chat/ChatScreen.kt")).readText()
         assertTrue(screen.contains("onSubmit = { if (canSend && !isResponding) onSend() },"))
-        assertTrue("the arrow still sends", screen.contains("IconButton(onClick = onSend, enabled = canSend)"))
+        // 05/10: the send arrow is the Web composer's 44dp rounded square (ComposerSquareButton) — same click, same `canSend` gate.
+        assertTrue("the arrow still sends", screen.contains("ComposerSquareButton(onClick = onSend, enabled = canSend, container = WebInteractiveBlue)"))
         assertTrue("still multi-line for Shift+Enter and long drafts", screen.contains("singleLine = false,") && screen.contains("maxLines = 6,"))
         assertTrue("the Vietnamese IME fix (TextFieldValue-held composing region) is untouched",
             screen.contains("var field by remember { mutableStateOf(TextFieldValue(input)) }"))

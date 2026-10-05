@@ -3,14 +3,18 @@ package com.tappyai.core.designsystem.component
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.input.key.isShiftPressed
@@ -23,6 +27,8 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.tappyai.core.designsystem.theme.TappyAITheme
 import com.tappyai.core.designsystem.theme.TappyShapes
 import com.tappyai.core.designsystem.theme.TappySpacing
@@ -83,6 +89,11 @@ fun TappyTextField(
      * inserted a newline and only the send arrow sent.
      */
     onSubmit: (() -> Unit)? = null,
+    /**
+     * Web chat composer look (`ChatInterface.tsx`: `bg-gray-100 dark:bg-gray-800 rounded-2xl px-4 py-3 text-sm`, no outline, focus ring
+     * `primary-500/50`): a filled field with 16dp corners. Default false keeps the outlined field every other screen uses.
+     */
+    filled: Boolean = false,
 ) {
     val isError = errorText != null
 
@@ -110,15 +121,15 @@ fun TappyTextField(
             maxLines = maxLines,
             label = label?.let { { Text(it) } },
             placeholder = placeholder?.let { { Text(it) } },
-            shape = TappyShapes.input,
+            shape = if (filled) RoundedCornerShape(16.dp) else TappyShapes.input,
             keyboardOptions = KeyboardOptions(
                 keyboardType = keyboardType,
                 imeAction = if (onSubmit != null) ImeAction.Send else ImeAction.Default,
             ),
             keyboardActions = KeyboardActions(onSend = { onSubmit?.invoke() }),
             visualTransformation = visualTransformation,
-            textStyle = MaterialTheme.typography.bodyMedium,
-            colors = OutlinedTextFieldDefaults.colors(),
+            textStyle = if (filled) MaterialTheme.typography.bodyMedium.copy(fontSize = 14.sp) else MaterialTheme.typography.bodyMedium,
+            colors = if (filled) webComposerFieldColors() else OutlinedTextFieldDefaults.colors(),
         )
         if (isError) {
             Text(
@@ -190,4 +201,24 @@ private fun TappyTextFieldPreview() {
             TappyTextField(value = "", onValueChange = {}, label = "Error", errorText = "Required")
         }
     }
+}
+
+/**
+ * Web chat composer field colours (`ChatInterface.tsx`): `bg-gray-100 dark:bg-gray-800` fill (gray-100 #F3F4F6 / gray-800 #1F2937), text
+ * gray-900 / gray-100, placeholder gray-400 (#9CA3AF), no outline; focus = `ring-2 ring-primary-500/50` (#007AFF at 50%).
+ */
+@Composable
+private fun webComposerFieldColors(): TextFieldColors {
+    val dark = MaterialTheme.colorScheme.background.luminance() < 0.5f
+    val container = if (dark) Color(0xFF1F2937) else Color(0xFFF3F4F6)
+    val text = if (dark) Color(0xFFF3F4F6) else Color(0xFF111827)
+    val placeholder = Color(0xFF9CA3AF)
+    val ring = Color(0xFF007AFF).copy(alpha = 0.5f)
+    return OutlinedTextFieldDefaults.colors(
+        focusedContainerColor = container, unfocusedContainerColor = container, disabledContainerColor = container,
+        focusedBorderColor = ring, unfocusedBorderColor = Color.Transparent, disabledBorderColor = Color.Transparent,
+        focusedTextColor = text, unfocusedTextColor = text,
+        focusedPlaceholderColor = placeholder, unfocusedPlaceholderColor = placeholder,
+        cursorColor = Color(0xFF007AFF),
+    )
 }
