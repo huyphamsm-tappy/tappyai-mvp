@@ -21,40 +21,6 @@ export function setCache(key: string, data: unknown, ttlMs: number) {
   cache.set(key, { data, expires: Date.now() + ttlMs })
 }
 
-// ===== GOOGLE PLACES PHOTO — LIVE SOURCE ONLY =====
-// Google Maps Platform Terms of Service: Places content (photos) must not be pre-fetched,
-// cached, or stored beyond the request — only place_id (indefinitely) and lat/lng (<=30 days)
-// are exempt. This function therefore never persists the result; every call hits Google live.
-// photoName is the full resource path returned by Places API (New), e.g. "places/ChIJ.../photos/AeZ..."
-export async function fetchPlacePhoto(placeId: string, photoName: string): Promise<string | null> {
-  const key = process.env.GOOGLE_PLACES_API_KEY
-  if (!key || !photoName) {
-    console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'api_skipped', placeId, hasKey: !!key, hasPhotoName: !!photoName }))
-    return null
-  }
-  const controller = new AbortController()
-  const tid = setTimeout(() => controller.abort(), 3000)
-  try {
-    // New API resource names (places/ChIJ.../photos/AeZ...) → use Places API (New) media endpoint
-    // Legacy photo_reference tokens → use old Maps API endpoint
-    const photoApiUrl = photoName.includes('/')
-      ? `https://places.googleapis.com/v1/${photoName}/media?maxWidthPx=400&key=${key}`
-      : `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${photoName}&key=${key}`
-    const resp = await fetch(photoApiUrl, { signal: controller.signal, redirect: 'follow' })
-    clearTimeout(tid)
-    console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'api_result', placeId, status: resp.status, ok: resp.ok, finalUrl: resp.url?.slice(0, 60) || null }))
-    if (!resp.ok) return null
-    const photoUri = resp.url
-    const safe = !!photoUri && !photoUri.includes('maps.googleapis.com')
-    if (!photoUri || !safe) return null
-    return photoUri
-  } catch (e) {
-    clearTimeout(tid)
-    console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'api_exception', placeId, error: String(e) }))
-    return null
-  }
-}
-
 // ===== OFFICIAL WEBSITE IMAGE (og:image) — live only, short timeout, never blocks =====
 // Highest-priority source: an image the business itself publishes on its own site.
 // Bounded read (stops once <head> is seen or MAX_BYTES hit) + hard timeout so a slow/dead
@@ -344,33 +310,6 @@ export async function resolvePlacePhotos(
     const t = Date.now(); const before = collected.length
     addUnique(await fetchOfficialWebsiteImage(place.website_uri))
     mark('website', t, before)
-  }
-
-  const key = process.env.GOOGLE_PLACES_API_KEY
-  if (collected.length < max && key && place.place_id) {
-    const tDetail = Date.now(); const beforeDetail = collected.length
-    let detailTimedOut = false
-    try {
-      const detailResp = await Promise.race([
-        fetch(`https://maps.googleapis.com/maps/api/place/details/json?place_id=${place.place_id}&fields=photos&key=${key}`),
-        new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 2500)),
-      ])
-      const detail = await (detailResp as Response).json()
-      const photoRef = (detail.result?.photos as Array<{ photo_reference: string }>)?.[0]?.photo_reference
-      mark('places_detail', tDetail, beforeDetail)
-      if (photoRef) {
-        const tMedia = Date.now(); const beforeMedia = collected.length
-        addUnique(await fetchPlacePhoto(place.place_id, photoRef))
-        mark('places_media', tMedia, beforeMedia)
-      }
-    } catch (e) {
-      // Unchanged behaviour: skip on timeout or error, fall through to Serper.
-      // The mark is emitted from the catch too, because a step that BURNED its
-      // timeout is exactly the one worth seeing — reporting only the successes
-      // would hide the slowest case there is.
-      detailTimedOut = e instanceof Error && e.message === 'timeout'
-      mark('places_detail', tDetail, beforeDetail, detailTimedOut)
-    }
   }
 
   if (collected.length < max && place.name) {

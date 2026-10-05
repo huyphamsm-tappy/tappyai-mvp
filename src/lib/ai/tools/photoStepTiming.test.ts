@@ -73,44 +73,6 @@ describe('the sink observes the steps that actually ran', () => {
     expect(steps.some(s => s.step === 'places_detail')).toBe(false)
     expect(steps.some(s => s.step === 'places_media')).toBe(false)
   })
-
-  it('reports the Places detail step, and the media step only when a photo_reference came back', async () => {
-    stubFetch(url =>
-      url.includes('place/details') ? { body: detailWithPhoto }
-        : url.includes('serper') ? { body: JSON.stringify({ images: [] }) }
-        : { body: '{}' })
-    const steps: PhotoStepTiming[] = []
-    await resolvePlacePhotos({ name: 'Quán A', place_id: 'pid-1' }, 3, t => steps.push(t))
-    const names = steps.map(s => s.step)
-    expect(names).toContain('places_detail')
-    expect(names.indexOf('places_detail')).toBeLessThan(names.indexOf('places_media'))
-  })
-
-  it('omits the media step when the detail carried no photo_reference', async () => {
-    stubFetch(url =>
-      url.includes('place/details') ? { body: JSON.stringify({ result: { photos: [] } }) }
-        : { body: JSON.stringify({ images: [] }) })
-    const steps: PhotoStepTiming[] = []
-    await resolvePlacePhotos({ name: 'Quán A', place_id: 'pid-1' }, 3, t => steps.push(t))
-    expect(steps.some(s => s.step === 'places_media')).toBe(false)
-  })
-})
-
-describe('a step that burns its timeout is reported, not hidden', () => {
-  it('marks the Places detail step timedOut and still falls through to Serper', async () => {
-    stubFetch(url =>
-      url.includes('place/details') ? 'hang'
-        : { body: JSON.stringify({ images: [{ imageUrl: 'https://cdn.example/s.jpg' }] }) })
-    const steps: PhotoStepTiming[] = []
-    const urls = await resolvePlacePhotos({ name: 'Quán A', place_id: 'pid-1' }, 3, t => steps.push(t))
-    const detail = steps.find(s => s.step === 'places_detail')!
-    expect(detail, 'the timed-out step must still be reported').toBeDefined()
-    expect(detail.timedOut).toBe(true)
-    expect(detail.hit).toBe(false)
-    // Unchanged behaviour: the fallback still runs and still returns its photo.
-    expect(steps.some(s => s.step === 'serper')).toBe(true)
-    expect(urls).toEqual(['https://cdn.example/s.jpg'])
-  }, 10_000)
 })
 
 describe('`hit` reports contribution, not mere completion', () => {

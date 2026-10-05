@@ -329,101 +329,16 @@ export async function searchPlaces(query: string, location?: string, type?: stri
     return cached
   }
 
-  const key = process.env.GOOGLE_PLACES_API_KEY
-  // BUG-011: resolved once here and used by BOTH providers, so the Google call and the OSM
-  // fallback can never disagree about which city this search is for.
+  // BUG-011: resolved once so every provider agrees about which city this search is for.
+  // Google Places was removed 2026-10: it is unavailable for Vietnam (Maps Platform prohibited
+  // territory). OpenStreetMap + Serper are the only sources.
   const { destination, remote: remoteDestination } = resolveSearchScope(location, locationBias)
   console.log(JSON.stringify({
-    type: 'tappyai_tool_called', tool: 'searchPlaces', step: 'fn_entry', hasKey: !!key, query, location, placeType: type,
+    type: 'tappyai_tool_called', tool: 'searchPlaces', step: 'fn_entry', query, location, placeType: type,
     // Operational only — a city name we resolved, never user text.
     destination: destination?.query ?? null, remoteDestination,
   }))
   let result: unknown = null
-  if (key) {
-    try {
-      const sq = location ? query + ' ' + location : query
-      // Map legacy type values to Places API (New) includedType names
-      const typeMap: Record<string, string> = { hotel: 'lodging', cinema: 'movie_theater' }
-      const includedType = type ? (typeMap[type] || type) : undefined
-      const bodyObj: Record<string, unknown> = { textQuery: sq, languageCode: lang, regionCode: 'VN' }
-      if (includedType) bodyObj.includedType = includedType
-      // BUG-011 (D1): the bias is dropped for a remote destination. `textQuery` already carries
-      // the city name, and `locationBias` is only a SOFT hint — Google is free to honour it, which
-      // is how a "công viên Quy Nhơn" query could still surface Saigon parks for a caller in
-      // Saigon. Nearby searches are untouched: without a resolved remote destination the bias is
-      // applied exactly as before.
-      if (locationBias && !remoteDestination) {
-        bodyObj.locationBias = {
-          circle: { center: { latitude: locationBias.lat, longitude: locationBias.lng }, radius: 5000.0 }
-        }
-      }
-      // places.photos excluded: key is restricted to old Places API only — new API silently returns 0 photos
-      const SEARCH_FIELD_MASK = 'places.id,places.displayName,places.formattedAddress,places.rating,places.userRatingCount,places.googleMapsUri,places.websiteUri'
-      const resp = await Promise.race([
-        fetch('https://places.googleapis.com/v1/places:searchText', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-Goog-Api-Key': key,
-            'X-Goog-FieldMask': SEARCH_FIELD_MASK,
-          },
-          body: JSON.stringify(bodyObj),
-        }),
-        new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 5000))
-      ])
-      const d = await (resp as Response).json()
-      // ── BUG-011 (D3): geographic output guard, address-based ───────────────
-      // The field mask does not request coordinates, so scope is judged from `formattedAddress`
-      // via the same city resolver the rest of the repo uses. Reject only when the address
-      // resolves to a DIFFERENT known city; an address that resolves to nothing is KEPT, because
-      // "unrecognised" must never be treated as "wrong".
-      //
-      // Filtered BEFORE the slice, so an out-of-scope row does not consume one of the 8 places.
-      // If nothing survives, `result` stays null and the OSM fallback below runs — now correctly
-      // centred on the destination — instead of returning an empty set for a real city.
-      const inScope = ((resp as Response).ok && Array.isArray(d.places))
-        ? (d.places as Record<string, unknown>[]).filter(r =>
-          belongsToDestination(destination, null, r.formattedAddress as string | undefined))
-        : []
-      if (inScope.length) {
-        const placesData = inScope.slice(0, 8)
-        console.log(JSON.stringify({
-          type: 'tappyai_photo_debug', step: 'places_textsearch_new',
-          // Both numbers: what the provider returned, and what survived the destination guard.
-          // A large gap is the signal that a search was being pulled out of scope.
-          placesCount: (d.places as unknown[]).length,
-          inScopeCount: inScope.length,
-          topName: ((placesData[0]?.displayName as { text?: string })?.text) || null,
-        }))
-
-        // B7-A: photos are NOT resolved here any more. The reply names at most 3
-        // places (2-3 by prompt rule R1) and the injector enriches at most 3, so
-        // resolving all 8 up front discarded roughly five places' worth of
-        // billable Places Details / Places Photo / Serper Images calls per
-        // search. Resolution moved to applyPlaceEnrichmentStreamFilter, which
-        // runs once the reply is known and can ask for exactly the right places
-        // (see resolvePlacePhotos in ./common). place_id and website_uri below
-        // are what it resolves from.
-        result = {
-          // The count the model reads must describe the rows it was GIVEN, not the rows the
-          // provider offered before the destination guard ran.
-          source: 'Google Maps', count: inScope.length,
-          results: placesData.map((r, idx) => ({
-            place_id: r.id as string,
-            name: (r.displayName as { text?: string })?.text || '',
-            address: r.formattedAddress,
-            google_rating: r.rating ? messages.places.googleRating(lang, r.rating as number, r.userRatingCount as number | undefined) : null,
-            maps_link: (r.googleMapsUri as string | undefined) || ('https://www.google.com/maps/place/?q=place_id:' + r.id),
-            ...(r.websiteUri ? { website_uri: r.websiteUri as string } : {}),
-          }))
-        }
-      } else {
-        console.log(JSON.stringify({ type: 'tappyai_places_debug', apiVersion: 'new', httpStatus: (resp as Response).status, errorMessage: (d.error as { message?: string })?.message || null }))
-      }
-    } catch (e) {
-      console.log(JSON.stringify({ type: 'tappyai_places_debug', error: String(e) }))
-    }
-  }
   if (!result) result = await searchPlacesOSM(query, location, type, locationBias, lang)
 
   // ===== Gia tham khao tu Serper (an uong / spa / giai tri) =====
