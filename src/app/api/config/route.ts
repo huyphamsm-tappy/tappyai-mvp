@@ -17,7 +17,7 @@ import {
   ONBOARDING_CITIES,
 } from '@/lib/config/product'
 import { appleSignInAvailable } from '@/lib/auth/appleCapability'
-import { selfDeleteEnabled } from '@/lib/account/selfDelete'
+import { selfDeleteAvailable } from '@/lib/account/deletionReady'
 
 // `flags.appleSignIn` is read at request time from the Supabase project's own provider state (appleCapability.ts), so the route is
 // dynamic; the Cache-Control below still lets the CDN serve it for 5 minutes.
@@ -34,6 +34,7 @@ export const dynamic = 'force-dynamic'
 // what it SHOWS, never what it CAN DO.
 export async function GET() {
   const appleSignIn = await appleSignInAvailable()
+  const accountSelfDelete = await selfDeleteAvailable()
   return NextResponse.json(
     {
       freemium: {
@@ -45,9 +46,9 @@ export async function GET() {
         showAppConnections: SHOW_APP_CONNECTIONS,
         showScamShield: SHOW_SCAM_SHIELD,
         // In-app account deletion (POST /api/account/delete). Native clients offer it only where the server can keep the promise
-        // (ACCOUNT_SELF_DELETE_ENABLED, set per environment AFTER the data clean-up behind it is live); off = the request-by-email flow.
-        // The route is dynamic, so the value follows the running environment. A missing field (older server) means off.
-        accountSelfDelete: selfDeleteEnabled(),
+        // (ACCOUNT_SELF_DELETE_ENABLED AND the clean-up migration installed - lib/account/deletionReady.ts); off = the request-by-email
+        // flow. The route is dynamic, so the value follows the running environment. A missing field (older server) means off.
+        accountSelfDelete,
         // Sign in with Apple (iOS native: Apple identity token -> Supabase signInWithIdToken). TRUE only while the Supabase project reports
         // its Apple provider as enabled (GET /auth/v1/settings, see lib/auth/appleCapability.ts); false on any doubt (unconfigured, error,
         // timeout). iOS shows the button only on true. Web has no Apple button: this flag does not change the Web login page.

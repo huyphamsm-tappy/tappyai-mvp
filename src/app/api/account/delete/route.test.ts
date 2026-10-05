@@ -16,6 +16,12 @@ const h = vi.hoisted(() => ({
   deleteError: null as { message: string; code?: string } | null,
   deleted: [] as string[],
   events: [] as string[],
+  /** Whether the clean-up migration is installed (the real helper has its own tests + deletionInterlock.route.test.ts). */
+  ready: true,
+}))
+
+vi.mock('@/lib/account/deletionReady', () => ({
+  selfDeleteAvailable: async () => process.env.ACCOUNT_SELF_DELETE_ENABLED === 'true' && h.ready,
 }))
 
 vi.mock('@/lib/auth/getRequestUser', () => ({ getRequestUser: async () => ({ user: h.user, supabase: {} }) }))
@@ -74,7 +80,7 @@ describe('POST /api/account/delete', () => {
     process.env.ACCOUNT_SELF_DELETE_ENABLED = 'true'
     Object.assign(process.env, APPLE_ENV)
     h.user = { id: 'u-1', is_anonymous: false }; h.roles = 0; h.owner = 0; h.lookupError = null; h.deleteError = null; h.deleted = []; h.events = []
-    h.identities = [{ provider: 'email' }]; h.appMeta = { provider: 'email', providers: ['email'] }; h.getUserError = null
+    h.identities = [{ provider: 'email' }]; h.appMeta = { provider: 'email', providers: ['email'] }; h.getUserError = null; h.ready = true
     logs = []
     vi.spyOn(console, 'log').mockImplementation((...a: unknown[]) => { logs.push(a.map(String).join(' ')) })
   })
@@ -86,6 +92,14 @@ describe('POST /api/account/delete', () => {
   // -- unchanged behaviour for everybody who never used Apple ----------------------------------------------------------------
   it('🚨 is not available where the flag is off (production until the clean-up behind it is live)', async () => {
     delete process.env.ACCOUNT_SELF_DELETE_ENABLED
+    const r = await call({ confirm: 'XÓA' })
+    expect(r.status).toBe(404)
+    expect((await r.json()).error).toBe('not_available')
+    expect(h.deleted).toEqual([])
+  })
+
+  it('🚨 is not available where the clean-up migration is not installed, even with the flag on', async () => {
+    h.ready = false
     const r = await call({ confirm: 'XÓA' })
     expect(r.status).toBe(404)
     expect((await r.json()).error).toBe('not_available')

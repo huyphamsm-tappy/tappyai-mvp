@@ -106,3 +106,35 @@ export function formatEventsForPrompt(events: CalendarEvent[]): string {
   // like any other external data. The header stays outside (FENCE-02).
   return `\n===== LỊCH TUẦN NÀY =====\n${fenceUntrusted('calendar_events', lines.join('\n'))}\n========================`
 }
+
+const GOOGLE_REVOKE_ENDPOINT = 'https://oauth2.googleapis.com/revoke'
+
+/**
+ * Best-effort revocation at Google. Never throws.
+ *
+ * The caller deletes the row regardless of the outcome: disconnecting is the
+ * user's instruction, and a provider outage must not leave them unable to carry
+ * it out. Returning the outcome rather than swallowing it lets the caller say
+ * something truthful if it ever needs to.
+ */
+export async function revokeGoogleToken(
+  token: string | null | undefined,
+  fetchImpl: typeof fetch = fetch,
+): Promise<boolean> {
+  if (typeof token !== 'string' || token.length === 0) return false
+  try {
+    // A constant endpoint, so there is no user-controlled destination here and
+    // nothing for safeFetch to pin.
+    const res = await fetchImpl(GOOGLE_REVOKE_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({ token }),
+    })
+    // 200 = revoked. 400 = already invalid/unknown, which is the same end state.
+    return res.ok || res.status === 400
+  } catch {
+    // The token stays live at Google and our row still goes. Logged by the
+    // caller, never with the token in it.
+    return false
+  }
+}

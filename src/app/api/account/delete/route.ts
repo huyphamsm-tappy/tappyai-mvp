@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server'
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { createAdminClient } from '@/lib/supabase/admin'
-import { deleteOwnAccount, isConfirmWord, lookupAppleIdentity, selfDeleteEnabled, staffStatus } from '@/lib/account/selfDelete'
+import { deleteOwnAccount, isConfirmWord, lookupAppleIdentity, staffStatus } from '@/lib/account/selfDelete'
+import { selfDeleteAvailable } from '@/lib/account/deletionReady'
 import { revokeAppleForDeletion } from '@/lib/auth/appleRevoke'
 import { refuseAnonymousSocialWrite } from '@/lib/auth/socialWriteAccess'
 import { requestLocale } from '@/lib/i18n/requestLocale'
@@ -30,7 +31,7 @@ export const runtime = 'nodejs'
 //   400   { error: "apple_authorization_invalid" }— the code is expired / used / not for this app: re-confirm with Apple
 //   401   { error: "unauthorized" }               — no session
 //   403   { error: "account_required" }           — an anonymous session (nothing to delete)
-//   404   { error: "not_available" }              — ACCOUNT_SELF_DELETE_ENABLED is off here
+//   404   { error: "not_available" }              — ACCOUNT_SELF_DELETE_ENABLED is off here, OR the clean-up migration is not installed
 //   409   { error: "staff_account" }              — use the staff leaver runbook
 //   409   { error: "apple_authorization_required" } — an Apple account and no code: the app must re-confirm with Apple
 //   409   { error: "apple_identity_mismatch" }    — the code belongs to a different Apple ID (nothing revoked, nothing deleted)
@@ -42,7 +43,8 @@ export const runtime = 'nodejs'
 
 export async function POST(req: Request) {
   const locale = requestLocale(req)
-  if (!selfDeleteEnabled()) {
+  // Flag AND installed clean-up (lib/account/deletionReady.ts): the env flag alone must never switch deletion on.
+  if (!(await selfDeleteAvailable())) {
     return NextResponse.json({ error: 'not_available', message: serverMessage('account.deleteUnavailable', locale) }, { status: 404 })
   }
 
