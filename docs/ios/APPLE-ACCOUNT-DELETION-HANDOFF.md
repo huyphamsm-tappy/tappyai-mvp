@@ -1,8 +1,8 @@
 # Apple account deletion (App Review 5.1.1(v)) — Web hotfix handoff
 
-Branch `hotfix/apple-account-deletion`, based on `origin/main`. **Not the p7 branch: no Phase 7, no Agent / Consultative / Luna, no subscription / commerce / discovery, no Android / iOS source, no Phase 8.** Final Web SHA: `git rev-parse origin/hotfix/apple-account-deletion` (a commit cannot contain its own hash); production SHA: `GET https://www.tappyai.com/api/version`; iOS SHA: `046a7a9065f2632952a1fd14aa15c47c8d31288b` (`ios/sync-2026-09-30`).
+**Web:** base `3c9dc7b85fd8bc107d181d591fecb407aaf3dd31`; hotfix head `8c1b04cacb7cb04f874ebfeab5a173300142bd90` on `hotfix/apple-account-deletion`; **PR #262 merged 2026-10-05 as `98b28d5125ce809016118838302ec08c333af197`**; production verified serving `98b28d5…` (later commits: `GET https://www.tappyai.com/api/version`). **iOS:** `046a7a9065f2632952a1fd14aa15c47c8d31288b` (`ios/sync-2026-09-30`). Not the p7 branch: no Phase 7, no Agent / Consultative / Luna, no subscription / commerce / discovery, no Android / iOS source, no Phase 8.
 
-**GATE STATUS: BLOCKED — one manual action left that I cannot perform: apply the migration (section 6).** Everything else that can be done from code and from the authenticated sessions is done and verified. Nothing here claims the Apple revoke works against the real Apple service or that iOS login/deletion works on a device: that needs one real Sign-in-with-Apple run (section 9).
+**GATE STATUS: BLOCKED — the only thing missing is real evidence.** Everything that can be done and checked without a real iPhone and a disposable Apple test account is done and verified **in production** (section 6 and 10). What has never run: the real Apple code exchange + revoke, and the iOS flow on a device (section 9). Do not read "route live + migration applied + CI green" as "Apple revocation works".
 
 ## 1. What an Apple account's deletion does
 
@@ -66,17 +66,16 @@ Clean-up: `supabase/migrations/20261005_account_deletion_cleanup.sql` (+ rollbac
 |---|---|
 | Supabase Apple provider (production `fwznnobrdctuskgrvuik`) | **enabled**, Client ID `com.tappyai.ios`, secret empty (native-only); public `/auth/v1/settings` → `external.apple=true`; `/api/config` → `flags.appleSignIn: true` |
 | Apple Developer key | created: name `Tappy SIWA account deletion`, **Key ID `MV69Z22JW7`**, service *Sign in with Apple*, primary App ID `com.tappyai.ios` (Team ID `6UAG75G2US`). The `.p8` was downloaded once (Apple removes the server copy) |
-| Vercel Production env | `APPLE_SIWA_TEAM_ID`, `APPLE_SIWA_KEY_ID`, `APPLE_SIWA_PRIVATE_KEY` (**Sensitive**, piped from the file; never printed or committed) — set 05/10, **effective on the next deployment**. `ACCOUNT_SELF_DELETE_ENABLED=true` was already set |
+| Vercel Production env | `APPLE_SIWA_TEAM_ID`, `APPLE_SIWA_KEY_ID`, `APPLE_SIWA_PRIVATE_KEY` (**Sensitive**, piped from the file; never printed or committed) — set 05/10, **present in production deployment `98b28d5`** (built after they were set). `ACCOUNT_SELF_DELETE_ENABLED=true` was already set |
 | GCS | production bucket `tappyai-media-prod`: the media bridge service account holds `roles/storage.objectUser` (includes list + delete) — read from the bucket IAM policy |
-| Production database | migration **NOT applied** (section 6) |
+| Production database | migration **APPLIED 2026-10-05** (section 6); `public.account_deletion_ready()` = true |
 
-## 6. The one manual action: apply the migration to production
+## 6. Production migration — APPLIED 2026-10-05
 
-I opened the production SQL editor read-only to inspect the catalog; the session's permission layer then refused further programmatic edits there, and I did not route around it. So the migration is yours to run:
+Run in the production SQL editor (`fwznnobrdctuskgrvuik`) from the merged file `supabase/migrations/20261005_account_deletion_cleanup.sql`. Before running: the editor content was checked byte-for-byte against the tested file (6,440 bytes, SHA-256 `8c4056c51fac8905…`), and a read-only pre-check confirmed all 10 columns the trigger uses exist with the right types and that none of the new objects existed. Supabase's generic "destructive operations" prompt appeared (it keys on `DROP`/`DELETE` text: a `DROP TRIGGER IF EXISTS` on a trigger that did not exist, and `DELETE`s inside the function body that run only when a user is deleted) and was confirmed. Result: **Success, no rows returned.**
 
-1. Supabase → project `fwznnobrdctuskgrvuik` → SQL Editor → paste the whole of `supabase/migrations/20261005_account_deletion_cleanup.sql` → Run (it is additive and idempotent; it adds a trigger on `auth.users`).
-2. Verify: `select public.account_deletion_ready();` → `true`.
-3. Within ~5 minutes (config cache) `GET /api/config` shows `flags.accountSelfDelete: true`, `GET /api/account/delete` answers **405** (route exists), and in-app deletion is live.
+Read-only verification afterwards: `account_deletion_ready()` = **true**; trigger `trg_enqueue_account_deletion` on `auth.users` = 1 and enabled; RLS on the queue; `anon` and `authenticated` have **no** privilege on it; `service_role` has SELECT but not INSERT; 0 jobs queued; both functions `SECURITY DEFINER` with `search_path=public, pg_temp`. The app's own probe (the public anon RPC) returns HTTP 200 `true`.
+
 Rollback: `supabase/migrations/rollback/20261005_account_deletion_cleanup_rollback.sql` (keeps the queue table).
 
 ## 7. Tests (Web)
@@ -89,8 +88,30 @@ Full suite on a clean checkout of `main` + this branch: see the PR description /
 
 ## 9. Not verified
 
-* **Real device: NO EVIDENCE.** No iPhone / authorized Apple test account was available.
-* **The real Apple exchange + revoke has never run.** The key exists and is valid P-256 (checked locally: 64-byte ES256 signature, self-verifies), but Apple only confirms it on a real call. The first real deletion with a disposable Apple test account is the proof; do not use a real user's account.
-* Production behaviour after the migration (section 6 step 3) is expected, not yet observed.
+* **Real device: NO EVIDENCE.** No iPhone / authorized Apple test account was available to this session (there is no macOS or simulator here), so the iOS flow has not been run on a device.
+* **The real Apple exchange + revoke has never run against Apple.** The key is valid P-256 (checked locally before it was stored: 64-byte ES256 signature, self-verifies) and is stored as a Sensitive Vercel variable that cannot be read back, so its acceptance by Apple is only confirmed by a real call. An invalid stored value fails safe (`503 apple_revoke_unavailable`, nothing deleted). Test with a **disposable Apple ID**, never a real user's account.
+* The cleanup trigger has not yet run on a real production deletion (it is covered by 17 real-Postgres tests and a read-only production catalog check).
 
-Remaining dependency: **SUPABASE CONFIGURATION REQUIRED** (apply the migration), then the owner's merge of the PR, then the real-device test.
+## 10. Production verification (2026-10-05, after the merge deployed)
+
+| Check | Result |
+|---|---|
+| `GET /api/version` | `98b28d5125ce809016118838302ec08c333af197` (the merge commit) |
+| `GET /api/config` | `flags.accountSelfDelete: true`, `flags.appleSignIn: true`; `auth.providers` still google / zalo / email, all enabled; no secret-like content |
+| `GET /api/account/delete` | **405** (route exists; was 404 before the merge) |
+| unauthenticated `POST /api/account/delete` | **401** |
+| `GET /api/cron/account-deletion-jobs` without the secret | **401** |
+| Supabase Apple provider | enabled (`external.apple=true`), Client ID `com.tappyai.ios` |
+| `account_deletion_ready()` (anon RPC, as the app calls it) | HTTP 200, `true` |
+
+## 11. Tests and CI
+
+* Web, branch before merge: full suite **9,690 passed / 0 failed**, required suites OK (46), lint 0 errors, `next build` OK, SQL-grants gate 0 errors. Measured per area: route 29, interlock 5, readiness 11, Apple client 18 (+1 live endpoint check, off by default), config 13, cron 7, worker 10, cron auth 4, Google revoke 9, media 7, 17 real-Postgres. Mutation-checked.
+* PR #262 CI (all four required checks pass on both runs): head `8c1b04c` — Test suite + Types/lint/SQL grants runs 37285680267 and 37285686655; AI architecture rules + Brand registry runs 37285680319 and 37285686758.
+* iOS `046a7a9`: run 37279257115 (Build + TappyAI Tests): 466 tests, 0 failures; `AccountDeletionTests` 13/13; `static_check.py` passes (re-run 2026-10-05). The repo's *Regression Gate* workflow is red on the iOS branch and has been since 2026-10-03: the same 12 Web-side iOS-parity tests fail before and after these changes (0 new).
+
+## 12. What would make this PASS
+
+One real run with a **disposable Apple ID** on a TestFlight build: Sign in with Apple → Settings → delete account → confirm → Apple sheet → account gone; then check the app no longer appears under that Apple ID's *Sign in with Apple* apps, and that signing in again creates a fresh account. Capture only non-sensitive evidence (never the code, token or key). If the server answers `503 apple_revoke_unavailable`, the stored key value is invalid: create a new key (Apple Developer → Keys) and replace `APPLE_SIWA_PRIVATE_KEY`.
+
+Remaining dependency: **REAL DEVICE EVIDENCE REQUIRED.**
