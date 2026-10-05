@@ -553,6 +553,7 @@ final class ChatViewModel: AppObservableObject {
                 chatSessionId: self.chatSessionId
             )
 
+            var streamReportedError = false
             do {
                 for try await frame in stream {
                     guard !Task.isCancelled else { break }
@@ -592,10 +593,21 @@ final class ChatViewModel: AppObservableObject {
                     case .done:
                         break
 
+                    // The AI SDK data stream reports a failed turn as an `3:` error part on a 200 response. It was ignored, so a failed
+                    // turn finished as an empty "complete" reply and the person saw no answer and no error.
+                    case .unknown(let prefix, _) where prefix == "3":
+                        streamReportedError = true
+
                     // Non-places annotations carry nothing the chat UI renders yet.
                     case .messageStart, .annotation, .unknown:
                         break
                     }
+                }
+
+                // A stream that ends with nothing to show is a failure, never a reply: say so and offer a retry.
+                if !Task.isCancelled, Self.streamProducedNothing(content: self.messages[assistantIndex].content,
+                                              hasPlaces: self.messages[assistantIndex].livePlaces != nil) {
+                    throw AppError.streaming(reason: streamReportedError ? "server reported an error" : "empty reply")
                 }
 
                 self.messages[assistantIndex].status = .complete
@@ -627,6 +639,11 @@ final class ChatViewModel: AppObservableObject {
                 self.log.error("stream error: \(error)")
             }
         }
+    }
+
+    /// True when a finished stream left nothing the person can read: no text and no place card.
+    static func streamProducedNothing(content: String, hasPlaces: Bool) -> Bool {
+        !hasPlaces && content.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
 
     // MARK: - Think timer
