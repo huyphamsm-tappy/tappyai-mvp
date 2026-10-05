@@ -6,6 +6,7 @@ import {
   MAX_VIDEO_DURATION_SEC, MAX_VIDEO_DURATION_ACCEPT_SEC, LINK_VIDEO_PROVIDERS, AUTH_PROVIDERS,
   ONBOARDING_INTERESTS, ONBOARDING_CITIES,
 } from '@/lib/config/product'
+import { selfDeleteEnabled } from '@/lib/account/selfDelete'
 import { GET } from './route'
 
 // GET /api/config -> flags.appleSignIn, through the REAL capability source (Supabase /auth/v1/settings) with fetch stubbed.
@@ -19,10 +20,10 @@ async function config() {
   return { r, body: JSON.parse(text) as Record<string, any>, raw: text }
 }
 
-/** The response this route produced BEFORE the Apple change, rebuilt from main's own constants. */
+/** The response this route produced BEFORE the Apple capability, rebuilt from main's own constants (+ the deletion flag this branch adds). */
 const BEFORE_APPLE = () => JSON.parse(JSON.stringify({
   freemium: { freeDailyLimit: FREE_DAILY_LIMIT, anonDailyLimit: ANON_DAILY_LIMIT },
-  flags: { showProUpgrade: SHOW_PRO_UPGRADE, showAppConnections: SHOW_APP_CONNECTIONS, showScamShield: SHOW_SCAM_SHIELD },
+  flags: { showProUpgrade: SHOW_PRO_UPGRADE, showAppConnections: SHOW_APP_CONNECTIONS, showScamShield: SHOW_SCAM_SHIELD, accountSelfDelete: selfDeleteEnabled() },
   upload: { maxPhotosPerReview: MAX_PHOTOS_PER_REVIEW, maxVideoSizeMb: MAX_VIDEO_SIZE_MB, maxVideoDurationSec: MAX_VIDEO_DURATION_SEC, maxVideoDurationAcceptSec: MAX_VIDEO_DURATION_ACCEPT_SEC },
   scamShield: { dailyLimitAuth: SCAM_SHIELD_DAILY_LIMIT_AUTH, dailyLimitAnon: SCAM_SHIELD_DAILY_LIMIT_ANON },
   video: { linkProviders: LINK_VIDEO_PROVIDERS },
@@ -101,5 +102,28 @@ describe('GET /api/config differs from main ONLY by flags.appleSignIn', () => {
     await GET()
     await GET()
     expect(f).toHaveBeenCalledTimes(1)
+  })
+})
+
+describe('GET /api/config flags.accountSelfDelete', () => {
+  it('follows ACCOUNT_SELF_DELETE_ENABLED exactly: only the literal "true" turns in-app deletion on', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(settings(false)))
+    for (const [value, expected] of [[undefined, false], ['', false], ['false', false], ['1', false], ['TRUE', false], ['true', true]] as const) {
+      __resetAppleCapabilityCache()
+      if (value === undefined) vi.stubEnv('ACCOUNT_SELF_DELETE_ENABLED', ''); else vi.stubEnv('ACCOUNT_SELF_DELETE_ENABLED', value)
+      const { body } = await config()
+      expect(body.flags.accountSelfDelete).toBe(expected)
+      expect(typeof body.flags.accountSelfDelete).toBe('boolean')
+    }
+  })
+  it('is independent of the Apple signal', async () => {
+    vi.stubEnv('ACCOUNT_SELF_DELETE_ENABLED', 'true')
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(settings(false)))
+    const off = (await config()).body.flags
+    __resetAppleCapabilityCache()
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(settings(true)))
+    const on = (await config()).body.flags
+    expect(off).toMatchObject({ accountSelfDelete: true, appleSignIn: false })
+    expect(on).toMatchObject({ accountSelfDelete: true, appleSignIn: true })
   })
 })
