@@ -595,8 +595,9 @@ final class ChatViewModel: AppObservableObject {
 
                     // The AI SDK data stream reports a failed turn as an `3:` error part on a 200 response. It was ignored, so a failed
                     // turn finished as an empty "complete" reply and the person saw no answer and no error.
-                    case .unknown(let prefix, _) where prefix == "3":
+                    case .unknown(let prefix, let payload) where prefix == "3":
                         streamReportedError = true
+                        self.log.error("server error part in the chat stream: \(String(decoding: payload.prefix(200), as: UTF8.self))")
 
                     // Non-places annotations carry nothing the chat UI renders yet.
                     case .messageStart, .annotation, .unknown:
@@ -642,8 +643,14 @@ final class ChatViewModel: AppObservableObject {
     }
 
     /// True when a finished stream left nothing the person can read: no text and no place card.
+    /// «Nothing» means nothing the reader can SEE: also a reply whose text is only marker blocks that decode to no card.
     static func streamProducedNothing(content: String, hasPlaces: Bool) -> Bool {
-        !hasPlaces && content.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        if hasPlaces { return false }
+        if content.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty { return true }
+        let p = ContentParser.parse(content)
+        return p.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+            && p.ctaButtons.isEmpty && p.plan == nil && p.followups.isEmpty && p.images.isEmpty
+            && p.shopping == nil && p.places.isEmpty && p.ask.isEmpty
     }
 
     // MARK: - Think timer

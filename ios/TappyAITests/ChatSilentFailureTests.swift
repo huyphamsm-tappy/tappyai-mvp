@@ -38,6 +38,19 @@ final class ChatSilentFailureTests: XCTestCase {
         XCTAssertFalse(vm.isStreaming)
     }
 
+    func testAReplyThatIsOnlyAnUndecodableMarkerBlockIsAnError() async {
+        // Text frames arrived, but everything in them is a marker block that decodes to nothing the person can see.
+        let vm = await chat(["0:\"[TAPPY_ASK]{not json}[/TAPPY_ASK]\"", "d:{\"finishReason\":\"stop\"}"])
+        XCTAssertEqual(vm.error, .generic)
+        XCTAssertFalse(vm.messages.contains { $0.isAssistant })
+    }
+
+    func testAMarkerOnlyReplyThatDecodesToACardIsStillAReply() async {
+        let vm = await chat(["0:\"[TAPPY_ASK]{\\\"v\\\":1,\\\"questions\\\":[{\\\"id\\\":\\\"q1\\\",\\\"q\\\":\\\"Mấy người?\\\",\\\"options\\\":[\\\"1\\\",\\\"2\\\"]}]}[/TAPPY_ASK]\"", "d:{\"finishReason\":\"stop\"}"])
+        XCTAssertNil(vm.error)
+        XCTAssertEqual(vm.messages.last?.status, .complete)
+    }
+
     func testANormalReplyIsUnchanged() async {
         let vm = await chat(["0:\"Xin \"", "0:\"chào\"", "d:{\"finishReason\":\"stop\"}"])
         XCTAssertNil(vm.error)
