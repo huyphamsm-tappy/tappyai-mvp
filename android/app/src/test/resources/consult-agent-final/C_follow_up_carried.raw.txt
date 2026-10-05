@@ -1,0 +1,4 @@
+e:{"finishReason":"stop","usage":{"promptTokens":5444,"completionTokens":26},"isContinued":false}
+0:"**Phở Ông Cát Gia Truyền Since 1988** mở đến 22:00."
+8:[{"kind":"tappy.turn.v1","domain":"food","turnType":"legacy","model":"openai:none","tokensIn":5444,"tokensOut":26,"serperCalls":0,"cacheHits":0,"promptCacheRead":0,"promptCacheWrite":0,"usd":0.000136,"intent":null,"intentUsd":0,"answerUsd":0.0001358,"serperUsd":0,"reasoningTokens":0,"lunaCachedIn":4850,"lunaCacheWrite":594,"fellBack":false}]
+d:{"finishReason":"stop","usage":{"promptTokens":5444,"completionTokens":26}}
