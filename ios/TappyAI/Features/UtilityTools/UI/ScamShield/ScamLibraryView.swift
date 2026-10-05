@@ -1,5 +1,13 @@
 import SwiftUI
 
+/// The Web's scam-reporting hotline (`SCAM_REPORT_HOTLINE` in `src/lib/scam-shield/hotline.ts`, Web final a43948d): the number
+/// shown to the person and the `tel:` URI. Source cited by the Web: Cục Cảnh sát hình sự - Bộ Công an,
+/// https://bocongan.gov.vn/hoi-dap/chi-tiet-cau-hoi/ab7d473e-21c9-4950-8ae2-947c1c7605af?page=/ (the page lists this number).
+enum ScamReportHotline {
+    static let display = "0692.345.860"
+    static let tel = "tel:0692345860"
+}
+
 /// The fixed emergency block: always on the Scam Shield screen, whatever tab is open.
 struct ScamEmergencyCard: View {
     var body: some View {
@@ -14,7 +22,8 @@ struct ScamEmergencyCard: View {
                 Text("scam.emergency.body").font(TappyFont.caption).foregroundStyle(TappyColor.textSecondary)
             }
             Spacer(minLength: Spacing.xs)
-            if let url = URL(string: "tel:113") {
+            // The identifier below keeps its old name: UI tests address the button by it.
+            if let url = URL(string: ScamReportHotline.tel) {
                 Link(destination: url) {
                     Text("scam.emergency.call")
                         .font(TappyFont.bodyEmphasis).foregroundStyle(.white)
