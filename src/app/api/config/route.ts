@@ -16,6 +16,11 @@ import {
   ONBOARDING_INTERESTS,
   ONBOARDING_CITIES,
 } from '@/lib/config/product'
+import { appleSignInAvailable } from '@/lib/auth/appleCapability'
+
+// `flags.appleSignIn` is read at request time from the Supabase project's own provider state (appleCapability.ts), so the route is
+// dynamic; the Cache-Control below still lets the CDN serve it for 5 minutes.
+export const dynamic = 'force-dynamic'
 
 // GET /api/config — the backend-owned product configuration, as a stable
 // contract for ALL clients (Web, Android, iOS). Native clients read quotas,
@@ -27,6 +32,7 @@ import {
 // /api/upload/video size token, /api/reviews caps). A tampered client changes
 // what it SHOWS, never what it CAN DO.
 export async function GET() {
+  const appleSignIn = await appleSignInAvailable()
   return NextResponse.json(
     {
       freemium: {
@@ -37,6 +43,10 @@ export async function GET() {
         showProUpgrade: SHOW_PRO_UPGRADE,
         showAppConnections: SHOW_APP_CONNECTIONS,
         showScamShield: SHOW_SCAM_SHIELD,
+        // Sign in with Apple (iOS native: Apple identity token -> Supabase signInWithIdToken). TRUE only while the Supabase project reports
+        // its Apple provider as enabled (GET /auth/v1/settings, see lib/auth/appleCapability.ts); false on any doubt (unconfigured, error,
+        // timeout). iOS shows the button only on true. Web has no Apple button: this flag does not change the Web login page.
+        appleSignIn,
       },
       upload: {
         maxPhotosPerReview: MAX_PHOTOS_PER_REVIEW,
