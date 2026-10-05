@@ -218,11 +218,33 @@ enum ContentParser {
             guard let label = dict["label"] as? String,
                   let type = dict["type"] as? String,
                   let url = dict["url"] as? String else { return nil }
+            // Web parity: a button the Web would drop is dropped here too (see `isAllowedCTAURL`).
+            guard isAllowedCTAURL(url) else { return nil }
             let primary = dict["primary"] as? Bool ?? false
             return CTAButton(label: label, type: type, url: url, primary: primary)
         }
 
         return (text, buttons)
+    }
+
+    /// Which CTA button URLs may be shown and opened. A direct port of the filter in Web `parseCTA`
+    /// (`src/lib/structuredContent/parseCta.ts`, Web commits bb09167 / 4601184, present in the Web final a43948d):
+    /// a button is a link to `http(s)`, a phone / mail link (`tel:`, `mailto:`) or a same-site path
+    /// (`/…`, but not `//…` or `/\…`) — never `javascript:`, `data:` or any other scheme — and the URL carries no
+    /// whitespace or control character (`[\u0000- \u007f]`, tested after a trim). Matching is case-insensitive.
+    static func isAllowedCTAURL(_ raw: String) -> Bool {
+        let t = raw.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !t.isEmpty else { return false }
+        if t.unicodeScalars.contains(where: { $0.value <= 0x20 || $0.value == 0x7f }) { return false }
+        let lower = t.lowercased()
+        if lower.hasPrefix("https://") || lower.hasPrefix("http://") || lower.hasPrefix("tel:") || lower.hasPrefix("mailto:") {
+            return true
+        }
+        if t.hasPrefix("/") {
+            let next = t.dropFirst().first
+            return next != "/" && next != "\\"
+        }
+        return false
     }
 
     // MARK: - Trip Plan

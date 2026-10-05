@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Compare the iOS Scam Shield strings with the CURRENT Web reference (needs no macOS).
 
-    git fetch origin && python ios/scripts/web_parity_check.py [git-ref]      # default: origin/rc/web-uat
+    git fetch origin && python ios/scripts/web_parity_check.py [git-ref]      # default: the Web final SHA pinned below
 
 Reads `src/lib/i18n/scamVerdict.ts` from the Web ref with `git show` and compares every verdict string that iOS
 mirrors with the value in `ios/TappyAI/Resources/Localizable.xcstrings`, in Vietnamese and English.
@@ -18,7 +18,9 @@ import sys
 sys.stdout.reconfigure(encoding="utf-8")
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 os.chdir(ROOT)
-ref = sys.argv[1] if len(sys.argv) > 1 else "origin/rc/web-uat"
+# The Web final: branch `p7/web-subscription`, commit adds docs/audit/CONSULTATIVE-FINAL-HANDOFF.md, code identical to 2a276ad.
+WEB_FINAL_SHA = "a43948d41684386a46857077b02b6f413e025d1f"
+ref = sys.argv[1] if len(sys.argv) > 1 else WEB_FINAL_SHA
 
 # iOS key -> Web key
 PAIRS = {
@@ -42,6 +44,14 @@ PAIRS = {
 }
 
 LINE = re.compile(r"\s*'([^']+)':\s*'(.*)',?\s*$")
+# A template literal that only interpolates the scam-reporting hotline: `... ${SCAM_REPORT_HOTLINE.display} ...`
+TEMPLATE_LINE = re.compile(r"\s*'([^']+)':\s*`(.*)`,?\s*$")
+
+
+def hotline_display():
+    out = subprocess.run(["git", "show", ref + ":src/lib/scam-shield/hotline.ts"], capture_output=True, text=True, encoding="utf-8")
+    m = re.search(r"display:\s*'([^']+)'", out.stdout) if out.returncode == 0 else None
+    return m.group(1) if m else None
 
 
 def web_strings():
@@ -58,6 +68,10 @@ def web_strings():
         m = LINE.match(line)
         if current and m:
             tables[current][m.group(1)] = m.group(2).replace("\\'", "'")
+            continue
+        t = TEMPLATE_LINE.match(line)
+        if current and t and "${SCAM_REPORT_HOTLINE.display}" in t.group(2) and hotline_display():
+            tables[current][t.group(1)] = t.group(2).replace("${SCAM_REPORT_HOTLINE.display}", hotline_display())
     return tables
 
 
