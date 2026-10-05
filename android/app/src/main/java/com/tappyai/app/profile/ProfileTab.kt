@@ -289,6 +289,21 @@ fun ProfileTab(
                     viewModel = viewModel,
                     onBack = { navController.popBackStack() },
                     onEditProfile = { navController.navigate(ProfileRoute.AccountEdit) },
+                    moreRows = {
+                        AccountMoreRows(onOpen = { item ->
+                            when (item) {
+                                ProfileMenuItem.ChatHistory -> navController.navigate(ProfileRoute.ChatHistory)
+                                ProfileMenuItem.Bookings -> navController.navigate(ProfileRoute.Bookings)
+                                ProfileMenuItem.Preferences -> navController.navigate(ProfileRoute.Preferences)
+                                ProfileMenuItem.Saved -> navController.navigate(ProfileRoute.Saved)
+                                ProfileMenuItem.PriceTracking -> navController.navigate(ProfileRoute.PriceTracking)
+                                ProfileMenuItem.Planner -> navController.navigate(ProfileRoute.Planner)
+                                ProfileMenuItem.TappyKnows -> navController.navigate(ProfileRoute.TappyKnows)
+                                ProfileMenuItem.GroupDining -> navController.navigate(ProfileRoute.GroupDining)
+                                else -> Unit // Account itself, and the two flag-gated rows (Pro, App connections), are not in this group
+                            }
+                        })
+                    },
                 )
             }
             composable<ProfileRoute.AccountEdit> { entry ->

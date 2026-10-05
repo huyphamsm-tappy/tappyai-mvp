@@ -139,6 +139,16 @@ internal fun accountMenuItems(): List<ProfileMenuItem> = buildList {
     if (SHOW_PRO_UPGRADE) add(ProfileMenuItem.UpgradeToPro)
 }
 
+/**
+ * Web final `accountHubRows()` (ProfileRows.tsx, owner 2026-10-02): the /profile hub shows ONE compact account row — like the Settings group — and the
+ * other eight rows of `accountRows()` live one tap deeper on the Account page (`accountMoreRows()`, group «Của tôi»). `accountMenuItems()` stays the
+ * full inventory (Web's `accountRows()`).
+ */
+internal fun accountHubMenuItems(): List<ProfileMenuItem> = accountMenuItems().take(1)
+
+/** The rows the compact hub folds into the Account page: everything except the Account row itself (Web `accountMoreRows()`). */
+internal fun accountMoreMenuItems(): List<ProfileMenuItem> = accountMenuItems().drop(1)
+
 private val CardShape = RoundedCornerShape(20.dp)
 private val TileShape = RoundedCornerShape(12.dp)
 
@@ -239,7 +249,7 @@ fun ProfileScreen(
                     MenuSectionHeader(stringResource(R.string.profile_section_account))
                     ProfileGroupCard {
                         val locked = viewModel.isAnonymous
-                        accountMenuItems().forEachIndexed { index, item ->
+                        accountHubMenuItems().forEachIndexed { index, item ->
                             if (index > 0) HorizontalDivider(color = HomeV3.Outline, modifier = Modifier.padding(start = 72.dp))
                             ProfileV3Row(
                                 item = item,
@@ -472,10 +482,28 @@ private fun ProfileV3Row(item: ProfileMenuItem, locked: Boolean, onClick: () -> 
         tint = item.tint,
         title = item.title(),
         // Guest: the web's locked row — "Cần đăng nhập" and a padlock, and the tap goes to sign-in.
-        subtitle = stringResource(if (locked) R.string.profile_guest_locked else item.subtitleRes),
+        // Web hub: the compact account row says what is inside (`profile.account.compactDesc`).
+        subtitle = stringResource(
+            when {
+                locked -> R.string.profile_guest_locked
+                item == ProfileMenuItem.Account -> R.string.profile_menu_account_compact_desc
+                else -> item.subtitleRes
+            },
+        ),
         locked = locked,
         onClick = onClick,
     )
+}
+
+/** The Account page's «Của tôi» group (Web `AccountView`: `<ProfileRowList rows={accountMoreRows()} />`): the eight rows the compact hub folds away. */
+@Composable
+internal fun AccountMoreRows(onOpen: (ProfileMenuItem) -> Unit) {
+    ProfileGroupCard {
+        accountMoreMenuItems().forEachIndexed { index, item ->
+            if (index > 0) HorizontalDivider(color = HomeV3.Outline, modifier = Modifier.padding(start = 72.dp))
+            ProfileV3Row(item = item, locked = false, onClick = { onOpen(item) })
+        }
+    }
 }
 
 /** One row: a coloured icon tile, title, one-line blurb, chevron. The whole row is the target. */

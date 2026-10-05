@@ -3,8 +3,8 @@
     <string name="settings_title">Settings</string>
     <!-- Settings V3 (2026-09-14): the header blurb and one-line row blurbs. Presentation only. -->
     <string name="settings_subtitle">Customise TappyAI the way you want</string>
-    <string name="settings_notifications_desc">Manage notifications from TappyAI</string>
-    <string name="settings_memory_desc">See and manage what Tappy remembers</string>
+    <string name="settings_notifications_desc">Reminders and updates</string>
+    <string name="settings_memory_desc">Manage what the AI remembers</string>
     <string name="settings_language_desc">Choose the display language</string>
     <string name="settings_how_to_use_desc">Learn how to use TappyAI</string>
     <string name="settings_terms_of_service_desc">Read the terms and conditions</string>
@@ -25,7 +25,7 @@
     <string name="settings_terms_of_service">Terms of Service</string>
     <string name="settings_privacy_policy">Privacy Policy</string>
     <string name="settings_copyright_policy">Copyright Policy</string>
-    <string name="settings_version">Version %1$s</string>
+    <string name="settings_version">Current version: %1$s</string>
     <string name="settings_signing_out">Signing out…</string>
     <string name="settings_sign_out">Sign out</string>
     <!-- Shown instead of "Sign out" while the session is anonymous: signing out of a guest
@@ -124,4 +124,6 @@
     <string name="account_cover_too_large">Cover photos are limited to 5MB</string>
     <string name="account_cover_not_image">Only image files are accepted</string>
     <string name="account_cover_error">Couldn\'t update the cover photo</string>
+    <string name="profile_menu_account_compact_desc">Profile, chat history, bookings, saved, preferences…</string>
+    <string name="account_more_section">Mine</string>
 </resources>

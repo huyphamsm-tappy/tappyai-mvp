@@ -2,8 +2,8 @@
     <!-- Settings screen (profile/SettingsScreen.kt, SettingsViewModel.kt) -->
     <string name="settings_title">Cài đặt</string>
     <string name="settings_subtitle">Tùy chỉnh TappyAI theo cách bạn muốn</string>
-    <string name="settings_notifications_desc">Quản lý thông báo từ TappyAI</string>
-    <string name="settings_memory_desc">Xem và quản lý thông tin Tappy đã nhớ</string>
+    <string name="settings_notifications_desc">Nhắc nhở và cập nhật</string>
+    <string name="settings_memory_desc">Quản lý thông tin AI ghi nhớ</string>
     <string name="settings_language_desc">Chọn ngôn ngữ hiển thị</string>
     <string name="settings_how_to_use_desc">Tìm hiểu cách sử dụng TappyAI</string>
     <string name="settings_terms_of_service_desc">Xem điều khoản và điều kiện</string>
@@ -12,7 +12,7 @@
     <string name="settings_delete_account_desc">Gửi yêu cầu xóa tài khoản và dữ liệu của bạn</string>
     <string name="settings_section_options">Tùy chọn</string>
     <string name="settings_notifications">Thông báo</string>
-    <string name="settings_memory">Bộ nhớ</string>
+    <string name="settings_memory">Trí nhớ</string>
     <string name="settings_language">Ngôn ngữ</string>
     <string name="settings_appearance">Giao diện</string>
     <string name="settings_appearance_desc">Theo hệ thống, hoặc luôn sáng / tối</string>
@@ -24,7 +24,7 @@
     <string name="settings_terms_of_service">Điều khoản dịch vụ</string>
     <string name="settings_privacy_policy">Chính sách bảo mật</string>
     <string name="settings_copyright_policy">Chính sách bản quyền</string>
-    <string name="settings_version">Phiên bản %1$s</string>
+    <string name="settings_version">Phiên bản hiện tại: %1$s</string>
     <string name="settings_signing_out">Đang đăng xuất…</string>
     <string name="settings_sign_out">Đăng xuất</string>
     <string name="settings_sign_in">Đăng nhập</string>
@@ -118,4 +118,6 @@
     <string name="account_cover_too_large">Ảnh bìa tối đa 5MB</string>
     <string name="account_cover_not_image">Chỉ chấp nhận file ảnh</string>
     <string name="account_cover_error">Không thể cập nhật ảnh bìa</string>
+    <string name="profile_menu_account_compact_desc">Hồ sơ, lịch sử chat, đặt chỗ, đã lưu, sở thích…</string>
+    <string name="account_more_section">Của tôi</string>
 </resources>
