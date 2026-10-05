@@ -22,6 +22,11 @@ import {
 } from '@/lib/config/product'
 import { selfDeleteEnabled } from '@/lib/account/selfDelete'
 import { userBlocksEnabled, reportsEnabled, moderationAdminEnabled } from '@/lib/safety/userBlocks'
+import { appleSignInAvailable } from '@/lib/auth/appleCapability'
+
+// `flags.appleSignIn` is read at request time from the Supabase project's own provider state (appleCapability.ts), so the route is
+// dynamic; the Cache-Control below still lets the CDN serve it for 5 minutes.
+export const dynamic = 'force-dynamic'
 
 // GET /api/config — the backend-owned product configuration, as a stable
 // contract for ALL clients (Web, Android, iOS). Native clients read quotas,
@@ -33,6 +38,7 @@ import { userBlocksEnabled, reportsEnabled, moderationAdminEnabled } from '@/lib
 // /api/upload/video size token, /api/reviews caps). A tampered client changes
 // what it SHOWS, never what it CAN DO.
 export async function GET() {
+  const appleSignIn = await appleSignInAvailable()
   return NextResponse.json(
     {
       freemium: {
@@ -67,6 +73,10 @@ export async function GET() {
         // SHOW_PUBLIC_SHARE=false|0 turns it off (build env — redeploy after flipping). Clients hide
         // the "public link" action on false; a missing field (older server) means true.
         publicShare: publicShareEnabled(),
+        // Sign in with Apple (iOS native: Apple identity token -> Supabase signInWithIdToken). TRUE only while the Supabase project reports
+        // its Apple provider as enabled (GET /auth/v1/settings, see lib/auth/appleCapability.ts); false on any doubt (unconfigured, error,
+        // timeout). iOS shows the button only on true. Web has no Apple button: this flag does not change the Web login page.
+        appleSignIn,
       },
       // User-safety surfaces a client may SHOW (Android SafetyApi / iOS AppConfig.P8 already read this block). The server
       // enforces each on its own (a guarded route answers 404 while its flag is off); this only decides whether the buttons
