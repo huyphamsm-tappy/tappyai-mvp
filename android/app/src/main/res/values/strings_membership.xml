@@ -15,7 +15,7 @@
     <string name="membership_upgrade_cta">Upgrade to Pro — %1$s/month</string>
     <string name="membership_pro_subscription_feature_name">Pro subscription</string>
     <string name="membership_faq_title">Frequently asked questions</string>
-    <string name="membership_free_feature_messages">15 messages / day</string>
+    <string name="membership_free_feature_messages">10 messages / day</string>
     <string name="membership_free_feature_search">Basic place search</string>
     <string name="membership_free_feature_history">7-day history</string>
     <string name="membership_pro_feature_messages">Unlimited messages</string>

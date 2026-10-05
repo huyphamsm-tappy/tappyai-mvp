@@ -107,6 +107,9 @@
     <string name="chat_action_read_aloud">Đọc to</string>
     <string name="chat_action_stop_read_aloud">Dừng đọc</string>
     <string name="chat_action_regenerate">Tạo lại</string>
+    <string name="chat_stream_cut">Câu trả lời bị ngắt giữa chừng. Bạn thử lại nhé?</string>
+    <string name="chat_stream_cut_retry">Trả lời lại</string>
+    <string name="chat_ai_disclaimer">Tappy có thể mắc lỗi. Vui lòng kiểm tra lại thông tin quan trọng.</string>
     <string name="chat_action_more">Thêm</string>
     <string name="chat_more_copy_plaintext">Sao chép văn bản thuần</string>
     <string name="chat_more_copy_id">Sao chép ID</string>

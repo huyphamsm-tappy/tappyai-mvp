@@ -98,8 +98,10 @@ class RealChatRepository @Inject constructor(
                     return@launch
                 }
 
+                val end = ChatStreamEnd()
                 while (!source.exhausted()) {
                     val line = source.readUtf8Line() ?: break
+                    end.feed(line)
                     if (ChatStreamFrames.errorFrame(line) != null) {
                         // Localized generic text in the VM (a blank message), never the SDK's English one.
                         close(ChatException.AiError(""))
@@ -107,6 +109,8 @@ class RealChatRepository @Inject constructor(
                     }
                     ChatStreamFrames.parse(line)?.let { trySend(it) }
                 }
+                // Closed cleanly with no `d:`/`3:` frame: half an answer (web streamCut.ts) — say so.
+                if (end.cut) trySend(ChatStreamEvent.Cut)
                 close()
             } catch (e: IOException) {
                 // A cancelled call throws IOException — close cleanly rather than as an error.
@@ -289,7 +293,7 @@ internal fun chatErrorFor(code: Int, dto: ChatErrorDto?, strings: StringProvider
         ?: dto?.error?.takeIf { looksLikeSentence(it) }
     val message = serverSentence ?: strings.get(R.string.chat_error_generic_with_code, code)
     return when {
-        code == 429 && dto?.error == "free_limit_reached" ->
+        code == 429 && (dto?.error == "free_limit_reached" || dto?.error == "plan_limit_reached") ->
             ChatException.DailyLimitReached(message)
         code == 429 ->
             ChatException.RateLimited(message)

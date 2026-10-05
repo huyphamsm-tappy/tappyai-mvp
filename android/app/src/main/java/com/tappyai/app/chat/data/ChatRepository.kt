@@ -43,6 +43,14 @@ sealed interface ChatStreamEvent {
      * Never text, never persisted. Web parity: `progressAnnotation.ts`.
      */
     data class Progress(val stage: String, val text: String) : ChatStreamEvent
+
+    /**
+     * The body closed cleanly WITHOUT its finish frame (`d:`) or an error frame (`3:`) — a proxy or
+     * function cut the reply half-way. The route always ends a data stream with one of the two, so the
+     * text received is half an answer, not a normal one: the screen offers «answer again» (web parity:
+     * `src/lib/chat/streamCut.ts`, 56a26ae). Sent last, after every other event of the turn.
+     */
+    data object Cut : ChatStreamEvent
 }
 
 interface ChatRepository {

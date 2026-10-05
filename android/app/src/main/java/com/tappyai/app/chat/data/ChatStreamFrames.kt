@@ -57,6 +57,12 @@ object ChatStreamFrames {
         return runCatching { json.decodeFromString<String>(stripped.removePrefix("3:")) }.getOrDefault("")
     }
 
+    /** A `d:` (finish) or `3:` (error) frame — the two ways the route ends a data stream (web `streamCut.ts`: `/^(?:d|3):/`). */
+    fun isEndFrame(line: String): Boolean {
+        val stripped = if (line.startsWith("data: ")) line.removePrefix("data: ") else line
+        return stripped.startsWith("d:") || stripped.startsWith("3:")
+    }
+
     fun parse(line: String): ChatStreamEvent? {
         val stripped = if (line.startsWith("data: ")) line.removePrefix("data: ") else line
         if (stripped.startsWith("0:")) {
@@ -90,4 +96,22 @@ object ChatStreamFrames {
         }
         return null
     }
+}
+
+/**
+ * Tracks how one `/api/chat` body ended. A reply that closed cleanly after at least one line but with
+ * neither a `d:` nor a `3:` frame is a CUT reply (web `watchStreamCut`, `src/lib/chat/streamCut.ts`):
+ * [cut] is false for an empty body, and an aborted call or a network error never reaches the end of the
+ * loop, so neither is reported as a cut.
+ */
+class ChatStreamEnd {
+    private var sawAny = false
+    private var finished = false
+
+    fun feed(line: String) {
+        sawAny = true
+        if (ChatStreamFrames.isEndFrame(line)) finished = true
+    }
+
+    val cut: Boolean get() = sawAny && !finished
 }

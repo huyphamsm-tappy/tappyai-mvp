@@ -42,6 +42,7 @@ class ChatStreamWireReplayTest {
                     is ChatStreamEvent.Text -> prose.append(event.delta)
                     is ChatStreamEvent.Places -> live = event.view
                     is ChatStreamEvent.Progress -> Unit // shown while streaming, never part of the turn
+                    ChatStreamEvent.Cut -> Unit // never produced by a single frame: the repository sends it from ChatStreamEnd
                     null -> Unit // a frame this client does not read — skipped, never rendered
                 }
             }

@@ -121,6 +121,20 @@ data class CtaButton(
 @Serializable
 private data class CtaEnvelope(val buttons: List<CtaButton> = emptyList())
 
+private val CTA_URL_FORBIDDEN_CHARS = Regex("""[\u0000- \u007f]""")
+private val CTA_URL_ALLOWED = Regex("""^(?:https?://|tel:|mailto:|/(?![/\\]))""", RegexOption.IGNORE_CASE)
+
+/**
+ * Port of web `parseCTA`'s defence-in-depth filter (`src/lib/structuredContent/parseCta.ts`, security review
+ * 02/10, 56a26ae): a CTA button is a link to http(s), a phone/mail link (`tel:`, `mailto:`) or a same-site path
+ * (`/x`, never `//host` or `/\host`) — never `javascript:`, `data:`, `intent:`, `file:` or any other scheme —
+ * and its url holds no whitespace or control character. A button that fails is dropped, the rest kept.
+ */
+internal fun isSafeCtaUrl(url: String): Boolean {
+    val u = url.trim()
+    return !CTA_URL_FORBIDDEN_CHARS.containsMatchIn(u) && CTA_URL_ALLOWED.containsMatchIn(u)
+}
+
 /**
  * One positional piece of an assistant reply: markdown text, or a run of consecutive place photos
  * that renders as an inline gallery exactly where it appeared in the reply. Mirrors the web's
@@ -374,7 +388,7 @@ object ChatResponseParser {
         text = CTA_PARTIAL_RE.replace(text, "").trimEnd()
 
         val buttons = ctaPayload?.let {
-            runCatching { json.decodeFromString<CtaEnvelope>(CardMarkdown.stripPayload(it.trim())).buttons }.getOrNull()
+            runCatching { json.decodeFromString<CtaEnvelope>(CardMarkdown.stripPayload(it.trim())).buttons.filter { b -> isSafeCtaUrl(b.url) } }.getOrNull()
         } ?: emptyList()
 
         // 3. Follow-up suggestion chips.

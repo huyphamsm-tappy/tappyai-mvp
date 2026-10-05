@@ -90,6 +90,7 @@ import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -156,6 +157,7 @@ fun ChatScreen(
     val messages by viewModel.messages.collectAsStateWithLifecycle()
     val publicShareEnabled by viewModel.publicShareEnabled.collectAsStateWithLifecycle()
     val isResponding by viewModel.isAssistantResponding.collectAsStateWithLifecycle()
+    val streamCut by viewModel.streamCut.collectAsStateWithLifecycle()
     val streamingText by viewModel.streamingText.collectAsStateWithLifecycle()
     val streamingHint by viewModel.streamingHint.collectAsStateWithLifecycle()
     val streamingPlaces by viewModel.streamingPlaces.collectAsStateWithLifecycle()
@@ -529,6 +531,33 @@ fun ChatScreen(
                         )
                     }
                 }
+                // A reply whose stream closed without its finish frame is half an answer: say so and offer to answer
+                // again (web ChatInterface `data-testid="stream-cut"`, same words as `chat.streamCut`/`chat.streamCutRetry`).
+                if (streamCut && !isResponding) {
+                    item(key = "stream-cut") {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clip(RoundedCornerShape(16.dp))
+                                .background(MaterialTheme.colorScheme.surfaceVariant)
+                                .padding(TappySpacing.lg),
+                            verticalArrangement = Arrangement.spacedBy(TappySpacing.sm),
+                        ) {
+                            Text(
+                                text = stringResource(R.string.chat_stream_cut),
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            )
+                            TappyButton(
+                                text = stringResource(R.string.chat_stream_cut_retry),
+                                onClick = viewModel::onRegenerate,
+                                variant = TappyButtonVariant.Ghost,
+                                size = TappyButtonSize.Small,
+                                leadingIcon = { Icon(Icons.Filled.Refresh, contentDescription = null, modifier = Modifier.size(16.dp)) },
+                            )
+                        }
+                    }
+                }
             }
         }
 
@@ -575,6 +604,18 @@ fun ChatScreen(
                     audioPermission.launch(Manifest.permission.RECORD_AUDIO)
                 }
             },
+        )
+        // Web final 2a276ad (Phase 7 CP7): the global AI disclaimer is a UI contract rendered by the product itself, under the
+        // chat composer (`<AiDisclaimer className="mt-1.5" />` after the form) — never left to the model to say.
+        Text(
+            text = stringResource(R.string.chat_ai_disclaimer),
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            textAlign = TextAlign.Center,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = TappySpacing.xl)
+                .padding(top = 6.dp, bottom = TappySpacing.sm),
         )
     }
     }

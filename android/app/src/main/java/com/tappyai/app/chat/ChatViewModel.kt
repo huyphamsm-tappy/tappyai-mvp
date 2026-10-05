@@ -124,6 +124,11 @@ class ChatViewModel @Inject constructor(
     private val _isAssistantResponding = MutableStateFlow(false)
     val isAssistantResponding: StateFlow<Boolean> = _isAssistantResponding.asStateFlow()
 
+    // The last reply's stream closed without its finish frame (ChatStreamEvent.Cut): the screen says so and
+    // offers «answer again». Cleared as soon as a new turn starts. Web parity: ChatInterface `streamCut`.
+    private val _streamCut = MutableStateFlow(false)
+    val streamCut: StateFlow<Boolean> = _streamCut.asStateFlow()
+
     // The reply text revealed AS IT STREAMS (structured blocks stripped, image markdown KEPT — the
     // UI segments it live so photo galleries appear inline mid-stream, matching the committed
     // message's segments). Empty until the first token arrives — the UI shows the thinking dots +
@@ -658,6 +663,7 @@ class ChatViewModel @Inject constructor(
         _isAssistantResponding.value = false
         respondingJob = viewModelScope.launch {
             _isAssistantResponding.value = true
+            _streamCut.value = false
             _streamingText.value = ""
             _streamingHint.value = null
             _streamingPlaces.value = null
@@ -676,6 +682,8 @@ class ChatViewModel @Inject constructor(
                         // by the decision); both are shown live as they arrive.
                         is ChatStreamEvent.Places -> { livePlaces = event.view; _streamingPlaces.value = event.view; return@collect }
                         is ChatStreamEvent.Progress -> { _streamingHint.value = event.text; return@collect }
+                        // Last event of a reply that closed without `d:`/`3:`: the half answer stays, with an «answer again» notice.
+                        ChatStreamEvent.Cut -> { _streamCut.value = true; return@collect }
                     }
                     reply.append(token)
                     // Surface the running text with structured blocks stripped but image markdown
