@@ -62,7 +62,7 @@ final class ScamScenarioCardTests: XCTestCase {
         switch outcome {
         case .matched(let n, _, _): number = n
         case .unsure(_, _, let n): number = n
-        case .noSigns: break
+        case .familiar, .noSigns: break
         }
         XCTAssertNotNil(number, "no longer «no familiar signs» without a scenario: \(outcome)")
         XCTAssertNotEqual(outcome.verdict, .unrecognized)
