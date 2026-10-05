@@ -65,6 +65,13 @@ const askOf = (raw) => {
   const m = raw.match(/\[TAPPY_ASK\]([\s\S]*?)\[\/TAPPY_ASK\]/)
   try { return (JSON.parse(m[1]).questions || []).filter((q) => Array.isArray(q.options) && q.options.length >= 2) } catch { return [] }
 }
+
+/** Scrolls the chat LIST. a.swipe() starts at 73% of the height, which on the chat screen is the suggestion-chip bar (it scrolls sideways, the list never moves). */
+const listSwipe = (a, dir = 'up') => {
+  const [w, h] = a.screen()
+  const [from, to] = dir === 'up' ? [h * 0.62, h * 0.22] : [h * 0.22, h * 0.62]
+  a.sh('input', 'swipe', String(Math.round(w / 2)), String(Math.round(from)), String(Math.round(w / 2)), String(Math.round(to)), '450')
+}
 const strip = (s) => s.replace(/^[^\p{L}\p{N}]+/u, '').trim() // a label's leading emoji
 
 /** Raw content of the last assistant message in the user's newest conversation containing [prompt]. */
@@ -155,8 +162,8 @@ export async function android({ a, shot, check, seeded }) {
         const qs = askOf(raw)
         // The emulator's software-GPU ANR ("TappyAI UAT isn't responding") can land while the card is drawn: answer «Wait».
         for (let k = 0; k < 4 && a.find(/isn.t responding/); k++) { const w = a.find('Wait'); if (w) await a.tap(w, { after: 3000 }) }
-        for (let k = 0; k < 4 && !a.find(qs[0].q); k++) { a.swipe('down'); await a.sleep(700) }
-        for (let k = 0; k < 8 && !a.find(qs[0].q); k++) { a.swipe('up'); await a.sleep(700) }
+        for (let k = 0; k < 4 && !a.find(qs[0].q); k++) { listSwipe(a, 'down'); await a.sleep(700) }
+        for (let k = 0; k < 8 && !a.find(qs[0].q); k++) { listSwipe(a, 'up'); await a.sleep(700) }
         const picked = []
         for (const q of qs) {
           let n = a.find(q.options[0])
@@ -166,7 +173,7 @@ export async function android({ a, shot, check, seeded }) {
         // The card's TOP (mascot + the per-area title) for the area evidence — then back down to the send button.
         const HEADER = /^(Hôm nay ăn gì nhỉ\?|Bạn đang tìm món gì\?|Chuyến đi thế nào đây\?|Thư giãn kiểu nào hôm nay\?|Tìm gì cho bạn hôm nay\?)$/
         for (let k = 0; k < 3 && a.find(/isn.t responding/); k++) { const w = a.find('Wait'); if (w) await a.tap(w, { after: 3000 }) }
-        for (let k = 0; k < 6 && !a.find(HEADER); k++) { a.swipe('down'); await a.sleep(600) }
+        for (let k = 0; k < 6 && !a.find(HEADER); k++) { listSwipe(a, 'down'); await a.sleep(600) }
         shot(`${c.id}-ask-header`)
         check(`${c.id}: tiêu đề thẻ hỏi theo mảng`, !!a.find(HEADER), a.texts().find((t) => HEADER.test(t)) || '(không thấy tiêu đề)')
         shot(`${c.id}-ask-picked`)
@@ -184,7 +191,7 @@ export async function android({ a, shot, check, seeded }) {
         const chips = followupsOf(raw)
         const chip = chips[0]
         // Chips sit in a horizontal row at the end of the reply: reach the row, then scroll it.
-        for (let k = 0; k < 8 && !a.find(chip) && !chips.some((x) => a.find(x)); k++) { a.swipe('up'); await a.sleep(700) }
+        for (let k = 0; k < 8 && !a.find(chip) && !chips.some((x) => a.find(x)); k++) { listSwipe(a, 'up'); await a.sleep(700) }
         const node = a.find(chip) || await a.scrollRowTo(chip, new RegExp(chips.map((x) => x.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|'))).catch(() => null)
         check(`${c.id}: câu hỏi làm rõ có nút trả lời một chạm «${chip}»`, !!node)
         if (node) {
@@ -197,8 +204,12 @@ export async function android({ a, shot, check, seeded }) {
     }
     // Plan case: accept the plan the way a user does — the server's "Lên kế hoạch chi tiết" chip.
     if (c.plan && !/\[TAPPY_PLAN\]/.test(raw)) {
-      for (let k = 0; k < 10 && !a.find(ACCEPT_PLAN); k++) { a.swipe('up'); await a.sleep(700) }
-      const acc = a.find(ACCEPT_PLAN)
+      // The chip sits in a HORIZONTAL row (and may carry an emoji prefix): reach the row vertically, then scroll the row sideways.
+      const ACCEPT_RE = new RegExp('^\\P{L}*' + ACCEPT_PLAN + '$', 'u')
+      const rowChips = followupsOf(raw)
+      const ROW_RE = rowChips.length ? new RegExp(rowChips.map((x) => x.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')) : ACCEPT_RE
+      for (let k = 0; k < 10 && !a.find(ACCEPT_RE); k++) { listSwipe(a, 'up'); await a.sleep(700) }
+      const acc = a.find(ACCEPT_RE) || await a.scrollRowTo(ACCEPT_RE, ROW_RE).catch(() => null)
       check(`${c.id}: có nút «${ACCEPT_PLAN}»`, !!acc)
       if (acc) {
         await a.tap(acc, { after: 3000 })
@@ -215,7 +226,7 @@ export async function android({ a, shot, check, seeded }) {
     // Read the whole reply on screen: the app shows a finished reply from its TOP, so read downward.
     await a.hideKeyboard()
     const seen = new Set()
-    for (let k = 0; k < 12; k++) { a.texts().forEach((t) => seen.add(t)); a.swipe('up'); await a.sleep(700) }
+    for (let k = 0; k < 12; k++) { a.texts().forEach((t) => seen.add(t)); listSwipe(a, 'up'); await a.sleep(700) }
     a.texts().forEach((t) => seen.add(t))
     const lint = screenLint([...seen])
     check(`${c.id}: không có ** / marker / URL thô / link dính / khoảng trắng lạ trên màn hình`, !lint.bold && !lint.marker && !lint.url && !lint.spaces && !lint.glued,
@@ -234,7 +245,10 @@ export async function android({ a, shot, check, seeded }) {
     const cardAction = [...seen].find((t) => ACTION.test(t))
     const label = shownCta[0] || cardAction
     if (label) {
-      const node = await a.scrollTo(new RegExp('^\\W*' + esc(label) + '$'), { max: 8 }).catch(() => null)
+      // The reading pass above ended at the BOTTOM of a long reply and a.scrollTo goes back up only 3 screens: walk up to the card's button first.
+      const LABEL_RE = new RegExp('^\\W*' + esc(label) + '$')
+      for (let k = 0; k < 20 && !a.find(LABEL_RE); k++) { listSwipe(a, 'down'); await a.sleep(500) }
+      const node = await a.scrollTo(LABEL_RE, { max: 8 }).catch(() => null)
       if (node) {
         a.clearLog()
         await a.tap(node, { after: 4000 })

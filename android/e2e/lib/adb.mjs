@@ -120,7 +120,7 @@ export function screen() {
 }
 export function swipe(dir = 'up') {
   const [w, h] = screen()
-  const [a, b] = dir === 'up' ? [h * 0.73, h * 0.29] : [h * 0.29, h * 0.73]
+  const [a, b] = dir === 'up' ? [h * 0.66, h * 0.27] : [h * 0.27, h * 0.66] // starts ABOVE the chat chip bar (~73-78%), which would swallow the swipe
   sh('input', 'swipe', String(Math.round(w / 2)), String(Math.round(a)), String(Math.round(w / 2)), String(Math.round(b)), '450')
 }
 /** BACK only when the soft keyboard is up — a BACK with no keyboard would leave the screen. */
