@@ -40,6 +40,9 @@ PAIRS = {
     "scamVerdict.scenario.report": "scamVerdict.scenario.report",
     "scamVerdict.link.reasons": "scamVerdict.link.reasons",
     "scamVerdict.qr.noVerdict": "scamVerdict.qr.noVerdict",
+    "scamVerdict.scenario.heading": "scamVerdict.scenario.heading",
+    "scamVerdict.scenario.signs": "scamVerdict.scenario.signs",
+    "scamVerdict.scenario.guidanceNote": "scamVerdict.scenario.guidanceNote",
     "scam.msg.privacy": "scamVerdict.msg.privacy",
 }
 

@@ -324,7 +324,7 @@ final class ScreenshotTests: XCTestCase {
 
     /// WEB 65685a7: no AI for the message check — the «suspicious» result has no «analyse deeper with AI» entry.
     func testScamMessageUnsureHasNoAIEntry() {
-        let app = scamLaunch(["-uitest-scam-message", "Bạn đã trúng thưởng một phần quà đặc biệt."])
+        let app = scamLaunch(["-uitest-scam-message", "Hóa đơn tiền điện tháng 9 kèm mã QR thanh toán"])   // a WEAK scenario match (Web match.test.ts): suspicious
         XCTAssertTrue(any(app, "scam-msg-unsure").waitForExistence(timeout: 40))
         shot("88-scam-message-unsure")
         for _ in 0..<2 { app.swipeUp() }
@@ -643,7 +643,8 @@ final class ScreenshotTests: XCTestCase {
         let welcome = any(app, "home-welcome")
         XCTAssertTrue(welcome.waitForExistence(timeout: 30), "hero")
         XCTAssertTrue(any(app, "home-ask").exists, "ask bar")
-        XCTAssertTrue(any(app, "home-quick-cafe").exists, "quick suggestions")
+        // Web final Home has neither the six "Gợi ý nhanh" cards nor an "Ưu đãi hôm nay" rail (HomeV3.tsx), so iOS shows neither.
+        XCTAssertFalse(any(app, "home-quick-cafe").exists, "no quick-suggestion cards on Home")
         let named = NSPredicate(format: "label CONTAINS %@", "Minh Anh")
         expectation(for: named, evaluatedWith: welcome)
         waitForExpectations(timeout: 30)
@@ -651,7 +652,7 @@ final class ScreenshotTests: XCTestCase {
         app.swipeUp()
         shot("24-home-2")
         app.swipeUp()
-        XCTAssertTrue(any(app, "home-deals-empty").waitForExistence(timeout: 20), "deals empty card")
+        XCTAssertFalse(any(app, "home-deals-empty").exists, "no deals rail on Home")
         shot("25-home-3")
         XCTAssertTrue(scrollTo(app, "home-suggestion-1"), "suggestion cards")
         shot("26-home-4")

@@ -36,18 +36,11 @@ struct HomeView: View {
                     HomeGreetingSection(hero: hero)
                     HomeAskBar { router.switchTo(.chat) }
                 }
-                HomeSuggestedPromptsSection(onOpenChat: { router.switchTo(.chat) }) { action in
-                    switch action.target {
-                    case .chat(let key): ask(NSLocalizedString(key, comment: ""))
-                    case .destination(let dest): router.push(dest, on: .home)
-                    }
-                }
                 if case .loaded(let recs) = vm.recommendations {
                     HomeRecommendationsSection(items: recs) { router.push(HomeDestination.recommendations, on: .home) }
                 }
                 HomeDiscoverBanner { router.switchTo(.deals) }
                 HomeScamShieldSection { router.push(HomeScamShieldSection.destination, on: .home) }
-                HomeDealsSection(rail: vm.deals) { router.switchTo(.deals) }
                 if case .loaded(let videos) = vm.videos {
                     HomeVideosSection(videos: videos) { router.switchTo(.explore) }
                 }

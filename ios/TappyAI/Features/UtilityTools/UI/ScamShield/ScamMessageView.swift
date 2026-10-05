@@ -38,7 +38,7 @@ struct ScamMessageView: View {
                 Text("\(vm.messageText.count)/\(ScamMessageMatcher.maxChars)").font(TappyFont.caption).foregroundStyle(TappyColor.textSecondary)
             }
 
-            Button { vm.checkMessage() } label: {
+            Button { UIApplication.shared.dismissKeyboard(); vm.checkMessage() } label: {
                 Text("scam.msg.check").frame(maxWidth: .infinity)
             }
             .buttonStyle(.tappy(.primary))
@@ -63,8 +63,12 @@ struct ScamMessageView: View {
                 } else {
                     unsureCard(signals)
                 }
-            case .unsure(let signals, _):
-                unsureCard(signals)
+            case .unsure(let signals, _, let number):
+                if let number, let scenario = knowledge.scenarios.first(where: { $0.officialNumber == number }) {
+                    unsureCard(signals, scenario: scenario)
+                } else {
+                    unsureCard(signals)
+                }
             case .noSigns:
                 noSignsCard
             }
@@ -87,6 +91,24 @@ struct ScamMessageView: View {
         }
     }
 
+    /// WEB `ScenarioCard` (ScamMessageResult.tsx): heading, the Ministry's scenario number, the summary and the article's warning
+    /// signs. Static, sourced text — shown under a familiar AND a suspicious verdict when a scenario matched.
+    @ViewBuilder
+    private func scenarioSection(_ scenario: ScamScenario) -> some View {
+                Text("scamVerdict.scenario.heading").font(TappyFont.bodyEmphasis).foregroundStyle(TappyColor.textPrimary)
+                    .accessibilityIdentifier("scam-msg-scenario")
+                Text(String(format: NSLocalizedString("scamVerdict.scenario.number", comment: ""), String(scenario.officialNumber)))
+                    .font(TappyFont.caption).foregroundStyle(TappyColor.textSecondary)
+                Text(scenario.official.summary).font(TappyFont.callout).foregroundStyle(TappyColor.textPrimary)
+                if !scenario.guidance.warningSigns.isEmpty {
+                    Text("scamVerdict.scenario.signs").font(TappyFont.callout.weight(.semibold)).foregroundStyle(TappyColor.textPrimary)
+                    ForEach(scenario.guidance.warningSigns, id: \.self) { sign in
+                        Label { Text(sign).font(TappyFont.callout) } icon: { Image(systemName: "exclamationmark.triangle.fill").foregroundStyle(TappyColor.secondary) }
+                            .foregroundStyle(TappyColor.textPrimary)
+                    }
+                }
+    }
+
     private func matchedCard(_ scenario: ScamScenario, _ signals: [ScamMessageSignal]) -> some View {
         TappyCard {
             VStack(alignment: .leading, spacing: Spacing.sm) {
@@ -94,9 +116,10 @@ struct ScamMessageView: View {
                 headerCard(icon: "exclamationmark.shield.fill", tint: TappyColor.danger, titleKey: "scam.msg.matched.title",
                            id: "scam-msg-matched", detail: scenario.official.title)
                 Text("scam.msg.matched.body").font(TappyFont.callout).foregroundStyle(TappyColor.textPrimary)
-                Text(scenario.official.summary).font(TappyFont.callout).foregroundStyle(TappyColor.textPrimary)
+                scenarioSection(scenario)
                 signalList(signals)
                 ScamSourceBlock(source: scenario.source)
+                Text("scamVerdict.scenario.guidanceNote").font(TappyFont.caption).foregroundStyle(TappyColor.textSecondary)
                 // WEB `scamVerdict.scenario.report`: shown when a scenario matched.
                 Text("scamVerdict.scenario.report").font(TappyFont.callout.weight(.semibold)).foregroundStyle(TappyColor.textPrimary)
                 NavigationLink {
@@ -111,11 +134,25 @@ struct ScamMessageView: View {
         }
     }
 
-    private func unsureCard(_ signals: [ScamMessageSignal]) -> some View {
+    private func unsureCard(_ signals: [ScamMessageSignal], scenario: ScamScenario? = nil) -> some View {
         TappyCard {
             VStack(alignment: .leading, spacing: Spacing.sm) {
                 headerCard(icon: "questionmark.diamond.fill", tint: TappyColor.secondary, titleKey: "scam.msg.unsure.title", id: "scam-msg-unsure")
                 Text("scam.msg.unsure.body").font(TappyFont.callout).foregroundStyle(TappyColor.textPrimary)
+                if let scenario {
+                    Text(scenario.official.title).font(TappyFont.bodyEmphasis).foregroundStyle(TappyColor.textPrimary)
+                    scenarioSection(scenario)
+                    ScamSourceBlock(source: scenario.source)
+                    Text("scamVerdict.scenario.guidanceNote").font(TappyFont.caption).foregroundStyle(TappyColor.textSecondary)
+                    Text("scamVerdict.scenario.report").font(TappyFont.callout.weight(.semibold)).foregroundStyle(TappyColor.textPrimary)
+                    NavigationLink {
+                        ScamScenarioDetailView(scenario: scenario, advice: knowledge.official)
+                    } label: {
+                        Label { Text("scam.msg.matched.more") } icon: { Image(systemName: "chevron.right") }
+                            .font(TappyFont.callout.weight(.semibold))
+                    }
+                    .accessibilityIdentifier("scam-msg-detail")
+                }
                 signalList(signals)
                 adviceBlock(signals)
                 ForEach(knowledge.official.preventionMeasures.prefix(3), id: \.self) { tip in

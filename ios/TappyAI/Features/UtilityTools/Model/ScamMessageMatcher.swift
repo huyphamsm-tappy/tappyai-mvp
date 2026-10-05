@@ -20,20 +20,21 @@ enum ScamMessageOutcome: Equatable, Sendable {
     /// One of the ministry's scenarios fits (`officialNumber`), with what the message showed.
     case matched(number: Int, signals: [ScamMessageSignal], links: [String])
     /// Something looks off but no known scenario fits for sure.
-    case unsure(signals: [ScamMessageSignal], links: [String])
+    /// `scenario`: a WEAK match with one of the ministry's scenarios (`ScamScenarioMatcher`), shown under the verdict.
+    case unsure(signals: [ScamMessageSignal], links: [String], scenario: Int? = nil)
     /// No familiar scam signs. NOT a guarantee.
     case noSigns(links: [String])
 
     var signals: [ScamMessageSignal] {
         switch self {
-        case .matched(_, let s, _), .unsure(let s, _): return s
+        case .matched(_, let s, _), .unsure(let s, _, _): return s
         case .noSigns: return []
         }
     }
 
     var links: [String] {
         switch self {
-        case .matched(_, _, let l), .unsure(_, let l), .noSigns(let l): return l
+        case .matched(_, _, let l), .unsure(_, let l, _), .noSigns(let l): return l
         }
     }
 }
@@ -183,7 +184,22 @@ enum ScamMessageMatcher {
 
     // MARK: Decision
 
+    /// Web parity (`message/index.ts` + `verdict.ts`): a STRONG scenario match is «familiar», a WEAK one «suspicious», and the
+    /// matched scenario is shown either way; otherwise the request rules below decide, as before.
     static func analyze(_ raw: String) -> ScamMessageOutcome {
+        let byRules = analyzeRules(raw)
+        guard let scenario = ScamScenarioMatcher.best(raw) else { return byRules }
+        switch (scenario.strength, byRules) {
+        case (.strong, _):
+            return .matched(number: scenario.number, signals: byRules.signals, links: byRules.links)
+        case (.weak, .matched):
+            return byRules
+        case (.weak, _):
+            return .unsure(signals: byRules.signals, links: byRules.links, scenario: scenario.number)
+        }
+    }
+
+    private static func analyzeRules(_ raw: String) -> ScamMessageOutcome {
         let links = extractLinks(raw)
         let norm = normalize(raw)
         let padded = " " + norm + " "
@@ -201,6 +217,6 @@ enum ScamMessageMatcher {
             || (s.contains(.qr) && anyOf(.transfer, .delivery, .bank))
             || (s.contains(.transfer) && anyOf(.urgency, .authority, .relative, .fine))
             || (s.contains(.investment) && anyOf(.transfer, .link))
-        return suspicious ? .unsure(signals: found, links: links) : .noSigns(links: links)
+        return suspicious ? .unsure(signals: found, links: links, scenario: nil) : .noSigns(links: links)
     }
 }

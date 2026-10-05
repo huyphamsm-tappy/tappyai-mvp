@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 
 /// Scam Shield — B09 parity with the web `/scam-shield` page.
 ///
@@ -49,6 +50,7 @@ struct ScamShieldView: View {
                     ScamLibraryView(knowledge: knowledge)
                 case .message:
                     ScamMessageView(vm: vm, knowledge: knowledge) { link in
+                        UIApplication.shared.dismissKeyboard()
                         vm.url = link
                         section = .check
                         Task { await vm.check() }
@@ -65,6 +67,16 @@ struct ScamShieldView: View {
             }
             .padding(.horizontal, Spacing.md)
             .padding(.vertical, Spacing.lg)
+        }
+        // The message box is a multi-line TextEditor (Return inserts a line), so nothing dismissed its keyboard: it stayed up over the
+        // result. Dragging the page now dismisses it, and the keyboard bar has a "Done" button.
+        .scrollDismissesKeyboard(.interactively)
+        .toolbar {
+            ToolbarItemGroup(placement: .keyboard) {
+                Spacer()
+                Button { UIApplication.shared.dismissKeyboard() } label: { Text("common.done") }
+                    .accessibilityIdentifier("scam-keyboard-done")
+            }
         }
         .background(TappyColor.background)
         .navigationTitle(NSLocalizedString("scamShield.title", comment: ""))
@@ -113,6 +125,7 @@ struct ScamShieldView: View {
             .autocorrectionDisabled()
 
         Button {
+            UIApplication.shared.dismissKeyboard()   // the result appears under the field: do not leave the keyboard over it
             Task { await vm.check() }
         } label: {
             Text(vm.loading
@@ -308,5 +321,12 @@ struct ScamShieldView: View {
     /// Accept-Language — not the device locale, which can differ.
     private static var isVietnamese: Bool {
         LocalizationManager.currentLanguageCode == "vi"
+    }
+}
+
+extension UIApplication {
+    /// Ends editing in whichever field has focus (works for TextField and TextEditor alike).
+    func dismissKeyboard() {
+        sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
 }
