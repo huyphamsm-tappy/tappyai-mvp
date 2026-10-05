@@ -28,7 +28,7 @@
     <!-- The matched scenario -->
     <string name="scam_verdict_scenario_heading">Matching scenario</string>
     <string name="scam_verdict_scenario_number">Scenario #%1$d in the Ministry of Public Security list</string>
-    <string name="scam_verdict_scenario_report">Report to the nearest police station or call 113 if you suspect a scam.</string>
+    <string name="scam_verdict_scenario_report">Report to the nearest police station or call 0692.345.860 if you suspect a scam.</string>
 
     <!-- Message tab -->
     <string name="scam_verdict_msg_subtitle">Paste a message or briefly describe a suspicious situation. TappyAI compares it with the scam scenarios the Ministry of Public Security has warned about.</string>

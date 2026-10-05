@@ -28,7 +28,7 @@
     <!-- Tình huống khớp (trạng thái quen thuộc / đáng ngờ khi có khớp) -->
     <string name="scam_verdict_scenario_heading">Tình huống tương ứng</string>
     <string name="scam_verdict_scenario_number">Kịch bản số %1$d trong danh sách của Bộ Công an</string>
-    <string name="scam_verdict_scenario_report">Báo ngay cho Công an nơi gần nhất hoặc gọi 113 nếu nghi ngờ bị lừa.</string>
+    <string name="scam_verdict_scenario_report">Báo ngay cho Công an nơi gần nhất hoặc gọi 0692.345.860 nếu nghi ngờ bị lừa.</string>
 
     <!-- Tab tin nhắn -->
     <string name="scam_verdict_msg_subtitle">Dán tin nhắn hoặc mô tả ngắn tình huống đáng ngờ. TappyAI đối chiếu với các tình huống lừa đảo đã được Bộ Công an cảnh báo.</string>

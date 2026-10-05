@@ -106,4 +106,12 @@
     <string name="scam_v3_kb_cat_data_theft">Đánh cắp dữ liệu</string>
     <!-- Empty on the web for vi (the note is shown to EN readers only); kept so every key has both languages. -->
     <string name="scam_v3_kb_contentLanguage"></string>
+    <string name="scam_v3_help_title">Nghi bị lừa?</string>
+    <string name="scam_v3_help_body">Nếu đã chuyển tiền hoặc lộ mã OTP, gọi Công an ngay.</string>
+    <string name="scam_v3_help_call">Gọi %1$s</string>
+    <string name="scam_v3_help_hotlineTitle">Đường Dây Nóng</string>
+    <string name="scam_v3_help_agency">Cục Cảnh sát hình sự - Bộ Công an</string>
+    <string name="scam_v3_help_hotlineDesc">Đường dây nóng tiếp nhận tin báo, tố giác về lừa đảo.</string>
+    <string name="scam_v3_help_sourceLabel">Nguồn:</string>
+    <string name="scam_v3_help_sourceName">Bộ Công an</string>
 </resources>

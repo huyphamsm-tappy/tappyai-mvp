@@ -33,7 +33,7 @@ class AgentFinalReplayTest {
 
     private val dir = File(javaClass.classLoader!!.getResource("consult-agent-final")!!.toURI())
     private fun run(name: String) = Run(name, File(dir, "$name.raw.txt").readText().split('\n'))
-    private val all by lazy { listOf("A_general", "B_local_discovery", "C_follow_up_carried", "D_trip_plan", "E_flight").map(::run) }
+    private val all by lazy { listOf("A_general", "B_local_discovery", "C_follow_up_carried", "D_trip_plan", "E_flight", "F_shopping", "G_multi_tool_plan").map(::run) }
 
     @Test
     fun `every real Agent turn ends with its finish frame - none is a cut - and Agent-only frames are ignored`() {
@@ -109,6 +109,29 @@ class AgentFinalReplayTest {
         assertEquals("one Trip.com and one Traveloka link", 2, links.size)
         assertTrue(links.all { isSafeCtaUrl(it) })
         assertTrue(r.parsed.text.contains("Xem giá trên Trip.com") && r.parsed.text.contains("Xem giá trên Traveloka"))
+    }
+
+    @Test
+    fun `a shopping turn carries its decision as one marker that Android decodes - no raw JSON on screen`() {
+        val r = run("F_shopping")
+        assertTrue("the marker is in the text stream", r.text.contains("[TAPPY_SHOPPING]"))
+        val shopping = r.parsed.shopping!!
+        assertEquals(6, shopping.entities.size)
+        assertTrue(shopping.entities.all { it.displayName != null && it.key.isNotBlank() })
+        assertTrue("offers or commerce links are carried", shopping.entities.any { it.offers.isNotEmpty() || !it.commerceLinks.isNullOrEmpty() })
+        assertFalse("the marker is not shown as text", r.parsed.text.contains("entities") || r.parsed.text.contains("\"requested\""))
+        assertTrue("the honest caution that follows the card stays", r.parsed.text.contains("ANC"))
+    }
+
+    @Test
+    fun `the longest real Agent turn - three tools in two rounds - ends with a complete plan and the same frames`() {
+        val r = run("G_multi_tool_plan")
+        assertEquals("five a: frames: places, hotel, flight and the bundle parts", 5, r.lines.count { it.startsWith("a:") })
+        assertTrue(r.events.filterIsInstance<ChatStreamEvent.Progress>().map { it.stage }.containsAll(listOf("searching", "found", "finishing")))
+        val plan = r.parsed.plan!!
+        assertEquals("trip", plan.type)
+        assertEquals(4, plan.days.size)
+        assertTrue(r.parsed.text.contains("Sala Danang"))
     }
 
     @Test

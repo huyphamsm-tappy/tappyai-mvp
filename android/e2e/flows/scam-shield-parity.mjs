@@ -123,7 +123,7 @@ export async function android({ a, shot, check, seeded }) {
   await runMessage(a, 'Chiều nay đi ăn phở nha, 6h gặp ở quán cũ.')
   check('tin bình thường → «Chưa nhận ra dấu hiệu quen thuộc»', await seen(a, /Chưa nhận ra dấu hiệu quen thuộc/))
   check('…kèm «KHÔNG có nghĩa là an toàn»', await seen(a, /KHÔNG có nghĩa là an toàn/, 2))
-  check('…kèm «TappyAI không thay thế cơ quan chức năng» (không dòng 113: web chỉ in khi có tình huống khớp)', (await seen(a, /không thay thế cơ quan chức năng/, 3)) && !a.visible(/gọi 113/))
+  check('…kèm «TappyAI không thay thế cơ quan chức năng» (không dòng báo tin: web chỉ in khi có tình huống khớp)', (await seen(a, /không thay thế cơ quan chức năng/, 3)) && !a.visible(/Báo ngay cho Công an nơi gần nhất/))
   check('…không «An toàn», không điểm, không «Độ tin cậy», không hộp hỏi AI', !a.dump().some((n) => FORBIDDEN.test((n.text || n.desc || '').trim())))
   shot('normal-message')
 
@@ -133,7 +133,7 @@ export async function android({ a, shot, check, seeded }) {
   shot('scam-message-known-top')
   check('…kèm «Tình huống tương ứng» + «Kịch bản số 22 trong danh sách của Bộ Công an»', (await seen(a, /Tình huống tương ứng/, 2)) && (await seen(a, /Kịch bản số 22 trong danh sách của Bộ Công an/, 2)))
   check('…kèm khối nguồn chính thức (Bộ Công an)', await seen(a, /Nguồn: Bộ Công an|Thông tin từ nguồn chính thức/, 5))
-  check('…kèm dòng 113 của web ở cuối thẻ tình huống và «không thay thế cơ quan chức năng» (thẻ tin nhắn của web KHÔNG có nút chia sẻ)', (await seen(a, /Báo ngay cho Công an nơi gần nhất hoặc gọi 113/, 8)) && (await seen(a, /không thay thế cơ quan chức năng/, 8)) && !a.visible(/Chia sẻ kết quả/))
+  check('…kèm dòng báo tin của web (đường dây 0692.345.860, Web final a43948d) ở cuối thẻ tình huống và «không thay thế cơ quan chức năng» (thẻ tin nhắn của web KHÔNG có nút chia sẻ)', (await seen(a, /Báo ngay cho Công an nơi gần nhất hoặc gọi 0692.345.860/, 8)) && (await seen(a, /không thay thế cơ quan chức năng/, 8)) && !a.visible(/Chia sẻ kết quả/))
   check('…không «An toàn», không điểm, không «Độ tin cậy»', !a.dump().some((n) => FORBIDDEN.test((n.text || n.desc || '').trim())))
   shot('scam-message-known')
 

@@ -22,8 +22,10 @@ export async function android({ a, shot, check, seeded }) {
     ['Tôi', 'Cài đặt', 'Cài đặt'],
     ['Tôi', 'Đã lưu', 'Đã lưu'],
     ['Tôi', 'Lịch sử chat', 'Lịch sử chat'],
-    ['Trang chủ', 'Viết caption bằng AI', 'Viết caption bằng AI'],
-    ['Trang chủ', 'Gợi ý địa điểm du lịch', 'Gợi ý địa điểm du lịch'],
+    // 05/10: Home no longer has the «Gợi ý nhanh» pills («Viết caption bằng AI», «Gợi ý địa điểm du lịch» lived there — commit abe2f44);
+    // the same destinations stay on Home as Smart Tools cards.
+    ['Trang chủ', 'Viết', 'Viết'],
+    ['Trang chủ', 'Tỷ giá', 'Tỷ giá'],
   ]
   for (const [tab, row, label] of nested) {
     await a.tap(tab, { after: 2500 })

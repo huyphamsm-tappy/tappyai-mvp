@@ -10,6 +10,8 @@ import java.io.File
  * `scamShield.error.*` lines of `dictionaries.ts` at origin/rc/web-uat @ 56a26aeb72d3ae1dacb484885df04e6976d5d84e (docs/uat/SCAM-SHIELD-PARITY.md
  * section 8). This table was generated from those files; each row is (Android string name, Vietnamese, English). If the web changes a
  * sentence, this test fails until the Android string follows.
+ * 05/10: Web final `a43948d` changed ONE sentence of this table — `scamVerdict.scenario.report` now interpolates the canonical hotline
+ * (`src/lib/scam-shield/hotline.ts`: `0692.345.860`) instead of the fixed "113"; the row below follows it.
  */
 class ScamWordingCopyTest {
 
@@ -32,7 +34,7 @@ class ScamWordingCopyTest {
         Triple("scam_verdict_disclaimer", "TappyAI không thay thế cơ quan chức năng.", "TappyAI does not replace the authorities."),
         Triple("scam_verdict_scenario_heading", "Tình huống tương ứng", "Matching scenario"),
         Triple("scam_verdict_scenario_number", "Kịch bản số %1\$d trong danh sách của Bộ Công an", "Scenario #%1\$d in the Ministry of Public Security list"),
-        Triple("scam_verdict_scenario_report", "Báo ngay cho Công an nơi gần nhất hoặc gọi 113 nếu nghi ngờ bị lừa.", "Report to the nearest police station or call 113 if you suspect a scam."),
+        Triple("scam_verdict_scenario_report", "Báo ngay cho Công an nơi gần nhất hoặc gọi 0692.345.860 nếu nghi ngờ bị lừa.", "Report to the nearest police station or call 0692.345.860 if you suspect a scam."),
         Triple("scam_verdict_scenario_signs", "Dấu hiệu nhận biết (theo bài viết)", "Warning signs (from the article)"),
         Triple("scam_verdict_scenario_source", "Thông tin từ nguồn chính thức", "Information from an official source"),
         Triple("scam_verdict_scenario_source_open", "Xem bài viết gốc", "Open the original article"),

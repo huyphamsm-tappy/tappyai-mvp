@@ -14,4 +14,6 @@ Used by `AgentFinalReplayTest`. Frames are byte-for-byte what the route wrote, e
 | `C_follow_up_carried.raw.txt` | "quán số 2 mở tới mấy giờ?" (same session) — answered from the carried card, no tool |
 | `D_trip_plan.raw.txt` | "Lên kế hoạch đi Đà Nẵng 3 ngày 2 đêm cho 2 người" — `get_trip_data` bundle + a complete `[TAPPY_PLAN]` |
 | `E_flight.raw.txt` | "vé máy bay từ Sài Gòn đi Quy Nhơn ngày mai bao nhiêu?" — booking hand-off only, fare "chưa xác minh được" |
+| `F_shopping.raw.txt` | "mua tai nghe chống ồn dưới 3 triệu" — `search_products`; the decision card arrives as one `[TAPPY_SHOPPING]` text marker (6 entities) before the prose |
+| `G_multi_tool_plan.raw.txt` | "Lên kế hoạch đi Đà Nẵng 4 ngày 3 đêm cho 2 người, bay từ Sài Gòn, cần cả vé máy bay và khách sạn ven biển" — three tool calls in two rounds; the longest silent gap of this turn is 15.7 s; a complete `[TAPPY_PLAN]` |
 | `limit-429.json` | the real body of the 429 an audit account got after its 10th question of the day |

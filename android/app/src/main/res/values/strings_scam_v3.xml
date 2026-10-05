@@ -105,4 +105,12 @@
     <string name="scam_v3_kb_cat_investment_jobs">Investment &amp; jobs</string>
     <string name="scam_v3_kb_cat_online_trading">Online trading</string>
     <string name="scam_v3_kb_cat_data_theft">Data theft</string>
+    <string name="scam_v3_help_title">Think you were scammed?</string>
+    <string name="scam_v3_help_body">If you already sent money or shared an OTP code, call the police now.</string>
+    <string name="scam_v3_help_call">Call %1$s</string>
+    <string name="scam_v3_help_hotlineTitle">Hotline</string>
+    <string name="scam_v3_help_agency">Criminal Police Department - Ministry of Public Security</string>
+    <string name="scam_v3_help_hotlineDesc">The hotline that receives reports and denunciations of fraud.</string>
+    <string name="scam_v3_help_sourceLabel">Source:</string>
+    <string name="scam_v3_help_sourceName">Ministry of Public Security</string>
 </resources>

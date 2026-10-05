@@ -172,6 +172,9 @@ fun ScamShieldScreen(
                     footer = { FeatureTiles() },
                 )
 
+                // ── 2b. Emergency card (Web final `ScamHelpCard`): after the hero, before any tool ──
+                ScamHelpCard()
+
                 // ── 3. The tool ──
                 ToolPanel {
                     FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -344,7 +347,7 @@ internal fun TabChip(label: String, icon: ImageVector?, active: Boolean, onClick
 
 /** `.v3-scam-brand.v3-scam-cta`: the blue→violet brand gradient, 52dp, 16dp radius. */
 @Composable
-private fun BrandCta(text: String, icon: ImageVector, busy: Boolean, enabled: Boolean, onClick: () -> Unit) {
+internal fun BrandCta(text: String, icon: ImageVector, busy: Boolean, enabled: Boolean, onClick: () -> Unit) {
     val shape = RoundedCornerShape(16.dp)
     Row(
         modifier = Modifier
