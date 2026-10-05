@@ -12,6 +12,12 @@ struct CurrencyView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: Spacing.lg) {
+                ToolHeroCard(eyebrow: NSLocalizedString("currency.title", comment: ""), title: [],
+                             subtitle: NSLocalizedString("currency.heroSubtitle", comment: ""),
+                             chips: [NSLocalizedString("currency.chipFast", comment: ""),
+                                     String(format: NSLocalizedString("currency.chipCurrencies", comment: ""), supportedCurrencies.count),
+                                     NSLocalizedString("currency.chipSource", comment: "")],
+                             mascot: "TappyDeals", identifier: "currency-hero")
                 amountInput
                 currencySelectors
                 resultCard

@@ -15,6 +15,10 @@ struct ScanView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: Spacing.md) {
+                ToolHeroCard(eyebrow: NSLocalizedString("scan.heroEyebrow", comment: ""),
+                             title: [NSLocalizedString("scan.heroTitle1", comment: ""), NSLocalizedString("scan.heroTitle2", comment: "")],
+                             subtitle: NSLocalizedString("scan.heroBody", comment: ""),
+                             mascot: "TappySearching", identifier: "scan-hero")
                 imageSection
                 if vm.hasImage && !vm.hasResult && !vm.loading {
                     scanButton

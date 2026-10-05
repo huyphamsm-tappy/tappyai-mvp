@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 
 /// Bottom input bar — matches Web layout: action chips + text field + emoji + mic + send/stop.
 struct ChatInputBar: View {
@@ -23,6 +24,15 @@ struct ChatInputBar: View {
 
     @FocusState private var isFocused: Bool
     @State private var showEmojiPanel = false
+
+    /// Editing ends BEFORE the turn starts: once a reply is streaming the field is disabled, and a SwiftUI focus change made on a disabled field
+    /// does not reach UIKit (CI run 37326705659: the keyboard was still up over the error card). Resigning the first responder here, while the
+    /// field is still enabled, is what actually closes the keyboard.
+    private func sendAndEndEditing() {
+        isFocused = false
+        UIApplication.shared.dismissKeyboard()
+        onSend()
+    }
 
     private let emojis = [
         "😀","😄","😂","🤣","😊","😍",
@@ -138,7 +148,7 @@ struct ChatInputBar: View {
                         .submitLabel(.send)
                         .onSubmit {
                             if !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-                                onSend()
+                                sendAndEndEditing()
                             }
                         }
                         .onChange(of: text) { _ in
@@ -192,7 +202,7 @@ struct ChatInputBar: View {
                         .buttonStyle(.plain)
                         .accessibilityLabel(Text("chat.stop"))
                     } else {
-                        Button(action: onSend) {
+                        Button(action: sendAndEndEditing) {
                             Image(systemName: "paperplane.fill")
                                 .font(.system(size: 16))
                                 .foregroundStyle(.white)

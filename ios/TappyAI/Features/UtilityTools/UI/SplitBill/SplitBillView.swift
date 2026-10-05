@@ -33,6 +33,12 @@ struct SplitBillView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: Spacing.md) {
+                ToolHeroCard(eyebrow: NSLocalizedString("splitBill.heroEyebrow", comment: ""), title: [],
+                             subtitle: NSLocalizedString("splitBill.heroSubtitle", comment: ""),
+                             chips: [String(format: NSLocalizedString("splitBill.chipPeople", comment: ""), 2, 20),
+                                     NSLocalizedString("splitBill.chipTip", comment: ""),
+                                     NSLocalizedString("splitBill.chipModes", comment: "")],
+                             mascot: "TappyWelcome", identifier: "splitbill-hero")
                 totalAndPeople
                 tipSection
                 modeToggle

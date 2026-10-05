@@ -31,13 +31,13 @@ struct FortuneHubView: View {
 
     private var heroBanner: some View {
         VStack(alignment: .leading, spacing: Spacing.xs) {
-            Text(NSLocalizedString("fortune.hub.kicker", comment: ""))
+            Text(NSLocalizedString("fortune.heroEyebrow", comment: ""))
                 .font(TappyFont.callout)
                 .foregroundStyle(.white.opacity(0.8))
-            Text("Khám phá vận số\ncủa bạn")
+            Text(NSLocalizedString("fortune.heroTitleLine1", comment: "") + "\n" + NSLocalizedString("fortune.heroTitleLine2", comment: ""))
                 .font(.system(size: 24, weight: .black))
                 .foregroundStyle(.white)
-            Text(NSLocalizedString("fortune.hub.subtitle", comment: ""))
+            Text(NSLocalizedString("fortune.heroDesc", comment: ""))
                 .font(TappyFont.callout)
                 .foregroundStyle(.white.opacity(0.8))
         }

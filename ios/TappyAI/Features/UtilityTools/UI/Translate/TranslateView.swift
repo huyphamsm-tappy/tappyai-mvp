@@ -11,6 +11,10 @@ struct TranslateView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: Spacing.md) {
+                ToolHeroCard(eyebrow: NSLocalizedString("translate.heroEyebrow", comment: ""),
+                             title: [NSLocalizedString("translate.heroTitle1", comment: ""), NSLocalizedString("translate.heroTitle2", comment: "")],
+                             subtitle: String(format: NSLocalizedString("translate.heroBody", comment: ""), supportedLanguages.count),
+                             mascot: "TappySpeaking", identifier: "translate-hero")
                 inputSection
                 languagePicker
                 translateButton
