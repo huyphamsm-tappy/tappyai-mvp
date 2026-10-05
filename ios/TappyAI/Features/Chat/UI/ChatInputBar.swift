@@ -144,6 +144,11 @@ struct ChatInputBar: View {
                         .onChange(of: text) { _ in
                             if pendingSend && isFocused { onCancelAutoSend() }
                         }
+                        // The field is DISABLED while a reply streams, and a disabled field keeps the first responder: the keyboard stayed up
+                        // over the conversation through the whole turn and over the error card when it failed (UAT build 129). Sending ends editing.
+                        .onChange(of: isStreaming) { streaming in
+                            if streaming { isFocused = false }
+                        }
                         .onTapGesture {
                             showEmojiPanel = false
                         }

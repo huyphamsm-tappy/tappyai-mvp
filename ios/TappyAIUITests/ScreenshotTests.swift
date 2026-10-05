@@ -240,6 +240,23 @@ final class ScreenshotTests: XCTestCase {
         setStub(["chat": "off"])
     }
 
+    /// UAT build 129: the turn failed, the error card appeared, and the keyboard stayed up over it. Sending ends editing, and the card is in view.
+    func testChatFailureShowsTheCardWithoutTheKeyboard() {
+        setStub(["chat": "error"])
+        defer { setStub(["chat": "off"]) }
+        let app = launch(route: "chat", extra: ["-uitest-theme", "dark"])
+        let input = any(app, "chat-input")
+        XCTAssertTrue(input.waitForExistence(timeout: 30))
+        input.tap()
+        input.typeText("Xin chao")
+        any(app, "chat-send").tap()
+        XCTAssertTrue(any(app, "chat-retry").waitForExistence(timeout: 30), "the error card with «Thử lại»")
+        XCTAssertTrue(any(app, "chat-retry").isHittable, "the card is on screen, not behind the keyboard")
+        XCTAssertEqual(app.keyboards.count, 0, "no keyboard over the conversation")
+        XCTAssertNotEqual(input.value(forKey: "hasKeyboardFocus") as? Bool, true, "the field gave up focus")
+        shot("91-chat-failure")
+    }
+
     func testGuestProfileHasSignInCardAndNoSignOut() {
         let app = launch(route: "hub", extra: ["-uitest-theme", "dark"])
         XCTAssertTrue(any(app, "profile-guest-signin").waitForExistence(timeout: 30))

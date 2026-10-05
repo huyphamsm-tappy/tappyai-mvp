@@ -28,6 +28,7 @@ final class ReviewDetailViewModel: AppObservableObject {
     @AppPublished var commentText = ""
     @AppPublished var isPostingComment = false
     @AppPublished var commentError: String?
+    @AppPublished var replyingTo: ReviewComment?
     @AppPublished var showShare = false
 
     let reviewId: String
@@ -171,11 +172,13 @@ final class ReviewDetailViewModel: AppObservableObject {
         isPostingComment = true
         commentError = nil
         let savedText = commentText
+        let parent = replyingTo
         commentText = ""
 
         Task {
             do {
-                let response = try await service.postComment(reviewId: reviewId, body: body)
+                let response = try await service.postComment(reviewId: reviewId, body: body, parentId: parent?.id)
+                replyingTo = nil
                 comments.append(response.comment)
                 commentCount = response.count
                 review?.commentCount = response.count
@@ -185,6 +188,20 @@ final class ReviewDetailViewModel: AppObservableObject {
                 log.error("post comment failed: \(error)")
             }
             isPostingComment = false
+        }
+    }
+
+    /// Picks (or takes back) `reaction` on a comment: shown at once, undone if the server refuses.
+    func react(to comment: ReviewComment, with reaction: CommentReaction) {
+        guard let idx = comments.firstIndex(where: { $0.id == comment.id }) else { return }
+        let before = comments[idx]
+        comments[idx] = CommentActions.applying(reaction, to: before)
+        let result = CommentActions.resulting(reaction, on: before)
+        Task {
+            do { try await service.setCommentReaction(commentId: comment.id, reaction: result) } catch {
+                if let i = comments.firstIndex(where: { $0.id == comment.id }) { comments[i] = before }
+                log.error("comment reaction failed: \(error)")
+            }
         }
     }
 

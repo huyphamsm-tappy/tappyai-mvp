@@ -16,10 +16,34 @@ import Foundation
 enum ReviewsDestination: Hashable {
     /// One review, by id — the web's `/reviews/{id}`.
     case reviewDetail(id: String)
+    /// A SEQUENCE of posts opened at one of them — the web's `ClipViewer posts={…} startIndex={…}` that the profile grid opens: the
+    /// clips of that profile, starting at the tapped one, swipeable to the others. `seedId` names the list in `ClipSeedStore`.
+    case clipViewer(seedId: String, start: Int)
     /// Someone else's public profile — the web's `/users/{id}`.
     case userProfile(id: String)
     /// A group-dining room — the web's `/group/{id}`.
     case group(id: String)
     /// The music copyright / notice-and-takedown policy — the web's `/copyright`.
     case copyrightPolicy
+}
+
+/// The posts a clip viewer was opened with (a navigation value must be `Hashable`; the posts travel by id).
+@MainActor
+enum ClipSeedStore {
+    private static var seeds: [String: [Review]] = [:]
+
+    /// Remembers `posts` and returns the id to put in `ReviewsDestination.clipViewer`.
+    static func put(_ posts: [Review]) -> String {
+        let id = UUID().uuidString
+        seeds[id] = posts
+        if seeds.count > 8, let oldest = seeds.keys.sorted().first, oldest != id { seeds[oldest] = nil }
+        return id
+    }
+
+    static func posts(for id: String) -> [Review] { seeds[id] ?? [] }
+
+    /// The destination that opens `posts[start]` with the rest of `posts` one swipe away.
+    static func destination(posts: [Review], start: Int) -> ReviewsDestination {
+        .clipViewer(seedId: put(posts), start: max(0, min(start, max(0, posts.count - 1))))
+    }
 }

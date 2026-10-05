@@ -187,7 +187,7 @@ struct MyPostsView: View {
     private func collectionTile(_ row: CollectionReview) -> some View {
         ZStack(alignment: .bottomLeading) {
             Rectangle().fill(TappyColor.surfaceElevated)
-            if let url = row.thumbnail ?? row.photos?.first, let parsed = URL(string: url) {
+            if let url = ReviewPoster.url(photos: row.photos, thumbnail: row.thumbnail), let parsed = URL(string: url) {
                 AsyncImage(url: parsed) { phase in
                     if case .success(let image) = phase {
                         image.resizable().aspectRatio(contentMode: .fill)
@@ -257,7 +257,10 @@ struct MyPostsView: View {
                     // eye-off veil (hidden), and the context menu is where "show again" lives.
                     if isOpenable(post) {
                         Button {
-                            router.push(ReviewsDestination.reviewDetail(id: post.id), on: .profile)
+                            // The author's own clips as one sequence, opened at the tapped one (Web `ClipViewer posts startIndex`).
+                            let openable = rows.filter { isOpenable($0) }
+                            let start = openable.firstIndex { $0.id == post.id } ?? 0
+                            router.push(ClipSeedStore.destination(posts: openable, start: start), on: .profile)
                         } label: {
                             tile(post)
                         }
@@ -283,7 +286,7 @@ struct MyPostsView: View {
     private func tile(_ post: Review) -> some View {
         ZStack(alignment: .topLeading) {
             Rectangle().fill(TappyColor.surfaceElevated)
-            if let url = post.thumbnail ?? post.photos?.first, let parsed = URL(string: url) {
+            if let url = ReviewPoster.url(photos: post.photos, thumbnail: post.thumbnail), let parsed = URL(string: url) {
                 AsyncImage(url: parsed) { phase in
                     if case .success(let image) = phase {
                         image.resizable().aspectRatio(contentMode: .fill)

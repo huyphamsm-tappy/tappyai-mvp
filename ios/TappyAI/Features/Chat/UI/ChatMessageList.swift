@@ -153,6 +153,13 @@ struct ChatMessageList: View {
                     proxy.scrollTo("bottom", anchor: .bottom)
                 }
             }
+            // The error card is not a message: bring it into view when it appears (it sat below the fold, behind the keyboard).
+            .onChange(of: error) { newError in
+                if newError != nil {
+                    withAnimation(.easeOut(duration: 0.2)) { proxy.scrollTo("bottom", anchor: .bottom) }
+                }
+            }
+            .scrollDismissesKeyboard(.interactively)
             .onChange(of: messages.last?.content) { _ in
                 if isStreaming {
                     proxy.scrollTo("bottom", anchor: .bottom)
@@ -512,6 +519,7 @@ private struct ChatErrorBanner: View {
                             .clipShape(RoundedRectangle(cornerRadius: Radius.md, style: .continuous))
                         }
                         .buttonStyle(.plain)
+                        .accessibilityIdentifier("chat-retry")
                     }
                     .padding(Spacing.sm)
                     .background(TappyColor.danger.opacity(0.08))

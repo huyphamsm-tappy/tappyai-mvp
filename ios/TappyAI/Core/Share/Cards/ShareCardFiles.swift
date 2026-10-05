@@ -120,7 +120,11 @@ final class ShareCardFiles {
                 sloganSub: CardCopy.string("share.card.sloganSub", lang: lang),
                 websiteLabel: CardCopy.string("share.card.websiteLabel", lang: lang),
                 features: (1...4).map { CardCopy.string("share.card.feat\($0)", lang: lang) },
-                website: CardCopy.website())
+                website: CardCopy.website(),
+                apps: .init(title: CardCopy.string("share.card.appsTitle", lang: lang),
+                            android: CardCopy.string("share.card.androidSoon", lang: lang),
+                            ios: CardCopy.string("share.card.iosSoon", lang: lang),
+                            orWebsite: CardCopy.string("share.card.orWebsite", lang: lang)))
             image = Self.rasterise(view, width: 1200, height: nil)
         case .review, .clip:
             guard let post = input.post else { return nil }

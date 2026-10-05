@@ -23,13 +23,35 @@ final class FeedVideoPlayer: AppObservableObject {
 
     static var feedAudioUnlocked = false
 
+    // MARK: - One coherent lifecycle (the invariant: ONLY THE ACTIVE CLIP MAY PLAY)
+    //
+    // Every player the feed, a profile's clip viewer or a single shared clip creates is registered here. Two guarantees hang off it:
+    //  • `setActive(true)` first deactivates whichever clip was active before, so two clips can never play together;
+    //  • `pauseAll()` stops every live player and releases the audio session — called when Explore (or the viewer) goes away.
+    // UAT build 129: the clip the person swiped away from kept playing, and kept playing after leaving Explore, because the only
+    // thing that paused a clip was an `isActive` change that a page controller never delivers to a page that is no longer on screen.
+    private static let live = NSHashTable<FeedVideoPlayer>.weakObjects()
+    private static weak var activePlayer: FeedVideoPlayer?
+
+    /// Stops every clip and gives the audio session back (so other apps' audio can resume). Idempotent.
+    static func pauseAll() {
+        for p in live.allObjects { p.deactivate() }
+        activePlayer = nil
+        try? AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation)
+    }
+
+    /// Players that are currently producing sound or moving pictures (a test pins this to «at most one»).
+    static var playingCount: Int { live.allObjects.filter { $0.player.timeControlStatus != .paused }.count }
+
     init() {
         player.isMuted = true
         player.automaticallyWaitsToMinimizeStalling = true
         configureAudioSession()
+        Self.live.add(self)
     }
 
     deinit {
+        player.pause()
         watchdogTimer?.cancel()
         if let obs = endObserver {
             NotificationCenter.default.removeObserver(obs)
@@ -98,6 +120,9 @@ final class FeedVideoPlayer: AppObservableObject {
 
     func setActive(_ active: Bool) {
         if active {
+            // Only one clip at a time: whatever was active before stops NOW, before this one starts.
+            if let previous = Self.activePlayer, previous !== self { previous.deactivate() }
+            Self.activePlayer = self
             watchStart = Date()
             if Self.feedAudioUnlocked {
                 setMuted(false)
@@ -106,12 +131,31 @@ final class FeedVideoPlayer: AppObservableObject {
                 ensurePlaying()
             }
         } else {
-            fireInteract(completionRate: nil)
-            pause(byUser: false)
+            deactivate()
         }
     }
 
-    // MARK: - Gesture: single-tap toggle
+    /// The clip is no longer the one on screen: bank the watch time, stop it, forget it as the active one.
+    private func deactivate() {
+        if Self.activePlayer === self { Self.activePlayer = nil }
+        fireInteract(completionRate: nil)
+        pause(byUser: false)
+    }
+
+    // MARK: - Gesture: single tap
+
+    /// One tap, one meaning (Web `feedShared.tsx` `onPointerUp` / `isFeedAudioUnlocked`): while sound is still locked the tap
+    /// UNLOCKS it and the clip keeps playing; only once sound is on does a tap pause or resume. Before, the first tap both paused the clip and
+    /// unmuted it, so the person had to tap twice — pause, then resume — before hearing anything.
+    func handleTap() {
+        if isMuted {
+            setMuted(false)
+            userPaused = false
+            ensurePlaying()
+        } else {
+            togglePlay()
+        }
+    }
 
     func togglePlay() {
         if isPlaying {

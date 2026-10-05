@@ -13,6 +13,10 @@ struct ReviewCommentSheet: View {
     @Binding var text: String
     let onPost: () -> Void
     let onDelete: (String) -> Void
+    /// Web comment actions: reply (one level of thread) and one reaction per person.
+    var replyingTo: ReviewComment? = nil
+    var onReply: (ReviewComment?) -> Void = { _ in }
+    var onReact: (ReviewComment, CommentReaction) -> Void = { _, _ in }
     let onDismiss: () -> Void
 
     /// First comment asks for the Terms (App Store 1.2); both comment entry points use this sheet.
@@ -44,8 +48,8 @@ struct ReviewCommentSheet: View {
                 } else {
                     ScrollView {
                         LazyVStack(alignment: .leading, spacing: Spacing.md) {
-                            ForEach(safety.visible(comments) { $0.userId }) { comment in
-                                commentRow(comment)
+                            ForEach(CommentActions.threaded(safety.visible(comments) { $0.userId }), id: \.comment.id) { entry in
+                                commentRow(entry.comment, isReply: entry.isReply)
                             }
                         }
                         .padding(.horizontal, Spacing.md)
@@ -62,6 +66,18 @@ struct ReviewCommentSheet: View {
                 }
 
                 Divider()
+                if let replyingTo {
+                    HStack {
+                        Text(String(format: NSLocalizedString("review.comments.replyingTo", comment: ""), replyingTo.displayName))
+                            .font(TappyFont.caption).foregroundStyle(TappyColor.textSecondary).lineLimit(1)
+                        Spacer()
+                        Button { onReply(nil) } label: { Image(systemName: "xmark.circle.fill").foregroundStyle(TappyColor.textSecondary) }
+                            .buttonStyle(.plain)
+                            .accessibilityIdentifier("comment-reply-cancel")
+                    }
+                    .padding(.horizontal, Spacing.md).padding(.vertical, Spacing.xxs)
+                    .background(TappyColor.surface)
+                }
                 commentInput
             }
             .navigationTitle("Bình luận (\(count))")
@@ -89,9 +105,9 @@ struct ReviewCommentSheet: View {
     }
 
     @ViewBuilder
-    private func commentRow(_ comment: ReviewComment) -> some View {
+    private func commentRow(_ comment: ReviewComment, isReply: Bool = false) -> some View {
         HStack(alignment: .top, spacing: Spacing.sm) {
-            avatar(url: comment.profiles?.avatarUrl, size: 32)
+            avatar(url: comment.profiles?.avatarUrl, size: isReply ? 26 : 32)
 
             VStack(alignment: .leading, spacing: 2) {
                 HStack {
@@ -128,7 +144,46 @@ struct ReviewCommentSheet: View {
                 Text(comment.body)
                     .font(TappyFont.callout)
                     .foregroundStyle(TappyColor.textPrimary)
+                commentActions(comment)
             }
+        }
+        .padding(.leading, isReply ? Spacing.xl : 0)
+        .accessibilityElement(children: .contain)
+        .accessibilityIdentifier("comment-" + comment.id)
+    }
+
+    /// Reply, the reaction picker and what people reacted with (Web `ReviewCommentButton` / `…/reactions`).
+    @ViewBuilder
+    private func commentActions(_ comment: ReviewComment) -> some View {
+        HStack(spacing: Spacing.md) {
+            if isAuthenticated {
+                Button { onReply(comment) } label: {
+                    Text("review.comments.reply").font(TappyFont.caption.weight(.semibold)).foregroundStyle(TappyColor.textSecondary)
+                }
+                .buttonStyle(.plain)
+                .accessibilityIdentifier("comment-reply-" + comment.id)
+
+                Menu {
+                    ForEach(CommentReaction.allCases) { reaction in
+                        Button { onReact(comment, reaction) } label: { Text(reaction.emoji) }
+                    }
+                } label: {
+                    Text(comment.myReaction.flatMap { CommentReaction(rawValue: $0)?.emoji } ?? "🙂")
+                        .font(.system(size: 14))
+                        .frame(minWidth: 28, minHeight: 28)
+                }
+                .accessibilityLabel(Text("review.comments.react"))
+                .accessibilityIdentifier("comment-react-" + comment.id)
+            }
+            // What was chosen, most popular first; the caller's own is marked.
+            ForEach(comment.reactions.sorted { $0.value != $1.value ? $0.value > $1.value : $0.key < $1.key }, id: \.key) { item in
+                if let reaction = CommentReaction(rawValue: item.key) {
+                    Text("\(reaction.emoji) \(item.value)")
+                        .font(TappyFont.caption)
+                        .foregroundStyle(comment.myReaction == item.key ? TappyColor.primary : TappyColor.textSecondary)
+                }
+            }
+            Spacer(minLength: 0)
         }
     }
 

@@ -23,6 +23,7 @@ struct ReviewPostView: View {
     /// replaces the one-tap reason menu above; nil = the server has the safety flags off.
     var onSafety: (() -> Void)?
 
+    @Environment(\.scenePhase) private var scenePhase
     @State private var showHeartBurst = false
     @State private var singleTapTask: Task<Void, Never>?
     @State private var showOwnMenu = false
@@ -77,6 +78,16 @@ struct ReviewPostView: View {
                 }
             }
         }
+        // The page is leaving the screen (swipe, other tab, pushed screen, sheet that covers it): its clip stops. A page controller
+        // never re-sends `isActive` to a page that is no longer visible, so this is the only signal that always arrives.
+        .onDisappear {
+            if review.isVideo, !isExternalEmbed { videoPlayer.setActive(false) }
+        }
+        // Leaving the app (Zalo's share target, the lock screen) stops sound; coming back resumes the clip that is on screen.
+        .onChange(of: scenePhase) { phase in
+            guard review.isVideo, !isExternalEmbed else { return }
+            if phase == .active { if isActive { videoPlayer.setActive(true) } } else { videoPlayer.setActive(false) }
+        }
         .confirmationDialog("", isPresented: $showOwnMenu, titleVisibility: .hidden) {
             Button(NSLocalizedString("review.action.hide", comment: "")) { onHide() }
             Button(NSLocalizedString("review.action.delete", comment: ""), role: .destructive) { onDelete() }
@@ -127,6 +138,22 @@ struct ReviewPostView: View {
                         .clipShape(RoundedRectangle(cornerRadius: Radius.lg, style: .continuous))
                     } else if isActive, videoPlayer.isBuffering {
                         ProgressView().tint(.white).scaleEffect(1.3)
+                    }
+                    // Autoplay starts muted (the Web's policy); say so, and one tap turns the sound on without pausing.
+                    if isActive, videoPlayer.isMuted, videoPlayer.isPlaying, !videoPlayer.failed {
+                        VStack {
+                            Spacer()
+                            HStack(spacing: Spacing.xs) {
+                                Image(systemName: "speaker.slash.fill")
+                                Text("feed.sound.tapToUnmute")
+                            }
+                            .font(TappyFont.caption).foregroundStyle(.white)
+                            .padding(.horizontal, Spacing.sm).padding(.vertical, Spacing.xs)
+                            .background(.black.opacity(0.55)).clipShape(Capsule())
+                            .padding(.bottom, 140)
+                            .accessibilityIdentifier("feed-sound-off")
+                        }
+                        .allowsHitTesting(false)
                     }
                 }
                 .frame(width: size.width, height: size.height)
@@ -390,7 +417,8 @@ struct ReviewPostView: View {
         singleTapTask = nil
 
         onDoubleTapLike()
-        FeedVideoPlayer.feedAudioUnlocked = true
+        // A double tap is a gesture too: it unlocks sound for THIS clip as well (before it only set the flag, and this clip stayed muted).
+        if review.isVideo, !isExternalEmbed, videoPlayer.isMuted { videoPlayer.unlockAudio() }
 
         showHeartBurst = true
         let generator = UIImpactFeedbackGenerator(style: .medium)
@@ -407,8 +435,7 @@ struct ReviewPostView: View {
             try? await Task.sleep(nanoseconds: 300_000_000)
             guard !Task.isCancelled else { return }
             if review.isVideo, !isExternalEmbed {
-                videoPlayer.togglePlay()
-                videoPlayer.unlockAudio()
+                videoPlayer.handleTap()
             }
         }
     }

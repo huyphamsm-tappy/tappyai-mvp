@@ -119,6 +119,12 @@ struct ReviewComment: Codable, Sendable, Identifiable, Hashable {
     let createdAt: String
     let userId: String
     let profiles: ReviewProfile?
+    /// Web `GET /api/reviews/{id}/comments`: the comment this one replies to (one level of thread), nil for a top-level comment.
+    var parentCommentId: String? = nil
+    /// Reaction key → how many people chose it (`like`, `love`, `haha`, `wow`, `sad`, `angry`).
+    var reactions: [String: Int] = [:]
+    /// The caller's own reaction key, if any.
+    var myReaction: String? = nil
 
     var displayName: String {
         profiles?.fullName ?? NSLocalizedString("search.user.unnamed", comment: "")
@@ -145,7 +151,7 @@ struct UserSearchResult: Decodable, Sendable, Identifiable, Hashable {
 }
 
 extension ReviewComment {
-    enum CodingKeys: String, CodingKey { case id, body, createdAt, userId, profiles }
+    enum CodingKeys: String, CodingKey { case id, body, createdAt, userId, profiles, parentCommentId, reactions, myReaction }
 
     init(from decoder: Decoder) throws {
         let c = try decoder.container(keyedBy: CodingKeys.self)
@@ -154,6 +160,9 @@ extension ReviewComment {
         createdAt = c.lenient(String.self, forKey: .createdAt, default: "")
         userId = c.lenient(String.self, forKey: .userId, default: "")
         profiles = c.lenient(ReviewProfile.self, forKey: .profiles)
+        parentCommentId = c.lenient(String.self, forKey: .parentCommentId)
+        reactions = c.lenient([String: Int].self, forKey: .reactions, default: [:])
+        myReaction = c.lenient(String.self, forKey: .myReaction)
     }
 }
 

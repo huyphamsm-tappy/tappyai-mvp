@@ -16,6 +16,8 @@ final class ReviewsFeedViewModel: AppObservableObject {
     @AppPublished var commentText = ""
     @AppPublished var isPostingComment = false
     @AppPublished var commentError: String?
+    /// The comment the next post replies to (Web: one level of thread), nil = a new top-level comment.
+    @AppPublished var replyingTo: ReviewComment?
     @AppPublished var shareReviewId: String?
     @AppPublished var menuReviewId: String?
 
@@ -32,6 +34,13 @@ final class ReviewsFeedViewModel: AppObservableObject {
     init(service: ReviewsService, session: SessionStore) {
         self.service = service
         self.session = session
+    }
+
+    /// A fixed list opened at one post (a profile's clips): no network feed, no further pages.
+    func seed(_ posts: [Review], start: Int) {
+        reviews = posts
+        hasMore = false
+        activeIndex = max(0, min(start, max(0, posts.count - 1)))
     }
 
     // MARK: - Feed loading
@@ -196,6 +205,7 @@ final class ReviewsFeedViewModel: AppObservableObject {
         commentCount = 0
         commentText = ""
         commentError = nil
+        replyingTo = nil
         Task { await loadComments(reviewId: reviewId) }
     }
 
@@ -224,11 +234,13 @@ final class ReviewsFeedViewModel: AppObservableObject {
         isPostingComment = true
         commentError = nil
         let savedText = commentText
+        let parent = replyingTo
         commentText = ""
 
         Task {
             do {
-                let response = try await service.postComment(reviewId: reviewId, body: body)
+                let response = try await service.postComment(reviewId: reviewId, body: body, parentId: parent?.id)
+                replyingTo = nil
                 comments.append(response.comment)
                 commentCount = response.count
                 if let idx = reviews.firstIndex(where: { $0.id == reviewId }) {
@@ -240,6 +252,20 @@ final class ReviewsFeedViewModel: AppObservableObject {
                 log.error("post comment failed: \(error)")
             }
             isPostingComment = false
+        }
+    }
+
+    /// Picks (or takes back) `reaction` on a comment: shown at once, undone if the server refuses.
+    func react(to comment: ReviewComment, with reaction: CommentReaction) {
+        guard let idx = comments.firstIndex(where: { $0.id == comment.id }) else { return }
+        let before = comments[idx]
+        comments[idx] = CommentActions.applying(reaction, to: before)
+        let result = CommentActions.resulting(reaction, on: before)
+        Task {
+            do { try await service.setCommentReaction(commentId: comment.id, reaction: result) } catch {
+                if let i = comments.firstIndex(where: { $0.id == comment.id }) { comments[i] = before }
+                log.error("comment reaction failed: \(error)")
+            }
         }
     }
 

@@ -431,6 +431,15 @@ class Handler(BaseHTTPRequestHandler):
                                                           "label_en": "Report and block the sender"}]},
                                     "reasoningSummary": "Tin nhắn có dấu hiệu dụ nhận quà.",
                                     "analysis": {"tier": 1, "aiStatus": "used"}})
+        if path == "/api/chat" and MODE.get("chat") == "error":
+            # A turn the server cannot answer: HTTP 200 and the AI SDK error part, no text (UAT build 129).
+            data = ('3:"An error occurred."\n' + 'd:{"finishReason":"error"}\n').encode("utf-8")
+            self.send_response(200)
+            self.send_header("Content-Type", "text/plain; charset=utf-8")
+            self.send_header("Content-Length", str(len(data)))
+            self.end_headers()
+            self.wfile.write(data)
+            return
         if path == "/api/chat" and MODE.get("chat") == "auth":
             # No usable session: the «sign in to continue» card (not the 18+ gate).
             return self._send(401, {"error": "unauthorized"})

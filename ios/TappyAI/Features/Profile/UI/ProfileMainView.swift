@@ -10,6 +10,7 @@ struct ProfileMainView: View {
     /// The count is shown only once `/api/conversations` actually answered.
     @State private var conversationsLoaded = false
     @State private var loading = true
+    @State private var didLoadOnce = false
     @State private var showProUpgrade = false
     @State private var showAppConnections = false
     @State private var showQR = false
@@ -70,6 +71,16 @@ struct ProfileMainView: View {
         .task {
             await loadProfile()
             await hub.load(userId: session.userId)
+            didLoadOnce = true
+        }
+        // Coming back from «Chỉnh sửa hồ sơ» (or anywhere else): show what was just saved. `.task` runs once, so the bio typed and saved
+        // there stayed invisible here until a pull-to-refresh or a relaunch.
+        .onAppear {
+            guard didLoadOnce else { return }
+            Task {
+                await loadProfile()
+                await hub.load(userId: session.userId, force: true)
+            }
         }
         // Signing in or out while this tab is on screen: show the right state at once, never a half one.
         .onChange(of: session.state) { _ in
@@ -295,7 +306,8 @@ struct ProfileMainView: View {
                 showAppConnections = cfg.flags.showAppConnections ?? false
             }
         } catch {
-            profile = UserProfile(fullName: "", avatarUrl: "", email: "", bio: "")
+            // A failed refresh keeps what is already on screen (the bio just saved included) instead of blanking it.
+            if profile == nil { profile = UserProfile(fullName: "", avatarUrl: "", email: "", bio: "") }
         }
         loading = false
     }

@@ -15,7 +15,10 @@ struct VerticalPagingView<Content: View>: UIViewControllerRepresentable {
         context.coordinator.parent = self
         context.coordinator.pagingVC = vc
         if pageCount > 0 {
-            let first = makeHosting(index: 0)
+            // Open AT `currentPage` (a profile's clip viewer starts at the tapped clip); it used to open at page 0 whatever was asked.
+            let start = max(0, min(currentPage, pageCount - 1))
+            context.coordinator.currentIndex = start
+            let first = makeHosting(index: start)
             vc.setViewControllers([first], direction: .forward, animated: false)
         }
         return vc

@@ -206,7 +206,9 @@ struct UserProfileView: View {
             LazyVGrid(columns: columns, spacing: 4) {
                 ForEach(shown) { review in
                     Button {
-                        router.push(ReviewsDestination.reviewDetail(id: review.id))
+                        // Web `PublicProfileView`: `<ClipViewer posts={shown} startIndex={…}>` — this profile's clips, opened at the tapped one.
+                        let start = shown.firstIndex { $0.id == review.id } ?? 0
+                        router.push(ClipSeedStore.destination(posts: shown, start: start))
                     } label: {
                         tile(review)
                     }
@@ -230,7 +232,7 @@ struct UserProfileView: View {
             .overlay {
                 ZStack {
                     TappyColor.surface
-                    if let raw = review.thumbnail ?? review.photos?.first, let url = URL(string: raw) {
+                    if let raw = ReviewPoster.url(photos: review.photos, thumbnail: review.thumbnail), let url = URL(string: raw) {
                         AsyncImage(url: url) { image in
                             image.resizable().aspectRatio(contentMode: .fill)
                         } placeholder: {

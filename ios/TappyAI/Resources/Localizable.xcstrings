@@ -855,6 +855,14 @@
         "vi": { "stringUnit": { "state": "translated", "value": "Đăng bài mới" } }
       }
     },
+    "feed.sound.tapToUnmute": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Tap for sound"}}, "vi": {"stringUnit": {"state": "translated", "value": "Chạm để bật tiếng"}}}},
+    "review.comments.reply": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Reply"}}, "vi": {"stringUnit": {"state": "translated", "value": "Trả lời"}}}},
+    "review.comments.react": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "React"}}, "vi": {"stringUnit": {"state": "translated", "value": "Cảm xúc"}}}},
+    "review.comments.replyingTo": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Replying to %@"}}, "vi": {"stringUnit": {"state": "translated", "value": "Đang trả lời %@"}}}},
+    "share.card.appsTitle": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Get the TappyAI app"}}, "vi": {"stringUnit": {"state": "translated", "value": "Tải ứng dụng TappyAI"}}}},
+    "share.card.androidSoon": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Android · Coming soon to Google Play"}}, "vi": {"stringUnit": {"state": "translated", "value": "Android · Sắp có trên Google Play"}}}},
+    "share.card.iosSoon": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "iOS · Coming soon to the App Store"}}, "vi": {"stringUnit": {"state": "translated", "value": "iOS · Sắp có trên App Store"}}}},
+    "share.card.orWebsite": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Or visit the website"}}, "vi": {"stringUnit": {"state": "translated", "value": "Hoặc truy cập website"}}}},
     "feed.video.failed": {
       "localizations": {
         "en": { "stringUnit": { "state": "translated", "value": "This clip could not load." } },

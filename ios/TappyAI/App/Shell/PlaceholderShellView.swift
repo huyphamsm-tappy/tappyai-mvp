@@ -29,6 +29,8 @@ struct PlaceholderShellView: View {
                             switch dest {
                             case .reviewDetail(let id):
                                 ReviewDetailView(deps: deps, reviewId: id)
+                            case .clipViewer(let seedId, let start):
+                                ReviewsFeedView(deps: deps, seed: ClipSeed(posts: ClipSeedStore.posts(for: seedId), start: start))
                             case .userProfile(let id):
                                 UserProfileView(deps: deps, userId: id)
                             case .group(let id):

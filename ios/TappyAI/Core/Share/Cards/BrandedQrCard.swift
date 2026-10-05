@@ -5,9 +5,9 @@ import SwiftUI
 /// code with its full quiet zone and blue brackets OUTSIDE it, name + caption, the slogan banner
 /// with the hoodie otter, the website panel, and the feature strip. Nothing is drawn inside the code.
 ///
-/// No Google Play badge on iOS: Android/web show one (owner SL2 29/09), but an iPhone user cannot
-/// use it and Apple's review does not welcome another store's badge — and there is no App Store
-/// listing yet to show instead (no badge and no "coming soon" box, same rule as the web card).
+/// No Google Play badge on iOS (an iPhone user cannot use it and Apple's review does not welcome another store's badge). Like the
+/// Web card while no store listing is public (Phase 7), the bottom panel names both apps: «Android · Sắp có…» and «iOS · Sắp có…»,
+/// each with a phone glyph, then «Hoặc truy cập website» (`apps`).
 struct BrandedQrCardView: View {
     let text: String
     let displayName: String
@@ -19,6 +19,16 @@ struct BrandedQrCardView: View {
     let websiteLabel: String?
     let features: [String]
     let website: String?
+    /// Web `brandedCard.ts` `apps` (Phase 7, no store listing public yet): «Tải ứng dụng TappyAI» with Android and iOS each on its own line
+    /// («Sắp có»), then «Hoặc truy cập website». Nil keeps the single-column website panel.
+    var apps: AppsComingSoon? = nil
+
+    struct AppsComingSoon {
+        let title: String
+        let android: String
+        let ios: String
+        let orWebsite: String
+    }
 
     private let width: CGFloat = 1200
     private let pad: CGFloat = 60
@@ -68,6 +78,43 @@ struct BrandedQrCardView: View {
     }
 
     private func websitePanel(_ website: String) -> some View {
+        if let apps { return AnyView(appsPanel(apps, website)) }
+        return AnyView(plainWebsitePanel(website))
+    }
+
+    /// Two columns, as the Web card: the apps on the left (phone glyph per system), a divider, the website on the right.
+    private func appsPanel(_ apps: AppsComingSoon, _ website: String) -> some View {
+        HStack(spacing: 0) {
+            VStack(alignment: .leading, spacing: 16) {
+                Text(apps.title).font(.system(size: 32, weight: .heavy)).foregroundStyle(CardLight.ink)
+                    .lineLimit(1).minimumScaleFactor(0.6)
+                ForEach([apps.android, apps.ios], id: \.self) { line in
+                    HStack(spacing: 14) {
+                        Image(systemName: "iphone").font(.system(size: 34, weight: .regular)).foregroundStyle(CardLight.blue)
+                        Text(line).font(.system(size: 25, weight: .semibold)).foregroundStyle(CardLight.muted)
+                            .lineLimit(2).minimumScaleFactor(0.6)
+                    }
+                }
+            }
+            .padding(.horizontal, 40)
+            .frame(width: (width - pad * 2) * 0.52, alignment: .leading)
+
+            Rectangle().fill(CardLight.panelBorder).frame(width: 2).padding(.vertical, 36)
+
+            VStack(spacing: 20) {
+                Text(apps.orWebsite).font(.system(size: 27, weight: .semibold)).foregroundStyle(CardLight.ink)
+                    .lineLimit(1).minimumScaleFactor(0.6)
+                CardWebsitePill(website: website)
+            }
+            .padding(.horizontal, 24)
+            .frame(maxWidth: .infinity)
+        }
+        .frame(width: width - pad * 2, height: 250)
+        .background(RoundedRectangle(cornerRadius: 32, style: .continuous).fill(Color.white))
+        .overlay(RoundedRectangle(cornerRadius: 32, style: .continuous).stroke(CardLight.panelBorder, lineWidth: 2))
+    }
+
+    private func plainWebsitePanel(_ website: String) -> some View {
         VStack(spacing: 20) {
             if let label = websiteLabel, !label.isEmpty {
                 Text(label).font(.system(size: 27, weight: .semibold)).foregroundStyle(CardLight.ink)

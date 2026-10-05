@@ -1,0 +1,64 @@
+import Foundation
+
+/// The reactions the Web comment API accepts (`src/app/api/comments/[commentId]/reactions/route.ts`: `like`, `love`, `haha`, `wow`, `sad`,
+/// `angry`) and the pure rules around replies and reactions, shared by the feed's and the detail screen's comment state.
+enum CommentReaction: String, CaseIterable, Identifiable, Sendable {
+    case like, love, haha, wow, sad, angry
+    var id: String { rawValue }
+
+    var emoji: String {
+        switch self {
+        case .like: return "👍"
+        case .love: return "❤️"
+        case .haha: return "😂"
+        case .wow: return "😮"
+        case .sad: return "😢"
+        case .angry: return "😡"
+        }
+    }
+}
+
+enum CommentActions {
+    /// A comment as it reads after the caller picks `reaction` (nil = removes it): the same toggle the server applies — one reaction per
+    /// person, picking the one you already have takes it back.
+    static func applying(_ reaction: CommentReaction, to comment: ReviewComment) -> ReviewComment {
+        var next = comment
+        if let mine = comment.myReaction { next.reactions[mine] = max(0, (next.reactions[mine] ?? 1) - 1) }
+        if comment.myReaction == reaction.rawValue {
+            next.myReaction = nil
+        } else {
+            next.reactions[reaction.rawValue, default: 0] += 1
+            next.myReaction = reaction.rawValue
+        }
+        next.reactions = next.reactions.filter { $0.value > 0 }
+        return next
+    }
+
+    /// The server's answer to what the caller now has: nil when the reaction was removed.
+    static func resulting(_ reaction: CommentReaction, on comment: ReviewComment) -> CommentReaction? {
+        comment.myReaction == reaction.rawValue ? nil : reaction
+    }
+
+    /// Top-level comments in order, each followed by its replies (one level, as the Web nests them). A reply whose parent is not in the
+    /// list (deleted, hidden by a block) is shown at top level rather than lost.
+    static func threaded(_ comments: [ReviewComment]) -> [(comment: ReviewComment, isReply: Bool)] {
+        let ids = Set(comments.map(\.id))
+        let tops = comments.filter { $0.parentCommentId == nil || !ids.contains($0.parentCommentId ?? "") }
+        var out: [(ReviewComment, Bool)] = []
+        for top in tops {
+            out.append((top, top.parentCommentId != nil))
+            out.append(contentsOf: comments.filter { $0.parentCommentId == top.id }.map { ($0, true) })
+        }
+        return out
+    }
+}
+
+/// The picture a post's tile shows. Web `posterFor` (`src/lib/links/platforms.ts`): a real PHOTO first, then the stored thumbnail, and only then a
+/// placeholder. The phone used the thumbnail first, so a post that has both showed a different picture from the same post on the Web.
+enum ReviewPoster {
+    static func url(photos: [String]?, thumbnail: String?) -> String? {
+        if let photo = photos?.first?.trimmingCharacters(in: .whitespacesAndNewlines), !photo.isEmpty { return photo }
+        if let thumb = thumbnail?.trimmingCharacters(in: .whitespacesAndNewlines), !thumb.isEmpty { return thumb }
+        return nil
+    }
+}

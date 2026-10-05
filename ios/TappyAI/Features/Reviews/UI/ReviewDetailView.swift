@@ -112,6 +112,9 @@ struct ReviewDetailView: View {
                 text: Binding(get: { vm.commentText }, set: { vm.commentText = $0 }),
                 onPost: { vm.postComment() },
                 onDelete: { vm.deleteComment(commentId: $0) },
+                replyingTo: vm.replyingTo,
+                onReply: { vm.replyingTo = $0 },
+                onReact: { vm.react(to: $0, with: $1) },
                 onDismiss: { vm.closeComments() }
             )
         }

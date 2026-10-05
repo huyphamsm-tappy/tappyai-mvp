@@ -175,8 +175,10 @@ struct ReviewsService: Sendable {
         return try await api.send(endpoint, as: CommentsResponse.self)
     }
 
-    func postComment(reviewId: String, body: String) async throws -> PostCommentResponse {
-        let payload = try JSONSerialization.data(withJSONObject: ["body": body])
+    func postComment(reviewId: String, body: String, parentId: String? = nil) async throws -> PostCommentResponse {
+        var fields: [String: String] = ["body": body]
+        if let parentId, !parentId.isEmpty { fields["parentId"] = parentId }   // Web: a reply carries `parentId`
+        let payload = try JSONSerialization.data(withJSONObject: fields)
         let endpoint = Endpoint(
             path: "/api/reviews/\(reviewId)/comments",
             method: .post,
@@ -184,6 +186,18 @@ struct ReviewsService: Sendable {
             requiresAuth: true
         )
         return try await api.send(endpoint, as: PostCommentResponse.self)
+    }
+
+    /// `POST /api/comments/{id}/reactions {reaction}` sets or changes the caller's one reaction; `DELETE` removes it.
+    func setCommentReaction(commentId: String, reaction: CommentReaction?) async throws {
+        let endpoint: Endpoint
+        if let reaction {
+            let payload = try JSONSerialization.data(withJSONObject: ["reaction": reaction.rawValue])
+            endpoint = Endpoint(path: "/api/comments/\(commentId)/reactions", method: .post, body: payload, requiresAuth: true)
+        } else {
+            endpoint = Endpoint(path: "/api/comments/\(commentId)/reactions", method: .delete, requiresAuth: true)
+        }
+        _ = try await api.send(endpoint)
     }
 
     func deleteComment(reviewId: String, commentId: String) async throws -> DeleteCommentResponse {
