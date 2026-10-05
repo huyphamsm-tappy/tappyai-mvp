@@ -70,8 +70,14 @@ Unset or invalid Apple config → `appleRevokeConfig()` is `null` → an **Apple
 | Supabase production Apple provider | **enabled**, Client ID `com.tappyai.ios` (05/10) | public `/auth/v1/settings` → `external.apple=true` |
 | Production `/api/config` `flags.appleSignIn` | `true` (production `0edd2d1`) | `GET /api/config` |
 | Production `/api/account/delete` | **404 (route absent)** until this hotfix is merged | `GET` returns 404 on `0edd2d1` |
-| iOS | `AccountDeletionFlow` + `AppleReauthorizer` written, tests added, CI pending | iOS branch `ios/sync-2026-09-30` |
+| iOS | `AccountDeletionFlow` + `AppleReauthorizer` written; `AccountDeletionTests` 13/13; whole iOS suite 466 tests / 0 failures; `static_check.py` passes | iOS `ios/sync-2026-09-30` @ `046a7a9065f2632952a1fd14aa15c47c8d31288b`, CI run 37279257115 (Build + TappyAITests: success). The first attempt (run 37278526502) failed to compile one line of a TEST helper; fixed in `046a7a9`, product code unchanged. |
 | Real iPhone + authorized Apple ID | **NO EVIDENCE** | — |
+
+## 4b. CI evidence
+
+Web PR #262, head `400374e942d796894ed1ce2935d927de5b902273`: all four required checks pass on both the push and the pull_request runs — *Test suite* (runs 37278449666, 37278470524), *Types, lint, SQL grants* (same runs), *AI architecture rules* (37278449646, 37278470538), *Brand registry validation* (same runs); Vercel preview pass. Local, on a clean `npm ci` of main + this commit: focused suites green, full suite 9,619 passed / 0 failed (required-suite gate OK, 44 suites), `tsc` 0, lint 0 errors, `next build` OK.
+
+iOS run 37279257115 (`Build + TappyAITests`) succeeded: 466 tests, 0 failures (459 before; 7 new). The repo's *Regression Gate* workflow is red on the iOS branch and has been on every commit since 2026-10-03: the same 12 Web-side iOS-parity tests (`iosLocalization`, `iosParityGuards`, `iosParityScreens`, `scam-shield/nativeParity`) fail before and after these changes — 0 new failures introduced, 0 fixed.
 
 ## 5. Tests (Web)
 
@@ -83,7 +89,7 @@ The **data clean-up** behind the deletion promise — migrations D1/D2/D4 (`2026
 
 ## 7. What is still required before the gate can pass
 
-1. **APPLE DEVELOPER CONFIGURATION REQUIRED** — create a *Sign in with Apple* key (Certificates, Identifiers & Profiles → Keys; enable Sign in with Apple, configure it for `com.tappyai.ios`), download the `.p8` once, and put Team ID, Key ID and the key into the Vercel **Production** env as `APPLE_SIWA_*` (key as Sensitive). Nobody should paste the key into chat or git.
+1. **APPLE DEVELOPER CONFIGURATION REQUIRED** (checked 05/10: the Apple Developer portal is not signed in in the available browser - it shows the login page, which needs a password and 2FA on your device; no credentials were entered) — create a *Sign in with Apple* key (Certificates, Identifiers & Profiles → Keys; enable Sign in with Apple, configure it for `com.tappyai.ios`), download the `.p8` once, and put Team ID, Key ID and the key into the Vercel **Production** env as `APPLE_SIWA_*` (key as Sensitive). Nobody should paste the key into chat or git.
 2. **Data clean-up live in production** — D1/D2/D4 (D4 needs a production-safe variant, see section 6) + the worker + cron + media methods, applied/deployed under the owner's migration process.
 3. **`ACCOUNT_SELF_DELETE_ENABLED=true`** in Production, only after 2.
 4. **Owner merges** this PR (and the iOS PR/branch change), production deploys, then verify: `/api/version`, `/api/config` (`accountSelfDelete: true`), and `GET /api/account/delete` is **405** (route exists) not 404.
