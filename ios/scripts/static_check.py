@@ -117,7 +117,18 @@ def brands():
         check("logo asset for brand " + bid, len(files) == 1 and os.path.getsize(files[0]) > 0, folder)
 
 
+def home_sections():
+    """The Web final Home has no «Gợi ý nhanh» cards and no «Ưu đãi hôm nay» rail (HomeV3.tsx): nothing in the app may render them."""
+    banned = ["HomeDealsSection", "HomeSuggestedPromptsSection", "HomeQuickAction(", "home.v3.quickTitle", "home.v3.dealsTitle"]
+    hits = []
+    for path in glob.glob("ios/TappyAI/**/*.swift", recursive=True):
+        body = open(path, encoding="utf-8").read()
+        hits += [os.path.basename(path) + ": " + w for w in banned if w in body]
+    check("Home does not reference the removed quick-suggestion / deals sections", not hits, ", ".join(hits))
+
+
 if __name__ == "__main__":
+    home_sections()
     strings_catalog()
     plists()
     scripts()

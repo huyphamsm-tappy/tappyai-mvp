@@ -16,7 +16,7 @@ struct HomeView: View {
     init(deps: AppDependencies) {
         _vm = AppStateObject(wrappedValue: HomeViewModel(
             home: HomeService(api: deps.api), places: PlacesService(api: deps.api),
-            deals: DealsService(api: deps.api), reviews: ReviewsService(api: deps.api),
+            reviews: ReviewsService(api: deps.api),
             profile: ProfileService(api: deps.api), session: deps.session))
     }
 

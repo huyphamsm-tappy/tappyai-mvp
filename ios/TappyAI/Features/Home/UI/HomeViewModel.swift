@@ -1,7 +1,7 @@
 import Foundation
 
-/// Home's data (Android `HomeViewModel`): the display name for the hero, and four rails over
-/// EXISTING endpoints — recommendations, deals, community videos, recent chats. Home is a
+/// Home's data (Android `HomeViewModel`): the display name for the hero, and three rails over
+/// EXISTING endpoints — recommendations, community videos, recent chats (no deals rail: the Web final Home has none). Home is a
 /// launchpad: every rail fails quietly to "nothing to show" instead of an error screen.
 @MainActor
 final class HomeViewModel: AppObservableObject {
@@ -9,25 +9,22 @@ final class HomeViewModel: AppObservableObject {
 
     @AppPublished var userName: String?
     @AppPublished var recommendations: Rail<Recommendation> = .loading
-    @AppPublished var deals: Rail<PartnerDeal> = .loading
     @AppPublished var videos: Rail<Review> = .loading
     @AppPublished var recent: Rail<ConversationSummary> = .loading
 
     private let home: HomeService
     private let places: PlacesService
-    private let dealsService: DealsService
     private let reviews: ReviewsService
     private let profile: ProfileService
     private let session: SessionStore
 
     static let recentLimit = 5
-    static let dealsLimit = 6
     static let recommendationsLimit = 8
     static let videoLimit = 8
 
-    init(home: HomeService, places: PlacesService, deals: DealsService, reviews: ReviewsService,
+    init(home: HomeService, places: PlacesService, reviews: ReviewsService,
          profile: ProfileService, session: SessionStore) {
-        self.home = home; self.places = places; self.dealsService = deals
+        self.home = home; self.places = places
         self.reviews = reviews; self.profile = profile; self.session = session
     }
 
@@ -36,10 +33,9 @@ final class HomeViewModel: AppObservableObject {
     func refresh(lang: String) async {
         async let a: () = loadName()
         async let b: () = loadRecommendations()
-        async let c: () = loadDeals(lang: lang)
-        async let d: () = loadVideos()
-        async let e: () = loadRecent()
-        _ = await (a, b, c, d, e)
+        async let c: () = loadVideos()
+        async let d: () = loadRecent()
+        _ = await (a, b, c, d)
     }
 
     func loadName() async {
@@ -51,11 +47,6 @@ final class HomeViewModel: AppObservableObject {
     func loadRecommendations() async {
         let items = (try? await places.fetchRecommendations())?.recommendations ?? []
         recommendations = Self.rail(Array(items.prefix(Self.recommendationsLimit)))
-    }
-
-    func loadDeals(lang: String) async {
-        let items = (try? await dealsService.fetchDeals(lang: lang)) ?? []
-        deals = Self.rail(Array(items.prefix(Self.dealsLimit)))
     }
 
     /// The trending feed narrowed to clips that can be shown (Android: video + a thumbnail or media).
