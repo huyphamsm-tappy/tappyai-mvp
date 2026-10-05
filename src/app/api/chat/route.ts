@@ -41,7 +41,7 @@ import { filmQueries, extractFilmEvidence, filmEvidencePayload, FILM_ENOUGH } fr
 import { sharedSerperBudget } from '@/lib/ai/tools/serperToolBudget'
 import { cardEvidence, mergeCarried } from '@/lib/ai/agent/carriedEvidence'
 import { plannerNeedsDestination, plannerDestinationQuestion } from '@/lib/ai/agent/plannerGate'
-import { tappyAgentEnabled, startAgentTurn, agentContext, codeResolvedDate, cityFromGps, followUpContextLines, confirmationOf, isRejectionTurn, actionOutcomeText, revalidatePendingAction, claimActionExecution, AGENT_SYSTEM, AGENT_LIMITS } from '@/lib/ai/agent'
+import { tappyAgentEnabled, startAgentTurn, agentContext, codeResolvedDate, priorDateFromHistory, cityFromGps, followUpContextLines, confirmationOf, isRejectionTurn, actionOutcomeText, revalidatePendingAction, claimActionExecution, AGENT_SYSTEM, AGENT_LIMITS } from '@/lib/ai/agent'
 import { detectWrongModel, wrongModelBlock, deviceLabel } from '@/lib/ai/wrongModel'
 import { gatePlacesByActivity, agencyRowsToDrop } from '@/lib/ai/consultative/placeTypeGate'
 import { deriveShoppingConstraints, budgetFromHistory, validateShoppingCandidates, unmetConstraintPayload } from '@/lib/ai/consultative/shoppingConstraints'
@@ -2868,7 +2868,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     const facts = cardEv.facts
     if (enrichment.consultativeV1 && cardEv.carried.length) enrichment.consultativeV1.carried = mergeCarried(enrichment.consultativeV1.carried, cardEv.carried)
     const context = agentContext({
-      now: new Date(), userText: lastText, lang, gps: !!userLocation, address: userLocation?.address ?? null, gpsCity: userLocation ? cityFromGps(userLocation.lat, userLocation.lng) : null, statedArea: statedArea?.label ?? null,
+      now: new Date(), userText: lastText, departDate: chatState?.flight?.departDate ?? priorDateFromHistory(lunaUserTexts, new Date()), lang, gps: !!userLocation, address: userLocation?.address ?? null, gpsCity: userLocation ? cityFromGps(userLocation.lat, userLocation.lng) : null, statedArea: statedArea?.label ?? null,
       state: { extra: followUpContextLines(chatState), cards, facts, pick: currentPick, rejected: [...new Set([...(chatState?.rejected ?? []), ...agentRejected])], known: chatState?.known, pendingAction: pending && !actionOutcome ? { summary: pending.summary } : null, actionOutcome },
     })
     const privateTexts = [memoryBlock, userLocation?.address ?? '']
@@ -2889,7 +2889,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       onPendingAction: pa => { agentPendingAction = pa },
       onState: p => { agentStatePatch = p },
       sanitizeQuery: q => sanitizeSearchQuery(q, { privateTexts, ownWords }),
-      codeDate: codeResolvedDate(lastText, new Date()),
+      codeDate: codeResolvedDate(lastText, new Date(), chatState?.flight?.departDate ?? priorDateFromHistory(lunaUserTexts, new Date())),
       onFinish: onFinish as never,
     })
   }

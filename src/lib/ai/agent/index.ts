@@ -234,5 +234,5 @@ export function startAgentTurn(i: AgentTurnInput): AgentStreamResult {
 }
 
 export { AGENT_LIMITS } from './loop'
-export { agentContext, codeResolvedDate, cityFromGps, followUpContextLines, AGENT_SYSTEM } from './prompt'
+export { agentContext, codeResolvedDate, afterOutbound, priorDateFromHistory, cityFromGps, followUpContextLines, AGENT_SYSTEM } from './prompt'
 export { confirmationOf, isRejectionTurn, actionOutcomeText, revalidatePendingAction, claimActionExecution } from './agentTools'

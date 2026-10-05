@@ -11,7 +11,7 @@ Branch `p7/web-subscription`. Web only. Master switch `SUBSCRIPTIONS_ENABLED` (d
 | Milo | $36 | 6 months (180 d) | 939.000đ | 30/day |
 | Sunny | $66 | 12 months (365 d) | 1.719.000đ | 30/day |
 
-Guest ("Welcome Guest"): 5 AI questions for life. Free account: 15/day. The USD price is only the label. The VND amounts are FIXED catalog values (`src/lib/plans/subscriptionPrices.json`) — never computed from USD or an exchange rate — and are what the SePay order charges and the payment screens show.
+Guest ("Welcome Guest"): 5 AI questions for life. Free account: 10/day (`FREE_DAILY_LIMIT`, Phase 7 canonical catalog 04/10; this line said 15 until the Phase 7 final UAT 05/10 found it stale). The USD price is only the label. The VND amounts are FIXED catalog values (`src/lib/plans/subscriptionPrices.json`) — never computed from USD or an exchange rate — and are what the SePay order charges and the payment screens show.
 
 ## Pip is a one-time trial per account (enforced in the database)
 `supabase/migrations/20261016_p7_pip_one_time.sql`: `p7_pip_used(user)` is true when the ledger holds a purchased Pip grant or a Pip order was paid; it never looks at the current subscription row, so expiry / cancellation / deleted row do not reopen it.
@@ -25,7 +25,7 @@ Guest ("Welcome Guest"): 5 AI questions for life. Free account: 15/day. The USD 
 `POST /api/payments/orders {plan}` (real account only; price/duration from `PLAN_CONFIG`, never from the client; 409 while a plan is active; ≤3 pending; 15-min expiry) → VietQR → `POST /api/payments/sepay` (HMAC-SHA256 over `"<timestamp>.<raw body>"`, 5-minute window, idempotent by SePay transaction id, amount ≥ price, receiving account checked) → `p8_apply_entitlement` (the only writer, append-only `entitlement_ledger`) → plan ACTIVE. No manual activation. Web = one payment per period, no auto-renew; the plan expires (`p8_subscriptions_expire`, cron route not scheduled) and the user buys again. Failure/expiry/short-transfer states are drawn by `SubscriptionFlow`; a client-side "paid" is never trusted — the screen shows success only after `/api/payments/me` says ACTIVE.
 
 ## Quota v2 = ONE module
-`src/lib/ai/quota/aiQuestionQuota.ts` (plan-aware): guest/anon lifetime 5 · free 15/day · every paid plan 30/day · day = Vietnam calendar day (reset = key change). Entitlement → quota is `accountQuotaFor` (one rule, `lib/plans/entitlement.ts`). A paying legacy `pro` row stays unmetered until its period ends (or `PRO_GRANDFATHER_CUTOFF`). Paid-plan refusal: 429 `plan_limit_reached`; free: `free_limit_reached`.
+`src/lib/ai/quota/aiQuestionQuota.ts` (plan-aware): guest/anon lifetime 5 · free 10/day · every paid plan 30/day · day = Vietnam calendar day (reset = key change). Entitlement → quota is `accountQuotaFor` (one rule, `lib/plans/entitlement.ts`). A paying legacy `pro` row stays unmetered until its period ends (or `PRO_GRANDFATHER_CUTOFF`). Paid-plan refusal: 429 `plan_limit_reached`; free: `free_limit_reached`.
 Metered (spend from the pool): `/api/chat` (guest, anonymous, free, paid) and `/api/scam-shield/analyze`. Display (`/api/subscription`, `/api/payments/me`, `/subscription`, Home chip) reads the same store.
 Not metered by this pool (own per-feature limits, unchanged from the release): `/api/translate`, `/api/scan`, `/api/viet-content`, `/api/group/[id]/suggest`, `/api/explore/process`, memory extraction, cron jobs.
 
