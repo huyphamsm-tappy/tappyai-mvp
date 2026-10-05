@@ -65,6 +65,13 @@ export interface MediaProvider {
    * reason `createUploadSession` is: Blob has no client-direct session.
    */
   statObject?(key: string): Promise<StoredObjectInfo | null>
+  /**
+   * F-096 · every object name under ONE owner's prefix (all pages). Only account deletion uses it;
+   * a prefix that does not name exactly one owner is refused (see `assertOwnerScopedPrefix`).
+   */
+  listObjects?(prefix: string): Promise<string[]>
+  /** F-096 · deletes one object. true = deleted, false = already gone (404). */
+  deleteObject?(key: string): Promise<boolean>
 }
 
 /** The minimum an upload must satisfy to count as complete. */
@@ -113,5 +120,16 @@ export class MediaTimeoutError extends Error {
   constructor(operation: string, ms: number) {
     super(`Media operation "${operation}" timed out after ${ms}ms`)
     this.name = 'MediaTimeoutError'
+  }
+}
+
+/**
+ * Listing or deleting stored objects failed (F-096 account deletion). Status code only — never the
+ * provider's response body or an object name, which carries a user id.
+ */
+export class MediaStorageError extends Error {
+  constructor(provider: MediaProviderId, operation: 'list' | 'delete' | 'read', status?: number) {
+    super(`Media provider "${provider}" ${operation} failed${status === undefined ? '' : ` (HTTP ${status})`}`)
+    this.name = 'MediaStorageError'
   }
 }

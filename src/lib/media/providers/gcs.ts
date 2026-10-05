@@ -11,6 +11,7 @@
 
 import {
   MediaCredentialsUnavailableError,
+  MediaStorageError,
   MediaTimeoutError,
   MediaUploadFailedError,
   MediaUploadSessionError,
@@ -21,7 +22,7 @@ import {
   type UploadSession,
   type UploadSessionRequest,
 } from '../types'
-import { assertSafeMediaKey } from '../key'
+import { assertOwnerScopedPrefix, assertSafeMediaKey } from '../key'
 
 export interface GcsProviderDeps {
   bucket: string
@@ -39,6 +40,7 @@ export interface GcsProviderDeps {
 }
 
 const UPLOAD_HOST = 'https://storage.googleapis.com'
+const MAX_LIST_PAGES = 50
 
 export const DEFAULT_SESSION_TIMEOUT_MS = 10_000
 
@@ -200,6 +202,62 @@ export function createGcsProvider(deps: GcsProviderDeps): MediaProvider {
         size: Number.parseInt(meta.size ?? '0', 10) || 0,
         contentType: meta.contentType ?? '',
       }
+    },
+
+    /**
+     * F-096 · every object name under ONE owner's prefix, following pages. `storage.objects.list`
+     * is in the bridge account's `roles/storage.objectUser` (PHASE7-AUDIT §bucket IAM).
+     * The prefix guard is the whole safety of account deletion: '' or 'avatars/' would list —
+     * and the caller would then delete — every user's files.
+     */
+    async listObjects(prefix: string): Promise<string[]> {
+      const safePrefix = assertOwnerScopedPrefix(prefix)
+      if (!deps.getAccessToken) throw new MediaCredentialsUnavailableError('gcs')
+      const token = await deps.getAccessToken()
+      const names: string[] = []
+      let pageToken: string | undefined
+      for (let page = 0; page < MAX_LIST_PAGES; page++) {
+        const url =
+          `${UPLOAD_HOST}/storage/v1/b/${encodeURIComponent(deps.bucket)}/o` +
+          `?prefix=${encodeURIComponent(safePrefix)}&maxResults=1000&fields=${encodeURIComponent('items(name),nextPageToken')}` +
+          (pageToken ? `&pageToken=${encodeURIComponent(pageToken)}` : '')
+        let res: Response
+        try {
+          res = await doFetch(url, { headers: { Authorization: `Bearer ${token}` }, signal: makeSignal(timeoutMs) })
+        } catch (e) {
+          const name = (e as { name?: string } | undefined)?.name
+          if (name === 'TimeoutError' || name === 'AbortError') throw new MediaTimeoutError('object list', timeoutMs)
+          throw new MediaStorageError('gcs', 'list')
+        }
+        if (!res.ok) throw new MediaStorageError('gcs', 'list', res.status)
+        const body = (await res.json()) as { items?: Array<{ name?: string }>; nextPageToken?: string }
+        for (const it of body.items ?? []) {
+          // Defence in depth: only names under the requested prefix are ever returned to a deleter.
+          if (typeof it.name === 'string' && it.name.startsWith(safePrefix)) names.push(it.name)
+        }
+        if (!body.nextPageToken) return names
+        pageToken = body.nextPageToken
+      }
+      throw new MediaStorageError('gcs', 'list')
+    },
+
+    /** F-096 · deletes one object. 404 = already gone, which is the state deletion wants. */
+    async deleteObject(key: string): Promise<boolean> {
+      const safeKey = assertSafeMediaKey(key)
+      if (!deps.getAccessToken) throw new MediaCredentialsUnavailableError('gcs')
+      const token = await deps.getAccessToken()
+      const url = `${UPLOAD_HOST}/storage/v1/b/${encodeURIComponent(deps.bucket)}/o/${encodeURIComponent(safeKey)}`
+      let res: Response
+      try {
+        res = await doFetch(url, { method: 'DELETE', headers: { Authorization: `Bearer ${token}` }, signal: makeSignal(timeoutMs) })
+      } catch (e) {
+        const name = (e as { name?: string } | undefined)?.name
+        if (name === 'TimeoutError' || name === 'AbortError') throw new MediaTimeoutError('object delete', timeoutMs)
+        throw new MediaStorageError('gcs', 'delete')
+      }
+      if (res.status === 404) return false
+      if (!res.ok) throw new MediaStorageError('gcs', 'delete', res.status)
+      return true
     },
   }
 }
