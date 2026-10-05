@@ -27,6 +27,7 @@ struct ScamShieldView: View {
     }
 
     var body: some View {
+        ScrollViewReader { proxy in
         ScrollView {
             VStack(alignment: .leading, spacing: Spacing.md) {
                 Text(NSLocalizedString("scamShield.subtitle", comment: ""))
@@ -71,6 +72,11 @@ struct ScamShieldView: View {
         // The message box is a multi-line TextEditor (Return inserts a line), so nothing dismissed its keyboard: it stayed up over the
         // result. Dragging the page now dismisses it, and the keyboard bar has a "Done" button.
         .scrollDismissesKeyboard(.interactively)
+        // A message result lands under the box the person just typed in: bring it to the top of the screen.
+        .onChange(of: vm.messageOutcome) { outcome in
+            guard outcome != nil else { return }
+            withAnimation { proxy.scrollTo("scam-msg-result", anchor: .top) }
+        }
         .toolbar {
             ToolbarItemGroup(placement: .keyboard) {
                 Spacer()
@@ -96,6 +102,7 @@ struct ScamShieldView: View {
             Text("scam.link.confirm.body")
         }
         .task { await applyDebugFixture() }
+        }
     }
 
     /// CI fixture only (DEBUG): open a pane with a message / a QR code already in it.

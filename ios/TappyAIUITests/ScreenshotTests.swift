@@ -322,6 +322,20 @@ final class ScreenshotTests: XCTestCase {
         shot("87-scam-message-normal")
     }
 
+    /// UAT build 123: after typing a message the keyboard stayed up over the result. Checking dismisses it and shows the situation.
+    func testScamMessageCheckDismissesTheKeyboardAndShowsTheSituation() {
+        let app = scamLaunch(["-uitest-scam-pane", "message"])
+        let input = any(app, "scam-msg-input")
+        XCTAssertTrue(input.waitForExistence(timeout: 40), "the message box")
+        input.tap()
+        input.typeText("Co nguoi goi dien yeu cau cung cap thong tin CCCD de xu ly van de hoan tien")
+        any(app, "scam-msg-check").tap()
+        XCTAssertTrue(any(app, "scam-msg-unsure").waitForExistence(timeout: 20), "the result card")
+        XCTAssertTrue(any(app, "scam-msg-scenario").waitForExistence(timeout: 10), "«Tình huống tương ứng» is shown")
+        XCTAssertEqual(app.keyboards.count, 0, "the keyboard is dismissed once the check runs")
+        shot("90-scam-message-situation")
+    }
+
     /// WEB 65685a7: no AI for the message check — the «suspicious» result has no «analyse deeper with AI» entry.
     func testScamMessageUnsureHasNoAIEntry() {
         let app = scamLaunch(["-uitest-scam-message", "Có người gọi điện yêu cầu tôi cung cấp thông tin CCCD để xử lý vấn đề hoàn tiền"])   // a WEAK scenario match: suspicious, scenario shown

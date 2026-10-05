@@ -47,7 +47,7 @@ struct ScamMessageView: View {
 
             Text("scam.msg.privacy").font(TappyFont.caption).foregroundStyle(TappyColor.textSecondary)
 
-            if let outcome = vm.messageOutcome { result(outcome) }
+            if let outcome = vm.messageOutcome { result(outcome).id("scam-msg-result") }
         }
     }
 
@@ -69,6 +69,8 @@ struct ScamMessageView: View {
                 } else {
                     unsureCard(signals)
                 }
+            case .familiar(let signals, _):
+                familiarCard(signals)
             case .noSigns:
                 noSignsCard
             }
@@ -130,6 +132,19 @@ struct ScamMessageView: View {
                 }
                 .accessibilityIdentifier("scam-msg-detail")
                 adviceBlock(signals)
+            }
+        }
+    }
+
+    /// «Familiar» from the request rules alone (the Web's level HIGH with no matching scenario): the verdict and its reasons.
+    private func familiarCard(_ signals: [ScamMessageSignal]) -> some View {
+        TappyCard {
+            VStack(alignment: .leading, spacing: Spacing.sm) {
+                headerCard(icon: "exclamationmark.shield.fill", tint: TappyColor.danger, titleKey: "scam.msg.matched.title", id: "scam-msg-matched")
+                Text("scam.msg.matched.body").font(TappyFont.callout).foregroundStyle(TappyColor.textPrimary)
+                signalList(signals)
+                adviceBlock(signals)
+                Text("scam.msg.notGov").font(TappyFont.caption).foregroundStyle(TappyColor.textSecondary)
             }
         }
     }
@@ -261,7 +276,7 @@ struct ScamMessageView: View {
                 lines.append(String(format: NSLocalizedString("scam.share.matched", comment: ""), s.official.title))
                 lines.append(contentsOf: s.guidance.whatNotToDo.prefix(2).map { "• " + $0 })
             }
-        case .unsure:
+        case .unsure, .familiar:
             lines.append(NSLocalizedString("scam.share.unsure", comment: ""))
         case .noSigns:
             lines.append(NSLocalizedString("scam.share.nosigns", comment: ""))

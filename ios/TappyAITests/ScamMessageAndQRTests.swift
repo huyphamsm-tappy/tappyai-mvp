@@ -32,12 +32,20 @@ final class ScamMessageAndQRTests: XCTestCase {
         XCTAssertEqual(number(outcome("Tôi là Công an quận. Anh liên quan vụ án, hãy chuyển tiền vào tài khoản an toàn để xác minh.")), 3)
     }
 
-    func testABankAskingForAnOTPIsTheFakeBankStaff() {
-        XCTAssertEqual(number(outcome("Ngân hàng Vietcombank thông báo tài khoản của bạn bất thường, vui lòng cung cấp mã OTP để xác minh.")), 4)
+    // Web final (the Web pipeline run over this text, see ScamWebVerdictParityTests): familiar from the request rules (HIGH), and no scenario
+    // block, because no scenario's phrases reach the weak threshold.
+    func testABankAskingForAnOTPIsFamiliarWithoutAScenario() {
+        let o = outcome("Ngân hàng Vietcombank thông báo tài khoản của bạn bất thường, vui lòng cung cấp mã OTP để xác minh.")
+        XCTAssertEqual(o.verdict, .familiar)
+        XCTAssertNil(number(o))
     }
 
-    func testRemoteControlSoftwareIsOneStrongSignal() {
-        XCTAssertEqual(number(outcome("Cài AnyDesk để nhân viên hỗ trợ giúp bạn.")), 20)
+    // Web final: suspicious (level MEDIUM) with scenario #20 shown; a lone remote-control app is not HIGH.
+    func testRemoteControlSoftwareAloneIsSuspiciousWithTheScenarioShown() {
+        let o = outcome("Cài AnyDesk để nhân viên hỗ trợ giúp bạn.")
+        XCTAssertEqual(o.verdict, .suspicious)
+        guard case .unsure(_, _, let scenario) = o else { return XCTFail("\(o)") }
+        XCTAssertEqual(scenario, 20)
     }
 
     func testAPrizeWithAFeeIsTheFakePrize() {

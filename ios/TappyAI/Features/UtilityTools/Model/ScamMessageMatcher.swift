@@ -22,19 +22,21 @@ enum ScamMessageOutcome: Equatable, Sendable {
     /// Something looks off but no known scenario fits for sure.
     /// `scenario`: a WEAK match with one of the ministry's scenarios (`ScamScenarioMatcher`), shown under the verdict.
     case unsure(signals: [ScamMessageSignal], links: [String], scenario: Int? = nil)
+    /// «Familiar» without a matching scenario (Web: level HIGH from the request rules alone).
+    case familiar(signals: [ScamMessageSignal], links: [String])
     /// No familiar scam signs. NOT a guarantee.
     case noSigns(links: [String])
 
     var signals: [ScamMessageSignal] {
         switch self {
-        case .matched(_, let s, _), .unsure(let s, _, _): return s
+        case .matched(_, let s, _), .unsure(let s, _, _), .familiar(let s, _): return s
         case .noSigns: return []
         }
     }
 
     var links: [String] {
         switch self {
-        case .matched(_, _, let l), .unsure(_, let l, _), .noSigns(let l): return l
+        case .matched(_, _, let l), .unsure(_, let l, _), .familiar(_, let l), .noSigns(let l): return l
         }
     }
 }
@@ -112,111 +114,22 @@ enum ScamMessageMatcher {
         return out
     }
 
-    // MARK: Scenario rules (the ministry's `officialNumber`)
-
-    /// A rule fits when any `strong` word is present, or one word from `a` AND one from `b` is. `<link>` in `b`
-    /// means «the message carries a link». Order = priority: specific rules first, the generic ones last.
-    private struct Rule {
-        let number: Int
-        var strong: [String] = []
-        let a: [String]
-        let b: [String]
-    }
-
-    private static let rules: [Rule] = [
-        Rule(number: 20, strong: ["anydesk", "ultraviewer", "teamviewer", "dieu khien tu xa", "chia se man hinh", "file apk"],
-             a: ["cai dat ung dung", "tai ung dung", "cai app", "tai app", "cai dat phan mem"],
-             b: ["ho tro", "kiem tra", "xac minh", "ngan hang", "cong an", "bao hiem", "nhan vien", "dich vu cong"]),
-        Rule(number: 19, a: ["ma qr", "quet ma", "qr code", "qr"],
-             b: ["thanh toan", "chuyen tien", "chuyen khoan", "nhan qua", "trung thuong", "buu pham", "buu kien", "dang nhap", "xac thuc", "ngan hang", "phi", "nap tien"]),
-        Rule(number: 22, a: ["phat nguoi", "vi pham giao thong", "csgt", "canh sat giao thong"],
-             b: ["nop phat", "tra cuu", "<link>", "trong vong", "qua han", "thong bao", "bien so"]),
-        Rule(number: 3, a: ["cong an", "vien kiem sat", "toa an", "co quan dieu tra", "lenh bat"],
-             b: ["chuyen tien", "chuyen khoan", "xac minh", "tai khoan an toan", "phong toa", "vu an", "dieu tra"]),
-        Rule(number: 4, a: ["ngan hang", "nhan vien ngan hang"],
-             b: ["otp", "mat khau", "ten dang nhap", "ma xac thuc", "thong tin tai khoan", "so the", "cvv"]),
-        Rule(number: 12, a: ["sim", "thue bao"],
-             b: ["chuan hoa", "nang cap", "xac thuc", "bi khoa", "ngung hoat dong", "tam khoa", "sinh trac hoc"]),
-        Rule(number: 17, a: ["tien dien", "evn", "dien luc", "tien nuoc", "cap nuoc", "cuoc", "viettel", "vinaphone", "mobifone", "no cuoc"],
-             b: ["no", "thanh toan", "cat dien", "ngung cung cap", "qua han", "bi khoa", "<link>"]),
-        Rule(number: 18, a: ["bhxh", "bao hiem xa hoi", "bao hiem y te", "bhyt", "vneid"],
-             b: ["cap nhat", "thong tin", "ho so", "<link>", "xac thuc"]),
-        Rule(number: 13, a: ["hoan tien", "hoan thue", "tien hoan"],
-             b: ["nhan", "<link>", "thong tin the", "tai khoan", "so the"]),
-        Rule(number: 25, a: ["trung tuyen", "nhan viec", "phong van", "tuyen dung"],
-             b: ["phi ho so", "phi dao tao", "dong phuc", "dat coc", "nop phi", "dong phi"]),
-        Rule(number: 23, a: ["trung thuong", "qua tang", "nhan thuong", "phan thuong", "giai thuong", "trung giai"],
-             b: ["phi", "thue", "van chuyen", "nhan qua", "<link>", "lien he", "dong tien", "nop"]),
-        Rule(number: 16, a: ["nhom dau tu", "nhom vip", "tham gia nhom", "chuyen gia", "thay giao"],
-             b: ["rut lai", "nap them", "loi nhuan", "dau tu"]),
-        Rule(number: 14, a: ["cong tac vien", "ctv", "nhiem vu", "lam nhiem vu", "tuyen dung"],
-             b: ["hoa hong", "nap tien", "chot don", "thu nhap", "nhan tien", "viec nhe"]),
-        Rule(number: 15, a: ["dau tu", "chung khoan", "tien so", "forex", "ngoai hoi", "bitcoin", "crypto"],
-             b: ["loi nhuan", "cam ket", "lai suat", "sinh loi", "x2", "nhom"]),
-        Rule(number: 24, a: ["lam quen", "nguoi nuoc ngoai", "bac si quan doi", "ket ban"],
-             b: ["chuyen tien", "qua tang", "hang ve", "nhan hang ho", "dau tu", "hai quan"]),
-        Rule(number: 21, a: ["dat coc", "coc truoc", "ban hang", "ship cod"],
-             b: ["chuyen khoan", "gui hang", "coc"]),
-        Rule(number: 7, a: ["da chuyen khoan", "bien lai", "anh chuyen khoan"],
-             b: ["chua nhan duoc", "gui hang", "gui lai", "hoan"]),
-        Rule(number: 10, a: ["co giao", "giao vien", "nha truong", "hoc sinh"],
-             b: ["tai nan", "benh vien", "cap cuu", "can tien", "chuyen tien", "vien phi"]),
-        Rule(number: 11, a: ["benh vien", "bac si", "cap cuu", "y ta"],
-             b: ["nguoi than", "vien phi", "chuyen khoan", "thanh toan", "dat coc", "phau thuat"]),
-        Rule(number: 1, a: ["video call", "goi video", "giong noi", "con day", "me day", "bo day", "so moi", "doi so"],
-             b: ["chuyen khoan", "chuyen tien", "cap cuu", "vay tien", "nho chuyen", "gap"]),
-        Rule(number: 8, a: ["facebook", "zalo", "messenger", "tai khoan"],
-             b: ["vay tien", "cho vay", "nap the", "nho chuyen", "giup minh"]),
-        Rule(number: 5, a: ["tai khoan", "giao dich", "dang nhap", "bi khoa", "tam khoa", "xac thuc"],
-             b: ["ngan hang", "vietcombank", "techcombank", "bidv", "mbbank", "vpbank", "agribank", "vietinbank", "tpbank", "sacombank", "momo", "<link>"]),
-        Rule(number: 6, a: ["<link>"],
-             b: ["bam vao", "truy cap", "click", "nhan vao", "xem tai", "dang nhap", "cap nhat", "xac thuc", "nhan qua", "bi khoa", "trong vong"])
-    ]
-
-    private static func satisfied(_ rule: Rule, padded: String, hasLink: Bool) -> Bool {
-        func hit(_ tokens: [String]) -> Bool {
-            if tokens.contains("<link>"), hasLink { return true }
-            return has(tokens.filter { $0 != "<link>" }, in: padded)
-        }
-        if has(rule.strong, in: padded) { return true }
-        return hit(rule.a) && hit(rule.b)
-    }
-
     // MARK: Decision
 
-    /// Web parity (`message/index.ts` + `verdict.ts`): a STRONG scenario match is «familiar», a WEAK one «suspicious», and the
-    /// matched scenario is shown either way; otherwise the request rules below decide, as before.
+    /// Web parity (`message/index.ts` + `fusion.ts` + `verdict.ts`, AI off): the verdict comes from `ScamWebEngine` (the Web's
+    /// request rules and score bands) and `ScamScenarioMatcher` (the 25 scenarios). The scenario shown is the Web's own match.
     static func analyze(_ raw: String) -> ScamMessageOutcome {
-        let byRules = analyzeRules(raw)
-        guard let scenario = ScamScenarioMatcher.best(raw) else { return byRules }
-        switch (scenario.strength, byRules) {
-        case (.strong, _):
-            return .matched(number: scenario.number, signals: byRules.signals, links: byRules.links)
-        case (.weak, .matched):
-            return byRules
-        case (.weak, _):
-            return .unsure(signals: byRules.signals, links: byRules.links, scenario: scenario.number)
-        }
-    }
-
-    private static func analyzeRules(_ raw: String) -> ScamMessageOutcome {
         let links = extractLinks(raw)
-        let norm = normalize(raw)
-        let padded = " " + norm + " "
-        let hasLink = !links.isEmpty
-        let found = signals(in: norm, hasLink: hasLink)
-
-        if let rule = rules.first(where: { satisfied($0, padded: padded, hasLink: hasLink) }) {
-            return .matched(number: rule.number, signals: found, links: links)
+        let found = signals(in: normalize(raw), hasLink: !links.isEmpty)
+        let scenario = ScamScenarioMatcher.best(raw)
+        switch ScamWebEngine.verdict(raw: raw, links: links, scenario: scenario) {
+        case .familiar:
+            if let scenario { return .matched(number: scenario.number, signals: found, links: links) }
+            return .familiar(signals: found, links: links)
+        case .suspicious:
+            return .unsure(signals: found, links: links, scenario: scenario?.number)
+        case .unrecognized:
+            return .noSigns(links: links)
         }
-        let s = Set(found)
-        func anyOf(_ x: ScamMessageSignal...) -> Bool { x.contains { s.contains($0) } }
-        let suspicious =
-            anyOf(.otp, .installApp, .remoteAccess, .prize)
-            || (s.contains(.link) && anyOf(.urgency, .bank, .authority, .delivery, .fine, .qr, .transfer))
-            || (s.contains(.qr) && anyOf(.transfer, .delivery, .bank))
-            || (s.contains(.transfer) && anyOf(.urgency, .authority, .relative, .fine))
-            || (s.contains(.investment) && anyOf(.transfer, .link))
-        return suspicious ? .unsure(signals: found, links: links, scenario: nil) : .noSigns(links: links)
     }
 }

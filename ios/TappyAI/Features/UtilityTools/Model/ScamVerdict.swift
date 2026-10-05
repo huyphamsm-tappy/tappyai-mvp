@@ -33,7 +33,7 @@ extension ScamMessageOutcome {
     /// nothing familiar = unrecognized (never «safe»).
     var verdict: ScamVerdict {
         switch self {
-        case .matched: return .familiar
+        case .matched, .familiar: return .familiar
         case .unsure: return .suspicious
         case .noSigns: return .unrecognized
         }
