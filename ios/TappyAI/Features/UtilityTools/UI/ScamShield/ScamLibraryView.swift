@@ -11,22 +11,28 @@ enum ScamReportHotline {
 /// The fixed emergency block: always on the Scam Shield screen, whatever tab is open.
 struct ScamEmergencyCard: View {
     var body: some View {
-        HStack(spacing: Spacing.sm) {
-            Image(systemName: "phone.fill")
-                .foregroundStyle(.white)
-                .frame(width: 36, height: 36)
-                .background(TappyColor.danger)
-                .clipShape(Circle())
-            VStack(alignment: .leading, spacing: 2) {
-                Text("scam.emergency.title").font(TappyFont.bodyEmphasis).foregroundStyle(TappyColor.textPrimary)
-                Text("scam.emergency.body").font(TappyFont.caption).foregroundStyle(TappyColor.textSecondary)
+        // Two rows, as the Web card ("call" button under the text): the hotline label «Gọi 0692.345.860» is too long to share a
+        // row with the text, and beside it the number was cut across three lines (CI run 37258782135, shot 07).
+        VStack(alignment: .leading, spacing: Spacing.sm) {
+            HStack(spacing: Spacing.sm) {
+                Image(systemName: "phone.fill")
+                    .foregroundStyle(.white)
+                    .frame(width: 36, height: 36)
+                    .background(TappyColor.danger)
+                    .clipShape(Circle())
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("scam.emergency.title").font(TappyFont.bodyEmphasis).foregroundStyle(TappyColor.textPrimary)
+                    Text("scam.emergency.body").font(TappyFont.caption).foregroundStyle(TappyColor.textSecondary)
+                }
+                Spacer(minLength: 0)
             }
-            Spacer(minLength: Spacing.xs)
             // The identifier below keeps its old name: UI tests address the button by it.
             if let url = URL(string: ScamReportHotline.tel) {
                 Link(destination: url) {
                     Text("scam.emergency.call")
                         .font(TappyFont.bodyEmphasis).foregroundStyle(.white)
+                        .lineLimit(1).minimumScaleFactor(0.8)
+                        .frame(maxWidth: .infinity)
                         .padding(.horizontal, Spacing.md).padding(.vertical, Spacing.xs)
                         .background(TappyColor.danger).clipShape(Capsule())
                 }
