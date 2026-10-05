@@ -155,6 +155,91 @@
         }
       }
     },
+    "account.delete.error.apple.required": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Confirm again with Sign in with Apple to delete your account. Your account has not been deleted."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hãy xác nhận lại bằng Đăng nhập với Apple để xóa tài khoản. Tài khoản của bạn chưa bị xóa."
+          }
+        }
+      }
+    },
+    "account.delete.error.apple.invalid": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The Apple confirmation expired or is not valid. Please try again — your account has not been deleted."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Xác nhận Apple đã hết hạn hoặc không hợp lệ. Hãy thử lại — tài khoản của bạn chưa bị xóa."
+          }
+        }
+      }
+    },
+    "account.delete.error.apple.mismatch": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The Apple account you confirmed does not match this account. Use the Apple ID you signed in with; your account has not been deleted."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tài khoản Apple vừa xác nhận không khớp với tài khoản này. Hãy dùng đúng Apple ID đã đăng nhập; tài khoản của bạn chưa bị xóa."
+          }
+        }
+      }
+    },
+    "account.delete.error.apple.unavailable": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apple sign-in cannot be unlinked right now, so your account was not deleted. It is unchanged — please try again later."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hiện chưa thể gỡ liên kết Apple nên chưa xóa tài khoản. Tài khoản của bạn vẫn còn nguyên — vui lòng thử lại sau."
+          }
+        }
+      }
+    },
+    "account.delete.error.apple.failed": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "We could not unlink Apple sign-in, so your account was not deleted. It is unchanged — please try again."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chưa gỡ được liên kết Apple nên chưa xóa tài khoản. Tài khoản của bạn vẫn còn nguyên — hãy thử lại."
+          }
+        }
+      }
+    },
     "account.delete.error.failed": {
       "extractionState": "manual",
       "localizations": {

@@ -171,19 +171,22 @@ struct AccountDeletionView: View {
 
     // MARK: - Request
 
+    @MainActor
     private func submit() async {
         guard !deleting, AccountDeletion.isConfirmWord(typed) else { return }
         deleting = true
         errorKey = nil
-        let result: Result<Void, Error>
-        do {
-            try await AccountDeletionService(api: deps.api).requestSelfDeletion(confirm: typed)
-            result = .success(())
-        } catch {
-            result = .failure(error)
-        }
+        // The server decides whether this is an Apple account (409 → the Apple sheet → the same request again with the fresh code).
+        // The reauthorizer lives exactly as long as this attempt: the closure below keeps it alive while the Apple sheet is up.
+        let service = AccountDeletionService(api: deps.api)
+        let reauthorizer = AppleReauthorizer()
+        let flow = AccountDeletionFlow(
+            send: { word, appleCode in try await service.requestSelfDeletion(confirm: word, appleAuthorizationCode: appleCode) },
+            reauthorize: { try await reauthorizer.authorizationCode() }
+        )
+        let outcome = await flow.run(confirm: typed)
         deleting = false
-        switch AccountDeletionOutcome.from(result) {
+        switch outcome {
         case .deleted: deleted = true
         case .notAvailable: onUnavailable()
         case let other: errorKey = other.errorKey
