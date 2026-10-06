@@ -115,18 +115,25 @@ describe('C33 — an anonymous session hands its history to the account', () => 
 
   it('every sign-in path claims, and reads the token BEFORE the session is replaced', () => {
     const src = code(REPO)
-    // Four ways in: Google, Zalo, email OTP, register.
-    expect((src.match(/claimAnonymousHistory\(claimToken\)/g) ?? []).length).toBe(5)
-    expect((src.match(/anonymousTokenToClaim\(\)/g) ?? []).length).toBeGreaterThanOrEqual(4)
+    // Six ways in, one claim each: email OTP, email+password, register, Google, Apple (added with Sign in with
+    // Apple) and Zalo (its single claim sits after BOTH callback branches, tokens and PKCE).
+    expect((src.match(/claimAnonymousHistory\(claimToken\)/g) ?? []).length).toBe(6)
+    expect((src.match(/anonymousTokenToClaim\(\)/g) ?? []).length).toBeGreaterThanOrEqual(6)
 
     // 🚨 Ordering IS the fix. `finishAuthentication` swaps the session, so a capture placed after
     // it would read the NEW account's token and claim nothing at all — while looking correct.
-    for (const fn of ['signInWithGoogle', 'verifyEmailOTP']) {
-      const start = src.indexOf(`func ${fn}`)
+    // Checked for EVERY sign-in path: capture < finishAuthentication < claim, inside that function's own body.
+    for (const fn of ['verifyEmailOTP', 'signIn', 'register', 'signInWithGoogle', 'signInWithApple', 'signInWithZalo']) {
+      const start = src.indexOf(`func ${fn}(`)
       expect(start, `${fn} not found`).toBeGreaterThan(-1)
-      const body = src.slice(start, start + 700)
-      expect(body.indexOf('anonymousTokenToClaim()'), `${fn}: capture must precede finishAuthentication`)
-        .toBeLessThan(body.indexOf('finishAuthentication'))
+      const next = src.indexOf('func ', start + 5)
+      const body = src.slice(start, next === -1 ? undefined : next)
+      const capture = body.indexOf('anonymousTokenToClaim()')
+      const finish = body.indexOf('finishAuthentication')
+      const claim = body.indexOf('claimAnonymousHistory(claimToken)')
+      expect(capture, `${fn}: must read the anonymous token`).toBeGreaterThan(-1)
+      expect(capture, `${fn}: capture must precede finishAuthentication`).toBeLessThan(finish)
+      expect(claim, `${fn}: must claim after the session is established`).toBeGreaterThan(finish)
     }
   })
 

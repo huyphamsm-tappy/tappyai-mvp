@@ -92,6 +92,19 @@ describe('the iOS string catalogue is at EN/VI parity', () => {
       'share.email',
       'share.brochure.website',
       'share.brochure.review',
+      // Identical on purpose because the WEB's own Vietnamese value is the same English/brand text
+      // (verified against the Web source, 2026-10-06; paths relative to src/lib/i18n of the Web tree):
+      'scan.heroEyebrow', //            w3/scan.ts:31           vi 'TappyAI OCR' (brand + OCR)
+      'share.card.tagline', //          v3/web.ts:23            vi 'v3.page.subtitle' = the English brand tagline
+      'share.card.badgeReview', //      share.ts:119            vi 'share.card.badge.review' = 'Review'
+      'share.card.badgeClip', //        share.ts:120            vi 'share.card.badge.clip' = 'Clip'
+      'share.plan.eyebrow', //          planBrochure.ts:46      vi eyebrow 'Tappy Plan'
+      'profileHub.info.email', //       v3/web.ts:713           vi 'v3.profile.infoEmail' = 'Email'
+      'profileHub.qr.title', //         v3/web.ts:725           vi 'v3.profile.qrTitle' = 'QR Profile'
+      'home.v3.greetingNamed', //       v3/web.ts:116           vi 'v3.home.greetUser' = 'Hi {name}!'
+      'home.v3.smartTools.title', //    v3/web.ts:44            vi 'v3.nav.smartTools' = 'Smart Tools' (title reuses it, see :92)
+      'chat.planV2.kicker', //          planBrochure.ts:46 +    plan card draws eyebrow 'Tappy Plan' upper-cased
+      //                                share/planCard.ts:139   -> 'TAPPY PLAN' in every language
     ])
     const suspicious: string[] = []
     for (const [key, entry] of Object.entries(cat.strings)) {

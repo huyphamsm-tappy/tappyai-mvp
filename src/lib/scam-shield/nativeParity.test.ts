@@ -20,6 +20,10 @@ import type { RiskLevel } from './types'
 const ANDROID = 'android/app/src/main/java/com/tappyai/app/scamshield'
 const IOS_MODEL = 'ios/TappyAI/Features/UtilityTools/Model/ScamShieldModel.swift'
 const IOS_VIEW = 'ios/TappyAI/Features/UtilityTools/UI/ScamShield/ScamShieldView.swift'
+// 2026-10: the level -> colour/glyph mapping moved out of ScamShieldView into ScamShieldLevelCopy (shared by the
+// link, QR and message checks); the level -> public verdict table lives in ScamVerdict.
+const IOS_LEVEL_COPY = 'ios/TappyAI/Features/UtilityTools/UI/ScamShield/ScamShieldLevelCopy.swift'
+const IOS_VERDICT = 'ios/TappyAI/Features/UtilityTools/Model/ScamVerdict.swift'
 const IOS_VM = 'ios/TappyAI/Features/UtilityTools/UI/ScamShield/ScamShieldViewModel.swift'
 const IOS_SERVICE = 'ios/TappyAI/Features/UtilityTools/Data/UtilityToolsService.swift'
 
@@ -107,6 +111,25 @@ const androidVerdict = () => read(join(ANDROID, 'ScamShieldResult.kt'))
 /** `RiskLevel.X ->`, or `RiskLevel.X, RiskLevel.Y ->` — a named branch either way. */
 const levelBranch = (level: string) => new RegExp(`RiskLevel\\.${level}(, RiskLevel\\.\\w+)* ->`)
 
+/** The body of `color(_ level: ScamRiskLevel)` in ScamShieldLevelCopy, up to the verdict overload. */
+function iosColorBlock(): string {
+  const src = read(IOS_LEVEL_COPY)
+  const start = src.indexOf('static func color(_ level: ScamRiskLevel)')
+  const end = src.indexOf('static func color(_ verdict: ScamVerdict)')
+  expect(start, 'the iOS level colour map must exist').toBeGreaterThan(-1)
+  expect(end, 'the iOS verdict colour map must follow it').toBeGreaterThan(start)
+  return src.slice(start, end)
+}
+
+/** The body of `ScamVerdict.link(level:)`, the level -> public verdict table. */
+function iosVerdictLinkBlock(): string {
+  const src = read(IOS_VERDICT)
+  const start = src.indexOf('static func link(level: ScamRiskLevel)')
+  const end = src.indexOf('init?(server', start)
+  expect(start, 'ScamVerdict.link(level:) must exist').toBeGreaterThan(-1)
+  return src.slice(start, end)
+}
+
 describe('B09 — every backend risk level is handled on both clients', () => {
   it.each(LEVELS)('Android gives %s a deliberate appearance', (level) => {
     // A level may share a branch with another (`RiskLevel.INCONCLUSIVE, RiskLevel.UNKNOWN ->`);
@@ -116,9 +139,9 @@ describe('B09 — every backend risk level is handled on both clients', () => {
 
   it.each(LEVELS)('iOS gives %s a deliberate appearance', (level) => {
     // Swift cases are lowerCamel of the wire value.
+    // The case must be NAMED in the exhaustive colour switch (alone, or grouped as `.inconclusive, .unknown`).
     const swiftCase = level.toLowerCase()
-    const view = read(IOS_VIEW)
-    expect(view).toContain(`case .${swiftCase}:`)
+    expect(iosColorBlock()).toMatch(new RegExp(`case [^:\\n]*\\.${swiftCase}\\b[^:\\n]*:`))
   })
 
   it('Android models every level the web can send', () => {
@@ -165,18 +188,28 @@ describe('B09 — an unresolved check can never look safe', () => {
   })
 
   it('iOS draws inconclusive and unknown in neutral slate, never the safe colour', () => {
-    const view = read(IOS_VIEW)
-    const colorBlock = view.slice(view.indexOf('func color(for'), view.indexOf('func glyph(for'))
+    const colorBlock = iosColorBlock()
     for (const level of ['inconclusive', 'unknown']) {
-      const line = colorBlock.split('\n').find((l) => l.includes(`case .${level}:`))!
+      const line = colorBlock.split('\n').find((l) => new RegExp(`case [^:]*\\.${level}\\b[^:]*:`).test(l))!
+      expect(line, `${level} must have its own deliberate branch`).toBeTruthy()
       expect(line, `${level} must use the neutral slate`).toContain('slate')
     }
 
-    const glyphBlock = view.slice(view.indexOf('func glyph(for'), view.indexOf('func levelKey(for'))
-    for (const level of ['inconclusive', 'unknown']) {
-      const line = glyphBlock.split('\n').find((l) => l.includes(`case .${level}:`))!
-      expect(line, `${level} must not use the reassuring shield glyph`).not.toContain('checkmark.shield')
-    }
+    // Glyphs: the level-specific glyph switch is gone (verdicts carry them now). No glyph anywhere in the shared
+    // copy file may be the reassuring checkmark shield, and the unrecognized verdict (where inconclusive/unknown
+    // land) must keep the neutral slashed shield.
+    const copy = read(IOS_LEVEL_COPY)
+    expect(copy, 'no reassuring shield glyph may exist in the level copy').not.toContain('checkmark.shield')
+    const glyphBlock = copy.slice(copy.indexOf('static func glyph('))
+    const unrecognized = glyphBlock.split('\n').find((l) => l.includes('case .unrecognized:'))!
+    expect(unrecognized).toContain('shield.lefthalf.filled.slash')
+    expect(unrecognized).not.toContain('checkmark.shield')
+
+    // And inconclusive/unknown really do land in `.unrecognized`, never familiar/suspicious (or anything safe-ish).
+    const link = iosVerdictLinkBlock()
+    const unrecognizedRow = link.split('\n').find((l) => l.includes('return .unrecognized'))!
+    expect(unrecognizedRow).toMatch(/\.inconclusive/)
+    expect(unrecognizedRow).toMatch(/\.unknown/)
   })
 
   it('neither client has an else/default branch that could swallow a new level', () => {
@@ -189,9 +222,8 @@ describe('B09 — an unresolved check can never look safe', () => {
     for (const level of LEVELS) expect(appearance).toContain(`RiskLevel.${level}`)
     expect(appearance).not.toContain('else ->')
 
-    const ios = read(IOS_VIEW)
-    const colorBlock = ios.slice(ios.indexOf('func color(for'), ios.indexOf('func glyph(for'))
-    expect(colorBlock).not.toContain('default:')
+    expect(iosColorBlock()).not.toContain('default:')
+    expect(iosVerdictLinkBlock()).not.toContain('default:')
   })
 
   it('a failed check routes to the unresolved presentation on both clients', () => {
@@ -222,8 +254,12 @@ describe('B09 — the native copy tells the truth about a failed check', () => {
 
   it('the iOS catalogue carries every Scam Shield key in both languages', () => {
     const catalogue = JSON.parse(read('ios/TappyAI/Resources/Localizable.xcstrings'))
-    const keys = Object.keys(catalogue.strings).filter((k) => k.startsWith('scamShield.'))
-    expect(keys.length).toBeGreaterThan(15)
+    // The Scam Shield UI is now spread over three prefixes: `scamShield.*` (link check, 15 keys), `scam.*`
+    // (message / QR / library panes, share text) and `scamVerdict.*` (the three-state verdict wording).
+    const keys = Object.keys(catalogue.strings).filter((k) => /^(scamShield|scam|scamVerdict)\./.test(k))
+    expect(keys.filter((k) => k.startsWith('scamShield.')).length).toBeGreaterThanOrEqual(15)
+    expect(keys.filter((k) => k.startsWith('scam.')).length).toBeGreaterThan(50)
+    expect(keys.filter((k) => k.startsWith('scamVerdict.')).length).toBeGreaterThan(10)
     for (const key of keys) {
       const loc = catalogue.strings[key].localizations
       expect(loc?.en?.stringUnit?.value, `${key} has no English`).toBeTruthy()
