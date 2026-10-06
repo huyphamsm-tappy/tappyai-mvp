@@ -2,6 +2,7 @@ package com.tappyai.features.auth.data
 
 import android.content.Context
 import android.net.Uri
+import androidx.browser.customtabs.CustomTabsClient
 import androidx.browser.customtabs.CustomTabsIntent
 import javax.inject.Inject
 import javax.inject.Named
@@ -38,6 +39,8 @@ import javax.inject.Singleton
 @Singleton
 class ZaloSignInClient @Inject constructor(
     @Named("baseUrl") private val baseUrl: String,
+    /** The `uat` build's Vercel Deployment Protection bypass; the empty string in every other build. */
+    @Named("vercelBypassSecret") private val deploymentBypassSecret: String,
 ) {
     /**
      * The one URL this app opens for Zalo sign-in. Same base-URL concatenation the network layer
@@ -48,9 +51,40 @@ class ZaloSignInClient @Inject constructor(
     fun loginUrl(appState: String): String =
         "${baseUrl}api/auth/zalo?platform=android&returnTo=/&app_state=${java.net.URLEncoder.encode(appState, "UTF-8")}"
 
-    /** [context] must be an Activity context — a Custom Tab launches an activity. Success here only
-     *  means the Custom Tab opened; the session completes later via the deep-link callback. */
+    /**
+     * What the Custom Tab is actually pointed at: [loginUrl], plus — only in the `uat` build, where
+     * [deploymentBypassSecret] is non-empty — the two parameters Vercel Deployment Protection needs
+     * to let a cookie-less browser through (`x-vercel-protection-bypass`, and
+     * `x-vercel-set-bypass-cookie` so the redirect back from Zalo is let through too). A release
+     * build has an empty secret and opens exactly [loginUrl].
+     */
+    fun launchUrl(appState: String): String {
+        val base = loginUrl(appState)
+        if (deploymentBypassSecret.isEmpty()) return base
+        return "$base&x-vercel-protection-bypass=${java.net.URLEncoder.encode(deploymentBypassSecret, "UTF-8")}&x-vercel-set-bypass-cookie=true"
+    }
+
+    /**
+     * [context] must be an Activity context — a Custom Tab launches an activity. Success here only
+     * means the Custom Tab opened; the session completes later via the deep-link callback.
+     *
+     * 🚨 EPHEMERAL, ON PURPOSE — account switching. The tab used to share Chrome's cookie jar, so
+     * Zalo found the Zalo web session already signed in (as the PREVIOUS person), approved the
+     * permission page without showing anything, and redirected back in about a second. After a
+     * logout the next "Tiếp tục với Zalo" therefore returned the same identity every time, and a
+     * second account was unreachable — measured on a real device 2026-10-06: `/api/auth/zalo` and
+     * `/api/auth/zalo/callback` answered in the same second, the Zalo app was never launched, and
+     * the backend's account list held exactly one Zalo user. Zalo's authorize endpoint has no
+     * documented re-authentication / account-picker parameter, so the browser context is what has
+     * to be fresh: an ephemeral Custom Tab (Chrome 136+, androidx.browser 1.9) neither reads nor
+     * keeps cookies, so Zalo has to authenticate the person actually holding the phone. A browser
+     * that cannot do it falls back to the ordinary tab, exactly as before.
+     */
     fun launch(context: Context, appState: String) {
-        CustomTabsIntent.Builder().build().launchUrl(context, Uri.parse(loginUrl(appState)))
+        val provider = CustomTabsClient.getPackageName(context, null)
+        val ephemeral = provider != null && CustomTabsClient.isEphemeralBrowsingSupported(context, provider)
+        val tab = CustomTabsIntent.Builder().setEphemeralBrowsingEnabled(ephemeral).build()
+        if (provider != null) tab.intent.setPackage(provider)
+        tab.launchUrl(context, Uri.parse(launchUrl(appState)))
     }
 }
