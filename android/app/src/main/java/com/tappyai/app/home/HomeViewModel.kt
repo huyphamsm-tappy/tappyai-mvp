@@ -95,7 +95,7 @@ class HomeViewModel @Inject constructor(
     }
 
     /**
-     * Reads the display name from the existing account profile.
+     * Reads the greeting name from the existing account profile — the web's first-name rule, see [heroGreetingName].
      *
      * Anything other than a successful load with a non-blank name leaves [userName] null, which
      * the hero renders as the generic greeting. No name is ever invented.
@@ -104,7 +104,7 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             val result = accountRepository.getProfile()
             _userName.value = (result as? NetworkResult.Success)
-                ?.data?.fullName?.trim()?.takeIf { it.isNotEmpty() }
+                ?.data?.let { heroGreetingName(it.fullName, it.email) }
         }
     }
 

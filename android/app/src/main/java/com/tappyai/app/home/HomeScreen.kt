@@ -290,7 +290,7 @@ private fun V3HeroSection(hero: HeroGreeting) {
                 fontWeight = FontWeight.ExtraBold,
                 letterSpacing = (-0.5).sp,
                 color = HomeV3.OnSurface,
-                maxLines = 1,
+                maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
             )
             Text(

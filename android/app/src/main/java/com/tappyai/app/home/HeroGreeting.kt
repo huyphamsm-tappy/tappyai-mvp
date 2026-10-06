@@ -43,3 +43,14 @@ internal fun heroGreeting(engineText: String, userName: String?, named: (String)
     val name = userName?.trim()?.takeIf { it.isNotEmpty() }
     return HeroGreeting(welcome = name?.let(named) ?: generic(), title = title, supporting = supporting)
 }
+
+/**
+ * The name the hero greets — the web's rule, verbatim (`src/app/(app)/(home)/page.tsx` at a43948d):
+ * `full_name.split(' ').pop() || email.split('@')[0] || ''`. The LAST word of the display name, so
+ * "Huy Phạm" greets as "Phạm" exactly as it does on the web, and a long full name can never reach
+ * the hero as a whole. A blank result is null so the hero falls back to the guest welcome (the web
+ * shows its own "you" word there; Android never invents a name).
+ */
+internal fun heroGreetingName(fullName: String?, email: String?): String? =
+    fullName?.trim()?.split(Regex("\\s+"))?.lastOrNull()?.takeIf { it.isNotEmpty() }
+        ?: email?.trim()?.substringBefore('@')?.takeIf { it.isNotEmpty() }

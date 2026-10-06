@@ -54,7 +54,7 @@
     <string name="social_view_profile">View profile</string>
     <string name="social_sign_in">Sign in to connect with people</string>
     <string name="social_unknown_user">User</string>
-    <string name="history_v3_title">HISTORY</string>
+    <string name="history_v3_title">Activity history</string>
     <string name="history_v3_tagline">Look back at what you have explored on TappyAI.</string>
     <string name="history_v3_all">All</string>
     <string name="history_v3_ai">Asked AI</string>
