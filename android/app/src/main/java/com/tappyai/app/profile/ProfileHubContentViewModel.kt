@@ -23,6 +23,7 @@ import com.tappyai.features.auth.data.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -120,8 +121,11 @@ class ProfileHubContentViewModel @Inject constructor(
     val likes: Int? get() = mine?.sumOf { it.likeCount }
     val videoCount: Int? get() = mine?.count { it.contentType == ReviewContentType.Video }
 
+    /** The read in flight (first load or a refresh) — one at a time, so a resume never doubles a load. */
+    private var loadJob: Job? = null
+
     init {
-        viewModelScope.launch {
+        loadJob = viewModelScope.launch {
             val anonymous = withContext(Dispatchers.IO) { authRepository.isAnonymous() }
             val userId = authRepository.currentUserId()
             if (anonymous || userId == null) return@launch
@@ -135,11 +139,27 @@ class ProfileHubContentViewModel @Inject constructor(
         loadTab(next)
     }
 
-    /** Re-read everything — the hub calls this when it comes back on screen after an edit. */
+    /**
+     * Re-reads everything the hub shows — called every time the hub comes back on screen.
+     *
+     * 🚨 WHY THIS EXISTS. The Tôi tab is restored from a saved back stack, so this ViewModel
+     * outlives the screen and [init] runs ONCE. Anything that changes the caller's own social
+     * graph elsewhere in the app — a Follow from the Explore rail or another creator's profile —
+     * was therefore never shown here: the server had the relationship (`user_follows`, the
+     * trigger-maintained `following_count`) while this hub kept the numbers it read at start-up.
+     * The web has no such gap because `/profile` is assembled server-side on every visit.
+     *
+     * Stale-while-revalidate: the content on screen stays until a read returns, and a read that
+     * fails leaves what is there (the assignments in [loadSide] only happen on success) — so a
+     * refresh never blanks a tab and never invents a number. The server's answer is the only
+     * source; nothing is incremented locally. A guest loads nothing, as at start-up.
+     */
     fun refresh() {
-        val userId = authRepository.currentUserId() ?: return
-        viewModelScope.launch {
-            mine = null; liked = null; saved = null; shared = null; places = null
+        if (loadJob?.isActive == true) return
+        loadJob = viewModelScope.launch {
+            val anonymous = withContext(Dispatchers.IO) { authRepository.isAnonymous() }
+            val userId = authRepository.currentUserId()
+            if (anonymous || userId == null) return@launch
             loadSide(userId)
             loadTab(tab)
         }

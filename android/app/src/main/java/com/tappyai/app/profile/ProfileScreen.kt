@@ -46,6 +46,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -193,6 +194,18 @@ fun ProfileScreen(
 ) {
     var comingSoonFeature by remember { mutableStateOf<String?>(null) }
     var showQrSheet by remember { mutableStateOf(false) }
+
+    // The hero's Following / Followers / Likes, the Following preview and the content tabs are the
+    // caller's OWN server state, and the hub's ViewModel outlives this screen (the Tôi tab is
+    // restored from a saved back stack, so `init` does not run again). Re-read on every RESUME —
+    // including the first one after returning to the tab, which is exactly when a Follow made in
+    // Explore has to show. ReloadOnResume is not used: it skips the first resume of a composition,
+    // and a restored tab is a fresh composition. The ViewModel drops a refresh while a read is in
+    // flight, so the start-up load is never doubled.
+    LifecycleResumeEffect(Unit) {
+        contentViewModel.refresh()
+        onPauseOrDispose { }
+    }
 
     V3HomeTheme {
         Column(
