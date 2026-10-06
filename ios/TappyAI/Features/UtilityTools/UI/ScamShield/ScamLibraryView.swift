@@ -6,6 +6,8 @@ import SwiftUI
 enum ScamReportHotline {
     static let display = "0692.345.860"
     static let tel = "tel:0692345860"
+    /// Web `SCAM_REPORT_HOTLINE.sourceUrl`.
+    static let sourceURL = "https://bocongan.gov.vn/hoi-dap/chi-tiet-cau-hoi/ab7d473e-21c9-4950-8ae2-947c1c7605af?page=/"
 }
 
 /// The fixed emergency block: always on the Scam Shield screen, whatever tab is open.
@@ -37,6 +39,21 @@ struct ScamEmergencyCard: View {
                         .background(TappyColor.danger).clipShape(Capsule())
                 }
                 .accessibilityIdentifier("scam-call-113")
+            }
+            // Web ScamHelpCard.tsx `data-scam-help-hotline` / `data-scam-help-source`: who runs the line, and the Ministry page as the source
+            // (only the agency name is the link; the long URL is never shown).
+            (Text("scam.emergency.hotlineTitle").bold() + Text(verbatim: " — ")
+                + Text("scam.emergency.agency") + Text(verbatim: ". ") + Text("scam.emergency.hotlineDesc"))
+                .font(.system(size: 12.5)).foregroundStyle(TappyColor.textSecondary)
+                .accessibilityIdentifier("scam-help-hotline")
+            HStack(spacing: 4) {
+                Text("scam.emergency.sourceLabel").font(.system(size: 12.5)).foregroundStyle(TappyColor.textSecondary)
+                if let source = URL(string: ScamReportHotline.sourceURL) {
+                    Link(destination: source) {
+                        Text("scam.emergency.sourceName").font(.system(size: 12.5)).underline()
+                    }
+                    .accessibilityIdentifier("scam-help-source")
+                }
             }
         }
         .padding(Spacing.md)

@@ -272,7 +272,7 @@
           ],
           "whatToDo": [
             "Coi mọi link trong SMS là đáng ngờ; tự mở ứng dụng/website chính thức để kiểm tra",
-            "Dùng công cụ Kiểm tra URL của Scam Shield trước khi mở"
+            "Dùng công cụ Kiểm tra URL của Cảnh báo lừa đảo trước khi mở"
           ],
           "whatNotToDo": [
             "Không bấm link trong SMS dù tên người gửi trông chính thức",
@@ -874,7 +874,7 @@
           ],
           "whatToDo": [
             "Kiểm tra tên người nhận hiện trong ứng dụng ngân hàng trước khi xác nhận",
-            "Dùng Quét mã QR của Scam Shield để kiểm tra đường dẫn trước khi mở"
+            "Dùng Quét mã QR của Cảnh báo lừa đảo để kiểm tra đường dẫn trước khi mở"
           ],
           "whatNotToDo": [
             "Không quét mã QR không rõ nguồn gốc",
@@ -949,7 +949,7 @@
             "Tải file/ứng dụng \"cần thiết\""
           ],
           "whatToDo": [
-            "Dùng Kiểm tra URL của Scam Shield trước khi mở link lạ",
+            "Dùng Kiểm tra URL của Cảnh báo lừa đảo trước khi mở link lạ",
             "Tự gõ địa chỉ website chính thức thay vì bấm link"
           ],
           "whatNotToDo": [

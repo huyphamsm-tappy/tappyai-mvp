@@ -63,4 +63,37 @@ final class ScamHotlineTests: XCTestCase {
         XCTAssertEqual(knowledge.official.hotline, "113")
         XCTAssertTrue(knowledge.official.reportAdvice.contains("113"))
     }
+
+    /// Web ScamHelpCard.tsx + i18n/v3/web.ts:463-470 / 1148-1155: the card's wording, the agency line and the Ministry source link.
+    func testTheEmergencyCardCarriesTheWebHelpCardWording() throws {
+        let rows: [(String, String, String)] = [
+            ("scam.emergency.title", "en", "Think you were scammed?"),
+            ("scam.emergency.title", "vi", "Nghi bị lừa?"),
+            ("scam.emergency.body", "en", "If you already sent money or shared an OTP code, call the police now."),
+            ("scam.emergency.hotlineTitle", "vi", "Đường Dây Nóng"),
+            ("scam.emergency.agency", "vi", "Cục Cảnh sát hình sự - Bộ Công an"),
+            ("scam.emergency.agency", "en", "Criminal Police Department - Ministry of Public Security"),
+            ("scam.emergency.hotlineDesc", "en", "The hotline that receives reports and denunciations of fraud."),
+            ("scam.emergency.sourceLabel", "vi", "Nguồn:"),
+            ("scam.emergency.sourceName", "en", "Ministry of Public Security"),
+        ]
+        for (key, lang, want) in rows { XCTAssertEqual(try string(key, lang), want, "\(key) [\(lang)]") }
+        XCTAssertEqual(ScamReportHotline.sourceURL, "https://bocongan.gov.vn/hoi-dap/chi-tiet-cau-hoi/ab7d473e-21c9-4950-8ae2-947c1c7605af?page=/")
+        XCTAssertNotNil(URL(string: ScamReportHotline.sourceURL))
+    }
+
+    /// Web i18n/scamVerdict.ts `scamVerdict.msg.subtitle` + v3/web.ts `v3.scam.msg.placeholder` / `v3.scam.msg.cta`: the message tab also takes a
+    /// described situation, and the dataset's tool name is the Web's «Cảnh báo lừa đảo» (bocongan2026.ts:117,249,267).
+    func testTheMessageTabAcceptsADescribedSituationAndTheDatasetNamesTheToolLikeTheWeb() throws {
+        XCTAssertEqual(try string("scam.msg.intro", "vi"), "Dán tin nhắn hoặc mô tả ngắn tình huống đáng ngờ. TappyAI đối chiếu với các tình huống lừa đảo đã được Bộ Công an cảnh báo.")
+        XCTAssertEqual(try string("scam.msg.intro", "en"), "Paste a message or briefly describe a suspicious situation. TappyAI compares it with the scam scenarios the Ministry of Public Security has warned about.")
+        XCTAssertEqual(try string("scam.msg.placeholder", "en"), "Example: Someone claiming to be a bank employee called me and asked me to transfer money to verify my account…")
+        XCTAssertEqual(try string("scam.msg.check", "vi"), "Phân tích ngay")
+        XCTAssertEqual(try string("scam.msg.check", "en"), "Analyze now")
+        let lines = ScamKnowledge.load().scenarios.flatMap(\.guidance.whatToDo)
+        XCTAssertTrue(lines.contains("Dùng công cụ Kiểm tra URL của Cảnh báo lừa đảo trước khi mở"))
+        XCTAssertTrue(lines.contains("Dùng Quét mã QR của Cảnh báo lừa đảo để kiểm tra đường dẫn trước khi mở"))
+        XCTAssertTrue(lines.contains("Dùng Kiểm tra URL của Cảnh báo lừa đảo trước khi mở link lạ"))
+        XCTAssertFalse(lines.contains { $0.contains("Scam Shield") })
+    }
 }

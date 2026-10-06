@@ -965,13 +965,13 @@
     },
     "scam.emergency.title": {
       "localizations": {
-        "en": { "stringUnit": { "state": "translated", "value": "Been scammed?" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Think you were scammed?" } },
         "vi": { "stringUnit": { "state": "translated", "value": "Nghi bị lừa?" } }
       }
     },
     "scam.emergency.body": {
       "localizations": {
-        "en": { "stringUnit": { "state": "translated", "value": "If you sent money or shared an OTP, call the police now." } },
+        "en": { "stringUnit": { "state": "translated", "value": "If you already sent money or shared an OTP code, call the police now." } },
         "vi": { "stringUnit": { "state": "translated", "value": "Nếu đã chuyển tiền hoặc lộ mã OTP, gọi Công an ngay." } }
       }
     },
@@ -981,6 +981,11 @@
         "vi": { "stringUnit": { "state": "translated", "value": "Gọi 0692.345.860" } }
       }
     },
+    "scam.emergency.hotlineTitle": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Hotline"}}, "vi": {"stringUnit": {"state": "translated", "value": "Đường Dây Nóng"}}}},
+    "scam.emergency.agency": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Criminal Police Department - Ministry of Public Security"}}, "vi": {"stringUnit": {"state": "translated", "value": "Cục Cảnh sát hình sự - Bộ Công an"}}}},
+    "scam.emergency.hotlineDesc": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "The hotline that receives reports and denunciations of fraud."}}, "vi": {"stringUnit": {"state": "translated", "value": "Đường dây nóng tiếp nhận tin báo, tố giác về lừa đảo."}}}},
+    "scam.emergency.sourceLabel": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Source:"}}, "vi": {"stringUnit": {"state": "translated", "value": "Nguồn:"}}}},
+    "scam.emergency.sourceName": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Ministry of Public Security"}}, "vi": {"stringUnit": {"state": "translated", "value": "Bộ Công an"}}}},
     "scam.lib.title": {
       "localizations": {
         "en": { "stringUnit": { "state": "translated", "value": "Scenario" } },
@@ -1171,10 +1176,10 @@
     "scam.pane.message": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Message" } }, "vi": { "stringUnit": { "state": "translated", "value": "Tin nhắn" } } } },
     "scam.pane.qr": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "QR code" } }, "vi": { "stringUnit": { "state": "translated", "value": "Mã QR" } } } },
     "scam.pane.library": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Scenarios" } }, "vi": { "stringUnit": { "state": "translated", "value": "Tình huống" } } } },
-    "scam.msg.intro": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Paste a message you doubt. Tappy reads it right on your phone and compares it with the 25 scam scenarios of the Ministry of Public Security." } }, "vi": { "stringUnit": { "state": "translated", "value": "Dán tin nhắn bạn nghi ngờ. Tappy đọc ngay trên điện thoại, đối chiếu với 25 tình huống lừa đảo của Bộ Công an." } } } },
-    "scam.msg.placeholder": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Paste the message here…" } }, "vi": { "stringUnit": { "state": "translated", "value": "Dán nội dung tin nhắn vào đây…" } } } },
+    "scam.msg.intro": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Paste a message or briefly describe a suspicious situation. TappyAI compares it with the scam scenarios the Ministry of Public Security has warned about." } }, "vi": { "stringUnit": { "state": "translated", "value": "Dán tin nhắn hoặc mô tả ngắn tình huống đáng ngờ. TappyAI đối chiếu với các tình huống lừa đảo đã được Bộ Công an cảnh báo." } } } },
+    "scam.msg.placeholder": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Example: Someone claiming to be a bank employee called me and asked me to transfer money to verify my account…" } }, "vi": { "stringUnit": { "state": "translated", "value": "Ví dụ: Một người tự xưng là nhân viên ngân hàng gọi cho tôi và yêu cầu chuyển tiền để xác minh tài khoản…" } } } },
     "scam.msg.paste": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Paste from clipboard" } }, "vi": { "stringUnit": { "state": "translated", "value": "Dán từ bộ nhớ tạm" } } } },
-    "scam.msg.check": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Check this message" } }, "vi": { "stringUnit": { "state": "translated", "value": "Kiểm tra tin nhắn" } } } },
+    "scam.msg.check": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Analyze now" } }, "vi": { "stringUnit": { "state": "translated", "value": "Phân tích ngay" } } } },
     "scam.msg.privacy": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Matched against a built-in list of scenarios and rules: no AI is used and the message text is not stored." } }, "vi": { "stringUnit": { "state": "translated", "value": "Đối chiếu bằng danh sách tình huống và quy tắc có sẵn: không dùng AI, không lưu nội dung tin nhắn." } } } },
     "scam.msg.matched.title": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Familiar scam signs found" } }, "vi": { "stringUnit": { "state": "translated", "value": "Có dấu hiệu lừa đảo quen thuộc" } } } },
     "scam.msg.matched.body": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "This looks like a scam tactic the authorities have warned about. Do not do what it asks." } }, "vi": { "stringUnit": { "state": "translated", "value": "Nội dung này giống một thủ đoạn lừa đảo đã được cơ quan chức năng cảnh báo. Đừng làm theo yêu cầu trong đó." } } } },
