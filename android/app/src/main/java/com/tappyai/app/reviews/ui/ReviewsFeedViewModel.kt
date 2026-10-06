@@ -16,6 +16,8 @@ import com.tappyai.app.safety.ReportOutcome
 import com.tappyai.app.safety.ReportReason
 import com.tappyai.app.safety.SafetyFlags
 import com.tappyai.app.safety.SafetyRepository
+import com.tappyai.app.social.data.ConnectionType
+import com.tappyai.app.social.data.SocialRepository
 import com.tappyai.app.safety.withoutHidden
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.combine
@@ -76,6 +78,7 @@ class ReviewsFeedViewModel @Inject constructor(
     private val logger: LoggerProvider,
     private val reviewErrorMessages: ReviewErrorMessages,
     private val safety: SafetyRepository,
+    private val socialRepository: SocialRepository,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
@@ -261,29 +264,77 @@ class ReviewsFeedViewModel @Inject constructor(
 
     /**
      * Follows / unfollows the AUTHOR of [review] without leaving the clip — the rail's "+" badge.
-     * The same `POST /api/users/{id}/follow` toggle the profile screen uses (server flips the
-     * row and returns `following`). Optimistic: every loaded row by that author flips at once,
-     * the server's answer is written back, a failure reverts. A no-op for the viewer's own posts
-     * (the server refuses `follow_self` anyway) and while a toggle for that author is in flight.
+     * Optimistic: every loaded row by that author flips at once, the server's answer is written
+     * back, a failure reverts. A no-op for the viewer's own posts (the server refuses `follow_self`
+     * anyway) and while a toggle for that author is in flight.
+     *
+     * 🚨 `POST /api/users/{id}/follow` is a TOGGLE, not "follow": it flips whatever the server holds.
+     * A row's [Review.isFollowingAuthor] is only as fresh as the feed read it came from, and this
+     * ViewModel outlives the screen — so a follow made on the author's profile (or on another
+     * device) left the rail showing "+", and tapping it silently UNFOLLOWED. The server's own
+     * `is_following` (`GET /api/users/{id}`) is therefore read first and the toggle is sent only
+     * when it would actually produce what the tap asked for ([followToggleAction]). Never a blind flip.
      */
     fun toggleFollow(review: Review) {
         val authorId = review.userId
         if (authorId == _uiState.value.currentUserId || authorId in followInFlight) return
-        val target = !review.isFollowingAuthor
+        val shown = review.isFollowingAuthor
+        val target = !shown
         followInFlight += authorId
+        followEpoch++
         _uiState.update { s -> s.copy(reviews = s.reviews.withFollowState(authorId, target)) }
         viewModelScope.launch {
-            when (val result = repository.toggleFollow(authorId)) {
-                is NetworkResult.Success ->
-                    _uiState.update { s -> s.copy(reviews = s.reviews.withFollowState(authorId, result.data)) }
-                is NetworkResult.Error -> {
-                    logger.e(TAG, "Follow toggle failed: ${result.error}")
-                    _uiState.update { s -> s.copy(reviews = s.reviews.withFollowState(authorId, !target)) }
+            try {
+                val serverNow = (repository.getUserProfile(authorId) as? NetworkResult.Success)?.data?.isFollowing
+                when (followToggleAction(target = target, server = serverNow)) {
+                    FollowToggleAction.Abort -> {
+                        // The server could not be asked: nothing was changed there, so nothing changes here.
+                        logger.e(TAG, "Follow state could not be read; the tap is not sent")
+                        _uiState.update { s -> s.copy(reviews = s.reviews.withFollowState(authorId, shown)) }
+                    }
+                    FollowToggleAction.AlreadyDone ->
+                        // The relationship already is what the tap asked for: show it, send nothing.
+                        _uiState.update { s -> s.copy(reviews = s.reviews.withFollowState(authorId, target)) }
+                    FollowToggleAction.Send -> when (val result = repository.toggleFollow(authorId)) {
+                        is NetworkResult.Success ->
+                            _uiState.update { s -> s.copy(reviews = s.reviews.withFollowState(authorId, result.data)) }
+                        is NetworkResult.Error -> {
+                            logger.e(TAG, "Follow toggle failed: ${result.error}")
+                            _uiState.update { s -> s.copy(reviews = s.reviews.withFollowState(authorId, shown)) }
+                        }
+                    }
                 }
+            } finally {
+                followInFlight -= authorId
+                followEpoch++
             }
-            followInFlight -= authorId
         }
     }
+
+    /**
+     * Explore came back to the front: reconcile every loaded row's follow badge with the server's
+     * Following list (`GET /api/social/connections?type=following`, the same read the Tôi hub
+     * uses). Without it a follow or unfollow made elsewhere — the author's profile, another
+     * device — left "+" / ✓ contradicting the server until the feed was reloaded.
+     *
+     * A read that started before a tap is discarded ([followEpoch]) and an author with a toggle in
+     * flight is left alone, so the answer can never overwrite something newer. A failed read
+     * changes nothing.
+     */
+    fun syncFollowState() {
+        if (source != ReviewsFeedSource.Explore || _uiState.value.currentUserId == null) return
+        val epoch = followEpoch
+        viewModelScope.launch {
+            val following = (socialRepository.getConnections(ConnectionType.Following) as? NetworkResult.Success)?.data ?: return@launch
+            if (epoch != followEpoch) return@launch
+            val ids = following.mapTo(HashSet()) { it.id }
+            val complete = following.size < FOLLOWING_LIST_LIMIT
+            _uiState.update { s -> s.copy(reviews = s.reviews.withFollowingSet(ids, complete, followInFlight.toSet())) }
+        }
+    }
+
+    /** Bumped when a toggle starts and ends, so a Following-list read older than a tap cannot overwrite it. */
+    private var followEpoch = 0
 
     private val followInFlight = mutableSetOf<String>()
 
@@ -423,6 +474,47 @@ internal fun initialPageFor(reviews: List<Review>, startReviewId: String): Int =
 /** [toggleFollow]'s row transform: every row by [authorId] gets [following]; other rows are the same object. */
 internal fun List<Review>.withFollowState(authorId: String, following: Boolean): List<Review> =
     map { if (it.userId == authorId && it.isFollowingAuthor != following) it.copy(isFollowingAuthor = following) else it }
+
+/** What a tap on the rail's follow badge may do, given what the server says the relationship is NOW. */
+internal enum class FollowToggleAction {
+    /** The server already holds what the tap asked for — send nothing, show it. */
+    AlreadyDone,
+    /** The toggle would produce exactly what the tap asked for. */
+    Send,
+    /** The server could not be asked — send nothing, change nothing. */
+    Abort,
+}
+
+/**
+ * [target] is what the tap asks for (follow = true); [server] is the relationship the server holds
+ * right now, null when it could not be read. The toggle endpoint flips whatever it finds, so it is
+ * only correct to send when the server holds the opposite of [target].
+ */
+internal fun followToggleAction(target: Boolean, server: Boolean?): FollowToggleAction = when {
+    server == null -> FollowToggleAction.Abort
+    server == target -> FollowToggleAction.AlreadyDone
+    else -> FollowToggleAction.Send
+}
+
+/** The server's Following list is capped at one page (the route's `PAGE_SIZE`); a full page may be truncated. */
+internal const val FOLLOWING_LIST_LIMIT = 60
+
+/**
+ * Reconciles every row's follow badge with the caller's Following list. An author in [following]
+ * is followed. An author NOT in it is unfollowed only when the list is [complete] (shorter than a
+ * page — a full page may have been cut off, and absence from a truncated list proves nothing).
+ * Authors in [inFlight] are left exactly as they are.
+ */
+internal fun List<Review>.withFollowingSet(following: Set<String>, complete: Boolean, inFlight: Set<String>): List<Review> =
+    map { row ->
+        if (row.userId in inFlight) return@map row
+        val server = row.userId in following
+        when {
+            server == row.isFollowingAuthor -> row
+            !server && !complete -> row
+            else -> row.copy(isFollowingAuthor = server)
+        }
+    }
 
 /** [setCommentCount]'s row transform: the row with [reviewId] gets [count]; every other row is the same object. */
 internal fun List<Review>.withCommentCount(reviewId: String, count: Int): List<Review> =

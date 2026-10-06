@@ -117,7 +117,7 @@ class FollowProfileSyncTest {
         val feed = src("app/src/main/java/com/tappyai/app/reviews/ui/ReviewsFeedViewModel.kt")
         assertTrue(feed.contains("repository.toggleFollow(authorId)"))
         assertTrue("success writes the server's answer", feed.contains("withFollowState(authorId, result.data)"))
-        assertTrue("failure restores the previous state", feed.contains("withFollowState(authorId, !target)"))
+        assertTrue("failure restores the previous state", feed.contains("withFollowState(authorId, shown)"))
         val creator = src("app/src/main/java/com/tappyai/app/reviews/ui/ReviewProfileViewModel.kt")
         assertTrue(creator.contains("repository.toggleFollow(userId)"))
         assertTrue(creator.contains("profile = s.profile?.copy(isFollowing = result.data)"))

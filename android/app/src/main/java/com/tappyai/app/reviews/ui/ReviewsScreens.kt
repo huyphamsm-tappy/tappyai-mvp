@@ -121,9 +121,12 @@ internal fun ReviewsFeedScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val reviews = uiState.reviews
-    // The bell's unread count, re-read whenever the feed comes back to the front.
+    // The bell's unread count, re-read whenever the feed comes back to the front — and the rail's
+    // follow badges are reconciled with the server's Following list, because this ViewModel
+    // outlives the screen and a follow made elsewhere would otherwise leave "+" / ✓ contradicting it.
     LifecycleResumeEffect(Unit) {
         inboxBadge.refresh()
+        viewModel.syncFollowState()
         onPauseOrDispose { }
     }
     val pagerState = rememberPagerState(pageCount = { reviews.size })
