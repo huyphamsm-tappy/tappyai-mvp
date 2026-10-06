@@ -119,3 +119,5 @@ Mobile **must not**:
 * infer behavior from the 35 old prompts;
 * create a parallel Agent architecture;
 * modify the Web contract independently.
+
+> UAT deployment trigger for TAPPY_AGENT verification — 2026-10-06
