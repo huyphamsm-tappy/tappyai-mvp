@@ -215,6 +215,8 @@ final class CommentFlowTests: XCTestCase {
         XCTAssertTrue(idle)
 
         vm.react(to: vm.comments[0], with: .haha)
+        let first = await waitUntil { self.reactionRequests(api).count == 1 }
+        XCTAssertTrue(first)
         vm.react(to: vm.comments[0], with: .haha)
         let reacted = await waitUntil { self.reactionRequests(api).count == 2 }
         XCTAssertTrue(reacted)
