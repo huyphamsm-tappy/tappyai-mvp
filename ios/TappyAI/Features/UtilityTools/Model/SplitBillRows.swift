@@ -35,3 +35,16 @@ enum SplitBillRows {
         fit(persons, to: persons.count + 1, name: name)
     }
 }
+
+extension SplitBillRows {
+    /// JS `String(activeTip)`: whole numbers without a trailing ".0" (Web passes `String(activeTip)` to `splitBill.includesTip`).
+    static func tipText(_ tip: Double) -> String {
+        if tip == tip.rounded(), abs(tip) < 1e15 { return String(Int(tip)) }
+        return String(tip)
+    }
+
+    /// Web `splitBill.includesTip`: "(Includes {tip}% tip · Total: {total} đ)".
+    static func includesTipLine(tip: Double, total: String) -> String {
+        String(format: NSLocalizedString("splitBill.includesTip", comment: ""), tipText(tip), total)
+    }
+}

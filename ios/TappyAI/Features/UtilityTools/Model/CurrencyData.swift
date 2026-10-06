@@ -7,6 +7,13 @@ struct CurrencyInfo: Identifiable {
     let decimals: Int
 
     var id: String { code }
+
+    /// Web `currency.<code>` (src/lib/i18n/w3/currency.ts), in the app language. `name` stays the Vietnamese fallback.
+    var localizedName: String {
+        let key = "currency.\(code)"
+        let value = NSLocalizedString(key, comment: "")
+        return value == key ? name : value
+    }
 }
 
 let supportedCurrencies: [CurrencyInfo] = [

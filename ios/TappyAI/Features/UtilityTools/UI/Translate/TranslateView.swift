@@ -16,7 +16,7 @@ struct TranslateView: View {
             VStack(spacing: Spacing.md) {
                 ToolHeroCard(eyebrow: NSLocalizedString("translate.heroEyebrow", comment: ""),
                              title: [NSLocalizedString("translate.heroTitle1", comment: ""), NSLocalizedString("translate.heroTitle2", comment: "")],
-                             subtitle: String(format: NSLocalizedString("translate.heroBody", comment: ""), supportedLanguages.count),
+                             subtitle: String(format: NSLocalizedString("translate.heroBody", comment: ""), supportedLanguages.count) + "\n" + NSLocalizedString("translate.heroSubtitle", comment: ""),
                              mascot: "TappySpeaking", identifier: "translate-hero")
                 inputSection
                 languagePicker
@@ -64,6 +64,7 @@ struct TranslateView: View {
                     .frame(minHeight: 120)
                     .padding(.horizontal, Spacing.sm)
                     .padding(.vertical, Spacing.xs)
+                    .onChange(of: vm.inputText) { _ in vm.enforceInputLimit() }
             }
             .background(TappyColor.surface)
             .clipShape(RoundedRectangle(cornerRadius: Radius.lg))
@@ -73,7 +74,7 @@ struct TranslateView: View {
             )
 
             HStack {
-                Text("\(vm.charCount)/2000")
+                Text("\(vm.charCount)/\(TranslateViewModel.maxChars)")
                     .font(TappyFont.caption)
                     .foregroundStyle(vm.isOverLimit ? .red : TappyColor.textSecondary)
                 Spacer()
@@ -173,17 +174,18 @@ struct TranslateView: View {
                     .foregroundStyle(TappyColor.textSecondary)
                 Spacer()
                 Button {
-                    UIPasteboard.general.string = vm.translation
+                    vm.copyTranslation()
                 } label: {
                     HStack(spacing: 4) {
-                        Image(systemName: "doc.on.doc")
+                        Image(systemName: vm.copied ? "checkmark" : "doc.on.doc")
                             .font(.system(size: 11))
-                        Text(NSLocalizedString("common.copy", comment: ""))
+                        Text(NSLocalizedString(vm.copied ? "translate.copied" : "common.copy", comment: ""))
                             .font(.system(size: 12, weight: .medium))
                     }
                     .foregroundStyle(TappyColor.primary)
                 }
                 .buttonStyle(.plain)
+                .accessibilityIdentifier("translate-copy")
             }
 
             Text(vm.translation)

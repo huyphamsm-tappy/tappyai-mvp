@@ -12,7 +12,7 @@ struct CurrencyView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: Spacing.lg) {
-                ToolHeroCard(eyebrow: NSLocalizedString("currency.title", comment: ""), title: [],
+                ToolHeroCard(eyebrow: "", title: [NSLocalizedString("currency.title", comment: "")],
                              subtitle: NSLocalizedString("currency.heroSubtitle", comment: ""),
                              chips: [NSLocalizedString("currency.chipFast", comment: ""),
                                      String(format: NSLocalizedString("currency.chipCurrencies", comment: ""), supportedCurrencies.count),
@@ -86,7 +86,7 @@ struct CurrencyView: View {
                         .clipShape(RoundedRectangle(cornerRadius: Radius.lg))
                 }
                 .buttonStyle(.plain)
-                currencyPicker(label: "Sang", code: $vm.toCode)
+                currencyPicker(label: NSLocalizedString("currency.to", comment: ""), code: $vm.toCode)
             }
         }
         .padding(Spacing.lg)
@@ -112,7 +112,7 @@ struct CurrencyView: View {
             .pickerStyle(.menu)
             .tint(TappyColor.textPrimary)
             if let cur = supportedCurrencies.first(where: { $0.code == code.wrappedValue }) {
-                Text("\(cur.flag) \(cur.name)")
+                Text("\(cur.flag) \(cur.localizedName)")
                     .font(TappyFont.caption)
                     .foregroundStyle(TappyColor.textSecondary)
             }
@@ -139,6 +139,16 @@ struct CurrencyView: View {
                     .foregroundStyle(.white)
                     .accessibilityIdentifier("currency.missingRate")
             } else if let converted = vm.convertedAmount, let rate = vm.conversionRate {
+                // Web `data-fx-status`: the hourly cache or the estimated table, never "live".
+                HStack(spacing: 6) {
+                    Circle().fill(vm.isFallback ? Color.orange : Color.green).frame(width: 8, height: 8)
+                    Text(NSLocalizedString(vm.isFallback ? "currency.rateStatusFallback" : "currency.rateStatusLive", comment: ""))
+                        .font(.system(size: 12, weight: .semibold))
+                        .foregroundStyle(.white.opacity(0.9))
+                }
+                .padding(.horizontal, 10).padding(.vertical, 5)
+                .background(.white.opacity(0.14)).clipShape(Capsule())
+                .accessibilityIdentifier("currency-rate-status")
                 Text("\(formatAmount(vm.numAmount, decimals: vm.fromCurrency.decimals)) \(vm.fromCode) =")
                     .font(TappyFont.callout)
                     .foregroundStyle(.white.opacity(0.7))

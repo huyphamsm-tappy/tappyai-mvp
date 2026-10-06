@@ -9,7 +9,6 @@ import SwiftUI
 struct VietContentView: View {
     @AppStateObject private var vm: VietContentViewModel
     @State private var exampleIdx = 0
-    @State private var copiedAll = false
 
     private static let primary = Color(hex: 0x007AFF)
     private static let accent = Color(hex: 0xFF9500)
@@ -170,13 +169,14 @@ struct VietContentView: View {
                     .frame(minHeight: 90)
                     .padding(.horizontal, Spacing.sm).padding(.vertical, Spacing.xs)
                     .accessibilityIdentifier("vc-topic")
+                    .onChange(of: vm.topic) { _ in vm.enforceTopicLimit() }
             }
             .background(TappyColor.surface)
             .clipShape(RoundedRectangle(cornerRadius: Radius.lg))
             .overlay(RoundedRectangle(cornerRadius: Radius.lg)
                 .stroke(vm.isOverLimit ? Color.red : TappyColor.border, lineWidth: 1))
             HStack {
-                Text("\(vm.charCount)/500")
+                Text("\(vm.charCount)/\(VietContentViewModel.maxTopicLength)")
                     .font(.system(size: 12))
                     .foregroundStyle(vm.isOverLimit ? .red : TappyColor.textSecondary)
                 Spacer()
@@ -321,20 +321,27 @@ struct VietContentView: View {
             VStack(alignment: .leading, spacing: Spacing.sm) {
                 HStack(spacing: 8) {
                     brandMark(vm.platform).frame(width: 24, height: 24)
-                    Text(NSLocalizedString("vietcontent.result", comment: ""))
-                        .font(.system(size: 13, weight: .semibold))
-                        .foregroundStyle(TappyColor.textSecondary)
+                    VStack(alignment: .leading, spacing: 1) {
+                        Text(NSLocalizedString("vietcontent.result", comment: ""))
+                            .font(.system(size: 13, weight: .semibold))
+                            .foregroundStyle(TappyColor.textSecondary)
+                        Text(vm.resultSubtitle)
+                            .font(.system(size: 11))
+                            .foregroundStyle(TappyColor.textSecondary.opacity(0.8))
+                            .accessibilityIdentifier("vc-result-subtitle")
+                    }
                     Spacer()
                     Button {
-                        UIPasteboard.general.string = vm.caption
+                        vm.copyCaption()
                     } label: {
                         HStack(spacing: 4) {
-                            Image(systemName: "doc.on.doc").font(.system(size: 11))
-                            Text(NSLocalizedString("common.copy", comment: "")).font(.system(size: 12, weight: .medium))
+                            Image(systemName: vm.copiedCaption ? "checkmark" : "doc.on.doc").font(.system(size: 11))
+                            Text(NSLocalizedString(vm.copiedCaption ? "vietcontent.copied" : "vietcontent.copy", comment: "")).font(.system(size: 12, weight: .medium))
                         }
                         .foregroundStyle(Self.primary)
                     }
                     .buttonStyle(.plain)
+                    .accessibilityIdentifier("vc-copy-caption")
                 }
                 Text(vm.caption)
                     .font(TappyFont.body)
@@ -372,10 +379,9 @@ struct VietContentView: View {
 
             HStack(spacing: Spacing.sm) {
                 Button {
-                    UIPasteboard.general.string = vm.caption + "\n\n" + vm.hashtags
-                    copiedAll = true
+                    vm.copyAll()
                 } label: {
-                    Text(LocalizedStringKey(copiedAll ? "vietcontent.copiedAll" : "vietcontent.copyAll"))
+                    Text(LocalizedStringKey(vm.copiedAll ? "vietcontent.copiedAll" : "vietcontent.copyAll"))
                         .font(.system(size: 14, weight: .semibold))
                         .foregroundStyle(.white)
                         .frame(maxWidth: .infinity).frame(height: 48)
@@ -384,7 +390,6 @@ struct VietContentView: View {
                 }
                 .buttonStyle(.plain)
                 Button {
-                    copiedAll = false
                     vm.reset()
                 } label: {
                     Text("vietcontent.rewrite")

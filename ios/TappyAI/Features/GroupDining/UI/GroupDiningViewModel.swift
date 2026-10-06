@@ -18,6 +18,14 @@ final class GroupDiningViewModel: AppObservableObject {
     /// produce a failure the user cannot act on. They are asked to sign in instead.
     var canCreate: Bool { session.state.isAuthenticated }
 
+    /// Web `NAME_MAX` (GroupNewForm.tsx:15, the input's maxLength).
+    static let nameMax = 80
+
+    /// What the name box may hold: typing and pasting can never go past `nameMax`.
+    static func capped(_ name: String) -> String {
+        name.count > nameMax ? String(name.prefix(nameMax)) : name
+    }
+
     var isNameValid: Bool {
         !groupName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }

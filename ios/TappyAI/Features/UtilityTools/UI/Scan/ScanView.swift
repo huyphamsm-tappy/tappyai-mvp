@@ -37,9 +37,11 @@ struct ScanView: View {
                 if vm.hasResult {
                     resultSection
                 }
+                // Web renders the formats card on every state of the page (`data-scan-formats`), the tips only before a result.
+                ToolInfoCard(title: NSLocalizedString("scan.formatsTitle", comment: ""),
+                             detail: NSLocalizedString("scan.formatsDesc", comment: ""),
+                             badges: ScanViewModel.supportedFormats, identifier: "scan-formats")
                 if !vm.hasImage && !vm.hasResult {
-                    ToolInfoCard(title: NSLocalizedString("scan.formatsTitle", comment: ""),
-                                 detail: NSLocalizedString("scan.formatsDesc", comment: ""), identifier: "scan-formats")
                     ToolInfoCard(title: NSLocalizedString("scan.tipsTitle", comment: ""),
                                  rows: [("sun.max", NSLocalizedString("scan.tipLightTitle", comment: ""), NSLocalizedString("scan.tipLightDesc", comment: "")),
                                         ("viewfinder", NSLocalizedString("scan.tipAngleTitle", comment: ""), NSLocalizedString("scan.tipAngleDesc", comment: "")),
@@ -176,17 +178,18 @@ struct ScanView: View {
                     .foregroundStyle(TappyColor.textSecondary)
                 Spacer()
                 Button {
-                    UIPasteboard.general.string = vm.extractedText
+                    vm.copyResult()
                 } label: {
                     HStack(spacing: 4) {
-                        Image(systemName: "doc.on.doc")
+                        Image(systemName: vm.copied ? "checkmark" : "doc.on.doc")
                             .font(.system(size: 11))
-                        Text(NSLocalizedString("common.copy", comment: ""))
+                        Text(NSLocalizedString(vm.copied ? "scan.copied" : "scan.copy", comment: ""))
                             .font(.system(size: 12, weight: .medium))
                     }
                     .foregroundStyle(TappyColor.primary)
                 }
                 .buttonStyle(.plain)
+                .accessibilityIdentifier("scan-copy")
             }
 
             Text(vm.extractedText)

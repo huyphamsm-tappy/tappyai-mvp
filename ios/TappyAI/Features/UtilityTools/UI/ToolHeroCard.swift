@@ -18,9 +18,11 @@ struct ToolHeroCard: View {
     var body: some View {
         HStack(spacing: 12) {
             VStack(alignment: .leading, spacing: 8) {
-                HStack(spacing: 6) {
-                    Image(systemName: "sparkles").font(.system(size: 14)).foregroundStyle(Color(hex: 0x66ACFF))
-                    Text(eyebrow).font(.system(size: 14, weight: .semibold)).foregroundStyle(Color(hex: 0x99C8FF))
+                if !eyebrow.isEmpty {
+                    HStack(spacing: 6) {
+                        Image(systemName: "sparkles").font(.system(size: 14)).foregroundStyle(Color(hex: 0x66ACFF))
+                        Text(eyebrow).font(.system(size: 14, weight: .semibold)).foregroundStyle(Color(hex: 0x99C8FF))
+                    }
                 }
                 if !title.isEmpty {
                     Text(title.joined(separator: "\n"))
@@ -95,12 +97,23 @@ struct ToolInfoCard: View {
     var detail: String? = nil
     var rows: [(symbol: String, title: String, detail: String)] = []
     var note: String? = nil
+    /// Small format chips under the detail (Web `v3-scan-fmt`: JPG / PNG / WEBP).
+    var badges: [String] = []
     var identifier = "tool-info"
 
     var body: some View {
         VStack(alignment: .leading, spacing: Spacing.sm) {
             Text(title).font(.system(size: 16, weight: .bold)).foregroundStyle(TappyColor.textPrimary)
             if let detail { Text(detail).font(TappyFont.callout).foregroundStyle(TappyColor.textSecondary) }
+            if !badges.isEmpty {
+                HStack(spacing: 6) {
+                    ForEach(badges, id: \.self) { badge in
+                        Text(badge).font(.system(size: 11, weight: .bold)).foregroundStyle(TappyColor.primary)
+                            .padding(.horizontal, 10).padding(.vertical, 4)
+                            .background(TappyColor.primary.opacity(0.12)).clipShape(Capsule())
+                    }
+                }
+            }
             ForEach(Array(rows.enumerated()), id: \.offset) { _, row in
                 HStack(alignment: .top, spacing: Spacing.sm) {
                     Image(systemName: row.symbol).font(.system(size: 18, weight: .semibold)).foregroundStyle(TappyColor.primary)

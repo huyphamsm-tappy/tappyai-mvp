@@ -7,6 +7,8 @@ final class ScanViewModel: AppObservableObject {
     @AppPublished var extractedText = ""
     @AppPublished var loading = false
     @AppPublished var error: String?
+    /// Web `copied` (scan.copied for two seconds after Copy).
+    @AppPublished var copied = false
 
     private let service: UtilityToolsService
     private let maxDimension: CGFloat = 2048
@@ -14,6 +16,9 @@ final class ScanViewModel: AppObservableObject {
     init(service: UtilityToolsService) {
         self.service = service
     }
+
+    /// Web `FORMATS` (scan/page.tsx:79).
+    static let supportedFormats = ["JPG", "PNG", "WEBP"]
 
     var hasImage: Bool { selectedImage != nil }
     var hasResult: Bool { !extractedText.isEmpty }
@@ -24,6 +29,7 @@ final class ScanViewModel: AppObservableObject {
 
     func setImage(_ image: UIImage) {
         selectedImage = image
+        copied = false
         extractedText = ""
         error = nil
     }
@@ -60,7 +66,13 @@ final class ScanViewModel: AppObservableObject {
         loading = false
     }
 
+    func copyResult(write: (String) -> Void = { UIPasteboard.general.string = $0 }, delay: Double = CopyFeedback.seconds) {
+        guard hasResult else { return }
+        CopyFeedback.copy(extractedText, write: write, flag: { [weak self] in self?.copied = $0 }, delay: delay)
+    }
+
     func clear() {
+        copied = false
         selectedImage = nil
         extractedText = ""
         error = nil

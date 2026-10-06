@@ -33,7 +33,7 @@ struct SplitBillView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: Spacing.md) {
-                ToolHeroCard(eyebrow: NSLocalizedString("splitBill.heroEyebrow", comment: ""), title: [],
+                ToolHeroCard(eyebrow: NSLocalizedString("splitBill.heroEyebrow", comment: ""), title: [NSLocalizedString("splitBill.title", comment: "")],
                              subtitle: NSLocalizedString("splitBill.heroSubtitle", comment: ""),
                              chips: [String(format: NSLocalizedString("splitBill.chipPeople", comment: ""), 2, 20),
                                      NSLocalizedString("splitBill.chipTip", comment: ""),
@@ -126,7 +126,7 @@ struct SplitBillView: View {
 
     private var tipSection: some View {
         VStack(alignment: .leading, spacing: Spacing.sm) {
-            Text("Tip")
+            Text(NSLocalizedString("splitBill.tipLabel", comment: ""))
                 .font(TappyFont.caption)
                 .foregroundStyle(TappyColor.textSecondary)
 
@@ -213,7 +213,7 @@ struct SplitBillView: View {
                     .foregroundStyle(.white)
 
                 if activeTip > 0 {
-                    Text("Đã gồm tip \(Int(activeTip))% — Tổng: \(fmtVND(grandTotal)) đ")
+                    Text(SplitBillRows.includesTipLine(tip: activeTip, total: fmtVND(grandTotal)))
                         .font(TappyFont.caption)
                         .foregroundStyle(.white.opacity(0.6))
                 }
@@ -222,7 +222,7 @@ struct SplitBillView: View {
 
                 HStack(spacing: 0) {
                     statCol(NSLocalizedString("splitbill.stat.bill", comment: ""), fmtVND(totalNum))
-                    statCol("Tip", fmtVND(totalNum * activeTip / 100))
+                    statCol(NSLocalizedString("splitBill.tipShortLabel", comment: ""), fmtVND(totalNum * activeTip / 100))
                     statCol(NSLocalizedString("splitbill.stat.grandTotal", comment: ""), fmtVND(grandTotal))
                 }
             } else {

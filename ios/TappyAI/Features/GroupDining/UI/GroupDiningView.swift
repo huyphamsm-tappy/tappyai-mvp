@@ -32,8 +32,14 @@ struct GroupDiningView: View {
                             .foregroundStyle(TappyColor.textPrimary)
                         TappyTextField(
                             titleKey: "group.name.placeholder",
-                            text: Binding(get: { vm.groupName }, set: { vm.groupName = $0 })
+                            text: Binding(get: { vm.groupName }, set: { vm.groupName = GroupDiningViewModel.capped($0) })
                         )
+                        // Web `data-group-counter`: «n/80».
+                        Text(verbatim: "\(vm.groupName.count)/\(GroupDiningViewModel.nameMax)")
+                            .font(TappyFont.caption)
+                            .foregroundStyle(TappyColor.textSecondary)
+                            .frame(maxWidth: .infinity, alignment: .trailing)
+                            .accessibilityIdentifier("group-name-counter")
 
                         if !vm.canCreate {
                             // Signed out, or on an anonymous session. Both are "you need an

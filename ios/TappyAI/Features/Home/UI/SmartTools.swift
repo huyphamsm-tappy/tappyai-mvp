@@ -39,13 +39,14 @@ struct SmartTool: Identifiable {
         }
     }
 
-    /// The registry, in the web's order (minus `suggest`, as on Android).
+    /// The registry, in the web's order (minus `suggest`, as on Android): safety FIRST, then scan
+    /// (Web registry.ts:75-77, «Phase 7 closeout 8J: Cảnh báo lừa đảo comes before Quét»).
     static let all: [SmartTool] = [
+        SmartTool(id: .safety, symbol: "checkmark.shield.fill", hue: .blue, mascot: "TappyRecommendation", group: .daily),
         SmartTool(id: .scan, symbol: "doc.text.viewfinder", hue: .blue, mascot: "TappySearching", group: .daily),
         SmartTool(id: .translate, symbol: "character.bubble", hue: .indigo, mascot: "TappySpeaking", group: .daily),
         SmartTool(id: .currency, symbol: "arrow.left.arrow.right", hue: .emerald, mascot: "TappyDeals", group: .daily),
         SmartTool(id: .split, symbol: "divide", hue: .amber, mascot: "TappyWelcome", group: .daily),
-        SmartTool(id: .safety, symbol: "checkmark.shield.fill", hue: .blue, mascot: "TappyRecommendation", group: .daily),
         SmartTool(id: .together, symbol: "person.3.fill", hue: .rose, mascot: "TappyFood", group: .discover, auth: true),
         SmartTool(id: .fortune, symbol: "sparkles", hue: .violet, mascot: "TappyThinking", group: .fun),
         SmartTool(id: .captions, symbol: "pencil.line", hue: .pink, mascot: "TappyPhone", group: .fun),
@@ -180,6 +181,17 @@ struct SmartToolsView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
                 Text("smartTools.blurb").font(.system(size: 15)).foregroundStyle(HomeV3.onSurfaceVariant)
+                // Web ToolsView.tsx:84-99 `data-tools-cta`: a link back to Home, the assistant that «does more».
+                Button { router.popToRoot(on: .home) } label: {
+                    HStack(spacing: 10) {
+                        Image(systemName: "lightbulb.fill").foregroundStyle(Color.orange)
+                        Text("smartTools.cta").font(.system(size: 13, weight: .medium)).foregroundStyle(HomeV3.onSurface)
+                    }
+                    .padding(.horizontal, 14).padding(.vertical, 10)
+                    .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous).stroke(HomeV3.onSurfaceVariant.opacity(0.25), lineWidth: 1))
+                }
+                .buttonStyle(.plain)
+                .accessibilityIdentifier("smart-tools-cta")
                 ForEach(SmartToolGroup.allCases, id: \.self) { group in
                     let tools = SmartTool.all.filter { $0.group == group }
                     if !tools.isEmpty {

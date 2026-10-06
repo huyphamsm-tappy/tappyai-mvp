@@ -84,7 +84,10 @@ final class HomeV3Tests: XCTestCase {
     // MARK: Smart Tools
 
     func testHomePreviewsSevenToolsAndEveryToolOpensAnExistingScreen() {
-        XCTAssertEqual(SmartTool.home.map(\.id), [.scan, .translate, .currency, .split, .safety, .together, .captions])
+        // Web src/lib/tools/registry.ts:75-81 lists safety first, then scan/translate/currency/split; Home is the `home: true`
+        // subset in that order (Web shows five, iOS/Android keep the two extra previews).
+        XCTAssertEqual(SmartTool.home.map(\.id), [.safety, .scan, .translate, .currency, .split, .together, .captions])
+        XCTAssertEqual(SmartTool.all.filter { $0.group == .daily }.map(\.id), [.safety, .scan, .translate, .currency, .split])
         XCTAssertEqual(SmartTool.all.first { $0.id == .together }?.destination, .groupDining)
         XCTAssertEqual(SmartTool.all.first { $0.id == .safety }?.destination, .scamShield)
         for tool in SmartTool.all { XCTAssertNotNil(UIImage(named: tool.mascot), tool.mascot) }

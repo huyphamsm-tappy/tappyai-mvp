@@ -67,7 +67,7 @@ struct FortuneHubView: View {
         VStack(spacing: Spacing.sm) {
             featureLink(emoji: "🔮", title: NSLocalizedString("fortune.tarot.name", comment: ""), desc: NSLocalizedString("fortune.tarot.desc", comment: ""), gradient: [.purple.opacity(0.15), .purple.opacity(0.05)], destination: .tarot)
             featureLink(emoji: "🧧", title: NSLocalizedString("fortune.tuvi.name", comment: ""), desc: NSLocalizedString("fortune.tuvi.desc", comment: ""), gradient: [.orange.opacity(0.15), .orange.opacity(0.05)], destination: .tuVi)
-            featureLink(emoji: "✨", title: NSLocalizedString("fortune.zodiac.name", comment: ""), desc: "Luận giải theo 12 chòm sao phương Tây", gradient: [Color(red: 0.2, green: 0.6, blue: 0.9).opacity(0.15), Color(red: 0.2, green: 0.6, blue: 0.9).opacity(0.05)], destination: .zodiac)
+            featureLink(emoji: "✨", title: NSLocalizedString("fortune.zodiac.name", comment: ""), desc: NSLocalizedString("fortune.zodiac.desc", comment: ""), gradient: [Color(red: 0.2, green: 0.6, blue: 0.9).opacity(0.15), Color(red: 0.2, green: 0.6, blue: 0.9).opacity(0.05)], destination: .zodiac)
         }
     }
 

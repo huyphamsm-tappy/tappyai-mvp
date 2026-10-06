@@ -1,4 +1,4 @@
-import Foundation
+import SwiftUI
 
 @MainActor
 final class VietContentViewModel: AppObservableObject {
@@ -10,9 +10,14 @@ final class VietContentViewModel: AppObservableObject {
     @AppPublished var hashtags = ""
     @AppPublished var loading = false
     @AppPublished var error: String?
+    /// Web `copiedCaption` / `copiedAll`: the Copy buttons read «Đã copy» for two seconds.
+    @AppPublished var copiedCaption = false
+    @AppPublished var copiedAll = false
 
     private let service: UtilityToolsService
-    private let maxTopicLength = 500
+    /// Web `maxLength={500}` on the topic box.
+    static let maxTopicLength = 500
+    private var maxTopicLength: Int { Self.maxTopicLength }
 
     init(service: UtilityToolsService) {
         self.service = service
@@ -76,14 +81,43 @@ final class VietContentViewModel: AppObservableObject {
         loading = false
     }
 
+    /// Web `maxLength`: typing, pasting and the example button can never push the topic past the cap.
+    func enforceTopicLimit() {
+        if topic.count > Self.maxTopicLength { topic = String(topic.prefix(Self.maxTopicLength)) }
+    }
+
+    /// Web VietContentForm.tsx:362 `{platform label} · {tone label}` under the result title.
+    var resultSubtitle: String {
+        let platformLabel = Self.platforms.first { $0.id == platform }?.label ?? platform
+        let toneLabel = Self.tones.first { $0.id == tone }?.label ?? tone
+        return "\(platformLabel) · \(toneLabel)"
+    }
+
+    /// Web `${result.caption}\n\n${result.hashtags}`.
+    var allText: String { caption + "\n\n" + hashtags }
+
+    func copyCaption(write: (String) -> Void = { UIPasteboard.general.string = $0 }, delay: Double = CopyFeedback.seconds) {
+        guard !caption.isEmpty else { return }
+        CopyFeedback.copy(caption, write: write, flag: { [weak self] in self?.copiedCaption = $0 }, delay: delay)
+    }
+
+    func copyAll(write: (String) -> Void = { UIPasteboard.general.string = $0 }, delay: Double = CopyFeedback.seconds) {
+        guard !caption.isEmpty else { return }
+        CopyFeedback.copy(allText, write: write, flag: { [weak self] in self?.copiedAll = $0 }, delay: delay)
+    }
+
     /// «Viết lại»: Web `handleReset` clears only the result and the error; the topic and the options stay so the user can rewrite.
     func reset() {
+        copiedCaption = false
+        copiedAll = false
         caption = ""
         hashtags = ""
         error = nil
     }
 
     func clear() {
+        copiedCaption = false
+        copiedAll = false
         topic = ""
         caption = ""
         hashtags = ""
