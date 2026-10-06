@@ -76,6 +76,13 @@ final class VietContentViewModel: AppObservableObject {
         loading = false
     }
 
+    /// «Viết lại»: Web `handleReset` clears only the result and the error; the topic and the options stay so the user can rewrite.
+    func reset() {
+        caption = ""
+        hashtags = ""
+        error = nil
+    }
+
     func clear() {
         topic = ""
         caption = ""

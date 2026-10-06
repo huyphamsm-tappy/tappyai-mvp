@@ -385,7 +385,7 @@ struct VietContentView: View {
                 .buttonStyle(.plain)
                 Button {
                     copiedAll = false
-                    vm.clear()
+                    vm.reset()
                 } label: {
                     Text("vietcontent.rewrite")
                         .font(.system(size: 14, weight: .semibold))
