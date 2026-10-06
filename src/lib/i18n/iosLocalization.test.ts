@@ -105,6 +105,9 @@ describe('the iOS string catalogue is at EN/VI parity', () => {
       'home.v3.smartTools.title', //    v3/web.ts:44            vi 'v3.nav.smartTools' = 'Smart Tools' (title reuses it, see :92)
       'chat.planV2.kicker', //          planBrochure.ts:46 +    plan card draws eyebrow 'Tappy Plan' upper-cased
       //                                share/planCard.ts:139   -> 'TAPPY PLAN' in every language
+      'currency.EUR', //                w3/currency.ts:31,68    vi 'Euro' (currency name, same in vi)
+      'splitBill.tipShortLabel', //     w3/splitBill.ts:20,60   vi 'Tip' (loanword kept by Web)
+      'vietcontent.copy', //            w3/vietContent.ts:43,89 vi 'Copy' (loanword kept by Web)
     ])
     const suspicious: string[] = []
     for (const [key, entry] of Object.entries(cat.strings)) {
