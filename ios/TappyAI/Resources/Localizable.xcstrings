@@ -4580,6 +4580,7 @@
     },
     "currency.loadingRates" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Loading exchange rates..."}}, "vi": {"stringUnit": {"state": "translated", "value": "Đang tải tỷ giá..."}}}},
     "currency.missingRate" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "No exchange rate available for %@. Please pick another currency."}}, "vi": {"stringUnit": {"state": "translated", "value": "Không có tỷ giá cho %@. Vui lòng chọn đồng tiền khác."}}}},
+    "splitbill.personDefaultName" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Person %d"}}, "vi": {"stringUnit": {"state": "translated", "value": "Người %d"}}}},
     "currency.title": {
       "extractionState": "manual",
       "localizations": {

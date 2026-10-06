@@ -9,8 +9,8 @@ struct SplitBillView: View {
     @State private var customTip = ""
     @State private var mode: SplitMode = .equal
     @State private var persons: [SplitPerson] = [
-        SplitPerson(id: 1, name: NSLocalizedString("splitbill.person1", comment: ""), amount: ""),
-        SplitPerson(id: 2, name: NSLocalizedString("splitbill.person2", comment: ""), amount: ""),
+        SplitPerson(id: 1, name: SplitBillRows.defaultName(1), amount: ""),
+        SplitPerson(id: 2, name: SplitBillRows.defaultName(2), amount: ""),
     ]
 
     private var activeTip: Double {
@@ -179,7 +179,7 @@ struct SplitBillView: View {
     private var modeToggle: some View {
         HStack(spacing: Spacing.xxs) {
             modeButton(NSLocalizedString("splitbill.mode.equal", comment: ""), isActive: mode == .equal) { mode = .equal }
-            modeButton(NSLocalizedString("splitbill.mode.custom", comment: ""), isActive: mode == .custom) { mode = .custom }
+            modeButton(NSLocalizedString("splitbill.mode.custom", comment: ""), isActive: mode == .custom) { enterCustomMode() }
         }
         .padding(4)
         .background(TappyColor.surface)
@@ -360,18 +360,17 @@ struct SplitBillView: View {
     private func syncPeopleCount(_ n: Int) {
         people = n
         if mode == .equal { return }
-        if n > persons.count {
-            for i in persons.count..<n {
-                persons.append(SplitPerson(id: i + 1, name: "Người \(i + 1)", amount: ""))
-            }
-        } else if n < persons.count {
-            persons = Array(persons.prefix(n))
-        }
+        persons = SplitBillRows.fit(persons, to: n)
+    }
+
+    /// Web `enterCustomMode`: fit the list to the current people count first (2 -> 5 in equal mode, then by item, shows five rows).
+    private func enterCustomMode() {
+        persons = SplitBillRows.fit(persons, to: people)
+        mode = .custom
     }
 
     private func addPerson() {
-        let next = (persons.map(\.id).max() ?? 0) + 1
-        persons.append(SplitPerson(id: next, name: "Người \(persons.count + 1)", amount: ""))
+        persons = SplitBillRows.adding(to: persons)
     }
 
     private func removePerson(_ id: Int) {
@@ -410,10 +409,4 @@ struct SplitBillView: View {
 
 private enum SplitMode {
     case equal, custom
-}
-
-private struct SplitPerson: Identifiable {
-    let id: Int
-    var name: String
-    var amount: String
 }
