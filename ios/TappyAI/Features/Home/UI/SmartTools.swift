@@ -52,8 +52,10 @@ struct SmartTool: Identifiable {
         SmartTool(id: .captions, symbol: "pencil.line", hue: .pink, mascot: "TappyPhone", group: .fun),
     ]
 
-    /// The seven Home previews (Android `SmartToolsSection`): everything except Fortune.
-    static let home: [SmartTool] = all.filter { $0.id != .fortune }
+    /// The five Home previews: the Web `home: true` subset, in registry order (Web registry.ts:70-75
+    /// `homeSmartTools()`; HomeV3.tsx:748-754 renders exactly those five). Together, Fortune and
+    /// Captions are `home: false` (registry.ts:80,84,85) and stay reachable from the catalogue (`all`).
+    static let home: [SmartTool] = all.filter { $0.group == .daily }
 }
 
 /// The web's `.v3-toolcard[data-hue]` stops, per appearance.

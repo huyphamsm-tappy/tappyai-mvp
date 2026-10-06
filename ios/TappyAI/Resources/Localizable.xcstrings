@@ -1235,7 +1235,7 @@
     "scam.msg.signal.delivery": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "It talks about a parcel or an order." } }, "vi": { "stringUnit": { "state": "translated", "value": "Tin nhắn nói về bưu phẩm hoặc đơn hàng." } } } },
     "scam.msg.signal.fine": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "It talks about a traffic fine." } }, "vi": { "stringUnit": { "state": "translated", "value": "Tin nhắn nói về phạt nguội hoặc vi phạm giao thông." } } } },
     "scam.share": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Share result" } }, "vi": { "stringUnit": { "state": "translated", "value": "Chia sẻ kết quả" } } } },
-    "scam.share.header": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Checked with TappyAI Scam Shield" } }, "vi": { "stringUnit": { "state": "translated", "value": "Kiểm tra bởi TappyAI Lá chắn lừa đảo" } } } },
+    "scam.share.header": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Checked with TappyAI Scam Alerts" } }, "vi": { "stringUnit": { "state": "translated", "value": "Kiểm tra bởi TappyAI Cảnh báo lừa đảo" } } } },
     "scam.share.matched": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "The message looks like the scenario: %@" } }, "vi": { "stringUnit": { "state": "translated", "value": "Tin nhắn giống tình huống: %@" } } } },
     "scam.share.unsure": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Something looks off, but no familiar trick was recognised." } }, "vi": { "stringUnit": { "state": "translated", "value": "Có điểm đáng ngờ nhưng chưa nhận ra thủ đoạn quen thuộc." } } } },
     "scam.share.nosigns": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "No familiar scam signs seen (not a guarantee of safety)." } }, "vi": { "stringUnit": { "state": "translated", "value": "Chưa thấy dấu hiệu lừa đảo quen thuộc (không phải bảo đảm an toàn)." } } } },
@@ -14678,13 +14678,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Scam Shield helps you spot risky links, but it can't catch everything. Never send money or share codes based on a link alone."
+            "value": "Scam Alerts helps you spot risky links, but it can't catch everything. Never send money or share codes based on a link alone."
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Lá chắn lừa đảo giúp bạn nhận ra link nguy hiểm, nhưng không thể phát hiện mọi trường hợp. Đừng bao giờ chuyển tiền hay đọc mã OTP chỉ vì một đường link."
+            "value": "Cảnh báo lừa đảo giúp bạn nhận ra link nguy hiểm, nhưng không thể phát hiện mọi trường hợp. Đừng bao giờ chuyển tiền hay đọc mã OTP chỉ vì một đường link."
           }
         }
       }
@@ -14848,13 +14848,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "🛡️ Scam Shield"
+            "value": "Scam Alerts"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "🛡️ Lá chắn lừa đảo"
+            "value": "Cảnh báo lừa đảo"
           }
         }
       }
@@ -22494,7 +22494,7 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Scam Shield"
+            "value": "Scam Alerts"
           }
         },
         "vi": {
@@ -23276,7 +23276,7 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Scam Shield"
+            "value": "Scam Alerts"
           }
         },
         "vi": {
