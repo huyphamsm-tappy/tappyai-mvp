@@ -79,12 +79,20 @@ enum CommentActions {
     }
 }
 
-/// The picture a post's tile shows. Web `posterFor` (`src/lib/links/platforms.ts`): a real PHOTO first, then the stored thumbnail, and only then a
-/// placeholder. The phone used the thumbnail first, so a post that has both showed a different picture from the same post on the Web.
+/// The picture a post's tile shows. The Web has TWO orders and iOS follows each surface:
+///  - `.poster` (default): Web `posterFor` / `LinkPoster` (`src/lib/links/platforms.ts`): a real PHOTO first, then the stored thumbnail. Used by the
+///    public profile (`PublicProfileView`), the feed profile tab (`ProfileTab`), creator pages and Explore tiles. iOS: `UserProfileView`.
+///  - `.ownProfile`: Web `ReviewGrid` / `ReviewList` in `(app)/profile/ProfileView.tsx` (`r.thumbnail || r.photos?.[0]`) and `favorites/SavedView.tsx`:
+///    the stored THUMBNAIL first, then the first photo. Used by the signed-in user's own profile hub (posts, shared, saved, restricted, hidden).
+///    iOS: `ProfileHubContent` and `MyPostsView`.
+/// Nothing is invented: when neither exists the result is nil.
 enum ReviewPoster {
-    static func url(photos: [String]?, thumbnail: String?) -> String? {
-        if let photo = photos?.first?.trimmingCharacters(in: .whitespacesAndNewlines), !photo.isEmpty { return photo }
-        if let thumb = thumbnail?.trimmingCharacters(in: .whitespacesAndNewlines), !thumb.isEmpty { return thumb }
-        return nil
+    enum Order { case poster, ownProfile }
+
+    static func url(photos: [String]?, thumbnail: String?, order: Order = .poster) -> String? {
+        let photo = photos?.first?.trimmingCharacters(in: .whitespacesAndNewlines)
+        let thumb = thumbnail?.trimmingCharacters(in: .whitespacesAndNewlines)
+        let candidates: [String?] = order == .poster ? [photo, thumb] : [thumb, photo]
+        return candidates.compactMap { $0 }.first { !$0.isEmpty }
     }
 }

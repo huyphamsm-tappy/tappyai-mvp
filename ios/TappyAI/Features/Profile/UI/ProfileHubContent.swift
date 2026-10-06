@@ -221,7 +221,7 @@ struct ProfileHubContentPanel: View {
             } else {
                 LazyVGrid(columns: columns, spacing: 4) {
                     ForEach(rows) { r in
-                        let t = tile(thumb: ReviewPoster.url(photos: r.photos, thumbnail: r.thumbnail), body: r.body, video: r.contentType == "video", badge: badge)
+                        let t = tile(thumb: ReviewPoster.url(photos: r.photos, thumbnail: r.thumbnail, order: .ownProfile), body: r.body, video: r.contentType == "video", badge: badge)
                         if openable {
                             Button { onOpenReview(r.id) } label: { t }.buttonStyle(.plain)
                         } else {
@@ -244,7 +244,7 @@ struct ProfileHubContentPanel: View {
                 LazyVGrid(columns: columns, spacing: 4) {
                     ForEach(rows) { r in
                         Button { onOpenReview(r.id) } label: {
-                            tile(thumb: ReviewPoster.url(photos: r.photos, thumbnail: r.thumbnail), body: r.body, video: r.isVideo, badge: nil)
+                            tile(thumb: ReviewPoster.url(photos: r.photos, thumbnail: r.thumbnail, order: .ownProfile), body: r.body, video: r.isVideo, badge: nil)
                         }
                         .buttonStyle(.plain)
                     }

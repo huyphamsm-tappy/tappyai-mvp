@@ -187,7 +187,7 @@ struct MyPostsView: View {
     private func collectionTile(_ row: CollectionReview) -> some View {
         ZStack(alignment: .bottomLeading) {
             Rectangle().fill(TappyColor.surfaceElevated)
-            if let url = ReviewPoster.url(photos: row.photos, thumbnail: row.thumbnail), let parsed = URL(string: url) {
+            if let url = ReviewPoster.url(photos: row.photos, thumbnail: row.thumbnail, order: .ownProfile), let parsed = URL(string: url) {
                 AsyncImage(url: parsed) { phase in
                     if case .success(let image) = phase {
                         image.resizable().aspectRatio(contentMode: .fill)
@@ -286,7 +286,7 @@ struct MyPostsView: View {
     private func tile(_ post: Review) -> some View {
         ZStack(alignment: .topLeading) {
             Rectangle().fill(TappyColor.surfaceElevated)
-            if let url = ReviewPoster.url(photos: post.photos, thumbnail: post.thumbnail), let parsed = URL(string: url) {
+            if let url = ReviewPoster.url(photos: post.photos, thumbnail: post.thumbnail, order: .ownProfile), let parsed = URL(string: url) {
                 AsyncImage(url: parsed) { phase in
                     if case .success(let image) = phase {
                         image.resizable().aspectRatio(contentMode: .fill)
