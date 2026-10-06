@@ -16,6 +16,7 @@ struct ReviewDetailView: View {
     @AppStateObject private var vm: ReviewDetailViewModel
     @AppStateObject private var videoPlayer = FeedVideoPlayer()
     @AppEnvironmentState private var router: AppRouter
+    @Environment(\.scenePhase) private var scenePhase
 
     private let baseURL: String
     @ObservedObject private var safety: SafetyStore
@@ -94,6 +95,10 @@ struct ReviewDetailView: View {
         .ignoresSafeArea(edges: .top)
         .toolbar(.hidden, for: .navigationBar)
         .statusBarHidden(true)
+        // This screen owns a player of its own (a shared clip opens cold). Leaving it, or the app going to the background, stops every clip;
+        // coming back, the page on screen re-activates itself (`ReviewPostView.onAppear` / scenePhase). Same rule as Explore (`ReviewsFeedView`).
+        .onDisappear { FeedVideoPlayer.pauseAll() }
+        .onChange(of: scenePhase) { if $0 != .active { FeedVideoPlayer.pauseAll() } }
         .sheet(item: $safetyTarget) { target in
             SafetySheet(target: target, safety: safety) { safetyTarget = nil }
                 .presentationDetents([.large])
