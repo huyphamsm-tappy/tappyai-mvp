@@ -281,6 +281,15 @@ class Handler(BaseHTTPRequestHandler):
             self.send_header("Content-Length", "0")
             self.end_headers()
             return
+        if path == "/api/rates":
+            # the production shape: USD-based table, every supported currency, not a fallback
+            return self._send(200, {
+                "rates": {"USD": 1, "VND": 25949.12, "EUR": 0.88889, "JPY": 157.73, "KRW": 1344.61, "GBP": 0.755727,
+                          "AUD": 1.439269, "SGD": 1.279411, "THB": 33.566256, "CNY": 6.710363, "HKD": 7.847568,
+                          "TWD": 31.871674},
+                "date": "Mon, 05 Oct 2026 00:02:31 +0000",
+                "fallback": False,
+            })
         if path == "/api/config":
             mode = MODE.get("config", "ok")
             if mode == "down":

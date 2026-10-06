@@ -52,6 +52,7 @@ struct CurrencyView: View {
                     } label: {
                         Text(formatPreset(v))
                             .font(.system(size: 12, weight: .medium))
+                            .lineLimit(1).minimumScaleFactor(0.7)
                             .padding(.horizontal, Spacing.sm)
                             .padding(.vertical, Spacing.xs)
                             .background(vm.amount == v ? TappyColor.primary : TappyColor.surface)

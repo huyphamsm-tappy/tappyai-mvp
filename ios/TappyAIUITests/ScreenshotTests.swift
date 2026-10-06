@@ -268,6 +268,8 @@ final class ScreenshotTests: XCTestCase {
 
         app = launch(route: "currency", signedIn: true, extra: ["-uitest-theme", "dark"])
         XCTAssertTrue(any(app, "currency-hero").waitForExistence(timeout: 40), "currency hero")
+        // the stub serves the production-shaped rate table: the conversion succeeds and the live pill shows
+        XCTAssertTrue(any(app, "currency-rate-status").waitForExistence(timeout: 20), "currency rate status pill")
         shot("93-currency-web-layout")
         app.terminate()
 

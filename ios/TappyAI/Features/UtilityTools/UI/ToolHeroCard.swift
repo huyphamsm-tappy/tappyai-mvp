@@ -34,10 +34,11 @@ struct ToolHeroCard: View {
                         .fixedSize(horizontal: false, vertical: true)
                 }
                 if !chips.isEmpty {
-                    HStack(spacing: 6) {
+                    // wraps to a second row instead of cutting a chip's wording ("Nguồn: ope…") on a narrow phone
+                    HomeFlowLayout(spacing: 6) {
                         ForEach(chips, id: \.self) { chip in
                             Text(chip).font(.system(size: 11, weight: .semibold)).foregroundStyle(.white.opacity(0.9))
-                                .lineLimit(1).minimumScaleFactor(0.7)
+                                .lineLimit(1)
                                 .padding(.horizontal, 8).padding(.vertical, 4)
                                 .background(.white.opacity(0.14)).clipShape(Capsule())
                         }
