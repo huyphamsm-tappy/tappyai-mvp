@@ -239,7 +239,8 @@ class AuthRepository @Inject constructor(
      * launch is a Custom-Tab/[context] UI concern). Completion arrives later via the
      * `tappyai://auth-callback` deep link → [handleOAuthRedirectIntent], like every other OAuth.
      */
-    fun startZaloSignIn(context: Context) = zaloSignInClient.launch(context, newCallbackState())
+    fun startZaloSignIn(context: Context, freshBrowserSession: Boolean = false) =
+        zaloSignInClient.launch(context, newCallbackState(), freshBrowserSession)
 
     /**
      * 🔒 A fresh login-CSRF state for a sign-in THIS app is starting ([AuthCallbackStateGuard]).

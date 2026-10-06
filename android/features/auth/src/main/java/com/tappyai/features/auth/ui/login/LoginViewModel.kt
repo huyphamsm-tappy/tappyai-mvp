@@ -132,6 +132,11 @@ class LoginViewModel @Inject constructor(
         authRepository.startZaloSignIn(context)
     }
 
+    /** The same Zalo flow in a cookie-less (ephemeral) Custom Tab — see [ZaloSignInClient.launch]. */
+    fun onZaloOtherAccountClick(context: Context) {
+        authRepository.startZaloSignIn(context, freshBrowserSession = true)
+    }
+
     fun onSendEmailOtpClick() {
         val emailValue = email.trim()
         if (emailValue.isEmpty()) {

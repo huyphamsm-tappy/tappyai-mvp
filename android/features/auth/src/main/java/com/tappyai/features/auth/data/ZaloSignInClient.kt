@@ -68,21 +68,29 @@ class ZaloSignInClient @Inject constructor(
      * [context] must be an Activity context — a Custom Tab launches an activity. Success here only
      * means the Custom Tab opened; the session completes later via the deep-link callback.
      *
-     * 🚨 EPHEMERAL, ON PURPOSE — account switching. The tab used to share Chrome's cookie jar, so
-     * Zalo found the Zalo web session already signed in (as the PREVIOUS person), approved the
-     * permission page without showing anything, and redirected back in about a second. After a
-     * logout the next "Tiếp tục với Zalo" therefore returned the same identity every time, and a
-     * second account was unreachable — measured on a real device 2026-10-06: `/api/auth/zalo` and
-     * `/api/auth/zalo/callback` answered in the same second, the Zalo app was never launched, and
-     * the backend's account list held exactly one Zalo user. Zalo's authorize endpoint has no
-     * documented re-authentication / account-picker parameter, so the browser context is what has
-     * to be fresh: an ephemeral Custom Tab (Chrome 136+, androidx.browser 1.9) neither reads nor
-     * keeps cookies, so Zalo has to authenticate the person actually holding the phone. A browser
-     * that cannot do it falls back to the ordinary tab, exactly as before.
+     * Two modes, on purpose (measured on a real SM-A127F, 2026-10-06):
+     *
+     *  - [freshBrowserSession] = false — the ordinary Custom Tab, sharing Chrome's cookies. This is
+     *    the one-tap path and the ONLY one that supports Zalo's "log in with the Zalo app": the Zalo
+     *    app answers by opening `googlechrome://navigate?url=id.zalo.me/account/login/native/verify
+     *    ?token=…&continue=<authorization transaction>` in the regular Chrome profile, which finds
+     *    the pending transaction because the cookie jar is shared. Its drawback is silent SSO — the
+     *    Zalo web session of whoever used the phone before approves the permission page in about a
+     *    second, so after a logout the next sign-in comes back as the same person.
+     *
+     *  - [freshBrowserSession] = true — an EPHEMERAL Custom Tab (no cookies read or kept; Chrome 136+,
+     *    androidx.browser 1.9) for "use a different Zalo account": Zalo has to authenticate whoever
+     *    is holding the phone. Zalo documents no account-picker / re-authentication parameter, so a
+     *    fresh browser context is the only supported way to get one. Its limit: the in-tab login
+     *    methods (phone + password, QR) work, but "log in with the Zalo app" does not — that hand-off
+     *    returns into the REGULAR Chrome profile, which does not hold the ephemeral tab's
+     *    authorization transaction, and ends on zalo.me with no callback.
+     *
+     * A browser that cannot do ephemeral falls back to the ordinary tab either way.
      */
-    fun launch(context: Context, appState: String) {
+    fun launch(context: Context, appState: String, freshBrowserSession: Boolean = false) {
         val provider = CustomTabsClient.getPackageName(context, null)
-        val ephemeral = provider != null && CustomTabsClient.isEphemeralBrowsingSupported(context, provider)
+        val ephemeral = freshBrowserSession && provider != null && CustomTabsClient.isEphemeralBrowsingSupported(context, provider)
         val tab = CustomTabsIntent.Builder().setEphemeralBrowsingEnabled(ephemeral).build()
         if (provider != null) tab.intent.setPackage(provider)
         tab.launchUrl(context, Uri.parse(launchUrl(appState)))
