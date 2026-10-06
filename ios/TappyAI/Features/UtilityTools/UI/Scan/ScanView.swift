@@ -31,11 +31,8 @@ struct ScanView: View {
                                    title: NSLocalizedString("scan.galleryTitle", comment: ""), detail: NSLocalizedString("scan.galleryDesc", comment: ""),
                                    cta: NSLocalizedString("scan.galleryCta", comment: ""), identifier: "scan-gallery") { showPhotoPicker = true }
                 }
-                if vm.hasImage && !vm.hasResult && !vm.loading {
+                if vm.showsScanButton {
                     scanButton
-                }
-                if vm.loading {
-                    loadingSection
                 }
                 if vm.hasResult {
                     resultSection
@@ -85,8 +82,13 @@ struct ScanView: View {
             Task { await vm.scan() }
         } label: {
             HStack(spacing: Spacing.sm) {
-                Image(systemName: "doc.text.viewfinder")
-                Text(NSLocalizedString("scan.heading", comment: ""))
+                if vm.loading {
+                    ProgressView().tint(.white)
+                    Text(NSLocalizedString("scan.scanning", comment: ""))
+                } else {
+                    Image(systemName: "doc.text.viewfinder")
+                    Text(NSLocalizedString("scan.scanButton", comment: ""))
+                }
             }
             .font(.system(size: 15, weight: .semibold))
             .frame(maxWidth: .infinity)
@@ -96,6 +98,9 @@ struct ScanView: View {
             .clipShape(RoundedRectangle(cornerRadius: Radius.lg))
         }
         .buttonStyle(.plain)
+        .disabled(!vm.canScan)
+        .opacity(vm.canScan ? 1 : 0.5)
+        .accessibilityIdentifier("scan-submit")
     }
 
     // MARK: - Image section
@@ -159,23 +164,6 @@ struct ScanView: View {
             .clipShape(RoundedRectangle(cornerRadius: Radius.lg))
         }
         .buttonStyle(.plain)
-    }
-
-    // MARK: - Loading
-
-    private var loadingSection: some View {
-        HStack(spacing: Spacing.sm) {
-            ProgressView()
-                .tint(TappyColor.primary)
-                .scaleEffect(0.8)
-            Text(NSLocalizedString("scan.recognizing", comment: ""))
-                .font(TappyFont.callout)
-                .foregroundStyle(TappyColor.textSecondary)
-        }
-        .frame(maxWidth: .infinity)
-        .padding(Spacing.lg)
-        .background(TappyColor.cardBackground)
-        .clipShape(RoundedRectangle(cornerRadius: Radius.xl))
     }
 
     // MARK: - Result

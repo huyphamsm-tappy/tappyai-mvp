@@ -17,6 +17,10 @@ final class ScanViewModel: AppObservableObject {
 
     var hasImage: Bool { selectedImage != nil }
     var hasResult: Bool { !extractedText.isEmpty }
+    /// Web keeps the scan button under the preview for as long as an image is selected (also after a result, so the user can scan again);
+    /// while a scan runs it is disabled and shows the spinner with `scan.scanning`.
+    var showsScanButton: Bool { hasImage }
+    var canScan: Bool { hasImage && !loading }
 
     func setImage(_ image: UIImage) {
         selectedImage = image

@@ -14934,6 +14934,8 @@
       }
     },
     "scan.heading" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Scan document"}}, "vi": {"stringUnit": {"state": "translated", "value": "Quét tài liệu"}}}},
+    "scan.scanButton" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Scan document"}}, "vi": {"stringUnit": {"state": "translated", "value": "Quét tài liệu"}}}},
+    "scan.scanning" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Reading document..."}}, "vi": {"stringUnit": {"state": "translated", "value": "Đang đọc tài liệu..."}}}},
     "scan.library": {
       "extractionState": "manual",
       "localizations": {
