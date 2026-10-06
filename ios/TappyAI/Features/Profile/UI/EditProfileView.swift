@@ -16,6 +16,7 @@ struct EditProfileView: View {
     @State private var selectedPhoto: PhotosPickerItem?
     @State private var uploadingAvatar = false
     @State private var coverUrl = ""
+    @State private var coverSupported = false
     @State private var selectedCover: PhotosPickerItem?
     @State private var uploadingCover = false
 
@@ -34,7 +35,7 @@ struct EditProfileView: View {
                         .padding(.top, 60)
                 } else {
                     avatarSection
-                    coverSection
+                    if coverSupported { coverSection }
                     if let error { errorBanner(error) }
                     formSection
                     saveButton
@@ -289,6 +290,7 @@ struct EditProfileView: View {
             email = p.email
             avatarUrl = p.avatarUrl
             coverUrl = p.coverUrl ?? ""
+            coverSupported = p.supportsCover
         } catch {}
         loading = false
     }

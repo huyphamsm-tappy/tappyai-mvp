@@ -8,6 +8,9 @@ struct UserProfile: Codable {
     var language: String?
     /// The profile cover photo (`cover_url`); nil/empty = none. Upload ≤5 MB, cleared by PATCH.
     var coverUrl: String? = nil
+    /// Whether the server's GET /api/profile carries a `cover_url` key at all (null counts). Production's profile row has no such key and its
+    /// POST has no `cover` field (400), so the cover section is offered only when this is true (Web edit/page.tsx: `profile.cover_url !== undefined`).
+    var supportsCover: Bool = false
 
     enum CodingKeys: String, CodingKey {
         case fullName = "full_name"
@@ -202,6 +205,7 @@ extension UserProfile {
         bio = c.lenient(String.self, forKey: .bio, default: "")
         language = c.lenient(String.self, forKey: .language)
         coverUrl = c.lenient(String.self, forKey: .coverUrl)
+        supportsCover = c.contains(.coverUrl)
     }
 }
 
