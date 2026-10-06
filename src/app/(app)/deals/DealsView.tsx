@@ -8,6 +8,7 @@ import BrandLogo from '@/components/ui/BrandLogo'
 import { resolveBrand } from '@/config/brandRegistry'
 import { ExternalLink, Loader2, Clock, Copy, Check, Sparkles, ArrowRight } from 'lucide-react'
 import { useTranslation, resolvedClientLocale } from '@/lib/i18n/useTranslation'
+import { trackGa } from '@/lib/tracking/tracker'
 import { promoCountdown } from '@/lib/deals/countdown'
 import AskTappyButton from '@/components/chat/AskTappyButton'
 import V3Shell, { V3Footer } from '@/components/v3/V3Shell'
@@ -60,6 +61,15 @@ interface PartnerDeal {
   endAt: string | null
 }
 
+// A booking partner whose affiliate deeplink is really implemented (GET /api/deals/partners). Shown only
+// when the admin-managed feed is empty. `url` is already the tracked link (/go/at records the click).
+interface PartnerCardItem {
+  providerId: string
+  partnerName: string
+  descriptionKey: string
+  url: string
+}
+
 // On the V3 ground the old light category pills disappeared, so each category
 // carries a tint from the V3 palette instead. Colour is never the only signal —
 // the category name is always spelled out next to it.
@@ -95,6 +105,7 @@ export default function DealsView() {
   const { t, locale } = useTranslation()
   const [deals, setDeals] = useState<PartnerDeal[]>([])
   const [loading, setLoading] = useState(true)
+  const [partners, setPartners] = useState<PartnerCardItem[]>([])
   const [filter, setFilter] = useState(0)
   // The second discovery axis: which platform the offer comes from. Kept EXCLUSIVE with the
   // category chips — picking one clears the other — so the grid is only ever explained by one
@@ -114,9 +125,22 @@ export default function DealsView() {
     setLoading(true)
     fetch(`/api/deals?lang=${encodeURIComponent(locale)}`)
       .then((r) => r.json())
-      .then((d) => { if (!cancelled) setDeals(Array.isArray(d?.deals) ? d.deals : []) })
-      .catch(() => { if (!cancelled) setDeals([]) })
-      .finally(() => { if (!cancelled) setLoading(false) })
+      .then((d) => (Array.isArray(d?.deals) ? d.deals as PartnerDeal[] : []))
+      .catch(() => [] as PartnerDeal[])
+      .then(async (list) => {
+        if (cancelled) return
+        setDeals(list)
+        // No managed deal: offer the booking partners that really have a tracked affiliate link.
+        let found: PartnerCardItem[] = []
+        if (list.length === 0) {
+          try {
+            const r = await fetch(`/api/deals/partners?lang=${encodeURIComponent(locale)}`, { cache: 'no-store' })
+            const body = r.ok ? await r.json() : null
+            found = Array.isArray(body?.partners) ? body.partners : []
+          } catch { found = [] }
+        }
+        if (!cancelled) { setPartners(found); setLoading(false) }
+      })
     return () => { cancelled = true }
   }, [locale])
 
@@ -235,7 +259,19 @@ export default function DealsView() {
           </div>
         )}
 
-        {!loading && visible.length === 0 && (
+        {!loading && deals.length === 0 && partners.length > 0 && (
+          <section aria-label={t('deals.partnersTitle')} className="space-y-3" data-testid="deal-partners">
+            <div>
+              <h2 className="text-[14px] font-semibold" style={{ color: 'var(--v3-fg)' }}>{t('deals.partnersTitle')}</h2>
+              <p className="mt-0.5 text-[11.5px] font-light" style={{ color: 'var(--v3-fg-muted)' }}>{t('deals.partnersHint')}</p>
+            </div>
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
+              {partners.map((p) => <PartnerCard key={p.providerId} p={p} />)}
+            </div>
+          </section>
+        )}
+
+        {!loading && visible.length === 0 && partners.length === 0 && (
           <p className="py-16 text-center text-[13px]" style={{ color: 'var(--v3-fg-muted)' }}>
             {t('deals.empty')}
           </p>
@@ -264,6 +300,36 @@ export default function DealsView() {
 
       <V3Footer />
     </V3Shell>
+  )
+}
+
+/* ── Booking partner card ───────────────────────────────────────────────────
+ * One card per implemented affiliate provider. The link is the tracked one resolved server-side
+ * (/go/at records the click); GA4 gets the same GA-only affiliate_click the chat cards send. No price
+ * or discount is shown: there is no data behind one. */
+function PartnerCard({ p }: { p: PartnerCardItem }) {
+  const { t } = useTranslation()
+  return (
+    <a
+      href={p.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      onClick={() => trackGa('affiliate_click', { domain: 'travel', provider: p.providerId, tracked: true })}
+      className="group flex items-center gap-3 rounded-2xl p-3.5 transition-all active:scale-[0.99]"
+      style={{ background: 'var(--v3-panel-elevated)', border: '1px solid var(--v3-border)' }}
+    >
+      {resolveBrand(p.partnerName)
+        ? <BrandLogo partnerName={p.partnerName} size={40} />
+        : <span aria-hidden="true" className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl text-base font-bold" style={{ background: 'rgba(245,158,11,0.14)', color: 'var(--v3-amber)' }}>{p.partnerName[0]}</span>}
+      <span className="min-w-0 flex-1">
+        <span className="block text-[13px] font-semibold" style={{ color: 'var(--v3-fg)' }}>{p.partnerName}</span>
+        <span className="block text-[11.5px]" style={{ color: 'var(--v3-fg-secondary)' }}>{t(p.descriptionKey)}</span>
+      </span>
+      <span className="inline-flex flex-shrink-0 items-center gap-1 text-[11px] font-semibold" style={{ color: 'var(--v3-amber)' }}>
+        {t('deals.partnerCta', { source: p.partnerName })}
+        <ExternalLink size={12} aria-hidden="true" />
+      </span>
+    </a>
   )
 }
 

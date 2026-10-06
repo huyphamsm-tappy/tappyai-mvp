@@ -7,6 +7,9 @@ import Header from '@/components/Header'
 import { SMART_TOOLS_HREF } from '@/lib/tools/registry'
 import BottomNav from '@/components/BottomNav'
 import { Copy, Check, Users, Loader2 } from 'lucide-react'
+import GroupAvatarPicker from '../GroupAvatarPicker'
+import { uploadGroupAvatar } from '@/lib/groups/avatarClient'
+import { useTranslation } from '@/lib/i18n/useTranslation'
 
 type Member = {
   id: string
@@ -23,6 +26,7 @@ type Group = {
   creator_id: string
   status: string
   suggestion: string | null
+  avatar_url?: string | null
   members: Member[]
 }
 
@@ -31,6 +35,11 @@ const BUDGET_OPTIONS = ['Dưới 100k', '100–200k', 'Trên 200k']
 export default function GroupPage() {
   const params = useParams()
   const id = params.id as string
+  const { t } = useTranslation()
+  const [avatarFile, setAvatarFile] = useState<File | null>(null)
+  const [avatarBusy, setAvatarBusy] = useState(false)
+  const [avatarError, setAvatarError] = useState('')
+  const [avatarSaved, setAvatarSaved] = useState(false)
 
   const [group, setGroup] = useState<Group | null>(null)
   const [loading, setLoading] = useState(true)
@@ -126,6 +135,19 @@ export default function GroupPage() {
     }
   }
 
+  async function saveAvatar() {
+    if (!avatarFile) return
+    setAvatarBusy(true)
+    setAvatarError('')
+    setAvatarSaved(false)
+    const up = await uploadGroupAvatar(id, avatarFile, t('groupNew.avatarErr.failed'))
+    setAvatarBusy(false)
+    if (!up.ok) { setAvatarError(up.message); return }
+    setGroup(prev => prev ? { ...prev, avatar_url: up.url } : prev)
+    setAvatarFile(null)
+    setAvatarSaved(true)
+  }
+
   async function copyLink() {
     const link = `${window.location.origin}/group/${id}`
     await navigator.clipboard.writeText(link)
@@ -162,8 +184,11 @@ export default function GroupPage() {
         {/* Group header card */}
         <div className="card p-5">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-primary-400 to-accent-400 flex items-center justify-center shrink-0">
-              <Users className="text-white" size={22} />
+            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-primary-400 to-accent-400 flex items-center justify-center shrink-0 overflow-hidden">
+              {group.avatar_url
+                // eslint-disable-next-line @next/next/no-img-element
+                ? <img src={group.avatar_url} alt={group.name} className="w-full h-full object-cover" />
+                : <Users className="text-white" size={22} />}
             </div>
             <div>
               <h1 className="font-bold text-gray-900 dark:text-white text-lg">{group.name}</h1>
@@ -177,6 +202,17 @@ export default function GroupPage() {
         {/* CREATOR VIEW */}
         {isCreator && (
           <>
+            {/* Group picture — creator only (the route enforces it too) */}
+            <div className="card p-4 space-y-3">
+              <GroupAvatarPicker currentUrl={group.avatar_url} file={avatarFile} onPick={f => { setAvatarFile(f); setAvatarSaved(false); setAvatarError('') }} busy={avatarBusy} error={avatarError} />
+              {avatarFile && (
+                <button type="button" onClick={saveAvatar} disabled={avatarBusy} className="text-link font-semibold text-sm disabled:opacity-50">
+                  {avatarBusy ? t('groupNew.avatarUploading') : t('groupNew.avatarSave')}
+                </button>
+              )}
+              {avatarSaved && <p className="text-sm text-green-600" role="status">{t('groupNew.avatarSaved')}</p>}
+            </div>
+
             {/* Share link */}
             <div className="card p-4">
               <p className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wide mb-2">Chia sẻ link với nhóm</p>

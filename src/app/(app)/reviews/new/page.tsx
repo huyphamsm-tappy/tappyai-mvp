@@ -548,6 +548,10 @@ export default function NewReviewPage() {
         // formats we take, in the user's language, rather than "upload failed".
         vfail('video-upload', tVideo, e, { note: 'unsupported format' })
         setError(t('reviewNew.videoUnsupportedFormat'))
+      } else if ((e as { code?: string })?.code === 'upload_unavailable') {
+        // The storage service itself is down / refusing this deployment: a retry cannot succeed, and nothing was saved.
+        vfail('video-upload', tVideo, e, { note: 'storage unavailable' })
+        setError(t('reviewNew.videoUploadUnavailable'))
       } else {
         vfail('video-upload', tVideo, e)
         setError(t('reviewNew.videoUploadError'))

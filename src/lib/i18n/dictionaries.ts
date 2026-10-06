@@ -296,7 +296,7 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     'nav.home': 'Trang chủ',
     'nav.chat': 'Chat',
     'nav.explore': 'Khám phá',
-    'nav.deals': 'Deals',
+    'nav.deals': 'Deal',
     'nav.profile': 'Tôi',
   },
   en: {
@@ -577,7 +577,7 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     'nav.home': 'Home',
     'nav.chat': 'Chat',
     'nav.explore': 'Explore',
-    'nav.deals': 'Deals',
+    'nav.deals': 'Deal',
     'nav.profile': 'Me',
   },
 }

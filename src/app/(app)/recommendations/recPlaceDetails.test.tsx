@@ -2,7 +2,7 @@
 // Design D:\redesign Sep 22 01_41_30 — the recommendation card shows the place's photo, address, rating
 // and recent activity, from the place's own community reviews; a chip only for data that exists.
 import { describe, expect, it } from 'vitest'
-import { render } from '@testing-library/react'
+import { render, fireEvent } from '@testing-library/react'
 import { RecPhoto, RecFacts, isRecentlyActive } from './RecPlaceDetails'
 
 describe('RecPlaceDetails', () => {
@@ -13,6 +13,12 @@ describe('RecPlaceDetails', () => {
     rerender(<RecPhoto photoUrl={null} rank={2} />)
     expect(container.querySelector('[data-rec-photo]')).toBeNull()
     expect(container.textContent).toContain('2')
+  })
+  it('a photo that fails to load falls back to the pin tile', () => {
+    const { container } = render(<RecPhoto photoUrl="https://x.example/dead.jpg" rank={3} />)
+    fireEvent.error(container.querySelector('[data-rec-photo]')!)
+    expect(container.querySelector('[data-rec-photo]')).toBeNull()
+    expect(container.textContent).toContain('3')
   })
   it('address, rating, recently active and review count — each only when the data exists', () => {
     const recent = new Date(Date.now() - 2 * 24 * 3600 * 1000).toISOString()

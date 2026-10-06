@@ -74,6 +74,14 @@ export default function SharedClipViewer({
     return () => window.removeEventListener('keydown', onKey)
   }, [onClose, commentOf, shareOf, likesOf])
 
+  // BUG 11: an open comment sheet follows the active clip (no stale comments from the previous one).
+  const activeRowId = rows[active]?.id ?? null
+  useEffect(() => {
+    if (!activeRowId) return
+    setCommentOf(cur => (cur && cur.id !== activeRowId ? rows.find(r => r.id === activeRowId) ?? null : cur))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeRowId])
+
   const del = useCallback((id: string) => { remove(id); onDelete?.(id) }, [remove, onDelete])
 
   // A viewer with nothing left to show (the only clip was deleted) goes back where it came from.
@@ -112,7 +120,9 @@ export default function SharedClipViewer({
       />
       {commentOf && (
         <CommentDrawer
+          key={commentOf.id}
           review={commentOf}
+          onNavigate={dir => setActive(a => Math.min(Math.max(0, rows.length - 1), Math.max(0, a + dir)))}
           me={me}
           onClose={() => setCommentOf(null)}
           onAdded={(id, count) => setRows(p => p.map(r => (r.id === id ? { ...r, comment_count: count } : r)))}

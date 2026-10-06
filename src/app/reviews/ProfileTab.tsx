@@ -133,6 +133,14 @@ function PhoneClipViewer({ posts, startIndex, me, onClose, onDelete }: { posts: 
     setActiveIndex(next)
   }
 
+  // An open comment sheet follows the active clip (BUG 11): no stale comments from the previous one.
+  const activeItemId = items[activeIndex]?.id ?? null
+  useEffect(() => {
+    if (!activeItemId) return
+    setCommentOf(cur => (cur && cur.id !== activeItemId ? items.find(r => r.id === activeItemId) ?? null : cur))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeItemId])
+
   return (
     <div className="fixed inset-0 z-50 bg-black flex justify-center">
       <button onClick={onClose} aria-label="Đóng" className="absolute top-4 left-4 z-[60] w-10 h-10 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center text-white active:scale-90 transition-transform">
@@ -158,7 +166,7 @@ function PhoneClipViewer({ posts, startIndex, me, onClose, onDelete }: { posts: 
             className="w-11 h-11 rounded-full bg-gray-800/90 text-white flex items-center justify-center hover:bg-gray-700 disabled:opacity-30 disabled:cursor-default transition-colors"><ChevronDown size={22} /></button>
         </div>
       </div>
-      {commentOf && <CommentDrawer review={commentOf} me={me} onClose={() => setCommentOf(null)} onAdded={addComment} />}
+      {commentOf && <CommentDrawer key={commentOf.id} review={commentOf} me={me} onClose={() => setCommentOf(null)} onAdded={addComment} onNavigate={scrollFeed} />}
       {shareOf && <ShareModal review={shareOf} onClose={() => setShareOf(null)} />}
       {likesOf && <LikeListSheet reviewId={likesOf} onClose={() => setLikesOf(null)} />}
     </div>

@@ -409,7 +409,64 @@ export async function renderBrandedQrCard(opts: BrandedQrOptions): Promise<Blob 
   return new Promise((resolve) => canvas.toBlob((blob) => resolve(blob), 'image/png'))
 }
 
-/** No public listing yet: the title, then Android and iOS each on its own line with a phone glyph and a truthful "coming soon". */
+/** Side of the square platform logo chips in the apps column (px at the rendered scale). */
+const STORE_LOGO = 46
+
+/**
+ * Original, hand-drawn platform marks (no brand artwork copied): a green chip with the robot head for
+ * Android, a black chip with the apple silhouette for iOS. Same size, same corner radius, so the two
+ * rows read as a balanced pair. Exported for the tests; pure canvas path calls.
+ */
+export function drawPlatformLogo(ctx: CanvasRenderingContext2D, kind: 'android' | 'apple', x: number, y: number, s: number) {
+  ctx.save()
+  ctx.fillStyle = kind === 'android' ? '#3DDC84' : '#111111'
+  roundedRect(ctx, x, y, s, s, s * 0.24)
+  ctx.fill()
+  const X = (f: number) => x + f * s
+  const Y = (f: number) => y + f * s
+  ctx.fillStyle = kind === 'android' ? '#0B3D22' : '#FFFFFF'
+  ctx.strokeStyle = ctx.fillStyle
+  if (kind === 'android') {
+    // dome head
+    ctx.beginPath()
+    ctx.moveTo(X(0.22), Y(0.64))
+    ctx.arc(X(0.5), Y(0.64), s * 0.28, Math.PI, 0)
+    ctx.closePath()
+    ctx.fill()
+    // antennae
+    ctx.lineWidth = Math.max(2, s * 0.05)
+    ctx.lineCap = 'round'
+    ctx.beginPath()
+    ctx.moveTo(X(0.34), Y(0.4)); ctx.lineTo(X(0.27), Y(0.27))
+    ctx.moveTo(X(0.66), Y(0.4)); ctx.lineTo(X(0.73), Y(0.27))
+    ctx.stroke()
+    // eyes, cut out in the chip colour
+    ctx.fillStyle = '#3DDC84'
+    for (const ex of [0.38, 0.62]) { ctx.beginPath(); ctx.arc(X(ex), Y(0.54), s * 0.04, 0, Math.PI * 2); ctx.fill() }
+  } else {
+    // apple body
+    ctx.beginPath()
+    ctx.moveTo(X(0.5), Y(0.36))
+    ctx.bezierCurveTo(X(0.42), Y(0.28), X(0.2), Y(0.3), X(0.19), Y(0.55))
+    ctx.bezierCurveTo(X(0.18), Y(0.78), X(0.33), Y(0.92), X(0.4), Y(0.9))
+    ctx.bezierCurveTo(X(0.45), Y(0.88), X(0.47), Y(0.86), X(0.5), Y(0.86))
+    ctx.bezierCurveTo(X(0.53), Y(0.86), X(0.55), Y(0.88), X(0.6), Y(0.9))
+    ctx.bezierCurveTo(X(0.67), Y(0.92), X(0.82), Y(0.78), X(0.81), Y(0.55))
+    ctx.bezierCurveTo(X(0.8), Y(0.3), X(0.58), Y(0.28), X(0.5), Y(0.36))
+    ctx.closePath()
+    ctx.fill()
+    // leaf
+    ctx.beginPath()
+    ctx.moveTo(X(0.52), Y(0.3))
+    ctx.bezierCurveTo(X(0.52), Y(0.2), X(0.58), Y(0.13), X(0.67), Y(0.11))
+    ctx.bezierCurveTo(X(0.67), Y(0.21), X(0.61), Y(0.28), X(0.52), Y(0.3))
+    ctx.closePath()
+    ctx.fill()
+  }
+  ctx.restore()
+}
+
+/** No public listing yet: the title, then Android and iOS each on its own line with its platform logo and a truthful "coming soon". */
 function drawAppsComingSoonColumn(ctx: CanvasRenderingContext2D, apps: AppsComingSoon, x: number, top: number, w: number) {
   ctx.save()
   ctx.textAlign = 'left'
@@ -420,15 +477,10 @@ function drawAppsComingSoonColumn(ctx: CanvasRenderingContext2D, apps: AppsComin
   const rows = [apps.android, apps.ios]
   rows.forEach((line, i) => {
     const y = top + 122 + i * 62
-    // phone glyph
-    ctx.strokeStyle = CARD.blue
-    ctx.lineWidth = 3.5
-    roundedRect(ctx, x, y - 22, 26, 44, 6)
-    ctx.stroke()
-    ctx.beginPath(); ctx.arc(x + 13, y + 15, 2.5, 0, Math.PI * 2); ctx.fillStyle = CARD.blue; ctx.fill()
+    drawPlatformLogo(ctx, i === 0 ? 'android' : 'apple', x, y - STORE_LOGO / 2, STORE_LOGO)
     ctx.font = `600 25px ${CARD.font}`
     ctx.fillStyle = CARD.muted
-    ctx.fillText(line, x + 44, y, w - 44)
+    ctx.fillText(line, x + STORE_LOGO + 18, y, w - STORE_LOGO - 18)
   })
   ctx.restore()
 }

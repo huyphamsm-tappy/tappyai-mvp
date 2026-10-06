@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { createClient } from '@/lib/supabase/server'
-import { BRAND, absoluteUrl, safeOgImageUrl } from '@/lib/share/openGraph'
+import { buildProfileMetadata, isProfileId } from '@/lib/share/profileOg'
 import UserProfileView from './UserProfileView'
 
 interface Props {
@@ -30,47 +30,21 @@ interface Props {
  * title rather than failing the page: a missing preview is a smaller problem than a 500.
  */
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const fallback: Metadata = { title: `Profile | ${BRAND.name}` }
-
   try {
+    if (!isProfileId(params.id)) return buildProfileMetadata(params.id, null)
     const supabase = createClient()
-    const { data: profile } = await supabase
+    // `updated_at` is the og:image cache-bust token; if a deployment lacks the column, read without it.
+    let { data: profile, error } = await supabase
       .from('profiles')
-      .select('full_name, avatar_url')
+      .select('full_name, avatar_url, updated_at')
       .eq('id', params.id)
       .maybeSingle()
-
-    if (!profile?.full_name) return fallback
-
-    const name = String(profile.full_name).slice(0, 60)
-    const title = `${name} | ${BRAND.name}`
-    const description = `${name} on ${BRAND.name}`
-    const url = absoluteUrl(`/users/${params.id}`)
-    // The same guard the review page uses: an avatar a crawler cannot fetch produces a broken
-    // preview image, which looks worse than the branded card.
-    const image = safeOgImageUrl(profile.avatar_url ?? undefined)
-
-    return {
-      title,
-      description,
-      alternates: { canonical: url },
-      openGraph: {
-        type: 'profile',
-        title: name,
-        description,
-        url,
-        siteName: BRAND.name,
-        images: [{ url: image }],
-      },
-      twitter: {
-        card: 'summary',
-        title: name,
-        description,
-        images: [image],
-      },
+    if (error?.code === '42703') {
+      ;({ data: profile } = await supabase.from('profiles').select('full_name, avatar_url').eq('id', params.id).maybeSingle())
     }
+    return buildProfileMetadata(params.id, profile ?? null)
   } catch {
-    return fallback
+    return buildProfileMetadata(params.id, null)
   }
 }
 

@@ -81,6 +81,15 @@ export async function POST(req: Request) {
     p_max_pending: MAX_PENDING_ORDERS,
   })
   if (error) {
+    // The payment migrations (20261011 / 15 / 16 / 17) not applied to this database: PostgREST answers
+    // PGRST202 ("function not found in the schema cache") or Postgres 42883 (undefined_function). That is
+    // an environment problem, not a failed order: say payments are unavailable (503), never "try again".
+    const code = (error as { code?: string }).code ?? ''
+    const missing = code === 'PGRST202' || code === '42883' || /could not find the function|does not exist/i.test(error.message ?? '')
+    console.error(JSON.stringify({ type: 'tappyai_payments_order_failed', code: code || null, rpcMissing: missing }))
+    if (missing) {
+      return NextResponse.json({ error: 'payments_unavailable', message: serverMessage('payments.unavailable', locale) }, { status: 503 })
+    }
     return NextResponse.json({ error: 'order_failed', message: serverMessage('payments.failed', locale) }, { status: 500 })
   }
   const result = data as { status: string; order?: OrderRow }

@@ -4,7 +4,7 @@
 // after Huy's mockups (web page + app screens 3–9). Written by the security session (p8/subscriptions).
 //
 //   home        hero (badge, title, 3 benefits) + "Gói hiện tại" when ACTIVE
-//               desktop: 7 columns — Welcome Guest, Miễn phí, Pip … Sunny (Sunny "Phổ biến nhất")
+//               desktop: 7 columns — Welcome Guest, Tappy (free), Pip … Sunny (Sunny "Phổ biến nhất")
 //               mobile:  "Quyền truy cập hiện tại" + the 5 plans as app-style list cards
 //               + 4 trust tiles
 //   detail      gradient hero card in the plan colour, 4 lines, "Chọn {plan}"; Sunny only: "Chỉ khoảng …/tháng"
@@ -122,7 +122,21 @@ function PopularBadge({ className = '' }: { className?: string }) {
   )
 }
 
-export default function SubscriptionFlow({ catalog, initialMe, initial, initialHistory, paymentsOpen = true }: {
+/** Where Back goes from each step (null = leave the page). Checkout always returns to the plan it came from. */
+function parentScreen(s: Screen, hasPlan: boolean): Screen | null {
+  switch (s) {
+    case 'detail': return 'home'
+    case 'method': return hasPlan ? 'detail' : 'home'
+    case 'pay': return 'method'
+    case 'failure': return hasPlan ? 'method' : 'home'
+    case 'success': return 'manage'
+    default: return null // home, manage, processing
+  }
+}
+
+export default function SubscriptionFlow({ catalog, initialMe, initial, initialHistory, paymentsOpen = true, onBackHandler }: {
+  /** The page header's Back asks this first; it returns true when it stepped back inside the flow. */
+  onBackHandler?: (fn: (() => boolean) | null) => void
   catalog: SubscriptionCatalog
   /** Phase 7: false while SUBSCRIPTIONS_ENABLED is off — the canonical plans stay visible, checkout is not offered. */
   paymentsOpen?: boolean
@@ -153,6 +167,19 @@ export default function SubscriptionFlow({ catalog, initialMe, initial, initialH
       return null
     }
   }, [])
+
+  useEffect(() => {
+    if (!onBackHandler) return
+    onBackHandler(() => {
+      const to = parentScreen(screen, !!plan)
+      if (!to) return false
+      if (screen === 'pay') setOrder(null)
+      setError(null)
+      setScreen(to)
+      return true
+    })
+    return () => onBackHandler(null)
+  }, [screen, plan, onBackHandler])
 
   const choose = (id: string) => { setPlanId(id); setError(null); setScreen('detail') }
 

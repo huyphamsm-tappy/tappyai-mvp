@@ -117,7 +117,10 @@ function bucket(identity: AiQuotaIdentity): { key: string; windowMs: number; lim
 // The same semantics on a Map: entries carry their timestamps so the daily key expires the way
 // the store's window would. Per-instance, like `lib/security/rateLimit.ts`, and for the same
 // deployments only.
-const local = new Map<string, number[]>()
+// Held on globalThis so that every copy of this module in the process (Next bundles route handlers and
+// dev HMR can evaluate the module more than once) shares ONE counter: a second copy must not start from 0.
+const g = globalThis as { __tappyAiQuotaLocal?: Map<string, number[]> }
+const local: Map<string, number[]> = (g.__tappyAiQuotaLocal ??= new Map<string, number[]>())
 
 function localSpend(key: string, windowMs: number, limit: number): { ok: boolean; used: number; member?: number } {
   const now = Date.now()

@@ -209,6 +209,33 @@ describe('the request, its states and the redirect are the same', () => {
   })
 })
 
+describe('a failed picture upload never causes a second group', () => {
+  it('after the group exists and the picture failed, removing the picture and submitting only navigates (no 2nd POST /api/group)', async () => {
+    fetchMock.mockImplementation(async (url: string) => {
+      if (String(url).startsWith('/api/group/') && String(url).endsWith('/avatar')) {
+        return { ok: false, json: async () => ({ message: 'storage down' }) }
+      }
+      return { ok: true, json: async () => ({ id: 'g-42', name: 'Hội bạn thân' }) }
+    })
+    render(<GroupNewForm />)
+    type('Hội bạn thân')
+    const png = new File([new Uint8Array([137, 80, 78, 71])], 'a.png', { type: 'image/png' })
+    await act(async () => { fireEvent.change(q<HTMLInputElement>('[data-group-avatar-input]')!, { target: { files: [png] } }) })
+    await act(async () => { fireEvent.submit(submit().closest('form')!) })
+    await waitFor(() => expect(q('[data-group-avatar-error]')).toBeTruthy())
+    expect(push).not.toHaveBeenCalled()
+    const groupPosts = () => fetchMock.mock.calls.filter(([u]) => u === '/api/group').length
+    expect(groupPosts()).toBe(1)
+
+    // The person gives up on the picture and submits again.
+    const remove = Array.from(document.querySelectorAll('button')).find(b => b.textContent?.includes(enCopy['groupNew.avatarRemove']))!
+    await act(async () => { fireEvent.click(remove) })
+    await act(async () => { fireEvent.submit(submit().closest('form')!) })
+    await waitFor(() => expect(push).toHaveBeenCalledWith('/group/g-42'))
+    expect(groupPosts()).toBe(1)
+  })
+})
+
 describe('i18n', () => {
   it('vi and en carry the same groupNew keys, none empty, and the form reads every key it uses from them', () => {
     expect(Object.keys(enCopy).sort()).toEqual(Object.keys(viCopy).sort())

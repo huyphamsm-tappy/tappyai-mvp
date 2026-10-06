@@ -10,6 +10,8 @@ import {
 } from 'lucide-react'
 import { TappyMascot } from '@/components/TappyMascot'
 import { SMART_TOOLS_HREF } from '@/lib/tools/registry'
+import GroupAvatarPicker from '../GroupAvatarPicker'
+import { uploadGroupAvatar } from '@/lib/groups/avatarClient'
 
 /** The input's `maxLength`; the counter beside it says the same number. */
 const NAME_MAX = 80
@@ -34,13 +36,27 @@ export default function GroupNewForm() {
   const [name, setName] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [avatar, setAvatar] = useState<File | null>(null)
+  const [avatarError, setAvatarError] = useState('')
+  // Set once the group row exists but its picture did not save: the next submit retries ONLY the picture.
+  const [createdId, setCreatedId] = useState<string | null>(null)
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     if (!name.trim()) return
     setLoading(true)
     setError('')
+    setAvatarError('')
     try {
+      if (createdId) {
+        // The group already exists: never POST /api/group again (a second group), even if the picture was removed.
+        if (avatar) {
+          const up = await uploadGroupAvatar(createdId, avatar, t('groupNew.avatarErr.failed'))
+          if (!up.ok) { setAvatarError(up.message); return }
+        }
+        router.push(`/group/${createdId}`)
+        return
+      }
       const res = await fetch('/api/group', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -52,6 +68,17 @@ export default function GroupNewForm() {
         return
       }
       const data = await res.json()
+      if (avatar) {
+        // The picture goes through the existing creator-only route once the group exists. A failure is shown,
+        // never swallowed: the group stays created and the user can retry here or enter without a picture.
+        const up = await uploadGroupAvatar(data.id, avatar, t('groupNew.avatarErr.failed'))
+        if (!up.ok) {
+          setCreatedId(data.id)
+          setError(t('groupNew.avatarErr.createdNoAvatar'))
+          setAvatarError(up.message)
+          return
+        }
+      }
       router.push(`/group/${data.id}`)
     } catch {
       setError(t('groupNew.error.network'))
@@ -136,6 +163,7 @@ export default function GroupNewForm() {
           </div>
 
           <form onSubmit={handleSubmit} className="mt-5 space-y-4">
+            <GroupAvatarPicker file={avatar} onPick={setAvatar} busy={loading} error={avatarError} />
             <label htmlFor="group-name" className="sr-only">{t('groupNew.nameLabel')}</label>
             <div className="v3-group-field">
               <Users size={18} className="v3-group-field-icon" aria-hidden="true" />
@@ -144,6 +172,7 @@ export default function GroupNewForm() {
                 type="text"
                 value={name}
                 onChange={e => setName(e.target.value)}
+                readOnly={!!createdId}
                 placeholder={t('groupNew.namePlaceholder')}
                 maxLength={NAME_MAX}
                 autoFocus
@@ -183,8 +212,13 @@ export default function GroupNewForm() {
               data-group-submit
             >
               {loading ? <Loader2 size={22} className="animate-spin" aria-hidden="true" /> : <Users size={22} aria-hidden="true" />}
-              {loading ? t('groupNew.submitting') : t('groupNew.submit')}
+              {loading ? t('groupNew.submitting') : createdId ? t('groupNew.avatarSave') : t('groupNew.submit')}
             </button>
+            {createdId && (
+              <button type="button" className="w-full text-center text-[14px] font-semibold underline" onClick={() => router.push(`/group/${createdId}`)}>
+                {t('groupNew.avatarContinue')}
+              </button>
+            )}
           </form>
         </section>
       </main>

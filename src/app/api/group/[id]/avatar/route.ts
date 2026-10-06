@@ -6,6 +6,7 @@ import { refuseAnonymousSocialWrite } from '@/lib/auth/socialWriteAccess'
 import { getMediaProvider, putMedia, randomMediaSuffix } from '@/lib/media'
 import { sniffImageType, imageExt, imageMime } from '@/lib/security/imageType'
 import { stripImageMetadata } from '@/lib/media/stripImageMetadata'
+import { isUploadServiceUnavailable } from '@/lib/media/uploadAvailability'
 
 /** Same ceiling as a profile avatar (`POST /api/profile`). */
 const MAX_AVATAR_BYTES = 3 * 1024 * 1024
@@ -75,6 +76,9 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
     )
   } catch (e) {
     console.error('[group/avatar] upload failed:', e instanceof Error ? e.message : e)
+    if (isUploadServiceUnavailable(e)) {
+      return NextResponse.json({ error: 'upload_unavailable', message: serverMessage('media.uploadUnavailable', requestLocale(req)) }, { status: 503 })
+    }
     return NextResponse.json({ error: 'upload_failed', message: serverMessage('media.uploadFailed', requestLocale(req)) }, { status: 500 })
   }
 

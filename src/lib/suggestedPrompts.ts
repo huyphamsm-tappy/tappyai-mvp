@@ -192,6 +192,50 @@ const SPA_OVERRIDE_PROMPTS: PromptItem[] = [
   { text: 'Spa nước khoáng hoặc sauna gần đây?', textEn: 'A mineral spa or sauna nearby?', category: 'spa' },
 ]
 
+// ===== CROSS-VERTICAL DISCOVERY (time-neutral) =====
+// The time pools above are food/coffee almost end to end, so on their own the strip
+// could never show Shopping / Travel / Entertainment / Wellness. These are merged into
+// every draw so each vertical is always available to the selector.
+const DISCOVERY_PROMPTS: PromptItem[] = [
+  { text: 'Đang có deal hay khuyến mãi nào đáng mua gần đây không?', textEn: 'Any worthwhile deals or promotions nearby right now?', category: 'shopping' },
+  { text: 'Trung tâm thương mại nào đang sale, đi dạo mua sắm một vòng?', textEn: 'Which mall has a sale on — a little shopping stroll?', category: 'shopping' },
+  { text: 'Gợi ý lịch trình du lịch 2 ngày 1 đêm gần đây?', textEn: 'A 2-day, 1-night trip itinerary nearby?', category: 'travel' },
+  { text: 'Nên đi du lịch đâu dịp nghỉ lễ sắp tới?', textEn: 'Where should I travel for the next holiday?', category: 'travel' },
+  { text: 'Tối nay có phim hay hoặc sự kiện gì đáng đi không?', textEn: 'Any good movie or event worth going to tonight?', category: 'entertainment' },
+  { text: 'Chỗ vui chơi giải trí cho nhóm bạn cuối tuần này?', textEn: 'Somewhere fun for a group of friends this weekend?', category: 'entertainment' },
+  { text: 'Spa hoặc massage thư giãn sau một tuần mệt?', textEn: 'A spa or massage to unwind after a tiring week?', category: 'spa' },
+  { text: 'Phòng gym, yoga hoặc chỗ chăm sóc sức khoẻ gần đây?', textEn: 'A gym, yoga studio or wellness spot nearby?', category: 'spa' },
+]
+
+type PromptCategory = PromptItem['category']
+
+/**
+ * Round-robin across categories (category order shuffled, order inside a category kept), so with
+ * >=2 verticals available no two neighbours share a vertical unless the other verticals ran out.
+ * Pure given its input; exported for tests.
+ */
+export function diversifyByCategory<T extends { category: PromptCategory }>(items: T[], count: number): T[] {
+  const buckets = new Map<PromptCategory, T[]>()
+  for (const p of items) {
+    const b = buckets.get(p.category)
+    if (b) b.push(p)
+    else buckets.set(p.category, [p])
+  }
+  const queues = shuffle([...buckets.values()])
+  const out: T[] = []
+  while (out.length < count && queues.some(q => q.length > 0)) {
+    // Rebuild the lap order each time so the vertical used last never opens the next lap.
+    const lastCat = out.length ? out[out.length - 1].category : null
+    const lap = queues.filter(q => q.length > 0)
+    if (lap.length > 1 && lastCat && lap[0][0].category === lastCat) lap.push(lap.shift()!)
+    for (const q of lap) {
+      if (out.length >= count) break
+      out.push(q.shift()!)
+    }
+  }
+  return out
+}
+
 export function getDynamicPrompts(
   hour: number,
   dayOfWeek: number,
@@ -227,6 +271,7 @@ export function getDynamicPrompts(
     ...basePool,
     ...dayPool,
     ...WITTY_PROMPTS.slice(0, 3),
+    ...DISCOVERY_PROMPTS,
   ])
 
   // 5. Memory signals
@@ -275,23 +320,10 @@ export function getDynamicPrompts(
     return true
   })
 
-  // 6. Pick with category diversity
-  const selected: PromptItem[] = []
-  const usedCategories = new Set<string>()
+  // 6. Pick with category diversity (round-robin across verticals, never a run of one vertical)
+  const selected = diversifyByCategory(candidates, count)
 
-  for (const p of candidates) {
-    if (selected.length >= count) break
-    if (!usedCategories.has(p.category) || selected.length === count - 1) {
-      selected.push(p)
-      usedCategories.add(p.category)
-    }
-  }
-  for (const p of candidates) {
-    if (selected.length >= count) break
-    if (!selected.includes(p)) selected.push(p)
-  }
-
-  return selected.slice(0, count).map(p => ({
+  return selected.map(p => ({
     text: localize(p.text),
     textEn: localizeEn(p.textEn),
     category: p.category,

@@ -60,6 +60,7 @@ export const vi: Record<string, string> = {
   'reviewNew.videoTooLong': 'Video quá dài. Vui lòng chọn video tối đa 5 phút 5 giây.',
   'reviewNew.uploadCancelled': 'Đã hủy tải lên',
   'reviewNew.videoUploadError': 'Lỗi tải video. Vui lòng thử lại.',
+  'reviewNew.videoUploadUnavailable': 'Dịch vụ tải video đang tạm gián đoạn. Video của bạn chưa được lưu — vui lòng thử lại sau.',
 
   // URL tab
   'reviewNew.pasteYoutube': 'Dán link YouTube...',
@@ -153,6 +154,7 @@ export const en: Record<string, string> = {
   'reviewNew.videoTooLong': 'Video is too long. Please choose a video up to 5 minutes 5 seconds.',
   'reviewNew.uploadCancelled': 'Upload cancelled',
   'reviewNew.videoUploadError': 'Upload failed. Please try again.',
+  'reviewNew.videoUploadUnavailable': "Video uploads are temporarily unavailable. Your video wasn't saved — please try again later.",
 
   // URL tab
   'reviewNew.pasteYoutube': 'Paste a YouTube link...',

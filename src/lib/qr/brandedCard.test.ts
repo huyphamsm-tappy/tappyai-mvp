@@ -81,3 +81,26 @@ describe('the payload is the profile URL and nothing else', () => {
     expect(view).toMatch(/profileUrl/)
   })
 })
+
+describe('platform logos on the apps column (BUG 12)', () => {
+  it('draws Android and Apple logos beside the coming-soon rows, same size, no copied artwork', () => {
+    const card = read(CARD)
+    expect(card).toContain("drawPlatformLogo(ctx, i === 0 ? 'android' : 'apple', x, y - STORE_LOGO / 2, STORE_LOGO)")
+    expect(card).toContain('export function drawPlatformLogo(')
+    expect(card).not.toMatch(/data:image|https?:\/\//)
+  })
+
+  it('paints a chip plus a mark for each platform on a 2D context (the PNG path)', async () => {
+    const { drawPlatformLogo } = await import('./brandedCard')
+    for (const kind of ['android', 'apple'] as const) {
+      const calls: string[] = []
+      const ctx = new Proxy({}, {
+        get: (t: Record<string, unknown>, k: string) => (k in t ? t[k] : (...a: unknown[]) => { calls.push(k); return a }),
+        set: (t: Record<string, unknown>, k: string, v: unknown) => { t[k] = v; return true },
+      }) as unknown as CanvasRenderingContext2D
+      drawPlatformLogo(ctx, kind, 10, 10, 46)
+      expect(calls.filter(c => c === 'fill').length).toBeGreaterThanOrEqual(2)
+      expect(calls).toContain(kind === 'android' ? 'arc' : 'bezierCurveTo')
+    }
+  })
+})

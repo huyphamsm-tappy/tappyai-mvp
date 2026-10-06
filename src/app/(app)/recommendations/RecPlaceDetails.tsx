@@ -4,6 +4,7 @@
 // rating, recent activity, review count — every value from the place's own community reviews
 // (/api/recommendations additive fields, 2026-09-28). A chip is drawn only for data that exists.
 
+import { useState } from 'react'
 import { MapPin, Star, Users } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 
@@ -23,11 +24,14 @@ export function isRecentlyActive(iso?: string | null, now = Date.now()): boolean
 
 /** The card's photo tile: the latest community photo, else a themed pin tile. Rank badge on top. */
 export function RecPhoto({ photoUrl, rank }: { photoUrl?: string | null; rank: number }) {
+  // A stored URL can 403/404 (expired, suspended host): fall back to the pin tile rather than a blank box.
+  const [failedUrl, setFailedUrl] = useState<string | null>(null)
+  const showPhoto = !!photoUrl && failedUrl !== photoUrl
   return (
     <div className="relative flex h-20 w-20 sm:h-24 sm:w-28 flex-shrink-0 items-center justify-center overflow-hidden rounded-xl bg-gradient-to-br from-primary-500/15 to-accent-500/15 ring-1 ring-gray-100 dark:ring-white/10" aria-hidden>
-      {photoUrl
+      {showPhoto
         // eslint-disable-next-line @next/next/no-img-element
-        ? <img src={photoUrl} alt="" data-rec-photo className="h-full w-full object-cover" loading="lazy" />
+        ? <img src={photoUrl!} alt="" data-rec-photo className="h-full w-full object-cover" loading="lazy" referrerPolicy="no-referrer" onError={() => setFailedUrl(photoUrl!)} />
         : <MapPin size={28} className="text-primary-500" />}
       <span className="absolute left-1.5 top-1.5 flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-br from-primary-500 to-accent-500 text-xs font-bold text-white">{rank}</span>
     </div>

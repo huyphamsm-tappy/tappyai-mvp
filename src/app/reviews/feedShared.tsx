@@ -96,7 +96,12 @@ const COMMENT_REACTIONS: { key: string; emoji: string }[] = [
 const reactionEmoji = (key: string) => COMMENT_REACTIONS.find(r => r.key === key)?.emoji || '👍'
 
 /* ─── Comment drawer ─── */
-export function CommentDrawer({ review, me, onClose, onAdded }: { review: Review; me: string | null; onClose: () => void; onAdded: (id: string, count: number) => void }) {
+export function CommentDrawer({ review, me, onClose, onAdded, onNavigate }: {
+  review: Review; me: string | null; onClose: () => void; onAdded: (id: string, count: number) => void
+  /** Moves the host to the next (1) / previous (-1) clip. The full-screen backdrop sits above the
+   *  stage and would otherwise swallow every swipe / wheel gesture, so it forwards them here. */
+  onNavigate?: (dir: 1 | -1) => void
+}) {
   const { t } = useTranslation()
   const [comments, setComments] = useState<Comment[]>([])
   const [loading, setLoading] = useState(true)
@@ -111,6 +116,9 @@ export function CommentDrawer({ review, me, onClose, onAdded }: { review: Review
   const [count, setCount] = useState(review.comment_count)
   const ref = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
+  const gestureRef = useRef<{ id: number; x: number; y: number } | null>(null)
+  const swipedRef = useRef(false)
+  const wheelAtRef = useRef(0)
 
   const loadComments = useCallback(() => {
     setLoadError(false)
@@ -242,7 +250,34 @@ export function CommentDrawer({ review, me, onClose, onAdded }: { review: Review
 
   return (
     <>
-      <div className="fixed inset-0 z-40" onClick={onClose} />
+      <div
+        className="fixed inset-0 z-40"
+        style={onNavigate ? { touchAction: 'none' } : undefined}
+        data-comment-backdrop
+        onClick={() => { if (swipedRef.current) { swipedRef.current = false; return } onClose() }}
+        onPointerDown={onNavigate ? e => { gestureRef.current = { id: e.pointerId, x: e.clientX, y: e.clientY } } : undefined}
+        onPointerUp={onNavigate ? e => {
+          const g = gestureRef.current
+          gestureRef.current = null
+          if (!g || g.id !== e.pointerId) return
+          const dx = e.clientX - g.x, dy = e.clientY - g.y
+          if (Math.max(Math.abs(dx), Math.abs(dy)) < 48) return
+          swipedRef.current = true // the click that may follow a drag is not a tap-to-close
+          setTimeout(() => { swipedRef.current = false }, 0)
+          const d = Math.abs(dy) >= Math.abs(dx) ? dy : dx
+          onNavigate(d < 0 ? 1 : -1)
+        } : undefined}
+        onPointerCancel={onNavigate ? () => { gestureRef.current = null } : undefined}
+        onWheel={onNavigate ? e => {
+          e.stopPropagation() // the host's own wheel forwarding must not fire a second time
+          const d = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY
+          if (Math.abs(d) < 8) return
+          const now = Date.now()
+          if (now - wheelAtRef.current < 420) return
+          wheelAtRef.current = now
+          onNavigate(d > 0 ? 1 : -1)
+        } : undefined}
+      />
       <div className="fixed bottom-[60px] left-0 right-0 md:left-1/2 md:-translate-x-1/2 md:w-[390px] z-50 bg-[#1a1a1a] rounded-t-3xl max-h-[60vh] flex flex-col">
         <div className="flex justify-center py-2 flex-shrink-0"><div className="w-8 h-1 bg-gray-600 rounded-full" /></div>
         <div className="flex items-center px-4 pb-3 flex-shrink-0">

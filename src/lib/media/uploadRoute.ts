@@ -15,6 +15,7 @@
 // disabled, because a disabled path comes back the moment an env var is wrong.
 
 import { getMediaProvider } from './index'
+import { isUploadServiceUnavailable } from './uploadAvailability'
 import { recordEvent } from '@/lib/observability'
 import {
   MediaUploadRejectedError,
@@ -178,6 +179,15 @@ export async function createUploadSessionResponse(
       status,
       kind: String(input.kind ?? 'unknown'),
     })
-    return { status: 502, body: { error: 'Không thể tạo phiên tải lên. Vui lòng thử lại.' } }
+    // Same classification /api/profile, /api/reviews/upload and the group avatar use: a credential / storage outage is
+    // the SERVICE being unavailable. The status and message stay as they were; only a machine `code` is added so the
+    // client can say "unavailable" instead of a generic retryable failure.
+    return {
+      status: 502,
+      body: {
+        error: 'Không thể tạo phiên tải lên. Vui lòng thử lại.',
+        ...(isUploadServiceUnavailable(e) ? { code: 'upload_unavailable' } : {}),
+      },
+    }
   }
 }

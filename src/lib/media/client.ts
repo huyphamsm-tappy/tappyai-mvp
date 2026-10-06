@@ -86,9 +86,9 @@ export async function uploadMedia(
   )
 
   if (res.status !== 200) {
-    const message =
-      (res.json as { error?: string } | null)?.error ?? 'Tải lên thất bại. Vui lòng thử lại.'
-    throw new MediaUploadError(message, res.status)
+    const j = res.json as { error?: string; code?: string } | null
+    const message = j?.error ?? 'Tải lên thất bại. Vui lòng thử lại.'
+    throw new MediaUploadError(message, res.status, typeof j?.code === 'string' ? j.code : undefined)
   }
 
   const session = res.json as {

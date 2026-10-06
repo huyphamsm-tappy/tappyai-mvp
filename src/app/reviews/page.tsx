@@ -733,6 +733,19 @@ function ReviewsPageInner() {
     })
   }
 
+  // BUG 11: an open comment sheet follows the active clip. Swiping to another clip while it is open
+  // re-targets it to the NEW clip (the drawer is keyed by review id, so its comments / draft /
+  // reply target reset — nothing from the previous clip is shown).
+  const activeReviewId = reviews[activeIndex]?.id ?? null
+  useEffect(() => {
+    if (!activeReviewId) return
+    setCommentOf(cur => {
+      if (!cur || cur.id === activeReviewId) return cur
+      return reviews.find(r => r.id === activeReviewId) ?? null
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeReviewId])
+
   // Single write path for the query (I2): UI state and session state move
   // together. An empty box is `null` in ExploreState, never ''.
   const updateSearchQuery = (q: string) => {
@@ -1307,7 +1320,7 @@ function ReviewsPageInner() {
 
       <TikNav tab={tab} setTab={handleSetTab} userId={me} unreadCount={unreadCount} />
 
-      {commentOf && <CommentDrawer review={commentOf} me={me} onClose={() => setCommentOf(null)} onAdded={addComment} />}
+      {commentOf && <CommentDrawer key={commentOf.id} review={commentOf} me={me} onClose={() => setCommentOf(null)} onAdded={addComment} onNavigate={tab === 'home' ? scrollFeed : undefined} />}
       {shareOf && <ShareModal review={shareOf} onClose={() => setShareOf(null)} />}
       {likesOf && <LikeListSheet reviewId={likesOf} onClose={() => setLikesOf(null)} />}
       {/* Opened from the Inbox. Closing returns to the notification list the user came from,

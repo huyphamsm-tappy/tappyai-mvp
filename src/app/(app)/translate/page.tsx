@@ -10,6 +10,7 @@ import {
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { inputLocaleFor } from '@/lib/voice/config'
 import TappyPresence from '@/components/v3/TappyPresence'
+import { SMART_TOOLS_HREF } from '@/lib/tools/registry'
 
 const LANGUAGES = [
   { code: 'vi', name: 'Tiếng Việt', tts: 'vi-VN' },
@@ -192,7 +193,7 @@ export default function TranslatePage() {
   return (
     // `v3-theme` brings the shared tokens to a page that keeps its legacy header and bottom nav.
     <div className="v3-theme v3-tr-page flex min-h-dvh flex-col">
-      <Header title={t('translate.headerTitle')} />
+      <Header showBack backFallbackHref={SMART_TOOLS_HREF} title={t('translate.headerTitle')} />
 
       <main className="mx-auto w-full max-w-4xl flex-1 px-4 pb-24 pt-5 sm:px-6 sm:pt-7" data-tr-main>
         {/* ── Hero ── */}

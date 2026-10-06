@@ -229,3 +229,42 @@ describe('Pip — one-time trial', () => {
     expect(assign).toHaveBeenCalledWith('/login?returnTo=%2Fsubscription')
   })
 })
+
+describe('naming — the free plan is "Tappy", "Miễn phí" is only its price', () => {
+  it('the free column is titled Tappy with "Miễn phí" as the price line; no column or access card is named "Miễn phí"', () => {
+    render(<SubscriptionFlow catalog={catalog} initialMe={free} />)
+    const cols = screen.getByTestId('sub-columns')
+    const tappy = [...cols.children].find((c) => c.querySelector('img[src="/subscription/tappy.webp"]'))!
+    const paragraphs = [...tappy.querySelectorAll('p')].map((p) => p.textContent)
+    expect(paragraphs[0]).toBe('Tappy')
+    expect(paragraphs).toContain('Miễn phí')
+    expect(screen.getByTestId('sub-access').textContent).toMatch(/Tappy/)
+    expect(screen.getByTestId('sub-access').textContent).not.toMatch(/Miễn phí/)
+    expect([...cols.querySelectorAll('p')].filter((p) => p.textContent === 'Miễn phí').length).toBe(2) // the two free columns' price lines (guest + Tappy)
+  })
+})
+
+describe('Back inside checkout returns to the plan it came from', () => {
+  it('registers a handler: pay-method -> detail -> list; the list leaves the page (handler declines)', () => {
+    let handler: (() => boolean) | null = null
+    render(<SubscriptionFlow catalog={catalog} initialMe={free} onBackHandler={(fn) => { handler = fn }} />)
+    expect(handler!()).toBe(false) // list: nothing to step back to inside the flow
+    goTo('pip')
+    expect(screen.getByTestId('sub-method')).toBeTruthy()
+    act(() => { expect(handler!()).toBe(true) })
+    expect(screen.getByTestId('sub-detail')).toBeTruthy()
+    act(() => { expect(handler!()).toBe(true) })
+    expect(screen.getByTestId('sub-home')).toBeTruthy()
+    expect(handler!()).toBe(false)
+  })
+
+  it('from the QR screen Back returns to the payment-method step (the plan is kept), never leaves the flow', async () => {
+    let handler: (() => boolean) | null = null
+    render(<SubscriptionFlow catalog={catalog} initialMe={free} onBackHandler={(fn) => { handler = fn }} />)
+    goTo('coco')
+    fireEvent.click(screen.getByRole('button', { name: /^Thanh toán/ }))
+    await waitFor(() => expect(screen.queryByTestId('sub-method')).toBeNull())
+    act(() => { expect(handler!()).toBe(true) })
+    expect(screen.getByTestId('sub-method')).toBeTruthy()
+  })
+})
