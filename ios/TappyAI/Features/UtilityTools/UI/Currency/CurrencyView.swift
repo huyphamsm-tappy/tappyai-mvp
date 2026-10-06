@@ -133,6 +133,11 @@ struct CurrencyView: View {
                         .font(TappyFont.callout)
                         .foregroundStyle(.white.opacity(0.7))
                 }
+            } else if let missing = vm.missingCode {
+                Label(String(format: NSLocalizedString("currency.missingRate", comment: ""), missing), systemImage: "exclamationmark.triangle")
+                    .font(.system(size: 15, weight: .semibold))
+                    .foregroundStyle(.white)
+                    .accessibilityIdentifier("currency.missingRate")
             } else if let converted = vm.convertedAmount, let rate = vm.conversionRate {
                 Text("\(formatAmount(vm.numAmount, decimals: vm.fromCurrency.decimals)) \(vm.fromCode) =")
                     .font(TappyFont.callout)

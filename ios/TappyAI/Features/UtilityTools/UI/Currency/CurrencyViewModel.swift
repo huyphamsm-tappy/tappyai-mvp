@@ -47,13 +47,26 @@ final class CurrencyViewModel: AppObservableObject {
         return numAmount * rate
     }
 
+    /// Cross rate A -> USD -> B, as Web `crossRate` (src/lib/finance/exchange.ts). A missing or non-positive
+    /// rate yields nil and `missingCode`; it never silently falls back to 1.
     var conversionRate: Double? {
         guard let rates else { return nil }
-        let fromRate = rates[fromCode] ?? 1
-        let toRate = rates[toCode] ?? 1
-        if fromCode == "USD" { return toRate }
-        if toCode == "USD" { return 1.0 / fromRate }
+        guard let fromRate = Self.validRate(rates[fromCode]), let toRate = Self.validRate(rates[toCode]) else { return nil }
         return toRate / fromRate
+    }
+
+    /// The first currency (from, then to) that has no usable rate, once rates are loaded and an amount is entered
+    /// (Web: `missingCode`, shown as `currency.missingRate`). Nil when the conversion can be computed.
+    var missingCode: String? {
+        guard let rates, numAmount > 0 else { return nil }
+        if Self.validRate(rates[fromCode]) == nil { return fromCode }
+        if Self.validRate(rates[toCode]) == nil { return toCode }
+        return nil
+    }
+
+    private static func validRate(_ v: Double?) -> Double? {
+        guard let v, v.isFinite, v > 0 else { return nil }
+        return v
     }
 
     var fromCurrency: CurrencyInfo {
