@@ -54,7 +54,7 @@
     <string name="social_view_profile">Xem trang cá nhân</string>
     <string name="social_sign_in">Đăng nhập để kết nối với mọi người</string>
     <string name="social_unknown_user">Người dùng</string>
-    <string name="history_v3_title">HISTORY</string>
+    <string name="history_v3_title">Lịch sử hoạt động</string>
     <string name="history_v3_tagline">Xem lại những gì bạn đã khám phá trên TappyAI.</string>
     <string name="history_v3_all">Tất cả</string>
     <string name="history_v3_ai">Đã hỏi AI</string>

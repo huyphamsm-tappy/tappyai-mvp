@@ -167,6 +167,7 @@ private fun PlanKind.labelRes(): Int = when (this) {
  * One plan. Collapsed it is a summary; expanded it is the itinerary — the reason this page is
  * a planner rather than an index.
  */
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun PlanCard(plan: DerivedPlan, now: Long, onOpen: () -> Unit) {
     var open by remember(plan.id) { mutableStateOf(false) }
@@ -227,9 +228,12 @@ private fun PlanCard(plan: DerivedPlan, now: Long, onOpen: () -> Unit) {
 
         // ── Footer: when the thread last moved, and the two ways on ──
         HorizontalDivider(color = HomeV3.Outline)
-        Row(
+        // A FlowRow, not a Row: on a phone-width card the two links fill the line, and a Row gave the
+        // label whatever was left (`Cập nhật …`). Here the label keeps its natural width and the links
+        // wrap to the next line when they do not fit beside it. Found on a real SM-A127F (360dp).
+        FlowRow(
             modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 6.dp),
-            verticalAlignment = Alignment.CenterVertically,
+            verticalArrangement = Arrangement.spacedBy(2.dp),
             horizontalArrangement = Arrangement.spacedBy(4.dp),
         ) {
             // 🚨 Labelled as THREAD activity, not as a plan date.
@@ -237,9 +241,7 @@ private fun PlanCard(plan: DerivedPlan, now: Long, onOpen: () -> Unit) {
                 text = stringResource(R.string.planner_last_activity, formatRelativeTime(plan.updatedAtMillis, now)),
                 color = HomeV3.OnSurfaceVariant,
                 fontSize = 11.sp,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-                modifier = Modifier.weight(1f),
+                modifier = Modifier.padding(end = 8.dp),
             )
             FooterLink(
                 text = stringResource(if (open) R.string.planner_collapse else R.string.planner_expand),

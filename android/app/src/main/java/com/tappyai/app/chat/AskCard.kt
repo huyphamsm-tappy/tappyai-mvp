@@ -329,13 +329,18 @@ private fun IconTile(o: AskOptionView, on: Boolean, enabled: Boolean, stacked: B
                 Text(o.label.noWrapHyphen(), color = textColor, fontSize = 12.5.sp, lineHeight = 15.sp, textAlign = TextAlign.Center, maxLines = 2, overflow = TextOverflow.Ellipsis)
             }
         } else {
+            // Web final's icon-beside-label tile (`AskCard.tsx` at a43948d): `px-2`, a 20px icon, a 12.5px
+            // label with `leading-tight` and NO line clamp. With the old 10dp padding, 24dp icon, 13.5sp
+            // label and `maxLines = 2`, a three-up row on a 360dp phone left ~31dp for the text, so
+            // "Quận trung tâm" broke inside "Quận" and ended "Quậ n tr…" (real SM-A127F). The label
+            // may now wrap onto as many lines as it needs — the text itself is never shortened.
             Row(
-                modifier = Modifier.fillMaxWidth().align(Alignment.Center).padding(horizontal = 10.dp, vertical = 14.dp),
+                modifier = Modifier.fillMaxWidth().align(Alignment.Center).padding(horizontal = 8.dp, vertical = 14.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
             ) {
-                Icon(iconOf(o.icon), contentDescription = null, tint = iconTint, modifier = Modifier.size(24.dp))
-                Text(o.label.noWrapHyphen(), color = textColor, fontSize = 13.5.sp, lineHeight = 16.sp, maxLines = 2, overflow = TextOverflow.Ellipsis)
+                Icon(iconOf(o.icon), contentDescription = null, tint = iconTint, modifier = Modifier.size(20.dp))
+                Text(o.label.noWrapHyphen(), color = textColor, fontSize = 12.5.sp, lineHeight = 16.sp)
             }
         }
         if (on) CheckBadge(Modifier.align(Alignment.TopEnd).padding(4.dp))
