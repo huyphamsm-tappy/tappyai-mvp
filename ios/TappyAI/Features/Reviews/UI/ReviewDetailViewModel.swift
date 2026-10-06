@@ -168,7 +168,7 @@ final class ReviewDetailViewModel: AppObservableObject {
 
     func postComment() {
         let body = commentText.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !body.isEmpty, body.count <= 300 else { return }
+        guard !body.isEmpty, body.count <= 300, !isPostingComment else { return }
         isPostingComment = true
         commentError = nil
         let savedText = commentText

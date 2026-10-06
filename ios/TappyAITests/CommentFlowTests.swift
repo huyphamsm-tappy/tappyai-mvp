@@ -227,4 +227,34 @@ final class CommentFlowTests: XCTestCase {
         XCTAssertTrue(removed)
         XCTAssertEqual(vm.commentCount, 1)
     }
+
+    // MARK: A second submit while one is in flight
+
+    func testFeedSecondSubmitWhilePostingSendsNothing() async throws {
+        let api = route()
+        let vm = feedVM(api)
+        vm.openComments(reviewId: "r1")
+        let loaded = await waitUntil { vm.comments.count == 2 }
+        XCTAssertTrue(loaded)
+
+        vm.isPostingComment = true
+        vm.commentText = "again"
+        vm.postComment()
+        try await Task.sleep(nanoseconds: 200_000_000)
+        XCTAssertFalse(api.requests.contains { $0.method == .post }, "no request while a post is in flight")
+        XCTAssertEqual(vm.commentText, "again", "the typed text is kept")
+    }
+
+    func testDetailSecondSubmitWhilePostingSendsNothing() async throws {
+        let api = route()
+        let vm = detailVM(api)
+        await vm.loadComments()
+
+        vm.isPostingComment = true
+        vm.commentText = "again"
+        vm.postComment()
+        try await Task.sleep(nanoseconds: 200_000_000)
+        XCTAssertFalse(api.requests.contains { $0.method == .post }, "no request while a post is in flight")
+        XCTAssertEqual(vm.commentText, "again", "the typed text is kept")
+    }
 }

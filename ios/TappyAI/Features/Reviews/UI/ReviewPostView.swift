@@ -81,6 +81,9 @@ struct ReviewPostView: View {
         // The page is leaving the screen (swipe, other tab, pushed screen, sheet that covers it): its clip stops. A page controller
         // never re-sends `isActive` to a page that is no longer visible, so this is the only signal that always arrives.
         .onDisappear {
+            // a tap that is still waiting out its double-tap window must not start this clip after it left the screen
+            singleTapTask?.cancel()
+            singleTapTask = nil
             if review.isVideo, !isExternalEmbed { videoPlayer.setActive(false) }
         }
         // Leaving the app (Zalo's share target, the lock screen) stops sound; coming back resumes the clip that is on screen.
