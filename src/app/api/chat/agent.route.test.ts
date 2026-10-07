@@ -273,3 +273,75 @@ describe('Phase 7 2F — the gate reads the user words however the client encode
     expect(h.state.placeCalls).toHaveLength(0)
   })
 })
+
+describe('UAT 2026-10-07 — the Agent keeps the thread and owns its prose', () => {
+  beforeEach(() => { process.env.TAPPY_AGENT = '1' })
+  it('"lập kế hoạch ăn chơi nhảy múa 3 ngày 2 đêm" names no destination → ONE question, no model step, no tool', async () => {
+    const body = await post([{ role: 'user', content: 'lập kế hoạch ăn chơi nhảy múa 3 ngày 2 đêm' }])
+    expect(body).toContain('Bạn muốn đi đâu?')
+    expect(h.state.stepCalls).toHaveLength(0)
+    expect(h.state.placeCalls).toHaveLength(0)
+  })
+  it('a destination named earlier is still in front of the model when the next request looks like a new subject (no one-message cut)', async () => {
+    h.state.steps = [{ text: 'ok', toolCalls: [] }]
+    await post([
+      { role: 'user', content: 'đi Đà Lạt nên ăn gì' },
+      { role: 'assistant', content: 'Đà Lạt nên thử **bánh căn**, **lẩu gà lá é** và **bánh tráng nướng** nhé.' },
+      { role: 'user', content: 'lập kế hoạch ăn chơi nhảy múa 3 ngày 2 đêm' },
+    ])
+    const o = h.state.stepCalls[0] as { messages: Array<{ role: string; content: unknown }> }
+    expect(JSON.stringify(o.messages)).toContain('Đà Lạt')
+    expect(o.messages.filter(m => m.role === 'user').length).toBeGreaterThanOrEqual(2)
+  })
+  it('a long non-venue answer after a place turn is delivered whole (no 6-sentence cap on Agent prose)', async () => {
+    const recipe = ['Lẩu cay nè:', '1. Phi thơm sả.', '2. Thêm nước dùng và gia vị.', '3. Cho nấm và đậu hũ vào.', '4. Nhúng thịt và rau.', '5. Nêm lại cho vừa.', 'thêm rau mùi cho thơm.', '6. Ăn kèm bún.', '7. Vắt chanh.', '8. Ăn nóng cho hợp trời mưa.'].join('\n')
+    h.state.steps = [{ text: recipe, toolCalls: [] }]
+    const body = await post([
+      { role: 'user', content: 'trời mưa ăn gì' },
+      { role: 'assistant', content: 'Trời mưa hợp **lẩu cay** và **mì cay**. Quán gần bạn có **Mì Cay SEOUL Quận 5** đang mở.' },
+      { role: 'user', content: 'cách nấu lẩu' },
+    ])
+    for (let i = 1; i <= 8; i++) expect(body, `step ${i}`).toContain(`${i}. `)
+    expect(body).toContain('thêm rau mùi cho thơm.')
+  })
+})
+
+describe('UAT 2026-10-07 (2) — plan-only turns are tool-free; a specific follow-up gets its tools; flights', () => {
+  beforeEach(() => { process.env.TAPPY_AGENT = '1' })
+  const planTexts = ['lập kế hoạch 3 ngày 2 đêm ở Đà Lạt', 'lập kế hoạch 3 ngày 2 đêm ở Quy Nhơn', 'làm cho kế hoạch ăn chơi nhảy múa 3 ngày 2 đêm ở quy nhơn đi']
+  it.each(planTexts)('"%s" → the model is offered NO tool, nothing is searched, no venue card is produced', async text => {
+    // Even a model that tries to search cannot: the turn has no tools, so the scripted tool call is dropped (AI.step mock honours opts.tools).
+    h.state.steps = [{ text: '**Ngày 1:** Đến nơi, dạo biển. **Ngày 2:** Tham quan. **Ngày 3:** Nghỉ ngơi rồi về.', toolCalls: [call('search_places', { query: 'quán ăn ngon', type: 'restaurant' })] }]
+    const body = await post([{ role: 'user', content: text }])
+    const o = h.state.stepCalls[0] as { tools?: Record<string, unknown> }
+    expect(o.tools).toBeUndefined()
+    expect(h.state.placeCalls).toHaveLength(0)
+    expect(body).not.toMatch(/^9:/m)
+    expect(body).not.toContain('tappy.places.v1')
+    expect(body).toContain('Ngày 1')
+  })
+  it('"chỗ ăn nào ngon ở Quy Nhơn?" → tools ARE offered and the card path is open', async () => {
+    h.state.steps = [{ text: '', toolCalls: [call('search_places', { query: 'quán ăn ngon Quy Nhơn', location: 'Quy Nhơn', type: 'restaurant' })] }, { text: 'Thử **Cơm Tấm Ba Ghiền** nhé.', toolCalls: [] }]
+    const body = await post([
+      { role: 'user', content: 'lập kế hoạch 3 ngày 2 đêm ở Quy Nhơn' },
+      { role: 'assistant', content: '**Ngày 1:** Đến nơi, dạo biển.' },
+      { role: 'user', content: 'chỗ ăn nào ngon ở Quy Nhơn?' },
+    ])
+    const o = h.state.stepCalls[0] as { tools?: Record<string, unknown> }
+    expect(Object.keys(o.tools ?? {})).toContain('search_places')
+    expect(h.state.placeCalls.length).toBeGreaterThan(0)
+    expect(body).toMatch(/^9:[^\n]*search_places/m)
+  })
+  it('a plan that asks for concrete data ("khách sạn nào", "giá bao nhiêu") keeps its tools', async () => {
+    h.state.steps = [{ text: 'ok', toolCalls: [] }]
+    await post([{ role: 'user', content: 'lập kế hoạch 3 ngày 2 đêm ở Đà Lạt, gợi ý khách sạn nào và giá bao nhiêu' }])
+    const o = h.state.stepCalls[0] as { tools?: Record<string, unknown> }
+    expect(Object.keys(o.tools ?? {})).toContain('get_hotel_prices')
+  })
+  it('a flight request is never a plan-only turn: the flight tool is offered', async () => {
+    h.state.steps = [{ text: 'ok', toolCalls: [] }]
+    await post([{ role: 'user', content: 'tìm vé máy bay SGN -> UIH ngày mai' }])
+    const o = h.state.stepCalls[0] as { tools?: Record<string, unknown> }
+    expect(Object.keys(o.tools ?? {})).toContain('get_flight_prices')
+  })
+})

@@ -540,9 +540,22 @@ export function linkLabelFor(url: string): string {
     return host.length > 28 ? `${host.slice(0, 26)}…` : host
   } catch { return 'Link' }
 }
+/**
+ * Tappy's own signed click redirect (`/go/at`) is built with the deployment's `NEXT_PUBLIC_SITE_URL` (https only) and signed with that
+ * environment's secret. Opened on a DIFFERENT origin (UAT / preview / localhost, whose site URL is the production host) it is rejected there and
+ * the button lands on a dead page (UAT 2026-10-07, "Xem giá trên Trip.com / Traveloka"). In the web chat it is therefore opened on the origin the
+ * person is on — a relative href. Every other link is untouched.
+ */
+export function sameSiteClickHref(url: string): string {
+  try {
+    const u = new URL(url.replace(/&amp;/g, '&'))
+    if (u.pathname !== '/go/at' || !/(^|\.)tappyai\.com$/i.test(u.hostname)) return url
+    return `${u.pathname}${u.search}`
+  } catch { return url }
+}
 /** One link, one chip: never glued to its neighbour, never a raw URL. */
 function linkChip(url: string, label: string): string {
-  return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center align-middle mx-0.5 my-0.5 px-2.5 py-0.5 rounded-full border border-primary-500/40 bg-primary-500/10 text-primary-600 dark:text-primary-300 text-[13px] font-medium no-underline hover:bg-primary-500/20 max-w-full truncate">${label}</a>`
+  return `<a href="${sameSiteClickHref(url)}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center align-middle mx-0.5 my-0.5 px-2.5 py-0.5 rounded-full border border-primary-500/40 bg-primary-500/10 text-primary-600 dark:text-primary-300 text-[13px] font-medium no-underline hover:bg-primary-500/20 max-w-full truncate">${label}</a>`
 }
 
 export function formatMessage(content: string) {
@@ -1750,7 +1763,7 @@ export default function ChatInterface({
                             return (
                               <div key={i} className="inline-flex items-center gap-1">
                                 <a
-                                  href={btn.url}
+                                  href={sameSiteClickHref(btn.url)}
                                   data-cta-type={btn.type}
                                   target={btn.type === 'internal_booking' ? undefined : '_blank'}
                                   rel={btn.type === 'internal_booking' ? undefined : 'noopener noreferrer'}

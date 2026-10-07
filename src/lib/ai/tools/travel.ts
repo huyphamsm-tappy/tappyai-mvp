@@ -49,7 +49,7 @@ const IATA_MAP: Record<string, string> = {
   'da lat': 'DLI', 'dalat': 'DLI',
   'vinh': 'VII',
   'buon ma thuot': 'BMV',
-  'quy nhon': 'UIH',
+  'quy nhon': 'UIH', 'qui nhon': 'UIH', 'phu cat': 'UIH',
   'pleiku': 'PXU',
   'con dao': 'VCS',
   'rach gia': 'VKG',

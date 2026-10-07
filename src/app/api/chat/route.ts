@@ -40,7 +40,7 @@ import { wantsFilmTitles, movieTitlesReply } from '@/lib/links/movieTitles'
 import { filmQueries, extractFilmEvidence, filmEvidencePayload, FILM_ENOUGH } from '@/lib/ai/searchIntel/filmSearch'
 import { sharedSerperBudget } from '@/lib/ai/tools/serperToolBudget'
 import { cardEvidence, mergeCarried } from '@/lib/ai/agent/carriedEvidence'
-import { plannerNeedsDestination, plannerDestinationQuestion } from '@/lib/ai/agent/plannerGate'
+import { plannerNeedsDestination, plannerDestinationQuestion, planNeedsNoRetrieval } from '@/lib/ai/agent/plannerGate'
 import { tappyAgentEnabled, startAgentTurn, agentContext, codeResolvedDate, priorDateFromHistory, cityFromGps, followUpContextLines, confirmationOf, isRejectionTurn, actionOutcomeText, revalidatePendingAction, claimActionExecution, AGENT_SYSTEM, AGENT_LIMITS } from '@/lib/ai/agent'
 import { detectWrongModel, wrongModelBlock, deviceLabel } from '@/lib/ai/wrongModel'
 import { gatePlacesByActivity, agencyRowsToDrop } from '@/lib/ai/consultative/placeTypeGate'
@@ -686,8 +686,12 @@ export async function POST(req: Request) {
   })()
   const plannerNeedsDest = agentOn && planningIntent === 'trip' && plannerNeedsDestination(plannerUserTexts)
   const plannerAsk = plannerNeedsDest ? plannerDestinationQuestion(lastText, lang) : null
+  // A trip plan whose destination is known and whose own words ask for NO concrete data (a named hotel/restaurant, a price, opening
+  // hours, "near me", a ticket) is answered from the model's general knowledge: no retrieval tool is offered this turn, so no search runs
+  // and no venue card can exist. A specific follow-up ("chỗ ăn nào ngon?") is a new turn and gets its tools.
+  const planOnlyTurn = agentOn && planningIntent === 'trip' && !plannerAsk && planNeedsNoRetrieval(lastText)
   // Counts only — never the user's words.
-  if (agentOn && planningIntent === 'trip') console.log(JSON.stringify({ type: 'tappyai_planner_gate', asked: plannerAsk ? 'destination' : null, user_turns: plannerUserTexts.length, external_calls_before_destination: plannerAsk ? 0 : null }))
+  if (agentOn && planningIntent === 'trip') console.log(JSON.stringify({ type: 'tappyai_planner_gate', asked: plannerAsk ? 'destination' : null, plan_only: planOnlyTurn, user_turns: plannerUserTexts.length, external_calls_before_destination: plannerAsk ? 0 : null }))
   // Re-evaluated with memory in the account branch (memory is a signal); a `let` for that reason.
   // An ASK turn is not charged (like the old clarify): it costs one small brain call and no search.
   let quotaExempt = cannedEarly !== null || clarifyGate !== null || consultAskReply !== null || cannedMovie !== null || plannerAsk !== null
@@ -1751,7 +1755,10 @@ export async function POST(req: Request) {
   // earlier subject's turns do not reach the model.
   // Consult V2 (owner 2026-09-29): the STATE block carries what was said; the model sees the last 3 turns only,
   // so a turn's cost does not grow with the session.
-  const trimmedMessages = ownDomainSwitch ? messages.slice(-1) : consult ? recentTurns(messages, 3) : messages.length > 10 ? messages.slice(-10) : messages
+  // The Agent decides what is relevant itself and keeps the thread (UAT 2026-10-07: "đi Đà Lạt nên ăn gì" → "lập kế hoạch ăn chơi 3 ngày 2 đêm"
+  // was cut to one message by ownDomainSwitch, so the plan was written for the GPS city and the destination was lost): the legacy
+  // new-subject cut applies to the legacy path only.
+  const trimmedMessages = ownDomainSwitch && !agentOn ? messages.slice(-1) : consult ? recentTurns(messages, 3) : messages.length > 10 ? messages.slice(-10) : messages
 
   // V2 highlighted regression: on a tool-less follow-up ("Giá cả thế nào?",
   // "cụ thể hơn", "chọn giúp tôi"), no PLACE_TOOL runs so bufferMode stays
@@ -2875,6 +2882,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     const ownWords = lunaUserTexts.join(' ')
     return startAgentTurn({
       routeTools: tools as never,
+      noRetrieval: planOnlyTurn,
       context,
       messages: modelMessages as never,
       lang,

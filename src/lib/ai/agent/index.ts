@@ -26,6 +26,8 @@ type RouteTool = { description?: string; parameters?: unknown; execute?: (args: 
 
 export interface AgentTurnInput {
   routeTools: Record<string, RouteTool> | undefined
+  /** A plan-only turn: the model gets no tools (no retrieval, no cards). Set by the route from the user's own words. */
+  noRetrieval?: boolean
   /** Trusted context (system) + untrusted app-state DATA block (sent as a user-role message), from agentContext(). */
   context: { system: string; data: string | null }
   /** Serper credits the agent's tools may spend in this turn, all tools together (8 normal / 10 travel minus the photo reserve). */
@@ -91,7 +93,7 @@ export const TRIP_PART_CREDITS = 3
  */
 export function tripDataTool(base: Record<string, RouteTool>, sink: SubResultSink) {
   return tool({
-    description: 'Gói dữ liệu cho KẾ HOẠCH DU LỊCH ở MỘT điểm đến: khách sạn + điểm tham quan + quán đặc sản, tra song song trong MỘT lần gọi. Dùng cho "đi X N ngày", "lịch trình", "kế hoạch". Vé máy bay: gọi get_flight_prices riêng khi người dùng hỏi vé.',
+    description: 'Gói dữ liệu cho KẾ HOẠCH DU LỊCH ở MỘT điểm đến: khách sạn + điểm tham quan + quán đặc sản, tra song song trong MỘT lần gọi. Chỉ gọi khi kế hoạch cần khách sạn / quán / điểm tham quan CỤ THỂ, giá hoặc giờ mở cửa; lịch trình tổng quát thì lập thẳng, không cần gọi. Vé máy bay: gọi get_flight_prices riêng khi người dùng hỏi vé.',
     parameters: z.object({
       destination: z.string().describe('Điểm đến, vd Đà Nẵng'),
       interests: z.string().optional().describe('Sở thích ăn uống / vui chơi người dùng đã nói (vd hải sản, biển), nếu có'),
@@ -119,7 +121,9 @@ export function tripDataTool(base: Record<string, RouteTool>, sink: SubResultSin
   })
 }
 
-export function buildAgentTools(i: Pick<AgentTurnInput, 'routeTools' | 'lang' | 'canConfirmActions' | 'onPendingAction'>, sink: SubResultSink = () => {}): Record<string, AgentExecutableTool & RouteTool> {
+export function buildAgentTools(i: Pick<AgentTurnInput, 'routeTools' | 'lang' | 'canConfirmActions' | 'onPendingAction' | 'noRetrieval'>, sink: SubResultSink = () => {}): Record<string, AgentExecutableTool & RouteTool> {
+  // A plan-only turn (see planNeedsNoRetrieval) offers no tool at all: the model answers from what it knows.
+  if (i.noRetrieval) return {}
   const base = Object.fromEntries(Object.entries(i.routeTools ?? {}).filter(([n, t]) => !!t?.execute && !SIDE_EFFECT_TOOLS.has(n))) as Record<string, RouteTool>
   // Fare results carry verification labels (fare for the asked date / schedule / live status) so nothing unverified reads as fact.
   const fares = base.get_flight_prices
@@ -160,7 +164,7 @@ export function startAgentTurn(i: AgentTurnInput): AgentStreamResult {
       systemShared: AGENT_SYSTEM,
       system: o.system,
       messages: o.messages,
-      tools: o.tools as never,
+      tools: (o.tools && Object.keys(o.tools).length ? o.tools : undefined) as never,
       parallelTools: true,
       // The same ceiling on every step (route: 4096 for a plan, 1500 otherwise): the model may write its answer — a whole trip plan — in any
       // step, not only the forced final one. UAT 04/10: a 1500 cap on non-final steps cut a plan reply mid-sentence. A ceiling bills nothing unused.

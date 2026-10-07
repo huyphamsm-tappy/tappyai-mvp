@@ -18,7 +18,7 @@ const fold = (s: string) => normalizeVN(s.toLowerCase()).replace(/[^a-z0-9\s]/g,
 
 /** Planning / time / party / budget / politeness words — none of them is a place. Whole-word, folded. */
 // A regex LITERAL on purpose: a template-string RegExp matched in vitest and never in the production bundle (Phase 7 UAT 04/10).
-const FILLER = /\b(?:len ke hoach|lap ke hoach|ke hoach|lich trinh|plan|trip|tour|du lich|di choi|di|choi|chuyen di|nghi duong|nghi|cuoi tuan|tuan sau|tuan nay|tuan toi|thang sau|thang nay|thang toi|ngay mai|mai|hom nay|dip le|le|tet|he|nay|toi|sau|\d+\s*ngay(?:\s*\d+\s*dem)?|\d+\s*dem|\d+n\d+d|ngay|dem|may ngay|cho|voi|cung|\d+\s*nguoi|nguoi|gia dinh|ban be|nguoi yeu|vo|chong|con|be|cap doi|mot minh|\d+\s*(?:trieu|tr|k|nghin|ngan)|trieu|ngan sach|tiet kiem|re|sang|giup|giup minh|giup tui|minh|tui|toi|em|anh|chi|nhe|nha|nhen|di nao|voi|duoc khong|khong|a|oi|tappy|mot|cai|nao|gi|dau|o dau|the nao|sao|can|muon|dinh|tinh|xem|thu|lam|hay|vui|dep|weekend|this|next|week|a|for|me|please|make|help|travel|vacation|holiday|days?|nights?)\b/g
+const FILLER = /\b(?:len ke hoach|lap ke hoach|ke hoach|lich trinh|plan|trip|tour|du lich|di choi|di|choi|an choi|vui choi|giai tri|tham quan|ngam canh|thu gian|mua sam|an uong|an|uong|nhay|mua|nhau|ca phe|cafe|kham pha|trai nghiem|check in|ngon|va|xong|roi|chuyen di|nghi duong|nghi|cuoi tuan|tuan sau|tuan nay|tuan toi|thang sau|thang nay|thang toi|ngay mai|mai|hom nay|dip le|le|tet|he|nay|toi|sau|\d+\s*ngay(?:\s*\d+\s*dem)?|\d+\s*dem|\d+n\d+d|ngay|dem|may ngay|cho|voi|cung|\d+\s*nguoi|nguoi|gia dinh|ban be|nguoi yeu|vo|chong|con|be|cap doi|mot minh|\d+\s*(?:trieu|tr|k|nghin|ngan)|trieu|ngan sach|tiet kiem|re|sang|giup|giup minh|giup tui|minh|tui|toi|em|anh|chi|nhe|nha|nhen|di nao|voi|duoc khong|khong|a|oi|tappy|mot|cai|nao|gi|dau|o dau|the nao|sao|can|muon|dinh|tinh|xem|thu|lam|hay|vui|dep|weekend|this|next|week|a|for|me|please|make|help|travel|vacation|holiday|days?|nights?)\b/g
 
 /** Terrain / vibe words: the user wants a kind of place — the agent can propose one, so the plan is not blocked. */
 const TERRAIN = /\b(?:bien|nui|dao|rung|thac|ho|song|cho mat|mat me|sinh thai|cam trai|camping|beach|mountain|island)\b/
@@ -47,4 +47,24 @@ export function plannerDestinationQuestion(userText: string, lang: string): stri
   const weekend = /\bcuoi tuan\b|\bweekend\b/.test(fold(userText))
   if (lang === 'en') return `${weekend ? 'Where would you like to go this weekend?' : 'Where would you like to go?'} If you haven't decided yet, I can suggest a few places that fit.`
   return `${weekend ? 'Cuối tuần này bạn muốn đi đâu?' : 'Bạn muốn đi đâu?'} Nếu chưa chốt, mình có thể gợi ý vài điểm phù hợp.`
+}
+
+/**
+ * Words that ask for CONCRETE, current or local data inside a plan request: a named lodging / restaurant, a price, opening hours,
+ * "near me", a ticket or flight, the weather, reviews. Folded, whole phrases (a regex LITERAL on purpose, like FILLER).
+ */
+const CONCRETE_DATA = /\b(?:khach san|hotel|resort|homestay|villa|nha nghi|nha hang|quan an|quan ca phe|quan cafe|quan nhau|quan bar|quan nao|quan ngon|dia chi|cho an|diem an|gia ca|gia tien|gia phong|gia ve|gia re|bao nhieu|mo cua|dang mo|gio mo|gan day|gan toi|gan nhat|ve may bay|chuyen bay|ve xe|dat phong|dat ban|dat ve|review|danh gia|thoi tiet|top \d+|nen o dau|an o dau|choi o dau|bay|ve tau|tau hoa|xe khach|thue xe|grab|taxi|ve xem|phim|rap)\b/
+
+/** An explicit request to PLAN: "lập/lên kế hoạch", "lịch trình", "itinerary". A flight / hotel / "đi X" request alone is not one. */
+const PLAN_REQUEST = /\b(?:lap ke hoach|len ke hoach|lam ke hoach|ke hoach|lich trinh|itinerary|plan)\b/
+
+/**
+ * A trip plan (destination already known) that asks for no concrete data is answered from general knowledge: the route offers the Agent
+ * NO retrieval tool that turn (no search, no get_trip_data, so no venue card). It needs an explicit plan request AND none of the words that
+ * ask for concrete data (a lodging, a restaurant, a price, opening hours, a flight / ticket, "near me"). Anything else — and any later
+ * specific follow-up ("chỗ ăn nào ngon?") — keeps the tools. Deterministic and conservative: the user's own words decide.
+ */
+export function planNeedsNoRetrieval(userText: string): boolean {
+  const t = fold(userText)
+  return PLAN_REQUEST.test(t) && !CONCRETE_DATA.test(t)
 }

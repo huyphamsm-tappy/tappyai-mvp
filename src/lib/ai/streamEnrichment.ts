@@ -2700,7 +2700,12 @@ export function applyPlaceEnrichmentStreamFilter(
       // Consult V2: a detailed plan is not reshaped into a 3-6 sentence pick (it cut 17 → 6 sentences in
       // replay); a pick keeps up to 2 alternatives (owner-approved frame). Claim guards are unchanged.
       const consultPlan = collector?.consultTurn === 'plan'
-      const shape = !hasVenues || consultPlan ? { text: atmosphere.text, stats: { sentences_in: 0, sentences_out: 0, listing_removed: 0, alternatives_removed: 0, capped: 0 } } : guardProseShape(atmosphere.text, {
+      // The Agent writes its own answer (it decides to answer, ask or call a tool): the legacy "pick + why + one alternative, ≤ 6 sentences"
+      // shape is NOT applied to it. UAT 2026-10-07: a 10-sentence recipe after a place turn was cut to 6 (capped 4, 3 orphan lines) because
+      // the previous turn's venues counted as `carried`. The claim guards below (search claims, atmosphere, budget-fit, evidence gaps)
+      // still run on Agent prose.
+      const agentOwnsProse = collector?.agentMode === true
+      const shape = !hasVenues || consultPlan || agentOwnsProse ? { text: atmosphere.text, stats: { sentences_in: 0, sentences_out: 0, listing_removed: 0, alternatives_removed: 0, capped: 0 } } : guardProseShape(atmosphere.text, {
         rendersCard: v1.rendersCard,
         ...(collector?.consultTurn ? { maxAlternatives: 2, maxSentences: adviceEnabled() ? 13 : 9 } : {}),
         venues: snippetPlaceNames.map(name => ({
@@ -2733,7 +2738,9 @@ export function applyPlaceEnrichmentStreamFilter(
         // (measured Android F4: a 16-word tail "liên hệ trực tiếp qua số điện thoại …" left by a clause cut)
         return /^\s*\p{Ll}/u.test(l) && /[.!?…]\s*$/.test(l) && l.trim().split(/\s+/).length <= 24
       }
-      const tidy = shape.text.split('\n')
+      // The line tidy exists to clean what the shape guard left behind; Agent prose was not shaped, so it is not "tidied" (it would drop
+      // a recipe line that merely starts in lower case).
+      const tidy = agentOwnsProse ? shape.text : shape.text.split('\n')
         .filter(l => l.trim() === '' || machineLine(l) || (/[\p{L}\p{N}]/u.test(l) && !linkOnlyLine(l) && !fragmentLine(l)))
         .join('\n').replace(/\n{3,}/g, '\n\n')
       /**
@@ -2941,7 +2948,8 @@ export function applyPlaceEnrichmentStreamFilter(
      * recommended entity) and placed at the top. The model's own text is not removed.
      */
     const v1PickBackstop = (() => {
-      if (g1bFallback || !collector?.consultativeV1?.on) return null
+      // The Agent chooses what to say: the code does not write a "Mình chọn **X** — 4.9⭐ (N đánh giá Google Maps)…" sentence on top of its answer.
+      if (g1bFallback || !collector?.consultativeV1?.on || collector.agentMode) return null
       const body = bodyAfterGuards.replace(/\[(?:CTA_BUTTONS|TAPPY_SHOPPING|TAPPY_PLACES|TAPPY_PLAN)\][\s\S]*?\[\/(?:CTA_BUTTONS|TAPPY_SHOPPING|TAPPY_PLACES|TAPPY_PLAN)\]/g, '').replace(/\[FOLLOWUPS\][^\n]*/g, '')
       const shopping = shoppingPickFromMarker(collector.shoppingMarker)
       const known = [...places.map(p => p.name || ''), ...(shopping ? [shopping.name] : [])]
@@ -3232,8 +3240,14 @@ export function applyPlaceEnrichmentStreamFilter(
      * validated links, never the model's, never composed here.
      */
     const missingSystemLinks = systemLinks.filter(l => !prose.includes(l.url))
+    // "Official" is for a provider's own URL. A tracked affiliate / deeplink (the signed `/go/at` redirect, or the affiliate network's host) is a
+    // PARTNER link and is labelled as one.
+    const partnerLinks = missingSystemLinks.some(l => /\/go\/at\b/.test(l.url) || /\/\/go\.isclix\.com\//.test(l.url))
+    const linksLabel = partnerLinks
+      ? (lang === 'vi' ? '🔗 Liên kết đối tác:' : '🔗 Partner links:')
+      : (lang === 'vi' ? '🔗 Liên kết chính thức:' : '🔗 Official links:')
     const systemLinksSuffix = systemLinks.length > 0 && missingSystemLinks.length === systemLinks.length
-      ? `\n\n${lang === 'vi' ? '🔗 Liên kết chính thức:' : '🔗 Official links:'} ${missingSystemLinks.map(l => `[${escapeMarkdownLabel(l.name)}](${sanitizeUrlForMarkdown(l.url)})`).join(' · ')}`
+      ? `\n\n${linksLabel} ${missingSystemLinks.map(l => `[${escapeMarkdownLabel(l.name)}](${sanitizeUrlForMarkdown(l.url)})`).join(' · ')}`
       : ''
     // Phase 7 2B/2C: a flight / film fact no approved source returns is said to be unverified for exactly the dimension the user asked
     // (fare, flight times, flight status, showtime, ticket price) — the system's sentence leads unless the reply already says it.
